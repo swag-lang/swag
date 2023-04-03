@@ -8,7 +8,6 @@
 #include "AST.h"
 #include "FindTarget.h"
 #include "Selection.h"
-#include "SourceCode.h"
 #include "refactor/Tweak.h"
 #include "support/Logger.h"
 #include "clang/AST/Decl.h"
@@ -17,8 +16,6 @@
 #include "clang/AST/RecursiveASTVisitor.h"
 #include "clang/Basic/SourceLocation.h"
 #include "clang/Tooling/Core/Replacement.h"
-#include "clang/Tooling/Refactoring/RecursiveSymbolVisitor.h"
-#include "llvm/ADT/ScopeExit.h"
 
 namespace clang {
 namespace clangd {
@@ -148,34 +145,37 @@ Expected<Tweak::Effect> RemoveUsingNamespace::apply(const Selection &Inputs) {
   // removing the directive.
   std::vector<SourceLocation> IdentsToQualify;
   for (auto &D : Inputs.AST->getLocalTopLevelDecls()) {
-    findExplicitReferences(D, [&](ReferenceLoc Ref) {
-      if (Ref.Qualifier)
-        return; // This reference is already qualified.
+    findExplicitReferences(
+        D,
+        [&](ReferenceLoc Ref) {
+          if (Ref.Qualifier)
+            return; // This reference is already qualified.
 
-      for (auto *T : Ref.Targets) {
-        if (!visibleContext(T->getDeclContext())
-                 ->Equals(TargetDirective->getNominatedNamespace()))
-          return;
-      }
-      SourceLocation Loc = Ref.NameLoc;
-      if (Loc.isMacroID()) {
-        // Avoid adding qualifiers before macro expansions, it's probably
-        // incorrect, e.g.
-        //   namespace std { int foo(); }
-        //   #define FOO 1 + foo()
-        //   using namespace foo; // provides matrix
-        //   auto x = FOO; // Must not changed to auto x = std::FOO
-        if (!SM.isMacroArgExpansion(Loc))
-          return; // FIXME: report a warning to the users.
-        Loc = SM.getFileLoc(Ref.NameLoc);
-      }
-      assert(Loc.isFileID());
-      if (SM.getFileID(Loc) != SM.getMainFileID())
-        return; // FIXME: report these to the user as warnings?
-      if (SM.isBeforeInTranslationUnit(Loc, FirstUsingDirectiveLoc))
-        return; // Directive was not visible before this point.
-      IdentsToQualify.push_back(Loc);
-    });
+          for (auto *T : Ref.Targets) {
+            if (!visibleContext(T->getDeclContext())
+                     ->Equals(TargetDirective->getNominatedNamespace()))
+              return;
+          }
+          SourceLocation Loc = Ref.NameLoc;
+          if (Loc.isMacroID()) {
+            // Avoid adding qualifiers before macro expansions, it's probably
+            // incorrect, e.g.
+            //   namespace std { int foo(); }
+            //   #define FOO 1 + foo()
+            //   using namespace foo; // provides matrix
+            //   auto x = FOO; // Must not changed to auto x = std::FOO
+            if (!SM.isMacroArgExpansion(Loc))
+              return; // FIXME: report a warning to the users.
+            Loc = SM.getFileLoc(Ref.NameLoc);
+          }
+          assert(Loc.isFileID());
+          if (SM.getFileID(Loc) != SM.getMainFileID())
+            return; // FIXME: report these to the user as warnings?
+          if (SM.isBeforeInTranslationUnit(Loc, FirstUsingDirectiveLoc))
+            return; // Directive was not visible before this point.
+          IdentsToQualify.push_back(Loc);
+        },
+        Inputs.AST->getHeuristicResolver());
   }
   // Remove duplicates.
   llvm::sort(IdentsToQualify);

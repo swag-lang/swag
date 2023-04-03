@@ -33,15 +33,17 @@ LLVM and API reference documentation.
    MarkedUpDisassembly
    MIRLangRef
    OptBisect
-   ORCv2
    PDB/index
+   PointerAuth
    ScudoHardenedAllocator
    MemTagSanitizer
    Security
+   SecurityTransparencyReports
    SegmentedStacks
    StackMaps
    SpeculativeLoadHardening
    Statepoints
+   SymbolizerMarkupFormat
    SystemLibrary
    TestingGuide
    TransformMetadata
@@ -60,12 +62,6 @@ API Reference
 :doc:`HowToUseAttributes`
   Answers some questions about the new Attributes infrastructure.
 
-`Documentation for Go bindings <http://godoc.org/llvm.org/llvm/bindings/go/llvm>`_
-
-:doc:`ORCv2`
-   Describes the design and implementation of the ORC APIs, including some
-   usage examples, and a guide for users transitioning from ORCv1 to ORCv2.
-
 LLVM Reference
 --------------
 
@@ -83,6 +79,9 @@ Command Line Utilities
 
 :doc:`OptBisect`
   A command line option for debugging optimization-induced failures.
+
+:doc:`SymbolizerMarkupFormat`
+  A reference for the log symbolizer markup accepted by ``llvm-symbolizer``.
 
 :doc:`The Microsoft PDB File Format <PDB/index>`
   A detailed description of the Microsoft PDB (Program Database) file format.
@@ -212,6 +211,10 @@ Additional Topics
 
 :doc:`Coroutines`
   LLVM support for coroutines.
+
+:doc:`PointerAuth`
+  A description of pointer authentication, its LLVM IR representation, and its
+  support in the backend.
 
 :doc:`YamlIO`
    A reference guide for using LLVM's YAML I/O library.

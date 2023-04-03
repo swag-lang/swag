@@ -13,7 +13,7 @@
 // we have several customizations:
 //  - preamble handling
 //  - capturing diagnostics for later access
-//  - running clang-tidy checks checks
+//  - running clang-tidy checks
 //
 //===----------------------------------------------------------------------===//
 
@@ -26,14 +26,10 @@
 #include "Headers.h"
 #include "Preamble.h"
 #include "index/CanonicalIncludes.h"
-#include "support/Path.h"
 #include "clang/Frontend/FrontendAction.h"
-#include "clang/Frontend/PrecompiledPreamble.h"
 #include "clang/Lex/Preprocessor.h"
-#include "clang/Tooling/CompilationDatabase.h"
 #include "clang/Tooling/Syntax/Tokens.h"
 #include "llvm/ADT/ArrayRef.h"
-#include "llvm/ADT/None.h"
 #include "llvm/ADT/Optional.h"
 #include "llvm/ADT/StringRef.h"
 #include <memory>
@@ -41,8 +37,9 @@
 #include <vector>
 
 namespace clang {
+class Sema;
 namespace clangd {
-class SymbolIndex;
+class HeuristicResolver;
 
 /// Stores and provides access to parsed AST.
 class ParsedAST {
@@ -67,6 +64,8 @@ public:
   ASTContext &getASTContext();
   const ASTContext &getASTContext() const;
 
+  Sema &getSema();
+
   Preprocessor &getPreprocessor();
   std::shared_ptr<Preprocessor> getPreprocessorPtr();
   const Preprocessor &getPreprocessor() const;
@@ -87,7 +86,9 @@ public:
   /// (These should be const, but RecursiveASTVisitor requires Decl*).
   ArrayRef<Decl *> getLocalTopLevelDecls();
 
-  const std::vector<Diag> &getDiagnostics() const;
+  const llvm::Optional<std::vector<Diag>> &getDiagnostics() const {
+    return Diags;
+  }
 
   /// Returns the estimated size of the AST and the accessory structures, in
   /// bytes. Does not include the size of the preamble.
@@ -98,6 +99,8 @@ public:
   /// Gets all macro references (definition, expansions) present in the main
   /// file, including those in the preamble region.
   const MainFileMacros &getMacros() const;
+  /// Gets all pragma marks in the main file.
+  const std::vector<PragmaMark> &getMarks() const;
   /// Tokens recorded while parsing the main file.
   /// (!) does not have tokens from the preamble.
   const syntax::TokenBuffer &getTokens() const { return Tokens; }
@@ -109,13 +112,18 @@ public:
   /// AST. Might be None if no Preamble is used.
   llvm::Optional<llvm::StringRef> preambleVersion() const;
 
+  const HeuristicResolver *getHeuristicResolver() const {
+    return Resolver.get();
+  }
+
 private:
   ParsedAST(llvm::StringRef Version,
             std::shared_ptr<const PreambleData> Preamble,
             std::unique_ptr<CompilerInstance> Clang,
             std::unique_ptr<FrontendAction> Action, syntax::TokenBuffer Tokens,
-            MainFileMacros Macros, std::vector<Decl *> LocalTopLevelDecls,
-            std::vector<Diag> Diags, IncludeStructure Includes,
+            MainFileMacros Macros, std::vector<PragmaMark> Marks,
+            std::vector<Decl *> LocalTopLevelDecls,
+            llvm::Optional<std::vector<Diag>> Diags, IncludeStructure Includes,
             CanonicalIncludes CanonIncludes);
 
   std::string Version;
@@ -137,13 +145,16 @@ private:
 
   /// All macro definitions and expansions in the main file.
   MainFileMacros Macros;
-  // Data, stored after parsing.
-  std::vector<Diag> Diags;
+  // Pragma marks in the main file.
+  std::vector<PragmaMark> Marks;
+  // Data, stored after parsing. None if AST was built with a stale preamble.
+  llvm::Optional<std::vector<Diag>> Diags;
   // Top-level decls inside the current file. Not that this does not include
   // top-level decls from the preamble.
   std::vector<Decl *> LocalTopLevelDecls;
   IncludeStructure Includes;
   CanonicalIncludes CanonIncludes;
+  std::unique_ptr<HeuristicResolver> Resolver;
 };
 
 } // namespace clangd

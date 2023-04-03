@@ -27,7 +27,7 @@ function(libomp_check_version_symbols retval)
     void func2() { printf(\"World\"); }
     __asm__(\".symver func1, func@VER1\");
     __asm__(\".symver func2, func@VER2\");
-    int main() {
+    int main(void) {
       func1();
       func2();
       return 0;
@@ -59,6 +59,9 @@ check_cxx_compiler_flag(-Wno-stringop-truncation LIBOMP_HAVE_WNO_STRINGOP_TRUNCA
 check_cxx_compiler_flag(-Wno-switch LIBOMP_HAVE_WNO_SWITCH_FLAG)
 check_cxx_compiler_flag(-Wno-uninitialized LIBOMP_HAVE_WNO_UNINITIALIZED_FLAG)
 check_cxx_compiler_flag(-Wno-unused-but-set-variable LIBOMP_HAVE_WNO_UNUSED_BUT_SET_VARIABLE_FLAG)
+check_cxx_compiler_flag(-Wno-return-type-c-linkage LIBOMP_HAVE_WNO_RETURN_TYPE_C_LINKAGE_FLAG)
+check_cxx_compiler_flag(-Wno-cast-qual LIBOMP_HAVE_WNO_CAST_QUAL_FLAG)
+check_cxx_compiler_flag(-Wno-int-to-void-pointer-cast LIBOMP_HAVE_WNO_INT_TO_VOID_POINTER_CAST_FLAG)
 # check_cxx_compiler_flag(-Wconversion LIBOMP_HAVE_WCONVERSION_FLAG)
 check_cxx_compiler_flag(-msse2 LIBOMP_HAVE_MSSE2_FLAG)
 check_cxx_compiler_flag(-ftls-model=initial-exec LIBOMP_HAVE_FTLS_MODEL_FLAG)
@@ -106,6 +109,23 @@ if (NOT LIBOMP_HAVE_SHM_OPEN_NO_LRT)
   set(CMAKE_REQUIRED_LIBRARIES)
 endif()
 
+# Check for aligned memory allocator function
+check_include_file(xmmintrin.h LIBOMP_HAVE_XMMINTRIN_H)
+set(OLD_CMAKE_REQUIRED_FLAGS ${CMAKE_REQUIRED_FLAGS})
+if (LIBOMP_HAVE_XMMINTRIN_H)
+  set(CMAKE_REQUIRED_FLAGS "${CMAKE_REQUIRED_FLAGS} -DLIBOMP_HAVE_XMMINTRIN_H")
+endif()
+set(source_code "// check for _mm_malloc
+    #ifdef LIBOMP_HAVE_XMMINTRIN_H
+    #include <xmmintrin.h>
+    #endif
+    int main() { void *ptr = _mm_malloc(sizeof(int) * 1000, 64); _mm_free(ptr); return 0; }")
+check_cxx_source_compiles("${source_code}" LIBOMP_HAVE__MM_MALLOC)
+set(CMAKE_REQUIRED_FLAGS ${OLD_CMAKE_REQUIRED_FLAGS})
+check_symbol_exists(aligned_alloc "stdlib.h" LIBOMP_HAVE_ALIGNED_ALLOC)
+check_symbol_exists(posix_memalign "stdlib.h" LIBOMP_HAVE_POSIX_MEMALIGN)
+check_symbol_exists(_aligned_malloc "malloc.h" LIBOMP_HAVE__ALIGNED_MALLOC)
+
 # Check linker flags
 if(WIN32)
   libomp_check_linker_flag(/SAFESEH LIBOMP_HAVE_SAFESEH_FLAG)
@@ -119,7 +139,7 @@ elseif(NOT APPLE)
 endif()
 
 # Check Intel(R) C Compiler specific flags
-if(CMAKE_C_COMPILER_ID STREQUAL "Intel")
+if(CMAKE_C_COMPILER_ID STREQUAL "Intel" OR CMAKE_C_COMPILER_ID STREQUAL "IntelLLVM")
   check_cxx_compiler_flag(/Qlong_double LIBOMP_HAVE_LONG_DOUBLE_FLAG)
   check_cxx_compiler_flag(/Qdiag-disable:177 LIBOMP_HAVE_DIAG_DISABLE_177_FLAG)
   check_cxx_compiler_flag(/Qinline-min-size=1 LIBOMP_HAVE_INLINE_MIN_SIZE_FLAG)
@@ -227,7 +247,7 @@ libomp_check_version_symbols(LIBOMP_HAVE_VERSION_SYMBOLS)
 # Check if quad precision types are available
 if(CMAKE_C_COMPILER_ID STREQUAL "GNU")
   set(LIBOMP_HAVE_QUAD_PRECISION TRUE)
-elseif(CMAKE_C_COMPILER_ID STREQUAL "Intel")
+elseif(CMAKE_C_COMPILER_ID STREQUAL "Intel" OR CMAKE_C_COMPILER_ID STREQUAL "IntelLLVM")
   if(LIBOMP_HAVE_EXTENDED_FLOAT_TYPES_FLAG)
     set(LIBOMP_HAVE_QUAD_PRECISION TRUE)
   else()
@@ -283,11 +303,13 @@ check_c_source_compiles("int main(int argc, char** argv) {
 check_c_source_compiles("__attribute__ ((weak)) int foo(int a) { return a*a; }
   int main(int argc, char** argv) {
   return foo(argc);}" LIBOMP_HAVE_WEAK_ATTRIBUTE)
-check_include_files("windows.h;psapi.h" LIBOMP_HAVE_PSAPI_H)
-check_library_exists(psapi EnumProcessModules "" LIBOMP_HAVE_LIBPSAPI)
-if(LIBOMP_HAVE_PSAPI_H AND LIBOMP_HAVE_LIBPSAPI)
-  set(LIBOMP_HAVE_PSAPI TRUE)
-endif()
+set(CMAKE_REQUIRED_LIBRARIES psapi)
+check_c_source_compiles("#include <windows.h>
+  #include <psapi.h>
+  int main(int artc, char** argv) {
+    return EnumProcessModules(NULL, NULL, 0, NULL);
+  }" LIBOMP_HAVE_PSAPI)
+set(CMAKE_REQUIRED_LIBRARIES)
 if(NOT LIBOMP_HAVE___BUILTIN_FRAME_ADDRESS)
   set(LIBOMP_HAVE_OMPT_SUPPORT FALSE)
 else()
@@ -310,7 +332,8 @@ endif()
 
 # Check if HWLOC support is available
 if(${LIBOMP_USE_HWLOC})
-  set(CMAKE_REQUIRED_INCLUDES ${LIBOMP_HWLOC_INSTALL_DIR}/include)
+  find_path(LIBOMP_HWLOC_INCLUDE_DIR NAMES hwloc.h HINTS ${LIBOMP_HWLOC_INSTALL_DIR} PATH_SUFFIXES include)
+  set(CMAKE_REQUIRED_INCLUDES ${LIBOMP_HWLOC_INCLUDE_DIR})
   check_include_file(hwloc.h LIBOMP_HAVE_HWLOC_H)
   set(CMAKE_REQUIRED_INCLUDES)
   find_library(LIBOMP_HWLOC_LIBRARY

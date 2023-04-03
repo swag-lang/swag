@@ -67,7 +67,7 @@ static bool processUse(CallInst *CI) {
   const bool HasReqdWorkGroupSize = MD && MD->getNumOperands() == 3;
 
   const bool HasUniformWorkGroupSize =
-    F->getFnAttribute("uniform-work-group-size").getValueAsString() == "true";
+    F->getFnAttribute("uniform-work-group-size").getValueAsBool();
 
   if (!HasReqdWorkGroupSize && !HasUniformWorkGroupSize)
     return false;
@@ -163,39 +163,29 @@ static bool processUse(CallInst *CI) {
     if (!GroupSize || !GridSize)
       continue;
 
+    using namespace llvm::PatternMatch;
+    auto GroupIDIntrin =
+        I == 0 ? m_Intrinsic<Intrinsic::amdgcn_workgroup_id_x>()
+               : (I == 1 ? m_Intrinsic<Intrinsic::amdgcn_workgroup_id_y>()
+                         : m_Intrinsic<Intrinsic::amdgcn_workgroup_id_z>());
+
     for (User *U : GroupSize->users()) {
       auto *ZextGroupSize = dyn_cast<ZExtInst>(U);
       if (!ZextGroupSize)
         continue;
 
-      for (User *ZextUser : ZextGroupSize->users()) {
-        auto *SI = dyn_cast<SelectInst>(ZextUser);
-        if (!SI)
-          continue;
-
-        using namespace llvm::PatternMatch;
-        auto GroupIDIntrin = I == 0 ?
-          m_Intrinsic<Intrinsic::amdgcn_workgroup_id_x>() :
-            (I == 1 ? m_Intrinsic<Intrinsic::amdgcn_workgroup_id_y>() :
-                      m_Intrinsic<Intrinsic::amdgcn_workgroup_id_z>());
-
-        auto SubExpr = m_Sub(m_Specific(GridSize),
-                             m_Mul(GroupIDIntrin, m_Specific(ZextGroupSize)));
-
-        ICmpInst::Predicate Pred;
-        if (match(SI,
-                  m_Select(m_ICmp(Pred, SubExpr, m_Specific(ZextGroupSize)),
-                           SubExpr,
-                           m_Specific(ZextGroupSize))) &&
-            Pred == ICmpInst::ICMP_ULT) {
+      for (User *UMin : ZextGroupSize->users()) {
+        if (match(UMin,
+                  m_UMin(m_Sub(m_Specific(GridSize),
+                               m_Mul(GroupIDIntrin, m_Specific(ZextGroupSize))),
+                         m_Specific(ZextGroupSize)))) {
           if (HasReqdWorkGroupSize) {
             ConstantInt *KnownSize
               = mdconst::extract<ConstantInt>(MD->getOperand(I));
-            SI->replaceAllUsesWith(ConstantExpr::getIntegerCast(KnownSize,
-                                                                SI->getType(),
-                                                                false));
+            UMin->replaceAllUsesWith(ConstantExpr::getIntegerCast(
+                KnownSize, UMin->getType(), false));
           } else {
-            SI->replaceAllUsesWith(ZextGroupSize);
+            UMin->replaceAllUsesWith(ZextGroupSize);
           }
 
           MadeChange = true;
@@ -249,9 +239,9 @@ bool AMDGPULowerKernelAttributes::runOnModule(Module &M) {
 }
 
 INITIALIZE_PASS_BEGIN(AMDGPULowerKernelAttributes, DEBUG_TYPE,
-                      "AMDGPU IR optimizations", false, false)
-INITIALIZE_PASS_END(AMDGPULowerKernelAttributes, DEBUG_TYPE, "AMDGPU IR optimizations",
-                    false, false)
+                      "AMDGPU Kernel Attributes", false, false)
+INITIALIZE_PASS_END(AMDGPULowerKernelAttributes, DEBUG_TYPE,
+                    "AMDGPU Kernel Attributes", false, false)
 
 char AMDGPULowerKernelAttributes::ID = 0;
 

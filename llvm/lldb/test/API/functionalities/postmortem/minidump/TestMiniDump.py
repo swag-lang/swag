@@ -12,8 +12,6 @@ from lldbsuite.test import lldbutil
 
 
 class MiniDumpTestCase(TestBase):
-
-    mydir = TestBase.compute_mydir(__file__)
     NO_DEBUG_INFO_TESTCASE = True
 
     def test_process_info_in_mini_dump(self):
@@ -38,7 +36,7 @@ class MiniDumpTestCase(TestBase):
         thread = self.process.GetThreadAtIndex(0)
         self.assertEqual(thread.GetStopReason(), lldb.eStopReasonException)
         stop_description = thread.GetStopDescription(256)
-        self.assertTrue("0xc0000005" in stop_description)
+        self.assertIn("0xc0000005", stop_description)
 
     def test_modules_in_mini_dump(self):
         """Test that lldb can read the list of modules from the minidump."""
@@ -120,10 +118,10 @@ class MiniDumpTestCase(TestBase):
             breakpoint = target.BreakpointCreateByName("bar")
             process = target.LaunchSimple(
                 None, None, self.get_process_working_directory())
-            self.assertEqual(process.GetState(), lldb.eStateStopped)
+            self.assertState(process.GetState(), lldb.eStateStopped)
             self.assertTrue(process.SaveCore(core))
             self.assertTrue(os.path.isfile(core))
-            self.assertTrue(process.Kill().Success())
+            self.assertSuccess(process.Kill())
 
             # Launch with the mini dump, and inspect the stack.
             target = self.dbg.CreateTarget(None)
@@ -136,7 +134,7 @@ class MiniDumpTestCase(TestBase):
                 frame = thread.GetFrameAtIndex(index)
                 self.assertTrue(frame.IsValid())
                 function_name = frame.GetFunctionName()
-                self.assertTrue(name in function_name)
+                self.assertIn(name, function_name)
 
         finally:
             # Clean up the mini dump file.
@@ -156,10 +154,10 @@ class MiniDumpTestCase(TestBase):
             breakpoint = target.BreakpointCreateByName("bar")
             process = target.LaunchSimple(
                 None, None, self.get_process_working_directory())
-            self.assertEqual(process.GetState(), lldb.eStateStopped)
+            self.assertState(process.GetState(), lldb.eStateStopped)
             self.assertTrue(process.SaveCore(core))
             self.assertTrue(os.path.isfile(core))
-            self.assertTrue(process.Kill().Success())
+            self.assertSuccess(process.Kill())
 
             # Launch with the mini dump, and inspect a local variable.
             target = self.dbg.CreateTarget(None)

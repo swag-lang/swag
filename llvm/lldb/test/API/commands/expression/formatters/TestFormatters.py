@@ -12,8 +12,6 @@ from lldbsuite.test import lldbutil
 
 class ExprFormattersTestCase(TestBase):
 
-    mydir = TestBase.compute_mydir(__file__)
-
     def setUp(self):
         # Call super's setUp().
         TestBase.setUp(self)
@@ -21,7 +19,6 @@ class ExprFormattersTestCase(TestBase):
         self.line = line_number('main.cpp',
                                 '// Stop here')
 
-    @expectedFailureAll(oslist=["windows"], bugnumber="llvm.org/pr21765")
     @skipIfTargetAndroid()  # skipping to avoid crashing the test runner
     @expectedFailureAndroid('llvm.org/pr24691')  # we hit an assertion in clang
     def test(self):

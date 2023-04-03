@@ -33,12 +33,12 @@ Annotations::Annotations(llvm::StringRef Text) {
   Code.reserve(Text.size());
   while (!Text.empty()) {
     if (Text.consume_front("^")) {
-      Points[Name.getValueOr("")].push_back(Code.size());
+      Points[Name.value_or("")].push_back(Code.size());
       Name = llvm::None;
       continue;
     }
     if (Text.consume_front("[[")) {
-      OpenRanges.emplace_back(Name.getValueOr(""), Code.size());
+      OpenRanges.emplace_back(Name.value_or(""), Code.size());
       Name = llvm::None;
       continue;
     }
@@ -53,7 +53,8 @@ Annotations::Annotations(llvm::StringRef Text) {
       continue;
     }
     if (Text.consume_front("$")) {
-      Name = Text.take_while(llvm::isAlnum);
+      Name =
+          Text.take_while([](char C) { return llvm::isAlnum(C) || C == '_'; });
       Text = Text.drop_front(Name->size());
       continue;
     }

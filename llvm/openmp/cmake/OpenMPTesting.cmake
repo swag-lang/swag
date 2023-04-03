@@ -14,7 +14,7 @@ function(find_standalone_test_dependencies)
 
   # Find executables.
   find_program(OPENMP_LLVM_LIT_EXECUTABLE
-    NAMES llvm-lit lit.py lit
+    NAMES llvm-lit.py llvm-lit lit.py lit
     PATHS ${OPENMP_LLVM_TOOLS_DIR})
   if (NOT OPENMP_LLVM_LIT_EXECUTABLE)
     message(STATUS "Cannot find llvm-lit.")
@@ -58,7 +58,13 @@ if (${OPENMP_STANDALONE_BUILD})
   set(OPENMP_LIT_ARGS "${DEFAULT_LIT_ARGS}" CACHE STRING "Options for lit.")
   separate_arguments(OPENMP_LIT_ARGS)
 else()
-  set(OPENMP_FILECHECK_EXECUTABLE ${LLVM_RUNTIME_OUTPUT_INTDIR}/FileCheck)
+  if (NOT TARGET "FileCheck")
+    message(STATUS "Cannot find 'FileCheck'.")
+    message(WARNING "The check targets will not be available!")
+    set(ENABLE_CHECK_TARGETS FALSE)
+  else()
+    set(OPENMP_FILECHECK_EXECUTABLE ${LLVM_RUNTIME_OUTPUT_INTDIR}/FileCheck)
+  endif()
   set(OPENMP_NOT_EXECUTABLE ${LLVM_RUNTIME_OUTPUT_INTDIR}/not)
 endif()
 
@@ -70,12 +76,16 @@ macro(extract_test_compiler_information lang file)
   list(GET information 2 version)
   list(GET information 3 openmp_flags)
   list(GET information 4 has_tsan_flags)
+  list(GET information 5 has_omit_frame_pointer_flags)
+  list(GET information 6 has_omp_h)
 
   set(OPENMP_TEST_${lang}_COMPILER_PATH ${path})
   set(OPENMP_TEST_${lang}_COMPILER_ID ${id})
   set(OPENMP_TEST_${lang}_COMPILER_VERSION ${version})
   set(OPENMP_TEST_${lang}_COMPILER_OPENMP_FLAGS ${openmp_flags})
   set(OPENMP_TEST_${lang}_COMPILER_HAS_TSAN_FLAGS ${has_tsan_flags})
+  set(OPENMP_TEST_${lang}_COMPILER_HAS_OMIT_FRAME_POINTER_FLAGS ${has_omit_frame_pointer_flags})
+  set(OPENMP_TEST_${lang}_COMPILER_HAS_OMP_H ${has_omp_h})
 endmacro()
 
 # Function to set variables with information about the test compiler.
@@ -92,6 +102,8 @@ function(set_test_compiler_information dir)
     set(OPENMP_TEST_COMPILER_VERSION "${OPENMP_TEST_C_COMPILER_VERSION}" PARENT_SCOPE)
     set(OPENMP_TEST_COMPILER_OPENMP_FLAGS "${OPENMP_TEST_C_COMPILER_OPENMP_FLAGS}" PARENT_SCOPE)
     set(OPENMP_TEST_COMPILER_HAS_TSAN_FLAGS "${OPENMP_TEST_C_COMPILER_HAS_TSAN_FLAGS}" PARENT_SCOPE)
+    set(OPENMP_TEST_COMPILER_HAS_OMIT_FRAME_POINTER_FLAGS "${OPENMP_TEST_C_COMPILER_HAS_OMIT_FRAME_POINTER_FLAGS}" PARENT_SCOPE)
+    set(OPENMP_TEST_COMPILER_HAS_OMP_H "${OPENMP_TEST_C_COMPILER_HAS_OMP_H}" PARENT_SCOPE)
 
     # Determine major version.
     string(REGEX MATCH "[0-9]+" major "${OPENMP_TEST_C_COMPILER_VERSION}")
@@ -141,8 +153,10 @@ else()
   else()
     set(OPENMP_TEST_COMPILER_HAS_TSAN_FLAGS 0)
   endif()
+  set(OPENMP_TEST_COMPILER_HAS_OMP_H 1)
   # TODO: Implement blockaddress in GlobalISel and remove this flag!
   set(OPENMP_TEST_COMPILER_OPENMP_FLAGS "-fopenmp ${OPENMP_TEST_COMPILER_THREAD_FLAGS} -fno-experimental-isel")
+  set(OPENMP_TEST_COMPILER_HAS_OMIT_FRAME_POINTER_FLAGS 1)
 endif()
 
 # Function to set compiler features for use in lit.
@@ -190,14 +204,14 @@ function(add_openmp_testsuite target comment)
         ${comment}
         ${ARG_UNPARSED_ARGUMENTS}
         EXCLUDE_FROM_CHECK_ALL
-        DEPENDS clang FileCheck ${ARG_DEPENDS}
+        DEPENDS clang FileCheck not ${ARG_DEPENDS}
         ARGS ${ARG_ARGS}
       )
     else()
       add_lit_testsuite(${target}
         ${comment}
         ${ARG_UNPARSED_ARGUMENTS}
-        DEPENDS clang FileCheck ${ARG_DEPENDS}
+        DEPENDS clang FileCheck not ${ARG_DEPENDS}
         ARGS ${ARG_ARGS}
       )
     endif()

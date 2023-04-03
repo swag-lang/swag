@@ -15,10 +15,10 @@
 
 #include "../PassDetail.h"
 #include "mlir/Conversion/GPUToVulkan/ConvertGPUToVulkanPass.h"
-#include "mlir/Dialect/GPU/GPUDialect.h"
+#include "mlir/Dialect/Func/IR/FuncOps.h"
+#include "mlir/Dialect/GPU/IR/GPUDialect.h"
 #include "mlir/Dialect/SPIRV/IR/SPIRVDialect.h"
 #include "mlir/Dialect/SPIRV/IR/SPIRVOps.h"
-#include "mlir/Dialect/StandardOps/IR/Ops.h"
 #include "mlir/IR/Attributes.h"
 #include "mlir/IR/Builders.h"
 #include "mlir/IR/BuiltinOps.h"
@@ -74,7 +74,7 @@ private:
   static constexpr unsigned kVulkanLaunchNumConfigOperands = 3;
 };
 
-} // anonymous namespace
+} // namespace
 
 void ConvertGpuLaunchFuncToVulkanLaunchFunc::runOnOperation() {
   bool done = false;
@@ -99,7 +99,7 @@ void ConvertGpuLaunchFuncToVulkanLaunchFunc::runOnOperation() {
 
 LogicalResult ConvertGpuLaunchFuncToVulkanLaunchFunc::declareVulkanLaunchFunc(
     Location loc, gpu::LaunchFuncOp launchOp) {
-  OpBuilder builder(getOperation().getBody()->getTerminator());
+  auto builder = OpBuilder::atBlockEnd(getOperation().getBody());
 
   // Workgroup size is written into the kernel. So to properly modelling
   // vulkan launch, we have to skip local workgroup size configuration here.
@@ -123,7 +123,7 @@ LogicalResult ConvertGpuLaunchFuncToVulkanLaunchFunc::declareVulkanLaunchFunc(
 
   // Declare vulkan launch function.
   auto funcType = builder.getFunctionType(vulkanLaunchTypes, {});
-  builder.create<FuncOp>(loc, kVulkanLaunch, funcType).setPrivate();
+  builder.create<func::FuncOp>(loc, kVulkanLaunch, funcType).setPrivate();
 
   return success();
 }
@@ -170,19 +170,18 @@ void ConvertGpuLaunchFuncToVulkanLaunchFunc::convertGpuLaunchFunc(
                               gpuLaunchOperands.end());
 
   // Create vulkan launch call op.
-  auto vulkanLaunchCallOp = builder.create<CallOp>(
-      loc, TypeRange{}, builder.getSymbolRefAttr(kVulkanLaunch),
+  auto vulkanLaunchCallOp = builder.create<func::CallOp>(
+      loc, TypeRange{}, SymbolRefAttr::get(builder.getContext(), kVulkanLaunch),
       vulkanLaunchOperands);
 
   // Set SPIR-V binary shader data as an attribute.
   vulkanLaunchCallOp->setAttr(
       kSPIRVBlobAttrName,
-      StringAttr::get({binary.data(), binary.size()}, loc->getContext()));
+      builder.getStringAttr(StringRef(binary.data(), binary.size())));
 
   // Set entry point name as an attribute.
-  vulkanLaunchCallOp->setAttr(
-      kSPIRVEntryPointAttrName,
-      StringAttr::get(launchOp.getKernelName(), loc->getContext()));
+  vulkanLaunchCallOp->setAttr(kSPIRVEntryPointAttrName,
+                              launchOp.getKernelName());
 
   launchOp.erase();
 }

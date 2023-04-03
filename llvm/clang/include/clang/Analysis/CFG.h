@@ -202,7 +202,8 @@ public:
                  isa<ReturnedValueConstructionContext>(C) ||
                  isa<VariableConstructionContext>(C) ||
                  isa<ConstructorInitializerConstructionContext>(C) ||
-                 isa<ArgumentConstructionContext>(C)));
+                 isa<ArgumentConstructionContext>(C) ||
+                 isa<LambdaCaptureConstructionContext>(C)));
     Data2.setPointer(const_cast<ConstructionContext *>(C));
   }
 
@@ -515,7 +516,7 @@ public:
     /// of the most derived class while we're in the base class.
     VirtualBaseBranch,
 
-    /// Number of different kinds, for sanity checks. We subtract 1 so that
+    /// Number of different kinds, for assertions. We subtract 1 so that
     /// to keep receiving compiler warnings when we don't cover all enum values
     /// in a switch.
     NumKindsMinusOne = VirtualBaseBranch
@@ -707,7 +708,7 @@ class CFGBlock {
 
     template <bool IsOtherConst>
     ElementRefIterator(ElementRefIterator<true, IsOtherConst> E)
-        : ElementRefIterator(E.Parent, llvm::make_reverse_iterator(E.Pos)) {}
+        : ElementRefIterator(E.Parent, std::make_reverse_iterator(E.Pos)) {}
 
     bool operator<(ElementRefIterator Other) const {
       assert(Parent == Other.Parent);
@@ -1307,6 +1308,12 @@ public:
 
   iterator nodes_begin() { return iterator(Blocks.begin()); }
   iterator nodes_end() { return iterator(Blocks.end()); }
+
+  llvm::iterator_range<iterator> nodes() { return {begin(), end()}; }
+  llvm::iterator_range<const_iterator> const_nodes() const {
+    return {begin(), end()};
+  }
+
   const_iterator nodes_begin() const { return const_iterator(Blocks.begin()); }
   const_iterator nodes_end() const { return const_iterator(Blocks.end()); }
 
@@ -1314,6 +1321,13 @@ public:
   reverse_iterator          rend()                 { return Blocks.rend(); }
   const_reverse_iterator    rbegin()      const    { return Blocks.rbegin(); }
   const_reverse_iterator    rend()        const    { return Blocks.rend(); }
+
+  llvm::iterator_range<reverse_iterator> reverse_nodes() {
+    return {rbegin(), rend()};
+  }
+  llvm::iterator_range<const_reverse_iterator> const_reverse_nodes() const {
+    return {rbegin(), rend()};
+  }
 
   CFGBlock &                getEntry()             { return *Entry; }
   const CFGBlock &          getEntry()    const    { return *Entry; }
@@ -1324,6 +1338,7 @@ public:
   const CFGBlock * getIndirectGotoBlock() const { return IndirectGotoBlock; }
 
   using try_block_iterator = std::vector<const CFGBlock *>::const_iterator;
+  using try_block_range = llvm::iterator_range<try_block_iterator>;
 
   try_block_iterator try_blocks_begin() const {
     return TryDispatchBlocks.begin();
@@ -1331,6 +1346,10 @@ public:
 
   try_block_iterator try_blocks_end() const {
     return TryDispatchBlocks.end();
+  }
+
+  try_block_range try_blocks() const {
+    return try_block_range(try_blocks_begin(), try_blocks_end());
   }
 
   void addTryDispatchBlock(const CFGBlock *block) {
@@ -1376,13 +1395,12 @@ public:
   // Member templates useful for various batch operations over CFGs.
   //===--------------------------------------------------------------------===//
 
-  template <typename CALLBACK>
-  void VisitBlockStmts(CALLBACK& O) const {
+  template <typename Callback> void VisitBlockStmts(Callback &O) const {
     for (const_iterator I = begin(), E = end(); I != E; ++I)
       for (CFGBlock::const_iterator BI = (*I)->begin(), BE = (*I)->end();
            BI != BE; ++BI) {
         if (Optional<CFGStmt> stmt = BI->getAs<CFGStmt>())
-          O(const_cast<Stmt*>(stmt->getStmt()));
+          O(const_cast<Stmt *>(stmt->getStmt()));
       }
   }
 
@@ -1477,9 +1495,6 @@ template <> struct GraphTraits< ::clang::CFGBlock *> {
   static ChildIteratorType child_end(NodeRef N) { return N->succ_end(); }
 };
 
-template <> struct GraphTraits<clang::CFGBlock>
-    : GraphTraits<clang::CFGBlock *> {};
-
 template <> struct GraphTraits< const ::clang::CFGBlock *> {
   using NodeRef = const ::clang::CFGBlock *;
   using ChildIteratorType = ::clang::CFGBlock::const_succ_iterator;
@@ -1488,9 +1503,6 @@ template <> struct GraphTraits< const ::clang::CFGBlock *> {
   static ChildIteratorType child_begin(NodeRef N) { return N->succ_begin(); }
   static ChildIteratorType child_end(NodeRef N) { return N->succ_end(); }
 };
-
-template <> struct GraphTraits<const clang::CFGBlock>
-    : GraphTraits<clang::CFGBlock *> {};
 
 template <> struct GraphTraits<Inverse< ::clang::CFGBlock *>> {
   using NodeRef = ::clang::CFGBlock *;
@@ -1504,9 +1516,6 @@ template <> struct GraphTraits<Inverse< ::clang::CFGBlock *>> {
   static ChildIteratorType child_end(NodeRef N) { return N->pred_end(); }
 };
 
-template <> struct GraphTraits<Inverse<clang::CFGBlock>>
-    : GraphTraits<clang::CFGBlock *> {};
-
 template <> struct GraphTraits<Inverse<const ::clang::CFGBlock *>> {
   using NodeRef = const ::clang::CFGBlock *;
   using ChildIteratorType = ::clang::CFGBlock::const_pred_iterator;
@@ -1518,9 +1527,6 @@ template <> struct GraphTraits<Inverse<const ::clang::CFGBlock *>> {
   static ChildIteratorType child_begin(NodeRef N) { return N->pred_begin(); }
   static ChildIteratorType child_end(NodeRef N) { return N->pred_end(); }
 };
-
-template <> struct GraphTraits<const Inverse<clang::CFGBlock>>
-    : GraphTraits<clang::CFGBlock *> {};
 
 // Traits for: CFG
 

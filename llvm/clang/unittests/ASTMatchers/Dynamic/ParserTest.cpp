@@ -32,6 +32,17 @@ public:
     return M.getID().second;
   }
 
+  bool isBuilderMatcher(MatcherCtor) const override { return false; }
+
+  ASTNodeKind nodeMatcherType(MatcherCtor) const override { return {}; }
+
+  internal::MatcherDescriptorPtr
+  buildMatcherCtor(MatcherCtor, SourceRange NameRange,
+                   ArrayRef<ParserValue> Args,
+                   Diagnostics *Error) const override {
+    return internal::MatcherDescriptorPtr{nullptr};
+  }
+
   void parse(StringRef Code) {
     Diagnostics Error;
     VariantValue Value;
@@ -138,7 +149,7 @@ bool matchesRange(SourceRange Range, unsigned StartLine,
 llvm::Optional<DynTypedMatcher> getSingleMatcher(const VariantValue &Value) {
   llvm::Optional<DynTypedMatcher> Result =
       Value.getMatcher().getSingleMatcher();
-  EXPECT_TRUE(Result.hasValue());
+  EXPECT_TRUE(Result);
   return Result;
 }
 
@@ -269,7 +280,7 @@ TEST(ParserTest, FullParserTest) {
   EXPECT_TRUE(matches("unsigned aaaccbb;", M));
 
   Code = "hasInitializer(\n    binaryOperator(hasLHS(\"A\")))";
-  EXPECT_TRUE(!Parser::parseMatcherExpression(Code, &Error).hasValue());
+  EXPECT_TRUE(!Parser::parseMatcherExpression(Code, &Error));
   EXPECT_EQ("1:1: Error parsing argument 1 for matcher hasInitializer.\n"
             "2:5: Error parsing argument 1 for matcher binaryOperator.\n"
             "2:20: Error building matcher hasLHS.\n"
@@ -329,7 +340,7 @@ TEST(ParserTest, Errors) {
             "1:5: Invalid token <(> found when looking for a value.",
             ParseWithError("Foo(("));
   EXPECT_EQ("1:7: Expected end of code.", ParseWithError("expr()a"));
-  EXPECT_EQ("1:11: Malformed bind() expression.",
+  EXPECT_EQ("1:11: Period not followed by valid chained call.",
             ParseWithError("isArrow().biind"));
   EXPECT_EQ("1:15: Malformed bind() expression.",
             ParseWithError("isArrow().bind"));
@@ -340,6 +351,20 @@ TEST(ParserTest, Errors) {
   EXPECT_EQ("1:1: Error building matcher isArrow.\n"
             "1:1: Matcher does not support binding.",
             ParseWithError("isArrow().bind(\"foo\")"));
+  EXPECT_EQ("1:1: Error building matcher isArrow.\n"
+            "1:11: Matcher does not support with call.",
+            ParseWithError("isArrow().with"));
+  EXPECT_EQ(
+      "1:22: Error parsing matcher. Found token <EOF> while looking for '('.",
+      ParseWithError("mapAnyOf(ifStmt).with"));
+  EXPECT_EQ(
+      "1:22: Error parsing matcher. Found end-of-code while looking for ')'.",
+      ParseWithError("mapAnyOf(ifStmt).with("));
+  EXPECT_EQ("1:1: Failed to build matcher: mapAnyOf.",
+            ParseWithError("mapAnyOf()"));
+  EXPECT_EQ("1:1: Error parsing argument 1 for matcher mapAnyOf.\n1:1: Failed "
+            "to build matcher: mapAnyOf.",
+            ParseWithError("mapAnyOf(\"foo\")"));
   EXPECT_EQ("Input value has unresolved overloaded type: "
             "Matcher<DoStmt|ForStmt|WhileStmt|CXXForRangeStmt|FunctionDecl>",
             ParseMatcherWithError("hasBody(stmt())"));
@@ -396,7 +421,7 @@ TEST(ParserTest, ParseMultiline) {
   )
 )matcher";
     Diagnostics Error;
-    EXPECT_TRUE(Parser::parseMatcherExpression(Code, &Error).hasValue());
+    EXPECT_TRUE(Parser::parseMatcherExpression(Code, &Error));
   }
 
   {
@@ -407,7 +432,7 @@ TEST(ParserTest, ParseMultiline) {
   )
 )matcher";
     Diagnostics Error;
-    EXPECT_TRUE(Parser::parseMatcherExpression(Code, &Error).hasValue());
+    EXPECT_TRUE(Parser::parseMatcherExpression(Code, &Error));
   }
 
   {
@@ -415,7 +440,7 @@ TEST(ParserTest, ParseMultiline) {
   "paramName")
 )matcher";
     Diagnostics Error;
-    EXPECT_TRUE(Parser::parseMatcherExpression(Code, &Error).hasValue());
+    EXPECT_TRUE(Parser::parseMatcherExpression(Code, &Error));
   }
 
   {
@@ -424,27 +449,27 @@ TEST(ParserTest, ParseMultiline) {
   )
 )matcher";
     Diagnostics Error;
-    EXPECT_TRUE(Parser::parseMatcherExpression(Code, &Error).hasValue());
+    EXPECT_TRUE(Parser::parseMatcherExpression(Code, &Error).has_value());
   }
 
   {
     Code = R"matcher(decl(decl()
 , decl()))matcher";
     Diagnostics Error;
-    EXPECT_TRUE(Parser::parseMatcherExpression(Code, &Error).hasValue());
+    EXPECT_TRUE(Parser::parseMatcherExpression(Code, &Error).has_value());
   }
 
   {
     Code = R"matcher(decl(decl(),
 decl()))matcher";
     Diagnostics Error;
-    EXPECT_TRUE(Parser::parseMatcherExpression(Code, &Error).hasValue());
+    EXPECT_TRUE(Parser::parseMatcherExpression(Code, &Error).has_value());
   }
 
   {
     Code = "namedDecl(hasName(\"n\"\n))";
     Diagnostics Error;
-    EXPECT_TRUE(Parser::parseMatcherExpression(Code, &Error).hasValue());
+    EXPECT_TRUE(Parser::parseMatcherExpression(Code, &Error).has_value());
   }
 
   {
@@ -456,7 +481,7 @@ decl()))matcher";
   ("paramName")
 )matcher";
     M = Parser::parseMatcherExpression(Code, nullptr, &NamedValues, &Error);
-    EXPECT_FALSE(M.hasValue());
+    EXPECT_FALSE(M);
     EXPECT_EQ("1:15: Malformed bind() expression.", Error.toStringFull());
   }
 
@@ -469,8 +494,9 @@ decl()))matcher";
   bind("paramName")
 )matcher";
     M = Parser::parseMatcherExpression(Code, nullptr, &NamedValues, &Error);
-    EXPECT_FALSE(M.hasValue());
-    EXPECT_EQ("1:11: Malformed bind() expression.", Error.toStringFull());
+    EXPECT_FALSE(M);
+    EXPECT_EQ("1:11: Period not followed by valid chained call.",
+              Error.toStringFull());
   }
 
   {
@@ -480,7 +506,7 @@ decl()))matcher";
 ()
 )matcher";
     M = Parser::parseMatcherExpression(Code, nullptr, nullptr, &Error);
-    EXPECT_FALSE(M.hasValue());
+    EXPECT_FALSE(M);
     EXPECT_EQ("1:8: Error parsing matcher. Found token "
               "<NewLine> while looking for '('.",
               Error.toStringFull());
@@ -495,7 +521,7 @@ decl()))matcher";
   )
 )matcher";
     M = Parser::parseMatcherExpression(Code, nullptr, nullptr, &Error);
-    EXPECT_FALSE(M.hasValue());
+    EXPECT_FALSE(M);
     StringRef Expected = R"error(1:1: Error parsing argument 1 for matcher varDecl.
 2:3: Matcher not found: doesNotExist)error";
     EXPECT_EQ(Expected, Error.toStringFull());
@@ -515,6 +541,29 @@ TEST(ParserTest, CompletionRegistry) {
   ASSERT_EQ(1u, Comps.size());
   EXPECT_EQ("bind(\"", Comps[0].TypedText);
   EXPECT_EQ("bind", Comps[0].MatcherDecl);
+
+  Code = "mapAny";
+  Comps = Parser::completeExpression(Code, 6);
+  ASSERT_EQ(1u, Comps.size());
+  EXPECT_EQ("Of(", Comps[0].TypedText);
+  EXPECT_EQ("Matcher<NestedNameSpecifierLoc|QualType|TypeLoc|...> "
+            "mapAnyOf(NestedNameSpecifierLoc|QualType|TypeLoc|"
+            "NestedNameSpecifier|Decl|Stmt|Type...)",
+            Comps[0].MatcherDecl);
+
+  Code = "mapAnyOf(ifStmt).";
+  Comps = Parser::completeExpression(Code, 17);
+  ASSERT_EQ(2u, Comps.size());
+  EXPECT_EQ("bind(\"", Comps[0].TypedText);
+  EXPECT_EQ("bind", Comps[0].MatcherDecl);
+  EXPECT_EQ("with(", Comps[1].TypedText);
+  EXPECT_EQ("with", Comps[1].MatcherDecl);
+
+  Code = "mapAnyOf(ifS";
+  Comps = Parser::completeExpression(Code, 12);
+  ASSERT_EQ(1u, Comps.size());
+  EXPECT_EQ("tmt", Comps[0].TypedText);
+  EXPECT_EQ("ifStmt", Comps[0].MatcherDecl);
 }
 
 TEST(ParserTest, CompletionNamedValues) {

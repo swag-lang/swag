@@ -21,6 +21,9 @@ namespace lldb_private {
 class NativeProcessELF : public NativeProcessProtocol {
   using NativeProcessProtocol::NativeProcessProtocol;
 
+public:
+  llvm::Optional<uint64_t> GetAuxValue(enum AuxVector::EntryType type);
+
 protected:
   template <typename T> struct ELFLinkMap {
     T l_addr;
@@ -29,8 +32,6 @@ protected:
     T l_next;
     T l_prev;
   };
-
-  llvm::Optional<uint64_t> GetAuxValue(enum AuxVector::EntryType type);
 
   lldb::addr_t GetSharedLibraryInfoAddress() override;
 
@@ -43,6 +44,8 @@ protected:
   template <typename T>
   llvm::Expected<SVR4LibraryInfo>
   ReadSVR4LibraryInfo(lldb::addr_t link_map_addr);
+
+  void NotifyDidExec() override;
 
   std::unique_ptr<AuxVector> m_aux_vector;
   llvm::Optional<lldb::addr_t> m_shared_library_info_addr;

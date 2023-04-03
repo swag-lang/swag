@@ -13,6 +13,8 @@
 #include "lldb/Host/MainLoopBase.h"
 #include "llvm/ADT/DenseMap.h"
 #include <csignal>
+#include <list>
+#include <vector>
 
 #if !HAVE_PPOLL && !HAVE_SYS_EVENT_H && !defined(__ANDROID__)
 #define SIGNAL_POLLING_UNSUPPORTED 1
@@ -58,6 +60,11 @@ public:
   SignalHandleUP RegisterSignal(int signo, const Callback &callback,
                                 Status &error);
 
+  // Add a pending callback that will be executed once after all the pending
+  // events are processed. The callback will be executed even if termination
+  // was requested.
+  void AddPendingCallback(const Callback &callback) override;
+
   Status Run() override;
 
   // This should only be performed from a callback. Do not attempt to terminate
@@ -68,7 +75,7 @@ public:
 protected:
   void UnregisterReadObject(IOObject::WaitableHandle handle) override;
 
-  void UnregisterSignal(int signo);
+  void UnregisterSignal(int signo, std::list<Callback>::iterator callback_it);
 
 private:
   void ProcessReadObject(IOObject::WaitableHandle handle);
@@ -76,14 +83,16 @@ private:
 
   class SignalHandle {
   public:
-    ~SignalHandle() { m_mainloop.UnregisterSignal(m_signo); }
+    ~SignalHandle() { m_mainloop.UnregisterSignal(m_signo, m_callback_it); }
 
   private:
-    SignalHandle(MainLoop &mainloop, int signo)
-        : m_mainloop(mainloop), m_signo(signo) {}
+    SignalHandle(MainLoop &mainloop, int signo,
+                 std::list<Callback>::iterator callback_it)
+        : m_mainloop(mainloop), m_signo(signo), m_callback_it(callback_it) {}
 
     MainLoop &m_mainloop;
     int m_signo;
+    std::list<Callback>::iterator m_callback_it;
 
     friend class MainLoop;
     SignalHandle(const SignalHandle &) = delete;
@@ -91,8 +100,8 @@ private:
   };
 
   struct SignalInfo {
-    Callback callback;
-#if HAVE_SIGACTION
+    std::list<Callback> callbacks;
+#ifndef SIGNAL_POLLING_UNSUPPORTED
     struct sigaction old_action;
 #endif
     bool was_blocked : 1;
@@ -101,6 +110,7 @@ private:
 
   llvm::DenseMap<IOObject::WaitableHandle, Callback> m_read_fds;
   llvm::DenseMap<int, SignalInfo> m_signals;
+  std::vector<Callback> m_pending_callbacks;
 #if HAVE_SYS_EVENT_H
   int m_kqueue;
 #endif

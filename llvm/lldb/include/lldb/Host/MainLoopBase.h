@@ -33,8 +33,8 @@ private:
   class ReadHandle;
 
 public:
-  MainLoopBase() {}
-  virtual ~MainLoopBase() {}
+  MainLoopBase() = default;
+  virtual ~MainLoopBase() = default;
 
   typedef std::unique_ptr<ReadHandle> ReadHandleUP;
 
@@ -43,6 +43,13 @@ public:
   virtual ReadHandleUP RegisterReadObject(const lldb::IOObjectSP &object_sp,
                                           const Callback &callback,
                                           Status &error) {
+    llvm_unreachable("Not implemented");
+  }
+
+  // Add a pending callback that will be executed once after all the pending
+  // events are processed. The callback will be executed even if termination
+  // was requested.
+  virtual void AddPendingCallback(const Callback &callback) {
     llvm_unreachable("Not implemented");
   }
 

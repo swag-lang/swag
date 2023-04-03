@@ -18,8 +18,6 @@ include "llvm/IR/Intrinsics.td"
 // Register file description - These classes are used to fill in the target
 // description classes.
 
-class RegisterClass; // Forward def
-
 class HwMode<string FS> {
   // A string representing subtarget features that turn on this HW mode.
   // For example, "+feat1,-feat2" will indicate that the mode is active
@@ -168,8 +166,15 @@ class Register<string n, list<string> altNames = []> {
   // minimize the number of instructions using a register with a CostPerUse.
   // This is used by the ARC target, by the ARM Thumb and x86-64 targets, where
   // some registers require larger instruction encodings, by the RISC-V target,
-  // where some registers preclude using some C instructions.
-  int CostPerUse = 0;
+  // where some registers preclude using some C instructions. By making it a
+  // list, targets can have multiple cost models associated with each register
+  // and can choose one specific cost model per Machine Function by overriding
+  // TargetRegisterInfo::getRegisterCostTableIndex. Every target register will
+  // finally have an equal number of cost values which is the max of costPerUse
+  // values specified. Any mismatch in the cost values for a register will be
+  // filled with zeros. Restricted the cost type to uint8_t in the
+  // generated table. It will considerably reduce the table size.
+  list<int> CostPerUse = [0];
 
   // CoveredBySubRegs - When this bit is set, the value of this register is
   // completely determined by the value of its sub-registers.  For example, the
@@ -274,6 +279,8 @@ class RegisterClass<string namespace, list<ValueType> regTypes, int alignment,
   // heuristic. Classes with higher priority values are assigned first. This is
   // useful as it is sometimes beneficial to assign registers to highly
   // constrained classes first. The value has to be in the range [0,63].
+  // Values >= 32 should be used with care since they may overlap with other
+  // fields in the allocator's priority heuristics.
   int AllocationPriority = 0;
 
   // Generate register pressure set for this register class and any class
@@ -301,6 +308,9 @@ class RegisterClass<string namespace, list<ValueType> regTypes, int alignment,
   // the assembly matcher will provide a function to map from diagnostic types
   // to message strings.
   string DiagnosticString = "";
+
+  // Target-specific flags. This becomes the TSFlags field in TargetRegisterClass.
+  bits<8> TSFlags = 0;
 }
 
 // The memberList in a RegisterClass is a dag of set operations. TableGen
@@ -381,6 +391,14 @@ class RegisterTuples<list<SubRegIndex> Indices, list<dag> Regs,
   list<string> RegAsmNames = RegNames;
 }
 
+// RegisterCategory - This class is a list of RegisterClasses that belong to a
+// general cateogry --- e.g. "general purpose" or "fixed" registers. This is
+// useful for identifying registers in a generic way instead of having
+// information about a specific target's registers.
+class RegisterCategory<list<RegisterClass> classes> {
+  // Classes - A list of register classes that fall within the category.
+  list<RegisterClass> Classes = classes;
+}
 
 //===----------------------------------------------------------------------===//
 // DwarfRegNum - This class provides a mapping of the llvm register enumeration
@@ -552,6 +570,9 @@ class Instruction : InstructionEncoding {
   bit isPseudo     = false;     // Is this instruction a pseudo-instruction?
                                 // If so, won't have encoding information for
                                 // the [MC]CodeEmitter stuff.
+  bit isMeta = false;           // Is this instruction a meta-instruction?
+                                // If so, won't produce any output in the form of
+                                // executable instructions
   bit isExtractSubreg = false;  // Is this instruction a kind of extract subreg?
                                 // If so, make sure to override
                                 // TargetInstrInfo::getExtractSubregLikeInputs.
@@ -632,11 +653,38 @@ class Instruction : InstructionEncoding {
   /// by TableGen.
   bit UseNamedOperandTable = false;
 
+  /// Should generate helper functions that help you to map a logical operand's
+  /// index to the underlying MIOperand's index.
+  /// In most architectures logical operand indicies are equal to
+  /// MIOperand indicies, but for some CISC architectures, a logical operand
+  /// might be consist of multiple MIOperand (e.g. a logical operand that
+  /// uses complex address mode).
+  bit UseLogicalOperandMappings = false;
+
   /// Should FastISel ignore this instruction. For certain ISAs, they have
   /// instructions which map to the same ISD Opcode, value type operands and
   /// instruction selection predicates. FastISel cannot handle such cases, but
   /// SelectionDAG can.
   bit FastISelShouldIgnore = false;
+
+  /// HasPositionOrder: Indicate tablegen to sort the instructions by record
+  /// ID, so that instruction that is defined earlier can be sorted earlier
+  /// in the assembly matching table.
+  bit HasPositionOrder = false;
+}
+
+/// Defines a Pat match between compressed and uncompressed instruction.
+/// The relationship and helper function generation are handled by
+/// CompressInstEmitter backend.
+class CompressPat<dag input, dag output, list<Predicate> predicates = []> {
+  /// Uncompressed instruction description.
+  dag Input = input;
+  /// Compressed instruction description.
+  dag Output = output;
+  /// Predicates that must be true for this to match.
+  list<Predicate> Predicates = predicates;
+  /// Duplicate match when tied operand is just different.
+  bit isCompressOnly = false;
 }
 
 /// Defines an additional encoding that disassembles to the given instruction
@@ -713,6 +761,33 @@ def ins;
 /// of operands.
 def variable_ops;
 
+/// variable-length instruction encoding utilities.
+/// The `ascend` operator should be used like this:
+///     (ascend 0b0010, 0b1101)
+/// Which represent a seqence of encoding fragments placing from LSB to MSB.
+/// Thus, in this case the final encoding will be 0b1101_0010.
+/// The arguments for `ascend` can either be `bits` or another DAG.
+def ascend;
+/// In addition, we can use `descend` to describe an encoding that places
+/// its arguments (i.e. encoding fragments) from MSB to LSB. For instance:
+///     (descend 0b0010, 0b1101)
+/// This results in an encoding of 0b0010_1101.
+def descend;
+/// The `operand` operator should be used like this:
+///     (operand "$src", 4)
+/// Which represents a 4-bit encoding for an instruction operand named `$src`.
+def operand;
+/// Similar to `operand`, we can reference only part of the operand's encoding:
+///     (slice "$src", 6, 8)
+///     (slice "$src", 8, 6)
+/// Both DAG represent bit 6 to 8 (total of 3 bits) in the encoding of operand
+/// `$src`.
+def slice;
+/// You can use `encoder` to specify a custom encoder function for a specific
+/// `operand` or `encoder` directive. For example:
+///     (operand "$src", 4, (encoder "encodeMyImm"))
+///     (slice "$src", 8, 6, (encoder "encodeMyReg"))
+def encoder;
 
 /// PointerLikeRegClass - Values that are designed to have pointer width are
 /// derived from this.  TableGen treats the register class as having a symbolic
@@ -958,7 +1033,7 @@ class InstrInfo {
   // by default, and TableGen will infer their value from the instruction
   // pattern when possible.
   //
-  // Normally, TableGen will issue an error it it can't infer the value of a
+  // Normally, TableGen will issue an error if it can't infer the value of a
   // property that hasn't been set explicitly. When guessInstructionProperties
   // is set, it will guess a safe value instead.
   //
@@ -1029,6 +1104,7 @@ def CFI_INSTRUCTION : StandardPseudoInstruction {
   let hasCtrlDep = true;
   let hasSideEffects = false;
   let isNotDuplicable = true;
+  let isMeta = true;
 }
 def EH_LABEL : StandardPseudoInstruction {
   let OutOperandList = (outs);
@@ -1037,6 +1113,7 @@ def EH_LABEL : StandardPseudoInstruction {
   let hasCtrlDep = true;
   let hasSideEffects = false;
   let isNotDuplicable = true;
+  let isMeta = true;
 }
 def GC_LABEL : StandardPseudoInstruction {
   let OutOperandList = (outs);
@@ -1045,6 +1122,7 @@ def GC_LABEL : StandardPseudoInstruction {
   let hasCtrlDep = true;
   let hasSideEffects = false;
   let isNotDuplicable = true;
+  let isMeta = true;
 }
 def ANNOTATION_LABEL : StandardPseudoInstruction {
   let OutOperandList = (outs);
@@ -1059,6 +1137,7 @@ def KILL : StandardPseudoInstruction {
   let InOperandList = (ins variable_ops);
   let AsmString = "";
   let hasSideEffects = false;
+  let isMeta = true;
 }
 def EXTRACT_SUBREG : StandardPseudoInstruction {
   let OutOperandList = (outs unknown:$dst);
@@ -1080,6 +1159,7 @@ def IMPLICIT_DEF : StandardPseudoInstruction {
   let hasSideEffects = false;
   let isReMaterializable = true;
   let isAsCheapAsAMove = true;
+  let isMeta = true;
 }
 def SUBREG_TO_REG : StandardPseudoInstruction {
   let OutOperandList = (outs unknown:$dst);
@@ -1099,18 +1179,35 @@ def DBG_VALUE : StandardPseudoInstruction {
   let InOperandList = (ins variable_ops);
   let AsmString = "DBG_VALUE";
   let hasSideEffects = false;
+  let isMeta = true;
+}
+def DBG_VALUE_LIST : StandardPseudoInstruction {
+  let OutOperandList = (outs);
+  let InOperandList = (ins variable_ops);
+  let AsmString = "DBG_VALUE_LIST";
+  let hasSideEffects = 0;
+  let isMeta = true;
 }
 def DBG_INSTR_REF : StandardPseudoInstruction {
   let OutOperandList = (outs);
   let InOperandList = (ins variable_ops);
   let AsmString = "DBG_INSTR_REF";
   let hasSideEffects = false;
+  let isMeta = true;
+}
+def DBG_PHI : StandardPseudoInstruction {
+  let OutOperandList = (outs);
+  let InOperandList = (ins variable_ops);
+  let AsmString = "DBG_PHI";
+  let hasSideEffects = 0;
+  let isMeta = true;
 }
 def DBG_LABEL : StandardPseudoInstruction {
   let OutOperandList = (outs);
   let InOperandList = (ins unknown:$label);
   let AsmString = "DBG_LABEL";
   let hasSideEffects = false;
+  let isMeta = true;
 }
 def REG_SEQUENCE : StandardPseudoInstruction {
   let OutOperandList = (outs unknown:$dst);
@@ -1138,18 +1235,29 @@ def LIFETIME_START : StandardPseudoInstruction {
   let InOperandList = (ins i32imm:$id);
   let AsmString = "LIFETIME_START";
   let hasSideEffects = false;
+  let isMeta = true;
 }
 def LIFETIME_END : StandardPseudoInstruction {
   let OutOperandList = (outs);
   let InOperandList = (ins i32imm:$id);
   let AsmString = "LIFETIME_END";
   let hasSideEffects = false;
+  let isMeta = true;
 }
 def PSEUDO_PROBE : StandardPseudoInstruction {
   let OutOperandList = (outs);
   let InOperandList = (ins i64imm:$guid, i64imm:$index, i8imm:$type, i32imm:$attr);
   let AsmString = "PSEUDO_PROBE";
   let hasSideEffects = 1;
+  let isMeta = true;
+}
+def ARITH_FENCE : StandardPseudoInstruction {
+  let OutOperandList = (outs unknown:$dst);
+  let InOperandList = (ins unknown:$src);
+  let AsmString = "";
+  let hasSideEffects = false;
+  let Constraints = "$src = $dst";
+  let isMeta = true;
 }
 
 def STACKMAP : StandardPseudoInstruction {

@@ -27,27 +27,38 @@ intermediate LLVM representation.
    CommandLine
    CompileCudaWithLLVM
    CoverageMappingFormat
+   CycleTerminology
    DebuggingJITedCode
+   DirectXUsage
    Docker
    ExtendingLLVM
    GoldPlugin
    HowToBuildOnARM
    HowToBuildWithPGO
+   HowToBuildWindowsItaniumPrograms
    HowToCrossCompileBuiltinsOnArm
    HowToCrossCompileLLVM
    HowToUpdateDebugInfo
+   InstrRefDebugInfo
    LinkTimeOptimization
    LoopTerminology
    MarkdownQuickstartTemplate
    MemorySSA
    MergeFunctions
    MCJITDesignAndImplementation
+   MisExpect
+   ORCv2
+   OpaquePointers
+   JITLink
+   NewPassManager
    NVPTXUsage
    Phabricator
    Passes
    ReportingGuide
+   ResponseGuide
    Remarks
    SourceLevelDebugging
+   SPIRVUsage
    StackSafetyAnalysis
    SupportLibrary
    TableGen/index
@@ -132,6 +143,9 @@ Optimizations
 :doc:`LoopTerminology`
   A document describing Loops and associated terms as used in LLVM.
 
+:doc:`CycleTerminology`
+  A document describing cycles as a generalization of loops.
+
 :doc:`Vectorizers`
    This document describes the current status of vectorization in LLVM.
 
@@ -148,6 +162,15 @@ Optimizations
 :doc:`Source Level Debugging with LLVM <SourceLevelDebugging>`
    This document describes the design and philosophy behind the LLVM
    source-level debugger.
+
+:doc:`How to Update Debug Info <HowToUpdateDebugInfo>`
+   This document specifies how to correctly update debug info in various kinds
+   of code transformations.
+
+:doc:`InstrRefDebugInfo`
+   This document explains how LLVM uses value tracking, or instruction
+   referencing, to determine variable locations for debug info in the final
+   stages of compilation.
 
 Code Generation
 ---------------
@@ -171,6 +194,14 @@ JIT
 :doc:`MCJITDesignAndImplementation`
    Describes the inner workings of MCJIT execution engine.
 
+:doc:`ORCv2`
+   Describes the design and implementation of the ORC APIs, including some
+   usage examples, and a guide for users transitioning from ORCv1 to ORCv2.
+
+:doc:`JITLink`
+   Describes the design and APIs for the JITLink library, ORC's new JIT
+   linker.
+
 :doc:`DebuggingJITedCode`
    How to debug JITed code with GDB.
 
@@ -186,6 +217,9 @@ Additional Topics
 :doc:`AddingConstrainedIntrinsics`
    Gives the steps necessary when adding a new constrained math intrinsic
    to LLVM.
+
+:doc:`HowToBuildWindowsItaniumPrograms`
+   Notes on assembling a Windows Itanium environment.
 
 :doc:`HowToCrossCompileBuiltinsOnArm`
    Notes on cross-building and testing the compiler-rt builtins for Arm.
@@ -206,3 +240,15 @@ Additional Topics
 :doc:`AMDGPUDwarfExtensionsForHeterogeneousDebugging`
    This document describes DWARF extensions to support heterogeneous debugging
    for targets such as the AMDGPU backend.
+
+:doc:`AMDGPUDwarfExtensionAllowLocationDescriptionOnTheDwarfExpressionStack/AMDGPUDwarfExtensionAllowLocationDescriptionOnTheDwarfExpressionStack`
+   This document describes a DWARF extension to allow location descriptions on
+   the DWARF expression stack. It is part of
+   :doc:`AMDGPUDwarfExtensionsForHeterogeneousDebugging`.
+
+:doc:`SPIRVUsage`
+   This document describes using the SPIR-V target to compile GPU kernels.
+
+:doc:`DirectXUsage`
+   This document describes using the DirectX target to compile GPU code for the
+   DirectX runtime.

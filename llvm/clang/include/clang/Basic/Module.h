@@ -71,8 +71,8 @@ struct ASTFileSignature : std::array<uint8_t, 20> {
     return Value;
   }
 
-  static ASTFileSignature create(StringRef Bytes) {
-    return create(Bytes.bytes_begin(), Bytes.bytes_end());
+  static ASTFileSignature create(std::array<uint8_t, 20> Bytes) {
+    return ASTFileSignature(std::move(Bytes));
   }
 
   static ASTFileSignature createDISentinel() {
@@ -106,8 +106,17 @@ public:
     /// of header files.
     ModuleMapModule,
 
-    /// This is a C++ Modules TS module interface unit.
+    /// This is a C++20 module interface unit.
     ModuleInterfaceUnit,
+
+    /// This is a C++ 20 header unit.
+    ModuleHeaderUnit,
+
+    /// This is a C++ 20 module partition interface.
+    ModulePartitionInterface,
+
+    /// This is a C++ 20 module partition implementation.
+    ModulePartitionImplementation,
 
     /// This is a fragment of the global module within some C++ module.
     GlobalModuleFragment,
@@ -133,9 +142,7 @@ public:
   std::string PresumedModuleMapFile;
 
   /// The umbrella header or directory.
-  llvm::PointerUnion<const FileEntryRef::MapEntry *,
-                     const DirectoryEntryRef::MapEntry *>
-      Umbrella;
+  llvm::PointerUnion<const FileEntry *, const DirectoryEntry *> Umbrella;
 
   /// The module signature.
   ASTFileSignature Signature;
@@ -143,14 +150,27 @@ public:
   /// The name of the umbrella entry, as written in the module map.
   std::string UmbrellaAsWritten;
 
+  // The path to the umbrella entry relative to the root module's \c Directory.
+  std::string UmbrellaRelativeToRootModuleDirectory;
+
   /// The module through which entities defined in this module will
   /// eventually be exposed, for use in "private" modules.
   std::string ExportAsModule;
 
   /// Does this Module scope describe part of the purview of a named C++ module?
   bool isModulePurview() const {
-    return Kind == ModuleInterfaceUnit || Kind == PrivateModuleFragment;
+    return Kind == ModuleInterfaceUnit || Kind == ModulePartitionInterface ||
+           Kind == ModulePartitionImplementation ||
+           Kind == PrivateModuleFragment;
   }
+
+  /// Does this Module scope describe a fragment of the global module within
+  /// some C++ module.
+  bool isGlobalModule() const { return Kind == GlobalModuleFragment; }
+
+  bool isPrivateModule() const { return Kind == PrivateModuleFragment; }
+
+  bool isModuleMapModule() const { return Kind == ModuleMapModule; }
 
 private:
   /// The submodules of this module, indexed by name.
@@ -190,18 +210,20 @@ public:
   /// file.
   struct Header {
     std::string NameAsWritten;
-    OptionalFileEntryRefDegradesToFileEntryPtr Entry;
+    std::string PathRelativeToRootModuleDirectory;
+    const FileEntry *Entry;
 
-    explicit operator bool() { return Entry != None; }
+    explicit operator bool() { return Entry; }
   };
 
   /// Information about a directory name as found in the module map
   /// file.
   struct DirectoryName {
     std::string NameAsWritten;
-    OptionalDirectoryEntryRefDegradesToDirectoryEntryPtr Entry;
+    std::string PathRelativeToRootModuleDirectory;
+    const DirectoryEntry *Entry;
 
-    explicit operator bool() { return Entry != None; }
+    explicit operator bool() { return Entry; }
   };
 
   /// The headers that are part of this module.
@@ -356,6 +378,10 @@ public:
   /// The set of use declarations that have yet to be resolved.
   SmallVector<ModuleId, 2> UnresolvedDirectUses;
 
+  /// When \c NoUndeclaredIncludes is true, the set of modules this module tried
+  /// to import but didn't because they are not direct uses.
+  llvm::SmallSetVector<const Module *, 2> UndeclaredUses;
+
   /// A library or framework to link against when an entity from this
   /// module is used.
   struct LinkLibrary {
@@ -499,6 +525,50 @@ public:
     Parent->SubModules.push_back(this);
   }
 
+  /// Is this module have similar semantics as headers.
+  bool isHeaderLikeModule() const {
+    return isModuleMapModule() || isHeaderUnit();
+  }
+
+  /// Is this a module partition.
+  bool isModulePartition() const {
+    return Kind == ModulePartitionInterface ||
+           Kind == ModulePartitionImplementation;
+  }
+
+  /// Is this module a header unit.
+  bool isHeaderUnit() const { return Kind == ModuleHeaderUnit; }
+  // Is this a C++20 module interface or a partition.
+  bool isInterfaceOrPartition() const {
+    return Kind == ModuleInterfaceUnit || isModulePartition();
+  }
+
+  bool isModuleInterfaceUnit() const {
+    return Kind == ModuleInterfaceUnit || Kind == ModulePartitionInterface;
+  }
+
+  /// Get the primary module interface name from a partition.
+  StringRef getPrimaryModuleInterfaceName() const {
+    // Technically, global module fragment belongs to global module. And global
+    // module has no name: [module.unit]p6:
+    //   The global module has no name, no module interface unit, and is not
+    //   introduced by any module-declaration.
+    //
+    // <global> is the default name showed in module map.
+    if (isGlobalModule())
+      return "<global>";
+
+    if (isModulePartition()) {
+      auto pos = Name.find(':');
+      return StringRef(Name.data(), pos);
+    }
+
+    if (isPrivateModule())
+      return getTopLevelModuleName();
+
+    return Name;
+  }
+
   /// Retrieve the full name of this module, including the path from
   /// its top-level module.
   /// \param AllowStringLiterals If \c true, components that might not be
@@ -546,15 +616,16 @@ public:
   /// Retrieve the header that serves as the umbrella header for this
   /// module.
   Header getUmbrellaHeader() const {
-    if (auto *ME = Umbrella.dyn_cast<const FileEntryRef::MapEntry *>())
-      return Header{UmbrellaAsWritten, FileEntryRef(*ME)};
+    if (auto *FE = Umbrella.dyn_cast<const FileEntry *>())
+      return Header{UmbrellaAsWritten, UmbrellaRelativeToRootModuleDirectory,
+                    FE};
     return Header{};
   }
 
   /// Determine whether this module has an umbrella directory that is
   /// not based on an umbrella header.
   bool hasUmbrellaDir() const {
-    return Umbrella && Umbrella.is<const DirectoryEntryRef::MapEntry *>();
+    return Umbrella && Umbrella.is<const DirectoryEntry *>();
   }
 
   /// Add a top-level header associated with this module.
@@ -570,7 +641,7 @@ public:
 
   /// Determine whether this module has declared its intention to
   /// directly use another module.
-  bool directlyUses(const Module *Requested) const;
+  bool directlyUses(const Module *Requested);
 
   /// Add the given feature requirement to the list of features
   /// required by this module.
@@ -598,6 +669,18 @@ public:
   /// \returns The submodule if found, or NULL otherwise.
   Module *findSubmodule(StringRef Name) const;
   Module *findOrInferSubmodule(StringRef Name);
+
+  /// Get the Global Module Fragment (sub-module) for this module, it there is
+  /// one.
+  ///
+  /// \returns The GMF sub-module if found, or NULL otherwise.
+  Module *getGlobalModuleFragment() { return findSubmodule("<global>"); }
+
+  /// Get the Private Module Fragment (sub-module) for this module, it there is
+  /// one.
+  ///
+  /// \returns The PMF sub-module if found, or NULL otherwise.
+  Module *getPrivateModuleFragment() { return findSubmodule("<private>"); }
 
   /// Determine whether the specified module would be visible to
   /// a lookup at the end of this module.
@@ -639,7 +722,7 @@ public:
   }
 
   /// Print the module map for this module to the given stream.
-  void print(raw_ostream &OS, unsigned Indent = 0) const;
+  void print(raw_ostream &OS, unsigned Indent = 0, bool Dump = false) const;
 
   /// Dump the contents of this module to the given output stream.
   void dump() const;

@@ -68,6 +68,7 @@
 #include "llvm/ADT/PostOrderIterator.h"
 #include "llvm/Analysis/CFG.h"
 #include "llvm/Analysis/DivergenceAnalysis.h"
+#include "llvm/Analysis/LoopInfo.h"
 #include "llvm/Analysis/Passes.h"
 #include "llvm/Analysis/PostDominators.h"
 #include "llvm/Analysis/TargetTransformInfo.h"
@@ -339,7 +340,8 @@ bool LegacyDivergenceAnalysis::runOnFunction(Function &F) {
   if (shouldUseGPUDivergenceAnalysis(F, TTI)) {
     // run the new GPU divergence analysis
     auto &LI = getAnalysis<LoopInfoWrapperPass>().getLoopInfo();
-    gpuDA = std::make_unique<GPUDivergenceAnalysis>(F, DT, PDT, LI, TTI);
+    gpuDA = std::make_unique<DivergenceInfo>(F, DT, PDT, LI, TTI,
+                                             /* KnownReducible  = */ true);
 
   } else {
     // run LLVM's existing DivergenceAnalysis
@@ -391,15 +393,14 @@ void LegacyDivergenceAnalysis::print(raw_ostream &OS, const Module *) const {
     return;
 
   // Dumps all divergent values in F, arguments and then instructions.
-  for (auto &Arg : F->args()) {
+  for (const auto &Arg : F->args()) {
     OS << (isDivergent(&Arg) ? "DIVERGENT: " : "           ");
     OS << Arg << "\n";
   }
   // Iterate instructions using instructions() to ensure a deterministic order.
-  for (auto BI = F->begin(), BE = F->end(); BI != BE; ++BI) {
-    auto &BB = *BI;
+  for (const BasicBlock &BB : *F) {
     OS << "\n           " << BB.getName() << ":\n";
-    for (auto &I : BB.instructionsWithoutDebug()) {
+    for (const auto &I : BB.instructionsWithoutDebug()) {
       OS << (isDivergent(&I) ? "DIVERGENT:     " : "               ");
       OS << I << "\n";
     }

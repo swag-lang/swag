@@ -1,13 +1,23 @@
 cmake_minimum_required(VERSION 3.13.4)
 
-# Add cmake directory to search for custom cmake functions.
-set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake ${CMAKE_MODULE_PATH})
+set(LLVM_COMMON_CMAKE_UTILS ${CMAKE_CURRENT_SOURCE_DIR}/../cmake)
+
+# Add path for custom modules
+list(INSERT CMAKE_MODULE_PATH 0
+  "${CMAKE_CURRENT_SOURCE_DIR}/cmake"
+  "${LLVM_COMMON_CMAKE_UTILS}/Modules"
+  )
 
 # llvm/runtimes/ will set OPENMP_STANDALONE_BUILD.
 if (OPENMP_STANDALONE_BUILD OR "${CMAKE_SOURCE_DIR}" STREQUAL "${CMAKE_CURRENT_SOURCE_DIR}")
   set(OPENMP_STANDALONE_BUILD TRUE)
   project(openmp C CXX)
+endif()
 
+# Must go below project(..)
+include(GNUInstallDirs)
+
+if (OPENMP_STANDALONE_BUILD)
   # CMAKE_BUILD_TYPE was not set, default to Release.
   if (NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE Release)
@@ -39,8 +49,6 @@ else()
     set(OPENMP_TEST_C_COMPILER ${LLVM_RUNTIME_OUTPUT_INTDIR}/clang.exe)
     set(OPENMP_TEST_CXX_COMPILER ${LLVM_RUNTIME_OUTPUT_INTDIR}/clang++.exe)
   endif()
-
-  list(APPEND LIBOMPTARGET_LLVM_INCLUDE_DIRS ${LLVM_MAIN_INCLUDE_DIR} ${LLVM_BINARY_DIR}/include)
 endif()
 
 # Check and set up common compiler flags.
@@ -63,29 +71,23 @@ if (APPLE OR WIN32 OR NOT OPENMP_HAVE_STD_CPP14_FLAG)
   set(ENABLE_LIBOMPTARGET OFF)
 endif()
 
-# Attempt to locate LLVM source, required by libomptarget
-if (NOT LIBOMPTARGET_LLVM_INCLUDE_DIRS)
-  if (LLVM_MAIN_INCLUDE_DIR)
-    list(APPEND LIBOMPTARGET_LLVM_INCLUDE_DIRS ${LLVM_MAIN_INCLUDE_DIR})
-  elseif (EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/../llvm/include)
-    list(APPEND LIBOMPTARGET_LLVM_INCLUDE_DIRS ${CMAKE_CURRENT_SOURCE_DIR}/../llvm/include)
-  endif()
-endif()
-
-if (NOT LIBOMPTARGET_LLVM_INCLUDE_DIRS)
-  message(STATUS "Missing definition for LIBOMPTARGET_LLVM_INCLUDE_DIRS, disabling libomptarget")
-  set(ENABLE_LIBOMPTARGET OFF)
+set(ENABLE_LIBOMPTARGET_PROFILING OFF)
+if (ENABLE_LIBOMPTARGET AND NOT LLVM_RUNTIMES_BUILD)
+  set(ENABLE_LIBOMPTARGET_PROFILING ON)
 endif()
 
 option(OPENMP_ENABLE_LIBOMPTARGET "Enable building libomptarget for offloading."
        ${ENABLE_LIBOMPTARGET})
 option(OPENMP_ENABLE_LIBOMPTARGET_PROFILING "Enable time profiling for libomptarget."
-       ${ENABLE_LIBOMPTARGET})
+       ${ENABLE_LIBOMPTARGET_PROFILING})
 option(OPENMP_ENABLE_LIBOMP_PROFILING "Enable time profiling for libomp." OFF)
 
 # Build host runtime library, after LIBOMPTARGET variables are set since they are needed
 # to enable time profiling support in the OpenMP runtime.
 add_subdirectory(runtime)
+
+# Build libompd.so
+add_subdirectory(libompd)
 
 if (OPENMP_ENABLE_LIBOMPTARGET)
   # Check that the library can actually be built.
@@ -110,6 +112,7 @@ if (OPENMP_ENABLE_OMPT_TOOLS)
   add_subdirectory(tools)
 endif()
 
+option(OPENMP_MSVC_NAME_SCHEME "Build dll with MSVC naming scheme." OFF)
 
 # Build documentation
 add_subdirectory(docs)

@@ -18,7 +18,6 @@
 #ifndef LLVM_ANALYSIS_CFGPRINTER_H
 #define LLVM_ANALYSIS_CFGPRINTER_H
 
-#include "llvm/ADT/STLExtras.h"
 #include "llvm/Analysis/BlockFrequencyInfo.h"
 #include "llvm/Analysis/BranchProbabilityInfo.h"
 #include "llvm/Analysis/HeatUtils.h"
@@ -27,10 +26,11 @@
 #include "llvm/IR/Function.h"
 #include "llvm/IR/Instructions.h"
 #include "llvm/IR/PassManager.h"
+#include "llvm/Support/DOTGraphTraits.h"
 #include "llvm/Support/FormatVariadic.h"
-#include "llvm/Support/GraphWriter.h"
 
 namespace llvm {
+template <class GraphType> struct GraphTraits;
 class CFGViewerPass : public PassInfoMixin<CFGViewerPass> {
 public:
   PreservedAnalyses run(Function &F, FunctionAnalysisManager &AM);
@@ -72,15 +72,15 @@ public:
     RawWeights = !!BFI;  // Print RawWeights when BFI is available.
   }
 
-  const BlockFrequencyInfo *getBFI() { return BFI; }
+  const BlockFrequencyInfo *getBFI() const { return BFI; }
 
-  const BranchProbabilityInfo *getBPI() { return BPI; }
+  const BranchProbabilityInfo *getBPI() const { return BPI; }
 
-  const Function *getFunction() { return this->F; }
+  const Function *getFunction() const { return this->F; }
 
-  uint64_t getMaxFreq() { return MaxFreq; }
+  uint64_t getMaxFreq() const { return MaxFreq; }
 
-  uint64_t getFreq(const BasicBlock *BB) {
+  uint64_t getFreq(const BasicBlock *BB) const {
     return BFI->getBlockFreq(BB).getFrequency();
   }
 
@@ -123,7 +123,7 @@ template <>
 struct DOTGraphTraits<DOTFuncInfo *> : public DefaultDOTGraphTraits {
 
   // Cache for is hidden property
-  llvm::DenseMap<const BasicBlock *, bool> isHiddenBasicBlock;
+  llvm::DenseMap<const BasicBlock *, bool> isOnDeoptOrUnreachablePath;
 
   DOTGraphTraits(bool isSimple = false) : DefaultDOTGraphTraits(isSimple) {}
 
@@ -296,7 +296,7 @@ struct DOTGraphTraits<DOTFuncInfo *> : public DefaultDOTGraphTraits {
     return Attrs;
   }
   bool isNodeHidden(const BasicBlock *Node, const DOTFuncInfo *CFGInfo);
-  void computeHiddenNodes(const Function *F);
+  void computeDeoptOrUnreachablePaths(const Function *F);
 };
 } // End llvm namespace
 

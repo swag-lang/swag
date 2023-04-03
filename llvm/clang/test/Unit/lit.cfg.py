@@ -30,13 +30,22 @@ if 'TMP' in os.environ:
 if 'TEMP' in os.environ:
     config.environment['TEMP'] = os.environ['TEMP']
 
-# Propagate path to symbolizer for ASan/MSan.
-for symbolizer in ['ASAN_SYMBOLIZER_PATH', 'MSAN_SYMBOLIZER_PATH']:
-    if symbolizer in os.environ:
-        config.environment[symbolizer] = os.environ[symbolizer]
+# Propagate sanitizer options.
+for var in [
+    'ASAN_SYMBOLIZER_PATH',
+    'MSAN_SYMBOLIZER_PATH',
+    'TSAN_SYMBOLIZER_PATH',
+    'UBSAN_SYMBOLIZER_PATH',
+    'ASAN_OPTIONS',
+    'MSAN_OPTIONS',
+    'TSAN_OPTIONS',
+    'UBSAN_OPTIONS',
+]:
+    if var in os.environ:
+        config.environment[var] = os.environ[var]
 
 def find_shlibpath_var():
-    if platform.system() in ['Linux', 'FreeBSD', 'NetBSD', 'SunOS']:
+    if platform.system() in ['Linux', 'FreeBSD', 'NetBSD', 'OpenBSD', 'SunOS']:
         yield 'LD_LIBRARY_PATH'
     elif platform.system() == 'Darwin':
         yield 'DYLD_LIBRARY_PATH'

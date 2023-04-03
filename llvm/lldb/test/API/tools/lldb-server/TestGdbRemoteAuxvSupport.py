@@ -5,8 +5,6 @@ from lldbsuite.test import lldbutil
 
 class TestGdbRemoteAuxvSupport(gdbremote_testcase.GdbRemoteTestCaseBase):
 
-    mydir = TestBase.compute_mydir(__file__)
-
     AUXV_SUPPORT_FEATURE_NAME = "qXfer:auxv:read"
 
     def has_auxv_support(self):
@@ -35,7 +33,7 @@ class TestGdbRemoteAuxvSupport(gdbremote_testcase.GdbRemoteTestCaseBase):
 
         proc_info = self.parse_process_info_response(context)
         self.assertIsNotNone(proc_info)
-        self.assertTrue("ptrsize" in proc_info)
+        self.assertIn("ptrsize", proc_info)
         word_size = int(proc_info["ptrsize"])
 
         OFFSET = 0

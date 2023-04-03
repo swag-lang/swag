@@ -15,7 +15,6 @@
 #ifndef LLVM_CODEGEN_CODEGENPASSBUILDER_H
 #define LLVM_CODEGEN_CODEGENPASSBUILDER_H
 
-#include "llvm/ADT/FunctionExtras.h"
 #include "llvm/ADT/SmallVector.h"
 #include "llvm/ADT/StringRef.h"
 #include "llvm/Analysis/AliasAnalysis.h"
@@ -26,15 +25,14 @@
 #include "llvm/Analysis/TargetTransformInfo.h"
 #include "llvm/Analysis/TypeBasedAliasAnalysis.h"
 #include "llvm/CodeGen/ExpandReductions.h"
-#include "llvm/CodeGen/MachineModuleInfo.h"
 #include "llvm/CodeGen/MachinePassManager.h"
 #include "llvm/CodeGen/PreISelIntrinsicLowering.h"
+#include "llvm/CodeGen/ReplaceWithVeclib.h"
 #include "llvm/CodeGen/UnreachableBlockElim.h"
 #include "llvm/IR/IRPrintingPasses.h"
 #include "llvm/IR/PassManager.h"
 #include "llvm/IR/Verifier.h"
 #include "llvm/MC/MCAsmInfo.h"
-#include "llvm/MC/MCStreamer.h"
 #include "llvm/MC/MCTargetOptions.h"
 #include "llvm/Support/CodeGen.h"
 #include "llvm/Support/Debug.h"
@@ -42,7 +40,6 @@
 #include "llvm/Support/ErrorHandling.h"
 #include "llvm/Target/CGPassBuilderOption.h"
 #include "llvm/Target/TargetMachine.h"
-#include "llvm/Transforms/Scalar.h"
 #include "llvm/Transforms/Scalar/ConstantHoisting.h"
 #include "llvm/Transforms/Scalar/LoopPassManager.h"
 #include "llvm/Transforms/Scalar/LoopStrengthReduce.h"
@@ -50,11 +47,9 @@
 #include "llvm/Transforms/Scalar/MergeICmps.h"
 #include "llvm/Transforms/Scalar/PartiallyInlineLibCalls.h"
 #include "llvm/Transforms/Scalar/ScalarizeMaskedMemIntrin.h"
-#include "llvm/Transforms/Utils.h"
 #include "llvm/Transforms/Utils/EntryExitInstrumenter.h"
 #include "llvm/Transforms/Utils/LowerInvoke.h"
 #include <cassert>
-#include <string>
 #include <type_traits>
 #include <utility>
 
@@ -159,7 +154,7 @@ protected:
   class AddIRPass {
   public:
     AddIRPass(ModulePassManager &MPM, bool DebugPM, bool Check = true)
-        : MPM(MPM), FPM(DebugPM) {
+        : MPM(MPM) {
       if (Check)
         AddingFunctionPasses = false;
     }
@@ -380,7 +375,6 @@ protected:
   /// representation to the MI representation.
   /// Adds IR based lowering and target specific optimization passes and finally
   /// the core instruction selection passes.
-  /// \returns true if an error occurred, false otherwise.
   void addISelPasses(AddIRPass &) const;
 
   /// Add the actual instruction selection passes. This does not include
@@ -651,6 +645,11 @@ void CodeGenPassBuilder<Derived>::addIRPasses(AddIRPass &addPass) const {
   if (getOptLevel() != CodeGenOpt::None && !Opt.DisableConstantHoisting)
     addPass(ConstantHoistingPass());
 
+  // Replace calls to LLVM intrinsics (e.g., exp, log) operating on vector
+  // operands with calls to the corresponding functions in a vector library.
+  if (getOptLevel() != CodeGenOpt::None)
+    addPass(ReplaceWithVeclib());
+
   if (getOptLevel() != CodeGenOpt::None && !Opt.DisablePartialLibcallInlining)
     addPass(PartiallyInlineLibCallsPass());
 
@@ -664,6 +663,10 @@ void CodeGenPassBuilder<Derived>::addIRPasses(AddIRPass &addPass) const {
 
   // Expand reduction intrinsics into shuffle sequences if the target wants to.
   addPass(ExpandReductionsPass());
+
+  // Convert conditional moves to conditional jumps when profitable.
+  if (getOptLevel() != CodeGenOpt::None && !Opt.DisableSelectOptimize)
+    addPass(SelectOptimizePass());
 }
 
 /// Turn exception handling constructs into something the code generators can
@@ -747,7 +750,7 @@ template <typename Derived>
 Error CodeGenPassBuilder<Derived>::addCoreISelPasses(
     AddMachinePass &addPass) const {
   // Enable FastISel with -fast-isel, but allow that to be overridden.
-  TM.setO0WantsFastISel(Opt.EnableFastISelOption.getValueOr(true));
+  TM.setO0WantsFastISel(Opt.EnableFastISelOption.value_or(true));
 
   // Determine an instruction selector.
   enum class SelectorType { SelectionDAG, FastISel, GlobalISel };
@@ -864,6 +867,8 @@ Error CodeGenPassBuilder<Derived>::addMachinePasses(
 
   // Run post-ra passes.
   derived().addPostRegAlloc(addPass);
+
+  addPass(RemoveRedundantDebugValuesPass());
 
   // Insert prolog/epilog code.  Eliminate abstract frame index references...
   if (getOptLevel() != CodeGenOpt::None) {

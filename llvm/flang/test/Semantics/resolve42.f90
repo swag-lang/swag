@@ -1,4 +1,4 @@
-! RUN: %S/test_errors.sh %s %t %f18
+! RUN: %python %S/test_errors.py %s %flang_fc1
 subroutine s1
   !ERROR: Array 'z' without ALLOCATABLE or POINTER attribute must have explicit shape
   common x, y(4), z(:)
@@ -83,7 +83,7 @@ module m11
   end type
   type(t2) :: x2
   !ERROR: Derived type variable 'x2' may not appear in a COMMON block due to ALLOCATABLE component
-  common x2
+  common /c2/ x2
 end
 
 module m12
@@ -98,7 +98,7 @@ module m12
   end type
   type(t2) :: x2
   !ERROR: Derived type variable 'x2' may not appear in a COMMON block due to component with default initialization
-  common x2
+  common /c3/ x2
 end
 
 subroutine s13

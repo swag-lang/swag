@@ -11,8 +11,7 @@
 
 #include "lld/Common/LLVM.h"
 #include "llvm/ADT/StringRef.h"
-#include "llvm/Support/MemoryBuffer.h"
-#include <utility>
+#include "llvm/Support/MemoryBufferRef.h"
 #include <vector>
 
 namespace lld {
@@ -39,6 +38,9 @@ public:
   std::vector<StringRef> tokens;
   bool inExpr = false;
   size_t pos = 0;
+
+  size_t lastLineNumber = 0;
+  size_t lastLineNumberOffset = 0;
 
 protected:
   MemoryBufferRef getCurrentMB();

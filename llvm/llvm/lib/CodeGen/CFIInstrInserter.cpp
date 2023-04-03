@@ -19,16 +19,14 @@
 
 #include "llvm/ADT/DepthFirstIterator.h"
 #include "llvm/ADT/Optional.h"
-#include "llvm/ADT/SetOperations.h"
 #include "llvm/CodeGen/MachineFunctionPass.h"
 #include "llvm/CodeGen/MachineInstrBuilder.h"
-#include "llvm/CodeGen/MachineModuleInfo.h"
 #include "llvm/CodeGen/Passes.h"
 #include "llvm/CodeGen/TargetFrameLowering.h"
 #include "llvm/CodeGen/TargetInstrInfo.h"
 #include "llvm/CodeGen/TargetSubtargetInfo.h"
 #include "llvm/InitializePasses.h"
-#include "llvm/Target/TargetMachine.h"
+#include "llvm/MC/MCDwarf.h"
 using namespace llvm;
 
 static cl::opt<bool> VerifyCFI("verify-cfiinstrs",
@@ -157,7 +155,7 @@ void CFIInstrInserter::calculateCFAInfo(MachineFunction &MF) {
 
   // Initialize MBBMap.
   for (MachineBasicBlock &MBB : MF) {
-    MBBCFAInfo MBBInfo;
+    MBBCFAInfo &MBBInfo = MBBVector[MBB.getNumber()];
     MBBInfo.MBB = &MBB;
     MBBInfo.IncomingCFAOffset = InitialOffset;
     MBBInfo.OutgoingCFAOffset = InitialOffset;
@@ -165,7 +163,6 @@ void CFIInstrInserter::calculateCFAInfo(MachineFunction &MF) {
     MBBInfo.OutgoingCFARegister = InitialRegister;
     MBBInfo.IncomingCSRSaved.resize(NumRegs);
     MBBInfo.OutgoingCSRSaved.resize(NumRegs);
-    MBBVector[MBB.getNumber()] = MBBInfo;
   }
   CSRLocMap.clear();
 
@@ -220,6 +217,14 @@ void CFIInstrInserter::calculateOutgoingCFAInfo(MBBCFAInfo &MBBInfo) {
       case MCCFIInstruction::OpRestore:
         CSRRestored.set(CFI.getRegister());
         break;
+      case MCCFIInstruction::OpLLVMDefAspaceCfa:
+        // TODO: Add support for handling cfi_def_aspace_cfa.
+#ifndef NDEBUG
+        report_fatal_error(
+            "Support for cfi_llvm_def_aspace_cfa not implemented! Value of CFA "
+            "may be incorrect!\n");
+#endif
+        break;
       case MCCFIInstruction::OpRememberState:
         // TODO: Add support for handling cfi_remember_state.
 #ifndef NDEBUG
@@ -265,9 +270,9 @@ void CFIInstrInserter::calculateOutgoingCFAInfo(MBBCFAInfo &MBBInfo) {
   MBBInfo.OutgoingCFARegister = SetRegister;
 
   // Update outgoing CSR info.
-  MBBInfo.OutgoingCSRSaved = MBBInfo.IncomingCSRSaved;
-  MBBInfo.OutgoingCSRSaved |= CSRSaved;
-  MBBInfo.OutgoingCSRSaved.reset(CSRRestored);
+  BitVector::apply([](auto x, auto y, auto z) { return (x | y) & ~z; },
+                   MBBInfo.OutgoingCSRSaved, MBBInfo.IncomingCSRSaved, CSRSaved,
+                   CSRRestored);
 }
 
 void CFIInstrInserter::updateSuccCFAInfo(MBBCFAInfo &MBBInfo) {
@@ -295,6 +300,7 @@ bool CFIInstrInserter::insertCFIInstrs(MachineFunction &MF) {
   const TargetInstrInfo *TII = MF.getSubtarget().getInstrInfo();
   bool InsertedCFIInstr = false;
 
+  BitVector SetDifference;
   for (MachineBasicBlock &MBB : MF) {
     // Skip the first MBB in a function
     if (MBB.getNumber() == MF.front().getNumber()) continue;
@@ -339,15 +345,15 @@ bool CFIInstrInserter::insertCFIInstrs(MachineFunction &MF) {
     }
 
     if (ForceFullCFA) {
-      MF.getSubtarget().getFrameLowering()->emitCalleeSavedFrameMoves(
+      MF.getSubtarget().getFrameLowering()->emitCalleeSavedFrameMovesFullCFA(
           *MBBInfo.MBB, MBBI);
       InsertedCFIInstr = true;
       PrevMBBInfo = &MBBInfo;
       continue;
     }
 
-    BitVector SetDifference = PrevMBBInfo->OutgoingCSRSaved;
-    SetDifference.reset(MBBInfo.IncomingCSRSaved);
+    BitVector::apply([](auto x, auto y) { return x & ~y; }, SetDifference,
+                     PrevMBBInfo->OutgoingCSRSaved, MBBInfo.IncomingCSRSaved);
     for (int Reg : SetDifference.set_bits()) {
       unsigned CFIIndex =
           MF.addFrameInst(MCCFIInstruction::createRestore(nullptr, Reg));
@@ -356,8 +362,8 @@ bool CFIInstrInserter::insertCFIInstrs(MachineFunction &MF) {
       InsertedCFIInstr = true;
     }
 
-    SetDifference = MBBInfo.IncomingCSRSaved;
-    SetDifference.reset(PrevMBBInfo->OutgoingCSRSaved);
+    BitVector::apply([](auto x, auto y) { return x & ~y; }, SetDifference,
+                     MBBInfo.IncomingCSRSaved, PrevMBBInfo->OutgoingCSRSaved);
     for (int Reg : SetDifference.set_bits()) {
       auto it = CSRLocMap.find(Reg);
       assert(it != CSRLocMap.end() && "Reg should have an entry in CSRLocMap");

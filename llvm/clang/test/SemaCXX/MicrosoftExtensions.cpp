@@ -85,18 +85,22 @@ void test_unaligned() {
   foo_unaligned(p2);
 
   __unaligned B_unaligned *p3 = 0;
-  int p4 = foo_unaligned(p3);
+  int p4 = foo_unaligned(p3); // expected-error {{cannot initialize a variable of type 'int' with an rvalue of type 'void *'}}
+  // expected-warning@-1 {{implicit cast from type '__unaligned B_unaligned *' to type 'B_unaligned *' drops __unaligned qualifier}}
 
-  B_unaligned *p5 = p3; // expected-error {{cannot initialize a variable of type 'B_unaligned *' with an lvalue of type '__unaligned B_unaligned *'}}
+  B_unaligned *p5 = p3;
+  // expected-warning@-1 {{implicit cast from type '__unaligned B_unaligned *' to type 'B_unaligned *' drops __unaligned qualifier}}
 
   __unaligned B_unaligned *p6 = p3;
 
   p1_aligned_type4 = p2_aligned_type4;
-  p2_aligned_type4 = p1_aligned_type4; // expected-error {{assigning to 'int aligned_type4::*' from incompatible type '__unaligned int aligned_type4::*'}}
+  p2_aligned_type4 = p1_aligned_type4;
+  // expected-warning@-1 {{implicit cast from type '__unaligned int aligned_type4::*' to type 'int aligned_type4::*' drops __unaligned qualifier}}
   p3_aligned_type4 = p1_aligned_type4;
 
   __unaligned int a[10];
-  int *b = a; // expected-error {{cannot initialize a variable of type 'int *' with an lvalue of type '__unaligned int [10]'}}
+  int *b = a;
+  // expected-warning@-1 {{implicit cast from type '__unaligned int[10]' to type 'int *' drops __unaligned qualifier}}
 }
 
 // Test from PR27367
@@ -115,13 +119,18 @@ __inline void FreeIDListArray(LPITEMIDLIST *ppidls) {
 // We should accept type conversion of __unaligned to non-__unaligned references
 typedef struct in_addr {
 public:
-  in_addr(in_addr &a) {} // expected-note {{candidate constructor not viable: no known conversion from '__unaligned IN_ADDR *' (aka '__unaligned in_addr *') to 'in_addr &' for 1st argument; dereference the argument with *}}
-  in_addr(in_addr *a) {} // expected-note {{candidate constructor not viable: 1st argument ('__unaligned IN_ADDR *' (aka '__unaligned in_addr *')) would lose __unaligned qualifier}}
+  in_addr(in_addr &a) {} // expected-note {{candidate constructor not viable: expects an lvalue for 1st argument}}
+  in_addr(in_addr *a) {} // expected-note {{candidate constructor not viable: no known conversion from 'IN_ADDR' (aka 'in_addr') to 'in_addr *' for 1st argument}}
 } IN_ADDR;
 
 void f(IN_ADDR __unaligned *a) {
   IN_ADDR local_addr = *a;
-  IN_ADDR local_addr2 = a; // expected-error {{no viable conversion from '__unaligned IN_ADDR *' (aka '__unaligned in_addr *') to 'IN_ADDR' (aka 'in_addr')}}
+  // FIXME: MSVC accepts the following; not sure why clang tries to
+  // copy-construct an in_addr.
+  IN_ADDR local_addr2 = a; // expected-error {{no viable constructor copying variable of type 'IN_ADDR' (aka 'in_addr')}}
+  // expected-warning@-1 {{implicit cast from type '__unaligned IN_ADDR *' (aka '__unaligned in_addr *') to type 'in_addr *' drops __unaligned qualifier}}
+  IN_ADDR local_addr3(a);
+  // expected-warning@-1 {{implicit cast from type '__unaligned IN_ADDR *' (aka '__unaligned in_addr *') to type 'in_addr *' drops __unaligned qualifier}}
 }
 
 template<typename T> void h1(T (__stdcall M::* const )()) { }
@@ -461,6 +470,77 @@ class SealedDestructor { // expected-note {{mark 'SealedDestructor' as 'sealed' 
     // expected-warning@+1 {{'sealed' keyword is a Microsoft extension}}
     virtual ~SealedDestructor() sealed; // expected-warning {{class with destructor marked 'sealed' cannot be inherited from}}
 };
+
+// expected-warning@+1 {{'abstract' keyword is a Microsoft extension}}
+class AbstractClass abstract {
+  int i;
+};
+
+// expected-error@+1 {{variable type 'AbstractClass' is an abstract class}}
+AbstractClass abstractInstance;
+
+// expected-warning@+4 {{abstract class is marked 'sealed'}}
+// expected-note@+3 {{'AbstractAndSealedClass' declared here}}
+// expected-warning@+2 {{'abstract' keyword is a Microsoft extension}}
+// expected-warning@+1 {{'sealed' keyword is a Microsoft extension}}
+class AbstractAndSealedClass abstract sealed {}; // Does no really make sense, but allowed
+
+// expected-error@+1 {{variable type 'AbstractAndSealedClass' is an abstract class}}
+AbstractAndSealedClass abstractAndSealedInstance;
+// expected-error@+1 {{base 'AbstractAndSealedClass' is marked 'sealed'}}
+class InheritFromAbstractAndSealed : AbstractAndSealedClass {};
+
+#if __cplusplus <= 199711L
+// expected-warning@+4 {{'final' keyword is a C++11 extension}}
+// expected-warning@+3 {{'final' keyword is a C++11 extension}}
+#endif
+// expected-error@+1 {{class already marked 'final'}}
+class TooManyVirtSpecifiers1 final final {};
+#if __cplusplus <= 199711L
+// expected-warning@+4 {{'final' keyword is a C++11 extension}}
+#endif
+// expected-warning@+2 {{'sealed' keyword is a Microsoft extension}}
+// expected-error@+1 {{class already marked 'sealed'}}
+class TooManyVirtSpecifiers2 final sealed {};
+#if __cplusplus <= 199711L
+// expected-warning@+6 {{'final' keyword is a C++11 extension}}
+// expected-warning@+5 {{'final' keyword is a C++11 extension}}
+#endif
+// expected-warning@+3 {{abstract class is marked 'final'}}
+// expected-warning@+2 {{'abstract' keyword is a Microsoft extension}}
+// expected-error@+1 {{class already marked 'final'}}
+class TooManyVirtSpecifiers3 final abstract final {};
+#if __cplusplus <= 199711L
+// expected-warning@+6 {{'final' keyword is a C++11 extension}}
+#endif
+// expected-warning@+4 {{abstract class is marked 'final'}}
+// expected-warning@+3 {{'abstract' keyword is a Microsoft extension}}
+// expected-warning@+2 {{'abstract' keyword is a Microsoft extension}}
+// expected-error@+1 {{class already marked 'abstract'}}
+class TooManyVirtSpecifiers4 abstract final abstract {};
+
+class Base {
+  virtual void i();
+};
+class AbstractFunctionInClass : public Base {
+  // expected-note@+2 {{unimplemented pure virtual method 'f' in 'AbstractFunctionInClass'}}
+  // expected-warning@+1 {{'abstract' keyword is a Microsoft extension}}
+  virtual void f() abstract;
+  // expected-warning@+1 {{'abstract' keyword is a Microsoft extension}}
+  void g() abstract; // expected-error {{'g' is not virtual and cannot be declared pure}}
+  // expected-note@+2 {{unimplemented pure virtual method 'h' in 'AbstractFunctionInClass'}}
+  // expected-warning@+1 {{'abstract' keyword is a Microsoft extension}}
+  virtual void h() abstract = 0; // expected-error {{class member already marked 'abstract'}}
+#if __cplusplus <= 199711L
+  // expected-warning@+4 {{'override' keyword is a C++11 extension}}
+#endif
+  // expected-note@+2 {{unimplemented pure virtual method 'i' in 'AbstractFunctionInClass'}}
+  // expected-warning@+1 {{'abstract' keyword is a Microsoft extension}}
+  virtual void i() abstract override;
+};
+
+// expected-error@+1 {{variable type 'AbstractFunctionInClass' is an abstract class}}
+AbstractFunctionInClass abstractFunctionInClassInstance;
 
 void AfterClassBody() {
   // expected-warning@+1 {{attribute 'deprecated' is ignored, place it after "struct" to apply attribute to type declaration}}

@@ -1,5 +1,5 @@
-; RUN: opt -passes='loop(unswitch),verify<loops>' -S < %s | FileCheck %s
-; RUN: opt -verify-memoryssa -passes='loop-mssa(unswitch),verify<loops>' -S < %s | FileCheck %s
+; RUN: opt -passes='loop(simple-loop-unswitch),verify<loops>' -S < %s | FileCheck %s
+; RUN: opt -verify-memoryssa -passes='loop-mssa(simple-loop-unswitch),verify<loops>' -S < %s | FileCheck %s
 
 declare void @some_func() noreturn
 declare void @sink(i32)
@@ -453,7 +453,8 @@ entry:
 ; CHECK-NEXT:    br i1 %cond1, label %entry.split, label %loop_exit.split
 ;
 ; CHECK:       entry.split:
-; CHECK-NEXT:    br i1 %cond2, label %entry.split.split, label %loop_exit
+; CHECK-NEXT:    [[FROZEN:%.+]] = freeze i1 %cond2
+; CHECK-NEXT:    br i1 [[FROZEN]], label %entry.split.split, label %loop_exit
 ;
 ; CHECK:       entry.split.split:
 ; CHECK-NEXT:    br label %loop_begin
@@ -490,14 +491,113 @@ loop_exit:
 ; CHECK-NEXT:    ret
 }
 
+define i32 @test_partial_condition_unswitch_and_select(i32* %var, i1 %cond1, i1 %cond2) {
+; CHECK-LABEL: @test_partial_condition_unswitch_and_select(
+entry:
+  br label %loop_begin
+; CHECK-NEXT:  entry:
+; CHECK-NEXT:    br i1 %cond1, label %entry.split, label %loop_exit.split
+;
+; CHECK:       entry.split:
+; CHECK-NEXT:    [[FROZEN:%.+]] = freeze i1 %cond2
+; CHECK-NEXT:    br i1 [[FROZEN]], label %entry.split.split, label %loop_exit
+;
+; CHECK:       entry.split.split:
+; CHECK-NEXT:    br label %loop_begin
+
+loop_begin:
+  br i1 %cond1, label %continue, label %loop_exit
+; CHECK:       loop_begin:
+; CHECK-NEXT:    br label %continue
+
+continue:
+  %var_val = load i32, i32* %var
+  %var_cond = trunc i32 %var_val to i1
+  %cond_and = select i1 %var_cond, i1 %cond2, i1 false
+  br i1 %cond_and, label %do_something, label %loop_exit
+; CHECK:       continue:
+; CHECK-NEXT:    %[[VAR:.*]] = load i32
+; CHECK-NEXT:    %[[VAR_COND:.*]] = trunc i32 %[[VAR]] to i1
+; CHECK-NEXT:    %[[COND_AND:.*]] = select i1 %[[VAR_COND]], i1 true, i1 false
+; CHECK-NEXT:    br i1 %[[COND_AND]], label %do_something, label %loop_exit
+
+do_something:
+  call void @some_func() noreturn nounwind
+  br label %loop_begin
+; CHECK:       do_something:
+; CHECK-NEXT:    call
+; CHECK-NEXT:    br label %loop_begin
+
+loop_exit:
+  ret i32 0
+; CHECK:       loop_exit:
+; CHECK-NEXT:    br label %loop_exit.split
+;
+; CHECK:       loop_exit.split:
+; CHECK-NEXT:    ret
+}
+
+define i32 @test_partial_condition_unswitch_or_simple_select(i32* %var, i1 %cond1, i1 %cond2) {
+; CHECK-LABEL: @test_partial_condition_unswitch_or_simple_select(
+entry:
+  br label %loop_begin
+; CHECK-NEXT:  entry:
+; CHECK-NEXT:    br i1 %cond1, label %entry.split, label %loop_exit.split
+;
+; CHECK:       entry.split:
+; CHECK-NEXT:    [[FROZEN:%.+]] = freeze i1 %cond2
+; CHECK-NEXT:    br i1 [[FROZEN]], label %loop_exit.split1, label %entry.split.split
+;
+; CHECK:       entry.split.split:
+; CHECK-NEXT:    br label %loop_begin
+
+loop_begin:
+  br i1 %cond1, label %continue, label %loop_exit
+; CHECK:       loop_begin:
+; CHECK-NEXT:    br label %continue
+
+continue:
+  %var_val = load i32, i32* %var
+  %var_cond = trunc i32 %var_val to i1
+  %cond_or = select i1 %var_cond, i1 true, i1 %cond2
+  br i1 %cond_or, label %loop_exit, label %do_something
+; CHECK:       continue:
+; CHECK-NEXT:    %[[VAR:.*]] = load i32
+; CHECK-NEXT:    %[[VAR_COND:.*]] = trunc i32 %[[VAR]] to i1
+; CHECK-NEXT:    %[[COND_OR:.*]] = select i1 %[[VAR_COND]], i1 true, i1 false
+; CHECK-NEXT:    br i1 %[[COND_OR]], label %loop_exit, label %do_something
+
+do_something:
+  call void @some_func() noreturn nounwind
+  br label %loop_begin
+; CHECK:       do_something:
+; CHECK-NEXT:    call
+; CHECK-NEXT:    br label %loop_begin
+
+loop_exit:
+  ret i32 0
+; CHECK:       loop_exit:
+; CHECK-NEXT:    br label %loop_exit.split1
+;
+; CHECK:       loop_exit.split1:
+; CHECK-NEXT:    br label %loop_exit.split
+;
+; CHECK:       loop_exit.split:
+; CHECK-NEXT:    ret
+}
+
 define i32 @test_partial_condition_unswitch_or(i32* %var, i1 %cond1, i1 %cond2, i1 %cond3, i1 %cond4, i1 %cond5, i1 %cond6) {
 ; CHECK-LABEL: @test_partial_condition_unswitch_or(
 entry:
   br label %loop_begin
 ; CHECK-NEXT:  entry:
-; CHECK-NEXT:    %[[INV_OR1:.*]] = or i1 %cond4, %cond2
-; CHECK-NEXT:    %[[INV_OR2:.*]] = or i1 %[[INV_OR1]], %cond3
-; CHECK-NEXT:    %[[INV_OR3:.*]] = or i1 %[[INV_OR2]], %cond1
+; CHECK-NEXT:    %[[C4_FR:.+]] = freeze i1 %cond4
+; CHECK-NEXT:    %[[C2_FR:.+]] = freeze i1 %cond2
+; CHECK-NEXT:    %[[C3_FR:.+]] = freeze i1 %cond3
+; CHECK-NEXT:    %[[C1_FR:.+]] = freeze i1 %cond1
+; CHECK-NEXT:    %[[INV_OR1:.*]] = or i1 %[[C4_FR]], %[[C2_FR]]
+; CHECK-NEXT:    %[[INV_OR2:.*]] = or i1 %[[INV_OR1]], %[[C3_FR]]
+; CHECK-NEXT:    %[[INV_OR3:.*]] = or i1 %[[INV_OR2]], %[[C1_FR]]
 ; CHECK-NEXT:    br i1 %[[INV_OR3]], label %loop_exit.split, label %entry.split
 ;
 ; CHECK:       entry.split:
@@ -546,7 +646,8 @@ define i32 @test_partial_condition_unswitch_with_lcssa_phi1(i32* %var, i1 %cond,
 entry:
   br label %loop_begin
 ; CHECK-NEXT:  entry:
-; CHECK-NEXT:    br i1 %cond, label %entry.split, label %loop_exit.split
+; CHECK-NEXT:    [[FROZEN:%.+]] = freeze i1 %cond
+; CHECK-NEXT:    br i1 [[FROZEN]], label %entry.split, label %loop_exit.split
 ;
 ; CHECK:       entry.split:
 ; CHECK-NEXT:    br label %loop_begin
@@ -586,7 +687,8 @@ define i32 @test_partial_condition_unswitch_with_lcssa_phi2(i32* %var, i1 %cond,
 entry:
   br label %loop_begin
 ; CHECK-NEXT:  entry:
-; CHECK-NEXT:    br i1 %cond, label %entry.split, label %loop_exit.split
+; CHECK-NEXT:    [[FROZEN:%.+]] = freeze i1 %cond
+; CHECK-NEXT:    br i1 [[FROZEN]], label %entry.split, label %loop_exit.split
 ;
 ; CHECK:       entry.split:
 ; CHECK-NEXT:    br label %loop_begin

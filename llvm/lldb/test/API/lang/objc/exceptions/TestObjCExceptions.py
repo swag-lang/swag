@@ -13,8 +13,6 @@ from lldbsuite.test import lldbutil
 
 class ObjCExceptionsTestCase(TestBase):
 
-    mydir = TestBase.compute_mydir(__file__)
-
     def test_objc_exceptions_at_throw(self):
         self.build()
 
@@ -123,7 +121,7 @@ class ObjCExceptionsTestCase(TestBase):
         pcs = [i.unsigned for i in children]
         names = [target.ResolveSymbolContextForAddress(lldb.SBAddress(pc, target), lldb.eSymbolContextSymbol).GetSymbol().name for pc in pcs]
         for n in ["objc_exception_throw", "foo(int)", "main"]:
-            self.assertTrue(n in names, "%s is in the exception backtrace (%s)" % (n, names))
+            self.assertIn(n, names, "%s is in the exception backtrace (%s)" % (n, names))
 
     def test_objc_exceptions_at_abort(self):
         self.build()

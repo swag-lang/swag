@@ -4,13 +4,13 @@ from lldbsuite.test.lldbtest import *
 from lldbsuite.test import lldbutil
 
 class TestWatchpointCount(TestBase):
-    mydir = TestBase.compute_mydir(__file__)
     NO_DEBUG_INFO_TESTCASE = True
 
     def setUp(self):
         TestBase.setUp(self)
 
-    @skipIf(oslist=["linux"], archs=["arm", "aarch64"])
+    @skipIf(oslist=["freebsd", "linux"], archs=["arm", "aarch64"],
+            bugnumber="llvm.org/pr26031")
     def test_watchpoint_count(self):
         self.build()
         (_, process, thread, _) = lldbutil.run_to_source_breakpoint(self, "patatino", lldb.SBFileSpec("main.c"))

@@ -21,13 +21,17 @@ namespace readability {
 /// Eliminates redundant `continue` statements at the end of a loop body.
 ///
 /// For the user-facing documentation see:
-/// http://clang.llvm.org/extra/clang-tidy/checks/readability-redundant-control-flow.html
+/// http://clang.llvm.org/extra/clang-tidy/checks/readability/redundant-control-flow.html
 class RedundantControlFlowCheck : public ClangTidyCheck {
 public:
   RedundantControlFlowCheck(StringRef Name, ClangTidyContext *Context)
       : ClangTidyCheck(Name, Context) {}
   void registerMatchers(ast_matchers::MatchFinder *Finder) override;
   void check(const ast_matchers::MatchFinder::MatchResult &Result) override;
+
+  llvm::Optional<TraversalKind> getCheckTraversalKind() const override {
+    return TK_IgnoreUnlessSpelledInSource;
+  }
 
 private:
   void

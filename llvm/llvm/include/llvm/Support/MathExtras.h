@@ -14,7 +14,6 @@
 #define LLVM_SUPPORT_MATHEXTRAS_H
 
 #include "llvm/Support/Compiler.h"
-#include <algorithm>
 #include <cassert>
 #include <climits>
 #include <cmath>
@@ -398,7 +397,7 @@ constexpr inline std::enable_if_t<(N < 64), bool> isUInt(uint64_t X) {
   return X < (UINT64_C(1) << (N));
 }
 template <unsigned N>
-constexpr inline std::enable_if_t<N >= 64, bool> isUInt(uint64_t X) {
+constexpr inline std::enable_if_t<N >= 64, bool> isUInt(uint64_t) {
   return true;
 }
 
@@ -572,6 +571,33 @@ inline unsigned countPopulation(T Value) {
   return detail::PopulationCounter<T, sizeof(T)>::count(Value);
 }
 
+/// Return true if the argument contains a non-empty sequence of ones with the
+/// remainder zero (32 bit version.) Ex. isShiftedMask_32(0x0000FF00U) == true.
+/// If true, \p MaskIdx will specify the index of the lowest set bit and \p
+/// MaskLen is updated to specify the length of the mask, else neither are
+/// updated.
+inline bool isShiftedMask_32(uint32_t Value, unsigned &MaskIdx,
+                             unsigned &MaskLen) {
+  if (!isShiftedMask_32(Value))
+    return false;
+  MaskIdx = countTrailingZeros(Value);
+  MaskLen = countPopulation(Value);
+  return true;
+}
+
+/// Return true if the argument contains a non-empty sequence of ones with the
+/// remainder zero (64 bit version.) If true, \p MaskIdx will specify the index
+/// of the lowest set bit and \p MaskLen is updated to specify the length of the
+/// mask, else neither are updated.
+inline bool isShiftedMask_64(uint64_t Value, unsigned &MaskIdx,
+                             unsigned &MaskLen) {
+  if (!isShiftedMask_64(Value))
+    return false;
+  MaskIdx = countTrailingZeros(Value);
+  MaskLen = countPopulation(Value);
+  return true;
+}
+
 /// Compile time Log2.
 /// Valid only for positive powers of two.
 template <size_t kValue> constexpr inline size_t CTLog2() {
@@ -681,7 +707,7 @@ constexpr inline uint64_t MinAlign(uint64_t A, uint64_t B) {
 
 /// Returns the next power of two (in 64-bits) that is strictly greater than A.
 /// Returns zero on overflow.
-inline uint64_t NextPowerOf2(uint64_t A) {
+constexpr inline uint64_t NextPowerOf2(uint64_t A) {
   A |= (A >> 1);
   A |= (A >> 2);
   A |= (A >> 4);
@@ -709,27 +735,40 @@ inline uint64_t PowerOf2Ceil(uint64_t A) {
 /// Returns the next integer (mod 2**64) that is greater than or equal to
 /// \p Value and is a multiple of \p Align. \p Align must be non-zero.
 ///
-/// If non-zero \p Skew is specified, the return value will be a minimal
-/// integer that is greater than or equal to \p Value and equal to
-/// \p Align * N + \p Skew for some integer N. If \p Skew is larger than
-/// \p Align, its value is adjusted to '\p Skew mod \p Align'.
-///
 /// Examples:
 /// \code
 ///   alignTo(5, 8) = 8
 ///   alignTo(17, 8) = 24
 ///   alignTo(~0LL, 8) = 0
 ///   alignTo(321, 255) = 510
+/// \endcode
+inline uint64_t alignTo(uint64_t Value, uint64_t Align) {
+  assert(Align != 0u && "Align can't be 0.");
+  return (Value + Align - 1) / Align * Align;
+}
+
+inline uint64_t alignToPowerOf2(uint64_t Value, uint64_t Align) {
+  assert(Align != 0 && (Align & (Align - 1)) == 0 &&
+         "Align must be a power of 2");
+  return (Value + Align - 1) & -Align;
+}
+
+/// If non-zero \p Skew is specified, the return value will be a minimal integer
+/// that is greater than or equal to \p Size and equal to \p A * N + \p Skew for
+/// some integer N. If \p Skew is larger than \p A, its value is adjusted to '\p
+/// Skew mod \p A'. \p Align must be non-zero.
 ///
+/// Examples:
+/// \code
 ///   alignTo(5, 8, 7) = 7
 ///   alignTo(17, 8, 1) = 17
 ///   alignTo(~0LL, 8, 3) = 3
 ///   alignTo(321, 255, 42) = 552
 /// \endcode
-inline uint64_t alignTo(uint64_t Value, uint64_t Align, uint64_t Skew = 0) {
+inline uint64_t alignTo(uint64_t Value, uint64_t Align, uint64_t Skew) {
   assert(Align != 0u && "Align can't be 0.");
   Skew %= Align;
-  return (Value + Align - 1 - Skew) / Align * Align + Skew;
+  return alignTo(Value - Skew, Align) + Skew;
 }
 
 /// Returns the next integer (mod 2**64) that is greater than or equal to
@@ -766,7 +805,7 @@ template <unsigned B> constexpr inline int32_t SignExtend32(uint32_t X) {
 }
 
 /// Sign-extend the number in the bottom B bits of X to a 32-bit integer.
-/// Requires 0 < B < 32.
+/// Requires 0 < B <= 32.
 inline int32_t SignExtend32(uint32_t X, unsigned B) {
   assert(B > 0 && "Bit width can't be 0.");
   assert(B <= 32 && "Bit width out of range.");
@@ -774,7 +813,7 @@ inline int32_t SignExtend32(uint32_t X, unsigned B) {
 }
 
 /// Sign-extend the number in the bottom B bits of X to a 64-bit integer.
-/// Requires 0 < B < 64.
+/// Requires 0 < B <= 64.
 template <unsigned B> constexpr inline int64_t SignExtend64(uint64_t x) {
   static_assert(B > 0, "Bit width can't be 0.");
   static_assert(B <= 64, "Bit width out of range.");
@@ -782,7 +821,7 @@ template <unsigned B> constexpr inline int64_t SignExtend64(uint64_t x) {
 }
 
 /// Sign-extend the number in the bottom B bits of X to a 64-bit integer.
-/// Requires 0 < B < 64.
+/// Requires 0 < B <= 64.
 inline int64_t SignExtend64(uint64_t X, unsigned B) {
   assert(B > 0 && "Bit width can't be 0.");
   assert(B <= 64 && "Bit width out of range.");
@@ -793,7 +832,7 @@ inline int64_t SignExtend64(uint64_t X, unsigned B) {
 /// value of the result.
 template <typename T>
 std::enable_if_t<std::is_unsigned<T>::value, T> AbsoluteDifference(T X, T Y) {
-  return std::max(X, Y) - std::min(X, Y);
+  return X > Y ? (X - Y) : (Y - X);
 }
 
 /// Add two unsigned integers, X and Y, of type T.  Clamp the result to the
@@ -880,7 +919,7 @@ extern const float huge_valf;
 
 
 /// Add two signed integers, computing the two's complement truncated result,
-/// returning true if overflow occured.
+/// returning true if overflow occurred.
 template <typename T>
 std::enable_if_t<std::is_signed<T>::value, T> AddOverflow(T X, T Y, T &Result) {
 #if __has_builtin(__builtin_add_overflow)

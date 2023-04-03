@@ -9,6 +9,7 @@
 #include "llvm/Transforms/Utils/EntryExitInstrumenter.h"
 #include "llvm/Analysis/GlobalsModRef.h"
 #include "llvm/IR/DebugInfoMetadata.h"
+#include "llvm/IR/Dominators.h"
 #include "llvm/IR/Function.h"
 #include "llvm/IR/Instructions.h"
 #include "llvm/IR/Intrinsics.h"
@@ -17,6 +18,7 @@
 #include "llvm/InitializePasses.h"
 #include "llvm/Pass.h"
 #include "llvm/Transforms/Utils.h"
+
 using namespace llvm;
 
 static void insertCall(Function &CurFn, StringRef Func,
@@ -87,7 +89,7 @@ static bool runOnFunction(Function &F, bool PostInlining) {
 
     insertCall(F, EntryFunc, &*F.begin()->getFirstInsertionPt(), DL);
     Changed = true;
-    F.removeAttribute(AttributeList::FunctionIndex, EntryAttr);
+    F.removeFnAttr(EntryAttr);
   }
 
   if (!ExitFunc.empty()) {
@@ -109,54 +111,10 @@ static bool runOnFunction(Function &F, bool PostInlining) {
       insertCall(F, ExitFunc, T, DL);
       Changed = true;
     }
-    F.removeAttribute(AttributeList::FunctionIndex, ExitAttr);
+    F.removeFnAttr(ExitAttr);
   }
 
   return Changed;
-}
-
-namespace {
-struct EntryExitInstrumenter : public FunctionPass {
-  static char ID;
-  EntryExitInstrumenter() : FunctionPass(ID) {
-    initializeEntryExitInstrumenterPass(*PassRegistry::getPassRegistry());
-  }
-  void getAnalysisUsage(AnalysisUsage &AU) const override {
-    AU.addPreserved<GlobalsAAWrapperPass>();
-  }
-  bool runOnFunction(Function &F) override { return ::runOnFunction(F, false); }
-};
-char EntryExitInstrumenter::ID = 0;
-
-struct PostInlineEntryExitInstrumenter : public FunctionPass {
-  static char ID;
-  PostInlineEntryExitInstrumenter() : FunctionPass(ID) {
-    initializePostInlineEntryExitInstrumenterPass(
-        *PassRegistry::getPassRegistry());
-  }
-  void getAnalysisUsage(AnalysisUsage &AU) const override {
-    AU.addPreserved<GlobalsAAWrapperPass>();
-  }
-  bool runOnFunction(Function &F) override { return ::runOnFunction(F, true); }
-};
-char PostInlineEntryExitInstrumenter::ID = 0;
-}
-
-INITIALIZE_PASS(
-    EntryExitInstrumenter, "ee-instrument",
-    "Instrument function entry/exit with calls to e.g. mcount() (pre inlining)",
-    false, false)
-INITIALIZE_PASS(PostInlineEntryExitInstrumenter, "post-inline-ee-instrument",
-                "Instrument function entry/exit with calls to e.g. mcount() "
-                "(post inlining)",
-                false, false)
-
-FunctionPass *llvm::createEntryExitInstrumenterPass() {
-  return new EntryExitInstrumenter();
-}
-
-FunctionPass *llvm::createPostInlineEntryExitInstrumenterPass() {
-  return new PostInlineEntryExitInstrumenter();
 }
 
 PreservedAnalyses
@@ -165,4 +123,14 @@ llvm::EntryExitInstrumenterPass::run(Function &F, FunctionAnalysisManager &AM) {
   PreservedAnalyses PA;
   PA.preserveSet<CFGAnalyses>();
   return PA;
+}
+
+void llvm::EntryExitInstrumenterPass::printPipeline(
+    raw_ostream &OS, function_ref<StringRef(StringRef)> MapClassName2PassName) {
+  static_cast<PassInfoMixin<llvm::EntryExitInstrumenterPass> *>(this)
+      ->printPipeline(OS, MapClassName2PassName);
+  OS << "<";
+  if (PostInlining)
+    OS << "post-inline";
+  OS << ">";
 }

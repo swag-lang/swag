@@ -6,24 +6,26 @@
 //
 //===----------------------------------------------------------------------===//
 
-#ifndef LLVM_DEBUGINFO_DWARFDEBUGRNGLISTS_H
-#define LLVM_DEBUGINFO_DWARFDEBUGRNGLISTS_H
+#ifndef LLVM_DEBUGINFO_DWARF_DWARFDEBUGRNGLISTS_H
+#define LLVM_DEBUGINFO_DWARF_DWARFDEBUGRNGLISTS_H
 
 #include "llvm/ADT/Optional.h"
+#include "llvm/ADT/STLFunctionalExtras.h"
 #include "llvm/BinaryFormat/Dwarf.h"
-#include "llvm/DebugInfo/DIContext.h"
-#include "llvm/DebugInfo/DWARF/DWARFDataExtractor.h"
-#include "llvm/DebugInfo/DWARF/DWARFDebugRangeList.h"
+#include "llvm/DebugInfo/DWARF/DWARFAddressRange.h"
 #include "llvm/DebugInfo/DWARF/DWARFListTable.h"
 #include <cstdint>
-#include <map>
-#include <vector>
 
 namespace llvm {
 
 class Error;
 class raw_ostream;
 class DWARFUnit;
+class DWARFDataExtractor;
+struct DIDumpOptions;
+namespace object {
+struct SectionedAddress;
+}
 
 /// A class representing a single range list entry.
 struct RangeListEntry : public DWARFListEntryBase {
@@ -68,4 +70,4 @@ public:
 
 } // end namespace llvm
 
-#endif // LLVM_DEBUGINFO_DWARFDEBUGRNGLISTS_H
+#endif // LLVM_DEBUGINFO_DWARF_DWARFDEBUGRNGLISTS_H

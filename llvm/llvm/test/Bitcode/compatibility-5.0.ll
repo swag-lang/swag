@@ -22,8 +22,8 @@ $comdat.exactmatch = comdat exactmatch
 ; CHECK: $comdat.exactmatch = comdat exactmatch
 $comdat.largest = comdat largest
 ; CHECK: $comdat.largest = comdat largest
-$comdat.noduplicates = comdat noduplicates
-; CHECK: $comdat.noduplicates = comdat noduplicates
+$comdat.noduplicates = comdat nodeduplicate
+; CHECK: $comdat.noduplicates = comdat nodeduplicate
 $comdat.samesize = comdat samesize
 ; CHECK: $comdat.samesize = comdat samesize
 
@@ -256,19 +256,19 @@ declare void @g.f1()
 
 ; IFunc -- Linkage
 @ifunc.external = external ifunc void (), i8* ()* @ifunc_resolver
-; CHECK: @ifunc.external = ifunc void (), i8* ()* @ifunc_resolver
+; CHECK: @ifunc.external = ifunc void (), bitcast (i8* ()* @ifunc_resolver to void ()* ()*)
 @ifunc.private = private ifunc void (), i8* ()* @ifunc_resolver
-; CHECK: @ifunc.private = private ifunc void (), i8* ()* @ifunc_resolver
+; CHECK: @ifunc.private = private ifunc void (), bitcast (i8* ()* @ifunc_resolver to void ()* ()*)
 @ifunc.internal = internal ifunc void (), i8* ()* @ifunc_resolver
-; CHECK: @ifunc.internal = internal ifunc void (), i8* ()* @ifunc_resolver
+; CHECK: @ifunc.internal = internal ifunc void (), bitcast (i8* ()* @ifunc_resolver to void ()* ()*)
 
 ; IFunc -- Visibility
 @ifunc.default = default ifunc void (), i8* ()* @ifunc_resolver
-; CHECK: @ifunc.default = ifunc void (), i8* ()* @ifunc_resolver
+; CHECK: @ifunc.default = ifunc void (), bitcast (i8* ()* @ifunc_resolver to void ()* ()*)
 @ifunc.hidden = hidden ifunc void (), i8* ()* @ifunc_resolver
-; CHECK: @ifunc.hidden = hidden ifunc void (), i8* ()* @ifunc_resolver
+; CHECK: @ifunc.hidden = hidden ifunc void (), bitcast (i8* ()* @ifunc_resolver to void ()* ()*)
 @ifunc.protected = protected ifunc void (), i8* ()* @ifunc_resolver
-; CHECK: @ifunc.protected = protected ifunc void (), i8* ()* @ifunc_resolver
+; CHECK: @ifunc.protected = protected ifunc void (), bitcast (i8* ()* @ifunc_resolver to void ()* ()*)
 
 define i8* @ifunc_resolver() {
 entry:
@@ -510,7 +510,7 @@ declare void @f.param.inreg(i8 inreg)
 declare void @f.param.byval({ i8, i8 }* byval({ i8, i8 }))
 ; CHECK: declare void @f.param.byval({ i8, i8 }* byval({ i8, i8 }))
 declare void @f.param.inalloca(i8* inalloca)
-; CHECK: declare void @f.param.inalloca(i8* inalloca)
+; CHECK: declare void @f.param.inalloca(i8* inalloca(i8))
 declare void @f.param.sret(i8* sret(i8))
 ; CHECK: declare void @f.param.sret(i8* sret(i8))
 declare void @f.param.noalias(i8* noalias)
@@ -1265,7 +1265,7 @@ exit:
 
 define void @instructions.call_musttail(i8* inalloca %val) {
   musttail call void @f.param.inalloca(i8* inalloca %val)
-  ; CHECK: musttail call void @f.param.inalloca(i8* inalloca %val)
+  ; CHECK: musttail call void @f.param.inalloca(i8* inalloca(i8) %val)
 
   ret void
 }
@@ -1665,14 +1665,14 @@ define i8** @constexpr() {
 ; CHECK: attributes #32 = { norecurse }
 ; CHECK: attributes #33 = { inaccessiblememonly }
 ; CHECK: attributes #34 = { inaccessiblemem_or_argmemonly }
-; CHECK: attributes #35 = { nofree nosync nounwind readnone willreturn }
-; CHECK: attributes #36 = { nofree nosync  nounwind willreturn }
+; CHECK: attributes #35 = { nocallback nofree nosync nounwind readnone willreturn }
+; CHECK: attributes #36 = { nocallback nofree nosync  nounwind willreturn }
 ; CHECK: attributes #37 = { argmemonly nounwind readonly }
 ; CHECK: attributes #38 = { argmemonly nounwind }
 ; CHECK: attributes #39 = { nounwind readonly }
 ; CHECK: attributes #40 = { writeonly }
 ; CHECK: attributes #41 = { speculatable }
-; CHECK: attributes #42 = { inaccessiblemem_or_argmemonly nofree nosync nounwind willreturn }
+; CHECK: attributes #42 = { inaccessiblemem_or_argmemonly nocallback nofree nosync nounwind willreturn }
 ; CHECK: attributes #43 = { builtin }
 
 ;; Metadata

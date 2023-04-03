@@ -13,6 +13,7 @@ add_clang_library(clangTidyCppCoreGuidelinesModule
   NarrowingConversionsCheck.cpp
   NoMallocCheck.cpp
   OwningMemoryCheck.cpp
+  PreferMemberInitializerCheck.cpp
   ProBoundsArrayToPointerDecayCheck.cpp
   ProBoundsConstantArrayIndexCheck.cpp
   ProBoundsPointerArithmeticCheck.cpp
@@ -25,6 +26,7 @@ add_clang_library(clangTidyCppCoreGuidelinesModule
   ProTypeVarargCheck.cpp
   SlicingCheck.cpp
   SpecialMemberFunctionsCheck.cpp
+  VirtualClassDestructorCheck.cpp
 
   LINK_LIBS
   clangTidy

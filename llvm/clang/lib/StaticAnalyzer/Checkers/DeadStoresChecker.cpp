@@ -11,17 +11,18 @@
 //
 //===----------------------------------------------------------------------===//
 
-#include "clang/Lex/Lexer.h"
-#include "clang/StaticAnalyzer/Checkers/BuiltinCheckerRegistration.h"
 #include "clang/AST/ASTContext.h"
 #include "clang/AST/Attr.h"
 #include "clang/AST/ParentMap.h"
 #include "clang/AST/RecursiveASTVisitor.h"
 #include "clang/Analysis/Analyses/LiveVariables.h"
+#include "clang/Lex/Lexer.h"
+#include "clang/StaticAnalyzer/Checkers/BuiltinCheckerRegistration.h"
 #include "clang/StaticAnalyzer/Core/BugReporter/BugReporter.h"
 #include "clang/StaticAnalyzer/Core/Checker.h"
 #include "clang/StaticAnalyzer/Core/PathSensitive/AnalysisManager.h"
 #include "llvm/ADT/BitVector.h"
+#include "llvm/ADT/STLExtras.h"
 #include "llvm/ADT/SmallString.h"
 #include "llvm/Support/SaveAndRestore.h"
 
@@ -106,11 +107,8 @@ LookThroughTransitiveAssignmentsAndCommaOperators(const Expr *Ex) {
       dyn_cast<BinaryOperator>(Ex->IgnoreParenCasts());
     if (!BO)
       break;
-    if (BO->getOpcode() == BO_Assign) {
-      Ex = BO->getRHS();
-      continue;
-    }
-    if (BO->getOpcode() == BO_Comma) {
+    BinaryOperatorKind Op = BO->getOpcode();
+    if (Op == BO_Assign || Op == BO_Comma) {
       Ex = BO->getRHS();
       continue;
     }
@@ -260,8 +258,8 @@ public:
         break;
     }
 
-    BR.EmitBasicReport(AC->getDecl(), Checker, BugType, "Dead store", os.str(),
-                       L, R, Fixits);
+    BR.EmitBasicReport(AC->getDecl(), Checker, BugType, categories::UnusedCode,
+                       os.str(), L, R, Fixits);
   }
 
   void CheckVarDecl(const VarDecl *VD, const Expr *Ex, const Expr *Val,
@@ -408,15 +406,17 @@ public:
               // Special case: check for initializations with constants.
               //
               //  e.g. : int x = 0;
+              //         struct A = {0, 1};
+              //         struct B = {{0}, {1, 2}};
               //
               // If x is EVER assigned a new value later, don't issue
               // a warning.  This is because such initialization can be
               // due to defensive programming.
-              if (E->isEvaluatable(Ctx))
+              if (isConstant(E))
                 return;
 
               if (const DeclRefExpr *DRE =
-                  dyn_cast<DeclRefExpr>(E->IgnoreParenCasts()))
+                      dyn_cast<DeclRefExpr>(E->IgnoreParenCasts()))
                 if (const VarDecl *VD = dyn_cast<VarDecl>(DRE->getDecl())) {
                   // Special case: check for initialization from constant
                   //  variables.
@@ -443,6 +443,29 @@ public:
           }
         }
       }
+  }
+
+private:
+  /// Return true if the given init list can be interpreted as constant
+  bool isConstant(const InitListExpr *Candidate) const {
+    // We consider init list to be constant if each member of the list can be
+    // interpreted as constant.
+    return llvm::all_of(Candidate->inits(),
+                        [this](const Expr *Init) { return isConstant(Init); });
+  }
+
+  /// Return true if the given expression can be interpreted as constant
+  bool isConstant(const Expr *E) const {
+    // It looks like E itself is a constant
+    if (E->isEvaluatable(Ctx))
+      return true;
+
+    // We should also allow defensive initialization of structs, i.e. { 0 }
+    if (const auto *ILE = dyn_cast<InitListExpr>(E->IgnoreParenCasts())) {
+      return isConstant(ILE);
+    }
+
+    return false;
   }
 };
 

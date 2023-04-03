@@ -24,6 +24,9 @@ type llcontext
     objects. See the [llvm::Module] class. *)
 type llmodule
 
+(** Opaque representation of Metadata nodes. See the [llvm::Metadata] class. *)
+type llmetadata
+
 (** Each value in the LLVM IR has a type, an instance of [lltype]. See the
     [llvm::Type] class. *)
 type lltype
@@ -77,6 +80,9 @@ module TypeKind : sig
   | Metadata
   | X86_mmx
   | Token
+  | ScalableVector
+  | BFloat
+  | X86_amx
 end
 
 (** The linkage of a global value, accessed with {!linkage} and
@@ -268,6 +274,7 @@ module Opcode : sig
   | CatchSwitch
   | FNeg
   | CallBr
+  | Freeze
 end
 
 (** The type of a clause of a [landingpad] instruction.
@@ -319,6 +326,8 @@ module AtomicRMWBinOp : sig
   | Min
   | UMax
   | UMin
+  | FAdd
+  | FSub
 end
 
 (** The kind of an [llvalue], the result of [classify_value v].
@@ -361,6 +370,15 @@ module DiagnosticSeverity : sig
   | Note
 end
 
+module ModuleFlagBehavior :sig
+  type t =
+  | Error
+  | Warning
+  | Require
+  | Override
+  | Append
+  | AppendUnique
+end
 
 (** {6 Iteration} *)
 
@@ -525,7 +543,24 @@ val set_module_inline_asm : llmodule -> string -> unit
     See the method [llvm::Module::getContext] *)
 val module_context : llmodule -> llcontext
 
+(** [get_module_identifier m] returns the module identifier of the
+    specified module. See the method [llvm::Module::getModuleIdentifier] *)
+val get_module_identifier : llmodule -> string
 
+(** [set_module_identifier m id] sets the module identifier of [m]
+    to [id]. See the method [llvm::Module::setModuleIdentifier] *)
+val set_module_identifer : llmodule -> string -> unit
+
+(** [get_module_flag m k] Return the corresponding value if key [k] appears in
+    the module flags of [m], otherwise return None
+    See the method [llvm::Module::getModuleFlag] *)
+val get_module_flag : llmodule -> string -> llmetadata option
+
+(** [add_module_flag m b k v] Add a module-level flag b, with key [k] and
+    value [v] to the flags metadata of module [m]. It will create the 
+    module-level flags named metadata if it doesn't already exist. *)
+val add_module_flag : llmodule -> ModuleFlagBehavior.t ->
+                        string -> llmetadata -> unit
 (** {6 Types} *)
 
 (** [classify_type ty] returns the {!TypeKind.t} corresponding to the type [ty].
@@ -919,6 +954,13 @@ val get_named_metadata : llmodule -> string -> llvalue array
     [llvm::MDNode::addOperand()]. *)
 val add_named_metadata_operand : llmodule -> string -> llvalue -> unit
 
+(** Obtain a Metadata as a Value.
+    See the method [llvm::ValueAsMetadata::get()]. *)
+val value_as_metadata : llvalue -> llmetadata
+
+(** Obtain a Value as a Metadata.
+    See the method [llvm::MetadataAsValue::get()]. *)
+val metadata_as_value : llcontext -> llmetadata -> llvalue
 
 (** {7 Operations on scalar constants} *)
 
@@ -926,8 +968,9 @@ val add_named_metadata_operand : llmodule -> string -> llvalue -> unit
     See the method [llvm::ConstantInt::get]. *)
 val const_int : lltype -> int -> llvalue
 
-(** [const_of_int64 ty i] returns the integer constant of type [ty] and value
-    [i]. See the method [llvm::ConstantInt::get]. *)
+(** [const_of_int64 ty i s] returns the integer constant of type [ty] and value
+    [i]. [s] indicates whether the integer is signed or not.
+    See the method [llvm::ConstantInt::get]. *)
 val const_of_int64 : lltype -> Int64.t -> bool -> llvalue
 
 (** [int64_of_const c] returns the int64 value of the [c] constant integer.
@@ -1056,10 +1099,6 @@ val const_nsw_add : llvalue -> llvalue -> llvalue
     See the method [llvm::ConstantExpr::getNSWAdd]. *)
 val const_nuw_add : llvalue -> llvalue -> llvalue
 
-(** [const_fadd c1 c2] returns the constant sum of two constant floats.
-    See the method [llvm::ConstantExpr::getFAdd]. *)
-val const_fadd : llvalue -> llvalue -> llvalue
-
 (** [const_sub c1 c2] returns the constant difference, [c1 - c2], of two
     constants. See the method [llvm::ConstantExpr::getSub]. *)
 val const_sub : llvalue -> llvalue -> llvalue
@@ -1074,10 +1113,6 @@ val const_nsw_sub : llvalue -> llvalue -> llvalue
     See the method [llvm::ConstantExpr::getNSWSub]. *)
 val const_nuw_sub : llvalue -> llvalue -> llvalue
 
-(** [const_fsub c1 c2] returns the constant difference, [c1 - c2], of two
-    constant floats. See the method [llvm::ConstantExpr::getFSub]. *)
-val const_fsub : llvalue -> llvalue -> llvalue
-
 (** [const_mul c1 c2] returns the constant product of two constants.
     See the method [llvm::ConstantExpr::getMul]. *)
 val const_mul : llvalue -> llvalue -> llvalue
@@ -1091,45 +1126,6 @@ val const_nsw_mul : llvalue -> llvalue -> llvalue
     no unsigned wrapping. The result is undefined if the sum overflows.
     See the method [llvm::ConstantExpr::getNSWMul]. *)
 val const_nuw_mul : llvalue -> llvalue -> llvalue
-
-(** [const_fmul c1 c2] returns the constant product of two constants floats.
-    See the method [llvm::ConstantExpr::getFMul]. *)
-val const_fmul : llvalue -> llvalue -> llvalue
-
-(** [const_udiv c1 c2] returns the constant quotient [c1 / c2] of two unsigned
-    integer constants.
-    See the method [llvm::ConstantExpr::getUDiv]. *)
-val const_udiv : llvalue -> llvalue -> llvalue
-
-(** [const_sdiv c1 c2] returns the constant quotient [c1 / c2] of two signed
-    integer constants.
-    See the method [llvm::ConstantExpr::getSDiv]. *)
-val const_sdiv : llvalue -> llvalue -> llvalue
-
-(** [const_exact_sdiv c1 c2] returns the constant quotient [c1 / c2] of two
-    signed integer constants. The result is undefined if the result is rounded
-    or overflows. See the method [llvm::ConstantExpr::getExactSDiv]. *)
-val const_exact_sdiv : llvalue -> llvalue -> llvalue
-
-(** [const_fdiv c1 c2] returns the constant quotient [c1 / c2] of two floating
-    point constants.
-    See the method [llvm::ConstantExpr::getFDiv]. *)
-val const_fdiv : llvalue -> llvalue -> llvalue
-
-(** [const_urem c1 c2] returns the constant remainder [c1 MOD c2] of two
-    unsigned integer constants.
-    See the method [llvm::ConstantExpr::getURem]. *)
-val const_urem : llvalue -> llvalue -> llvalue
-
-(** [const_srem c1 c2] returns the constant remainder [c1 MOD c2] of two
-    signed integer constants.
-    See the method [llvm::ConstantExpr::getSRem]. *)
-val const_srem : llvalue -> llvalue -> llvalue
-
-(** [const_frem c1 c2] returns the constant remainder [c1 MOD c2] of two
-    signed floating point constants.
-    See the method [llvm::ConstantExpr::getFRem]. *)
-val const_frem : llvalue -> llvalue -> llvalue
 
 (** [const_and c1 c2] returns the constant bitwise [AND] of two integer
     constants.
@@ -1175,6 +1171,12 @@ val const_ashr : llvalue -> llvalue -> llvalue
     constant integers indices from the array [indices].
     See the method [llvm::ConstantExpr::getGetElementPtr]. *)
 val const_gep : llvalue -> llvalue array -> llvalue
+
+(** [const_gep2 srcty pc indices] returns the constant [getElementPtr] of [pc]
+    with source element type [srcty] and the constant integers indices from the
+    array [indices].
+    See the method [llvm::ConstantExpr::getGetElementPtr]. *)
+val const_gep2 : lltype -> llvalue -> llvalue array -> llvalue
 
 (** [const_in_bounds_gep pc indices] returns the constant [getElementPtr] of [pc]
     with the constant integers indices from the array [indices].
@@ -1298,16 +1300,6 @@ val const_insertelement : llvalue -> llvalue -> llvalue -> llvalue
     See the method [llvm::ConstantExpr::getShuffleVector]. *)
 val const_shufflevector : llvalue -> llvalue -> llvalue -> llvalue
 
-(** [const_extractvalue agg idxs] returns the constant [idxs]th value of
-    constant aggregate [agg]. Each [idxs] must be less than the size of the
-    aggregate.  See the method [llvm::ConstantExpr::getExtractValue]. *)
-val const_extractvalue : llvalue -> int array -> llvalue
-
-(** [const_insertvalue agg val idxs] inserts the value [val] in the specified
-    indexs [idxs] in the aggregate [agg]. Each [idxs] must be less than the size
-    of the aggregate. See the method [llvm::ConstantExpr::getInsertValue]. *)
-val const_insertvalue : llvalue -> llvalue -> int array -> llvalue
-
 (** [const_inline_asm ty asm con side align] inserts a inline assembly string.
     See the method [llvm::InlineAsm::get]. *)
 val const_inline_asm : lltype -> string -> string -> bool -> bool -> llvalue
@@ -1377,6 +1369,12 @@ val alignment : llvalue -> int
 (** [set_alignment n g] sets the required alignment of the global value [g] to
     [n] bytes. See the method [llvm::GlobalValue::setAlignment]. *)
 val set_alignment : int -> llvalue -> unit
+
+(** [global_copy_all_metadata g] returns all the metadata associated with [g],
+    which must be an [Instruction] or [GlobalObject].
+    See the [llvm::Instruction::getAllMetadata()] and
+    [llvm::GlobalObject::getAllMetadata()] methods. *)
+val global_copy_all_metadata : llvalue -> (llmdkind * llmetadata) array
 
 
 (** {7 Operations on global variables} *)
@@ -1463,9 +1461,9 @@ val is_global_constant : llvalue -> bool
     See the method [llvm::GlobalVariable::setConstant]. *)
 val set_global_constant : bool -> llvalue -> unit
 
-(** [global_initializer gv] returns the initializer for the global variable
-    [gv]. See the method [llvm::GlobalVariable::getInitializer]. *)
-val global_initializer : llvalue -> llvalue
+(** [global_initializer gv] If global variable [gv] has an initializer it is returned,
+    otherwise returns [None]. See the method [llvm::GlobalVariable::getInitializer]. *)
+val global_initializer : llvalue -> llvalue option
 
 (** [set_initializer c gv] sets the initializer for the global variable
     [gv] to the constant [c].
@@ -1515,6 +1513,10 @@ val set_externally_initialized : bool -> llvalue -> unit
     See the constructor for [llvm::GlobalAlias]. *)
 val add_alias : llmodule -> lltype -> llvalue -> string -> llvalue
 
+(** [add_alias m vt as a n] inserts an alias in the module [m] with the value
+    type [vt] the address space [as] the aliasee [a] with the name [n].
+    See the constructor for [llvm::GlobalAlias]. *)
+val add_alias2 : llmodule -> lltype -> int -> llvalue -> string -> llvalue
 
 (** {7 Operations on functions} *)
 
@@ -2101,6 +2103,13 @@ val add_destination : llvalue -> llbasicblock -> unit
 val build_invoke : llvalue -> llvalue array -> llbasicblock ->
                         llbasicblock -> string -> llbuilder -> llvalue
 
+(** [build_invoke2 fnty fn args tobb unwindbb name b] creates an
+    [%name = invoke %fn(args) to %tobb unwind %unwindbb]
+    instruction at the position specified by the instruction builder [b].
+    See the method [llvm::LLVMBuilder::CreateInvoke]. *)
+val build_invoke2 : lltype -> llvalue -> llvalue array -> llbasicblock ->
+                        llbasicblock -> string -> llbuilder -> llvalue
+
 (** [build_landingpad ty persfn numclauses name b] creates an
     [landingpad]
     instruction at the position specified by the instruction builder [b].
@@ -2341,6 +2350,12 @@ val build_array_alloca : lltype -> llvalue -> string -> llbuilder ->
     See the method [llvm::LLVMBuilder::CreateLoad]. *)
 val build_load : llvalue -> string -> llbuilder -> llvalue
 
+(** [build_load2 ty v name b] creates a
+    [%name = load %ty, %v]
+    instruction at the position specified by the instruction builder [b].
+    See the method [llvm::LLVMBuilder::CreateLoad]. *)
+val build_load2 : lltype -> llvalue -> string -> llbuilder -> llvalue
+
 (** [build_store v p b] creates a
     [store %v, %p]
     instruction at the position specified by the instruction builder [b].
@@ -2361,6 +2376,13 @@ val build_atomicrmw : AtomicRMWBinOp.t -> llvalue -> llvalue ->
     See the method [llvm::LLVMBuilder::CreateGetElementPtr]. *)
 val build_gep : llvalue -> llvalue array -> string -> llbuilder -> llvalue
 
+(** [build_gep2 srcty p indices name b] creates a
+    [%name = getelementptr srcty, %p, indices...]
+    instruction at the position specified by the instruction builder [b].
+    See the method [llvm::LLVMBuilder::CreateGetElementPtr]. *)
+val build_gep2 : lltype -> llvalue -> llvalue array -> string -> llbuilder ->
+                       llvalue
+
 (** [build_in_bounds_gep p indices name b] creates a
     [%name = gelementptr inbounds %p, indices...]
     instruction at the position specified by the instruction builder [b].
@@ -2368,11 +2390,25 @@ val build_gep : llvalue -> llvalue array -> string -> llbuilder -> llvalue
 val build_in_bounds_gep : llvalue -> llvalue array -> string -> llbuilder ->
                                llvalue
 
+(** [build_in_bounds_gep2 srcty p indices name b] creates a
+    [%name = gelementptr inbounds srcty, %p, indices...]
+    instruction at the position specified by the instruction builder [b].
+    See the method [llvm::LLVMBuilder::CreateInBoundsGetElementPtr]. *)
+val build_in_bounds_gep2 : lltype -> llvalue -> llvalue array -> string ->
+                                llbuilder -> llvalue
+
 (** [build_struct_gep p idx name b] creates a
     [%name = getelementptr %p, 0, idx]
     instruction at the position specified by the instruction builder [b].
     See the method [llvm::LLVMBuilder::CreateStructGetElementPtr]. *)
 val build_struct_gep : llvalue -> int -> string -> llbuilder ->
+                            llvalue
+
+(** [build_struct_gep2 srcty p idx name b] creates a
+    [%name = getelementptr srcty, %p, 0, idx]
+    instruction at the position specified by the instruction builder [b].
+    See the method [llvm::LLVMBuilder::CreateStructGetElementPtr]. *)
+val build_struct_gep2 : lltype -> llvalue -> int -> string -> llbuilder ->
                             llvalue
 
 (** [build_global_string str name b] creates a series of instructions that adds
@@ -2534,6 +2570,13 @@ val build_empty_phi : lltype -> string -> llbuilder -> llvalue
     See the method [llvm::LLVMBuilder::CreateCall]. *)
 val build_call : llvalue -> llvalue array -> string -> llbuilder -> llvalue
 
+(** [build_call2 fnty fn args name b] creates a
+    [%name = call %fn(args...)]
+    instruction at the position specified by the instruction builder [b].
+    See the method [llvm::LLVMBuilder::CreateCall]. *)
+val build_call2 : lltype -> llvalue -> llvalue array -> string -> llbuilder ->
+                        llvalue
+
 (** [build_select cond thenv elsev name b] creates a
     [%name = select %cond, %thenv, %elsev]
     instruction at the position specified by the instruction builder [b].
@@ -2599,6 +2642,13 @@ val build_is_not_null : llvalue -> string -> llbuilder -> llvalue
     instruction builder [b].
     See the method [llvm::LLVMBuilder::CreatePtrDiff]. *)
 val build_ptrdiff : llvalue -> llvalue -> string -> llbuilder -> llvalue
+
+(** [build_ptrdiff2 elemty lhs rhs name b] creates a series of instructions
+    that measure the difference between two pointer values in multiples of
+    [elemty] at the position specified by the instruction builder [b].
+    See the method [llvm::LLVMBuilder::CreatePtrDiff]. *)
+val build_ptrdiff2 : lltype -> llvalue -> llvalue -> string -> llbuilder ->
+                     llvalue
 
 (** [build_freeze x name b] creates a
     [%name = freeze %x]

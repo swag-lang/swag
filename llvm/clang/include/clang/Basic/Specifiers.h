@@ -31,6 +31,15 @@ namespace clang {
   /// Define the kind of constexpr specifier.
   enum class ConstexprSpecKind { Unspecified, Constexpr, Consteval, Constinit };
 
+  /// In an if statement, this denotes whether the the statement is
+  /// a constexpr or consteval if statement.
+  enum class IfStatementKind : unsigned {
+    Ordinary,
+    Constexpr,
+    ConstevalNonNegated,
+    ConstevalNegated
+  };
+
   /// Specifies the width of a type, e.g., short, long, or long long.
   enum class TypeSpecifierWidth { Unspecified, Short, Long, LongLong };
 
@@ -50,7 +59,7 @@ namespace clang {
     TST_char32,       // C++11 char32_t
     TST_int,
     TST_int128,
-    TST_extint,       // Extended Int types.
+    TST_bitint,       // Bit-precise integer types.
     TST_half,         // OpenCL half, ARM NEON __fp16
     TST_Float16,      // C11 extension ISO/IEC TS 18661-3
     TST_Accum,        // ISO/IEC JTC1 SC22 WG14 N1169 Extension
@@ -59,6 +68,7 @@ namespace clang {
     TST_float,
     TST_double,
     TST_float128,
+    TST_ibm128,
     TST_bool,         // _Bool
     TST_decimal32,    // _Decimal32
     TST_decimal64,    // _Decimal64
@@ -105,9 +115,9 @@ namespace clang {
   /// The categorization of expression values, currently following the
   /// C++11 scheme.
   enum ExprValueKind {
-    /// An r-value expression (a pr-value in the C++11 taxonomy)
+    /// A pr-value expression (in the C++11 taxonomy)
     /// produces a temporary value.
-    VK_RValue,
+    VK_PRValue,
 
     /// An l-value expression is a reference to an object with
     /// independent storage.
@@ -266,9 +276,12 @@ namespace clang {
     CC_SpirFunction, // default for OpenCL functions on SPIR target
     CC_OpenCLKernel, // inferred for OpenCL kernels
     CC_Swift,        // __attribute__((swiftcall))
+    CC_SwiftAsync,        // __attribute__((swiftasynccall))
     CC_PreserveMost, // __attribute__((preserve_most))
     CC_PreserveAll,  // __attribute__((preserve_all))
     CC_AArch64VectorCall, // __attribute__((aarch64_vector_pcs))
+    CC_AArch64SVEPCS, // __attribute__((aarch64_sve_pcs))
+    CC_AMDGPUKernelCall, // __attribute__((amdgpu_kernel))
   };
 
   /// Checks whether the given calling convention supports variadic
@@ -284,6 +297,7 @@ namespace clang {
     case CC_SpirFunction:
     case CC_OpenCLKernel:
     case CC_Swift:
+    case CC_SwiftAsync:
       return false;
     default:
       return true;
@@ -312,7 +326,7 @@ namespace clang {
     Unspecified,
     // Generally behaves like Nullable, except when used in a block parameter
     // that was imported into a swift async method. There, swift will assume
-    // that the parameter can get null even if no error occured. _Nullable
+    // that the parameter can get null even if no error occurred. _Nullable
     // parameters are assumed to only get null on error.
     NullableResult,
   };
@@ -344,7 +358,12 @@ namespace clang {
     /// This parameter (which must have pointer type) uses the special
     /// Swift context-pointer ABI treatment.  There can be at
     /// most one parameter on a given function that uses this treatment.
-    SwiftContext
+    SwiftContext,
+
+    /// This parameter (which must have pointer type) uses the special
+    /// Swift asynchronous context-pointer ABI treatment.  There can be at
+    /// most one parameter on a given function that uses this treatment.
+    SwiftAsyncContext,
   };
 
   /// Assigned inheritance model for a class in the MS C++ ABI. Must match order

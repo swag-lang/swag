@@ -11,16 +11,14 @@
 //
 //===----------------------------------------------------------------------===//
 
-#ifndef LLVM_CODEGEN_PASSBUILDER_OPTION_H
-#define LLVM_CODEGEN_PASSBUILDER_OPTION_H
+#ifndef LLVM_TARGET_CGPASSBUILDEROPTION_H
+#define LLVM_TARGET_CGPASSBUILDEROPTION_H
 
 #include "llvm/ADT/Optional.h"
 #include "llvm/ADT/StringRef.h"
 #include "llvm/Target/TargetOptions.h"
-#include <vector>
 
 namespace llvm {
-class TargetMachine;
 
 enum class RunOutliner { TargetDefault, AlwaysOutline, NeverOutline };
 enum class RegAllocType { Default, Basic, Fast, Greedy, PBQP };
@@ -44,6 +42,7 @@ struct CGPassBuilderOption {
   bool DisableMergeICmps = false;
   bool DisablePartialLibcallInlining = false;
   bool DisableConstantHoisting = false;
+  bool DisableSelectOptimize = true;
   bool PrintISelInput = false;
   bool PrintGCInfo = false;
   bool RequiresCodeGenSCCOrder = false;
@@ -62,4 +61,4 @@ CGPassBuilderOption getCGPassBuilderOption();
 
 } // namespace llvm
 
-#endif // LLVM_CODEGEN_PASSBUILDER_OPTION_H
+#endif // LLVM_TARGET_CGPASSBUILDEROPTION_H

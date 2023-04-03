@@ -20,7 +20,6 @@
 
 #include "llvm/ADT/ArrayRef.h"
 #include "llvm/ADT/MapVector.h"
-#include "llvm/ADT/None.h"
 #include "llvm/ADT/SmallVector.h"
 #include "llvm/IR/PassManager.h"
 
@@ -30,7 +29,6 @@ class AAResults;
 class AssumptionCache;
 class BasicBlock;
 class CmpInst;
-class DataLayout;
 class DemandedBits;
 class DominatorTree;
 class Function;
@@ -94,15 +92,11 @@ private:
   bool tryToVectorizePair(Value *A, Value *B, slpvectorizer::BoUpSLP &R);
 
   /// Try to vectorize a list of operands.
-  /// When \p InsertUses is provided and its entries are non-zero
-  /// then users of \p VL are known to be InsertElement instructions
-  /// each associated with same VL entry index. Their cost is then
-  /// used to adjust cost of the vectorization assuming instcombine pass
-  /// then optimizes ExtractElement-InsertElement sequence.
+  /// \param LimitForRegisterSize Vectorize only using maximal allowed register
+  /// size.
   /// \returns true if a value was vectorized.
   bool tryToVectorizeList(ArrayRef<Value *> VL, slpvectorizer::BoUpSLP &R,
-                          bool AllowReorder = false,
-                          ArrayRef<Value *> InsertUses = None);
+                          bool LimitForRegisterSize = false);
 
   /// Try to vectorize a chain that may start at the operands of \p I.
   bool tryToVectorize(Instruction *I, slpvectorizer::BoUpSLP &R);
@@ -128,20 +122,18 @@ private:
   bool vectorizeInsertElementInst(InsertElementInst *IEI, BasicBlock *BB,
                                   slpvectorizer::BoUpSLP &R);
 
-  /// Try to vectorize trees that start at compare instructions.
-  bool vectorizeCmpInst(CmpInst *CI, BasicBlock *BB, slpvectorizer::BoUpSLP &R);
-
   /// Tries to vectorize constructs started from CmpInst, InsertValueInst or
   /// InsertElementInst instructions.
   bool vectorizeSimpleInstructions(SmallVectorImpl<Instruction *> &Instructions,
-                                   BasicBlock *BB, slpvectorizer::BoUpSLP &R);
+                                   BasicBlock *BB, slpvectorizer::BoUpSLP &R,
+                                   bool AtTerminator);
 
   /// Scan the basic block and look for patterns that are likely to start
   /// a vectorization chain.
   bool vectorizeChainsInBlock(BasicBlock *BB, slpvectorizer::BoUpSLP &R);
 
   bool vectorizeStoreChain(ArrayRef<Value *> Chain, slpvectorizer::BoUpSLP &R,
-                           unsigned Idx);
+                           unsigned Idx, unsigned MinVF);
 
   bool vectorizeStores(ArrayRef<StoreInst *> Stores, slpvectorizer::BoUpSLP &R);
 

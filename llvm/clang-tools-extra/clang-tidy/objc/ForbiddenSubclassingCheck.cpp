@@ -7,11 +7,11 @@
 //===----------------------------------------------------------------------===//
 
 #include "ForbiddenSubclassingCheck.h"
+#include "../utils/OptionsUtils.h"
 #include "clang/AST/ASTContext.h"
 #include "clang/ASTMatchers/ASTMatchFinder.h"
 #include "llvm/ADT/Hashing.h"
 #include "llvm/ADT/SmallVector.h"
-#include "../utils/OptionsUtils.h"
 
 using namespace clang::ast_matchers;
 
@@ -51,14 +51,9 @@ ForbiddenSubclassingCheck::ForbiddenSubclassingCheck(
 void ForbiddenSubclassingCheck::registerMatchers(MatchFinder *Finder) {
   Finder->addMatcher(
       objcInterfaceDecl(
-          isDerivedFrom(
-              objcInterfaceDecl(
-                  hasAnyName(
-                      std::vector<StringRef>(
-                          ForbiddenSuperClassNames.begin(),
-                          ForbiddenSuperClassNames.end())))
-              .bind("superclass")))
-      .bind("subclass"),
+          isDerivedFrom(objcInterfaceDecl(hasAnyName(ForbiddenSuperClassNames))
+                            .bind("superclass")))
+          .bind("subclass"),
       this);
 }
 

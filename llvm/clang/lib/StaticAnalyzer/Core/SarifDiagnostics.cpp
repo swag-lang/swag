@@ -10,6 +10,7 @@
 //
 //===----------------------------------------------------------------------===//
 
+#include "clang/Analysis/MacroExpansionContext.h"
 #include "clang/Analysis/PathDiagnostic.h"
 #include "clang/Basic/FileManager.h"
 #include "clang/Basic/Version.h"
@@ -48,7 +49,8 @@ public:
 void ento::createSarifDiagnosticConsumer(
     PathDiagnosticConsumerOptions DiagOpts, PathDiagnosticConsumers &C,
     const std::string &Output, const Preprocessor &PP,
-    const cross_tu::CrossTranslationUnitContext &CTU) {
+    const cross_tu::CrossTranslationUnitContext &CTU,
+    const MacroExpansionContext &MacroExpansions) {
 
   // TODO: Emit an error here.
   if (Output.empty())
@@ -56,7 +58,7 @@ void ento::createSarifDiagnosticConsumer(
 
   C.push_back(new SarifDiagnostics(Output, PP.getLangOpts()));
   createTextMinimalPathDiagnosticConsumer(std::move(DiagOpts), C, Output, PP,
-                                          CTU);
+                                          CTU, MacroExpansions);
 }
 
 static StringRef getFileName(const FileEntry &FE) {
@@ -95,12 +97,12 @@ static std::string fileNameToURI(StringRef Filename) {
   assert(Iter != End && "Expected there to be a non-root path component.");
   // Add the rest of the path components, encoding any reserved characters;
   // we skip past the first path component, as it was handled it above.
-  std::for_each(++Iter, End, [&Ret](StringRef Component) {
+  for (StringRef Component : llvm::make_range(++Iter, End)) {
     // For reasons unknown to me, we may get a backslash with Windows native
     // paths for the initial backslash following the drive component, which
     // we need to ignore as a URI path part.
     if (Component == "\\")
-      return;
+      continue;
 
     // Add the separator between the previous path part and the one being
     // currently processed.
@@ -110,7 +112,7 @@ static std::string fileNameToURI(StringRef Filename) {
     for (char C : Component) {
       Ret += percentEncodeURICharacter(C);
     }
-  });
+  }
 
   return std::string(Ret);
 }
@@ -339,14 +341,14 @@ static json::Array createRules(std::vector<const PathDiagnostic *> &Diags,
   json::Array Rules;
   llvm::StringSet<> Seen;
 
-  llvm::for_each(Diags, [&](const PathDiagnostic *D) {
+  for (const PathDiagnostic *D : Diags) {
     StringRef RuleID = D->getCheckerName();
     std::pair<llvm::StringSet<>::iterator, bool> P = Seen.insert(RuleID);
     if (P.second) {
       RuleMapping[RuleID] = Rules.size(); // Maps RuleID to an Array Index.
       Rules.push_back(createRule(*D));
     }
-  });
+  }
 
   return Rules;
 }
@@ -366,10 +368,9 @@ static json::Object createRun(const LangOptions &LO,
   json::Array Results, Artifacts;
   StringMap<unsigned> RuleMapping;
   json::Object Tool = createTool(Diags, RuleMapping);
-  
-  llvm::for_each(Diags, [&](const PathDiagnostic *D) {
+
+  for (const PathDiagnostic *D : Diags)
     Results.push_back(createResult(LO, *D, Artifacts, RuleMapping));
-  });
 
   return json::Object{{"tool", std::move(Tool)},
                       {"results", std::move(Results)},
@@ -385,7 +386,7 @@ void SarifDiagnostics::FlushDiagnosticsImpl(
   // file can become large very quickly, so decoding into JSON to append a run
   // may be an expensive operation.
   std::error_code EC;
-  llvm::raw_fd_ostream OS(OutputFile, EC, llvm::sys::fs::OF_Text);
+  llvm::raw_fd_ostream OS(OutputFile, EC, llvm::sys::fs::OF_TextWithCRLF);
   if (EC) {
     llvm::errs() << "warning: could not create file: " << EC.message() << '\n';
     return;

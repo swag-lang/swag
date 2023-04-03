@@ -107,9 +107,6 @@ class HexagonTargetLowering : public TargetLowering {
   const HexagonTargetMachine &HTM;
   const HexagonSubtarget &Subtarget;
 
-  bool CanReturnSmallStruct(const Function* CalleeFn, unsigned& RetSize)
-      const;
-
 public:
   explicit HexagonTargetLowering(const TargetMachine &TM,
                                  const HexagonSubtarget &ST);
@@ -278,13 +275,6 @@ public:
   getRegForInlineAsmConstraint(const TargetRegisterInfo *TRI,
                                StringRef Constraint, MVT VT) const override;
 
-  unsigned
-  getInlineAsmMemConstraint(StringRef ConstraintCode) const override {
-    if (ConstraintCode == "o")
-      return InlineAsm::Constraint_o;
-    return TargetLowering::getInlineAsmMemConstraint(ConstraintCode);
-  }
-
   // Intrinsics
   SDValue LowerINTRINSIC_WO_CHAIN(SDValue Op, SelectionDAG &DAG) const;
   SDValue LowerINTRINSIC_VOID(SDValue Op, SelectionDAG &DAG) const;
@@ -318,8 +308,9 @@ public:
                           bool *Fast) const override;
 
   bool allowsMisalignedMemoryAccesses(EVT VT, unsigned AddrSpace,
-      unsigned Alignment, MachineMemOperand::Flags Flags, bool *Fast)
-      const override;
+                                      Align Alignment,
+                                      MachineMemOperand::Flags Flags,
+                                      bool *Fast) const override;
 
   /// Returns relocation base for the given PIC jumptable.
   SDValue getPICJumpTableRelocBase(SDValue Table, SelectionDAG &DAG)
@@ -329,12 +320,12 @@ public:
                              EVT NewVT) const override;
 
   // Handling of atomic RMW instructions.
-  Value *emitLoadLinked(IRBuilder<> &Builder, Value *Addr,
-      AtomicOrdering Ord) const override;
-  Value *emitStoreConditional(IRBuilder<> &Builder, Value *Val,
-      Value *Addr, AtomicOrdering Ord) const override;
+  Value *emitLoadLinked(IRBuilderBase &Builder, Type *ValueTy, Value *Addr,
+                        AtomicOrdering Ord) const override;
+  Value *emitStoreConditional(IRBuilderBase &Builder, Value *Val, Value *Addr,
+                              AtomicOrdering Ord) const override;
   AtomicExpansionKind shouldExpandAtomicLoadInIR(LoadInst *LI) const override;
-  bool shouldExpandAtomicStoreInIR(StoreInst *SI) const override;
+  AtomicExpansionKind shouldExpandAtomicStoreInIR(StoreInst *SI) const override;
   AtomicExpansionKind
   shouldExpandAtomicCmpXchgInIR(AtomicCmpXchgInst *AI) const override;
 
@@ -347,8 +338,9 @@ private:
   void initializeHVXLowering();
   unsigned getPreferredHvxVectorAction(MVT VecTy) const;
 
-  void validateConstPtrAlignment(SDValue Ptr, const SDLoc &dl,
-                                 unsigned NeedAlign) const;
+  bool validateConstPtrAlignment(SDValue Ptr, Align NeedAlign, const SDLoc &dl,
+                                 SelectionDAG &DAG) const;
+  SDValue replaceMemWithUndef(SDValue Op, SelectionDAG &DAG) const;
 
   std::pair<SDValue,int> getBaseAndOffset(SDValue Addr) const;
 
@@ -463,6 +455,7 @@ private:
                           SelectionDAG &DAG) const;
 
   SDValue LowerHvxBuildVector(SDValue Op, SelectionDAG &DAG) const;
+  SDValue LowerHvxSplatVector(SDValue Op, SelectionDAG &DAG) const;
   SDValue LowerHvxConcatVectors(SDValue Op, SelectionDAG &DAG) const;
   SDValue LowerHvxExtractElement(SDValue Op, SelectionDAG &DAG) const;
   SDValue LowerHvxInsertElement(SDValue Op, SelectionDAG &DAG) const;
@@ -473,7 +466,6 @@ private:
   SDValue LowerHvxSignExt(SDValue Op, SelectionDAG &DAG) const;
   SDValue LowerHvxZeroExt(SDValue Op, SelectionDAG &DAG) const;
   SDValue LowerHvxCttz(SDValue Op, SelectionDAG &DAG) const;
-  SDValue LowerHvxMul(SDValue Op, SelectionDAG &DAG) const;
   SDValue LowerHvxMulh(SDValue Op, SelectionDAG &DAG) const;
   SDValue LowerHvxSetCC(SDValue Op, SelectionDAG &DAG) const;
   SDValue LowerHvxExtend(SDValue Op, SelectionDAG &DAG) const;
@@ -481,6 +473,8 @@ private:
   SDValue LowerHvxShift(SDValue Op, SelectionDAG &DAG) const;
   SDValue LowerHvxIntrinsic(SDValue Op, SelectionDAG &DAG) const;
   SDValue LowerHvxMaskedOp(SDValue Op, SelectionDAG &DAG) const;
+  SDValue LowerHvxFpExtend(SDValue Op, SelectionDAG &DAG) const;
+  SDValue LowerHvxConvertFpInt(SDValue Op, SelectionDAG &DAG) const;
 
   SDValue SplitHvxPairOp(SDValue Op, SelectionDAG &DAG) const;
   SDValue SplitHvxMemOp(SDValue Op, SelectionDAG &DAG) const;

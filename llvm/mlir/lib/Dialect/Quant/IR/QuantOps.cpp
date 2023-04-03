@@ -23,6 +23,8 @@ using namespace mlir;
 using namespace mlir::quant;
 using namespace mlir::quant::detail;
 
+#include "mlir/Dialect/Quant/QuantOpsDialect.cpp.inc"
+
 void QuantizationDialect::initialize() {
   addTypes<AnyQuantizedType, CalibratedQuantizedType, UniformQuantizedType,
            UniformQuantizedPerAxisType>();
@@ -35,10 +37,10 @@ void QuantizationDialect::initialize() {
 OpFoldResult StorageCastOp::fold(ArrayRef<Attribute> operands) {
   // Matches x -> [scast -> scast] -> y, replacing the second scast with the
   // value of x if the casts invert each other.
-  auto srcScastOp = arg().getDefiningOp<StorageCastOp>();
-  if (!srcScastOp || srcScastOp.arg().getType() != getType())
+  auto srcScastOp = getArg().getDefiningOp<StorageCastOp>();
+  if (!srcScastOp || srcScastOp.getArg().getType() != getType())
     return OpFoldResult();
-  return srcScastOp.arg();
+  return srcScastOp.getArg();
 }
 
 /// The quantization specification should match the expressed type.
@@ -63,29 +65,67 @@ static bool isValidQuantizationSpec(Attribute quantSpec, Type expressed) {
   return false;
 }
 
-static LogicalResult verifyRegionOp(QuantizeRegionOp op) {
+LogicalResult QuantizeRegionOp::verify() {
   // There are specifications for both inputs and outputs.
-  if (op.getNumOperands() != op.input_specs().size() ||
-      op.getNumResults() != op.output_specs().size())
-    return op.emitOpError(
+  if (getNumOperands() != getInputSpecs().size() ||
+      getNumResults() != getOutputSpecs().size())
+    return emitOpError(
         "has unmatched operands/results number and spec attributes number");
 
   // Verify that quantization specifications are valid.
-  for (auto input : llvm::zip(op.getOperandTypes(), op.input_specs())) {
+  for (auto input : llvm::zip(getOperandTypes(), getInputSpecs())) {
     Type inputType = std::get<0>(input);
     Attribute inputSpec = std::get<1>(input);
     if (!isValidQuantizationSpec(inputSpec, inputType)) {
-      return op.emitOpError() << "has incompatible specification " << inputSpec
-                              << " and input type " << inputType;
+      return emitOpError() << "has incompatible specification " << inputSpec
+                           << " and input type " << inputType;
     }
   }
 
-  for (auto result : llvm::zip(op.getResultTypes(), op.output_specs())) {
+  for (auto result : llvm::zip(getResultTypes(), getOutputSpecs())) {
     Type outputType = std::get<0>(result);
     Attribute outputSpec = std::get<1>(result);
     if (!isValidQuantizationSpec(outputSpec, outputType)) {
-      return op.emitOpError() << "has incompatible specification " << outputSpec
-                              << " and output type " << outputType;
+      return emitOpError() << "has incompatible specification " << outputSpec
+                           << " and output type " << outputType;
+    }
+  }
+  return success();
+}
+
+LogicalResult StatisticsOp::verify() {
+  auto tensorArg = getArg().getType().dyn_cast<TensorType>();
+  if (!tensorArg)
+    return emitOpError("arg needs to be tensor type.");
+
+  // Verify layerStats attribute.
+  {
+    auto layerStatsType = getLayerStats().getType();
+    if (!layerStatsType.getElementType().isa<FloatType>()) {
+      return emitOpError("layerStats must have a floating point element type");
+    }
+    if (layerStatsType.getRank() != 1 || layerStatsType.getDimSize(0) != 2) {
+      return emitOpError("layerStats must have shape [2]");
+    }
+  }
+  // Verify axisStats (optional) attribute.
+  if (getAxisStats()) {
+    if (!getAxis())
+      return emitOpError("axis must be specified for axisStats");
+
+    auto shape = tensorArg.getShape();
+    auto argSliceSize =
+        std::accumulate(std::next(shape.begin(), *getAxis()), shape.end(), 1,
+                        std::multiplies<int64_t>());
+
+    auto axisStatsType = getAxisStats()->getType();
+    if (!axisStatsType.getElementType().isa<FloatType>()) {
+      return emitOpError("axisStats must have a floating point element type");
+    }
+    if (axisStatsType.getRank() != 2 || axisStatsType.getDimSize(1) != 2 ||
+        axisStatsType.getDimSize(0) != argSliceSize) {
+      return emitOpError("axisStats must have shape [N,2] "
+                         "where N = the slice size defined by the axis dim");
     }
   }
   return success();

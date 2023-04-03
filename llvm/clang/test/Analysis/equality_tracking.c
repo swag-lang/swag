@@ -9,9 +9,9 @@
 #define CHAR_MIN (char)(UCHAR_MAX & ~(UCHAR_MAX >> 1))
 
 void clang_analyzer_eval(int);
-void clang_analyzer_warnIfReached();
+void clang_analyzer_warnIfReached(void);
 
-int getInt();
+int getInt(void);
 
 void zeroImpliesEquality(int a, int b) {
   clang_analyzer_eval((a - b) == 0); // expected-warning{{UNKNOWN}}
@@ -218,4 +218,18 @@ void avoidInfeasibleConstraintforLT(int a, int b) {
   // a == b
   if (c < 0)
     ;
+}
+
+void implyDisequalityFromGT(int a, int b) {
+  if (a > b) {
+    clang_analyzer_eval(a == b); // expected-warning{{FALSE}}
+    clang_analyzer_eval(a != b); // expected-warning{{TRUE}}
+  }
+}
+
+void implyDisequalityFromLT(int a, int b) {
+  if (a < b) {
+    clang_analyzer_eval(a == b); // expected-warning{{FALSE}}
+    clang_analyzer_eval(a != b); // expected-warning{{TRUE}}
+  }
 }

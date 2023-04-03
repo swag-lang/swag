@@ -6,22 +6,19 @@
 //
 //===------------------------------------------------------------------===//
 
-#ifndef LLVM_DEBUGINFO_DWARFDEBUGADDR_H
-#define LLVM_DEBUGINFO_DWARFDEBUGADDR_H
+#ifndef LLVM_DEBUGINFO_DWARF_DWARFDEBUGADDR_H
+#define LLVM_DEBUGINFO_DWARF_DWARFDEBUGADDR_H
 
 #include "llvm/BinaryFormat/Dwarf.h"
 #include "llvm/DebugInfo/DIContext.h"
-#include "llvm/DebugInfo/DWARF/DWARFDataExtractor.h"
-#include "llvm/Support/Errc.h"
 #include "llvm/Support/Error.h"
 #include <cstdint>
-#include <map>
 #include <vector>
 
 namespace llvm {
 
-class Error;
 class raw_ostream;
+class DWARFDataExtractor;
 
 /// A class representing an address table as specified in DWARF v5.
 /// The table consists of a header followed by an array of address values from
@@ -96,4 +93,4 @@ public:
 
 } // end namespace llvm
 
-#endif // LLVM_DEBUGINFO_DWARFDEBUGADDR_H
+#endif // LLVM_DEBUGINFO_DWARF_DWARFDEBUGADDR_H

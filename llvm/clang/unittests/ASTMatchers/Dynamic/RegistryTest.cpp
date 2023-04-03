@@ -198,13 +198,32 @@ TEST_F(RegistryTest, OverloadedMatchers) {
                            constructMatcher("hasName", StringRef("x")))))
       .getTypedMatcher<Stmt>();
 
+  Matcher<Stmt> ObjCMsgExpr =
+      constructMatcher(
+          "objcMessageExpr",
+          constructMatcher(
+              "callee",
+              constructMatcher("objcMethodDecl",
+                               constructMatcher("hasName", StringRef("x")))))
+          .getTypedMatcher<Stmt>();
+
   std::string Code = "class Y { public: void x(); }; void z() { Y y; y.x(); }";
   EXPECT_FALSE(matches(Code, CallExpr0));
   EXPECT_TRUE(matches(Code, CallExpr1));
+  EXPECT_FALSE(matches(Code, ObjCMsgExpr));
 
   Code = "class Z { public: void z() { this->z(); } };";
   EXPECT_TRUE(matches(Code, CallExpr0));
   EXPECT_FALSE(matches(Code, CallExpr1));
+  EXPECT_FALSE(matches(Code, ObjCMsgExpr));
+
+  Code = "@interface I "
+         "+ (void)x; "
+         "@end\n"
+         "int main() { [I x]; }";
+  EXPECT_FALSE(matchesObjC(Code, CallExpr0));
+  EXPECT_FALSE(matchesObjC(Code, CallExpr1));
+  EXPECT_TRUE(matchesObjC(Code, ObjCMsgExpr));
 
   Matcher<Decl> DeclDecl = declaratorDecl(hasTypeLoc(
       constructMatcher(
@@ -295,6 +314,17 @@ TEST_F(RegistryTest, TypeTraversal) {
       .getTypedMatcher<Type>();
   EXPECT_FALSE(matches("struct A{}; A a[7];;", M));
   EXPECT_TRUE(matches("int b[7];", M));
+}
+
+TEST_F(RegistryTest, CXXBaseSpecifier) {
+  // TODO: rewrite with top-level cxxBaseSpecifier matcher when available
+  DeclarationMatcher ClassHasAnyDirectBase =
+      constructMatcher("cxxRecordDecl",
+                       constructMatcher("hasDirectBase",
+                                        constructMatcher("cxxBaseSpecifier")))
+          .getTypedMatcher<Decl>();
+  EXPECT_TRUE(matches("class X {}; class Y : X {};", ClassHasAnyDirectBase));
+  EXPECT_TRUE(notMatches("class X {};", ClassHasAnyDirectBase));
 }
 
 TEST_F(RegistryTest, CXXCtorInitializer) {
@@ -495,6 +525,26 @@ TEST_F(RegistryTest, Completion) {
   EXPECT_TRUE(hasCompletion(
       Comps, "isSameOrDerivedFrom(",
       "Matcher<CXXRecordDecl> isSameOrDerivedFrom(string|Matcher<NamedDecl>)"));
+}
+
+TEST_F(RegistryTest, MatcherBuilder) {
+  auto Ctor = *lookupMatcherCtor("mapAnyOf");
+  EXPECT_TRUE(Registry::isBuilderMatcher(Ctor));
+  auto BuiltCtor = Registry::buildMatcherCtor(Ctor, {}, Args(ASTNodeKind::getFromNodeKind<WhileStmt>(), ASTNodeKind::getFromNodeKind<ForStmt>()), nullptr);
+  EXPECT_TRUE(BuiltCtor.get());
+  auto LoopMatcher = Registry::constructMatcher(BuiltCtor.get(), SourceRange(), Args(), nullptr).getTypedMatcher<Stmt>();
+  EXPECT_TRUE(matches("void f() { for (;;) {} }", LoopMatcher));
+  EXPECT_TRUE(matches("void f() { while (true) {} }", LoopMatcher));
+  EXPECT_FALSE(matches("void f() { if (true) {} }", LoopMatcher));
+
+  auto NotBuiltCtor = Registry::buildMatcherCtor(Ctor, {}, Args(ASTNodeKind::getFromNodeKind<FunctionDecl>(), ASTNodeKind::getFromNodeKind<ForStmt>()), nullptr);
+  EXPECT_FALSE(NotBuiltCtor.get());
+}
+
+TEST_F(RegistryTest, NodeType) {
+  EXPECT_TRUE(Registry::nodeMatcherType(*lookupMatcherCtor("callExpr")).isSame(ASTNodeKind::getFromNodeKind<CallExpr>()));
+  EXPECT_TRUE(Registry::nodeMatcherType(*lookupMatcherCtor("has")).isNone());
+  EXPECT_TRUE(Registry::nodeMatcherType(*lookupMatcherCtor("allOf")).isNone());
 }
 
 TEST_F(RegistryTest, HasArgs) {

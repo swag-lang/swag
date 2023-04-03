@@ -18,8 +18,8 @@
 #include "lldb/lldb-private-enumerations.h"
 #include "lldb/lldb-types.h"
 
-#include <stddef.h>
-#include <stdint.h>
+#include <cstddef>
+#include <cstdint>
 namespace lldb_private {
 class ModuleList;
 class Process;
@@ -62,8 +62,9 @@ public:
   ///
   /// \param[in] plugin_name
   ///     An optional name of a specific dynamic loader plug-in that
-  ///     should be used. If NULL, pick the best plug-in.
-  static DynamicLoader *FindPlugin(Process *process, const char *plugin_name);
+  ///     should be used. If empty, pick the best plug-in.
+  static DynamicLoader *FindPlugin(Process *process,
+                                   llvm::StringRef plugin_name);
 
   /// Construct with a process.
   DynamicLoader(Process *process);
@@ -202,6 +203,8 @@ public:
 
   /// Locates or creates a module given by \p file and updates/loads the
   /// resulting module at the virtual base address \p base_addr.
+  /// Note that this calls Target::GetOrCreateModule with notify being false,
+  /// so it is necessary to call Target::ModulesDidLoad afterwards.
   virtual lldb::ModuleSP LoadModuleAtAddress(const lldb_private::FileSpec &file,
                                              lldb::addr_t link_map_addr,
                                              lldb::addr_t base_addr,
@@ -251,8 +254,18 @@ public:
     return false;
   }
 
+  /// Return whether the dynamic loader is fully initialized and it's safe to
+  /// call its APIs.
+  ///
+  /// On some systems (e.g. Darwin based systems), lldb will get notified by
+  /// the dynamic loader before it itself finished initializing and it's not
+  /// safe to call certain APIs or SPIs.
+  virtual bool IsFullyInitialized() { return true; }
+
 protected:
   // Utility methods for derived classes
+
+  lldb::ModuleSP FindModuleViaTarget(const FileSpec &file);
 
   /// Checks to see if the target module has changed, updates the target
   /// accordingly and returns the target executable module.
@@ -294,7 +307,7 @@ protected:
   // Read a pointer from memory at the given addr. Return LLDB_INVALID_ADDRESS
   // if the read fails.
   lldb::addr_t ReadPointer(lldb::addr_t addr);
-  
+
   // Calls into the Process protected method LoadOperatingSystemPlugin:
   void LoadOperatingSystemPlugin(bool flush);
 

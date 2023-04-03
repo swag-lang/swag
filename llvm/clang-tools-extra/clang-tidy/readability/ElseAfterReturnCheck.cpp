@@ -171,8 +171,7 @@ void ElseAfterReturnCheck::registerPPCallbacks(const SourceManager &SM,
 void ElseAfterReturnCheck::registerMatchers(MatchFinder *Finder) {
   const auto InterruptsControlFlow = stmt(anyOf(
       returnStmt().bind(InterruptingStr), continueStmt().bind(InterruptingStr),
-      breakStmt().bind(InterruptingStr),
-      expr(ignoringImplicit(cxxThrowExpr().bind(InterruptingStr)))));
+      breakStmt().bind(InterruptingStr), cxxThrowExpr().bind(InterruptingStr)));
   Finder->addMatcher(
       compoundStmt(
           forEach(ifStmt(unless(isConstexpr()),
@@ -264,7 +263,7 @@ void ElseAfterReturnCheck::check(const MatchFinder::MatchResult &Result) {
     if (!WarnOnConditionVariables)
       return;
     if (IsLastInScope) {
-      // If the if statement is the last statement its enclosing statements
+      // If the if statement is the last statement of its enclosing statements
       // scope, we can pull the decl out of the if statement.
       DiagnosticBuilder Diag = diag(ElseLoc, WarningMessage)
                                << ControlFlowInterruptor
@@ -300,7 +299,7 @@ void ElseAfterReturnCheck::check(const MatchFinder::MatchResult &Result) {
     if (!WarnOnConditionVariables)
       return;
     if (IsLastInScope) {
-      // If the if statement is the last statement its enclosing statements
+      // If the if statement is the last statement of its enclosing statements
       // scope, we can pull the decl out of the if statement.
       DiagnosticBuilder Diag = diag(ElseLoc, WarningMessage)
                                << ControlFlowInterruptor

@@ -1,10 +1,11 @@
 ; Test that we correctly import an unsat resolution for type identifier "typeid1".
-; RUN: opt -S -lowertypetests -lowertypetests-summary-action=import -lowertypetests-read-summary=%S/Inputs/import-unsat.yaml -lowertypetests-write-summary=%t < %s | FileCheck %s
+; RUN: opt -S -passes=lowertypetests -lowertypetests-summary-action=import -lowertypetests-read-summary=%S/Inputs/import-unsat.yaml -lowertypetests-write-summary=%t %s | FileCheck %s
 ; RUN: FileCheck --check-prefix=SUMMARY %s < %t
 
 ; SUMMARY:      GlobalValueMap:
 ; SUMMARY-NEXT:   42:
 ; SUMMARY-NEXT:    - Linkage:             0
+; SUMMARY-NEXT:      Visibility:          0
 ; SUMMARY-NEXT:      NotEligibleToImport: false
 ; SUMMARY-NEXT:      Live:                true
 ; SUMMARY-NEXT:      Local:               false

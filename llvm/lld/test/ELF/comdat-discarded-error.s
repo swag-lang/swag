@@ -2,7 +2,7 @@
 # RUN: llvm-mc -filetype=obj -triple=x86_64 %s -o %t1.o
 # RUN: echo '.section .text.foo,"axG",@progbits,foo,comdat; .globl foo; foo:' |\
 # RUN:   llvm-mc -filetype=obj -triple=x86_64 - -o %t2.o
-# RUN: echo '.section .text.foo,"axG",@progbits,foo,comdat; .globl bar; bar:' |\
+# RUN: echo '.weak foo; foo: .section .text.foo,"axG",@progbits,foo,comdat; .globl bar; bar:' |\
 # RUN:   llvm-mc -filetype=obj -triple=x86_64 - -o %t3.o
 
 # RUN: not ld.lld %t2.o %t3.o %t1.o -o /dev/null 2>&1 | FileCheck %s
@@ -11,6 +11,7 @@
 # CHECK-NEXT: >>> defined in {{.*}}3.o
 # CHECK-NEXT: >>> section group signature: foo
 # CHECK-NEXT: >>> prevailing definition is in {{.*}}2.o
+# CHECK-NEXT: >>> or the symbol in the prevailing group {{.*}}
 # CHECK-NEXT: >>> referenced by {{.*}}1.o:(.text+0x1)
 
 # CHECK:      error: relocation refers to a discarded section: .text.foo
@@ -24,5 +25,7 @@ _start:
   jmp bar
 
 .section .text.foo,"axG",@progbits,foo,comdat
+.globl foo
+foo:
 .data
   .quad .text.foo

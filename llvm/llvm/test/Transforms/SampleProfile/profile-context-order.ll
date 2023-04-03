@@ -1,28 +1,36 @@
 ;; Test for different function processing orders affecting inlining in sample profile loader.
 
 ;; There is an SCC _Z5funcAi -> _Z8funcLeafi -> _Z5funcAi in the program.
-;; With -use-profile-top-down-order=0, the top-down processing order of
+;; With -use-profiled-call-graph=0, the top-down processing order of
 ;; that SCC is (_Z8funcLeafi, _Z5funcAi), which is determinined based on
-;; the static call graph. With -use-profile-top-down-order=1, call edges
+;; the static call graph. With -use-profiled-call-graph=1, call edges
 ;; from profile are considered, thus the order becomes (_Z5funcAi, _Z8funcLeafi)
 ;; which leads to _Z8funcLeafi inlined into _Z5funcAi.
-; RUN: opt < %s -passes=sample-profile -use-profile-top-down-order=1 -sample-profile-file=%S/Inputs/profile-context-order.prof -S | FileCheck %s -check-prefix=INLINE
-; RUN: opt < %s -passes=sample-profile -use-profile-top-down-order=0 -sample-profile-file=%S/Inputs/profile-context-order.prof -S | FileCheck %s -check-prefix=NOINLINE
+; RUN: opt < %s -passes=sample-profile -use-profiled-call-graph=1 -sample-profile-file=%S/Inputs/profile-context-order.prof -S | FileCheck %s -check-prefix=INLINE
+; RUN: opt < %s -passes=sample-profile -use-profiled-call-graph=0 -sample-profile-file=%S/Inputs/profile-context-order.prof -S | FileCheck %s -check-prefix=NOINLINE
 
 ;; There is an indirect call _Z5funcAi -> _Z3fibi in the program.
-;; With -use-profile-indirect-call-edges=0, the processing order computed
+;; With -use-profiled-call-graph=0, the processing order computed
 ;; based on the static call graph is (_Z3fibi, _Z5funcAi). With 
-;; -use-profile-top-down-order=1, the indirect call edge from profile is
+;; -use-profiled-call-graph=1, the indirect call edge from profile is
 ;; considered, thus the order becomes (_Z5funcAi, _Z3fibi) which leads to
 ;; _Z3fibi inlined into _Z5funcAi.
-; RUN: opt < %s -passes=sample-profile -use-profile-indirect-call-edges=1 -sample-profile-file=%S/Inputs/profile-context-order.prof -S | FileCheck %s -check-prefix=ICALL-INLINE
+; RUN: opt < %s -passes=sample-profile -use-profiled-call-graph=1 -sample-profile-file=%S/Inputs/profile-context-order.prof -S | FileCheck %s -check-prefix=ICALL-INLINE
+
+;; When a cycle is formed by profiled edges between _Z5funcBi and _Z8funcLeafi,
+;; the function processing order matters. Without considering call edge weights
+;; _Z8funcLeafi can be processed before _Z5funcBi, thus leads to suboptimal
+;; inlining.
+; RUN: opt < %s -passes=sample-profile -use-profiled-call-graph=1 -sort-profiled-scc-member=0 -sample-profile-file=%S/Inputs/profile-context-order-scc.prof -S | FileCheck %s -check-prefix=NOINLINEB
+; RUN: opt < %s -passes=sample-profile -use-profiled-call-graph=1 -sort-profiled-scc-member=1 -sample-profile-file=%S/Inputs/profile-context-order-scc.prof -S | FileCheck %s -check-prefix=INLINEB
+
 
 @factor = dso_local global i32 3, align 4, !dbg !0
-@fp = dso_local global i32 (i32)* null, align 8
+@fp = dso_local global ptr null, align 8
 
 define dso_local i32 @main() local_unnamed_addr #0 !dbg !18 {
 entry:
-  store i32 (i32)* @_Z3fibi, i32 (i32)** @fp, align 8, !dbg !25
+  store ptr @_Z3fibi, ptr @fp, align 8, !dbg !25
   br label %for.body, !dbg !25
 
 for.cond.cleanup:                                 ; preds = %for.body
@@ -47,10 +55,14 @@ for.body:                                         ; preds = %for.body, %entry
 ; NOINLINE: call i32 @_Z8funcLeafi
 ; ICALL-INLINE: define dso_local i32 @_Z5funcAi
 ; ICALL-INLINE: call i32 @_Z3foo
+; INLINEB: define dso_local i32 @_Z5funcBi
+; INLINEB-NOT: call i32 @_Z8funcLeafi
+; NOINLINEB: define dso_local i32 @_Z5funcBi
+; NOINLINEB: call i32 @_Z8funcLeafi
 define dso_local i32 @_Z5funcAi(i32 %x) local_unnamed_addr #0 !dbg !40 {
 entry:
   %add = add nsw i32 %x, 100000, !dbg !44
-  %0 = load i32 (i32)*, i32 (i32)** @fp, align 8
+  %0 = load ptr, ptr @fp, align 8
   %call = call i32 %0(i32 8), !dbg !45
   %call1 = tail call i32 @_Z8funcLeafi(i32 %add), !dbg !46
   ret i32 %call, !dbg !46
@@ -71,7 +83,7 @@ while.cond2.preheader:                            ; preds = %entry
 
 while.body:                                       ; preds = %while.body, %entry
   %x.addr.016 = phi i32 [ %sub, %while.body ], [ %x, %entry ]
-  %tmp = load volatile i32, i32* @factor, align 4, !dbg !64
+  %tmp = load volatile i32, ptr @factor, align 4, !dbg !64
   %call = tail call i32 @_Z5funcAi(i32 %tmp), !dbg !67
   %sub = sub nsw i32 %x.addr.016, %call, !dbg !68
   %cmp1 = icmp sgt i32 %sub, 0, !dbg !69
@@ -79,7 +91,7 @@ while.body:                                       ; preds = %while.body, %entry
 
 while.body4:                                      ; preds = %while.body4, %while.cond2.preheader
   %x.addr.114 = phi i32 [ %add, %while.body4 ], [ %x, %while.cond2.preheader ]
-  %tmp1 = load volatile i32, i32* @factor, align 4, !dbg !72
+  %tmp1 = load volatile i32, ptr @factor, align 4, !dbg !72
   %call5 = tail call i32 @_Z5funcBi(i32 %tmp1), !dbg !74
   %add = add nsw i32 %call5, %x.addr.114, !dbg !75
   %cmp3 = icmp slt i32 %add, 0, !dbg !60

@@ -1,6 +1,7 @@
 add_custom_target(LLDBUnitTests)
 set_target_properties(LLDBUnitTests PROPERTIES FOLDER "lldb tests")
-add_dependencies(lldb-test-deps LLDBUnitTests)
+
+add_dependencies(lldb-unit-test-deps LLDBUnitTests)
 
 include_directories(${LLDB_SOURCE_ROOT})
 include_directories(${LLDB_PROJECT_ROOT}/unittests)
@@ -19,7 +20,7 @@ endif ()
 if (LLDB_BUILT_STANDALONE)
   # Build the gtest library needed for unittests, if we have LLVM sources
   # handy.
-  if (EXISTS ${LLVM_MAIN_SRC_DIR}/utils/unittest AND NOT TARGET gtest)
+  if (EXISTS ${LLVM_MAIN_SRC_DIR}/utils/unittest AND NOT TARGET llvm_gtest)
     add_subdirectory(${LLVM_MAIN_SRC_DIR}/utils/unittest utils/unittest)
   endif()
   # LLVMTestingSupport library is needed for Process/gdb-remote.

@@ -29,9 +29,9 @@ public:
 
   void InclusionDirective(SourceLocation HashLoc, const Token &IncludeTok,
                           StringRef FileName, bool IsAngled,
-                          CharSourceRange FileNameRange, const FileEntry *File,
-                          StringRef SearchPath, StringRef RelativePath,
-                          const Module *Imported,
+                          CharSourceRange FileNameRange,
+                          Optional<FileEntryRef> File, StringRef SearchPath,
+                          StringRef RelativePath, const Module *Imported,
                           SrcMgr::CharacteristicKind FileType) override;
 
   void EndOfMainFile() override;
@@ -39,7 +39,7 @@ public:
 private:
   /// Returns true if the name of the file with path FilePath is 'kernel.cl',
   /// 'verilog.cl', or 'vhdl.cl'. The file name check is case insensitive.
-  bool FileNameIsRestricted(StringRef FilePath);
+  bool fileNameIsRestricted(StringRef FilePath);
 
   struct IncludeDirective {
     SourceLocation Loc; // Location in the include directive.
@@ -62,17 +62,17 @@ void KernelNameRestrictionCheck::registerPPCallbacks(const SourceManager &SM,
 
 void KernelNameRestrictionPPCallbacks::InclusionDirective(
     SourceLocation HashLoc, const Token &, StringRef FileName, bool,
-    CharSourceRange, const FileEntry *, StringRef, StringRef, const Module *,
-    SrcMgr::CharacteristicKind) {
+    CharSourceRange, Optional<FileEntryRef>, StringRef, StringRef,
+    const Module *, SrcMgr::CharacteristicKind) {
   IncludeDirective ID = {HashLoc, FileName};
   IncludeDirectives.push_back(std::move(ID));
 }
 
-bool KernelNameRestrictionPPCallbacks::FileNameIsRestricted(
+bool KernelNameRestrictionPPCallbacks::fileNameIsRestricted(
     StringRef FileName) {
-  return FileName.equals_lower("kernel.cl") ||
-         FileName.equals_lower("verilog.cl") ||
-         FileName.equals_lower("vhdl.cl");
+  return FileName.equals_insensitive("kernel.cl") ||
+         FileName.equals_insensitive("verilog.cl") ||
+         FileName.equals_insensitive("vhdl.cl");
 }
 
 void KernelNameRestrictionPPCallbacks::EndOfMainFile() {
@@ -80,7 +80,7 @@ void KernelNameRestrictionPPCallbacks::EndOfMainFile() {
   // Check main file for restricted names.
   const FileEntry *Entry = SM.getFileEntryForID(SM.getMainFileID());
   StringRef FileName = llvm::sys::path::filename(Entry->getName());
-  if (FileNameIsRestricted(FileName))
+  if (fileNameIsRestricted(FileName))
     Check.diag(SM.getLocForStartOfFile(SM.getMainFileID()),
                "compiling '%0' may cause additional compilation errors due "
                "to the name of the kernel source file; consider renaming the "
@@ -93,7 +93,7 @@ void KernelNameRestrictionPPCallbacks::EndOfMainFile() {
   // Check included files for restricted names.
   for (const IncludeDirective &ID : IncludeDirectives) {
     StringRef FileName = llvm::sys::path::filename(ID.FileName);
-    if (FileNameIsRestricted(FileName))
+    if (fileNameIsRestricted(FileName))
       Check.diag(ID.Loc,
                  "including '%0' may cause additional compilation errors due "
                  "to the name of the kernel source file; consider renaming the "

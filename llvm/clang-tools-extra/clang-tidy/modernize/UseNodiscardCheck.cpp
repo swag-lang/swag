@@ -120,8 +120,8 @@ void UseNodiscardCheck::check(const MatchFinder::MatchResult &Result) {
 
   ASTContext &Context = *Result.Context;
 
-  auto Diag = diag(RetLoc, "function %0 should be marked " + NoDiscardMacro)
-              << MatchedDecl;
+  auto Diag = diag(RetLoc, "function %0 should be marked %1")
+              << MatchedDecl << NoDiscardMacro;
 
   // Check for the existence of the keyword being used as the ``[[nodiscard]]``.
   if (!doesNoDiscardMacroExist(Context, NoDiscardMacro))
@@ -131,7 +131,7 @@ void UseNodiscardCheck::check(const MatchFinder::MatchResult &Result) {
   // 1. A const member function which returns a variable which is ignored
   // but performs some external I/O operation and the return value could be
   // ignored.
-  Diag << FixItHint::CreateInsertion(RetLoc, NoDiscardMacro + " ");
+  Diag << FixItHint::CreateInsertion(RetLoc, (NoDiscardMacro + " ").str());
 }
 
 bool UseNodiscardCheck::isLanguageVersionSupported(

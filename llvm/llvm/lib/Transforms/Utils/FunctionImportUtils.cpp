@@ -12,8 +12,6 @@
 //===----------------------------------------------------------------------===//
 
 #include "llvm/Transforms/Utils/FunctionImportUtils.h"
-#include "llvm/IR/Constants.h"
-#include "llvm/IR/InstIterator.h"
 using namespace llvm;
 
 /// Checks if we should import SGV as a definition, otherwise import as a
@@ -37,6 +35,13 @@ bool FunctionImportGlobalProcessing::doImportAsDefinition(
 bool FunctionImportGlobalProcessing::shouldPromoteLocalToGlobal(
     const GlobalValue *SGV, ValueInfo VI) {
   assert(SGV->hasLocalLinkage());
+
+  // Ifuncs and ifunc alias does not have summary.
+  if (isa<GlobalIFunc>(SGV) ||
+      (isa<GlobalAlias>(SGV) &&
+       isa<GlobalIFunc>(cast<GlobalAlias>(SGV)->getAliaseeObject())))
+    return false;
+
   // Both the imported references and the original local variable must
   // be promoted.
   if (!isPerformingImport() && !isModuleExporting())
@@ -276,10 +281,12 @@ void FunctionImportGlobalProcessing::processGlobalForThinLTO(GlobalValue &GV) {
   // When ClearDSOLocalOnDeclarations is true, clear dso_local if GV is
   // converted to a declaration, to disable direct access. Don't do this if GV
   // is implicitly dso_local due to a non-default visibility.
-  if (ClearDSOLocalOnDeclarations && GV.isDeclarationForLinker() &&
+  if (ClearDSOLocalOnDeclarations &&
+      (GV.isDeclarationForLinker() ||
+       (isPerformingImport() && !doImportAsDefinition(&GV))) &&
       !GV.isImplicitDSOLocal()) {
     GV.setDSOLocal(false);
-  } else if (VI && VI.isDSOLocal()) {
+  } else if (VI && VI.isDSOLocal(ImportIndex.withDSOLocalPropagation())) {
     // If all summaries are dso_local, symbol gets resolved to a known local
     // definition.
     GV.setDSOLocal(true);

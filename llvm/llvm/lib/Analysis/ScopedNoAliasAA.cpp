@@ -32,10 +32,10 @@
 //===----------------------------------------------------------------------===//
 
 #include "llvm/Analysis/ScopedNoAliasAA.h"
+#include "llvm/ADT/SetOperations.h"
 #include "llvm/ADT/SmallPtrSet.h"
 #include "llvm/Analysis/MemoryLocation.h"
 #include "llvm/IR/InstrTypes.h"
-#include "llvm/IR/Instruction.h"
 #include "llvm/IR/LLVMContext.h"
 #include "llvm/IR/Metadata.h"
 #include "llvm/InitializePasses.h"
@@ -63,10 +63,10 @@ AliasResult ScopedNoAliasAAResult::alias(const MemoryLocation &LocA,
   const MDNode *ANoAlias = LocA.AATags.NoAlias, *BNoAlias = LocB.AATags.NoAlias;
 
   if (!mayAliasInScopes(AScopes, BNoAlias))
-    return NoAlias;
+    return AliasResult::NoAlias;
 
   if (!mayAliasInScopes(BScopes, ANoAlias))
-    return NoAlias;
+    return AliasResult::NoAlias;
 
   // If they may alias, chain to the next AliasAnalysis.
   return AAResultBase::alias(LocA, LocB, AAQI);
@@ -138,14 +138,7 @@ bool ScopedNoAliasAAResult::mayAliasInScopes(const MDNode *Scopes,
     collectMDInDomain(NoAlias, Domain, NANodes);
 
     // To not alias, all of the nodes in ScopeNodes must be in NANodes.
-    bool FoundAll = true;
-    for (const MDNode *SMD : ScopeNodes)
-      if (!NANodes.count(SMD)) {
-        FoundAll = false;
-        break;
-      }
-
-    if (FoundAll)
+    if (llvm::set_is_subset(ScopeNodes, NANodes))
       return false;
   }
 

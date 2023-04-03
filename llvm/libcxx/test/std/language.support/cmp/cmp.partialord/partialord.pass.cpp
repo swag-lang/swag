@@ -51,24 +51,15 @@ void test_signatures() {
 #endif
 }
 
-constexpr bool test_conversion() {
-  static_assert(std::is_convertible<const std::partial_ordering, std::weak_equality>::value, "");
-  { // value == 0
-    auto V = std::partial_ordering::equivalent;
-    std::weak_equality WV = V;
-    assert(WV == 0);
-  }
-  std::partial_ordering TestCases[] = {
-      std::partial_ordering::less,
-      std::partial_ordering::greater,
-      std::partial_ordering::unordered
-  };
-  for (auto V : TestCases)
-  { // value != 0
-    std::weak_equality WV = V;
-    assert(WV != 0);
-  }
-  return true;
+constexpr void test_equality() {
+#ifndef TEST_HAS_NO_SPACESHIP_OPERATOR
+  auto& PartialEq = std::partial_ordering::equivalent;
+  auto& WeakEq = std::weak_ordering::equivalent;
+  assert(PartialEq == WeakEq);
+
+  auto& StrongEq = std::strong_ordering::equal;
+  assert(PartialEq == StrongEq);
+#endif
 }
 
 constexpr bool test_constexpr() {
@@ -186,6 +177,8 @@ constexpr bool test_constexpr() {
     static_assert(std::partial_ordering::unordered ==
                   std::partial_ordering::unordered);
   }
+
+  test_equality();
 #endif
 
   return true;
@@ -194,7 +187,7 @@ constexpr bool test_constexpr() {
 int main(int, char**) {
   test_static_members();
   test_signatures();
-  static_assert(test_conversion(), "conversion test failed");
+  test_equality();
   static_assert(test_constexpr(), "constexpr test failed");
 
   return 0;

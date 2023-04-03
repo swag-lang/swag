@@ -299,14 +299,6 @@ namespace {
   };
 }
 
-template<typename MemInst>
-static bool AreSequentialAccesses(MemInst *MemOp0, MemInst *MemOp1,
-                                  const DataLayout &DL, ScalarEvolution &SE) {
-  if (isConsecutiveAccess(MemOp0, MemOp1, DL, SE))
-    return true;
-  return false;
-}
-
 bool ARMParallelDSP::AreSequentialLoads(LoadInst *Ld0, LoadInst *Ld1,
                                         MemInstList &VecMem) {
   if (!Ld0 || !Ld1)
@@ -414,7 +406,7 @@ bool ARMParallelDSP::RecordMemoryOps(BasicBlock *BB) {
       if (Base == Offset || OffsetLoads.count(Offset))
         continue;
 
-      if (AreSequentialAccesses<LoadInst>(Base, Offset, *DL, *SE) &&
+      if (isConsecutiveAccess(Base, Offset, *DL, *SE) &&
           SafeToPair(Base, Offset)) {
         LoadPairs[Base] = Offset;
         OffsetLoads.insert(Offset);
@@ -466,6 +458,10 @@ bool ARMParallelDSP::Search(Value *V, BasicBlock *BB, Reduction &R) {
 
     if (ValidLHS && ValidRHS)
       return true;
+
+    // Ensure we don't add the root as the incoming accumulator.
+    if (R.getRoot() == I)
+      return false;
 
     return R.InsertAcc(I);
   }
@@ -543,6 +539,7 @@ bool ARMParallelDSP::MatchSMLAD(Function &F) {
       InsertParallelMACs(R);
       Changed = true;
       AllAdds.insert(R.getAdds().begin(), R.getAdds().end());
+      LLVM_DEBUG(dbgs() << "BB after inserting parallel MACs:\n" << BB);
     }
   }
 

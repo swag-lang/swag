@@ -11,16 +11,15 @@
 #include "Config.h"
 #include "support/FileCache.h"
 #include "support/Logger.h"
+#include "support/Path.h"
 #include "support/ThreadsafeFS.h"
 #include "llvm/ADT/STLExtras.h"
 #include "llvm/ADT/SmallString.h"
 #include "llvm/ADT/StringExtras.h"
 #include "llvm/ADT/StringSet.h"
 #include "llvm/Support/Allocator.h"
-#include "llvm/Support/ErrorHandling.h"
 #include "llvm/Support/Process.h"
 #include "llvm/Support/SourceMgr.h"
-#include "llvm/Support/VirtualFileSystem.h"
 #include <memory>
 
 namespace clang {
@@ -102,23 +101,12 @@ public:
 
     // Compute absolute paths to all ancestors (substrings of P.Path).
     // Ensure cache entries for each ancestor exist in the map.
-    llvm::StringRef Parent = path::parent_path(AbsPath);
     llvm::SmallVector<DotClangTidyCache *> Caches;
     {
       std::lock_guard<std::mutex> Lock(Mu);
-      for (auto I = path::rbegin(Parent), E = path::rend(Parent); I != E; ++I) {
-        assert(I->end() >= Parent.begin() && I->end() <= Parent.end() &&
-               "Canonical path components should be substrings");
-        llvm::StringRef Ancestor(Parent.begin(), I->end() - Parent.begin());
-#ifdef _WIN32
-        // C:\ is an ancestor, but skip its (relative!) parent C:.
-        if (Ancestor.size() == 2 && Ancestor.back() == ':')
-          continue;
-#endif
-        assert(path::is_absolute(Ancestor));
-
+      for (auto Ancestor = absoluteParent(AbsPath); !Ancestor.empty();
+           Ancestor = absoluteParent(Ancestor)) {
         auto It = Cache.find(Ancestor);
-
         // Assemble the actual config file path only if needed.
         if (It == Cache.end()) {
           llvm::SmallString<256> ConfigPath = Ancestor;
@@ -137,7 +125,7 @@ public:
     for (const DotClangTidyCache *Cache : Caches)
       if (auto Config = Cache->get(FS, FreshTime)) {
         OptionStack.push_back(std::move(Config));
-        if (!OptionStack.back()->InheritParentConfig.getValueOr(false))
+        if (!OptionStack.back()->InheritParentConfig.value_or(false))
           break;
       }
     unsigned Order = 1u;
@@ -223,7 +211,15 @@ TidyProvider disableUnusableChecks(llvm::ArrayRef<std::string> ExtraBadChecks) {
                        // Check can choke on invalid (intermediate) c++
                        // code, which is often the case when clangd
                        // tries to build an AST.
-                       "-bugprone-use-after-move");
+                       "-bugprone-use-after-move",
+                       // Alias for bugprone-use-after-move.
+                       "-hicpp-invalid-access-moved",
+
+                       // ----- Performance problems -----
+
+                       // This check runs expensive analysis for each variable.
+                       // It has been observed to increase reparse time by 10x.
+                       "-misc-const-correctness");
 
   size_t Size = BadChecks.size();
   for (const std::string &Str : ExtraBadChecks) {

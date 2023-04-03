@@ -7,8 +7,6 @@ from lldbsuite.test import lldbutil
 
 class TestWithGmodulesDebugInfo(TestBase):
 
-    mydir = TestBase.compute_mydir(__file__)
-
     @skipIf(bugnumber="llvm.org/pr36146", oslist=["linux"], archs=["i386"])
     @add_test_categories(["gmodules"])
     def test_specialized_typedef_from_pch(self):
@@ -38,7 +36,7 @@ class TestWithGmodulesDebugInfo(TestBase):
         self.assertTrue(process.IsValid(), PROCESS_IS_VALID)
 
         # Get the thread of the process
-        self.assertEquals(process.GetState(), lldb.eStateStopped)
+        self.assertState(process.GetState(), lldb.eStateStopped)
         thread = lldbutil.get_stopped_thread(
             process, lldb.eStopReasonBreakpoint)
         self.assertTrue(
@@ -53,8 +51,8 @@ class TestWithGmodulesDebugInfo(TestBase):
             testValue.GetError().Success(),
             "Test expression value invalid: %s" %
             (testValue.GetError().GetCString()))
-        self.assertTrue(
-            testValue.GetTypeName() == "IntContainer",
+        self.assertEqual(
+            testValue.GetTypeName(), "IntContainer",
             "Test expression type incorrect")
 
         memberValue = testValue.GetChildMemberWithName("storage")
@@ -62,8 +60,8 @@ class TestWithGmodulesDebugInfo(TestBase):
             memberValue.GetError().Success(),
             "Member value missing or invalid: %s" %
             (testValue.GetError().GetCString()))
-        self.assertTrue(
-            memberValue.GetTypeName() == "int",
+        self.assertEqual(
+            memberValue.GetTypeName(), "int",
             "Member type incorrect")
         self.assertEqual(
             42,
@@ -75,8 +73,8 @@ class TestWithGmodulesDebugInfo(TestBase):
             testValue.GetError().Success(),
             "Test expression value invalid: %s" %
             (testValue.GetError().GetCString()))
-        self.assertTrue(
-            testValue.GetTypeName() == "Foo::Bar",
+        self.assertEqual(
+            testValue.GetTypeName(), "Foo::Bar",
             "Test expression type incorrect")
 
         memberValue = testValue.GetChildMemberWithName("i")
@@ -84,8 +82,8 @@ class TestWithGmodulesDebugInfo(TestBase):
             memberValue.GetError().Success(),
             "Member value missing or invalid: %s" %
             (testValue.GetError().GetCString()))
-        self.assertTrue(
-            memberValue.GetTypeName() == "int",
+        self.assertEqual(
+            memberValue.GetTypeName(), "int",
             "Member type incorrect")
         self.assertEqual(
             123,

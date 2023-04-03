@@ -172,6 +172,12 @@ enum MemoryModuleLoadLevel {
   eMemoryModuleLoadLevelComplete, // Load sections and all symbols
 };
 
+// Behavior on fork/vfork
+enum FollowForkMode {
+  eFollowParent, // Follow parent process
+  eFollowChild,  // Follow child process
+};
+
 // Result enums for when reading multiple lines from IOHandlers
 enum class LineStatus {
   Success, // The line that was just edited if good and should be added to the
@@ -216,6 +222,37 @@ enum StatisticKind {
   StatisticMax = 4
 };
 
+// Enumeration that can be used to specify a log handler.
+enum LogHandlerKind {
+  eLogHandlerStream,
+  eLogHandlerCallback,
+  eLogHandlerCircular,
+  eLogHandlerSystem,
+  eLogHandlerDefault = eLogHandlerStream,
+};
+
+enum ReproducerProvider {
+  eReproducerProviderCommands,
+  eReproducerProviderFiles,
+  eReproducerProviderSymbolFiles,
+  eReproducerProviderGDB,
+  eReproducerProviderProcessInfo,
+  eReproducerProviderVersion,
+  eReproducerProviderWorkingDirectory,
+  eReproducerProviderHomeDirectory,
+  eReproducerProviderNone,
+};
+
+enum ReproducerCrashSignal {
+  eReproducerCrashSigill,
+  eReproducerCrashSigsegv,
+};
+
+enum LoadDependentFiles {
+  eLoadDependentsDefault,
+  eLoadDependentsYes,
+  eLoadDependentsNo,
+};
 
 inline std::string GetStatDescription(lldb_private::StatisticKind K) {
    switch (K) {

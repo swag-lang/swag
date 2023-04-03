@@ -14,7 +14,6 @@
 #include "mlir/Dialect/SPIRV/IR/SPIRVDialect.h"
 #include "mlir/IR/Attributes.h"
 #include "mlir/IR/BuiltinTypes.h"
-#include "mlir/IR/Identifier.h"
 #include "llvm/ADT/STLExtras.h"
 #include "llvm/ADT/TypeSwitch.h"
 
@@ -559,14 +558,17 @@ void ScalarType::getCapabilities(
       static const Capability caps[] = {Capability::cap8};                     \
       ArrayRef<Capability> ref(caps, llvm::array_lengthof(caps));              \
       capabilities.push_back(ref);                                             \
-    } else if (bitwidth == 16) {                                               \
+      return;                                                                  \
+    }                                                                          \
+    if (bitwidth == 16) {                                                      \
       static const Capability caps[] = {Capability::cap16};                    \
       ArrayRef<Capability> ref(caps, llvm::array_lengthof(caps));              \
       capabilities.push_back(ref);                                             \
+      return;                                                                  \
     }                                                                          \
-    /* No requirements for other bitwidths */                                  \
-    return;                                                                    \
-  }
+    /* For 64-bit integers/floats, Int64/Float64 enables support for all */    \
+    /* storage classes. Fall through to the next section. */                   \
+  } break
 
   // This part only handles the cases where special bitwidths appearing in
   // interface storage classes.
@@ -583,8 +585,9 @@ void ScalarType::getCapabilities(
         static const Capability caps[] = {Capability::StorageInputOutput16};
         ArrayRef<Capability> ref(caps, llvm::array_lengthof(caps));
         capabilities.push_back(ref);
+        return;
       }
-      return;
+      break;
     }
     default:
       break;
@@ -604,22 +607,22 @@ void ScalarType::getCapabilities(
 
   if (auto intType = dyn_cast<IntegerType>()) {
     switch (bitwidth) {
-    case 32:
-    case 1:
-      break;
       WIDTH_CASE(Int, 8);
       WIDTH_CASE(Int, 16);
       WIDTH_CASE(Int, 64);
+    case 1:
+    case 32:
+      break;
     default:
       llvm_unreachable("invalid bitwidth to getCapabilities");
     }
   } else {
     assert(isa<FloatType>());
     switch (bitwidth) {
-    case 32:
-      break;
       WIDTH_CASE(Float, 16);
       WIDTH_CASE(Float, 64);
+    case 32:
+      break;
     default:
       llvm_unreachable("invalid bitwidth to getCapabilities");
     }
@@ -668,6 +671,8 @@ void SPIRVType::getExtensions(SPIRVType::ExtensionArrayRefVector &extensions,
     compositeType.getExtensions(extensions, storage);
   } else if (auto imageType = dyn_cast<ImageType>()) {
     imageType.getExtensions(extensions, storage);
+  } else if (auto sampledImageType = dyn_cast<SampledImageType>()) {
+    sampledImageType.getExtensions(extensions, storage);
   } else if (auto matrixType = dyn_cast<MatrixType>()) {
     matrixType.getExtensions(extensions, storage);
   } else if (auto ptrType = dyn_cast<PointerType>()) {
@@ -686,6 +691,8 @@ void SPIRVType::getCapabilities(
     compositeType.getCapabilities(capabilities, storage);
   } else if (auto imageType = dyn_cast<ImageType>()) {
     imageType.getCapabilities(capabilities, storage);
+  } else if (auto sampledImageType = dyn_cast<SampledImageType>()) {
+    sampledImageType.getCapabilities(capabilities, storage);
   } else if (auto matrixType = dyn_cast<MatrixType>()) {
     matrixType.getCapabilities(capabilities, storage);
   } else if (auto ptrType = dyn_cast<PointerType>()) {
@@ -701,6 +708,58 @@ Optional<int64_t> SPIRVType::getSizeInBytes() {
   if (auto compositeType = dyn_cast<CompositeType>())
     return compositeType.getSizeInBytes();
   return llvm::None;
+}
+
+//===----------------------------------------------------------------------===//
+// SampledImageType
+//===----------------------------------------------------------------------===//
+struct spirv::detail::SampledImageTypeStorage : public TypeStorage {
+  using KeyTy = Type;
+
+  SampledImageTypeStorage(const KeyTy &key) : imageType{key} {}
+
+  bool operator==(const KeyTy &key) const { return key == KeyTy(imageType); }
+
+  static SampledImageTypeStorage *construct(TypeStorageAllocator &allocator,
+                                            const KeyTy &key) {
+    return new (allocator.allocate<SampledImageTypeStorage>())
+        SampledImageTypeStorage(key);
+  }
+
+  Type imageType;
+};
+
+SampledImageType SampledImageType::get(Type imageType) {
+  return Base::get(imageType.getContext(), imageType);
+}
+
+SampledImageType
+SampledImageType::getChecked(function_ref<InFlightDiagnostic()> emitError,
+                             Type imageType) {
+  return Base::getChecked(emitError, imageType.getContext(), imageType);
+}
+
+Type SampledImageType::getImageType() const { return getImpl()->imageType; }
+
+LogicalResult
+SampledImageType::verify(function_ref<InFlightDiagnostic()> emitError,
+                         Type imageType) {
+  if (!imageType.isa<ImageType>())
+    return emitError() << "expected image type";
+
+  return success();
+}
+
+void SampledImageType::getExtensions(
+    SPIRVType::ExtensionArrayRefVector &extensions,
+    Optional<StorageClass> storage) {
+  getImageType().cast<ImageType>().getExtensions(extensions, storage);
+}
+
+void SampledImageType::getCapabilities(
+    SPIRVType::CapabilityArrayRefVector &capabilities,
+    Optional<StorageClass> storage) {
+  getImageType().cast<ImageType>().getCapabilities(capabilities, storage);
 }
 
 //===----------------------------------------------------------------------===//
@@ -727,7 +786,7 @@ struct spirv::detail::StructTypeStorage : public TypeStorage {
   /// in order to mutate the storage object providing the actual content.
   StructTypeStorage(StringRef identifier)
       : memberTypesAndIsBodySet(nullptr, false), offsetInfo(nullptr),
-        numMemberDecorations(0), memberDecorationsInfo(nullptr),
+        numMembers(0), numMemberDecorations(0), memberDecorationsInfo(nullptr),
         identifier(identifier) {}
 
   /// Construct a storage object for a literal struct type. A struct type
@@ -1041,27 +1100,27 @@ MatrixType MatrixType::get(Type columnType, uint32_t columnCount) {
   return Base::get(columnType.getContext(), columnType, columnCount);
 }
 
-MatrixType MatrixType::getChecked(Type columnType, uint32_t columnCount,
-                                  Location location) {
-  return Base::getChecked(location, columnType, columnCount);
+MatrixType MatrixType::getChecked(function_ref<InFlightDiagnostic()> emitError,
+                                  Type columnType, uint32_t columnCount) {
+  return Base::getChecked(emitError, columnType.getContext(), columnType,
+                          columnCount);
 }
 
-LogicalResult MatrixType::verifyConstructionInvariants(Location loc,
-                                                       Type columnType,
-                                                       uint32_t columnCount) {
+LogicalResult MatrixType::verify(function_ref<InFlightDiagnostic()> emitError,
+                                 Type columnType, uint32_t columnCount) {
   if (columnCount < 2 || columnCount > 4)
-    return emitError(loc, "matrix can have 2, 3, or 4 columns only");
+    return emitError() << "matrix can have 2, 3, or 4 columns only";
 
   if (!isValidColumnType(columnType))
-    return emitError(loc, "matrix columns must be vectors of floats");
+    return emitError() << "matrix columns must be vectors of floats";
 
   /// The underlying vectors (columns) must be of size 2, 3, or 4
   ArrayRef<int64_t> columnShape = columnType.cast<VectorType>().getShape();
   if (columnShape.size() != 1)
-    return emitError(loc, "matrix columns must be 1D vectors");
+    return emitError() << "matrix columns must be 1D vectors";
 
   if (columnShape[0] < 2 || columnShape[0] > 4)
-    return emitError(loc, "matrix columns must be of size 2, 3, or 4");
+    return emitError() << "matrix columns must be of size 2, 3, or 4";
 
   return success();
 }
@@ -1106,4 +1165,13 @@ void MatrixType::getCapabilities(
   }
   // Add any capabilities associated with the underlying vectors (i.e., columns)
   getColumnType().cast<SPIRVType>().getCapabilities(capabilities, storage);
+}
+
+//===----------------------------------------------------------------------===//
+// SPIR-V Dialect
+//===----------------------------------------------------------------------===//
+
+void SPIRVDialect::registerTypes() {
+  addTypes<ArrayType, CooperativeMatrixNVType, ImageType, MatrixType,
+           PointerType, RuntimeArrayType, SampledImageType, StructType>();
 }

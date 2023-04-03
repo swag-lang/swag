@@ -20,4 +20,7 @@ set(LLVM_LINK_COMPONENTS
 add_llvm_target_unittest(AArch64Tests
   InstSizes.cpp
   DecomposeStackOffsetTest.cpp
+  MatrixRegisterAliasing.cpp
   )
+
+set_property(TARGET AArch64Tests PROPERTY FOLDER "Tests/UnitTests/TargetTests")

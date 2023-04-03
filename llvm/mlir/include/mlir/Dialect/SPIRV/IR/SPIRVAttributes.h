@@ -18,14 +18,15 @@
 #include "mlir/Support/LLVM.h"
 
 // Pull in TableGen'erated SPIR-V attribute definitions for target and ABI.
-#include "mlir/Dialect/SPIRV/IR/TargetAndABI.h.inc"
+#define GET_ATTRDEF_CLASSES
+#include "mlir/Dialect/SPIRV/IR/SPIRVAttributes.h.inc"
 
 namespace mlir {
 namespace spirv {
 enum class Capability : uint32_t;
-enum class DeviceType;
-enum class Extension;
-enum class Vendor;
+enum class DeviceType : uint32_t;
+enum class Extension : uint32_t;
+enum class Vendor : uint32_t;
 enum class Version : uint32_t;
 
 namespace detail {
@@ -69,10 +70,9 @@ public:
   /// Returns `spirv::StorageClass`.
   Optional<StorageClass> getStorageClass();
 
-  static LogicalResult verifyConstructionInvariants(Location loc,
-                                                    IntegerAttr descriptorSet,
-                                                    IntegerAttr binding,
-                                                    IntegerAttr storageClass);
+  static LogicalResult verify(function_ref<InFlightDiagnostic()> emitError,
+                              IntegerAttr descriptorSet, IntegerAttr binding,
+                              IntegerAttr storageClass);
 };
 
 /// An attribute that specifies the SPIR-V (version, capabilities, extensions)
@@ -120,10 +120,9 @@ public:
   /// Returns the capabilities as an integer array attribute.
   ArrayAttr getCapabilitiesAttr();
 
-  static LogicalResult verifyConstructionInvariants(Location loc,
-                                                    IntegerAttr version,
-                                                    ArrayAttr capabilities,
-                                                    ArrayAttr extensions);
+  static LogicalResult verify(function_ref<InFlightDiagnostic()> emitError,
+                              IntegerAttr version, ArrayAttr capabilities,
+                              ArrayAttr extensions);
 };
 
 /// An attribute that specifies the target version, allowed extensions and
@@ -141,7 +140,7 @@ public:
   /// Gets a TargetEnvAttr instance.
   static TargetEnvAttr get(VerCapExtAttr triple, Vendor vendorID,
                            DeviceType deviceType, uint32_t deviceId,
-                           DictionaryAttr limits);
+                           ResourceLimitsAttr limits);
 
   /// Returns the attribute kind's name (without the 'spv.' prefix).
   static StringRef getKindName();
@@ -173,11 +172,6 @@ public:
 
   /// Returns the target resource limits.
   ResourceLimitsAttr getResourceLimits() const;
-
-  static LogicalResult
-  verifyConstructionInvariants(Location loc, VerCapExtAttr triple,
-                               Vendor vendorID, DeviceType deviceType,
-                               uint32_t deviceID, DictionaryAttr limits);
 };
 } // namespace spirv
 } // namespace mlir

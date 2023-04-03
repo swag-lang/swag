@@ -4,7 +4,7 @@
 // spv.Branch
 //===----------------------------------------------------------------------===//
 
-func @branch() -> () {
+func.func @branch() -> () {
   // CHECK: spv.Branch ^bb1
   spv.Branch ^next
 ^next:
@@ -13,8 +13,8 @@ func @branch() -> () {
 
 // -----
 
-func @branch_argument() -> () {
-  %zero = spv.constant 0 : i32
+func.func @branch_argument() -> () {
+  %zero = spv.Constant 0 : i32
   // CHECK: spv.Branch ^bb1(%{{.*}}, %{{.*}} : i32, i32)
   spv.Branch ^next(%zero, %zero: i32, i32)
 ^next(%arg0: i32, %arg1: i32):
@@ -23,15 +23,15 @@ func @branch_argument() -> () {
 
 // -----
 
-func @missing_accessor() -> () {
-  // expected-error @+2 {{expected block name}}
+func.func @missing_accessor() -> () {
+  // expected-error @+1 {{expected block name}}
   spv.Branch
 }
 
 // -----
 
-func @wrong_accessor_count() -> () {
-  %true = spv.constant true
+func.func @wrong_accessor_count() -> () {
+  %true = spv.Constant true
   // expected-error @+1 {{requires 1 successor but found 2}}
   "spv.Branch"()[^one, ^two] : () -> ()
 ^one:
@@ -46,8 +46,8 @@ func @wrong_accessor_count() -> () {
 // spv.BranchConditional
 //===----------------------------------------------------------------------===//
 
-func @cond_branch() -> () {
-  %true = spv.constant true
+func.func @cond_branch() -> () {
+  %true = spv.Constant true
   // CHECK: spv.BranchConditional %{{.*}}, ^bb1, ^bb2
   spv.BranchConditional %true, ^one, ^two
 // CHECK: ^bb1
@@ -60,9 +60,9 @@ func @cond_branch() -> () {
 
 // -----
 
-func @cond_branch_argument() -> () {
-  %true = spv.constant true
-  %zero = spv.constant 0 : i32
+func.func @cond_branch_argument() -> () {
+  %true = spv.Constant true
+  %zero = spv.Constant 0 : i32
   // CHECK: spv.BranchConditional %{{.*}}, ^bb1(%{{.*}}, %{{.*}} : i32, i32), ^bb2
   spv.BranchConditional %true, ^true1(%zero, %zero: i32, i32), ^false1
 ^true1(%arg0: i32, %arg1: i32):
@@ -78,8 +78,8 @@ func @cond_branch_argument() -> () {
 
 // -----
 
-func @cond_branch_with_weights() -> () {
-  %true = spv.constant true
+func.func @cond_branch_with_weights() -> () {
+  %true = spv.Constant true
   // CHECK: spv.BranchConditional %{{.*}} [5, 10]
   spv.BranchConditional %true [5, 10], ^one, ^two
 ^one:
@@ -90,7 +90,7 @@ func @cond_branch_with_weights() -> () {
 
 // -----
 
-func @missing_condition() -> () {
+func.func @missing_condition() -> () {
   // expected-error @+1 {{expected SSA operand}}
   spv.BranchConditional ^one, ^two
 ^one:
@@ -101,9 +101,9 @@ func @missing_condition() -> () {
 
 // -----
 
-func @wrong_condition_type() -> () {
+func.func @wrong_condition_type() -> () {
   // expected-note @+1 {{prior use here}}
-  %zero = spv.constant 0 : i32
+  %zero = spv.Constant 0 : i32
   // expected-error @+1 {{use of value '%zero' expects different type than prior uses: 'i1' vs 'i32'}}
   spv.BranchConditional %zero, ^one, ^two
 ^one:
@@ -114,8 +114,8 @@ func @wrong_condition_type() -> () {
 
 // -----
 
-func @wrong_accessor_count() -> () {
-  %true = spv.constant true
+func.func @wrong_accessor_count() -> () {
+  %true = spv.Constant true
   // expected-error @+1 {{requires 2 successors but found 1}}
   "spv.BranchConditional"(%true)[^one] {operand_segment_sizes = dense<[1, 0, 0]>: vector<3xi32>} : (i1) -> ()
 ^one:
@@ -126,8 +126,8 @@ func @wrong_accessor_count() -> () {
 
 // -----
 
-func @wrong_number_of_weights() -> () {
-  %true = spv.constant true
+func.func @wrong_number_of_weights() -> () {
+  %true = spv.Constant true
   // expected-error @+1 {{must have exactly two branch weights}}
   "spv.BranchConditional"(%true)[^one, ^two] {branch_weights = [1 : i32, 2 : i32, 3 : i32],
                                               operand_segment_sizes = dense<[1, 0, 0]>: vector<3xi32>} : (i1) -> ()
@@ -139,8 +139,8 @@ func @wrong_number_of_weights() -> () {
 
 // -----
 
-func @weights_cannot_both_be_zero() -> () {
-  %true = spv.constant true
+func.func @weights_cannot_both_be_zero() -> () {
+  %true = spv.Constant true
   // expected-error @+1 {{branch weights cannot both be zero}}
   spv.BranchConditional %true [0, 0], ^one, ^two
 ^one:
@@ -192,7 +192,7 @@ spv.func @callee() "None" {
   spv.Return
 }
 
-func @caller() {
+func.func @caller() {
   // CHECK: spv.FunctionCall
   spv.FunctionCall @callee() : () -> ()
   spv.Return
@@ -232,7 +232,7 @@ spv.module Logical GLSL450 {
 
 spv.module Logical GLSL450 {
   spv.func @f_type_mismatch(%arg0 : i32, %arg1 : i32) -> () "None" {
-    %0 = spv.constant 2.0 : f32
+    %0 = spv.Constant 2.0 : f32
     // expected-error @+1 {{operand type mismatch: expected operand type 'i32', but provided 'f32' for operand number 1}}
     spv.FunctionCall @f_type_mismatch(%arg0, %0) : (i32, f32) -> ()
     spv.Return
@@ -243,7 +243,7 @@ spv.module Logical GLSL450 {
 
 spv.module Logical GLSL450 {
   spv.func @f_type_mismatch(%arg0 : i32, %arg1 : i32) -> i32 "None" {
-    %cst = spv.constant 0: i32
+    %cst = spv.Constant 0: i32
     // expected-error @+1 {{result type mismatch: expected 'i32', but provided 'f32'}}
     %0 = spv.FunctionCall @f_type_mismatch(%arg0, %arg0) : (i32, i32) -> f32
     spv.ReturnValue %cst: i32
@@ -263,17 +263,17 @@ spv.module Logical GLSL450 {
 // -----
 
 //===----------------------------------------------------------------------===//
-// spv.loop
+// spv.mlir.loop
 //===----------------------------------------------------------------------===//
 
 // for (int i = 0; i < count; ++i) {}
-func @loop(%count : i32) -> () {
-  %zero = spv.constant 0: i32
-  %one = spv.constant 1: i32
+func.func @loop(%count : i32) -> () {
+  %zero = spv.Constant 0: i32
+  %one = spv.Constant 1: i32
   %var = spv.Variable init(%zero) : !spv.ptr<i32, Function>
 
-  // CHECK: spv.loop {
-  spv.loop {
+  // CHECK: spv.mlir.loop {
+  spv.mlir.loop {
     // CHECK-NEXT: spv.Branch ^bb1
     spv.Branch ^header
 
@@ -308,9 +308,9 @@ func @loop(%count : i32) -> () {
 // -----
 
 // CHECK-LABEL: @empty_region
-func @empty_region() -> () {
-  // CHECK: spv.loop
-  spv.loop {
+func.func @empty_region() -> () {
+  // CHECK: spv.mlir.loop
+  spv.mlir.loop {
   }
   return
 }
@@ -318,18 +318,18 @@ func @empty_region() -> () {
 // -----
 
 // CHECK-LABEL: @loop_with_control
-func @loop_with_control() -> () {
-  // CHECK: spv.loop control(Unroll)
-  spv.loop control(Unroll) {
+func.func @loop_with_control() -> () {
+  // CHECK: spv.mlir.loop control(Unroll)
+  spv.mlir.loop control(Unroll) {
   }
   return
 }
 
 // -----
 
-func @wrong_merge_block() -> () {
+func.func @wrong_merge_block() -> () {
   // expected-error @+1 {{last block must be the merge block with only one 'spv.mlir.merge' op}}
-  spv.loop {
+  spv.mlir.loop {
     spv.Return
   }
   return
@@ -337,9 +337,9 @@ func @wrong_merge_block() -> () {
 
 // -----
 
-func @missing_entry_block() -> () {
+func.func @missing_entry_block() -> () {
   // expected-error @+1 {{must have an entry block branching to the loop header block}}
-  spv.loop {
+  spv.mlir.loop {
     spv.mlir.merge
   }
   return
@@ -347,9 +347,9 @@ func @missing_entry_block() -> () {
 
 // -----
 
-func @missing_header_block() -> () {
+func.func @missing_header_block() -> () {
   // expected-error @+1 {{must have a loop header block branched from the entry block}}
-  spv.loop {
+  spv.mlir.loop {
   ^entry:
     spv.Branch ^merge
   ^merge:
@@ -360,9 +360,9 @@ func @missing_header_block() -> () {
 
 // -----
 
-func @entry_should_branch_to_header() -> () {
+func.func @entry_should_branch_to_header() -> () {
   // expected-error @+1 {{entry block must only have one 'spv.Branch' op to the second block}}
-  spv.loop {
+  spv.mlir.loop {
   ^entry:
     spv.Branch ^merge
   ^header:
@@ -375,9 +375,9 @@ func @entry_should_branch_to_header() -> () {
 
 // -----
 
-func @missing_continue_block() -> () {
+func.func @missing_continue_block() -> () {
   // expected-error @+1 {{requires a loop continue block branching to the loop header block}}
-  spv.loop {
+  spv.mlir.loop {
   ^entry:
     spv.Branch ^header
   ^header:
@@ -390,9 +390,9 @@ func @missing_continue_block() -> () {
 
 // -----
 
-func @continue_should_branch_to_header() -> () {
+func.func @continue_should_branch_to_header() -> () {
   // expected-error @+1 {{second to last block must be the loop continue block that branches to the loop header block}}
-  spv.loop {
+  spv.mlir.loop {
   ^entry:
     spv.Branch ^header
   ^header:
@@ -407,9 +407,9 @@ func @continue_should_branch_to_header() -> () {
 
 // -----
 
-func @only_entry_and_continue_branch_to_header() -> () {
+func.func @only_entry_and_continue_branch_to_header() -> () {
   // expected-error @+1 {{can only have the entry and loop continue block branching to the loop header block}}
-  spv.loop {
+  spv.mlir.loop {
   ^entry:
     spv.Branch ^header
   ^header:
@@ -430,24 +430,24 @@ func @only_entry_and_continue_branch_to_header() -> () {
 // spv.mlir.merge
 //===----------------------------------------------------------------------===//
 
-func @merge() -> () {
-  // expected-error @+1 {{expected parent op to be 'spv.selection' or 'spv.loop'}}
+func.func @merge() -> () {
+  // expected-error @+1 {{expected parent op to be 'spv.mlir.selection' or 'spv.mlir.loop'}}
   spv.mlir.merge
 }
 
 // -----
 
-func @only_allowed_in_last_block(%cond : i1) -> () {
-  %zero = spv.constant 0: i32
-  %one = spv.constant 1: i32
+func.func @only_allowed_in_last_block(%cond : i1) -> () {
+  %zero = spv.Constant 0: i32
+  %one = spv.Constant 1: i32
   %var = spv.Variable init(%zero) : !spv.ptr<i32, Function>
 
-  spv.selection {
+  spv.mlir.selection {
     spv.BranchConditional %cond, ^then, ^merge
 
   ^then:
     spv.Store "Function" %var, %one : i32
-    // expected-error @+1 {{can only be used in the last block of 'spv.selection' or 'spv.loop'}}
+    // expected-error @+1 {{can only be used in the last block of 'spv.mlir.selection' or 'spv.mlir.loop'}}
     spv.mlir.merge
 
   ^merge:
@@ -459,14 +459,14 @@ func @only_allowed_in_last_block(%cond : i1) -> () {
 
 // -----
 
-func @only_allowed_in_last_block() -> () {
-  %true = spv.constant true
-  spv.loop {
+func.func @only_allowed_in_last_block() -> () {
+  %true = spv.Constant true
+  spv.mlir.loop {
     spv.Branch ^header
   ^header:
     spv.BranchConditional %true, ^body, ^merge
   ^body:
-    // expected-error @+1 {{can only be used in the last block of 'spv.selection' or 'spv.loop'}}
+    // expected-error @+1 {{can only be used in the last block of 'spv.mlir.selection' or 'spv.mlir.loop'}}
     spv.mlir.merge
   ^continue:
     spv.Branch ^header
@@ -483,8 +483,8 @@ func @only_allowed_in_last_block() -> () {
 //===----------------------------------------------------------------------===//
 
 // CHECK-LABEL: func @in_selection
-func @in_selection(%cond : i1) -> () {
-  spv.selection {
+func.func @in_selection(%cond : i1) -> () {
+  spv.mlir.selection {
     spv.BranchConditional %cond, ^then, ^merge
   ^then:
     // CHECK: spv.Return
@@ -496,8 +496,8 @@ func @in_selection(%cond : i1) -> () {
 }
 
 // CHECK-LABEL: func @in_loop
-func @in_loop(%cond : i1) -> () {
-  spv.loop {
+func.func @in_loop(%cond : i1) -> () {
+  spv.mlir.loop {
     spv.Branch ^header
   ^header:
     spv.BranchConditional %cond, ^body, ^merge
@@ -513,7 +513,7 @@ func @in_loop(%cond : i1) -> () {
 }
 
 // CHECK-LABEL: in_other_func_like_op
-func @in_other_func_like_op() {
+func.func @in_other_func_like_op() {
   // CHECK: spv.Return
   spv.Return
 }
@@ -539,7 +539,7 @@ spv.module Logical GLSL450 {
 
 spv.module Logical GLSL450 {
   spv.func @in_nested_region(%cond: i1) -> (i32) "None" {
-    spv.selection {
+    spv.mlir.selection {
       spv.BranchConditional %cond, ^then, ^merge
     ^then:
       // expected-error @+1 {{cannot be used in functions returning value}}
@@ -548,7 +548,7 @@ spv.module Logical GLSL450 {
       spv.mlir.merge
     }
 
-    %zero = spv.constant 0: i32
+    %zero = spv.Constant 0: i32
     spv.ReturnValue %zero: i32
   }
 }
@@ -559,35 +559,35 @@ spv.module Logical GLSL450 {
 // spv.ReturnValue
 //===----------------------------------------------------------------------===//
 
-func @ret_val() -> (i32) {
-  %0 = spv.constant 42 : i32
+func.func @ret_val() -> (i32) {
+  %0 = spv.Constant 42 : i32
   // CHECK: spv.ReturnValue %{{.*}} : i32
   spv.ReturnValue %0 : i32
 }
 
 // CHECK-LABEL: func @in_selection
-func @in_selection(%cond : i1) -> (i32) {
-  spv.selection {
+func.func @in_selection(%cond : i1) -> (i32) {
+  spv.mlir.selection {
     spv.BranchConditional %cond, ^then, ^merge
   ^then:
-    %zero = spv.constant 0 : i32
+    %zero = spv.Constant 0 : i32
     // CHECK: spv.ReturnValue
     spv.ReturnValue %zero : i32
   ^merge:
     spv.mlir.merge
   }
-  %one = spv.constant 1 : i32
+  %one = spv.Constant 1 : i32
   spv.ReturnValue %one : i32
 }
 
 // CHECK-LABEL: func @in_loop
-func @in_loop(%cond : i1) -> (i32) {
-  spv.loop {
+func.func @in_loop(%cond : i1) -> (i32) {
+  spv.mlir.loop {
     spv.Branch ^header
   ^header:
     spv.BranchConditional %cond, ^body, ^merge
   ^body:
-    %zero = spv.constant 0 : i32
+    %zero = spv.Constant 0 : i32
     // CHECK: spv.ReturnValue
     spv.ReturnValue %zero : i32
   ^continue:
@@ -595,12 +595,12 @@ func @in_loop(%cond : i1) -> (i32) {
   ^merge:
     spv.mlir.merge
   }
-  %one = spv.constant 1 : i32
+  %one = spv.Constant 1 : i32
   spv.ReturnValue %one : i32
 }
 
 // CHECK-LABEL: in_other_func_like_op
-func @in_other_func_like_op(%arg: i32) -> i32 {
+func.func @in_other_func_like_op(%arg: i32) -> i32 {
   // CHECK: spv.ReturnValue
   spv.ReturnValue %arg: i32
 }
@@ -608,7 +608,7 @@ func @in_other_func_like_op(%arg: i32) -> i32 {
 // -----
 
 "foo.function"() ({
-  %0 = spv.constant true
+  %0 = spv.Constant true
   // expected-error @+1 {{op must appear in a function-like op's block}}
   spv.ReturnValue %0 : i1
 })  : () -> ()
@@ -617,7 +617,7 @@ func @in_other_func_like_op(%arg: i32) -> i32 {
 
 spv.module Logical GLSL450 {
   spv.func @value_count_mismatch() -> () "None" {
-    %0 = spv.constant 42 : i32
+    %0 = spv.Constant 42 : i32
     // expected-error @+1 {{op returns 1 value but enclosing function requires 0 results}}
     spv.ReturnValue %0 : i32
   }
@@ -627,7 +627,7 @@ spv.module Logical GLSL450 {
 
 spv.module Logical GLSL450 {
   spv.func @value_type_mismatch() -> (f32) "None" {
-    %0 = spv.constant 42 : i32
+    %0 = spv.Constant 42 : i32
     // expected-error @+1 {{return value's type ('i32') mismatch with function's result type ('f32')}}
     spv.ReturnValue %0 : i32
   }
@@ -637,10 +637,10 @@ spv.module Logical GLSL450 {
 
 spv.module Logical GLSL450 {
   spv.func @in_nested_region(%cond: i1) -> () "None" {
-    spv.selection {
+    spv.mlir.selection {
       spv.BranchConditional %cond, ^then, ^merge
     ^then:
-      %cst = spv.constant 0: i32
+      %cst = spv.Constant 0: i32
       // expected-error @+1 {{op returns 1 value but enclosing function requires 0 results}}
       spv.ReturnValue %cst: i32
     ^merge:
@@ -654,16 +654,16 @@ spv.module Logical GLSL450 {
 // -----
 
 //===----------------------------------------------------------------------===//
-// spv.selection
+// spv.mlir.selection
 //===----------------------------------------------------------------------===//
 
-func @selection(%cond: i1) -> () {
-  %zero = spv.constant 0: i32
-  %one = spv.constant 1: i32
+func.func @selection(%cond: i1) -> () {
+  %zero = spv.Constant 0: i32
+  %one = spv.Constant 1: i32
   %var = spv.Variable init(%zero) : !spv.ptr<i32, Function>
 
-  // CHECK: spv.selection {
-  spv.selection {
+  // CHECK: spv.mlir.selection {
+  spv.mlir.selection {
     // CHECK-NEXT: spv.BranchConditional %{{.*}}, ^bb1, ^bb2
     spv.BranchConditional %cond, ^then, ^merge
 
@@ -684,14 +684,14 @@ func @selection(%cond: i1) -> () {
 
 // -----
 
-func @selection(%cond: i1) -> () {
-  %zero = spv.constant 0: i32
-  %one = spv.constant 1: i32
-  %two = spv.constant 2: i32
+func.func @selection(%cond: i1) -> () {
+  %zero = spv.Constant 0: i32
+  %one = spv.Constant 1: i32
+  %two = spv.Constant 2: i32
   %var = spv.Variable init(%zero) : !spv.ptr<i32, Function>
 
-  // CHECK: spv.selection {
-  spv.selection {
+  // CHECK: spv.mlir.selection {
+  spv.mlir.selection {
     // CHECK-NEXT: spv.BranchConditional %{{.*}}, ^bb1, ^bb2
     spv.BranchConditional %cond, ^then, ^else
 
@@ -719,9 +719,9 @@ func @selection(%cond: i1) -> () {
 // -----
 
 // CHECK-LABEL: @empty_region
-func @empty_region() -> () {
-  // CHECK: spv.selection
-  spv.selection {
+func.func @empty_region() -> () {
+  // CHECK: spv.mlir.selection
+  spv.mlir.selection {
   }
   return
 }
@@ -729,18 +729,18 @@ func @empty_region() -> () {
 // -----
 
 // CHECK-LABEL: @selection_with_control
-func @selection_with_control() -> () {
-  // CHECK: spv.selection control(Flatten)
-  spv.selection control(Flatten) {
+func.func @selection_with_control() -> () {
+  // CHECK: spv.mlir.selection control(Flatten)
+  spv.mlir.selection control(Flatten) {
   }
   return
 }
 
 // -----
 
-func @wrong_merge_block() -> () {
+func.func @wrong_merge_block() -> () {
   // expected-error @+1 {{last block must be the merge block with only one 'spv.mlir.merge' op}}
-  spv.selection {
+  spv.mlir.selection {
     spv.Return
   }
   return
@@ -748,9 +748,9 @@ func @wrong_merge_block() -> () {
 
 // -----
 
-func @missing_entry_block() -> () {
+func.func @missing_entry_block() -> () {
   // expected-error @+1 {{must have a selection header block}}
-  spv.selection {
+  spv.mlir.selection {
     spv.mlir.merge
   }
   return
@@ -763,7 +763,7 @@ func @missing_entry_block() -> () {
 //===----------------------------------------------------------------------===//
 
 // CHECK-LABEL: func @unreachable_no_pred
-func @unreachable_no_pred() {
+func.func @unreachable_no_pred() {
     spv.Return
 
   ^next:
@@ -772,7 +772,7 @@ func @unreachable_no_pred() {
 }
 
 // CHECK-LABEL: func @unreachable_with_pred
-func @unreachable_with_pred() {
+func.func @unreachable_with_pred() {
     spv.Return
 
   ^parent:
@@ -785,7 +785,7 @@ func @unreachable_with_pred() {
 
 // -----
 
-func @unreachable() {
+func.func @unreachable() {
   // expected-error @+1 {{cannot be used in reachable block}}
   spv.Unreachable
 }

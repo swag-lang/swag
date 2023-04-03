@@ -1,43 +1,37 @@
 name: Clang Tests
 
 on:
+  workflow_dispatch:
   push:
+    ignore-forks: true
     branches:
       - 'release/**'
     paths:
       - 'clang/**'
-      - 'llvm/**'
       - '.github/workflows/clang-tests.yml'
+      - '.github/workflows/llvm-project-tests.yml'
+      - '!llvm/**'
   pull_request:
+    ignore-forks: true
+    branches:
+      - 'release/**'
     paths:
       - 'clang/**'
-      - 'llvm/**'
       - '.github/workflows/clang-tests.yml'
+      - '.github/workflows/llvm-project-tests.yml'
+      - '!llvm/**'
+
+concurrency:
+  # Skip intermediate builds: always.
+  # Cancel intermediate builds: only if it is a pull request build.
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ startsWith(github.ref, 'refs/pull/') }}
 
 jobs:
-  build_clang:
-    name: clang check-all
-    runs-on: ${{ matrix.os }}
-    strategy:
-      fail-fast: false
-      matrix:
-        os:
-          - ubuntu-latest
-          - windows-latest
-          - macOS-latest
-    steps:
-    - name: Setup Windows
-      if: startsWith(matrix.os, 'windows')
-      uses: llvm/actions/setup-windows@main
-      with:
-        arch: amd64
-    - name: Install Ninja
-      uses: llvm/actions/install-ninja@main
-    - uses: actions/checkout@v1
-      with:
-        fetch-depth: 250
-    - name: Test clang
-      uses: llvm/actions/build-test-llvm-project@main
-      with:
-        cmake_args: -G Ninja  -DLLVM_ENABLE_PROJECTS="clang" -DCMAKE_BUILD_TYPE=Release
-        build_target: check-clang
+  check_clang:
+    if: github.repository_owner == 'llvm'
+    name: Test clang,lldb,libclc
+    uses: ./.github/workflows/llvm-project-tests.yml
+    with:
+      build_target: check-clang
+      projects: clang;lldb;libclc

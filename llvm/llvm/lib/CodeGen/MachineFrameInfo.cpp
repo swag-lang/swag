@@ -127,7 +127,7 @@ BitVector MachineFrameInfo::getPristineRegs(const MachineFunction &MF) const {
     BV.set(*CSR);
 
   // Saved CSRs are not pristine.
-  for (auto &I : getCalleeSavedInfo())
+  for (const auto &I : getCalleeSavedInfo())
     for (MCSubRegIterator S(I.getReg(), TRI, true); S.isValid(); ++S)
       BV.reset(*S);
 
@@ -173,7 +173,7 @@ uint64_t MachineFrameInfo::estimateStackSize(const MachineFunction &MF) const {
   // value.
   Align StackAlign;
   if (adjustsStack() || hasVarSizedObjects() ||
-      (RegInfo->needsStackRealignment(MF) && getObjectIndexEnd() != 0))
+      (RegInfo->hasStackRealignment(MF) && getObjectIndexEnd() != 0))
     StackAlign = TFI->getStackAlign();
   else
     StackAlign = TFI->getTransientStackAlign();

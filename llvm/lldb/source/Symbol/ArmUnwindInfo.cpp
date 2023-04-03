@@ -65,10 +65,10 @@ ArmUnwindInfo::ArmUnwindInfo(ObjectFile &objfile, SectionSP &arm_exidx,
 
   // Sort the entries in the exidx section. The entries should be sorted inside
   // the section but some old compiler isn't sorted them.
-  llvm::sort(m_exidx_entries.begin(), m_exidx_entries.end());
+  llvm::sort(m_exidx_entries);
 }
 
-ArmUnwindInfo::~ArmUnwindInfo() {}
+ArmUnwindInfo::~ArmUnwindInfo() = default;
 
 // Read a byte from the unwind instruction stream with the given offset. Custom
 // function is required because have to red in order of significance within

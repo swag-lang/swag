@@ -99,6 +99,8 @@ STATISTIC(NonEmptyExitBlock, "Candidate has a non-empty exit block with "
 STATISTIC(NonEmptyGuardBlock, "Candidate has a non-empty guard block with "
                               "instructions that cannot be moved");
 STATISTIC(NotRotated, "Candidate is not rotated");
+STATISTIC(OnlySecondCandidateIsGuarded,
+          "The second candidate is guarded while the first one is not");
 
 enum FusionDependenceAnalysisChoice {
   FUSION_DEPENDENCE_ANALYSIS_SCEV,
@@ -115,7 +117,7 @@ static cl::opt<FusionDependenceAnalysisChoice> FusionDependenceAnalysis(
                           "Use the dependence analysis interface"),
                clEnumValN(FUSION_DEPENDENCE_ANALYSIS_ALL, "all",
                           "Use all available analyses")),
-    cl::Hidden, cl::init(FUSION_DEPENDENCE_ANALYSIS_ALL), cl::ZeroOrMore);
+    cl::Hidden, cl::init(FUSION_DEPENDENCE_ANALYSIS_ALL));
 
 static cl::opt<unsigned> FusionPeelMaxCount(
     "loop-fusion-peel-max-count", cl::init(0), cl::Hidden,
@@ -126,7 +128,7 @@ static cl::opt<unsigned> FusionPeelMaxCount(
 static cl::opt<bool>
     VerboseFusionDebugging("loop-fusion-verbose-debug",
                            cl::desc("Enable verbose debugging for Loop Fusion"),
-                           cl::Hidden, cl::init(false), cl::ZeroOrMore);
+                           cl::Hidden, cl::init(false));
 #endif
 
 namespace {
@@ -176,12 +178,12 @@ struct FusionCandidate {
   /// FusionCandidateCompare function, required by FusionCandidateSet to
   /// determine where the FusionCandidate should be inserted into the set. These
   /// are used to establish ordering of the FusionCandidates based on dominance.
-  const DominatorTree *DT;
+  DominatorTree &DT;
   const PostDominatorTree *PDT;
 
   OptimizationRemarkEmitter &ORE;
 
-  FusionCandidate(Loop *L, const DominatorTree *DT,
+  FusionCandidate(Loop *L, DominatorTree &DT,
                   const PostDominatorTree *PDT, OptimizationRemarkEmitter &ORE,
                   TTI::PeelingPreferences PP)
       : Preheader(L->getLoopPreheader()), Header(L->getHeader()),
@@ -370,11 +372,13 @@ private:
   bool reportInvalidCandidate(llvm::Statistic &Stat) const {
     using namespace ore;
     assert(L && Preheader && "Fusion candidate not initialized properly!");
+#if LLVM_ENABLE_STATS
     ++Stat;
     ORE.emit(OptimizationRemarkAnalysis(DEBUG_TYPE, Stat.getName(),
                                         L->getStartLoc(), Preheader)
              << "[" << Preheader->getParent()->getName() << "]: "
              << "Loop is not a candidate for fusion: " << Stat.getDesc());
+#endif
     return false;
   }
 };
@@ -386,7 +390,7 @@ struct FusionCandidateCompare {
   /// IF RHS dominates LHS and LHS post-dominates RHS, return false;
   bool operator()(const FusionCandidate &LHS,
                   const FusionCandidate &RHS) const {
-    const DominatorTree *DT = LHS.DT;
+    const DominatorTree *DT = &(LHS.DT);
 
     BasicBlock *LHSEntryBlock = LHS.getEntryBlock();
     BasicBlock *RHSEntryBlock = RHS.getEntryBlock();
@@ -641,7 +645,7 @@ private:
     for (Loop *L : LV) {
       TTI::PeelingPreferences PP =
           gatherPeelingPreferences(L, SE, TTI, None, None);
-      FusionCandidate CurrCand(L, &DT, &PDT, ORE, PP);
+      FusionCandidate CurrCand(L, DT, &PDT, ORE, PP);
       if (!CurrCand.isEligibleForFusion(SE))
         continue;
 
@@ -763,7 +767,7 @@ private:
     LLVM_DEBUG(dbgs() << "Attempting to peel first " << PeelCount
                       << " iterations of the first loop. \n");
 
-    FC0.Peeled = peelLoop(FC0.L, PeelCount, &LI, &SE, &DT, &AC, true);
+    FC0.Peeled = peelLoop(FC0.L, PeelCount, &LI, &SE, DT, &AC, true);
     if (FC0.Peeled) {
       LLVM_DEBUG(dbgs() << "Done Peeling\n");
 
@@ -891,6 +895,14 @@ private:
             continue;
           }
 
+          if (!FC0->GuardBranch && FC1->GuardBranch) {
+            LLVM_DEBUG(dbgs() << "The second candidate is guarded while the "
+                                 "first one is not. Not fusing.\n");
+            reportLoopFusion<OptimizationRemarkMissed>(
+                *FC0, *FC1, OnlySecondCandidateIsGuarded);
+            continue;
+          }
+
           // Ensure that FC0 and FC1 have identical guards.
           // If one (or both) are not guarded, this check is not necessary.
           if (FC0->GuardBranch && FC1->GuardBranch &&
@@ -978,7 +990,7 @@ private:
                                                FuseCounter);
 
           FusionCandidate FusedCand(
-              performFusion((Peel ? FC0Copy : *FC0), *FC1), &DT, &PDT, ORE,
+              performFusion((Peel ? FC0Copy : *FC0), *FC1), DT, &PDT, ORE,
               FC0Copy.PP);
           FusedCand.verify();
           assert(FusedCand.isEligibleForFusion(SE) &&
@@ -1523,6 +1535,7 @@ private:
     assert(FC0.Preheader && FC1.Preheader &&
            "Expecting valid fusion candidates");
     using namespace ore;
+#if LLVM_ENABLE_STATS
     ++Stat;
     ORE.emit(RemarkKind(DEBUG_TYPE, Stat.getName(), FC0.L->getStartLoc(),
                         FC0.Preheader)
@@ -1530,6 +1543,7 @@ private:
              << "]: " << NV("Cand1", StringRef(FC0.Preheader->getName()))
              << " and " << NV("Cand2", StringRef(FC1.Preheader->getName()))
              << ": " << Stat.getDesc());
+#endif
   }
 
   /// Fuse two guarded fusion candidates, creating a new fused loop.

@@ -1,6 +1,6 @@
-// RUN: %clang_cc1 -triple arm64-unknown-linux -disable-O0-optnone -emit-llvm -o - %s | opt -S -mem2reg | FileCheck %s --check-prefix=CHECK --check-prefix=CHECK-LINUX
-// RUN: %clang_cc1 -triple aarch64-windows -disable-O0-optnone -S -emit-llvm -o - %s | opt -S -mem2reg | FileCheck %s --check-prefix=CHECK --check-prefix=CHECK-WIN
-// RUN: %clang_cc1 -triple arm64_32-apple-ios13 -disable-O0-optnone -emit-llvm -o - %s | opt -S -mem2reg | FileCheck %s
+// RUN: %clang_cc1 -no-opaque-pointers -triple arm64-unknown-linux -disable-O0-optnone -emit-llvm -o - %s | opt -S -mem2reg | FileCheck %s --check-prefix=CHECK --check-prefix=CHECK-LINUX
+// RUN: %clang_cc1 -no-opaque-pointers -triple aarch64-windows -disable-O0-optnone -S -emit-llvm -o - %s | opt -S -mem2reg | FileCheck %s --check-prefix=CHECK --check-prefix=CHECK-WIN
+// RUN: %clang_cc1 -no-opaque-pointers -triple arm64_32-apple-ios13 -disable-O0-optnone -emit-llvm -o - %s | opt -S -mem2reg | FileCheck %s
 #include <stdint.h>
 
 void f0(void *a, void *b) {
@@ -30,7 +30,7 @@ uint64_t rbit64(uint64_t a) {
   return __builtin_arm_rbit64(a);
 }
 
-void hints() {
+void hints(void) {
   __builtin_arm_nop();    //CHECK: call {{.*}} @llvm.aarch64.hint(i32 0)
   __builtin_arm_yield();  //CHECK: call {{.*}} @llvm.aarch64.hint(i32 1)
   __builtin_arm_wfe();    //CHECK: call {{.*}} @llvm.aarch64.hint(i32 2)
@@ -39,13 +39,13 @@ void hints() {
   __builtin_arm_sevl();   //CHECK: call {{.*}} @llvm.aarch64.hint(i32 5)
 }
 
-void barriers() {
+void barriers(void) {
   __builtin_arm_dmb(1);  //CHECK: call {{.*}} @llvm.aarch64.dmb(i32 1)
   __builtin_arm_dsb(2);  //CHECK: call {{.*}} @llvm.aarch64.dsb(i32 2)
   __builtin_arm_isb(3);  //CHECK: call {{.*}} @llvm.aarch64.isb(i32 3)
 }
 
-void prefetch() {
+void prefetch(void) {
   __builtin_arm_prefetch(0, 1, 2, 0, 1); // pstl3keep
   // CHECK: call {{.*}} @llvm.prefetch.p0i8(i8* null, i32 1, i32 1, i32 1)
 
@@ -67,7 +67,7 @@ int32_t jcvt(double v) {
 
 __typeof__(__builtin_arm_rsr("1:2:3:4:5")) rsr(void);
 
-uint32_t rsr() {
+uint32_t rsr(void) {
   // CHECK: [[V0:[%A-Za-z0-9.]+]] = call i64 @llvm.read_volatile_register.i64(metadata ![[M0:[0-9]]])
   // CHECK-NEXT: trunc i64 [[V0]] to i32
   return __builtin_arm_rsr("1:2:3:4:5");
@@ -80,7 +80,7 @@ uint64_t rsr64(void) {
   return __builtin_arm_rsr64("1:2:3:4:5");
 }
 
-void *rsrp() {
+void *rsrp(void) {
   // CHECK: [[V0:[%A-Za-z0-9.]+]] = call i64 @llvm.read_volatile_register.i64(metadata ![[M0:[0-9]]])
   // CHECK-NEXT: inttoptr i64 [[V0]] to i8*
   return __builtin_arm_rsrp("1:2:3:4:5");
@@ -122,6 +122,32 @@ unsigned int clsl(unsigned long v) {
 unsigned int clsll(uint64_t v) {
   // CHECK: call i32 @llvm.aarch64.cls64(i64 %v)
   return __builtin_arm_cls64(v);
+}
+
+// CHECK-LABEL: @rndr(
+// CHECK-NEXT:  entry:
+// CHECK-NEXT:    [[TMP0:%.*]] = call { i64, i1 } @llvm.aarch64.rndr()
+// CHECK-NEXT:    [[TMP1:%.*]] = extractvalue { i64, i1 } [[TMP0]], 0
+// CHECK-NEXT:    [[TMP2:%.*]] = extractvalue { i64, i1 } [[TMP0]], 1
+// CHECK-NEXT:    store i64 [[TMP1]], i64* [[__ADDR:%.*]], align 8
+// CHECK-NEXT:    [[TMP3:%.*]] = zext i1 [[TMP2]] to i32
+// CHECK-NEXT:    ret i32 [[TMP3]]
+//
+int rndr(uint64_t *__addr) {
+  return __builtin_arm_rndr(__addr);
+}
+
+// CHECK-LABEL: @rndrrs(
+// CHECK-NEXT:  entry:
+// CHECK-NEXT:    [[TMP0:%.*]] = call { i64, i1 } @llvm.aarch64.rndrrs()
+// CHECK-NEXT:    [[TMP1:%.*]] = extractvalue { i64, i1 } [[TMP0]], 0
+// CHECK-NEXT:    [[TMP2:%.*]] = extractvalue { i64, i1 } [[TMP0]], 1
+// CHECK-NEXT:    store i64 [[TMP1]], i64* [[__ADDR:%.*]], align 8
+// CHECK-NEXT:    [[TMP3:%.*]] = zext i1 [[TMP2]] to i32
+// CHECK-NEXT:    ret i32 [[TMP3]]
+//
+int rndrrs(uint64_t *__addr) {
+  return __builtin_arm_rndrrs(__addr);
 }
 
 // CHECK: ![[M0]] = !{!"1:2:3:4:5"}

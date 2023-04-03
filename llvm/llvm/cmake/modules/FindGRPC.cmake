@@ -1,3 +1,5 @@
+option(ENABLE_GRPC_REFLECTION "Link clangd-index-server to gRPC Reflection library" OFF)
+
 # FIXME(kirillbobyrev): Check if gRPC and Protobuf headers can be included at
 # configure time.
 find_package(Threads REQUIRED)
@@ -10,7 +12,7 @@ if (GRPC_INSTALL_PATH)
   # LLVM's BUILD_SHARED_LIBS has no effect).
   set(protobuf_MODULE_COMPATIBLE TRUE)
   find_package(Protobuf CONFIG REQUIRED HINTS ${GRPC_INSTALL_PATH})
-  message(STATUS "Using protobuf ${protobuf_VERSION}")
+  message(STATUS "Using protobuf ${Protobuf_VERSION}")
   find_package(gRPC CONFIG REQUIRED HINTS ${GRPC_INSTALL_PATH})
   message(STATUS "Using gRPC ${gRPC_VERSION}")
 
@@ -22,6 +24,10 @@ if (GRPC_INSTALL_PATH)
   add_library(protobuf ALIAS protobuf::libprotobuf)
   set_target_properties(gRPC::grpc++ PROPERTIES IMPORTED_GLOBAL TRUE)
   add_library(grpc++ ALIAS gRPC::grpc++)
+  if (ENABLE_GRPC_REFLECTION)
+    set_target_properties(gRPC::grpc++_reflection PROPERTIES IMPORTED_GLOBAL TRUE)
+    add_library(grpc++_reflection ALIAS gRPC::grpc++_reflection)
+  endif()
 
   set(GRPC_CPP_PLUGIN $<TARGET_FILE:gRPC::grpc_cpp_plugin>)
   set(PROTOC ${Protobuf_PROTOC_EXECUTABLE})
@@ -42,6 +48,7 @@ else()
   # the system path.
   set(GRPC_OPTS "")
   set(PROTOBUF_OPTS "")
+  set(GRPC_INCLUDE_PATHS "")
   if (${APPLE})
     find_program(HOMEBREW brew)
     # If Homebrew is not found, the user might have installed libraries
@@ -55,26 +62,45 @@ else()
         OUTPUT_VARIABLE PROTOBUF_HOMEBREW_PATH
         RESULT_VARIABLE PROTOBUF_HOMEBREW_RETURN_CODE
         OUTPUT_STRIP_TRAILING_WHITESPACE)
+      execute_process(COMMAND ${HOMEBREW} --prefix abseil
+        OUTPUT_VARIABLE ABSL_HOMEBREW_PATH
+        RESULT_VARIABLE ABSL_HOMEBREW_RETURN_CODE
+        OUTPUT_STRIP_TRAILING_WHITESPACE)
       # If either library is not installed via Homebrew, fall back to the
       # system path.
       if (GRPC_HOMEBREW_RETURN_CODE EQUAL "0")
-        include_directories(${GRPC_HOMEBREW_PATH}/include)
+        list(APPEND GRPC_INCLUDE_PATHS ${GRPC_HOMEBREW_PATH}/include)
         list(APPEND GRPC_OPTS PATHS ${GRPC_HOMEBREW_PATH}/lib NO_DEFAULT_PATH)
       endif()
       if (PROTOBUF_HOMEBREW_RETURN_CODE EQUAL "0")
-        include_directories(${PROTOBUF_HOMEBREW_PATH}/include)
+        list(APPEND GRPC_INCLUDE_PATHS ${PROTOBUF_HOMEBREW_PATH}/include)
         list(APPEND PROTOBUF_OPTS PATHS ${PROTOBUF_HOMEBREW_PATH}/lib NO_DEFAULT_PATH)
+      endif()
+      if (ABSL_HOMEBREW_RETURN_CODE EQUAL "0")
+        list(APPEND GRPC_INCLUDE_PATHS ${ABSL_HOMEBREW_PATH}/include)
       endif()
     endif()
   endif()
-  find_library(GRPC_LIBRARY grpc++ $GRPC_OPTS REQUIRED)
-  add_library(grpc++ UNKNOWN IMPORTED GLOBAL)
-  message(STATUS "Using grpc++: " ${GRPC_LIBRARY})
-  set_target_properties(grpc++ PROPERTIES IMPORTED_LOCATION ${GRPC_LIBRARY})
-  find_library(PROTOBUF_LIBRARY protobuf $PROTOBUF_OPTS REQUIRED)
-  message(STATUS "Using protobuf: " ${PROTOBUF_LIBRARY})
-  add_library(protobuf UNKNOWN IMPORTED GLOBAL)
-  set_target_properties(protobuf PROPERTIES IMPORTED_LOCATION ${PROTOBUF_LIBRARY})
+  if(NOT TARGET grpc++)
+    find_library(GRPC_LIBRARY grpc++ ${GRPC_OPTS} REQUIRED)
+    add_library(grpc++ UNKNOWN IMPORTED GLOBAL)
+    message(STATUS "Using grpc++: " ${GRPC_LIBRARY})
+    set_target_properties(grpc++ PROPERTIES IMPORTED_LOCATION ${GRPC_LIBRARY})
+    target_include_directories(grpc++ INTERFACE ${GRPC_INCLUDE_PATHS})
+    if (ENABLE_GRPC_REFLECTION)
+      find_library(GRPC_REFLECTION_LIBRARY grpc++_reflection ${GRPC_OPTS} REQUIRED)
+      add_library(grpc++_reflection UNKNOWN IMPORTED GLOBAL)
+      set_target_properties(grpc++_reflection PROPERTIES IMPORTED_LOCATION ${GRPC_REFLECTION_LIBRARY})
+    endif()
+    find_library(PROTOBUF_LIBRARY protobuf ${PROTOBUF_OPTS} REQUIRED)
+    message(STATUS "Using protobuf: " ${PROTOBUF_LIBRARY})
+    add_library(protobuf UNKNOWN IMPORTED GLOBAL)
+    set_target_properties(protobuf PROPERTIES IMPORTED_LOCATION ${PROTOBUF_LIBRARY})
+  endif()
+endif()
+
+if (ENABLE_GRPC_REFLECTION)
+  set(REFLECTION_LIBRARY grpc++_reflection)
 endif()
 
 # Proto headers are generated in ${CMAKE_CURRENT_BINARY_DIR}.

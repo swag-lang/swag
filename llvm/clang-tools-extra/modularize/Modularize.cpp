@@ -247,7 +247,6 @@
 #include "llvm/Support/MemoryBuffer.h"
 #include "llvm/Support/Path.h"
 #include <algorithm>
-#include <fstream>
 #include <iterator>
 #include <string>
 #include <vector>
@@ -311,13 +310,12 @@ cl::desc("Only warn if #include directives are inside extern or namespace"
 
 // Option for include paths for coverage check.
 static cl::list<std::string>
-IncludePaths("I", cl::desc("Include path for coverage check."),
-cl::ZeroOrMore, cl::value_desc("path"));
+    IncludePaths("I", cl::desc("Include path for coverage check."),
+                 cl::value_desc("path"));
 
 // Option for disabling the coverage check.
-static cl::opt<bool>
-NoCoverageCheck("no-coverage-check", cl::init(false),
-cl::desc("Don't do the coverage check."));
+static cl::opt<bool> NoCoverageCheck("no-coverage-check",
+                                     cl::desc("Don't do the coverage check."));
 
 // Option for just doing the coverage check.
 static cl::opt<bool>

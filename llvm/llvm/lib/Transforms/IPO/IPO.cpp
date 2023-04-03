@@ -23,8 +23,7 @@
 using namespace llvm;
 
 void llvm::initializeIPO(PassRegistry &Registry) {
-  initializeOpenMPOptLegacyPassPass(Registry);
-  initializeArgPromotionPass(Registry);
+  initializeOpenMPOptCGSCCLegacyPassPass(Registry);
   initializeAnnotation2MetadataLegacyPass(Registry);
   initializeCalledValuePropagationLegacyPassPass(Registry);
   initializeConstantMergeLegacyPassPass(Registry);
@@ -32,6 +31,7 @@ void llvm::initializeIPO(PassRegistry &Registry) {
   initializeDAEPass(Registry);
   initializeDAHPass(Registry);
   initializeForceFunctionAttrsLegacyPassPass(Registry);
+  initializeFunctionSpecializationLegacyPassPass(Registry);
   initializeGlobalDCELegacyPassPass(Registry);
   initializeGlobalOptLegacyPassPass(Registry);
   initializeGlobalSplitPass(Registry);
@@ -44,7 +44,6 @@ void llvm::initializeIPO(PassRegistry &Registry) {
   initializeLoopExtractorLegacyPassPass(Registry);
   initializeBlockExtractorLegacyPassPass(Registry);
   initializeSingleLoopExtractorPass(Registry);
-  initializeLowerTypeTestsPass(Registry);
   initializeMergeFunctionsLegacyPassPass(Registry);
   initializePartialInlinerLegacyPassPass(Registry);
   initializeAttributorLegacyPassPass(Registry);
@@ -60,17 +59,10 @@ void llvm::initializeIPO(PassRegistry &Registry) {
   initializeStripNonDebugSymbolsPass(Registry);
   initializeBarrierNoopPass(Registry);
   initializeEliminateAvailableExternallyLegacyPassPass(Registry);
-  initializeSampleProfileLoaderLegacyPassPass(Registry);
-  initializeFunctionImportLegacyPassPass(Registry);
-  initializeWholeProgramDevirtPass(Registry);
 }
 
 void LLVMInitializeIPO(LLVMPassRegistryRef R) {
   initializeIPO(*unwrap(R));
-}
-
-void LLVMAddArgumentPromotionPass(LLVMPassManagerRef PM) {
-  unwrap(PM)->add(createArgumentPromotionPass());
 }
 
 void LLVMAddCalledValuePropagationPass(LLVMPassManagerRef PM) {

@@ -299,8 +299,6 @@ CXCursor cxcursor::MakeCXCursor(const Stmt *S, const Decl *Parent,
   case Stmt::BinaryConditionalOperatorClass:
   case Stmt::TypeTraitExprClass:
   case Stmt::CoawaitExprClass:
-  case Stmt::ConceptSpecializationExprClass:
-  case Stmt::RequiresExprClass:
   case Stmt::DependentCoawaitExprClass:
   case Stmt::CoyieldExprClass:
   case Stmt::CXXBindTemporaryExprClass:
@@ -336,6 +334,7 @@ CXCursor cxcursor::MakeCXCursor(const Stmt *S, const Decl *Parent,
   case Stmt::ObjCBoxedExprClass:
   case Stmt::ObjCSubscriptRefExprClass:
   case Stmt::RecoveryExprClass:
+  case Stmt::SYCLUniqueStableNameExprClass:
     K = CXCursor_UnexposedExpr;
     break;
 
@@ -636,14 +635,34 @@ CXCursor cxcursor::MakeCXCursor(const Stmt *S, const Decl *Parent,
     return getSelectorIdentifierCursor(SelectorIdIndex, C);
   }
 
+  case Stmt::ConceptSpecializationExprClass:
+    K = CXCursor_ConceptSpecializationExpr;
+    break;
+
+  case Stmt::RequiresExprClass:
+    K = CXCursor_RequiresExpr;
+    break;
+
   case Stmt::MSDependentExistsStmtClass:
     K = CXCursor_UnexposedStmt;
+    break;
+  case Stmt::OMPCanonicalLoopClass:
+    K = CXCursor_OMPCanonicalLoop;
+    break;
+  case Stmt::OMPMetaDirectiveClass:
+    K = CXCursor_OMPMetaDirective;
     break;
   case Stmt::OMPParallelDirectiveClass:
     K = CXCursor_OMPParallelDirective;
     break;
   case Stmt::OMPSimdDirectiveClass:
     K = CXCursor_OMPSimdDirective;
+    break;
+  case Stmt::OMPTileDirectiveClass:
+    K = CXCursor_OMPTileDirective;
+    break;
+  case Stmt::OMPUnrollDirectiveClass:
+    K = CXCursor_OMPUnrollDirective;
     break;
   case Stmt::OMPForDirectiveClass:
     K = CXCursor_OMPForDirective;
@@ -674,6 +693,9 @@ CXCursor cxcursor::MakeCXCursor(const Stmt *S, const Decl *Parent,
     break;
   case Stmt::OMPParallelMasterDirectiveClass:
     K = CXCursor_OMPParallelMasterDirective;
+    break;
+  case Stmt::OMPParallelMaskedDirectiveClass:
+    K = CXCursor_OMPParallelMaskedDirective;
     break;
   case Stmt::OMPParallelSectionsDirectiveClass:
     K = CXCursor_OMPParallelSectionsDirective;
@@ -747,14 +769,26 @@ CXCursor cxcursor::MakeCXCursor(const Stmt *S, const Decl *Parent,
   case Stmt::OMPMasterTaskLoopDirectiveClass:
     K = CXCursor_OMPMasterTaskLoopDirective;
     break;
+  case Stmt::OMPMaskedTaskLoopDirectiveClass:
+    K = CXCursor_OMPMaskedTaskLoopDirective;
+    break;
   case Stmt::OMPMasterTaskLoopSimdDirectiveClass:
     K = CXCursor_OMPMasterTaskLoopSimdDirective;
+    break;
+  case Stmt::OMPMaskedTaskLoopSimdDirectiveClass:
+    K = CXCursor_OMPMaskedTaskLoopSimdDirective;
     break;
   case Stmt::OMPParallelMasterTaskLoopDirectiveClass:
     K = CXCursor_OMPParallelMasterTaskLoopDirective;
     break;
+  case Stmt::OMPParallelMaskedTaskLoopDirectiveClass:
+    K = CXCursor_OMPParallelMaskedTaskLoopDirective;
+    break;
   case Stmt::OMPParallelMasterTaskLoopSimdDirectiveClass:
     K = CXCursor_OMPParallelMasterTaskLoopSimdDirective;
+    break;
+  case Stmt::OMPParallelMaskedTaskLoopSimdDirectiveClass:
+    K = CXCursor_OMPParallelMaskedTaskLoopSimdDirective;
     break;
   case Stmt::OMPDistributeDirectiveClass:
     K = CXCursor_OMPDistributeDirective;
@@ -800,6 +834,30 @@ CXCursor cxcursor::MakeCXCursor(const Stmt *S, const Decl *Parent,
     break;
   case Stmt::OMPTargetTeamsDistributeSimdDirectiveClass:
     K = CXCursor_OMPTargetTeamsDistributeSimdDirective;
+    break;
+  case Stmt::OMPInteropDirectiveClass:
+    K = CXCursor_OMPInteropDirective;
+    break;
+  case Stmt::OMPDispatchDirectiveClass:
+    K = CXCursor_OMPDispatchDirective;
+    break;
+  case Stmt::OMPMaskedDirectiveClass:
+    K = CXCursor_OMPMaskedDirective;
+    break;
+  case Stmt::OMPGenericLoopDirectiveClass:
+    K = CXCursor_OMPGenericLoopDirective;
+    break;
+  case Stmt::OMPTeamsGenericLoopDirectiveClass:
+    K = CXCursor_OMPTeamsGenericLoopDirective;
+    break;
+  case Stmt::OMPTargetTeamsGenericLoopDirectiveClass:
+    K = CXCursor_OMPTargetTeamsGenericLoopDirective;
+    break;
+  case Stmt::OMPParallelGenericLoopDirectiveClass:
+    K = CXCursor_OMPParallelGenericLoopDirective;
+    break;
+  case Stmt::OMPTargetParallelGenericLoopDirectiveClass:
+    K = CXCursor_OMPTargetParallelGenericLoopDirective;
     break;
   case Stmt::BuiltinBitCastExprClass:
     K = CXCursor_BuiltinBitCastExpr;
@@ -1686,7 +1744,7 @@ CXType clang_Cursor_getReceiverType(CXCursor C) {
     ME = dyn_cast_or_null<MemberExpr>(CE->getCallee());
 
   if (ME) {
-    if (dyn_cast_or_null<CXXMethodDecl>(ME->getMemberDecl())) {
+    if (isa_and_nonnull<CXXMethodDecl>(ME->getMemberDecl())) {
       auto receiverTy = ME->getBase()->IgnoreImpCasts()->getType();
       return cxtype::MakeCXType(receiverTy, TU);
     }

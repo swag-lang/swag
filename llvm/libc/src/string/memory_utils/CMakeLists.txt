@@ -1,21 +1,37 @@
-add_gen_header(
-  cacheline_size
-  DEF_FILE
-    cacheline_size.h.def
-  GEN_HDR
-    cacheline_size.h
-  PARAMS
-    machine_cacheline_size=cacheline_size_${LIBC_TARGET_MACHINE}.h.inc
-  DATA_FILES
-    cacheline_size_${LIBC_TARGET_MACHINE}.h.inc
-)
-
+#TODO(michaelrj): split out the implementations from memory_utils
 add_header_library(
   memory_utils
   HDRS
     utils.h
-    memcpy_utils.h
-    memset_utils.h
-  DEPENDS
-    .cacheline_size
+    elements.h
+    bcmp_implementations.h
+    memcmp_implementations.h
+    memcpy_implementations.h
+    memset_implementations.h
+  DEPS
+    libc.src.__support.CPP.bit
+)
+
+add_header_library(
+  memcpy_implementation
+  HDRS
+    memcpy_implementations.h
+  DEPS
+    .memory_utils
+)
+
+add_header_library(
+  memcmp_implementation
+  HDRS
+    memcmp_implementations.h
+  DEPS
+    .memory_utils
+)
+
+add_header_library(
+  memset_implementation
+  HDRS
+    memset_implementations.h
+  DEPS
+    .memory_utils
 )

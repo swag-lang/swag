@@ -75,7 +75,7 @@ protected:
   }
 
   static bool consumeHexStyle(StringRef &Str, HexPrintStyle &Style) {
-    if (!Str.startswith_lower("x"))
+    if (!Str.startswith_insensitive("x"))
       return false;
 
     if (Str.consume_front("x-"))
@@ -313,7 +313,7 @@ struct format_provider<T,
       S = FloatStyle::Fixed;
 
     Optional<size_t> Precision = parseNumericPrecision(Style);
-    if (!Precision.hasValue())
+    if (!Precision)
       Precision = getDefaultPrecision(S);
 
     write_double(Stream, static_cast<double>(V), S, Precision);

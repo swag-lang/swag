@@ -47,9 +47,9 @@ bool Operand::isUse() const { return !IsDef; }
 
 bool Operand::isReg() const { return Tracker; }
 
-bool Operand::isTied() const { return TiedToIndex.hasValue(); }
+bool Operand::isTied() const { return TiedToIndex.has_value(); }
 
-bool Operand::isVariable() const { return VariableIndex.hasValue(); }
+bool Operand::isVariable() const { return VariableIndex.has_value(); }
 
 bool Operand::isMemory() const {
   return isExplicit() &&
@@ -374,8 +374,10 @@ void DumpMCOperand(const MCRegisterInfo &MCRegisterInfo, const MCOperand &Op,
     OS << MCRegisterInfo.getName(Op.getReg());
   else if (Op.isImm())
     OS << Op.getImm();
-  else if (Op.isFPImm())
-    OS << Op.getFPImm();
+  else if (Op.isDFPImm())
+    OS << bit_cast<double>(Op.getDFPImm());
+  else if (Op.isSFPImm())
+    OS << bit_cast<float>(Op.getSFPImm());
   else if (Op.isExpr())
     OS << "Expr";
   else if (Op.isInst())

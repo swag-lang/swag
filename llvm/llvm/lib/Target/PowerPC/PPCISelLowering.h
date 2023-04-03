@@ -51,9 +51,9 @@ namespace llvm {
     ///
     FSEL,
 
-    /// XSMAXCDP, XSMINCDP - C-type min/max instructions.
-    XSMAXCDP,
-    XSMINCDP,
+    /// XSMAXC[DQ]P, XSMINC[DQ]P - C-type min/max instructions.
+    XSMAXC,
+    XSMINC,
 
     /// FCFID - The FCFID instruction, taking an f64 operand and producing
     /// and f64 value containing the FP representation of the integer that
@@ -77,7 +77,7 @@ namespace llvm {
     FCTIDUZ,
     FCTIWUZ,
 
-    /// Floating-point-to-interger conversion instructions
+    /// Floating-point-to-integer conversion instructions
     FP_TO_UINT_IN_VSR,
     FP_TO_SINT_IN_VSR,
 
@@ -199,6 +199,14 @@ namespace llvm {
     /// instruction and the TOC reload required on 64-bit ELF, 32-bit AIX
     /// and 64-bit AIX.
     BCTRL_LOAD_TOC,
+
+    /// The variants that implicitly define rounding mode for calls with
+    /// strictfp semantics.
+    CALL_RM,
+    CALL_NOP_RM,
+    CALL_NOTOC_RM,
+    BCTRL_RM,
+    BCTRL_LOAD_TOC_RM,
 
     /// Return with a flag operand, matched by 'blr'
     RET_FLAG,
@@ -355,6 +363,15 @@ namespace llvm {
     /// register assignment.
     ADDI_TLSGD_L_ADDR,
 
+    /// GPRC = TLSGD_AIX, TOC_ENTRY, TOC_ENTRY
+    /// G8RC = TLSGD_AIX, TOC_ENTRY, TOC_ENTRY
+    /// Op that combines two register copies of TOC entries
+    /// (region handle into R3 and variable offset into R4) followed by a
+    /// GET_TLS_ADDR node which will be expanded to a call to __get_tls_addr.
+    /// This node is used in 64-bit mode as well (in which case the result is
+    /// G8RC and inputs are X3/X4).
+    TLSGD_AIX,
+
     /// G8RC = ADDIS_TLSLD_HA %x2, Symbol - For the local-dynamic TLS
     /// model, produces an ADDIS8 instruction that adds the GOT base
     /// register to sym\@got\@tlsld\@ha.
@@ -485,6 +502,11 @@ namespace llvm {
     /// Constrained floating point add in round-to-zero mode.
     STRICT_FADDRTZ,
 
+    // NOTE: The nodes below may require PC-Rel specific patterns if the
+    // address could be PC-Relative. When adding new nodes below, consider
+    // whether or not the address can be PC-Relative and add the corresponding
+    // PC-relative patterns and tests.
+
     /// CHAIN = STBRX CHAIN, GPRC, Ptr, Type - This is a
     /// byte-swapping store instruction.  It byte-swaps the low "Type" bits of
     /// the GPRC input, then stores it through Ptr.  Type can be either i16 or
@@ -544,6 +566,14 @@ namespace llvm {
     /// VSRC, CHAIN = LD_SPLAT, CHAIN, Ptr - a splatting load memory
     /// instructions such as LXVDSX, LXVWSX.
     LD_SPLAT,
+
+    /// VSRC, CHAIN = ZEXT_LD_SPLAT, CHAIN, Ptr - a splatting load memory
+    /// that zero-extends.
+    ZEXT_LD_SPLAT,
+
+    /// VSRC, CHAIN = SEXT_LD_SPLAT, CHAIN, Ptr - a splatting load memory
+    /// that sign-extends.
+    SEXT_LD_SPLAT,
 
     /// CHAIN = STXVD2X CHAIN, VSRC, Ptr - Occurs only for little endian.
     /// Maps directly to an stxvd2x instruction that will be preceded by
@@ -662,6 +692,51 @@ namespace llvm {
     /// the number of bytes of each element [124] -> [bhw].
     SDValue get_VSPLTI_elt(SDNode *N, unsigned ByteSize, SelectionDAG &DAG);
 
+    // Flags for computing the optimal addressing mode for loads and stores.
+    enum MemOpFlags {
+      MOF_None = 0,
+
+      // Extension mode for integer loads.
+      MOF_SExt = 1,
+      MOF_ZExt = 1 << 1,
+      MOF_NoExt = 1 << 2,
+
+      // Address computation flags.
+      MOF_NotAddNorCst = 1 << 5,      // Not const. or sum of ptr and scalar.
+      MOF_RPlusSImm16 = 1 << 6,       // Reg plus signed 16-bit constant.
+      MOF_RPlusLo = 1 << 7,           // Reg plus signed 16-bit relocation
+      MOF_RPlusSImm16Mult4 = 1 << 8,  // Reg plus 16-bit signed multiple of 4.
+      MOF_RPlusSImm16Mult16 = 1 << 9, // Reg plus 16-bit signed multiple of 16.
+      MOF_RPlusSImm34 = 1 << 10,      // Reg plus 34-bit signed constant.
+      MOF_RPlusR = 1 << 11,           // Sum of two variables.
+      MOF_PCRel = 1 << 12,            // PC-Relative relocation.
+      MOF_AddrIsSImm32 = 1 << 13,     // A simple 32-bit constant.
+
+      // The in-memory type.
+      MOF_SubWordInt = 1 << 15,
+      MOF_WordInt = 1 << 16,
+      MOF_DoubleWordInt = 1 << 17,
+      MOF_ScalarFloat = 1 << 18, // Scalar single or double precision.
+      MOF_Vector = 1 << 19,      // Vector types and quad precision scalars.
+      MOF_Vector256 = 1 << 20,
+
+      // Subtarget features.
+      MOF_SubtargetBeforeP9 = 1 << 22,
+      MOF_SubtargetP9 = 1 << 23,
+      MOF_SubtargetP10 = 1 << 24,
+      MOF_SubtargetSPE = 1 << 25
+    };
+
+    // The addressing modes for loads and stores.
+    enum AddrMode {
+      AM_None,
+      AM_DForm,
+      AM_DSForm,
+      AM_DQForm,
+      AM_PrefixDForm,
+      AM_XForm,
+      AM_PCRel
+    };
   } // end namespace PPC
 
   class PPCTargetLowering : public TargetLowering {
@@ -690,7 +765,19 @@ namespace llvm {
     /// then the VPERM for the shuffle. All in all a very slow sequence.
     TargetLoweringBase::LegalizeTypeAction getPreferredVectorAction(MVT VT)
       const override {
-      if (VT.getVectorNumElements() != 1 && VT.getScalarSizeInBits() % 8 == 0)
+      // Default handling for scalable and single-element vectors.
+      if (VT.isScalableVector() || VT.getVectorNumElements() == 1)
+        return TargetLoweringBase::getPreferredVectorAction(VT);
+
+      // Split and promote vNi1 vectors so we don't produce v256i1/v512i1
+      // types as those are only for MMA instructions.
+      if (VT.getScalarSizeInBits() == 1 && VT.getSizeInBits() > 16)
+        return TypeSplitVector;
+      if (VT.getScalarSizeInBits() == 1)
+        return TypePromoteInteger;
+
+      // Widen vectors that have reasonably sized elements.
+      if (VT.getScalarSizeInBits() % 8 == 0)
         return TypeWidenVector;
       return TargetLoweringBase::getPreferredVectorAction(VT);
     }
@@ -737,7 +824,7 @@ namespace llvm {
     EVT getSetCCResultType(const DataLayout &DL, LLVMContext &Context,
                            EVT VT) const override;
 
-    /// Return true if target always beneficiates from combining into FMA for a
+    /// Return true if target always benefits from combining into FMA for a
     /// given value type. This must typically return false on targets where FMA
     /// takes more cycles to execute than FADD.
     bool enableAggressiveFMAFusion(EVT VT) const override;
@@ -818,10 +905,29 @@ namespace llvm {
       return true;
     }
 
-    Instruction *emitLeadingFence(IRBuilder<> &Builder, Instruction *Inst,
+    Instruction *emitLeadingFence(IRBuilderBase &Builder, Instruction *Inst,
                                   AtomicOrdering Ord) const override;
-    Instruction *emitTrailingFence(IRBuilder<> &Builder, Instruction *Inst,
+    Instruction *emitTrailingFence(IRBuilderBase &Builder, Instruction *Inst,
                                    AtomicOrdering Ord) const override;
+
+    bool shouldInlineQuadwordAtomics() const;
+
+    TargetLowering::AtomicExpansionKind
+    shouldExpandAtomicRMWInIR(AtomicRMWInst *AI) const override;
+
+    TargetLowering::AtomicExpansionKind
+    shouldExpandAtomicCmpXchgInIR(AtomicCmpXchgInst *AI) const override;
+
+    Value *emitMaskedAtomicRMWIntrinsic(IRBuilderBase &Builder,
+                                        AtomicRMWInst *AI, Value *AlignedAddr,
+                                        Value *Incr, Value *Mask,
+                                        Value *ShiftAmt,
+                                        AtomicOrdering Ord) const override;
+    Value *emitMaskedAtomicCmpXchgIntrinsic(IRBuilderBase &Builder,
+                                            AtomicCmpXchgInst *CI,
+                                            Value *AlignedAddr, Value *CmpVal,
+                                            Value *NewVal, Value *Mask,
+                                            AtomicOrdering Ord) const override;
 
     MachineBasicBlock *
     EmitInstrWithCustomInserter(MachineInstr &MI,
@@ -866,7 +972,7 @@ namespace llvm {
     /// getByValTypeAlignment - Return the desired alignment for ByVal aggregate
     /// function arguments in the caller parameter area.  This is the actual
     /// alignment, not its logarithm.
-    unsigned getByValTypeAlignment(Type *Ty,
+    uint64_t getByValTypeAlignment(Type *Ty,
                                    const DataLayout &DL) const override;
 
     /// LowerAsmOperandForConstraint - Lower the specified operand into the Ops
@@ -880,8 +986,6 @@ namespace llvm {
     getInlineAsmMemConstraint(StringRef ConstraintCode) const override {
       if (ConstraintCode == "es")
         return InlineAsm::Constraint_es;
-      else if (ConstraintCode == "o")
-        return InlineAsm::Constraint_o;
       else if (ConstraintCode == "Q")
         return InlineAsm::Constraint_Q;
       else if (ConstraintCode == "Z")
@@ -961,7 +1065,7 @@ namespace llvm {
     /// Is unaligned memory access allowed for the given type, and is it fast
     /// relative to software emulation.
     bool allowsMisalignedMemoryAccesses(
-        EVT VT, unsigned AddrSpace, unsigned Align = 1,
+        EVT VT, unsigned AddrSpace, Align Alignment = Align(1),
         MachineMemOperand::Flags Flags = MachineMemOperand::MONone,
         bool *Fast = nullptr) const override;
 
@@ -998,7 +1102,8 @@ namespace llvm {
     /// Returns true if an argument of type Ty needs to be passed in a
     /// contiguous block of registers in calling convention CallConv.
     bool functionArgumentNeedsConsecutiveRegisters(
-      Type *Ty, CallingConv::ID CallConv, bool isVarArg) const override {
+        Type *Ty, CallingConv::ID CallConv, bool isVarArg,
+        const DataLayout &DL) const override {
       // We support any array type as "consecutive" block in the parameter
       // save area.  The element type defines the alignment requirement and
       // whether the argument should go in GPRs, FPRs, or VRs if available.
@@ -1022,6 +1127,7 @@ namespace llvm {
     /// Override to support customized stack guard loading.
     bool useLoadStackGuardNode() const override;
     void insertSSPDeclarations(Module &M) const override;
+    Value *getSDagStackGuard(const Module &M) const override;
 
     bool isFPImmLegal(const APFloat &Imm, EVT VT,
                       bool ForCodeSize) const override;
@@ -1034,6 +1140,22 @@ namespace llvm {
                                                unsigned JTI,
                                                MCContext &Ctx) const override;
 
+    /// SelectOptimalAddrMode - Based on a node N and it's Parent (a MemSDNode),
+    /// compute the address flags of the node, get the optimal address mode
+    /// based on the flags, and set the Base and Disp based on the address mode.
+    PPC::AddrMode SelectOptimalAddrMode(const SDNode *Parent, SDValue N,
+                                        SDValue &Disp, SDValue &Base,
+                                        SelectionDAG &DAG,
+                                        MaybeAlign Align) const;
+    /// SelectForceXFormMode - Given the specified address, force it to be
+    /// represented as an indexed [r+r] operation (an XForm instruction).
+    PPC::AddrMode SelectForceXFormMode(SDValue N, SDValue &Disp, SDValue &Base,
+                                       SelectionDAG &DAG) const;
+
+    bool
+    splitValueIntoRegisterParts(SelectionDAG &DAG, const SDLoc &DL, SDValue Val,
+                                SDValue *Parts, unsigned NumParts, MVT PartVT,
+                                Optional<CallingConv::ID> CC) const override;
     /// Structure that collects some common arguments that get passed around
     /// between the functions for call lowering.
     struct CallFlags {
@@ -1051,6 +1173,9 @@ namespace llvm {
             IsPatchPoint(IsPatchPoint), IsIndirect(IsIndirect),
             HasNest(HasNest), NoMerge(NoMerge) {}
     };
+
+    CCAssignFn *ccAssignFnForCall(CallingConv::ID CC, bool Return,
+                                  bool IsVarArg) const;
 
   private:
     struct ReuseLoadInfo {
@@ -1075,6 +1200,10 @@ namespace llvm {
         return F;
       }
     };
+
+    // Map that relates a set of common address flags to PPC addressing modes.
+    std::map<PPC::AddrMode, SmallVector<unsigned, 16>> AddrModesMap;
+    void initializeAddrModeMap();
 
     bool canReuseLoadAddress(SDValue Op, EVT MemVT, ReuseLoadInfo &RLI,
                              SelectionDAG &DAG,
@@ -1123,6 +1252,8 @@ namespace llvm {
     SDValue LowerConstantPool(SDValue Op, SelectionDAG &DAG) const;
     SDValue LowerBlockAddress(SDValue Op, SelectionDAG &DAG) const;
     SDValue LowerGlobalTLSAddress(SDValue Op, SelectionDAG &DAG) const;
+    SDValue LowerGlobalTLSAddressAIX(SDValue Op, SelectionDAG &DAG) const;
+    SDValue LowerGlobalTLSAddressLinux(SDValue Op, SelectionDAG &DAG) const;
     SDValue LowerGlobalAddress(SDValue Op, SelectionDAG &DAG) const;
     SDValue LowerJumpTable(SDValue Op, SelectionDAG &DAG) const;
     SDValue LowerSETCC(SDValue Op, SelectionDAG &DAG) const;
@@ -1155,6 +1286,26 @@ namespace llvm {
     SDValue LowerINTRINSIC_VOID(SDValue Op, SelectionDAG &DAG) const;
     SDValue LowerBSWAP(SDValue Op, SelectionDAG &DAG) const;
     SDValue LowerATOMIC_CMP_SWAP(SDValue Op, SelectionDAG &DAG) const;
+    SDValue lowerToLibCall(const char *LibCallName, SDValue Op,
+                           SelectionDAG &DAG) const;
+    SDValue lowerLibCallBasedOnType(const char *LibCallFloatName,
+                                    const char *LibCallDoubleName, SDValue Op,
+                                    SelectionDAG &DAG) const;
+    bool isLowringToMASSFiniteSafe(SDValue Op) const;
+    bool isLowringToMASSSafe(SDValue Op) const;
+    bool isScalarMASSConversionEnabled() const;
+    SDValue lowerLibCallBase(const char *LibCallDoubleName,
+                             const char *LibCallFloatName,
+                             const char *LibCallDoubleNameFinite,
+                             const char *LibCallFloatNameFinite, SDValue Op,
+                             SelectionDAG &DAG) const;
+    SDValue lowerPow(SDValue Op, SelectionDAG &DAG) const;
+    SDValue lowerSin(SDValue Op, SelectionDAG &DAG) const;
+    SDValue lowerCos(SDValue Op, SelectionDAG &DAG) const;
+    SDValue lowerLog(SDValue Op, SelectionDAG &DAG) const;
+    SDValue lowerLog10(SDValue Op, SelectionDAG &DAG) const;
+    SDValue lowerExp(SDValue Op, SelectionDAG &DAG) const;
+    SDValue LowerATOMIC_LOAD_STORE(SDValue Op, SelectionDAG &DAG) const;
     SDValue LowerSCALAR_TO_VECTOR(SDValue Op, SelectionDAG &DAG) const;
     SDValue LowerMUL(SDValue Op, SelectionDAG &DAG) const;
     SDValue LowerFP_EXTEND(SDValue Op, SelectionDAG &DAG) const;
@@ -1306,6 +1457,17 @@ namespace llvm {
     bool mayBeEmittedAsTailCall(const CallInst *CI) const override;
     bool hasBitPreservingFPLogic(EVT VT) const override;
     bool isMaskAndCmp0FoldingBeneficial(const Instruction &AndI) const override;
+
+    /// getAddrModeForFlags - Based on the set of address flags, select the most
+    /// optimal instruction format to match by.
+    PPC::AddrMode getAddrModeForFlags(unsigned Flags) const;
+
+    /// computeMOFlags - Given a node N and it's Parent (a MemSDNode), compute
+    /// the address flags of the load/store instruction that is to be matched.
+    /// The address flags are stored in a map, which is then searched
+    /// through to determine the optimal load/store instruction format.
+    unsigned computeMOFlags(const SDNode *Parent, SDValue N,
+                            SelectionDAG &DAG) const;
   }; // end class PPCTargetLowering
 
   namespace PPC {
@@ -1322,7 +1484,8 @@ namespace llvm {
 
   bool convertToNonDenormSingle(APInt &ArgAPInt);
   bool convertToNonDenormSingle(APFloat &ArgAPFloat);
+  bool checkConvertToNonDenormSingle(APFloat &ArgAPFloat);
 
 } // end namespace llvm
 
-#endif // LLVM_TARGET_POWERPC_PPC32ISELLOWERING_H
+#endif // LLVM_LIB_TARGET_POWERPC_PPCISELLOWERING_H

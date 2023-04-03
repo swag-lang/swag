@@ -123,13 +123,29 @@ public:
     return numCopyAssignmentCalls;
   }
 
-  friend bool operator==(const Constructable & c0, const Constructable & c1) {
+  friend bool operator==(const Constructable &c0, const Constructable &c1) {
     return c0.getValue() == c1.getValue();
   }
 
-  friend bool LLVM_ATTRIBUTE_UNUSED
-  operator!=(const Constructable & c0, const Constructable & c1) {
+  friend bool LLVM_ATTRIBUTE_UNUSED operator!=(const Constructable &c0,
+                                               const Constructable &c1) {
     return c0.getValue() != c1.getValue();
+  }
+
+  friend bool operator<(const Constructable &c0, const Constructable &c1) {
+    return c0.getValue() < c1.getValue();
+  }
+  friend bool LLVM_ATTRIBUTE_UNUSED operator<=(const Constructable &c0,
+                                               const Constructable &c1) {
+    return c0.getValue() <= c1.getValue();
+  }
+  friend bool LLVM_ATTRIBUTE_UNUSED operator>(const Constructable &c0,
+                                              const Constructable &c1) {
+    return c0.getValue() > c1.getValue();
+  }
+  friend bool LLVM_ATTRIBUTE_UNUSED operator>=(const Constructable &c0,
+                                               const Constructable &c1) {
+    return c0.getValue() >= c1.getValue();
   }
 };
 
@@ -208,7 +224,7 @@ typedef ::testing::Types<SmallVector<Constructable, 0>,
                          SmallVector<Constructable, 4>,
                          SmallVector<Constructable, 5>
                          > SmallVectorTestTypes;
-TYPED_TEST_CASE(SmallVectorTest, SmallVectorTestTypes);
+TYPED_TEST_SUITE(SmallVectorTest, SmallVectorTestTypes, );
 
 // Constructor test.
 TYPED_TEST(SmallVectorTest, ConstructorNonIterTest) {
@@ -307,6 +323,32 @@ TYPED_TEST(SmallVectorTest, ResizeShrinkTest) {
   this->assertValuesInOrder(this->theVector, 1u, 1);
   EXPECT_EQ(6, Constructable::getNumConstructorCalls());
   EXPECT_EQ(5, Constructable::getNumDestructorCalls());
+}
+
+// Truncate test.
+TYPED_TEST(SmallVectorTest, TruncateTest) {
+  SCOPED_TRACE("TruncateTest");
+
+  this->theVector.reserve(3);
+  this->makeSequence(this->theVector, 1, 3);
+  this->theVector.truncate(1);
+
+  this->assertValuesInOrder(this->theVector, 1u, 1);
+  EXPECT_EQ(6, Constructable::getNumConstructorCalls());
+  EXPECT_EQ(5, Constructable::getNumDestructorCalls());
+
+#if !defined(NDEBUG) && GTEST_HAS_DEATH_TEST
+  EXPECT_DEATH(this->theVector.truncate(2), "Cannot increase size");
+#endif
+  this->theVector.truncate(1);
+  this->assertValuesInOrder(this->theVector, 1u, 1);
+  EXPECT_EQ(6, Constructable::getNumConstructorCalls());
+  EXPECT_EQ(5, Constructable::getNumDestructorCalls());
+
+  this->theVector.truncate(0);
+  this->assertEmpty(this->theVector);
+  EXPECT_EQ(6, Constructable::getNumConstructorCalls());
+  EXPECT_EQ(6, Constructable::getNumDestructorCalls());
 }
 
 // Resize bigger test.
@@ -740,8 +782,8 @@ TYPED_TEST(SmallVectorTest, InsertEmptyRangeTest) {
 }
 
 // Comparison tests.
-TYPED_TEST(SmallVectorTest, ComparisonTest) {
-  SCOPED_TRACE("ComparisonTest");
+TYPED_TEST(SmallVectorTest, ComparisonEqualityTest) {
+  SCOPED_TRACE("ComparisonEqualityTest");
 
   this->makeSequence(this->theVector, 1, 3);
   this->makeSequence(this->otherVector, 1, 3);
@@ -754,6 +796,36 @@ TYPED_TEST(SmallVectorTest, ComparisonTest) {
 
   EXPECT_FALSE(this->theVector == this->otherVector);
   EXPECT_TRUE(this->theVector != this->otherVector);
+}
+
+// Comparison tests.
+TYPED_TEST(SmallVectorTest, ComparisonLessThanTest) {
+  SCOPED_TRACE("ComparisonLessThanTest");
+
+  this->theVector = {1, 2, 4};
+  this->otherVector = {1, 4};
+
+  EXPECT_TRUE(this->theVector < this->otherVector);
+  EXPECT_TRUE(this->theVector <= this->otherVector);
+  EXPECT_FALSE(this->theVector > this->otherVector);
+  EXPECT_FALSE(this->theVector >= this->otherVector);
+
+  EXPECT_FALSE(this->otherVector < this->theVector);
+  EXPECT_FALSE(this->otherVector <= this->theVector);
+  EXPECT_TRUE(this->otherVector > this->theVector);
+  EXPECT_TRUE(this->otherVector >= this->theVector);
+
+  this->otherVector = {1, 2, 4};
+
+  EXPECT_FALSE(this->theVector < this->otherVector);
+  EXPECT_TRUE(this->theVector <= this->otherVector);
+  EXPECT_FALSE(this->theVector > this->otherVector);
+  EXPECT_TRUE(this->theVector >= this->otherVector);
+
+  EXPECT_FALSE(this->otherVector < this->theVector);
+  EXPECT_TRUE(this->otherVector <= this->theVector);
+  EXPECT_FALSE(this->otherVector > this->theVector);
+  EXPECT_TRUE(this->otherVector >= this->theVector);
 }
 
 // Constant vector tests.
@@ -811,7 +883,7 @@ typedef ::testing::Types<
     std::pair<SmallVector<Constructable, 2>, SmallVector<Constructable, 2>>
   > DualSmallVectorTestTypes;
 
-TYPED_TEST_CASE(DualSmallVectorsTest, DualSmallVectorTestTypes);
+TYPED_TEST_SUITE(DualSmallVectorsTest, DualSmallVectorTestTypes, );
 
 TYPED_TEST(DualSmallVectorsTest, MoveAssignment) {
   SCOPED_TRACE("MoveAssignTest-DualVectorTypes");
@@ -1095,8 +1167,8 @@ protected:
 using SmallVectorReferenceInvalidationTestTypes =
     ::testing::Types<SmallVector<int, 3>, SmallVector<Constructable, 3>>;
 
-TYPED_TEST_CASE(SmallVectorReferenceInvalidationTest,
-                SmallVectorReferenceInvalidationTestTypes);
+TYPED_TEST_SUITE(SmallVectorReferenceInvalidationTest,
+                 SmallVectorReferenceInvalidationTestTypes, );
 
 TYPED_TEST(SmallVectorReferenceInvalidationTest, PushBack) {
   // Note: setup adds [1, 2, ...] to V until it's at capacity in small mode.
@@ -1382,8 +1454,8 @@ using SmallVectorInternalReferenceInvalidationTestTypes =
     ::testing::Types<SmallVector<std::pair<int, int>, 3>,
                      SmallVector<std::pair<Constructable, Constructable>, 3>>;
 
-TYPED_TEST_CASE(SmallVectorInternalReferenceInvalidationTest,
-                SmallVectorInternalReferenceInvalidationTestTypes);
+TYPED_TEST_SUITE(SmallVectorInternalReferenceInvalidationTest,
+                 SmallVectorInternalReferenceInvalidationTestTypes, );
 
 TYPED_TEST(SmallVectorInternalReferenceInvalidationTest, EmplaceBack) {
   // Note: setup adds [1, 2, ...] to V until it's at capacity in small mode.

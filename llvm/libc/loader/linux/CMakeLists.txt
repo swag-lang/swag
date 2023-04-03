@@ -19,11 +19,12 @@ function(add_loader_object name)
 
     add_custom_target(${fq_target_name})
     add_dependencies(${fq_target_name} ${fq_dep_name})
-    get_target_property(dep_objfile ${fq_dep_name} OBJECT_FILES)
+    get_target_property(loader_object ${fq_dep_name} LOADER_OBJECT)
     set_target_properties(
       ${fq_target_name}
       PROPERTIES
         "TARGET_TYPE" "${OBJECT_LIBRARY_TARGET_TYPE}"
+        "LOADER_OBJECT" "${loader_object}"
         "OBJECT_FILES" ""
         "DEPS" "${fq_dep_name}"
     )
@@ -51,21 +52,34 @@ function(add_loader_object name)
     ${fq_target_name}
     PROPERTIES
       "TARGET_TYPE" "${OBJECT_LIBRARY_TARGET_TYPE}"
+      "LOADER_OBJECT" "${objfile}"
       "OBJECT_FILES" ""
       "DEPS" "${fq_target_name}.__objects__"
   )
 endfunction()
 
-if(NOT (EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/${LIBC_TARGET_MACHINE}))
-  message(STATUS "Skipping loader for target machine ${LIBC_TARGET_MACHINE}")
+if(NOT (EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/${LIBC_TARGET_ARCHITECTURE}))
+  message(STATUS "Skipping loader for target architecture ${LIBC_TARGET_ARCHITECTURE}")
   return()
 endif()
 
-add_subdirectory(${LIBC_TARGET_MACHINE})
+add_subdirectory(${LIBC_TARGET_ARCHITECTURE})
 
 add_loader_object(
   crt1
   ALIAS
   DEPENDS
-    .${LIBC_TARGET_MACHINE}.crt1
+    .${LIBC_TARGET_ARCHITECTURE}.crt1
+)
+
+add_loader_object(
+  crti
+  SRC
+    crti.cpp
+)
+
+add_loader_object(
+  crtn
+  SRC
+    crtn.cpp
 )

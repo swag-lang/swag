@@ -20,6 +20,14 @@ import gdb
 import sys
 
 test_failures = 0
+# Sometimes the inital run command can fail to trace the process.
+# (e.g. you don't have ptrace permissions)
+# In these cases gdb still sends us an exited event so we cannot
+# see what "run" printed to check for a warning message, since
+# we get taken to our exit handler before we can look.
+# Instead check that at least one test has been run by the time
+# we exit.
+has_run_tests = False
 
 
 class CheckResult(gdb.Command):
@@ -29,7 +37,11 @@ class CheckResult(gdb.Command):
             "print_and_compare", gdb.COMMAND_DATA)
 
     def invoke(self, arg, from_tty):
+        global has_run_tests
+
         try:
+            has_run_tests = True
+
             # Stack frame is:
             # 0. StopForDebugger
             # 1. ComparePrettyPrintToChars or ComparePrettyPrintToRegex
@@ -37,23 +49,6 @@ class CheckResult(gdb.Command):
             compare_frame = gdb.newest_frame().older()
             testcase_frame = compare_frame.older()
             test_loc = testcase_frame.find_sal()
-
-            expectation_val = compare_frame.read_var("expectation")
-            check_literal = expectation_val.string(encoding="utf-8")
-
-            # Heuristic to determine if libc++ itself has debug
-            # info. If it doesn't, then anything normally homed there
-            # won't be found, and the printer will error. We don't
-            # want to fail the test in this case--the printer itself
-            # is probably fine, or at least we can't tell.
-            if check_literal.startswith("std::shared_ptr"):
-                shared_ptr = compare_frame.read_var("value")
-                if not "__shared_owners_" in shared_ptr.type.fields():
-                    print("IGNORED (no debug info in libc++): " +
-                          test_loc.symtab.filename + ":" +
-                          str(test_loc.line))
-                    return
-
             # Use interactive commands in the correct context to get the pretty
             # printed version
 
@@ -106,7 +101,12 @@ class CheckResult(gdb.Command):
 
 def exit_handler(event=None):
     global test_failures
-    if test_failures:
+    global has_run_tests
+
+    if not has_run_tests:
+        print("FAILED test program did not run correctly, check gdb warnings")
+        test_failures = -1
+    elif test_failures:
         print("FAILED %d cases" % test_failures)
     exit(test_failures)
 

@@ -184,7 +184,7 @@ namespace TemplateSpecializations {
 
 namespace Diags {
   struct A { int n, m; };
-  template<A a> struct X { static_assert(a.n == a.m); }; // expected-error {{static_assert failed due to requirement 'Diags::A{1, 2}.n == Diags::A{1, 2}.m'}}
+  template<A a> struct X { static_assert(a.n == a.m); }; // expected-error {{static assertion failed due to requirement 'Diags::A{1, 2}.n == Diags::A{1, 2}.m'}}
   template struct X<A{1, 2}>; // expected-note {{in instantiation of template class 'Diags::X<{1, 2}>' requested here}}
 }
 
@@ -290,5 +290,18 @@ namespace Predefined {
     Y<*&__func__>(); // expected-error {{reference to predefined '__func__' variable}}
     Y<A{__func__}>(); // expected-error {{pointer to subobject of predefined '__func__' variable}}
     Y<B{__func__[0]}>(); // expected-error {{reference to subobject of predefined '__func__' variable}}
+  }
+}
+
+namespace DependentCTAD {
+  template<auto> struct A {};
+  template<template<typename> typename T, T V> void f(A<V>); // expected-note {{couldn't infer template argument 'T'}}
+  template<typename T> struct B { constexpr B(T) {} };
+
+  void g() {
+    // PR50039: Note that we could in principle deduce T here, but the language
+    // deduction rules don't support that.
+    f(A<B(0)>()); // expected-error {{no matching function}}
+    f<B>(A<B(0)>()); // OK
   }
 }

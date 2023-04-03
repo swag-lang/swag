@@ -1,15 +1,15 @@
-; RUN: opt < %s -wasm-lower-em-ehsjlj -S | FileCheck %s --check-prefixes=CHECK,NO-TLS
-; RUN: opt < %s -wasm-lower-em-ehsjlj -S --mattr=+atomics,+bulk-memory | FileCheck %s --check-prefixes=CHECK,TLS
+; RUN: opt < %s -wasm-lower-em-ehsjlj -enable-emscripten-cxx-exceptions -S | FileCheck %s -DPTR=i32
+; RUN: opt < %s -wasm-lower-em-ehsjlj -enable-emscripten-cxx-exceptions -S --mattr=+atomics,+bulk-memory | FileCheck %s -DPTR=i32
+; RUN: opt < %s -wasm-lower-em-ehsjlj -enable-emscripten-cxx-exceptions --mtriple=wasm64-unknown-unknown -data-layout="e-m:e-p:64:64-i64:64-n32:64-S128" -S | FileCheck %s -DPTR=i64
 
 target datalayout = "e-m:e-p:32:32-i64:64-n32:64-S128"
 target triple = "wasm32-unknown-unknown"
 
 @_ZTIi = external constant i8*
 @_ZTIc = external constant i8*
-; NO-TLS-DAG: __THREW__ = external global i32
-; NO-TLS-DAG: __threwValue = external global i32
-; TLS-DAG: __THREW__ = external thread_local(localexec) global i32
-; TLS-DAG: __threwValue = external thread_local(localexec) global i32
+; CHECK: @__THREW__ = external thread_local global [[PTR]]
+; __threwValue is only used in Emscripten SjLj, so it shouldn't be generated.
+; CHECK-NOT: @__threwValue =
 
 ; Test invoke instruction with clauses (try-catch block)
 define void @clause() personality i8* bitcast (i32 (...)* @__gxx_personality_v0 to i8*) {
@@ -18,11 +18,11 @@ entry:
   invoke void @foo(i32 3)
           to label %invoke.cont unwind label %lpad
 ; CHECK: entry:
-; CHECK-NEXT: store i32 0, i32* @__THREW__
+; CHECK-NEXT: store [[PTR]] 0, [[PTR]]* @__THREW__
 ; CHECK-NEXT: call cc{{.*}} void @__invoke_void_i32(void (i32)* @foo, i32 3)
-; CHECK-NEXT: %[[__THREW__VAL:.*]] = load i32, i32* @__THREW__
-; CHECK-NEXT: store i32 0, i32* @__THREW__
-; CHECK-NEXT: %cmp = icmp eq i32 %[[__THREW__VAL]], 1
+; CHECK-NEXT: %[[__THREW__VAL:.*]] = load [[PTR]], [[PTR]]* @__THREW__
+; CHECK-NEXT: store [[PTR]] 0, [[PTR]]* @__THREW__
+; CHECK-NEXT: %cmp = icmp eq [[PTR]] %[[__THREW__VAL]], 1
 ; CHECK-NEXT: br i1 %cmp, label %lpad, label %invoke.cont
 
 invoke.cont:                                      ; preds = %entry
@@ -77,11 +77,11 @@ entry:
   invoke void @foo(i32 3)
           to label %invoke.cont unwind label %lpad
 ; CHECK: entry:
-; CHECK-NEXT: store i32 0, i32* @__THREW__
+; CHECK-NEXT: store [[PTR]] 0, [[PTR]]* @__THREW__
 ; CHECK-NEXT: call cc{{.*}} void @__invoke_void_i32(void (i32)* @foo, i32 3)
-; CHECK-NEXT: %[[__THREW__VAL:.*]] = load i32, i32* @__THREW__
-; CHECK-NEXT: store i32 0, i32* @__THREW__
-; CHECK-NEXT: %cmp = icmp eq i32 %[[__THREW__VAL]], 1
+; CHECK-NEXT: %[[__THREW__VAL:.*]] = load [[PTR]], [[PTR]]* @__THREW__
+; CHECK-NEXT: store [[PTR]] 0, [[PTR]]* @__THREW__
+; CHECK-NEXT: %cmp = icmp eq [[PTR]] %[[__THREW__VAL]], 1
 ; CHECK-NEXT: br i1 %cmp, label %lpad, label %invoke.cont
 
 invoke.cont:                                      ; preds = %entry
@@ -125,7 +125,7 @@ entry:
   %0 = invoke noalias i8* @bar(i8 signext 1, i8 zeroext 2)
           to label %invoke.cont unwind label %lpad
 ; CHECK: entry:
-; CHECK-NEXT: store i32 0, i32* @__THREW__
+; CHECK-NEXT: store [[PTR]] 0, [[PTR]]* @__THREW__
 ; CHECK-NEXT: %0 = call cc{{.*}} noalias i8* @"__invoke_i8*_i8_i8"(i8* (i8, i8)* @bar, i8 signext 1, i8 zeroext 2)
 
 invoke.cont:                                      ; preds = %entry
@@ -171,7 +171,6 @@ declare void @__cxa_call_unexpected(i8*)
 
 ; JS glue functions and invoke wrappers declaration
 ; CHECK-DAG: declare i32 @getTempRet0()
-; CHECK-DAG: declare void @setTempRet0(i32)
 ; CHECK-DAG: declare void @__resumeException(i8*)
 ; CHECK-DAG: declare void @__invoke_void_i32(void (i32)*, i32)
 ; CHECK-DAG: declare i8* @__cxa_find_matching_catch_4(i8*, i8*)

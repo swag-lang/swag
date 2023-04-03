@@ -24,6 +24,7 @@
 #include "lldb/Target/ThreadPlan.h"
 #include "lldb/Target/ThreadPlanCallFunction.h"
 #include "lldb/Utility/DataExtractor.h"
+#include "lldb/Utility/LLDBLog.h"
 #include "lldb/Utility/Log.h"
 #include "lldb/Utility/State.h"
 
@@ -193,8 +194,8 @@ bool FunctionCaller::WriteFunctionArguments(
     // Special case: if it's a pointer, don't do anything (the ABI supports
     // passing cstrings)
 
-    if (arg_value->GetValueType() == Value::eValueTypeHostAddress &&
-        arg_value->GetContextType() == Value::eContextTypeInvalid &&
+    if (arg_value->GetValueType() == Value::ValueType::HostAddress &&
+        arg_value->GetContextType() == Value::ContextType::Invalid &&
         arg_value->GetCompilerType().IsPointerType())
       continue;
 
@@ -218,7 +219,7 @@ bool FunctionCaller::InsertFunction(ExecutionContext &exe_ctx,
   if (!WriteFunctionArguments(exe_ctx, args_addr_ref, diagnostic_manager))
     return false;
 
-  Log *log(lldb_private::GetLogIfAllCategoriesSet(LIBLLDB_LOG_STEP));
+  Log *log = GetLog(LLDBLog::Step);
   LLDB_LOGF(log, "Call Address: 0x%" PRIx64 " Struct Address: 0x%" PRIx64 ".\n",
             m_jit_start_addr, args_addr_ref);
 
@@ -229,8 +230,7 @@ lldb::ThreadPlanSP FunctionCaller::GetThreadPlanToCallFunction(
     ExecutionContext &exe_ctx, lldb::addr_t args_addr,
     const EvaluateExpressionOptions &options,
     DiagnosticManager &diagnostic_manager) {
-  Log *log(lldb_private::GetLogIfAnyCategoriesSet(LIBLLDB_LOG_EXPRESSIONS |
-                                                  LIBLLDB_LOG_STEP));
+  Log *log(GetLog(LLDBLog::Expressions | LLDBLog::Step));
 
   LLDB_LOGF(log,
             "-- [FunctionCaller::GetThreadPlanToCallFunction] Creating "
@@ -254,7 +254,7 @@ lldb::ThreadPlanSP FunctionCaller::GetThreadPlanToCallFunction(
 
   lldb::ThreadPlanSP new_plan_sp(new ThreadPlanCallFunction(
       *thread, wrapper_address, CompilerType(), args, options));
-  new_plan_sp->SetIsMasterPlan(true);
+  new_plan_sp->SetIsControllingPlan(true);
   new_plan_sp->SetOkayToDiscard(false);
   return new_plan_sp;
 }
@@ -269,8 +269,7 @@ bool FunctionCaller::FetchFunctionResults(ExecutionContext &exe_ctx,
   // then use GetReturnValueObject
   // to fetch the value.  That way we can fetch any values we need.
 
-  Log *log(lldb_private::GetLogIfAnyCategoriesSet(LIBLLDB_LOG_EXPRESSIONS |
-                                                  LIBLLDB_LOG_STEP));
+  Log *log(GetLog(LLDBLog::Expressions | LLDBLog::Step));
 
   LLDB_LOGF(log,
             "-- [FunctionCaller::FetchFunctionResults] Fetching function "
@@ -295,7 +294,7 @@ bool FunctionCaller::FetchFunctionResults(ExecutionContext &exe_ctx,
     return false;
 
   ret_value.SetCompilerType(m_function_return_type);
-  ret_value.SetValueType(Value::eValueTypeScalar);
+  ret_value.SetValueType(Value::ValueType::Scalar);
   return true;
 }
 
@@ -317,12 +316,16 @@ lldb::ExpressionResults FunctionCaller::ExecuteFunction(
   lldb::ExpressionResults return_value = lldb::eExpressionSetupError;
 
   // FunctionCaller::ExecuteFunction execution is always just to get the
-  // result. Do make sure we ignore breakpoints, unwind on error, and don't try
-  // to debug it.
+  // result. Unless explicitly asked for, ignore breakpoints and unwind on
+  // error.
+  const bool enable_debugging =
+      exe_ctx.GetTargetPtr() &&
+      exe_ctx.GetTargetPtr()->GetDebugUtilityExpression();
   EvaluateExpressionOptions real_options = options;
-  real_options.SetDebug(false);
-  real_options.SetUnwindOnError(true);
-  real_options.SetIgnoreBreakpoints(true);
+  real_options.SetDebug(false); // This halts the expression for debugging.
+  real_options.SetGenerateDebugInfo(enable_debugging);
+  real_options.SetUnwindOnError(!enable_debugging);
+  real_options.SetIgnoreBreakpoints(!enable_debugging);
 
   lldb::addr_t args_addr;
 
@@ -339,8 +342,7 @@ lldb::ExpressionResults FunctionCaller::ExecuteFunction(
       return lldb::eExpressionSetupError;
   }
 
-  Log *log(lldb_private::GetLogIfAnyCategoriesSet(LIBLLDB_LOG_EXPRESSIONS |
-                                                  LIBLLDB_LOG_STEP));
+  Log *log(GetLog(LLDBLog::Expressions | LLDBLog::Step));
 
   LLDB_LOGF(log,
             "== [FunctionCaller::ExecuteFunction] Executing function \"%s\" ==",

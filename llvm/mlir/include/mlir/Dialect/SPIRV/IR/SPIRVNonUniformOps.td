@@ -15,7 +15,7 @@
 #define MLIR_DIALECT_SPIRV_IR_NON_UNIFORM_OPS
 
 class SPV_GroupNonUniformArithmeticOp<string mnemonic, Type type,
-      list<OpTrait> traits = []> : SPV_Op<mnemonic, traits> {
+      list<Trait> traits = []> : SPV_Op<mnemonic, traits> {
 
   let arguments = (ins
     SPV_ScopeAttr:$execution_scope,
@@ -27,11 +27,6 @@ class SPV_GroupNonUniformArithmeticOp<string mnemonic, Type type,
   let results = (outs
     SPV_ScalarOrVectorOf<type>:$result
   );
-
-  let parser = [{ return parseGroupNonUniformArithmeticOp(parser, result); }];
-  let printer = [{ printGroupNonUniformArithmeticOp(getOperation(), p); }];
-  let verifier = [{ return ::verifyGroupNonUniformArithmeticOp(getOperation()); }];
-
 }
 
 // -----
@@ -208,8 +203,6 @@ def SPV_GroupNonUniformElectOp : SPV_Op<"GroupNonUniformElect", []> {
     SPV_Bool:$result
   );
 
-  let builders = [OpBuilderDAG<(ins "spirv::Scope")>];
-
   let assemblyFormat = "$execution_scope attr-dict `:` type($result)";
 }
 
@@ -254,7 +247,7 @@ def SPV_GroupNonUniformFAddOp : SPV_GroupNonUniformArithmeticOp<"GroupNonUniform
     #### Example:
 
     ```mlir
-    %four = spv.constant 4 : i32
+    %four = spv.Constant 4 : i32
     %scalar = ... : f32
     %vector = ... : vector<4xf32>
     %0 = spv.GroupNonUniformFAdd "Workgroup" "Reduce" %scalar : f32
@@ -314,7 +307,7 @@ def SPV_GroupNonUniformFMaxOp : SPV_GroupNonUniformArithmeticOp<"GroupNonUniform
     #### Example:
 
     ```mlir
-    %four = spv.constant 4 : i32
+    %four = spv.Constant 4 : i32
     %scalar = ... : f32
     %vector = ... : vector<4xf32>
     %0 = spv.GroupNonUniformFMax "Workgroup" "Reduce" %scalar : f32
@@ -374,7 +367,7 @@ def SPV_GroupNonUniformFMinOp : SPV_GroupNonUniformArithmeticOp<"GroupNonUniform
     #### Example:
 
     ```mlir
-    %four = spv.constant 4 : i32
+    %four = spv.Constant 4 : i32
     %scalar = ... : f32
     %vector = ... : vector<4xf32>
     %0 = spv.GroupNonUniformFMin "Workgroup" "Reduce" %scalar : f32
@@ -431,7 +424,7 @@ def SPV_GroupNonUniformFMulOp : SPV_GroupNonUniformArithmeticOp<"GroupNonUniform
     #### Example:
 
     ```mlir
-    %four = spv.constant 4 : i32
+    %four = spv.Constant 4 : i32
     %scalar = ... : f32
     %vector = ... : vector<4xf32>
     %0 = spv.GroupNonUniformFMul "Workgroup" "Reduce" %scalar : f32
@@ -486,7 +479,7 @@ def SPV_GroupNonUniformIAddOp : SPV_GroupNonUniformArithmeticOp<"GroupNonUniform
     #### Example:
 
     ```mlir
-    %four = spv.constant 4 : i32
+    %four = spv.Constant 4 : i32
     %scalar = ... : i32
     %vector = ... : vector<4xi32>
     %0 = spv.GroupNonUniformIAdd "Workgroup" "Reduce" %scalar : i32
@@ -541,7 +534,7 @@ def SPV_GroupNonUniformIMulOp : SPV_GroupNonUniformArithmeticOp<"GroupNonUniform
     #### Example:
 
     ```mlir
-    %four = spv.constant 4 : i32
+    %four = spv.Constant 4 : i32
     %scalar = ... : i32
     %vector = ... : vector<4xi32>
     %0 = spv.GroupNonUniformIMul "Workgroup" "Reduce" %scalar : i32
@@ -598,7 +591,7 @@ def SPV_GroupNonUniformSMaxOp : SPV_GroupNonUniformArithmeticOp<"GroupNonUniform
     #### Example:
 
     ```mlir
-    %four = spv.constant 4 : i32
+    %four = spv.Constant 4 : i32
     %scalar = ... : i32
     %vector = ... : vector<4xi32>
     %0 = spv.GroupNonUniformSMax "Workgroup" "Reduce" %scalar : i32
@@ -655,7 +648,7 @@ def SPV_GroupNonUniformSMinOp : SPV_GroupNonUniformArithmeticOp<"GroupNonUniform
     #### Example:
 
     ```mlir
-    %four = spv.constant 4 : i32
+    %four = spv.Constant 4 : i32
     %scalar = ... : i32
     %vector = ... : vector<4xi32>
     %0 = spv.GroupNonUniformSMin "Workgroup" "Reduce" %scalar : i32
@@ -713,7 +706,7 @@ def SPV_GroupNonUniformUMaxOp : SPV_GroupNonUniformArithmeticOp<"GroupNonUniform
     #### Example:
 
     ```mlir
-    %four = spv.constant 4 : i32
+    %four = spv.Constant 4 : i32
     %scalar = ... : i32
     %vector = ... : vector<4xi32>
     %0 = spv.GroupNonUniformUMax "Workgroup" "Reduce" %scalar : i32
@@ -771,7 +764,7 @@ def SPV_GroupNonUniformUMinOp : SPV_GroupNonUniformArithmeticOp<"GroupNonUniform
     #### Example:
 
     ```mlir
-    %four = spv.constant 4 : i32
+    %four = spv.Constant 4 : i32
     %scalar = ... : i32
     %vector = ... : vector<4xi32>
     %0 = spv.GroupNonUniformUMin "Workgroup" "Reduce" %scalar : i32

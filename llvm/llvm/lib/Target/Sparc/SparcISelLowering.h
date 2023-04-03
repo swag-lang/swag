@@ -44,9 +44,13 @@ namespace llvm {
       GLOBAL_BASE_REG, // Global base reg for PIC.
       FLUSHW,      // FLUSH register windows to stack.
 
+      TAIL_CALL,   // Tail call
+
       TLS_ADD,     // For Thread Local Storage (TLS).
       TLS_LD,
-      TLS_CALL
+      TLS_CALL,
+
+      LOAD_GDOP,   // Load operation w/ gdop relocation.
     };
   }
 
@@ -81,13 +85,6 @@ namespace llvm {
                                       std::string &Constraint,
                                       std::vector<SDValue> &Ops,
                                       SelectionDAG &DAG) const override;
-
-    unsigned
-    getInlineAsmMemConstraint(StringRef ConstraintCode) const override {
-      if (ConstraintCode == "o")
-        return InlineAsm::Constraint_o;
-      return TargetLowering::getInlineAsmMemConstraint(ConstraintCode);
-    }
 
     std::pair<unsigned, const TargetRegisterClass *>
     getRegForInlineAsmConstraint(const TargetRegisterInfo *TRI,
@@ -147,6 +144,11 @@ namespace llvm {
     SDValue LowerCall_64(TargetLowering::CallLoweringInfo &CLI,
                          SmallVectorImpl<SDValue> &InVals) const;
 
+    bool CanLowerReturn(CallingConv::ID CallConv, MachineFunction &MF,
+                        bool isVarArg,
+                        const SmallVectorImpl<ISD::OutputArg> &Outs,
+                        LLVMContext &Context) const override;
+
     SDValue LowerReturn(SDValue Chain, CallingConv::ID CallConv, bool isVarArg,
                         const SmallVectorImpl<ISD::OutputArg> &Outs,
                         const SmallVectorImpl<SDValue> &OutVals,
@@ -188,6 +190,10 @@ namespace llvm {
                                    SelectionDAG &DAG) const;
 
     SDValue PerformDAGCombine(SDNode *N, DAGCombinerInfo &DCI) const override;
+
+    bool IsEligibleForTailCallOptimization(CCState &CCInfo,
+                                           CallLoweringInfo &CLI,
+                                           MachineFunction &MF) const;
 
     bool ShouldShrinkFPConstant(EVT VT) const override {
       // Do not shrink FP constpool if VT == MVT::f128.

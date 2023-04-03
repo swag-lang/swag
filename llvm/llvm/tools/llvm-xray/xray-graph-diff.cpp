@@ -22,6 +22,7 @@
 #include "xray-color-helper.h"
 #include "llvm/ADT/iterator_range.h"
 #include "llvm/Support/FormatVariadic.h"
+#include "llvm/Support/MemoryBuffer.h"
 #include "llvm/XRay/Trace.h"
 
 using namespace llvm;
@@ -294,10 +295,7 @@ static Twine truncateString(const StringRef &S, size_t n) {
 }
 
 template <typename T> static bool containsNullptr(const T &Collection) {
-  for (const auto &E : Collection)
-    if (E == nullptr)
-      return true;
-  return false;
+  return llvm::is_contained(Collection, nullptr);
 }
 
 static std::string getLabel(const GraphDiffRenderer::GraphT::EdgeValueType &E,
@@ -459,7 +457,7 @@ static CommandRegistration Unused(&GraphDiff, []() -> Error {
   auto &GDR = *GDROrErr;
 
   std::error_code EC;
-  raw_fd_ostream OS(GraphDiffOutput, EC, sys::fs::OpenFlags::OF_Text);
+  raw_fd_ostream OS(GraphDiffOutput, EC, sys::fs::OpenFlags::OF_TextWithCRLF);
   if (EC)
     return make_error<StringError>(
         Twine("Cannot open file '") + GraphDiffOutput + "' for writing.", EC);

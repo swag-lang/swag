@@ -18,10 +18,8 @@
 #include "llvm/Analysis/RegionInfo.h"
 #include "llvm/Analysis/RegionIterator.h"
 #include "llvm/Analysis/RegionPass.h"
-#include "llvm/IR/Argument.h"
 #include "llvm/IR/BasicBlock.h"
 #include "llvm/IR/CFG.h"
-#include "llvm/IR/Constant.h"
 #include "llvm/IR/Constants.h"
 #include "llvm/IR/Dominators.h"
 #include "llvm/IR/Function.h"
@@ -33,7 +31,6 @@
 #include "llvm/IR/PatternMatch.h"
 #include "llvm/IR/Type.h"
 #include "llvm/IR/Use.h"
-#include "llvm/IR/User.h"
 #include "llvm/IR/Value.h"
 #include "llvm/IR/ValueHandle.h"
 #include "llvm/InitializePasses.h"
@@ -41,7 +38,6 @@
 #include "llvm/Support/Casting.h"
 #include "llvm/Support/CommandLine.h"
 #include "llvm/Support/Debug.h"
-#include "llvm/Support/ErrorHandling.h"
 #include "llvm/Support/raw_ostream.h"
 #include "llvm/Transforms/Scalar.h"
 #include "llvm/Transforms/Utils.h"
@@ -275,6 +271,8 @@ class StructurizeCFG {
   void collectInfos();
 
   void insertConditions(bool Loops);
+
+  void simplifyConditions();
 
   void delPhiValues(BasicBlock *From, BasicBlock *To);
 
@@ -586,6 +584,28 @@ void StructurizeCFG::insertConditions(bool Loops) {
   }
 }
 
+/// Simplify any inverted conditions that were built by buildConditions.
+void StructurizeCFG::simplifyConditions() {
+  SmallVector<Instruction *> InstToErase;
+  for (auto &I : concat<PredMap::value_type>(Predicates, LoopPreds)) {
+    auto &Preds = I.second;
+    for (auto &J : Preds) {
+      auto &Cond = J.second;
+      Instruction *Inverted;
+      if (match(Cond, m_Not(m_OneUse(m_Instruction(Inverted)))) &&
+          !Cond->use_empty()) {
+        if (auto *InvertedCmp = dyn_cast<CmpInst>(Inverted)) {
+          InvertedCmp->setPredicate(InvertedCmp->getInversePredicate());
+          Cond->replaceAllUsesWith(InvertedCmp);
+          InstToErase.push_back(cast<Instruction>(Cond));
+        }
+      }
+    }
+  }
+  for (auto *I : InstToErase)
+    I->eraseFromParent();
+}
+
 /// Remove all PHI values coming from "From" into "To" and remember
 /// them in DeletedPhis
 void StructurizeCFG::delPhiValues(BasicBlock *From, BasicBlock *To) {
@@ -661,7 +681,7 @@ void StructurizeCFG::simplifyAffectedPhis() {
     Q.DT = DT;
     for (WeakVH VH : AffectedPhis) {
       if (auto Phi = dyn_cast_or_null<PHINode>(VH)) {
-        if (auto NewValue = SimplifyInstruction(Phi, Q)) {
+        if (auto NewValue = simplifyInstruction(Phi, Q)) {
           Phi->replaceAllUsesWith(NewValue);
           Phi->eraseFromParent();
           Changed = true;
@@ -677,9 +697,8 @@ void StructurizeCFG::killTerminator(BasicBlock *BB) {
   if (!Term)
     return;
 
-  for (succ_iterator SI = succ_begin(BB), SE = succ_end(BB);
-       SI != SE; ++SI)
-    delPhiValues(BB, *SI);
+  for (BasicBlock *Succ : successors(BB))
+    delPhiValues(BB, Succ);
 
   if (DA)
     DA->removeValue(Term);
@@ -694,11 +713,9 @@ void StructurizeCFG::changeExit(RegionNode *Node, BasicBlock *NewExit,
     BasicBlock *OldExit = SubRegion->getExit();
     BasicBlock *Dominator = nullptr;
 
-    // Find all the edges from the sub region to the exit
-    for (auto BBI = pred_begin(OldExit), E = pred_end(OldExit); BBI != E;) {
-      // Incrememt BBI before mucking with BB's terminator.
-      BasicBlock *BB = *BBI++;
-
+    // Find all the edges from the sub region to the exit.
+    // We use make_early_inc_range here because we modify BB's terminator.
+    for (BasicBlock *BB : llvm::make_early_inc_range(predecessors(OldExit))) {
       if (!SubRegion->contains(BB))
         continue;
 
@@ -924,10 +941,9 @@ void StructurizeCFG::rebuildSSA() {
   for (BasicBlock *BB : ParentRegion->blocks())
     for (Instruction &I : *BB) {
       bool Initialized = false;
-      // We may modify the use list as we iterate over it, so be careful to
-      // compute the next element in the use list at the top of the loop.
-      for (auto UI = I.use_begin(), E = I.use_end(); UI != E;) {
-        Use &U = *UI++;
+      // We may modify the use list as we iterate over it, so we use
+      // make_early_inc_range.
+      for (Use &U : llvm::make_early_inc_range(I.uses())) {
         Instruction *User = cast<Instruction>(U.getUser());
         if (User->getParent() == BB) {
           continue;
@@ -1070,6 +1086,7 @@ bool StructurizeCFG::run(Region *R, DominatorTree *DT) {
   insertConditions(false);
   insertConditions(true);
   setPhiValues();
+  simplifyConditions();
   simplifyAffectedPhis();
   rebuildSSA();
 

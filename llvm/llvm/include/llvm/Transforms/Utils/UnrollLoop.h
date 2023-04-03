@@ -17,6 +17,7 @@
 
 #include "llvm/ADT/DenseMap.h"
 #include "llvm/Analysis/TargetTransformInfo.h"
+#include "llvm/Support/InstructionCost.h"
 
 namespace llvm {
 
@@ -66,14 +67,9 @@ enum class LoopUnrollResult {
 
 struct UnrollLoopOptions {
   unsigned Count;
-  unsigned TripCount;
   bool Force;
-  bool AllowRuntime;
+  bool Runtime;
   bool AllowExpensiveTripCount;
-  bool PreserveCondBr;
-  bool PreserveOnlyFirst;
-  unsigned TripMultiple;
-  unsigned PeelCount;
   bool UnrollRemainder;
   bool ForgetAllSCEV;
 };
@@ -106,9 +102,9 @@ bool isSafeToUnrollAndJam(Loop *L, ScalarEvolution &SE, DominatorTree &DT,
 bool computeUnrollCount(Loop *L, const TargetTransformInfo &TTI,
                         DominatorTree &DT, LoopInfo *LI, ScalarEvolution &SE,
                         const SmallPtrSetImpl<const Value *> &EphValues,
-                        OptimizationRemarkEmitter *ORE, unsigned &TripCount,
+                        OptimizationRemarkEmitter *ORE, unsigned TripCount,
                         unsigned MaxTripCount, bool MaxOrZero,
-                        unsigned &TripMultiple, unsigned LoopSize,
+                        unsigned TripMultiple, unsigned LoopSize,
                         TargetTransformInfo::UnrollingPreferences &UP,
                         TargetTransformInfo::PeelingPreferences &PP,
                         bool &UseUpperBound);
@@ -122,16 +118,15 @@ MDNode *GetUnrollMetadata(MDNode *LoopID, StringRef Name);
 
 TargetTransformInfo::UnrollingPreferences gatherUnrollingPreferences(
     Loop *L, ScalarEvolution &SE, const TargetTransformInfo &TTI,
-    BlockFrequencyInfo *BFI, ProfileSummaryInfo *PSI, int OptLevel,
+    BlockFrequencyInfo *BFI, ProfileSummaryInfo *PSI,
+    llvm::OptimizationRemarkEmitter &ORE, int OptLevel,
     Optional<unsigned> UserThreshold, Optional<unsigned> UserCount,
     Optional<bool> UserAllowPartial, Optional<bool> UserRuntime,
     Optional<bool> UserUpperBound, Optional<unsigned> UserFullUnrollMaxCount);
 
-unsigned ApproximateLoopSize(const Loop *L, unsigned &NumCalls,
-                             bool &NotDuplicatable, bool &Convergent,
-                             const TargetTransformInfo &TTI,
-                             const SmallPtrSetImpl<const Value *> &EphValues,
-                             unsigned BEInsns);
+InstructionCost ApproximateLoopSize(const Loop *L, unsigned &NumCalls,
+    bool &NotDuplicatable, bool &Convergent, const TargetTransformInfo &TTI,
+    const SmallPtrSetImpl<const Value *> &EphValues, unsigned BEInsns);
 
 } // end namespace llvm
 

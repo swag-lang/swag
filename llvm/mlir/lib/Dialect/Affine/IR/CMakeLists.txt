@@ -1,4 +1,4 @@
-add_mlir_dialect_library(MLIRAffine
+add_mlir_dialect_library(MLIRAffineDialect
   AffineMemoryOpInterfaces.cpp
   AffineOps.cpp
   AffineValueMap.cpp
@@ -11,9 +11,10 @@ add_mlir_dialect_library(MLIRAffine
   MLIRAffineOpsIncGen
 
   LINK_LIBS PUBLIC
-  MLIREDSC
+  MLIRArithmeticDialect
   MLIRIR
   MLIRLoopLikeInterface
+  MLIRMemRefDialect
   MLIRSideEffectInterfaces
-  MLIRStandard
+  MLIRTensorDialect
   )

@@ -11,15 +11,15 @@
 //
 //===----------------------------------------------------------------------===//
 
-#include "Taint.h"
 #include "clang/AST/CharUnits.h"
 #include "clang/StaticAnalyzer/Checkers/BuiltinCheckerRegistration.h"
+#include "clang/StaticAnalyzer/Checkers/Taint.h"
 #include "clang/StaticAnalyzer/Core/BugReporter/BugType.h"
 #include "clang/StaticAnalyzer/Core/Checker.h"
 #include "clang/StaticAnalyzer/Core/CheckerManager.h"
 #include "clang/StaticAnalyzer/Core/PathSensitive/APSIntType.h"
 #include "clang/StaticAnalyzer/Core/PathSensitive/CheckerContext.h"
-#include "clang/StaticAnalyzer/Core/PathSensitive/DynamicSize.h"
+#include "clang/StaticAnalyzer/Core/PathSensitive/DynamicExtent.h"
 #include "clang/StaticAnalyzer/Core/PathSensitive/ExprEngine.h"
 #include "llvm/ADT/SmallString.h"
 #include "llvm/Support/raw_ostream.h"
@@ -144,10 +144,9 @@ void ArrayBoundCheckerV2::checkLocation(SVal location, bool isLoad,
   SVal extentBegin = computeExtentBegin(svalBuilder, rawOffset.getRegion());
 
   if (Optional<NonLoc> NV = extentBegin.getAs<NonLoc>()) {
-    if (NV->getAs<nonloc::ConcreteInt>()) {
+    if (auto ConcreteNV = NV->getAs<nonloc::ConcreteInt>()) {
       std::pair<NonLoc, nonloc::ConcreteInt> simplifiedOffsets =
-          getSimplifiedOffsets(rawOffset.getByteOffset(),
-                               NV->castAs<nonloc::ConcreteInt>(),
+          getSimplifiedOffsets(rawOffset.getByteOffset(), *ConcreteNV,
                                svalBuilder);
       rawOffsetVal = simplifiedOffsets.first;
       *NV = simplifiedOffsets.second;
@@ -179,14 +178,14 @@ void ArrayBoundCheckerV2::checkLocation(SVal location, bool isLoad,
     // CHECK UPPER BOUND: Is byteOffset >= size(baseRegion)?  If so,
     // we are doing a load/store after the last valid offset.
     const MemRegion *MR = rawOffset.getRegion();
-    DefinedOrUnknownSVal Size = getDynamicSize(state, MR, svalBuilder);
-    if (!Size.getAs<NonLoc>())
+    DefinedOrUnknownSVal Size = getDynamicExtent(state, MR, svalBuilder);
+    if (!isa<NonLoc>(Size))
       break;
 
-    if (Size.getAs<nonloc::ConcreteInt>()) {
+    if (auto ConcreteSize = Size.getAs<nonloc::ConcreteInt>()) {
       std::pair<NonLoc, nonloc::ConcreteInt> simplifiedOffsets =
-          getSimplifiedOffsets(rawOffset.getByteOffset(),
-                               Size.castAs<nonloc::ConcreteInt>(), svalBuilder);
+          getSimplifiedOffsets(rawOffset.getByteOffset(), *ConcreteSize,
+                               svalBuilder);
       rawOffsetVal = simplifiedOffsets.first;
       Size = simplifiedOffsets.second;
     }
@@ -275,7 +274,7 @@ void RegionRawOffsetV2::dumpToStream(raw_ostream &os) const {
 // is unknown or undefined, we lazily substitute '0'.  Otherwise,
 // return 'val'.
 static inline SVal getValue(SVal val, SValBuilder &svalBuilder) {
-  return val.getAs<UndefinedVal>() ? svalBuilder.makeArrayIndex(0) : val;
+  return val.isUndef() ? svalBuilder.makeZeroArrayIndex() : val;
 }
 
 // Scale a base value by a scaling factor, and return the scaled
@@ -324,7 +323,7 @@ RegionRawOffsetV2 RegionRawOffsetV2::computeOffset(ProgramStateRef state,
       case MemRegion::ElementRegionKind: {
         const ElementRegion *elemReg = cast<ElementRegion>(region);
         SVal index = elemReg->getIndex();
-        if (!index.getAs<NonLoc>())
+        if (!isa<NonLoc>(index))
           return RegionRawOffsetV2();
         QualType elemType = elemReg->getElementType();
         // If the element is an incomplete type, go no further.

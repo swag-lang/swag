@@ -17,8 +17,6 @@
 #include "clang/Basic/MacroBuilder.h"
 #include "clang/Basic/TargetBuiltins.h"
 #include "llvm/ADT/StringSwitch.h"
-#include "llvm/Frontend/OpenMP/OMPGridValues.h"
-#include "llvm/IR/DataLayout.h"
 
 using namespace clang;
 using namespace clang::targets;
@@ -51,6 +49,11 @@ const LangASMap AMDGPUTargetInfo::AMDGPUDefIsGenMap = {
     Global,   // cuda_device
     Constant, // cuda_constant
     Local,    // cuda_shared
+    Global,   // sycl_global
+    Global,   // sycl_global_device
+    Global,   // sycl_global_host
+    Local,    // sycl_local
+    Private,  // sycl_private
     Generic,  // ptr32_sptr
     Generic,  // ptr32_uptr
     Generic   // ptr64
@@ -68,6 +71,12 @@ const LangASMap AMDGPUTargetInfo::AMDGPUDefIsPrivMap = {
     Global,   // cuda_device
     Constant, // cuda_constant
     Local,    // cuda_shared
+    // SYCL address space values for this map are dummy
+    Generic,  // sycl_global
+    Generic,  // sycl_global_device
+    Generic,  // sycl_global_host
+    Generic,  // sycl_local
+    Generic,  // sycl_private
     Generic,  // ptr32_sptr
     Generic,  // ptr32_uptr
     Generic   // ptr64
@@ -174,6 +183,29 @@ bool AMDGPUTargetInfo::initFeatureMap(
   // XXX - What does the member GPU mean if device name string passed here?
   if (isAMDGCN(getTriple())) {
     switch (llvm::AMDGPU::parseArchAMDGCN(CPU)) {
+    case GK_GFX1103:
+    case GK_GFX1102:
+    case GK_GFX1101:
+    case GK_GFX1100:
+      Features["ci-insts"] = true;
+      Features["dot1-insts"] = true;
+      Features["dot5-insts"] = true;
+      Features["dot6-insts"] = true;
+      Features["dot7-insts"] = true;
+      Features["dot8-insts"] = true;
+      Features["dl-insts"] = true;
+      Features["flat-address-space"] = true;
+      Features["16-bit-insts"] = true;
+      Features["dpp"] = true;
+      Features["gfx8-insts"] = true;
+      Features["gfx9-insts"] = true;
+      Features["gfx10-insts"] = true;
+      Features["gfx10-3-insts"] = true;
+      Features["gfx11-insts"] = true;
+      break;
+    case GK_GFX1036:
+    case GK_GFX1035:
+    case GK_GFX1034:
     case GK_GFX1033:
     case GK_GFX1032:
     case GK_GFX1031:
@@ -183,6 +215,7 @@ bool AMDGPUTargetInfo::initFeatureMap(
       Features["dot2-insts"] = true;
       Features["dot5-insts"] = true;
       Features["dot6-insts"] = true;
+      Features["dot7-insts"] = true;
       Features["dl-insts"] = true;
       Features["flat-address-space"] = true;
       Features["16-bit-insts"] = true;
@@ -192,6 +225,7 @@ bool AMDGPUTargetInfo::initFeatureMap(
       Features["gfx10-insts"] = true;
       Features["gfx10-3-insts"] = true;
       Features["s-memrealtime"] = true;
+      Features["s-memtime-inst"] = true;
       break;
     case GK_GFX1012:
     case GK_GFX1011:
@@ -199,7 +233,9 @@ bool AMDGPUTargetInfo::initFeatureMap(
       Features["dot2-insts"] = true;
       Features["dot5-insts"] = true;
       Features["dot6-insts"] = true;
+      Features["dot7-insts"] = true;
       LLVM_FALLTHROUGH;
+    case GK_GFX1013:
     case GK_GFX1010:
       Features["dl-insts"] = true;
       Features["ci-insts"] = true;
@@ -210,7 +246,15 @@ bool AMDGPUTargetInfo::initFeatureMap(
       Features["gfx9-insts"] = true;
       Features["gfx10-insts"] = true;
       Features["s-memrealtime"] = true;
+      Features["s-memtime-inst"] = true;
       break;
+    case GK_GFX940:
+      Features["gfx940-insts"] = true;
+      Features["fp8-insts"] = true;
+      LLVM_FALLTHROUGH;
+    case GK_GFX90A:
+      Features["gfx90a-insts"] = true;
+      LLVM_FALLTHROUGH;
     case GK_GFX908:
       Features["dot3-insts"] = true;
       Features["dot4-insts"] = true;
@@ -222,6 +266,7 @@ bool AMDGPUTargetInfo::initFeatureMap(
       Features["dl-insts"] = true;
       Features["dot1-insts"] = true;
       Features["dot2-insts"] = true;
+      Features["dot7-insts"] = true;
       LLVM_FALLTHROUGH;
     case GK_GFX90C:
     case GK_GFX909:
@@ -252,6 +297,7 @@ bool AMDGPUTargetInfo::initFeatureMap(
     case GK_GFX602:
     case GK_GFX601:
     case GK_GFX600:
+      Features["s-memtime-inst"] = true;
       break;
     case GK_NONE:
       break;
@@ -313,8 +359,6 @@ AMDGPUTargetInfo::AMDGPUTargetInfo(const llvm::Triple &Triple,
                   llvm::AMDGPU::getArchAttrR600(GPUKind)) {
   resetDataLayout(isAMDGCN(getTriple()) ? DataLayoutStringAMDGCN
                                         : DataLayoutStringR600);
-  assert(DataLayout->getAllocaAddrSpace() == Private);
-  GridValues = llvm::omp::AMDGPUGpuGridValues;
 
   setAddressSpaceMap(Triple.getOS() == llvm::Triple::Mesa3D ||
                      !isAMDGCN(Triple));
@@ -326,7 +370,7 @@ AMDGPUTargetInfo::AMDGPUTargetInfo(const llvm::Triple &Triple,
   AllowAMDGPUUnsafeFPAtomics = Opts.AllowAMDGPUUnsafeFPAtomics;
 
   // Set pointer width and alignment for target address space 0.
-  PointerWidth = PointerAlign = DataLayout->getPointerSizeInBits();
+  PointerWidth = PointerAlign = getPointerWidthV(Generic);
   if (getMaxPointerWidth() == 64) {
     LongWidth = LongAlign = 64;
     SizeType = UnsignedLong;
@@ -337,8 +381,8 @@ AMDGPUTargetInfo::AMDGPUTargetInfo(const llvm::Triple &Triple,
   MaxAtomicPromoteWidth = MaxAtomicInlineWidth = 64;
 }
 
-void AMDGPUTargetInfo::adjust(LangOptions &Opts) {
-  TargetInfo::adjust(Opts);
+void AMDGPUTargetInfo::adjust(DiagnosticsEngine &Diags, LangOptions &Opts) {
+  TargetInfo::adjust(Diags, Opts);
   // ToDo: There are still a few places using default address space as private
   // address space in OpenCL, which needs to be cleaned up, then Opts.OpenCL
   // can be removed from the following line.
@@ -365,12 +409,17 @@ void AMDGPUTargetInfo::getTargetDefines(const LangOptions &Opts,
     StringRef CanonName = isAMDGCN(getTriple()) ?
       getArchNameAMDGCN(GPUKind) : getArchNameR600(GPUKind);
     Builder.defineMacro(Twine("__") + Twine(CanonName) + Twine("__"));
+    // Emit macros for gfx family e.g. gfx906 -> __GFX9__, gfx1030 -> __GFX10___
+    if (isAMDGCN(getTriple())) {
+      assert(CanonName.startswith("gfx") && "Invalid amdgcn canonical name");
+      Builder.defineMacro(Twine("__") + Twine(CanonName.drop_back(2).upper()) +
+                          Twine("__"));
+    }
     if (isAMDGCN(getTriple())) {
       Builder.defineMacro("__amdgcn_processor__",
                           Twine("\"") + Twine(CanonName) + Twine("\""));
       Builder.defineMacro("__amdgcn_target_id__",
-                          Twine("\"") + Twine(getTargetID().getValue()) +
-                              Twine("\""));
+                          Twine("\"") + Twine(*getTargetID()) + Twine("\""));
       for (auto F : getAllPossibleTargetIDFeatures(getTriple(), CanonName)) {
         auto Loc = OffloadArchFeatures.find(F);
         if (Loc != OffloadArchFeatures.end()) {
@@ -383,6 +432,9 @@ void AMDGPUTargetInfo::getTargetDefines(const LangOptions &Opts,
       }
     }
   }
+
+  if (AllowAMDGPUUnsafeFPAtomics)
+    Builder.defineMacro("__AMDGCN_UNSAFE_FP_ATOMICS__");
 
   // TODO: __HAS_FMAF__, __HAS_LDEXPF__, __HAS_FP64__ are deprecated and will be
   // removed in the near future.
@@ -410,9 +462,13 @@ void AMDGPUTargetInfo::setAuxTarget(const TargetInfo *Aux) {
   // supported by AMDGPU. Therefore keep its own format for these two types.
   auto SaveLongDoubleFormat = LongDoubleFormat;
   auto SaveFloat128Format = Float128Format;
+  auto SaveLongDoubleWidth = LongDoubleWidth;
+  auto SaveLongDoubleAlign = LongDoubleAlign;
   copyAuxTarget(Aux);
   LongDoubleFormat = SaveLongDoubleFormat;
   Float128Format = SaveFloat128Format;
+  LongDoubleWidth = SaveLongDoubleWidth;
+  LongDoubleAlign = SaveLongDoubleAlign;
   // For certain builtin types support on the host target, claim they are
   // support to pass the compilation of the host code during the device-side
   // compilation.

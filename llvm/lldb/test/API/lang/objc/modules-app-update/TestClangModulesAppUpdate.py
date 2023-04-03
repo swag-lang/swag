@@ -10,7 +10,6 @@ from lldbsuite.test import lldbutil
 
 
 class TestClangModuleAppUpdate(TestBase):
-    mydir = TestBase.compute_mydir(__file__)
 
     @skipIf(debug_info=no_match(["gmodules"]))
     def test_rebuild_app_modules_untouched(self):
@@ -20,7 +19,7 @@ class TestClangModuleAppUpdate(TestBase):
                     """)
         with open(self.getBuildArtifact("f.h"), "w") as f:
             f.write("""
-                    @import Foundation;
+                    @import ObjectiveC;
                     @interface Foo : NSObject {
                        int i;
                     }

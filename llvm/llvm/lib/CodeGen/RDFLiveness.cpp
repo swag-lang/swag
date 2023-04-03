@@ -22,6 +22,7 @@
 // and Embedded Architectures and Compilers", 8 (4),
 // <10.1145/2086696.2086706>. <hal-00647369>
 //
+#include "llvm/CodeGen/RDFLiveness.h"
 #include "llvm/ADT/BitVector.h"
 #include "llvm/ADT/DenseMap.h"
 #include "llvm/ADT/STLExtras.h"
@@ -32,14 +33,12 @@
 #include "llvm/CodeGen/MachineDominators.h"
 #include "llvm/CodeGen/MachineFunction.h"
 #include "llvm/CodeGen/MachineInstr.h"
-#include "llvm/CodeGen/RDFLiveness.h"
 #include "llvm/CodeGen/RDFGraph.h"
 #include "llvm/CodeGen/RDFRegisters.h"
 #include "llvm/CodeGen/TargetRegisterInfo.h"
 #include "llvm/MC/LaneBitmask.h"
 #include "llvm/MC/MCRegisterInfo.h"
 #include "llvm/Support/CommandLine.h"
-#include "llvm/Support/Debug.h"
 #include "llvm/Support/ErrorHandling.h"
 #include "llvm/Support/raw_ostream.h"
 #include <algorithm>
@@ -62,7 +61,7 @@ namespace rdf {
 
   raw_ostream &operator<< (raw_ostream &OS, const Print<Liveness::RefMap> &P) {
     OS << '{';
-    for (auto &I : P.Obj) {
+    for (const auto &I : P.Obj) {
       OS << ' ' << printReg(I.first, &P.G.getTRI()) << '{';
       for (auto J = I.second.begin(), E = I.second.end(); J != E; ) {
         OS << Print<NodeId>(J->first, P.G) << PrintLaneMaskOpt(J->second);
@@ -171,7 +170,7 @@ NodeList Liveness::getAllReachingDefs(RegisterRef RefRR,
 
   SmallSet<NodeId,32> Defs;
 
-  // Remove all non-phi defs that are not aliased to RefRR, and segregate
+  // Remove all non-phi defs that are not aliased to RefRR, and separate
   // the the remaining defs into buckets for containing blocks.
   std::map<NodeId, NodeAddr<InstrNode*>> Owners;
   std::map<MachineBasicBlock*, SmallVector<NodeId,32>> Blocks;
@@ -238,8 +237,8 @@ NodeList Liveness::getAllReachingDefs(RegisterRef RefRR,
              [this](auto A, auto B) { return MDT.properlyDominates(A, B); });
 
   std::vector<NodeId> TmpInst;
-  for (auto I = TmpBB.rbegin(), E = TmpBB.rend(); I != E; ++I) {
-    auto &Bucket = Blocks[*I];
+  for (MachineBasicBlock *MBB : llvm::reverse(TmpBB)) {
+    auto &Bucket = Blocks[MBB];
     TmpInst.insert(TmpInst.end(), Bucket.rbegin(), Bucket.rend());
   }
 
@@ -341,9 +340,8 @@ Liveness::getAllReachingDefsRecImpl(RegisterRef RefRR, NodeAddr<RefNode*> RefA,
     if (!(DA.Addr->getFlags() & NodeAttrs::PhiRef))
       continue;
     NodeAddr<PhiNode*> PA = DA.Addr->getOwner(DFG);
-    if (Visited.count(PA.Id))
+    if (!Visited.insert(PA.Id).second)
       continue;
-    Visited.insert(PA.Id);
     // Go over all phi uses and get the reaching defs for each use.
     for (auto U : PA.Addr->members_if(DFG.IsRef<NodeAttrs::Use>, DFG)) {
       const auto &T = getAllReachingDefsRecImpl(RefRR, U, Visited, TmpDefs,
@@ -769,7 +767,7 @@ void Liveness::computeLiveIns() {
   }
 
   for (auto I : IDF)
-    for (auto S : I.second)
+    for (auto *S : I.second)
       IIDF[S].insert(I.first);
 
   computePhiInfo();
@@ -866,8 +864,8 @@ void Liveness::computeLiveIns() {
     // Dump the liveness map
     for (MachineBasicBlock &B : MF) {
       std::vector<RegisterRef> LV;
-      for (auto I = B.livein_begin(), E = B.livein_end(); I != E; ++I)
-        LV.push_back(RegisterRef(I->PhysReg, I->LaneMask));
+      for (const MachineBasicBlock::RegisterMaskPair &LI : B.liveins())
+        LV.push_back(RegisterRef(LI.PhysReg, LI.LaneMask));
       llvm::sort(LV);
       dbgs() << printMBBReference(B) << "\t rec = {";
       for (auto I : LV)
@@ -893,16 +891,14 @@ void Liveness::resetLiveIns() {
   for (auto &B : DFG.getMF()) {
     // Remove all live-ins.
     std::vector<unsigned> T;
-    for (auto I = B.livein_begin(), E = B.livein_end(); I != E; ++I)
-      T.push_back(I->PhysReg);
+    for (const MachineBasicBlock::RegisterMaskPair &LI : B.liveins())
+      T.push_back(LI.PhysReg);
     for (auto I : T)
       B.removeLiveIn(I);
     // Add the newly computed live-ins.
     const RegisterAggr &LiveIns = LiveMap[&B];
-    for (auto I = LiveIns.rr_begin(), E = LiveIns.rr_end(); I != E; ++I) {
-      RegisterRef R = *I;
+    for (const RegisterRef R : make_range(LiveIns.rr_begin(), LiveIns.rr_end()))
       B.addLiveIn({MCPhysReg(R.Reg), R.Mask});
-    }
   }
 }
 
@@ -930,16 +926,15 @@ void Liveness::resetKills(MachineBasicBlock *B) {
 
   BitVector LiveIn(TRI.getNumRegs()), Live(TRI.getNumRegs());
   CopyLiveIns(B, LiveIn);
-  for (auto SI : B->successors())
+  for (auto *SI : B->successors())
     CopyLiveIns(SI, Live);
 
-  for (auto I = B->rbegin(), E = B->rend(); I != E; ++I) {
-    MachineInstr *MI = &*I;
-    if (MI->isDebugInstr())
+  for (MachineInstr &MI : llvm::reverse(*B)) {
+    if (MI.isDebugInstr())
       continue;
 
-    MI->clearKillInfo();
-    for (auto &Op : MI->operands()) {
+    MI.clearKillInfo();
+    for (auto &Op : MI.operands()) {
       // An implicit def of a super-register may not necessarily start a
       // live range of it, since an implicit use could be used to keep parts
       // of it live. Instead of analyzing the implicit operands, ignore
@@ -952,7 +947,7 @@ void Liveness::resetKills(MachineBasicBlock *B) {
       for (MCSubRegIterator SR(R, &TRI, true); SR.isValid(); ++SR)
         Live.reset(*SR);
     }
-    for (auto &Op : MI->operands()) {
+    for (auto &Op : MI.operands()) {
       if (!Op.isReg() || !Op.isUse() || Op.isUndef())
         continue;
       Register R = Op.getReg();
@@ -1008,7 +1003,7 @@ void Liveness::traverse(MachineBasicBlock *B, RefMap &LiveIn) {
 
   // Go up the dominator tree (depth-first).
   MachineDomTreeNode *N = MDT.getNode(B);
-  for (auto I : *N) {
+  for (auto *I : *N) {
     RefMap L;
     MachineBasicBlock *SB = I->getBlock();
     traverse(SB, L);
@@ -1020,7 +1015,7 @@ void Liveness::traverse(MachineBasicBlock *B, RefMap &LiveIn) {
   if (Trace) {
     dbgs() << "\n-- " << printMBBReference(*B) << ": " << __func__
            << " after recursion into: {";
-    for (auto I : *N)
+    for (auto *I : *N)
       dbgs() << ' ' << I->getBlock()->getNumber();
     dbgs() << " }\n";
     dbgs() << "  LiveIn: " << Print<RefMap>(LiveIn, DFG) << '\n';
@@ -1160,7 +1155,7 @@ void Liveness::traverse(MachineBasicBlock *B, RefMap &LiveIn) {
     dbgs() << "  Local:  " << Print<RegisterAggr>(Local, DFG) << '\n';
   }
 
-  for (auto C : IIDF[B]) {
+  for (auto *C : IIDF[B]) {
     RegisterAggr &LiveC = LiveMap[C];
     for (const std::pair<const RegisterId, NodeRefSet> &S : LiveIn)
       for (auto R : S.second)

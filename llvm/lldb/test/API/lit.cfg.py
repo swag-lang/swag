@@ -17,10 +17,10 @@ config.name = 'lldb-api'
 config.suffixes = ['.py']
 
 # test_source_root: The root path where tests are located.
-# test_exec_root: The root path where tests should be run.
 config.test_source_root = os.path.dirname(__file__)
-config.test_exec_root = config.test_source_root
 
+# test_exec_root: The root path where tests should be run.
+config.test_exec_root = os.path.join(config.lldb_obj_root, 'test', 'API')
 
 def mkdir_p(path):
   import errno
@@ -98,18 +98,18 @@ def delete_module_cache(path):
   This is necessary in an incremental build whenever clang changes underneath,
   so doing it once per lit.py invocation is close enough. """
   if os.path.isdir(path):
-    print("Deleting module cache at %s." % path)
+    lit_config.note("Deleting module cache at %s." % path)
     shutil.rmtree(path)
 
 if is_configured('llvm_use_sanitizer'):
   if 'Address' in config.llvm_use_sanitizer:
     config.environment['ASAN_OPTIONS'] = 'detect_stack_use_after_return=1'
-    if 'Darwin' in config.host_os and 'x86' in config.host_triple:
+    if 'Darwin' in config.host_os:
       config.environment['DYLD_INSERT_LIBRARIES'] = find_sanitizer_runtime(
           'libclang_rt.asan_osx_dynamic.dylib')
 
   if 'Thread' in config.llvm_use_sanitizer:
-    if 'Darwin' in config.host_os and 'x86' in config.host_triple:
+    if 'Darwin' in config.host_os:
       config.environment['DYLD_INSERT_LIBRARIES'] = find_sanitizer_runtime(
           'libclang_rt.tsan_osx_dynamic.dylib')
 
@@ -128,23 +128,6 @@ if is_configured('shared_libs'):
   else:
     lit_config.warning("unable to inject shared library path on '{}'".format(
         platform.system()))
-
-# Propagate LLDB_CAPTURE_REPRODUCER
-if 'LLDB_CAPTURE_REPRODUCER' in os.environ:
-  config.environment['LLDB_CAPTURE_REPRODUCER'] = os.environ[
-      'LLDB_CAPTURE_REPRODUCER']
-
-# Support running the test suite under the lldb-repro wrapper. This makes it
-# possible to capture a test suite run and then rerun all the test from the
-# just captured reproducer.
-lldb_repro_mode = lit_config.params.get('lldb-run-with-repro', None)
-if lldb_repro_mode:
-  lit_config.note("Running API tests in {} mode.".format(lldb_repro_mode))
-  mkdir_p(config.lldb_reproducer_directory)
-  if lldb_repro_mode == 'capture':
-    config.available_features.add('lldb-repro-capture')
-  elif lldb_repro_mode == 'replay':
-    config.available_features.add('lldb-repro-replay')
 
 lldb_use_simulator = lit_config.params.get('lldb-run-with-simulator', None)
 if lldb_use_simulator:
@@ -175,9 +158,21 @@ dotest_cmd = [os.path.join(config.lldb_src_root, 'test', 'API', 'dotest.py')]
 if is_configured('dotest_args_str'):
   dotest_cmd.extend(config.dotest_args_str.split(';'))
 
-# Library path may be needed to locate just-built clang.
+# Library path may be needed to locate just-built clang and libcxx.
 if is_configured('llvm_libs_dir'):
   dotest_cmd += ['--env', 'LLVM_LIBS_DIR=' + config.llvm_libs_dir]
+
+# Include path may be needed to locate just-built libcxx.
+if is_configured('llvm_include_dir'):
+  dotest_cmd += ['--env', 'LLVM_INCLUDE_DIR=' + config.llvm_include_dir]
+
+# This path may be needed to locate required llvm tools
+if is_configured('llvm_tools_dir'):
+  dotest_cmd += ['--env', 'LLVM_TOOLS_DIR=' + config.llvm_tools_dir]
+
+# If we have a just-built libcxx, prefer it over the system one.
+if is_configured('has_libcxx') and platform.system() != 'Windows':
+  dotest_cmd += ['--hermetic-libcxx']
 
 # Forward ASan-specific environment variables to tests, as a test may load an
 # ASan-ified dylib.
@@ -208,11 +203,8 @@ if is_configured('test_compiler'):
 if is_configured('dsymutil'):
   dotest_cmd += ['--dsymutil', config.dsymutil]
 
-if is_configured('filecheck'):
-  dotest_cmd += ['--filecheck', config.filecheck]
-
-if is_configured('yaml2obj'):
-  dotest_cmd += ['--yaml2obj', config.yaml2obj]
+if is_configured('llvm_tools_dir'):
+  dotest_cmd += ['--llvm-tools-dir', config.llvm_tools_dir]
 
 if is_configured('server'):
   dotest_cmd += ['--server', config.server]
@@ -255,7 +247,14 @@ import lldbtest
 # testFormat: The test format to use to interpret tests.
 config.test_format = lldbtest.LLDBTest(dotest_cmd)
 
+# Propagate TERM or default to vt100.
+config.environment['TERM'] = os.getenv('TERM', default='vt100')
+
 # Propagate FREEBSD_LEGACY_PLUGIN
 if 'FREEBSD_LEGACY_PLUGIN' in os.environ:
   config.environment['FREEBSD_LEGACY_PLUGIN'] = os.environ[
       'FREEBSD_LEGACY_PLUGIN']
+
+# Propagate XDG_CACHE_HOME
+if 'XDG_CACHE_HOME' in os.environ:
+  config.environment['XDG_CACHE_HOME'] = os.environ['XDG_CACHE_HOME']

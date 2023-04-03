@@ -1,4 +1,5 @@
 ; RUN: llc -mtriple=nvptx64-nvidia-cuda < %s | FileCheck %s
+; RUN: %if ptxas %{ llc -mtriple=nvptx64-nvidia-cuda < %s | %ptxas-verify %}
 
 ; CHECK: .target sm_{{[0-9]+}}, debug
 
@@ -12,7 +13,7 @@
 ; CHECK: .visible .func  (.param .b32 func_retval0) _Z3bari(
 ; CHECK: {
 ; CHECK: .loc [[CU1:[0-9]+]] 1 0
-; CHECK: Lfunc_begin0:
+; CHECK: $L__func_begin0:
 ; CHECK: .loc [[CU1]] 1 0
 
 ; CHECK: //DEBUG_VALUE: bar:b <- {{[0-9]+}}
@@ -41,7 +42,7 @@ declare void @llvm.dbg.value(metadata, metadata, metadata) #1
 ; CHECK: .visible .func _Z3baz1A(
 ; CHECK: {
 ; CHECK: .loc [[CU2:[0-9]+]] 6 0
-; CHECK: Lfunc_begin1:
+; CHECK: $L__func_begin1:
 ; CHECK: .loc [[CU2]] 6 0
 ; CHECK-NOT: //DEBUG_VALUE: baz:z
 ; CHECK: //DEBUG_VALUE: baz:z <- undef
@@ -98,7 +99,7 @@ attributes #2 = { "less-precise-fpmad"="false" "frame-pointer"="all" "no-infs-fp
 !0 = distinct !DICompileUnit(language: DW_LANG_C_plus_plus, producer: "clang version 3.5.0 (210479)", isOptimized: false, emissionKind: FullDebug, file: !1, enums: !2, retainedTypes: !2, globals: !2, imports: !2, nameTableKind: None)
 !1 = !DIFile(filename: "debug-loc-offset1.cc", directory: "/llvm_cmake_gcc")
 !2 = !{}
-!4 = distinct !DISubprogram(name: "bar", linkageName: "_Z3bari", line: 1, isLocal: false, isDefinition: true, virtualIndex: 6, flags: DIFlagPrototyped, isOptimized: false, unit: !0, scopeLine: 1, file: !1, scope: !5, type: !6, retainedNodes: !2)
+!4 = distinct !DISubprogram(name: "bar", linkageName: "_Z3bari", line: 1, isLocal: false, isDefinition: true, virtualIndex: 6, flags: DIFlagPrototyped, isOptimized: false, unit: !0, scopeLine: 1, file: !1, scope: !5, type: !6, retainedNodes: !35)
 !5 = !DIFile(filename: "debug-loc-offset1.cc", directory: "/llvm_cmake_gcc")
 !6 = !DISubroutineType(types: !7)
 !7 = !{!8, !8}
@@ -107,7 +108,7 @@ attributes #2 = { "less-precise-fpmad"="false" "frame-pointer"="all" "no-infs-fp
 !10 = !DIFile(filename: "debug-loc-offset2.cc", directory: "/llvm_cmake_gcc")
 !11 = !{!12}
 !12 = !DICompositeType(tag: DW_TAG_structure_type, name: "A", line: 1, flags: DIFlagFwdDecl, file: !10, identifier: "_ZTS1A")
-!14 = distinct !DISubprogram(name: "baz", linkageName: "_Z3baz1A", line: 6, isLocal: false, isDefinition: true, virtualIndex: 6, flags: DIFlagPrototyped, isOptimized: false, unit: !9, scopeLine: 6, file: !10, scope: !15, type: !16, retainedNodes: !2)
+!14 = distinct !DISubprogram(name: "baz", linkageName: "_Z3baz1A", line: 6, isLocal: false, isDefinition: true, virtualIndex: 6, flags: DIFlagPrototyped, isOptimized: false, unit: !9, scopeLine: 6, file: !10, scope: !15, type: !16, retainedNodes: !36)
 !15 = !DIFile(filename: "debug-loc-offset2.cc", directory: "/llvm_cmake_gcc")
 !16 = !DISubroutineType(types: !17)
 !17 = !{null, !12}
@@ -128,6 +129,8 @@ attributes #2 = { "less-precise-fpmad"="false" "frame-pointer"="all" "no-infs-fp
 !32 = distinct !DILexicalBlock(line: 10, column: 0, file: !10, scope: !14)
 !33 = !DILocation(line: 11, scope: !32)
 !34 = !DILocation(line: 12, scope: !14)
+!35 = !{!21}
+!36 = !{!24, !26}
 
 ; CHECK: .section .debug_abbrev
 ; CHECK-NEXT: {
@@ -182,6 +185,19 @@ attributes #2 = { "less-precise-fpmad"="false" "frame-pointer"="all" "no-infs-fp
 ; CHECK-NEXT: .b8 0                                // EOM(1)
 ; CHECK-NEXT: .b8 0                                // EOM(2)
 ; CHECK-NEXT: .b8 4                                // Abbreviation Code
+; CHECK-NEXT: .b8 5                                // DW_TAG_formal_parameter
+; CHECK-NEXT: .b8 0                                // DW_CHILDREN_no
+; CHECK-NEXT: .b8 3                                // DW_AT_name
+; CHECK-NEXT: .b8 8                                // DW_FORM_string
+; CHECK-NEXT: .b8 58                               // DW_AT_decl_file
+; CHECK-NEXT: .b8 11                               // DW_FORM_data1
+; CHECK-NEXT: .b8 59                               // DW_AT_decl_line
+; CHECK-NEXT: .b8 11                               // DW_FORM_data1
+; CHECK-NEXT: .b8 73                               // DW_AT_type
+; CHECK-NEXT: .b8 19                               // DW_FORM_ref4
+; CHECK-NEXT: .b8 0                                // EOM(1)
+; CHECK-NEXT: .b8 0                                // EOM(2)
+; CHECK-NEXT: .b8 5                                // Abbreviation Code
 ; CHECK-NEXT: .b8 52                               // DW_TAG_variable
 ; CHECK-NEXT: .b8 0                                // DW_CHILDREN_no
 ; CHECK-NEXT: .b8 3                                // DW_AT_name
@@ -194,7 +210,7 @@ attributes #2 = { "less-precise-fpmad"="false" "frame-pointer"="all" "no-infs-fp
 ; CHECK-NEXT: .b8 16                               // DW_FORM_ref_addr
 ; CHECK-NEXT: .b8 0                                // EOM(1)
 ; CHECK-NEXT: .b8 0                                // EOM(2)
-; CHECK-NEXT: .b8 5                                // Abbreviation Code
+; CHECK-NEXT: .b8 6                                // Abbreviation Code
 ; CHECK-NEXT: .b8 46                               // DW_TAG_subprogram
 ; CHECK-NEXT: .b8 1                                // DW_CHILDREN_yes
 ; CHECK-NEXT: .b8 17                               // DW_AT_low_pc
@@ -218,19 +234,6 @@ attributes #2 = { "less-precise-fpmad"="false" "frame-pointer"="all" "no-infs-fp
 ; CHECK-NEXT: .b8 12                               // DW_FORM_flag
 ; CHECK-NEXT: .b8 0                                // EOM(1)
 ; CHECK-NEXT: .b8 0                                // EOM(2)
-; CHECK-NEXT: .b8 6                                // Abbreviation Code
-; CHECK-NEXT: .b8 5                                // DW_TAG_formal_parameter
-; CHECK-NEXT: .b8 0                                // DW_CHILDREN_no
-; CHECK-NEXT: .b8 3                                // DW_AT_name
-; CHECK-NEXT: .b8 8                                // DW_FORM_string
-; CHECK-NEXT: .b8 58                               // DW_AT_decl_file
-; CHECK-NEXT: .b8 11                               // DW_FORM_data1
-; CHECK-NEXT: .b8 59                               // DW_AT_decl_line
-; CHECK-NEXT: .b8 11                               // DW_FORM_data1
-; CHECK-NEXT: .b8 73                               // DW_AT_type
-; CHECK-NEXT: .b8 19                               // DW_FORM_ref4
-; CHECK-NEXT: .b8 0                                // EOM(1)
-; CHECK-NEXT: .b8 0                                // EOM(2)
 ; CHECK-NEXT: .b8 7                                // Abbreviation Code
 ; CHECK-NEXT: .b8 36                               // DW_TAG_base_type
 ; CHECK-NEXT: .b8 0                                // DW_CHILDREN_no
@@ -246,12 +249,12 @@ attributes #2 = { "less-precise-fpmad"="false" "frame-pointer"="all" "no-infs-fp
 ; CHECK-NEXT: }
 ; CHECK-NEXT: .section .debug_info
 ; CHECK-NEXT: {
-; CHECK-NEXT: .b32 150                             // Length of Unit
+; CHECK-NEXT: .b32 159                             // Length of Unit
 ; CHECK-NEXT: .b8 2                                // DWARF version number
 ; CHECK-NEXT: .b8 0
 ; CHECK-NEXT: .b32 .debug_abbrev                   // Offset Into Abbrev. Section
 ; CHECK-NEXT: .b8 8                                // Address Size (in bytes)
-; CHECK-NEXT: .b8 1                                // Abbrev [1] 0xb:0x8f DW_TAG_compile_unit
+; CHECK-NEXT: .b8 1                                // Abbrev [1] 0xb:0x98 DW_TAG_compile_unit
 ; CHECK-NEXT: .b8 99                               // DW_AT_producer
 ; CHECK-NEXT: .b8 108
 ; CHECK-NEXT: .b8 97
@@ -321,15 +324,15 @@ attributes #2 = { "less-precise-fpmad"="false" "frame-pointer"="all" "no-infs-fp
 ; CHECK-NEXT: .b8 99
 ; CHECK-NEXT: .b8 99
 ; CHECK-NEXT: .b8 0
-; CHECK-NEXT: .b64 Lfunc_begin1                    // DW_AT_low_pc
-; CHECK-NEXT: .b64 Lfunc_end1                      // DW_AT_high_pc
+; CHECK-NEXT: .b64 $L__func_begin1                 // DW_AT_low_pc
+; CHECK-NEXT: .b64 $L__func_end1                   // DW_AT_high_pc
 ; CHECK-NEXT: .b8 2                                // Abbrev [2] 0x64:0x4 DW_TAG_structure_type
 ; CHECK-NEXT: .b8 65                               // DW_AT_name
 ; CHECK-NEXT: .b8 0
 ; CHECK-NEXT: .b8 1                                // DW_AT_declaration
-; CHECK-NEXT: .b8 3                                // Abbrev [3] 0x68:0x31 DW_TAG_subprogram
-; CHECK-NEXT: .b64 Lfunc_begin1                    // DW_AT_low_pc
-; CHECK-NEXT: .b64 Lfunc_end1                      // DW_AT_high_pc
+; CHECK-NEXT: .b8 3                                // Abbrev [3] 0x68:0x3a DW_TAG_subprogram
+; CHECK-NEXT: .b64 $L__func_begin1                 // DW_AT_low_pc
+; CHECK-NEXT: .b64 $L__func_end1                   // DW_AT_high_pc
 ; CHECK-NEXT: .b8 1                                // DW_AT_frame_base
 ; CHECK-NEXT: .b8 156
 ; CHECK-NEXT: .b8 95                               // DW_AT_MIPS_linkage_name
@@ -348,12 +351,18 @@ attributes #2 = { "less-precise-fpmad"="false" "frame-pointer"="all" "no-infs-fp
 ; CHECK-NEXT: .b8 2                                // DW_AT_decl_file
 ; CHECK-NEXT: .b8 6                                // DW_AT_decl_line
 ; CHECK-NEXT: .b8 1                                // DW_AT_external
-; CHECK-NEXT: .b8 4                                // Abbrev [4] 0x8b:0xd DW_TAG_variable
+; CHECK-NEXT: .b8 4                                // Abbrev [4] 0x8b:0x9 DW_TAG_formal_parameter
+; CHECK-NEXT: .b8 97                               // DW_AT_name
+; CHECK-NEXT: .b8 0
+; CHECK-NEXT: .b8 2                                // DW_AT_decl_file
+; CHECK-NEXT: .b8 6                                // DW_AT_decl_line
+; CHECK-NEXT: .b32 100                             // DW_AT_type
+; CHECK-NEXT: .b8 5                                // Abbrev [5] 0x94:0xd DW_TAG_variable
 ; CHECK-NEXT: .b8 122                              // DW_AT_name
 ; CHECK-NEXT: .b8 0
 ; CHECK-NEXT: .b8 2                                // DW_AT_decl_file
 ; CHECK-NEXT: .b8 7                                // DW_AT_decl_line
-; CHECK-NEXT: .b64 .debug_info+302                 // DW_AT_type
+; CHECK-NEXT: .b64 .debug_info+311                 // DW_AT_type
 ; CHECK-NEXT: .b8 0                                // End Of Children Mark
 ; CHECK-NEXT: .b8 0                                // End Of Children Mark
 ; CHECK-NEXT: .b32 152                             // Length of Unit
@@ -431,11 +440,11 @@ attributes #2 = { "less-precise-fpmad"="false" "frame-pointer"="all" "no-infs-fp
 ; CHECK-NEXT: .b8 99
 ; CHECK-NEXT: .b8 99
 ; CHECK-NEXT: .b8 0
-; CHECK-NEXT: .b64 Lfunc_begin0                    // DW_AT_low_pc
-; CHECK-NEXT: .b64 Lfunc_end0                      // DW_AT_high_pc
-; CHECK-NEXT: .b8 5                                // Abbrev [5] 0x64:0x30 DW_TAG_subprogram
-; CHECK-NEXT: .b64 Lfunc_begin0                    // DW_AT_low_pc
-; CHECK-NEXT: .b64 Lfunc_end0                      // DW_AT_high_pc
+; CHECK-NEXT: .b64 $L__func_begin0                 // DW_AT_low_pc
+; CHECK-NEXT: .b64 $L__func_end0                   // DW_AT_high_pc
+; CHECK-NEXT: .b8 6                                // Abbrev [6] 0x64:0x30 DW_TAG_subprogram
+; CHECK-NEXT: .b64 $L__func_begin0                 // DW_AT_low_pc
+; CHECK-NEXT: .b64 $L__func_end0                   // DW_AT_high_pc
 ; CHECK-NEXT: .b8 1                                // DW_AT_frame_base
 ; CHECK-NEXT: .b8 156
 ; CHECK-NEXT: .b8 95                               // DW_AT_MIPS_linkage_name
@@ -454,7 +463,7 @@ attributes #2 = { "less-precise-fpmad"="false" "frame-pointer"="all" "no-infs-fp
 ; CHECK-NEXT: .b8 1                                // DW_AT_decl_line
 ; CHECK-NEXT: .b32 148                             // DW_AT_type
 ; CHECK-NEXT: .b8 1                                // DW_AT_external
-; CHECK-NEXT: .b8 6                                // Abbrev [6] 0x8a:0x9 DW_TAG_formal_parameter
+; CHECK-NEXT: .b8 4                                // Abbrev [4] 0x8a:0x9 DW_TAG_formal_parameter
 ; CHECK-NEXT: .b8 98                               // DW_AT_name
 ; CHECK-NEXT: .b8 0
 ; CHECK-NEXT: .b8 1                                // DW_AT_decl_file

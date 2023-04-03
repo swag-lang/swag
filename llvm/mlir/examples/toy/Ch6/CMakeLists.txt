@@ -42,11 +42,14 @@ target_link_libraries(toyc-ch6
     MLIRCastInterfaces
     MLIRExecutionEngine
     MLIRIR
-    MLIRLLVMIR
+    MLIRLLVMCommonConversion
+    MLIRLLVMDialect
+    MLIRLLVMToLLVMIRTranslation
+    MLIRMemRefDialect
     MLIRParser
     MLIRPass
     MLIRSideEffectInterfaces
     MLIRSupport
-    MLIRTargetLLVMIR
+    MLIRTargetLLVMIRExport
     MLIRTransforms
     )

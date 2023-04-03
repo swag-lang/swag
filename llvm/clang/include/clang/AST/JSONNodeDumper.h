@@ -1,9 +1,8 @@
 //===--- JSONNodeDumper.h - Printing of AST nodes to JSON -----------------===//
 //
-//                     The LLVM Compiler Infrastructure
-//
-// This file is distributed under the University of Illinois Open Source
-// License. See LICENSE.TXT for details.
+// Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
+// See https://llvm.org/LICENSE.txt for license information.
+// SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 //
 //===----------------------------------------------------------------------===//
 //
@@ -21,6 +20,7 @@
 #include "clang/AST/AttrVisitor.h"
 #include "clang/AST/CommentCommandTraits.h"
 #include "clang/AST/CommentVisitor.h"
+#include "clang/AST/ExprConcepts.h"
 #include "clang/AST/ExprCXX.h"
 #include "clang/AST/Mangle.h"
 #include "clang/AST/Type.h"
@@ -160,6 +160,7 @@ class JSONNodeDumper
   std::string createPointerRepresentation(const void *Ptr);
   llvm::json::Object createQualType(QualType QT, bool Desugar = true);
   llvm::json::Object createBareDeclRef(const Decl *D);
+  llvm::json::Object createFPOptions(FPOptionsOverride FPO);
   void writeBareDeclRef(const Decl *D);
   llvm::json::Object createCXXRecordDefinitionData(const CXXRecordDecl *RD);
   llvm::json::Object createCXXBaseSpecifier(const CXXBaseSpecifier &BS);
@@ -204,6 +205,7 @@ public:
   void Visit(const OMPClause *C);
   void Visit(const BlockDecl::Capture &C);
   void Visit(const GenericSelectionExpr::ConstAssociation &A);
+  void Visit(const concepts::Requirement *R);
   void Visit(const APValue &Value, QualType Ty);
 
   void VisitTypedefType(const TypedefType *TT);
@@ -234,6 +236,7 @@ public:
   void VisitUsingDirectiveDecl(const UsingDirectiveDecl *UDD);
   void VisitNamespaceAliasDecl(const NamespaceAliasDecl *NAD);
   void VisitUsingDecl(const UsingDecl *UD);
+  void VisitUsingEnumDecl(const UsingEnumDecl *UED);
   void VisitUsingShadowDecl(const UsingShadowDecl *USD);
   void VisitVarDecl(const VarDecl *VD);
   void VisitFieldDecl(const FieldDecl *FD);
@@ -263,6 +266,7 @@ public:
   void VisitBlockDecl(const BlockDecl *D);
 
   void VisitDeclRefExpr(const DeclRefExpr *DRE);
+  void VisitSYCLUniqueStableNameExpr(const SYCLUniqueStableNameExpr *E);
   void VisitPredefinedExpr(const PredefinedExpr *PE);
   void VisitUnaryOperator(const UnaryOperator *UO);
   void VisitBinaryOperator(const BinaryOperator *BO);
@@ -288,6 +292,7 @@ public:
   void VisitCXXBindTemporaryExpr(const CXXBindTemporaryExpr *BTE);
   void VisitMaterializeTemporaryExpr(const MaterializeTemporaryExpr *MTE);
   void VisitCXXDependentScopeMemberExpr(const CXXDependentScopeMemberExpr *ME);
+  void VisitRequiresExpr(const RequiresExpr *RE);
 
   void VisitObjCEncodeExpr(const ObjCEncodeExpr *OEE);
   void VisitObjCMessageExpr(const ObjCMessageExpr *OME);
@@ -313,6 +318,7 @@ public:
   void VisitGotoStmt(const GotoStmt *GS);
   void VisitWhileStmt(const WhileStmt *WS);
   void VisitObjCAtCatchStmt(const ObjCAtCatchStmt *OACS);
+  void VisitCompoundStmt(const CompoundStmt *IS);
 
   void VisitNullTemplateArgument(const TemplateArgument &TA);
   void VisitTypeTemplateArgument(const TemplateArgument &TA);

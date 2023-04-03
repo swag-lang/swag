@@ -24,8 +24,7 @@ constexpr char ConstructorCall[] = "constructorCall";
 constexpr char ResetCall[] = "resetCall";
 constexpr char NewExpression[] = "newExpression";
 
-std::string GetNewExprName(const CXXNewExpr *NewExpr,
-                           const SourceManager &SM,
+std::string getNewExprName(const CXXNewExpr *NewExpr, const SourceManager &SM,
                            const LangOptions &Lang) {
   StringRef WrittenName = Lexer::getSourceText(
       CharSourceRange::getTokenRange(
@@ -45,7 +44,8 @@ MakeSmartPtrCheck::MakeSmartPtrCheck(StringRef Name, ClangTidyContext *Context,
                                      StringRef MakeSmartPtrFunctionName)
     : ClangTidyCheck(Name, Context),
       Inserter(Options.getLocalOrGlobal("IncludeStyle",
-                                        utils::IncludeSorter::IS_LLVM)),
+                                        utils::IncludeSorter::IS_LLVM),
+               areDiagsSelfContained()),
       MakeSmartPtrFunctionHeader(
           Options.get("MakeSmartPtrFunctionHeader", "<memory>")),
       MakeSmartPtrFunctionName(
@@ -183,8 +183,7 @@ void MakeSmartPtrCheck::checkConstruct(SourceManager &SM, ASTContext *Ctx,
     // we have to add it back.
     ConstructCallEnd = ConstructCallStart.getLocWithOffset(ExprStr.size());
     Diag << FixItHint::CreateInsertion(
-        ConstructCallEnd,
-        "<" + GetNewExprName(New, SM, getLangOpts()) + ">");
+        ConstructCallEnd, "<" + getNewExprName(New, SM, getLangOpts()) + ">");
   } else {
     ConstructCallEnd = ConstructCallStart.getLocWithOffset(LAngle);
   }
@@ -248,7 +247,7 @@ void MakeSmartPtrCheck::checkReset(SourceManager &SM, ASTContext *Ctx,
   Diag << FixItHint::CreateReplacement(
       CharSourceRange::getCharRange(OperatorLoc, ExprEnd),
       (llvm::Twine(" = ") + MakeSmartPtrFunctionName + "<" +
-       GetNewExprName(New, SM, getLangOpts()) + ">")
+       getNewExprName(New, SM, getLangOpts()) + ">")
           .str());
 
   if (Expr->isArrow())
@@ -284,7 +283,7 @@ bool MakeSmartPtrCheck::replaceNew(DiagnosticBuilder &Diag,
     return false;
 
   std::string ArraySizeExpr;
-  if (const auto* ArraySize = New->getArraySize().getValueOr(nullptr)) {
+  if (const auto *ArraySize = New->getArraySize().value_or(nullptr)) {
     ArraySizeExpr = Lexer::getSourceText(CharSourceRange::getTokenRange(
                                              ArraySize->getSourceRange()),
                                          SM, getLangOpts())
@@ -389,19 +388,18 @@ bool MakeSmartPtrCheck::replaceNew(DiagnosticBuilder &Diag,
         //   std::make_smart_ptr<S>(std::initializer_list<int>({}));
         //   std::make_smart_ptr<S2>(S{1, 2}, 3);
         return false;
-      } else {
-        // Direct initialization with ordinary constructors.
-        //   struct S { S(int x); S(); };
-        //   smart_ptr<S>(new S{5});
-        //   smart_ptr<S>(new S{}); // use default constructor
-        // The arguments in the initialization list are going to be forwarded to
-        // the constructor, so this has to be replaced with:
-        //   std::make_smart_ptr<S>(5);
-        //   std::make_smart_ptr<S>();
-        InitRange = SourceRange(
-            NewConstruct->getParenOrBraceRange().getBegin().getLocWithOffset(1),
-            NewConstruct->getParenOrBraceRange().getEnd().getLocWithOffset(-1));
       }
+      // Direct initialization with ordinary constructors.
+      //   struct S { S(int x); S(); };
+      //   smart_ptr<S>(new S{5});
+      //   smart_ptr<S>(new S{}); // use default constructor
+      // The arguments in the initialization list are going to be forwarded to
+      // the constructor, so this has to be replaced with:
+      //   std::make_smart_ptr<S>(5);
+      //   std::make_smart_ptr<S>();
+      InitRange = SourceRange(
+          NewConstruct->getParenOrBraceRange().getBegin().getLocWithOffset(1),
+          NewConstruct->getParenOrBraceRange().getEnd().getLocWithOffset(-1));
     } else {
       // Aggregate initialization.
       //   smart_ptr<Pair>(new Pair{first, second});

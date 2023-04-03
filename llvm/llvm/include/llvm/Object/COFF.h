@@ -604,6 +604,7 @@ enum class coff_guard_flags : uint32_t {
   ProtectDelayLoadIAT = 0x00001000,
   DelayLoadIATSection = 0x00002000, // Delay load in separate section
   HasLongJmpTable = 0x00010000,
+  HasEHContTable = 0x00400000,
   FidTableHasFlags = 0x10000000, // Indicates that fid tables are 5 bytes
 };
 
@@ -661,6 +662,17 @@ struct coff_load_configuration32 {
   support::ulittle16_t Reserved2;
   support::ulittle32_t GuardRFVerifyStackPointerFunctionPointer;
   support::ulittle32_t HotPatchTableOffset;
+
+  // Added in MSVC 2019
+  support::ulittle32_t Reserved3;
+  support::ulittle32_t EnclaveConfigurationPointer;
+  support::ulittle32_t VolatileMetadataPointer;
+  support::ulittle32_t GuardEHContinuationTable;
+  support::ulittle32_t GuardEHContinuationCount;
+  support::ulittle32_t GuardXFGCheckFunctionPointer;
+  support::ulittle32_t GuardXFGDispatchFunctionPointer;
+  support::ulittle32_t GuardXFGTableDispatchFunctionPointer;
+  support::ulittle32_t CastGuardOsDeterminedFailureMode;
 };
 
 /// 64-bit load config (IMAGE_LOAD_CONFIG_DIRECTORY64)
@@ -708,6 +720,17 @@ struct coff_load_configuration64 {
   support::ulittle16_t Reserved2;
   support::ulittle64_t GuardRFVerifyStackPointerFunctionPointer;
   support::ulittle32_t HotPatchTableOffset;
+
+  // Added in MSVC 2019
+  support::ulittle32_t Reserved3;
+  support::ulittle64_t EnclaveConfigurationPointer;
+  support::ulittle64_t VolatileMetadataPointer;
+  support::ulittle64_t GuardEHContinuationTable;
+  support::ulittle64_t GuardEHContinuationCount;
+  support::ulittle64_t GuardXFGCheckFunctionPointer;
+  support::ulittle64_t GuardXFGDispatchFunctionPointer;
+  support::ulittle64_t GuardXFGTableDispatchFunctionPointer;
+  support::ulittle64_t CastGuardOsDeterminedFailureMode;
 };
 
 struct coff_runtime_function_x64 {
@@ -936,7 +959,7 @@ protected:
   bool isSectionData(DataRefImpl Sec) const override;
   bool isSectionBSS(DataRefImpl Sec) const override;
   bool isSectionVirtual(DataRefImpl Sec) const override;
-  bool isDebugSection(StringRef SectionName) const override;
+  bool isDebugSection(DataRefImpl Sec) const override;
   relocation_iterator section_rel_begin(DataRefImpl Sec) const override;
   relocation_iterator section_rel_end(DataRefImpl Sec) const override;
 
@@ -1056,13 +1079,15 @@ public:
 
   uint64_t getImageBase() const;
   Error getVaPtr(uint64_t VA, uintptr_t &Res) const;
-  Error getRvaPtr(uint32_t Rva, uintptr_t &Res) const;
+  Error getRvaPtr(uint32_t Rva, uintptr_t &Res,
+                  const char *ErrorContext = nullptr) const;
 
   /// Given an RVA base and size, returns a valid array of bytes or an error
   /// code if the RVA and size is not contained completely within a valid
   /// section.
   Error getRvaAndSizeAsBytes(uint32_t RVA, uint32_t Size,
-                             ArrayRef<uint8_t> &Contents) const;
+                             ArrayRef<uint8_t> &Contents,
+                             const char *ErrorContext = nullptr) const;
 
   Error getHintName(uint32_t Rva, uint16_t &Hint,
                               StringRef &Name) const;
@@ -1271,6 +1296,12 @@ struct FpoData {
 
   // cbFrame: frame pointer
   frame_type getFP() const { return static_cast<frame_type>(Attributes >> 14); }
+};
+
+class SectionStrippedError
+    : public ErrorInfo<SectionStrippedError, BinaryError> {
+public:
+  SectionStrippedError() { setErrorCode(object_error::section_stripped); }
 };
 
 } // end namespace object

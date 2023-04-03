@@ -2,6 +2,8 @@
 # RUN: wasm-ld --export-all -o %t.wasm %t.o
 # RUN: obj2yaml %t.wasm | FileCheck %s
 
+.globaltype __stack_pointer, i32
+
 .globl _start
 
 _start:
@@ -14,8 +16,6 @@ foo:
   .functype foo () -> (i32)
   i32.const 42
   end_function
-
-.globaltype __stack_pointer, i32
 
 #      CHECK:   - Type:            EXPORT
 # CHECK-NEXT:     Exports:
@@ -40,9 +40,12 @@ foo:
 # CHECK-NEXT:       - Name:            __heap_base
 # CHECK-NEXT:         Kind:            GLOBAL
 # CHECK-NEXT:         Index:           4
-# CHECK-NEXT:       - Name:            __memory_base
+# CHECK-NEXT:       - Name:            __heap_end
 # CHECK-NEXT:         Kind:            GLOBAL
 # CHECK-NEXT:         Index:           5
-# CHECK-NEXT:       - Name:            __table_base
+# CHECK-NEXT:       - Name:            __memory_base
 # CHECK-NEXT:         Kind:            GLOBAL
 # CHECK-NEXT:         Index:           6
+# CHECK-NEXT:       - Name:            __table_base
+# CHECK-NEXT:         Kind:            GLOBAL
+# CHECK-NEXT:         Index:           7

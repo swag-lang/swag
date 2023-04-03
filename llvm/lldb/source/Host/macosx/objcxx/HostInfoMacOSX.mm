@@ -6,12 +6,14 @@
 //
 //===----------------------------------------------------------------------===//
 
-#include "lldb/Host/macosx/HostInfoMacOSX.h"
 #include "lldb/Host/FileSystem.h"
 #include "lldb/Host/Host.h"
 #include "lldb/Host/HostInfo.h"
+#include "lldb/Host/macosx/HostInfoMacOSX.h"
 #include "lldb/Utility/Args.h"
+#include "lldb/Utility/LLDBLog.h"
 #include "lldb/Utility/Log.h"
+#include "lldb/Utility/Timer.h"
 #include "Utility/UuidCompatibility.h"
 
 #include "llvm/ADT/SmallString.h"
@@ -24,7 +26,7 @@
 #include <string>
 
 // C inclues
-#include <stdlib.h>
+#include <cstdlib>
 #include <sys/sysctl.h>
 #include <sys/syslimits.h>
 #include <sys/types.h>
@@ -33,6 +35,10 @@
 #include <CoreFoundation/CoreFoundation.h>
 #include <Foundation/Foundation.h>
 #include <mach-o/dyld.h>
+#if __has_include(<mach-o/dyld_introspection.h>)
+#include <mach-o/dyld_introspection.h>
+#define SDK_HAS_NEW_DYLD_INTROSPECTION_SPIS
+#endif
 #include <objc/objc-auto.h>
 
 // These are needed when compiling on systems
@@ -54,29 +60,14 @@
 
 using namespace lldb_private;
 
-bool HostInfoMacOSX::GetOSBuildString(std::string &s) {
+llvm::Optional<std::string> HostInfoMacOSX::GetOSBuildString() {
   int mib[2] = {CTL_KERN, KERN_OSVERSION};
   char cstr[PATH_MAX];
   size_t cstr_len = sizeof(cstr);
-  if (::sysctl(mib, 2, cstr, &cstr_len, NULL, 0) == 0) {
-    s.assign(cstr, cstr_len);
-    return true;
-  }
+  if (::sysctl(mib, 2, cstr, &cstr_len, NULL, 0) == 0)
+    return std::string(cstr, cstr_len - 1);
 
-  s.clear();
-  return false;
-}
-
-bool HostInfoMacOSX::GetOSKernelDescription(std::string &s) {
-  int mib[2] = {CTL_KERN, KERN_VERSION};
-  char cstr[PATH_MAX];
-  size_t cstr_len = sizeof(cstr);
-  if (::sysctl(mib, 2, cstr, &cstr_len, NULL, 0) == 0) {
-    s.assign(cstr, cstr_len);
-    return true;
-  }
-  s.clear();
-  return false;
+  return llvm::None;
 }
 
 static void ParseOSVersion(llvm::VersionTuple &version, NSString *Key) {
@@ -138,7 +129,7 @@ bool HostInfoMacOSX::ComputeSupportExeDirectory(FileSpec &file_spec) {
   size_t framework_pos = raw_path.find("LLDB.framework");
   if (framework_pos != std::string::npos) {
     framework_pos += strlen("LLDB.framework");
-#if TARGET_OS_EMBEDDED
+#if TARGET_OS_IPHONE
     // Shallow bundle
     raw_path.resize(framework_pos);
 #else
@@ -158,7 +149,7 @@ bool HostInfoMacOSX::ComputeSupportExeDirectory(FileSpec &file_spec) {
     FileSpec support_dir_spec(raw_path);
     FileSystem::Instance().Resolve(support_dir_spec);
     if (!FileSystem::Instance().IsDirectory(support_dir_spec)) {
-      Log *log = lldb_private::GetLogIfAllCategoriesSet(LIBLLDB_LOG_HOST);
+      Log *log = GetLog(LLDBLog::Host);
       LLDB_LOGF(log, "HostInfoMacOSX::%s(): failed to find support directory",
                 __FUNCTION__);
       return false;
@@ -241,6 +232,12 @@ void HostInfoMacOSX::ComputeHostArchitectureSupport(ArchSpec &arch_32,
 
     len = sizeof(is_64_bit_capable);
     ::sysctlbyname("hw.cpu64bit_capable", &is_64_bit_capable, &len, NULL, 0);
+
+    if (cputype == CPU_TYPE_ARM64 && cpusubtype == CPU_SUBTYPE_ARM64E) {
+      // The arm64e architecture is a preview. Pretend the host architecture
+      // is arm64.
+      cpusubtype = CPU_SUBTYPE_ARM64_ALL;
+    }
 
     if (is_64_bit_capable) {
       if (cputype & CPU_ARCH_ABI64) {
@@ -376,17 +373,29 @@ static std::string GetXcodeSDK(XcodeSDK sdk) {
 
   auto xcrun = [](const std::string &sdk,
                   llvm::StringRef developer_dir = "") -> std::string {
-    std::string xcrun_cmd = "xcrun --show-sdk-path --sdk " + sdk;
-    if (!developer_dir.empty())
-      xcrun_cmd = "/usr/bin/env DEVELOPER_DIR=\"" + developer_dir.str() +
-                  "\" " + xcrun_cmd;
+    Args args;
+    if (!developer_dir.empty()) {
+      args.AppendArgument("/usr/bin/env");
+      args.AppendArgument("DEVELOPER_DIR=" + developer_dir.str());
+    }
+    args.AppendArgument("/usr/bin/xcrun");
+    args.AppendArgument("--show-sdk-path");
+    args.AppendArgument("--sdk");
+    args.AppendArgument(sdk);
+
+    Log *log = GetLog(LLDBLog::Host);
+    if (log) {
+      std::string cmdstr;
+      args.GetCommandString(cmdstr);
+      log->Printf("GetXcodeSDK() running shell cmd '%s'", cmdstr.c_str());
+    }
 
     int status = 0;
     int signo = 0;
     std::string output_str;
     lldb_private::Status error =
-        Host::RunShellCommand(xcrun_cmd, FileSpec(), &status, &signo,
-                              &output_str, std::chrono::seconds(15));
+        Host::RunShellCommand(args, FileSpec(), &status, &signo, &output_str,
+                              std::chrono::seconds(15));
 
     // Check that xcrun return something useful.
     if (status != 0 || output_str.empty())
@@ -446,7 +455,7 @@ static std::string GetXcodeSDK(XcodeSDK sdk) {
       if (!path.empty())
         break;
     }
-    Log *log = lldb_private::GetLogIfAllCategoriesSet(LIBLLDB_LOG_HOST);
+    Log *log = GetLog(LLDBLog::Host);
     LLDB_LOGF(log, "Couldn't find SDK %s on host", sdk_name.c_str());
 
     // Try without the version.
@@ -473,6 +482,8 @@ llvm::StringRef HostInfoMacOSX::GetXcodeSDKPath(XcodeSDK sdk) {
   static std::mutex g_sdk_path_mutex;
 
   std::lock_guard<std::mutex> guard(g_sdk_path_mutex);
+  LLDB_SCOPED_TIMER();
+
   auto it = g_sdk_path.find(sdk.GetString());
   if (it != g_sdk_path.end())
     return it->second;
@@ -504,10 +515,10 @@ extern "C" bool _dyld_get_shared_cache_uuid(uuid_t uuid);
 namespace {
 class SharedCacheInfo {
 public:
-  const UUID &GetUUID() const { return m_uuid; };
+  const UUID &GetUUID() const { return m_uuid; }
   const llvm::StringMap<SharedCacheImageInfo> &GetImages() const {
     return m_images;
-  };
+  }
 
   SharedCacheInfo();
 
@@ -518,6 +529,41 @@ private:
 }
 
 SharedCacheInfo::SharedCacheInfo() {
+#if defined(SDK_HAS_NEW_DYLD_INTROSPECTION_SPIS)
+  if (__builtin_available(macOS 12, *)) {
+    if (dyld_process_create_for_current_task) {
+      auto dyld_process = dyld_process_create_for_current_task();
+      auto snapshot =
+          dyld_process_snapshot_create_for_process(dyld_process, nullptr);
+      auto shared_cache = dyld_process_snapshot_get_shared_cache(snapshot);
+      assert(dyld_process && snapshot && shared_cache);
+
+      dyld_shared_cache_for_each_image(shared_cache, ^(dyld_image_t image) {
+        __block uint64_t minVmAddr = UINT64_MAX;
+        __block uint64_t maxVmAddr = 0;
+        uuid_t uuidStore;
+        __block uuid_t *uuid = &uuidStore;
+
+        dyld_image_for_each_segment_info(image, ^(const char *segmentName,
+                                                  uint64_t vmAddr,
+                                                  uint64_t vmSize, int perm) {
+          minVmAddr = std::min(minVmAddr, vmAddr);
+          maxVmAddr = std::max(maxVmAddr, vmAddr + vmSize);
+          dyld_image_copy_uuid(image, uuid);
+        });
+        assert(minVmAddr != UINT_MAX);
+        assert(maxVmAddr != 0);
+        m_images[dyld_image_get_installname(image)] = SharedCacheImageInfo{
+            UUID::fromData(uuid, 16),
+            std::make_shared<DataBufferUnowned>((uint8_t *)minVmAddr,
+                                                maxVmAddr - minVmAddr)};
+      });
+      dyld_process_snapshot_dispose(snapshot);
+      return;
+    }
+  }
+#endif
+
   size_t shared_cache_size;
   uint8_t *shared_cache_start =
       _dyld_get_shared_cache_range(&shared_cache_size);

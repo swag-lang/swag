@@ -10,8 +10,6 @@ from lldbsuite.test import lldbutil
 import six
 
 class ListenToModuleLoadedEvents (TestBase):
-
-    mydir = TestBase.compute_mydir(__file__)
     NO_DEBUG_INFO_TESTCASE = True
 
     def test_clearing_listener(self):
@@ -35,11 +33,9 @@ class ListenToModuleLoadedEvents (TestBase):
             lldb.SBTarget.GetBroadcasterClassName(),
             lldb.SBTarget.eBroadcastBitModulesUnloaded)
 
-        exe = self.getBuildArtifact("a.out")
-
         my_listener.Clear()
 
-        target = self.dbg.CreateTarget(exe)
+        target = self.createTestTarget()
 
         bkpt = target.BreakpointCreateByName("main")
 
@@ -58,9 +54,7 @@ class ListenToModuleLoadedEvents (TestBase):
             lldb.SBTarget.GetBroadcasterClassName(),
             lldb.SBTarget.eBroadcastBitBreakpointChanged)
 
-        exe = self.getBuildArtifact("a.out")
-
-        target = self.dbg.CreateTarget(exe)
+        target = self.createTestTarget()
 
         bkpt = target.BreakpointCreateByName("main")
 
@@ -73,8 +67,8 @@ class ListenToModuleLoadedEvents (TestBase):
             "It is a breakpoint event.")
         self.assertTrue(lldb.SBBreakpoint.GetBreakpointEventTypeFromEvent(
             event) == lldb.eBreakpointEventTypeAdded, "It is a breakpoint added event.")
-        self.assertTrue(
-            bkpt == lldb.SBBreakpoint.GetBreakpointFromEvent(event),
+        self.assertEqual(
+            bkpt, lldb.SBBreakpoint.GetBreakpointFromEvent(event),
             "It is our breakpoint.")
 
         # Now make sure if we stop listening for events we don't get them:
@@ -100,9 +94,7 @@ class ListenToModuleLoadedEvents (TestBase):
             lldb.SBTarget.GetBroadcasterClassName(),
             lldb.SBTarget.eBroadcastBitBreakpointChanged)
 
-        exe = self.getBuildArtifact("a.out")
-
-        target = self.dbg.CreateTarget(exe)
+        target = self.createTestTarget()
         result = target.GetBroadcaster().AddListener(my_listener,
                                                      lldb.SBTarget.eBroadcastBitBreakpointChanged)
         self.assertEqual(result, lldb.SBTarget.eBroadcastBitBreakpointChanged,"Got our bit")
@@ -118,8 +110,8 @@ class ListenToModuleLoadedEvents (TestBase):
             "It is a breakpoint event.")
         self.assertTrue(lldb.SBBreakpoint.GetBreakpointEventTypeFromEvent(
             event) == lldb.eBreakpointEventTypeAdded, "It is a breakpoint added event.")
-        self.assertTrue(
-            bkpt == lldb.SBBreakpoint.GetBreakpointFromEvent(event),
+        self.assertEqual(
+            bkpt, lldb.SBBreakpoint.GetBreakpointFromEvent(event),
             "It is our breakpoint.")
 
         # Now make sure if we stop listening for events we don't get them:

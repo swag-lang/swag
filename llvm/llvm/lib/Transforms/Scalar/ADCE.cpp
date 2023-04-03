@@ -35,7 +35,6 @@
 #include "llvm/IR/Function.h"
 #include "llvm/IR/IRBuilder.h"
 #include "llvm/IR/InstIterator.h"
-#include "llvm/IR/InstrTypes.h"
 #include "llvm/IR/Instruction.h"
 #include "llvm/IR/Instructions.h"
 #include "llvm/IR/IntrinsicInst.h"
@@ -50,6 +49,7 @@
 #include "llvm/Support/Debug.h"
 #include "llvm/Support/raw_ostream.h"
 #include "llvm/Transforms/Scalar.h"
+#include "llvm/Transforms/Utils/Local.h"
 #include <cassert>
 #include <cstddef>
 #include <utility>
@@ -325,7 +325,7 @@ void AggressiveDeadCodeElimination::initialize() {
 
 bool AggressiveDeadCodeElimination::isAlwaysLive(Instruction &I) {
   // TODO -- use llvm::isInstructionTriviallyDead
-  if (I.isEHPad() || I.mayHaveSideEffects() || !I.willReturn()) {
+  if (I.isEHPad() || I.mayHaveSideEffects()) {
     // Skip any value profile instrumentation calls if they are
     // instrumenting constants.
     if (isInstrumentsConstant(I))
@@ -521,10 +521,14 @@ bool AggressiveDeadCodeElimination::removeDeadInstructions() {
         // If intrinsic is pointing at a live SSA value, there may be an
         // earlier optimization bug: if we know the location of the variable,
         // why isn't the scope of the location alive?
-        if (Value *V = DII->getVariableLocation())
-          if (Instruction *II = dyn_cast<Instruction>(V))
-            if (isLive(II))
+        for (Value *V : DII->location_ops()) {
+          if (Instruction *II = dyn_cast<Instruction>(V)) {
+            if (isLive(II)) {
               dbgs() << "Dropping debug info for " << *DII << "\n";
+              break;
+            }
+          }
+        }
       }
     }
   });
@@ -533,7 +537,7 @@ bool AggressiveDeadCodeElimination::removeDeadInstructions() {
   // that have no side effects and do not influence the control flow or return
   // value of the function, and may therefore be deleted safely.
   // NOTE: We reuse the Worklist vector here for memory efficiency.
-  for (Instruction &I : instructions(F)) {
+  for (Instruction &I : llvm::reverse(instructions(F))) {
     // Check if the instruction is alive.
     if (isLive(&I))
       continue;
@@ -548,8 +552,11 @@ bool AggressiveDeadCodeElimination::removeDeadInstructions() {
 
     // Prepare to delete.
     Worklist.push_back(&I);
-    I.dropAllReferences();
+    salvageDebugInfo(I);
   }
+
+  for (Instruction *&I : Worklist)
+    I->dropAllReferences();
 
   for (Instruction *&I : Worklist) {
     ++NumRemoved;
@@ -571,6 +578,7 @@ bool AggressiveDeadCodeElimination::updateDeadRegions() {
   // Don't compute the post ordering unless we needed it.
   bool HavePostOrder = false;
   bool Changed = false;
+  SmallVector<DominatorTree::UpdateType, 10> DeletedEdges;
 
   for (auto *BB : BlocksWithDeadTerminators) {
     auto &Info = BlockInfo[BB];
@@ -609,7 +617,6 @@ bool AggressiveDeadCodeElimination::updateDeadRegions() {
     makeUnconditional(BB, PreferredSucc->BB);
 
     // Inform the dominators about the deleted CFG edges.
-    SmallVector<DominatorTree::UpdateType, 4> DeletedEdges;
     for (auto *Succ : RemovedSuccessors) {
       // It might have happened that the same successor appeared multiple times
       // and the CFG edge wasn't really removed.
@@ -621,12 +628,13 @@ bool AggressiveDeadCodeElimination::updateDeadRegions() {
       }
     }
 
-    DomTreeUpdater(DT, &PDT, DomTreeUpdater::UpdateStrategy::Eager)
-        .applyUpdates(DeletedEdges);
-
     NumBranchesRemoved += 1;
     Changed = true;
   }
+
+  if (!DeletedEdges.empty())
+    DomTreeUpdater(DT, &PDT, DomTreeUpdater::UpdateStrategy::Eager)
+        .applyUpdates(DeletedEdges);
 
   return Changed;
 }
@@ -696,7 +704,6 @@ PreservedAnalyses ADCEPass::run(Function &F, FunctionAnalysisManager &FAM) {
     PA.preserve<DominatorTreeAnalysis>();
     PA.preserve<PostDominatorTreeAnalysis>();
   }
-  PA.preserve<GlobalsAA>();
   return PA;
 }
 

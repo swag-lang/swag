@@ -1,6 +1,6 @@
-// RUN: %clang_cc1 -triple x86_64-apple-darwin10 -fsyntax-only -verify -std=gnu++11 -fms-extensions -Wno-microsoft %s
-// RUN: %clang_cc1 -triple x86_64-apple-darwin10 -fsyntax-only -verify -std=gnu++14 -fms-extensions -Wno-microsoft %s
-// RUN: %clang_cc1 -triple x86_64-apple-darwin10 -fsyntax-only -verify -std=gnu++1z -fms-extensions -Wno-microsoft %s
+// RUN: %clang_cc1 -triple x86_64-apple-darwin10 -fsyntax-only -verify -std=gnu++11 -Wno-deprecated-builtins -fms-extensions -Wno-microsoft %s
+// RUN: %clang_cc1 -triple x86_64-apple-darwin10 -fsyntax-only -verify -std=gnu++14 -Wno-deprecated-builtins -fms-extensions -Wno-microsoft %s
+// RUN: %clang_cc1 -triple x86_64-apple-darwin10 -fsyntax-only -verify -std=gnu++1z -Wno-deprecated-builtins -fms-extensions -Wno-microsoft %s
 
 #define T(b) (b) ? 1 : -1
 #define F(b) (b) ? -1 : 1
@@ -13,6 +13,7 @@ typedef NonPOD NonPODArMB[10][2];
 // PODs
 enum Enum { EV };
 enum SignedEnum : signed int { };
+enum UnsignedEnum : unsigned int { };
 struct POD { Enum e; int i; float f; NonPOD* p; };
 struct Empty {};
 struct IncompleteStruct;
@@ -1440,6 +1441,7 @@ void is_signed()
   int t25[F(__is_signed(IntArNB))];
   int t26[F(__is_signed(Union))];
   int t27[F(__is_signed(UnionAr))];
+  int t28[F(__is_signed(UnsignedEnum))];
 }
 
 void is_unsigned()
@@ -1450,7 +1452,6 @@ void is_unsigned()
   int t04[T(__is_unsigned(unsigned int))];
   int t05[T(__is_unsigned(unsigned long))];
   int t06[T(__is_unsigned(unsigned long long))];
-  int t07[T(__is_unsigned(Enum))];
 
   int t10[F(__is_unsigned(void))];
   int t11[F(__is_unsigned(cvoid))];
@@ -1468,6 +1469,9 @@ void is_unsigned()
   int t24[F(__is_unsigned(Derives))];
   int t25[F(__is_unsigned(ClassType))];
   int t26[F(__is_unsigned(IntArNB))];
+  int t27[F(__is_unsigned(Enum))];
+  int t28[F(__is_unsigned(UnsignedEnum))];
+  int t29[F(__is_unsigned(SignedEnum))];
 }
 
 typedef Int& IntRef;
@@ -2850,3 +2854,64 @@ void test() { (void) __is_constructible(int, T32768(int)); }
 #undef T16384
 #undef T32768
 } // namespace type_trait_expr_numargs_overflow
+
+namespace is_trivially_relocatable {
+
+static_assert(!__is_trivially_relocatable(void), "");
+static_assert(__is_trivially_relocatable(int), "");
+static_assert(__is_trivially_relocatable(int[]), "");
+
+enum Enum {};
+static_assert(__is_trivially_relocatable(Enum), "");
+static_assert(__is_trivially_relocatable(Enum[]), "");
+
+union Union {int x;};
+static_assert(__is_trivially_relocatable(Union), "");
+static_assert(__is_trivially_relocatable(Union[]), "");
+
+struct Trivial {};
+static_assert(__is_trivially_relocatable(Trivial), "");
+static_assert(__is_trivially_relocatable(Trivial[]), "");
+
+struct Incomplete; // expected-note {{forward declaration of 'is_trivially_relocatable::Incomplete'}}
+bool unused = __is_trivially_relocatable(Incomplete); // expected-error {{incomplete type}}
+
+struct NontrivialDtor {
+  ~NontrivialDtor() {}
+};
+static_assert(!__is_trivially_relocatable(NontrivialDtor), "");
+static_assert(!__is_trivially_relocatable(NontrivialDtor[]), "");
+
+struct NontrivialCopyCtor {
+  NontrivialCopyCtor(const NontrivialCopyCtor&) {}
+};
+static_assert(!__is_trivially_relocatable(NontrivialCopyCtor), "");
+static_assert(!__is_trivially_relocatable(NontrivialCopyCtor[]), "");
+
+struct NontrivialMoveCtor {
+  NontrivialMoveCtor(NontrivialMoveCtor&&) {}
+};
+static_assert(!__is_trivially_relocatable(NontrivialMoveCtor), "");
+static_assert(!__is_trivially_relocatable(NontrivialMoveCtor[]), "");
+
+struct [[clang::trivial_abi]] TrivialAbiNontrivialDtor {
+  ~TrivialAbiNontrivialDtor() {}
+};
+static_assert(__is_trivially_relocatable(TrivialAbiNontrivialDtor), "");
+static_assert(__is_trivially_relocatable(TrivialAbiNontrivialDtor[]), "");
+
+struct [[clang::trivial_abi]] TrivialAbiNontrivialCopyCtor {
+  TrivialAbiNontrivialCopyCtor(const TrivialAbiNontrivialCopyCtor&) {}
+};
+static_assert(__is_trivially_relocatable(TrivialAbiNontrivialCopyCtor), "");
+static_assert(__is_trivially_relocatable(TrivialAbiNontrivialCopyCtor[]), "");
+
+// A more complete set of tests for the behavior of trivial_abi can be found in
+// clang/test/SemaCXX/attr-trivial-abi.cpp
+struct [[clang::trivial_abi]] TrivialAbiNontrivialMoveCtor {
+  TrivialAbiNontrivialMoveCtor(TrivialAbiNontrivialMoveCtor&&) {}
+};
+static_assert(__is_trivially_relocatable(TrivialAbiNontrivialMoveCtor), "");
+static_assert(__is_trivially_relocatable(TrivialAbiNontrivialMoveCtor[]), "");
+
+} // namespace is_trivially_relocatable

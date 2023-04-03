@@ -1,4 +1,4 @@
-//===-------------------------- ios.cpp -----------------------------------===//
+//===----------------------------------------------------------------------===//
 //
 // Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
 // See https://llvm.org/LICENSE.txt for license information.
@@ -6,20 +6,20 @@
 //
 //===----------------------------------------------------------------------===//
 
-#include "__config"
-
-#include "ios"
-
+#include <__config>
+#include <__locale>
+#include <algorithm>
+#include <ios>
+#include <limits>
+#include <memory>
+#include <new>
 #include <stdlib.h>
+#include <string>
 
-#include "__locale"
-#include "algorithm"
 #include "include/config_elast.h"
-#include "limits"
-#include "memory"
-#include "new"
-#include "string"
-#include "__undef_macros"
+
+_LIBCPP_PUSH_MACROS
+#include <__undef_macros>
 
 _LIBCPP_BEGIN_NAMESPACE_STD
 
@@ -27,12 +27,12 @@ class _LIBCPP_HIDDEN __iostream_category
     : public __do_message
 {
 public:
-    virtual const char* name() const _NOEXCEPT;
+    virtual const char* name() const noexcept;
     virtual string message(int ev) const;
 };
 
 const char*
-__iostream_category::name() const _NOEXCEPT
+__iostream_category::name() const noexcept
 {
     return "iostream";
 }
@@ -43,14 +43,14 @@ __iostream_category::message(int ev) const
     if (ev != static_cast<int>(io_errc::stream)
 #ifdef _LIBCPP_ELAST
         && ev <= _LIBCPP_ELAST
-#endif  // _LIBCPP_ELAST
+#endif // _LIBCPP_ELAST
         )
         return __do_message::message(ev);
     return string("unspecified iostream_category error");
 }
 
 const error_category&
-iostream_category() _NOEXCEPT
+iostream_category() noexcept
 {
     static __iostream_category s;
     return s;
@@ -137,7 +137,7 @@ ios_base::getloc() const
 
 // xalloc
 #if defined(_LIBCPP_HAS_C_ATOMIC_IMP) && !defined(_LIBCPP_HAS_NO_THREADS)
-atomic<int> ios_base::__xindex_ = ATOMIC_VAR_INIT(0);
+atomic<int> ios_base::__xindex_{0};
 #else
 int ios_base::__xindex_ = 0;
 #endif
@@ -387,7 +387,7 @@ ios_base::move(ios_base& rhs)
 }
 
 void
-ios_base::swap(ios_base& rhs) _NOEXCEPT
+ios_base::swap(ios_base& rhs) noexcept
 {
     _VSTD::swap(__fmtflags_, rhs.__fmtflags_);
     _VSTD::swap(__precision_, rhs.__precision_);
@@ -416,7 +416,7 @@ ios_base::__set_badbit_and_consider_rethrow()
 #ifndef _LIBCPP_NO_EXCEPTIONS
     if (__exceptions_ & badbit)
         throw;
-#endif  // _LIBCPP_NO_EXCEPTIONS
+#endif // _LIBCPP_NO_EXCEPTIONS
 }
 
 void
@@ -426,7 +426,7 @@ ios_base::__set_failbit_and_consider_rethrow()
 #ifndef _LIBCPP_NO_EXCEPTIONS
     if (__exceptions_ & failbit)
         throw;
-#endif  // _LIBCPP_NO_EXCEPTIONS
+#endif // _LIBCPP_NO_EXCEPTIONS
 }
 
 bool
@@ -439,3 +439,5 @@ ios_base::sync_with_stdio(bool sync)
 }
 
 _LIBCPP_END_NAMESPACE_STD
+
+_LIBCPP_POP_MACROS
