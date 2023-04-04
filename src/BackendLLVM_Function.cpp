@@ -4167,7 +4167,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         {
             auto r1        = builder.CreateLoad(I64_TY(), GEP64(allocR, ip->a.u32));
             auto r2        = builder.CreateLoad(I64_TY(), GEP64(allocR, ip->b.u32));
-            auto resultPtr = builder.CreatePointerCast(func->getArg((int) func->arg_size() - 1), PTR_I64_TY());
+            auto resultPtr = TO_PTR_I64(func->getArg((int) func->arg_size() - 1));
             builder.CreateStore(r1, resultPtr);
             builder.CreateStore(r2, builder.CreateInBoundsGEP(I64_TY(), resultPtr, builder.getInt64(1)));
             break;
@@ -4288,6 +4288,8 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             break;
         }
 
+            /////////////////////////////////////
+
         case ByteCodeOp::ZeroToTrue:
         {
             auto r0 = GEP64(allocR, ip->a.u32);
@@ -4328,6 +4330,8 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             builder.CreateStore(a0, TO_PTR_I8(r0));
             break;
         }
+
+            /////////////////////////////////////
 
         case ByteCodeOp::PushRVParam:
             pushRVParams.push_back({ip->a.u32, ip->b.u32});
