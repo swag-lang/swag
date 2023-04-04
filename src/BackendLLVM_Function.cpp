@@ -2773,45 +2773,53 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::CompareOp3WayS32:
         case ByteCodeOp::CompareOp3WayU32:
         {
-            MK_BINOP32_CAB();
-            auto v0 = builder.CreateSub(r1, r2);
-            auto v1 = builder.CreateIntCast(builder.CreateICmpSGT(v0, pp.cst0_i32), I32_TY(), false);
-            auto v2 = builder.CreateIntCast(builder.CreateICmpSLT(v0, pp.cst0_i32), I32_TY(), false);
-            auto v3 = builder.CreateSub(v1, v2);
-            builder.CreateStore(v3, TO_PTR_I32(r0));
+            auto         r0 = GEP64_PTR_I32(allocR, ip->c.u32);
+            llvm::Value* r1 = MK_IMMA_32();
+            llvm::Value* r2 = MK_IMMB_32();
+            auto         v0 = builder.CreateSub(r1, r2);
+            auto         v1 = builder.CreateIntCast(builder.CreateICmpSGT(v0, pp.cst0_i32), I32_TY(), false);
+            auto         v2 = builder.CreateIntCast(builder.CreateICmpSLT(v0, pp.cst0_i32), I32_TY(), false);
+            auto         v3 = builder.CreateSub(v1, v2);
+            builder.CreateStore(v3, r0);
             break;
         }
 
         case ByteCodeOp::CompareOp3WayU64:
         case ByteCodeOp::CompareOp3WayS64:
         {
-            MK_BINOP64_CAB();
-            auto v0 = builder.CreateSub(r1, r2);
-            auto v1 = builder.CreateIntCast(builder.CreateICmpSGT(v0, pp.cst0_i64), I32_TY(), false);
-            auto v2 = builder.CreateIntCast(builder.CreateICmpSLT(v0, pp.cst0_i64), I32_TY(), false);
-            auto v3 = builder.CreateSub(v1, v2);
-            builder.CreateStore(v3, TO_PTR_I32(r0));
+            auto         r0 = GEP64_PTR_I32(allocR, ip->c.u32);
+            llvm::Value* r1 = MK_IMMA_64();
+            llvm::Value* r2 = MK_IMMB_64();
+            auto         v0 = builder.CreateSub(r1, r2);
+            auto         v1 = builder.CreateIntCast(builder.CreateICmpSGT(v0, pp.cst0_i64), I32_TY(), false);
+            auto         v2 = builder.CreateIntCast(builder.CreateICmpSLT(v0, pp.cst0_i64), I32_TY(), false);
+            auto         v3 = builder.CreateSub(v1, v2);
+            builder.CreateStore(v3, r0);
             break;
         }
 
         case ByteCodeOp::CompareOp3WayF32:
         {
-            MK_BINOPF32_CAB();
-            auto v0 = builder.CreateFSub(r1, r2);
-            auto v1 = builder.CreateIntCast(builder.CreateFCmpUGT(v0, pp.cst0_f32), I32_TY(), false);
-            auto v2 = builder.CreateIntCast(builder.CreateFCmpULT(v0, pp.cst0_f32), I32_TY(), false);
-            auto v3 = builder.CreateSub(v1, v2);
-            builder.CreateStore(v3, TO_PTR_I32(r0));
+            auto         r0 = GEP64_PTR_I32(allocR, ip->c.u32);
+            llvm::Value* r1 = MK_IMMA_F32();
+            llvm::Value* r2 = MK_IMMB_F32();
+            auto         v0 = builder.CreateFSub(r1, r2);
+            auto         v1 = builder.CreateIntCast(builder.CreateFCmpUGT(v0, pp.cst0_f32), I32_TY(), false);
+            auto         v2 = builder.CreateIntCast(builder.CreateFCmpULT(v0, pp.cst0_f32), I32_TY(), false);
+            auto         v3 = builder.CreateSub(v1, v2);
+            builder.CreateStore(v3, r0);
             break;
         }
         case ByteCodeOp::CompareOp3WayF64:
         {
-            MK_BINOPF64_CAB();
-            auto v0 = builder.CreateFSub(r1, r2);
-            auto v1 = builder.CreateIntCast(builder.CreateFCmpUGT(v0, pp.cst0_f64), I32_TY(), false);
-            auto v2 = builder.CreateIntCast(builder.CreateFCmpULT(v0, pp.cst0_f64), I32_TY(), false);
-            auto v3 = builder.CreateSub(v1, v2);
-            builder.CreateStore(v3, TO_PTR_I32(r0));
+            auto         r0 = GEP64_PTR_I32(allocR, ip->c.u32);
+            llvm::Value* r1 = MK_IMMA_F64();
+            llvm::Value* r2 = MK_IMMB_F64();
+            auto         v0 = builder.CreateFSub(r1, r2);
+            auto         v1 = builder.CreateIntCast(builder.CreateFCmpUGT(v0, pp.cst0_f64), I32_TY(), false);
+            auto         v2 = builder.CreateIntCast(builder.CreateFCmpULT(v0, pp.cst0_f64), I32_TY(), false);
+            auto         v3 = builder.CreateSub(v1, v2);
+            builder.CreateStore(v3, r0);
             break;
         }
 
