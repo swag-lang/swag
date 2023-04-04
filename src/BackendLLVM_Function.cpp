@@ -4379,23 +4379,23 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
                 {
                 case 1:
                 {
-                    auto r0 = GEP64(allocR, ip->a.u32);
+                    auto r0 = GEP64_PTR_PTR_I8(allocR, ip->a.u32);
                     auto r1 = builder.CreateInBoundsGEP(I8_TY(), allocVA, pp.cst0_i32);
-                    builder.CreateStore(r1, TO_PTR_PTR_I8(r0));
+                    builder.CreateStore(r1, r0);
                     break;
                 }
                 case 2:
                 {
-                    auto r0 = GEP64(allocR, ip->a.u32);
+                    auto r0 = GEP64_PTR_PTR_I16(allocR, ip->a.u32);
                     auto r1 = builder.CreateInBoundsGEP(I16_TY(), allocVA, pp.cst0_i32);
-                    builder.CreateStore(r1, TO_PTR_PTR_I16(r0));
+                    builder.CreateStore(r1, r0);
                     break;
                 }
                 case 4:
                 {
-                    auto r0 = GEP64(allocR, ip->a.u32);
+                    auto r0 = GEP64_PTR_PTR_I32(allocR, ip->a.u32);
                     auto r1 = builder.CreateInBoundsGEP(I32_TY(), allocVA, pp.cst0_i32);
-                    builder.CreateStore(r1, TO_PTR_PTR_I32(r0));
+                    builder.CreateStore(r1, r0);
                     break;
                 }
                 }
@@ -4461,9 +4461,9 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
                     idxParam--;
                 }
 
-                auto r0 = GEP64(allocR, ip->a.u32);
+                auto r0 = GEP64_PTR_PTR_I64(allocR, ip->a.u32);
                 auto r1 = builder.CreateInBoundsGEP(I64_TY(), allocVA, pp.cst0_i32);
-                builder.CreateStore(r1, TO_PTR_PTR_I64(r0));
+                builder.CreateStore(r1, r0);
             }
             break;
         }
@@ -4477,8 +4477,8 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             auto T = getOrCreateFuncType(buildParameters, moduleToGen, typeFuncNode);
             auto F = (llvm::Function*) modu.getOrInsertFunction(callName.c_str(), T).getCallee();
 
-            auto r0 = GEP64(allocR, ip->a.u32);
-            builder.CreateStore(TO_PTR_I8(F), TO_PTR_PTR_I8(r0));
+            auto r0 = GEP64_PTR_PTR_I8(allocR, ip->a.u32);
+            builder.CreateStore(TO_PTR_I8(F), r0);
 
             auto v0 = builder.CreateLoad(I64_TY(), GEP64(allocR, ip->a.u32));
             builder.CreateStore(v0, GEP64(allocR, ip->a.u32));
@@ -4505,8 +4505,8 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
                 auto r2 = builder.CreatePointerCast(r1, PT);
                 auto v2 = builder.CreateIntToPtr(v0, PTR_I8_TY());
                 auto v1 = builder.CreateCall(pp.makeCallbackTy, r2, {v2});
-                auto r3 = GEP64(allocR, ip->a.u32);
-                builder.CreateStore(v1, TO_PTR_PTR_I8(r3));
+                auto r3 = GEP64_PTR_PTR_I8(allocR, ip->a.u32);
+                builder.CreateStore(v1, r3);
                 builder.CreateBr(blockNext);
             }
 
@@ -4667,6 +4667,8 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             pushRAParams.clear();
             pushRVParams.clear();
             break;
+
+            /////////////////////////////////////
 
         case ByteCodeOp::IntrinsicS8x1:
         {
