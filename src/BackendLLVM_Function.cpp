@@ -3843,34 +3843,34 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
 
         case ByteCodeOp::NegBool:
         {
-            auto r0 = GEP64(allocR, ip->a.u32);
+            auto r0 = GEP64_PTR_I8(allocR, ip->a.u32);
             auto r1 = GEP64(allocR, ip->b.u32);
             auto v0 = builder.CreateXor(builder.CreateLoad(I8_TY(), r1), pp.cst1_i8);
-            builder.CreateStore(v0, TO_PTR_I8(r0));
+            builder.CreateStore(v0, r0);
             break;
         }
         case ByteCodeOp::NegF32:
         {
-            auto r0 = GEP64(allocR, ip->a.u32);
+            auto r0 = GEP64_PTR_F32(allocR, ip->a.u32);
             auto r1 = GEP64(allocR, ip->b.u32);
             auto v0 = builder.CreateFNeg(builder.CreateLoad(F32_TY(), r1));
-            builder.CreateStore(v0, TO_PTR_F32(r0));
+            builder.CreateStore(v0, r0);
             break;
         }
         case ByteCodeOp::NegF64:
         {
-            auto r0 = GEP64(allocR, ip->a.u32);
+            auto r0 = GEP64_PTR_F64(allocR, ip->a.u32);
             auto r1 = GEP64(allocR, ip->b.u32);
             auto v0 = builder.CreateFNeg(builder.CreateLoad(F64_TY(), r1));
-            builder.CreateStore(v0, TO_PTR_F64(r0));
+            builder.CreateStore(v0, r0);
             break;
         }
         case ByteCodeOp::NegS32:
         {
-            auto r0 = GEP64(allocR, ip->a.u32);
+            auto r0 = GEP64_PTR_I32(allocR, ip->a.u32);
             auto r1 = GEP64(allocR, ip->b.u32);
             auto v0 = builder.CreateNeg(builder.CreateLoad(I32_TY(), r1));
-            builder.CreateStore(v0, TO_PTR_I32(r0));
+            builder.CreateStore(v0, r0);
             break;
         }
         case ByteCodeOp::NegS64:
@@ -3884,26 +3884,26 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
 
         case ByteCodeOp::InvertU8:
         {
-            auto r0 = GEP64(allocR, ip->a.u32);
+            auto r0 = GEP64_PTR_I8(allocR, ip->a.u32);
             auto r1 = GEP64(allocR, ip->b.u32);
             auto v0 = builder.CreateNot(builder.CreateLoad(I8_TY(), r1));
-            builder.CreateStore(v0, TO_PTR_I8(r0));
+            builder.CreateStore(v0, r0);
             break;
         }
         case ByteCodeOp::InvertU16:
         {
-            auto r0 = GEP64(allocR, ip->a.u32);
+            auto r0 = GEP64_PTR_I16(allocR, ip->a.u32);
             auto r1 = GEP64(allocR, ip->b.u32);
             auto v0 = builder.CreateNot(builder.CreateLoad(I16_TY(), r1));
-            builder.CreateStore(v0, TO_PTR_I16(r0));
+            builder.CreateStore(v0, r0);
             break;
         }
         case ByteCodeOp::InvertU32:
         {
-            auto r0 = GEP64(allocR, ip->a.u32);
+            auto r0 = GEP64_PTR_I32(allocR, ip->a.u32);
             auto r1 = GEP64(allocR, ip->b.u32);
             auto v0 = builder.CreateNot(builder.CreateLoad(I32_TY(), r1));
-            builder.CreateStore(v0, TO_PTR_I32(r0));
+            builder.CreateStore(v0, r0);
             break;
         }
         case ByteCodeOp::InvertU64:
@@ -3917,9 +3917,9 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
 
         case ByteCodeOp::ClearMaskU32:
         {
-            auto r0 = GEP64(allocR, ip->a.u32);
+            auto r0 = GEP64_PTR_I32(allocR, ip->a.u32);
             auto v0 = builder.CreateAnd(builder.CreateLoad(I32_TY(), r0), CST_RB32);
-            builder.CreateStore(v0, TO_PTR_I32(r0));
+            builder.CreateStore(v0, r0);
             break;
         }
         case ByteCodeOp::ClearMaskU64:
@@ -3929,6 +3929,8 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             builder.CreateStore(v0, r0);
             break;
         }
+
+            /////////////////////////////////////
 
         case ByteCodeOp::CastBool8:
         {
