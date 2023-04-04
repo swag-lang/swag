@@ -3749,13 +3749,13 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
 
         case ByteCodeOp::IntrinsicIsByteCode:
         {
-            auto r0 = TO_PTR_I8(GEP64(allocR, ip->a.u32));
+            auto r0 = GEP64_PTR_I8(allocR, ip->a.u32);
             builder.CreateStore(pp.cst0_i8, r0);
             break;
         }
         case ByteCodeOp::IntrinsicCompiler:
         {
-            auto r0 = TO_PTR_I64(GEP64(allocR, ip->a.u32));
+            auto r0 = GEP64(allocR, ip->a.u32);
             builder.CreateStore(pp.cst0_i64, r0);
             auto r1 = TO_PTR_I64(GEP64(allocR, ip->b.u32));
             builder.CreateStore(pp.cst0_i64, r1);
@@ -3765,7 +3765,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         {
             if (moduleToGen->modulesSliceOffset == UINT32_MAX)
             {
-                auto r0 = TO_PTR_I64(GEP64(allocR, ip->a.u32));
+                auto r0 = GEP64(allocR, ip->a.u32);
                 builder.CreateStore(pp.cst0_i64, r0);
                 auto r1 = TO_PTR_I64(GEP64(allocR, ip->b.u32));
                 builder.CreateStore(pp.cst0_i64, r1);
@@ -3784,7 +3784,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         {
             if (moduleToGen->globalVarsToDropSliceOffset == UINT32_MAX)
             {
-                auto r0 = TO_PTR_I64(GEP64(allocR, ip->a.u32));
+                auto r0 = GEP64(allocR, ip->a.u32);
                 builder.CreateStore(pp.cst0_i64, r0);
                 auto r1 = TO_PTR_I64(GEP64(allocR, ip->b.u32));
                 builder.CreateStore(pp.cst0_i64, r1);
@@ -4672,7 +4672,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
 
         case ByteCodeOp::IntrinsicS8x1:
         {
-            auto r0 = TO_PTR_I8(GEP64(allocR, ip->a.u32));
+            auto r0 = GEP64_PTR_I8(allocR, ip->a.u32);
             auto r1 = MK_IMMB_8();
             switch ((TokenId) ip->d.u32)
             {
@@ -4697,7 +4697,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         }
         case ByteCodeOp::IntrinsicS16x1:
         {
-            auto r0 = TO_PTR_I16(GEP64(allocR, ip->a.u32));
+            auto r0 = GEP64_PTR_I16(allocR, ip->a.u32);
             auto r1 = MK_IMMB_16();
             switch ((TokenId) ip->d.u32)
             {
@@ -4753,7 +4753,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         }
         case ByteCodeOp::IntrinsicS64x1:
         {
-            auto r0 = TO_PTR_I64(GEP64(allocR, ip->a.u32));
+            auto r0 = GEP64(allocR, ip->a.u32);
             auto r1 = MK_IMMB_64();
             switch ((TokenId) ip->d.u32)
             {
@@ -4782,7 +4782,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
 
         case ByteCodeOp::IntrinsicS8x2:
         {
-            auto r0 = TO_PTR_I8(GEP64(allocR, ip->a.u32));
+            auto r0 = GEP64_PTR_I8(allocR, ip->a.u32);
             auto r1 = MK_IMMB_8();
             auto r2 = MK_IMMC_8();
             switch ((TokenId) ip->d.u32)
@@ -4802,7 +4802,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         }
         case ByteCodeOp::IntrinsicS16x2:
         {
-            auto r0 = TO_PTR_I16(GEP64(allocR, ip->a.u32));
+            auto r0 = GEP64_PTR_I16(allocR, ip->a.u32);
             auto r1 = MK_IMMB_16();
             auto r2 = MK_IMMC_16();
             switch ((TokenId) ip->d.u32)
@@ -4863,7 +4863,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
 
         case ByteCodeOp::IntrinsicU8x2:
         {
-            auto r0 = TO_PTR_I8(GEP64(allocR, ip->a.u32));
+            auto r0 = GEP64_PTR_I8(allocR, ip->a.u32);
             auto r1 = MK_IMMB_8();
             auto r2 = MK_IMMC_8();
             switch ((TokenId) ip->d.u32)
@@ -4883,7 +4883,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         }
         case ByteCodeOp::IntrinsicU16x2:
         {
-            auto r0 = TO_PTR_I16(GEP64(allocR, ip->a.u32));
+            auto r0 = GEP64_PTR_I16(allocR, ip->a.u32);
             auto r1 = MK_IMMB_16();
             auto r2 = MK_IMMC_16();
             switch ((TokenId) ip->d.u32)
@@ -4944,7 +4944,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
 
         case ByteCodeOp::IntrinsicF32x2:
         {
-            auto r0 = TO_PTR_F32(GEP64(allocR, ip->a.u32));
+            auto r0 = GEP64_PTR_F32(allocR, ip->a.u32);
             auto r1 = MK_IMMB_F32();
             auto r2 = MK_IMMC_F32();
             switch ((TokenId) ip->d.u32)
@@ -4970,7 +4970,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         }
         case ByteCodeOp::IntrinsicF64x2:
         {
-            auto r0 = TO_PTR_F64(GEP64(allocR, ip->a.u32));
+            auto r0 = GEP64_PTR_F64(allocR, ip->a.u32);
             auto r1 = MK_IMMB_F64();
             auto r2 = MK_IMMC_F64();
             switch ((TokenId) ip->d.u32)
@@ -4997,7 +4997,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
 
         case ByteCodeOp::IntrinsicF32x1:
         {
-            auto r0 = TO_PTR_F32(GEP64(allocR, ip->a.u32));
+            auto r0 = GEP64_PTR_F32(allocR, ip->a.u32);
             auto r1 = MK_IMMB_F32();
             switch ((TokenId) ip->d.u32)
             {
@@ -5071,7 +5071,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
 
         case ByteCodeOp::IntrinsicF64x1:
         {
-            auto r0 = TO_PTR_F64(GEP64(allocR, ip->a.u32));
+            auto r0 = GEP64_PTR_F64(allocR, ip->a.u32);
             auto r1 = MK_IMMB_F64();
             switch ((TokenId) ip->d.u32)
             {
