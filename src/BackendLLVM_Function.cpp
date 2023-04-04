@@ -640,7 +640,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         {
             auto r1 = builder.CreateInBoundsGEP(I8_TY(), allocStack, CST_RB32);
             auto v0 = builder.CreateLoad(PTR_I8_TY(), r1);
-            auto v1 = builder.CreateInBoundsGEP(I8_TY(), v0, CST_RC64);
+            auto v1 = GEP8_PTR_I16(v0, ip->c.u64);
             auto v2 = builder.CreateLoad(I16_TY(), v1);
             auto v3 = builder.CreateIntCast(v2, I64_TY(), false);
             builder.CreateStore(v3, GEP64(allocR, ip->a.u32));
@@ -650,7 +650,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         {
             auto r1 = builder.CreateInBoundsGEP(I8_TY(), allocStack, CST_RB32);
             auto v0 = builder.CreateLoad(PTR_I8_TY(), r1);
-            auto v1 = builder.CreateInBoundsGEP(I8_TY(), v0, CST_RC64);
+            auto v1 = GEP8_PTR_I32(v0, ip->c.u64);
             auto v2 = builder.CreateLoad(I32_TY(), v1);
             auto v3 = builder.CreateIntCast(v2, I64_TY(), false);
             builder.CreateStore(v3, GEP64(allocR, ip->a.u32));
@@ -660,7 +660,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         {
             auto r1 = builder.CreateInBoundsGEP(I8_TY(), allocStack, CST_RB32);
             auto v0 = builder.CreateLoad(PTR_I8_TY(), r1);
-            auto v1 = builder.CreateInBoundsGEP(I8_TY(), v0, CST_RC64);
+            auto v1 = GEP8_PTR_I64(v0, ip->c.u64);
             auto v2 = builder.CreateLoad(I64_TY(), v1);
             builder.CreateStore(v2, GEP64(allocR, ip->a.u32));
             break;
