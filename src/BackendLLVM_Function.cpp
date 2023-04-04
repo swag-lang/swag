@@ -4292,42 +4292,42 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
 
         case ByteCodeOp::ZeroToTrue:
         {
-            auto r0 = GEP64(allocR, ip->a.u32);
+            auto r0 = GEP64_PTR_I8(allocR, ip->a.u32);
             auto v0 = builder.CreateLoad(I32_TY(), r0);
             auto a0 = builder.CreateIntCast(builder.CreateICmpEQ(v0, pp.cst0_i32), I8_TY(), false);
-            builder.CreateStore(a0, TO_PTR_I8(r0));
+            builder.CreateStore(a0, r0);
             break;
         }
         case ByteCodeOp::LowerZeroToTrue:
         {
-            auto r0 = GEP64(allocR, ip->a.u32);
+            auto r0 = GEP64_PTR_I8(allocR, ip->a.u32);
             auto v0 = builder.CreateLoad(I32_TY(), r0);
             auto a0 = builder.CreateIntCast(builder.CreateICmpSLT(v0, pp.cst0_i32), I8_TY(), false);
-            builder.CreateStore(a0, TO_PTR_I8(r0));
+            builder.CreateStore(a0, r0);
             break;
         }
         case ByteCodeOp::LowerEqZeroToTrue:
         {
-            auto r0 = GEP64(allocR, ip->a.u32);
+            auto r0 = GEP64_PTR_I8(allocR, ip->a.u32);
             auto v0 = builder.CreateLoad(I32_TY(), r0);
             auto a0 = builder.CreateIntCast(builder.CreateICmpSLE(v0, pp.cst0_i32), I8_TY(), false);
-            builder.CreateStore(a0, TO_PTR_I8(r0));
+            builder.CreateStore(a0, r0);
             break;
         }
         case ByteCodeOp::GreaterZeroToTrue:
         {
-            auto r0 = GEP64(allocR, ip->a.u32);
+            auto r0 = GEP64_PTR_I8(allocR, ip->a.u32);
             auto v0 = builder.CreateLoad(I32_TY(), r0);
             auto a0 = builder.CreateIntCast(builder.CreateICmpSGT(v0, pp.cst0_i32), I8_TY(), false);
-            builder.CreateStore(a0, TO_PTR_I8(r0));
+            builder.CreateStore(a0, r0);
             break;
         }
         case ByteCodeOp::GreaterEqZeroToTrue:
         {
-            auto r0 = GEP64(allocR, ip->a.u32);
+            auto r0 = GEP64_PTR_I8(allocR, ip->a.u32);
             auto v0 = builder.CreateLoad(I32_TY(), r0);
             auto a0 = builder.CreateIntCast(builder.CreateICmpSGE(v0, pp.cst0_i32), I8_TY(), false);
-            builder.CreateStore(a0, TO_PTR_I8(r0));
+            builder.CreateStore(a0, r0);
             break;
         }
 
@@ -4357,7 +4357,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             break;
         case ByteCodeOp::CopySP:
         {
-            auto r0 = TO_PTR_PTR_I64(GEP64(allocR, ip->a.u32));
+            auto r0 = GEP64_PTR_PTR_I64(allocR, ip->a.u32);
             auto r1 = GEP64(allocR, ip->c.u32);
             builder.CreateStore(r1, r0);
             break;
