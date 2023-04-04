@@ -3814,7 +3814,8 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::InternalHasErr:
         {
             auto r0 = GEP64(allocR, ip->b.u32);
-            auto v0 = builder.CreateInBoundsGEP(I8_TY(), builder.CreateLoad(PTR_I8_TY(), r0), builder.getInt32(offsetof(SwagContext, errorMsgLen)));
+            auto ra = builder.CreateLoad(PTR_I8_TY(), r0);
+            auto v0 = GEP8(ra, offsetof(SwagContext, errorMsgLen));
             auto r1 = GEP64_PTR_I32(allocR, ip->a.u32);
             builder.CreateStore(builder.CreateLoad(I32_TY(), v0), r1);
             break;
@@ -3822,8 +3823,9 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::InternalClearErr:
         {
             auto r0 = GEP64(allocR, ip->a.u32);
-            auto v0 = builder.CreateInBoundsGEP(I8_TY(), builder.CreateLoad(PTR_I8_TY(), r0), builder.getInt32(offsetof(SwagContext, errorMsgLen)));
-            builder.CreateStore(pp.cst0_i32, TO_PTR_I32(v0));
+            auto ra = builder.CreateLoad(PTR_I8_TY(), r0);
+            auto v0 = GEP8_PTR_I32(ra, offsetof(SwagContext, errorMsgLen));
+            builder.CreateStore(pp.cst0_i32, v0);
             break;
         }
         case ByteCodeOp::InternalPushErr:
