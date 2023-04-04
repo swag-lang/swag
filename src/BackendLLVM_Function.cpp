@@ -5488,22 +5488,42 @@ void BackendLLVM::storeTypedValueToRegister(llvm::LLVMContext& context, const Bu
     auto& builder         = *pp.builder;
 
     SWAG_ASSERT(value);
-    auto r0 = GEP64(allocR, reg);
     auto r1 = value;
     if (value->getType()->isPointerTy())
+    {
+        auto r0 = GEP64(allocR, reg);
         builder.CreateStore(builder.CreatePtrToInt(r1, I64_TY()), r0);
+    }
     else if (value->getType()->isIntegerTy(8))
-        builder.CreateStore(r1, TO_PTR_I8(r0));
-    else if (value->getType()->isIntegerTy(16))
-        builder.CreateStore(r1, TO_PTR_I16(r0));
-    else if (value->getType()->isIntegerTy(32))
-        builder.CreateStore(r1, TO_PTR_I32(r0));
-    else if (value->getType()->isFloatTy())
-        builder.CreateStore(r1, TO_PTR_F32(r0));
-    else if (value->getType()->isDoubleTy())
-        builder.CreateStore(r1, TO_PTR_F64(r0));
-    else
+    {
+        auto r0 = GEP64_PTR_I8(allocR, reg);
         builder.CreateStore(r1, r0);
+    }
+    else if (value->getType()->isIntegerTy(16))
+    {
+        auto r0 = GEP64_PTR_I16(allocR, reg);
+        builder.CreateStore(r1, r0);
+    }
+    else if (value->getType()->isIntegerTy(32))
+    {
+        auto r0 = GEP64_PTR_I32(allocR, reg);
+        builder.CreateStore(r1, r0);
+    }
+    else if (value->getType()->isFloatTy())
+    {
+        auto r0 = GEP64_PTR_F32(allocR, reg);
+        builder.CreateStore(r1, r0);
+    }
+    else if (value->getType()->isDoubleTy())
+    {
+        auto r0 = GEP64_PTR_F64(allocR, reg);
+        builder.CreateStore(r1, r0);
+    }
+    else
+    {
+        auto r0 = GEP64(allocR, reg);
+        builder.CreateStore(r1, r0);
+    }
 }
 
 void BackendLLVM::storeRT2ToRegisters(llvm::LLVMContext& context, const BuildParameters& buildParameters, uint32_t reg0, uint32_t reg1, llvm::AllocaInst* allocR, llvm::AllocaInst* allocRR)
