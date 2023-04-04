@@ -2927,48 +2927,28 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
 
         case ByteCodeOp::TestNotZero8:
         {
-            llvm::Value* r1;
-            if (ip->flags & BCI_IMM_B)
-                r1 = builder.getInt8(ip->b.u8);
-            else
-                r1 = builder.CreateLoad(I8_TY(), GEP64(allocR, ip->b.u32));
-            auto b0 = builder.CreateIsNotNull(r1);
+            auto b0 = builder.CreateIsNotNull(MK_IMMB_8());
             auto r0 = GEP64_PTR_I8(allocR, ip->a.u32);
             builder.CreateStore(builder.CreateIntCast(b0, I8_TY(), false), r0);
             break;
         }
         case ByteCodeOp::TestNotZero16:
         {
-            llvm::Value* r1;
-            if (ip->flags & BCI_IMM_B)
-                r1 = builder.getInt16(ip->b.u16);
-            else
-                r1 = builder.CreateLoad(I16_TY(), GEP64(allocR, ip->b.u32));
-            auto b0 = builder.CreateIsNotNull(r1);
+            auto b0 = builder.CreateIsNotNull(MK_IMMB_16());
             auto r0 = GEP64_PTR_I8(allocR, ip->a.u32);
             builder.CreateStore(builder.CreateIntCast(b0, I8_TY(), false), r0);
             break;
         }
         case ByteCodeOp::TestNotZero32:
         {
-            llvm::Value* r1;
-            if (ip->flags & BCI_IMM_B)
-                r1 = builder.getInt32(ip->b.u32);
-            else
-                r1 = builder.CreateLoad(I32_TY(), GEP64(allocR, ip->b.u32));
-            auto b0 = builder.CreateIsNotNull(r1);
+            auto b0 = builder.CreateIsNotNull(MK_IMMB_32());
             auto r0 = GEP64_PTR_I8(allocR, ip->a.u32);
             builder.CreateStore(builder.CreateIntCast(b0, I8_TY(), false), r0);
             break;
         }
         case ByteCodeOp::TestNotZero64:
         {
-            llvm::Value* r1;
-            if (ip->flags & BCI_IMM_B)
-                r1 = builder.getInt64(ip->b.u64);
-            else
-                r1 = builder.CreateLoad(I64_TY(), GEP64(allocR, ip->b.u32));
-            auto b0 = builder.CreateIsNotNull(r1);
+            auto b0 = builder.CreateIsNotNull(MK_IMMB_64());
             auto r0 = GEP64_PTR_I8(allocR, ip->a.u32);
             builder.CreateStore(builder.CreateIntCast(b0, I8_TY(), false), r0);
             break;
