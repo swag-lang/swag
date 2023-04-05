@@ -3563,6 +3563,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             // RIDICULOUS !!
             //
             // If we request an optimized code, do not do that crap.
+#if 0
             bool isDebug = !buildParameters.buildCfg->backendOptimizeSpeed && !buildParameters.buildCfg->backendOptimizeSize;
             if (isDebug && buildParameters.buildCfg->backendDebugInformations)
             {
@@ -3575,6 +3576,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
                     SWAG_CHECK(emitGetParam(context, buildParameters, func, typeFunc, iparam, r1));
                 }
             }
+#endif
 
             // Emit result
             if (returnType != g_TypeMgr->typeInfoVoid && !typeFunc->returnByCopy())
@@ -4199,82 +4201,69 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
 
         case ByteCodeOp::GetParam8:
         {
-            auto r0 = GEP64(allocR, ip->a.u32);
-            SWAG_CHECK(emitGetParam(context, buildParameters, func, typeFunc, ip->c.u32, r0, 1));
+            SWAG_CHECK(emitGetParam(context, buildParameters, func, typeFunc, ip->a.u32, ip->c.u32, allocR, 1));
             break;
         }
         case ByteCodeOp::GetParam16:
         {
-            auto r0 = GEP64(allocR, ip->a.u32);
-            SWAG_CHECK(emitGetParam(context, buildParameters, func, typeFunc, ip->c.u32, r0, 2));
+            SWAG_CHECK(emitGetParam(context, buildParameters, func, typeFunc, ip->a.u32, ip->c.u32, allocR, 2));
             break;
         }
         case ByteCodeOp::GetParam32:
         {
-            auto r0 = GEP64(allocR, ip->a.u32);
-            SWAG_CHECK(emitGetParam(context, buildParameters, func, typeFunc, ip->c.u32, r0, 4));
+            SWAG_CHECK(emitGetParam(context, buildParameters, func, typeFunc, ip->a.u32, ip->c.u32, allocR, 4));
             break;
         }
         case ByteCodeOp::GetParam64:
         {
-            auto r0 = GEP64(allocR, ip->a.u32);
-            SWAG_CHECK(emitGetParam(context, buildParameters, func, typeFunc, ip->c.u32, r0));
+            SWAG_CHECK(emitGetParam(context, buildParameters, func, typeFunc, ip->a.u32, ip->c.u32, allocR));
             break;
         }
         case ByteCodeOp::GetIncParam64:
         {
-            auto r0 = GEP64(allocR, ip->a.u32);
-            SWAG_CHECK(emitGetParam(context, buildParameters, func, typeFunc, ip->c.u32, r0, 0, ip->d.u64));
+            SWAG_CHECK(emitGetParam(context, buildParameters, func, typeFunc, ip->a.u32, ip->c.u32, allocR, 0, ip->d.u64));
             break;
         }
 
         case ByteCodeOp::GetParam64DeRef8:
         {
-            auto r0 = GEP64(allocR, ip->a.u32);
-            SWAG_CHECK(emitGetParam(context, buildParameters, func, typeFunc, ip->c.u32, r0, 0, 0, 1));
+            SWAG_CHECK(emitGetParam(context, buildParameters, func, typeFunc, ip->a.u32, ip->c.u32, allocR, 0, 0, 1));
             break;
         }
         case ByteCodeOp::GetParam64DeRef16:
         {
-            auto r0 = GEP64(allocR, ip->a.u32);
-            SWAG_CHECK(emitGetParam(context, buildParameters, func, typeFunc, ip->c.u32, r0, 0, 0, 2));
+            SWAG_CHECK(emitGetParam(context, buildParameters, func, typeFunc, ip->a.u32, ip->c.u32, allocR, 0, 0, 2));
             break;
         }
         case ByteCodeOp::GetParam64DeRef32:
         {
-            auto r0 = GEP64(allocR, ip->a.u32);
-            SWAG_CHECK(emitGetParam(context, buildParameters, func, typeFunc, ip->c.u32, r0, 0, 0, 4));
+            SWAG_CHECK(emitGetParam(context, buildParameters, func, typeFunc, ip->a.u32, ip->c.u32, allocR, 0, 0, 4));
             break;
         }
         case ByteCodeOp::GetParam64DeRef64:
         {
-            auto r0 = GEP64(allocR, ip->a.u32);
-            SWAG_CHECK(emitGetParam(context, buildParameters, func, typeFunc, ip->c.u32, r0, 0, 0, 8));
+            SWAG_CHECK(emitGetParam(context, buildParameters, func, typeFunc, ip->a.u32, ip->c.u32, allocR, 0, 0, 8));
             break;
         }
 
         case ByteCodeOp::GetIncParam64DeRef8:
         {
-            auto r0 = GEP64(allocR, ip->a.u32);
-            SWAG_CHECK(emitGetParam(context, buildParameters, func, typeFunc, ip->c.u32, r0, 0, ip->d.u64, 1));
+            SWAG_CHECK(emitGetParam(context, buildParameters, func, typeFunc, ip->a.u32, ip->c.u32, allocR, 0, ip->d.u64, 1));
             break;
         }
         case ByteCodeOp::GetIncParam64DeRef16:
         {
-            auto r0 = GEP64(allocR, ip->a.u32);
-            SWAG_CHECK(emitGetParam(context, buildParameters, func, typeFunc, ip->c.u32, r0, 0, ip->d.u64, 2));
+            SWAG_CHECK(emitGetParam(context, buildParameters, func, typeFunc, ip->a.u32, ip->c.u32, allocR, 0, ip->d.u64, 2));
             break;
         }
         case ByteCodeOp::GetIncParam64DeRef32:
         {
-            auto r0 = GEP64(allocR, ip->a.u32);
-            SWAG_CHECK(emitGetParam(context, buildParameters, func, typeFunc, ip->c.u32, r0, 0, ip->d.u64, 4));
+            SWAG_CHECK(emitGetParam(context, buildParameters, func, typeFunc, ip->a.u32, ip->c.u32, allocR, 0, ip->d.u64, 4));
             break;
         }
         case ByteCodeOp::GetIncParam64DeRef64:
         {
-            auto r0 = GEP64(allocR, ip->a.u32);
-            SWAG_CHECK(emitGetParam(context, buildParameters, func, typeFunc, ip->c.u32, r0, 0, ip->d.u64, 8));
+            SWAG_CHECK(emitGetParam(context, buildParameters, func, typeFunc, ip->a.u32, ip->c.u32, allocR, 0, ip->d.u64, 8));
             break;
         }
 

@@ -108,8 +108,9 @@ bool BackendLLVM::emitGetParam(llvm::LLVMContext&     context,
                                const BuildParameters& buildParameters,
                                llvm::Function*        func,
                                TypeInfoFuncAttr*      typeFunc,
-                               int                    idx,
-                               llvm::Value*           r0,
+                               uint32_t               rdest,
+                               uint32_t               paramIdx,
+                               llvm::AllocaInst*      allocR,
                                int                    sizeOf,
                                uint64_t               toAdd,
                                int                    deRefSize)
@@ -120,15 +121,16 @@ bool BackendLLVM::emitGetParam(llvm::LLVMContext&     context,
     auto&       pp              = *perThread[ct][precompileIndex];
     auto&       builder         = *pp.builder;
 
-    auto param = typeFunc->registerIdxToType(idx);
+    auto param = typeFunc->registerIdxToType(paramIdx);
     if (param->isAutoConstPointerRef())
         param = TypeManager::concretePtrRef(param);
 
-    auto arg = func->getArg(idx);
+    auto r0  = GEP64(allocR, rdest);
+    auto arg = func->getArg(paramIdx);
 
     // First two parameters are occupied by the variadic slice
     if (typeFunc->isVariadic())
-        idx += 2;
+        paramIdx += 2;
 
     if (toAdd || deRefSize)
     {
@@ -170,10 +172,10 @@ bool BackendLLVM::emitGetParam(llvm::LLVMContext&     context,
             // We need the pointer
             else
             {
-                auto allocR = builder.CreateAlloca(I64_TY(), builder.getInt32(1));
-                allocR->setAlignment(llvm::Align(sizeof(void*)));
-                builder.CreateStore(ra, allocR);
-                ra = builder.CreateInBoundsGEP(I8_TY(), allocR, builder.getInt64(toAdd));
+                auto allocR1 = builder.CreateAlloca(I64_TY(), builder.getInt32(1));
+                allocR1->setAlignment(llvm::Align(sizeof(void*)));
+                builder.CreateStore(ra, allocR1);
+                ra = builder.CreateInBoundsGEP(I8_TY(), allocR1, builder.getInt64(toAdd));
                 builder.CreateStore(ra, r0);
             }
 
@@ -231,10 +233,10 @@ bool BackendLLVM::emitGetParam(llvm::LLVMContext&     context,
         else if (cc.structByRegister && param->isStruct() && param->sizeOf <= sizeof(void*))
         {
             // Make a copy of the value on the stack, and return the address
-            auto allocR = builder.CreateAlloca(I64_TY(), builder.getInt32(1));
-            allocR->setAlignment(llvm::Align(sizeof(void*)));
-            builder.CreateStore(builder.CreateIntCast(arg, I64_TY(), false), allocR);
-            builder.CreateStore(allocR, TO_PTR_PTR_I64(r0));
+            auto allocR1 = builder.CreateAlloca(I64_TY(), builder.getInt32(1));
+            allocR1->setAlignment(llvm::Align(sizeof(void*)));
+            builder.CreateStore(builder.CreateIntCast(arg, I64_TY(), false), allocR1);
+            builder.CreateStore(allocR1, TO_PTR_PTR_I64(r0));
         }
 
         // This can be casted to an integer

@@ -69,6 +69,7 @@ const solar_bodies: [] Planet = [
 //#[Swag.Optim("", false)]
 func energy(bodies: ^Planet)->f64
 {
+    //return bodies.vx * bodies.vx + bodies.vy
     var e: f64 = 0.0
 
     //visit bi, i: bodies[..@countof(bodies)-2]
