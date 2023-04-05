@@ -4,14 +4,11 @@
 #pragma comment(lib, "dbghelp.lib")
 
 #include "Workspace.h"
-#include "Module.h"
 #include "Diagnostic.h"
-#include "ErrorIds.h"
 #include "TypeManager.h"
 #include "BackendX64.h"
 #include "Context.h"
 #include "Report.h"
-#include "ByteCodeStack.h"
 
 namespace OS
 {
@@ -25,6 +22,7 @@ namespace OS
         // Current target
         nativeTarget.os   = SwagTargetOs::Windows;
         nativeTarget.arch = SwagTargetArch::X86_64;
+        nativeTarget.cpu  = llvm::sys::getHostCPUName().str().c_str();
 
         // We do not want assert, but just reports of the CRT
         if (!IsDebuggerPresent())

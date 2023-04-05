@@ -318,9 +318,9 @@ bool BackendLLVM::generateObjFile(const BuildParameters& buildParameters)
     // CPU. If we are compiling for the native env, then get cpu features.
     if (g_CommandLine.target.os == OS::getNativeTarget().os &&
         g_CommandLine.target.arch == OS::getNativeTarget().arch &&
-        g_CommandLine.target.cpu.empty())
+        (g_CommandLine.target.cpu.empty() || g_CommandLine.target.cpu == OS::getNativeTarget().cpu))
     {
-        cpu = llvm::sys::getHostCPUName().str().c_str();
+        cpu = OS::getNativeTarget().cpu;
 
         llvm::StringMap<bool, llvm::MallocAllocator> feat;
         llvm::sys::getHostCPUFeatures(feat);
