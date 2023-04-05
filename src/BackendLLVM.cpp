@@ -311,11 +311,34 @@ bool BackendLLVM::generateObjFile(const BuildParameters& buildParameters)
     }
 
     // Create target machine
-    auto                cpu      = "generic";
-    auto                features = "";
+    auto cpu = "generic";
+    Utf8 features;
+
+    llvm::StringMap<bool, llvm::MallocAllocator> feat;
+    llvm::sys::getHostCPUFeatures(feat);
+    bool first = true;
+    for (auto& it : feat)
+    {
+        if (!it.getValue())
+            continue;
+
+        if (!first)
+            features += ",";
+        first = false;
+        features += "+";
+        features += it.getKey().str().c_str();
+    }
+
     llvm::TargetOptions opt;
-    auto                rm            = llvm::Optional<llvm::Reloc::Model>();
-    auto                targetMachine = target->createTargetMachine(targetTriple.c_str(), cpu, features, opt, rm);
+    opt.AllowFPOpFusion     = buildParameters.buildCfg->backendLLVM.fpMathFma ? llvm::FPOpFusion::Fast : llvm::FPOpFusion::Standard;
+    opt.NoNaNsFPMath        = buildParameters.buildCfg->backendLLVM.fpMathNoNaN;
+    opt.NoInfsFPMath        = buildParameters.buildCfg->backendLLVM.fpMathNoInf;
+    opt.UnsafeFPMath        = buildParameters.buildCfg->backendLLVM.fpMathUnsafe;
+    opt.NoSignedZerosFPMath = buildParameters.buildCfg->backendLLVM.fpMathNoSignedZero;
+    opt.ApproxFuncFPMath    = buildParameters.buildCfg->backendLLVM.fpMathApproxFunc;
+
+    auto rm            = llvm::Optional<llvm::Reloc::Model>();
+    auto targetMachine = target->createTargetMachine(targetTriple.c_str(), cpu, features.c_str(), opt, rm);
     if (isDebug)
         targetMachine->setOptLevel(llvm::CodeGenOpt::None);
     else

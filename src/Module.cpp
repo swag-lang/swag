@@ -93,17 +93,21 @@ void Module::setup(const Utf8& moduleName, const Path& modulePath)
     }
     else if (g_CommandLine.buildCfg == "release")
     {
-        buildCfg.byteCodeOptimizeLevel    = 2;
-        buildCfg.byteCodeDebugInline      = false;
-        buildCfg.byteCodeInline           = true;
-        buildCfg.byteCodeAutoInline       = true;
-        buildCfg.byteCodeEmitAssume       = false;
-        buildCfg.safetyGuards             = 0;
-        buildCfg.stackTrace               = false;
-        buildCfg.debugAllocator           = false;
-        buildCfg.backendOptimizeSpeed     = true;
-        buildCfg.backendOptimizeSize      = false;
-        buildCfg.backendDebugInformations = true;
+        buildCfg.byteCodeOptimizeLevel          = 2;
+        buildCfg.byteCodeDebugInline            = false;
+        buildCfg.byteCodeInline                 = true;
+        buildCfg.byteCodeAutoInline             = true;
+        buildCfg.byteCodeEmitAssume             = false;
+        buildCfg.safetyGuards                   = 0;
+        buildCfg.stackTrace                     = false;
+        buildCfg.debugAllocator                 = false;
+        buildCfg.backendOptimizeSpeed           = true;
+        buildCfg.backendOptimizeSize            = false;
+        buildCfg.backendDebugInformations       = true;
+        buildCfg.backendLLVM.fpMathFma          = true;
+        buildCfg.backendLLVM.fpMathNoInf        = true;
+        buildCfg.backendLLVM.fpMathNoNaN        = true;
+        buildCfg.backendLLVM.fpMathNoSignedZero = true;
     }
 
     // Overwrite with command line

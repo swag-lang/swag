@@ -168,7 +168,14 @@ struct BuildCfgBackendLLVM
 {
     uint32_t minFunctionPerFile = 128;
     uint32_t maxFunctionPerFile = 1024;
-    bool     outputIR           = false; // Write a 'file.ir' text file just next to the output file
+    bool     outputIR           = false; // Write a '.ir' text file just next to the temporary file
+
+    bool fpMathFma          = false;
+    bool fpMathNoNaN        = false;
+    bool fpMathNoInf        = false;
+    bool fpMathNoSignedZero = false;
+    bool fpMathUnsafe       = false;
+    bool fpMathApproxFunc   = false;
 };
 
 struct BuildCfgBackendX64

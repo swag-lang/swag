@@ -37,16 +37,6 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
     llvm::Function* func     = (llvm::Function*) modu.getOrInsertFunction(funcName.c_str(), funcType).getCallee();
     setFuncAttributes(buildParameters, moduleToGen, bcFuncNode, bc, func);
 
-    // No pointer aliasing, on all pointers. Is this correct ??
-    // Note that without the NoAlias flag, some optims will not trigger (like vectorisation)
-    /*for (int i = 0; i < func->arg_size(); i++)
-    {
-        auto arg = func->getArg(i);
-        if (!arg->getType()->isPointerTy())
-            continue;
-        arg->addAttr(llvm::Attribute::NoAlias);
-    }*/
-
     // Export symbol
     if (bcFuncNode && bcFuncNode->attributeFlags & ATTRIBUTE_PUBLIC)
     {
@@ -5478,6 +5468,25 @@ void BackendLLVM::setFuncAttributes(const BuildParameters& buildParameters, Modu
         func->addFnAttr(llvm::Attribute::AttrKind::OptimizeNone);
     if (funcNode && funcNode->attributeFlags & ATTRIBUTE_NO_INLINE)
         func->addFnAttr(llvm::Attribute::AttrKind::NoInline);
+
+#if 0
+    for (int i = 0; i < func->arg_size(); i++)
+    {
+        auto arg = func->getArg(i);
+
+        if (arg->getType()->isPointerTy())
+        {
+            arg->addAttr(llvm::Attribute::NoCapture);
+
+            // No pointer aliasing, on all pointers. Is this correct ??
+            // Note that without the NoAlias flag, some optims will not trigger (like vectorisation)
+            // arg->addAttr(llvm::Attribute::NoAlias);
+        }
+
+        arg->addAttr(llvm::Attribute::NoUndef);
+        arg->addAttr(llvm::Attribute::ReadOnly);
+    }
+#endif
 }
 
 void BackendLLVM::storeTypedValueToRegister(llvm::LLVMContext& context, const BuildParameters& buildParameters, llvm::Value* value, uint32_t reg, llvm::AllocaInst* allocR)

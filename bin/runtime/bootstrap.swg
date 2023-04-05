@@ -542,14 +542,21 @@ namespace Swag
 
     struct BuildCfgBackendLLVM
     {
-        minFunctionPerFile: u32 = 256
-        maxFunctionPerFile: u32 = 1024
-        outputIR: bool          = false
+        minFunctionPerFile: u32  = 128
+        maxFunctionPerFile: u32  = 1024
+        outputIR:           bool = false
+
+        fpMathFma:          bool = false    // true in 'release'
+        fpMathNoNaN:        bool = false    // true in 'release'
+        fpMathNoInf:        bool = false    // true in 'release'
+        fpMathNoSignedZero: bool = false    // true in 'release'
+        fpMathUnsafe:       bool = false
+        fpMathApproxFunc:   bool = false
     }
 
     struct BuildCfgBackendX64
     {
-        minFunctionPerFile: u32 = 256
+        minFunctionPerFile: u32 = 128
         maxFunctionPerFile: u32 = 1024
     }
 
