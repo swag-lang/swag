@@ -38,10 +38,11 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
     setFuncAttributes(buildParameters, moduleToGen, bcFuncNode, bc, func);
 
     // Export symbol
-    if (bcFuncNode && bcFuncNode->attributeFlags & ATTRIBUTE_PUBLIC)
+    if (bcFuncNode &&
+        bcFuncNode->attributeFlags & ATTRIBUTE_PUBLIC &&
+        buildParameters.buildCfg->backendKind == BuildCfgBackendKind::DynamicLib)
     {
-        if (buildParameters.buildCfg->backendKind == BuildCfgBackendKind::DynamicLib)
-            func->setDLLStorageClass(llvm::GlobalValue::DLLExportStorageClass);
+        func->setDLLStorageClass(llvm::GlobalValue::DLLExportStorageClass);
     }
 
     // Content
@@ -5487,41 +5488,21 @@ void BackendLLVM::storeTypedValueToRegister(llvm::LLVMContext& context, const Bu
 
     SWAG_ASSERT(value);
     auto r1 = value;
+
     if (value->getType()->isPointerTy())
-    {
-        auto r0 = GEP64(allocR, reg);
-        builder.CreateStore(builder.CreatePtrToInt(r1, I64_TY()), r0);
-    }
+        builder.CreateStore(builder.CreatePtrToInt(r1, I64_TY()), GEP64(allocR, reg));
     else if (value->getType()->isIntegerTy(8))
-    {
-        auto r0 = GEP64_PTR_I8(allocR, reg);
-        builder.CreateStore(r1, r0);
-    }
+        builder.CreateStore(r1, GEP64_PTR_I8(allocR, reg));
     else if (value->getType()->isIntegerTy(16))
-    {
-        auto r0 = GEP64_PTR_I16(allocR, reg);
-        builder.CreateStore(r1, r0);
-    }
+        builder.CreateStore(r1, GEP64_PTR_I16(allocR, reg));
     else if (value->getType()->isIntegerTy(32))
-    {
-        auto r0 = GEP64_PTR_I32(allocR, reg);
-        builder.CreateStore(r1, r0);
-    }
+        builder.CreateStore(r1, GEP64_PTR_I32(allocR, reg));
     else if (value->getType()->isFloatTy())
-    {
-        auto r0 = GEP64_PTR_F32(allocR, reg);
-        builder.CreateStore(r1, r0);
-    }
+        builder.CreateStore(r1, GEP64_PTR_F32(allocR, reg));
     else if (value->getType()->isDoubleTy())
-    {
-        auto r0 = GEP64_PTR_F64(allocR, reg);
-        builder.CreateStore(r1, r0);
-    }
+        builder.CreateStore(r1, GEP64_PTR_F64(allocR, reg));
     else
-    {
-        auto r0 = GEP64(allocR, reg);
-        builder.CreateStore(r1, r0);
-    }
+        builder.CreateStore(r1, GEP64(allocR, reg));
 }
 
 void BackendLLVM::storeRT2ToRegisters(llvm::LLVMContext& context, const BuildParameters& buildParameters, uint32_t reg0, uint32_t reg1, llvm::AllocaInst* allocR, llvm::AllocaInst* allocRR)
