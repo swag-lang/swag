@@ -279,8 +279,9 @@ void LanguageSpec::setupKeywords()
     keywords.add("#validifx", TokenId::CompilerValidIfx);
 
     keywords.add("#cfg", TokenId::CompilerBuildCfg);
-    keywords.add("#arch", TokenId::CompilerArch);
     keywords.add("#os", TokenId::CompilerOs);
+    keywords.add("#arch", TokenId::CompilerArch);
+    keywords.add("#cpu", TokenId::CompilerCpu);
     keywords.add("#backend", TokenId::CompilerBackend);
     keywords.add("#module", TokenId::CompilerModule);
     keywords.add("#file", TokenId::CompilerFile);

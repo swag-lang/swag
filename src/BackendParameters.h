@@ -18,6 +18,7 @@ struct BackendTarget
 {
     SwagTargetArch arch = SwagTargetArch::X86_64;
     SwagTargetOs   os   = SwagTargetOs::Windows;
+    Utf8           cpu;
 };
 
 enum class BackendGenType

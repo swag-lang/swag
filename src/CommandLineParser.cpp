@@ -67,9 +67,10 @@ void CommandLineParser::setup(CommandLine* cmdLine)
     addArg("bu cl sc",       "--cfg-debug-alloc",      nullptr,    CommandLineType::EnumString,    &cmdLine->buildCfgDebugAlloc, "true|false|default", "use the debug allocator");
     addArg("bu cl sc",       "--cfg-llvm-ir",          nullptr,    CommandLineType::EnumString,    &cmdLine->buildCfgLlvmIR, "true|false|default", "generate .ir files (llvm backend)");
 
-    addArg("bu cl sc",       "--arch",                 nullptr,    CommandLineType::EnumInt,       &cmdLine->target.arch, "x86_64", "set the target architecture");
     addArg("bu cl sc",       "--os",                   nullptr,    CommandLineType::EnumInt,       &cmdLine->target.os, "windows", "set the target operating system");
-                                                                                                   
+    addArg("bu cl sc",       "--arch",                 nullptr,    CommandLineType::EnumInt,       &cmdLine->target.arch, "x86_64", "set the target architecture");
+    addArg("bu cl sc",       "--cpu",                  nullptr,    CommandLineType::String,        &cmdLine->target.cpu, nullptr, "set the target micro architecture");
+
     addArg("bu sc",          "--tag",                  nullptr,    CommandLineType::StringSet,     &cmdLine->tags, nullptr, "add a build tag, with an optional associated type and value");
     addArg("bu sc",          "--args",                 nullptr,    CommandLineType::String,        &cmdLine->userArguments, nullptr, "pass some specific arguments to the user code");
                                                                                                    

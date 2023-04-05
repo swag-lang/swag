@@ -188,8 +188,9 @@ bool Parser::doSinglePrimaryExpression(AstNode* parent, uint32_t exprFlags, AstN
     case TokenId::CompilerCallerFunction:
     case TokenId::CompilerCallerLocation:
     case TokenId::CompilerBuildCfg:
-    case TokenId::CompilerArch:
     case TokenId::CompilerOs:
+    case TokenId::CompilerArch:
+    case TokenId::CompilerCpu:
     case TokenId::CompilerSwagOs:
     case TokenId::CompilerBackend:
         SWAG_CHECK(doCompilerSpecialValue(parent, result));

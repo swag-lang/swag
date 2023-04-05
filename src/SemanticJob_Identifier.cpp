@@ -572,8 +572,9 @@ bool SemanticJob::setSymbolMatchCallParams(SemanticContext* context, AstIdentifi
             case TokenId::CompilerCallerLocation:
             case TokenId::CompilerCallerFunction:
             case TokenId::CompilerBuildCfg:
-            case TokenId::CompilerArch:
             case TokenId::CompilerOs:
+            case TokenId::CompilerArch:
+            case TokenId::CompilerCpu:
             case TokenId::CompilerSwagOs:
             case TokenId::CompilerBackend:
                 continue;

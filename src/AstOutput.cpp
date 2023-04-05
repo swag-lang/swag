@@ -1629,14 +1629,17 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
         case TokenId::CompilerLocation:
             CONCAT_FIXED_STR(concat, "#location");
             break;
-        case TokenId::CompilerArch:
-            CONCAT_FIXED_STR(concat, "#arch");
-            break;
         case TokenId::CompilerOs:
             CONCAT_FIXED_STR(concat, "#os");
             break;
         case TokenId::CompilerSwagOs:
             CONCAT_FIXED_STR(concat, "#swagos");
+            break;
+        case TokenId::CompilerArch:
+            CONCAT_FIXED_STR(concat, "#arch");
+            break;
+        case TokenId::CompilerCpu:
+            CONCAT_FIXED_STR(concat, "#cpu");
             break;
         case TokenId::CompilerBackend:
             CONCAT_FIXED_STR(concat, "#backend");
