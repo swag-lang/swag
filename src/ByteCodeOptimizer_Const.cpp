@@ -90,6 +90,24 @@ bool ByteCodeOptimizer::optimizePassConst(ByteCodeOptContext* context)
             }
         }
 
+        if ((ip->flags & BCI_IMM_A) && (ip->flags & BCI_IMM_B) && (ip->flags & BCI_IMM_C))
+        {
+            switch (ip->op)
+            {
+            case ByteCodeOp::BinOpMulAddF32:
+                SET_OP(ip, ByteCodeOp::SetImmediate32);
+                ip->d.f32 = (ip->a.f32 * ip->b.f32) + ip->c.f32;
+                OK();
+                break;
+
+            case ByteCodeOp::BinOpMulAddF64:
+                SET_OP(ip, ByteCodeOp::SetImmediate64);
+                ip->d.f64 = (ip->a.f64 * ip->b.f64) + ip->c.f64;
+                OK();
+                break;
+            }
+        }
+
         if ((ip->flags & BCI_IMM_A) && (ip->flags & BCI_IMM_B))
         {
             switch (ip->op)

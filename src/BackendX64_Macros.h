@@ -164,6 +164,24 @@
         pp.__op(XMM0, XMM1);                                      \
     }
 
+#define MK_IMMA_F32(__reg)                        \
+    if (ip->flags & BCI_IMM_A)                    \
+    {                                             \
+        pp.emit_Load32_Immediate(ip->a.u32, RAX); \
+        pp.emit_CopyF32(RAX, __reg);              \
+    }                                             \
+    else                                          \
+        pp.emit_LoadF32_Indirect(regOffset(ip->a.u32), __reg);
+
+#define MK_IMMA_F64(__reg)                        \
+    if (ip->flags & BCI_IMM_A)                    \
+    {                                             \
+        pp.emit_Load64_Immediate(ip->a.u32, RAX); \
+        pp.emit_CopyF64(RAX, __reg);              \
+    }                                             \
+    else                                          \
+        pp.emit_LoadF64_Indirect(regOffset(ip->a.u32), __reg);
+
 #define MK_IMMB_8(__reg)                          \
     if (ip->flags & BCI_IMM_B)                    \
         pp.emit_Load8_Immediate(ip->b.u8, __reg); \

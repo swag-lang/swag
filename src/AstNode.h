@@ -1016,6 +1016,7 @@ struct AstOp : public AstNode
 {
     static const uint16_t SPECFLAG_SAFE  = 0x0001;
     static const uint16_t SPECFLAG_SMALL = 0x0002;
+    static const uint16_t SPECFLAG_FMA   = 0x0004;
 
     AstNode* clone(CloneContext& context);
 

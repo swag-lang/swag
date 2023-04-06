@@ -1454,6 +1454,23 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
         break;
     }
 
+    case ByteCodeOp::BinOpMulAddF32:
+    {
+        auto val1                  = IMMA_F32(ip);
+        auto val2                  = IMMB_F32(ip);
+        auto val3                  = IMMC_F32(ip);
+        registersRC[ip->d.u32].f32 = (val1 * val2) + val3;
+        break;
+    }
+    case ByteCodeOp::BinOpMulAddF64:
+    {
+        auto val1                  = IMMA_F64(ip);
+        auto val2                  = IMMB_F64(ip);
+        auto val3                  = IMMC_F64(ip);
+        registersRC[ip->d.u32].f64 = (val1 * val2) + val3;
+        break;
+    }
+
     case ByteCodeOp::BinOpPlusS32_Safe:
     {
         auto val1                  = IMMA_S32(ip);

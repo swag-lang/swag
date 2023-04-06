@@ -13,7 +13,7 @@
 
 bool SemanticJob::resolveBinaryOpPlus(SemanticContext* context, AstNode* left, AstNode* right)
 {
-    auto node          = context->node;
+    auto node          = CastAst<AstOp>(context->node, AstNodeKind::FactorOp);
     auto sourceFile    = context->sourceFile;
     auto leftTypeInfo  = TypeManager::concretePtrRefType(left->typeInfo);
     auto rightTypeInfo = TypeManager::concretePtrRefType(right->typeInfo);
@@ -174,6 +174,16 @@ bool SemanticJob::resolveBinaryOpPlus(SemanticContext* context, AstNode* left, A
             node->setPassThrough();
             Ast::removeFromParent(right);
             right->release();
+        }
+    }
+
+    // Mul add
+    if (leftTypeInfo->isNativeFloat())
+    {
+        if (left->kind == AstNodeKind::FactorOp && left->tokenId == TokenId::SymAsterisk)
+        {
+            left->specFlags |= AstOp::SPECFLAG_FMA;
+            node->specFlags |= AstOp::SPECFLAG_FMA;
         }
     }
 

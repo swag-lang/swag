@@ -251,6 +251,7 @@ enum class ConstantKind
 {
     SetImmediateA,
     SetImmediateC,
+    SetImmediateD,
 };
 
 struct Context
@@ -1724,6 +1725,27 @@ static bool optimizePassSanityStack(ByteCodeOptContext* context, Context& cxt)
         case ByteCodeOp::ClearMaskU64:
             SWAG_CHECK(getRegister(ra, cxt, ip->a.u32));
             ra->reg.u64 &= ip->b.u64;
+            break;
+
+        case ByteCodeOp::BinOpMulAddF32:
+            SWAG_CHECK(getImmediateA(va, cxt, ip));
+            SWAG_CHECK(getImmediateB(vb, cxt, ip));
+            SWAG_CHECK(getImmediateC(vc, cxt, ip));
+            SWAG_CHECK(getRegister(rd, cxt, ip->d.u32));
+            rd->kind = va.kind == ValueKind::Constant && vb.kind == ValueKind::Constant && vc.kind == ValueKind::Constant ? ValueKind::Constant : ValueKind::Unknown;
+            if (rd->kind == ValueKind::Constant)
+                rd->reg.f64 = (va.reg.f32 * vb.reg.f32) + vc.reg.f32;
+            setConstant(cxt, rd->kind, ip, rd->reg.u32, ConstantKind::SetImmediateD);
+            break;
+        case ByteCodeOp::BinOpMulAddF64:
+            SWAG_CHECK(getImmediateA(va, cxt, ip));
+            SWAG_CHECK(getImmediateB(vb, cxt, ip));
+            SWAG_CHECK(getImmediateC(vc, cxt, ip));
+            SWAG_CHECK(getRegister(rd, cxt, ip->d.u32));
+            rd->kind = va.kind == ValueKind::Constant && vb.kind == ValueKind::Constant && vc.kind == ValueKind::Constant ? ValueKind::Constant : ValueKind::Unknown;
+            if (rd->kind == ValueKind::Constant)
+                rd->reg.f64 = (va.reg.f64 * vb.reg.f64) + vc.reg.f64;
+            setConstant(cxt, rd->kind, ip, rd->reg.u64, ConstantKind::SetImmediateD);
             break;
 
         case ByteCodeOp::BinOpBitmaskAnd8:

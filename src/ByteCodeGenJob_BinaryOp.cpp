@@ -36,7 +36,8 @@ bool ByteCodeGenJob::emitBinaryOpPlus(ByteCodeGenContext* context, TypeInfo* typ
             return Report::internalError(context->node, "emitBinaryOpPlus, type not supported");
         }
     }
-    else if (typeInfo->isPointer())
+
+    if (typeInfo->isPointer())
     {
         auto typePtr = CastTypeInfo<TypeInfoPointer>(TypeManager::concreteType(typeInfo), TypeInfoKind::Pointer);
         auto sizeOf  = typePtr->pointedType->sizeOf;
@@ -143,6 +144,10 @@ bool ByteCodeGenJob::emitBinaryOpMinus(ByteCodeGenContext* context, TypeInfo* ty
 
 bool ByteCodeGenJob::emitBinaryOpMul(ByteCodeGenContext* context, TypeInfo* typeInfoExpr, uint32_t r0, uint32_t r1, uint32_t r2)
 {
+    // 'mul' will be done by the parent 'add' (mulAdd)
+    if (context->node->specFlags & AstOp::SPECFLAG_FMA)
+        return true;
+
     auto typeInfo = TypeManager::concreteType(typeInfoExpr);
 
     if (!typeInfo->isNative())
@@ -576,9 +581,6 @@ bool ByteCodeGenJob::emitBinaryOp(ByteCodeGenContext* context)
 
     if (!(node->semFlags & SEMFLAG_EMIT_OP))
     {
-        auto r0 = node->childs[0]->resultRegisterRC;
-        auto r1 = node->childs[1]->resultRegisterRC;
-
         // User special function
         if (node->hasSpecialFuncCall())
         {
@@ -587,8 +589,37 @@ bool ByteCodeGenJob::emitBinaryOp(ByteCodeGenContext* context)
                 return true;
             node->semFlags |= SEMFLAG_EMIT_OP;
         }
+        else if (node->tokenId == TokenId::SymPlus && node->specFlags & AstOp::SPECFLAG_FMA)
+        {
+            auto front             = node->childs[0];
+            auto typeInfo          = TypeManager::concreteType(front->typeInfo);
+            node->resultRegisterRC = reserveRegisterRC(context);
+
+            switch (typeInfo->nativeType)
+            {
+            case NativeTypeKind::F32:
+                emitInstruction(context, ByteCodeOp::BinOpMulAddF32, front->childs[0]->resultRegisterRC, front->childs[1]->resultRegisterRC, node->childs[1]->resultRegisterRC, node->resultRegisterRC);
+                break;
+            case NativeTypeKind::F64:
+                emitInstruction(context, ByteCodeOp::BinOpMulAddF64, front->childs[0]->resultRegisterRC, front->childs[1]->resultRegisterRC, node->childs[1]->resultRegisterRC, node->resultRegisterRC);
+                break;
+            default:
+                return Report::internalError(context->node, "emitBinaryOpPlus, muladd, type not supported");
+            }
+
+            freeRegisterRC(context, front->childs[0]->resultRegisterRC);
+            freeRegisterRC(context, front->childs[1]->resultRegisterRC);
+            freeRegisterRC(context, node->childs[1]->resultRegisterRC);
+            node->semFlags |= SEMFLAG_EMIT_OP;
+        }
+        else if (node->tokenId == TokenId::SymAsterisk && node->specFlags & AstOp::SPECFLAG_FMA)
+        {
+            node->semFlags |= SEMFLAG_EMIT_OP;
+        }
         else
         {
+            auto     r0 = node->childs[0]->resultRegisterRC;
+            auto     r1 = node->childs[1]->resultRegisterRC;
             uint32_t r2 = 0;
 
             // Register for the binary operation has already been allocated in 'additionalRegisterRC' by the left expression in case of a logical test

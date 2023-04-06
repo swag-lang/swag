@@ -557,6 +557,45 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             emitBinOpFloat64AtReg(pp, ip, X64Op::FMUL);
             break;
 
+        case ByteCodeOp::BinOpMulAddF32:
+        {
+            MK_IMMA_F32(XMM0);
+            MK_IMMB_F32(XMM1);
+            MK_IMMC_F32(XMM2);
+
+            pp.concat.addU8(0xF3);
+            pp.concat.addU8(0x0F);
+            pp.concat.addU8((uint8_t) X64Op::FMUL);
+            pp.concat.addU8(0xC1);
+
+            pp.concat.addU8(0xF3);
+            pp.concat.addU8(0x0F);
+            pp.concat.addU8((uint8_t) X64Op::FADD);
+            pp.concat.addU8(0xC2);
+
+            pp.emit_StoreF32_Indirect(regOffset(ip->d.u32), XMM0);
+            break;
+        }
+        case ByteCodeOp::BinOpMulAddF64:
+        {
+            MK_IMMA_F64(XMM0);
+            MK_IMMB_F64(XMM1);
+            MK_IMMC_F64(XMM2);
+
+            pp.concat.addU8(0xF2);
+            pp.concat.addU8(0x0F);
+            pp.concat.addU8((uint8_t) X64Op::FMUL);
+            pp.concat.addU8(0xC1);
+
+            pp.concat.addU8(0xF2);
+            pp.concat.addU8(0x0F);
+            pp.concat.addU8((uint8_t) X64Op::FADD);
+            pp.concat.addU8(0xC2);
+
+            pp.emit_StoreF64_Indirect(regOffset(ip->d.u32), XMM0);
+            break;
+        }
+
         case ByteCodeOp::BinOpModuloS32:
             emitBinOpIntDivAtReg(pp, ip, true, 32, true);
             break;

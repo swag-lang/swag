@@ -1291,6 +1291,25 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             break;
         }
 
+        case ByteCodeOp::BinOpMulAddF32:
+        {
+            auto r0 = MK_IMMA_F32();
+            auto r1 = MK_IMMB_F32();
+            auto r2 = MK_IMMC_F32();
+            auto r3 = GEP64_PTR_F32(allocR, ip->d.u32);
+            builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::fmuladd, {F32_TY()}, {r0, r1, r2}), r3);
+            break;
+        }
+        case ByteCodeOp::BinOpMulAddF64:
+        {
+            auto r0 = MK_IMMA_F64();
+            auto r1 = MK_IMMB_F64();
+            auto r2 = MK_IMMC_F64();
+            auto r3 = GEP64_PTR_F64(allocR, ip->d.u32);
+            builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::fmuladd, {F64_TY()}, {r0, r1, r2}), r3);
+            break;
+        }
+
         case ByteCodeOp::BinOpXorU8:
         {
             MK_BINOP8_CAB();
