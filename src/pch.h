@@ -7,7 +7,6 @@
 #pragma clang diagnostic ignored "-Wreorder-ctor"
 #pragma clang diagnostic ignored "-Wtypename-missing"
 #pragma clang diagnostic ignored "-Wsign-compare"
-#pragma clang diagnostic ignored "-Wpointer-bool-conversion"
 #pragma clang diagnostic ignored "-Wmicrosoft-include"
 #pragma clang diagnostic ignored "-Wswitch"
 #pragma clang diagnostic ignored "-Wmissing-field-initializers"

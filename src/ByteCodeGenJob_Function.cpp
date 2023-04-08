@@ -1216,7 +1216,7 @@ void ByteCodeGenJob::computeSourceLocation(JobContext* context, AstNode* node, u
     if (it != module->cacheSourceLoc.end())
         it->second.push_back(tmpLoc);
     else
-        module->cacheSourceLoc[crc] = {tmpLoc};
+        module->cacheSourceLoc[crc] = VectorNative<SourceLocationCache>{tmpLoc};
 
     *storageOffset = offset;
 }

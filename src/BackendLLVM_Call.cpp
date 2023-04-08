@@ -478,9 +478,8 @@ llvm::Value* BackendLLVM::emitCall(const BuildParameters&      buildParameters,
                                    const Vector<uint32_t>&     regs,
                                    const Vector<llvm::Value*>& values)
 {
-    auto                typeFunc = g_Workspace->runtimeModule->getRuntimeTypeFct(name);
-    llvm::FunctionType* FT;
-    getOrCreateFuncType(buildParameters, moduleToGen, typeFunc, &FT);
+    auto typeFunc = g_Workspace->runtimeModule->getRuntimeTypeFct(name);
+    getOrCreateFuncType(buildParameters, moduleToGen, typeFunc);
 
     // Invert regs
     VectorNative<uint32_t> pushRAParams;
