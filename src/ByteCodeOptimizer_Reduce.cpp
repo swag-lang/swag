@@ -545,6 +545,67 @@ void ByteCodeOptimizer::reduceAppend(ByteCodeOptContext* context, ByteCodeInstru
         ip[1].b.u32 = ip[0].a.u32;
     }
 
+    switch (ip->op)
+    {
+    case ByteCodeOp::GetIncParam64DeRef8:
+    case ByteCodeOp::GetIncFromStack64DeRef8:
+        if (ip[1].op == ip[0].op &&
+            ip[0].b.u64 == ip[1].b.u64 &&
+            ip[0].c.u64 == ip[1].c.u64 &&
+            ip[0].d.u64 == ip[1].d.u64 &&
+            ip[0].flags == ip[1].flags &&
+            !(ip[1].flags & BCI_START_STMT))
+        {
+            SET_OP(ip + 1, ByteCodeOp::CopyRBtoRA8);
+            ip[1].b.u32 = ip[0].a.u32;
+        }
+
+        break;
+    case ByteCodeOp::GetIncParam64DeRef16:
+    case ByteCodeOp::GetIncFromStack64DeRef16:
+        if (ip[1].op == ip[0].op &&
+            ip[0].b.u64 == ip[1].b.u64 &&
+            ip[0].c.u64 == ip[1].c.u64 &&
+            ip[0].d.u64 == ip[1].d.u64 &&
+            ip[0].flags == ip[1].flags &&
+            !(ip[1].flags & BCI_START_STMT))
+        {
+            SET_OP(ip + 1, ByteCodeOp::CopyRBtoRA16);
+            ip[1].b.u32 = ip[0].a.u32;
+        }
+
+        break;
+    case ByteCodeOp::GetIncParam64DeRef32:
+    case ByteCodeOp::GetIncFromStack64DeRef32:
+        if (ip[1].op == ip[0].op &&
+            ip[0].b.u64 == ip[1].b.u64 &&
+            ip[0].c.u64 == ip[1].c.u64 &&
+            ip[0].d.u64 == ip[1].d.u64 &&
+            ip[0].flags == ip[1].flags &&
+            !(ip[1].flags & BCI_START_STMT))
+        {
+            SET_OP(ip + 1, ByteCodeOp::CopyRBtoRA32);
+            ip[1].b.u32 = ip[0].a.u32;
+        }
+
+        break;
+    case ByteCodeOp::GetIncParam64:
+    case ByteCodeOp::GetIncParam64DeRef64:
+    case ByteCodeOp::GetIncFromStack64DeRef64:
+        if (ip[1].op == ip[0].op &&
+            ip[0].b.u64 == ip[1].b.u64 &&
+            ip[0].c.u64 == ip[1].c.u64 &&
+            ip[0].d.u64 == ip[1].d.u64 &&
+            ip[0].flags == ip[1].flags &&
+            !(ip[1].flags & BCI_START_STMT))
+        {
+            SET_OP(ip + 1, ByteCodeOp::CopyRBtoRA64);
+            ip[1].b.u32 = ip[0].a.u32;
+        }
+
+        break;
+    }
+
     // A = something followed by B = A
     // make B = something, this gives the opportunity to remove one of them
     if (ip[1].op == ByteCodeOp::CopyRBtoRA64 &&
