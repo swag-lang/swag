@@ -106,8 +106,8 @@ bool Module::flushCompilerMessages(JobContext* context, uint32_t pass, Job* job)
 
 bool Module::sendCompilerMessage(CompilerMsgKind msgKind, Job* dependentJob)
 {
-    ExportedCompilerMessage msg = {0};
-    msg.kind                    = msgKind;
+    ExportedCompilerMessage msg;
+    msg.kind = msgKind;
     return sendCompilerMessage(&msg, dependentJob);
 }
 

@@ -242,7 +242,7 @@ bool SemanticJob::sendCompilerMsgGlobalVar(SemanticContext* context)
     if (sourceFile->imported)
         return true;
 
-    CompilerMessage msg      = {0};
+    CompilerMessage msg;
     msg.concrete.kind        = CompilerMsgKind::SemGlobals;
     msg.concrete.name.buffer = node->token.text.buffer;
     msg.concrete.name.count  = node->token.text.length();

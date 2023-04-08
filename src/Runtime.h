@@ -155,13 +155,13 @@ enum class SwagRuntimeFlags : uint64_t
 
 typedef struct SwagProcessInfos
 {
-    SwagSlice          modules;
-    SwagSlice          args;
-    uint64_t           contextTlsId;
-    SwagContext*       defaultContext;
-    SwagBytecodeRun    byteCodeRun;
-    SwagMakeCallback   makeCallback;
-    SwagBackendGenType backendKind;
+    SwagSlice          modules        = {0};
+    SwagSlice          args           = {0};
+    uint64_t           contextTlsId   = 0;
+    SwagContext*       defaultContext = nullptr;
+    SwagBytecodeRun    byteCodeRun    = nullptr;
+    SwagMakeCallback   makeCallback   = nullptr;
+    SwagBackendGenType backendKind    = SwagBackendGenType::X64;
 } SwagProcessInfos;
 
 struct BuildCfgBackendLLVM
@@ -460,9 +460,9 @@ enum class CompilerMsgKindMask : uint64_t
 struct ExportedCompilerMessage
 {
     SwagSlice         moduleName;
-    CompilerMsgKind   kind;
     SwagSlice         name;
-    ExportedTypeInfo* type;
+    ExportedTypeInfo* type = nullptr;
+    CompilerMsgKind   kind = CompilerMsgKind::Max;
 };
 
 static const uint64_t SWAG_LAMBDA_BC_MARKER_BIT = 63;

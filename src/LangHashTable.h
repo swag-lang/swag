@@ -13,11 +13,16 @@ struct LangHashTable
     };
 
     bool     firstLetter[256] = {false};
-    Entry    buffer[N]        = {0};
-    uint32_t count            = 0;
-    uint32_t allocated        = N;
-    uint32_t minLetters       = UINT32_MAX;
-    uint32_t maxLetters       = 0;
+    Entry    buffer[N];
+    uint32_t count      = 0;
+    uint32_t allocated  = N;
+    uint32_t minLetters = UINT32_MAX;
+    uint32_t maxLetters = 0;
+
+    LangHashTable()
+    {
+        memset(buffer, 0, sizeof(buffer));
+    }
 
     const V* find(const Utf8& key)
     {

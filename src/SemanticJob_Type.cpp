@@ -26,7 +26,7 @@ bool SemanticJob::sendCompilerMsgTypeDecl(SemanticContext* context)
     if (node->typeInfo->flags & (TYPEINFO_STRUCT_IS_TUPLE | TYPEINFO_GENERIC))
         return true;
 
-    CompilerMessage msg      = {0};
+    CompilerMessage msg;
     msg.concrete.kind        = CompilerMsgKind::SemTypes;
     msg.concrete.name.buffer = node->token.text.buffer;
     msg.concrete.name.count  = node->token.text.length();

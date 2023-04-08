@@ -2256,7 +2256,7 @@ bool TypeManager::collectInterface(SemanticContext* context, TypeInfoStruct* fro
     context->castCollectInterfaceField.clear();
     auto& stack = context->castCollectInterfaceField;
 
-    stack.push_back({fromTypeStruct, 0, nullptr});
+    stack.push_back({fromTypeStruct, 0, nullptr, nullptr});
     while (!stack.empty())
     {
         auto it = stack.back();

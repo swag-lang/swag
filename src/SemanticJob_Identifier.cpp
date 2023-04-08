@@ -4169,8 +4169,8 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context, AstIdentifier* ide
         // :SilentCall
         if (identifier->token.text.empty())
         {
-            OneSymbolMatch sm = {0};
-            sm.symbol         = identifierRef->resolvedSymbolName;
+            OneSymbolMatch sm;
+            sm.symbol = identifierRef->resolvedSymbolName;
             dependentSymbols.push_back(sm);
         }
         else

@@ -95,8 +95,8 @@ struct ExecuteNodeParams
 struct CompilerMessage
 {
     ExportedCompilerMessage concrete;
-    TypeInfo*               typeInfo;
-    AstNode*                node;
+    TypeInfo*               typeInfo = nullptr;
+    AstNode*                node     = nullptr;
 };
 
 const uint32_t BUILDRES_NONE     = 0x00000000;
@@ -213,7 +213,7 @@ struct Module
     TypeGen          typeGen;
     ByteCodeRun      runner;
     DependentJobs    dependentJobs;
-    SwagProcessInfos processInfos = {{0}};
+    SwagProcessInfos processInfos;
 
     VectorNative<SourceFile*>                        files;
     VectorNative<Module*>                            errorModules;

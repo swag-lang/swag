@@ -650,9 +650,9 @@ namespace Swag
     struct CompilerMessage
     {
         moduleName:     string
-        kind:           CompilerMsgKind = undefined
 	    name:           string
         type:           const* TypeInfo
+        kind:           CompilerMsgKind = undefined
     }
 
     interface ICompiler

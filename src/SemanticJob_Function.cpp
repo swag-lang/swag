@@ -203,7 +203,7 @@ bool SemanticJob::sendCompilerMsgFuncDecl(SemanticContext* context)
     auto node     = CastAst<AstFuncDecl>(context->node, AstNodeKind::FuncDecl);
     auto typeInfo = CastTypeInfo<TypeInfoFuncAttr>(node->typeInfo, TypeInfoKind::FuncAttr);
 
-    CompilerMessage msg      = {0};
+    CompilerMessage msg;
     msg.concrete.kind        = CompilerMsgKind::SemFunctions;
     msg.concrete.name.buffer = node->token.text.buffer;
     msg.concrete.name.count  = node->token.text.length();

@@ -12,8 +12,8 @@ void ByteCodeDebugger::setup()
         return;
 
     // clang-format off
-    commands.push_back({"<return>",    "",  "",                       "repeat the last command"});
-    commands.push_back({"<tab>",       "",  "",                       "contextual completion of the current word"});
+    commands.push_back({"<return>",    "",  "",                       "repeat the last command", nullptr});
+    commands.push_back({"<tab>",       "",  "",                       "contextual completion of the current word", nullptr});
     commands.push_back({});
 
     commands.push_back({"step",        "s",    "",                    "runs to the next line", cmdStep});
@@ -24,21 +24,21 @@ void ByteCodeDebugger::setup()
     commands.push_back({"jump",        "j",    "",                    "jump to the given line or instruction in the current function (depends on 'mode bc')", cmdJump});
     commands.push_back({});                    
                                                
-    commands.push_back({"execute",     "e",    "<stmt>",              "execute the code statement <stmt> in the current context", cmdExecute });
-    commands.push_back({"print",       "p",    "[/format] <expr>",    "print the result of the expression <expr> in the current context (format is the same as 'x' command)", cmdPrint });
+    commands.push_back({"execute",     "e",    "<stmt>",              "execute the code statement <stmt> in the current context", cmdExecute});
+    commands.push_back({"print",       "p",    "[/format] <expr>",    "print the result of the expression <expr> in the current context (format is the same as 'x' command)", cmdPrint});
     commands.push_back({});                    
                                                
-    commands.push_back({"x",           "",     "[/format] [/num] <address>",     "print memory (format = s8|s16|s32|s64|u8|u16|u32|u64|x8|x16|x32|x64|f32|f64)", cmdMemory });
+    commands.push_back({"x",           "",     "[/format] [/num] <address>",     "print memory (format = s8|s16|s32|s64|u8|u16|u32|u64|x8|x16|x32|x64|f32|f64)", cmdMemory});
     commands.push_back({});                    
                                                
     commands.push_back({"list",        "l",    "[num]",               "print the current source code line and [num] lines around", cmdList});
-    commands.push_back({"ll",          "",     "[name]",              "print the current function (or function [name]) source code", cmdLongList });
+    commands.push_back({"ll",          "",     "[name]",              "print the current function (or function [name]) source code", cmdLongList});
     commands.push_back({});                    
                                                
     commands.push_back({"info",        "o",    "(l)ocals",            "print all current local variables", cmdInfo});
     commands.push_back({"info",        "o",    "(a)rgs",              "print all current function arguments", cmdInfo});
-    commands.push_back({"info",        "o",    "(br)eakpoints",       "print all breakpoints", cmdInfo });
-    commands.push_back({"info",        "o",    "(r)egs [/format]",    "print all registers (format is the same as 'x' command)", cmdInfo });
+    commands.push_back({"info",        "o",    "(br)eakpoints",       "print all breakpoints", cmdInfo});
+    commands.push_back({"info",        "o",    "(r)egs [/format]",    "print all registers (format is the same as 'x' command)", cmdInfo});
     commands.push_back({"info",        "o",    "module",              "print all modules", cmdInfo});
     commands.push_back({"info",        "o",    "func [filter]",       "print all functions which contains [filter] in their names", cmdInfo});
     commands.push_back({});
@@ -47,7 +47,7 @@ void ByteCodeDebugger::setup()
                                        
     commands.push_back({"break",       "b",    "",                    "print all breakpoints", cmdBreak});
     commands.push_back({"break",       "b",    "(f)unc <name>",       "add breakpoint when entering function with exact <name>", cmdBreak});
-    commands.push_back({"break",       "b",    "(f)unc *<name>",      "add breakpoint when entering function containing <name>", cmdBreak });
+    commands.push_back({"break",       "b",    "(f)unc *<name>",      "add breakpoint when entering function containing <name>", cmdBreak});
     commands.push_back({"break",       "b",    "line <line>",         "add breakpoint in the current source file at <line>", cmdBreak});
     commands.push_back({"break",       "b",    "file <file> <line>",  "add breakpoint in <file> at <line>", cmdBreak});
     commands.push_back({"break",       "b",    "(cl)ear",             "remove all breakpoints", cmdBreak});

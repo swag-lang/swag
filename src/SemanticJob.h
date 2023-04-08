@@ -164,10 +164,10 @@ struct OneGenericMatch
 
 struct OneSymbolMatch
 {
-    SymbolName* symbol;
-    Scope*      scope;
-    uint32_t    asFlags;
-    bool        remove = false;
+    SymbolName* symbol  = nullptr;
+    Scope*      scope   = nullptr;
+    uint32_t    asFlags = 0;
+    bool        remove  = false;
 
     bool operator==(const OneSymbolMatch& other)
     {
