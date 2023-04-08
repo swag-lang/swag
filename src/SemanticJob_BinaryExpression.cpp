@@ -908,7 +908,6 @@ bool SemanticJob::resolveFactorExpression(SemanticContext* context)
     }
 
     // Special case for enum : nothing is possible, except for flags
-    bool isEnumFlags   = false;
     auto leftTypeInfo  = TypeManager::concretePtrRefType(left->typeInfo, CONCRETE_ALIAS | CONCRETE_FUNC);
     auto rightTypeInfo = TypeManager::concretePtrRefType(right->typeInfo, CONCRETE_ALIAS | CONCRETE_FUNC);
     if (leftTypeInfo->isEnum() || rightTypeInfo->isEnum())
@@ -927,8 +926,6 @@ bool SemanticJob::resolveFactorExpression(SemanticContext* context)
             return context->report({node, Fmt(Err(Err0037), node->token.ctext(), leftTypeInfo->getDisplayNameC())});
         if (rightTypeInfo->isEnum() && !(rightTypeInfo->flags & TYPEINFO_ENUM_FLAGS))
             return context->report({node, Fmt(Err(Err0037), node->token.ctext(), rightTypeInfo->getDisplayNameC())});
-
-        isEnumFlags = true;
     }
 
     // :ConcreteRef

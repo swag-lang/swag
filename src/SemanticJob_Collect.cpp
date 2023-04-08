@@ -148,7 +148,6 @@ bool SemanticJob::collectStructLiterals(JobContext* context, DataSegment* storag
     AstStruct* structNode = CastAst<AstStruct>(node, AstNodeKind::StructDecl);
     auto       typeStruct = CastTypeInfo<TypeInfoStruct>(structNode->typeInfo, TypeInfoKind::Struct);
 
-    auto cptField = 0;
     for (auto field : typeStruct->fields)
     {
         auto ptrDest  = storageSegment->address(offsetStruct + field->offset);
@@ -206,8 +205,6 @@ bool SemanticJob::collectStructLiterals(JobContext* context, DataSegment* storag
             auto srcAddr = varType->computedValue->storageSegment->address(varType->computedValue->storageOffset);
             memcpy(ptrDest, srcAddr, typeInfo->sizeOf);
         }
-
-        cptField++;
     }
 
     return true;

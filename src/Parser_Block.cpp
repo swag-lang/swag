@@ -65,9 +65,8 @@ bool Parser::doSwitch(AstNode* parent, AstNode** result)
     auto startLoc = token.startLocation;
     SWAG_CHECK(eatToken(TokenId::SymLeftCurly, "to start the switch body"));
 
-    AstSwitchCase*      defaultCase      = nullptr;
-    AstSwitchCaseBlock* defaultStatement = nullptr;
-    bool                hasDefault       = false;
+    AstSwitchCase* defaultCase = nullptr;
+    bool           hasDefault  = false;
     while (token.id != TokenId::SymRightCurly && token.id != TokenId::EndOfFile)
     {
         SWAG_VERIFY(token.id == TokenId::KwdCase || token.id == TokenId::KwdDefault, error(token, Err(Syn0053)));
@@ -123,9 +122,7 @@ bool Parser::doSwitch(AstNode* parent, AstNode** result)
             statement->extSemantic()->semanticAfterFct  = SemanticJob::resolveScopedStmtAfter;
             statement->ownerCase                        = caseNode;
             caseNode->block                             = statement;
-            if (isDefault)
-                defaultStatement = statement;
-            newScope->owner = statement;
+            newScope->owner                             = statement;
 
             // Instructions
             ScopedBreakable scopedBreakable(this, switchNode);

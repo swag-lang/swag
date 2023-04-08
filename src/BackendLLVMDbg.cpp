@@ -402,12 +402,10 @@ void BackendLLVMDbg::startFunction(const BuildParameters& buildParameters, LLVMP
 
     Utf8              name     = bc->name;
     TypeInfoFuncAttr* typeFunc = bc->typeInfoFunc;
-    int               line     = 0;
     llvm::DIFile*     file     = getOrCreateFile(bc->sourceFile);
     if (decl)
     {
         name     = decl->token.text;
-        line     = decl->token.startLocation.line;
         typeFunc = CastTypeInfo<TypeInfoFuncAttr>(decl->typeInfo, TypeInfoKind::FuncAttr);
     }
 

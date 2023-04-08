@@ -629,7 +629,6 @@ void Diagnostic::printRanges()
 
     // Print all marks
     auto startIndex = minBlanks;
-    int  rangeIdx   = 0;
     for (auto& r : ranges)
     {
         while (startIndex < (int) r.startLocation.column && startIndex < (uint32_t) backLine.length())
@@ -653,8 +652,6 @@ void Diagnostic::printRanges()
             else
                 g_Log.print("-");
         }
-
-        rangeIdx++;
     }
 
     // Last hint message on the same line

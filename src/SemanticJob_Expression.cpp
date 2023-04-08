@@ -29,7 +29,6 @@ bool SemanticJob::computeExpressionListTupleType(SemanticContext* context, AstNo
     typeInfo->sizeOf   = 0;
     typeInfo->declNode = node;
 
-    int idx = 0;
     node->flags |= AST_CONST_EXPR | AST_R_VALUE;
     for (auto child : node->childs)
     {
@@ -61,8 +60,6 @@ bool SemanticJob::computeExpressionListTupleType(SemanticContext* context, AstNo
             node->flags &= ~AST_CONST_EXPR;
         if (!(child->flags & AST_R_VALUE))
             node->flags &= ~AST_R_VALUE;
-
-        idx++;
     }
 
     typeInfo->name += "}";

@@ -83,7 +83,6 @@ bool ByteCodeGenJob::emitCastToInterface(ByteCodeGenContext* context, AstNode* e
     }
 
     TypeInfoStruct* fromTypeStruct = nullptr;
-    bool            fromPointer    = false;
     if (fromTypeInfo->isStruct())
     {
         fromTypeStruct = CastTypeInfo<TypeInfoStruct>(fromTypeInfo, TypeInfoKind::Struct);
@@ -92,7 +91,6 @@ bool ByteCodeGenJob::emitCastToInterface(ByteCodeGenContext* context, AstNode* e
     {
         auto fromTypePointer = CastTypeInfo<TypeInfoPointer>(fromTypeInfo, TypeInfoKind::Pointer);
         fromTypeStruct       = CastTypeInfo<TypeInfoStruct>(fromTypePointer->pointedType, TypeInfoKind::Struct);
-        fromPointer          = true;
     }
     else
     {
@@ -622,7 +620,7 @@ bool ByteCodeGenJob::emitCastToNativeString(ByteCodeGenContext* context, AstNode
     {
         auto typeArray = CastTypeInfo<TypeInfoArray>(fromTypeInfo, TypeInfoKind::Array);
         transformResultToLinear2(context, exprNode);
-        node->resultRegisterRC                                                                     = exprNode->resultRegisterRC;
+        node->resultRegisterRC                                                                = exprNode->resultRegisterRC;
         EMIT_INST1(context, ByteCodeOp::SetImmediate64, exprNode->resultRegisterRC[1])->b.u64 = typeArray->count;
         return true;
     }

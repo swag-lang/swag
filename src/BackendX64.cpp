@@ -742,8 +742,6 @@ bool BackendX64::saveObjFile(const BuildParameters& buildParameters)
     path.append(pp.filename.c_str());
     auto filename = path;
 
-    Concat concat;
-
     FILE* f = nullptr;
     if (fopen_s(&f, filename.string().c_str(), "wb"))
     {

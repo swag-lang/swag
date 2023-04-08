@@ -50,16 +50,8 @@ JobResult BackendX64FunctionBodyJob::execute()
 
     for (auto one : byteCodeFunc)
     {
-        TypeInfoFuncAttr* typeFunc = one->typeInfoFunc;
-        AstFuncDecl*      node     = nullptr;
-
-        if (one->node)
-        {
-            if (one->node->attributeFlags & (ATTRIBUTE_MIXIN | ATTRIBUTE_MACRO | ATTRIBUTE_COMPILER))
-                continue;
-            node     = CastAst<AstFuncDecl>(one->node, AstNodeKind::FuncDecl);
-            typeFunc = CastTypeInfo<TypeInfoFuncAttr>(node->typeInfo, TypeInfoKind::FuncAttr);
-        }
+        if (one->node && one->node->attributeFlags & (ATTRIBUTE_MIXIN | ATTRIBUTE_MACRO | ATTRIBUTE_COMPILER))
+            continue;
 
         // Emit the internal function
         if (!bachendX64->emitFunctionBody(buildParameters, module, one))

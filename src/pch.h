@@ -2,7 +2,6 @@
 
 #ifdef __clang__
 
-#pragma clang diagnostic ignored "-Wunused-variable"
 #pragma clang diagnostic ignored "-Wunused-parameter"
 #pragma clang diagnostic ignored "-Wreorder-ctor"
 #pragma clang diagnostic ignored "-Wtypename-missing"
@@ -11,7 +10,6 @@
 #pragma clang diagnostic ignored "-Wswitch"
 #pragma clang diagnostic ignored "-Wmissing-field-initializers"
 #pragma clang diagnostic ignored "-Wunqualified-std-cast-call"
-#pragma clang diagnostic ignored "-Wunused-but-set-variable"
 #pragma clang diagnostic ignored "-Wmissing-braces"
 #pragma clang diagnostic ignored "-Wdelete-non-abstract-non-virtual-dtor"
 #pragma clang diagnostic ignored "-Wnonportable-include-path"
