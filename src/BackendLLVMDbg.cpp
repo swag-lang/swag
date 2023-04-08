@@ -446,6 +446,36 @@ void BackendLLVMDbg::startFunction(const BuildParameters& buildParameters, LLVMP
             countParams--;
         }
 
+        // :OptimizedAwayDebugCrap
+        // Parameters are "optimized away" by the debugger, most of the time.
+        // The only way to have correct values seems to make a local copy of the parameter on the stack,
+        // and make the debugger use that copy instead of the parameter.
+        // Crap !
+        // So make a copy, except if we are in optimized mode...
+        bool                            isDebug = !buildParameters.buildCfg->backendOptimizeSpeed && !buildParameters.buildCfg->backendOptimizeSize;
+        VectorNative<llvm::AllocaInst*> allocas;
+        allocas.reserve((int) countParams);
+        for (int i = 0; i < countParams; i++)
+        {
+            auto typeParam = typeFunc->parameters[i]->typeInfo;
+            if (typeParam->isString() || typeParam->isSlice())
+            {
+                auto allocA = builder.CreateAlloca(I64_TY(), builder.getInt64(2));
+                allocA->setAlignment(llvm::Align{sizeof(void*)});
+                allocas.push_back(allocA);
+            }
+            else if (isDebug)
+            {
+                auto allocA = builder.CreateAlloca(func->getArg(idxParam)->getType(), nullptr, func->getArg(idxParam)->getName());
+                allocA->setAlignment(llvm::Align{sizeof(void*)});
+                allocas.push_back(allocA);
+            }
+            else
+            {
+                allocas.push_back(nullptr);
+            }
+        }
+
         for (int i = 0; i < countParams; i++)
         {
             auto        child     = decl->parameters->childs[i];
@@ -453,24 +483,26 @@ void BackendLLVMDbg::startFunction(const BuildParameters& buildParameters, LLVMP
             auto        typeParam = typeFunc->parameters[i]->typeInfo;
             auto        scope     = SP;
             auto        location  = debugLocGet(loc.line + 1, loc.column, scope);
+            auto        allocA    = allocas[i];
 
             // If parameters are passed with two registers, make a local variable instead of a reference to
             // the parameters
             if (typeParam->isString() || typeParam->isSlice())
             {
-                auto type = getType(typeParam, file);
+                auto                   type  = getType(typeParam, file);
+                llvm::DILocalVariable* value = dbgBuilder->createAutoVariable(scope, child->token.ctext(), file, loc.line + 1, type, !isOptimized);
 
-                llvm::DILocalVariable* var0   = dbgBuilder->createAutoVariable(scope, child->token.ctext(), file, loc.line + 1, type, !isOptimized);
-                auto                   allocA = builder.CreateAlloca(I64_TY(), builder.getInt64(2));
+                if (isDebug)
+                {
+                    auto v0   = builder.CreateInBoundsGEP(I64_TY(), allocA, builder.getInt64(0));
+                    auto arg0 = func->getArg(idxParam);
+                    builder.CreateStore(arg0, builder.CreatePointerCast(v0, arg0->getType()->getPointerTo()));
 
-                auto v0   = builder.CreateInBoundsGEP(I64_TY(), allocA, builder.getInt64(0));
-                auto arg0 = func->getArg(idxParam);
-                builder.CreateStore(arg0, builder.CreatePointerCast(v0, arg0->getType()->getPointerTo()));
+                    auto v1 = builder.CreateInBoundsGEP(I64_TY(), allocA, builder.getInt64(1));
+                    builder.CreateStore(func->getArg(idxParam + 1), v1);
+                }
 
-                auto v1 = builder.CreateInBoundsGEP(I64_TY(), allocA, builder.getInt64(1));
-                builder.CreateStore(func->getArg(idxParam + 1), v1);
-
-                dbgBuilder->insertDeclare(allocA, var0, dbgBuilder->createExpression(), debugLocGet(loc.line + 1, loc.column, scope), pp.builder->GetInsertBlock());
+                dbgBuilder->insertDeclare(allocA, value, dbgBuilder->createExpression(), debugLocGet(loc.line + 1, loc.column, scope), pp.builder->GetInsertBlock());
             }
             else
             {
@@ -489,22 +521,15 @@ void BackendLLVMDbg::startFunction(const BuildParameters& buildParameters, LLVMP
                 llvm::DILocalVariable* var   = dbgBuilder->createParameterVariable(scope, child->token.ctext(), idxParam + 1, file, loc.line + 1, type, !isOptimized, llvm::DINode::FlagZero);
                 llvm::Value*           value = func->getArg(idxParam);
 
-                // :OptimizedAwayDebugCrap
-                // Parameters are "optimized away" by the debugger, most of the time.
-                // The only way to have correct values seems to make a local copy of the parameter on the stack,
-                // and make the debugger use that copy instead of the parameter.
-                // Crap !
-                // So make a copy, except if we are in optimized mode...
-                bool isDebug = !buildParameters.buildCfg->backendOptimizeSpeed && !buildParameters.buildCfg->backendOptimizeSize;
                 if (isDebug)
                 {
-                    auto allocA = builder.CreateAlloca(value->getType(), nullptr, func->getArg(idxParam)->getName());
                     builder.CreateStore(value, allocA);
                     value = allocA;
                 }
 
                 dbgBuilder->insertDeclare(value, var, dbgBuilder->createExpression(), location, pp.builder->GetInsertBlock());
 
+                // Create a 'this' variable for the debugger
                 if (typeParam->isSelf() && child->token.text == "self")
                 {
                     var = dbgBuilder->createParameterVariable(scope, "this", idxParam + 1, file, loc.line + 1, type, !isOptimized, llvm::DINode::FlagObjectPointer);
