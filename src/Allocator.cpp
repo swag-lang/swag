@@ -13,19 +13,17 @@ const uint64_t MAGIC_ALLOC = 0xC0DEC0DEC0DEC0DE;
 const uint64_t MAGIC_FREE  = 0xCAFECAFECAFECAFE;
 #endif
 
-/////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////
-
 void* operator new(size_t t)
 {
-    t      = Allocator::alignSize((int) t + sizeof(uint64_t));
-    auto p = (uint64_t*) Allocator::alloc(t);
+    t = Allocator::alignSize((int) t + 2 * sizeof(uint64_t));
+
+    auto p = (uint64_t*) Allocator::alloc(t, 2 * sizeof(uint64_t));
     *p     = (uint64_t) t;
+
 #ifdef SWAG_STATS
     g_Stats.memNew += t;
 #endif
-    return p + 1;
+    return p + 2;
 }
 
 void operator delete(void* addr) noexcept
@@ -33,19 +31,17 @@ void operator delete(void* addr) noexcept
     if (!addr)
         return;
     auto p = (uint64_t*) addr;
-    p--;
+    p -= 2;
 #ifdef SWAG_STATS
     g_Stats.memNew -= *p;
 #endif
     return Allocator::free(p, *p);
 }
 
-void* Allocator::alloc(size_t size)
+void* Allocator::alloc(size_t size, size_t align)
 {
-    SWAG_ASSERT(!(size & 7));
-
 #ifdef SWAG_CHECK_MEMORY
-    auto result = mi_malloc(size + (3 * sizeof(uint64_t)));
+    auto result = mi_malloc_aligned(size + (3 * sizeof(uint64_t)), align);
     result      = markDebugBlock((uint8_t*) result, size, MAGIC_ALLOC);
 #else
     auto result = mi_malloc(size);
@@ -65,8 +61,6 @@ void Allocator::free(void* ptr, size_t size)
 {
     if (!ptr || !size)
         return;
-
-    SWAG_ASSERT(!(size & 7));
 
 #ifdef SWAG_CHECK_MEMORY
     ptr = checkUserBlock((uint8_t*) ptr, size, MAGIC_ALLOC);

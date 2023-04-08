@@ -23,7 +23,7 @@ struct Allocator
         free(ptr, alignSize(sizeof(T)));
     }
 
-    static void* alloc(size_t size);
+    static void* alloc(size_t size, size_t align = sizeof(void*));
     static void  free(void*, size_t size);
 
     // clang-format off

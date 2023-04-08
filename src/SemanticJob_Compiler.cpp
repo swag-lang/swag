@@ -424,11 +424,12 @@ bool SemanticJob::resolveCompilerAssert(SemanticContext* context)
 
     // Expression to check
     auto expr = node->childs[0];
-    SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoBool, nullptr, expr, CASTFLAG_AUTO_BOOL));
+    SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoBool, nullptr, expr, CASTFLAG_AUTO_BOOL | CASTFLAG_JUST_CHECK));
     SWAG_CHECK(executeCompilerNode(context, expr, true));
     if (context->result != ContextResult::Done)
         return true;
 
+    SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoBool, nullptr, expr, CASTFLAG_AUTO_BOOL));
     node->flags |= AST_NO_BYTECODE;
 
     if (!expr->computedValue->reg.b)
