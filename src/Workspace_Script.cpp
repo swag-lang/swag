@@ -51,7 +51,7 @@ void Workspace::scriptCommand()
     pathF                    = filesystem::absolute(pathF);
     g_CommandLine.scriptName = pathF.string();
     error_code err;
-    if (!filesystem::exists(g_CommandLine.scriptName.c_str()), err)
+    if (!filesystem::exists(g_CommandLine.scriptName.c_str(), err))
     {
         Report::error(Fmt(Err(Fat0020), g_CommandLine.scriptName.c_str()));
         OS::exit(-1);

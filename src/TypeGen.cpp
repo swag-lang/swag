@@ -620,7 +620,7 @@ TypeGen::MapPerSeg& TypeGen::getMapPerSeg(DataSegment* segment)
     return *mapPerSegment[2 + segment->compilerThreadIdx];
 }
 
-bool TypeGen::genExportedStuct(JobContext* context, const auto& typeName, ExportedTypeInfo* exportedTypeInfoValue, TypeInfo* typeInfo, DataSegment* storageSegment, uint32_t storageOffset, uint32_t cflags)
+bool TypeGen::genExportedStuct(JobContext* context, const Utf8& typeName, ExportedTypeInfo* exportedTypeInfoValue, TypeInfo* typeInfo, DataSegment* storageSegment, uint32_t storageOffset, uint32_t cflags)
 {
     // If we are already waiting for a job to finish, then we must... wait, and not generate new jobs
     if (context->baseJob->waitingKind == JobWaitKind::GenExportedType && context->result != ContextResult::Done)

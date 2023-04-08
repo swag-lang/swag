@@ -48,7 +48,7 @@ struct TypeGen
     bool  genExportedAny(JobContext* context, struct ExportedAny* ptrAny, DataSegment* storageSegment, uint32_t storageOffset, ComputedValue& computedValue, TypeInfo* typeInfo, uint32_t cflags);
     bool  genExportedAttributes(JobContext* context, AttributeList& attributes, void* exportedTypeInfoValue, DataSegment* storageSegment, uint32_t storageOffset, SwagSlice* result, uint32_t cflags);
     bool  genExportedString(JobContext* context, SwagSlice* result, const Utf8& str, DataSegment* storageSegment, uint32_t offsetInBuffer);
-    bool  genExportedStuct(JobContext* context, const auto& typeName, ExportedTypeInfo* exportedTypeInfoValue, TypeInfo* typeInfo, DataSegment* storageSegment, uint32_t storageOffset, uint32_t cflags);
+    bool  genExportedStuct(JobContext* context, const Utf8& typeName, ExportedTypeInfo* exportedTypeInfoValue, TypeInfo* typeInfo, DataSegment* storageSegment, uint32_t storageOffset, uint32_t cflags);
 
     MapPerSeg& getMapPerSeg(DataSegment* segment);
     void       tableJobDone(TypeGenStructJob* job, DataSegment* segment);

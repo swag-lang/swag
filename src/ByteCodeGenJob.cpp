@@ -287,7 +287,11 @@ ByteCodeInstruction* ByteCodeGenJob::emitGetFromSeg(ByteCodeGenContext* context,
     return nullptr;
 }
 
+#ifdef __clang__
+ByteCodeInstruction* ByteCodeGenJob::emitInstruction(ByteCodeGenContext* context, ByteCodeOp op, uint32_t r0, uint32_t r1, uint32_t r2, uint32_t r3)
+#else
 ByteCodeInstruction* ByteCodeGenJob::emitInstruction(ByteCodeGenContext* context, ByteCodeOp op, uint32_t r0, uint32_t r1, uint32_t r2, uint32_t r3, const std::source_location location)
+#endif
 {
     AstNode* node = context->node;
     auto     bc   = context->bc;
@@ -340,8 +344,13 @@ ByteCodeInstruction* ByteCodeGenJob::emitInstruction(ByteCodeGenContext* context
     ins.node = context->forceNode ? context->forceNode : node;
 
 #if defined SWAG_DEV_MODE
-    ins.sourceFile            = location.file_name();
-    ins.sourceLine            = location.line();
+#ifndef __clang__
+    ins.sourceFile = location.file_name();
+    ins.sourceLine = location.line();
+#else
+    ins.sourceFile = "?";
+    ins.sourceLine = 0;
+#endif
     static atomic<int> serial = 0;
     ins.serial                = serial++;
     ins.treeNode              = 0;
