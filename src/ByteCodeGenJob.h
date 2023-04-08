@@ -228,11 +228,7 @@ struct ByteCodeGenJob : public Job
 
     static ByteCodeInstruction* emitMakeSegPointer(ByteCodeGenContext* context, DataSegment* storageSegment, uint32_t storageOffset, uint32_t r0);
     static ByteCodeInstruction* emitGetFromSeg(ByteCodeGenContext* context, DataSegment* storageSegment, uint32_t storageOffset, uint32_t r0);
-#ifdef __clang__
-    static ByteCodeInstruction* emitInstruction(ByteCodeGenContext* context, ByteCodeOp op, uint32_t r0 = 0, uint32_t r1 = 0, uint32_t r2 = 0, uint32_t r3 = 0);
-#else
-    static ByteCodeInstruction* emitInstruction(ByteCodeGenContext* context, ByteCodeOp op, uint32_t r0 = 0, uint32_t r1 = 0, uint32_t r2 = 0, uint32_t r3 = 0, const std::source_location location = std::source_location::current());
-#endif
+    static ByteCodeInstruction* emitInstruction(ByteCodeGenContext* context, ByteCodeOp op, uint32_t r0, uint32_t r1, uint32_t r2, uint32_t r3, const char* file, uint32_t line);
 
     static bool emitDefaultParamValue(ByteCodeGenContext* context, AstNode* param, RegisterList& regList);
     static void emitOpCallUser(ByteCodeGenContext* context, TypeInfoStruct* typeStruct, EmitOpUserKind kind, bool pushParam = true, uint32_t offset = 0, uint32_t numParams = 1);
@@ -465,3 +461,9 @@ struct ByteCodeGenJob : public Job
     AstNode* allParamsTmp = nullptr;
     Pass     pass         = Pass::Generate;
 };
+
+#define EMIT_INST0(__cxt, __op) emitInstruction(__cxt, __op, 0, 0, 0, 0, __FILE__, __LINE__)
+#define EMIT_INST1(__cxt, __op, __r0) emitInstruction(__cxt, __op, __r0, 0, 0, 0, __FILE__, __LINE__)
+#define EMIT_INST2(__cxt, __op, __r0, __r1) emitInstruction(__cxt, __op, __r0, __r1, 0, 0, __FILE__, __LINE__)
+#define EMIT_INST3(__cxt, __op, __r0, __r1, __r2) emitInstruction(__cxt, __op, __r0, __r1, __r2, 0, __FILE__, __LINE__)
+#define EMIT_INST4(__cxt, __op, __r0, __r1, __r2, __r3) emitInstruction(__cxt, __op, __r0, __r1, __r2, __r3, __FILE__, __LINE__)

@@ -87,7 +87,7 @@ bool ByteCodeGenJob::emitInRange(ByteCodeGenContext* context, AstNode* left, Ast
         SWAG_CHECK(emitCompareOpLowerEq(context, left, up, r0, up->resultRegisterRC, rb));
     }
 
-    emitInstruction(context, ByteCodeOp::CompareOpEqual8, ra, rb, r2);
+    EMIT_INST3(context, ByteCodeOp::CompareOpEqual8, ra, rb, r2);
 
     freeRegisterRC(context, ra);
     freeRegisterRC(context, rb);
@@ -128,7 +128,7 @@ bool ByteCodeGenJob::emitCompareOpPostSpecialFunc(ByteCodeGenContext* context, T
         case TokenId::SymLowerEqualGreater:
         {
             auto rt = reserveRegisterRC(context);
-            emitInstruction(context, ByteCodeOp::NegS32, rt, r2);
+            EMIT_INST2(context, ByteCodeOp::NegS32, rt, r2);
             freeRegisterRC(context, r2);
             node->resultRegisterRC = rt;
             break;
@@ -136,23 +136,23 @@ bool ByteCodeGenJob::emitCompareOpPostSpecialFunc(ByteCodeGenContext* context, T
         case TokenId::SymExclamEqual:
         {
             auto rt = reserveRegisterRC(context);
-            emitInstruction(context, ByteCodeOp::NegBool, rt, r2);
+            EMIT_INST2(context, ByteCodeOp::NegBool, rt, r2);
             freeRegisterRC(context, r2);
             node->resultRegisterRC = rt;
             break;
         }
 
         case TokenId::SymGreater:
-            emitInstruction(context, ByteCodeOp::LowerZeroToTrue, r2);
+            EMIT_INST1(context, ByteCodeOp::LowerZeroToTrue, r2);
             break;
         case TokenId::SymGreaterEqual:
-            emitInstruction(context, ByteCodeOp::LowerEqZeroToTrue, r2);
+            EMIT_INST1(context, ByteCodeOp::LowerEqZeroToTrue, r2);
             break;
         case TokenId::SymLower:
-            emitInstruction(context, ByteCodeOp::GreaterZeroToTrue, r2);
+            EMIT_INST1(context, ByteCodeOp::GreaterZeroToTrue, r2);
             break;
         case TokenId::SymLowerEqual:
-            emitInstruction(context, ByteCodeOp::GreaterEqZeroToTrue, r2);
+            EMIT_INST1(context, ByteCodeOp::GreaterEqZeroToTrue, r2);
             break;
         }
     }
@@ -163,22 +163,22 @@ bool ByteCodeGenJob::emitCompareOpPostSpecialFunc(ByteCodeGenContext* context, T
         case TokenId::SymExclamEqual:
         {
             auto rt = reserveRegisterRC(context);
-            emitInstruction(context, ByteCodeOp::NegBool, rt, r2);
+            EMIT_INST2(context, ByteCodeOp::NegBool, rt, r2);
             freeRegisterRC(context, r2);
             node->resultRegisterRC = rt;
             break;
         }
         case TokenId::SymLower:
-            emitInstruction(context, ByteCodeOp::LowerZeroToTrue, r2);
+            EMIT_INST1(context, ByteCodeOp::LowerZeroToTrue, r2);
             break;
         case TokenId::SymGreater:
-            emitInstruction(context, ByteCodeOp::GreaterZeroToTrue, r2);
+            EMIT_INST1(context, ByteCodeOp::GreaterZeroToTrue, r2);
             break;
         case TokenId::SymLowerEqual:
-            emitInstruction(context, ByteCodeOp::LowerEqZeroToTrue, r2);
+            EMIT_INST1(context, ByteCodeOp::LowerEqZeroToTrue, r2);
             break;
         case TokenId::SymGreaterEqual:
-            emitInstruction(context, ByteCodeOp::GreaterEqZeroToTrue, r2);
+            EMIT_INST1(context, ByteCodeOp::GreaterEqZeroToTrue, r2);
             break;
         }
     }
@@ -198,42 +198,42 @@ bool ByteCodeGenJob::emitCompareOpEqual(ByteCodeGenContext* context, AstNode* le
         case NativeTypeKind::Bool:
         case NativeTypeKind::S8:
         case NativeTypeKind::U8:
-            emitInstruction(context, ByteCodeOp::CompareOpEqual8, r0, r1, r2);
+            EMIT_INST3(context, ByteCodeOp::CompareOpEqual8, r0, r1, r2);
             return true;
         case NativeTypeKind::S16:
         case NativeTypeKind::U16:
-            emitInstruction(context, ByteCodeOp::CompareOpEqual16, r0, r1, r2);
+            EMIT_INST3(context, ByteCodeOp::CompareOpEqual16, r0, r1, r2);
             return true;
         case NativeTypeKind::S32:
         case NativeTypeKind::U32:
         case NativeTypeKind::Rune:
-            emitInstruction(context, ByteCodeOp::CompareOpEqual32, r0, r1, r2);
+            EMIT_INST3(context, ByteCodeOp::CompareOpEqual32, r0, r1, r2);
             return true;
         case NativeTypeKind::F32:
-            emitInstruction(context, ByteCodeOp::CompareOpEqualF32, r0, r1, r2);
+            EMIT_INST3(context, ByteCodeOp::CompareOpEqualF32, r0, r1, r2);
             return true;
         case NativeTypeKind::S64:
         case NativeTypeKind::U64:
-            emitInstruction(context, ByteCodeOp::CompareOpEqual64, r0, r1, r2);
+            EMIT_INST3(context, ByteCodeOp::CompareOpEqual64, r0, r1, r2);
             return true;
         case NativeTypeKind::F64:
-            emitInstruction(context, ByteCodeOp::CompareOpEqualF64, r0, r1, r2);
+            EMIT_INST3(context, ByteCodeOp::CompareOpEqualF64, r0, r1, r2);
             return true;
         case NativeTypeKind::String:
             if (right->semFlags & SEMFLAG_TYPE_IS_NULL)
             {
-                emitInstruction(context, ByteCodeOp::CompareOpEqual64, r0[0], r1[0], r2);
+                EMIT_INST3(context, ByteCodeOp::CompareOpEqual64, r0[0], r1[0], r2);
             }
             else
             {
-                emitInstruction(context, ByteCodeOp::CopyRBtoRA64, r2, r1[1]);
-                emitInstruction(context, ByteCodeOp::IntrinsicStringCmp, r0[0], r0[1], r1[0], r2);
+                EMIT_INST2(context, ByteCodeOp::CopyRBtoRA64, r2, r1[1]);
+                EMIT_INST4(context, ByteCodeOp::IntrinsicStringCmp, r0[0], r0[1], r1[0], r2);
             }
             return true;
         case NativeTypeKind::Any:
             if (right->semFlags & SEMFLAG_TYPE_IS_NULL)
             {
-                emitInstruction(context, ByteCodeOp::CompareOpEqual64, r0[0], r1[0], r2);
+                EMIT_INST3(context, ByteCodeOp::CompareOpEqual64, r0[0], r1[0], r2);
                 return true;
             }
         default:
@@ -248,50 +248,50 @@ bool ByteCodeGenJob::emitCompareOpEqual(ByteCodeGenContext* context, AstNode* le
         if (leftTypeInfo->isPointerToTypeInfo() || rightTypeInfo->isPointerToTypeInfo())
         {
             auto rflags = reserveRegisterRC(context);
-            auto inst   = emitInstruction(context, ByteCodeOp::SetImmediate32, rflags);
+            auto inst   = EMIT_INST1(context, ByteCodeOp::SetImmediate32, rflags);
             inst->b.u64 = SWAG_COMPARE_STRICT;
-            inst        = emitInstruction(context, ByteCodeOp::IntrinsicTypeCmp, r0, r1, rflags, r2);
+            inst        = EMIT_INST4(context, ByteCodeOp::IntrinsicTypeCmp, r0, r1, rflags, r2);
             freeRegisterRC(context, rflags);
         }
 
         // CString compare
         else if (leftTypeInfo->flags & TYPEINFO_C_STRING)
         {
-            emitInstruction(context, ByteCodeOp::IntrinsicStrCmp, r2, r0, r1);
-            emitInstruction(context, ByteCodeOp::ZeroToTrue, r2);
+            EMIT_INST3(context, ByteCodeOp::IntrinsicStrCmp, r2, r0, r1);
+            EMIT_INST1(context, ByteCodeOp::ZeroToTrue, r2);
         }
 
         // Simple pointer compare
         else
         {
-            emitInstruction(context, ByteCodeOp::CompareOpEqual64, r0, r1, r2);
+            EMIT_INST3(context, ByteCodeOp::CompareOpEqual64, r0, r1, r2);
         }
     }
     else if (leftTypeInfo->isClosure())
     {
-        emitInstruction(context, ByteCodeOp::DeRef64, r0, r0);
-        emitInstruction(context, ByteCodeOp::CompareOpEqual64, r0, r1, r2);
+        EMIT_INST2(context, ByteCodeOp::DeRef64, r0, r0);
+        EMIT_INST3(context, ByteCodeOp::CompareOpEqual64, r0, r1, r2);
     }
     else if (leftTypeInfo->isLambda())
     {
-        emitInstruction(context, ByteCodeOp::CompareOpEqual64, r0, r1, r2);
+        EMIT_INST3(context, ByteCodeOp::CompareOpEqual64, r0, r1, r2);
     }
     else if (leftTypeInfo->isInterface())
     {
         if (rightTypeInfo->isPointerNull() || right->semFlags & SEMFLAG_FROM_NULL)
-            emitInstruction(context, ByteCodeOp::CompareOpEqual64, r0[1], r1[1], r2);
+            EMIT_INST3(context, ByteCodeOp::CompareOpEqual64, r0[1], r1[1], r2);
         else
         {
             SWAG_ASSERT(rightTypeInfo->isInterface());
-            emitInstruction(context, ByteCodeOp::CompareOpEqual64, r0[0], r1[0], r2);
-            emitInstruction(context, ByteCodeOp::JumpIfFalse, r2)->b.u64 = 1;
-            emitInstruction(context, ByteCodeOp::CompareOpEqual64, r0[1], r1[1], r2);
+            EMIT_INST3(context, ByteCodeOp::CompareOpEqual64, r0[0], r1[0], r2);
+            EMIT_INST1(context, ByteCodeOp::JumpIfFalse, r2)->b.u64 = 1;
+            EMIT_INST3(context, ByteCodeOp::CompareOpEqual64, r0[1], r1[1], r2);
         }
     }
     else if (leftTypeInfo->isSlice())
     {
         // Just compare pointers. This is enough for now, as we can only compare a slice to 'null'
-        emitInstruction(context, ByteCodeOp::CompareOpEqual64, r0[1], r1[1], r2);
+        EMIT_INST3(context, ByteCodeOp::CompareOpEqual64, r0[1], r1[1], r2);
     }
     else
     {
@@ -313,45 +313,45 @@ bool ByteCodeGenJob::emitCompareOpNotEqual(ByteCodeGenContext* context, AstNode*
         case NativeTypeKind::Bool:
         case NativeTypeKind::S8:
         case NativeTypeKind::U8:
-            emitInstruction(context, ByteCodeOp::CompareOpNotEqual8, r0, r1, r2);
+            EMIT_INST3(context, ByteCodeOp::CompareOpNotEqual8, r0, r1, r2);
             return true;
         case NativeTypeKind::S16:
         case NativeTypeKind::U16:
-            emitInstruction(context, ByteCodeOp::CompareOpNotEqual16, r0, r1, r2);
+            EMIT_INST3(context, ByteCodeOp::CompareOpNotEqual16, r0, r1, r2);
             return true;
         case NativeTypeKind::S32:
         case NativeTypeKind::U32:
         case NativeTypeKind::Rune:
-            emitInstruction(context, ByteCodeOp::CompareOpNotEqual32, r0, r1, r2);
+            EMIT_INST3(context, ByteCodeOp::CompareOpNotEqual32, r0, r1, r2);
             return true;
         case NativeTypeKind::F32:
-            emitInstruction(context, ByteCodeOp::CompareOpNotEqualF32, r0, r1, r2);
+            EMIT_INST3(context, ByteCodeOp::CompareOpNotEqualF32, r0, r1, r2);
             return true;
         case NativeTypeKind::S64:
         case NativeTypeKind::U64:
-            emitInstruction(context, ByteCodeOp::CompareOpNotEqual64, r0, r1, r2);
+            EMIT_INST3(context, ByteCodeOp::CompareOpNotEqual64, r0, r1, r2);
             return true;
         case NativeTypeKind::F64:
-            emitInstruction(context, ByteCodeOp::CompareOpNotEqualF64, r0, r1, r2);
+            EMIT_INST3(context, ByteCodeOp::CompareOpNotEqualF64, r0, r1, r2);
             return true;
         case NativeTypeKind::String:
             if (right->semFlags & SEMFLAG_TYPE_IS_NULL)
             {
-                emitInstruction(context, ByteCodeOp::CompareOpNotEqual64, r0[0], r1[0], r2);
+                EMIT_INST3(context, ByteCodeOp::CompareOpNotEqual64, r0[0], r1[0], r2);
             }
             else
             {
                 auto rt = reserveRegisterRC(context);
-                emitInstruction(context, ByteCodeOp::CopyRBtoRA64, rt, r1[1]);
-                emitInstruction(context, ByteCodeOp::IntrinsicStringCmp, r0[0], r0[1], r1[0], rt);
-                emitInstruction(context, ByteCodeOp::NegBool, r2, rt);
+                EMIT_INST2(context, ByteCodeOp::CopyRBtoRA64, rt, r1[1]);
+                EMIT_INST4(context, ByteCodeOp::IntrinsicStringCmp, r0[0], r0[1], r1[0], rt);
+                EMIT_INST2(context, ByteCodeOp::NegBool, r2, rt);
                 freeRegisterRC(context, rt);
             }
             return true;
         case NativeTypeKind::Any:
             if (right->semFlags & SEMFLAG_TYPE_IS_NULL)
             {
-                emitInstruction(context, ByteCodeOp::CompareOpNotEqual64, r0[0], r1[0], r2);
+                EMIT_INST3(context, ByteCodeOp::CompareOpNotEqual64, r0[0], r1[0], r2);
                 return true;
             }
         default:
@@ -367,43 +367,43 @@ bool ByteCodeGenJob::emitCompareOpNotEqual(ByteCodeGenContext* context, AstNode*
         {
             auto rflags = reserveRegisterRC(context);
             auto rt     = reserveRegisterRC(context);
-            auto inst   = emitInstruction(context, ByteCodeOp::SetImmediate32, rflags);
+            auto inst   = EMIT_INST1(context, ByteCodeOp::SetImmediate32, rflags);
             inst->b.u64 = SWAG_COMPARE_STRICT;
-            inst        = emitInstruction(context, ByteCodeOp::IntrinsicTypeCmp, r0, r1, rflags, rt);
-            emitInstruction(context, ByteCodeOp::NegBool, r2, rt);
+            inst        = EMIT_INST4(context, ByteCodeOp::IntrinsicTypeCmp, r0, r1, rflags, rt);
+            EMIT_INST2(context, ByteCodeOp::NegBool, r2, rt);
             freeRegisterRC(context, rflags);
             freeRegisterRC(context, rt);
         }
 
         // Simple pointer compare
         else
-            emitInstruction(context, ByteCodeOp::CompareOpNotEqual64, r0, r1, r2);
+            EMIT_INST3(context, ByteCodeOp::CompareOpNotEqual64, r0, r1, r2);
     }
     else if (leftTypeInfo->isClosure())
     {
-        emitInstruction(context, ByteCodeOp::DeRef64, r0, r0);
-        emitInstruction(context, ByteCodeOp::CompareOpNotEqual64, r0, r1, r2);
+        EMIT_INST2(context, ByteCodeOp::DeRef64, r0, r0);
+        EMIT_INST3(context, ByteCodeOp::CompareOpNotEqual64, r0, r1, r2);
     }
     else if (leftTypeInfo->isLambda())
     {
-        emitInstruction(context, ByteCodeOp::CompareOpNotEqual64, r0, r1, r2);
+        EMIT_INST3(context, ByteCodeOp::CompareOpNotEqual64, r0, r1, r2);
     }
     else if (leftTypeInfo->isInterface())
     {
         if (rightTypeInfo->isPointerNull() || right->semFlags & SEMFLAG_FROM_NULL)
-            emitInstruction(context, ByteCodeOp::CompareOpNotEqual64, r0[1], r1[1], r2);
+            EMIT_INST3(context, ByteCodeOp::CompareOpNotEqual64, r0[1], r1[1], r2);
         else
         {
             SWAG_ASSERT(rightTypeInfo->isInterface());
-            emitInstruction(context, ByteCodeOp::CompareOpNotEqual64, r0[0], r1[0], r2);
-            emitInstruction(context, ByteCodeOp::JumpIfTrue, r2)->b.u64 = 1;
-            emitInstruction(context, ByteCodeOp::CompareOpNotEqual64, r0[1], r1[1], r2);
+            EMIT_INST3(context, ByteCodeOp::CompareOpNotEqual64, r0[0], r1[0], r2);
+            EMIT_INST1(context, ByteCodeOp::JumpIfTrue, r2)->b.u64 = 1;
+            EMIT_INST3(context, ByteCodeOp::CompareOpNotEqual64, r0[1], r1[1], r2);
         }
     }
     else if (leftTypeInfo->isSlice())
     {
         // Just compare pointers. This is enough for now, as we can only compare a slice to 'null'
-        emitInstruction(context, ByteCodeOp::CompareOpNotEqual64, r0[1], r1[1], r2);
+        EMIT_INST3(context, ByteCodeOp::CompareOpNotEqual64, r0[1], r1[1], r2);
     }
     else
     {
@@ -440,23 +440,23 @@ bool ByteCodeGenJob::emitCompareOp3Way(ByteCodeGenContext* context, uint32_t r0,
         switch (typeInfo->nativeType)
         {
         case NativeTypeKind::S32:
-            emitInstruction(context, ByteCodeOp::CompareOp3WayS32, r0, r1, r2);
+            EMIT_INST3(context, ByteCodeOp::CompareOp3WayS32, r0, r1, r2);
             return true;
         case NativeTypeKind::U32:
         case NativeTypeKind::Rune:
-            emitInstruction(context, ByteCodeOp::CompareOp3WayU32, r0, r1, r2);
+            EMIT_INST3(context, ByteCodeOp::CompareOp3WayU32, r0, r1, r2);
             return true;
         case NativeTypeKind::S64:
-            emitInstruction(context, ByteCodeOp::CompareOp3WayS64, r0, r1, r2);
+            EMIT_INST3(context, ByteCodeOp::CompareOp3WayS64, r0, r1, r2);
             return true;
         case NativeTypeKind::U64:
-            emitInstruction(context, ByteCodeOp::CompareOp3WayU64, r0, r1, r2);
+            EMIT_INST3(context, ByteCodeOp::CompareOp3WayU64, r0, r1, r2);
             return true;
         case NativeTypeKind::F32:
-            emitInstruction(context, ByteCodeOp::CompareOp3WayF32, r0, r1, r2);
+            EMIT_INST3(context, ByteCodeOp::CompareOp3WayF32, r0, r1, r2);
             return true;
         case NativeTypeKind::F64:
-            emitInstruction(context, ByteCodeOp::CompareOp3WayF64, r0, r1, r2);
+            EMIT_INST3(context, ByteCodeOp::CompareOp3WayF64, r0, r1, r2);
             return true;
         default:
             return Report::internalError(context->node, "emitCompareOp3Way, type not supported");
@@ -464,7 +464,7 @@ bool ByteCodeGenJob::emitCompareOp3Way(ByteCodeGenContext* context, uint32_t r0,
     }
     else if (typeInfo->isPointer())
     {
-        emitInstruction(context, ByteCodeOp::CompareOp3WayU64, r0, r1, r2);
+        EMIT_INST3(context, ByteCodeOp::CompareOp3WayU64, r0, r1, r2);
     }
     else
     {
@@ -482,23 +482,23 @@ bool ByteCodeGenJob::emitCompareOpLower(ByteCodeGenContext* context, AstNode* le
         switch (typeInfo->nativeType)
         {
         case NativeTypeKind::S32:
-            emitInstruction(context, ByteCodeOp::CompareOpLowerS32, r0, r1, r2);
+            EMIT_INST3(context, ByteCodeOp::CompareOpLowerS32, r0, r1, r2);
             return true;
         case NativeTypeKind::U32:
         case NativeTypeKind::Rune:
-            emitInstruction(context, ByteCodeOp::CompareOpLowerU32, r0, r1, r2);
+            EMIT_INST3(context, ByteCodeOp::CompareOpLowerU32, r0, r1, r2);
             return true;
         case NativeTypeKind::S64:
-            emitInstruction(context, ByteCodeOp::CompareOpLowerS64, r0, r1, r2);
+            EMIT_INST3(context, ByteCodeOp::CompareOpLowerS64, r0, r1, r2);
             return true;
         case NativeTypeKind::U64:
-            emitInstruction(context, ByteCodeOp::CompareOpLowerU64, r0, r1, r2);
+            EMIT_INST3(context, ByteCodeOp::CompareOpLowerU64, r0, r1, r2);
             return true;
         case NativeTypeKind::F32:
-            emitInstruction(context, ByteCodeOp::CompareOpLowerF32, r0, r1, r2);
+            EMIT_INST3(context, ByteCodeOp::CompareOpLowerF32, r0, r1, r2);
             return true;
         case NativeTypeKind::F64:
-            emitInstruction(context, ByteCodeOp::CompareOpLowerF64, r0, r1, r2);
+            EMIT_INST3(context, ByteCodeOp::CompareOpLowerF64, r0, r1, r2);
             return true;
         default:
             return Report::internalError(context->node, "emitCompareOpLower, type not supported");
@@ -506,7 +506,7 @@ bool ByteCodeGenJob::emitCompareOpLower(ByteCodeGenContext* context, AstNode* le
     }
     else if (typeInfo->isPointer())
     {
-        emitInstruction(context, ByteCodeOp::CompareOpLowerU64, r0, r1, r2);
+        EMIT_INST3(context, ByteCodeOp::CompareOpLowerU64, r0, r1, r2);
     }
     else
     {
@@ -533,23 +533,23 @@ bool ByteCodeGenJob::emitCompareOpLowerEq(ByteCodeGenContext* context, AstNode* 
         switch (typeInfo->nativeType)
         {
         case NativeTypeKind::S32:
-            emitInstruction(context, ByteCodeOp::CompareOpLowerEqS32, r0, r1, r2);
+            EMIT_INST3(context, ByteCodeOp::CompareOpLowerEqS32, r0, r1, r2);
             return true;
         case NativeTypeKind::U32:
         case NativeTypeKind::Rune:
-            emitInstruction(context, ByteCodeOp::CompareOpLowerEqU32, r0, r1, r2);
+            EMIT_INST3(context, ByteCodeOp::CompareOpLowerEqU32, r0, r1, r2);
             return true;
         case NativeTypeKind::S64:
-            emitInstruction(context, ByteCodeOp::CompareOpLowerEqS64, r0, r1, r2);
+            EMIT_INST3(context, ByteCodeOp::CompareOpLowerEqS64, r0, r1, r2);
             return true;
         case NativeTypeKind::U64:
-            emitInstruction(context, ByteCodeOp::CompareOpLowerEqU64, r0, r1, r2);
+            EMIT_INST3(context, ByteCodeOp::CompareOpLowerEqU64, r0, r1, r2);
             return true;
         case NativeTypeKind::F32:
-            emitInstruction(context, ByteCodeOp::CompareOpLowerEqF32, r0, r1, r2);
+            EMIT_INST3(context, ByteCodeOp::CompareOpLowerEqF32, r0, r1, r2);
             return true;
         case NativeTypeKind::F64:
-            emitInstruction(context, ByteCodeOp::CompareOpLowerEqF64, r0, r1, r2);
+            EMIT_INST3(context, ByteCodeOp::CompareOpLowerEqF64, r0, r1, r2);
             return true;
         default:
             return Report::internalError(context->node, "emitCompareOpLowerEq, type not supported");
@@ -557,7 +557,7 @@ bool ByteCodeGenJob::emitCompareOpLowerEq(ByteCodeGenContext* context, AstNode* 
     }
     else if (typeInfo->isPointer())
     {
-        emitInstruction(context, ByteCodeOp::CompareOpLowerEqU64, r0, r1, r2);
+        EMIT_INST3(context, ByteCodeOp::CompareOpLowerEqU64, r0, r1, r2);
     }
     else
     {
@@ -584,23 +584,23 @@ bool ByteCodeGenJob::emitCompareOpGreater(ByteCodeGenContext* context, AstNode* 
         switch (typeInfo->nativeType)
         {
         case NativeTypeKind::S32:
-            emitInstruction(context, ByteCodeOp::CompareOpGreaterS32, r0, r1, r2);
+            EMIT_INST3(context, ByteCodeOp::CompareOpGreaterS32, r0, r1, r2);
             return true;
         case NativeTypeKind::U32:
         case NativeTypeKind::Rune:
-            emitInstruction(context, ByteCodeOp::CompareOpGreaterU32, r0, r1, r2);
+            EMIT_INST3(context, ByteCodeOp::CompareOpGreaterU32, r0, r1, r2);
             return true;
         case NativeTypeKind::S64:
-            emitInstruction(context, ByteCodeOp::CompareOpGreaterS64, r0, r1, r2);
+            EMIT_INST3(context, ByteCodeOp::CompareOpGreaterS64, r0, r1, r2);
             return true;
         case NativeTypeKind::U64:
-            emitInstruction(context, ByteCodeOp::CompareOpGreaterU64, r0, r1, r2);
+            EMIT_INST3(context, ByteCodeOp::CompareOpGreaterU64, r0, r1, r2);
             return true;
         case NativeTypeKind::F32:
-            emitInstruction(context, ByteCodeOp::CompareOpGreaterF32, r0, r1, r2);
+            EMIT_INST3(context, ByteCodeOp::CompareOpGreaterF32, r0, r1, r2);
             return true;
         case NativeTypeKind::F64:
-            emitInstruction(context, ByteCodeOp::CompareOpGreaterF64, r0, r1, r2);
+            EMIT_INST3(context, ByteCodeOp::CompareOpGreaterF64, r0, r1, r2);
             return true;
         default:
             return Report::internalError(context->node, "emitCompareOpGreater, type not supported");
@@ -608,7 +608,7 @@ bool ByteCodeGenJob::emitCompareOpGreater(ByteCodeGenContext* context, AstNode* 
     }
     else if (typeInfo->isPointer())
     {
-        emitInstruction(context, ByteCodeOp::CompareOpGreaterU64, r0, r1, r2);
+        EMIT_INST3(context, ByteCodeOp::CompareOpGreaterU64, r0, r1, r2);
     }
     else
     {
@@ -635,23 +635,23 @@ bool ByteCodeGenJob::emitCompareOpGreaterEq(ByteCodeGenContext* context, AstNode
         switch (typeInfo->nativeType)
         {
         case NativeTypeKind::S32:
-            emitInstruction(context, ByteCodeOp::CompareOpGreaterEqS32, r0, r1, r2);
+            EMIT_INST3(context, ByteCodeOp::CompareOpGreaterEqS32, r0, r1, r2);
             return true;
         case NativeTypeKind::U32:
         case NativeTypeKind::Rune:
-            emitInstruction(context, ByteCodeOp::CompareOpGreaterEqU32, r0, r1, r2);
+            EMIT_INST3(context, ByteCodeOp::CompareOpGreaterEqU32, r0, r1, r2);
             return true;
         case NativeTypeKind::S64:
-            emitInstruction(context, ByteCodeOp::CompareOpGreaterEqS64, r0, r1, r2);
+            EMIT_INST3(context, ByteCodeOp::CompareOpGreaterEqS64, r0, r1, r2);
             return true;
         case NativeTypeKind::U64:
-            emitInstruction(context, ByteCodeOp::CompareOpGreaterEqU64, r0, r1, r2);
+            EMIT_INST3(context, ByteCodeOp::CompareOpGreaterEqU64, r0, r1, r2);
             return true;
         case NativeTypeKind::F32:
-            emitInstruction(context, ByteCodeOp::CompareOpGreaterEqF32, r0, r1, r2);
+            EMIT_INST3(context, ByteCodeOp::CompareOpGreaterEqF32, r0, r1, r2);
             return true;
         case NativeTypeKind::F64:
-            emitInstruction(context, ByteCodeOp::CompareOpGreaterEqF64, r0, r1, r2);
+            EMIT_INST3(context, ByteCodeOp::CompareOpGreaterEqF64, r0, r1, r2);
             return true;
         default:
             return Report::internalError(context->node, "emitCompareOpGreaterEq, type not supported");
@@ -659,7 +659,7 @@ bool ByteCodeGenJob::emitCompareOpGreaterEq(ByteCodeGenContext* context, AstNode
     }
     else if (typeInfo->isPointer())
     {
-        emitInstruction(context, ByteCodeOp::CompareOpGreaterEqU64, r0, r1, r2);
+        EMIT_INST3(context, ByteCodeOp::CompareOpGreaterEqU64, r0, r1, r2);
     }
     else
     {

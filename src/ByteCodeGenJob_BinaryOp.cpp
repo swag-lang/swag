@@ -14,23 +14,23 @@ bool ByteCodeGenJob::emitBinaryOpPlus(ByteCodeGenContext* context, TypeInfo* typ
         switch (typeInfo->nativeType)
         {
         case NativeTypeKind::S32:
-            emitInstruction(context, ByteCodeOp::BinOpPlusS32, r0, r1, r2);
+            EMIT_INST3(context, ByteCodeOp::BinOpPlusS32, r0, r1, r2);
             return true;
         case NativeTypeKind::U32:
         case NativeTypeKind::Rune:
-            emitInstruction(context, ByteCodeOp::BinOpPlusU32, r0, r1, r2);
+            EMIT_INST3(context, ByteCodeOp::BinOpPlusU32, r0, r1, r2);
             return true;
         case NativeTypeKind::S64:
-            emitInstruction(context, ByteCodeOp::BinOpPlusS64, r0, r1, r2);
+            EMIT_INST3(context, ByteCodeOp::BinOpPlusS64, r0, r1, r2);
             return true;
         case NativeTypeKind::U64:
-            emitInstruction(context, ByteCodeOp::BinOpPlusU64, r0, r1, r2);
+            EMIT_INST3(context, ByteCodeOp::BinOpPlusU64, r0, r1, r2);
             return true;
         case NativeTypeKind::F32:
-            emitInstruction(context, ByteCodeOp::BinOpPlusF32, r0, r1, r2);
+            EMIT_INST3(context, ByteCodeOp::BinOpPlusF32, r0, r1, r2);
             return true;
         case NativeTypeKind::F64:
-            emitInstruction(context, ByteCodeOp::BinOpPlusF64, r0, r1, r2);
+            EMIT_INST3(context, ByteCodeOp::BinOpPlusF64, r0, r1, r2);
             return true;
         default:
             return Report::internalError(context->node, "emitBinaryOpPlus, type not supported");
@@ -48,22 +48,22 @@ bool ByteCodeGenJob::emitBinaryOpPlus(ByteCodeGenContext* context, TypeInfo* typ
             // Be sure that the pointer is on the left side, because ptr = 1 + ptr is possible
             if (context->node->childs[0]->typeInfo->isPointer())
             {
-                emitInstruction(context, ByteCodeOp::CopyRBtoRA64, rt, r1);
-                emitInstruction(context, ByteCodeOp::Mul64byVB64, rt)->b.u64 = sizeOf;
-                emitInstruction(context, ByteCodeOp::IncPointer64, r0, rt, r2);
+                EMIT_INST2(context, ByteCodeOp::CopyRBtoRA64, rt, r1);
+                EMIT_INST1(context, ByteCodeOp::Mul64byVB64, rt)->b.u64 = sizeOf;
+                EMIT_INST3(context, ByteCodeOp::IncPointer64, r0, rt, r2);
             }
             else
             {
-                emitInstruction(context, ByteCodeOp::CopyRBtoRA64, rt, r0);
-                emitInstruction(context, ByteCodeOp::Mul64byVB64, rt)->b.u64 = sizeOf;
-                emitInstruction(context, ByteCodeOp::IncPointer64, r1, rt, r2);
+                EMIT_INST2(context, ByteCodeOp::CopyRBtoRA64, rt, r0);
+                EMIT_INST1(context, ByteCodeOp::Mul64byVB64, rt)->b.u64 = sizeOf;
+                EMIT_INST3(context, ByteCodeOp::IncPointer64, r1, rt, r2);
             }
 
             freeRegisterRC(context, rt);
         }
         else
         {
-            emitInstruction(context, ByteCodeOp::IncPointer64, r0, r1, r2);
+            EMIT_INST3(context, ByteCodeOp::IncPointer64, r0, r1, r2);
         }
 
         return true;
@@ -84,10 +84,10 @@ bool ByteCodeGenJob::emitBinaryOpMinus(ByteCodeGenContext* context, TypeInfo* ty
         if (rightTypeInfo->isPointer())
         {
             auto rightTypePointer = CastTypeInfo<TypeInfoPointer>(rightTypeInfo, TypeInfoKind::Pointer);
-            emitInstruction(context, ByteCodeOp::BinOpMinusS64, r0, r1, r2);
+            EMIT_INST3(context, ByteCodeOp::BinOpMinusS64, r0, r1, r2);
             auto sizeOf = rightTypePointer->pointedType->sizeOf;
             if (sizeOf > 1)
-                emitInstruction(context, ByteCodeOp::Div64byVB64, r2)->b.u64 = sizeOf;
+                EMIT_INST1(context, ByteCodeOp::Div64byVB64, r2)->b.u64 = sizeOf;
             return true;
         }
     }
@@ -97,23 +97,23 @@ bool ByteCodeGenJob::emitBinaryOpMinus(ByteCodeGenContext* context, TypeInfo* ty
         switch (typeInfo->nativeType)
         {
         case NativeTypeKind::S32:
-            emitInstruction(context, ByteCodeOp::BinOpMinusS32, r0, r1, r2);
+            EMIT_INST3(context, ByteCodeOp::BinOpMinusS32, r0, r1, r2);
             return true;
         case NativeTypeKind::U32:
         case NativeTypeKind::Rune:
-            emitInstruction(context, ByteCodeOp::BinOpMinusU32, r0, r1, r2);
+            EMIT_INST3(context, ByteCodeOp::BinOpMinusU32, r0, r1, r2);
             return true;
         case NativeTypeKind::S64:
-            emitInstruction(context, ByteCodeOp::BinOpMinusS64, r0, r1, r2);
+            EMIT_INST3(context, ByteCodeOp::BinOpMinusS64, r0, r1, r2);
             return true;
         case NativeTypeKind::U64:
-            emitInstruction(context, ByteCodeOp::BinOpMinusU64, r0, r1, r2);
+            EMIT_INST3(context, ByteCodeOp::BinOpMinusU64, r0, r1, r2);
             return true;
         case NativeTypeKind::F32:
-            emitInstruction(context, ByteCodeOp::BinOpMinusF32, r0, r1, r2);
+            EMIT_INST3(context, ByteCodeOp::BinOpMinusF32, r0, r1, r2);
             return true;
         case NativeTypeKind::F64:
-            emitInstruction(context, ByteCodeOp::BinOpMinusF64, r0, r1, r2);
+            EMIT_INST3(context, ByteCodeOp::BinOpMinusF64, r0, r1, r2);
             return true;
         default:
             return Report::internalError(context->node, "emitBinaryOpMinus, type not supported");
@@ -126,14 +126,14 @@ bool ByteCodeGenJob::emitBinaryOpMinus(ByteCodeGenContext* context, TypeInfo* ty
         if (sizeOf > 1)
         {
             auto rt = reserveRegisterRC(context);
-            emitInstruction(context, ByteCodeOp::CopyRBtoRA64, rt, r1);
-            emitInstruction(context, ByteCodeOp::Mul64byVB64, rt)->b.u64 = sizeOf;
-            emitInstruction(context, ByteCodeOp::DecPointer64, r0, rt, r2);
+            EMIT_INST2(context, ByteCodeOp::CopyRBtoRA64, rt, r1);
+            EMIT_INST1(context, ByteCodeOp::Mul64byVB64, rt)->b.u64 = sizeOf;
+            EMIT_INST3(context, ByteCodeOp::DecPointer64, r0, rt, r2);
             freeRegisterRC(context, rt);
         }
         else
         {
-            emitInstruction(context, ByteCodeOp::DecPointer64, r0, r1, r2);
+            EMIT_INST3(context, ByteCodeOp::DecPointer64, r0, r1, r2);
         }
 
         return true;
@@ -156,23 +156,23 @@ bool ByteCodeGenJob::emitBinaryOpMul(ByteCodeGenContext* context, TypeInfo* type
     switch (typeInfo->nativeType)
     {
     case NativeTypeKind::S32:
-        emitInstruction(context, ByteCodeOp::BinOpMulS32, r0, r1, r2);
+        EMIT_INST3(context, ByteCodeOp::BinOpMulS32, r0, r1, r2);
         return true;
     case NativeTypeKind::U32:
     case NativeTypeKind::Rune:
-        emitInstruction(context, ByteCodeOp::BinOpMulU32, r0, r1, r2);
+        EMIT_INST3(context, ByteCodeOp::BinOpMulU32, r0, r1, r2);
         return true;
     case NativeTypeKind::S64:
-        emitInstruction(context, ByteCodeOp::BinOpMulS64, r0, r1, r2);
+        EMIT_INST3(context, ByteCodeOp::BinOpMulS64, r0, r1, r2);
         return true;
     case NativeTypeKind::U64:
-        emitInstruction(context, ByteCodeOp::BinOpMulU64, r0, r1, r2);
+        EMIT_INST3(context, ByteCodeOp::BinOpMulU64, r0, r1, r2);
         return true;
     case NativeTypeKind::F32:
-        emitInstruction(context, ByteCodeOp::BinOpMulF32, r0, r1, r2);
+        EMIT_INST3(context, ByteCodeOp::BinOpMulF32, r0, r1, r2);
         return true;
     case NativeTypeKind::F64:
-        emitInstruction(context, ByteCodeOp::BinOpMulF64, r0, r1, r2);
+        EMIT_INST3(context, ByteCodeOp::BinOpMulF64, r0, r1, r2);
         return true;
     default:
         return Report::internalError(context->node, "emitBinaryOpMul, type not supported");
@@ -190,28 +190,28 @@ bool ByteCodeGenJob::emitBinaryOpDiv(ByteCodeGenContext* context, TypeInfo* type
     {
     case NativeTypeKind::S32:
         emitSafetyDivZero(context, r1, 32);
-        emitInstruction(context, ByteCodeOp::BinOpDivS32, r0, r1, r2);
+        EMIT_INST3(context, ByteCodeOp::BinOpDivS32, r0, r1, r2);
         return true;
     case NativeTypeKind::S64:
         emitSafetyDivZero(context, r1, 64);
-        emitInstruction(context, ByteCodeOp::BinOpDivS64, r0, r1, r2);
+        EMIT_INST3(context, ByteCodeOp::BinOpDivS64, r0, r1, r2);
         return true;
     case NativeTypeKind::U32:
     case NativeTypeKind::Rune:
         emitSafetyDivZero(context, r1, 32);
-        emitInstruction(context, ByteCodeOp::BinOpDivU32, r0, r1, r2);
+        EMIT_INST3(context, ByteCodeOp::BinOpDivU32, r0, r1, r2);
         return true;
     case NativeTypeKind::U64:
         emitSafetyDivZero(context, r1, 64);
-        emitInstruction(context, ByteCodeOp::BinOpDivU64, r0, r1, r2);
+        EMIT_INST3(context, ByteCodeOp::BinOpDivU64, r0, r1, r2);
         return true;
     case NativeTypeKind::F32:
         emitSafetyDivZero(context, r1, 32);
-        emitInstruction(context, ByteCodeOp::BinOpDivF32, r0, r1, r2);
+        EMIT_INST3(context, ByteCodeOp::BinOpDivF32, r0, r1, r2);
         return true;
     case NativeTypeKind::F64:
         emitSafetyDivZero(context, r1, 64);
-        emitInstruction(context, ByteCodeOp::BinOpDivF64, r0, r1, r2);
+        EMIT_INST3(context, ByteCodeOp::BinOpDivF64, r0, r1, r2);
         return true;
     default:
         return Report::internalError(context->node, "emitBinaryOpDiv, type not supported");
@@ -229,20 +229,20 @@ bool ByteCodeGenJob::emitBinaryOpModulo(ByteCodeGenContext* context, TypeInfo* t
     {
     case NativeTypeKind::S32:
         emitSafetyDivZero(context, r1, 32);
-        emitInstruction(context, ByteCodeOp::BinOpModuloS32, r0, r1, r2);
+        EMIT_INST3(context, ByteCodeOp::BinOpModuloS32, r0, r1, r2);
         return true;
     case NativeTypeKind::S64:
         emitSafetyDivZero(context, r1, 64);
-        emitInstruction(context, ByteCodeOp::BinOpModuloS64, r0, r1, r2);
+        EMIT_INST3(context, ByteCodeOp::BinOpModuloS64, r0, r1, r2);
         return true;
     case NativeTypeKind::U32:
     case NativeTypeKind::Rune:
         emitSafetyDivZero(context, r1, 32);
-        emitInstruction(context, ByteCodeOp::BinOpModuloU32, r0, r1, r2);
+        EMIT_INST3(context, ByteCodeOp::BinOpModuloU32, r0, r1, r2);
         return true;
     case NativeTypeKind::U64:
         emitSafetyDivZero(context, r1, 64);
-        emitInstruction(context, ByteCodeOp::BinOpModuloU64, r0, r1, r2);
+        EMIT_INST3(context, ByteCodeOp::BinOpModuloU64, r0, r1, r2);
         return true;
     default:
         return Report::internalError(context->node, "emitBinaryOpModulo, type not supported");
@@ -262,20 +262,20 @@ bool ByteCodeGenJob::emitBitmaskAnd(ByteCodeGenContext* context, TypeInfo* typeI
     case NativeTypeKind::S8:
     case NativeTypeKind::U8:
     case NativeTypeKind::Bool:
-        emitInstruction(context, ByteCodeOp::BinOpBitmaskAnd8, r0, r1, r2);
+        EMIT_INST3(context, ByteCodeOp::BinOpBitmaskAnd8, r0, r1, r2);
         return true;
     case NativeTypeKind::S16:
     case NativeTypeKind::U16:
-        emitInstruction(context, ByteCodeOp::BinOpBitmaskAnd16, r0, r1, r2);
+        EMIT_INST3(context, ByteCodeOp::BinOpBitmaskAnd16, r0, r1, r2);
         return true;
     case NativeTypeKind::S32:
     case NativeTypeKind::U32:
     case NativeTypeKind::Rune:
-        emitInstruction(context, ByteCodeOp::BinOpBitmaskAnd32, r0, r1, r2);
+        EMIT_INST3(context, ByteCodeOp::BinOpBitmaskAnd32, r0, r1, r2);
         return true;
     case NativeTypeKind::S64:
     case NativeTypeKind::U64:
-        emitInstruction(context, ByteCodeOp::BinOpBitmaskAnd64, r0, r1, r2);
+        EMIT_INST3(context, ByteCodeOp::BinOpBitmaskAnd64, r0, r1, r2);
         return true;
     default:
         return Report::internalError(context->node, "emitBitmaskAnd, type not supported");
@@ -294,20 +294,20 @@ bool ByteCodeGenJob::emitBitmaskOr(ByteCodeGenContext* context, TypeInfo* typeIn
     case NativeTypeKind::S8:
     case NativeTypeKind::U8:
     case NativeTypeKind::Bool:
-        emitInstruction(context, ByteCodeOp::BinOpBitmaskOr8, r0, r1, r2);
+        EMIT_INST3(context, ByteCodeOp::BinOpBitmaskOr8, r0, r1, r2);
         return true;
     case NativeTypeKind::S16:
     case NativeTypeKind::U16:
-        emitInstruction(context, ByteCodeOp::BinOpBitmaskOr16, r0, r1, r2);
+        EMIT_INST3(context, ByteCodeOp::BinOpBitmaskOr16, r0, r1, r2);
         return true;
     case NativeTypeKind::S32:
     case NativeTypeKind::U32:
     case NativeTypeKind::Rune:
-        emitInstruction(context, ByteCodeOp::BinOpBitmaskOr32, r0, r1, r2);
+        EMIT_INST3(context, ByteCodeOp::BinOpBitmaskOr32, r0, r1, r2);
         return true;
     case NativeTypeKind::S64:
     case NativeTypeKind::U64:
-        emitInstruction(context, ByteCodeOp::BinOpBitmaskOr64, r0, r1, r2);
+        EMIT_INST3(context, ByteCodeOp::BinOpBitmaskOr64, r0, r1, r2);
         return true;
     default:
         return Report::internalError(context->node, "emitBitmaskOr, type not supported");
@@ -331,32 +331,32 @@ bool ByteCodeGenJob::emitShiftLeft(ByteCodeGenContext* context, TypeInfo* typeIn
     switch (typeInfo->nativeType)
     {
     case NativeTypeKind::S8:
-        emitInstruction(context, ByteCodeOp::BinOpShiftLeftS8, r0, r1, r2)->flags |= shiftFlags;
+        EMIT_INST3(context, ByteCodeOp::BinOpShiftLeftS8, r0, r1, r2)->flags |= shiftFlags;
         return true;
     case NativeTypeKind::U8:
-        emitInstruction(context, ByteCodeOp::BinOpShiftLeftU8, r0, r1, r2)->flags |= shiftFlags;
+        EMIT_INST3(context, ByteCodeOp::BinOpShiftLeftU8, r0, r1, r2)->flags |= shiftFlags;
         return true;
 
     case NativeTypeKind::S16:
-        emitInstruction(context, ByteCodeOp::BinOpShiftLeftS16, r0, r1, r2)->flags |= shiftFlags;
+        EMIT_INST3(context, ByteCodeOp::BinOpShiftLeftS16, r0, r1, r2)->flags |= shiftFlags;
         return true;
     case NativeTypeKind::U16:
-        emitInstruction(context, ByteCodeOp::BinOpShiftLeftU16, r0, r1, r2)->flags |= shiftFlags;
+        EMIT_INST3(context, ByteCodeOp::BinOpShiftLeftU16, r0, r1, r2)->flags |= shiftFlags;
         return true;
 
     case NativeTypeKind::S32:
-        emitInstruction(context, ByteCodeOp::BinOpShiftLeftS32, r0, r1, r2)->flags |= shiftFlags;
+        EMIT_INST3(context, ByteCodeOp::BinOpShiftLeftS32, r0, r1, r2)->flags |= shiftFlags;
         return true;
     case NativeTypeKind::U32:
     case NativeTypeKind::Rune:
-        emitInstruction(context, ByteCodeOp::BinOpShiftLeftU32, r0, r1, r2)->flags |= shiftFlags;
+        EMIT_INST3(context, ByteCodeOp::BinOpShiftLeftU32, r0, r1, r2)->flags |= shiftFlags;
         return true;
 
     case NativeTypeKind::S64:
-        emitInstruction(context, ByteCodeOp::BinOpShiftLeftS64, r0, r1, r2)->flags |= shiftFlags;
+        EMIT_INST3(context, ByteCodeOp::BinOpShiftLeftS64, r0, r1, r2)->flags |= shiftFlags;
         return true;
     case NativeTypeKind::U64:
-        emitInstruction(context, ByteCodeOp::BinOpShiftLeftU64, r0, r1, r2)->flags |= shiftFlags;
+        EMIT_INST3(context, ByteCodeOp::BinOpShiftLeftU64, r0, r1, r2)->flags |= shiftFlags;
         return true;
     default:
         return Report::internalError(context->node, "emitShiftLeft, type not supported");
@@ -380,30 +380,30 @@ bool ByteCodeGenJob::emitShiftRight(ByteCodeGenContext* context, TypeInfo* typeI
     switch (typeInfo->nativeType)
     {
     case NativeTypeKind::S8:
-        emitInstruction(context, ByteCodeOp::BinOpShiftRightS8, r0, r1, r2)->flags |= shiftFlags;
+        EMIT_INST3(context, ByteCodeOp::BinOpShiftRightS8, r0, r1, r2)->flags |= shiftFlags;
         return true;
     case NativeTypeKind::S16:
-        emitInstruction(context, ByteCodeOp::BinOpShiftRightS16, r0, r1, r2)->flags |= shiftFlags;
+        EMIT_INST3(context, ByteCodeOp::BinOpShiftRightS16, r0, r1, r2)->flags |= shiftFlags;
         return true;
     case NativeTypeKind::S32:
-        emitInstruction(context, ByteCodeOp::BinOpShiftRightS32, r0, r1, r2)->flags |= shiftFlags;
+        EMIT_INST3(context, ByteCodeOp::BinOpShiftRightS32, r0, r1, r2)->flags |= shiftFlags;
         return true;
     case NativeTypeKind::S64:
-        emitInstruction(context, ByteCodeOp::BinOpShiftRightS64, r0, r1, r2)->flags |= shiftFlags;
+        EMIT_INST3(context, ByteCodeOp::BinOpShiftRightS64, r0, r1, r2)->flags |= shiftFlags;
         return true;
 
     case NativeTypeKind::U8:
-        emitInstruction(context, ByteCodeOp::BinOpShiftRightU8, r0, r1, r2)->flags |= shiftFlags;
+        EMIT_INST3(context, ByteCodeOp::BinOpShiftRightU8, r0, r1, r2)->flags |= shiftFlags;
         return true;
     case NativeTypeKind::U16:
-        emitInstruction(context, ByteCodeOp::BinOpShiftRightU16, r0, r1, r2)->flags |= shiftFlags;
+        EMIT_INST3(context, ByteCodeOp::BinOpShiftRightU16, r0, r1, r2)->flags |= shiftFlags;
         return true;
     case NativeTypeKind::U32:
     case NativeTypeKind::Rune:
-        emitInstruction(context, ByteCodeOp::BinOpShiftRightU32, r0, r1, r2)->flags |= shiftFlags;
+        EMIT_INST3(context, ByteCodeOp::BinOpShiftRightU32, r0, r1, r2)->flags |= shiftFlags;
         return true;
     case NativeTypeKind::U64:
-        emitInstruction(context, ByteCodeOp::BinOpShiftRightU64, r0, r1, r2)->flags |= shiftFlags;
+        EMIT_INST3(context, ByteCodeOp::BinOpShiftRightU64, r0, r1, r2)->flags |= shiftFlags;
         return true;
     default:
         return Report::internalError(context->node, "emitShiftRight, type not supported");
@@ -422,20 +422,20 @@ bool ByteCodeGenJob::emitXor(ByteCodeGenContext* context, TypeInfo* typeInfoExpr
     case NativeTypeKind::Bool:
     case NativeTypeKind::S8:
     case NativeTypeKind::U8:
-        emitInstruction(context, ByteCodeOp::BinOpXorU8, r0, r1, r2);
+        EMIT_INST3(context, ByteCodeOp::BinOpXorU8, r0, r1, r2);
         return true;
     case NativeTypeKind::S16:
     case NativeTypeKind::U16:
-        emitInstruction(context, ByteCodeOp::BinOpXorU16, r0, r1, r2);
+        EMIT_INST3(context, ByteCodeOp::BinOpXorU16, r0, r1, r2);
         return true;
     case NativeTypeKind::S32:
     case NativeTypeKind::U32:
     case NativeTypeKind::Rune:
-        emitInstruction(context, ByteCodeOp::BinOpXorU32, r0, r1, r2);
+        EMIT_INST3(context, ByteCodeOp::BinOpXorU32, r0, r1, r2);
         return true;
     case NativeTypeKind::S64:
     case NativeTypeKind::U64:
-        emitInstruction(context, ByteCodeOp::BinOpXorU64, r0, r1, r2);
+        EMIT_INST3(context, ByteCodeOp::BinOpXorU64, r0, r1, r2);
         return true;
     default:
         return Report::internalError(context->node, "emitXor, type not supported");
@@ -483,11 +483,11 @@ bool ByteCodeGenJob::emitLogicalAndAfterLeft(ByteCodeGenContext* context)
         }
     }
 
-    emitInstruction(context, ByteCodeOp::CopyRBtoRA64, left->extMisc()->additionalRegisterRC, left->resultRegisterRC);
+    EMIT_INST2(context, ByteCodeOp::CopyRBtoRA64, left->extMisc()->additionalRegisterRC, left->resultRegisterRC);
 
     // Short cut. Will just after the right expression in the the left expression is false. A and B => do not evaluate B
     binNode->seekJumpExpression = context->bc->numInstructions;
-    emitInstruction(context, ByteCodeOp::JumpIfFalse, left->extMisc()->additionalRegisterRC);
+    EMIT_INST1(context, ByteCodeOp::JumpIfFalse, left->extMisc()->additionalRegisterRC);
     return true;
 }
 
@@ -499,7 +499,7 @@ bool ByteCodeGenJob::emitLogicalAnd(ByteCodeGenContext* context, uint32_t r0, ui
     // expression on the left is true because of the shortcut
     // Se we just need to propagate the result
     if (r2 != r1)
-        emitInstruction(context, ByteCodeOp::CopyRBtoRA64, r2, r1);
+        EMIT_INST2(context, ByteCodeOp::CopyRBtoRA64, r2, r1);
 
     // And we update the shortcut jump after the 'right' side of the expression
     auto inst   = &context->bc->out[node->seekJumpExpression];
@@ -541,11 +541,11 @@ bool ByteCodeGenJob::emitLogicalOrAfterLeft(ByteCodeGenContext* context)
         }
     }
 
-    emitInstruction(context, ByteCodeOp::CopyRBtoRA64, left->extMisc()->additionalRegisterRC, left->resultRegisterRC);
+    EMIT_INST2(context, ByteCodeOp::CopyRBtoRA64, left->extMisc()->additionalRegisterRC, left->resultRegisterRC);
 
     // Short cut. Will just after the right expression in the the left expression is true. A or B => do not evaluate B
     binNode->seekJumpExpression = context->bc->numInstructions;
-    emitInstruction(context, ByteCodeOp::JumpIfTrue, left->resultRegisterRC);
+    EMIT_INST1(context, ByteCodeOp::JumpIfTrue, left->resultRegisterRC);
     return true;
 }
 
@@ -553,7 +553,7 @@ bool ByteCodeGenJob::emitLogicalOr(ByteCodeGenContext* context, uint32_t r0, uin
 {
     auto node = CastAst<AstBinaryOpNode>(context->node, AstNodeKind::BinaryOp);
     if (r2 != r1)
-        emitInstruction(context, ByteCodeOp::CopyRBtoRA64, r2, r1);
+        EMIT_INST2(context, ByteCodeOp::CopyRBtoRA64, r2, r1);
     auto inst   = &context->bc->out[node->seekJumpExpression];
     inst->b.s32 = context->bc->numInstructions - node->seekJumpExpression - 1;
     return true;
@@ -598,10 +598,10 @@ bool ByteCodeGenJob::emitBinaryOp(ByteCodeGenContext* context)
             switch (typeInfo->nativeType)
             {
             case NativeTypeKind::F32:
-                emitInstruction(context, ByteCodeOp::BinOpMulAddF32, front->childs[0]->resultRegisterRC, front->childs[1]->resultRegisterRC, node->childs[1]->resultRegisterRC, node->resultRegisterRC);
+                EMIT_INST4(context, ByteCodeOp::BinOpMulAddF32, front->childs[0]->resultRegisterRC, front->childs[1]->resultRegisterRC, node->childs[1]->resultRegisterRC, node->resultRegisterRC);
                 break;
             case NativeTypeKind::F64:
-                emitInstruction(context, ByteCodeOp::BinOpMulAddF64, front->childs[0]->resultRegisterRC, front->childs[1]->resultRegisterRC, node->childs[1]->resultRegisterRC, node->resultRegisterRC);
+                EMIT_INST4(context, ByteCodeOp::BinOpMulAddF64, front->childs[0]->resultRegisterRC, front->childs[1]->resultRegisterRC, node->childs[1]->resultRegisterRC, node->resultRegisterRC);
                 break;
             default:
                 return Report::internalError(context->node, "emitBinaryOpPlus, muladd, type not supported");

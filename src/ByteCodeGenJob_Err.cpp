@@ -10,7 +10,7 @@ bool ByteCodeGenJob::emitGetErr(ByteCodeGenContext* context)
 {
     auto node = context->node;
     reserveRegisterRC(context, node->resultRegisterRC, 2);
-    emitInstruction(context, ByteCodeOp::IntrinsicGetErr, node->resultRegisterRC[0], node->resultRegisterRC[1]);
+    EMIT_INST2(context, ByteCodeOp::IntrinsicGetErr, node->resultRegisterRC[0], node->resultRegisterRC[1]);
     return true;
 }
 
@@ -19,7 +19,7 @@ bool ByteCodeGenJob::emitInitStackTrace(ByteCodeGenContext* context)
     if (context->sourceFile->module->buildCfg.stackTrace)
     {
         PushICFlags ic(context, BCI_TRYCATCH);
-        emitInstruction(context, ByteCodeOp::InternalInitStackTrace);
+        EMIT_INST0(context, ByteCodeOp::InternalInitStackTrace);
     }
 
     return true;
@@ -32,7 +32,7 @@ bool ByteCodeGenJob::emitTryThrowExit(ByteCodeGenContext* context, AstNode* from
     // Push current error context in case the leave scope triggers some errors too
     if (!(context->node->semFlags & SEMFLAG_STACK_TRACE))
     {
-        emitInstruction(context, ByteCodeOp::InternalPushErr);
+        EMIT_INST0(context, ByteCodeOp::InternalPushErr);
         context->node->semFlags |= SEMFLAG_STACK_TRACE;
         context->tryCatchScope++;
     }
@@ -47,7 +47,7 @@ bool ByteCodeGenJob::emitTryThrowExit(ByteCodeGenContext* context, AstNode* from
     {
         SWAG_ASSERT(context->tryCatchScope);
         context->tryCatchScope--;
-        emitInstruction(context, ByteCodeOp::InternalPopErr);
+        EMIT_INST0(context, ByteCodeOp::InternalPopErr);
 
         if (context->sourceFile->module->buildCfg.stackTrace)
         {
@@ -56,7 +56,7 @@ bool ByteCodeGenJob::emitTryThrowExit(ByteCodeGenContext* context, AstNode* from
             DataSegment* storageSegment;
             computeSourceLocation(context, context->node, &storageOffset, &storageSegment);
             emitMakeSegPointer(context, storageSegment, storageOffset, r0);
-            emitInstruction(context, ByteCodeOp::InternalStackTrace, r0);
+            EMIT_INST1(context, ByteCodeOp::InternalStackTrace, r0);
             freeRegisterRC(context, r0);
         }
 
@@ -79,7 +79,7 @@ bool ByteCodeGenJob::emitTryThrowExit(ByteCodeGenContext* context, AstNode* from
             else if (!(context->node->semFlags & SEMFLAG_TRY_2))
             {
                 reserveRegisterRC(context, node->regInit, 1);
-                emitInstruction(context, ByteCodeOp::CopyRRtoRC, node->regInit);
+                EMIT_INST1(context, ByteCodeOp::CopyRRtoRC, node->regInit);
                 context->node->semFlags |= SEMFLAG_TRY_2;
             }
 
@@ -99,13 +99,13 @@ bool ByteCodeGenJob::emitTryThrowExit(ByteCodeGenContext* context, AstNode* from
             {
                 if (node->ownerInline)
                 {
-                    emitInstruction(context, ByteCodeOp::SetZeroAtPointerX, node->ownerInline->resultRegisterRC)->b.u64 = typeArr->sizeOf;
+                    EMIT_INST1(context, ByteCodeOp::SetZeroAtPointerX, node->ownerInline->resultRegisterRC)->b.u64 = typeArr->sizeOf;
                 }
                 else
                 {
                     auto r0 = reserveRegisterRC(context);
-                    emitInstruction(context, ByteCodeOp::CopyRRtoRC, r0);
-                    emitInstruction(context, ByteCodeOp::SetZeroAtPointerX, r0)->b.u64 = typeArr->sizeOf;
+                    EMIT_INST1(context, ByteCodeOp::CopyRRtoRC, r0);
+                    EMIT_INST1(context, ByteCodeOp::SetZeroAtPointerX, r0)->b.u64 = typeArr->sizeOf;
                     freeRegisterRC(context, r0);
                 }
             }
@@ -115,9 +115,9 @@ bool ByteCodeGenJob::emitTryThrowExit(ByteCodeGenContext* context, AstNode* from
                 {
                     reserveRegisterRC(context, node->regInit, 1);
                     if (node->ownerInline)
-                        emitInstruction(context, ByteCodeOp::CopyRBtoRA64, node->regInit, node->ownerInline->resultRegisterRC);
+                        EMIT_INST2(context, ByteCodeOp::CopyRBtoRA64, node->regInit, node->ownerInline->resultRegisterRC);
                     else
-                        emitInstruction(context, ByteCodeOp::CopyRRtoRC, node->regInit);
+                        EMIT_INST1(context, ByteCodeOp::CopyRRtoRC, node->regInit);
                     context->node->semFlags |= SEMFLAG_TRY_2;
                 }
 
@@ -134,13 +134,13 @@ bool ByteCodeGenJob::emitTryThrowExit(ByteCodeGenContext* context, AstNode* from
         {
             if (node->ownerInline)
             {
-                emitInstruction(context, ByteCodeOp::ClearRA, node->ownerInline->resultRegisterRC[0]);
+                EMIT_INST1(context, ByteCodeOp::ClearRA, node->ownerInline->resultRegisterRC[0]);
             }
             else
             {
                 auto r0 = reserveRegisterRC(context);
-                emitInstruction(context, ByteCodeOp::ClearRA, r0);
-                emitInstruction(context, ByteCodeOp::CopyRCtoRR, r0);
+                EMIT_INST1(context, ByteCodeOp::ClearRA, r0);
+                EMIT_INST1(context, ByteCodeOp::CopyRCtoRR, r0);
                 freeRegisterRC(context, r0);
             }
         }
@@ -148,14 +148,14 @@ bool ByteCodeGenJob::emitTryThrowExit(ByteCodeGenContext* context, AstNode* from
         {
             if (node->ownerInline)
             {
-                emitInstruction(context, ByteCodeOp::ClearRA, node->ownerInline->resultRegisterRC[0]);
-                emitInstruction(context, ByteCodeOp::ClearRA, node->ownerInline->resultRegisterRC[1]);
+                EMIT_INST1(context, ByteCodeOp::ClearRA, node->ownerInline->resultRegisterRC[0]);
+                EMIT_INST1(context, ByteCodeOp::ClearRA, node->ownerInline->resultRegisterRC[1]);
             }
             else
             {
                 auto r0 = reserveRegisterRC(context);
-                emitInstruction(context, ByteCodeOp::ClearRA, r0);
-                emitInstruction(context, ByteCodeOp::CopyRCtoRR2, r0, r0);
+                EMIT_INST1(context, ByteCodeOp::ClearRA, r0);
+                EMIT_INST2(context, ByteCodeOp::CopyRCtoRR2, r0, r0);
                 freeRegisterRC(context, r0);
             }
         }
@@ -169,12 +169,12 @@ bool ByteCodeGenJob::emitTryThrowExit(ByteCodeGenContext* context, AstNode* from
     if (node->ownerInline)
     {
         node->seekJump = context->bc->numInstructions;
-        emitInstruction(context, ByteCodeOp::Jump);
+        EMIT_INST0(context, ByteCodeOp::Jump);
         node->ownerInline->returnList.push_back(node);
     }
     else
     {
-        emitInstruction(context, ByteCodeOp::Ret)->a.u32 = node->ownerFct->stackSize;
+        EMIT_INST0(context, ByteCodeOp::Ret)->a.u32 = node->ownerFct->stackSize;
     }
 
     return true;
@@ -197,7 +197,7 @@ bool ByteCodeGenJob::emitThrow(ByteCodeGenContext* context)
 
     if (!(node->semFlags & SEMFLAG_TRY_1))
     {
-        emitInstruction(context, ByteCodeOp::InternalSetErr, expr->resultRegisterRC[0], expr->resultRegisterRC[1]);
+        EMIT_INST2(context, ByteCodeOp::InternalSetErr, expr->resultRegisterRC[0], expr->resultRegisterRC[1]);
         node->semFlags |= SEMFLAG_TRY_1;
     }
 
@@ -211,9 +211,9 @@ bool ByteCodeGenJob::emitThrow(ByteCodeGenContext* context)
 
         auto r1 = reserveRegisterRC(context);
         if (context->sourceFile->module->buildCfg.stackTrace)
-            emitInstruction(context, ByteCodeOp::InternalInitStackTrace);
+            EMIT_INST0(context, ByteCodeOp::InternalInitStackTrace);
         emitMakeSegPointer(context, storageSegment, storageOffset, r1);
-        emitInstruction(context, ByteCodeOp::IntrinsicPanic, expr->resultRegisterRC[0], expr->resultRegisterRC[1], r1);
+        EMIT_INST3(context, ByteCodeOp::IntrinsicPanic, expr->resultRegisterRC[0], expr->resultRegisterRC[1], r1);
         freeRegisterRC(context, expr->resultRegisterRC);
         freeRegisterRC(context, r1);
     }
@@ -248,9 +248,9 @@ bool ByteCodeGenJob::emitTry(ByteCodeGenContext* context)
     {
         SWAG_ASSERT(node->ownerFct->registerGetContext != UINT32_MAX);
         auto r0 = reserveRegisterRC(context);
-        emitInstruction(context, ByteCodeOp::InternalHasErr, r0, node->ownerFct->registerGetContext);
+        EMIT_INST2(context, ByteCodeOp::InternalHasErr, r0, node->ownerFct->registerGetContext);
         tryNode->seekInsideJump = context->bc->numInstructions;
-        emitInstruction(context, ByteCodeOp::JumpIfZero32, r0);
+        EMIT_INST1(context, ByteCodeOp::JumpIfZero32, r0);
         freeRegisterRC(context, r0);
         node->semFlags |= SEMFLAG_TRY_1;
     }
@@ -273,9 +273,9 @@ bool ByteCodeGenJob::emitTryCatch(ByteCodeGenContext* context)
     {
         SWAG_ASSERT(node->ownerFct->registerGetContext != UINT32_MAX);
         auto r0 = reserveRegisterRC(context);
-        emitInstruction(context, ByteCodeOp::InternalHasErr, r0, node->ownerFct->registerGetContext);
+        EMIT_INST2(context, ByteCodeOp::InternalHasErr, r0, node->ownerFct->registerGetContext);
         tryNode->seekInsideJump = context->bc->numInstructions;
-        emitInstruction(context, ByteCodeOp::JumpIfZero32, r0);
+        EMIT_INST1(context, ByteCodeOp::JumpIfZero32, r0);
         freeRegisterRC(context, r0);
         node->semFlags |= SEMFLAG_TRY_1;
     }
@@ -300,9 +300,9 @@ bool ByteCodeGenJob::emitAssume(ByteCodeGenContext* context)
 
     RegisterList r0;
     reserveRegisterRC(context, r0, 2);
-    emitInstruction(context, ByteCodeOp::IntrinsicGetErr, r0[0], r0[1]);
+    EMIT_INST2(context, ByteCodeOp::IntrinsicGetErr, r0[0], r0[1]);
     assumeNode->seekInsideJump = context->bc->numInstructions;
-    emitInstruction(context, ByteCodeOp::JumpIfZero64, r0[1]);
+    EMIT_INST1(context, ByteCodeOp::JumpIfZero64, r0[1]);
 
     uint32_t     storageOffset;
     DataSegment* storageSegment;
@@ -310,7 +310,7 @@ bool ByteCodeGenJob::emitAssume(ByteCodeGenContext* context)
 
     auto r1 = reserveRegisterRC(context);
     emitMakeSegPointer(context, storageSegment, storageOffset, r1);
-    emitInstruction(context, ByteCodeOp::IntrinsicPanic, r0[0], r0[1], r1);
+    EMIT_INST3(context, ByteCodeOp::IntrinsicPanic, r0[0], r0[1], r1);
     freeRegisterRC(context, r0);
     freeRegisterRC(context, r1);
 

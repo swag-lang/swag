@@ -22,7 +22,7 @@ bool ByteCodeGenJob::emitInlineBefore(ByteCodeGenContext* context)
     if (node->func->typeInfo->flags & TYPEINFO_CAN_THROW)
     {
         SWAG_ASSERT(node->ownerFct->registerGetContext != UINT32_MAX);
-        emitInstruction(context, ByteCodeOp::InternalClearErr, node->ownerFct->registerGetContext);
+        EMIT_INST1(context, ByteCodeOp::InternalClearErr, node->ownerFct->registerGetContext);
     }
 
     // Reserve registers for return value
@@ -34,7 +34,7 @@ bool ByteCodeGenJob::emitInlineBefore(ByteCodeGenContext* context)
     // not the top for speed, but anyway there's room for improvement for inline in all cases.
     if (returnType->flags & TYPEINFO_RETURN_BY_COPY)
     {
-        auto inst   = emitInstruction(context, ByteCodeOp::MakeStackPointer, node->resultRegisterRC);
+        auto inst   = EMIT_INST1(context, ByteCodeOp::MakeStackPointer, node->resultRegisterRC);
         inst->b.u64 = node->computedValue->storageOffset;
         node->ownerScope->symTable.addVarToDrop(nullptr, returnType, node->computedValue->storageOffset);
     }
@@ -316,7 +316,7 @@ bool ByteCodeGenJob::emitIfAfterExpr(ByteCodeGenContext* context)
         return true;
 
     ifNode->seekJumpExpression = context->bc->numInstructions;
-    emitInstruction(context, ByteCodeOp::JumpIfFalse, node->resultRegisterRC);
+    EMIT_INST1(context, ByteCodeOp::JumpIfFalse, node->resultRegisterRC);
     freeRegisterRC(context, node);
     return true;
 }
@@ -334,7 +334,7 @@ bool ByteCodeGenJob::emitIfAfterIf(ByteCodeGenContext* context)
     auto         ifNode     = CastAst<AstIf>(node->parent, AstNodeKind::If);
     ifNode->seekJumpAfterIf = context->bc->numInstructions;
     if (ifNode->elseBlock)
-        emitInstruction(context, ByteCodeOp::Jump);
+        EMIT_INST0(context, ByteCodeOp::Jump);
 
     return true;
 }
@@ -414,12 +414,12 @@ bool ByteCodeGenJob::emitLoopBeforeBlock(ByteCodeGenContext* context)
     loopNode->registerIndex = reserveRegisterRC(context);
     loopNode->breakableFlags |= BREAKABLE_NEED_INDEX;
 
-    emitInstruction(context, ByteCodeOp::SetImmediate64, loopNode->registerIndex)->b.s64 = -1;
+    EMIT_INST1(context, ByteCodeOp::SetImmediate64, loopNode->registerIndex)->b.s64 = -1;
 
     loopNode->seekJumpBeforeExpression = context->bc->numInstructions;
     loopNode->seekJumpBeforeContinue   = loopNode->seekJumpBeforeExpression;
 
-    emitInstruction(context, ByteCodeOp::IncrementRA64, loopNode->registerIndex);
+    EMIT_INST1(context, ByteCodeOp::IncrementRA64, loopNode->registerIndex);
 
     return true;
 }
@@ -451,14 +451,14 @@ bool ByteCodeGenJob::emitLoopAfterExpr(ByteCodeGenContext* context)
     // Normal loop
     if (loopNode->expression->kind != AstNodeKind::Range)
     {
-        emitInstruction(context, ByteCodeOp::SetImmediate64, loopNode->registerIndex)->b.s64 = -1;
+        EMIT_INST1(context, ByteCodeOp::SetImmediate64, loopNode->registerIndex)->b.s64 = -1;
 
         loopNode->seekJumpBeforeExpression = context->bc->numInstructions;
         loopNode->seekJumpBeforeContinue   = loopNode->seekJumpBeforeExpression;
-        emitInstruction(context, ByteCodeOp::IncrementRA64, loopNode->registerIndex);
+        EMIT_INST1(context, ByteCodeOp::IncrementRA64, loopNode->registerIndex);
         loopNode->seekJumpExpression = context->bc->numInstructions;
 
-        auto inst = emitInstruction(context, ByteCodeOp::JumpIfEqual64, loopNode->registerIndex, 0, node->resultRegisterRC);
+        auto inst = EMIT_INST3(context, ByteCodeOp::JumpIfEqual64, loopNode->registerIndex, 0, node->resultRegisterRC);
         if (loopNode->expression->flags & AST_VALUE_COMPUTED)
         {
             inst->c.u64 = loopNode->expression->computedValue->reg.u64;
@@ -480,16 +480,16 @@ bool ByteCodeGenJob::emitLoopAfterExpr(ByteCodeGenContext* context)
 
         if (increment)
         {
-            auto inst   = emitInstruction(context, ByteCodeOp::SetImmediate64, loopNode->registerIndex);
+            auto inst   = EMIT_INST1(context, ByteCodeOp::SetImmediate64, loopNode->registerIndex);
             inst->b.u64 = rangeNode->expressionLow->computedValue->reg.u64 - 1;
 
             loopNode->seekJumpBeforeExpression = context->bc->numInstructions;
             loopNode->seekJumpBeforeContinue   = loopNode->seekJumpBeforeExpression;
 
-            emitInstruction(context, ByteCodeOp::IncrementRA64, loopNode->registerIndex);
+            EMIT_INST1(context, ByteCodeOp::IncrementRA64, loopNode->registerIndex);
             loopNode->seekJumpExpression = context->bc->numInstructions;
 
-            inst        = emitInstruction(context, ByteCodeOp::JumpIfEqual64, loopNode->registerIndex);
+            inst        = EMIT_INST1(context, ByteCodeOp::JumpIfEqual64, loopNode->registerIndex);
             inst->c.u64 = rangeNode->expressionUp->computedValue->reg.u64;
             if (!(rangeNode->specFlags & AstRange::SPECFLAG_EXCLUDE_UP))
                 inst->c.u64++;
@@ -498,16 +498,16 @@ bool ByteCodeGenJob::emitLoopAfterExpr(ByteCodeGenContext* context)
         }
         else
         {
-            auto inst   = emitInstruction(context, ByteCodeOp::SetImmediate64, loopNode->registerIndex);
+            auto inst   = EMIT_INST1(context, ByteCodeOp::SetImmediate64, loopNode->registerIndex);
             inst->b.u64 = rangeNode->expressionLow->computedValue->reg.u64 + 1;
 
             loopNode->seekJumpBeforeExpression = context->bc->numInstructions;
             loopNode->seekJumpBeforeContinue   = loopNode->seekJumpBeforeExpression;
 
-            emitInstruction(context, ByteCodeOp::DecrementRA64, loopNode->registerIndex);
+            EMIT_INST1(context, ByteCodeOp::DecrementRA64, loopNode->registerIndex);
             loopNode->seekJumpExpression = context->bc->numInstructions;
 
-            inst        = emitInstruction(context, ByteCodeOp::JumpIfEqual64, loopNode->registerIndex);
+            inst        = EMIT_INST1(context, ByteCodeOp::JumpIfEqual64, loopNode->registerIndex);
             inst->c.u64 = rangeNode->expressionUp->computedValue->reg.u64;
             if (!(rangeNode->specFlags & AstRange::SPECFLAG_EXCLUDE_UP))
                 inst->c.u64--;
@@ -521,21 +521,21 @@ bool ByteCodeGenJob::emitLoopAfterExpr(ByteCodeGenContext* context)
     loopNode->breakableFlags |= BREAKABLE_NEED_INDEX1;
 
     // registerIndex1 contains the increment to the index (-1 or 1)
-    emitInstruction(context, ByteCodeOp::SetImmediate64, loopNode->registerIndex1)->b.s64 = 1;
-    emitInstruction(context, ByteCodeOp::JumpIfLowerEqS64, rangeNode->expressionLow->resultRegisterRC, 1, rangeNode->expressionUp->resultRegisterRC);
-    emitInstruction(context, ByteCodeOp::SetImmediate64, loopNode->registerIndex1)->b.s64 = -1;
+    EMIT_INST1(context, ByteCodeOp::SetImmediate64, loopNode->registerIndex1)->b.s64 = 1;
+    EMIT_INST3(context, ByteCodeOp::JumpIfLowerEqS64, rangeNode->expressionLow->resultRegisterRC, 1, rangeNode->expressionUp->resultRegisterRC);
+    EMIT_INST1(context, ByteCodeOp::SetImmediate64, loopNode->registerIndex1)->b.s64 = -1;
 
     if (rangeNode->specFlags & AstRange::SPECFLAG_EXCLUDE_UP)
-        emitInstruction(context, ByteCodeOp::BinOpMinusS64, rangeNode->expressionUp->resultRegisterRC, loopNode->registerIndex1, rangeNode->expressionUp->resultRegisterRC);
+        EMIT_INST3(context, ByteCodeOp::BinOpMinusS64, rangeNode->expressionUp->resultRegisterRC, loopNode->registerIndex1, rangeNode->expressionUp->resultRegisterRC);
 
-    emitInstruction(context, ByteCodeOp::CopyRBtoRA64, loopNode->registerIndex, rangeNode->expressionLow->resultRegisterRC);
-    emitInstruction(context, ByteCodeOp::BinOpMinusS64, loopNode->registerIndex, loopNode->registerIndex1, loopNode->registerIndex);
+    EMIT_INST2(context, ByteCodeOp::CopyRBtoRA64, loopNode->registerIndex, rangeNode->expressionLow->resultRegisterRC);
+    EMIT_INST3(context, ByteCodeOp::BinOpMinusS64, loopNode->registerIndex, loopNode->registerIndex1, loopNode->registerIndex);
 
     loopNode->seekJumpBeforeExpression = context->bc->numInstructions;
     loopNode->seekJumpBeforeContinue   = loopNode->seekJumpBeforeExpression;
     loopNode->seekJumpExpression       = context->bc->numInstructions;
-    emitInstruction(context, ByteCodeOp::JumpIfEqual64, loopNode->registerIndex, 0, rangeNode->expressionUp->resultRegisterRC);
-    emitInstruction(context, ByteCodeOp::BinOpPlusS64, loopNode->registerIndex, loopNode->registerIndex1, loopNode->registerIndex);
+    EMIT_INST3(context, ByteCodeOp::JumpIfEqual64, loopNode->registerIndex, 0, rangeNode->expressionUp->resultRegisterRC);
+    EMIT_INST3(context, ByteCodeOp::BinOpPlusS64, loopNode->registerIndex, loopNode->registerIndex1, loopNode->registerIndex);
     return true;
 }
 
@@ -560,7 +560,7 @@ bool ByteCodeGenJob::emitLoopAfterBlock(ByteCodeGenContext* context)
 
     if (node->parent->kind != AstNodeKind::ScopeBreakable)
     {
-        auto inst   = emitInstruction(context, ByteCodeOp::Jump);
+        auto inst   = EMIT_INST0(context, ByteCodeOp::Jump);
         auto diff   = loopNode->seekJumpBeforeContinue - context->bc->numInstructions;
         inst->b.s32 = diff;
     }
@@ -595,7 +595,7 @@ bool ByteCodeGenJob::emitWhileBeforeExpr(ByteCodeGenContext* context)
     if (whileNode->needIndex())
     {
         whileNode->registerIndex = reserveRegisterRC(context);
-        auto inst                = emitInstruction(context, ByteCodeOp::SetImmediate64, whileNode->registerIndex);
+        auto inst                = EMIT_INST1(context, ByteCodeOp::SetImmediate64, whileNode->registerIndex);
         inst->b.s64              = -1;
     }
 
@@ -612,11 +612,11 @@ bool ByteCodeGenJob::emitWhileAfterExpr(ByteCodeGenContext* context)
 
     auto whileNode                = CastAst<AstWhile>(node->parent, AstNodeKind::While);
     whileNode->seekJumpExpression = context->bc->numInstructions;
-    emitInstruction(context, ByteCodeOp::JumpIfFalse, node->resultRegisterRC);
+    EMIT_INST1(context, ByteCodeOp::JumpIfFalse, node->resultRegisterRC);
 
     // Increment the index
     if (whileNode->needIndex())
-        emitInstruction(context, ByteCodeOp::IncrementRA64, whileNode->registerIndex);
+        EMIT_INST1(context, ByteCodeOp::IncrementRA64, whileNode->registerIndex);
 
     return true;
 }
@@ -640,7 +640,7 @@ bool ByteCodeGenJob::emitForAfterExpr(ByteCodeGenContext* context)
     auto forNode = CastAst<AstFor>(node->parent, AstNodeKind::For);
 
     forNode->seekJumpExpression = context->bc->numInstructions;
-    emitInstruction(context, ByteCodeOp::JumpIfFalse, node->resultRegisterRC);
+    EMIT_INST1(context, ByteCodeOp::JumpIfFalse, node->resultRegisterRC);
 
     return true;
 }
@@ -654,12 +654,12 @@ bool ByteCodeGenJob::emitForBeforePost(ByteCodeGenContext* context)
     if (forNode->needIndex())
     {
         forNode->registerIndex = reserveRegisterRC(context);
-        emitInstruction(context, ByteCodeOp::ClearRA, forNode->registerIndex);
+        EMIT_INST1(context, ByteCodeOp::ClearRA, forNode->registerIndex);
     }
 
     // Jump to the test expression
     forNode->seekJumpToExpression = context->bc->numInstructions;
-    emitInstruction(context, ByteCodeOp::Jump);
+    EMIT_INST0(context, ByteCodeOp::Jump);
 
     // This is the start of the post statement
     forNode->seekJumpBeforeExpression = context->bc->numInstructions;
@@ -667,7 +667,7 @@ bool ByteCodeGenJob::emitForBeforePost(ByteCodeGenContext* context)
 
     // Increment the index
     if (forNode->needIndex())
-        emitInstruction(context, ByteCodeOp::IncrementRA64, forNode->registerIndex);
+        EMIT_INST1(context, ByteCodeOp::IncrementRA64, forNode->registerIndex);
 
     return true;
 }
@@ -716,11 +716,11 @@ bool ByteCodeGenJob::emitBeforeSwitch(ByteCodeGenContext* context)
     auto switchNode = CastAst<AstSwitch>(node, AstNodeKind::Switch);
 
     // Jump to the first case
-    emitInstruction(context, ByteCodeOp::Jump)->b.s32 = 1;
+    EMIT_INST0(context, ByteCodeOp::Jump)->b.s32 = 1;
 
     // Jump to exit the switch
     switchNode->seekJumpExpression = context->bc->numInstructions;
-    emitInstruction(context, ByteCodeOp::Jump);
+    EMIT_INST0(context, ByteCodeOp::Jump);
     return true;
 }
 
@@ -730,11 +730,11 @@ bool ByteCodeGenJob::emitSwitchAfterExpr(ByteCodeGenContext* context)
     auto switchNode = CastAst<AstSwitch>(node->parent, AstNodeKind::Switch);
 
     // Jump to the first case
-    emitInstruction(context, ByteCodeOp::Jump)->b.s32 = 1;
+    EMIT_INST0(context, ByteCodeOp::Jump)->b.s32 = 1;
 
     // Jump to exit the switch
     switchNode->seekJumpExpression = context->bc->numInstructions;
-    emitInstruction(context, ByteCodeOp::Jump);
+    EMIT_INST0(context, ByteCodeOp::Jump);
     return true;
 }
 
@@ -803,7 +803,7 @@ bool ByteCodeGenJob::emitSwitchCaseBeforeBlock(ByteCodeGenContext* context)
                 }
 
                 allJumps.push_back(context->bc->numInstructions);
-                auto inst   = emitInstruction(context, ByteCodeOp::JumpIfTrue, r0);
+                auto inst   = EMIT_INST1(context, ByteCodeOp::JumpIfTrue, r0);
                 inst->b.u64 = context->bc->numInstructions; // Remember start of the jump, to compute the relative offset
                 freeRegisterRC(context, r0);
             }
@@ -815,7 +815,7 @@ bool ByteCodeGenJob::emitSwitchCaseBeforeBlock(ByteCodeGenContext* context)
             for (auto expr : caseNode->expressions)
             {
                 allJumps.push_back(context->bc->numInstructions);
-                auto inst   = emitInstruction(context, ByteCodeOp::JumpIfTrue, expr->resultRegisterRC);
+                auto inst   = EMIT_INST1(context, ByteCodeOp::JumpIfTrue, expr->resultRegisterRC);
                 inst->b.u64 = context->bc->numInstructions; // Remember start of the jump, to compute the relative offset
             }
         }
@@ -825,7 +825,7 @@ bool ByteCodeGenJob::emitSwitchCaseBeforeBlock(ByteCodeGenContext* context)
 
         // Jump to the next case, except for the default, which is the last
         blockNode->seekJumpNextCase = context->bc->numInstructions;
-        emitInstruction(context, ByteCodeOp::Jump);
+        EMIT_INST0(context, ByteCodeOp::Jump);
 
         // Save start of the case
         blockNode->seekStart = context->bc->numInstructions;
@@ -859,7 +859,7 @@ bool ByteCodeGenJob::emitSwitchCaseAfterBlock(ByteCodeGenContext* context)
 
     // Jump to exit the switch
     context->setNoLocation();
-    auto inst   = emitInstruction(context, ByteCodeOp::Jump);
+    auto inst   = EMIT_INST0(context, ByteCodeOp::Jump);
     inst->b.s32 = blockNode->ownerCase->ownerSwitch->seekJumpExpression - context->bc->numInstructions;
     context->restoreNoLocation();
 
@@ -884,7 +884,7 @@ bool ByteCodeGenJob::emitFallThrough(ByteCodeGenContext* context)
 
     emitDebugLine(context);
     fallNode->jumpInstruction = context->bc->numInstructions;
-    emitInstruction(context, ByteCodeOp::Jump);
+    EMIT_INST0(context, ByteCodeOp::Jump);
     return true;
 }
 
@@ -903,7 +903,7 @@ bool ByteCodeGenJob::emitBreak(ByteCodeGenContext* context)
 
     emitDebugLine(context);
     breakNode->jumpInstruction = context->bc->numInstructions;
-    emitInstruction(context, ByteCodeOp::Jump);
+    EMIT_INST0(context, ByteCodeOp::Jump);
     return true;
 }
 
@@ -922,7 +922,7 @@ bool ByteCodeGenJob::emitContinue(ByteCodeGenContext* context)
 
     emitDebugLine(context);
     continueNode->jumpInstruction = context->bc->numInstructions;
-    emitInstruction(context, ByteCodeOp::Jump);
+    EMIT_INST0(context, ByteCodeOp::Jump);
     return true;
 }
 
@@ -935,7 +935,7 @@ bool ByteCodeGenJob::emitIndex(ByteCodeGenContext* context)
     while (ownerBreakable && !(ownerBreakable->breakableFlags & BREAKABLE_CAN_HAVE_INDEX))
         ownerBreakable = ownerBreakable->ownerBreakable;
     SWAG_ASSERT(ownerBreakable);
-    emitInstruction(context, ByteCodeOp::CopyRBtoRA64, node->resultRegisterRC, ownerBreakable->registerIndex);
+    EMIT_INST2(context, ByteCodeOp::CopyRBtoRA64, node->resultRegisterRC, ownerBreakable->registerIndex);
     return true;
 }
 
@@ -985,9 +985,9 @@ bool ByteCodeGenJob::emitLeaveScopeDrop(ByteCodeGenContext* context, Scope* scop
             if (typeArray->totalCount == 1)
             {
                 RegisterList r1   = reserveRegisterRC(context);
-                auto         inst = emitInstruction(context, ByteCodeOp::MakeStackPointer, r1);
+                auto         inst = EMIT_INST1(context, ByteCodeOp::MakeStackPointer, r1);
                 inst->b.u64       = one.storageOffset;
-                emitInstruction(context, ByteCodeOp::PushRAParam, r1);
+                EMIT_INST1(context, ByteCodeOp::PushRAParam, r1);
                 emitOpCallUser(context, one.typeStruct->opUserDropFct, one.typeStruct->opDrop, false);
                 freeRegisterRC(context, r1);
             }
@@ -997,21 +997,21 @@ bool ByteCodeGenJob::emitLeaveScopeDrop(ByteCodeGenContext* context, Scope* scop
                 RegisterList r0 = reserveRegisterRC(context);
                 RegisterList r1 = reserveRegisterRC(context);
 
-                emitInstruction(context, ByteCodeOp::SetImmediate64, r0[0])->b.u64 = typeArray->totalCount;
+                EMIT_INST1(context, ByteCodeOp::SetImmediate64, r0[0])->b.u64 = typeArray->totalCount;
 
-                auto inst     = emitInstruction(context, ByteCodeOp::MakeStackPointer, r1);
+                auto inst     = EMIT_INST1(context, ByteCodeOp::MakeStackPointer, r1);
                 inst->b.u64   = one.storageOffset;
                 auto seekJump = context->bc->numInstructions;
 
-                emitInstruction(context, ByteCodeOp::PushRAParam, r1);
+                EMIT_INST1(context, ByteCodeOp::PushRAParam, r1);
                 emitOpCallUser(context, one.typeStruct->opUserDropFct, one.typeStruct->opDrop, false);
 
-                inst        = emitInstruction(context, ByteCodeOp::IncPointer64, r1, 0, r1);
+                inst        = EMIT_INST3(context, ByteCodeOp::IncPointer64, r1, 0, r1);
                 inst->b.u64 = one.typeStruct->sizeOf;
                 inst->flags |= BCI_IMM_B;
 
-                emitInstruction(context, ByteCodeOp::DecrementRA64, r0[0]);
-                emitInstruction(context, ByteCodeOp::JumpIfNotZero64, r0[0])->b.s32 = seekJump - context->bc->numInstructions - 1;
+                EMIT_INST1(context, ByteCodeOp::DecrementRA64, r0[0]);
+                EMIT_INST1(context, ByteCodeOp::JumpIfNotZero64, r0[0])->b.s32 = seekJump - context->bc->numInstructions - 1;
 
                 freeRegisterRC(context, r0);
                 freeRegisterRC(context, r1);
@@ -1020,9 +1020,9 @@ bool ByteCodeGenJob::emitLeaveScopeDrop(ByteCodeGenContext* context, Scope* scop
         else
         {
             auto r0     = reserveRegisterRC(context);
-            auto inst   = emitInstruction(context, ByteCodeOp::MakeStackPointer, r0);
+            auto inst   = EMIT_INST1(context, ByteCodeOp::MakeStackPointer, r0);
             inst->b.u64 = one.storageOffset;
-            emitInstruction(context, ByteCodeOp::PushRAParam, r0);
+            EMIT_INST1(context, ByteCodeOp::PushRAParam, r0);
             emitOpCallUser(context, one.typeStruct->opUserDropFct, one.typeStruct->opDrop, false);
             freeRegisterRC(context, r0);
         }

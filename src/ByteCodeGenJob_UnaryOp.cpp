@@ -18,16 +18,16 @@ bool ByteCodeGenJob::emitUnaryOpMinus(ByteCodeGenContext* context, TypeInfo* typ
     case NativeTypeKind::S8:
     case NativeTypeKind::S16:
     case NativeTypeKind::S32:
-        emitInstruction(context, ByteCodeOp::NegS32, rt, r0);
+        EMIT_INST2(context, ByteCodeOp::NegS32, rt, r0);
         return true;
     case NativeTypeKind::S64:
-        emitInstruction(context, ByteCodeOp::NegS64, rt, r0);
+        EMIT_INST2(context, ByteCodeOp::NegS64, rt, r0);
         return true;
     case NativeTypeKind::F32:
-        emitInstruction(context, ByteCodeOp::NegF32, rt, r0);
+        EMIT_INST2(context, ByteCodeOp::NegF32, rt, r0);
         return true;
     case NativeTypeKind::F64:
-        emitInstruction(context, ByteCodeOp::NegF64, rt, r0);
+        EMIT_INST2(context, ByteCodeOp::NegF64, rt, r0);
         return true;
     default:
         return Report::internalError(context->node, "emitUnaryOpMinus, type not supported");
@@ -44,19 +44,19 @@ bool ByteCodeGenJob::emitUnaryOpInvert(ByteCodeGenContext* context, TypeInfo* ty
     {
     case NativeTypeKind::S8:
     case NativeTypeKind::U8:
-        emitInstruction(context, ByteCodeOp::InvertU8, rt, r0);
+        EMIT_INST2(context, ByteCodeOp::InvertU8, rt, r0);
         return true;
     case NativeTypeKind::S16:
     case NativeTypeKind::U16:
-        emitInstruction(context, ByteCodeOp::InvertU16, rt, r0);
+        EMIT_INST2(context, ByteCodeOp::InvertU16, rt, r0);
         return true;
     case NativeTypeKind::S32:
     case NativeTypeKind::U32:
-        emitInstruction(context, ByteCodeOp::InvertU32, rt, r0);
+        EMIT_INST2(context, ByteCodeOp::InvertU32, rt, r0);
         return true;
     case NativeTypeKind::S64:
     case NativeTypeKind::U64:
-        emitInstruction(context, ByteCodeOp::InvertU64, rt, r0);
+        EMIT_INST2(context, ByteCodeOp::InvertU64, rt, r0);
         return true;
     default:
         return Report::internalError(context->node, "emitUnaryOpInvert, type not supported");
@@ -90,7 +90,7 @@ bool ByteCodeGenJob::emitUnaryOp(ByteCodeGenContext* context)
                 SWAG_CHECK(emitCast(context, node, front->typeInfo, front->castedTypeInfo));
                 SWAG_ASSERT(context->result == ContextResult::Done);
                 auto rt = reserveRegisterRC(context);
-                emitInstruction(context, ByteCodeOp::NegBool, rt, node->resultRegisterRC);
+                EMIT_INST2(context, ByteCodeOp::NegBool, rt, node->resultRegisterRC);
                 freeRegisterRC(context, node->resultRegisterRC);
                 node->resultRegisterRC = rt;
                 break;

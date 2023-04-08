@@ -126,9 +126,9 @@ void ByteCodeGenJob::transformResultToLinear2(ByteCodeGenContext* context, Regis
     {
         RegisterList r0;
         reserveLinearRegisterRC2(context, r0);
-        emitInstruction(context, ByteCodeOp::CopyRBtoRA64, r0[0], resultRegisterRC[0])->flags |= BCI_UNPURE;
+        EMIT_INST2(context, ByteCodeOp::CopyRBtoRA64, r0[0], resultRegisterRC[0])->flags |= BCI_UNPURE;
         if (!onlyOne)
-            emitInstruction(context, ByteCodeOp::CopyRBtoRA64, r0[1], resultRegisterRC[1])->flags |= BCI_UNPURE;
+            EMIT_INST2(context, ByteCodeOp::CopyRBtoRA64, r0[1], resultRegisterRC[1])->flags |= BCI_UNPURE;
         freeRegisterRC(context, resultRegisterRC);
         resultRegisterRC = r0;
     }
@@ -181,7 +181,7 @@ void ByteCodeGenJob::ensureCanBeChangedRC(ByteCodeGenContext* context, RegisterL
         RegisterList re;
         reserveRegisterRC(context, re, r0.size());
         for (int i = 0; i < r0.size(); i++)
-            emitInstruction(context, ByteCodeOp::CopyRBtoRA64, re[i], r0[i]);
+            EMIT_INST2(context, ByteCodeOp::CopyRBtoRA64, re[i], r0[i]);
         freeRegisterRC(context, r0);
         r0 = re;
     }
@@ -236,7 +236,7 @@ void ByteCodeGenJob::emitDebugLine(ByteCodeGenContext* context)
         context->sourceFile->module->buildCfg.byteCodeOptimizeLevel == 0 &&
         !context->sourceFile->isScriptFile)
     {
-        emitInstruction(context, ByteCodeOp::DebugNop);
+        EMIT_INST0(context, ByteCodeOp::DebugNop);
     }
 }
 
@@ -255,13 +255,13 @@ ByteCodeInstruction* ByteCodeGenJob::emitMakeSegPointer(ByteCodeGenContext* cont
     switch (storageSegment->kind)
     {
     case SegmentKind::Data:
-        return emitInstruction(context, ByteCodeOp::MakeMutableSegPointer, r0, storageOffset);
+        return EMIT_INST2(context, ByteCodeOp::MakeMutableSegPointer, r0, storageOffset);
     case SegmentKind::Bss:
-        return emitInstruction(context, ByteCodeOp::MakeBssSegPointer, r0, storageOffset);
+        return EMIT_INST2(context, ByteCodeOp::MakeBssSegPointer, r0, storageOffset);
     case SegmentKind::Compiler:
-        return emitInstruction(context, ByteCodeOp::MakeCompilerSegPointer, r0, storageOffset);
+        return EMIT_INST2(context, ByteCodeOp::MakeCompilerSegPointer, r0, storageOffset);
     case SegmentKind::Constant:
-        return emitInstruction(context, ByteCodeOp::MakeConstantSegPointer, r0, storageOffset);
+        return EMIT_INST2(context, ByteCodeOp::MakeConstantSegPointer, r0, storageOffset);
     default:
         SWAG_ASSERT(false);
     }
@@ -275,11 +275,11 @@ ByteCodeInstruction* ByteCodeGenJob::emitGetFromSeg(ByteCodeGenContext* context,
     switch (storageSegment->kind)
     {
     case SegmentKind::Data:
-        return emitInstruction(context, ByteCodeOp::GetFromMutableSeg64, r0, storageOffset);
+        return EMIT_INST2(context, ByteCodeOp::GetFromMutableSeg64, r0, storageOffset);
     case SegmentKind::Bss:
-        return emitInstruction(context, ByteCodeOp::GetFromBssSeg64, r0, storageOffset);
+        return EMIT_INST2(context, ByteCodeOp::GetFromBssSeg64, r0, storageOffset);
     case SegmentKind::Compiler:
-        return emitInstruction(context, ByteCodeOp::GetFromCompilerSeg64, r0, storageOffset);
+        return EMIT_INST2(context, ByteCodeOp::GetFromCompilerSeg64, r0, storageOffset);
     default:
         SWAG_ASSERT(false);
     }
@@ -287,11 +287,7 @@ ByteCodeInstruction* ByteCodeGenJob::emitGetFromSeg(ByteCodeGenContext* context,
     return nullptr;
 }
 
-#ifdef __clang__
-ByteCodeInstruction* ByteCodeGenJob::emitInstruction(ByteCodeGenContext* context, ByteCodeOp op, uint32_t r0, uint32_t r1, uint32_t r2, uint32_t r3)
-#else
-ByteCodeInstruction* ByteCodeGenJob::emitInstruction(ByteCodeGenContext* context, ByteCodeOp op, uint32_t r0, uint32_t r1, uint32_t r2, uint32_t r3, const std::source_location location)
-#endif
+ByteCodeInstruction* ByteCodeGenJob::emitInstruction(ByteCodeGenContext* context, ByteCodeOp op, uint32_t r0, uint32_t r1, uint32_t r2, uint32_t r3, const char* file, uint32_t line)
 {
     AstNode* node = context->node;
     auto     bc   = context->bc;
@@ -344,13 +340,8 @@ ByteCodeInstruction* ByteCodeGenJob::emitInstruction(ByteCodeGenContext* context
     ins.node = context->forceNode ? context->forceNode : node;
 
 #if defined SWAG_DEV_MODE
-#ifndef __clang__
-    ins.sourceFile = location.file_name();
-    ins.sourceLine = location.line();
-#else
-    ins.sourceFile = "?";
-    ins.sourceLine = 0;
-#endif
+    ins.sourceFile            = file;
+    ins.sourceLine            = line;
     static atomic<int> serial = 0;
     ins.serial                = serial++;
     ins.treeNode              = 0;
@@ -711,7 +702,7 @@ JobResult ByteCodeGenJob::execute()
 
         if (context.bc)
         {
-            emitInstruction(&context, ByteCodeOp::End);
+            EMIT_INST0(&context, ByteCodeOp::End);
 
             if (originalNode->kind == AstNodeKind::FuncDecl || context.bc->isCompilerGenerated)
             {

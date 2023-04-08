@@ -167,18 +167,18 @@ bool ByteCodeGenJob::emitLocalVarDecl(ByteCodeGenContext* context)
                     // Need to loop on every element of the array in order to initialize them
                     RegisterList r0;
                     reserveRegisterRC(context, r0, 2);
-                    emitInstruction(context, ByteCodeOp::SetImmediate64, r0[0])->b.u64 = typeArray->totalCount;
-                    emitInstruction(context, ByteCodeOp::ClearRA, r0[1]);
+                    EMIT_INST1(context, ByteCodeOp::SetImmediate64, r0[0])->b.u64 = typeArray->totalCount;
+                    EMIT_INST1(context, ByteCodeOp::ClearRA, r0[1]);
                     auto seekJump = context->bc->numInstructions;
 
                     if (!(node->flags & AST_EXPLICITLY_NOT_INITIALIZED) && !(node->flags & AST_HAS_FULL_STRUCT_PARAMETERS))
                         emitStructInit(context, CastTypeInfo<TypeInfoStruct>(finalType, TypeInfoKind::Struct), r0[1], retVal);
                     emitStructParameters(context, r0[1], retVal);
 
-                    emitInstruction(context, ByteCodeOp::DecrementRA64, r0[0]);
+                    EMIT_INST1(context, ByteCodeOp::DecrementRA64, r0[0]);
                     if (finalType->sizeOf)
-                        emitInstruction(context, ByteCodeOp::Add64byVB64, r0[1])->b.u64 = finalType->sizeOf;
-                    emitInstruction(context, ByteCodeOp::JumpIfNotZero64, r0[0])->b.s32 = seekJump - context->bc->numInstructions - 1;
+                        EMIT_INST1(context, ByteCodeOp::Add64byVB64, r0[1])->b.u64 = finalType->sizeOf;
+                    EMIT_INST1(context, ByteCodeOp::JumpIfNotZero64, r0[0])->b.s32 = seekJump - context->bc->numInstructions - 1;
 
                     freeRegisterRC(context, r0);
                 }
@@ -201,7 +201,7 @@ bool ByteCodeGenJob::emitLocalVarDecl(ByteCodeGenContext* context)
         }
         else if (typeInfo->isClosure())
         {
-            emitInstruction(context, ByteCodeOp::SetZeroStack64)->a.u32 = resolved->computedValue.storageOffset;
+            EMIT_INST0(context, ByteCodeOp::SetZeroStack64)->a.u32 = resolved->computedValue.storageOffset;
         }
         else
         {
@@ -209,20 +209,20 @@ bool ByteCodeGenJob::emitLocalVarDecl(ByteCodeGenContext* context)
             switch (typeInfo->sizeOf)
             {
             case 1:
-                emitInstruction(context, ByteCodeOp::SetZeroStack8)->a.u32 = resolved->computedValue.storageOffset;
+                EMIT_INST0(context, ByteCodeOp::SetZeroStack8)->a.u32 = resolved->computedValue.storageOffset;
                 break;
             case 2:
-                emitInstruction(context, ByteCodeOp::SetZeroStack16)->a.u32 = resolved->computedValue.storageOffset;
+                EMIT_INST0(context, ByteCodeOp::SetZeroStack16)->a.u32 = resolved->computedValue.storageOffset;
                 break;
             case 4:
-                emitInstruction(context, ByteCodeOp::SetZeroStack32)->a.u32 = resolved->computedValue.storageOffset;
+                EMIT_INST0(context, ByteCodeOp::SetZeroStack32)->a.u32 = resolved->computedValue.storageOffset;
                 break;
             case 8:
-                emitInstruction(context, ByteCodeOp::SetZeroStack64)->a.u32 = resolved->computedValue.storageOffset;
+                EMIT_INST0(context, ByteCodeOp::SetZeroStack64)->a.u32 = resolved->computedValue.storageOffset;
                 break;
             default:
             {
-                auto inst   = emitInstruction(context, ByteCodeOp::SetZeroStackX);
+                auto inst   = EMIT_INST0(context, ByteCodeOp::SetZeroStackX);
                 inst->a.u32 = resolved->computedValue.storageOffset;
                 inst->b.u64 = typeInfo->sizeOf;
                 break;

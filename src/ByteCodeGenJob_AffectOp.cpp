@@ -19,39 +19,39 @@ bool ByteCodeGenJob::emitCopyArray(ByteCodeGenContext* context, TypeInfo* typeIn
         {
             RegisterList r0 = reserveRegisterRC(context);
 
-            auto inst     = emitInstruction(context, ByteCodeOp::SetImmediate64, r0);
+            auto inst     = EMIT_INST1(context, ByteCodeOp::SetImmediate64, r0);
             inst->b.u64   = typeArray->totalCount;
             auto seekJump = context->bc->numInstructions;
 
             switch (from->typeInfo->sizeOf)
             {
             case 1:
-                emitInstruction(context, ByteCodeOp::SetAtPointer8, dstReg, srcReg);
+                EMIT_INST2(context, ByteCodeOp::SetAtPointer8, dstReg, srcReg);
                 break;
             case 2:
-                emitInstruction(context, ByteCodeOp::SetAtPointer16, dstReg, srcReg);
+                EMIT_INST2(context, ByteCodeOp::SetAtPointer16, dstReg, srcReg);
                 break;
             case 4:
-                emitInstruction(context, ByteCodeOp::SetAtPointer32, dstReg, srcReg);
+                EMIT_INST2(context, ByteCodeOp::SetAtPointer32, dstReg, srcReg);
                 break;
             case 8:
-                emitInstruction(context, ByteCodeOp::SetAtPointer64, dstReg, srcReg);
+                EMIT_INST2(context, ByteCodeOp::SetAtPointer64, dstReg, srcReg);
                 break;
             case 16:
-                emitInstruction(context, ByteCodeOp::SetAtPointer64, dstReg, srcReg[0]);
-                emitInstruction(context, ByteCodeOp::SetAtPointer64, dstReg, srcReg[1], sizeof(void*));
+                EMIT_INST2(context, ByteCodeOp::SetAtPointer64, dstReg, srcReg[0]);
+                EMIT_INST3(context, ByteCodeOp::SetAtPointer64, dstReg, srcReg[1], sizeof(void*));
                 break;
             default:
                 Report::internalError(from, "unsupported array initialization value type");
                 return false;
             }
 
-            inst        = emitInstruction(context, ByteCodeOp::IncPointer64, dstReg, 0, dstReg);
+            inst        = EMIT_INST3(context, ByteCodeOp::IncPointer64, dstReg, 0, dstReg);
             inst->b.u64 = from->typeInfo->sizeOf;
             inst->flags |= BCI_IMM_B;
 
-            emitInstruction(context, ByteCodeOp::DecrementRA64, r0);
-            emitInstruction(context, ByteCodeOp::JumpIfNotZero64, r0)->b.s32 = seekJump - context->bc->numInstructions - 1;
+            EMIT_INST1(context, ByteCodeOp::DecrementRA64, r0);
+            EMIT_INST1(context, ByteCodeOp::JumpIfNotZero64, r0)->b.s32 = seekJump - context->bc->numInstructions - 1;
 
             freeRegisterRC(context, r0);
             return true;
@@ -84,21 +84,21 @@ bool ByteCodeGenJob::emitCopyArray(ByteCodeGenContext* context, TypeInfo* typeIn
     // Need to loop on every element of the array in order to initialize them
     RegisterList r0 = reserveRegisterRC(context);
 
-    auto inst     = emitInstruction(context, ByteCodeOp::SetImmediate64, r0);
+    auto inst     = EMIT_INST1(context, ByteCodeOp::SetImmediate64, r0);
     inst->b.u64   = typeArray->totalCount;
     auto seekJump = context->bc->numInstructions;
 
     SWAG_CHECK(emitCopyStruct(context, dstReg, srcReg, typeStruct, from));
 
-    inst        = emitInstruction(context, ByteCodeOp::IncPointer64, dstReg, 0, dstReg);
+    inst        = EMIT_INST3(context, ByteCodeOp::IncPointer64, dstReg, 0, dstReg);
     inst->b.u64 = typeStruct->sizeOf;
     inst->flags |= BCI_IMM_B;
-    inst        = emitInstruction(context, ByteCodeOp::IncPointer64, srcReg, 0, srcReg);
+    inst        = EMIT_INST3(context, ByteCodeOp::IncPointer64, srcReg, 0, srcReg);
     inst->b.u64 = typeStruct->sizeOf;
     inst->flags |= BCI_IMM_B;
 
-    emitInstruction(context, ByteCodeOp::DecrementRA64, r0);
-    emitInstruction(context, ByteCodeOp::JumpIfNotZero64, r0)->b.s32 = seekJump - context->bc->numInstructions - 1;
+    EMIT_INST1(context, ByteCodeOp::DecrementRA64, r0);
+    EMIT_INST1(context, ByteCodeOp::JumpIfNotZero64, r0)->b.s32 = seekJump - context->bc->numInstructions - 1;
 
     freeRegisterRC(context, r0);
     return true;
@@ -140,22 +140,22 @@ bool ByteCodeGenJob::emitAffectEqual(ByteCodeGenContext* context, RegisterList& 
 
     if (typeInfo->isPointer())
     {
-        emitInstruction(context, ByteCodeOp::SetAtPointer64, r0, r1);
+        EMIT_INST2(context, ByteCodeOp::SetAtPointer64, r0, r1);
         return true;
     }
 
     if (typeInfo->isLambda())
     {
         SWAG_ASSERT(!fromTypeInfo->isClosure());
-        emitInstruction(context, ByteCodeOp::SetAtPointer64, r0, r1);
+        EMIT_INST2(context, ByteCodeOp::SetAtPointer64, r0, r1);
         return true;
     }
 
     auto aliasFrom = TypeManager::concreteType(fromTypeInfo);
     if (typeInfo->isClosure() && aliasFrom->isLambda())
     {
-        emitInstruction(context, ByteCodeOp::SetAtPointer64, r0, r1);
-        emitInstruction(context, ByteCodeOp::SetZeroAtPointer64, r0)->b.u32 = sizeof(void*);
+        EMIT_INST2(context, ByteCodeOp::SetAtPointer64, r0, r1);
+        EMIT_INST1(context, ByteCodeOp::SetZeroAtPointer64, r0)->b.u32 = sizeof(void*);
         return true;
     }
 
@@ -167,8 +167,8 @@ bool ByteCodeGenJob::emitAffectEqual(ByteCodeGenContext* context, RegisterList& 
         // :ConvertToClosure
         if (from->kind == AstNodeKind::MakePointerLambda)
         {
-            emitInstruction(context, ByteCodeOp::SetAtPointer64, r0, r1);
-            auto inst = emitInstruction(context, ByteCodeOp::SetAtPointer64, r0);
+            EMIT_INST2(context, ByteCodeOp::SetAtPointer64, r0, r1);
+            auto inst = EMIT_INST1(context, ByteCodeOp::SetAtPointer64, r0);
             inst->flags |= BCI_IMM_B;
             inst->b.u32 = 1; // <> 0 for closure, 0 for lambda
             inst->c.u32 = sizeof(void*);
@@ -179,7 +179,7 @@ bool ByteCodeGenJob::emitAffectEqual(ByteCodeGenContext* context, RegisterList& 
             auto typeBlock = CastTypeInfo<TypeInfoStruct>(nodeCapture->childs.back()->typeInfo, TypeInfoKind::Struct);
             if (typeBlock->fields.size())
             {
-                emitInstruction(context, ByteCodeOp::Add64byVB64, r0)->b.u64 = 2 * sizeof(void*);
+                EMIT_INST1(context, ByteCodeOp::Add64byVB64, r0)->b.u64 = 2 * sizeof(void*);
                 emitMemCpy(context, r0, r1[1], typeBlock->sizeOf);
             }
         }
@@ -195,13 +195,13 @@ bool ByteCodeGenJob::emitAffectEqual(ByteCodeGenContext* context, RegisterList& 
     {
         if (fromTypeInfo->isPointerNull())
         {
-            emitInstruction(context, ByteCodeOp::SetZeroAtPointer64, r0);
-            emitInstruction(context, ByteCodeOp::SetZeroAtPointer64, r0)->b.u32 = 8;
+            EMIT_INST1(context, ByteCodeOp::SetZeroAtPointer64, r0);
+            EMIT_INST1(context, ByteCodeOp::SetZeroAtPointer64, r0)->b.u32 = 8;
         }
         else
         {
-            emitInstruction(context, ByteCodeOp::SetAtPointer64, r0, r1[0]);
-            emitInstruction(context, ByteCodeOp::SetAtPointer64, r0, r1[1])->c.u32 = 8;
+            EMIT_INST2(context, ByteCodeOp::SetAtPointer64, r0, r1[0]);
+            EMIT_INST2(context, ByteCodeOp::SetAtPointer64, r0, r1[1])->c.u32 = 8;
         }
 
         return true;
@@ -211,25 +211,25 @@ bool ByteCodeGenJob::emitAffectEqual(ByteCodeGenContext* context, RegisterList& 
     {
         if (fromTypeInfo->isPointerNull())
         {
-            emitInstruction(context, ByteCodeOp::SetZeroAtPointer64, r0);
-            emitInstruction(context, ByteCodeOp::SetZeroAtPointer64, r0)->b.u32 = 8;
+            EMIT_INST1(context, ByteCodeOp::SetZeroAtPointer64, r0);
+            EMIT_INST1(context, ByteCodeOp::SetZeroAtPointer64, r0)->b.u32 = 8;
         }
         else if (node->childs.size() > 1 && node->childs[1]->typeInfo->isArray())
         {
-            emitInstruction(context, ByteCodeOp::SetAtPointer64, r0, r1);
+            EMIT_INST2(context, ByteCodeOp::SetAtPointer64, r0, r1);
 
             auto typeArray = CastTypeInfo<TypeInfoArray>(node->childs[1]->typeInfo, TypeInfoKind::Array);
             auto r2        = reserveRegisterRC(context);
 
-            emitInstruction(context, ByteCodeOp::SetImmediate64, r2)->b.u64     = typeArray->count;
-            emitInstruction(context, ByteCodeOp::SetAtPointer64, r0, r2)->c.u32 = 8;
+            EMIT_INST1(context, ByteCodeOp::SetImmediate64, r2)->b.u64     = typeArray->count;
+            EMIT_INST2(context, ByteCodeOp::SetAtPointer64, r0, r2)->c.u32 = 8;
 
             freeRegisterRC(context, r2);
         }
         else
         {
-            emitInstruction(context, ByteCodeOp::SetAtPointer64, r0, r1[0]);
-            emitInstruction(context, ByteCodeOp::SetAtPointer64, r0, r1[1])->c.u32 = 8;
+            EMIT_INST2(context, ByteCodeOp::SetAtPointer64, r0, r1[0]);
+            EMIT_INST2(context, ByteCodeOp::SetAtPointer64, r0, r1[1])->c.u32 = 8;
         }
 
         return true;
@@ -239,13 +239,13 @@ bool ByteCodeGenJob::emitAffectEqual(ByteCodeGenContext* context, RegisterList& 
     {
         if (fromTypeInfo->isPointerNull())
         {
-            emitInstruction(context, ByteCodeOp::SetZeroAtPointer64, r0);
-            emitInstruction(context, ByteCodeOp::SetZeroAtPointer64, r0)->b.u32 = 8;
+            EMIT_INST1(context, ByteCodeOp::SetZeroAtPointer64, r0);
+            EMIT_INST1(context, ByteCodeOp::SetZeroAtPointer64, r0)->b.u32 = 8;
         }
         else
         {
-            emitInstruction(context, ByteCodeOp::SetAtPointer64, r0, r1[0]);
-            emitInstruction(context, ByteCodeOp::SetAtPointer64, r0, r1[1])->c.u32 = 8;
+            EMIT_INST2(context, ByteCodeOp::SetAtPointer64, r0, r1[0]);
+            EMIT_INST2(context, ByteCodeOp::SetAtPointer64, r0, r1[1])->c.u32 = 8;
         }
 
         return true;
@@ -259,34 +259,34 @@ bool ByteCodeGenJob::emitAffectEqual(ByteCodeGenContext* context, RegisterList& 
     case NativeTypeKind::Bool:
     case NativeTypeKind::S8:
     case NativeTypeKind::U8:
-        emitInstruction(context, ByteCodeOp::SetAtPointer8, r0, r1);
+        EMIT_INST2(context, ByteCodeOp::SetAtPointer8, r0, r1);
         return true;
     case NativeTypeKind::S16:
     case NativeTypeKind::U16:
-        emitInstruction(context, ByteCodeOp::SetAtPointer16, r0, r1);
+        EMIT_INST2(context, ByteCodeOp::SetAtPointer16, r0, r1);
         return true;
     case NativeTypeKind::S32:
     case NativeTypeKind::U32:
     case NativeTypeKind::F32:
     case NativeTypeKind::Rune:
-        emitInstruction(context, ByteCodeOp::SetAtPointer32, r0, r1);
+        EMIT_INST2(context, ByteCodeOp::SetAtPointer32, r0, r1);
         return true;
     case NativeTypeKind::S64:
     case NativeTypeKind::U64:
     case NativeTypeKind::F64:
-        emitInstruction(context, ByteCodeOp::SetAtPointer64, r0, r1);
+        EMIT_INST2(context, ByteCodeOp::SetAtPointer64, r0, r1);
         return true;
     case NativeTypeKind::Any:
     {
         if (fromTypeInfo->isPointerNull())
         {
-            emitInstruction(context, ByteCodeOp::SetZeroAtPointer64, r0);
-            emitInstruction(context, ByteCodeOp::SetZeroAtPointer64, r0)->b.u32 = 8;
+            EMIT_INST1(context, ByteCodeOp::SetZeroAtPointer64, r0);
+            EMIT_INST1(context, ByteCodeOp::SetZeroAtPointer64, r0)->b.u32 = 8;
         }
         else
         {
-            emitInstruction(context, ByteCodeOp::SetAtPointer64, r0, r1[0]);
-            emitInstruction(context, ByteCodeOp::SetAtPointer64, r0, r1[1])->c.u32 = 8;
+            EMIT_INST2(context, ByteCodeOp::SetAtPointer64, r0, r1[0]);
+            EMIT_INST2(context, ByteCodeOp::SetAtPointer64, r0, r1[1])->c.u32 = 8;
         }
 
         return true;
@@ -310,35 +310,35 @@ bool ByteCodeGenJob::emitAffectPlusEqual(ByteCodeGenContext* context, uint32_t r
         switch (leftTypeInfo->nativeType)
         {
         case NativeTypeKind::S8:
-            emitInstruction(context, ByteCodeOp::AffectOpPlusEqS8, r0, r1);
+            EMIT_INST2(context, ByteCodeOp::AffectOpPlusEqS8, r0, r1);
             return true;
         case NativeTypeKind::U8:
-            emitInstruction(context, ByteCodeOp::AffectOpPlusEqU8, r0, r1);
+            EMIT_INST2(context, ByteCodeOp::AffectOpPlusEqU8, r0, r1);
             return true;
         case NativeTypeKind::S16:
-            emitInstruction(context, ByteCodeOp::AffectOpPlusEqS16, r0, r1);
+            EMIT_INST2(context, ByteCodeOp::AffectOpPlusEqS16, r0, r1);
             return true;
         case NativeTypeKind::U16:
-            emitInstruction(context, ByteCodeOp::AffectOpPlusEqU16, r0, r1);
+            EMIT_INST2(context, ByteCodeOp::AffectOpPlusEqU16, r0, r1);
             return true;
         case NativeTypeKind::S32:
-            emitInstruction(context, ByteCodeOp::AffectOpPlusEqS32, r0, r1);
+            EMIT_INST2(context, ByteCodeOp::AffectOpPlusEqS32, r0, r1);
             return true;
         case NativeTypeKind::U32:
         case NativeTypeKind::Rune:
-            emitInstruction(context, ByteCodeOp::AffectOpPlusEqU32, r0, r1);
+            EMIT_INST2(context, ByteCodeOp::AffectOpPlusEqU32, r0, r1);
             return true;
         case NativeTypeKind::S64:
-            emitInstruction(context, ByteCodeOp::AffectOpPlusEqS64, r0, r1);
+            EMIT_INST2(context, ByteCodeOp::AffectOpPlusEqS64, r0, r1);
             return true;
         case NativeTypeKind::U64:
-            emitInstruction(context, ByteCodeOp::AffectOpPlusEqU64, r0, r1);
+            EMIT_INST2(context, ByteCodeOp::AffectOpPlusEqU64, r0, r1);
             return true;
         case NativeTypeKind::F32:
-            emitInstruction(context, ByteCodeOp::AffectOpPlusEqF32, r0, r1);
+            EMIT_INST2(context, ByteCodeOp::AffectOpPlusEqF32, r0, r1);
             return true;
         case NativeTypeKind::F64:
-            emitInstruction(context, ByteCodeOp::AffectOpPlusEqF64, r0, r1);
+            EMIT_INST2(context, ByteCodeOp::AffectOpPlusEqF64, r0, r1);
             return true;
         default:
             return Report::internalError(context->node, "emitAffectPlusEqual, type not supported");
@@ -349,8 +349,8 @@ bool ByteCodeGenJob::emitAffectPlusEqual(ByteCodeGenContext* context, uint32_t r
         auto typePtr = CastTypeInfo<TypeInfoPointer>(TypeManager::concreteType(leftTypeInfo), TypeInfoKind::Pointer);
         auto sizeOf  = typePtr->pointedType->sizeOf;
         if (sizeOf > 1)
-            emitInstruction(context, ByteCodeOp::Mul64byVB64, r1)->b.u64 = sizeOf;
-        emitInstruction(context, ByteCodeOp::AffectOpPlusEqS64, r0, r1);
+            EMIT_INST1(context, ByteCodeOp::Mul64byVB64, r1)->b.u64 = sizeOf;
+        EMIT_INST2(context, ByteCodeOp::AffectOpPlusEqS64, r0, r1);
         return true;
     }
 
@@ -371,35 +371,35 @@ bool ByteCodeGenJob::emitAffectMinusEqual(ByteCodeGenContext* context, uint32_t 
         switch (leftTypeInfo->nativeType)
         {
         case NativeTypeKind::S8:
-            emitInstruction(context, ByteCodeOp::AffectOpMinusEqS8, r0, r1);
+            EMIT_INST2(context, ByteCodeOp::AffectOpMinusEqS8, r0, r1);
             return true;
         case NativeTypeKind::U8:
-            emitInstruction(context, ByteCodeOp::AffectOpMinusEqU8, r0, r1);
+            EMIT_INST2(context, ByteCodeOp::AffectOpMinusEqU8, r0, r1);
             return true;
         case NativeTypeKind::S16:
-            emitInstruction(context, ByteCodeOp::AffectOpMinusEqS16, r0, r1);
+            EMIT_INST2(context, ByteCodeOp::AffectOpMinusEqS16, r0, r1);
             return true;
         case NativeTypeKind::U16:
-            emitInstruction(context, ByteCodeOp::AffectOpMinusEqU16, r0, r1);
+            EMIT_INST2(context, ByteCodeOp::AffectOpMinusEqU16, r0, r1);
             return true;
         case NativeTypeKind::S32:
-            emitInstruction(context, ByteCodeOp::AffectOpMinusEqS32, r0, r1);
+            EMIT_INST2(context, ByteCodeOp::AffectOpMinusEqS32, r0, r1);
             return true;
         case NativeTypeKind::U32:
         case NativeTypeKind::Rune:
-            emitInstruction(context, ByteCodeOp::AffectOpMinusEqU32, r0, r1);
+            EMIT_INST2(context, ByteCodeOp::AffectOpMinusEqU32, r0, r1);
             return true;
         case NativeTypeKind::S64:
-            emitInstruction(context, ByteCodeOp::AffectOpMinusEqS64, r0, r1);
+            EMIT_INST2(context, ByteCodeOp::AffectOpMinusEqS64, r0, r1);
             return true;
         case NativeTypeKind::U64:
-            emitInstruction(context, ByteCodeOp::AffectOpMinusEqU64, r0, r1);
+            EMIT_INST2(context, ByteCodeOp::AffectOpMinusEqU64, r0, r1);
             return true;
         case NativeTypeKind::F32:
-            emitInstruction(context, ByteCodeOp::AffectOpMinusEqF32, r0, r1);
+            EMIT_INST2(context, ByteCodeOp::AffectOpMinusEqF32, r0, r1);
             return true;
         case NativeTypeKind::F64:
-            emitInstruction(context, ByteCodeOp::AffectOpMinusEqF64, r0, r1);
+            EMIT_INST2(context, ByteCodeOp::AffectOpMinusEqF64, r0, r1);
             return true;
         default:
             return Report::internalError(context->node, "emitAffectMinusEqual, type not supported");
@@ -410,8 +410,8 @@ bool ByteCodeGenJob::emitAffectMinusEqual(ByteCodeGenContext* context, uint32_t 
         auto typePtr = CastTypeInfo<TypeInfoPointer>(TypeManager::concreteType(leftTypeInfo), TypeInfoKind::Pointer);
         auto sizeOf  = typePtr->pointedType->sizeOf;
         if (sizeOf > 1)
-            emitInstruction(context, ByteCodeOp::Mul64byVB64, r1)->b.u64 = sizeOf;
-        emitInstruction(context, ByteCodeOp::AffectOpMinusEqS64, r0, r1);
+            EMIT_INST1(context, ByteCodeOp::Mul64byVB64, r1)->b.u64 = sizeOf;
+        EMIT_INST2(context, ByteCodeOp::AffectOpMinusEqS64, r0, r1);
         return true;
     }
 
@@ -433,35 +433,35 @@ bool ByteCodeGenJob::emitAffectMulEqual(ByteCodeGenContext* context, uint32_t r0
     switch (leftTypeInfo->nativeType)
     {
     case NativeTypeKind::S8:
-        emitInstruction(context, ByteCodeOp::AffectOpMulEqS8, r0, r1);
+        EMIT_INST2(context, ByteCodeOp::AffectOpMulEqS8, r0, r1);
         return true;
     case NativeTypeKind::U8:
-        emitInstruction(context, ByteCodeOp::AffectOpMulEqU8, r0, r1);
+        EMIT_INST2(context, ByteCodeOp::AffectOpMulEqU8, r0, r1);
         return true;
     case NativeTypeKind::S16:
-        emitInstruction(context, ByteCodeOp::AffectOpMulEqS16, r0, r1);
+        EMIT_INST2(context, ByteCodeOp::AffectOpMulEqS16, r0, r1);
         return true;
     case NativeTypeKind::U16:
-        emitInstruction(context, ByteCodeOp::AffectOpMulEqU16, r0, r1);
+        EMIT_INST2(context, ByteCodeOp::AffectOpMulEqU16, r0, r1);
         return true;
     case NativeTypeKind::S32:
-        emitInstruction(context, ByteCodeOp::AffectOpMulEqS32, r0, r1);
+        EMIT_INST2(context, ByteCodeOp::AffectOpMulEqS32, r0, r1);
         return true;
     case NativeTypeKind::U32:
     case NativeTypeKind::Rune:
-        emitInstruction(context, ByteCodeOp::AffectOpMulEqU32, r0, r1);
+        EMIT_INST2(context, ByteCodeOp::AffectOpMulEqU32, r0, r1);
         return true;
     case NativeTypeKind::S64:
-        emitInstruction(context, ByteCodeOp::AffectOpMulEqS64, r0, r1);
+        EMIT_INST2(context, ByteCodeOp::AffectOpMulEqS64, r0, r1);
         return true;
     case NativeTypeKind::U64:
-        emitInstruction(context, ByteCodeOp::AffectOpMulEqU64, r0, r1);
+        EMIT_INST2(context, ByteCodeOp::AffectOpMulEqU64, r0, r1);
         return true;
     case NativeTypeKind::F32:
-        emitInstruction(context, ByteCodeOp::AffectOpMulEqF32, r0, r1);
+        EMIT_INST2(context, ByteCodeOp::AffectOpMulEqF32, r0, r1);
         return true;
     case NativeTypeKind::F64:
-        emitInstruction(context, ByteCodeOp::AffectOpMulEqF64, r0, r1);
+        EMIT_INST2(context, ByteCodeOp::AffectOpMulEqF64, r0, r1);
         return true;
     default:
         return Report::internalError(context->node, "emitAffectMulEqual, type not supported");
@@ -485,20 +485,20 @@ bool ByteCodeGenJob::emitAffectAndEqual(ByteCodeGenContext* context, uint32_t r0
     case NativeTypeKind::S8:
     case NativeTypeKind::U8:
     case NativeTypeKind::Bool:
-        emitInstruction(context, ByteCodeOp::AffectOpAndEqU8, r0, r1);
+        EMIT_INST2(context, ByteCodeOp::AffectOpAndEqU8, r0, r1);
         return true;
     case NativeTypeKind::S16:
     case NativeTypeKind::U16:
-        emitInstruction(context, ByteCodeOp::AffectOpAndEqU16, r0, r1);
+        EMIT_INST2(context, ByteCodeOp::AffectOpAndEqU16, r0, r1);
         return true;
     case NativeTypeKind::S32:
     case NativeTypeKind::U32:
     case NativeTypeKind::Rune:
-        emitInstruction(context, ByteCodeOp::AffectOpAndEqU32, r0, r1);
+        EMIT_INST2(context, ByteCodeOp::AffectOpAndEqU32, r0, r1);
         return true;
     case NativeTypeKind::S64:
     case NativeTypeKind::U64:
-        emitInstruction(context, ByteCodeOp::AffectOpAndEqU64, r0, r1);
+        EMIT_INST2(context, ByteCodeOp::AffectOpAndEqU64, r0, r1);
         return true;
     default:
         return Report::internalError(context->node, "emitAffectAndEqual, type not supported");
@@ -522,20 +522,20 @@ bool ByteCodeGenJob::emitAffectOrEqual(ByteCodeGenContext* context, uint32_t r0,
     case NativeTypeKind::S8:
     case NativeTypeKind::U8:
     case NativeTypeKind::Bool:
-        emitInstruction(context, ByteCodeOp::AffectOpOrEqU8, r0, r1);
+        EMIT_INST2(context, ByteCodeOp::AffectOpOrEqU8, r0, r1);
         return true;
     case NativeTypeKind::S16:
     case NativeTypeKind::U16:
-        emitInstruction(context, ByteCodeOp::AffectOpOrEqU16, r0, r1);
+        EMIT_INST2(context, ByteCodeOp::AffectOpOrEqU16, r0, r1);
         return true;
     case NativeTypeKind::S32:
     case NativeTypeKind::U32:
     case NativeTypeKind::Rune:
-        emitInstruction(context, ByteCodeOp::AffectOpOrEqU32, r0, r1);
+        EMIT_INST2(context, ByteCodeOp::AffectOpOrEqU32, r0, r1);
         return true;
     case NativeTypeKind::S64:
     case NativeTypeKind::U64:
-        emitInstruction(context, ByteCodeOp::AffectOpOrEqU64, r0, r1);
+        EMIT_INST2(context, ByteCodeOp::AffectOpOrEqU64, r0, r1);
         return true;
     default:
         return Report::internalError(context->node, "emitAffectOrEqual, type not supported");
@@ -559,20 +559,20 @@ bool ByteCodeGenJob::emitAffectXorEqual(ByteCodeGenContext* context, uint32_t r0
     case NativeTypeKind::S8:
     case NativeTypeKind::U8:
     case NativeTypeKind::Bool:
-        emitInstruction(context, ByteCodeOp::AffectOpXorEqU8, r0, r1);
+        EMIT_INST2(context, ByteCodeOp::AffectOpXorEqU8, r0, r1);
         return true;
     case NativeTypeKind::S16:
     case NativeTypeKind::U16:
-        emitInstruction(context, ByteCodeOp::AffectOpXorEqU16, r0, r1);
+        EMIT_INST2(context, ByteCodeOp::AffectOpXorEqU16, r0, r1);
         return true;
     case NativeTypeKind::S32:
     case NativeTypeKind::U32:
     case NativeTypeKind::Rune:
-        emitInstruction(context, ByteCodeOp::AffectOpXorEqU32, r0, r1);
+        EMIT_INST2(context, ByteCodeOp::AffectOpXorEqU32, r0, r1);
         return true;
     case NativeTypeKind::S64:
     case NativeTypeKind::U64:
-        emitInstruction(context, ByteCodeOp::AffectOpXorEqU64, r0, r1);
+        EMIT_INST2(context, ByteCodeOp::AffectOpXorEqU64, r0, r1);
         return true;
     default:
         return Report::internalError(context->node, "emitAffectXorEqual, type not supported");
@@ -601,29 +601,29 @@ bool ByteCodeGenJob::emitAffectShiftLeftEqual(ByteCodeGenContext* context, uint3
     switch (leftTypeInfo->nativeType)
     {
     case NativeTypeKind::S8:
-        emitInstruction(context, ByteCodeOp::AffectOpShiftLeftEqS8, r0, r1)->flags |= shiftFlags;
+        EMIT_INST2(context, ByteCodeOp::AffectOpShiftLeftEqS8, r0, r1)->flags |= shiftFlags;
         return true;
     case NativeTypeKind::U8:
-        emitInstruction(context, ByteCodeOp::AffectOpShiftLeftEqU8, r0, r1)->flags |= shiftFlags;
+        EMIT_INST2(context, ByteCodeOp::AffectOpShiftLeftEqU8, r0, r1)->flags |= shiftFlags;
         return true;
     case NativeTypeKind::S16:
-        emitInstruction(context, ByteCodeOp::AffectOpShiftLeftEqS16, r0, r1)->flags |= shiftFlags;
+        EMIT_INST2(context, ByteCodeOp::AffectOpShiftLeftEqS16, r0, r1)->flags |= shiftFlags;
         return true;
     case NativeTypeKind::U16:
-        emitInstruction(context, ByteCodeOp::AffectOpShiftLeftEqU16, r0, r1)->flags |= shiftFlags;
+        EMIT_INST2(context, ByteCodeOp::AffectOpShiftLeftEqU16, r0, r1)->flags |= shiftFlags;
         return true;
     case NativeTypeKind::S32:
-        emitInstruction(context, ByteCodeOp::AffectOpShiftLeftEqS32, r0, r1)->flags |= shiftFlags;
+        EMIT_INST2(context, ByteCodeOp::AffectOpShiftLeftEqS32, r0, r1)->flags |= shiftFlags;
         return true;
     case NativeTypeKind::U32:
     case NativeTypeKind::Rune:
-        emitInstruction(context, ByteCodeOp::AffectOpShiftLeftEqU32, r0, r1)->flags |= shiftFlags;
+        EMIT_INST2(context, ByteCodeOp::AffectOpShiftLeftEqU32, r0, r1)->flags |= shiftFlags;
         return true;
     case NativeTypeKind::S64:
-        emitInstruction(context, ByteCodeOp::AffectOpShiftLeftEqS64, r0, r1)->flags |= shiftFlags;
+        EMIT_INST2(context, ByteCodeOp::AffectOpShiftLeftEqS64, r0, r1)->flags |= shiftFlags;
         return true;
     case NativeTypeKind::U64:
-        emitInstruction(context, ByteCodeOp::AffectOpShiftLeftEqU64, r0, r1)->flags |= shiftFlags;
+        EMIT_INST2(context, ByteCodeOp::AffectOpShiftLeftEqU64, r0, r1)->flags |= shiftFlags;
         return true;
     default:
         return Report::internalError(context->node, "emitAffectShiftLeftEqual, type not supported");
@@ -652,30 +652,30 @@ bool ByteCodeGenJob::emitAffectShiftRightEqual(ByteCodeGenContext* context, uint
     switch (leftTypeInfo->nativeType)
     {
     case NativeTypeKind::S8:
-        emitInstruction(context, ByteCodeOp::AffectOpShiftRightEqS8, r0, r1)->flags |= shiftFlags;
+        EMIT_INST2(context, ByteCodeOp::AffectOpShiftRightEqS8, r0, r1)->flags |= shiftFlags;
         return true;
     case NativeTypeKind::S16:
-        emitInstruction(context, ByteCodeOp::AffectOpShiftRightEqS16, r0, r1)->flags |= shiftFlags;
+        EMIT_INST2(context, ByteCodeOp::AffectOpShiftRightEqS16, r0, r1)->flags |= shiftFlags;
         return true;
     case NativeTypeKind::S32:
-        emitInstruction(context, ByteCodeOp::AffectOpShiftRightEqS32, r0, r1)->flags |= shiftFlags;
+        EMIT_INST2(context, ByteCodeOp::AffectOpShiftRightEqS32, r0, r1)->flags |= shiftFlags;
         return true;
     case NativeTypeKind::S64:
-        emitInstruction(context, ByteCodeOp::AffectOpShiftRightEqS64, r0, r1)->flags |= shiftFlags;
+        EMIT_INST2(context, ByteCodeOp::AffectOpShiftRightEqS64, r0, r1)->flags |= shiftFlags;
         return true;
 
     case NativeTypeKind::U8:
-        emitInstruction(context, ByteCodeOp::AffectOpShiftRightEqU8, r0, r1)->flags |= shiftFlags;
+        EMIT_INST2(context, ByteCodeOp::AffectOpShiftRightEqU8, r0, r1)->flags |= shiftFlags;
         return true;
     case NativeTypeKind::U16:
-        emitInstruction(context, ByteCodeOp::AffectOpShiftRightEqU16, r0, r1)->flags |= shiftFlags;
+        EMIT_INST2(context, ByteCodeOp::AffectOpShiftRightEqU16, r0, r1)->flags |= shiftFlags;
         return true;
     case NativeTypeKind::U32:
     case NativeTypeKind::Rune:
-        emitInstruction(context, ByteCodeOp::AffectOpShiftRightEqU32, r0, r1)->flags |= shiftFlags;
+        EMIT_INST2(context, ByteCodeOp::AffectOpShiftRightEqU32, r0, r1)->flags |= shiftFlags;
         return true;
     case NativeTypeKind::U64:
-        emitInstruction(context, ByteCodeOp::AffectOpShiftRightEqU64, r0, r1)->flags |= shiftFlags;
+        EMIT_INST2(context, ByteCodeOp::AffectOpShiftRightEqU64, r0, r1)->flags |= shiftFlags;
         return true;
     default:
         return Report::internalError(context->node, "emitAffectShiftRightEqual, type not supported");
@@ -698,36 +698,36 @@ bool ByteCodeGenJob::emitAffectPercentEqual(ByteCodeGenContext* context, uint32_
     {
     case NativeTypeKind::S8:
         emitSafetyDivZero(context, r1, 8);
-        emitInstruction(context, ByteCodeOp::AffectOpModuloEqS8, r0, r1);
+        EMIT_INST2(context, ByteCodeOp::AffectOpModuloEqS8, r0, r1);
         return true;
     case NativeTypeKind::U8:
         emitSafetyDivZero(context, r1, 8);
-        emitInstruction(context, ByteCodeOp::AffectOpModuloEqU8, r0, r1);
+        EMIT_INST2(context, ByteCodeOp::AffectOpModuloEqU8, r0, r1);
         return true;
     case NativeTypeKind::S16:
         emitSafetyDivZero(context, r1, 16);
-        emitInstruction(context, ByteCodeOp::AffectOpModuloEqS16, r0, r1);
+        EMIT_INST2(context, ByteCodeOp::AffectOpModuloEqS16, r0, r1);
         return true;
     case NativeTypeKind::U16:
         emitSafetyDivZero(context, r1, 16);
-        emitInstruction(context, ByteCodeOp::AffectOpModuloEqU16, r0, r1);
+        EMIT_INST2(context, ByteCodeOp::AffectOpModuloEqU16, r0, r1);
         return true;
     case NativeTypeKind::S32:
         emitSafetyDivZero(context, r1, 32);
-        emitInstruction(context, ByteCodeOp::AffectOpModuloEqS32, r0, r1);
+        EMIT_INST2(context, ByteCodeOp::AffectOpModuloEqS32, r0, r1);
         return true;
     case NativeTypeKind::U32:
     case NativeTypeKind::Rune:
         emitSafetyDivZero(context, r1, 32);
-        emitInstruction(context, ByteCodeOp::AffectOpModuloEqU32, r0, r1);
+        EMIT_INST2(context, ByteCodeOp::AffectOpModuloEqU32, r0, r1);
         return true;
     case NativeTypeKind::S64:
         emitSafetyDivZero(context, r1, 64);
-        emitInstruction(context, ByteCodeOp::AffectOpModuloEqS64, r0, r1);
+        EMIT_INST2(context, ByteCodeOp::AffectOpModuloEqS64, r0, r1);
         return true;
     case NativeTypeKind::U64:
         emitSafetyDivZero(context, r1, 64);
-        emitInstruction(context, ByteCodeOp::AffectOpModuloEqU64, r0, r1);
+        EMIT_INST2(context, ByteCodeOp::AffectOpModuloEqU64, r0, r1);
         return true;
     default:
         return Report::internalError(context->node, "emitAffectPercentEqual, type not supported");
@@ -750,44 +750,44 @@ bool ByteCodeGenJob::emitAffectDivEqual(ByteCodeGenContext* context, uint32_t r0
     {
     case NativeTypeKind::S8:
         emitSafetyDivZero(context, r1, 8);
-        emitInstruction(context, ByteCodeOp::AffectOpDivEqS8, r0, r1);
+        EMIT_INST2(context, ByteCodeOp::AffectOpDivEqS8, r0, r1);
         return true;
     case NativeTypeKind::S16:
         emitSafetyDivZero(context, r1, 16);
-        emitInstruction(context, ByteCodeOp::AffectOpDivEqS16, r0, r1);
+        EMIT_INST2(context, ByteCodeOp::AffectOpDivEqS16, r0, r1);
         return true;
     case NativeTypeKind::S32:
         emitSafetyDivZero(context, r1, 32);
-        emitInstruction(context, ByteCodeOp::AffectOpDivEqS32, r0, r1);
+        EMIT_INST2(context, ByteCodeOp::AffectOpDivEqS32, r0, r1);
         return true;
     case NativeTypeKind::S64:
         emitSafetyDivZero(context, r1, 64);
-        emitInstruction(context, ByteCodeOp::AffectOpDivEqS64, r0, r1);
+        EMIT_INST2(context, ByteCodeOp::AffectOpDivEqS64, r0, r1);
         return true;
     case NativeTypeKind::U8:
         emitSafetyDivZero(context, r1, 8);
-        emitInstruction(context, ByteCodeOp::AffectOpDivEqU8, r0, r1);
+        EMIT_INST2(context, ByteCodeOp::AffectOpDivEqU8, r0, r1);
         return true;
     case NativeTypeKind::U16:
         emitSafetyDivZero(context, r1, 16);
-        emitInstruction(context, ByteCodeOp::AffectOpDivEqU16, r0, r1);
+        EMIT_INST2(context, ByteCodeOp::AffectOpDivEqU16, r0, r1);
         return true;
     case NativeTypeKind::U32:
     case NativeTypeKind::Rune:
         emitSafetyDivZero(context, r1, 32);
-        emitInstruction(context, ByteCodeOp::AffectOpDivEqU32, r0, r1);
+        EMIT_INST2(context, ByteCodeOp::AffectOpDivEqU32, r0, r1);
         return true;
     case NativeTypeKind::U64:
         emitSafetyDivZero(context, r1, 64);
-        emitInstruction(context, ByteCodeOp::AffectOpDivEqU64, r0, r1);
+        EMIT_INST2(context, ByteCodeOp::AffectOpDivEqU64, r0, r1);
         return true;
     case NativeTypeKind::F32:
         emitSafetyDivZero(context, r1, 32);
-        emitInstruction(context, ByteCodeOp::AffectOpDivEqF32, r0, r1);
+        EMIT_INST2(context, ByteCodeOp::AffectOpDivEqF32, r0, r1);
         return true;
     case NativeTypeKind::F64:
         emitSafetyDivZero(context, r1, 64);
-        emitInstruction(context, ByteCodeOp::AffectOpDivEqF64, r0, r1);
+        EMIT_INST2(context, ByteCodeOp::AffectOpDivEqF64, r0, r1);
         return true;
     default:
         return Report::internalError(context->node, "emitAffectDivEqual, type not supported");

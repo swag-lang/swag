@@ -46,21 +46,21 @@ void ByteCodeGenJob::emitOpCallUser(ByteCodeGenContext* context, AstFuncDecl* fu
     if (pushParam)
     {
         SWAG_ASSERT(numParams == 1);
-        emitInstruction(context, ByteCodeOp::GetParam64, 0, 24);
+        EMIT_INST2(context, ByteCodeOp::GetParam64, 0, 24);
         if (offset)
         {
-            auto inst = emitInstruction(context, ByteCodeOp::IncPointer64, 0, 0, 0);
+            auto inst = EMIT_INST0(context, ByteCodeOp::IncPointer64);
             SWAG_ASSERT(offset != 0xFFFFFFFF);
             inst->b.u64 = offset;
             inst->flags |= BCI_IMM_B;
         }
 
-        emitInstruction(context, ByteCodeOp::PushRAParam, 0);
+        EMIT_INST1(context, ByteCodeOp::PushRAParam, 0);
     }
 
     if (funcDecl && !bc && funcDecl->attributeFlags & ATTRIBUTE_FOREIGN)
     {
-        auto inst       = emitInstruction(context, ByteCodeOp::ForeignCall);
+        auto inst       = EMIT_INST0(context, ByteCodeOp::ForeignCall);
         inst->a.pointer = (uint8_t*) funcDecl;
         inst->b.pointer = (uint8_t*) funcDecl->typeInfo;
         context->bc->hasForeignFunctionCallsModules.insert(ModuleManager::getForeignModuleName(funcDecl));
@@ -68,7 +68,7 @@ void ByteCodeGenJob::emitOpCallUser(ByteCodeGenContext* context, AstFuncDecl* fu
     }
     else
     {
-        auto inst = emitInstruction(context, ByteCodeOp::LocalCall);
+        auto inst = EMIT_INST0(context, ByteCodeOp::LocalCall);
         SWAG_ASSERT(bc || (funcDecl && funcDecl->hasExtByteCode() && funcDecl->extByteCode()->bc));
         auto bcReal     = bc ? bc : funcDecl->extByteCode()->bc;
         bcReal->isUsed  = true;
@@ -78,7 +78,7 @@ void ByteCodeGenJob::emitOpCallUser(ByteCodeGenContext* context, AstFuncDecl* fu
         inst->b.pointer = numParams == 1 ? (uint8_t*) g_TypeMgr->typeInfoOpCall : (uint8_t*) g_TypeMgr->typeInfoOpCall2;
     }
 
-    emitInstruction(context, ByteCodeOp::IncSPPostCall, numParams * 8);
+    EMIT_INST1(context, ByteCodeOp::IncSPPostCall, numParams * 8);
 }
 
 void ByteCodeGenJob::generateStructAlloc(ByteCodeGenContext* context, TypeInfoStruct* typeInfoStruct)
@@ -414,18 +414,18 @@ void ByteCodeGenJob::emitOpCallUserArrayOfStruct(ByteCodeGenContext* context, Ty
     if (typeArray->totalCount == 1)
     {
         if (!pushParam)
-            emitInstruction(context, ByteCodeOp::PushRAParam, 0);
+            EMIT_INST1(context, ByteCodeOp::PushRAParam, 0);
         emitOpCallUser(context, typeStructVar, kind, pushParam, offset);
     }
     else if (typeArray->totalCount == 2)
     {
         if (!pushParam)
-            emitInstruction(context, ByteCodeOp::PushRAParam, 0);
+            EMIT_INST1(context, ByteCodeOp::PushRAParam, 0);
         emitOpCallUser(context, typeStructVar, kind, pushParam, offset);
-        auto inst = emitInstruction(context, ByteCodeOp::IncPointer64, 0, 0, 0);
+        auto inst = EMIT_INST0(context, ByteCodeOp::IncPointer64);
         inst->flags |= BCI_IMM_B;
         inst->b.u64 = typeStructVar->sizeOf;
-        emitInstruction(context, ByteCodeOp::PushRAParam, 0);
+        EMIT_INST1(context, ByteCodeOp::PushRAParam, 0);
         emitOpCallUser(context, typeStructVar, kind, false);
     }
     else
@@ -433,10 +433,10 @@ void ByteCodeGenJob::emitOpCallUserArrayOfStruct(ByteCodeGenContext* context, Ty
         // Reference to the field
         if (pushParam)
         {
-            emitInstruction(context, ByteCodeOp::GetParam64, 0, 24);
+            EMIT_INST2(context, ByteCodeOp::GetParam64, 0, 24);
             if (offset)
             {
-                auto inst   = emitInstruction(context, ByteCodeOp::IncPointer64, 0, 0, 0);
+                auto inst   = EMIT_INST0(context, ByteCodeOp::IncPointer64);
                 inst->b.u64 = offset;
                 inst->flags |= BCI_IMM_B;
             }
@@ -445,19 +445,19 @@ void ByteCodeGenJob::emitOpCallUserArrayOfStruct(ByteCodeGenContext* context, Ty
         // Need to loop on every element of the array
         RegisterList r0 = reserveRegisterRC(context);
 
-        auto inst     = emitInstruction(context, ByteCodeOp::SetImmediate32, r0);
+        auto inst     = EMIT_INST1(context, ByteCodeOp::SetImmediate32, r0);
         inst->b.u64   = typeArray->totalCount;
         auto seekJump = context->bc->numInstructions;
 
-        emitInstruction(context, ByteCodeOp::PushRAParam, 0);
+        EMIT_INST1(context, ByteCodeOp::PushRAParam, 0);
         emitOpCallUser(context, typeStructVar, kind, false);
 
-        inst = emitInstruction(context, ByteCodeOp::IncPointer64, 0, 0, 0);
+        inst = EMIT_INST0(context, ByteCodeOp::IncPointer64);
         inst->flags |= BCI_IMM_B;
         inst->b.u64 = typeStructVar->sizeOf;
 
-        emitInstruction(context, ByteCodeOp::DecrementRA32, r0);
-        emitInstruction(context, ByteCodeOp::JumpIfNotZero32, r0)->b.s32 = seekJump - context->bc->numInstructions - 1;
+        EMIT_INST1(context, ByteCodeOp::DecrementRA32, r0);
+        EMIT_INST1(context, ByteCodeOp::JumpIfNotZero32, r0)->b.s32 = seekJump - context->bc->numInstructions - 1;
 
         freeRegisterRC(context, r0);
     }
@@ -589,8 +589,8 @@ bool ByteCodeGenJob::generateStruct_opInit(ByteCodeGenContext* context, TypeInfo
     // All fields are explicitly not initialized, so we are done, function is empty
     if (typeInfoStruct->flags & TYPEINFO_STRUCT_ALL_UNINITIALIZED)
     {
-        emitInstruction(&cxt, ByteCodeOp::Ret);
-        emitInstruction(&cxt, ByteCodeOp::End);
+        EMIT_INST0(&cxt, ByteCodeOp::Ret);
+        EMIT_INST0(&cxt, ByteCodeOp::End);
         if (structNode->attributeFlags & ATTRIBUTE_PRINT_BC)
         {
             ScopedLock lk1(cxt.bc->sourceFile->module->mutexByteCode);
@@ -602,10 +602,10 @@ bool ByteCodeGenJob::generateStruct_opInit(ByteCodeGenContext* context, TypeInfo
     // No special value, so we can just clear the struct
     if (!(typeInfoStruct->flags & TYPEINFO_STRUCT_HAS_INIT_VALUES))
     {
-        emitInstruction(&cxt, ByteCodeOp::GetParam64, 0, 24);
+        EMIT_INST2(&cxt, ByteCodeOp::GetParam64, 0, 24);
         emitSetZeroAtPointer(&cxt, typeInfoStruct->sizeOf, 0);
-        emitInstruction(&cxt, ByteCodeOp::Ret);
-        emitInstruction(&cxt, ByteCodeOp::End);
+        EMIT_INST0(&cxt, ByteCodeOp::Ret);
+        EMIT_INST0(&cxt, ByteCodeOp::End);
         if (structNode->attributeFlags & ATTRIBUTE_PRINT_BC)
         {
             ScopedLock lk1(cxt.bc->sourceFile->module->mutexByteCode);
@@ -620,10 +620,10 @@ bool ByteCodeGenJob::generateStruct_opInit(ByteCodeGenContext* context, TypeInfo
         auto typeVar = TypeManager::concreteType(param->typeInfo);
 
         // Reference to the field
-        emitInstruction(&cxt, ByteCodeOp::GetParam64, 0, 24);
+        EMIT_INST2(&cxt, ByteCodeOp::GetParam64, 0, 24);
         if (param->offset)
         {
-            auto inst = emitInstruction(&cxt, ByteCodeOp::IncPointer64, 0, 0, 0);
+            auto inst = EMIT_INST0(&cxt, ByteCodeOp::IncPointer64);
             SWAG_ASSERT(param->offset != 0xFFFFFFFF);
             inst->b.u64 = param->offset;
             inst->flags |= BCI_IMM_B;
@@ -662,7 +662,7 @@ bool ByteCodeGenJob::generateStruct_opInit(ByteCodeGenContext* context, TypeInfo
                         auto storageOffset  = storageSegment->addString(varDecl->assignment->computedValue->text);
                         SWAG_ASSERT(storageOffset != UINT32_MAX);
                         emitMakeSegPointer(&cxt, storageSegment, storageOffset, 1);
-                        emitInstruction(&cxt, ByteCodeOp::SetImmediate64, 2)->b.u64 = varDecl->assignment->computedValue->text.length();
+                        EMIT_INST1(&cxt, ByteCodeOp::SetImmediate64, 2)->b.u64 = varDecl->assignment->computedValue->text.length();
                         RegisterList r1;
                         r1 += 1;
                         r1 += 2;
@@ -671,7 +671,7 @@ bool ByteCodeGenJob::generateStruct_opInit(ByteCodeGenContext* context, TypeInfo
                     else
                     {
                         RegisterList r1   = 1;
-                        auto         inst = emitInstruction(&cxt, ByteCodeOp::SetImmediate64, 1);
+                        auto         inst = EMIT_INST1(&cxt, ByteCodeOp::SetImmediate64, 1);
                         inst->b.u64       = varDecl->assignment->computedValue->reg.u64;
                         emitCopyArray(&cxt, typeVar, r0, r1, varDecl->assignment);
                     }
@@ -683,9 +683,9 @@ bool ByteCodeGenJob::generateStruct_opInit(ByteCodeGenContext* context, TypeInfo
                 auto storageOffset  = storageSegment->addString(varDecl->assignment->computedValue->text);
                 SWAG_ASSERT(storageOffset != UINT32_MAX);
                 emitMakeSegPointer(&cxt, storageSegment, storageOffset, 1);
-                emitInstruction(&cxt, ByteCodeOp::SetImmediate64, 2)->b.u64 = varDecl->assignment->computedValue->text.length();
-                emitInstruction(&cxt, ByteCodeOp::SetAtPointer64, 0, 1);
-                emitInstruction(&cxt, ByteCodeOp::SetAtPointer64, 0, 2)->c.u32 = 8;
+                EMIT_INST1(&cxt, ByteCodeOp::SetImmediate64, 2)->b.u64 = varDecl->assignment->computedValue->text.length();
+                EMIT_INST2(&cxt, ByteCodeOp::SetAtPointer64, 0, 1);
+                EMIT_INST2(&cxt, ByteCodeOp::SetAtPointer64, 0, 2)->c.u32 = 8;
             }
             // :opAffectConstExpr
             else if (typeVar->isStruct() &&
@@ -706,20 +706,20 @@ bool ByteCodeGenJob::generateStruct_opInit(ByteCodeGenContext* context, TypeInfo
                 switch (typeVar->sizeOf)
                 {
                 case 1:
-                    emitInstruction(&cxt, ByteCodeOp::SetImmediate32, 1)->b.u64 = varDecl->assignment->computedValue->reg.u8;
-                    emitInstruction(&cxt, ByteCodeOp::SetAtPointer8, 0, 1);
+                    EMIT_INST1(&cxt, ByteCodeOp::SetImmediate32, 1)->b.u64 = varDecl->assignment->computedValue->reg.u8;
+                    EMIT_INST2(&cxt, ByteCodeOp::SetAtPointer8, 0, 1);
                     break;
                 case 2:
-                    emitInstruction(&cxt, ByteCodeOp::SetImmediate32, 1)->b.u64 = varDecl->assignment->computedValue->reg.u16;
-                    emitInstruction(&cxt, ByteCodeOp::SetAtPointer16, 0, 1);
+                    EMIT_INST1(&cxt, ByteCodeOp::SetImmediate32, 1)->b.u64 = varDecl->assignment->computedValue->reg.u16;
+                    EMIT_INST2(&cxt, ByteCodeOp::SetAtPointer16, 0, 1);
                     break;
                 case 4:
-                    emitInstruction(&cxt, ByteCodeOp::SetImmediate32, 1)->b.u64 = varDecl->assignment->computedValue->reg.u32;
-                    emitInstruction(&cxt, ByteCodeOp::SetAtPointer32, 0, 1);
+                    EMIT_INST1(&cxt, ByteCodeOp::SetImmediate32, 1)->b.u64 = varDecl->assignment->computedValue->reg.u32;
+                    EMIT_INST2(&cxt, ByteCodeOp::SetAtPointer32, 0, 1);
                     break;
                 case 8:
-                    emitInstruction(&cxt, ByteCodeOp::SetImmediate64, 1)->b.u64 = varDecl->assignment->computedValue->reg.u64;
-                    emitInstruction(&cxt, ByteCodeOp::SetAtPointer64, 0, 1);
+                    EMIT_INST1(&cxt, ByteCodeOp::SetImmediate64, 1)->b.u64 = varDecl->assignment->computedValue->reg.u64;
+                    EMIT_INST2(&cxt, ByteCodeOp::SetAtPointer64, 0, 1);
                     break;
                 default:
                     return Report::internalError(varDecl, "generateStructInit, invalid native type sizeof");
@@ -743,7 +743,7 @@ bool ByteCodeGenJob::generateStruct_opInit(ByteCodeGenContext* context, TypeInfo
         {
             auto typeVarStruct = CastTypeInfo<TypeInfoStruct>(typeVar, TypeInfoKind::Struct);
             SWAG_ASSERT(typeVarStruct->opInit || typeVarStruct->opUserInitFct);
-            emitInstruction(&cxt, ByteCodeOp::PushRAParam, 0);
+            EMIT_INST1(&cxt, ByteCodeOp::PushRAParam, 0);
             emitOpCallUser(&cxt, typeVarStruct->opUserInitFct, typeVarStruct->opInit, false);
         }
         else
@@ -752,8 +752,8 @@ bool ByteCodeGenJob::generateStruct_opInit(ByteCodeGenContext* context, TypeInfo
         }
     }
 
-    emitInstruction(&cxt, ByteCodeOp::Ret);
-    emitInstruction(&cxt, ByteCodeOp::End);
+    EMIT_INST0(&cxt, ByteCodeOp::Ret);
+    EMIT_INST0(&cxt, ByteCodeOp::End);
 
     if (structNode->attributeFlags & ATTRIBUTE_PRINT_BC)
     {
@@ -859,8 +859,8 @@ bool ByteCodeGenJob::generateStruct_opDrop(ByteCodeGenContext* context, TypeInfo
     // Call for each field
     emitOpCallUserFields(&cxt, typeInfoStruct, EmitOpUserKind::Drop);
 
-    emitInstruction(&cxt, ByteCodeOp::Ret);
-    emitInstruction(&cxt, ByteCodeOp::End);
+    EMIT_INST0(&cxt, ByteCodeOp::Ret);
+    EMIT_INST0(&cxt, ByteCodeOp::End);
 
     if (structNode->attributeFlags & ATTRIBUTE_PRINT_BC)
     {
@@ -968,8 +968,8 @@ bool ByteCodeGenJob::generateStruct_opPostCopy(ByteCodeGenContext* context, Type
     // Then call user function if defined
     emitOpCallUser(&cxt, typeInfoStruct->opUserPostCopyFct);
 
-    emitInstruction(&cxt, ByteCodeOp::Ret);
-    emitInstruction(&cxt, ByteCodeOp::End);
+    EMIT_INST0(&cxt, ByteCodeOp::Ret);
+    EMIT_INST0(&cxt, ByteCodeOp::End);
 
     if (structNode->attributeFlags & ATTRIBUTE_PRINT_BC)
     {
@@ -1075,8 +1075,8 @@ bool ByteCodeGenJob::generateStruct_opPostMove(ByteCodeGenContext* context, Type
     // Then call user function if defined
     emitOpCallUser(&cxt, typeInfoStruct->opUserPostMoveFct);
 
-    emitInstruction(&cxt, ByteCodeOp::Ret);
-    emitInstruction(&cxt, ByteCodeOp::End);
+    EMIT_INST0(&cxt, ByteCodeOp::Ret);
+    EMIT_INST0(&cxt, ByteCodeOp::End);
 
     if (structNode->attributeFlags & ATTRIBUTE_PRINT_BC)
     {
@@ -1127,7 +1127,7 @@ bool ByteCodeGenJob::emitCopyStruct(ByteCodeGenContext* context, RegisterList& r
         bool mustDrop = (from->flags & AST_NO_LEFT_DROP) ? false : true;
         if (mustDrop)
         {
-            emitInstruction(context, ByteCodeOp::PushRAParam, r0);
+            EMIT_INST1(context, ByteCodeOp::PushRAParam, r0);
             emitOpCallUser(context, typeInfoStruct->opUserDropFct, typeInfoStruct->opDrop, false);
         }
     }
@@ -1150,7 +1150,7 @@ bool ByteCodeGenJob::emitCopyStruct(ByteCodeGenContext* context, RegisterList& r
         PushICFlags sf(context, BCI_POST_COPYMOVE);
         if (typeInfoStruct->opPostCopy || typeInfoStruct->opUserPostCopyFct)
         {
-            emitInstruction(context, ByteCodeOp::PushRAParam, r0);
+            EMIT_INST1(context, ByteCodeOp::PushRAParam, r0);
             emitOpCallUser(context, typeInfoStruct->opUserPostCopyFct, typeInfoStruct->opPostCopy, false);
         }
     }
@@ -1161,7 +1161,7 @@ bool ByteCodeGenJob::emitCopyStruct(ByteCodeGenContext* context, RegisterList& r
         PushICFlags sf(context, BCI_POST_COPYMOVE);
         if (typeInfoStruct->opPostMove || typeInfoStruct->opUserPostMoveFct)
         {
-            emitInstruction(context, ByteCodeOp::PushRAParam, r0);
+            EMIT_INST1(context, ByteCodeOp::PushRAParam, r0);
             emitOpCallUser(context, typeInfoStruct->opUserPostMoveFct, typeInfoStruct->opPostMove, false);
         }
 
@@ -1188,7 +1188,7 @@ bool ByteCodeGenJob::emitCopyStruct(ByteCodeGenContext* context, RegisterList& r
         {
             if ((typeInfoStruct->opInit || typeInfoStruct->opUserInitFct) && (typeInfoStruct->flags & TYPEINFO_STRUCT_HAS_INIT_VALUES))
             {
-                emitInstruction(context, ByteCodeOp::PushRAParam, r1);
+                EMIT_INST1(context, ByteCodeOp::PushRAParam, r1);
                 emitOpCallUser(context, typeInfoStruct->opUserInitFct, typeInfoStruct->opInit, false);
             }
             else
@@ -1209,13 +1209,13 @@ void ByteCodeGenJob::emitRetValRef(ByteCodeGenContext* context, SymbolOverload* 
         auto overload = node->resolvedSymbolOverload;
         SWAG_ASSERT(overload);
         if (overload->node->ownerInline && overload->node->ownerInline->resultRegisterRC.countResults)
-            emitInstruction(context, ByteCodeOp::CopyRBtoRA64, r0, overload->node->ownerInline->resultRegisterRC);
+            EMIT_INST2(context, ByteCodeOp::CopyRBtoRA64, r0, overload->node->ownerInline->resultRegisterRC);
         else
-            emitInstruction(context, ByteCodeOp::CopyRRtoRC, r0);
+            EMIT_INST1(context, ByteCodeOp::CopyRRtoRC, r0);
     }
     else
     {
-        auto inst = emitInstruction(context, ByteCodeOp::MakeStackPointer, r0);
+        auto inst = EMIT_INST1(context, ByteCodeOp::MakeStackPointer, r0);
         SWAG_ASSERT(stackOffset != UINT32_MAX);
         inst->b.s32     = stackOffset;
         inst->c.pointer = (uint8_t*) resolved;
@@ -1243,7 +1243,7 @@ bool ByteCodeGenJob::emitStructInit(ByteCodeGenContext* context, TypeInfoStruct*
         }
         else
         {
-            auto inst = emitInstruction(context, ByteCodeOp::SetZeroStackX);
+            auto inst = EMIT_INST0(context, ByteCodeOp::SetZeroStackX);
             SWAG_ASSERT(resolved->computedValue.storageOffset != UINT32_MAX);
             inst->a.u32 = resolved->computedValue.storageOffset;
             inst->b.u64 = typeInfoStruct->sizeOf;
@@ -1257,11 +1257,11 @@ bool ByteCodeGenJob::emitStructInit(ByteCodeGenContext* context, TypeInfoStruct*
 
         // Offset variable reference
         if (regOffset != UINT32_MAX)
-            emitInstruction(context, ByteCodeOp::IncPointer64, r0, regOffset, r0);
+            EMIT_INST3(context, ByteCodeOp::IncPointer64, r0, regOffset, r0);
 
         // Then call
         SWAG_ASSERT(typeInfoStruct->opInit || typeInfoStruct->opUserInitFct);
-        emitInstruction(context, ByteCodeOp::PushRAParam, r0);
+        EMIT_INST1(context, ByteCodeOp::PushRAParam, r0);
         emitOpCallUser(context, typeInfoStruct->opUserInitFct, typeInfoStruct->opInit, false);
         freeRegisterRC(context, r0);
     }
@@ -1300,14 +1300,14 @@ void ByteCodeGenJob::emitStructParameters(ByteCodeGenContext* context, uint32_t 
                 emitRetValRef(context, resolved, r0, retVal, resolved->computedValue.storageOffset + typeParam->offset);
                 if (retVal && typeParam->offset)
                 {
-                    auto inst = emitInstruction(context, ByteCodeOp::IncPointer64, r0, 0, r0);
+                    auto inst = EMIT_INST3(context, ByteCodeOp::IncPointer64, r0, 0, r0);
                     SWAG_ASSERT(typeParam->offset != 0xFFFFFFFF);
                     inst->b.u64 = typeParam->offset;
                     inst->flags |= BCI_IMM_B;
                 }
 
                 if (regOffset != UINT32_MAX)
-                    emitInstruction(context, ByteCodeOp::IncPointer64, r0, regOffset, r0);
+                    EMIT_INST3(context, ByteCodeOp::IncPointer64, r0, regOffset, r0);
 
                 child->flags |= AST_NO_LEFT_DROP;
 
@@ -1423,7 +1423,7 @@ bool ByteCodeGenJob::emitInit(ByteCodeGenContext* context, TypeInfoPointer* type
             else
             {
                 SWAG_ASSERT(count);
-                emitInstruction(context, ByteCodeOp::SetZeroAtPointerXRB, rExpr, count->resultRegisterRC)->c.u64 = sizeToClear;
+                EMIT_INST2(context, ByteCodeOp::SetZeroAtPointerXRB, rExpr, count->resultRegisterRC)->c.u64 = sizeToClear;
             }
         }
     }
@@ -1443,7 +1443,7 @@ bool ByteCodeGenJob::emitInit(ByteCodeGenContext* context, TypeInfoPointer* type
             if (numToInit > 1)
             {
                 regCount    = reserveRegisterRC(context);
-                auto inst   = emitInstruction(context, ByteCodeOp::SetImmediate64, regCount);
+                auto inst   = EMIT_INST1(context, ByteCodeOp::SetImmediate64, regCount);
                 inst->b.u64 = numToInit;
             }
 
@@ -1455,21 +1455,21 @@ bool ByteCodeGenJob::emitInit(ByteCodeGenContext* context, TypeInfoPointer* type
             if (numToInit == 0)
             {
                 jumpAfter = context->bc->numInstructions;
-                emitInstruction(context, ByteCodeOp::JumpIfZero64, count->resultRegisterRC);
-                emitInstruction(context, ByteCodeOp::DecrementRA64, count->resultRegisterRC);
+                EMIT_INST1(context, ByteCodeOp::JumpIfZero64, count->resultRegisterRC);
+                EMIT_INST1(context, ByteCodeOp::DecrementRA64, count->resultRegisterRC);
             }
 
-            emitInstruction(context, ByteCodeOp::PushRAParam, rExpr);
+            EMIT_INST1(context, ByteCodeOp::PushRAParam, rExpr);
             SWAG_ASSERT(typeStruct->opInit || typeStruct->opUserInitFct);
             emitOpCallUser(context, typeStruct->opUserInitFct, typeStruct->opInit, false);
 
             // Dynamic loop
             if (numToInit == 0)
             {
-                auto inst = emitInstruction(context, ByteCodeOp::IncPointer64, rExpr, 0, rExpr);
+                auto inst = EMIT_INST3(context, ByteCodeOp::IncPointer64, rExpr, 0, rExpr);
                 inst->flags |= BCI_IMM_B;
                 inst->b.u64                       = typeStruct->sizeOf;
-                auto instJump                     = emitInstruction(context, ByteCodeOp::Jump);
+                auto instJump                     = EMIT_INST0(context, ByteCodeOp::Jump);
                 instJump->b.s32                   = startLoop - context->bc->numInstructions;
                 context->bc->out[jumpAfter].b.s32 = context->bc->numInstructions - jumpAfter - 1;
             }
@@ -1477,11 +1477,11 @@ bool ByteCodeGenJob::emitInit(ByteCodeGenContext* context, TypeInfoPointer* type
             // Constant loop
             else if (numToInit > 1)
             {
-                auto inst = emitInstruction(context, ByteCodeOp::IncPointer64, rExpr, 0, rExpr);
+                auto inst = EMIT_INST3(context, ByteCodeOp::IncPointer64, rExpr, 0, rExpr);
                 inst->flags |= BCI_IMM_B;
                 inst->b.u64 = typeStruct->sizeOf;
-                emitInstruction(context, ByteCodeOp::DecrementRA64, regCount);
-                auto instJump   = emitInstruction(context, ByteCodeOp::JumpIfNotZero64, regCount);
+                EMIT_INST1(context, ByteCodeOp::DecrementRA64, regCount);
+                auto instJump   = EMIT_INST1(context, ByteCodeOp::JumpIfNotZero64, regCount);
                 instJump->b.s32 = startLoop - context->bc->numInstructions;
                 freeRegisterRC(context, regCount);
             }
@@ -1497,8 +1497,8 @@ bool ByteCodeGenJob::emitInit(ByteCodeGenContext* context, TypeInfoPointer* type
         if (numToInit != 1)
         {
             jumpAfter = context->bc->numInstructions;
-            emitInstruction(context, ByteCodeOp::JumpIfZero64, count->resultRegisterRC);
-            emitInstruction(context, ByteCodeOp::DecrementRA64, count->resultRegisterRC);
+            EMIT_INST1(context, ByteCodeOp::JumpIfZero64, count->resultRegisterRC);
+            EMIT_INST1(context, ByteCodeOp::DecrementRA64, count->resultRegisterRC);
         }
 
         SWAG_CHECK(emitAffectEqual(context, rExpr, child->resultRegisterRC, child->typeInfo, child));
@@ -1506,11 +1506,11 @@ bool ByteCodeGenJob::emitInit(ByteCodeGenContext* context, TypeInfoPointer* type
 
         if (numToInit != 1)
         {
-            auto inst = emitInstruction(context, ByteCodeOp::IncPointer64, rExpr, 0, rExpr);
+            auto inst = EMIT_INST3(context, ByteCodeOp::IncPointer64, rExpr, 0, rExpr);
             inst->flags |= BCI_IMM_B;
             inst->b.u64 = typeExpression->pointedType->sizeOf;
 
-            auto instJump                     = emitInstruction(context, ByteCodeOp::Jump);
+            auto instJump                     = EMIT_INST0(context, ByteCodeOp::Jump);
             instJump->b.s32                   = startLoop - context->bc->numInstructions;
             context->bc->out[jumpAfter].b.s32 = context->bc->numInstructions - jumpAfter - 1;
         }
@@ -1527,28 +1527,28 @@ bool ByteCodeGenJob::emitInit(ByteCodeGenContext* context, TypeInfoPointer* type
         if (numToInit != 1)
         {
             jumpAfter = context->bc->numInstructions;
-            emitInstruction(context, ByteCodeOp::JumpIfZero64, count->resultRegisterRC);
-            emitInstruction(context, ByteCodeOp::DecrementRA64, count->resultRegisterRC);
+            EMIT_INST1(context, ByteCodeOp::JumpIfZero64, count->resultRegisterRC);
+            EMIT_INST1(context, ByteCodeOp::DecrementRA64, count->resultRegisterRC);
         }
 
         for (auto child : parameters->childs)
         {
             auto param     = CastAst<AstFuncCallParam>(child, AstNodeKind::FuncCallParam);
             auto typeParam = param->resolvedParameter;
-            emitInstruction(context, ByteCodeOp::CopyRBtoRA64, r1, rExpr);
+            EMIT_INST2(context, ByteCodeOp::CopyRBtoRA64, r1, rExpr);
             if (typeParam->offset)
-                emitInstruction(context, ByteCodeOp::Add64byVB64, r1)->b.u64 = typeParam->offset;
+                EMIT_INST1(context, ByteCodeOp::Add64byVB64, r1)->b.u64 = typeParam->offset;
             emitAffectEqual(context, r1, child->resultRegisterRC, child->typeInfo, child);
             SWAG_ASSERT(context->result == ContextResult::Done);
         }
 
         if (numToInit != 1)
         {
-            auto inst   = emitInstruction(context, ByteCodeOp::IncPointer64, rExpr, 0, rExpr);
+            auto inst   = EMIT_INST3(context, ByteCodeOp::IncPointer64, rExpr, 0, rExpr);
             inst->b.u64 = typeExpression->pointedType->sizeOf;
             inst->flags |= BCI_IMM_B;
 
-            auto instJump                     = emitInstruction(context, ByteCodeOp::Jump);
+            auto instJump                     = EMIT_INST0(context, ByteCodeOp::Jump);
             instJump->b.s32                   = startLoop - context->bc->numInstructions;
             context->bc->out[jumpAfter].b.s32 = context->bc->numInstructions - jumpAfter - 1;
         }
@@ -1630,11 +1630,11 @@ bool ByteCodeGenJob::emitDropCopyMove(ByteCodeGenContext* context)
         if (numToDo != 1)
         {
             jumpAfter = context->bc->numInstructions;
-            emitInstruction(context, ByteCodeOp::JumpIfZero64, node->count->resultRegisterRC);
-            emitInstruction(context, ByteCodeOp::DecrementRA64, node->count->resultRegisterRC);
+            EMIT_INST1(context, ByteCodeOp::JumpIfZero64, node->count->resultRegisterRC);
+            EMIT_INST1(context, ByteCodeOp::DecrementRA64, node->count->resultRegisterRC);
         }
 
-        emitInstruction(context, ByteCodeOp::PushRAParam, node->expression->resultRegisterRC);
+        EMIT_INST1(context, ByteCodeOp::PushRAParam, node->expression->resultRegisterRC);
 
         switch (node->kind)
         {
@@ -1651,10 +1651,10 @@ bool ByteCodeGenJob::emitDropCopyMove(ByteCodeGenContext* context)
 
         if (numToDo != 1)
         {
-            auto inst   = emitInstruction(context, ByteCodeOp::IncPointer64, node->expression->resultRegisterRC, 0, node->expression->resultRegisterRC);
+            auto inst   = EMIT_INST3(context, ByteCodeOp::IncPointer64, node->expression->resultRegisterRC, 0, node->expression->resultRegisterRC);
             inst->b.u64 = typeExpression->pointedType->sizeOf;
             inst->flags |= BCI_IMM_B;
-            auto instJump                     = emitInstruction(context, ByteCodeOp::Jump);
+            auto instJump                     = EMIT_INST0(context, ByteCodeOp::Jump);
             instJump->b.s32                   = startLoop - context->bc->numInstructions;
             context->bc->out[jumpAfter].b.s32 = context->bc->numInstructions - jumpAfter - 1;
         }

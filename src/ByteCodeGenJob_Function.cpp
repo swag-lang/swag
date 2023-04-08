@@ -26,7 +26,7 @@ bool ByteCodeGenJob::emitLocalFuncDecl(ByteCodeGenContext* context)
         return true;
 
     emitDebugLine(context);
-    emitInstruction(context, ByteCodeOp::Ret)->a.u32 = funcDecl->stackSize;
+    EMIT_INST0(context, ByteCodeOp::Ret)->a.u32 = funcDecl->stackSize;
 
     return true;
 }
@@ -140,14 +140,14 @@ bool ByteCodeGenJob::emitReturn(ByteCodeGenContext* context)
                     if (typeBlock->fields.size())
                     {
                         auto r1 = reserveRegisterRC(context);
-                        emitInstruction(context, ByteCodeOp::CopyRBtoRA64, r1, node->ownerInline->resultRegisterRC);
-                        emitInstruction(context, ByteCodeOp::Add64byVB64, r1)->b.u64 = 2 * sizeof(void*);
+                        EMIT_INST2(context, ByteCodeOp::CopyRBtoRA64, r1, node->ownerInline->resultRegisterRC);
+                        EMIT_INST1(context, ByteCodeOp::Add64byVB64, r1)->b.u64 = 2 * sizeof(void*);
                         emitMemCpy(context, r1, returnExpression->resultRegisterRC[1], typeBlock->sizeOf);
                         freeRegisterRC(context, r1);
                     }
 
-                    emitInstruction(context, ByteCodeOp::SetAtPointer64, node->ownerInline->resultRegisterRC, returnExpression->resultRegisterRC[0]);
-                    auto inst = emitInstruction(context, ByteCodeOp::SetAtPointer64, node->ownerInline->resultRegisterRC);
+                    EMIT_INST2(context, ByteCodeOp::SetAtPointer64, node->ownerInline->resultRegisterRC, returnExpression->resultRegisterRC[0]);
+                    auto inst = EMIT_INST1(context, ByteCodeOp::SetAtPointer64, node->ownerInline->resultRegisterRC);
                     inst->flags |= BCI_IMM_B;
                     inst->b.u32 = 1; // <> 0 for closure, 0 for lambda
                     inst->c.u32 = sizeof(void*);
@@ -165,7 +165,7 @@ bool ByteCodeGenJob::emitReturn(ByteCodeGenContext* context)
                 {
                     auto sizeChilds = child->resultRegisterRC.size();
                     for (int r = 0; r < sizeChilds; r++)
-                        emitInstruction(context, ByteCodeOp::CopyRBtoRA64, node->ownerInline->resultRegisterRC[r], child->resultRegisterRC[r]);
+                        EMIT_INST2(context, ByteCodeOp::CopyRBtoRA64, node->ownerInline->resultRegisterRC[r], child->resultRegisterRC[r]);
                     freeRegisterRC(context, child);
                 }
             }
@@ -181,7 +181,7 @@ bool ByteCodeGenJob::emitReturn(ByteCodeGenContext* context)
                 // Force raw copy (no drop on the left, i.e. the argument to return the result) because it has not been initialized
                 returnExpression->flags |= AST_NO_LEFT_DROP;
                 RegisterList r0 = reserveRegisterRC(context);
-                emitInstruction(context, ByteCodeOp::CopyRRtoRC, r0);
+                EMIT_INST1(context, ByteCodeOp::CopyRRtoRC, r0);
                 SWAG_CHECK(emitCopyStruct(context, r0, returnExpression->resultRegisterRC, returnType, returnExpression));
                 freeRegisterRC(context, r0);
                 freeRegisterRC(context, returnExpression->resultRegisterRC);
@@ -191,7 +191,7 @@ bool ByteCodeGenJob::emitReturn(ByteCodeGenContext* context)
                 // Force raw copy (no drop on the left, i.e. the argument to return the result) because it has not been initialized
                 returnExpression->flags |= AST_NO_LEFT_DROP;
                 RegisterList r1 = reserveRegisterRC(context);
-                emitInstruction(context, ByteCodeOp::CopyRRtoRC, r1);
+                EMIT_INST1(context, ByteCodeOp::CopyRRtoRC, r1);
                 SWAG_CHECK(emitCopyArray(context, returnType, r1, returnExpression->resultRegisterRC, returnExpression));
                 freeRegisterRC(context, r1);
                 freeRegisterRC(context, returnExpression->resultRegisterRC);
@@ -200,8 +200,8 @@ bool ByteCodeGenJob::emitReturn(ByteCodeGenContext* context)
             {
                 auto child = node->childs.front();
                 if (funcNode->attributeFlags & ATTRIBUTE_AST_FUNC)
-                    emitInstruction(context, ByteCodeOp::CloneString, child->resultRegisterRC[0], child->resultRegisterRC[1]);
-                emitInstruction(context, ByteCodeOp::CopyRCtoRR2, child->resultRegisterRC[0], child->resultRegisterRC[1]);
+                    EMIT_INST2(context, ByteCodeOp::CloneString, child->resultRegisterRC[0], child->resultRegisterRC[1]);
+                EMIT_INST2(context, ByteCodeOp::CopyRCtoRR2, child->resultRegisterRC[0], child->resultRegisterRC[1]);
                 freeRegisterRC(context, child->resultRegisterRC);
             }
             else if (returnType->isClosure())
@@ -209,13 +209,13 @@ bool ByteCodeGenJob::emitReturn(ByteCodeGenContext* context)
                 auto child = node->childs.front();
 
                 RegisterList r1 = reserveRegisterRC(context);
-                emitInstruction(context, ByteCodeOp::CopyRRtoRC, r1);
+                EMIT_INST1(context, ByteCodeOp::CopyRRtoRC, r1);
 
                 // :ConvertToClosure
                 if (child->kind == AstNodeKind::MakePointerLambda)
                 {
-                    emitInstruction(context, ByteCodeOp::SetAtPointer64, r1, child->resultRegisterRC[0]);
-                    auto inst = emitInstruction(context, ByteCodeOp::SetAtPointer64, r1);
+                    EMIT_INST2(context, ByteCodeOp::SetAtPointer64, r1, child->resultRegisterRC[0]);
+                    auto inst = EMIT_INST1(context, ByteCodeOp::SetAtPointer64, r1);
                     inst->flags |= BCI_IMM_B;
                     inst->b.u32 = 1; // <> 0 for closure, 0 for lambda
                     inst->c.u32 = sizeof(void*);
@@ -226,7 +226,7 @@ bool ByteCodeGenJob::emitReturn(ByteCodeGenContext* context)
                     auto typeBlock = CastTypeInfo<TypeInfoStruct>(nodeCapture->childs.back()->typeInfo, TypeInfoKind::Struct);
                     if (typeBlock->fields.size())
                     {
-                        emitInstruction(context, ByteCodeOp::Add64byVB64, r1)->b.u64 = 2 * sizeof(void*);
+                        EMIT_INST1(context, ByteCodeOp::Add64byVB64, r1)->b.u64 = 2 * sizeof(void*);
                         emitMemCpy(context, r1, child->resultRegisterRC[1], typeBlock->sizeOf);
                     }
                 }
@@ -246,9 +246,9 @@ bool ByteCodeGenJob::emitReturn(ByteCodeGenContext* context)
                 auto numRetReg = returnType->numRegisters();
                 SWAG_ASSERT(numRetReg <= 2);
                 if (numRetReg == 1)
-                    emitInstruction(context, ByteCodeOp::CopyRCtoRR, child->resultRegisterRC[0]);
+                    EMIT_INST1(context, ByteCodeOp::CopyRCtoRR, child->resultRegisterRC[0]);
                 else if (numRetReg == 2)
-                    emitInstruction(context, ByteCodeOp::CopyRCtoRR2, child->resultRegisterRC[0], child->resultRegisterRC[1]);
+                    EMIT_INST2(context, ByteCodeOp::CopyRCtoRR2, child->resultRegisterRC[0], child->resultRegisterRC[1]);
                 freeRegisterRC(context, child->resultRegisterRC);
             }
         }
@@ -265,12 +265,12 @@ bool ByteCodeGenJob::emitReturn(ByteCodeGenContext* context)
     if (node->ownerInline && (node->semFlags & SEMFLAG_EMBEDDED_RETURN))
     {
         node->seekJump = context->bc->numInstructions;
-        emitInstruction(context, ByteCodeOp::Jump);
+        EMIT_INST0(context, ByteCodeOp::Jump);
         node->ownerInline->returnList.push_back(node);
     }
     else
     {
-        emitInstruction(context, ByteCodeOp::Ret)->a.u32 = funcNode->stackSize;
+        EMIT_INST0(context, ByteCodeOp::Ret)->a.u32 = funcNode->stackSize;
     }
 
     return true;
@@ -281,7 +281,7 @@ bool ByteCodeGenJob::emitIntrinsicCVaStart(ByteCodeGenContext* context)
     auto node      = context->node;
     auto childDest = node->childs[0];
 
-    auto inst = emitInstruction(context, ByteCodeOp::IntrinsicCVaStart, childDest->resultRegisterRC);
+    auto inst = EMIT_INST1(context, ByteCodeOp::IntrinsicCVaStart, childDest->resultRegisterRC);
     SWAG_ASSERT(node->ownerFct);
     SWAG_ASSERT(node->ownerFct->parameters);
     SWAG_ASSERT(!node->ownerFct->parameters->childs.empty());
@@ -301,7 +301,7 @@ bool ByteCodeGenJob::emitIntrinsicCVaEnd(ByteCodeGenContext* context)
     auto node      = context->node;
     auto childDest = node->childs[0];
 
-    emitInstruction(context, ByteCodeOp::IntrinsicCVaEnd, childDest->resultRegisterRC);
+    EMIT_INST1(context, ByteCodeOp::IntrinsicCVaEnd, childDest->resultRegisterRC);
     freeRegisterRC(context, childDest);
     return true;
 }
@@ -312,7 +312,7 @@ bool ByteCodeGenJob::emitIntrinsicCVaArg(ByteCodeGenContext* context)
     auto childDest = node->childs[0];
 
     node->resultRegisterRC = reserveRegisterRC(context);
-    auto inst              = emitInstruction(context, ByteCodeOp::IntrinsicCVaArg, childDest->resultRegisterRC, node->resultRegisterRC);
+    auto inst              = EMIT_INST2(context, ByteCodeOp::IntrinsicCVaArg, childDest->resultRegisterRC, node->resultRegisterRC);
     inst->c.u64            = node->typeInfo->sizeOf;
     freeRegisterRC(context, childDest);
     return true;
@@ -349,7 +349,7 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
             auto t0     = TypeManager::concreteType(callParams->childs[0]->typeInfo);
             auto re     = reserveRegisterRC(context);
             auto op     = t0->nativeType == NativeTypeKind::F32 ? ByteCodeOp::CompareOpGreaterEqF32 : ByteCodeOp::CompareOpGreaterEqF64;
-            auto inst   = emitInstruction(context, op, callParams->childs[0]->resultRegisterRC, 0, re);
+            auto inst   = EMIT_INST3(context, op, callParams->childs[0]->resultRegisterRC, 0, re);
             inst->b.f64 = 0;
             inst->flags |= BCI_IMM_B;
             emitAssert(context, re, safetyMsg(SafetyMsg::IntrinsicSqrt, t0));
@@ -361,7 +361,7 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
             auto t0     = TypeManager::concreteType(callParams->childs[0]->typeInfo);
             auto re     = reserveRegisterRC(context);
             auto op     = t0->nativeType == NativeTypeKind::F32 ? ByteCodeOp::CompareOpGreaterF32 : ByteCodeOp::CompareOpGreaterF64;
-            auto inst   = emitInstruction(context, op, callParams->childs[0]->resultRegisterRC, 0, re);
+            auto inst   = EMIT_INST3(context, op, callParams->childs[0]->resultRegisterRC, 0, re);
             inst->b.f64 = 0;
             inst->flags |= BCI_IMM_B;
             emitAssert(context, re, safetyMsg(SafetyMsg::IntrinsicLog, t0));
@@ -373,7 +373,7 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
             auto t0     = TypeManager::concreteType(callParams->childs[0]->typeInfo);
             auto re     = reserveRegisterRC(context);
             auto op     = t0->nativeType == NativeTypeKind::F32 ? ByteCodeOp::CompareOpGreaterF32 : ByteCodeOp::CompareOpGreaterF64;
-            auto inst   = emitInstruction(context, op, callParams->childs[0]->resultRegisterRC, 0, re);
+            auto inst   = EMIT_INST3(context, op, callParams->childs[0]->resultRegisterRC, 0, re);
             inst->b.f64 = 0;
             inst->flags |= BCI_IMM_B;
             emitAssert(context, re, safetyMsg(SafetyMsg::IntrinsicLog2, t0));
@@ -385,7 +385,7 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
             auto t0     = TypeManager::concreteType(callParams->childs[0]->typeInfo);
             auto re     = reserveRegisterRC(context);
             auto op     = t0->nativeType == NativeTypeKind::F32 ? ByteCodeOp::CompareOpGreaterF32 : ByteCodeOp::CompareOpGreaterF64;
-            auto inst   = emitInstruction(context, op, callParams->childs[0]->resultRegisterRC, 0, re);
+            auto inst   = EMIT_INST3(context, op, callParams->childs[0]->resultRegisterRC, 0, re);
             inst->b.f64 = 0;
             inst->flags |= BCI_IMM_B;
             emitAssert(context, re, safetyMsg(SafetyMsg::IntrinsicLog10, t0));
@@ -400,22 +400,22 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
             auto re  = reserveRegisterRC(context);
             if (t0->nativeType == NativeTypeKind::F32)
             {
-                auto inst   = emitInstruction(context, ByteCodeOp::CompareOpGreaterEqF32, callParams->childs[0]->resultRegisterRC, 0, re);
+                auto inst   = EMIT_INST3(context, ByteCodeOp::CompareOpGreaterEqF32, callParams->childs[0]->resultRegisterRC, 0, re);
                 inst->b.f32 = -1;
                 inst->flags |= BCI_IMM_B;
                 emitAssert(context, re, msg);
-                inst        = emitInstruction(context, ByteCodeOp::CompareOpLowerEqF32, callParams->childs[0]->resultRegisterRC, 0, re);
+                inst        = EMIT_INST3(context, ByteCodeOp::CompareOpLowerEqF32, callParams->childs[0]->resultRegisterRC, 0, re);
                 inst->b.f32 = 1;
                 inst->flags |= BCI_IMM_B;
                 emitAssert(context, re, msg);
             }
             else
             {
-                auto inst   = emitInstruction(context, ByteCodeOp::CompareOpGreaterEqF64, callParams->childs[0]->resultRegisterRC, 0, re);
+                auto inst   = EMIT_INST3(context, ByteCodeOp::CompareOpGreaterEqF64, callParams->childs[0]->resultRegisterRC, 0, re);
                 inst->b.f64 = -1;
                 inst->flags |= BCI_IMM_B;
                 emitAssert(context, re, msg);
-                inst        = emitInstruction(context, ByteCodeOp::CompareOpLowerEqF64, callParams->childs[0]->resultRegisterRC, 0, re);
+                inst        = EMIT_INST3(context, ByteCodeOp::CompareOpLowerEqF64, callParams->childs[0]->resultRegisterRC, 0, re);
                 inst->b.f64 = 1;
                 inst->flags |= BCI_IMM_B;
                 emitAssert(context, re, msg);
@@ -432,7 +432,7 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
     {
         auto child0 = callParams->childs.front();
         auto child1 = callParams->childs.back();
-        emitInstruction(context, ByteCodeOp::IntrinsicCompilerError, child0->resultRegisterRC[0], child0->resultRegisterRC[1], child1->resultRegisterRC);
+        EMIT_INST3(context, ByteCodeOp::IntrinsicCompilerError, child0->resultRegisterRC[0], child0->resultRegisterRC[1], child1->resultRegisterRC);
         freeRegisterRC(context, child0);
         freeRegisterRC(context, child1);
         break;
@@ -441,7 +441,7 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
     {
         auto child0 = callParams->childs.front();
         auto child1 = callParams->childs.back();
-        emitInstruction(context, ByteCodeOp::IntrinsicCompilerWarning, child0->resultRegisterRC[0], child0->resultRegisterRC[1], child1->resultRegisterRC);
+        EMIT_INST3(context, ByteCodeOp::IntrinsicCompilerWarning, child0->resultRegisterRC[0], child0->resultRegisterRC[1], child1->resultRegisterRC);
         freeRegisterRC(context, child0);
         freeRegisterRC(context, child1);
         break;
@@ -450,7 +450,7 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
     {
         auto child0 = callParams->childs.front();
         auto child1 = callParams->childs.back();
-        emitInstruction(context, ByteCodeOp::IntrinsicPanic, child0->resultRegisterRC[0], child0->resultRegisterRC[1], child1->resultRegisterRC);
+        EMIT_INST3(context, ByteCodeOp::IntrinsicPanic, child0->resultRegisterRC[0], child0->resultRegisterRC[1], child1->resultRegisterRC);
         freeRegisterRC(context, child0);
         freeRegisterRC(context, child1);
         break;
@@ -464,21 +464,21 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
     }
     case TokenId::IntrinsicBcBreakpoint:
     {
-        emitInstruction(context, ByteCodeOp::IntrinsicBcBreakpoint);
+        EMIT_INST0(context, ByteCodeOp::IntrinsicBcBreakpoint);
         break;
     }
     case TokenId::IntrinsicAlloc:
     {
         auto child0            = callParams->childs.front();
         node->resultRegisterRC = reserveRegisterRC(context);
-        emitInstruction(context, ByteCodeOp::IntrinsicAlloc, node->resultRegisterRC, child0->resultRegisterRC);
+        EMIT_INST2(context, ByteCodeOp::IntrinsicAlloc, node->resultRegisterRC, child0->resultRegisterRC);
         freeRegisterRC(context, child0);
         break;
     }
     case TokenId::IntrinsicFree:
     {
         auto child0 = callParams->childs.front();
-        emitInstruction(context, ByteCodeOp::IntrinsicFree, child0->resultRegisterRC);
+        EMIT_INST1(context, ByteCodeOp::IntrinsicFree, child0->resultRegisterRC);
         freeRegisterRC(context, child0);
         break;
     }
@@ -487,7 +487,7 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
         auto child0            = callParams->childs.front();
         auto child1            = callParams->childs.back();
         node->resultRegisterRC = reserveRegisterRC(context);
-        emitInstruction(context, ByteCodeOp::IntrinsicRealloc, node->resultRegisterRC, child0->resultRegisterRC, child1->resultRegisterRC);
+        EMIT_INST3(context, ByteCodeOp::IntrinsicRealloc, node->resultRegisterRC, child0->resultRegisterRC, child1->resultRegisterRC);
         freeRegisterRC(context, child0);
         freeRegisterRC(context, child1);
         break;
@@ -497,7 +497,7 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
         auto childDest = callParams->childs[0];
         auto childSrc  = callParams->childs[1];
         auto childSize = callParams->childs[2];
-        emitInstruction(context, ByteCodeOp::IntrinsicMemCpy, childDest->resultRegisterRC, childSrc->resultRegisterRC, childSize->resultRegisterRC);
+        EMIT_INST3(context, ByteCodeOp::IntrinsicMemCpy, childDest->resultRegisterRC, childSrc->resultRegisterRC, childSize->resultRegisterRC);
         freeRegisterRC(context, childDest);
         freeRegisterRC(context, childSrc);
         freeRegisterRC(context, childSize);
@@ -508,7 +508,7 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
         auto childDest = callParams->childs[0];
         auto childSrc  = callParams->childs[1];
         auto childSize = callParams->childs[2];
-        emitInstruction(context, ByteCodeOp::IntrinsicMemMove, childDest->resultRegisterRC, childSrc->resultRegisterRC, childSize->resultRegisterRC);
+        EMIT_INST3(context, ByteCodeOp::IntrinsicMemMove, childDest->resultRegisterRC, childSrc->resultRegisterRC, childSize->resultRegisterRC);
         freeRegisterRC(context, childDest);
         freeRegisterRC(context, childSrc);
         freeRegisterRC(context, childSize);
@@ -519,7 +519,7 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
         auto childDest  = callParams->childs[0];
         auto childValue = callParams->childs[1];
         auto childSize  = callParams->childs[2];
-        emitInstruction(context, ByteCodeOp::IntrinsicMemSet, childDest->resultRegisterRC, childValue->resultRegisterRC, childSize->resultRegisterRC);
+        EMIT_INST3(context, ByteCodeOp::IntrinsicMemSet, childDest->resultRegisterRC, childValue->resultRegisterRC, childSize->resultRegisterRC);
         freeRegisterRC(context, childDest);
         freeRegisterRC(context, childValue);
         freeRegisterRC(context, childSize);
@@ -531,7 +531,7 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
         auto childSrc          = callParams->childs[1];
         auto childSize         = callParams->childs[2];
         node->resultRegisterRC = reserveRegisterRC(context);
-        emitInstruction(context, ByteCodeOp::IntrinsicMemCmp, node->resultRegisterRC, childDest->resultRegisterRC, childSrc->resultRegisterRC, childSize->resultRegisterRC);
+        EMIT_INST4(context, ByteCodeOp::IntrinsicMemCmp, node->resultRegisterRC, childDest->resultRegisterRC, childSrc->resultRegisterRC, childSize->resultRegisterRC);
         freeRegisterRC(context, childDest);
         freeRegisterRC(context, childSrc);
         freeRegisterRC(context, childSize);
@@ -541,7 +541,7 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
     {
         auto childSrc          = callParams->childs[0];
         node->resultRegisterRC = reserveRegisterRC(context);
-        emitInstruction(context, ByteCodeOp::IntrinsicStrLen, node->resultRegisterRC, childSrc->resultRegisterRC);
+        EMIT_INST2(context, ByteCodeOp::IntrinsicStrLen, node->resultRegisterRC, childSrc->resultRegisterRC);
         freeRegisterRC(context, childSrc);
         break;
     }
@@ -550,7 +550,7 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
         auto childSrc0         = callParams->childs[0];
         auto childSrc1         = callParams->childs[1];
         node->resultRegisterRC = reserveRegisterRC(context);
-        emitInstruction(context, ByteCodeOp::IntrinsicStrCmp, node->resultRegisterRC, childSrc0->resultRegisterRC, childSrc1->resultRegisterRC);
+        EMIT_INST3(context, ByteCodeOp::IntrinsicStrCmp, node->resultRegisterRC, childSrc0->resultRegisterRC, childSrc1->resultRegisterRC);
         freeRegisterRC(context, childSrc0);
         freeRegisterRC(context, childSrc1);
         break;
@@ -561,7 +561,7 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
         auto child1            = callParams->childs[1];
         auto child2            = callParams->childs[2];
         node->resultRegisterRC = reserveRegisterRC(context);
-        emitInstruction(context, ByteCodeOp::IntrinsicTypeCmp, child0->resultRegisterRC, child1->resultRegisterRC, child2->resultRegisterRC, node->resultRegisterRC);
+        EMIT_INST4(context, ByteCodeOp::IntrinsicTypeCmp, child0->resultRegisterRC, child1->resultRegisterRC, child2->resultRegisterRC, node->resultRegisterRC);
         freeRegisterRC(context, child0);
         freeRegisterRC(context, child1);
         freeRegisterRC(context, child2);
@@ -570,7 +570,7 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
     case TokenId::IntrinsicRtFlags:
     {
         node->resultRegisterRC = reserveRegisterRC(context);
-        emitInstruction(context, ByteCodeOp::IntrinsicRtFlags, node->resultRegisterRC);
+        EMIT_INST1(context, ByteCodeOp::IntrinsicRtFlags, node->resultRegisterRC);
         break;
     }
     case TokenId::IntrinsicStringCmp:
@@ -578,7 +578,7 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
         auto child0            = callParams->childs[0];
         auto child1            = callParams->childs[1];
         node->resultRegisterRC = child1->resultRegisterRC[1];
-        emitInstruction(context, ByteCodeOp::IntrinsicStringCmp, child0->resultRegisterRC[0], child0->resultRegisterRC[1], child1->resultRegisterRC[0], child1->resultRegisterRC[1]);
+        EMIT_INST4(context, ByteCodeOp::IntrinsicStringCmp, child0->resultRegisterRC[0], child0->resultRegisterRC[1], child1->resultRegisterRC[0], child1->resultRegisterRC[1]);
         freeRegisterRC(context, child0);
         freeRegisterRC(context, child1->resultRegisterRC[0]);
         break;
@@ -588,7 +588,7 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
         auto child0            = callParams->childs[0];
         auto child1            = callParams->childs[1];
         node->resultRegisterRC = reserveRegisterRC(context);
-        emitInstruction(context, ByteCodeOp::IntrinsicItfTableOf, child0->resultRegisterRC, child1->resultRegisterRC, node->resultRegisterRC);
+        EMIT_INST3(context, ByteCodeOp::IntrinsicItfTableOf, child0->resultRegisterRC, child1->resultRegisterRC, node->resultRegisterRC);
         freeRegisterRC(context, child0);
         freeRegisterRC(context, child1);
         break;
@@ -596,7 +596,7 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
     case TokenId::InternalSetErr:
     {
         auto child0 = callParams->childs[0];
-        emitInstruction(context, ByteCodeOp::InternalSetErr, child0->resultRegisterRC[0], child0->resultRegisterRC[1]);
+        EMIT_INST2(context, ByteCodeOp::InternalSetErr, child0->resultRegisterRC[0], child0->resultRegisterRC[1]);
         freeRegisterRC(context, child0);
         break;
     }
@@ -605,7 +605,7 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
         node->resultRegisterRC                  = reserveRegisterRC(context);
         node->identifierRef()->resultRegisterRC = node->resultRegisterRC;
         node->parent->resultRegisterRC          = node->resultRegisterRC;
-        emitInstruction(context, ByteCodeOp::IntrinsicDbgAlloc, node->resultRegisterRC);
+        EMIT_INST1(context, ByteCodeOp::IntrinsicDbgAlloc, node->resultRegisterRC);
         break;
     }
     case TokenId::IntrinsicSysAlloc:
@@ -613,7 +613,7 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
         node->resultRegisterRC                  = reserveRegisterRC(context);
         node->identifierRef()->resultRegisterRC = node->resultRegisterRC;
         node->parent->resultRegisterRC          = node->resultRegisterRC;
-        emitInstruction(context, ByteCodeOp::IntrinsicSysAlloc, node->resultRegisterRC);
+        EMIT_INST1(context, ByteCodeOp::IntrinsicSysAlloc, node->resultRegisterRC);
         break;
     }
     case TokenId::IntrinsicGetContext:
@@ -622,13 +622,13 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
         SWAG_ASSERT(node->identifierRef() == node->parent);
         node->identifierRef()->resultRegisterRC = node->resultRegisterRC;
         node->parent->resultRegisterRC          = node->resultRegisterRC;
-        emitInstruction(context, ByteCodeOp::IntrinsicGetContext, node->resultRegisterRC);
+        EMIT_INST1(context, ByteCodeOp::IntrinsicGetContext, node->resultRegisterRC);
         break;
     }
     case TokenId::IntrinsicSetContext:
     {
         auto childDest = callParams->childs[0];
-        emitInstruction(context, ByteCodeOp::IntrinsicSetContext, childDest->resultRegisterRC);
+        EMIT_INST1(context, ByteCodeOp::IntrinsicSetContext, childDest->resultRegisterRC);
         freeRegisterRC(context, childDest);
         break;
     }
@@ -638,35 +638,35 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
         SWAG_ASSERT(node->identifierRef() == node->parent);
         node->identifierRef()->resultRegisterRC = node->resultRegisterRC;
         node->parent->resultRegisterRC          = node->resultRegisterRC;
-        emitInstruction(context, ByteCodeOp::IntrinsicGetProcessInfos, node->resultRegisterRC);
+        EMIT_INST1(context, ByteCodeOp::IntrinsicGetProcessInfos, node->resultRegisterRC);
         break;
     }
     case TokenId::IntrinsicArguments:
     {
         reserveLinearRegisterRC2(context, node->resultRegisterRC);
         node->parent->resultRegisterRC = node->resultRegisterRC;
-        emitInstruction(context, ByteCodeOp::IntrinsicArguments, node->resultRegisterRC[0], node->resultRegisterRC[1]);
+        EMIT_INST2(context, ByteCodeOp::IntrinsicArguments, node->resultRegisterRC[0], node->resultRegisterRC[1]);
         break;
     }
     case TokenId::IntrinsicModules:
     {
         reserveLinearRegisterRC2(context, node->resultRegisterRC);
         node->parent->resultRegisterRC = node->resultRegisterRC;
-        emitInstruction(context, ByteCodeOp::IntrinsicModules, node->resultRegisterRC[0], node->resultRegisterRC[1]);
+        EMIT_INST2(context, ByteCodeOp::IntrinsicModules, node->resultRegisterRC[0], node->resultRegisterRC[1]);
         break;
     }
     case TokenId::IntrinsicGvtd:
     {
         reserveLinearRegisterRC2(context, node->resultRegisterRC);
         node->parent->resultRegisterRC = node->resultRegisterRC;
-        emitInstruction(context, ByteCodeOp::IntrinsicGvtd, node->resultRegisterRC[0], node->resultRegisterRC[1]);
+        EMIT_INST2(context, ByteCodeOp::IntrinsicGvtd, node->resultRegisterRC[0], node->resultRegisterRC[1]);
         break;
     }
     case TokenId::IntrinsicCompiler:
     {
         reserveLinearRegisterRC2(context, node->resultRegisterRC);
         node->parent->resultRegisterRC = node->resultRegisterRC;
-        emitInstruction(context, ByteCodeOp::IntrinsicCompiler, node->resultRegisterRC[0], node->resultRegisterRC[1]);
+        EMIT_INST2(context, ByteCodeOp::IntrinsicCompiler, node->resultRegisterRC[0], node->resultRegisterRC[1]);
         emitPostCallUfcs(context);
         break;
     }
@@ -675,7 +675,7 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
         node->resultRegisterRC                  = reserveRegisterRC(context);
         node->identifierRef()->resultRegisterRC = node->resultRegisterRC;
         node->parent->resultRegisterRC          = node->resultRegisterRC;
-        emitInstruction(context, ByteCodeOp::IntrinsicIsByteCode, node->resultRegisterRC);
+        EMIT_INST1(context, ByteCodeOp::IntrinsicIsByteCode, node->resultRegisterRC);
         break;
     }
     case TokenId::IntrinsicAtomicAdd:
@@ -688,19 +688,19 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
         {
         case NativeTypeKind::S8:
         case NativeTypeKind::U8:
-            emitInstruction(context, ByteCodeOp::IntrinsicAtomicAddS8, child0->resultRegisterRC, child1->resultRegisterRC, node->resultRegisterRC);
+            EMIT_INST3(context, ByteCodeOp::IntrinsicAtomicAddS8, child0->resultRegisterRC, child1->resultRegisterRC, node->resultRegisterRC);
             break;
         case NativeTypeKind::S16:
         case NativeTypeKind::U16:
-            emitInstruction(context, ByteCodeOp::IntrinsicAtomicAddS16, child0->resultRegisterRC, child1->resultRegisterRC, node->resultRegisterRC);
+            EMIT_INST3(context, ByteCodeOp::IntrinsicAtomicAddS16, child0->resultRegisterRC, child1->resultRegisterRC, node->resultRegisterRC);
             break;
         case NativeTypeKind::S32:
         case NativeTypeKind::U32:
-            emitInstruction(context, ByteCodeOp::IntrinsicAtomicAddS32, child0->resultRegisterRC, child1->resultRegisterRC, node->resultRegisterRC);
+            EMIT_INST3(context, ByteCodeOp::IntrinsicAtomicAddS32, child0->resultRegisterRC, child1->resultRegisterRC, node->resultRegisterRC);
             break;
         case NativeTypeKind::S64:
         case NativeTypeKind::U64:
-            emitInstruction(context, ByteCodeOp::IntrinsicAtomicAddS64, child0->resultRegisterRC, child1->resultRegisterRC, node->resultRegisterRC);
+            EMIT_INST3(context, ByteCodeOp::IntrinsicAtomicAddS64, child0->resultRegisterRC, child1->resultRegisterRC, node->resultRegisterRC);
             break;
         default:
             return Report::internalError(context->node, "emitIntrinsic, IntrinsicAtomicAdd invalid type");
@@ -719,19 +719,19 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
         {
         case NativeTypeKind::S8:
         case NativeTypeKind::U8:
-            emitInstruction(context, ByteCodeOp::IntrinsicAtomicAndS8, child0->resultRegisterRC, child1->resultRegisterRC, node->resultRegisterRC);
+            EMIT_INST3(context, ByteCodeOp::IntrinsicAtomicAndS8, child0->resultRegisterRC, child1->resultRegisterRC, node->resultRegisterRC);
             break;
         case NativeTypeKind::S16:
         case NativeTypeKind::U16:
-            emitInstruction(context, ByteCodeOp::IntrinsicAtomicAndS16, child0->resultRegisterRC, child1->resultRegisterRC, node->resultRegisterRC);
+            EMIT_INST3(context, ByteCodeOp::IntrinsicAtomicAndS16, child0->resultRegisterRC, child1->resultRegisterRC, node->resultRegisterRC);
             break;
         case NativeTypeKind::S32:
         case NativeTypeKind::U32:
-            emitInstruction(context, ByteCodeOp::IntrinsicAtomicAndS32, child0->resultRegisterRC, child1->resultRegisterRC, node->resultRegisterRC);
+            EMIT_INST3(context, ByteCodeOp::IntrinsicAtomicAndS32, child0->resultRegisterRC, child1->resultRegisterRC, node->resultRegisterRC);
             break;
         case NativeTypeKind::S64:
         case NativeTypeKind::U64:
-            emitInstruction(context, ByteCodeOp::IntrinsicAtomicAndS64, child0->resultRegisterRC, child1->resultRegisterRC, node->resultRegisterRC);
+            EMIT_INST3(context, ByteCodeOp::IntrinsicAtomicAndS64, child0->resultRegisterRC, child1->resultRegisterRC, node->resultRegisterRC);
             break;
         default:
             return Report::internalError(context->node, "emitIntrinsic, IntrinsicAtomicAnd invalid type");
@@ -750,19 +750,19 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
         {
         case NativeTypeKind::S8:
         case NativeTypeKind::U8:
-            emitInstruction(context, ByteCodeOp::IntrinsicAtomicOrS8, child0->resultRegisterRC, child1->resultRegisterRC, node->resultRegisterRC);
+            EMIT_INST3(context, ByteCodeOp::IntrinsicAtomicOrS8, child0->resultRegisterRC, child1->resultRegisterRC, node->resultRegisterRC);
             break;
         case NativeTypeKind::S16:
         case NativeTypeKind::U16:
-            emitInstruction(context, ByteCodeOp::IntrinsicAtomicOrS16, child0->resultRegisterRC, child1->resultRegisterRC, node->resultRegisterRC);
+            EMIT_INST3(context, ByteCodeOp::IntrinsicAtomicOrS16, child0->resultRegisterRC, child1->resultRegisterRC, node->resultRegisterRC);
             break;
         case NativeTypeKind::S32:
         case NativeTypeKind::U32:
-            emitInstruction(context, ByteCodeOp::IntrinsicAtomicOrS32, child0->resultRegisterRC, child1->resultRegisterRC, node->resultRegisterRC);
+            EMIT_INST3(context, ByteCodeOp::IntrinsicAtomicOrS32, child0->resultRegisterRC, child1->resultRegisterRC, node->resultRegisterRC);
             break;
         case NativeTypeKind::S64:
         case NativeTypeKind::U64:
-            emitInstruction(context, ByteCodeOp::IntrinsicAtomicOrS64, child0->resultRegisterRC, child1->resultRegisterRC, node->resultRegisterRC);
+            EMIT_INST3(context, ByteCodeOp::IntrinsicAtomicOrS64, child0->resultRegisterRC, child1->resultRegisterRC, node->resultRegisterRC);
             break;
         default:
             return Report::internalError(context->node, "emitIntrinsic, IntrinsicAtomicOr invalid type");
@@ -781,19 +781,19 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
         {
         case NativeTypeKind::S8:
         case NativeTypeKind::U8:
-            emitInstruction(context, ByteCodeOp::IntrinsicAtomicXorS8, child0->resultRegisterRC, child1->resultRegisterRC, node->resultRegisterRC);
+            EMIT_INST3(context, ByteCodeOp::IntrinsicAtomicXorS8, child0->resultRegisterRC, child1->resultRegisterRC, node->resultRegisterRC);
             break;
         case NativeTypeKind::S16:
         case NativeTypeKind::U16:
-            emitInstruction(context, ByteCodeOp::IntrinsicAtomicXorS16, child0->resultRegisterRC, child1->resultRegisterRC, node->resultRegisterRC);
+            EMIT_INST3(context, ByteCodeOp::IntrinsicAtomicXorS16, child0->resultRegisterRC, child1->resultRegisterRC, node->resultRegisterRC);
             break;
         case NativeTypeKind::S32:
         case NativeTypeKind::U32:
-            emitInstruction(context, ByteCodeOp::IntrinsicAtomicXorS32, child0->resultRegisterRC, child1->resultRegisterRC, node->resultRegisterRC);
+            EMIT_INST3(context, ByteCodeOp::IntrinsicAtomicXorS32, child0->resultRegisterRC, child1->resultRegisterRC, node->resultRegisterRC);
             break;
         case NativeTypeKind::S64:
         case NativeTypeKind::U64:
-            emitInstruction(context, ByteCodeOp::IntrinsicAtomicXorS64, child0->resultRegisterRC, child1->resultRegisterRC, node->resultRegisterRC);
+            EMIT_INST3(context, ByteCodeOp::IntrinsicAtomicXorS64, child0->resultRegisterRC, child1->resultRegisterRC, node->resultRegisterRC);
             break;
         default:
             return Report::internalError(context->node, "emitIntrinsic, IntrinsicAtomicXor invalid type");
@@ -813,19 +813,19 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
         {
         case NativeTypeKind::S8:
         case NativeTypeKind::U8:
-            emitInstruction(context, ByteCodeOp::IntrinsicAtomicXchgS8, child0->resultRegisterRC, child1->resultRegisterRC, node->resultRegisterRC);
+            EMIT_INST3(context, ByteCodeOp::IntrinsicAtomicXchgS8, child0->resultRegisterRC, child1->resultRegisterRC, node->resultRegisterRC);
             break;
         case NativeTypeKind::S16:
         case NativeTypeKind::U16:
-            emitInstruction(context, ByteCodeOp::IntrinsicAtomicXchgS16, child0->resultRegisterRC, child1->resultRegisterRC, node->resultRegisterRC);
+            EMIT_INST3(context, ByteCodeOp::IntrinsicAtomicXchgS16, child0->resultRegisterRC, child1->resultRegisterRC, node->resultRegisterRC);
             break;
         case NativeTypeKind::S32:
         case NativeTypeKind::U32:
-            emitInstruction(context, ByteCodeOp::IntrinsicAtomicXchgS32, child0->resultRegisterRC, child1->resultRegisterRC, node->resultRegisterRC);
+            EMIT_INST3(context, ByteCodeOp::IntrinsicAtomicXchgS32, child0->resultRegisterRC, child1->resultRegisterRC, node->resultRegisterRC);
             break;
         case NativeTypeKind::S64:
         case NativeTypeKind::U64:
-            emitInstruction(context, ByteCodeOp::IntrinsicAtomicXchgS64, child0->resultRegisterRC, child1->resultRegisterRC, node->resultRegisterRC);
+            EMIT_INST3(context, ByteCodeOp::IntrinsicAtomicXchgS64, child0->resultRegisterRC, child1->resultRegisterRC, node->resultRegisterRC);
             break;
         default:
             return Report::internalError(context->node, "emitIntrinsic, IntrinsicAtomicXchg invalid type");
@@ -846,19 +846,19 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
         {
         case NativeTypeKind::S8:
         case NativeTypeKind::U8:
-            emitInstruction(context, ByteCodeOp::IntrinsicAtomicCmpXchgS8, child0->resultRegisterRC, child1->resultRegisterRC, child2->resultRegisterRC, node->resultRegisterRC);
+            EMIT_INST4(context, ByteCodeOp::IntrinsicAtomicCmpXchgS8, child0->resultRegisterRC, child1->resultRegisterRC, child2->resultRegisterRC, node->resultRegisterRC);
             break;
         case NativeTypeKind::S16:
         case NativeTypeKind::U16:
-            emitInstruction(context, ByteCodeOp::IntrinsicAtomicCmpXchgS16, child0->resultRegisterRC, child1->resultRegisterRC, child2->resultRegisterRC, node->resultRegisterRC);
+            EMIT_INST4(context, ByteCodeOp::IntrinsicAtomicCmpXchgS16, child0->resultRegisterRC, child1->resultRegisterRC, child2->resultRegisterRC, node->resultRegisterRC);
             break;
         case NativeTypeKind::S32:
         case NativeTypeKind::U32:
-            emitInstruction(context, ByteCodeOp::IntrinsicAtomicCmpXchgS32, child0->resultRegisterRC, child1->resultRegisterRC, child2->resultRegisterRC, node->resultRegisterRC);
+            EMIT_INST4(context, ByteCodeOp::IntrinsicAtomicCmpXchgS32, child0->resultRegisterRC, child1->resultRegisterRC, child2->resultRegisterRC, node->resultRegisterRC);
             break;
         case NativeTypeKind::S64:
         case NativeTypeKind::U64:
-            emitInstruction(context, ByteCodeOp::IntrinsicAtomicCmpXchgS64, child0->resultRegisterRC, child1->resultRegisterRC, child2->resultRegisterRC, node->resultRegisterRC);
+            EMIT_INST4(context, ByteCodeOp::IntrinsicAtomicCmpXchgS64, child0->resultRegisterRC, child1->resultRegisterRC, child2->resultRegisterRC, node->resultRegisterRC);
             break;
         default:
             return Report::internalError(context->node, "emitIntrinsic, IntrinsicAtomicCmpXchg invalid type");
@@ -892,7 +892,7 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
             return Report::internalError(context->node, "emitIntrinsic, IntrinsicPow invalid type");
         }
 
-        auto inst   = emitInstruction(context, op, node->resultRegisterRC, child0->resultRegisterRC, child1->resultRegisterRC);
+        auto inst   = EMIT_INST3(context, op, node->resultRegisterRC, child0->resultRegisterRC, child1->resultRegisterRC);
         inst->d.u32 = (uint32_t) node->tokenId;
         freeRegisterRC(context, child0);
         freeRegisterRC(context, child1);
@@ -928,7 +928,7 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
             return Report::internalError(context->node, "emitIntrinsic, IntrinsicBitCount invalid type");
         }
 
-        auto inst   = emitInstruction(context, op, node->resultRegisterRC, child->resultRegisterRC);
+        auto inst   = EMIT_INST2(context, op, node->resultRegisterRC, child->resultRegisterRC);
         inst->d.u32 = (uint32_t) node->tokenId;
         freeRegisterRC(context, child);
         break;
@@ -958,7 +958,7 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
             return Report::internalError(context->node, "emitIntrinsic, IntrinsicByteSwap invalid type");
         }
 
-        auto inst   = emitInstruction(context, op, node->resultRegisterRC, child->resultRegisterRC);
+        auto inst   = EMIT_INST2(context, op, node->resultRegisterRC, child->resultRegisterRC);
         inst->d.u32 = (uint32_t) node->tokenId;
         freeRegisterRC(context, child);
         break;
@@ -1011,7 +1011,7 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
             return Report::internalError(context->node, "emitIntrinsic, IntrinsicMin/Max invalid type");
         }
 
-        auto inst   = emitInstruction(context, op, node->resultRegisterRC, child0->resultRegisterRC, child1->resultRegisterRC);
+        auto inst   = EMIT_INST3(context, op, node->resultRegisterRC, child0->resultRegisterRC, child1->resultRegisterRC);
         inst->d.u32 = (uint32_t) node->tokenId;
         freeRegisterRC(context, child0);
         freeRegisterRC(context, child1);
@@ -1070,7 +1070,7 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
             return Report::internalError(context->node, "emitIntrinsic, math intrinsic invalid type");
         }
 
-        auto inst   = emitInstruction(context, op, node->resultRegisterRC, child->resultRegisterRC);
+        auto inst   = EMIT_INST2(context, op, node->resultRegisterRC, child->resultRegisterRC);
         inst->d.u32 = (uint32_t) node->tokenId;
         freeRegisterRC(context, child);
         break;
@@ -1105,13 +1105,13 @@ bool ByteCodeGenJob::emitLambdaCall(ByteCodeGenContext* context)
     {
         // Deref capture context. If 0, no context.
         node->extMisc()->additionalRegisterRC += reserveRegisterRC(context);
-        emitInstruction(context, ByteCodeOp::DeRef64, node->extMisc()->additionalRegisterRC[1], node->extMisc()->additionalRegisterRC[0])->c.u64 = 8;
+        EMIT_INST2(context, ByteCodeOp::DeRef64, node->extMisc()->additionalRegisterRC[1], node->extMisc()->additionalRegisterRC[0])->c.u64 = 8;
 
         // If 0, keep it 0, otherwhise compte the capture context context by adding that offset to the address of the closure storage
-        emitInstruction(context, ByteCodeOp::MulAddVC64, node->extMisc()->additionalRegisterRC[1], node->extMisc()->additionalRegisterRC[0])->c.u64 = 16;
+        EMIT_INST2(context, ByteCodeOp::MulAddVC64, node->extMisc()->additionalRegisterRC[1], node->extMisc()->additionalRegisterRC[0])->c.u64 = 16;
 
         // Deref function pointer
-        emitInstruction(context, ByteCodeOp::DeRef64, node->extMisc()->additionalRegisterRC[0], node->extMisc()->additionalRegisterRC[0]);
+        EMIT_INST2(context, ByteCodeOp::DeRef64, node->extMisc()->additionalRegisterRC[0], node->extMisc()->additionalRegisterRC[0]);
     }
 
     SWAG_CHECK(emitCall(context, allParams, nullptr, (AstVarDecl*) overload->node, node->extMisc()->additionalRegisterRC, false, true, true));
@@ -1133,11 +1133,11 @@ void ByteCodeGenJob::emitPostCallUfcs(ByteCodeGenContext* context)
         auto r = reserveRegisterRC(context);
 
         // So we need to remember the object pointer to be passed as a parameter.
-        emitInstruction(context, ByteCodeOp::CopyRBtoRA64, r, node->resultRegisterRC[0]);
+        EMIT_INST2(context, ByteCodeOp::CopyRBtoRA64, r, node->resultRegisterRC[0]);
 
         // And we need to put the itable pointer in the first register, in order for the lambda value (function pointer)
         // to be dereferenced.
-        emitInstruction(context, ByteCodeOp::CopyRBtoRA64, node->resultRegisterRC[0], node->resultRegisterRC[1]);
+        EMIT_INST2(context, ByteCodeOp::CopyRBtoRA64, node->resultRegisterRC[0], node->resultRegisterRC[1]);
 
         // From now on, the register is the object pointer (not the itable). Used un emitFuncCallParam.
         node->resultRegisterRC = r;
@@ -1244,14 +1244,14 @@ bool ByteCodeGenJob::emitDefaultParamValue(ByteCodeGenContext* context, AstNode*
         case TokenId::CompilerOs:
         {
             regList     = reserveRegisterRC(context);
-            auto inst   = emitInstruction(context, ByteCodeOp::SetImmediate64, regList[0]);
+            auto inst   = EMIT_INST1(context, ByteCodeOp::SetImmediate64, regList[0]);
             inst->b.u64 = (uint64_t) g_CommandLine.target.os;
             break;
         }
         case TokenId::CompilerArch:
         {
             regList     = reserveRegisterRC(context);
-            auto inst   = emitInstruction(context, ByteCodeOp::SetImmediate64, regList[0]);
+            auto inst   = EMIT_INST1(context, ByteCodeOp::SetImmediate64, regList[0]);
             inst->b.u64 = (uint64_t) g_CommandLine.target.arch;
             break;
         }
@@ -1259,7 +1259,7 @@ bool ByteCodeGenJob::emitDefaultParamValue(ByteCodeGenContext* context, AstNode*
         case TokenId::CompilerSwagOs:
         {
             regList     = reserveRegisterRC(context);
-            auto inst   = emitInstruction(context, ByteCodeOp::SetImmediate64, regList[0]);
+            auto inst   = EMIT_INST1(context, ByteCodeOp::SetImmediate64, regList[0]);
             inst->b.u64 = (uint64_t) OS::getNativeTarget().os;
             break;
         }
@@ -1267,7 +1267,7 @@ bool ByteCodeGenJob::emitDefaultParamValue(ByteCodeGenContext* context, AstNode*
         case TokenId::CompilerBackend:
         {
             regList     = reserveRegisterRC(context);
-            auto inst   = emitInstruction(context, ByteCodeOp::SetImmediate64, regList[0]);
+            auto inst   = EMIT_INST1(context, ByteCodeOp::SetImmediate64, regList[0]);
             inst->b.u64 = (uint64_t) g_CommandLine.backendGenType;
             break;
         }
@@ -1282,7 +1282,7 @@ bool ByteCodeGenJob::emitDefaultParamValue(ByteCodeGenContext* context, AstNode*
             auto storageOffset  = storageSegment->addString(str);
             SWAG_ASSERT(storageOffset != UINT32_MAX);
             emitMakeSegPointer(context, storageSegment, storageOffset, regList[0]);
-            emitInstruction(context, ByteCodeOp::SetImmediate64, regList[1])->b.u64 = str.length();
+            EMIT_INST1(context, ByteCodeOp::SetImmediate64, regList[1])->b.u64 = str.length();
             break;
         }
         default:
@@ -1321,22 +1321,22 @@ void ByteCodeGenJob::emitPushRAParams(ByteCodeGenContext* context, VectorNative<
         ByteCodeInstruction* inst;
         if (cpt - i >= 4)
         {
-            inst = emitInstruction(context, ByteCodeOp::PushRAParam4, accParams[i], accParams[i + 1], accParams[i + 2], accParams[i + 3]);
+            inst = EMIT_INST4(context, ByteCodeOp::PushRAParam4, accParams[i], accParams[i + 1], accParams[i + 2], accParams[i + 3]);
             i += 4;
         }
         else if (cpt - i >= 3)
         {
-            inst = emitInstruction(context, ByteCodeOp::PushRAParam3, accParams[i], accParams[i + 1], accParams[i + 2]);
+            inst = EMIT_INST3(context, ByteCodeOp::PushRAParam3, accParams[i], accParams[i + 1], accParams[i + 2]);
             i += 3;
         }
         else if (cpt - i >= 2)
         {
-            inst = emitInstruction(context, ByteCodeOp::PushRAParam2, accParams[i], accParams[i + 1]);
+            inst = EMIT_INST2(context, ByteCodeOp::PushRAParam2, accParams[i], accParams[i + 1]);
             i += 2;
         }
         else
         {
-            inst = emitInstruction(context, ByteCodeOp::PushRAParam, accParams[i]);
+            inst = EMIT_INST1(context, ByteCodeOp::PushRAParam, accParams[i]);
             i += 1;
         }
 
@@ -1345,7 +1345,7 @@ void ByteCodeGenJob::emitPushRAParams(ByteCodeGenContext* context, VectorNative<
 
     // Closure context
     if (node->typeInfo && node->typeInfo->isClosure())
-        emitInstruction(context, ByteCodeOp::PushRAParamCond, accParams.back(), accParams.back());
+        EMIT_INST2(context, ByteCodeOp::PushRAParamCond, accParams.back(), accParams.back());
 
     accParams.clear();
 }
@@ -1409,13 +1409,13 @@ bool ByteCodeGenJob::emitReturnByCopyAddress(ByteCodeGenContext* context, AstNod
             if (node->ownerInline)
             {
                 SWAG_ASSERT(TypeManager::concreteType(node->ownerInline->func->typeInfo)->flags & TYPEINFO_RETURN_BY_COPY);
-                emitInstruction(context, ByteCodeOp::CopyRCtoRT, node->ownerInline->resultRegisterRC);
+                EMIT_INST1(context, ByteCodeOp::CopyRCtoRT, node->ownerInline->resultRegisterRC);
             }
             else
             {
                 SWAG_ASSERT(TypeManager::concreteType(node->ownerFct->typeInfo)->flags & TYPEINFO_RETURN_BY_COPY);
-                emitInstruction(context, ByteCodeOp::CopyRRtoRC, node->resultRegisterRC);
-                emitInstruction(context, ByteCodeOp::CopyRCtoRT, node->resultRegisterRC);
+                EMIT_INST1(context, ByteCodeOp::CopyRRtoRC, node->resultRegisterRC);
+                EMIT_INST1(context, ByteCodeOp::CopyRCtoRT, node->resultRegisterRC);
             }
 
             context->bc->maxCallResults = max(context->bc->maxCallResults, 1);
@@ -1445,7 +1445,7 @@ bool ByteCodeGenJob::emitReturnByCopyAddress(ByteCodeGenContext* context, AstNod
         auto typeParam = param->resolvedParameter;
 
         emitRetValRef(context, resolved, node->resultRegisterRC, false, resolved->computedValue.storageOffset + typeParam->offset);
-        emitInstruction(context, ByteCodeOp::CopyRCtoRT, node->resultRegisterRC);
+        EMIT_INST1(context, ByteCodeOp::CopyRCtoRT, node->resultRegisterRC);
         context->bc->maxCallResults = max(context->bc->maxCallResults, 1);
 
         testReturn->parent->semFlags |= SEMFLAG_FIELD_STRUCT;
@@ -1453,9 +1453,9 @@ bool ByteCodeGenJob::emitReturnByCopyAddress(ByteCodeGenContext* context, AstNod
     }
 
     // Store in RR0 the address of the stack to store the result
-    auto inst   = emitInstruction(context, ByteCodeOp::MakeStackPointer, node->resultRegisterRC);
+    auto inst   = EMIT_INST1(context, ByteCodeOp::MakeStackPointer, node->resultRegisterRC);
     inst->b.u64 = node->computedValue->storageOffset;
-    emitInstruction(context, ByteCodeOp::CopyRCtoRT, node->resultRegisterRC);
+    EMIT_INST1(context, ByteCodeOp::CopyRCtoRT, node->resultRegisterRC);
     context->bc->maxCallResults = max(context->bc->maxCallResults, 1);
 
     if (node->resolvedSymbolOverload)
@@ -1492,7 +1492,7 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
     {
         auto typeVar = TypeManager::concretePtrRefType(varNode->typeInfo, CONCRETE_ALIAS);
         typeInfoFunc = CastTypeInfo<TypeInfoFuncAttr>(typeVar, TypeInfoKind::LambdaClosure);
-        emitInstruction(context, ByteCodeOp::DeRef64, node->resultRegisterRC, node->resultRegisterRC);
+        EMIT_INST2(context, ByteCodeOp::DeRef64, node->resultRegisterRC, node->resultRegisterRC);
     }
     else
     {
@@ -1524,12 +1524,12 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
     {
         if (node->ownerFct->returnType->typeInfo->flags & TYPEINFO_RETURN_BY_COPY)
         {
-            emitInstruction(context, ByteCodeOp::PushRR);
+            EMIT_INST0(context, ByteCodeOp::PushRR);
             rr0Saved = true;
         }
         else if (node->flags & AST_IN_DEFER)
         {
-            emitInstruction(context, ByteCodeOp::PushRR);
+            EMIT_INST0(context, ByteCodeOp::PushRR);
             rr0Saved = true;
         }
     }
@@ -1582,13 +1582,13 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
             auto constSegment = child->computedValue->storageSegment2;
             emitMakeSegPointer(context, constSegment, child->computedValue->storageOffset2, r0);
 
-            emitInstruction(context, ByteCodeOp::PushRAParam, r0);
+            EMIT_INST1(context, ByteCodeOp::PushRAParam, r0);
             maxCallParams++;
 
             // For a big data we directly set the data pointer in the 'any' instead of pushing it to the stack.
             if (typeParam->flags & TYPEINFO_RETURN_BY_COPY)
             {
-                emitInstruction(context, ByteCodeOp::PushRAParam, child->resultRegisterRC[0]);
+                EMIT_INST1(context, ByteCodeOp::PushRAParam, child->resultRegisterRC[0]);
                 maxCallParams++;
             }
             else
@@ -1599,10 +1599,10 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
                 // The value will be stored on the stack (1 or 2 registers max). So we push now the address
                 // of that value on that stack. This is the data part of the 'any'
                 // Store address of value on the stack
-                auto inst   = emitInstruction(context, ByteCodeOp::CopySP, r1);
+                auto inst   = EMIT_INST1(context, ByteCodeOp::CopySP, r1);
                 inst->b.u64 = offset;
                 inst->c.u64 = child->resultRegisterRC[0];
-                emitInstruction(context, ByteCodeOp::PushRAParam, r1);
+                EMIT_INST1(context, ByteCodeOp::PushRAParam, r1);
                 maxCallParams++;
             }
 
@@ -1749,20 +1749,20 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
                     switch (param->typeInfo->nativeType)
                     {
                     case NativeTypeKind::S8:
-                        emitInstruction(context, ByteCodeOp::CastS8S32, param->resultRegisterRC);
+                        EMIT_INST1(context, ByteCodeOp::CastS8S32, param->resultRegisterRC);
                         break;
                     case NativeTypeKind::S16:
-                        emitInstruction(context, ByteCodeOp::CastS16S32, param->resultRegisterRC);
+                        EMIT_INST1(context, ByteCodeOp::CastS16S32, param->resultRegisterRC);
                         break;
                     case NativeTypeKind::U8:
                     case NativeTypeKind::Bool:
-                        emitInstruction(context, ByteCodeOp::ClearMaskU32, param->resultRegisterRC)->b.u64 = 0x000000FF;
+                        EMIT_INST1(context, ByteCodeOp::ClearMaskU32, param->resultRegisterRC)->b.u64 = 0x000000FF;
                         break;
                     case NativeTypeKind::U16:
-                        emitInstruction(context, ByteCodeOp::ClearMaskU32, param->resultRegisterRC)->b.u64 = 0x0000FFFF;
+                        EMIT_INST1(context, ByteCodeOp::ClearMaskU32, param->resultRegisterRC)->b.u64 = 0x0000FFFF;
                         break;
                     case NativeTypeKind::F32:
-                        emitInstruction(context, ByteCodeOp::CastF32F64, param->resultRegisterRC);
+                        EMIT_INST1(context, ByteCodeOp::CastF32F64, param->resultRegisterRC);
                         break;
                     }
                 }
@@ -1784,7 +1784,7 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
                         {
                             if (freeRegistersParams && !param->resultRegisterRC.cannotFree)
                                 toFree.push_back(param->resultRegisterRC[r]);
-                            auto inst   = emitInstruction(context, ByteCodeOp::PushRVParam, param->resultRegisterRC[r--]);
+                            auto inst   = EMIT_INST1(context, ByteCodeOp::PushRVParam, param->resultRegisterRC[r--]);
                             inst->b.u64 = typeRawVariadic->sizeOf;
                             precallStack += typeRawVariadic->sizeOf;
                             numPushParams++;
@@ -1827,7 +1827,7 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
     if (lastParam && lastParam->typeInfo && lastParam->typeInfo->isTypedVariadic())
     {
         precallStack += 2 * sizeof(Register);
-        emitInstruction(context, ByteCodeOp::PushRAParam2, lastParam->resultRegisterRC[1], lastParam->resultRegisterRC[0]);
+        EMIT_INST2(context, ByteCodeOp::PushRAParam2, lastParam->resultRegisterRC[1], lastParam->resultRegisterRC[0]);
         numPushParams += 2;
         maxCallParams += 2;
         freeRegisterRC(context, lastParam);
@@ -1837,7 +1837,7 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
     else if (lastParam && lastParam->typeInfo && lastParam->typeInfo->isVariadic())
     {
         precallStack += 2 * sizeof(Register);
-        emitInstruction(context, ByteCodeOp::PushRAParam2, lastParam->resultRegisterRC[1], lastParam->resultRegisterRC[0]);
+        EMIT_INST2(context, ByteCodeOp::PushRAParam2, lastParam->resultRegisterRC[1], lastParam->resultRegisterRC[0]);
         numPushParams += 2;
         maxCallParams += 2;
         freeRegisterRC(context, lastParam);
@@ -1846,7 +1846,7 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
     // If last parameter is a spread, then no need to deal with variadic slice : already done
     else if (lastParam && lastParam->typeInfo && lastParam->typeInfo->flags & TYPEINFO_SPREAD)
     {
-        emitInstruction(context, ByteCodeOp::PushRAParam2, lastParam->resultRegisterRC[1], lastParam->resultRegisterRC[0]);
+        EMIT_INST2(context, ByteCodeOp::PushRAParam2, lastParam->resultRegisterRC[1], lastParam->resultRegisterRC[0]);
         maxCallParams += 2;
         precallStack += 2 * sizeof(Register);
         freeRegisterRC(context, lastParam);
@@ -1864,7 +1864,7 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
         toFree.push_back(r0[0]);
         toFree.push_back(r0[1]);
 
-        auto inst                = emitInstruction(context, ByteCodeOp::CopySPVaargs, r0[0]);
+        auto inst                = EMIT_INST1(context, ByteCodeOp::CopySPVaargs, r0[0]);
         inst->b.u32              = (uint32_t) offset * sizeof(Register);
         context->bc->maxSPVaargs = max(context->bc->maxSPVaargs, maxCallParams + 2);
 
@@ -1880,16 +1880,16 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
         if (node->typeInfo && node->typeInfo->isClosure())
         {
             SWAG_ASSERT(node->extension);
-            inst = emitInstruction(context, ByteCodeOp::JumpIfZero64, node->extMisc()->additionalRegisterRC[1]);
+            inst = EMIT_INST1(context, ByteCodeOp::JumpIfZero64, node->extMisc()->additionalRegisterRC[1]);
             inst->flags |= BCI_NO_BACKEND;
             inst->b.s64 = 1;
-            inst        = emitInstruction(context, ByteCodeOp::Add64byVB64, r0[0]);
+            inst        = EMIT_INST1(context, ByteCodeOp::Add64byVB64, r0[0]);
             inst->b.s64 = sizeof(Register);
             inst->flags |= BCI_NO_BACKEND;
         }
 
-        emitInstruction(context, ByteCodeOp::SetImmediate64, r0[1])->b.u64 = numVariadic;
-        emitInstruction(context, ByteCodeOp::PushRAParam2, r0[1], r0[0]);
+        EMIT_INST1(context, ByteCodeOp::SetImmediate64, r0[1])->b.u64 = numVariadic;
+        EMIT_INST2(context, ByteCodeOp::PushRAParam2, r0[1], r0[0]);
         maxCallParams += 2;
 
         precallStack += 2 * sizeof(Register);
@@ -1904,7 +1904,7 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
         toFree.push_back(r0[0]);
         toFree.push_back(r0[1]);
 
-        auto inst                = emitInstruction(context, ByteCodeOp::CopySPVaargs, r0[0]);
+        auto inst                = EMIT_INST1(context, ByteCodeOp::CopySPVaargs, r0[0]);
         inst->b.u32              = (uint32_t) offset * sizeof(Register);
         context->bc->maxSPVaargs = max(context->bc->maxSPVaargs, maxCallParams + 2);
 
@@ -1920,16 +1920,16 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
         if (node->typeInfo && node->typeInfo->isClosure())
         {
             SWAG_ASSERT(node->extension);
-            inst = emitInstruction(context, ByteCodeOp::JumpIfZero64, node->extMisc()->additionalRegisterRC[1]);
+            inst = EMIT_INST1(context, ByteCodeOp::JumpIfZero64, node->extMisc()->additionalRegisterRC[1]);
             inst->flags |= BCI_NO_BACKEND;
             inst->b.s64 = 1;
-            inst        = emitInstruction(context, ByteCodeOp::Add64byVB64, r0[0]);
+            inst        = EMIT_INST1(context, ByteCodeOp::Add64byVB64, r0[0]);
             inst->flags |= BCI_NO_BACKEND;
             inst->b.s64 = sizeof(Register);
         }
 
-        emitInstruction(context, ByteCodeOp::SetImmediate64, r0[1])->b.u64 = numVariadic;
-        emitInstruction(context, ByteCodeOp::PushRAParam2, r0[1], r0[0]);
+        EMIT_INST1(context, ByteCodeOp::SetImmediate64, r0[1])->b.u64 = numVariadic;
+        EMIT_INST2(context, ByteCodeOp::PushRAParam2, r0[1], r0[0]);
         maxCallParams += 2;
 
         precallStack += 2 * sizeof(Register);
@@ -1937,7 +1937,7 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
 
     if (foreign)
     {
-        auto inst               = emitInstruction(context, ByteCodeOp::ForeignCall);
+        auto inst               = EMIT_INST0(context, ByteCodeOp::ForeignCall);
         inst->a.pointer         = (uint8_t*) funcNode;
         inst->b.pointer         = (uint8_t*) typeInfoFunc;
         inst->numVariadicParams = (uint8_t) numVariadic;
@@ -1945,7 +1945,7 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
     }
     else if (funcNode)
     {
-        auto inst = emitInstruction(context, ByteCodeOp::LocalCall);
+        auto inst = EMIT_INST0(context, ByteCodeOp::LocalCall);
         SWAG_ASSERT(funcNode->extension && funcNode->extension->bytecode && funcNode->extByteCode()->bc);
         inst->a.pointer                     = (uint8_t*) funcNode->extByteCode()->bc;
         inst->b.pointer                     = (uint8_t*) typeInfoFunc;
@@ -1955,7 +1955,7 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
     else
     {
         SWAG_ASSERT(varNodeRegisters.size() > 0);
-        auto inst                            = emitInstruction(context, ByteCodeOp::LambdaCall, varNodeRegisters);
+        auto inst                            = EMIT_INST1(context, ByteCodeOp::LambdaCall, varNodeRegisters);
         inst->b.pointer                      = (uint8_t*) typeInfoFunc;
         inst->numVariadicParams              = (uint8_t) numVariadic;
         context->bc->hasForeignFunctionCalls = true;
@@ -1980,7 +1980,7 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
                 reserveRegisterRC(context, node->resultRegisterRC, numRegs);
                 if (numRegs == 1)
                 {
-                    emitInstruction(context, ByteCodeOp::CopyRTtoRC, node->resultRegisterRC[0]);
+                    EMIT_INST1(context, ByteCodeOp::CopyRTtoRC, node->resultRegisterRC[0]);
 
                     if (node->semFlags & SEMFLAG_FROM_REF && !node->forceTakeAddress())
                     {
@@ -1993,7 +1993,7 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
                 {
                     SWAG_ASSERT(numRegs == 2);
                     SWAG_ASSERT(!(node->semFlags & SEMFLAG_FROM_REF));
-                    emitInstruction(context, ByteCodeOp::CopyRTtoRC2, node->resultRegisterRC[0], node->resultRegisterRC[1]);
+                    EMIT_INST2(context, ByteCodeOp::CopyRTtoRC2, node->resultRegisterRC[0], node->resultRegisterRC[1]);
                 }
             }
         }
@@ -2008,20 +2008,20 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
         if (node->typeInfo && node->typeInfo->isClosure())
         {
             SWAG_ASSERT(node->extension);
-            emitInstruction(context, ByteCodeOp::IncSPPostCallCond, node->extMisc()->additionalRegisterRC[1], sizeof(void*));
+            EMIT_INST2(context, ByteCodeOp::IncSPPostCallCond, node->extMisc()->additionalRegisterRC[1], sizeof(void*));
             if (precallStack - sizeof(void*))
-                emitInstruction(context, ByteCodeOp::IncSPPostCall, precallStack - sizeof(void*));
+                EMIT_INST1(context, ByteCodeOp::IncSPPostCall, precallStack - sizeof(void*));
         }
         else
         {
-            emitInstruction(context, ByteCodeOp::IncSPPostCall, precallStack);
+            EMIT_INST1(context, ByteCodeOp::IncSPPostCall, precallStack);
         }
     }
 
     // If we are in a function that need to keep the RR0 register alive, we need to restore it
     if (rr0Saved)
     {
-        emitInstruction(context, ByteCodeOp::PopRR);
+        EMIT_INST0(context, ByteCodeOp::PopRR);
     }
 
     // This is usefull when function call is inside an expression like func().something
@@ -2096,7 +2096,7 @@ bool ByteCodeGenJob::emitBeforeFuncDeclContent(ByteCodeGenContext* context)
     if (funcNode->attributeFlags & ATTRIBUTE_SHARP_FUNC)
     {
         if (context->sourceFile->module->buildCfg.stackTrace)
-            emitInstruction(context, ByteCodeOp::InternalInitStackTrace);
+            EMIT_INST0(context, ByteCodeOp::InternalInitStackTrace);
     }
 
     // Clear error when entering a #<function> or a function than can raise en error
@@ -2104,14 +2104,14 @@ bool ByteCodeGenJob::emitBeforeFuncDeclContent(ByteCodeGenContext* context)
     {
         SWAG_ASSERT(funcNode->registerGetContext == UINT32_MAX);
         funcNode->registerGetContext = reserveRegisterRC(context);
-        emitInstruction(context, ByteCodeOp::IntrinsicGetContext, funcNode->registerGetContext);
-        emitInstruction(context, ByteCodeOp::InternalClearErr, funcNode->registerGetContext);
+        EMIT_INST1(context, ByteCodeOp::IntrinsicGetContext, funcNode->registerGetContext);
+        EMIT_INST1(context, ByteCodeOp::InternalClearErr, funcNode->registerGetContext);
     }
     else if (funcNode->specFlags & AstFuncDecl::SPECFLAG_REG_GET_CONTEXT)
     {
         SWAG_ASSERT(funcNode->registerGetContext == UINT32_MAX);
         funcNode->registerGetContext = reserveRegisterRC(context);
-        emitInstruction(context, ByteCodeOp::IntrinsicGetContext, funcNode->registerGetContext);
+        EMIT_INST1(context, ByteCodeOp::IntrinsicGetContext, funcNode->registerGetContext);
     }
 
     // Should be aligned !
@@ -2121,9 +2121,9 @@ bool ByteCodeGenJob::emitBeforeFuncDeclContent(ByteCodeGenContext* context)
         Report::report({funcNode, Fmt(Err(Err0536), Utf8::toNiceSize(g_CommandLine.stackSizeRT).c_str())});
 
     if (funcNode->stackSize == 0)
-        emitInstruction(context, ByteCodeOp::SetBP);
+        EMIT_INST0(context, ByteCodeOp::SetBP);
     else
-        emitInstruction(context, ByteCodeOp::DecSPBP)->a.u32 = funcNode->stackSize;
+        EMIT_INST0(context, ByteCodeOp::DecSPBP)->a.u32 = funcNode->stackSize;
 
     return true;
 }
