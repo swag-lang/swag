@@ -65,7 +65,7 @@ const solar_bodies: [] Planet = [
     },
 ]
 
-#[Swag.PrintBc]
+//#[Swag.PrintBc]
 //#[Swag.Optim("", false)]
 func energy(bodies: ^Planet)->f64
 {

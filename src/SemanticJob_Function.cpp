@@ -1070,7 +1070,7 @@ bool SemanticJob::resolveFuncCallParam(SemanticContext* context)
         node->semFlags |= SEMFLAG_LITERAL_SUFFIX;
 
     // Inherit the original type in case of computed values, in order to make the cast if necessary
-    if (node->flags & (AST_VALUE_COMPUTED | node->flags & AST_OPAFFECT_CAST))
+    if (node->flags & (AST_VALUE_COMPUTED | AST_OPAFFECT_CAST))
         node->castedTypeInfo = child->castedTypeInfo;
 
     if (checkForConcrete & !(node->flags & AST_OPAFFECT_CAST))

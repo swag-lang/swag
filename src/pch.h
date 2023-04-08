@@ -15,8 +15,6 @@
 #pragma clang diagnostic ignored "-Wnonportable-include-path"
 #pragma clang diagnostic ignored "-Wmicrosoft-cast"
 #pragma clang diagnostic ignored "-Wchar-subscripts"
-#pragma clang diagnostic ignored "-Wlogical-op-parentheses"
-#pragma clang diagnostic ignored "-Wbitwise-op-parentheses"
 #define SWAG_FORCE_INLINE __attribute__((always_inline))
 #define SWAG_UNREACHABLE __builtin_unreachable()
 

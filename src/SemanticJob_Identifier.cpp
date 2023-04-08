@@ -1857,7 +1857,7 @@ bool SemanticJob::matchIdentifierParameters(SemanticContext* context, VectorNati
                     {
                         auto grandParent = node->parent->parent;
                         if (grandParent->kind == AstNodeKind::IntrinsicDefined ||
-                            grandParent->kind == AstNodeKind::IntrinsicProp && grandParent->tokenId == TokenId::IntrinsicNameOf)
+                            (grandParent->kind == AstNodeKind::IntrinsicProp && grandParent->tokenId == TokenId::IntrinsicNameOf))
                             asMatch = true;
                     }
                 }
@@ -3387,7 +3387,7 @@ bool SemanticJob::filterMatches(SemanticContext* context, VectorNative<OneMatch*
     {
         auto grandParent = node->parent->parent;
         if (grandParent->kind == AstNodeKind::IntrinsicDefined ||
-            grandParent->kind == AstNodeKind::IntrinsicProp && grandParent->tokenId == TokenId::IntrinsicNameOf)
+            (grandParent->kind == AstNodeKind::IntrinsicProp && grandParent->tokenId == TokenId::IntrinsicNameOf))
         {
             matches.count = 1;
             return true;

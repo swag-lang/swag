@@ -154,7 +154,7 @@ SymbolOverload* SymTable::addSymbolTypeInfoNoLock(ErrorContext* context, AddSymb
     if (!overload)
     {
         // No ghosting check for an inline parameter
-        if (!(toAdd.flags & OVERLOAD_VAR_INLINE | toAdd.flags & OVERLOAD_RETVAL))
+        if (!(toAdd.flags & (OVERLOAD_VAR_INLINE | OVERLOAD_RETVAL)))
         {
             if (!checkHiddenSymbolNoLock(context, toAdd.node, toAdd.typeInfo, toAdd.kind, symbol, toAdd.flags))
                 return nullptr;
