@@ -195,6 +195,8 @@ static bool optimizePassDeadStoreDupScan(ByteCodeOptContext* context, uint32_t c
                         return true;
                     }
                     break;
+                default:
+                    break;
                 }
             }
 

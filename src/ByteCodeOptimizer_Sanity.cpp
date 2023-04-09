@@ -324,6 +324,8 @@ static void setConstant(Context& cxt, ValueKind kind, ByteCodeInstruction* ip, u
         ip->a.u32 = ip->c.u32;
         ip->b.u64 = value;
         break;
+    default:
+        break;
     }
 }
 

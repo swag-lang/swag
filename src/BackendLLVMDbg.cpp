@@ -293,6 +293,8 @@ llvm::DIType* BackendLLVMDbg::getType(TypeInfo* typeInfo, llvm::DIFile* file)
             return s64Ty;
         }
     }
+    default:
+        break;
     }
 
     return s64Ty;

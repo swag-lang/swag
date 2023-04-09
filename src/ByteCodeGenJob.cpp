@@ -697,6 +697,8 @@ JobResult ByteCodeGenJob::execute()
 
                 nodes.pop_back();
                 break;
+            default:
+                break;
             }
         }
 

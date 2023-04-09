@@ -111,6 +111,8 @@ const char* ByteCodeGenJob::safetyMsg(SafetyMsg msg, TypeInfo* toType, TypeInfo*
             SWAG_ASSERT(toType);
             typedMsg[m][i][j] = Fmt(Err(Saf0027), toType->name.c_str());
             break;
+        default:
+            break;
         }
     }
 
@@ -560,6 +562,8 @@ void ByteCodeGenJob::emitSafetyNeg(ByteCodeGenContext* context, uint32_t r0, Typ
         emitAssert(context, re, forAbs ? msg : msg1);
         break;
     }
+    default:
+        break;
     }
 
     freeRegisterRC(context, re);
@@ -815,6 +819,8 @@ void ByteCodeGenJob::emitSafetyCastOverflow(ByteCodeGenContext* context, TypeInf
             emitAssert(context, re, msg);
             break;
         }
+        default:
+            break;
         }
         break;
 
@@ -908,6 +914,8 @@ void ByteCodeGenJob::emitSafetyCastOverflow(ByteCodeGenContext* context, TypeInf
             emitAssert(context, re, msg);
             break;
         }
+        default:
+            break;
         }
         break;
 
@@ -977,6 +985,8 @@ void ByteCodeGenJob::emitSafetyCastOverflow(ByteCodeGenContext* context, TypeInf
             emitAssert(context, re, msg);
             break;
         }
+        default:
+            break;
         }
         break;
 
@@ -1003,6 +1013,8 @@ void ByteCodeGenJob::emitSafetyCastOverflow(ByteCodeGenContext* context, TypeInf
             emitAssert(context, re, msg);
             break;
         }
+        default:
+            break;
         }
         break;
 
@@ -1130,6 +1142,8 @@ void ByteCodeGenJob::emitSafetyCastOverflow(ByteCodeGenContext* context, TypeInf
             emitAssert(context, re, msg);
             break;
         }
+        default:
+            break;
         }
         break;
 
@@ -1236,6 +1250,8 @@ void ByteCodeGenJob::emitSafetyCastOverflow(ByteCodeGenContext* context, TypeInf
             emitAssert(context, re, msg);
             break;
         }
+        default:
+            break;
         }
         break;
 
@@ -1327,6 +1343,8 @@ void ByteCodeGenJob::emitSafetyCastOverflow(ByteCodeGenContext* context, TypeInf
             emitAssert(context, re, msg);
             break;
         }
+        default:
+            break;
         }
         break;
 
@@ -1397,7 +1415,11 @@ void ByteCodeGenJob::emitSafetyCastOverflow(ByteCodeGenContext* context, TypeInf
             emitAssert(context, re, msg);
             break;
         }
+        default:
+            break;
         }
+        break;
+    default:
         break;
     }
 

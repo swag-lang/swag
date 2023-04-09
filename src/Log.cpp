@@ -51,6 +51,9 @@ const char* Log::colorToVTS(LogColor color)
         return "\x1b[96m";
     case LogColor::White:
         return "\x1b[97m";
+
+    default:
+        break;
     }
 
     return "";

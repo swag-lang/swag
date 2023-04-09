@@ -170,6 +170,9 @@ bool SemanticJob::setupIdentifierRef(SemanticContext* context, AstNode* node, Ty
         node->typeInfo = typeInfo;
         break;
     }
+
+    default:
+        break;
     }
 
     return true;
@@ -211,6 +214,8 @@ void SemanticJob::dealWithIntrinsic(SemanticContext* context, AstIdentifier* ide
         }
         break;
     }
+    default:
+        break;
     }
 }
 
@@ -578,6 +583,8 @@ bool SemanticJob::setSymbolMatchCallParams(SemanticContext* context, AstIdentifi
             case TokenId::CompilerSwagOs:
             case TokenId::CompilerBackend:
                 continue;
+            default:
+                break;
             }
 
             auto typeParam = TypeManager::concretePtrRef(funcParam->typeInfo);
@@ -1457,6 +1464,8 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* ide
             case AstNodeKind::Assume:
                 extension->byteCodeAfterFct = ByteCodeGenJob::emitAssume;
                 break;
+            default:
+                break;
             }
         }
 
@@ -1481,6 +1490,8 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* ide
 
         break;
     }
+    default:
+        break;
     }
 
     return true;
@@ -2906,6 +2917,8 @@ bool SemanticJob::getUsingVar(SemanticContext* context, AstIdentifierRef* identi
     case SymbolKind::TypeAlias:
     case SymbolKind::Interface:
         return true;
+    default:
+        break;
     }
 
     auto                        symbol   = overload->symbol;
@@ -3224,6 +3237,8 @@ bool SemanticJob::appendLastCodeStatement(SemanticContext* context, AstIdentifie
                             Diagnostic diag{node, node->token, Fmt(Err(Err0686), Naming::kindName(overload).c_str(), overload->node->token.ctext(), brotherParent->token.ctext())};
                             return context->report(diag, Diagnostic::hereIs(overload->node));
                         }
+                        default:
+                            break;
                         }
 
                         auto fctCallParam = Ast::newFuncCallParam(context->sourceFile, node->callParameters);

@@ -125,6 +125,9 @@ void ByteCodeOptimizer::optimizePassDupCopyRBRAOp(ByteCodeOptContext* context, B
                     }
                 }
                 break;
+
+            default:
+                break;
             }
         }
         else if (op == ByteCodeOp::CopyRBtoRA64)

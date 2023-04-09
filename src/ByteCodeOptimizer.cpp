@@ -323,6 +323,8 @@ void ByteCodeOptimizer::setContextFlags(ByteCodeOptContext* context)
         case ByteCodeOp::SetImmediate64:
             context->contextBcFlags |= OCF_HAS_DUPCOPY;
             break;
+        default:
+            break;
         }
     }
 }

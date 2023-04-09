@@ -340,7 +340,10 @@ bool ModuleCfgManager::resolveModuleDependency(Module* srcModule, ModuleDependen
                 {
                     pendingCfgModules.insert(cfgModule);
                 }
-            }
+            }            
+            break;
+
+        default:
             break;
         }
     }
@@ -382,6 +385,9 @@ bool ModuleCfgManager::resolveModuleDependency(Module* srcModule, ModuleDependen
                 pendingCfgModules.insert(cfgModule);
             }
 
+            break;
+
+        default:
             break;
         }
     }
@@ -660,6 +666,8 @@ bool ModuleCfgManager::execute()
                 ((FetchModuleFileSystemJob*) fetchJob)->collectSourceFiles = false;
                 break;
             }
+            default:
+                break;
             }
 
             SWAG_ASSERT(fetchJob);

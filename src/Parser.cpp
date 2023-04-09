@@ -75,6 +75,9 @@ bool Parser::invalidTokenError(InvalidTokenError kind)
         return error(token, Err(Syn0103));
     case TokenId::SymRightSquare:
         return error(token, Err(Syn0100));
+
+    default:
+        break;
     }
 
     Utf8 msg;
@@ -119,6 +122,8 @@ bool Parser::invalidTokenError(InvalidTokenError kind)
             if (nextToken.id == TokenId::SymEqual || nextToken.id == TokenId::SymColonEqual || nextToken.id == TokenId::SymColon)
                 msg += ") did you miss 'var' or 'const' to declare a global variable ?";
         }
+        break;
+    default:
         break;
     }
 

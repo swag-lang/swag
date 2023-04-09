@@ -641,6 +641,8 @@ bool Parser::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId)
             funcNode->flags |= AST_GENERATED;
             funcNode->attributeFlags |= ATTRIBUTE_MATCH_VALIDIFX_FUNC | ATTRIBUTE_CONSTEXPR | ATTRIBUTE_COMPILER | ATTRIBUTE_GENERATED_FUNC | ATTRIBUTE_SHARP_FUNC;
             break;
+        default:
+            break;
         }
     }
     else

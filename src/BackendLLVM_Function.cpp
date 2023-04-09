@@ -134,6 +134,8 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::PushRR:
         case ByteCodeOp::PopRR:
             continue;
+        default:
+            break;
         }
 
         switch (ip->op)
@@ -3005,6 +3007,8 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
                 r0 = MK_IMMA_64();
                 r1 = builder.getInt64(ip->b.u64);
                 break;
+            default:
+                break;
             }
 
             auto b0 = builder.CreateICmpEQ(r0, r1);
@@ -3026,6 +3030,8 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
                     break;
                 case ByteCodeOp::JumpDyn64:
                     r1 = builder.getInt64((uint64_t) (idx - 1) + ip->b.u64);
+                    break;
+                default:
                     break;
                 }
 
@@ -5266,6 +5272,8 @@ llvm::Type* BackendLLVM::swagTypeToLLVMType(const BuildParameters& buildParamete
             return F64_TY();
         case NativeTypeKind::Void:
             return VOID_TY();
+        default:
+            break;
         }
     }
 

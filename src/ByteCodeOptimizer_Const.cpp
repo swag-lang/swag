@@ -87,6 +87,8 @@ bool ByteCodeOptimizer::optimizePassConst(ByteCodeOptContext* context)
                 if (ip->d.u64 == 0)
                     setNop(context, ip);
                 break;
+            default:
+                break;
             }
         }
 
@@ -104,6 +106,9 @@ bool ByteCodeOptimizer::optimizePassConst(ByteCodeOptContext* context)
                 SET_OP(ip, ByteCodeOp::SetImmediate64);
                 ip->d.f64 = (ip->a.f64 * ip->b.f64) + ip->c.f64;
                 OK();
+                break;
+
+            default:
                 break;
             }
         }
@@ -639,6 +644,9 @@ bool ByteCodeOptimizer::optimizePassConst(ByteCodeOptContext* context)
                 ip->a.u32 = ip->c.u32;
                 OK();
                 break;
+
+            default:
+                break;
             }
         }
         else if ((ip->flags & BCI_IMM_B) && (ip->flags & BCI_IMM_C))
@@ -673,6 +681,9 @@ bool ByteCodeOptimizer::optimizePassConst(ByteCodeOptContext* context)
                 OK();
                 break;
             }
+
+            default:
+                break;
             }
         }
         else if (ip->flags & BCI_IMM_B)
@@ -1071,6 +1082,9 @@ bool ByteCodeOptimizer::optimizePassConst(ByteCodeOptContext* context)
                 SET_OP(ip, ByteCodeOp::SetImmediate64);
                 ip->b.u64 = ip->c.u64 & ip->b.u64;
                 OK();
+                break;
+
+            default:
                 break;
             }
         }

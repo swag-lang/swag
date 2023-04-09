@@ -274,6 +274,8 @@ void SymTable::disabledIfBlockOverloadNoLock(AstNode* node, SymbolName* symbol)
         structNode->scope = nullptr;
         break;
     }
+    default:
+        break;
     }
 }
 

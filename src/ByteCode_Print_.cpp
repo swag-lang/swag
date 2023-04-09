@@ -197,6 +197,8 @@ Utf8 ByteCode::getPrettyInstruction(ByteCodeInstruction* ip)
     case ByteCodeOp::IntrinsicF64x2:
         str.replace("_w0_", g_TokenNames[ip->d.u32]);
         break;
+    default:
+        break;
     }
 
     str.trim();
@@ -385,6 +387,8 @@ void ByteCode::printInstruction(ByteCodeInstruction* ip, ByteCodeInstruction* cu
         }
         break;
     }
+    default:
+        break;
     }
 
 #ifdef SWAG_DEV_MODE

@@ -274,6 +274,8 @@ inline llvm::Type* toNativeTy(llvm::LLVMContext& context, NativeTypeKind k)
         return F32_TY();
     case NativeTypeKind::F64:
         return F64_TY();
+    default:
+        break;
     }
 
     SWAG_ASSERT(false);
@@ -302,6 +304,8 @@ inline llvm::Value* toPtrNative(llvm::LLVMContext& context, llvm::IRBuilder<>& b
         return TO_PTR_F32(v);
     case NativeTypeKind::F64:
         return TO_PTR_F64(v);
+    default:
+        break;
     }
 
     SWAG_ASSERT(false);
@@ -331,6 +335,8 @@ inline llvm::Value* toPtrPtrNative(llvm::LLVMContext& context, llvm::IRBuilder<>
         return TO_PTR_PTR_F32(v);
     case NativeTypeKind::F64:
         return TO_PTR_PTR_F64(v);
+    default:
+        break;
     }
 
     SWAG_ASSERT(false);

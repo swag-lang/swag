@@ -366,6 +366,8 @@ static void deduceGenericParam(SymbolMatchContext& context, AstNode* callParamet
             }
             break;
         }
+        default:
+            break;
         }
     }
 }
@@ -494,6 +496,9 @@ static void matchParameters(SymbolMatchContext& context, VectorNative<TypeInfoPa
                 }
                 break;
             }
+
+            default:
+                break;
             }
 
             if (invalidType)

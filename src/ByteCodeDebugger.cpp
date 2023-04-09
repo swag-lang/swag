@@ -351,6 +351,7 @@ Utf8 ByteCodeDebugger::getCommandLine(ByteCodeRunContext* context, bool& ctrl, b
 
         //////////////////////////////////
         case OS::Key::Tab:
+        {
             if (!context->debugCxtIp || !context->debugCxtIp->node || !context->debugCxtIp->node->sourceFile)
                 continue;
             if (cursorX != line.count)
@@ -367,6 +368,10 @@ Utf8 ByteCodeDebugger::getCommandLine(ByteCodeRunContext* context, bool& ctrl, b
                 continue;
             }
 
+            break;
+        }
+
+        default:
             break;
         }
     }
@@ -494,6 +499,8 @@ bool ByteCodeDebugger::mustBreak(ByteCodeRunContext* context)
         context->debugStepMode = ByteCodeRunContext::DebugStepMode::None;
         break;
     }
+    default:
+        break;
     }
 
     return !zapCurrentIp;

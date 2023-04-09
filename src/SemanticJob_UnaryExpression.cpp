@@ -76,6 +76,8 @@ bool SemanticJob::resolveUnaryOpMinus(SemanticContext* context, AstNode* op, Ast
         case NativeTypeKind::F64:
             child->computedValue->reg.f64 = -child->computedValue->reg.f64;
             break;
+        default:
+            break;
         }
     }
 
@@ -119,6 +121,8 @@ bool SemanticJob::resolveUnaryOpExclam(SemanticContext* context, AstNode* child)
         case NativeTypeKind::S64:
         case NativeTypeKind::U64:
             child->computedValue->reg.b = child->computedValue->reg.u64 ? false : true;
+            break;
+        default:
             break;
         }
     }
@@ -172,6 +176,9 @@ bool SemanticJob::resolveUnaryOpInvert(SemanticContext* context, AstNode* child)
         case NativeTypeKind::U64:
             child->computedValue->reg.u64 = ~child->computedValue->reg.u64;
             break;
+
+        default:
+            break;
         }
     }
 
@@ -215,6 +222,8 @@ bool SemanticJob::resolveUnaryOp(SemanticContext* context)
         case TokenId::SymTilde:
             SWAG_CHECK(resolveUserOp(context, g_LangSpec->name_opUnary, "~", nullptr, child, nullptr));
             break;
+        default:
+            break;
         }
 
         op->typeInfo = typeInfo;
@@ -243,6 +252,8 @@ bool SemanticJob::resolveUnaryOp(SemanticContext* context)
     case TokenId::SymTilde:
         SWAG_CHECK(checkTypeIsNative(context, op, typeInfo));
         SWAG_CHECK(resolveUnaryOpInvert(context, child));
+        break;
+    default:
         break;
     }
 

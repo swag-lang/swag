@@ -551,6 +551,8 @@ DbgTypeIndex BackendX64::dbgGetSimpleType(TypeInfo* typeInfo)
             return SimpleTypeKind::Float64;
         case NativeTypeKind::Rune:
             return SimpleTypeKind::Character32;
+        default:
+            break;
         }
     }
 

@@ -49,6 +49,8 @@ struct ByteCode
         case ByteCodeOp::SetZeroAtPointerX:
             offset = inst->c.u32;
             return inst->b.u32;
+        default:
+            break;
         }
 
         return 0;
@@ -73,6 +75,8 @@ struct ByteCode
         case ByteCodeOp::SetZeroStackX:
             offset = inst->a.u32;
             return inst->b.u32;
+        default:
+            break;
         }
 
         return 0;

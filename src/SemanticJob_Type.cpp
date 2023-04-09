@@ -751,6 +751,8 @@ bool SemanticJob::resolveExplicitBitCast(SemanticContext* context)
         case NativeTypeKind::U32:
             node->computedValue->reg.u64 = node->computedValue->reg.u32;
             break;
+        default:
+            break;
         }
     }
 

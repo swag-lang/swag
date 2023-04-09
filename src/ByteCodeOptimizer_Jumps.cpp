@@ -1067,6 +1067,9 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
             }
 
             break;
+
+        default:
+            break;
         }
 
         switch (ip->op)
@@ -1198,6 +1201,9 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
                 }
             }
             break;
+
+        default:
+            break;
         }
 
 #define OPT_JMPAC(__op, __val)        \
@@ -1327,6 +1333,9 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
             case ByteCodeOp::JumpIfLowerEqF64:
                 OPT_JMPAC(<=, f64);
                 break;
+                
+            default:
+                break;
             }
         }
 
@@ -1370,6 +1379,9 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
                 break;
             case ByteCodeOp::JumpIfNotZero64:
                 OPT_JMPA0(!=, u64);
+                break;
+
+            default:
                 break;
             }
         }

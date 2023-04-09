@@ -172,6 +172,9 @@ void ByteCodeOptimizer::reduceMath(ByteCodeOptContext* context, ByteCodeInstruct
             break;
         }
         break;
+
+    default:
+        break;
     }
 }
 
@@ -191,6 +194,9 @@ void ByteCodeOptimizer::reduceFactor(ByteCodeOptContext* context, ByteCodeInstru
             ip[1].flags |= BCI_IMM_B;
             break;
         }
+        break;
+
+    default:
         break;
     }
 }
@@ -373,6 +379,9 @@ void ByteCodeOptimizer::reduceErr(ByteCodeOptContext* context, ByteCodeInstructi
             setNop(context, ip + 3);
         }
         break;
+
+    default:
+        break;
     }
 }
 
@@ -443,6 +452,9 @@ void ByteCodeOptimizer::reduceMemcpy(ByteCodeOptContext* context, ByteCodeInstru
         case 8:
             SET_OP(ip, ByteCodeOp::MemCpy64);
             break;
+
+        default:
+            break;
         }
     }
 
@@ -477,6 +489,9 @@ void ByteCodeOptimizer::reduceMemcpy(ByteCodeOptContext* context, ByteCodeInstru
             SET_OP(ip + 2, ByteCodeOp::CopyStack64);
             ip[2].a.u32 = ip[1].b.u32;
             ip[2].b.u32 = ip[0].b.u32;
+            break;
+
+        default:
             break;
         }
     }
@@ -526,6 +541,9 @@ void ByteCodeOptimizer::reduceMemcpy(ByteCodeOptContext* context, ByteCodeInstru
             ip[2].flags |= BCI_IMM_B;
             break;
         }
+
+        default:
+            break;
         }
     }
 }
@@ -604,6 +622,9 @@ void ByteCodeOptimizer::reduceAppend(ByteCodeOptContext* context, ByteCodeInstru
         }
 
         break;
+
+    default:
+        break;
     }
 
     // A = something followed by B = A
@@ -649,6 +670,9 @@ void ByteCodeOptimizer::reduceAppend(ByteCodeOptContext* context, ByteCodeInstru
             context->passHasDoneSomething = true;
             break;
         }
+
+        default:
+            break;
         }
     }
 }
@@ -797,6 +821,9 @@ void ByteCodeOptimizer::reduceFunc(ByteCodeOptContext* context, ByteCodeInstruct
             setNop(context, ip + 1);
             break;
         }
+        break;
+
+    default:
         break;
     }
 }
@@ -2315,6 +2342,9 @@ void ByteCodeOptimizer::reduceStack(ByteCodeOptContext* context, ByteCodeInstruc
         }
 
         break;
+
+    default:
+        break;
     }
 
     // Init stack just before a return
@@ -2336,6 +2366,9 @@ void ByteCodeOptimizer::reduceStack(ByteCodeOptContext* context, ByteCodeInstruc
         case ByteCodeOp::SetZeroStack64:
         case ByteCodeOp::SetZeroStackX:
             setNop(context, ip);
+            break;
+
+        default:
             break;
         }
     }
@@ -2572,6 +2605,9 @@ void ByteCodeOptimizer::reduceIncPtr(ByteCodeOptContext* context, ByteCodeInstru
             break;
         }
         break;
+
+    default:
+        break;
     }
 }
 
@@ -2647,6 +2683,9 @@ void ByteCodeOptimizer::reduceCast(ByteCodeOptContext* context, ByteCodeInstruct
             break;
         }
         break;
+
+    default:
+        break;
     }
 }
 
@@ -2710,6 +2749,9 @@ void ByteCodeOptimizer::reduceNoOp(ByteCodeOptContext* context, ByteCodeInstruct
             setNop(context, ip + 1);
             break;
         }
+        break;
+
+    default:
         break;
     }
 
@@ -2817,6 +2859,9 @@ void ByteCodeOptimizer::reduceNoOp(ByteCodeOptContext* context, ByteCodeInstruct
             if (ip->b.u32 == 0)
                 setNop(context, ip);
             break;
+
+        default:
+            break;
         }
     }
 
@@ -2852,6 +2897,9 @@ void ByteCodeOptimizer::reduceNoOp(ByteCodeOptContext* context, ByteCodeInstruct
             if (ip->b.u64 == 0)
                 setNop(context, ip);
             break;
+
+        default:
+            break;
         }
     }
 
@@ -2880,6 +2928,9 @@ void ByteCodeOptimizer::reduceNoOp(ByteCodeOptContext* context, ByteCodeInstruct
                     ip->flags &= ~BCI_IMM_B;
                 }
             }
+            break;
+
+        default:
             break;
         }
     }
@@ -3059,6 +3110,9 @@ void ByteCodeOptimizer::reduceSetAt(ByteCodeOptContext* context, ByteCodeInstruc
         }
 
         break;
+
+    default:
+        break;
     }
 }
 
@@ -3195,6 +3249,9 @@ void ByteCodeOptimizer::reduceX2(ByteCodeOptContext* context, ByteCodeInstructio
                 break;
             }
             break;*/
+
+    default:
+        break;
     }
 }
 
@@ -4546,6 +4603,9 @@ void ByteCodeOptimizer::reduceCmpJump(ByteCodeOptContext* context, ByteCodeInstr
         }
 
         break;
+
+    default:
+        break;
     }
 
     // Compare to == 0
@@ -4776,6 +4836,9 @@ void ByteCodeOptimizer::reduceCmpJump(ByteCodeOptContext* context, ByteCodeInstr
             }
 
             break;
+
+        default:
+            break;
         }
     }
 }
@@ -4805,6 +4868,9 @@ void ByteCodeOptimizer::reduceLateStack(ByteCodeOptContext* context, ByteCodeIns
             setNop(context, ip);
             break;
         }
+        break;
+
+    default:
         break;
     }
 }
@@ -5014,6 +5080,8 @@ void ByteCodeOptimizer::reduceStackOp(ByteCodeOptContext* context, ByteCodeInstr
                 ip[1].a.u32 = ip->b.u32;
                 SET_OP(ip + 1, ByteCodeOp::AffectOpModuloEqU64_S);
                 break;
+            default:
+                break;
             }
         }
         break;
@@ -5067,6 +5135,8 @@ void ByteCodeOptimizer::reduceStackOp(ByteCodeOptContext* context, ByteCodeInstr
                 ip[1].b.u32 = ip->b.u32;
                 SET_OP(ip + 1, ByteCodeOp::AffectOpModuloEqU8_SS);
                 break;
+            default:
+                break;
             }
         }
         break;
@@ -5119,6 +5189,8 @@ void ByteCodeOptimizer::reduceStackOp(ByteCodeOptContext* context, ByteCodeInstr
             case ByteCodeOp::AffectOpModuloEqU16_S:
                 ip[1].b.u32 = ip->b.u32;
                 SET_OP(ip + 1, ByteCodeOp::AffectOpModuloEqU16_SS);
+                break;
+            default:
                 break;
             }
         }
@@ -5189,6 +5261,8 @@ void ByteCodeOptimizer::reduceStackOp(ByteCodeOptContext* context, ByteCodeInstr
                 ip[1].b.u32 = ip->b.u32;
                 SET_OP(ip + 1, ByteCodeOp::AffectOpModuloEqU32_SS);
                 break;
+            default:
+                break;
             }
         }
         break;
@@ -5258,8 +5332,13 @@ void ByteCodeOptimizer::reduceStackOp(ByteCodeOptContext* context, ByteCodeInstr
                 ip[1].b.u32 = ip->b.u32;
                 SET_OP(ip + 1, ByteCodeOp::AffectOpModuloEqU64_SS);
                 break;
+            default:
+                break;
             }
         }
+        break;
+
+    default:
         break;
     }
 }
@@ -5383,6 +5462,9 @@ void ByteCodeOptimizer::reduceForceSafe(ByteCodeOptContext* context, ByteCodeIns
         break;
     case ByteCodeOp::BinOpMulU64:
         SET_OP(ip, ByteCodeOp::BinOpMulU64_Safe);
+        break;
+
+    default:
         break;
     }
 }

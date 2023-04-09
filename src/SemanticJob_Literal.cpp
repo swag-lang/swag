@@ -154,6 +154,8 @@ Utf8 SemanticJob::checkLiteralValue(ComputedValue& computedValue, LiteralType& l
         case NativeTypeKind::S64:
             computedValue.reg.s64 = -computedValue.reg.s64;
             break;
+        default:
+            break;
         }
 
         switch (literalType)
@@ -165,6 +167,8 @@ Utf8 SemanticJob::checkLiteralValue(ComputedValue& computedValue, LiteralType& l
             break;
         case LiteralType::TT_U64:
             literalType = LiteralType::TT_S64;
+            break;
+        default:
             break;
         }
     }
@@ -340,6 +344,8 @@ Utf8 SemanticJob::checkLiteralValue(ComputedValue& computedValue, LiteralType& l
         }
 
         break;
+    default:
+        break;
     }
 
     return "";
@@ -432,6 +438,8 @@ bool SemanticJob::resolveLiteral(SemanticContext* context)
         node->literalType      = LiteralType::TT_S32;
         node->literalValue.s32 = SWAG_BUILD_NUM;
         break;
+    default:
+        break;
     }
 
     node->typeInfo = TypeManager::literalTypeToType(node->literalType, node->literalValue);
@@ -489,6 +497,8 @@ bool SemanticJob::resolveLiteral(SemanticContext* context)
         case NativeTypeKind::S64:
             node->semFlags |= SEMFLAG_NEG_EATEN;
             negApplied = true;
+            break;
+        default:
             break;
         }
     }

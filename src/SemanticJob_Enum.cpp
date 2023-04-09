@@ -135,6 +135,9 @@ bool SemanticJob::resolveEnumType(SemanticContext* context)
         if (rawTypeInfo->nativeType == NativeTypeKind::Any)
             return context->report({typeNode->childs.front(), Fmt(Err(Err0705), rawTypeInfo->getDisplayNameC())});
         return true;
+
+    default:
+        break;
     }
 
     if (rawTypeInfo->isCString())
@@ -218,11 +221,16 @@ bool SemanticJob::resolveEnumValue(SemanticContext* context)
             case NativeTypeKind::F32:
             case NativeTypeKind::F64:
                 return context->report({valNode, Fmt(Err(Err0706), valNode->token.ctext(), rawTypeInfo->getDisplayNameC())});
+            default:
+                break;
             }
             break;
 
         case TypeInfoKind::Slice:
             return context->report({valNode, Fmt(Err(Err0706), valNode->token.ctext(), rawTypeInfo->getDisplayNameC())});
+
+        default:
+            break;
         }
     }
 
@@ -316,6 +324,8 @@ bool SemanticJob::resolveEnumValue(SemanticContext* context)
                 if (enumNode->computedValue->reg.s64 <= INT64_MIN || enumNode->computedValue->reg.s64 >= INT64_MAX)
                     return context->report({valNode, Fmt(Err(Err0719), valNode->token.ctext())});
                 enumNode->computedValue->reg.s64++;
+                break;
+            default:
                 break;
             }
         }

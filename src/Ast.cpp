@@ -89,6 +89,8 @@ Utf8 Ast::enumToString(TypeInfo* typeInfo, const Utf8& text, const Register& reg
                 else if ((value->value->reg.u64 & reg.u64) == value->value->reg.u64)
                     ok = true;
                 break;
+            default:
+                break;
             }
 
             if (ok)
@@ -143,6 +145,8 @@ Utf8 Ast::enumToString(TypeInfo* typeInfo, const Utf8& text, const Register& reg
                 case NativeTypeKind::String:
                     if (value->value->text == text)
                         ok = true;
+                    break;
+                default:
                     break;
                 }
 

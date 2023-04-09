@@ -154,6 +154,8 @@ bool ByteCodeGenJob::emitCompareOpPostSpecialFunc(ByteCodeGenContext* context, T
         case TokenId::SymLowerEqual:
             EMIT_INST1(context, ByteCodeOp::GreaterEqZeroToTrue, r2);
             break;
+        default:
+            break;
         }
     }
     else
@@ -179,6 +181,8 @@ bool ByteCodeGenJob::emitCompareOpPostSpecialFunc(ByteCodeGenContext* context, T
             break;
         case TokenId::SymGreaterEqual:
             EMIT_INST1(context, ByteCodeOp::GreaterEqZeroToTrue, r2);
+            break;
+        default:
             break;
         }
     }

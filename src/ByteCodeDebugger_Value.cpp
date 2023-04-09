@@ -449,6 +449,8 @@ void ByteCodeDebugger::appendTypedValueProtected(ByteCodeRunContext* context, Ut
         case NativeTypeKind::F64:
             str += Fmt("%lf", *(double*) addr);
             return;
+        default:
+            break;
         }
     }
 

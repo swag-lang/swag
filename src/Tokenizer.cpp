@@ -157,6 +157,8 @@ Utf8 Tokenizer::tokenToName(TokenId id)
         return "=";
     case TokenId::SymVertical:
         return "|";
+    default:
+        break;
     }
 
     return "???";

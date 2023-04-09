@@ -198,6 +198,9 @@ void ByteCodeRun::executeGetFromStackSI(ByteCodeRunContext* context, ByteCodeIns
         case NativeTypeKind::F64:
             registersRC[ip->a.u32].u64 = child->computedValue->reg.u64;
             return;
+
+        default:
+            break;
         }
     }
 

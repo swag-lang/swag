@@ -306,6 +306,9 @@ TypeInfo* Generic::doTypeSubstitution(VectorMap<Utf8, TypeInfo*>& replaceTypes, 
 
         break;
     }
+
+    default:
+        break;
     }
 
     return typeInfo;

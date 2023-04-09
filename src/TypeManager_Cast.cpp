@@ -82,6 +82,8 @@ bool TypeManager::safetyComputedValue(SemanticContext* context, TypeInfo* toType
                 return context->report({fromNode ? fromNode : context->node, msg});
         }
         break;
+    default:
+        break;
     }
 
     return true;
@@ -574,6 +576,8 @@ bool TypeManager::castToNativeBool(SemanticContext* context, TypeInfo* fromType,
                 }
             }
             return true;
+        default:
+            break;
         }
     }
 
@@ -646,6 +650,8 @@ bool TypeManager::castToNativeRune(SemanticContext* context, TypeInfo* fromType,
                 }
             }
             break;
+        default:
+            break;
         }
     }
     else
@@ -667,6 +673,8 @@ bool TypeManager::castToNativeRune(SemanticContext* context, TypeInfo* fromType,
                     return true;
                 }
             }
+            break;
+        default:
             break;
         }
     }
@@ -737,6 +745,9 @@ bool TypeManager::castToNativeU8(SemanticContext* context, TypeInfo* fromType, A
             }
 
             break;
+
+        default:
+            break;
         }
     }
 
@@ -793,6 +804,8 @@ bool TypeManager::castToNativeU8(SemanticContext* context, TypeInfo* fromType, A
                 }
             }
             return true;
+        default:
+            break;
         }
     }
 
@@ -862,6 +875,9 @@ bool TypeManager::castToNativeU16(SemanticContext* context, TypeInfo* fromType, 
             }
 
             break;
+
+        default:
+            break;
         }
     }
 
@@ -918,6 +934,8 @@ bool TypeManager::castToNativeU16(SemanticContext* context, TypeInfo* fromType, 
                 }
             }
             return true;
+        default:
+            break;
         }
     }
 
@@ -979,6 +997,8 @@ bool TypeManager::castToNativeU32(SemanticContext* context, TypeInfo* fromType, 
             }
 
             break;
+        default:
+            break;
         }
     }
 
@@ -1026,6 +1046,8 @@ bool TypeManager::castToNativeU32(SemanticContext* context, TypeInfo* fromType, 
                 }
             }
             return true;
+        default:
+            break;
         }
     }
 
@@ -1090,6 +1112,8 @@ bool TypeManager::castToNativeU64(SemanticContext* context, TypeInfo* fromType, 
             }
 
             break;
+        default:
+            break;
         }
     }
 
@@ -1136,6 +1160,8 @@ bool TypeManager::castToNativeU64(SemanticContext* context, TypeInfo* fromType, 
                 }
             }
             return true;
+        default:
+            break;
         }
     }
 
@@ -1192,6 +1218,8 @@ bool TypeManager::castToNativeS8(SemanticContext* context, TypeInfo* fromType, A
             }
 
             break;
+        default:
+            break;
         }
     }
 
@@ -1246,6 +1274,8 @@ bool TypeManager::castToNativeS8(SemanticContext* context, TypeInfo* fromType, A
                 }
             }
             return true;
+        default:
+            break;
         }
     }
 
@@ -1302,6 +1332,9 @@ bool TypeManager::castToNativeS16(SemanticContext* context, TypeInfo* fromType, 
             }
 
             break;
+
+        default:
+            break;
         }
     }
 
@@ -1354,6 +1387,8 @@ bool TypeManager::castToNativeS16(SemanticContext* context, TypeInfo* fromType, 
                     fromNode->typeInfo = g_TypeMgr->typeInfoS16;
             }
             return true;
+        default:
+            break;
         }
     }
 
@@ -1395,6 +1430,8 @@ bool TypeManager::castToNativeS32(SemanticContext* context, TypeInfo* fromType, 
             }
 
             break;
+        default:
+            break;
         }
     }
 
@@ -1434,6 +1471,8 @@ bool TypeManager::castToNativeS32(SemanticContext* context, TypeInfo* fromType, 
                 fromNode->typeInfo               = g_TypeMgr->typeInfoS32;
             }
             return true;
+        default:
+            break;
         }
     }
 
@@ -1475,6 +1514,8 @@ bool TypeManager::castToNativeS64(SemanticContext* context, TypeInfo* fromType, 
             }
 
             break;
+        default:
+            break;
         }
     }
 
@@ -1513,6 +1554,8 @@ bool TypeManager::castToNativeS64(SemanticContext* context, TypeInfo* fromType, 
                 fromNode->typeInfo               = g_TypeMgr->typeInfoS64;
             }
             return true;
+        default:
+            break;
         }
     }
 
@@ -1608,6 +1651,8 @@ bool TypeManager::castToNativeF32(SemanticContext* context, TypeInfo* fromType, 
             return true;
         break;
     }
+    default:
+        break;
     }
 
     return castError(context, g_TypeMgr->typeInfoF32, fromType, fromNode, castFlags);
@@ -1703,6 +1748,8 @@ bool TypeManager::castToNativeF64(SemanticContext* context, TypeInfo* fromType, 
             return true;
         else if (castFlags & CASTFLAG_EXPLICIT)
             return true;
+        break;
+    default:
         break;
     }
 
@@ -1894,6 +1941,8 @@ bool TypeManager::castExpressionList(SemanticContext* context, TypeInfoList* fro
                     return context->report(diag, Diagnostic::hereIs(toTypeStruct->declNode->resolvedSymbolOverload));
                 return context->report(diag);
             }
+            default:
+                break;
             }
 
             for (int j = 0; j < child->childs.size(); j++)
@@ -2956,6 +3005,8 @@ bool TypeManager::promoteOne(SemanticContext* context, AstNode* right)
     case NativeTypeKind::U16:
         SWAG_CHECK(makeCompatibles(context, g_TypeMgr->typeInfoU32, nullptr, right, CASTFLAG_TRY_COERCE));
         break;
+    default:
+        break;
     }
 
     return true;
@@ -2987,6 +3038,8 @@ void TypeManager::promoteOne(AstNode* left, AstNode* right, bool is3264)
     case NativeTypeKind::Rune:
     case NativeTypeKind::String:
         return;
+    default:
+        break;
     }
 
     TypeInfo* newLeftTypeInfo = nullptr;
@@ -3080,6 +3133,8 @@ void TypeManager::promoteOne(AstNode* left, AstNode* right, bool is3264)
     case NativeTypeKind::F32:
         if (newLeft == NativeTypeKind::F64)
             left->computedValue->reg.f64 = left->computedValue->reg.f32;
+        break;
+    default:
         break;
     }
 }
@@ -3444,6 +3499,9 @@ TypeInfo* TypeManager::concreteType(TypeInfo* typeInfo, uint32_t flags)
                 return typeGeneric;
             return concreteType(typeGeneric->rawType, flags);
         }
+        break;
+
+    default:
         break;
     }
 

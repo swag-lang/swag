@@ -560,6 +560,8 @@ bool Parser::doUnaryExpression(AstNode* parent, uint32_t exprFlags, AstNode** re
         SWAG_CHECK(eatToken());
         return doPrimaryExpression(node, exprFlags, &dummyResult);
     }
+    default:
+        break;
     }
 
     return doPrimaryExpression(parent, exprFlags, result);
@@ -597,6 +599,8 @@ static int getPrecedence(TokenId id)
     case TokenId::SymGreater:
     case TokenId::SymGreaterEqual:
         return 9;
+    default:
+        break;
     }
 
     return -1;
@@ -612,6 +616,8 @@ static bool isAssociative(TokenId id)
     case TokenId::SymCircumflex:
     case TokenId::SymPlusPlus:
         return true;
+    default:
+        break;
     }
 
     return false;
@@ -1207,6 +1213,8 @@ void Parser::forceTakeAddress(AstNode* node)
     case AstNodeKind::ArrayPointerIndex:
         forceTakeAddress(static_cast<AstArrayPointerIndex*>(node)->array);
         break;
+    default:
+        break;
     }
 }
 
@@ -1614,6 +1622,8 @@ bool Parser::doDropCopyMove(AstNode* parent, AstNode** result)
     case TokenId::IntrinsicPostMove:
         node->token.text = g_LangSpec->name_atpostMove;
         node->kind       = AstNodeKind::PostMove;
+        break;
+    default:
         break;
     }
 

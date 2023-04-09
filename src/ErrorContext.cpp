@@ -85,6 +85,9 @@ void ErrorContext::extract(Diagnostic& diag, Vector<const Diagnostic*>& notes)
             case ErrCxtStepKind::Help:
                 exp.hide = msg.empty();
                 break;
+
+            default:
+                break;
             }
         }
 
@@ -142,6 +145,8 @@ void ErrorContext::extract(Diagnostic& diag, Vector<const Diagnostic*>& notes)
                 note = Diagnostic::hereIs(exp.node->resolvedSymbolOverload);
                 if (!note)
                     continue;
+                break;
+            default:
                 break;
             }
 

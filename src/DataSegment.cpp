@@ -41,6 +41,8 @@ void DataSegment::setup(SegmentKind _kind, Module* _module)
     case SegmentKind::String:
         name = "string segment";
         break;
+    default:
+        break;
     }
 }
 

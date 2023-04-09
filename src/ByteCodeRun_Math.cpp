@@ -624,6 +624,8 @@ bool ByteCodeRun::executeMathIntrinsic(JobContext* context, ByteCodeInstruction*
         }
         break;
     }
+    default:
+        break;
     }
 
     return true;

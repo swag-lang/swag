@@ -42,6 +42,8 @@ bool SemanticJob::setUnRef(AstNode* node)
     case AstNodeKind::FuncCallParam:
         setUnRef(node->childs.back());
         break;
+    default:
+        break;
     }
 
     return true;
@@ -260,6 +262,8 @@ void SemanticJob::enterState(AstNode* node)
         idRef->previousResolvedNode   = nullptr;
         break;
     }
+    default:
+        break;
     }
 }
 
@@ -399,6 +403,8 @@ JobResult SemanticJob::execute()
 
                     nodes.pop_back();
                     continue;
+                default:
+                    break;
                 }
             }
 
@@ -489,6 +495,9 @@ JobResult SemanticJob::execute()
             }
 
             nodes.pop_back();
+            break;
+
+        default:
             break;
         }
     }

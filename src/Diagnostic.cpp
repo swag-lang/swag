@@ -197,6 +197,9 @@ void Diagnostic::printErrorLevel()
         g_Log.setColor(stackColor);
         g_Log.print("trace error: ");
         break;
+
+    default:
+        break;
     }
 }
 
@@ -615,6 +618,8 @@ void Diagnostic::setColorRanges(DiagnosticLevel level)
     case DiagnosticLevel::Note:
     case DiagnosticLevel::Help:
         g_Log.setColor(rangeNoteColor);
+        break;
+    default:
         break;
     }
 }

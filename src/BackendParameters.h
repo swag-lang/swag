@@ -49,6 +49,8 @@ inline bool isOsDarwin(SwagTargetOs os)
     {
     case SwagTargetOs::MacOSX:
         return true;
+    default:
+        break;
     }
 
     return false;
@@ -60,6 +62,8 @@ inline bool isArchArm(SwagTargetArch arch)
     {
     case SwagTargetArch::X86_64:
         return false;
+    default:
+        break;
     }
 
     return true;

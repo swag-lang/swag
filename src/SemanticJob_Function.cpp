@@ -1552,6 +1552,8 @@ bool SemanticJob::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode
         case AstNodeKind::Assume:
             extension->byteCodeAfterFct = ByteCodeGenJob::emitAssume;
             break;
+        default:
+            break;
         }
 
         // Reset emit from the modifier if it exists, as the inline block will deal with that

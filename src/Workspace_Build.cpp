@@ -295,6 +295,8 @@ static Utf8 errorPendingJobsType(Job* pendingJob)
         return Fmt("waiting for %s to be fully solved", sym.c_str());
     case JobWaitKind::WaitSymbol:
         return Fmt("waiting for %s to be solved", sym.c_str());
+    default:
+        break;
     }
 
     return "";
@@ -379,6 +381,8 @@ Diagnostic* Workspace::errorPendingJob(Job* prevJob, Job* depJob)
         case AstNodeKind::EnumValue:
             msg += " ";
             msg += Fmt("because of %s '%s'", Naming::kindName(prevJob->waitingHintNode).c_str(), prevJob->waitingHintNode->token.ctext());
+            break;
+        default:
             break;
         }
     }

@@ -97,6 +97,7 @@ bool Parser::doUsing(AstNode* parent, AstNode** result)
         return true;
 
     case TokenId::KwdVar:
+    {
         AstNode* varNode;
         SWAG_CHECK(doVarDecl(parent, &varNode));
 
@@ -105,6 +106,9 @@ bool Parser::doUsing(AstNode* parent, AstNode** result)
         node->semanticFct = SemanticJob::resolveUsing;
         Ast::newIdentifierRef(sourceFile, varNode->token.text, node, this);
         return true;
+    }
+    default:
+        break;
     }
 
     // We must ensure that no job can be run before the using
@@ -594,6 +598,8 @@ bool Parser::doLeftInstruction(AstNode* parent, AstNode** result, AstWith* withN
     case TokenId::IntrinsicCVaEnd:
     case TokenId::IntrinsicCVaArg:
         SWAG_CHECK(doIdentifierRef(parent, result));
+        break;
+    default:
         break;
     }
 

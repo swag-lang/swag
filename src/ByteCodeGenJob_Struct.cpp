@@ -312,6 +312,8 @@ void ByteCodeGenJob::generateStructAlloc(ByteCodeGenContext* context, TypeInfoSt
                 continue;
             }
             break;
+        default:
+            break;
         }
 
         auto      sourceFile = context->sourceFile;
@@ -1618,6 +1620,8 @@ bool ByteCodeGenJob::emitDropCopyMove(ByteCodeGenContext* context)
             return true;
         somethingToDo = typeStruct->opPostMove || typeStruct->opUserPostMoveFct;
         break;
+    default:
+        break;
     }
 
     if (somethingToDo)
@@ -1646,6 +1650,8 @@ bool ByteCodeGenJob::emitDropCopyMove(ByteCodeGenContext* context)
             break;
         case AstNodeKind::PostMove:
             emitOpCallUser(context, typeStruct->opUserPostMoveFct, typeStruct->opPostMove, false);
+            break;
+        default:
             break;
         }
 

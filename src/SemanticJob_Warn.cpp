@@ -49,6 +49,8 @@ bool SemanticJob::warnDeprecated(SemanticContext* context, AstNode* identifier)
         v             = typeInfo->attributes.getValue(g_LangSpec->name_Swag_Deprecated, g_LangSpec->name_msg);
         break;
     }
+    default:
+        break;
     }
 
     Diagnostic diag{identifier, identifier->token, Fmt(Err(Wrn0003), Naming::kindName(symbol->kind).c_str(), identifier->resolvedSymbolOverload->symbol->name.c_str()), DiagnosticLevel::Warning};

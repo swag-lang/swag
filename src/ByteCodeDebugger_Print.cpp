@@ -220,6 +220,9 @@ void ByteCodeDebugger::printSourceLines(ByteCodeRunContext* context, ByteCode* b
                 if (file->name == bkp.name && startLine + lineIdx + 1 == bkp.line)
                     hasBkp = &bkp;
                 break;
+
+            default:
+                break;
             }
         }
 

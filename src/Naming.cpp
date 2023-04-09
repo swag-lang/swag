@@ -160,6 +160,8 @@ Utf8 Naming::kindName(SymbolKind kind, Utf8& article)
     case SymbolKind::PlaceHolder:
         article = "a";
         return "placeholder";
+    default:
+        break;
     }
 
     article = "a";
@@ -250,6 +252,9 @@ Utf8 Naming::kindName(TypeInfo* typeInfo, Utf8& article)
     case TypeInfoKind::Native:
         article = "a";
         return "type";
+
+    default:
+        break;
     }
 
     article = "a";
@@ -351,6 +356,9 @@ Utf8 Naming::kindName(AstNode* node, Utf8& article)
     case AstNodeKind::TypeExpression:
         article = "a";
         return "type";
+
+    default:
+        break;
     }
 
     article = "a";

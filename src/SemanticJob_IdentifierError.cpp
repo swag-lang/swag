@@ -125,6 +125,8 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
         }
 
         break;
+    default:
+        break;
     }
 
     switch (match.result)
@@ -714,6 +716,8 @@ bool SemanticJob::cannotMatchIdentifierError(SemanticContext* context, VectorNat
             case MatchResult::NotEnoughGenericParameters:
                 n.push_back(oneMatch);
                 break;
+            default:
+                break;
             }
         }
         if (!n.empty())
@@ -731,6 +735,8 @@ bool SemanticJob::cannotMatchIdentifierError(SemanticContext* context, VectorNat
             {
             case MatchResult::MissingSomeParameters:
                 n.push_back(oneMatch);
+                break;
+            default:
                 break;
             }
         }
@@ -903,6 +909,8 @@ bool SemanticJob::cannotMatchIdentifierError(SemanticContext* context, VectorNat
             case MatchResult::NotEnoughGenericParameters:
                 diagRemarks = Diagnostic::note(Fmt("not enough generic parameters"));
                 notes.push_back(diagRemarks);
+                break;
+            default:
                 break;
             }
 
@@ -1272,9 +1280,13 @@ void SemanticJob::unknownIdentifier(SemanticContext* context, AstIdentifierRef* 
                 case AstNodeKind::StructDecl:
                 case AstNodeKind::InterfaceDecl:
                 case AstNodeKind::EnumDecl:
+                {
                     auto note       = Diagnostic::note(identifierRef->startScope->owner, identifierRef->startScope->owner->token, Fmt(Nte(Nte0029), displayName.c_str()));
                     note->showRange = false;
                     notes.push_back(note);
+                    break;
+                }
+                default:
                     break;
                 }
             }

@@ -861,6 +861,8 @@ void SemanticJob::flattenStructChilds(SemanticContext* context, AstNode* parent,
                 result.push_back(attrUse->content);
             continue;
         }
+        default:
+            break;
         }
 
         result.push_back(child);

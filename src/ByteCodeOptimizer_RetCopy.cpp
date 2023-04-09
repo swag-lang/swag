@@ -112,6 +112,9 @@ void ByteCodeOptimizer::registerParamsReg(ByteCodeOptContext* context, ByteCodeI
         context->vecReg.push_back(ip->c.u32);
         context->vecReg.push_back(ip->d.u32);
         break;
+
+    default:
+        break;
     }
 }
 

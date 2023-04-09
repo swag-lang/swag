@@ -1005,6 +1005,8 @@ bool SemanticJob::resolveFactorExpression(SemanticContext* context)
             swap(leftTypeInfo, rightTypeInfo);
             node->semFlags |= SEMFLAG_INVERSE_PARAMS;
             break;
+        default:
+            break;
         }
     }
 
@@ -1371,6 +1373,8 @@ bool SemanticJob::resolveBoolExpression(SemanticContext* context)
     case TokenId::KwdOr:
         left->allocateExtension(ExtensionKind::ByteCode);
         left->extByteCode()->byteCodeAfterFct = ByteCodeGenJob::emitLogicalOrAfterLeft;
+        break;
+    default:
         break;
     }
 

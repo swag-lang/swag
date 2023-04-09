@@ -14,6 +14,8 @@ void Parser::relaxIdentifier(TokenParse& token)
     case TokenId::KwdOrElse:
         token.id = TokenId::Identifier;
         return;
+    default:
+        break;
     }
 }
 

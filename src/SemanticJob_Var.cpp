@@ -1136,6 +1136,8 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
         case SegmentKind::Bss:
             symbolFlags |= OVERLOAD_VAR_BSS;
             break;
+        default:
+            break;
         }
 
         if (node->hasExtMisc() && node->extMisc()->resolvedUserOpSymbolOverload)

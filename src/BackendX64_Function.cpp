@@ -210,6 +210,8 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
         case ByteCodeOp::PopRR:
         case ByteCodeOp::IntrinsicBcBreakpoint:
             continue;
+        default:
+            break;
         }
 
         switch (ip->op)

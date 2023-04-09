@@ -423,6 +423,8 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
             freeRegisterRC(context, re);
             break;
         }
+        default:
+            break;
         }
     }
 
@@ -1763,6 +1765,8 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
                         break;
                     case NativeTypeKind::F32:
                         EMIT_INST1(context, ByteCodeOp::CastF32F64, param->resultRegisterRC);
+                        break;
+                    default:
                         break;
                     }
                 }

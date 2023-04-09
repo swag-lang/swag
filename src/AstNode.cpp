@@ -207,6 +207,8 @@ void AstNode::release()
             funcDecl->content->ownerScope->release();
         break;
     }
+    default:
+        break;
     }
 
     // Release childs first
@@ -929,6 +931,8 @@ bool AstNode::isConstant1()
         return computedValue->reg.f32 == 1;
     case NativeTypeKind::F64:
         return computedValue->reg.f64 == 1;
+    default:
+        break;
     }
 
     return false;

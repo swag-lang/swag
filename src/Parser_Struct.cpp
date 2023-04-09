@@ -23,6 +23,8 @@ bool Parser::doImpl(AstNode* parent, AstNode** result)
         scopeKind = ScopeKind::Enum;
         SWAG_CHECK(eatToken());
         break;
+    default:
+        break;
     }
 
     // Identifier
@@ -286,6 +288,8 @@ bool Parser::doStructContent(AstStruct* structNode, SyntaxStructType structType)
         {
         case SyntaxStructType::Interface:
             symbolKind = SymbolKind::Interface;
+            break;
+        default:
             break;
         }
 

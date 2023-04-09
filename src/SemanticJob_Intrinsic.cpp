@@ -112,6 +112,8 @@ bool SemanticJob::resolveIntrinsicTag(SemanticContext* context)
 
         return true;
     }
+    default:
+        break;
     }
     return true;
 }
@@ -521,6 +523,8 @@ bool SemanticJob::resolveIntrinsicCountOf(SemanticContext* context, AstNode* nod
                     if (expression->computedValue->reg.s64 < 0)
                         return context->report({expression, Fmt(Err(Err0805), node->computedValue->reg.s64)});
                     break;
+                default:
+                    break;
                 }
             }
         }
@@ -877,6 +881,8 @@ bool SemanticJob::resolveIntrinsicProperty(SemanticContext* context)
 
         break;
     }
+    default:
+        break;
     }
 
     return true;

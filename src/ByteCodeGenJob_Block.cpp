@@ -395,6 +395,8 @@ bool ByteCodeGenJob::emitLoop(ByteCodeGenContext* context)
             freeRegisterRC(context, forNode->boolExpression);
             break;
         }
+        default:
+            break;
         }
     }
 
