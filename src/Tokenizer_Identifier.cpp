@@ -3,7 +3,7 @@
 
 void Tokenizer::doIdentifier(TokenParse& token)
 {
-    while (idLetters[curBuffer[0]])
+    while (idLetters[(uint32_t) curBuffer[0]])
     {
         curBuffer++;
         location.column++;

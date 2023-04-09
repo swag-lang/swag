@@ -31,7 +31,7 @@ struct LangHashTable
 
     const V* find(const char* key, uint32_t keyLen, uint32_t crc)
     {
-        if (keyLen < minLetters || keyLen > maxLetters || !firstLetter[key[0]])
+        if (keyLen < minLetters || keyLen > maxLetters || !firstLetter[(uint32_t) key[0]])
             return nullptr;
 
         if (!crc)
@@ -62,13 +62,13 @@ struct LangHashTable
             idx = (idx + 1) % N;
         }
 
-        firstLetter[key[0]] = true;
-        minLetters          = min(minLetters, keyLen);
-        maxLetters          = max(maxLetters, keyLen);
-        buffer[idx].hash    = crc;
-        buffer[idx].key     = key;
-        buffer[idx].keyLen  = keyLen;
-        buffer[idx].value   = value;
+        firstLetter[(uint32_t) key[0]] = true;
+        minLetters                     = min(minLetters, keyLen);
+        maxLetters                     = max(maxLetters, keyLen);
+        buffer[idx].hash               = crc;
+        buffer[idx].key                = key;
+        buffer[idx].keyLen             = keyLen;
+        buffer[idx].value              = value;
         count += 1;
     }
 };

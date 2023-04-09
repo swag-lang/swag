@@ -1333,7 +1333,7 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
             case ByteCodeOp::JumpIfLowerEqF64:
                 OPT_JMPAC(<=, f64);
                 break;
-                
+
             default:
                 break;
             }

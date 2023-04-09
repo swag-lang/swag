@@ -8,13 +8,11 @@
 #pragma clang diagnostic ignored "-Wmicrosoft-include"
 #pragma clang diagnostic ignored "-Wdelete-non-abstract-non-virtual-dtor"
 #pragma clang diagnostic ignored "-Wnonportable-include-path"
-#pragma clang diagnostic ignored "-Wchar-subscripts"
 #define SWAG_FORCE_INLINE __attribute__((always_inline))
 #define SWAG_UNREACHABLE __builtin_unreachable()
 
 #else
 
-#define _SILENCE_ALL_CXX17_DEPRECATION_WARNINGS
 #define _SILENCE_CXX20_CISO646_REMOVED_WARNING
 #define SWAG_FORCE_INLINE __forceinline
 #define SWAG_UNREACHABLE __assume(false)

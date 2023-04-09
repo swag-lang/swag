@@ -340,7 +340,7 @@ bool ModuleCfgManager::resolveModuleDependency(Module* srcModule, ModuleDependen
                 {
                     pendingCfgModules.insert(cfgModule);
                 }
-            }            
+            }
             break;
 
         default:
