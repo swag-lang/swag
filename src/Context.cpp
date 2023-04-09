@@ -140,12 +140,12 @@ static void byteCodeRunCB(void* byteCodePtr, ...)
 // That's why we have here lots of native identical functions, which are dynamically associated to a bytecode
 // when calling @mkcallback
 
-static void* doCallback(void* cb, void* p1, void* p2, void* p3, void* p4, void* p5, void* p6);
+static void* doCallback(FuncCB cb, void* p1, void* p2, void* p3, void* p4, void* p5, void* p6);
 
 struct Callback
 {
-    void* bytecode;
-    void* cb;
+    void*  bytecode;
+    FuncCB cb;
 };
 
 #define DECL_CB(__idx)                                                                         \
@@ -179,7 +179,7 @@ static Callback g_CallbackArr[] = {
 // clang-format on
 
 // This is the actual callback that will be called by external libraries
-static void* doCallback(void* cb, void* p1, void* p2, void* p3, void* p4, void* p5, void* p6)
+static void* doCallback(FuncCB cb, void* p1, void* p2, void* p3, void* p4, void* p5, void* p6)
 {
     uint32_t cbIndex = UINT32_MAX;
 
@@ -213,7 +213,7 @@ static void* doCallback(void* cb, void* p1, void* p2, void* p3, void* p4, void* 
 }
 
 // Runtime function called by user code
-void* makeCallback(void* lambda)
+FuncCB makeCallback(void* lambda)
 {
     ScopedLock lk(g_MakeCallbackMutex);
 

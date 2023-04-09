@@ -124,9 +124,11 @@ typedef struct SwagContext
     void*                   panic;
 } SwagContext;
 
+using FuncCB = void* (*) (void*, void*, void*, void*, void*, void*);
+
 typedef void (*SwagBytecodeRun)(void*, ...);
 typedef void (*SwagThreadRun)(void*);
-typedef void* (*SwagMakeCallback)(void*);
+typedef FuncCB (*SwagMakeCallback)(void*);
 
 enum class SwagBackendGenType : uint32_t
 {

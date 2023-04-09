@@ -18,7 +18,7 @@ extern thread_local ByteCodeRunContext* g_RunContext;
 
 void     initDefaultContext();
 uint64_t getDefaultContextFlags(Module* module);
-void*    makeCallback(void* lambda);
+FuncCB   makeCallback(void* lambda);
 
 struct PushSwagContext
 {
