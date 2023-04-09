@@ -221,7 +221,9 @@ void ByteCode::printInstruction(ByteCodeInstruction* ip, ByteCodeInstruction* cu
     static const int ALIGN_FLAGS1 = ALIGN_OPCODE + 50;
     static const int ALIGN_FLAGS2 = ALIGN_FLAGS1 + 5;
     static const int ALIGN_PRETTY = ALIGN_FLAGS2 + 10;
+#ifdef SWAG_DEV_MODE
     static const int ALIGN_SOURCE = ALIGN_PRETTY + 65;
+#endif
 
     int  i      = (int) (ip - out);
     bool forDbg = curIp != nullptr;

@@ -82,15 +82,15 @@ bool ByteCodeGenJob::emitCastToInterface(ByteCodeGenContext* context, AstNode* e
         return true;
     }
 
-    TypeInfoStruct* fromTypeStruct = nullptr;
+    SWAG_IF_ASSERT(TypeInfoStruct* fromTypeStruct = nullptr);
     if (fromTypeInfo->isStruct())
     {
-        fromTypeStruct = CastTypeInfo<TypeInfoStruct>(fromTypeInfo, TypeInfoKind::Struct);
+        SWAG_IF_ASSERT(fromTypeStruct = CastTypeInfo<TypeInfoStruct>(fromTypeInfo, TypeInfoKind::Struct));
     }
     else if (fromTypeInfo->isPointerTo(TypeInfoKind::Struct))
     {
-        auto fromTypePointer = CastTypeInfo<TypeInfoPointer>(fromTypeInfo, TypeInfoKind::Pointer);
-        fromTypeStruct       = CastTypeInfo<TypeInfoStruct>(fromTypePointer->pointedType, TypeInfoKind::Struct);
+        SWAG_IF_ASSERT(auto fromTypePointer = CastTypeInfo<TypeInfoPointer>(fromTypeInfo, TypeInfoKind::Pointer));
+        SWAG_IF_ASSERT(fromTypeStruct = CastTypeInfo<TypeInfoStruct>(fromTypePointer->pointedType, TypeInfoKind::Struct));
     }
     else
     {

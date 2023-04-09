@@ -690,12 +690,12 @@ bool BackendX64::emitStringTable(const BuildParameters& buildParameters)
     auto& concat          = pp.concat;
 
     concat.addU32(pp.stringTableOffset); // .Size of table in bytes + 4
-    uint32_t subTotal = 4;
+    SWAG_IF_ASSERT(uint32_t subTotal = 4);
     for (auto str : pp.stringTable)
     {
         concat.addString(str->buffer, str->count);
         concat.addU8(0);
-        subTotal += str->count + 1;
+        SWAG_IF_ASSERT(subTotal += str->count + 1);
     }
 
     SWAG_ASSERT(subTotal == pp.stringTableOffset);
@@ -750,25 +750,25 @@ bool BackendX64::saveObjFile(const BuildParameters& buildParameters)
     }
 
     // Output the full concat buffer
-    uint32_t totalCount = 0;
-    auto     bucket     = pp.concat.firstBucket;
+    SWAG_IF_ASSERT(uint32_t totalCount = 0);
+    auto bucket = pp.concat.firstBucket;
     while (bucket != pp.concat.lastBucket->nextBucket)
     {
         auto count = pp.concat.bucketCount(bucket);
         fwrite(bucket->datas, count, 1, f);
-        totalCount += count;
+        SWAG_IF_ASSERT(totalCount += count);
         bucket = bucket->nextBucket;
     }
 
-    uint32_t subTotal = 0;
+    SWAG_IF_ASSERT(uint32_t subTotal = 0);
     SWAG_ASSERT(totalCount == pp.concat.totalCount());
 
     // The global strings segment
     SWAG_ASSERT(totalCount == *pp.patchSSOffset || *pp.patchSSOffset == 0);
     for (auto oneB : pp.stringSegment.buckets)
     {
-        totalCount += oneB.count;
-        subTotal += oneB.count;
+        SWAG_IF_ASSERT(totalCount += oneB.count);
+        SWAG_IF_ASSERT(subTotal += oneB.count);
         fwrite(oneB.buffer, oneB.count, 1, f);
     }
     SWAG_ASSERT(subTotal == pp.stringSegment.totalCount);
@@ -777,11 +777,11 @@ bool BackendX64::saveObjFile(const BuildParameters& buildParameters)
     {
         // The global segment to store context & process infos
         SWAG_ASSERT(totalCount == *pp.patchGSOffset || *pp.patchGSOffset == 0);
-        subTotal = 0;
+        SWAG_IF_ASSERT(subTotal = 0);
         for (auto oneB : pp.globalSegment.buckets)
         {
-            totalCount += oneB.count;
-            subTotal += oneB.count;
+            SWAG_IF_ASSERT(totalCount += oneB.count);
+            SWAG_IF_ASSERT(subTotal += oneB.count);
             fwrite(oneB.buffer, oneB.count, 1, f);
         }
         SWAG_ASSERT(subTotal == *pp.patchGSCount || *pp.patchGSCount == 0);
@@ -789,11 +789,11 @@ bool BackendX64::saveObjFile(const BuildParameters& buildParameters)
 
         // The constant segment
         SWAG_ASSERT(totalCount == *pp.patchCSOffset || *pp.patchCSOffset == 0);
-        subTotal = 0;
+        SWAG_IF_ASSERT(subTotal = 0);
         for (auto oneB : module->constantSegment.buckets)
         {
-            totalCount += oneB.count;
-            subTotal += oneB.count;
+            SWAG_IF_ASSERT(totalCount += oneB.count);
+            SWAG_IF_ASSERT(subTotal += oneB.count);
             fwrite(oneB.buffer, oneB.count, 1, f);
         }
         SWAG_ASSERT(subTotal == *pp.patchCSCount || *pp.patchCSCount == 0);
@@ -801,11 +801,11 @@ bool BackendX64::saveObjFile(const BuildParameters& buildParameters)
 
         // The mutable segment
         SWAG_ASSERT(totalCount == *pp.patchMSOffset || *pp.patchMSOffset == 0);
-        subTotal = 0;
+        SWAG_IF_ASSERT(subTotal = 0);
         for (auto oneB : module->mutableSegment.buckets)
         {
-            totalCount += oneB.count;
-            subTotal += oneB.count;
+            SWAG_IF_ASSERT(totalCount += oneB.count);
+            SWAG_IF_ASSERT(subTotal += oneB.count);
             fwrite(oneB.buffer, oneB.count, 1, f);
         }
         SWAG_ASSERT(subTotal == *pp.patchMSCount || *pp.patchMSCount == 0);
@@ -813,11 +813,11 @@ bool BackendX64::saveObjFile(const BuildParameters& buildParameters)
 
         // The tls segment
         SWAG_ASSERT(totalCount == *pp.patchTLSOffset || *pp.patchTLSOffset == 0);
-        subTotal = 0;
+        SWAG_IF_ASSERT(subTotal = 0);
         for (auto oneB : module->tlsSegment.buckets)
         {
-            totalCount += oneB.count;
-            subTotal += oneB.count;
+            SWAG_IF_ASSERT(totalCount += oneB.count);
+            SWAG_IF_ASSERT(subTotal += oneB.count);
             fwrite(oneB.buffer, oneB.count, 1, f);
         }
         SWAG_ASSERT(subTotal == *pp.patchTLSCount || *pp.patchTLSCount == 0);

@@ -2055,7 +2055,7 @@ bool ByteCodeGenJob::emitFuncDeclParams(ByteCodeGenContext* context)
     offset += funcNode->stackSize;
 
     // Variadic parameter is the last one pushed on the stack
-    uint32_t storageIndex = 0;
+    SWAG_IF_ASSERT(uint32_t storageIndex = 0);
     if (funcNode->typeInfo->flags & (TYPEINFO_VARIADIC | TYPEINFO_TYPED_VARIADIC))
     {
         auto param                            = node->childs.back();
@@ -2063,7 +2063,7 @@ bool ByteCodeGenJob::emitFuncDeclParams(ByteCodeGenContext* context)
         resolved->computedValue.storageOffset = offset;
         offset += g_TypeMgr->typeInfoVariadic->sizeOf;
         SWAG_ASSERT(resolved->storageIndex == 0);
-        storageIndex += 2;
+        SWAG_IF_ASSERT(storageIndex += 2);
     }
 
     auto childSize = node->childs.size();
@@ -2079,7 +2079,7 @@ bool ByteCodeGenJob::emitFuncDeclParams(ByteCodeGenContext* context)
         auto typeInfo     = TypeManager::concreteType(resolved->typeInfo);
         int  numRegisters = typeInfo->numRegisters();
         offset += numRegisters * sizeof(Register);
-        storageIndex += numRegisters;
+        SWAG_IF_ASSERT(storageIndex += numRegisters);
     }
 
     return true;
