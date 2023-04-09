@@ -5,6 +5,8 @@ struct Module;
 
 struct SaveGenJob : public Job
 {
+    virtual ~SaveGenJob() = default;
+
     SaveGenJob()
     {
         flags |= JOB_IS_IO;

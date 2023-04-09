@@ -4,6 +4,8 @@ struct Module;
 
 struct CopyFileJob : public Job
 {
+    virtual ~CopyFileJob() = default;
+
     CopyFileJob()
     {
         flags |= JOB_IS_IO;

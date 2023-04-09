@@ -4,6 +4,7 @@
 
 struct BackendLLVMFunctionBodyJob : public BackendFunctionBodyJobBase
 {
+    virtual ~BackendLLVMFunctionBodyJob() = default;
     JobResult execute() override;
 
     void release() override

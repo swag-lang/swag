@@ -209,10 +209,11 @@ const uint32_t ASKBC_WAIT_RESOLVED          = 0x00000004;
 
 struct ByteCodeGenJob : public Job
 {
-    JobResult waitForDependenciesGenerated();
+    virtual ~ByteCodeGenJob() = default;
     JobResult execute() override;
     void      release() override;
 
+    JobResult   waitForDependenciesGenerated();
     static void askForByteCode(Job* job, AstNode* node, uint32_t flags, ByteCode* caller = nullptr);
     static bool makeInline(ByteCodeGenContext* context, AstFuncDecl* funcDecl, AstNode* forNode);
 

@@ -9,6 +9,8 @@ struct SyntaxContext : public JobContext
 
 struct SyntaxJob : public Job
 {
+    virtual ~SyntaxJob() = default;
+
     void release() override
     {
         Allocator::free<SyntaxJob>(this);
