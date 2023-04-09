@@ -7,7 +7,6 @@
 #pragma clang diagnostic ignored "-Wtypename-missing"
 #pragma clang diagnostic ignored "-Wsign-compare"
 #pragma clang diagnostic ignored "-Wmicrosoft-include"
-#pragma clang diagnostic ignored "-Wunqualified-std-cast-call"
 #pragma clang diagnostic ignored "-Wdelete-non-abstract-non-virtual-dtor"
 #pragma clang diagnostic ignored "-Wnonportable-include-path"
 #pragma clang diagnostic ignored "-Wchar-subscripts"

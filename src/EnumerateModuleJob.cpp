@@ -146,7 +146,7 @@ void EnumerateModuleJob::enumerateFilesInModule(const Path& basePath, Module* th
     Path modulePath;
     while (directories.size())
     {
-        tmp = move(directories.back());
+        tmp = std::move(directories.back());
         directories.pop_back();
 
         OS::visitFilesFolders(tmp.string().c_str(),
@@ -222,7 +222,7 @@ void EnumerateModuleJob::loadFilesInModules(const Path& basePath)
                          Path tmp, tmp1;
                          while (directories.size())
                          {
-                             tmp = move(directories.back());
+                             tmp = std::move(directories.back());
                              directories.pop_back();
 
                              OS::visitFilesFolders(tmp.string().c_str(),

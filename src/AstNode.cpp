@@ -611,7 +611,7 @@ void AstNode::inheritAndFlag3(AstNode* who, uint64_t flag1, uint64_t flag2, uint
 void AstNode::inheritTokenName(Token& tkn)
 {
     SWAG_ASSERT(!tkn.text.empty());
-    token.text = move(tkn.text);
+    token.text = std::move(tkn.text);
 }
 
 void AstNode::inheritTokenLocation(Token& tkn)

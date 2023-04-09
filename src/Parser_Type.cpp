@@ -400,7 +400,7 @@ bool Parser::doTupleOrAnonymousType(AstNode* parent, AstNode** result, bool isCo
     // Name
     Utf8 name = sourceFile->scopeFile->name + "_tuple_";
     name += Fmt("%d", g_UniqueID.fetch_add(1));
-    structNode->token.text = move(name);
+    structNode->token.text = std::move(name);
 
     // :SubDeclParent
     auto newParent = parent;
@@ -770,7 +770,7 @@ bool Parser::doTypeExpression(AstNode* parent, uint32_t exprFlags, AstNode** res
         alias->semanticFct = SemanticJob::resolveUsing;
         Utf8 name          = sourceFile->scopeFile->name + "_alias_";
         name += Fmt("%d", g_UniqueID.fetch_add(1));
-        alias->token.text = move(name);
+        alias->token.text = std::move(name);
         alias->allocateExtension(ExtensionKind::Semantic);
         alias->extSemantic()->semanticBeforeFct = SemanticJob::resolveTypeAliasBefore;
         alias->semanticFct                      = SemanticJob::resolveTypeAlias;

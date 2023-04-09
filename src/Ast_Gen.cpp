@@ -167,7 +167,7 @@ bool Ast::convertLiteralTupleToStructType(SemanticContext* context, TypeInfoStru
 
     Utf8 name = sourceFile->scopeFile->name + "_tuple_";
     name += Fmt("%d", g_UniqueID.fetch_add(1));
-    structNode->token.text = move(name);
+    structNode->token.text = std::move(name);
 
     // Add struct type and scope
     Scope* rootScope;

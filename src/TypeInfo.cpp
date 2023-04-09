@@ -74,7 +74,7 @@ const Utf8& TypeInfo::computeWhateverNameNoLock(uint32_t nameType)
         {
             computeWhateverName(str, nameType);
             SWAG_RACE_CONDITION_WRITE(raceName);
-            name = move(str);
+            name = std::move(str);
         }
 
         return name;
@@ -84,7 +84,7 @@ const Utf8& TypeInfo::computeWhateverNameNoLock(uint32_t nameType)
         {
             computeWhateverName(str, nameType);
             SWAG_RACE_CONDITION_WRITE(raceName);
-            displayName = move(str);
+            displayName = std::move(str);
         }
 
         return displayName;
@@ -94,7 +94,7 @@ const Utf8& TypeInfo::computeWhateverNameNoLock(uint32_t nameType)
         {
             computeWhateverName(str, nameType);
             SWAG_RACE_CONDITION_WRITE(raceName);
-            scopedName = move(str);
+            scopedName = std::move(str);
         }
 
         return scopedName;
@@ -104,7 +104,7 @@ const Utf8& TypeInfo::computeWhateverNameNoLock(uint32_t nameType)
         {
             computeWhateverName(str, nameType);
             SWAG_RACE_CONDITION_WRITE(raceName);
-            scopedNameExport = move(str);
+            scopedNameExport = std::move(str);
         }
 
         return scopedNameExport;

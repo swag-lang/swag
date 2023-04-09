@@ -513,7 +513,7 @@ void BackendX64::registerFunction(CoffFunction* fct, uint32_t startAddress, uint
     fct->startAddress = startAddress;
     fct->endAddress   = endAddress;
     fct->sizeProlog   = sizeProlog;
-    fct->unwind       = move(unwind);
+    fct->unwind       = std::move(unwind);
 }
 
 bool BackendX64::emitXData(const BuildParameters& buildParameters)

@@ -28,7 +28,7 @@ struct JobGroup
         ScopedLock lk(mutex);
         while (runningJobs.load() > 0)
             this_thread::yield();
-        jobs = move(grp.jobs);
+        jobs = std::move(grp.jobs);
     }
 
     void waitAndClear()

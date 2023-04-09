@@ -1679,7 +1679,7 @@ bool SemanticJob::matchIdentifierParameters(SemanticContext* context, VectorNati
                 auto match              = job->getOneMatch();
                 match->symbolOverload   = overload;
                 match->scope            = oneMatch->scope;
-                match->solvedParameters = move(oneOverload.symMatchContext.solvedParameters);
+                match->solvedParameters = std::move(oneOverload.symMatchContext.solvedParameters);
                 match->dependentVar     = dependentVar;
                 match->ufcs             = oneOverload.ufcs;
                 matches.push_back(match);
@@ -1877,7 +1877,7 @@ bool SemanticJob::matchIdentifierParameters(SemanticContext* context, VectorNati
                 {
                     auto match              = job->getOneMatch();
                     match->symbolOverload   = overload;
-                    match->solvedParameters = move(oneOverload.symMatchContext.solvedParameters);
+                    match->solvedParameters = std::move(oneOverload.symMatchContext.solvedParameters);
                     match->dependentVar     = dependentVar;
                     match->ufcs             = oneOverload.ufcs;
                     match->oneOverload      = &oneOverload;
@@ -1890,15 +1890,15 @@ bool SemanticJob::matchIdentifierParameters(SemanticContext* context, VectorNati
                     match->flags                          = oneOverload.symMatchContext.flags;
                     match->symbolName                     = symbol;
                     match->symbolOverload                 = overload;
-                    match->genericParametersCallTypes     = move(oneOverload.symMatchContext.genericParametersCallTypes);
-                    match->genericParametersCallTypesFrom = move(oneOverload.symMatchContext.genericParametersCallTypesFrom);
-                    match->genericParametersGenTypes      = move(oneOverload.symMatchContext.genericParametersGenTypes);
-                    match->genericReplaceTypes            = move(oneOverload.symMatchContext.genericReplaceTypes);
-                    match->genericReplaceTypesFrom        = move(oneOverload.symMatchContext.genericReplaceTypesFrom);
-                    match->genericReplaceValues           = move(oneOverload.symMatchContext.genericReplaceValues);
+                    match->genericParametersCallTypes     = std::move(oneOverload.symMatchContext.genericParametersCallTypes);
+                    match->genericParametersCallTypesFrom = std::move(oneOverload.symMatchContext.genericParametersCallTypesFrom);
+                    match->genericParametersGenTypes      = std::move(oneOverload.symMatchContext.genericParametersGenTypes);
+                    match->genericReplaceTypes            = std::move(oneOverload.symMatchContext.genericReplaceTypes);
+                    match->genericReplaceTypesFrom        = std::move(oneOverload.symMatchContext.genericReplaceTypesFrom);
+                    match->genericReplaceValues           = std::move(oneOverload.symMatchContext.genericReplaceValues);
                     match->genericParameters              = genericParameters;
-                    match->parameters                     = move(oneOverload.symMatchContext.parameters);
-                    match->solvedParameters               = move(oneOverload.symMatchContext.solvedParameters);
+                    match->parameters                     = std::move(oneOverload.symMatchContext.parameters);
+                    match->solvedParameters               = std::move(oneOverload.symMatchContext.solvedParameters);
                     match->numOverloadsWhenChecked        = oneOverload.cptOverloads;
                     match->numOverloadsInitWhenChecked    = oneOverload.cptOverloadsInit;
                     if (overload->node->flags & AST_HAS_SELECT_IF && overload->node->kind == AstNodeKind::FuncDecl)
@@ -1934,7 +1934,7 @@ bool SemanticJob::matchIdentifierParameters(SemanticContext* context, VectorNati
                 {
                     auto match              = job->getOneMatch();
                     match->symbolOverload   = overload;
-                    match->solvedParameters = move(oneOverload.symMatchContext.solvedParameters);
+                    match->solvedParameters = std::move(oneOverload.symMatchContext.solvedParameters);
                     match->dependentVar     = dependentVar;
                     match->ufcs             = oneOverload.ufcs;
                     match->autoOpCast       = oneOverload.symMatchContext.autoOpCast;
@@ -3819,7 +3819,7 @@ bool SemanticJob::filterGenericMatches(SemanticContext* context, VectorNative<On
             }
         }
 
-        genMatches = move(newGenericMatches);
+        genMatches = std::move(newGenericMatches);
     }
 
     return true;
