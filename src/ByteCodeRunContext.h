@@ -95,7 +95,7 @@ struct ByteCodeRunContext
     ByteCodeInstruction* ip                        = nullptr;
     Register*            curRegistersRC            = nullptr;
     static const int     MAX_ALLOC_RR              = 2;
-    Register             registersRR[MAX_ALLOC_RR] = {0};
+    Register             registersRR[MAX_ALLOC_RR] = {{0}, {0}};
     uint8_t*             stack                     = nullptr;
     uint8_t*             sp                        = nullptr;
     uint8_t*             spAlt                     = nullptr;
