@@ -52,7 +52,7 @@ struct Vector : public vector<T, StdAllocator<T>>
 template<typename K, typename V>
 struct VectorMap : public Vector<pair<K, V>>
 {
-    using IT = Vector<pair<K, V>>::iterator;
+    using IT = typename Vector<pair<K, V>>::iterator;
     IT find(const K& key)
     {
         for (auto it = this->begin(); it != this->end(); it++)

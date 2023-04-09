@@ -4,7 +4,6 @@
 
 #pragma clang diagnostic ignored "-Wunused-parameter"
 #pragma clang diagnostic ignored "-Wreorder-ctor"
-#pragma clang diagnostic ignored "-Wtypename-missing"
 #pragma clang diagnostic ignored "-Wsign-compare"
 #pragma clang diagnostic ignored "-Wmicrosoft-include"
 #pragma clang diagnostic ignored "-Wdelete-non-abstract-non-virtual-dtor"
