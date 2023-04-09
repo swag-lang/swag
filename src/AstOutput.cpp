@@ -577,7 +577,10 @@ bool AstOutput::outputAttributes(OutputContext& context, Concat& concat, AstNode
     }
     }
 
+    if (!attr)
+        return true;
     SWAG_CHECK(outputAttributes(context, concat, node, typeInfo, *attr));
+
     return true;
 }
 
