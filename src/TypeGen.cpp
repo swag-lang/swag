@@ -601,7 +601,7 @@ void TypeGen::setup(const Utf8& moduleName)
 {
     name = moduleName;
     mapPerSegment.set_size_clear(2 + g_ThreadMgr.numWorkers);
-    for (int i = 0; i < mapPerSegment.count; i++)
+    for (uint32_t i = 0; i < mapPerSegment.count; i++)
         mapPerSegment[i] = new MapPerSeg;
 }
 

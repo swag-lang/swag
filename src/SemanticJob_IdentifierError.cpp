@@ -338,7 +338,7 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
         {
             auto type1 = CastTypeInfo<TypeInfoFuncAttr>(bi.badSignatureRequestedType, TypeInfoKind::LambdaClosure);
             auto type2 = CastTypeInfo<TypeInfoFuncAttr>(bi.badSignatureGivenType, TypeInfoKind::LambdaClosure);
-            for (int i = 0; i < min(type1->parameters.count, type2->parameters.count); i++)
+            for (uint32_t i = 0; i < min(type1->parameters.count, type2->parameters.count); i++)
             {
                 if (type2->parameters[i]->typeInfo->isNative(NativeTypeKind::Undefined))
                     type2->parameters[i]->typeInfo = type1->parameters[i]->typeInfo;

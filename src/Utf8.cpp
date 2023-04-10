@@ -315,8 +315,8 @@ bool operator==(const Utf8& str1, const char* str2)
     SWAG_ASSERT(str2);
     if (str1.count == 0)
         return false;
-    auto len = strlen(str2);
-    if (str1.count != len)
+    auto len = (uint32_t) strlen(str2);
+    if (str1.count != (int) len)
         return false;
     return !strncmp(str1.buffer, str2, str1.count);
 }
@@ -460,7 +460,7 @@ void Utf8::toUni32(VectorNative<uint32_t>& uni, int maxChars)
     auto        endpz = buffer + count;
     while (pz != endpz)
     {
-        if (maxChars != -1 && uni.size() >= maxChars)
+        if (maxChars != -1 && uni.size() >= (size_t) maxChars)
             return;
         uint32_t c;
         pz = decodeUtf8(pz, c, offset);
@@ -477,7 +477,7 @@ void Utf8::toUni16(VectorNative<uint16_t>& uni, int maxChars)
     auto        endpz = buffer + count;
     while (pz != endpz)
     {
-        if (maxChars != -1 && uni.size() >= maxChars)
+        if (maxChars != -1 && uni.size() >= (size_t) maxChars)
             return;
         uint32_t c;
         pz = decodeUtf8(pz, c, offset);

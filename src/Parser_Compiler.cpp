@@ -548,7 +548,7 @@ bool Parser::doCompilerGlobal(AstNode* parent, AstNode** result)
     {
         SWAG_VERIFY(sourceFile->isCfgFile, context->report({sourceFile, token, Err(Syn0005)}));
 
-        int prevCount = parent->childs.count;
+        auto prevCount = parent->childs.count;
         SWAG_CHECK(doUsing(parent, &dummyResult));
         while (prevCount != parent->childs.count)
         {

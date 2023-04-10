@@ -54,7 +54,7 @@ struct VectorNative
         allocated = 0;
     }
 
-    void reserve(int newcapacity, bool copy = true)
+    void reserve(uint32_t newcapacity, bool copy = true)
     {
         if (newcapacity <= allocated)
             return;
@@ -103,7 +103,7 @@ struct VectorNative
         count++;
     }
 
-    void insertAtIndex(const T& val, int index)
+    void insertAtIndex(const T& val, size_t index)
     {
         if (index == count)
         {
@@ -132,27 +132,27 @@ struct VectorNative
         return buffer[count];
     }
 
-    void expand_clear(int num)
+    void expand_clear(size_t num)
     {
         if (num)
         {
-            reserve(num, false);
+            reserve((uint32_t) num, false);
             if (count < num)
                 memset(buffer + count, 0, (num - count) * sizeof(T));
         }
 
-        count = num;
+        count = (uint32_t) num;
     }
 
-    void set_size_clear(int num)
+    void set_size_clear(size_t num)
     {
         if (num)
         {
-            reserve(num, false);
+            reserve((uint32_t) num, false);
             memset(buffer, 0, num * sizeof(T));
         }
 
-        count = num;
+        count = (uint32_t) num;
     }
 
     T* begin()
@@ -202,11 +202,11 @@ struct VectorNative
         return buffer[0];
     }
 
-    void erase(size_t index, int num = 1)
+    void erase(size_t index, size_t num = 1)
     {
         if (index != count - num)
             memmove(buffer + index, buffer + index + num, (count - index - num) * sizeof(T));
-        count -= num;
+        count -= (uint32_t) num;
     }
 
     void erase_unordered(size_t index)
@@ -218,7 +218,7 @@ struct VectorNative
 
     void erase_unordered_byval(const T& val)
     {
-        for (int i = 0; i < count; i++)
+        for (uint32_t i = 0; i < count; i++)
         {
             if (buffer[i] == val)
             {
@@ -254,7 +254,7 @@ struct VectorNative
 
     bool contains(const T& val)
     {
-        for (int i = 0; i < count; i++)
+        for (uint32_t i = 0; i < count; i++)
         {
             if (buffer[i] == val)
                 return true;
@@ -311,7 +311,7 @@ struct VectorNative
         return buffer[index];
     }
 
-    T*  buffer    = nullptr;
-    int count     = 0;
-    int allocated = 0;
+    T*       buffer    = nullptr;
+    uint32_t count     = 0;
+    uint32_t allocated = 0;
 };
