@@ -2931,14 +2931,14 @@ bool TypeManager::castToSlice(SemanticContext* context, TypeInfo* toType, TypeIn
 
 void TypeManager::promote3264(AstNode* left, AstNode* right)
 {
-    promoteOne(left, right, true);
-    promoteOne(right, left, true);
+    promoteLeft(left, right, true);
+    promoteLeft(right, left, true);
 }
 
 void TypeManager::promote816(AstNode* left, AstNode* right)
 {
-    promoteOne(left, right, false);
-    promoteOne(right, left, false);
+    promoteLeft(left, right, false);
+    promoteLeft(right, left, false);
 }
 
 TypeInfo* TypeManager::promoteUntyped(TypeInfo* typeInfo)
@@ -2954,54 +2954,55 @@ TypeInfo* TypeManager::promoteUntyped(TypeInfo* typeInfo)
 
 void TypeManager::promoteUntypedInteger(AstNode* left, AstNode* right)
 {
-    TypeInfo* leftTypeInfo  = TypeManager::concreteType(left->typeInfo);
-    TypeInfo* rightTypeInfo = TypeManager::concreteType(right->typeInfo);
-
+    TypeInfo* leftTypeInfo = TypeManager::concreteType(left->typeInfo);
     SWAG_ASSERT(leftTypeInfo->isUntypedInteger());
+
+    TypeInfo* rightTypeInfo = TypeManager::concreteType(right->typeInfo);
+    if (!rightTypeInfo->isNativeInteger())
+        return;
+
     auto leftNative = CastTypeInfo<TypeInfoNative>(leftTypeInfo, TypeInfoKind::Native);
-    if (rightTypeInfo->isNativeInteger())
+    if (leftNative->valueInteger == 0)
     {
-        if (leftNative->valueInteger == 0)
-        {
-            left->typeInfo = rightTypeInfo;
-        }
-        else if ((leftNative->valueInteger > 0) && (rightTypeInfo->flags & TYPEINFO_UNSIGNED))
-        {
-            if (leftNative->valueInteger <= UINT8_MAX)
-                left->typeInfo = g_TypeMgr->typeInfoU8;
-            else if (leftNative->valueInteger <= UINT16_MAX)
-                left->typeInfo = g_TypeMgr->typeInfoU16;
-            else
-                left->typeInfo = g_TypeMgr->typeInfoU32;
-        }
+        left->typeInfo = rightTypeInfo;
+    }
+    else if ((leftNative->valueInteger > 0) && (rightTypeInfo->flags & TYPEINFO_UNSIGNED))
+    {
+        if (leftNative->valueInteger <= UINT8_MAX)
+            left->typeInfo = g_TypeMgr->typeInfoU8;
+        else if (leftNative->valueInteger <= UINT16_MAX)
+            left->typeInfo = g_TypeMgr->typeInfoU16;
         else
-        {
-            if (leftNative->valueInteger >= INT8_MIN && leftNative->valueInteger <= INT8_MAX)
-                left->typeInfo = g_TypeMgr->typeInfoS8;
-            else if (leftNative->valueInteger >= INT16_MIN && leftNative->valueInteger <= INT16_MAX)
-                left->typeInfo = g_TypeMgr->typeInfoS16;
-            else if (leftNative->valueInteger >= INT32_MIN && leftNative->valueInteger <= INT32_MAX)
-                left->typeInfo = g_TypeMgr->typeInfoS32;
-            else
-                left->typeInfo = g_TypeMgr->typeInfoS64;
-        }
+            left->typeInfo = g_TypeMgr->typeInfoU32;
+    }
+    else
+    {
+        if (leftNative->valueInteger >= INT8_MIN && leftNative->valueInteger <= INT8_MAX)
+            left->typeInfo = g_TypeMgr->typeInfoS8;
+        else if (leftNative->valueInteger >= INT16_MIN && leftNative->valueInteger <= INT16_MAX)
+            left->typeInfo = g_TypeMgr->typeInfoS16;
+        else if (leftNative->valueInteger >= INT32_MIN && leftNative->valueInteger <= INT32_MAX)
+            left->typeInfo = g_TypeMgr->typeInfoS32;
+        else
+            left->typeInfo = g_TypeMgr->typeInfoS64;
     }
 }
 
-bool TypeManager::promoteOne(SemanticContext* context, AstNode* right)
+bool TypeManager::promote32(SemanticContext* context, AstNode* left)
 {
-    TypeInfo* rightTypeInfo = TypeManager::concreteType(right->typeInfo);
+    TypeInfo* rightTypeInfo = TypeManager::concreteType(left->typeInfo);
     if (!rightTypeInfo->isNative())
         return true;
+
     switch (rightTypeInfo->nativeType)
     {
     case NativeTypeKind::S8:
     case NativeTypeKind::S16:
-        SWAG_CHECK(makeCompatibles(context, g_TypeMgr->typeInfoS32, nullptr, right, CASTFLAG_TRY_COERCE));
+        SWAG_CHECK(makeCompatibles(context, g_TypeMgr->typeInfoS32, nullptr, left, CASTFLAG_TRY_COERCE));
         break;
     case NativeTypeKind::U8:
     case NativeTypeKind::U16:
-        SWAG_CHECK(makeCompatibles(context, g_TypeMgr->typeInfoU32, nullptr, right, CASTFLAG_TRY_COERCE));
+        SWAG_CHECK(makeCompatibles(context, g_TypeMgr->typeInfoU32, nullptr, left, CASTFLAG_TRY_COERCE));
         break;
     default:
         break;
@@ -3010,13 +3011,25 @@ bool TypeManager::promoteOne(SemanticContext* context, AstNode* right)
     return true;
 }
 
-void TypeManager::promoteOne(AstNode* left, AstNode* right, bool is3264)
+void TypeManager::promoteLeft(AstNode* left, AstNode* right, bool is3264)
 {
     TypeInfo* leftTypeInfo  = TypeManager::concreteType(left->typeInfo);
     TypeInfo* rightTypeInfo = TypeManager::concreteType(right->typeInfo);
+
+    // Promotion only for native types
     if (!leftTypeInfo->isNative() || !rightTypeInfo->isNative())
         return;
 
+    // This native types do not have a promotion
+    switch (leftTypeInfo->nativeType)
+    {
+    case NativeTypeKind::Bool:
+    case NativeTypeKind::Rune:
+    case NativeTypeKind::String:
+        return;
+    default:
+        break;
+    }
     if (leftTypeInfo->isUntypedInteger() && !rightTypeInfo->isUntypedInteger())
     {
         promoteUntypedInteger(left, right);
@@ -3029,22 +3042,11 @@ void TypeManager::promoteOne(AstNode* left, AstNode* right, bool is3264)
         rightTypeInfo = right->typeInfo;
     }
 
-    // This types do not have a promotion
-    switch (leftTypeInfo->nativeType)
-    {
-    case NativeTypeKind::Bool:
-    case NativeTypeKind::Rune:
-    case NativeTypeKind::String:
-        return;
-    default:
-        break;
-    }
-
     TypeInfo* newLeftTypeInfo = nullptr;
     if (is3264)
         newLeftTypeInfo = (TypeInfo*) g_TypeMgr->promoteMatrix3264[(int) leftTypeInfo->nativeType][(int) rightTypeInfo->nativeType];
     else
-        newLeftTypeInfo = (TypeInfo*) g_TypeMgr->promoteMatrix816[(int) leftTypeInfo->nativeType][(int) rightTypeInfo->nativeType];
+        newLeftTypeInfo = (TypeInfo*) g_TypeMgr->promoteMatrix[(int) leftTypeInfo->nativeType][(int) rightTypeInfo->nativeType];
     if (newLeftTypeInfo == nullptr)
         newLeftTypeInfo = leftTypeInfo;
 

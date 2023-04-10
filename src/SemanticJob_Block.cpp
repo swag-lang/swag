@@ -466,9 +466,9 @@ bool SemanticJob::resolveCase(SemanticContext* context)
                 }
                 else
                 {
-                    TypeManager::promoteOne(context, node->ownerSwitch->expression);
-                    TypeManager::promoteOne(context, rangeNode->expressionLow);
-                    TypeManager::promoteOne(context, rangeNode->expressionUp);
+                    SWAG_CHECK(TypeManager::promote32(context, node->ownerSwitch->expression));
+                    SWAG_CHECK(TypeManager::promote32(context, rangeNode->expressionLow));
+                    SWAG_CHECK(TypeManager::promote32(context, rangeNode->expressionUp));
                     SWAG_CHECK(TypeManager::makeCompatibles(context, node->ownerSwitch->expression, rangeNode->expressionLow, CASTFLAG_COMPARE));
                     SWAG_CHECK(TypeManager::makeCompatibles(context, node->ownerSwitch->expression, rangeNode->expressionUp, CASTFLAG_COMPARE));
                 }
