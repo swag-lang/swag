@@ -15,35 +15,35 @@ struct Path;
 
 struct Utf8
 {
-    char* buffer    = nullptr;
-    int   count     = 0;
-    int   allocated = 0;
+    char*    buffer    = nullptr;
+    uint32_t count     = 0;
+    uint32_t allocated = 0;
 
     Utf8();
     Utf8(const char* from);
     Utf8(const char* from, uint32_t len);
     Utf8(const string& from);
     Utf8(const Utf8& from);
-    Utf8(const Utf8& from, int capcity);
+    Utf8(const Utf8& from, uint32_t capcity);
     Utf8(Utf8&& from);
     ~Utf8();
 
-    void setView(const char* txt, int len);
+    void setView(const char* txt, uint32_t len);
     void setView(const Utf8& other);
 
     uint32_t    hash() const;
     void        freeBuffer();
     void        release();
-    void        reserve(int newSize);
-    void        resize(int newSize);
+    void        reserve(uint32_t newSize);
+    void        resize(uint32_t newSize);
     bool        empty() const;
-    int         length() const;
+    uint32_t    length() const;
     Utf8        toZeroTerminated() const;
     const char* c_str() const;
     void        clear();
-    int         capacity() const;
+    uint32_t    capacity() const;
     void        makeLocal();
-    void        append(const char* txt, int len);
+    void        append(const char* txt, uint32_t len);
     void        append(const char* txt);
     void        append(const Utf8& txt);
     void        append(char c);
@@ -58,10 +58,10 @@ struct Utf8
     void        trimRight();
     void        trim();
     void        removeBack();
-    int         find(const Utf8& str, int startpos = 0) const;
-    void        remove(int index, int len);
-    void        insert(int index, const char* str);
-    void        insert(int index, char c);
+    int         find(const Utf8& str, uint32_t startpos = 0) const;
+    void        remove(uint32_t index, uint32_t len);
+    void        insert(uint32_t index, const char* str);
+    void        insert(uint32_t index, char c);
     bool        compareNoCase(const Utf8& txt1);
 
                 operator const char*();
@@ -70,7 +70,7 @@ struct Utf8
     void        operator+=(const Utf8& txt);
     void        operator+=(const char* txt);
     void        operator=(const Utf8& other);
-    char        operator[](int index) const;
+    char        operator[](uint32_t index) const;
     friend Utf8 operator+(const Utf8& str1, const char* str2);
     friend Utf8 operator+(const char* str1, const Utf8& str2);
     friend bool operator==(const Utf8& str1, char c);

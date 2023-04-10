@@ -369,7 +369,7 @@ bool SemanticJob::resolveIntrinsicRunes(SemanticContext* context)
     // Convert
     Vector<uint32_t> runes;
     const char*      pz  = expr->computedValue->text.buffer;
-    int              cpt = 0;
+    uint32_t         cpt = 0;
     while (cpt < expr->computedValue->text.count)
     {
         uint32_t c;

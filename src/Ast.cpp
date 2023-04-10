@@ -379,7 +379,7 @@ void Ast::normalizeIdentifierName(Utf8& name)
     auto len = name.length();
     auto pz  = name.buffer;
 
-    for (int i = 0; i < len; i++)
+    for (uint32_t i = 0; i < len; i++)
     {
         switch (*pz)
         {

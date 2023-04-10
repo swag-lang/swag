@@ -216,7 +216,7 @@ bool Parser::saveEmbeddedAst(const Utf8& content, AstNode* fromNode, Path& tmpFi
 
     uint32_t countEol = 0;
     auto     size     = content.length();
-    for (int i = 0; i < size; i++)
+    for (uint32_t i = 0; i < size; i++)
     {
         if (content[i] == '\n')
             countEol++;

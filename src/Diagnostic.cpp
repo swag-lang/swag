@@ -247,9 +247,9 @@ static void fixRange(const Utf8& backLine, SourceLocation& startLocation, int& r
     if (range == 1)
         return;
 
-    int decal = startLocation.column;
-    int cpt   = 0;
-    for (int i = decal; i < backLine.length() && i < decal + range; i++)
+    uint32_t decal = startLocation.column;
+    uint32_t cpt   = 0;
+    for (uint32_t i = decal; i < backLine.length() && i < decal + range; i++)
     {
         if (backLine[i] == c1)
             cpt++;

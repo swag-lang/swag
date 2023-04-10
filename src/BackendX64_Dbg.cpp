@@ -153,7 +153,7 @@ Utf8 BackendX64::dbgGetScopedName(AstNode* node)
 
     auto pz      = nn.buffer;
     bool lastDot = false;
-    for (int i = 0; i < nn.length(); i++, pz++)
+    for (uint32_t i = 0; i < nn.length(); i++, pz++)
     {
         if (*pz == '.')
         {

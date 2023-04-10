@@ -1203,7 +1203,7 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
                 child->token.text[0] == 'i' && child->token.text[1] == 't' && child->token.text[2] == 'e' && child->token.text[3] == 'm')
             {
                 hasItemName = true;
-                for (int idx = 4; idx < child->token.text.length(); idx++)
+                for (uint32_t idx = 4; idx < child->token.text.length(); idx++)
                 {
                     if (!isdigit(child->token.text[idx]))
                         hasItemName = false;

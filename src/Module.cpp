@@ -218,7 +218,7 @@ bool Module::isValidName(const Utf8& name, Utf8& errorStr)
     }
     else
     {
-        for (int i = 0; i < name.length(); i++)
+        for (uint32_t i = 0; i < name.length(); i++)
         {
             if (name[i] <= 32)
             {
@@ -767,7 +767,7 @@ bool Module::addDependency(AstNode* importNode, const Token& tokenLocation, cons
         }
 
         // Be sure we have a number
-        for (int j = 0; j < splits[i].length(); j++)
+        for (uint32_t j = 0; j < splits[i].length(); j++)
         {
             if (!isdigit(splits[i][j]))
             {

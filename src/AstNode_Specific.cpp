@@ -284,7 +284,7 @@ void AstFuncDecl::computeFullNameForeign(bool forExport)
     auto len = nameForeign.length();
     auto pz  = nameForeign.buffer;
     auto pzd = fullnameForeign.buffer;
-    for (int i = 0; i < len; i++)
+    for (uint32_t i = 0; i < len; i++)
     {
         if (*pz == ' ')
         {

@@ -187,8 +187,8 @@ Utf8 ByteCodeDebugger::getCommandLine(ByteCodeRunContext* context, bool& ctrl, b
     static Vector<Utf8> debugCmdHistory;
     static uint32_t     debugCmdHistoryIndex = 0;
 
-    Utf8 line;
-    int  cursorX = 0;
+    Utf8     line;
+    uint32_t cursorX = 0;
 
     while (true)
     {
