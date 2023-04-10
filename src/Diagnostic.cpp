@@ -319,7 +319,7 @@ void Diagnostic::collectRanges()
         r.width = max(1, r.width);
 
         // Special case for a range == 1.
-        if (r.width == 1 && (int) r.startLocation.column < backLine.count)
+        if (r.width == 1 && r.startLocation.column < backLine.count)
         {
             int decal = r.startLocation.column;
 

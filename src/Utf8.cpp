@@ -646,16 +646,16 @@ void Utf8::replace(const char* src, const char* dst)
     uint32_t len    = (uint32_t) strlen(src);
     uint32_t lenins = (uint32_t) strlen(dst);
     uint32_t pos    = 0;
-    do
+    while (true)
     {
-        pos = find(src, pos);
-        if (pos != -1)
-        {
-            remove(pos, len);
-            insert(pos, dst);
-            pos += lenins;
-        }
-    } while (pos != -1);
+        auto npos = find(src, pos);
+        if (npos == -1)
+            break;
+        pos = (uint32_t) npos;
+        remove(pos, len);
+        insert(pos, dst);
+        pos += lenins;
+    };
 }
 
 uint32_t Utf8::hash() const
