@@ -149,7 +149,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdBreakEnable(ByteCodeRunContext* context,
         return BcDbgCommandResult::BadArguments;
 
     int numB = atoi(cmds[2].c_str());
-    if (!numB || numB - 1 >= context->debugBreakpoints.size())
+    if (!numB || numB - 1 >= (int) context->debugBreakpoints.size())
         g_Log.print("invalid breakpoint number\n", LogColor::Red);
     else
     {
@@ -168,7 +168,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdBreakDisable(ByteCodeRunContext* context
         return BcDbgCommandResult::BadArguments;
 
     int numB = atoi(cmds[2].c_str());
-    if (!numB || numB - 1 >= context->debugBreakpoints.size())
+    if (!numB || numB - 1 >= (int) context->debugBreakpoints.size())
         g_Log.print("invalid breakpoint number\n", LogColor::Red);
     else
     {
@@ -197,7 +197,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdBreakClear(ByteCodeRunContext* context, 
         return BcDbgCommandResult::BadArguments;
 
     int numB = atoi(cmds[2].c_str());
-    if (!numB || numB - 1 >= context->debugBreakpoints.size())
+    if (!numB || numB - 1 >= (int) context->debugBreakpoints.size())
         g_Log.print("invalid breakpoint number\n", LogColor::Red);
     else
     {

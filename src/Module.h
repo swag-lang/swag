@@ -58,7 +58,7 @@ struct ModuleDependency
     AstNode*            node      = nullptr;
     Module*             module    = nullptr;
     DependencyFetchKind fetchKind = DependencyFetchKind::Invalid;
-    int                 verNum, revNum, buildNum;
+    uint32_t            verNum, revNum, buildNum;
     bool                importDone           = false;
     bool                isLocalToWorkspace   = false;
     bool                locationAutoResolved = false;

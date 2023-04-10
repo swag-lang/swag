@@ -475,7 +475,7 @@ bool TypeInfoEnum::isSame(TypeInfo* to, uint32_t castFlags)
 
     if (!(castFlags & CASTFLAG_CAST))
     {
-        int childSize = (int) values.size();
+        auto childSize = values.size();
         if (childSize != other->values.size())
             return false;
         for (size_t i = 0; i < childSize; i++)
@@ -746,8 +746,8 @@ bool TypeInfoFuncAttr::isSame(TypeInfoFuncAttr* other, uint32_t castFlags, BadSi
         if ((type1->flags & TYPEINFO_POINTER_MOVE_REF) != (type2->flags & TYPEINFO_POINTER_MOVE_REF))
         {
             bi.matchResult      = MatchResult::BadSignature;
-            bi.badSignatureNum1 = i;
-            bi.badSignatureNum2 = i + firstParam;
+            bi.badSignatureNum1 = (int) i;
+            bi.badSignatureNum2 = (int) i + firstParam;
             return false;
         }
 
@@ -756,8 +756,8 @@ bool TypeInfoFuncAttr::isSame(TypeInfoFuncAttr* other, uint32_t castFlags, BadSi
             type2->isPointerRef())
         {
             bi.matchResult      = MatchResult::BadSignature;
-            bi.badSignatureNum1 = i;
-            bi.badSignatureNum2 = i + firstParam;
+            bi.badSignatureNum1 = (int) i;
+            bi.badSignatureNum2 = (int) i + firstParam;
             return false;
         }
 
@@ -766,8 +766,8 @@ bool TypeInfoFuncAttr::isSame(TypeInfoFuncAttr* other, uint32_t castFlags, BadSi
         if (!type1->isSame(type2, castFlags))
         {
             bi.matchResult      = MatchResult::BadSignature;
-            bi.badSignatureNum1 = i;
-            bi.badSignatureNum2 = i + firstParam;
+            bi.badSignatureNum1 = (int) i;
+            bi.badSignatureNum2 = (int) i + firstParam;
             return false;
         }
     }
@@ -869,7 +869,7 @@ uint32_t TypeInfoFuncAttr::registerIdxToParamIdx(int argIdx)
         argIdx -= 2;
     }
 
-    int argNo = 0;
+    size_t argNo = 0;
     while (true)
     {
         if (argNo >= parameters.size())
@@ -881,7 +881,7 @@ uint32_t TypeInfoFuncAttr::registerIdxToParamIdx(int argIdx)
         auto typeParam = TypeManager::concreteType(parameters[argNo]->typeInfo);
         auto n         = typeParam->numRegisters();
         if (argIdx < n)
-            return argNo;
+            return (uint32_t) argNo;
         argIdx -= n;
         argNo++;
     }

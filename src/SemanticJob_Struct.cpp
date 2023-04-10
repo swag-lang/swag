@@ -376,7 +376,7 @@ bool SemanticJob::resolveImplFor(SemanticContext* context)
         content += missingNode->name;
 
         content += "(";
-        for (int i = 1; i < typeFunc->parameters.size(); i++)
+        for (size_t i = 1; i < typeFunc->parameters.size(); i++)
         {
             if (i != 1)
                 content += ",";

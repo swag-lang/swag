@@ -409,14 +409,14 @@ bool ByteCodeOptimizer::optimize(Job* job, Module* module, bool& done)
         totalInstructions /= (g_ThreadMgr.numWorkers * 4);
         totalInstructions = max(totalInstructions, 1);
 
-        int startIndex = 0;
+        size_t startIndex = 0;
         while (startIndex < module->byteCodeFunc.size())
         {
             auto newJob          = Allocator::alloc<ByteCodeOptimizerJob>();
             newJob->module       = module;
             newJob->dependentJob = job;
-            newJob->startIndex   = startIndex;
-            newJob->endIndex     = min(startIndex + 1, (int) module->byteCodeFunc.size());
+            newJob->startIndex   = (int) startIndex;
+            newJob->endIndex     = (int) min(startIndex + 1, module->byteCodeFunc.size());
             startIndex           = newJob->endIndex;
 
             auto curInst = module->byteCodeFunc[newJob->startIndex]->numInstructions;

@@ -636,7 +636,7 @@ void Diagnostic::printRanges()
     auto startIndex = minBlanks;
     for (auto& r : ranges)
     {
-        while (startIndex < (int) r.startLocation.column && startIndex < (uint32_t) backLine.length())
+        while (startIndex < r.startLocation.column && startIndex < (uint32_t) backLine.length())
         {
             if (backLine[startIndex] == '\t')
                 g_Log.print("\t");
@@ -687,7 +687,7 @@ void Diagnostic::printRanges()
         startIndex = minBlanks;
         for (const auto& r : ranges)
         {
-            while (startIndex < (int) r.startLocation.column && startIndex < (uint32_t) backLine.length())
+            while (startIndex < r.startLocation.column && startIndex < (uint32_t) backLine.length())
             {
                 if (backLine[startIndex] == '\t')
                     g_Log.print("\t");
@@ -709,7 +709,7 @@ void Diagnostic::printRanges()
         for (size_t i = 0; i < ranges.size(); i++)
         {
             const auto& r = ranges[i];
-            while (startIndex < (int) r.startLocation.column && startIndex < (uint32_t) backLine.length())
+            while (startIndex < r.startLocation.column && startIndex < (uint32_t) backLine.length())
             {
                 if (backLine[startIndex] == '\t')
                     g_Log.print("\t");

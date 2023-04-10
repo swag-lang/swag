@@ -744,7 +744,7 @@ bool Module::addDependency(AstNode* importNode, const Token& tokenLocation, cons
         return Report::report(diag, note);
     }
 
-    int* setVer = nullptr;
+    uint32_t* setVer = nullptr;
     for (int i = 0; i < 3; i++)
     {
         switch (i)
@@ -762,7 +762,7 @@ bool Module::addDependency(AstNode* importNode, const Token& tokenLocation, cons
 
         if (splits[i] == '?')
         {
-            *setVer = -1;
+            *setVer = UINT32_MAX;
             continue;
         }
 
@@ -788,10 +788,10 @@ bool Module::addDependency(AstNode* importNode, const Token& tokenLocation, cons
         switch (i)
         {
         case 1:
-            SWAG_VERIFY(dep->verNum != -1, Report::report({importNode, tokenVersion, Fmt(Err(Err0335), dep->revNum)}));
+            SWAG_VERIFY(dep->verNum != UINT32_MAX, Report::report({importNode, tokenVersion, Fmt(Err(Err0335), dep->revNum)}));
             break;
         case 2:
-            SWAG_VERIFY(dep->revNum != -1, Report::report({importNode, tokenVersion, Fmt(Err(Err0336), dep->buildNum)}));
+            SWAG_VERIFY(dep->revNum != UINT32_MAX, Report::report({importNode, tokenVersion, Fmt(Err(Err0336), dep->buildNum)}));
             break;
         }
     }

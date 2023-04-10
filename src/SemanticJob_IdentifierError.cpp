@@ -77,7 +77,7 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
     AstFuncCallParam* failedParam       = nullptr;
 
     // Get the call parameter that failed
-    int badParamIdx = getBadParamIdx(oneTry, callParameters);
+    size_t badParamIdx = getBadParamIdx(oneTry, callParameters);
     if (oneTry.callParameters && badParamIdx >= 0 && badParamIdx < callParameters->childs.size())
         failedParam = static_cast<AstFuncCallParam*>(callParameters->childs[badParamIdx]);
     badParamIdx += 1;
@@ -175,7 +175,7 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
         SWAG_ASSERT(failedParam && failedParam->hasExtMisc() && failedParam->extMisc()->isNamed);
         diag       = new Diagnostic{failedParam->extMisc()->isNamed, Fmt(Err(Err0011), failedParam->extMisc()->isNamed->token.ctext())};
         diag->hint = Hnt(Hnt0009);
-        int other  = oneTry.symMatchContext.badSignatureInfos.badSignatureNum1;
+        size_t other  = oneTry.symMatchContext.badSignatureInfos.badSignatureNum1;
         SWAG_ASSERT(other < callParameters->childs.size());
         diag->addRange(callParameters->childs[other], Hnt(Hnt0059));
         result0.push_back(diag);
@@ -462,7 +462,7 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
             note->showMultipleCodeLines = false;
             result1.push_back(note);
         }
-        else if (destFuncDecl && bi.badSignatureParameterIdx < destFuncDecl->parameters->childs.size())
+        else if (destFuncDecl && bi.badSignatureParameterIdx < (int) destFuncDecl->parameters->childs.size())
         {
             auto reqParam = destFuncDecl->parameters->childs[bi.badSignatureParameterIdx];
             note          = Diagnostic::note(reqParam, reqParam->token, Fmt(Nte(Nte0066), reqParam->token.ctext(), refNiceName.c_str()));
@@ -536,7 +536,7 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
 
         result0.push_back(diag);
 
-        if (destFuncDecl && bi.badSignatureParameterIdx < destFuncDecl->genericParameters->childs.size())
+        if (destFuncDecl && bi.badSignatureParameterIdx < (int) destFuncDecl->genericParameters->childs.size())
         {
             auto reqParam = destFuncDecl->genericParameters->childs[bi.badSignatureParameterIdx];
             auto note     = Diagnostic::note(reqParam, Fmt(Nte(Nte0068), reqParam->token.ctext(), refNiceName.c_str()));
@@ -643,7 +643,7 @@ void SemanticJob::symbolErrorRemarks(SemanticContext* context, VectorNative<OneT
     auto identifier = CastAst<AstIdentifier>(node, AstNodeKind::Identifier, AstNodeKind::FuncCall);
     if (identifier->identifierRef()->startScope && !tryMatches.empty())
     {
-        int notFound = 0;
+        size_t notFound = 0;
         for (auto tryMatch : tryMatches)
         {
             if (tryMatch->ufcs &&

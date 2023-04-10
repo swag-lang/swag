@@ -402,8 +402,8 @@ static void matchParameters(SymbolMatchContext& context, VectorNative<TypeInfoPa
                 return;
             }
 
-            context.badSignatureInfos.badSignatureParameterIdx = i;
-            context.badSignatureInfos.badSignatureNum1         = numParams;
+            context.badSignatureInfos.badSignatureParameterIdx = (int) i;
+            context.badSignatureInfos.badSignatureNum1         = (int) numParams;
             context.badSignatureInfos.badSignatureNum2         = (int) parameters.size();
             context.result                                     = MatchResult::TooManyParameters;
             return;
@@ -444,7 +444,7 @@ static void matchParameters(SymbolMatchContext& context, VectorNative<TypeInfoPa
         // If we pass a @spread, must be match to a TypedVariadic !
         else if (callTypeInfo->flags & TYPEINFO_SPREAD)
         {
-            context.badSignatureInfos.badSignatureParameterIdx  = i;
+            context.badSignatureInfos.badSignatureParameterIdx  = (int) i;
             context.badSignatureInfos.badSignatureRequestedType = wantedTypeInfo;
             context.badSignatureInfos.badSignatureGivenType     = callTypeInfo;
             SWAG_ASSERT(context.badSignatureInfos.badSignatureRequestedType);
@@ -505,7 +505,7 @@ static void matchParameters(SymbolMatchContext& context, VectorNative<TypeInfoPa
             {
                 if (context.result == MatchResult::Ok)
                 {
-                    context.badSignatureInfos.badSignatureParameterIdx  = i;
+                    context.badSignatureInfos.badSignatureParameterIdx  = (int) i;
                     context.badSignatureInfos.badSignatureRequestedType = concreteTypeInfo;
                     context.badSignatureInfos.badSignatureGivenType     = wantedTypeInfo;
                     SWAG_ASSERT(context.badSignatureInfos.badSignatureRequestedType);
@@ -520,7 +520,7 @@ static void matchParameters(SymbolMatchContext& context, VectorNative<TypeInfoPa
             return;
 
         context.flags |= context.semContext->castFlagsResult;
-        if (context.cptResolved < context.doneParameters.size())
+        if (context.cptResolved < (int) context.doneParameters.size())
             context.doneParameters[context.cptResolved] = true;
 
         if (!same)
@@ -528,7 +528,7 @@ static void matchParameters(SymbolMatchContext& context, VectorNative<TypeInfoPa
             // Keep the first error
             if (context.result == MatchResult::Ok)
             {
-                context.badSignatureInfos.badSignatureParameterIdx  = i;
+                context.badSignatureInfos.badSignatureParameterIdx  = (int) i;
                 context.badSignatureInfos.badSignatureRequestedType = wantedTypeInfo;
                 context.badSignatureInfos.badSignatureGivenType     = callTypeInfo;
                 context.badSignatureInfos.castErrorToType           = context.semContext->castErrorToType;
@@ -542,12 +542,12 @@ static void matchParameters(SymbolMatchContext& context, VectorNative<TypeInfoPa
         }
         else if (wantedTypeInfo->isGeneric())
         {
-            deduceGenericParam(context, callParameter, callTypeInfo, wantedTypeInfo, i, castFlags & (CASTFLAG_ACCEPT_PENDING | CASTFLAG_AUTO_OPCAST));
+            deduceGenericParam(context, callParameter, callTypeInfo, wantedTypeInfo, (int) i, castFlags & (CASTFLAG_ACCEPT_PENDING | CASTFLAG_AUTO_OPCAST));
             if (context.semContext->result != ContextResult::Done)
                 return;
         }
 
-        if (context.cptResolved < context.solvedParameters.size())
+        if (context.cptResolved < (int) context.solvedParameters.size())
         {
             context.solvedParameters[context.cptResolved]     = wantedParameter;
             context.solvedCallParameters[context.cptResolved] = wantedParameter;
@@ -575,7 +575,7 @@ static void matchNamedParameter(SymbolMatchContext& context, AstFuncCallParam* c
         {
             if (context.doneParameters[j])
             {
-                context.badSignatureInfos.badSignatureNum1 = j;
+                context.badSignatureInfos.badSignatureNum1 = (int) j;
                 for (size_t k = 0; k < context.parameters.size(); k++)
                 {
                     auto checkParam = context.parameters[k];
@@ -583,7 +583,7 @@ static void matchNamedParameter(SymbolMatchContext& context, AstFuncCallParam* c
                         checkParam->extMisc()->isNamed &&
                         checkParam->extMisc()->isNamed->token.text == parameters[j]->name)
                     {
-                        context.badSignatureInfos.badSignatureNum1 = k;
+                        context.badSignatureInfos.badSignatureNum1 = (int) k;
                         break;
                     }
                 }
@@ -629,13 +629,13 @@ static void matchNamedParameter(SymbolMatchContext& context, AstFuncCallParam* c
             }
             else if (wantedTypeInfo->isGeneric())
             {
-                deduceGenericParam(context, callParameter, callTypeInfo, wantedTypeInfo, j, castFlags & (CASTFLAG_ACCEPT_PENDING | CASTFLAG_AUTO_OPCAST));
+                deduceGenericParam(context, callParameter, callTypeInfo, wantedTypeInfo, (int) j, castFlags & (CASTFLAG_ACCEPT_PENDING | CASTFLAG_AUTO_OPCAST));
             }
 
             context.solvedParameters[j]                  = wantedParameter;
             context.solvedCallParameters[parameterIndex] = wantedParameter;
             callParameter->resolvedParameter             = wantedParameter;
-            callParameter->indexParam                    = j;
+            callParameter->indexParam                    = (int) j;
             context.doneParameters[j]                    = true;
             context.cptResolved++;
             return;
@@ -694,17 +694,17 @@ static void matchNamedParameters(SymbolMatchContext& context, VectorNative<TypeI
 
         if (!param->hasExtMisc() || !param->extMisc()->isNamed)
         {
-            context.badSignatureInfos.badSignatureParameterIdx = i;
+            context.badSignatureInfos.badSignatureParameterIdx = (int) i;
             context.result                                     = MatchResult::MissingNamedParameter;
             return;
         }
 
-        matchNamedParameter(context, param, i, parameters, forceCastFlags);
+        matchNamedParameter(context, param, (int) i, parameters, forceCastFlags);
         if (context.result != MatchResult::DuplicatedNamedParameter)
         {
             if (!param->resolvedParameter)
             {
-                context.badSignatureInfos.badSignatureParameterIdx = i;
+                context.badSignatureInfos.badSignatureParameterIdx = (int) i;
                 context.result                                     = MatchResult::InvalidNamedParameter;
                 return;
             }
@@ -1101,8 +1101,8 @@ void TypeInfoFuncAttr::match(SymbolMatchContext& context)
     context.cptResolved = min(context.cptResolved, cptDone);
 
     // Not enough parameters
-    int firstDefault = firstDefaultValueIdx == -1 ? (int) parameters.size() : firstDefaultValueIdx;
-    if (context.cptResolved < firstDefault && parameters.size() && (context.result == MatchResult::Ok || context.result == MatchResult::BadSignature))
+    size_t firstDefault = firstDefaultValueIdx == UINT32_MAX ? parameters.size() : firstDefaultValueIdx;
+    if (context.cptResolved < (int) firstDefault && parameters.size() && (context.result == MatchResult::Ok || context.result == MatchResult::BadSignature))
     {
         auto back = parameters.back()->typeInfo;
         if (!back->isVariadic() && !back->isTypedVariadic() && !back->isCVariadic())
@@ -1114,7 +1114,7 @@ void TypeInfoFuncAttr::match(SymbolMatchContext& context)
             return;
         }
 
-        if (parameters.size() > 1 && context.cptResolved < min(parameters.size() - 1, firstDefault))
+        if (parameters.size() > 1 && context.cptResolved < (int) min(parameters.size() - 1, firstDefault))
         {
             if (context.result == MatchResult::Ok)
                 context.result = MatchResult::MissingSomeParameters;

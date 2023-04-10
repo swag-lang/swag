@@ -16,7 +16,7 @@ struct SourceFile
     void release();
     bool checkFormat();
     bool load();
-    Utf8 getLine(long lineNo, bool* eof = nullptr);
+    Utf8 getLine(uint32_t lineNo, bool* eof = nullptr);
     void setExternalBuffer(const Utf8& content);
     void addGlobalUsing(Scope* scope);
 
@@ -40,11 +40,11 @@ struct SourceFile
     uint64_t writeTime = 0;
 
     uint32_t  offsetStartBuffer = 0;
-    long      bufferSize        = 0;
-    long      allocBufferSize   = 0;
-    int       offsetGetLine     = 0;
-    int       numErrors         = 0;
-    int       numWarnings       = 0;
+    uint32_t  bufferSize        = 0;
+    uint32_t  allocBufferSize   = 0;
+    uint32_t  offsetGetLine     = 0;
+    uint32_t  numErrors         = 0;
+    uint32_t  numWarnings       = 0;
     uint32_t  indexInModule     = UINT32_MAX;
     BuildPass buildPass         = BuildPass::Full;
     uint32_t  globalAttr        = 0;

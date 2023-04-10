@@ -15,7 +15,7 @@ void Workspace::cleanFolderContent(const Path& path)
                       [&](const char* cFileName)
                       {
                           std::error_code err;
-                          if (filesystem::remove_all(cFileName, err) == -1)
+                          if (filesystem::remove_all(cFileName, err) == static_cast<std::uintmax_t>(-1))
                           {
                               Report::errorOS(Fmt(Err(Fat0010), cFileName));
                               OS::exit(-1);
@@ -23,7 +23,7 @@ void Workspace::cleanFolderContent(const Path& path)
                       });
 
     std::error_code err;
-    if (filesystem::remove_all(path, err) == -1)
+    if (filesystem::remove_all(path, err) == static_cast<std::uintmax_t>(-1))
     {
         Report::errorOS(Fmt(Err(Fat0009), path.string().c_str()));
         OS::exit(-1);

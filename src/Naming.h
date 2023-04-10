@@ -28,7 +28,7 @@ namespace Naming
     Utf8 kindName(ScopeKind kind);
     Utf8 aKindName(ScopeKind kind);
 
-    Utf8 niceArgumentRank(int idx);
-    Utf8 niceParameterRank(int idx);
+    Utf8 niceArgumentRank(size_t idx);
+    Utf8 niceParameterRank(size_t idx);
 
 }; // namespace Naming

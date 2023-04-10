@@ -2971,10 +2971,8 @@ void TypeManager::promoteUntypedInteger(AstNode* left, AstNode* right)
                 left->typeInfo = g_TypeMgr->typeInfoU8;
             else if (leftNative->valueInteger <= UINT16_MAX)
                 left->typeInfo = g_TypeMgr->typeInfoU16;
-            else if (leftNative->valueInteger <= UINT32_MAX)
-                left->typeInfo = g_TypeMgr->typeInfoU32;
             else
-                left->typeInfo = g_TypeMgr->typeInfoU64;
+                left->typeInfo = g_TypeMgr->typeInfoU32;
         }
         else
         {

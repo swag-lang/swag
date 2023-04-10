@@ -46,17 +46,17 @@ bool Module::prepareCompilerMessages(JobContext* context, uint32_t pass)
         return true;
 
     // Batch prepare
-    auto count     = (int) compilerMessages[pass].size() / g_ThreadMgr.numWorkers;
-    count          = max(count, 1);
-    count          = min(count, (int) compilerMessages[pass].size());
-    int startIndex = 0;
+    auto count        = compilerMessages[pass].size() / g_ThreadMgr.numWorkers;
+    count             = max(count, 1);
+    count             = min(count, compilerMessages[pass].size());
+    size_t startIndex = 0;
     while (startIndex < compilerMessages[pass].size())
     {
         auto newJob          = Allocator::alloc<PrepCompilerMsgJob>();
         newJob->module       = this;
         newJob->pass         = pass;
-        newJob->startIndex   = startIndex;
-        newJob->endIndex     = min(startIndex + count, (int) compilerMessages[pass].size());
+        newJob->startIndex   = (int) startIndex;
+        newJob->endIndex     = (int) min(startIndex + count, compilerMessages[pass].size());
         newJob->dependentJob = context->baseJob;
         startIndex += count;
         context->baseJob->jobsToAdd.push_back(newJob);

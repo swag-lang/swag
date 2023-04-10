@@ -125,14 +125,14 @@ void ByteCodeStack::log(ByteCodeRunContext* runContext)
     if (copySteps.empty())
         return;
 
-    int maxSteps = 20;
-    int nb       = (int) copySteps.size() - 1;
-    for (int i = nb; i >= 0; i--)
+    size_t maxSteps = 20;
+    size_t nb       = copySteps.size() - 1;
+    for (size_t i = nb; i >= 0; i--)
     {
         bool current = false;
         if (runContext && runContext->debugOn)
             current = i == (copySteps.size() - 1) - runContext->debugStackFrameOffset;
-        logStep(i, current, copySteps[i]);
+        logStep((int) i, current, copySteps[i]);
 
         maxSteps--;
         if (maxSteps == 0)

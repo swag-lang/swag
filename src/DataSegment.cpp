@@ -429,7 +429,7 @@ void DataSegment::addInitPtr(uint32_t patchOffset, uint32_t srcOffset, SegmentKi
     // have a weird memory overwrite
     // Note: can happen, because of structs, that a pointer is patched twice, so offset of 0 is fine
     // (even if no optimal)
-    for (int i = 0; i < initPtr.size(); i++)
+    for (size_t i = 0; i < initPtr.size(); i++)
     {
         auto diff = abs((int) initPtr[i].patchOffset - (int) patchOffset);
         SWAG_ASSERT(diff == 0 || diff >= 8);

@@ -418,7 +418,7 @@ static bool checkEscapeFrame(Context& cxt, uint64_t stackOffset, SymbolOverload*
 
 static bool checkStackOffset(Context& cxt, uint64_t stackOffset, uint32_t sizeOf = 0)
 {
-    if (stackOffset + sizeOf > STATE().stack.count)
+    if (stackOffset + sizeOf > (size_t) STATE().stack.count)
         return raiseError(cxt, Fmt(Err(San0010), stackOffset + sizeOf, STATE().stack.count));
     return true;
 }
@@ -2123,7 +2123,7 @@ bool ByteCodeOptimizer::optimizePassSanity(ByteCodeOptContext* context)
 
     for (size_t i = 0; i < cxt.states.size(); i++)
     {
-        cxt.state = i;
+        cxt.state = (int) i;
         SWAG_CHECK(optimizePassSanityStack(context, cxt));
         if (i == cxt.states.size() - 1)
             break;

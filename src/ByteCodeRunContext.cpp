@@ -87,7 +87,7 @@ void ByteCodeRunContext::stackOverflow()
 
 int ByteCodeRunContext::getRegCount(int cur)
 {
-    if (cur >= registersRC.size() - 1)
+    if ((size_t) cur >= registersRC.size() - 1)
         return (int) bc->maxReservedRegisterRC;
     return (int) (registersRC[cur + 1] - registersRC[cur]);
 }

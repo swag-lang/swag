@@ -315,13 +315,13 @@ bool SemanticJob::setSymbolMatchCallParams(SemanticContext* context, AstIdentifi
     {
         auto nodeCall = CastAst<AstFuncCallParam>(identifier->callParameters->childs[idx], AstNodeKind::FuncCallParam);
 
-        int i = idx;
+        size_t i = idx;
         if (idx < typeInfoFunc->parameters.size() - 1 || !(typeInfoFunc->flags & (TYPEINFO_VARIADIC | TYPEINFO_C_VARIADIC)))
             i = nodeCall->indexParam;
 
         // This is a lambda that was waiting for a match to have its types, and to continue solving its content
         if (nodeCall->typeInfo->isLambdaClosure() && (nodeCall->typeInfo->declNode->semFlags & SEMFLAG_PENDING_LAMBDA_TYPING))
-            resolvePendingLambdaTyping(nodeCall, &oneMatch, i);
+            resolvePendingLambdaTyping(nodeCall, &oneMatch, (uint32_t) i);
 
         uint32_t castFlags = CASTFLAG_AUTO_OPCAST | CASTFLAG_ACCEPT_PENDING | CASTFLAG_PARAMS | CASTFLAG_PTR_REF | CASTFLAG_FOR_AFFECT | CASTFLAG_ACCEPT_MOVE_REF;
         if (i == 0 && oneMatch.ufcs)
@@ -512,7 +512,7 @@ bool SemanticJob::setSymbolMatchCallParams(SemanticContext* context, AstIdentifi
                 auto newParam        = Ast::newFuncCallParam(sourceFile, identifier->callParameters);
                 newParam->indexParam = nodeCall->indexParam;
                 Ast::removeFromParent(newParam);
-                Ast::insertChild(identifier->callParameters, newParam, i);
+                Ast::insertChild(identifier->callParameters, newParam, (uint32_t) i);
 
                 // If the match is against a 'moveref', then we should have a 'moveref' node and a makepointer.
                 if (typeInfoFunc->parameters[nodeCall->indexParam]->typeInfo->isPointerMoveRef())
@@ -1035,8 +1035,8 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* ide
             auto maxParams = identifier->callParameters->childs.size();
             for (size_t i = 0; i < maxParams; i++)
             {
-                auto nodeCall = CastAst<AstFuncCallParam>(identifier->callParameters->childs[i], AstNodeKind::FuncCallParam);
-                int  idx      = nodeCall->indexParam;
+                auto   nodeCall = CastAst<AstFuncCallParam>(identifier->callParameters->childs[i], AstNodeKind::FuncCallParam);
+                size_t idx      = nodeCall->indexParam;
                 if (idx < oneMatch.solvedParameters.size() && oneMatch.solvedParameters[idx])
                 {
                     uint32_t castFlags = CASTFLAG_TRY_COERCE | CASTFLAG_FORCE_UNCONST | CASTFLAG_PTR_REF;
@@ -3757,9 +3757,9 @@ bool SemanticJob::filterGenericMatches(SemanticContext* context, VectorNative<On
     // the already instantiated one
     if (genMatches.size() > 1 && matches.size() == 1)
     {
-        auto idCost       = scopeCost(context->node->ownerScope, matches[0]->symbolOverload->node->ownerScope);
-        auto bestIsIdCost = true;
-        int  bestGenId    = 0;
+        auto   idCost       = scopeCost(context->node->ownerScope, matches[0]->symbolOverload->node->ownerScope);
+        auto   bestIsIdCost = true;
+        size_t bestGenId    = 0;
 
         for (size_t i = 0; i < genMatches.size(); i++)
         {
@@ -3785,10 +3785,10 @@ bool SemanticJob::filterGenericMatches(SemanticContext* context, VectorNative<On
     // Take the most "specialized" generic match, i.e. the one with the more 'genericReplaceTypes'
     if (genMatches.size() > 1)
     {
-        int bestS = -1;
+        size_t bestS = 0;
         for (size_t i = 0; i < genMatches.size(); i++)
         {
-            bestS = max(bestS, (int) genMatches[i]->genericReplaceTypes.size());
+            bestS = max(bestS, genMatches[i]->genericReplaceTypes.size());
         }
 
         for (size_t i = 0; i < genMatches.size(); i++)
@@ -4058,7 +4058,7 @@ bool SemanticJob::filterSymbols(SemanticContext* context, AstIdentifier* node)
     }
 
     // Eliminate all matches tag as 'remove'
-    for (int i = 0; i < dependentSymbols.size(); i++)
+    for (size_t i = 0; i < dependentSymbols.size(); i++)
     {
         if (dependentSymbols[i].remove)
         {

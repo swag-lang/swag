@@ -151,7 +151,7 @@ bool SemanticJob::resolveInlineBefore(SemanticContext* context)
                 for (size_t j = 0; j < identifier->callParameters->childs.size(); j++)
                 {
                     auto callParam = CastAst<AstFuncCallParam>(identifier->callParameters->childs[j], AstNodeKind::FuncCallParam);
-                    if (callParam->indexParam != i)
+                    if (callParam->indexParam != (int) i)
                         continue;
                     orgCallParam = callParam;
                     if (!(callParam->flags & AST_VALUE_COMPUTED))
@@ -682,7 +682,7 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
     SWAG_ASSERT(concat.firstBucket->nextBucket == nullptr);
 
     AstNode* newVar        = nullptr;
-    int      firstAliasVar = 0;
+    size_t   firstAliasVar = 0;
     int      id            = g_UniqueID.fetch_add(1);
 
     // Multi dimensional array
@@ -901,8 +901,8 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
 
     // In case of error (like an already defined identifier), we need to set the correct location of declared
     // variables
-    int countVar   = 0;
-    int countAlias = 0;
+    size_t countVar   = 0;
+    size_t countAlias = 0;
     Ast::visit(newExpression, [&](AstNode* x)
                {
                    if (countAlias >= node->aliasNames.size())
@@ -1031,7 +1031,7 @@ bool SemanticJob::resolveFallThrough(SemanticContext* context)
 
     // 'fallthrough' cannot be used on the last case, this has no sens
     auto switchBlock = CastAst<AstSwitch>(node->ownerBreakable, AstNodeKind::Switch);
-    SWAG_VERIFY(node->switchCase->caseIndex < switchBlock->cases.size() - 1, context->report({node, Err(Err0635)}));
+    SWAG_VERIFY(node->switchCase->caseIndex < (int) switchBlock->cases.size() - 1, context->report({node, Err(Err0635)}));
 
     SWAG_CHECK(warnUnreachableCode(context));
     node->byteCodeFct = ByteCodeGenJob::emitFallThrough;

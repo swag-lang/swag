@@ -202,14 +202,14 @@ struct VectorNative
         return buffer[0];
     }
 
-    void erase(int index, int num = 1)
+    void erase(size_t index, int num = 1)
     {
         if (index != count - num)
             memmove(buffer + index, buffer + index + num, (count - index - num) * sizeof(T));
         count -= num;
     }
 
-    void erase_unordered(int index)
+    void erase_unordered(size_t index)
     {
         if (index != count - 1)
             buffer[index] = buffer[count - 1];
@@ -299,12 +299,12 @@ struct VectorNative
         other.buffer                  = nullptr;
     }
 
-    const T& operator[](int index) const
+    const T& operator[](size_t index) const
     {
         return buffer[index];
     }
 
-    T& operator[](int index)
+    T& operator[](size_t index)
     {
         SWAG_ASSERT(buffer && count);
         SWAG_ASSERT(index < count);

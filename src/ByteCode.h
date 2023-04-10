@@ -100,7 +100,7 @@ struct ByteCode
         }
 #endif
 
-        SWAG_ASSERT(context->curRC == context->registersRC.size());
+        SWAG_ASSERT(context->curRC == (int) context->registersRC.size());
         context->registersRC.push_back(context->registers.count);
         context->registers.reserve(context->registers.count + maxReservedRegisterRC);
         context->curRegistersRC = context->registers.buffer + context->registers.count;

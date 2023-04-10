@@ -15,8 +15,8 @@ bool SemanticJob::setupFuncDeclParams(SemanticContext* context, TypeInfoFuncAttr
     if (!parameters || (funcNode->attributeFlags & ATTRIBUTE_COMPILER_FUNC))
         return true;
 
-    bool defaultValueDone = false;
-    int  index            = 0;
+    bool   defaultValueDone = false;
+    size_t index            = 0;
 
     // If we have a tuple as a default parameter, without a user defined type, then we need to convert it to a tuple struct
     // and wait for the type to be solved.
@@ -131,7 +131,7 @@ bool SemanticJob::setupFuncDeclParams(SemanticContext* context, TypeInfoFuncAttr
             if (!defaultValueDone)
             {
                 defaultValueDone               = true;
-                typeInfo->firstDefaultValueIdx = index - 1;
+                typeInfo->firstDefaultValueIdx = (uint32_t) (index - 1);
                 firstParamWithDef              = nodeParam;
             }
 
@@ -159,7 +159,7 @@ bool SemanticJob::setupFuncDeclParams(SemanticContext* context, TypeInfoFuncAttr
         {
             if (defaultValueDone)
             {
-                Diagnostic diag{nodeParam, Fmt(Err(Err0738), Naming::niceParameterRank(index).c_str())};
+                Diagnostic diag{nodeParam, Fmt(Err(Err0738), Naming::niceParameterRank((int) index).c_str())};
                 diag.hint = Hnt(Hnt0089);
                 diag.addRange(firstParamWithDef, Hnt(Hnt0088));
                 return context->report(diag);
@@ -777,7 +777,7 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
 
         // We need to be sure that we only have empty functions, and not a real one.
         // As we can have multiple times the same empty function prototype, count them.
-        int cptEmpty = 0;
+        size_t cptEmpty = 0;
         for (auto n : funcNode->resolvedSymbolName->nodes)
         {
             if (!n->isEmptyFct())

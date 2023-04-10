@@ -139,15 +139,15 @@ void CommandLineParser::logArguments(const Utf8& cmd)
 {
     Utf8 line0, line1;
 
-    size_t columns[10] = {4};
+    int columns[10] = {4};
 
-    static const int SPACE = 4;
+    static const size_t SPACE = 4;
 
-    columns[0] = SPACE + strlen("Argument");
-    columns[1] = SPACE + strlen("Short");
-    columns[2] = SPACE + strlen("Value");
-    columns[3] = SPACE + strlen("Default");
-    columns[4] = SPACE + strlen("Help");
+    columns[0] = SPACE + (int) strlen("Argument");
+    columns[1] = SPACE + (int) strlen("Short");
+    columns[2] = SPACE + (int) strlen("Value");
+    columns[3] = SPACE + (int) strlen("Default");
+    columns[4] = SPACE + (int) strlen("Help");
 
     for (auto arg : longNameArgs)
     {
@@ -163,10 +163,10 @@ void CommandLineParser::logArguments(const Utf8& cmd)
         columns[2] = max(columns[2], value.length() + SPACE);
         columns[3] = max(columns[3], defaultVal.length() + SPACE);
 
-        columns[4] = max(columns[4], strlen(oneArg->help) + SPACE);
+        columns[4] = max(columns[4], (int) strlen(oneArg->help) + SPACE);
     }
 
-    size_t total = 0;
+    int total = 0;
 
     line0 = "Argument";
     line1 = "--------";
@@ -317,7 +317,7 @@ bool CommandLineParser::process(const Utf8& swagCmd, int argc, const char* argv[
                 index++;
             }
 
-            if (index == tokens.size())
+            if (index == (int) tokens.size())
             {
                 Report::error(Fmt(Err(Err0722), it->first.c_str(), arg->param));
                 result = false;
@@ -343,7 +343,7 @@ bool CommandLineParser::process(const Utf8& swagCmd, int argc, const char* argv[
                 index++;
             }
 
-            if (index == tokens.size())
+            if (index == (int) tokens.size())
             {
                 Report::error(Fmt(Err(Err0722), it->first.c_str(), arg->param));
                 result = false;

@@ -295,7 +295,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdMemory(ByteCodeRunContext* context, cons
 
     // Print format
     ValueFormat fmt;
-    int         startIdx = 0;
+    size_t      startIdx = 0;
     if (exprCmds.size() && getValueFormat(exprCmds[0], fmt))
         startIdx++;
     fmt.print0x = false;

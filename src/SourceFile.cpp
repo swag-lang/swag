@@ -119,7 +119,7 @@ bool SourceFile::load()
     return true;
 }
 
-Utf8 SourceFile::getLine(long lineNo, bool* eof)
+Utf8 SourceFile::getLine(uint32_t lineNo, bool* eof)
 {
     ScopedLock lk(mutex);
 

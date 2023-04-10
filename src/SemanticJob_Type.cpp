@@ -150,7 +150,7 @@ bool SemanticJob::resolveTypeLambdaClosure(SemanticContext* context)
 
     if (node->parameters)
     {
-        int index = 0;
+        size_t index = 0;
         for (auto param : node->parameters->childs)
         {
             auto typeParam      = g_TypeMgr->makeParam();

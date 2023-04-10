@@ -40,7 +40,7 @@ bool ByteCodeGenJob::emitInlineBefore(ByteCodeGenContext* context)
     }
 
     AstNode* allParams        = nullptr;
-    int      numCallParams    = 0;
+    size_t   numCallParams    = 0;
     bool     canFreeRegParams = true;
     parent                    = node->parent;
 
@@ -59,7 +59,7 @@ bool ByteCodeGenJob::emitInlineBefore(ByteCodeGenContext* context)
         auto identifier                               = CastAst<AstIdentifier>(parent, AstNodeKind::Identifier);
         identifier->identifierRef()->resultRegisterRC = node->resultRegisterRC;
         allParams                                     = identifier->callParameters;
-        numCallParams                                 = allParams ? (int) allParams->childs.size() : 0;
+        numCallParams                                 = allParams ? allParams->childs.size() : 0;
     }
     else if (parent->kind == AstNodeKind::Loop)
     {
@@ -78,7 +78,7 @@ bool ByteCodeGenJob::emitInlineBefore(ByteCodeGenContext* context)
         parameters.inheritOwners(parent);
         parameters.childs.push_back(arrayNode);
         allParams        = &parameters;
-        numCallParams    = (uint32_t) parameters.childs.size();
+        numCallParams    = parameters.childs.size();
         canFreeRegParams = false;
     }
     else if (parent->kind == AstNodeKind::SwitchCase)
@@ -93,7 +93,7 @@ bool ByteCodeGenJob::emitInlineBefore(ByteCodeGenContext* context)
         parameters.childs.push_back(switchNode->expression);
         parameters.childs.push_back(caseNode->childs.front());
         allParams     = &parameters;
-        numCallParams = (uint32_t) parameters.childs.size();
+        numCallParams = parameters.childs.size();
     }
     else if (parent->kind == AstNodeKind::AffectOp &&
              (parent->hasSpecialFuncCall(g_LangSpec->name_opIndexAffect) || parent->hasSpecialFuncCall(g_LangSpec->name_opIndexAssign)))
@@ -123,12 +123,12 @@ bool ByteCodeGenJob::emitInlineBefore(ByteCodeGenContext* context)
         parameters.childs.push_back(ptIdx->access);
         parameters.childs.push_back(parent->childs[1]);
         allParams     = &parameters;
-        numCallParams = (uint32_t) parameters.childs.size();
+        numCallParams = parameters.childs.size();
     }
     else
     {
         allParams     = parent;
-        numCallParams = (int) allParams->childs.size() - 1; // Remove the inline block
+        numCallParams = allParams->childs.size() - 1; // Remove the inline block
     }
 
     // Need to Map all call parameters to function arguments
@@ -143,7 +143,7 @@ bool ByteCodeGenJob::emitInlineBefore(ByteCodeGenContext* context)
         // Simple case, every parameters are covered by the call, and there's no named param
         if (numFuncParams == numCallParams)
         {
-            for (int i = 0; i < numCallParams; i++)
+            for (size_t i = 0; i < numCallParams; i++)
             {
                 auto funcParam = CastAst<AstVarDecl>(func->parameters->childs[i], AstNodeKind::FuncDeclParam);
                 auto callParam = allParams->childs[i];
@@ -177,7 +177,7 @@ bool ByteCodeGenJob::emitInlineBefore(ByteCodeGenContext* context)
                 for (size_t j = 0; j < numCallParams; j++)
                 {
                     auto callParam = CastAst<AstFuncCallParam>(allParams->childs[j], AstNodeKind::FuncCallParam);
-                    if (callParam->indexParam == i)
+                    if (callParam->indexParam == (int) i)
                     {
                         if (callParam->semFlags & SEMFLAG_AUTO_CODE_PARAM)
                         {
@@ -699,7 +699,7 @@ bool ByteCodeGenJob::emitSwitch(ByteCodeGenContext* context)
     for (auto fallNode : switchNode->fallThroughList)
     {
         SWAG_ASSERT(fallNode->switchCase);
-        SWAG_ASSERT(fallNode->switchCase->caseIndex < switchNode->cases.size() - 1);
+        SWAG_ASSERT(fallNode->switchCase->caseIndex < (int) switchNode->cases.size() - 1);
 
         auto nextCase      = switchNode->cases[fallNode->switchCase->caseIndex + 1];
         auto nextCaseBlock = CastAst<AstSwitchCaseBlock>(nextCase->block, AstNodeKind::SwitchCaseBlock);

@@ -217,7 +217,7 @@ bool ByteCodeGenJob::emitExpressionList(ByteCodeGenContext* context)
 
         // Emit one affectation per child
         auto         oneOffset   = typeList->subTypes.front()->typeInfo->sizeOf;
-        auto         totalOffset = 0;
+        size_t       totalOffset = 0;
         RegisterList r0;
         reserveRegisterRC(context, r0, 1);
         for (auto child : job->collectChilds)

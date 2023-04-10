@@ -196,7 +196,7 @@ T* makeType(TypeInfoKind k = TypeInfoKind::Invalid)
     g_Stats.memTypes += sizeof(T);
 #ifdef SWAG_DEV_MODE
     SWAG_ASSERT(newType->kind != TypeInfoKind::Invalid);
-    SWAG_ASSERT((int) newType->kind < sizeof(g_Stats.countTypesByKind) / sizeof(g_Stats.countTypesByKind[0]));
+    SWAG_ASSERT((size_t) newType->kind < sizeof(g_Stats.countTypesByKind) / sizeof(g_Stats.countTypesByKind[0]));
     g_Stats.countTypesByKind[(int) newType->kind] += 1;
 #endif
 #endif

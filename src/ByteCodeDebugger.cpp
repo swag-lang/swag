@@ -118,7 +118,7 @@ void ByteCodeDebugger::computeDebugContext(ByteCodeRunContext* context)
 
     for (int i = (int) maxLevel; i >= 0; i--)
     {
-        if (i >= steps.size())
+        if (i >= (int) steps.size())
             continue;
 
         auto& step = steps[i];
