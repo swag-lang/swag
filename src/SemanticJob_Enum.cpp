@@ -240,7 +240,7 @@ bool SemanticJob::resolveEnumValue(SemanticContext* context)
 
         // First child is enumType
         AstNode* firstEnumValue = nullptr;
-        for (int fev = 1; fev < enumNode->childs.size(); fev++)
+        for (size_t fev = 1; fev < enumNode->childs.size(); fev++)
         {
             firstEnumValue = enumNode->childs[fev];
             if (firstEnumValue->kind == AstNodeKind::EnumValue)

@@ -14,7 +14,7 @@ bool Generic::updateGenericParameters(SemanticContext*              context,
                                       AstNode*                      callGenericParameters,
                                       OneGenericMatch&              match)
 {
-    for (int i = 0; i < typeGenericParameters.size(); i++)
+    for (size_t i = 0; i < typeGenericParameters.size(); i++)
     {
         auto param = typeGenericParameters[i];
 
@@ -262,7 +262,7 @@ TypeInfo* Generic::doTypeSubstitution(VectorMap<Utf8, TypeInfo*>& replaceTypes, 
         }
 
         auto numParams = typeLambda->parameters.size();
-        for (int idx = 0; idx < numParams; idx++)
+        for (size_t idx = 0; idx < numParams; idx++)
         {
             auto param = typeLambda->parameters[idx];
             newType    = doTypeSubstitution(replaceTypes, param->typeInfo);
@@ -420,7 +420,7 @@ bool Generic::instantiateStruct(SemanticContext* context, AstNode* genericParame
             TypeInfoStruct* t1 = (TypeInfoStruct*) newType;
 
             bool same = true;
-            for (int i = 0; i < t0->genericParameters.size(); i++)
+            for (size_t i = 0; i < t0->genericParameters.size(); i++)
             {
                 if (!t0->genericParameters[i]->typeInfo->isSame(t1->genericParameters[i]->typeInfo, CASTFLAG_EXACT))
                 {

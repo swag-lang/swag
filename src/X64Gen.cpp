@@ -1933,7 +1933,7 @@ void X64Gen::emit_Call_Parameters(TypeInfoFuncAttr* typeFunc, const VectorNative
     // Add all C variadic parameters
     if (typeFunc->isCVariadic())
     {
-        for (int i = typeFunc->numParamsRegisters(); i < pushRAParams.size(); i++)
+        for (size_t i = typeFunc->numParamsRegisters(); i < pushRAParams.size(); i++)
         {
             auto index = pushRAParams[indexParam--];
             pushParams3.push_back(index);

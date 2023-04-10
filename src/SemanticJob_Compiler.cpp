@@ -654,7 +654,7 @@ void SemanticJob::disableCompilerIfBlock(SemanticContext* context, AstCompilerIf
     // Clean array
     for (auto typeStruct : allStructs)
     {
-        for (int i = 0; i < typeStruct->methods.size(); i++)
+        for (size_t i = 0; i < typeStruct->methods.size(); i++)
         {
             if (!typeStruct->methods[i])
             {

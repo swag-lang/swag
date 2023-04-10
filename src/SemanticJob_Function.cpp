@@ -431,7 +431,7 @@ void SemanticJob::setFuncDeclParamsIndex(AstFuncDecl* funcNode)
         }
 
         auto childSize = funcNode->parameters->childs.size();
-        for (int i = 0; i < childSize; i++)
+        for (size_t i = 0; i < childSize; i++)
         {
             if ((i == childSize - 1) && funcNode->typeInfo->flags & (TYPEINFO_VARIADIC | TYPEINFO_TYPED_VARIADIC))
                 break;

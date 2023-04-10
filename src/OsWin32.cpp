@@ -263,7 +263,7 @@ namespace OS
 
         // Remove unwanted characters
         char* pz = messageBuffer;
-        for (int i = 0; i < size; i++)
+        for (size_t i = 0; i < size; i++)
         {
             if (pz[i] < 32)
                 pz[i] = 32;

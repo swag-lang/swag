@@ -510,7 +510,7 @@ bool ByteCodeDebugger::processCommandLine(ByteCodeRunContext* context, Vector<Ut
 {
     line.clear();
     bool err = false;
-    for (int i = 0; i < cmds.size() && !err; i++)
+    for (size_t i = 0; i < cmds.size() && !err; i++)
     {
         // Make some replacements
         if (cmds[i] == "$sp")

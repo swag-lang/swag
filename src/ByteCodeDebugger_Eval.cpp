@@ -199,7 +199,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdPrint(ByteCodeRunContext* context, const
         {
             hasFormat = true;
             expr.clear();
-            for (int i = 2; i < cmds.size(); i++)
+            for (size_t i = 2; i < cmds.size(); i++)
                 expr += cmds[i] + " ";
             expr.trim();
             if (expr.empty())

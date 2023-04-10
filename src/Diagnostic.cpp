@@ -392,7 +392,7 @@ void Diagnostic::collectSourceCode()
     }
 
     // Remove blanks on the left, but keep indentation
-    for (int i = 0; i < lines.size(); i++)
+    for (size_t i = 0; i < lines.size(); i++)
     {
         auto        line = lines[i];
         const char* pz   = line.c_str();
@@ -588,7 +588,7 @@ void Diagnostic::printSourceCode(bool verboseMode)
         printMargin(true);
 
     // Print all lines except the one that really contains the relevant stuff (and ranges)
-    for (int i = 0; i < lines.size(); i++)
+    for (size_t i = 0; i < lines.size(); i++)
     {
         const char* pz = lines[i].c_str();
         if (*pz == 0 || *pz == '\n' || *pz == '\r')
@@ -669,7 +669,7 @@ void Diagnostic::printRanges()
     }
 
     // Remove all ranges with an empty hint
-    for (int i = 0; i < ranges.size(); i++)
+    for (size_t i = 0; i < ranges.size(); i++)
     {
         if (ranges[i].hint.empty())
         {
@@ -706,7 +706,7 @@ void Diagnostic::printRanges()
 
         // Print the last hint
         startIndex = minBlanks;
-        for (int i = 0; i < ranges.size(); i++)
+        for (size_t i = 0; i < ranges.size(); i++)
         {
             const auto& r = ranges[i];
             while (startIndex < (int) r.startLocation.column && startIndex < (uint32_t) backLine.length())

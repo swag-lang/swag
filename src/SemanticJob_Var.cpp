@@ -327,7 +327,7 @@ bool SemanticJob::resolveVarDeclAfterAssign(SemanticContext* context)
     identifier->callParameters = Ast::newFuncCallParams(sourceFile, identifier);
 
     auto numParams = assign->childs.size();
-    for (int i = 0; i < numParams; i++)
+    for (size_t i = 0; i < numParams; i++)
     {
         auto child = assign->childs[0];
         auto param = Ast::newFuncCallParam(sourceFile, identifier->callParameters);
@@ -445,7 +445,7 @@ bool SemanticJob::deduceLambdaTypeAffect(SemanticContext* context, AstVarDecl* n
                 if (node->ownerFct->captureParameters)
                     tryType->flags |= TYPEINFO_CLOSURE;
 
-                for (int i = 0; i < node->ownerFct->parameters->childs.size(); i++)
+                for (size_t i = 0; i < node->ownerFct->parameters->childs.size(); i++)
                 {
                     auto p      = g_TypeMgr->makeParam();
                     p->typeInfo = g_TypeMgr->typeInfoUndefined;

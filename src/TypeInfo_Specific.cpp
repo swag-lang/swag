@@ -355,7 +355,7 @@ bool TypeInfoList::isSame(TypeInfo* to, uint32_t castFlags)
     if (subTypes.size() != other->subTypes.size())
         return false;
 
-    for (int i = 0; i < subTypes.size(); i++)
+    for (size_t i = 0; i < subTypes.size(); i++)
     {
         if (!subTypes[i]->isSame(other->subTypes[i], castFlags))
             return false;
@@ -444,7 +444,7 @@ TypeInfo* TypeInfoEnum::clone()
     newType->rawType    = rawType;
     newType->attributes = attributes;
 
-    for (int i = 0; i < values.size(); i++)
+    for (size_t i = 0; i < values.size(); i++)
     {
         auto param = static_cast<TypeInfoParam*>(values[i]);
         param      = static_cast<TypeInfoParam*>(param->clone());
@@ -478,7 +478,7 @@ bool TypeInfoEnum::isSame(TypeInfo* to, uint32_t castFlags)
         int childSize = (int) values.size();
         if (childSize != other->values.size())
             return false;
-        for (int i = 0; i < childSize; i++)
+        for (size_t i = 0; i < childSize; i++)
         {
             if (!values[i]->isSame(other->values[i], castFlags))
                 return false;
@@ -502,13 +502,13 @@ TypeInfo* TypeInfoFuncAttr::clone()
     newType->replaceTypes         = replaceTypes;
     newType->replaceTypesFrom     = replaceTypesFrom;
 
-    for (int i = 0; i < genericParameters.size(); i++)
+    for (size_t i = 0; i < genericParameters.size(); i++)
     {
         auto param = genericParameters[i]->clone();
         newType->genericParameters.push_back(param);
     }
 
-    for (int i = 0; i < parameters.size(); i++)
+    for (size_t i = 0; i < parameters.size(); i++)
     {
         auto param = parameters[i]->clone();
         newType->parameters.push_back(param);
@@ -528,7 +528,7 @@ static void computeNameGenericParameters(VectorNative<TypeInfoParam*>& genericPa
     else
         resName += "'";
 
-    for (int i = 0; i < genericParameters.size(); i++)
+    for (size_t i = 0; i < genericParameters.size(); i++)
     {
         if (i)
             resName += ", ";
@@ -580,7 +580,7 @@ void TypeInfoFuncAttr::computeWhateverName(Utf8& resName, uint32_t nameType)
     // Parameters
     resName += "(";
     bool first = true;
-    for (int i = 0; i < parameters.size(); i++)
+    for (size_t i = 0; i < parameters.size(); i++)
     {
         // First parameter of a closure is generated, so do not count it in the name
         if (isClosure() && !i)
@@ -704,7 +704,7 @@ bool TypeInfoFuncAttr::isSame(TypeInfoFuncAttr* other, uint32_t castFlags, BadSi
 
     if (genericParameters.size() == other->genericParameters.size())
     {
-        for (int i = 0; i < genericParameters.size(); i++)
+        for (size_t i = 0; i < genericParameters.size(); i++)
         {
             if (!genericParameters[i]->typeInfo->isSame(other->genericParameters[i]->typeInfo, castFlags))
                 return false;
@@ -718,7 +718,7 @@ bool TypeInfoFuncAttr::isSame(TypeInfoFuncAttr* other, uint32_t castFlags, BadSi
     {
         if (capture.size() != other->capture.size())
             return false;
-        for (int i = 0; i < capture.size(); i++)
+        for (size_t i = 0; i < capture.size(); i++)
         {
             if (capture[i]->typeInfo->isNative(NativeTypeKind::Undefined))
                 continue;
@@ -735,7 +735,7 @@ bool TypeInfoFuncAttr::isSame(TypeInfoFuncAttr* other, uint32_t castFlags, BadSi
     if (!isClosure() && other->isClosure())
         firstParam = 1;
 
-    for (int i = 0; i < parameters.size(); i++)
+    for (size_t i = 0; i < parameters.size(); i++)
     {
         auto type1 = parameters[i]->typeInfo;
         auto type2 = other->parameters[i + firstParam]->typeInfo;
@@ -1021,7 +1021,7 @@ bool TypeInfoStruct::isSame(TypeInfo* to, uint32_t castFlags)
         auto numGenParams = genericParameters.size();
         if (numGenParams != other->genericParameters.size())
             return false;
-        for (int i = 0; i < numGenParams; i++)
+        for (size_t i = 0; i < numGenParams; i++)
         {
             auto myGenParam    = genericParameters[i];
             auto otherGenParam = other->genericParameters[i];
@@ -1069,11 +1069,11 @@ bool TypeInfoStruct::isSame(TypeInfo* to, uint32_t castFlags)
 
     if (compareFields)
     {
-        int childCount = (int) fields.size();
+        size_t childCount = fields.size();
         if (childCount != other->fields.size())
             return false;
 
-        for (int i = 0; i < childCount; i++)
+        for (size_t i = 0; i < childCount; i++)
         {
             // Compare field type
             if (!fields[i]->isSame(other->fields[i], castFlags))
@@ -1127,7 +1127,7 @@ void TypeInfoStruct::computeWhateverName(Utf8& resName, uint32_t nameType)
     if (((nameType == COMPUTE_SCOPED_NAME_EXPORT) || nameType == COMPUTE_DISPLAY_NAME) && isTuple())
     {
         resName += "{";
-        for (int i = 0; i < fields.size(); i++)
+        for (size_t i = 0; i < fields.size(); i++)
         {
             auto p = fields[i];
             if (i)

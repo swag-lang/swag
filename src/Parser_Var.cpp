@@ -187,7 +187,7 @@ bool Parser::doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode* ty
         orgVarNode->publicName = "(";
 
         int idx = 0;
-        for (int i = 0; i < leftNode->childs.size(); i++)
+        for (size_t i = 0; i < leftNode->childs.size(); i++)
         {
             auto child = leftNode->childs[i];
 

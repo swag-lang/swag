@@ -290,7 +290,7 @@ bool Parser::doFuncDeclParameter(AstNode* parent, bool acceptMissingType, bool* 
                 Diagnostic diag{sourceFile, token, Err(Syn0189)};
                 diag.hint = Hnt(Hnt0061);
                 diag.addRange(unnamedTokens.front(), Hnt(Hnt0097));
-                for (int i = 1; i < unnamedTokens.size(); i++)
+                for (size_t i = 1; i < unnamedTokens.size(); i++)
                     diag.addRange(unnamedTokens[i], "");
                 return context->report(diag);
             }
@@ -347,7 +347,7 @@ bool Parser::doFuncDeclParameter(AstNode* parent, bool acceptMissingType, bool* 
                 Diagnostic diag{sourceFile, token, Err(Syn0190)};
                 diag.hint = Hnt(Hnt0061);
                 diag.addRange(unnamedTokens.front(), Hnt(Hnt0099));
-                for (int i = 1; i < unnamedTokens.size(); i++)
+                for (size_t i = 1; i < unnamedTokens.size(); i++)
                     diag.addRange(unnamedTokens[i], "");
                 return context->report(diag);
             }

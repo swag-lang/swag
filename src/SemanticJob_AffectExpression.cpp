@@ -124,7 +124,7 @@ bool SemanticJob::checkIsConstAffect(SemanticContext* context, AstNode* left, As
         {
             auto leftId = CastAst<AstIdentifier>(left, AstNodeKind::Identifier);
             hint        = "this is equivalent to '";
-            for (int ic = 0; ic < orgLeft->childs.size(); ic++)
+            for (size_t ic = 0; ic < orgLeft->childs.size(); ic++)
             {
                 auto c = orgLeft->childs[ic];
                 if (ic)

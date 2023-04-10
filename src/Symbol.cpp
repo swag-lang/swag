@@ -64,7 +64,7 @@ Utf8 SymbolName::getFullName()
 void SymbolName::unregisterNode(AstNode* node)
 {
     // Unregister the node in the symbol
-    for (int i = 0; i < nodes.size(); i++)
+    for (size_t i = 0; i < nodes.size(); i++)
     {
         if (nodes[i] == node)
         {

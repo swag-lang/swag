@@ -278,21 +278,21 @@ bool SemanticJob::checkFuncPrototypeOp(SemanticContext* context, AstFuncDecl* no
     {
         SWAG_CHECK(checkFuncPrototypeOpNumParams(context, node, parameters, 2, false));
         SWAG_CHECK(checkFuncPrototypeOpReturnType(context, node, nullptr));
-        for (int i = 1; i < parameters->childs.size(); i++)
+        for (size_t i = 1; i < parameters->childs.size(); i++)
             SWAG_CHECK(checkFuncPrototypeOpParam(context, node, parameters, i, g_TypeMgr->typeInfoU64));
     }
     else if (name == g_LangSpec->name_opIndexAssign)
     {
         SWAG_CHECK(checkFuncPrototypeOpNumParams(context, node, parameters, 3, false));
         SWAG_CHECK(checkFuncPrototypeOpReturnType(context, node, g_TypeMgr->typeInfoVoid));
-        for (int i = 1; i < parameters->childs.size() - 1; i++)
+        for (size_t i = 1; i < parameters->childs.size() - 1; i++)
             SWAG_CHECK(checkFuncPrototypeOpParam(context, node, parameters, i, g_TypeMgr->typeInfoU64));
     }
     else if (name == g_LangSpec->name_opIndexAffect)
     {
         SWAG_CHECK(checkFuncPrototypeOpNumParams(context, node, parameters, 3, false));
         SWAG_CHECK(checkFuncPrototypeOpReturnType(context, node, g_TypeMgr->typeInfoVoid));
-        for (int i = 1; i < parameters->childs.size() - 1; i++)
+        for (size_t i = 1; i < parameters->childs.size() - 1; i++)
             SWAG_CHECK(checkFuncPrototypeOpParam(context, node, parameters, i, g_TypeMgr->typeInfoU64));
     }
     else if (name == g_LangSpec->name_opInit && node->sourceFile->isGenerated)
@@ -667,7 +667,7 @@ bool SemanticJob::resolveUserOp(SemanticContext* context, const Utf8& name, cons
         return true;
 
     auto oneMatch = job->cacheMatches[0];
-    for (int i = 0; i < params.size(); i++)
+    for (size_t i = 0; i < params.size(); i++)
     {
         if (i < oneMatch->solvedParameters.size() && oneMatch->solvedParameters[i])
         {

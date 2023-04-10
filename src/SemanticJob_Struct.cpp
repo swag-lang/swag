@@ -205,7 +205,7 @@ bool SemanticJob::resolveImplFor(SemanticContext* context)
     if (hasRegItf)
         decreaseInterfaceRegCount(typeStruct);
 
-    for (int i = 0; i < childs.size(); i++)
+    for (size_t i = 0; i < childs.size(); i++)
     {
         auto child = childs[i];
         if (child->kind != AstNodeKind::FuncDecl)
@@ -359,7 +359,7 @@ bool SemanticJob::resolveImplFor(SemanticContext* context)
 
         content += "(using self";
         auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(missingNode->typeInfo, TypeInfoKind::LambdaClosure);
-        for (int i = 1; i < typeFunc->parameters.size(); i++)
+        for (size_t i = 1; i < typeFunc->parameters.size(); i++)
         {
             content += ", ";
             auto type = typeFunc->parameters[i]->typeInfo;
@@ -394,7 +394,7 @@ bool SemanticJob::resolveImplFor(SemanticContext* context)
         parser.setup(context, context->sourceFile->module, context->sourceFile);
         SWAG_CHECK(parser.constructEmbeddedAst(content, node, node, CompilerAstKind::MissingInterfaceMtd, true));
 
-        for (int i = numChilds; i < node->childs.size(); i++)
+        for (size_t i = numChilds; i < node->childs.size(); i++)
             context->job->nodes.push_back(node->childs[i]);
         context->result = ContextResult::NewChilds;
         return true;
@@ -477,7 +477,7 @@ bool SemanticJob::resolveInterface(SemanticContext* context)
     typeITable->scope      = Ast::newScope(node, node->token.text, ScopeKind::Struct, nullptr);
     typeITable->flags |= TYPEINFO_STRUCT_IS_ITABLE;
 
-    for (int i = 0; i < childs.size(); i++)
+    for (size_t i = 0; i < childs.size(); i++)
     {
         auto child = childs[i];
         if (child->kind != AstNodeKind::VarDecl)
@@ -960,7 +960,7 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
     typeInfo->sizeOf  = 0;
 
     // If one of my childs is incomplete, then we must wait
-    for (int i = 0; i < childs.size(); i++)
+    for (size_t i = 0; i < childs.size(); i++)
     {
         auto child = childs[i];
 
@@ -980,7 +980,7 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
         }
     }
 
-    for (int i = 0; i < childs.size(); i++)
+    for (size_t i = 0; i < childs.size(); i++)
     {
         auto child = childs[i];
         if (child->kind != AstNodeKind::VarDecl && child->kind != AstNodeKind::ConstDecl)

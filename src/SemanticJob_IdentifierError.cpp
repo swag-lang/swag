@@ -918,7 +918,7 @@ bool SemanticJob::cannotMatchIdentifierError(SemanticContext* context, VectorNat
             AstOutput::OutputContext outCxt;
             concat.init(10 * 1024);
 
-            for (int i = 0; i < min(tryMatches.size(), MAX_OVERLOADS); i++)
+            for (size_t i = 0; i < min(tryMatches.size(), MAX_OVERLOADS); i++)
             {
                 auto funcNode = CastAst<AstFuncDecl>(tryMatches[i]->overload->node, AstNodeKind::FuncDecl);
                 AstOutput::outputFuncSignature(outCxt, concat, funcNode, funcNode->genericParameters, funcNode->parameters, nullptr);
@@ -940,7 +940,7 @@ bool SemanticJob::cannotMatchIdentifierError(SemanticContext* context, VectorNat
         }
 
         // Remove tryMatches with a less accurate match
-        for (int i = 0; i < tryMatches.size(); i++)
+        for (size_t i = 0; i < tryMatches.size(); i++)
         {
             auto one = tryMatches[i];
 

@@ -383,7 +383,7 @@ bool BackendX64::dbgEmitDataDebugT(const BuildParameters& buildParameters)
         {
         case LF_ARGLIST:
             concat.addU32(f->LF_ArgList.count);
-            for (int i = 0; i < f->LF_ArgList.args.size(); i++)
+            for (size_t i = 0; i < f->LF_ArgList.args.size(); i++)
                 concat.addU32(f->LF_ArgList.args[i]);
             break;
 
@@ -940,7 +940,7 @@ DbgTypeIndex BackendX64::dbgGetOrCreateType(X64Gen& pp, TypeInfo* typeInfo, bool
             auto tr1              = dbgAddTypeRecord(pp);
             tr1->kind             = LF_ARGLIST;
             tr1->LF_ArgList.count = numArgs;
-            for (int i = 0; i < typeFunc->parameters.size(); i++)
+            for (size_t i = 0; i < typeFunc->parameters.size(); i++)
             {
                 auto p = typeFunc->parameters[i];
                 tr1->LF_ArgList.args.push_back(dbgGetOrCreateType(pp, p->typeInfo));
@@ -1137,7 +1137,7 @@ bool BackendX64::dbgEmitFctDebugS(const BuildParameters& buildParameters)
             if (decl->captureParameters && !(decl->attributeFlags & ATTRIBUTE_COMPILER_FUNC))
             {
                 auto countParams = decl->captureParameters->childs.size();
-                for (int i = 0; i < countParams; i++)
+                for (size_t i = 0; i < countParams; i++)
                 {
                     auto child     = decl->captureParameters->childs[i];
                     auto typeParam = child->typeInfo;
@@ -1183,7 +1183,7 @@ bool BackendX64::dbgEmitFctDebugS(const BuildParameters& buildParameters)
             {
                 auto countParams = decl->parameters->childs.size();
                 int  regCounter  = 0;
-                for (int i = 0; i < countParams; i++)
+                for (size_t i = 0; i < countParams; i++)
                 {
                     auto child     = decl->parameters->childs[i];
                     auto typeParam = typeFunc->parameters[i]->typeInfo;
@@ -1319,7 +1319,7 @@ bool BackendX64::dbgEmitFctDebugS(const BuildParameters& buildParameters)
 
         // Lines table
         /////////////////////////////////
-        for (int idxDbgFile = 0; idxDbgFile < f.dbgLines.size(); idxDbgFile++)
+        for (size_t idxDbgFile = 0; idxDbgFile < f.dbgLines.size(); idxDbgFile++)
         {
             auto& itFile     = f.dbgLines[idxDbgFile];
             auto  sourceFile = itFile.sourceFile;

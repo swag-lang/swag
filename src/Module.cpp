@@ -802,7 +802,7 @@ bool Module::addDependency(AstNode* importNode, const Token& tokenLocation, cons
 bool Module::removeDependency(AstNode* importNode)
 {
     ScopedLock lk(mutexDependency);
-    for (int i = 0; i < moduleDependencies.size(); i++)
+    for (size_t i = 0; i < moduleDependencies.size(); i++)
     {
         if (moduleDependencies[i]->node == importNode)
         {

@@ -151,11 +151,11 @@ static void cleanNotes(Vector<Diagnostic*>& notes)
                 !note1->forceSourceFile &&
                 (note1->errorLevel == DiagnosticLevel::Note || note1->errorLevel == DiagnosticLevel::Help))
             {
-                for (int i = 0; i < note1->ranges.size(); i++)
+                for (size_t i = 0; i < note1->ranges.size(); i++)
                 {
                     bool        canAdd = true;
                     const auto& r1     = note1->ranges[i];
-                    for (int j = 0; j < note->ranges.size(); j++)
+                    for (size_t j = 0; j < note->ranges.size(); j++)
                     {
                         auto& r0 = note->ranges[j];
                         if (r0.endLocation.column <= r1.startLocation.column)

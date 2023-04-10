@@ -50,7 +50,7 @@ bool Parser::doWith(AstNode* parent, AstNode** result)
         {
             SWAG_ASSERT(!id->extSemantic()->semanticAfterFct);
             id->extSemantic()->semanticAfterFct = SemanticJob::resolveWith;
-            for (int i = 0; i < id->childs.size(); i++)
+            for (size_t i = 0; i < id->childs.size(); i++)
                 node->id.push_back(id->childs[i]->token.text);
         }
         else if (id->kind == AstNodeKind::VarDecl)
@@ -64,7 +64,7 @@ bool Parser::doWith(AstNode* parent, AstNode** result)
             id = id->childs.front();
             SWAG_ASSERT(id->extSemantic()->semanticAfterFct == SemanticJob::resolveAfterAffectLeft);
             id->extSemantic()->semanticAfterFct = SemanticJob::resolveWithAfterAffectLeft;
-            for (int i = 0; i < id->childs.size(); i++)
+            for (size_t i = 0; i < id->childs.size(); i++)
                 node->id.push_back(id->childs[i]->token.text);
         }
         else
@@ -445,7 +445,7 @@ void Parser::registerSubDecl(AstNode* subDecl)
 
             // Clone all attributes
             CloneContext cloneContext;
-            for (int i = 0; i < testParent->childs.size() - 1; i++) // Do not clone content
+            for (size_t i = 0; i < testParent->childs.size() - 1; i++) // Do not clone content
             {
                 cloneContext.parent = newAttrUse;
                 auto child          = testParent->childs[i]->clone(cloneContext);

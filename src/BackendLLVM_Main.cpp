@@ -183,7 +183,7 @@ bool BackendLLVM::emitMain(const BuildParameters& buildParameters)
     // Load all dependencies
     VectorNative<ModuleDependency*> moduleDependencies;
     module->sortDependenciesByInitOrder(moduleDependencies);
-    for (int i = 0; i < moduleDependencies.size(); i++)
+    for (size_t i = 0; i < moduleDependencies.size(); i++)
     {
         auto dep      = moduleDependencies[i];
         auto nameDown = dep->name;
@@ -196,7 +196,7 @@ bool BackendLLVM::emitMain(const BuildParameters& buildParameters)
 
     // Call to global init of all dependencies
     auto funcType = llvm::FunctionType::get(VOID_TY(), {pp.processInfosTy->getPointerTo()}, false);
-    for (int i = 0; i < moduleDependencies.size(); i++)
+    for (size_t i = 0; i < moduleDependencies.size(); i++)
     {
         auto dep = moduleDependencies[i];
         if (!dep->module->isSwag)
@@ -214,7 +214,7 @@ bool BackendLLVM::emitMain(const BuildParameters& buildParameters)
     }
 
     // Call to global premain of all dependencies
-    for (int i = 0; i < moduleDependencies.size(); i++)
+    for (size_t i = 0; i < moduleDependencies.size(); i++)
     {
         auto dep = moduleDependencies[i];
         if (!dep->module->isSwag)

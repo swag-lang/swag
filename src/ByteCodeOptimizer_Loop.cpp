@@ -7,7 +7,7 @@ bool ByteCodeOptimizer::optimizePassLoop(ByteCodeOptContext* context)
     auto& mapRA = context->mapRegInstA;
     auto& mapRB = context->mapRegInstB;
 
-    for (int idx = 0; idx < context->jumps.size(); idx++)
+    for (size_t idx = 0; idx < context->jumps.size(); idx++)
     {
         auto ip = context->jumps[idx];
         if (!ByteCode::isJump(ip))

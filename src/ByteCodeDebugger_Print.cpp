@@ -317,7 +317,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdMemory(ByteCodeRunContext* context, cons
 
     // Expression
     Utf8 expr;
-    for (int i = startIdx; i < exprCmds.size(); i++)
+    for (size_t i = startIdx; i < exprCmds.size(); i++)
     {
         expr += exprCmds[i];
         expr += " ";

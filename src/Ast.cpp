@@ -50,7 +50,7 @@ Utf8 Ast::enumToString(TypeInfo* typeInfo, const Utf8& text, const Register& reg
     if (typeEnum->declNode->attributeFlags & ATTRIBUTE_ENUM_FLAGS)
     {
         SWAG_ASSERT(typeEnum->rawType->isNative());
-        for (int i = 0; i < typeEnum->values.size(); i++)
+        for (size_t i = 0; i < typeEnum->values.size(); i++)
         {
             auto value = typeEnum->values[i];
             bool ok    = false;
@@ -110,7 +110,7 @@ Utf8 Ast::enumToString(TypeInfo* typeInfo, const Utf8& text, const Register& reg
         if (scoped)
             result = typeInfo->name;
         result += ".";
-        for (int i = 0; i < typeEnum->values.size(); i++)
+        for (size_t i = 0; i < typeEnum->values.size(); i++)
         {
             auto value = typeEnum->values[i];
             bool ok    = false;

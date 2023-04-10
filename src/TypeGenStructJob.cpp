@@ -141,7 +141,7 @@ bool TypeGenStructJob::computeStruct()
                                                                         storageOffset,
                                                                         &concreteType->generics.buffer,
                                                                         storageArray);
-        for (int param = 0; param < concreteType->generics.count; param++)
+        for (size_t param = 0; param < concreteType->generics.count; param++)
         {
             SWAG_CHECK(typeGen->genExportedTypeValue(baseContext, addrArray + param, storageSegment, storageArray, realType->genericParameters[param], cflags));
             storageArray += sizeof(ExportedTypeValue);
@@ -165,7 +165,7 @@ bool TypeGenStructJob::computeStruct()
                                                                             storageOffset,
                                                                             &concreteType->fields.buffer,
                                                                             storageArray);
-            for (int param = 0; param < concreteType->fields.count; param++)
+            for (size_t param = 0; param < concreteType->fields.count; param++)
             {
                 SWAG_CHECK(typeGen->genExportedTypeValue(baseContext, addrArray + param, storageSegment, storageArray, realType->fields[param], cflags));
                 storageArray += sizeof(ExportedTypeValue);
@@ -192,7 +192,7 @@ bool TypeGenStructJob::computeStruct()
                                                                                 storageOffset,
                                                                                 &concreteType->methods.buffer,
                                                                                 storageArray);
-                for (int param = 0; param < concreteType->methods.count; param++)
+                for (size_t param = 0; param < concreteType->methods.count; param++)
                 {
                     SWAG_CHECK(typeGen->genExportedTypeValue(baseContext, addrArray + param, storageSegment, storageArray, realType->methods[param], cflags));
 
@@ -225,7 +225,7 @@ bool TypeGenStructJob::computeStruct()
                                                                             storageOffset,
                                                                             &concreteType->interfaces.buffer,
                                                                             storageArray);
-            for (int param = 0; param < concreteType->interfaces.count; param++)
+            for (size_t param = 0; param < concreteType->interfaces.count; param++)
             {
                 SWAG_CHECK(typeGen->genExportedTypeValue(baseContext, addrArray + param, storageSegment, storageArray, realType->interfaces[param], cflags));
 

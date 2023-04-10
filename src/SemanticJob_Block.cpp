@@ -135,7 +135,7 @@ bool SemanticJob::resolveInlineBefore(SemanticContext* context)
         AstIdentifier* identifier = nullptr;
         if (node->parent->kind == AstNodeKind::Identifier)
             identifier = CastAst<AstIdentifier>(node->parent, AstNodeKind::Identifier, AstNodeKind::FuncCall);
-        for (int i = 0; i < func->parameters->childs.size(); i++)
+        for (size_t i = 0; i < func->parameters->childs.size(); i++)
         {
             auto funcParam = func->parameters->childs[i];
 
@@ -148,7 +148,7 @@ bool SemanticJob::resolveInlineBefore(SemanticContext* context)
             AstFuncCallParam* orgCallParam = nullptr;
             if (identifier && identifier->callParameters)
             {
-                for (int j = 0; j < identifier->callParameters->childs.size(); j++)
+                for (size_t j = 0; j < identifier->callParameters->childs.size(); j++)
                 {
                     auto callParam = CastAst<AstFuncCallParam>(identifier->callParameters->childs[j], AstNodeKind::FuncCallParam);
                     if (callParam->indexParam != i)

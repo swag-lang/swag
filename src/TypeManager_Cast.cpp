@@ -1878,7 +1878,7 @@ bool TypeManager::castExpressionList(SemanticContext* context, TypeInfoList* fro
     if (toType->isListTuple() || toType->isListArray())
         toTypeList = CastTypeInfo<TypeInfoList>(toType, TypeInfoKind::TypeListTuple, TypeInfoKind::TypeListArray);
 
-    for (int i = 0; i < fromSize; i++)
+    for (size_t i = 0; i < fromSize; i++)
     {
         auto child     = fromNode ? fromNode->childs[i] : nullptr;
         auto convertTo = toTypeList ? toTypeList->subTypes[i]->typeInfo : toType;
@@ -1945,7 +1945,7 @@ bool TypeManager::castExpressionList(SemanticContext* context, TypeInfoList* fro
                 break;
             }
 
-            for (int j = 0; j < child->childs.size(); j++)
+            for (size_t j = 0; j < child->childs.size(); j++)
             {
                 auto           childJ = child->childs[j];
                 TypeInfoParam* fieldJ = symContext.solvedCallParameters[j];
@@ -2009,7 +2009,7 @@ bool TypeManager::castExpressionList(SemanticContext* context, TypeInfoList* fro
     {
         auto oldSizeof = fromTypeList->sizeOf;
         fromTypeList   = (TypeInfoList*) fromTypeList->clone();
-        for (int i = 0; i < fromTypeList->subTypes.size(); i++)
+        for (size_t i = 0; i < fromTypeList->subTypes.size(); i++)
             fromTypeList->subTypes[i]->typeInfo = fromNode->childs[i]->typeInfo;
         fromTypeList->sizeOf = newSizeof;
         fromNode->typeInfo   = fromTypeList;

@@ -208,7 +208,7 @@ bool Ast::convertLiteralTupleToStructType(SemanticContext* context, TypeInfoStru
             auto p1        = typeList->subTypes[i];
             auto typeField = p1->typeInfo;
             Utf8 nameVar   = p->name;
-            for (int j = 0; j < typeList->subTypes.size(); j++)
+            for (size_t j = 0; j < typeList->subTypes.size(); j++)
             {
                 if (nameVar == typeList->subTypes[j]->name)
                 {

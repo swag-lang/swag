@@ -64,7 +64,7 @@ uint32_t ByteCodeGenJob::reserveRegisterRC(ByteCodeGenContext* context, uint32_t
         // Try to reuse register if provided
         if (hintRegister != UINT32_MAX)
         {
-            for (int i = 0; i < context->bc->availableRegistersRC.size(); i++)
+            for (size_t i = 0; i < context->bc->availableRegistersRC.size(); i++)
             {
                 if (context->bc->availableRegistersRC[i] == hintRegister)
                 {
@@ -91,7 +91,7 @@ void ByteCodeGenJob::reserveLinearRegisterRC2(ByteCodeGenContext* context, Regis
     if (size > 1)
     {
         sortRegistersRC(context);
-        for (int i = 0; i < size - 1; i++)
+        for (size_t i = 0; i < size - 1; i++)
         {
             if (context->bc->availableRegistersRC[i] == context->bc->availableRegistersRC[i + 1] + 1)
             {
@@ -818,7 +818,7 @@ JobResult ByteCodeGenJob::waitForDependenciesGenerated()
 
     while (!dependentNodesTmp.empty())
     {
-        for (int i = 0; i < dependentNodesTmp.size(); i++)
+        for (size_t i = 0; i < dependentNodesTmp.size(); i++)
         {
             auto node = dependentNodesTmp[i];
             SWAG_ASSERT(node->hasExtByteCode() && node->extByteCode()->bc);

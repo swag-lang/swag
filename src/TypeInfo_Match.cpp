@@ -93,7 +93,7 @@ static void deduceGenericParam(SymbolMatchContext& context, AstNode* callParamet
                     if (callStruct->genericParameters.size() == wantedStruct->genericParameters.size() && callStruct->genericParameters.size())
                     {
                         auto newStructType = (TypeInfoStruct*) callStruct->clone();
-                        for (int i = 0; i < callStruct->genericParameters.size(); i++)
+                        for (size_t i = 0; i < callStruct->genericParameters.size(); i++)
                         {
                             newStructType->genericParameters[i]->name = wantedStruct->genericParameters[i]->typeInfo->name;
                         }
@@ -137,7 +137,7 @@ static void deduceGenericParam(SymbolMatchContext& context, AstNode* callParamet
                 if (!typeStruct->genericParameters.empty())
                 {
                     auto num = min(symbolStruct->genericParameters.size(), typeStruct->genericParameters.size());
-                    for (int idx = 0; idx < num; idx++)
+                    for (size_t idx = 0; idx < num; idx++)
                     {
                         auto genTypeInfo = symbolStruct->genericParameters[idx]->typeInfo;
                         auto rawTypeInfo = typeStruct->genericParameters[idx]->typeInfo;
@@ -148,7 +148,7 @@ static void deduceGenericParam(SymbolMatchContext& context, AstNode* callParamet
                 else
                 {
                     auto num = min(symbolStruct->genericParameters.size(), typeStruct->deducedGenericParameters.size());
-                    for (int idx = 0; idx < num; idx++)
+                    for (size_t idx = 0; idx < num; idx++)
                     {
                         auto genTypeInfo = symbolStruct->genericParameters[idx]->typeInfo;
                         auto rawTypeInfo = typeStruct->deducedGenericParameters[idx];
@@ -161,7 +161,7 @@ static void deduceGenericParam(SymbolMatchContext& context, AstNode* callParamet
             {
                 auto typeList = CastTypeInfo<TypeInfoList>(callTypeInfo, TypeInfoKind::TypeListTuple);
                 auto num      = min(symbolStruct->genericParameters.size(), typeList->subTypes.size());
-                for (int idx = 0; idx < num; idx++)
+                for (size_t idx = 0; idx < num; idx++)
                 {
                     // A tuple typelist like {a: 1, b: 2} can have named parameters, which means that the order of
                     // fields is irrelevant, as we can write {b: 2, a: 1} too.
@@ -171,7 +171,7 @@ static void deduceGenericParam(SymbolMatchContext& context, AstNode* callParamet
                     // specified).
                     auto p       = symbolStruct->genericParameters[idx];
                     Utf8 nameVar = p->name;
-                    for (int idx1 = 0; idx1 < (int) symbolStruct->fields.size(); idx1++)
+                    for (size_t idx1 = 0; idx1 < symbolStruct->fields.size(); idx1++)
                     {
                         if (symbolStruct->fields[idx1]->typeInfo->name == symbolStruct->genericParameters[idx]->typeInfo->name)
                         {
@@ -183,7 +183,7 @@ static void deduceGenericParam(SymbolMatchContext& context, AstNode* callParamet
                     // Then the corresponding field name is searched in the typelist in case the user has specified one.
                     auto p1        = typeList->subTypes[idx];
                     auto typeField = p1->typeInfo;
-                    for (int j = 0; j < typeList->subTypes.size(); j++)
+                    for (size_t j = 0; j < typeList->subTypes.size(); j++)
                     {
                         if (nameVar == typeList->subTypes[j]->name)
                         {
@@ -345,7 +345,7 @@ static void deduceGenericParam(SymbolMatchContext& context, AstNode* callParamet
             }
 
             auto num = symbolLambda->parameters.size();
-            for (int idx = 0; idx < num; idx++)
+            for (size_t idx = 0; idx < num; idx++)
             {
                 if (symbolLambda->isClosure() && !idx)
                     continue;
@@ -382,8 +382,8 @@ static void matchParameters(SymbolMatchContext& context, VectorNative<TypeInfoPa
 
     // Solve unnamed parameters
     bool isAfterVariadic = false;
-    int  numParams       = (int) context.parameters.size();
-    for (int i = 0; i < numParams; i++)
+    auto numParams       = context.parameters.size();
+    for (size_t i = 0; i < numParams; i++)
     {
         auto callParameter = context.parameters[i];
 
@@ -566,7 +566,7 @@ static void matchParameters(SymbolMatchContext& context, VectorNative<TypeInfoPa
 
 static void matchNamedParameter(SymbolMatchContext& context, AstFuncCallParam* callParameter, int parameterIndex, VectorNative<TypeInfoParam*>& parameters, uint32_t forceCastFlags = 0)
 {
-    for (int j = 0; j < parameters.size(); j++)
+    for (size_t j = 0; j < parameters.size(); j++)
     {
         auto wantedParameter = parameters[j];
         if (callParameter->hasExtMisc() &&
@@ -576,7 +576,7 @@ static void matchNamedParameter(SymbolMatchContext& context, AstFuncCallParam* c
             if (context.doneParameters[j])
             {
                 context.badSignatureInfos.badSignatureNum1 = j;
-                for (int k = 0; k < context.parameters.size(); k++)
+                for (size_t k = 0; k < context.parameters.size(); k++)
                 {
                     auto checkParam = context.parameters[k];
                     if (checkParam->hasExtMisc() &&
@@ -667,7 +667,7 @@ static void matchNamedParameters(SymbolMatchContext& context, VectorNative<TypeI
     fakeParam.kind = AstNodeKind::FuncCallParam;
 
     auto startResolved = context.cptResolved;
-    for (int i = startResolved; i < context.parameters.size(); i++)
+    for (size_t i = startResolved; i < context.parameters.size(); i++)
     {
         callParameter = context.parameters[i];
 

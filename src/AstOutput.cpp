@@ -442,7 +442,7 @@ bool AstOutput::outputAttributes(OutputContext& context, Concat& concat, AstNode
     {
         Set<AstNode*> done;
         bool          first = true;
-        for (int j = 0; j < attr->allAttributes.size(); j++)
+        for (size_t j = 0; j < attr->allAttributes.size(); j++)
         {
             auto& one = attr->allAttributes[j];
 
@@ -482,7 +482,7 @@ bool AstOutput::outputAttributes(OutputContext& context, Concat& concat, AstNode
                 {
                     concat.addChar('(');
 
-                    for (int i = 0; i < one.parameters.size(); i++)
+                    for (size_t i = 0; i < one.parameters.size(); i++)
                     {
                         auto& oneParam = one.parameters[i];
                         if (i)

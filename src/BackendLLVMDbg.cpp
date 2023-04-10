@@ -455,7 +455,7 @@ void BackendLLVMDbg::startFunction(const BuildParameters& buildParameters, LLVMP
         bool                            isDebug = !buildParameters.buildCfg->backendOptimizeSpeed && !buildParameters.buildCfg->backendOptimizeSize;
         VectorNative<llvm::AllocaInst*> allocas;
         allocas.reserve((int) countParams);
-        for (int i = 0; i < countParams; i++)
+        for (size_t i = 0; i < countParams; i++)
         {
             auto typeParam = typeFunc->parameters[i]->typeInfo;
             if (typeParam->isString() || typeParam->isSlice())
@@ -476,7 +476,7 @@ void BackendLLVMDbg::startFunction(const BuildParameters& buildParameters, LLVMP
             }
         }
 
-        for (int i = 0; i < countParams; i++)
+        for (size_t i = 0; i < countParams; i++)
         {
             auto        child     = decl->parameters->childs[i];
             const auto& loc       = child->token.startLocation;

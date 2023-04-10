@@ -170,11 +170,11 @@ bool ByteCodeGenJob::emitInlineBefore(ByteCodeGenContext* context)
         else
         {
             // Determine if this parameter has been covered by the call
-            for (int i = 0; i < numFuncParams; i++)
+            for (size_t i = 0; i < numFuncParams; i++)
             {
                 auto funcParam = CastAst<AstVarDecl>(func->parameters->childs[i], AstNodeKind::FuncDeclParam);
                 bool covered   = false;
-                for (int j = 0; j < numCallParams; j++)
+                for (size_t j = 0; j < numCallParams; j++)
                 {
                     auto callParam = CastAst<AstFuncCallParam>(allParams->childs[j], AstNodeKind::FuncCallParam);
                     if (callParam->indexParam == i)
@@ -1043,7 +1043,7 @@ bool ByteCodeGenJob::emitDeferredStatements(ByteCodeGenContext* context, Scope* 
     {
         context->result = ContextResult::NewChilds;
         auto job        = context->job;
-        for (int i = 0; i < numDeferred; i++)
+        for (size_t i = 0; i < numDeferred; i++)
         {
             auto node = scope->deferredNodes[i];
 

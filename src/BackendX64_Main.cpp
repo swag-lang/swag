@@ -124,7 +124,7 @@ bool BackendX64::emitMain(const BuildParameters& buildParameters)
     // Load all dependencies
     VectorNative<ModuleDependency*> moduleDependencies;
     module->sortDependenciesByInitOrder(moduleDependencies);
-    for (int i = 0; i < moduleDependencies.size(); i++)
+    for (size_t i = 0; i < moduleDependencies.size(); i++)
     {
         auto dep      = moduleDependencies[i];
         auto nameDown = dep->name;
@@ -142,7 +142,7 @@ bool BackendX64::emitMain(const BuildParameters& buildParameters)
     pp.pushParams.push_back({X64PushParamType::RelocAddr, pp.symPI_processInfos});
 
     // Call to global init of all dependencies
-    for (int i = 0; i < moduleDependencies.size(); i++)
+    for (size_t i = 0; i < moduleDependencies.size(); i++)
     {
         auto dep = moduleDependencies[i];
         SWAG_ASSERT(dep->module);
@@ -157,7 +157,7 @@ bool BackendX64::emitMain(const BuildParameters& buildParameters)
     emitInternalCallExt(pp, module, thisInit, pp.pushParams, UINT32_MAX, g_TypeMgr->typeInfoModuleCall);
 
     // Call to global premain of all dependencies
-    for (int i = 0; i < moduleDependencies.size(); i++)
+    for (size_t i = 0; i < moduleDependencies.size(); i++)
     {
         auto dep = moduleDependencies[i];
         SWAG_ASSERT(dep->module);

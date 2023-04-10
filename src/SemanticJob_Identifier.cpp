@@ -228,7 +228,7 @@ void SemanticJob::resolvePendingLambdaTyping(AstFuncCallParam* nodeCall, OneMatc
     auto typeDefinedFct   = CastTypeInfo<TypeInfoFuncAttr>(concreteType, TypeInfoKind::LambdaClosure);
 
     // Replace every parameters types
-    for (int paramIdx = 0; paramIdx < typeUndefinedFct->parameters.size(); paramIdx++)
+    for (size_t paramIdx = 0; paramIdx < typeUndefinedFct->parameters.size(); paramIdx++)
     {
         auto childType = funcDecl->parameters->childs[paramIdx];
 
@@ -244,7 +244,7 @@ void SemanticJob::resolvePendingLambdaTyping(AstFuncCallParam* nodeCall, OneMatc
     }
 
     // Replace generic parameters, if any
-    for (int paramIdx = 0; paramIdx < typeUndefinedFct->genericParameters.size(); paramIdx++)
+    for (size_t paramIdx = 0; paramIdx < typeUndefinedFct->genericParameters.size(); paramIdx++)
     {
         auto undefinedType = typeUndefinedFct->genericParameters[paramIdx];
         auto it            = typeDefinedFct->replaceTypes.find(undefinedType->name);
@@ -311,7 +311,7 @@ bool SemanticJob::setSymbolMatchCallParams(SemanticContext* context, AstIdentifi
 
     sortParameters(identifier->callParameters);
     auto maxParams = identifier->callParameters->childs.size();
-    for (int idx = 0; idx < maxParams; idx++)
+    for (size_t idx = 0; idx < maxParams; idx++)
     {
         auto nodeCall = CastAst<AstFuncCallParam>(identifier->callParameters->childs[idx], AstNodeKind::FuncCallParam);
 
@@ -472,7 +472,7 @@ bool SemanticJob::setSymbolMatchCallParams(SemanticContext* context, AstIdentifi
 
     // Deal with opAffect automatic conversion
     // :opAffectParam
-    for (int i = 0; i < maxParams; i++)
+    for (size_t i = 0; i < maxParams; i++)
     {
         auto nodeCall = CastAst<AstFuncCallParam>(identifier->callParameters->childs[i], AstNodeKind::FuncCallParam);
 
@@ -1033,7 +1033,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* ide
         {
             sortParameters(identifier->callParameters);
             auto maxParams = identifier->callParameters->childs.size();
-            for (int i = 0; i < maxParams; i++)
+            for (size_t i = 0; i < maxParams; i++)
             {
                 auto nodeCall = CastAst<AstFuncCallParam>(identifier->callParameters->childs[i], AstNodeKind::FuncCallParam);
                 int  idx      = nodeCall->indexParam;
@@ -1728,7 +1728,7 @@ bool SemanticJob::matchIdentifierParameters(SemanticContext* context, VectorNati
                         rawTypeStruct = (TypeInfoStruct*) rawTypeInfo->clone();
                         rawTypeInfo   = rawTypeStruct;
                         typeWasForced = rawTypeInfo;
-                        for (int i = 0; i < returnStructType->genericParameters.size(); i++)
+                        for (size_t i = 0; i < returnStructType->genericParameters.size(); i++)
                         {
                             rawTypeStruct->genericParameters[i]->name = returnStructType->genericParameters[i]->name;
                         }
@@ -2095,7 +2095,7 @@ bool SemanticJob::matchIdentifierParameters(SemanticContext* context, VectorNati
     // We remove all generated nodes, because if they exist, they do not participate to the
     // error
     auto oneTry = overloads[0];
-    for (int i = 0; i < overloads.size(); i++)
+    for (size_t i = 0; i < overloads.size(); i++)
     {
         if (overloads[i]->overload->node->flags & AST_FROM_GENERIC)
         {
@@ -2316,7 +2316,7 @@ bool SemanticJob::instantiateGenericSymbol(SemanticContext* context, OneGenericM
             {
                 auto typeWasForced = firstMatch.symbolOverload->typeInfo->clone();
                 newStructType      = CastTypeInfo<TypeInfoStruct>(typeWasForced, TypeInfoKind::Struct);
-                for (int i = 0; i < genericParameters->childs.size(); i++)
+                for (size_t i = 0; i < genericParameters->childs.size(); i++)
                 {
                     newStructType->genericParameters[i]->name     = genericParameters->childs[i]->typeInfo->name;
                     newStructType->genericParameters[i]->typeInfo = genericParameters->childs[i]->typeInfo;
@@ -2552,7 +2552,7 @@ bool SemanticJob::findEnumTypeInContext(SemanticContext* context, AstNode* node,
                 else
                 {
                     int enumIdx = 0;
-                    for (int i = 0; i < fctCallParam->parent->childs.size(); i++)
+                    for (size_t i = 0; i < fctCallParam->parent->childs.size(); i++)
                     {
                         auto child = fctCallParam->parent->childs[i];
                         if (child == fctCallParam)
@@ -2826,7 +2826,7 @@ bool SemanticJob::findIdentifierInScopes(SemanticContext* context, VectorNative<
         // Search symbol in all the scopes of the hierarchy
         while (scopeHierarchy.size())
         {
-            for (int i = 0; i < scopeHierarchy.size(); i++)
+            for (size_t i = 0; i < scopeHierarchy.size(); i++)
             {
                 const auto& as = scopeHierarchy[i];
                 if (!as.scope)
@@ -3317,7 +3317,7 @@ bool SemanticJob::fillMatchContextCallParameters(SemanticContext* context, Symbo
     if (callParameters)
     {
         auto childCount = callParameters->childs.size();
-        for (int i = 0; i < childCount; i++)
+        for (size_t i = 0; i < childCount; i++)
         {
             auto oneParam = CastAst<AstFuncCallParam>(callParameters->childs[i], AstNodeKind::FuncCallParam);
             symMatchContext.parameters.push_back(oneParam);
@@ -3380,7 +3380,7 @@ bool SemanticJob::fillMatchContextGenericParameters(SemanticContext* context, Sy
         }
 
         auto childCount = genericParameters->childs.size();
-        for (int i = 0; i < childCount; i++)
+        for (size_t i = 0; i < childCount; i++)
         {
             auto oneParam = CastAst<AstFuncCallParam>(genericParameters->childs[i], AstNodeKind::FuncCallParam);
             symMatchContext.genericParameters.push_back(oneParam);
@@ -3409,7 +3409,7 @@ bool SemanticJob::filterMatches(SemanticContext* context, VectorNative<OneMatch*
         }
     }
 
-    for (int i = 0; i < countMatches; i++)
+    for (size_t i = 0; i < countMatches; i++)
     {
         auto curMatch = matches[i];
         auto over     = curMatch->symbolOverload;
@@ -3457,7 +3457,7 @@ bool SemanticJob::filterMatches(SemanticContext* context, VectorNative<OneMatch*
         // Not sure this is true, perhaps one day will have to change the way we find it.
         if (overSym->name[0] == '@' && overSym->name.find(g_LangSpec->name_atalias) == 0)
         {
-            for (int j = 0; j < countMatches; j++)
+            for (size_t j = 0; j < countMatches; j++)
             {
                 if (i != j)
                     matches[j]->remove = true;
@@ -3469,7 +3469,7 @@ bool SemanticJob::filterMatches(SemanticContext* context, VectorNative<OneMatch*
         // Priority to a 'moveref' call
         if (curMatch->flags & CASTFLAG_RESULT_AUTO_MOVE_OPAFFECT)
         {
-            for (int j = 0; j < countMatches; j++)
+            for (size_t j = 0; j < countMatches; j++)
             {
                 if (!(matches[j]->flags & CASTFLAG_RESULT_AUTO_MOVE_OPAFFECT))
                 {
@@ -3481,7 +3481,7 @@ bool SemanticJob::filterMatches(SemanticContext* context, VectorNative<OneMatch*
         // Priority to a guess 'moveref' call
         if (curMatch->flags & CASTFLAG_RESULT_GUESS_MOVE)
         {
-            for (int j = 0; j < countMatches; j++)
+            for (size_t j = 0; j < countMatches; j++)
             {
                 if (!(matches[j]->flags & CASTFLAG_RESULT_GUESS_MOVE))
                 {
@@ -3493,7 +3493,7 @@ bool SemanticJob::filterMatches(SemanticContext* context, VectorNative<OneMatch*
         // Priority to a match without an auto cast
         if (curMatch->autoOpCast)
         {
-            for (int j = 0; j < countMatches; j++)
+            for (size_t j = 0; j < countMatches; j++)
             {
                 if (!matches[j]->autoOpCast)
                 {
@@ -3506,7 +3506,7 @@ bool SemanticJob::filterMatches(SemanticContext* context, VectorNative<OneMatch*
         // Priority to a non empty function
         if (over->node->isEmptyFct())
         {
-            for (int j = 0; j < countMatches; j++)
+            for (size_t j = 0; j < countMatches; j++)
             {
                 if (!matches[j]->symbolOverload->node->isEmptyFct() &&
                     matches[j]->symbolOverload->symbol == curMatch->symbolOverload->symbol)
@@ -3520,7 +3520,7 @@ bool SemanticJob::filterMatches(SemanticContext* context, VectorNative<OneMatch*
         // Priority to a local var/parameter versus a function
         if (over->typeInfo->isFuncAttr())
         {
-            for (int j = 0; j < countMatches; j++)
+            for (size_t j = 0; j < countMatches; j++)
             {
                 if (matches[j]->symbolOverload->flags & (OVERLOAD_VAR_LOCAL | OVERLOAD_VAR_FUNC_PARAM | OVERLOAD_VAR_INLINE))
                 {
@@ -3533,7 +3533,7 @@ bool SemanticJob::filterMatches(SemanticContext* context, VectorNative<OneMatch*
         // Priority if no CASTFLAG_RESULT_STRUCT_CONVERT
         if (curMatch->oneOverload && curMatch->oneOverload->symMatchContext.flags & CASTFLAG_RESULT_STRUCT_CONVERT)
         {
-            for (int j = 0; j < countMatches; j++)
+            for (size_t j = 0; j < countMatches; j++)
             {
                 if (matches[j]->oneOverload && !(matches[j]->oneOverload->symMatchContext.flags & CASTFLAG_RESULT_STRUCT_CONVERT))
                 {
@@ -3547,7 +3547,7 @@ bool SemanticJob::filterMatches(SemanticContext* context, VectorNative<OneMatch*
         auto lastOverloadType = overSym->ownerTable->scope->owner->typeInfo;
         if (lastOverloadType && lastOverloadType->isGeneric())
         {
-            for (int j = 0; j < countMatches; j++)
+            for (size_t j = 0; j < countMatches; j++)
             {
                 auto newOverloadType = matches[j]->symbolOverload->symbol->ownerTable->scope->owner->typeInfo;
                 if (newOverloadType && !newOverloadType->isGeneric())
@@ -3562,7 +3562,7 @@ bool SemanticJob::filterMatches(SemanticContext* context, VectorNative<OneMatch*
         // from the sub scope inside a struct (OVERLOAD_IMPL_IN_STRUCT).
         if (over->flags & OVERLOAD_IMPL_IN_STRUCT)
         {
-            for (int j = 0; j < countMatches; j++)
+            for (size_t j = 0; j < countMatches; j++)
             {
                 if (!(matches[j]->symbolOverload->flags & OVERLOAD_IMPL_IN_STRUCT))
                 {
@@ -3579,7 +3579,7 @@ bool SemanticJob::filterMatches(SemanticContext* context, VectorNative<OneMatch*
         // Priority to a user generic parameters, instead of a copy one
         if (over->node->flags & AST_GENERATED_GENERIC_PARAM)
         {
-            for (int j = 0; j < countMatches; j++)
+            for (size_t j = 0; j < countMatches; j++)
             {
                 if (!(matches[j]->symbolOverload->node->flags & AST_GENERATED_GENERIC_PARAM))
                 {
@@ -3592,7 +3592,7 @@ bool SemanticJob::filterMatches(SemanticContext* context, VectorNative<OneMatch*
         // Priority to the same stack frame
         if (!node->isSameStackFrame(over))
         {
-            for (int j = 0; j < countMatches; j++)
+            for (size_t j = 0; j < countMatches; j++)
             {
                 if (node->isSameStackFrame(matches[j]->symbolOverload))
                 {
@@ -3608,7 +3608,7 @@ bool SemanticJob::filterMatches(SemanticContext* context, VectorNative<OneMatch*
             auto callParams = over->node->findParent(AstNodeKind::FuncCallParams);
             if (callParams)
             {
-                for (int j = 0; j < countMatches; j++)
+                for (size_t j = 0; j < countMatches; j++)
                 {
                     if (matches[j]->symbolOverload->symbol->kind == SymbolKind::Function)
                     {
@@ -3627,7 +3627,7 @@ bool SemanticJob::filterMatches(SemanticContext* context, VectorNative<OneMatch*
         {
             if (!node->ownerInline->scope->isParentOf(over->node->ownerScope))
             {
-                for (int j = 0; j < countMatches; j++)
+                for (size_t j = 0; j < countMatches; j++)
                 {
                     auto nodeToKeep = matches[j]->symbolOverload->node;
                     if (node->ownerInline->scope->isParentOf(nodeToKeep->ownerScope))
@@ -3652,7 +3652,7 @@ bool SemanticJob::filterMatches(SemanticContext* context, VectorNative<OneMatch*
         // Priority to not a namespace (??)
         if (curMatch->symbolOverload->symbol->kind == SymbolKind::Namespace)
         {
-            for (int j = 0; j < countMatches; j++)
+            for (size_t j = 0; j < countMatches; j++)
             {
                 if (matches[j]->symbolOverload->symbol->kind != SymbolKind::Namespace)
                 {
@@ -3665,7 +3665,7 @@ bool SemanticJob::filterMatches(SemanticContext* context, VectorNative<OneMatch*
         // Closure variable has a priority over a "out of scope" one
         if (curMatch->symbolOverload->symbol->kind == SymbolKind::Variable)
         {
-            for (int j = 0; j < countMatches; j++)
+            for (size_t j = 0; j < countMatches; j++)
             {
                 if (i == j)
                     continue;
@@ -3686,7 +3686,7 @@ bool SemanticJob::filterMatches(SemanticContext* context, VectorNative<OneMatch*
             auto typeFunc0 = CastTypeInfo<TypeInfoFuncAttr>(over->typeInfo, TypeInfoKind::FuncAttr);
             if (!typeFunc0->parameters.empty() && typeFunc0->parameters[0]->typeInfo->isSelf())
             {
-                for (int j = 0; j < countMatches; j++)
+                for (size_t j = 0; j < countMatches; j++)
                 {
                     if (matches[j]->symbolOverload->typeInfo->isFuncAttr())
                     {
@@ -3707,7 +3707,7 @@ bool SemanticJob::filterMatches(SemanticContext* context, VectorNative<OneMatch*
             auto typeFunc0 = CastTypeInfo<TypeInfoFuncAttr>(over->typeInfo, TypeInfoKind::FuncAttr);
             if (typeFunc0->parameters.empty() || !typeFunc0->parameters[0]->typeInfo->isSelf())
             {
-                for (int j = 0; j < countMatches; j++)
+                for (size_t j = 0; j < countMatches; j++)
                 {
                     if (matches[j]->symbolOverload->typeInfo->isFuncAttr())
                     {
@@ -3724,7 +3724,7 @@ bool SemanticJob::filterMatches(SemanticContext* context, VectorNative<OneMatch*
     }
 
     // Eliminate all matches tag as 'remove'
-    for (int i = 0; i < matches.size(); i++)
+    for (size_t i = 0; i < matches.size(); i++)
     {
         if (matches[i]->remove)
         {
@@ -3761,7 +3761,7 @@ bool SemanticJob::filterGenericMatches(SemanticContext* context, VectorNative<On
         auto bestIsIdCost = true;
         int  bestGenId    = 0;
 
-        for (int i = 0; i < genMatches.size(); i++)
+        for (size_t i = 0; i < genMatches.size(); i++)
         {
             auto& p    = genMatches[i];
             auto  cost = scopeCost(context->node->ownerScope, p->symbolOverload->node->ownerScope);
@@ -3786,12 +3786,12 @@ bool SemanticJob::filterGenericMatches(SemanticContext* context, VectorNative<On
     if (genMatches.size() > 1)
     {
         int bestS = -1;
-        for (int i = 0; i < genMatches.size(); i++)
+        for (size_t i = 0; i < genMatches.size(); i++)
         {
             bestS = max(bestS, (int) genMatches[i]->genericReplaceTypes.size());
         }
 
-        for (int i = 0; i < genMatches.size(); i++)
+        for (size_t i = 0; i < genMatches.size(); i++)
         {
             if (genMatches[i]->genericReplaceTypes.size() < bestS)
             {
@@ -3809,9 +3809,9 @@ bool SemanticJob::filterGenericMatches(SemanticContext* context, VectorNative<On
     {
         VectorNative<OneGenericMatch*> newGenericMatches;
         newGenericMatches.reserve((int) genMatches.size());
-        for (int im = 0; im < matches.size(); im++)
+        for (size_t im = 0; im < matches.size(); im++)
         {
-            for (int i = 0; i < genMatches.size(); i++)
+            for (size_t i = 0; i < genMatches.size(); i++)
             {
                 auto same = areGenericReplaceTypesIdentical(matches[im]->oneOverload->overload->typeInfo, *genMatches[i]);
                 if (!same)
@@ -3830,7 +3830,7 @@ bool SemanticJob::filterMatchesInContext(SemanticContext* context, VectorNative<
     if (matches.size() <= 1)
         return true;
 
-    for (int i = 0; i < matches.size(); i++)
+    for (size_t i = 0; i < matches.size(); i++)
     {
         auto          oneMatch = matches[i];
         auto          over     = oneMatch->symbolOverload;
@@ -4716,7 +4716,7 @@ bool SemanticJob::collectScopeHierarchy(SemanticContext*                   conte
         addAlternativeScope(toProcess, g_Workspace->runtimeModule->scopeRoot);
     }
 
-    for (int i = 0; i < toProcess.size(); i++)
+    for (size_t i = 0; i < toProcess.size(); i++)
     {
         auto& as    = toProcess[i];
         auto  scope = as.scope;

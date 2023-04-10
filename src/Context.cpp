@@ -102,7 +102,7 @@ static void byteCodeRun(bool forCallback, void* byteCodePtr, va_list valist)
     g_RunContext->firstRC       = saveFirstRC;
 
     // Get result
-    for (int i = 0; i < returnRegisters.size(); i++)
+    for (size_t i = 0; i < returnRegisters.size(); i++)
     {
         auto r = returnRegisters[i];
         *r     = g_RunContext->registersRR[i];

@@ -466,7 +466,7 @@ void Workspace::errorPendingJobs(Vector<PendingJob>& pendingJobs)
             Vector<const Diagnostic*> notes;
             auto                      prevJob = pendingJob;
 
-            for (int idxJob = 0; idxJob < cycle.size(); idxJob++)
+            for (size_t idxJob = 0; idxJob < cycle.size(); idxJob++)
             {
                 if (prevJob->nodes.size() > 1 && prevJob->originalNode->kind == AstNodeKind::FuncDecl)
                 {
@@ -793,7 +793,7 @@ bool Workspace::buildTarget()
         toBuild.clear();
         toBuild.push_back(filteredModule);
         filteredModule->addedToBuild = true;
-        for (int i = 0; i < toBuild.size(); i++)
+        for (size_t i = 0; i < toBuild.size(); i++)
         {
             for (auto& dep : toBuild[i]->moduleDependencies)
             {
@@ -842,7 +842,7 @@ bool Workspace::buildTarget()
 
         bool restart     = false;
         auto waitingJobs = g_ThreadMgr.waitingJobs;
-        for (int i = 0; i < waitingJobs.size(); i++)
+        for (size_t i = 0; i < waitingJobs.size(); i++)
         {
             auto job = waitingJobs[i];
             if (job->flags & JOB_PENDING_PLACE_HOLDER)
