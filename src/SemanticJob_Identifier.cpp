@@ -323,7 +323,7 @@ bool SemanticJob::setSymbolMatchCallParams(SemanticContext* context, AstIdentifi
         if (nodeCall->typeInfo->isLambdaClosure() && (nodeCall->typeInfo->declNode->semFlags & SEMFLAG_PENDING_LAMBDA_TYPING))
             resolvePendingLambdaTyping(nodeCall, &oneMatch, (uint32_t) i);
 
-        uint32_t castFlags = CASTFLAG_AUTO_OPCAST | CASTFLAG_ACCEPT_PENDING | CASTFLAG_PARAMS | CASTFLAG_PTR_REF | CASTFLAG_FOR_AFFECT | CASTFLAG_ACCEPT_MOVE_REF;
+        uint64_t castFlags = CASTFLAG_AUTO_OPCAST | CASTFLAG_ACCEPT_PENDING | CASTFLAG_PARAMS | CASTFLAG_PTR_REF | CASTFLAG_FOR_AFFECT | CASTFLAG_ACCEPT_MOVE_REF;
         if (i == 0 && oneMatch.ufcs)
             castFlags |= CASTFLAG_UFCS;
 
@@ -1039,7 +1039,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* ide
                 size_t idx      = nodeCall->indexParam;
                 if (idx < oneMatch.solvedParameters.size() && oneMatch.solvedParameters[idx])
                 {
-                    uint32_t castFlags = CASTFLAG_TRY_COERCE | CASTFLAG_FORCE_UNCONST | CASTFLAG_PTR_REF;
+                    uint64_t castFlags = CASTFLAG_TRY_COERCE | CASTFLAG_FORCE_UNCONST | CASTFLAG_PTR_REF;
                     if (canOptimAffect)
                         castFlags |= CASTFLAG_NO_TUPLE_TO_STRUCT;
                     SWAG_CHECK(TypeManager::makeCompatibles(context, oneMatch.solvedParameters[idx]->typeInfo, nullptr, nodeCall, castFlags));

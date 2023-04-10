@@ -113,7 +113,7 @@ struct SemanticContext : public JobContext
     uint32_t                          castFlagsResult   = 0;
     TypeInfo*                         castErrorToType   = nullptr;
     TypeInfo*                         castErrorFromType = nullptr;
-    uint32_t                          castErrorFlags    = 0;
+    uint64_t                          castErrorFlags    = 0;
     bool                              forDebugger       = false;
 };
 

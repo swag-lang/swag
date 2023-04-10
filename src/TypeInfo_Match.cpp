@@ -6,7 +6,7 @@
 #include "Generic.h"
 #include "LanguageSpec.h"
 
-static void deduceGenericParam(SymbolMatchContext& context, AstNode* callParameter, TypeInfo* callTypeInfo, TypeInfo* wantedTypeInfo, int idxParam, uint32_t castFlags)
+static void deduceGenericParam(SymbolMatchContext& context, AstNode* callParameter, TypeInfo* callTypeInfo, TypeInfo* wantedTypeInfo, int idxParam, uint64_t castFlags)
 {
     SWAG_ASSERT(wantedTypeInfo->isGeneric());
 
@@ -372,7 +372,7 @@ static void deduceGenericParam(SymbolMatchContext& context, AstNode* callParamet
     }
 }
 
-static void matchParameters(SymbolMatchContext& context, VectorNative<TypeInfoParam*>& parameters, uint32_t forceCastFlags = 0)
+static void matchParameters(SymbolMatchContext& context, VectorNative<TypeInfoParam*>& parameters, uint64_t forceCastFlags = 0)
 {
     // One boolean per used parameter
     context.doneParameters.set_size_clear((int) parameters.size());
@@ -451,7 +451,7 @@ static void matchParameters(SymbolMatchContext& context, VectorNative<TypeInfoPa
             context.result = MatchResult::BadSignature;
         }
 
-        uint32_t castFlags = CASTFLAG_JUST_CHECK | CASTFLAG_ACCEPT_PENDING | CASTFLAG_FOR_AFFECT;
+        uint64_t castFlags = CASTFLAG_JUST_CHECK | CASTFLAG_ACCEPT_PENDING | CASTFLAG_FOR_AFFECT;
         if (context.flags & SymbolMatchContext::MATCH_UNCONST)
             castFlags |= CASTFLAG_UNCONST;
         if (context.flags & SymbolMatchContext::MATCH_UFCS && i == 0)
@@ -564,7 +564,7 @@ static void matchParameters(SymbolMatchContext& context, VectorNative<TypeInfoPa
     }
 }
 
-static void matchNamedParameter(SymbolMatchContext& context, AstFuncCallParam* callParameter, int parameterIndex, VectorNative<TypeInfoParam*>& parameters, uint32_t forceCastFlags = 0)
+static void matchNamedParameter(SymbolMatchContext& context, AstFuncCallParam* callParameter, int parameterIndex, VectorNative<TypeInfoParam*>& parameters, uint64_t forceCastFlags = 0)
 {
     for (size_t j = 0; j < parameters.size(); j++)
     {
@@ -613,7 +613,7 @@ static void matchNamedParameter(SymbolMatchContext& context, AstFuncCallParam* c
                 context.result = MatchResult::BadSignature;
             }
 
-            uint32_t castFlags = CASTFLAG_JUST_CHECK | CASTFLAG_PARAMS;
+            uint64_t castFlags = CASTFLAG_JUST_CHECK | CASTFLAG_PARAMS;
             castFlags |= forceCastFlags;
             bool same = TypeManager::makeCompatibles(context.semContext, wantedParameter->typeInfo, callTypeInfo, nullptr, nullptr, castFlags);
             if (context.semContext->result != ContextResult::Done)
@@ -654,7 +654,7 @@ static void matchNamedParameter(SymbolMatchContext& context, AstFuncCallParam* c
     }
 }
 
-static void matchNamedParameters(SymbolMatchContext& context, VectorNative<TypeInfoParam*>& parameters, uint32_t forceCastFlags = 0)
+static void matchNamedParameters(SymbolMatchContext& context, VectorNative<TypeInfoParam*>& parameters, uint64_t forceCastFlags = 0)
 {
     if (!context.hasNamedParameters)
         return;
@@ -1028,7 +1028,7 @@ static void fillUserGenericParams(SymbolMatchContext& context, VectorNative<Type
     }
 }
 
-static void matchParametersAndNamed(SymbolMatchContext& context, VectorNative<TypeInfoParam*>& parameters, uint32_t castFlags)
+static void matchParametersAndNamed(SymbolMatchContext& context, VectorNative<TypeInfoParam*>& parameters, uint64_t castFlags)
 {
     matchParameters(context, parameters, castFlags);
     if (context.result == MatchResult::Ok)

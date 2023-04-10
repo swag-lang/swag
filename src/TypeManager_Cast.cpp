@@ -22,7 +22,7 @@ bool TypeManager::errorOutOfRange(SemanticContext* context, AstNode* fromNode, T
     return context->report({fromNode, Fmt(Err(Err0181), fromNode->computedValue->reg.u64, toType->getDisplayNameC())});
 }
 
-bool TypeManager::safetyComputedValue(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* fromNode, uint32_t castFlags)
+bool TypeManager::safetyComputedValue(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* fromNode, uint64_t castFlags)
 {
     if (!fromNode || !(fromNode->flags & AST_VALUE_COMPUTED))
         return true;
@@ -89,7 +89,7 @@ bool TypeManager::safetyComputedValue(SemanticContext* context, TypeInfo* toType
     return true;
 }
 
-bool TypeManager::tryOpAffect(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* fromNode, uint32_t castFlags)
+bool TypeManager::tryOpAffect(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* fromNode, uint64_t castFlags)
 {
     auto structType = toType;
 
@@ -196,7 +196,7 @@ bool TypeManager::tryOpAffect(SemanticContext* context, TypeInfo* toType, TypeIn
     return true;
 }
 
-bool TypeManager::tryOpCast(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* fromNode, uint32_t castFlags)
+bool TypeManager::tryOpCast(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* fromNode, uint64_t castFlags)
 {
     toType   = TypeManager::concretePtrRef(toType);
     fromType = TypeManager::concretePtrRef(fromType);
@@ -301,7 +301,7 @@ bool TypeManager::tryOpCast(SemanticContext* context, TypeInfo* toType, TypeInfo
     return true;
 }
 
-void TypeManager::getCastErrorMsg(Utf8& msg, Utf8& hint, TypeInfo* toType, TypeInfo* fromType, uint32_t castFlags, bool forNote)
+void TypeManager::getCastErrorMsg(Utf8& msg, Utf8& hint, TypeInfo* toType, TypeInfo* fromType, uint64_t castFlags, bool forNote)
 {
     msg.clear();
     hint.clear();
@@ -357,7 +357,7 @@ void TypeManager::getCastErrorMsg(Utf8& msg, Utf8& hint, TypeInfo* toType, TypeI
     }
 }
 
-bool TypeManager::castError(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* fromNode, uint32_t castFlags)
+bool TypeManager::castError(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* fromNode, uint64_t castFlags)
 {
     // Last minute change : convert 'fromType' (struct) to 'toType' with an opCast
     if (!(castFlags & CASTFLAG_NO_LAST_MINUTE))
@@ -412,7 +412,7 @@ bool TypeManager::castError(SemanticContext* context, TypeInfo* toType, TypeInfo
     return false;
 }
 
-bool TypeManager::castToNativeBool(SemanticContext* context, TypeInfo* fromType, AstNode* fromNode, uint32_t castFlags)
+bool TypeManager::castToNativeBool(SemanticContext* context, TypeInfo* fromType, AstNode* fromNode, uint64_t castFlags)
 {
     if (fromType == g_TypeMgr->typeInfoBool)
         return true;
@@ -584,7 +584,7 @@ bool TypeManager::castToNativeBool(SemanticContext* context, TypeInfo* fromType,
     return castError(context, g_TypeMgr->typeInfoBool, fromType, fromNode, castFlags);
 }
 
-bool TypeManager::castToNativeRune(SemanticContext* context, TypeInfo* fromType, AstNode* fromNode, uint32_t castFlags)
+bool TypeManager::castToNativeRune(SemanticContext* context, TypeInfo* fromType, AstNode* fromNode, uint64_t castFlags)
 {
     if (fromType->nativeType == NativeTypeKind::Rune)
         return true;
@@ -682,7 +682,7 @@ bool TypeManager::castToNativeRune(SemanticContext* context, TypeInfo* fromType,
     return castError(context, g_TypeMgr->typeInfoRune, fromType, fromNode, castFlags);
 }
 
-bool TypeManager::castToNativeU8(SemanticContext* context, TypeInfo* fromType, AstNode* fromNode, uint32_t castFlags)
+bool TypeManager::castToNativeU8(SemanticContext* context, TypeInfo* fromType, AstNode* fromNode, uint64_t castFlags)
 {
     if (fromType->nativeType == NativeTypeKind::U8)
         return true;
@@ -812,7 +812,7 @@ bool TypeManager::castToNativeU8(SemanticContext* context, TypeInfo* fromType, A
     return castError(context, g_TypeMgr->typeInfoU8, fromType, fromNode, castFlags);
 }
 
-bool TypeManager::castToNativeU16(SemanticContext* context, TypeInfo* fromType, AstNode* fromNode, uint32_t castFlags)
+bool TypeManager::castToNativeU16(SemanticContext* context, TypeInfo* fromType, AstNode* fromNode, uint64_t castFlags)
 {
     if (fromType->nativeType == NativeTypeKind::U16)
         return true;
@@ -942,7 +942,7 @@ bool TypeManager::castToNativeU16(SemanticContext* context, TypeInfo* fromType, 
     return castError(context, g_TypeMgr->typeInfoU16, fromType, fromNode, castFlags);
 }
 
-bool TypeManager::castToNativeU32(SemanticContext* context, TypeInfo* fromType, AstNode* fromNode, uint32_t castFlags)
+bool TypeManager::castToNativeU32(SemanticContext* context, TypeInfo* fromType, AstNode* fromNode, uint64_t castFlags)
 {
     if (fromType->nativeType == NativeTypeKind::U32)
         return true;
@@ -1054,7 +1054,7 @@ bool TypeManager::castToNativeU32(SemanticContext* context, TypeInfo* fromType, 
     return castError(context, g_TypeMgr->typeInfoU32, fromType, fromNode, castFlags);
 }
 
-bool TypeManager::castToNativeU64(SemanticContext* context, TypeInfo* fromType, AstNode* fromNode, uint32_t castFlags)
+bool TypeManager::castToNativeU64(SemanticContext* context, TypeInfo* fromType, AstNode* fromNode, uint64_t castFlags)
 {
     if (fromType->nativeType == NativeTypeKind::U64)
         return true;
@@ -1168,7 +1168,7 @@ bool TypeManager::castToNativeU64(SemanticContext* context, TypeInfo* fromType, 
     return castError(context, g_TypeMgr->typeInfoU64, fromType, fromNode, castFlags);
 }
 
-bool TypeManager::castToNativeS8(SemanticContext* context, TypeInfo* fromType, AstNode* fromNode, uint32_t castFlags)
+bool TypeManager::castToNativeS8(SemanticContext* context, TypeInfo* fromType, AstNode* fromNode, uint64_t castFlags)
 {
     if (fromType->nativeType == NativeTypeKind::S8)
         return true;
@@ -1282,7 +1282,7 @@ bool TypeManager::castToNativeS8(SemanticContext* context, TypeInfo* fromType, A
     return castError(context, g_TypeMgr->typeInfoS8, fromType, fromNode, castFlags);
 }
 
-bool TypeManager::castToNativeS16(SemanticContext* context, TypeInfo* fromType, AstNode* fromNode, uint32_t castFlags)
+bool TypeManager::castToNativeS16(SemanticContext* context, TypeInfo* fromType, AstNode* fromNode, uint64_t castFlags)
 {
     if (fromType->nativeType == NativeTypeKind::S16)
         return true;
@@ -1395,7 +1395,7 @@ bool TypeManager::castToNativeS16(SemanticContext* context, TypeInfo* fromType, 
     return castError(context, g_TypeMgr->typeInfoS16, fromType, fromNode, castFlags);
 }
 
-bool TypeManager::castToNativeS32(SemanticContext* context, TypeInfo* fromType, AstNode* fromNode, uint32_t castFlags)
+bool TypeManager::castToNativeS32(SemanticContext* context, TypeInfo* fromType, AstNode* fromNode, uint64_t castFlags)
 {
     if (fromType->nativeType == NativeTypeKind::S32)
         return true;
@@ -1479,7 +1479,7 @@ bool TypeManager::castToNativeS32(SemanticContext* context, TypeInfo* fromType, 
     return castError(context, g_TypeMgr->typeInfoS32, fromType, fromNode, castFlags);
 }
 
-bool TypeManager::castToNativeS64(SemanticContext* context, TypeInfo* fromType, AstNode* fromNode, uint32_t castFlags)
+bool TypeManager::castToNativeS64(SemanticContext* context, TypeInfo* fromType, AstNode* fromNode, uint64_t castFlags)
 {
     if (fromType->nativeType == NativeTypeKind::S64)
         return true;
@@ -1562,7 +1562,7 @@ bool TypeManager::castToNativeS64(SemanticContext* context, TypeInfo* fromType, 
     return castError(context, g_TypeMgr->typeInfoS64, fromType, fromNode, castFlags);
 }
 
-bool TypeManager::castToNativeF32(SemanticContext* context, TypeInfo* fromType, AstNode* fromNode, uint32_t castFlags)
+bool TypeManager::castToNativeF32(SemanticContext* context, TypeInfo* fromType, AstNode* fromNode, uint64_t castFlags)
 {
     if (fromType->nativeType == NativeTypeKind::F32)
         return true;
@@ -1658,7 +1658,7 @@ bool TypeManager::castToNativeF32(SemanticContext* context, TypeInfo* fromType, 
     return castError(context, g_TypeMgr->typeInfoF32, fromType, fromNode, castFlags);
 }
 
-bool TypeManager::castToNativeF64(SemanticContext* context, TypeInfo* fromType, AstNode* fromNode, uint32_t castFlags)
+bool TypeManager::castToNativeF64(SemanticContext* context, TypeInfo* fromType, AstNode* fromNode, uint64_t castFlags)
 {
     if (fromType->nativeType == NativeTypeKind::F64)
         return true;
@@ -1756,7 +1756,7 @@ bool TypeManager::castToNativeF64(SemanticContext* context, TypeInfo* fromType, 
     return castError(context, g_TypeMgr->typeInfoF64, fromType, fromNode, castFlags);
 }
 
-bool TypeManager::castToNative(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* toNode, AstNode* fromNode, uint32_t castFlags)
+bool TypeManager::castToNative(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* toNode, AstNode* fromNode, uint64_t castFlags)
 {
     // Pick the best order
     if (castFlags & CASTFLAG_COMMUTATIVE)
@@ -1776,7 +1776,7 @@ bool TypeManager::castToNative(SemanticContext* context, TypeInfo* toType, TypeI
     return castToNative(context, toType, fromType, fromNode, castFlags);
 }
 
-bool TypeManager::castToNative(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* fromNode, uint32_t castFlags)
+bool TypeManager::castToNative(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* fromNode, uint64_t castFlags)
 {
     // Automatic conversions if coerce mode is on (for expressions)
     if (castFlags & CASTFLAG_TRY_COERCE)
@@ -1860,7 +1860,7 @@ bool TypeManager::castToNative(SemanticContext* context, TypeInfo* toType, TypeI
     return true;
 }
 
-bool TypeManager::castExpressionList(SemanticContext* context, TypeInfoList* fromTypeList, TypeInfo* toType, AstNode* fromNode, uint32_t castFlags)
+bool TypeManager::castExpressionList(SemanticContext* context, TypeInfoList* fromTypeList, TypeInfo* toType, AstNode* fromNode, uint64_t castFlags)
 {
     auto fromSize = fromTypeList->subTypes.size();
     while (fromNode && fromNode->kind != AstNodeKind::ExpressionList)
@@ -2027,7 +2027,7 @@ bool TypeManager::castExpressionList(SemanticContext* context, TypeInfoList* fro
     return true;
 }
 
-bool TypeManager::castToString(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* fromNode, uint32_t castFlags)
+bool TypeManager::castToString(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* fromNode, uint64_t castFlags)
 {
     if (fromType->isPointerNull())
     {
@@ -2080,7 +2080,7 @@ bool TypeManager::castToString(SemanticContext* context, TypeInfo* toType, TypeI
     return castError(context, toType, fromType, fromNode, castFlags);
 }
 
-bool TypeManager::castToFromAny(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* toNode, AstNode* fromNode, uint32_t castFlags)
+bool TypeManager::castToFromAny(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* toNode, AstNode* fromNode, uint64_t castFlags)
 {
     if (toType->isAny())
     {
@@ -2193,7 +2193,7 @@ bool TypeManager::castToFromAny(SemanticContext* context, TypeInfo* toType, Type
     return true;
 }
 
-bool TypeManager::castStructToStruct(SemanticContext* context, TypeInfoStruct* toStruct, TypeInfoStruct* fromStruct, TypeInfo* toType, TypeInfo* fromType, AstNode* fromNode, uint32_t castFlags, bool& ok)
+bool TypeManager::castStructToStruct(SemanticContext* context, TypeInfoStruct* toStruct, TypeInfoStruct* fromStruct, TypeInfo* toType, TypeInfo* fromType, AstNode* fromNode, uint64_t castFlags, bool& ok)
 {
     context->castStructStructFields.clear();
     auto& stack = context->castStructStructFields;
@@ -2368,7 +2368,7 @@ bool TypeManager::collectInterface(SemanticContext* context, TypeInfoStruct* fro
     return true;
 }
 
-bool TypeManager::castToInterface(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* fromNode, uint32_t castFlags)
+bool TypeManager::castToInterface(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* fromNode, uint64_t castFlags)
 {
     if (castFlags & CASTFLAG_FOR_GENERIC)
         return castError(context, toType, fromType, fromNode, castFlags);
@@ -2444,7 +2444,7 @@ bool TypeManager::castToInterface(SemanticContext* context, TypeInfo* toType, Ty
     return castError(context, toType, fromType, fromNode, castFlags);
 }
 
-bool TypeManager::castToPointerRef(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* fromNode, uint32_t castFlags)
+bool TypeManager::castToPointerRef(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* fromNode, uint64_t castFlags)
 {
     auto toTypePointer = CastTypeInfo<TypeInfoPointer>(toType, TypeInfoKind::Pointer);
 
@@ -2527,7 +2527,7 @@ bool TypeManager::castToPointerRef(SemanticContext* context, TypeInfo* toType, T
     return castError(context, toType, fromType, fromNode, castFlags);
 }
 
-bool TypeManager::castToPointer(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* fromNode, uint32_t castFlags)
+bool TypeManager::castToPointer(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* fromNode, uint64_t castFlags)
 {
     // To "cstring"
     if (toType->isCString())
@@ -2749,7 +2749,7 @@ bool TypeManager::castToPointer(SemanticContext* context, TypeInfo* toType, Type
     return castError(context, toType, fromType, fromNode, castFlags);
 }
 
-bool TypeManager::castToArray(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* fromNode, uint32_t castFlags)
+bool TypeManager::castToArray(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* fromNode, uint64_t castFlags)
 {
     TypeInfoArray* toTypeArray = CastTypeInfo<TypeInfoArray>(toType, TypeInfoKind::Array);
     if (fromType->isListArray())
@@ -2810,7 +2810,7 @@ bool TypeManager::castToArray(SemanticContext* context, TypeInfo* toType, TypeIn
     return castError(context, toType, fromType, fromNode, castFlags);
 }
 
-bool TypeManager::castToLambda(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* fromNode, uint32_t castFlags)
+bool TypeManager::castToLambda(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* fromNode, uint64_t castFlags)
 {
     TypeInfoFuncAttr* toTypeLambda = CastTypeInfo<TypeInfoFuncAttr>(toType, TypeInfoKind::LambdaClosure);
     if (castFlags & CASTFLAG_EXPLICIT)
@@ -2830,7 +2830,7 @@ bool TypeManager::castToLambda(SemanticContext* context, TypeInfo* toType, TypeI
     return castError(context, toType, fromType, fromNode, castFlags);
 }
 
-bool TypeManager::castToClosure(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* fromNode, uint32_t castFlags)
+bool TypeManager::castToClosure(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* fromNode, uint64_t castFlags)
 {
     TypeInfoFuncAttr* toTypeLambda = CastTypeInfo<TypeInfoFuncAttr>(toType, TypeInfoKind::LambdaClosure);
     if (castFlags & CASTFLAG_EXPLICIT)
@@ -2850,7 +2850,7 @@ bool TypeManager::castToClosure(SemanticContext* context, TypeInfo* toType, Type
     return castError(context, toType, fromType, fromNode, castFlags);
 }
 
-bool TypeManager::castToSlice(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* fromNode, uint32_t castFlags)
+bool TypeManager::castToSlice(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* fromNode, uint64_t castFlags)
 {
     TypeInfoSlice* toTypeSlice = CastTypeInfo<TypeInfoSlice>(toType, TypeInfoKind::Slice);
 
@@ -3137,7 +3137,7 @@ void TypeManager::promoteOne(AstNode* left, AstNode* right, bool is3264)
     }
 }
 
-bool TypeManager::makeCompatibles(SemanticContext* context, AstNode* leftNode, AstNode* rightNode, uint32_t castFlags)
+bool TypeManager::makeCompatibles(SemanticContext* context, AstNode* leftNode, AstNode* rightNode, uint64_t castFlags)
 {
     PushErrCxtStep ec(context, leftNode, ErrCxtStepKind::Hint2, [leftNode]()
                       { return Diagnostic::isType(leftNode->typeInfo); });
@@ -3145,7 +3145,7 @@ bool TypeManager::makeCompatibles(SemanticContext* context, AstNode* leftNode, A
     return true;
 }
 
-bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, AstNode* toNode, AstNode* fromNode, uint32_t castFlags)
+bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, AstNode* toNode, AstNode* fromNode, uint64_t castFlags)
 {
     // convert {...} expression list to a structure : this will create a variable, with parameters
     if (!(castFlags & CASTFLAG_NO_TUPLE_TO_STRUCT))
@@ -3235,7 +3235,7 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, As
     return true;
 }
 
-bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* toNode, AstNode* fromNode, uint32_t castFlags)
+bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* toNode, AstNode* fromNode, uint64_t castFlags)
 {
     // convert {...} expression list to a structure : this will create a variable, with parameters
     auto realFromType = concreteType(fromType, CONCRETE_ALIAS);

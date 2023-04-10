@@ -263,7 +263,7 @@ bool TypeInfo::isMethod()
     return true;
 }
 
-bool TypeInfo::isSame(TypeInfo* from, uint32_t castFlags)
+bool TypeInfo::isSame(TypeInfo* from, uint64_t castFlags)
 {
     if (this == from)
         return true;
@@ -352,7 +352,7 @@ TypeInfoParam* TypeInfoParam::clone()
     return newType;
 }
 
-bool TypeInfoParam::isSame(TypeInfoParam* to, uint32_t castFlags)
+bool TypeInfoParam::isSame(TypeInfoParam* to, uint64_t castFlags)
 {
     if (this == to)
         return true;

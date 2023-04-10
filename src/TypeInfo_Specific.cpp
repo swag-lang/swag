@@ -11,7 +11,7 @@ TypeInfo* TypeInfoNative::clone()
     return newType;
 }
 
-bool TypeInfoNative::isSame(TypeInfo* to, uint32_t castFlags)
+bool TypeInfoNative::isSame(TypeInfo* to, uint64_t castFlags)
 {
     if (this == to)
         return true;
@@ -52,7 +52,7 @@ TypeInfo* TypeInfoCode::clone()
     return newType;
 }
 
-bool TypeInfoCode::isSame(TypeInfo* to, uint32_t castFlags)
+bool TypeInfoCode::isSame(TypeInfo* to, uint64_t castFlags)
 {
     if (this == to)
         return true;
@@ -85,7 +85,7 @@ void TypeInfoAlias::computeWhateverName(Utf8& resName, uint32_t nameType)
     }
 }
 
-bool TypeInfoAlias::isSame(TypeInfo* to, uint32_t castFlags)
+bool TypeInfoAlias::isSame(TypeInfo* to, uint64_t castFlags)
 {
     if (this == to)
         return true;
@@ -147,7 +147,7 @@ void TypeInfoPointer::computeWhateverName(Utf8& resName, uint32_t nameType)
     resName += pointedType->computeWhateverName(nameType);
 }
 
-bool TypeInfoPointer::isSame(TypeInfo* to, uint32_t castFlags)
+bool TypeInfoPointer::isSame(TypeInfo* to, uint64_t castFlags)
 {
     if (this == to)
         return true;
@@ -200,7 +200,7 @@ TypeInfo* TypeInfoArray::clone()
     return newType;
 }
 
-bool TypeInfoArray::isSame(TypeInfo* to, uint32_t castFlags)
+bool TypeInfoArray::isSame(TypeInfo* to, uint64_t castFlags)
 {
     if (this == to)
         return true;
@@ -271,7 +271,7 @@ TypeInfo* TypeInfoSlice::clone()
     return newType;
 }
 
-bool TypeInfoSlice::isSame(TypeInfo* to, uint32_t castFlags)
+bool TypeInfoSlice::isSame(TypeInfo* to, uint64_t castFlags)
 {
     if (this == to)
         return true;
@@ -336,7 +336,7 @@ TypeInfo* TypeInfoList::clone()
     return newType;
 }
 
-bool TypeInfoList::isSame(TypeInfo* to, uint32_t castFlags)
+bool TypeInfoList::isSame(TypeInfo* to, uint64_t castFlags)
 {
     if (this == to)
         return true;
@@ -391,7 +391,7 @@ void TypeInfoVariadic::computeWhateverName(Utf8& resName, uint32_t nameType)
     resName += "...";
 }
 
-bool TypeInfoVariadic::isSame(TypeInfo* to, uint32_t castFlags)
+bool TypeInfoVariadic::isSame(TypeInfo* to, uint64_t castFlags)
 {
     if (!TypeInfo::isSame(to, castFlags))
         return false;
@@ -413,7 +413,7 @@ TypeInfo* TypeInfoGeneric::clone()
     return newType;
 }
 
-bool TypeInfoGeneric::isSame(TypeInfo* to, uint32_t castFlags)
+bool TypeInfoGeneric::isSame(TypeInfo* to, uint64_t castFlags)
 {
     if (this == to)
         return true;
@@ -455,7 +455,7 @@ TypeInfo* TypeInfoEnum::clone()
     return newType;
 }
 
-bool TypeInfoEnum::isSame(TypeInfo* to, uint32_t castFlags)
+bool TypeInfoEnum::isSame(TypeInfo* to, uint64_t castFlags)
 {
     if (this == to)
         return true;
@@ -605,13 +605,13 @@ void TypeInfoFuncAttr::computeWhateverName(Utf8& resName, uint32_t nameType)
         resName += " throw";
 }
 
-bool TypeInfoFuncAttr::isSame(TypeInfoFuncAttr* other, uint32_t castFlags)
+bool TypeInfoFuncAttr::isSame(TypeInfoFuncAttr* other, uint64_t castFlags)
 {
     BadSignatureInfos bi;
     return isSame(other, castFlags, bi);
 }
 
-bool TypeInfoFuncAttr::isSame(TypeInfoFuncAttr* other, uint32_t castFlags, BadSignatureInfos& bi)
+bool TypeInfoFuncAttr::isSame(TypeInfoFuncAttr* other, uint64_t castFlags, BadSignatureInfos& bi)
 {
     // Cannot convert a closure to a lambda
     if (isClosure() && !other->isClosure())
@@ -775,7 +775,7 @@ bool TypeInfoFuncAttr::isSame(TypeInfoFuncAttr* other, uint32_t castFlags, BadSi
     return true;
 }
 
-bool TypeInfoFuncAttr::isSame(TypeInfo* to, uint32_t castFlags)
+bool TypeInfoFuncAttr::isSame(TypeInfo* to, uint64_t castFlags)
 {
     if (this == to)
         return true;
@@ -980,7 +980,7 @@ TypeInfo* TypeInfoStruct::clone()
     return newType;
 }
 
-bool TypeInfoStruct::isSame(TypeInfo* to, uint32_t castFlags)
+bool TypeInfoStruct::isSame(TypeInfo* to, uint64_t castFlags)
 {
     if (this == to)
         return true;
