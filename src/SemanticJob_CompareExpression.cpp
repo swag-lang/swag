@@ -393,7 +393,9 @@ bool SemanticJob::resolveCompareExpression(SemanticContext* context)
     left->typeInfo  = getConcreteTypeUnRef(left, CONCRETE_FUNC | CONCRETE_ENUM);
     right->typeInfo = getConcreteTypeUnRef(right, CONCRETE_FUNC | CONCRETE_ENUM);
 
-    TypeManager::promote3264(left, right);
+    SWAG_CHECK(TypeManager::promote(context, left, right));
+    SWAG_CHECK(TypeManager::promote32(context, left));
+    SWAG_CHECK(TypeManager::promote32(context, right));
 
     // Must not make types compatible for a struct, as we can compare a struct with whatever other type in
     // a opEquals function

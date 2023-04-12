@@ -332,34 +332,34 @@ impl Decoder
                 loop i: inChannels
                     destOff[i] = src[i]
                 loop k: nk
-                    destOff[inChannels + k] = cast,bit(u8) (src[inChannels + k] + destOff[k])
+                    destOff[inChannels + k] = cast,bit(u8) (src[inChannels + k] +,safe destOff[k])
 
             case Up:
                 loop k: rowStrideIn
-                    destOff[k] = cast,bit(u8) (src[k] + up[k])
+                    destOff[k] = cast,bit(u8) (src[k] +,safe up[k])
 
             case Average:
                 loop i: inChannels
                 {
                     avg := up[i] >>,safe 1
-                    destOff[i] = cast,bit(u8) (src[i] + avg)
+                    destOff[i] = cast,bit(u8) (src[i] +,safe avg)
                 }
                 loop k: nk
                 {
                     avg := cast(u8) ((cast(u16) (up[inChannels + k]) + cast(u16) (destOff[k])) >>,safe 1)
-                    destOff[inChannels + k] = cast,bit(u8) (src[inChannels + k] + avg)
+                    destOff[inChannels + k] = cast,bit(u8) (src[inChannels + k] +,safe avg)
                 }
 
             case Paeth:
                 loop i: inChannels
                 {
-                    paeth := filterPaeth(0, up[i], 0)
+                    paeth := cast(u32) filterPaeth(0, up[i], 0)
                     destOff[i] = cast,bit(u8) (src[i] + paeth)
                 }
                 loop k: nk
                 {
-                    paeth := filterPaeth(destOff[k], up[inChannels + k], up[k])
-                    destOff[inChannels + k] = cast,bit(u8) (src[inChannels + k] + paeth)
+                    paeth := cast(u32) filterPaeth(destOff[k], up[inChannels + k], up[k])
+                    destOff[inChannels + k] = cast,bit(u8) (src[inChannels + k] +,safe paeth)
                 }
             }
 
@@ -396,9 +396,10 @@ impl Decoder
         {
 			x := (header.width  - Adam7OrigX[p] + Adam7SpacingX[p] - 1) / Adam7SpacingX[p]
 			y := (header.height - Adam7OrigY[p] + Adam7SpacingY[p] - 1) / Adam7SpacingY[p]
-            if x <= 0 or y <= 0 continue
+            if x <= 0 or y <= 0
+                continue
 
-            tmpArr.resize(x * y * inChannels)
+            tmpArr.resize(cast(u64) (x * y * inChannels))
             Memory.clear(tmpArr.buffer, tmpArr.count)
 
             defilter(cast(u32) x, cast(u32) y, input, tmpArr.buffer)

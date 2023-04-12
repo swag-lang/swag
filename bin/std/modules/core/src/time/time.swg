@@ -54,7 +54,7 @@ func timeToTicks(hour, minute, second, millisecond: u16)->Ticks
 
     // totalSeconds is bounded by 2^31 * 2^12 + 2^31 * 2^8 + 2^31,
     // which is less than 2^44, meaning we won't overflow totalSeconds.
-    totalMilli := (hour*3600 + minute*60 + second) * 1000'u64
+    totalMilli := (hour*3600'u32 + minute*60'u32 + second) * 1000'u64
     totalMilli += millisecond
     Debug.assert(totalMilli <= MaxMilliSeconds)
     return totalMilli * TicksPerMilliSecond

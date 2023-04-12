@@ -56,26 +56,3 @@ This is an 'implicit' cast.
         */
     }
 }
-
-/**
-To avoid an overflow with operators + - * /, operations are promoted to 32 or 64 bits.
-*/
-#test
-{
-    @assert(@typeof(1's8 + 2's8)  == s32)
-    @assert(@typeof(1's8 + 2's16) == s32)
-    @assert(@typeof(1'u8 + 2'u8)  == u32)
-    @assert(@typeof(1'u8 + 2'u16) == u32)
-    @assert(@typeof(1'u8 + 2'f64) == f64)
-}
-
-/**
-But in that case, you can still affect to the original type.
-The compiler will add an implicit cast, and a safety check to be sure there's no overflow.
-*/
-#test
-{
-    // Even if the resulting type of the '+' operator is 's32', you can still
-    // affect to a 's8' value. Swag will panic at runtime (or compile time) if the conversion is invalid.
-    var x: s8 = 1's8 + 2's8
-}

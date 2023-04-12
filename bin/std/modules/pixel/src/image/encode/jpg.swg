@@ -220,17 +220,17 @@ impl Encoder
         imageX = cast(u16) image.width
         imageY = cast(u16) image.height
 
-        var xDiv8, yDiv8: u16
+        var xDiv8, yDiv8: u32
         if imageX % 8 != 0
-            xDiv8 = cast(u16) ((imageX / 8) * 8 + 8)
+            xDiv8 = (imageX / 8) * 8'u32 + 8
         else
             xDiv8 = imageX
         if imageY % 8 != 0
-            yDiv8 = cast(u16) ((imageY / 8) * 8 + 8)
+            yDiv8 = (imageY / 8) * 8'u32 + 8
         else
             yDiv8 = imageY
 
-        bufferRGB.resize(cast(u64) (xDiv8 * yDiv8))
+        bufferRGB.resize(cast(u64) xDiv8 * yDiv8)
         pdst := bufferRGB.buffer
         pref := image.pixels.buffer
 
@@ -239,8 +239,8 @@ impl Encoder
             switch image.bpp
             {
             case 24:
-                Memory.copy(pdst + nrline * xDiv8, pref, cast(u64) (imageX * 3))
-                pref += imageX * 3
+                Memory.copy(pdst + nrline * xDiv8, pref, imageX * 3'u64)
+                pref += imageX * 3'u64
 
             case 32:
                 loop column: imageX
@@ -258,13 +258,13 @@ impl Encoder
                 Memory.copy(pdst + nrline * xDiv8 + column, &lastcolor, 3)
         }
 
-        imageX  = xDiv8
+        imageX  = cast(u16) xDiv8
         tmpline := Array.createBuffer(cast(u64) imageX * @sizeof(ColorRGB))
 
         // Reorder in memory the inversed bitmap
-        nrLineUp := imageY - 1
-        nrLineDn := 0
-        dimline  := cast(u64) (imageX * 3)
+        nrLineUp := cast(u32) imageY - 1
+        nrLineDn := 0'u32
+        dimline  := cast(u32) imageX * 3'u64
         while nrLineUp > nrLineDn
         {
             Memory.copy(tmpline.buffer, pdst + nrLineUp * imageX, dimline)
@@ -275,11 +275,11 @@ impl Encoder
         }
 
         // Y completion
-        Memory.copy(tmpline.buffer, pdst + (imageY - 1) * imageX, dimline)
+        Memory.copy(tmpline.buffer, pdst + (imageY - 1) * cast(u32) imageX, dimline)
         for nrLine := imageY; nrLine < yDiv8; nrLine += 1
-            Memory.copy(pdst + nrLine * imageX, tmpline.buffer, dimline)
+            Memory.copy(pdst + nrLine * cast(u32) imageX, tmpline.buffer, dimline)
 
-        imageY = yDiv8
+        imageY = cast(u16) yDiv8
     }
 
     mtd setQuantTable(basicTable: const ^u8, newTable: ^u8)

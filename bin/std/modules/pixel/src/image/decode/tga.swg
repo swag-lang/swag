@@ -75,7 +75,7 @@ impl Decoder
             }
             else
             {
-                val := cast(u64) (bpp8 * (num + 1))
+                val := cast(u64) bpp8 * (num + 1)
                 if dest + val > lastDest { invalid = true; break; }
                 if src + val > lastSrc { invalid = true; break; }
                 Memory.copy(dest, src, val)

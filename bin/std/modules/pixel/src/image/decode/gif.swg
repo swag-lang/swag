@@ -289,7 +289,7 @@ impl Decoder
         key := getKey(keySize, &subLen, &shift, &byte) /* clear code */
         frmOff := 0
         ret := 0
-        frmSize := fw * fh
+        frmSize := cast(u32) fw * fh
         tableIsFull := 0
         strLen := 0'u16
 
@@ -375,16 +375,16 @@ impl Decoder
 
     mtd renderFrame(buffer: ^u8, pf: PixelFormat)
     {
-        i := fy * width + fx
+        i := cast(u32) fy * width + fx
 
         if pf.hasAlpha()
         {
             loop j: fh-1..0
             {
-                loop k: fw
+                loop k: cast(u32) fw
                 {
-                    index := frame[(fy + j) * width + (fx + k)]
-                    color := &palette.colors[index*3]
+                    index := frame[(fy + j) * cast(u32) width + (fx + k)]
+                    color := &palette.colors[index*3'u32]
                     b     := buffer + (i+k)*4
                     b[0] = color[0]
                     b[1] = color[1]
@@ -478,14 +478,15 @@ public impl Decoder
 
         if decodePixels
         {
-            frame.resize(4'u64 * width * height)
-            Memory.set(frame.buffer, bgIndex, cast(u64) (width * height))
-            canvas  = &frame.buffer[width * height]
+            size := cast(u64) width * cast(u64) height
+            frame.resize(4 * size)
+            Memory.set(frame.buffer, bgIndex, size)
+            canvas  = &frame.buffer[size]
 
-            bgcolor := &palette.colors[bgIndex*3]
-            if bgcolor[0] or bgcolor[1] or bgcolor [2]
+            bgcolor := &palette.colors[bgIndex*3'u32]
+            if bgcolor[0] or bgcolor[1] or bgcolor[2]
             {
-                loop i: width * height
+                loop i: size
                     Memory.copy(&canvas[i*3], bgcolor, 3)
             }
         }

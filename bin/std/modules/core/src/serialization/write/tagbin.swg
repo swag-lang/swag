@@ -2,7 +2,7 @@
 #global public
 using Swag
 
-enum TagBinSignatures
+enum TagBinSignatures: u32
 {
     Root        = 0xC0DE0000
     Fat         = 0xC0DE0001

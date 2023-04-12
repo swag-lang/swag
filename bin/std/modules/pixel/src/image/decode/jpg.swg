@@ -693,28 +693,28 @@ impl Decoder
             tmp2 += z2 + z3
             tmp3 += z1 + z4
 
-            i := descale(tmp10 + tmp3, ConstBits + Pass1Bits + 3) + 128
+            i := descale(tmp10 + tmp3, ConstBits + Pass1Bits + 3) + 128's32
             pdstPtr[8 * 0] = clamp(i)
 
-            i = descale(tmp10 - tmp3, ConstBits + Pass1Bits + 3) + 128
+            i = descale(tmp10 - tmp3, ConstBits + Pass1Bits + 3) + 128's32
             pdstPtr[8 * 7] = clamp(i)
 
-            i = descale(tmp11 + tmp2, ConstBits + Pass1Bits + 3) + 128
+            i = descale(tmp11 + tmp2, ConstBits + Pass1Bits + 3) + 128's32
             pdstPtr[8 * 1] = clamp(i)
 
-            i = descale(tmp11 - tmp2, ConstBits + Pass1Bits + 3) + 128
+            i = descale(tmp11 - tmp2, ConstBits + Pass1Bits + 3) + 128's32
             pdstPtr[8 * 6] = clamp(i)
 
-            i = descale(tmp12 + tmp1, ConstBits + Pass1Bits + 3) + 128
+            i = descale(tmp12 + tmp1, ConstBits + Pass1Bits + 3) + 128's32
             pdstPtr[8 * 2] = clamp(i)
 
-            i = descale(tmp12 - tmp1, ConstBits + Pass1Bits + 3) + 128
+            i = descale(tmp12 - tmp1, ConstBits + Pass1Bits + 3) + 128's32
             pdstPtr[8 * 5] = clamp(i)
 
-            i = descale(tmp13 + tmp0, ConstBits + Pass1Bits + 3) + 128
+            i = descale(tmp13 + tmp0, ConstBits + Pass1Bits + 3) + 128's32
             pdstPtr[8 * 3] = clamp(i)
 
-            i = descale(tmp13 - tmp0, ConstBits + Pass1Bits + 3) + 128
+            i = descale(tmp13 - tmp0, ConstBits + Pass1Bits + 3) + 128's32
             pdstPtr[8 * 4] = clamp(i)
 
             dataPtr, pdstPtr += 1
@@ -1340,7 +1340,7 @@ impl Decoder
         if s != 0
         {
             r := getBits2(s)
-            s = (r < ExtendTest[s] ? r + ExtendOff[s] : r)
+            s = (r < ExtendTest[s] ? r + ExtendOff[s] : cast(s32) r)
         }
 
         s += lastDcVal[cmpId]

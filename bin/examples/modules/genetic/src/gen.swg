@@ -188,7 +188,7 @@ func genGo()->*u8
 
         // Copy solution from mother, in order, except of already present
         var holes: Array'u32
-        cpt := 0
+        cpt := 0'u32
         loop i: g_NumGenes - crossPoint1
         {
             g := mother.genes[i + crossPoint1]

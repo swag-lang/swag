@@ -87,8 +87,12 @@ bool SemanticJob::resolveBinaryOpPlus(SemanticContext* context, AstNode* left, A
 
     switch (leftTypeInfo->nativeType)
     {
+    case NativeTypeKind::S8:
+    case NativeTypeKind::S16:
     case NativeTypeKind::S32:
     case NativeTypeKind::S64:
+    case NativeTypeKind::U8:
+    case NativeTypeKind::U16:
     case NativeTypeKind::U32:
     case NativeTypeKind::U64:
     case NativeTypeKind::F32:
@@ -128,6 +132,8 @@ bool SemanticJob::resolveBinaryOpPlus(SemanticContext* context, AstNode* left, A
 
         switch (leftTypeInfo->nativeType)
         {
+        case NativeTypeKind::S8:
+        case NativeTypeKind::S16:
         case NativeTypeKind::S32:
             if (addWillOverflow(node, left->computedValue->reg.s32, right->computedValue->reg.s32))
                 return context->report({node, ByteCodeGenJob::safetyMsg(SafetyMsg::Plus, g_TypeMgr->typeInfoS32)});
@@ -138,6 +144,8 @@ bool SemanticJob::resolveBinaryOpPlus(SemanticContext* context, AstNode* left, A
                 return context->report({node, ByteCodeGenJob::safetyMsg(SafetyMsg::Plus, g_TypeMgr->typeInfoS64)});
             node->computedValue->reg.s64 = left->computedValue->reg.s64 + right->computedValue->reg.s64;
             break;
+        case NativeTypeKind::U8:
+        case NativeTypeKind::U16:
         case NativeTypeKind::U32:
         case NativeTypeKind::Rune:
             if (addWillOverflow(node, left->computedValue->reg.u32, right->computedValue->reg.u32))
@@ -240,8 +248,12 @@ bool SemanticJob::resolveBinaryOpMinus(SemanticContext* context, AstNode* left, 
 
     switch (leftTypeInfo->nativeType)
     {
+    case NativeTypeKind::S8:
+    case NativeTypeKind::S16:
     case NativeTypeKind::S32:
     case NativeTypeKind::S64:
+    case NativeTypeKind::U8:
+    case NativeTypeKind::U16:
     case NativeTypeKind::U32:
     case NativeTypeKind::U64:
     case NativeTypeKind::F32:
@@ -264,6 +276,8 @@ bool SemanticJob::resolveBinaryOpMinus(SemanticContext* context, AstNode* left, 
 
         switch (leftTypeInfo->nativeType)
         {
+        case NativeTypeKind::S8:
+        case NativeTypeKind::S16:
         case NativeTypeKind::S32:
             if (subWillOverflow(node, left->computedValue->reg.s32, right->computedValue->reg.s32))
                 return context->report({node, ByteCodeGenJob::safetyMsg(SafetyMsg::Minus, g_TypeMgr->typeInfoS32)});
@@ -274,6 +288,8 @@ bool SemanticJob::resolveBinaryOpMinus(SemanticContext* context, AstNode* left, 
                 return context->report({node, ByteCodeGenJob::safetyMsg(SafetyMsg::Minus, g_TypeMgr->typeInfoS64)});
             node->computedValue->reg.s64 = left->computedValue->reg.s64 - right->computedValue->reg.s64;
             break;
+        case NativeTypeKind::U8:
+        case NativeTypeKind::U16:
         case NativeTypeKind::U32:
         case NativeTypeKind::Rune:
             if (subWillOverflow(node, left->computedValue->reg.u32, right->computedValue->reg.u32))
@@ -332,8 +348,12 @@ bool SemanticJob::resolveBinaryOpMul(SemanticContext* context, AstNode* left, As
 
     switch (leftTypeInfo->nativeType)
     {
+    case NativeTypeKind::S8:
+    case NativeTypeKind::S16:
     case NativeTypeKind::S32:
     case NativeTypeKind::S64:
+    case NativeTypeKind::U8:
+    case NativeTypeKind::U16:
     case NativeTypeKind::U32:
     case NativeTypeKind::U64:
     case NativeTypeKind::F32:
@@ -355,6 +375,8 @@ bool SemanticJob::resolveBinaryOpMul(SemanticContext* context, AstNode* left, As
 
         switch (leftTypeInfo->nativeType)
         {
+        case NativeTypeKind::S8:
+        case NativeTypeKind::S16:
         case NativeTypeKind::S32:
             if (mulWillOverflow(node, left->computedValue->reg.s32, right->computedValue->reg.s32))
                 return context->report({node, ByteCodeGenJob::safetyMsg(SafetyMsg::Mul, g_TypeMgr->typeInfoS32)});
@@ -365,6 +387,8 @@ bool SemanticJob::resolveBinaryOpMul(SemanticContext* context, AstNode* left, As
                 return context->report({node, ByteCodeGenJob::safetyMsg(SafetyMsg::Mul, g_TypeMgr->typeInfoS64)});
             node->computedValue->reg.s64 = left->computedValue->reg.s64 * right->computedValue->reg.s64;
             break;
+        case NativeTypeKind::U8:
+        case NativeTypeKind::U16:
         case NativeTypeKind::U32:
         case NativeTypeKind::Rune:
             if (mulWillOverflow(node, left->computedValue->reg.u32, right->computedValue->reg.u32))
@@ -436,8 +460,12 @@ bool SemanticJob::resolveBinaryOpDiv(SemanticContext* context, AstNode* left, As
 
     switch (leftTypeInfo->nativeType)
     {
+    case NativeTypeKind::S8:
+    case NativeTypeKind::S16:
     case NativeTypeKind::S32:
     case NativeTypeKind::S64:
+    case NativeTypeKind::U8:
+    case NativeTypeKind::U16:
     case NativeTypeKind::U32:
     case NativeTypeKind::U64:
     case NativeTypeKind::F32:
@@ -459,6 +487,8 @@ bool SemanticJob::resolveBinaryOpDiv(SemanticContext* context, AstNode* left, As
 
         switch (leftTypeInfo->nativeType)
         {
+        case NativeTypeKind::S8:
+        case NativeTypeKind::S16:
         case NativeTypeKind::S32:
             if (right->computedValue->reg.s32 == 0)
                 return context->report({right, Err(Err0150), Hnt(Hnt0033)});
@@ -469,6 +499,8 @@ bool SemanticJob::resolveBinaryOpDiv(SemanticContext* context, AstNode* left, As
                 return context->report({right, Err(Err0150), Hnt(Hnt0033)});
             node->computedValue->reg.s64 = left->computedValue->reg.s64 / right->computedValue->reg.s64;
             break;
+        case NativeTypeKind::U8:
+        case NativeTypeKind::U16:
         case NativeTypeKind::U32:
         case NativeTypeKind::Rune:
             if (right->computedValue->reg.u32 == 0)
@@ -533,8 +565,12 @@ bool SemanticJob::resolveBinaryOpModulo(SemanticContext* context, AstNode* left,
 
     switch (leftTypeInfo->nativeType)
     {
+    case NativeTypeKind::S8:
+    case NativeTypeKind::S16:
     case NativeTypeKind::S32:
     case NativeTypeKind::S64:
+    case NativeTypeKind::U8:
+    case NativeTypeKind::U16:
     case NativeTypeKind::U32:
     case NativeTypeKind::U64:
     case NativeTypeKind::Rune:
@@ -549,6 +585,8 @@ bool SemanticJob::resolveBinaryOpModulo(SemanticContext* context, AstNode* left,
 
         switch (leftTypeInfo->nativeType)
         {
+        case NativeTypeKind::S8:
+        case NativeTypeKind::S16:
         case NativeTypeKind::S32:
             if (right->computedValue->reg.s32 == 0)
                 return context->report({right, Err(Err0150), Hnt(Hnt0033)});
@@ -559,6 +597,8 @@ bool SemanticJob::resolveBinaryOpModulo(SemanticContext* context, AstNode* left,
                 return context->report({right, Err(Err0150), Hnt(Hnt0033)});
             node->computedValue->reg.s64 = left->computedValue->reg.s64 % right->computedValue->reg.s64;
             break;
+        case NativeTypeKind::U8:
+        case NativeTypeKind::U16:
         case NativeTypeKind::U32:
         case NativeTypeKind::Rune:
             if (right->computedValue->reg.u32 == 0)
@@ -897,16 +937,6 @@ bool SemanticJob::resolveFactorExpression(SemanticContext* context)
     if (context->result == ContextResult::Pending)
         return true;
 
-    // Determin if we must promote to 32/64 bits.
-    // Bit manipulations to not promote.
-    bool mustPromote = true;
-    if (node->tokenId == TokenId::SymVertical ||
-        node->tokenId == TokenId::SymAmpersand ||
-        node->tokenId == TokenId::SymCircumflex)
-    {
-        mustPromote = false;
-    }
-
     // Special case for enum : nothing is possible, except for flags
     auto leftTypeInfo  = TypeManager::concretePtrRefType(left->typeInfo, CONCRETE_ALIAS | CONCRETE_FUNC);
     auto rightTypeInfo = TypeManager::concretePtrRefType(right->typeInfo, CONCRETE_ALIAS | CONCRETE_FUNC);
@@ -956,38 +986,17 @@ bool SemanticJob::resolveFactorExpression(SemanticContext* context)
     node->inheritAndFlag2(AST_CONST_EXPR, AST_R_VALUE);
     node->inheritOrFlag(AST_SIDE_EFFECTS);
 
-    TypeInfo* promotedFrom = nullptr;
-    if (mustPromote)
+    // Determin if we must promote.
+    if (node->tokenId != TokenId::SymVertical &&
+        node->tokenId != TokenId::SymAmpersand &&
+        node->tokenId != TokenId::SymCircumflex)
     {
-        TypeInfo* saveLeftTypeInfo        = left->typeInfo;
-        TypeInfo* saveRightTypeInfo       = right->typeInfo;
-        TypeInfo* saveCastedLeftTypeInfo  = left->castedTypeInfo;
-        TypeInfo* saveCastedRightTypeInfo = right->castedTypeInfo;
-
-        // Special case for promotion of s8/s16/u8/u16. We want to keep trace of the original type
-        // in order to be able to make implicit conversions (with safety checks)
-        if (!(leftTypeInfo->flags & TYPEINFO_CAN_PROMOTE_816) && leftTypeInfo->promotedFrom)
-            leftTypeInfo = left->typeInfo = leftTypeInfo->promotedFrom;
-
-        if (!(rightTypeInfo->flags & TYPEINFO_CAN_PROMOTE_816) && rightTypeInfo->promotedFrom)
-            rightTypeInfo = right->typeInfo = rightTypeInfo->promotedFrom;
-
-        if (leftTypeInfo->flags & TYPEINFO_CAN_PROMOTE_816 || rightTypeInfo->flags & TYPEINFO_CAN_PROMOTE_816)
+        SWAG_CHECK(TypeManager::promote(context, left, right));
+        if (node->specFlags & AstOp::SPECFLAG_UP)
         {
-            TypeManager::promote816(left, right);
-            promotedFrom = left->typeInfo;
-            if (!(promotedFrom->flags & TYPEINFO_CAN_PROMOTE_816))
-                promotedFrom = nullptr;
-
-            left->typeInfo        = saveLeftTypeInfo;
-            right->typeInfo       = saveRightTypeInfo;
-            left->castedTypeInfo  = saveCastedLeftTypeInfo;
-            right->castedTypeInfo = saveCastedRightTypeInfo;
-            leftTypeInfo          = TypeManager::concretePtrRefType(left->typeInfo);
-            rightTypeInfo         = TypeManager::concretePtrRefType(right->typeInfo);
+            TypeManager::promote32(context, left);
+            TypeManager::promote32(context, right);
         }
-
-        TypeManager::promote3264(left, right);
     }
 
     // Must do move and not copy
@@ -1058,12 +1067,6 @@ bool SemanticJob::resolveFactorExpression(SemanticContext* context)
     {
         if (leftTypeInfo->isStruct() && !(leftTypeInfo->declNode->attributeFlags & ATTRIBUTE_CONSTEXPR))
             node->flags &= ~AST_CONST_EXPR;
-    }
-
-    if (promotedFrom)
-    {
-        node->typeInfo               = node->typeInfo->clone();
-        node->typeInfo->promotedFrom = promotedFrom;
     }
 
     return true;

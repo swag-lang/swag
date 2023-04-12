@@ -1374,6 +1374,20 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
         break;
     }
 
+    case ByteCodeOp::BinOpModuloS8:
+    {
+        auto val1                  = IMMA_S8(ip);
+        auto val2                  = IMMB_S8(ip);
+        registersRC[ip->c.u32].s32 = val1 % val2;
+        break;
+    }
+    case ByteCodeOp::BinOpModuloS16:
+    {
+        auto val1                  = IMMA_S16(ip);
+        auto val2                  = IMMB_S16(ip);
+        registersRC[ip->c.u32].s32 = val1 % val2;
+        break;
+    }
     case ByteCodeOp::BinOpModuloS32:
     {
         auto val1                  = IMMA_S32(ip);
@@ -1386,6 +1400,20 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
         auto val1                  = IMMA_S64(ip);
         auto val2                  = IMMB_S64(ip);
         registersRC[ip->c.u32].s64 = val1 % val2;
+        break;
+    }
+    case ByteCodeOp::BinOpModuloU8:
+    {
+        auto val1                  = IMMA_U8(ip);
+        auto val2                  = IMMB_U8(ip);
+        registersRC[ip->c.u32].u32 = val1 % val2;
+        break;
+    }
+    case ByteCodeOp::BinOpModuloU16:
+    {
+        auto val1                  = IMMA_U16(ip);
+        auto val2                  = IMMB_U16(ip);
+        registersRC[ip->c.u32].u32 = val1 % val2;
         break;
     }
     case ByteCodeOp::BinOpModuloU32:
@@ -1403,21 +1431,30 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
         break;
     }
 
+    case ByteCodeOp::BinOpPlusS8:
+    {
+        auto val1 = IMMA_S8(ip);
+        auto val2 = IMMB_S8(ip);
+        if (addWillOverflow(ip->node, val1, val2))
+            callInternalPanic(context, ip, ByteCodeGenJob::safetyMsg(SafetyMsg::Plus, g_TypeMgr->typeInfoS8));
+        registersRC[ip->c.u32].s32 = val1 + val2;
+        break;
+    }
+    case ByteCodeOp::BinOpPlusS16:
+    {
+        auto val1 = IMMA_S16(ip);
+        auto val2 = IMMB_S16(ip);
+        if (addWillOverflow(ip->node, val1, val2))
+            callInternalPanic(context, ip, ByteCodeGenJob::safetyMsg(SafetyMsg::Plus, g_TypeMgr->typeInfoS16));
+        registersRC[ip->c.u32].s32 = val1 + val2;
+        break;
+    }
     case ByteCodeOp::BinOpPlusS32:
     {
         auto val1 = IMMA_S32(ip);
         auto val2 = IMMB_S32(ip);
         if (addWillOverflow(ip->node, val1, val2))
             callInternalPanic(context, ip, ByteCodeGenJob::safetyMsg(SafetyMsg::Plus, g_TypeMgr->typeInfoS32));
-        registersRC[ip->c.u32].s32 = val1 + val2;
-        break;
-    }
-    case ByteCodeOp::BinOpPlusU32:
-    {
-        auto val1 = (uint32_t) IMMA_S32(ip);
-        auto val2 = (uint32_t) IMMB_S32(ip);
-        if (addWillOverflow(ip->node, val1, val2))
-            callInternalPanic(context, ip, ByteCodeGenJob::safetyMsg(SafetyMsg::Plus, g_TypeMgr->typeInfoU32));
         registersRC[ip->c.u32].s32 = val1 + val2;
         break;
     }
@@ -1430,13 +1467,40 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
         registersRC[ip->c.u32].s64 = val1 + val2;
         break;
     }
+    case ByteCodeOp::BinOpPlusU8:
+    {
+        auto val1 = (uint8_t) IMMA_S8(ip);
+        auto val2 = (uint8_t) IMMB_S8(ip);
+        if (addWillOverflow(ip->node, val1, val2))
+            callInternalPanic(context, ip, ByteCodeGenJob::safetyMsg(SafetyMsg::Plus, g_TypeMgr->typeInfoU8));
+        registersRC[ip->c.u32].u32 = val1 + val2;
+        break;
+    }
+    case ByteCodeOp::BinOpPlusU16:
+    {
+        auto val1 = (uint16_t) IMMA_S16(ip);
+        auto val2 = (uint16_t) IMMB_S16(ip);
+        if (addWillOverflow(ip->node, val1, val2))
+            callInternalPanic(context, ip, ByteCodeGenJob::safetyMsg(SafetyMsg::Plus, g_TypeMgr->typeInfoU16));
+        registersRC[ip->c.u32].u32 = val1 + val2;
+        break;
+    }
+    case ByteCodeOp::BinOpPlusU32:
+    {
+        auto val1 = (uint32_t) IMMA_S32(ip);
+        auto val2 = (uint32_t) IMMB_S32(ip);
+        if (addWillOverflow(ip->node, val1, val2))
+            callInternalPanic(context, ip, ByteCodeGenJob::safetyMsg(SafetyMsg::Plus, g_TypeMgr->typeInfoU32));
+        registersRC[ip->c.u32].u32 = val1 + val2;
+        break;
+    }
     case ByteCodeOp::BinOpPlusU64:
     {
         auto val1 = (uint64_t) IMMA_S64(ip);
         auto val2 = (uint64_t) IMMB_S64(ip);
         if (addWillOverflow(ip->node, val1, val2))
             callInternalPanic(context, ip, ByteCodeGenJob::safetyMsg(SafetyMsg::Plus, g_TypeMgr->typeInfoU64));
-        registersRC[ip->c.u32].s64 = val1 + val2;
+        registersRC[ip->c.u32].u64 = val1 + val2;
         break;
     }
     case ByteCodeOp::BinOpPlusF32:
@@ -1471,17 +1535,24 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
         break;
     }
 
+    case ByteCodeOp::BinOpPlusS8_Safe:
+    {
+        auto val1                  = IMMA_S8(ip);
+        auto val2                  = IMMB_S8(ip);
+        registersRC[ip->c.u32].s32 = val1 + val2;
+        break;
+    }
+    case ByteCodeOp::BinOpPlusS16_Safe:
+    {
+        auto val1                  = IMMA_S16(ip);
+        auto val2                  = IMMB_S16(ip);
+        registersRC[ip->c.u32].s32 = val1 + val2;
+        break;
+    }
     case ByteCodeOp::BinOpPlusS32_Safe:
     {
         auto val1                  = IMMA_S32(ip);
         auto val2                  = IMMB_S32(ip);
-        registersRC[ip->c.u32].s32 = val1 + val2;
-        break;
-    }
-    case ByteCodeOp::BinOpPlusU32_Safe:
-    {
-        auto val1                  = (uint32_t) IMMA_S32(ip);
-        auto val2                  = (uint32_t) IMMB_S32(ip);
         registersRC[ip->c.u32].s32 = val1 + val2;
         break;
     }
@@ -1492,29 +1563,59 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
         registersRC[ip->c.u32].s64 = val1 + val2;
         break;
     }
+    case ByteCodeOp::BinOpPlusU8_Safe:
+    {
+        auto val1                  = (uint8_t) IMMA_S8(ip);
+        auto val2                  = (uint8_t) IMMB_S8(ip);
+        registersRC[ip->c.u32].u32 = val1 + val2;
+        break;
+    }
+    case ByteCodeOp::BinOpPlusU16_Safe:
+    {
+        auto val1                  = (uint16_t) IMMA_S16(ip);
+        auto val2                  = (uint16_t) IMMB_S16(ip);
+        registersRC[ip->c.u32].u32 = val1 + val2;
+        break;
+    }
+    case ByteCodeOp::BinOpPlusU32_Safe:
+    {
+        auto val1                  = (uint32_t) IMMA_S32(ip);
+        auto val2                  = (uint32_t) IMMB_S32(ip);
+        registersRC[ip->c.u32].u32 = val1 + val2;
+        break;
+    }
     case ByteCodeOp::BinOpPlusU64_Safe:
     {
         auto val1                  = (uint64_t) IMMA_S64(ip);
         auto val2                  = (uint64_t) IMMB_S64(ip);
-        registersRC[ip->c.u32].s64 = val1 + val2;
+        registersRC[ip->c.u32].u64 = val1 + val2;
         break;
     }
 
+    case ByteCodeOp::BinOpMinusS8:
+    {
+        auto val1 = IMMA_S8(ip);
+        auto val2 = IMMB_S8(ip);
+        if (subWillOverflow(ip->node, val1, val2))
+            callInternalPanic(context, ip, ByteCodeGenJob::safetyMsg(SafetyMsg::Minus, g_TypeMgr->typeInfoS8));
+        registersRC[ip->c.u32].s32 = val1 - val2;
+        break;
+    }
+    case ByteCodeOp::BinOpMinusS16:
+    {
+        auto val1 = IMMA_S16(ip);
+        auto val2 = IMMB_S16(ip);
+        if (subWillOverflow(ip->node, val1, val2))
+            callInternalPanic(context, ip, ByteCodeGenJob::safetyMsg(SafetyMsg::Minus, g_TypeMgr->typeInfoS16));
+        registersRC[ip->c.u32].s32 = val1 - val2;
+        break;
+    }
     case ByteCodeOp::BinOpMinusS32:
     {
         auto val1 = IMMA_S32(ip);
         auto val2 = IMMB_S32(ip);
         if (subWillOverflow(ip->node, val1, val2))
             callInternalPanic(context, ip, ByteCodeGenJob::safetyMsg(SafetyMsg::Minus, g_TypeMgr->typeInfoS32));
-        registersRC[ip->c.u32].s32 = val1 - val2;
-        break;
-    }
-    case ByteCodeOp::BinOpMinusU32:
-    {
-        auto val1 = (uint32_t) IMMA_S32(ip);
-        auto val2 = (uint32_t) IMMB_S32(ip);
-        if (subWillOverflow(ip->node, val1, val2))
-            callInternalPanic(context, ip, ByteCodeGenJob::safetyMsg(SafetyMsg::Minus, g_TypeMgr->typeInfoU32));
         registersRC[ip->c.u32].s32 = val1 - val2;
         break;
     }
@@ -1527,13 +1628,40 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
         registersRC[ip->c.u32].s64 = val1 - val2;
         break;
     }
+    case ByteCodeOp::BinOpMinusU8:
+    {
+        auto val1 = (uint8_t) IMMA_S8(ip);
+        auto val2 = (uint8_t) IMMB_S8(ip);
+        if (subWillOverflow(ip->node, val1, val2))
+            callInternalPanic(context, ip, ByteCodeGenJob::safetyMsg(SafetyMsg::Minus, g_TypeMgr->typeInfoU8));
+        registersRC[ip->c.u32].u32 = val1 - val2;
+        break;
+    }
+    case ByteCodeOp::BinOpMinusU16:
+    {
+        auto val1 = (uint16_t) IMMA_S16(ip);
+        auto val2 = (uint16_t) IMMB_S16(ip);
+        if (subWillOverflow(ip->node, val1, val2))
+            callInternalPanic(context, ip, ByteCodeGenJob::safetyMsg(SafetyMsg::Minus, g_TypeMgr->typeInfoU16));
+        registersRC[ip->c.u32].u16 = val1 - val2;
+        break;
+    }
+    case ByteCodeOp::BinOpMinusU32:
+    {
+        auto val1 = (uint32_t) IMMA_S32(ip);
+        auto val2 = (uint32_t) IMMB_S32(ip);
+        if (subWillOverflow(ip->node, val1, val2))
+            callInternalPanic(context, ip, ByteCodeGenJob::safetyMsg(SafetyMsg::Minus, g_TypeMgr->typeInfoU32));
+        registersRC[ip->c.u32].u32 = val1 - val2;
+        break;
+    }
     case ByteCodeOp::BinOpMinusU64:
     {
         auto val1 = (uint64_t) IMMA_S64(ip);
         auto val2 = (uint64_t) IMMB_S64(ip);
         if (subWillOverflow(ip->node, val1, val2))
             callInternalPanic(context, ip, ByteCodeGenJob::safetyMsg(SafetyMsg::Minus, g_TypeMgr->typeInfoU64));
-        registersRC[ip->c.u32].s64 = val1 - val2;
+        registersRC[ip->c.u32].u64 = val1 - val2;
         break;
     }
     case ByteCodeOp::BinOpMinusF32:
@@ -1551,17 +1679,24 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
         break;
     }
 
+    case ByteCodeOp::BinOpMinusS8_Safe:
+    {
+        auto val1                  = IMMA_S8(ip);
+        auto val2                  = IMMB_S8(ip);
+        registersRC[ip->c.u32].s32 = val1 - val2;
+        break;
+    }
+    case ByteCodeOp::BinOpMinusS16_Safe:
+    {
+        auto val1                  = IMMA_S16(ip);
+        auto val2                  = IMMB_S16(ip);
+        registersRC[ip->c.u32].s32 = val1 - val2;
+        break;
+    }
     case ByteCodeOp::BinOpMinusS32_Safe:
     {
         auto val1                  = IMMA_S32(ip);
         auto val2                  = IMMB_S32(ip);
-        registersRC[ip->c.u32].s32 = val1 - val2;
-        break;
-    }
-    case ByteCodeOp::BinOpMinusU32_Safe:
-    {
-        auto val1                  = (uint32_t) IMMA_S32(ip);
-        auto val2                  = (uint32_t) IMMB_S32(ip);
         registersRC[ip->c.u32].s32 = val1 - val2;
         break;
     }
@@ -1572,29 +1707,59 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
         registersRC[ip->c.u32].s64 = val1 - val2;
         break;
     }
+    case ByteCodeOp::BinOpMinusU8_Safe:
+    {
+        auto val1                  = (uint8_t) IMMA_S8(ip);
+        auto val2                  = (uint8_t) IMMB_S8(ip);
+        registersRC[ip->c.u32].u32 = val1 - val2;
+        break;
+    }
+    case ByteCodeOp::BinOpMinusU16_Safe:
+    {
+        auto val1                  = (uint16_t) IMMA_S16(ip);
+        auto val2                  = (uint16_t) IMMB_S16(ip);
+        registersRC[ip->c.u32].u32 = val1 - val2;
+        break;
+    }
+    case ByteCodeOp::BinOpMinusU32_Safe:
+    {
+        auto val1                  = (uint32_t) IMMA_S32(ip);
+        auto val2                  = (uint32_t) IMMB_S32(ip);
+        registersRC[ip->c.u32].u32 = val1 - val2;
+        break;
+    }
     case ByteCodeOp::BinOpMinusU64_Safe:
     {
         auto val1                  = (uint64_t) IMMA_S64(ip);
         auto val2                  = (uint64_t) IMMB_S64(ip);
-        registersRC[ip->c.u32].s64 = val1 - val2;
+        registersRC[ip->c.u32].u64 = val1 - val2;
         break;
     }
 
+    case ByteCodeOp::BinOpMulS8:
+    {
+        auto val1 = IMMA_S8(ip);
+        auto val2 = IMMB_S8(ip);
+        if (mulWillOverflow(ip->node, val1, val2))
+            callInternalPanic(context, ip, ByteCodeGenJob::safetyMsg(SafetyMsg::Mul, g_TypeMgr->typeInfoS8));
+        registersRC[ip->c.u32].s32 = val1 * val2;
+        break;
+    }
+    case ByteCodeOp::BinOpMulS16:
+    {
+        auto val1 = IMMA_S16(ip);
+        auto val2 = IMMB_S16(ip);
+        if (mulWillOverflow(ip->node, val1, val2))
+            callInternalPanic(context, ip, ByteCodeGenJob::safetyMsg(SafetyMsg::Mul, g_TypeMgr->typeInfoS16));
+        registersRC[ip->c.u32].s32 = val1 * val2;
+        break;
+    }
     case ByteCodeOp::BinOpMulS32:
     {
         auto val1 = IMMA_S32(ip);
         auto val2 = IMMB_S32(ip);
         if (mulWillOverflow(ip->node, val1, val2))
             callInternalPanic(context, ip, ByteCodeGenJob::safetyMsg(SafetyMsg::Mul, g_TypeMgr->typeInfoS32));
-        registersRC[ip->c.u32].s32 = val1 * val2;
-        break;
-    }
-    case ByteCodeOp::BinOpMulU32:
-    {
-        auto val1 = (uint32_t) IMMA_S32(ip);
-        auto val2 = (uint32_t) IMMB_S32(ip);
-        if (mulWillOverflow(ip->node, val1, val2))
-            callInternalPanic(context, ip, ByteCodeGenJob::safetyMsg(SafetyMsg::Mul, g_TypeMgr->typeInfoU32));
         registersRC[ip->c.u32].s32 = val1 * val2;
         break;
     }
@@ -1607,13 +1772,40 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
         registersRC[ip->c.u32].s64 = val1 * val2;
         break;
     }
+    case ByteCodeOp::BinOpMulU8:
+    {
+        auto val1 = (uint8_t) IMMA_S8(ip);
+        auto val2 = (uint8_t) IMMB_S8(ip);
+        if (mulWillOverflow(ip->node, val1, val2))
+            callInternalPanic(context, ip, ByteCodeGenJob::safetyMsg(SafetyMsg::Mul, g_TypeMgr->typeInfoU8));
+        registersRC[ip->c.u32].u32 = val1 * val2;
+        break;
+    }
+    case ByteCodeOp::BinOpMulU16:
+    {
+        auto val1 = (uint16_t) IMMA_S16(ip);
+        auto val2 = (uint16_t) IMMB_S16(ip);
+        if (mulWillOverflow(ip->node, val1, val2))
+            callInternalPanic(context, ip, ByteCodeGenJob::safetyMsg(SafetyMsg::Mul, g_TypeMgr->typeInfoU16));
+        registersRC[ip->c.u32].u32 = val1 * val2;
+        break;
+    }
+    case ByteCodeOp::BinOpMulU32:
+    {
+        auto val1 = (uint32_t) IMMA_S32(ip);
+        auto val2 = (uint32_t) IMMB_S32(ip);
+        if (mulWillOverflow(ip->node, val1, val2))
+            callInternalPanic(context, ip, ByteCodeGenJob::safetyMsg(SafetyMsg::Mul, g_TypeMgr->typeInfoU32));
+        registersRC[ip->c.u32].u32 = val1 * val2;
+        break;
+    }
     case ByteCodeOp::BinOpMulU64:
     {
         auto val1 = (uint64_t) IMMA_S64(ip);
         auto val2 = (uint64_t) IMMB_S64(ip);
         if (mulWillOverflow(ip->node, val1, val2))
             callInternalPanic(context, ip, ByteCodeGenJob::safetyMsg(SafetyMsg::Mul, g_TypeMgr->typeInfoU64));
-        registersRC[ip->c.u32].s64 = val1 * val2;
+        registersRC[ip->c.u32].u64 = val1 * val2;
         break;
     }
     case ByteCodeOp::BinOpMulF32:
@@ -1631,6 +1823,20 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
         break;
     }
 
+    case ByteCodeOp::BinOpMulS8_Safe:
+    {
+        auto val1                  = IMMA_S8(ip);
+        auto val2                  = IMMB_S8(ip);
+        registersRC[ip->c.u32].s32 = val1 * val2;
+        break;
+    }
+    case ByteCodeOp::BinOpMulS16_Safe:
+    {
+        auto val1                  = IMMA_S16(ip);
+        auto val2                  = IMMB_S16(ip);
+        registersRC[ip->c.u32].s32 = val1 * val2;
+        break;
+    }
     case ByteCodeOp::BinOpMulS32_Safe:
     {
         auto val1                  = IMMA_S32(ip);
@@ -1638,28 +1844,56 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
         registersRC[ip->c.u32].s32 = val1 * val2;
         break;
     }
-    case ByteCodeOp::BinOpMulU32_Safe:
-    {
-        auto val1                  = (uint32_t) IMMA_S32(ip);
-        auto val2                  = (uint32_t) IMMB_S32(ip);
-        registersRC[ip->c.u32].s32 = val1 * val2;
-        break;
-    }
     case ByteCodeOp::BinOpMulS64_Safe:
     {
         auto val1                  = IMMA_S64(ip);
         auto val2                  = IMMB_S64(ip);
-        registersRC[ip->c.u32].s64 = val1 * val2;
+        registersRC[ip->c.u32].u64 = val1 * val2;
+        break;
+    }
+    case ByteCodeOp::BinOpMulU8_Safe:
+    {
+        auto val1                  = (uint8_t) IMMA_S8(ip);
+        auto val2                  = (uint8_t) IMMB_S8(ip);
+        registersRC[ip->c.u32].u32 = val1 * val2;
+        break;
+    }
+    case ByteCodeOp::BinOpMulU16_Safe:
+    {
+        auto val1                  = (uint16_t) IMMA_S16(ip);
+        auto val2                  = (uint16_t) IMMB_S16(ip);
+        registersRC[ip->c.u32].u32 = val1 * val2;
+        break;
+    }
+    case ByteCodeOp::BinOpMulU32_Safe:
+    {
+        auto val1                  = (uint32_t) IMMA_S32(ip);
+        auto val2                  = (uint32_t) IMMB_S32(ip);
+        registersRC[ip->c.u32].u32 = val1 * val2;
         break;
     }
     case ByteCodeOp::BinOpMulU64_Safe:
     {
         auto val1                  = (uint64_t) IMMA_S64(ip);
         auto val2                  = (uint64_t) IMMB_S64(ip);
-        registersRC[ip->c.u32].s64 = val1 * val2;
+        registersRC[ip->c.u32].u64 = val1 * val2;
         break;
     }
 
+    case ByteCodeOp::BinOpDivS8:
+    {
+        auto val1                  = IMMA_S8(ip);
+        auto val2                  = IMMB_S8(ip);
+        registersRC[ip->c.u32].s32 = val1 / val2;
+        break;
+    }
+    case ByteCodeOp::BinOpDivS16:
+    {
+        auto val1                  = IMMA_S16(ip);
+        auto val2                  = IMMB_S16(ip);
+        registersRC[ip->c.u32].s32 = val1 / val2;
+        break;
+    }
     case ByteCodeOp::BinOpDivS32:
     {
         auto val1                  = IMMA_S32(ip);
@@ -1672,6 +1906,20 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
         auto val1                  = IMMA_S64(ip);
         auto val2                  = IMMB_S64(ip);
         registersRC[ip->c.u32].s64 = val1 / val2;
+        break;
+    }
+    case ByteCodeOp::BinOpDivU8:
+    {
+        auto val1                  = IMMA_U8(ip);
+        auto val2                  = IMMB_U8(ip);
+        registersRC[ip->c.u32].u32 = val1 / val2;
+        break;
+    }
+    case ByteCodeOp::BinOpDivU16:
+    {
+        auto val1                  = IMMA_U16(ip);
+        auto val2                  = IMMB_U16(ip);
+        registersRC[ip->c.u32].u32 = val1 / val2;
         break;
     }
     case ByteCodeOp::BinOpDivU32:

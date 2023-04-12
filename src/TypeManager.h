@@ -36,13 +36,12 @@ const uint64_t CASTFLAG_NO_LAST_MINUTE     = 0x0000000000100000;
 const uint64_t CASTFLAG_FOR_GENERIC        = 0x0000000000200000;
 const uint64_t CASTFLAG_PARAMS             = 0x0000000000400000;
 const uint64_t CASTFLAG_NO_IMPLICIT        = 0x0000000000800000;
-const uint64_t CASTFLAG_FROM_PROMOTE       = 0x0000000001000000;
+const uint64_t CASTFLAG_FOR_VAR_INIT       = 0x0000000001000000;
 const uint64_t CASTFLAG_PTR_REF            = 0x0000000002000000;
 const uint64_t CASTFLAG_NO_TUPLE_TO_STRUCT = 0x0000000004000000;
 const uint64_t CASTFLAG_ACCEPT_MOVE_REF    = 0x0000000008000000;
 const uint64_t CASTFLAG_EXACT              = 0x0000000010000000;
 const uint64_t CASTFLAG_CAST               = 0x0000000020000000;
-const uint64_t CASTFLAG_FOR_VAR_INIT       = 0x0000000040000000;
 
 // Stored in SymbolMatchContext.flags
 const uint32_t CASTFLAG_RESULT_STRUCT_CONVERT     = 0x01000000;
@@ -115,9 +114,8 @@ struct TypeManager
     static TypeInfo* resolveUntypedType(TypeInfo* typeInfo, uint32_t value);
     static TypeInfo* literalTypeToType(LiteralType literalType);
     static TypeInfo* literalTypeToType(LiteralType literalType, Register literalValue);
-    static void      promote3264(AstNode* left, AstNode* right);
-    static void      promote816(AstNode* left, AstNode* right);
-    static void      promoteLeft(AstNode* left, AstNode* right, bool is3264);
+    static bool      promote(SemanticContext* context, AstNode* left, AstNode* right);
+    static bool      promoteLeft(SemanticContext* context, AstNode* left, AstNode* right);
     static bool      promote32(SemanticContext* context, AstNode* right);
     static TypeInfo* promoteUntyped(TypeInfo* typeInfo);
     static void      promoteUntypedInteger(AstNode* left, AstNode* right);
@@ -179,8 +177,7 @@ struct TypeManager
     TypeInfoCode*     typeInfoCode           = nullptr;
     TypeInfoSlice*    typeInfoSliceRunes     = nullptr;
 
-    TypeInfoNative* promoteMatrix3264[(int) NativeTypeKind::Count][(int) NativeTypeKind::Count] = {{0}};
-    TypeInfoNative* promoteMatrix[(int) NativeTypeKind::Count][(int) NativeTypeKind::Count]     = {{0}};
+    TypeInfoNative* promoteMatrix[(int) NativeTypeKind::Count][(int) NativeTypeKind::Count] = {{0}};
 };
 
 extern TypeManager* g_TypeMgr;

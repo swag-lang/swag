@@ -1,0 +1,39 @@
+#[Swag.Optim("", false)]
+#test
+{
+    x := 0's8
+    y := 0's8
+    x += 6
+    y += 3
+    @assert(x / y == 2)
+}
+
+#[Swag.Optim("", false)]
+#test
+{
+    x := 0's16
+    y := 0's16
+    x += 6
+    y += 3
+    @assert(x / y == 2)
+}
+
+#[Swag.Optim("", false)]
+#test
+{
+    x := 0'u8
+    y := 0'u8
+    x += 6
+    y += 3
+    @assert(x / y == 2)
+}
+
+#[Swag.Optim("", false)]
+#test
+{
+    x := 0'u16
+    y := 0'u16
+    x += 6
+    y += 3
+    @assert(x / y == 2)
+}

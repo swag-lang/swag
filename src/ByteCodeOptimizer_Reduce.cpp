@@ -11,8 +11,8 @@ void ByteCodeOptimizer::reduceMath(ByteCodeOptContext* context, ByteCodeInstruct
 
     switch (ip->op)
     {
-    case ByteCodeOp::BinOpDivU32:
-        if (ip->b.u32 == 1)
+    case ByteCodeOp::BinOpDivS8:
+        if (ip->b.u8 == 1)
         {
             SET_OP(ip, ByteCodeOp::CopyRBtoRA64);
             ip->b.u32 = ip->a.u32;
@@ -21,16 +21,15 @@ void ByteCodeOptimizer::reduceMath(ByteCodeOptContext* context, ByteCodeInstruct
             break;
         }
 
-        if (isPowerOfTwo(ip->b.u32))
+        if (isPowerOfTwo(ip->b.u8))
         {
-            SET_OP(ip, ByteCodeOp::BinOpShiftRightU32);
-            ip->b.u32 = (uint32_t) log2(ip->b.u32);
+            SET_OP(ip, ByteCodeOp::BinOpShiftRightS8);
+            ip->b.u32 = (uint32_t) log2(ip->b.u8);
             break;
         }
         break;
-
-    case ByteCodeOp::BinOpDivU64:
-        if (ip->b.u64 == 1)
+    case ByteCodeOp::BinOpDivS16:
+        if (ip->b.u16 == 1)
         {
             SET_OP(ip, ByteCodeOp::CopyRBtoRA64);
             ip->b.u32 = ip->a.u32;
@@ -39,14 +38,13 @@ void ByteCodeOptimizer::reduceMath(ByteCodeOptContext* context, ByteCodeInstruct
             break;
         }
 
-        if (isPowerOfTwo(ip->b.u64))
+        if (isPowerOfTwo(ip->b.u16))
         {
-            SET_OP(ip, ByteCodeOp::BinOpShiftRightU64);
-            ip->b.u64 = (uint64_t) log2(ip->b.u64);
+            SET_OP(ip, ByteCodeOp::BinOpShiftRightS16);
+            ip->b.u32 = (uint32_t) log2(ip->b.u16);
             break;
         }
         break;
-
     case ByteCodeOp::BinOpDivS32:
         if (ip->b.u32 == 1)
         {
@@ -64,7 +62,6 @@ void ByteCodeOptimizer::reduceMath(ByteCodeOptContext* context, ByteCodeInstruct
             break;
         }
         break;
-
     case ByteCodeOp::BinOpDivS64:
         if (ip->b.u64 == 1)
         {
@@ -78,6 +75,74 @@ void ByteCodeOptimizer::reduceMath(ByteCodeOptContext* context, ByteCodeInstruct
         if (isPowerOfTwo(ip->b.u64))
         {
             SET_OP(ip, ByteCodeOp::BinOpShiftRightS64);
+            ip->b.u64 = (uint64_t) log2(ip->b.u64);
+            break;
+        }
+        break;
+    case ByteCodeOp::BinOpDivU8:
+        if (ip->b.u8 == 1)
+        {
+            SET_OP(ip, ByteCodeOp::CopyRBtoRA64);
+            ip->b.u32 = ip->a.u32;
+            ip->a.u32 = ip->c.u32;
+            ip->flags &= ~BCI_IMM_B;
+            break;
+        }
+
+        if (isPowerOfTwo(ip->b.u8))
+        {
+            SET_OP(ip, ByteCodeOp::BinOpShiftRightU8);
+            ip->b.u32 = (uint32_t) log2(ip->b.u8);
+            break;
+        }
+        break;
+    case ByteCodeOp::BinOpDivU16:
+        if (ip->b.u16 == 1)
+        {
+            SET_OP(ip, ByteCodeOp::CopyRBtoRA64);
+            ip->b.u32 = ip->a.u32;
+            ip->a.u32 = ip->c.u32;
+            ip->flags &= ~BCI_IMM_B;
+            break;
+        }
+
+        if (isPowerOfTwo(ip->b.u16))
+        {
+            SET_OP(ip, ByteCodeOp::BinOpShiftRightU16);
+            ip->b.u32 = (uint32_t) log2(ip->b.u16);
+            break;
+        }
+        break;
+    case ByteCodeOp::BinOpDivU32:
+        if (ip->b.u32 == 1)
+        {
+            SET_OP(ip, ByteCodeOp::CopyRBtoRA64);
+            ip->b.u32 = ip->a.u32;
+            ip->a.u32 = ip->c.u32;
+            ip->flags &= ~BCI_IMM_B;
+            break;
+        }
+
+        if (isPowerOfTwo(ip->b.u32))
+        {
+            SET_OP(ip, ByteCodeOp::BinOpShiftRightU32);
+            ip->b.u32 = (uint32_t) log2(ip->b.u32);
+            break;
+        }
+        break;
+    case ByteCodeOp::BinOpDivU64:
+        if (ip->b.u64 == 1)
+        {
+            SET_OP(ip, ByteCodeOp::CopyRBtoRA64);
+            ip->b.u32 = ip->a.u32;
+            ip->a.u32 = ip->c.u32;
+            ip->flags &= ~BCI_IMM_B;
+            break;
+        }
+
+        if (isPowerOfTwo(ip->b.u64))
+        {
+            SET_OP(ip, ByteCodeOp::BinOpShiftRightU64);
             ip->b.u64 = (uint64_t) log2(ip->b.u64);
             break;
         }
@@ -2872,6 +2937,30 @@ void ByteCodeOptimizer::reduceNoOp(ByteCodeOptContext* context, ByteCodeInstruct
     {
         switch (ip->op)
         {
+        case ByteCodeOp::BinOpPlusS8:
+        case ByteCodeOp::BinOpMinusS8:
+        case ByteCodeOp::BinOpPlusU8:
+        case ByteCodeOp::BinOpMinusU8:
+        case ByteCodeOp::BinOpPlusS8_Safe:
+        case ByteCodeOp::BinOpMinusS8_Safe:
+        case ByteCodeOp::BinOpPlusU8_Safe:
+        case ByteCodeOp::BinOpMinusU8_Safe:
+            if (ip->b.u8 == 0)
+                setNop(context, ip);
+            break;
+
+        case ByteCodeOp::BinOpPlusS16:
+        case ByteCodeOp::BinOpMinusS16:
+        case ByteCodeOp::BinOpPlusU16:
+        case ByteCodeOp::BinOpMinusU16:
+        case ByteCodeOp::BinOpPlusS16_Safe:
+        case ByteCodeOp::BinOpMinusS16_Safe:
+        case ByteCodeOp::BinOpPlusU16_Safe:
+        case ByteCodeOp::BinOpMinusU16_Safe:
+            if (ip->b.u16 == 0)
+                setNop(context, ip);
+            break;
+
         case ByteCodeOp::BinOpPlusS32:
         case ByteCodeOp::BinOpMinusS32:
         case ByteCodeOp::BinOpPlusU32:
@@ -2903,30 +2992,39 @@ void ByteCodeOptimizer::reduceNoOp(ByteCodeOptContext* context, ByteCodeInstruct
         }
     }
 
+    // :STRANGE
     if ((ip->flags & BCI_IMM_B) &&
         !(ip->flags & BCI_IMM_A) &&
-        !(ip->flags & BCI_IMM_C))
+        !(ip->flags & BCI_IMM_C) &&
+        (ip->a.u32 != ip->c.u32))
     {
         switch (ip->op)
         {
-        case ByteCodeOp::BinOpMulU32:
-        case ByteCodeOp::BinOpMulU64:
         case ByteCodeOp::BinOpMulS32:
-        case ByteCodeOp::BinOpMulS64:
-        case ByteCodeOp::BinOpMulU32_Safe:
-        case ByteCodeOp::BinOpMulU64_Safe:
         case ByteCodeOp::BinOpMulS32_Safe:
-        case ByteCodeOp::BinOpMulS64_Safe:
+        case ByteCodeOp::BinOpMulU32:
+        case ByteCodeOp::BinOpMulU32_Safe:
             if (ip->b.u32 == 1)
             {
-                if (ip->a.u32 != ip->c.u32)
-                {
-                    SET_OP(ip, ByteCodeOp::CopyRBtoRA64);
-                    auto s    = ip->a.u32;
-                    ip->a.u32 = ip->c.u32;
-                    ip->b.u32 = s;
-                    ip->flags &= ~BCI_IMM_B;
-                }
+                SET_OP(ip, ByteCodeOp::CopyRBtoRA64);
+                auto s    = ip->a.u32;
+                ip->a.u32 = ip->c.u32;
+                ip->b.u32 = s;
+                ip->flags &= ~BCI_IMM_B;
+            }
+            break;
+
+        case ByteCodeOp::BinOpMulU64:
+        case ByteCodeOp::BinOpMulS64:
+        case ByteCodeOp::BinOpMulU64_Safe:
+        case ByteCodeOp::BinOpMulS64_Safe:
+            if (ip->b.u64 == 1)
+            {
+                SET_OP(ip, ByteCodeOp::CopyRBtoRA64);
+                auto s    = ip->a.u32;
+                ip->a.u32 = ip->c.u32;
+                ip->b.u32 = s;
+                ip->flags &= ~BCI_IMM_B;
             }
             break;
 
@@ -5425,40 +5523,76 @@ void ByteCodeOptimizer::reduceForceSafe(ByteCodeOptContext* context, ByteCodeIns
         SET_OP(ip, ByteCodeOp::AffectOpMulEqU64_Safe);
         break;
 
+    case ByteCodeOp::BinOpPlusS8:
+        SET_OP(ip, ByteCodeOp::BinOpPlusS8_Safe);
+        break;
+    case ByteCodeOp::BinOpPlusS16:
+        SET_OP(ip, ByteCodeOp::BinOpPlusS16_Safe);
+        break;
     case ByteCodeOp::BinOpPlusS32:
         SET_OP(ip, ByteCodeOp::BinOpPlusS32_Safe);
         break;
-    case ByteCodeOp::BinOpPlusU32:
-        SET_OP(ip, ByteCodeOp::BinOpPlusU32_Safe);
-        break;
     case ByteCodeOp::BinOpPlusS64:
         SET_OP(ip, ByteCodeOp::BinOpPlusS64_Safe);
+        break;
+    case ByteCodeOp::BinOpPlusU8:
+        SET_OP(ip, ByteCodeOp::BinOpPlusU8_Safe);
+        break;
+    case ByteCodeOp::BinOpPlusU16:
+        SET_OP(ip, ByteCodeOp::BinOpPlusU16_Safe);
+        break;
+    case ByteCodeOp::BinOpPlusU32:
+        SET_OP(ip, ByteCodeOp::BinOpPlusU32_Safe);
         break;
     case ByteCodeOp::BinOpPlusU64:
         SET_OP(ip, ByteCodeOp::BinOpPlusU64_Safe);
         break;
 
+    case ByteCodeOp::BinOpMinusS8:
+        SET_OP(ip, ByteCodeOp::BinOpMinusS8_Safe);
+        break;
+    case ByteCodeOp::BinOpMinusS16:
+        SET_OP(ip, ByteCodeOp::BinOpMinusS16_Safe);
+        break;
     case ByteCodeOp::BinOpMinusS32:
         SET_OP(ip, ByteCodeOp::BinOpMinusS32_Safe);
         break;
-    case ByteCodeOp::BinOpMinusU32:
-        SET_OP(ip, ByteCodeOp::BinOpMinusU32_Safe);
-        break;
     case ByteCodeOp::BinOpMinusS64:
         SET_OP(ip, ByteCodeOp::BinOpMinusS64_Safe);
+        break;
+    case ByteCodeOp::BinOpMinusU8:
+        SET_OP(ip, ByteCodeOp::BinOpMinusU8_Safe);
+        break;
+    case ByteCodeOp::BinOpMinusU16:
+        SET_OP(ip, ByteCodeOp::BinOpMinusU16_Safe);
+        break;
+    case ByteCodeOp::BinOpMinusU32:
+        SET_OP(ip, ByteCodeOp::BinOpMinusU32_Safe);
         break;
     case ByteCodeOp::BinOpMinusU64:
         SET_OP(ip, ByteCodeOp::BinOpMinusU64_Safe);
         break;
 
+    case ByteCodeOp::BinOpMulS8:
+        SET_OP(ip, ByteCodeOp::BinOpMulS8_Safe);
+        break;
+    case ByteCodeOp::BinOpMulS16:
+        SET_OP(ip, ByteCodeOp::BinOpMulS16_Safe);
+        break;
     case ByteCodeOp::BinOpMulS32:
         SET_OP(ip, ByteCodeOp::BinOpMulS32_Safe);
         break;
-    case ByteCodeOp::BinOpMulU32:
-        SET_OP(ip, ByteCodeOp::BinOpMulU32_Safe);
-        break;
     case ByteCodeOp::BinOpMulS64:
         SET_OP(ip, ByteCodeOp::BinOpMulS64_Safe);
+        break;
+    case ByteCodeOp::BinOpMulU8:
+        SET_OP(ip, ByteCodeOp::BinOpMulU8_Safe);
+        break;
+    case ByteCodeOp::BinOpMulU16:
+        SET_OP(ip, ByteCodeOp::BinOpMulU16_Safe);
+        break;
+    case ByteCodeOp::BinOpMulU32:
+        SET_OP(ip, ByteCodeOp::BinOpMulU32_Safe);
         break;
     case ByteCodeOp::BinOpMulU64:
         SET_OP(ip, ByteCodeOp::BinOpMulU64_Safe);

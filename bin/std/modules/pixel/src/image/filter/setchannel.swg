@@ -55,7 +55,7 @@ impl Image
             case Color:     color = params.color
             case MinRGB:    color = Math.min(pix[0], pix[1], pix[2])
             case MaxRGB:    color = Math.max(pix[0], pix[1], pix[2])
-            case MeanRGB:   color = cast(u8) ((pix[0] + pix[1] + pix[2]) / 3)
+            case MeanRGB:   color = cast(u8) ((pix[0] +,up pix[1] +,up pix[2]) / 3)
             case Alpha:     color = pix[3]
             }
 

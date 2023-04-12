@@ -78,8 +78,8 @@ impl DateTime
     // Returns the day of week of the current date
     mtdc dayOfWeek()->DayOfWeek
     {
-        m := (month + 9) % 12
-        y := year - m/10
+        var m: u32 = (month + 9) % 12
+        var y: u32 = year - m/10
         dn := 365*y +,safe y/4 +,safe y/400 +,safe (m*306 + 5)/10 +,safe day-1 -,safe y/100
         dn += 3
         return cast(DayOfWeek) (dn % 7)

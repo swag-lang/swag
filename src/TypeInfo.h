@@ -323,9 +323,8 @@ struct TypeInfo
     Utf8 scopedName;
     Utf8 scopedNameExport;
 
-    AstNode*  declNode     = nullptr;
-    TypeInfo* promotedFrom = nullptr;
-    uint64_t  flags        = 0;
+    AstNode* declNode = nullptr;
+    uint64_t flags    = 0;
 
     uint32_t       sizeOf     = 0;
     TypeInfoKind   kind       = TypeInfoKind::Invalid;

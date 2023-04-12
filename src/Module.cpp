@@ -138,8 +138,10 @@ void Module::release()
     cacheSourceLoc.release();
     typeGen.release();
 
-    constantSegment.release();
-    compilerSegment.release();
+    // This is a problem because of premain called in bytecode, and type registration
+    // constantSegment.release();
+    // compilerSegment.release();
+
     mutableSegment.release();
     bssSegment.release();
     tlsSegment.release();

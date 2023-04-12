@@ -699,6 +699,27 @@ bool Parser::doModifiers(Token& forNode, TokenId tokenId, uint32_t& mdfFlags)
     while (token.id == TokenId::SymComma && !(token.flags & TOKENPARSE_LAST_BLANK) && !(token.flags & TOKENPARSE_LAST_EOL))
     {
         SWAG_CHECK(eatToken());
+
+        if (token.text == g_LangSpec->name_up)
+        {
+            switch (opId)
+            {
+            case TokenId::SymPlus:
+            case TokenId::SymMinus:
+            case TokenId::SymAsterisk:
+            case TokenId::SymSlash:
+            case TokenId::SymPercent:
+                break;
+            default:
+                return error(token, Fmt(Err(Syn0126), forNode.ctext()));
+            }
+
+            SWAG_VERIFY(!(mdfFlags & MODIFIER_UP), error(token, Fmt(Err(Syn0125), token.ctext())));
+            mdfFlags |= MODIFIER_UP;
+            SWAG_CHECK(eatToken());
+            continue;
+        }
+
         if (token.text == g_LangSpec->name_safe)
         {
             switch (opId)
@@ -859,6 +880,11 @@ bool Parser::doFactorExpression(AstNode** parent, uint32_t exprFlags, AstNode** 
         if (mdfFlags & MODIFIER_SMALL)
         {
             binaryNode->specFlags |= AstOp::SPECFLAG_SMALL;
+        }
+
+        if (mdfFlags & MODIFIER_UP)
+        {
+            binaryNode->specFlags |= AstOp::SPECFLAG_UP;
         }
 
         Ast::addChildBack(binaryNode, leftNode);

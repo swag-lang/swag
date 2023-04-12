@@ -751,10 +751,6 @@ bool TypeManager::castToNativeU8(SemanticContext* context, TypeInfo* fromType, A
         }
     }
 
-    // Try with promoted type
-    if (fromType->promotedFrom && fromType->promotedFrom->isNative(NativeTypeKind::U8) && !(castFlags & CASTFLAG_EXPLICIT))
-        castFlags |= CASTFLAG_EXPLICIT | CASTFLAG_FROM_PROMOTE;
-
     if (castFlags & CASTFLAG_EXPLICIT)
     {
         switch (fromType->nativeType)
@@ -769,12 +765,7 @@ bool TypeManager::castToNativeU8(SemanticContext* context, TypeInfo* fromType, A
         case NativeTypeKind::U16:
         case NativeTypeKind::U32:
         case NativeTypeKind::U64:
-            if (fromNode && (castFlags & CASTFLAG_FROM_PROMOTE))
-            {
-                fromNode->castedTypeInfo = fromType;
-                fromNode->typeInfo       = g_TypeMgr->typeInfoU8;
-            }
-            else if (fromNode && fromNode->flags & AST_VALUE_COMPUTED)
+            if (fromNode && fromNode->flags & AST_VALUE_COMPUTED)
             {
                 if (!(castFlags & CASTFLAG_JUST_CHECK))
                 {
@@ -881,10 +872,6 @@ bool TypeManager::castToNativeU16(SemanticContext* context, TypeInfo* fromType, 
         }
     }
 
-    // Try with promoted type
-    if (fromType->promotedFrom && fromType->promotedFrom->isNative(NativeTypeKind::U16) && !(castFlags & CASTFLAG_EXPLICIT))
-        castFlags |= CASTFLAG_EXPLICIT | CASTFLAG_FROM_PROMOTE;
-
     if (castFlags & CASTFLAG_EXPLICIT)
     {
         switch (fromType->nativeType)
@@ -899,12 +886,7 @@ bool TypeManager::castToNativeU16(SemanticContext* context, TypeInfo* fromType, 
         case NativeTypeKind::U16:
         case NativeTypeKind::U32:
         case NativeTypeKind::U64:
-            if (fromNode && (castFlags & CASTFLAG_FROM_PROMOTE))
-            {
-                fromNode->castedTypeInfo = fromType;
-                fromNode->typeInfo       = g_TypeMgr->typeInfoU16;
-            }
-            else if (fromNode && fromNode->flags & AST_VALUE_COMPUTED)
+            if (fromNode && fromNode->flags & AST_VALUE_COMPUTED)
             {
                 if (!(castFlags & CASTFLAG_JUST_CHECK))
                 {
@@ -1223,10 +1205,6 @@ bool TypeManager::castToNativeS8(SemanticContext* context, TypeInfo* fromType, A
         }
     }
 
-    // Try with promoted type
-    if (fromType->promotedFrom && fromType->promotedFrom->isNative(NativeTypeKind::S8) && !(castFlags & CASTFLAG_EXPLICIT))
-        castFlags |= CASTFLAG_EXPLICIT | CASTFLAG_FROM_PROMOTE;
-
     if (castFlags & CASTFLAG_EXPLICIT)
     {
         switch (fromType->nativeType)
@@ -1241,12 +1219,7 @@ bool TypeManager::castToNativeS8(SemanticContext* context, TypeInfo* fromType, A
         case NativeTypeKind::U16:
         case NativeTypeKind::U32:
         case NativeTypeKind::U64:
-            if (fromNode && (castFlags & CASTFLAG_FROM_PROMOTE))
-            {
-                fromNode->castedTypeInfo = fromType;
-                fromNode->typeInfo       = g_TypeMgr->typeInfoS8;
-            }
-            else if (fromNode && fromNode->flags & AST_VALUE_COMPUTED)
+            if (fromNode && fromNode->flags & AST_VALUE_COMPUTED)
             {
                 if (!(castFlags & CASTFLAG_JUST_CHECK))
                     fromNode->typeInfo = g_TypeMgr->typeInfoS8;
@@ -1338,10 +1311,6 @@ bool TypeManager::castToNativeS16(SemanticContext* context, TypeInfo* fromType, 
         }
     }
 
-    // Try with promoted type
-    if (fromType->promotedFrom && fromType->promotedFrom->isNative(NativeTypeKind::S16) && !(castFlags & CASTFLAG_EXPLICIT))
-        castFlags |= CASTFLAG_EXPLICIT | CASTFLAG_FROM_PROMOTE;
-
     if (castFlags & CASTFLAG_EXPLICIT)
     {
         switch (fromType->nativeType)
@@ -1356,12 +1325,7 @@ bool TypeManager::castToNativeS16(SemanticContext* context, TypeInfo* fromType, 
         case NativeTypeKind::U16:
         case NativeTypeKind::U32:
         case NativeTypeKind::U64:
-            if (fromNode && (castFlags & CASTFLAG_FROM_PROMOTE))
-            {
-                fromNode->castedTypeInfo = fromType;
-                fromNode->typeInfo       = g_TypeMgr->typeInfoS16;
-            }
-            else if (fromNode && fromNode->flags & AST_VALUE_COMPUTED)
+            if (fromNode && fromNode->flags & AST_VALUE_COMPUTED)
             {
                 if (!(castFlags & CASTFLAG_JUST_CHECK))
                     fromNode->typeInfo = g_TypeMgr->typeInfoS16;
@@ -2929,18 +2893,6 @@ bool TypeManager::castToSlice(SemanticContext* context, TypeInfo* toType, TypeIn
     return castError(context, toType, fromType, fromNode, castFlags);
 }
 
-void TypeManager::promote3264(AstNode* left, AstNode* right)
-{
-    promoteLeft(left, right, true);
-    promoteLeft(right, left, true);
-}
-
-void TypeManager::promote816(AstNode* left, AstNode* right)
-{
-    promoteLeft(left, right, false);
-    promoteLeft(right, left, false);
-}
-
 TypeInfo* TypeManager::promoteUntyped(TypeInfo* typeInfo)
 {
     if (typeInfo->isUntypedInteger())
@@ -2990,18 +2942,30 @@ void TypeManager::promoteUntypedInteger(AstNode* left, AstNode* right)
 
 bool TypeManager::promote32(SemanticContext* context, AstNode* left)
 {
-    TypeInfo* rightTypeInfo = TypeManager::concreteType(left->typeInfo);
-    if (!rightTypeInfo->isNative())
+    TypeInfo* typeInfo = TypeManager::concreteType(left->typeInfo);
+    if (!typeInfo->isNative())
         return true;
 
-    switch (rightTypeInfo->nativeType)
+    switch (typeInfo->nativeType)
     {
     case NativeTypeKind::S8:
+        if (left->flags & AST_VALUE_COMPUTED)
+            left->computedValue->reg.s64 = left->computedValue->reg.s8;
+        SWAG_CHECK(makeCompatibles(context, g_TypeMgr->typeInfoS32, nullptr, left, CASTFLAG_TRY_COERCE));
+        break;
     case NativeTypeKind::S16:
+        if (left->flags & AST_VALUE_COMPUTED)
+            left->computedValue->reg.s64 = left->computedValue->reg.s16;
         SWAG_CHECK(makeCompatibles(context, g_TypeMgr->typeInfoS32, nullptr, left, CASTFLAG_TRY_COERCE));
         break;
     case NativeTypeKind::U8:
+        if (left->flags & AST_VALUE_COMPUTED)
+            left->computedValue->reg.u64 = left->computedValue->reg.u8;
+        SWAG_CHECK(makeCompatibles(context, g_TypeMgr->typeInfoU32, nullptr, left, CASTFLAG_TRY_COERCE));
+        break;
     case NativeTypeKind::U16:
+        if (left->flags & AST_VALUE_COMPUTED)
+            left->computedValue->reg.u64 = left->computedValue->reg.u32;
         SWAG_CHECK(makeCompatibles(context, g_TypeMgr->typeInfoU32, nullptr, left, CASTFLAG_TRY_COERCE));
         break;
     default:
@@ -3011,25 +2975,24 @@ bool TypeManager::promote32(SemanticContext* context, AstNode* left)
     return true;
 }
 
-void TypeManager::promoteLeft(AstNode* left, AstNode* right, bool is3264)
+bool TypeManager::promote(SemanticContext* context, AstNode* left, AstNode* right)
+{
+    SWAG_CHECK(promoteLeft(context, left, right));
+    SWAG_CHECK(promoteLeft(context, right, left));
+    return true;
+}
+
+bool TypeManager::promoteLeft(SemanticContext* context, AstNode* left, AstNode* right)
 {
     TypeInfo* leftTypeInfo  = TypeManager::concreteType(left->typeInfo);
     TypeInfo* rightTypeInfo = TypeManager::concreteType(right->typeInfo);
 
     // Promotion only for native types
-    if (!leftTypeInfo->isNative() || !rightTypeInfo->isNative())
-        return;
+    if (!leftTypeInfo->isNativeInteger() && !leftTypeInfo->isNativeFloat())
+        return true;
+    if (!rightTypeInfo->isNativeInteger() && !rightTypeInfo->isNativeFloat())
+        return true;
 
-    // This native types do not have a promotion
-    switch (leftTypeInfo->nativeType)
-    {
-    case NativeTypeKind::Bool:
-    case NativeTypeKind::Rune:
-    case NativeTypeKind::String:
-        return;
-    default:
-        break;
-    }
     if (leftTypeInfo->isUntypedInteger() && !rightTypeInfo->isUntypedInteger())
     {
         promoteUntypedInteger(left, right);
@@ -3042,26 +3005,19 @@ void TypeManager::promoteLeft(AstNode* left, AstNode* right, bool is3264)
         rightTypeInfo = right->typeInfo;
     }
 
-    TypeInfo* newLeftTypeInfo = nullptr;
-    if (is3264)
-        newLeftTypeInfo = (TypeInfo*) g_TypeMgr->promoteMatrix3264[(int) leftTypeInfo->nativeType][(int) rightTypeInfo->nativeType];
-    else
-        newLeftTypeInfo = (TypeInfo*) g_TypeMgr->promoteMatrix[(int) leftTypeInfo->nativeType][(int) rightTypeInfo->nativeType];
-    if (newLeftTypeInfo == nullptr)
-        newLeftTypeInfo = leftTypeInfo;
-
+    auto newLeftTypeInfo = g_TypeMgr->promoteMatrix[(int) leftTypeInfo->nativeType][(int) rightTypeInfo->nativeType];
+    SWAG_ASSERT(newLeftTypeInfo);
     if (newLeftTypeInfo == leftTypeInfo)
-        return;
-
-    if (!(left->flags & AST_VALUE_COMPUTED) || !is3264)
-    {
-        left->typeInfo       = newLeftTypeInfo;
-        left->castedTypeInfo = leftTypeInfo;
-        return;
-    }
+        return true;
 
     left->typeInfo = newLeftTypeInfo;
-    auto newLeft   = newLeftTypeInfo->nativeType;
+    if (!(left->flags & AST_VALUE_COMPUTED))
+    {
+        left->castedTypeInfo = leftTypeInfo;
+        return true;
+    }
+
+    auto newLeft = newLeftTypeInfo->nativeType;
     switch (leftTypeInfo->nativeType)
     {
     case NativeTypeKind::U8:
@@ -3137,6 +3093,8 @@ void TypeManager::promoteLeft(AstNode* left, AstNode* right, bool is3264)
     default:
         break;
     }
+
+    return true;
 }
 
 bool TypeManager::makeCompatibles(SemanticContext* context, AstNode* leftNode, AstNode* rightNode, uint64_t castFlags)
