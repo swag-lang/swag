@@ -790,10 +790,7 @@ void BackendX64::emitBinOpIntDivAtReg(X64Gen& pp, ByteCodeInstruction* ip, bool 
     {
     case 8:
         if (ip->flags & BCI_IMM_A)
-        {
-            pp.emit_Load8_Immediate(ip->a.u8, RAX);
-            pp.emit_Extend_U8U32(RAX);
-        }
+            pp.emit_Load32_Immediate((uint32_t) ip->a.u8, RAX);
         else if (isSigned)
             pp.emit_LoadS8S32_Indirect(regOffset(ip->a.u32), RAX, RDI);
         else
@@ -932,7 +929,7 @@ void BackendX64::emitBinOpIntDivAtReg(X64Gen& pp, ByteCodeInstruction* ip, bool 
     switch (bits)
     {
     case 8:
-        if (modulo) // modulo in 8 bits stores the reminder in AH and not RDX
+        if (modulo)                           // modulo in 8 bits stores the reminder in AH and not RDX
             pp.concat.addString2("\x88\xE2"); // mov dl, ah
         pp.emit_Store8_Indirect(regOffset(ip->c.u32), sReg);
         break;

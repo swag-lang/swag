@@ -52,18 +52,21 @@
     else                                          \
         pp.emit_Load8_Indirect(regOffset(ip->b.u32), __reg);
 
-#define MK_IMMB_S8_TO_S32(__reg)                  \
-    if (ip->flags & BCI_IMM_B)                    \
-    {                                             \
-        pp.emit_Load8_Immediate(ip->b.u8, __reg); \
-        pp.emit_Extend_S8S32(__reg);              \
-    }                                             \
-    else                                          \
+#define MK_IMMB_S8_TO_S32(__reg)                             \
+    if (ip->flags & BCI_IMM_B)                               \
+        pp.emit_Load32_Immediate((int32_t) ip->b.s8, __reg); \
+    else                                                     \
         pp.emit_LoadS8S32_Indirect(regOffset(ip->b.u32), __reg, RDI);
 
 #define MK_IMMB_U8_TO_U32(__reg)                   \
     if (ip->flags & BCI_IMM_B)                     \
         pp.emit_Load32_Immediate(ip->b.u8, __reg); \
+    else                                           \
+        pp.emit_LoadU8U32_Indirect(regOffset(ip->b.u32), __reg, RDI);
+
+#define MK_IMMB_U8_TO_U16(__reg)                   \
+    if (ip->flags & BCI_IMM_B)                     \
+        pp.emit_Load16_Immediate(ip->b.u8, __reg); \
     else                                           \
         pp.emit_LoadU8U32_Indirect(regOffset(ip->b.u32), __reg, RDI);
 
@@ -109,13 +112,10 @@
     else                                          \
         pp.emit_Load8_Indirect(regOffset(ip->c.u32), __reg);
 
-#define MK_IMMC_S8_TO_S32(__reg)                  \
-    if (ip->flags & BCI_IMM_C)                    \
-    {                                             \
-        pp.emit_Load8_Immediate(ip->c.u8, __reg); \
-        pp.emit_Extend_S8S32(__reg);              \
-    }                                             \
-    else                                          \
+#define MK_IMMC_S8_TO_S32(__reg)                             \
+    if (ip->flags & BCI_IMM_C)                               \
+        pp.emit_Load32_Immediate((int32_t) ip->c.s8, __reg); \
+    else                                                     \
         pp.emit_LoadS8S32_Indirect(regOffset(ip->c.u32), __reg, RDI);
 
 #define MK_IMMC_U8_TO_U32(__reg)                   \

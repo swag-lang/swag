@@ -440,10 +440,6 @@ struct X64Gen
     void emit_CopyF32(CPURegister regSrc, CPURegister regDst);
     void emit_CopyF64(CPURegister regSrc, CPURegister regDst);
     void emit_CopyX(uint32_t count, uint32_t offset, CPURegister regDst, CPURegister regSrc);
-    void emit_Extend_S8S16(CPURegister reg);
-    void emit_Extend_S8S32(CPURegister reg);
-    void emit_Extend_U8U32(CPURegister reg);
-    void emit_Extend_U16U32(CPURegister reg);
     void emit_Extend_U16U64(CPURegister regSrc, CPURegister regDst);
     void emit_Extend_U8U64(CPURegister regSrc, CPURegister regDst);
     void emit_GlobalString(const Utf8& str, CPURegister reg);

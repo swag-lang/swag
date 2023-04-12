@@ -1282,54 +1282,6 @@ void X64Gen::emit_Add32_RSP(uint32_t value)
 
 /////////////////////////////////////////////////////////////////////
 
-void X64Gen::emit_Extend_S8S32(CPURegister reg)
-{
-    switch (reg)
-    {
-    case RAX:
-        concat.addString3("\x0F\xBE\xC0"); // movsx eax, al
-        break;
-    case RCX:
-        concat.addString3("\x0f\xbe\xC9"); // movsx ecx, cl
-        break;
-    default:
-        SWAG_ASSERT(false);
-        break;
-    }
-}
-
-void X64Gen::emit_Extend_S8S16(CPURegister reg)
-{
-    switch (reg)
-    {
-    case RAX:
-        concat.addString4("\x66\x0F\xBE\xC0"); // movsx ax, al
-        break;
-    case RCX:
-        concat.addString4("\x66\x0f\xbe\xC9"); // movsx cx, cl
-        break;
-    default:
-        SWAG_ASSERT(false);
-        break;
-    }
-}
-
-void X64Gen::emit_Extend_U8U32(CPURegister reg)
-{
-    // movzx eax, al
-    concat.addU8(0x0F);
-    concat.addU8(0xB6);
-    concat.addU8(getModRM(REGREG, reg, reg));
-}
-
-void X64Gen::emit_Extend_U16U32(CPURegister reg)
-{
-    // movzx rax, ax
-    concat.addU8(0x0F);
-    concat.addU8(0xB7);
-    concat.addU8(getModRM(REGREG, reg, reg));
-}
-
 void X64Gen::emit_Extend_U8U64(CPURegister regSrc, CPURegister regDst)
 {
     // movzx regDst.64, regSrc.8
@@ -2030,17 +1982,17 @@ void X64Gen::emit_GlobalString(const Utf8& str, CPURegister reg)
 
 void X64Gen::emit_Cwd()
 {
-    concat.addString2("\x66\x99"); // cwd
+    concat.addString2("\x66\x99");
 }
 
 void X64Gen::emit_Cdq()
 {
-    concat.addU8(0x99); // cdq
+    concat.addU8(0x99);
 }
 
 void X64Gen::emit_Cqo()
 {
-    concat.addString2("\x48\x99"); // cqo
+    concat.addString2("\x48\x99");
 }
 
 void X64Gen::emit_Not8(CPURegister reg)
