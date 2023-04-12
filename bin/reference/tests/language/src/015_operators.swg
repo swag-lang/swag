@@ -153,3 +153,27 @@ It will return the left expression if it is not zero, otherwise it will return t
         @assert(c == b)
     }
 }
+
+/**
+Unlike C, types are not promoted to 32 bits when dealing with 8 or 16 bits types. But types will be promoted if the two sides of an operation do not have the same type.
+*/
+#test
+{
+    #assert @typeof(0'u8 + 1'u8)  == u8
+    #assert @typeof(0'u8 + 1'u16) == u16    // Priority to bigger type
+    #assert @typeof(0'u8 + 1'u32) == u32
+    #assert @typeof(0'u8 + 1'u64) == u64
+    #assert @typeof(0'u8 + 1's8)  == s8     // Priority to signed type
+    #assert @typeof(0'u8 + 1's16) == s16
+    #assert @typeof(0'u8 + 1's32) == s32
+    #assert @typeof(0'u8 + 1's64) == s64
+    #assert @typeof(0'u8 + 1'f32) == f32
+    #assert @typeof(0'u8 + 1'f64) == f64
+
+    #assert @typeof(0's8 + 1'u16) == u16   // Priority to bigger type also
+
+    // This means that a 8/16 bits operation (like an addition) can more easily overflow if you do not take care.
+    // In that case, you can use the ',up' modifier on the operation, which will promote the type to at least 32 bits. The operation will be done accordingly.
+    #assert @typeof(255'u8 +,up 1'u8) == u32
+    #assert 255'u8 +,up 1'u8 == 256 // No overflow, because the operation is done in 32 bits.
+}

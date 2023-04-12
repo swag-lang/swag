@@ -37,6 +37,16 @@ Add the ',safe' modifier after the operation. This will disable safety checks.
 }
 
 /**
+For 8 or 16 bits, you can promote an operation to 32 bits by using ',up'.
+*/
+#test
+{
+    x := 255'u8 +,up 1
+    @assert(x == 256)
+    @assert(@typeof(x) == u32)
+}
+
+/**
 Swag will also check that a cast does not lose information.
 */
 #test
