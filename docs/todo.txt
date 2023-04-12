@@ -69,8 +69,6 @@ ambiguités : var x: STRUCT {} erreur naze
 TODO
 ****************************************
 
-// :STRANGE dans le code
-
 -------------------------------------
 @compilererror/warning with an optional hint for the error
 -------------------------------------
