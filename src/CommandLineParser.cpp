@@ -61,8 +61,7 @@ void CommandLineParser::setup(CommandLine* cmdLine)
     addArg("bu cl sc",       "--cfg-safety",           nullptr,    CommandLineType::EnumString,    &cmdLine->buildCfgSafety, "true|false|default", "generate safety guards");
     addArg("bu cl sc",       "--cfg-inline-bc",        nullptr,    CommandLineType::EnumString,    &cmdLine->buildCfgInlineBC, "true|false|default", "inline marked functions");
     addArg("bu cl sc",       "--cfg-optim-bc",         nullptr,    CommandLineType::EnumString,    &cmdLine->buildCfgOptimBC, "0|1|2|default", "bytecode optimization level");
-    addArg("bu cl sc",       "--cfg-optim-speed",      nullptr,    CommandLineType::EnumString,    &cmdLine->buildCfgOptimSpeed, "true|false|default", "optimize output for speed");
-    addArg("bu cl sc",       "--cfg-optim-size",       nullptr,    CommandLineType::EnumString,    &cmdLine->buildCfgOptimSize, "true|false|default", "optimize output for size");
+    addArg("bu cl sc",       "--cfg-optim-backend",    nullptr,    CommandLineType::EnumString,    &cmdLine->buildCfgOptim, "O1|O2|O3|Os|Oz|default", "optimize output for speed and/or size");
     addArg("bu cl sc",       "--cfg-stack-trace",      nullptr,    CommandLineType::EnumString,    &cmdLine->buildCfgStackTrace, "true|false|default", "generate call trace for errors");
     addArg("bu cl sc",       "--cfg-debug-alloc",      nullptr,    CommandLineType::EnumString,    &cmdLine->buildCfgDebugAlloc, "true|false|default", "use the debug allocator");
     addArg("bu cl sc",       "--cfg-llvm-ir",          nullptr,    CommandLineType::EnumString,    &cmdLine->buildCfgLlvmIR, "true|false|default", "generate .ir files (llvm backend)");

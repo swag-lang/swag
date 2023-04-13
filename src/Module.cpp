@@ -59,8 +59,7 @@ void Module::setup(const Utf8& moduleName, const Path& modulePath)
         buildCfg.safetyGuards             = 0;
         buildCfg.stackTrace               = false;
         buildCfg.debugAllocator           = true;
-        buildCfg.backendOptimizeSpeed     = false;
-        buildCfg.backendOptimizeSize      = false;
+        buildCfg.backendOptimize          = BuildCfgBackendOptim::O0;
         buildCfg.backendDebugInformations = false;
     }
     else if (g_CommandLine.buildCfg == "debug")
@@ -73,8 +72,7 @@ void Module::setup(const Utf8& moduleName, const Path& modulePath)
         buildCfg.safetyGuards             = SAFETY_ALL;
         buildCfg.stackTrace               = true;
         buildCfg.debugAllocator           = true;
-        buildCfg.backendOptimizeSpeed     = false;
-        buildCfg.backendOptimizeSize      = false;
+        buildCfg.backendOptimize          = BuildCfgBackendOptim::O0;
         buildCfg.backendDebugInformations = true;
     }
     else if (g_CommandLine.buildCfg == "fast-debug")
@@ -87,8 +85,7 @@ void Module::setup(const Utf8& moduleName, const Path& modulePath)
         buildCfg.safetyGuards             = SAFETY_ALL & ~SAFETY_NAN & ~SAFETY_BOOL;
         buildCfg.stackTrace               = true;
         buildCfg.debugAllocator           = true;
-        buildCfg.backendOptimizeSpeed     = true;
-        buildCfg.backendOptimizeSize      = false;
+        buildCfg.backendOptimize          = BuildCfgBackendOptim::O2;
         buildCfg.backendDebugInformations = true;
     }
     else if (g_CommandLine.buildCfg == "release")
@@ -101,8 +98,7 @@ void Module::setup(const Utf8& moduleName, const Path& modulePath)
         buildCfg.safetyGuards                   = 0;
         buildCfg.stackTrace                     = false;
         buildCfg.debugAllocator                 = false;
-        buildCfg.backendOptimizeSpeed           = true;
-        buildCfg.backendOptimizeSize            = false;
+        buildCfg.backendOptimize                = BuildCfgBackendOptim::O3;
         buildCfg.backendDebugInformations       = true;
         buildCfg.backendLLVM.fpMathFma          = true;
         buildCfg.backendLLVM.fpMathNoInf        = true;
@@ -117,10 +113,8 @@ void Module::setup(const Utf8& moduleName, const Path& modulePath)
         buildCfg.byteCodeOptimizeLevel = max(0, min(atoi(g_CommandLine.buildCfgOptimBC.c_str()), 2));
     if (g_CommandLine.buildCfgDebug != "default")
         buildCfg.backendDebugInformations = g_CommandLine.buildCfgDebug == "true" ? true : false;
-    if (g_CommandLine.buildCfgOptimSpeed != "default")
-        buildCfg.backendOptimizeSpeed = g_CommandLine.buildCfgOptimSpeed == "true" ? true : false;
-    if (g_CommandLine.buildCfgOptimSize != "default")
-        buildCfg.backendOptimizeSize = g_CommandLine.buildCfgOptimSize == "true" ? true : false;
+    if (g_CommandLine.buildCfgOptim != "default")
+        buildCfg.backendOptimize = (BuildCfgBackendOptim) max(0, min(atoi(g_CommandLine.buildCfgOptim.c_str()), 5));
     if (g_CommandLine.buildCfgSafety != "default")
         buildCfg.safetyGuards = g_CommandLine.buildCfgSafety == "true" ? SAFETY_ALL : 0;
     if (g_CommandLine.buildCfgStackTrace != "default")

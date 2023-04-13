@@ -2654,7 +2654,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             break;
         case ByteCodeOp::SetZeroAtPointerX:
             SWAG_ASSERT(ip->c.s64 >= 0 && ip->c.s64 <= 0x7FFFFFFF);
-            if (ip->b.u32 <= 128 && buildParameters.buildCfg->backendOptimizeSpeed)
+            if (ip->b.u32 <= 128 && !buildParameters.isDebug())
             {
                 pp.emit_Load64_Indirect(regOffset(ip->a.u32), RAX);
                 pp.emit_ClearX(ip->b.u32, ip->c.u32, RAX);
@@ -2689,7 +2689,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             pp.emit_Store64_Immediate(offsetStack + ip->a.u32, 0, RDI);
             break;
         case ByteCodeOp::SetZeroStackX:
-            if (ip->b.u32 <= 128 && buildParameters.buildCfg->backendOptimizeSpeed)
+            if (ip->b.u32 <= 128 && !buildParameters.isDebug())
                 pp.emit_ClearX(ip->b.u32, offsetStack + ip->a.u32, RDI);
             else
             {
@@ -2961,7 +2961,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             break;
 
         case ByteCodeOp::IntrinsicMemCpy:
-            if ((ip->flags & BCI_IMM_C) && ip->c.u64 <= 128 && buildParameters.buildCfg->backendOptimizeSpeed)
+            if ((ip->flags & BCI_IMM_C) && ip->c.u64 <= 128 && !buildParameters.isDebug())
             {
                 pp.emit_Load64_Indirect(regOffset(ip->a.u32), RCX);
                 pp.emit_Load64_Indirect(regOffset(ip->b.u32), RDX);
@@ -2980,7 +2980,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             }
             break;
         case ByteCodeOp::IntrinsicMemSet:
-            if ((ip->flags & BCI_IMM_B) && (ip->flags & BCI_IMM_C) && (ip->b.u8 == 0) && (ip->c.u64 <= 128) && buildParameters.buildCfg->backendOptimizeSpeed)
+            if ((ip->flags & BCI_IMM_B) && (ip->flags & BCI_IMM_C) && (ip->b.u8 == 0) && (ip->c.u64 <= 128) && !buildParameters.isDebug())
             {
                 pp.emit_Load64_Indirect(regOffset(ip->a.u32), RCX);
                 pp.emit_ClearX(ip->c.u32, 0, RCX);

@@ -16,7 +16,7 @@ static llvm::DILocation* debugLocGet(unsigned Line, unsigned Col, const llvm::MD
 void BackendLLVMDbg::setup(BackendLLVM* m, llvm::Module* modu)
 {
     llvm          = m;
-    isOptimized   = m->module->buildParameters.buildCfg->backendOptimizeSpeed || m->module->buildParameters.buildCfg->backendOptimizeSize;
+    isOptimized   = !m->module->buildParameters.isDebug();
     dbgBuilder    = new llvm::DIBuilder(*modu, true);
     llvmModule    = modu;
     llvmContext   = &modu->getContext();
@@ -429,7 +429,7 @@ void BackendLLVMDbg::startFunction(const BuildParameters& buildParameters, LLVMP
             countParams--;
         }
 
-        bool isDebug = !buildParameters.buildCfg->backendOptimizeSpeed && !buildParameters.buildCfg->backendOptimizeSize;
+        bool isDebug = buildParameters.isDebug();
 
         VectorNative<llvm::AllocaInst*> allocas;
         allocas.reserve((int) countParams);

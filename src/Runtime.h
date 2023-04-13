@@ -201,6 +201,16 @@ enum class BuildCfgSubBackendKind
     Console,
 };
 
+enum class BuildCfgBackendOptim
+{
+    O0,
+    O1,
+    O2,
+    O3,
+    Os,
+    Oz,
+};
+
 struct BuildCfg
 {
     // Module informations
@@ -236,8 +246,7 @@ struct BuildCfg
     BuildCfgBackendKind    backendKind              = BuildCfgBackendKind::Executable;
     BuildCfgSubBackendKind subBackendKind           = BuildCfgSubBackendKind::Console;
     bool                   backendDebugInformations = false;
-    bool                   backendOptimizeSpeed     = false;
-    bool                   backendOptimizeSize      = false;
+    BuildCfgBackendOptim   backendOptimize          = BuildCfgBackendOptim::O0;
 
     // Specific backend parameters
     BuildCfgBackendLLVM backendLLVM;

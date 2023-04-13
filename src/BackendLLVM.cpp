@@ -299,7 +299,7 @@ bool BackendLLVM::generateObjFile(const BuildParameters& buildParameters)
     }
 
     Utf8 targetTriple = Fmt("%s-%s-%s-%s", archName.c_str(), vendorName.c_str(), osName.c_str(), abiName.c_str()).c_str();
-    bool isDebug      = !buildParameters.buildCfg->backendOptimizeSpeed && !buildParameters.buildCfg->backendOptimizeSize;
+    bool isDebug      = buildParameters.isDebug();
 
     // Setup target
     modu.setTargetTriple(targetTriple.c_str());
@@ -352,10 +352,25 @@ bool BackendLLVM::generateObjFile(const BuildParameters& buildParameters)
 
     auto rm            = llvm::Optional<llvm::Reloc::Model>();
     auto targetMachine = target->createTargetMachine(targetTriple.c_str(), cpu.c_str(), features.c_str(), opt, rm);
-    if (isDebug)
+
+    switch (buildParameters.buildCfg->backendOptimize)
+    {
+    case BuildCfgBackendOptim::O0:
         targetMachine->setOptLevel(llvm::CodeGenOpt::None);
-    else
+        break;
+    case BuildCfgBackendOptim::O1:
+        targetMachine->setOptLevel(llvm::CodeGenOpt::Less);
+        break;
+    case BuildCfgBackendOptim::O2:
+    case BuildCfgBackendOptim::Os:
+    case BuildCfgBackendOptim::Oz:
+        targetMachine->setOptLevel(llvm::CodeGenOpt::Default);
+        break;
+    case BuildCfgBackendOptim::O3:
         targetMachine->setOptLevel(llvm::CodeGenOpt::Aggressive);
+        break;
+    }
+
     targetMachine->setO0WantsFastISel(true);
     modu.setDataLayout(targetMachine->createDataLayout());
 
@@ -388,12 +403,27 @@ bool BackendLLVM::generateObjFile(const BuildParameters& buildParameters)
     passBuilder.crossRegisterProxies(loopMgr, functionMgr, cgsccMgr, moduleMgr);
 
     llvm::OptimizationLevel optLevel;
-    if (isDebug)
+    switch (buildParameters.buildCfg->backendOptimize)
+    {
+    case BuildCfgBackendOptim::O0:
         optLevel = llvm::OptimizationLevel::O0;
-    else if (buildParameters.buildCfg->backendOptimizeSize)
-        optLevel = llvm::OptimizationLevel::Oz;
-    else
+        break;
+    case BuildCfgBackendOptim::O1:
+        optLevel = llvm::OptimizationLevel::O1;
+        break;
+    case BuildCfgBackendOptim::O2:
+        optLevel = llvm::OptimizationLevel::O2;
+        break;
+    case BuildCfgBackendOptim::O3:
         optLevel = llvm::OptimizationLevel::O3;
+        break;
+    case BuildCfgBackendOptim::Os:
+        optLevel = llvm::OptimizationLevel::Os;
+        break;
+    case BuildCfgBackendOptim::Oz:
+        optLevel = llvm::OptimizationLevel::Oz;
+        break;
+    }
 
     llvm::ModulePassManager modulePassMgr;
     if (optLevel == llvm::OptimizationLevel::O0)

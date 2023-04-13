@@ -83,8 +83,7 @@ struct CommandLine
     Utf8 buildCfgSafety     = "default";
     Utf8 buildCfgInlineBC   = "default";
     Utf8 buildCfgOptimBC    = "default";
-    Utf8 buildCfgOptimSpeed = "default";
-    Utf8 buildCfgOptimSize  = "default";
+    Utf8 buildCfgOptim      = "default";
     Utf8 buildCfgStackTrace = "default";
     Utf8 buildCfgDebugAlloc = "default";
     Utf8 buildCfgLlvmIR     = "default";

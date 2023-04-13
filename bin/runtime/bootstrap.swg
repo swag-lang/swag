@@ -574,6 +574,16 @@ namespace Swag
         Console
     }
 
+    enum BuildCfgBackendOptim
+    {
+        O0
+        O1
+        O2
+        O3
+        Os
+        Oz
+    }
+
     struct BuildCfg
     {
         // Module infos
@@ -609,8 +619,7 @@ namespace Swag
         backendKind               = BuildCfgBackendKind.Executable
         subBackendKind            = BuildCfgSubBackendKind.Console
         backendDebugInformations  = false
-        backendOptimizeSpeed      = false
-        backendOptimizeSize       = false
+        backendOptimize           = BuildCfgBackendOptim.O0
 
         // Specific backend parameters
         backendLLVM:    BuildCfgBackendLLVM
