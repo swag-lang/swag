@@ -414,30 +414,13 @@ void BackendLLVMDbg::startFunction(const BuildParameters& buildParameters, LLVMP
     // Parameters
     if (decl && decl->parameters && !(decl->attributeFlags & ATTRIBUTE_COMPILER_FUNC))
     {
-        int  idxParam    = 0;
-        auto countParams = decl->parameters->childs.size();
+        int               idxParam       = 0;
+        auto              countParams    = decl->parameters->childs.size();
+        llvm::AllocaInst* allocAVariadic = nullptr;
 
-        // Variadic. Pass as first parameters, but get type at the end
         if (typeFunc->flags & (TYPEINFO_VARIADIC | TYPEINFO_TYPED_VARIADIC))
         {
-            auto          child     = decl->parameters->childs.back();
-            const auto&   loc       = child->token.startLocation;
-            auto          typeParam = typeFunc->parameters.back()->typeInfo;
-            auto          scope     = SP;
-            llvm::DIType* type      = getType(typeParam, file);
-
-            llvm::DILocalVariable* var0   = dbgBuilder->createAutoVariable(scope, child->token.ctext(), file, loc.line + 1, type, !isOptimized);
-            auto                   allocA = builder.CreateAlloca(I64_TY(), builder.getInt64(2));
-
-            auto v0   = builder.CreateInBoundsGEP(I64_TY(), allocA, builder.getInt64(0));
-            auto arg0 = func->getArg(0);
-            builder.CreateStore(arg0, builder.CreatePointerCast(v0, arg0->getType()->getPointerTo()));
-
-            auto v1 = builder.CreateInBoundsGEP(I64_TY(), allocA, builder.getInt64(1));
-            builder.CreateStore(func->getArg(1), v1);
-
-            dbgBuilder->insertDeclare(allocA, var0, dbgBuilder->createExpression(), debugLocGet(loc.line + 1, loc.column, scope), pp.builder->GetInsertBlock());
-
+            allocAVariadic = builder.CreateAlloca(I64_TY(), builder.getInt64(2));
             idxParam += 2;
             countParams--;
         }
@@ -446,13 +429,8 @@ void BackendLLVMDbg::startFunction(const BuildParameters& buildParameters, LLVMP
             countParams--;
         }
 
-        // :OptimizedAwayDebugCrap
-        // Parameters are "optimized away" by the debugger, most of the time.
-        // The only way to have correct values seems to make a local copy of the parameter on the stack,
-        // and make the debugger use that copy instead of the parameter.
-        // Crap !
-        // So make a copy, except if we are in optimized mode...
-        bool                            isDebug = !buildParameters.buildCfg->backendOptimizeSpeed && !buildParameters.buildCfg->backendOptimizeSize;
+        bool isDebug = !buildParameters.buildCfg->backendOptimizeSpeed && !buildParameters.buildCfg->backendOptimizeSize;
+
         VectorNative<llvm::AllocaInst*> allocas;
         allocas.reserve((int) countParams);
         for (size_t i = 0; i < countParams; i++)
@@ -464,6 +442,12 @@ void BackendLLVMDbg::startFunction(const BuildParameters& buildParameters, LLVMP
                 allocA->setAlignment(llvm::Align{sizeof(void*)});
                 allocas.push_back(allocA);
             }
+
+            // :OptimizedAwayDebugCrap
+            // Parameters are "optimized away" by the debugger, most of the time.
+            // The only way to have correct values seems to make a local copy of the parameter on the stack,
+            // and make the debugger use that copy instead of the parameter.
+            // So make a copy, except if we are in optimized mode...
             else if (isDebug)
             {
                 auto allocA = builder.CreateAlloca(func->getArg(idxParam)->getType(), nullptr, func->getArg(idxParam)->getName());
@@ -474,6 +458,27 @@ void BackendLLVMDbg::startFunction(const BuildParameters& buildParameters, LLVMP
             {
                 allocas.push_back(nullptr);
             }
+        }
+
+        // Variadic. Pass as first parameters, but get type at the end
+        if (typeFunc->flags & (TYPEINFO_VARIADIC | TYPEINFO_TYPED_VARIADIC))
+        {
+            auto          child     = decl->parameters->childs.back();
+            const auto&   loc       = child->token.startLocation;
+            auto          typeParam = typeFunc->parameters.back()->typeInfo;
+            auto          scope     = SP;
+            llvm::DIType* type      = getType(typeParam, file);
+
+            llvm::DILocalVariable* var0 = dbgBuilder->createAutoVariable(scope, child->token.ctext(), file, loc.line + 1, type, !isOptimized);
+
+            auto v0   = builder.CreateInBoundsGEP(I64_TY(), allocAVariadic, builder.getInt64(0));
+            auto arg0 = func->getArg(0);
+            builder.CreateStore(arg0, builder.CreatePointerCast(v0, arg0->getType()->getPointerTo()));
+
+            auto v1 = builder.CreateInBoundsGEP(I64_TY(), allocAVariadic, builder.getInt64(1));
+            builder.CreateStore(func->getArg(1), v1);
+
+            dbgBuilder->insertDeclare(allocAVariadic, var0, dbgBuilder->createExpression(), debugLocGet(loc.line + 1, loc.column, scope), pp.builder->GetInsertBlock());
         }
 
         for (size_t i = 0; i < countParams; i++)
