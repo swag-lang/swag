@@ -94,7 +94,6 @@ llvm debug, pas à jour
 - debug lambda capture parameters not visible
 - variables local en #[Swag.global]
 - mettre les constants
-- mettre les enums (void CodeViewDebug::emitStaticConstMemberList())
 -------------------------------------
 
 

@@ -1,4 +1,5 @@
 #define IX_TY(__n) llvm::Type::getIntNTy(context, __n)
+#define I1_TY() llvm::Type::getInt1Ty(context)
 #define I8_TY() llvm::Type::getInt8Ty(context)
 #define I16_TY() llvm::Type::getInt16Ty(context)
 #define I32_TY() llvm::Type::getInt32Ty(context)

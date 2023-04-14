@@ -3,7 +3,10 @@ struct A
     x, y: s32
 }
 
-const X4473 = 666
+const X44734 = cast(s32) 0xFF
+const X4473 = 665
+const TOTO4473 = "toto"
+var Y4473 = 666
 
 enum RGB
 {

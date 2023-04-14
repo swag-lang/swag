@@ -736,10 +736,6 @@ void BackendLLVMDbg::createGlobalVariablesForSegment(const BuildParameters& buil
 
     for (auto node : *all)
     {
-        // Compile time constant
-        if (node->flags & AST_VALUE_COMPUTED)
-            continue;
-
         auto resolved = node->resolvedSymbolOverload;
         auto typeInfo = node->typeInfo;
         auto file     = compileUnit->getFile();
@@ -747,29 +743,86 @@ void BackendLLVMDbg::createGlobalVariablesForSegment(const BuildParameters& buil
         if (!dbgType)
             continue;
 
-        // Segment is stored as an array of 64 bits elements. Get address of the first element
-        auto constExpr = llvm::ConstantExpr::getGetElementPtr(type, var, {offset.begin(), offset.end()});
-        // Convert to a pointer to bytes
-        constExpr = llvm::ConstantExpr::getPointerCast(constExpr, PTR_I8_TY());
-        // Convert to int, in order to make an Add
-        constExpr = llvm::ConstantExpr::getPtrToInt(constExpr, I64_TY());
-        // Add the byte offset
-        constExpr = llvm::ConstantExpr::getAdd(constExpr, llvm::ConstantInt::get(llvm::Type::getInt64Ty(*pp.context), resolved->computedValue.storageOffset));
-        // Convert back to a pointer to bytes
-        constExpr = llvm::ConstantExpr::getIntToPtr(constExpr, PTR_I8_TY());
-
         // Cast to the correct type
         auto varType = llvm->swagTypeToLLVMType(buildParameters, module, typeInfo);
         if (!varType)
             continue;
 
-        varType         = varType->getPointerTo();
-        constExpr       = llvm::ConstantExpr::getPointerCast(constExpr, varType);
-        auto name       = node->token.ctext();
-        auto g          = new llvm::GlobalVariable(modu, varType, false, llvm::GlobalValue::ExternalLinkage, constExpr, name);
-        auto dbgRefType = getReferenceToType(typeInfo, file);
-        auto gve        = pp.dbg->dbgBuilder->createGlobalVariableExpression(compileUnit, name, name, file, 0, dbgRefType, dbgType, true);
-        g->addDebugInfo(gve);
+        auto nameU = node->getScopedName();
+        auto name = nameU.c_str();
+
+        if (node->flags & AST_VALUE_COMPUTED)
+        {
+            llvm::Constant* constant = nullptr;
+            if (typeInfo->isNative())
+            {
+                switch (typeInfo->nativeType)
+                {
+                case NativeTypeKind::S8:
+                    constant = llvm::ConstantInt::get(I8_TY(), node->computedValue->reg.s32, true);
+                    break;
+                case NativeTypeKind::S16:
+                    constant = llvm::ConstantInt::get(I8_TY(), node->computedValue->reg.s16, true);
+                    break;
+                case NativeTypeKind::S32:
+                    constant = llvm::ConstantInt::get(I32_TY(), node->computedValue->reg.s32, true);
+                    break;
+                case NativeTypeKind::S64:
+                    constant = llvm::ConstantInt::get(I32_TY(), node->computedValue->reg.s64, true);
+                    break;
+                case NativeTypeKind::U8:
+                    constant = llvm::ConstantInt::get(I8_TY(), node->computedValue->reg.s32, false);
+                    break;
+                case NativeTypeKind::U16:
+                    constant = llvm::ConstantInt::get(I8_TY(), node->computedValue->reg.s16, false);
+                    break;
+                case NativeTypeKind::U32:
+                case NativeTypeKind::Rune:
+                    constant = llvm::ConstantInt::get(I32_TY(), node->computedValue->reg.s32, false);
+                    break;
+                case NativeTypeKind::U64:
+                    constant = llvm::ConstantInt::get(I32_TY(), node->computedValue->reg.s64, false);
+                    break;
+                case NativeTypeKind::F32:
+                    constant = llvm::ConstantFP::get(F32_TY(), node->computedValue->reg.f32);
+                    break;
+                case NativeTypeKind::F64:
+                    constant = llvm::ConstantFP::get(F64_TY(), node->computedValue->reg.f64);
+                    break;
+                case NativeTypeKind::Bool:
+                    constant = llvm::ConstantInt::get(I1_TY(), node->computedValue->reg.b, false);
+                    break;
+                }
+            }
+
+            if (constant)
+            {
+                auto g   = new llvm::GlobalVariable(modu, constant->getType(), true, llvm::GlobalValue::PrivateLinkage, constant, name);
+                auto gve = pp.dbg->dbgBuilder->createGlobalVariableExpression(compileUnit, node->token.ctext(), name, file, 1, dbgType, true);
+                g->addDebugInfo(gve);
+            }
+        }
+        else
+        {
+            // Segment is stored as an array of 64 bits elements. Get address of the first element
+            auto constExpr = llvm::ConstantExpr::getGetElementPtr(type, var, {offset.begin(), offset.end()});
+            // Convert to a pointer to bytes
+            constExpr = llvm::ConstantExpr::getPointerCast(constExpr, PTR_I8_TY());
+            // Convert to int, in order to make an Add
+            constExpr = llvm::ConstantExpr::getPtrToInt(constExpr, I64_TY());
+            // Add the byte offset
+            constExpr = llvm::ConstantExpr::getAdd(constExpr, llvm::ConstantInt::get(llvm::Type::getInt64Ty(*pp.context), resolved->computedValue.storageOffset));
+            // Convert back to a pointer to bytes
+            constExpr = llvm::ConstantExpr::getIntToPtr(constExpr, PTR_I8_TY());
+
+            varType   = varType->getPointerTo();
+            constExpr = llvm::ConstantExpr::getPointerCast(constExpr, varType);
+
+            auto g          = new llvm::GlobalVariable(modu, varType, false, llvm::GlobalValue::ExternalLinkage, constExpr, name);
+            auto dbgRefType = getReferenceToType(typeInfo, file);
+            auto gve        = pp.dbg->dbgBuilder->createGlobalVariableExpression(compileUnit, node->token.ctext(), name, file, 0, dbgRefType, true);
+            g->addDebugInfo(gve);
+        }
     }
 }
 
