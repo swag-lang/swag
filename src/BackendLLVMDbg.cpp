@@ -110,10 +110,11 @@ llvm::DIType* BackendLLVMDbg::getEnumType(TypeInfo* typeInfo, llvm::DIFile* file
             subscripts.push_back(typeField);
         }
 
-        auto lineNo        = typeInfo->declNode->token.startLocation.line + 1;
-        auto rawType       = getType(typeInfoEnum->rawType, file);
-        auto content       = dbgBuilder->getOrCreateArray({subscripts.begin(), subscripts.end()});
-        auto result        = dbgBuilder->createEnumerationType(scope, typeInfo->name.c_str(), file, lineNo, typeInfo->sizeOf * 8, 0, content, rawType);
+        auto lineNo  = typeInfo->declNode->token.startLocation.line + 1;
+        auto rawType = getType(typeInfoEnum->rawType, file);
+        auto content = dbgBuilder->getOrCreateArray({subscripts.begin(), subscripts.end()});
+        typeInfo->computeScopedName();
+        auto result        = dbgBuilder->createEnumerationType(scope, typeInfo->scopedName.c_str(), file, lineNo, typeInfo->sizeOf * 8, 0, content, rawType);
         mapTypes[typeInfo] = result;
         return result;
     }
@@ -150,10 +151,8 @@ llvm::DIType* BackendLLVMDbg::getStructType(TypeInfo* typeInfo, llvm::DIFile* fi
     auto scope  = file->getScope();
     auto noFlag = llvm::DINode::DIFlags::FlagZero;
     auto lineNo = typeInfo->declNode->token.startLocation.line + 1;
-    auto name   = typeInfo->name;
-    Ast::normalizeIdentifierName(name);
     typeInfo->computeScopedName();
-    auto result = dbgBuilder->createStructType(scope, name.c_str(), file, lineNo, typeInfo->sizeOf * 8, 0, noFlag, nullptr, llvm::DINodeArray(), 0, nullptr, typeInfo->scopedName.c_str());
+    auto result = dbgBuilder->createStructType(scope, typeInfo->scopedName.c_str(), file, lineNo, typeInfo->sizeOf * 8, 0, noFlag, nullptr, llvm::DINodeArray(), 0, nullptr, typeInfo->scopedName.c_str());
 
     // Register it right away, so that even if a struct is referencing itself, this will work
     // and won't recurse forever
@@ -411,16 +410,22 @@ void BackendLLVMDbg::startFunction(const BuildParameters& buildParameters, LLVMP
         typeFunc = CastTypeInfo<TypeInfoFuncAttr>(decl->typeInfo, TypeInfoKind::FuncAttr);
     }
 
-    // Parameters
+    VectorNative<llvm::AllocaInst*> allocaParams;
+    VectorNative<llvm::AllocaInst*> allocaRetval;
+    llvm::AllocaInst*               allocaVariadic = nullptr;
+    size_t                          countParams    = 0;
+    int                             idxParam       = 0;
+    bool                            isDebug        = buildParameters.isDebug();
+
+    // Allocate some temporary variables linked to parameters
     if (decl && decl->parameters && !(decl->attributeFlags & ATTRIBUTE_COMPILER_FUNC))
     {
-        int               idxParam       = 0;
-        auto              countParams    = decl->parameters->childs.size();
-        llvm::AllocaInst* allocAVariadic = nullptr;
+        countParams = decl->parameters->childs.size();
+        allocaParams.reserve((uint32_t) countParams);
 
         if (typeFunc->flags & (TYPEINFO_VARIADIC | TYPEINFO_TYPED_VARIADIC))
         {
-            allocAVariadic = builder.CreateAlloca(I64_TY(), builder.getInt64(2));
+            allocaVariadic = builder.CreateAlloca(I64_TY(), builder.getInt64(2));
             idxParam += 2;
             countParams--;
         }
@@ -429,10 +434,6 @@ void BackendLLVMDbg::startFunction(const BuildParameters& buildParameters, LLVMP
             countParams--;
         }
 
-        bool isDebug = buildParameters.isDebug();
-
-        VectorNative<llvm::AllocaInst*> allocas;
-        allocas.reserve((int) countParams);
         for (size_t i = 0; i < countParams; i++)
         {
             auto typeParam = typeFunc->parameters[i]->typeInfo;
@@ -440,7 +441,7 @@ void BackendLLVMDbg::startFunction(const BuildParameters& buildParameters, LLVMP
             {
                 auto allocA = builder.CreateAlloca(I64_TY(), builder.getInt64(2));
                 allocA->setAlignment(llvm::Align{sizeof(void*)});
-                allocas.push_back(allocA);
+                allocaParams.push_back(allocA);
             }
 
             // :OptimizedAwayDebugCrap
@@ -452,14 +453,35 @@ void BackendLLVMDbg::startFunction(const BuildParameters& buildParameters, LLVMP
             {
                 auto allocA = builder.CreateAlloca(func->getArg(idxParam)->getType(), nullptr, func->getArg(idxParam)->getName());
                 allocA->setAlignment(llvm::Align{sizeof(void*)});
-                allocas.push_back(allocA);
+                allocaParams.push_back(allocA);
             }
             else
             {
-                allocas.push_back(nullptr);
+                allocaParams.push_back(nullptr);
             }
         }
+    }
 
+    // Allocate some temporary variables for each local 'retval', in order to make a copy of the return pointer
+    if (func->arg_size() > 0)
+    {
+        for (auto localVar : bc->localVars)
+        {
+            SymbolOverload* overload = localVar->resolvedSymbolOverload;
+            if (overload->node->flags & AST_GENERATED)
+                continue;
+
+            if (overload->flags & OVERLOAD_RETVAL)
+            {
+                auto allocA = builder.CreateAlloca(I64_TY(), builder.getInt64(1));
+                allocA->setAlignment(llvm::Align{sizeof(void*)});
+                allocaRetval.push_back(allocA);
+            }
+        }
+    }
+
+    if (decl && decl->parameters && !(decl->attributeFlags & ATTRIBUTE_COMPILER_FUNC))
+    {
         // Variadic. Pass as first parameters, but get type at the end
         if (typeFunc->flags & (TYPEINFO_VARIADIC | TYPEINFO_TYPED_VARIADIC))
         {
@@ -471,14 +493,14 @@ void BackendLLVMDbg::startFunction(const BuildParameters& buildParameters, LLVMP
 
             llvm::DILocalVariable* var0 = dbgBuilder->createAutoVariable(scope, child->token.ctext(), file, loc.line + 1, type, !isOptimized);
 
-            auto v0   = builder.CreateInBoundsGEP(I64_TY(), allocAVariadic, builder.getInt64(0));
+            auto v0   = builder.CreateInBoundsGEP(I64_TY(), allocaVariadic, builder.getInt64(0));
             auto arg0 = func->getArg(0);
             builder.CreateStore(arg0, builder.CreatePointerCast(v0, arg0->getType()->getPointerTo()));
 
-            auto v1 = builder.CreateInBoundsGEP(I64_TY(), allocAVariadic, builder.getInt64(1));
+            auto v1 = builder.CreateInBoundsGEP(I64_TY(), allocaVariadic, builder.getInt64(1));
             builder.CreateStore(func->getArg(1), v1);
 
-            dbgBuilder->insertDeclare(allocAVariadic, var0, dbgBuilder->createExpression(), debugLocGet(loc.line + 1, loc.column, scope), pp.builder->GetInsertBlock());
+            dbgBuilder->insertDeclare(allocaVariadic, var0, dbgBuilder->createExpression(), debugLocGet(loc.line + 1, loc.column, scope), pp.builder->GetInsertBlock());
         }
 
         for (size_t i = 0; i < countParams; i++)
@@ -488,7 +510,7 @@ void BackendLLVMDbg::startFunction(const BuildParameters& buildParameters, LLVMP
             auto        typeParam = typeFunc->parameters[i]->typeInfo;
             auto        scope     = SP;
             auto        location  = debugLocGet(loc.line + 1, loc.column, scope);
-            auto        allocA    = allocas[i];
+            auto        allocA    = allocaParams[i];
 
             // If parameters are passed with two registers, make a local variable instead of a reference to
             // the parameters
@@ -552,25 +574,24 @@ void BackendLLVMDbg::startFunction(const BuildParameters& buildParameters, LLVMP
     }
 
     // Local variables
+    uint32_t idxRetVal = 0;
     for (auto localVar : bc->localVars)
     {
         SymbolOverload* overload = localVar->resolvedSymbolOverload;
         if (overload->node->flags & AST_GENERATED)
             continue;
 
-        auto typeInfo = overload->typeInfo;
+        auto  typeInfo = overload->typeInfo;
+        auto& loc      = localVar->token.startLocation;
 
-        auto& loc = localVar->token.startLocation;
-        if (overload->flags & OVERLOAD_RETVAL)
+        if (overload->flags & OVERLOAD_RETVAL && idxRetVal < allocaRetval.size())
         {
-            if (func->arg_size() > 0)
-            {
-                llvm::DIType*          type = getPointerToType(typeInfo, file);
-                llvm::DILocalVariable* var  = dbgBuilder->createParameterVariable(SP, localVar->token.ctext(), 1, file, loc.line + 1, type, !isOptimized);
-                // auto                   scope = getOrCreateScope(file, localVar->ownerScope);
-                //  auto                   v     = func->getArg(0);
-                //  dbgBuilder->insertDeclare(v, var, dbgBuilder->createExpression(), debugLocGet(loc.line + 1, loc.column, scope), pp.builder->GetInsertBlock());
-            }
+            llvm::DIType*          type   = getPointerToType(typeInfo, file);
+            auto                   scope  = getOrCreateScope(file, localVar->ownerScope);
+            llvm::DILocalVariable* var    = dbgBuilder->createAutoVariable(scope, localVar->token.ctext(), file, localVar->token.startLocation.line, type, !isOptimized);
+            auto                   allocA = allocaRetval[idxRetVal++];
+            dbgBuilder->insertDeclare(allocA, var, dbgBuilder->createExpression(), debugLocGet(loc.line + 1, loc.column, scope), pp.builder->GetInsertBlock());
+            builder.CreateStore(func->getArg((uint32_t) func->arg_size() - 1), allocA);
         }
         else
         {
@@ -670,7 +691,11 @@ llvm::DIScope* BackendLLVMDbg::getOrCreateScope(llvm::DIFile* file, Scope* scope
     {
         auto           toGenScope = toGen[i];
         llvm::DIScope* newScope;
-        if (toGenScope->isGlobal())
+        if (toGenScope->kind == ScopeKind::Namespace)
+        {
+            newScope = dbgBuilder->createNameSpace(parent, toGenScope->name.c_str(), true);
+        }
+        else if (toGenScope->isGlobal())
         {
             newScope = dbgBuilder->createLexicalBlockFile(parent, file);
         }
