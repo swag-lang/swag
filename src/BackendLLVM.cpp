@@ -110,17 +110,17 @@ bool BackendLLVM::createRuntime(const BuildParameters& buildParameters)
     // mainContext
     if (precompileIndex == 0)
     {
-        pp.mainContext          = new llvm::GlobalVariable(modu, pp.contextTy, false, llvm::GlobalValue::ExternalLinkage, llvm::ConstantAggregateZero::get(pp.contextTy), "swag_mainContext");
-        pp.defaultAllocTable    = new llvm::GlobalVariable(modu, pp.allocatorTy->getPointerTo(), false, llvm::GlobalValue::ExternalLinkage, llvm::ConstantPointerNull::get(pp.allocatorTy->getPointerTo()), "swag_defaultAllocTable");
-        pp.processInfos         = new llvm::GlobalVariable(modu, pp.processInfosTy, false, llvm::GlobalValue::ExternalLinkage, llvm::ConstantAggregateZero::get(pp.processInfosTy), "swag_processInfos");
-        pp.symTls_threadLocalId = new llvm::GlobalVariable(modu, I64_TY(), false, llvm::GlobalValue::ExternalLinkage, llvm::ConstantInt::get(I64_TY(), 0), "swag_tls_threadLocalId");
+        pp.mainContext          = new llvm::GlobalVariable(modu, pp.contextTy, false, llvm::GlobalValue::WeakAnyLinkage, llvm::ConstantAggregateZero::get(pp.contextTy), "swag_mainContext");
+        pp.defaultAllocTable    = new llvm::GlobalVariable(modu, pp.allocatorTy->getPointerTo(), false, llvm::GlobalValue::WeakAnyLinkage, llvm::ConstantPointerNull::get(pp.allocatorTy->getPointerTo()), "swag_defaultAllocTable");
+        pp.processInfos         = new llvm::GlobalVariable(modu, pp.processInfosTy, false, llvm::GlobalValue::WeakAnyLinkage, llvm::ConstantAggregateZero::get(pp.processInfosTy), "swag_processInfos");
+        pp.symTls_threadLocalId = new llvm::GlobalVariable(modu, I64_TY(), false, llvm::GlobalValue::WeakAnyLinkage, llvm::ConstantInt::get(I64_TY(), 0), "swag_tls_threadLocalId");
     }
     else
     {
-        pp.mainContext          = new llvm::GlobalVariable(modu, pp.contextTy, false, llvm::GlobalValue::InternalLinkage, nullptr, "swag_mainContext");
-        pp.defaultAllocTable    = new llvm::GlobalVariable(modu, pp.allocatorTy->getPointerTo(), false, llvm::GlobalValue::InternalLinkage, nullptr, "swag_defaultAllocTable");
-        pp.processInfos         = new llvm::GlobalVariable(modu, pp.processInfosTy, false, llvm::GlobalValue::InternalLinkage, nullptr, "swag_processInfos");
-        pp.symTls_threadLocalId = new llvm::GlobalVariable(modu, I64_TY(), false, llvm::GlobalValue::InternalLinkage, nullptr, "swag_tls_threadLocalId");
+        pp.mainContext          = new llvm::GlobalVariable(modu, pp.contextTy, false, llvm::GlobalValue::ExternalLinkage, nullptr, "swag_mainContext");
+        pp.defaultAllocTable    = new llvm::GlobalVariable(modu, pp.allocatorTy->getPointerTo(), false, llvm::GlobalValue::ExternalLinkage, nullptr, "swag_defaultAllocTable");
+        pp.processInfos         = new llvm::GlobalVariable(modu, pp.processInfosTy, false, llvm::GlobalValue::ExternalLinkage, nullptr, "swag_processInfos");
+        pp.symTls_threadLocalId = new llvm::GlobalVariable(modu, I64_TY(), false, llvm::GlobalValue::ExternalLinkage, nullptr, "swag_tls_threadLocalId");
     }
 
     // LIBC functions without llvm intrinsics
@@ -430,6 +430,10 @@ bool BackendLLVM::generateObjFile(const BuildParameters& buildParameters)
         modulePassMgr = passBuilder.buildO0DefaultPipeline(optLevel);
     else
         modulePassMgr = passBuilder.buildPerModuleDefaultPipeline(optLevel);
+
+#ifdef SWAG_DEV_MODE
+    modulePassMgr.addPass(llvm::VerifierPass());
+#endif
 
     llvm::legacy::PassManager codegenPassMgr;
     codegenPassMgr.add(new llvm::TargetTransformInfoWrapperPass(targetMachine->getTargetIRAnalysis()));

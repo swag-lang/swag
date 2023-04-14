@@ -523,8 +523,13 @@ void BackendLLVMDbg::startFunction(const BuildParameters& buildParameters, LLVMP
                     break;
                 }
 
-                llvm::DILocalVariable* var   = dbgBuilder->createParameterVariable(scope, child->token.ctext(), idxParam + 1, file, loc.line + 1, type, !isOptimized, llvm::DINode::FlagZero);
-                llvm::Value*           value = func->getArg(idxParam);
+                llvm::DINode::DIFlags flags = llvm::DINode::FlagZero;
+                if (typeParam->isSelf() && child->token.text == "self")
+                    flags |= llvm::DINode::FlagObjectPointer;
+
+                llvm::DILocalVariable* var = dbgBuilder->createParameterVariable(scope, child->token.ctext(), idxParam + 1, file, loc.line + 1, type, !isOptimized, flags);
+
+                llvm::Value* value = func->getArg(idxParam);
 
                 if (isDebug)
                 {
@@ -537,8 +542,8 @@ void BackendLLVMDbg::startFunction(const BuildParameters& buildParameters, LLVMP
                 // Create a 'this' variable for the debugger
                 if (typeParam->isSelf() && child->token.text == "self")
                 {
-                    var = dbgBuilder->createParameterVariable(scope, "this", idxParam + 1, file, loc.line + 1, type, !isOptimized, llvm::DINode::FlagObjectPointer);
-                    dbgBuilder->insertDeclare(value, var, dbgBuilder->createExpression(), location, pp.builder->GetInsertBlock());
+                    var = dbgBuilder->createParameterVariable(scope, "this", idxParam + 1, file, loc.line + 1, type, !isOptimized, flags);
+                    // dbgBuilder->insertDeclare(value, var, dbgBuilder->createExpression(), location, pp.builder->GetInsertBlock());
                 }
             }
 
@@ -550,18 +555,21 @@ void BackendLLVMDbg::startFunction(const BuildParameters& buildParameters, LLVMP
     for (auto localVar : bc->localVars)
     {
         SymbolOverload* overload = localVar->resolvedSymbolOverload;
-        auto            typeInfo = overload->typeInfo;
+        if (overload->node->flags & AST_GENERATED)
+            continue;
+
+        auto typeInfo = overload->typeInfo;
 
         auto& loc = localVar->token.startLocation;
         if (overload->flags & OVERLOAD_RETVAL)
         {
             if (func->arg_size() > 0)
             {
-                llvm::DIType*          type  = getPointerToType(typeInfo, file);
-                auto                   scope = getOrCreateScope(file, localVar->ownerScope);
-                llvm::DILocalVariable* var   = dbgBuilder->createParameterVariable(SP, localVar->token.ctext(), 1, file, loc.line + 1, type, !isOptimized);
-                auto                   v     = func->getArg(0);
-                dbgBuilder->insertDeclare(v, var, dbgBuilder->createExpression(), debugLocGet(loc.line + 1, loc.column, scope), pp.builder->GetInsertBlock());
+                llvm::DIType*          type = getPointerToType(typeInfo, file);
+                llvm::DILocalVariable* var  = dbgBuilder->createParameterVariable(SP, localVar->token.ctext(), 1, file, loc.line + 1, type, !isOptimized);
+                // auto                   scope = getOrCreateScope(file, localVar->ownerScope);
+                //  auto                   v     = func->getArg(0);
+                //  dbgBuilder->insertDeclare(v, var, dbgBuilder->createExpression(), debugLocGet(loc.line + 1, loc.column, scope), pp.builder->GetInsertBlock());
             }
         }
         else

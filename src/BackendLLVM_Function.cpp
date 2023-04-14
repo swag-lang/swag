@@ -3744,55 +3744,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             }
 #endif
 
-            // Emit result
-            if (returnType != g_TypeMgr->typeInfoVoid && !typeFunc->returnByCopy())
-            {
-                if (returnType->isNative())
-                {
-                    switch (returnType->nativeType)
-                    {
-                    case NativeTypeKind::U8:
-                    case NativeTypeKind::S8:
-                    case NativeTypeKind::Bool:
-                        builder.CreateRet(builder.CreateLoad(I8_TY(), allocResult));
-                        break;
-                    case NativeTypeKind::U16:
-                    case NativeTypeKind::S16:
-                        builder.CreateRet(builder.CreateLoad(I16_TY(), allocResult));
-                        break;
-                    case NativeTypeKind::U32:
-                    case NativeTypeKind::S32:
-                    case NativeTypeKind::Rune:
-                        builder.CreateRet(builder.CreateLoad(I32_TY(), allocResult));
-                        break;
-                    case NativeTypeKind::U64:
-                    case NativeTypeKind::S64:
-                        builder.CreateRet(builder.CreateLoad(I64_TY(), allocResult));
-                        break;
-                    case NativeTypeKind::F32:
-                        builder.CreateRet(builder.CreateLoad(F32_TY(), allocResult));
-                        break;
-                    case NativeTypeKind::F64:
-                        builder.CreateRet(builder.CreateLoad(F64_TY(), allocResult));
-                        break;
-                    default:
-                        SWAG_ASSERT(false);
-                        break;
-                    }
-                }
-                else if (returnType->isPointer() || returnType->isLambdaClosure())
-                {
-                    auto llvmType = swagTypeToLLVMType(buildParameters, moduleToGen, returnType);
-                    builder.CreateRet(builder.CreateLoad(llvmType, allocResult));
-                }
-                else
-                {
-                    SWAG_ASSERT(false);
-                }
-            }
-            else
-                builder.CreateRetVoid();
-
+            createRet(buildParameters, moduleToGen, typeFunc, returnType, allocResult);
             blockIsClosed = true;
             break;
         }
@@ -4822,16 +4774,16 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             switch ((TokenId) ip->d.u32)
             {
             case TokenId::IntrinsicAbs:
-                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::abs, {I8_TY(), builder.getInt1Ty()}, {r1, pp.cst0_i1}), r0);
+                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::abs, {I8_TY()}, {r1, pp.cst0_i1}), r0);
                 break;
             case TokenId::IntrinsicBitCountNz:
                 builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::ctpop, {I8_TY()}, {r1}), r0);
                 break;
             case TokenId::IntrinsicBitCountTz:
-                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::cttz, {I8_TY(), builder.getInt1Ty()}, {r1, pp.cst0_i1}), r0);
+                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::cttz, {I8_TY()}, {r1, pp.cst0_i1}), r0);
                 break;
             case TokenId::IntrinsicBitCountLz:
-                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::ctlz, {I8_TY(), builder.getInt1Ty()}, {r1, pp.cst0_i1}), r0);
+                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::ctlz, {I8_TY()}, {r1, pp.cst0_i1}), r0);
                 break;
             default:
                 ok = false;
@@ -4847,16 +4799,16 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             switch ((TokenId) ip->d.u32)
             {
             case TokenId::IntrinsicAbs:
-                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::abs, {I16_TY(), builder.getInt1Ty()}, {r1, pp.cst0_i1}), r0);
+                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::abs, {I16_TY()}, {r1, pp.cst0_i1}), r0);
                 break;
             case TokenId::IntrinsicBitCountNz:
                 builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::ctpop, {I16_TY()}, {r1}), r0);
                 break;
             case TokenId::IntrinsicBitCountTz:
-                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::cttz, {I16_TY(), builder.getInt1Ty()}, {r1, pp.cst0_i1}), r0);
+                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::cttz, {I16_TY()}, {r1, pp.cst0_i1}), r0);
                 break;
             case TokenId::IntrinsicBitCountLz:
-                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::ctlz, {I16_TY(), builder.getInt1Ty()}, {r1, pp.cst0_i1}), r0);
+                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::ctlz, {I16_TY()}, {r1, pp.cst0_i1}), r0);
                 break;
             case TokenId::IntrinsicByteSwap:
                 builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::bswap, {I16_TY()}, {r1}), r0);
@@ -4875,16 +4827,16 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             switch ((TokenId) ip->d.u32)
             {
             case TokenId::IntrinsicAbs:
-                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::abs, {I32_TY(), builder.getInt1Ty()}, {r1, pp.cst0_i1}), r0);
+                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::abs, {I32_TY()}, {r1, pp.cst0_i1}), r0);
                 break;
             case TokenId::IntrinsicBitCountNz:
                 builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::ctpop, {I32_TY()}, {r1}), r0);
                 break;
             case TokenId::IntrinsicBitCountTz:
-                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::cttz, {I32_TY(), builder.getInt1Ty()}, {r1, pp.cst0_i1}), r0);
+                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::cttz, {I32_TY()}, {r1, pp.cst0_i1}), r0);
                 break;
             case TokenId::IntrinsicBitCountLz:
-                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::ctlz, {I32_TY(), builder.getInt1Ty()}, {r1, pp.cst0_i1}), r0);
+                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::ctlz, {I32_TY()}, {r1, pp.cst0_i1}), r0);
                 break;
             case TokenId::IntrinsicByteSwap:
                 builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::bswap, {I32_TY()}, {r1}), r0);
@@ -4903,16 +4855,16 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             switch ((TokenId) ip->d.u32)
             {
             case TokenId::IntrinsicAbs:
-                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::abs, {I64_TY(), builder.getInt1Ty()}, {r1, pp.cst0_i1}), r0);
+                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::abs, {I64_TY()}, {r1, pp.cst0_i1}), r0);
                 break;
             case TokenId::IntrinsicBitCountNz:
                 builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::ctpop, {I64_TY()}, {r1}), r0);
                 break;
             case TokenId::IntrinsicBitCountTz:
-                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::cttz, {I64_TY(), builder.getInt1Ty()}, {r1, pp.cst0_i1}), r0);
+                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::cttz, {I64_TY()}, {r1, pp.cst0_i1}), r0);
                 break;
             case TokenId::IntrinsicBitCountLz:
-                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::ctlz, {I64_TY(), builder.getInt1Ty()}, {r1, pp.cst0_i1}), r0);
+                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::ctlz, {I64_TY()}, {r1, pp.cst0_i1}), r0);
                 break;
             case TokenId::IntrinsicByteSwap:
                 builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::bswap, {I64_TY()}, {r1}), r0);
@@ -4933,10 +4885,10 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             switch ((TokenId) ip->d.u32)
             {
             case TokenId::IntrinsicMin:
-                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::smin, {I8_TY(), I8_TY()}, {r1, r2}), r0);
+                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::smin, {I8_TY()}, {r1, r2}), r0);
                 break;
             case TokenId::IntrinsicMax:
-                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::smax, {I8_TY(), I8_TY()}, {r1, r2}), r0);
+                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::smax, {I8_TY()}, {r1, r2}), r0);
                 break;
             default:
                 ok = false;
@@ -4953,10 +4905,10 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             switch ((TokenId) ip->d.u32)
             {
             case TokenId::IntrinsicMin:
-                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::smin, {I16_TY(), I16_TY()}, {r1, r2}), r0);
+                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::smin, {I16_TY()}, {r1, r2}), r0);
                 break;
             case TokenId::IntrinsicMax:
-                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::smax, {I16_TY(), I16_TY()}, {r1, r2}), r0);
+                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::smax, {I16_TY()}, {r1, r2}), r0);
                 break;
             default:
                 ok = false;
@@ -4973,10 +4925,10 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             switch ((TokenId) ip->d.u32)
             {
             case TokenId::IntrinsicMin:
-                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::smin, {I32_TY(), I32_TY()}, {r1, r2}), r0);
+                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::smin, {I32_TY()}, {r1, r2}), r0);
                 break;
             case TokenId::IntrinsicMax:
-                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::smax, {I32_TY(), I32_TY()}, {r1, r2}), r0);
+                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::smax, {I32_TY()}, {r1, r2}), r0);
                 break;
             default:
                 ok = false;
@@ -4993,10 +4945,10 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             switch ((TokenId) ip->d.u32)
             {
             case TokenId::IntrinsicMin:
-                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::smin, {I64_TY(), I64_TY()}, {r1, r2}), r0);
+                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::smin, {I64_TY()}, {r1, r2}), r0);
                 break;
             case TokenId::IntrinsicMax:
-                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::smax, {I64_TY(), I64_TY()}, {r1, r2}), r0);
+                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::smax, {I64_TY()}, {r1, r2}), r0);
                 break;
             default:
                 ok = false;
@@ -5014,10 +4966,10 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             switch ((TokenId) ip->d.u32)
             {
             case TokenId::IntrinsicMin:
-                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::umin, {I8_TY(), I8_TY()}, {r1, r2}), r0);
+                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::umin, {I8_TY()}, {r1, r2}), r0);
                 break;
             case TokenId::IntrinsicMax:
-                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::umax, {I8_TY(), I8_TY()}, {r1, r2}), r0);
+                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::umax, {I8_TY()}, {r1, r2}), r0);
                 break;
             default:
                 ok = false;
@@ -5034,10 +4986,10 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             switch ((TokenId) ip->d.u32)
             {
             case TokenId::IntrinsicMin:
-                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::umin, {I16_TY(), I16_TY()}, {r1, r2}), r0);
+                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::umin, {I16_TY()}, {r1, r2}), r0);
                 break;
             case TokenId::IntrinsicMax:
-                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::umax, {I16_TY(), I16_TY()}, {r1, r2}), r0);
+                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::umax, {I16_TY()}, {r1, r2}), r0);
                 break;
             default:
                 ok = false;
@@ -5054,10 +5006,10 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             switch ((TokenId) ip->d.u32)
             {
             case TokenId::IntrinsicMin:
-                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::umin, {I32_TY(), I32_TY()}, {r1, r2}), r0);
+                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::umin, {I32_TY()}, {r1, r2}), r0);
                 break;
             case TokenId::IntrinsicMax:
-                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::umax, {I32_TY(), I32_TY()}, {r1, r2}), r0);
+                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::umax, {I32_TY()}, {r1, r2}), r0);
                 break;
             default:
                 ok = false;
@@ -5074,10 +5026,10 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             switch ((TokenId) ip->d.u32)
             {
             case TokenId::IntrinsicMin:
-                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::umin, {I64_TY(), I64_TY()}, {r1, r2}), r0);
+                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::umin, {I64_TY()}, {r1, r2}), r0);
                 break;
             case TokenId::IntrinsicMax:
-                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::umax, {I64_TY(), I64_TY()}, {r1, r2}), r0);
+                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::umax, {I64_TY()}, {r1, r2}), r0);
                 break;
             default:
                 ok = false;
@@ -5098,10 +5050,10 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
                 builder.CreateStore(builder.CreateCall(pp.fn_powf32, {r1, r2}), r0);
                 break;
             case TokenId::IntrinsicMin:
-                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::minnum, {F32_TY(), F32_TY()}, {r1, r2}), r0);
+                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::minnum, {F32_TY()}, {r1, r2}), r0);
                 break;
             case TokenId::IntrinsicMax:
-                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::maxnum, {F32_TY(), F32_TY()}, {r1, r2}), r0);
+                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::maxnum, {F32_TY()}, {r1, r2}), r0);
                 break;
             case TokenId::IntrinsicATan2:
                 builder.CreateStore(builder.CreateCall(pp.fn_atan2f32, {r1, r2}), r0);
@@ -5124,10 +5076,10 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
                 builder.CreateStore(builder.CreateCall(pp.fn_powf64, {r1, r2}), r0);
                 break;
             case TokenId::IntrinsicMin:
-                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::minnum, {F64_TY(), F64_TY()}, {r1, r2}), r0);
+                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::minnum, {F64_TY()}, {r1, r2}), r0);
                 break;
             case TokenId::IntrinsicMax:
-                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::maxnum, {F64_TY(), F64_TY()}, {r1, r2}), r0);
+                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::maxnum, {F64_TY()}, {r1, r2}), r0);
                 break;
             case TokenId::IntrinsicATan2:
                 builder.CreateStore(builder.CreateCall(pp.fn_atan2f64, {r1, r2}), r0);
@@ -5296,7 +5248,10 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
     }
 
     if (!blockIsClosed)
-        builder.CreateRetVoid();
+    {
+        createRet(buildParameters, moduleToGen, typeFunc, returnType, allocResult);
+    }
+
     return ok;
 }
 
@@ -5622,7 +5577,11 @@ void BackendLLVM::emitInternalPanic(const BuildParameters& buildParameters, Modu
 void BackendLLVM::setFuncAttributes(const BuildParameters& buildParameters, Module* moduleToGen, AstFuncDecl* funcNode, ByteCode* bc, llvm::Function* func)
 {
     if (!moduleToGen->mustOptimizeBK(bc->node))
+    {
         func->addFnAttr(llvm::Attribute::AttrKind::OptimizeNone);
+        func->addFnAttr(llvm::Attribute::AttrKind::NoInline);
+    }
+
     if (funcNode && funcNode->attributeFlags & ATTRIBUTE_NO_INLINE)
         func->addFnAttr(llvm::Attribute::AttrKind::NoInline);
 

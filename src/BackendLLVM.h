@@ -107,6 +107,7 @@ struct BackendLLVM : public Backend
     llvm::Type*         getIntType(llvm::LLVMContext& context, uint8_t numBits);
     llvm::Type*         getIntPtrType(llvm::LLVMContext& context, uint8_t numBits);
     llvm::Type*         swagTypeToLLVMType(const BuildParameters& buildParameters, Module* moduleToGen, TypeInfo* typeInfo);
+    void                createRet(const BuildParameters& buildParameters, Module* moduleToGen, TypeInfoFuncAttr* typeFunc, TypeInfo* returnType, llvm::AllocaInst* allocResult);
     llvm::FunctionType* getOrCreateFuncType(const BuildParameters& buildParameters, Module* moduleToGen, TypeInfoFuncAttr* typeFuncBC, bool closureToLambda = false);
     void                emitInternalPanic(const BuildParameters& buildParameters, Module* moduleToGen, llvm::AllocaInst* allocR, llvm::AllocaInst* allocT, AstNode* node, const char* message);
     void                setFuncAttributes(const BuildParameters& buildParameters, Module* moduleToGen, AstFuncDecl* funcNode, ByteCode* bc, llvm::Function* func);

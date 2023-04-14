@@ -6,6 +6,66 @@
 #include "Workspace.h"
 #include "Report.h"
 
+void BackendLLVM::createRet(const BuildParameters& buildParameters, Module* moduleToGen, TypeInfoFuncAttr* typeFunc, TypeInfo* returnType, llvm::AllocaInst* allocResult)
+{
+    int   ct              = buildParameters.compileType;
+    int   precompileIndex = buildParameters.precompileIndex;
+    auto& pp              = *perThread[ct][precompileIndex];
+    auto& context         = *pp.context;
+    auto& builder         = *pp.builder;
+
+    // Emit result
+    if (returnType != g_TypeMgr->typeInfoVoid && !typeFunc->returnByCopy())
+    {
+        if (returnType->isNative())
+        {
+            switch (returnType->nativeType)
+            {
+            case NativeTypeKind::U8:
+            case NativeTypeKind::S8:
+            case NativeTypeKind::Bool:
+                builder.CreateRet(builder.CreateLoad(I8_TY(), allocResult));
+                break;
+            case NativeTypeKind::U16:
+            case NativeTypeKind::S16:
+                builder.CreateRet(builder.CreateLoad(I16_TY(), allocResult));
+                break;
+            case NativeTypeKind::U32:
+            case NativeTypeKind::S32:
+            case NativeTypeKind::Rune:
+                builder.CreateRet(builder.CreateLoad(I32_TY(), allocResult));
+                break;
+            case NativeTypeKind::U64:
+            case NativeTypeKind::S64:
+                builder.CreateRet(builder.CreateLoad(I64_TY(), allocResult));
+                break;
+            case NativeTypeKind::F32:
+                builder.CreateRet(builder.CreateLoad(F32_TY(), allocResult));
+                break;
+            case NativeTypeKind::F64:
+                builder.CreateRet(builder.CreateLoad(F64_TY(), allocResult));
+                break;
+            default:
+                SWAG_ASSERT(false);
+                break;
+            }
+        }
+        else if (returnType->isPointer() || returnType->isLambdaClosure())
+        {
+            auto llvmType = swagTypeToLLVMType(buildParameters, moduleToGen, returnType);
+            builder.CreateRet(builder.CreateLoad(llvmType, allocResult));
+        }
+        else
+        {
+            SWAG_ASSERT(false);
+        }
+    }
+    else
+    {
+        builder.CreateRetVoid();
+    }
+}
+
 llvm::FunctionType* BackendLLVM::getOrCreateFuncType(const BuildParameters& buildParameters, Module* moduleToGen, TypeInfoFuncAttr* typeFunc, bool closureToLambda)
 {
     const auto& cc              = g_CallConv[typeFunc->callConv];

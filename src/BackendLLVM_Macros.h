@@ -204,52 +204,52 @@
     auto r0 = GEP8_PTR_F64(allocStack, ip->a.u32); \
     auto r1 = GEP8_PTR_F64(allocStack, ip->b.u32);
 
-#define OPEQ_OVERFLOW(__intr, __inst, __type, __msg)                                                                                                \
-    if (module->mustEmitSafetyOF(ip->node))                                                                                                         \
-    {                                                                                                                                               \
-        auto vs = builder.CreateIntrinsic(llvm::Intrinsic::__intr, {builder.__type, builder.__type}, {builder.CreateLoad(builder.__type, r1), r2}); \
-        auto v0 = builder.CreateExtractValue(vs, {0});                                                                                              \
-        auto v1 = builder.CreateExtractValue(vs, {1});                                                                                              \
-                                                                                                                                                    \
-        llvm::BasicBlock* blockOk  = llvm::BasicBlock::Create(context, "", func);                                                                   \
-        llvm::BasicBlock* blockErr = llvm::BasicBlock::Create(context, "", func);                                                                   \
-                                                                                                                                                    \
-        auto v2 = builder.CreateIsNull(v1);                                                                                                         \
-        builder.CreateCondBr(v2, blockOk, blockErr);                                                                                                \
-        builder.SetInsertPoint(blockErr);                                                                                                           \
-        emitInternalPanic(buildParameters, moduleToGen, allocR, allocT, ip->node, __msg);                                                           \
-        builder.CreateBr(blockOk);                                                                                                                  \
-        builder.SetInsertPoint(blockOk);                                                                                                            \
-        builder.CreateStore(v0, r1);                                                                                                                \
-    }                                                                                                                                               \
-    else                                                                                                                                            \
-    {                                                                                                                                               \
-        auto v0 = builder.__inst(builder.CreateLoad(builder.__type, r1), r2);                                                                       \
-        builder.CreateStore(v0, r1);                                                                                                                \
+#define OPEQ_OVERFLOW(__intr, __inst, __type, __msg)                                                                  \
+    if (module->mustEmitSafetyOF(ip->node))                                                                           \
+    {                                                                                                                 \
+        auto vs = builder.CreateBinaryIntrinsic(llvm::Intrinsic::__intr, builder.CreateLoad(builder.__type, r1), r2); \
+        auto v0 = builder.CreateExtractValue(vs, {0});                                                                \
+        auto v1 = builder.CreateExtractValue(vs, {1});                                                                \
+                                                                                                                      \
+        llvm::BasicBlock* blockOk  = llvm::BasicBlock::Create(context, "", func);                                     \
+        llvm::BasicBlock* blockErr = llvm::BasicBlock::Create(context, "", func);                                     \
+                                                                                                                      \
+        auto v2 = builder.CreateIsNull(v1);                                                                           \
+        builder.CreateCondBr(v2, blockOk, blockErr);                                                                  \
+        builder.SetInsertPoint(blockErr);                                                                             \
+        emitInternalPanic(buildParameters, moduleToGen, allocR, allocT, ip->node, __msg);                             \
+        builder.CreateBr(blockOk);                                                                                    \
+        builder.SetInsertPoint(blockOk);                                                                              \
+        builder.CreateStore(v0, r1);                                                                                  \
+    }                                                                                                                 \
+    else                                                                                                              \
+    {                                                                                                                 \
+        auto v0 = builder.__inst(builder.CreateLoad(builder.__type, r1), r2);                                         \
+        builder.CreateStore(v0, r1);                                                                                  \
     }
 
-#define OP_OVERFLOW(__intr, __inst, __type, __msg)                                                              \
-    if (module->mustEmitSafetyOF(ip->node))                                                                     \
-    {                                                                                                           \
-        auto vs = builder.CreateIntrinsic(llvm::Intrinsic::__intr, {builder.__type, builder.__type}, {r1, r2}); \
-        auto v0 = builder.CreateExtractValue(vs, {0});                                                          \
-        auto v1 = builder.CreateExtractValue(vs, {1});                                                          \
-                                                                                                                \
-        llvm::BasicBlock* blockOk  = llvm::BasicBlock::Create(context, "", func);                               \
-        llvm::BasicBlock* blockErr = llvm::BasicBlock::Create(context, "", func);                               \
-                                                                                                                \
-        auto v2 = builder.CreateIsNull(v1);                                                                     \
-        builder.CreateCondBr(v2, blockOk, blockErr);                                                            \
-        builder.SetInsertPoint(blockErr);                                                                       \
-        emitInternalPanic(buildParameters, moduleToGen, allocR, allocT, ip->node, __msg);                       \
-        builder.CreateBr(blockOk);                                                                              \
-        builder.SetInsertPoint(blockOk);                                                                        \
-        builder.CreateStore(v0, r0);                                                                            \
-    }                                                                                                           \
-    else                                                                                                        \
-    {                                                                                                           \
-        auto v0 = builder.__inst(r1, r2);                                                                       \
-        builder.CreateStore(v0, r0);                                                                            \
+#define OP_OVERFLOW(__intr, __inst, __type, __msg)                                        \
+    if (module->mustEmitSafetyOF(ip->node))                                               \
+    {                                                                                     \
+        auto vs = builder.CreateBinaryIntrinsic(llvm::Intrinsic::__intr, r1, r2);         \
+        auto v0 = builder.CreateExtractValue(vs, {0});                                    \
+        auto v1 = builder.CreateExtractValue(vs, {1});                                    \
+                                                                                          \
+        llvm::BasicBlock* blockOk  = llvm::BasicBlock::Create(context, "", func);         \
+        llvm::BasicBlock* blockErr = llvm::BasicBlock::Create(context, "", func);         \
+                                                                                          \
+        auto v2 = builder.CreateIsNull(v1);                                               \
+        builder.CreateCondBr(v2, blockOk, blockErr);                                      \
+        builder.SetInsertPoint(blockErr);                                                 \
+        emitInternalPanic(buildParameters, moduleToGen, allocR, allocT, ip->node, __msg); \
+        builder.CreateBr(blockOk);                                                        \
+        builder.SetInsertPoint(blockOk);                                                  \
+        builder.CreateStore(v0, r0);                                                      \
+    }                                                                                     \
+    else                                                                                  \
+    {                                                                                     \
+        auto v0 = builder.__inst(r1, r2);                                                 \
+        builder.CreateStore(v0, r0);                                                      \
     }
 
 inline llvm::Type* toNativeTy(llvm::LLVMContext& context, NativeTypeKind k)
