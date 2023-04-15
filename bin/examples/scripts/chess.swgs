@@ -92,10 +92,10 @@ func initGame()
 
 func initCells()
 {
-    loop i: 96
+    loop i: 96'u8
     {
-        x := cast(u8) (i%12)
-        y := cast(u8) (i/12)
+        x := i%12
+        y := i/12
 
         g_Board[i].piece = .None
         if x < 2 or x >= 10
@@ -207,7 +207,7 @@ func computeMoves()
     }
 
     // castle special case
-    var ki: s8 = g_Game.whiteTurn ? 6 : 90
+    ki := g_Game.whiteTurn ? 6's8 : 90's8
     littleCastle := g_Game.castle[contentToTreat, 0]
     bigCastle    := g_Game.castle[contentToTreat, 1]
 
@@ -346,7 +346,7 @@ func doMove(from, to: s8)
     }
 
     if g_Board[to].piece == .Pawn and Math.abs(cast(s8) (from - to)) == 24
-        g_Game.priseEnPassant = (from + to) / 2
+        g_Game.priseEnPassant = cast(s8) ((from +,up to) / 2)
     else
         g_Game.priseEnPassant = -1
 
@@ -414,7 +414,7 @@ func paintBoard(evt: *Event)
 
     loop column: 8
     {
-        str.buffer[0] = cast(u8)(65 + column)
+        str.buffer[0] = cast(u8) (65 + column)
         rs.set(str)
         painter.drawRichString(rect, &rs, rsf)
         rect.x += CellSize
@@ -423,7 +423,7 @@ func paintBoard(evt: *Event)
     rect = Math.Rectangle{0, b, b, CellSize}
     loop row: 8
     {
-        str.buffer[0] = cast(u8)(56 - row)
+        str.buffer[0] = cast(u8) (56 - row)
         rs.set(str)
         painter.drawRichString(rect, &rs, rsf)
         rect.y += CellSize
