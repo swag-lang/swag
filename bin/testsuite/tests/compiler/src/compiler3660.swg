@@ -1,5 +1,5 @@
 //#global skip
-struct A { x: s32; }
+struct A { x: u32; }
 impl A
 {
     mtd(op: string) opBinary(value: u32)->Self

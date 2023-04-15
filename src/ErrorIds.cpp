@@ -1105,7 +1105,7 @@ void initErrors()
     SWAG_ERROR(Hnt0042, "this should be replaced by 'func'");
     SWAG_ERROR(Hnt0068, "this tuple contains '%d' field(s)");
     SWAG_ERROR(Hnt0069, "this tuple is empty");
-    SWAG_ERROR(Hnt0032, "this type is '%s' (could be casted with 'cast(%s)')");
+    SWAG_ERROR(Hnt0032, "this type is '%s' (could be explicitly casted with 'cast(%s)')");
     SWAG_ERROR(Hnt0011, "this type is '%s'");
     SWAG_ERROR(Hnt0063, "this type is evaluated to '%s'");
     SWAG_ERROR(Hnt0022, "this type is immutable");
