@@ -4,6 +4,7 @@
 }
 
 using Core, Gui, Pixel
+
 const GridSize = 24
 const CellSize = 30'f32
 
@@ -15,13 +16,13 @@ struct Cell
     score:  s32
 }
 
-var g_Grid:     [GridSize, GridSize] Cell
-var g_FontCell: *Font
-var g_Lost:     bool
-var g_Win:      bool
-var g_NumMines: s32
-var g_NumMarks: s32
-var g_Density:  s32 = 5
+var g_Grid:       [GridSize, GridSize] Cell
+var g_FontCell:   *Font
+var g_Lost:       bool
+var g_Win:        bool
+var g_NumMines:   s32
+var g_NumMarks:   s32
+var g_Density:    s32 = 5
 var g_Discovered: u32
 
 func fillGrid()
@@ -187,7 +188,7 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
                 }
                 elif g_Grid[i, j].score
                 {
-                    str  := Format.toString("%", g_Grid[i, j].score)
+                    str := Format.toString("%", g_Grid[i, j].score)
 
                     var rs:  RichString
                     var rsf: RichStringFormat

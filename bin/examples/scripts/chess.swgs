@@ -256,7 +256,7 @@ func getPawnMoves(board: ^Cell, from: s8, moves: *Array's8)
 func getPawnAttacks(board: ^Cell, from: s8, moves: *Array's8)
 {
     isWhite := board[from].content == .White
-    targetContent := isWhite  ? ContentEnum.Black : .White
+    targetContent := isWhite ? ContentEnum.Black : .White
     offset := isWhite ? 12's8 : -12's8
     target := getCellWithOffset(board, from, offset-1)
     if target != -1 and (board[target].content == targetContent or g_Game.priseEnPassant == target)
