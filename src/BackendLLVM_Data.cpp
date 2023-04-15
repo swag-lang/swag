@@ -119,9 +119,9 @@ bool BackendLLVM::emitInitSeg(const BuildParameters& buildParameters, DataSegmen
         SWAG_ASSERT(false);
         break;
     }
-    llvm::Function* fct = llvm::Function::Create(fctType, llvm::Function::InternalLinkage, name, modu);
 
-    llvm::BasicBlock* BB = llvm::BasicBlock::Create(context, "entry", fct);
+    llvm::Function*   fct = llvm::Function::Create(fctType, llvm::Function::InternalLinkage, name, modu);
+    llvm::BasicBlock* BB  = llvm::BasicBlock::Create(context, "entry", fct);
     builder.SetInsertPoint(BB);
 
     for (auto& k : dataSegment->initPtr)
@@ -129,28 +129,21 @@ bool BackendLLVM::emitInitSeg(const BuildParameters& buildParameters, DataSegmen
         auto fromSegment = k.fromSegment;
         if (fromSegment == SegmentKind::Me)
             fromSegment = me;
+
+        auto dest = GEP8_PTR_I64(gVar, k.patchOffset);
         if (fromSegment == SegmentKind::Constant)
         {
-            auto dest = builder.CreateInBoundsGEP(I8_TY(), gVar, builder.getInt64(k.patchOffset));
-            dest      = builder.CreatePointerCast(dest, PTR_I64_TY());
-            auto src  = builder.CreateInBoundsGEP(I8_TY(), pp.constantSeg, builder.getInt64(k.fromOffset));
-            src       = builder.CreateCast(llvm::Instruction::CastOps::PtrToInt, src, I64_TY());
+            auto src = GEP8_PTR_I64(pp.constantSeg, k.fromOffset);
             builder.CreateStore(src, dest);
         }
         else if (fromSegment == SegmentKind::Bss)
         {
-            auto dest = builder.CreateInBoundsGEP(I8_TY(), gVar, builder.getInt64(k.patchOffset));
-            dest      = builder.CreatePointerCast(dest, PTR_I64_TY());
-            auto src  = builder.CreateInBoundsGEP(I8_TY(), pp.bssSeg, builder.getInt64(k.fromOffset));
-            src       = builder.CreateCast(llvm::Instruction::CastOps::PtrToInt, src, I64_TY());
+            auto src = GEP8_PTR_I64(pp.bssSeg, k.fromOffset);
             builder.CreateStore(src, dest);
         }
         else if (fromSegment == SegmentKind::Data)
         {
-            auto dest = builder.CreateInBoundsGEP(I8_TY(), gVar, builder.getInt64(k.patchOffset));
-            dest      = builder.CreatePointerCast(dest, PTR_I64_TY());
-            auto src  = builder.CreateInBoundsGEP(I8_TY(), pp.mutableSeg, builder.getInt64(k.fromOffset));
-            src       = builder.CreateCast(llvm::Instruction::CastOps::PtrToInt, src, I64_TY());
+            auto src = GEP8_PTR_I64(pp.mutableSeg, k.fromOffset);
             builder.CreateStore(src, dest);
         }
         else
@@ -161,8 +154,7 @@ bool BackendLLVM::emitInitSeg(const BuildParameters& buildParameters, DataSegmen
 
     for (auto& k : dataSegment->initFuncPtr)
     {
-        auto dest = builder.CreateInBoundsGEP(I8_TY(), gVar, builder.getInt64(k.first));
-        dest      = builder.CreatePointerCast(dest, PTR_I64_TY());
+        auto dest = GEP8_PTR_I64(gVar, k.first);
         auto F    = modu.getOrInsertFunction(k.second.c_str(), fctType);
         auto src  = builder.CreateCast(llvm::Instruction::CastOps::PtrToInt, F.getCallee(), I64_TY());
         builder.CreateStore(src, dest);
