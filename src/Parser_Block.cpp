@@ -13,17 +13,51 @@ bool Parser::doIf(AstNode* parent, AstNode** result)
     SWAG_CHECK(eatToken());
     SWAG_VERIFY(token.id != TokenId::SymLeftCurly, error(node->token, Err(Syn0084)));
 
-    SWAG_CHECK(doExpression(node, EXPR_FLAG_NONE, &node->boolExpression));
-    SWAG_CHECK(doEmbeddedStatement(node, (AstNode**) &node->ifBlock));
+    // If with an assignment
+    if (token.id == TokenId::KwdVar || token.id == TokenId::KwdConst)
+    {
+        node->specFlags |= AstIf::SPECFLAG_ASSIGN;
 
-    if (token.id == TokenId::KwdElse)
-    {
-        SWAG_CHECK(eatToken());
-        SWAG_CHECK(doEmbeddedStatement(node, (AstNode**) &node->elseBlock));
+        auto   newScope = Ast::newScope(parent, "", ScopeKind::Statement, currentScope);
+        Scoped scoped(this, newScope);
+
+        AstNode* varDecl;
+        SWAG_CHECK(doVarDecl(node, &varDecl));
+
+        SWAG_VERIFY(varDecl->childs.size() == 1, error(varDecl->childs.back()->token, Err(Syn0065)));
+
+        node->boolExpression = Ast::newIdentifierRef(sourceFile, varDecl->token.text, node, this);
+        node->boolExpression->flags |= AST_GENERATED;
+        node->boolExpression->inheritTokenLocation(varDecl);
+
+        SWAG_CHECK(doEmbeddedStatement(node, (AstNode**) &node->ifBlock));
+
+        if (token.id == TokenId::KwdElse)
+        {
+            SWAG_CHECK(eatToken());
+            SWAG_CHECK(doEmbeddedStatement(node, (AstNode**) &node->elseBlock));
+        }
+        else if (token.id == TokenId::KwdElif)
+        {
+            SWAG_CHECK(doIf(node, (AstNode**) &node->elseBlock));
+        }
     }
-    else if (token.id == TokenId::KwdElif)
+
+    // If with a simple expression
+    else
     {
-        SWAG_CHECK(doIf(node, (AstNode**) &node->elseBlock));
+        SWAG_CHECK(doExpression(node, EXPR_FLAG_NONE, &node->boolExpression));
+        SWAG_CHECK(doEmbeddedStatement(node, (AstNode**) &node->ifBlock));
+
+        if (token.id == TokenId::KwdElse)
+        {
+            SWAG_CHECK(eatToken());
+            SWAG_CHECK(doEmbeddedStatement(node, (AstNode**) &node->elseBlock));
+        }
+        else if (token.id == TokenId::KwdElif)
+        {
+            SWAG_CHECK(doIf(node, (AstNode**) &node->elseBlock));
+        }
     }
 
     return true;

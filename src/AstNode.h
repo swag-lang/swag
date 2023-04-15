@@ -604,6 +604,8 @@ struct AstConditionalOpNode : public AstNode
 
 struct AstIf : public AstNode
 {
+    static const uint16_t SPECFLAG_ASSIGN = 0x0001;
+
     AstNode* clone(CloneContext& context);
 
     AstNode*            boolExpression;

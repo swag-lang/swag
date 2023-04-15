@@ -171,7 +171,7 @@ void initErrors()
     SWAG_ERROR(Syn0062, "expected a single identifier %s");
     SWAG_ERROR(Syn0063, "expected a struct name, found '%s'");
     SWAG_ERROR(Syn0064, "expected a top level instruction");
-    SWAG_ERROR(Syn0065, nullptr);
+    SWAG_ERROR(Syn0065, "unexpected multiple variable declaration in a 'if' assignment expression");
     SWAG_ERROR(Syn0066, "expected a type declaration, found '%s'");
     SWAG_ERROR(Syn0067, "expected a type inside the tuple type definition, found '%s'");
     SWAG_ERROR(Syn0068, "expected a variable declaration");
@@ -1132,7 +1132,7 @@ void initErrors()
     SWAG_ERROR(Hnt0113, "this parameter does not match");
     SWAG_ERROR(Hnt0114, "missing return type");
     SWAG_ERROR(Hnt0115, "one function is declared with 'throw' and the other one is not");
-    SWAG_ERROR(Hnt0116, nullptr);
+    SWAG_ERROR(Hnt0116, "':=' should be replaced with '=' when used after an explicit 'const' or 'var'");
     SWAG_ERROR(Hnt0117, nullptr);
     SWAG_ERROR(Hnt0118, nullptr);
     SWAG_ERROR(Hnt0119, nullptr);
