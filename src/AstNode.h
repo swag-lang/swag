@@ -375,6 +375,8 @@ struct AstNode
 
     void allocateExtension(ExtensionKind extensionKind);
     void allocateExtensionNoLock(ExtensionKind extensionKind);
+    void setBcNotifBefore(ByteCodeNotifyFct fct, ByteCodeNotifyFct checkIf = nullptr);
+    void setBcNotifAfter(ByteCodeNotifyFct fct, ByteCodeNotifyFct checkIf = nullptr);
 
     // clang-format off
     bool               hasExtByteCode() { return extension && extension->bytecode; }

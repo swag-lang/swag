@@ -825,6 +825,38 @@ bool AstNode::isSpecialFunctionName()
     return true;
 }
 
+void AstNode::setBcNotifBefore(ByteCodeNotifyFct fct, ByteCodeNotifyFct checkIf)
+{
+    allocateExtension(ExtensionKind::ByteCode);
+
+#ifdef SWAG_HAS_ASSERT
+    if (extension->bytecode->byteCodeBeforeFct != nullptr &&
+        extension->bytecode->byteCodeBeforeFct != fct &&
+        extension->bytecode->byteCodeBeforeFct != checkIf)
+    {
+        SWAG_ASSERT(false);
+    }
+#endif
+
+    extension->bytecode->byteCodeBeforeFct = fct;
+}
+
+void AstNode::setBcNotifAfter(ByteCodeNotifyFct fct, ByteCodeNotifyFct checkIf)
+{
+    allocateExtension(ExtensionKind::ByteCode);
+
+#ifdef SWAG_HAS_ASSERT
+    if (extension->bytecode->byteCodeAfterFct != nullptr &&
+        extension->bytecode->byteCodeAfterFct != fct &&
+        extension->bytecode->byteCodeAfterFct != checkIf)
+    {
+        SWAG_ASSERT(false);
+    }
+#endif
+
+    extension->bytecode->byteCodeAfterFct = fct;
+}
+
 void AstNode::allocateExtension(ExtensionKind extensionKind)
 {
     ScopedLock lk(mutex);

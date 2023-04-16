@@ -74,9 +74,8 @@ bool SemanticJob::resolveExpressionListTuple(SemanticContext* context)
     if (context->result != ContextResult::Done)
         return true;
 
-    node->allocateExtension(ExtensionKind::ByteCode);
-    node->extByteCode()->byteCodeBeforeFct = ByteCodeGenJob::emitExpressionListBefore;
-    node->byteCodeFct                      = ByteCodeGenJob::emitExpressionList;
+    node->setBcNotifBefore(ByteCodeGenJob::emitExpressionListBefore);
+    node->byteCodeFct = ByteCodeGenJob::emitExpressionList;
 
     // If the literal tuple is not constant, then we need to reserve some space in the
     // stack in order to store it.
@@ -121,10 +120,9 @@ bool SemanticJob::resolveExpressionListArray(SemanticContext* context)
     }
 
     typeInfo->forceComputeName();
-    node->allocateExtension(ExtensionKind::ByteCode);
-    node->extByteCode()->byteCodeBeforeFct = ByteCodeGenJob::emitExpressionListBefore;
-    node->byteCodeFct                      = ByteCodeGenJob::emitExpressionList;
-    node->typeInfo                         = typeInfo;
+    node->setBcNotifBefore(ByteCodeGenJob::emitExpressionListBefore);
+    node->byteCodeFct = ByteCodeGenJob::emitExpressionList;
+    node->typeInfo    = typeInfo;
 
     // If the literal array is not constant, then we need to reserve some space in the
     // stack in order to store it.

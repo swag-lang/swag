@@ -11,9 +11,8 @@ AstInline* Ast::newInline(SourceFile* sourceFile, AstNode* parent, Parser* parse
     node->allocateExtension(ExtensionKind::Semantic);
     node->extSemantic()->semanticAfterFct  = SemanticJob::resolveInlineAfter;
     node->extSemantic()->semanticBeforeFct = SemanticJob::resolveInlineBefore;
-    node->allocateExtension(ExtensionKind::ByteCode);
-    node->extByteCode()->byteCodeBeforeFct = ByteCodeGenJob::emitInlineBefore;
-    node->byteCodeFct                      = ByteCodeGenJob::emitInline;
+    node->setBcNotifBefore(ByteCodeGenJob::emitInlineBefore);
+    node->byteCodeFct = ByteCodeGenJob::emitInline;
     return node;
 }
 

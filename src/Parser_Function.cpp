@@ -888,8 +888,7 @@ bool Parser::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId)
         newScope->owner = resStmt;
         resStmt->allocateExtension(ExtensionKind::Semantic);
         resStmt->extSemantic()->semanticAfterFct = SemanticJob::resolveScopedStmtAfter;
-        resStmt->allocateExtension(ExtensionKind::ByteCode);
-        resStmt->extByteCode()->byteCodeAfterFct = ByteCodeGenJob::emitLeaveScope;
+        resStmt->setBcNotifAfter(ByteCodeGenJob::emitLeaveScope);
     }
 
     return true;
@@ -1066,9 +1065,8 @@ bool Parser::doLambdaFuncDecl(AstNode* parent, AstNode** result, bool acceptMiss
             funcNode->content->token = token;
         }
 
-        funcNode->content->allocateExtension(ExtensionKind::ByteCode);
-        funcNode->content->extByteCode()->byteCodeAfterFct = &ByteCodeGenJob::emitLeaveScope;
-        newScope->owner                                    = funcNode->content;
+        funcNode->content->setBcNotifAfter(ByteCodeGenJob::emitLeaveScope);
+        newScope->owner = funcNode->content;
     }
 
     return true;

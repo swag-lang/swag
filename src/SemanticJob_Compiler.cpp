@@ -468,9 +468,8 @@ bool SemanticJob::resolveCompilerMixin(SemanticContext* context)
     auto expr = node->childs[0];
     SWAG_VERIFY(expr->typeInfo->isCode(), context->report({expr, Fmt(Err(Err0240), expr->typeInfo->getDisplayNameC())}));
 
-    node->allocateExtension(ExtensionKind::ByteCode);
-    node->extByteCode()->byteCodeBeforeFct = ByteCodeGenJob::emitDebugNop;
-    node->byteCodeFct                      = ByteCodeGenJob::emitDebugNop;
+    node->setBcNotifBefore(ByteCodeGenJob::emitDebugNop);
+    node->byteCodeFct = ByteCodeGenJob::emitDebugNop;
     expr->flags |= AST_NO_BYTECODE;
 
     auto typeCode = CastTypeInfo<TypeInfoCode>(expr->typeInfo, TypeInfoKind::Code);

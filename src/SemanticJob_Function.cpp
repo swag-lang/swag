@@ -317,10 +317,7 @@ bool SemanticJob::resolveFuncDecl(SemanticContext* context)
 
     // Can be null for intrinsics etc...
     if (node->content)
-    {
-        node->content->allocateExtension(ExtensionKind::ByteCode);
-        node->content->extByteCode()->byteCodeBeforeFct = ByteCodeGenJob::emitBeforeFuncDeclContent;
-    }
+        node->content->setBcNotifBefore(ByteCodeGenJob::emitBeforeFuncDeclContent);
 
     // Do we have a return value
     if (node->content && node->returnType && node->returnType->typeInfo != g_TypeMgr->typeInfoVoid)
