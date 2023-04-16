@@ -440,7 +440,7 @@ void BackendLLVMDbg::startFunction(const BuildParameters& buildParameters, LLVMP
             if (typeParam->isString() || typeParam->isSlice())
             {
                 auto allocA = builder.CreateAlloca(I64_TY(), builder.getInt64(2));
-                allocA->setAlignment(llvm::Align{8});
+                allocA->setAlignment(llvm::Align{16});
                 allocaParams.push_back(allocA);
             }
 
@@ -452,7 +452,7 @@ void BackendLLVMDbg::startFunction(const BuildParameters& buildParameters, LLVMP
             else if (isDebug)
             {
                 auto allocA = builder.CreateAlloca(func->getArg(idxParam)->getType(), nullptr, func->getArg(idxParam)->getName());
-                allocA->setAlignment(llvm::Align{8});
+                allocA->setAlignment(llvm::Align{16});
                 allocaParams.push_back(allocA);
             }
             else
@@ -474,7 +474,7 @@ void BackendLLVMDbg::startFunction(const BuildParameters& buildParameters, LLVMP
             if (overload->flags & OVERLOAD_RETVAL)
             {
                 auto allocA = builder.CreateAlloca(I64_TY(), builder.getInt64(1));
-                allocA->setAlignment(llvm::Align{8});
+                allocA->setAlignment(llvm::Align{16});
                 allocaRetval.push_back(allocA);
             }
         }

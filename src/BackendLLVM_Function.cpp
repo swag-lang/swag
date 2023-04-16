@@ -57,25 +57,25 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
     if (bc->maxReservedRegisterRC)
     {
         allocR = builder.CreateAlloca(I64_TY(), builder.getInt32(bc->maxReservedRegisterRC));
-        allocR->setAlignment(llvm::Align{8});
+        allocR->setAlignment(llvm::Align{16});
     }
 
     llvm::AllocaInst* allocRR = nullptr;
     if (bc->maxCallResults)
     {
         allocRR = builder.CreateAlloca(I64_TY(), builder.getInt32(bc->maxCallResults));
-        allocRR->setAlignment(llvm::Align{8});
+        allocRR->setAlignment(llvm::Align{16});
     }
 
     llvm::AllocaInst* allocResult = builder.CreateAlloca(I64_TY(), builder.getInt32(1));
-    allocResult->setAlignment(llvm::Align{8});
+    allocResult->setAlignment(llvm::Align{16});
 
     // To store variadics
     llvm::AllocaInst* allocVA = nullptr;
     if (bc->maxSPVaargs)
     {
         allocVA = builder.CreateAlloca(I64_TY(), builder.getInt64(bc->maxSPVaargs));
-        allocVA->setAlignment(llvm::Align{8});
+        allocVA->setAlignment(llvm::Align{16});
     }
 
     // Stack
@@ -89,7 +89,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
     // Reserve room to pass parameters to embedded intrinsics
     const int ALLOCT_NUM = 5;
     auto      allocT     = builder.CreateAlloca(I64_TY(), builder.getInt64(ALLOCT_NUM));
-    allocT->setAlignment(llvm::Align{8});
+    allocT->setAlignment(llvm::Align{16});
 
     // Debug infos
     if (pp.dbg && bc->node)
