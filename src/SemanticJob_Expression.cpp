@@ -243,11 +243,10 @@ bool SemanticJob::resolveConditionalOp(SemanticContext* context)
         return true;
     }
 
-    expression->allocateExtension(ExtensionKind::ByteCode);
-    expression->extByteCode()->byteCodeAfterFct = ByteCodeGenJob::emitConditionalOpAfterExpr;
-    ifTrue->allocateExtension(ExtensionKind::ByteCode);
-    ifTrue->extByteCode()->byteCodeAfterFct = ByteCodeGenJob::emitConditionalOpAfterIfTrue;
-    node->byteCodeFct                       = ByteCodeGenJob::emitConditionalOp;
+    expression->setBcNotifAfter(ByteCodeGenJob::emitConditionalOpAfterExpr);
+    ifTrue->setBcNotifAfter(ByteCodeGenJob::emitConditionalOpAfterIfTrue);
+    node->byteCodeFct = ByteCodeGenJob::emitConditionalOp;
+
     return true;
 }
 

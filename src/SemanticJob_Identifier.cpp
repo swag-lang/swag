@@ -1451,18 +1451,16 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* ide
             identifier->extOwner()->ownerTryCatchAssume &&
             (identifier->typeInfo->flags & TYPEINFO_CAN_THROW))
         {
-            identifier->allocateExtension(ExtensionKind::ByteCode);
-            auto extension = identifier->extByteCode();
             switch (identifier->extOwner()->ownerTryCatchAssume->kind)
             {
             case AstNodeKind::Try:
-                extension->byteCodeAfterFct = ByteCodeGenJob::emitTry;
+                identifier->setBcNotifAfter(ByteCodeGenJob::emitTry);
                 break;
             case AstNodeKind::TryCatch:
-                extension->byteCodeAfterFct = ByteCodeGenJob::emitTryCatch;
+                identifier->setBcNotifAfter(ByteCodeGenJob::emitTryCatch);
                 break;
             case AstNodeKind::Assume:
-                extension->byteCodeAfterFct = ByteCodeGenJob::emitAssume;
+                identifier->setBcNotifAfter(ByteCodeGenJob::emitAssume);
                 break;
             default:
                 break;

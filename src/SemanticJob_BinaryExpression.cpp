@@ -1370,12 +1370,10 @@ bool SemanticJob::resolveBoolExpression(SemanticContext* context)
     switch (node->tokenId)
     {
     case TokenId::KwdAnd:
-        left->allocateExtension(ExtensionKind::ByteCode);
-        left->extByteCode()->byteCodeAfterFct = ByteCodeGenJob::emitLogicalAndAfterLeft;
+        left->setBcNotifAfter(ByteCodeGenJob::emitLogicalAndAfterLeft);
         break;
     case TokenId::KwdOr:
-        left->allocateExtension(ExtensionKind::ByteCode);
-        left->extByteCode()->byteCodeAfterFct = ByteCodeGenJob::emitLogicalOrAfterLeft;
+        left->setBcNotifAfter(ByteCodeGenJob::emitLogicalOrAfterLeft);
         break;
     default:
         break;

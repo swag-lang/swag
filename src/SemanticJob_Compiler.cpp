@@ -443,8 +443,7 @@ bool SemanticJob::resolveCompilerMacro(SemanticContext* context)
     auto scope            = node->childs.back()->ownerScope;
     scope->startStackSize = node->ownerScope->startStackSize;
 
-    node->allocateExtension(ExtensionKind::ByteCode);
-    node->extByteCode()->byteCodeAfterFct = ByteCodeGenJob::emitLeaveScope;
+    node->setBcNotifAfter(ByteCodeGenJob::emitLeaveScope);
 
     // Be sure #macro is used inside a macro
     if (!node->ownerInline || (node->ownerInline->attributeFlags & ATTRIBUTE_MIXIN) || !(node->ownerInline->attributeFlags & ATTRIBUTE_MACRO))
