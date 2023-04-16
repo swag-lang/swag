@@ -27,13 +27,26 @@ bool BackendLLVM::emitDataSegment(const BuildParameters& buildParameters, DataSe
     if (precompileIndex)
     {
         if (dataSegment == &module->bssSegment)
+        {
             pp.bssSeg = new llvm::GlobalVariable(modu, arrayType, false, llvm::GlobalValue::ExternalLinkage, nullptr, "__bs");
+            pp.bssSeg->setAlignment(llvm::Align(16));
+        }
         else if (dataSegment == &module->mutableSegment)
+        {
             pp.mutableSeg = new llvm::GlobalVariable(modu, arrayType, false, llvm::GlobalValue::ExternalLinkage, nullptr, "__ms");
+            pp.mutableSeg->setAlignment(llvm::Align(16));
+        }
         else if (dataSegment == &module->tlsSegment)
+        {
             pp.tlsSeg = new llvm::GlobalVariable(modu, arrayType, false, llvm::GlobalValue::ExternalLinkage, nullptr, "__tls");
+            pp.tlsSeg->setAlignment(llvm::Align(16));
+        }
         else
+        {
             pp.constantSeg = new llvm::GlobalVariable(modu, arrayType, false, llvm::GlobalValue::ExternalLinkage, nullptr, "__cs");
+            pp.constantSeg->setAlignment(llvm::Align(16));
+        }
+
         return true;
     }
 
@@ -67,18 +80,21 @@ bool BackendLLVM::emitDataSegment(const BuildParameters& buildParameters, DataSe
         if (dataSegment == &module->mutableSegment)
         {
             pp.mutableSeg = new llvm::GlobalVariable(modu, arrayType, false, llvm::GlobalValue::ExternalLinkage, constArray, "__ms");
+            pp.mutableSeg->setAlignment(llvm::Align(16));
             if (pp.dbg)
                 pp.dbg->createGlobalVariablesForSegment(buildParameters, arrayType, pp.mutableSeg);
         }
         else if (dataSegment == &module->tlsSegment)
         {
             pp.tlsSeg = new llvm::GlobalVariable(modu, arrayType, false, llvm::GlobalValue::ExternalLinkage, constArray, "__tls");
+            pp.tlsSeg->setAlignment(llvm::Align(16));
             if (pp.dbg)
                 pp.dbg->createGlobalVariablesForSegment(buildParameters, arrayType, pp.tlsSeg);
         }
         else
         {
             pp.constantSeg = new llvm::GlobalVariable(modu, arrayType, false, llvm::GlobalValue::ExternalLinkage, constArray, "__cs");
+            pp.constantSeg->setAlignment(llvm::Align(16));
             if (pp.dbg)
                 pp.dbg->createGlobalVariablesForSegment(buildParameters, arrayType, pp.constantSeg);
         }

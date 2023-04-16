@@ -57,25 +57,25 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
     if (bc->maxReservedRegisterRC)
     {
         allocR = builder.CreateAlloca(I64_TY(), builder.getInt32(bc->maxReservedRegisterRC));
-        allocR->setAlignment(llvm::Align(sizeof(void*)));
+        allocR->setAlignment(llvm::Align{8});
     }
 
     llvm::AllocaInst* allocRR = nullptr;
     if (bc->maxCallResults)
     {
         allocRR = builder.CreateAlloca(I64_TY(), builder.getInt32(bc->maxCallResults));
-        allocRR->setAlignment(llvm::Align(sizeof(void*)));
+        allocRR->setAlignment(llvm::Align{8});
     }
 
     llvm::AllocaInst* allocResult = builder.CreateAlloca(I64_TY(), builder.getInt32(1));
-    allocResult->setAlignment(llvm::Align(sizeof(void*)));
+    allocResult->setAlignment(llvm::Align{8});
 
     // To store variadics
     llvm::AllocaInst* allocVA = nullptr;
     if (bc->maxSPVaargs)
     {
         allocVA = builder.CreateAlloca(I64_TY(), builder.getInt64(bc->maxSPVaargs));
-        allocVA->setAlignment(llvm::Align(sizeof(void*)));
+        allocVA->setAlignment(llvm::Align{8});
     }
 
     // Stack
@@ -89,7 +89,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
     // Reserve room to pass parameters to embedded intrinsics
     const int ALLOCT_NUM = 5;
     auto      allocT     = builder.CreateAlloca(I64_TY(), builder.getInt64(ALLOCT_NUM));
-    allocT->setAlignment(llvm::Align(sizeof(void*)));
+    allocT->setAlignment(llvm::Align{8});
 
     // Debug infos
     if (pp.dbg && bc->node)
@@ -5327,8 +5327,7 @@ llvm::Type* BackendLLVM::swagTypeToLLVMType(const BuildParameters& buildParamete
         auto pointedType     = TypeManager::concreteType(typeInfoPointer->pointedType);
         if (pointedType->isVoid())
             return PTR_I8_TY();
-        else
-            return swagTypeToLLVMType(buildParameters, moduleToGen, pointedType)->getPointerTo();
+        return swagTypeToLLVMType(buildParameters, moduleToGen, pointedType)->getPointerTo();
     }
 
     if (typeInfo->isSlice() ||
