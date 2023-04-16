@@ -168,9 +168,7 @@ typedef struct SwagProcessInfos
 
 struct BuildCfgBackendLLVM
 {
-    uint32_t minFunctionPerFile = 128;
-    uint32_t maxFunctionPerFile = 1024;
-    bool     outputIR           = false; // Write a '.ir' text file just next to the temporary file
+    bool outputIR = false; // Write a '.ir' text file just next to the temporary file
 
     bool fpMathFma          = false;
     bool fpMathNoNaN        = false;
@@ -182,8 +180,6 @@ struct BuildCfgBackendLLVM
 
 struct BuildCfgBackendX64
 {
-    uint32_t minFunctionPerFile = 128;
-    uint32_t maxFunctionPerFile = 1024;
 };
 
 enum class BuildCfgBackendKind
@@ -195,7 +191,7 @@ enum class BuildCfgBackendKind
     StaticLib,
 };
 
-enum class BuildCfgSubBackendKind
+enum class BuildCfgBackendSubKind
 {
     Default,
     Console,
@@ -244,9 +240,10 @@ struct BuildCfg
 
     // Backend common
     BuildCfgBackendKind    backendKind              = BuildCfgBackendKind::Executable;
-    BuildCfgSubBackendKind subBackendKind           = BuildCfgSubBackendKind::Console;
+    BuildCfgBackendSubKind backendSubKind           = BuildCfgBackendSubKind::Console;
     bool                   backendDebugInformations = false;
     BuildCfgBackendOptim   backendOptimize          = BuildCfgBackendOptim::O0;
+    uint32_t               backendNumCU             = 0;
 
     // Specific backend parameters
     BuildCfgBackendLLVM backendLLVM;

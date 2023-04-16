@@ -37,14 +37,6 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
     llvm::Function* func     = (llvm::Function*) modu.getOrInsertFunction(funcName.c_str(), funcType).getCallee();
     setFuncAttributes(buildParameters, moduleToGen, bcFuncNode, bc, func);
 
-    // Export symbol
-    if (bcFuncNode &&
-        bcFuncNode->attributeFlags & ATTRIBUTE_PUBLIC &&
-        buildParameters.buildCfg->backendKind == BuildCfgBackendKind::DynamicLib)
-    {
-        func->setDLLStorageClass(llvm::GlobalValue::DLLExportStorageClass);
-    }
-
     // Content
     llvm::BasicBlock* block         = llvm::BasicBlock::Create(context, "entry", func);
     bool              blockIsClosed = false;
@@ -5575,6 +5567,11 @@ void BackendLLVM::emitInternalPanic(const BuildParameters& buildParameters, Modu
 
 void BackendLLVM::setFuncAttributes(const BuildParameters& buildParameters, Module* moduleToGen, AstFuncDecl* funcNode, ByteCode* bc, llvm::Function* func)
 {
+    int   ct              = buildParameters.compileType;
+    int   precompileIndex = buildParameters.precompileIndex;
+    auto& pp              = *perThread[ct][precompileIndex];
+    auto& context         = *pp.context;
+
     if (!moduleToGen->mustOptimizeBK(bc->node))
     {
         func->addFnAttr(llvm::Attribute::AttrKind::OptimizeNone);
@@ -5583,6 +5580,26 @@ void BackendLLVM::setFuncAttributes(const BuildParameters& buildParameters, Modu
 
     if (funcNode && funcNode->attributeFlags & ATTRIBUTE_NO_INLINE)
         func->addFnAttr(llvm::Attribute::AttrKind::NoInline);
+
+    llvm::AttrBuilder attrs(context);
+    attrs.addStackAlignmentAttr(llvm::Align(16));
+    func->addFnAttrs(attrs);
+
+    // Export public symbol in case of a dll
+    if (funcNode &&
+        funcNode->attributeFlags & ATTRIBUTE_PUBLIC &&
+        buildParameters.buildCfg->backendKind == BuildCfgBackendKind::DynamicLib)
+    {
+        func->setDLLStorageClass(llvm::GlobalValue::DLLExportStorageClass);
+    }
+
+    // If we just have one compile unit, then force private linkage
+    else if (funcNode &&
+             !funcNode->sourceFile->isRuntimeFile &&
+             numPreCompileBuffers == 1)
+    {
+        func->setLinkage(llvm::GlobalValue::InternalLinkage);
+    }
 
 #if 0
     for (int i = 0; i < func->arg_size(); i++)

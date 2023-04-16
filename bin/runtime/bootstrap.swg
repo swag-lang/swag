@@ -542,8 +542,6 @@ namespace Swag
 
     struct BuildCfgBackendLLVM
     {
-        minFunctionPerFile: u32  = 128
-        maxFunctionPerFile: u32  = 1024
         outputIR:           bool = false
 
         fpMathFma:          bool = false    // true in 'release'
@@ -556,8 +554,6 @@ namespace Swag
 
     struct BuildCfgBackendX64
     {
-        minFunctionPerFile: u32 = 128
-        maxFunctionPerFile: u32 = 1024
     }
 
     enum BuildCfgBackendKind
@@ -568,7 +564,7 @@ namespace Swag
         DynamicLib
     }
 
-    enum BuildCfgSubBackendKind
+    enum BuildCfgBackendSubKind
     {
         Default
         Console
@@ -617,9 +613,10 @@ namespace Swag
 
         // Backend common
         backendKind               = BuildCfgBackendKind.Executable
-        subBackendKind            = BuildCfgSubBackendKind.Console
+        backendSubKind            = BuildCfgBackendSubKind.Console
         backendDebugInformations  = false
         backendOptimize           = BuildCfgBackendOptim.O0
+        backendNumCU: u32         = 0
 
         // Specific backend parameters
         backendLLVM:    BuildCfgBackendLLVM
