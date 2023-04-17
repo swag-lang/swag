@@ -10,6 +10,28 @@
 #include "JobGroup.h"
 #include "Path.h"
 
+enum class ModuleBuildPass
+{
+    Init,
+    Dependencies,
+    Syntax,
+    IncludeSwg,
+    BeforeCompilerMessagesPass0,
+    CompilerMessagesPass0,
+    BeforeCompilerMessagesPass1,
+    AfterSemantic,
+    WaitForDependencies,
+    FlushGenFiles,
+    OptimizeBc,
+    Publish,
+    SemanticModule,
+    RunByteCode,
+    Output,
+    RunNative,
+    Done,
+    Invalid
+};
+
 struct Utf8;
 struct SourceFile;
 struct SymTable;
@@ -24,6 +46,7 @@ struct BuildCfg;
 struct SourceLocation;
 struct AstFuncDecl;
 struct Module;
+enum class ModuleBuildPass;
 
 enum class GlobalVarKind
 {
@@ -129,7 +152,7 @@ struct Module
     SourceFile* findFile(const Utf8& fileName);
     ByteCode*   findBc(const Utf8& bcName);
 
-    void printStartBuilding(const BuildParameters& bp);
+    void startBuilding(const BuildParameters& bp);
     void printBC();
 
     bool computeExecuteResult(ByteCodeRunContext* runContext, SourceFile* sourceFile, AstNode* node, JobContext* callerContext, ExecuteNodeParams* params);
@@ -180,6 +203,7 @@ struct Module
     void decImplForToSolve(TypeInfoStruct* typeStruct);
 
     void logStage(const char* msg);
+    void logPass(ModuleBuildPass pass);
 
     struct ForToSolve
     {
@@ -267,18 +291,19 @@ struct Module
 
     uint64_t moreRecentSourceFile = 0;
 
-    ModuleKind  kind;
-    BuildPass   buildPass                   = BuildPass::Full;
-    uint32_t    hasBeenBuilt                = BUILDRES_NONE;
-    uint32_t    modulesSliceOffset          = UINT32_MAX;
-    uint32_t    typesSliceOffset            = UINT32_MAX;
-    uint32_t    globalVarsToDropSliceOffset = UINT32_MAX;
-    int         optimPass                   = 0;
-    atomic<int> optimNeedRestart            = 0;
-    atomic<int> numCompilerFunctions        = 0;
-    atomic<int> numErrors                   = 0;
-    atomic<int> numWarnings                 = 0;
-    atomic<int> criticalErrors              = 0;
+    ModuleKind      kind;
+    BuildPass       buildPass                   = BuildPass::Full;
+    uint32_t        hasBeenBuilt                = BUILDRES_NONE;
+    uint32_t        modulesSliceOffset          = UINT32_MAX;
+    uint32_t        typesSliceOffset            = UINT32_MAX;
+    uint32_t        globalVarsToDropSliceOffset = UINT32_MAX;
+    int             optimPass                   = 0;
+    atomic<int>     optimNeedRestart            = 0;
+    atomic<int>     numCompilerFunctions        = 0;
+    atomic<int>     numErrors                   = 0;
+    atomic<int>     numWarnings                 = 0;
+    atomic<int>     criticalErrors              = 0;
+    ModuleBuildPass curPass                     = ModuleBuildPass::Invalid;
 
     bool shouldHaveError   = false;
     bool shouldHaveWarning = false;

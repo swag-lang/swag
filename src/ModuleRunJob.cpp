@@ -18,11 +18,6 @@ JobResult ModuleRunJob::execute()
     Timer timer(&g_Stats.runTestTime);
 #endif
 
-    if (buildParameters.compileType == BackendCompileType::Test)
-        g_Log.messageHeaderCentered("Testing backend", module->name.c_str());
-    else
-        g_Log.messageHeaderCentered("Running backend", module->name.c_str());
-
     Utf8 cmdLine = path.string();
     cmdLine += " ";
     cmdLine += g_CommandLine.userArguments;

@@ -13,6 +13,7 @@
 #include "SaveGenJob.h"
 #include "Parser.h"
 #include "ThreadManager.h"
+#include "ModuleBuildJob.h"
 
 void Module::setup(const Utf8& moduleName, const Path& modulePath)
 {
@@ -906,20 +907,11 @@ uint32_t Module::getHasBeenBuilt()
     return hasBeenBuilt;
 }
 
-void Module::printStartBuilding(const BuildParameters& bp)
+void Module::startBuilding(const BuildParameters& bp)
 {
     if (!backend->mustCompile)
     {
         g_Workspace->skippedModules += 1;
-    }
-    else
-    {
-        if (bp.compileType == BackendCompileType::Test)
-            g_Log.messageHeaderCentered("Generating test", name.c_str());
-        else if (bp.compileType == BackendCompileType::Example)
-            g_Log.messageHeaderCentered("Generating example", name.c_str());
-        else
-            g_Log.messageHeaderCentered("Generating", name.c_str());
     }
 }
 
@@ -1157,13 +1149,6 @@ Utf8 Module::getGlobalPrivFct(const Utf8& nameFct)
     return Fmt(nameFct.c_str(), nameNormalized.c_str());
 }
 
-void Module::logStage(const char* msg)
-{
-    if (!g_CommandLine.verboseStages)
-        return;
-    g_Log.messageVerbose(Fmt("[%s] -- %s", name.c_str(), msg));
-}
-
 bool Module::filterFunctionsToEmit()
 {
     byteCodeFuncToGen.reserve((int) byteCodeFunc.size());
@@ -1183,4 +1168,87 @@ void Module::flushGenFiles()
     auto newJob    = Allocator::alloc<SaveGenJob>();
     newJob->module = this;
     g_ThreadMgr.addJob(newJob);
+}
+
+void Module::logStage(const char* msg)
+{
+    if (!g_CommandLine.verboseStages)
+        return;
+    g_Log.messageVerbose(Fmt("[%s] -- %s", name.c_str(), msg));
+}
+
+void Module::logPass(ModuleBuildPass pass)
+{
+    if (curPass == pass)
+        return;
+    curPass = pass;
+
+    if (isErrorModule ||
+        kind == ModuleKind::Config ||
+        kind == ModuleKind::Runtime ||
+        kind == ModuleKind::BootStrap ||
+        buildCfg.backendKind == BuildCfgBackendKind::Export)
+        return;
+
+    Utf8 str;
+    switch (pass)
+    {
+    case ModuleBuildPass::Init:
+        // str = "Init";
+        break;
+    case ModuleBuildPass::Dependencies:
+        // str = "Dependencies";
+        break;
+    case ModuleBuildPass::Syntax:
+        // str = "Syntax";
+        break;
+    case ModuleBuildPass::IncludeSwg:
+        // str = "IncludeSwg";
+        break;
+    case ModuleBuildPass::BeforeCompilerMessagesPass0:
+        // str = "BeforeCompilerMessagesPass0";
+        break;
+    case ModuleBuildPass::CompilerMessagesPass0:
+        // str = "CompilerMessagesPass0";
+        break;
+    case ModuleBuildPass::BeforeCompilerMessagesPass1:
+        // str = "BeforeCompilerMessagesPass1";
+        break;
+    case ModuleBuildPass::AfterSemantic:
+        // str = "AfterSemantic";
+        break;
+    case ModuleBuildPass::WaitForDependencies:
+        // str = "WaitForDependencies";
+        break;
+    case ModuleBuildPass::FlushGenFiles:
+        // str = "FlushGenFiles";
+        break;
+    case ModuleBuildPass::OptimizeBc:
+        // str = "Optimizing";
+        break;
+    case ModuleBuildPass::Publish:
+        // str = "Publishing";
+        break;
+    case ModuleBuildPass::SemanticModule:
+        str = "Compiling";
+        break;
+    case ModuleBuildPass::RunByteCode:
+        if (kind == ModuleKind::Script)
+            str = "Running ByteCode";
+        break;
+    case ModuleBuildPass::Output:
+        if (backend->mustCompile)
+            str = "Generating";
+        break;
+    case ModuleBuildPass::RunNative:
+        if (mustGenerateTestExe() && g_CommandLine.runBackendTests)
+            str = "Testing Backend";
+        else
+            str = "Running Backend";
+        break;
+    }
+
+    if (str.empty())
+        return;
+    g_Log.messageHeaderCentered(str, name);
 }

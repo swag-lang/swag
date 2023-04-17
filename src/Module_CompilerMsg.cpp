@@ -79,8 +79,7 @@ bool Module::flushCompilerMessages(JobContext* context, uint32_t pass, Job* job)
         }
     }
 
-    if (g_CommandLine.verboseStages)
-        logStage("#message flush\n");
+    logStage("#message flush\n");
 
     for (auto& msg : compilerMessages[pass])
     {

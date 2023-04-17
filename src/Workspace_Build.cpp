@@ -728,8 +728,7 @@ bool Workspace::buildTarget()
     // Bootstrap module semantic pass
     //////////////////////////////////////////////////
     {
-        if (g_CommandLine.verboseStages)
-            bootstrapModule->logStage("buildRTModule\n");
+        bootstrapModule->logStage("buildRTModule\n");
 
 #ifdef SWAG_STATS
         Timer timer(&g_Stats.bootstrapTime);
@@ -741,8 +740,7 @@ bool Workspace::buildTarget()
     // Runtime module semantic pass
     //////////////////////////////////////////////////
     {
-        if (g_CommandLine.verboseStages)
-            runtimeModule->logStage("buildRTModule\n");
+        runtimeModule->logStage("buildRTModule\n");
 
 #ifdef SWAG_STATS
         Timer timer(&g_Stats.runtimeTime);

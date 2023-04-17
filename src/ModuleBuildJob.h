@@ -2,29 +2,8 @@
 #include "Job.h"
 #include "Timer.h"
 #include "Statistics.h"
-struct Module;
+#include "Module.h"
 struct ModuleDependency;
-
-enum class ModuleBuildPass
-{
-    Init,
-    Dependencies,
-    Syntax,
-    IncludeSwg,
-    BeforeCompilerMessagesPass0,
-    CompilerMessagesPass0,
-    BeforeCompilerMessagesPass1,
-    AfterSemantic,
-    WaitForDependencies,
-    FlushGenFiles,
-    OptimizeBc,
-    Publish,
-    SemanticModule,
-    RunByteCode,
-    Output,
-    RunNative,
-    Done,
-};
 
 struct ModuleBuildJob : public Job
 {

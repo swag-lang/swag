@@ -10,8 +10,7 @@ JobResult ModuleOutputJob::execute()
 {
     if (pass == ModuleOutputJobPass::Init)
     {
-        if (g_CommandLine.verboseStages)
-            module->logStage("ModuleOutputJobPass::Init\n");
+        module->logStage("ModuleOutputJobPass::Init\n");
         pass = ModuleOutputJobPass::PrepareOutputStage1;
 
         // This can arrive when testing, if the error is raised late, when generating export
@@ -39,8 +38,7 @@ JobResult ModuleOutputJob::execute()
     {
         if (!g_CommandLine.output)
             return JobResult::ReleaseJob;
-        if (g_CommandLine.verboseStages)
-            module->logStage("ModuleOutputJobPass::PrepareOutputStage1\n");
+        module->logStage("ModuleOutputJobPass::PrepareOutputStage1\n");
 
         pass = ModuleOutputJobPass::PrepareOutputStage2;
 
@@ -101,8 +99,7 @@ JobResult ModuleOutputJob::execute()
 
     if (pass == ModuleOutputJobPass::PrepareOutputStage2)
     {
-        if (g_CommandLine.verboseStages)
-            module->logStage("ModuleOutputJobPass::PrepareOutputStage2\n");
+        module->logStage("ModuleOutputJobPass::PrepareOutputStage2\n");
 
         pass = ModuleOutputJobPass::WaitForDependencies;
 
@@ -148,8 +145,7 @@ JobResult ModuleOutputJob::execute()
             return JobResult::ReleaseJob;
         if (module->numErrors)
             return JobResult::ReleaseJob;
-        if (g_CommandLine.verboseStages)
-            module->logStage("ModuleOutputJobPass::WaitForDependencies\n");
+        module->logStage("ModuleOutputJobPass::WaitForDependencies\n");
 
         if (!module->waitForDependenciesDone(this))
             return JobResult::KeepJobAlive;
@@ -160,8 +156,7 @@ JobResult ModuleOutputJob::execute()
     {
         if (module->numErrors)
             return JobResult::ReleaseJob;
-        if (g_CommandLine.verboseStages)
-            module->logStage("ModuleOutputJobPass::GenOutput\n");
+        module->logStage("ModuleOutputJobPass::GenOutput\n");
 
         pass = ModuleOutputJobPass::Done;
 

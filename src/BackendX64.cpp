@@ -325,7 +325,7 @@ JobResult BackendX64::prepareOutput(int stage, const BuildParameters& buildParam
 
     // Message
     if (pp.pass == BackendPreCompilePass::Init && buildParameters.precompileIndex == 0)
-        module->printStartBuilding(buildParameters);
+        module->startBuilding(buildParameters);
 
     // Do we need to generate the file ?
     if (!mustCompile)

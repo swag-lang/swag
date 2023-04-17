@@ -183,7 +183,7 @@ JobResult BackendLLVM::prepareOutput(int stage, const BuildParameters& buildPara
 
     // Message
     if (pp.pass == BackendPreCompilePass::Init && buildParameters.precompileIndex == 0)
-        module->printStartBuilding(buildParameters);
+        module->startBuilding(buildParameters);
 
     // Do we need to generate the file ?
     if (!mustCompile)
