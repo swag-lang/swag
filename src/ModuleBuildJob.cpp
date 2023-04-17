@@ -753,7 +753,8 @@ JobResult ModuleBuildJob::execute()
             return JobResult::ReleaseJob;
 
         // Run test executable
-        if (module->mustGenerateTestExe() && g_CommandLine.runBackendTests)
+        if (module->mustGenerateTestExe() &&
+            g_CommandLine.runBackendTests)
         {
             module->logPass(ModuleBuildPass::RunNative);
             auto job                            = Allocator::alloc<ModuleRunJob>();
@@ -765,7 +766,9 @@ JobResult ModuleBuildJob::execute()
         }
 
         // Run command
-        if (g_CommandLine.run && module->kind != ModuleKind::Test)
+        if (g_CommandLine.run &&
+            module->kind != ModuleKind::Test &&
+            module->buildParameters.buildCfg->backendKind == BuildCfgBackendKind::Executable)
         {
             module->logPass(ModuleBuildPass::RunNative);
             auto job                         = Allocator::alloc<ModuleRunJob>();
