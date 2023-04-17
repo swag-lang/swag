@@ -9,6 +9,7 @@ struct(T, N: u32) NumericArray
 
 impl NumericArray
 {
+    #[Inline]
     mtdc opIndex(idx: u64)->T
     {
         return buf[idx]
@@ -16,21 +17,81 @@ impl NumericArray
 
     mtdc opEquals(other: Self)->bool
     {
-        loop N
+        loop i: N
         {
-            if buf[@index] != other.buf[@index]
+            if buf[i] != other.buf[i]
                 return false
         }
 
         return true
     }
 
+    mtd(op: string) opBinary(other: Self)->Self
+    {
+        var result: retval
+        loop i: N
+        {
+            #if op == "+"
+                result.buf[i] = buf[i] + other.buf[i]
+            #elif op == "-"
+                result.buf[i] = buf[i] - other.buf[i]
+            #elif op == "*"
+                result.buf[i] = buf[i] * other.buf[i]
+            #elif op == "/"
+                result.buf[i] = buf[i] / other.buf[i]
+            #else
+                #error "unsupported binary operation '" ++ op ++ "'"
+        }
+        return result
+    }
+
+    func(op: string) opAssign(using self, value: T)
+    {
+        loop i: N
+        {
+            #if op == "+="
+                buf[i] += value
+            #else #if (op == "-=")
+                buf[i] -= value
+            #else #if (op == "*=")
+                buf[i] *= value
+            #else #if (op == "/=")
+                buf[i] /= value
+            #else
+                #error "unsupported assign operation '" ++ op ++ "'"
+        }
+    }
+
+    func(op: string) opAssign(using self, value: Self)
+    {
+        loop i: N
+        {
+            #if op == "+="
+                buf[i] += value.buf[i]
+            #else #if (op == "-=")
+                buf[i] -= value.buf[i]
+            #else #if (op == "*=")
+                buf[i] *= value.buf[i]
+            #else #if (op == "/=")
+                buf[i] /= value.buf[i]
+            #else
+                #error "unsupported assign operation '" ++ op ++ "'"
+        }
+    }
+
+    #[Safety("bound", false), Complete]
+    mtd opAffect(what: T)
+    {
+        loop i: N
+            buf[i] = what
+    }
+
     #[Safety("bound", false), Complete]
     mtd opAffect(what: const [..] T)
     {
         Debug.assert(@countof(what) == N)
-        loop N
-            buf[@index] = what[@index]
+        loop i: N
+            buf[i] = what[i]
     }
 
     #[Safety("bound", false)]
@@ -45,66 +106,26 @@ impl NumericArray
 
     // Set all values
     #[Safety("bound", false)]
-    mtd setAll(value: T)
-    {
-        loop N
-            buf[@index] = value
-    }
-
-    // Set all values
-    #[Safety("bound", false)]
     mtd set(values: T...)
     {
         Debug.assert(@countof(values) == N)
-        loop N
-            buf[@index] = values[@index]
-    }
-
-    // Add
-    #[Safety("bound", false)]
-    mtd add(value: T)
-    {
-        loop N
-            buf[@index] += value
-    }
-
-    // Multiply
-    #[Safety("bound", false)]
-    mtd mul(value: T)
-    {
-        loop N
-            buf[@index] *= value
+        loop i: N
+            buf[i] = values[i]
     }
 
     // Multiply & add
     #[Safety("bound", false)]
     mtd mulAdd(value1, value2: T)
     {
-        loop N
-            buf[@index] = (buf[@index] * value1) + value2
-    }
-
-    // Add
-    #[Safety("bound", false)]
-    mtd add(value: Self)
-    {
-        loop N
-            buf[@index] += value.buf[@index]
-    }
-
-    // Multiply
-    #[Safety("bound", false)]
-    mtd mul(value: Self)
-    {
-        loop N
-            buf[@index] *= value.buf[@index]
+        loop i: N
+            buf[i] = (buf[i] * value1) + value2
     }
 
     // Multiply & Add
     #[Safety("bound", false)]
     mtd mulAdd(value1, value2: Self)
     {
-        loop N
-            buf[@index] = (buf[@index] * value1[@index]) + value2.buf[@index]
+        loop i: N
+            buf[i] = (buf[i] * value1[i]) + value2.buf[i]
     }
 }
