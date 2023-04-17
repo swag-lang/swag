@@ -12,6 +12,6 @@
         cfg.moduleRevision = 0
         cfg.moduleBuildNum = 0
         cfg.backendKind    = .Executable
-        cfg.subBackendKind = .Default
+        cfg.backendSubKind = .Default
     }
 }

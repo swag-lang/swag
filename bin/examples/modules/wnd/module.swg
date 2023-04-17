@@ -11,6 +11,6 @@
         cfg.moduleBuildNum = 0
         cfg.embbedImports  = true
         cfg.backendKind    = .Executable
-        cfg.subBackendKind = .Default
+        cfg.backendSubKind = .Default
     }
 }
