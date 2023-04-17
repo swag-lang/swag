@@ -194,11 +194,9 @@ bool BackendLLVM::emitGetParam(llvm::LLVMContext&     context,
 
     if (toAdd || deRefSize)
     {
-        llvm::Value* ra = nullptr;
-
         if (cc.structByRegister && param->isStruct() && param->sizeOf <= sizeof(void*))
         {
-            ra = builder.CreateIntCast(arg, I64_TY(), false);
+            auto ra = builder.CreateIntCast(arg, I64_TY(), false);
 
             // If this is a value, then we just have to shift it on the right with the given amount of bits
             if (deRefSize)
@@ -242,16 +240,7 @@ bool BackendLLVM::emitGetParam(llvm::LLVMContext&     context,
             return true;
         }
 
-        if (param->numRegisters() == 1)
-        {
-            ra = builder.CreateInBoundsGEP(I8_TY(), arg, builder.getInt64(toAdd));
-        }
-        else
-        {
-            ra = builder.CreateIntToPtr(arg, PTR_I8_TY());
-            ra = builder.CreateInBoundsGEP(I8_TY(), ra, builder.getInt64(toAdd));
-        }
-
+        auto ra = builder.CreateInBoundsGEP(I8_TY(), arg, builder.getInt64(toAdd));
         if (deRefSize)
         {
             llvm::Value* v1;
@@ -285,9 +274,13 @@ bool BackendLLVM::emitGetParam(llvm::LLVMContext&     context,
     {
         // By convention, all remaining bits should be zero
         if (param->isNativeIntegerSigned() && param->sizeOf < sizeof(void*))
+        {
             builder.CreateStore(builder.CreateIntCast(arg, I64_TY(), true), r0);
+        }
         else if (param->isNativeIntegerUnsigned() && param->sizeOf < sizeof(void*))
+        {
             builder.CreateStore(builder.CreateIntCast(arg, I64_TY(), false), r0);
+        }
 
         // Struct by copy
         else if (cc.structByRegister && param->isStruct() && param->sizeOf <= sizeof(void*))
@@ -295,6 +288,7 @@ bool BackendLLVM::emitGetParam(llvm::LLVMContext&     context,
             // Make a copy of the value on the stack, and return the address
             auto allocR1 = builder.CreateAlloca(I64_TY(), builder.getInt32(1));
             allocR1->setAlignment(llvm::Align{16});
+
             builder.CreateStore(builder.CreateIntCast(arg, I64_TY(), false), allocR1);
             builder.CreateStore(allocR1, TO_PTR_PTR_I64(r0));
         }
