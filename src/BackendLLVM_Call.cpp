@@ -420,7 +420,8 @@ bool BackendLLVM::emitCallParameters(const BuildParameters&        buildParamete
         }
         else if (typeParam->isNative())
         {
-            params.push_back(builder.CreateLoad(toNativeTy(context, typeParam->nativeType), GEP64(allocR, index)));
+            auto llvmType = swagTypeToLLVMType(buildParameters, moduleToGen, typeParam);
+            params.push_back(builder.CreateLoad(llvmType, GEP64(allocR, index)));
         }
         else
         {
