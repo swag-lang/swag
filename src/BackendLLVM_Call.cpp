@@ -485,7 +485,32 @@ bool BackendLLVM::emitCallReturnValue(const BuildParameters& buildParameters,
         }
         else if (returnType->isNative())
         {
-            auto r = TO_PTR_NATIVE(allocRR, returnType->nativeType);
+            llvm::Value* r = nullptr;
+            switch (returnType->nativeType)
+            {
+            case NativeTypeKind::S8:
+            case NativeTypeKind::U8:
+            case NativeTypeKind::Bool:
+            case NativeTypeKind::Void:
+                r = TO_PTR_I8(allocRR);
+            case NativeTypeKind::S16:
+            case NativeTypeKind::U16:
+                r = TO_PTR_I16(allocRR);
+            case NativeTypeKind::S32:
+            case NativeTypeKind::U32:
+            case NativeTypeKind::Rune:
+                r = TO_PTR_I32(allocRR);
+            case NativeTypeKind::S64:
+            case NativeTypeKind::U64:
+                r = TO_PTR_I64(allocRR);
+            case NativeTypeKind::F32:
+                r = TO_PTR_F32(allocRR);
+            case NativeTypeKind::F64:
+                r = TO_PTR_F64(allocRR);
+            default:
+                break;
+            }
+
             if (!r)
                 return Report::internalError(typeFuncBC->declNode, "emitCall, invalid return type");
             builder.CreateStore(callResult, r);
