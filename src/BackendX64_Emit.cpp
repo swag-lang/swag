@@ -809,25 +809,15 @@ void BackendX64::emitBinOpIntDivAtReg(X64Gen& pp, ByteCodeInstruction* ip, bool 
         }
     }
 
-    auto sReg = modulo ? CPURegister::RDX : CPURegister::RAX;
-    switch (bits)
+    // modulo in 8 bits stores the reminder in AH and not RDX
+    if (modulo)
     {
-    case 8:
-        if (modulo)                           // modulo in 8 bits stores the reminder in AH and not RDX
+        if (bits == 8)
             pp.concat.addString2("\x88\xE2"); // mov dl, ah
-        pp.emit_Store8_Indirect(regOffset(ip->c.u32), sReg);
-        break;
-    case 16:
-        pp.emit_Store16_Indirect(regOffset(ip->c.u32), sReg);
-        break;
-    case 32:
-        pp.emit_Store32_Indirect(regOffset(ip->c.u32), sReg);
-        break;
-    case 64:
-        pp.emit_Store64_Indirect(regOffset(ip->c.u32), sReg);
-        break;
-    default:
-        SWAG_ASSERT(false);
-        break;
+        pp.emit_StoreN_Indirect(regOffset(ip->c.u32), RDX, RDI, bits);
+    }
+    else
+    {
+        pp.emit_StoreN_Indirect(regOffset(ip->c.u32), RAX, RDI, bits);
     }
 }
