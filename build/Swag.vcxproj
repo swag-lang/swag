@@ -343,6 +343,7 @@
     <ClCompile Include="..\src\BackendLLVM_Data.cpp" />
     <ClCompile Include="../src/BackendLLVMDbg.cpp" />
     <ClCompile Include="../src/BackendLLVMFunctionBodyJob.cpp" />
+    <ClCompile Include="..\src\BackendLLVM_Emit.cpp" />
     <ClCompile Include="..\src\BackendLLVM_Function.cpp" />
     <ClCompile Include="..\src\BackendLLVM_Main.cpp" />
     <ClCompile Include="../src/BackendLinker.cpp" />

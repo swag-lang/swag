@@ -602,6 +602,9 @@
     <ClCompile Include="..\src\Parser_Type.cpp">
       <Filter>Syntax\Parser</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\BackendLLVM_Emit.cpp">
+      <Filter>Backend\LLVM</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="../src/ThreadManager.h">

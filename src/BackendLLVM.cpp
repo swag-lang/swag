@@ -2,6 +2,7 @@
 #include "BackendLLVM.h"
 #include "BackendLLVMDbg.h"
 #include "BackendLLVM_Macros.h"
+#include "BackendLLVMFunctionBodyJob.h"
 #include "Workspace.h"
 #include "BackendLinker.h"
 #include "Module.h"
@@ -9,6 +10,11 @@
 #include "Report.h"
 #include "LanguageSpec.h"
 #include "Os.h"
+
+BackendFunctionBodyJobBase* BackendLLVM::newFunctionJob()
+{
+    return Allocator::alloc<BackendLLVMFunctionBodyJob>();
+}
 
 bool BackendLLVM::createRuntime(const BuildParameters& buildParameters)
 {
