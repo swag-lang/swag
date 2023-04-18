@@ -1059,6 +1059,12 @@ void X64Gen::emit_Op8(uint8_t reg1, uint8_t reg2, X64Op instruction)
         concat.addU8(0xF6);
         concat.addU8((uint8_t) instruction);
     }
+    else if (instruction == X64Op::MUL || instruction == X64Op::IMUL)
+    {
+        SWAG_ASSERT(reg1 == RAX and reg2 == RCX);
+        concat.addU8(0xF6);
+        concat.addU8(instruction == X64Op::IMUL ? 0xE9 : 0xE1);
+    }
     else
     {
         concat.addU8((uint8_t) instruction & ~1);
@@ -1076,6 +1082,12 @@ void X64Gen::emit_Op16(uint8_t reg1, uint8_t reg2, X64Op instruction)
         concat.addU8(0xF7);
         concat.addU8((uint8_t) instruction);
     }
+    else if (instruction == X64Op::MUL || instruction == X64Op::IMUL)
+    {
+        SWAG_ASSERT(reg1 == RAX and reg2 == RCX);
+        concat.addU8(0xF7);
+        concat.addU8(instruction == X64Op::IMUL ? 0xE9 : 0xE1);
+    }
     else
     {
         concat.addU8((uint8_t) instruction);
@@ -1092,6 +1104,12 @@ void X64Gen::emit_Op32(uint8_t reg1, uint8_t reg2, X64Op instruction)
         concat.addU8(0xF7);
         concat.addU8((uint8_t) instruction);
     }
+    else if (instruction == X64Op::MUL || instruction == X64Op::IMUL)
+    {
+        SWAG_ASSERT(reg1 == RAX and reg2 == RCX);
+        concat.addU8(0xF7);
+        concat.addU8(instruction == X64Op::IMUL ? 0xE9 : 0xE1);
+    }
     else
     {
         concat.addU8((uint8_t) instruction);
@@ -1107,6 +1125,12 @@ void X64Gen::emit_Op64(uint8_t reg1, uint8_t reg2, X64Op instruction)
         SWAG_ASSERT(reg1 == RAX and reg2 == RCX);
         concat.addU8(0xF7);
         concat.addU8((uint8_t) instruction);
+    }
+    else if (instruction == X64Op::MUL || instruction == X64Op::IMUL)
+    {
+        SWAG_ASSERT(reg1 == RAX and reg2 == RCX);
+        concat.addU8(0xF7);
+        concat.addU8(instruction == X64Op::IMUL ? 0xE9 : 0xE1);
     }
     else
     {
