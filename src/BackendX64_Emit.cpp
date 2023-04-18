@@ -668,7 +668,7 @@ void BackendX64::emitBinOpInt32(X64Gen& pp, ByteCodeInstruction* ip, X64Op op)
             pp.emit_Load32_Indirect(regOffset(ip->b.u32), RCX);
 
         if (op == X64Op::MUL)
-            pp.concat.addString3("\x48\xF7\xE1"); // mul rcx
+            pp.concat.addString2("\xF7\xE1"); // mul ecx
         else if (op == X64Op::IMUL)
             pp.concat.addString3("\x0F\xAF\xC1"); // imul eax, ecx
         else
@@ -681,19 +681,19 @@ void BackendX64::emitBinOpInt64(X64Gen& pp, ByteCodeInstruction* ip, X64Op op)
     if (!(ip->flags & BCI_IMM_A) && !(ip->flags & BCI_IMM_B))
     {
         pp.emit_Load64_Indirect(regOffset(ip->a.u32), RAX);
+        pp.emit_REX();
         if (op == X64Op::MUL)
         {
-            pp.concat.addString2("\x48\xF7"); // mul
+            pp.concat.addString1("\xF7"); // mul
             pp.emit_ModRM(regOffset(ip->b.u32), 4, RDI);
         }
         else if (op == X64Op::IMUL)
         {
-            pp.concat.addString3("\x48\x0F\xAF"); // imul
+            pp.concat.addString2("\x0F\xAF"); // imul
             pp.emit_ModRM(regOffset(ip->b.u32), RAX, RDI);
         }
         else
         {
-            pp.emit_REX();
             pp.concat.addU8((uint8_t) op | 2);
             pp.emit_ModRM(regOffset(ip->b.u32), RAX, RDI);
         }
@@ -733,10 +733,17 @@ void BackendX64::emitBinOpInt64(X64Gen& pp, ByteCodeInstruction* ip, X64Op op)
             pp.emit_Load64_Immediate(ip->b.u64, RCX);
         else
             pp.emit_Load64_Indirect(regOffset(ip->b.u32), RCX);
+
         if (op == X64Op::MUL)
-            pp.concat.addString3("\x48\xF7\xE1"); // mul rcx
+        {
+            pp.emit_REX();
+            pp.concat.addString2("\xF7\xE1"); // mul rcx
+        }
         else if (op == X64Op::IMUL)
-            pp.concat.addString4("\x48\x0F\xAF\xC1"); // imul rax, rcx
+        {
+            pp.emit_REX();
+            pp.concat.addString3("\x0F\xAF\xC1"); // imul rax, rcx
+        }
         else
             pp.emit_Op64(RCX, RAX, op);
     }
