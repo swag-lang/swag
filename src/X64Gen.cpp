@@ -1053,30 +1053,66 @@ void X64Gen::emit_OpF64_Indirect(CPURegister reg, CPURegister memReg, X64Op inst
 void X64Gen::emit_Op8(uint8_t reg1, uint8_t reg2, X64Op instruction)
 {
     SWAG_ASSERT(reg1 < R8 && reg2 < R8);
-    concat.addU8((uint8_t) instruction & ~1);
-    concat.addU8(getModRM(REGREG, reg1, reg2));
+    if (instruction == X64Op::DIV || instruction == X64Op::IDIV)
+    {
+        SWAG_ASSERT(reg1 == RAX and reg2 == RCX);
+        concat.addU8(0xF6);
+        concat.addU8((uint8_t) instruction);
+    }
+    else
+    {
+        concat.addU8((uint8_t) instruction & ~1);
+        concat.addU8(getModRM(REGREG, reg1, reg2));
+    }
 }
 
 void X64Gen::emit_Op16(uint8_t reg1, uint8_t reg2, X64Op instruction)
 {
     SWAG_ASSERT(reg1 < R8 && reg2 < R8);
-    concat.addU8(0x66);
-    concat.addU8((uint8_t) instruction);
-    concat.addU8(getModRM(REGREG, reg1, reg2));
+    emit_REX(16);
+    if (instruction == X64Op::DIV || instruction == X64Op::IDIV)
+    {
+        SWAG_ASSERT(reg1 == RAX and reg2 == RCX);
+        concat.addU8(0xF7);
+        concat.addU8((uint8_t) instruction);
+    }
+    else
+    {
+        concat.addU8((uint8_t) instruction);
+        concat.addU8(getModRM(REGREG, reg1, reg2));
+    }
 }
 
 void X64Gen::emit_Op32(uint8_t reg1, uint8_t reg2, X64Op instruction)
 {
     SWAG_ASSERT(reg1 < R8 && reg2 < R8);
-    concat.addU8((uint8_t) instruction);
-    concat.addU8(getModRM(REGREG, reg1, reg2));
+    if (instruction == X64Op::DIV || instruction == X64Op::IDIV)
+    {
+        SWAG_ASSERT(reg1 == RAX and reg2 == RCX);
+        concat.addU8(0xF7);
+        concat.addU8((uint8_t) instruction);
+    }
+    else
+    {
+        concat.addU8((uint8_t) instruction);
+        concat.addU8(getModRM(REGREG, reg1, reg2));
+    }
 }
 
 void X64Gen::emit_Op64(uint8_t reg1, uint8_t reg2, X64Op instruction)
 {
     concat.addU8(getREX(true, reg1 >= R8, false, reg2 >= R8));
-    concat.addU8((uint8_t) instruction);
-    concat.addU8(getModRM(REGREG, reg1, reg2));
+    if (instruction == X64Op::DIV || instruction == X64Op::IDIV)
+    {
+        SWAG_ASSERT(reg1 == RAX and reg2 == RCX);
+        concat.addU8(0xF7);
+        concat.addU8((uint8_t) instruction);
+    }
+    else
+    {
+        concat.addU8((uint8_t) instruction);
+        concat.addU8(getModRM(REGREG, reg1, reg2));
+    }
 }
 
 /////////////////////////////////////////////////////////////////////

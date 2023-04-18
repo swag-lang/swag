@@ -773,15 +773,21 @@ void BackendX64::emitBinOpIntDivAtReg(X64Gen& pp, ByteCodeInstruction* ip, bool 
     if (ip->flags & BCI_IMM_B)
     {
         pp.emit_LoadN_Immediate(ip->b, RCX, bits);
-        pp.emit_REX(bits);
-        if (bits == 8)
-            pp.concat.addU8(0xF6);
-        else
-            pp.concat.addU8(0xF7);
-        if (isSigned)
-            pp.concat.addU8(0xF9); // idiv
-        else
-            pp.concat.addU8(0xF1); // div
+        switch (bits)
+        {
+        case 8:
+            pp.emit_Op8(RAX, RCX, isSigned ? X64Op::IDIV : X64Op::DIV);
+            break;
+        case 16:
+            pp.emit_Op16(RAX, RCX, isSigned ? X64Op::IDIV : X64Op::DIV);
+            break;
+        case 32:
+            pp.emit_Op32(RAX, RCX, isSigned ? X64Op::IDIV : X64Op::DIV);
+            break;
+        case 64:
+            pp.emit_Op64(RAX, RCX, isSigned ? X64Op::IDIV : X64Op::DIV);
+            break;
+        }
     }
     else
     {

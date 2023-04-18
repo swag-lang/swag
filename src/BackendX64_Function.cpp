@@ -1414,7 +1414,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             pp.emit_Load16_Indirect(0, RAX, RAX);
             pp.emit_Cwd();
             MK_IMMB_16(RCX);
-            concat.addString3("\x66\xf7\xf9"); // idiv ax, cx
+            concat.addString3("\x66\xf7\xF9"); // idiv ax, cx
             pp.emit_Load64_Indirect(regOffset(ip->a.u32), RCX);
             pp.emit_Store16_Indirect(0, RDX, RCX);
             break;
