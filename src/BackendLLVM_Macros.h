@@ -65,9 +65,8 @@
 #define TO_PTR_I8(__r) builder.CreatePointerCast(__r, PTR_I8_TY())
 #define TO_PTR_F64(__r) builder.CreatePointerCast(__r, PTR_F64_TY())
 #define TO_PTR_F32(__r) builder.CreatePointerCast(__r, PTR_F32_TY())
-#define TO_PTR_IX(__r, __n) builder.CreatePointerCast(__r, llvm::Type::getIntNPtrTy(context, __n))
-#define TO_PTR_I_N(__r, __numBits) builder.CreatePointerCast(__r, getIntPtrType(context, __numBits))
-#define TO_PTR_PTR_I_N(__r, __numBits) builder.CreatePointerCast(__r, getIntPtrType(context, __numBits)->getPointerTo())
+#define TO_PTR_I_N(__r, __n) builder.CreatePointerCast(__r, llvm::Type::getIntNPtrTy(context, __n))
+#define TO_PTR_PTR_I_N(__r, __numBits) TO_PTR_I_N(__r, __n)->getPointerTo())
 #define TO_BOOL(__r) builder.CreateIntCast(__r, llvm::Type::getInt1Ty(context), false)
 
 #define MK_IMMA_8() (ip->flags & BCI_IMM_A) ? (llvm::Value*) builder.getInt8(ip->a.u8) : (llvm::Value*) builder.CreateLoad(I8_TY(), GEP64(allocR, ip->a.u32))

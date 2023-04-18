@@ -5244,31 +5244,6 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
     return ok;
 }
 
-llvm::Type* BackendLLVM::getIntType(llvm::LLVMContext& context, uint8_t numBits)
-{
-    switch (numBits)
-    {
-    case 8:
-        return I8_TY();
-    case 16:
-        return I16_TY();
-    case 32:
-        return I32_TY();
-    case 64:
-        return I64_TY();
-    default:
-        SWAG_ASSERT(false);
-        break;
-    }
-
-    return nullptr;
-}
-
-llvm::Type* BackendLLVM::getIntPtrType(llvm::LLVMContext& context, uint8_t numBits)
-{
-    return getIntType(context, numBits)->getPointerTo();
-}
-
 llvm::Type* BackendLLVM::swagTypeToLLVMType(const BuildParameters& buildParameters, Module* moduleToGen, TypeInfo* typeInfo)
 {
     int   ct              = buildParameters.compileType;

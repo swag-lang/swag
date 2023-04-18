@@ -104,8 +104,6 @@ struct BackendLLVM : public Backend
 
     bool                createRuntime(const BuildParameters& buildParameters);
     llvm::Value*        getImmediateConstantA(llvm::LLVMContext& context, llvm::IRBuilder<>& builder, llvm::AllocaInst* allocR, ByteCodeInstruction* ip, uint8_t numBits);
-    llvm::Type*         getIntType(llvm::LLVMContext& context, uint8_t numBits);
-    llvm::Type*         getIntPtrType(llvm::LLVMContext& context, uint8_t numBits);
     llvm::Type*         swagTypeToLLVMType(const BuildParameters& buildParameters, Module* moduleToGen, TypeInfo* typeInfo);
     void                createRet(const BuildParameters& buildParameters, Module* moduleToGen, TypeInfoFuncAttr* typeFunc, TypeInfo* returnType, llvm::AllocaInst* allocResult);
     llvm::FunctionType* getOrCreateFuncType(const BuildParameters& buildParameters, Module* moduleToGen, TypeInfoFuncAttr* typeFuncBC, bool closureToLambda = false);
