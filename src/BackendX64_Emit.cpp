@@ -723,7 +723,7 @@ void BackendX64::emitBinOpInt64AtReg(X64Gen& pp, ByteCodeInstruction* ip, X64Op 
     pp.emit_Store64_Indirect(regOffset(ip->c.u32), RAX);
 }
 
-void BackendX64::emitBinOpIntDivAtReg(X64Gen& pp, ByteCodeInstruction* ip, bool isSigned, uint32_t bits, bool modulo)
+void BackendX64::emitBinOpIntDivAtReg(X64Gen& pp, ByteCodeInstruction* ip, bool isSigned, uint8_t bits, bool modulo)
 {
     switch (bits)
     {
@@ -772,86 +772,31 @@ void BackendX64::emitBinOpIntDivAtReg(X64Gen& pp, ByteCodeInstruction* ip, bool 
 
     if (ip->flags & BCI_IMM_B)
     {
-        switch (bits)
-        {
-        case 8:
-            pp.emit_Load8_Immediate(ip->b.u8, RCX);
-            break;
-        case 16:
-            pp.emit_Load16_Immediate(ip->b.u16, RCX);
-            break;
-        case 32:
-            pp.emit_Load32_Immediate(ip->b.u32, RCX);
-            break;
-        case 64:
-            pp.emit_Load64_Immediate(ip->b.u64, RCX);
-            break;
-        }
-
-        if (isSigned)
-        {
-            switch (bits)
-            {
-            case 8:
-                pp.concat.addString2("\xF6\xF9"); // idiv cl
-                break;
-            case 16:
-                pp.concat.addString3("\x66\xF7\xF9"); // idiv cx
-                break;
-            case 32:
-                pp.concat.addString2("\xF7\xF9"); // idiv ecx
-                break;
-            case 64:
-                pp.concat.addString3("\x48\xF7\xF9"); // idiv rcx
-                break;
-            }
-        }
+        pp.emit_LoadN_Immediate(ip->b, RCX, bits);
+        pp.emit_REX(bits);
+        if (bits == 8)
+            pp.concat.addU8(0xF6);
         else
-        {
-            switch (bits)
-            {
-            case 8:
-                pp.concat.addString2("\xF6\xF1"); // div cl
-                break;
-            case 16:
-                pp.concat.addString3("\x66\xF7\xF1"); // div cx
-                break;
-            case 32:
-                pp.concat.addString2("\xF7\xF1"); // div ecx
-                break;
-            case 64:
-                pp.concat.addString3("\x48\xF7\xF1"); // div rcx
-                break;
-            }
-        }
+            pp.concat.addU8(0xF7);
+        if (isSigned)
+            pp.concat.addU8(0xF9); // idiv
+        else
+            pp.concat.addU8(0xF1); // div
     }
     else
     {
         // div [rdi+?]
-        switch (bits)
-        {
-        case 8:
+        pp.emit_REX(bits);
+        if (bits == 8)
             pp.concat.addU8(0xF6);
-            break;
-        case 16:
-            pp.concat.addU8(0x66);
+        else
             pp.concat.addU8(0xF7);
-            break;
-        case 32:
-            pp.concat.addU8(0xF7);
-            break;
-        case 64:
-            pp.emit_REX();
-            pp.concat.addU8(0xF7);
-            break;
-        default:
-            SWAG_ASSERT(false);
-            break;
-        }
 
         uint32_t offsetStack = ip->b.u32 * sizeof(Register);
         if (offsetStack == 0)
+        {
             pp.concat.addU8(0x37 | (isSigned ? 0b1000 : 0));
+        }
         else if (offsetStack <= 0x7F)
         {
             pp.concat.addU8(0x77 | (isSigned ? 0b1000 : 0));
