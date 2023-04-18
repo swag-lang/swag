@@ -49,14 +49,13 @@ struct BackendX64 : public Backend
     void     emitBinOpFloat32AtReg(X64Gen& pp, ByteCodeInstruction* ip, X64Op op);
     void     emitBinOpFloat64(X64Gen& pp, ByteCodeInstruction* ip, X64Op op);
     void     emitBinOpFloat64AtReg(X64Gen& pp, ByteCodeInstruction* ip, X64Op op);
-    void     emitBinOpInt16(X64Gen& pp, ByteCodeInstruction* ip, X64Op op);
-    void     emitBinOpInt16AtReg(X64Gen& pp, ByteCodeInstruction* ip, X64Op op);
-    void     emitBinOpInt32(X64Gen& pp, ByteCodeInstruction* ip, X64Op op);
-    void     emitBinOpInt32AtReg(X64Gen& pp, ByteCodeInstruction* ip, X64Op op);
-    void     emitBinOpInt64(X64Gen& pp, ByteCodeInstruction* ip, X64Op op);
-    void     emitBinOpInt64AtReg(X64Gen& pp, ByteCodeInstruction* ip, X64Op op);
     void     emitBinOpInt8(X64Gen& pp, ByteCodeInstruction* ip, X64Op op);
+    void     emitBinOpInt16(X64Gen& pp, ByteCodeInstruction* ip, X64Op op);
+    void     emitBinOpIntN(X64Gen& pp, ByteCodeInstruction* ip, X64Op op, uint8_t bits);
     void     emitBinOpInt8AtReg(X64Gen& pp, ByteCodeInstruction* ip, X64Op op);
+    void     emitBinOpInt16AtReg(X64Gen& pp, ByteCodeInstruction* ip, X64Op op);
+    void     emitBinOpInt32AtReg(X64Gen& pp, ByteCodeInstruction* ip, X64Op op);
+    void     emitBinOpInt64AtReg(X64Gen& pp, ByteCodeInstruction* ip, X64Op op);
     void     emitBinOpIntDivAtReg(X64Gen& pp, ByteCodeInstruction* ip, bool isSigned, uint32_t bits, bool modulo = false);
     void     emitAddSubMul64(X64Gen& pp, ByteCodeInstruction* ip, uint64_t mul, X64Op op);
 

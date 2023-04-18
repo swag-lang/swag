@@ -1994,7 +1994,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
 
         case ByteCodeOp::CompareOp3WayU32:
         case ByteCodeOp::CompareOp3WayS32:
-            emitBinOpInt32(pp, ip, X64Op::SUB);
+            emitBinOpIntN(pp, ip, X64Op::SUB, 32);
             pp.emit_Clear32(RCX);
             pp.emit_Test32(RAX, RAX);
             pp.concat.addString3("\x0F\x9F\xC1"); // setg cl
@@ -2004,7 +2004,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             break;
         case ByteCodeOp::CompareOp3WayU64:
         case ByteCodeOp::CompareOp3WayS64:
-            emitBinOpInt64(pp, ip, X64Op::SUB);
+            emitBinOpIntN(pp, ip, X64Op::SUB, 64);
             pp.emit_Clear64(RCX);
             pp.emit_Test64(RAX, RAX);
             pp.concat.addString3("\x0F\x9F\xC1"); // setg cl

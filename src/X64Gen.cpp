@@ -35,9 +35,12 @@ uint8_t X64Gen::getModRM(uint8_t mod, uint8_t r, uint8_t m)
     return (mod << 6) | ((r & 0b111) << 3) | (m & 0b111);
 }
 
-void X64Gen::emit_REX()
+void X64Gen::emit_REX(uint8_t bits)
 {
-    concat.addU8(getREX());
+    if (bits == 16)
+        concat.addU8(0x66);
+    else if (bits == 64)
+        concat.addU8(getREX());
 }
 
 void X64Gen::emit_ModRM(uint32_t stackOffset, uint8_t reg, uint8_t memReg, uint8_t op)
