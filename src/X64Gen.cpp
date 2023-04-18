@@ -1139,6 +1139,40 @@ void X64Gen::emit_Op64(uint8_t reg1, uint8_t reg2, X64Op instruction)
     }
 }
 
+void X64Gen::emit_OpF32(uint8_t reg1, uint8_t reg2, X64Op instruction)
+{
+    SWAG_ASSERT(reg1 == XMM0 && reg2 == XMM1);
+    if (instruction == X64Op::MUL)
+    {
+        concat.addString4("\xF3\x0F\x59\xC1"); // mulss xmm0, xmm1
+    }
+    else if (instruction == X64Op::DIV)
+    {
+        concat.addString4("\xF3\x0F\x5E\xC1"); // divss xmm0, xmm1
+    }
+    else
+    {
+        SWAG_ASSERT(false);
+    }
+}
+
+void X64Gen::emit_OpF64(uint8_t reg1, uint8_t reg2, X64Op instruction)
+{
+    SWAG_ASSERT(reg1 == XMM0 && reg2 == XMM1);
+    if (instruction == X64Op::MUL)
+    {
+        concat.addString4("\xF2\x0F\x59\xC1"); // mulsd xmm0, xmm1
+    }
+    else if (instruction == X64Op::DIV)
+    {
+        concat.addString4("\xF2\x0F\x5E\xC1"); // divsd xmm0, xmm1
+    }
+    else
+    {
+        SWAG_ASSERT(false);
+    }
+}
+
 /////////////////////////////////////////////////////////////////////
 
 void X64Gen::emit_Add64_Immediate(uint64_t value, CPURegister reg)
