@@ -580,35 +580,17 @@ void BackendX64::emitBinOpInt16(X64Gen& pp, ByteCodeInstruction* ip, X64Op op)
         pp.emit_Load16_Indirect(regOffset(ip->a.u32), RAX);
         pp.concat.addU8((uint8_t) 0x66);
         if (ip->b.u16 <= 0x7F)
-            pp.concat.addU8((uint8_t) 0x83);
-        else
-            pp.concat.addU8((uint8_t) 0x81);
-        switch (op)
         {
-        case X64Op::ADD:
-            pp.concat.addU8(0xC0);
-            break;
-        case X64Op::AND:
-            pp.concat.addU8(0xE0);
-            break;
-        case X64Op::OR:
-            pp.concat.addU8(0xC8);
-            break;
-        case X64Op::SUB:
-            pp.concat.addU8(0xE8);
-            break;
-        case X64Op::XOR:
-            pp.concat.addU8(0xF0);
-            break;
-        default:
-            SWAG_ASSERT(false);
-            break;
-        }
-
-        if (ip->b.u16 <= 0x7F)
+            pp.concat.addU8(0x83); // op eax, ??
+            pp.concat.addU8(0xBF + (uint8_t) op);
             pp.concat.addU8(ip->b.u8);
+        }
         else
+        {
+            pp.concat.addU8(0x81); // op eax, ????????
+            pp.concat.addU8(0xBF + (uint8_t) op);
             pp.concat.addU16(ip->b.u16);
+        }
     }
     else
     {
