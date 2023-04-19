@@ -1713,7 +1713,7 @@ void X64Gen::emit_Call_Parameters(TypeInfoFuncAttr* typeFuncBC, VectorNative<X64
         else
         {
             // Pass struct in a register if small enough
-            if (cc.structByRegister && type->isStruct() && type->sizeOf <= sizeof(void*))
+            if (cc.structByValue(type))
             {
                 SWAG_ASSERT(paramsRegisters[i].type == X64PushParamType::Reg);
                 emit_Load64_Indirect(regOffset(reg), RAX);
@@ -1831,7 +1831,7 @@ void X64Gen::emit_Call_Parameters(TypeInfoFuncAttr* typeFuncBC, VectorNative<X64
                 emit_Load64_Indirect(regOffset(reg), RAX);
 
                 // Store the content of the struct in the stack
-                if (cc.structByRegister && sizeOf <= sizeof(void*))
+                if (cc.structByValue(type))
                 {
                     switch (sizeOf)
                     {

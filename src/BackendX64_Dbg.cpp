@@ -1192,7 +1192,7 @@ bool BackendX64::dbgEmitFctDebugS(const BuildParameters& buildParameters)
                     switch (typeParam->kind)
                     {
                     case TypeInfoKind::Struct:
-                        if (cc.structByRegister && typeParam->sizeOf <= sizeof(void*))
+                        if (cc.structByValue(typeParam))
                             typeIdx = dbgGetOrCreateType(pp, typeParam);
                         else
                             typeIdx = dbgGetOrCreatePointerToType(pp, typeParam, true);
@@ -1203,7 +1203,7 @@ bool BackendX64::dbgEmitFctDebugS(const BuildParameters& buildParameters)
                         if (typeParam->isAutoConstPointerRef())
                         {
                             auto typeRef = TypeManager::concretePtrRefType(typeParam);
-                            if (cc.structByRegister && typeRef->sizeOf <= sizeof(void*))
+                            if (cc.structByValue(typeRef))
                                 typeIdx = dbgGetOrCreateType(pp, typeRef);
                             else
                                 typeIdx = dbgGetOrCreateType(pp, typeParam);

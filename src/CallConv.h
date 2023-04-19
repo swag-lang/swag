@@ -1,5 +1,6 @@
 #pragma once
 #include "VectorNative.h"
+struct TypeInfo;
 
 enum CallingConvention
 {
@@ -36,7 +37,7 @@ enum CPURegister : uint8_t
     XMM3 = 0b0011,
 };
 
-struct CallingConventDesc
+struct CallingConventionDesc
 {
     // The number of parameters to pass by register
     uint32_t byRegisterCount = 4;
@@ -65,7 +66,9 @@ struct CallingConventDesc
     // Scratch registers used to opimized generation
     CPURegister firstScratchRegister = CPURegister::R12;
     uint32_t    numScratchRegisters  = 4;
+
+    bool structByValue(TypeInfo* typeParam) const;
 };
 
-extern CallingConventDesc g_CallConv[CallingConvention::Max];
-extern void               initCallingConventions();
+extern CallingConventionDesc g_CallConv[CallingConvention::Max];
+extern void                  initCallingConventions();

@@ -57,7 +57,7 @@ void BackendX64::emitGetParam(X64Gen& pp, CoffFunction* coffFct, int reg, uint32
 
     SWAG_ASSERT(toAdd <= 0x7FFFFFFFF);
 
-    bool structByValue = cc.structByRegister && typeParam->isStruct() && typeParam->sizeOf <= sizeof(void*);
+    bool structByValue = cc.structByValue(typeParam);
 
     // Use scratch registers
     if (paramIdx < coffFct->numScratchRegs && !structByValue)

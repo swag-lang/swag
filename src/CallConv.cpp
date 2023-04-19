@@ -1,7 +1,8 @@
 #include "pch.h"
 #include "CallConv.h"
+#include "TypeInfo.h"
 
-CallingConventDesc g_CallConv[CallingConvention::Max];
+CallingConventionDesc g_CallConv[CallingConvention::Max];
 
 void initCallingConventions()
 {
@@ -25,4 +26,9 @@ void initCallingConventions()
     cc.useReturnByRegisterFloat = true;
 
     cc.structByRegister = true;
+}
+
+bool CallingConventionDesc::structByValue(TypeInfo* typeParam) const
+{
+    return structByRegister && typeParam->isStruct() && typeParam->sizeOf <= sizeof(void*);
 }

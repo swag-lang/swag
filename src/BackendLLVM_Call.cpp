@@ -126,7 +126,7 @@ llvm::FunctionType* BackendLLVM::getOrCreateFuncType(const BuildParameters& buil
             if (param->isAutoConstPointerRef())
                 param = TypeManager::concretePtrRef(param);
 
-            if (cc.structByRegister && param->isStruct() && param->sizeOf <= sizeof(void*))
+            if (cc.structByValue(param))
             {
                 params.push_back(IX_TY(param->sizeOf * 8));
             }
@@ -194,7 +194,7 @@ bool BackendLLVM::emitGetParam(llvm::LLVMContext&     context,
 
     if (toAdd || deRefSize)
     {
-        if (cc.structByRegister && param->isStruct() && param->sizeOf <= sizeof(void*))
+        if (cc.structByValue(param))
         {
             auto ra = builder.CreateIntCast(arg, I64_TY(), false);
 
@@ -283,7 +283,7 @@ bool BackendLLVM::emitGetParam(llvm::LLVMContext&     context,
         }
 
         // Struct by copy
-        else if (cc.structByRegister && param->isStruct() && param->sizeOf <= sizeof(void*))
+        else if (cc.structByValue(param))
         {
             // Make a copy of the value on the stack, and return the address
             auto allocR1 = builder.CreateAlloca(I64_TY(), builder.getInt32(1));
@@ -387,7 +387,7 @@ bool BackendLLVM::emitCallParameters(const BuildParameters&        buildParamete
             auto llvmType = swagTypeToLLVMType(buildParameters, moduleToGen, typePtr);
             params.push_back(builder.CreateLoad(llvmType, GEP64(allocR, index)));
         }
-        else if (cc.structByRegister && typeParam->isStruct() && typeParam->sizeOf <= sizeof(void*))
+        else if (cc.structByValue(typeParam))
         {
             auto v0 = builder.CreateLoad(PTR_I8_TY(), GEP64(allocR, index));
             params.push_back(builder.CreateLoad(IX_TY(typeParam->sizeOf * 8), v0));
