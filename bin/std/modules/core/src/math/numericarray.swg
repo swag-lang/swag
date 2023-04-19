@@ -26,7 +26,7 @@ impl NumericArray
         return true
     }
 
-    mtd(op: string) opBinary(other: Self)->Self
+    mtdc(op: string) opBinary(other: Self)->Self
     {
         var result: retval
         loop i: N
