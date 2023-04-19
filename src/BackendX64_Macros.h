@@ -166,6 +166,24 @@
     else                                            \
         pp.emit_Load64_Indirect(regOffset(ip->d.u32), __reg);
 
+#define MK_IMMD_F32(__reg)                        \
+    if (ip->flags & BCI_IMM_D)                    \
+    {                                             \
+        pp.emit_Load32_Immediate(ip->d.u32, RAX); \
+        pp.emit_CopyF32(RAX, __reg);              \
+    }                                             \
+    else                                          \
+        pp.emit_LoadF32_Indirect(regOffset(ip->d.u32), __reg);
+
+#define MK_IMMD_F64(__reg)                        \
+    if (ip->flags & BCI_IMM_D)                    \
+    {                                             \
+        pp.emit_Load64_Immediate(ip->d.u64, RAX); \
+        pp.emit_CopyF64(RAX, __reg);              \
+    }                                             \
+    else                                          \
+        pp.emit_LoadF64_Indirect(regOffset(ip->d.u32), __reg);
+
 //////////////////////////////////
 
 #define MK_BINOP8_CAB(__opInd, __op)                              \

@@ -142,7 +142,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
     case ByteCodeOp::IntrinsicF64x1:
     {
         auto& rb = (ip->flags & BCI_IMM_B) ? ip->b : registersRC[ip->b.u32];
-        SWAG_CHECK(executeMathIntrinsic(&context->jc, ip, registersRC[ip->a.u32], rb, rb, true));
+        SWAG_CHECK(executeMathIntrinsic(&context->jc, ip, registersRC[ip->a.u32], rb, {}, {}, true));
         break;
     }
 
@@ -159,7 +159,17 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
     {
         auto& rb = (ip->flags & BCI_IMM_B) ? ip->b : registersRC[ip->b.u32];
         auto& rc = (ip->flags & BCI_IMM_C) ? ip->c : registersRC[ip->c.u32];
-        SWAG_CHECK(executeMathIntrinsic(&context->jc, ip, registersRC[ip->a.u32], rb, rc, true));
+        SWAG_CHECK(executeMathIntrinsic(&context->jc, ip, registersRC[ip->a.u32], rb, rc, {}, true));
+        break;
+    }
+
+    case ByteCodeOp::IntrinsicMulAddF32:
+    case ByteCodeOp::IntrinsicMulAddF64:
+    {
+        auto& rb = (ip->flags & BCI_IMM_B) ? ip->b : registersRC[ip->b.u32];
+        auto& rc = (ip->flags & BCI_IMM_C) ? ip->c : registersRC[ip->c.u32];
+        auto& rd = (ip->flags & BCI_IMM_D) ? ip->d : registersRC[ip->d.u32];
+        SWAG_CHECK(executeMathIntrinsic(&context->jc, ip, registersRC[ip->a.u32], rb, rc, rd, true));
         break;
     }
 
@@ -1515,23 +1525,6 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
         auto val1                  = IMMA_F64(ip);
         auto val2                  = IMMB_F64(ip);
         registersRC[ip->c.u32].f64 = val1 + val2;
-        break;
-    }
-
-    case ByteCodeOp::BinOpMulAddF32:
-    {
-        auto val1                  = IMMA_F32(ip);
-        auto val2                  = IMMB_F32(ip);
-        auto val3                  = IMMC_F32(ip);
-        registersRC[ip->d.u32].f32 = (val1 * val2) + val3;
-        break;
-    }
-    case ByteCodeOp::BinOpMulAddF64:
-    {
-        auto val1                  = IMMA_F64(ip);
-        auto val2                  = IMMB_F64(ip);
-        auto val3                  = IMMC_F64(ip);
-        registersRC[ip->d.u32].f64 = (val1 * val2) + val3;
         break;
     }
 

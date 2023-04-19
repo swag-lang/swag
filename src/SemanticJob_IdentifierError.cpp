@@ -173,9 +173,9 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
     case MatchResult::DuplicatedNamedParameter:
     {
         SWAG_ASSERT(failedParam && failedParam->hasExtMisc() && failedParam->extMisc()->isNamed);
-        diag       = new Diagnostic{failedParam->extMisc()->isNamed, Fmt(Err(Err0011), failedParam->extMisc()->isNamed->token.ctext())};
-        diag->hint = Hnt(Hnt0009);
-        size_t other  = oneTry.symMatchContext.badSignatureInfos.badSignatureNum1;
+        diag         = new Diagnostic{failedParam->extMisc()->isNamed, Fmt(Err(Err0011), failedParam->extMisc()->isNamed->token.ctext())};
+        diag->hint   = Hnt(Hnt0009);
+        size_t other = oneTry.symMatchContext.badSignatureInfos.badSignatureNum1;
         SWAG_ASSERT(other < callParameters->childs.size());
         diag->addRange(callParameters->childs[other], Hnt(Hnt0059));
         result0.push_back(diag);

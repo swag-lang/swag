@@ -87,10 +87,17 @@ void ByteCodeRun::executeRightShift(Register* rdest, const Register& rleft, cons
     }
 }
 
-bool ByteCodeRun::executeMathIntrinsic(JobContext* context, ByteCodeInstruction* ip, Register& ra, const Register& rb, const Register& rc, bool runtime)
+bool ByteCodeRun::executeMathIntrinsic(JobContext* context, ByteCodeInstruction* ip, Register& ra, const Register& rb, const Register& rc, const Register& rd, bool runtime)
 {
     switch (ip->op)
     {
+    case ByteCodeOp::IntrinsicMulAddF32:
+        ra.f32 = (rb.f32 * rc.f32) + rd.f32;
+        break;
+    case ByteCodeOp::IntrinsicMulAddF64:
+        ra.f64 = (rb.f64 * rc.f64) + rd.f64;
+        break;
+
     case ByteCodeOp::IntrinsicS8x1:
     {
         switch ((TokenId) ip->d.u32)

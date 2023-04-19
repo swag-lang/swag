@@ -666,10 +666,10 @@ bool ByteCodeGenJob::emitBinaryOp(ByteCodeGenContext* context)
             switch (typeInfo->nativeType)
             {
             case NativeTypeKind::F32:
-                EMIT_INST4(context, ByteCodeOp::BinOpMulAddF32, front->childs[0]->resultRegisterRC, front->childs[1]->resultRegisterRC, node->childs[1]->resultRegisterRC, node->resultRegisterRC);
+                EMIT_INST4(context, ByteCodeOp::IntrinsicMulAddF32, node->resultRegisterRC, front->childs[0]->resultRegisterRC, front->childs[1]->resultRegisterRC, node->childs[1]->resultRegisterRC);
                 break;
             case NativeTypeKind::F64:
-                EMIT_INST4(context, ByteCodeOp::BinOpMulAddF64, front->childs[0]->resultRegisterRC, front->childs[1]->resultRegisterRC, node->childs[1]->resultRegisterRC, node->resultRegisterRC);
+                EMIT_INST4(context, ByteCodeOp::IntrinsicMulAddF64, node->resultRegisterRC, front->childs[0]->resultRegisterRC, front->childs[1]->resultRegisterRC, node->childs[1]->resultRegisterRC);
                 break;
             default:
                 return Report::internalError(context->node, "emitBinaryOpPlus, muladd, type not supported");

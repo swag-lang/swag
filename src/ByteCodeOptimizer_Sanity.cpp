@@ -504,6 +504,21 @@ static bool getImmediateC(Value& result, Context& cxt, ByteCodeInstruction* ip)
     return true;
 }
 
+static bool getImmediateD(Value& result, Context& cxt, ByteCodeInstruction* ip)
+{
+    if (ip->flags & BCI_IMM_D)
+    {
+        result.kind = ValueKind::Constant;
+        result.reg  = ip->d;
+        return true;
+    }
+
+    Value* rd = nullptr;
+    SWAG_CHECK(getRegister(rd, cxt, ip->d.u32));
+    result = *rd;
+    return true;
+}
+
 static bool getStackAddress(uint8_t*& result, Context& cxt, uint64_t stackOffset, uint32_t sizeOf = 0)
 {
     SWAG_CHECK(checkStackOffset(cxt, stackOffset, sizeOf));
@@ -532,7 +547,7 @@ static bool optimizePassSanityStack(ByteCodeOptContext* context, Context& cxt)
     Value*   rd    = nullptr;
     uint8_t* addr  = nullptr;
     uint8_t* addr2 = nullptr;
-    Value    va, vb, vc;
+    Value    va, vb, vc, vd;
 
     auto ip = STATE().ip;
     while (ip->op != ByteCodeOp::End)
@@ -1729,27 +1744,6 @@ static bool optimizePassSanityStack(ByteCodeOptContext* context, Context& cxt)
             ra->reg.u64 &= ip->b.u64;
             break;
 
-        case ByteCodeOp::BinOpMulAddF32:
-            SWAG_CHECK(getImmediateA(va, cxt, ip));
-            SWAG_CHECK(getImmediateB(vb, cxt, ip));
-            SWAG_CHECK(getImmediateC(vc, cxt, ip));
-            SWAG_CHECK(getRegister(rd, cxt, ip->d.u32));
-            rd->kind = va.kind == ValueKind::Constant && vb.kind == ValueKind::Constant && vc.kind == ValueKind::Constant ? ValueKind::Constant : ValueKind::Unknown;
-            if (rd->kind == ValueKind::Constant)
-                rd->reg.f64 = (va.reg.f32 * vb.reg.f32) + vc.reg.f32;
-            setConstant(cxt, rd->kind, ip, rd->reg.u32, ConstantKind::SetImmediateD);
-            break;
-        case ByteCodeOp::BinOpMulAddF64:
-            SWAG_CHECK(getImmediateA(va, cxt, ip));
-            SWAG_CHECK(getImmediateB(vb, cxt, ip));
-            SWAG_CHECK(getImmediateC(vc, cxt, ip));
-            SWAG_CHECK(getRegister(rd, cxt, ip->d.u32));
-            rd->kind = va.kind == ValueKind::Constant && vb.kind == ValueKind::Constant && vc.kind == ValueKind::Constant ? ValueKind::Constant : ValueKind::Unknown;
-            if (rd->kind == ValueKind::Constant)
-                rd->reg.f64 = (va.reg.f64 * vb.reg.f64) + vc.reg.f64;
-            setConstant(cxt, rd->kind, ip, rd->reg.u64, ConstantKind::SetImmediateD);
-            break;
-
         case ByteCodeOp::BinOpBitmaskAnd8:
             BINOP(&, u8);
             break;
@@ -2082,6 +2076,27 @@ static bool optimizePassSanityStack(ByteCodeOptContext* context, Context& cxt)
             invalidateCurStateStack(cxt);
             break;
 
+        case ByteCodeOp::IntrinsicMulAddF32:
+            SWAG_CHECK(getRegister(ra, cxt, ip->a.u32));
+            SWAG_CHECK(getImmediateB(vb, cxt, ip));
+            SWAG_CHECK(getImmediateC(vc, cxt, ip));
+            SWAG_CHECK(getImmediateD(vd, cxt, ip));
+            ra->kind = vb.kind == ValueKind::Constant && vc.kind == ValueKind::Constant && vd.kind == ValueKind::Constant ? ValueKind::Constant : ValueKind::Unknown;
+            if (ra->kind == ValueKind::Constant)
+                ra->reg.f32 = (vb.reg.f32 * vc.reg.f32) + vd.reg.f32;
+            setConstant(cxt, ra->kind, ip, ra->reg.u32, ConstantKind::SetImmediateA);
+            break;
+        case ByteCodeOp::IntrinsicMulAddF64:
+            SWAG_CHECK(getRegister(ra, cxt, ip->a.u32));
+            SWAG_CHECK(getImmediateB(vb, cxt, ip));
+            SWAG_CHECK(getImmediateC(vc, cxt, ip));
+            SWAG_CHECK(getImmediateD(vd, cxt, ip));
+            ra->kind = vb.kind == ValueKind::Constant && vc.kind == ValueKind::Constant && vd.kind == ValueKind::Constant ? ValueKind::Constant : ValueKind::Unknown;
+            if (ra->kind == ValueKind::Constant)
+                ra->reg.f64 = (vb.reg.f64 * vc.reg.f64) + vd.reg.f64;
+            setConstant(cxt, ra->kind, ip, ra->reg.u64, ConstantKind::SetImmediateA);
+            break;
+
         case ByteCodeOp::IntrinsicS8x1:
         case ByteCodeOp::IntrinsicS16x1:
         case ByteCodeOp::IntrinsicS32x1:
@@ -2094,7 +2109,7 @@ static bool optimizePassSanityStack(ByteCodeOptContext* context, Context& cxt)
             if (vb.kind == ValueKind::Constant)
             {
                 ra->kind = ValueKind::Constant;
-                SWAG_CHECK(ByteCodeRun::executeMathIntrinsic(context, ip, ra->reg, vb.reg, vb.reg, false));
+                SWAG_CHECK(ByteCodeRun::executeMathIntrinsic(context, ip, ra->reg, vb.reg, {}, {}, false));
             }
             break;
 
@@ -2115,7 +2130,7 @@ static bool optimizePassSanityStack(ByteCodeOptContext* context, Context& cxt)
             if (vb.kind == ValueKind::Constant && vc.kind == ValueKind::Constant)
             {
                 ra->kind = ValueKind::Constant;
-                SWAG_CHECK(ByteCodeRun::executeMathIntrinsic(context, ip, ra->reg, vb.reg, vc.reg, false));
+                SWAG_CHECK(ByteCodeRun::executeMathIntrinsic(context, ip, ra->reg, vb.reg, vc.reg, {}, false));
             }
             break;
 

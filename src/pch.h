@@ -5,7 +5,7 @@
 #pragma clang diagnostic ignored "-Wmicrosoft-include"
 #pragma clang diagnostic ignored "-Wnonportable-include-path"
 #pragma clang diagnostic ignored "-Wunused-parameter"
-//#pragma clang diagnostic ignored "-Wsign-compare"
+// #pragma clang diagnostic ignored "-Wsign-compare"
 #define SWAG_FORCE_INLINE __attribute__((always_inline))
 #define SWAG_UNREACHABLE __builtin_unreachable()
 

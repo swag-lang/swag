@@ -91,6 +91,8 @@
 #define MK_IMMC_F64() (ip->flags & BCI_IMM_C) ? (llvm::Value*) llvm::ConstantFP::get(F64_TY(), ip->c.f64) : (llvm::Value*) builder.CreateLoad(F64_TY(), GEP64(allocR, ip->c.u32))
 
 #define MK_IMMD_64() (ip->flags & BCI_IMM_D) ? (llvm::Value*) builder.getInt64(ip->d.u64) : (llvm::Value*) builder.CreateLoad(I64_TY(), GEP64(allocR, ip->d.u32))
+#define MK_IMMD_F32() (ip->flags & BCI_IMM_D) ? (llvm::Value*) llvm::ConstantFP::get(F32_TY(), ip->d.f32) : (llvm::Value*) builder.CreateLoad(F32_TY(), GEP64(allocR, ip->d.u32))
+#define MK_IMMD_F64() (ip->flags & BCI_IMM_D) ? (llvm::Value*) llvm::ConstantFP::get(F64_TY(), ip->d.f64) : (llvm::Value*) builder.CreateLoad(F64_TY(), GEP64(allocR, ip->d.u32))
 
 #define MK_BINOP8_CAB()                                \
     auto         r0 = GEP64_PTR_I8(allocR, ip->c.u32); \
