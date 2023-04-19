@@ -169,6 +169,7 @@ Intrinsics libc.
 @memcpy
 @memmove
 @memset
+@muladd
 @min
 @pow
 @realloc

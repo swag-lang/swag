@@ -279,6 +279,7 @@ impl IRichEditLexer for RichEditLexerSwag
         mapWords.add("@memmove", State.Buildin)
         mapWords.add("@memset", State.Buildin)
         mapWords.add("@memcmp", State.Buildin)
+        mapWords.add("@muladd", State.Buildin)
         mapWords.add("@strlen", State.Buildin)
         mapWords.add("@strcmp", State.Buildin)
         mapWords.add("@atomadd", State.Buildin)

@@ -205,3 +205,6 @@ func @bitcountlz(value: u64)->u64;
 func @byteswap(value: u16)->u16;
 func @byteswap(value: u32)->u32;
 func @byteswap(value: u64)->u64;
+
+func @muladd(val1, val2, val3: f32)->f32;
+func @muladd(val1, val2, val3: f64)->f64;

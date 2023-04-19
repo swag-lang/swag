@@ -347,6 +347,7 @@ bool Parser::doSinglePrimaryExpression(AstNode* parent, uint32_t exprFlags, AstN
     case TokenId::IntrinsicBitCountTz:
     case TokenId::IntrinsicBitCountLz:
     case TokenId::IntrinsicByteSwap:
+    case TokenId::IntrinsicMulAdd:
         SWAG_CHECK(doIdentifierRef(parent, result));
         break;
 

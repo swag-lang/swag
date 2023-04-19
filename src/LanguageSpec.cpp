@@ -443,6 +443,7 @@ void LanguageSpec::setupKeywords()
     keywords.add("@memmove", TokenId::IntrinsicMemMove);
     keywords.add("@memset", TokenId::IntrinsicMemSet);
     keywords.add("@memcmp", TokenId::IntrinsicMemCmp);
+    keywords.add("@muladd", TokenId::IntrinsicMulAdd);
     keywords.add("@strlen", TokenId::IntrinsicStrLen);
     keywords.add("@strcmp", TokenId::IntrinsicStrCmp);
     keywords.add("@atomadd", TokenId::IntrinsicAtomicAdd);

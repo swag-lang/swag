@@ -966,6 +966,33 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
         break;
     }
 
+    case TokenId::IntrinsicMulAdd:
+    {
+        node->resultRegisterRC                  = reserveRegisterRC(context);
+        node->identifierRef()->resultRegisterRC = node->resultRegisterRC;
+        node->parent->resultRegisterRC          = node->resultRegisterRC;
+        auto typeInfo                           = TypeManager::concreteType(callParams->childs[0]->typeInfo);
+        SWAG_ASSERT(typeInfo->isNative());
+        ByteCodeOp op = ByteCodeOp::End;
+        switch (typeInfo->nativeType)
+        {
+        case NativeTypeKind::F32:
+            op = ByteCodeOp::IntrinsicMulAddF32;
+            break;
+        case NativeTypeKind::F64:
+            op = ByteCodeOp::IntrinsicMulAddF64;
+            break;
+        default:
+            return Report::internalError(context->node, "emitIntrinsic, IntrinsicMulAdd invalid type");
+        }
+
+        EMIT_INST4(context, op, node->resultRegisterRC, callParams->childs[0]->resultRegisterRC, callParams->childs[1]->resultRegisterRC, callParams->childs[2]->resultRegisterRC);
+        freeRegisterRC(context, callParams->childs[0]);
+        freeRegisterRC(context, callParams->childs[1]);
+        freeRegisterRC(context, callParams->childs[2]);
+        break;
+    }
+
     case TokenId::IntrinsicMin:
     case TokenId::IntrinsicMax:
     {

@@ -132,4 +132,7 @@ alias ConstF64 = Const'f64
     func exp2(x: f64) => @exp2(x)
     func pow(x, y: f32) => @pow(x, y)
     func pow(x, y: f64) => @pow(x, y)
+
+    func mulAdd(x, y, z: f32) => @muladd(x, y, z)
+    func mulAdd(x, y, z: f64) => @muladd(x, y, z)
 }
