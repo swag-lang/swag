@@ -5330,11 +5330,6 @@ llvm::BasicBlock* BackendLLVM::getOrCreateLabel(LLVMPerThread& pp, llvm::Functio
 
 void BackendLLVM::setFuncAttributes(const BuildParameters& buildParameters, Module* moduleToGen, AstFuncDecl* funcNode, ByteCode* bc, llvm::Function* func)
 {
-    int   ct              = buildParameters.compileType;
-    int   precompileIndex = buildParameters.precompileIndex;
-    auto& pp              = *perThread[ct][precompileIndex];
-    auto& context         = *pp.context;
-
     if (!moduleToGen->mustOptimizeBK(bc->node))
     {
         func->addFnAttr(llvm::Attribute::AttrKind::OptimizeNone);
@@ -5343,10 +5338,6 @@ void BackendLLVM::setFuncAttributes(const BuildParameters& buildParameters, Modu
 
     if (funcNode && funcNode->attributeFlags & ATTRIBUTE_NO_INLINE)
         func->addFnAttr(llvm::Attribute::AttrKind::NoInline);
-
-    llvm::AttrBuilder attrs(context);
-    attrs.addStackAlignmentAttr(llvm::Align(16));
-    func->addFnAttrs(attrs);
 
     // Export public symbol in case of a dll
     if (funcNode &&
