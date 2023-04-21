@@ -545,19 +545,20 @@ bool SemanticJob::resolveArrayPointerRef(SemanticContext* context)
     SWAG_CHECK(checkIsConcrete(context, arrayNode->access));
     arrayNode->flags |= AST_R_VALUE;
 
-    auto arrayType = TypeManager::concretePtrRefType(arrayNode->array->typeInfo, CONCRETE_ALIAS | CONCRETE_FUNC);
+    auto baseType  = arrayNode->array->typeInfo;
+    auto arrayType = TypeManager::concretePtrRefType(baseType, CONCRETE_ALIAS | CONCRETE_FUNC);
 
     // When we are building a pointer, this is fine to be const, because in fact we do no generate an address to modify the content
     // (or it will be done later on a pointer, and it will be const too)
     if (arrayNode->parent->parent->kind != AstNodeKind::MakePointer)
     {
-        if (arrayType->isConst())
-            return context->report({arrayNode->array, Fmt(Err(Err0564), arrayType->getDisplayNameC()), Diagnostic::isType(arrayType)});
+        if (baseType->isConst())
+            return context->report({arrayNode->array, Fmt(Err(Err0564), baseType->getDisplayNameC()), Diagnostic::isType(baseType)});
     }
     else
     {
         // If array is const, inform the make pointer that it need to make a const pointer
-        if (arrayType->isConst())
+        if (baseType->isConst())
             arrayNode->parent->parent->flags |= AST_IS_CONST;
     }
 
