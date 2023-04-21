@@ -43,7 +43,7 @@ bool BackendLLVM::emitDataSegment(const BuildParameters& buildParameters, DataSe
         }
         else
         {
-            pp.constantSeg = new llvm::GlobalVariable(modu, arrayType, false, llvm::GlobalValue::ExternalLinkage, nullptr, "__cs");
+            pp.constantSeg = new llvm::GlobalVariable(modu, arrayType, true, llvm::GlobalValue::ExternalLinkage, nullptr, "__cs");
             pp.constantSeg->setAlignment(llvm::Align(16));
         }
 

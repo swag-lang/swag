@@ -58,6 +58,7 @@ JobResult ModuleOutputJob::execute()
             }
 
             backend->numPreCompileBuffers = max(backend->numPreCompileBuffers, 1);
+            backend->numPreCompileBuffers += 1;
             backend->numPreCompileBuffers = min(backend->numPreCompileBuffers, MAX_PRECOMPILE_BUFFERS);
 
             for (int i = 0; i < backend->numPreCompileBuffers; i++)

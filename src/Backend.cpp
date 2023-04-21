@@ -330,16 +330,19 @@ void Backend::getRangeFunctionIndexForJob(const BuildParameters& buildParameters
 {
     int size            = (int) moduleToGen->byteCodeFuncToGen.size();
     int precompileIndex = buildParameters.precompileIndex;
-    int range           = size / numPreCompileBuffers;
 
+    SWAG_ASSERT(numPreCompileBuffers > 1);
+    int range = size / (numPreCompileBuffers - 1);
+
+    // First precompileIndex is dedicated to datas and main
     if (precompileIndex == 0)
     {
         start = 0;
-        end   = range;
+        end   = 0;
     }
     else
     {
-        start = precompileIndex * range;
+        start = (precompileIndex - 1) * range;
         end   = start + range;
         if (precompileIndex == numPreCompileBuffers - 1)
             end = size;
