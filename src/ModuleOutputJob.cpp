@@ -46,51 +46,48 @@ JobResult ModuleOutputJob::execute()
         if (!module->filterFunctionsToEmit())
             return JobResult::ReleaseJob;
 
-        auto backend = module->backend;
-        if (module->byteCodeFunc.size())
+        auto backend                  = module->backend;
+        backend->numPreCompileBuffers = module->buildParameters.buildCfg->backendNumCU;
+        if (backend->numPreCompileBuffers == 0)
         {
-            backend->numPreCompileBuffers = module->buildParameters.buildCfg->backendNumCU;
-            if (backend->numPreCompileBuffers == 0)
+            auto numDiv                   = (uint32_t) module->byteCodeFunc.size() / g_ThreadMgr.numWorkers;
+            numDiv                        = max(numDiv, g_ThreadMgr.numWorkers * 32);
+            backend->numPreCompileBuffers = (uint32_t) module->byteCodeFunc.size() / numDiv;
+        }
+
+        backend->numPreCompileBuffers = max(backend->numPreCompileBuffers, 1);
+        backend->numPreCompileBuffers += 1; // :SegZeroIsData
+        backend->numPreCompileBuffers = min(backend->numPreCompileBuffers, MAX_PRECOMPILE_BUFFERS);
+
+        for (int i = 0; i < backend->numPreCompileBuffers; i++)
+        {
+            // Precompile a specific version, to test it
+            if (module->mustGenerateTestExe())
             {
-                auto numDiv                   = (uint32_t) module->byteCodeFunc.size() / g_ThreadMgr.numWorkers;
-                numDiv                        = max(numDiv, g_ThreadMgr.numWorkers * 32);
-                backend->numPreCompileBuffers = (uint32_t) module->byteCodeFunc.size() / numDiv;
+                auto preCompileJob                             = Allocator::alloc<ModulePrepOutputStage1Job>();
+                preCompileJob->module                          = module;
+                preCompileJob->dependentJob                    = this;
+                preCompileJob->buildParameters                 = module->buildParameters;
+                preCompileJob->buildParameters.precompileIndex = i;
+                preCompileJob->buildParameters.compileType     = BackendCompileType::Test;
+                jobsToAdd.push_back(preCompileJob);
             }
 
-            backend->numPreCompileBuffers = max(backend->numPreCompileBuffers, 1);
-            backend->numPreCompileBuffers += 1; // :SegZeroIsData
-            backend->numPreCompileBuffers = min(backend->numPreCompileBuffers, MAX_PRECOMPILE_BUFFERS);
-
-            for (int i = 0; i < backend->numPreCompileBuffers; i++)
+            // Precompile the normal version
+            if (module->canGenerateLegit())
             {
-                // Precompile a specific version, to test it
-                if (module->mustGenerateTestExe())
-                {
-                    auto preCompileJob                             = Allocator::alloc<ModulePrepOutputStage1Job>();
-                    preCompileJob->module                          = module;
-                    preCompileJob->dependentJob                    = this;
-                    preCompileJob->buildParameters                 = module->buildParameters;
-                    preCompileJob->buildParameters.precompileIndex = i;
-                    preCompileJob->buildParameters.compileType     = BackendCompileType::Test;
-                    jobsToAdd.push_back(preCompileJob);
-                }
-
-                // Precompile the normal version
-                if (module->canGenerateLegit())
-                {
-                    auto preCompileJob                             = Allocator::alloc<ModulePrepOutputStage1Job>();
-                    preCompileJob->module                          = module;
-                    preCompileJob->dependentJob                    = this;
-                    preCompileJob->buildParameters                 = module->buildParameters;
-                    preCompileJob->buildParameters.precompileIndex = i;
-                    if (module->kind == ModuleKind::Test)
-                        preCompileJob->buildParameters.compileType = BackendCompileType::Test;
-                    else if (module->kind == ModuleKind::Example)
-                        preCompileJob->buildParameters.compileType = BackendCompileType::Example;
-                    else
-                        preCompileJob->buildParameters.compileType = BackendCompileType::Normal;
-                    jobsToAdd.push_back(preCompileJob);
-                }
+                auto preCompileJob                             = Allocator::alloc<ModulePrepOutputStage1Job>();
+                preCompileJob->module                          = module;
+                preCompileJob->dependentJob                    = this;
+                preCompileJob->buildParameters                 = module->buildParameters;
+                preCompileJob->buildParameters.precompileIndex = i;
+                if (module->kind == ModuleKind::Test)
+                    preCompileJob->buildParameters.compileType = BackendCompileType::Test;
+                else if (module->kind == ModuleKind::Example)
+                    preCompileJob->buildParameters.compileType = BackendCompileType::Example;
+                else
+                    preCompileJob->buildParameters.compileType = BackendCompileType::Normal;
+                jobsToAdd.push_back(preCompileJob);
             }
         }
 
