@@ -4268,11 +4268,11 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         }
         case ByteCodeOp::CopyRRtoRC:
         {
-            auto r0 = GEP64(allocR, ip->a.u32);
+            auto r0 = GEP64_PTR_PTR_I8(allocR, ip->a.u32);
             auto r1 = TO_PTR_I8(func->getArg((int) func->arg_size() - 1));
             if (ip->b.u64)
                 r1 = builder.CreateInBoundsGEP(I8_TY(), r1, builder.getInt64(ip->b.u64));
-            builder.CreateStore(r1, TO_PTR_PTR_I8(r0));
+            builder.CreateStore(r1, r0);
             break;
         }
 
