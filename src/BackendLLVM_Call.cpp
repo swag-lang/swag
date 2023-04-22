@@ -185,7 +185,6 @@ bool BackendLLVM::emitGetParam(llvm::LLVMContext&     context,
     if (param->isAutoConstPointerRef())
         param = TypeManager::concretePtrRef(param);
 
-    auto r0  = GEP64(allocR, rdest);
     auto arg = func->getArg(paramIdx);
 
     // First two parameters are occupied by the variadic slice
@@ -224,6 +223,7 @@ bool BackendLLVM::emitGetParam(llvm::LLVMContext&     context,
                     }
                 }
 
+                auto r0 = GEP64(allocR, rdest);
                 builder.CreateStore(ra, r0);
             }
 
@@ -233,14 +233,15 @@ bool BackendLLVM::emitGetParam(llvm::LLVMContext&     context,
                 auto allocR1 = builder.CreateAlloca(I64_TY(), builder.getInt32(1));
                 allocR1->setAlignment(llvm::Align(8));
                 builder.CreateStore(ra, allocR1);
-                ra = builder.CreateInBoundsGEP(I8_TY(), allocR1, builder.getInt64(toAdd));
+                ra      = GEP8(allocR1, toAdd);
+                auto r0 = GEP64(allocR, rdest);
                 builder.CreateStore(ra, r0);
             }
 
             return true;
         }
 
-        auto ra = builder.CreateInBoundsGEP(I8_TY(), arg, builder.getInt64(toAdd));
+        auto ra = GEP8(arg, toAdd);
         if (deRefSize)
         {
             llvm::Value* v1;
@@ -263,11 +264,13 @@ bool BackendLLVM::emitGetParam(llvm::LLVMContext&     context,
                 break;
             }
 
+            auto r0 = GEP64(allocR, rdest);
             builder.CreateStore(ra, r0);
         }
         else
         {
-            builder.CreateStore(ra, TO_PTR_PTR_I8(r0));
+            auto r0 = GEP64_PTR_PTR_I8(allocR, rdest);
+            builder.CreateStore(ra, r0);
         }
     }
     else if (param->numRegisters() == 1)
@@ -275,37 +278,48 @@ bool BackendLLVM::emitGetParam(llvm::LLVMContext&     context,
         // By convention, all remaining bits should be zero
         if (param->isNativeIntegerSigned() && param->sizeOf < sizeof(void*))
         {
-            builder.CreateStore(builder.CreateIntCast(arg, I64_TY(), true), r0);
+            auto r0 = GEP64(allocR, rdest);
+            auto ra = builder.CreateIntCast(arg, I64_TY(), true);
+            builder.CreateStore(ra, r0);
         }
         else if (param->isNativeIntegerUnsigned() && param->sizeOf < sizeof(void*))
         {
-            builder.CreateStore(builder.CreateIntCast(arg, I64_TY(), false), r0);
+            auto r0 = GEP64(allocR, rdest);
+            auto ra = builder.CreateIntCast(arg, I64_TY(), false);
+            builder.CreateStore(ra, r0);
         }
 
         // Struct by copy
         else if (cc.structByValue(param))
         {
-            // Make a copy of the value on the stack, and return the address
+            // Make a copy of the value on the stack, and get the address
             auto allocR1 = builder.CreateAlloca(I64_TY(), builder.getInt32(1));
             allocR1->setAlignment(llvm::Align{16});
 
-            builder.CreateStore(builder.CreateIntCast(arg, I64_TY(), false), allocR1);
-            builder.CreateStore(allocR1, TO_PTR_PTR_I64(r0));
+            auto ra = builder.CreateIntCast(arg, I64_TY(), false);
+            builder.CreateStore(ra, allocR1);
+            auto r0 = GEP64_PTR_PTR_I64(allocR, rdest);
+            builder.CreateStore(allocR1, r0);
         }
 
         // This can be casted to an integer
         else if (sizeOf)
         {
+            auto r0 = GEP64(allocR, rdest);
             if (sizeOf == sizeof(void*))
                 builder.CreateStore(arg, r0);
             else
-                builder.CreateStore(builder.CreateIntCast(arg, I64_TY(), false), r0);
+            {
+                auto ra = builder.CreateIntCast(arg, I64_TY(), false);
+                builder.CreateStore(ra, r0);
+            }
         }
 
         // Real type
         else
         {
             auto ty = swagTypeToLLVMType(buildParameters, module, param);
+            auto r0 = GEP64(allocR, rdest);
             r0      = builder.CreatePointerCast(r0, ty->getPointerTo());
             builder.CreateStore(arg, r0);
         }
@@ -313,9 +327,16 @@ bool BackendLLVM::emitGetParam(llvm::LLVMContext&     context,
     else
     {
         if (arg->getType()->isPointerTy())
-            builder.CreateStore(arg, builder.CreatePointerCast(r0, arg->getType()->getPointerTo()));
-        else
+        {
+            auto r0 = GEP64(allocR, rdest);
+            r0      = builder.CreatePointerCast(r0, arg->getType()->getPointerTo());
             builder.CreateStore(arg, r0);
+        }
+        else
+        {
+            auto r0 = GEP64(allocR, rdest);
+            builder.CreateStore(arg, r0);
+        }
     }
 
     return true;
