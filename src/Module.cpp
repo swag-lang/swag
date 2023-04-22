@@ -1164,6 +1164,9 @@ bool Module::filterFunctionsToEmit()
         byteCodeFuncToGen.push_back(bc);
     }
 
+    sort(byteCodeFuncToGen.begin(), byteCodeFuncToGen.end(), [](ByteCode* bc1, ByteCode* bc2)
+         { return (size_t) bc1->sourceFile < (size_t) bc2->sourceFile; });
+
     return true;
 }
 
