@@ -48,9 +48,6 @@ namespace Swag
     attr Mixin()
 
     #[AttrUsage(AttributeUsage.Function)]
-    attr Test()
-
-    #[AttrUsage(AttributeUsage.Function)]
     attr Implicit()
 
     // Also hardcoded for switch

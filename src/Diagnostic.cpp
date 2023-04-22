@@ -512,6 +512,7 @@ Utf8 Diagnostic::syntax(const Utf8& line)
                 case TokenId::KwdVisit:
                 case TokenId::KwdBreak:
                 case TokenId::KwdFallThrough:
+                case TokenId::KwdUnreachable:
                 case TokenId::KwdReturn:
                 case TokenId::KwdCase:
                 case TokenId::KwdContinue:

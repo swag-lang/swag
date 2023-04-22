@@ -6,7 +6,7 @@
 {
     x := 1
 
-    #[Swag.Complete]
+    //#[Swag.Complete]
     switch x
     {
     case 0: @print("0")

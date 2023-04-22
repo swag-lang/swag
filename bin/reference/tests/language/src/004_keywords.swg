@@ -41,6 +41,7 @@ default
 break
 continue
 fallthrough
+unreachable
 for
 loop
 while

@@ -3151,6 +3151,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             }
 
             builder.CreateBr(trueBlocks[0]);
+
             blockIsClosed = true;
             break;
         }
@@ -3743,6 +3744,13 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             break;
         case ByteCodeOp::InternalStackTrace:
             emitCall(buildParameters, moduleToGen, g_LangSpec->name__stackTrace, allocR, allocT, {ip->a.u32}, {});
+            break;
+        case ByteCodeOp::Unreachable:
+            emitInternalPanic(buildParameters, moduleToGen, allocR, allocT, ip->node, (const char*) "executing unreachable code");
+            break;
+        case ByteCodeOp::InternalUnreachable:
+            builder.CreateUnreachable();
+            blockIsClosed = true;
             break;
         case ByteCodeOp::InternalPanic:
             emitInternalPanic(buildParameters, moduleToGen, allocR, allocT, ip->node, (const char*) ip->d.pointer);

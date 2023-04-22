@@ -598,6 +598,8 @@ static bool optimizePassSanityStack(ByteCodeOptContext* context, Context& cxt)
         case ByteCodeOp::IntrinsicCVaEnd:
         case ByteCodeOp::IntrinsicFree:
         case ByteCodeOp::DebugNop:
+        case ByteCodeOp::Unreachable:
+        case ByteCodeOp::InternalUnreachable:
         case ByteCodeOp::IntrinsicBcBreakpoint:
             break;
 

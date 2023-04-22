@@ -4,6 +4,8 @@ BYTECODE_OP(PopBP, 0, "")
 BYTECODE_OP(PushRR, 0, "push my_result")
 BYTECODE_OP(PopRR, 0, "pop my_result")
 BYTECODE_OP(DebugNop, 0, "nop")
+BYTECODE_OP(Unreachable, 0, "unreachable")
+BYTECODE_OP(InternalUnreachable, 0, "internal unreachable")
 
 BYTECODE_OP(IncSPPostCallCond, OPFLAG_READ_A | OPFLAG_READ_VAL32_B, "if _ra_ popstack _rbu32_")
 BYTECODE_OP(IncSPPostCall, OPFLAG_READ_VAL32_A, "popstack _rau32_")

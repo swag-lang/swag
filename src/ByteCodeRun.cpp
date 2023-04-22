@@ -2223,6 +2223,21 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
         break;
     }
 
+    case ByteCodeOp::InternalUnreachable:
+        break;
+    case ByteCodeOp::Unreachable:
+    {
+        auto bc  = g_Workspace->runtimeModule->getRuntimeFct(g_LangSpec->name__panic);
+        auto loc = ByteCode::getLocation(context->bc, ip);
+
+        context->push((const uint8_t*) "executing unreachable code");
+        context->push<uint64_t>(loc.location->column);
+        context->push<uint64_t>(loc.location->line);
+        context->push(_strdup(loc.file->path.string().c_str()));
+        localCall(context, bc, 4);
+        break;
+    }
+
     case ByteCodeOp::InternalInitStackTrace:
     {
         auto cxt        = (SwagContext*) OS::tlsGetValue(g_TlsContextId);

@@ -171,22 +171,8 @@ Swag will also check for invalid arguments on some math intrinsics.
 
 /**
 #[Swag.Safety("switch", true)]
-Swag will panic if a dynamic switch is marked with #[Swag.Complete], but the value is not covered by a 'case'.
+Swag will panic if a switch is marked with #[Swag.Complete], but the value is not covered by a 'case'.
 */
-
-#test
-{
-    a := 42'u8
-
-    // This would panic because the value of 'a' (42) is not covered by a 'case'.
-    #[Swag.Safety("switch", false)]
-    #[Swag.Complete]
-    switch a
-    {
-    case 1: break
-    case 2: break
-    }
-}
 
 /**
 #[Swag.Safety("bool", true)]

@@ -3008,6 +3008,11 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
         case ByteCodeOp::InternalPanic:
             emitInternalPanic(pp, ip->node, (const char*) ip->d.pointer);
             break;
+        case ByteCodeOp::InternalUnreachable:
+            break;
+        case ByteCodeOp::Unreachable:
+            emitInternalPanic(pp, ip->node, "executing unreachable code");
+            break;
 
         case ByteCodeOp::InternalGetTlsPtr:
             pp.pushParams.clear();

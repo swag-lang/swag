@@ -689,6 +689,9 @@ bool Parser::doEmbeddedInstruction(AstNode* parent, AstNode** result)
     case TokenId::KwdFallThrough:
         SWAG_CHECK(doFallThrough(parent, result));
         break;
+    case TokenId::KwdUnreachable:
+        SWAG_CHECK(doUnreachable(parent, result));
+        break;
     case TokenId::KwdContinue:
         SWAG_CHECK(doContinue(parent, result));
         break;

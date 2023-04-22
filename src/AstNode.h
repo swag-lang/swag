@@ -134,6 +134,7 @@ enum class AstNodeKind : uint8_t
     SubstBreakContinue,
     Break,
     FallThrough,
+    Unreachable,
     Continue,
     Statement,
     StatementNoScope,

@@ -329,6 +329,7 @@ struct ByteCodeGenJob : public Job
     static bool emitSwitchAfterExpr(ByteCodeGenContext* context);
     static bool emitSwitchCaseBeforeCase(ByteCodeGenContext* context);
     static bool emitSwitchCaseBeforeBlock(ByteCodeGenContext* context);
+    static bool emitSafetyUnreachable(ByteCodeGenContext* context);
     static bool emitSafetySwitchDefault(ByteCodeGenContext* context);
     static bool emitSafetyValue(ByteCodeGenContext* context, int r0, TypeInfo* typeInfo);
     static bool emitSwitchCaseAfterBlock(ByteCodeGenContext* context);
@@ -395,6 +396,7 @@ struct ByteCodeGenJob : public Job
     static bool emitConditionalOp(ByteCodeGenContext* context);
     static bool emitNullConditionalOp(ByteCodeGenContext* context);
     static bool emitPassThrough(ByteCodeGenContext* context);
+    static bool emitUnreachable(ByteCodeGenContext* context);
     static void emitDebugLine(ByteCodeGenContext* context, AstNode* node);
     static void emitDebugLine(ByteCodeGenContext* context);
     static bool emitDebugNop(ByteCodeGenContext* context);

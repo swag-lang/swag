@@ -3,6 +3,7 @@
 #include "SemanticJob.h"
 #include "Scoped.h"
 #include "ErrorIds.h"
+#include "ByteCodeGenJob.h"
 
 bool Parser::doIf(AstNode* parent, AstNode** result)
 {
@@ -392,6 +393,15 @@ bool Parser::doFallThrough(AstNode* parent, AstNode** result)
 {
     auto node         = Ast::newNode<AstBreakContinue>(this, AstNodeKind::FallThrough, sourceFile, parent);
     node->semanticFct = SemanticJob::resolveFallThrough;
+    *result           = node;
+    SWAG_CHECK(eatToken());
+    return true;
+}
+
+bool Parser::doUnreachable(AstNode* parent, AstNode** result)
+{
+    auto node         = Ast::newNode<AstNode>(this, AstNodeKind::Unreachable, sourceFile, parent);
+    node->byteCodeFct = ByteCodeGenJob::emitUnreachable;
     *result           = node;
     SWAG_CHECK(eatToken());
     return true;

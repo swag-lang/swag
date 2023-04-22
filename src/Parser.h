@@ -201,6 +201,7 @@ struct Parser
     bool doSwitch(AstNode* parent, AstNode** result);
     bool doBreak(AstNode* parent, AstNode** result);
     bool doFallThrough(AstNode* parent, AstNode** result);
+    bool doUnreachable(AstNode* parent, AstNode** result);
     bool doContinue(AstNode* parent, AstNode** result);
     bool doArrayPointerIndex(AstNode** exprNode);
     bool doLeftInstruction(AstNode* parent, AstNode** result, AstWith* withNode = nullptr);

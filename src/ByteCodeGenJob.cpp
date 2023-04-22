@@ -222,6 +222,12 @@ bool ByteCodeGenJob::skipNodes(ByteCodeGenContext* context, AstNode* node)
     return res;
 }
 
+bool ByteCodeGenJob::emitUnreachable(ByteCodeGenContext* context)
+{
+    SWAG_CHECK(emitSafetyUnreachable(context));
+    return true;
+}
+
 void ByteCodeGenJob::emitDebugLine(ByteCodeGenContext* context, AstNode* node)
 {
     if (!node)

@@ -44,15 +44,20 @@ namespace BackendLinker
                             l2.trim();
                             auto l1 = Fmt("linker error: module '%s': %s", module->name.c_str(), l2.c_str());
                             l       = l1;
-#ifdef SWAG_DEV_MODE
-                            OS::errorBox("[Developer Mode]", "Error raised !");
-#endif
                         }
+
+                        l += "\n";
+                        g_Log.print(l);
+#ifdef SWAG_DEV_MODE
+                        OS::errorBox("[Developer Mode]", "Error raised !");
+#endif
                     }
                     else
+                    {
                         g_Log.setColor(LogColor::Gray);
-                    l += "\n";
-                    g_Log.print(l);
+                        l += "\n";
+                        g_Log.print(l);
+                    }
                 }
 
                 g_Log.setDefaultColor();

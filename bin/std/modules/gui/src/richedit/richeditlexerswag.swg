@@ -139,6 +139,7 @@ impl IRichEditLexer for RichEditLexerSwag
         mapWords.add("visit", State.Control)
         mapWords.add("break", State.Control)
         mapWords.add("fallthrough", State.Control)
+        mapWords.add("unreachable", State.Control)
         mapWords.add("return", State.Control)
         mapWords.add("case", State.Control)
         mapWords.add("continue", State.Control)

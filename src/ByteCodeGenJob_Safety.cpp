@@ -151,12 +151,30 @@ void ByteCodeGenJob::emitSafetyNotZero(ByteCodeGenContext* context, uint32_t r, 
     EMIT_INST0(context, ByteCodeOp::InternalPanic)->d.pointer = (uint8_t*) message;
 }
 
+bool ByteCodeGenJob::emitSafetyUnreachable(ByteCodeGenContext* context)
+{
+    if ((context->contextFlags & BCC_FLAG_NOSAFETY) ||
+        !context->sourceFile->module->mustEmitSafety(context->node->parent, SAFETY_SWITCH))
+    {
+        EMIT_INST0(context, ByteCodeOp::InternalUnreachable);
+    }
+    else
+    {
+        EMIT_INST0(context, ByteCodeOp::Unreachable);
+    }
+
+    return true;
+}
+
 bool ByteCodeGenJob::emitSafetySwitchDefault(ByteCodeGenContext* context)
 {
-    if (context->contextFlags & BCC_FLAG_NOSAFETY)
+    if ((context->contextFlags & BCC_FLAG_NOSAFETY) ||
+        !context->sourceFile->module->mustEmitSafety(context->node->parent, SAFETY_SWITCH))
+    {
+        EMIT_INST0(context, ByteCodeOp::InternalUnreachable);
         return true;
-    if (!context->sourceFile->module->mustEmitSafety(context->node->parent, SAFETY_SWITCH))
-        return true;
+    }
+
     EMIT_INST0(context, ByteCodeOp::InternalPanic)->d.pointer = (uint8_t*) ByteCodeGenJob::safetyMsg(SafetyMsg::SwitchComplete);
     return true;
 }

@@ -357,6 +357,7 @@ void LanguageSpec::setupKeywords()
     keywords.add("and", TokenId::KwdAnd);
     keywords.add("or", TokenId::KwdOr);
     keywords.add("orelse", TokenId::KwdOrElse);
+    keywords.add("unreachable", TokenId::KwdUnreachable);
 
     keywords.add("@defined", TokenId::IntrinsicDefined);
     keywords.add("@location", TokenId::IntrinsicLocation);
@@ -503,7 +504,6 @@ void LanguageSpec::setupAttributesFlags()
 {
     attributesFlags.add("ConstExpr", ATTRIBUTE_CONSTEXPR);
     attributesFlags.add("PrintBc", ATTRIBUTE_PRINT_BC);
-    attributesFlags.add("Test", ATTRIBUTE_TEST_FUNC);
     attributesFlags.add("Compiler", ATTRIBUTE_COMPILER);
     attributesFlags.add("EnumFlags", ATTRIBUTE_ENUM_FLAGS);
     attributesFlags.add("EnumIndex", ATTRIBUTE_ENUM_INDEX);

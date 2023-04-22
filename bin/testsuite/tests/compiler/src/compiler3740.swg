@@ -5,8 +5,8 @@
 {
     x := 1
 
-    #[Swag.Complete]
-    #[Swag.Safety("switch", false)]
+    //#[Swag.Complete]
+    //#[Swag.Safety("switch", false)]
     switch x
     {
     case 0: @print("0")
