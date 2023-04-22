@@ -203,7 +203,7 @@ bool BackendLLVM::emitGetParam(llvm::LLVMContext&     context,
                 if (toAdd)
                     ra = builder.CreateLShr(ra, builder.getInt64(toAdd * 8));
 
-                // We need to mask in order to derefence only the correct value
+                // We need to mask in order to dereference only the correct value
                 if (param->sizeOf != (uint32_t) deRefSize)
                 {
                     switch (deRefSize)
