@@ -5347,10 +5347,13 @@ void BackendLLVM::setFuncAttributes(const BuildParameters& buildParameters, Modu
         func->setDLLStorageClass(llvm::GlobalValue::DLLExportStorageClass);
     }
 
-    // If we just have one compile unit, then force private linkage
+    // If we just have one user compile unit, then force private linkage if possible
     else if (funcNode &&
              !funcNode->sourceFile->isRuntimeFile &&
-             numPreCompileBuffers == 1)
+             !funcNode->sourceFile->isBootstrapFile &&
+             !bc->isInSeg &&
+             !(funcNode->attributeFlags & ATTRIBUTE_SHARP_FUNC) &&
+             numPreCompileBuffers == 2) // :SegZeroIsData
     {
         func->setLinkage(llvm::GlobalValue::InternalLinkage);
     }

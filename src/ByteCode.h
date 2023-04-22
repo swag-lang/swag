@@ -239,6 +239,7 @@ struct ByteCode
     bool forceEmit               = false;
     bool hasForeignFunctionCalls = false;
     bool sanDone                 = false;
+    bool isInSeg                 = false;
 
     atomic<bool> isEmpty;
 

@@ -340,13 +340,17 @@ void Module::buildGlobalVarsToDropSlice()
             auto opDrop = g.type->opDrop;
             SWAG_ASSERT(opDrop);
             *(void**) resultPtr = opDrop;
+            opDrop->isInSeg     = true;
+
             if (opDrop->node)
             {
                 auto funcNode = CastAst<AstFuncDecl>(opDrop->node, AstNodeKind::FuncDecl);
                 mutableSegment.addInitPtrFunc(offset, funcNode->getCallName());
             }
             else
+            {
                 mutableSegment.addInitPtrFunc(offset, opDrop->getCallName());
+            }
         }
 
         resultPtr += sizeof(void*);

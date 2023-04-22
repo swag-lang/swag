@@ -431,7 +431,8 @@ bool SemanticJob::resolveImplFor(SemanticContext* context)
         }
         else
         {
-            funcChild->extByteCode()->bc->isUsed = true;
+            funcChild->extByteCode()->bc->isUsed  = true;
+            funcChild->extByteCode()->bc->isInSeg = true;
 
             *ptrITable = ByteCode::doByteCodeLambda(funcChild->extByteCode()->bc);
             constSegment->addInitPtrFunc(offset, funcChild->getCallName());
