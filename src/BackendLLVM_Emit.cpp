@@ -7,7 +7,6 @@
 void BackendLLVM::emitShiftArithmetic(llvm::LLVMContext& context, llvm::IRBuilder<>& builder, llvm::AllocaInst* allocR, ByteCodeInstruction* ip, uint8_t numBits)
 {
     auto         iType = llvm::Type::getIntNTy(context, numBits);
-    auto         r0    = TO_PTR_I_N(GEP64(allocR, ip->c.u32), numBits);
     llvm::Value* r1    = getImmediateConstantA(context, builder, allocR, ip, numBits);
 
     llvm::Value* r2;
@@ -37,13 +36,14 @@ void BackendLLVM::emitShiftArithmetic(llvm::LLVMContext& context, llvm::IRBuilde
         c2 = builder.CreateAnd(c2, llvm::ConstantInt::get(iType, numBits - 1));
 
     auto v0 = builder.CreateAShr(r1, c2);
-    builder.CreateStore(v0, TO_PTR_I_N(r0, numBits));
+    auto r0 = GEP64_PTR_IX(allocR, ip->c.u32, numBits);
+    builder.CreateStore(v0, r0);
 }
 
 void BackendLLVM::emitShiftLogical(llvm::LLVMContext& context, llvm::IRBuilder<>& builder, llvm::AllocaInst* allocR, ByteCodeInstruction* ip, uint8_t numBits, bool left)
 {
     auto iType = llvm::Type::getIntNTy(context, numBits);
-    auto r0    = TO_PTR_I_N(GEP64(allocR, ip->c.u32), numBits);
+    auto r0    = GEP64_PTR_IX(allocR, ip->c.u32, numBits);
     auto zero  = llvm::ConstantInt::get(iType, 0);
 
     // Smart shift, imm mode overflow
@@ -84,7 +84,6 @@ void BackendLLVM::emitShiftEqArithmetic(llvm::LLVMContext& context, llvm::IRBuil
 {
     auto iType = llvm::Type::getIntNTy(context, numBits);
     auto r0    = GEP64(allocR, ip->a.u32);
-    auto r1    = builder.CreateLoad(PTR_IX_TY(numBits), r0);
 
     llvm::Value* r2;
     if (ip->flags & BCI_IMM_B)
@@ -112,8 +111,9 @@ void BackendLLVM::emitShiftEqArithmetic(llvm::LLVMContext& context, llvm::IRBuil
     else if (!(ip->flags & BCI_IMM_B))
         c2 = builder.CreateAnd(c2, llvm::ConstantInt::get(iType, numBits - 1));
 
+    auto r1 = builder.CreateLoad(PTR_IX_TY(numBits), r0);
     auto v0 = builder.CreateAShr(builder.CreateLoad(IX_TY(numBits), r1), c2);
-    builder.CreateStore(v0, TO_PTR_I_N(r1, numBits));
+    builder.CreateStore(v0, r1);
 }
 
 void BackendLLVM::emitShiftEqLogical(llvm::LLVMContext& context, llvm::IRBuilder<>& builder, llvm::AllocaInst* allocR, ByteCodeInstruction* ip, uint8_t numBits, bool left)
@@ -204,8 +204,8 @@ llvm::Value* BackendLLVM::getImmediateConstantA(llvm::LLVMContext& context, llvm
         }
     }
 
-    auto r0 = GEP64(allocR, ip->a.u32);
-    return builder.CreateLoad(IX_TY(numBits), TO_PTR_I_N(r0, numBits));
+    auto r0 = GEP64_PTR_IX(allocR, ip->a.u32, numBits);
+    return builder.CreateLoad(IX_TY(numBits), r0);
 }
 
 void BackendLLVM::storeTypedValueToRegister(llvm::LLVMContext& context, const BuildParameters& buildParameters, llvm::Value* value, uint32_t reg, llvm::AllocaInst* allocR)

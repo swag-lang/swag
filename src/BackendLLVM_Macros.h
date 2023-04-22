@@ -37,6 +37,7 @@
 #define GEP64_PTR_I8(__data, __offset) builder.CreateInBoundsGEP(I8_TY(), __data, builder.getInt64(__offset * 8))
 #define GEP64_PTR_I16(__data, __offset) builder.CreateInBoundsGEP(I16_TY(), __data, builder.getInt64(__offset * 4))
 #define GEP64_PTR_I32(__data, __offset) builder.CreateInBoundsGEP(I32_TY(), __data, builder.getInt64(__offset * 2))
+#define GEP64_PTR_IX(__data, __offset, __n) builder.CreateInBoundsGEP(llvm::Type::getIntNTy(context, __n), __data, builder.getInt64(__offset * (64 / __n)))
 #define GEP64_PTR_F32(__data, __offset) builder.CreateInBoundsGEP(F32_TY(), __data, builder.getInt64(__offset * 2))
 #define GEP64_PTR_F64(__data, __offset) builder.CreateInBoundsGEP(F64_TY(), __data, builder.getInt64(__offset))
 
@@ -65,8 +66,8 @@
 #define TO_PTR_I8(__r) builder.CreatePointerCast(__r, PTR_I8_TY())
 #define TO_PTR_F64(__r) builder.CreatePointerCast(__r, PTR_F64_TY())
 #define TO_PTR_F32(__r) builder.CreatePointerCast(__r, PTR_F32_TY())
-#define TO_PTR_I_N(__r, __n) builder.CreatePointerCast(__r, llvm::Type::getIntNPtrTy(context, __n))
-#define TO_PTR_PTR_I_N(__r, __numBits) TO_PTR_I_N(__r, __n)->getPointerTo())
+#define TO_PTR_IX(__r, __n) builder.CreatePointerCast(__r, llvm::Type::getIntNPtrTy(context, __n))
+#define TO_PTR_PTR_IX(__r, __numBits) TO_PTR_IX(__r, __n)->getPointerTo())
 #define TO_BOOL(__r) builder.CreateIntCast(__r, llvm::Type::getInt1Ty(context), false)
 
 #define MK_IMMA_8() (ip->flags & BCI_IMM_A) ? (llvm::Value*) builder.getInt8(ip->a.u8) : (llvm::Value*) builder.CreateLoad(I8_TY(), GEP64(allocR, ip->a.u32))
