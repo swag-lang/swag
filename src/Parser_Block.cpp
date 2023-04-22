@@ -401,7 +401,7 @@ bool Parser::doFallThrough(AstNode* parent, AstNode** result)
 bool Parser::doUnreachable(AstNode* parent, AstNode** result)
 {
     auto node         = Ast::newNode<AstNode>(this, AstNodeKind::Unreachable, sourceFile, parent);
-    node->byteCodeFct = ByteCodeGenJob::emitUnreachable;
+    node->semanticFct = SemanticJob::resolveUnreachable;
     *result           = node;
     SWAG_CHECK(eatToken());
     return true;

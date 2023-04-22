@@ -976,6 +976,14 @@ bool SemanticJob::resolveBreak(SemanticContext* context)
     return true;
 }
 
+bool SemanticJob::resolveUnreachable(SemanticContext* context)
+{
+    auto node = context->node;
+    SWAG_CHECK(warnUnreachableCode(context));
+    node->byteCodeFct = ByteCodeGenJob::emitUnreachable;
+    return true;
+}
+
 bool SemanticJob::resolveFallThrough(SemanticContext* context)
 {
     auto node = CastAst<AstBreakContinue>(context->node, AstNodeKind::FallThrough);

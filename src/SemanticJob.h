@@ -409,6 +409,7 @@ struct SemanticJob : public Job
     static bool resolveGetErr(SemanticContext* context);
     static bool resolveIndex(SemanticContext* context);
     static bool resolveBreak(SemanticContext* context);
+    static bool resolveUnreachable(SemanticContext* context);
     static bool resolveFallThrough(SemanticContext* context);
     static bool resolveContinue(SemanticContext* context);
     static bool resolveScopeBreakable(SemanticContext* context);
