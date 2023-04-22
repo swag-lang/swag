@@ -4059,9 +4059,8 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
 
         case ByteCodeOp::CastS8S16:
         {
-            auto r0 = GEP64_PTR_I8(allocR, ip->a.u32);
+            auto r0 = GEP64_PTR_I16(allocR, ip->a.u32);
             auto v0 = builder.CreateIntCast(builder.CreateLoad(I8_TY(), r0), I16_TY(), true);
-            r0      = TO_PTR_I16(r0);
             builder.CreateStore(v0, r0);
             break;
         }
