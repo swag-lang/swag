@@ -792,6 +792,8 @@ void BackendLLVMDbg::createGlobalVariablesForSegment(const BuildParameters& buil
                 case NativeTypeKind::Bool:
                     constant = llvm::ConstantInt::get(I1_TY(), node->computedValue->reg.b, false);
                     break;
+                default:
+                    break;
                 }
             }
 

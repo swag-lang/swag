@@ -1253,6 +1253,8 @@ void Module::logPass(ModuleBuildPass pass)
         else
             str = "Running Backend";
         break;
+    default:
+        break;
     }
 
     if (str.empty())

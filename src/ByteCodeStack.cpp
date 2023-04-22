@@ -131,7 +131,7 @@ void ByteCodeStack::log(ByteCodeRunContext* runContext)
     {
         bool current = false;
         if (runContext && runContext->debugOn)
-            current = i == (copySteps.size() - 1) - runContext->debugStackFrameOffset;
+            current = (size_t) i == (copySteps.size() - 1) - runContext->debugStackFrameOffset;
         logStep(i, current, copySteps[(size_t) i]);
 
         maxSteps--;
