@@ -164,7 +164,7 @@ func parseU64(str: string) -> {value: u64, eat: u32, ovf: bool} throw
         throw ParseErrorInvalid
     while cpt < countof and Latin1.isDigit(dref buffer)
     {
-        value1 := value *,safe 10
+        value1 := value *,over 10
         if value1 < value
         {
             result.ovf = true
@@ -176,7 +176,7 @@ func parseU64(str: string) -> {value: u64, eat: u32, ovf: bool} throw
         if !result.ovf
         {
             add := cast(u64) (dref buffer - "0"'u8)
-            if value +,safe add < value
+            if value +,over add < value
             {
                 result.ovf = true
                 value = Swag.U64.Max
@@ -283,7 +283,7 @@ func parseS64(str: string) -> {value: s64, eat: u32, ovf: bool} throw
         throw ParseErrorInvalid
     while cpt < countof and Latin1.isDigit(dref buffer)
     {
-        value1 := value *,safe 10
+        value1 := value *,over 10
         if value1 < value
         {
             result.ovf = true

@@ -1009,8 +1009,8 @@ struct AstAlias : public AstNode
 
 struct AstCast : public AstNode
 {
-    static const uint16_t SPECFLAG_SAFE = 0x0001;
-    static const uint16_t SPECFLAG_BIT  = 0x0002;
+    static const uint16_t SPECFLAG_OVERFLOW = 0x0001;
+    static const uint16_t SPECFLAG_BIT      = 0x0002;
 
     AstNode* clone(CloneContext& context);
 
@@ -1019,10 +1019,10 @@ struct AstCast : public AstNode
 
 struct AstOp : public AstNode
 {
-    static const uint16_t SPECFLAG_SAFE  = 0x0001;
-    static const uint16_t SPECFLAG_SMALL = 0x0002;
-    static const uint16_t SPECFLAG_FMA   = 0x0004;
-    static const uint16_t SPECFLAG_UP    = 0x0008;
+    static const uint16_t SPECFLAG_OVERFLOW = 0x0001;
+    static const uint16_t SPECFLAG_SMALL    = 0x0002;
+    static const uint16_t SPECFLAG_FMA      = 0x0004;
+    static const uint16_t SPECFLAG_UP       = 0x0008;
 
     AstNode* clone(CloneContext& context);
 

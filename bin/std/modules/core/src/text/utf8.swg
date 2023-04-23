@@ -104,7 +104,7 @@ func decodeLastRune(buffer: const [..] u8) -> {c: rune, eat: u32}
     loop
     {
         c = dref ptr
-        if c >>,safe 6 != 2
+        if c >>,over 6 != 2
             break
         if ptr == dataof
         {
@@ -177,7 +177,7 @@ func decodeRune(buffer: const [..] u8) -> {c: rune, eat: u32}
         return result
     }
 
-	accept := AcceptRanges[x >>,safe 4]
+	accept := AcceptRanges[x >>,over 4]
 
     // Length == 2
 	b1 := dataof[1]
@@ -239,27 +239,27 @@ func encodeRune(dest: [..] u8, src: rune)->u32
         return 1
 
     case src <= 0x07FF:
-        dest[0] = cast(u8) (((src >>,safe 6) & 0x1F) | 0xC0)
-        dest[1] = cast(u8) (((src >>,safe 0) & 0x3F) | 0x80)
+        dest[0] = cast(u8) (((src >>,over 6) & 0x1F) | 0xC0)
+        dest[1] = cast(u8) (((src >>,over 0) & 0x3F) | 0x80)
         return 2
 
     case !isValidRune(src):
-        dest[0] = cast(u8) (((RuneError >>,safe 12) & 0x0F) | 0xE0)
-        dest[1] = cast(u8) (((RuneError >>,safe 6) & 0x3F) | 0x80)
-        dest[2] = cast(u8) (((RuneError >>,safe 0) & 0x3F) | 0x80)
+        dest[0] = cast(u8) (((RuneError >>,over 12) & 0x0F) | 0xE0)
+        dest[1] = cast(u8) (((RuneError >>,over 6) & 0x3F) | 0x80)
+        dest[2] = cast(u8) (((RuneError >>,over 0) & 0x3F) | 0x80)
         return 3
 
     case src <= 0xFFFF:
-        dest[0] = cast(u8) (((src >>,safe 12) & 0x0F) | 0xE0)
-        dest[1] = cast(u8) (((src >>,safe 6) & 0x3F) | 0x80)
-        dest[2] = cast(u8) (((src >>,safe 0) & 0x3F) | 0x80)
+        dest[0] = cast(u8) (((src >>,over 12) & 0x0F) | 0xE0)
+        dest[1] = cast(u8) (((src >>,over 6) & 0x3F) | 0x80)
+        dest[2] = cast(u8) (((src >>,over 0) & 0x3F) | 0x80)
         return 3
 
     default:
-        dest[0] = cast(u8) (((src >>,safe 18) & 0x07) | 0xF0)
-        dest[1] = cast(u8) (((src >>,safe 12) & 0x3F) | 0x80)
-        dest[2] = cast(u8) (((src >>,safe 6) & 0x3F) | 0x80)
-        dest[3] = cast(u8) (((src >>,safe 0) & 0x3F) | 0x80)
+        dest[0] = cast(u8) (((src >>,over 18) & 0x07) | 0xF0)
+        dest[1] = cast(u8) (((src >>,over 12) & 0x3F) | 0x80)
+        dest[2] = cast(u8) (((src >>,over 6) & 0x3F) | 0x80)
+        dest[3] = cast(u8) (((src >>,over 0) & 0x3F) | 0x80)
         return 4
     }
 }
@@ -374,7 +374,7 @@ func countBytesAt(buffer: const [..] u8)->u32
 	if countof < sz
         return 1
 
-	accept := AcceptRanges[x >>,safe 4]
+	accept := AcceptRanges[x >>,over 4]
 
 	b1 := dataof[1]
 	if !(accept.lo <= b1 and b1 <= accept.hi)
@@ -769,7 +769,7 @@ func isValid(buffer: const [..] u8)->bool
         if countof < sz
             return false
 
-        accept := AcceptRanges[x >>,safe 4]
+        accept := AcceptRanges[x >>,over 4]
 
         b1 := p[1]
         if !(accept.lo <= b1 and b1 <= accept.hi)

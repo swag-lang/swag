@@ -67,7 +67,7 @@ public impl BitArray
     {
         len := @countof(what)
         reserve(len)
-        buffer[len >>,safe 5] = 0
+        buffer[len >>,over 5] = 0
         visit value, index: what
             set(index, value)
     }
@@ -78,7 +78,7 @@ public impl BitArray
         if count != other.count
             return false
 
-        loop Math.max(count >>,safe 5, 1)
+        loop Math.max(count >>,over 5, 1)
         {
             if buffer[@index] != other.buffer[@index]
                 return false
@@ -98,7 +98,7 @@ public impl BitArray
         countBits := 0'u64
 
         #scope Up
-        loop idx: Math.max(count >>,safe 5, 1)
+        loop idx: Math.max(count >>,over 5, 1)
         {
             var shift: u32 = 1
             loop Math.min(remainingBits, 32)
@@ -129,7 +129,7 @@ public impl BitArray
         }
 
         count = maxBits
-        capacity = maxBits >>,safe 5
+        capacity = maxBits >>,over 5
         if capacity << 5 < maxBits
             capacity += 1
 
@@ -154,7 +154,7 @@ public impl BitArray
     mtd set(index: u64, value: bool)
     {
         Debug.assert(index < count)
-        val := index >>,safe 5
+        val := index >>,over 5
         bit := index - (val << 5)
         var shift = 1'u32 << cast(u32) bit
         if value
@@ -167,7 +167,7 @@ public impl BitArray
     mtdc get(index: u64)->bool
     {
         Debug.assert(index < count)
-        val := index >>,safe 5
+        val := index >>,over 5
         bit := index - (val << 5)
         var shift = 1'u32 << cast(u32) bit
         return cast(bool) (buffer[val] & shift)
@@ -177,7 +177,7 @@ public impl BitArray
     mtd invert(index: u64)
     {
         Debug.assert(index < count)
-        val := index >>,safe 5
+        val := index >>,over 5
         bit := index - (val << 5)
         var shift = 1'u32 << cast(u32) bit
         if buffer[val] & shift
@@ -192,7 +192,7 @@ public impl BitArray
     {
         Debug.assert(count == other.count)
         if !count return
-        loop Math.max(count >>,safe 5, 1)
+        loop Math.max(count >>,over 5, 1)
             buffer[@index] &= other.buffer[@index]
     }
 
@@ -202,7 +202,7 @@ public impl BitArray
     {
         Debug.assert(count == other.count)
         if !count return
-        loop Math.max(count >>,safe 5, 1)
+        loop Math.max(count >>,over 5, 1)
             buffer[@index] |= other.buffer[@index]
     }
 
@@ -212,7 +212,7 @@ public impl BitArray
     {
         Debug.assert(count == other.count)
         if !count return
-        loop Math.max(count >>,safe 5, 1)
+        loop Math.max(count >>,over 5, 1)
             buffer[@index] ^= other.buffer[@index]
     }
 
@@ -220,7 +220,7 @@ public impl BitArray
     mtd not()
     {
         if !count return
-        loop Math.max(count >>,safe 5, 1)
+        loop Math.max(count >>,over 5, 1)
             buffer[@index] = ~buffer[@index]
     }
 }

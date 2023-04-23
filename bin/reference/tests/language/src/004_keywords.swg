@@ -249,7 +249,7 @@ Other intrinsics.
 /**
 Modifiers.
 ```
-,safe
+,over
 ,small
 ,nodrop
 ,bit

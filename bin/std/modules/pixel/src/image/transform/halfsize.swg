@@ -15,10 +15,10 @@ impl Image
             pixSrcb8 := pixSrc + b8
             pixSrcw8 := pixSrc + w8
             pixSrcw8b8 := pixSrcw8 + b8
-            pix[0] = cast(u8) ((pixSrc[0] +,up pixSrcb8[0] +,up pixSrcw8[0] +,up pixSrcw8b8[0]) >>,safe 2)
-            pix[1] = cast(u8) ((pixSrc[1] +,up pixSrcb8[1] +,up pixSrcw8[1] +,up pixSrcw8b8[1]) >>,safe 2)
-            pix[2] = cast(u8) ((pixSrc[2] +,up pixSrcb8[2] +,up pixSrcw8[2] +,up pixSrcw8b8[2]) >>,safe 2)
-            if image.bpp == 32 pix[3] = cast(u8) ((pixSrc[3] +,up pixSrcb8[3] +,up pixSrcw8[3] +,up pixSrcw8b8[3]) >>,safe 2)
+            pix[0] = cast(u8) ((pixSrc[0] +,up pixSrcb8[0] +,up pixSrcw8[0] +,up pixSrcw8b8[0]) >>,over 2)
+            pix[1] = cast(u8) ((pixSrc[1] +,up pixSrcb8[1] +,up pixSrcw8[1] +,up pixSrcw8b8[1]) >>,over 2)
+            pix[2] = cast(u8) ((pixSrc[2] +,up pixSrcb8[2] +,up pixSrcw8[2] +,up pixSrcw8b8[2]) >>,over 2)
+            if image.bpp == 32 pix[3] = cast(u8) ((pixSrc[3] +,up pixSrcb8[3] +,up pixSrcw8[3] +,up pixSrcw8b8[3]) >>,over 2)
         }
     }
 

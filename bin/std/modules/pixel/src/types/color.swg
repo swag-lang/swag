@@ -169,9 +169,9 @@ impl Color
     func fromAbgr(abgr: u32)->Color
     {
         var result: retval
-        result.a = acast (abgr >>,safe 24)
-        result.b = acast ((abgr >>,safe 16) & 0xFF)
-        result.g = acast ((abgr >>,safe 8) & 0xFF)
+        result.a = acast (abgr >>,over 24)
+        result.b = acast ((abgr >>,over 16) & 0xFF)
+        result.g = acast ((abgr >>,over 8) & 0xFF)
         result.r = acast (abgr & 0xFF)
         return result
     }

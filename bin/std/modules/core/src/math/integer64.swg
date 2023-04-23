@@ -72,11 +72,11 @@ impl Int128
         negate := (lhs < 0) != (rhs < 0)
 
         if lhs < 0 lhs = -lhs
-        int1Hi := cast(u64) lhs >>,safe 32
+        int1Hi := cast(u64) lhs >>,over 32
         int1Lo := cast(u64) (lhs & 0xFFFFFFFF)
 
         if (rhs < 0) rhs = -rhs
-        int2Hi := cast(u64) rhs >>,safe 32
+        int2Hi := cast(u64) rhs >>,over 32
         int2Lo := cast(u64) (rhs & 0xFFFFFFFF)
 
         a := int1Hi * int2Hi

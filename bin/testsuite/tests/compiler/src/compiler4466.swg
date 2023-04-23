@@ -11,7 +11,7 @@
         y := year - m/10
         @print("x: ", 365*y)
         //@assert(365*y == 164040)
-        dn := 365*y +,safe y/4 +,safe y/400 +,safe (m*306 + 5)/10 +,safe day-1 -,safe y/100
+        dn := 365*y +,over y/4 +,over y/400 +,over (m*306 + 5)/10 +,over day-1 -,over y/100
         dn += 3
         //@print(dn % 7)
     }

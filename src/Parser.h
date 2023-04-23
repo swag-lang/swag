@@ -42,7 +42,7 @@ enum class SyntaxStructType
     Tuple
 };
 
-const uint32_t MODIFIER_SAFE          = 0x00000001;
+const uint32_t MODIFIER_OVERFLOW      = 0x00000001;
 const uint32_t MODIFIER_SMALL         = 0x00000002;
 const uint32_t MODIFIER_NO_LEFT_DROP  = 0x00000004;
 const uint32_t MODIFIER_MOVE          = 0x00000008;

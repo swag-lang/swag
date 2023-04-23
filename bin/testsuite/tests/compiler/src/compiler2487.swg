@@ -6,8 +6,8 @@ using Swag
 {
     {
         var x: s8 = 1
-        x >>=,safe 1
-        #assert 1 >>,safe 1 == 0
-        #assert Swag.U32.Max <<,safe 1 == 0xFFFFFFFE
+        x >>=,over 1
+        #assert 1 >>,over 1 == 0
+        #assert Swag.U32.Max <<,over 1 == 0xFFFFFFFE
     }
 }

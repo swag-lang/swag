@@ -23,7 +23,7 @@ public impl Adler32
     mtd update(buffer: const [..] u8)
     {
         s1 := adler & 0xffff
-        s2 := (adler >>,safe 16) & 0xffff
+        s2 := (adler >>,over 16) & 0xffff
 
         countof := @countof(buffer)
         if !countof return

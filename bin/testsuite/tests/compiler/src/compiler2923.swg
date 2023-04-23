@@ -2,7 +2,7 @@
 func consumeBits(width: u8)
 {
     var codeBuffer: u32 = 1
-    codeBuffer >>=,safe width
+    codeBuffer >>=,over width
     @assert(codeBuffer == 1)
 }
 

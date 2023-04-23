@@ -145,7 +145,7 @@ void LanguageSpec::setupNames()
     name_version     = "version";
 
     name_up      = "up";
-    name_safe    = "safe";
+    name_over    = "over";
     name_small   = "small";
     name_nodrop  = "nodrop";
     name_move    = "move";

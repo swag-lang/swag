@@ -109,7 +109,7 @@ impl HuffmanTable
             if sizes[i] != 0 and (cde - 1) >= (1 << i)
                 throw "huffman bad code lengths"
             maxCode[i] = cast(s64) cde << (16 - i)
-            cde <<=,safe 1
+            cde <<=,over 1
             k += sizes[i]
         }
 
@@ -162,7 +162,7 @@ impl Inflate
         b := ht.fast[stream.codeBuffer & FastMask]
         if b
         {
-            s := cast(u8) (b >>,safe FastBits)
+            s := cast(u8) (b >>,over FastBits)
             stream.consumeBits(s)
             return b & 511
         }
@@ -175,7 +175,7 @@ impl Inflate
 
         if s >= 16
             throw "bad huffman code"
-        b1 := (k >>,safe (16 - s)) - ht.firstCode[s] + ht.firstSymbol[s]
+        b1 := (k >>,over (16 - s)) - ht.firstCode[s] + ht.firstSymbol[s]
         if b1 >= @countof(ht.size)
             throw "bad huffman code"
         if ht.size[b1] != s

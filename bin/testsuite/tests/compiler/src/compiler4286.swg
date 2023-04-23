@@ -2,5 +2,5 @@
 
 #test
 {
-    x := cast,bit,safe(s32) 5
+    x := cast,bit,over(s32) 5
 }

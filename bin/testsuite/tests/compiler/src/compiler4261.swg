@@ -1,5 +1,5 @@
 #[Swag.Inline]
-func HIWORD(l: u64) => cast(s32) cast,bit(s16) ((l >>,safe 16) & 0xffff)
+func HIWORD(l: u64) => cast(s32) cast,bit(s16) ((l >>,over 16) & 0xffff)
 
 #[Swag.Optim("", false)]
 #test

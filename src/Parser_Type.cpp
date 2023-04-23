@@ -814,10 +814,10 @@ bool Parser::doCast(AstNode* parent, AstNode** result)
     // Cast modifiers
     uint32_t mdfFlags = 0;
     SWAG_CHECK(doModifiers(node->token, node->tokenId, mdfFlags));
-    if (mdfFlags & MODIFIER_SAFE)
+    if (mdfFlags & MODIFIER_OVERFLOW)
     {
-        node->specFlags |= AstCast::SPECFLAG_SAFE;
-        node->attributeFlags |= ATTRIBUTE_SAFETY_OVERFLOW_OFF;
+        node->specFlags |= AstCast::SPECFLAG_OVERFLOW;
+        node->attributeFlags |= ATTRIBUTE_SAFETY_OVERFLOW_OFF | ATTRIBUTE_CAN_OVERFLOW;
     }
 
     if (mdfFlags & MODIFIER_BIT)
@@ -826,7 +826,7 @@ bool Parser::doCast(AstNode* parent, AstNode** result)
         node->semanticFct = SemanticJob::resolveExplicitBitCast;
     }
 
-    if (mdfFlags & MODIFIER_BIT && mdfFlags & MODIFIER_SAFE)
+    if ((mdfFlags & MODIFIER_BIT) && (mdfFlags & MODIFIER_OVERFLOW))
     {
         return error(node, Err(Syn0186));
     }

@@ -332,10 +332,10 @@ impl Encoder
                 hT[stdTable[posInTable]].value  = codevalue
                 hT[stdTable[posInTable]].length = cast(u8) k
                 posInTable += 1
-                codevalue +=,safe 1
+                codevalue +=,over 1
             }
 
-            codevalue *=,safe 2
+            codevalue *=,over 2
         }
     }
 
@@ -402,7 +402,7 @@ impl Encoder
     #[Swag.Inline]
     mtd writeWord(w: u16)
     {
-        stream.addNative(cast(u8) (w >>,safe 8))
+        stream.addNative(cast(u8) (w >>,over 8))
         stream.addNative(cast(u8) (w & 0xFF))
     }
 

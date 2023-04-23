@@ -28,7 +28,7 @@ impl Rng
         #if @defined(T.seedU64)
             return rng.seedU64(seed)
         #else
-            return rng.seedU32(cast,safe(u32) seed)
+            return rng.seedU32(cast,over(u32) seed)
     }
 
     // Returns an unsigned 32 bits random value
@@ -41,7 +41,7 @@ impl Rng
         #if @defined(T.nextU32)
             return rng.nextU32()
         #else
-            return cast,safe(u32) rng.nextU64()
+            return cast,over(u32) rng.nextU64()
     }
 
     // Returns an unsigned 64 bits random value

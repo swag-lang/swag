@@ -23,16 +23,16 @@ Operators that can overflow are : + - * << >> and their equivalent += -= *= <<= 
 
 /**
 But if you know what your are doing, you can use a special version of those operators, which will not panic.
-Add the ',safe' modifier after the operation. This will disable safety checks.
+Add the ',over' modifier after the operation. This will disable safety checks.
 */
 #test
 {
     x := 255'u8
-    x +=,safe 1     // wrap around
+    x +=,over 1     // Overflow is expected, so this will wrap around
     @assert(x == 0)
 
     y := 255'u8
-    y >>=,safe 1
+    y >>=,over 1    // Overflow is expected, so we lose a bit
     @assert(y == 127)
 }
 
@@ -56,13 +56,13 @@ Swag will also check that a cast does not lose information.
     //y0 := cast(s8) x1     // This would lose information and panic, as 255 cannot be encoded in 's8'
     //@print(y0)
 
-    y1 := cast,safe(s8) x1  // But ',safe' can be used on the cast operation too
+    y1 := cast,over(s8) x1  // But ',over' can be used on the cast operation too
     @assert(y1 == -1)
 
     x2 := -1's8
     //y2 := cast(u8) x2     // This cast also is not possible, because 'x2' is negative and 'y' is 'u8'
     //@print(y)
-    y2 := cast,safe(u8) x2
+    y2 := cast,over(u8) x2
     @assert(y2 == 255)
 }
 

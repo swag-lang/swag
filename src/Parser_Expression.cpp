@@ -721,7 +721,7 @@ bool Parser::doModifiers(Token& forNode, TokenId tokenId, uint32_t& mdfFlags)
             continue;
         }
 
-        if (token.text == g_LangSpec->name_safe)
+        if (token.text == g_LangSpec->name_over)
         {
             switch (opId)
             {
@@ -741,8 +741,8 @@ bool Parser::doModifiers(Token& forNode, TokenId tokenId, uint32_t& mdfFlags)
                 return error(token, Fmt(Err(Syn0126), forNode.ctext()));
             }
 
-            SWAG_VERIFY(!(mdfFlags & MODIFIER_SAFE), error(token, Fmt(Err(Syn0125), token.ctext())));
-            mdfFlags |= MODIFIER_SAFE;
+            SWAG_VERIFY(!(mdfFlags & MODIFIER_OVERFLOW), error(token, Fmt(Err(Syn0125), token.ctext())));
+            mdfFlags |= MODIFIER_OVERFLOW;
             SWAG_CHECK(eatToken());
             continue;
         }
@@ -872,10 +872,10 @@ bool Parser::doFactorExpression(AstNode** parent, uint32_t exprFlags, AstNode** 
         // Modifiers
         uint32_t mdfFlags = 0;
         SWAG_CHECK(doModifiers(binaryNode->token, binaryNode->tokenId, mdfFlags));
-        if (mdfFlags & MODIFIER_SAFE)
+        if (mdfFlags & MODIFIER_OVERFLOW)
         {
-            binaryNode->specFlags |= AstOp::SPECFLAG_SAFE;
-            binaryNode->attributeFlags |= ATTRIBUTE_SAFETY_OVERFLOW_OFF;
+            binaryNode->specFlags |= AstOp::SPECFLAG_OVERFLOW;
+            binaryNode->attributeFlags |= ATTRIBUTE_SAFETY_OVERFLOW_OFF | ATTRIBUTE_CAN_OVERFLOW;
         }
 
         if (mdfFlags & MODIFIER_SMALL)
@@ -1445,10 +1445,10 @@ bool Parser::doAffectExpression(AstNode* parent, AstNode** result, AstWith* with
             SWAG_CHECK(doModifiers(savedtoken, savedtoken.id, mdfFlags));
         }
 
-        if (mdfFlags & MODIFIER_SAFE)
+        if (mdfFlags & MODIFIER_OVERFLOW)
         {
-            opFlags |= AstOp::SPECFLAG_SAFE;
-            opAttrFlags |= ATTRIBUTE_SAFETY_OVERFLOW_OFF;
+            opFlags |= AstOp::SPECFLAG_OVERFLOW;
+            opAttrFlags |= ATTRIBUTE_SAFETY_OVERFLOW_OFF | ATTRIBUTE_CAN_OVERFLOW;
         }
 
         if (mdfFlags & MODIFIER_SMALL)

@@ -53,13 +53,13 @@ impl BitStream
     mtd peekBits(width: u8)->u32
     {
 	    if numBits < width refill()
-    	return codeBuffer & ~(0xffffffff <<,safe width)
+    	return codeBuffer & ~(0xffffffff <<,over width)
     }
 
     mtd peekBitsNoRefill(width: u8)->u32
     {
 	    Debug.assert(numBits >= width)
-    	return codeBuffer & ~(0xffffffff <<,safe width)
+    	return codeBuffer & ~(0xffffffff <<,over width)
     }
 
     #[Swag.Inline]
@@ -80,8 +80,8 @@ impl BitStream
     #[Swag.Inline]
     mtd consumeBits(width: u8)
     {
-	    codeBuffer >>=,safe width
-	    numBits -=,safe width
+	    codeBuffer >>=,over width
+	    numBits -=,over width
     }
 
     #[Swag.Inline]

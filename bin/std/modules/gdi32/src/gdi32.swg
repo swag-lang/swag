@@ -374,7 +374,7 @@ alias FONTENUMPROCW = func(const *LOGFONTW, const *TEXTMETRICW, DWORD, LPARAM)->
 #[Swag.Inline]
 func RGB(r,g,b: s32)->COLORREF
 {
-    return r | g <<,safe 8 | b <<,safe 16
+    return r | g <<,over 8 | b <<,over 16
 }
 
 #[Foreign("Gdi32")]

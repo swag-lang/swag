@@ -132,7 +132,7 @@ impl Decoder
         /* Discard block size (always 0x04) */
         seek(1)
         rdit := readU8()
-        gce.disposal = (rdit >>,safe 2) & 3
+        gce.disposal = (rdit >>,over 2) & 3
         gce.input = rdit & 2
         gce.transparency = rdit & 1
         gce.delay = readU16()
@@ -221,7 +221,7 @@ impl Decoder
             }
 
             frag_size = Math.min(cast(s32) (keySize - bits_read), cast(s32) (8 - rpad))
-            key |= (cast(u16) ((dref byte) >>,safe rpad)) <<,safe bits_read
+            key |= (cast(u16) ((dref byte) >>,over rpad)) <<,over bits_read
         }
 
         /* Clear extra bits to the left. */
@@ -464,7 +464,7 @@ public impl Decoder
             throw "no global color table"
 
         /* Color space's depth */
-        depth = acast (((fdsz >>,safe 4) & 7) + 1)
+        depth = acast (((fdsz >>,over 4) & 7) + 1)
         /* Ignore sort flag */
         /* GCT Size */
         gct.size = 1 << ((fdsz & 0x07) + 1)

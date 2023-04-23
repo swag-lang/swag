@@ -407,7 +407,7 @@ impl Decoder
     #[Swag.Safety("", false)]
     mtd huffDecode(ph: *HuffTables)->s32
     {
-        symbol := ph.lookUp[(bitBuf >>,safe 8) & 0xFF]
+        symbol := ph.lookUp[(bitBuf >>,over 8) & 0xFF]
         if symbol < 0
         {
             getBits2(8)
@@ -459,7 +459,7 @@ impl Decoder
                 while k < 64
                 {
                     s = huffDecode(ph)
-                    r := s >>,safe 4
+                    r := s >>,over 4
                     s &= 0x0F
 
                     if s
@@ -629,7 +629,7 @@ impl Decoder
             if (dataPtr[8 * 1] | dataPtr[8 * 2] | dataPtr[8 * 3] | dataPtr[8 * 4] | dataPtr[8 * 5] | dataPtr[8 * 6] | dataPtr[8 * 7]) == 0
             {
                 dcval := descale(cast(s32) dataPtr[0], Pass1Bits + 3)
-                dcval +=,safe 128
+                dcval +=,over 128
                 dcval = Math.clamp(dcval, 0's16, 255's16)
                 dcval8 := cast(u8) dcval
 
@@ -841,9 +841,9 @@ impl Decoder
                 cb := s[64 + j]
                 cr := s[128 + j]
 
-                d[2] = clamp(y +,safe crr[cr])
-                d[1] = clamp(y +,safe ((crg[cr] + cbg[cb]) >>,safe 16))
-                d[0] = clamp(y +,safe cbb[cb])
+                d[2] = clamp(y +,over crr[cr])
+                d[1] = clamp(y +,over ((crg[cr] + cbg[cb]) >>,over 16))
+                d[0] = clamp(y +,over cbb[cb])
                 d += 3
             }
 
@@ -864,7 +864,7 @@ impl Decoder
         else
             y = pSampleBuf + 64 * 1 + (row & 7) * 8
 
-        c := pSampleBuf + 64 * 2 + (row >>,safe 1) * 8
+        c := pSampleBuf + 64 * 2 + (row >>,over 1) * 8
         loop i: maxMcusPerRow..1
         {
             loop j: 8
@@ -872,18 +872,18 @@ impl Decoder
                 cb := c[0 + j]
                 cr := c[64 + j]
                 rc := crr[cr]
-                gc := ((crg[cr] + cbg[cb]) >>,safe 16)
+                gc := ((crg[cr] + cbg[cb]) >>,over 16)
                 bc := cbb[cb]
                 yy := cast(s32) y[j]
 
-                d0[2] = clamp(yy +,safe rc)
-                d0[1] = clamp(yy +,safe gc)
-                d0[0] = clamp(yy +,safe bc)
+                d0[2] = clamp(yy +,over rc)
+                d0[1] = clamp(yy +,over gc)
+                d0[0] = clamp(yy +,over bc)
 
                 yy    = y[8 + j]
-                d1[2] = clamp(yy +,safe rc)
-                d1[1] = clamp(yy +,safe gc)
-                d1[0] = clamp(yy +,safe bc)
+                d1[2] = clamp(yy +,over rc)
+                d1[1] = clamp(yy +,over gc)
+                d1[0] = clamp(yy +,over bc)
 
                 d0, d1 += 3
             }
@@ -909,18 +909,18 @@ impl Decoder
                     cb := c[0]
                     cr := c[64]
                     rc := crr[cr]
-                    gc := (crg[cr] + cbg[cb]) >>,safe 16
+                    gc := (crg[cr] + cbg[cb]) >>,over 16
                     bc := cbb[cb]
                     yy := cast(s32) y[j << 1]
 
-                    d0[2] = clamp(yy +,safe rc)
-                    d0[1] = clamp(yy +,safe gc)
-                    d0[0] = clamp(yy +,safe bc)
+                    d0[2] = clamp(yy +,over rc)
+                    d0[1] = clamp(yy +,over gc)
+                    d0[0] = clamp(yy +,over bc)
 
                     yy    = y[(j << 1) + 1]
-                    d0[5] = clamp(yy +,safe rc)
-                    d0[4] = clamp(yy +,safe gc)
-                    d0[3] = clamp(yy +,safe bc)
+                    d0[5] = clamp(yy +,over rc)
+                    d0[4] = clamp(yy +,over gc)
+                    d0[3] = clamp(yy +,over bc)
 
                     d0 += 6
 
@@ -958,28 +958,28 @@ impl Decoder
                     cb := c[0]
                     cr := c[64]
                     rc := crr[cr]
-                    gc := (crg[cr] + cbg[cb]) >>,safe 16
+                    gc := (crg[cr] + cbg[cb]) >>,over 16
                     bc := cbb[cb]
                     yy := cast(s32) y[j]
 
-                    d0[2] = clamp(yy +,safe rc)
-                    d0[1] = clamp(yy +,safe gc)
-                    d0[0] = clamp(yy +,safe bc)
+                    d0[2] = clamp(yy +,over rc)
+                    d0[1] = clamp(yy +,over gc)
+                    d0[0] = clamp(yy +,over bc)
 
                     yy    = y[j + 1]
-                    d0[5] = clamp(yy +,safe rc)
-                    d0[4] = clamp(yy +,safe gc)
-                    d0[3] = clamp(yy +,safe bc)
+                    d0[5] = clamp(yy +,over rc)
+                    d0[4] = clamp(yy +,over gc)
+                    d0[3] = clamp(yy +,over bc)
 
                     yy    = y[j + 8]
-                    d1[2] = clamp(yy +,safe rc)
-                    d1[1] = clamp(yy +,safe gc)
-                    d1[0] = clamp(yy +,safe bc)
+                    d1[2] = clamp(yy +,over rc)
+                    d1[1] = clamp(yy +,over gc)
+                    d1[0] = clamp(yy +,over bc)
 
                     yy    = y[j + 8 + 1]
-                    d1[5] = clamp(yy +,safe rc)
-                    d1[4] = clamp(yy +,safe gc)
-                    d1[3] = clamp(yy +,safe bc)
+                    d1[5] = clamp(yy +,over rc)
+                    d1[4] = clamp(yy +,over gc)
+                    d1[3] = clamp(yy +,over bc)
 
                     d0 += 6
                     d1 += 6
@@ -1090,8 +1090,8 @@ impl Decoder
         loop i: 255
         {
             k := (i * 2) - 256
-            crr[i] = (fix[0] * k + (1 << (16 - 1))) >>,safe 16
-            cbb[i] = (fix[1] * k + (1 << (16 - 1))) >>,safe 16
+            crr[i] = (fix[0] * k + (1 << (16 - 1))) >>,over 16
+            cbb[i] = (fix[1] * k + (1 << (16 - 1))) >>,over 16
             crg[i] = (fix[2] * k)
             cbg[i] = (fix[3] * k + (1 << (16 - 1)))
         }
@@ -1129,12 +1129,12 @@ impl Decoder
     mtd fixInBuffer()
     {
         if bitsLeft == 16
-            stuffChar(cast(u8) ((bitBuf >>,safe 16) & 0xFF))
+            stuffChar(cast(u8) ((bitBuf >>,over 16) & 0xFF))
         if bitsLeft >= 8
-            stuffChar(cast(u8) ((bitBuf >>,safe 24) & 0xFF))
+            stuffChar(cast(u8) ((bitBuf >>,over 24) & 0xFF))
 
         stuffChar(cast(u8) (bitBuf & 0xFF))
-        stuffChar(cast(u8) ((bitBuf >>,safe 8) & 0xFF))
+        stuffChar(cast(u8) ((bitBuf >>,over 8) & 0xFF))
         bitsLeft = 16
 
         getBits2(16)
@@ -1179,7 +1179,7 @@ impl Decoder
                 p, cde += 1
             }
 
-            cde <<=,safe 1
+            cde <<=,over 1
             si += 1
         }
 
@@ -1206,7 +1206,7 @@ impl Decoder
             }
             else
             {
-                subtree := (cde >>,safe (codeSize - 8)) & 0xFF
+                subtree := (cde >>,over (codeSize - 8)) & 0xFF
                 currentEntry := hs.lookUp[subtree]
                 if currentEntry == 0
                 {
@@ -1859,7 +1859,7 @@ impl Decoder
         while left
         {
             n    := getBits1(8)
-            prec := n >>,safe 4
+            prec := n >>,over 4
             n &= 0x0F
             if n >= MaxQuantTables throw "bad dqt table"
 
@@ -1937,7 +1937,7 @@ impl Decoder
                 throw "bad sos comp id"
 
             compList[i]   = ci
-            compDcTab[ci] = (c >>,safe 4) & 15
+            compDcTab[ci] = (c >>,over 4) & 15
             compAcTab[ci] = (c & 15) + (MaxHuffTables >> 1)
         }
 

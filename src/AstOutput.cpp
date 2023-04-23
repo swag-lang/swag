@@ -1951,8 +1951,8 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
         SWAG_CHECK(outputNode(context, concat, node->childs[0]));
         concat.addChar(' ');
         concat.addString(node->token.text);
-        if (opNode->specFlags & AstOp::SPECFLAG_SAFE)
-            CONCAT_FIXED_STR(concat, ",safe");
+        if (opNode->specFlags & AstOp::SPECFLAG_OVERFLOW)
+            CONCAT_FIXED_STR(concat, ",over");
         if (opNode->specFlags & AstOp::SPECFLAG_SMALL)
             CONCAT_FIXED_STR(concat, ",small");
         concat.addChar(' ');
@@ -1967,8 +1967,8 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
         SWAG_CHECK(outputNode(context, concat, node->childs[0]));
         concat.addChar(' ');
         concat.addString(node->token.text);
-        if (opNode->specFlags & AstOp::SPECFLAG_SAFE)
-            CONCAT_FIXED_STR(concat, ",safe");
+        if (opNode->specFlags & AstOp::SPECFLAG_OVERFLOW)
+            CONCAT_FIXED_STR(concat, ",over");
         if (opNode->specFlags & AstOp::SPECFLAG_SMALL)
             CONCAT_FIXED_STR(concat, ",small");
         concat.addChar(' ');
@@ -1994,8 +1994,8 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
 
     case AstNodeKind::Cast:
         CONCAT_FIXED_STR(concat, "cast");
-        if (node->specFlags & AstCast::SPECFLAG_SAFE)
-            CONCAT_FIXED_STR(concat, ",safe");
+        if (node->specFlags & AstCast::SPECFLAG_OVERFLOW)
+            CONCAT_FIXED_STR(concat, ",over");
         if (node->specFlags & AstCast::SPECFLAG_BIT)
             CONCAT_FIXED_STR(concat, ",bit");
         concat.addChar('(');
