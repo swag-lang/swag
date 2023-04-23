@@ -154,7 +154,7 @@ void ByteCodeGenJob::emitSafetyNotZero(ByteCodeGenContext* context, uint32_t r, 
 bool ByteCodeGenJob::emitSafetyUnreachable(ByteCodeGenContext* context)
 {
     if ((context->contextFlags & BCC_FLAG_NOSAFETY) ||
-        !context->sourceFile->module->mustEmitSafety(context->node->parent, SAFETY_SWITCH))
+        !context->sourceFile->module->mustEmitSafety(context->node->parent, SAFETY_UNREACHABLE))
     {
         EMIT_INST0(context, ByteCodeOp::InternalUnreachable);
     }

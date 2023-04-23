@@ -274,6 +274,7 @@ struct SemanticJob : public Job
     static DataSegment* getConstantSegFromContext(AstNode* node, bool forceCompiler = false);
     static void         enterState(AstNode* node);
     static void         inheritAttributesFromParent(AstNode* child);
+    static void         inheritAttributesFrom(AstNode* child, uint64_t attributeFlags, uint16_t safetyOn, uint16_t safetyOff);
     static void         inheritAttributesFromOwnerFunc(AstNode* child);
     static bool         setupIdentifierRef(SemanticContext* context, AstNode* node, TypeInfo* typeInfo);
     static bool         derefConstantValue(SemanticContext* context, AstNode* node, TypeInfo* typeInfo, DataSegment* storageSegment, void* ptr);

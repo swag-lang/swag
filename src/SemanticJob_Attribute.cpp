@@ -205,6 +205,22 @@ void SemanticJob::inheritAttributesFromParent(AstNode* child)
     child->safetyOff |= child->parent->safetyOff;
 }
 
+void SemanticJob::inheritAttributesFrom(AstNode* child, uint64_t attributeFlags, uint16_t safetyOn, uint16_t safetyOff)
+{
+    INHERIT_SAFETY(child, SAFETY_BOUNDCHECK);
+    INHERIT_SAFETY(child, SAFETY_OVERFLOW);
+    INHERIT_SAFETY(child, SAFETY_MATH);
+    INHERIT_SAFETY(child, SAFETY_ANY);
+    INHERIT_SAFETY(child, SAFETY_SWITCH);
+    INHERIT_SAFETY(child, SAFETY_UNREACHABLE);
+    INHERIT_SAFETY(child, SAFETY_BOOL);
+    INHERIT_SAFETY(child, SAFETY_NAN);
+    INHERIT_SAFETY(child, SAFETY_SANITY);
+
+    INHERIT_ATTR(child, ATTRIBUTE_OPTIM_BACKEND_ON | ATTRIBUTE_OPTIM_BACKEND_OFF);
+    INHERIT_ATTR(child, ATTRIBUTE_OPTIM_BYTECODE_ON | ATTRIBUTE_OPTIM_BYTECODE_OFF);
+}
+
 void SemanticJob::inheritAttributesFromOwnerFunc(AstNode* child)
 {
     SWAG_ASSERT(child->kind == AstNodeKind::FuncDecl);
@@ -215,18 +231,7 @@ void SemanticJob::inheritAttributesFromOwnerFunc(AstNode* child)
     auto safetyOff      = child->ownerFct->safetyOff;
 
     child->attributeFlags |= attributeFlags & ATTRIBUTE_PRINT_BC;
-
-    INHERIT_SAFETY(child, SAFETY_BOUNDCHECK);
-    INHERIT_SAFETY(child, SAFETY_OVERFLOW);
-    INHERIT_SAFETY(child, SAFETY_MATH);
-    INHERIT_SAFETY(child, SAFETY_ANY);
-    INHERIT_SAFETY(child, SAFETY_SWITCH);
-    INHERIT_SAFETY(child, SAFETY_BOOL);
-    INHERIT_SAFETY(child, SAFETY_NAN);
-    INHERIT_SAFETY(child, SAFETY_SANITY);
-
-    INHERIT_ATTR(child, ATTRIBUTE_OPTIM_BACKEND_ON | ATTRIBUTE_OPTIM_BACKEND_OFF);
-    INHERIT_ATTR(child, ATTRIBUTE_OPTIM_BYTECODE_ON | ATTRIBUTE_OPTIM_BYTECODE_OFF);
+    inheritAttributesFrom(child, attributeFlags, safetyOn, safetyOff);
 }
 
 bool SemanticJob::collectAttributes(SemanticContext* context, AstNode* forNode, AttributeList* result)
@@ -262,18 +267,8 @@ bool SemanticJob::collectAttributes(SemanticContext* context, AstNode* forNode, 
         // Inherit all simple flags
         forNode->attributeFlags |= attributeFlags & ~(ATTRIBUTE_OPTIM_MASK | ATTRIBUTE_MATCH_MASK | ATTRIBUTE_EXPOSE_MASK);
 
-        // Inherit with condition
-        INHERIT_SAFETY(forNode, SAFETY_BOUNDCHECK);
-        INHERIT_SAFETY(forNode, SAFETY_OVERFLOW);
-        INHERIT_SAFETY(forNode, SAFETY_MATH);
-        INHERIT_SAFETY(forNode, SAFETY_ANY);
-        INHERIT_SAFETY(forNode, SAFETY_SWITCH);
-        INHERIT_SAFETY(forNode, SAFETY_BOOL);
-        INHERIT_SAFETY(forNode, SAFETY_NAN);
-        INHERIT_SAFETY(forNode, SAFETY_SANITY);
-
-        INHERIT_ATTR(forNode, ATTRIBUTE_OPTIM_BACKEND_ON | ATTRIBUTE_OPTIM_BACKEND_OFF);
-        INHERIT_ATTR(forNode, ATTRIBUTE_OPTIM_BYTECODE_ON | ATTRIBUTE_OPTIM_BYTECODE_OFF);
+        // Inherit some attributes and safety
+        inheritAttributesFrom(forNode, attributeFlags, safetyOn, safetyOff);
 
         INHERIT_ATTR(forNode, ATTRIBUTE_MATCH_MASK);
 
@@ -459,6 +454,7 @@ bool SemanticJob::collectAttributes(SemanticContext* context, AstNode* forNode, 
                         CHECK_SAFETY_NAME(name_math, SAFETY_MATH);
                         CHECK_SAFETY_NAME(name_any, SAFETY_ANY);
                         CHECK_SAFETY_NAME(name_switch, SAFETY_SWITCH);
+                        CHECK_SAFETY_NAME(name_unreachable, SAFETY_UNREACHABLE);
                         CHECK_SAFETY_NAME(name_bool, SAFETY_BOOL);
                         CHECK_SAFETY_NAME(name_nan, SAFETY_NAN);
                         CHECK_SAFETY_NAME(name_sanity, SAFETY_SANITY);

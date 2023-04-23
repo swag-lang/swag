@@ -40,6 +40,7 @@ bool SemanticJob::resolveIntrinsicTag(SemanticContext* context)
         CHECK_SAFETY_NAME(name_over, SAFETY_OVERFLOW);
         CHECK_SAFETY_NAME(name_math, SAFETY_MATH);
         CHECK_SAFETY_NAME(name_switch, SAFETY_SWITCH);
+        CHECK_SAFETY_NAME(name_unreachable, SAFETY_UNREACHABLE);
         CHECK_SAFETY_NAME(name_any, SAFETY_ANY);
         CHECK_SAFETY_NAME(name_bool, SAFETY_BOOL);
         CHECK_SAFETY_NAME(name_nan, SAFETY_NAN);

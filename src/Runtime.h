@@ -5,15 +5,16 @@
 // MUST BE IN SYNC IN BOOTSTRAP.SWG
 //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
-const uint64_t SAFETY_BOUNDCHECK = 0x0001;
-const uint64_t SAFETY_OVERFLOW   = 0x0002;
-const uint64_t SAFETY_MATH       = 0x0004;
-const uint64_t SAFETY_ANY        = 0x0008;
-const uint64_t SAFETY_SWITCH     = 0x0010;
-const uint64_t SAFETY_BOOL       = 0x0020;
-const uint64_t SAFETY_NAN        = 0x0040;
-const uint64_t SAFETY_SANITY     = 0x0080;
-const uint64_t SAFETY_ALL        = 0xFFFF;
+const uint64_t SAFETY_BOUNDCHECK  = 0x0001;
+const uint64_t SAFETY_OVERFLOW    = 0x0002;
+const uint64_t SAFETY_MATH        = 0x0004;
+const uint64_t SAFETY_ANY         = 0x0008;
+const uint64_t SAFETY_SWITCH      = 0x0010;
+const uint64_t SAFETY_BOOL        = 0x0020;
+const uint64_t SAFETY_NAN         = 0x0040;
+const uint64_t SAFETY_SANITY      = 0x0080;
+const uint64_t SAFETY_UNREACHABLE = 0x0100;
+const uint64_t SAFETY_ALL         = 0xFFFF;
 
 const int SWAG_EXCEPTION_TO_PREV_HANDLER     = 665;
 const int SWAG_EXCEPTION_TO_COMPILER_HANDLER = 666; // must be the same value in __raiseException666 in runtime_windows.h

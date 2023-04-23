@@ -154,14 +154,15 @@ void LanguageSpec::setupNames()
     name_noerr   = "noerr";
     name_bit     = "bit";
 
-    name_bound  = "bound";
-    name_over   = "over";
-    name_switch = "switch";
-    name_math   = "math";
-    name_any    = "any";
-    name_bool   = "bool";
-    name_nan    = "nan";
-    name_sanity = "sanity";
+    name_bound       = "bound";
+    name_over        = "over";
+    name_switch      = "switch";
+    name_unreachable = "unreachable";
+    name_math        = "math";
+    name_any         = "any";
+    name_bool        = "bool";
+    name_nan         = "nan";
+    name_sanity      = "sanity";
 
     name_name     = "name";
     name_msg      = "msg";
