@@ -250,7 +250,6 @@ Other intrinsics.
 Modifiers.
 ```
 ,over
-,small
 ,nodrop
 ,bit
 ,move

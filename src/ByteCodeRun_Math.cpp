@@ -5,25 +5,18 @@
 #include "Context.h"
 #include "ErrorIds.h"
 
-void ByteCodeRun::executeLeftShift(Register* rdest, const Register& rleft, const Register& rright, uint32_t numBits, bool isSigned, bool isSmall)
+void ByteCodeRun::executeLeftShift(Register* rdest, const Register& rleft, const Register& rright, uint32_t numBits, bool isSigned)
 {
     auto shift = rright.u32;
-    if (isSmall)
-        shift &= numBits - 1;
-
     if (shift >= numBits)
         rdest->u64 = 0;
     else
         rdest->u64 = rleft.u64 << shift;
 }
 
-void ByteCodeRun::executeRightShift(Register* rdest, const Register& rleft, const Register& rright, uint32_t numBits, bool isSigned, bool isSmall)
+void ByteCodeRun::executeRightShift(Register* rdest, const Register& rleft, const Register& rright, uint32_t numBits, bool isSigned)
 {
     auto shift = rright.u32;
-    if (isSmall)
-        shift &= numBits - 1;
-
-    // Overflow, too many bits to shift
     if (shift >= numBits)
     {
         if (isSigned)

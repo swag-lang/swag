@@ -391,40 +391,35 @@ bool ByteCodeGenJob::emitShiftLeft(ByteCodeGenContext* context, TypeInfo* typeIn
 
     emitSafetyLeftShift(context, r0, r1, typeInfo);
 
-    auto     opNode     = CastAst<AstOp>(context->node, AstNodeKind::FactorOp);
-    uint16_t shiftFlags = 0;
-    if (opNode->specFlags & AstOp::SPECFLAG_SMALL)
-        shiftFlags |= BCI_SHIFT_SMALL;
-
     switch (typeInfo->nativeType)
     {
     case NativeTypeKind::S8:
-        EMIT_INST3(context, ByteCodeOp::BinOpShiftLeftS8, r0, r1, r2)->flags |= shiftFlags;
+        EMIT_INST3(context, ByteCodeOp::BinOpShiftLeftS8, r0, r1, r2);
         return true;
     case NativeTypeKind::U8:
-        EMIT_INST3(context, ByteCodeOp::BinOpShiftLeftU8, r0, r1, r2)->flags |= shiftFlags;
+        EMIT_INST3(context, ByteCodeOp::BinOpShiftLeftU8, r0, r1, r2);
         return true;
 
     case NativeTypeKind::S16:
-        EMIT_INST3(context, ByteCodeOp::BinOpShiftLeftS16, r0, r1, r2)->flags |= shiftFlags;
+        EMIT_INST3(context, ByteCodeOp::BinOpShiftLeftS16, r0, r1, r2);
         return true;
     case NativeTypeKind::U16:
-        EMIT_INST3(context, ByteCodeOp::BinOpShiftLeftU16, r0, r1, r2)->flags |= shiftFlags;
+        EMIT_INST3(context, ByteCodeOp::BinOpShiftLeftU16, r0, r1, r2);
         return true;
 
     case NativeTypeKind::S32:
-        EMIT_INST3(context, ByteCodeOp::BinOpShiftLeftS32, r0, r1, r2)->flags |= shiftFlags;
+        EMIT_INST3(context, ByteCodeOp::BinOpShiftLeftS32, r0, r1, r2);
         return true;
     case NativeTypeKind::U32:
     case NativeTypeKind::Rune:
-        EMIT_INST3(context, ByteCodeOp::BinOpShiftLeftU32, r0, r1, r2)->flags |= shiftFlags;
+        EMIT_INST3(context, ByteCodeOp::BinOpShiftLeftU32, r0, r1, r2);
         return true;
 
     case NativeTypeKind::S64:
-        EMIT_INST3(context, ByteCodeOp::BinOpShiftLeftS64, r0, r1, r2)->flags |= shiftFlags;
+        EMIT_INST3(context, ByteCodeOp::BinOpShiftLeftS64, r0, r1, r2);
         return true;
     case NativeTypeKind::U64:
-        EMIT_INST3(context, ByteCodeOp::BinOpShiftLeftU64, r0, r1, r2)->flags |= shiftFlags;
+        EMIT_INST3(context, ByteCodeOp::BinOpShiftLeftU64, r0, r1, r2);
         return true;
     default:
         return Report::internalError(context->node, "emitShiftLeft, type not supported");
@@ -440,38 +435,33 @@ bool ByteCodeGenJob::emitShiftRight(ByteCodeGenContext* context, TypeInfo* typeI
 
     emitSafetyRightShift(context, r0, r1, typeInfo);
 
-    auto     opNode     = CastAst<AstOp>(context->node, AstNodeKind::FactorOp);
-    uint16_t shiftFlags = 0;
-    if (opNode->specFlags & AstOp::SPECFLAG_SMALL)
-        shiftFlags |= BCI_SHIFT_SMALL;
-
     switch (typeInfo->nativeType)
     {
     case NativeTypeKind::S8:
-        EMIT_INST3(context, ByteCodeOp::BinOpShiftRightS8, r0, r1, r2)->flags |= shiftFlags;
+        EMIT_INST3(context, ByteCodeOp::BinOpShiftRightS8, r0, r1, r2);
         return true;
     case NativeTypeKind::S16:
-        EMIT_INST3(context, ByteCodeOp::BinOpShiftRightS16, r0, r1, r2)->flags |= shiftFlags;
+        EMIT_INST3(context, ByteCodeOp::BinOpShiftRightS16, r0, r1, r2);
         return true;
     case NativeTypeKind::S32:
-        EMIT_INST3(context, ByteCodeOp::BinOpShiftRightS32, r0, r1, r2)->flags |= shiftFlags;
+        EMIT_INST3(context, ByteCodeOp::BinOpShiftRightS32, r0, r1, r2);
         return true;
     case NativeTypeKind::S64:
-        EMIT_INST3(context, ByteCodeOp::BinOpShiftRightS64, r0, r1, r2)->flags |= shiftFlags;
+        EMIT_INST3(context, ByteCodeOp::BinOpShiftRightS64, r0, r1, r2);
         return true;
 
     case NativeTypeKind::U8:
-        EMIT_INST3(context, ByteCodeOp::BinOpShiftRightU8, r0, r1, r2)->flags |= shiftFlags;
+        EMIT_INST3(context, ByteCodeOp::BinOpShiftRightU8, r0, r1, r2);
         return true;
     case NativeTypeKind::U16:
-        EMIT_INST3(context, ByteCodeOp::BinOpShiftRightU16, r0, r1, r2)->flags |= shiftFlags;
+        EMIT_INST3(context, ByteCodeOp::BinOpShiftRightU16, r0, r1, r2);
         return true;
     case NativeTypeKind::U32:
     case NativeTypeKind::Rune:
-        EMIT_INST3(context, ByteCodeOp::BinOpShiftRightU32, r0, r1, r2)->flags |= shiftFlags;
+        EMIT_INST3(context, ByteCodeOp::BinOpShiftRightU32, r0, r1, r2);
         return true;
     case NativeTypeKind::U64:
-        EMIT_INST3(context, ByteCodeOp::BinOpShiftRightU64, r0, r1, r2)->flags |= shiftFlags;
+        EMIT_INST3(context, ByteCodeOp::BinOpShiftRightU64, r0, r1, r2);
         return true;
     default:
         return Report::internalError(context->node, "emitShiftRight, type not supported");

@@ -17,12 +17,11 @@ const uint16_t BCI_VARIADIC      = 0x0040;
 const uint16_t BCI_POST_COPYMOVE = 0x0080;
 const uint16_t BCI_UNPURE        = 0x0100;
 const uint16_t BCI_TRYCATCH      = 0x0200;
-const uint16_t BCI_SHIFT_SMALL   = 0x0400;
+const uint16_t BCI_CAN_OVERFLOW  = 0x0400;
 const uint16_t BCI_START_STMT_N  = 0x0800;
 const uint16_t BCI_START_STMT_S  = 0x1000;
 const uint16_t BCI_START_STMT    = BCI_START_STMT_N | BCI_START_STMT_S;
 const uint16_t BCI_NO_BACKEND    = 0x2000;
-const uint16_t BCI_CAN_OVERFLOW  = 0x4000;
 
 const uint8_t BCID_OPT_FLAG  = 0x01;
 const uint8_t BCID_SAN_PASS  = 0x02;

@@ -30,7 +30,7 @@ struct ByteCodeRun
     void         callInternalCompilerError(ByteCodeRunContext* context, ByteCodeInstruction* ip, const char* msg);
     void         callInternalPanic(ByteCodeRunContext* context, ByteCodeInstruction* ip, const char* msg);
     static void* makeLambda(JobContext* context, AstFuncDecl* funcNode, ByteCode* bc);
-    static void  executeLeftShift(Register* rdest, const Register& rleft, const Register& rright, uint32_t numBits, bool isSigned, bool isSmall);
-    static void  executeRightShift(Register* rdest, const Register& rleft, const Register& rright, uint32_t numBits, bool isSigned, bool isSmall);
+    static void  executeLeftShift(Register* rdest, const Register& rleft, const Register& rright, uint32_t numBits, bool isSigned);
+    static void  executeRightShift(Register* rdest, const Register& rleft, const Register& rright, uint32_t numBits, bool isSigned);
     static bool  executeMathIntrinsic(JobContext* context, ByteCodeInstruction* ip, Register& ra, const Register& rb, const Register& rc, const Register& rd, bool runtime);
 };

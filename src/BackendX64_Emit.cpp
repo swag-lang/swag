@@ -61,7 +61,7 @@ void BackendX64::emitAddSubMul64(X64Gen& pp, ByteCodeInstruction* ip, uint64_t m
 
 void BackendX64::emitShiftArithmetic(X64Gen& pp, ByteCodeInstruction* ip, uint8_t numBits)
 {
-    if (!(ip->flags & BCI_IMM_A) && (ip->flags & BCI_IMM_B) && ip->b.u32 >= numBits && !(ip->flags & BCI_SHIFT_SMALL))
+    if (!(ip->flags & BCI_IMM_A) && (ip->flags & BCI_IMM_B) && ip->b.u32 >= numBits)
     {
         pp.emit_LoadN_Indirect(regOffset(ip->a.u32), RAX, RDI, numBits);
         switch (numBits)
@@ -133,22 +133,14 @@ void BackendX64::emitShiftArithmetic(X64Gen& pp, ByteCodeInstruction* ip, uint8_
         else
         {
             pp.emit_Load32_Indirect(regOffset(ip->b.u32), RCX);
-            if (ip->flags & BCI_SHIFT_SMALL)
-            {
-                pp.concat.addString2("\x80\xE1"); // and cl, ??
-                pp.concat.addU8(numBits - 1);
-            }
-            else
-            {
-                pp.concat.addString2("\x83\xF9"); // cmp ecx, ??
-                pp.concat.addU8(numBits);
-                pp.emit_NearJumpOp(JL);
-                pp.concat.addU8(0); // mov below
-                auto seekPtr = pp.concat.getSeekPtr() - 1;
-                auto seekJmp = pp.concat.totalCount();
-                pp.emit_Load8_Immediate(numBits - 1, RCX);
-                *seekPtr = (uint8_t) (pp.concat.totalCount() - seekJmp);
-            }
+            pp.concat.addString2("\x83\xF9"); // cmp ecx, ??
+            pp.concat.addU8(numBits);
+            pp.emit_NearJumpOp(JL);
+            pp.concat.addU8(0); // mov below
+            auto seekPtr = pp.concat.getSeekPtr() - 1;
+            auto seekJmp = pp.concat.totalCount();
+            pp.emit_Load8_Immediate(numBits - 1, RCX);
+            *seekPtr = (uint8_t) (pp.concat.totalCount() - seekJmp);
         }
 
         switch (numBits)
@@ -192,30 +184,19 @@ void BackendX64::emitShiftEqArithmetic(X64Gen& pp, ByteCodeInstruction* ip, uint
             break;
         }
 
-        if (ip->flags & BCI_SHIFT_SMALL)
-            pp.concat.addU8(ip->b.u8 & (numBits - 1));
-        else
-            pp.concat.addU8(min(ip->b.u8, numBits - 1));
+        pp.concat.addU8(min(ip->b.u8, numBits - 1));
     }
     else
     {
         pp.emit_Load32_Indirect(regOffset(ip->b.u32), RCX);
-        if (ip->flags & BCI_SHIFT_SMALL)
-        {
-            pp.concat.addString2("\x80\xE1"); // and cl, ??
-            pp.concat.addU8(numBits - 1);
-        }
-        else
-        {
-            pp.concat.addString2("\x83\xF9"); // cmp ecx, ??
-            pp.concat.addU8(numBits);
-            pp.emit_NearJumpOp(JL);
-            pp.concat.addU8(0); // move below
-            auto seekPtr = pp.concat.getSeekPtr() - 1;
-            auto seekJmp = pp.concat.totalCount();
-            pp.emit_Load8_Immediate(numBits - 1, RCX);
-            *seekPtr = (uint8_t) (pp.concat.totalCount() - seekJmp);
-        }
+        pp.concat.addString2("\x83\xF9"); // cmp ecx, ??
+        pp.concat.addU8(numBits);
+        pp.emit_NearJumpOp(JL);
+        pp.concat.addU8(0); // move below
+        auto seekPtr = pp.concat.getSeekPtr() - 1;
+        auto seekJmp = pp.concat.totalCount();
+        pp.emit_Load8_Immediate(numBits - 1, RCX);
+        *seekPtr = (uint8_t) (pp.concat.totalCount() - seekJmp);
 
         switch (numBits)
         {
@@ -237,7 +218,7 @@ void BackendX64::emitShiftEqArithmetic(X64Gen& pp, ByteCodeInstruction* ip, uint
 
 void BackendX64::emitShiftLogical(X64Gen& pp, ByteCodeInstruction* ip, uint8_t numBits, X64Op op)
 {
-    if (!(ip->flags & BCI_IMM_A) && (ip->flags & BCI_IMM_B) && ip->b.u32 >= numBits && !(ip->flags & BCI_SHIFT_SMALL))
+    if (!(ip->flags & BCI_IMM_A) && (ip->flags & BCI_IMM_B) && ip->b.u32 >= numBits)
     {
         pp.emit_ClearN(RAX, numBits);
     }
@@ -258,22 +239,14 @@ void BackendX64::emitShiftLogical(X64Gen& pp, ByteCodeInstruction* ip, uint8_t n
         else
         {
             pp.emit_Load32_Indirect(regOffset(ip->b.u32), RCX);
-            if (ip->flags & BCI_SHIFT_SMALL)
-            {
-                pp.concat.addString2("\x80\xE1"); // and cl, ??
-                pp.concat.addU8(numBits - 1);
-            }
-            else
-            {
-                pp.concat.addString2("\x83\xF9"); // cmp ecx, ?
-                pp.concat.addU8(numBits);
-                pp.emit_NearJumpOp(JL);
-                pp.concat.addU8(0); // clear below
-                auto seekPtr = pp.concat.getSeekPtr() - 1;
-                auto seekJmp = pp.concat.totalCount();
-                pp.emit_ClearN(RAX, numBits);
-                *seekPtr = (uint8_t) (pp.concat.totalCount() - seekJmp);
-            }
+            pp.concat.addString2("\x83\xF9"); // cmp ecx, ?
+            pp.concat.addU8(numBits);
+            pp.emit_NearJumpOp(JL);
+            pp.concat.addU8(0); // clear below
+            auto seekPtr = pp.concat.getSeekPtr() - 1;
+            auto seekJmp = pp.concat.totalCount();
+            pp.emit_ClearN(RAX, numBits);
+            *seekPtr = (uint8_t) (pp.concat.totalCount() - seekJmp);
         }
 
         switch (numBits)
@@ -301,7 +274,7 @@ void BackendX64::emitShiftLogical(X64Gen& pp, ByteCodeInstruction* ip, uint8_t n
 void BackendX64::emitShiftEqLogical(X64Gen& pp, ByteCodeInstruction* ip, uint8_t numBits, X64Op op)
 {
     pp.emit_Load64_Indirect(regOffset(ip->a.u32), RAX);
-    if (ip->flags & BCI_IMM_B && ip->b.u32 >= numBits && !(ip->flags & BCI_SHIFT_SMALL))
+    if (ip->flags & BCI_IMM_B && ip->b.u32 >= numBits)
     {
         pp.emit_ClearN(RCX, numBits);
         pp.emit_StoreN_Indirect(0, RCX, RAX, numBits);
@@ -325,31 +298,20 @@ void BackendX64::emitShiftEqLogical(X64Gen& pp, ByteCodeInstruction* ip, uint8_t
         }
 
         pp.concat.addU8((uint8_t) op);
-        if (ip->flags & BCI_SHIFT_SMALL)
-            pp.concat.addU8(ip->b.u8 & (numBits - 1));
-        else
-            pp.concat.addU8(ip->b.u8);
+        pp.concat.addU8(ip->b.u8);
     }
     else
     {
         pp.emit_Load32_Indirect(regOffset(ip->b.u32), RCX);
-        if (ip->flags & BCI_SHIFT_SMALL)
-        {
-            pp.concat.addString2("\x80\xE1"); // and cl, ??
-            pp.concat.addU8(numBits - 1);
-        }
-        else
-        {
-            pp.concat.addString2("\x83\xF9"); // cmp ecx, ??
-            pp.concat.addU8(numBits);
-            pp.emit_NearJumpOp(JL);
-            pp.concat.addU8(0); // clear + store below
-            auto seekPtr = pp.concat.getSeekPtr() - 1;
-            auto seekJmp = pp.concat.totalCount();
-            pp.emit_ClearN(RCX, numBits);
-            pp.emit_StoreN_Indirect(0, RCX, RAX, numBits);
-            *seekPtr = (uint8_t) (pp.concat.totalCount() - seekJmp);
-        }
+        pp.concat.addString2("\x83\xF9"); // cmp ecx, ??
+        pp.concat.addU8(numBits);
+        pp.emit_NearJumpOp(JL);
+        pp.concat.addU8(0); // clear + store below
+        auto seekPtr = pp.concat.getSeekPtr() - 1;
+        auto seekJmp = pp.concat.totalCount();
+        pp.emit_ClearN(RCX, numBits);
+        pp.emit_StoreN_Indirect(0, RCX, RAX, numBits);
+        *seekPtr = (uint8_t) (pp.concat.totalCount() - seekJmp);
 
         switch (numBits)
         {

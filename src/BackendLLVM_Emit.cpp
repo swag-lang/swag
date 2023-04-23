@@ -19,11 +19,11 @@ void BackendLLVM::emitShiftArithmetic(llvm::LLVMContext& context, llvm::IRBuilde
     auto shift = llvm::ConstantInt::get(iType, numBits - 1);
 
     // Smart shift, imm mode overflow
-    if ((ip->flags & BCI_IMM_B) && !(ip->flags & BCI_SHIFT_SMALL) && ip->b.u32 >= numBits)
+    if ((ip->flags & BCI_IMM_B) && ip->b.u32 >= numBits)
         c2 = shift;
 
     // Smart shift, dyn mode
-    else if (!(ip->flags & BCI_IMM_B) && !(ip->flags & BCI_SHIFT_SMALL))
+    else if (!(ip->flags & BCI_IMM_B))
     {
         auto cond    = builder.CreateICmpULT(r2, builder.getInt32(numBits));
         auto iftrue  = c2;
@@ -47,7 +47,7 @@ void BackendLLVM::emitShiftLogical(llvm::LLVMContext& context, llvm::IRBuilder<>
     auto zero  = llvm::ConstantInt::get(iType, 0);
 
     // Smart shift, imm mode overflow
-    if ((ip->flags & BCI_IMM_B) && !(ip->flags & BCI_SHIFT_SMALL) && ip->b.u32 >= numBits)
+    if ((ip->flags & BCI_IMM_B) && ip->b.u32 >= numBits)
         builder.CreateStore(zero, r0);
     else
     {
@@ -61,7 +61,7 @@ void BackendLLVM::emitShiftLogical(llvm::LLVMContext& context, llvm::IRBuilder<>
         auto c2 = builder.CreateIntCast(r2, iType, false);
 
         // Smart shift, dyn mode
-        if (!(ip->flags & BCI_IMM_B) && !(ip->flags & BCI_SHIFT_SMALL))
+        if (!(ip->flags & BCI_IMM_B))
         {
             auto cond    = builder.CreateICmpULT(r2, builder.getInt32(numBits));
             auto iftrue  = left ? builder.CreateShl(r1, c2) : builder.CreateLShr(r1, c2);
@@ -95,11 +95,11 @@ void BackendLLVM::emitShiftEqArithmetic(llvm::LLVMContext& context, llvm::IRBuil
     auto shift = llvm::ConstantInt::get(iType, numBits - 1);
 
     // Smart shift, imm mode overflow
-    if ((ip->flags & BCI_IMM_B) && !(ip->flags & BCI_SHIFT_SMALL) && ip->b.u32 >= numBits)
+    if ((ip->flags & BCI_IMM_B) && ip->b.u32 >= numBits)
         c2 = shift;
 
     // Smart shift, dyn mode
-    else if (!(ip->flags & BCI_IMM_B) && !(ip->flags & BCI_SHIFT_SMALL))
+    else if (!(ip->flags & BCI_IMM_B))
     {
         auto cond    = builder.CreateICmpULT(r2, builder.getInt32(numBits));
         auto iftrue  = c2;
@@ -134,11 +134,11 @@ void BackendLLVM::emitShiftEqLogical(llvm::LLVMContext& context, llvm::IRBuilder
     llvm::Value* v0;
 
     // Smart shift, imm mode overflow
-    if ((ip->flags & BCI_IMM_B) && !(ip->flags & BCI_SHIFT_SMALL) && ip->b.u32 >= numBits)
+    if ((ip->flags & BCI_IMM_B) && ip->b.u32 >= numBits)
         v0 = zero;
 
     // Smart shift, dyn mode
-    else if (!(ip->flags & BCI_IMM_B) && !(ip->flags & BCI_SHIFT_SMALL))
+    else if (!(ip->flags & BCI_IMM_B))
     {
         auto cond    = builder.CreateICmpULT(r2, builder.getInt32(numBits));
         auto iftrue  = left ? builder.CreateShl(v1, c2) : builder.CreateLShr(v1, c2);

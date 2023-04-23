@@ -593,37 +593,32 @@ bool ByteCodeGenJob::emitAffectShiftLeftEqual(ByteCodeGenContext* context, uint3
 
     emitSafetyLeftShiftEq(context, r0, r1, leftTypeInfo);
 
-    auto     opNode     = CastAst<AstOp>(context->node, AstNodeKind::AffectOp);
-    uint16_t shiftFlags = 0;
-    if (opNode->specFlags & AstOp::SPECFLAG_SMALL)
-        shiftFlags |= BCI_SHIFT_SMALL;
-
     switch (leftTypeInfo->nativeType)
     {
     case NativeTypeKind::S8:
-        EMIT_INST2(context, ByteCodeOp::AffectOpShiftLeftEqS8, r0, r1)->flags |= shiftFlags;
+        EMIT_INST2(context, ByteCodeOp::AffectOpShiftLeftEqS8, r0, r1);
         return true;
     case NativeTypeKind::U8:
-        EMIT_INST2(context, ByteCodeOp::AffectOpShiftLeftEqU8, r0, r1)->flags |= shiftFlags;
+        EMIT_INST2(context, ByteCodeOp::AffectOpShiftLeftEqU8, r0, r1);
         return true;
     case NativeTypeKind::S16:
-        EMIT_INST2(context, ByteCodeOp::AffectOpShiftLeftEqS16, r0, r1)->flags |= shiftFlags;
+        EMIT_INST2(context, ByteCodeOp::AffectOpShiftLeftEqS16, r0, r1);
         return true;
     case NativeTypeKind::U16:
-        EMIT_INST2(context, ByteCodeOp::AffectOpShiftLeftEqU16, r0, r1)->flags |= shiftFlags;
+        EMIT_INST2(context, ByteCodeOp::AffectOpShiftLeftEqU16, r0, r1);
         return true;
     case NativeTypeKind::S32:
-        EMIT_INST2(context, ByteCodeOp::AffectOpShiftLeftEqS32, r0, r1)->flags |= shiftFlags;
+        EMIT_INST2(context, ByteCodeOp::AffectOpShiftLeftEqS32, r0, r1);
         return true;
     case NativeTypeKind::U32:
     case NativeTypeKind::Rune:
-        EMIT_INST2(context, ByteCodeOp::AffectOpShiftLeftEqU32, r0, r1)->flags |= shiftFlags;
+        EMIT_INST2(context, ByteCodeOp::AffectOpShiftLeftEqU32, r0, r1);
         return true;
     case NativeTypeKind::S64:
-        EMIT_INST2(context, ByteCodeOp::AffectOpShiftLeftEqS64, r0, r1)->flags |= shiftFlags;
+        EMIT_INST2(context, ByteCodeOp::AffectOpShiftLeftEqS64, r0, r1);
         return true;
     case NativeTypeKind::U64:
-        EMIT_INST2(context, ByteCodeOp::AffectOpShiftLeftEqU64, r0, r1)->flags |= shiftFlags;
+        EMIT_INST2(context, ByteCodeOp::AffectOpShiftLeftEqU64, r0, r1);
         return true;
     default:
         return Report::internalError(context->node, "emitAffectShiftLeftEqual, type not supported");
@@ -644,38 +639,33 @@ bool ByteCodeGenJob::emitAffectShiftRightEqual(ByteCodeGenContext* context, uint
 
     emitSafetyRightShiftEq(context, r0, r1, leftTypeInfo);
 
-    auto     opNode     = CastAst<AstOp>(context->node, AstNodeKind::AffectOp);
-    uint16_t shiftFlags = 0;
-    if (opNode->specFlags & AstOp::SPECFLAG_SMALL)
-        shiftFlags |= BCI_SHIFT_SMALL;
-
     switch (leftTypeInfo->nativeType)
     {
     case NativeTypeKind::S8:
-        EMIT_INST2(context, ByteCodeOp::AffectOpShiftRightEqS8, r0, r1)->flags |= shiftFlags;
+        EMIT_INST2(context, ByteCodeOp::AffectOpShiftRightEqS8, r0, r1);
         return true;
     case NativeTypeKind::S16:
-        EMIT_INST2(context, ByteCodeOp::AffectOpShiftRightEqS16, r0, r1)->flags |= shiftFlags;
+        EMIT_INST2(context, ByteCodeOp::AffectOpShiftRightEqS16, r0, r1);
         return true;
     case NativeTypeKind::S32:
-        EMIT_INST2(context, ByteCodeOp::AffectOpShiftRightEqS32, r0, r1)->flags |= shiftFlags;
+        EMIT_INST2(context, ByteCodeOp::AffectOpShiftRightEqS32, r0, r1);
         return true;
     case NativeTypeKind::S64:
-        EMIT_INST2(context, ByteCodeOp::AffectOpShiftRightEqS64, r0, r1)->flags |= shiftFlags;
+        EMIT_INST2(context, ByteCodeOp::AffectOpShiftRightEqS64, r0, r1);
         return true;
 
     case NativeTypeKind::U8:
-        EMIT_INST2(context, ByteCodeOp::AffectOpShiftRightEqU8, r0, r1)->flags |= shiftFlags;
+        EMIT_INST2(context, ByteCodeOp::AffectOpShiftRightEqU8, r0, r1);
         return true;
     case NativeTypeKind::U16:
-        EMIT_INST2(context, ByteCodeOp::AffectOpShiftRightEqU16, r0, r1)->flags |= shiftFlags;
+        EMIT_INST2(context, ByteCodeOp::AffectOpShiftRightEqU16, r0, r1);
         return true;
     case NativeTypeKind::U32:
     case NativeTypeKind::Rune:
-        EMIT_INST2(context, ByteCodeOp::AffectOpShiftRightEqU32, r0, r1)->flags |= shiftFlags;
+        EMIT_INST2(context, ByteCodeOp::AffectOpShiftRightEqU32, r0, r1);
         return true;
     case NativeTypeKind::U64:
-        EMIT_INST2(context, ByteCodeOp::AffectOpShiftRightEqU64, r0, r1)->flags |= shiftFlags;
+        EMIT_INST2(context, ByteCodeOp::AffectOpShiftRightEqU64, r0, r1);
         return true;
     default:
         return Report::internalError(context->node, "emitAffectShiftRightEqual, type not supported");

@@ -1953,8 +1953,6 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
         concat.addString(node->token.text);
         if (opNode->specFlags & AstOp::SPECFLAG_OVERFLOW)
             CONCAT_FIXED_STR(concat, ",over");
-        if (opNode->specFlags & AstOp::SPECFLAG_SMALL)
-            CONCAT_FIXED_STR(concat, ",small");
         concat.addChar(' ');
         SWAG_CHECK(outputNode(context, concat, node->childs[1]));
         break;
@@ -1969,8 +1967,6 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
         concat.addString(node->token.text);
         if (opNode->specFlags & AstOp::SPECFLAG_OVERFLOW)
             CONCAT_FIXED_STR(concat, ",over");
-        if (opNode->specFlags & AstOp::SPECFLAG_SMALL)
-            CONCAT_FIXED_STR(concat, ",small");
         concat.addChar(' ');
         SWAG_CHECK(outputNode(context, concat, node->childs[1]));
         concat.addChar(')');

@@ -747,25 +747,6 @@ bool Parser::doModifiers(Token& forNode, TokenId tokenId, uint32_t& mdfFlags)
             continue;
         }
 
-        if (token.text == g_LangSpec->name_small)
-        {
-            switch (opId)
-            {
-            case TokenId::SymLowerLower:
-            case TokenId::SymGreaterGreater:
-            case TokenId::SymLowerLowerEqual:
-            case TokenId::SymGreaterGreaterEqual:
-                break;
-            default:
-                return error(token, Fmt(Err(Syn0126), forNode.ctext()));
-            }
-
-            SWAG_VERIFY(!(mdfFlags & MODIFIER_SMALL), error(token, Fmt(Err(Syn0125), token.ctext())));
-            mdfFlags |= MODIFIER_SMALL;
-            SWAG_CHECK(eatToken());
-            continue;
-        }
-
         if (token.text == g_LangSpec->name_nodrop)
         {
             switch (opId)
@@ -876,11 +857,6 @@ bool Parser::doFactorExpression(AstNode** parent, uint32_t exprFlags, AstNode** 
         {
             binaryNode->specFlags |= AstOp::SPECFLAG_OVERFLOW;
             binaryNode->attributeFlags |= ATTRIBUTE_CAN_OVERFLOW_ON;
-        }
-
-        if (mdfFlags & MODIFIER_SMALL)
-        {
-            binaryNode->specFlags |= AstOp::SPECFLAG_SMALL;
         }
 
         if (mdfFlags & MODIFIER_UP)
@@ -1449,11 +1425,6 @@ bool Parser::doAffectExpression(AstNode* parent, AstNode** result, AstWith* with
         {
             opFlags |= AstOp::SPECFLAG_OVERFLOW;
             opAttrFlags |= ATTRIBUTE_CAN_OVERFLOW_ON;
-        }
-
-        if (mdfFlags & MODIFIER_SMALL)
-        {
-            opFlags |= AstOp::SPECFLAG_SMALL;
         }
 
         // Multiple affectation

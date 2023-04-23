@@ -148,7 +148,6 @@ void LanguageSpec::setupNames()
 
     name_up      = "up";
     name_over    = "over";
-    name_small   = "small";
     name_nodrop  = "nodrop";
     name_move    = "move";
     name_moveraw = "moveraw";

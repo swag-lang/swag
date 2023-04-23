@@ -364,132 +364,132 @@ bool ByteCodeOptimizer::optimizePassConst(ByteCodeOptContext* context)
                 break;
 
             case ByteCodeOp::BinOpShiftLeftS8:
-                if (leftShiftWillOverflow<int8_t, true>(ip, ip->node, ip->a.s8, ip->b.u32, ip->flags & BCI_SHIFT_SMALL))
+                if (leftShiftWillOverflow<int8_t, true>(ip, ip->node, ip->a.s8, ip->b.u32))
                     return context->report({node, ByteCodeGenJob::safetyMsg(SafetyMsg::ShiftLeft, g_TypeMgr->typeInfoS8)});
                 SET_OP(ip, ByteCodeOp::SetImmediate32);
-                ByteCodeRun::executeLeftShift(&ip->b, ip->a, ip->b, 8, true, ip->flags & BCI_SHIFT_SMALL);
+                ByteCodeRun::executeLeftShift(&ip->b, ip->a, ip->b, 8, true);
                 ip->a.u32 = ip->c.u32;
                 OK();
                 break;
             case ByteCodeOp::BinOpShiftLeftS16:
-                if (leftShiftWillOverflow<int16_t, true>(ip, ip->node, ip->a.s16, ip->b.u32, ip->flags & BCI_SHIFT_SMALL))
+                if (leftShiftWillOverflow<int16_t, true>(ip, ip->node, ip->a.s16, ip->b.u32))
                     return context->report({node, ByteCodeGenJob::safetyMsg(SafetyMsg::ShiftLeft, g_TypeMgr->typeInfoS16)});
                 SET_OP(ip, ByteCodeOp::SetImmediate32);
-                ByteCodeRun::executeLeftShift(&ip->b, ip->a, ip->b, 16, true, ip->flags & BCI_SHIFT_SMALL);
+                ByteCodeRun::executeLeftShift(&ip->b, ip->a, ip->b, 16, true);
                 ip->a.u32 = ip->c.u32;
                 OK();
                 break;
             case ByteCodeOp::BinOpShiftLeftS32:
-                if (leftShiftWillOverflow<int32_t, true>(ip, ip->node, ip->a.s32, ip->b.u32, ip->flags & BCI_SHIFT_SMALL))
+                if (leftShiftWillOverflow<int32_t, true>(ip, ip->node, ip->a.s32, ip->b.u32))
                     return context->report({node, ByteCodeGenJob::safetyMsg(SafetyMsg::ShiftLeft, g_TypeMgr->typeInfoS32)});
                 SET_OP(ip, ByteCodeOp::SetImmediate32);
-                ByteCodeRun::executeLeftShift(&ip->b, ip->a, ip->b, 32, true, ip->flags & BCI_SHIFT_SMALL);
+                ByteCodeRun::executeLeftShift(&ip->b, ip->a, ip->b, 32, true);
                 ip->a.u32 = ip->c.u32;
                 OK();
                 break;
             case ByteCodeOp::BinOpShiftLeftS64:
-                if (leftShiftWillOverflow<int64_t, true>(ip, ip->node, ip->a.s64, ip->b.u32, ip->flags & BCI_SHIFT_SMALL))
+                if (leftShiftWillOverflow<int64_t, true>(ip, ip->node, ip->a.s64, ip->b.u32))
                     return context->report({node, ByteCodeGenJob::safetyMsg(SafetyMsg::ShiftLeft, g_TypeMgr->typeInfoS64)});
                 SET_OP(ip, ByteCodeOp::SetImmediate64);
-                ByteCodeRun::executeLeftShift(&ip->b, ip->a, ip->b, 64, true, ip->flags & BCI_SHIFT_SMALL);
+                ByteCodeRun::executeLeftShift(&ip->b, ip->a, ip->b, 64, true);
                 ip->a.u32 = ip->c.u32;
                 OK();
                 break;
             case ByteCodeOp::BinOpShiftLeftU8:
-                if (leftShiftWillOverflow<uint8_t, false>(ip, ip->node, ip->a.u8, ip->b.u32, ip->flags & BCI_SHIFT_SMALL))
+                if (leftShiftWillOverflow<uint8_t, false>(ip, ip->node, ip->a.u8, ip->b.u32))
                     return context->report({node, ByteCodeGenJob::safetyMsg(SafetyMsg::ShiftLeft, g_TypeMgr->typeInfoU8)});
                 SET_OP(ip, ByteCodeOp::SetImmediate32);
-                ByteCodeRun::executeLeftShift(&ip->b, ip->a, ip->b, 8, false, ip->flags & BCI_SHIFT_SMALL);
+                ByteCodeRun::executeLeftShift(&ip->b, ip->a, ip->b, 8, false);
                 ip->a.u32 = ip->c.u32;
                 OK();
                 break;
             case ByteCodeOp::BinOpShiftLeftU16:
-                if (leftShiftWillOverflow<uint16_t, false>(ip, ip->node, ip->a.u16, ip->b.u32, ip->flags & BCI_SHIFT_SMALL))
+                if (leftShiftWillOverflow<uint16_t, false>(ip, ip->node, ip->a.u16, ip->b.u32))
                     return context->report({node, ByteCodeGenJob::safetyMsg(SafetyMsg::ShiftLeft, g_TypeMgr->typeInfoU16)});
                 SET_OP(ip, ByteCodeOp::SetImmediate32);
-                ByteCodeRun::executeLeftShift(&ip->b, ip->a, ip->b, 16, false, ip->flags & BCI_SHIFT_SMALL);
+                ByteCodeRun::executeLeftShift(&ip->b, ip->a, ip->b, 16, false);
                 ip->a.u32 = ip->c.u32;
                 OK();
                 break;
             case ByteCodeOp::BinOpShiftLeftU32:
-                if (leftShiftWillOverflow<uint32_t, false>(ip, ip->node, ip->a.u32, ip->b.u32, ip->flags & BCI_SHIFT_SMALL))
+                if (leftShiftWillOverflow<uint32_t, false>(ip, ip->node, ip->a.u32, ip->b.u32))
                     return context->report({node, ByteCodeGenJob::safetyMsg(SafetyMsg::ShiftLeft, g_TypeMgr->typeInfoU32)});
                 SET_OP(ip, ByteCodeOp::SetImmediate32);
-                ByteCodeRun::executeLeftShift(&ip->b, ip->a, ip->b, 32, false, ip->flags & BCI_SHIFT_SMALL);
+                ByteCodeRun::executeLeftShift(&ip->b, ip->a, ip->b, 32, false);
                 ip->a.u32 = ip->c.u32;
                 OK();
                 break;
             case ByteCodeOp::BinOpShiftLeftU64:
-                if (leftShiftWillOverflow<uint64_t, false>(ip, ip->node, ip->a.u64, ip->b.u32, ip->flags & BCI_SHIFT_SMALL))
+                if (leftShiftWillOverflow<uint64_t, false>(ip, ip->node, ip->a.u64, ip->b.u32))
                     return context->report({node, ByteCodeGenJob::safetyMsg(SafetyMsg::ShiftLeft, g_TypeMgr->typeInfoU64)});
                 SET_OP(ip, ByteCodeOp::SetImmediate64);
-                ByteCodeRun::executeLeftShift(&ip->b, ip->a, ip->b, 64, false, ip->flags & BCI_SHIFT_SMALL);
+                ByteCodeRun::executeLeftShift(&ip->b, ip->a, ip->b, 64, false);
                 ip->a.u32 = ip->c.u32;
                 OK();
                 break;
 
             case ByteCodeOp::BinOpShiftRightS8:
-                if (rightShiftWillOverflow<int8_t, true>(ip, ip->node, ip->a.s8, ip->b.u32, ip->flags & BCI_SHIFT_SMALL))
+                if (rightShiftWillOverflow<int8_t, true>(ip, ip->node, ip->a.s8, ip->b.u32))
                     return context->report({node, ByteCodeGenJob::safetyMsg(SafetyMsg::ShiftLeft, g_TypeMgr->typeInfoS8)});
                 SET_OP(ip, ByteCodeOp::SetImmediate32);
-                ByteCodeRun::executeRightShift(&ip->b, ip->a, ip->b, 8, true, ip->flags & BCI_SHIFT_SMALL);
+                ByteCodeRun::executeRightShift(&ip->b, ip->a, ip->b, 8, true);
                 ip->a.u32 = ip->c.u32;
                 OK();
                 break;
             case ByteCodeOp::BinOpShiftRightS16:
-                if (rightShiftWillOverflow<int16_t, true>(ip, ip->node, ip->a.s16, ip->b.u32, ip->flags & BCI_SHIFT_SMALL))
+                if (rightShiftWillOverflow<int16_t, true>(ip, ip->node, ip->a.s16, ip->b.u32))
                     return context->report({node, ByteCodeGenJob::safetyMsg(SafetyMsg::ShiftLeft, g_TypeMgr->typeInfoS16)});
                 SET_OP(ip, ByteCodeOp::SetImmediate32);
-                ByteCodeRun::executeRightShift(&ip->b, ip->a, ip->b, 16, true, ip->flags & BCI_SHIFT_SMALL);
+                ByteCodeRun::executeRightShift(&ip->b, ip->a, ip->b, 16, true);
                 ip->a.u32 = ip->c.u32;
                 OK();
                 break;
             case ByteCodeOp::BinOpShiftRightS32:
-                if (rightShiftWillOverflow<int32_t, true>(ip, ip->node, ip->a.s32, ip->b.u32, ip->flags & BCI_SHIFT_SMALL))
+                if (rightShiftWillOverflow<int32_t, true>(ip, ip->node, ip->a.s32, ip->b.u32))
                     return context->report({node, ByteCodeGenJob::safetyMsg(SafetyMsg::ShiftLeft, g_TypeMgr->typeInfoS32)});
                 SET_OP(ip, ByteCodeOp::SetImmediate32);
-                ByteCodeRun::executeRightShift(&ip->b, ip->a, ip->b, 32, true, ip->flags & BCI_SHIFT_SMALL);
+                ByteCodeRun::executeRightShift(&ip->b, ip->a, ip->b, 32, true);
                 ip->a.u32 = ip->c.u32;
                 OK();
                 break;
             case ByteCodeOp::BinOpShiftRightS64:
-                if (rightShiftWillOverflow<int64_t, true>(ip, ip->node, ip->a.s64, ip->b.u32, ip->flags & BCI_SHIFT_SMALL))
+                if (rightShiftWillOverflow<int64_t, true>(ip, ip->node, ip->a.s64, ip->b.u32))
                     return context->report({node, ByteCodeGenJob::safetyMsg(SafetyMsg::ShiftLeft, g_TypeMgr->typeInfoS64)});
                 SET_OP(ip, ByteCodeOp::SetImmediate64);
-                ByteCodeRun::executeRightShift(&ip->b, ip->a, ip->b, 64, true, ip->flags & BCI_SHIFT_SMALL);
+                ByteCodeRun::executeRightShift(&ip->b, ip->a, ip->b, 64, true);
                 ip->a.u32 = ip->c.u32;
                 OK();
                 break;
 
             case ByteCodeOp::BinOpShiftRightU8:
-                if (rightShiftWillOverflow<uint8_t, false>(ip, ip->node, ip->a.u8, ip->b.u32, ip->flags & BCI_SHIFT_SMALL))
+                if (rightShiftWillOverflow<uint8_t, false>(ip, ip->node, ip->a.u8, ip->b.u32))
                     return context->report({node, ByteCodeGenJob::safetyMsg(SafetyMsg::ShiftLeft, g_TypeMgr->typeInfoU8)});
                 SET_OP(ip, ByteCodeOp::SetImmediate32);
-                ByteCodeRun::executeRightShift(&ip->b, ip->a, ip->b, 8, false, ip->flags & BCI_SHIFT_SMALL);
+                ByteCodeRun::executeRightShift(&ip->b, ip->a, ip->b, 8, false);
                 ip->a.u32 = ip->c.u32;
                 OK();
                 break;
             case ByteCodeOp::BinOpShiftRightU16:
-                if (rightShiftWillOverflow<uint16_t, false>(ip, ip->node, ip->a.u16, ip->b.u32, ip->flags & BCI_SHIFT_SMALL))
+                if (rightShiftWillOverflow<uint16_t, false>(ip, ip->node, ip->a.u16, ip->b.u32))
                     return context->report({node, ByteCodeGenJob::safetyMsg(SafetyMsg::ShiftLeft, g_TypeMgr->typeInfoU16)});
                 SET_OP(ip, ByteCodeOp::SetImmediate32);
-                ByteCodeRun::executeRightShift(&ip->b, ip->a, ip->b, 16, false, ip->flags & BCI_SHIFT_SMALL);
+                ByteCodeRun::executeRightShift(&ip->b, ip->a, ip->b, 16, false);
                 ip->a.u32 = ip->c.u32;
                 OK();
                 break;
             case ByteCodeOp::BinOpShiftRightU32:
-                if (rightShiftWillOverflow<uint32_t, false>(ip, ip->node, ip->a.u32, ip->b.u32, ip->flags & BCI_SHIFT_SMALL))
+                if (rightShiftWillOverflow<uint32_t, false>(ip, ip->node, ip->a.u32, ip->b.u32))
                     return context->report({node, ByteCodeGenJob::safetyMsg(SafetyMsg::ShiftLeft, g_TypeMgr->typeInfoU32)});
                 SET_OP(ip, ByteCodeOp::SetImmediate32);
-                ByteCodeRun::executeRightShift(&ip->b, ip->a, ip->b, 32, false, ip->flags & BCI_SHIFT_SMALL);
+                ByteCodeRun::executeRightShift(&ip->b, ip->a, ip->b, 32, false);
                 ip->a.u32 = ip->c.u32;
                 OK();
                 break;
             case ByteCodeOp::BinOpShiftRightU64:
-                if (rightShiftWillOverflow<uint64_t, false>(ip, ip->node, ip->a.u64, ip->b.u32, ip->flags & BCI_SHIFT_SMALL))
+                if (rightShiftWillOverflow<uint64_t, false>(ip, ip->node, ip->a.u64, ip->b.u32))
                     return context->report({node, ByteCodeGenJob::safetyMsg(SafetyMsg::ShiftLeft, g_TypeMgr->typeInfoU64)});
                 SET_OP(ip, ByteCodeOp::SetImmediate64);
-                ByteCodeRun::executeRightShift(&ip->b, ip->a, ip->b, 64, false, ip->flags & BCI_SHIFT_SMALL);
+                ByteCodeRun::executeRightShift(&ip->b, ip->a, ip->b, 64, false);
                 ip->a.u32 = ip->c.u32;
                 OK();
                 break;
