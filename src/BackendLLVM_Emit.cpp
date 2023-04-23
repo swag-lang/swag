@@ -31,10 +31,6 @@ void BackendLLVM::emitShiftRightArithmetic(llvm::LLVMContext& context, llvm::IRB
         c2           = builder.CreateSelect(cond, iftrue, iffalse);
     }
 
-    // Small shift, dyn mode, we mask the operand
-    else if (!(ip->flags & BCI_IMM_B))
-        c2 = builder.CreateAnd(c2, llvm::ConstantInt::get(iType, numBits - 1));
-
     auto v0 = builder.CreateAShr(r1, c2);
     auto r0 = GEP64_PTR_IX(allocR, ip->c.u32, numBits);
     builder.CreateStore(v0, r0);
@@ -106,10 +102,6 @@ void BackendLLVM::emitShiftRightEqArithmetic(llvm::LLVMContext& context, llvm::I
         auto iffalse = shift;
         c2           = builder.CreateSelect(cond, iftrue, iffalse);
     }
-
-    // Small shift, dyn mode, we mask the operand
-    else if (!(ip->flags & BCI_IMM_B))
-        c2 = builder.CreateAnd(c2, llvm::ConstantInt::get(iType, numBits - 1));
 
     auto r1 = builder.CreateLoad(PTR_IX_TY(numBits), r0);
     auto v0 = builder.CreateAShr(builder.CreateLoad(IX_TY(numBits), r1), c2);

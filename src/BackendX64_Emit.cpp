@@ -4,17 +4,12 @@
 #include "LanguageSpec.h"
 #include "Math.h"
 
-void BackendX64::emitShiftRightArithmetic(X64Gen& pp, ByteCodeInstruction* ip, uint8_t numBits)
+void BackendX64::emitShiftRightArithmetic(X64Gen& pp, ByteCodeInstruction* ip, uint32_t numBits)
 {
-    if (!(ip->flags & BCI_IMM_A) && (ip->flags & BCI_IMM_B) && ip->b.u32 >= numBits)
+    if (!(ip->flags & BCI_IMM_A) && (ip->flags & BCI_IMM_B))
     {
         pp.emit_LoadN_Indirect(regOffset(ip->a.u32), RAX, RDI, numBits);
-        pp.emit_ShiftN_Immediate(RAX, numBits - 1, numBits, X64Op::SAR);
-    }
-    else if (!(ip->flags & BCI_IMM_A) && (ip->flags & BCI_IMM_B))
-    {
-        pp.emit_LoadN_Indirect(regOffset(ip->a.u32), RAX, RDI, numBits);
-        pp.emit_ShiftN_Immediate(RAX, ip->b.u8, numBits, X64Op::SAR);
+        pp.emit_ShiftN_Immediate(RAX, min(ip->b.u32, numBits - 1), numBits, X64Op::SAR);
     }
     else
     {
@@ -23,17 +18,17 @@ void BackendX64::emitShiftRightArithmetic(X64Gen& pp, ByteCodeInstruction* ip, u
         else
             pp.emit_LoadN_Indirect(regOffset(ip->a.u32), RAX, RDI, numBits);
         if (ip->flags & BCI_IMM_B)
-            pp.emit_Load8_Immediate(ip->b.u8 & (numBits - 1), RCX);
+            pp.emit_Load8_Immediate((uint8_t) min(ip->b.u32, numBits - 1), RCX);
         else
         {
             pp.emit_Load32_Indirect(regOffset(ip->b.u32), RCX);
             pp.concat.addString2("\x83\xF9"); // cmp ecx, ??
-            pp.concat.addU8(numBits);
+            pp.concat.addU8((uint8_t) numBits);
             pp.emit_NearJumpOp(JL);
             pp.concat.addU8(0); // mov below
             auto seekPtr = pp.concat.getSeekPtr() - 1;
             auto seekJmp = pp.concat.totalCount();
-            pp.emit_Load8_Immediate(numBits - 1, RCX);
+            pp.emit_Load8_Immediate((uint8_t) numBits - 1, RCX);
             *seekPtr = (uint8_t) (pp.concat.totalCount() - seekJmp);
         }
 
@@ -57,7 +52,7 @@ void BackendX64::emitShiftRightArithmetic(X64Gen& pp, ByteCodeInstruction* ip, u
     pp.emit_StoreN_Indirect(regOffset(ip->c.u32), RAX, RDI, numBits);
 }
 
-void BackendX64::emitShiftRightEqArithmetic(X64Gen& pp, ByteCodeInstruction* ip, uint8_t numBits)
+void BackendX64::emitShiftRightEqArithmetic(X64Gen& pp, ByteCodeInstruction* ip, uint32_t numBits)
 {
     pp.emit_Load64_Indirect(regOffset(ip->a.u32), RAX);
     if (ip->flags & BCI_IMM_B)
@@ -78,18 +73,18 @@ void BackendX64::emitShiftRightEqArithmetic(X64Gen& pp, ByteCodeInstruction* ip,
             break;
         }
 
-        pp.concat.addU8(min(ip->b.u8, numBits - 1));
+        pp.concat.addU8((uint8_t) min(ip->b.u32, numBits - 1));
     }
     else
     {
         pp.emit_Load32_Indirect(regOffset(ip->b.u32), RCX);
         pp.concat.addString2("\x83\xF9"); // cmp ecx, ??
-        pp.concat.addU8(numBits);
+        pp.concat.addU8((uint8_t) numBits);
         pp.emit_NearJumpOp(JL);
         pp.concat.addU8(0); // move below
         auto seekPtr = pp.concat.getSeekPtr() - 1;
         auto seekJmp = pp.concat.totalCount();
-        pp.emit_Load8_Immediate(numBits - 1, RCX);
+        pp.emit_Load8_Immediate((uint8_t) numBits - 1, RCX);
         *seekPtr = (uint8_t) (pp.concat.totalCount() - seekJmp);
 
         switch (numBits)
@@ -110,16 +105,12 @@ void BackendX64::emitShiftRightEqArithmetic(X64Gen& pp, ByteCodeInstruction* ip,
     }
 }
 
-void BackendX64::emitShiftLogical(X64Gen& pp, ByteCodeInstruction* ip, uint8_t numBits, X64Op op)
+void BackendX64::emitShiftLogical(X64Gen& pp, ByteCodeInstruction* ip, uint32_t numBits, X64Op op)
 {
-    if (!(ip->flags & BCI_IMM_A) && (ip->flags & BCI_IMM_B) && ip->b.u32 >= numBits)
-    {
-        pp.emit_ClearN(RAX, numBits);
-    }
-    else if (!(ip->flags & BCI_IMM_A) && (ip->flags & BCI_IMM_B))
+    if (!(ip->flags & BCI_IMM_A) && (ip->flags & BCI_IMM_B))
     {
         pp.emit_LoadN_Indirect(regOffset(ip->a.u32), RAX, RDI, numBits);
-        pp.emit_ShiftN_Immediate(RAX, ip->b.u8, numBits, op);
+        pp.emit_ShiftN_Immediate(RAX, (uint8_t) min(ip->b.u32, numBits - 1), numBits, op);
     }
     else
     {
@@ -129,12 +120,12 @@ void BackendX64::emitShiftLogical(X64Gen& pp, ByteCodeInstruction* ip, uint8_t n
             pp.emit_LoadN_Indirect(regOffset(ip->a.u32), RAX, RDI, numBits);
 
         if (ip->flags & BCI_IMM_B)
-            pp.emit_Load8_Immediate(ip->b.u8 & (numBits - 1), RCX);
+            pp.emit_Load8_Immediate((uint8_t) min(ip->b.u32, numBits - 1), RCX);
         else
         {
             pp.emit_Load32_Indirect(regOffset(ip->b.u32), RCX);
             pp.concat.addString2("\x83\xF9"); // cmp ecx, ?
-            pp.concat.addU8(numBits);
+            pp.concat.addU8((uint8_t) numBits);
             pp.emit_NearJumpOp(JL);
             pp.concat.addU8(0); // clear below
             auto seekPtr = pp.concat.getSeekPtr() - 1;
@@ -165,15 +156,10 @@ void BackendX64::emitShiftLogical(X64Gen& pp, ByteCodeInstruction* ip, uint8_t n
     pp.emit_StoreN_Indirect(regOffset(ip->c.u32), RAX, RDI, numBits);
 }
 
-void BackendX64::emitShiftEqLogical(X64Gen& pp, ByteCodeInstruction* ip, uint8_t numBits, X64Op op)
+void BackendX64::emitShiftEqLogical(X64Gen& pp, ByteCodeInstruction* ip, uint32_t numBits, X64Op op)
 {
     pp.emit_Load64_Indirect(regOffset(ip->a.u32), RAX);
-    if (ip->flags & BCI_IMM_B && ip->b.u32 >= numBits)
-    {
-        pp.emit_ClearN(RCX, numBits);
-        pp.emit_StoreN_Indirect(0, RCX, RAX, numBits);
-    }
-    else if (ip->flags & BCI_IMM_B)
+    if (ip->flags & BCI_IMM_B)
     {
         switch (numBits)
         {
@@ -192,13 +178,13 @@ void BackendX64::emitShiftEqLogical(X64Gen& pp, ByteCodeInstruction* ip, uint8_t
         }
 
         pp.concat.addU8((uint8_t) op);
-        pp.concat.addU8(ip->b.u8);
+        pp.concat.addU8((uint8_t) min(ip->b.u32, numBits - 1));
     }
     else
     {
         pp.emit_Load32_Indirect(regOffset(ip->b.u32), RCX);
         pp.concat.addString2("\x83\xF9"); // cmp ecx, ??
-        pp.concat.addU8(numBits);
+        pp.concat.addU8((uint8_t) numBits);
         pp.emit_NearJumpOp(JL);
         pp.concat.addU8(0); // clear + store below
         auto seekPtr = pp.concat.getSeekPtr() - 1;

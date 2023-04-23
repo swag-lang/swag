@@ -54,6 +54,23 @@
     }
 
     {
+        x := -100's8
+        y := 32
+        @assert(x >>,over y == -1)
+    }
+
+    {
+        x := -100's8
+        y := 512
+        @assert(x >>,over y == -1)
+    }
+
+    {
+        x := -100's8
+        @assert(x >>,over 512 == -1)
+    }
+
+    {
         x := 1's16
         x >>=,over 32
         @assert(x == 0)

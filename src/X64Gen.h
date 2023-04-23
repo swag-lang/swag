@@ -417,7 +417,7 @@ struct X64Gen
     void emit_Clear32(CPURegister reg);
     void emit_Clear64(CPURegister reg);
     void emit_Clear8(CPURegister reg);
-    void emit_ClearN(CPURegister reg, uint8_t numBits);
+    void emit_ClearN(CPURegister reg, uint32_t numBits);
     void emit_ClearX(uint32_t count, uint32_t offset, CPURegister reg);
     void emit_Cmp16(uint8_t reg1, uint8_t reg2);
     void emit_Cmp16_Indirect(uint32_t offsetStack, CPURegister reg, CPURegister memReg);
@@ -458,8 +458,8 @@ struct X64Gen
     void emit_LoadAddress_Indirect(uint32_t stackOffset, CPURegister reg, CPURegister memReg);
     void emit_LoadF32_Indirect(uint32_t stackOffset, CPURegister reg, CPURegister memReg = RDI);
     void emit_LoadF64_Indirect(uint32_t stackOffset, CPURegister reg, CPURegister memReg = RDI);
-    void emit_LoadN_Immediate(Register& val, CPURegister reg, uint8_t numBits);
-    void emit_LoadN_Indirect(uint32_t stackOffset, CPURegister reg, CPURegister memReg, uint8_t numBits);
+    void emit_LoadN_Immediate(Register& val, CPURegister reg, uint32_t numBits);
+    void emit_LoadN_Indirect(uint32_t stackOffset, CPURegister reg, CPURegister memReg, uint32_t numBits);
     void emit_LoadS16S32_Indirect(uint32_t stackOffset, CPURegister reg, CPURegister memReg);
     void emit_LoadS16S64_Indirect(uint32_t stackOffset, CPURegister reg, CPURegister memReg);
     void emit_LoadS32S64_Indirect(uint32_t stackOffset, CPURegister reg, CPURegister memReg);
@@ -513,7 +513,7 @@ struct X64Gen
     void emit_Store64_Indirect(uint32_t stackOffset, CPURegister reg, CPURegister memReg = RDI);
     void emit_StoreF32_Indirect(uint32_t stackOffset, CPURegister reg, CPURegister memReg = RDI);
     void emit_StoreF64_Indirect(uint32_t stackOffset, CPURegister reg, CPURegister memReg = RDI);
-    void emit_StoreN_Indirect(uint32_t stackOffset, CPURegister reg, CPURegister memReg, uint8_t numBits);
+    void emit_StoreN_Indirect(uint32_t stackOffset, CPURegister reg, CPURegister memReg, uint32_t numBits);
     void emit_Sub32_RSP(uint32_t value);
     void emit_Sub64_RAX(uint64_t value);
     void emit_Symbol_RelocationAddr(CPURegister reg, uint32_t symbolIndex, uint32_t offset);
@@ -556,5 +556,5 @@ struct X64Gen
     void emit_CMovE64(CPURegister reg1, CPURegister reg2);
     void emit_BSwap32(CPURegister reg);
     void emit_BSwap64(CPURegister reg);
-    void emit_ShiftN_Immediate(CPURegister reg, uint8_t value, uint8_t numBits, X64Op instruction);
+    void emit_ShiftN_Immediate(CPURegister reg, uint32_t value, uint32_t numBits, X64Op instruction);
 };

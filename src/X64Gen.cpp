@@ -261,7 +261,7 @@ void X64Gen::emit_Load64_Indirect(uint32_t stackOffset, CPURegister reg, CPURegi
     emit_ModRM(stackOffset, reg, memReg);
 }
 
-void X64Gen::emit_LoadN_Indirect(uint32_t stackOffset, CPURegister reg, CPURegister memReg, uint8_t numBits)
+void X64Gen::emit_LoadN_Indirect(uint32_t stackOffset, CPURegister reg, CPURegister memReg, uint32_t numBits)
 {
     switch (numBits)
     {
@@ -370,7 +370,7 @@ void X64Gen::emit_Store64_Indirect(uint32_t stackOffset, CPURegister reg, CPUReg
     storageRegBits  = 64;
 }
 
-void X64Gen::emit_StoreN_Indirect(uint32_t stackOffset, CPURegister reg, CPURegister memReg, uint8_t numBits)
+void X64Gen::emit_StoreN_Indirect(uint32_t stackOffset, CPURegister reg, CPURegister memReg, uint32_t numBits)
 {
     switch (numBits)
     {
@@ -518,7 +518,7 @@ void X64Gen::emit_Load64_Immediate(uint64_t val, CPURegister reg, bool force64bi
     }
 }
 
-void X64Gen::emit_LoadN_Immediate(Register& val, CPURegister reg, uint8_t numBits)
+void X64Gen::emit_LoadN_Immediate(Register& val, CPURegister reg, uint32_t numBits)
 {
     switch (numBits)
     {
@@ -542,7 +542,7 @@ void X64Gen::emit_LoadN_Immediate(Register& val, CPURegister reg, uint8_t numBit
 
 /////////////////////////////////////////////////////////////////////
 
-void X64Gen::emit_ClearN(CPURegister reg, uint8_t numBits)
+void X64Gen::emit_ClearN(CPURegister reg, uint32_t numBits)
 {
     switch (numBits)
     {
@@ -2415,9 +2415,10 @@ void X64Gen::emit_BSwap64(CPURegister reg)
     concat.addU8(0xC8);
 }
 
-void X64Gen::emit_ShiftN_Immediate(CPURegister reg, uint8_t value, uint8_t numBits, X64Op op)
+void X64Gen::emit_ShiftN_Immediate(CPURegister reg, uint32_t value, uint32_t numBits, X64Op op)
 {
     SWAG_ASSERT(reg == RAX);
+    value = min(value, numBits - 1);
 
     if (value == 1)
     {
@@ -2458,6 +2459,6 @@ void X64Gen::emit_ShiftN_Immediate(CPURegister reg, uint8_t value, uint8_t numBi
         }
 
         concat.addU8((uint8_t) op);
-        concat.addU8(value & (numBits - 1));
+        concat.addU8((uint8_t) value);
     }
 }
