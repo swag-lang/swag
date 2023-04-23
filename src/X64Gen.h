@@ -556,5 +556,5 @@ struct X64Gen
     void emit_CMovE64(CPURegister reg1, CPURegister reg2);
     void emit_BSwap32(CPURegister reg);
     void emit_BSwap64(CPURegister reg);
-    void emit_ShiftN_Immediate(CPURegister reg, uint32_t value, uint32_t numBits, X64Op instruction);
+    void emit_ShiftN(CPURegister reg, uint32_t value, uint32_t numBits, X64Op instruction);
 };

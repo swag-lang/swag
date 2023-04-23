@@ -2415,7 +2415,7 @@ void X64Gen::emit_BSwap64(CPURegister reg)
     concat.addU8(0xC8);
 }
 
-void X64Gen::emit_ShiftN_Immediate(CPURegister reg, uint32_t value, uint32_t numBits, X64Op op)
+void X64Gen::emit_ShiftN(CPURegister reg, uint32_t value, uint32_t numBits, X64Op op)
 {
     SWAG_ASSERT(reg == RAX);
     value = min(value, numBits - 1);

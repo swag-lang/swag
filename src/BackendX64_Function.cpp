@@ -1807,7 +1807,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             break;
         case ByteCodeOp::LowerZeroToTrue:
             pp.emit_Load32_Indirect(regOffset(ip->a.u32), RAX);
-            pp.emit_ShiftN_Immediate(RAX, 31, 32, X64Op::SHR);
+            pp.emit_ShiftN(RAX, 31, 32, X64Op::SHR);
             pp.emit_Store8_Indirect(regOffset(ip->a.u32), RAX);
             break;
         case ByteCodeOp::LowerEqZeroToTrue:
@@ -1825,7 +1825,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
         case ByteCodeOp::GreaterEqZeroToTrue:
             pp.emit_Load32_Indirect(regOffset(ip->a.u32), RAX);
             pp.emit_Not32(RAX);
-            pp.emit_ShiftN_Immediate(RAX, 31, 32, X64Op::SHR);
+            pp.emit_ShiftN(RAX, 31, 32, X64Op::SHR);
             pp.emit_Store8_Indirect(regOffset(ip->a.u32), RAX);
             break;
 
@@ -1959,7 +1959,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             pp.emit_Clear32(RCX);
             pp.emit_Test32(RAX, RAX);
             pp.concat.addString3("\x0F\x9F\xC1"); // setg cl
-            pp.emit_ShiftN_Immediate(RAX, 31, 32, X64Op::SHR);
+            pp.emit_ShiftN(RAX, 31, 32, X64Op::SHR);
             pp.emit_Op32(RAX, RCX, X64Op::SUB);
             pp.emit_Store32_Indirect(regOffset(ip->c.u32), RCX);
             break;
@@ -1969,7 +1969,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             pp.emit_Clear64(RCX);
             pp.emit_Test64(RAX, RAX);
             pp.concat.addString3("\x0F\x9F\xC1"); // setg cl
-            pp.emit_ShiftN_Immediate(RAX, 63, 64, X64Op::SHR);
+            pp.emit_ShiftN(RAX, 63, 64, X64Op::SHR);
             pp.emit_Op32(RAX, RCX, X64Op::SUB);
             pp.emit_Store32_Indirect(regOffset(ip->c.u32), RCX);
             break;
