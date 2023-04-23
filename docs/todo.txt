@@ -72,8 +72,6 @@ TODO
 -------------------------------------
 neg operator with wraparound safety
 -------------------------------------
-print bc, [stack + x] += 1 => stack[x] += 1
--------------------------------------
 @compilererror/warning with an optional hint for the error
 -------------------------------------
 fast math ? (faire les tests de float en u32/U64 comme avant la prise en charge de nan)
