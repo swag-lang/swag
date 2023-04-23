@@ -107,10 +107,14 @@ void BackendX64::emitShiftRightEqArithmetic(X64Gen& pp, ByteCodeInstruction* ip,
 
 void BackendX64::emitShiftLogical(X64Gen& pp, ByteCodeInstruction* ip, uint32_t numBits, X64Op op)
 {
-    if (!(ip->flags & BCI_IMM_A) && (ip->flags & BCI_IMM_B))
+    if ((ip->flags & BCI_IMM_B) && ip->b.u32 >= numBits)
+    {
+        pp.emit_ClearN(RAX, numBits);
+    }
+    else if (!(ip->flags & BCI_IMM_A) && (ip->flags & BCI_IMM_B))
     {
         pp.emit_LoadN_Indirect(regOffset(ip->a.u32), RAX, RDI, numBits);
-        pp.emit_ShiftN_Immediate(RAX, (uint8_t) min(ip->b.u32, numBits - 1), numBits, op);
+        pp.emit_ShiftN_Immediate(RAX, ip->b.u8, numBits, op);
     }
     else
     {
@@ -159,7 +163,12 @@ void BackendX64::emitShiftLogical(X64Gen& pp, ByteCodeInstruction* ip, uint32_t 
 void BackendX64::emitShiftEqLogical(X64Gen& pp, ByteCodeInstruction* ip, uint32_t numBits, X64Op op)
 {
     pp.emit_Load64_Indirect(regOffset(ip->a.u32), RAX);
-    if (ip->flags & BCI_IMM_B)
+    if ((ip->flags & BCI_IMM_B) && ip->b.u32 >= numBits)
+    {
+        pp.emit_ClearN(RCX, numBits);
+        pp.emit_StoreN_Indirect(0, RCX, RAX, numBits);
+    }
+    else if (ip->flags & BCI_IMM_B)
     {
         switch (numBits)
         {
