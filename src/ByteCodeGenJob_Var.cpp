@@ -10,7 +10,7 @@ bool ByteCodeGenJob::emitLocalVarDeclBefore(ByteCodeGenContext* context)
     auto node = CastAst<AstVarDecl>(context->node, AstNodeKind::VarDecl, AstNodeKind::ConstDecl);
 
     // No need to generate a local variable if it is never used
-    if (context->sourceFile->module->mustOptimizeBC(node))
+    if (context->sourceFile->module->mustOptimizeBytecode(node))
     {
         if (node->resolvedSymbolOverload && !(node->resolvedSymbolOverload->flags & OVERLOAD_USED))
         {

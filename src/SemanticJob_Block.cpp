@@ -22,7 +22,7 @@ bool SemanticJob::resolveIf(SemanticContext* context)
     SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoBool, nullptr, node->boolExpression, CASTFLAG_AUTO_BOOL));
 
     // Do not generate backend if 'if' is constant, and has already been evaluated
-    if (module->mustOptimizeBC(node) && (node->boolExpression->flags & AST_VALUE_COMPUTED))
+    if (module->mustOptimizeBytecode(node) && (node->boolExpression->flags & AST_VALUE_COMPUTED))
     {
         node->boolExpression->flags |= AST_NO_BYTECODE;
         if (node->boolExpression->computedValue->reg.b)
@@ -57,7 +57,7 @@ bool SemanticJob::resolveWhile(SemanticContext* context)
     SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoBool, nullptr, node->boolExpression, CASTFLAG_AUTO_BOOL));
 
     // Do not evaluate while if it's constant and false
-    if (module->mustOptimizeBC(node) && (node->boolExpression->flags & AST_VALUE_COMPUTED))
+    if (module->mustOptimizeBytecode(node) && (node->boolExpression->flags & AST_VALUE_COMPUTED))
     {
         if (!node->boolExpression->computedValue->reg.b)
         {
@@ -522,7 +522,7 @@ bool SemanticJob::resolveLoop(SemanticContext* context)
             node->typeInfo = node->expression->typeInfo;
 
             // Do not evaluate loop if it's constant and 0
-            if (module->mustOptimizeBC(node) && (node->expression->flags & AST_VALUE_COMPUTED))
+            if (module->mustOptimizeBytecode(node) && (node->expression->flags & AST_VALUE_COMPUTED))
             {
                 if (!node->expression->computedValue->reg.u64)
                 {

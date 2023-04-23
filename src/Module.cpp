@@ -925,7 +925,7 @@ void Module::printBC()
         bc->print();
 }
 
-bool Module::mustEmitSafetyOF(AstNode* node)
+bool Module::mustEmitSafetyOverflow(AstNode* node)
 {
     return mustEmitSafety(node, SAFETY_OVERFLOW);
 }
@@ -937,7 +937,7 @@ bool Module::mustEmitSafety(AstNode* node, uint16_t what)
     return ((buildCfg.safetyGuards & what) || (node->safetyOn & what)) && !(node->safetyOff & what);
 }
 
-bool Module::mustOptimizeBC(AstNode* node)
+bool Module::mustOptimizeBytecode(AstNode* node)
 {
     if (!node)
         return buildCfg.byteCodeOptimizeLevel > 0;
@@ -954,7 +954,7 @@ bool Module::mustOptimizeBC(AstNode* node)
     return buildCfg.byteCodeOptimizeLevel > 0;
 }
 
-bool Module::mustOptimizeBK(AstNode* node)
+bool Module::mustOptimizeBackend(AstNode* node)
 {
     if (!node)
         return buildCfg.byteCodeOptimizeLevel > 0;

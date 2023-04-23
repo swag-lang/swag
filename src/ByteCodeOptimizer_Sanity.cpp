@@ -270,7 +270,7 @@ static void setStackConstant(Context& cxt, ValueKind kind, ByteCodeInstruction* 
         return;
     if (kind != ValueKind::Constant)
         return;
-    if (!cxt.bc->sourceFile->module->mustOptimizeBC(cxt.bc->node))
+    if (!cxt.bc->sourceFile->module->mustOptimizeBytecode(cxt.bc->node))
         return;
 
     auto context = cxt.context;
@@ -309,7 +309,7 @@ static void setConstant(Context& cxt, ValueKind kind, ByteCodeInstruction* ip, u
         return;
     if (kind != ValueKind::Constant)
         return;
-    if (!cxt.bc->sourceFile->module->mustOptimizeBC(cxt.bc->node))
+    if (!cxt.bc->sourceFile->module->mustOptimizeBytecode(cxt.bc->node))
         return;
 
     auto context = cxt.context;

@@ -167,7 +167,7 @@ bool SemanticJob::resolveBinaryOpPlus(SemanticContext* context, AstNode* left, A
             return Report::internalError(context->node, "resolveBinaryOpPlus, type not supported");
         }
     }
-    else if (module->mustOptimizeBC(node))
+    else if (module->mustOptimizeBytecode(node))
     {
         // 0 + something => something
         if (left->isConstant0())
@@ -311,7 +311,7 @@ bool SemanticJob::resolveBinaryOpMinus(SemanticContext* context, AstNode* left, 
             return Report::internalError(context->node, "resolveBinaryOpMinus, type not supported");
         }
     }
-    else if (module->mustOptimizeBC(node))
+    else if (module->mustOptimizeBytecode(node))
     {
         // something - 0 => something
         if (right->isConstant0())
@@ -410,7 +410,7 @@ bool SemanticJob::resolveBinaryOpMul(SemanticContext* context, AstNode* left, As
             return Report::internalError(context->node, "resolveBinaryOpMul, type not supported");
         }
     }
-    else if (module->mustOptimizeBC(node))
+    else if (module->mustOptimizeBytecode(node))
     {
         // something * 0 => 0
         if (left->isConstant0() || right->isConstant0())
@@ -530,7 +530,7 @@ bool SemanticJob::resolveBinaryOpDiv(SemanticContext* context, AstNode* left, As
     {
         return context->report({right, Err(Err0150), Hnt(Hnt0033)});
     }
-    else if (module->mustOptimizeBC(node))
+    else if (module->mustOptimizeBytecode(node))
     {
         // something / 1 => something
         if (right->isConstant1())
@@ -688,7 +688,7 @@ bool SemanticJob::resolveBitmaskOr(SemanticContext* context, AstNode* left, AstN
             return Report::internalError(context->node, "resolveBitmaskOr, type not supported");
         }
     }
-    else if (module->mustOptimizeBC(node))
+    else if (module->mustOptimizeBytecode(node))
     {
         // 0 | something => something
         if (left->isConstant0())
@@ -799,7 +799,7 @@ bool SemanticJob::resolveBitmaskAnd(SemanticContext* context, AstNode* left, Ast
             return Report::internalError(context->node, "resolveBitmaskAnd, type not supported");
         }
     }
-    else if (module->mustOptimizeBC(node))
+    else if (module->mustOptimizeBytecode(node))
     {
         // 0 & something => 0
         // something & 0 => 0
@@ -1148,7 +1148,7 @@ bool SemanticJob::resolveShiftLeft(SemanticContext* context, AstNode* left, AstN
             return Report::internalError(context->node, "resolveShiftLeft, type not supported");
         }
     }
-    else if (module->mustOptimizeBC(node))
+    else if (module->mustOptimizeBytecode(node))
     {
         // something << 0 => something
         if (right->isConstant0())
@@ -1244,7 +1244,7 @@ bool SemanticJob::resolveShiftRight(SemanticContext* context, AstNode* left, Ast
             return Report::internalError(context->node, "resolveShiftRight, type not supported");
         }
     }
-    else if (module->mustOptimizeBC(node))
+    else if (module->mustOptimizeBytecode(node))
     {
         // something >> 0 => something
         if (right->isConstant0())
@@ -1400,7 +1400,7 @@ bool SemanticJob::resolveBoolExpression(SemanticContext* context)
 
     else if (node->tokenId == TokenId::KwdAnd)
     {
-        if (module->mustOptimizeBC(node))
+        if (module->mustOptimizeBytecode(node))
         {
             // false && something => false
             if (left->isConstantFalse())
@@ -1433,7 +1433,7 @@ bool SemanticJob::resolveBoolExpression(SemanticContext* context)
 
     else if (node->tokenId == TokenId::KwdOr)
     {
-        if (module->mustOptimizeBC(node))
+        if (module->mustOptimizeBytecode(node))
         {
             // true || something => true
             if (left->isConstantTrue())

@@ -5337,7 +5337,7 @@ llvm::BasicBlock* BackendLLVM::getOrCreateLabel(LLVMPerThread& pp, llvm::Functio
 
 void BackendLLVM::setFuncAttributes(const BuildParameters& buildParameters, Module* moduleToGen, AstFuncDecl* funcNode, ByteCode* bc, llvm::Function* func)
 {
-    if (!moduleToGen->mustOptimizeBK(bc->node))
+    if (!moduleToGen->mustOptimizeBackend(bc->node))
     {
         func->addFnAttr(llvm::Attribute::AttrKind::OptimizeNone);
         func->addFnAttr(llvm::Attribute::AttrKind::NoInline);

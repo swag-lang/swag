@@ -160,9 +160,9 @@ struct Module
     bool compileString(const Utf8& str);
     bool hasBytecodeToRun();
 
-    bool mustOptimizeBC(AstNode* node);
-    bool mustOptimizeBK(AstNode* node);
-    bool mustEmitSafetyOF(AstNode* node);
+    bool mustOptimizeBytecode(AstNode* node);
+    bool mustOptimizeBackend(AstNode* node);
+    bool mustEmitSafetyOverflow(AstNode* node);
     bool mustEmitSafety(AstNode* node, uint16_t what);
 
     void setBuildPass(BuildPass buildP);

@@ -373,7 +373,7 @@ void BackendX64::emitShiftEqLogical(X64Gen& pp, ByteCodeInstruction* ip, uint8_t
 
 void BackendX64::emitOverflowSigned(X64Gen& pp, AstNode* node, const char* msg)
 {
-    if (!module->mustEmitSafetyOF(node))
+    if (!module->mustEmitSafetyOverflow(node))
         return;
     pp.emit_LongJumpOp(JNO);
     pp.concat.addU32(0);
@@ -385,7 +385,7 @@ void BackendX64::emitOverflowSigned(X64Gen& pp, AstNode* node, const char* msg)
 
 void BackendX64::emitOverflowUnsigned(X64Gen& pp, AstNode* node, const char* msg)
 {
-    if (!module->mustEmitSafetyOF(node))
+    if (!module->mustEmitSafetyOverflow(node))
         return;
     pp.emit_LongJumpOp(JAE);
     pp.concat.addU32(0);

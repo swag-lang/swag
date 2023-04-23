@@ -208,7 +208,7 @@
     auto r1 = GEP8_PTR_F64(allocStack, ip->b.u32);
 
 #define OPEQ_OVERFLOW(__intr, __inst, __type, __msg)                                                          \
-    if (module->mustEmitSafetyOF(ip->node))                                                                   \
+    if (module->mustEmitSafetyOverflow(ip->node))                                                             \
     {                                                                                                         \
         auto vs = builder.CreateBinaryIntrinsic(llvm::Intrinsic::__intr, builder.CreateLoad(__type, r1), r2); \
         auto v0 = builder.CreateExtractValue(vs, {0});                                                        \
@@ -232,7 +232,7 @@
     }
 
 #define OP_OVERFLOW(__intr, __inst, __type, __msg)                                        \
-    if (module->mustEmitSafetyOF(ip->node))                                               \
+    if (module->mustEmitSafetyOverflow(ip->node))                                         \
     {                                                                                     \
         auto vs = builder.CreateBinaryIntrinsic(llvm::Intrinsic::__intr, r1, r2);         \
         auto v0 = builder.CreateExtractValue(vs, {0});                                    \

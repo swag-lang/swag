@@ -449,7 +449,7 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
         // Shift operand too big
         if (right->flags & AST_VALUE_COMPUTED)
         {
-            if (node->sourceFile->module->mustEmitSafetyOF(node))
+            if (node->sourceFile->module->mustEmitSafetyOverflow(node))
             {
                 if (right->computedValue->reg.u32 >= left->typeInfo->sizeOf * 8)
                 {

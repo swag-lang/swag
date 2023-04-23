@@ -291,7 +291,7 @@ void ByteCodeOptimizer::setContextFlags(ByteCodeOptContext* context)
     for (auto ip = context->bc->out; ip->op != ByteCodeOp::End; ip++)
     {
         // Mark some instructions for some specific passes
-        if (ip->node && ip->node->sourceFile && ip->node->sourceFile->module && ip->node->sourceFile->module->mustEmitSafetyOF(ip->node))
+        if (ip->node && ip->node->sourceFile && ip->node->sourceFile->module && ip->node->sourceFile->module->mustEmitSafetyOverflow(ip->node))
             ip->dynFlags |= BCID_SAFETY_OF;
         else
             ip->dynFlags &= ~BCID_SAFETY_OF;
@@ -467,7 +467,7 @@ bool ByteCodeOptimizer::optimize(ByteCodeOptContext& optContext, ByteCode* bc, b
     if (!bc->canEmit())
         return true;
 
-    if (optContext.module->mustOptimizeBC(bc->node))
+    if (optContext.module->mustOptimizeBytecode(bc->node))
     {
         while (true)
         {

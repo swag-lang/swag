@@ -914,14 +914,14 @@ bool ByteCodeOptimizer::optimizePassConst(ByteCodeOptContext* context)
                 break;
 
             case ByteCodeOp::NegS32:
-                if (ip->b.s32 == INT32_MIN && sourceFile->module->mustEmitSafetyOF(node))
+                if (ip->b.s32 == INT32_MIN && sourceFile->module->mustEmitSafetyOverflow(node))
                     return context->report({node, ByteCodeGenJob::safetyMsg(SafetyMsg::Neg, g_TypeMgr->typeInfoS32)});
                 SET_OP(ip, ByteCodeOp::SetImmediate32);
                 ip->b.s32 = -ip->b.s32;
                 OK();
                 break;
             case ByteCodeOp::NegS64:
-                if (ip->b.s64 == INT64_MIN && sourceFile->module->mustEmitSafetyOF(node))
+                if (ip->b.s64 == INT64_MIN && sourceFile->module->mustEmitSafetyOverflow(node))
                     return context->report({node, ByteCodeGenJob::safetyMsg(SafetyMsg::Neg, g_TypeMgr->typeInfoS64)});
                 SET_OP(ip, ByteCodeOp::SetImmediate64);
                 ip->b.s64 = -ip->b.s64;

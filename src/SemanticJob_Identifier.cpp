@@ -204,7 +204,7 @@ void SemanticJob::dealWithIntrinsic(SemanticContext* context, AstIdentifier* ide
     {
     case TokenId::IntrinsicAssert:
     {
-        if (module->mustOptimizeBC(context->node))
+        if (module->mustOptimizeBytecode(context->node))
         {
             // Remove assert(true)
             SWAG_ASSERT(identifier->callParameters && !identifier->callParameters->childs.empty());
