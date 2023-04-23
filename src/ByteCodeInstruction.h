@@ -22,6 +22,7 @@ const uint16_t BCI_START_STMT_N  = 0x0800;
 const uint16_t BCI_START_STMT_S  = 0x1000;
 const uint16_t BCI_START_STMT    = BCI_START_STMT_N | BCI_START_STMT_S;
 const uint16_t BCI_NO_BACKEND    = 0x2000;
+const uint16_t BCI_CAN_OVERFLOW  = 0x4000;
 
 const uint8_t BCID_OPT_FLAG  = 0x01;
 const uint8_t BCID_SAN_PASS  = 0x02;

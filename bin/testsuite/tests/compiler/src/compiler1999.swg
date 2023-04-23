@@ -36,9 +36,9 @@ func(T) sortQuick(values: [..] T, cb: func(T, T)->s32)
         buffer[high] = med
 
         // To avoid too much recursions, we recurse only for the smaller partition
-        #[Swag.Safety("overflow", false)]
+        #[Swag.Overflow(true)]
         set1 := cast(s64) ((low - 1) - begin)
-        #[Swag.Safety("overflow", false)]
+        #[Swag.Overflow(true)]
         set2 := cast(s64) (end - (high + 1))
 
         if set1 > 0 and set2 > 0

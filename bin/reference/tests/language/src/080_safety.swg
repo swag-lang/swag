@@ -37,6 +37,21 @@ Add the ',over' modifier after the operation. This will disable safety checks.
 }
 
 /**
+You can also use #[Swag.Overflow(true)] to authorize overflow on a more global scale.
+*/
+#[Swag.Overflow(true)]
+#test
+{
+    x := 255'u8
+    x += 1     // No need for operator modifier ',over'
+    @assert(x == 0)
+
+    y := 255'u8
+    y >>= 1    // Overflow is expected, so we lose a bit
+    @assert(y == 127)
+}
+
+/**
 For 8 or 16 bits, you can promote an operation to 32 bits by using ',up'.
 */
 #test
@@ -69,7 +84,7 @@ Swag will also check that a cast does not lose information.
 /**
 Rember that you can disable these safety checks with the corresponding attribute.
 */
-#[Swag.Safety("overflow", false)]
+#[Swag.Overflow(true)]
 #test
 {
     x := 255'u8

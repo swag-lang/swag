@@ -932,8 +932,12 @@ bool Module::mustEmitSafetyOverflow(AstNode* node)
 
 bool Module::mustEmitSafety(AstNode* node, uint16_t what)
 {
-    if (what == SAFETY_OVERFLOW && node->attributeFlags & ATTRIBUTE_SAFETY_OVERFLOW_OFF)
-        return false;
+    if (what == SAFETY_OVERFLOW)
+    {
+        if (node->attributeFlags & ATTRIBUTE_CAN_OVERFLOW_ON)
+            return false;
+    }
+
     return ((buildCfg.safetyGuards & what) || (node->safetyOn & what)) && !(node->safetyOff & what);
 }
 

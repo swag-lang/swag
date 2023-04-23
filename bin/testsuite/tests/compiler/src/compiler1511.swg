@@ -2,7 +2,7 @@
 #test
 {
     var index: u32 = 65
-    #[Swag.Safety("overflow", false)]
+    #[Swag.Overflow(true)]
     val := index >> 3
     bit := index - (val << 3)
     var shift: u8 = cast(u8) (1 << bit)

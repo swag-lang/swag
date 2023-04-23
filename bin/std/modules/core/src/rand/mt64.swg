@@ -25,7 +25,7 @@ public struct Mt64
 
 public impl Mt64
 {
-    #[Swag.Safety("overflow", false)]
+    #[Swag.Overflow(true)]
     mtd seedU64(seed: u64)
     {
         mt[0] = seed
@@ -37,7 +37,7 @@ public impl Mt64
         }
     }
 
-    #[Swag.Safety("overflow", false)]
+    #[Swag.Overflow(true)]
     mtd seedU64(seed: const [..] u64)
     {
         keyLength := @countof(seed)
@@ -75,7 +75,7 @@ public impl Mt64
         mt[0] = 1'u64 << 63
     }
 
-    #[Swag.Safety("overflow", false)]
+    #[Swag.Overflow(true)]
     mtd nextU64()->u64
     {
         if mti >= NN

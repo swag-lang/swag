@@ -6,7 +6,7 @@
 */
 
 #global namespace Compress
-#global #[Swag.Safety("overflow", false)]
+#global #[Swag.Overflow(true)]
 
 #scopefile {
 

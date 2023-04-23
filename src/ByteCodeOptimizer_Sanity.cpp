@@ -42,23 +42,23 @@
         }                                                                                 \
     }
 
-#define BINOPEQ_OVF(__cast, __op, __reg, __ovf, __msg, __type)                                                       \
-    SWAG_CHECK(getRegister(ra, cxt, ip->a.u32));                                                                     \
-    SWAG_CHECK(checkNotNull(cxt, ra));                                                                               \
-    if (ra->kind == ValueKind::StackAddr)                                                                            \
-    {                                                                                                                \
-        SWAG_CHECK(getStackAddress(addr, cxt, ra->reg.u32, sizeof(vb.reg.__reg)));                                   \
-        SWAG_CHECK(checkStackInitialized(cxt, addr, sizeof(vb.reg.__reg), ra->overload));                            \
-        SWAG_CHECK(getStackValue(va, cxt, addr, sizeof(vb.reg.__reg)));                                              \
-        SWAG_CHECK(getImmediateB(vb, cxt, ip));                                                                      \
-        if (va.kind == ValueKind::Unknown || vb.kind == ValueKind::Unknown)                                          \
-            setStackValue(cxt, addr, sizeof(vb.reg.__reg), ValueKind::Unknown);                                      \
-        else                                                                                                         \
-        {                                                                                                            \
-            SWAG_CHECK(checkOverflow(cxt, !__ovf(ip->node, *(__cast*) addr, (__cast) vb.reg.__reg), __msg, __type)); \
-            *(__cast*) addr __op vb.reg.__reg;                                                                       \
-            setStackConstant(cxt, va.kind, ip, ra->reg.u32, addr, sizeof(vb.reg.__reg));                             \
-        }                                                                                                            \
+#define BINOPEQ_OVF(__cast, __op, __reg, __ovf, __msg, __type)                                                           \
+    SWAG_CHECK(getRegister(ra, cxt, ip->a.u32));                                                                         \
+    SWAG_CHECK(checkNotNull(cxt, ra));                                                                                   \
+    if (ra->kind == ValueKind::StackAddr)                                                                                \
+    {                                                                                                                    \
+        SWAG_CHECK(getStackAddress(addr, cxt, ra->reg.u32, sizeof(vb.reg.__reg)));                                       \
+        SWAG_CHECK(checkStackInitialized(cxt, addr, sizeof(vb.reg.__reg), ra->overload));                                \
+        SWAG_CHECK(getStackValue(va, cxt, addr, sizeof(vb.reg.__reg)));                                                  \
+        SWAG_CHECK(getImmediateB(vb, cxt, ip));                                                                          \
+        if (va.kind == ValueKind::Unknown || vb.kind == ValueKind::Unknown)                                              \
+            setStackValue(cxt, addr, sizeof(vb.reg.__reg), ValueKind::Unknown);                                          \
+        else                                                                                                             \
+        {                                                                                                                \
+            SWAG_CHECK(checkOverflow(cxt, !__ovf(ip, ip->node, *(__cast*) addr, (__cast) vb.reg.__reg), __msg, __type)); \
+            *(__cast*) addr __op vb.reg.__reg;                                                                           \
+            setStackConstant(cxt, va.kind, ip, ra->reg.u32, addr, sizeof(vb.reg.__reg));                                 \
+        }                                                                                                                \
     }
 
 #define ATOMEQ(__cast, __op, __reg)                                                       \
@@ -114,37 +114,37 @@
     }                                                                  \
     BINOPEQ(__cast, __op, __reg);
 
-#define BINOPEQ_SHIFT_OVF(__cast, __reg, __func, __isSigned, __isSmall, __ovf, __msg, __type)                                            \
-    SWAG_CHECK(getRegister(ra, cxt, ip->a.u32));                                                                                         \
-    SWAG_CHECK(checkNotNull(cxt, ra));                                                                                                   \
-    if (ra->kind == ValueKind::StackAddr)                                                                                                \
-    {                                                                                                                                    \
-        SWAG_CHECK(getStackAddress(addr, cxt, ra->reg.u32, sizeof(vb.reg.__reg)));                                                       \
-        SWAG_CHECK(checkStackInitialized(cxt, addr, sizeof(vb.reg.__reg), ra->overload));                                                \
-        SWAG_CHECK(getStackValue(va, cxt, addr, sizeof(vb.reg.__reg)));                                                                  \
-        SWAG_CHECK(getImmediateB(vb, cxt, ip));                                                                                          \
-        if (va.kind == ValueKind::Unknown || vb.kind == ValueKind::Unknown)                                                              \
-            setStackValue(cxt, addr, sizeof(vb.reg.__reg), ValueKind::Unknown);                                                          \
-        else                                                                                                                             \
-        {                                                                                                                                \
-            SWAG_CHECK(checkOverflow(cxt, !__ovf<__cast, __isSigned>(ip->node, *(__cast*) addr, vb.reg.u32, __isSmall), __msg, __type)); \
-            Register r;                                                                                                                  \
-            r.__reg = *(__cast*) addr;                                                                                                   \
-            __func(&r, r, vb.reg, sizeof(vb.reg.__reg) * 8, __isSigned, __isSmall);                                                      \
-            *(__cast*) addr = r.__reg;                                                                                                   \
-        }                                                                                                                                \
+#define BINOPEQ_SHIFT_OVF(__cast, __reg, __func, __isSigned, __isSmall, __ovf, __msg, __type)                                                \
+    SWAG_CHECK(getRegister(ra, cxt, ip->a.u32));                                                                                             \
+    SWAG_CHECK(checkNotNull(cxt, ra));                                                                                                       \
+    if (ra->kind == ValueKind::StackAddr)                                                                                                    \
+    {                                                                                                                                        \
+        SWAG_CHECK(getStackAddress(addr, cxt, ra->reg.u32, sizeof(vb.reg.__reg)));                                                           \
+        SWAG_CHECK(checkStackInitialized(cxt, addr, sizeof(vb.reg.__reg), ra->overload));                                                    \
+        SWAG_CHECK(getStackValue(va, cxt, addr, sizeof(vb.reg.__reg)));                                                                      \
+        SWAG_CHECK(getImmediateB(vb, cxt, ip));                                                                                              \
+        if (va.kind == ValueKind::Unknown || vb.kind == ValueKind::Unknown)                                                                  \
+            setStackValue(cxt, addr, sizeof(vb.reg.__reg), ValueKind::Unknown);                                                              \
+        else                                                                                                                                 \
+        {                                                                                                                                    \
+            SWAG_CHECK(checkOverflow(cxt, !__ovf<__cast, __isSigned>(ip, ip->node, *(__cast*) addr, vb.reg.u32, __isSmall), __msg, __type)); \
+            Register r;                                                                                                                      \
+            r.__reg = *(__cast*) addr;                                                                                                       \
+            __func(&r, r, vb.reg, sizeof(vb.reg.__reg) * 8, __isSigned, __isSmall);                                                          \
+            *(__cast*) addr = r.__reg;                                                                                                       \
+        }                                                                                                                                    \
     }
 
-#define BINOP_SHIFT_OVF(__cast, __reg, __func, __isSigned, __isSmall, __ovf, __msg, __type)                                       \
-    SWAG_CHECK(getImmediateA(va, cxt, ip));                                                                                       \
-    SWAG_CHECK(getImmediateB(vb, cxt, ip));                                                                                       \
-    SWAG_CHECK(getRegister(rc, cxt, ip->c.u32));                                                                                  \
-    rc->kind = va.kind == ValueKind::Constant && vb.kind == ValueKind::Constant ? ValueKind::Constant : ValueKind::Unknown;       \
-    if (rc->kind == ValueKind::Constant)                                                                                          \
-    {                                                                                                                             \
-        SWAG_CHECK(checkOverflow(cxt, !__ovf<__cast, __isSigned>(ip->node, va.reg.__reg, vb.reg.u32, __isSmall), __msg, __type)); \
-        __func(&rc->reg, va.reg, vb.reg, sizeof(va.reg.__reg) * 8, __isSigned, __isSmall);                                        \
-    }                                                                                                                             \
+#define BINOP_SHIFT_OVF(__cast, __reg, __func, __isSigned, __isSmall, __ovf, __msg, __type)                                           \
+    SWAG_CHECK(getImmediateA(va, cxt, ip));                                                                                           \
+    SWAG_CHECK(getImmediateB(vb, cxt, ip));                                                                                           \
+    SWAG_CHECK(getRegister(rc, cxt, ip->c.u32));                                                                                      \
+    rc->kind = va.kind == ValueKind::Constant && vb.kind == ValueKind::Constant ? ValueKind::Constant : ValueKind::Unknown;           \
+    if (rc->kind == ValueKind::Constant)                                                                                              \
+    {                                                                                                                                 \
+        SWAG_CHECK(checkOverflow(cxt, !__ovf<__cast, __isSigned>(ip, ip->node, va.reg.__reg, vb.reg.u32, __isSmall), __msg, __type)); \
+        __func(&rc->reg, va.reg, vb.reg, sizeof(va.reg.__reg) * 8, __isSigned, __isSmall);                                            \
+    }                                                                                                                                 \
     setConstant(cxt, rc->kind, ip, rc->reg.u64, ConstantKind::SetImmediateC);
 
 #define BINOP(__op, __reg)                                                                                                  \
@@ -163,7 +163,7 @@
     rc->kind = va.kind == ValueKind::Constant && vb.kind == ValueKind::Constant ? ValueKind::Constant : ValueKind::Unknown; \
     if (rc->kind == ValueKind::Constant)                                                                                    \
     {                                                                                                                       \
-        SWAG_CHECK(checkOverflow(cxt, !__ovf(ip->node, va.reg.__reg, vb.reg.__reg), __msg, __type));                        \
+        SWAG_CHECK(checkOverflow(cxt, !__ovf(ip, ip->node, va.reg.__reg, vb.reg.__reg), __msg, __type));                    \
         rc->reg.__reg = va.reg.__reg __op vb.reg.__reg;                                                                     \
     }                                                                                                                       \
     setConstant(cxt, rc->kind, ip, rc->reg.u64, ConstantKind::SetImmediateC);

@@ -875,7 +875,7 @@ bool Parser::doFactorExpression(AstNode** parent, uint32_t exprFlags, AstNode** 
         if (mdfFlags & MODIFIER_OVERFLOW)
         {
             binaryNode->specFlags |= AstOp::SPECFLAG_OVERFLOW;
-            binaryNode->attributeFlags |= ATTRIBUTE_SAFETY_OVERFLOW_OFF | ATTRIBUTE_CAN_OVERFLOW;
+            binaryNode->attributeFlags |= ATTRIBUTE_CAN_OVERFLOW_ON;
         }
 
         if (mdfFlags & MODIFIER_SMALL)
@@ -1448,7 +1448,7 @@ bool Parser::doAffectExpression(AstNode* parent, AstNode** result, AstWith* with
         if (mdfFlags & MODIFIER_OVERFLOW)
         {
             opFlags |= AstOp::SPECFLAG_OVERFLOW;
-            opAttrFlags |= ATTRIBUTE_SAFETY_OVERFLOW_OFF | ATTRIBUTE_CAN_OVERFLOW;
+            opAttrFlags |= ATTRIBUTE_CAN_OVERFLOW_ON;
         }
 
         if (mdfFlags & MODIFIER_SMALL)

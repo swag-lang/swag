@@ -299,7 +299,8 @@ void ByteCode::printInstruction(ByteCodeInstruction* ip, ByteCodeInstruction* cu
     g_Log.print(ip->flags & BCI_IMM_D ? "D" : ".");
     g_Log.print(ip->flags & BCI_START_STMT ? "S" : ".");
     g_Log.print(ip->flags & BCI_UNPURE ? "U" : ".");
-    column += 6;
+    g_Log.print(ip->flags & BCI_CAN_OVERFLOW || (ip->node && ip->node->attributeFlags & ATTRIBUTE_CAN_OVERFLOW_ON) ? "O" : ".");
+    column += 7;
 
     // Tree Node
 #ifdef SWAG_DEV_MODE

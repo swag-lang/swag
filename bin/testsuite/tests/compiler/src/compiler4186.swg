@@ -1,5 +1,5 @@
 //#[Swag.PrintBc]
-#[Swag.Safety("overflow", false)]
+#[Swag.Overflow(true)]
 func transform(buf: const ^u8)
 {
     var m: [64] u32

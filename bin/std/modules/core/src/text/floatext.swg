@@ -6,7 +6,7 @@
 */
 
 #global namespace StrConv
-#global #[Swag.Safety("overflow", false)]
+#global #[Swag.Overflow(true)]
 
 // An extFloat represents an extended floating-point number, with more
 // precision than a float64. It does not try to save bits: the

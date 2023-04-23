@@ -201,6 +201,7 @@ void SemanticJob::inheritAttributesFromParent(AstNode* child)
         return;
 
     child->attributeFlags |= child->parent->attributeFlags & ATTRIBUTE_MATCH_MASK;
+    child->attributeFlags |= child->parent->attributeFlags & ATTRIBUTE_OVERFLOW_MASK;
     child->safetyOn |= child->parent->safetyOn;
     child->safetyOff |= child->parent->safetyOff;
 }
@@ -219,6 +220,10 @@ void SemanticJob::inheritAttributesFrom(AstNode* child, uint64_t attributeFlags,
 
     INHERIT_ATTR(child, ATTRIBUTE_OPTIM_BACKEND_ON | ATTRIBUTE_OPTIM_BACKEND_OFF);
     INHERIT_ATTR(child, ATTRIBUTE_OPTIM_BYTECODE_ON | ATTRIBUTE_OPTIM_BYTECODE_OFF);
+    INHERIT_ATTR(child, ATTRIBUTE_CAN_OVERFLOW_ON | ATTRIBUTE_CAN_OVERFLOW_OFF);
+    INHERIT_ATTR(child, ATTRIBUTE_MATCH_VALIDIF_OFF | ATTRIBUTE_MATCH_SELF_OFF);
+    if (!(child->flags & AST_PRIVATE))
+        INHERIT_ATTR(child, ATTRIBUTE_PUBLIC | ATTRIBUTE_PRIVATE);
 }
 
 void SemanticJob::inheritAttributesFromOwnerFunc(AstNode* child)
@@ -265,15 +270,10 @@ bool SemanticJob::collectAttributes(SemanticContext* context, AstNode* forNode, 
         auto safetyOff      = curAttr->safetyOff;
 
         // Inherit all simple flags
-        forNode->attributeFlags |= attributeFlags & ~(ATTRIBUTE_OPTIM_MASK | ATTRIBUTE_MATCH_MASK | ATTRIBUTE_EXPOSE_MASK);
+        forNode->attributeFlags |= attributeFlags & ~(ATTRIBUTE_OPTIM_MASK | ATTRIBUTE_MATCH_MASK | ATTRIBUTE_OVERFLOW_MASK | ATTRIBUTE_EXPOSE_MASK);
 
         // Inherit some attributes and safety
         inheritAttributesFrom(forNode, attributeFlags, safetyOn, safetyOff);
-
-        INHERIT_ATTR(forNode, ATTRIBUTE_MATCH_MASK);
-
-        if (!(forNode->flags & AST_PRIVATE))
-            INHERIT_ATTR(forNode, ATTRIBUTE_EXPOSE_MASK);
 
         for (auto child : curAttr->childs)
         {
@@ -584,6 +584,18 @@ bool SemanticJob::collectAttributes(SemanticContext* context, AstNode* forNode, 
                 SWAG_ASSERT(attrParam);
                 auto attrValue = &attrParam->value;
                 SWAG_VERIFY(isPowerOfTwo(attrValue->reg.u8), context->report({child, attrParam->token, Fmt(Err(Err0596), attrValue->reg.u8)}));
+            }
+
+            //////
+            else if (child->token.text == g_LangSpec->name_Overflow)
+            {
+                auto attrParam = curAttr->attributes.getParam(g_LangSpec->name_Swag_Overflow, g_LangSpec->name_value);
+                SWAG_ASSERT(attrParam);
+                flags &= ~(ATTRIBUTE_CAN_OVERFLOW_ON | ATTRIBUTE_CAN_OVERFLOW_OFF);
+                if (attrParam->value.reg.b)
+                    flags |= ATTRIBUTE_CAN_OVERFLOW_ON;
+                else
+                    flags |= ATTRIBUTE_CAN_OVERFLOW_OFF;
             }
 
             // Remember attributes that's here

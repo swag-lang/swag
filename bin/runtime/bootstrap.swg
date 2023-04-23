@@ -104,6 +104,9 @@ namespace Swag
     #[AttrMulti]
     attr Optim(what: string, value: bool)
 
+    #[AttrUsage(AttributeUsage.All|AttributeUsage.File)]
+    attr Overflow(value: bool)
+
     enum WarnLevel: u8
     {
         Enable

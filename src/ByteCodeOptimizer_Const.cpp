@@ -168,42 +168,42 @@ bool ByteCodeOptimizer::optimizePassConst(ByteCodeOptContext* context)
 
             case ByteCodeOp::BinOpPlusS8:
             case ByteCodeOp::BinOpPlusS8_Safe:
-                SWAG_VERIFY(!addWillOverflow(node, ip->a.s8, ip->b.s8), context->report({node, ByteCodeGenJob::safetyMsg(SafetyMsg::Plus, g_TypeMgr->typeInfoS8)}));
+                SWAG_VERIFY(!addWillOverflow(ip, ip->node, ip->a.s8, ip->b.s8), context->report({node, ByteCodeGenJob::safetyMsg(SafetyMsg::Plus, g_TypeMgr->typeInfoS8)}));
                 BINOP_S8(+);
                 break;
             case ByteCodeOp::BinOpPlusS16:
             case ByteCodeOp::BinOpPlusS16_Safe:
-                SWAG_VERIFY(!addWillOverflow(node, ip->a.s16, ip->b.s16), context->report({node, ByteCodeGenJob::safetyMsg(SafetyMsg::Plus, g_TypeMgr->typeInfoS16)}));
+                SWAG_VERIFY(!addWillOverflow(ip, ip->node, ip->a.s16, ip->b.s16), context->report({node, ByteCodeGenJob::safetyMsg(SafetyMsg::Plus, g_TypeMgr->typeInfoS16)}));
                 BINOP_S16(+);
                 break;
             case ByteCodeOp::BinOpPlusS32:
             case ByteCodeOp::BinOpPlusS32_Safe:
-                SWAG_VERIFY(!addWillOverflow(node, ip->a.s32, ip->b.s32), context->report({node, ByteCodeGenJob::safetyMsg(SafetyMsg::Plus, g_TypeMgr->typeInfoS32)}));
+                SWAG_VERIFY(!addWillOverflow(ip, ip->node, ip->a.s32, ip->b.s32), context->report({node, ByteCodeGenJob::safetyMsg(SafetyMsg::Plus, g_TypeMgr->typeInfoS32)}));
                 BINOP_S32(+);
                 break;
             case ByteCodeOp::BinOpPlusS64:
             case ByteCodeOp::BinOpPlusS64_Safe:
-                SWAG_VERIFY(!addWillOverflow(node, ip->a.s64, ip->b.s64), context->report({node, ByteCodeGenJob::safetyMsg(SafetyMsg::Plus, g_TypeMgr->typeInfoS64)}));
+                SWAG_VERIFY(!addWillOverflow(ip, ip->node, ip->a.s64, ip->b.s64), context->report({node, ByteCodeGenJob::safetyMsg(SafetyMsg::Plus, g_TypeMgr->typeInfoS64)}));
                 BINOP_S64(+);
                 break;
             case ByteCodeOp::BinOpPlusU8:
             case ByteCodeOp::BinOpPlusU8_Safe:
-                SWAG_VERIFY(!addWillOverflow(node, ip->a.u8, ip->b.u8), context->report({node, ByteCodeGenJob::safetyMsg(SafetyMsg::Plus, g_TypeMgr->typeInfoU8)}));
+                SWAG_VERIFY(!addWillOverflow(ip, ip->node, ip->a.u8, ip->b.u8), context->report({node, ByteCodeGenJob::safetyMsg(SafetyMsg::Plus, g_TypeMgr->typeInfoU8)}));
                 BINOP_U8(+);
                 break;
             case ByteCodeOp::BinOpPlusU16:
             case ByteCodeOp::BinOpPlusU16_Safe:
-                SWAG_VERIFY(!addWillOverflow(node, ip->a.u16, ip->b.u16), context->report({node, ByteCodeGenJob::safetyMsg(SafetyMsg::Plus, g_TypeMgr->typeInfoU16)}));
+                SWAG_VERIFY(!addWillOverflow(ip, ip->node, ip->a.u16, ip->b.u16), context->report({node, ByteCodeGenJob::safetyMsg(SafetyMsg::Plus, g_TypeMgr->typeInfoU16)}));
                 BINOP_U16(+);
                 break;
             case ByteCodeOp::BinOpPlusU32:
             case ByteCodeOp::BinOpPlusU32_Safe:
-                SWAG_VERIFY(!addWillOverflow(node, ip->a.u32, ip->b.u32), context->report({node, ByteCodeGenJob::safetyMsg(SafetyMsg::Plus, g_TypeMgr->typeInfoU32)}));
+                SWAG_VERIFY(!addWillOverflow(ip, ip->node, ip->a.u32, ip->b.u32), context->report({node, ByteCodeGenJob::safetyMsg(SafetyMsg::Plus, g_TypeMgr->typeInfoU32)}));
                 BINOP_S32(+);
                 break;
             case ByteCodeOp::BinOpPlusU64:
             case ByteCodeOp::BinOpPlusU64_Safe:
-                SWAG_VERIFY(!addWillOverflow(node, ip->a.u64, ip->b.u64), context->report({node, ByteCodeGenJob::safetyMsg(SafetyMsg::Plus, g_TypeMgr->typeInfoU64)}));
+                SWAG_VERIFY(!addWillOverflow(ip, ip->node, ip->a.u64, ip->b.u64), context->report({node, ByteCodeGenJob::safetyMsg(SafetyMsg::Plus, g_TypeMgr->typeInfoU64)}));
                 BINOP_S64(+);
                 break;
             case ByteCodeOp::BinOpPlusF32:
@@ -215,42 +215,42 @@ bool ByteCodeOptimizer::optimizePassConst(ByteCodeOptContext* context)
 
             case ByteCodeOp::BinOpMinusS8:
             case ByteCodeOp::BinOpMinusS8_Safe:
-                SWAG_VERIFY(!subWillOverflow(node, ip->a.s8, ip->b.s8), context->report({node, ByteCodeGenJob::safetyMsg(SafetyMsg::Minus, g_TypeMgr->typeInfoS8)}));
+                SWAG_VERIFY(!subWillOverflow(ip, ip->node, ip->a.s8, ip->b.s8), context->report({node, ByteCodeGenJob::safetyMsg(SafetyMsg::Minus, g_TypeMgr->typeInfoS8)}));
                 BINOP_S8(-);
                 break;
             case ByteCodeOp::BinOpMinusS16:
             case ByteCodeOp::BinOpMinusS16_Safe:
-                SWAG_VERIFY(!subWillOverflow(node, ip->a.s16, ip->b.s16), context->report({node, ByteCodeGenJob::safetyMsg(SafetyMsg::Minus, g_TypeMgr->typeInfoS16)}));
+                SWAG_VERIFY(!subWillOverflow(ip, ip->node, ip->a.s16, ip->b.s16), context->report({node, ByteCodeGenJob::safetyMsg(SafetyMsg::Minus, g_TypeMgr->typeInfoS16)}));
                 BINOP_S16(-);
                 break;
             case ByteCodeOp::BinOpMinusS32:
             case ByteCodeOp::BinOpMinusS32_Safe:
-                SWAG_VERIFY(!subWillOverflow(node, ip->a.s32, ip->b.s32), context->report({node, ByteCodeGenJob::safetyMsg(SafetyMsg::Minus, g_TypeMgr->typeInfoS32)}));
+                SWAG_VERIFY(!subWillOverflow(ip, ip->node, ip->a.s32, ip->b.s32), context->report({node, ByteCodeGenJob::safetyMsg(SafetyMsg::Minus, g_TypeMgr->typeInfoS32)}));
                 BINOP_S32(-);
                 break;
             case ByteCodeOp::BinOpMinusS64:
             case ByteCodeOp::BinOpMinusS64_Safe:
-                SWAG_VERIFY(!subWillOverflow(node, ip->a.s64, ip->b.s64), context->report({node, ByteCodeGenJob::safetyMsg(SafetyMsg::Minus, g_TypeMgr->typeInfoS64)}));
+                SWAG_VERIFY(!subWillOverflow(ip, ip->node, ip->a.s64, ip->b.s64), context->report({node, ByteCodeGenJob::safetyMsg(SafetyMsg::Minus, g_TypeMgr->typeInfoS64)}));
                 BINOP_S64(-);
                 break;
             case ByteCodeOp::BinOpMinusU8:
             case ByteCodeOp::BinOpMinusU8_Safe:
-                SWAG_VERIFY(!subWillOverflow(node, ip->a.u8, ip->b.u8), context->report({node, ByteCodeGenJob::safetyMsg(SafetyMsg::Minus, g_TypeMgr->typeInfoU8)}));
+                SWAG_VERIFY(!subWillOverflow(ip, ip->node, ip->a.u8, ip->b.u8), context->report({node, ByteCodeGenJob::safetyMsg(SafetyMsg::Minus, g_TypeMgr->typeInfoU8)}));
                 BINOP_S8(-);
                 break;
             case ByteCodeOp::BinOpMinusU16:
             case ByteCodeOp::BinOpMinusU16_Safe:
-                SWAG_VERIFY(!subWillOverflow(node, ip->a.u16, ip->b.u16), context->report({node, ByteCodeGenJob::safetyMsg(SafetyMsg::Minus, g_TypeMgr->typeInfoU16)}));
+                SWAG_VERIFY(!subWillOverflow(ip, ip->node, ip->a.u16, ip->b.u16), context->report({node, ByteCodeGenJob::safetyMsg(SafetyMsg::Minus, g_TypeMgr->typeInfoU16)}));
                 BINOP_S16(-);
                 break;
             case ByteCodeOp::BinOpMinusU32:
             case ByteCodeOp::BinOpMinusU32_Safe:
-                SWAG_VERIFY(!subWillOverflow(node, ip->a.u32, ip->b.u32), context->report({node, ByteCodeGenJob::safetyMsg(SafetyMsg::Minus, g_TypeMgr->typeInfoU32)}));
+                SWAG_VERIFY(!subWillOverflow(ip, ip->node, ip->a.u32, ip->b.u32), context->report({node, ByteCodeGenJob::safetyMsg(SafetyMsg::Minus, g_TypeMgr->typeInfoU32)}));
                 BINOP_S32(-);
                 break;
             case ByteCodeOp::BinOpMinusU64:
             case ByteCodeOp::BinOpMinusU64_Safe:
-                SWAG_VERIFY(!subWillOverflow(node, ip->a.u64, ip->b.u64), context->report({node, ByteCodeGenJob::safetyMsg(SafetyMsg::Minus, g_TypeMgr->typeInfoU64)}));
+                SWAG_VERIFY(!subWillOverflow(ip, ip->node, ip->a.u64, ip->b.u64), context->report({node, ByteCodeGenJob::safetyMsg(SafetyMsg::Minus, g_TypeMgr->typeInfoU64)}));
                 BINOP_S64(-);
                 break;
             case ByteCodeOp::BinOpMinusF32:
@@ -262,42 +262,42 @@ bool ByteCodeOptimizer::optimizePassConst(ByteCodeOptContext* context)
 
             case ByteCodeOp::BinOpMulS8:
             case ByteCodeOp::BinOpMulS8_Safe:
-                SWAG_VERIFY(!mulWillOverflow(node, ip->a.s8, ip->b.s8), context->report({node, ByteCodeGenJob::safetyMsg(SafetyMsg::Mul, g_TypeMgr->typeInfoS8)}));
+                SWAG_VERIFY(!mulWillOverflow(ip, ip->node, ip->a.s8, ip->b.s8), context->report({node, ByteCodeGenJob::safetyMsg(SafetyMsg::Mul, g_TypeMgr->typeInfoS8)}));
                 BINOP_S8(*);
                 break;
             case ByteCodeOp::BinOpMulS16:
             case ByteCodeOp::BinOpMulS16_Safe:
-                SWAG_VERIFY(!mulWillOverflow(node, ip->a.s16, ip->b.s16), context->report({node, ByteCodeGenJob::safetyMsg(SafetyMsg::Mul, g_TypeMgr->typeInfoS16)}));
+                SWAG_VERIFY(!mulWillOverflow(ip, ip->node, ip->a.s16, ip->b.s16), context->report({node, ByteCodeGenJob::safetyMsg(SafetyMsg::Mul, g_TypeMgr->typeInfoS16)}));
                 BINOP_S16(*);
                 break;
             case ByteCodeOp::BinOpMulS32:
             case ByteCodeOp::BinOpMulS32_Safe:
-                SWAG_VERIFY(!mulWillOverflow(node, ip->a.s32, ip->b.s32), context->report({node, ByteCodeGenJob::safetyMsg(SafetyMsg::Mul, g_TypeMgr->typeInfoS32)}));
+                SWAG_VERIFY(!mulWillOverflow(ip, ip->node, ip->a.s32, ip->b.s32), context->report({node, ByteCodeGenJob::safetyMsg(SafetyMsg::Mul, g_TypeMgr->typeInfoS32)}));
                 BINOP_S32(*);
                 break;
             case ByteCodeOp::BinOpMulS64:
             case ByteCodeOp::BinOpMulS64_Safe:
-                SWAG_VERIFY(!mulWillOverflow(node, ip->a.s64, ip->b.s64), context->report({node, ByteCodeGenJob::safetyMsg(SafetyMsg::Mul, g_TypeMgr->typeInfoS64)}));
+                SWAG_VERIFY(!mulWillOverflow(ip, ip->node, ip->a.s64, ip->b.s64), context->report({node, ByteCodeGenJob::safetyMsg(SafetyMsg::Mul, g_TypeMgr->typeInfoS64)}));
                 BINOP_S64(*);
                 break;
             case ByteCodeOp::BinOpMulU8:
             case ByteCodeOp::BinOpMulU8_Safe:
-                SWAG_VERIFY(!mulWillOverflow(node, ip->a.u8, ip->b.u8), context->report({node, ByteCodeGenJob::safetyMsg(SafetyMsg::Mul, g_TypeMgr->typeInfoU8)}));
+                SWAG_VERIFY(!mulWillOverflow(ip, ip->node, ip->a.u8, ip->b.u8), context->report({node, ByteCodeGenJob::safetyMsg(SafetyMsg::Mul, g_TypeMgr->typeInfoU8)}));
                 BINOP_S8(*);
                 break;
             case ByteCodeOp::BinOpMulU16:
             case ByteCodeOp::BinOpMulU16_Safe:
-                SWAG_VERIFY(!mulWillOverflow(node, ip->a.u16, ip->b.u16), context->report({node, ByteCodeGenJob::safetyMsg(SafetyMsg::Mul, g_TypeMgr->typeInfoU16)}));
+                SWAG_VERIFY(!mulWillOverflow(ip, ip->node, ip->a.u16, ip->b.u16), context->report({node, ByteCodeGenJob::safetyMsg(SafetyMsg::Mul, g_TypeMgr->typeInfoU16)}));
                 BINOP_S16(*);
                 break;
             case ByteCodeOp::BinOpMulU32:
             case ByteCodeOp::BinOpMulU32_Safe:
-                SWAG_VERIFY(!mulWillOverflow(node, ip->a.u32, ip->b.u32), context->report({node, ByteCodeGenJob::safetyMsg(SafetyMsg::Mul, g_TypeMgr->typeInfoU32)}));
+                SWAG_VERIFY(!mulWillOverflow(ip, ip->node, ip->a.u32, ip->b.u32), context->report({node, ByteCodeGenJob::safetyMsg(SafetyMsg::Mul, g_TypeMgr->typeInfoU32)}));
                 BINOP_S32(*);
                 break;
             case ByteCodeOp::BinOpMulU64:
             case ByteCodeOp::BinOpMulU64_Safe:
-                SWAG_VERIFY(!mulWillOverflow(node, ip->a.u64, ip->b.u64), context->report({node, ByteCodeGenJob::safetyMsg(SafetyMsg::Mul, g_TypeMgr->typeInfoU64)}));
+                SWAG_VERIFY(!mulWillOverflow(ip, ip->node, ip->a.u64, ip->b.u64), context->report({node, ByteCodeGenJob::safetyMsg(SafetyMsg::Mul, g_TypeMgr->typeInfoU64)}));
                 BINOP_S64(*);
                 break;
             case ByteCodeOp::BinOpMulF32:
@@ -364,7 +364,7 @@ bool ByteCodeOptimizer::optimizePassConst(ByteCodeOptContext* context)
                 break;
 
             case ByteCodeOp::BinOpShiftLeftS8:
-                if (leftShiftWillOverflow<int8_t, true>(node, ip->a.s8, ip->b.u32, ip->flags & BCI_SHIFT_SMALL))
+                if (leftShiftWillOverflow<int8_t, true>(ip, ip->node, ip->a.s8, ip->b.u32, ip->flags & BCI_SHIFT_SMALL))
                     return context->report({node, ByteCodeGenJob::safetyMsg(SafetyMsg::ShiftLeft, g_TypeMgr->typeInfoS8)});
                 SET_OP(ip, ByteCodeOp::SetImmediate32);
                 ByteCodeRun::executeLeftShift(&ip->b, ip->a, ip->b, 8, true, ip->flags & BCI_SHIFT_SMALL);
@@ -372,7 +372,7 @@ bool ByteCodeOptimizer::optimizePassConst(ByteCodeOptContext* context)
                 OK();
                 break;
             case ByteCodeOp::BinOpShiftLeftS16:
-                if (leftShiftWillOverflow<int16_t, true>(node, ip->a.s16, ip->b.u32, ip->flags & BCI_SHIFT_SMALL))
+                if (leftShiftWillOverflow<int16_t, true>(ip, ip->node, ip->a.s16, ip->b.u32, ip->flags & BCI_SHIFT_SMALL))
                     return context->report({node, ByteCodeGenJob::safetyMsg(SafetyMsg::ShiftLeft, g_TypeMgr->typeInfoS16)});
                 SET_OP(ip, ByteCodeOp::SetImmediate32);
                 ByteCodeRun::executeLeftShift(&ip->b, ip->a, ip->b, 16, true, ip->flags & BCI_SHIFT_SMALL);
@@ -380,7 +380,7 @@ bool ByteCodeOptimizer::optimizePassConst(ByteCodeOptContext* context)
                 OK();
                 break;
             case ByteCodeOp::BinOpShiftLeftS32:
-                if (leftShiftWillOverflow<int32_t, true>(node, ip->a.s32, ip->b.u32, ip->flags & BCI_SHIFT_SMALL))
+                if (leftShiftWillOverflow<int32_t, true>(ip, ip->node, ip->a.s32, ip->b.u32, ip->flags & BCI_SHIFT_SMALL))
                     return context->report({node, ByteCodeGenJob::safetyMsg(SafetyMsg::ShiftLeft, g_TypeMgr->typeInfoS32)});
                 SET_OP(ip, ByteCodeOp::SetImmediate32);
                 ByteCodeRun::executeLeftShift(&ip->b, ip->a, ip->b, 32, true, ip->flags & BCI_SHIFT_SMALL);
@@ -388,7 +388,7 @@ bool ByteCodeOptimizer::optimizePassConst(ByteCodeOptContext* context)
                 OK();
                 break;
             case ByteCodeOp::BinOpShiftLeftS64:
-                if (leftShiftWillOverflow<int64_t, true>(node, ip->a.s64, ip->b.u32, ip->flags & BCI_SHIFT_SMALL))
+                if (leftShiftWillOverflow<int64_t, true>(ip, ip->node, ip->a.s64, ip->b.u32, ip->flags & BCI_SHIFT_SMALL))
                     return context->report({node, ByteCodeGenJob::safetyMsg(SafetyMsg::ShiftLeft, g_TypeMgr->typeInfoS64)});
                 SET_OP(ip, ByteCodeOp::SetImmediate64);
                 ByteCodeRun::executeLeftShift(&ip->b, ip->a, ip->b, 64, true, ip->flags & BCI_SHIFT_SMALL);
@@ -396,7 +396,7 @@ bool ByteCodeOptimizer::optimizePassConst(ByteCodeOptContext* context)
                 OK();
                 break;
             case ByteCodeOp::BinOpShiftLeftU8:
-                if (leftShiftWillOverflow<uint8_t, false>(node, ip->a.u8, ip->b.u32, ip->flags & BCI_SHIFT_SMALL))
+                if (leftShiftWillOverflow<uint8_t, false>(ip, ip->node, ip->a.u8, ip->b.u32, ip->flags & BCI_SHIFT_SMALL))
                     return context->report({node, ByteCodeGenJob::safetyMsg(SafetyMsg::ShiftLeft, g_TypeMgr->typeInfoU8)});
                 SET_OP(ip, ByteCodeOp::SetImmediate32);
                 ByteCodeRun::executeLeftShift(&ip->b, ip->a, ip->b, 8, false, ip->flags & BCI_SHIFT_SMALL);
@@ -404,7 +404,7 @@ bool ByteCodeOptimizer::optimizePassConst(ByteCodeOptContext* context)
                 OK();
                 break;
             case ByteCodeOp::BinOpShiftLeftU16:
-                if (leftShiftWillOverflow<uint16_t, false>(node, ip->a.u16, ip->b.u32, ip->flags & BCI_SHIFT_SMALL))
+                if (leftShiftWillOverflow<uint16_t, false>(ip, ip->node, ip->a.u16, ip->b.u32, ip->flags & BCI_SHIFT_SMALL))
                     return context->report({node, ByteCodeGenJob::safetyMsg(SafetyMsg::ShiftLeft, g_TypeMgr->typeInfoU16)});
                 SET_OP(ip, ByteCodeOp::SetImmediate32);
                 ByteCodeRun::executeLeftShift(&ip->b, ip->a, ip->b, 16, false, ip->flags & BCI_SHIFT_SMALL);
@@ -412,7 +412,7 @@ bool ByteCodeOptimizer::optimizePassConst(ByteCodeOptContext* context)
                 OK();
                 break;
             case ByteCodeOp::BinOpShiftLeftU32:
-                if (leftShiftWillOverflow<uint32_t, false>(node, ip->a.u32, ip->b.u32, ip->flags & BCI_SHIFT_SMALL))
+                if (leftShiftWillOverflow<uint32_t, false>(ip, ip->node, ip->a.u32, ip->b.u32, ip->flags & BCI_SHIFT_SMALL))
                     return context->report({node, ByteCodeGenJob::safetyMsg(SafetyMsg::ShiftLeft, g_TypeMgr->typeInfoU32)});
                 SET_OP(ip, ByteCodeOp::SetImmediate32);
                 ByteCodeRun::executeLeftShift(&ip->b, ip->a, ip->b, 32, false, ip->flags & BCI_SHIFT_SMALL);
@@ -420,7 +420,7 @@ bool ByteCodeOptimizer::optimizePassConst(ByteCodeOptContext* context)
                 OK();
                 break;
             case ByteCodeOp::BinOpShiftLeftU64:
-                if (leftShiftWillOverflow<uint64_t, false>(node, ip->a.u64, ip->b.u32, ip->flags & BCI_SHIFT_SMALL))
+                if (leftShiftWillOverflow<uint64_t, false>(ip, ip->node, ip->a.u64, ip->b.u32, ip->flags & BCI_SHIFT_SMALL))
                     return context->report({node, ByteCodeGenJob::safetyMsg(SafetyMsg::ShiftLeft, g_TypeMgr->typeInfoU64)});
                 SET_OP(ip, ByteCodeOp::SetImmediate64);
                 ByteCodeRun::executeLeftShift(&ip->b, ip->a, ip->b, 64, false, ip->flags & BCI_SHIFT_SMALL);
@@ -429,7 +429,7 @@ bool ByteCodeOptimizer::optimizePassConst(ByteCodeOptContext* context)
                 break;
 
             case ByteCodeOp::BinOpShiftRightS8:
-                if (rightShiftWillOverflow<int8_t, true>(node, ip->a.s8, ip->b.u32, ip->flags & BCI_SHIFT_SMALL))
+                if (rightShiftWillOverflow<int8_t, true>(ip, ip->node, ip->a.s8, ip->b.u32, ip->flags & BCI_SHIFT_SMALL))
                     return context->report({node, ByteCodeGenJob::safetyMsg(SafetyMsg::ShiftLeft, g_TypeMgr->typeInfoS8)});
                 SET_OP(ip, ByteCodeOp::SetImmediate32);
                 ByteCodeRun::executeRightShift(&ip->b, ip->a, ip->b, 8, true, ip->flags & BCI_SHIFT_SMALL);
@@ -437,7 +437,7 @@ bool ByteCodeOptimizer::optimizePassConst(ByteCodeOptContext* context)
                 OK();
                 break;
             case ByteCodeOp::BinOpShiftRightS16:
-                if (rightShiftWillOverflow<int16_t, true>(node, ip->a.s16, ip->b.u32, ip->flags & BCI_SHIFT_SMALL))
+                if (rightShiftWillOverflow<int16_t, true>(ip, ip->node, ip->a.s16, ip->b.u32, ip->flags & BCI_SHIFT_SMALL))
                     return context->report({node, ByteCodeGenJob::safetyMsg(SafetyMsg::ShiftLeft, g_TypeMgr->typeInfoS16)});
                 SET_OP(ip, ByteCodeOp::SetImmediate32);
                 ByteCodeRun::executeRightShift(&ip->b, ip->a, ip->b, 16, true, ip->flags & BCI_SHIFT_SMALL);
@@ -445,7 +445,7 @@ bool ByteCodeOptimizer::optimizePassConst(ByteCodeOptContext* context)
                 OK();
                 break;
             case ByteCodeOp::BinOpShiftRightS32:
-                if (rightShiftWillOverflow<int32_t, true>(node, ip->a.s32, ip->b.u32, ip->flags & BCI_SHIFT_SMALL))
+                if (rightShiftWillOverflow<int32_t, true>(ip, ip->node, ip->a.s32, ip->b.u32, ip->flags & BCI_SHIFT_SMALL))
                     return context->report({node, ByteCodeGenJob::safetyMsg(SafetyMsg::ShiftLeft, g_TypeMgr->typeInfoS32)});
                 SET_OP(ip, ByteCodeOp::SetImmediate32);
                 ByteCodeRun::executeRightShift(&ip->b, ip->a, ip->b, 32, true, ip->flags & BCI_SHIFT_SMALL);
@@ -453,7 +453,7 @@ bool ByteCodeOptimizer::optimizePassConst(ByteCodeOptContext* context)
                 OK();
                 break;
             case ByteCodeOp::BinOpShiftRightS64:
-                if (rightShiftWillOverflow<int64_t, true>(node, ip->a.s64, ip->b.u32, ip->flags & BCI_SHIFT_SMALL))
+                if (rightShiftWillOverflow<int64_t, true>(ip, ip->node, ip->a.s64, ip->b.u32, ip->flags & BCI_SHIFT_SMALL))
                     return context->report({node, ByteCodeGenJob::safetyMsg(SafetyMsg::ShiftLeft, g_TypeMgr->typeInfoS64)});
                 SET_OP(ip, ByteCodeOp::SetImmediate64);
                 ByteCodeRun::executeRightShift(&ip->b, ip->a, ip->b, 64, true, ip->flags & BCI_SHIFT_SMALL);
@@ -462,7 +462,7 @@ bool ByteCodeOptimizer::optimizePassConst(ByteCodeOptContext* context)
                 break;
 
             case ByteCodeOp::BinOpShiftRightU8:
-                if (rightShiftWillOverflow<uint8_t, false>(node, ip->a.u8, ip->b.u32, ip->flags & BCI_SHIFT_SMALL))
+                if (rightShiftWillOverflow<uint8_t, false>(ip, ip->node, ip->a.u8, ip->b.u32, ip->flags & BCI_SHIFT_SMALL))
                     return context->report({node, ByteCodeGenJob::safetyMsg(SafetyMsg::ShiftLeft, g_TypeMgr->typeInfoU8)});
                 SET_OP(ip, ByteCodeOp::SetImmediate32);
                 ByteCodeRun::executeRightShift(&ip->b, ip->a, ip->b, 8, false, ip->flags & BCI_SHIFT_SMALL);
@@ -470,7 +470,7 @@ bool ByteCodeOptimizer::optimizePassConst(ByteCodeOptContext* context)
                 OK();
                 break;
             case ByteCodeOp::BinOpShiftRightU16:
-                if (rightShiftWillOverflow<uint16_t, false>(node, ip->a.u16, ip->b.u32, ip->flags & BCI_SHIFT_SMALL))
+                if (rightShiftWillOverflow<uint16_t, false>(ip, ip->node, ip->a.u16, ip->b.u32, ip->flags & BCI_SHIFT_SMALL))
                     return context->report({node, ByteCodeGenJob::safetyMsg(SafetyMsg::ShiftLeft, g_TypeMgr->typeInfoU16)});
                 SET_OP(ip, ByteCodeOp::SetImmediate32);
                 ByteCodeRun::executeRightShift(&ip->b, ip->a, ip->b, 16, false, ip->flags & BCI_SHIFT_SMALL);
@@ -478,7 +478,7 @@ bool ByteCodeOptimizer::optimizePassConst(ByteCodeOptContext* context)
                 OK();
                 break;
             case ByteCodeOp::BinOpShiftRightU32:
-                if (rightShiftWillOverflow<uint32_t, false>(node, ip->a.u32, ip->b.u32, ip->flags & BCI_SHIFT_SMALL))
+                if (rightShiftWillOverflow<uint32_t, false>(ip, ip->node, ip->a.u32, ip->b.u32, ip->flags & BCI_SHIFT_SMALL))
                     return context->report({node, ByteCodeGenJob::safetyMsg(SafetyMsg::ShiftLeft, g_TypeMgr->typeInfoU32)});
                 SET_OP(ip, ByteCodeOp::SetImmediate32);
                 ByteCodeRun::executeRightShift(&ip->b, ip->a, ip->b, 32, false, ip->flags & BCI_SHIFT_SMALL);
@@ -486,7 +486,7 @@ bool ByteCodeOptimizer::optimizePassConst(ByteCodeOptContext* context)
                 OK();
                 break;
             case ByteCodeOp::BinOpShiftRightU64:
-                if (rightShiftWillOverflow<uint64_t, false>(node, ip->a.u64, ip->b.u32, ip->flags & BCI_SHIFT_SMALL))
+                if (rightShiftWillOverflow<uint64_t, false>(ip, ip->node, ip->a.u64, ip->b.u32, ip->flags & BCI_SHIFT_SMALL))
                     return context->report({node, ByteCodeGenJob::safetyMsg(SafetyMsg::ShiftLeft, g_TypeMgr->typeInfoU64)});
                 SET_OP(ip, ByteCodeOp::SetImmediate64);
                 ByteCodeRun::executeRightShift(&ip->b, ip->a, ip->b, 64, false, ip->flags & BCI_SHIFT_SMALL);

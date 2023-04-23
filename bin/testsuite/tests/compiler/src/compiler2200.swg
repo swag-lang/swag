@@ -4,10 +4,10 @@
     {
         var x: u32 = 10'u8
         var y: s8 = -1
-        #[Swag.Safety("overflow", false)]
+        #[Swag.Overflow(true)]
         z := x + y
         @assert(z == 9)
-        #[Swag.Safety("overflow", false)]
+        #[Swag.Overflow(true)]
         z1 := 10'u32 + cast(u32) -1's8
         @assert(z1 == 9)
     }
@@ -15,10 +15,10 @@
     {
         var x: u32 = 10'u8
         var y: s8 = -1
-        #[Swag.Safety("overflow", false)]
+        #[Swag.Overflow(true)]
         z := x - y
         @assert(z == 11)
-        #[Swag.Safety("overflow", false)]
+        #[Swag.Overflow(true)]
         z1 := 10'u32 - cast(u32) -1's8
         @assert(z1 == 11)
     }

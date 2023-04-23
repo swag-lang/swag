@@ -2,7 +2,7 @@
 #test
 {
 	var c = 0xFFFFFFFF_FFFFFFFF;
-    #[Swag.Safety("overflow", false)]
+    #[Swag.Overflow(true)]
 	var a = c >> 56;
 	@assert(a == 0xFF);
 }

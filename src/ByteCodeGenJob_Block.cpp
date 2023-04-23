@@ -528,16 +528,21 @@ bool ByteCodeGenJob::emitLoopAfterExpr(ByteCodeGenContext* context)
     EMIT_INST1(context, ByteCodeOp::SetImmediate64, loopNode->registerIndex1)->b.s64 = -1;
 
     if (rangeNode->specFlags & AstRange::SPECFLAG_EXCLUDE_UP)
-        EMIT_INST3(context, ByteCodeOp::BinOpMinusS64, rangeNode->expressionUp->resultRegisterRC, loopNode->registerIndex1, rangeNode->expressionUp->resultRegisterRC);
+    {
+        auto inst = EMIT_INST3(context, ByteCodeOp::BinOpMinusS64, rangeNode->expressionUp->resultRegisterRC, loopNode->registerIndex1, rangeNode->expressionUp->resultRegisterRC);
+        inst->flags |= BCI_CAN_OVERFLOW;
+    }
 
     EMIT_INST2(context, ByteCodeOp::CopyRBtoRA64, loopNode->registerIndex, rangeNode->expressionLow->resultRegisterRC);
-    EMIT_INST3(context, ByteCodeOp::BinOpMinusS64, loopNode->registerIndex, loopNode->registerIndex1, loopNode->registerIndex);
+    auto inst = EMIT_INST3(context, ByteCodeOp::BinOpMinusS64, loopNode->registerIndex, loopNode->registerIndex1, loopNode->registerIndex);
+    inst->flags |= BCI_CAN_OVERFLOW;
 
     loopNode->seekJumpBeforeExpression = context->bc->numInstructions;
     loopNode->seekJumpBeforeContinue   = loopNode->seekJumpBeforeExpression;
     loopNode->seekJumpExpression       = context->bc->numInstructions;
     EMIT_INST3(context, ByteCodeOp::JumpIfEqual64, loopNode->registerIndex, 0, rangeNode->expressionUp->resultRegisterRC);
-    EMIT_INST3(context, ByteCodeOp::BinOpPlusS64, loopNode->registerIndex, loopNode->registerIndex1, loopNode->registerIndex);
+    inst = EMIT_INST3(context, ByteCodeOp::BinOpPlusS64, loopNode->registerIndex, loopNode->registerIndex1, loopNode->registerIndex);
+    inst->flags |= BCI_CAN_OVERFLOW;
     return true;
 }
 

@@ -39,6 +39,7 @@ void LanguageSpec::setupNames()
     name_opPostCopyGenerated = "opPostCopyGenerated";
     name_opPostMoveGenerated = "opPostMoveGenerated";
 
+    name_Overflow   = "Overflow";
     name_Safety     = "Safety";
     name_Optim      = "Optim";
     name_Match      = "Match";
@@ -57,6 +58,7 @@ void LanguageSpec::setupNames()
     name_Swag_AttrUsage  = "Swag.AttrUsage";
     name_Swag_AttrMulti  = "Swag.AttrMulti";
     name_Swag_Align      = "Swag.Align";
+    name_Swag_Overflow   = "Swag.Overflow";
     name_Swag_Safety     = "Swag.Safety";
     name_Swag_Optim      = "Swag.Optim";
     name_Swag_Match      = "Swag.Match";

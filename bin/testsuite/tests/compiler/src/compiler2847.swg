@@ -1,7 +1,7 @@
 //#[Swag.Safety("", true)]
 //#[Swag.PrintBc]
 #[Swag.Optim("", false)]
-#[Swag.Safety("overflow", false)]
+#[Swag.Overflow(true)]
 #test
 {
     mant := 0x12345678_12345678
