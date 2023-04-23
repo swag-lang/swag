@@ -34,5 +34,5 @@ func(what: string) safety(expr: bool, message: string = null, loc = #callerlocat
 #[Swag.Warn("wrn0004", Swag.WarnLevel.Disable)]
 func safetyBoundCheck(expr: bool, message: string = null, loc = #callerlocation)
 {
-    safety'("bound")(expr, message, loc)
+    safety'("boundcheck")(expr, message, loc)
 }

@@ -5,7 +5,7 @@
     See LICENCE.md for the corresponding licence.
 */
 
-#global #[Swag.Safety("over", false)]
+#global #[Swag.Safety("overflow", false)]
 
 struct FloatInfo
 {

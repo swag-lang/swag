@@ -1,6 +1,6 @@
 #test
 {
-    #if @safety("bound")
+    #if @safety("boundcheck")
     {
     }
 }

@@ -3,7 +3,7 @@
 //#[Swag.PrintBc]
 #[Swag.Optim("", false)]
 #[Swag.Safety("sanity", true)]
-#[Swag.Safety("over", true)]
+#[Swag.Safety("overflow", true)]
 #test
 {
     x := 254'u8

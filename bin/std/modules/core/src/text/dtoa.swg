@@ -6,7 +6,7 @@
 */
 
 #global namespace StrConv.Dtoa
-#global #[Swag.Safety("over|nan", false)]
+#global #[Swag.Safety("overflow|nan", false)]
 using Globalization
 
 func dtoa(dst: *ConcatBuffer, precision: s64, fmt: u8, neg, forceSign: bool, mant: u64, exp: s64)

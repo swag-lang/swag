@@ -21,7 +21,7 @@ impl CMWC4096
         c = value % 809430660
     }
 
-    #[Swag.Safety("over", false)]
+    #[Swag.Safety("overflow", false)]
     mtd nextU32()->u32
     {
         const a = 18782'u64

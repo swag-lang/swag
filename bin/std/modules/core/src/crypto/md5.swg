@@ -1,5 +1,5 @@
 #global namespace Hash
-#global #[Swag.Safety("over", false)]
+#global #[Swag.Safety("overflow", false)]
 
 public struct Md5
 {

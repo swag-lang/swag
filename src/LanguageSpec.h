@@ -174,8 +174,8 @@ struct LanguageSpec
     Utf8 name_noerr;
     Utf8 name_bit;
 
-    Utf8 name_bound;
-    Utf8 name_over;
+    Utf8 name_boundcheck;
+    Utf8 name_overflow;
     Utf8 name_math;
     Utf8 name_switch;
     Utf8 name_unreachable;

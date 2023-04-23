@@ -449,8 +449,8 @@ bool SemanticJob::collectAttributes(SemanticContext* context, AstNode* forNode, 
                         w.trim();
                         bool done = false;
 
-                        CHECK_SAFETY_NAME(name_bound, SAFETY_BOUNDCHECK);
-                        CHECK_SAFETY_NAME(name_over, SAFETY_OVERFLOW);
+                        CHECK_SAFETY_NAME(name_boundcheck, SAFETY_BOUNDCHECK);
+                        CHECK_SAFETY_NAME(name_overflow, SAFETY_OVERFLOW);
                         CHECK_SAFETY_NAME(name_math, SAFETY_MATH);
                         CHECK_SAFETY_NAME(name_any, SAFETY_ANY);
                         CHECK_SAFETY_NAME(name_switch, SAFETY_SWITCH);

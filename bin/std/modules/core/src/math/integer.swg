@@ -4,7 +4,7 @@
 #global namespace Math
 using Swag
 
-#[ConstExpr, Safety("over", false)]
+#[ConstExpr, Safety("overflow", false)]
 func roundUpToPowerOf2(x: u32)->u32
 {
     v := x - 1
@@ -16,7 +16,7 @@ func roundUpToPowerOf2(x: u32)->u32
     return v + 1
 }
 
-#[ConstExpr, Safety("over", false)]
+#[ConstExpr, Safety("overflow", false)]
 func roundDownToPowerOf2(x: u32)->u32
 {
     i := 1'u32
@@ -33,19 +33,19 @@ func isPowerOf2(x: u32)->bool
 }
 
 // Determin if any of the bytes is zero
-#[ConstExpr, Inline, Safety("over", false)]
+#[ConstExpr, Inline, Safety("overflow", false)]
 func hasZeroByte(v: u16)->bool
 {
     return hasZeroByte(cast(u32) v)
 }
 
-#[ConstExpr, Inline, Safety("over", false)]
+#[ConstExpr, Inline, Safety("overflow", false)]
 func hasZeroByte(v: u32)->bool
 {
     return cast(bool) (((v) - 0x01010101) & ~(v) & 0x80808080)
 }
 
-#[ConstExpr, Inline, Safety("over", false)]
+#[ConstExpr, Inline, Safety("overflow", false)]
 func hasZeroByte(v: u64)->bool
 {
     return cast(bool) (((v) - 0x01010101_01010101) & ~(v) & 0x80808080_80808080)

@@ -2,6 +2,6 @@
 
 #test
 {
-    #[Swag.Safety("over", true)]
+    #[Swag.Safety("overflow", true)]
     var x: s64 = Swag.S64.Min - 1
 }

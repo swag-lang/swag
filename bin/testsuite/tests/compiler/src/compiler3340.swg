@@ -1,4 +1,4 @@
-#global #[Swag.Safety("over", true)]
+#global #[Swag.Safety("overflow", true)]
 #global testerror
 
 const G: u8 = -10

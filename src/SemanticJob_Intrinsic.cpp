@@ -36,8 +36,8 @@ bool SemanticJob::resolveIntrinsicTag(SemanticContext* context)
         node->computedValue->reg.b = module->mustEmitSafety(node, __flag); \
     }
 
-        CHECK_SAFETY_NAME(name_bound, SAFETY_BOUNDCHECK);
-        CHECK_SAFETY_NAME(name_over, SAFETY_OVERFLOW);
+        CHECK_SAFETY_NAME(name_boundcheck, SAFETY_BOUNDCHECK);
+        CHECK_SAFETY_NAME(name_overflow, SAFETY_OVERFLOW);
         CHECK_SAFETY_NAME(name_math, SAFETY_MATH);
         CHECK_SAFETY_NAME(name_switch, SAFETY_SWITCH);
         CHECK_SAFETY_NAME(name_unreachable, SAFETY_UNREACHABLE);

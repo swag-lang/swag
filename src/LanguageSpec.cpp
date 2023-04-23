@@ -154,8 +154,8 @@ void LanguageSpec::setupNames()
     name_noerr   = "noerr";
     name_bit     = "bit";
 
-    name_bound       = "bound";
-    name_over        = "over";
+    name_boundcheck  = "boundcheck";
+    name_overflow    = "overflow";
     name_switch      = "switch";
     name_unreachable = "unreachable";
     name_math        = "math";

@@ -71,7 +71,7 @@ public impl TextReader
 
     // Read one line of text.
     // Returns false at the end
-    #[Swag.Safety("bound|over", false)]
+    #[Swag.Safety("boundcheck|overflow", false)]
     func readLine(using self, result: ref String)->bool
     {
         result.clear()

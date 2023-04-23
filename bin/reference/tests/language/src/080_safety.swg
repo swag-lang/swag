@@ -8,7 +8,7 @@ Safety checks are disabled in 'fast-compile' and 'release'.
 */
 
 /**
-#[Swag.Safety("over", true)]
+#[Swag.Safety("overflow", true)]
 Swag will panic if some operators overflow and if we lose some bits during an integer conversion.
 
 Operators that can overflow are : + - * << >> and their equivalent += -= *= <<= >>=
@@ -69,7 +69,7 @@ Swag will also check that a cast does not lose information.
 /**
 Rember that you can disable these safety checks with the corresponding attribute.
 */
-#[Swag.Safety("over", false)]
+#[Swag.Safety("overflow", false)]
 #test
 {
     x := 255'u8
@@ -93,7 +93,7 @@ Swag will panic if a bad cast from 'any' is performed.
 }
 
 /**
-#[Swag.Safety("bound", true)]
+#[Swag.Safety("boundcheck", true)]
 Swag will panic if an index is out of range when dereferencing a sized value like an array, a slice, a string...
 */
 
