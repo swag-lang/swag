@@ -57,6 +57,8 @@ enum class X64Op : uint8_t
     XCHG  = 0x87,
     SHL   = 0xE0,
     SHR   = 0xE8,
+    SAL   = 0xF0,
+    SAR   = 0xF8,
     SHLEQ = 0x20,
     SHREQ = 0x28,
 };

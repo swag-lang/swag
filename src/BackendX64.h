@@ -39,9 +39,9 @@ struct BackendX64 : public Backend
     void     computeUnwind(const VectorNative<CPURegister>& unwindRegs, const VectorNative<uint32_t>& unwindOffsetRegs, uint32_t sizeStack, uint32_t offsetSubRSP, VectorNative<uint16_t>& unwind);
     void     emitOverflowSigned(X64Gen& pp, AstNode* node, const char* msg);
     void     emitOverflowUnsigned(X64Gen& pp, AstNode* node, const char* msg);
-    void     emitShiftArithmetic(X64Gen& pp, ByteCodeInstruction* ip, uint8_t numBits);
+    void     emitShiftRightArithmetic(X64Gen& pp, ByteCodeInstruction* ip, uint8_t numBits);
     void     emitShiftLogical(X64Gen& pp, ByteCodeInstruction* ip, uint8_t numBits, X64Op op);
-    void     emitShiftEqArithmetic(X64Gen& pp, ByteCodeInstruction* ip, uint8_t numBits);
+    void     emitShiftRightEqArithmetic(X64Gen& pp, ByteCodeInstruction* ip, uint8_t numBits);
     void     emitShiftEqLogical(X64Gen& pp, ByteCodeInstruction* ip, uint8_t numBits, X64Op op);
     void     emitInternalPanic(X64Gen& pp, AstNode* node, const char* msg);
     bool     emitFunctionBody(const BuildParameters& buildParameters, Module* moduleToGen, ByteCode* bc);

@@ -4,7 +4,7 @@
 #include "ByteCode.h"
 #include "LanguageSpec.h"
 
-void BackendLLVM::emitShiftArithmetic(llvm::LLVMContext& context, llvm::IRBuilder<>& builder, llvm::AllocaInst* allocR, ByteCodeInstruction* ip, uint8_t numBits)
+void BackendLLVM::emitShiftRightArithmetic(llvm::LLVMContext& context, llvm::IRBuilder<>& builder, llvm::AllocaInst* allocR, ByteCodeInstruction* ip, uint8_t numBits)
 {
     auto         iType = llvm::Type::getIntNTy(context, numBits);
     llvm::Value* r1    = getImmediateConstantA(context, builder, allocR, ip, numBits);
@@ -80,7 +80,7 @@ void BackendLLVM::emitShiftLogical(llvm::LLVMContext& context, llvm::IRBuilder<>
     }
 }
 
-void BackendLLVM::emitShiftEqArithmetic(llvm::LLVMContext& context, llvm::IRBuilder<>& builder, llvm::AllocaInst* allocR, ByteCodeInstruction* ip, uint8_t numBits)
+void BackendLLVM::emitShiftRightEqArithmetic(llvm::LLVMContext& context, llvm::IRBuilder<>& builder, llvm::AllocaInst* allocR, ByteCodeInstruction* ip, uint8_t numBits)
 {
     auto iType = llvm::Type::getIntNTy(context, numBits);
     auto r0    = GEP64(allocR, ip->a.u32);

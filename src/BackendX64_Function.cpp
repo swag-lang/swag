@@ -507,16 +507,16 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             break;
 
         case ByteCodeOp::BinOpShiftRightS8:
-            emitShiftArithmetic(pp, ip, 8);
+            emitShiftRightArithmetic(pp, ip, 8);
             break;
         case ByteCodeOp::BinOpShiftRightS16:
-            emitShiftArithmetic(pp, ip, 16);
+            emitShiftRightArithmetic(pp, ip, 16);
             break;
         case ByteCodeOp::BinOpShiftRightS32:
-            emitShiftArithmetic(pp, ip, 32);
+            emitShiftRightArithmetic(pp, ip, 32);
             break;
         case ByteCodeOp::BinOpShiftRightS64:
-            emitShiftArithmetic(pp, ip, 64);
+            emitShiftRightArithmetic(pp, ip, 64);
             break;
 
         case ByteCodeOp::BinOpXorU8:
@@ -791,16 +791,16 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             break;
 
         case ByteCodeOp::AffectOpShiftRightEqS8:
-            emitShiftEqArithmetic(pp, ip, 8);
+            emitShiftRightEqArithmetic(pp, ip, 8);
             break;
         case ByteCodeOp::AffectOpShiftRightEqS16:
-            emitShiftEqArithmetic(pp, ip, 16);
+            emitShiftRightEqArithmetic(pp, ip, 16);
             break;
         case ByteCodeOp::AffectOpShiftRightEqS32:
-            emitShiftEqArithmetic(pp, ip, 32);
+            emitShiftRightEqArithmetic(pp, ip, 32);
             break;
         case ByteCodeOp::AffectOpShiftRightEqS64:
-            emitShiftEqArithmetic(pp, ip, 64);
+            emitShiftRightEqArithmetic(pp, ip, 64);
             break;
 
             /////////////////////////////////////

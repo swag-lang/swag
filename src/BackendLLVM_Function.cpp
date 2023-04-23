@@ -1426,16 +1426,16 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             break;
 
         case ByteCodeOp::BinOpShiftRightS8:
-            emitShiftArithmetic(context, builder, allocR, ip, 8);
+            emitShiftRightArithmetic(context, builder, allocR, ip, 8);
             break;
         case ByteCodeOp::BinOpShiftRightS16:
-            emitShiftArithmetic(context, builder, allocR, ip, 16);
+            emitShiftRightArithmetic(context, builder, allocR, ip, 16);
             break;
         case ByteCodeOp::BinOpShiftRightS32:
-            emitShiftArithmetic(context, builder, allocR, ip, 32);
+            emitShiftRightArithmetic(context, builder, allocR, ip, 32);
             break;
         case ByteCodeOp::BinOpShiftRightS64:
-            emitShiftArithmetic(context, builder, allocR, ip, 64);
+            emitShiftRightArithmetic(context, builder, allocR, ip, 64);
             break;
 
         case ByteCodeOp::BinOpModuloS8:
@@ -2646,16 +2646,16 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             break;
 
         case ByteCodeOp::AffectOpShiftRightEqS8:
-            emitShiftEqArithmetic(context, builder, allocR, ip, 8);
+            emitShiftRightEqArithmetic(context, builder, allocR, ip, 8);
             break;
         case ByteCodeOp::AffectOpShiftRightEqS16:
-            emitShiftEqArithmetic(context, builder, allocR, ip, 16);
+            emitShiftRightEqArithmetic(context, builder, allocR, ip, 16);
             break;
         case ByteCodeOp::AffectOpShiftRightEqS32:
-            emitShiftEqArithmetic(context, builder, allocR, ip, 32);
+            emitShiftRightEqArithmetic(context, builder, allocR, ip, 32);
             break;
         case ByteCodeOp::AffectOpShiftRightEqS64:
-            emitShiftEqArithmetic(context, builder, allocR, ip, 64);
+            emitShiftRightEqArithmetic(context, builder, allocR, ip, 64);
             break;
 
             /////////////////////////////////////
