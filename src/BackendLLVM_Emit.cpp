@@ -4,10 +4,32 @@
 #include "ByteCode.h"
 #include "LanguageSpec.h"
 
-void BackendLLVM::emitShiftRightArithmetic(llvm::LLVMContext& context, llvm::IRBuilder<>& builder, llvm::AllocaInst* allocR, ByteCodeInstruction* ip, uint8_t numBits)
+void BackendLLVM::emitShiftRightArithmetic(llvm::LLVMContext& context, llvm::IRBuilder<>& builder, llvm::AllocaInst* allocR, ByteCodeInstruction* ip, uint32_t numBits)
 {
-    auto         iType = llvm::Type::getIntNTy(context, numBits);
-    llvm::Value* r1    = getImmediateConstantA(context, builder, allocR, ip, numBits);
+    llvm::Value* r1 = getImmediateConstantA(context, builder, allocR, ip, numBits);
+
+    llvm::Value* r2;
+    if (ip->flags & BCI_IMM_B)
+        r2 = builder.getIntN(numBits, min(ip->b.u32, numBits - 1));
+    else
+    {
+        r2           = builder.CreateLoad(I32_TY(), GEP64(allocR, ip->b.u32));
+        auto cond    = builder.CreateICmpULT(r2, builder.getInt32(numBits));
+        auto iftrue  = r2;
+        auto iffalse = builder.getInt32(numBits - 1);
+        r2           = builder.CreateSelect(cond, iftrue, iffalse);
+        r2           = builder.CreateIntCast(r2, IX_TY(numBits), false);
+    }
+
+    auto v0 = builder.CreateAShr(r1, r2);
+    auto r0 = GEP64_PTR_IX(allocR, ip->c.u32, numBits);
+    builder.CreateStore(v0, r0);
+}
+
+void BackendLLVM::emitShiftRightEqArithmetic(llvm::LLVMContext& context, llvm::IRBuilder<>& builder, llvm::AllocaInst* allocR, ByteCodeInstruction* ip, uint32_t numBits)
+{
+    auto iType = llvm::Type::getIntNTy(context, numBits);
+    auto r0    = GEP64(allocR, ip->a.u32);
 
     llvm::Value* r2;
     if (ip->flags & BCI_IMM_B)
@@ -31,12 +53,12 @@ void BackendLLVM::emitShiftRightArithmetic(llvm::LLVMContext& context, llvm::IRB
         c2           = builder.CreateSelect(cond, iftrue, iffalse);
     }
 
-    auto v0 = builder.CreateAShr(r1, c2);
-    auto r0 = GEP64_PTR_IX(allocR, ip->c.u32, numBits);
-    builder.CreateStore(v0, r0);
+    auto r1 = builder.CreateLoad(PTR_IX_TY(numBits), r0);
+    auto v0 = builder.CreateAShr(builder.CreateLoad(IX_TY(numBits), r1), c2);
+    builder.CreateStore(v0, r1);
 }
 
-void BackendLLVM::emitShiftLogical(llvm::LLVMContext& context, llvm::IRBuilder<>& builder, llvm::AllocaInst* allocR, ByteCodeInstruction* ip, uint8_t numBits, bool left)
+void BackendLLVM::emitShiftLogical(llvm::LLVMContext& context, llvm::IRBuilder<>& builder, llvm::AllocaInst* allocR, ByteCodeInstruction* ip, uint32_t numBits, bool left)
 {
     auto iType = llvm::Type::getIntNTy(context, numBits);
     auto r0    = GEP64_PTR_IX(allocR, ip->c.u32, numBits);
@@ -76,39 +98,7 @@ void BackendLLVM::emitShiftLogical(llvm::LLVMContext& context, llvm::IRBuilder<>
     }
 }
 
-void BackendLLVM::emitShiftRightEqArithmetic(llvm::LLVMContext& context, llvm::IRBuilder<>& builder, llvm::AllocaInst* allocR, ByteCodeInstruction* ip, uint8_t numBits)
-{
-    auto iType = llvm::Type::getIntNTy(context, numBits);
-    auto r0    = GEP64(allocR, ip->a.u32);
-
-    llvm::Value* r2;
-    if (ip->flags & BCI_IMM_B)
-        r2 = builder.getInt32(ip->b.u32 & (numBits - 1));
-    else
-        r2 = builder.CreateLoad(I32_TY(), GEP64(allocR, ip->b.u32));
-
-    auto c2    = builder.CreateIntCast(r2, iType, false);
-    auto shift = llvm::ConstantInt::get(iType, numBits - 1);
-
-    // Smart shift, imm mode overflow
-    if ((ip->flags & BCI_IMM_B) && ip->b.u32 >= numBits)
-        c2 = shift;
-
-    // Smart shift, dyn mode
-    else if (!(ip->flags & BCI_IMM_B))
-    {
-        auto cond    = builder.CreateICmpULT(r2, builder.getInt32(numBits));
-        auto iftrue  = c2;
-        auto iffalse = shift;
-        c2           = builder.CreateSelect(cond, iftrue, iffalse);
-    }
-
-    auto r1 = builder.CreateLoad(PTR_IX_TY(numBits), r0);
-    auto v0 = builder.CreateAShr(builder.CreateLoad(IX_TY(numBits), r1), c2);
-    builder.CreateStore(v0, r1);
-}
-
-void BackendLLVM::emitShiftEqLogical(llvm::LLVMContext& context, llvm::IRBuilder<>& builder, llvm::AllocaInst* allocR, ByteCodeInstruction* ip, uint8_t numBits, bool left)
+void BackendLLVM::emitShiftEqLogical(llvm::LLVMContext& context, llvm::IRBuilder<>& builder, llvm::AllocaInst* allocR, ByteCodeInstruction* ip, uint32_t numBits, bool left)
 {
     auto iType = llvm::Type::getIntNTy(context, numBits);
     auto r0    = GEP64(allocR, ip->a.u32);
@@ -179,7 +169,7 @@ void BackendLLVM::emitInternalPanic(const BuildParameters& buildParameters, Modu
     emitCall(buildParameters, moduleToGen, g_LangSpec->name__panic, allocR, allocT, {UINT32_MAX, UINT32_MAX, UINT32_MAX, UINT32_MAX}, {r1, r2, r3, r4});
 }
 
-llvm::Value* BackendLLVM::getImmediateConstantA(llvm::LLVMContext& context, llvm::IRBuilder<>& builder, llvm::AllocaInst* allocR, ByteCodeInstruction* ip, uint8_t numBits)
+llvm::Value* BackendLLVM::getImmediateConstantA(llvm::LLVMContext& context, llvm::IRBuilder<>& builder, llvm::AllocaInst* allocR, ByteCodeInstruction* ip, uint32_t numBits)
 {
     if (ip->flags & BCI_IMM_A)
     {
