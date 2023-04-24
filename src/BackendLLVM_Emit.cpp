@@ -72,7 +72,7 @@ void BackendLLVM::emitShiftRightEqArithmetic(llvm::LLVMContext& context, llvm::I
     }
 }
 
-void BackendLLVM::emitShiftLogical(llvm::LLVMContext& context, llvm::IRBuilder<>& builder, llvm::AllocaInst* allocR, ByteCodeInstruction* ip, uint32_t numBits, bool left)
+void BackendLLVM::emitShiftLogical(llvm::LLVMContext& context, llvm::IRBuilder<>& builder, llvm::AllocaInst* allocR, ByteCodeInstruction* ip, uint32_t numBits, bool left, bool isSigned)
 {
     if ((ip->flags & BCI_IMM_B) && ip->b.u32 >= numBits)
     {
@@ -101,7 +101,7 @@ void BackendLLVM::emitShiftLogical(llvm::LLVMContext& context, llvm::IRBuilder<>
     }
 }
 
-void BackendLLVM::emitShiftEqLogical(llvm::LLVMContext& context, llvm::IRBuilder<>& builder, llvm::AllocaInst* allocR, ByteCodeInstruction* ip, uint32_t numBits, bool left)
+void BackendLLVM::emitShiftEqLogical(llvm::LLVMContext& context, llvm::IRBuilder<>& builder, llvm::AllocaInst* allocR, ByteCodeInstruction* ip, uint32_t numBits, bool left, bool isSigned)
 {
     if ((ip->flags & BCI_IMM_B) && ip->b.u32 >= numBits)
     {

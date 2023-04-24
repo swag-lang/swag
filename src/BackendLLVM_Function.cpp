@@ -1396,33 +1396,41 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         }
 
         case ByteCodeOp::BinOpShiftLeftS8:
+            emitShiftLogical(context, builder, allocR, ip, 8, true, true);
+            break;
         case ByteCodeOp::BinOpShiftLeftU8:
-            emitShiftLogical(context, builder, allocR, ip, 8, true);
+            emitShiftLogical(context, builder, allocR, ip, 8, true, false);
             break;
         case ByteCodeOp::BinOpShiftLeftS16:
+            emitShiftLogical(context, builder, allocR, ip, 16, true, true);
+            break;
         case ByteCodeOp::BinOpShiftLeftU16:
-            emitShiftLogical(context, builder, allocR, ip, 16, true);
+            emitShiftLogical(context, builder, allocR, ip, 16, true, false);
             break;
         case ByteCodeOp::BinOpShiftLeftS32:
+            emitShiftLogical(context, builder, allocR, ip, 32, true, true);
+            break;
         case ByteCodeOp::BinOpShiftLeftU32:
-            emitShiftLogical(context, builder, allocR, ip, 32, true);
+            emitShiftLogical(context, builder, allocR, ip, 32, true, false);
             break;
         case ByteCodeOp::BinOpShiftLeftS64:
+            emitShiftLogical(context, builder, allocR, ip, 64, true, true);
+            break;
         case ByteCodeOp::BinOpShiftLeftU64:
-            emitShiftLogical(context, builder, allocR, ip, 64, true);
+            emitShiftLogical(context, builder, allocR, ip, 64, true, false);
             break;
 
         case ByteCodeOp::BinOpShiftRightU8:
-            emitShiftLogical(context, builder, allocR, ip, 8, false);
+            emitShiftLogical(context, builder, allocR, ip, 8, false, false);
             break;
         case ByteCodeOp::BinOpShiftRightU16:
-            emitShiftLogical(context, builder, allocR, ip, 16, false);
+            emitShiftLogical(context, builder, allocR, ip, 16, false, false);
             break;
         case ByteCodeOp::BinOpShiftRightU32:
-            emitShiftLogical(context, builder, allocR, ip, 32, false);
+            emitShiftLogical(context, builder, allocR, ip, 32, false, false);
             break;
         case ByteCodeOp::BinOpShiftRightU64:
-            emitShiftLogical(context, builder, allocR, ip, 64, false);
+            emitShiftLogical(context, builder, allocR, ip, 64, false, false);
             break;
 
         case ByteCodeOp::BinOpShiftRightS8:
@@ -2614,35 +2622,43 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             /////////////////////////////////////
 
         case ByteCodeOp::AffectOpShiftLeftEqS8:
+            emitShiftEqLogical(context, builder, allocR, ip, 8, true, true);
+            break;
         case ByteCodeOp::AffectOpShiftLeftEqU8:
-            emitShiftEqLogical(context, builder, allocR, ip, 8, true);
+            emitShiftEqLogical(context, builder, allocR, ip, 8, true, false);
             break;
         case ByteCodeOp::AffectOpShiftLeftEqS16:
+            emitShiftEqLogical(context, builder, allocR, ip, 16, true, true);
+            break;
         case ByteCodeOp::AffectOpShiftLeftEqU16:
-            emitShiftEqLogical(context, builder, allocR, ip, 16, true);
+            emitShiftEqLogical(context, builder, allocR, ip, 16, true, false);
             break;
         case ByteCodeOp::AffectOpShiftLeftEqS32:
+            emitShiftEqLogical(context, builder, allocR, ip, 32, true, true);
+            break;
         case ByteCodeOp::AffectOpShiftLeftEqU32:
-            emitShiftEqLogical(context, builder, allocR, ip, 32, true);
+            emitShiftEqLogical(context, builder, allocR, ip, 32, true, false);
             break;
         case ByteCodeOp::AffectOpShiftLeftEqS64:
+            emitShiftEqLogical(context, builder, allocR, ip, 64, true, true);
+            break;
         case ByteCodeOp::AffectOpShiftLeftEqU64:
-            emitShiftEqLogical(context, builder, allocR, ip, 64, true);
+            emitShiftEqLogical(context, builder, allocR, ip, 64, true, false);
             break;
 
             /////////////////////////////////////
 
         case ByteCodeOp::AffectOpShiftRightEqU8:
-            emitShiftEqLogical(context, builder, allocR, ip, 8, false);
+            emitShiftEqLogical(context, builder, allocR, ip, 8, false, false);
             break;
         case ByteCodeOp::AffectOpShiftRightEqU16:
-            emitShiftEqLogical(context, builder, allocR, ip, 16, false);
+            emitShiftEqLogical(context, builder, allocR, ip, 16, false, false);
             break;
         case ByteCodeOp::AffectOpShiftRightEqU32:
-            emitShiftEqLogical(context, builder, allocR, ip, 32, false);
+            emitShiftEqLogical(context, builder, allocR, ip, 32, false, false);
             break;
         case ByteCodeOp::AffectOpShiftRightEqU64:
-            emitShiftEqLogical(context, builder, allocR, ip, 64, false);
+            emitShiftEqLogical(context, builder, allocR, ip, 64, false, false);
             break;
 
         case ByteCodeOp::AffectOpShiftRightEqS8:
