@@ -202,6 +202,7 @@ void ModuleBuildJob::checkMissingErrors()
             {
                 if (g_CommandLine.testFilter.empty() || strstr(file->name, g_CommandLine.testFilter.c_str()))
                 {
+                    file->shouldHaveError = false;
                     Report::report({file, Err(Err0707)});
                 }
             }
@@ -210,6 +211,7 @@ void ModuleBuildJob::checkMissingErrors()
             {
                 if (g_CommandLine.testFilter.empty() || strstr(file->name, g_CommandLine.testFilter.c_str()))
                 {
+                    file->shouldHaveWarning = false;
                     Report::report({file, Err(Err0580)});
                 }
             }
