@@ -18,7 +18,6 @@ Operators that can overflow are : + - * << >> and their equivalent += -= *= <<= 
 {
     x := 255'u8
     // x += 1      // This would overflow, and panic, because we lose informations
-    // x <<= 1     // Same here, we lose some bits
 }
 
 /**
@@ -30,10 +29,6 @@ Add the ',over' modifier after the operation. This will disable safety checks.
     x := 255'u8
     x +=,over 1     // Overflow is expected, so this will wrap around
     @assert(x == 0)
-
-    y := 255'u8
-    y >>=,over 1    // Overflow is expected, so we lose a bit
-    @assert(y == 127)
 }
 
 /**
@@ -45,10 +40,6 @@ You can also use #[Swag.Overflow(true)] to authorize overflow on a more global s
     x := 255'u8
     x += 1     // No need for operator modifier ',over'
     @assert(x == 0)
-
-    y := 255'u8
-    y >>= 1    // Overflow is expected, so we lose a bit
-    @assert(y == 127)
 }
 
 /**

@@ -574,7 +574,7 @@ public impl Crc32
         currentChar := cast(const ^u8) current
         while length
         {
-            cur = (cur >>,over 8) ^ LookupTable[0, (cur & 0xFF) ^ currentChar[0]]
+            cur = (cur >> 8) ^ LookupTable[0, (cur & 0xFF) ^ currentChar[0]]
             currentChar += 1
             length -= 1
         }

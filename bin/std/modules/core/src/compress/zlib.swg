@@ -21,9 +21,9 @@ impl ZLib
         encoder.init(level)
         try encoder.compress(&result, buffer)
 
-        result.add(cast(u8) ((encoder.adler.adler >>,over 24) & 0xFF))
-        result.add(cast(u8) ((encoder.adler.adler >>,over 16) & 0xFF))
-        result.add(cast(u8) ((encoder.adler.adler >>,over 8) & 0xFF))
+        result.add(cast(u8) ((encoder.adler.adler >> 24) & 0xFF))
+        result.add(cast(u8) ((encoder.adler.adler >> 16) & 0xFF))
+        result.add(cast(u8) ((encoder.adler.adler >> 8) & 0xFF))
         result.add(cast(u8) (encoder.adler.adler & 0xFF))
 
         return result
@@ -42,7 +42,7 @@ impl ZLib
             throw "invalid compression mtd"
 
         // Window size
-        cinfo := (cmf >>,over 4) & 0xF
+        cinfo := (cmf >> 4) & 0xF
         if cinfo > 7
             throw "unsupported window size"
         winSize := 1'u32 << (cinfo + 8)
@@ -51,12 +51,12 @@ impl ZLib
         flg := bs.readU8()
 
         // Dict
-        fdict := (flg >>,over 5) & 1
+        fdict := (flg >> 5) & 1
         if fdict
             throw "unsupported dictionnary"
 
         // Compression level
-        //flevel := (flg >>,over 6) & 3
+        //flevel := (flg >> 6) & 3
 
         var result: retval
         result = try decoder.decompress(bs.remainReadToSlice(), winSize)

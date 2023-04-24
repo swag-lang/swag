@@ -46,7 +46,7 @@ func encodeRune(dest: [..] u16, src: rune)->u32
 
     case SurrSelf <= src and src <= 0x10FFFF:
         r := src - SurrSelf
-        dest[0] = Surr1 + ((r >>,over 10) & 0x3ff)
+        dest[0] = Surr1 + ((r >> 10) & 0x3ff)
         dest[1] = Surr2 + (r & 0x3ff)
         return 2
 

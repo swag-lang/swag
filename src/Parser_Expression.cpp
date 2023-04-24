@@ -728,13 +728,9 @@ bool Parser::doModifiers(Token& forNode, TokenId tokenId, uint32_t& mdfFlags)
             case TokenId::SymPlus:
             case TokenId::SymMinus:
             case TokenId::SymAsterisk:
-            case TokenId::SymLowerLower:
-            case TokenId::SymGreaterGreater:
             case TokenId::SymPlusEqual:
             case TokenId::SymMinusEqual:
             case TokenId::SymAsteriskEqual:
-            case TokenId::SymLowerLowerEqual:
-            case TokenId::SymGreaterGreaterEqual:
             case TokenId::KwdCast:
                 break;
             default:

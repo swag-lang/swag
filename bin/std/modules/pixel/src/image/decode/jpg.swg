@@ -407,7 +407,7 @@ impl Decoder
     #[Swag.Safety("", false)]
     mtd huffDecode(ph: *HuffTables)->s32
     {
-        symbol := ph.lookUp[(bitBuf >>,over 8) & 0xFF]
+        symbol := ph.lookUp[(bitBuf >> 8) & 0xFF]
         if symbol < 0
         {
             getBits2(8)
@@ -459,7 +459,7 @@ impl Decoder
                 while k < 64
                 {
                     s = huffDecode(ph)
-                    r := s >>,over 4
+                    r := s >> 4
                     s &= 0x0F
 
                     if s
@@ -842,7 +842,7 @@ impl Decoder
                 cr := s[128 + j]
 
                 d[2] = clamp(y +,over crr[cr])
-                d[1] = clamp(y +,over ((crg[cr] + cbg[cb]) >>,over 16))
+                d[1] = clamp(y +,over ((crg[cr] + cbg[cb]) >> 16))
                 d[0] = clamp(y +,over cbb[cb])
                 d += 3
             }
@@ -864,7 +864,7 @@ impl Decoder
         else
             y = pSampleBuf + 64 * 1 + (row & 7) * 8
 
-        c := pSampleBuf + 64 * 2 + (row >>,over 1) * 8
+        c := pSampleBuf + 64 * 2 + (row >> 1) * 8
         loop i: maxMcusPerRow..1
         {
             loop j: 8
@@ -872,7 +872,7 @@ impl Decoder
                 cb := c[0 + j]
                 cr := c[64 + j]
                 rc := crr[cr]
-                gc := ((crg[cr] + cbg[cb]) >>,over 16)
+                gc := ((crg[cr] + cbg[cb]) >> 16)
                 bc := cbb[cb]
                 yy := cast(s32) y[j]
 
@@ -909,7 +909,7 @@ impl Decoder
                     cb := c[0]
                     cr := c[64]
                     rc := crr[cr]
-                    gc := (crg[cr] + cbg[cb]) >>,over 16
+                    gc := (crg[cr] + cbg[cb]) >> 16
                     bc := cbb[cb]
                     yy := cast(s32) y[j << 1]
 
@@ -958,7 +958,7 @@ impl Decoder
                     cb := c[0]
                     cr := c[64]
                     rc := crr[cr]
-                    gc := (crg[cr] + cbg[cb]) >>,over 16
+                    gc := (crg[cr] + cbg[cb]) >> 16
                     bc := cbb[cb]
                     yy := cast(s32) y[j]
 
@@ -1090,8 +1090,8 @@ impl Decoder
         loop i: 255
         {
             k := (i * 2) - 256
-            crr[i] = (fix[0] * k + (1 << (16 - 1))) >>,over 16
-            cbb[i] = (fix[1] * k + (1 << (16 - 1))) >>,over 16
+            crr[i] = (fix[0] * k + (1 << (16 - 1))) >> 16
+            cbb[i] = (fix[1] * k + (1 << (16 - 1))) >> 16
             crg[i] = (fix[2] * k)
             cbg[i] = (fix[3] * k + (1 << (16 - 1)))
         }
@@ -1129,12 +1129,12 @@ impl Decoder
     mtd fixInBuffer()
     {
         if bitsLeft == 16
-            stuffChar(cast(u8) ((bitBuf >>,over 16) & 0xFF))
+            stuffChar(cast(u8) ((bitBuf >> 16) & 0xFF))
         if bitsLeft >= 8
-            stuffChar(cast(u8) ((bitBuf >>,over 24) & 0xFF))
+            stuffChar(cast(u8) ((bitBuf >> 24) & 0xFF))
 
         stuffChar(cast(u8) (bitBuf & 0xFF))
-        stuffChar(cast(u8) ((bitBuf >>,over 8) & 0xFF))
+        stuffChar(cast(u8) ((bitBuf >> 8) & 0xFF))
         bitsLeft = 16
 
         getBits2(16)
@@ -1179,7 +1179,7 @@ impl Decoder
                 p, cde += 1
             }
 
-            cde <<=,over 1
+            cde <<= 1
             si += 1
         }
 
@@ -1206,7 +1206,7 @@ impl Decoder
             }
             else
             {
-                subtree := (cde >>,over (codeSize - 8)) & 0xFF
+                subtree := (cde >> (codeSize - 8)) & 0xFF
                 currentEntry := hs.lookUp[subtree]
                 if currentEntry == 0
                 {
@@ -1859,7 +1859,7 @@ impl Decoder
         while left
         {
             n    := getBits1(8)
-            prec := n >>,over 4
+            prec := n >> 4
             n &= 0x0F
             if n >= MaxQuantTables throw "bad dqt table"
 
@@ -1937,7 +1937,7 @@ impl Decoder
                 throw "bad sos comp id"
 
             compList[i]   = ci
-            compDcTab[ci] = (c >>,over 4) & 15
+            compDcTab[ci] = (c >> 4) & 15
             compAcTab[ci] = (c & 15) + (MaxHuffTables >> 1)
         }
 

@@ -3,5 +3,5 @@
 #test
 {
     x := 0
-    x <<=,over,over 1
+    x <<=,over 1
 }

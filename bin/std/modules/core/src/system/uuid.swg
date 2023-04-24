@@ -63,45 +63,45 @@ impl UUID
         const Tbl = "0123456789abcdef"
 
         result[0] = Tbl[(val8[0] & 0xF)]
-        result[1] = Tbl[(val8[0] >>,over 4)]
+        result[1] = Tbl[(val8[0] >> 4)]
         result[2] = Tbl[(val8[1] & 0xF)]
-        result[3] = Tbl[(val8[1] >>,over 4)]
+        result[3] = Tbl[(val8[1] >> 4)]
         result[4] = Tbl[(val8[2] & 0xF)]
-        result[5] = Tbl[(val8[2] >>,over 4)]
+        result[5] = Tbl[(val8[2] >> 4)]
         result[6] = Tbl[(val8[3] & 0xF)]
-        result[7] = Tbl[(val8[3] >>,over 4)]
+        result[7] = Tbl[(val8[3] >> 4)]
         result[8] = "-"'u8
 
         result[9] = Tbl[(val8[4] & 0xF)]
-        result[10] = Tbl[(val8[4] >>,over 4)]
+        result[10] = Tbl[(val8[4] >> 4)]
         result[11] = Tbl[(val8[5] & 0xF)]
-        result[12] = Tbl[(val8[5] >>,over 4)]
+        result[12] = Tbl[(val8[5] >> 4)]
         result[13] = "-"'u8
 
         result[14] = Tbl[(val8[6] & 0xF)]
-        result[15] = Tbl[(val8[6] >>,over 4)]
+        result[15] = Tbl[(val8[6] >> 4)]
         result[16] = Tbl[(val8[7] & 0xF)]
-        result[17] = Tbl[(val8[7] >>,over 4)]
+        result[17] = Tbl[(val8[7] >> 4)]
         result[18] = "-"'u8
 
         result[19] = Tbl[(val8[8] & 0xF)]
-        result[20] = Tbl[(val8[8] >>,over 4)]
+        result[20] = Tbl[(val8[8] >> 4)]
         result[21] = Tbl[(val8[9] & 0xF)]
-        result[22] = Tbl[(val8[9] >>,over 4)]
+        result[22] = Tbl[(val8[9] >> 4)]
         result[23] = "-"'u8
 
         result[24] = Tbl[(val8[10] & 0xF)]
-        result[25] = Tbl[(val8[10] >>,over 4)]
+        result[25] = Tbl[(val8[10] >> 4)]
         result[26] = Tbl[(val8[11] & 0xF)]
-        result[27] = Tbl[(val8[11] >>,over 4)]
+        result[27] = Tbl[(val8[11] >> 4)]
         result[28] = Tbl[(val8[12] & 0xF)]
-        result[29] = Tbl[(val8[12] >>,over 4)]
+        result[29] = Tbl[(val8[12] >> 4)]
         result[30] = Tbl[(val8[13] & 0xF)]
-        result[31] = Tbl[(val8[13] >>,over 4)]
+        result[31] = Tbl[(val8[13] >> 4)]
         result[32] = Tbl[(val8[14] & 0xF)]
-        result[33] = Tbl[(val8[14] >>,over 4)]
+        result[33] = Tbl[(val8[14] >> 4)]
         result[34] = Tbl[(val8[15] & 0xF)]
-        result[35] = Tbl[(val8[15] >>,over 4)]
+        result[35] = Tbl[(val8[15] >> 4)]
     }
 
     // Convert uuid to a string

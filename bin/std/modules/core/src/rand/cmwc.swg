@@ -32,7 +32,7 @@ impl CMWC4096
 
 	    i = (i + 1) & 4095
     	t := a * q[i] + c
-	    c = cast(u32) (t >>,over 32)
+	    c = cast(u32) (t >> 32)
 	    x := t + c
 	    if x < c
             x, c += 1

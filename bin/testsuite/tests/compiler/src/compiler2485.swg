@@ -1,4 +1,4 @@
-using Swag
+/*using Swag
 
 var G = 0
 func panic(msg: string, loc: Swag.SourceCodeLocation)
@@ -46,4 +46,4 @@ func panic(msg: string, loc: Swag.SourceCodeLocation)
     }
 
     @assert(G == 6)
-}
+}*/

@@ -58,10 +58,10 @@ impl Decoder
                     switch bpp
                     {
                     case 24:
-                        dest[2] = cast,bit(u8) (val >>,over 16)
+                        dest[2] = cast,bit(u8) (val >> 16)
                         fallthrough
                     case 16:
-                        dest[1] = cast,bit(u8) (val >>,over 8)
+                        dest[1] = cast,bit(u8) (val >> 8)
                         fallthrough
                     case 8:
                         dest[0] = cast,bit(u8) val

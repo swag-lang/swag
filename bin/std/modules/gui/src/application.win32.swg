@@ -69,7 +69,7 @@ impl Application
             mdf |= .Control
         if msg.lParam & MOD_SHIFT
             mdf |= .Shift
-        key := Keyboard.virtualKeyToKey(acast (msg.lParam >>,over 16))
+        key := Keyboard.virtualKeyToKey(acast (msg.lParam >> 16))
 
         (id, target) := getHotKeyShortcut(mdf, key)
         if id and target

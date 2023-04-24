@@ -22,8 +22,8 @@ impl BitArray
     mtd reserve(maxBits: u64)
     {
         count = maxBits
-        capacity = maxBits >>,over 5
-        if capacity <<,over 5 < maxBits
+        capacity = maxBits >> 5
+        if capacity << 5 < maxBits
             capacity += 1
 
         capacity *= 4

@@ -446,27 +446,6 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
             return notAllowed(context, node, leftTypeInfo);
         }
 
-        // Shift operand too big
-        if (right->flags & AST_VALUE_COMPUTED)
-        {
-            if (node->sourceFile->module->mustEmitSafetyOverflow(node))
-            {
-                if (right->computedValue->reg.u32 >= left->typeInfo->sizeOf * 8)
-                {
-                    if (tokenId == TokenId::SymLowerLowerEqual)
-                    {
-                        auto msg = ByteCodeGenJob::safetyMsg(SafetyMsg::ShiftLeft, left->typeInfo);
-                        return context->report({right, msg});
-                    }
-                    else
-                    {
-                        auto msg = ByteCodeGenJob::safetyMsg(SafetyMsg::ShiftRight, left->typeInfo);
-                        return context->report({right, msg});
-                    }
-                }
-            }
-        }
-
         break;
     }
 

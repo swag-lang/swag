@@ -309,33 +309,3 @@ inline bool mulWillOverflow(ByteCodeInstruction* ip, AstNode* node, uint64_t x, 
     }
     return false;
 }
-
-template<typename T, bool isSigned>
-inline bool leftShiftWillOverflow(ByteCodeInstruction* ip, AstNode* node, T left, uint32_t right)
-{
-    if (!overflowIsEnabled(ip, node))
-    {
-        if (right >= sizeof(T) * 8)
-            return true;
-        if (isSigned)
-        {
-            uint64_t bt = 1ULL << ((sizeof(T) * 8) - 1);
-            if (((left << right) & bt) != (left & bt))
-                return false;
-        }
-    }
-
-    return false;
-}
-
-template<typename T, bool isSigned>
-inline bool rightShiftWillOverflow(ByteCodeInstruction* ip, AstNode* node, T left, uint32_t right)
-{
-    if (!overflowIsEnabled(ip, node))
-    {
-        if (right >= sizeof(T) * 8)
-            return true;
-    }
-
-    return false;
-}

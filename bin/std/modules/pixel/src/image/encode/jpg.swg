@@ -402,7 +402,7 @@ impl Encoder
     #[Swag.Inline]
     mtd writeWord(w: u16)
     {
-        stream.addNative(cast(u8) (w >>,over 8))
+        stream.addNative(cast(u8) (w >> 8))
         stream.addNative(cast(u8) (w & 0xFF))
     }
 

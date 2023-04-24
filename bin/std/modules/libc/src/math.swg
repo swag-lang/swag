@@ -12,7 +12,7 @@ const HUGE_VAL  = cast(f64) INFINITY
 const MATH_ERRNO     = 1
 const MATH_ERREXCEPT = 2
 
-const FP_ILOGBNAN = -1 - cast(s32) ((~0'u32) >>,over 1)
+const FP_ILOGBNAN = -1 - cast(s32) ((~0'u32) >> 1)
 const FP_ILOGB0   = FP_ILOGBNAN
 
 #[Foreign(ForeignLib), Discardable]
@@ -149,13 +149,13 @@ const FP_SUBNORMAL  = 4
 func fpclassify(x: f64)->s32
 {
 	u := cast,bit(u64) x
-    e := (u >>,over 52) & 0x7ff
+    e := (u >> 52) & 0x7ff
 	switch e
     {
 	case 0:
-        return (u <<,over 1) ? FP_SUBNORMAL : FP_ZERO
+        return (u << 1) ? FP_SUBNORMAL : FP_ZERO
 	case 0x7ff:
-        return (u <<,over 12) ? FP_NAN : FP_INFINITE
+        return (u << 12) ? FP_NAN : FP_INFINITE
 	}
 
 	return FP_NORMAL
@@ -165,13 +165,13 @@ func fpclassify(x: f64)->s32
 func fpclassifyf(x: f32)->s32
 {
 	u := cast,bit(u32) x
-    e := (u >>,over 23) & 0xff
+    e := (u >> 23) & 0xff
 	switch e
     {
 	case 0:
-        return (u <<,over 1) ? FP_SUBNORMAL : FP_ZERO
+        return (u << 1) ? FP_SUBNORMAL : FP_ZERO
 	case 0x7ff:
-        return (u <<,over 9) ? FP_NAN : FP_INFINITE
+        return (u << 9) ? FP_NAN : FP_INFINITE
 	}
 
 	return FP_NORMAL
@@ -179,8 +179,8 @@ func fpclassifyf(x: f32)->s32
 
 #[Inline]
 {
-    func signbit(x: f32) => cast(s32) (cast,bit(u32) x >>,over 31)
-    func signbit(x: f64)  => cast(s32) (cast,bit(u64) x >>,over 63)
+    func signbit(x: f32) => cast(s32) (cast,bit(u32) x >> 31)
+    func signbit(x: f64)  => cast(s32) (cast,bit(u64) x >> 63)
 
     func isunordered(x, y: f32) => isnan(x) or isnan(y)
     func isunordered(x, y: f64) => isnan(x) or isnan(y)

@@ -114,35 +114,33 @@
     }                                                                  \
     BINOPEQ(__cast, __op, __reg);
 
-#define BINOPEQ_SHIFT_OVF(__cast, __reg, __func, __isSigned, __ovf, __msg, __type)                                                \
-    SWAG_CHECK(getRegister(ra, cxt, ip->a.u32));                                                                                  \
-    SWAG_CHECK(checkNotNull(cxt, ra));                                                                                            \
-    if (ra->kind == ValueKind::StackAddr)                                                                                         \
-    {                                                                                                                             \
-        SWAG_CHECK(getStackAddress(addr, cxt, ra->reg.u32, sizeof(vb.reg.__reg)));                                                \
-        SWAG_CHECK(checkStackInitialized(cxt, addr, sizeof(vb.reg.__reg), ra->overload));                                         \
-        SWAG_CHECK(getStackValue(va, cxt, addr, sizeof(vb.reg.__reg)));                                                           \
-        SWAG_CHECK(getImmediateB(vb, cxt, ip));                                                                                   \
-        if (va.kind == ValueKind::Unknown || vb.kind == ValueKind::Unknown)                                                       \
-            setStackValue(cxt, addr, sizeof(vb.reg.__reg), ValueKind::Unknown);                                                   \
-        else                                                                                                                      \
-        {                                                                                                                         \
-            SWAG_CHECK(checkOverflow(cxt, !__ovf<__cast, __isSigned>(ip, ip->node, *(__cast*) addr, vb.reg.u32), __msg, __type)); \
-            Register r;                                                                                                           \
-            r.__reg = *(__cast*) addr;                                                                                            \
-            __func(&r, r, vb.reg, sizeof(vb.reg.__reg) * 8, __isSigned);                                                          \
-            *(__cast*) addr = r.__reg;                                                                                            \
-        }                                                                                                                         \
+#define BINOPEQ_SHIFT(__cast, __reg, __func, __isSigned)                                  \
+    SWAG_CHECK(getRegister(ra, cxt, ip->a.u32));                                          \
+    SWAG_CHECK(checkNotNull(cxt, ra));                                                    \
+    if (ra->kind == ValueKind::StackAddr)                                                 \
+    {                                                                                     \
+        SWAG_CHECK(getStackAddress(addr, cxt, ra->reg.u32, sizeof(vb.reg.__reg)));        \
+        SWAG_CHECK(checkStackInitialized(cxt, addr, sizeof(vb.reg.__reg), ra->overload)); \
+        SWAG_CHECK(getStackValue(va, cxt, addr, sizeof(vb.reg.__reg)));                   \
+        SWAG_CHECK(getImmediateB(vb, cxt, ip));                                           \
+        if (va.kind == ValueKind::Unknown || vb.kind == ValueKind::Unknown)               \
+            setStackValue(cxt, addr, sizeof(vb.reg.__reg), ValueKind::Unknown);           \
+        else                                                                              \
+        {                                                                                 \
+            Register r;                                                                   \
+            r.__reg = *(__cast*) addr;                                                    \
+            __func(&r, r, vb.reg, sizeof(vb.reg.__reg) * 8, __isSigned);                  \
+            *(__cast*) addr = r.__reg;                                                    \
+        }                                                                                 \
     }
 
-#define BINOP_SHIFT_OVF(__cast, __reg, __func, __isSigned, __ovf, __msg, __type)                                            \
+#define BINOP_SHIFT(__cast, __reg, __func, __isSigned)                                                                      \
     SWAG_CHECK(getImmediateA(va, cxt, ip));                                                                                 \
     SWAG_CHECK(getImmediateB(vb, cxt, ip));                                                                                 \
     SWAG_CHECK(getRegister(rc, cxt, ip->c.u32));                                                                            \
     rc->kind = va.kind == ValueKind::Constant && vb.kind == ValueKind::Constant ? ValueKind::Constant : ValueKind::Unknown; \
     if (rc->kind == ValueKind::Constant)                                                                                    \
     {                                                                                                                       \
-        SWAG_CHECK(checkOverflow(cxt, !__ovf<__cast, __isSigned>(ip, ip->node, va.reg.__reg, vb.reg.u32), __msg, __type));  \
         __func(&rc->reg, va.reg, vb.reg, sizeof(va.reg.__reg) * 8, __isSigned);                                             \
     }                                                                                                                       \
     setConstant(cxt, rc->kind, ip, rc->reg.u64, ConstantKind::SetImmediateC);
@@ -1408,53 +1406,53 @@ static bool optimizePassSanityStack(ByteCodeOptContext* context, Context& cxt)
             break;
 
         case ByteCodeOp::AffectOpShiftLeftEqS8:
-            BINOPEQ_SHIFT_OVF(uint8_t, u8, ByteCodeRun::executeLeftShift, true, leftShiftWillOverflow, SafetyMsg::ShiftLeft, g_TypeMgr->typeInfoS8);
+            BINOPEQ_SHIFT(uint8_t, u8, ByteCodeRun::executeLeftShift, true);
             break;
         case ByteCodeOp::AffectOpShiftLeftEqS16:
-            BINOPEQ_SHIFT_OVF(uint16_t, u16, ByteCodeRun::executeLeftShift, true, leftShiftWillOverflow, SafetyMsg::ShiftLeft, g_TypeMgr->typeInfoS16);
+            BINOPEQ_SHIFT(uint16_t, u16, ByteCodeRun::executeLeftShift, true);
             break;
         case ByteCodeOp::AffectOpShiftLeftEqS32:
-            BINOPEQ_SHIFT_OVF(uint32_t, u32, ByteCodeRun::executeLeftShift, true, leftShiftWillOverflow, SafetyMsg::ShiftLeft, g_TypeMgr->typeInfoS32);
+            BINOPEQ_SHIFT(uint32_t, u32, ByteCodeRun::executeLeftShift, true);
             break;
         case ByteCodeOp::AffectOpShiftLeftEqS64:
-            BINOPEQ_SHIFT_OVF(uint64_t, u64, ByteCodeRun::executeLeftShift, true, leftShiftWillOverflow, SafetyMsg::ShiftLeft, g_TypeMgr->typeInfoS64);
+            BINOPEQ_SHIFT(uint64_t, u64, ByteCodeRun::executeLeftShift, true);
             break;
         case ByteCodeOp::AffectOpShiftLeftEqU8:
-            BINOPEQ_SHIFT_OVF(uint8_t, u8, ByteCodeRun::executeLeftShift, false, leftShiftWillOverflow, SafetyMsg::ShiftLeft, g_TypeMgr->typeInfoU8);
+            BINOPEQ_SHIFT(uint8_t, u8, ByteCodeRun::executeLeftShift, false);
             break;
         case ByteCodeOp::AffectOpShiftLeftEqU16:
-            BINOPEQ_SHIFT_OVF(uint16_t, u16, ByteCodeRun::executeLeftShift, false, leftShiftWillOverflow, SafetyMsg::ShiftLeft, g_TypeMgr->typeInfoU16);
+            BINOPEQ_SHIFT(uint16_t, u16, ByteCodeRun::executeLeftShift, false);
             break;
         case ByteCodeOp::AffectOpShiftLeftEqU32:
-            BINOPEQ_SHIFT_OVF(uint32_t, u32, ByteCodeRun::executeLeftShift, false, leftShiftWillOverflow, SafetyMsg::ShiftLeft, g_TypeMgr->typeInfoU32);
+            BINOPEQ_SHIFT(uint32_t, u32, ByteCodeRun::executeLeftShift, false);
             break;
         case ByteCodeOp::AffectOpShiftLeftEqU64:
-            BINOPEQ_SHIFT_OVF(uint64_t, u64, ByteCodeRun::executeLeftShift, false, leftShiftWillOverflow, SafetyMsg::ShiftLeft, g_TypeMgr->typeInfoU64);
+            BINOPEQ_SHIFT(uint64_t, u64, ByteCodeRun::executeLeftShift, false);
             break;
 
         case ByteCodeOp::AffectOpShiftRightEqS8:
-            BINOPEQ_SHIFT_OVF(int8_t, s8, ByteCodeRun::executeRightShift, true, rightShiftWillOverflow, SafetyMsg::ShiftRight, g_TypeMgr->typeInfoS8);
+            BINOPEQ_SHIFT(int8_t, s8, ByteCodeRun::executeRightShift, true);
             break;
         case ByteCodeOp::AffectOpShiftRightEqS16:
-            BINOPEQ_SHIFT_OVF(int16_t, s16, ByteCodeRun::executeRightShift, true, rightShiftWillOverflow, SafetyMsg::ShiftRight, g_TypeMgr->typeInfoS16);
+            BINOPEQ_SHIFT(int16_t, s16, ByteCodeRun::executeRightShift, true);
             break;
         case ByteCodeOp::AffectOpShiftRightEqS32:
-            BINOPEQ_SHIFT_OVF(int32_t, s32, ByteCodeRun::executeRightShift, true, rightShiftWillOverflow, SafetyMsg::ShiftRight, g_TypeMgr->typeInfoS32);
+            BINOPEQ_SHIFT(int32_t, s32, ByteCodeRun::executeRightShift, true);
             break;
         case ByteCodeOp::AffectOpShiftRightEqS64:
-            BINOPEQ_SHIFT_OVF(int64_t, s64, ByteCodeRun::executeRightShift, true, rightShiftWillOverflow, SafetyMsg::ShiftRight, g_TypeMgr->typeInfoS64);
+            BINOPEQ_SHIFT(int64_t, s64, ByteCodeRun::executeRightShift, true);
             break;
         case ByteCodeOp::AffectOpShiftRightEqU8:
-            BINOPEQ_SHIFT_OVF(uint8_t, u8, ByteCodeRun::executeRightShift, false, rightShiftWillOverflow, SafetyMsg::ShiftRight, g_TypeMgr->typeInfoU8);
+            BINOPEQ_SHIFT(uint8_t, u8, ByteCodeRun::executeRightShift, false);
             break;
         case ByteCodeOp::AffectOpShiftRightEqU16:
-            BINOPEQ_SHIFT_OVF(uint16_t, u16, ByteCodeRun::executeRightShift, false, rightShiftWillOverflow, SafetyMsg::ShiftRight, g_TypeMgr->typeInfoU16);
+            BINOPEQ_SHIFT(uint16_t, u16, ByteCodeRun::executeRightShift, false);
             break;
         case ByteCodeOp::AffectOpShiftRightEqU32:
-            BINOPEQ_SHIFT_OVF(uint32_t, u32, ByteCodeRun::executeRightShift, false, rightShiftWillOverflow, SafetyMsg::ShiftRight, g_TypeMgr->typeInfoU32);
+            BINOPEQ_SHIFT(uint32_t, u32, ByteCodeRun::executeRightShift, false);
             break;
         case ByteCodeOp::AffectOpShiftRightEqU64:
-            BINOPEQ_SHIFT_OVF(uint64_t, u64, ByteCodeRun::executeRightShift, false, rightShiftWillOverflow, SafetyMsg::ShiftRight, g_TypeMgr->typeInfoU64);
+            BINOPEQ_SHIFT(uint64_t, u64, ByteCodeRun::executeRightShift, false);
             break;
 
         case ByteCodeOp::NegBool:
@@ -1935,53 +1933,53 @@ static bool optimizePassSanityStack(ByteCodeOptContext* context, Context& cxt)
             break;
 
         case ByteCodeOp::BinOpShiftLeftS8:
-            BINOP_SHIFT_OVF(uint8_t, u8, ByteCodeRun::executeLeftShift, true, leftShiftWillOverflow, SafetyMsg::ShiftLeft, g_TypeMgr->typeInfoS8);
+            BINOP_SHIFT(uint8_t, u8, ByteCodeRun::executeLeftShift, true);
             break;
         case ByteCodeOp::BinOpShiftLeftS16:
-            BINOP_SHIFT_OVF(uint16_t, u16, ByteCodeRun::executeLeftShift, true, leftShiftWillOverflow, SafetyMsg::ShiftLeft, g_TypeMgr->typeInfoS16);
+            BINOP_SHIFT(uint16_t, u16, ByteCodeRun::executeLeftShift, true);
             break;
         case ByteCodeOp::BinOpShiftLeftS32:
-            BINOP_SHIFT_OVF(uint32_t, u32, ByteCodeRun::executeLeftShift, true, leftShiftWillOverflow, SafetyMsg::ShiftLeft, g_TypeMgr->typeInfoS32);
+            BINOP_SHIFT(uint32_t, u32, ByteCodeRun::executeLeftShift, true);
             break;
         case ByteCodeOp::BinOpShiftLeftS64:
-            BINOP_SHIFT_OVF(uint64_t, u64, ByteCodeRun::executeLeftShift, true, leftShiftWillOverflow, SafetyMsg::ShiftLeft, g_TypeMgr->typeInfoS64);
+            BINOP_SHIFT(uint64_t, u64, ByteCodeRun::executeLeftShift, true);
             break;
         case ByteCodeOp::BinOpShiftLeftU8:
-            BINOP_SHIFT_OVF(uint8_t, u8, ByteCodeRun::executeLeftShift, false, leftShiftWillOverflow, SafetyMsg::ShiftLeft, g_TypeMgr->typeInfoU8);
+            BINOP_SHIFT(uint8_t, u8, ByteCodeRun::executeLeftShift, false);
             break;
         case ByteCodeOp::BinOpShiftLeftU16:
-            BINOP_SHIFT_OVF(uint16_t, u16, ByteCodeRun::executeLeftShift, false, leftShiftWillOverflow, SafetyMsg::ShiftLeft, g_TypeMgr->typeInfoU16);
+            BINOP_SHIFT(uint16_t, u16, ByteCodeRun::executeLeftShift, false);
             break;
         case ByteCodeOp::BinOpShiftLeftU32:
-            BINOP_SHIFT_OVF(uint32_t, u32, ByteCodeRun::executeLeftShift, false, leftShiftWillOverflow, SafetyMsg::ShiftLeft, g_TypeMgr->typeInfoU32);
+            BINOP_SHIFT(uint32_t, u32, ByteCodeRun::executeLeftShift, false);
             break;
         case ByteCodeOp::BinOpShiftLeftU64:
-            BINOP_SHIFT_OVF(uint64_t, u64, ByteCodeRun::executeLeftShift, false, leftShiftWillOverflow, SafetyMsg::ShiftLeft, g_TypeMgr->typeInfoU64);
+            BINOP_SHIFT(uint64_t, u64, ByteCodeRun::executeLeftShift, false);
             break;
 
         case ByteCodeOp::BinOpShiftRightS8:
-            BINOP_SHIFT_OVF(int8_t, s8, ByteCodeRun::executeRightShift, true, rightShiftWillOverflow, SafetyMsg::ShiftRight, g_TypeMgr->typeInfoS8);
+            BINOP_SHIFT(int8_t, s8, ByteCodeRun::executeRightShift, true);
             break;
         case ByteCodeOp::BinOpShiftRightS16:
-            BINOP_SHIFT_OVF(int16_t, s16, ByteCodeRun::executeRightShift, true, rightShiftWillOverflow, SafetyMsg::ShiftRight, g_TypeMgr->typeInfoS16);
+            BINOP_SHIFT(int16_t, s16, ByteCodeRun::executeRightShift, true);
             break;
         case ByteCodeOp::BinOpShiftRightS32:
-            BINOP_SHIFT_OVF(int32_t, s32, ByteCodeRun::executeRightShift, true, rightShiftWillOverflow, SafetyMsg::ShiftRight, g_TypeMgr->typeInfoS32);
+            BINOP_SHIFT(int32_t, s32, ByteCodeRun::executeRightShift, true);
             break;
         case ByteCodeOp::BinOpShiftRightS64:
-            BINOP_SHIFT_OVF(int64_t, s64, ByteCodeRun::executeRightShift, true, rightShiftWillOverflow, SafetyMsg::ShiftRight, g_TypeMgr->typeInfoS64);
+            BINOP_SHIFT(int64_t, s64, ByteCodeRun::executeRightShift, true);
             break;
         case ByteCodeOp::BinOpShiftRightU8:
-            BINOP_SHIFT_OVF(uint8_t, u8, ByteCodeRun::executeRightShift, false, rightShiftWillOverflow, SafetyMsg::ShiftRight, g_TypeMgr->typeInfoU8);
+            BINOP_SHIFT(uint8_t, u8, ByteCodeRun::executeRightShift, false);
             break;
         case ByteCodeOp::BinOpShiftRightU16:
-            BINOP_SHIFT_OVF(uint16_t, u16, ByteCodeRun::executeRightShift, false, rightShiftWillOverflow, SafetyMsg::ShiftRight, g_TypeMgr->typeInfoU16);
+            BINOP_SHIFT(uint16_t, u16, ByteCodeRun::executeRightShift, false);
             break;
         case ByteCodeOp::BinOpShiftRightU32:
-            BINOP_SHIFT_OVF(uint32_t, u32, ByteCodeRun::executeRightShift, false, rightShiftWillOverflow, SafetyMsg::ShiftRight, g_TypeMgr->typeInfoU32);
+            BINOP_SHIFT(uint32_t, u32, ByteCodeRun::executeRightShift, false);
             break;
         case ByteCodeOp::BinOpShiftRightU64:
-            BINOP_SHIFT_OVF(uint64_t, u64, ByteCodeRun::executeRightShift, false, rightShiftWillOverflow, SafetyMsg::ShiftRight, g_TypeMgr->typeInfoU64);
+            BINOP_SHIFT(uint64_t, u64, ByteCodeRun::executeRightShift, false);
             break;
 
         case ByteCodeOp::InvertU8:

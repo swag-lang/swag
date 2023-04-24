@@ -66,7 +66,7 @@ public impl Font
     private func mulFix(a, b: s32)->s32
     {
         ab := cast(s64) a * cast(s64) b
-        return cast(s32) (((ab + 0x8000 - (ab < 0 ? 1 : 0)) >>,over 16))
+        return cast(s32) (((ab + 0x8000 - (ab < 0 ? 1 : 0)) >> 16))
     }
 
     // Release the given font

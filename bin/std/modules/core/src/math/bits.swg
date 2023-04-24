@@ -52,7 +52,7 @@ func reverse(x: u8)->u8
 #[ConstExpr]
 func reverse(x: u16)->u16
 {
-	return cast(u16) Rev8Arr[x >>,over 8] | cast(u16) (Rev8Arr[x & 0xFF]) <<,over 8
+	return cast(u16) Rev8Arr[x >> 8] | cast(u16) (Rev8Arr[x & 0xFF]) << 8
 }
 
 #[Safety("overflow", false)]

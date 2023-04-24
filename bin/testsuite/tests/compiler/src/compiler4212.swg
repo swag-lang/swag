@@ -24,17 +24,17 @@ func(T) toto(y, z: T)->T
     @assert(toto'u16(6) == 2)
     @assert(toto'u16(9, 3) == 3)
     @assert(toto'u16(255, 2) == 127)
-    @assert(toto'u16(0xFFFF, 2) == 0xFFFF >>,over 1)
+    @assert(toto'u16(0xFFFF, 2) == 0xFFFF >> 1)
 
     @assert(toto'u32(6) == 2)
     @assert(toto'u32(9, 3) == 3)
     @assert(toto'u32(255, 2) == 127)
-    @assert(toto'u32(0xFFFF_FFFF, 2) == 0xFFFF_FFFF >>,over 1)
+    @assert(toto'u32(0xFFFF_FFFF, 2) == 0xFFFF_FFFF >> 1)
 
     @assert(toto'u64(6) == 2)
     @assert(toto'u64(9, 3) == 3)
     @assert(toto'u64(255, 2) == 127)
-    @assert(toto'u64(0xFFFF_FFFF_FFFF_FFFF, 2) == 0xFFFF_FFFF_FFFF_FFFF >>,over 1)
+    @assert(toto'u64(0xFFFF_FFFF_FFFF_FFFF, 2) == 0xFFFF_FFFF_FFFF_FFFF >> 1)
 
     @assert(toto'f32(6) == 2)
     @assert(toto'f32(9, 3) == 3)
