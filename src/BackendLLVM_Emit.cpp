@@ -88,44 +88,29 @@ void BackendLLVM::emitShiftLogical(llvm::LLVMContext& context, llvm::IRBuilder<>
 
 void BackendLLVM::emitShiftEqLogical(llvm::LLVMContext& context, llvm::IRBuilder<>& builder, llvm::AllocaInst* allocR, ByteCodeInstruction* ip, uint32_t numBits, bool left)
 {
-    auto iType = llvm::Type::getIntNTy(context, numBits);
-    auto r0    = GEP64(allocR, ip->a.u32);
-    auto r1    = builder.CreateLoad(PTR_IX_TY(numBits), r0);
+    auto r0 = builder.CreateLoad(PTR_IX_TY(numBits), GEP64(allocR, ip->a.u32));
 
-    llvm::Value* r2;
-    if (ip->flags & BCI_IMM_B)
-        r2 = builder.getInt32(ip->b.u32 & (numBits - 1));
-    else
-        r2 = builder.CreateLoad(I32_TY(), GEP64(allocR, ip->b.u32));
-
-    auto         c2   = builder.CreateIntCast(r2, iType, false);
-    auto         zero = llvm::ConstantInt::get(iType, 0);
-    auto         v1   = builder.CreateLoad(IX_TY(numBits), r1);
-    llvm::Value* v0;
-
-    // Smart shift, imm mode overflow
     if ((ip->flags & BCI_IMM_B) && ip->b.u32 >= numBits)
-        v0 = zero;
-
-    // Smart shift, dyn mode
-    else if (!(ip->flags & BCI_IMM_B))
     {
-        auto cond    = builder.CreateICmpULT(r2, builder.getInt32(numBits));
-        auto iftrue  = left ? builder.CreateShl(v1, c2) : builder.CreateLShr(v1, c2);
-        auto iffalse = zero;
-        v0           = builder.CreateSelect(cond, iftrue, iffalse);
+        auto v0 = llvm::ConstantInt::get(IX_TY(numBits), 0);
+        builder.CreateStore(v0, r0);
     }
-
-    // Imm mode
+    else if (ip->flags & BCI_IMM_B)
+    {
+        auto r2 = builder.getIntN(numBits, ip->b.u8);
+        auto v1 = builder.CreateLoad(IX_TY(numBits), r0);
+        auto v0 = left ? builder.CreateShl(v1, r2) : builder.CreateLShr(v1, r2);
+        builder.CreateStore(v0, r0);
+    }
     else
     {
-        // Small shift, dyn mode, we mask the operand
-        if (!(ip->flags & BCI_IMM_B))
-            c2 = builder.CreateAnd(c2, llvm::ConstantInt::get(iType, numBits - 1));
-        v0 = left ? builder.CreateShl(v1, c2) : builder.CreateLShr(v1, c2);
+        auto r2      = builder.CreateLoad(I32_TY(), GEP64(allocR, ip->b.u8));
+        auto cond    = builder.CreateICmpULT(r2, builder.getInt32(numBits));
+        auto iftrue  = left ? builder.CreateShl(builder.CreateLoad(IX_TY(numBits), r0), builder.CreateIntCast(r2, IX_TY(numBits), false)) : builder.CreateLShr(builder.CreateLoad(IX_TY(numBits), r0), builder.CreateIntCast(r2, IX_TY(numBits), false));
+        auto iffalse = llvm::ConstantInt::get(IX_TY(numBits), 0);
+        auto v0      = builder.CreateSelect(cond, iftrue, iffalse);
+        builder.CreateStore(v0, r0);
     }
-
-    builder.CreateStore(v0, r1);
 }
 
 void BackendLLVM::emitInternalPanic(const BuildParameters& buildParameters, Module* moduleToGen, llvm::AllocaInst* allocR, llvm::AllocaInst* allocT, AstNode* node, const char* message)
