@@ -848,9 +848,31 @@ void X64Gen::emit_Cmp64(uint8_t reg1, uint8_t reg2)
     concat.addU8(getModRM(REGREG, reg2, reg1));
 }
 
+void X64Gen::emit_Cmp32_Immediate(uint32_t value, CPURegister reg)
+{
+    SWAG_ASSERT(reg == RAX || reg == RCX);
+
+    if (value <= 0x7f)
+    {
+        concat.addU8(0x83);
+        concat.addU8(0xF8 | reg);
+        concat.addU8((uint8_t) value);
+    }
+    else if (value <= 0x7fffffff)
+    {
+        concat.addU8(0x3d);
+        concat.addU32((uint32_t) value);
+    }
+    else
+    {
+        emit_Load32_Immediate(value, RCX);
+        emit_Cmp32(reg, RCX);
+    }
+}
+
 void X64Gen::emit_Cmp64_Immediate(uint64_t value, CPURegister reg)
 {
-    SWAG_ASSERT(reg == RAX);
+    SWAG_ASSERT(reg == RAX || reg == RCX);
 
     if (value <= 0x7f)
     {
@@ -2332,6 +2354,16 @@ void X64Gen::emit_CMovL64(CPURegister reg1, CPURegister reg2)
     concat.addU8(0x0F);
     concat.addU8(0x4C);
     concat.addU8(0xC1);
+}
+
+void X64Gen::emit_CMovG32(CPURegister reg1, CPURegister reg2)
+{
+    SWAG_ASSERT(reg1 == RCX);
+    SWAG_ASSERT(reg2 == RAX);
+
+    concat.addU8(0x0F);
+    concat.addU8(0x4F);
+    concat.addU8(0xC8);
 }
 
 void X64Gen::emit_CMovB16(CPURegister reg1, CPURegister reg2)

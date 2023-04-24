@@ -13,24 +13,20 @@ void BackendX64::emitShiftRightArithmetic(X64Gen& pp, ByteCodeInstruction* ip, u
     }
     else
     {
-        if (ip->flags & BCI_IMM_A)
-            pp.emit_LoadN_Immediate(ip->a, RAX, numBits);
-        else
-            pp.emit_LoadN_Indirect(regOffset(ip->a.u32), RAX, RDI, numBits);
         if (ip->flags & BCI_IMM_B)
             pp.emit_Load8_Immediate((uint8_t) min(ip->b.u32, numBits - 1), RCX);
         else
         {
             pp.emit_Load32_Indirect(regOffset(ip->b.u32), RCX);
-            pp.concat.addString2("\x83\xF9"); // cmp ecx, ??
-            pp.concat.addU8((uint8_t) numBits);
-            pp.emit_NearJumpOp(JL);
-            pp.concat.addU8(0); // mov below
-            auto seekPtr = pp.concat.getSeekPtr() - 1;
-            auto seekJmp = pp.concat.totalCount();
-            pp.emit_Load8_Immediate((uint8_t) numBits - 1, RCX);
-            *seekPtr = (uint8_t) (pp.concat.totalCount() - seekJmp);
+            pp.emit_Load32_Immediate((uint8_t) numBits - 1, RAX);
+            pp.emit_Cmp32_Immediate(numBits - 1, RCX);
+            pp.emit_CMovG32(RCX, RAX);
         }
+
+        if (ip->flags & BCI_IMM_A)
+            pp.emit_LoadN_Immediate(ip->a, RAX, numBits);
+        else
+            pp.emit_LoadN_Indirect(regOffset(ip->a.u32), RAX, RDI, numBits);
 
         switch (numBits)
         {
