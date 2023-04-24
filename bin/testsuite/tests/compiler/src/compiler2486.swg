@@ -8,6 +8,7 @@ func panic(msg: string, loc: Swag.SourceCodeLocation)
 
 #[Safety("sanity", false)]
 #[Safety("overflow", true)]
+#[Optim("", false)]
 //#[PrintBc]
 #test
 {

@@ -138,6 +138,7 @@ bool ByteCodeOptimizer::optimizePassSwap(ByteCodeOptContext* context)
                 swap(ip[0].b, ip[1].b);
                 swap(ip[0].c, ip[1].c);
                 swap(ip[0].d, ip[1].d);
+                swap(ip[0].node, ip[1].node);
 
                 if (ip[1].flags & BCI_START_STMT)
                 {

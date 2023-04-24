@@ -276,26 +276,26 @@ void ByteCodeGenJob::emitSafetyLeftShift(ByteCodeGenContext* context, uint32_t r
         switch (typeInfo->sizeOf)
         {
         case 1:
-            EMIT_INST3(context, ByteCodeOp::BinOpShiftLeftU8, r0, r1, re);
-            EMIT_INST3(context, ByteCodeOp::BinOpShiftRightU8, re, r1, re);
+            EMIT_INST3(context, ByteCodeOp::BinOpShiftLeftU8, r0, r1, re)->flags |= BCI_CAN_OVERFLOW;
+            EMIT_INST3(context, ByteCodeOp::BinOpShiftRightU8, re, r1, re)->flags |= BCI_CAN_OVERFLOW;
             EMIT_INST3(context, ByteCodeOp::CompareOpEqual8, re, r0, re1);
             emitAssert(context, re1, msg);
             break;
         case 2:
-            EMIT_INST3(context, ByteCodeOp::BinOpShiftLeftU16, r0, r1, re);
-            EMIT_INST3(context, ByteCodeOp::BinOpShiftRightU16, re, r1, re);
+            EMIT_INST3(context, ByteCodeOp::BinOpShiftLeftU16, r0, r1, re)->flags |= BCI_CAN_OVERFLOW;
+            EMIT_INST3(context, ByteCodeOp::BinOpShiftRightU16, re, r1, re)->flags |= BCI_CAN_OVERFLOW;
             EMIT_INST3(context, ByteCodeOp::CompareOpEqual16, re, r0, re1);
             emitAssert(context, re1, msg);
             break;
         case 4:
-            EMIT_INST3(context, ByteCodeOp::BinOpShiftLeftU32, r0, r1, re);
-            EMIT_INST3(context, ByteCodeOp::BinOpShiftRightU32, re, r1, re);
+            EMIT_INST3(context, ByteCodeOp::BinOpShiftLeftU32, r0, r1, re)->flags |= BCI_CAN_OVERFLOW;
+            EMIT_INST3(context, ByteCodeOp::BinOpShiftRightU32, re, r1, re)->flags |= BCI_CAN_OVERFLOW;
             EMIT_INST3(context, ByteCodeOp::CompareOpEqual32, re, r0, re1);
             emitAssert(context, re1, msg);
             break;
         case 8:
-            EMIT_INST3(context, ByteCodeOp::BinOpShiftLeftU64, r0, r1, re);
-            EMIT_INST3(context, ByteCodeOp::BinOpShiftRightU64, re, r1, re);
+            EMIT_INST3(context, ByteCodeOp::BinOpShiftLeftU64, r0, r1, re)->flags |= BCI_CAN_OVERFLOW;
+            EMIT_INST3(context, ByteCodeOp::BinOpShiftRightU64, re, r1, re)->flags |= BCI_CAN_OVERFLOW;
             EMIT_INST3(context, ByteCodeOp::CompareOpEqual64, re, r0, re1);
             emitAssert(context, re1, msg);
             break;
@@ -307,26 +307,26 @@ void ByteCodeGenJob::emitSafetyLeftShift(ByteCodeGenContext* context, uint32_t r
         switch (typeInfo->sizeOf)
         {
         case 1:
-            EMIT_INST3(context, ByteCodeOp::BinOpShiftLeftS8, r0, r1, re);
-            EMIT_INST3(context, ByteCodeOp::BinOpShiftRightS8, re, r1, re);
+            EMIT_INST3(context, ByteCodeOp::BinOpShiftLeftS8, r0, r1, re)->flags |= BCI_CAN_OVERFLOW;
+            EMIT_INST3(context, ByteCodeOp::BinOpShiftRightS8, re, r1, re)->flags |= BCI_CAN_OVERFLOW;
             EMIT_INST3(context, ByteCodeOp::CompareOpEqual8, re, r0, re1);
             emitAssert(context, re1, msg);
             break;
         case 2:
-            EMIT_INST3(context, ByteCodeOp::BinOpShiftLeftS16, r0, r1, re);
-            EMIT_INST3(context, ByteCodeOp::BinOpShiftRightS16, re, r1, re);
+            EMIT_INST3(context, ByteCodeOp::BinOpShiftLeftS16, r0, r1, re)->flags |= BCI_CAN_OVERFLOW;
+            EMIT_INST3(context, ByteCodeOp::BinOpShiftRightS16, re, r1, re)->flags |= BCI_CAN_OVERFLOW;
             EMIT_INST3(context, ByteCodeOp::CompareOpEqual16, re, r0, re1);
             emitAssert(context, re1, msg);
             break;
         case 4:
-            EMIT_INST3(context, ByteCodeOp::BinOpShiftLeftS32, r0, r1, re);
-            EMIT_INST3(context, ByteCodeOp::BinOpShiftRightS32, re, r1, re);
+            EMIT_INST3(context, ByteCodeOp::BinOpShiftLeftS32, r0, r1, re)->flags |= BCI_CAN_OVERFLOW;
+            EMIT_INST3(context, ByteCodeOp::BinOpShiftRightS32, re, r1, re)->flags |= BCI_CAN_OVERFLOW;
             EMIT_INST3(context, ByteCodeOp::CompareOpEqual32, re, r0, re1);
             emitAssert(context, re1, msg);
             break;
         case 8:
-            EMIT_INST3(context, ByteCodeOp::BinOpShiftLeftS64, r0, r1, re);
-            EMIT_INST3(context, ByteCodeOp::BinOpShiftRightS64, re, r1, re);
+            EMIT_INST3(context, ByteCodeOp::BinOpShiftLeftS64, r0, r1, re)->flags |= BCI_CAN_OVERFLOW;
+            EMIT_INST3(context, ByteCodeOp::BinOpShiftRightS64, re, r1, re)->flags |= BCI_CAN_OVERFLOW;
             EMIT_INST3(context, ByteCodeOp::CompareOpEqual64, re, r0, re1);
             emitAssert(context, re1, msg);
             break;
@@ -378,26 +378,26 @@ void ByteCodeGenJob::emitSafetyRightShift(ByteCodeGenContext* context, uint32_t 
         switch (typeInfo->sizeOf)
         {
         case 1:
-            EMIT_INST3(context, ByteCodeOp::BinOpShiftRightU8, r0, r1, re);
-            EMIT_INST3(context, ByteCodeOp::BinOpShiftLeftU8, re, r1, re);
+            EMIT_INST3(context, ByteCodeOp::BinOpShiftRightU8, r0, r1, re)->flags |= BCI_CAN_OVERFLOW;
+            EMIT_INST3(context, ByteCodeOp::BinOpShiftLeftU8, re, r1, re)->flags |= BCI_CAN_OVERFLOW;
             EMIT_INST3(context, ByteCodeOp::CompareOpEqual8, re, r0, re1);
             emitAssert(context, re1, msg);
             break;
         case 2:
-            EMIT_INST3(context, ByteCodeOp::BinOpShiftRightU16, r0, r1, re);
-            EMIT_INST3(context, ByteCodeOp::BinOpShiftLeftU16, re, r1, re);
+            EMIT_INST3(context, ByteCodeOp::BinOpShiftRightU16, r0, r1, re)->flags |= BCI_CAN_OVERFLOW;
+            EMIT_INST3(context, ByteCodeOp::BinOpShiftLeftU16, re, r1, re)->flags |= BCI_CAN_OVERFLOW;
             EMIT_INST3(context, ByteCodeOp::CompareOpEqual16, re, r0, re1);
             emitAssert(context, re1, msg);
             break;
         case 4:
-            EMIT_INST3(context, ByteCodeOp::BinOpShiftRightU32, r0, r1, re);
-            EMIT_INST3(context, ByteCodeOp::BinOpShiftLeftU32, re, r1, re);
+            EMIT_INST3(context, ByteCodeOp::BinOpShiftRightU32, r0, r1, re)->flags |= BCI_CAN_OVERFLOW;
+            EMIT_INST3(context, ByteCodeOp::BinOpShiftLeftU32, re, r1, re)->flags |= BCI_CAN_OVERFLOW;
             EMIT_INST3(context, ByteCodeOp::CompareOpEqual32, re, r0, re1);
             emitAssert(context, re1, msg);
             break;
         case 8:
-            EMIT_INST3(context, ByteCodeOp::BinOpShiftRightU64, r0, r1, re);
-            EMIT_INST3(context, ByteCodeOp::BinOpShiftLeftU64, re, r1, re);
+            EMIT_INST3(context, ByteCodeOp::BinOpShiftRightU64, r0, r1, re)->flags |= BCI_CAN_OVERFLOW;
+            EMIT_INST3(context, ByteCodeOp::BinOpShiftLeftU64, re, r1, re)->flags |= BCI_CAN_OVERFLOW;
             EMIT_INST3(context, ByteCodeOp::CompareOpEqual64, re, r0, re1);
             emitAssert(context, re1, msg);
             break;
@@ -409,26 +409,26 @@ void ByteCodeGenJob::emitSafetyRightShift(ByteCodeGenContext* context, uint32_t 
         switch (typeInfo->sizeOf)
         {
         case 1:
-            EMIT_INST3(context, ByteCodeOp::BinOpShiftRightS8, r0, r1, re);
-            EMIT_INST3(context, ByteCodeOp::BinOpShiftLeftU8, re, r1, re);
+            EMIT_INST3(context, ByteCodeOp::BinOpShiftRightS8, r0, r1, re)->flags |= BCI_CAN_OVERFLOW;
+            EMIT_INST3(context, ByteCodeOp::BinOpShiftLeftU8, re, r1, re)->flags |= BCI_CAN_OVERFLOW;
             EMIT_INST3(context, ByteCodeOp::CompareOpEqual8, re, r0, re1);
             emitAssert(context, re1, msg);
             break;
         case 2:
-            EMIT_INST3(context, ByteCodeOp::BinOpShiftRightS16, r0, r1, re);
-            EMIT_INST3(context, ByteCodeOp::BinOpShiftLeftU16, re, r1, re);
+            EMIT_INST3(context, ByteCodeOp::BinOpShiftRightS16, r0, r1, re)->flags |= BCI_CAN_OVERFLOW;
+            EMIT_INST3(context, ByteCodeOp::BinOpShiftLeftU16, re, r1, re)->flags |= BCI_CAN_OVERFLOW;
             EMIT_INST3(context, ByteCodeOp::CompareOpEqual16, re, r0, re1);
             emitAssert(context, re1, msg);
             break;
         case 4:
-            EMIT_INST3(context, ByteCodeOp::BinOpShiftRightS32, r0, r1, re);
-            EMIT_INST3(context, ByteCodeOp::BinOpShiftLeftU32, re, r1, re);
+            EMIT_INST3(context, ByteCodeOp::BinOpShiftRightS32, r0, r1, re)->flags |= BCI_CAN_OVERFLOW;
+            EMIT_INST3(context, ByteCodeOp::BinOpShiftLeftU32, re, r1, re)->flags |= BCI_CAN_OVERFLOW;
             EMIT_INST3(context, ByteCodeOp::CompareOpEqual32, re, r0, re1);
             emitAssert(context, re1, msg);
             break;
         case 8:
-            EMIT_INST3(context, ByteCodeOp::BinOpShiftRightS64, r0, r1, re);
-            EMIT_INST3(context, ByteCodeOp::BinOpShiftLeftU64, re, r1, re);
+            EMIT_INST3(context, ByteCodeOp::BinOpShiftRightS64, r0, r1, re)->flags |= BCI_CAN_OVERFLOW;
+            EMIT_INST3(context, ByteCodeOp::BinOpShiftLeftU64, re, r1, re)->flags |= BCI_CAN_OVERFLOW;
             EMIT_INST3(context, ByteCodeOp::CompareOpEqual64, re, r0, re1);
             emitAssert(context, re1, msg);
             break;

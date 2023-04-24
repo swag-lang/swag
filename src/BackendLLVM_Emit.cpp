@@ -6,12 +6,12 @@
 
 void BackendLLVM::emitShiftRightArithmetic(llvm::LLVMContext& context, llvm::IRBuilder<>& builder, llvm::AllocaInst* allocR, ByteCodeInstruction* ip, uint32_t numBits)
 {
-    bool canOver = (ip->flags & BCI_CAN_OVERFLOW) || (ip->node && ip->node->attributeFlags & ATTRIBUTE_CAN_OVERFLOW_ON);
+    bool canOver = true;
     if (ip->flags & BCI_IMM_B)
     {
         llvm::Value* r1 = getImmediateConstantA(context, builder, allocR, ip, numBits);
         auto         r2 = builder.getIntN(numBits, min(ip->b.u32, numBits - 1));
-        auto         v0 = builder.CreateAShr(r1, r2, "", !canOver);
+        auto         v0 = builder.CreateAShr(r1, r2);
         auto         r0 = GEP64_PTR_IX(allocR, ip->c.u32, numBits);
         builder.CreateStore(v0, r0);
     }
@@ -19,7 +19,7 @@ void BackendLLVM::emitShiftRightArithmetic(llvm::LLVMContext& context, llvm::IRB
     {
         llvm::Value* r1 = getImmediateConstantA(context, builder, allocR, ip, numBits);
         auto         r2 = builder.CreateLoad(IX_TY(numBits), GEP64(allocR, ip->b.u32));
-        auto         v1 = builder.CreateAShr(r1, r2, "", true);
+        auto         v1 = builder.CreateAShr(r1, r2);
         auto         r0 = GEP64_PTR_IX(allocR, ip->c.u32, numBits);
         builder.CreateStore(v1, r0);
     }
@@ -32,7 +32,7 @@ void BackendLLVM::emitShiftRightArithmetic(llvm::LLVMContext& context, llvm::IRB
         auto         iffalse = builder.getInt32(numBits - 1);
         auto         r2      = builder.CreateSelect(cond, iftrue, iffalse);
         r2                   = builder.CreateIntCast(r2, IX_TY(numBits), false);
-        auto v1              = builder.CreateAShr(r1, r2, "", !canOver);
+        auto v1              = builder.CreateAShr(r1, r2);
         auto r0              = GEP64_PTR_IX(allocR, ip->c.u32, numBits);
         builder.CreateStore(v1, r0);
     }
@@ -40,13 +40,13 @@ void BackendLLVM::emitShiftRightArithmetic(llvm::LLVMContext& context, llvm::IRB
 
 void BackendLLVM::emitShiftRightEqArithmetic(llvm::LLVMContext& context, llvm::IRBuilder<>& builder, llvm::AllocaInst* allocR, ByteCodeInstruction* ip, uint32_t numBits)
 {
-    bool canOver = (ip->flags & BCI_CAN_OVERFLOW) || (ip->node && ip->node->attributeFlags & ATTRIBUTE_CAN_OVERFLOW_ON);
+    bool canOver = true;
     if (ip->flags & BCI_IMM_B)
     {
         auto r2 = builder.getIntN(numBits, min(ip->b.u32, numBits - 1));
         auto r0 = builder.CreateLoad(PTR_IX_TY(numBits), GEP64(allocR, ip->a.u32));
         auto v1 = builder.CreateLoad(IX_TY(numBits), r0);
-        auto v0 = builder.CreateAShr(v1, r2, "", !canOver);
+        auto v0 = builder.CreateAShr(v1, r2);
         builder.CreateStore(v0, r0);
     }
     else if (!canOver)
@@ -54,7 +54,7 @@ void BackendLLVM::emitShiftRightEqArithmetic(llvm::LLVMContext& context, llvm::I
         auto r0 = builder.CreateLoad(PTR_IX_TY(numBits), GEP64(allocR, ip->a.u32));
         auto r1 = builder.CreateLoad(IX_TY(numBits), r0);
         auto r2 = builder.CreateLoad(IX_TY(numBits), GEP64(allocR, ip->b.u32));
-        auto v1 = builder.CreateAShr(r1, r2, "", true);
+        auto v1 = builder.CreateAShr(r1, r2);
         builder.CreateStore(v1, r0);
     }
     else
@@ -67,13 +67,14 @@ void BackendLLVM::emitShiftRightEqArithmetic(llvm::LLVMContext& context, llvm::I
         r2           = builder.CreateIntCast(r2, IX_TY(numBits), false);
         auto r0      = builder.CreateLoad(PTR_IX_TY(numBits), GEP64(allocR, ip->a.u32));
         auto v1      = builder.CreateLoad(IX_TY(numBits), r0);
-        auto v2      = builder.CreateAShr(v1, r2, "", !canOver);
+        auto v2      = builder.CreateAShr(v1, r2);
         builder.CreateStore(v2, r0);
     }
 }
 
 void BackendLLVM::emitShiftLogical(llvm::LLVMContext& context, llvm::IRBuilder<>& builder, llvm::AllocaInst* allocR, ByteCodeInstruction* ip, uint32_t numBits, bool left, bool isSigned)
 {
+    bool canOver = true;
     if ((ip->flags & BCI_IMM_B) && ip->b.u32 >= numBits)
     {
         auto r0 = GEP64_PTR_IX(allocR, ip->c.u32, numBits);
@@ -94,7 +95,8 @@ void BackendLLVM::emitShiftLogical(llvm::LLVMContext& context, llvm::IRBuilder<>
         llvm::Value* r1      = getImmediateConstantA(context, builder, allocR, ip, numBits);
         auto         r2      = builder.CreateLoad(I32_TY(), GEP64(allocR, ip->b.u32));
         auto         cond    = builder.CreateICmpULT(r2, builder.getInt32(numBits));
-        auto         iftrue  = left ? builder.CreateShl(r1, builder.CreateIntCast(r2, IX_TY(numBits), false)) : builder.CreateLShr(r1, builder.CreateIntCast(r2, IX_TY(numBits), false));
+        auto         l1      = builder.CreateIntCast(r2, IX_TY(numBits), false);
+        auto         iftrue  = left ? builder.CreateShl(r1, l1) : builder.CreateLShr(r1, l1);
         auto         iffalse = llvm::ConstantInt::get(IX_TY(numBits), 0);
         auto         v0      = builder.CreateSelect(cond, iftrue, iffalse);
         builder.CreateStore(v0, r0);
@@ -103,6 +105,7 @@ void BackendLLVM::emitShiftLogical(llvm::LLVMContext& context, llvm::IRBuilder<>
 
 void BackendLLVM::emitShiftEqLogical(llvm::LLVMContext& context, llvm::IRBuilder<>& builder, llvm::AllocaInst* allocR, ByteCodeInstruction* ip, uint32_t numBits, bool left, bool isSigned)
 {
+    bool canOver = true;
     if ((ip->flags & BCI_IMM_B) && ip->b.u32 >= numBits)
     {
         auto r0 = builder.CreateLoad(PTR_IX_TY(numBits), GEP64(allocR, ip->a.u32));
@@ -122,7 +125,9 @@ void BackendLLVM::emitShiftEqLogical(llvm::LLVMContext& context, llvm::IRBuilder
         auto r0      = builder.CreateLoad(PTR_IX_TY(numBits), GEP64(allocR, ip->a.u32));
         auto r2      = builder.CreateLoad(I32_TY(), GEP64(allocR, ip->b.u8));
         auto cond    = builder.CreateICmpULT(r2, builder.getInt32(numBits));
-        auto iftrue  = left ? builder.CreateShl(builder.CreateLoad(IX_TY(numBits), r0), builder.CreateIntCast(r2, IX_TY(numBits), false)) : builder.CreateLShr(builder.CreateLoad(IX_TY(numBits), r0), builder.CreateIntCast(r2, IX_TY(numBits), false));
+        auto l0      = builder.CreateLoad(IX_TY(numBits), r0);
+        auto l1      = builder.CreateIntCast(r2, IX_TY(numBits), false);
+        auto iftrue  = left ? builder.CreateShl(l0, l1) : builder.CreateLShr(l0, l1);
         auto iffalse = llvm::ConstantInt::get(IX_TY(numBits), 0);
         auto v0      = builder.CreateSelect(cond, iftrue, iffalse);
         builder.CreateStore(v0, r0);

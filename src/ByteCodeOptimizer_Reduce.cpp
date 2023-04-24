@@ -25,6 +25,7 @@ void ByteCodeOptimizer::reduceMath(ByteCodeOptContext* context, ByteCodeInstruct
         {
             SET_OP(ip, ByteCodeOp::BinOpShiftRightS8);
             ip->b.u32 = (uint32_t) log2(ip->b.u8);
+            ip->flags |= BCI_CAN_OVERFLOW;
             break;
         }
         break;
@@ -42,6 +43,7 @@ void ByteCodeOptimizer::reduceMath(ByteCodeOptContext* context, ByteCodeInstruct
         {
             SET_OP(ip, ByteCodeOp::BinOpShiftRightS16);
             ip->b.u32 = (uint32_t) log2(ip->b.u16);
+            ip->flags |= BCI_CAN_OVERFLOW;
             break;
         }
         break;
@@ -59,6 +61,7 @@ void ByteCodeOptimizer::reduceMath(ByteCodeOptContext* context, ByteCodeInstruct
         {
             SET_OP(ip, ByteCodeOp::BinOpShiftRightS32);
             ip->b.u32 = (uint32_t) log2(ip->b.u32);
+            ip->flags |= BCI_CAN_OVERFLOW;
             break;
         }
         break;
@@ -76,6 +79,7 @@ void ByteCodeOptimizer::reduceMath(ByteCodeOptContext* context, ByteCodeInstruct
         {
             SET_OP(ip, ByteCodeOp::BinOpShiftRightS64);
             ip->b.u64 = (uint64_t) log2(ip->b.u64);
+            ip->flags |= BCI_CAN_OVERFLOW;
             break;
         }
         break;
@@ -93,6 +97,7 @@ void ByteCodeOptimizer::reduceMath(ByteCodeOptContext* context, ByteCodeInstruct
         {
             SET_OP(ip, ByteCodeOp::BinOpShiftRightU8);
             ip->b.u32 = (uint32_t) log2(ip->b.u8);
+            ip->flags |= BCI_CAN_OVERFLOW;
             break;
         }
         break;
@@ -110,6 +115,7 @@ void ByteCodeOptimizer::reduceMath(ByteCodeOptContext* context, ByteCodeInstruct
         {
             SET_OP(ip, ByteCodeOp::BinOpShiftRightU16);
             ip->b.u32 = (uint32_t) log2(ip->b.u16);
+            ip->flags |= BCI_CAN_OVERFLOW;
             break;
         }
         break;
@@ -127,6 +133,7 @@ void ByteCodeOptimizer::reduceMath(ByteCodeOptContext* context, ByteCodeInstruct
         {
             SET_OP(ip, ByteCodeOp::BinOpShiftRightU32);
             ip->b.u32 = (uint32_t) log2(ip->b.u32);
+            ip->flags |= BCI_CAN_OVERFLOW;
             break;
         }
         break;
@@ -144,6 +151,7 @@ void ByteCodeOptimizer::reduceMath(ByteCodeOptContext* context, ByteCodeInstruct
         {
             SET_OP(ip, ByteCodeOp::BinOpShiftRightU64);
             ip->b.u64 = (uint64_t) log2(ip->b.u64);
+            ip->flags |= BCI_CAN_OVERFLOW;
             break;
         }
         break;
