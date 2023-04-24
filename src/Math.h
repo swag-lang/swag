@@ -323,11 +323,6 @@ inline bool leftShiftWillOverflow(ByteCodeInstruction* ip, AstNode* node, T left
             if (((left << right) & bt) != (left & bt))
                 return false;
         }
-        else
-        {
-            if (((left << right) >> right) != left)
-                return true;
-        }
     }
 
     return false;
@@ -339,10 +334,6 @@ inline bool rightShiftWillOverflow(ByteCodeInstruction* ip, AstNode* node, T lef
     if (!overflowIsEnabled(ip, node))
     {
         if (right >= sizeof(T) * 8)
-            return true;
-        if (isSigned)
-            return false;
-        if (((left >> right) << right) != left)
             return true;
     }
 

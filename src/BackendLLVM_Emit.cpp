@@ -6,7 +6,6 @@
 
 void BackendLLVM::emitShiftRightArithmetic(llvm::LLVMContext& context, llvm::IRBuilder<>& builder, llvm::AllocaInst* allocR, ByteCodeInstruction* ip, uint32_t numBits)
 {
-    bool canOver = true;
     if (ip->flags & BCI_IMM_B)
     {
         llvm::Value* r1 = getImmediateConstantA(context, builder, allocR, ip, numBits);
@@ -14,14 +13,6 @@ void BackendLLVM::emitShiftRightArithmetic(llvm::LLVMContext& context, llvm::IRB
         auto         v0 = builder.CreateAShr(r1, r2);
         auto         r0 = GEP64_PTR_IX(allocR, ip->c.u32, numBits);
         builder.CreateStore(v0, r0);
-    }
-    else if (!canOver)
-    {
-        llvm::Value* r1 = getImmediateConstantA(context, builder, allocR, ip, numBits);
-        auto         r2 = builder.CreateLoad(IX_TY(numBits), GEP64(allocR, ip->b.u32));
-        auto         v1 = builder.CreateAShr(r1, r2);
-        auto         r0 = GEP64_PTR_IX(allocR, ip->c.u32, numBits);
-        builder.CreateStore(v1, r0);
     }
     else
     {
@@ -40,7 +31,6 @@ void BackendLLVM::emitShiftRightArithmetic(llvm::LLVMContext& context, llvm::IRB
 
 void BackendLLVM::emitShiftRightEqArithmetic(llvm::LLVMContext& context, llvm::IRBuilder<>& builder, llvm::AllocaInst* allocR, ByteCodeInstruction* ip, uint32_t numBits)
 {
-    bool canOver = true;
     if (ip->flags & BCI_IMM_B)
     {
         auto r2 = builder.getIntN(numBits, min(ip->b.u32, numBits - 1));
@@ -48,14 +38,6 @@ void BackendLLVM::emitShiftRightEqArithmetic(llvm::LLVMContext& context, llvm::I
         auto v1 = builder.CreateLoad(IX_TY(numBits), r0);
         auto v0 = builder.CreateAShr(v1, r2);
         builder.CreateStore(v0, r0);
-    }
-    else if (!canOver)
-    {
-        auto r0 = builder.CreateLoad(PTR_IX_TY(numBits), GEP64(allocR, ip->a.u32));
-        auto r1 = builder.CreateLoad(IX_TY(numBits), r0);
-        auto r2 = builder.CreateLoad(IX_TY(numBits), GEP64(allocR, ip->b.u32));
-        auto v1 = builder.CreateAShr(r1, r2);
-        builder.CreateStore(v1, r0);
     }
     else
     {
@@ -74,7 +56,6 @@ void BackendLLVM::emitShiftRightEqArithmetic(llvm::LLVMContext& context, llvm::I
 
 void BackendLLVM::emitShiftLogical(llvm::LLVMContext& context, llvm::IRBuilder<>& builder, llvm::AllocaInst* allocR, ByteCodeInstruction* ip, uint32_t numBits, bool left, bool isSigned)
 {
-    bool canOver = true;
     if ((ip->flags & BCI_IMM_B) && ip->b.u32 >= numBits)
     {
         auto r0 = GEP64_PTR_IX(allocR, ip->c.u32, numBits);
@@ -105,7 +86,6 @@ void BackendLLVM::emitShiftLogical(llvm::LLVMContext& context, llvm::IRBuilder<>
 
 void BackendLLVM::emitShiftEqLogical(llvm::LLVMContext& context, llvm::IRBuilder<>& builder, llvm::AllocaInst* allocR, ByteCodeInstruction* ip, uint32_t numBits, bool left, bool isSigned)
 {
-    bool canOver = true;
     if ((ip->flags & BCI_IMM_B) && ip->b.u32 >= numBits)
     {
         auto r0 = builder.CreateLoad(PTR_IX_TY(numBits), GEP64(allocR, ip->a.u32));

@@ -1,7 +1,7 @@
 #global testerror
-#global testerror
 
 #[Swag.Safety("overflow", true)]
+#[Swag.Optimize("", false)]
 #test
 {
     var x: u32 = Swag.U32.Max
@@ -10,6 +10,7 @@
 }
 
 #[Swag.Safety("overflow", true)]
+#[Swag.Optimize("", false)]
 #test
 {
     var x: u64 = Swag.U64.Max
