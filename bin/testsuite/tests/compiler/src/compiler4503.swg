@@ -1,0 +1,14 @@
+#[Swag.Optim("", false)]
+func toto(y: s32)
+{
+    {
+        x := 2's32
+        x >>= y
+        @assert(x == 1)
+    }
+}
+
+#test
+{
+    toto(1)
+}
