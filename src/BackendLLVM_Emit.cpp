@@ -15,6 +15,14 @@ void BackendLLVM::emitShiftRightArithmetic(llvm::LLVMContext& context, llvm::IRB
         auto         r0 = GEP64_PTR_IX(allocR, ip->c.u32, numBits);
         builder.CreateStore(v0, r0);
     }
+    else if (!canOver)
+    {
+        llvm::Value* r1 = getImmediateConstantA(context, builder, allocR, ip, numBits);
+        auto         r2 = builder.CreateLoad(IX_TY(numBits), GEP64(allocR, ip->b.u32));
+        auto         v1 = builder.CreateAShr(r1, r2, "", true);
+        auto         r0 = GEP64_PTR_IX(allocR, ip->c.u32, numBits);
+        builder.CreateStore(v1, r0);
+    }
     else
     {
         llvm::Value* r1      = getImmediateConstantA(context, builder, allocR, ip, numBits);
