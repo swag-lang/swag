@@ -6,57 +6,63 @@
 
 void BackendLLVM::emitShiftRightArithmetic(llvm::LLVMContext& context, llvm::IRBuilder<>& builder, llvm::AllocaInst* allocR, ByteCodeInstruction* ip, uint32_t numBits)
 {
-    llvm::Value* r1 = getImmediateConstantA(context, builder, allocR, ip, numBits);
-
-    llvm::Value* r2;
     if (ip->flags & BCI_IMM_B)
-        r2 = builder.getIntN(numBits, min(ip->b.u32, numBits - 1));
+    {
+        llvm::Value* r1 = getImmediateConstantA(context, builder, allocR, ip, numBits);
+        auto         r2 = builder.getIntN(numBits, min(ip->b.u32, numBits - 1));
+        auto         v0 = builder.CreateAShr(r1, r2);
+        auto         r0 = GEP64_PTR_IX(allocR, ip->c.u32, numBits);
+        builder.CreateStore(v0, r0);
+    }
     else
     {
-        r2           = builder.CreateLoad(I32_TY(), GEP64(allocR, ip->b.u32));
-        auto cond    = builder.CreateICmpULT(r2, builder.getInt32(numBits));
-        auto iftrue  = r2;
-        auto iffalse = builder.getInt32(numBits - 1);
-        r2           = builder.CreateSelect(cond, iftrue, iffalse);
-        r2           = builder.CreateIntCast(r2, IX_TY(numBits), false);
+        llvm::Value* r1      = getImmediateConstantA(context, builder, allocR, ip, numBits);
+        auto         v0      = builder.CreateLoad(I32_TY(), GEP64(allocR, ip->b.u32));
+        auto         cond    = builder.CreateICmpULT(v0, builder.getInt32(numBits));
+        auto         iftrue  = v0;
+        auto         iffalse = builder.getInt32(numBits - 1);
+        auto         r2      = builder.CreateSelect(cond, iftrue, iffalse);
+        r2                   = builder.CreateIntCast(r2, IX_TY(numBits), false);
+        auto v1              = builder.CreateAShr(r1, r2);
+        auto r0              = GEP64_PTR_IX(allocR, ip->c.u32, numBits);
+        builder.CreateStore(v1, r0);
     }
-
-    auto v0 = builder.CreateAShr(r1, r2);
-    auto r0 = GEP64_PTR_IX(allocR, ip->c.u32, numBits);
-    builder.CreateStore(v0, r0);
 }
 
 void BackendLLVM::emitShiftRightEqArithmetic(llvm::LLVMContext& context, llvm::IRBuilder<>& builder, llvm::AllocaInst* allocR, ByteCodeInstruction* ip, uint32_t numBits)
 {
-    llvm::Value* r2;
     if (ip->flags & BCI_IMM_B)
-        r2 = builder.getIntN(numBits, min(ip->b.u32, numBits - 1));
+    {
+        auto r2 = builder.getIntN(numBits, min(ip->b.u32, numBits - 1));
+        auto r0 = builder.CreateLoad(PTR_IX_TY(numBits), GEP64(allocR, ip->a.u32));
+        auto v0 = builder.CreateAShr(builder.CreateLoad(IX_TY(numBits), r0), r2);
+        builder.CreateStore(v0, r0);
+    }
     else
     {
-        r2           = builder.CreateLoad(I32_TY(), GEP64(allocR, ip->b.u32));
-        auto cond    = builder.CreateICmpULT(r2, builder.getInt32(numBits));
-        auto iftrue  = r2;
+        auto v0      = builder.CreateLoad(I32_TY(), GEP64(allocR, ip->b.u32));
+        auto cond    = builder.CreateICmpULT(v0, builder.getInt32(numBits));
+        auto iftrue  = v0;
         auto iffalse = builder.getInt32(numBits - 1);
-        r2           = builder.CreateSelect(cond, iftrue, iffalse);
+        auto r2      = builder.CreateSelect(cond, iftrue, iffalse);
         r2           = builder.CreateIntCast(r2, IX_TY(numBits), false);
+        auto r0      = builder.CreateLoad(PTR_IX_TY(numBits), GEP64(allocR, ip->a.u32));
+        auto v1      = builder.CreateAShr(builder.CreateLoad(IX_TY(numBits), r0), r2);
+        builder.CreateStore(v1, r0);
     }
-
-    auto r0 = builder.CreateLoad(PTR_IX_TY(numBits), GEP64(allocR, ip->a.u32));
-    auto v0 = builder.CreateAShr(builder.CreateLoad(IX_TY(numBits), r0), r2);
-    builder.CreateStore(v0, r0);
 }
 
 void BackendLLVM::emitShiftLogical(llvm::LLVMContext& context, llvm::IRBuilder<>& builder, llvm::AllocaInst* allocR, ByteCodeInstruction* ip, uint32_t numBits, bool left)
 {
-    auto r0 = GEP64_PTR_IX(allocR, ip->c.u32, numBits);
-
     if ((ip->flags & BCI_IMM_B) && ip->b.u32 >= numBits)
     {
+        auto r0 = GEP64_PTR_IX(allocR, ip->c.u32, numBits);
         auto v0 = llvm::ConstantInt::get(IX_TY(numBits), 0);
         builder.CreateStore(v0, r0);
     }
     else if (ip->flags & BCI_IMM_B)
     {
+        auto         r0 = GEP64_PTR_IX(allocR, ip->c.u32, numBits);
         llvm::Value* r1 = getImmediateConstantA(context, builder, allocR, ip, numBits);
         auto         r2 = builder.getIntN(numBits, ip->b.u8);
         auto         v0 = left ? builder.CreateShl(r1, r2) : builder.CreateLShr(r1, r2);
@@ -64,6 +70,7 @@ void BackendLLVM::emitShiftLogical(llvm::LLVMContext& context, llvm::IRBuilder<>
     }
     else
     {
+        auto         r0      = GEP64_PTR_IX(allocR, ip->c.u32, numBits);
         llvm::Value* r1      = getImmediateConstantA(context, builder, allocR, ip, numBits);
         auto         r2      = builder.CreateLoad(I32_TY(), GEP64(allocR, ip->b.u32));
         auto         cond    = builder.CreateICmpULT(r2, builder.getInt32(numBits));
@@ -76,15 +83,15 @@ void BackendLLVM::emitShiftLogical(llvm::LLVMContext& context, llvm::IRBuilder<>
 
 void BackendLLVM::emitShiftEqLogical(llvm::LLVMContext& context, llvm::IRBuilder<>& builder, llvm::AllocaInst* allocR, ByteCodeInstruction* ip, uint32_t numBits, bool left)
 {
-    auto r0 = builder.CreateLoad(PTR_IX_TY(numBits), GEP64(allocR, ip->a.u32));
-
     if ((ip->flags & BCI_IMM_B) && ip->b.u32 >= numBits)
     {
+        auto r0 = builder.CreateLoad(PTR_IX_TY(numBits), GEP64(allocR, ip->a.u32));
         auto v0 = llvm::ConstantInt::get(IX_TY(numBits), 0);
         builder.CreateStore(v0, r0);
     }
     else if (ip->flags & BCI_IMM_B)
     {
+        auto r0 = builder.CreateLoad(PTR_IX_TY(numBits), GEP64(allocR, ip->a.u32));
         auto r2 = builder.getIntN(numBits, ip->b.u8);
         auto v1 = builder.CreateLoad(IX_TY(numBits), r0);
         auto v0 = left ? builder.CreateShl(v1, r2) : builder.CreateLShr(v1, r2);
@@ -92,6 +99,7 @@ void BackendLLVM::emitShiftEqLogical(llvm::LLVMContext& context, llvm::IRBuilder
     }
     else
     {
+        auto r0      = builder.CreateLoad(PTR_IX_TY(numBits), GEP64(allocR, ip->a.u32));
         auto r2      = builder.CreateLoad(I32_TY(), GEP64(allocR, ip->b.u8));
         auto cond    = builder.CreateICmpULT(r2, builder.getInt32(numBits));
         auto iftrue  = left ? builder.CreateShl(builder.CreateLoad(IX_TY(numBits), r0), builder.CreateIntCast(r2, IX_TY(numBits), false)) : builder.CreateLShr(builder.CreateLoad(IX_TY(numBits), r0), builder.CreateIntCast(r2, IX_TY(numBits), false));
