@@ -654,7 +654,7 @@ void BackendX64::emitAddSubMul64(X64Gen& pp, ByteCodeInstruction* ip, uint64_t m
     auto val = ip->b.u64 * mul;
     if (ip->flags & BCI_IMM_B && val <= 0x7FFFFFFF && ip->a.u32 == ip->c.u32)
     {
-        pp.emit_REX();
+        pp.emit_REX(64);
         if (val <= 0x7F)
             pp.concat.addU8(0x83);
         else

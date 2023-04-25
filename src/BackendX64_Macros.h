@@ -462,7 +462,7 @@
     pp.emit_Load64_Indirect(regOffset(ip->a.u32), RAX);   \
     if (ip->flags & BCI_IMM_B && ip->b.u64 <= 0x7FFFFFFF) \
     {                                                     \
-        pp.emit_REX();                                    \
+        pp.emit_REX(64);                                  \
         if (ip->b.u64 <= 0x7F)                            \
             pp.concat.addU8(0x83);                        \
         else                                              \
@@ -482,7 +482,7 @@
 #define MK_BINOPEQ64_SCAB(__op)                                         \
     if (ip->flags & BCI_IMM_B && ip->b.u64 <= 0x7FFFFFFF)               \
     {                                                                   \
-        pp.emit_REX();                                                  \
+        pp.emit_REX(64);                                                \
         if (ip->b.u64 <= 0x7F)                                          \
             pp.concat.addU8(0x83);                                      \
         else                                                            \

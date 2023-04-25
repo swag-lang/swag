@@ -35,12 +35,12 @@ uint8_t X64Gen::getModRM(uint8_t mod, uint8_t r, uint8_t m)
     return (mod << 6) | ((r & 0b111) << 3) | (m & 0b111);
 }
 
-void X64Gen::emit_REX(uint32_t numBits)
+void X64Gen::emit_REX(uint32_t numBits, CPURegister reg1, CPURegister reg2)
 {
     if (numBits == 16)
         concat.addU8(0x66);
-    else if (numBits == 64)
-        concat.addU8(getREX());
+    if (numBits == 64 || reg1 >= R8 || reg2 >= R8)
+        concat.addU8(getREX(numBits == 64, reg1 >= R8, false, reg2 >= R8));
 }
 
 void X64Gen::emit_ModRM(uint32_t stackOffset, uint8_t reg, uint8_t memReg, uint8_t op)
@@ -2358,12 +2358,8 @@ void X64Gen::emit_CMovL64(CPURegister reg1, CPURegister reg2)
 
 void X64Gen::emit_CMovN(CPURegister regDst, CPURegister regSrc, uint32_t numBits, X64Op op)
 {
-    if (numBits < 32)
-        numBits = 32;
-    if (regDst >= R8 || regSrc >= R8)
-        concat.addU8(getREX(numBits == 64, regDst >= R8, false, regSrc >= R8));
-    else
-        emit_REX(numBits);
+    numBits = max(numBits, 32);
+    emit_REX(numBits, regDst, regSrc);
     concat.addU8(0x0F);
     concat.addU8((uint8_t) op);
     concat.addU8(getModRM(REGREG, regDst, regSrc));
