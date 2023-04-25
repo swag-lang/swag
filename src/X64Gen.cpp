@@ -622,32 +622,28 @@ void X64Gen::emit_Ret()
 
 void X64Gen::emit_Copy8(CPURegister regDst, CPURegister regSrc)
 {
-    if (regSrc >= R8 || regDst >= R8)
-        concat.addU8(getREX(false, regSrc >= R8, false, regDst >= R8));
+    emit_REX(8, regSrc, regDst);
     concat.addU8(0x88);
     concat.addU8(getModRM(REGREG, regSrc, regDst));
 }
 
 void X64Gen::emit_Copy16(CPURegister regDst, CPURegister regSrc)
 {
-    concat.addU8(0x66);
-    if (regSrc >= R8 || regDst >= R8)
-        concat.addU8(getREX(false, regSrc >= R8, false, regDst >= R8));
+    emit_REX(16, regSrc, regDst);
     concat.addU8(0x89);
     concat.addU8(getModRM(REGREG, regSrc, regDst));
 }
 
 void X64Gen::emit_Copy32(CPURegister regDst, CPURegister regSrc)
 {
-    if (regSrc >= R8 || regDst >= R8)
-        concat.addU8(getREX(false, regSrc >= R8, false, regDst >= R8));
+    emit_REX(32, regSrc, regDst);
     concat.addU8(0x89);
     concat.addU8(getModRM(REGREG, regSrc, regDst));
 }
 
 void X64Gen::emit_Copy64(CPURegister regDst, CPURegister regSrc)
 {
-    concat.addU8(getREX(true, regSrc >= R8, false, regDst >= R8));
+    emit_REX(64, regSrc, regDst);
     concat.addU8(0x89);
     concat.addU8(getModRM(REGREG, regSrc, regDst));
 }
