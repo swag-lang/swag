@@ -1562,7 +1562,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
         case ByteCodeOp::AffectOpPlusEqS8_SSafe:
         case ByteCodeOp::AffectOpPlusEqU8_SSafe:
             if (ip->flags & BCI_IMM_B && ip->b.u32 == 1)
-                pp.emit_Inc8_Indirect(offsetStack + ip->a.u32, RDI);
+                pp.emit_IncN_Indirect(offsetStack + ip->a.u32, RDI, X64Bits::B8);
             else
             {
                 MK_BINOPEQ8_SCAB(X64Op::ADD);
@@ -1581,7 +1581,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
         case ByteCodeOp::AffectOpPlusEqS16_SSafe:
         case ByteCodeOp::AffectOpPlusEqU16_SSafe:
             if (ip->flags & BCI_IMM_B && ip->b.u32 == 1)
-                pp.emit_Inc16_Indirect(offsetStack + ip->a.u32, RDI);
+                pp.emit_IncN_Indirect(offsetStack + ip->a.u32, RDI, X64Bits::B16);
             else
             {
                 MK_BINOPEQ16_SCAB(X64Op::ADD);
@@ -1600,7 +1600,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
         case ByteCodeOp::AffectOpPlusEqS32_SSafe:
         case ByteCodeOp::AffectOpPlusEqU32_SSafe:
             if (ip->flags & BCI_IMM_B && ip->b.u32 == 1)
-                pp.emit_Inc32_Indirect(offsetStack + ip->a.u32, RDI);
+                pp.emit_IncN_Indirect(offsetStack + ip->a.u32, RDI, X64Bits::B32);
             else
             {
                 MK_BINOPEQ32_SCAB(X64Op::ADD);
@@ -1620,7 +1620,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
         case ByteCodeOp::AffectOpPlusEqS64_SSafe:
         case ByteCodeOp::AffectOpPlusEqU64_SSafe:
             if (ip->flags & BCI_IMM_B && ip->b.u32 == 1)
-                pp.emit_Inc64_Indirect(offsetStack + ip->a.u32, RDI);
+                pp.emit_IncN_Indirect(offsetStack + ip->a.u32, RDI, X64Bits::B64);
             else
             {
                 MK_BINOPEQ64_SCAB(X64Op::ADD);
@@ -2331,7 +2331,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             MK_JMPCMP3_F64(JP, JZ);
             break;
         case ByteCodeOp::IncJumpIfEqual64:
-            pp.emit_Inc64_Indirect(regOffset(ip->a.u32), RDI);
+            pp.emit_IncN_Indirect(regOffset(ip->a.u32), RDI, X64Bits::B64);
             MK_JMPCMP_64(JZ);
             break;
 
@@ -2415,7 +2415,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             pp.emit_DecN_Indirect(regOffset(ip->a.u32), RDI, X64Bits::B32);
             break;
         case ByteCodeOp::IncrementRA64:
-            pp.emit_Inc64_Indirect(regOffset(ip->a.u32), RDI);
+            pp.emit_IncN_Indirect(regOffset(ip->a.u32), RDI, X64Bits::B64);
             break;
         case ByteCodeOp::DecrementRA64:
             pp.emit_DecN_Indirect(regOffset(ip->a.u32), RDI, X64Bits::B64);
