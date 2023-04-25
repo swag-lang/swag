@@ -306,7 +306,7 @@ void X64Gen::emit_LoadF64_Indirect(uint32_t stackOffset, CPURegister reg, CPUReg
 void X64Gen::emit_LoadAddress_Indirect(uint32_t stackOffset, CPURegister reg, CPURegister memReg)
 {
     if (stackOffset == 0)
-        emit_Copy64(memReg, reg);
+        emit_Copy64(reg, memReg);
     else
     {
         concat.addU8(getREX(true, reg >= R8, false, memReg >= R8));
@@ -620,7 +620,7 @@ void X64Gen::emit_Ret()
 
 /////////////////////////////////////////////////////////////////////
 
-void X64Gen::emit_Copy8(CPURegister regSrc, CPURegister regDst)
+void X64Gen::emit_Copy8(CPURegister regDst, CPURegister regSrc)
 {
     if (regSrc >= R8 || regDst >= R8)
         concat.addU8(getREX(false, regSrc >= R8, false, regDst >= R8));
@@ -628,7 +628,7 @@ void X64Gen::emit_Copy8(CPURegister regSrc, CPURegister regDst)
     concat.addU8(getModRM(REGREG, regSrc, regDst));
 }
 
-void X64Gen::emit_Copy16(CPURegister regSrc, CPURegister regDst)
+void X64Gen::emit_Copy16(CPURegister regDst, CPURegister regSrc)
 {
     concat.addU8(0x66);
     if (regSrc >= R8 || regDst >= R8)
@@ -637,7 +637,7 @@ void X64Gen::emit_Copy16(CPURegister regSrc, CPURegister regDst)
     concat.addU8(getModRM(REGREG, regSrc, regDst));
 }
 
-void X64Gen::emit_Copy32(CPURegister regSrc, CPURegister regDst)
+void X64Gen::emit_Copy32(CPURegister regDst, CPURegister regSrc)
 {
     if (regSrc >= R8 || regDst >= R8)
         concat.addU8(getREX(false, regSrc >= R8, false, regDst >= R8));
@@ -645,14 +645,14 @@ void X64Gen::emit_Copy32(CPURegister regSrc, CPURegister regDst)
     concat.addU8(getModRM(REGREG, regSrc, regDst));
 }
 
-void X64Gen::emit_Copy64(CPURegister regSrc, CPURegister regDst)
+void X64Gen::emit_Copy64(CPURegister regDst, CPURegister regSrc)
 {
     concat.addU8(getREX(true, regSrc >= R8, false, regDst >= R8));
     concat.addU8(0x89);
     concat.addU8(getModRM(REGREG, regSrc, regDst));
 }
 
-void X64Gen::emit_CopyF32(CPURegister regSrc, CPURegister regDst)
+void X64Gen::emit_CopyF32(CPURegister regDst, CPURegister regSrc)
 {
     SWAG_ASSERT(regSrc == RAX);
     SWAG_ASSERT(regDst == XMM0 || regDst == XMM1 || regDst == XMM2 || regDst == XMM3);
@@ -662,7 +662,7 @@ void X64Gen::emit_CopyF32(CPURegister regSrc, CPURegister regDst)
     concat.addU8(0xC0 | (regDst << 3));
 }
 
-void X64Gen::emit_CopyF64(CPURegister regSrc, CPURegister regDst)
+void X64Gen::emit_CopyF64(CPURegister regDst, CPURegister regSrc)
 {
     SWAG_ASSERT(regSrc == RAX);
     SWAG_ASSERT(regDst == XMM0 || regDst == XMM1 || regDst == XMM2 || regDst == XMM3);
@@ -1748,7 +1748,7 @@ void X64Gen::emit_Call_Parameters(TypeInfoFuncAttr* typeFuncBC, VectorNative<X64
                 {
                     SWAG_ASSERT(paramsRegisters[i].reg <= UINT32_MAX);
                     emit_Load32_Immediate(RAX, (uint32_t) paramsRegisters[i].reg);
-                    emit_CopyF32(RAX, cc.byRegisterFloat[i]);
+                    emit_CopyF32(cc.byRegisterFloat[i], RAX);
                 }
                 else
                 {
@@ -1761,7 +1761,7 @@ void X64Gen::emit_Call_Parameters(TypeInfoFuncAttr* typeFuncBC, VectorNative<X64
                 if (paramsRegisters[i].type == X64PushParamType::Imm)
                 {
                     emit_Load64_Immediate(RAX, paramsRegisters[i].reg);
-                    emit_CopyF64(RAX, cc.byRegisterFloat[i]);
+                    emit_CopyF64(cc.byRegisterFloat[i], RAX);
                 }
                 else
                 {
@@ -1798,7 +1798,7 @@ void X64Gen::emit_Call_Parameters(TypeInfoFuncAttr* typeFuncBC, VectorNative<X64
                 case X64PushParamType::RegMul:
                     emit_Load64_Indirect(regOffset(reg), RAX);
                     emit_Mul64_RAX(paramsRegisters[i].val);
-                    emit_Copy64(RAX, cc.byRegisterInteger[i]);
+                    emit_Copy64(cc.byRegisterInteger[i], RAX);
                     break;
                 case X64PushParamType::GlobalString:
                     emit_GlobalString((const char*) paramsRegisters[i].reg, cc.byRegisterInteger[i]);

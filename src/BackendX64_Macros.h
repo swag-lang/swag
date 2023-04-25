@@ -32,7 +32,7 @@
     if (ip->flags & BCI_IMM_A)                    \
     {                                             \
         pp.emit_Load32_Immediate(RAX, ip->a.u32); \
-        pp.emit_CopyF32(RAX, __reg);              \
+        pp.emit_CopyF32(__reg, RAX);              \
     }                                             \
     else                                          \
         pp.emit_LoadF32_Indirect(regOffset(ip->a.u32), __reg);
@@ -41,7 +41,7 @@
     if (ip->flags & BCI_IMM_A)                    \
     {                                             \
         pp.emit_Load64_Immediate(RAX, ip->a.u32); \
-        pp.emit_CopyF64(RAX, __reg);              \
+        pp.emit_CopyF64(__reg, RAX);              \
     }                                             \
     else                                          \
         pp.emit_LoadF64_Indirect(regOffset(ip->a.u32), __reg);
@@ -92,7 +92,7 @@
     if (ip->flags & BCI_IMM_B)                    \
     {                                             \
         pp.emit_Load32_Immediate(RAX, ip->b.u32); \
-        pp.emit_CopyF32(RAX, __reg);              \
+        pp.emit_CopyF32(__reg, RAX);              \
     }                                             \
     else                                          \
         pp.emit_LoadF32_Indirect(regOffset(ip->b.u32), __reg);
@@ -101,7 +101,7 @@
     if (ip->flags & BCI_IMM_B)                    \
     {                                             \
         pp.emit_Load64_Immediate(RAX, ip->b.u64); \
-        pp.emit_CopyF64(RAX, __reg);              \
+        pp.emit_CopyF64(__reg, RAX);              \
     }                                             \
     else                                          \
         pp.emit_LoadF64_Indirect(regOffset(ip->b.u32), __reg);
@@ -146,7 +146,7 @@
     if (ip->flags & BCI_IMM_C)                    \
     {                                             \
         pp.emit_Load32_Immediate(RAX, ip->c.u32); \
-        pp.emit_CopyF32(RAX, __reg);              \
+        pp.emit_CopyF32(__reg, RAX);              \
     }                                             \
     else                                          \
         pp.emit_LoadF32_Indirect(regOffset(ip->c.u32), __reg);
@@ -155,7 +155,7 @@
     if (ip->flags & BCI_IMM_C)                    \
     {                                             \
         pp.emit_Load64_Immediate(RAX, ip->c.u64); \
-        pp.emit_CopyF64(RAX, __reg);              \
+        pp.emit_CopyF64(__reg, RAX);              \
     }                                             \
     else                                          \
         pp.emit_LoadF64_Indirect(regOffset(ip->c.u32), __reg);
@@ -170,7 +170,7 @@
     if (ip->flags & BCI_IMM_D)                    \
     {                                             \
         pp.emit_Load32_Immediate(RAX, ip->d.u32); \
-        pp.emit_CopyF32(RAX, __reg);              \
+        pp.emit_CopyF32(__reg, RAX);              \
     }                                             \
     else                                          \
         pp.emit_LoadF32_Indirect(regOffset(ip->d.u32), __reg);
@@ -179,7 +179,7 @@
     if (ip->flags & BCI_IMM_D)                    \
     {                                             \
         pp.emit_Load64_Immediate(RAX, ip->d.u64); \
-        pp.emit_CopyF64(RAX, __reg);              \
+        pp.emit_CopyF64(__reg, RAX);              \
     }                                             \
     else                                          \
         pp.emit_LoadF64_Indirect(regOffset(ip->d.u32), __reg);
@@ -275,7 +275,7 @@
     else if ((ip->flags & BCI_IMM_A) && !(ip->flags & BCI_IMM_B)) \
     {                                                             \
         pp.emit_Load32_Immediate(RAX, ip->a.u32);                 \
-        pp.emit_CopyF32(RAX, XMM0);                               \
+        pp.emit_CopyF32(XMM0, RAX);                               \
         pp.__opInd(regOffset(ip->b.u32), XMM0, RDI);              \
     }                                                             \
     else                                                          \
@@ -294,7 +294,7 @@
     else if ((ip->flags & BCI_IMM_A) && !(ip->flags & BCI_IMM_B)) \
     {                                                             \
         pp.emit_Load64_Immediate(RAX, ip->a.u64);                 \
-        pp.emit_CopyF64(RAX, XMM0);                               \
+        pp.emit_CopyF64(XMM0, RAX);                               \
         pp.__opInd(regOffset(ip->b.u32), XMM0, RDI);              \
     }                                                             \
     else                                                          \

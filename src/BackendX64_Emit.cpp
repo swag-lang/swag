@@ -263,14 +263,14 @@ void BackendX64::emitBinOpFloat32(X64Gen& pp, ByteCodeInstruction* ip, X64Op op)
         if (ip->flags & BCI_IMM_A)
         {
             pp.emit_Load32_Immediate(RAX, ip->a.u32);
-            pp.emit_CopyF32(RAX, XMM0);
+            pp.emit_CopyF32(XMM0, RAX);
         }
         else
             pp.emit_LoadF32_Indirect(regOffset(ip->a.u32), XMM0);
         if (ip->flags & BCI_IMM_B)
         {
             pp.emit_Load32_Immediate(RAX, ip->b.u32);
-            pp.emit_CopyF32(RAX, XMM1);
+            pp.emit_CopyF32(XMM1, RAX);
         }
         else
             pp.emit_LoadF32_Indirect(regOffset(ip->b.u32), XMM1);
@@ -302,14 +302,14 @@ void BackendX64::emitBinOpFloat64(X64Gen& pp, ByteCodeInstruction* ip, X64Op op)
         if (ip->flags & BCI_IMM_A)
         {
             pp.emit_Load64_Immediate(RAX, ip->a.u64);
-            pp.emit_CopyF64(RAX, XMM0);
+            pp.emit_CopyF64(XMM0, RAX);
         }
         else
             pp.emit_LoadF64_Indirect(regOffset(ip->a.u32), XMM0);
         if (ip->flags & BCI_IMM_B)
         {
             pp.emit_Load64_Immediate(RAX, ip->b.u64);
-            pp.emit_CopyF64(RAX, XMM1);
+            pp.emit_CopyF64(XMM1, RAX);
         }
         else
             pp.emit_LoadF64_Indirect(regOffset(ip->b.u32), XMM1);

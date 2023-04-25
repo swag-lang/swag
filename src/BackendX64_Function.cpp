@@ -179,7 +179,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
     // This is used to debug and have access to capture parameters, even if we "lose" rcx
     // which is the register that will have a pointer to the capture buffer (but rcx is volatile)
     if (typeFunc->isClosure() && debug)
-        pp.emit_Copy64(RCX, R11);
+        pp.emit_Copy64(R11, RCX);
 
     auto                                   ip = bc->out;
     VectorNative<uint32_t>                 pushRAParams;
@@ -3370,7 +3370,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             // ByteCode lambda
             //////////////////
 
-            pp.emit_Copy64(RAX, RCX);
+            pp.emit_Copy64(RCX, RAX);
             pp.emit_Symbol_RelocationAddr(RAX, pp.symPI_makeCallback, 0);
             pp.emit_Load64_Indirect(0, RAX, RAX);
             pp.emit_Call_Indirect(RAX);
@@ -3441,7 +3441,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             //////////////////
             *jumpToBCAddr = concat.totalCount() - jumpToBCOffset;
 
-            pp.emit_Copy64(R10, RCX);
+            pp.emit_Copy64(RCX, R10);
             emitByteCodeCallParameters(pp, typeFuncBC, offsetRT, pushRAParams);
             pp.emit_Symbol_RelocationAddr(RAX, pp.symPI_byteCodeRun, 0);
             pp.emit_Load64_Indirect(0, RAX, RAX);
@@ -3488,9 +3488,9 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
                 if (cc.useReturnByRegisterFloat)
                 {
                     if (returnType->isNative(NativeTypeKind::F32))
-                        pp.emit_CopyF32(RAX, cc.returnByRegisterFloat);
+                        pp.emit_CopyF32(cc.returnByRegisterFloat, RAX);
                     else if (returnType->isNative(NativeTypeKind::F64))
-                        pp.emit_CopyF64(RAX, cc.returnByRegisterFloat);
+                        pp.emit_CopyF64(cc.returnByRegisterFloat, RAX);
                 }
             }
 
@@ -3701,7 +3701,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             {
             case TokenId::IntrinsicAbs:
                 MK_IMMB_8(RAX);
-                pp.emit_Copy8(RAX, RCX);
+                pp.emit_Copy8(RCX, RAX);
                 concat.addString3("\xC0\xF9\x07"); // sar cl, 7
                 concat.addString2("\x30\xC8");     // xor al, cl
                 concat.addString2("\x28\xC8");     // sub al, cl
@@ -3741,7 +3741,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             {
             case TokenId::IntrinsicAbs:
                 MK_IMMB_16(RAX);
-                pp.emit_Copy16(RAX, RCX);
+                pp.emit_Copy16(RCX, RAX);
                 concat.addString4("\x66\xC1\xF9\x0F"); // sar cx, 15
                 concat.addString3("\x66\x31\xC8");     // xor ax, cx
                 concat.addString3("\x66\x29\xC8");     // sub ax, cx
@@ -3786,7 +3786,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             {
             case TokenId::IntrinsicAbs:
                 MK_IMMB_32(RAX);
-                pp.emit_Copy32(RAX, RCX);
+                pp.emit_Copy32(RCX, RAX);
                 concat.addString3("\xC1\xF9\x1F"); // sar ecx, 31
                 concat.addString2("\x31\xC8");     // xor eax, ecx
                 pp.emit_Op32(RCX, RAX, X64Op::SUB);
@@ -3831,7 +3831,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             {
             case TokenId::IntrinsicAbs:
                 MK_IMMB_64(RAX);
-                pp.emit_Copy64(RAX, RCX);
+                pp.emit_Copy64(RCX, RAX);
                 concat.addString4("\x48\xC1\xF9\x3F"); // sar rcx, 63
                 pp.emit_Op64(RCX, RAX, X64Op::XOR);
                 pp.emit_Op64(RCX, RAX, X64Op::SUB);
@@ -4180,7 +4180,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             case TokenId::IntrinsicAbs:
                 MK_IMMB_F32(XMM0);
                 pp.emit_Load64_Immediate(RAX, 0x7FFFFFFF);
-                pp.emit_CopyF64(RAX, XMM1);
+                pp.emit_CopyF64(XMM1, RAX);
                 concat.addString3("\x0F\x54\xC1"); // andps xmm0, xmm1
                 pp.emit_StoreF32_Indirect(regOffset(ip->a.u32), XMM0);
                 break;
@@ -4266,7 +4266,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             case TokenId::IntrinsicAbs:
                 MK_IMMB_F64(XMM0);
                 pp.emit_Load64_Immediate(RAX, 0x7FFFFFFF'FFFFFFFF);
-                pp.emit_CopyF64(RAX, XMM1);
+                pp.emit_CopyF64(XMM1, RAX);
                 concat.addString4("\x66\x0F\x54\xC1"); // andpd xmm0, xmm1
                 pp.emit_StoreF64_Indirect(regOffset(ip->a.u32), XMM0);
                 break;

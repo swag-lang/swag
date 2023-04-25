@@ -441,12 +441,12 @@ struct X64Gen
     void emit_CmpF32_Indirect(uint32_t offsetStack, CPURegister reg, CPURegister memReg);
     void emit_CmpF64(uint8_t reg1, uint8_t reg2);
     void emit_CmpF64_Indirect(uint32_t offsetStack, CPURegister reg, CPURegister memReg);
-    void emit_Copy8(CPURegister regSrc, CPURegister regDst);
-    void emit_Copy16(CPURegister regSrc, CPURegister regDst);
-    void emit_Copy32(CPURegister regSrc, CPURegister regDst);
-    void emit_Copy64(CPURegister regSrc, CPURegister regDst);
-    void emit_CopyF32(CPURegister regSrc, CPURegister regDst);
-    void emit_CopyF64(CPURegister regSrc, CPURegister regDst);
+    void emit_Copy8(CPURegister regDst, CPURegister regSrc);
+    void emit_Copy16(CPURegister regDst, CPURegister regSrc);
+    void emit_Copy32(CPURegister regDst, CPURegister regSrc);
+    void emit_Copy64(CPURegister regDst, CPURegister regSrc);
+    void emit_CopyF32(CPURegister regDst, CPURegister regSrc);
+    void emit_CopyF64(CPURegister regDst, CPURegister regSrc);
     void emit_CopyX(uint32_t count, uint32_t offset, CPURegister regDst, CPURegister regSrc);
     void emit_Extend_U16U64(CPURegister regSrc, CPURegister regDst);
     void emit_Extend_U8U64(CPURegister regSrc, CPURegister regDst);
