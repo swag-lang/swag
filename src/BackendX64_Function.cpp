@@ -2145,7 +2145,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
 
         case ByteCodeOp::InvertU8:
             if (ip->a.u32 == ip->b.u32)
-                pp.emit_Not8_Indirect(regOffset(ip->a.u32), RDI);
+                pp.emit_NotN_Indirect(regOffset(ip->a.u32), RDI, X64Bits::B8);
             else
             {
                 pp.emit_Load8_Indirect(regOffset(ip->b.u32), RAX);
@@ -2155,7 +2155,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             break;
         case ByteCodeOp::InvertU16:
             if (ip->a.u32 == ip->b.u32)
-                pp.emit_Not16_Indirect(regOffset(ip->a.u32), RDI);
+                pp.emit_NotN_Indirect(regOffset(ip->a.u32), RDI, X64Bits::B16);
             else
             {
                 pp.emit_Load16_Indirect(regOffset(ip->b.u32), RAX);
@@ -2165,7 +2165,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             break;
         case ByteCodeOp::InvertU32:
             if (ip->a.u32 == ip->b.u32)
-                pp.emit_Not32_Indirect(regOffset(ip->a.u32), RDI);
+                pp.emit_NotN_Indirect(regOffset(ip->a.u32), RDI, X64Bits::B32);
             else
             {
                 pp.emit_Load32_Indirect(regOffset(ip->b.u32), RAX);
@@ -2175,7 +2175,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             break;
         case ByteCodeOp::InvertU64:
             if (ip->a.u32 == ip->b.u32)
-                pp.emit_Not64_Indirect(regOffset(ip->a.u32), RDI);
+                pp.emit_NotN_Indirect(regOffset(ip->a.u32), RDI, X64Bits::B64);
             else
             {
                 pp.emit_Load64_Indirect(regOffset(ip->b.u32), RAX);

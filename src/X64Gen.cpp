@@ -2077,6 +2077,7 @@ void X64Gen::emit_Cqo()
 void X64Gen::emit_NotN(CPURegister reg, X64Bits numBits)
 {
     SWAG_ASSERT(reg < R8);
+
     emit_REX(numBits);
     if (numBits == X64Bits::B8)
         concat.addU8(0xF6);
@@ -2085,64 +2086,16 @@ void X64Gen::emit_NotN(CPURegister reg, X64Bits numBits)
     concat.addU8(0xD0 | (reg & 0b111));
 }
 
-void X64Gen::emit_Not8_Indirect(uint32_t stackOffset, CPURegister memReg)
+void X64Gen::emit_NotN_Indirect(uint32_t stackOffset, CPURegister memReg, X64Bits numBits)
 {
     SWAG_ASSERT(memReg == RDI);
 
-    concat.addU8(0xF6);
-    if (stackOffset <= 0x7F)
-    {
-        concat.addU8(0x57);
-        concat.addU8((uint8_t) stackOffset);
-    }
+    emit_REX(numBits);
+    if (numBits == X64Bits::B8)
+        concat.addU8(0xF6);
     else
-    {
-        concat.addU8(0x97);
-        concat.addU32(stackOffset);
-    }
-}
+        concat.addU8(0xF7);
 
-void X64Gen::emit_Not16_Indirect(uint32_t stackOffset, CPURegister memReg)
-{
-    SWAG_ASSERT(memReg == RDI);
-
-    concat.addU8(0x66);
-    concat.addU8(0xF7);
-    if (stackOffset <= 0x7F)
-    {
-        concat.addU8(0x57);
-        concat.addU8((uint8_t) stackOffset);
-    }
-    else
-    {
-        concat.addU8(0x97);
-        concat.addU32(stackOffset);
-    }
-}
-
-void X64Gen::emit_Not32_Indirect(uint32_t stackOffset, CPURegister memReg)
-{
-    SWAG_ASSERT(memReg == RDI);
-
-    concat.addU8(0xF7);
-    if (stackOffset <= 0x7F)
-    {
-        concat.addU8(0x57);
-        concat.addU8((uint8_t) stackOffset);
-    }
-    else
-    {
-        concat.addU8(0x97);
-        concat.addU32(stackOffset);
-    }
-}
-
-void X64Gen::emit_Not64_Indirect(uint32_t stackOffset, CPURegister memReg)
-{
-    SWAG_ASSERT(memReg == RDI);
-
-    concat.addU8(getREX());
-    concat.addU8(0xF7);
     if (stackOffset <= 0x7F)
     {
         concat.addU8(0x57);

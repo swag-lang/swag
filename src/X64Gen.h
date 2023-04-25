@@ -535,10 +535,7 @@ struct X64Gen
     void emit_Cdq();
     void emit_Cqo();
     void emit_NotN(CPURegister reg, X64Bits numBits);
-    void emit_Not8_Indirect(uint32_t stackOffset, CPURegister memReg);
-    void emit_Not16_Indirect(uint32_t stackOffset, CPURegister memReg);
-    void emit_Not32_Indirect(uint32_t stackOffset, CPURegister memReg);
-    void emit_Not64_Indirect(uint32_t stackOffset, CPURegister memReg);
+    void emit_NotN_Indirect(uint32_t stackOffset, CPURegister memReg, X64Bits numBits);
     void emit_IncN_Indirect(uint32_t stackOffset, CPURegister memReg, X64Bits numBits);
     void emit_DecN_Indirect(uint32_t stackOffset, CPURegister memReg, X64Bits numBits);
     void emit_NegN(CPURegister reg, X64Bits numBits);
