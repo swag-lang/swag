@@ -1824,7 +1824,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             break;
         case ByteCodeOp::GreaterEqZeroToTrue:
             pp.emit_Load32_Indirect(regOffset(ip->a.u32), RAX);
-            pp.emit_Not32(RAX);
+            pp.emit_NotN(RAX, X64Bits::B32);
             pp.emit_ShiftN(RAX, 31, X64Bits::B32, X64Op::SHR);
             pp.emit_Store8_Indirect(regOffset(ip->a.u32), RAX);
             break;
@@ -2149,7 +2149,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             else
             {
                 pp.emit_Load8_Indirect(regOffset(ip->b.u32), RAX);
-                pp.emit_Not8(RAX);
+                pp.emit_NotN(RAX, X64Bits::B8);
                 pp.emit_Store8_Indirect(regOffset(ip->a.u32), RAX);
             }
             break;
@@ -2159,7 +2159,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             else
             {
                 pp.emit_Load16_Indirect(regOffset(ip->b.u32), RAX);
-                pp.emit_Not16(RAX);
+                pp.emit_NotN(RAX, X64Bits::B16);
                 pp.emit_Store16_Indirect(regOffset(ip->a.u32), RAX);
             }
             break;
@@ -2169,7 +2169,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             else
             {
                 pp.emit_Load32_Indirect(regOffset(ip->b.u32), RAX);
-                pp.emit_Not32(RAX);
+                pp.emit_NotN(RAX, X64Bits::B32);
                 pp.emit_Store32_Indirect(regOffset(ip->a.u32), RAX);
             }
             break;
@@ -2179,7 +2179,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             else
             {
                 pp.emit_Load64_Indirect(regOffset(ip->b.u32), RAX);
-                pp.emit_Not64(RAX);
+                pp.emit_NotN(RAX, X64Bits::B64);
                 pp.emit_Store64_Indirect(regOffset(ip->a.u32), RAX);
             }
             break;
