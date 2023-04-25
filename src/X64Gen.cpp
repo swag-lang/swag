@@ -2249,28 +2249,12 @@ void X64Gen::emit_Neg64(CPURegister reg)
     concat.addU8(0xD8 | (reg & 0b111));
 }
 
-void X64Gen::emit_Neg32_Indirect(uint32_t stackOffset, CPURegister memReg)
+void X64Gen::emit_NegN_Indirect(uint32_t stackOffset, CPURegister memReg, X64Bits numBits)
 {
     SWAG_ASSERT(memReg == RDI);
+    SWAG_ASSERT(numBits == X64Bits::B32 || numBits == X64Bits::B64);
 
-    concat.addU8(0xF7);
-    if (stackOffset <= 0x7F)
-    {
-        concat.addU8(0x5F);
-        concat.addU8((uint8_t) stackOffset);
-    }
-    else
-    {
-        concat.addU8(0x9F);
-        concat.addU32(stackOffset);
-    }
-}
-
-void X64Gen::emit_Neg64_Indirect(uint32_t stackOffset, CPURegister memReg)
-{
-    SWAG_ASSERT(memReg == RDI);
-
-    concat.addU8(getREX());
+    emit_REX(numBits);
     concat.addU8(0xF7);
     if (stackOffset <= 0x7F)
     {

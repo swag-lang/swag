@@ -2108,7 +2108,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             break;
         case ByteCodeOp::NegS32:
             if (ip->a.u32 == ip->b.u32)
-                pp.emit_Neg32_Indirect(regOffset(ip->a.u32), RDI);
+                pp.emit_NegN_Indirect(regOffset(ip->a.u32), RDI, X64Bits::B32);
             else
             {
                 pp.emit_Load32_Indirect(regOffset(ip->b.u32), RAX);
@@ -2118,7 +2118,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             break;
         case ByteCodeOp::NegS64:
             if (ip->a.u32 == ip->b.u32)
-                pp.emit_Neg64_Indirect(regOffset(ip->a.u32), RDI);
+                pp.emit_NegN_Indirect(regOffset(ip->a.u32), RDI, X64Bits::B64);
             else
             {
                 pp.emit_Load64_Indirect(regOffset(ip->b.u32), RAX);
