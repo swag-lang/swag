@@ -2324,38 +2324,6 @@ void X64Gen::emit_Neg64_Indirect(uint32_t stackOffset, CPURegister memReg)
     }
 }
 
-void X64Gen::emit_CMovL16(CPURegister reg1, CPURegister reg2)
-{
-    SWAG_ASSERT(reg1 == RAX);
-    SWAG_ASSERT(reg2 == RCX);
-
-    concat.addU8(0x66);
-    concat.addU8(0x0F);
-    concat.addU8(0x4C);
-    concat.addU8(0xC1);
-}
-
-void X64Gen::emit_CMovL32(CPURegister reg1, CPURegister reg2)
-{
-    SWAG_ASSERT(reg1 == RAX);
-    SWAG_ASSERT(reg2 == RCX);
-
-    concat.addU8(0x0F);
-    concat.addU8(0x4C);
-    concat.addU8(0xC1);
-}
-
-void X64Gen::emit_CMovL64(CPURegister reg1, CPURegister reg2)
-{
-    SWAG_ASSERT(reg1 == RAX);
-    SWAG_ASSERT(reg2 == RCX);
-
-    concat.addU8(getREX());
-    concat.addU8(0x0F);
-    concat.addU8(0x4C);
-    concat.addU8(0xC1);
-}
-
 void X64Gen::emit_CMovN(CPURegister regDst, CPURegister regSrc, uint32_t numBits, X64Op op)
 {
     numBits = max(numBits, 32);
@@ -2363,70 +2331,6 @@ void X64Gen::emit_CMovN(CPURegister regDst, CPURegister regSrc, uint32_t numBits
     concat.addU8(0x0F);
     concat.addU8((uint8_t) op);
     concat.addU8(getModRM(REGREG, regDst, regSrc));
-}
-
-void X64Gen::emit_CMovB16(CPURegister reg1, CPURegister reg2)
-{
-    SWAG_ASSERT(reg1 == RAX);
-    SWAG_ASSERT(reg2 == RCX);
-
-    concat.addU8(0x66);
-    concat.addU8(0x0F);
-    concat.addU8(0x42);
-    concat.addU8(0xC1);
-}
-
-void X64Gen::emit_CMovB32(CPURegister reg1, CPURegister reg2)
-{
-    SWAG_ASSERT(reg1 == RAX);
-    SWAG_ASSERT(reg2 == RCX);
-
-    concat.addU8(0x0F);
-    concat.addU8(0x42);
-    concat.addU8(0xC1);
-}
-
-void X64Gen::emit_CMovB64(CPURegister reg1, CPURegister reg2)
-{
-    SWAG_ASSERT(reg1 == RAX);
-    SWAG_ASSERT(reg2 == RCX);
-
-    concat.addU8(getREX());
-    concat.addU8(0x0F);
-    concat.addU8(0x42);
-    concat.addU8(0xC1);
-}
-
-void X64Gen::emit_CMovE16(CPURegister reg1, CPURegister reg2)
-{
-    SWAG_ASSERT(reg1 == RAX);
-    SWAG_ASSERT(reg2 == RCX);
-
-    concat.addU8(0x66);
-    concat.addU8(0x0F);
-    concat.addU8(0x44);
-    concat.addU8(0xC1);
-}
-
-void X64Gen::emit_CMovE32(CPURegister reg1, CPURegister reg2)
-{
-    SWAG_ASSERT(reg1 == RAX);
-    SWAG_ASSERT(reg2 == RCX);
-
-    concat.addU8(0x0F);
-    concat.addU8(0x44);
-    concat.addU8(0xC1);
-}
-
-void X64Gen::emit_CMovE64(CPURegister reg1, CPURegister reg2)
-{
-    SWAG_ASSERT(reg1 == RAX);
-    SWAG_ASSERT(reg2 == RCX);
-
-    concat.addU8(getREX());
-    concat.addU8(0x0F);
-    concat.addU8(0x44);
-    concat.addU8(0xC1);
 }
 
 void X64Gen::emit_BSwap32(CPURegister reg)
