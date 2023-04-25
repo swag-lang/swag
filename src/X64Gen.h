@@ -61,6 +61,7 @@ enum class X64Op : uint8_t
     SAR   = 0xF8,
     SHLEQ = 0x20,
     SHREQ = 0x28,
+    CMOVG = 0x4F,
 };
 
 enum class CoffSymbolKind
@@ -472,7 +473,7 @@ struct X64Gen
     void emit_LoadU8U32_Indirect(uint32_t stackOffset, CPURegister reg, CPURegister memReg);
     void emit_LoadU8U64_Indirect(uint32_t stackOffset, CPURegister reg, CPURegister memReg);
     void emit_LongJumpOp(JumpType jumpType);
-    void emit_REX(uint8_t bits = 64);
+    void emit_REX(uint32_t numBits = 64);
     void emit_ModRM(uint32_t stackOffset, uint8_t reg, uint8_t memReg, uint8_t op = 1);
     void emit_Mul64_RAX(uint64_t value);
     void emit_NearJumpOp(JumpType jumpType);
@@ -555,7 +556,7 @@ struct X64Gen
     void emit_CMovE16(CPURegister reg1, CPURegister reg2);
     void emit_CMovE32(CPURegister reg1, CPURegister reg2);
     void emit_CMovE64(CPURegister reg1, CPURegister reg2);
-    void emit_CMovG32(CPURegister reg1, CPURegister reg2);
+    void emit_CMovN(CPURegister reg1, CPURegister reg2, uint32_t numBits, X64Op op);
     void emit_BSwap32(CPURegister reg);
     void emit_BSwap64(CPURegister reg);
     void emit_ShiftN(CPURegister reg, uint32_t value, uint32_t numBits, X64Op instruction);

@@ -35,11 +35,11 @@ uint8_t X64Gen::getModRM(uint8_t mod, uint8_t r, uint8_t m)
     return (mod << 6) | ((r & 0b111) << 3) | (m & 0b111);
 }
 
-void X64Gen::emit_REX(uint8_t bits)
+void X64Gen::emit_REX(uint32_t numBits)
 {
-    if (bits == 16)
+    if (numBits == 16)
         concat.addU8(0x66);
-    else if (bits == 64)
+    else if (numBits == 64)
         concat.addU8(getREX());
 }
 
@@ -577,7 +577,7 @@ void X64Gen::emit_Clear16(CPURegister reg)
 
 void X64Gen::emit_Clear32(CPURegister reg)
 {
-    SWAG_ASSERT(reg < R8);
+    concat.addU8(getREX(false, reg >= R8, false, reg >= R8));
     concat.addU8(0x31);
     concat.addU8(getModRM(REGREG, reg, reg));
 }
@@ -2356,14 +2356,17 @@ void X64Gen::emit_CMovL64(CPURegister reg1, CPURegister reg2)
     concat.addU8(0xC1);
 }
 
-void X64Gen::emit_CMovG32(CPURegister reg1, CPURegister reg2)
+void X64Gen::emit_CMovN(CPURegister regDst, CPURegister regSrc, uint32_t numBits, X64Op op)
 {
-    SWAG_ASSERT(reg1 == RCX);
-    SWAG_ASSERT(reg2 == RAX);
-
+    if (numBits < 32)
+        numBits = 32;
+    if (regDst >= R8 || regSrc >= R8)
+        concat.addU8(getREX(numBits == 64, regDst >= R8, false, regSrc >= R8));
+    else
+        emit_REX(numBits);
     concat.addU8(0x0F);
-    concat.addU8(0x4F);
-    concat.addU8(0xC8);
+    concat.addU8((uint8_t) op);
+    concat.addU8(getModRM(REGREG, regDst, regSrc));
 }
 
 void X64Gen::emit_CMovB16(CPURegister reg1, CPURegister reg2)

@@ -20,7 +20,7 @@ void BackendX64::emitShiftRightArithmetic(X64Gen& pp, ByteCodeInstruction* ip, u
             pp.emit_Load32_Indirect(regOffset(ip->b.u32), RCX);
             pp.emit_Load32_Immediate((uint8_t) numBits - 1, RAX);
             pp.emit_Cmp32_Immediate(numBits - 1, RCX);
-            pp.emit_CMovG32(RCX, RAX);
+            pp.emit_CMovN(RCX, RAX, numBits, X64Op::CMOVG);
         }
 
         if (ip->flags & BCI_IMM_A)
@@ -76,7 +76,7 @@ void BackendX64::emitShiftRightEqArithmetic(X64Gen& pp, ByteCodeInstruction* ip,
         pp.emit_Load32_Indirect(regOffset(ip->b.u32), RCX);
         pp.emit_Load32_Immediate((uint8_t) numBits - 1, RAX);
         pp.emit_Cmp32_Immediate(numBits - 1, RCX);
-        pp.emit_CMovG32(RCX, RAX);
+        pp.emit_CMovN(RCX, RAX, numBits, X64Op::CMOVG);
 
         pp.emit_Load64_Indirect(regOffset(ip->a.u32), RAX);
         switch (numBits)
@@ -102,11 +102,13 @@ void BackendX64::emitShiftLogical(X64Gen& pp, ByteCodeInstruction* ip, uint32_t 
     if ((ip->flags & BCI_IMM_B) && ip->b.u32 >= numBits)
     {
         pp.emit_ClearN(RAX, numBits);
+        pp.emit_StoreN_Indirect(regOffset(ip->c.u32), RAX, RDI, numBits);
     }
     else if (!(ip->flags & BCI_IMM_A) && (ip->flags & BCI_IMM_B))
     {
         pp.emit_LoadN_Indirect(regOffset(ip->a.u32), RAX, RDI, numBits);
         pp.emit_ShiftN(RAX, ip->b.u8, numBits, op);
+        pp.emit_StoreN_Indirect(regOffset(ip->c.u32), RAX, RDI, numBits);
     }
     else
     {
@@ -118,17 +120,7 @@ void BackendX64::emitShiftLogical(X64Gen& pp, ByteCodeInstruction* ip, uint32_t 
         if (ip->flags & BCI_IMM_B)
             pp.emit_Load8_Immediate(ip->b.u8, RCX);
         else
-        {
             pp.emit_Load32_Indirect(regOffset(ip->b.u32), RCX);
-            pp.concat.addString2("\x83\xF9"); // cmp ecx, ?
-            pp.concat.addU8((uint8_t) numBits);
-            pp.emit_NearJumpOp(JL);
-            pp.concat.addU8(0); // clear below
-            auto seekPtr = pp.concat.getSeekPtr() - 1;
-            auto seekJmp = pp.concat.totalCount();
-            pp.emit_ClearN(RAX, numBits);
-            *seekPtr = (uint8_t) (pp.concat.totalCount() - seekJmp);
-        }
 
         switch (numBits)
         {
@@ -147,9 +139,12 @@ void BackendX64::emitShiftLogical(X64Gen& pp, ByteCodeInstruction* ip, uint32_t 
         }
 
         pp.concat.addU8((uint8_t) op);
-    }
 
-    pp.emit_StoreN_Indirect(regOffset(ip->c.u32), RAX, RDI, numBits);
+        pp.emit_ClearN(R8, numBits);
+        pp.emit_Cmp32_Immediate(numBits - 1, RCX);
+        pp.emit_CMovN(RAX, R8, numBits, X64Op::CMOVG);
+        pp.emit_StoreN_Indirect(regOffset(ip->c.u32), RAX, RDI, numBits);
+    }
 }
 
 void BackendX64::emitShiftEqLogical(X64Gen& pp, ByteCodeInstruction* ip, uint32_t numBits, X64Op op)
