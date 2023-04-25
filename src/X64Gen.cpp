@@ -850,35 +850,36 @@ void X64Gen::emit_Cmp64(uint8_t reg1, uint8_t reg2)
 
 void X64Gen::emit_Cmp32_Immediate(CPURegister reg, uint32_t value)
 {
-    SWAG_ASSERT(reg == RAX || reg == RCX);
-
     if (value <= 0x7f)
     {
+        SWAG_ASSERT(reg == RAX || reg == RCX);
         concat.addU8(0x83);
         concat.addU8(0xF8 | reg);
         concat.addU8((uint8_t) value);
     }
     else if (value <= 0x7fffffff)
     {
+        SWAG_ASSERT(reg == RAX);
         concat.addU8(0x3d);
         concat.addU32((uint32_t) value);
     }
     else
     {
+        SWAG_ASSERT(reg == RAX);
         emit_Load32_Immediate(value, RCX);
         emit_Cmp32(reg, RCX);
     }
 }
 
-void X64Gen::emit_Cmp64_Immediate(uint64_t value, CPURegister reg)
+void X64Gen::emit_Cmp64_Immediate(CPURegister reg, uint64_t value)
 {
-    SWAG_ASSERT(reg == RAX || reg == RCX);
+    SWAG_ASSERT(reg == RAX);
 
     if (value <= 0x7f)
     {
         concat.addU8(getREX());
         concat.addU8(0x83);
-        concat.addU8(0xF8 | reg);
+        concat.addU8(0xF8);
         concat.addU8((uint8_t) value);
     }
     else if (value <= 0x7fffffff)

@@ -2209,7 +2209,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             // We could in the end remove two instructions and be as the llvm generation
 
             pp.emit_Sub64_RAX(ip->b.u64 - 1);
-            pp.emit_Cmp64_Immediate(ip->c.u64, RAX);
+            pp.emit_Cmp64_Immediate(RAX, ip->c.u64);
             pp.emit_Jump(JAE, i, tableCompiler[0]);
 
             uint8_t* addrConstant        = nullptr;
