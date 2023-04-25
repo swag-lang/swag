@@ -848,7 +848,7 @@ void X64Gen::emit_Cmp64(uint8_t reg1, uint8_t reg2)
     concat.addU8(getModRM(REGREG, reg2, reg1));
 }
 
-void X64Gen::emit_Cmp32_Immediate(uint32_t value, CPURegister reg)
+void X64Gen::emit_Cmp32_Immediate(CPURegister reg, uint32_t value)
 {
     SWAG_ASSERT(reg == RAX || reg == RCX);
 
