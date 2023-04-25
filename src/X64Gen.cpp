@@ -2234,17 +2234,12 @@ void X64Gen::emit_Dec64_Indirect(uint32_t stackOffset, CPURegister memReg)
     emit_ModRM(stackOffset, 1, memReg);
 }
 
-void X64Gen::emit_Neg32(CPURegister reg)
+void X64Gen::emit_NegN(CPURegister reg, X64Bits numBits)
 {
     SWAG_ASSERT(reg < R8);
-    concat.addU8(0xF7);
-    concat.addU8(0xD8 | (reg & 0b111));
-}
+    SWAG_ASSERT(numBits == X64Bits::B32 || numBits == X64Bits::B64);
 
-void X64Gen::emit_Neg64(CPURegister reg)
-{
-    SWAG_ASSERT(reg < R8);
-    concat.addU8(getREX());
+    emit_REX(numBits);
     concat.addU8(0xF7);
     concat.addU8(0xD8 | (reg & 0b111));
 }

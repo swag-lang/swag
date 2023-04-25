@@ -2112,7 +2112,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             else
             {
                 pp.emit_Load32_Indirect(regOffset(ip->b.u32), RAX);
-                pp.emit_Neg32(RAX);
+                pp.emit_NegN(RAX, X64Bits::B64);
                 pp.emit_Store32_Indirect(regOffset(ip->a.u32), RAX);
             }
             break;
@@ -2122,7 +2122,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             else
             {
                 pp.emit_Load64_Indirect(regOffset(ip->b.u32), RAX);
-                pp.emit_Neg64(RAX);
+                pp.emit_NegN(RAX, X64Bits::B64);
                 pp.emit_Store64_Indirect(regOffset(ip->a.u32), RAX);
             }
             break;
