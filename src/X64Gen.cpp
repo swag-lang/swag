@@ -35,12 +35,12 @@ uint8_t X64Gen::getModRM(uint8_t mod, uint8_t r, uint8_t m)
     return (mod << 6) | ((r & 0b111) << 3) | (m & 0b111);
 }
 
-void X64Gen::emit_REX(uint32_t numBits, CPURegister reg1, CPURegister reg2)
+void X64Gen::emit_REX(X64Bits numBits, CPURegister reg1, CPURegister reg2)
 {
-    if (numBits == 16)
+    if (numBits == X64Bits::B16)
         concat.addU8(0x66);
-    if (numBits == 64 || reg1 >= R8 || reg2 >= R8)
-        concat.addU8(getREX(numBits == 64, reg1 >= R8, false, reg2 >= R8));
+    if (numBits == X64Bits::B64 || reg1 >= R8 || reg2 >= R8)
+        concat.addU8(getREX(numBits == X64Bits::B64, reg1 >= R8, false, reg2 >= R8));
 }
 
 void X64Gen::emit_ModRM(uint32_t stackOffset, uint8_t reg, uint8_t memReg, uint8_t op)
@@ -261,20 +261,20 @@ void X64Gen::emit_Load64_Indirect(uint32_t stackOffset, CPURegister reg, CPURegi
     emit_ModRM(stackOffset, reg, memReg);
 }
 
-void X64Gen::emit_LoadN_Indirect(uint32_t stackOffset, CPURegister reg, CPURegister memReg, uint32_t numBits)
+void X64Gen::emit_LoadN_Indirect(uint32_t stackOffset, CPURegister reg, CPURegister memReg, X64Bits numBits)
 {
     switch (numBits)
     {
-    case 8:
+    case X64Bits::B8:
         emit_Load8_Indirect(stackOffset, reg, memReg);
         break;
-    case 16:
+    case X64Bits::B16:
         emit_Load16_Indirect(stackOffset, reg, memReg);
         break;
-    case 32:
+    case X64Bits::B32:
         emit_Load32_Indirect(stackOffset, reg, memReg);
         break;
-    case 64:
+    case X64Bits::B64:
         emit_Load64_Indirect(stackOffset, reg, memReg);
         break;
     default:
@@ -370,20 +370,20 @@ void X64Gen::emit_Store64_Indirect(uint32_t stackOffset, CPURegister reg, CPUReg
     storageRegBits  = 64;
 }
 
-void X64Gen::emit_StoreN_Indirect(uint32_t stackOffset, CPURegister reg, CPURegister memReg, uint32_t numBits)
+void X64Gen::emit_StoreN_Indirect(uint32_t stackOffset, CPURegister reg, CPURegister memReg, X64Bits numBits)
 {
     switch (numBits)
     {
-    case 8:
+    case X64Bits::B8:
         emit_Store8_Indirect(stackOffset, reg, memReg);
         break;
-    case 16:
+    case X64Bits::B16:
         emit_Store16_Indirect(stackOffset, reg, memReg);
         break;
-    case 32:
+    case X64Bits::B32:
         emit_Store32_Indirect(stackOffset, reg, memReg);
         break;
-    case 64:
+    case X64Bits::B64:
         emit_Store64_Indirect(stackOffset, reg, memReg);
         break;
     default:
@@ -449,7 +449,7 @@ void X64Gen::emit_Load8_Immediate(CPURegister reg, uint8_t value)
 {
     if (value == 0)
     {
-        emit_ClearN(reg, 8);
+        emit_ClearN(reg, X64Bits::B8);
         return;
     }
 
@@ -461,7 +461,7 @@ void X64Gen::emit_Load16_Immediate(CPURegister reg, uint16_t value)
 {
     if (value == 0)
     {
-        emit_ClearN(reg, 16);
+        emit_ClearN(reg, X64Bits::B16);
         return;
     }
 
@@ -474,7 +474,7 @@ void X64Gen::emit_Load32_Immediate(CPURegister reg, uint32_t value)
 {
     if (value == 0)
     {
-        emit_ClearN(reg, 32);
+        emit_ClearN(reg, X64Bits::B32);
         return;
     }
 
@@ -494,7 +494,7 @@ void X64Gen::emit_Load64_Immediate(CPURegister reg, uint64_t value, bool force64
 
     if (value == 0)
     {
-        emit_ClearN(reg, 64);
+        emit_ClearN(reg, X64Bits::B64);
         return;
     }
 
@@ -518,20 +518,20 @@ void X64Gen::emit_Load64_Immediate(CPURegister reg, uint64_t value, bool force64
     }
 }
 
-void X64Gen::emit_LoadN_Immediate(CPURegister reg, Register& value, uint32_t numBits)
+void X64Gen::emit_LoadN_Immediate(CPURegister reg, Register& value, X64Bits numBits)
 {
     switch (numBits)
     {
-    case 8:
+    case X64Bits::B8:
         emit_Load8_Immediate(reg, value.u8);
         break;
-    case 16:
+    case X64Bits::B16:
         emit_Load16_Immediate(reg, value.u16);
         break;
-    case 32:
+    case X64Bits::B32:
         emit_Load32_Immediate(reg, value.u32);
         break;
-    case 64:
+    case X64Bits::B64:
         emit_Load64_Immediate(reg, value.u64);
         break;
     default:
@@ -542,10 +542,10 @@ void X64Gen::emit_LoadN_Immediate(CPURegister reg, Register& value, uint32_t num
 
 /////////////////////////////////////////////////////////////////////
 
-void X64Gen::emit_ClearN(CPURegister reg, uint32_t numBits)
+void X64Gen::emit_ClearN(CPURegister reg, X64Bits numBits)
 {
     emit_REX(numBits, reg, reg);
-    if (numBits == 8)
+    if (numBits == X64Bits::B8)
         concat.addU8((uint8_t) X64Op::XOR & ~1);
     else
         concat.addU8((uint8_t) X64Op::XOR);
@@ -585,28 +585,28 @@ void X64Gen::emit_Ret()
 
 void X64Gen::emit_Copy8(CPURegister regDst, CPURegister regSrc)
 {
-    emit_REX(8, regSrc, regDst);
+    emit_REX(X64Bits::B8, regSrc, regDst);
     concat.addU8(0x88);
     concat.addU8(getModRM(REGREG, regSrc, regDst));
 }
 
 void X64Gen::emit_Copy16(CPURegister regDst, CPURegister regSrc)
 {
-    emit_REX(16, regSrc, regDst);
+    emit_REX(X64Bits::B16, regSrc, regDst);
     concat.addU8(0x89);
     concat.addU8(getModRM(REGREG, regSrc, regDst));
 }
 
 void X64Gen::emit_Copy32(CPURegister regDst, CPURegister regSrc)
 {
-    emit_REX(32, regSrc, regDst);
+    emit_REX(X64Bits::B32, regSrc, regDst);
     concat.addU8(0x89);
     concat.addU8(getModRM(REGREG, regSrc, regDst));
 }
 
 void X64Gen::emit_Copy64(CPURegister regDst, CPURegister regSrc)
 {
-    emit_REX(64, regSrc, regDst);
+    emit_REX(X64Bits::B64, regSrc, regDst);
     concat.addU8(0x89);
     concat.addU8(getModRM(REGREG, regSrc, regDst));
 }
@@ -1057,7 +1057,7 @@ void X64Gen::emit_Op8(uint8_t reg1, uint8_t reg2, X64Op instruction)
 void X64Gen::emit_Op16(uint8_t reg1, uint8_t reg2, X64Op instruction)
 {
     SWAG_ASSERT(reg1 < R8 && reg2 < R8);
-    emit_REX(16);
+    emit_REX(X64Bits::B16);
     if (instruction == X64Op::DIV || instruction == X64Op::IDIV)
     {
         SWAG_ASSERT(reg1 == RAX and reg2 == RCX);
@@ -1734,7 +1734,7 @@ void X64Gen::emit_Call_Parameters(TypeInfoFuncAttr* typeFuncBC, VectorNative<X64
                 {
                 case X64PushParamType::Imm:
                     if (paramsRegisters[i].reg == 0)
-                        emit_ClearN(cc.byRegisterInteger[i], 64);
+                        emit_ClearN(cc.byRegisterInteger[i], X64Bits::B64);
                     else
                         emit_Load64_Immediate(cc.byRegisterInteger[i], paramsRegisters[i].reg);
                     break;
@@ -2284,52 +2284,49 @@ void X64Gen::emit_Neg64_Indirect(uint32_t stackOffset, CPURegister memReg)
     }
 }
 
-void X64Gen::emit_CMovN(CPURegister regDst, CPURegister regSrc, uint32_t numBits, X64Op op)
+void X64Gen::emit_CMovN(CPURegister regDst, CPURegister regSrc, X64Bits numBits, X64Op op)
 {
-    numBits = max(numBits, 32);
+    if (numBits < X64Bits::B32)
+        numBits = X64Bits::B32;
     emit_REX(numBits, regDst, regSrc);
     concat.addU8(0x0F);
     concat.addU8((uint8_t) op);
     concat.addU8(getModRM(REGREG, regDst, regSrc));
 }
 
-void X64Gen::emit_BSwap32(CPURegister reg)
+void X64Gen::emit_BSwapN(CPURegister reg, X64Bits numBits)
 {
     SWAG_ASSERT(reg == RAX);
+    SWAG_ASSERT(numBits == X64Bits::B32 || numBits == X64Bits::B64);
 
+    emit_REX(numBits);
     concat.addU8(0x0F);
     concat.addU8(0xC8);
 }
 
-void X64Gen::emit_BSwap64(CPURegister reg)
+void X64Gen::emit_ShiftN(CPURegister reg, uint32_t value, X64Bits numBits, X64Op op)
 {
     SWAG_ASSERT(reg == RAX);
-
-    concat.addU8(getREX());
-    concat.addU8(0x0F);
-    concat.addU8(0xC8);
-}
-
-void X64Gen::emit_ShiftN(CPURegister reg, uint32_t value, uint32_t numBits, X64Op op)
-{
-    SWAG_ASSERT(reg == RAX);
-    value = min(value, numBits - 1);
+    value = min(value, (uint32_t) numBits - 1);
 
     if (value == 1)
     {
         switch (numBits)
         {
-        case 8:
+        case X64Bits::B8:
             concat.addString1("\xD0");
             break;
-        case 16:
+        case X64Bits::B16:
             concat.addString2("\x66\xD1");
             break;
-        case 32:
+        case X64Bits::B32:
             concat.addString1("\xD1");
             break;
-        case 64:
+        case X64Bits::B64:
             concat.addString2("\x48\xD1");
+            break;
+        default:
+            SWAG_ASSERT(false);
             break;
         }
 
@@ -2339,17 +2336,20 @@ void X64Gen::emit_ShiftN(CPURegister reg, uint32_t value, uint32_t numBits, X64O
     {
         switch (numBits)
         {
-        case 8:
+        case X64Bits::B8:
             concat.addString1("\xC0");
             break;
-        case 16:
+        case X64Bits::B16:
             concat.addString2("\x66\xC1");
             break;
-        case 32:
+        case X64Bits::B32:
             concat.addString1("\xC1");
             break;
-        case 64:
+        case X64Bits::B64:
             concat.addString2("\x48\xC1");
+            break;
+        default:
+            SWAG_ASSERT(false);
             break;
         }
 

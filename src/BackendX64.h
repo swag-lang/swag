@@ -39,10 +39,10 @@ struct BackendX64 : public Backend
     void     computeUnwind(const VectorNative<CPURegister>& unwindRegs, const VectorNative<uint32_t>& unwindOffsetRegs, uint32_t sizeStack, uint32_t offsetSubRSP, VectorNative<uint16_t>& unwind);
     void     emitOverflowSigned(X64Gen& pp, AstNode* node, const char* msg);
     void     emitOverflowUnsigned(X64Gen& pp, AstNode* node, const char* msg);
-    void     emitShiftRightArithmetic(X64Gen& pp, ByteCodeInstruction* ip, uint32_t numBits);
-    void     emitShiftLogical(X64Gen& pp, ByteCodeInstruction* ip, uint32_t numBits, X64Op op);
-    void     emitShiftRightEqArithmetic(X64Gen& pp, ByteCodeInstruction* ip, uint32_t numBits);
-    void     emitShiftEqLogical(X64Gen& pp, ByteCodeInstruction* ip, uint32_t numBits, X64Op op);
+    void     emitShiftRightArithmetic(X64Gen& pp, ByteCodeInstruction* ip, X64Bits numBits);
+    void     emitShiftLogical(X64Gen& pp, ByteCodeInstruction* ip, X64Bits numBits, X64Op op);
+    void     emitShiftRightEqArithmetic(X64Gen& pp, ByteCodeInstruction* ip, X64Bits numBits);
+    void     emitShiftEqLogical(X64Gen& pp, ByteCodeInstruction* ip, X64Bits numBits, X64Op op);
     void     emitInternalPanic(X64Gen& pp, AstNode* node, const char* msg);
     bool     emitFunctionBody(const BuildParameters& buildParameters, Module* moduleToGen, ByteCode* bc);
     void     emitBinOpFloat32(X64Gen& pp, ByteCodeInstruction* ip, X64Op op);
@@ -51,12 +51,12 @@ struct BackendX64 : public Backend
     void     emitBinOpFloat64AtReg(X64Gen& pp, ByteCodeInstruction* ip, X64Op op);
     void     emitBinOpInt8(X64Gen& pp, ByteCodeInstruction* ip, X64Op op);
     void     emitBinOpInt16(X64Gen& pp, ByteCodeInstruction* ip, X64Op op);
-    void     emitBinOpIntN(X64Gen& pp, ByteCodeInstruction* ip, X64Op op, uint8_t bits);
+    void     emitBinOpIntN(X64Gen& pp, ByteCodeInstruction* ip, X64Op op, X64Bits numBits);
     void     emitBinOpInt8AtReg(X64Gen& pp, ByteCodeInstruction* ip, X64Op op);
     void     emitBinOpInt16AtReg(X64Gen& pp, ByteCodeInstruction* ip, X64Op op);
     void     emitBinOpInt32AtReg(X64Gen& pp, ByteCodeInstruction* ip, X64Op op);
     void     emitBinOpInt64AtReg(X64Gen& pp, ByteCodeInstruction* ip, X64Op op);
-    void     emitBinOpIntDivAtReg(X64Gen& pp, ByteCodeInstruction* ip, bool isSigned, uint8_t bits, bool modulo = false);
+    void     emitBinOpIntDivAtReg(X64Gen& pp, ByteCodeInstruction* ip, bool isSigned, X64Bits numBits, bool modulo = false);
     void     emitAddSubMul64(X64Gen& pp, ByteCodeInstruction* ip, uint64_t mul, X64Op op);
 
     bool emitXData(const BuildParameters& buildParameters);
