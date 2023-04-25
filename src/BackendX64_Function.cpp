@@ -118,7 +118,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
     // Check stack
     if (sizeStack + sizeParamsStack >= SWAG_LIMIT_PAGE_STACK)
     {
-        pp.emit_Load64_Immediate(sizeStack + sizeParamsStack, RAX);
+        pp.emit_Load64_Immediate(RAX, sizeStack + sizeParamsStack);
         emitCall(pp, "__chkstk");
     }
 
@@ -256,7 +256,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             }
             else
             {
-                pp.emit_Load64_Immediate(ip->b.u64, RCX);
+                pp.emit_Load64_Immediate(RCX, ip->b.u64);
                 concat.addString3("\x48\x01\x08"); // add [rax], rcx
             }
             break;
@@ -2128,7 +2128,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             break;
         case ByteCodeOp::NegF32:
             pp.emit_LoadF32_Indirect(regOffset(ip->b.u32), XMM0);
-            pp.emit_Load64_Immediate(0x80000000, RAX);
+            pp.emit_Load64_Immediate(RAX, 0x80000000);
             pp.emit_Store64_Indirect(offsetFLT, RAX, RDI);
             pp.emit_LoadF32_Indirect(offsetFLT, XMM1, RDI);
             concat.addString3("\x0f\x57\xc1"); // xorps xmm0, xmm1
@@ -2136,7 +2136,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             break;
         case ByteCodeOp::NegF64:
             pp.emit_LoadF64_Indirect(regOffset(ip->b.u32), XMM0);
-            pp.emit_Load64_Immediate(0x80000000'00000000, RAX);
+            pp.emit_Load64_Immediate(RAX, 0x80000000'00000000);
             pp.emit_Store64_Indirect(offsetFLT, RAX, RDI);
             pp.emit_LoadF64_Indirect(offsetFLT, XMM1, RDI);
             concat.addString4("\x66\x0f\x57\xc1"); // xorpd xmm0, xmm1
@@ -2445,7 +2445,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
                 pp.emit_Load64_Indirect(ip->c.u32, RAX, RAX);
             else
             {
-                pp.emit_Load64_Immediate(ip->c.u64, RCX);
+                pp.emit_Load64_Immediate(RCX, ip->c.u64);
                 pp.emit_Op64(RCX, RAX, X64Op::ADD);
                 pp.emit_Load64_Indirect(0, RAX, RAX);
             }
@@ -2701,7 +2701,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             else if (ip->flags & BCI_IMM_B)
             {
                 pp.emit_Load64_Indirect(regOffset(ip->a.u32), RAX);
-                pp.emit_Load64_Immediate(ip->b.u64, RCX);
+                pp.emit_Load64_Immediate(RCX, ip->b.u64);
                 pp.emit_Store64_Indirect(ip->c.u32, RCX, RAX);
             }
             else
@@ -2744,7 +2744,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
                 pp.emit_Store64_Immediate(offsetStack + ip->a.u32, ip->b.u64, RDI);
             else if (ip->flags & BCI_IMM_B)
             {
-                pp.emit_Load64_Immediate(ip->b.u64, RAX);
+                pp.emit_Load64_Immediate(RAX, ip->b.u64);
                 pp.emit_Store64_Indirect(offsetStack + ip->a.u32, RAX, RDI);
             }
             else
@@ -2810,7 +2810,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
                 pp.emit_Store64_Immediate(offsetStack + ip->a.u32, ip->b.u64, RDI);
             else if (ip->flags & BCI_IMM_B)
             {
-                pp.emit_Load64_Immediate(ip->b.u64, RAX);
+                pp.emit_Load64_Immediate(RAX, ip->b.u64);
                 pp.emit_Store64_Indirect(offsetStack + ip->a.u32, RAX, RDI);
             }
             else
@@ -2823,7 +2823,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
                 pp.emit_Store64_Immediate(offsetStack + ip->c.u32, ip->d.u64, RDI);
             else if (ip->flags & BCI_IMM_D)
             {
-                pp.emit_Load64_Immediate(ip->d.u64, RAX);
+                pp.emit_Load64_Immediate(RAX, ip->d.u64);
                 pp.emit_Store64_Indirect(offsetStack + ip->c.u32, RAX, RDI);
             }
             else
@@ -2881,7 +2881,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
 
         case ByteCodeOp::Div64byVB64:
             pp.emit_Load64_Indirect(regOffset(ip->a.u32), RAX);
-            pp.emit_Load64_Immediate(ip->b.u64, RCX);
+            pp.emit_Load64_Immediate(RCX, ip->b.u64);
             pp.emit_Clear64(RDX);
             concat.addString3("\x48\xf7\xf9"); // idiv rax, rcx
             pp.emit_Store64_Indirect(regOffset(ip->a.u32), RAX);
@@ -2895,7 +2895,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
                 pp.emit_Store64_Immediate(regOffset(ip->a.u32), ip->b.u32, RDI);
             else
             {
-                pp.emit_Load64_Immediate(ip->b.u64, RAX);
+                pp.emit_Load64_Immediate(RAX, ip->b.u64);
                 pp.emit_Store64_Indirect(regOffset(ip->a.u32), RAX);
             }
             break;
@@ -3074,7 +3074,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             }
 
             pp.emit_Store64_Indirect(regOffset(ip->b.u32), RDX);
-            pp.emit_Load64_Immediate(8, RCX);
+            pp.emit_Load64_Immediate(RCX, 8);
             pp.emit_Op64_Indirect(0, RCX, RAX, X64Op::ADD);
             break;
 
@@ -3146,7 +3146,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             }
             else if (ip->flags & BCI_IMM_A)
             {
-                pp.emit_Load64_Immediate(ip->a.u64, RCX);
+                pp.emit_Load64_Immediate(RCX, ip->a.u64);
                 pp.emit_Store64_Indirect(0, RCX, RAX);
             }
             else
@@ -3180,7 +3180,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             pp.emit_Load64_Indirect(stackOffset, RAX, RDI);
             if (ip->b.u64)
             {
-                pp.emit_Load64_Immediate(ip->b.u64, RCX);
+                pp.emit_Load64_Immediate(RCX, ip->b.u64);
                 pp.emit_Op64(RCX, RAX, X64Op::ADD);
             }
 
@@ -3343,7 +3343,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             auto funcNode = CastAst<AstFuncDecl>((AstNode*) ip->b.pointer, AstNodeKind::FuncDecl);
             SWAG_ASSERT(!ip->c.pointer || (funcNode && funcNode->hasExtByteCode() && funcNode->extByteCode()->bc == (ByteCode*) ip->c.pointer));
             Utf8 callName = funcNode->getCallName();
-            pp.emit_Load64_Immediate(0, RAX, true);
+            pp.emit_Load64_Immediate(RAX, 0, true);
 
             CoffRelocation reloc;
             reloc.virtualAddress = concat.totalCount() - sizeof(uint64_t) - pp.textSectionOffset;
@@ -3359,7 +3359,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
         {
             // Test if it's a bytecode lambda
             pp.emit_Load64_Indirect(regOffset(ip->a.u32), RAX);
-            pp.emit_Load64_Immediate(SWAG_LAMBDA_BC_MARKER, RCX);
+            pp.emit_Load64_Immediate(RCX, SWAG_LAMBDA_BC_MARKER);
             pp.emit_Op64(RAX, RCX, X64Op::AND);
             pp.emit_Test64(RCX, RCX);
             pp.emit_LongJumpOp(JZ);
@@ -3470,7 +3470,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             }
             else if (ip->flags & BCI_IMM_B)
             {
-                pp.emit_Load64_Immediate(ip->b.u64, RCX);
+                pp.emit_Load64_Immediate(RCX, ip->b.u64);
                 pp.emit_Store64_Indirect(0, RCX, RAX);
             }
             else
@@ -3715,14 +3715,14 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             case TokenId::IntrinsicBitCountTz:
                 MK_IMMB_U8_TO_U32(RAX);
                 concat.addString3("\x0F\xBC\xC0"); // bsf eax, eax
-                pp.emit_Load32_Immediate(8, RCX);
+                pp.emit_Load32_Immediate(RCX, 8);
                 pp.emit_CMovN(RAX, RCX, 32, X64Op::CMOVE);
                 pp.emit_Store8_Indirect(regOffset(ip->a.u32), RAX);
                 break;
             case TokenId::IntrinsicBitCountLz:
                 MK_IMMB_U8_TO_U32(RAX);
                 concat.addString3("\x0F\xBD\xC0"); // bsr eax, eax
-                pp.emit_Load32_Immediate(15, RCX);
+                pp.emit_Load32_Immediate(RCX, 15);
                 pp.emit_CMovN(RAX, RCX, 32, X64Op::CMOVE);
                 concat.addString3("\x83\xF0\x07"); // xor eax, 7
                 pp.emit_Store8_Indirect(regOffset(ip->a.u32), RAX);
@@ -3755,14 +3755,14 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             case TokenId::IntrinsicBitCountTz:
                 MK_IMMB_16(RAX);
                 concat.addString4("\x66\x0F\xBC\xC0"); // bsf ax, ax
-                pp.emit_Load16_Immediate(16, RCX);
+                pp.emit_Load16_Immediate(RCX, 16);
                 pp.emit_CMovN(RAX, RCX, 16, X64Op::CMOVE);
                 pp.emit_Store16_Indirect(regOffset(ip->a.u32), RAX);
                 break;
             case TokenId::IntrinsicBitCountLz:
                 MK_IMMB_16(RAX);
                 concat.addString4("\x66\x0F\xBD\xC0"); // bsr ax, ax
-                pp.emit_Load16_Immediate(31, RCX);
+                pp.emit_Load16_Immediate(RCX, 31);
                 pp.emit_CMovN(RAX, RCX, 16, X64Op::CMOVE);
                 concat.addString4("\x66\x83\xF0\x0F"); // xor ax, 15
                 pp.emit_Store16_Indirect(regOffset(ip->a.u32), RAX);
@@ -3800,14 +3800,14 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             case TokenId::IntrinsicBitCountTz:
                 MK_IMMB_32(RAX);
                 concat.addString3("\x0F\xBC\xC0"); // bsf eax, eax
-                pp.emit_Load32_Immediate(32, RCX);
+                pp.emit_Load32_Immediate(RCX, 32);
                 pp.emit_CMovN(RAX, RCX, 32, X64Op::CMOVE);
                 pp.emit_Store32_Indirect(regOffset(ip->a.u32), RAX);
                 break;
             case TokenId::IntrinsicBitCountLz:
                 MK_IMMB_32(RAX);
                 concat.addString3("\x0F\xBD\xC0"); // bsr eax, eax
-                pp.emit_Load32_Immediate(63, RCX);
+                pp.emit_Load32_Immediate(RCX, 63);
                 pp.emit_CMovN(RAX, RCX, 32, X64Op::CMOVE);
                 concat.addString3("\x83\xF0\x1F"); // xor eax, 31
                 pp.emit_Store32_Indirect(regOffset(ip->a.u32), RAX);
@@ -3845,14 +3845,14 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             case TokenId::IntrinsicBitCountTz:
                 MK_IMMB_64(RAX);
                 concat.addString4("\x48\x0F\xBC\xC0"); // bsf rax, rax
-                pp.emit_Load32_Immediate(64, RCX);
+                pp.emit_Load32_Immediate(RCX, 64);
                 pp.emit_CMovN(RAX, RCX, 64, X64Op::CMOVE);
                 pp.emit_Store64_Indirect(regOffset(ip->a.u32), RAX);
                 break;
             case TokenId::IntrinsicBitCountLz:
                 MK_IMMB_64(RAX);
                 concat.addString4("\x48\x0F\xBD\xC0"); // bsr rax, rax
-                pp.emit_Load64_Immediate(127, RCX);
+                pp.emit_Load64_Immediate(RCX, 127);
                 pp.emit_CMovN(RAX, RCX, 64, X64Op::CMOVE);
                 concat.addString4("\x48\x83\xF0\x3F"); // xor rax, 63
                 pp.emit_Store64_Indirect(regOffset(ip->a.u32), RAX);
@@ -4179,7 +4179,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
                 break;
             case TokenId::IntrinsicAbs:
                 MK_IMMB_F32(XMM0);
-                pp.emit_Load64_Immediate(0x7FFFFFFF, RAX);
+                pp.emit_Load64_Immediate(RAX, 0x7FFFFFFF);
                 pp.emit_CopyF64(RAX, XMM1);
                 concat.addString3("\x0F\x54\xC1"); // andps xmm0, xmm1
                 pp.emit_StoreF32_Indirect(regOffset(ip->a.u32), XMM0);
@@ -4265,7 +4265,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
                 break;
             case TokenId::IntrinsicAbs:
                 MK_IMMB_F64(XMM0);
-                pp.emit_Load64_Immediate(0x7FFFFFFF'FFFFFFFF, RAX);
+                pp.emit_Load64_Immediate(RAX, 0x7FFFFFFF'FFFFFFFF);
                 pp.emit_CopyF64(RAX, XMM1);
                 concat.addString4("\x66\x0F\x54\xC1"); // andpd xmm0, xmm1
                 pp.emit_StoreF64_Indirect(regOffset(ip->a.u32), XMM0);

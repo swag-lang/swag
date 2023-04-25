@@ -1,37 +1,37 @@
 #define MK_IMMA_8(__reg)                          \
     if (ip->flags & BCI_IMM_A)                    \
-        pp.emit_Load8_Immediate(ip->a.u8, __reg); \
+        pp.emit_Load8_Immediate(__reg, ip->a.u8); \
     else                                          \
         pp.emit_Load8_Indirect(regOffset(ip->a.u32), __reg);
 
 #define MK_IMMA_16(__reg)                           \
     if (ip->flags & BCI_IMM_A)                      \
-        pp.emit_Load16_Immediate(ip->a.u16, __reg); \
+        pp.emit_Load16_Immediate(__reg, ip->a.u16); \
     else                                            \
         pp.emit_Load16_Indirect(regOffset(ip->a.u32), __reg);
 
 #define MK_IMMA_32(__reg)                           \
     if (ip->flags & BCI_IMM_A)                      \
-        pp.emit_Load32_Immediate(ip->a.u32, __reg); \
+        pp.emit_Load32_Immediate(__reg, ip->a.u32); \
     else                                            \
         pp.emit_Load32_Indirect(regOffset(ip->a.u32), __reg);
 
 #define MK_IMMA_64(__reg)                           \
     if (ip->flags & BCI_IMM_A)                      \
-        pp.emit_Load64_Immediate(ip->a.u64, __reg); \
+        pp.emit_Load64_Immediate(__reg, ip->a.u64); \
     else                                            \
         pp.emit_Load64_Indirect(regOffset(ip->a.u32), __reg);
 
 #define MK_IMMB_64(__reg)                           \
     if (ip->flags & BCI_IMM_B)                      \
-        pp.emit_Load64_Immediate(ip->b.u64, __reg); \
+        pp.emit_Load64_Immediate(__reg, ip->b.u64); \
     else                                            \
         pp.emit_Load64_Indirect(regOffset(ip->b.u32), __reg);
 
 #define MK_IMMA_F32(__reg)                        \
     if (ip->flags & BCI_IMM_A)                    \
     {                                             \
-        pp.emit_Load32_Immediate(ip->a.u32, RAX); \
+        pp.emit_Load32_Immediate(RAX, ip->a.u32); \
         pp.emit_CopyF32(RAX, __reg);              \
     }                                             \
     else                                          \
@@ -40,7 +40,7 @@
 #define MK_IMMA_F64(__reg)                        \
     if (ip->flags & BCI_IMM_A)                    \
     {                                             \
-        pp.emit_Load64_Immediate(ip->a.u32, RAX); \
+        pp.emit_Load64_Immediate(RAX, ip->a.u32); \
         pp.emit_CopyF64(RAX, __reg);              \
     }                                             \
     else                                          \
@@ -48,50 +48,50 @@
 
 #define MK_IMMB_8(__reg)                          \
     if (ip->flags & BCI_IMM_B)                    \
-        pp.emit_Load8_Immediate(ip->b.u8, __reg); \
+        pp.emit_Load8_Immediate(__reg, ip->b.u8); \
     else                                          \
         pp.emit_Load8_Indirect(regOffset(ip->b.u32), __reg);
 
 #define MK_IMMB_S8_TO_S32(__reg)                             \
     if (ip->flags & BCI_IMM_B)                               \
-        pp.emit_Load32_Immediate((int32_t) ip->b.s8, __reg); \
+        pp.emit_Load32_Immediate(__reg, (int32_t) ip->b.s8); \
     else                                                     \
         pp.emit_LoadS8S32_Indirect(regOffset(ip->b.u32), __reg, RDI);
 
 #define MK_IMMB_U8_TO_U32(__reg)                   \
     if (ip->flags & BCI_IMM_B)                     \
-        pp.emit_Load32_Immediate(ip->b.u8, __reg); \
+        pp.emit_Load32_Immediate(__reg, ip->b.u8); \
     else                                           \
         pp.emit_LoadU8U32_Indirect(regOffset(ip->b.u32), __reg, RDI);
 
 #define MK_IMMB_U8_TO_U16(__reg)                   \
     if (ip->flags & BCI_IMM_B)                     \
-        pp.emit_Load16_Immediate(ip->b.u8, __reg); \
+        pp.emit_Load16_Immediate(__reg, ip->b.u8); \
     else                                           \
         pp.emit_LoadU8U32_Indirect(regOffset(ip->b.u32), __reg, RDI);
 
 #define MK_IMMB_16(__reg)                           \
     if (ip->flags & BCI_IMM_B)                      \
-        pp.emit_Load16_Immediate(ip->b.u16, __reg); \
+        pp.emit_Load16_Immediate(__reg, ip->b.u16); \
     else                                            \
         pp.emit_Load16_Indirect(regOffset(ip->b.u32), __reg);
 
 #define MK_IMMB_32(__reg)                           \
     if (ip->flags & BCI_IMM_B)                      \
-        pp.emit_Load32_Immediate(ip->b.u32, __reg); \
+        pp.emit_Load32_Immediate(__reg, ip->b.u32); \
     else                                            \
         pp.emit_Load32_Indirect(regOffset(ip->b.u32), __reg);
 
 #define MK_IMMB_64(__reg)                           \
     if (ip->flags & BCI_IMM_B)                      \
-        pp.emit_Load64_Immediate(ip->b.u64, __reg); \
+        pp.emit_Load64_Immediate(__reg, ip->b.u64); \
     else                                            \
         pp.emit_Load64_Indirect(regOffset(ip->b.u32), __reg);
 
 #define MK_IMMB_F32(__reg)                        \
     if (ip->flags & BCI_IMM_B)                    \
     {                                             \
-        pp.emit_Load32_Immediate(ip->b.u32, RAX); \
+        pp.emit_Load32_Immediate(RAX, ip->b.u32); \
         pp.emit_CopyF32(RAX, __reg);              \
     }                                             \
     else                                          \
@@ -100,7 +100,7 @@
 #define MK_IMMB_F64(__reg)                        \
     if (ip->flags & BCI_IMM_B)                    \
     {                                             \
-        pp.emit_Load64_Immediate(ip->b.u64, RAX); \
+        pp.emit_Load64_Immediate(RAX, ip->b.u64); \
         pp.emit_CopyF64(RAX, __reg);              \
     }                                             \
     else                                          \
@@ -108,44 +108,44 @@
 
 #define MK_IMMC_8(__reg)                          \
     if (ip->flags & BCI_IMM_C)                    \
-        pp.emit_Load8_Immediate(ip->c.u8, __reg); \
+        pp.emit_Load8_Immediate(__reg, ip->c.u8); \
     else                                          \
         pp.emit_Load8_Indirect(regOffset(ip->c.u32), __reg);
 
 #define MK_IMMC_S8_TO_S32(__reg)                             \
     if (ip->flags & BCI_IMM_C)                               \
-        pp.emit_Load32_Immediate((int32_t) ip->c.s8, __reg); \
+        pp.emit_Load32_Immediate(__reg, (int32_t) ip->c.s8); \
     else                                                     \
         pp.emit_LoadS8S32_Indirect(regOffset(ip->c.u32), __reg, RDI);
 
 #define MK_IMMC_U8_TO_U32(__reg)                   \
     if (ip->flags & BCI_IMM_C)                     \
-        pp.emit_Load32_Immediate(ip->c.u8, __reg); \
+        pp.emit_Load32_Immediate(__reg, ip->c.u8); \
     else                                           \
         pp.emit_LoadU8U32_Indirect(regOffset(ip->c.u32), __reg, RDI);
 
 #define MK_IMMC_16(__reg)                           \
     if (ip->flags & BCI_IMM_C)                      \
-        pp.emit_Load16_Immediate(ip->c.u16, __reg); \
+        pp.emit_Load16_Immediate(__reg, ip->c.u16); \
     else                                            \
         pp.emit_Load16_Indirect(regOffset(ip->c.u32), __reg);
 
 #define MK_IMMC_32(__reg)                           \
     if (ip->flags & BCI_IMM_C)                      \
-        pp.emit_Load32_Immediate(ip->c.u32, __reg); \
+        pp.emit_Load32_Immediate(__reg, ip->c.u32); \
     else                                            \
         pp.emit_Load32_Indirect(regOffset(ip->c.u32), __reg);
 
 #define MK_IMMC_64(__reg)                           \
     if (ip->flags & BCI_IMM_C)                      \
-        pp.emit_Load64_Immediate(ip->c.u64, __reg); \
+        pp.emit_Load64_Immediate(__reg, ip->c.u64); \
     else                                            \
         pp.emit_Load64_Indirect(regOffset(ip->c.u32), __reg);
 
 #define MK_IMMC_F32(__reg)                        \
     if (ip->flags & BCI_IMM_C)                    \
     {                                             \
-        pp.emit_Load32_Immediate(ip->c.u32, RAX); \
+        pp.emit_Load32_Immediate(RAX, ip->c.u32); \
         pp.emit_CopyF32(RAX, __reg);              \
     }                                             \
     else                                          \
@@ -154,7 +154,7 @@
 #define MK_IMMC_F64(__reg)                        \
     if (ip->flags & BCI_IMM_C)                    \
     {                                             \
-        pp.emit_Load64_Immediate(ip->c.u64, RAX); \
+        pp.emit_Load64_Immediate(RAX, ip->c.u64); \
         pp.emit_CopyF64(RAX, __reg);              \
     }                                             \
     else                                          \
@@ -162,14 +162,14 @@
 
 #define MK_IMMD_64(__reg)                           \
     if (ip->flags & BCI_IMM_D)                      \
-        pp.emit_Load64_Immediate(ip->d.u64, __reg); \
+        pp.emit_Load64_Immediate(__reg, ip->d.u64); \
     else                                            \
         pp.emit_Load64_Indirect(regOffset(ip->d.u32), __reg);
 
 #define MK_IMMD_F32(__reg)                        \
     if (ip->flags & BCI_IMM_D)                    \
     {                                             \
-        pp.emit_Load32_Immediate(ip->d.u32, RAX); \
+        pp.emit_Load32_Immediate(RAX, ip->d.u32); \
         pp.emit_CopyF32(RAX, __reg);              \
     }                                             \
     else                                          \
@@ -178,7 +178,7 @@
 #define MK_IMMD_F64(__reg)                        \
     if (ip->flags & BCI_IMM_D)                    \
     {                                             \
-        pp.emit_Load64_Immediate(ip->d.u64, RAX); \
+        pp.emit_Load64_Immediate(RAX, ip->d.u64); \
         pp.emit_CopyF64(RAX, __reg);              \
     }                                             \
     else                                          \
@@ -194,7 +194,7 @@
     }                                                             \
     else if ((ip->flags & BCI_IMM_A) && !(ip->flags & BCI_IMM_B)) \
     {                                                             \
-        pp.emit_Load8_Immediate(ip->a.u8, RAX);                   \
+        pp.emit_Load8_Immediate(RAX, ip->a.u8);                   \
         pp.__opInd(regOffset(ip->b.u32), RAX, RDI);               \
     }                                                             \
     else                                                          \
@@ -212,7 +212,7 @@
     }                                                             \
     else if ((ip->flags & BCI_IMM_A) && !(ip->flags & BCI_IMM_B)) \
     {                                                             \
-        pp.emit_Load16_Immediate(ip->a.u16, RAX);                 \
+        pp.emit_Load16_Immediate(RAX, ip->a.u16);                 \
         pp.__opInd(regOffset(ip->b.u32), RAX, RDI);               \
     }                                                             \
     else                                                          \
@@ -230,7 +230,7 @@
     }                                                             \
     else if ((ip->flags & BCI_IMM_A) && !(ip->flags & BCI_IMM_B)) \
     {                                                             \
-        pp.emit_Load32_Immediate(ip->a.u32, RAX);                 \
+        pp.emit_Load32_Immediate(RAX, ip->a.u32);                 \
         pp.__opInd(regOffset(ip->b.u32), RAX, RDI);               \
     }                                                             \
     else if (!(ip->flags & BCI_IMM_A) && (ip->flags & BCI_IMM_B)) \
@@ -252,7 +252,7 @@
     }                                                                                        \
     else if ((ip->flags & BCI_IMM_A) && !(ip->flags & BCI_IMM_B))                            \
     {                                                                                        \
-        pp.emit_Load64_Immediate(ip->a.u64, RAX);                                            \
+        pp.emit_Load64_Immediate(RAX, ip->a.u64);                                            \
         pp.__opInd(regOffset(ip->b.u32), RAX, RDI);                                          \
     }                                                                                        \
     else if (!(ip->flags & BCI_IMM_A) && (ip->flags & BCI_IMM_B) && ip->b.u64 <= 0x7FFFFFFF) \
@@ -274,7 +274,7 @@
     }                                                             \
     else if ((ip->flags & BCI_IMM_A) && !(ip->flags & BCI_IMM_B)) \
     {                                                             \
-        pp.emit_Load32_Immediate(ip->a.u32, RAX);                 \
+        pp.emit_Load32_Immediate(RAX, ip->a.u32);                 \
         pp.emit_CopyF32(RAX, XMM0);                               \
         pp.__opInd(regOffset(ip->b.u32), XMM0, RDI);              \
     }                                                             \
@@ -293,7 +293,7 @@
     }                                                             \
     else if ((ip->flags & BCI_IMM_A) && !(ip->flags & BCI_IMM_B)) \
     {                                                             \
-        pp.emit_Load64_Immediate(ip->a.u64, RAX);                 \
+        pp.emit_Load64_Immediate(RAX, ip->a.u64);                 \
         pp.emit_CopyF64(RAX, XMM0);                               \
         pp.__opInd(regOffset(ip->b.u32), XMM0, RDI);              \
     }                                                             \

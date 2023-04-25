@@ -20,7 +20,7 @@ bool BackendX64::emitOS(const BuildParameters& buildParameters)
     {
         // int _DllMainCRTStartup(void*, int, void*)
         pp.getOrAddSymbol("_DllMainCRTStartup", CoffSymbolKind::Function, concat.totalCount() - pp.textSectionOffset);
-        pp.emit_Load64_Immediate(1, RAX);
+        pp.emit_Load64_Immediate(RAX, 1);
         pp.emit_Ret();
         return true;
     }

@@ -870,14 +870,14 @@ namespace OS
         auto startOffset = gen.concat.currentSP - gen.concat.firstBucket->datas;
         gen.emit_Push(RDI);
         gen.emit_Sub32_RSP(stackSize);
-        gen.emit_Load64_Immediate((uint64_t) context->sp, RDI, true);
+        gen.emit_Load64_Immediate(RDI, (uint64_t) context->sp, true);
         gen.emit_Call_Parameters(typeInfoFunc, pushRAParam, 0, retCopyAddr);
-        gen.emit_Load64_Immediate((uint64_t) foreignPtr, RAX, true);
+        gen.emit_Load64_Immediate(RAX, (uint64_t) foreignPtr, true);
         gen.emit_Call_Indirect(RAX);
 
         if (returnType != g_TypeMgr->typeInfoVoid && !retCopyAddr)
         {
-            gen.emit_Load64_Immediate((uint64_t) context->registersRR, RDI, true);
+            gen.emit_Load64_Immediate(RDI, (uint64_t) context->registersRR, true);
             gen.emit_Call_Result(typeInfoFunc, 0);
         }
 

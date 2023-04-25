@@ -445,21 +445,21 @@ void X64Gen::emit_Store64_Immediate(uint32_t stackOffset, uint64_t val, CPURegis
 
 /////////////////////////////////////////////////////////////////////
 
-void X64Gen::emit_Load8_Immediate(uint8_t val, CPURegister reg)
+void X64Gen::emit_Load8_Immediate(CPURegister reg, uint8_t value)
 {
-    if (val == 0)
+    if (value == 0)
     {
         emit_Clear8(reg);
         return;
     }
 
     concat.addU8(0xB0 | reg);
-    concat.addU8(val);
+    concat.addU8(value);
 }
 
-void X64Gen::emit_Load16_Immediate(uint16_t val, CPURegister reg)
+void X64Gen::emit_Load16_Immediate(CPURegister reg, uint16_t value)
 {
-    if (val == 0)
+    if (value == 0)
     {
         emit_Clear16(reg);
         return;
@@ -467,72 +467,72 @@ void X64Gen::emit_Load16_Immediate(uint16_t val, CPURegister reg)
 
     concat.addU8(0x66);
     concat.addU8(0xB8 | reg);
-    concat.addU16(val);
+    concat.addU16(value);
 }
 
-void X64Gen::emit_Load32_Immediate(uint32_t val, CPURegister reg)
+void X64Gen::emit_Load32_Immediate(CPURegister reg, uint32_t value)
 {
-    if (val == 0)
+    if (value == 0)
     {
         emit_Clear32(reg);
         return;
     }
 
     concat.addU8(0xB8 | reg);
-    concat.addU32(val);
+    concat.addU32(value);
 }
 
-void X64Gen::emit_Load64_Immediate(uint64_t val, CPURegister reg, bool force64bits)
+void X64Gen::emit_Load64_Immediate(CPURegister reg, uint64_t value, bool force64bits)
 {
     if (force64bits)
     {
         concat.addU8(getREX(true, false, false, reg >= R8));
         concat.addU8(0xB8 | reg);
-        concat.addU64(val);
+        concat.addU64(value);
         return;
     }
 
-    if (val == 0)
+    if (value == 0)
     {
         emit_Clear64(reg);
         return;
     }
 
-    if (val <= 0x7FFFFFFF && reg < R8)
+    if (value <= 0x7FFFFFFF && reg < R8)
     {
-        emit_Load32_Immediate((uint32_t) val, reg);
+        emit_Load32_Immediate(reg, (uint32_t) value);
         return;
     }
 
     concat.addU8(getREX(true, false, false, reg >= R8));
-    if (val <= 0x7FFFFFFF)
+    if (value <= 0x7FFFFFFF)
     {
         concat.addU8(0xC7);
         concat.addU8(0xC0 | (reg & 0b111));
-        concat.addU32((uint32_t) val);
+        concat.addU32((uint32_t) value);
     }
     else
     {
         concat.addU8(0xB8 | reg);
-        concat.addU64(val);
+        concat.addU64(value);
     }
 }
 
-void X64Gen::emit_LoadN_Immediate(Register& val, CPURegister reg, uint32_t numBits)
+void X64Gen::emit_LoadN_Immediate(CPURegister reg, Register& value, uint32_t numBits)
 {
     switch (numBits)
     {
     case 8:
-        emit_Load8_Immediate(val.u8, reg);
+        emit_Load8_Immediate(reg, value.u8);
         break;
     case 16:
-        emit_Load16_Immediate(val.u16, reg);
+        emit_Load16_Immediate(reg, value.u16);
         break;
     case 32:
-        emit_Load32_Immediate(val.u32, reg);
+        emit_Load32_Immediate(reg, value.u32);
         break;
     case 64:
-        emit_Load64_Immediate(val.u64, reg);
+        emit_Load64_Immediate(reg, value.u64);
         break;
     default:
         SWAG_ASSERT(false);
@@ -866,7 +866,7 @@ void X64Gen::emit_Cmp32_Immediate(CPURegister reg, uint32_t value)
     else
     {
         SWAG_ASSERT(reg == RAX);
-        emit_Load32_Immediate(value, RCX);
+        emit_Load32_Immediate(RCX, value);
         emit_Cmp32(reg, RCX);
     }
 }
@@ -890,7 +890,7 @@ void X64Gen::emit_Cmp64_Immediate(CPURegister reg, uint64_t value)
     }
     else
     {
-        emit_Load64_Immediate(value, RCX);
+        emit_Load64_Immediate(RCX, value);
         emit_Cmp64(reg, RCX);
     }
 }
@@ -1276,7 +1276,7 @@ void X64Gen::emit_Sub64_RAX(uint64_t value)
     }
     else if (value > 0x7FFFFFFF)
     {
-        emit_Load64_Immediate(value, RCX);
+        emit_Load64_Immediate(RCX, value);
         concat.addU8(getREX());
         concat.addU8(0x29);
         concat.addU8(0xC8); // sub rax, rcx
@@ -1322,7 +1322,7 @@ void X64Gen::emit_Mul64_RAX(uint64_t value)
     }
     else
     {
-        emit_Load64_Immediate(value, RCX);
+        emit_Load64_Immediate(RCX, value);
         concat.addString4("\x48\x0F\xAF\xC1"); // imul rax, rcx
     }
 }
@@ -1725,7 +1725,7 @@ void X64Gen::emit_Call_Parameters(TypeInfoFuncAttr* typeFuncBC, VectorNative<X64
         {
             SWAG_ASSERT(paramsRegisters[i].type == X64PushParamType::Reg);
             if (retCopy)
-                emit_Load64_Immediate((uint64_t) retCopy, cc.byRegisterInteger[i]);
+                emit_Load64_Immediate(cc.byRegisterInteger[i], (uint64_t) retCopy);
             else if (returnByCopy)
                 emit_Load64_Indirect(reg, cc.byRegisterInteger[i], RDI);
             else
@@ -1747,7 +1747,7 @@ void X64Gen::emit_Call_Parameters(TypeInfoFuncAttr* typeFuncBC, VectorNative<X64
                 if (paramsRegisters[i].type == X64PushParamType::Imm)
                 {
                     SWAG_ASSERT(paramsRegisters[i].reg <= UINT32_MAX);
-                    emit_Load32_Immediate((uint32_t) paramsRegisters[i].reg, RAX);
+                    emit_Load32_Immediate(RAX, (uint32_t) paramsRegisters[i].reg);
                     emit_CopyF32(RAX, cc.byRegisterFloat[i]);
                 }
                 else
@@ -1760,7 +1760,7 @@ void X64Gen::emit_Call_Parameters(TypeInfoFuncAttr* typeFuncBC, VectorNative<X64
             {
                 if (paramsRegisters[i].type == X64PushParamType::Imm)
                 {
-                    emit_Load64_Immediate(paramsRegisters[i].reg, RAX);
+                    emit_Load64_Immediate(RAX, paramsRegisters[i].reg);
                     emit_CopyF64(RAX, cc.byRegisterFloat[i]);
                 }
                 else
@@ -1777,10 +1777,10 @@ void X64Gen::emit_Call_Parameters(TypeInfoFuncAttr* typeFuncBC, VectorNative<X64
                     if (paramsRegisters[i].reg == 0)
                         emit_Clear64(cc.byRegisterInteger[i]);
                     else
-                        emit_Load64_Immediate(paramsRegisters[i].reg, cc.byRegisterInteger[i]);
+                        emit_Load64_Immediate(cc.byRegisterInteger[i], paramsRegisters[i].reg);
                     break;
                 case X64PushParamType::Imm64:
-                    emit_Load64_Immediate(paramsRegisters[i].reg, cc.byRegisterInteger[i], true);
+                    emit_Load64_Immediate(cc.byRegisterInteger[i], paramsRegisters[i].reg, true);
                     break;
                 case X64PushParamType::RelocV:
                     emit_Symbol_RelocationValue(cc.byRegisterInteger[i], (uint32_t) paramsRegisters[i].reg, 0);
@@ -1835,7 +1835,7 @@ void X64Gen::emit_Call_Parameters(TypeInfoFuncAttr* typeFuncBC, VectorNative<X64
         {
             // r is an address to registerRR, for FFI
             if (retCopy)
-                emit_Load64_Immediate((uint64_t) retCopy, RAX);
+                emit_Load64_Immediate(RAX, (uint64_t) retCopy);
             else if (returnByCopy)
                 emit_Load64_Indirect(reg, RAX, RDI);
             else
@@ -2079,7 +2079,7 @@ void X64Gen::emit_Call_Indirect(CPURegister reg)
 
 void X64Gen::emit_GlobalString(const Utf8& str, CPURegister reg)
 {
-    emit_Load64_Immediate(0, reg, true);
+    emit_Load64_Immediate(reg, 0, true);
 
     auto        it  = globalStrings.find(str);
     CoffSymbol* sym = nullptr;
