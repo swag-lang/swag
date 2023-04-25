@@ -1685,7 +1685,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
         case ByteCodeOp::AffectOpMinusEqS8_SSafe:
         case ByteCodeOp::AffectOpMinusEqU8_SSafe:
             if (ip->flags & BCI_IMM_B && ip->b.u32 == 1)
-                pp.emit_Dec8_Indirect(offsetStack + ip->a.u32, RDI);
+                pp.emit_DecN_Indirect(offsetStack + ip->a.u32, RDI, X64Bits::B8);
             else
             {
                 MK_BINOPEQ8_SCAB(X64Op::SUB);
@@ -1704,7 +1704,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
         case ByteCodeOp::AffectOpMinusEqS16_SSafe:
         case ByteCodeOp::AffectOpMinusEqU16_SSafe:
             if (ip->flags & BCI_IMM_B && ip->b.u32 == 1)
-                pp.emit_Dec16_Indirect(offsetStack + ip->a.u32, RDI);
+                pp.emit_DecN_Indirect(offsetStack + ip->a.u32, RDI, X64Bits::B16);
             else
             {
                 MK_BINOPEQ16_SCAB(X64Op::SUB);
@@ -1723,7 +1723,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
         case ByteCodeOp::AffectOpMinusEqS32_SSafe:
         case ByteCodeOp::AffectOpMinusEqU32_SSafe:
             if (ip->flags & BCI_IMM_B && ip->b.u32 == 1)
-                pp.emit_Dec32_Indirect(offsetStack + ip->a.u32, RDI);
+                pp.emit_DecN_Indirect(offsetStack + ip->a.u32, RDI, X64Bits::B32);
             else
             {
                 MK_BINOPEQ32_SCAB(X64Op::SUB);
@@ -1742,7 +1742,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
         case ByteCodeOp::AffectOpMinusEqS64_SSafe:
         case ByteCodeOp::AffectOpMinusEqU64_SSafe:
             if (ip->flags & BCI_IMM_B && ip->b.u32 == 1)
-                pp.emit_Dec64_Indirect(offsetStack + ip->a.u32, RDI);
+                pp.emit_DecN_Indirect(offsetStack + ip->a.u32, RDI, X64Bits::B64);
             else
             {
                 MK_BINOPEQ64_SCAB(X64Op::SUB);
@@ -2412,13 +2412,13 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             break;
 
         case ByteCodeOp::DecrementRA32:
-            pp.emit_Dec32_Indirect(regOffset(ip->a.u32), RDI);
+            pp.emit_DecN_Indirect(regOffset(ip->a.u32), RDI, X64Bits::B32);
             break;
         case ByteCodeOp::IncrementRA64:
             pp.emit_Inc64_Indirect(regOffset(ip->a.u32), RDI);
             break;
         case ByteCodeOp::DecrementRA64:
-            pp.emit_Dec64_Indirect(regOffset(ip->a.u32), RDI);
+            pp.emit_DecN_Indirect(regOffset(ip->a.u32), RDI, X64Bits::B64);
             break;
 
         case ByteCodeOp::DeRef8:
