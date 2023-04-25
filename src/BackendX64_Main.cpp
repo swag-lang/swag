@@ -94,7 +94,7 @@ bool BackendX64::emitMain(const BuildParameters& buildParameters)
     pp.emit_Store64_Immediate(0, module->moduleDependencies.count + 1, RAX);
 
     //__process_infos.args
-    pp.emit_Clear64(RCX);
+    pp.emit_ClearN(RCX, 64);
     pp.emit_Symbol_RelocationAddr(RAX, pp.symPI_argsAddr, 0);
     pp.emit_Store64_Indirect(0, RCX, RAX);
     pp.emit_Symbol_RelocationAddr(RAX, pp.symPI_argsCount, 0);
@@ -206,7 +206,7 @@ bool BackendX64::emitMain(const BuildParameters& buildParameters)
 
     emitCall(pp, g_LangSpec->name__closeRuntime);
 
-    pp.emit_Clear64(RAX);
+    pp.emit_ClearN(RAX, 64);
     pp.emit_Add32_RSP(40);
     pp.emit_Ret();
 

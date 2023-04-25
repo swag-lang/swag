@@ -449,7 +449,7 @@ void X64Gen::emit_Load8_Immediate(CPURegister reg, uint8_t value)
 {
     if (value == 0)
     {
-        emit_Clear8(reg);
+        emit_ClearN(reg, 8);
         return;
     }
 
@@ -461,7 +461,7 @@ void X64Gen::emit_Load16_Immediate(CPURegister reg, uint16_t value)
 {
     if (value == 0)
     {
-        emit_Clear16(reg);
+        emit_ClearN(reg, 16);
         return;
     }
 
@@ -474,7 +474,7 @@ void X64Gen::emit_Load32_Immediate(CPURegister reg, uint32_t value)
 {
     if (value == 0)
     {
-        emit_Clear32(reg);
+        emit_ClearN(reg, 32);
         return;
     }
 
@@ -494,7 +494,7 @@ void X64Gen::emit_Load64_Immediate(CPURegister reg, uint64_t value, bool force64
 
     if (value == 0)
     {
-        emit_Clear64(reg);
+        emit_ClearN(reg, 64);
         return;
     }
 
@@ -544,47 +544,11 @@ void X64Gen::emit_LoadN_Immediate(CPURegister reg, Register& value, uint32_t num
 
 void X64Gen::emit_ClearN(CPURegister reg, uint32_t numBits)
 {
-    switch (numBits)
-    {
-    case 8:
-    case 16:
-    case 32:
-        emit_Clear32(reg);
-        break;
-    case 64:
-        emit_Clear64(reg);
-        break;
-    default:
-        SWAG_ASSERT(false);
-        break;
-    }
-}
-
-void X64Gen::emit_Clear8(CPURegister reg)
-{
-    emit_REX(8, reg, reg);
-    concat.addU8(0x30);
-    concat.addU8(getModRM(REGREG, reg, reg));
-}
-
-void X64Gen::emit_Clear16(CPURegister reg)
-{
-    emit_REX(16, reg, reg);
-    concat.addU8(0x31);
-    concat.addU8(getModRM(REGREG, reg, reg));
-}
-
-void X64Gen::emit_Clear32(CPURegister reg)
-{
-    emit_REX(32, reg, reg);
-    concat.addU8(0x31);
-    concat.addU8(getModRM(REGREG, reg, reg));
-}
-
-void X64Gen::emit_Clear64(CPURegister reg)
-{
-    emit_REX(64, reg, reg);
-    concat.addU8(0x31);
+    emit_REX(numBits, reg, reg);
+    if (numBits == 8)
+        concat.addU8((uint8_t) X64Op::XOR & ~1);
+    else
+        concat.addU8((uint8_t) X64Op::XOR);
     concat.addU8(getModRM(REGREG, reg, reg));
 }
 
@@ -1770,7 +1734,7 @@ void X64Gen::emit_Call_Parameters(TypeInfoFuncAttr* typeFuncBC, VectorNative<X64
                 {
                 case X64PushParamType::Imm:
                     if (paramsRegisters[i].reg == 0)
-                        emit_Clear64(cc.byRegisterInteger[i]);
+                        emit_ClearN(cc.byRegisterInteger[i], 64);
                     else
                         emit_Load64_Immediate(cc.byRegisterInteger[i], paramsRegisters[i].reg);
                     break;

@@ -563,7 +563,7 @@ void BackendX64::emitBinOpIntDivAtReg(X64Gen& pp, ByteCodeInstruction* ip, bool 
         if (isSigned)
             pp.emit_Cwd();
         else
-            pp.emit_Clear16(RDX);
+            pp.emit_ClearN(RDX, 16);
         break;
     case 32:
         if (ip->flags & BCI_IMM_A)
@@ -573,7 +573,7 @@ void BackendX64::emitBinOpIntDivAtReg(X64Gen& pp, ByteCodeInstruction* ip, bool 
         if (isSigned)
             pp.emit_Cdq();
         else
-            pp.emit_Clear32(RDX);
+            pp.emit_ClearN(RDX, 32);
         break;
     case 64:
         if (ip->flags & BCI_IMM_A)
@@ -583,7 +583,7 @@ void BackendX64::emitBinOpIntDivAtReg(X64Gen& pp, ByteCodeInstruction* ip, bool 
         if (isSigned)
             pp.emit_Cqo();
         else
-            pp.emit_Clear64(RDX);
+            pp.emit_ClearN(RDX, 64);
         break;
     default:
         SWAG_ASSERT(false);
