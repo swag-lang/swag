@@ -562,29 +562,28 @@ void X64Gen::emit_ClearN(CPURegister reg, uint32_t numBits)
 
 void X64Gen::emit_Clear8(CPURegister reg)
 {
-    SWAG_ASSERT(reg < R8);
+    emit_REX(8, reg, reg);
     concat.addU8(0x30);
     concat.addU8(getModRM(REGREG, reg, reg));
 }
 
 void X64Gen::emit_Clear16(CPURegister reg)
 {
-    SWAG_ASSERT(reg < R8);
-    concat.addU8(0x66);
+    emit_REX(16, reg, reg);
     concat.addU8(0x31);
     concat.addU8(getModRM(REGREG, reg, reg));
 }
 
 void X64Gen::emit_Clear32(CPURegister reg)
 {
-    concat.addU8(getREX(false, reg >= R8, false, reg >= R8));
+    emit_REX(32, reg, reg);
     concat.addU8(0x31);
     concat.addU8(getModRM(REGREG, reg, reg));
 }
 
 void X64Gen::emit_Clear64(CPURegister reg)
 {
-    concat.addU8(getREX(true, reg >= R8, false, reg >= R8));
+    emit_REX(64, reg, reg);
     concat.addU8(0x31);
     concat.addU8(getModRM(REGREG, reg, reg));
 }
