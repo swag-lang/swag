@@ -12,3 +12,4 @@
 ..\bin\swag_devmode ..\bin\examples\scripts\swag.swgs       --args:"swag.test"
 ..\bin\swag_devmode ..\bin\examples\scripts\pendulum.swgs   --args:"swag.test"
 ..\bin\swag_devmode ..\bin\examples\scripts\cards.swgs      --args:"swag.test"
+..\bin\swag_devmode ..\bin\examples\scripts\calc.swgs       --args:"swag.test"

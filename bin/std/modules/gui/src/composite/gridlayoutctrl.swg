@@ -1,17 +1,26 @@
 #global public
 using Core
 
+#[Swag.EnumFlags]
+enum GridLayoutCtrlFlags
+{
+    Zero
+    AdaptSizeToContent
+}
+
 struct GridLayoutCtrl
 {
     using frameWnd: FrameWnd
+
+    gridLayoutFlags = GridLayoutCtrlFlags.Zero
     numColumns:     s32
     numRows:        s32
     spacingHorz:    f32 = 5
     spacingVert:    f32 = 5
-    layout:         Array'*Wnd
-    colSizes:       Array'f32
-    rowSizes:       Array'f32
-    autoSize:       bool
+
+    layout:     Array'*Wnd
+    colSizes:   Array'f32
+    rowSizes:   Array'f32
 }
 
 impl IWnd for GridLayoutCtrl
@@ -75,7 +84,7 @@ impl IWnd for GridLayoutCtrl
             y += rowSizes[j] + spacingVert
         }
 
-        if autoSize
+        if gridLayoutFlags & .AdaptSizeToContent
             resize(maxW, maxH)
         frameWnd.IWnd.onResizeEvent(evt)
     }
@@ -117,6 +126,8 @@ impl GridLayoutCtrl
         rowSizes[row] = size
     }
 
+    // Set the wnd associated with the given 'col' and 'row'.
+    // Window can cover multiple columns and rows.
     mtd setColRowChild(child: *Wnd, col, row: s32, spanH, spanV: s32 = 1)
     {
         Debug.assert(child.parent == self)

@@ -72,7 +72,7 @@ func createView6(_tabView: *Tab, view: *Wnd)
         lt := GridLayoutCtrl.create(view, 3, 3, {220, 240, 400, 300})
         lt.backgroundStyle = .Dialog
         lt.padding = 5
-        lt.autoSize = true
+        lt.gridLayoutFlags = .AdaptSizeToContent
         lt.setColRowChild(Label.create(lt, "Label 0"), 0, 0)
         lt.setColRowChild(Label.create(lt, "Label 1"), 1, 0)
         lt.setColRowChild(Label.create(lt, "Label 2"), 2, 0)

@@ -1221,4 +1221,12 @@ impl Wnd
                 c.serializeState(ser)
         }
     }
+
+    // Convert wnd to type, or null if not correct
+    mtd(T) dynCast()->*T
+    {
+        if T != type
+            return null
+        return cast(*T) self
+    }
 }
