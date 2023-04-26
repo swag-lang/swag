@@ -82,6 +82,7 @@ struct CloneContext
     void propageResult(CloneContext& context)
     {
         usedReplaceNames.insert(context.usedReplaceNames.begin(), context.usedReplaceNames.end());
+        nodeRefsToUpdate.append(context.nodeRefsToUpdate);
     }
 };
 
