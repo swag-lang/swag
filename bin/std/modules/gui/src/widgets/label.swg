@@ -88,8 +88,6 @@ impl Label
         sf.flags |= .Clip
         if labelFlags & .WordWrap
             sf.flags |= .WordWrap
-        else
-            sf.flags |= .VertCenterBaseLine
         sf.font = getFont()
         sf.horzAlignment = horzAlignmentText
         sf.vertAlignment = vertAlignmentText

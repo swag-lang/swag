@@ -19,7 +19,7 @@ namespace Res
 var g_ModeAA:       bool = true
 var g_PaintQuality: PaintQuality = Normal
 var g_Pattern:      bool = true
-var g_Page:         s32 = 3
+var g_Page:         s32 = 4
 var g_Angle:        f32 = 0
 const MaxPages = 8
 
@@ -424,9 +424,10 @@ func displayPage4(painter: *Pixel.Painter)
 
     {
         brush := Brush.createTexture(Res.image1)
-        rect := Painter.measureString(100, 300, str, Res.font40)
-        painter.fillRect(rect.x, rect.y, rect.width, rect.height, Color.fromArgb(0x1F, Argb.Blue))
-        painter.fillRect(rect.x, rect.y, rect.width, rect.baseLine, Color.fromArgb(0x1F, Argb.Red))
+        measure := Painter.measureString(str, Res.font40)
+        off := Res.font40.height - measure.height
+        painter.fillRect(100, 300+off, measure.width, measure.height, Color.fromArgb(0x1F, Argb.Blue))
+        painter.fillRect(100, 300+off, measure.width, measure.ascent, Color.fromArgb(0x1F, Argb.Red))
         painter.drawString(100, 300, str, Res.font40, brush, UnderlineStyle.Strikeout)
         painter.drawString(100, 350, str, Res.font40, Argb.Black)
     }

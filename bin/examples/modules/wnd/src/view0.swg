@@ -237,7 +237,7 @@ func createView0(tabView: *Tab, view: *Wnd)
 
     // SliderCtrl
     {
-        sliderctrl := SliderCtrl.create(view, "Center", {370, 580, 250, 30})
+        sliderctrl := SliderCtrl.create(view, "Center", {370, 580, 250, 50})
         sliderctrl.slider.setMinMax(0, 255)
         sliderctrl.edit.setInputU64(0, 255)
         sliderctrl.slider.setValue(0)
@@ -257,6 +257,7 @@ func createView0(tabView: *Tab, view: *Wnd)
         label.icon = theme.getIcon24(ThemeIcons24.WndClose)
         label.backgroundStyle = .Dialog
         label.horzAlignmentText = .Right
+        label.vertAlignmentText = .Center
         label.horzAlignmentIcon = .Right
         label.paddingText = {0, 0, 24, 3}
 

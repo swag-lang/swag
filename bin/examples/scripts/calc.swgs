@@ -96,9 +96,9 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
         g_Edit = EditBox.create(layout, "0")
         layout.setColRowChild(g_Edit, 0, 0, 4)
 
-        createBtn("7", 0, 2)
-        createBtn("8", 1, 2)
-        createBtn("9", 2, 2)
+        createBtn("\u2212", 0, 2)
+        createBtn("6", 1, 2)
+        createBtn("5", 2, 2)
         createBtn("4", 0, 3)
         createBtn("5", 1, 3)
         createBtn("6", 2, 3)
@@ -109,7 +109,7 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
 
         createBtn("\u00F7", 3, 1)
         createBtn("\u00D7", 3, 2)
-        createBtn("-", 3, 3)
+        createBtn("\u2212", 3, 3)
         createBtn("+", 3, 4)
         createBtn("=", 3, 5)
 

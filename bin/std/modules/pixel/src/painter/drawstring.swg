@@ -29,13 +29,14 @@ enum StringFormatFlags
     Default
     WordWrap
     Clip
-    VertCenterBaseLine
 }
 
 struct StringMetrics
 {
-    using rect: Math.Rectangle
-    baseLine:   f32
+    ascent:     f32     // Maximum size above baseline
+    descent:    f32     // Maximum size below baseline
+    width:      f32
+    height:     f32     // ascent + descent
 }
 
 struct RichStringFormat
@@ -90,38 +91,27 @@ impl Painter
         return result
     }
 
-    // Returns the bounding rectangle if a given text, at a given position
+    // Returns the metrics of a given text
     func measureString(text: string, font: *Font)->StringMetrics
     {
-        return measureString(0, 0, text, font)
-    }
-
-    // Returns the bounding rectangle if a given text, at a given position
-    func measureString(left, top: f32, text: string, font: *Font)->StringMetrics
-    {
         arr := getGlyphs(text, font)
-        return measureString(left, top, arr, font)
+        return measureString(arr, font)
     }
 
     // Returns the bounding rectangle if a given text, at a given position
-    func measureString(left, top: f32, text: Array'(const *GlyphDesc), font: *Font)->StringMetrics
+    func measureString(text: Array'(const *GlyphDesc), font: *Font)->StringMetrics
     {
         var result: retval
-
-        y := top + font.ascent
-        result.x = left
-        result.y = y
-        bottom := top
-
+        result.ascent  = Swag.F32.NegInf
+        result.descent = Swag.F32.NegInf
         visit refr: text
         {
-            result.y = Math.min(result.y, y - refr.shiftY)
-            bottom = Math.max(bottom, y - refr.shiftY + refr.height)
-            result.baseLine = Math.max(result.baseLine, refr.shiftY)
+            result.ascent = Math.max(result.ascent, refr.shiftY)
+            result.descent = Math.max(result.descent, refr.height - refr.shiftY)
             result.width += refr.advanceX
         }
 
-        result.height = bottom - result.y
+        result.height = result.ascent + result.descent
         return result
     }
 
@@ -129,7 +119,7 @@ impl Painter
     mtd drawStringCenter(x, y: f32, text: string, font: *Font, color: Color, under = UnderlineStyle.None)
     {
         ms := measureString(text, font)
-        drawString(x - ms.width * 0.5, y - ms.height * 0.5 - ms.y, text, font, color, under)
+        drawString(x - ms.width * 0.5, y - ms.height * 0.5, text, font, color, under)
     }
 
     // Draw a simple string
@@ -155,13 +145,13 @@ impl Painter
         y := Math.round(top + font.ascent)
 
         // Compute text extent only if necessary
-        var boundRect: StringMetrics = undefined
+        var ms: StringMetrics = undefined
         if under != .None or brush.type != .SolidColor
-            boundRect = measureString(x, y, text, font)
+            ms = measureString(text, font)
 
         // Set brush main texture
         if brush.type != .SolidColor
-            setTexture0({x, y - boundRect.baseLine}, {x + boundRect.width, y + boundRect.height}, brush)
+            setTexture0({x, y - ms.ascent}, {x + ms.width, y + ms.height}, brush)
         else
             resetTexture0()
 
@@ -176,11 +166,11 @@ impl Painter
             switch under
             {
             case Strikeout:
-                yUnder := y - (boundRect.baseLine / 2)
-                drawLine(x, yUnder, x + boundRect.width, yUnder, pen)
+                yUnder := y - (ms.ascent / 2)
+                drawLine(x, yUnder, x + ms.width, yUnder, pen)
             case Underline:
                 yUnder := y - font.underlinePos
-                drawLine(x, yUnder, x + boundRect.width, yUnder, pen)
+                drawLine(x, yUnder, x + ms.width, yUnder, pen)
             }
 
             canSetTexture0 = true
@@ -221,12 +211,10 @@ impl Painter
 
         struct OneLine
         {
+            measure:        StringMetrics
             start, end:     s32
-            width:          f32
             countSpaces:    s32
             whiteSpaces:    f32
-            minTop:         f32
-            maxHeight:      f32
             hasEol:         bool
         }
 
@@ -234,7 +222,6 @@ impl Painter
         var lines: Array'OneLine
         var line:  OneLine
 
-        line.minTop = Swag.F32.Max
         startLine := 0
         lastWasSpace := false
 
@@ -245,7 +232,8 @@ impl Painter
             c.font = format.font.getFont(fs)
 
             // Measure
-            c.boundRect = measureString(c.slice, c.font).rect
+            ms := measureString(c.slice, c.font)
+            c.boundRect = {0, 0, ms.width, ms.height}
 
             // User eol
             if c.isEol
@@ -256,9 +244,8 @@ impl Painter
                 lines.add(line)
 
                 startLine = line.end + 1
-                line.width = 0
-                line.minTop = Swag.F32.Max
-                line.maxHeight = 0
+                line.measure.width, line.measure.height = 0
+                line.measure.ascent, line.measure.descent = 0
                 line.countSpaces = 0
                 line.hasEol = false
                 continue
@@ -267,7 +254,7 @@ impl Painter
             // Wrap
             if format.flags & .WordWrap or format.horzAlignment == .Justify
             {
-                curW := line.width
+                curW := line.measure.width
                 if format.horzAlignment == .Justify
                     curW += line.whiteSpaces
 
@@ -281,7 +268,7 @@ impl Painter
                     {
                         line.countSpaces -= 1
                         if format.horzAlignment != .Justify
-                            line.width -= text.chunks[idx - 1].boundRect.width
+                            line.measure.width -= text.chunks[idx - 1].boundRect.width
                         else
                             line.whiteSpaces -= text.chunks[idx - 1].boundRect.width
                         line.end -= 1
@@ -289,9 +276,8 @@ impl Painter
 
                     lines.add(line)
                     startLine  = cast(s32) idx
-                    line.width = 0
-                    line.minTop = Swag.F32.Max
-                    line.maxHeight = 0
+                    line.measure.width, line.measure.height = 0
+                    line.measure.ascent, line.measure.descent = 0
                     line.countSpaces = 0
                     line.whiteSpaces = 0
 
@@ -300,9 +286,10 @@ impl Painter
                         startLine += 1
                     else
                     {
-                        line.width += c.boundRect.x + c.boundRect.width
-                        line.minTop = Math.min(line.minTop, c.boundRect.y)
-                        line.maxHeight = Math.max(line.maxHeight, c.boundRect.height)
+                        line.measure.width += ms.width
+                        line.measure.ascent = Math.max(line.measure.ascent, ms.ascent)
+                        line.measure.descent = Math.max(line.measure.descent, ms.descent)
+                        line.measure.height = Math.max(line.measure.height, ms.height)
                     }
 
                     continue
@@ -314,14 +301,15 @@ impl Painter
             {
                 line.countSpaces += 1
                 if format.horzAlignment != .Justify
-                    line.width += c.boundRect.x + c.boundRect.width
+                    line.measure.width += ms.width
                 else
-                    line.whiteSpaces += c.boundRect.x + c.boundRect.width
+                    line.whiteSpaces += ms.width
             }
             else
-                line.width += c.boundRect.x + c.boundRect.width
-            line.minTop = Math.min(line.minTop, c.boundRect.y)
-            line.maxHeight = Math.max(line.maxHeight, c.boundRect.height)
+                line.measure.width += ms.width
+            line.measure.ascent = Math.max(line.measure.ascent, ms.ascent)
+            line.measure.descent = Math.max(line.measure.descent, ms.descent)
+            line.measure.height = Math.max(line.measure.height, ms.height)
         }
 
         if startLine != text.chunks.count
@@ -336,26 +324,32 @@ impl Painter
 
         // Vertical
         var totalHeight: f32
-        if lines.count
+
+        singleLine := lines.count == 1
+        if lines.count > 1
         {
             totalHeight = cast(f32) (lines.count * format.font.regular.height)
             totalHeight += cast(f32) (lines.count - 1) * format.lineGap
         }
+        else if singleLine
+        {
+            totalHeight = lines[0].measure.height
+        }
 
         switch format.vertAlignment
         {
-        case Bottom:    y = pos.bottom() - totalHeight
-        case Center:    y = pos.vertCenter() - (totalHeight * 0.5)
+        case Bottom: y = pos.bottom() - totalHeight
+        case Center: y = pos.vertCenter() - (totalHeight * 0.5)
         }
-
-        // Little vertical ajustement
-        if format.vertAlignment == .Center and lines.count == 1 and format.flags & .VertCenterBaseLine
-            y -= lines[0].minTop * 0.5
 
         text.boundRect.x = Swag.F32.Max
         text.boundRect.y = y
         text.boundRect.width = 0
         text.boundRect.height = totalHeight
+
+        // Y correction if single line
+        if singleLine
+            y -= (format.font.regular.ascent - lines[0].measure.ascent)
 
         // Layout
         visit &l, idxLine: lines
@@ -366,19 +360,19 @@ impl Painter
             switch format.horzAlignment
             {
             case Left:   break
-            case Right:  x1 = pos.right() - l.width
-            case Center: x1 = pos.horzCenter() - l.width * 0.5
+            case Right:  x1 = pos.right() - l.measure.width
+            case Center: x1 = pos.horzCenter() - l.measure.width * 0.5
             }
 
             text.boundRect.x = Math.min(text.boundRect.x, x1)
-            text.boundRect.width = Math.max(text.boundRect.width, l.width)
+            text.boundRect.width = Math.max(text.boundRect.width, l.measure.width)
 
             loop idx: l.start..<l.end
             {
                 c := &text.chunks[idx]
                 c.pos.x = x1
                 if c.isSpace and format.horzAlignment == .Justify and idxLine != lines.count - 1 and !l.hasEol
-                    x1 += (pos.width - l.width) / l.countSpaces
+                    x1 += (pos.width - l.measure.width) / l.countSpaces
                 else
                     x1 += c.boundRect.width
                 c.pos.y = y1

@@ -798,7 +798,7 @@ public impl RichEditCtrl
         visit l: lines
         {
             arr     := Painter.getGlyphs(l.chars, fontR)
-            measure := Painter.measureString(0, 0, arr, fontR)
+            measure := Painter.measureString(arr, fontR)
             result.w = Math.max(result.h, measure.width)
         }
 

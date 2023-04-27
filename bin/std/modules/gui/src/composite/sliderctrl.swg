@@ -20,7 +20,7 @@ impl IWnd for SliderCtrl
         rect    := getClientRect()
         metrics := getThemeMetrics()
 
-        label.setPosition(0, 0, labelSize, metrics.editBox_Height)
+        label.setPosition(0, 0, labelSize, rect.height)
 
         w := rect.width - labelSize - editSize
         slider.setPosition(label.position.right(), rect.vertCenter() - metrics.slider_Height / 2, w, metrics.slider_Height)
@@ -44,6 +44,7 @@ impl SliderCtrl
         with ctrl := Wnd.create'SliderCtrl(parent, pos, id)
         {
             .label = Label.create(ctrl, #self.name, {})
+            .label.vertAlignmentText = .Center
             .label.horzAlignmentText = .Right
 
             .slider = Slider.create(ctrl, {})
