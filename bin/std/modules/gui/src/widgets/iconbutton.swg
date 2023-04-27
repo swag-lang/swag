@@ -213,10 +213,10 @@ impl IWnd for IconButton
                 break
             }
 
-            font := theme.res.fontDefault.regular
-            sm := Painter.measureString(name.raw.toString(), font)
+            fontR := getFont().regular
+            sm := Painter.measureString(name.raw.toString(), fontR)
             nw += sm.width
-            nh += theme.res.fontDefault.regular.height
+            nh += fontR.height
 
             if hasIcon
             {

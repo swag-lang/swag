@@ -14,7 +14,6 @@ struct Label
 {
     using wnd: Wnd
 
-    font:               *FontFamily
     icon:               Icon
     iconColor:          Color
     labelFlags          = LabelFlags.None
@@ -91,7 +90,7 @@ impl Label
             sf.flags |= .WordWrap
         else
             sf.flags |= .VertCenterBaseLine
-        sf.font = font ? dref font : theme.res.fontDefault
+        sf.font = getFont()
         sf.horzAlignment = horzAlignmentText
         sf.vertAlignment = vertAlignmentText
 
@@ -149,7 +148,7 @@ impl Label
     }
 
     // Change the text
-    mtd setFont(fm: *FontFamily)
+    mtd setFont(fm: FontFamily)
     {
         font = fm
         invalidate()

@@ -131,7 +131,7 @@ impl RichEditCtrl
         if !(richEdFlags & .WordWrap)
             return
 
-        font := fontFamily.getFont(styles[0].fontMode)
+        fontR := getFont().getFont(styles[0].fontMode)
 
         // Do the wrap
         curLine := lineIndex
@@ -153,7 +153,7 @@ impl RichEditCtrl
 
             if cutAti > 1
             {
-                x := getMarginLeft() + Painter.measureString(str, font).width
+                x := getMarginLeft() + Painter.measureString(str, fontR).width
                 if x > clientRect.right()
                 {
                     if cutAti and cutAti == i + 1
@@ -794,11 +794,11 @@ public impl RichEditCtrl
         result.h = cast(f32) (lines.count * x.y)
         result.h += cast(f32) ((lines.count - 1) * lineSpacing)
 
-        font := fontFamily.getFont(styles[0].fontMode)
+        fontR := getFont().getFont(styles[0].fontMode)
         visit l: lines
         {
-            arr     := Painter.getGlyphs(l.chars, font)
-            measure := Painter.measureString(0, 0, arr, font)
+            arr     := Painter.getGlyphs(l.chars, fontR)
+            measure := Painter.measureString(0, 0, arr, fontR)
             result.w = Math.max(result.h, measure.width)
         }
 

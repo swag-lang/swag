@@ -187,7 +187,7 @@ impl IWnd for EditBox
 
         painter.pushClippingRect(clientRect)
         painter.translateTransform(-scrollPosX, 0)
-        font := theme.res.fontDefault.regular
+        fontR := getFont().regular
 
         // Selection
         if selBeg != selEnd and hasFocus()
@@ -197,17 +197,17 @@ impl IWnd for EditBox
                 pos.x = pos.right() - sizeX + posSelBeg
             else
                 pos.x += posSelBeg
-            pos.y = clientRect.vertCenter() - font.height * 0.5
-            pos.height = font.height
+            pos.y = clientRect.vertCenter() - fontR.height * 0.5
+            pos.height = fontR.height
             pos.width = posSelEnd - posSelBeg
             bc.painter.fillRect(pos, colors.edit_SelectedBk)
         }
 
         // Content
-        y := clientRect.vertCenter() - font.height * 0.5
+        y := clientRect.vertCenter() - fontR.height * 0.5
         if editBoxFlags & .RightAlign
             clientRect.x = clientRect.right() - sizeX
-        bc.painter.drawString(clientRect.x, y, text, font, colorText)
+        bc.painter.drawString(clientRect.x, y, text, fontR, colorText)
 
         // Caret
         if visibleCaret and hasFocus()
@@ -619,8 +619,8 @@ private impl EditBox
             result.x = clientRect.right() - posSelEnd - 2
         }
 
-        font := getTheme().res.fontDefault.regular
-        result.height = font.height
+        fontR := getFont().regular
+        result.height = fontR.height
         result.y = clientRect.vertCenter() - result.height * 0.5
 
         result.width = 2
@@ -635,19 +635,19 @@ private impl EditBox
         x := xmouse
         x += scrollPosX
 
-        font := getTheme().res.fontDefault.regular
+        fontR := getFont().regular
 
         // Could be better, of course...
         if editBoxFlags & .RightAlign
         {
             clientRect := getEditRect()
-            sizeX := Painter.measureString(text, getTheme().res.fontDefault.regular).width
+            sizeX := Painter.measureString(text, fontR).width
             lastWidth := 0'f32
             diff      := 0'f32
             loop idx: 1..text.length-1
             {
                 str := @mkstring(text.buffer, idx)
-                met := Painter.measureString(str, font).width
+                met := Painter.measureString(str, fontR).width
                 diff = (met - lastWidth) * 0.5
                 if x <= clientRect.right() - sizeX + met
                 {
@@ -671,7 +671,7 @@ private impl EditBox
             loop idx: 1..text.length-1
             {
                 str := @mkstring(text.buffer, idx)
-                met := Painter.measureString(str, font).width
+                met := Painter.measureString(str, fontR).width
                 diff = (met - lastWidth) * 0.5
                 if x <= met
                 {
@@ -694,16 +694,17 @@ private impl EditBox
     {
         if getFocus() != self
             return
-        font := getTheme().res.fontDefault.regular
+
+        fontR := getFont().regular
 
         str := @mkstring(text.buffer, selEnd)
-        met := Painter.measureString(str, font)
+        met := Painter.measureString(str, fontR)
         posSelBeg, posSelEnd = met.width
 
         if selBeg != selEnd
         {
             str = @mkstring(text.buffer, selBeg)
-            met = Painter.measureString(str, font)
+            met = Painter.measureString(str, fontR)
             posSelBeg = met.width
         }
     }

@@ -121,6 +121,7 @@ struct Wnd
     focusStrategy: FocusStategy = MousePressed
 
     backgroundStyle:  BackgroundStyle = Transparent
+    font:             FontFamily
     isAllocated:      bool
     isPendingDestroy: bool
     createEventDone:  bool
@@ -420,6 +421,19 @@ impl Wnd
     //////////////////////////////////////////////
     // Paint
     //////////////////////////////////////////////
+
+    // Returns the font associated to the window.
+    mtd getFont()->FontFamily
+    {
+        var result: retval
+
+        tm := getTheme()
+        result.regular    = font.regular    orelse tm.res.fontDefault.regular
+        result.bold       = font.bold       orelse tm.res.fontDefault.bold
+        result.italic     = font.italic     orelse tm.res.fontDefault.italic
+        result.boldItalic = font.boldItalic orelse tm.res.fontDefault.boldItalic
+        return result
+    }
 
     mtd computeStyle()
     {

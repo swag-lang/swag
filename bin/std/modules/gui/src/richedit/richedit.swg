@@ -30,7 +30,6 @@ struct RichEditMapping
 struct RichEditCtrl
 {
     using frameWnd: FrameWnd
-    fontFamily:     FontFamily
     richEdFlags     = RichEditFlags.None
     lineSpacing:    f32
     overwriteMode:  bool
@@ -294,7 +293,7 @@ impl RichEditCtrl
         switch self.form
         {
         case RichEditCtrl:
-            fontFamily = parent.getTheme().res.fontDefaultFs
+            font = parent.getTheme().res.fontDefaultFs
 
             mdlBk := bkColorModel
             if bkColorModel.length == 0
@@ -313,7 +312,7 @@ impl RichEditCtrl
             stylesSelect[1].colBk = colors.richEdit_SelBkNoFocus
 
         case Edit:
-            fontFamily = parent.getTheme().res.fontDefault
+            font = parent.getTheme().res.fontDefault
 
             mdlBk := bkColorModel
             if bkColorModel.length == 0

@@ -20,8 +20,8 @@ impl RichEditCtrl
         else
         {
             styleIdx := line.styles[i]
-            font := fontFamily.getFont(styles[styleIdx].fontMode)
-            size = Painter.measureRune(line.chars[i], font)
+            fontR := getFont().getFont(styles[styleIdx].fontMode)
+            size = Painter.measureRune(line.chars[i], fontR)
             size.y += lineSpacing
         }
 
@@ -48,9 +48,9 @@ impl RichEditCtrl
 
     mtd getTabOffset(x: s32, numBlanks: *s32 = null)->s32
     {
-        of   := cast(s32) (x - getMarginLeft())
-        font := fontFamily.getFont(styles[0].fontMode)
-        sizeBlank := Painter.measureRune(" "'rune, font)
+        of    := cast(s32) (x - getMarginLeft())
+        fontR := getFont().getFont(styles[0].fontMode)
+        sizeBlank := Painter.measureRune(" "'rune, fontR)
         sx := cast(s32) (sizeBlank.x * tabSize)
 
         tab := (of / sx) * sx
@@ -64,8 +64,8 @@ impl RichEditCtrl
 
     mtd getXExtent()->Math.Point
     {
-        font := fontFamily.getFont(styles[0].fontMode)
-        return Painter.measureRune("X"'rune, font)
+        fontR := getFont().getFont(styles[0].fontMode)
+        return Painter.measureRune("X"'rune, fontR)
     }
 
     mtd getCaretPos(cp: RichEditCursor)->Math.Rectangle

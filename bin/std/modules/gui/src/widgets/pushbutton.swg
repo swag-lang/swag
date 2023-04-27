@@ -149,7 +149,7 @@ impl IWnd for PushButton
         format.horzAlignment = .Center
         format.vertAlignment = .Center
         format.flags = .Clip
-        format.font = theme.res.fontDefault
+        format.font = getFont()
         if form == .Strong
             format.fontStyle = .Bold
         labelPos := clientRect

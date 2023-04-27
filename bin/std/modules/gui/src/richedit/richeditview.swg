@@ -300,8 +300,8 @@ impl RichEditView
     {
         painter := bc.painter
 
-        font := ed.fontFamily.getFont(strStyle.fontMode)
-        me := Painter.measureString(str, font)
+        fontR := ed.getFont().getFont(strStyle.fontMode)
+        me := Painter.measureString(str, fontR)
 
         // Background rectangle
         if visible and strStyle.colBk.a
@@ -314,7 +314,7 @@ impl RichEditView
             painter.fillRect(rect, strStyle.colBk)
         }
 
-        painter.drawString(x, y, str, font, strStyle.colFg, strStyle.underline)
+        painter.drawString(x, y, str, fontR, strStyle.colFg, strStyle.underline)
         return x + me.width
     }
 
