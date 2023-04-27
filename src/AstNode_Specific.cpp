@@ -343,6 +343,19 @@ bool AstFuncDecl::cloneSubDecls(ErrorContext* context, CloneContext& cloneContex
             if (nodeFunc->captureParameters)
                 nodeFunc->flags |= AST_NO_SEMANTIC | AST_SPEC_SEMANTIC1;
 
+            // If function is linked to a makePointerLambda, then we make a unique name for the function, and change the
+            // corresponding reference.
+            // This way, even if the lambda is used insided a mixin, we won't have any name collisions if the mixin is included multiple times
+            // in the same scope.
+            // Example 4506.
+            if (nodeFunc->makePointerLambda)
+            {
+                int id = g_UniqueID.fetch_add(1);
+                subDecl->token.text += to_string(id);
+                auto idRef        = CastAst<AstIdentifier>(nodeFunc->makePointerLambda->childs.front()->childs.back(), AstNodeKind::Identifier);
+                idRef->token.text = subDecl->token.text;
+            }
+
             break;
         }
         case AstNodeKind::StructDecl:
