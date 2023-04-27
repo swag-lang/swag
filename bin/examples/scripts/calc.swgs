@@ -7,9 +7,70 @@
 
 using Core, Gui, Pixel, Math
 
-var g_Edit: *EditBox
-var g_ComputeValue: u64
-var g_CurValue: u64
+var g_Edit:         *EditBox
+var g_ComputeValue: s64
+var g_CurValue:     s64
+var g_Op:           String
+var g_Error:        bool
+var g_Start:        bool = true
+
+func validateCalc()
+{
+    switch g_Op
+    {
+    case "+":
+        g_ComputeValue += g_CurValue
+    case "-":
+        g_ComputeValue -= g_CurValue
+    case "*":
+        g_ComputeValue *= g_CurValue
+    case "/":
+        if g_CurValue == 0
+        {
+            g_Edit.setText("divide by zero")
+            g_ComputeValue = 0
+            g_Error = true
+        }
+        else
+            g_ComputeValue /= g_CurValue
+    default:
+        g_ComputeValue = g_CurValue
+    }
+
+    g_Start = true
+    g_CurValue = g_ComputeValue
+    if !g_Error
+        g_Edit.setText(Format.toString("%", g_CurValue))
+}
+
+func validateBtn(str: string)
+{
+    switch str
+    {
+    case "+", "-", "*", "/":
+        validateCalc()
+        g_Op = str
+        break
+    case "=":
+        validateCalc()
+        g_Op = null
+        break
+
+    default:
+        if g_Start
+        {
+            g_CurValue = 0
+            g_Start = false
+        }
+
+        v := assume StrConv.toS64(str)
+        g_Error = false
+        g_CurValue *= 10
+        g_CurValue += v
+        g_Edit.setText(Format.toString("%", g_CurValue))
+        break
+    }
+}
 
 #[Swag.Mixin]
 func createBtn(str: string, x, y: s32)
@@ -17,27 +78,17 @@ func createBtn(str: string, x, y: s32)
     {
         btn := PushButton.create(layout, str)
         btn.sigPressed += func(btn) {
-            switch btn.name
-            {
-            case "-": break
-            case "+": break
-            case "*": break
-            case "=": break
-            default:
-                v := assume StrConv.toS64(btn.name.raw)
-                g_CurValue *= 10
-                g_CurValue += v
-                break
-            }
-            g_Edit.setText(Format.toString("%", g_CurValue))
+            validateBtn(btn.name.raw)
         }
 
         layout.setColRowChild(btn, x, y)
 
         switch str
         {
-        case "=":           btn.style.addStyleSheetColors("btnPush_Bk 0xFF880000")
-        case "+", "-", "*": btn.style.addStyleSheetColors("btnPush_Bk 0xFF008800")
+        case "=":
+            btn.style.addStyleSheetColors("btnPush_Bk 0xFF880000")
+        case "+", "-", "*", "/":
+            btn.style.addStyleSheetColors("btnPush_Bk 0xFF008800")
         }
     }
 }
@@ -53,28 +104,29 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
             .gridLayoutFlags = .AdaptColWidth | .AdaptRowHeight
             .backgroundStyle = .Window
             .margin = 10
-
-            g_Edit = EditBox.create(layout, "0")
-            .setColRowChild(g_Edit, 0, 0, 4)
-
-            createBtn("7", 0, 1)
-            createBtn("8", 1, 1)
-            createBtn("9", 2, 1)
-            createBtn("4", 0, 2)
-            createBtn("5", 1, 2)
-            createBtn("6", 2, 2)
-            createBtn("1", 0, 3)
-            createBtn("2", 1, 3)
-            createBtn("3", 2, 3)
-            createBtn("0", 1, 4)
-
-            createBtn("*", 3, 1)
-            createBtn("-", 3, 2)
-            createBtn("+", 3, 3)
-            createBtn("=", 3, 4)
-
-            .computeLayout()
         }
+
+        g_Edit = EditBox.create(layout, "0")
+        layout.setColRowChild(g_Edit, 0, 0, 4)
+
+        createBtn("7", 0, 1)
+        createBtn("8", 1, 1)
+        createBtn("9", 2, 1)
+        createBtn("4", 0, 2)
+        createBtn("5", 1, 2)
+        createBtn("6", 2, 2)
+        createBtn("1", 0, 3)
+        createBtn("2", 1, 3)
+        createBtn("3", 2, 3)
+        createBtn("0", 1, 4)
+
+        createBtn("*", 3, 1)
+        createBtn("-", 3, 2)
+        createBtn("+", 3, 3)
+        createBtn("/", 2, 4)
+        createBtn("=", 3, 4)
+
+        layout.computeLayout()
     }
 
     return false
