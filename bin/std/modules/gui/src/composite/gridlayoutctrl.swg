@@ -6,11 +6,13 @@ enum GridLayoutCtrlFlags
 {
     Zero
     AdaptSizeToContent
+    AdaptColWidth
+    AdaptRowHeight
 }
 
 struct GridLayoutCtrl
 {
-    using frameWnd: FrameWnd
+    using wnd: Wnd
 
     gridLayoutFlags = GridLayoutCtrlFlags.Zero
     numColumns:     s32
@@ -29,8 +31,28 @@ impl IWnd for GridLayoutCtrl
     {
         if !childs.count
         {
-            frameWnd.IWnd.onResizeEvent(evt)
+            wnd.IWnd.onResizeEvent(evt)
             return
+        }
+
+        // Auto compute width of each cell
+        forcedW := 0'f32
+        if gridLayoutFlags & .AdaptColWidth
+        {
+            forcedW = position.width
+            forcedW -= (padding.x + padding.z)
+            forcedW -= (numColumns - 1) * spacingHorz
+            forcedW /= numColumns
+        }
+
+        // Auto compute height of each cell
+        forcedH := 0'f32
+        if gridLayoutFlags & .AdaptRowHeight
+        {
+            forcedH = position.height
+            forcedH -= (padding.y + padding.w)
+            forcedH -= (numRows - 1) * spacingVert
+            forcedH /= numRows
         }
 
         var done: Array'(*Wnd)
@@ -41,7 +63,8 @@ impl IWnd for GridLayoutCtrl
             x := padding.x
             loop i: numColumns
             {
-                defer x += colSizes[i] + spacingHorz
+                colW := forcedW orelse colSizes[i]
+                defer x += colW + spacingHorz
 
                 idx := i + (j * numColumns)
                 curWnd := layout[idx]
@@ -58,7 +81,7 @@ impl IWnd for GridLayoutCtrl
                 idxN := 0
                 while idxC < numColumns and layout[idxW] == curWnd
                 {
-                    w += colSizes[idxC]
+                    w += forcedW orelse colSizes[idxC]
                     idxW, idxC, idxN += 1
                 }
 
@@ -69,7 +92,7 @@ impl IWnd for GridLayoutCtrl
                 idxN = 0
                 while idxC < numRows and layout[idxW] == curWnd
                 {
-                    h += rowSizes[idxC]
+                    h += forcedH orelse rowSizes[idxC]
                     idxW += numColumns
                     idxC, idxN += 1
                 }
@@ -81,12 +104,13 @@ impl IWnd for GridLayoutCtrl
                 maxH = Math.max(maxH, y + h + padding.w)
             }
 
-            y += rowSizes[j] + spacingVert
+            y += forcedH orelse rowSizes[j]
+            y += spacingVert
         }
 
         if gridLayoutFlags & .AdaptSizeToContent
             resize(maxW, maxH)
-        frameWnd.IWnd.onResizeEvent(evt)
+        wnd.IWnd.onResizeEvent(evt)
     }
 }
 
@@ -102,8 +126,10 @@ impl GridLayoutCtrl
         res.numRows = numRows
 
         res.layout.resize(cast(u64) (numColumns * numRows))
-        loop numColumns res.colSizes.add(100)
-        loop numRows    res.rowSizes.add(30)
+        loop numColumns
+            res.colSizes.add(100)
+        loop numRows
+            res.rowSizes.add(30)
 
         return res
     }

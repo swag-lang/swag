@@ -16,9 +16,10 @@ enum StackLayoutKind
 
 struct StackLayoutCtrl
 {
-    using frameWnd: FrameWnd
-    layoutKind:     StackLayoutKind = Top
-    spacing:        f32 = 5
+    using wnd: Wnd
+
+    layoutKind: StackLayoutKind = Top
+    spacing:    f32 = 5
 }
 
 impl IWnd for StackLayoutCtrl
@@ -27,7 +28,7 @@ impl IWnd for StackLayoutCtrl
     {
         if !childs.count
         {
-            frameWnd.IWnd.onResizeEvent(evt)
+            wnd.IWnd.onResizeEvent(evt)
             return
         }
 
@@ -99,7 +100,7 @@ impl IWnd for StackLayoutCtrl
             applyLayout(evt.oldSize)
         }
 
-        frameWnd.IWnd.onResizeEvent(evt)
+        wnd.IWnd.onResizeEvent(evt)
 
         switch layoutKind
         {

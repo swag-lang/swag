@@ -3,7 +3,8 @@ using Core
 
 struct WrapLayoutCtrl
 {
-    using frameWnd: FrameWnd
+    using wnd: Wnd
+
     spacing:        f32 = 5
     wrapWidth:      f32 = 64
     wrapHeight:     f32 = 64
@@ -16,7 +17,7 @@ impl IWnd for WrapLayoutCtrl
     {
         if !childs.count
         {
-            frameWnd.IWnd.onResizeEvent(evt)
+            wnd.IWnd.onResizeEvent(evt)
             return
         }
 
@@ -39,7 +40,7 @@ impl IWnd for WrapLayoutCtrl
             }
         }
 
-        frameWnd.IWnd.onResizeEvent(evt)
+        wnd.IWnd.onResizeEvent(evt)
     }
 }
 

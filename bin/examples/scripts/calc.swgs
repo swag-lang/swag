@@ -7,16 +7,38 @@
 
 using Core, Gui, Pixel, Math
 
-#[Swag.Mixin, Swag.Discardable]
-func createBtn(str: string, x, y: s32)->*PushButton
+var g_Edit: *EditBox
+var g_ComputeValue: u64
+var g_CurValue: u64
+
+#[Swag.Mixin]
+func createBtn(str: string, x, y: s32)
 {
     {
         btn := PushButton.create(layout, str)
         btn.sigPressed += func(btn) {
-            @print("pressed")
+            switch btn.name
+            {
+            case "-": break
+            case "+": break
+            case "*": break
+            case "=": break
+            default:
+                v := assume StrConv.toS64(btn.name.raw)
+                g_CurValue *= 10
+                g_CurValue += v
+                break
+            }
+            g_Edit.setText(Format.toString("%", g_CurValue))
         }
+
         layout.setColRowChild(btn, x, y)
-        return btn
+
+        switch str
+        {
+        case "=":           btn.style.addStyleSheetColors("btnPush_Bk 0xFF880000")
+        case "+", "-", "*": btn.style.addStyleSheetColors("btnPush_Bk 0xFF008800")
+        }
     }
 }
 
@@ -28,9 +50,12 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
         with layout := GridLayoutCtrl.create(wnd, 4, 5)
         {
             .dockStyle = .Center
+            .gridLayoutFlags = .AdaptColWidth | .AdaptRowHeight
+            .backgroundStyle = .Window
             .margin = 10
 
-            .setColRowChild(EditBox.create(layout, ""), 0, 0, 4)
+            g_Edit = EditBox.create(layout, "0")
+            .setColRowChild(g_Edit, 0, 0, 4)
 
             createBtn("7", 0, 1)
             createBtn("8", 1, 1)
@@ -58,5 +83,5 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
 #run
 {
     func test(app: *Application) = if Env.hasArg("swag.test") app.maxRunFrame = 100
-    Application.runSurface(100, 100, 800, 600, title: "Calc", hook: &onEvent, init: &test)
+    Application.runSurface(100, 100, 400, 400, title: "Calc", hook: &onEvent, init: &test)
 }
