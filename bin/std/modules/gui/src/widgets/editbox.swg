@@ -165,14 +165,15 @@ impl IWnd for EditBox
             format.palette[0] = colors.edit_Note
             format.vertAlignment = .Center
             format.flags = .Clip
-            format.font = theme.res.fontDefault
+            format.font = getFont()
             Theme.drawIconText(bc.painter, clientRect, {}, &name, format, metrics.iconText_Margin)
         }
 
         // Compute scroll position
+        fontR     := getFont().regular
         caretPos  := getCaretPos()
-        decalX    := Math.min(Painter.measureString("X", theme.res.fontDefault.regular).width * 10, clientRect.width * 0.5)
-        sizeX     := Painter.measureString(text, theme.res.fontDefault.regular).width
+        decalX    := Math.min(Painter.measureString("X", fontR).width * 10, clientRect.width * 0.5)
+        sizeX     := Painter.measureString(text, fontR).width
         maxDecalX := sizeX - decalX
 
         if caretPos.x - clientRect.x < scrollPosX
@@ -187,7 +188,6 @@ impl IWnd for EditBox
 
         painter.pushClippingRect(clientRect)
         painter.translateTransform(-scrollPosX, 0)
-        fontR := getFont().regular
 
         // Selection
         if selBeg != selEnd and hasFocus()
@@ -604,11 +604,12 @@ private impl EditBox
             clientRect.x += icon.sizeX + 4
 
         result = clientRect
+        fontR := getFont().regular
         if !text.isEmpty()
         {
             if editBoxFlags & .RightAlign
             {
-                sizeX := Painter.measureString(text, getTheme().res.fontDefault.regular).width
+                sizeX := Painter.measureString(text, fontR).width
                 result.x = clientRect.right() - sizeX + posSelEnd - 2
             }
             else
@@ -619,7 +620,6 @@ private impl EditBox
             result.x = clientRect.right() - posSelEnd - 2
         }
 
-        fontR := getFont().regular
         result.height = fontR.height
         result.y = clientRect.vertCenter() - result.height * 0.5
 

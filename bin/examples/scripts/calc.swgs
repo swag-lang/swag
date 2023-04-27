@@ -6,8 +6,11 @@
 }
 
 using Core, Gui, Pixel, Math
+const Div = "\u00F7"
+const Mul = "\u00D7"
 
-var g_Font:         *Font
+var g_FontTxt:      *Font
+var g_FontBtn:      *Font
 var g_Edit:         *EditBox
 var g_ComputeValue: s64
 var g_CurValue:     s64
@@ -37,9 +40,9 @@ func validateOp(str: string)
             g_ComputeValue += g_CurValue
         case "-":
             g_ComputeValue -= g_CurValue
-        case "*":
+        case Mul:
             g_ComputeValue *= g_CurValue
-        case "/":
+        case Div:
             if g_CurValue == 0
                 g_Error = "divide by zero"
             else
@@ -65,14 +68,14 @@ func createBtn(str: string, x, y: s32)
     {
         btn := PushButton.create(layout, str)
         btn.sigPressed += func(btn) { validateOp(btn.name.raw); }
-        btn.font.regular = g_Font
+        btn.font.regular = g_FontBtn
         layout.setColRowChild(btn, x, y)
 
         switch str
         {
         case "=":
             btn.style.addStyleSheetColors("btnPush_Bk 0xFF880000")
-        case "+", "-", "*", "/":
+        case "+", "-", Mul, Div:
             btn.style.addStyleSheetColors("btnPush_Bk 0xFF008800")
         }
     }
@@ -83,7 +86,8 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
     switch evt.kind
     {
     case Create:
-        g_Font = wnd.getTheme().createDefaultFont(30)
+        g_FontTxt = wnd.getTheme().createDefaultFont(30)
+        g_FontBtn = wnd.getTheme().createDefaultFont(30)
 
         with layout := GridLayoutCtrl.create(wnd, 4, 6)
         {
@@ -93,10 +97,14 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
             .margin = 10
         }
 
-        g_Edit = EditBox.create(layout, "0")
+        with g_Edit = EditBox.create(layout, "0")
+        {
+            .editBoxFlags = .ReadOnly | .RightAlign
+            .font.regular = g_FontTxt
+        }
         layout.setColRowChild(g_Edit, 0, 0, 4)
 
-        createBtn("\u2212", 0, 2)
+        createBtn("7", 0, 2)
         createBtn("6", 1, 2)
         createBtn("5", 2, 2)
         createBtn("4", 0, 3)
@@ -107,9 +115,9 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
         createBtn("3", 2, 4)
         createBtn("0", 1, 5)
 
-        createBtn("\u00F7", 3, 1)
-        createBtn("\u00D7", 3, 2)
-        createBtn("\u2212", 3, 3)
+        createBtn(Div, 3, 1)
+        createBtn(Mul, 3, 2)
+        createBtn("-", 3, 3)
         createBtn("+", 3, 4)
         createBtn("=", 3, 5)
 
