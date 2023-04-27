@@ -55,7 +55,6 @@ func createView1(_tabView: *Tab, view: *Wnd)
         list.frameFlags |= .FocusBorder
         list.selectionMode = .Single
         list.setPosition({5, 5, 250, 300})
-        list.computeLayout()
     }
 
     {

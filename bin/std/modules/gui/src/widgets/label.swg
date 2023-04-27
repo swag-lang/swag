@@ -27,6 +27,11 @@ struct Label
 
 impl IWnd for Label
 {
+    mtd onSetThemeEvent(evt: *SetThemeEvent)
+    {
+        autoHeight()
+    }
+
     mtd onPaintEvent(evt: *PaintEvent)
     {
         bc      := evt.bc
@@ -141,14 +146,6 @@ impl Label
     mtd setText(text: string)
     {
         name = text
-        invalidate()
-        autoHeight()
-    }
-
-    // Change the text
-    mtd setFont(fm: FontFamily)
-    {
-        style.setFont(fm)
         invalidate()
         autoHeight()
     }

@@ -182,7 +182,7 @@ impl IWnd for Wnd
     mtd onPrePaintEvent(evt: *PaintEvent)                   {}
     mtd onPaintEvent(evt: *PaintEvent)                      {}
     mtd onPostPaintEvent(evt: *PaintEvent)                  {}
-    mtd onSetThemeEvent(evt: *SetThemeEvent)                {}
+    mtd onSetThemeEvent(evt: *SetThemeEvent)                { invalidate(); sendResizeEvent(); }
     mtd onTimerEvent(evt: *TimerEvent)                      {}
     mtd onHookEvent(evt: *Event)                            {}
     mtd onSerializeStateEvent(evt: *SerializeStateEvent)    {}

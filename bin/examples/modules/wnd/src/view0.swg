@@ -316,8 +316,9 @@ func createView0(tabView: *Tab, view: *Wnd)
     }
 
     {
-        tab := Tab.create(view, {600, 570, 400, 100})
+        tab := Tab.create(view, {600, 560, 400, 100})
         tab.setForm(.Button)
+        tab.style.setFont(view.getTheme().createDefaultFont(40), .Regular)
         tab.addItem("toto", app.theme.getIcon24(ThemeIcons24.Search, 16))
         tab.addItem("tata", app.theme.getIcon24(ThemeIcons24.Search, 16))
         tab.addItem("titilafoule", app.theme.getIcon24(ThemeIcons24.Search, 16))

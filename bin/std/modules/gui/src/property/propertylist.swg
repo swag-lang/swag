@@ -357,7 +357,7 @@ private impl PropertyList
             elif Reflection.isStruct(f.pointedType)
             {
                 item := addItem(f, ptrData)
-                item.label.setFont(&fontBig)
+                item.label.style.setFont(&fontBig)
                 typeSubStruct := cast(const *Swag.TypeInfoStruct) f.pointedType
                 addStruct(ptrData, typeSubStruct)
             }
