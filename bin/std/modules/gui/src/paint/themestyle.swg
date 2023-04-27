@@ -1,5 +1,5 @@
 #global public
-using Core
+using Core, Pixel
 
 struct ThemeStyleRef
 {
@@ -13,6 +13,7 @@ struct ThemeStyle
     dirty:              bool
     styleSheetMetrics:  String
     styleSheetColors:   String
+    font:               FontFamily
 }
 
 impl ThemeStyle
@@ -81,8 +82,16 @@ impl ThemeStyle
         owner.sendEvent(&evt)
 
         // Nothing to override
-        if styleSheetColors.length == 0 and styleSheetMetrics.length == 0 and !evt.accepted
+        if styleSheetColors.length == 0 and
+           styleSheetMetrics.length == 0 and
+           font.regular == null and
+           font.bold  == null and
+           font.italic == null and
+           font.boldItalic == null and
+           !evt.accepted
+        {
             return
+        }
 
         // Make a new tweak as a copy of the parent
         if refr == parent.refr
@@ -133,6 +142,35 @@ impl ThemeStyle
     {
         styleSheetMetrics.append("\n")
         styleSheetMetrics.append(str)
+        dirty = true
+    }
+
+    mtd getFont()->FontFamily
+    {
+        var result: retval
+        df := &refr.theme.res.fontDefault
+        result.regular    = font.regular    orelse df.regular
+        result.bold       = font.bold       orelse df.bold
+        result.italic     = font.italic     orelse df.italic
+        result.boldItalic = font.boldItalic orelse df.boldItalic
+        return result
+    }
+
+    mtd setFont(fnt: FontFamily)
+    {
+        font = fnt
+        dirty = true
+    }
+
+    mtd setFont(fnt: *Font, style: FontFamilyStyle)
+    {
+        font.setFont(fnt, style)
+        dirty = true
+    }
+
+    mtd clearFont()
+    {
+        @init(&font)
         dirty = true
     }
 }

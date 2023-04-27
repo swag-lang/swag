@@ -148,7 +148,7 @@ impl Label
     // Change the text
     mtd setFont(fm: FontFamily)
     {
-        font = fm
+        style.setFont(fm)
         invalidate()
         autoHeight()
     }

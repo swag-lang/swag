@@ -119,7 +119,9 @@ impl Painter
     mtd drawStringCenter(x, y: f32, text: string, font: *Font, color: Color, under = UnderlineStyle.None)
     {
         ms := measureString(text, font)
-        drawString(x - ms.width * 0.5, y - ms.height * 0.5, text, font, color, under)
+        yr := y - ms.height * 0.5
+        yr -= (font.ascent - ms.ascent)
+        drawString(x - ms.width * 0.5, yr, text, font, color, under)
     }
 
     // Draw a simple string

@@ -96,7 +96,7 @@ impl IWnd for RadioButton
             format.horzAlignment = .Left
         format.vertAlignment = .Center
         format.flags = .Clip
-        format.font = theme.res.fontDefault
+        format.font = getFont()
         labelPos := clientRect
         if !(radioButtonFlags & .RightAlign)
             labelPos.x += posBox.width + metrics.btnCheck_Padding

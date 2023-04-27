@@ -107,7 +107,7 @@ impl IWnd for Header
         format.horzAlignment = .Left
         format.vertAlignment = .Center
         format.flags = .Clip
-        format.font = theme.res.fontDefault
+        format.font = getFont()
         Theme.drawIconText(painter, labelPos, item.icon, &item.name, format, metrics.iconText_Margin)
     }
 

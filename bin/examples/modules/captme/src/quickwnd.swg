@@ -588,7 +588,7 @@ impl QuickWnd
             Capture.paintForm(btnp.getApp(), painter, {0, 0, 64, 64}, btnp.formItf, zoom: 1, quickMode: true)
 
             if @countof(title)
-                painter.drawStringCenter(rect.horzCenter(), rect.bottom(), title, btnp.getTheme().res.fontDefault.regular, Argb.White)
+                painter.drawStringCenter(rect.horzCenter(), rect.bottom(), title, btnp.getFont().regular, Argb.White)
         }
 
         edMode := main.editMode == .Selection ? main.getEditMode() : main.editMode

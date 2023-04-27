@@ -258,7 +258,7 @@ impl IWnd for SurfaceWnd
 
             var sf: Pixel.RichStringFormat
             sf.vertAlignment = .Center
-            sf.font.regular = theme.res.fontDefault.regular
+            sf.font = getFont()
             sf.palette[0] = surface.app.isActivated ? colors.wnd_CaptionText : colors.wnd_CaptionNotActivatedText
             bc.painter.drawRichString(posCaption, &name, sf)
         }

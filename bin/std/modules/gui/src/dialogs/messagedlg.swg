@@ -47,7 +47,7 @@ public impl MessageDlg
         // Evaluate size of text
         var fake: Painter{fake: true}
         var rsf:  RichStringFormat
-        rsf.font = surface.app.theme.res.fontDefault
+        rsf.font = getFont()
         rsf.flags |= .WordWrap
         fake.drawRichString({0, 0, 512, 0}, &label.name, rsf)
         label.name.invalidate()

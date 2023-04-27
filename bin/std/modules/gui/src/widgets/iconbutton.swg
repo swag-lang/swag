@@ -308,7 +308,7 @@ impl IWnd for IconButton
         {
             var sf: RichStringFormat
             theme.setTextColors(&sf, colorText)
-            sf.font = theme.res.fontDefault
+            sf.font = getFont()
             sf.horzAlignment = .Center
             sf.vertAlignment = .Center
             switch textPos

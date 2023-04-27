@@ -18,7 +18,7 @@ enum FontFamilyStyle
 
 impl FontFamily
 {
-    // Get the font correspondig to the style.
+    // Get the font corresponding to the style.
     // If not evailable, get another one.
     mtd getFont(style: FontFamilyStyle)->*Font
     {
@@ -43,5 +43,17 @@ impl FontFamily
         }
 
         return null
+    }
+
+    // Set the font corresponding to a given style.
+    mtd setFont(fnt: *Font, style: FontFamilyStyle)
+    {
+        switch style
+        {
+        case Regular:       regular = fnt
+        case Bold:          bold = fnt
+        case Italic:        italic = fnt
+        case BoldItalic:    boldItalic = fnt
+        }
     }
 }

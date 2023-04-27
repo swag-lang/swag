@@ -58,7 +58,7 @@ struct ListCtrl
     using frameWnd: FrameWnd
 
     horizontalExtent:   f32
-    lineHeight:         f32 = 22
+    lineHeight:         f32
     indentWidth:        f32 = 22
     iconSize:           f32
     iconMarginFirstCol  = true
@@ -360,10 +360,10 @@ impl IWnd for ListView
         if evt.button != .Left
             return
 
-        if idx != Swag.U32.Max
+        if idx != Swag.U32.Max and !list.isVirtual
         {
             hitLine := list.lines[idx]
-            idxLine := list.isVirtual ? idx : hitLine.index
+            idxLine := hitLine.index
             localPos := surfaceToLocal(evt.surfacePos)
             localPos.x += scrollPos.x
             widthLeft := hitLine.level * list.indentWidth
@@ -372,13 +372,13 @@ impl IWnd for ListView
                 // Expand
                 // ============================
 
-                widthLeft += Math.min(metrics.btnCheck_Size, list.lineHeight)
+                widthLeft += Math.min(metrics.btnCheck_Size, list.getLineHeight())
                 if list.lines[idx].canExpand()
                 {
                     eatCheck := false
                     if localPos.x < widthLeft
                         eatCheck = true
-                    widthLeft += Math.min(metrics.btnCheck_Size, list.lineHeight)
+                    widthLeft += Math.min(metrics.btnCheck_Size, list.getLineHeight())
 
                     if eatCheck
                     {
@@ -499,7 +499,7 @@ impl IWnd for ListView
 
         var rect: Math.Rectangle
         rect.width = getDisplayWidth()
-        rect.height = list.lineHeight
+        rect.height = list.getLineHeight()
 
         // Clipping, take care of padding
         clipRect := getSurfaceRect()
@@ -510,7 +510,7 @@ impl IWnd for ListView
 
         // Do not display with bigs coordinates to avoid precision issues
         // So we do the scroll by hand, and draw will small coordinates
-        y := cast(f64) firstIdx * list.lineHeight
+        y := cast(f64) firstIdx * list.getLineHeight()
         y -= scrollPos.y
         rect.y = cast(f32) y
 
@@ -637,7 +637,7 @@ private impl ListView
             format.horzAlignment = item.horzAlign
             format.vertAlignment = .Center
             format.flags = .Clip
-            format.font = theme.res.fontDefault
+            format.font = list.getFont()
 
             labelPos := rect
 
@@ -703,7 +703,7 @@ private impl ListView
                     subRectBorder = &rects.btnCheck_NormalBorder
                 }
 
-                widthCheck := Math.min(metrics.btnCheck_Size, list.lineHeight)
+                widthCheck := Math.min(metrics.btnCheck_Size, list.getLineHeight())
                 posBox := labelPos
                 posBox.height = widthCheck
                 posBox.y = labelPos.vertCenter() - (posBox.height * 0.5)
@@ -747,7 +747,7 @@ private impl ListView
         if res.x < 0 or res.y < 0
             return Swag.U32.Max
         res.y += scrollPos.y
-        idx := cast(u32) (res.y / list.lineHeight)
+        idx := cast(u32) (res.y / list.getLineHeight())
         if idx >= lc
             return Swag.U32.Max
         if !list.isVirtual and list.lines[idx].separator
@@ -929,9 +929,15 @@ impl ListCtrl
             scrollWidth = header.getTotalItemsWidth()
         else
             scrollWidth = clientRect.width
-        scrollHeight := getLineCount() * lineHeight
+        scrollHeight := getLineCount() * getLineHeight()
         scrollWnd.setScrollSize(scrollWidth, scrollHeight)
         invalidate()
+    }
+
+    // Get the height of one line
+    mtd getLineHeight()->f32
+    {
+        return lineHeight orelse getFont().regular.height + 2
     }
 
     // Get a line by index
@@ -1017,7 +1023,7 @@ impl ListCtrl
     mtd getFirstVisibleLineIndex()->u32
     {
         lc := getLineCount()
-        idx := cast(u32) (listView.scrollPos.y / lineHeight)
+        idx := cast(u32) (listView.scrollPos.y / getLineHeight())
         if idx >= lc
             return Swag.U32.Max
         return idx
@@ -1034,8 +1040,8 @@ impl ListCtrl
         y -= scrollWnd.view.padding.y
         y -= scrollWnd.view.padding.w
         if y < 0
-            return cast(u32) (listView.scrollPos.y / lineHeight)
-        idx := cast(u32) (y / lineHeight)
+            return cast(u32) (listView.scrollPos.y / getLineHeight())
+        idx := cast(u32) (y / getLineHeight())
         if idx >= lc
             return cast(u32) lc - 1
         return idx
@@ -1049,7 +1055,7 @@ impl ListCtrl
         if idx > first and idx < last
             return
         sc := scrollWnd.getScrollPos()
-        scrollWnd.setScrollPos(sc.x, idx * lineHeight)
+        scrollWnd.setScrollPos(sc.x, idx * getLineHeight())
     }
 
     // Returns true if the line at the given index is selected

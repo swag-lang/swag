@@ -109,7 +109,7 @@ impl IWnd for CheckButton
             format.horzAlignment = .Left
         format.vertAlignment = .Center
         format.flags = .Clip
-        format.font = theme.res.fontDefault
+        format.font = getFont()
         labelPos := clientRect
         if !(checkButtonFlags & .RightAlign)
             labelPos.x += posBox.width + metrics.btnCheck_Padding

@@ -106,7 +106,7 @@ impl IWnd for ComboBox
             format.horzAlignment = .Left
             format.vertAlignment = .Center
             format.flags = .Clip
-            format.font = theme.res.fontDefault
+            format.font = getFont()
             painter.drawRichString(itemRect, &item.name, format)
         }
 

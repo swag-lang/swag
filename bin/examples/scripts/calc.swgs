@@ -68,7 +68,7 @@ func createBtn(str: string, x, y: s32)
     {
         btn := PushButton.create(layout, str)
         btn.sigPressed += func(btn) { validateOp(btn.name.raw); }
-        btn.font.regular = g_FontBtn
+        btn.style.setFont(g_FontBtn, .Regular)
         layout.setColRowChild(btn, x, y)
 
         switch str
@@ -100,7 +100,7 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
         with g_Edit = EditBox.create(layout, "0")
         {
             .editBoxFlags = .ReadOnly | .RightAlign
-            .font.regular = g_FontTxt
+            .style.setFont(g_FontTxt, .Regular)
         }
         layout.setColRowChild(g_Edit, 0, 0, 4)
 

@@ -118,7 +118,7 @@ public impl IWnd for MenuCtrl
             format.horzAlignment = .Left
             format.vertAlignment = .Center
             format.flags = .Clip
-            format.font = theme.res.fontDefault
+            format.font = getFont()
             painter.drawRichString(labelPos, &i.name, format)
         }
     }
@@ -211,7 +211,7 @@ public impl IWnd for MenuCtrl
             format.horzAlignment = .Left
             format.vertAlignment = .Center
             format.flags = .Clip
-            format.font = theme.res.fontDefault
+            format.font = getFont()
             painter.drawRichString(labelPos, &i.name, format)
 
             // Text right
@@ -221,7 +221,7 @@ public impl IWnd for MenuCtrl
                 format.horzAlignment = .Right
                 format.vertAlignment = .Center
                 format.flags = .Clip
-                format.font = theme.res.fontDefault
+                format.font = getFont()
                 painter.drawRichString(labelPos, &i.rightName, format)
             }
 
@@ -534,7 +534,7 @@ impl MenuCtrl
 
         var fake: Pixel.Painter{fake: true}
         var rsf:  Pixel.RichStringFormat
-        rsf.font = surface.app.theme.res.fontDefault
+        rsf.font = getFont()
 
         visit i, idx: items
         {
@@ -564,7 +564,7 @@ impl MenuCtrl
 
         var fake: Pixel.Painter{fake: true}
         var rsf:  Pixel.RichStringFormat
-        rsf.font = theme.res.fontDefault
+        rsf.font = getFont()
 
         lastIsSeparator := true
         visit i, idx: items

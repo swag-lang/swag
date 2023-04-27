@@ -165,7 +165,7 @@ impl IWnd for PopupListView
             if list.maxIconSize
                 labelPos.moveLeft(list.maxIconSize + metrics.popupList_IconTextMargin)
 
-            fntHeight := theme.res.fontDefault.regular.height
+            fntHeight := getFont().regular.height
             if idx == list.selectedIdx
                 labelPos.setRight(labelPos.right() - fntHeight - metrics.popupList_IconTextMargin)
 
@@ -174,7 +174,7 @@ impl IWnd for PopupListView
             format.horzAlignment = .Left
             format.vertAlignment = .Center
             format.flags = .Clip
-            format.font = theme.res.fontDefault
+            format.font = getFont()
             painter.drawRichString(labelPos, &i.name, format)
 
             // Check mark

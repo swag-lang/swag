@@ -293,7 +293,7 @@ impl RichEditCtrl
         switch self.form
         {
         case RichEditCtrl:
-            font = parent.getTheme().res.fontDefaultFs
+            style.setFont(parent.getTheme().res.fontDefaultFs)
 
             mdlBk := bkColorModel
             if bkColorModel.length == 0
@@ -312,7 +312,7 @@ impl RichEditCtrl
             stylesSelect[1].colBk = colors.richEdit_SelBkNoFocus
 
         case Edit:
-            font = parent.getTheme().res.fontDefault
+            style.clearFont()
 
             mdlBk := bkColorModel
             if bkColorModel.length == 0

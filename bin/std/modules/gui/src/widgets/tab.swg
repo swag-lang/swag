@@ -154,7 +154,7 @@ impl IWnd for Tab
         format.horzAlignment = .Center
         format.vertAlignment = .Center
         format.flags = .Clip
-        format.font = theme.res.fontDefault
+        format.font = getFont()
         Theme.drawIconText(painter, labelPos, v.icon, &v.name, format, metrics.iconText_Margin)
     }
 
@@ -349,7 +349,7 @@ private impl Tab
         case Auto:
             visit v: views
             {
-                mes := Painter.measureString(v.item.name.raw, getTheme().res.fontDefault.regular)
+                mes := Painter.measureString(v.item.name.raw, getFont().regular)
 
                 // Text
                 v.width = mes.width
