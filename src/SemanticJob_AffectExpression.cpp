@@ -405,9 +405,13 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
                            { return Fmt(Err(Err0196), "affect", rightTypeInfo->getDisplayNameC(), "to", leftTypeInfo->getDisplayNameC()); });
         PushErrCxtStep ec(context, left, ErrCxtStepKind::Hint2, [left]()
                           { return Diagnostic::isType(left); });
-        uint32_t       castFlags = CASTFLAG_AUTO_BOOL | CASTFLAG_TRY_COERCE | CASTFLAG_FOR_AFFECT | CASTFLAG_ACCEPT_PENDING;
-        if (leftTypeInfo->flags & TYPEINFO_RETURN_BY_COPY)
+
+        uint32_t castFlags = CASTFLAG_AUTO_BOOL | CASTFLAG_TRY_COERCE | CASTFLAG_FOR_AFFECT | CASTFLAG_ACCEPT_PENDING;
+        if (leftTypeInfo->isStruct() ||
+            leftTypeInfo->isArray() ||
+            leftTypeInfo->isClosure())
             castFlags |= CASTFLAG_UNCONST;
+
         SWAG_CHECK(TypeManager::makeCompatibles(context, leftTypeInfo, nullptr, right, castFlags));
         if (context->result == ContextResult::Pending)
             return true;

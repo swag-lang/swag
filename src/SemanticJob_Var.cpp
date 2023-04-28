@@ -988,7 +988,9 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
     {
         if ((symbolFlags & OVERLOAD_VAR_GLOBAL) || isLocalConstant)
         {
-            if (node->typeInfo->flags & TYPEINFO_RETURN_BY_COPY)
+            if (node->typeInfo->isStruct() ||
+                node->typeInfo->isArray() ||
+                node->typeInfo->isClosure())
             {
                 node->typeInfo = g_TypeMgr->makeConst(node->typeInfo);
             }
