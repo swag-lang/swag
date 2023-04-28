@@ -1545,21 +1545,22 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
 
     // If we are in a function that need to keep the RR0 register alive, we need to save it
     bool rr0Saved = false;
-    if (node->ownerFct &&
-        node->ownerFct->returnType &&
-        node->ownerFct->returnType->typeInfo &&
-        !node->ownerFct->returnType->typeInfo->isVoid())
+    if (node->ownerFct)
     {
         auto ownerTypeInfoFunc = CastTypeInfo<TypeInfoFuncAttr>(node->ownerFct->typeInfo, TypeInfoKind::FuncAttr, TypeInfoKind::LambdaClosure);
-        if (ownerTypeInfoFunc->returnByStackAddress())
+        auto ownerReturnType   = ownerTypeInfoFunc->concreteReturnType();
+        if (!ownerReturnType->isVoid())
         {
-            EMIT_INST0(context, ByteCodeOp::PushRR);
-            rr0Saved = true;
-        }
-        else if (node->flags & AST_IN_DEFER)
-        {
-            EMIT_INST0(context, ByteCodeOp::PushRR);
-            rr0Saved = true;
+            if (ownerTypeInfoFunc->returnByStackAddress())
+            {
+                EMIT_INST0(context, ByteCodeOp::PushRR);
+                rr0Saved = true;
+            }
+            else if (node->flags & AST_IN_DEFER)
+            {
+                EMIT_INST0(context, ByteCodeOp::PushRR);
+                rr0Saved = true;
+            }
         }
     }
 
