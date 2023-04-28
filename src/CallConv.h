@@ -1,6 +1,7 @@
 #pragma once
 #include "VectorNative.h"
 struct TypeInfo;
+struct TypeInfoFuncAttr;
 
 enum CallConvKind
 {
@@ -64,7 +65,10 @@ struct CallConv
     CPURegister firstScratchRegister = CPURegister::R12;
     uint32_t    numScratchRegisters  = 4;
 
-    bool structByValue(TypeInfo* typeParam) const;
+    static bool structParamByValue(TypeInfoFuncAttr* typeFunc, TypeInfo* typeParam);
+    static bool returnByAddress(TypeInfoFuncAttr* typeFunc);
+    static bool returnByStackAddress(TypeInfoFuncAttr* typeFunc);
+    static bool returnByValue(TypeInfoFuncAttr* typeFunc);
 };
 
 extern CallConv g_CallConv[CallConvKind::Max];

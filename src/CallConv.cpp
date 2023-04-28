@@ -27,7 +27,49 @@ void initCallConvKinds()
     cc.structByRegister = true;
 }
 
-bool CallConv::structByValue(TypeInfo* typeParam) const
+bool CallConv::structParamByValue(TypeInfoFuncAttr* typeFunc, TypeInfo* typeParam)
 {
-    return structByRegister && typeParam->isStruct() && typeParam->sizeOf <= sizeof(void*);
+    const auto& cc = typeFunc->getCallConv();
+    return cc.structByRegister && typeParam->isStruct() && typeParam->sizeOf <= sizeof(void*);
+}
+
+bool CallConv::returnByAddress(TypeInfoFuncAttr* typeFunc)
+{
+    if (!typeFunc->returnType || typeFunc->returnType->isVoid())
+        return false;
+
+    auto type = typeFunc->concreteReturnType();
+    if (type->isSlice() ||
+        type->isInterface() ||
+        type->isAny() ||
+        type->isString())
+    {
+        return true;
+    }
+
+    return CallConv::returnByStackAddress(typeFunc);
+}
+
+bool CallConv::returnByStackAddress(TypeInfoFuncAttr* typeFunc)
+{
+    if (!typeFunc->returnType || typeFunc->returnType->isVoid())
+        return false;
+
+    auto type = typeFunc->concreteReturnType();
+    if (type->isStruct() ||
+        type->isArray() ||
+        type->isClosure())
+    {
+        return true;
+    }
+
+    return false;
+}
+
+bool CallConv::returnByValue(TypeInfoFuncAttr* typeFunc)
+{
+    if (!typeFunc->returnType || typeFunc->returnType->isVoid())
+        return false;
+
+    return !CallConv::returnByAddress(typeFunc);
 }

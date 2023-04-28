@@ -827,47 +827,6 @@ bool TypeInfoFuncAttr::isCVariadic()
     return false;
 }
 
-bool TypeInfoFuncAttr::returnByAddress()
-{
-    if (!returnType || returnType->isVoid())
-        return false;
-
-    auto type = concreteReturnType();
-    if (type->isSlice() ||
-        type->isInterface() ||
-        type->isAny() ||
-        type->isString())
-    {
-        return true;
-    }
-
-    return returnByStackAddress();
-}
-
-bool TypeInfoFuncAttr::returnByStackAddress()
-{
-    if (!returnType || returnType->isVoid())
-        return false;
-
-    auto type = concreteReturnType();
-    if (type->isStruct() ||
-        type->isArray() ||
-        type->isClosure())
-    {
-        return true;
-    }
-
-    return false;
-}
-
-bool TypeInfoFuncAttr::returnByValue()
-{
-    if (!returnType || returnType->isVoid())
-        return false;
-
-    return !returnByAddress();
-}
-
 TypeInfo* TypeInfoFuncAttr::concreteReturnType()
 {
     if (!returnType)
@@ -935,7 +894,7 @@ int TypeInfoFuncAttr::numTotalRegisters()
     return numReturnRegisters() + numParamsRegisters();
 }
 
-const CallConv& TypeInfoFuncAttr::callingConv()
+const CallConv& TypeInfoFuncAttr::getCallConv()
 {
     return g_CallConv[callConv];
 }

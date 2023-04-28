@@ -769,7 +769,7 @@ bool SemanticJob::resolveUserOp(SemanticContext* context, const Utf8& name, cons
 
         // Allocate room on the stack to store the result of the function call
         auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(overload->typeInfo, TypeInfoKind::FuncAttr);
-        if (typeFunc->returnByStackAddress())
+        if (CallConv::returnByStackAddress(typeFunc))
         {
             node->allocateComputedValue();
             node->computedValue->storageOffset = node->ownerScope->startStackSize;

@@ -15,7 +15,7 @@ void BackendLLVM::createRet(const BuildParameters& buildParameters, Module* modu
     auto& builder         = *pp.builder;
 
     // Emit result
-    if (!returnType->isVoid() && !typeFunc->returnByAddress())
+    if (!returnType->isVoid() && !CallConv::returnByAddress(typeFunc))
     {
         if (returnType->isNative())
         {
@@ -68,11 +68,10 @@ void BackendLLVM::createRet(const BuildParameters& buildParameters, Module* modu
 
 llvm::FunctionType* BackendLLVM::getOrCreateFuncType(const BuildParameters& buildParameters, Module* moduleToGen, TypeInfoFuncAttr* typeFunc, bool closureToLambda)
 {
-    const auto& cc              = typeFunc->callingConv();
-    int         ct              = buildParameters.compileType;
-    int         precompileIndex = buildParameters.precompileIndex;
-    auto&       pp              = *perThread[ct][precompileIndex];
-    auto&       context         = *pp.context;
+    int   ct              = buildParameters.compileType;
+    int   precompileIndex = buildParameters.precompileIndex;
+    auto& pp              = *perThread[ct][precompileIndex];
+    auto& context         = *pp.context;
 
     // Already done ?
     if (closureToLambda)
@@ -90,7 +89,7 @@ llvm::FunctionType* BackendLLVM::getOrCreateFuncType(const BuildParameters& buil
 
     VectorNative<llvm::Type*> params;
     llvm::Type*               returnType   = nullptr;
-    bool                      returnByCopy = typeFunc->returnByAddress();
+    bool                      returnByCopy = CallConv::returnByAddress(typeFunc);
 
     llvm::Type* llvmRealReturnType = swagTypeToLLVMType(buildParameters, moduleToGen, typeFunc->returnType);
     if (returnByCopy)
@@ -126,7 +125,7 @@ llvm::FunctionType* BackendLLVM::getOrCreateFuncType(const BuildParameters& buil
             if (param->isAutoConstPointerRef())
                 param = TypeManager::concretePtrRef(param);
 
-            if (cc.structByValue(param))
+            if (CallConv::structParamByValue(typeFunc, param))
             {
                 params.push_back(IX_TY(param->sizeOf * 8));
             }
@@ -175,11 +174,10 @@ bool BackendLLVM::emitGetParam(llvm::LLVMContext&     context,
                                uint64_t               toAdd,
                                int                    deRefSize)
 {
-    const auto& cc              = typeFunc->callingConv();
-    int         ct              = buildParameters.compileType;
-    int         precompileIndex = buildParameters.precompileIndex;
-    auto&       pp              = *perThread[ct][precompileIndex];
-    auto&       builder         = *pp.builder;
+    int   ct              = buildParameters.compileType;
+    int   precompileIndex = buildParameters.precompileIndex;
+    auto& pp              = *perThread[ct][precompileIndex];
+    auto& builder         = *pp.builder;
 
     auto param = typeFunc->registerIdxToType(paramIdx);
     if (param->isAutoConstPointerRef())
@@ -193,7 +191,7 @@ bool BackendLLVM::emitGetParam(llvm::LLVMContext&     context,
 
     if (toAdd || deRefSize)
     {
-        if (cc.structByValue(param))
+        if (CallConv::structParamByValue(typeFunc, param))
         {
             auto ra = builder.CreateIntCast(arg, I64_TY(), false);
 
@@ -290,7 +288,7 @@ bool BackendLLVM::emitGetParam(llvm::LLVMContext&     context,
         }
 
         // Struct by copy
-        else if (cc.structByValue(param))
+        else if (CallConv::structParamByValue(typeFunc, param))
         {
             // Make a copy of the value on the stack, and get the address
             auto allocR1 = builder.CreateAlloca(I64_TY(), builder.getInt32(1));
@@ -352,12 +350,11 @@ bool BackendLLVM::emitCallParameters(const BuildParameters&        buildParamete
                                      const Vector<llvm::Value*>&   values,
                                      bool                          closureToLambda)
 {
-    const auto& cc              = typeFuncBC->callingConv();
-    int         ct              = buildParameters.compileType;
-    int         precompileIndex = buildParameters.precompileIndex;
-    auto&       pp              = *perThread[ct][precompileIndex];
-    auto&       context         = *pp.context;
-    auto&       builder         = *pp.builder;
+    int   ct              = buildParameters.compileType;
+    int   precompileIndex = buildParameters.precompileIndex;
+    auto& pp              = *perThread[ct][precompileIndex];
+    auto& context         = *pp.context;
+    auto& builder         = *pp.builder;
 
     int numCallParams = (int) typeFuncBC->parameters.size();
     int idxParam      = (int) pushParams.size() - 1;
@@ -408,7 +405,7 @@ bool BackendLLVM::emitCallParameters(const BuildParameters&        buildParamete
             auto llvmType = swagTypeToLLVMType(buildParameters, moduleToGen, typePtr);
             params.push_back(builder.CreateLoad(llvmType, GEP64(allocR, index)));
         }
-        else if (cc.structByValue(typeParam))
+        else if (CallConv::structParamByValue(typeFuncBC, typeParam))
         {
             auto v0 = builder.CreateLoad(PTR_I8_TY(), GEP64(allocR, index));
             params.push_back(builder.CreateLoad(IX_TY(typeParam->sizeOf * 8), v0));
@@ -445,11 +442,11 @@ bool BackendLLVM::emitCallParameters(const BuildParameters&        buildParamete
     }
 
     // Return by parameter
-    if (typeFuncBC->returnByAddress() && !typeFuncBC->returnByStackAddress())
+    if (CallConv::returnByAddress(typeFuncBC) && !CallConv::returnByStackAddress(typeFuncBC))
     {
         params.push_back(TO_PTR_I8(allocRR));
     }
-    else if (typeFuncBC->returnByAddress())
+    else if (CallConv::returnByAddress(typeFuncBC))
     {
         params.push_back(builder.CreateLoad(PTR_I8_TY(), allocRR));
     }
@@ -480,7 +477,7 @@ bool BackendLLVM::emitCallReturnValue(const BuildParameters& buildParameters,
     auto& builder         = *pp.builder;
 
     auto returnType = typeFuncBC->concreteReturnType();
-    if (!returnType->isVoid() && !typeFuncBC->returnByAddress())
+    if (!returnType->isVoid() && !CallConv::returnByAddress(typeFuncBC))
     {
         if (returnType->isPointer())
         {

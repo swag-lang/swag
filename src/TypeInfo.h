@@ -429,9 +429,6 @@ struct TypeInfoFuncAttr : public TypeInfo
     bool            isSame(TypeInfoFuncAttr* other, uint64_t castFlags, BadSignatureInfos& bi);
     bool            isSame(TypeInfoFuncAttr* from, uint64_t castFlags);
     void            match(SymbolMatchContext& context);
-    bool            returnByAddress();
-    bool            returnByStackAddress();
-    bool            returnByValue();
     TypeInfo*       concreteReturnType();
     bool            isVariadic();
     bool            isCVariadic();
@@ -440,7 +437,7 @@ struct TypeInfoFuncAttr : public TypeInfo
     int             numParamsRegisters();
     int             numReturnRegisters();
     int             numTotalRegisters();
-    const CallConv& callingConv();
+    const CallConv& getCallConv();
 
     VectorNative<TypeInfoParam*> capture;
     VectorNative<TypeInfoParam*> genericParameters;

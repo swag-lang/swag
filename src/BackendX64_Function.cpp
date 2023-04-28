@@ -26,7 +26,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
     auto        returnType      = typeFunc->concreteReturnType();
     bool        ok              = true;
     bool        debug           = buildParameters.buildCfg->backendDebugInformations;
-    const auto& cc              = typeFunc->callingConv();
+    const auto& cc              = typeFunc->getCallConv();
 
     concat.align(16);
     uint32_t startAddress = concat.totalCount();
@@ -157,7 +157,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
     }
 
     // Save pointer to return value if this is a return by copy
-    if (typeFunc->returnByAddress() && iReg < cc.byRegisterCount)
+    if (CallConv::returnByAddress(typeFunc) && iReg < cc.byRegisterCount)
     {
         uint32_t stackOffset = getParamStackOffset(coffFct, iReg);
         pp.emit_Store64_Indirect(stackOffset, cc.byRegisterInteger[iReg], RDI);
@@ -3144,7 +3144,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
         {
             int stackOffset = 0;
             int paramIdx    = typeFunc->numParamsRegisters();
-            if (typeFunc->returnByAddress())
+            if (CallConv::returnByAddress(typeFunc))
                 paramIdx += 1;
             stackOffset = coffFct->offsetCallerStackParams + regOffset(paramIdx);
             pp.emit_LoadAddress_Indirect(stackOffset, RAX, RDI);
@@ -3600,7 +3600,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
         case ByteCodeOp::Ret:
 
             // Emit result
-            if (!returnType->isVoid() && !typeFunc->returnByAddress())
+            if (!returnType->isVoid() && !CallConv::returnByAddress(typeFunc))
             {
                 pp.emit_Load64_Indirect(offsetResult, cc.returnByRegisterInteger, RDI);
                 if (returnType->isNative(NativeTypeKind::F32))

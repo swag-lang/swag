@@ -6,7 +6,7 @@
 
 uint32_t BackendX64::getParamStackOffset(CoffFunction* coffFct, int paramIdx)
 {
-    const auto& cc = coffFct->typeFunc->callingConv();
+    const auto& cc = coffFct->typeFunc->getCallConv();
 
     // If this was passed as a register, then get the value from storeS4 (where input registers have been saved)
     // instead of value from the stack
@@ -21,7 +21,7 @@ uint32_t BackendX64::getParamStackOffset(CoffFunction* coffFct, int paramIdx)
 void BackendX64::emitGetParam(X64Gen& pp, CoffFunction* coffFct, int reg, uint32_t paramIdx, int sizeOf, uint64_t toAdd, int deRefSize)
 {
     auto        typeFunc   = coffFct->typeFunc;
-    const auto& cc         = typeFunc->callingConv();
+    const auto& cc         = typeFunc->getCallConv();
     int         paramStack = getParamStackOffset(coffFct, paramIdx);
     auto        typeParam  = TypeManager::concreteType(typeFunc->parameters[typeFunc->registerIdxToParamIdx(paramIdx)]->typeInfo);
     if (typeParam->isAutoConstPointerRef())
@@ -57,7 +57,7 @@ void BackendX64::emitGetParam(X64Gen& pp, CoffFunction* coffFct, int reg, uint32
 
     SWAG_ASSERT(toAdd <= 0x7FFFFFFFF);
 
-    bool structByValue = cc.structByValue(typeParam);
+    bool structByValue = CallConv::structParamByValue(typeFunc, typeParam);
 
     // Use scratch registers
     if (paramIdx < coffFct->numScratchRegs && !structByValue)

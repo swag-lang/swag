@@ -33,7 +33,7 @@ bool ByteCodeGenJob::emitInlineBefore(ByteCodeGenContext* context)
     // If the inline returns a copy, then initialize the register with the address of the temporary
     // variable on the stack, so that the inline block can copy it's result to it. Of course, this is
     // not the top for speed, but anyway there's room for improvement for inline in all cases.
-    if (typeInfoFunc->returnByStackAddress())
+    if (CallConv::returnByStackAddress(typeInfoFunc))
     {
         auto inst   = EMIT_INST1(context, ByteCodeOp::MakeStackPointer, node->resultRegisterRC);
         inst->b.u64 = node->computedValue->storageOffset;

@@ -1662,8 +1662,8 @@ void X64Gen::emit_ClearX(uint32_t count, uint32_t offset, CPURegister reg)
 
 void X64Gen::emit_Call_Parameters(TypeInfoFuncAttr* typeFuncBC, VectorNative<X64PushParam>& paramsRegisters, VectorNative<TypeInfo*>& paramsTypes, void* retCopyAddr)
 {
-    const auto& cc                = typeFuncBC->callingConv();
-    bool        returnByStackAddr = typeFuncBC->returnByStackAddress();
+    const auto& cc                = typeFuncBC->getCallConv();
+    bool        returnByStackAddr = CallConv::returnByStackAddress(typeFuncBC);
 
     int callConvRegisters    = cc.byRegisterCount;
     int maxParamsPerRegister = (int) paramsRegisters.size();
@@ -1694,7 +1694,7 @@ void X64Gen::emit_Call_Parameters(TypeInfoFuncAttr* typeFuncBC, VectorNative<X64
         else
         {
             // Pass struct in a register if small enough
-            if (cc.structByValue(type))
+            if (CallConv::structParamByValue(typeFuncBC, type))
             {
                 SWAG_ASSERT(paramsRegisters[i].type == X64PushParamType::Reg);
                 emit_Load64_Indirect(regOffset(reg), RAX);
@@ -1812,7 +1812,7 @@ void X64Gen::emit_Call_Parameters(TypeInfoFuncAttr* typeFuncBC, VectorNative<X64
                 emit_Load64_Indirect(regOffset(reg), RAX);
 
                 // Store the content of the struct in the stack
-                if (cc.structByValue(type))
+                if (CallConv::structParamByValue(typeFuncBC, type))
                 {
                     switch (sizeOf)
                     {
@@ -1954,7 +1954,7 @@ void X64Gen::emit_Call_Parameters(TypeInfoFuncAttr* typeFunc, const VectorNative
     }
 
     // Return by parameter
-    if (typeFunc->returnByAddress())
+    if (CallConv::returnByAddress(typeFunc))
     {
         pushParams3.push_back({X64PushParamType::Reg, offsetRT});
         pushParamsTypes.push_back(g_TypeMgr->typeInfoUndefined);
@@ -2014,9 +2014,9 @@ void X64Gen::emit_Call_Parameters(TypeInfoFuncAttr* typeFunc, const VectorNative
 
 void X64Gen::emit_Call_Result(TypeInfoFuncAttr* typeFunc, uint32_t offsetRT)
 {
-    if (typeFunc->returnByValue())
+    if (CallConv::returnByValue(typeFunc))
     {
-        const auto& cc         = typeFunc->callingConv();
+        const auto& cc         = typeFunc->getCallConv();
         auto        returnType = typeFunc->concreteReturnType();
         if (returnType->isNativeFloat())
             emit_StoreF64_Indirect(offsetRT, cc.returnByRegisterFloat, RDI);

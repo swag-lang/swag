@@ -1438,13 +1438,13 @@ bool ByteCodeGenJob::emitReturnByCopyAddress(ByteCodeGenContext* context, AstNod
             if (node->ownerInline)
             {
                 SWAG_IF_ASSERT(auto parentTypeFunc = CastTypeInfo<TypeInfoFuncAttr>(node->ownerInline->func->typeInfo, TypeInfoKind::FuncAttr));
-                SWAG_ASSERT(parentTypeFunc->returnByStackAddress());
+                SWAG_ASSERT(CallConv::returnByStackAddress(parentTypeFunc));
                 EMIT_INST1(context, ByteCodeOp::CopyRCtoRT, node->ownerInline->resultRegisterRC);
             }
             else
             {
                 SWAG_IF_ASSERT(auto parentTypeFunc = CastTypeInfo<TypeInfoFuncAttr>(node->ownerFct->typeInfo, TypeInfoKind::FuncAttr));
-                SWAG_ASSERT(parentTypeFunc->returnByStackAddress());
+                SWAG_ASSERT(CallConv::returnByStackAddress(parentTypeFunc));
                 EMIT_INST1(context, ByteCodeOp::CopyRRtoRC, node->resultRegisterRC);
                 EMIT_INST1(context, ByteCodeOp::CopyRCtoRT, node->resultRegisterRC);
             }
@@ -1553,7 +1553,7 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
         auto ownerReturnType   = ownerTypeInfoFunc->concreteReturnType();
         if (!ownerReturnType->isVoid())
         {
-            if (ownerTypeInfoFunc->returnByStackAddress())
+            if (CallConv::returnByStackAddress(ownerTypeInfoFunc))
             {
                 EMIT_INST0(context, ByteCodeOp::PushRR);
                 rr0Saved = true;
@@ -1567,7 +1567,7 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
     }
 
     // Return by copy
-    if (typeInfoFunc->returnByStackAddress())
+    if (CallConv::returnByStackAddress(typeInfoFunc))
     {
         SWAG_CHECK(emitReturnByCopyAddress(context, node, typeInfoFunc));
     }
@@ -2005,7 +2005,7 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
     // Copy result in a computing register
     if (typeInfoFunc->returnType &&
         !typeInfoFunc->returnType->isVoid() &&
-        !typeInfoFunc->returnByStackAddress())
+        !CallConv::returnByStackAddress(typeInfoFunc))
     {
         auto numRegs = typeInfoFunc->returnType->numRegisters();
 

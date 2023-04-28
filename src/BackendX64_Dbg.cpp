@@ -1178,7 +1178,6 @@ bool BackendX64::dbgEmitFctDebugS(const BuildParameters& buildParameters)
 
             // Parameters
             /////////////////////////////////
-            const auto& cc = typeFunc->callingConv();
             if (decl->parameters && !(decl->attributeFlags & ATTRIBUTE_COMPILER_FUNC))
             {
                 auto countParams = decl->parameters->childs.size();
@@ -1192,7 +1191,7 @@ bool BackendX64::dbgEmitFctDebugS(const BuildParameters& buildParameters)
                     switch (typeParam->kind)
                     {
                     case TypeInfoKind::Struct:
-                        if (cc.structByValue(typeParam))
+                        if (CallConv::structParamByValue(typeFunc, typeParam))
                             typeIdx = dbgGetOrCreateType(pp, typeParam);
                         else
                             typeIdx = dbgGetOrCreatePointerToType(pp, typeParam, true);
@@ -1203,7 +1202,7 @@ bool BackendX64::dbgEmitFctDebugS(const BuildParameters& buildParameters)
                         if (typeParam->isAutoConstPointerRef())
                         {
                             auto typeRef = TypeManager::concretePtrRefType(typeParam);
-                            if (cc.structByValue(typeRef))
+                            if (CallConv::structParamByValue(typeFunc, typeRef))
                                 typeIdx = dbgGetOrCreateType(pp, typeRef);
                             else
                                 typeIdx = dbgGetOrCreateType(pp, typeParam);

@@ -224,7 +224,7 @@ bool BackendX64::emitGetTypeTable(const BuildParameters& buildParameters)
     int         precompileIndex = buildParameters.precompileIndex;
     auto&       pp              = *perThread[ct][precompileIndex];
     auto&       concat          = pp.concat;
-    const auto& cc              = g_TypeMgr->typeInfoModuleCall->callingConv();
+    const auto& cc              = g_TypeMgr->typeInfoModuleCall->getCallConv();
 
     concat.align(16);
     auto startAddress = concat.totalCount();
@@ -258,7 +258,7 @@ bool BackendX64::emitGlobalPreMain(const BuildParameters& buildParameters)
     int         precompileIndex = buildParameters.precompileIndex;
     auto&       pp              = *perThread[ct][precompileIndex];
     auto&       concat          = pp.concat;
-    const auto& cc              = g_TypeMgr->typeInfoModuleCall->callingConv();
+    const auto& cc              = g_TypeMgr->typeInfoModuleCall->getCallConv();
 
     concat.align(16);
     auto startAddress = concat.totalCount();
@@ -313,7 +313,7 @@ bool BackendX64::emitGlobalInit(const BuildParameters& buildParameters)
     int         precompileIndex = buildParameters.precompileIndex;
     auto&       pp              = *perThread[ct][precompileIndex];
     auto&       concat          = pp.concat;
-    const auto& cc              = g_TypeMgr->typeInfoModuleCall->callingConv();
+    const auto& cc              = g_TypeMgr->typeInfoModuleCall->getCallConv();
 
     concat.align(16);
     auto startAddress = concat.totalCount();

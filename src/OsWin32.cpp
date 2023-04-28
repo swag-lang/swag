@@ -835,7 +835,7 @@ namespace OS
     thread_local X64Gen g_FfiX64Gen;
     void                ffi(ByteCodeRunContext* context, void* foreignPtr, TypeInfoFuncAttr* typeInfoFunc, const VectorNative<uint32_t>& pushRAParam, void* retCopyAddr)
     {
-        const auto& cc         = typeInfoFunc->callingConv();
+        const auto& cc         = typeInfoFunc->getCallConv();
         auto        returnType = TypeManager::concreteType(typeInfoFunc->returnType);
 
         // Special case when rising an exception (__raiseException666 in windows runtime)
