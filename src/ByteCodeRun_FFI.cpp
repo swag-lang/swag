@@ -138,7 +138,7 @@ void ByteCodeRun::ffiCall(ByteCodeRunContext* context, ByteCodeInstruction* ip, 
     // Function return type
     void* retCopyAddr = nullptr;
     auto  returnType  = typeInfoFunc->concreteReturnType();
-    if (returnType != g_TypeMgr->typeInfoVoid)
+    if (!returnType->isVoid())
     {
         if (returnType->isSlice() ||
             returnType->isInterface() ||

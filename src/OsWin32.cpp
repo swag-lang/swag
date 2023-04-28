@@ -875,7 +875,7 @@ namespace OS
         gen.emit_Load64_Immediate(RAX, (uint64_t) foreignPtr, true);
         gen.emit_Call_Indirect(RAX);
 
-        if (returnType != g_TypeMgr->typeInfoVoid && !retCopyAddr)
+        if (!returnType->isVoid() && !retCopyAddr)
         {
             gen.emit_Load64_Immediate(RDI, (uint64_t) context->registersRR, true);
             gen.emit_Call_Result(typeInfoFunc, 0);

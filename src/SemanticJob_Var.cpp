@@ -875,7 +875,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
                 node->typeInfo = g_TypeMgr->makeUnConst(node->typeInfo);
         }
 
-        if (node->typeInfo == g_TypeMgr->typeInfoVoid)
+        if (node->typeInfo->isVoid())
         {
             if (node->assignment->typeInfo->isFuncAttr() && node->assignment->resolvedSymbolOverload)
             {

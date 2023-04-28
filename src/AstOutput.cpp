@@ -197,7 +197,7 @@ bool AstOutput::outputFuncSignature(OutputContext& context, Concat& concat, AstN
         if (returnNode && !returnNode->childs.empty())
             returnNode = returnNode->childs.front();
 
-        if (typeFunc->returnType && typeFunc->returnType != g_TypeMgr->typeInfoVoid)
+        if (typeFunc->returnType && !typeFunc->returnType->isVoid())
         {
             CONCAT_FIXED_STR(concat, "->");
             SWAG_CHECK(outputType(context, concat, returnNode, typeFunc->returnType));
@@ -280,7 +280,7 @@ bool AstOutput::outputFunc(OutputContext& context, Concat& concat, AstFuncDecl* 
         returnNode = returnNode->childs.front();
 
     auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(funcDecl->typeInfo, TypeInfoKind::FuncAttr);
-    if (typeFunc->returnType && typeFunc->returnType != g_TypeMgr->typeInfoVoid)
+    if (typeFunc->returnType && !typeFunc->returnType->isVoid())
     {
         CONCAT_FIXED_STR(concat, "->");
         SWAG_CHECK(outputType(context, concat, returnNode, typeFunc->returnType));

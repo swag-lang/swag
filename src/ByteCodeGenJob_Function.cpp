@@ -18,7 +18,7 @@ bool ByteCodeGenJob::emitLocalFuncDecl(ByteCodeGenContext* context)
     // No need to do the scope leave stuff if the function does return something, because
     // it has been covered by the mandatory return
     auto typeInfo = CastTypeInfo<TypeInfoFuncAttr>(funcDecl->typeInfo, TypeInfoKind::FuncAttr);
-    if (typeInfo->returnType != g_TypeMgr->typeInfoVoid)
+    if (!typeInfo->returnType->isVoid())
         return true;
 
     SWAG_CHECK(computeLeaveScope(context, funcDecl->scope));
@@ -1549,7 +1549,7 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
     if (node->ownerFct &&
         node->ownerFct->returnType &&
         node->ownerFct->returnType->typeInfo &&
-        node->ownerFct->returnType->typeInfo != g_TypeMgr->typeInfoVoid)
+        !node->ownerFct->returnType->typeInfo->isVoid())
     {
         if (node->ownerFct->returnType->typeInfo->flags & TYPEINFO_RETURN_BY_COPY)
         {
@@ -1997,7 +1997,7 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
         freeRegisterRC(context, r);
 
     // Copy result in a computing register
-    if (typeInfoFunc->returnType && typeInfoFunc->returnType != g_TypeMgr->typeInfoVoid)
+    if (typeInfoFunc->returnType && !typeInfoFunc->returnType->isVoid())
     {
         if (!(typeInfoFunc->returnType->flags & TYPEINFO_RETURN_BY_COPY))
         {

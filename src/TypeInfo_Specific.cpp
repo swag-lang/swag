@@ -177,7 +177,7 @@ bool TypeInfoPointer::isSame(TypeInfo* to, uint64_t castFlags)
     // Anonymous pointers
     if (castFlags & CASTFLAG_CAST)
     {
-        if (other->pointedType == g_TypeMgr->typeInfoVoid && !(castFlags & CASTFLAG_FOR_GENERIC))
+        if (other->pointedType->isVoid() && !(castFlags & CASTFLAG_FOR_GENERIC))
             return true;
         if ((to->flags & TYPEINFO_POINTER_ARITHMETIC) && !(flags & TYPEINFO_POINTER_ARITHMETIC))
             return false;
@@ -796,9 +796,9 @@ bool TypeInfoFuncAttr::isSame(TypeInfo* to, uint64_t castFlags)
 
     if ((castFlags & CASTFLAG_EXACT) || (to->isLambdaClosure()))
     {
-        if (returnType && returnType != g_TypeMgr->typeInfoVoid && !other->returnType)
+        if (returnType && !returnType->isVoid() && !other->returnType)
             return false;
-        if (!returnType && other->returnType && other->returnType != g_TypeMgr->typeInfoVoid)
+        if (!returnType && other->returnType && !other->returnType->isVoid())
             return false;
         if (returnType && other->returnType && !returnType->isNative(NativeTypeKind::Undefined) && !returnType->isSame(other->returnType, castFlags))
             return false;
@@ -829,7 +829,7 @@ bool TypeInfoFuncAttr::isCVariadic()
 
 bool TypeInfoFuncAttr::returnByCopy()
 {
-    if (!returnType || returnType == g_TypeMgr->typeInfoVoid)
+    if (!returnType || returnType->isVoid())
         return false;
 
     auto type = concreteReturnType();
@@ -847,7 +847,7 @@ bool TypeInfoFuncAttr::returnByCopy()
 
 bool TypeInfoFuncAttr::returnByValue()
 {
-    if (!returnType || returnType == g_TypeMgr->typeInfoVoid)
+    if (!returnType || returnType->isVoid())
         return false;
     return !returnByCopy();
 }

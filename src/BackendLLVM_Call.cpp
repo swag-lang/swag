@@ -15,7 +15,7 @@ void BackendLLVM::createRet(const BuildParameters& buildParameters, Module* modu
     auto& builder         = *pp.builder;
 
     // Emit result
-    if (returnType != g_TypeMgr->typeInfoVoid && !typeFunc->returnByCopy())
+    if (!returnType->isVoid() && !typeFunc->returnByCopy())
     {
         if (returnType->isNative())
         {
@@ -484,7 +484,7 @@ bool BackendLLVM::emitCallReturnValue(const BuildParameters& buildParameters,
     auto& builder         = *pp.builder;
 
     auto returnType = TypeManager::concreteType(typeFuncBC->returnType);
-    if (returnType != g_TypeMgr->typeInfoVoid)
+    if (!returnType->isVoid())
     {
         if ((returnType->isSlice()) ||
             (returnType->isInterface()) ||

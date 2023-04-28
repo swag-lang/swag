@@ -305,7 +305,7 @@ bool SemanticJob::resolveFuncDecl(SemanticContext* context)
         if (node->attributeFlags & ATTRIBUTE_TEST_FUNC)
         {
             SWAG_VERIFY(module->kind == ModuleKind::Test, context->report({node, Err(Err0744)}));
-            SWAG_VERIFY(node->returnType->typeInfo == g_TypeMgr->typeInfoVoid, context->report({node->returnType, Err(Err0745), Hnt(Hnt0026)}));
+            SWAG_VERIFY(node->returnType->typeInfo->isVoid(), context->report({node->returnType, Err(Err0745), Hnt(Hnt0026)}));
             SWAG_VERIFY(!node->parameters || node->parameters->childs.size() == 0, context->report({node->parameters, Err(Err0746), Hnt(Hnt0026)}));
         }
 
@@ -320,7 +320,7 @@ bool SemanticJob::resolveFuncDecl(SemanticContext* context)
         node->content->setBcNotifBefore(ByteCodeGenJob::emitBeforeFuncDeclContent);
 
     // Do we have a return value
-    if (node->content && node->returnType && node->returnType->typeInfo != g_TypeMgr->typeInfoVoid)
+    if (node->content && node->returnType && !node->returnType->typeInfo->isVoid())
     {
         if (!(node->content->flags & AST_NO_SEMANTIC))
         {
@@ -601,7 +601,7 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
     // It will be done in the same way as parameters
     if (!(funcNode->flags & AST_IS_GENERIC))
     {
-        if ((funcNode->semFlags & SEMFLAG_PENDING_LAMBDA_TYPING) && (typeNode->typeInfo == g_TypeMgr->typeInfoVoid))
+        if ((funcNode->semFlags & SEMFLAG_PENDING_LAMBDA_TYPING) && typeNode->typeInfo->isVoid())
         {
             typeNode->typeInfo = g_TypeMgr->typeInfoUndefined;
             funcNode->specFlags &= ~AstFuncDecl::SPECFLAG_SHORT_LAMBDA;
@@ -1277,7 +1277,7 @@ bool SemanticJob::resolveReturn(SemanticContext* context)
     }
 
     // Nothing to return
-    if (funcNode->returnType->typeInfo == g_TypeMgr->typeInfoVoid && node->childs.empty())
+    if (funcNode->returnType->typeInfo->isVoid() && node->childs.empty())
     {
         if (funcNode->attributeFlags & ATTRIBUTE_RUN_GENERATED_EXP)
         {

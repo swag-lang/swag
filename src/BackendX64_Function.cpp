@@ -3600,7 +3600,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
         case ByteCodeOp::Ret:
 
             // Emit result
-            if (returnType != g_TypeMgr->typeInfoVoid && !typeFunc->returnByCopy())
+            if (!returnType->isVoid() && !typeFunc->returnByCopy())
             {
                 pp.emit_Load64_Indirect(offsetResult, cc.returnByRegisterInteger, RDI);
                 if (cc.useReturnByRegisterFloat)

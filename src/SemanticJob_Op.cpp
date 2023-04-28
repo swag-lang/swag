@@ -86,12 +86,12 @@ bool SemanticJob::checkFuncPrototypeOpReturnType(SemanticContext* context, AstFu
     // Whatever except nothing
     if (wanted == nullptr)
     {
-        if (returnType == g_TypeMgr->typeInfoVoid)
+        if (returnType->isVoid())
             return context->report({node, node->token, Fmt(Err(Err0063), node->token.ctext())});
         return true;
     }
 
-    if (wanted != g_TypeMgr->typeInfoVoid && returnType == g_TypeMgr->typeInfoVoid)
+    if (!wanted->isVoid() && returnType->isVoid())
         return context->report({node, node->token, Fmt(Err(Err0064), node->token.ctext(), wanted->getDisplayNameC())});
 
     if (!returnType->isSame(wanted, CASTFLAG_CAST))

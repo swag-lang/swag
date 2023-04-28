@@ -191,7 +191,7 @@ bool SemanticJob::resolveInlineAfter(SemanticContext* context)
     // checked as a separated function
     if (fct->attributeFlags & (ATTRIBUTE_MACRO | ATTRIBUTE_MIXIN))
     {
-        if (fct->returnType && fct->returnType->typeInfo != g_TypeMgr->typeInfoVoid)
+        if (fct->returnType && !fct->returnType->typeInfo->isVoid())
         {
             if (!(node->semFlags & SEMFLAG_SCOPE_HAS_RETURN))
             {
