@@ -425,6 +425,7 @@ struct TypeInfoFuncAttr : public TypeInfo
     bool                         isSame(TypeInfoFuncAttr* from, uint64_t castFlags);
     void                         match(SymbolMatchContext& context);
     bool                         returnByAddress();
+    bool                         returnByStackAddress();
     bool                         returnByValue();
     TypeInfo*                    concreteReturnType();
     bool                         isVariadic();

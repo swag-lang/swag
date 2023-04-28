@@ -836,8 +836,23 @@ bool TypeInfoFuncAttr::returnByAddress()
     if (type->isSlice() ||
         type->isInterface() ||
         type->isAny() ||
-        type->isString() ||
-        type->flags & TYPEINFO_RETURN_BY_COPY)
+        type->isString())
+    {
+        return true;
+    }
+
+    return returnByStackAddress();
+}
+
+bool TypeInfoFuncAttr::returnByStackAddress()
+{
+    if (!returnType || returnType->isVoid())
+        return false;
+
+    auto type = concreteReturnType();
+    if (type->isStruct() ||
+        type->isArray() ||
+        type->isClosure())
     {
         return true;
     }
@@ -849,6 +864,7 @@ bool TypeInfoFuncAttr::returnByValue()
 {
     if (!returnType || returnType->isVoid())
         return false;
+
     return !returnByAddress();
 }
 

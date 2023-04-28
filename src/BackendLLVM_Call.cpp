@@ -445,15 +445,11 @@ bool BackendLLVM::emitCallParameters(const BuildParameters&        buildParamete
     }
 
     // Return by parameter
-    auto returnType = typeFuncBC->concreteReturnType();
-    if (returnType->isSlice() ||
-        returnType->isInterface() ||
-        returnType->isAny() ||
-        returnType->isString())
+    if (typeFuncBC->returnByAddress() && !typeFuncBC->returnByStackAddress())
     {
         params.push_back(TO_PTR_I8(allocRR));
     }
-    else if (returnType->flags & TYPEINFO_RETURN_BY_COPY)
+    else if (typeFuncBC->returnByAddress())
     {
         params.push_back(builder.CreateLoad(PTR_I8_TY(), allocRR));
     }
@@ -484,17 +480,9 @@ bool BackendLLVM::emitCallReturnValue(const BuildParameters& buildParameters,
     auto& builder         = *pp.builder;
 
     auto returnType = typeFuncBC->concreteReturnType();
-    if (!returnType->isVoid())
+    if (!returnType->isVoid() && !typeFuncBC->returnByAddress())
     {
-        if ((returnType->isSlice()) ||
-            (returnType->isInterface()) ||
-            (returnType->isAny()) ||
-            (returnType->isString()) ||
-            (returnType->flags & TYPEINFO_RETURN_BY_COPY))
-        {
-            // Return by parameter
-        }
-        else if (returnType->isPointer())
+        if (returnType->isPointer())
         {
             builder.CreateStore(TO_PTR_I8(callResult), TO_PTR_PTR_I8(allocRR));
         }
