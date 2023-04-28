@@ -3543,8 +3543,13 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, Ty
                         return castError(context, toType, fromType, fromNode, castFlags | CASTFLAG_CONST_ERR);
 
                     // We can affect a const to an unconst if type is by copy, and we are in an affectation
-                    if (!(fromType->flags & TYPEINFO_RETURN_BY_COPY) && !(toType->flags & TYPEINFO_RETURN_BY_COPY))
+                    if (!fromType->isStruct() &&
+                        !toType->isStruct() &&
+                        !fromType->isArray() &&
+                        !toType->isArray())
+                    {
                         return castError(context, toType, fromType, fromNode, castFlags | CASTFLAG_CONST_ERR);
+                    }
                 }
             }
         }
