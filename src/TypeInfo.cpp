@@ -300,8 +300,6 @@ int TypeInfo::numRegisters()
 {
     if (sizeOf == 0)
         return 0;
-    if (flags & TYPEINFO_RETURN_BY_COPY)
-        return 1;
     int result = max(sizeOf, sizeof(void*)) / sizeof(void*);
     SWAG_ASSERT(result <= 2);
     return result;
