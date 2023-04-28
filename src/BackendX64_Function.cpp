@@ -220,6 +220,8 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             concat.addU8(0x90); // nop
             break;
 
+            /////////////////////////////////////
+
         case ByteCodeOp::MulAddVC64:
             pp.emit_Load64_Indirect(regOffset(ip->b.u32), RCX);
             concat.addString3("\x48\x83\xc1"); // add rcx, ??
@@ -261,6 +263,8 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             }
             break;
 
+            /////////////////////////////////////
+
         case ByteCodeOp::ClearRA:
             pp.emit_Store64_Immediate(regOffset(ip->a.u32), 0, RDI);
             break;
@@ -279,6 +283,8 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             pp.emit_Store64_Immediate(regOffset(ip->c.u32), 0, RDI);
             pp.emit_Store64_Immediate(regOffset(ip->d.u32), 0, RDI);
             break;
+
+            /////////////////////////////////////
 
         case ByteCodeOp::CopyRBtoRA8:
             pp.emit_LoadU8U64_Indirect(regOffset(ip->b.u32), RAX, RDI);
@@ -302,6 +308,8 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             pp.emit_LoadAddress_Indirect(regOffset(ip->b.u32), RAX, RDI);
             pp.emit_Store64_Indirect(regOffset(ip->a.u32), RAX);
             break;
+
+            /////////////////////////////////////
 
         case ByteCodeOp::CastBool8:
             pp.emit_Load8_Indirect(regOffset(ip->b.u32), RAX);
@@ -476,6 +484,8 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             pp.emit_StoreF64_Indirect(regOffset(ip->a.u32), XMM0);
             break;
 
+            /////////////////////////////////////
+
         case ByteCodeOp::BinOpShiftLeftS8:
         case ByteCodeOp::BinOpShiftLeftU8:
             emitShiftLogical(pp, ip, X64Bits::B8, X64Op::SHL);
@@ -492,6 +502,8 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
         case ByteCodeOp::BinOpShiftLeftU64:
             emitShiftLogical(pp, ip, X64Bits::B64, X64Op::SHL);
             break;
+
+            /////////////////////////////////////
 
         case ByteCodeOp::BinOpShiftRightU8:
             emitShiftLogical(pp, ip, X64Bits::B8, X64Op::SHR);
@@ -519,6 +531,8 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             emitShiftRightArithmetic(pp, ip, X64Bits::B64);
             break;
 
+            /////////////////////////////////////
+
         case ByteCodeOp::BinOpXorU8:
             emitBinOpInt8AtReg(pp, ip, X64Op::XOR);
             break;
@@ -531,6 +545,8 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
         case ByteCodeOp::BinOpXorU64:
             emitBinOpInt64AtReg(pp, ip, X64Op::XOR);
             break;
+
+            /////////////////////////////////////
 
         case ByteCodeOp::BinOpMulS8:
         case ByteCodeOp::BinOpMulS8_Safe:
@@ -579,6 +595,8 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             emitBinOpFloat64AtReg(pp, ip, X64Op::FMUL);
             break;
 
+            /////////////////////////////////////
+
         case ByteCodeOp::BinOpModuloS8:
             emitBinOpIntDivAtReg(pp, ip, true, X64Bits::B8, true);
             break;
@@ -603,6 +621,8 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
         case ByteCodeOp::BinOpModuloU64:
             emitBinOpIntDivAtReg(pp, ip, false, X64Bits::B64, true);
             break;
+
+            /////////////////////////////////////
 
         case ByteCodeOp::BinOpDivS8:
             emitBinOpIntDivAtReg(pp, ip, true, X64Bits::B8);
@@ -634,6 +654,8 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
         case ByteCodeOp::BinOpDivF64:
             emitBinOpFloat64AtReg(pp, ip, X64Op::FDIV);
             break;
+
+            /////////////////////////////////////
 
         case ByteCodeOp::BinOpPlusS8:
         case ByteCodeOp::BinOpPlusS8_Safe:
@@ -681,6 +703,8 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
         case ByteCodeOp::BinOpPlusF64:
             emitBinOpFloat64AtReg(pp, ip, X64Op::FADD);
             break;
+
+            /////////////////////////////////////
 
         case ByteCodeOp::BinOpMinusS8:
         case ByteCodeOp::BinOpMinusS8_Safe:
@@ -730,6 +754,8 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             emitBinOpFloat64AtReg(pp, ip, X64Op::FSUB);
             break;
 
+            /////////////////////////////////////
+
         case ByteCodeOp::BinOpBitmaskAnd8:
             emitBinOpInt8AtReg(pp, ip, X64Op::AND);
             break;
@@ -742,6 +768,8 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
         case ByteCodeOp::BinOpBitmaskAnd64:
             emitBinOpInt64AtReg(pp, ip, X64Op::AND);
             break;
+
+            /////////////////////////////////////
 
         case ByteCodeOp::BinOpBitmaskOr8:
             emitBinOpInt8AtReg(pp, ip, X64Op::OR);
@@ -1829,6 +1857,8 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             pp.emit_Store8_Indirect(regOffset(ip->a.u32), RAX);
             break;
 
+            /////////////////////////////////////
+
         case ByteCodeOp::CompareOpGreaterS32:
             MK_BINOP32_CAB(emit_Cmp32_IndirectDst, emit_Cmp32_Indirect, emit_Cmp32);
             pp.emit_SetG();
@@ -1890,6 +1920,8 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             pp.emit_SetAE();
             pp.emit_Store8_Indirect(regOffset(ip->c.u32), RAX);
             break;
+
+            /////////////////////////////////////
 
         case ByteCodeOp::CompareOpLowerS32:
             MK_BINOP32_CAB(emit_Cmp32_IndirectDst, emit_Cmp32_Indirect, emit_Cmp32);
@@ -1953,6 +1985,8 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             pp.emit_Store8_Indirect(regOffset(ip->c.u32), RAX);
             break;
 
+            /////////////////////////////////////
+
         case ByteCodeOp::CompareOp3WayU32:
         case ByteCodeOp::CompareOp3WayS32:
             emitBinOpIntN(pp, ip, X64Op::SUB, X64Bits::B32);
@@ -1998,6 +2032,8 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             pp.emit_Store32_Indirect(regOffset(ip->c.u32), RAX);
             break;
 
+            /////////////////////////////////////
+
         case ByteCodeOp::CompareOpEqual8:
             MK_BINOP8_CAB(emit_Cmp8_Indirect, emit_Cmp8);
             pp.emit_SetE();
@@ -2028,6 +2064,8 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             pp.emit_SetEP();
             pp.emit_Store8_Indirect(regOffset(ip->c.u32), RAX);
             break;
+
+            /////////////////////////////////////
 
         case ByteCodeOp::CompareOpNotEqual8:
             MK_BINOP8_CAB(emit_Cmp8_Indirect, emit_Cmp8);
@@ -2060,6 +2098,8 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             pp.emit_Store8_Indirect(regOffset(ip->c.u32), RAX);
             break;
 
+            /////////////////////////////////////
+
         case ByteCodeOp::IntrinsicDbgAlloc:
             emitInternalCall(pp, moduleToGen, g_LangSpec->name_atdbgalloc, {}, regOffset(ip->a.u32));
             break;
@@ -2075,6 +2115,8 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
         case ByteCodeOp::IntrinsicTypeCmp:
             emitInternalCall(pp, moduleToGen, g_LangSpec->name_attypecmp, {ip->a.u32, ip->b.u32, ip->c.u32}, regOffset(ip->d.u32));
             break;
+
+            /////////////////////////////////////
 
         case ByteCodeOp::TestNotZero8:
             MK_IMMB_8(RAX);
@@ -2100,6 +2142,8 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             pp.emit_SetNE();
             pp.emit_Store8_Indirect(regOffset(ip->a.u32), RAX);
             break;
+
+            /////////////////////////////////////
 
         case ByteCodeOp::NegBool:
             pp.emit_Load8_Indirect(regOffset(ip->b.u32), RAX);
@@ -2143,6 +2187,8 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             pp.emit_StoreF64_Indirect(regOffset(ip->a.u32), XMM0);
             break;
 
+            /////////////////////////////////////
+
         case ByteCodeOp::InvertU8:
             if (ip->a.u32 == ip->b.u32)
                 pp.emit_NotN_Indirect(regOffset(ip->a.u32), RDI, X64Bits::B8);
@@ -2183,6 +2229,8 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
                 pp.emit_Store64_Indirect(regOffset(ip->a.u32), RAX);
             }
             break;
+
+            /////////////////////////////////////
 
         case ByteCodeOp::JumpDyn8:
         case ByteCodeOp::JumpDyn16:
@@ -2239,6 +2287,8 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             break;
         }
 
+            /////////////////////////////////////
+
         case ByteCodeOp::JumpIfTrue:
             pp.emit_Load8_Indirect(regOffset(ip->a.u32), RAX);
             pp.emit_Test8(RAX, RAX);
@@ -2293,6 +2343,8 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             pp.emit_Jump(JUMP, i, ip->b.s32);
             break;
 
+            /////////////////////////////////////
+
         case ByteCodeOp::JumpIfNotEqual8:
             MK_JMPCMP_8(JNZ);
             break;
@@ -2311,6 +2363,8 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
         case ByteCodeOp::JumpIfNotEqualF64:
             MK_JMPCMP2_F64(JP, JNZ);
             break;
+
+            /////////////////////////////////////
 
         case ByteCodeOp::JumpIfEqual8:
             MK_JMPCMP_8(JZ);
@@ -2335,6 +2389,8 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             MK_JMPCMP_64(JZ);
             break;
 
+            /////////////////////////////////////
+
         case ByteCodeOp::JumpIfLowerS32:
             MK_JMPCMP_32(JL);
             break;
@@ -2353,6 +2409,8 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
         case ByteCodeOp::JumpIfLowerF64:
             MK_JMPCMP_F64(JB);
             break;
+
+            /////////////////////////////////////
 
         case ByteCodeOp::JumpIfLowerEqS32:
             MK_JMPCMP_32(JLE);
@@ -2373,6 +2431,8 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             MK_JMPCMP_F64(JBE);
             break;
 
+            /////////////////////////////////////
+
         case ByteCodeOp::JumpIfGreaterS32:
             MK_JMPCMP_32(JG);
             break;
@@ -2391,6 +2451,8 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
         case ByteCodeOp::JumpIfGreaterF64:
             MK_JMPCMP_F64(JA);
             break;
+
+            /////////////////////////////////////
 
         case ByteCodeOp::JumpIfGreaterEqS32:
             MK_JMPCMP_32(JGE);
@@ -2411,6 +2473,8 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             MK_JMPCMP_F64(JAE);
             break;
 
+            /////////////////////////////////////
+
         case ByteCodeOp::DecrementRA32:
             pp.emit_DecN_Indirect(regOffset(ip->a.u32), RDI, X64Bits::B32);
             break;
@@ -2420,6 +2484,8 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
         case ByteCodeOp::DecrementRA64:
             pp.emit_DecN_Indirect(regOffset(ip->a.u32), RDI, X64Bits::B64);
             break;
+
+            /////////////////////////////////////
 
         case ByteCodeOp::DeRef8:
             SWAG_ASSERT(ip->c.u64 <= 0x7FFFFFFF); // If this triggers, see DeRef64 below
@@ -2461,6 +2527,8 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             pp.emit_Store64_Indirect(regOffset(ip->a.u32), RAX);
             break;
 
+            /////////////////////////////////////
+
         case ByteCodeOp::GetFromBssSeg64:
             pp.emit_Symbol_RelocationAddr(RAX, pp.symBSIndex, 0);
             pp.emit_Load64_Indirect(ip->b.u32, RAX, RAX);
@@ -2471,6 +2539,8 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             pp.emit_Load64_Indirect(ip->b.u32, RAX, RAX);
             pp.emit_Store64_Indirect(regOffset(ip->a.u32), RAX);
             break;
+
+            /////////////////////////////////////
 
         case ByteCodeOp::GetFromStack8:
             pp.emit_LoadU8U64_Indirect(offsetStack + ip->b.u32, RAX, RDI);
@@ -2493,6 +2563,8 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             pp.emit_Add64_RAX(ip->c.u64);
             pp.emit_Store64_Indirect(regOffset(ip->a.u32), RAX);
             break;
+
+            /////////////////////////////////////
 
         case ByteCodeOp::GetIncFromStack64DeRef8:
             if (ip->c.u64 <= 0x7FFFFFFF)
@@ -2551,6 +2623,8 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             pp.emit_Store64_Indirect(regOffset(ip->a.u32), RAX);
             break;
 
+            /////////////////////////////////////
+
         case ByteCodeOp::CopyStack8:
             pp.emit_Load8_Indirect(offsetStack + ip->b.u32, RAX, RDI);
             pp.emit_Store8_Indirect(offsetStack + ip->a.u32, RAX, RDI);
@@ -2568,12 +2642,16 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             pp.emit_Store64_Indirect(offsetStack + ip->a.u32, RAX, RDI);
             break;
 
+            /////////////////////////////////////
+
         case ByteCodeOp::GetFromStack64x2:
             pp.emit_Load64_Indirect(offsetStack + ip->b.u32, RAX, RDI);
             pp.emit_Store64_Indirect(regOffset(ip->a.u32), RAX);
             pp.emit_Load64_Indirect(offsetStack + ip->d.u32, RAX, RDI);
             pp.emit_Store64_Indirect(regOffset(ip->c.u32), RAX);
             break;
+
+            /////////////////////////////////////
 
         case ByteCodeOp::ClearMaskU32:
             if (ip->b.u32 == 0xFF)
@@ -2596,6 +2674,8 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
                 SWAG_ASSERT(false);
             pp.emit_Store64_Indirect(regOffset(ip->a.u32), RAX);
             break;
+
+            /////////////////////////////////////
 
         case ByteCodeOp::SetZeroAtPointer8:
             pp.emit_Load64_Indirect(regOffset(ip->a.u32), RAX);
@@ -2637,6 +2717,8 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             emitInternalCallExt(pp, moduleToGen, g_LangSpec->name_memset, pp.pushParams);
             break;
 
+            /////////////////////////////////////
+
         case ByteCodeOp::SetZeroStack8:
             pp.emit_Store8_Immediate(offsetStack + ip->a.u32, 0, RDI);
             break;
@@ -2661,6 +2743,8 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
                 emitInternalCallExt(pp, moduleToGen, g_LangSpec->name_memset, pp.pushParams);
             }
             break;
+
+            /////////////////////////////////////
 
         case ByteCodeOp::SetAtPointer8:
             pp.emit_Load64_Indirect(regOffset(ip->a.u32), RAX);
@@ -2712,6 +2796,8 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             }
             break;
 
+            /////////////////////////////////////
+
         case ByteCodeOp::SetAtStackPointer8:
             if (ip->flags & BCI_IMM_B)
                 pp.emit_Store8_Immediate(offsetStack + ip->a.u32, ip->b.u8, RDI);
@@ -2753,6 +2839,8 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
                 pp.emit_Store64_Indirect(offsetStack + ip->a.u32, RAX, RDI);
             }
             break;
+
+            /////////////////////////////////////
 
         case ByteCodeOp::SetAtStackPointer8x2:
             if (ip->flags & BCI_IMM_B)
@@ -2833,6 +2921,8 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             }
             break;
 
+            /////////////////////////////////////
+
         case ByteCodeOp::MakeStackPointer:
             pp.emit_LoadAddress_Indirect(offsetStack + ip->b.u32, RAX, RDI);
             pp.emit_Store64_Indirect(regOffset(ip->a.u32), RAX);
@@ -2847,6 +2937,8 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             pp.emit_LoadAddress_Indirect(offsetStack + ip->a.u32, RAX, RDI);
             pp.emit_Store64_Indirect(offsetRT + regOffset(0), RAX, RDI);
             break;
+
+            /////////////////////////////////////
 
         case ByteCodeOp::MakeMutableSegPointer:
             pp.emit_Symbol_RelocationAddr(RAX, pp.symMSIndex, ip->b.u32);
@@ -2863,6 +2955,8 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
         case ByteCodeOp::MakeCompilerSegPointer:
             return Report::report({ip->node, Err(Err0060)});
 
+            /////////////////////////////////////
+
         case ByteCodeOp::IncPointer64:
             emitAddSubMul64(pp, ip, 1, X64Op::ADD);
             break;
@@ -2872,6 +2966,8 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
         case ByteCodeOp::IncMulPointer64:
             emitAddSubMul64(pp, ip, ip->d.u64, X64Op::ADD);
             break;
+
+            /////////////////////////////////////
 
         case ByteCodeOp::Mul64byVB64:
             pp.emit_Load64_Indirect(regOffset(ip->a.u32), RAX);
@@ -2887,6 +2983,8 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             pp.emit_Store64_Indirect(regOffset(ip->a.u32), RAX);
             break;
 
+            /////////////////////////////////////
+
         case ByteCodeOp::SetImmediate32:
             pp.emit_Store32_Immediate(regOffset(ip->a.u32), ip->b.u32, RDI);
             break;
@@ -2899,6 +2997,8 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
                 pp.emit_Store64_Indirect(regOffset(ip->a.u32), RAX);
             }
             break;
+
+            /////////////////////////////////////
 
         case ByteCodeOp::MemCpy8:
             pp.emit_Load64_Indirect(regOffset(ip->a.u32), RCX);
@@ -2920,6 +3020,8 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             pp.emit_Load64_Indirect(regOffset(ip->b.u32), RDX);
             pp.emit_CopyX(8, 0, RCX, RDX);
             break;
+
+            /////////////////////////////////////
 
         case ByteCodeOp::IntrinsicMemCpy:
             if ((ip->flags & BCI_IMM_C) && ip->c.u64 <= 128 && !buildParameters.isDebug())
@@ -3138,6 +3240,8 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             emitInternalCall(pp, moduleToGen, g_LangSpec->name_atitftableof, {ip->a.u32, ip->b.u32}, regOffset(ip->c.u32));
             break;
 
+            /////////////////////////////////////
+
         case ByteCodeOp::CopyRCtoRR:
             pp.emit_LoadAddress_Indirect(offsetResult, RAX, RDI);
             if (ip->flags & BCI_IMM_A && ip->a.u64 <= 0x7FFFFFFF)
@@ -3273,6 +3377,8 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             break;
         }
 
+            /////////////////////////////////////
+
         case ByteCodeOp::PushRVParam:
             pushRVParams.push_back({ip->a.u32, ip->b.u32});
             break;
@@ -3296,6 +3402,8 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             pushRAParams.push_back(ip->d.u32);
             break;
 
+            /////////////////////////////////////
+
         case ByteCodeOp::GetParam8:
             emitGetParam(pp, coffFct, ip->a.u32, ip->c.u32, 1);
             break;
@@ -3312,6 +3420,8 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             emitGetParam(pp, coffFct, ip->a.u32, ip->c.u32, 8, ip->d.u64);
             break;
 
+            /////////////////////////////////////
+
         case ByteCodeOp::GetParam64DeRef8:
             emitGetParam(pp, coffFct, ip->a.u32, ip->c.u32, 8, 0, 1);
             break;
@@ -3325,6 +3435,8 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             emitGetParam(pp, coffFct, ip->a.u32, ip->c.u32, 8, 0, 8);
             break;
 
+            /////////////////////////////////////
+
         case ByteCodeOp::GetIncParam64DeRef8:
             emitGetParam(pp, coffFct, ip->a.u32, ip->c.u32, 8, ip->d.u64, 1);
             break;
@@ -3337,6 +3449,8 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
         case ByteCodeOp::GetIncParam64DeRef64:
             emitGetParam(pp, coffFct, ip->a.u32, ip->c.u32, 8, ip->d.u64, 8);
             break;
+
+            /////////////////////////////////////
 
         case ByteCodeOp::MakeLambda:
         {
@@ -3382,6 +3496,8 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
 
             break;
         }
+
+            /////////////////////////////////////
 
         case ByteCodeOp::LocalCall:
         case ByteCodeOp::LocalCallPop:
@@ -3455,6 +3571,8 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             pushRVParams.clear();
             break;
         }
+
+            /////////////////////////////////////
 
         case ByteCodeOp::IncSPPostCall:
         case ByteCodeOp::IncSPPostCallCond:

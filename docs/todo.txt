@@ -1,5 +1,5 @@
 ****************************************
-LANGUAGE ???
+LANGUAGE IDEAS ???
 ****************************************
 
 -------------------------------------
@@ -70,8 +70,6 @@ TODO
 ****************************************
 
 -------------------------------------
-neg operator with wraparound safety
--------------------------------------
 @compilererror/warning with an optional hint for the error
 -------------------------------------
 fast math ? (faire les tests de float en u32/U64 comme avant la prise en charge de nan)
@@ -127,7 +125,7 @@ pass orEq/andEq/xOrEq/shiftEq en mode Stack StackStack. Dans les faits, plein d'
 -------------------------------------
 x64 emit_BinOpInt8/16 shift au lieu de mul (ca arrive jusqu'au backend en 32/64 bits, ca devait pas être traité dans l'optim bc ca ?)
 -------------------------------------
-passer/retourner des structs par value si <= 64 bits
+retourner des structs par value si <= 64 bits
 -------------------------------------
 x64: et si les premiers registres étaient des vrais registres x64 volatiles plutot que des accès indirects à la mémoire ?
 rc[0] = r12 etc... chiant
