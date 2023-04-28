@@ -1663,7 +1663,7 @@ void X64Gen::emit_ClearX(uint32_t count, uint32_t offset, CPURegister reg)
 void X64Gen::emit_Call_Parameters(TypeInfoFuncAttr* typeFuncBC, VectorNative<X64PushParam>& paramsRegisters, VectorNative<TypeInfo*>& paramsTypes, void* retCopy)
 {
     const auto& cc           = typeFuncBC->callingConv();
-    auto        returnType   = TypeManager::concreteType(typeFuncBC->returnType);
+    auto        returnType   = typeFuncBC->concreteReturnType();
     bool        returnByCopy = returnType->flags & TYPEINFO_RETURN_BY_COPY;
 
     int callConvRegisters    = cc.byRegisterCount;
@@ -2019,7 +2019,7 @@ void X64Gen::emit_Call_Result(TypeInfoFuncAttr* typeFunc, uint32_t offsetRT)
         return;
 
     const auto& cc         = typeFunc->callingConv();
-    auto        returnType = TypeManager::concreteType(typeFunc->returnType);
+    auto        returnType = typeFunc->concreteReturnType();
 
     if (cc.useReturnByRegisterFloat && returnType->isNativeFloat())
         emit_StoreF64_Indirect(offsetRT, cc.returnByRegisterFloat, RDI);

@@ -22,7 +22,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
     auto& builder         = *pp.builder;
     auto& modu            = *pp.module;
     auto  typeFunc        = bc->getCallType();
-    auto  returnType      = TypeManager::concreteType(typeFunc->returnType);
+    auto  returnType      = typeFunc->concreteReturnType();
     bool  ok              = true;
 
     // Get function name

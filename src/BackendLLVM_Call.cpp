@@ -445,7 +445,7 @@ bool BackendLLVM::emitCallParameters(const BuildParameters&        buildParamete
     }
 
     // Return by parameter
-    auto returnType = TypeManager::concreteType(typeFuncBC->returnType);
+    auto returnType = typeFuncBC->concreteReturnType();
     if (returnType->isSlice() ||
         returnType->isInterface() ||
         returnType->isAny() ||
@@ -483,7 +483,7 @@ bool BackendLLVM::emitCallReturnValue(const BuildParameters& buildParameters,
     auto& context         = *pp.context;
     auto& builder         = *pp.builder;
 
-    auto returnType = TypeManager::concreteType(typeFuncBC->returnType);
+    auto returnType = typeFuncBC->concreteReturnType();
     if (!returnType->isVoid())
     {
         if ((returnType->isSlice()) ||

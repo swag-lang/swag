@@ -9,5 +9,5 @@ func toto(t: T)->T
 #test
 {
     x := toto({1, 2})
-    @print(x.a, " ", x.b, "\n")
+    //@print(x.a, " ", x.b, "\n")
 }

@@ -1346,7 +1346,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* ide
             if (identifier->flags & AST_CONST_EXPR)
             {
                 auto typeFunc   = CastTypeInfo<TypeInfoFuncAttr>(identifier->typeInfo, TypeInfoKind::FuncAttr);
-                auto returnType = TypeManager::concreteType(typeFunc->returnType);
+                auto returnType = typeFunc->concreteReturnType();
 
                 // :CheckConstExprFuncReturnType
                 if (returnType &&
