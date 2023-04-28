@@ -137,21 +137,10 @@ void ByteCodeRun::ffiCall(ByteCodeRunContext* context, ByteCodeInstruction* ip, 
 
     // Function return type
     void* retCopyAddr = nullptr;
-    auto  returnType  = typeInfoFunc->concreteReturnType();
-    if (!returnType->isVoid())
-    {
-        if (returnType->isSlice() ||
-            returnType->isInterface() ||
-            returnType->isAny() ||
-            returnType->isString())
-        {
-            retCopyAddr = context->registersRR;
-        }
-        else if (returnType->flags & TYPEINFO_RETURN_BY_COPY)
-        {
-            retCopyAddr = context->registersRR[0].pointer;
-        }
-    }
+    if (typeInfoFunc->returnByAddress() && !typeInfoFunc->returnByStackAddress())
+        retCopyAddr = context->registersRR;
+    else if (typeInfoFunc->returnByStackAddress())
+        retCopyAddr = context->registersRR[0].pointer;
 
     if (typeInfoFunc->isCVariadic())
     {
