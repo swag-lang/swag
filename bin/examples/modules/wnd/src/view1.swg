@@ -53,6 +53,7 @@ func createView1(_tabView: *Tab, view: *Wnd)
         list := createListSimple(view, 10)
         list.style.setFont(view.getTheme().createDefaultFont(40), .Regular)
         list.frameFlags |= .FocusBorder
+        list.listFlags |= .HotTrack
         list.selectionMode = .Single
         list.setPosition({5, 5, 250, 300})
     }
