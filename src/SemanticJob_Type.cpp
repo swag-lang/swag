@@ -210,9 +210,12 @@ bool SemanticJob::resolveTypeLambdaClosure(SemanticContext* context)
 
 void SemanticJob::forceConstType(SemanticContext* context, AstTypeExpression* node)
 {
-    if (node->typeInfo->flags & TYPEINFO_RETURN_BY_COPY ||
-        node->typeInfo->isPointer() ||
-        node->typeInfo->isSlice())
+    auto concrete = TypeManager::concreteType(node->typeInfo, CONCRETE_ALIAS);
+    if (concrete->isStruct() ||
+        concrete->isArray() ||
+        concrete->isClosure() ||
+        concrete->isPointer() ||
+        concrete->isSlice())
     {
         if (node->typeFlags & TYPEFLAG_FORCE_CONST)
             node->typeFlags |= TYPEFLAG_IS_CONST;
