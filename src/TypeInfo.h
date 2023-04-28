@@ -418,9 +418,15 @@ struct TypeInfoFuncAttr : public TypeInfo
     {
     }
 
-    TypeInfo*                    clone() override;
-    void                         computeWhateverName(Utf8& resName, uint32_t nameType) override;
-    bool                         isSame(TypeInfo* from, uint64_t castFlags) override;
+    int numRegisters() override
+    {
+        return 1;
+    }
+
+    TypeInfo* clone() override;
+    void      computeWhateverName(Utf8& resName, uint32_t nameType) override;
+    bool      isSame(TypeInfo* from, uint64_t castFlags) override;
+
     bool                         isSame(TypeInfoFuncAttr* other, uint64_t castFlags, BadSignatureInfos& bi);
     bool                         isSame(TypeInfoFuncAttr* from, uint64_t castFlags);
     void                         match(SymbolMatchContext& context);
@@ -628,9 +634,7 @@ struct TypeInfoAlias : public TypeInfo
 
     int numRegisters() override
     {
-        if (flags & TYPEINFO_FAKE_ALIAS)
-            return rawType->numRegisters();
-        return TypeInfo::numRegisters();
+        return rawType->numRegisters();
     }
 
     TypeInfo* rawType = nullptr;
