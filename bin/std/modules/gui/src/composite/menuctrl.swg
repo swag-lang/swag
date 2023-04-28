@@ -551,7 +551,6 @@ impl MenuCtrl
 
     public mtd computeLayoutPopup()
     {
-        theme   := getTheme()
         metrics := getThemeMetrics()
 
         clientRect := getClientRect()

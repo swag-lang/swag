@@ -95,11 +95,11 @@ impl Painter
     func measureString(text: string, font: *Font)->StringMetrics
     {
         arr := getGlyphs(text, font)
-        return measureString(arr, font)
+        return measureString(arr)
     }
 
     // Returns the bounding rectangle if a given text, at a given position
-    func measureString(text: Array'(const *GlyphDesc), font: *Font)->StringMetrics
+    func measureString(text: Array'(const *GlyphDesc))->StringMetrics
     {
         var result: retval
         result.ascent  = Swag.F32.NegInf
