@@ -26,7 +26,11 @@ bool ByteCodeGenJob::emitCastToNativeAny(ByteCodeGenContext* context, AstNode* e
 
     // This is the value part.
     // Make a pointer to the value
-    if ((fromTypeInfo->flags & TYPEINFO_RETURN_BY_COPY) || (exprNode->flags & AST_VALUE_IS_TYPEINFO))
+    if (fromTypeInfo->isStruct() ||
+        fromTypeInfo->isArray() ||
+        fromTypeInfo->isListArray() ||
+        fromTypeInfo->isListTuple() ||
+        (exprNode->flags & AST_VALUE_IS_TYPEINFO))
     {
         EMIT_INST2(context, ByteCodeOp::CopyRBtoRA64, r0[0], exprNode->resultRegisterRC[0]);
     }

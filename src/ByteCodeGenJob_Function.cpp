@@ -1618,7 +1618,10 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
             maxCallParams++;
 
             // For a big data we directly set the data pointer in the 'any' instead of pushing it to the stack.
-            if (typeParam->flags & TYPEINFO_RETURN_BY_COPY)
+            if (typeParam->isStruct() ||
+                typeParam->isArray() ||
+                typeParam->isListArray() ||
+                typeParam->isListTuple())
             {
                 EMIT_INST1(context, ByteCodeOp::PushRAParam, child->resultRegisterRC[0]);
                 maxCallParams++;

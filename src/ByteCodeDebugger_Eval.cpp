@@ -134,7 +134,7 @@ bool ByteCodeDebugger::evalDynExpression(ByteCodeRunContext* context, const Utf8
     res.type       = TypeManager::concreteType(child->typeInfo, CONCRETE_FUNC);
     res.storage[0] = runContext.registersRR[0].pointer;
     res.storage[1] = runContext.registersRR[1].pointer;
-    if (res.type->flags & TYPEINFO_RETURN_BY_COPY)
+    if (res.type->isStruct() || res.type->isArray())
         res.addr = res.storage[0];
     else
         res.addr = &res.storage[0];
