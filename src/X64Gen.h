@@ -421,9 +421,9 @@ struct X64Gen
     void emit_Add64_RAX(uint64_t value);
     void emit_Add64_RCX(uint64_t value);
     void emit_Call_Indirect(CPURegister reg);
-    void emit_Call_Parameters(TypeInfoFuncAttr* typeFunc, const VectorNative<uint32_t>& pushRAParams, uint32_t offsetRT, void* retCopy = nullptr);
-    void emit_Call_Parameters(TypeInfoFuncAttr* typeFunc, const VectorNative<X64PushParam>& pushRAParams, uint32_t offsetRT, void* retCopy = nullptr);
-    void emit_Call_Parameters(TypeInfoFuncAttr* typeFunc, VectorNative<X64PushParam>& paramsRegisters, VectorNative<TypeInfo*>& paramsTypes, void* retCopy = nullptr);
+    void emit_Call_Parameters(TypeInfoFuncAttr* typeFunc, const VectorNative<uint32_t>& pushRAParams, uint32_t offsetRT, void* retCopyAddr = nullptr);
+    void emit_Call_Parameters(TypeInfoFuncAttr* typeFunc, const VectorNative<X64PushParam>& pushRAParams, uint32_t offsetRT, void* retCopyAddr = nullptr);
+    void emit_Call_Parameters(TypeInfoFuncAttr* typeFunc, VectorNative<X64PushParam>& paramsRegisters, VectorNative<TypeInfo*>& paramsTypes, void* retCopyAddr = nullptr);
     void emit_Call_Result(TypeInfoFuncAttr* typeFunc, uint32_t offsetRT);
     void emit_ClearN(CPURegister reg, X64Bits numBits);
     void emit_ClearX(uint32_t count, uint32_t offset, CPURegister reg);

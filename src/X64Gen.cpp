@@ -1660,11 +1660,10 @@ void X64Gen::emit_ClearX(uint32_t count, uint32_t offset, CPURegister reg)
     }
 }
 
-void X64Gen::emit_Call_Parameters(TypeInfoFuncAttr* typeFuncBC, VectorNative<X64PushParam>& paramsRegisters, VectorNative<TypeInfo*>& paramsTypes, void* retCopy)
+void X64Gen::emit_Call_Parameters(TypeInfoFuncAttr* typeFuncBC, VectorNative<X64PushParam>& paramsRegisters, VectorNative<TypeInfo*>& paramsTypes, void* retCopyAddr)
 {
-    const auto& cc           = typeFuncBC->callingConv();
-    auto        returnType   = typeFuncBC->concreteReturnType();
-    bool        returnByCopy = returnType->flags & TYPEINFO_RETURN_BY_COPY;
+    const auto& cc                = typeFuncBC->callingConv();
+    bool        returnByStackAddr = typeFuncBC->returnByStackAddress();
 
     int callConvRegisters    = cc.byRegisterCount;
     int maxParamsPerRegister = (int) paramsRegisters.size();
@@ -1683,9 +1682,9 @@ void X64Gen::emit_Call_Parameters(TypeInfoFuncAttr* typeFuncBC, VectorNative<X64
         if (type == g_TypeMgr->typeInfoUndefined)
         {
             SWAG_ASSERT(paramsRegisters[i].type == X64PushParamType::Reg);
-            if (retCopy)
-                emit_Load64_Immediate(cc.byRegisterInteger[i], (uint64_t) retCopy);
-            else if (returnByCopy)
+            if (retCopyAddr)
+                emit_Load64_Immediate(cc.byRegisterInteger[i], (uint64_t) retCopyAddr);
+            else if (returnByStackAddr)
                 emit_Load64_Indirect(reg, cc.byRegisterInteger[i], RDI);
             else
                 emit_LoadAddress_Indirect(reg, cc.byRegisterInteger[i], RDI);
@@ -1793,9 +1792,9 @@ void X64Gen::emit_Call_Parameters(TypeInfoFuncAttr* typeFuncBC, VectorNative<X64
         else if (type == g_TypeMgr->typeInfoUndefined)
         {
             // r is an address to registerRR, for FFI
-            if (retCopy)
-                emit_Load64_Immediate(RAX, (uint64_t) retCopy);
-            else if (returnByCopy)
+            if (retCopyAddr)
+                emit_Load64_Immediate(RAX, (uint64_t) retCopyAddr);
+            else if (returnByStackAddr)
                 emit_Load64_Indirect(reg, RAX, RDI);
             else
                 emit_LoadAddress_Indirect(reg, RAX, RDI);
@@ -1874,15 +1873,15 @@ void X64Gen::emit_Call_Parameters(TypeInfoFuncAttr* typeFuncBC, VectorNative<X64
     }
 }
 
-void X64Gen::emit_Call_Parameters(TypeInfoFuncAttr* typeFunc, const VectorNative<uint32_t>& pushRAParams, uint32_t offsetRT, void* retCopy)
+void X64Gen::emit_Call_Parameters(TypeInfoFuncAttr* typeFunc, const VectorNative<uint32_t>& pushRAParams, uint32_t offsetRT, void* retCopyAddr)
 {
     pushParams2.clear();
     for (auto r : pushRAParams)
         pushParams2.push_back({X64PushParamType::Reg, r});
-    emit_Call_Parameters(typeFunc, pushParams2, offsetRT, retCopy);
+    emit_Call_Parameters(typeFunc, pushParams2, offsetRT, retCopyAddr);
 }
 
-void X64Gen::emit_Call_Parameters(TypeInfoFuncAttr* typeFunc, const VectorNative<X64PushParam>& pushRAParams, uint32_t offsetRT, void* retCopy)
+void X64Gen::emit_Call_Parameters(TypeInfoFuncAttr* typeFunc, const VectorNative<X64PushParam>& pushRAParams, uint32_t offsetRT, void* retCopyAddr)
 {
     int numCallParams = (int) typeFunc->parameters.size();
     pushParams3.clear();
@@ -1990,7 +1989,7 @@ void X64Gen::emit_Call_Parameters(TypeInfoFuncAttr* typeFunc, const VectorNative
         auto seekPtrClosure = concat.getSeekPtr() - 4;
         auto seekJmpClosure = concat.totalCount();
 
-        emit_Call_Parameters(typeFunc, pushParams3, pushParamsTypes, retCopy);
+        emit_Call_Parameters(typeFunc, pushParams3, pushParamsTypes, retCopyAddr);
 
         // Jump to after closure call
         emit_LongJumpOp(JUMP);
@@ -2003,13 +2002,13 @@ void X64Gen::emit_Call_Parameters(TypeInfoFuncAttr* typeFunc, const VectorNative
 
         pushParams3.erase(0);
         pushParamsTypes.erase(0);
-        emit_Call_Parameters(typeFunc, pushParams3, pushParamsTypes, retCopy);
+        emit_Call_Parameters(typeFunc, pushParams3, pushParamsTypes, retCopyAddr);
 
         *seekPtrAfterClosure = (uint8_t) (concat.totalCount() - seekJmpAfterClosure);
     }
     else
     {
-        emit_Call_Parameters(typeFunc, pushParams3, pushParamsTypes, retCopy);
+        emit_Call_Parameters(typeFunc, pushParams3, pushParamsTypes, retCopyAddr);
     }
 }
 
