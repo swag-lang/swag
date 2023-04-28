@@ -1114,7 +1114,7 @@ bool SemanticJob::resolveRetVal(SemanticContext* context)
 
     // If this is a simple return type, remove the retval stuff.
     // Variable will behaves normally, in the stack
-    if (!(typeFct->returnType->flags & TYPEINFO_RETURN_BY_COPY))
+    if (!typeFct->returnByStackAddress())
     {
         auto typeExpr = CastAst<AstTypeExpression>(node, AstNodeKind::TypeExpression);
         typeExpr->typeFlags &= ~TYPEFLAG_RETVAL;

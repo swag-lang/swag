@@ -1192,7 +1192,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* ide
             }
 
             // From now this is considered as a function, not a lambda
-            auto funcType           = typeInfo->clone();
+            auto funcType           = (TypeInfoFuncAttr*) typeInfo->clone();
             funcType->kind          = TypeInfoKind::FuncAttr;
             identifier->typeInfo    = funcType;
             identifier->byteCodeFct = ByteCodeGenJob::emitLambdaCall;
@@ -1201,9 +1201,9 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* ide
             SWAG_CHECK(setSymbolMatchCallParams(context, identifier, oneMatch));
 
             // For a return by copy, need to reserve room on the stack for the return result
-            auto returnType = TypeManager::concreteType(identifier->typeInfo);
-            if (returnType->flags & TYPEINFO_RETURN_BY_COPY)
+            if (funcType->returnByStackAddress())
             {
+                auto returnType = funcType->concreteReturnType();
                 identifier->flags |= AST_TRANSIENT;
                 identifier->allocateComputedValue();
                 identifier->computedValue->storageOffset = identifier->ownerScope->startStackSize;
@@ -1334,6 +1334,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* ide
         }
 
         // The function call is constexpr if the function is, and all parameters are
+        auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(identifier->typeInfo, TypeInfoKind::FuncAttr, TypeInfoKind::LambdaClosure);
         if (identifier->resolvedSymbolOverload->node->flags & AST_CONST_EXPR)
         {
             if (identifier->callParameters)
@@ -1345,7 +1346,6 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* ide
             // Otherwise, we do not want the AST_CONST_EXPR_FLAG
             if (identifier->flags & AST_CONST_EXPR)
             {
-                auto typeFunc   = CastTypeInfo<TypeInfoFuncAttr>(identifier->typeInfo, TypeInfoKind::FuncAttr);
                 auto returnType = typeFunc->concreteReturnType();
 
                 // :CheckConstExprFuncReturnType
@@ -1440,9 +1440,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* ide
             identifier->byteCodeFct = ByteCodeGenJob::emitIntrinsic;
         }
         else if (funcDecl->isForeign())
-        {
             identifier->byteCodeFct = ByteCodeGenJob::emitForeignCall;
-        }
         else
             identifier->byteCodeFct = ByteCodeGenJob::emitCall;
 
@@ -1477,7 +1475,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* ide
         SWAG_CHECK(setupIdentifierRef(context, identifier, returnType));
 
         // For a return by copy, need to reserve room on the stack for the return result
-        if (returnType->flags & TYPEINFO_RETURN_BY_COPY)
+        if (typeFunc->returnByStackAddress())
         {
             identifier->flags |= AST_TRANSIENT;
             identifier->allocateComputedValue();
