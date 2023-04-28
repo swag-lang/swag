@@ -1355,7 +1355,9 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* ide
                     !returnType->isNativeFloat() &&
                     !returnType->isBool() &&
                     !returnType->isPointerToTypeInfo() &&
-                    !(returnType->flags & TYPEINFO_RETURN_BY_COPY) && // Treated later (as errors)
+                    !returnType->isStruct() &&  // Treated later (as errors)
+                    !returnType->isArray() &&   // Treated later (as errors)
+                    !returnType->isClosure() && // Treated later (as errors)
                     !(identifier->semFlags & SEMFLAG_EXEC_RET_STACK))
                 {
                     identifier->flags &= ~AST_CONST_EXPR;
