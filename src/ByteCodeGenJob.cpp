@@ -338,12 +338,15 @@ ByteCodeInstruction* ByteCodeGenJob::emitInstruction(ByteCodeGenContext* context
     ins.c.u64 = r2;
     ins.d.u64 = r3;
 
-    ins.flags = context->instructionsFlags;
-    if (context->tryCatchScope)
-        ins.flags |= BCI_TRYCATCH;
+    ins.flags    = context->instructionsFlags;
     ins.dynFlags = 0;
 
     ins.node = context->forceNode ? context->forceNode : node;
+
+    if (context->tryCatchScope)
+        ins.flags |= BCI_TRYCATCH;
+    if (ins.node && ins.node->attributeFlags & ATTRIBUTE_CAN_OVERFLOW_ON)
+        ins.flags |= BCI_CAN_OVERFLOW;
 
 #if defined SWAG_DEV_MODE
     ins.sourceFile            = file;
