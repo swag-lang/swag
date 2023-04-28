@@ -410,8 +410,8 @@ private impl Tab
         rect := getBarRectItems()
         if idx < firstVisibleIdx or views[idx].pos + views[idx].width >= rect.right()
         {
-            x := rect.right() - views[firstVisibleIdx].width
             firstVisibleIdx = idx
+            x := rect.right() - views[firstVisibleIdx].width
             while firstVisibleIdx
             {
                 x -= views[firstVisibleIdx - 1].width
