@@ -157,7 +157,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
     }
 
     // Save pointer to return value if this is a return by copy
-    if (typeFunc->returnByCopy() && iReg < cc.byRegisterCount)
+    if (typeFunc->returnByAddress() && iReg < cc.byRegisterCount)
     {
         uint32_t stackOffset = getParamStackOffset(coffFct, iReg);
         pp.emit_Store64_Indirect(stackOffset, cc.byRegisterInteger[iReg], RDI);
@@ -3144,7 +3144,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
         {
             int stackOffset = 0;
             int paramIdx    = typeFunc->numParamsRegisters();
-            if (typeFunc->returnByCopy())
+            if (typeFunc->returnByAddress())
                 paramIdx += 1;
             stackOffset = coffFct->offsetCallerStackParams + regOffset(paramIdx);
             pp.emit_LoadAddress_Indirect(stackOffset, RAX, RDI);
@@ -3600,7 +3600,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
         case ByteCodeOp::Ret:
 
             // Emit result
-            if (!returnType->isVoid() && !typeFunc->returnByCopy())
+            if (!returnType->isVoid() && !typeFunc->returnByAddress())
             {
                 pp.emit_Load64_Indirect(offsetResult, cc.returnByRegisterInteger, RDI);
                 if (returnType->isNative(NativeTypeKind::F32))

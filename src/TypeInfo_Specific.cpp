@@ -827,7 +827,7 @@ bool TypeInfoFuncAttr::isCVariadic()
     return false;
 }
 
-bool TypeInfoFuncAttr::returnByCopy()
+bool TypeInfoFuncAttr::returnByAddress()
 {
     if (!returnType || returnType->isVoid())
         return false;
@@ -849,7 +849,7 @@ bool TypeInfoFuncAttr::returnByValue()
 {
     if (!returnType || returnType->isVoid())
         return false;
-    return !returnByCopy();
+    return !returnByAddress();
 }
 
 TypeInfo* TypeInfoFuncAttr::concreteReturnType()

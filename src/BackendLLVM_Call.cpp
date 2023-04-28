@@ -15,7 +15,7 @@ void BackendLLVM::createRet(const BuildParameters& buildParameters, Module* modu
     auto& builder         = *pp.builder;
 
     // Emit result
-    if (!returnType->isVoid() && !typeFunc->returnByCopy())
+    if (!returnType->isVoid() && !typeFunc->returnByAddress())
     {
         if (returnType->isNative())
         {
@@ -90,7 +90,7 @@ llvm::FunctionType* BackendLLVM::getOrCreateFuncType(const BuildParameters& buil
 
     VectorNative<llvm::Type*> params;
     llvm::Type*               returnType   = nullptr;
-    bool                      returnByCopy = typeFunc->returnByCopy();
+    bool                      returnByCopy = typeFunc->returnByAddress();
 
     llvm::Type* llvmRealReturnType = swagTypeToLLVMType(buildParameters, moduleToGen, typeFunc->returnType);
     if (returnByCopy)

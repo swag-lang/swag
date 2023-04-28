@@ -1955,7 +1955,7 @@ void X64Gen::emit_Call_Parameters(TypeInfoFuncAttr* typeFunc, const VectorNative
     }
 
     // Return by parameter
-    if (typeFunc->returnByCopy())
+    if (typeFunc->returnByAddress())
     {
         pushParams3.push_back({X64PushParamType::Reg, offsetRT});
         pushParamsTypes.push_back(g_TypeMgr->typeInfoUndefined);
