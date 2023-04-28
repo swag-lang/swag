@@ -21,9 +21,8 @@ void initCallingConventions()
     cc.byRegisterFloat.push_back(XMM3);
     cc.useRegisterFloat = true;
 
-    cc.returnByRegisterInteger  = CPURegister::RAX;
-    cc.returnByRegisterFloat    = CPURegister::XMM0;
-    cc.useReturnByRegisterFloat = true;
+    cc.returnByRegisterInteger = CPURegister::RAX;
+    cc.returnByRegisterFloat   = CPURegister::XMM0;
 
     cc.structByRegister = true;
 }

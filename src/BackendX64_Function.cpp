@@ -3603,13 +3603,10 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             if (!returnType->isVoid() && !typeFunc->returnByCopy())
             {
                 pp.emit_Load64_Indirect(offsetResult, cc.returnByRegisterInteger, RDI);
-                if (cc.useReturnByRegisterFloat)
-                {
-                    if (returnType->isNative(NativeTypeKind::F32))
-                        pp.emit_CopyF32(cc.returnByRegisterFloat, RAX);
-                    else if (returnType->isNative(NativeTypeKind::F64))
-                        pp.emit_CopyF64(cc.returnByRegisterFloat, RAX);
-                }
+                if (returnType->isNative(NativeTypeKind::F32))
+                    pp.emit_CopyF32(cc.returnByRegisterFloat, RAX);
+                else if (returnType->isNative(NativeTypeKind::F64))
+                    pp.emit_CopyF64(cc.returnByRegisterFloat, RAX);
             }
 
             pp.emit_Add32_RSP(sizeStack + sizeParamsStack);

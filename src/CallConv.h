@@ -60,9 +60,6 @@ struct CallingConventionDesc
     // The register used to return a float
     CPURegister returnByRegisterFloat = CPURegister::XMM0;
 
-    // Use 'returnByRegisterFloat' in case of returning a float instead of 'registerReturnInteger4'
-    bool useReturnByRegisterFloat = true;
-
     // Scratch registers used to opimized generation
     CPURegister firstScratchRegister = CPURegister::R12;
     uint32_t    numScratchRegisters  = 4;

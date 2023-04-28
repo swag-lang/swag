@@ -2015,16 +2015,15 @@ void X64Gen::emit_Call_Parameters(TypeInfoFuncAttr* typeFunc, const VectorNative
 
 void X64Gen::emit_Call_Result(TypeInfoFuncAttr* typeFunc, uint32_t offsetRT)
 {
-    if (!typeFunc->returnByValue())
-        return;
-
-    const auto& cc         = typeFunc->callingConv();
-    auto        returnType = typeFunc->concreteReturnType();
-
-    if (cc.useReturnByRegisterFloat && returnType->isNativeFloat())
-        emit_StoreF64_Indirect(offsetRT, cc.returnByRegisterFloat, RDI);
-    else
-        emit_Store64_Indirect(offsetRT, cc.returnByRegisterInteger, RDI);
+    if (typeFunc->returnByValue())
+    {
+        const auto& cc         = typeFunc->callingConv();
+        auto        returnType = typeFunc->concreteReturnType();
+        if (returnType->isNativeFloat())
+            emit_StoreF64_Indirect(offsetRT, cc.returnByRegisterFloat, RDI);
+        else
+            emit_Store64_Indirect(offsetRT, cc.returnByRegisterInteger, RDI);
+    }
 }
 
 void X64Gen::emit_Call_Indirect(CPURegister reg)
