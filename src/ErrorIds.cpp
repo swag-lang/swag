@@ -479,7 +479,7 @@ void initErrors()
     SWAG_ERROR(Err0481, "cannot dereference type '%s'");
     SWAG_ERROR(Err0094, "cannot discard a function call that returns nothing");
     SWAG_ERROR(Err0090, "cannot evaluate function parameter at compile time (type is '%s')");
-    SWAG_ERROR(Err0280, "cannot evaluate the constant expression of type '%s' at compile time");
+    SWAG_ERROR(Err0280, nullptr);
     SWAG_ERROR(Err0321, "cannot evaluate the tuple value at compile time because one of its members is not 'Swag.ConstExpr'");
     SWAG_ERROR(Err0281, "cannot evaluate the value of type '%s' at compile time because the struct is not marked with 'Swag.ConstExpr'");
     SWAG_ERROR(Err0775, "cannot expand '%s' because this is recursive");

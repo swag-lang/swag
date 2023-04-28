@@ -101,55 +101,49 @@ bool SemanticJob::executeCompilerNode(SemanticContext* context, AstNode* node)
     if (!(node->semFlags & SEMFLAG_EXEC_RET_STACK))
     {
         auto realType = TypeManager::concreteType(node->typeInfo);
-        if (realType && realType->flags & TYPEINFO_RETURN_BY_COPY)
+        if (realType && realType->isStruct() && !(realType->declNode->attributeFlags & ATTRIBUTE_CONSTEXPR))
         {
-            switch (realType->kind)
+            if (realType->isTuple())
             {
-            case TypeInfoKind::Struct:
+                Diagnostic diag{node, Err(Err0321)};
+                return context->report(diag);
+            }
+
+            // It is possible to convert a complex struct to a constant static array of values if the struct
+            // implements 'opCount' and 'opSlice'
+            context->job->waitAllStructMethods(realType);
+            if (context->result != ContextResult::Done)
+                return true;
+
+            if (node->hasSpecialFuncCall())
             {
-                // Type is forced constexpr, evaluate it "as is"
-                if (realType->declNode->attributeFlags & ATTRIBUTE_CONSTEXPR)
-                    break;
+                Diagnostic diag{node, Fmt(Err(Err0281), realType->getDisplayNameC())};
+                diag.hint = Fmt(Hnt(Hnt0047), node->extMisc()->resolvedUserOpSymbolOverload->symbol->name.c_str());
+                return context->report(diag);
+            }
 
-                if (realType->isTuple())
+            SymbolName* symCount   = nullptr;
+            SymbolName* symSlice   = nullptr;
+            auto        typeStruct = CastTypeInfo<TypeInfoStruct>(realType, TypeInfoKind::Struct);
+            SWAG_CHECK(hasUserOp(context, g_LangSpec->name_opCount, typeStruct, &symCount));
+            SWAG_CHECK(hasUserOp(context, g_LangSpec->name_opSlice, typeStruct, &symSlice));
+
+            if (!symCount || !symSlice)
+            {
+                // Force evaluation by a #run
+                if (node->flags & AST_RUN_BLOCK)
                 {
-                    Diagnostic diag{node, Err(Err0321)};
-                    return context->report(diag);
+                    node->semFlags |= SEMFLAG_FORCE_CONST_EXPR;
                 }
-
-                // It is possible to convert a complex struct to a constant static array of values if the struct
-                // implements 'opCount' and 'opSlice'
-                context->job->waitAllStructMethods(realType);
-                if (context->result != ContextResult::Done)
-                    return true;
-
-                if (node->hasSpecialFuncCall())
+                else
                 {
-                    Diagnostic diag{node, Fmt(Err(Err0281), realType->getDisplayNameC())};
-                    diag.hint = Fmt(Hnt(Hnt0047), node->extMisc()->resolvedUserOpSymbolOverload->symbol->name.c_str());
-                    return context->report(diag);
-                }
-
-                SymbolName* symCount   = nullptr;
-                SymbolName* symSlice   = nullptr;
-                auto        typeStruct = CastTypeInfo<TypeInfoStruct>(realType, TypeInfoKind::Struct);
-                SWAG_CHECK(hasUserOp(context, g_LangSpec->name_opCount, typeStruct, &symCount));
-                SWAG_CHECK(hasUserOp(context, g_LangSpec->name_opSlice, typeStruct, &symSlice));
-
-                if (!symCount || !symSlice)
-                {
-                    // Force evaluation by a #run
-                    if (node->flags & AST_RUN_BLOCK)
-                    {
-                        node->semFlags |= SEMFLAG_FORCE_CONST_EXPR;
-                        break;
-                    }
-
                     Diagnostic diag{node, Fmt(Err(Err0281), realType->getDisplayNameC())};
                     diag.hint = Hlp(Hlp0036);
                     return context->report(diag);
                 }
-
+            }
+            else
+            {
                 SWAG_ASSERT(!context->node->hasExtMisc() || !context->node->extMisc()->resolvedUserOpSymbolOverload);
 
                 // opCount
@@ -241,15 +235,6 @@ bool SemanticJob::executeCompilerNode(SemanticContext* context, AstNode* node)
                             return true;
                     }
                 }
-
-                break;
-            }
-
-            case TypeInfoKind::Array:
-                break;
-
-            default:
-                return context->report({node, Fmt(Err(Err0280), realType->getDisplayNameC())});
             }
         }
     }
