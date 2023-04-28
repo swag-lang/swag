@@ -99,11 +99,12 @@ bool SemanticJob::resolveInlineBefore(SemanticContext* context)
         return true;
     node->semFlags |= SEMFLAG_RESOLVE_INLINED;
 
-    auto func = node->func;
+    auto func         = node->func;
+    auto typeInfoFunc = CastTypeInfo<TypeInfoFuncAttr>(func->typeInfo, TypeInfoKind::FuncAttr, TypeInfoKind::LambdaClosure);
 
     // :DirectInlineLocalVar
     // For a return by copy, need to reserve room on the stack for the return result
-    if (func->returnType && func->returnType->typeInfo->flags & TYPEINFO_RETURN_BY_COPY)
+    if (typeInfoFunc->returnByStackAddress())
     {
         node->flags |= AST_TRANSIENT;
         node->allocateComputedValue();
@@ -115,7 +116,7 @@ bool SemanticJob::resolveInlineBefore(SemanticContext* context)
     node->scope->startStackSize = node->ownerScope->startStackSize;
 
     // If we inline a throwable function, be sure the top level function is informed
-    if (func->typeInfo->flags & TYPEINFO_CAN_THROW)
+    if (typeInfoFunc->flags & TYPEINFO_CAN_THROW)
         node->ownerFct->specFlags |= AstFuncDecl::SPECFLAG_REG_GET_CONTEXT;
 
     // Register all function parameters as inline symbols
