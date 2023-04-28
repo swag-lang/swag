@@ -1540,9 +1540,8 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
     else
         SWAG_CHECK(checkCatchError(context, varNode, node, node, node->parent, typeInfoFunc));
 
-    int  precallStack  = 0;
-    int  numCallParams = allParams ? (int) allParams->childs.size() : 0;
-    auto returnType    = typeInfoFunc->returnType;
+    int precallStack  = 0;
+    int numCallParams = allParams ? (int) allParams->childs.size() : 0;
 
     // If we are in a function that need to keep the RR0 register alive, we need to save it
     bool rr0Saved = false;
@@ -1551,7 +1550,8 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
         node->ownerFct->returnType->typeInfo &&
         !node->ownerFct->returnType->typeInfo->isVoid())
     {
-        if (node->ownerFct->returnType->typeInfo->flags & TYPEINFO_RETURN_BY_COPY)
+        auto ownerTypeInfoFunc = CastTypeInfo<TypeInfoFuncAttr>(node->ownerFct->typeInfo, TypeInfoKind::FuncAttr, TypeInfoKind::LambdaClosure);
+        if (ownerTypeInfoFunc->returnByStackAddress())
         {
             EMIT_INST0(context, ByteCodeOp::PushRR);
             rr0Saved = true;
@@ -1564,7 +1564,7 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
     }
 
     // Return by copy
-    if (returnType && (returnType->flags & TYPEINFO_RETURN_BY_COPY))
+    if (typeInfoFunc->returnByStackAddress())
     {
         SWAG_CHECK(emitReturnByCopyAddress(context, node, typeInfoFunc));
     }
@@ -1997,35 +1997,34 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
         freeRegisterRC(context, r);
 
     // Copy result in a computing register
-    if (typeInfoFunc->returnType && !typeInfoFunc->returnType->isVoid())
+    if (typeInfoFunc->returnType &&
+        !typeInfoFunc->returnType->isVoid() &&
+        !typeInfoFunc->returnByStackAddress())
     {
-        if (!(typeInfoFunc->returnType->flags & TYPEINFO_RETURN_BY_COPY))
+        auto numRegs = typeInfoFunc->returnType->numRegisters();
+
+        // Need to do that even if discard, not sure why
+        context->bc->maxCallResults = max(context->bc->maxCallResults, numRegs);
+
+        if (!(node->flags & AST_DISCARD))
         {
-            auto numRegs = typeInfoFunc->returnType->numRegisters();
-
-            // Need to do that even if discard, not sure why
-            context->bc->maxCallResults = max(context->bc->maxCallResults, numRegs);
-
-            if (!(node->flags & AST_DISCARD))
+            reserveRegisterRC(context, node->resultRegisterRC, numRegs);
+            if (numRegs == 1)
             {
-                reserveRegisterRC(context, node->resultRegisterRC, numRegs);
-                if (numRegs == 1)
-                {
-                    EMIT_INST1(context, ByteCodeOp::CopyRTtoRC, node->resultRegisterRC[0]);
+                EMIT_INST1(context, ByteCodeOp::CopyRTtoRC, node->resultRegisterRC[0]);
 
-                    if (node->semFlags & SEMFLAG_FROM_REF && !node->forceTakeAddress())
-                    {
-                        auto ptrPointer = CastTypeInfo<TypeInfoPointer>(typeInfoFunc->returnType, TypeInfoKind::Pointer);
-                        SWAG_ASSERT(ptrPointer->flags & TYPEINFO_POINTER_REF);
-                        SWAG_CHECK(emitTypeDeRef(context, node->resultRegisterRC, ptrPointer->pointedType));
-                    }
-                }
-                else
+                if (node->semFlags & SEMFLAG_FROM_REF && !node->forceTakeAddress())
                 {
-                    SWAG_ASSERT(numRegs == 2);
-                    SWAG_ASSERT(!(node->semFlags & SEMFLAG_FROM_REF));
-                    EMIT_INST2(context, ByteCodeOp::CopyRTtoRC2, node->resultRegisterRC[0], node->resultRegisterRC[1]);
+                    auto ptrPointer = CastTypeInfo<TypeInfoPointer>(typeInfoFunc->returnType, TypeInfoKind::Pointer);
+                    SWAG_ASSERT(ptrPointer->flags & TYPEINFO_POINTER_REF);
+                    SWAG_CHECK(emitTypeDeRef(context, node->resultRegisterRC, ptrPointer->pointedType));
                 }
+            }
+            else
+            {
+                SWAG_ASSERT(numRegs == 2);
+                SWAG_ASSERT(!(node->semFlags & SEMFLAG_FROM_REF));
+                EMIT_INST2(context, ByteCodeOp::CopyRTtoRC2, node->resultRegisterRC[0], node->resultRegisterRC[1]);
             }
         }
     }
