@@ -212,7 +212,7 @@ func createView0(tabView: *Tab, view: *Wnd)
 
         slider0 := Slider.create(view, {10, 470}, id: "slider0")
         slider0.sliderFlags &= ~.HilightBar
-        edit0   := EditBox.create(view, "0", {205, 464, 45}, id: "edit0")
+        edit0   := EditBox.create(view, "0", {210, 464, 45}, id: "edit0")
         edit0.setForm(EditBoxForm.Transparent)
 
         slider0.setMinMax(0, 255)
@@ -237,9 +237,10 @@ func createView0(tabView: *Tab, view: *Wnd)
 
     // SliderCtrl
     {
-        sliderctrl := SliderCtrl.create(view, "Center", {370, 580, 250, 50})
+        sliderctrl := SliderCtrl.create(view, "Center", {370, 590, 250, 50})
         sliderctrl.slider.setMinMax(0, 255)
         sliderctrl.edit.setInputU64(0, 255)
+        sliderctrl.edit.setForm(.Square)
         sliderctrl.slider.setValue(0)
     }
 

@@ -65,7 +65,7 @@ impl SliderCtrl
             }
 
             .edit = EditBox.create(ctrl, "", {})
-            .edit.setForm(.Transparent)
+            .edit.setForm(.Square)
             .edit.editBoxFlags |= .RightAlign
             .edit.sigLoseFocus += closure|ctrl|(edit)
             {

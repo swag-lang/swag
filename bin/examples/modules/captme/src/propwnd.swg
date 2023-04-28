@@ -130,7 +130,6 @@ impl PropWnd
     {
         with ctrl := SliderCtrl.create(mainLayout, #self.name)
         {
-            .edit.setForm(.Square)
             .setMinMaxS64(minv, maxv)
             .dockStyle = .Top
             .setValue(val)
