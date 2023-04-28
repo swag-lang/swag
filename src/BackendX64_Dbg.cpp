@@ -1178,7 +1178,7 @@ bool BackendX64::dbgEmitFctDebugS(const BuildParameters& buildParameters)
 
             // Parameters
             /////////////////////////////////
-            const auto& cc = g_CallConv[typeFunc->callConv];
+            const auto& cc = typeFunc->callingConv();
             if (decl->parameters && !(decl->attributeFlags & ATTRIBUTE_COMPILER_FUNC))
             {
                 auto countParams = decl->parameters->childs.size();

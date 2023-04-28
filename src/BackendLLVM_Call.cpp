@@ -68,7 +68,7 @@ void BackendLLVM::createRet(const BuildParameters& buildParameters, Module* modu
 
 llvm::FunctionType* BackendLLVM::getOrCreateFuncType(const BuildParameters& buildParameters, Module* moduleToGen, TypeInfoFuncAttr* typeFunc, bool closureToLambda)
 {
-    const auto& cc              = g_CallConv[typeFunc->callConv];
+    const auto& cc              = typeFunc->callingConv();
     int         ct              = buildParameters.compileType;
     int         precompileIndex = buildParameters.precompileIndex;
     auto&       pp              = *perThread[ct][precompileIndex];
@@ -175,7 +175,7 @@ bool BackendLLVM::emitGetParam(llvm::LLVMContext&     context,
                                uint64_t               toAdd,
                                int                    deRefSize)
 {
-    const auto& cc              = g_CallConv[typeFunc->callConv];
+    const auto& cc              = typeFunc->callingConv();
     int         ct              = buildParameters.compileType;
     int         precompileIndex = buildParameters.precompileIndex;
     auto&       pp              = *perThread[ct][precompileIndex];
@@ -352,7 +352,7 @@ bool BackendLLVM::emitCallParameters(const BuildParameters&        buildParamete
                                      const Vector<llvm::Value*>&   values,
                                      bool                          closureToLambda)
 {
-    const auto& cc              = g_CallConv[typeFuncBC->callConv];
+    const auto& cc              = typeFuncBC->callingConv();
     int         ct              = buildParameters.compileType;
     int         precompileIndex = buildParameters.precompileIndex;
     auto&       pp              = *perThread[ct][precompileIndex];

@@ -26,7 +26,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
     auto        returnType      = TypeManager::concreteType(typeFunc->returnType);
     bool        ok              = true;
     bool        debug           = buildParameters.buildCfg->backendDebugInformations;
-    const auto& cc              = g_CallConv[typeFunc->callConv];
+    const auto& cc              = typeFunc->callingConv();
 
     concat.align(16);
     uint32_t startAddress = concat.totalCount();

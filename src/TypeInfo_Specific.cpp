@@ -919,6 +919,11 @@ int TypeInfoFuncAttr::numTotalRegisters()
     return numReturnRegisters() + numParamsRegisters();
 }
 
+const CallingConventionDesc& TypeInfoFuncAttr::callingConv()
+{
+    return g_CallConv[callConv];
+}
+
 TypeInfo* TypeInfoStruct::clone()
 {
     ScopedLock lk(mutex);

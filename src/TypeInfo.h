@@ -418,22 +418,23 @@ struct TypeInfoFuncAttr : public TypeInfo
     {
     }
 
-    TypeInfo* clone() override;
-    void      computeWhateverName(Utf8& resName, uint32_t nameType) override;
-    bool      isSame(TypeInfo* from, uint64_t castFlags) override;
-    bool      isSame(TypeInfoFuncAttr* other, uint64_t castFlags, BadSignatureInfos& bi);
-    bool      isSame(TypeInfoFuncAttr* from, uint64_t castFlags);
-    void      match(SymbolMatchContext& context);
-    bool      returnByCopy();
-    bool      returnByValue();
-    TypeInfo* concreteReturnType();
-    bool      isVariadic();
-    bool      isCVariadic();
-    uint32_t  registerIdxToParamIdx(int argIdx);
-    TypeInfo* registerIdxToType(int argIdx);
-    int       numParamsRegisters();
-    int       numReturnRegisters();
-    int       numTotalRegisters();
+    TypeInfo*                    clone() override;
+    void                         computeWhateverName(Utf8& resName, uint32_t nameType) override;
+    bool                         isSame(TypeInfo* from, uint64_t castFlags) override;
+    bool                         isSame(TypeInfoFuncAttr* other, uint64_t castFlags, BadSignatureInfos& bi);
+    bool                         isSame(TypeInfoFuncAttr* from, uint64_t castFlags);
+    void                         match(SymbolMatchContext& context);
+    bool                         returnByCopy();
+    bool                         returnByValue();
+    TypeInfo*                    concreteReturnType();
+    bool                         isVariadic();
+    bool                         isCVariadic();
+    uint32_t                     registerIdxToParamIdx(int argIdx);
+    TypeInfo*                    registerIdxToType(int argIdx);
+    int                          numParamsRegisters();
+    int                          numReturnRegisters();
+    int                          numTotalRegisters();
+    const CallingConventionDesc& callingConv();
 
     VectorNative<TypeInfoParam*> capture;
     VectorNative<TypeInfoParam*> genericParameters;
