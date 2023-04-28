@@ -935,7 +935,7 @@ int TypeInfoFuncAttr::numTotalRegisters()
     return numReturnRegisters() + numParamsRegisters();
 }
 
-const CallingConventionDesc& TypeInfoFuncAttr::callingConv()
+const CallConv& TypeInfoFuncAttr::callingConv()
 {
     return g_CallConv[callConv];
 }

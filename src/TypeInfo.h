@@ -426,21 +426,21 @@ struct TypeInfoFuncAttr : public TypeInfo
     void      computeWhateverName(Utf8& resName, uint32_t nameType) override;
     bool      isSame(TypeInfo* from, uint64_t castFlags) override;
 
-    bool                         isSame(TypeInfoFuncAttr* other, uint64_t castFlags, BadSignatureInfos& bi);
-    bool                         isSame(TypeInfoFuncAttr* from, uint64_t castFlags);
-    void                         match(SymbolMatchContext& context);
-    bool                         returnByAddress();
-    bool                         returnByStackAddress();
-    bool                         returnByValue();
-    TypeInfo*                    concreteReturnType();
-    bool                         isVariadic();
-    bool                         isCVariadic();
-    uint32_t                     registerIdxToParamIdx(int argIdx);
-    TypeInfo*                    registerIdxToType(int argIdx);
-    int                          numParamsRegisters();
-    int                          numReturnRegisters();
-    int                          numTotalRegisters();
-    const CallingConventionDesc& callingConv();
+    bool            isSame(TypeInfoFuncAttr* other, uint64_t castFlags, BadSignatureInfos& bi);
+    bool            isSame(TypeInfoFuncAttr* from, uint64_t castFlags);
+    void            match(SymbolMatchContext& context);
+    bool            returnByAddress();
+    bool            returnByStackAddress();
+    bool            returnByValue();
+    TypeInfo*       concreteReturnType();
+    bool            isVariadic();
+    bool            isCVariadic();
+    uint32_t        registerIdxToParamIdx(int argIdx);
+    TypeInfo*       registerIdxToType(int argIdx);
+    int             numParamsRegisters();
+    int             numReturnRegisters();
+    int             numTotalRegisters();
+    const CallConv& callingConv();
 
     VectorNative<TypeInfoParam*> capture;
     VectorNative<TypeInfoParam*> genericParameters;
@@ -451,10 +451,10 @@ struct TypeInfoFuncAttr : public TypeInfo
 
     TypeInfo* returnType = nullptr;
 
-    uint32_t          firstDefaultValueIdx = UINT32_MAX;
-    int               stackSize            = 0;
-    uint32_t          attributeUsage       = AttributeUsage::All;
-    CallingConvention callConv             = CallingConvention::Swag;
+    uint32_t     firstDefaultValueIdx = UINT32_MAX;
+    int          stackSize            = 0;
+    uint32_t     attributeUsage       = AttributeUsage::All;
+    CallConvKind callConv             = CallConvKind::Swag;
 };
 
 struct TypeInfoPointer : public TypeInfo

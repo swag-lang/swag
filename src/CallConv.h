@@ -2,7 +2,7 @@
 #include "VectorNative.h"
 struct TypeInfo;
 
-enum CallingConvention
+enum CallConvKind
 {
     Swag,
     Max
@@ -37,7 +37,7 @@ enum CPURegister : uint8_t
     XMM3 = 0b0011,
 };
 
-struct CallingConventionDesc
+struct CallConv
 {
     // The number of parameters to pass by register
     uint32_t byRegisterCount = 4;
@@ -67,5 +67,5 @@ struct CallingConventionDesc
     bool structByValue(TypeInfo* typeParam) const;
 };
 
-extern CallingConventionDesc g_CallConv[CallingConvention::Max];
-extern void                  initCallingConventions();
+extern CallConv g_CallConv[CallConvKind::Max];
+extern void     initCallConvKinds();

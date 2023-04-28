@@ -28,7 +28,7 @@ BackendFunctionBodyJobBase* Backend::newFunctionJob()
 
 void Backend::setup()
 {
-    initCallingConventions();
+    initCallConvKinds();
     if (!g_CommandLine.output)
         return;
 

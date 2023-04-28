@@ -2,11 +2,11 @@
 #include "CallConv.h"
 #include "TypeInfo.h"
 
-CallingConventionDesc g_CallConv[CallingConvention::Max];
+CallConv g_CallConv[CallConvKind::Max];
 
-void initCallingConventions()
+void initCallConvKinds()
 {
-    auto& cc = g_CallConv[CallingConvention::Swag];
+    auto& cc = g_CallConv[CallConvKind::Swag];
 
     cc.byRegisterCount = 4;
 
@@ -27,7 +27,7 @@ void initCallingConventions()
     cc.structByRegister = true;
 }
 
-bool CallingConventionDesc::structByValue(TypeInfo* typeParam) const
+bool CallConv::structByValue(TypeInfo* typeParam) const
 {
     return structByRegister && typeParam->isStruct() && typeParam->sizeOf <= sizeof(void*);
 }
