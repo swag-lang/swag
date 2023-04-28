@@ -457,10 +457,9 @@ void TypeManager::convertStructParamToRef(AstNode* node, TypeInfo* typeInfo)
     // A struct/interface is forced to be a const reference
     if (!node->typeInfo->isGeneric() && typeInfo->isStruct())
     {
-        auto typeRef   = makeType<TypeInfoPointer>();
-        typeInfo       = typeInfo->getFakeAlias();
-        typeRef->flags = typeInfo->flags | TYPEINFO_CONST | TYPEINFO_POINTER_REF | TYPEINFO_POINTER_AUTO_REF;
-        typeRef->flags &= ~TYPEINFO_RETURN_BY_COPY;
+        auto typeRef         = makeType<TypeInfoPointer>();
+        typeInfo             = typeInfo->getFakeAlias();
+        typeRef->flags       = typeInfo->flags | TYPEINFO_CONST | TYPEINFO_POINTER_REF | TYPEINFO_POINTER_AUTO_REF;
         typeRef->pointedType = typeInfo;
         typeRef->sizeOf      = sizeof(void*);
         typeRef->computeName();

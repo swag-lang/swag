@@ -273,10 +273,9 @@ TypeInfo* Generic::doTypeSubstitution(VectorMap<Utf8, TypeInfo*>& replaceTypes, 
             // So transform the replaced lambda type by a closure one.
             if (param->typeInfo->isClosure() && newType->isLambda())
             {
-                newType = newType->clone();
-                newType->flags |= TYPEINFO_CLOSURE;
+                newType         = newType->clone();
                 newType->sizeOf = SWAG_LIMIT_CLOSURE_SIZEOF;
-                newType->flags |= TYPEINFO_RETURN_BY_COPY | TYPEINFO_CLOSURE;
+                newType->flags |= TYPEINFO_CLOSURE;
 
                 auto newParam      = g_TypeMgr->makeParam();
                 newParam->typeInfo = g_TypeMgr->makePointerTo(g_TypeMgr->typeInfoVoid);

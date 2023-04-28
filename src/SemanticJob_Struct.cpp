@@ -799,7 +799,6 @@ bool SemanticJob::preResolveStructContent(SemanticContext* context)
     {
     case AstNodeKind::StructDecl:
         symbolKind = SymbolKind::Struct;
-        typeInfo->flags |= TYPEINFO_RETURN_BY_COPY;
         break;
     case AstNodeKind::InterfaceDecl:
         symbolKind     = SymbolKind::Interface;

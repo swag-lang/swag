@@ -196,7 +196,7 @@ bool SemanticJob::resolveTypeLambdaClosure(SemanticContext* context)
     if (node->kind == AstNodeKind::TypeClosure)
     {
         typeInfo->sizeOf = SWAG_LIMIT_CLOSURE_SIZEOF;
-        typeInfo->flags |= TYPEINFO_RETURN_BY_COPY | TYPEINFO_CLOSURE;
+        typeInfo->flags |= TYPEINFO_CLOSURE;
     }
     else
     {
@@ -684,7 +684,6 @@ bool SemanticJob::resolveTypeAlias(SemanticContext* context)
     auto typeInfo     = CastTypeInfo<TypeInfoAlias>(node->typeInfo, TypeInfoKind::Alias);
     typeInfo->rawType = node->childs.front()->typeInfo;
     typeInfo->sizeOf  = typeInfo->rawType->sizeOf;
-    typeInfo->flags |= (typeInfo->rawType->flags & TYPEINFO_RETURN_BY_COPY);
     typeInfo->flags |= (typeInfo->rawType->flags & TYPEINFO_GENERIC);
     typeInfo->flags |= (typeInfo->rawType->flags & TYPEINFO_CONST);
     typeInfo->computeName();

@@ -45,7 +45,7 @@ const uint64_t TYPEINFO_STRUCT_NO_POST_COPY      = 0x00000000'00000400;
 const uint64_t TYPEINFO_STRUCT_NO_POST_MOVE      = 0x00000000'00000800;
 const uint64_t TYPEINFO_STRUCT_NO_DROP           = 0x00000000'00001000;
 const uint64_t TYPEINFO_GENERIC                  = 0x00000000'00002000;
-const uint64_t TYPEINFO_RETURN_BY_COPY           = 0x00000000'00004000;
+const uint64_t TYPEINFO_POINTER_MOVE_REF         = 0x00000000'00004000;
 const uint64_t TYPEINFO_UNTYPED_INTEGER          = 0x00000000'00008000;
 const uint64_t TYPEINFO_UNTYPED_FLOAT            = 0x00000000'00010000;
 const uint64_t TYPEINFO_DEFINED_VALUE            = 0x00000000'00020000;
@@ -80,7 +80,6 @@ const uint64_t TYPEINFO_POINTER_AUTO_REF         = 0x00002000'00000000;
 const uint64_t TYPEINFO_STRUCT_NO_INIT           = 0x00004000'00000000;
 const uint64_t TYPEINFO_SPECOP_GENERATED         = 0x00008000'00000000;
 const uint64_t TYPEINFO_STRUCT_EMPTY             = 0x00010000'00000000;
-const uint64_t TYPEINFO_POINTER_MOVE_REF         = 0x00020000'00000000;
 
 const uint64_t TYPEINFOPARAM_DEFINED_VALUE = 0x00000000'00000001;
 const uint64_t TYPEINFOPARAM_HAS_USING     = 0x00000000'00000002;
@@ -477,7 +476,6 @@ struct TypeInfoArray : public TypeInfo
     TypeInfoArray()
         : TypeInfo{TypeInfoKind::Array}
     {
-        flags |= TYPEINFO_RETURN_BY_COPY;
     }
 
     int numRegisters() override
@@ -516,7 +514,6 @@ struct TypeInfoList : public TypeInfo
 {
     TypeInfoList()
     {
-        flags |= TYPEINFO_RETURN_BY_COPY;
     }
 
     int numRegisters() override

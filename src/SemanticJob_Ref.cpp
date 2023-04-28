@@ -93,10 +93,7 @@ bool SemanticJob::resolveMakePointerLambda(SemanticContext* context)
     auto lambdaType  = child->typeInfo->clone();
     lambdaType->kind = TypeInfoKind::LambdaClosure;
     if (child->typeInfo->isClosure())
-    {
-        lambdaType->flags |= TYPEINFO_RETURN_BY_COPY;
         lambdaType->sizeOf = SWAG_LIMIT_CLOSURE_SIZEOF;
-    }
     else
         lambdaType->sizeOf = sizeof(void*);
     node->typeInfo    = lambdaType;
