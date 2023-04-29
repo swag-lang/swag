@@ -804,7 +804,7 @@ bool Workspace::buildTarget()
                 }
 
                 auto depModule = it->second;
-                if (filteredModule->moduleEmbbeded.contains(depModule))
+                if (filteredModule->moduleEmbedded.contains(depModule))
                     continue;
                 if (depModule->addedToBuild)
                     continue;

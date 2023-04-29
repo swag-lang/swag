@@ -74,7 +74,7 @@ bool SemanticJob::warnUnusedFunction(Module* moduleToGen, ByteCode* one)
         return true;
     if (!one->node || !one->node->sourceFile || !one->node->resolvedSymbolName)
         return true;
-    if (one->node->sourceFile->isEmbbeded || one->node->sourceFile->isExternal || one->node->sourceFile->imported)
+    if (one->node->sourceFile->isEmbedded || one->node->sourceFile->isExternal || one->node->sourceFile->imported)
         return true;
     if (one->node->sourceFile->isRuntimeFile || one->node->sourceFile->isBootstrapFile)
         return true;

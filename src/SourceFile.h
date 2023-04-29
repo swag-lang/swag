@@ -23,7 +23,7 @@ struct SourceFile
     SharedMutex            mutex;
     Vector<Utf8>           allLines;
     VectorNative<Scope*>   globalUsings;
-    VectorNative<AstNode*> globalUsingsEmbbed;
+    VectorNative<AstNode*> globalUsingsEmbedded;
     Utf8                   name;
     Path                   path;
     Utf8                   externalContent;
@@ -55,7 +55,7 @@ struct SourceFile
     bool isBootstrapFile   = false;
     bool isRuntimeFile     = false;
     bool isScriptFile      = false;
-    bool isEmbbeded        = false;
+    bool isEmbedded        = false;
     bool shouldHaveError   = false;
     bool shouldHaveWarning = false;
     bool fromTests         = false;

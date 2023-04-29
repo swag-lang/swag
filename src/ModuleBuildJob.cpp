@@ -116,7 +116,7 @@ void ModuleBuildJob::publishFilesToTarget(Module* moduleToPublish)
 void ModuleBuildJob::publishFilesToPublic()
 {
     publishFilesToPublic(module);
-    for (auto m : module->moduleEmbbeded)
+    for (auto m : module->moduleEmbedded)
     {
         if (!m->addedToBuild)
             publishFilesToPublic(m);
@@ -126,7 +126,7 @@ void ModuleBuildJob::publishFilesToPublic()
 void ModuleBuildJob::publishFilesToTarget()
 {
     publishFilesToTarget(module);
-    for (auto m : module->moduleEmbbeded)
+    for (auto m : module->moduleEmbedded)
     {
         if (!m->addedToBuild)
             publishFilesToTarget(m);
@@ -273,9 +273,9 @@ JobResult ModuleBuildJob::execute()
             }
         }
 
-        // If we have an embbed module, and that module is also compiled as a normal module,
+        // If we have an embedded module, and that module is also compiled as a normal module,
         // then we need to wait for it to have published its files
-        for (auto& depModule : module->moduleEmbbeded)
+        for (auto& depModule : module->moduleEmbedded)
         {
             if (!depModule->addedToBuild)
                 continue;

@@ -352,10 +352,10 @@ JobResult EnumerateModuleJob::execute()
             return JobResult::ReleaseJob;
     }
 
-    // Deal with embbeded modules
+    // Deal with embedded modules
     for (auto m : g_Workspace->modules)
     {
-        if (!m->buildCfg.embbedImports)
+        if (!m->buildCfg.embeddedImports)
             continue;
 
         Vector<SourceFile*>             allFiles;
@@ -370,15 +370,15 @@ JobResult EnumerateModuleJob::execute()
                 continue;
             }
 
-            m->moduleEmbbeded.push_back(mod);
+            m->moduleEmbedded.push_back(mod);
 
             for (auto f : mod->files)
             {
                 if (f->isCfgFile)
                     continue;
-                auto newFile                = addFileToModule(m, allFiles, f->path.parent_path(), f->name, f->writeTime, nullptr, mod);
-                newFile->isEmbbeded         = true;
-                newFile->globalUsingsEmbbed = mod->buildParameters.globalUsings;
+                auto newFile                  = addFileToModule(m, allFiles, f->path.parent_path(), f->name, f->writeTime, nullptr, mod);
+                newFile->isEmbedded           = true;
+                newFile->globalUsingsEmbedded = mod->buildParameters.globalUsings;
             }
 
             // Add the dependencies of the embedded module too

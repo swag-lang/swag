@@ -254,7 +254,7 @@ struct Module
     VectorNative<ByteCode*>                          byteCodeRunFunc;
     VectorNative<ByteCode*>                          byteCodePrintBC;
     VectorNative<ModuleDependency*>                  moduleDependencies;
-    VectorNative<Module*>                            moduleEmbbeded;
+    VectorNative<Module*>                            moduleEmbedded;
     VectorNative<AstNode*>                           includes;
     VectorNative<AstNode*>                           globalVarsBss;
     VectorNative<AstNode*>                           globalVarsMutable;

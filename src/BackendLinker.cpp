@@ -130,7 +130,7 @@ namespace BackendLinker
                 arguments.push_back(libName);
         }
 
-        for (const auto& dep : module->moduleEmbbeded)
+        for (const auto& dep : module->moduleEmbedded)
         {
             if (dep->buildCfg.backendKind != BuildCfgBackendKind::Export)
                 continue;

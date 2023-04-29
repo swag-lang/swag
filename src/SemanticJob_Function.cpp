@@ -198,7 +198,7 @@ bool SemanticJob::sendCompilerMsgFuncDecl(SemanticContext* context)
     // Filter what we send
     if (module->kind == ModuleKind::BootStrap || module->kind == ModuleKind::Runtime)
         return true;
-    if (sourceFile->imported && !sourceFile->isEmbbeded)
+    if (sourceFile->imported && !sourceFile->isEmbedded)
         return true;
     if (!context->node->ownerScope->isGlobalOrImpl())
         return true;

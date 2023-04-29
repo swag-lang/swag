@@ -215,7 +215,7 @@ struct BuildCfg
     uint32_t  moduleRevision = 0;
     uint32_t  moduleBuildNum = 0;
     SwagSlice moduleNamespace;
-    bool      embbedImports = false;
+    bool      embeddedImports = false;
 
     // Debug
     uint32_t scratchAllocatorCapacity   = 4 * 1024 * 1024;

@@ -413,7 +413,7 @@ bool Parser::generateAst()
     sourceFile->astRoot->ownerScope = currentScope;
 
     // Make a copy of all #global using of the config file
-    if (!sourceFile->isCfgFile && !sourceFile->imported && !sourceFile->isEmbbeded)
+    if (!sourceFile->isCfgFile && !sourceFile->imported && !sourceFile->isEmbedded)
     {
         for (auto s : module->buildParameters.globalUsings)
         {
@@ -425,9 +425,9 @@ bool Parser::generateAst()
             node->sourceFile = sourceFile;
         }
     }
-    else if (sourceFile->isEmbbeded)
+    else if (sourceFile->isEmbedded)
     {
-        for (auto s : sourceFile->globalUsingsEmbbed)
+        for (auto s : sourceFile->globalUsingsEmbedded)
         {
             CloneContext cxt;
             cxt.parent       = sourceFile->astRoot;
