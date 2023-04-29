@@ -6,13 +6,12 @@ void ByteCodeDebugger::printHelp(const BcDbgCommand& cmd)
     Utf8 line;
     line.clear();
 
-    line += " ";
-    line += cmd.shortname;
+    line += cmd.name;
     line += " ";
 
-    while (line.length() < 4)
+    while (line.length() < 10)
         line += " ";
-    line += cmd.name;
+    line += cmd.shortname;
     line += " ";
 
     while (line.length() < 14)

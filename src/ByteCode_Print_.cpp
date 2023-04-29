@@ -217,16 +217,8 @@ Utf8 ByteCode::getInstructionReg(const char* header, const Register& reg, bool r
     return str;
 }
 
-void ByteCode::printInstruction(ByteCodeInstruction* ip, ByteCodeInstruction* curIp)
+void ByteCode::getPrintInstruction(ByteCodeInstruction* ip, ByteCodeInstruction* curIp, PrintInstructionLine& line)
 {
-    static const int ALIGN_OPCODE = 25;
-    static const int ALIGN_FLAGS1 = ALIGN_OPCODE + 50;
-    static const int ALIGN_FLAGS2 = ALIGN_FLAGS1 + 5;
-    static const int ALIGN_PRETTY = ALIGN_FLAGS2 + 10;
-#ifdef SWAG_DEV_MODE
-    static const int ALIGN_SOURCE = ALIGN_PRETTY + 65;
-#endif
-
     int  i      = (int) (ip - out);
     bool forDbg = curIp != nullptr;
 
@@ -234,130 +226,57 @@ void ByteCode::printInstruction(ByteCodeInstruction* ip, ByteCodeInstruction* cu
     if (forDbg)
     {
         if (ip == curIp)
-            g_Log.setColor(LogColor::Green);
+            line.rank += "-> ";
         else
-            g_Log.setColor(LogColor::Gray);
-
-        if (ip == curIp)
-            g_Log.print("-> ");
-        else
-            g_Log.print("   ");
-
-        g_Log.print(Fmt("%08d ", i));
+            line.rank += "   ";
     }
-    else
-    {
-        g_Log.setColor(LogColor::Cyan);
-        g_Log.print(Fmt("%08d ", i));
-    }
+    line.rank += Fmt("%08d", i);
 
-    // Instruction
-    if (!forDbg)
-        g_Log.setColor(LogColor::White);
-    int len = (int) strlen(g_ByteCodeOpDesc[(int) ip->op].name);
-    while (len++ < ALIGN_OPCODE)
-        g_Log.print(" ");
-    g_Log.print(g_ByteCodeOpDesc[(int) ip->op].name);
-    g_Log.print("   ");
-
-    int column = ALIGN_OPCODE + 3;
+    // Instruction name
+    line.name += g_ByteCodeOpDesc[(int) ip->op].name;
 
     // Parameters
-    if (!forDbg)
-        g_Log.setColor(LogColor::Gray);
     auto opFlags = g_ByteCodeOpDesc[(int) ip->op].flags;
-    Utf8 instRef;
-    instRef += getInstructionReg("A", ip->a, opFlags & OPFLAG_WRITE_A, opFlags & OPFLAG_READ_A, opFlags & (OPFLAG_READ_VAL32_A | OPFLAG_READ_VAL64_A) || ip->flags & BCI_IMM_A);
-    instRef += getInstructionReg("B", ip->b, opFlags & OPFLAG_WRITE_B, opFlags & OPFLAG_READ_B, opFlags & (OPFLAG_READ_VAL32_B | OPFLAG_READ_VAL64_B) || ip->flags & BCI_IMM_B);
-    instRef += getInstructionReg("C", ip->c, opFlags & OPFLAG_WRITE_C, opFlags & OPFLAG_READ_C, opFlags & (OPFLAG_READ_VAL32_C | OPFLAG_READ_VAL64_C) || ip->flags & BCI_IMM_C);
-    instRef += getInstructionReg("D", ip->d, opFlags & OPFLAG_WRITE_D, opFlags & OPFLAG_READ_D, opFlags & (OPFLAG_READ_VAL32_D | OPFLAG_READ_VAL64_D) || ip->flags & BCI_IMM_D);
-    g_Log.print(instRef);
-    column += instRef.length();
+    line.instRef += getInstructionReg("A", ip->a, opFlags & OPFLAG_WRITE_A, opFlags & OPFLAG_READ_A, opFlags & (OPFLAG_READ_VAL32_A | OPFLAG_READ_VAL64_A) || ip->flags & BCI_IMM_A);
+    line.instRef += getInstructionReg("B", ip->b, opFlags & OPFLAG_WRITE_B, opFlags & OPFLAG_READ_B, opFlags & (OPFLAG_READ_VAL32_B | OPFLAG_READ_VAL64_B) || ip->flags & BCI_IMM_B);
+    line.instRef += getInstructionReg("C", ip->c, opFlags & OPFLAG_WRITE_C, opFlags & OPFLAG_READ_C, opFlags & (OPFLAG_READ_VAL32_C | OPFLAG_READ_VAL64_C) || ip->flags & BCI_IMM_C);
+    line.instRef += getInstructionReg("D", ip->d, opFlags & OPFLAG_WRITE_D, opFlags & OPFLAG_READ_D, opFlags & (OPFLAG_READ_VAL32_D | OPFLAG_READ_VAL64_D) || ip->flags & BCI_IMM_D);
+    line.instRef.trim();
 
-    // Flags 1
-    while (column < ALIGN_FLAGS1)
-    {
-        g_Log.print(" ");
-        column++;
-    }
+    // Flags
+    line.flags += ip->flags & BCI_SAFETY ? "S" : ".";
+    line.flags += ip->flags & BCI_TRYCATCH ? "E" : ".";
+    line.flags += ip->node && ip->node->ownerInline ? "I" : ".";
+    line.flags += " ";
+    line.flags += ip->flags & BCI_IMM_A ? "A" : ".";
+    line.flags += ip->flags & BCI_IMM_B ? "B" : ".";
+    line.flags += ip->flags & BCI_IMM_C ? "C" : ".";
+    line.flags += ip->flags & BCI_IMM_D ? "D" : ".";
+    line.flags += ip->flags & BCI_START_STMT ? "S" : ".";
+    line.flags += ip->flags & BCI_UNPURE ? "U" : ".";
+    line.flags += ip->flags & BCI_CAN_OVERFLOW || (ip->node && ip->node->attributeFlags & ATTRIBUTE_CAN_OVERFLOW_ON) ? "O" : ".";
 
-    g_Log.print(ip->flags & BCI_SAFETY ? "S" : ".");
-    g_Log.print(ip->flags & BCI_TRYCATCH ? "E" : ".");
-    g_Log.print(ip->node && ip->node->ownerInline ? "I" : ".");
-    column += 3;
+    // Pretty
+    line.pretty = getPrettyInstruction(ip);
+    line.pretty += " ";
 
-    // Flags 2
-    while (column < ALIGN_FLAGS2)
-    {
-        g_Log.print(" ");
-        column++;
-    }
-
-    g_Log.print(ip->flags & BCI_IMM_A ? "A" : ".");
-    g_Log.print(ip->flags & BCI_IMM_B ? "B" : ".");
-    g_Log.print(ip->flags & BCI_IMM_C ? "C" : ".");
-    g_Log.print(ip->flags & BCI_IMM_D ? "D" : ".");
-    g_Log.print(ip->flags & BCI_START_STMT ? "S" : ".");
-    g_Log.print(ip->flags & BCI_UNPURE ? "U" : ".");
-    g_Log.print(ip->flags & BCI_CAN_OVERFLOW || (ip->node && ip->node->attributeFlags & ATTRIBUTE_CAN_OVERFLOW_ON) ? "O" : ".");
-    column += 7;
-
-    // Tree Node
-#ifdef SWAG_DEV_MODE
-    if (!forDbg)
-    {
-        g_Log.setColor(LogColor::Magenta);
-        g_Log.print(Fmt("  %08d  %08X  ", ip->treeNode, ip->crc));
-        column += 22;
-        g_Log.setColor(LogColor::Gray);
-    }
-#endif
-
-    if (!forDbg)
-        g_Log.setColor(LogColor::White);
-    while (column < ALIGN_PRETTY)
-    {
-        g_Log.print(" ");
-        column++;
-    }
-
-    auto tmp = getPrettyInstruction(ip);
-    g_Log.print(tmp);
-    column += tmp.length();
-
-    if (!forDbg)
-        g_Log.setColor(LogColor::Gray);
-    g_Log.print(" ");
-
-    // Jump offset
     if (ByteCode::isJump(ip))
-    {
-        g_Log.print(Fmt("%08d ", ip->b.s32 + i + 1));
-        column += 9;
-    }
+        line.pretty += Fmt("%08d ", ip->b.s32 + i + 1);
 
     switch (ip->op)
     {
     case ByteCodeOp::InternalPanic:
         if (ip->d.pointer)
-        {
-            tmp = Utf8::truncateDisplay((const char*) ip->d.pointer, 30);
-            g_Log.print(tmp);
-            column += tmp.length();
-        }
+            line.pretty += Utf8::truncateDisplay((const char*) ip->d.pointer, 30);
         break;
 
     case ByteCodeOp::MakeLambda:
     {
         auto funcNode = (AstFuncDecl*) ip->b.pointer;
         SWAG_ASSERT(funcNode);
-        tmp = Utf8::truncateDisplay(funcNode->sourceFile->name, 30);
-        g_Log.print(tmp);
-        column += tmp.length();
-        g_Log.print("/");
-        column++;
-        g_Log.print(funcNode->token.text);
-        column += funcNode->token.text.length();
+        line.pretty += Utf8::truncateDisplay(funcNode->sourceFile->name, 30);
+        line.pretty += "/";
+        line.pretty += funcNode->token.text;
         break;
     }
 
@@ -365,9 +284,7 @@ void ByteCode::printInstruction(ByteCodeInstruction* ip, ByteCodeInstruction* cu
     case ByteCodeOp::ForeignCallPop:
     {
         auto funcNode = CastAst<AstFuncDecl>((AstNode*) ip->a.pointer, AstNodeKind::FuncDecl);
-        tmp           = Utf8::truncateDisplay(funcNode->token.text, 30);
-        g_Log.print(tmp);
-        column += tmp.length();
+        line.pretty += Utf8::truncateDisplay(funcNode->token.text, 30);
         break;
     }
 
@@ -377,14 +294,11 @@ void ByteCode::printInstruction(ByteCodeInstruction* ip, ByteCodeInstruction* cu
     {
         auto bc = (ByteCode*) ip->a.pointer;
         SWAG_ASSERT(bc);
-        g_Log.print(bc->name);
-        column += bc->name.length();
+        line.pretty += bc->name;
         if (bc->node && bc->node->typeInfo)
         {
-            g_Log.print(" ");
-            column += 1;
-            g_Log.print(bc->node->typeInfo->name);
-            column += bc->node->typeInfo->name.length();
+            line.pretty += " ";
+            line.pretty += bc->node->typeInfo->name;
         }
         break;
     }
@@ -392,27 +306,172 @@ void ByteCode::printInstruction(ByteCodeInstruction* ip, ByteCodeInstruction* cu
         break;
     }
 
+    // DevMode
 #ifdef SWAG_DEV_MODE
     if (!forDbg)
     {
-        g_Log.setColor(LogColor::Magenta);
-        g_Log.print(" ");
-        while (column < ALIGN_SOURCE)
-        {
-            g_Log.print(" ");
-            column++;
-        }
-
-        g_Log.print(Fmt("%08d ", ip->serial));
+        line.devMode = Fmt("%08d %08X %08d", ip->treeNode, ip->crc, ip->serial);
         if (ip->sourceFile)
         {
             Path sf = ip->sourceFile;
-            g_Log.print(Fmt("%s:%d", sf.filename().string().c_str(), ip->sourceLine));
+            line.devMode += Fmt(" %s:%d", sf.filename().string().c_str(), ip->sourceLine);
         }
+    }
+#endif
+}
+
+void ByteCode::printInstruction(ByteCodeInstruction* ip, ByteCodeInstruction* curIp, const PrintInstructionLine& line)
+{
+    bool forDbg = curIp != nullptr;
+
+    // Instruction rank
+    if (forDbg && ip == curIp)
+        g_Log.setColor(LogColor::Green);
+    else if (forDbg)
+        g_Log.setColor(LogColor::Gray);
+    else
+        g_Log.setColor(LogColor::Cyan);
+    g_Log.print(line.rank);
+
+    // Instruction name
+    g_Log.setColor(forDbg ? LogColor::Gray : LogColor::White);
+    g_Log.print(line.name);
+
+    // Parameters
+    g_Log.setColor(forDbg ? LogColor::Gray : LogColor::White);
+    g_Log.print(line.instRef);
+
+    // Flags
+    g_Log.setColor(forDbg ? LogColor::Gray : LogColor::Gray);
+    g_Log.print(line.flags);
+
+    // Pretty
+    g_Log.setColor(forDbg ? LogColor::Gray : LogColor::White);
+    g_Log.print(line.pretty);
+
+#ifdef SWAG_DEV_MODE
+    if (!forDbg)
+    {
+        g_Log.setColor(LogColor::Gray);
+        g_Log.print(line.devMode);
     }
 #endif
 
     g_Log.eol();
+}
+
+enum class RankStr
+{
+    Rank,
+    Name,
+    InstRef,
+    Flags,
+    Pretty,
+#ifdef SWAG_DEV_MODE
+    DevMode,
+#endif
+};
+
+static void align(Vector<ByteCode::PrintInstructionLine>& lines, RankStr what, bool alignLeft, uint32_t defaultLen = 0)
+{
+    uint32_t len = 0;
+    for (auto& line : lines)
+    {
+        switch (what)
+        {
+        case RankStr::Rank:
+            len = max(len, line.rank.length());
+            break;
+        case RankStr::Name:
+            len = max(len, line.name.length());
+            break;
+        case RankStr::InstRef:
+            len = max(len, line.instRef.length());
+            break;
+        case RankStr::Flags:
+            len = max(len, line.flags.length());
+            break;
+        case RankStr::Pretty:
+            len = max(len, line.pretty.length());
+            break;
+#ifdef SWAG_DEV_MODE
+        case RankStr::DevMode:
+            len = max(len, line.devMode.length());
+            break;
+#endif
+        }
+    }
+
+    len = max(len, defaultLen);
+
+    for (auto& line : lines)
+    {
+        Utf8* str = nullptr;
+        switch (what)
+        {
+        case RankStr::Rank:
+            str = &line.rank;
+            break;
+        case RankStr::Name:
+            str = &line.name;
+            break;
+        case RankStr::InstRef:
+            str = &line.instRef;
+            break;
+        case RankStr::Flags:
+            str = &line.flags;
+            break;
+        case RankStr::Pretty:
+            str = &line.pretty;
+            break;
+#ifdef SWAG_DEV_MODE
+        case RankStr::DevMode:
+            str = &line.devMode;
+            break;
+#endif
+        default:
+            SWAG_ASSERT(false);
+            break;
+        }
+
+        if (alignLeft)
+        {
+            while (str->length() < len)
+                *str = " " + *str;
+        }
+        else
+        {
+            while (str->length() < len)
+                *str += " ";
+        }
+
+        *str += "  ";
+    }
+}
+
+void ByteCode::alignPrintInstructions(Vector<PrintInstructionLine>& lines, bool defaultLen)
+{
+    align(lines, RankStr::Rank, false, defaultLen ? 10 : 0);
+    align(lines, RankStr::Name, true, defaultLen ? 25 : 0);
+    align(lines, RankStr::InstRef, false, defaultLen ? 40 : 0);
+    align(lines, RankStr::Flags, false, defaultLen ? 12 : 0);
+    align(lines, RankStr::Pretty, false, defaultLen);
+#ifdef SWAG_DEV_MODE
+    align(lines, RankStr::DevMode, false);
+#endif
+}
+
+void ByteCode::printInstruction(ByteCodeInstruction* ip, ByteCodeInstruction* curIp)
+{
+    PrintInstructionLine line;
+
+    getPrintInstruction(ip, curIp, line);
+
+    Vector<PrintInstructionLine> lines;
+    lines.push_back(line);
+    alignPrintInstructions(lines, true);
+
+    printInstruction(ip, curIp, lines[0]);
 }
 
 void ByteCode::print(ByteCodeInstruction* curIp)
@@ -432,15 +491,28 @@ void ByteCode::print(ByteCodeInstruction* curIp)
         g_Log.eol();
     }
 
-    uint32_t    lastLine = UINT32_MAX;
-    SourceFile* lastFile = nullptr;
-    auto        ip       = out;
+    uint32_t                     lastLine = UINT32_MAX;
+    SourceFile*                  lastFile = nullptr;
+    Vector<PrintInstructionLine> lines;
+
+    auto ip = out;
+    for (int i = 0; i < (int) numInstructions; i++)
+    {
+        PrintInstructionLine line;
+        getPrintInstruction(ip++, curIp, line);
+        lines.push_back(line);
+    }
+
+    alignPrintInstructions(lines);
+
+    ip = out;
     for (int i = 0; i < (int) numInstructions; i++)
     {
         printSourceCode(ip, &lastLine, &lastFile);
-        printInstruction(ip++, curIp);
+        printInstruction(ip++, curIp, lines[i]);
     }
 
+    g_Log.eol();
     g_Log.setDefaultColor();
     g_Log.unlock();
 }

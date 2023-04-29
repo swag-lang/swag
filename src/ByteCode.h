@@ -182,10 +182,25 @@ struct ByteCode
     static bool     isByteCodeLambda(void* ptr);
     static Location getLocation(ByteCode* bc, ByteCodeInstruction* ip, bool getInline = false);
 
+    struct PrintInstructionLine
+    {
+        Utf8 rank;
+        Utf8 name;
+        Utf8 instRef;
+        Utf8 flags;
+        Utf8 pretty;
+#ifdef SWAG_DEV_MODE
+        Utf8 devMode;
+#endif
+    };
+
     void              printSourceCode(ByteCodeInstruction* ip, uint32_t* lastLine = nullptr, SourceFile** lastFile = nullptr);
     Utf8              getPrettyInstruction(ByteCodeInstruction* ip);
     Utf8              getInstructionReg(const char* name, const Register& reg, bool regW, bool regR, bool regImm);
+    void              getPrintInstruction(ByteCodeInstruction* ip, ByteCodeInstruction* curIp, PrintInstructionLine& line);
+    void              printInstruction(ByteCodeInstruction* ip, ByteCodeInstruction* curIp, const PrintInstructionLine& line);
     void              printInstruction(ByteCodeInstruction* ip, ByteCodeInstruction* curIp = nullptr);
+    void              alignPrintInstructions(Vector<PrintInstructionLine>& lines, bool defaultLen = false);
     void              print(ByteCodeInstruction* curIp = nullptr);
     Utf8              getCallNameFromDecl();
     Utf8              getCallName();
