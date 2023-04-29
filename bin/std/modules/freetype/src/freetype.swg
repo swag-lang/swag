@@ -1,4 +1,5 @@
 #global export
+using Swag
 
 alias FT_Library        = *FT_LibraryRec
 alias FT_Face           = *FT_FaceRec
@@ -54,7 +55,7 @@ const FT_LOAD_BITMAP_METRICS_ONLY           = 1 << 22
 const FT_STYLE_FLAG_ITALIC = 1 << 0
 const FT_STYLE_FLAG_BOLD   = 1 << 1
 
-#[Swag.ConstExpr]
+#[ConstExpr]
 func FT_LOAD_TARGET(x: FT_Int32) => (cast(FT_Int32) (x & 15) << 16)
 const FT_LOAD_TARGET_NORMAL  = FT_LOAD_TARGET(cast(FT_Int32) FT_Render_Mode.FT_RENDER_MODE_NORMAL)
 const FT_LOAD_TARGET_LIGHT   = FT_LOAD_TARGET(cast(FT_Int32) FT_Render_Mode.FT_RENDER_MODE_LIGHT)
@@ -198,7 +199,7 @@ struct FT_GlyphSlotRec
     internal:           FT_Slot_Internal
 }
 
-#[Swag.ConstExpr]
+#[ConstExpr]
 func FT_IMAGE_TAG(x1, x2, x3, x4: u32)->u32 => (x1 << 24) | (x2 << 16) | (x3 << 8) | (x4)
 enum FT_Glyph_Format
 {
@@ -402,7 +403,7 @@ var Errors: [0xFF] string = undefined
     Errors[0xBA] = "Font glyphs corrupted or missing fields"
 }
 
-#[Swag.Foreign("freetype")]
+#[Foreign("freetype")]
 {
     func FT_Done_Face(face: FT_Face);
     func FT_Get_Char_Index(face: FT_Face, charcode: FT_ULong)->FT_UInt;
@@ -413,7 +414,7 @@ var Errors: [0xFF] string = undefined
 
 namespace FreeTypePriv
 {
-    #[Swag.Foreign("freetype")]
+    #[Foreign("freetype")]
     {
         func FT_Init_FreeType(alibrary: *FT_Library)->FT_Error;
         func FT_Done_FreeType(alibrary: FT_Library)->FT_Error;
@@ -429,7 +430,7 @@ namespace FreeTypePriv
     }
 }
 
-#[Swag.Inline]
+#[Inline]
 {
     func FT_Init_FreeType(alibrary: *FT_Library) throw
     {
