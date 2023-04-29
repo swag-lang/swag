@@ -569,6 +569,44 @@ void ByteCodeOptimizer::reduceMemcpy(ByteCodeOptContext* context, ByteCodeInstru
         }
     }
 
+    else if (ip[0].op == ByteCodeOp::MakeStackPointer &&
+             ip[1].op == ByteCodeOp::MakeStackPointer &&
+             ip[2].a.u32 == ip[0].a.u32 &&
+             ip[2].b.u32 == ip[1].a.u32 &&
+             !(ip[1].flags & BCI_START_STMT) &&
+             !(ip[2].flags & BCI_START_STMT))
+    {
+        switch (ip[2].op)
+        {
+        case ByteCodeOp::MemCpy8:
+            SET_OP(ip + 2, ByteCodeOp::CopyStack8);
+            ip[2].a.u32 = ip[0].b.u32;
+            ip[2].b.u32 = ip[1].b.u32;
+            break;
+
+        case ByteCodeOp::MemCpy16:
+            SET_OP(ip + 2, ByteCodeOp::CopyStack16);
+            ip[2].a.u32 = ip[0].b.u32;
+            ip[2].b.u32 = ip[1].b.u32;
+            break;
+
+        case ByteCodeOp::MemCpy32:
+            SET_OP(ip + 2, ByteCodeOp::CopyStack32);
+            ip[2].a.u32 = ip[0].b.u32;
+            ip[2].b.u32 = ip[1].b.u32;
+            break;
+
+        case ByteCodeOp::MemCpy64:
+            SET_OP(ip + 2, ByteCodeOp::CopyStack64);
+            ip[2].a.u32 = ip[0].b.u32;
+            ip[2].b.u32 = ip[1].b.u32;
+            break;
+
+        default:
+            break;
+        }
+    }
+
     // Copy a constant value (from segment) to the stack
     else if (ip->op == ByteCodeOp::MakeConstantSegPointer &&
              ip[1].op == ByteCodeOp::MakeStackPointer &&
