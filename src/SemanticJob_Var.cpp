@@ -1238,7 +1238,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
                 auto alignOf                     = SemanticJob::alignOf(node);
                 node->ownerScope->startStackSize = (uint32_t) TypeManager::align(node->ownerScope->startStackSize, alignOf);
                 storageOffset                    = node->ownerScope->startStackSize;
-                node->ownerScope->startStackSize += typeInfo->sizeOf;
+                node->ownerScope->startStackSize += typeInfo->isStruct() ? max(typeInfo->sizeOf, 8) : typeInfo->sizeOf;
                 SemanticJob::setOwnerMaxStackSize(node, node->ownerScope->startStackSize);
             }
         }

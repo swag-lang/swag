@@ -290,6 +290,7 @@ struct SemanticJob : public Job
     static bool         setSymbolMatchCallParams(SemanticContext* context, AstIdentifier* identifier, OneMatch& oneMatch);
     static bool         setSymbolMatch(SemanticContext* context, AstIdentifierRef* identifierRef, AstIdentifier* identifier, OneMatch& oneMatch);
     static void         resolvePendingLambdaTyping(AstFuncCallParam* nodeCall, OneMatch* oneMatch, int i);
+    static void         allocateOnStack(AstNode* node, TypeInfo* typeInfo);
     static bool         setupFuncDeclParams(SemanticContext* context, TypeInfoFuncAttr* typeInfo, AstNode* funcAttr, AstNode* parameters, bool forGenerics);
     static Diagnostic*  computeNonConstExprNote(AstNode* node);
     static bool         executeCompilerNode(SemanticContext* context, AstNode* node, bool onlyConstExpr);

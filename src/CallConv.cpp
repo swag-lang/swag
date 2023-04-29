@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "CallConv.h"
 #include "TypeInfo.h"
+#include "Ast.h"
 
 CallConv g_CallConv[CallConvKind::Max];
 
@@ -19,13 +20,14 @@ void initCallConvKinds()
     ccSwag.returnByRegisterInteger = CPURegister::RAX;
     ccSwag.returnByRegisterFloat   = CPURegister::XMM0;
     ccSwag.useRegisterFloat        = true;
-    ccSwag.structByRegister        = true;
+    ccSwag.structParamByRegister   = true;
+    ccSwag.returnStructByRegister  = false;
 }
 
 bool CallConv::structParamByValue(TypeInfoFuncAttr* typeFunc, TypeInfo* typeParam)
 {
     const auto& cc = typeFunc->getCallConv();
-    return cc.structByRegister && typeParam->isStruct() && typeParam->sizeOf <= sizeof(void*);
+    return cc.structParamByRegister && typeParam->isStruct() && typeParam->sizeOf <= sizeof(void*);
 }
 
 bool CallConv::returnByAddress(TypeInfoFuncAttr* typeFunc)
@@ -50,6 +52,9 @@ bool CallConv::returnByStackAddress(TypeInfoFuncAttr* typeFunc)
     if (!typeFunc->returnType || typeFunc->returnType->isVoid())
         return false;
 
+    if (returnStructByValue(typeFunc))
+        return false;
+
     auto type = typeFunc->concreteReturnType();
     if (type->isStruct() ||
         type->isArray() ||
@@ -67,4 +72,35 @@ bool CallConv::returnByValue(TypeInfoFuncAttr* typeFunc)
         return false;
 
     return !CallConv::returnByAddress(typeFunc);
+}
+
+bool CallConv::returnStructByValue(TypeInfoFuncAttr* typeFunc)
+{
+    if (!typeFunc->returnType || typeFunc->returnType->isVoid())
+        return false;
+    if (!typeFunc->declNode)
+        return false;
+    if (typeFunc->flags & TYPEINFO_CAN_THROW)
+        return false;
+
+    if (typeFunc->declNode->kind == AstNodeKind::FuncDecl)
+    {
+        auto fctNode = CastAst<AstFuncDecl>(typeFunc->declNode, AstNodeKind::FuncDecl);
+        if (fctNode->mustInline())
+            return false;
+    }
+
+    auto type = typeFunc->concreteReturnType();
+    if (!type->isStruct())
+        return false;
+
+    auto typeStruct = CastTypeInfo<TypeInfoStruct>(type, TypeInfoKind::Struct);
+    if (!typeStruct->isPlainOldData())
+        return false;
+
+    const auto& cc = typeFunc->getCallConv();
+    if (cc.returnStructByRegister && type->isStruct() && type->sizeOf <= sizeof(void*))
+        return true;
+
+    return false;
 }

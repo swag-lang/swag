@@ -104,13 +104,10 @@ bool SemanticJob::resolveInlineBefore(SemanticContext* context)
 
     // :DirectInlineLocalVar
     // For a return by copy, need to reserve room on the stack for the return result
-    if (CallConv::returnByStackAddress(typeInfoFunc))
+    if (CallConv::returnByStackAddress(typeInfoFunc) || CallConv::returnStructByValue(typeInfoFunc))
     {
         node->flags |= AST_TRANSIENT;
-        node->allocateComputedValue();
-        node->computedValue->storageOffset = node->ownerScope->startStackSize;
-        node->ownerScope->startStackSize += func->returnType->typeInfo->sizeOf;
-        SemanticJob::setOwnerMaxStackSize(node, node->ownerScope->startStackSize);
+        allocateOnStack(node, func->returnType->typeInfo);
     }
 
     node->scope->startStackSize = node->ownerScope->startStackSize;

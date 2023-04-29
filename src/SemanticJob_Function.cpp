@@ -6,9 +6,16 @@
 #include "TypeManager.h"
 #include "ThreadManager.h"
 #include "Os.h"
-#include "ErrorIds.h"
 #include "LanguageSpec.h"
 #include "Naming.h"
+
+void SemanticJob::allocateOnStack(AstNode* node, TypeInfo* typeInfo)
+{
+    node->allocateComputedValue();
+    node->computedValue->storageOffset = node->ownerScope->startStackSize;
+    node->ownerScope->startStackSize += typeInfo->isStruct() ? max(typeInfo->sizeOf, 8) : typeInfo->sizeOf;
+    SemanticJob::setOwnerMaxStackSize(node, node->ownerScope->startStackSize);
+}
 
 bool SemanticJob::setupFuncDeclParams(SemanticContext* context, TypeInfoFuncAttr* typeInfo, AstNode* funcNode, AstNode* parameters, bool forGenerics)
 {
@@ -1116,7 +1123,10 @@ bool SemanticJob::resolveRetVal(SemanticContext* context)
     // Variable will behaves normally, in the stack
     if (!CallConv::returnByStackAddress(typeFct))
     {
-        auto typeExpr = CastAst<AstTypeExpression>(node, AstNodeKind::TypeExpression);
+        auto parentNode = node;
+        if (parentNode->kind == AstNodeKind::Identifier)
+            parentNode = parentNode->findParent(AstNodeKind::TypeExpression);
+        auto typeExpr = CastAst<AstTypeExpression>(parentNode, AstNodeKind::TypeExpression);
         typeExpr->typeFlags &= ~TYPEFLAG_RETVAL;
     }
 

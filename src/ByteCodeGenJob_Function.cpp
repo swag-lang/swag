@@ -178,22 +178,54 @@ bool ByteCodeGenJob::emitReturn(ByteCodeGenContext* context)
         {
             if (returnType->isStruct())
             {
-                // Force raw copy (no drop on the left, i.e. the argument to return the result) because it has not been initialized
-                returnExpression->flags |= AST_NO_LEFT_DROP;
-                RegisterList r0 = reserveRegisterRC(context);
-                EMIT_INST1(context, ByteCodeOp::CopyRRtoRC, r0);
-                SWAG_CHECK(emitCopyStruct(context, r0, returnExpression->resultRegisterRC, returnType, returnExpression));
-                freeRegisterRC(context, r0);
-                freeRegisterRC(context, returnExpression->resultRegisterRC);
+                auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(funcNode->typeInfo, TypeInfoKind::FuncAttr);
+
+                // :ReturnStructByValue
+                if (CallConv::returnStructByValue(typeFunc))
+                {
+                    if (!(typeFunc->returnType->flags & TYPEINFO_STRUCT_EMPTY))
+                    {
+                        switch (typeFunc->returnType->sizeOf)
+                        {
+                        case 1:
+                            EMIT_INST2(context, ByteCodeOp::DeRef8, returnExpression->resultRegisterRC, returnExpression->resultRegisterRC);
+                            break;
+                        case 2:
+                            EMIT_INST2(context, ByteCodeOp::DeRef16, returnExpression->resultRegisterRC, returnExpression->resultRegisterRC);
+                            break;
+                        case 3:
+                        case 4:
+                            EMIT_INST2(context, ByteCodeOp::DeRef32, returnExpression->resultRegisterRC, returnExpression->resultRegisterRC);
+                            break;
+                        default:
+                            EMIT_INST2(context, ByteCodeOp::DeRef64, returnExpression->resultRegisterRC, returnExpression->resultRegisterRC);
+                            break;
+                        }
+
+                        EMIT_INST1(context, ByteCodeOp::CopyRCtoRR, returnExpression->resultRegisterRC);
+                    }
+
+                    freeRegisterRC(context, returnExpression->resultRegisterRC);
+                }
+                else
+                {
+                    // Force raw copy (no drop on the left, i.e. the argument to return the result) because it has not been initialized
+                    returnExpression->flags |= AST_NO_LEFT_DROP;
+                    RegisterList r0 = reserveRegisterRC(context);
+                    EMIT_INST1(context, ByteCodeOp::CopyRRtoRC, r0);
+                    SWAG_CHECK(emitCopyStruct(context, r0, returnExpression->resultRegisterRC, returnType, returnExpression));
+                    freeRegisterRC(context, r0);
+                    freeRegisterRC(context, returnExpression->resultRegisterRC);
+                }
             }
             else if (returnType->isArray())
             {
                 // Force raw copy (no drop on the left, i.e. the argument to return the result) because it has not been initialized
                 returnExpression->flags |= AST_NO_LEFT_DROP;
-                RegisterList r1 = reserveRegisterRC(context);
-                EMIT_INST1(context, ByteCodeOp::CopyRRtoRC, r1);
-                SWAG_CHECK(emitCopyArray(context, returnType, r1, returnExpression->resultRegisterRC, returnExpression));
-                freeRegisterRC(context, r1);
+                RegisterList r0 = reserveRegisterRC(context);
+                EMIT_INST1(context, ByteCodeOp::CopyRRtoRC, r0);
+                SWAG_CHECK(emitCopyArray(context, returnType, r0, returnExpression->resultRegisterRC, returnExpression));
+                freeRegisterRC(context, r0);
                 freeRegisterRC(context, returnExpression->resultRegisterRC);
             }
             else if (returnType->isString())
@@ -2017,6 +2049,7 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
             reserveRegisterRC(context, node->resultRegisterRC, numRegs);
             if (numRegs == 1)
             {
+                auto returnType = typeInfoFunc->concreteReturnType();
                 EMIT_INST1(context, ByteCodeOp::CopyRTtoRC, node->resultRegisterRC[0]);
 
                 if (node->semFlags & SEMFLAG_FROM_REF && !node->forceTakeAddress())
@@ -2024,6 +2057,14 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
                     auto ptrPointer = CastTypeInfo<TypeInfoPointer>(typeInfoFunc->returnType, TypeInfoKind::Pointer);
                     SWAG_ASSERT(ptrPointer->flags & TYPEINFO_POINTER_REF);
                     SWAG_CHECK(emitTypeDeRef(context, node->resultRegisterRC, ptrPointer->pointedType));
+                }
+
+                // :ReturnStructByValue
+                else if (returnType->isStruct())
+                {
+                    SWAG_ASSERT(node->computedValue);
+                    EMIT_INST2(context, ByteCodeOp::SetAtStackPointer64, node->computedValue->storageOffset, node->resultRegisterRC);
+                    EMIT_INST2(context, ByteCodeOp::MakeStackPointer, node->resultRegisterRC, node->computedValue->storageOffset);
                 }
             }
             else

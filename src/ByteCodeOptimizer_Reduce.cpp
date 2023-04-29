@@ -5064,6 +5064,7 @@ void ByteCodeOptimizer::reduceLateStack(ByteCodeOptContext* context, ByteCodeIns
     case ByteCodeOp::SetZeroStack16:
     case ByteCodeOp::SetZeroStack32:
     case ByteCodeOp::SetZeroStack64:
+    case ByteCodeOp::SetZeroStackX:
     case ByteCodeOp::CopyStack8:
     case ByteCodeOp::CopyStack16:
     case ByteCodeOp::CopyStack32:

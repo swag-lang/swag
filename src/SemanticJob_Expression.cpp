@@ -82,10 +82,7 @@ bool SemanticJob::resolveExpressionListTuple(SemanticContext* context)
     // Otherwise the tuple will come from the constant segment.
     if (!(node->flags & AST_CONST_EXPR) && node->ownerScope && node->ownerFct && node->typeInfo)
     {
-        node->allocateComputedValue();
-        node->computedValue->storageOffset = node->ownerScope->startStackSize;
-        node->ownerScope->startStackSize += node->typeInfo->sizeOf;
-        SemanticJob::setOwnerMaxStackSize(node, node->ownerScope->startStackSize);
+        allocateOnStack(node, node->typeInfo);
     }
 
     return true;
@@ -130,10 +127,7 @@ bool SemanticJob::resolveExpressionListArray(SemanticContext* context)
     // :ExprListArrayStorage
     if (!(node->flags & AST_CONST_EXPR) && node->ownerScope && node->ownerFct)
     {
-        node->allocateComputedValue();
-        node->computedValue->storageOffset = node->ownerScope->startStackSize;
-        node->ownerScope->startStackSize += node->typeInfo->sizeOf;
-        SemanticJob::setOwnerMaxStackSize(node, node->ownerScope->startStackSize);
+        allocateOnStack(node, node->typeInfo);
     }
 
     return true;

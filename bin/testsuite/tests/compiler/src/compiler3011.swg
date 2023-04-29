@@ -8,7 +8,7 @@ impl Vector
     //#[Swag.PrintBc, Swag.Safety("", false)]
     func max(x, y: Vector)->Vector
     {
-        var result: retval = undefined
+        var result: retval// = undefined
         zz := @max(x.x, y.x)
         //@print(zz)
         return result

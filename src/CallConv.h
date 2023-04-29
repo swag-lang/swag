@@ -53,7 +53,10 @@ struct CallConv
     bool useRegisterFloat = true;
 
     // If a const struct fits in a register, pass it by value instead of by pointer
-    bool structByRegister = true;
+    bool structParamByRegister = true;
+
+    // Returns a struct by register if it fits
+    bool returnStructByRegister = true;
 
     // The register used to return an integer
     CPURegister returnByRegisterInteger = CPURegister::RAX;
@@ -61,7 +64,7 @@ struct CallConv
     // The register used to return a float
     CPURegister returnByRegisterFloat = CPURegister::XMM0;
 
-    // Scratch registers used to opimized generation
+    // Scratch registers used to optimized generation (x64 backend)
     CPURegister firstScratchRegister = CPURegister::R12;
     uint32_t    numScratchRegisters  = 4;
 
@@ -69,6 +72,7 @@ struct CallConv
     static bool returnByAddress(TypeInfoFuncAttr* typeFunc);
     static bool returnByStackAddress(TypeInfoFuncAttr* typeFunc);
     static bool returnByValue(TypeInfoFuncAttr* typeFunc);
+    static bool returnStructByValue(TypeInfoFuncAttr* typeFunc);
 };
 
 extern CallConv g_CallConv[CallConvKind::Max];

@@ -6,6 +6,99 @@
 #include "Workspace.h"
 #include "Report.h"
 
+void BackendLLVM::getReturnResult(llvm::LLVMContext&     context,
+                                  const BuildParameters& buildParameters,
+                                  Module*                moduleToGen,
+                                  TypeInfo*              returnType,
+                                  bool                   imm,
+                                  Register&              reg,
+                                  llvm::AllocaInst*      allocR,
+                                  llvm::AllocaInst*      allocResult)
+{
+    int   ct              = buildParameters.compileType;
+    int   precompileIndex = buildParameters.precompileIndex;
+    auto& pp              = *perThread[ct][precompileIndex];
+    auto& builder         = *pp.builder;
+
+    llvm::Value* returnResult = nullptr;
+    if (returnType->isNative())
+    {
+        switch (returnType->nativeType)
+        {
+        case NativeTypeKind::U8:
+        case NativeTypeKind::S8:
+        case NativeTypeKind::Bool:
+            if (imm)
+                returnResult = builder.getInt8(reg.u8);
+            else
+                returnResult = builder.CreateLoad(I8_TY(), GEP64(allocR, reg.u32));
+            builder.CreateStore(returnResult, TO_PTR_I8(allocResult));
+            break;
+        case NativeTypeKind::U16:
+        case NativeTypeKind::S16:
+            if (imm)
+                returnResult = builder.getInt16(reg.u16);
+            else
+                returnResult = builder.CreateLoad(I16_TY(), GEP64(allocR, reg.u32));
+            builder.CreateStore(returnResult, TO_PTR_I16(allocResult));
+            break;
+        case NativeTypeKind::U32:
+        case NativeTypeKind::S32:
+        case NativeTypeKind::Rune:
+            if (imm)
+                returnResult = builder.getInt32(reg.u32);
+            else
+                returnResult = builder.CreateLoad(I32_TY(), GEP64(allocR, reg.u32));
+            builder.CreateStore(returnResult, TO_PTR_I32(allocResult));
+            break;
+        case NativeTypeKind::U64:
+        case NativeTypeKind::S64:
+            if (imm)
+                returnResult = builder.getInt64(reg.u64);
+            else
+                returnResult = builder.CreateLoad(I64_TY(), GEP64(allocR, reg.u32));
+            builder.CreateStore(returnResult, TO_PTR_I64(allocResult));
+            break;
+        case NativeTypeKind::F32:
+            if (imm)
+                returnResult = llvm::ConstantFP::get(F32_TY(), reg.f32);
+            else
+                returnResult = builder.CreateLoad(F32_TY(), GEP64(allocR, reg.u32));
+            builder.CreateStore(returnResult, TO_PTR_F32(allocResult));
+            break;
+        case NativeTypeKind::F64:
+            if (imm)
+                returnResult = llvm::ConstantFP::get(F64_TY(), reg.f64);
+            else
+                returnResult = builder.CreateLoad(F64_TY(), GEP64(allocR, reg.u32));
+            builder.CreateStore(returnResult, TO_PTR_F64(allocResult));
+            break;
+        default:
+            SWAG_ASSERT(false);
+            break;
+        }
+    }
+    else if (returnType->isPointer() || returnType->isLambdaClosure())
+    {
+        auto llvmType = swagTypeToLLVMType(buildParameters, moduleToGen, returnType);
+        if (imm)
+            returnResult = builder.CreateIntToPtr(builder.getInt64(reg.u64), llvmType);
+        else
+            returnResult = builder.CreateIntToPtr(builder.CreateLoad(I64_TY(), GEP64(allocR, reg.u32)), llvmType);
+        builder.CreateStore(returnResult, builder.CreatePointerCast(allocResult, llvmType->getPointerTo()));
+    }
+    // :ReturnStructByValue
+    else if (returnType->isStruct())
+    {
+        returnResult = builder.CreateLoad(I64_TY(), GEP64(allocR, reg.u32));
+        builder.CreateStore(returnResult, TO_PTR_I64(allocResult));
+    }
+    else
+    {
+        SWAG_ASSERT(false);
+    }
+}
+
 void BackendLLVM::createRet(const BuildParameters& buildParameters, Module* moduleToGen, TypeInfoFuncAttr* typeFunc, TypeInfo* returnType, llvm::AllocaInst* allocResult)
 {
     int   ct              = buildParameters.compileType;
@@ -55,6 +148,11 @@ void BackendLLVM::createRet(const BuildParameters& buildParameters, Module* modu
             auto llvmType = swagTypeToLLVMType(buildParameters, moduleToGen, returnType);
             builder.CreateRet(builder.CreateLoad(llvmType, allocResult));
         }
+        // :ReturnStructByValue
+        else if (returnType->isStruct())
+        {
+            builder.CreateRet(builder.CreateLoad(I64_TY(), allocResult));
+        }
         else
         {
             SWAG_ASSERT(false);
@@ -88,14 +186,18 @@ llvm::FunctionType* BackendLLVM::getOrCreateFuncType(const BuildParameters& buil
     }
 
     VectorNative<llvm::Type*> params;
-    llvm::Type*               returnType   = nullptr;
-    bool                      returnByCopy = CallConv::returnByAddress(typeFunc);
+    llvm::Type*               llvmRealReturnType = swagTypeToLLVMType(buildParameters, moduleToGen, typeFunc->returnType);
+    bool                      returnByAddress    = CallConv::returnByAddress(typeFunc);
+    auto                      returnType         = typeFunc->concreteReturnType();
 
-    llvm::Type* llvmRealReturnType = swagTypeToLLVMType(buildParameters, moduleToGen, typeFunc->returnType);
-    if (returnByCopy)
-        returnType = VOID_TY();
+    llvm::Type* llvmReturnType = nullptr;
+    if (returnByAddress)
+        llvmReturnType = VOID_TY();
+    // :ReturnStructByValue
+    else if (returnType->isStruct())
+        llvmReturnType = I64_TY();
     else
-        returnType = llvmRealReturnType;
+        llvmReturnType = llvmRealReturnType;
 
     if (typeFunc->parameters.size())
     {
@@ -150,10 +252,10 @@ llvm::FunctionType* BackendLLVM::getOrCreateFuncType(const BuildParameters& buil
     }
 
     // Return value by copy is last
-    if (returnByCopy)
+    if (returnByAddress)
         params.push_back(llvmRealReturnType);
 
-    auto result = llvm::FunctionType::get(returnType, {params.begin(), params.end()}, typeFunc->isCVariadic());
+    auto result = llvm::FunctionType::get(llvmReturnType, {params.begin(), params.end()}, typeFunc->isCVariadic());
 
     if (closureToLambda)
         pp.mapFctTypeForeignClosure[typeFunc] = result;

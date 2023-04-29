@@ -1201,14 +1201,10 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* ide
             SWAG_CHECK(setSymbolMatchCallParams(context, identifier, oneMatch));
 
             // For a return by copy, need to reserve room on the stack for the return result
-            if (CallConv::returnByStackAddress(funcType))
+            if (CallConv::returnByStackAddress(funcType) || CallConv::returnStructByValue(funcType))
             {
-                auto returnType = funcType->concreteReturnType();
                 identifier->flags |= AST_TRANSIENT;
-                identifier->allocateComputedValue();
-                identifier->computedValue->storageOffset = identifier->ownerScope->startStackSize;
-                identifier->ownerScope->startStackSize += returnType->sizeOf;
-                SemanticJob::setOwnerMaxStackSize(identifier, identifier->ownerScope->startStackSize);
+                allocateOnStack(identifier, funcType->concreteReturnType());
             }
         }
         else
@@ -1477,13 +1473,10 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* ide
         SWAG_CHECK(setupIdentifierRef(context, identifier, returnType));
 
         // For a return by copy, need to reserve room on the stack for the return result
-        if (CallConv::returnByStackAddress(typeFunc))
+        if (CallConv::returnByStackAddress(typeFunc) || CallConv::returnStructByValue(typeFunc))
         {
             identifier->flags |= AST_TRANSIENT;
-            identifier->allocateComputedValue();
-            identifier->computedValue->storageOffset = identifier->ownerScope->startStackSize;
-            identifier->ownerScope->startStackSize += returnType->sizeOf;
-            SemanticJob::setOwnerMaxStackSize(identifier, identifier->ownerScope->startStackSize);
+            allocateOnStack(identifier, returnType);
         }
 
         break;
