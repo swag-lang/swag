@@ -458,24 +458,7 @@ void BackendX64::emitBinOpIntN(X64Gen& pp, ByteCodeInstruction* ip, X64Op op, X6
         }
         else
         {
-            switch (numBits)
-            {
-            case X64Bits::B8:
-                pp.emit_Op8(RCX, RAX, op);
-                break;
-            case X64Bits::B16:
-                pp.emit_Op16(RCX, RAX, op);
-                break;
-            case X64Bits::B32:
-                pp.emit_Op32(RCX, RAX, op);
-                break;
-            case X64Bits::B64:
-                pp.emit_Op64(RCX, RAX, op);
-                break;
-            default:
-                SWAG_ASSERT(false);
-                break;
-            }
+            pp.emit_OpIntN(RCX, RAX, op, numBits);
         }
     }
 }
@@ -536,24 +519,7 @@ void BackendX64::emitBinOpDivIntNAtReg(X64Gen& pp, ByteCodeInstruction* ip, bool
     if (ip->flags & BCI_IMM_B)
     {
         pp.emit_LoadN_Immediate(RCX, ip->b, numBits);
-        switch (numBits)
-        {
-        case X64Bits::B8:
-            pp.emit_Op8(RAX, RCX, isSigned ? X64Op::IDIV : X64Op::DIV);
-            break;
-        case X64Bits::B16:
-            pp.emit_Op16(RAX, RCX, isSigned ? X64Op::IDIV : X64Op::DIV);
-            break;
-        case X64Bits::B32:
-            pp.emit_Op32(RAX, RCX, isSigned ? X64Op::IDIV : X64Op::DIV);
-            break;
-        case X64Bits::B64:
-            pp.emit_Op64(RAX, RCX, isSigned ? X64Op::IDIV : X64Op::DIV);
-            break;
-        default:
-            SWAG_ASSERT(false);
-            break;
-        }
+        pp.emit_OpIntN(RAX, RCX, isSigned ? X64Op::IDIV : X64Op::DIV, numBits);
     }
     else
     {
@@ -643,7 +609,7 @@ void BackendX64::emitAddSubMul64(X64Gen& pp, ByteCodeInstruction* ip, uint64_t m
         else
         {
             pp.emit_Load64_Indirect(regOffset(ip->a.u32), RCX);
-            pp.emit_Op64(RAX, RCX, op);
+            pp.emit_OpIntN(RAX, RCX, op, X64Bits::B64);
             pp.emit_Store64_Indirect(regOffset(ip->c.u32), RCX);
         }
     }

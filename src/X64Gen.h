@@ -493,7 +493,7 @@ struct X64Gen
     void emit_Op8(CPURegister reg1, CPURegister reg2, X64Op instruction);
     void emit_Op16(CPURegister reg1, CPURegister reg2, X64Op instruction);
     void emit_Op32(CPURegister reg1, CPURegister reg2, X64Op instruction);
-    void emit_Op64(CPURegister reg1, CPURegister reg2, X64Op instruction);
+    void emit_OpIntN(CPURegister reg1, CPURegister reg2, X64Op instruction, X64Bits numBits);
     void emit_OpF32(CPURegister reg1, CPURegister reg2, X64Op instruction);
     void emit_OpF64(CPURegister reg1, CPURegister reg2, X64Op instruction);
     void emit_Pop(CPURegister reg);

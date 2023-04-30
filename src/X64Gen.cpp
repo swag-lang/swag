@@ -1099,9 +1099,27 @@ void X64Gen::emit_Op32(CPURegister reg1, CPURegister reg2, X64Op instruction)
     }
 }
 
-void X64Gen::emit_Op64(CPURegister reg1, CPURegister reg2, X64Op instruction)
+void X64Gen::emit_OpIntN(CPURegister reg1, CPURegister reg2, X64Op instruction, X64Bits numBits)
 {
-    concat.addU8(getREX(true, reg1 >= R8, false, reg2 >= R8));
+    if (numBits == X64Bits::B8)
+    {
+        emit_Op8(reg1, reg2, instruction);
+        return;
+    }
+
+    if (numBits == X64Bits::B16)
+    {
+        emit_Op16(reg1, reg2, instruction);
+        return;
+    }
+
+    if (numBits == X64Bits::B32)
+    {
+        emit_Op32(reg1, reg2, instruction);
+        return;
+    }
+
+    emit_REX(numBits, reg1, reg2);
     if (instruction == X64Op::DIV || instruction == X64Op::IDIV)
     {
         SWAG_ASSERT(reg1 == RAX and reg2 == RCX);
