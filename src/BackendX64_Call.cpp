@@ -10,7 +10,7 @@ uint32_t BackendX64::getParamStackOffset(CoffFunction* coffFct, int paramIdx)
 
     // If this was passed as a register, then get the value from storeS4 (where input registers have been saved)
     // instead of value from the stack
-    if (paramIdx < (int) cc.byRegisterCount)
+    if (paramIdx < (int) cc.paramByRegisterCount)
         return regOffset(paramIdx) + coffFct->offsetLocalStackParams;
 
     // Value from the caller stack

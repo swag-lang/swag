@@ -7,21 +7,21 @@ CallConv g_CallConv[CallConvKind::Max];
 
 void initCallConvKinds()
 {
-    auto& ccSwag           = g_CallConv[CallConvKind::Swag];
-    ccSwag.byRegisterCount = 4;
-    ccSwag.byRegisterInteger.push_back(RCX);
-    ccSwag.byRegisterInteger.push_back(RDX);
-    ccSwag.byRegisterInteger.push_back(R8);
-    ccSwag.byRegisterInteger.push_back(R9);
-    ccSwag.byRegisterFloat.push_back(XMM0);
-    ccSwag.byRegisterFloat.push_back(XMM1);
-    ccSwag.byRegisterFloat.push_back(XMM2);
-    ccSwag.byRegisterFloat.push_back(XMM3);
+    auto& ccSwag                = g_CallConv[CallConvKind::Swag];
+    ccSwag.paramByRegisterCount = 4;
+    ccSwag.paramByRegisterInteger.push_back(RCX);
+    ccSwag.paramByRegisterInteger.push_back(RDX);
+    ccSwag.paramByRegisterInteger.push_back(R8);
+    ccSwag.paramByRegisterInteger.push_back(R9);
+    ccSwag.paramByRegisterFloat.push_back(XMM0);
+    ccSwag.paramByRegisterFloat.push_back(XMM1);
+    ccSwag.paramByRegisterFloat.push_back(XMM2);
+    ccSwag.paramByRegisterFloat.push_back(XMM3);
     ccSwag.returnByRegisterInteger = CPURegister::RAX;
     ccSwag.returnByRegisterFloat   = CPURegister::XMM0;
     ccSwag.useRegisterFloat        = true;
     ccSwag.structParamByRegister   = true;
-    ccSwag.returnStructByRegister  = true;
+    ccSwag.structReturnByRegister  = true;
 }
 
 bool CallConv::structParamByValue(TypeInfoFuncAttr* typeFunc, TypeInfo* typeParam)
@@ -110,7 +110,7 @@ bool CallConv::returnStructByValue(TypeInfoFuncAttr* typeFunc)
         return false;
 
     const auto& cc = typeFunc->getCallConv();
-    if (cc.returnStructByRegister && type->isStruct() && type->sizeOf <= sizeof(void*))
+    if (cc.structReturnByRegister && type->isStruct() && type->sizeOf <= sizeof(void*))
         return true;
 
     return false;

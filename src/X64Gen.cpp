@@ -1665,7 +1665,7 @@ void X64Gen::emit_Call_Parameters(TypeInfoFuncAttr* typeFuncBC, VectorNative<X64
     const auto& cc                = typeFuncBC->getCallConv();
     bool        returnByStackAddr = CallConv::returnByStackAddress(typeFuncBC);
 
-    int callConvRegisters    = cc.byRegisterCount;
+    int callConvRegisters    = cc.paramByRegisterCount;
     int maxParamsPerRegister = (int) paramsRegisters.size();
 
     // Set the first N parameters. Can be return register, or function parameter.
@@ -1683,11 +1683,11 @@ void X64Gen::emit_Call_Parameters(TypeInfoFuncAttr* typeFuncBC, VectorNative<X64
         {
             SWAG_ASSERT(paramsRegisters[i].type == X64PushParamType::Reg);
             if (retCopyAddr)
-                emit_Load64_Immediate(cc.byRegisterInteger[i], (uint64_t) retCopyAddr);
+                emit_Load64_Immediate(cc.paramByRegisterInteger[i], (uint64_t) retCopyAddr);
             else if (returnByStackAddr)
-                emit_Load64_Indirect(reg, cc.byRegisterInteger[i], RDI);
+                emit_Load64_Indirect(reg, cc.paramByRegisterInteger[i], RDI);
             else
-                emit_LoadAddress_Indirect(reg, cc.byRegisterInteger[i], RDI);
+                emit_LoadAddress_Indirect(reg, cc.paramByRegisterInteger[i], RDI);
         }
 
         // This is a normal parameter, which can be float or integer
@@ -1698,7 +1698,7 @@ void X64Gen::emit_Call_Parameters(TypeInfoFuncAttr* typeFuncBC, VectorNative<X64
             {
                 SWAG_ASSERT(paramsRegisters[i].type == X64PushParamType::Reg);
                 emit_Load64_Indirect(regOffset(reg), RAX);
-                emit_Load64_Indirect(0, cc.byRegisterInteger[i], RAX);
+                emit_Load64_Indirect(0, cc.paramByRegisterInteger[i], RAX);
             }
             else if (cc.useRegisterFloat && type->isNative(NativeTypeKind::F32))
             {
@@ -1706,12 +1706,12 @@ void X64Gen::emit_Call_Parameters(TypeInfoFuncAttr* typeFuncBC, VectorNative<X64
                 {
                     SWAG_ASSERT(paramsRegisters[i].reg <= UINT32_MAX);
                     emit_Load32_Immediate(RAX, (uint32_t) paramsRegisters[i].reg);
-                    emit_CopyF32(cc.byRegisterFloat[i], RAX);
+                    emit_CopyF32(cc.paramByRegisterFloat[i], RAX);
                 }
                 else
                 {
                     SWAG_ASSERT(paramsRegisters[i].type == X64PushParamType::Reg);
-                    emit_LoadF32_Indirect(regOffset(reg), cc.byRegisterFloat[i]);
+                    emit_LoadF32_Indirect(regOffset(reg), cc.paramByRegisterFloat[i]);
                 }
             }
             else if (cc.useRegisterFloat && type->isNative(NativeTypeKind::F64))
@@ -1719,12 +1719,12 @@ void X64Gen::emit_Call_Parameters(TypeInfoFuncAttr* typeFuncBC, VectorNative<X64
                 if (paramsRegisters[i].type == X64PushParamType::Imm)
                 {
                     emit_Load64_Immediate(RAX, paramsRegisters[i].reg);
-                    emit_CopyF64(cc.byRegisterFloat[i], RAX);
+                    emit_CopyF64(cc.paramByRegisterFloat[i], RAX);
                 }
                 else
                 {
                     SWAG_ASSERT(paramsRegisters[i].type == X64PushParamType::Reg);
-                    emit_LoadF64_Indirect(regOffset(reg), cc.byRegisterFloat[i]);
+                    emit_LoadF64_Indirect(regOffset(reg), cc.paramByRegisterFloat[i]);
                 }
             }
             else
@@ -1733,37 +1733,37 @@ void X64Gen::emit_Call_Parameters(TypeInfoFuncAttr* typeFuncBC, VectorNative<X64
                 {
                 case X64PushParamType::Imm:
                     if (paramsRegisters[i].reg == 0)
-                        emit_ClearN(cc.byRegisterInteger[i], X64Bits::B64);
+                        emit_ClearN(cc.paramByRegisterInteger[i], X64Bits::B64);
                     else
-                        emit_Load64_Immediate(cc.byRegisterInteger[i], paramsRegisters[i].reg);
+                        emit_Load64_Immediate(cc.paramByRegisterInteger[i], paramsRegisters[i].reg);
                     break;
                 case X64PushParamType::Imm64:
-                    emit_Load64_Immediate(cc.byRegisterInteger[i], paramsRegisters[i].reg, true);
+                    emit_Load64_Immediate(cc.paramByRegisterInteger[i], paramsRegisters[i].reg, true);
                     break;
                 case X64PushParamType::RelocV:
-                    emit_Symbol_RelocationValue(cc.byRegisterInteger[i], (uint32_t) paramsRegisters[i].reg, 0);
+                    emit_Symbol_RelocationValue(cc.paramByRegisterInteger[i], (uint32_t) paramsRegisters[i].reg, 0);
                     break;
                 case X64PushParamType::RelocAddr:
-                    emit_Symbol_RelocationAddr(cc.byRegisterInteger[i], (uint32_t) paramsRegisters[i].reg, 0);
+                    emit_Symbol_RelocationAddr(cc.paramByRegisterInteger[i], (uint32_t) paramsRegisters[i].reg, 0);
                     break;
                 case X64PushParamType::Addr:
-                    emit_LoadAddress_Indirect((uint32_t) paramsRegisters[i].reg, cc.byRegisterInteger[i], RDI);
+                    emit_LoadAddress_Indirect((uint32_t) paramsRegisters[i].reg, cc.paramByRegisterInteger[i], RDI);
                     break;
                 case X64PushParamType::RegAdd:
-                    emit_Load64_Indirect(regOffset(reg), cc.byRegisterInteger[i]);
-                    emit_Add64_Immediate(paramsRegisters[i].val, cc.byRegisterInteger[i]);
+                    emit_Load64_Indirect(regOffset(reg), cc.paramByRegisterInteger[i]);
+                    emit_Add64_Immediate(paramsRegisters[i].val, cc.paramByRegisterInteger[i]);
                     break;
                 case X64PushParamType::RegMul:
                     emit_Load64_Indirect(regOffset(reg), RAX);
                     emit_Mul64_RAX(paramsRegisters[i].val);
-                    emit_Copy64(cc.byRegisterInteger[i], RAX);
+                    emit_Copy64(cc.paramByRegisterInteger[i], RAX);
                     break;
                 case X64PushParamType::GlobalString:
-                    emit_GlobalString((const char*) paramsRegisters[i].reg, cc.byRegisterInteger[i]);
+                    emit_GlobalString((const char*) paramsRegisters[i].reg, cc.paramByRegisterInteger[i]);
                     break;
                 default:
                     SWAG_ASSERT(paramsRegisters[i].type == X64PushParamType::Reg);
-                    emit_Load64_Indirect(regOffset(reg), cc.byRegisterInteger[i]);
+                    emit_Load64_Indirect(regOffset(reg), cc.paramByRegisterInteger[i]);
                     break;
                 }
             }

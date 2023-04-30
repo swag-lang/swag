@@ -278,9 +278,9 @@ bool BackendX64::emitGlobalPreMain(const BuildParameters& buildParameters)
     computeUnwind({}, {}, 48, sizeProlog, unwind);
 
     // Store first parameter on stack (process infos ptr)
-    SWAG_ASSERT(cc.byRegisterCount >= 1);
+    SWAG_ASSERT(cc.paramByRegisterCount >= 1);
     pp.emit_LoadAddress_Indirect(0, RDI, RSP);
-    pp.emit_Store64_Indirect(0, cc.byRegisterInteger[0], RDI);
+    pp.emit_Store64_Indirect(0, cc.paramByRegisterInteger[0], RDI);
 
     // Copy process infos passed as a parameter to the process info struct of this module
     pp.pushParams.clear();
@@ -333,9 +333,9 @@ bool BackendX64::emitGlobalInit(const BuildParameters& buildParameters)
     computeUnwind({}, {}, 48, sizeProlog, unwind);
 
     // Store first parameter on stack (process infos ptr)
-    SWAG_ASSERT(cc.byRegisterCount >= 1);
+    SWAG_ASSERT(cc.paramByRegisterCount >= 1);
     pp.emit_LoadAddress_Indirect(0, RDI, RSP);
-    pp.emit_Store64_Indirect(0, cc.byRegisterInteger[0], RDI);
+    pp.emit_Store64_Indirect(0, cc.paramByRegisterInteger[0], RDI);
 
     // Copy process infos passed as a parameter to the process info struct of this module
     pp.pushParams.clear();

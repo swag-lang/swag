@@ -863,7 +863,7 @@ namespace OS
             concat.currentSP             = gen.concat.firstBucket->datas;
         }
 
-        uint32_t stackSize = (uint32_t) max(cc.byRegisterCount, pushRAParam.size()) * sizeof(void*);
+        uint32_t stackSize = (uint32_t) max(cc.paramByRegisterCount, pushRAParam.size()) * sizeof(void*);
         stackSize += sizeof(void*);
         MK_ALIGN16(stackSize);
 

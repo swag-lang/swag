@@ -70,7 +70,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
 
     uint32_t offsetRT     = bc->maxReservedRegisterRC * sizeof(Register);
     uint32_t offsetS4     = offsetRT + bc->maxCallResults * sizeof(Register);
-    uint32_t offsetResult = offsetS4 + cc.byRegisterCount * sizeof(Register);
+    uint32_t offsetResult = offsetS4 + cc.paramByRegisterCount * sizeof(Register);
     uint32_t offsetStack  = offsetResult + sizeof(Register);
 
     // For float load (should be reserved only if we have floating point operations in that function)
@@ -79,9 +79,9 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
     uint32_t sizeStack = offsetFLT + 8;
     MK_ALIGN16(sizeStack);
 
-    // Calling convention, space for at least 'cc.byRegisterCount' parameters when calling a function
+    // Calling convention, space for at least 'cc.paramByRegisterCount' parameters when calling a function
     // (should ideally be reserved only if we have a call)
-    uint32_t sizeParamsStack = max(cc.byRegisterCount * sizeof(Register), (bc->maxCallParams + 1) * sizeof(Register));
+    uint32_t sizeParamsStack = max(cc.paramByRegisterCount * sizeof(Register), (bc->maxCallParams + 1) * sizeof(Register));
 
     // Because of variadic parameters in fct calls, we need to add some extra room, in case we have to flatten them
     // We want to be sure to have the room to flatten the array of variadics (make all params contiguous). That's
@@ -103,7 +103,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
     unwindOffsetRegs.push_back(concat.totalCount() - beforeProlog);
 
     // Push on scratch register per parameter
-    while (coffFct->numScratchRegs < min(cc.numScratchRegisters, min(cc.byRegisterCount, numTotalRegs)))
+    while (coffFct->numScratchRegs < min(cc.numScratchRegisters, min(cc.paramByRegisterCount, numTotalRegs)))
     {
         pp.emit_Push((CPURegister) (cc.firstScratchRegister + coffFct->numScratchRegs));
         unwindRegs.push_back((CPURegister) (cc.firstScratchRegister + coffFct->numScratchRegs));
@@ -141,14 +141,14 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
 
     // Save register parameters
     uint32_t iReg = 0;
-    while (iReg < min(cc.byRegisterCount, numTotalRegs))
+    while (iReg < min(cc.paramByRegisterCount, numTotalRegs))
     {
         auto     typeParam   = typeFunc->registerIdxToType(iReg);
         uint32_t stackOffset = getParamStackOffset(coffFct, iReg);
         if (cc.useRegisterFloat && typeParam->isNativeFloat())
-            pp.emit_StoreF64_Indirect(stackOffset, cc.byRegisterFloat[iReg], RDI);
+            pp.emit_StoreF64_Indirect(stackOffset, cc.paramByRegisterFloat[iReg], RDI);
         else
-            pp.emit_Store64_Indirect(stackOffset, cc.byRegisterInteger[iReg], RDI);
+            pp.emit_Store64_Indirect(stackOffset, cc.paramByRegisterInteger[iReg], RDI);
 
         if (iReg < coffFct->numScratchRegs)
             pp.emit_Load64_Indirect(stackOffset, (CPURegister) (cc.firstScratchRegister + iReg), RDI);
@@ -157,20 +157,20 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
     }
 
     // Save pointer to return value if this is a return by copy
-    if (CallConv::returnByAddress(typeFunc) && iReg < cc.byRegisterCount)
+    if (CallConv::returnByAddress(typeFunc) && iReg < cc.paramByRegisterCount)
     {
         uint32_t stackOffset = getParamStackOffset(coffFct, iReg);
-        pp.emit_Store64_Indirect(stackOffset, cc.byRegisterInteger[iReg], RDI);
+        pp.emit_Store64_Indirect(stackOffset, cc.paramByRegisterInteger[iReg], RDI);
         iReg++;
     }
 
     // Save C variadics
     if (typeFunc->isCVariadic())
     {
-        while (iReg < cc.byRegisterCount)
+        while (iReg < cc.paramByRegisterCount)
         {
             uint32_t stackOffset = coffFct->offsetCallerStackParams + regOffset(iReg);
-            pp.emit_Store64_Indirect(stackOffset, cc.byRegisterInteger[iReg], RDI);
+            pp.emit_Store64_Indirect(stackOffset, cc.paramByRegisterInteger[iReg], RDI);
             iReg++;
         }
     }

@@ -41,22 +41,22 @@ enum CPURegister : uint8_t
 struct CallConv
 {
     // The number of parameters to pass by register
-    uint32_t byRegisterCount = 4;
+    uint32_t paramByRegisterCount = 4;
 
     // The registers to use when passing parameter by register, and if it's integer
-    VectorNative<CPURegister> byRegisterInteger;
+    VectorNative<CPURegister> paramByRegisterInteger;
 
     // The registers to use when passing parameter by register, and if it's float
-    VectorNative<CPURegister> byRegisterFloat;
+    VectorNative<CPURegister> paramByRegisterFloat;
 
-    // If a float is passed by register, use 'byRegisterFloat' instead of 'byRegisterInteger'
+    // If a float is passed by register, use 'paramByRegisterFloat' instead of 'paramByRegisterInteger'
     bool useRegisterFloat = true;
 
     // If a const struct fits in a register, pass it by value instead of by pointer
     bool structParamByRegister = true;
 
     // Returns a struct by register if it fits
-    bool returnStructByRegister = true;
+    bool structReturnByRegister = true;
 
     // The register used to return an integer
     CPURegister returnByRegisterInteger = CPURegister::RAX;
