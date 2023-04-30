@@ -618,7 +618,6 @@
     <ClCompile Include="..\src\TypeGenStructJob.cpp" />
     <ClCompile Include="../src/Utf8.cpp" />
     <ClCompile Include="../src/Workspace.cpp" />
-    <ClCompile Include="..\src\ByteCodeOptimizer_Loop.cpp" />
     <ClCompile Include="..\src\ByteCodeDebugger.cpp" />
     <ClCompile Include="..\src\ModuleCfgManager.cpp" />
     <ClCompile Include="..\src\FetchModuleFileSystemJob.cpp" />

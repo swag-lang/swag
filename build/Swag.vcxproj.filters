@@ -209,9 +209,6 @@
     <ClCompile Include="..\src\FetchModuleFileSystemJob.cpp">
       <Filter>CfgManager</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\ByteCodeOptimizer_Loop.cpp">
-      <Filter>Backend\ByteCode\Optimize</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\RaceCondition.cpp">
       <Filter>Threading</Filter>
     </ClCompile>
