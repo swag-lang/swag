@@ -16,6 +16,12 @@ union Register
     double   f64;
     uint32_t ch;
     bool     b;
+
+    Register() = default;
+    Register(uint64_t val)
+        : u64{val}
+    {
+    }
 };
 
 struct RegisterList
