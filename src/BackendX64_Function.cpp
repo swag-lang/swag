@@ -598,55 +598,55 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             /////////////////////////////////////
 
         case ByteCodeOp::BinOpModuloS8:
-            emitBinOpIntDivAtReg(pp, ip, true, X64Bits::B8, true);
+            emitBinOpDivIntNAtReg(pp, ip, true, X64Bits::B8, true);
             break;
         case ByteCodeOp::BinOpModuloS16:
-            emitBinOpIntDivAtReg(pp, ip, true, X64Bits::B16, true);
+            emitBinOpDivIntNAtReg(pp, ip, true, X64Bits::B16, true);
             break;
         case ByteCodeOp::BinOpModuloS32:
-            emitBinOpIntDivAtReg(pp, ip, true, X64Bits::B32, true);
+            emitBinOpDivIntNAtReg(pp, ip, true, X64Bits::B32, true);
             break;
         case ByteCodeOp::BinOpModuloS64:
-            emitBinOpIntDivAtReg(pp, ip, true, X64Bits::B64, true);
+            emitBinOpDivIntNAtReg(pp, ip, true, X64Bits::B64, true);
             break;
         case ByteCodeOp::BinOpModuloU8:
-            emitBinOpIntDivAtReg(pp, ip, false, X64Bits::B8, true);
+            emitBinOpDivIntNAtReg(pp, ip, false, X64Bits::B8, true);
             break;
         case ByteCodeOp::BinOpModuloU16:
-            emitBinOpIntDivAtReg(pp, ip, false, X64Bits::B16, true);
+            emitBinOpDivIntNAtReg(pp, ip, false, X64Bits::B16, true);
             break;
         case ByteCodeOp::BinOpModuloU32:
-            emitBinOpIntDivAtReg(pp, ip, false, X64Bits::B32, true);
+            emitBinOpDivIntNAtReg(pp, ip, false, X64Bits::B32, true);
             break;
         case ByteCodeOp::BinOpModuloU64:
-            emitBinOpIntDivAtReg(pp, ip, false, X64Bits::B64, true);
+            emitBinOpDivIntNAtReg(pp, ip, false, X64Bits::B64, true);
             break;
 
             /////////////////////////////////////
 
         case ByteCodeOp::BinOpDivS8:
-            emitBinOpIntDivAtReg(pp, ip, true, X64Bits::B8);
+            emitBinOpDivIntNAtReg(pp, ip, true, X64Bits::B8);
             break;
         case ByteCodeOp::BinOpDivS16:
-            emitBinOpIntDivAtReg(pp, ip, true, X64Bits::B16);
+            emitBinOpDivIntNAtReg(pp, ip, true, X64Bits::B16);
             break;
         case ByteCodeOp::BinOpDivS32:
-            emitBinOpIntDivAtReg(pp, ip, true, X64Bits::B32);
+            emitBinOpDivIntNAtReg(pp, ip, true, X64Bits::B32);
             break;
         case ByteCodeOp::BinOpDivS64:
-            emitBinOpIntDivAtReg(pp, ip, true, X64Bits::B64);
+            emitBinOpDivIntNAtReg(pp, ip, true, X64Bits::B64);
             break;
         case ByteCodeOp::BinOpDivU8:
-            emitBinOpIntDivAtReg(pp, ip, false, X64Bits::B8);
+            emitBinOpDivIntNAtReg(pp, ip, false, X64Bits::B8);
             break;
         case ByteCodeOp::BinOpDivU16:
-            emitBinOpIntDivAtReg(pp, ip, false, X64Bits::B16);
+            emitBinOpDivIntNAtReg(pp, ip, false, X64Bits::B16);
             break;
         case ByteCodeOp::BinOpDivU32:
-            emitBinOpIntDivAtReg(pp, ip, false, X64Bits::B32);
+            emitBinOpDivIntNAtReg(pp, ip, false, X64Bits::B32);
             break;
         case ByteCodeOp::BinOpDivU64:
-            emitBinOpIntDivAtReg(pp, ip, false, X64Bits::B64);
+            emitBinOpDivIntNAtReg(pp, ip, false, X64Bits::B64);
             break;
         case ByteCodeOp::BinOpDivF32:
             emitBinOpFloat32AtReg(pp, ip, X64Op::FDIV);

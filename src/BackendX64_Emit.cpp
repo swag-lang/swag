@@ -486,7 +486,7 @@ void BackendX64::emitBinOpIntNAtReg(X64Gen& pp, ByteCodeInstruction* ip, X64Op o
     pp.emit_StoreN_Indirect(regOffset(ip->c.u32), RAX, RDI, numBits);
 }
 
-void BackendX64::emitBinOpIntDivAtReg(X64Gen& pp, ByteCodeInstruction* ip, bool isSigned, X64Bits numBits, bool modulo)
+void BackendX64::emitBinOpDivIntNAtReg(X64Gen& pp, ByteCodeInstruction* ip, bool isSigned, X64Bits numBits, bool modulo)
 {
     switch (numBits)
     {
