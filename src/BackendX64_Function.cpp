@@ -908,7 +908,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             pp.emit_Load64_Indirect(regOffset(ip->a.u32), RAX);
             pp.emit_Load16_Indirect(0, RAX, RAX);
             MK_IMMB_16(RCX);
-            pp.emit_Op16(RAX, RCX, X64Op::IMUL);
+            pp.emit_OpIntN(RAX, RCX, X64Op::IMUL, X64Bits::B16);
             emitOverflowSigned(pp, ip->node, ByteCodeGenJob::safetyMsg(SafetyMsg::MulEq, g_TypeMgr->typeInfoS16));
             pp.emit_Load64_Indirect(regOffset(ip->a.u32), RCX);
             pp.emit_Store16_Indirect(0, RAX, RCX);
@@ -916,14 +916,14 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
         case ByteCodeOp::AffectOpMulEqS16_SSafe:
             pp.emit_Load16_Indirect(offsetStack + ip->a.u32, RAX, RDI);
             MK_IMMB_16(RCX);
-            pp.emit_Op16(RAX, RCX, X64Op::IMUL);
+            pp.emit_OpIntN(RAX, RCX, X64Op::IMUL, X64Bits::B16);
             pp.emit_LoadAddress_Indirect(offsetStack + ip->a.u32, RCX, RDI);
             pp.emit_Store16_Indirect(0, RAX, RCX);
             break;
         case ByteCodeOp::AffectOpMulEqS16_SSSafe:
             pp.emit_Load16_Indirect(offsetStack + ip->a.u32, RAX, RDI);
             pp.emit_Load16_Indirect(offsetStack + ip->b.u32, RCX, RDI);
-            pp.emit_Op16(RAX, RCX, X64Op::IMUL);
+            pp.emit_OpIntN(RAX, RCX, X64Op::IMUL, X64Bits::B16);
             pp.emit_LoadAddress_Indirect(offsetStack + ip->a.u32, RCX, RDI);
             pp.emit_Store16_Indirect(0, RAX, RCX);
             break;
@@ -1008,7 +1008,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             pp.emit_Load64_Indirect(regOffset(ip->a.u32), RAX);
             pp.emit_Load16_Indirect(0, RAX, RAX);
             MK_IMMB_16(RCX);
-            pp.emit_Op16(RAX, RCX, X64Op::MUL);
+            pp.emit_OpIntN(RAX, RCX, X64Op::MUL, X64Bits::B16);
             emitOverflowUnsigned(pp, ip->node, ByteCodeGenJob::safetyMsg(SafetyMsg::MulEq, g_TypeMgr->typeInfoU16));
             pp.emit_Load64_Indirect(regOffset(ip->a.u32), RCX);
             pp.emit_Store16_Indirect(0, RAX, RCX);
@@ -1016,14 +1016,14 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
         case ByteCodeOp::AffectOpMulEqU16_SSafe:
             pp.emit_Load16_Indirect(offsetStack + ip->a.u32, RAX, RDI);
             MK_IMMB_16(RCX);
-            pp.emit_Op16(RAX, RCX, X64Op::MUL);
+            pp.emit_OpIntN(RAX, RCX, X64Op::MUL, X64Bits::B16);
             pp.emit_LoadAddress_Indirect(offsetStack + ip->a.u32, RCX, RDI);
             pp.emit_Store16_Indirect(0, RAX, RCX);
             break;
         case ByteCodeOp::AffectOpMulEqU16_SSSafe:
             pp.emit_Load16_Indirect(offsetStack + ip->a.u32, RAX, RDI);
             pp.emit_Load16_Indirect(offsetStack + ip->b.u32, RCX, RDI);
-            pp.emit_Op16(RAX, RCX, X64Op::MUL);
+            pp.emit_OpIntN(RAX, RCX, X64Op::MUL, X64Bits::B16);
             pp.emit_LoadAddress_Indirect(offsetStack + ip->a.u32, RCX, RDI);
             pp.emit_Store16_Indirect(0, RAX, RCX);
             break;
@@ -1152,7 +1152,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             pp.emit_Load16_Indirect(0, RAX, RAX);
             pp.emit_Cwd();
             MK_IMMB_16(RCX);
-            pp.emit_Op16(RAX, RCX, X64Op::IDIV);
+            pp.emit_OpIntN(RAX, RCX, X64Op::IDIV, X64Bits::B16);
             pp.emit_Load64_Indirect(regOffset(ip->a.u32), RCX);
             pp.emit_Store16_Indirect(0, RAX, RCX);
             break;
@@ -1160,7 +1160,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             pp.emit_Load16_Indirect(offsetStack + ip->a.u32, RAX, RDI);
             pp.emit_Cwd();
             MK_IMMB_16(RCX);
-            pp.emit_Op16(RAX, RCX, X64Op::IDIV);
+            pp.emit_OpIntN(RAX, RCX, X64Op::IDIV, X64Bits::B16);
             pp.emit_LoadAddress_Indirect(offsetStack + ip->a.u32, RCX, RDI);
             pp.emit_Store16_Indirect(0, RAX, RCX);
             break;
@@ -1168,7 +1168,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             pp.emit_Load16_Indirect(offsetStack + ip->a.u32, RAX, RDI);
             pp.emit_Cwd();
             pp.emit_Load16_Indirect(offsetStack + ip->b.u32, RCX, RDI);
-            pp.emit_Op16(RAX, RCX, X64Op::IDIV);
+            pp.emit_OpIntN(RAX, RCX, X64Op::IDIV, X64Bits::B16);
             pp.emit_LoadAddress_Indirect(offsetStack + ip->a.u32, RCX, RDI);
             pp.emit_Store16_Indirect(0, RAX, RCX);
             break;
@@ -1253,7 +1253,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             pp.emit_Load16_Indirect(0, RAX, RAX);
             pp.emit_ClearN(RDX, X64Bits::B16);
             MK_IMMB_16(RCX);
-            pp.emit_Op16(RAX, RCX, X64Op::DIV);
+            pp.emit_OpIntN(RAX, RCX, X64Op::DIV, X64Bits::B16);
             pp.emit_Load64_Indirect(regOffset(ip->a.u32), RCX);
             pp.emit_Store16_Indirect(0, RAX, RCX);
             break;
@@ -1261,7 +1261,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             pp.emit_Load16_Indirect(offsetStack + ip->a.u32, RAX, RDI);
             pp.emit_ClearN(RDX, X64Bits::B16);
             MK_IMMB_16(RCX);
-            pp.emit_Op16(RAX, RCX, X64Op::DIV);
+            pp.emit_OpIntN(RAX, RCX, X64Op::DIV, X64Bits::B16);
             pp.emit_LoadAddress_Indirect(offsetStack + ip->a.u32, RCX, RDI);
             pp.emit_Store16_Indirect(0, RAX, RCX);
             break;
@@ -1269,7 +1269,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             pp.emit_Load16_Indirect(offsetStack + ip->a.u32, RAX, RDI);
             pp.emit_ClearN(RDX, X64Bits::B16);
             pp.emit_Load16_Indirect(offsetStack + ip->b.u32, RCX, RDI);
-            pp.emit_Op16(RAX, RCX, X64Op::DIV);
+            pp.emit_OpIntN(RAX, RCX, X64Op::DIV, X64Bits::B16);
             pp.emit_LoadAddress_Indirect(offsetStack + ip->a.u32, RCX, RDI);
             pp.emit_Store16_Indirect(0, RAX, RCX);
             break;
@@ -1403,7 +1403,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             pp.emit_Load16_Indirect(0, RAX, RAX);
             pp.emit_Cwd();
             MK_IMMB_16(RCX);
-            pp.emit_Op16(RAX, RCX, X64Op::IDIV);
+            pp.emit_OpIntN(RAX, RCX, X64Op::IDIV, X64Bits::B16);
             pp.emit_Load64_Indirect(regOffset(ip->a.u32), RCX);
             pp.emit_Store16_Indirect(0, RDX, RCX);
             break;
@@ -1411,7 +1411,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             pp.emit_Load16_Indirect(offsetStack + ip->a.u32, RAX, RDI);
             pp.emit_Cwd();
             MK_IMMB_16(RCX);
-            pp.emit_Op16(RAX, RCX, X64Op::IDIV);
+            pp.emit_OpIntN(RAX, RCX, X64Op::IDIV, X64Bits::B16);
             pp.emit_LoadAddress_Indirect(offsetStack + ip->a.u32, RCX, RDI);
             pp.emit_Store16_Indirect(0, RDX, RCX);
             break;
@@ -1419,7 +1419,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             pp.emit_Load16_Indirect(offsetStack + ip->a.u32, RAX, RDI);
             pp.emit_Cwd();
             pp.emit_Load16_Indirect(offsetStack + ip->b.u32, RCX, RDI);
-            pp.emit_Op16(RAX, RCX, X64Op::IDIV);
+            pp.emit_OpIntN(RAX, RCX, X64Op::IDIV, X64Bits::B16);
             pp.emit_LoadAddress_Indirect(offsetStack + ip->a.u32, RCX, RDI);
             pp.emit_Store16_Indirect(0, RDX, RCX);
             break;
@@ -1507,7 +1507,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             pp.emit_Load16_Indirect(0, RAX, RAX);
             pp.emit_ClearN(RDX, X64Bits::B16);
             MK_IMMB_16(RCX);
-            pp.emit_Op16(RAX, RCX, X64Op::DIV);
+            pp.emit_OpIntN(RAX, RCX, X64Op::DIV, X64Bits::B16);
             pp.emit_Load64_Indirect(regOffset(ip->a.u32), RCX);
             pp.emit_Store16_Indirect(0, RDX, RCX);
             break;
@@ -1515,7 +1515,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             pp.emit_Load16_Indirect(offsetStack + ip->a.u32, RAX, RDI);
             pp.emit_ClearN(RDX, X64Bits::B16);
             MK_IMMB_16(RCX);
-            pp.emit_Op16(RAX, RCX, X64Op::DIV);
+            pp.emit_OpIntN(RAX, RCX, X64Op::DIV, X64Bits::B16);
             pp.emit_LoadAddress_Indirect(offsetStack + ip->a.u32, RCX, RDI);
             pp.emit_Store16_Indirect(0, RDX, RCX);
             break;
@@ -1523,7 +1523,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             pp.emit_Load16_Indirect(offsetStack + ip->a.u32, RAX, RDI);
             pp.emit_ClearN(RDX, X64Bits::B16);
             pp.emit_Load16_Indirect(offsetStack + ip->b.u32, RCX, RDI);
-            pp.emit_Op16(RAX, RCX, X64Op::DIV);
+            pp.emit_OpIntN(RAX, RCX, X64Op::DIV, X64Bits::B16);
             pp.emit_LoadAddress_Indirect(offsetStack + ip->a.u32, RCX, RDI);
             pp.emit_Store16_Indirect(0, RDX, RCX);
             break;
