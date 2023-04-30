@@ -749,32 +749,13 @@ void X64Gen::emit_SetLE()
 
 /////////////////////////////////////////////////////////////////////
 
-void X64Gen::emit_Test64(uint8_t reg1, uint8_t reg2)
+void X64Gen::emit_TestN(CPURegister reg1, CPURegister reg2, X64Bits numBits)
 {
-    concat.addU8(getREX(true, reg2 >= R8, false, reg1 >= R8));
-    concat.addU8(0x85);
-    concat.addU8(getModRM(REGREG, reg2, reg1));
-}
-
-void X64Gen::emit_Test32(uint8_t reg1, uint8_t reg2)
-{
-    SWAG_ASSERT(reg1 < R8 && reg2 < R8);
-    concat.addU8(0x85);
-    concat.addU8(getModRM(REGREG, reg2, reg1));
-}
-
-void X64Gen::emit_Test16(uint8_t reg1, uint8_t reg2)
-{
-    SWAG_ASSERT(reg1 < R8 && reg2 < R8);
-    concat.addU8(0x66);
-    concat.addU8(0x85);
-    concat.addU8(getModRM(REGREG, reg2, reg1));
-}
-
-void X64Gen::emit_Test8(uint8_t reg1, uint8_t reg2)
-{
-    SWAG_ASSERT(reg1 < R8 && reg2 < R8);
-    concat.addU8(0x84);
+    emit_REX(numBits, reg2, reg1);
+    if (numBits == X64Bits::B8)
+        concat.addU8(0x84);
+    else
+        concat.addU8(0x85);
     concat.addU8(getModRM(REGREG, reg2, reg1));
 }
 
@@ -1923,7 +1904,7 @@ void X64Gen::emit_Call_Parameters(TypeInfoFuncAttr* typeFunc, const VectorNative
         auto reg = (uint32_t) pushParams3[0].reg;
 
         emit_Load64_Indirect(regOffset(reg), RAX);
-        emit_Test64(RAX, RAX);
+        emit_TestN(RAX, RAX, X64Bits::B64);
 
         // If not zero, jump to closure call
         emit_LongJumpOp(JZ);

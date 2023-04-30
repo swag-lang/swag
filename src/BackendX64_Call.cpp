@@ -257,7 +257,7 @@ void BackendX64::emitByteCodeCallParameters(X64Gen& pp, TypeInfoFuncAttr* typeFu
     {
         auto reg = pushRAParams.back();
         pp.emit_Load64_Indirect(regOffset(reg), RAX);
-        pp.emit_Test64(RAX, RAX);
+        pp.emit_TestN(RAX, RAX, X64Bits::B64);
 
         // If not zero, jump to closure call
         pp.emit_LongJumpOp(JZ);

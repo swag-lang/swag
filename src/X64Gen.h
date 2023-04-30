@@ -524,10 +524,7 @@ struct X64Gen
     void emit_Sub64_RAX(uint64_t value);
     void emit_Symbol_RelocationAddr(CPURegister reg, uint32_t symbolIndex, uint32_t offset);
     void emit_Symbol_RelocationValue(CPURegister reg, uint32_t symbolIndex, uint32_t offset);
-    void emit_Test16(uint8_t reg1, uint8_t reg2);
-    void emit_Test32(uint8_t reg1, uint8_t reg2);
-    void emit_Test64(uint8_t reg1, uint8_t reg2);
-    void emit_Test8(uint8_t reg1, uint8_t reg2);
+    void emit_TestN(CPURegister reg1, CPURegister reg2, X64Bits numBits);
     void emit_Cwd();
     void emit_Cdq();
     void emit_Cqo();
