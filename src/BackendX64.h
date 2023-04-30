@@ -50,10 +50,7 @@ struct BackendX64 : public Backend
     void     emitBinOpFloat64(X64Gen& pp, ByteCodeInstruction* ip, X64Op op);
     void     emitBinOpFloat64AtReg(X64Gen& pp, ByteCodeInstruction* ip, X64Op op);
     void     emitBinOpIntN(X64Gen& pp, ByteCodeInstruction* ip, X64Op op, X64Bits numBits);
-    void     emitBinOpInt8AtReg(X64Gen& pp, ByteCodeInstruction* ip, X64Op op);
-    void     emitBinOpInt16AtReg(X64Gen& pp, ByteCodeInstruction* ip, X64Op op);
-    void     emitBinOpInt32AtReg(X64Gen& pp, ByteCodeInstruction* ip, X64Op op);
-    void     emitBinOpInt64AtReg(X64Gen& pp, ByteCodeInstruction* ip, X64Op op);
+    void     emitBinOpIntNAtReg(X64Gen& pp, ByteCodeInstruction* ip, X64Op op, X64Bits numBits);
     void     emitBinOpIntDivAtReg(X64Gen& pp, ByteCodeInstruction* ip, bool isSigned, X64Bits numBits, bool modulo = false);
     void     emitAddSubMul64(X64Gen& pp, ByteCodeInstruction* ip, uint64_t mul, X64Op op);
 

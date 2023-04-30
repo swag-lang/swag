@@ -296,12 +296,6 @@ void BackendX64::emitBinOpFloat32(X64Gen& pp, ByteCodeInstruction* ip, X64Op op)
     }
 }
 
-void BackendX64::emitBinOpFloat32AtReg(X64Gen& pp, ByteCodeInstruction* ip, X64Op op)
-{
-    emitBinOpFloat32(pp, ip, op);
-    pp.emit_StoreF32_Indirect(regOffset(ip->c.u32), XMM0);
-}
-
 void BackendX64::emitBinOpFloat64(X64Gen& pp, ByteCodeInstruction* ip, X64Op op)
 {
     if (!(ip->flags & BCI_IMM_A) && !(ip->flags & BCI_IMM_B))
@@ -333,6 +327,12 @@ void BackendX64::emitBinOpFloat64(X64Gen& pp, ByteCodeInstruction* ip, X64Op op)
         pp.concat.addU8((uint8_t) op);
         pp.concat.addU8(0xC1);
     }
+}
+
+void BackendX64::emitBinOpFloat32AtReg(X64Gen& pp, ByteCodeInstruction* ip, X64Op op)
+{
+    emitBinOpFloat32(pp, ip, op);
+    pp.emit_StoreF32_Indirect(regOffset(ip->c.u32), XMM0);
 }
 
 void BackendX64::emitBinOpFloat64AtReg(X64Gen& pp, ByteCodeInstruction* ip, X64Op op)
@@ -480,28 +480,10 @@ void BackendX64::emitBinOpIntN(X64Gen& pp, ByteCodeInstruction* ip, X64Op op, X6
     }
 }
 
-void BackendX64::emitBinOpInt8AtReg(X64Gen& pp, ByteCodeInstruction* ip, X64Op op)
+void BackendX64::emitBinOpIntNAtReg(X64Gen& pp, ByteCodeInstruction* ip, X64Op op, X64Bits numBits)
 {
-    emitBinOpIntN(pp, ip, op, X64Bits::B8);
-    pp.emit_Store8_Indirect(regOffset(ip->c.u32), RAX);
-}
-
-void BackendX64::emitBinOpInt16AtReg(X64Gen& pp, ByteCodeInstruction* ip, X64Op op)
-{
-    emitBinOpIntN(pp, ip, op, X64Bits::B16);
-    pp.emit_Store16_Indirect(regOffset(ip->c.u32), RAX);
-}
-
-void BackendX64::emitBinOpInt32AtReg(X64Gen& pp, ByteCodeInstruction* ip, X64Op op)
-{
-    emitBinOpIntN(pp, ip, op, X64Bits::B32);
-    pp.emit_Store32_Indirect(regOffset(ip->c.u32), RAX);
-}
-
-void BackendX64::emitBinOpInt64AtReg(X64Gen& pp, ByteCodeInstruction* ip, X64Op op)
-{
-    emitBinOpIntN(pp, ip, op, X64Bits::B64);
-    pp.emit_Store64_Indirect(regOffset(ip->c.u32), RAX);
+    emitBinOpIntN(pp, ip, op, numBits);
+    pp.emit_StoreN_Indirect(regOffset(ip->c.u32), RAX, RDI, numBits);
 }
 
 void BackendX64::emitBinOpIntDivAtReg(X64Gen& pp, ByteCodeInstruction* ip, bool isSigned, X64Bits numBits, bool modulo)
