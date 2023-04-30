@@ -1119,6 +1119,14 @@ bool SemanticJob::resolveRetVal(SemanticContext* context)
     auto typeFct = CastTypeInfo<TypeInfoFuncAttr>(fct->typeInfo, TypeInfoKind::FuncAttr);
     SWAG_VERIFY(typeFct->returnType && !typeFct->returnType->isVoid(), context->report({node, Err(Err0771)}));
 
+    // :WaitForPOD
+    if (typeFct->returnType->isStruct())
+    {
+        context->job->waitStructGenerated(typeFct->returnType);
+        if (context->result != ContextResult::Done)
+            return true;
+    }
+
     // If this is a simple return type, remove the retval stuff.
     // Variable will behaves normally, in the stack
     if (!CallConv::returnByStackAddress(typeFct))
@@ -1221,15 +1229,14 @@ void SemanticJob::propagateReturn(AstNode* node)
 
 AstFuncDecl* SemanticJob::getFunctionForReturn(AstNode* node)
 {
-    SWAG_ASSERT(node->kind == AstNodeKind::Return);
-
     // For a return inside an inline block, take the original function, except if it is flagged with 'Swag.noreturn'
     auto funcNode = node->ownerFct;
     if (node->ownerInline && node->ownerInline->isParentOf(node))
     {
         if (!(node->ownerInline->func->attributeFlags & ATTRIBUTE_NO_RETURN) && !(node->flags & AST_IN_MIXIN))
         {
-            node->semFlags |= SEMFLAG_EMBEDDED_RETURN;
+            if (node->kind == AstNodeKind::Return)
+                node->semFlags |= SEMFLAG_EMBEDDED_RETURN;
             funcNode = node->ownerInline->func;
         }
     }
@@ -1252,7 +1259,6 @@ bool SemanticJob::resolveReturn(SemanticContext* context)
     // of multiple returns
     if (funcNode->returnTypeDeducedNode)
     {
-
         // We return nothing, but the previous return had something
         if (node->childs.empty())
         {
@@ -1379,6 +1385,14 @@ bool SemanticJob::resolveReturn(SemanticContext* context)
         }
 
         return context->report(diag);
+    }
+
+    // :WaitForPOD
+    if (returnType && returnType->isStruct())
+    {
+        context->job->waitAllStructSpecialMethods(returnType);
+        if (context->result != ContextResult::Done)
+            return true;
     }
 
     // If returning retval, then returning nothing, as we will change the return parameter value in place

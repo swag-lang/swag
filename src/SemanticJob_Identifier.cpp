@@ -1201,7 +1201,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* ide
             SWAG_CHECK(setSymbolMatchCallParams(context, identifier, oneMatch));
 
             // For a return by copy, need to reserve room on the stack for the return result
-            if (CallConv::returnByStackAddress(funcType) || CallConv::returnStructByValue(funcType))
+            if (CallConv::returnNeedsStack(funcType))
             {
                 identifier->flags |= AST_TRANSIENT;
                 allocateOnStack(identifier, funcType->concreteReturnType());
@@ -1473,7 +1473,8 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* ide
         SWAG_CHECK(setupIdentifierRef(context, identifier, returnType));
 
         // For a return by copy, need to reserve room on the stack for the return result
-        if (CallConv::returnByStackAddress(typeFunc) || CallConv::returnStructByValue(typeFunc))
+        // Order is important, because otherwhise this could call isPlainOldData, which could be not resolved
+        if (CallConv::returnNeedsStack(typeFunc))
         {
             identifier->flags |= AST_TRANSIENT;
             allocateOnStack(identifier, returnType);

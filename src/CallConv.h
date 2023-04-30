@@ -71,6 +71,7 @@ struct CallConv
     static bool structParamByValue(TypeInfoFuncAttr* typeFunc, TypeInfo* typeParam);
     static bool returnByAddress(TypeInfoFuncAttr* typeFunc);
     static bool returnByStackAddress(TypeInfoFuncAttr* typeFunc);
+    static bool returnNeedsStack(TypeInfoFuncAttr* typeFunc);
     static bool returnByValue(TypeInfoFuncAttr* typeFunc);
     static bool returnStructByValue(TypeInfoFuncAttr* typeFunc);
 };

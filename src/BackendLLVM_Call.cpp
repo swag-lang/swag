@@ -57,7 +57,7 @@ void BackendLLVM::getReturnResult(llvm::LLVMContext&     context,
                 returnResult = builder.getInt64(reg.u64);
             else
                 returnResult = builder.CreateLoad(I64_TY(), GEP64(allocR, reg.u32));
-            builder.CreateStore(returnResult, TO_PTR_I64(allocResult));
+            builder.CreateStore(returnResult, allocResult);
             break;
         case NativeTypeKind::F32:
             if (imm)
@@ -90,8 +90,12 @@ void BackendLLVM::getReturnResult(llvm::LLVMContext&     context,
     // :ReturnStructByValue
     else if (returnType->isStruct())
     {
-        returnResult = builder.CreateLoad(I64_TY(), GEP64(allocR, reg.u32));
-        builder.CreateStore(returnResult, TO_PTR_I64(allocResult));
+        SWAG_ASSERT(returnType->sizeOf <= sizeof(void*));
+        if (imm)
+            returnResult = builder.getInt64(reg.u64);
+        else
+            returnResult = builder.CreateLoad(I64_TY(), GEP64(allocR, reg.u32));
+        builder.CreateStore(returnResult, allocResult);
     }
     else
     {
@@ -151,6 +155,7 @@ void BackendLLVM::createRet(const BuildParameters& buildParameters, Module* modu
         // :ReturnStructByValue
         else if (returnType->isStruct())
         {
+            SWAG_ASSERT(returnType->sizeOf <= sizeof(void*));
             builder.CreateRet(builder.CreateLoad(I64_TY(), allocResult));
         }
         else
@@ -192,10 +197,15 @@ llvm::FunctionType* BackendLLVM::getOrCreateFuncType(const BuildParameters& buil
 
     llvm::Type* llvmReturnType = nullptr;
     if (returnByAddress)
+    {
         llvmReturnType = VOID_TY();
+    }
     // :ReturnStructByValue
     else if (returnType->isStruct())
+    {
+        SWAG_ASSERT(returnType->sizeOf <= sizeof(void*));
         llvmReturnType = I64_TY();
+    }
     else
         llvmReturnType = llvmRealReturnType;
 
@@ -616,6 +626,10 @@ bool BackendLLVM::emitCallReturnValue(const BuildParameters& buildParameters,
             if (!r)
                 return Report::internalError(typeFuncBC->declNode, "emitCall, invalid return type");
             builder.CreateStore(callResult, r);
+        }
+        else if (returnType->isStruct())
+        {
+            builder.CreateStore(callResult, TO_PTR_I64(allocRR));
         }
         else
         {

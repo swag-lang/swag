@@ -125,8 +125,6 @@ pass orEq/andEq/xOrEq/shiftEq en mode Stack StackStack. Dans les faits, plein d'
 -------------------------------------
 x64 emit_BinOpInt8/16 shift au lieu de mul (ca arrive jusqu'au backend en 32/64 bits, ca devait pas être traité dans l'optim bc ca ?)
 -------------------------------------
-retourner des structs par value si <= 64 bits
--------------------------------------
 x64: et si les premiers registres étaient des vrais registres x64 volatiles plutot que des accès indirects à la mémoire ?
 rc[0] = r12 etc... chiant
 -------------------------------------

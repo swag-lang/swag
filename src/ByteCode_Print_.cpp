@@ -352,7 +352,7 @@ void ByteCode::printInstruction(ByteCodeInstruction* ip, ByteCodeInstruction* cu
 #ifdef SWAG_DEV_MODE
     if (!forDbg)
     {
-        g_Log.setColor(LogColor::Gray);
+        g_Log.setColor(LogColor::DarkMagenta);
         g_Log.print(line.devMode);
     }
 #endif

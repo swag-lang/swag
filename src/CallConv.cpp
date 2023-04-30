@@ -21,7 +21,7 @@ void initCallConvKinds()
     ccSwag.returnByRegisterFloat   = CPURegister::XMM0;
     ccSwag.useRegisterFloat        = true;
     ccSwag.structParamByRegister   = true;
-    ccSwag.returnStructByRegister  = false;
+    ccSwag.returnStructByRegister  = true;
 }
 
 bool CallConv::structParamByValue(TypeInfoFuncAttr* typeFunc, TypeInfo* typeParam)
@@ -52,18 +52,29 @@ bool CallConv::returnByStackAddress(TypeInfoFuncAttr* typeFunc)
     if (!typeFunc->returnType || typeFunc->returnType->isVoid())
         return false;
 
-    if (returnStructByValue(typeFunc))
-        return false;
-
     auto type = typeFunc->concreteReturnType();
-    if (type->isStruct() ||
-        type->isArray() ||
+    if (type->isArray() ||
         type->isClosure())
     {
         return true;
     }
 
+    if (returnStructByValue(typeFunc))
+        return false;
+    else if (type->isStruct())
+        return true;
+
     return false;
+}
+
+bool CallConv::returnNeedsStack(TypeInfoFuncAttr* typeFunc)
+{
+    if (!typeFunc->returnType || typeFunc->returnType->isVoid())
+        return false;
+    auto type = typeFunc->concreteReturnType();
+    if (type->isStruct())
+        return true;
+    return returnByStackAddress(typeFunc);
 }
 
 bool CallConv::returnByValue(TypeInfoFuncAttr* typeFunc)

@@ -61,11 +61,7 @@ bool Ast::convertLiteralTupleToStructVar(SemanticContext* context, TypeInfo* toT
 
     // If this is in a return expression, then force the identifier type to be retval
     if (fromNode->inSimpleReturn())
-    {
-        auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(fromNode->ownerFct->typeInfo, TypeInfoKind::FuncAttr);
-        if (!CallConv::returnStructByValue(typeFunc))
-            typeNode->typeFlags |= TYPEFLAG_RETVAL;
-    }
+        typeNode->typeFlags |= TYPEFLAG_RETVAL;
 
     // And make a reference to that variable
     auto identifierRef = Ast::newIdentifierRef(sourceFile, varNode->token.text, parentForRef);
@@ -486,11 +482,7 @@ bool Ast::convertStructParamsToTmpVar(SemanticContext* context, AstIdentifier* i
 
     // If this is in a return expression, then force the identifier type to be retval
     if (node->parent && node->parent->inSimpleReturn())
-    {
-        auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(node->parent->ownerFct->typeInfo, TypeInfoKind::FuncAttr);
-        if (!CallConv::returnStructByValue(typeFunc))
-            typeNode->typeFlags |= TYPEFLAG_RETVAL;
-    }
+        typeNode->typeFlags |= TYPEFLAG_RETVAL;
 
     // And make a reference to that variable
     auto identifierRef = identifier->identifierRef();

@@ -1196,7 +1196,17 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
         {
             auto typeExpr = CastAst<AstTypeExpression>(node->type, AstNodeKind::TypeExpression);
             if (typeExpr->typeFlags & TYPEFLAG_RETVAL)
-                symbolFlags |= OVERLOAD_RETVAL;
+            {
+                auto ownerFct   = getFunctionForReturn(node);
+                auto typeFunc   = CastTypeInfo<TypeInfoFuncAttr>(ownerFct->typeInfo, TypeInfoKind::FuncAttr);
+                auto returnType = typeFunc->concreteReturnType();
+                context->job->waitStructGenerated(returnType);
+                if (context->result != ContextResult::Done)
+                    return true;
+
+                if (!CallConv::returnStructByValue(typeFunc))
+                    symbolFlags |= OVERLOAD_RETVAL;
+            }
         }
 
         // If this is a tuple unpacking, then we just compute the stack offset of the item

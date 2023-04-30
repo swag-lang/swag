@@ -104,7 +104,7 @@ bool SemanticJob::resolveInlineBefore(SemanticContext* context)
 
     // :DirectInlineLocalVar
     // For a return by copy, need to reserve room on the stack for the return result
-    if (CallConv::returnByStackAddress(typeInfoFunc) || CallConv::returnStructByValue(typeInfoFunc))
+    if (CallConv::returnNeedsStack(typeInfoFunc))
     {
         node->flags |= AST_TRANSIENT;
         allocateOnStack(node, func->returnType->typeInfo);

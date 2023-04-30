@@ -2062,6 +2062,7 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
                 // :ReturnStructByValue
                 else if (returnType->isStruct())
                 {
+                    SWAG_ASSERT(returnType->sizeOf <= sizeof(void*));
                     SWAG_ASSERT(node->computedValue);
                     EMIT_INST2(context, ByteCodeOp::SetAtStackPointer64, node->computedValue->storageOffset, node->resultRegisterRC);
                     EMIT_INST2(context, ByteCodeOp::MakeStackPointer, node->resultRegisterRC, node->computedValue->storageOffset);
