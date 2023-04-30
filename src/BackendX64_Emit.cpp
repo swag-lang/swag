@@ -341,53 +341,6 @@ void BackendX64::emitBinOpFloat64AtReg(X64Gen& pp, ByteCodeInstruction* ip, X64O
     pp.emit_StoreF64_Indirect(regOffset(ip->c.u32), XMM0);
 }
 
-void BackendX64::emitBinOpInt8(X64Gen& pp, ByteCodeInstruction* ip, X64Op op)
-{
-    if (!(ip->flags & BCI_IMM_A) && !(ip->flags & BCI_IMM_B))
-    {
-        pp.emit_Load8_Indirect(regOffset(ip->a.u32), RAX);
-        if (op == X64Op::MUL)
-        {
-            pp.concat.addString1("\xF6"); // mul
-            pp.emit_ModRM(regOffset(ip->b.u32), 4, RDI);
-        }
-        else if (op == X64Op::IMUL)
-        {
-            pp.concat.addString1("\xF6"); // imul
-            pp.emit_ModRM(regOffset(ip->b.u32), 5, RDI);
-        }
-        else
-        {
-            pp.concat.addU8((uint8_t) op + 1);
-            pp.emit_ModRM(regOffset(ip->b.u32), RAX, RDI); // al, [rdi+?]
-        }
-    }
-    else if ((op == X64Op::AND || op == X64Op::OR || op == X64Op::XOR || op == X64Op::ADD || op == X64Op::SUB) && !(ip->flags & BCI_IMM_A) && (ip->flags & BCI_IMM_B))
-    {
-        pp.emit_Load8_Indirect(regOffset(ip->a.u32), RAX);
-        pp.concat.addU8((uint8_t) op + 3);
-        pp.concat.addU8(ip->b.u8);
-    }
-    else
-    {
-        if (ip->flags & BCI_IMM_A)
-            pp.emit_Load8_Immediate(RAX, ip->a.u8);
-        else
-            pp.emit_Load8_Indirect(regOffset(ip->a.u32), RAX);
-        if (ip->flags & BCI_IMM_B)
-            pp.emit_Load8_Immediate(RCX, ip->b.u8);
-        else
-            pp.emit_Load8_Indirect(regOffset(ip->b.u32), RCX);
-
-        if (op == X64Op::MUL)
-            pp.concat.addString2("\xF6\xE1"); // mul cl
-        else if (op == X64Op::IMUL)
-            pp.concat.addString2("\xF6\xE9"); // imul cl
-        else
-            pp.emit_Op8(RCX, RAX, op);
-    }
-}
-
 void BackendX64::emitBinOpIntN(X64Gen& pp, ByteCodeInstruction* ip, X64Op op, X64Bits numBits)
 {
     if (!(ip->flags & BCI_IMM_A) && !(ip->flags & BCI_IMM_B))
@@ -396,22 +349,41 @@ void BackendX64::emitBinOpIntN(X64Gen& pp, ByteCodeInstruction* ip, X64Op op, X6
         pp.emit_REX(numBits);
         if (op == X64Op::MUL)
         {
-            pp.concat.addString1("\xF7"); // mul
+            if (numBits == X64Bits::B8)
+                pp.concat.addString1("\xF6");
+            else
+                pp.concat.addString1("\xF7");
             pp.emit_ModRM(regOffset(ip->b.u32), 4, RDI);
         }
         else if (op == X64Op::IMUL)
         {
-            pp.concat.addString2("\x0F\xAF"); // imul
-            pp.emit_ModRM(regOffset(ip->b.u32), RAX, RDI);
+            if (numBits == X64Bits::B8)
+            {
+                pp.concat.addString1("\xF6");
+                pp.emit_ModRM(regOffset(ip->b.u32), 5, RDI);
+            }
+            else if (numBits == X64Bits::B16)
+            {
+                pp.concat.addString1("\xF7");
+                pp.emit_ModRM(regOffset(ip->b.u32), 5, RDI);
+            }
+            else
+            {
+                pp.concat.addString2("\x0F\xAF");
+                pp.emit_ModRM(regOffset(ip->b.u32), RAX, RDI);
+            }
         }
         else
         {
-            pp.concat.addU8((uint8_t) op | 2);
+            if (numBits == X64Bits::B8)
+                pp.concat.addU8((uint8_t) op + 1);
+            else
+                pp.concat.addU8((uint8_t) op | 2);
             pp.emit_ModRM(regOffset(ip->b.u32), RAX, RDI);
         }
     }
     // Mul by power of 2 => shift by log2
-    else if (op == X64Op::MUL && !(ip->flags & BCI_IMM_A) && (ip->flags & BCI_IMM_B) && isPowerOfTwo(ip->b.u64) && (ip->b.u64 < 64))
+    else if (op == X64Op::MUL && !(ip->flags & BCI_IMM_A) && (ip->flags & BCI_IMM_B) && isPowerOfTwo(ip->b.u64) && (ip->b.u64 < (uint64_t) numBits))
     {
         pp.emit_LoadN_Indirect(regOffset(ip->a.u32), RAX, RDI, numBits);
         pp.emit_Load8_Immediate(RCX, (uint8_t) log2(ip->b.u64));
@@ -424,24 +396,34 @@ void BackendX64::emitBinOpIntN(X64Gen& pp, ByteCodeInstruction* ip, X64Op op, X6
         pp.emit_REX(numBits);
         if (ip->b.u32 <= 0x7F)
         {
-            pp.concat.addU8(0x83); // op rax, ??
-            pp.concat.addU8(0xBF + (uint8_t) op);
+            if (numBits == X64Bits::B8)
+            {
+                pp.concat.addU8((uint8_t) op + 3);
+            }
+            else
+            {
+                pp.concat.addU8(0x83);
+                pp.concat.addU8(0xBF + (uint8_t) op);
+            }
             pp.concat.addU8(ip->b.u8);
         }
         else
         {
-            pp.concat.addU8(0x81); // op rax, ????????
-            pp.concat.addU8(0xBF + (uint8_t) op);
             switch (numBits)
             {
             case X64Bits::B8:
+                pp.concat.addU8((uint8_t) op + 3);
                 pp.concat.addU8(ip->b.u8);
                 break;
             case X64Bits::B16:
+                pp.concat.addU8(0x81);
+                pp.concat.addU8(0xBF + (uint8_t) op);
                 pp.concat.addU16(ip->b.u16);
                 break;
             case X64Bits::B32:
             case X64Bits::B64:
+                pp.concat.addU8(0x81);
+                pp.concat.addU8(0xBF + (uint8_t) op);
                 pp.concat.addU32(ip->b.u32);
                 break;
             }
@@ -461,12 +443,18 @@ void BackendX64::emitBinOpIntN(X64Gen& pp, ByteCodeInstruction* ip, X64Op op, X6
         if (op == X64Op::MUL)
         {
             pp.emit_REX(numBits);
-            pp.concat.addString2("\xF7\xE1"); // mul rcx
+            if (numBits == X64Bits::B8 || numBits == X64Bits::B16)
+                pp.concat.addString2("\xF6\xE1");
+            else
+                pp.concat.addString2("\xF7\xE1");
         }
         else if (op == X64Op::IMUL)
         {
             pp.emit_REX(numBits);
-            pp.concat.addString3("\x0F\xAF\xC1"); // imul rax, rcx
+            if (numBits == X64Bits::B8 || numBits == X64Bits::B16)
+                pp.concat.addString2("\xF6\xE9");
+            else
+                pp.concat.addString3("\x0F\xAF\xC1");
         }
         else
         {
@@ -494,7 +482,7 @@ void BackendX64::emitBinOpIntN(X64Gen& pp, ByteCodeInstruction* ip, X64Op op, X6
 
 void BackendX64::emitBinOpInt8AtReg(X64Gen& pp, ByteCodeInstruction* ip, X64Op op)
 {
-    emitBinOpInt8(pp, ip, op);
+    emitBinOpIntN(pp, ip, op, X64Bits::B8);
     pp.emit_Store8_Indirect(regOffset(ip->c.u32), RAX);
 }
 
