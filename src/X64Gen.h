@@ -490,12 +490,12 @@ struct X64Gen
     void emit_Op64_Indirect(uint32_t offsetStack, CPURegister reg, CPURegister memReg, X64Op instruction, bool lock = false);
     void emit_OpF32_Indirect(CPURegister reg, CPURegister memReg, X64Op instruction);
     void emit_OpF64_Indirect(CPURegister reg, CPURegister memReg, X64Op instruction);
-    void emit_Op8(uint8_t reg1, uint8_t reg2, X64Op instruction);
-    void emit_Op16(uint8_t reg1, uint8_t reg2, X64Op instruction);
-    void emit_Op32(uint8_t reg1, uint8_t reg2, X64Op instruction);
-    void emit_Op64(uint8_t reg1, uint8_t reg2, X64Op instruction);
-    void emit_OpF32(uint8_t reg1, uint8_t reg2, X64Op instruction);
-    void emit_OpF64(uint8_t reg1, uint8_t reg2, X64Op instruction);
+    void emit_Op8(CPURegister reg1, CPURegister reg2, X64Op instruction);
+    void emit_Op16(CPURegister reg1, CPURegister reg2, X64Op instruction);
+    void emit_Op32(CPURegister reg1, CPURegister reg2, X64Op instruction);
+    void emit_Op64(CPURegister reg1, CPURegister reg2, X64Op instruction);
+    void emit_OpF32(CPURegister reg1, CPURegister reg2, X64Op instruction);
+    void emit_OpF64(CPURegister reg1, CPURegister reg2, X64Op instruction);
     void emit_Pop(CPURegister reg);
     void emit_Push(CPURegister reg);
     void emit_Ret();

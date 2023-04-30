@@ -1032,7 +1032,7 @@ void X64Gen::emit_OpF64_Indirect(CPURegister reg, CPURegister memReg, X64Op inst
     emit_StoreF64_Indirect(0, XMM0, memReg);
 }
 
-void X64Gen::emit_Op8(uint8_t reg1, uint8_t reg2, X64Op instruction)
+void X64Gen::emit_Op8(CPURegister reg1, CPURegister reg2, X64Op instruction)
 {
     SWAG_ASSERT(reg1 < R8 && reg2 < R8);
     if (instruction == X64Op::DIV || instruction == X64Op::IDIV)
@@ -1054,7 +1054,7 @@ void X64Gen::emit_Op8(uint8_t reg1, uint8_t reg2, X64Op instruction)
     }
 }
 
-void X64Gen::emit_Op16(uint8_t reg1, uint8_t reg2, X64Op instruction)
+void X64Gen::emit_Op16(CPURegister reg1, CPURegister reg2, X64Op instruction)
 {
     SWAG_ASSERT(reg1 < R8 && reg2 < R8);
     emit_REX(X64Bits::B16);
@@ -1077,7 +1077,7 @@ void X64Gen::emit_Op16(uint8_t reg1, uint8_t reg2, X64Op instruction)
     }
 }
 
-void X64Gen::emit_Op32(uint8_t reg1, uint8_t reg2, X64Op instruction)
+void X64Gen::emit_Op32(CPURegister reg1, CPURegister reg2, X64Op instruction)
 {
     SWAG_ASSERT(reg1 < R8 && reg2 < R8);
     if (instruction == X64Op::DIV || instruction == X64Op::IDIV)
@@ -1099,7 +1099,7 @@ void X64Gen::emit_Op32(uint8_t reg1, uint8_t reg2, X64Op instruction)
     }
 }
 
-void X64Gen::emit_Op64(uint8_t reg1, uint8_t reg2, X64Op instruction)
+void X64Gen::emit_Op64(CPURegister reg1, CPURegister reg2, X64Op instruction)
 {
     concat.addU8(getREX(true, reg1 >= R8, false, reg2 >= R8));
     if (instruction == X64Op::DIV || instruction == X64Op::IDIV)
@@ -1121,7 +1121,7 @@ void X64Gen::emit_Op64(uint8_t reg1, uint8_t reg2, X64Op instruction)
     }
 }
 
-void X64Gen::emit_OpF32(uint8_t reg1, uint8_t reg2, X64Op instruction)
+void X64Gen::emit_OpF32(CPURegister reg1, CPURegister reg2, X64Op instruction)
 {
     SWAG_ASSERT(reg1 == XMM0 && reg2 == XMM1);
     if (instruction == X64Op::MUL)
@@ -1138,7 +1138,7 @@ void X64Gen::emit_OpF32(uint8_t reg1, uint8_t reg2, X64Op instruction)
     }
 }
 
-void X64Gen::emit_OpF64(uint8_t reg1, uint8_t reg2, X64Op instruction)
+void X64Gen::emit_OpF64(CPURegister reg1, CPURegister reg2, X64Op instruction)
 {
     SWAG_ASSERT(reg1 == XMM0 && reg2 == XMM1);
     if (instruction == X64Op::MUL)
