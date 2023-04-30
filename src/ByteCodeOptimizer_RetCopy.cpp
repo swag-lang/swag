@@ -135,6 +135,9 @@ void ByteCodeOptimizer::registerParamsReg(ByteCodeOptContext* context, ByteCodeI
 // ... post move stuff
 bool ByteCodeOptimizer::optimizePassRetCopyLocal(ByteCodeOptContext* context)
 {
+    if (!(context->contextBcFlags & OCF_HAS_COPY_RCRT))
+        return true;
+
     for (auto ip = context->bc->out; ip->op != ByteCodeOp::End; ip++)
     {
         bool startOk = false;
@@ -240,6 +243,9 @@ void ByteCodeOptimizer::registerMakeAddr(ByteCodeOptContext* context, ByteCodeIn
 
 bool ByteCodeOptimizer::optimizePassRetCopyGlobal(ByteCodeOptContext* context)
 {
+    if (!(context->contextBcFlags & OCF_HAS_COPY_RCRT))
+        return true;
+
     context->mapRegReg.clear();
     for (auto ip = context->bc->out; ip->op != ByteCodeOp::End; ip++)
     {
@@ -361,6 +367,9 @@ bool ByteCodeOptimizer::optimizePassRetCopyGlobal(ByteCodeOptContext* context)
 // Same, but we make the detection before and after a function that has been inlined
 bool ByteCodeOptimizer::optimizePassRetCopyInline(ByteCodeOptContext* context)
 {
+    if (!(context->contextBcFlags & OCF_HAS_INLINE))
+        return true;
+
     for (auto ip = context->bc->out; ip->op != ByteCodeOp::End; ip++)
     {
         bool       startOk     = false;
@@ -418,6 +427,9 @@ bool ByteCodeOptimizer::optimizePassRetCopyInline(ByteCodeOptContext* context)
 // If we affect the result to a local variable, then remove on unecessary copy
 bool ByteCodeOptimizer::optimizePassRetCopyStructVal(ByteCodeOptContext* context)
 {
+    if (!(context->contextBcFlags & OCF_HAS_COPY_RTRC))
+        return true;
+
     for (auto ip = context->bc->out; ip->op != ByteCodeOp::End; ip++)
     {
         if (ip[0].op == ByteCodeOp::CopyRTtoRC &&

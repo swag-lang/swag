@@ -41,6 +41,56 @@ uint32_t ByteCodeOptimizer::newTreeNode(ByteCodeOptContext* context, ByteCodeIns
     return pos;
 }
 
+void ByteCodeOptimizer::setContextFlags(ByteCodeOptContext* context, ByteCodeInstruction* ip)
+{
+    // Mark some instructions for some specific passes
+    if (ip->node && ip->node->sourceFile && ip->node->sourceFile->module && ip->node->sourceFile->module->mustEmitSafetyOverflow(ip->node))
+        ip->dynFlags |= BCID_SAFETY_OF;
+    else
+        ip->dynFlags &= ~BCID_SAFETY_OF;
+
+    if (ip->node && ip->node->ownerInline)
+        context->contextBcFlags |= OCF_HAS_INLINE;
+
+    switch (ip->op)
+    {
+    case ByteCodeOp::CopyRBtoRA8:
+    case ByteCodeOp::CopyRBtoRA16:
+    case ByteCodeOp::CopyRBtoRA32:
+    case ByteCodeOp::CopyRBtoRA64:
+        context->contextBcFlags |= OCF_HAS_COPY_RBRA;
+        break;
+
+    case ByteCodeOp::CopyRTtoRC:
+        context->contextBcFlags |= OCF_HAS_COPY_RTRC;
+        break;
+    case ByteCodeOp::CopyRCtoRT:
+        context->contextBcFlags |= OCF_HAS_COPY_RCRT;
+        break;
+
+    case ByteCodeOp::CopyRRtoRC:
+    case ByteCodeOp::MakeBssSegPointer:
+    case ByteCodeOp::MakeConstantSegPointer:
+    case ByteCodeOp::MakeMutableSegPointer:
+    case ByteCodeOp::GetParam64:
+    case ByteCodeOp::GetIncParam64:
+    case ByteCodeOp::GetParam64DeRef8:
+    case ByteCodeOp::GetParam64DeRef16:
+    case ByteCodeOp::GetParam64DeRef32:
+    case ByteCodeOp::GetParam64DeRef64:
+    case ByteCodeOp::GetIncParam64DeRef8:
+    case ByteCodeOp::GetIncParam64DeRef16:
+    case ByteCodeOp::GetIncParam64DeRef32:
+    case ByteCodeOp::GetIncParam64DeRef64:
+    case ByteCodeOp::SetImmediate32:
+    case ByteCodeOp::SetImmediate64:
+        context->contextBcFlags |= OCF_HAS_DUP_COPY;
+        break;
+    default:
+        break;
+    }
+}
+
 void ByteCodeOptimizer::genTree(ByteCodeOptContext* context, uint32_t nodeIdx, bool computeCrc)
 {
     ByteCodeOptTreeNode* node = &context->tree[nodeIdx];
@@ -48,6 +98,7 @@ void ByteCodeOptimizer::genTree(ByteCodeOptContext* context, uint32_t nodeIdx, b
 
     while (!ByteCode::isRet(node->end) && !ByteCode::isJumpOrDyn(node->end) && !(node->end[1].flags & BCI_START_STMT))
     {
+        setContextFlags(context, node->end);
         if (computeCrc)
             node->crc = context->bc->computeCrc(node->end, node->crc, true, false);
 #ifdef SWAG_DEV_MODE
@@ -130,7 +181,8 @@ void ByteCodeOptimizer::genTree(ByteCodeOptContext* context, uint32_t nodeIdx, b
 void ByteCodeOptimizer::genTree(ByteCodeOptContext* context, bool computeCrc)
 {
     context->mapInstNode.clear();
-    context->nextTreeNode = 0;
+    context->nextTreeNode   = 0;
+    context->contextBcFlags = 0;
 
     auto bc = context->bc;
 
@@ -285,50 +337,6 @@ void ByteCodeOptimizer::removeNops(ByteCodeOptContext* context)
     context->nops.clear();
 }
 
-void ByteCodeOptimizer::setContextFlags(ByteCodeOptContext* context)
-{
-    context->contextBcFlags = 0;
-    for (auto ip = context->bc->out; ip->op != ByteCodeOp::End; ip++)
-    {
-        // Mark some instructions for some specific passes
-        if (ip->node && ip->node->sourceFile && ip->node->sourceFile->module && ip->node->sourceFile->module->mustEmitSafetyOverflow(ip->node))
-            ip->dynFlags |= BCID_SAFETY_OF;
-        else
-            ip->dynFlags &= ~BCID_SAFETY_OF;
-
-        switch (ip->op)
-        {
-        case ByteCodeOp::CopyRBtoRA8:
-        case ByteCodeOp::CopyRBtoRA16:
-        case ByteCodeOp::CopyRBtoRA32:
-        case ByteCodeOp::CopyRBtoRA64:
-            context->contextBcFlags |= OCF_HAS_COPYRBRA;
-            break;
-
-        case ByteCodeOp::CopyRRtoRC:
-        case ByteCodeOp::MakeBssSegPointer:
-        case ByteCodeOp::MakeConstantSegPointer:
-        case ByteCodeOp::MakeMutableSegPointer:
-        case ByteCodeOp::GetParam64:
-        case ByteCodeOp::GetIncParam64:
-        case ByteCodeOp::GetParam64DeRef8:
-        case ByteCodeOp::GetParam64DeRef16:
-        case ByteCodeOp::GetParam64DeRef32:
-        case ByteCodeOp::GetParam64DeRef64:
-        case ByteCodeOp::GetIncParam64DeRef8:
-        case ByteCodeOp::GetIncParam64DeRef16:
-        case ByteCodeOp::GetIncParam64DeRef32:
-        case ByteCodeOp::GetIncParam64DeRef64:
-        case ByteCodeOp::SetImmediate32:
-        case ByteCodeOp::SetImmediate64:
-            context->contextBcFlags |= OCF_HAS_DUPCOPY;
-            break;
-        default:
-            break;
-        }
-    }
-}
-
 void ByteCodeOptimizer::setJumps(ByteCodeOptContext* context)
 {
     context->jumps.clear();
@@ -458,7 +466,6 @@ bool ByteCodeOptimizer::optimize(ByteCodeOptContext& optContext, ByteCode* bc, b
     if (bc->node && !bc->sanDone && optContext.module->mustEmitSafety(bc->node, SAFETY_SANITY))
     {
         bc->sanDone = true;
-        setContextFlags(&optContext);
         setJumps(&optContext);
         genTree(&optContext, false);
         SWAG_CHECK(optimizePassSanity(&optContext));
@@ -480,7 +487,6 @@ bool ByteCodeOptimizer::optimize(ByteCodeOptContext& optContext, ByteCode* bc, b
             if (bc->isEmpty)
                 return true;
 
-            setContextFlags(&optContext);
             setJumps(&optContext);
             genTree(&optContext, false);
 

@@ -269,7 +269,7 @@ void ByteCodeOptimizer::optimizePassDupCopyRBRAOp(ByteCodeOptContext* context, B
 bool ByteCodeOptimizer::optimizePassDupCopyRBRA(ByteCodeOptContext* context)
 {
     // See setContextFlags if you add one instruction
-    if (!(context->contextBcFlags & OCF_HAS_COPYRBRA))
+    if (!(context->contextBcFlags & OCF_HAS_COPY_RBRA))
         return true;
 
     optimizePassDupCopyRBRAOp(context, ByteCodeOp::CopyRBtoRA8);
@@ -326,7 +326,7 @@ void ByteCodeOptimizer::optimizePassDupCopyOp(ByteCodeOptContext* context, ByteC
 bool ByteCodeOptimizer::optimizePassDupCopy(ByteCodeOptContext* context)
 {
     // See setContextFlags if you add one instruction
-    if (!(context->contextBcFlags & OCF_HAS_DUPCOPY))
+    if (!(context->contextBcFlags & OCF_HAS_DUP_COPY))
         return true;
 
     optimizePassDupCopyOp(context, ByteCodeOp::CopyRRtoRC);

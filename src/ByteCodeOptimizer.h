@@ -17,7 +17,7 @@ struct ByteCodeOptimizer
     static void     parseTree(ByteCodeOptContext* context, uint32_t startNode, ByteCodeInstruction* startIp, uint32_t doneFlag, function<void(ByteCodeOptContext*, ByteCodeOptTreeParseContext&)> cb);
 
     static void setNop(ByteCodeOptContext* context, ByteCodeInstruction* ip);
-    static void setContextFlags(ByteCodeOptContext* context);
+    static void setContextFlags(ByteCodeOptContext* context, ByteCodeInstruction* ip);
     static void setJumps(ByteCodeOptContext* context);
     static void removeNops(ByteCodeOptContext* context);
 
