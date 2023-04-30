@@ -497,6 +497,7 @@ bool ByteCodeOptimizer::optimize(ByteCodeOptContext& optContext, ByteCode* bc, b
             OPT_PASS(optimizePassRetCopyLocal);
             OPT_PASS(optimizePassRetCopyInline);
             OPT_PASS(optimizePassRetCopyGlobal);
+            OPT_PASS(optimizePassRetCopyStructVal);
             OPT_PASS(optimizePassReduce);
             OPT_PASS(optimizePassDeadStore);
             OPT_PASS(optimizePassDeadStoreDup);

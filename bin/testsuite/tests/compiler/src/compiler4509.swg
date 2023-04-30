@@ -2,16 +2,16 @@ struct T { a, b: s32; }
 
 //#[Swag.PrintBc]
 #[Swag.NoInline]
-func toto(t: T)->T
+func toto()->T
 {
     //@print(t.a, " ", t.b, "\n")
-    return t
+    return {1, 2}
 }
 
 //#[Swag.Optim("", false)]
 #test
 {
-    x := toto({1, 2})
+    x := toto()
     @assert(x.a == 1)
     @assert(x.b == 2)
 }
