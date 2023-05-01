@@ -420,13 +420,9 @@ bool SemanticJob::resolveCompareExpression(SemanticContext* context)
     switch (node->tokenId)
     {
     case TokenId::SymEqualEqual:
-        SWAG_CHECK(TypeManager::promote32(context, left));
-        SWAG_CHECK(TypeManager::promote32(context, right));
         SWAG_CHECK(resolveCompOpEqual(context, left, right));
         break;
     case TokenId::SymExclamEqual:
-        SWAG_CHECK(TypeManager::promote32(context, left));
-        SWAG_CHECK(TypeManager::promote32(context, right));
         SWAG_CHECK(resolveCompOpEqual(context, left, right));
         if (node->computedValue)
             node->computedValue->reg.b = !node->computedValue->reg.b;
