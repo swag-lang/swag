@@ -240,44 +240,52 @@
 
 //////////////////////////////////
 
-#define MK_BINOP8_CAB(__opInd, __op)                                  \
-    {                                                                 \
-        if (!(ip->flags & (BCI_IMM_A | BCI_IMM_B)))                   \
-        {                                                             \
-            pp.emit_Load8_Indirect(regOffset(ip->a.u32), RAX);        \
-            pp.__opInd(regOffset(ip->b.u32), RAX, RDI, X64Bits::B8);  \
-        }                                                             \
-        else if ((ip->flags & BCI_IMM_A) && !(ip->flags & BCI_IMM_B)) \
-        {                                                             \
-            pp.emit_Load8_Immediate(RAX, ip->a.u8);                   \
-            pp.__opInd(regOffset(ip->b.u32), RAX, RDI, X64Bits::B8);  \
-        }                                                             \
-        else                                                          \
-        {                                                             \
-            MK_IMMA_8(RAX);                                           \
-            MK_IMMB_8(RCX);                                           \
-            pp.__op(RAX, RCX, X64Bits::B8);                           \
-        }                                                             \
+#define MK_BINOP8_CAB(__opIndDst, __opInd, __op)                        \
+    {                                                                   \
+        if (!(ip->flags & (BCI_IMM_A | BCI_IMM_B)))                     \
+        {                                                               \
+            pp.emit_Load8_Indirect(regOffset(ip->a.u32), RAX);          \
+            pp.__opInd(regOffset(ip->b.u32), RAX, RDI, X64Bits::B8);    \
+        }                                                               \
+        else if ((ip->flags & BCI_IMM_A) && !(ip->flags & BCI_IMM_B))   \
+        {                                                               \
+            pp.emit_Load8_Immediate(RAX, ip->a.u8);                     \
+            pp.__opInd(regOffset(ip->b.u32), RAX, RDI, X64Bits::B8);    \
+        }                                                               \
+        else if (!(ip->flags & BCI_IMM_A) && (ip->flags & BCI_IMM_B))   \
+        {                                                               \
+            pp.__opIndDst(regOffset(ip->a.u32), ip->b.u8, X64Bits::B8); \
+        }                                                               \
+        else                                                            \
+        {                                                               \
+            MK_IMMA_8(RAX);                                             \
+            MK_IMMB_8(RCX);                                             \
+            pp.__op(RAX, RCX, X64Bits::B8);                             \
+        }                                                               \
     }
 
-#define MK_BINOP16_CAB(__opInd, __op)                                 \
-    {                                                                 \
-        if (!(ip->flags & (BCI_IMM_A | BCI_IMM_B)))                   \
-        {                                                             \
-            pp.emit_Load16_Indirect(regOffset(ip->a.u32), RAX);       \
-            pp.__opInd(regOffset(ip->b.u32), RAX, RDI, X64Bits::B16); \
-        }                                                             \
-        else if ((ip->flags & BCI_IMM_A) && !(ip->flags & BCI_IMM_B)) \
-        {                                                             \
-            pp.emit_Load16_Immediate(RAX, ip->a.u16);                 \
-            pp.__opInd(regOffset(ip->b.u32), RAX, RDI, X64Bits::B16); \
-        }                                                             \
-        else                                                          \
-        {                                                             \
-            MK_IMMA_16(RAX);                                          \
-            MK_IMMB_16(RCX);                                          \
-            pp.__op(RAX, RCX, X64Bits::B16);                          \
-        }                                                             \
+#define MK_BINOP16_CAB(__opIndDst, __opInd, __op)                         \
+    {                                                                     \
+        if (!(ip->flags & (BCI_IMM_A | BCI_IMM_B)))                       \
+        {                                                                 \
+            pp.emit_Load16_Indirect(regOffset(ip->a.u32), RAX);           \
+            pp.__opInd(regOffset(ip->b.u32), RAX, RDI, X64Bits::B16);     \
+        }                                                                 \
+        else if ((ip->flags & BCI_IMM_A) && !(ip->flags & BCI_IMM_B))     \
+        {                                                                 \
+            pp.emit_Load16_Immediate(RAX, ip->a.u16);                     \
+            pp.__opInd(regOffset(ip->b.u32), RAX, RDI, X64Bits::B16);     \
+        }                                                                 \
+        else if (!(ip->flags & BCI_IMM_A) && (ip->flags & BCI_IMM_B))     \
+        {                                                                 \
+            pp.__opIndDst(regOffset(ip->a.u32), ip->b.u16, X64Bits::B16); \
+        }                                                                 \
+        else                                                              \
+        {                                                                 \
+            MK_IMMA_16(RAX);                                              \
+            MK_IMMB_16(RCX);                                              \
+            pp.__op(RAX, RCX, X64Bits::B16);                              \
+        }                                                                 \
     }
 
 #define MK_BINOP32_CAB(__opIndDst, __opInd, __op)                         \

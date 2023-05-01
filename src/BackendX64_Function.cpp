@@ -2018,12 +2018,12 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             /////////////////////////////////////
 
         case ByteCodeOp::CompareOpEqual8:
-            MK_BINOP8_CAB(emit_CmpN_Indirect, emit_CmpN);
+            MK_BINOP8_CAB(emit_CmpN_IndirectDst, emit_CmpN_Indirect, emit_CmpN);
             pp.emit_SetE();
             pp.emit_Store8_Indirect(regOffset(ip->c.u32), RAX);
             break;
         case ByteCodeOp::CompareOpEqual16:
-            MK_BINOP16_CAB(emit_CmpN_Indirect, emit_CmpN);
+            MK_BINOP16_CAB(emit_CmpN_IndirectDst, emit_CmpN_Indirect, emit_CmpN);
             pp.emit_SetE();
             pp.emit_Store8_Indirect(regOffset(ip->c.u32), RAX);
             break;
@@ -2051,12 +2051,12 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             /////////////////////////////////////
 
         case ByteCodeOp::CompareOpNotEqual8:
-            MK_BINOP8_CAB(emit_CmpN_Indirect, emit_CmpN);
+            MK_BINOP8_CAB(emit_CmpN_IndirectDst, emit_CmpN_Indirect, emit_CmpN);
             pp.emit_SetNE();
             pp.emit_Store8_Indirect(regOffset(ip->c.u32), RAX);
             break;
         case ByteCodeOp::CompareOpNotEqual16:
-            MK_BINOP16_CAB(emit_CmpN_Indirect, emit_CmpN);
+            MK_BINOP16_CAB(emit_CmpN_IndirectDst, emit_CmpN_Indirect, emit_CmpN);
             pp.emit_SetNE();
             pp.emit_Store8_Indirect(regOffset(ip->c.u32), RAX);
             break;

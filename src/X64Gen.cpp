@@ -1153,7 +1153,6 @@ void X64Gen::emit_OpN_Immediate(CPURegister reg, uint64_t value, X64Op op, X64Bi
             SWAG_ASSERT(reg == RAX);
             concat.addU8(0x69);
             concat.addU8(0xC0);
-            concat.addU32((uint32_t) value);
             break;
         default:
             SWAG_ASSERT(false);
