@@ -1107,39 +1107,6 @@ void X64Gen::emit_OpN_Immediate(CPURegister reg, uint64_t value, X64Op instructi
     }
 }
 
-void X64Gen::emit_Sub64_RAX(uint64_t value)
-{
-    if (!value)
-        return;
-
-    if (value == 1)
-    {
-        emit_REX(X64Bits::B64);
-        concat.addU8(0xFF);
-        concat.addU8(0xC8); // dec rax
-    }
-    else if (value > 0x7FFFFFFF)
-    {
-        emit_Load64_Immediate(RCX, value);
-        emit_REX(X64Bits::B64);
-        concat.addU8(0x29);
-        concat.addU8(0xC8); // sub rax, rcx
-    }
-    else if (value <= 0x7F)
-    {
-        emit_REX(X64Bits::B64);
-        concat.addU8(0x83);
-        concat.addU8(0xE8);
-        concat.addU8((uint8_t) value);
-    }
-    else
-    {
-        emit_REX(X64Bits::B64);
-        concat.addU8(0x2D);
-        concat.addU32((uint32_t) value);
-    }
-}
-
 void X64Gen::emit_Mul64_RAX(uint64_t value)
 {
     if (value == 1)

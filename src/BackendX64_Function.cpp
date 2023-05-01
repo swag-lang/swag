@@ -2256,7 +2256,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             //
             // We could in the end remove two instructions and be as the llvm generation
 
-            pp.emit_Sub64_RAX(ip->b.u64 - 1);
+            pp.emit_OpN_Immediate(RAX, ip->b.u64 - 1, X64Op::SUB, X64Bits::B64);
             pp.emit_CmpN_Immediate(RAX, ip->c.u64, X64Bits::B64);
             pp.emit_Jump(JAE, i, tableCompiler[0]);
 
