@@ -1842,6 +1842,16 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
 
             /////////////////////////////////////
 
+        case ByteCodeOp::CompareOpGreaterS8:
+            MK_BINOP8_CAB(emit_CmpN_IndirectDst, emit_CmpN_Indirect, emit_CmpN);
+            pp.emit_SetG();
+            pp.emit_Store8_Indirect(regOffset(ip->c.u32), RAX);
+            break;
+        case ByteCodeOp::CompareOpGreaterS16:
+            MK_BINOP16_CAB(emit_CmpN_IndirectDst, emit_CmpN_Indirect, emit_CmpN);
+            pp.emit_SetG();
+            pp.emit_Store8_Indirect(regOffset(ip->c.u32), RAX);
+            break;
         case ByteCodeOp::CompareOpGreaterS32:
             MK_BINOP32_CAB(emit_CmpN_IndirectDst, emit_CmpN_Indirect, emit_CmpN);
             pp.emit_SetG();
@@ -1850,6 +1860,16 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
         case ByteCodeOp::CompareOpGreaterS64:
             MK_BINOP64_CAB(emit_CmpN_IndirectDst, emit_CmpN_Indirect, emit_CmpN);
             pp.emit_SetG();
+            pp.emit_Store8_Indirect(regOffset(ip->c.u32), RAX);
+            break;
+        case ByteCodeOp::CompareOpGreaterU8:
+            MK_BINOP8_CAB(emit_CmpN_IndirectDst, emit_CmpN_Indirect, emit_CmpN);
+            pp.emit_SetA();
+            pp.emit_Store8_Indirect(regOffset(ip->c.u32), RAX);
+            break;
+        case ByteCodeOp::CompareOpGreaterU16:
+            MK_BINOP16_CAB(emit_CmpN_IndirectDst, emit_CmpN_Indirect, emit_CmpN);
+            pp.emit_SetA();
             pp.emit_Store8_Indirect(regOffset(ip->c.u32), RAX);
             break;
         case ByteCodeOp::CompareOpGreaterU32:
@@ -1873,6 +1893,16 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             pp.emit_Store8_Indirect(regOffset(ip->c.u32), RAX);
             break;
 
+        case ByteCodeOp::CompareOpGreaterEqS8:
+            MK_BINOP8_CAB(emit_CmpN_IndirectDst, emit_CmpN_Indirect, emit_CmpN);
+            pp.emit_SetGE();
+            pp.emit_Store8_Indirect(regOffset(ip->c.u32), RAX);
+            break;
+        case ByteCodeOp::CompareOpGreaterEqS16:
+            MK_BINOP16_CAB(emit_CmpN_IndirectDst, emit_CmpN_Indirect, emit_CmpN);
+            pp.emit_SetGE();
+            pp.emit_Store8_Indirect(regOffset(ip->c.u32), RAX);
+            break;
         case ByteCodeOp::CompareOpGreaterEqS32:
             MK_BINOP32_CAB(emit_CmpN_IndirectDst, emit_CmpN_Indirect, emit_CmpN);
             pp.emit_SetGE();
@@ -1881,6 +1911,16 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
         case ByteCodeOp::CompareOpGreaterEqS64:
             MK_BINOP64_CAB(emit_CmpN_IndirectDst, emit_CmpN_Indirect, emit_CmpN);
             pp.emit_SetGE();
+            pp.emit_Store8_Indirect(regOffset(ip->c.u32), RAX);
+            break;
+        case ByteCodeOp::CompareOpGreaterEqU8:
+            MK_BINOP8_CAB(emit_CmpN_IndirectDst, emit_CmpN_Indirect, emit_CmpN);
+            pp.emit_SetAE();
+            pp.emit_Store8_Indirect(regOffset(ip->c.u32), RAX);
+            break;
+        case ByteCodeOp::CompareOpGreaterEqU16:
+            MK_BINOP16_CAB(emit_CmpN_IndirectDst, emit_CmpN_Indirect, emit_CmpN);
+            pp.emit_SetAE();
             pp.emit_Store8_Indirect(regOffset(ip->c.u32), RAX);
             break;
         case ByteCodeOp::CompareOpGreaterEqU32:
@@ -1906,6 +1946,16 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
 
             /////////////////////////////////////
 
+        case ByteCodeOp::CompareOpLowerS8:
+            MK_BINOP8_CAB(emit_CmpN_IndirectDst, emit_CmpN_Indirect, emit_CmpN);
+            pp.emit_SetL();
+            pp.emit_Store8_Indirect(regOffset(ip->c.u32), RAX);
+            break;
+        case ByteCodeOp::CompareOpLowerS16:
+            MK_BINOP16_CAB(emit_CmpN_IndirectDst, emit_CmpN_Indirect, emit_CmpN);
+            pp.emit_SetL();
+            pp.emit_Store8_Indirect(regOffset(ip->c.u32), RAX);
+            break;
         case ByteCodeOp::CompareOpLowerS32:
             MK_BINOP32_CAB(emit_CmpN_IndirectDst, emit_CmpN_Indirect, emit_CmpN);
             pp.emit_SetL();
@@ -1914,6 +1964,16 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
         case ByteCodeOp::CompareOpLowerS64:
             MK_BINOP64_CAB(emit_CmpN_IndirectDst, emit_CmpN_Indirect, emit_CmpN);
             pp.emit_SetL();
+            pp.emit_Store8_Indirect(regOffset(ip->c.u32), RAX);
+            break;
+        case ByteCodeOp::CompareOpLowerU8:
+            MK_BINOP8_CAB(emit_CmpN_IndirectDst, emit_CmpN_Indirect, emit_CmpN);
+            pp.emit_SetB();
+            pp.emit_Store8_Indirect(regOffset(ip->c.u32), RAX);
+            break;
+        case ByteCodeOp::CompareOpLowerU16:
+            MK_BINOP16_CAB(emit_CmpN_IndirectDst, emit_CmpN_Indirect, emit_CmpN);
+            pp.emit_SetB();
             pp.emit_Store8_Indirect(regOffset(ip->c.u32), RAX);
             break;
         case ByteCodeOp::CompareOpLowerU32:
@@ -1937,6 +1997,16 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             pp.emit_Store8_Indirect(regOffset(ip->c.u32), RAX);
             break;
 
+        case ByteCodeOp::CompareOpLowerEqS8:
+            MK_BINOP8_CAB(emit_CmpN_IndirectDst, emit_CmpN_Indirect, emit_CmpN);
+            pp.emit_SetLE();
+            pp.emit_Store8_Indirect(regOffset(ip->c.u32), RAX);
+            break;
+        case ByteCodeOp::CompareOpLowerEqS16:
+            MK_BINOP16_CAB(emit_CmpN_IndirectDst, emit_CmpN_Indirect, emit_CmpN);
+            pp.emit_SetLE();
+            pp.emit_Store8_Indirect(regOffset(ip->c.u32), RAX);
+            break;
         case ByteCodeOp::CompareOpLowerEqS32:
             MK_BINOP32_CAB(emit_CmpN_IndirectDst, emit_CmpN_Indirect, emit_CmpN);
             pp.emit_SetLE();
@@ -1945,6 +2015,16 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
         case ByteCodeOp::CompareOpLowerEqS64:
             MK_BINOP64_CAB(emit_CmpN_IndirectDst, emit_CmpN_Indirect, emit_CmpN);
             pp.emit_SetLE();
+            pp.emit_Store8_Indirect(regOffset(ip->c.u32), RAX);
+            break;
+        case ByteCodeOp::CompareOpLowerEqU8:
+            MK_BINOP8_CAB(emit_CmpN_IndirectDst, emit_CmpN_Indirect, emit_CmpN);
+            pp.emit_SetBE();
+            pp.emit_Store8_Indirect(regOffset(ip->c.u32), RAX);
+            break;
+        case ByteCodeOp::CompareOpLowerEqU16:
+            MK_BINOP16_CAB(emit_CmpN_IndirectDst, emit_CmpN_Indirect, emit_CmpN);
+            pp.emit_SetBE();
             pp.emit_Store8_Indirect(regOffset(ip->c.u32), RAX);
             break;
         case ByteCodeOp::CompareOpLowerEqU32:
@@ -2374,11 +2454,23 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
 
             /////////////////////////////////////
 
+        case ByteCodeOp::JumpIfLowerS8:
+            MK_JMPCMP_8(JL);
+            break;
+        case ByteCodeOp::JumpIfLowerS16:
+            MK_JMPCMP_16(JL);
+            break;
         case ByteCodeOp::JumpIfLowerS32:
             MK_JMPCMP_32(JL);
             break;
         case ByteCodeOp::JumpIfLowerS64:
             MK_JMPCMP_64(JL);
+            break;
+        case ByteCodeOp::JumpIfLowerU8:
+            MK_JMPCMP_8(JB);
+            break;
+        case ByteCodeOp::JumpIfLowerU16:
+            MK_JMPCMP_16(JB);
             break;
         case ByteCodeOp::JumpIfLowerU32:
             MK_JMPCMP_32(JB);
@@ -2395,11 +2487,23 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
 
             /////////////////////////////////////
 
+        case ByteCodeOp::JumpIfLowerEqS8:
+            MK_JMPCMP_8(JLE);
+            break;
+        case ByteCodeOp::JumpIfLowerEqS16:
+            MK_JMPCMP_16(JLE);
+            break;
         case ByteCodeOp::JumpIfLowerEqS32:
             MK_JMPCMP_32(JLE);
             break;
         case ByteCodeOp::JumpIfLowerEqS64:
             MK_JMPCMP_64(JLE);
+            break;
+        case ByteCodeOp::JumpIfLowerEqU8:
+            MK_JMPCMP_8(JBE);
+            break;
+        case ByteCodeOp::JumpIfLowerEqU16:
+            MK_JMPCMP_16(JBE);
             break;
         case ByteCodeOp::JumpIfLowerEqU32:
             MK_JMPCMP_32(JBE);
@@ -2416,11 +2520,23 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
 
             /////////////////////////////////////
 
+        case ByteCodeOp::JumpIfGreaterS8:
+            MK_JMPCMP_8(JG);
+            break;
+        case ByteCodeOp::JumpIfGreaterS16:
+            MK_JMPCMP_16(JG);
+            break;
         case ByteCodeOp::JumpIfGreaterS32:
             MK_JMPCMP_32(JG);
             break;
         case ByteCodeOp::JumpIfGreaterS64:
             MK_JMPCMP_64(JG);
+            break;
+        case ByteCodeOp::JumpIfGreaterU8:
+            MK_JMPCMP_8(JA);
+            break;
+        case ByteCodeOp::JumpIfGreaterU16:
+            MK_JMPCMP_16(JA);
             break;
         case ByteCodeOp::JumpIfGreaterU32:
             MK_JMPCMP_32(JA);
@@ -2437,11 +2553,23 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
 
             /////////////////////////////////////
 
+        case ByteCodeOp::JumpIfGreaterEqS8:
+            MK_JMPCMP_8(JGE);
+            break;
+        case ByteCodeOp::JumpIfGreaterEqS16:
+            MK_JMPCMP_16(JGE);
+            break;
         case ByteCodeOp::JumpIfGreaterEqS32:
             MK_JMPCMP_32(JGE);
             break;
         case ByteCodeOp::JumpIfGreaterEqS64:
             MK_JMPCMP_64(JGE);
+            break;
+        case ByteCodeOp::JumpIfGreaterEqU8:
+            MK_JMPCMP_8(JAE);
+            break;
+        case ByteCodeOp::JumpIfGreaterEqU16:
+            MK_JMPCMP_16(JAE);
             break;
         case ByteCodeOp::JumpIfGreaterEqU32:
             MK_JMPCMP_32(JAE);

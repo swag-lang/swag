@@ -120,6 +120,10 @@
     llvm::Value* r1 = MK_IMMA_F64();                    \
     llvm::Value* r2 = MK_IMMB_F64();
 
+#define MK_BINOP8_CAB8()                               \
+    auto         r0 = GEP64_PTR_I8(allocR, ip->c.u32); \
+    llvm::Value* r1 = MK_IMMA_8();                     \
+    llvm::Value* r2 = MK_IMMB_8();
 #define MK_BINOP16_CAB8()                              \
     auto         r0 = GEP64_PTR_I8(allocR, ip->c.u32); \
     llvm::Value* r1 = MK_IMMA_16();                    \

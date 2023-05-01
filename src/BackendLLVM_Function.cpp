@@ -2710,6 +2710,22 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
 
             /////////////////////////////////////
 
+        case ByteCodeOp::CompareOpGreaterS8:
+        {
+            MK_BINOP8_CAB8();
+            auto v0 = builder.CreateICmpSGT(r1, r2);
+            v0      = builder.CreateIntCast(v0, I8_TY(), false);
+            builder.CreateStore(v0, r0);
+            break;
+        }
+        case ByteCodeOp::CompareOpGreaterS16:
+        {
+            MK_BINOP16_CAB8();
+            auto v0 = builder.CreateICmpSGT(r1, r2);
+            v0      = builder.CreateIntCast(v0, I8_TY(), false);
+            builder.CreateStore(v0, r0);
+            break;
+        }
         case ByteCodeOp::CompareOpGreaterS32:
         {
             MK_BINOP32_CAB8();
@@ -2722,6 +2738,22 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         {
             MK_BINOP64_CAB8();
             auto v0 = builder.CreateICmpSGT(r1, r2);
+            v0      = builder.CreateIntCast(v0, I8_TY(), false);
+            builder.CreateStore(v0, r0);
+            break;
+        }
+        case ByteCodeOp::CompareOpGreaterU8:
+        {
+            MK_BINOP8_CAB8();
+            auto v0 = builder.CreateICmpUGT(r1, r2);
+            v0      = builder.CreateIntCast(v0, I8_TY(), false);
+            builder.CreateStore(v0, r0);
+            break;
+        }
+        case ByteCodeOp::CompareOpGreaterU16:
+        {
+            MK_BINOP16_CAB8();
+            auto v0 = builder.CreateICmpUGT(r1, r2);
             v0      = builder.CreateIntCast(v0, I8_TY(), false);
             builder.CreateStore(v0, r0);
             break;
@@ -2759,6 +2791,22 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             break;
         }
 
+        case ByteCodeOp::CompareOpGreaterEqS8:
+        {
+            MK_BINOP8_CAB8();
+            auto v0 = builder.CreateICmpSGE(r1, r2);
+            v0      = builder.CreateIntCast(v0, I8_TY(), false);
+            builder.CreateStore(v0, r0);
+            break;
+        }
+        case ByteCodeOp::CompareOpGreaterEqS16:
+        {
+            MK_BINOP16_CAB8();
+            auto v0 = builder.CreateICmpSGE(r1, r2);
+            v0      = builder.CreateIntCast(v0, I8_TY(), false);
+            builder.CreateStore(v0, r0);
+            break;
+        }
         case ByteCodeOp::CompareOpGreaterEqS32:
         {
             MK_BINOP32_CAB8();
@@ -2771,6 +2819,22 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         {
             MK_BINOP64_CAB8();
             auto v0 = builder.CreateICmpSGE(r1, r2);
+            v0      = builder.CreateIntCast(v0, I8_TY(), false);
+            builder.CreateStore(v0, r0);
+            break;
+        }
+        case ByteCodeOp::CompareOpGreaterEqU8:
+        {
+            MK_BINOP8_CAB8();
+            auto v0 = builder.CreateICmpUGE(r1, r2);
+            v0      = builder.CreateIntCast(v0, I8_TY(), false);
+            builder.CreateStore(v0, r0);
+            break;
+        }
+        case ByteCodeOp::CompareOpGreaterEqU16:
+        {
+            MK_BINOP16_CAB8();
+            auto v0 = builder.CreateICmpUGE(r1, r2);
             v0      = builder.CreateIntCast(v0, I8_TY(), false);
             builder.CreateStore(v0, r0);
             break;
@@ -2808,6 +2872,22 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             break;
         }
 
+        case ByteCodeOp::CompareOpLowerS8:
+        {
+            MK_BINOP8_CAB8();
+            auto v0 = builder.CreateICmpSLT(r1, r2);
+            v0      = builder.CreateIntCast(v0, I8_TY(), false);
+            builder.CreateStore(v0, r0);
+            break;
+        }
+        case ByteCodeOp::CompareOpLowerS16:
+        {
+            MK_BINOP16_CAB8();
+            auto v0 = builder.CreateICmpSLT(r1, r2);
+            v0      = builder.CreateIntCast(v0, I8_TY(), false);
+            builder.CreateStore(v0, r0);
+            break;
+        }
         case ByteCodeOp::CompareOpLowerS32:
         {
             MK_BINOP32_CAB8();
@@ -2820,6 +2900,22 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         {
             MK_BINOP64_CAB8();
             auto v0 = builder.CreateICmpSLT(r1, r2);
+            v0      = builder.CreateIntCast(v0, I8_TY(), false);
+            builder.CreateStore(v0, r0);
+            break;
+        }
+        case ByteCodeOp::CompareOpLowerU8:
+        {
+            MK_BINOP8_CAB8();
+            auto v0 = builder.CreateICmpULT(r1, r2);
+            v0      = builder.CreateIntCast(v0, I8_TY(), false);
+            builder.CreateStore(v0, r0);
+            break;
+        }
+        case ByteCodeOp::CompareOpLowerU16:
+        {
+            MK_BINOP16_CAB8();
+            auto v0 = builder.CreateICmpULT(r1, r2);
             v0      = builder.CreateIntCast(v0, I8_TY(), false);
             builder.CreateStore(v0, r0);
             break;
@@ -2857,6 +2953,22 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             break;
         }
 
+        case ByteCodeOp::CompareOpLowerEqS8:
+        {
+            MK_BINOP8_CAB8();
+            auto v0 = builder.CreateICmpSLE(r1, r2);
+            v0 = builder.CreateIntCast(v0, I8_TY(), false);
+            builder.CreateStore(v0, r0);
+            break;
+        }
+        case ByteCodeOp::CompareOpLowerEqS16:
+        {
+            MK_BINOP16_CAB8();
+            auto v0 = builder.CreateICmpSLE(r1, r2);
+            v0 = builder.CreateIntCast(v0, I8_TY(), false);
+            builder.CreateStore(v0, r0);
+            break;
+        }
         case ByteCodeOp::CompareOpLowerEqS32:
         {
             MK_BINOP32_CAB8();
@@ -2870,6 +2982,22 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             MK_BINOP64_CAB8();
             auto v0 = builder.CreateICmpSLE(r1, r2);
             v0      = builder.CreateIntCast(v0, I8_TY(), false);
+            builder.CreateStore(v0, r0);
+            break;
+        }
+        case ByteCodeOp::CompareOpLowerEqU8:
+        {
+            MK_BINOP8_CAB8();
+            auto v0 = builder.CreateICmpULE(r1, r2);
+            v0 = builder.CreateIntCast(v0, I8_TY(), false);
+            builder.CreateStore(v0, r0);
+            break;
+        }
+        case ByteCodeOp::CompareOpLowerEqU16:
+        {
+            MK_BINOP16_CAB8();
+            auto v0 = builder.CreateICmpULE(r1, r2);
+            v0 = builder.CreateIntCast(v0, I8_TY(), false);
             builder.CreateStore(v0, r0);
             break;
         }
@@ -3432,6 +3560,28 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             break;
         }
 
+        case ByteCodeOp::JumpIfLowerS8:
+        {
+            auto labelTrue  = getOrCreateLabel(pp, func, i + ip->b.s32 + 1);
+            auto labelFalse = getOrCreateLabel(pp, func, i + 1);
+            auto r0         = MK_IMMA_8();
+            auto r1         = MK_IMMC_8();
+            auto b0         = builder.CreateICmpSLT(r0, r1);
+            builder.CreateCondBr(b0, labelTrue, labelFalse);
+            blockIsClosed = true;
+            break;
+        }
+        case ByteCodeOp::JumpIfLowerS16:
+        {
+            auto labelTrue  = getOrCreateLabel(pp, func, i + ip->b.s32 + 1);
+            auto labelFalse = getOrCreateLabel(pp, func, i + 1);
+            auto r0         = MK_IMMA_16();
+            auto r1         = MK_IMMC_16();
+            auto b0         = builder.CreateICmpSLT(r0, r1);
+            builder.CreateCondBr(b0, labelTrue, labelFalse);
+            blockIsClosed = true;
+            break;
+        }
         case ByteCodeOp::JumpIfLowerS32:
         {
             auto labelTrue  = getOrCreateLabel(pp, func, i + ip->b.s32 + 1);
@@ -3450,6 +3600,28 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             auto r0         = MK_IMMA_64();
             auto r1         = MK_IMMC_64();
             auto b0         = builder.CreateICmpSLT(r0, r1);
+            builder.CreateCondBr(b0, labelTrue, labelFalse);
+            blockIsClosed = true;
+            break;
+        }
+        case ByteCodeOp::JumpIfLowerU8:
+        {
+            auto labelTrue  = getOrCreateLabel(pp, func, i + ip->b.s32 + 1);
+            auto labelFalse = getOrCreateLabel(pp, func, i + 1);
+            auto r0         = MK_IMMA_8();
+            auto r1         = MK_IMMC_8();
+            auto b0         = builder.CreateICmpULT(r0, r1);
+            builder.CreateCondBr(b0, labelTrue, labelFalse);
+            blockIsClosed = true;
+            break;
+        }
+        case ByteCodeOp::JumpIfLowerU16:
+        {
+            auto labelTrue  = getOrCreateLabel(pp, func, i + ip->b.s32 + 1);
+            auto labelFalse = getOrCreateLabel(pp, func, i + 1);
+            auto r0         = MK_IMMA_16();
+            auto r1         = MK_IMMC_16();
+            auto b0         = builder.CreateICmpULT(r0, r1);
             builder.CreateCondBr(b0, labelTrue, labelFalse);
             blockIsClosed = true;
             break;
@@ -3499,6 +3671,28 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             break;
         }
 
+        case ByteCodeOp::JumpIfLowerEqS8:
+        {
+            auto labelTrue  = getOrCreateLabel(pp, func, i + ip->b.s32 + 1);
+            auto labelFalse = getOrCreateLabel(pp, func, i + 1);
+            auto r0         = MK_IMMA_8();
+            auto r1         = MK_IMMC_8();
+            auto b0         = builder.CreateICmpSLE(r0, r1);
+            builder.CreateCondBr(b0, labelTrue, labelFalse);
+            blockIsClosed = true;
+            break;
+        }
+        case ByteCodeOp::JumpIfLowerEqS16:
+        {
+            auto labelTrue  = getOrCreateLabel(pp, func, i + ip->b.s32 + 1);
+            auto labelFalse = getOrCreateLabel(pp, func, i + 1);
+            auto r0         = MK_IMMA_16();
+            auto r1         = MK_IMMC_16();
+            auto b0         = builder.CreateICmpSLE(r0, r1);
+            builder.CreateCondBr(b0, labelTrue, labelFalse);
+            blockIsClosed = true;
+            break;
+        }
         case ByteCodeOp::JumpIfLowerEqS32:
         {
             auto labelTrue  = getOrCreateLabel(pp, func, i + ip->b.s32 + 1);
@@ -3517,6 +3711,28 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             auto r0         = MK_IMMA_64();
             auto r1         = MK_IMMC_64();
             auto b0         = builder.CreateICmpSLE(r0, r1);
+            builder.CreateCondBr(b0, labelTrue, labelFalse);
+            blockIsClosed = true;
+            break;
+        }
+        case ByteCodeOp::JumpIfLowerEqU8:
+        {
+            auto labelTrue  = getOrCreateLabel(pp, func, i + ip->b.s32 + 1);
+            auto labelFalse = getOrCreateLabel(pp, func, i + 1);
+            auto r0         = MK_IMMA_8();
+            auto r1         = MK_IMMC_8();
+            auto b0         = builder.CreateICmpULE(r0, r1);
+            builder.CreateCondBr(b0, labelTrue, labelFalse);
+            blockIsClosed = true;
+            break;
+        }
+        case ByteCodeOp::JumpIfLowerEqU16:
+        {
+            auto labelTrue  = getOrCreateLabel(pp, func, i + ip->b.s32 + 1);
+            auto labelFalse = getOrCreateLabel(pp, func, i + 1);
+            auto r0         = MK_IMMA_16();
+            auto r1         = MK_IMMC_16();
+            auto b0         = builder.CreateICmpULE(r0, r1);
             builder.CreateCondBr(b0, labelTrue, labelFalse);
             blockIsClosed = true;
             break;
@@ -3566,6 +3782,28 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             break;
         }
 
+        case ByteCodeOp::JumpIfGreaterEqS8:
+        {
+            auto labelTrue  = getOrCreateLabel(pp, func, i + ip->b.s32 + 1);
+            auto labelFalse = getOrCreateLabel(pp, func, i + 1);
+            auto r0         = MK_IMMA_8();
+            auto r1         = MK_IMMC_8();
+            auto b0         = builder.CreateICmpSGE(r0, r1);
+            builder.CreateCondBr(b0, labelTrue, labelFalse);
+            blockIsClosed = true;
+            break;
+        }
+        case ByteCodeOp::JumpIfGreaterEqS16:
+        {
+            auto labelTrue  = getOrCreateLabel(pp, func, i + ip->b.s32 + 1);
+            auto labelFalse = getOrCreateLabel(pp, func, i + 1);
+            auto r0         = MK_IMMA_16();
+            auto r1         = MK_IMMC_16();
+            auto b0         = builder.CreateICmpSGE(r0, r1);
+            builder.CreateCondBr(b0, labelTrue, labelFalse);
+            blockIsClosed = true;
+            break;
+        }
         case ByteCodeOp::JumpIfGreaterEqS32:
         {
             auto labelTrue  = getOrCreateLabel(pp, func, i + ip->b.s32 + 1);
@@ -3584,6 +3822,28 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             auto r0         = MK_IMMA_64();
             auto r1         = MK_IMMC_64();
             auto b0         = builder.CreateICmpSGE(r0, r1);
+            builder.CreateCondBr(b0, labelTrue, labelFalse);
+            blockIsClosed = true;
+            break;
+        }
+        case ByteCodeOp::JumpIfGreaterEqU8:
+        {
+            auto labelTrue  = getOrCreateLabel(pp, func, i + ip->b.s32 + 1);
+            auto labelFalse = getOrCreateLabel(pp, func, i + 1);
+            auto r0         = MK_IMMA_8();
+            auto r1         = MK_IMMC_8();
+            auto b0         = builder.CreateICmpUGE(r0, r1);
+            builder.CreateCondBr(b0, labelTrue, labelFalse);
+            blockIsClosed = true;
+            break;
+        }
+        case ByteCodeOp::JumpIfGreaterEqU16:
+        {
+            auto labelTrue  = getOrCreateLabel(pp, func, i + ip->b.s32 + 1);
+            auto labelFalse = getOrCreateLabel(pp, func, i + 1);
+            auto r0         = MK_IMMA_16();
+            auto r1         = MK_IMMC_16();
+            auto b0         = builder.CreateICmpUGE(r0, r1);
             builder.CreateCondBr(b0, labelTrue, labelFalse);
             blockIsClosed = true;
             break;
@@ -3633,6 +3893,28 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             break;
         }
 
+        case ByteCodeOp::JumpIfGreaterS8:
+        {
+            auto labelTrue  = getOrCreateLabel(pp, func, i + ip->b.s32 + 1);
+            auto labelFalse = getOrCreateLabel(pp, func, i + 1);
+            auto r0         = MK_IMMA_8();
+            auto r1         = MK_IMMC_8();
+            auto b0         = builder.CreateICmpSGT(r0, r1);
+            builder.CreateCondBr(b0, labelTrue, labelFalse);
+            blockIsClosed = true;
+            break;
+        }
+        case ByteCodeOp::JumpIfGreaterS16:
+        {
+            auto labelTrue  = getOrCreateLabel(pp, func, i + ip->b.s32 + 1);
+            auto labelFalse = getOrCreateLabel(pp, func, i + 1);
+            auto r0         = MK_IMMA_16();
+            auto r1         = MK_IMMC_16();
+            auto b0         = builder.CreateICmpSGT(r0, r1);
+            builder.CreateCondBr(b0, labelTrue, labelFalse);
+            blockIsClosed = true;
+            break;
+        }
         case ByteCodeOp::JumpIfGreaterS32:
         {
             auto labelTrue  = getOrCreateLabel(pp, func, i + ip->b.s32 + 1);
@@ -3651,6 +3933,28 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             auto r0         = MK_IMMA_64();
             auto r1         = MK_IMMC_64();
             auto b0         = builder.CreateICmpSGT(r0, r1);
+            builder.CreateCondBr(b0, labelTrue, labelFalse);
+            blockIsClosed = true;
+            break;
+        }
+        case ByteCodeOp::JumpIfGreaterU8:
+        {
+            auto labelTrue  = getOrCreateLabel(pp, func, i + ip->b.s32 + 1);
+            auto labelFalse = getOrCreateLabel(pp, func, i + 1);
+            auto r0         = MK_IMMA_8();
+            auto r1         = MK_IMMC_8();
+            auto b0         = builder.CreateICmpUGT(r0, r1);
+            builder.CreateCondBr(b0, labelTrue, labelFalse);
+            blockIsClosed = true;
+            break;
+        }
+        case ByteCodeOp::JumpIfGreaterU16:
+        {
+            auto labelTrue  = getOrCreateLabel(pp, func, i + ip->b.s32 + 1);
+            auto labelFalse = getOrCreateLabel(pp, func, i + 1);
+            auto r0         = MK_IMMA_16();
+            auto r1         = MK_IMMC_16();
+            auto b0         = builder.CreateICmpUGT(r0, r1);
             builder.CreateCondBr(b0, labelTrue, labelFalse);
             blockIsClosed = true;
             break;

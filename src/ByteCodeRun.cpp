@@ -377,15 +377,15 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
         break;
     }
 
-    case ByteCodeOp::JumpIfLowerU32:
+    case ByteCodeOp::JumpIfLowerS8:
     {
-        if (IMMA_U32(ip) < IMMC_U32(ip))
+        if (IMMA_S8(ip) < IMMC_S8(ip))
             context->ip += ip->b.s32;
         break;
     }
-    case ByteCodeOp::JumpIfLowerU64:
+    case ByteCodeOp::JumpIfLowerS16:
     {
-        if (IMMA_U64(ip) < IMMC_U64(ip))
+        if (IMMA_S16(ip) < IMMC_S16(ip))
             context->ip += ip->b.s32;
         break;
     }
@@ -398,6 +398,30 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
     case ByteCodeOp::JumpIfLowerS64:
     {
         if (IMMA_S64(ip) < IMMC_S64(ip))
+            context->ip += ip->b.s32;
+        break;
+    }
+    case ByteCodeOp::JumpIfLowerU8:
+    {
+        if (IMMA_U8(ip) < IMMC_U8(ip))
+            context->ip += ip->b.s32;
+        break;
+    }
+    case ByteCodeOp::JumpIfLowerU16:
+    {
+        if (IMMA_U16(ip) < IMMC_U16(ip))
+            context->ip += ip->b.s32;
+        break;
+    }
+    case ByteCodeOp::JumpIfLowerU32:
+    {
+        if (IMMA_U32(ip) < IMMC_U32(ip))
+            context->ip += ip->b.s32;
+        break;
+    }
+    case ByteCodeOp::JumpIfLowerU64:
+    {
+        if (IMMA_U64(ip) < IMMC_U64(ip))
             context->ip += ip->b.s32;
         break;
     }
@@ -414,6 +438,18 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
         break;
     }
 
+    case ByteCodeOp::JumpIfLowerEqU8:
+    {
+        if (IMMA_U8(ip) <= IMMC_U8(ip))
+            context->ip += ip->b.s32;
+        break;
+    }
+    case ByteCodeOp::JumpIfLowerEqU16:
+    {
+        if (IMMA_U16(ip) <= IMMC_U16(ip))
+            context->ip += ip->b.s32;
+        break;
+    }
     case ByteCodeOp::JumpIfLowerEqU32:
     {
         if (IMMA_U32(ip) <= IMMC_U32(ip))
@@ -423,6 +459,18 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
     case ByteCodeOp::JumpIfLowerEqU64:
     {
         if (IMMA_U64(ip) <= IMMC_U64(ip))
+            context->ip += ip->b.s32;
+        break;
+    }
+    case ByteCodeOp::JumpIfLowerEqS8:
+    {
+        if (IMMA_S8(ip) <= IMMC_S8(ip))
+            context->ip += ip->b.s32;
+        break;
+    }
+    case ByteCodeOp::JumpIfLowerEqS16:
+    {
+        if (IMMA_S16(ip) <= IMMC_S16(ip))
             context->ip += ip->b.s32;
         break;
     }
@@ -451,6 +499,18 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
         break;
     }
 
+    case ByteCodeOp::JumpIfGreaterU8:
+    {
+        if (IMMA_U8(ip) > IMMC_U8(ip))
+            context->ip += ip->b.s32;
+        break;
+    }
+    case ByteCodeOp::JumpIfGreaterU16:
+    {
+        if (IMMA_U16(ip) > IMMC_U16(ip))
+            context->ip += ip->b.s32;
+        break;
+    }
     case ByteCodeOp::JumpIfGreaterU32:
     {
         if (IMMA_U32(ip) > IMMC_U32(ip))
@@ -460,6 +520,18 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
     case ByteCodeOp::JumpIfGreaterU64:
     {
         if (IMMA_U64(ip) > IMMC_U64(ip))
+            context->ip += ip->b.s32;
+        break;
+    }
+    case ByteCodeOp::JumpIfGreaterS8:
+    {
+        if (IMMA_S8(ip) > IMMC_S8(ip))
+            context->ip += ip->b.s32;
+        break;
+    }
+    case ByteCodeOp::JumpIfGreaterS16:
+    {
+        if (IMMA_S16(ip) > IMMC_S16(ip))
             context->ip += ip->b.s32;
         break;
     }
@@ -488,6 +560,18 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
         break;
     }
 
+    case ByteCodeOp::JumpIfGreaterEqU8:
+    {
+        if (IMMA_U8(ip) >= IMMC_U8(ip))
+            context->ip += ip->b.s32;
+        break;
+    }
+    case ByteCodeOp::JumpIfGreaterEqU16:
+    {
+        if (IMMA_U16(ip) >= IMMC_U16(ip))
+            context->ip += ip->b.s32;
+        break;
+    }
     case ByteCodeOp::JumpIfGreaterEqU32:
     {
         if (IMMA_U32(ip) >= IMMC_U32(ip))
@@ -497,6 +581,18 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
     case ByteCodeOp::JumpIfGreaterEqU64:
     {
         if (IMMA_U64(ip) >= IMMC_U64(ip))
+            context->ip += ip->b.s32;
+        break;
+    }
+    case ByteCodeOp::JumpIfGreaterEqS8:
+    {
+        if (IMMA_S8(ip) >= IMMC_S8(ip))
+            context->ip += ip->b.s32;
+        break;
+    }
+    case ByteCodeOp::JumpIfGreaterEqS16:
+    {
+        if (IMMA_S16(ip) >= IMMC_S16(ip))
             context->ip += ip->b.s32;
         break;
     }
@@ -2643,6 +2739,16 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
         break;
     }
 
+    case ByteCodeOp::CompareOpLowerS8:
+    {
+        registersRC[ip->c.u32].b = IMMA_S8(ip) < IMMB_S8(ip);
+        break;
+    }
+    case ByteCodeOp::CompareOpLowerS16:
+    {
+        registersRC[ip->c.u32].b = IMMA_S16(ip) < IMMB_S16(ip);
+        break;
+    }
     case ByteCodeOp::CompareOpLowerS32:
     {
         registersRC[ip->c.u32].b = IMMA_S32(ip) < IMMB_S32(ip);
@@ -2651,6 +2757,16 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
     case ByteCodeOp::CompareOpLowerS64:
     {
         registersRC[ip->c.u32].b = IMMA_S64(ip) < IMMB_S64(ip);
+        break;
+    }
+    case ByteCodeOp::CompareOpLowerU8:
+    {
+        registersRC[ip->c.u32].b = IMMA_U8(ip) < IMMB_U8(ip);
+        break;
+    }
+    case ByteCodeOp::CompareOpLowerU16:
+    {
+        registersRC[ip->c.u32].b = IMMA_U16(ip) < IMMB_U16(ip);
         break;
     }
     case ByteCodeOp::CompareOpLowerU32:
@@ -2674,6 +2790,16 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
         break;
     }
 
+    case ByteCodeOp::CompareOpLowerEqS8:
+    {
+        registersRC[ip->c.u32].b = IMMA_S8(ip) <= IMMB_S8(ip);
+        break;
+    }
+    case ByteCodeOp::CompareOpLowerEqS16:
+    {
+        registersRC[ip->c.u32].b = IMMA_S16(ip) <= IMMB_S16(ip);
+        break;
+    }
     case ByteCodeOp::CompareOpLowerEqS32:
     {
         registersRC[ip->c.u32].b = IMMA_S32(ip) <= IMMB_S32(ip);
@@ -2682,6 +2808,16 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
     case ByteCodeOp::CompareOpLowerEqS64:
     {
         registersRC[ip->c.u32].b = IMMA_S64(ip) <= IMMB_S64(ip);
+        break;
+    }
+    case ByteCodeOp::CompareOpLowerEqU8:
+    {
+        registersRC[ip->c.u32].b = IMMA_U8(ip) <= IMMB_U8(ip);
+        break;
+    }
+    case ByteCodeOp::CompareOpLowerEqU16:
+    {
+        registersRC[ip->c.u32].b = IMMA_U16(ip) <= IMMB_U16(ip);
         break;
     }
     case ByteCodeOp::CompareOpLowerEqU32:
@@ -2705,6 +2841,16 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
         break;
     }
 
+    case ByteCodeOp::CompareOpGreaterS8:
+    {
+        registersRC[ip->c.u32].b = IMMA_S8(ip) > IMMB_S8(ip);
+        break;
+    }
+    case ByteCodeOp::CompareOpGreaterS16:
+    {
+        registersRC[ip->c.u32].b = IMMA_S16(ip) > IMMB_S16(ip);
+        break;
+    }
     case ByteCodeOp::CompareOpGreaterS32:
     {
         registersRC[ip->c.u32].b = IMMA_S32(ip) > IMMB_S32(ip);
@@ -2713,6 +2859,16 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
     case ByteCodeOp::CompareOpGreaterS64:
     {
         registersRC[ip->c.u32].b = IMMA_S64(ip) > IMMB_S64(ip);
+        break;
+    }
+    case ByteCodeOp::CompareOpGreaterU8:
+    {
+        registersRC[ip->c.u32].b = IMMA_U8(ip) > IMMB_U8(ip);
+        break;
+    }
+    case ByteCodeOp::CompareOpGreaterU16:
+    {
+        registersRC[ip->c.u32].b = IMMA_U16(ip) > IMMB_U16(ip);
         break;
     }
     case ByteCodeOp::CompareOpGreaterU32:
@@ -2736,6 +2892,16 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
         break;
     }
 
+    case ByteCodeOp::CompareOpGreaterEqS8:
+    {
+        registersRC[ip->c.u32].b = IMMA_S8(ip) >= IMMB_S8(ip);
+        break;
+    }
+    case ByteCodeOp::CompareOpGreaterEqS16:
+    {
+        registersRC[ip->c.u32].b = IMMA_S16(ip) >= IMMB_S16(ip);
+        break;
+    }
     case ByteCodeOp::CompareOpGreaterEqS32:
     {
         registersRC[ip->c.u32].b = IMMA_S32(ip) >= IMMB_S32(ip);
@@ -2744,6 +2910,16 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
     case ByteCodeOp::CompareOpGreaterEqS64:
     {
         registersRC[ip->c.u32].b = IMMA_S64(ip) >= IMMB_S64(ip);
+        break;
+    }
+    case ByteCodeOp::CompareOpGreaterEqU8:
+    {
+        registersRC[ip->c.u32].b = IMMA_U8(ip) >= IMMB_U8(ip);
+        break;
+    }
+    case ByteCodeOp::CompareOpGreaterEqU16:
+    {
+        registersRC[ip->c.u32].b = IMMA_U16(ip) >= IMMB_U16(ip);
         break;
     }
     case ByteCodeOp::CompareOpGreaterEqU32:

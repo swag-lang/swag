@@ -1659,11 +1659,23 @@ static bool optimizePassSanityStack(ByteCodeOptContext* context, Context& cxt)
             CMPOP(!=, f64);
             break;
 
+        case ByteCodeOp::CompareOpGreaterEqS8:
+            CMPOP(>=, s8);
+            break;
+        case ByteCodeOp::CompareOpGreaterEqS16:
+            CMPOP(>=, s16);
+            break;
         case ByteCodeOp::CompareOpGreaterEqS32:
             CMPOP(>=, s32);
             break;
         case ByteCodeOp::CompareOpGreaterEqS64:
             CMPOP(>=, s64);
+            break;
+        case ByteCodeOp::CompareOpGreaterEqU8:
+            CMPOP(>=, u8);
+            break;
+        case ByteCodeOp::CompareOpGreaterEqU16:
+            CMPOP(>=, u16);
             break;
         case ByteCodeOp::CompareOpGreaterEqU32:
             CMPOP(>=, u32);
@@ -1678,11 +1690,23 @@ static bool optimizePassSanityStack(ByteCodeOptContext* context, Context& cxt)
             CMPOP(>=, f64);
             break;
 
+        case ByteCodeOp::CompareOpGreaterS8:
+            CMPOP(>, s8);
+            break;
+        case ByteCodeOp::CompareOpGreaterS16:
+            CMPOP(>, s16);
+            break;
         case ByteCodeOp::CompareOpGreaterS32:
             CMPOP(>, s32);
             break;
         case ByteCodeOp::CompareOpGreaterS64:
             CMPOP(>, s64);
+            break;
+        case ByteCodeOp::CompareOpGreaterU8:
+            CMPOP(>, u8);
+            break;
+        case ByteCodeOp::CompareOpGreaterU16:
+            CMPOP(>, u16);
             break;
         case ByteCodeOp::CompareOpGreaterU32:
             CMPOP(>, u32);
@@ -1697,11 +1721,23 @@ static bool optimizePassSanityStack(ByteCodeOptContext* context, Context& cxt)
             CMPOP(>, f64);
             break;
 
+        case ByteCodeOp::CompareOpLowerEqS8:
+            CMPOP(<=, s8);
+            break;
+        case ByteCodeOp::CompareOpLowerEqS16:
+            CMPOP(<=, s16);
+            break;
         case ByteCodeOp::CompareOpLowerEqS32:
             CMPOP(<=, s32);
             break;
         case ByteCodeOp::CompareOpLowerEqS64:
             CMPOP(<=, s64);
+            break;
+        case ByteCodeOp::CompareOpLowerEqU8:
+            CMPOP(<=, u8);
+            break;
+        case ByteCodeOp::CompareOpLowerEqU16:
+            CMPOP(<=, u16);
             break;
         case ByteCodeOp::CompareOpLowerEqU32:
             CMPOP(<=, u32);
@@ -1716,11 +1752,23 @@ static bool optimizePassSanityStack(ByteCodeOptContext* context, Context& cxt)
             CMPOP(<=, f64);
             break;
 
+        case ByteCodeOp::CompareOpLowerS8:
+            CMPOP(<, s8);
+            break;
+        case ByteCodeOp::CompareOpLowerS16:
+            CMPOP(<, s16);
+            break;
         case ByteCodeOp::CompareOpLowerS32:
             CMPOP(<, s32);
             break;
         case ByteCodeOp::CompareOpLowerS64:
             CMPOP(<, s64);
+            break;
+        case ByteCodeOp::CompareOpLowerU8:
+            CMPOP(<, u8);
+            break;
+        case ByteCodeOp::CompareOpLowerU16:
+            CMPOP(<, u16);
             break;
         case ByteCodeOp::CompareOpLowerU32:
             CMPOP(<, u32);

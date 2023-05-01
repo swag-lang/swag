@@ -485,15 +485,27 @@ bool ByteCodeGenJob::emitCompareOpLower(ByteCodeGenContext* context, AstNode* le
     {
         switch (typeInfo->nativeType)
         {
+        case NativeTypeKind::S8:
+            EMIT_INST3(context, ByteCodeOp::CompareOpLowerS8, r0, r1, r2);
+            return true;
+        case NativeTypeKind::S16:
+            EMIT_INST3(context, ByteCodeOp::CompareOpLowerS16, r0, r1, r2);
+            return true;
         case NativeTypeKind::S32:
             EMIT_INST3(context, ByteCodeOp::CompareOpLowerS32, r0, r1, r2);
+            return true;
+        case NativeTypeKind::S64:
+            EMIT_INST3(context, ByteCodeOp::CompareOpLowerS64, r0, r1, r2);
+            return true;
+        case NativeTypeKind::U8:
+            EMIT_INST3(context, ByteCodeOp::CompareOpLowerU8, r0, r1, r2);
+            return true;
+        case NativeTypeKind::U16:
+            EMIT_INST3(context, ByteCodeOp::CompareOpLowerU16, r0, r1, r2);
             return true;
         case NativeTypeKind::U32:
         case NativeTypeKind::Rune:
             EMIT_INST3(context, ByteCodeOp::CompareOpLowerU32, r0, r1, r2);
-            return true;
-        case NativeTypeKind::S64:
-            EMIT_INST3(context, ByteCodeOp::CompareOpLowerS64, r0, r1, r2);
             return true;
         case NativeTypeKind::U64:
             EMIT_INST3(context, ByteCodeOp::CompareOpLowerU64, r0, r1, r2);
@@ -536,15 +548,27 @@ bool ByteCodeGenJob::emitCompareOpLowerEq(ByteCodeGenContext* context, AstNode* 
     {
         switch (typeInfo->nativeType)
         {
+        case NativeTypeKind::S8:
+            EMIT_INST3(context, ByteCodeOp::CompareOpLowerEqS8, r0, r1, r2);
+            return true;
+        case NativeTypeKind::S16:
+            EMIT_INST3(context, ByteCodeOp::CompareOpLowerEqS16, r0, r1, r2);
+            return true;
         case NativeTypeKind::S32:
             EMIT_INST3(context, ByteCodeOp::CompareOpLowerEqS32, r0, r1, r2);
+            return true;
+        case NativeTypeKind::S64:
+            EMIT_INST3(context, ByteCodeOp::CompareOpLowerEqS64, r0, r1, r2);
+            return true;
+        case NativeTypeKind::U8:
+            EMIT_INST3(context, ByteCodeOp::CompareOpLowerEqU8, r0, r1, r2);
+            return true;
+        case NativeTypeKind::U16:
+            EMIT_INST3(context, ByteCodeOp::CompareOpLowerEqU16, r0, r1, r2);
             return true;
         case NativeTypeKind::U32:
         case NativeTypeKind::Rune:
             EMIT_INST3(context, ByteCodeOp::CompareOpLowerEqU32, r0, r1, r2);
-            return true;
-        case NativeTypeKind::S64:
-            EMIT_INST3(context, ByteCodeOp::CompareOpLowerEqS64, r0, r1, r2);
             return true;
         case NativeTypeKind::U64:
             EMIT_INST3(context, ByteCodeOp::CompareOpLowerEqU64, r0, r1, r2);
@@ -587,15 +611,27 @@ bool ByteCodeGenJob::emitCompareOpGreater(ByteCodeGenContext* context, AstNode* 
     {
         switch (typeInfo->nativeType)
         {
+        case NativeTypeKind::S8:
+            EMIT_INST3(context, ByteCodeOp::CompareOpGreaterS8, r0, r1, r2);
+            return true;
+        case NativeTypeKind::S16:
+            EMIT_INST3(context, ByteCodeOp::CompareOpGreaterS16, r0, r1, r2);
+            return true;
         case NativeTypeKind::S32:
             EMIT_INST3(context, ByteCodeOp::CompareOpGreaterS32, r0, r1, r2);
+            return true;
+        case NativeTypeKind::S64:
+            EMIT_INST3(context, ByteCodeOp::CompareOpGreaterS64, r0, r1, r2);
+            return true;
+        case NativeTypeKind::U8:
+            EMIT_INST3(context, ByteCodeOp::CompareOpGreaterU8, r0, r1, r2);
+            return true;
+        case NativeTypeKind::U16:
+            EMIT_INST3(context, ByteCodeOp::CompareOpGreaterU16, r0, r1, r2);
             return true;
         case NativeTypeKind::U32:
         case NativeTypeKind::Rune:
             EMIT_INST3(context, ByteCodeOp::CompareOpGreaterU32, r0, r1, r2);
-            return true;
-        case NativeTypeKind::S64:
-            EMIT_INST3(context, ByteCodeOp::CompareOpGreaterS64, r0, r1, r2);
             return true;
         case NativeTypeKind::U64:
             EMIT_INST3(context, ByteCodeOp::CompareOpGreaterU64, r0, r1, r2);
@@ -638,15 +674,27 @@ bool ByteCodeGenJob::emitCompareOpGreaterEq(ByteCodeGenContext* context, AstNode
     {
         switch (typeInfo->nativeType)
         {
+        case NativeTypeKind::S8:
+            EMIT_INST3(context, ByteCodeOp::CompareOpGreaterEqS8, r0, r1, r2);
+            return true;
+        case NativeTypeKind::S16:
+            EMIT_INST3(context, ByteCodeOp::CompareOpGreaterEqS16, r0, r1, r2);
+            return true;
         case NativeTypeKind::S32:
             EMIT_INST3(context, ByteCodeOp::CompareOpGreaterEqS32, r0, r1, r2);
+            return true;
+        case NativeTypeKind::S64:
+            EMIT_INST3(context, ByteCodeOp::CompareOpGreaterEqS64, r0, r1, r2);
+            return true;
+        case NativeTypeKind::U8:
+            EMIT_INST3(context, ByteCodeOp::CompareOpGreaterEqU8, r0, r1, r2);
+            return true;
+        case NativeTypeKind::U16:
+            EMIT_INST3(context, ByteCodeOp::CompareOpGreaterEqU16, r0, r1, r2);
             return true;
         case NativeTypeKind::U32:
         case NativeTypeKind::Rune:
             EMIT_INST3(context, ByteCodeOp::CompareOpGreaterEqU32, r0, r1, r2);
-            return true;
-        case NativeTypeKind::S64:
-            EMIT_INST3(context, ByteCodeOp::CompareOpGreaterEqS64, r0, r1, r2);
             return true;
         case NativeTypeKind::U64:
             EMIT_INST3(context, ByteCodeOp::CompareOpGreaterEqU64, r0, r1, r2);
@@ -726,20 +774,20 @@ bool ByteCodeGenJob::emitCompareOp(ByteCodeGenContext* context)
         case TokenId::SymExclamEqual:
             SWAG_CHECK(emitCompareOpNotEqual(context, r0, r1, r2));
             break;
-        case TokenId::SymLowerEqualGreater:
-            SWAG_CHECK(emitCompareOp3Way(context, r0, r1, r2));
-            break;
         case TokenId::SymLower:
             SWAG_CHECK(emitCompareOpLower(context, r0, r1, r2));
-            break;
-        case TokenId::SymGreater:
-            SWAG_CHECK(emitCompareOpGreater(context, r0, r1, r2));
             break;
         case TokenId::SymLowerEqual:
             SWAG_CHECK(emitCompareOpLowerEq(context, r0, r1, r2));
             break;
+        case TokenId::SymGreater:
+            SWAG_CHECK(emitCompareOpGreater(context, r0, r1, r2));
+            break;
         case TokenId::SymGreaterEqual:
             SWAG_CHECK(emitCompareOpGreaterEq(context, r0, r1, r2));
+            break;
+        case TokenId::SymLowerEqualGreater:
+            SWAG_CHECK(emitCompareOp3Way(context, r0, r1, r2));
             break;
         default:
             return Report::internalError(context->node, "emitCompareOpGreater, invalid token op");

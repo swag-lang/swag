@@ -428,33 +428,25 @@ bool SemanticJob::resolveCompareExpression(SemanticContext* context)
             node->computedValue->reg.b = !node->computedValue->reg.b;
         break;
     case TokenId::SymLower:
-        SWAG_CHECK(TypeManager::promote32(context, left));
-        SWAG_CHECK(TypeManager::promote32(context, right));
         SWAG_CHECK(resolveCompOpLower(context, left, right));
+        break;
+    case TokenId::SymLowerEqual:
+        SWAG_CHECK(resolveCompOpGreater(context, left, right));
+        if (node->computedValue)
+            node->computedValue->reg.b = !node->computedValue->reg.b;
+        break;
+    case TokenId::SymGreater:
+        SWAG_CHECK(resolveCompOpGreater(context, left, right));
+        break;
+    case TokenId::SymGreaterEqual:
+        SWAG_CHECK(resolveCompOpLower(context, left, right));
+        if (node->computedValue)
+            node->computedValue->reg.b = !node->computedValue->reg.b;
         break;
     case TokenId::SymLowerEqualGreater:
         SWAG_CHECK(TypeManager::promote32(context, left));
         SWAG_CHECK(TypeManager::promote32(context, right));
         SWAG_CHECK(resolveCompOp3Way(context, left, right));
-        break;
-    case TokenId::SymGreater:
-        SWAG_CHECK(TypeManager::promote32(context, left));
-        SWAG_CHECK(TypeManager::promote32(context, right));
-        SWAG_CHECK(resolveCompOpGreater(context, left, right));
-        break;
-    case TokenId::SymLowerEqual:
-        SWAG_CHECK(TypeManager::promote32(context, left));
-        SWAG_CHECK(TypeManager::promote32(context, right));
-        SWAG_CHECK(resolveCompOpGreater(context, left, right));
-        if (node->computedValue)
-            node->computedValue->reg.b = !node->computedValue->reg.b;
-        break;
-    case TokenId::SymGreaterEqual:
-        SWAG_CHECK(TypeManager::promote32(context, left));
-        SWAG_CHECK(TypeManager::promote32(context, right));
-        SWAG_CHECK(resolveCompOpLower(context, left, right));
-        if (node->computedValue)
-            node->computedValue->reg.b = !node->computedValue->reg.b;
         break;
     default:
         return Report::internalError(context->node, "resolveCompareExpression, token not supported");
