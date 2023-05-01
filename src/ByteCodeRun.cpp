@@ -174,25 +174,17 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
     }
 
     case ByteCodeOp::TestNotZero8:
-    {
         registersRC[ip->a.u32].b = IMMB_U8(ip) != 0;
         break;
-    }
     case ByteCodeOp::TestNotZero16:
-    {
         registersRC[ip->a.u32].b = IMMB_U16(ip) != 0;
         break;
-    }
     case ByteCodeOp::TestNotZero32:
-    {
         registersRC[ip->a.u32].b = IMMB_U32(ip) != 0;
         break;
-    }
     case ByteCodeOp::TestNotZero64:
-    {
         registersRC[ip->a.u32].b = IMMB_U64(ip) != 0;
         break;
-    }
 
     case ByteCodeOp::JumpDyn8:
     {
@@ -239,395 +231,270 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
     }
 
     case ByteCodeOp::JumpIfZero8:
-    {
         if (!IMMA_U8(ip))
             context->ip += ip->b.s32;
         break;
-    }
     case ByteCodeOp::JumpIfZero16:
-    {
         if (!IMMA_U16(ip))
             context->ip += ip->b.s32;
         break;
-    }
     case ByteCodeOp::JumpIfZero32:
-    {
         if (!IMMA_U32(ip))
             context->ip += ip->b.s32;
         break;
-    }
     case ByteCodeOp::JumpIfZero64:
-    {
         if (!IMMA_U64(ip))
             context->ip += ip->b.s32;
         break;
-    }
     case ByteCodeOp::JumpIfNotZero8:
-    {
         if (IMMA_U8(ip))
             context->ip += ip->b.s32;
         break;
-    }
     case ByteCodeOp::JumpIfNotZero16:
-    {
         if (IMMA_U16(ip))
             context->ip += ip->b.s32;
         break;
-    }
     case ByteCodeOp::JumpIfNotZero32:
-    {
         if (IMMA_U32(ip))
             context->ip += ip->b.s32;
         break;
-    }
     case ByteCodeOp::JumpIfNotZero64:
-    {
         if (IMMA_U64(ip))
             context->ip += ip->b.s32;
         break;
-    }
     case ByteCodeOp::JumpIfFalse:
-    {
         if (!registersRC[ip->a.u32].b)
             context->ip += ip->b.s32;
         break;
-    }
     case ByteCodeOp::JumpIfTrue:
-    {
         if (registersRC[ip->a.u32].b)
             context->ip += ip->b.s32;
         break;
-    }
+
     case ByteCodeOp::JumpIfNotEqual8:
-    {
         if (IMMA_U8(ip) != IMMC_U8(ip))
             context->ip += ip->b.s32;
         break;
-    }
     case ByteCodeOp::JumpIfNotEqual16:
-    {
         if (IMMA_U16(ip) != IMMC_U16(ip))
             context->ip += ip->b.s32;
         break;
-    }
     case ByteCodeOp::JumpIfNotEqual32:
-    {
         if (IMMA_U32(ip) != IMMC_U32(ip))
             context->ip += ip->b.s32;
         break;
-    }
     case ByteCodeOp::JumpIfNotEqual64:
-    {
         if (IMMA_U64(ip) != IMMC_U64(ip))
             context->ip += ip->b.s32;
         break;
-    }
     case ByteCodeOp::JumpIfNotEqualF32:
-    {
         if (IMMA_F32(ip) != IMMC_F32(ip))
             context->ip += ip->b.s32;
         break;
-    }
     case ByteCodeOp::JumpIfNotEqualF64:
-    {
         if (IMMA_F64(ip) != IMMC_F64(ip))
             context->ip += ip->b.s32;
         break;
-    }
+
     case ByteCodeOp::JumpIfEqual8:
-    {
         if (IMMA_U8(ip) == IMMC_U8(ip))
             context->ip += ip->b.s32;
         break;
-    }
     case ByteCodeOp::JumpIfEqual16:
-    {
         if (IMMA_U16(ip) == IMMC_U16(ip))
             context->ip += ip->b.s32;
         break;
-    }
     case ByteCodeOp::JumpIfEqual32:
-    {
         if (IMMA_U32(ip) == IMMC_U32(ip))
             context->ip += ip->b.s32;
         break;
-    }
     case ByteCodeOp::IncJumpIfEqual64:
-    {
         if (++registersRC[ip->a.u32].u64 == IMMC_U64(ip))
             context->ip += ip->b.s32;
         break;
-    }
     case ByteCodeOp::JumpIfEqual64:
-    {
         if (IMMA_U64(ip) == IMMC_U64(ip))
             context->ip += ip->b.s32;
         break;
-    }
     case ByteCodeOp::JumpIfEqualF32:
-    {
         if (IMMA_F32(ip) == IMMC_F32(ip))
             context->ip += ip->b.s32;
         break;
-    }
     case ByteCodeOp::JumpIfEqualF64:
-    {
         if (IMMA_F64(ip) == IMMC_F64(ip))
             context->ip += ip->b.s32;
         break;
-    }
 
     case ByteCodeOp::JumpIfLowerS8:
-    {
         if (IMMA_S8(ip) < IMMC_S8(ip))
             context->ip += ip->b.s32;
         break;
-    }
     case ByteCodeOp::JumpIfLowerS16:
-    {
         if (IMMA_S16(ip) < IMMC_S16(ip))
             context->ip += ip->b.s32;
         break;
-    }
     case ByteCodeOp::JumpIfLowerS32:
-    {
         if (IMMA_S32(ip) < IMMC_S32(ip))
             context->ip += ip->b.s32;
         break;
-    }
     case ByteCodeOp::JumpIfLowerS64:
-    {
         if (IMMA_S64(ip) < IMMC_S64(ip))
             context->ip += ip->b.s32;
         break;
-    }
     case ByteCodeOp::JumpIfLowerU8:
-    {
         if (IMMA_U8(ip) < IMMC_U8(ip))
             context->ip += ip->b.s32;
         break;
-    }
     case ByteCodeOp::JumpIfLowerU16:
-    {
         if (IMMA_U16(ip) < IMMC_U16(ip))
             context->ip += ip->b.s32;
         break;
-    }
     case ByteCodeOp::JumpIfLowerU32:
-    {
         if (IMMA_U32(ip) < IMMC_U32(ip))
             context->ip += ip->b.s32;
         break;
-    }
     case ByteCodeOp::JumpIfLowerU64:
-    {
         if (IMMA_U64(ip) < IMMC_U64(ip))
             context->ip += ip->b.s32;
         break;
-    }
     case ByteCodeOp::JumpIfLowerF32:
-    {
         if (IMMA_F32(ip) < IMMC_F32(ip))
             context->ip += ip->b.s32;
         break;
-    }
     case ByteCodeOp::JumpIfLowerF64:
-    {
         if (IMMA_F64(ip) < IMMC_F64(ip))
             context->ip += ip->b.s32;
         break;
-    }
 
     case ByteCodeOp::JumpIfLowerEqU8:
-    {
         if (IMMA_U8(ip) <= IMMC_U8(ip))
             context->ip += ip->b.s32;
         break;
-    }
     case ByteCodeOp::JumpIfLowerEqU16:
-    {
         if (IMMA_U16(ip) <= IMMC_U16(ip))
             context->ip += ip->b.s32;
         break;
-    }
     case ByteCodeOp::JumpIfLowerEqU32:
-    {
         if (IMMA_U32(ip) <= IMMC_U32(ip))
             context->ip += ip->b.s32;
         break;
-    }
     case ByteCodeOp::JumpIfLowerEqU64:
-    {
         if (IMMA_U64(ip) <= IMMC_U64(ip))
             context->ip += ip->b.s32;
         break;
-    }
     case ByteCodeOp::JumpIfLowerEqS8:
-    {
         if (IMMA_S8(ip) <= IMMC_S8(ip))
             context->ip += ip->b.s32;
         break;
-    }
     case ByteCodeOp::JumpIfLowerEqS16:
-    {
         if (IMMA_S16(ip) <= IMMC_S16(ip))
             context->ip += ip->b.s32;
         break;
-    }
     case ByteCodeOp::JumpIfLowerEqS32:
-    {
         if (IMMA_S32(ip) <= IMMC_S32(ip))
             context->ip += ip->b.s32;
         break;
-    }
     case ByteCodeOp::JumpIfLowerEqS64:
-    {
         if (IMMA_S64(ip) <= IMMC_S64(ip))
             context->ip += ip->b.s32;
         break;
-    }
     case ByteCodeOp::JumpIfLowerEqF32:
-    {
         if (IMMA_F32(ip) <= IMMC_F32(ip))
             context->ip += ip->b.s32;
         break;
-    }
     case ByteCodeOp::JumpIfLowerEqF64:
-    {
         if (IMMA_F64(ip) <= IMMC_F64(ip))
             context->ip += ip->b.s32;
         break;
-    }
 
     case ByteCodeOp::JumpIfGreaterU8:
-    {
         if (IMMA_U8(ip) > IMMC_U8(ip))
             context->ip += ip->b.s32;
         break;
-    }
     case ByteCodeOp::JumpIfGreaterU16:
-    {
         if (IMMA_U16(ip) > IMMC_U16(ip))
             context->ip += ip->b.s32;
         break;
-    }
     case ByteCodeOp::JumpIfGreaterU32:
-    {
         if (IMMA_U32(ip) > IMMC_U32(ip))
             context->ip += ip->b.s32;
         break;
-    }
     case ByteCodeOp::JumpIfGreaterU64:
-    {
         if (IMMA_U64(ip) > IMMC_U64(ip))
             context->ip += ip->b.s32;
         break;
-    }
     case ByteCodeOp::JumpIfGreaterS8:
-    {
         if (IMMA_S8(ip) > IMMC_S8(ip))
             context->ip += ip->b.s32;
         break;
-    }
     case ByteCodeOp::JumpIfGreaterS16:
-    {
         if (IMMA_S16(ip) > IMMC_S16(ip))
             context->ip += ip->b.s32;
         break;
-    }
     case ByteCodeOp::JumpIfGreaterS32:
-    {
         if (IMMA_S32(ip) > IMMC_S32(ip))
             context->ip += ip->b.s32;
         break;
-    }
     case ByteCodeOp::JumpIfGreaterS64:
-    {
         if (IMMA_S64(ip) > IMMC_S64(ip))
             context->ip += ip->b.s32;
         break;
-    }
     case ByteCodeOp::JumpIfGreaterF32:
-    {
         if (IMMA_F32(ip) > IMMC_F32(ip))
             context->ip += ip->b.s32;
         break;
-    }
     case ByteCodeOp::JumpIfGreaterF64:
-    {
         if (IMMA_F64(ip) > IMMC_F64(ip))
             context->ip += ip->b.s32;
         break;
-    }
 
     case ByteCodeOp::JumpIfGreaterEqU8:
-    {
         if (IMMA_U8(ip) >= IMMC_U8(ip))
             context->ip += ip->b.s32;
         break;
-    }
     case ByteCodeOp::JumpIfGreaterEqU16:
-    {
         if (IMMA_U16(ip) >= IMMC_U16(ip))
             context->ip += ip->b.s32;
         break;
-    }
     case ByteCodeOp::JumpIfGreaterEqU32:
-    {
         if (IMMA_U32(ip) >= IMMC_U32(ip))
             context->ip += ip->b.s32;
         break;
-    }
     case ByteCodeOp::JumpIfGreaterEqU64:
-    {
         if (IMMA_U64(ip) >= IMMC_U64(ip))
             context->ip += ip->b.s32;
         break;
-    }
     case ByteCodeOp::JumpIfGreaterEqS8:
-    {
         if (IMMA_S8(ip) >= IMMC_S8(ip))
             context->ip += ip->b.s32;
         break;
-    }
     case ByteCodeOp::JumpIfGreaterEqS16:
-    {
         if (IMMA_S16(ip) >= IMMC_S16(ip))
             context->ip += ip->b.s32;
         break;
-    }
     case ByteCodeOp::JumpIfGreaterEqS32:
-    {
         if (IMMA_S32(ip) >= IMMC_S32(ip))
             context->ip += ip->b.s32;
         break;
-    }
     case ByteCodeOp::JumpIfGreaterEqS64:
-    {
         if (IMMA_S64(ip) >= IMMC_S64(ip))
             context->ip += ip->b.s32;
         break;
-    }
     case ByteCodeOp::JumpIfGreaterEqF32:
-    {
         if (IMMA_F32(ip) >= IMMC_F32(ip))
             context->ip += ip->b.s32;
         break;
-    }
     case ByteCodeOp::JumpIfGreaterEqF64:
-    {
         if (IMMA_F64(ip) >= IMMC_F64(ip))
             context->ip += ip->b.s32;
         break;
-    }
 
     case ByteCodeOp::Jump:
-    {
         context->ip += ip->b.s32;
         break;
-    }
     case ByteCodeOp::CopyRCtoRRRet:
         context->registersRR[0].u64 = IMMB_U64(ip);
+        // fallthrough
     case ByteCodeOp::Ret:
     {
         context->incSP(ip->a.u32);
@@ -676,35 +543,26 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
     }
 
     case ByteCodeOp::LocalCall:
-    {
         localCall(context, (ByteCode*) ip->a.pointer);
         break;
-    }
     case ByteCodeOp::LocalCallPop:
-    {
         localCall(context, (ByteCode*) ip->a.pointer, 0, UINT32_MAX, ip->c.u32);
         break;
-    }
     case ByteCodeOp::LocalCallPopRC:
-    {
         localCall(context, (ByteCode*) ip->a.pointer, 0, ip->d.u32, ip->c.u32);
         break;
-    }
     case ByteCodeOp::ForeignCall:
-    {
         g_ByteCodeStackTrace->push(context);
         ffiCall(context, ip);
         g_ByteCodeStackTrace->pop();
         break;
-    }
     case ByteCodeOp::ForeignCallPop:
-    {
         g_ByteCodeStackTrace->push(context);
         ffiCall(context, ip);
         g_ByteCodeStackTrace->pop();
         context->incSP(ip->c.u32);
         break;
-    }
+
     case ByteCodeOp::LambdaCall:
     case ByteCodeOp::LambdaCallPop:
     {
@@ -760,25 +618,17 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
         break;
 
     case ByteCodeOp::DeRef8:
-    {
         registersRC[ip->a.u32].u64 = *(uint8_t*) (registersRC[ip->b.u32].pointer + ip->c.s64);
         break;
-    }
     case ByteCodeOp::DeRef16:
-    {
         registersRC[ip->a.u32].u64 = *(uint16_t*) (registersRC[ip->b.u32].pointer + ip->c.s64);
         break;
-    }
     case ByteCodeOp::DeRef32:
-    {
         registersRC[ip->a.u32].u64 = *(uint32_t*) (registersRC[ip->b.u32].pointer + ip->c.s64);
         break;
-    }
     case ByteCodeOp::DeRef64:
-    {
         registersRC[ip->a.u32].u64 = *(uint64_t*) (registersRC[ip->b.u32].pointer + ip->c.s64);
         break;
-    }
     case ByteCodeOp::DeRefStringSlice:
     {
         auto       ptr                 = registersRC[ip->a.u32].pointer + ip->c.s64;
@@ -838,16 +688,12 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
         break;
 
     case ByteCodeOp::SetBP:
-    {
         context->bp = context->sp;
         break;
-    }
     case ByteCodeOp::DecSPBP:
-    {
         context->decSP(ip->a.u32);
         context->bp = context->sp;
         break;
-    }
 
     case ByteCodeOp::MemCpy8:
     {
@@ -929,151 +775,99 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
     }
 
     case ByteCodeOp::CopyRBtoRA8:
-    {
         registersRC[ip->a.u32].u64 = registersRC[ip->b.u32].u8;
         break;
-    }
     case ByteCodeOp::CopyRBtoRA16:
-    {
         registersRC[ip->a.u32].u64 = registersRC[ip->b.u32].u16;
         break;
-    }
     case ByteCodeOp::CopyRBtoRA32:
-    {
         registersRC[ip->a.u32].u64 = registersRC[ip->b.u32].u32;
         break;
-    }
     case ByteCodeOp::CopyRBtoRA64:
-    {
         registersRC[ip->a.u32].u64 = registersRC[ip->b.u32].u64;
         break;
-    }
 
     case ByteCodeOp::CopyRBAddrToRA:
     case ByteCodeOp::CopyRBAddrToRA2:
-    {
         registersRC[ip->a.u32].pointer = (uint8_t*) (registersRC + ip->b.u32);
         break;
-    }
     case ByteCodeOp::SetImmediate32:
-    {
         registersRC[ip->a.u32].u64 = ip->b.u32;
         break;
-    }
     case ByteCodeOp::SetImmediate64:
-    {
         registersRC[ip->a.u32].u64 = ip->b.u64;
         break;
-    }
     case ByteCodeOp::ClearRA:
-    {
         registersRC[ip->a.u32].u64 = 0;
         break;
-    }
     case ByteCodeOp::ClearRA2:
-    {
         registersRC[ip->a.u32].u64 = 0;
         registersRC[ip->b.u32].u64 = 0;
         break;
-    }
     case ByteCodeOp::ClearRA3:
-    {
         registersRC[ip->a.u32].u64 = 0;
         registersRC[ip->b.u32].u64 = 0;
         registersRC[ip->c.u32].u64 = 0;
         break;
-    }
     case ByteCodeOp::ClearRA4:
-    {
         registersRC[ip->a.u32].u64 = 0;
         registersRC[ip->b.u32].u64 = 0;
         registersRC[ip->c.u32].u64 = 0;
         registersRC[ip->d.u32].u64 = 0;
         break;
-    }
 
     case ByteCodeOp::DecrementRA32:
-    {
         registersRC[ip->a.u32].u32--;
         break;
-    }
     case ByteCodeOp::IncrementRA64:
-    {
         registersRC[ip->a.u32].u64++;
         break;
-    }
     case ByteCodeOp::DecrementRA64:
-    {
         registersRC[ip->a.u32].u64--;
         break;
-    }
 
     case ByteCodeOp::Add32byVB32:
-    {
         registersRC[ip->a.u32].u32 += ip->b.u32;
         break;
-    }
     case ByteCodeOp::Add64byVB64:
-    {
         registersRC[ip->a.u32].u64 += ip->b.u64;
         break;
-    }
 
     case ByteCodeOp::PushRR:
-    {
         context->push(context->registersRR[0].u64);
         context->push(context->registersRR[1].u64);
         break;
-    }
     case ByteCodeOp::PopRR:
-    {
         context->registersRR[1].u64 = context->pop<uint64_t>();
         context->registersRR[0].u64 = context->pop<uint64_t>();
         break;
-    }
 
     case ByteCodeOp::CopyRCtoRT:
-    {
         context->registersRR[0] = registersRC[ip->a.u32];
         break;
-    }
     case ByteCodeOp::CopyRCtoRR:
-    {
         context->registersRR[0].u64 = IMMA_U64(ip);
         break;
-    }
     case ByteCodeOp::CopyRCtoRR2:
-    {
         context->registersRR[0] = registersRC[ip->a.u32];
         context->registersRR[1] = registersRC[ip->b.u32];
         break;
-    }
     case ByteCodeOp::CopyRRtoRC:
-    {
         registersRC[ip->a.u32].pointer = context->registersRR[0].pointer + ip->b.u64;
         break;
-    }
     case ByteCodeOp::CopyRTtoRC:
-    {
         registersRC[ip->a.u32] = context->registersRR[0];
         break;
-    }
     case ByteCodeOp::CopyRTtoRC2:
-    {
         registersRC[ip->a.u32] = context->registersRR[0];
         registersRC[ip->b.u32] = context->registersRR[1];
         break;
-    }
     case ByteCodeOp::PushBP:
-    {
         context->push(context->bp);
         break;
-    }
     case ByteCodeOp::PopBP:
-    {
         context->bp = context->pop<uint8_t*>();
         break;
-    }
     case ByteCodeOp::CopySP:
         registersRC[ip->a.u32].pointer = context->sp - ip->b.u32;
         break;
