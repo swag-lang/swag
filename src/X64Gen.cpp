@@ -1021,20 +1021,13 @@ void X64Gen::emit_OpF64_Indirect(CPURegister reg, CPURegister memReg, X64Op op)
 
 void X64Gen::emit_OpN_Immediate(CPURegister reg, uint64_t value, X64Op op, X64Bits numBits)
 {
-    SWAG_ASSERT(reg == RAX || reg == RCX);
-    SWAG_ASSERT(op == X64Op::ADD || op == X64Op::SUB || op == X64Op::IMUL);
-    SWAG_ASSERT(numBits == X64Bits::B64);
-
-    if (op == X64Op::ADD && value == 0)
-        return;
-    if (op == X64Op::SUB && value == 0)
-        return;
-    if (op == X64Op::MUL && value == 1)
-        return;
-
     switch (op)
     {
     case X64Op::ADD:
+        SWAG_ASSERT(numBits == X64Bits::B64);
+        SWAG_ASSERT(reg == RAX || reg == RCX);
+        if (value == 0)
+            return;
         if (value == 1)
         {
             emit_REX(numBits);
@@ -1043,7 +1036,12 @@ void X64Gen::emit_OpN_Immediate(CPURegister reg, uint64_t value, X64Op op, X64Bi
             return;
         }
         break;
+
     case X64Op::SUB:
+        SWAG_ASSERT(numBits == X64Bits::B64);
+        SWAG_ASSERT(reg == RAX || reg == RCX);
+        if (value == 0)
+            return;
         if (value == 1)
         {
             emit_REX(numBits);
@@ -1052,7 +1050,12 @@ void X64Gen::emit_OpN_Immediate(CPURegister reg, uint64_t value, X64Op op, X64Bi
             return;
         }
         break;
-    case X64Op::MUL:
+
+    case X64Op::IMUL:
+        SWAG_ASSERT(numBits == X64Bits::B64);
+        SWAG_ASSERT(reg == RAX || reg == RCX);
+        if (value == 1)
+            return;
         if (value == 0)
         {
             emit_ClearN(reg, numBits);
@@ -1071,7 +1074,16 @@ void X64Gen::emit_OpN_Immediate(CPURegister reg, uint64_t value, X64Op op, X64Bi
             concat.addU8(0xC1);
             concat.addU8(0xE0 | reg); // shl rax, ??
             concat.addU8((uint8_t) log2(value));
+            return;
         }
+        break;
+
+    case X64Op::XOR:
+        SWAG_ASSERT(reg == RAX);
+        break;
+
+    default:
+        SWAG_ASSERT(false);
         break;
     }
 
@@ -1106,6 +1118,13 @@ void X64Gen::emit_OpN_Immediate(CPURegister reg, uint64_t value, X64Op op, X64Bi
             SWAG_ASSERT(reg == RAX);
             concat.addU8(0x6B);
             concat.addU8(0xC0);
+            break;
+        case X64Op::XOR:
+            SWAG_ASSERT(reg == RAX);
+            if (numBits == X64Bits::B8)
+                concat.addU8(0x34);
+            else
+                concat.addString("\x83\xF0");
             break;
         default:
             SWAG_ASSERT(false);
