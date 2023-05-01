@@ -458,7 +458,7 @@ void BackendX64::emitBinOpIntN(X64Gen& pp, ByteCodeInstruction* ip, X64Op op, X6
         }
         else
         {
-            pp.emit_OpIntN(RCX, RAX, op, numBits);
+            pp.emit_OpN(RCX, RAX, op, numBits);
         }
     }
 }
@@ -519,7 +519,7 @@ void BackendX64::emitBinOpDivIntNAtReg(X64Gen& pp, ByteCodeInstruction* ip, bool
     if (ip->flags & BCI_IMM_B)
     {
         pp.emit_LoadN_Immediate(RCX, ip->b, numBits);
-        pp.emit_OpIntN(RAX, RCX, isSigned ? X64Op::IDIV : X64Op::DIV, numBits);
+        pp.emit_OpN(RAX, RCX, isSigned ? X64Op::IDIV : X64Op::DIV, numBits);
     }
     else
     {
@@ -609,7 +609,7 @@ void BackendX64::emitAddSubMul64(X64Gen& pp, ByteCodeInstruction* ip, uint64_t m
         else
         {
             pp.emit_Load64_Indirect(regOffset(ip->a.u32), RCX);
-            pp.emit_OpIntN(RAX, RCX, op, X64Bits::B64);
+            pp.emit_OpN(RAX, RCX, op, X64Bits::B64);
             pp.emit_Store64_Indirect(regOffset(ip->c.u32), RCX);
         }
     }

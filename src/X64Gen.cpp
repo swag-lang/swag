@@ -237,7 +237,7 @@ void X64Gen::emit_Load32_Indirect(uint32_t stackOffset, CPURegister reg, CPURegi
         storageRegCount == concat.totalCount())
     {
         if (storageRegBits > 32)
-            emit_Copy32(RAX, RAX);
+            emit_CopyN(RAX, RAX, X64Bits::B32);
         return;
     }
 
@@ -306,7 +306,7 @@ void X64Gen::emit_LoadF64_Indirect(uint32_t stackOffset, CPURegister reg, CPUReg
 void X64Gen::emit_LoadAddress_Indirect(uint32_t stackOffset, CPURegister reg, CPURegister memReg)
 {
     if (stackOffset == 0)
-        emit_Copy64(reg, memReg);
+        emit_CopyN(reg, memReg, X64Bits::B64);
     else
     {
         concat.addU8(getREX(true, reg >= R8, false, memReg >= R8));
@@ -583,31 +583,13 @@ void X64Gen::emit_Ret()
 
 /////////////////////////////////////////////////////////////////////
 
-void X64Gen::emit_Copy8(CPURegister regDst, CPURegister regSrc)
+void X64Gen::emit_CopyN(CPURegister regDst, CPURegister regSrc, X64Bits numBits)
 {
-    emit_REX(X64Bits::B8, regSrc, regDst);
-    concat.addU8(0x88);
-    concat.addU8(getModRM(REGREG, regSrc, regDst));
-}
-
-void X64Gen::emit_Copy16(CPURegister regDst, CPURegister regSrc)
-{
-    emit_REX(X64Bits::B16, regSrc, regDst);
-    concat.addU8(0x89);
-    concat.addU8(getModRM(REGREG, regSrc, regDst));
-}
-
-void X64Gen::emit_Copy32(CPURegister regDst, CPURegister regSrc)
-{
-    emit_REX(X64Bits::B32, regSrc, regDst);
-    concat.addU8(0x89);
-    concat.addU8(getModRM(REGREG, regSrc, regDst));
-}
-
-void X64Gen::emit_Copy64(CPURegister regDst, CPURegister regSrc)
-{
-    emit_REX(X64Bits::B64, regSrc, regDst);
-    concat.addU8(0x89);
+    emit_REX(numBits, regSrc, regDst);
+    if (numBits == X64Bits::B8)
+        concat.addU8(0x88);
+    else
+        concat.addU8(0x89);
     concat.addU8(getModRM(REGREG, regSrc, regDst));
 }
 
@@ -1002,7 +984,7 @@ void X64Gen::emit_OpF64_Indirect(CPURegister reg, CPURegister memReg, X64Op inst
     emit_StoreF64_Indirect(0, XMM0, memReg);
 }
 
-void X64Gen::emit_OpIntN(CPURegister reg1, CPURegister reg2, X64Op instruction, X64Bits numBits)
+void X64Gen::emit_OpN(CPURegister reg1, CPURegister reg2, X64Op instruction, X64Bits numBits)
 {
     emit_REX(numBits, reg1, reg2);
     if (instruction == X64Op::DIV || instruction == X64Op::IDIV)
@@ -1668,7 +1650,7 @@ void X64Gen::emit_Call_Parameters(TypeInfoFuncAttr* typeFuncBC, VectorNative<X64
                 case X64PushParamType::RegMul:
                     emit_Load64_Indirect(regOffset(reg), RAX);
                     emit_Mul64_RAX(paramsRegisters[i].val);
-                    emit_Copy64(cc.paramByRegisterInteger[i], RAX);
+                    emit_CopyN(cc.paramByRegisterInteger[i], RAX, X64Bits::B64);
                     break;
                 case X64PushParamType::GlobalString:
                     emit_GlobalString((const char*) paramsRegisters[i].reg, cc.paramByRegisterInteger[i]);

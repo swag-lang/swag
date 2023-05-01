@@ -446,10 +446,7 @@ struct X64Gen
     void emit_CmpF64(CPURegister reg1, CPURegister reg2);
     void emit_CmpF32_Indirect(uint32_t offsetStack, CPURegister reg, CPURegister memReg);
     void emit_CmpF64_Indirect(uint32_t offsetStack, CPURegister reg, CPURegister memReg);
-    void emit_Copy8(CPURegister regDst, CPURegister regSrc);
-    void emit_Copy16(CPURegister regDst, CPURegister regSrc);
-    void emit_Copy32(CPURegister regDst, CPURegister regSrc);
-    void emit_Copy64(CPURegister regDst, CPURegister regSrc);
+    void emit_CopyN(CPURegister regDst, CPURegister regSrc, X64Bits numBits);
     void emit_CopyF32(CPURegister regDst, CPURegister regSrc);
     void emit_CopyF64(CPURegister regDst, CPURegister regSrc);
     void emit_CopyX(uint32_t count, uint32_t offset, CPURegister regDst, CPURegister regSrc);
@@ -489,7 +486,7 @@ struct X64Gen
     void emit_Op64_Indirect(uint32_t offsetStack, CPURegister reg, CPURegister memReg, X64Op instruction, bool lock = false);
     void emit_OpF32_Indirect(CPURegister reg, CPURegister memReg, X64Op instruction);
     void emit_OpF64_Indirect(CPURegister reg, CPURegister memReg, X64Op instruction);
-    void emit_OpIntN(CPURegister reg1, CPURegister reg2, X64Op instruction, X64Bits numBits);
+    void emit_OpN(CPURegister reg1, CPURegister reg2, X64Op instruction, X64Bits numBits);
     void emit_OpF32(CPURegister reg1, CPURegister reg2, X64Op instruction);
     void emit_OpF64(CPURegister reg1, CPURegister reg2, X64Op instruction);
     void emit_Push(CPURegister reg);

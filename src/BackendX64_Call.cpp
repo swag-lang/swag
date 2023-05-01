@@ -48,7 +48,7 @@ void BackendX64::emitGetParam(X64Gen& pp, CoffFunction* coffFct, int reg, uint32
     case 4:
         SWAG_ASSERT(!toAdd);
         if (paramIdx < coffFct->numScratchRegs)
-            pp.emit_Copy32(RAX, (CPURegister) (cc.firstScratchRegister + paramIdx));
+            pp.emit_CopyN(RAX, (CPURegister) (cc.firstScratchRegister + paramIdx), X64Bits::B32);
         else
             pp.emit_Load32_Indirect(paramStack, RAX, RDI);
         pp.emit_Store64_Indirect(regOffset(reg), RAX);
