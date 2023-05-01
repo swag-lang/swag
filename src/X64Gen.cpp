@@ -829,14 +829,14 @@ void X64Gen::emit_SetLE()
 
 /////////////////////////////////////////////////////////////////////
 
-void X64Gen::emit_TestN(CPURegister reg1, CPURegister reg2, X64Bits numBits)
+void X64Gen::emit_TestN(CPURegister regSrc, CPURegister regDst, X64Bits numBits)
 {
-    emit_REX(numBits, reg2, reg1);
+    emit_REX(numBits, regDst, regSrc);
     if (numBits == X64Bits::B8)
         concat.addU8(0x84);
     else
         concat.addU8(0x85);
-    concat.addU8(getModRM(REGREG, reg2, reg1));
+    concat.addU8(getModRM(REGREG, regDst, regSrc));
 }
 
 void X64Gen::emit_CmpN(CPURegister regSrc, CPURegister regDst, X64Bits numBits)
@@ -941,110 +941,98 @@ void X64Gen::emit_CmpN_IndirectDst(uint32_t offsetStack, uint32_t value, X64Bits
 
 /////////////////////////////////////////////////////////////////////
 
-void X64Gen::emit_OpN(CPURegister regSrc, CPURegister regDst, X64Op instruction, X64Bits numBits)
+void X64Gen::emit_OpN(CPURegister regSrc, CPURegister regDst, X64Op op, X64Bits numBits)
 {
     emit_REX(numBits, regSrc, regDst);
-    if (instruction == X64Op::DIV || instruction == X64Op::IDIV)
+    if (op == X64Op::DIV || op == X64Op::IDIV)
     {
         SWAG_ASSERT(regSrc == RAX && regDst == RCX);
         emit_Spec8(0xF7, numBits);
-        concat.addU8((uint8_t) instruction);
+        concat.addU8((uint8_t) op);
     }
-    else if (instruction == X64Op::MUL || instruction == X64Op::IMUL)
+    else if (op == X64Op::MUL || op == X64Op::IMUL)
     {
         SWAG_ASSERT(regSrc == RAX && regDst == RCX);
         emit_Spec8(0xF7, numBits);
-        concat.addU8(instruction == X64Op::IMUL ? 0xE9 : 0xE1);
+        concat.addU8(op == X64Op::IMUL ? 0xE9 : 0xE1);
     }
     else
     {
-        emit_Spec8((uint8_t) instruction, numBits);
+        emit_Spec8((uint8_t) op, numBits);
         concat.addU8(getModRM(REGREG, regSrc, regDst));
     }
 }
 
-void X64Gen::emit_OpF32(CPURegister regSrc, CPURegister regDst, X64Op instruction)
+void X64Gen::emit_OpF32(CPURegister regSrc, CPURegister regDst, X64Op op)
 {
     SWAG_ASSERT(regSrc == XMM0 && regDst == XMM1);
-    if (instruction == X64Op::MUL)
-    {
+    if (op == X64Op::MUL)
         concat.addString4("\xF3\x0F\x59\xC1"); // mulss xmm0, xmm1
-    }
-    else if (instruction == X64Op::DIV)
-    {
+    else if (op == X64Op::DIV)
         concat.addString4("\xF3\x0F\x5E\xC1"); // divss xmm0, xmm1
-    }
     else
-    {
         SWAG_ASSERT(false);
-    }
 }
 
-void X64Gen::emit_OpF64(CPURegister regSrc, CPURegister regDst, X64Op instruction)
+void X64Gen::emit_OpF64(CPURegister regSrc, CPURegister regDst, X64Op op)
 {
     SWAG_ASSERT(regSrc == XMM0 && regDst == XMM1);
-    if (instruction == X64Op::MUL)
-    {
+    if (op == X64Op::MUL)
         concat.addString4("\xF2\x0F\x59\xC1"); // mulsd xmm0, xmm1
-    }
-    else if (instruction == X64Op::DIV)
-    {
+    else if (op == X64Op::DIV)
         concat.addString4("\xF2\x0F\x5E\xC1"); // divsd xmm0, xmm1
-    }
     else
-    {
         SWAG_ASSERT(false);
-    }
 }
 
-void X64Gen::emit_OpN_Indirect(uint32_t offsetStack, CPURegister reg, CPURegister memReg, X64Op instruction, X64Bits numBits, bool lock)
+void X64Gen::emit_OpN_Indirect(uint32_t offsetStack, CPURegister reg, CPURegister memReg, X64Op op, X64Bits numBits, bool lock)
 {
     SWAG_ASSERT(memReg < R8);
     if (lock)
         concat.addU8(0xF0);
     emit_REX(numBits, reg);
-    emit_Spec8((uint8_t) instruction, numBits);
+    emit_Spec8((uint8_t) op, numBits);
     emit_ModRM(offsetStack, reg, memReg);
 }
 
-void X64Gen::emit_OpF32_Indirect(CPURegister reg, CPURegister memReg, X64Op instruction)
+void X64Gen::emit_OpF32_Indirect(CPURegister reg, CPURegister memReg, X64Op op)
 {
     SWAG_ASSERT(reg == XMM1);
     SWAG_ASSERT(memReg < R8);
     emit_LoadF32_Indirect(0, XMM0, memReg);
     concat.addU8(0xF3);
     concat.addU8(0x0F);
-    concat.addU8((uint8_t) instruction);
+    concat.addU8((uint8_t) op);
     concat.addU8(0xC1);
     emit_StoreF32_Indirect(0, XMM0, memReg);
 }
 
-void X64Gen::emit_OpF64_Indirect(CPURegister reg, CPURegister memReg, X64Op instruction)
+void X64Gen::emit_OpF64_Indirect(CPURegister reg, CPURegister memReg, X64Op op)
 {
     SWAG_ASSERT(reg == XMM1);
     SWAG_ASSERT(memReg < R8);
     emit_LoadF64_Indirect(0, XMM0, memReg);
     concat.addU8(0xF2);
     concat.addU8(0x0F);
-    concat.addU8((uint8_t) instruction);
+    concat.addU8((uint8_t) op);
     concat.addU8(0xC1);
     emit_StoreF64_Indirect(0, XMM0, memReg);
 }
 
-void X64Gen::emit_OpN_Immediate(CPURegister reg, uint64_t value, X64Op instruction, X64Bits numBits)
+void X64Gen::emit_OpN_Immediate(CPURegister reg, uint64_t value, X64Op op, X64Bits numBits)
 {
     SWAG_ASSERT(reg == RAX || reg == RCX);
-    SWAG_ASSERT(instruction == X64Op::ADD || instruction == X64Op::SUB || instruction == X64Op::IMUL);
+    SWAG_ASSERT(op == X64Op::ADD || op == X64Op::SUB || op == X64Op::IMUL);
     SWAG_ASSERT(numBits == X64Bits::B64);
 
-    if (instruction == X64Op::ADD && value == 0)
+    if (op == X64Op::ADD && value == 0)
         return;
-    if (instruction == X64Op::SUB && value == 0)
+    if (op == X64Op::SUB && value == 0)
         return;
-    if (instruction == X64Op::MUL && value == 1)
+    if (op == X64Op::MUL && value == 1)
         return;
 
-    switch (instruction)
+    switch (op)
     {
     case X64Op::ADD:
         if (value == 1)
@@ -1089,22 +1077,22 @@ void X64Gen::emit_OpN_Immediate(CPURegister reg, uint64_t value, X64Op instructi
 
     if (value > 0x7FFFFFFF)
     {
-        if (instruction == X64Op::IMUL)
+        if (op == X64Op::IMUL)
         {
             SWAG_ASSERT(reg == RAX);
             emit_Load64_Immediate(RCX, value);
-            emit_OpN(RCX, reg, instruction, numBits);
+            emit_OpN(RCX, reg, op, numBits);
         }
         else
         {
             emit_Load64_Immediate(R8, value);
-            emit_OpN(R8, reg, instruction, numBits);
+            emit_OpN(R8, reg, op, numBits);
         }
     }
     else if (value <= 0x7F)
     {
         emit_REX(numBits);
-        switch (instruction)
+        switch (op)
         {
         case X64Op::ADD:
             concat.addU8(0x83);
@@ -1128,7 +1116,7 @@ void X64Gen::emit_OpN_Immediate(CPURegister reg, uint64_t value, X64Op instructi
     else
     {
         emit_REX(numBits);
-        switch (instruction)
+        switch (op)
         {
         case X64Op::ADD:
             if (reg == RAX)
