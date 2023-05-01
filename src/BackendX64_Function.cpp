@@ -3818,8 +3818,8 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
                 MK_IMMB_8(RAX);
                 pp.emit_CopyN(RCX, RAX, X64Bits::B8);
                 concat.addString3("\xC0\xF9\x07"); // sar cl, 7
-                concat.addString2("\x30\xC8");     // xor al, cl
-                concat.addString2("\x28\xC8");     // sub al, cl
+                pp.emit_OpN(RCX, RAX, X64Op::XOR, X64Bits::B8);
+                pp.emit_OpN(RCX, RAX, X64Op::SUB, X64Bits::B8);
                 pp.emit_Store8_Indirect(regOffset(ip->a.u32), RAX);
                 break;
             case TokenId::IntrinsicBitCountNz:
@@ -3858,8 +3858,8 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
                 MK_IMMB_16(RAX);
                 pp.emit_CopyN(RCX, RAX, X64Bits::B16);
                 concat.addString4("\x66\xC1\xF9\x0F"); // sar cx, 15
-                concat.addString3("\x66\x31\xC8");     // xor ax, cx
-                concat.addString3("\x66\x29\xC8");     // sub ax, cx
+                pp.emit_OpN(RCX, RAX, X64Op::XOR, X64Bits::B16);
+                pp.emit_OpN(RCX, RAX, X64Op::SUB, X64Bits::B16);
                 pp.emit_Store16_Indirect(regOffset(ip->a.u32), RAX);
                 break;
             case TokenId::IntrinsicBitCountNz:
@@ -3903,7 +3903,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
                 MK_IMMB_32(RAX);
                 pp.emit_CopyN(RCX, RAX, X64Bits::B32);
                 concat.addString3("\xC1\xF9\x1F"); // sar ecx, 31
-                concat.addString2("\x31\xC8");     // xor eax, ecx
+                pp.emit_OpN(RCX, RAX, X64Op::XOR, X64Bits::B32);
                 pp.emit_OpN(RCX, RAX, X64Op::SUB, X64Bits::B32);
                 pp.emit_Store32_Indirect(regOffset(ip->a.u32), RAX);
                 break;

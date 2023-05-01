@@ -984,12 +984,12 @@ void X64Gen::emit_OpF64_Indirect(CPURegister reg, CPURegister memReg, X64Op inst
     emit_StoreF64_Indirect(0, XMM0, memReg);
 }
 
-void X64Gen::emit_OpN(CPURegister reg1, CPURegister reg2, X64Op instruction, X64Bits numBits)
+void X64Gen::emit_OpN(CPURegister regSrc, CPURegister regDst, X64Op instruction, X64Bits numBits)
 {
-    emit_REX(numBits, reg1, reg2);
+    emit_REX(numBits, regSrc, regDst);
     if (instruction == X64Op::DIV || instruction == X64Op::IDIV)
     {
-        SWAG_ASSERT(reg1 == RAX and reg2 == RCX);
+        SWAG_ASSERT(regSrc == RAX and regDst == RCX);
         if (numBits == X64Bits::B8)
             concat.addU8(0xF6);
         else
@@ -998,7 +998,7 @@ void X64Gen::emit_OpN(CPURegister reg1, CPURegister reg2, X64Op instruction, X64
     }
     else if (instruction == X64Op::MUL || instruction == X64Op::IMUL)
     {
-        SWAG_ASSERT(reg1 == RAX and reg2 == RCX);
+        SWAG_ASSERT(regSrc == RAX and regDst == RCX);
         if (numBits == X64Bits::B8)
             concat.addU8(0xF6);
         else
@@ -1011,13 +1011,13 @@ void X64Gen::emit_OpN(CPURegister reg1, CPURegister reg2, X64Op instruction, X64
             concat.addU8((uint8_t) instruction & ~1);
         else
             concat.addU8((uint8_t) instruction);
-        concat.addU8(getModRM(REGREG, reg1, reg2));
+        concat.addU8(getModRM(REGREG, regSrc, regDst));
     }
 }
 
-void X64Gen::emit_OpF32(CPURegister reg1, CPURegister reg2, X64Op instruction)
+void X64Gen::emit_OpF32(CPURegister regSrc, CPURegister regDst, X64Op instruction)
 {
-    SWAG_ASSERT(reg1 == XMM0 && reg2 == XMM1);
+    SWAG_ASSERT(regSrc == XMM0 && regDst == XMM1);
     if (instruction == X64Op::MUL)
     {
         concat.addString4("\xF3\x0F\x59\xC1"); // mulss xmm0, xmm1
@@ -1032,9 +1032,9 @@ void X64Gen::emit_OpF32(CPURegister reg1, CPURegister reg2, X64Op instruction)
     }
 }
 
-void X64Gen::emit_OpF64(CPURegister reg1, CPURegister reg2, X64Op instruction)
+void X64Gen::emit_OpF64(CPURegister regSrc, CPURegister regDst, X64Op instruction)
 {
-    SWAG_ASSERT(reg1 == XMM0 && reg2 == XMM1);
+    SWAG_ASSERT(regSrc == XMM0 && regDst == XMM1);
     if (instruction == X64Op::MUL)
     {
         concat.addString4("\xF2\x0F\x59\xC1"); // mulsd xmm0, xmm1
