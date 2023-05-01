@@ -444,10 +444,7 @@ struct X64Gen
     void emit_CmpF32_Indirect(uint32_t offsetStack, CPURegister reg, CPURegister memReg);
     void emit_CmpF64_Indirect(uint32_t offsetStack, CPURegister reg, CPURegister memReg);
     void emit_CmpN_Immediate(CPURegister reg, const Register& value, X64Bits numBits);
-    void emit_Cmp8_IndirectDst(uint32_t offsetStack, uint32_t value);
-    void emit_Cmp16_IndirectDst(uint32_t offsetStack, uint32_t value);
-    void emit_Cmp32_IndirectDst(uint32_t offsetStack, uint32_t value);
-    void emit_Cmp64_IndirectDst(uint32_t offsetStack, uint32_t value);
+    void emit_CmpN_IndirectDst(uint32_t offsetStack, uint32_t value, X64Bits numBits);
     void emit_CopyN(CPURegister regDst, CPURegister regSrc, X64Bits numBits);
     void emit_CopyF32(CPURegister regDst, CPURegister regSrc);
     void emit_CopyF64(CPURegister regDst, CPURegister regSrc);

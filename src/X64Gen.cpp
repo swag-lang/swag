@@ -913,17 +913,16 @@ void X64Gen::emit_CmpF64_Indirect(uint32_t offsetStack, CPURegister reg, CPURegi
     emit_ModRM(offsetStack, reg, memReg);
 }
 
-void X64Gen::emit_Cmp8_IndirectDst(uint32_t offsetStack, uint32_t value)
+void X64Gen::emit_CmpN_IndirectDst(uint32_t offsetStack, uint32_t value, X64Bits numBits)
 {
-    concat.addU8(0x80);
-    emit_ModRM(offsetStack, RDI, RDI);
-    concat.addU8((uint8_t) value);
-}
-
-void X64Gen::emit_Cmp16_IndirectDst(uint32_t offsetStack, uint32_t value)
-{
-    concat.addU8(0x66);
-    if (value <= 0x7F)
+    emit_REX(numBits);
+    if (numBits == X64Bits::B8)
+    {
+        concat.addU8(0x80);
+        emit_ModRM(offsetStack, RDI, RDI);
+        concat.addU8((uint8_t) value);
+    }
+    else if (value <= 0x7F)
     {
         concat.addU8(0x83);
         emit_ModRM(offsetStack, RDI, RDI);
@@ -933,31 +932,11 @@ void X64Gen::emit_Cmp16_IndirectDst(uint32_t offsetStack, uint32_t value)
     {
         concat.addU8(0x81);
         emit_ModRM(offsetStack, RDI, RDI);
-        concat.addU16((uint16_t) value);
+        if (numBits == X64Bits::B16)
+            concat.addU16((uint16_t) value);
+        else
+            concat.addU32(value);
     }
-}
-
-void X64Gen::emit_Cmp32_IndirectDst(uint32_t offsetStack, uint32_t value)
-{
-    if (value <= 0x7F)
-    {
-        concat.addU8(0x83);
-        emit_ModRM(offsetStack, RDI, RDI);
-        concat.addU8((uint8_t) value);
-    }
-    else
-    {
-        concat.addU8(0x81);
-        emit_ModRM(offsetStack, RDI, RDI);
-        concat.addU32((uint32_t) value);
-    }
-}
-
-void X64Gen::emit_Cmp64_IndirectDst(uint32_t offsetStack, uint32_t value)
-{
-    SWAG_ASSERT(value <= 0x7FFFFFFF);
-    emit_REX(X64Bits::B64);
-    emit_Cmp32_IndirectDst(offsetStack, value);
 }
 
 /////////////////////////////////////////////////////////////////////
