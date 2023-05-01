@@ -70,6 +70,16 @@ void X64Gen::emit_ModRM(uint32_t stackOffset, uint8_t reg, uint8_t memReg, uint8
     }
 }
 
+void X64Gen::emit_Spec8(uint8_t value, X64Bits numBits)
+{
+    if (numBits == X64Bits::B8)
+        concat.addU8(value & ~1);
+    else
+        concat.addU8(value);
+}
+
+/////////////////////////////////////////////////////////////////////
+
 CoffSymbol* X64Gen::getSymbol(const Utf8& name)
 {
     auto it = mapSymbols.find(name);
@@ -107,6 +117,35 @@ CoffSymbol* X64Gen::getOrAddSymbol(const Utf8& name, CoffSymbolKind kind, uint32
     allSymbols.emplace_back(std::move(sym));
     mapSymbols[name] = (uint32_t) allSymbols.size() - 1;
     return &allSymbols.back();
+}
+
+/////////////////////////////////////////////////////////////////////
+
+void X64Gen::emit_Push(CPURegister reg)
+{
+    if (reg < R8)
+        concat.addU8(0x50 | (reg & 0b111));
+    else
+    {
+        concat.addU8(getREX(false, false, false, true));
+        concat.addU8(0x50 | (reg & 0b111));
+    }
+}
+
+void X64Gen::emit_Pop(CPURegister reg)
+{
+    if (reg < R8)
+        concat.addU8(0x58 | (reg & 0b111));
+    else
+    {
+        concat.addU8(getREX(false, false, false, true));
+        concat.addU8(0x58 | (reg & 0b111));
+    }
+}
+
+void X64Gen::emit_Ret()
+{
+    concat.addU8(0xC3);
 }
 
 /////////////////////////////////////////////////////////////////////
@@ -545,40 +584,8 @@ void X64Gen::emit_LoadN_Immediate(CPURegister reg, const Register& value, X64Bit
 void X64Gen::emit_ClearN(CPURegister reg, X64Bits numBits)
 {
     emit_REX(numBits, reg, reg);
-    if (numBits == X64Bits::B8)
-        concat.addU8((uint8_t) X64Op::XOR & ~1);
-    else
-        concat.addU8((uint8_t) X64Op::XOR);
+    emit_Spec8((uint8_t) X64Op::XOR, numBits);
     concat.addU8(getModRM(REGREG, reg, reg));
-}
-
-/////////////////////////////////////////////////////////////////////
-
-void X64Gen::emit_Push(CPURegister reg)
-{
-    if (reg < R8)
-        concat.addU8(0x50 | (reg & 0b111));
-    else
-    {
-        concat.addU8(getREX(false, false, false, true));
-        concat.addU8(0x50 | (reg & 0b111));
-    }
-}
-
-void X64Gen::emit_Pop(CPURegister reg)
-{
-    if (reg < R8)
-        concat.addU8(0x58 | (reg & 0b111));
-    else
-    {
-        concat.addU8(getREX(false, false, false, true));
-        concat.addU8(0x58 | (reg & 0b111));
-    }
-}
-
-void X64Gen::emit_Ret()
-{
-    concat.addU8(0xC3);
 }
 
 /////////////////////////////////////////////////////////////////////
@@ -925,7 +932,7 @@ void X64Gen::emit_Op8_Indirect(uint32_t offsetStack, CPURegister reg, CPURegiste
     SWAG_ASSERT(reg < R8 && memReg < R8);
     if (lock)
         concat.addU8(0xF0);
-    concat.addU8((uint8_t) instruction & ~1);
+    emit_Spec8((uint8_t) instruction, X64Bits::B8);
     emit_ModRM(offsetStack, reg, memReg);
 }
 
@@ -990,27 +997,18 @@ void X64Gen::emit_OpN(CPURegister regSrc, CPURegister regDst, X64Op instruction,
     if (instruction == X64Op::DIV || instruction == X64Op::IDIV)
     {
         SWAG_ASSERT(regSrc == RAX and regDst == RCX);
-        if (numBits == X64Bits::B8)
-            concat.addU8(0xF6);
-        else
-            concat.addU8(0xF7);
+        emit_Spec8(0xF7, numBits);
         concat.addU8((uint8_t) instruction);
     }
     else if (instruction == X64Op::MUL || instruction == X64Op::IMUL)
     {
         SWAG_ASSERT(regSrc == RAX and regDst == RCX);
-        if (numBits == X64Bits::B8)
-            concat.addU8(0xF6);
-        else
-            concat.addU8(0xF7);
+        emit_Spec8(0xF7, numBits);
         concat.addU8(instruction == X64Op::IMUL ? 0xE9 : 0xE1);
     }
     else
     {
-        if (numBits == X64Bits::B8)
-            concat.addU8((uint8_t) instruction & ~1);
-        else
-            concat.addU8((uint8_t) instruction);
+        emit_Spec8((uint8_t) instruction, numBits);
         concat.addU8(getModRM(REGREG, regSrc, regDst));
     }
 }
