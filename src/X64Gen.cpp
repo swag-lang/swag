@@ -987,13 +987,10 @@ void X64Gen::emit_CmpF64_Indirect(uint32_t offsetStack, CPURegister reg, CPURegi
 
 void X64Gen::emit_OpN_Indirect(uint32_t offsetStack, CPURegister reg, CPURegister memReg, X64Op instruction, X64Bits numBits, bool lock)
 {
-    SWAG_ASSERT(memReg < R8 && reg < R8);
+    SWAG_ASSERT(memReg < R8);
     if (lock)
         concat.addU8(0xF0);
-    if (reg >= R8 && numBits == X64Bits::B32)
-        concat.addU8(0x44);
-    else
-        emit_REX(numBits, reg);
+    emit_REX(numBits, reg);
     emit_Spec8((uint8_t) instruction, numBits);
     emit_ModRM(offsetStack, reg, memReg);
 }
