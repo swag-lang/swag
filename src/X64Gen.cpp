@@ -2074,50 +2074,15 @@ void X64Gen::emit_ShiftN(CPURegister reg, uint32_t value, X64Bits numBits, X64Op
     SWAG_ASSERT(reg == RAX);
     value = min(value, (uint32_t) numBits - 1);
 
+    emit_REX(numBits);
     if (value == 1)
     {
-        switch (numBits)
-        {
-        case X64Bits::B8:
-            concat.addString1("\xD0");
-            break;
-        case X64Bits::B16:
-            concat.addString2("\x66\xD1");
-            break;
-        case X64Bits::B32:
-            concat.addString1("\xD1");
-            break;
-        case X64Bits::B64:
-            concat.addString2("\x48\xD1");
-            break;
-        default:
-            SWAG_ASSERT(false);
-            break;
-        }
-
+        emit_Spec8(0xD1, numBits);
         concat.addU8((uint8_t) op);
     }
     else
     {
-        switch (numBits)
-        {
-        case X64Bits::B8:
-            concat.addString1("\xC0");
-            break;
-        case X64Bits::B16:
-            concat.addString2("\x66\xC1");
-            break;
-        case X64Bits::B32:
-            concat.addString1("\xC1");
-            break;
-        case X64Bits::B64:
-            concat.addString2("\x48\xC1");
-            break;
-        default:
-            SWAG_ASSERT(false);
-            break;
-        }
-
+        emit_Spec8(0xC1, numBits);
         concat.addU8((uint8_t) op);
         concat.addU8((uint8_t) value);
     }
