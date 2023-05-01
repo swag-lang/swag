@@ -67,5 +67,5 @@ func panic(msg: string, loc: Swag.SourceCodeLocation)
         }
     }
 
-    @assert(G == 27)
+    @assert(G == 28)
 }

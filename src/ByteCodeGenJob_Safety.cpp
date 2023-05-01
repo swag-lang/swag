@@ -431,7 +431,6 @@ void ByteCodeGenJob::emitSafetyCastOverflow(ByteCodeGenContext* context, TypeInf
     PushLocation lc(context, &exprNode->token.startLocation);
     PushICFlags  ic(context, BCI_SAFETY);
     auto         re   = reserveRegisterRC(context);
-    auto         r1   = reserveRegisterRC(context);
     auto         msg  = safetyMsg(SafetyMsg::CastTruncated, typeInfo, fromTypeInfo);
     auto         msg1 = safetyMsg(SafetyMsg::CastNeg, typeInfo, fromTypeInfo);
 
@@ -444,9 +443,7 @@ void ByteCodeGenJob::emitSafetyCastOverflow(ByteCodeGenContext* context, TypeInf
         {
         case NativeTypeKind::U8:
         {
-            auto inst   = EMIT_INST1(context, ByteCodeOp::ClearMaskU32, exprNode->resultRegisterRC);
-            inst->b.u64 = 0xFF;
-            inst        = EMIT_INST3(context, ByteCodeOp::CompareOpLowerEqU32, exprNode->resultRegisterRC, 0, re);
+            auto inst = EMIT_INST3(context, ByteCodeOp::CompareOpLowerEqU8, exprNode->resultRegisterRC, 0, re);
             inst->flags |= BCI_IMM_B;
             inst->b.u64 = INT8_MAX;
             emitAssert(context, re, msg);
@@ -455,9 +452,7 @@ void ByteCodeGenJob::emitSafetyCastOverflow(ByteCodeGenContext* context, TypeInf
 
         case NativeTypeKind::U16:
         {
-            auto inst   = EMIT_INST1(context, ByteCodeOp::ClearMaskU32, exprNode->resultRegisterRC);
-            inst->b.u64 = 0xFFFF;
-            inst        = EMIT_INST3(context, ByteCodeOp::CompareOpLowerEqU32, exprNode->resultRegisterRC, 0, re);
+            auto inst = EMIT_INST3(context, ByteCodeOp::CompareOpLowerEqU16, exprNode->resultRegisterRC, 0, re);
             inst->flags |= BCI_IMM_B;
             inst->b.u64 = INT8_MAX;
             emitAssert(context, re, msg);
@@ -485,14 +480,12 @@ void ByteCodeGenJob::emitSafetyCastOverflow(ByteCodeGenContext* context, TypeInf
 
         case NativeTypeKind::S16:
         {
-            EMIT_INST2(context, ByteCodeOp::CopyRBtoRA64, r1, exprNode->resultRegisterRC);
-            EMIT_INST1(context, ByteCodeOp::CastS16S32, r1);
-            auto inst = EMIT_INST3(context, ByteCodeOp::CompareOpGreaterEqS32, r1, 0, re);
+            auto inst = EMIT_INST3(context, ByteCodeOp::CompareOpGreaterEqS16, exprNode->resultRegisterRC, 0, re);
             inst->flags |= BCI_IMM_B;
             inst->b.s64 = INT8_MIN;
             emitAssert(context, re, msg);
 
-            inst = EMIT_INST3(context, ByteCodeOp::CompareOpLowerEqS32, r1, 0, re);
+            inst = EMIT_INST3(context, ByteCodeOp::CompareOpLowerEqS16, exprNode->resultRegisterRC, 0, re);
             inst->flags |= BCI_IMM_B;
             inst->b.s64 = INT8_MAX;
             emitAssert(context, re, msg);
@@ -594,9 +587,7 @@ void ByteCodeGenJob::emitSafetyCastOverflow(ByteCodeGenContext* context, TypeInf
 
         case NativeTypeKind::U16:
         {
-            auto inst   = EMIT_INST1(context, ByteCodeOp::ClearMaskU32, exprNode->resultRegisterRC);
-            inst->b.u64 = 0xFFFF;
-            inst        = EMIT_INST3(context, ByteCodeOp::CompareOpLowerEqU32, exprNode->resultRegisterRC, 0, re);
+            auto inst = EMIT_INST3(context, ByteCodeOp::CompareOpLowerEqU16, exprNode->resultRegisterRC, 0, re);
             inst->flags |= BCI_IMM_B;
             inst->b.u64 = INT16_MAX;
             emitAssert(context, re, msg);
@@ -760,15 +751,12 @@ void ByteCodeGenJob::emitSafetyCastOverflow(ByteCodeGenContext* context, TypeInf
         {
         case NativeTypeKind::S8:
         {
-            EMIT_INST2(context, ByteCodeOp::CopyRBtoRA64, r1, exprNode->resultRegisterRC);
-            EMIT_INST1(context, ByteCodeOp::CastS8S32, r1);
-
-            auto inst = EMIT_INST3(context, ByteCodeOp::CompareOpGreaterEqS32, exprNode->resultRegisterRC, 0, re);
+            auto inst = EMIT_INST3(context, ByteCodeOp::CompareOpGreaterEqS8, exprNode->resultRegisterRC, 0, re);
             inst->flags |= BCI_IMM_B;
             inst->b.u64 = 0;
             emitAssert(context, re, msg1);
 
-            inst = EMIT_INST3(context, ByteCodeOp::CompareOpGreaterEqS32, r1, 0, re);
+            inst = EMIT_INST3(context, ByteCodeOp::CompareOpGreaterEqS8, exprNode->resultRegisterRC, 0, re);
             inst->flags |= BCI_IMM_B;
             inst->b.u64 = 0;
             emitAssert(context, re, msg1);
@@ -777,15 +765,12 @@ void ByteCodeGenJob::emitSafetyCastOverflow(ByteCodeGenContext* context, TypeInf
 
         case NativeTypeKind::S16:
         {
-            EMIT_INST2(context, ByteCodeOp::CopyRBtoRA64, r1, exprNode->resultRegisterRC);
-            EMIT_INST1(context, ByteCodeOp::CastS16S32, r1);
-
-            auto inst = EMIT_INST3(context, ByteCodeOp::CompareOpGreaterEqS32, exprNode->resultRegisterRC, 0, re);
+            auto inst = EMIT_INST3(context, ByteCodeOp::CompareOpGreaterEqS16, exprNode->resultRegisterRC, 0, re);
             inst->flags |= BCI_IMM_B;
             inst->b.u64 = 0;
             emitAssert(context, re, msg1);
 
-            inst = EMIT_INST3(context, ByteCodeOp::CompareOpLowerEqU32, r1, 0, re);
+            inst = EMIT_INST3(context, ByteCodeOp::CompareOpLowerEqU16, exprNode->resultRegisterRC, 0, re);
             inst->flags |= BCI_IMM_B;
             inst->b.u64 = UINT8_MAX;
             emitAssert(context, re, msg);
@@ -822,9 +807,7 @@ void ByteCodeGenJob::emitSafetyCastOverflow(ByteCodeGenContext* context, TypeInf
 
         case NativeTypeKind::U16:
         {
-            auto inst   = EMIT_INST1(context, ByteCodeOp::ClearMaskU32, exprNode->resultRegisterRC);
-            inst->b.u64 = 0xFFFF;
-            inst        = EMIT_INST3(context, ByteCodeOp::CompareOpLowerEqU32, exprNode->resultRegisterRC, 0, re);
+            auto inst = EMIT_INST3(context, ByteCodeOp::CompareOpLowerEqU16, exprNode->resultRegisterRC, 0, re);
             inst->flags |= BCI_IMM_B;
             inst->b.u64 = UINT8_MAX;
             emitAssert(context, re, msg);
@@ -889,9 +872,7 @@ void ByteCodeGenJob::emitSafetyCastOverflow(ByteCodeGenContext* context, TypeInf
         {
         case NativeTypeKind::S8:
         {
-            EMIT_INST2(context, ByteCodeOp::CopyRBtoRA64, r1, exprNode->resultRegisterRC);
-            EMIT_INST1(context, ByteCodeOp::CastS8S32, r1);
-            auto inst = EMIT_INST3(context, ByteCodeOp::CompareOpGreaterEqS32, r1, 0, re);
+            auto inst = EMIT_INST3(context, ByteCodeOp::CompareOpGreaterEqS8, exprNode->resultRegisterRC, 0, re);
             inst->flags |= BCI_IMM_B;
             inst->b.u64 = 0;
             emitAssert(context, re, msg1);
@@ -900,9 +881,7 @@ void ByteCodeGenJob::emitSafetyCastOverflow(ByteCodeGenContext* context, TypeInf
 
         case NativeTypeKind::S16:
         {
-            EMIT_INST2(context, ByteCodeOp::CopyRBtoRA64, r1, exprNode->resultRegisterRC);
-            EMIT_INST1(context, ByteCodeOp::CastS16S32, r1);
-            auto inst = EMIT_INST3(context, ByteCodeOp::CompareOpGreaterEqS32, r1, 0, re);
+            auto inst = EMIT_INST3(context, ByteCodeOp::CompareOpGreaterEqS32, exprNode->resultRegisterRC, 0, re);
             inst->flags |= BCI_IMM_B;
             inst->b.u64 = 0;
             emitAssert(context, re, msg1);
@@ -998,9 +977,7 @@ void ByteCodeGenJob::emitSafetyCastOverflow(ByteCodeGenContext* context, TypeInf
         {
         case NativeTypeKind::S8:
         {
-            EMIT_INST2(context, ByteCodeOp::CopyRBtoRA64, r1, exprNode->resultRegisterRC);
-            EMIT_INST1(context, ByteCodeOp::CastS8S32, r1);
-            auto inst = EMIT_INST3(context, ByteCodeOp::CompareOpGreaterEqS32, r1, 0, re);
+            auto inst = EMIT_INST3(context, ByteCodeOp::CompareOpGreaterEqS8, exprNode->resultRegisterRC, 0, re);
             inst->flags |= BCI_IMM_B;
             inst->b.u64 = 0;
             emitAssert(context, re, msg1);
@@ -1009,9 +986,7 @@ void ByteCodeGenJob::emitSafetyCastOverflow(ByteCodeGenContext* context, TypeInf
 
         case NativeTypeKind::S16:
         {
-            EMIT_INST2(context, ByteCodeOp::CopyRBtoRA64, r1, exprNode->resultRegisterRC);
-            EMIT_INST1(context, ByteCodeOp::CastS16S32, r1);
-            auto inst = EMIT_INST3(context, ByteCodeOp::CompareOpGreaterEqS32, r1, 0, re);
+            auto inst = EMIT_INST3(context, ByteCodeOp::CompareOpGreaterEqS16, exprNode->resultRegisterRC, 0, re);
             inst->flags |= BCI_IMM_B;
             inst->b.u64 = 0;
             emitAssert(context, re, msg1);
@@ -1090,9 +1065,7 @@ void ByteCodeGenJob::emitSafetyCastOverflow(ByteCodeGenContext* context, TypeInf
         {
         case NativeTypeKind::S8:
         {
-            EMIT_INST2(context, ByteCodeOp::CopyRBtoRA64, r1, exprNode->resultRegisterRC);
-            EMIT_INST1(context, ByteCodeOp::CastS8S32, r1);
-            auto inst = EMIT_INST3(context, ByteCodeOp::CompareOpGreaterEqS32, r1, 0, re);
+            auto inst = EMIT_INST3(context, ByteCodeOp::CompareOpGreaterEqS8, exprNode->resultRegisterRC, 0, re);
             inst->flags |= BCI_IMM_B;
             inst->b.u64 = 0;
             emitAssert(context, re, msg1);
@@ -1101,9 +1074,7 @@ void ByteCodeGenJob::emitSafetyCastOverflow(ByteCodeGenContext* context, TypeInf
 
         case NativeTypeKind::S16:
         {
-            EMIT_INST2(context, ByteCodeOp::CopyRBtoRA64, r1, exprNode->resultRegisterRC);
-            EMIT_INST1(context, ByteCodeOp::CastS16S32, r1);
-            auto inst = EMIT_INST3(context, ByteCodeOp::CompareOpGreaterEqS32, r1, 0, re);
+            auto inst = EMIT_INST3(context, ByteCodeOp::CompareOpGreaterEqS16, exprNode->resultRegisterRC, 0, re);
             inst->flags |= BCI_IMM_B;
             inst->b.u64 = 0;
             emitAssert(context, re, msg1);
@@ -1158,6 +1129,5 @@ void ByteCodeGenJob::emitSafetyCastOverflow(ByteCodeGenContext* context, TypeInf
         break;
     }
 
-    freeRegisterRC(context, r1);
     freeRegisterRC(context, re);
 }
