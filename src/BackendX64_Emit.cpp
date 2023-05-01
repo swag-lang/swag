@@ -24,7 +24,7 @@ void BackendX64::emitShiftRightArithmetic(X64Gen& pp, ByteCodeInstruction* ip, X
         }
 
         if (ip->flags & BCI_IMM_A)
-            pp.emit_LoadN_Immediate(RAX, ip->a, numBits);
+            pp.emit_LoadN_Immediate(RAX, ip->a.u64, numBits);
         else
             pp.emit_LoadN_Indirect(regOffset(ip->a.u32), RAX, RDI, numBits);
 
@@ -122,7 +122,7 @@ void BackendX64::emitShiftLogical(X64Gen& pp, ByteCodeInstruction* ip, X64Bits n
     else
     {
         if (ip->flags & BCI_IMM_A)
-            pp.emit_LoadN_Immediate(RAX, ip->a, numBits);
+            pp.emit_LoadN_Immediate(RAX, ip->a.u64, numBits);
         else
             pp.emit_LoadN_Indirect(regOffset(ip->a.u32), RAX, RDI, numBits);
 
@@ -432,11 +432,11 @@ void BackendX64::emitBinOpIntN(X64Gen& pp, ByteCodeInstruction* ip, X64Op op, X6
     else
     {
         if (ip->flags & BCI_IMM_A)
-            pp.emit_LoadN_Immediate(RAX, ip->a, numBits);
+            pp.emit_LoadN_Immediate(RAX, ip->a.u64, numBits);
         else
             pp.emit_LoadN_Indirect(regOffset(ip->a.u32), RAX, RDI, numBits);
         if (ip->flags & BCI_IMM_B)
-            pp.emit_LoadN_Immediate(RCX, ip->b, numBits);
+            pp.emit_LoadN_Immediate(RCX, ip->b.u64, numBits);
         else
             pp.emit_LoadN_Indirect(regOffset(ip->b.u32), RCX, RDI, numBits);
 
@@ -518,7 +518,7 @@ void BackendX64::emitBinOpDivIntNAtReg(X64Gen& pp, ByteCodeInstruction* ip, bool
 
     if (ip->flags & BCI_IMM_B)
     {
-        pp.emit_LoadN_Immediate(RCX, ip->b, numBits);
+        pp.emit_LoadN_Immediate(RCX, ip->b.u64, numBits);
         pp.emit_OpN(RAX, RCX, isSigned ? X64Op::IDIV : X64Op::DIV, numBits);
     }
     else

@@ -648,21 +648,21 @@ void X64Gen::emit_Load64_Immediate(CPURegister reg, uint64_t value, bool force64
     }
 }
 
-void X64Gen::emit_LoadN_Immediate(CPURegister reg, const Register& value, X64Bits numBits)
+void X64Gen::emit_LoadN_Immediate(CPURegister reg, uint64_t value, X64Bits numBits)
 {
     switch (numBits)
     {
     case X64Bits::B8:
-        emit_Load8_Immediate(reg, value.u8);
+        emit_Load8_Immediate(reg, (uint8_t) value);
         break;
     case X64Bits::B16:
-        emit_Load16_Immediate(reg, value.u16);
+        emit_Load16_Immediate(reg, (uint16_t) value);
         break;
     case X64Bits::B32:
-        emit_Load32_Immediate(reg, value.u32);
+        emit_Load32_Immediate(reg, (uint32_t) value);
         break;
     case X64Bits::B64:
-        emit_Load64_Immediate(reg, value.u64);
+        emit_Load64_Immediate(reg, value);
         break;
     default:
         SWAG_ASSERT(false);
@@ -863,22 +863,22 @@ void X64Gen::emit_CmpF64(CPURegister reg1, CPURegister reg2)
     concat.addU8(getModRM(REGREG, reg1, reg2));
 }
 
-void X64Gen::emit_CmpN_Immediate(CPURegister reg, const Register& value, X64Bits numBits)
+void X64Gen::emit_CmpN_Immediate(CPURegister reg, uint64_t value, X64Bits numBits)
 {
-    if (value.u64 <= 0x7f)
+    if (value <= 0x7f)
     {
         SWAG_ASSERT(reg == RAX || reg == RCX);
         emit_REX(numBits);
         concat.addU8(0x83);
         concat.addU8(0xF8 | reg);
-        concat.addU8(value.u8);
+        concat.addU8((uint8_t) value);
     }
-    else if (value.u64 <= 0x7fffffff)
+    else if (value <= 0x7fffffff)
     {
         SWAG_ASSERT(reg == RAX);
         emit_REX(numBits);
         concat.addU8(0x3d);
-        concat.addU32(value.u32);
+        concat.addU32((uint32_t) value);
     }
     else
     {
@@ -1032,6 +1032,11 @@ void X64Gen::emit_OpF64(CPURegister regSrc, CPURegister regDst, X64Op instructio
 }
 
 /////////////////////////////////////////////////////////////////////
+
+void X64Gen::emit_OpN_Immediate(CPURegister reg, uint64_t value, X64Op instruction, X64Bits numBits)
+{
+    emit_REX(numBits);
+}
 
 void X64Gen::emit_Add64_Immediate(uint64_t value, CPURegister reg)
 {
