@@ -485,10 +485,7 @@ struct X64Gen
     void emit_LongJumpOp(JumpType jumpType);
     void emit_NearJumpOp(JumpType jumpType);
     void emit_Mul64_RAX(uint64_t value);
-    void emit_Op8_Indirect(uint32_t offsetStack, CPURegister reg, CPURegister memReg, X64Op instruction, bool lock = false);
-    void emit_Op16_Indirect(uint32_t offsetStack, CPURegister reg, CPURegister memReg, X64Op instruction, bool lock = false);
-    void emit_Op32_Indirect(uint32_t offsetStack, CPURegister reg, CPURegister memReg, X64Op instruction, bool lock = false);
-    void emit_Op64_Indirect(uint32_t offsetStack, CPURegister reg, CPURegister memReg, X64Op instruction, bool lock = false);
+    void emit_OpN_Indirect(uint32_t offsetStack, CPURegister reg, CPURegister memReg, X64Op instruction, X64Bits numBits, bool lock = false);
     void emit_OpF32_Indirect(CPURegister reg, CPURegister memReg, X64Op instruction);
     void emit_OpF64_Indirect(CPURegister reg, CPURegister memReg, X64Op instruction);
     void emit_OpN(CPURegister regSrc, CPURegister regDst, X64Op instruction, X64Bits numBits);

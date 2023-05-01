@@ -985,43 +985,16 @@ void X64Gen::emit_CmpF64_Indirect(uint32_t offsetStack, CPURegister reg, CPURegi
 
 /////////////////////////////////////////////////////////////////////
 
-void X64Gen::emit_Op8_Indirect(uint32_t offsetStack, CPURegister reg, CPURegister memReg, X64Op instruction, bool lock)
-{
-    SWAG_ASSERT(reg < R8 && memReg < R8);
-    if (lock)
-        concat.addU8(0xF0);
-    emit_Spec8((uint8_t) instruction, X64Bits::B8);
-    emit_ModRM(offsetStack, reg, memReg);
-}
-
-void X64Gen::emit_Op16_Indirect(uint32_t offsetStack, CPURegister reg, CPURegister memReg, X64Op instruction, bool lock)
-{
-    SWAG_ASSERT(reg < R8 && memReg < R8);
-    if (lock)
-        concat.addU8(0xF0);
-    concat.addU8(0x66);
-    concat.addU8((uint8_t) instruction);
-    emit_ModRM(offsetStack, reg, memReg);
-}
-
-void X64Gen::emit_Op32_Indirect(uint32_t offsetStack, CPURegister reg, CPURegister memReg, X64Op instruction, bool lock)
-{
-    SWAG_ASSERT(memReg < R8);
-    if (lock)
-        concat.addU8(0xF0);
-    if (reg >= R8)
-        concat.addU8(0x44);
-    concat.addU8((uint8_t) instruction);
-    emit_ModRM(offsetStack, reg, memReg);
-}
-
-void X64Gen::emit_Op64_Indirect(uint32_t offsetStack, CPURegister reg, CPURegister memReg, X64Op instruction, bool lock)
+void X64Gen::emit_OpN_Indirect(uint32_t offsetStack, CPURegister reg, CPURegister memReg, X64Op instruction, X64Bits numBits, bool lock)
 {
     SWAG_ASSERT(memReg < R8 && reg < R8);
     if (lock)
         concat.addU8(0xF0);
-    emit_REX(X64Bits::B64);
-    concat.addU8((uint8_t) instruction);
+    if (reg >= R8 && numBits == X64Bits::B32)
+        concat.addU8(0x44);
+    else
+        emit_REX(numBits, reg);
+    emit_Spec8((uint8_t) instruction, numBits);
     emit_ModRM(offsetStack, reg, memReg);
 }
 

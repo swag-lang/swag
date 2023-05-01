@@ -605,7 +605,7 @@ void BackendX64::emitAddSubMul64(X64Gen& pp, ByteCodeInstruction* ip, uint64_t m
         }
 
         if (ip->a.u32 == ip->c.u32)
-            pp.emit_Op64_Indirect(regOffset(ip->a.u32), RAX, RDI, op);
+            pp.emit_OpN_Indirect(regOffset(ip->a.u32), RAX, RDI, op, X64Bits::B64);
         else
         {
             pp.emit_Load64_Indirect(regOffset(ip->a.u32), RCX);

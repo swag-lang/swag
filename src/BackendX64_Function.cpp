@@ -3177,7 +3177,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
 
             pp.emit_Store64_Indirect(regOffset(ip->b.u32), RDX);
             pp.emit_Load64_Immediate(RCX, 8);
-            pp.emit_Op64_Indirect(0, RCX, RAX, X64Op::ADD);
+            pp.emit_OpN_Indirect(0, RCX, RAX, X64Op::ADD, X64Bits::B64);
             break;
 
         case ByteCodeOp::IntrinsicArguments:
