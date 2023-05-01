@@ -1,6 +1,5 @@
-..\bin\swag_devmode build -w:../bin/examples --rebuild %1 %2 %3 %4
-
 ..\bin\swag_devmode clean --script %1 %2 %3 %4
+
 ..\bin\swag_devmode run -w:..\bin\examples -m:wnd    --bytecode --args:"swag.test" %1 %2 %3 %4
 ..\bin\swag_devmode run -w:..\bin\examples -m:captme --bytecode --args:"swag.test" %1 %2 %3 %4
 ..\bin\swag_devmode run -w:..\bin\examples -m:draw   --bytecode --args:"swag.test" %1 %2 %3 %4
