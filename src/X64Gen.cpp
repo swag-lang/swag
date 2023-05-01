@@ -333,6 +333,7 @@ void X64Gen::emit_Load8_Indirect(uint32_t stackOffset, CPURegister reg, CPURegis
     if (storageRegStack == stackOffset &&
         storageReg == reg &&
         storageMemReg == memReg &&
+        storageRegBits >= 8 &&
         storageRegCount == concat.totalCount())
     {
         return;
@@ -348,6 +349,7 @@ void X64Gen::emit_Load16_Indirect(uint32_t stackOffset, CPURegister reg, CPURegi
     if (storageRegStack == stackOffset &&
         storageReg == reg &&
         storageMemReg == memReg &&
+        storageRegBits >= 16 &&
         storageRegCount == concat.totalCount())
     {
         return;
@@ -364,6 +366,7 @@ void X64Gen::emit_Load32_Indirect(uint32_t stackOffset, CPURegister reg, CPURegi
     if (storageRegStack == stackOffset &&
         storageReg == reg &&
         storageMemReg == memReg &&
+        storageRegBits >= 32 &&
         storageRegCount == concat.totalCount())
     {
         if (storageRegBits > 32)
@@ -381,6 +384,7 @@ void X64Gen::emit_Load64_Indirect(uint32_t stackOffset, CPURegister reg, CPURegi
     if (storageRegStack == stackOffset &&
         storageReg == reg &&
         storageMemReg == memReg &&
+        storageRegBits == 64 &&
         storageRegCount == concat.totalCount())
     {
         return;
