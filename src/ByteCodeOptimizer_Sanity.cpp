@@ -810,6 +810,30 @@ static bool optimizePassSanityStack(ByteCodeOptContext* context, Context& cxt)
             *ra = *rb;
             break;
 
+        case ByteCodeOp::CompareOp3WayS8:
+        case ByteCodeOp::CompareOp3WayU8:
+            SWAG_CHECK(getImmediateA(va, cxt, ip));
+            SWAG_CHECK(getImmediateB(vb, cxt, ip));
+            SWAG_CHECK(getRegister(rc, cxt, ip->c.u32));
+            rc->kind = va.kind == ValueKind::Constant && vb.kind == ValueKind::Constant ? ValueKind::Constant : ValueKind::Unknown;
+            if (rc->kind == ValueKind::Constant)
+            {
+                auto sub    = va.reg.s8 - vb.reg.s8;
+                rc->reg.s32 = (int32_t) ((sub > 0) - (sub < 0));
+            }
+            break;
+        case ByteCodeOp::CompareOp3WayS16:
+        case ByteCodeOp::CompareOp3WayU16:
+            SWAG_CHECK(getImmediateA(va, cxt, ip));
+            SWAG_CHECK(getImmediateB(vb, cxt, ip));
+            SWAG_CHECK(getRegister(rc, cxt, ip->c.u32));
+            rc->kind = va.kind == ValueKind::Constant && vb.kind == ValueKind::Constant ? ValueKind::Constant : ValueKind::Unknown;
+            if (rc->kind == ValueKind::Constant)
+            {
+                auto sub    = va.reg.s16 - vb.reg.s16;
+                rc->reg.s32 = (int32_t) ((sub > 0) - (sub < 0));
+            }
+            break;
         case ByteCodeOp::CompareOp3WayS32:
         case ByteCodeOp::CompareOp3WayU32:
             SWAG_CHECK(getImmediateA(va, cxt, ip));

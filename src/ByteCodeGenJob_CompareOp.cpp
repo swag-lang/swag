@@ -443,8 +443,20 @@ bool ByteCodeGenJob::emitCompareOp3Way(ByteCodeGenContext* context, uint32_t r0,
     {
         switch (typeInfo->nativeType)
         {
+        case NativeTypeKind::S8:
+            EMIT_INST3(context, ByteCodeOp::CompareOp3WayS8, r0, r1, r2);
+            return true;
+        case NativeTypeKind::S16:
+            EMIT_INST3(context, ByteCodeOp::CompareOp3WayS16, r0, r1, r2);
+            return true;
         case NativeTypeKind::S32:
             EMIT_INST3(context, ByteCodeOp::CompareOp3WayS32, r0, r1, r2);
+            return true;
+        case NativeTypeKind::U8:
+            EMIT_INST3(context, ByteCodeOp::CompareOp3WayU8, r0, r1, r2);
+            return true;
+        case NativeTypeKind::U16:
+            EMIT_INST3(context, ByteCodeOp::CompareOp3WayU16, r0, r1, r2);
             return true;
         case NativeTypeKind::U32:
         case NativeTypeKind::Rune:

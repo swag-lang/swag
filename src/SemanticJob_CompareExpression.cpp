@@ -444,8 +444,6 @@ bool SemanticJob::resolveCompareExpression(SemanticContext* context)
             node->computedValue->reg.b = !node->computedValue->reg.b;
         break;
     case TokenId::SymLowerEqualGreater:
-        SWAG_CHECK(TypeManager::promote32(context, left));
-        SWAG_CHECK(TypeManager::promote32(context, right));
         SWAG_CHECK(resolveCompOp3Way(context, left, right));
         break;
     default:

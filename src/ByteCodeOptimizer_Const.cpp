@@ -536,27 +536,31 @@ bool ByteCodeOptimizer::optimizePassConst(ByteCodeOptContext* context)
                 OK();
                 break;
 
+            case ByteCodeOp::CompareOp3WayS8:
+            case ByteCodeOp::CompareOp3WayU8:
+                SET_OP(ip, ByteCodeOp::SetImmediate32);
+                ip->b.s32 = CMP3(ip->a.u8, ip->b.u8);
+                ip->a.u32 = ip->c.u32;
+                OK();
+                break;
+            case ByteCodeOp::CompareOp3WayS16:
+            case ByteCodeOp::CompareOp3WayU16:
+                SET_OP(ip, ByteCodeOp::SetImmediate32);
+                ip->b.s32 = CMP3(ip->a.u16, ip->b.u16);
+                ip->a.u32 = ip->c.u32;
+                OK();
+                break;
+            case ByteCodeOp::CompareOp3WayS32:
             case ByteCodeOp::CompareOp3WayU32:
                 SET_OP(ip, ByteCodeOp::SetImmediate32);
                 ip->b.s32 = CMP3(ip->a.u32, ip->b.u32);
                 ip->a.u32 = ip->c.u32;
                 OK();
                 break;
+            case ByteCodeOp::CompareOp3WayS64:
             case ByteCodeOp::CompareOp3WayU64:
                 SET_OP(ip, ByteCodeOp::SetImmediate32);
                 ip->b.s32 = CMP3(ip->a.u64, ip->b.u64);
-                ip->a.u32 = ip->c.u32;
-                OK();
-                break;
-            case ByteCodeOp::CompareOp3WayS32:
-                SET_OP(ip, ByteCodeOp::SetImmediate32);
-                ip->b.s32 = CMP3(ip->a.s32, ip->b.s32);
-                ip->a.u32 = ip->c.u32;
-                OK();
-                break;
-            case ByteCodeOp::CompareOp3WayS64:
-                SET_OP(ip, ByteCodeOp::SetImmediate32);
-                ip->b.s32 = CMP3(ip->a.s64, ip->b.s64);
                 ip->a.u32 = ip->c.u32;
                 OK();
                 break;

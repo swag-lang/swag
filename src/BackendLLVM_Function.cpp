@@ -3036,6 +3036,34 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
 
             /////////////////////////////////////
 
+        case ByteCodeOp::CompareOp3WayS8:
+        case ByteCodeOp::CompareOp3WayU8:
+        {
+            auto         r0 = GEP64_PTR_I32(allocR, ip->c.u32);
+            llvm::Value* r1 = MK_IMMA_8();
+            llvm::Value* r2 = MK_IMMB_8();
+            auto         v0 = builder.CreateSub(r1, r2);
+            auto         v1 = builder.CreateIntCast(builder.CreateICmpSGT(v0, pp.cst0_i8), I32_TY(), false);
+            auto         v2 = builder.CreateIntCast(builder.CreateICmpSLT(v0, pp.cst0_i8), I32_TY(), false);
+            auto         v3 = builder.CreateSub(v1, v2);
+            builder.CreateStore(v3, r0);
+            break;
+        }
+
+        case ByteCodeOp::CompareOp3WayS16:
+        case ByteCodeOp::CompareOp3WayU16:
+        {
+            auto         r0 = GEP64_PTR_I32(allocR, ip->c.u32);
+            llvm::Value* r1 = MK_IMMA_16();
+            llvm::Value* r2 = MK_IMMB_16();
+            auto         v0 = builder.CreateSub(r1, r2);
+            auto         v1 = builder.CreateIntCast(builder.CreateICmpSGT(v0, pp.cst0_i16), I32_TY(), false);
+            auto         v2 = builder.CreateIntCast(builder.CreateICmpSLT(v0, pp.cst0_i16), I32_TY(), false);
+            auto         v3 = builder.CreateSub(v1, v2);
+            builder.CreateStore(v3, r0);
+            break;
+        }
+
         case ByteCodeOp::CompareOp3WayS32:
         case ByteCodeOp::CompareOp3WayU32:
         {

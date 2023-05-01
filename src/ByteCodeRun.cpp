@@ -2506,6 +2506,20 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
         break;
     }
 
+    case ByteCodeOp::CompareOp3WayS8:
+    case ByteCodeOp::CompareOp3WayU8:
+    {
+        auto sub                   = IMMA_S8(ip) - IMMB_S8(ip);
+        registersRC[ip->c.u32].s32 = (int32_t) ((sub > 0) - (sub < 0));
+        break;
+    }
+    case ByteCodeOp::CompareOp3WayS16:
+    case ByteCodeOp::CompareOp3WayU16:
+    {
+        auto sub                   = IMMA_S16(ip) - IMMB_S16(ip);
+        registersRC[ip->c.u32].s32 = (int32_t) ((sub > 0) - (sub < 0));
+        break;
+    }
     case ByteCodeOp::CompareOp3WayS32:
     case ByteCodeOp::CompareOp3WayU32:
     {
