@@ -354,7 +354,7 @@ bool BackendX64::emitGlobalInit(const BuildParameters& buildParameters)
     {
         if (!dep->module->isSwag)
         {
-            pp.emit_Add64_RCX(sizeof(SwagModule));
+            pp.emit_OpN_Immediate(RCX, sizeof(SwagModule), X64Op::ADD, X64Bits::B64);
             continue;
         }
 
@@ -364,11 +364,10 @@ bool BackendX64::emitGlobalInit(const BuildParameters& buildParameters)
         // Count types is stored as a uint64_t at the start of the address
         pp.emit_Load64_Indirect(0, R8, cc.returnByRegisterInteger);
         pp.emit_Store64_Indirect(sizeof(uint64_t), R8, RCX);
-        pp.emit_Add64_Immediate(sizeof(uint64_t), cc.returnByRegisterInteger);
-
+        pp.emit_OpN_Immediate(cc.returnByRegisterInteger, sizeof(uint64_t), X64Op::ADD, X64Bits::B64);
         pp.emit_Store64_Indirect(0, cc.returnByRegisterInteger, RCX);
 
-        pp.emit_Add64_RCX(sizeof(SwagModule));
+        pp.emit_OpN_Immediate(RCX, sizeof(SwagModule), X64Op::ADD, X64Bits::B64);
     }
 
     // Call to #init functions

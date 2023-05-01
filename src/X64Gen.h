@@ -432,11 +432,8 @@ struct X64Gen
     void emit_Call_Parameters(TypeInfoFuncAttr* typeFunc, VectorNative<X64PushParam>& paramsRegisters, VectorNative<TypeInfo*>& paramsTypes, void* retCopyAddr = nullptr);
     void emit_Call_Result(TypeInfoFuncAttr* typeFunc, uint32_t offsetRT);
 
-    void emit_Add64_Immediate(uint64_t value, CPURegister reg);
-    void emit_Add64_RAX(uint64_t value);
-    void emit_Add64_RCX(uint64_t value);
-    void emit_Mul64_RAX(uint64_t value);
     void emit_Sub64_RAX(uint64_t value);
+    void emit_Mul64_RAX(uint64_t value);
 
     void emit_ClearN(CPURegister reg, X64Bits numBits);
     void emit_ClearX(uint32_t count, uint32_t offset, CPURegister reg);

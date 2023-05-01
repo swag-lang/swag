@@ -941,40 +941,6 @@ void X64Gen::emit_CmpN_IndirectDst(uint32_t offsetStack, uint32_t value, X64Bits
 
 /////////////////////////////////////////////////////////////////////
 
-void X64Gen::emit_OpN_Indirect(uint32_t offsetStack, CPURegister reg, CPURegister memReg, X64Op instruction, X64Bits numBits, bool lock)
-{
-    SWAG_ASSERT(memReg < R8);
-    if (lock)
-        concat.addU8(0xF0);
-    emit_REX(numBits, reg);
-    emit_Spec8((uint8_t) instruction, numBits);
-    emit_ModRM(offsetStack, reg, memReg);
-}
-
-void X64Gen::emit_OpF32_Indirect(CPURegister reg, CPURegister memReg, X64Op instruction)
-{
-    SWAG_ASSERT(reg == XMM1);
-    SWAG_ASSERT(memReg < R8);
-    emit_LoadF32_Indirect(0, XMM0, memReg);
-    concat.addU8(0xF3);
-    concat.addU8(0x0F);
-    concat.addU8((uint8_t) instruction);
-    concat.addU8(0xC1);
-    emit_StoreF32_Indirect(0, XMM0, memReg);
-}
-
-void X64Gen::emit_OpF64_Indirect(CPURegister reg, CPURegister memReg, X64Op instruction)
-{
-    SWAG_ASSERT(reg == XMM1);
-    SWAG_ASSERT(memReg < R8);
-    emit_LoadF64_Indirect(0, XMM0, memReg);
-    concat.addU8(0xF2);
-    concat.addU8(0x0F);
-    concat.addU8((uint8_t) instruction);
-    concat.addU8(0xC1);
-    emit_StoreF64_Indirect(0, XMM0, memReg);
-}
-
 void X64Gen::emit_OpN(CPURegister regSrc, CPURegister regDst, X64Op instruction, X64Bits numBits)
 {
     emit_REX(numBits, regSrc, regDst);
@@ -1031,74 +997,112 @@ void X64Gen::emit_OpF64(CPURegister regSrc, CPURegister regDst, X64Op instructio
     }
 }
 
-/////////////////////////////////////////////////////////////////////
+void X64Gen::emit_OpN_Indirect(uint32_t offsetStack, CPURegister reg, CPURegister memReg, X64Op instruction, X64Bits numBits, bool lock)
+{
+    SWAG_ASSERT(memReg < R8);
+    if (lock)
+        concat.addU8(0xF0);
+    emit_REX(numBits, reg);
+    emit_Spec8((uint8_t) instruction, numBits);
+    emit_ModRM(offsetStack, reg, memReg);
+}
+
+void X64Gen::emit_OpF32_Indirect(CPURegister reg, CPURegister memReg, X64Op instruction)
+{
+    SWAG_ASSERT(reg == XMM1);
+    SWAG_ASSERT(memReg < R8);
+    emit_LoadF32_Indirect(0, XMM0, memReg);
+    concat.addU8(0xF3);
+    concat.addU8(0x0F);
+    concat.addU8((uint8_t) instruction);
+    concat.addU8(0xC1);
+    emit_StoreF32_Indirect(0, XMM0, memReg);
+}
+
+void X64Gen::emit_OpF64_Indirect(CPURegister reg, CPURegister memReg, X64Op instruction)
+{
+    SWAG_ASSERT(reg == XMM1);
+    SWAG_ASSERT(memReg < R8);
+    emit_LoadF64_Indirect(0, XMM0, memReg);
+    concat.addU8(0xF2);
+    concat.addU8(0x0F);
+    concat.addU8((uint8_t) instruction);
+    concat.addU8(0xC1);
+    emit_StoreF64_Indirect(0, XMM0, memReg);
+}
 
 void X64Gen::emit_OpN_Immediate(CPURegister reg, uint64_t value, X64Op instruction, X64Bits numBits)
 {
-    emit_REX(numBits);
-}
+    SWAG_ASSERT(reg == RAX || reg == RCX);
+    SWAG_ASSERT(instruction == X64Op::ADD || instruction == X64Op::SUB);
+    SWAG_ASSERT(numBits == X64Bits::B64);
 
-void X64Gen::emit_Add64_Immediate(uint64_t value, CPURegister reg)
-{
-    switch (reg)
-    {
-    case RAX:
-        emit_Add64_RAX(value);
-        break;
-    case RCX:
-        emit_Add64_RCX(value);
-        break;
-    default:
-        SWAG_ASSERT(false);
-        break;
-    }
-}
-
-void X64Gen::emit_Add64_RAX(uint64_t value)
-{
-    if (!value)
+    if (instruction == X64Op::ADD && value == 0)
+        return;
+    if (instruction == X64Op::SUB && value == 0)
         return;
 
-    emit_REX(X64Bits::B64);
-    if (value == 1)
+    if (instruction == X64Op::ADD && value == 1)
     {
+        emit_REX(numBits);
         concat.addU8(0xFF);
-        concat.addU8(0xC0); // inc rax
+        concat.addU8(0xC0 | reg); // inc rax
+        return;
+    }
+
+    if (instruction == X64Op::SUB && value == 1)
+    {
+        emit_REX(numBits);
+        concat.addU8(0xFF);
+        concat.addU8(0xC8 | reg); // dec rax
+        return;
+    }
+
+    if (value > 0x7FFFFFFF)
+    {
+        emit_Load64_Immediate(R8, value);
+        emit_OpN(R8, reg, instruction, numBits);
     }
     else if (value <= 0x7F)
     {
+        emit_REX(numBits);
         concat.addU8(0x83);
-        concat.addU8(0xC0);
+        switch (instruction)
+        {
+        case X64Op::ADD:
+            concat.addU8(0xC0 | reg);
+            break;
+        case X64Op::SUB:
+            concat.addU8(0xE8 | reg);
+            break;
+        default:
+            SWAG_ASSERT(false);
+            break;
+        }
         concat.addU8((uint8_t) value);
     }
     else
     {
-        concat.addU8(0x05);
-        concat.addU32((uint32_t) value);
-    }
-}
+        emit_REX(numBits);
+        switch (instruction)
+        {
+        case X64Op::ADD:
+            if (reg == RAX)
+                concat.addU8(0x05);
+            else
+                concat.addString2("\x81\xC1");
+            break;
+        case X64Op::SUB:
+            if (reg == RAX)
+                concat.addU8(0x2D);
+            else
+                concat.addString2("\x81\xE9");
+            break;
+        default:
+            SWAG_ASSERT(false);
+            break;
+        }
 
-void X64Gen::emit_Add64_RCX(uint64_t value)
-{
-    if (!value)
-        return;
-
-    emit_REX(X64Bits::B64);
-    if (value == 1)
-    {
-        concat.addU8(0xFF);
-        concat.addU8(0xC1); // inc rcx
-    }
-    else if (value <= 0x7F)
-    {
-        concat.addU8(0x83);
-        concat.addU8(0xC1);
-        concat.addU8((uint8_t) value);
-    }
-    else
-    {
-        concat.addU8(0x81);
-        concat.addU8(0xC1);
         concat.addU32((uint32_t) value);
     }
 }
@@ -1563,7 +1567,7 @@ void X64Gen::emit_Call_Parameters(TypeInfoFuncAttr* typeFuncBC, VectorNative<X64
                     break;
                 case X64PushParamType::RegAdd:
                     emit_Load64_Indirect(regOffset(reg), cc.paramByRegisterInteger[i]);
-                    emit_Add64_Immediate(paramsRegisters[i].val, cc.paramByRegisterInteger[i]);
+                    emit_OpN_Immediate(cc.paramByRegisterInteger[i], paramsRegisters[i].val, X64Op::ADD, X64Bits::B64);
                     break;
                 case X64PushParamType::RegMul:
                     emit_Load64_Indirect(regOffset(reg), RAX);
