@@ -80,6 +80,102 @@ void X64Gen::emit_Spec8(uint8_t value, X64Bits numBits)
 
 /////////////////////////////////////////////////////////////////////
 
+void X64Gen::emit_Sub32_RSP(uint32_t value)
+{
+    if (value)
+    {
+        if (value <= 0x7F)
+        {
+            concat.addString3("\x48\x83\xEC"); // sub rsp, ??
+            concat.addU8((uint8_t) value);
+        }
+        else
+        {
+            concat.addString3("\x48\x81\xEC"); // sub rsp, ????????
+            concat.addU32(value);
+        }
+    }
+}
+
+void X64Gen::emit_Add32_RSP(uint32_t value)
+{
+    if (value)
+    {
+        if (value <= 0x7F)
+        {
+            concat.addString3("\x48\x83\xC4"); // add rsp, ??
+            concat.addU8((uint8_t) value);
+        }
+        else
+        {
+            concat.addString3("\x48\x81\xC4"); // add rsp, ????????
+            concat.addU32(value);
+        }
+    }
+}
+
+/////////////////////////////////////////////////////////////////////
+
+void X64Gen::emit_GlobalString(const Utf8& str, CPURegister reg)
+{
+    emit_Load64_Immediate(reg, 0, true);
+
+    auto        it  = globalStrings.find(str);
+    CoffSymbol* sym = nullptr;
+    if (it != globalStrings.end())
+        sym = &allSymbols[it->second];
+    else
+    {
+        Utf8 symName       = Fmt("__str%u", (uint32_t) globalStrings.size());
+        sym                = getOrAddSymbol(symName, CoffSymbolKind::GlobalString);
+        globalStrings[str] = sym->index;
+        sym->value         = stringSegment.addStringNoLock(str);
+    }
+
+    CoffRelocation reloc;
+    reloc.virtualAddress = (concat.totalCount() - 8) - textSectionOffset;
+    reloc.symbolIndex    = sym->index;
+    reloc.type           = IMAGE_REL_AMD64_ADDR64;
+    relocTableTextSection.table.push_back(reloc);
+}
+
+void X64Gen::emit_Symbol_RelocationAddr(CPURegister reg, uint32_t symbolIndex, uint32_t offset)
+{
+    SWAG_ASSERT(reg == RAX || reg == RCX || reg == RDX || reg == R8 || reg == R9 || reg == RDI);
+    if (reg == R8 || reg == R9)
+        concat.addU8(0x4C);
+    else
+        concat.addU8(getREX());
+    concat.addU8(0x8D);
+    concat.addU8(0x05 | ((reg & 0b111) << 3));
+
+    CoffRelocation reloc;
+    reloc.virtualAddress = concat.totalCount() - textSectionOffset;
+    reloc.symbolIndex    = symbolIndex;
+    reloc.type           = IMAGE_REL_AMD64_REL32;
+    relocTableTextSection.table.push_back(reloc);
+    concat.addU32(offset);
+}
+
+void X64Gen::emit_Symbol_RelocationValue(CPURegister reg, uint32_t symbolIndex, uint32_t offset)
+{
+    SWAG_ASSERT(reg == RAX || reg == RCX || reg == RDX || reg == R8 || reg == R9);
+
+    if (reg == R8 || reg == R9)
+        concat.addU8(0x4C);
+    else
+        concat.addU8(getREX());
+    concat.addU8(0x8B);
+    concat.addU8(0x05 | ((reg & 0b111) << 3));
+
+    CoffRelocation reloc;
+    reloc.virtualAddress = concat.totalCount() - textSectionOffset;
+    reloc.symbolIndex    = symbolIndex;
+    reloc.type           = IMAGE_REL_AMD64_REL32;
+    relocTableTextSection.table.push_back(reloc);
+    concat.addU32(offset);
+}
+
 CoffSymbol* X64Gen::getSymbol(const Utf8& name)
 {
     auto it = mapSymbols.find(name);
@@ -1180,79 +1276,6 @@ void X64Gen::emit_Mul64_RAX(uint64_t value)
 
 /////////////////////////////////////////////////////////////////////
 
-void X64Gen::emit_Symbol_RelocationAddr(CPURegister reg, uint32_t symbolIndex, uint32_t offset)
-{
-    SWAG_ASSERT(reg == RAX || reg == RCX || reg == RDX || reg == R8 || reg == R9 || reg == RDI);
-    if (reg == R8 || reg == R9)
-        concat.addU8(0x4C);
-    else
-        concat.addU8(getREX());
-    concat.addU8(0x8D);
-    concat.addU8(0x05 | ((reg & 0b111) << 3));
-
-    CoffRelocation reloc;
-    reloc.virtualAddress = concat.totalCount() - textSectionOffset;
-    reloc.symbolIndex    = symbolIndex;
-    reloc.type           = IMAGE_REL_AMD64_REL32;
-    relocTableTextSection.table.push_back(reloc);
-    concat.addU32(offset);
-}
-
-void X64Gen::emit_Symbol_RelocationValue(CPURegister reg, uint32_t symbolIndex, uint32_t offset)
-{
-    SWAG_ASSERT(reg == RAX || reg == RCX || reg == RDX || reg == R8 || reg == R9);
-
-    if (reg == R8 || reg == R9)
-        concat.addU8(0x4C);
-    else
-        concat.addU8(getREX());
-    concat.addU8(0x8B);
-    concat.addU8(0x05 | ((reg & 0b111) << 3));
-
-    CoffRelocation reloc;
-    reloc.virtualAddress = concat.totalCount() - textSectionOffset;
-    reloc.symbolIndex    = symbolIndex;
-    reloc.type           = IMAGE_REL_AMD64_REL32;
-    relocTableTextSection.table.push_back(reloc);
-    concat.addU32(offset);
-}
-
-void X64Gen::emit_Sub32_RSP(uint32_t value)
-{
-    if (value)
-    {
-        if (value <= 0x7F)
-        {
-            concat.addString3("\x48\x83\xEC"); // sub rsp, ??
-            concat.addU8((uint8_t) value);
-        }
-        else
-        {
-            concat.addString3("\x48\x81\xEC"); // sub rsp, ????????
-            concat.addU32(value);
-        }
-    }
-}
-
-void X64Gen::emit_Add32_RSP(uint32_t value)
-{
-    if (value)
-    {
-        if (value <= 0x7F)
-        {
-            concat.addString3("\x48\x83\xC4"); // add rsp, ??
-            concat.addU8((uint8_t) value);
-        }
-        else
-        {
-            concat.addString3("\x48\x81\xC4"); // add rsp, ????????
-            concat.addU32(value);
-        }
-    }
-}
-
-/////////////////////////////////////////////////////////////////////
-
 void X64Gen::emit_Extend_U8U64(CPURegister regSrc, CPURegister regDst)
 {
     // movzx regDst.64, regSrc.8
@@ -1422,6 +1445,8 @@ void X64Gen::emit_Jump(JumpType jumpType, int32_t instructionCount, int32_t jump
     labelsToSolve.push_back(label);
 }
 
+/////////////////////////////////////////////////////////////////////
+
 void X64Gen::emit_CopyX(uint32_t count, uint32_t offset, CPURegister regDst, CPURegister regSrc)
 {
     if (!count)
@@ -1551,6 +1576,8 @@ void X64Gen::emit_ClearX(uint32_t count, uint32_t offset, CPURegister reg)
         offset += 1;
     }
 }
+
+/////////////////////////////////////////////////////////////////////
 
 void X64Gen::emit_Call_Parameters(TypeInfoFuncAttr* typeFuncBC, VectorNative<X64PushParam>& paramsRegisters, VectorNative<TypeInfo*>& paramsTypes, void* retCopyAddr)
 {
@@ -1926,32 +1953,12 @@ void X64Gen::emit_Call_Indirect(CPURegister reg)
     concat.addU8(0xD0 | (reg & 0b111));
 }
 
-void X64Gen::emit_GlobalString(const Utf8& str, CPURegister reg)
-{
-    emit_Load64_Immediate(reg, 0, true);
-
-    auto        it  = globalStrings.find(str);
-    CoffSymbol* sym = nullptr;
-    if (it != globalStrings.end())
-        sym = &allSymbols[it->second];
-    else
-    {
-        Utf8 symName       = Fmt("__str%u", (uint32_t) globalStrings.size());
-        sym                = getOrAddSymbol(symName, CoffSymbolKind::GlobalString);
-        globalStrings[str] = sym->index;
-        sym->value         = stringSegment.addStringNoLock(str);
-    }
-
-    CoffRelocation reloc;
-    reloc.virtualAddress = (concat.totalCount() - 8) - textSectionOffset;
-    reloc.symbolIndex    = sym->index;
-    reloc.type           = IMAGE_REL_AMD64_ADDR64;
-    relocTableTextSection.table.push_back(reloc);
-}
+/////////////////////////////////////////////////////////////////////
 
 void X64Gen::emit_Cwd()
 {
-    concat.addString2("\x66\x99");
+    emit_REX(X64Bits::B16);
+    concat.addU8(0x99);
 }
 
 void X64Gen::emit_Cdq()
@@ -1961,8 +1968,11 @@ void X64Gen::emit_Cdq()
 
 void X64Gen::emit_Cqo()
 {
-    concat.addString2("\x48\x99");
+    emit_REX(X64Bits::B64);
+    concat.addU8(0x99);
 }
+
+/////////////////////////////////////////////////////////////////////
 
 void X64Gen::emit_NotN(CPURegister reg, X64Bits numBits)
 {

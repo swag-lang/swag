@@ -411,23 +411,30 @@ struct X64Gen
 
     void clearInstructionCache();
 
-    uint8_t     getREX(bool w = true, bool r = false, bool x = false, bool b = false);
-    uint8_t     getModRM(uint8_t mod, uint8_t r, uint8_t m);
+    uint8_t getREX(bool w = true, bool r = false, bool x = false, bool b = false);
+    uint8_t getModRM(uint8_t mod, uint8_t r, uint8_t m);
+    void    emit_REX(X64Bits numBits, CPURegister reg1 = RAX, CPURegister reg2 = RAX);
+    void    emit_ModRM(uint32_t stackOffset, uint8_t reg, uint8_t memReg, uint8_t op = 1);
+    void    emit_Spec8(uint8_t value, X64Bits numBits);
+
     CoffSymbol* getSymbol(const Utf8& name);
     CoffSymbol* getOrAddSymbol(const Utf8& name, CoffSymbolKind kind, uint32_t value = 0, uint16_t sectionIdx = 0);
+    void        emit_Symbol_RelocationAddr(CPURegister reg, uint32_t symbolIndex, uint32_t offset);
+    void        emit_Symbol_RelocationValue(CPURegister reg, uint32_t symbolIndex, uint32_t offset);
 
-    void emit_REX(X64Bits numBits, CPURegister reg1 = RAX, CPURegister reg2 = RAX);
-    void emit_ModRM(uint32_t stackOffset, uint8_t reg, uint8_t memReg, uint8_t op = 1);
-    void emit_Spec8(uint8_t value, X64Bits numBits);
+    void emit_Push(CPURegister reg);
+    void emit_Pop(CPURegister reg);
     void emit_Add32_RSP(uint32_t value);
-    void emit_Add64_Immediate(uint64_t value, CPURegister reg);
-    void emit_Add64_RAX(uint64_t value);
-    void emit_Add64_RCX(uint64_t value);
+    void emit_Sub32_RSP(uint32_t value);
     void emit_Call_Indirect(CPURegister reg);
     void emit_Call_Parameters(TypeInfoFuncAttr* typeFunc, const VectorNative<uint32_t>& pushRAParams, uint32_t offsetRT, void* retCopyAddr = nullptr);
     void emit_Call_Parameters(TypeInfoFuncAttr* typeFunc, const VectorNative<X64PushParam>& pushRAParams, uint32_t offsetRT, void* retCopyAddr = nullptr);
     void emit_Call_Parameters(TypeInfoFuncAttr* typeFunc, VectorNative<X64PushParam>& paramsRegisters, VectorNative<TypeInfo*>& paramsTypes, void* retCopyAddr = nullptr);
     void emit_Call_Result(TypeInfoFuncAttr* typeFunc, uint32_t offsetRT);
+
+    void emit_Add64_Immediate(uint64_t value, CPURegister reg);
+    void emit_Add64_RAX(uint64_t value);
+    void emit_Add64_RCX(uint64_t value);
     void emit_ClearN(CPURegister reg, X64Bits numBits);
     void emit_ClearX(uint32_t count, uint32_t offset, CPURegister reg);
     void emit_Cmp8(CPURegister reg1, CPURegister reg2);
@@ -490,8 +497,6 @@ struct X64Gen
     void emit_OpN(CPURegister regSrc, CPURegister regDst, X64Op instruction, X64Bits numBits);
     void emit_OpF32(CPURegister regSrc, CPURegister regDst, X64Op instruction);
     void emit_OpF64(CPURegister regSrc, CPURegister regDst, X64Op instruction);
-    void emit_Push(CPURegister reg);
-    void emit_Pop(CPURegister reg);
     void emit_Ret();
     void emit_SetA(CPURegister reg = RAX);
     void emit_SetAE(CPURegister reg = RAX);
@@ -520,10 +525,7 @@ struct X64Gen
     void emit_StoreF32_Indirect(uint32_t stackOffset, CPURegister reg, CPURegister memReg = RDI);
     void emit_StoreF64_Indirect(uint32_t stackOffset, CPURegister reg, CPURegister memReg = RDI);
     void emit_StoreN_Indirect(uint32_t stackOffset, CPURegister reg, CPURegister memReg, X64Bits numBits);
-    void emit_Sub32_RSP(uint32_t value);
     void emit_Sub64_RAX(uint64_t value);
-    void emit_Symbol_RelocationAddr(CPURegister reg, uint32_t symbolIndex, uint32_t offset);
-    void emit_Symbol_RelocationValue(CPURegister reg, uint32_t symbolIndex, uint32_t offset);
     void emit_TestN(CPURegister reg1, CPURegister reg2, X64Bits numBits);
     void emit_NotN(CPURegister reg, X64Bits numBits);
     void emit_NotN_Indirect(uint32_t stackOffset, CPURegister memReg, X64Bits numBits);
