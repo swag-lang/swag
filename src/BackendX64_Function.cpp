@@ -2147,7 +2147,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
 
         case ByteCodeOp::NegBool:
             pp.emit_Load8_Indirect(regOffset(ip->b.u32), RAX);
-            concat.addString2("\x34\x01"); // xor al, 1
+            pp.emit_OpN_Immediate(RAX, 1, X64Op::XOR, X64Bits::B8);
             pp.emit_Store64_Indirect(regOffset(ip->a.u32), RAX);
             break;
         case ByteCodeOp::NegS32:
@@ -3839,7 +3839,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
                 concat.addString3("\x0F\xBD\xC0"); // bsr eax, eax
                 pp.emit_Load32_Immediate(RCX, 15);
                 pp.emit_CMovN(RAX, RCX, X64Bits::B32, X64Op::CMOVE);
-                concat.addString3("\x83\xF0\x07"); // xor eax, 7
+                pp.emit_OpN_Immediate(RAX, 7, X64Op::XOR, X64Bits::B32);
                 pp.emit_Store8_Indirect(regOffset(ip->a.u32), RAX);
                 break;
             default:
@@ -3879,7 +3879,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
                 concat.addString4("\x66\x0F\xBD\xC0"); // bsr ax, ax
                 pp.emit_Load16_Immediate(RCX, 31);
                 pp.emit_CMovN(RAX, RCX, X64Bits::B16, X64Op::CMOVE);
-                concat.addString4("\x66\x83\xF0\x0F"); // xor ax, 15
+                pp.emit_OpN_Immediate(RAX, 15, X64Op::XOR, X64Bits::B16);
                 pp.emit_Store16_Indirect(regOffset(ip->a.u32), RAX);
                 break;
             case TokenId::IntrinsicByteSwap:
@@ -3924,7 +3924,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
                 concat.addString3("\x0F\xBD\xC0"); // bsr eax, eax
                 pp.emit_Load32_Immediate(RCX, 63);
                 pp.emit_CMovN(RAX, RCX, X64Bits::B32, X64Op::CMOVE);
-                concat.addString3("\x83\xF0\x1F"); // xor eax, 31
+                pp.emit_OpN_Immediate(RAX, 31, X64Op::XOR, X64Bits::B32);
                 pp.emit_Store32_Indirect(regOffset(ip->a.u32), RAX);
                 break;
             case TokenId::IntrinsicByteSwap:
@@ -3969,7 +3969,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
                 concat.addString4("\x48\x0F\xBD\xC0"); // bsr rax, rax
                 pp.emit_Load64_Immediate(RCX, 127);
                 pp.emit_CMovN(RAX, RCX, X64Bits::B64, X64Op::CMOVE);
-                concat.addString4("\x48\x83\xF0\x3F"); // xor rax, 63
+                pp.emit_OpN_Immediate(RAX, 63, X64Op::XOR, X64Bits::B64);
                 pp.emit_Store64_Indirect(regOffset(ip->a.u32), RAX);
                 break;
             case TokenId::IntrinsicByteSwap:
