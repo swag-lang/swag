@@ -444,29 +444,21 @@ bool ByteCodeGenJob::emitCompareOp3Way(ByteCodeGenContext* context, uint32_t r0,
         switch (typeInfo->nativeType)
         {
         case NativeTypeKind::S8:
-            EMIT_INST3(context, ByteCodeOp::CompareOp3WayS8, r0, r1, r2);
+        case NativeTypeKind::U8:
+            EMIT_INST3(context, ByteCodeOp::CompareOp3Way8, r0, r1, r2);
             return true;
         case NativeTypeKind::S16:
-            EMIT_INST3(context, ByteCodeOp::CompareOp3WayS16, r0, r1, r2);
+        case NativeTypeKind::U16:
+            EMIT_INST3(context, ByteCodeOp::CompareOp3Way16, r0, r1, r2);
             return true;
         case NativeTypeKind::S32:
-            EMIT_INST3(context, ByteCodeOp::CompareOp3WayS32, r0, r1, r2);
-            return true;
-        case NativeTypeKind::U8:
-            EMIT_INST3(context, ByteCodeOp::CompareOp3WayU8, r0, r1, r2);
-            return true;
-        case NativeTypeKind::U16:
-            EMIT_INST3(context, ByteCodeOp::CompareOp3WayU16, r0, r1, r2);
-            return true;
         case NativeTypeKind::U32:
         case NativeTypeKind::Rune:
-            EMIT_INST3(context, ByteCodeOp::CompareOp3WayU32, r0, r1, r2);
+            EMIT_INST3(context, ByteCodeOp::CompareOp3Way32, r0, r1, r2);
             return true;
         case NativeTypeKind::S64:
-            EMIT_INST3(context, ByteCodeOp::CompareOp3WayS64, r0, r1, r2);
-            return true;
         case NativeTypeKind::U64:
-            EMIT_INST3(context, ByteCodeOp::CompareOp3WayU64, r0, r1, r2);
+            EMIT_INST3(context, ByteCodeOp::CompareOp3Way64, r0, r1, r2);
             return true;
         case NativeTypeKind::F32:
             EMIT_INST3(context, ByteCodeOp::CompareOp3WayF32, r0, r1, r2);
@@ -480,7 +472,7 @@ bool ByteCodeGenJob::emitCompareOp3Way(ByteCodeGenContext* context, uint32_t r0,
     }
     else if (typeInfo->isPointer())
     {
-        EMIT_INST3(context, ByteCodeOp::CompareOp3WayU64, r0, r1, r2);
+        EMIT_INST3(context, ByteCodeOp::CompareOp3Way64, r0, r1, r2);
     }
     else
     {

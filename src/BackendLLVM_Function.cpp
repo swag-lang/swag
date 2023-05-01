@@ -3036,8 +3036,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
 
             /////////////////////////////////////
 
-        case ByteCodeOp::CompareOp3WayS8:
-        case ByteCodeOp::CompareOp3WayU8:
+        case ByteCodeOp::CompareOp3Way8:
         {
             auto         r0 = GEP64_PTR_I32(allocR, ip->c.u32);
             llvm::Value* r1 = MK_IMMA_8();
@@ -3050,8 +3049,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             break;
         }
 
-        case ByteCodeOp::CompareOp3WayS16:
-        case ByteCodeOp::CompareOp3WayU16:
+        case ByteCodeOp::CompareOp3Way16:
         {
             auto         r0 = GEP64_PTR_I32(allocR, ip->c.u32);
             llvm::Value* r1 = MK_IMMA_16();
@@ -3064,8 +3062,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             break;
         }
 
-        case ByteCodeOp::CompareOp3WayS32:
-        case ByteCodeOp::CompareOp3WayU32:
+        case ByteCodeOp::CompareOp3Way32:
         {
             auto         r0 = GEP64_PTR_I32(allocR, ip->c.u32);
             llvm::Value* r1 = MK_IMMA_32();
@@ -3078,8 +3075,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             break;
         }
 
-        case ByteCodeOp::CompareOp3WayU64:
-        case ByteCodeOp::CompareOp3WayS64:
+        case ByteCodeOp::CompareOp3Way64:
         {
             auto         r0 = GEP64_PTR_I32(allocR, ip->c.u32);
             llvm::Value* r1 = MK_IMMA_64();

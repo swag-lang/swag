@@ -2050,8 +2050,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
 
             /////////////////////////////////////
 
-        case ByteCodeOp::CompareOp3WayU8:
-        case ByteCodeOp::CompareOp3WayS8:
+        case ByteCodeOp::CompareOp3Way8:
             emitBinOpIntN(pp, ip, X64Op::SUB, X64Bits::B8);
             pp.emit_ClearN(RCX, X64Bits::B8);
             pp.emit_TestN(RAX, RAX, X64Bits::B8);
@@ -2061,8 +2060,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             pp.emit_OpN(RAX, RCX, X64Op::SUB, X64Bits::B32);
             pp.emit_Store32_Indirect(regOffset(ip->c.u32), RCX);
             break;
-        case ByteCodeOp::CompareOp3WayU16:
-        case ByteCodeOp::CompareOp3WayS16:
+        case ByteCodeOp::CompareOp3Way16:
             emitBinOpIntN(pp, ip, X64Op::SUB, X64Bits::B16);
             pp.emit_ClearN(RCX, X64Bits::B16);
             pp.emit_TestN(RAX, RAX, X64Bits::B16);
@@ -2072,8 +2070,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             pp.emit_OpN(RAX, RCX, X64Op::SUB, X64Bits::B32);
             pp.emit_Store32_Indirect(regOffset(ip->c.u32), RCX);
             break;
-        case ByteCodeOp::CompareOp3WayU32:
-        case ByteCodeOp::CompareOp3WayS32:
+        case ByteCodeOp::CompareOp3Way32:
             emitBinOpIntN(pp, ip, X64Op::SUB, X64Bits::B32);
             pp.emit_ClearN(RCX, X64Bits::B32);
             pp.emit_TestN(RAX, RAX, X64Bits::B32);
@@ -2082,8 +2079,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             pp.emit_OpN(RAX, RCX, X64Op::SUB, X64Bits::B32);
             pp.emit_Store32_Indirect(regOffset(ip->c.u32), RCX);
             break;
-        case ByteCodeOp::CompareOp3WayU64:
-        case ByteCodeOp::CompareOp3WayS64:
+        case ByteCodeOp::CompareOp3Way64:
             emitBinOpIntN(pp, ip, X64Op::SUB, X64Bits::B64);
             pp.emit_ClearN(RCX, X64Bits::B64);
             pp.emit_TestN(RAX, RAX, X64Bits::B64);

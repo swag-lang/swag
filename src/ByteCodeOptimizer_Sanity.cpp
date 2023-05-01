@@ -810,51 +810,47 @@ static bool optimizePassSanityStack(ByteCodeOptContext* context, Context& cxt)
             *ra = *rb;
             break;
 
-        case ByteCodeOp::CompareOp3WayS8:
-        case ByteCodeOp::CompareOp3WayU8:
+        case ByteCodeOp::CompareOp3Way8:
             SWAG_CHECK(getImmediateA(va, cxt, ip));
             SWAG_CHECK(getImmediateB(vb, cxt, ip));
             SWAG_CHECK(getRegister(rc, cxt, ip->c.u32));
             rc->kind = va.kind == ValueKind::Constant && vb.kind == ValueKind::Constant ? ValueKind::Constant : ValueKind::Unknown;
             if (rc->kind == ValueKind::Constant)
             {
-                auto sub    = va.reg.s8 - vb.reg.s8;
+                auto sub    = va.reg.u8 - vb.reg.u8;
                 rc->reg.s32 = (int32_t) ((sub > 0) - (sub < 0));
             }
             break;
-        case ByteCodeOp::CompareOp3WayS16:
-        case ByteCodeOp::CompareOp3WayU16:
+        case ByteCodeOp::CompareOp3Way16:
             SWAG_CHECK(getImmediateA(va, cxt, ip));
             SWAG_CHECK(getImmediateB(vb, cxt, ip));
             SWAG_CHECK(getRegister(rc, cxt, ip->c.u32));
             rc->kind = va.kind == ValueKind::Constant && vb.kind == ValueKind::Constant ? ValueKind::Constant : ValueKind::Unknown;
             if (rc->kind == ValueKind::Constant)
             {
-                auto sub    = va.reg.s16 - vb.reg.s16;
+                auto sub    = va.reg.u16 - vb.reg.u16;
                 rc->reg.s32 = (int32_t) ((sub > 0) - (sub < 0));
             }
             break;
-        case ByteCodeOp::CompareOp3WayS32:
-        case ByteCodeOp::CompareOp3WayU32:
+        case ByteCodeOp::CompareOp3Way32:
             SWAG_CHECK(getImmediateA(va, cxt, ip));
             SWAG_CHECK(getImmediateB(vb, cxt, ip));
             SWAG_CHECK(getRegister(rc, cxt, ip->c.u32));
             rc->kind = va.kind == ValueKind::Constant && vb.kind == ValueKind::Constant ? ValueKind::Constant : ValueKind::Unknown;
             if (rc->kind == ValueKind::Constant)
             {
-                auto sub    = va.reg.s32 - vb.reg.s32;
+                auto sub    = va.reg.u32 - vb.reg.u32;
                 rc->reg.s32 = (int32_t) ((sub > 0) - (sub < 0));
             }
             break;
-        case ByteCodeOp::CompareOp3WayS64:
-        case ByteCodeOp::CompareOp3WayU64:
+        case ByteCodeOp::CompareOp3Way64:
             SWAG_CHECK(getImmediateA(va, cxt, ip));
             SWAG_CHECK(getImmediateB(vb, cxt, ip));
             SWAG_CHECK(getRegister(rc, cxt, ip->c.u32));
             rc->kind = va.kind == ValueKind::Constant && vb.kind == ValueKind::Constant ? ValueKind::Constant : ValueKind::Unknown;
             if (rc->kind == ValueKind::Constant)
             {
-                auto sub    = va.reg.s64 - vb.reg.s64;
+                auto sub    = va.reg.u64 - vb.reg.u64;
                 rc->reg.s32 = (int32_t) ((sub > 0) - (sub < 0));
             }
             break;
