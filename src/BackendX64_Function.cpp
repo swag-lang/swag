@@ -2971,7 +2971,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
 
         case ByteCodeOp::Mul64byVB64:
             pp.emit_Load64_Indirect(regOffset(ip->a.u32), RAX);
-            pp.emit_Mul64_RAX(ip->b.u64);
+            pp.emit_OpN_Immediate(RAX, ip->b.u64, X64Op::IMUL, X64Bits::B64);
             pp.emit_Store64_Indirect(regOffset(ip->a.u32), RAX);
             break;
 

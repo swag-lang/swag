@@ -946,13 +946,13 @@ void X64Gen::emit_OpN(CPURegister regSrc, CPURegister regDst, X64Op instruction,
     emit_REX(numBits, regSrc, regDst);
     if (instruction == X64Op::DIV || instruction == X64Op::IDIV)
     {
-        SWAG_ASSERT(regSrc == RAX and regDst == RCX);
+        SWAG_ASSERT(regSrc == RAX && regDst == RCX);
         emit_Spec8(0xF7, numBits);
         concat.addU8((uint8_t) instruction);
     }
     else if (instruction == X64Op::MUL || instruction == X64Op::IMUL)
     {
-        SWAG_ASSERT(regSrc == RAX and regDst == RCX);
+        SWAG_ASSERT(regSrc == RAX && regDst == RCX);
         emit_Spec8(0xF7, numBits);
         concat.addU8(instruction == X64Op::IMUL ? 0xE9 : 0xE1);
     }
@@ -1034,46 +1034,90 @@ void X64Gen::emit_OpF64_Indirect(CPURegister reg, CPURegister memReg, X64Op inst
 void X64Gen::emit_OpN_Immediate(CPURegister reg, uint64_t value, X64Op instruction, X64Bits numBits)
 {
     SWAG_ASSERT(reg == RAX || reg == RCX);
-    SWAG_ASSERT(instruction == X64Op::ADD || instruction == X64Op::SUB);
+    SWAG_ASSERT(instruction == X64Op::ADD || instruction == X64Op::SUB || instruction == X64Op::IMUL);
     SWAG_ASSERT(numBits == X64Bits::B64);
 
     if (instruction == X64Op::ADD && value == 0)
         return;
     if (instruction == X64Op::SUB && value == 0)
         return;
-
-    if (instruction == X64Op::ADD && value == 1)
-    {
-        emit_REX(numBits);
-        concat.addU8(0xFF);
-        concat.addU8(0xC0 | reg); // inc rax
+    if (instruction == X64Op::MUL && value == 1)
         return;
-    }
 
-    if (instruction == X64Op::SUB && value == 1)
+    switch (instruction)
     {
-        emit_REX(numBits);
-        concat.addU8(0xFF);
-        concat.addU8(0xC8 | reg); // dec rax
-        return;
+    case X64Op::ADD:
+        if (value == 1)
+        {
+            emit_REX(numBits);
+            concat.addU8(0xFF);
+            concat.addU8(0xC0 | reg); // inc rax
+            return;
+        }
+        break;
+    case X64Op::SUB:
+        if (value == 1)
+        {
+            emit_REX(numBits);
+            concat.addU8(0xFF);
+            concat.addU8(0xC8 | reg); // dec rax
+            return;
+        }
+        break;
+    case X64Op::MUL:
+        if (value == 0)
+        {
+            emit_ClearN(reg, numBits);
+            return;
+        }
+        if (value == 2)
+        {
+            emit_REX(numBits);
+            concat.addU8(0xD1);
+            concat.addU8(0xE0 | reg); // shl rax, 1
+            return;
+        }
+        if (isPowerOfTwo(value))
+        {
+            emit_REX(numBits);
+            concat.addU8(0xC1);
+            concat.addU8(0xE0 | reg); // shl rax, ??
+            concat.addU8((uint8_t) log2(value));
+        }
+        break;
     }
 
     if (value > 0x7FFFFFFF)
     {
-        emit_Load64_Immediate(R8, value);
-        emit_OpN(R8, reg, instruction, numBits);
+        if (instruction == X64Op::IMUL)
+        {
+            SWAG_ASSERT(reg == RAX);
+            emit_Load64_Immediate(RCX, value);
+            emit_OpN(RCX, reg, instruction, numBits);
+        }
+        else
+        {
+            emit_Load64_Immediate(R8, value);
+            emit_OpN(R8, reg, instruction, numBits);
+        }
     }
     else if (value <= 0x7F)
     {
         emit_REX(numBits);
-        concat.addU8(0x83);
         switch (instruction)
         {
         case X64Op::ADD:
+            concat.addU8(0x83);
             concat.addU8(0xC0 | reg);
             break;
         case X64Op::SUB:
+            concat.addU8(0x83);
             concat.addU8(0xE8 | reg);
+            break;
+        case X64Op::IMUL:
+            SWAG_ASSERT(reg == RAX);
+            concat.addU8(0x6B);
+            concat.addU8(0xC0);
             break;
         default:
             SWAG_ASSERT(false);
@@ -1098,43 +1142,18 @@ void X64Gen::emit_OpN_Immediate(CPURegister reg, uint64_t value, X64Op instructi
             else
                 concat.addString2("\x81\xE9");
             break;
+        case X64Op::IMUL:
+            SWAG_ASSERT(reg == RAX);
+            concat.addU8(0x69);
+            concat.addU8(0xC0);
+            concat.addU32((uint32_t) value);
+            break;
         default:
             SWAG_ASSERT(false);
             break;
         }
 
         concat.addU32((uint32_t) value);
-    }
-}
-
-void X64Gen::emit_Mul64_RAX(uint64_t value)
-{
-    if (value == 1)
-        return;
-
-    if (value == 2)
-    {
-        concat.addString3("\x48\xD1\xE0"); // shl rax, 1
-    }
-    else if (isPowerOfTwo(value))
-    {
-        concat.addString3("\x48\xC1\xE0"); // shl rax, ??
-        concat.addU8((uint8_t) log2(value));
-    }
-    else if (value <= 0x7F)
-    {
-        concat.addString3("\x48\x6B\xC0"); // imul rax, ??
-        concat.addU8((uint8_t) value);
-    }
-    else if (value <= 0x7FFFFFFF)
-    {
-        concat.addString3("\x48\x69\xC0"); // imul rax, ????????
-        concat.addU32((uint32_t) value);
-    }
-    else
-    {
-        emit_Load64_Immediate(RCX, value);
-        concat.addString4("\x48\x0F\xAF\xC1"); // imul rax, rcx
     }
 }
 
@@ -1538,7 +1557,7 @@ void X64Gen::emit_Call_Parameters(TypeInfoFuncAttr* typeFuncBC, VectorNative<X64
                     break;
                 case X64PushParamType::RegMul:
                     emit_Load64_Indirect(regOffset(reg), RAX);
-                    emit_Mul64_RAX(paramsRegisters[i].val);
+                    emit_OpN_Immediate(RAX, paramsRegisters[i].val, X64Op::IMUL, X64Bits::B64);
                     emit_CopyN(cc.paramByRegisterInteger[i], RAX, X64Bits::B64);
                     break;
                 case X64PushParamType::GlobalString:
