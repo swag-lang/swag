@@ -437,10 +437,7 @@ struct X64Gen
     void emit_Add64_RCX(uint64_t value);
     void emit_ClearN(CPURegister reg, X64Bits numBits);
     void emit_ClearX(uint32_t count, uint32_t offset, CPURegister reg);
-    void emit_Cmp8(CPURegister reg1, CPURegister reg2);
-    void emit_Cmp16(CPURegister reg1, CPURegister reg2);
-    void emit_Cmp32(CPURegister reg1, CPURegister reg2);
-    void emit_Cmp64(CPURegister reg1, CPURegister reg2);
+    void emit_CmpN(CPURegister regSrc, CPURegister regDst, X64Bits numBits);
     void emit_Cmp8_Indirect(uint32_t offsetStack, CPURegister reg, CPURegister memReg);
     void emit_Cmp16_Indirect(uint32_t offsetStack, CPURegister reg, CPURegister memReg);
     void emit_Cmp32_Indirect(uint32_t offsetStack, CPURegister reg, CPURegister memReg);

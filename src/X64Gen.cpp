@@ -839,33 +839,11 @@ void X64Gen::emit_TestN(CPURegister reg1, CPURegister reg2, X64Bits numBits)
     concat.addU8(getModRM(REGREG, reg2, reg1));
 }
 
-void X64Gen::emit_Cmp8(CPURegister reg1, CPURegister reg2)
+void X64Gen::emit_CmpN(CPURegister regSrc, CPURegister regDst, X64Bits numBits)
 {
-    SWAG_ASSERT(reg1 < R8 && reg2 < R8);
-    concat.addU8(0x38);
-    concat.addU8(getModRM(REGREG, reg2, reg1));
-}
-
-void X64Gen::emit_Cmp16(CPURegister reg1, CPURegister reg2)
-{
-    SWAG_ASSERT(reg1 < R8 && reg2 < R8);
-    concat.addU8(0x66);
-    concat.addU8(0x39);
-    concat.addU8(getModRM(REGREG, reg2, reg1));
-}
-
-void X64Gen::emit_Cmp32(CPURegister reg1, CPURegister reg2)
-{
-    SWAG_ASSERT(reg1 < R8 && reg2 < R8);
-    concat.addU8(0x39);
-    concat.addU8(getModRM(REGREG, reg2, reg1));
-}
-
-void X64Gen::emit_Cmp64(CPURegister reg1, CPURegister reg2)
-{
-    concat.addU8(getREX(true, reg2 >= R8, false, reg1 >= R8));
-    concat.addU8(0x39);
-    concat.addU8(getModRM(REGREG, reg2, reg1));
+    emit_REX(numBits, regDst, regSrc);
+    emit_Spec8(0x39, numBits);
+    concat.addU8(getModRM(REGREG, regDst, regSrc));
 }
 
 void X64Gen::emit_CmpN_Immediate(CPURegister reg, const Register& value, X64Bits numBits)
@@ -889,18 +867,7 @@ void X64Gen::emit_CmpN_Immediate(CPURegister reg, const Register& value, X64Bits
     {
         SWAG_ASSERT(reg == RAX);
         emit_LoadN_Immediate(RCX, value, numBits);
-        switch (numBits)
-        {
-        case X64Bits::B32:
-            emit_Cmp32(reg, RCX);
-            break;
-        case X64Bits::B64:
-            emit_Cmp64(reg, RCX);
-            break;
-        default:
-            SWAG_ASSERT(false);
-            break;
-        }
+        emit_CmpN(reg, RCX, numBits);
     }
 }
 

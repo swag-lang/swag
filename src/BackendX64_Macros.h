@@ -201,7 +201,7 @@
     {                                                             \
         MK_IMMA_8(RAX);                                           \
         MK_IMMB_8(RCX);                                           \
-        pp.__op(RAX, RCX);                                        \
+        pp.__op(RAX, RCX, X64Bits::B8);                           \
     }
 
 #define MK_BINOP16_CAB(__opInd, __op)                             \
@@ -219,7 +219,7 @@
     {                                                             \
         MK_IMMA_16(RAX);                                          \
         MK_IMMB_16(RCX);                                          \
-        pp.__op(RAX, RCX);                                        \
+        pp.__op(RAX, RCX, X64Bits::B16);                          \
     }
 
 #define MK_BINOP32_CAB(__opIndDst, __opInd, __op)                 \
@@ -241,7 +241,7 @@
     {                                                             \
         MK_IMMA_32(RAX);                                          \
         MK_IMMB_32(RCX);                                          \
-        pp.__op(RAX, RCX);                                        \
+        pp.__op(RAX, RCX, X64Bits::B32);                          \
     }
 
 #define MK_BINOP64_CAB(__opIndDst, __opInd, __op)                                            \
@@ -263,7 +263,7 @@
     {                                                                                        \
         MK_IMMA_64(RAX);                                                                     \
         MK_IMMB_64(RCX);                                                                     \
-        pp.__op(RAX, RCX);                                                                   \
+        pp.__op(RAX, RCX, X64Bits::B64);                                                     \
     }
 
 #define MK_BINOPF32_CAB(__opInd, __op)                            \
@@ -578,7 +578,7 @@
     {                                                             \
         MK_IMMA_8(RAX);                                           \
         MK_IMMC_8(RCX);                                           \
-        pp.emit_Cmp8(RAX, RCX);                                   \
+        pp.emit_CmpN(RAX, RCX, X64Bits::B8);                      \
     }                                                             \
     pp.emit_Jump(__op, i, ip->b.s32);
 
@@ -596,7 +596,7 @@
     {                                                               \
         MK_IMMA_16(RAX);                                            \
         MK_IMMC_16(RCX);                                            \
-        pp.emit_Cmp16(RAX, RCX);                                    \
+        pp.emit_CmpN(RAX, RCX, X64Bits::B16);                       \
     }                                                               \
     pp.emit_Jump(__op, i, ip->b.s32);
 
@@ -614,7 +614,7 @@
     {                                                               \
         MK_IMMA_32(RAX);                                            \
         MK_IMMC_32(RCX);                                            \
-        pp.emit_Cmp32(RAX, RCX);                                    \
+        pp.emit_CmpN(RAX, RCX, X64Bits::B32);                       \
     }                                                               \
     pp.emit_Jump(__op, i, ip->b.s32);
 
@@ -632,7 +632,7 @@
     {                                                                                        \
         MK_IMMA_64(RAX);                                                                     \
         MK_IMMC_64(RCX);                                                                     \
-        pp.emit_Cmp64(RAX, RCX);                                                             \
+        pp.emit_CmpN(RAX, RCX, X64Bits::B64);                                                \
     }                                                                                        \
     pp.emit_Jump(__op, i, ip->b.s32);
 
