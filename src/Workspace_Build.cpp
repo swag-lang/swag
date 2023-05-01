@@ -938,6 +938,12 @@ bool Workspace::build()
                 g_Log.messageHeaderCentered("Workspace", Fmt("%s [%s]", workspacePath.filename().string().c_str(), targetFullName.c_str()));
             }
         }
+        else
+        {
+            auto targetFullName = g_Workspace->getTargetFullName(g_CommandLine.buildCfg, g_CommandLine.target);
+            Path p              = g_CommandLine.scriptName;
+            g_Log.messageHeaderCentered("Script", Fmt("%s [%s]", p.filename().string().c_str(), targetFullName.c_str()));
+        }
 
         addBootstrap();
         addRuntime();

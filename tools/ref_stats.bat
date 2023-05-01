@@ -1,1 +1,0 @@
-..\bin\swag_stats test -w:../bin/reference --backend:x64 --rebuild %1 %2 %3 %4
