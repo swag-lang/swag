@@ -224,10 +224,9 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
 
         case ByteCodeOp::MulAddVC64:
             pp.emit_Load64_Indirect(regOffset(ip->b.u32), RCX);
-            concat.addString3("\x48\x83\xc1"); // add rcx, ??
-            concat.addU8(ip->c.u8);
+            pp.emit_OpN_Immediate(RCX, ip->c.u8, X64Op::ADD, X64Bits::B64);
             pp.emit_Load64_Indirect(regOffset(ip->a.u32), RAX);
-            concat.addString3("\x48\xf7\xe1"); // mul rax, rcx
+            pp.emit_OpN(RAX, RCX, X64Op::MUL, X64Bits::B64);
             pp.emit_Store64_Indirect(regOffset(ip->a.u32), RAX);
             break;
 
