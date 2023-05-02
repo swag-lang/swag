@@ -612,7 +612,7 @@ void X64Gen::emit_Load64_Immediate(CPURegister reg, uint64_t value, bool force64
 {
     if (force64bits)
     {
-        concat.addU8(getREX(true, false, false, reg >= R8));
+        emit_REX(X64Bits::B64, RAX, reg);
         concat.addU8(0xB8 | reg);
         concat.addU64(value);
         return;
@@ -630,7 +630,7 @@ void X64Gen::emit_Load64_Immediate(CPURegister reg, uint64_t value, bool force64
         return;
     }
 
-    concat.addU8(getREX(true, false, false, reg >= R8));
+    emit_REX(X64Bits::B64, RAX, reg);
     if (value <= 0x7FFFFFFF)
     {
         concat.addU8(0xC7);
