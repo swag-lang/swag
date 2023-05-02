@@ -562,6 +562,8 @@ void BackendX64::emitBinOpDivIntNAtReg(X64Gen& pp, ByteCodeInstruction* ip, bool
 
 void BackendX64::emitAddSubMul64(X64Gen& pp, ByteCodeInstruction* ip, uint64_t mul, X64Op op)
 {
+    SWAG_ASSERT(op == X64Op::ADD || op == X64Op::SUB);
+
     auto val = ip->b.u64 * mul;
     if (ip->flags & BCI_IMM_B && val <= 0x7FFFFFFF && ip->a.u32 == ip->c.u32)
     {
@@ -592,16 +594,7 @@ void BackendX64::emitAddSubMul64(X64Gen& pp, ByteCodeInstruction* ip, uint64_t m
         else
         {
             pp.emit_Load64_Indirect(regOffset(ip->b.u32), RAX);
-            if (mul != 1 && isPowerOfTwo(mul))
-            {
-                pp.concat.addString3("\x48\xC1\xE0"); // shl rax, ?
-                pp.concat.addU8((uint8_t) log2(mul));
-            }
-            else if (mul != 1)
-            {
-                pp.emit_Load64_Immediate(RCX, mul);
-                pp.concat.addString3("\x48\xF7\xE1"); // mul rcx
-            }
+            pp.emit_OpN_Immediate(RAX, mul, X64Op::IMUL, X64Bits::B64);
         }
 
         if (ip->a.u32 == ip->c.u32)
