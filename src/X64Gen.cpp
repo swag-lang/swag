@@ -243,9 +243,7 @@ void X64Gen::emit_Ret()
 
 void X64Gen::emit_LoadS8S16_Indirect(uint32_t stackOffset, CPURegister reg, CPURegister memReg)
 {
-    concat.addU8(0x66);
-    if (reg >= R8 || memReg >= R8)
-        concat.addU8(getREX(false, reg >= R8, false, memReg >= R8));
+    emit_REX(X64Bits::B16, reg, memReg);
     concat.addU8(0x0F);
     concat.addU8(0xBE);
     emit_ModRM(stackOffset, reg, memReg);
@@ -253,8 +251,7 @@ void X64Gen::emit_LoadS8S16_Indirect(uint32_t stackOffset, CPURegister reg, CPUR
 
 void X64Gen::emit_LoadS8S32_Indirect(uint32_t stackOffset, CPURegister reg, CPURegister memReg)
 {
-    if (reg >= R8 || memReg >= R8)
-        concat.addU8(getREX(false, reg >= R8, false, memReg >= R8));
+    emit_REX(X64Bits::B32, reg, memReg);
     concat.addU8(0x0F);
     concat.addU8(0xBE);
     emit_ModRM(stackOffset, reg, memReg);
@@ -262,8 +259,7 @@ void X64Gen::emit_LoadS8S32_Indirect(uint32_t stackOffset, CPURegister reg, CPUR
 
 void X64Gen::emit_LoadS16S32_Indirect(uint32_t stackOffset, CPURegister reg, CPURegister memReg)
 {
-    if (reg >= R8 || memReg >= R8)
-        concat.addU8(getREX(false, reg >= R8, false, memReg >= R8));
+    emit_REX(X64Bits::B32, reg, memReg);
     concat.addU8(0x0F);
     concat.addU8(0xBF);
     emit_ModRM(stackOffset, reg, memReg);
@@ -271,7 +267,7 @@ void X64Gen::emit_LoadS16S32_Indirect(uint32_t stackOffset, CPURegister reg, CPU
 
 void X64Gen::emit_LoadS8S64_Indirect(uint32_t stackOffset, CPURegister reg, CPURegister memReg)
 {
-    concat.addU8(getREX(true, reg >= R8, false, memReg >= R8));
+    emit_REX(X64Bits::B64, reg, memReg);
     concat.addU8(0x0F);
     concat.addU8(0xBE);
     emit_ModRM(stackOffset, reg, memReg);
@@ -279,7 +275,7 @@ void X64Gen::emit_LoadS8S64_Indirect(uint32_t stackOffset, CPURegister reg, CPUR
 
 void X64Gen::emit_LoadS16S64_Indirect(uint32_t stackOffset, CPURegister reg, CPURegister memReg)
 {
-    concat.addU8(getREX(true, reg >= R8, false, memReg >= R8));
+    emit_REX(X64Bits::B64, reg, memReg);
     concat.addU8(0x0F);
     concat.addU8(0xBF);
     emit_ModRM(stackOffset, reg, memReg);
@@ -287,15 +283,14 @@ void X64Gen::emit_LoadS16S64_Indirect(uint32_t stackOffset, CPURegister reg, CPU
 
 void X64Gen::emit_LoadS32S64_Indirect(uint32_t stackOffset, CPURegister reg, CPURegister memReg)
 {
-    concat.addU8(getREX(true, reg >= R8, false, memReg >= R8));
+    emit_REX(X64Bits::B64, reg, memReg);
     concat.addU8(0x63);
     emit_ModRM(stackOffset, reg, memReg);
 }
 
 void X64Gen::emit_LoadU8U32_Indirect(uint32_t stackOffset, CPURegister reg, CPURegister memReg)
 {
-    if (reg >= R8 || memReg >= R8)
-        concat.addU8(getREX(false, reg >= R8, false, memReg >= R8));
+    emit_REX(X64Bits::B32, reg, memReg);
     concat.addU8(0x0F);
     concat.addU8(0xB6);
     emit_ModRM(stackOffset, reg, memReg);
@@ -303,8 +298,7 @@ void X64Gen::emit_LoadU8U32_Indirect(uint32_t stackOffset, CPURegister reg, CPUR
 
 void X64Gen::emit_LoadU16U32_Indirect(uint32_t stackOffset, CPURegister reg, CPURegister memReg)
 {
-    if (reg >= R8 || memReg >= R8)
-        concat.addU8(getREX(false, reg >= R8, false, memReg >= R8));
+    emit_REX(X64Bits::B32, reg, memReg);
     concat.addU8(0x0F);
     concat.addU8(0xB7);
     emit_ModRM(stackOffset, reg, memReg);
@@ -312,7 +306,7 @@ void X64Gen::emit_LoadU16U32_Indirect(uint32_t stackOffset, CPURegister reg, CPU
 
 void X64Gen::emit_LoadU8U64_Indirect(uint32_t stackOffset, CPURegister reg, CPURegister memReg)
 {
-    concat.addU8(getREX(true, reg >= R8, false, memReg >= R8));
+    emit_REX(X64Bits::B64, reg, memReg);
     concat.addU8(0x0F);
     concat.addU8(0xB6);
     emit_ModRM(stackOffset, reg, memReg);
@@ -320,7 +314,7 @@ void X64Gen::emit_LoadU8U64_Indirect(uint32_t stackOffset, CPURegister reg, CPUR
 
 void X64Gen::emit_LoadU16U64_Indirect(uint32_t stackOffset, CPURegister reg, CPURegister memReg)
 {
-    concat.addU8(getREX(true, reg >= R8, false, memReg >= R8));
+    emit_REX(X64Bits::B64, reg, memReg);
     concat.addU8(0x0F);
     concat.addU8(0xB7);
     emit_ModRM(stackOffset, reg, memReg);
@@ -339,7 +333,7 @@ void X64Gen::emit_Load8_Indirect(uint32_t stackOffset, CPURegister reg, CPURegis
         return;
     }
 
-    concat.addU8(getREX(false, reg >= R8, false, memReg >= R8));
+    emit_REX(X64Bits::B8, reg, memReg);
     concat.addU8(0x8A);
     emit_ModRM(stackOffset, reg, memReg);
 }
@@ -355,8 +349,7 @@ void X64Gen::emit_Load16_Indirect(uint32_t stackOffset, CPURegister reg, CPURegi
         return;
     }
 
-    concat.addU8(0x66);
-    concat.addU8(getREX(false, reg >= R8, false, memReg >= R8));
+    emit_REX(X64Bits::B16, reg, memReg);
     concat.addU8(0x8B);
     emit_ModRM(stackOffset, reg, memReg);
 }
@@ -374,7 +367,7 @@ void X64Gen::emit_Load32_Indirect(uint32_t stackOffset, CPURegister reg, CPURegi
         return;
     }
 
-    concat.addU8(getREX(false, reg >= R8, false, memReg >= R8));
+    emit_REX(X64Bits::B32, reg, memReg);
     concat.addU8(0x8B);
     emit_ModRM(stackOffset, reg, memReg);
 }
@@ -390,7 +383,7 @@ void X64Gen::emit_Load64_Indirect(uint32_t stackOffset, CPURegister reg, CPURegi
         return;
     }
 
-    concat.addU8(getREX(true, reg >= R8, false, memReg >= R8));
+    emit_REX(X64Bits::B64, reg, memReg);
     concat.addU8(0x8B);
     emit_ModRM(stackOffset, reg, memReg);
 }
@@ -443,7 +436,7 @@ void X64Gen::emit_LoadAddress_Indirect(uint32_t stackOffset, CPURegister reg, CP
         emit_CopyN(reg, memReg, X64Bits::B64);
     else
     {
-        concat.addU8(getREX(true, reg >= R8, false, memReg >= R8));
+        emit_REX(X64Bits::B64, reg, memReg);
         concat.addU8(0x8D);
         emit_ModRM(stackOffset, reg, memReg);
     }
@@ -453,7 +446,7 @@ void X64Gen::emit_LoadAddress_Indirect(uint32_t stackOffset, CPURegister reg, CP
 
 void X64Gen::emit_Store8_Indirect(uint32_t stackOffset, CPURegister reg, CPURegister memReg)
 {
-    SWAG_ASSERT(reg < R8 && memReg < R8);
+    emit_REX(X64Bits::B8, reg, memReg);
     concat.addU8(0x88);
     emit_ModRM(stackOffset, reg, memReg);
 
@@ -466,8 +459,7 @@ void X64Gen::emit_Store8_Indirect(uint32_t stackOffset, CPURegister reg, CPURegi
 
 void X64Gen::emit_Store16_Indirect(uint32_t stackOffset, CPURegister reg, CPURegister memReg)
 {
-    SWAG_ASSERT(reg < R8 && memReg < R8);
-    concat.addU8(0x66);
+    emit_REX(X64Bits::B16, reg, memReg);
     concat.addU8(0x89);
     emit_ModRM(stackOffset, reg, memReg);
 
@@ -480,7 +472,7 @@ void X64Gen::emit_Store16_Indirect(uint32_t stackOffset, CPURegister reg, CPUReg
 
 void X64Gen::emit_Store32_Indirect(uint32_t stackOffset, CPURegister reg, CPURegister memReg)
 {
-    SWAG_ASSERT(reg < R8 && memReg < R8);
+    emit_REX(X64Bits::B32, reg, memReg);
     concat.addU8(0x89);
     emit_ModRM(stackOffset, reg, memReg);
 
@@ -493,7 +485,7 @@ void X64Gen::emit_Store32_Indirect(uint32_t stackOffset, CPURegister reg, CPUReg
 
 void X64Gen::emit_Store64_Indirect(uint32_t stackOffset, CPURegister reg, CPURegister memReg)
 {
-    concat.addU8(getREX(true, reg >= R8, false, memReg >= R8));
+    emit_REX(X64Bits::B64, reg, memReg);
     concat.addU8(0x89);
     emit_ModRM(stackOffset, reg, memReg);
 
