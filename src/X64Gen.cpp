@@ -1169,19 +1169,17 @@ void X64Gen::emit_OpN_Immediate(CPURegister reg, uint64_t value, X64Op op, X64Bi
 
 void X64Gen::emit_OpN_IndirectDst(uint32_t offsetStack, uint64_t value, CPURegister memReg, X64Op op, X64Bits numBits)
 {
-    SWAG_ASSERT(numBits == X64Bits::B32 || numBits == X64Bits::B64);
-    SWAG_ASSERT(op == X64Op::ADD || op == X64Op::SUB);
     SWAG_ASSERT(memReg == RAX || memReg == RDI);
 
     if (value > 0x7FFFFFFF)
     {
-        emit_Load64_Immediate(RCX, value);
+        emit_LoadN_Immediate(RCX, value, numBits);
         emit_OpN_Indirect(offsetStack, RCX, memReg, op, numBits);
         return;
     }
 
     emit_REX(numBits);
-    if (value <= 0x7F)
+    if (value <= 0x7F || numBits == X64Bits::B8)
         concat.addU8(0x83);
     else
         concat.addU8(0x81);
@@ -1199,8 +1197,11 @@ void X64Gen::emit_OpN_IndirectDst(uint32_t offsetStack, uint64_t value, CPURegis
         concat.addU8(0x7F + memReg + (uint8_t) op);
         concat.addU32(offsetStack);
     }
-    if (value <= 0x7F)
+
+    if (value <= 0x7F || numBits == X64Bits::B8)
         concat.addU8((uint8_t) value);
+    else if (numBits == X64Bits::B16)
+        concat.addU16((uint16_t) value);
     else
         concat.addU32((uint32_t) value);
 }
