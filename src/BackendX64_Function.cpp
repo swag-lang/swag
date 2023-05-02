@@ -231,36 +231,10 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             break;
 
         case ByteCodeOp::Add32byVB32:
-            pp.emit_LoadAddress_Indirect(regOffset(ip->a.u32), RAX, RDI);
-            if (ip->b.u32 <= 0x7F)
-            {
-                concat.addString2("\x83\x00"); // add [rax], ??
-                concat.addU8(ip->b.u8);
-            }
-            else
-            {
-                concat.addString2("\x81\x00"); // add [rax], ??????
-                concat.addU32(ip->b.u32);
-            }
+            pp.emit_OpN_IndirectDst(regOffset(ip->a.u32), ip->b.u64, RDI, X64Op::ADD, X64Bits::B32);
             break;
         case ByteCodeOp::Add64byVB64:
-            pp.emit_LoadAddress_Indirect(regOffset(ip->a.u32), RAX, RDI);
-
-            if (ip->b.u64 <= 0x7F) // add [rax], ??
-            {
-                concat.addString3("\x48\x83\x00");
-                concat.addU8(ip->b.u8);
-            }
-            else if (ip->b.u64 <= 0x7FFFFFFF) // add [rax], ????????
-            {
-                concat.addString3("\x48\x81\x00");
-                concat.addU32(ip->b.u32);
-            }
-            else
-            {
-                pp.emit_Load64_Immediate(RCX, ip->b.u64);
-                concat.addString3("\x48\x01\x08"); // add [rax], rcx
-            }
+            pp.emit_OpN_IndirectDst(regOffset(ip->a.u32), ip->b.u64, RDI, X64Op::ADD, X64Bits::B64);
             break;
 
             /////////////////////////////////////
