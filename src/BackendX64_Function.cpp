@@ -245,6 +245,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             break;
         case ByteCodeOp::Add64byVB64:
             pp.emit_LoadAddress_Indirect(regOffset(ip->a.u32), RAX, RDI);
+
             if (ip->b.u64 <= 0x7F) // add [rax], ??
             {
                 concat.addString3("\x48\x83\x00");
