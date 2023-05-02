@@ -1204,8 +1204,7 @@ void X64Gen::emit_OpN_IndirectDst(uint32_t offsetStack, uint64_t value, CPURegis
 
 void X64Gen::emit_Extend_U8U64(CPURegister regSrc, CPURegister regDst)
 {
-    // movzx regDst.64, regSrc.8
-    concat.addU8(getREX(true, regDst >= R8, false, regSrc >= R8));
+    emit_REX(X64Bits::B64, regDst, regSrc);
     concat.addU8(0x0F);
     concat.addU8(0xB6);
     concat.addU8(getModRM(REGREG, regDst, regSrc));
@@ -1213,8 +1212,7 @@ void X64Gen::emit_Extend_U8U64(CPURegister regSrc, CPURegister regDst)
 
 void X64Gen::emit_Extend_U16U64(CPURegister regSrc, CPURegister regDst)
 {
-    // movzx regDst.64, regSrc.16
-    concat.addU8(getREX(true, regDst >= R8, false, regSrc >= R8));
+    emit_REX(X64Bits::B64, regDst, regSrc);
     concat.addU8(0x0F);
     concat.addU8(0xB7);
     concat.addU8(getModRM(REGREG, regDst, regSrc));
