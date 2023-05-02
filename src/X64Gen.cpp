@@ -1179,7 +1179,9 @@ void X64Gen::emit_OpN_IndirectDst(uint32_t offsetStack, uint64_t value, CPURegis
     }
 
     emit_REX(numBits);
-    if (value <= 0x7F || numBits == X64Bits::B8)
+    if (numBits == X64Bits::B8)
+        concat.addU8(0x80);
+    else if (value <= 0x7F)
         concat.addU8(0x83);
     else
         concat.addU8(0x81);
