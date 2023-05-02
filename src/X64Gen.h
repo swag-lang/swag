@@ -511,6 +511,7 @@ struct X64Gen
     void emit_OpF64_Indirect(CPURegister reg, CPURegister memReg, X64Op op);
 
     void emit_OpN_Immediate(CPURegister reg, uint64_t value, X64Op op, X64Bits numBits);
+    void emit_OpN_IndirectDst(uint32_t offsetStack, uint32_t value, CPURegister memReg, X64Op op, X64Bits numBits);
 
     void emit_SetA(CPURegister reg = RAX);
     void emit_SetAE(CPURegister reg = RAX);

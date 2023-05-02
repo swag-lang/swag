@@ -1167,6 +1167,33 @@ void X64Gen::emit_OpN_Immediate(CPURegister reg, uint64_t value, X64Op op, X64Bi
     }
 }
 
+void X64Gen::emit_OpN_IndirectDst(uint32_t offsetStack, uint32_t value, CPURegister memReg, X64Op op, X64Bits numBits)
+{
+    SWAG_ASSERT(numBits == X64Bits::B64);
+    SWAG_ASSERT(op == X64Op::ADD || op == X64Op::SUB);
+    SWAG_ASSERT(memReg == RDI);
+
+    emit_REX(numBits);
+    if (value <= 0x7F)
+        concat.addU8(0x83);
+    else
+        concat.addU8(0x81);
+    if (offsetStack <= 0x7F)
+    {
+        concat.addU8(0x46 + (uint8_t) op);
+        concat.addU8((uint8_t) offsetStack);
+    }
+    else
+    {
+        concat.addU8(0x86 + (uint8_t) op);
+        concat.addU32(offsetStack);
+    }
+    if (value <= 0x7F)
+        concat.addU8((uint8_t) value);
+    else
+        concat.addU32(value);
+}
+
 /////////////////////////////////////////////////////////////////////
 
 void X64Gen::emit_Extend_U8U64(CPURegister regSrc, CPURegister regDst)
