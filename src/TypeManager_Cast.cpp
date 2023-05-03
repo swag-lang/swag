@@ -3411,11 +3411,11 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, Ty
         fromType = TypeManager::concreteType(fromType, CONCRETE_ENUM);
     }
 
-    // Transform typealias to related type again, because an enum can have a type alias as an underlying type
-    if (toType->isAlias())
-        toType = TypeManager::concreteType(toType, CONCRETE_ALIAS | (castFlags & CASTFLAG_EXPLICIT ? CONCRETE_FORCEALIAS : 0));
-    if (fromType->isAlias())
-        fromType = TypeManager::concreteType(fromType, CONCRETE_ALIAS | (castFlags & CASTFLAG_EXPLICIT ? CONCRETE_FORCEALIAS : 0));
+    // Transform typealias to related type
+    fromType = TypeManager::concreteType(fromType, (castFlags & CASTFLAG_EXPLICIT) ? CONCRETE_FORCEALIAS : CONCRETE_ALIAS);
+    toType   = TypeManager::concreteType(toType, (castFlags & CASTFLAG_EXPLICIT) ? CONCRETE_FORCEALIAS : CONCRETE_ALIAS);
+    if (fromType->isListTuple() || fromType->isListArray())
+        toType = TypeManager::concreteType(toType, CONCRETE_FORCEALIAS);
 
     if (fromType == toType)
         return true;
