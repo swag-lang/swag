@@ -914,6 +914,15 @@ bool ByteCodeGenJob::emitCast(ByteCodeGenContext* context, AstNode* exprNode, Ty
         return true;
     }
 
+    // Pass through
+    if (typeInfo->isStruct())
+    {
+        node->resultRegisterRC   = exprNode->resultRegisterRC;
+        exprNode->typeInfo       = typeInfo;
+        exprNode->castedTypeInfo = nullptr;
+        return true;
+    }
+
     if (!typeInfo->isNative())
         return Report::internalError(context->node, "emitCast, cast type not native");
 
