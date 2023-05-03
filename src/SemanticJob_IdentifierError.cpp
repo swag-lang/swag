@@ -86,6 +86,14 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
     Utf8 refNiceName = "the ";
     refNiceName += Naming::kindName(overload);
 
+    // :SilentCall
+    if (node->token.text.empty())
+    {
+        auto arrNode = node->parent->childs[node->childParentIdx() - 1];
+        if (arrNode->kind == AstNodeKind::ArrayPointerIndex)
+            node = arrNode;
+    }
+
     // Get parameters of destination symbol
     AstFuncDecl* destFuncDecl = nullptr;
     if (overload->node->kind == AstNodeKind::FuncDecl)
@@ -233,12 +241,15 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
     case MatchResult::NotEnoughParameters:
     {
         if (!callParameters)
-        {
-            diag       = new Diagnostic{node, Fmt(Err(Err0020), refNiceName.c_str())};
-            diag->hint = Hnt(Hnt0044);
-        }
+            diag = new Diagnostic{node, Fmt(Err(Err0020), refNiceName.c_str())};
         else
             diag = new Diagnostic{callParameters, Fmt(Err(Err0016), refNiceName.c_str())};
+
+        if (!callParameters)
+            diag->hint = Hnt(Hnt0044);
+        else if (!overload->typeInfo->isFuncAttr())
+            diag->addRange(node, Diagnostic::isType(overload->typeInfo));
+
         result0.push_back(diag);
 
         auto note = Diagnostic::hereIs(overload);

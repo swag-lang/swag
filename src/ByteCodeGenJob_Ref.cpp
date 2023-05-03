@@ -379,12 +379,14 @@ bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
             EMIT_INST3(context, ByteCodeOp::IncPointer64, node->array->resultRegisterRC, node->access->resultRegisterRC, node->array->resultRegisterRC);
         }
 
-        if (typeInfoArray->pointedType->isString())
-            SWAG_CHECK(emitTypeDeRef(context, node->array->resultRegisterRC, typeInfoArray->pointedType));
-        else if (typeInfoArray->pointedType->isPointer())
-            SWAG_CHECK(emitTypeDeRef(context, node->array->resultRegisterRC, typeInfoArray->pointedType));
-        else if (!node->forceTakeAddress() && !typeInfoArray->pointedType->isArray())
-            SWAG_CHECK(emitTypeDeRef(context, node->array->resultRegisterRC, typeInfoArray->pointedType));
+        auto pointedType = TypeManager::concreteType(typeInfoArray->pointedType, CONCRETE_ALIAS);
+
+        if (pointedType->isString())
+            SWAG_CHECK(emitTypeDeRef(context, node->array->resultRegisterRC, pointedType));
+        else if (pointedType->isPointer())
+            SWAG_CHECK(emitTypeDeRef(context, node->array->resultRegisterRC, pointedType));
+        else if (!node->forceTakeAddress() && !pointedType->isArray())
+            SWAG_CHECK(emitTypeDeRef(context, node->array->resultRegisterRC, pointedType));
 
         node->resultRegisterRC         = node->array->resultRegisterRC;
         node->parent->resultRegisterRC = node->resultRegisterRC;

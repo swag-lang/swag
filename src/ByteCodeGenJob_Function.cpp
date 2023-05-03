@@ -1158,10 +1158,18 @@ bool ByteCodeGenJob::emitLambdaCall(ByteCodeGenContext* context)
     auto allParams                        = node->childs.empty() ? nullptr : node->childs.back();
     SWAG_ASSERT(!allParams || allParams->kind == AstNodeKind::FuncCallParams);
 
+    auto typeRef = TypeManager::concreteType(overload->typeInfo, CONCRETE_ALIAS);
+
+    // :SilentCall
+    if (node->token.text.empty() && typeRef->isArray())
+    {
+        auto typeArr = CastTypeInfo<TypeInfoArray>(overload->typeInfo, TypeInfoKind::Array);
+        typeRef      = TypeManager::concreteType(typeArr->finalType, CONCRETE_ALIAS);
+    }
+
     // A closure is the pointer to the variable, not the function address
     // Function address is stored first
     // Then comes 8 or 0 if it's a real closure or a lambda
-    auto typeRef = TypeManager::concreteType(overload->typeInfo, CONCRETE_ALIAS);
     if (typeRef->isClosure())
     {
         // Deref capture context. If 0, no context.
@@ -1736,7 +1744,7 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
                     }
                     else
                     {
-                        auto funcDesc = CastAst<AstTypeLambda>(typeInfoFunc->declNode, AstNodeKind::TypeLambda);
+                        auto funcDesc = CastAst<AstTypeLambda>(typeInfoFunc->declNode, AstNodeKind::TypeLambda, AstNodeKind::TypeClosure);
                         parameters    = funcDesc->childs.front();
                     }
                 }

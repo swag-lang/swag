@@ -563,12 +563,14 @@ bool SemanticJob::setSymbolMatchCallParams(SemanticContext* context, AstIdentifi
         }
         else
         {
-            auto funcDecl = CastAst<AstTypeLambda>(typeInfoFunc->declNode, AstNodeKind::TypeLambda);
+            auto funcDecl = CastAst<AstTypeLambda>(typeInfoFunc->declNode, AstNodeKind::TypeLambda, AstNodeKind::TypeClosure);
             parameters    = funcDecl->childs.front();
         }
 
         for (uint32_t i = 0; i < parameters->childs.size(); i++)
         {
+            if (parameters->childs[i]->kind != AstNodeKind::FuncDeclParam)
+                continue;
             auto funcParam = CastAst<AstVarDecl>(parameters->childs[i], AstNodeKind::FuncDeclParam);
             if (!funcParam->assignment)
                 continue;
@@ -3260,9 +3262,17 @@ bool SemanticJob::fillMatchContextCallParameters(SemanticContext* context, Symbo
     auto symbolKind     = symbol->kind;
     auto callParameters = identifier->callParameters;
 
+    auto typeRef = TypeManager::concreteType(overload->typeInfo, CONCRETE_ALIAS);
+
+    // :SilentCall
+    if (identifier->token.text.empty() && typeRef->isArray())
+    {
+        auto typeArr = CastTypeInfo<TypeInfoArray>(overload->typeInfo, TypeInfoKind::Array);
+        typeRef      = TypeManager::concreteType(typeArr->finalType, CONCRETE_ALIAS);
+    }
+
     // :ClosureForceFirstParam
     // A closure has always a first parameter of type *void
-    auto typeRef = TypeManager::concreteType(overload->typeInfo, CONCRETE_ALIAS);
     if (typeRef->isClosure() && identifier->callParameters)
     {
         if (!(identifier->specFlags & AstIdentifier::SPECFLAG_CLOSURE_FIRST_PARAM))

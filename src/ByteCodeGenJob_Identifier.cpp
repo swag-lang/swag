@@ -346,8 +346,21 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
         // :SilentCall
         if (node->token.text.empty())
         {
-            EMIT_INST2(context, ByteCodeOp::DeRef64, node->resultRegisterRC, node->parent->resultRegisterRC);
-            freeRegisterRC(context, node->parent);
+            auto typeArr   = CastTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
+            auto finalType = TypeManager::concreteType(typeArr->finalType, CONCRETE_ALL);
+
+            // A closure is the pointer to the data, not a pointer to the function.
+            // So we must not dereference in that case
+            if (finalType->isClosure())
+            {
+                freeRegisterRC(context, node);
+                node->resultRegisterRC = node->parent->resultRegisterRC;
+            }
+            else
+            {
+                EMIT_INST2(context, ByteCodeOp::DeRef64, node->resultRegisterRC, node->parent->resultRegisterRC);
+                freeRegisterRC(context, node->parent);
+            }
         }
         else if (node->semFlags & SEMFLAG_FROM_REF)
         {
