@@ -199,10 +199,12 @@ bool Parser::doIdentifier(AstNode* parent, uint32_t identifierFlags)
 
             if (!(token.flags & TOKENPARSE_LAST_EOL) && !(identifierFlags & IDENTIFIER_NO_FCT_PARAMS) && token.id == TokenId::SymLeftParen)
             {
+                // :SilentCall
                 SWAG_CHECK(eatToken(TokenId::SymLeftParen));
                 identifier = Ast::newNode<AstIdentifier>(this, AstNodeKind::Identifier, sourceFile, parent);
                 identifier->inheritTokenLocation(token);
-                identifier->token.text  = ""; // :SilentCall
+                identifier->token.text = "";
+                identifier->specFlags |= AstIdentifier::SPECFLAG_SILENT_CALL;
                 identifier->semanticFct = SemanticJob::resolveIdentifier;
                 SWAG_CHECK(doFuncCallParameters(identifier, &identifier->callParameters, TokenId::SymRightParen));
             }

@@ -674,8 +674,7 @@ bool SemanticJob::setSymbolMatchCallParams(SemanticContext* context, AstIdentifi
 
 static bool isStatementIdentifier(AstIdentifier* identifier)
 {
-    // :SilentCall
-    if (identifier->token.text.empty())
+    if (identifier->isSilentCall())
         return false;
 
     auto checkParent = identifier->identifierRef()->parent;
@@ -726,7 +725,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* ide
         symbol->kind == SymbolKind::Variable &&
         !overload->typeInfo->isLambdaClosure() &&
         !identifierRef->startScope &&
-        !identifier->token.text.empty() && // :SilentCall
+        !identifier->isSilentCall() &&
         identifierRef->previousResolvedNode &&
         !identifierRef->previousResolvedNode->typeInfo->isPointerTo(TypeInfoKind::Struct) &&
         !identifierRef->previousResolvedNode->typeInfo->isStruct())
@@ -3264,9 +3263,9 @@ bool SemanticJob::fillMatchContextCallParameters(SemanticContext* context, Symbo
 
     auto typeRef = TypeManager::concreteType(overload->typeInfo, CONCRETE_ALIAS);
 
-    // :SilentCall
-    if (identifier->token.text.empty() && typeRef->isArray())
+    if (identifier->isSilentCall())
     {
+        SWAG_ASSERT(typeRef->isArray());
         auto typeArr = CastTypeInfo<TypeInfoArray>(overload->typeInfo, TypeInfoKind::Array);
         typeRef      = TypeManager::concreteType(typeArr->finalType, CONCRETE_ALIAS);
     }
@@ -3296,7 +3295,7 @@ bool SemanticJob::fillMatchContextCallParameters(SemanticContext* context, Symbo
             symbolKind != SymbolKind::Struct &&
             symbolKind != SymbolKind::Interface &&
             symbolKind != SymbolKind::TypeAlias &&
-            !identifier->token.text.empty() && // :SilentCall
+            !identifier->isSilentCall() &&
             !symbol->overloads[0]->typeInfo->isKindGeneric() &&
             !TypeManager::concretePtrRefType(symbol->overloads[0]->typeInfo, CONCRETE_ALIAS)->isLambdaClosure())
         {
@@ -4183,8 +4182,7 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context, AstIdentifier* ide
 
     if (dependentSymbols.empty())
     {
-        // :SilentCall
-        if (identifier->token.text.empty())
+        if (identifier->isSilentCall())
         {
             OneSymbolMatch sm;
             sm.symbol = identifierRef->resolvedSymbolName;
@@ -4412,8 +4410,7 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context, AstIdentifier* ide
         }
     }
 
-    // :SilentCall
-    if (identifier->token.text.empty())
+    if (identifier->isSilentCall())
         identifier->typeInfo = identifierRef->typeInfo;
     else if (match->typeWasForced)
         identifier->typeInfo = match->typeWasForced;

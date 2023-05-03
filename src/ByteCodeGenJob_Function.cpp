@@ -1149,8 +1149,8 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
 
 bool ByteCodeGenJob::emitLambdaCall(ByteCodeGenContext* context)
 {
-    AstNode* node     = CastAst<AstIdentifier>(context->node, AstNodeKind::Identifier);
-    auto     overload = node->resolvedSymbolOverload;
+    auto node     = CastAst<AstIdentifier>(context->node, AstNodeKind::Identifier);
+    auto overload = node->resolvedSymbolOverload;
 
     SWAG_CHECK(emitIdentifier(context));
     node->allocateExtension(ExtensionKind::Misc);
@@ -1160,8 +1160,7 @@ bool ByteCodeGenJob::emitLambdaCall(ByteCodeGenContext* context)
 
     auto typeRef = TypeManager::concreteType(overload->typeInfo, CONCRETE_ALIAS);
 
-    // :SilentCall
-    if (node->token.text.empty() && typeRef->isArray())
+    if (node->isSilentCall())
     {
         auto typeArr = CastTypeInfo<TypeInfoArray>(overload->typeInfo, TypeInfoKind::Array);
         typeRef      = TypeManager::concreteType(typeArr->finalType, CONCRETE_ALIAS);

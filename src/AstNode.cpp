@@ -724,6 +724,11 @@ bool AstNode::isForeign()
     return attributeFlags & ATTRIBUTE_FOREIGN;
 }
 
+bool AstNode::isSilentCall()
+{
+    return kind == AstNodeKind::Identifier && (specFlags & AstIdentifier::SPECFLAG_SILENT_CALL);
+}
+
 bool AstNode::isFunctionCall()
 {
     if (kind == AstNodeKind::FuncCall)

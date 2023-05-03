@@ -86,12 +86,11 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
     Utf8 refNiceName = "the ";
     refNiceName += Naming::kindName(overload);
 
-    // :SilentCall
-    if (node->token.text.empty())
+    if (node->isSilentCall())
     {
         auto arrNode = node->parent->childs[node->childParentIdx() - 1];
-        if (arrNode->kind == AstNodeKind::ArrayPointerIndex)
-            node = arrNode;
+        SWAG_ASSERT(arrNode->kind == AstNodeKind::ArrayPointerIndex);
+        node = arrNode;
     }
 
     // Get parameters of destination symbol

@@ -194,7 +194,7 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
             EMIT_INST2(context, ByteCodeOp::DeRef64, node->resultRegisterRC, node->resultRegisterRC);
 
         // :SilentCall
-        if ((resolved->flags & OVERLOAD_VAR_TLS) && node->token.text.empty())
+        if ((resolved->flags & OVERLOAD_VAR_TLS) && node->isSilentCall())
             freeRegisterRC(context, node->parent);
 
         identifier->identifierRef()->resultRegisterRC = node->resultRegisterRC;
@@ -234,8 +234,7 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
 
         SWAG_CHECK(sameStackFrame(context, resolved));
 
-        // :SilentCall
-        if (node->token.text.empty())
+        if (node->isSilentCall())
         {
             EMIT_INST2(context, ByteCodeOp::DeRef64, node->resultRegisterRC, node->parent->resultRegisterRC);
             freeRegisterRC(context, node->parent);
@@ -343,8 +342,7 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
         SWAG_ASSERT(node->resultRegisterRC[0] < 256);
         resolved->hintRegister = (uint8_t) node->resultRegisterRC[0];
 
-        // :SilentCall
-        if (node->token.text.empty())
+        if (node->isSilentCall())
         {
             auto typeArr   = CastTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
             auto finalType = TypeManager::concreteType(typeArr->finalType, CONCRETE_ALL);
@@ -428,8 +426,7 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
         SWAG_ASSERT(node->resultRegisterRC[0] < 256);
         resolved->hintRegister = (uint8_t) node->resultRegisterRC[0];
 
-        // :SilentCall
-        if (node->token.text.empty())
+        if (node->isSilentCall())
         {
             EMIT_INST2(context, ByteCodeOp::DeRef64, node->resultRegisterRC, node->parent->resultRegisterRC);
             freeRegisterRC(context, node->parent);

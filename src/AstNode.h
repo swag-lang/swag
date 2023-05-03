@@ -303,6 +303,7 @@ struct AstNode
     bool isGeneratedSelf();
     bool isEmptyFct();
     bool isForeign();
+    bool isSilentCall();
 
     void     setPassThrough();
     AstNode* findChildRef(AstNode* ref, AstNode* fromChild);
@@ -478,6 +479,7 @@ struct AstIdentifier : public AstNode
     static const uint16_t SPECFLAG_FROM_WITH           = 0x0002;
     static const uint16_t SPECFLAG_FROM_USING          = 0x0004;
     static const uint16_t SPECFLAG_CLOSURE_FIRST_PARAM = 0x0008;
+    static const uint16_t SPECFLAG_SILENT_CALL         = 0x0010;
 
     struct IdentifierExtension
     {
