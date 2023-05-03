@@ -5602,7 +5602,7 @@ llvm::Type* BackendLLVM::swagTypeToLLVMType(const BuildParameters& buildParamete
     auto& pp              = *perThread[ct][precompileIndex];
     auto& context         = *pp.context;
 
-    typeInfo = TypeManager::concreteType(typeInfo, CONCRETE_ALIAS | CONCRETE_FORCEALIAS);
+    typeInfo = TypeManager::concreteType(typeInfo, CONCRETE_FORCEALIAS);
 
     if (typeInfo->isEnum())
     {

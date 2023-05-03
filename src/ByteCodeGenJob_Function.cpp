@@ -72,9 +72,9 @@ bool ByteCodeGenJob::emitReturn(ByteCodeGenContext* context)
 
     // Get the function return type. In case of an emmbedded return, this is the type of the original function to inline
     if (node->ownerInline && (node->semFlags & SEMFLAG_EMBEDDED_RETURN))
-        returnType = TypeManager::concreteType(node->ownerInline->func->returnType->typeInfo, CONCRETE_ALIAS);
+        returnType = TypeManager::concreteType(node->ownerInline->func->returnType->typeInfo, CONCRETE_FORCEALIAS);
     else
-        returnType = TypeManager::concreteType(funcNode->returnType->typeInfo, CONCRETE_ALIAS);
+        returnType = TypeManager::concreteType(funcNode->returnType->typeInfo, CONCRETE_FORCEALIAS);
 
     // Copy result to RR0... registers
     if (!(node->semFlags & SEMFLAG_EMIT_DEFERRED) && !node->childs.empty() && !returnType->isVoid())

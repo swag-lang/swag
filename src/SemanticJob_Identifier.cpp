@@ -113,6 +113,7 @@ bool SemanticJob::setupIdentifierRef(SemanticContext* context, AstNode* node, Ty
     typeInfo = TypeManager::concreteType(typeInfo, CONCRETE_ALIAS);
     if (!(identifierRef->semFlags & SEMFLAG_TYPE_SOLVED))
         identifierRef->typeInfo = typeInfo;
+
     identifierRef->previousResolvedNode = node;
     identifierRef->startScope           = nullptr;
 
@@ -120,7 +121,7 @@ bool SemanticJob::setupIdentifierRef(SemanticContext* context, AstNode* node, Ty
     if (node->typeInfo->isEnum())
         identifierRef->startScope = CastTypeInfo<TypeInfoEnum>(node->typeInfo, node->typeInfo->kind)->scope;
 
-    auto scopeType = typeInfo;
+    auto scopeType = TypeManager::concreteType(typeInfo, CONCRETE_FORCEALIAS);
     if (scopeType->isLambdaClosure())
     {
         auto funcType = CastTypeInfo<TypeInfoFuncAttr>(scopeType, TypeInfoKind::LambdaClosure);
