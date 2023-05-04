@@ -397,6 +397,10 @@ bool SemanticJob::resolveIntrinsicRunes(SemanticContext* context)
 bool SemanticJob::resolveIntrinsicCountOf(SemanticContext* context, AstNode* node, AstNode* expression)
 {
     auto typeInfo = TypeManager::concretePtrRef(expression->typeInfo);
+    typeInfo      = TypeManager::concreteType(typeInfo, CONCRETE_FORCEALIAS);
+
+    if (expression->resolvedSymbolName && expression->resolvedSymbolName->kind == SymbolKind::EnumValue)
+        typeInfo = TypeManager::concreteType(typeInfo, CONCRETE_ENUM);
 
     if (typeInfo->isEnum())
     {
@@ -605,7 +609,7 @@ bool SemanticJob::resolveIntrinsicKindOf(SemanticContext* context)
             return true;
         node->byteCodeFct = ByteCodeGenJob::emitIntrinsicKindOf;
         node->flags |= AST_R_VALUE;
-        SWAG_CHECK(setupIdentifierRef(context, node, node->typeInfo));
+        SWAG_CHECK(setupIdentifierRef(context, node));
         return true;
     }
 
@@ -616,7 +620,7 @@ bool SemanticJob::resolveIntrinsicKindOf(SemanticContext* context)
         if (context->result != ContextResult::Done)
             return true;
         node->inheritComputedValue(expr);
-        SWAG_CHECK(setupIdentifierRef(context, node, node->typeInfo));
+        SWAG_CHECK(setupIdentifierRef(context, node));
         return true;
     }
 
@@ -628,7 +632,19 @@ bool SemanticJob::resolveIntrinsicKindOf(SemanticContext* context)
         if (context->result != ContextResult::Done)
             return true;
         node->inheritComputedValue(expr);
-        SWAG_CHECK(setupIdentifierRef(context, node, node->typeInfo));
+        SWAG_CHECK(setupIdentifierRef(context, node));
+        return true;
+    }
+
+    // For an alias, this is the raw type
+    if (expr->typeInfo->isAlias())
+    {
+        auto typeAlias = CastTypeInfo<TypeInfoAlias>(expr->typeInfo, TypeInfoKind::Alias);
+        SWAG_CHECK(resolveTypeAsExpression(context, expr, typeAlias->rawType, &node->typeInfo));
+        if (context->result != ContextResult::Done)
+            return true;
+        node->inheritComputedValue(expr);
+        SWAG_CHECK(setupIdentifierRef(context, node));
         return true;
     }
 
@@ -692,7 +708,7 @@ bool SemanticJob::resolveIntrinsicTypeOf(SemanticContext* context)
     if (context->result != ContextResult::Done)
         return true;
     node->inheritComputedValue(expr);
-    SWAG_CHECK(setupIdentifierRef(context, node, node->typeInfo));
+    SWAG_CHECK(setupIdentifierRef(context, node));
     return true;
 }
 
@@ -788,8 +804,9 @@ bool SemanticJob::resolveIntrinsicProperty(SemanticContext* context)
 
     case TokenId::IntrinsicCountOf:
     {
-        auto expr = node->childs.front();
-        if (!expr->typeInfo->isEnum() && !expr->typeInfo->isArray())
+        auto expr     = node->childs.front();
+        auto typeInfo = TypeManager::concreteType(expr->typeInfo, CONCRETE_FORCEALIAS);
+        if (!typeInfo->isEnum() && !typeInfo->isArray())
             SWAG_CHECK(checkIsConcrete(context, expr));
         node->inheritComputedValue(expr);
         SWAG_CHECK(resolveIntrinsicCountOf(context, node, expr));

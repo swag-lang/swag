@@ -583,7 +583,7 @@ bool SemanticJob::resolveAlias(SemanticContext* context)
     if (!overload && back->kind == AstNodeKind::IdentifierRef)
     {
         back = back->childs.back();
-        if (back->tokenId == TokenId::IntrinsicTypeOf)
+        if (back->tokenId == TokenId::IntrinsicTypeOf || back->tokenId == TokenId::IntrinsicKindOf)
         {
             node->resolvedSymbolName->kind = SymbolKind::TypeAlias;
             SWAG_CHECK(resolveTypeAlias(context));
@@ -596,7 +596,7 @@ bool SemanticJob::resolveAlias(SemanticContext* context)
     auto symbol       = overload->symbol;
     auto typeResolved = overload->typeInfo;
 
-    if (typeResolved->isStruct() || typeResolved->isInterface())
+    if (typeResolved->isStruct() || typeResolved->isInterface() || typeResolved->isEnum())
     {
         node->resolvedSymbolName->kind = SymbolKind::TypeAlias;
         SWAG_CHECK(resolveTypeAliasBefore(context));

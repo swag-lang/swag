@@ -822,7 +822,7 @@ bool SemanticJob::resolveIntrinsicLocation(SemanticContext* context)
 
     node->setFlagsValueIsComputed();
     ByteCodeGenJob::computeSourceLocation(context, locNode, &node->computedValue->storageOffset, &node->computedValue->storageSegment);
-    SWAG_CHECK(setupIdentifierRef(context, node, node->typeInfo));
+    SWAG_CHECK(setupIdentifierRef(context, node));
     return true;
 }
 
@@ -908,7 +908,7 @@ bool SemanticJob::resolveCompilerSpecialValue(SemanticContext* context)
         node->typeInfo = g_TypeMgr->makeConst(g_Workspace->swagScope.regTypeInfoSourceLoc);
         node->setFlagsValueIsComputed();
         ByteCodeGenJob::computeSourceLocation(context, node, &node->computedValue->storageOffset, &node->computedValue->storageSegment);
-        SWAG_CHECK(setupIdentifierRef(context, node, node->typeInfo));
+        SWAG_CHECK(setupIdentifierRef(context, node));
         return true;
 
     case TokenId::CompilerCallerLocation:

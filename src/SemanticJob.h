@@ -276,7 +276,7 @@ struct SemanticJob : public Job
     static void         inheritAttributesFromParent(AstNode* child);
     static void         inheritAttributesFrom(AstNode* child, uint64_t attributeFlags, uint16_t safetyOn, uint16_t safetyOff);
     static void         inheritAttributesFromOwnerFunc(AstNode* child);
-    static bool         setupIdentifierRef(SemanticContext* context, AstNode* node, TypeInfo* typeInfo);
+    static bool         setupIdentifierRef(SemanticContext* context, AstNode* node);
     static bool         derefConstantValue(SemanticContext* context, AstNode* node, TypeInfo* typeInfo, DataSegment* storageSegment, void* ptr);
     static bool         derefConstantValue(SemanticContext* context, AstNode* node, TypeInfoKind kind, NativeTypeKind nativeKind, void* ptr);
     static bool         derefLiteralStruct(SemanticContext* context, uint8_t* ptr, SymbolOverload* overload, DataSegment* storageSegment);

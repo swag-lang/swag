@@ -844,7 +844,7 @@ bool SemanticJob::resolveArrayPointerDeRef(SemanticContext* context)
         }
 
         arrayNode->typeInfo = typePtr->pointedType;
-        setupIdentifierRef(context, arrayNode, arrayNode->typeInfo);
+        setupIdentifierRef(context, arrayNode);
         break;
     }
 
@@ -853,7 +853,7 @@ bool SemanticJob::resolveArrayPointerDeRef(SemanticContext* context)
         SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoU64, nullptr, arrayNode->access, CASTFLAG_TRY_COERCE | CASTFLAG_INDEX));
         auto typePtr        = CastTypeInfo<TypeInfoArray>(arrayType, TypeInfoKind::Array);
         arrayNode->typeInfo = typePtr->pointedType;
-        setupIdentifierRef(context, arrayNode, arrayNode->typeInfo);
+        setupIdentifierRef(context, arrayNode);
 
         // Try to dereference as a constant if we can
         uint32_t     storageOffset  = UINT32_MAX;
@@ -886,7 +886,7 @@ bool SemanticJob::resolveArrayPointerDeRef(SemanticContext* context)
         SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoU64, nullptr, arrayNode->access, CASTFLAG_TRY_COERCE | CASTFLAG_INDEX));
         auto typeSlice      = CastTypeInfo<TypeInfoSlice>(arrayType, TypeInfoKind::Slice);
         arrayNode->typeInfo = typeSlice->pointedType;
-        setupIdentifierRef(context, arrayNode, arrayNode->typeInfo);
+        setupIdentifierRef(context, arrayNode);
 
         // Try to dereference as a constant if we can
         if (arrayNode->access->flags & AST_VALUE_COMPUTED)
@@ -917,7 +917,7 @@ bool SemanticJob::resolveArrayPointerDeRef(SemanticContext* context)
         SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoU64, nullptr, arrayNode->access, CASTFLAG_TRY_COERCE | CASTFLAG_INDEX));
         auto typeVariadic   = CastTypeInfo<TypeInfoVariadic>(arrayType, TypeInfoKind::TypedVariadic);
         arrayNode->typeInfo = typeVariadic->rawType;
-        setupIdentifierRef(context, arrayNode, arrayNode->typeInfo);
+        setupIdentifierRef(context, arrayNode);
         break;
     }
 
@@ -1253,7 +1253,7 @@ bool SemanticJob::derefLiteralStruct(SemanticContext* context, uint8_t* ptr, Sym
         node->computedValue->storageOffset  = storageSegment->offset(ptr);
         node->computedValue->storageSegment = storageSegment;
         node->typeInfo                      = concreteType;
-        setupIdentifierRef(context, node, concreteType);
+        setupIdentifierRef(context, node);
     }
     else if (!derefConstantValue(context, node, concreteType, storageSegment, ptr))
     {

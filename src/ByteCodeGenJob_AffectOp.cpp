@@ -10,7 +10,8 @@ bool ByteCodeGenJob::emitCopyArray(ByteCodeGenContext* context, TypeInfo* typeIn
     auto typeArray = CastTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
     if (!typeArray->finalType->isStruct())
     {
-        if (from->typeInfo->isArray() || from->typeInfo->isListArray())
+        auto fromType = TypeManager::concreteType(from->typeInfo);
+        if (fromType->isArray() || fromType->isListArray())
         {
             emitMemCpy(context, dstReg, srcReg, typeArray->sizeOf);
             return true;
@@ -23,7 +24,7 @@ bool ByteCodeGenJob::emitCopyArray(ByteCodeGenContext* context, TypeInfo* typeIn
             inst->b.u64   = typeArray->totalCount;
             auto seekJump = context->bc->numInstructions;
 
-            switch (from->typeInfo->sizeOf)
+            switch (fromType->sizeOf)
             {
             case 1:
                 EMIT_INST2(context, ByteCodeOp::SetAtPointer8, dstReg, srcReg);
@@ -47,7 +48,7 @@ bool ByteCodeGenJob::emitCopyArray(ByteCodeGenContext* context, TypeInfo* typeIn
             }
 
             inst        = EMIT_INST3(context, ByteCodeOp::IncPointer64, dstReg, 0, dstReg);
-            inst->b.u64 = from->typeInfo->sizeOf;
+            inst->b.u64 = fromType->sizeOf;
             inst->flags |= BCI_IMM_B;
 
             EMIT_INST1(context, ByteCodeOp::DecrementRA64, r0);

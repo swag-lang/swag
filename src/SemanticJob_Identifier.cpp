@@ -85,17 +85,17 @@ bool SemanticJob::resolveIdentifierRef(SemanticContext* context)
     return true;
 }
 
-bool SemanticJob::setupIdentifierRef(SemanticContext* context, AstNode* node, TypeInfo* typeInfo)
+bool SemanticJob::setupIdentifierRef(SemanticContext* context, AstNode* node)
 {
-    if (!typeInfo)
-        return true;
-
     // If type of previous one was const, then we force this node to be const (cannot change it)
     if (node->parent->typeInfo && node->parent->typeInfo->isConst())
         node->flags |= AST_IS_CONST;
     auto overload = node->resolvedSymbolOverload;
     if (overload && overload->flags & OVERLOAD_CONST_ASSIGN)
         node->semFlags |= SEMFLAG_IS_CONST_ASSIGN;
+
+    auto typeInfo = TypeManager::concreteType(node->typeInfo, CONCRETE_FUNC);
+    typeInfo      = TypeManager::concreteType(typeInfo, CONCRETE_ALIAS);
 
     if (node->parent->kind != AstNodeKind::IdentifierRef)
         return true;
@@ -110,26 +110,28 @@ bool SemanticJob::setupIdentifierRef(SemanticContext* context, AstNode* node, Ty
         node->semFlags |= SEMFLAG_IS_CONST_ASSIGN_INHERIT;
     }
 
-    typeInfo = TypeManager::concreteType(typeInfo, CONCRETE_ALIAS);
-    if (!(identifierRef->semFlags & SEMFLAG_TYPE_SOLVED))
-        identifierRef->typeInfo = typeInfo;
-
     identifierRef->previousResolvedNode = node;
     identifierRef->startScope           = nullptr;
-
-    // Before making the type concrete
-    if (node->typeInfo->isEnum())
-        identifierRef->startScope = CastTypeInfo<TypeInfoEnum>(node->typeInfo, node->typeInfo->kind)->scope;
 
     auto scopeType = TypeManager::concreteType(typeInfo, CONCRETE_FORCEALIAS);
     if (scopeType->isLambdaClosure())
     {
         auto funcType = CastTypeInfo<TypeInfoFuncAttr>(scopeType, TypeInfoKind::LambdaClosure);
-        scopeType     = funcType->returnType;
+        scopeType     = TypeManager::concreteType(funcType->returnType, CONCRETE_FORCEALIAS);
     }
+
+    // typeInfo = TypeManager::concreteType(typeInfo, CONCRETE_ENUM);
+    if (!(identifierRef->semFlags & SEMFLAG_TYPE_SOLVED))
+        identifierRef->typeInfo = typeInfo;
 
     switch (scopeType->kind)
     {
+    case TypeInfoKind::Enum:
+    {
+        identifierRef->startScope = CastTypeInfo<TypeInfoEnum>(scopeType, TypeInfoKind::Enum)->scope;
+        node->typeInfo            = typeInfo; // TypeManager::concreteType(typeInfo, CONCRETE_ENUM);
+        break;
+    }
     case TypeInfoKind::Pointer:
     {
         auto typePointer = CastTypeInfo<TypeInfoPointer>(scopeType, TypeInfoKind::Pointer);
@@ -945,6 +947,10 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* ide
         typeAlias = TypeManager::concreteType(identifier->typeInfo, CONCRETE_ALIAS);
         if (typeAlias->isStruct())
             symbolKind = SymbolKind::Struct;
+        else if (typeAlias->isInterface())
+            symbolKind = SymbolKind::Interface;
+        else if (typeAlias->isEnum())
+            symbolKind = SymbolKind::Enum;
     }
 
     // Global identifier call. Must be a call to a mixin function, that's it...
@@ -970,7 +976,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* ide
     switch (symbolKind)
     {
     case SymbolKind::GenericType:
-        SWAG_CHECK(setupIdentifierRef(context, identifier, identifier->typeInfo));
+        SWAG_CHECK(setupIdentifierRef(context, identifier));
         break;
 
     case SymbolKind::Namespace:
@@ -979,12 +985,12 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* ide
         break;
 
     case SymbolKind::Enum:
-        identifierRef->startScope = CastTypeInfo<TypeInfoEnum>(identifier->typeInfo, identifier->typeInfo->kind)->scope;
+        SWAG_CHECK(setupIdentifierRef(context, identifier));
         identifier->flags |= AST_CONST_EXPR;
         break;
 
     case SymbolKind::EnumValue:
-        SWAG_CHECK(setupIdentifierRef(context, identifier, TypeManager::concreteType(identifier->typeInfo)));
+        SWAG_CHECK(setupIdentifierRef(context, identifier));
         identifier->setFlagsValueIsComputed();
         identifier->flags |= AST_R_VALUE;
         *identifier->computedValue = identifier->resolvedSymbolOverload->computedValue;
@@ -994,7 +1000,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* ide
     case SymbolKind::Interface:
     {
         if (!(overload->flags & OVERLOAD_IMPL_IN_STRUCT))
-            SWAG_CHECK(setupIdentifierRef(context, identifier, identifier->typeInfo));
+            SWAG_CHECK(setupIdentifierRef(context, identifier));
         identifierRef->startScope = CastTypeInfo<TypeInfoStruct>(typeAlias, typeAlias->kind)->scope;
 
         if (!identifier->callParameters)
@@ -1154,7 +1160,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* ide
 
         // Setup parent if necessary
         auto typeInfo = TypeManager::concreteType(identifier->typeInfo, CONCRETE_ALL & ~CONCRETE_FORCEALIAS);
-        SWAG_CHECK(setupIdentifierRef(context, identifier, typeInfo));
+        SWAG_CHECK(setupIdentifierRef(context, identifier));
 
         // If this is a 'code' variable, when passing code from one macro to another, then do not generate bytecode
         // for it, as this is not really a variable
@@ -1422,7 +1428,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* ide
                     }
                     else
                     {
-                        SWAG_CHECK(setupIdentifierRef(context, identifier, returnType));
+                        SWAG_CHECK(setupIdentifierRef(context, identifier));
                     }
 
                     identifier->byteCodeFct = ByteCodeGenJob::emitPassThrough;
@@ -1472,7 +1478,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* ide
             identifier->semFlags |= SEMFLAG_IS_CONST_ASSIGN;
         }
 
-        SWAG_CHECK(setupIdentifierRef(context, identifier, returnType));
+        SWAG_CHECK(setupIdentifierRef(context, identifier));
 
         // For a return by copy, need to reserve room on the stack for the return result
         // Order is important, because otherwhise this could call isPlainOldData, which could be not resolved
@@ -4235,7 +4241,7 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context, AstIdentifier* ide
 
         // In case identifier is part of a reference, need to initialize it
         if (!needToWait && identifier != identifier->identifierRef()->childs.back())
-            SWAG_CHECK(setupIdentifierRef(context, identifier, identifier->typeInfo));
+            SWAG_CHECK(setupIdentifierRef(context, identifier));
 
         return true;
     }
