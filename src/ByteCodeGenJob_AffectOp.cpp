@@ -8,7 +8,8 @@
 bool ByteCodeGenJob::emitCopyArray(ByteCodeGenContext* context, TypeInfo* typeInfo, RegisterList& dstReg, RegisterList& srcReg, AstNode* from)
 {
     auto typeArray = CastTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
-    if (!typeArray->finalType->isStruct())
+    auto finalType = TypeManager::concreteType(typeArray->finalType);
+    if (!finalType->isStruct())
     {
         auto fromType = TypeManager::concreteType(from->typeInfo);
         if (fromType->isArray() || fromType->isListArray())
@@ -16,50 +17,48 @@ bool ByteCodeGenJob::emitCopyArray(ByteCodeGenContext* context, TypeInfo* typeIn
             emitMemCpy(context, dstReg, srcReg, typeArray->sizeOf);
             return true;
         }
-        else
+
+        RegisterList r0 = reserveRegisterRC(context);
+
+        auto inst     = EMIT_INST1(context, ByteCodeOp::SetImmediate64, r0);
+        inst->b.u64   = typeArray->totalCount;
+        auto seekJump = context->bc->numInstructions;
+
+        switch (fromType->sizeOf)
         {
-            RegisterList r0 = reserveRegisterRC(context);
-
-            auto inst     = EMIT_INST1(context, ByteCodeOp::SetImmediate64, r0);
-            inst->b.u64   = typeArray->totalCount;
-            auto seekJump = context->bc->numInstructions;
-
-            switch (fromType->sizeOf)
-            {
-            case 1:
-                EMIT_INST2(context, ByteCodeOp::SetAtPointer8, dstReg, srcReg);
-                break;
-            case 2:
-                EMIT_INST2(context, ByteCodeOp::SetAtPointer16, dstReg, srcReg);
-                break;
-            case 4:
-                EMIT_INST2(context, ByteCodeOp::SetAtPointer32, dstReg, srcReg);
-                break;
-            case 8:
-                EMIT_INST2(context, ByteCodeOp::SetAtPointer64, dstReg, srcReg);
-                break;
-            case 16:
-                EMIT_INST2(context, ByteCodeOp::SetAtPointer64, dstReg, srcReg[0]);
-                EMIT_INST3(context, ByteCodeOp::SetAtPointer64, dstReg, srcReg[1], sizeof(void*));
-                break;
-            default:
-                Report::internalError(from, "unsupported array initialization value type");
-                return false;
-            }
-
-            inst        = EMIT_INST3(context, ByteCodeOp::IncPointer64, dstReg, 0, dstReg);
-            inst->b.u64 = fromType->sizeOf;
-            inst->flags |= BCI_IMM_B;
-
-            EMIT_INST1(context, ByteCodeOp::DecrementRA64, r0);
-            EMIT_INST1(context, ByteCodeOp::JumpIfNotZero64, r0)->b.s32 = seekJump - context->bc->numInstructions - 1;
-
-            freeRegisterRC(context, r0);
-            return true;
+        case 1:
+            EMIT_INST2(context, ByteCodeOp::SetAtPointer8, dstReg, srcReg);
+            break;
+        case 2:
+            EMIT_INST2(context, ByteCodeOp::SetAtPointer16, dstReg, srcReg);
+            break;
+        case 4:
+            EMIT_INST2(context, ByteCodeOp::SetAtPointer32, dstReg, srcReg);
+            break;
+        case 8:
+            EMIT_INST2(context, ByteCodeOp::SetAtPointer64, dstReg, srcReg);
+            break;
+        case 16:
+            EMIT_INST2(context, ByteCodeOp::SetAtPointer64, dstReg, srcReg[0]);
+            EMIT_INST3(context, ByteCodeOp::SetAtPointer64, dstReg, srcReg[1], sizeof(void*));
+            break;
+        default:
+            Report::internalError(from, "unsupported array initialization value type");
+            return false;
         }
+
+        inst        = EMIT_INST3(context, ByteCodeOp::IncPointer64, dstReg, 0, dstReg);
+        inst->b.u64 = fromType->sizeOf;
+        inst->flags |= BCI_IMM_B;
+
+        EMIT_INST1(context, ByteCodeOp::DecrementRA64, r0);
+        EMIT_INST1(context, ByteCodeOp::JumpIfNotZero64, r0)->b.s32 = seekJump - context->bc->numInstructions - 1;
+
+        freeRegisterRC(context, r0);
+        return true;
     }
 
-    auto typeStruct = CastTypeInfo<TypeInfoStruct>(typeArray->finalType, TypeInfoKind::Struct);
+    auto typeStruct = CastTypeInfo<TypeInfoStruct>(finalType, TypeInfoKind::Struct);
     if (typeStruct->flags & TYPEINFO_STRUCT_NO_COPY)
     {
         Diagnostic diag{from, Fmt(Err(Err0231), typeStruct->getDisplayNameC()), Diagnostic::isType(typeArray)};
