@@ -401,6 +401,8 @@ bool SemanticJob::resolveIntrinsicCountOf(SemanticContext* context, AstNode* nod
 
     if (expression->resolvedSymbolName && expression->resolvedSymbolName->kind == SymbolKind::EnumValue)
         typeInfo = TypeManager::concreteType(typeInfo, CONCRETE_ENUM);
+    else if (expression->resolvedSymbolName && expression->resolvedSymbolName->kind == SymbolKind::Variable)
+        typeInfo = TypeManager::concreteType(typeInfo, CONCRETE_ENUM);
 
     if (typeInfo->isEnum())
     {
