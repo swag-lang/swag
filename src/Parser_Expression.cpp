@@ -712,7 +712,7 @@ bool Parser::doModifiers(Token& forNode, TokenId tokenId, uint32_t& mdfFlags)
             case TokenId::SymPercent:
                 break;
             default:
-                return error(token, Fmt(Err(Syn0126), forNode.ctext()));
+                return error(token, Fmt(Err(Syn0126), token.ctext(), forNode.ctext()));
             }
 
             SWAG_VERIFY(!(mdfFlags & MODIFIER_UP), error(token, Fmt(Err(Syn0125), token.ctext())));
@@ -734,7 +734,7 @@ bool Parser::doModifiers(Token& forNode, TokenId tokenId, uint32_t& mdfFlags)
             case TokenId::KwdCast:
                 break;
             default:
-                return error(token, Fmt(Err(Syn0126), forNode.ctext()));
+                return error(token, Fmt(Err(Syn0126), token.ctext(), forNode.ctext()));
             }
 
             SWAG_VERIFY(!(mdfFlags & MODIFIER_OVERFLOW), error(token, Fmt(Err(Syn0125), token.ctext())));
@@ -751,7 +751,7 @@ bool Parser::doModifiers(Token& forNode, TokenId tokenId, uint32_t& mdfFlags)
             case TokenId::SymColonEqual:
                 break;
             default:
-                return error(token, Fmt(Err(Syn0126), forNode.ctext()));
+                return error(token, Fmt(Err(Syn0126), token.ctext(), forNode.ctext()));
             }
 
             SWAG_VERIFY(!(mdfFlags & MODIFIER_NO_LEFT_DROP), error(token, Fmt(Err(Syn0125), token.ctext())));
@@ -767,7 +767,7 @@ bool Parser::doModifiers(Token& forNode, TokenId tokenId, uint32_t& mdfFlags)
             case TokenId::KwdCast:
                 break;
             default:
-                return error(token, Fmt(Err(Syn0126), forNode.ctext()));
+                return error(token, Fmt(Err(Syn0126), token.ctext(), forNode.ctext()));
             }
 
             SWAG_VERIFY(!(mdfFlags & MODIFIER_BIT), error(token, Fmt(Err(Syn0125), token.ctext())));
@@ -784,7 +784,7 @@ bool Parser::doModifiers(Token& forNode, TokenId tokenId, uint32_t& mdfFlags)
             case TokenId::SymColonEqual:
                 break;
             default:
-                return error(token, Fmt(Err(Syn0126), forNode.ctext()));
+                return error(token, Fmt(Err(Syn0126), token.ctext(), forNode.ctext()));
             }
 
             SWAG_VERIFY(!(mdfFlags & MODIFIER_MOVE), error(token, Fmt(Err(Syn0125), token.ctext())));
@@ -801,7 +801,7 @@ bool Parser::doModifiers(Token& forNode, TokenId tokenId, uint32_t& mdfFlags)
             case TokenId::SymColonEqual:
                 break;
             default:
-                return error(token, Fmt(Err(Syn0126), forNode.ctext()));
+                return error(token, Fmt(Err(Syn0126), token.ctext(), forNode.ctext()));
             }
 
             SWAG_VERIFY(!(mdfFlags & MODIFIER_NO_RIGHT_DROP), error(token, Fmt(Err(Syn0125), token.ctext())));
