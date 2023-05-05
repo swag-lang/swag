@@ -2479,7 +2479,7 @@ bool SemanticJob::ufcsSetFirstParam(SemanticContext* context, AstIdentifierRef* 
 
 TypeInfoEnum* SemanticJob::findEnumTypeInContext(SemanticContext* context, TypeInfo* typeInfo)
 {
-    typeInfo = TypeManager::concreteType(typeInfo, CONCRETE_FUNC);
+    typeInfo = TypeManager::concreteType(typeInfo, CONCRETE_FUNC | CONCRETE_FORCEALIAS);
     if (!typeInfo || !typeInfo->isEnum())
         return nullptr;
     return CastTypeInfo<TypeInfoEnum>(typeInfo, TypeInfoKind::Enum);
@@ -2524,10 +2524,11 @@ bool SemanticJob::findEnumTypeInContext(SemanticContext* context, AstNode* node,
             VectorNative<TypeInfoEnum*> result;
             for (auto& overload : symbol->overloads)
             {
-                if (!overload->typeInfo->isFuncAttr() && !overload->typeInfo->isLambdaClosure())
+                auto concrete = TypeManager::concreteType(overload->typeInfo, CONCRETE_FORCEALIAS);
+                if (!concrete->isFuncAttr() && !concrete->isLambdaClosure())
                     continue;
 
-                auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(overload->typeInfo, TypeInfoKind::FuncAttr, TypeInfoKind::LambdaClosure);
+                auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(concrete, TypeInfoKind::FuncAttr, TypeInfoKind::LambdaClosure);
 
                 // If there's only one corresponding type in the function, then take it
                 // If it's not the correct parameter, the match will not be done, so we do not really care here
@@ -2555,7 +2556,7 @@ bool SemanticJob::findEnumTypeInContext(SemanticContext* context, AstNode* node,
                         auto child = fctCallParam->parent->childs[i];
                         if (child == fctCallParam)
                             break;
-                        if (child->typeInfo && child->typeInfo->isEnum())
+                        if (child->typeInfo && child->typeInfo->getCA()->isEnum())
                             enumIdx++;
                         else if (child->kind == AstNodeKind::IdentifierRef && child->specFlags & AstIdentifierRef::SPECFLAG_AUTO_SCOPE)
                             enumIdx++;
@@ -2563,11 +2564,12 @@ bool SemanticJob::findEnumTypeInContext(SemanticContext* context, AstNode* node,
 
                     for (auto p : typeFunc->parameters)
                     {
-                        if (p->typeInfo->isEnum())
+                        auto concreteP = TypeManager::concreteType(p->typeInfo, CONCRETE_FORCEALIAS);
+                        if (concreteP->isEnum())
                         {
                             if (!enumIdx)
                             {
-                                auto typeEnum = findEnumTypeInContext(context, p->typeInfo);
+                                auto typeEnum = findEnumTypeInContext(context, concreteP);
                                 if (typeEnum && typeEnum->contains(node->token.text))
                                     result.push_back_once(typeEnum);
                                 break;
@@ -2605,7 +2607,7 @@ bool SemanticJob::findEnumTypeInContext(SemanticContext* context, AstNode* node,
             auto funcNode = getFunctionForReturn(fctReturn);
             if (funcNode->returnType)
             {
-                auto typeInfo = TypeManager::concreteType(funcNode->returnType->typeInfo, CONCRETE_FUNC);
+                auto typeInfo = TypeManager::concreteType(funcNode->returnType->typeInfo, CONCRETE_FUNC | CONCRETE_FORCEALIAS);
                 if (typeInfo->isEnum())
                 {
                     *res = CastTypeInfo<TypeInfoEnum>(typeInfo, TypeInfoKind::Enum);

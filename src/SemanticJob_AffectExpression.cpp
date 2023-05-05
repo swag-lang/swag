@@ -227,14 +227,14 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
     bool forEnumFlags = false;
     if (node->tokenId != TokenId::SymEqual)
     {
-        if (leftTypeInfo->isEnum() || rightTypeInfo->isEnum())
+        if (leftTypeInfo->getCA()->isEnum() || rightTypeInfo->getCA()->isEnum())
         {
             SWAG_CHECK(TypeManager::makeCompatibles(context, left, right));
             if (node->tokenId != TokenId::SymVerticalEqual &&
                 node->tokenId != TokenId::SymAmpersandEqual &&
                 node->tokenId != TokenId::SymCircumflexEqual)
                 return notAllowed(context, node, leftTypeInfo, nullptr, left);
-            if (!(leftTypeInfo->flags & TYPEINFO_ENUM_FLAGS) || !(rightTypeInfo->flags & TYPEINFO_ENUM_FLAGS))
+            if (!(leftTypeInfo->getCA()->flags & TYPEINFO_ENUM_FLAGS) || !(rightTypeInfo->getCA()->flags & TYPEINFO_ENUM_FLAGS))
                 return notAllowed(context, node, leftTypeInfo, "because the enum is not marked with 'Swag.EnumFlags'", left);
             forEnumFlags = true;
         }

@@ -781,9 +781,20 @@ Utf8 Diagnostic::isType(TypeInfo* typeInfo)
 {
     if (!typeInfo)
         return "";
+
+    Utf8 str;
     if (typeInfo->isTuple() || typeInfo->isListTuple())
-        return Hnt(Hnt0010);
-    return Fmt(Hnt(Hnt0011), typeInfo->getDisplayNameC());
+        str = Hnt(Hnt0010);
+    else
+        str = Fmt(Hnt(Hnt0011), typeInfo->getDisplayNameC());
+
+    if (typeInfo->isAlias())
+    {
+        auto typeAlias = CastTypeInfo<TypeInfoAlias>(typeInfo, TypeInfoKind::Alias);
+        str += Fmt(" (aka '%s')", typeAlias->rawType->getCA()->getDisplayNameC());
+    }
+
+    return str;
 }
 
 Utf8 Diagnostic::isType(AstNode* node)
