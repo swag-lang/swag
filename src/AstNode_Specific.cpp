@@ -451,12 +451,15 @@ AstNode* AstFuncDecl::clone(CloneContext& context)
     {
         for (const auto& p : context.nodeRefsToUpdate)
         {
-            if (p.node->kind == AstNodeKind::AffectOp)
+            if (p.node->hasExtMisc() && p.node->extMisc()->dependentLambda == newNode)
             {
-                auto affOp = CastAst<AstOp>(p.node, AstNodeKind::AffectOp);
-                if (affOp->dependentLambda == newNode)
+                for (auto p1 : p.node->childs)
                 {
-                    newNode->makePointerLambda = CastAst<AstMakePointer>(affOp->childs.back(), AstNodeKind::MakePointerLambda);
+                    if (p1->kind == AstNodeKind::MakePointerLambda)
+                    {
+                        newNode->makePointerLambda = CastAst<AstMakePointer>(p1, AstNodeKind::MakePointerLambda);
+                        break;
+                    }
                 }
             }
         }
@@ -1262,13 +1265,6 @@ AstNode* AstOp::clone(CloneContext& context)
 {
     auto newNode = Ast::newNode<AstOp>();
     newNode->copyFrom(context, this);
-
-    if (dependentLambda)
-    {
-        newNode->dependentLambda = dependentLambda;
-        context.nodeRefsToUpdate.push_back({newNode, &newNode->dependentLambda});
-    }
-
     return newNode;
 }
 

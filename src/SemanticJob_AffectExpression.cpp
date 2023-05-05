@@ -44,11 +44,11 @@ bool SemanticJob::resolveAfterAffectLeft(SemanticContext* context)
     auto typeInfo = TypeManager::concreteType(node->typeInfo);
     if (typeInfo->isLambdaClosure() || typeInfo->isStruct())
     {
-        auto op = CastAst<AstOp>(node->parent, AstNodeKind::AffectOp);
-        if (op->dependentLambda)
+        auto op = node->parent;
+        if (op->hasExtMisc() && op->extMisc()->dependentLambda)
         {
             // Cannot cast from closure to lambda
-            if (node->typeInfo->isLambda() && op->dependentLambda->typeInfo->isClosure())
+            if (node->typeInfo->isLambda() && op->extMisc()->dependentLambda->typeInfo->isClosure())
             {
                 Diagnostic diag{op->childs.back(), Err(Err0185)};
                 diag.addRange(node, Diagnostic::isType(node->typeInfo));
@@ -56,9 +56,9 @@ bool SemanticJob::resolveAfterAffectLeft(SemanticContext* context)
                 return context->report(diag, note);
             }
 
-            ScopedLock lk(op->dependentLambda->mutex);
-            op->dependentLambda->flags &= ~AST_SPEC_SEMANTIC2;
-            launchResolveSubDecl(context, op->dependentLambda);
+            ScopedLock lk(op->extMisc()->dependentLambda->mutex);
+            op->extMisc()->dependentLambda->flags &= ~AST_SPEC_SEMANTIC2;
+            launchResolveSubDecl(context, op->extMisc()->dependentLambda);
         }
     }
 

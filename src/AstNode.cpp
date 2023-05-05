@@ -88,6 +88,9 @@ void AstNode::copyFrom(CloneContext& context, AstNode* from, bool cloneHie)
         extMisc()->anyTypeOffset                = from->extMisc()->anyTypeOffset;
         extMisc()->alternativeScopes            = from->extMisc()->alternativeScopes;
         extMisc()->isNamed                      = from->extMisc()->isNamed;
+        extMisc()->dependentLambda              = from->extMisc()->dependentLambda;
+        if (extMisc()->dependentLambda)
+            context.nodeRefsToUpdate.push_back({this, &this->extMisc()->dependentLambda});
     }
 
     if (from->hasExtSemantic())

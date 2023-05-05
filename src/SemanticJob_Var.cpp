@@ -419,13 +419,11 @@ DataSegment* SemanticJob::getSegmentForVar(SemanticContext* context, AstVarDecl*
 bool SemanticJob::deduceLambdaParamTypeFrom(SemanticContext* context, AstVarDecl* nodeParam, bool& lambdaExpr, bool& genericType)
 {
     auto mpl = nodeParam->ownerFct->makePointerLambda;
-    if (!mpl || mpl->parent->kind != AstNodeKind::AffectOp)
+    if (!mpl || !mpl->parent->hasExtMisc() || !mpl->parent->extMisc()->dependentLambda)
         return true;
 
     TypeInfoFuncAttr* typeLambda = nullptr;
-    auto              op         = CastAst<AstOp>(mpl->parent, AstNodeKind::AffectOp);
-    if (!op->dependentLambda)
-        return true;
+    auto              op         = mpl->parent;
 
     auto front = op->childs.front();
     SWAG_ASSERT(op->childs.back() == mpl);
@@ -434,11 +432,11 @@ bool SemanticJob::deduceLambdaParamTypeFrom(SemanticContext* context, AstVarDecl
     auto frontType = TypeManager::concreteType(front->typeInfo);
     if (frontType->isStruct())
     {
-        typeLambda = op->deducedLambdaType;
+        typeLambda = op->extMisc()->deducedLambdaType;
         if (!typeLambda)
         {
             // Generate an undefined type to make the match
-            if (!op->tryLambdaType)
+            if (!op->extMisc()->tryLambdaType)
             {
                 auto tryType  = makeType<TypeInfoFuncAttr>();
                 tryType->kind = TypeInfoKind::LambdaClosure;
@@ -452,7 +450,7 @@ bool SemanticJob::deduceLambdaParamTypeFrom(SemanticContext* context, AstVarDecl
                     tryType->parameters.push_back(p);
                 }
 
-                op->tryLambdaType = tryType;
+                op->extMisc()->tryLambdaType = tryType;
             }
 
             // op match
@@ -465,7 +463,7 @@ bool SemanticJob::deduceLambdaParamTypeFrom(SemanticContext* context, AstVarDecl
             }
             else
             {
-                mpl->typeInfo = op->tryLambdaType;
+                mpl->typeInfo = op->extMisc()->tryLambdaType;
                 SWAG_CHECK(resolveUserOp(context, g_LangSpec->name_opAssign, op->token.text, nullptr, front, mpl, ROP_SIMPLE_CAST));
                 if (context->result != ContextResult::Done)
                     return true;
@@ -503,10 +501,10 @@ bool SemanticJob::deduceLambdaParamTypeFrom(SemanticContext* context, AstVarDecl
         return context->report(diag);
     }
 
-    op->deducedLambdaType = typeLambda;
-    nodeParam->typeInfo   = typeLambda->parameters[paramIdx]->typeInfo;
-    lambdaExpr            = false;
-    genericType           = false;
+    op->extMisc()->deducedLambdaType = typeLambda;
+    nodeParam->typeInfo              = typeLambda->parameters[paramIdx]->typeInfo;
+    lambdaExpr                       = false;
+    genericType                      = false;
 
     return true;
 }

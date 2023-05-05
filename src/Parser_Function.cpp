@@ -1075,6 +1075,7 @@ bool Parser::doLambdaFuncDecl(AstNode* parent, AstNode** result, bool acceptMiss
 bool Parser::doLambdaExpression(AstNode* parent, uint32_t exprFlags, AstNode** result)
 {
     bool acceptMissingType = false;
+    bool deduceMissingType = false;
 
     // We accept missing types if lambda is in a function call, because we can deduce them from the called
     // function parameters
@@ -1083,8 +1084,11 @@ bool Parser::doLambdaExpression(AstNode* parent, uint32_t exprFlags, AstNode** r
 
     // We accept missing types if lambda is in an affectation, because we can deduce them from the
     // type on the left
-    if (parent->kind == AstNodeKind::AffectOp)
+    else if (parent->kind == AstNodeKind::AffectOp)
+    {
         acceptMissingType = true;
+        deduceMissingType = true;
+    }
 
     AstNode* lambda         = nullptr;
     bool     hasMissingType = false;
@@ -1167,10 +1171,10 @@ bool Parser::doLambdaExpression(AstNode* parent, uint32_t exprFlags, AstNode** r
     }
 
     // :DeduceLambdaType
-    if (exprNode->parent->kind == AstNodeKind::AffectOp && acceptMissingType && hasMissingType)
+    if (deduceMissingType && acceptMissingType && hasMissingType)
     {
-        auto op             = CastAst<AstOp>(exprNode->parent, AstNodeKind::AffectOp);
-        op->dependentLambda = lambda;
+        exprNode->parent->allocateExtension(ExtensionKind::Misc);
+        exprNode->parent->extMisc()->dependentLambda = lambda;
 
         auto lambdaFunc               = CastAst<AstFuncDecl>(lambda, AstNodeKind::FuncDecl);
         lambdaFunc->makePointerLambda = exprNode;
