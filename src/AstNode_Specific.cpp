@@ -447,20 +447,20 @@ AstNode* AstFuncDecl::clone(CloneContext& context)
     newNode->nodeCounts        = nodeCounts;
     newNode->makePointerLambda = makePointerLambda;
 
+    // We have a correponsing MakePointerLambda, which has already been duplicated.
+    // We then need to make 'makePointerLambda' point to it.
     if (makePointerLambda)
     {
+        // The duplicated MakePointerLambda is registered in context.nodeRefsToUpdate, so we search
+        // for one which has been updated to reference 'newNode'.
+        // And then we update the current 'makePointerLambda'.
         for (const auto& p : context.nodeRefsToUpdate)
         {
-            if (p.node->hasExtMisc() && p.node->extMisc()->dependentLambda == newNode)
+            if (p.node->kind == AstNodeKind::MakePointerLambda)
             {
-                for (auto p1 : p.node->childs)
-                {
-                    if (p1->kind == AstNodeKind::MakePointerLambda)
-                    {
-                        newNode->makePointerLambda = CastAst<AstMakePointer>(p1, AstNodeKind::MakePointerLambda);
-                        break;
-                    }
-                }
+                auto mpl = CastAst<AstMakePointer>(p.node, AstNodeKind::MakePointerLambda);
+                if (mpl->lambda == newNode)
+                    newNode->makePointerLambda = mpl;
             }
         }
     }
@@ -1230,11 +1230,6 @@ AstNode* AstRange::clone(CloneContext& context)
     newNode->expressionLow = findChildRef(expressionLow, newNode);
     newNode->expressionUp  = findChildRef(expressionUp, newNode);
     return newNode;
-}
-
-bool AstMakePointer::mustDeduceType()
-{
-    return parent && parent->hasExtMisc() && parent->extMisc()->dependentLambda;
 }
 
 AstNode* AstMakePointer::clone(CloneContext& context)

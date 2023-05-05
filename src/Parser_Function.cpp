@@ -1173,9 +1173,8 @@ bool Parser::doLambdaExpression(AstNode* parent, uint32_t exprFlags, AstNode** r
     // :DeduceLambdaType
     if (deduceMissingType && acceptMissingType && hasMissingType)
     {
-        exprNode->parent->allocateExtension(ExtensionKind::Misc);
-        exprNode->parent->extMisc()->dependentLambda = lambda;
-        lambdaDecl->makePointerLambda                = exprNode;
+        exprNode->specFlags |= AstMakePointer::SPECFLAG_DEP_TYPE;
+        lambdaDecl->makePointerLambda = exprNode;
         lambdaDecl->flags |= AST_NO_SEMANTIC | AST_SPEC_SEMANTIC2;
     }
 

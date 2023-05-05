@@ -44,11 +44,14 @@ bool SemanticJob::resolveAfterAffectLeft(SemanticContext* context)
     auto typeInfo = TypeManager::concreteType(node->typeInfo);
     if (typeInfo->isLambdaClosure() || typeInfo->isStruct())
     {
-        auto op = node->parent;
-        if (op->hasExtMisc() && op->extMisc()->dependentLambda)
+        auto op   = node->parent;
+        auto back = op->childs.back();
+        if (back->kind == AstNodeKind::MakePointerLambda && back->specFlags & AstMakePointer::SPECFLAG_DEP_TYPE)
         {
+            auto mpl = CastAst<AstMakePointer>(back, AstNodeKind::MakePointerLambda);
+
             // Cannot cast from closure to lambda
-            if (node->typeInfo->isLambda() && op->extMisc()->dependentLambda->typeInfo->isClosure())
+            if (node->typeInfo->isLambda() && mpl->lambda->typeInfo->isClosure())
             {
                 Diagnostic diag{op->childs.back(), Err(Err0185)};
                 diag.addRange(node, Diagnostic::isType(node->typeInfo));
@@ -56,9 +59,9 @@ bool SemanticJob::resolveAfterAffectLeft(SemanticContext* context)
                 return context->report(diag, note);
             }
 
-            ScopedLock lk(op->extMisc()->dependentLambda->mutex);
-            op->extMisc()->dependentLambda->flags &= ~AST_SPEC_SEMANTIC2;
-            launchResolveSubDecl(context, op->extMisc()->dependentLambda);
+            ScopedLock lk(mpl->lambda->mutex);
+            mpl->lambda->flags &= ~AST_SPEC_SEMANTIC2;
+            launchResolveSubDecl(context, mpl->lambda);
         }
     }
 

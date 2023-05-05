@@ -354,16 +354,13 @@ struct AstNode
         VectorNative<uint32_t>            registersToRelease;
         RegisterList                      additionalRegisterRC;
 
-        SymbolOverload*   resolvedUserOpSymbolOverload = nullptr;
-        TypeInfo*         collectTypeInfo              = nullptr;
-        AstNode*          alternativeNode              = nullptr;
-        AstNode*          exportNode                   = nullptr;
-        DataSegment*      anyTypeSegment               = nullptr;
-        TypeInfoParam*    castItf                      = nullptr;
-        AstNode*          isNamed                      = nullptr;
-        AstNode*          dependentLambda              = nullptr;
-        TypeInfoFuncAttr* deducedLambdaType            = nullptr;
-        TypeInfoFuncAttr* tryLambdaType                = nullptr;
+        SymbolOverload* resolvedUserOpSymbolOverload = nullptr;
+        TypeInfo*       collectTypeInfo              = nullptr;
+        AstNode*        alternativeNode              = nullptr;
+        AstNode*        exportNode                   = nullptr;
+        DataSegment*    anyTypeSegment               = nullptr;
+        TypeInfoParam*  castItf                      = nullptr;
+        AstNode*        isNamed                      = nullptr;
 
         uint32_t castOffset    = 0;
         uint32_t stackOffset   = 0;
@@ -1044,12 +1041,14 @@ struct AstRange : public AstNode
 
 struct AstMakePointer : public AstNode
 {
-    static const uint16_t SPECFLAG_TOREF = 0x0001;
+    static const uint16_t SPECFLAG_TOREF    = 0x0001;
+    static const uint16_t SPECFLAG_DEP_TYPE = 0x0002;
 
     AstNode* clone(CloneContext& context);
-    bool     mustDeduceType();
 
-    AstFuncDecl* lambda;
+    AstFuncDecl*      lambda;
+    TypeInfoFuncAttr* deducedLambdaType = nullptr;
+    TypeInfoFuncAttr* tryLambdaType     = nullptr;
 };
 
 struct AstSubstBreakContinue : public AstNode
