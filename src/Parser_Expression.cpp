@@ -940,7 +940,7 @@ bool Parser::doBoolExpression(AstNode* parent, uint32_t exprFlags, AstNode** res
     return true;
 }
 
-bool Parser::doMoveExpression(Token& forToken, TokenId tokenId, AstNode* parent, AstNode** result)
+bool Parser::doMoveExpression(Token& forToken, TokenId tokenId, AstNode* parent, uint32_t exprFlags, AstNode** result)
 {
     uint32_t mdfFlags = 0;
     SWAG_CHECK(doModifiers(forToken, tokenId, mdfFlags));
@@ -978,7 +978,7 @@ bool Parser::doMoveExpression(Token& forToken, TokenId tokenId, AstNode* parent,
         }
     }
 
-    SWAG_CHECK(doExpression(parent, EXPR_FLAG_NONE, result));
+    SWAG_CHECK(doExpression(parent, exprFlags, result));
     return true;
 }
 
@@ -1184,7 +1184,7 @@ bool Parser::doExpressionListArray(AstNode* parent, AstNode** result)
     return true;
 }
 
-bool Parser::doInitializationExpression(TokenParse& forToken, AstNode* parent, AstNode** result)
+bool Parser::doInitializationExpression(TokenParse& forToken, AstNode* parent, uint32_t exprFlags, AstNode** result)
 {
     // var x: type = undefined => not initialized
     if (token.id == TokenId::KwdUndefined)
@@ -1198,7 +1198,7 @@ bool Parser::doInitializationExpression(TokenParse& forToken, AstNode* parent, A
         return true;
     }
 
-    return doMoveExpression(forToken, forToken.id, parent, result);
+    return doMoveExpression(forToken, forToken.id, parent, exprFlags, result);
 }
 
 void Parser::forceTakeAddress(AstNode* node)
@@ -1386,7 +1386,7 @@ bool Parser::doAffectExpression(AstNode* parent, AstNode** result, AstWith* with
         auto     saveToken = token;
         AstNode* assign;
         SWAG_CHECK(eatToken());
-        SWAG_CHECK(doInitializationExpression(saveToken, parent, &assign));
+        SWAG_CHECK(doInitializationExpression(saveToken, parent, EXPR_FLAG_IN_VAR_DECL, &assign));
         Ast::removeFromParent(assign);
         SWAG_CHECK(doVarDeclExpression(parent, leftNode, nullptr, assign, saveToken, AstNodeKind::VarDecl, result));
         leftNode->release();
@@ -1458,7 +1458,7 @@ bool Parser::doAffectExpression(AstNode* parent, AstNode** result, AstWith* with
                 {
                     firstDone = true;
                     if (affectNode->tokenId == TokenId::SymEqual)
-                        SWAG_CHECK(doMoveExpression(affectNode->token, affectNode->tokenId, affectNode, &affectExpression));
+                        SWAG_CHECK(doMoveExpression(affectNode->token, affectNode->tokenId, affectNode, EXPR_FLAG_NONE, &affectExpression));
                     else
                         SWAG_CHECK(doExpression(affectNode, EXPR_FLAG_NONE, &affectExpression));
                 }
@@ -1555,7 +1555,7 @@ bool Parser::doAffectExpression(AstNode* parent, AstNode** result, AstWith* with
             front->extSemantic()->semanticAfterFct = SemanticJob::resolveAfterAffectLeft;
 
             if (affectNode->tokenId == TokenId::SymEqual)
-                SWAG_CHECK(doMoveExpression(affectNode->token, affectNode->tokenId, affectNode, &dummyResult));
+                SWAG_CHECK(doMoveExpression(affectNode->token, affectNode->tokenId, affectNode, EXPR_FLAG_NONE, &dummyResult));
             else
                 SWAG_CHECK(doExpression(affectNode, EXPR_FLAG_NONE, &dummyResult));
 

@@ -153,7 +153,7 @@ struct Parser
     bool doAssignmentExpression(AstNode* parent, AstNode** result);
     bool doExpressionListTuple(AstNode* parent, AstNode** result);
     bool doExpressionListArray(AstNode* parent, AstNode** result);
-    bool doInitializationExpression(TokenParse& forToken, AstNode* parent, AstNode** result);
+    bool doInitializationExpression(TokenParse& forToken, AstNode* parent, uint32_t exprFlags, AstNode** result);
     bool doLiteral(AstNode* parent, AstNode** result);
     bool doIntrinsicProp(AstNode* parent, AstNode** result);
     bool doGetErr(AstNode* parent, AstNode** result);
@@ -171,7 +171,7 @@ struct Parser
     bool doCompareExpression(AstNode* parent, uint32_t exprFlags, AstNode** result);
     bool doBoolExpression(AstNode* parent, uint32_t exprFlags, AstNode** result);
     bool doExpression(AstNode* parent, uint32_t exprFlags, AstNode** result);
-    bool doMoveExpression(Token& forToken, TokenId tokenId, AstNode* parent, AstNode** result);
+    bool doMoveExpression(Token& forToken, TokenId tokenId, AstNode* parent, uint32_t exprFlags, AstNode** result);
     bool doGenericDeclParameters(AstNode* parent, AstNode** result);
     bool doLambdaFuncDecl(AstNode* parent, AstNode** result, bool acceptMissingType = false, bool* hasMissingType = nullptr);
     bool doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId = TokenId::Invalid);
