@@ -195,7 +195,7 @@ bool SemanticJob::resolveMakePointer(SemanticContext* context)
     // Type is constant if we take address of a readonly variable
     else if (child->resolvedSymbolOverload && !child->typeInfo->isPointerRef())
     {
-        auto typeResolved = TypeManager::concreteType(child->resolvedSymbolOverload->typeInfo, CONCRETE_ALIAS);
+        auto typeResolved = TypeManager::concreteType(child->resolvedSymbolOverload->typeInfo, CONCRETE_FORCEALIAS);
 
         if ((child->resolvedSymbolOverload->flags & OVERLOAD_CONST_ASSIGN) &&
             !typeResolved->isPointerArithmetic() &&
@@ -543,7 +543,7 @@ bool SemanticJob::resolveArrayPointerRef(SemanticContext* context)
     arrayNode->flags |= AST_R_VALUE;
 
     auto baseType  = arrayNode->array->typeInfo;
-    auto arrayType = TypeManager::concretePtrRefType(baseType, CONCRETE_ALIAS | CONCRETE_FUNC);
+    auto arrayType = TypeManager::concretePtrRefType(baseType, CONCRETE_FORCEALIAS | CONCRETE_FUNC);
 
     // When we are building a pointer, this is fine to be const, because in fact we do no generate an address to modify the content
     // (or it will be done later on a pointer, and it will be const too)

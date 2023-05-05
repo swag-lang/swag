@@ -497,7 +497,7 @@ bool SemanticJob::resolveInterface(SemanticContext* context)
             typeITable->fields.push_back(typeParam);
 
             // Verify signature
-            typeParam->typeInfo = TypeManager::concreteType(child->typeInfo, CONCRETE_ALIAS);
+            typeParam->typeInfo = TypeManager::concreteType(child->typeInfo, CONCRETE_FORCEALIAS);
             SWAG_VERIFY(typeParam->typeInfo->isLambdaClosure(), context->report({varDecl->type, Fmt(Err(Err0676), child->typeInfo->getDisplayNameC())}));
             auto typeLambda = CastTypeInfo<TypeInfoFuncAttr>(typeParam->typeInfo, TypeInfoKind::LambdaClosure);
 
@@ -1100,7 +1100,7 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
         {
             SWAG_CHECK(checkIsConstExpr(context, varDecl->assignment->flags & AST_CONST_EXPR, varDecl->assignment, Err(Err0670)));
 
-            auto typeInfoAssignment = TypeManager::concreteType(varDecl->assignment->typeInfo, CONCRETE_ALIAS);
+            auto typeInfoAssignment = TypeManager::concreteType(varDecl->assignment->typeInfo, CONCRETE_FORCEALIAS);
             typeInfoAssignment      = TypeManager::concreteType(varDecl->assignment->typeInfo, CONCRETE_ENUM);
 
             if (typeInfoAssignment->isString())

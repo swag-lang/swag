@@ -198,7 +198,7 @@ bool SemanticJob::resolveUnaryOp(SemanticContext* context)
     op->flags |= AST_R_VALUE;
 
     // Special case for enum : nothing is possible, except for flags
-    auto typeInfo = TypeManager::concreteType(child->typeInfo, CONCRETE_ALIAS);
+    auto typeInfo = TypeManager::concreteType(child->typeInfo, CONCRETE_FORCEALIAS);
     if (typeInfo->isEnum())
     {
         if (!(typeInfo->flags & TYPEINFO_ENUM_FLAGS))
