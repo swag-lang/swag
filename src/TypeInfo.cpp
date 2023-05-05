@@ -135,8 +135,8 @@ bool TypeInfo::isPointerVoid()
 {
     if (kind != TypeInfoKind::Pointer)
         return false;
-    auto ptr   = (TypeInfoPointer*) this;
-    auto unref = TypeManager::concreteType(ptr->pointedType, CONCRETE_ALIAS);
+    auto ptr   = CastTypeInfo<TypeInfoPointer>(this, TypeInfoKind::Pointer);
+    auto unref = ptr->pointedType->getCA();
     if (!unref->isNative())
         return false;
     if (unref->nativeType != NativeTypeKind::Void)
@@ -153,19 +153,26 @@ TypeInfo* TypeInfo::getFakeAlias()
 {
     if (!(flags & TYPEINFO_FAKE_ALIAS))
         return this;
-    return ((TypeInfoAlias*) this)->rawType;
+    return CastTypeInfo<TypeInfoAlias>(this, kind)->rawType;
+}
+
+TypeInfo* TypeInfo::getCA()
+{
+    return TypeManager::concreteType(this, CONCRETE_FORCEALIAS);
 }
 
 TypeInfoStruct* TypeInfo::getStructOrPointedStruct()
 {
-    if (kind == TypeInfoKind::Struct)
-        return CastTypeInfo<TypeInfoStruct>(this, TypeInfoKind::Struct);
+    auto self = getCA();
+    if (self->kind == TypeInfoKind::Struct)
+        return CastTypeInfo<TypeInfoStruct>(self, TypeInfoKind::Struct);
 
-    if (kind == TypeInfoKind::Pointer)
+    if (self->kind == TypeInfoKind::Pointer)
     {
-        auto typePointer = CastTypeInfo<TypeInfoPointer>(this, TypeInfoKind::Pointer);
-        if (typePointer->pointedType->isStruct())
-            CastTypeInfo<TypeInfoStruct>(typePointer->pointedType, TypeInfoKind::Struct);
+        auto typePointer = CastTypeInfo<TypeInfoPointer>(self, TypeInfoKind::Pointer);
+        auto pointed     = typePointer->pointedType->getCA();
+        if (pointed->isStruct())
+            return CastTypeInfo<TypeInfoStruct>(pointed, TypeInfoKind::Struct);
     }
 
     return nullptr;
@@ -175,47 +182,32 @@ bool TypeInfo::isPointerTo(NativeTypeKind pointerKind)
 {
     if (kind != TypeInfoKind::Pointer)
         return false;
-    auto ptr = (TypeInfoPointer*) this;
-    if (!ptr->pointedType)
-        return false;
-    auto c = TypeManager::concreteType(ptr->pointedType, CONCRETE_ALIAS);
-    if (!c->isNative(pointerKind))
-        return false;
-    return true;
+    auto ptr = CastTypeInfo<TypeInfoPointer>(this, TypeInfoKind::Pointer);
+    return ptr->pointedType->getCA()->isNative(pointerKind);
 }
 
 bool TypeInfo::isPointerTo(TypeInfoKind pointerKind)
 {
     if (kind != TypeInfoKind::Pointer)
         return false;
-    auto ptr = (TypeInfoPointer*) this;
-    if (!ptr->pointedType)
-        return false;
-    if (ptr->pointedType->kind != pointerKind)
-        return false;
-    return true;
+    auto ptr = CastTypeInfo<TypeInfoPointer>(this, TypeInfoKind::Pointer);
+    return ptr->pointedType->getCA()->kind == pointerKind;
 }
 
 bool TypeInfo::isPointerTo(TypeInfo* finalType)
 {
     if (kind != TypeInfoKind::Pointer)
         return false;
-    auto ptr = (TypeInfoPointer*) this;
-    if (!ptr->pointedType)
-        return false;
-    if (ptr->pointedType != finalType)
-        return false;
-    return true;
+    auto ptr = CastTypeInfo<TypeInfoPointer>(this, TypeInfoKind::Pointer);
+    return ptr->pointedType->getCA() == finalType;
 }
 
 bool TypeInfo::isPointerToTypeInfo()
 {
     if (kind != TypeInfoKind::Pointer)
         return false;
-    auto ptr = (TypeInfoPointer*) this;
-    if (!ptr->pointedType)
-        return false;
-    return ptr->pointedType->flags & TYPEINFO_STRUCT_TYPEINFO;
+    auto ptr = CastTypeInfo<TypeInfoPointer>(this, TypeInfoKind::Pointer);
+    return ptr->pointedType->getCA()->flags & TYPEINFO_STRUCT_TYPEINFO;
 }
 
 bool TypeInfo::isPointerNull()
@@ -234,23 +226,23 @@ bool TypeInfo::isArrayOfStruct()
 {
     if (kind != TypeInfoKind::Array)
         return false;
-    auto ptr = (TypeInfoArray*) this;
-    return ptr->finalType->isStruct();
+    auto ptr = CastTypeInfo<TypeInfoArray>(this, TypeInfoKind::Array);
+    return ptr->finalType->getCA()->isStruct();
 }
 
 bool TypeInfo::isArrayOfEnum()
 {
     if (kind != TypeInfoKind::Array)
         return false;
-    auto ptr = (TypeInfoArray*) this;
-    return ptr->finalType->isEnum();
+    auto ptr = CastTypeInfo<TypeInfoArray>(this, TypeInfoKind::Array);
+    return ptr->finalType->getCA()->isEnum();
 }
 
 bool TypeInfo::isMethod()
 {
     if (kind != TypeInfoKind::FuncAttr)
         return false;
-    auto ptr = (TypeInfoFuncAttr*) this;
+    auto ptr = CastTypeInfo<TypeInfoFuncAttr>(this, kind);
     if (ptr->parameters.size() == 0)
         return false;
     auto param = ptr->parameters[0];

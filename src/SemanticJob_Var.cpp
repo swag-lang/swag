@@ -997,11 +997,9 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
         }
     }
 
-    auto typeInfo = TypeManager::concreteType(node->typeInfo, CONCRETE_ALIAS);
-    typeInfo      = TypeManager::concreteType(node->typeInfo, CONCRETE_ALL & ~CONCRETE_FORCEALIAS);
+    auto typeInfo = TypeManager::concreteType(node->typeInfo);
 
     // In case of a struct (or array of structs), be sure struct is now completed before
-    // parsing variable.
     // Otherwise there's a chance, for example, that 'sizeof' is 0, which can lead to various
     // problems.
     if (!isCompilerConstant || !(node->flags & AST_FROM_GENERIC))

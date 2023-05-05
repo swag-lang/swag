@@ -226,19 +226,21 @@ struct TypeInfo
     TypeInfo(TypeInfoKind kind) : kind{kind} {}
     // clang-format on
 
-    bool            isPointerTo(NativeTypeKind pointerKind);
-    bool            isPointerTo(TypeInfoKind pointerKind);
-    bool            isPointerTo(TypeInfo* finalType);
-    bool            isPointerNull();
-    bool            isPointerVoid();
-    bool            isPointerConstVoid();
-    bool            isPointerToTypeInfo();
-    bool            isInitializerList();
-    bool            isArrayOfStruct();
-    bool            isArrayOfEnum();
-    bool            isMethod();
+    bool isPointerTo(NativeTypeKind pointerKind);
+    bool isPointerTo(TypeInfoKind pointerKind);
+    bool isPointerTo(TypeInfo* finalType);
+    bool isPointerNull();
+    bool isPointerVoid();
+    bool isPointerConstVoid();
+    bool isPointerToTypeInfo();
+    bool isInitializerList();
+    bool isArrayOfStruct();
+    bool isArrayOfEnum();
+    bool isMethod();
+
     TypeInfoStruct* getStructOrPointedStruct();
     TypeInfo*       getFakeAlias();
+    TypeInfo*       getCA();
 
     // clang-format off
     bool isSlice()                          { return kind == TypeInfoKind::Slice; }
