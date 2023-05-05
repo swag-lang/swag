@@ -310,6 +310,7 @@ struct AstNode
     AstNode* findChildRefRec(AstNode* ref, AstNode* fromChild);
     AstNode* findParent(AstNodeKind parentKind);
     AstNode* findParent(AstNodeKind parentKind1, AstNodeKind parentKind2);
+    AstNode* findChild(AstNodeKind childKind);
     Utf8     getScopedName();
     void     setOwnerAttrUse(AstAttrUse* attrUse);
     void     swap2Childs();

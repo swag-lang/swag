@@ -62,8 +62,8 @@ bool Parser::doWith(AstNode* parent, AstNode** result)
         else if (id->kind == AstNodeKind::AffectOp)
         {
             id = id->childs.front();
-            if (id->extSemantic()->semanticAfterFct == SemanticJob::resolveAfterAffectLeft)
-                id->extSemantic()->semanticAfterFct = SemanticJob::resolveWithAfterAffectLeft;
+            if (id->extSemantic()->semanticAfterFct == SemanticJob::resolveAfterKnownType)
+                id->extSemantic()->semanticAfterFct = SemanticJob::resolveWithAfterKnownType;
             else
                 id->extSemantic()->semanticAfterFct = SemanticJob::resolveWith;
             for (size_t i = 0; i < id->childs.size(); i++)

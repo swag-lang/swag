@@ -1139,6 +1139,17 @@ AstNode* AstNode::findParent(AstNodeKind parentKind1, AstNodeKind parentKind2)
     return find;
 }
 
+AstNode* AstNode::findChild(AstNodeKind childKind)
+{
+    for (auto c : childs)
+    {
+        if (c->kind == childKind)
+            return c;
+    }
+
+    return nullptr;
+}
+
 AstNode* AstNode::findChildRef(AstNode* ref, AstNode* fromChild)
 {
     if (!ref)

@@ -478,7 +478,7 @@ struct SemanticJob : public Job
     static bool resolveAlias(SemanticContext* context);
     static bool resolveWith(SemanticContext* context);
     static bool resolveWithVarDeclAfter(SemanticContext* context);
-    static bool resolveWithAfterAffectLeft(SemanticContext* context);
+    static bool resolveWithAfterKnownType(SemanticContext* context);
     static bool resolveUsing(SemanticContext* context);
     static bool resolveBinaryOpModulo(SemanticContext* context, AstNode* left, AstNode* right);
     static bool resolveBitmaskOr(SemanticContext* context, AstNode* left, AstNode* right);
@@ -503,7 +503,7 @@ struct SemanticJob : public Job
     static bool resolveCase(SemanticContext* context);
     static bool resolveLoop(SemanticContext* context);
     static bool resolveVisit(SemanticContext* context);
-    static bool resolveAfterAffectLeft(SemanticContext* context);
+    static bool resolveAfterKnownType(SemanticContext* context);
     static bool resolveAffect(SemanticContext* context);
     static bool resolveMove(SemanticContext* context);
     static bool resolveRange(SemanticContext* context);

@@ -37,32 +37,31 @@ bool SemanticJob::resolveMove(SemanticContext* context)
     return true;
 }
 
-bool SemanticJob::resolveAfterAffectLeft(SemanticContext* context)
+// :DeduceLambdaType
+// This function is called when the type has been identified, and there's a lambda waiting for it.
+// This will launch the evaluation of the lambda now that we can deduce some missing types (like parameters)
+bool SemanticJob::resolveAfterKnownType(SemanticContext* context)
 {
-    // :DeduceLambdaType
     auto node     = context->node;
     auto typeInfo = TypeManager::concreteType(node->typeInfo);
     if (typeInfo->isLambdaClosure() || typeInfo->isStruct())
     {
-        auto op   = node->parent;
-        auto back = op->childs.back();
-        if (back->kind == AstNodeKind::MakePointerLambda && back->specFlags & AstMakePointer::SPECFLAG_DEP_TYPE)
+        auto findMpl = node->parent->findChild(AstNodeKind::MakePointerLambda);
+        SWAG_ASSERT(findMpl);
+        auto mpl = CastAst<AstMakePointer>(findMpl, AstNodeKind::MakePointerLambda);
+
+        // Cannot cast from closure to lambda
+        if (node->typeInfo->isLambda() && mpl->lambda->typeInfo->isClosure())
         {
-            auto mpl = CastAst<AstMakePointer>(back, AstNodeKind::MakePointerLambda);
-
-            // Cannot cast from closure to lambda
-            if (node->typeInfo->isLambda() && mpl->lambda->typeInfo->isClosure())
-            {
-                Diagnostic diag{op->childs.back(), Err(Err0185)};
-                diag.addRange(node, Diagnostic::isType(node->typeInfo));
-                auto note = Diagnostic::help(Hlp(Hlp0003));
-                return context->report(diag, note);
-            }
-
-            ScopedLock lk(mpl->lambda->mutex);
-            mpl->lambda->flags &= ~AST_SPEC_SEMANTIC2;
-            launchResolveSubDecl(context, mpl->lambda);
+            Diagnostic diag{mpl, Err(Err0185)};
+            diag.addRange(node, Diagnostic::isType(node->typeInfo));
+            auto note = Diagnostic::help(Hlp(Hlp0003));
+            return context->report(diag, note);
         }
+
+        ScopedLock lk(mpl->lambda->mutex);
+        mpl->lambda->flags &= ~AST_SPEC_SEMANTIC2;
+        launchResolveSubDecl(context, mpl->lambda);
     }
 
     return true;

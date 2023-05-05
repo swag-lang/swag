@@ -48,9 +48,9 @@ bool SemanticJob::resolveWithVarDeclAfter(SemanticContext* context)
     return true;
 }
 
-bool SemanticJob::resolveWithAfterAffectLeft(SemanticContext* context)
+bool SemanticJob::resolveWithAfterKnownType(SemanticContext* context)
 {
-    SWAG_CHECK(resolveAfterAffectLeft(context));
+    SWAG_CHECK(resolveAfterKnownType(context));
     SWAG_CHECK(resolveWith(context));
     return true;
 }

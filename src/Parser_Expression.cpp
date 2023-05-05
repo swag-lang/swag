@@ -1561,7 +1561,7 @@ bool Parser::doAffectExpression(AstNode* parent, AstNode** result, AstWith* with
             {
                 auto front = affectNode->childs.front();
                 front->allocateExtension(ExtensionKind::Semantic);
-                front->extSemantic()->semanticAfterFct = SemanticJob::resolveAfterAffectLeft;
+                front->extSemantic()->semanticAfterFct = SemanticJob::resolveAfterKnownType;
             }
 
             *result = affectNode;
