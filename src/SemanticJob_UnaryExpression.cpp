@@ -86,8 +86,7 @@ bool SemanticJob::resolveUnaryOpMinus(SemanticContext* context, AstNode* op, Ast
 
 bool SemanticJob::resolveUnaryOpExclam(SemanticContext* context, AstNode* child)
 {
-    auto typeInfo = TypeManager::concreteType(child->typeInfo, CONCRETE_ALIAS);
-    typeInfo      = TypeManager::concreteType(typeInfo);
+    auto typeInfo = TypeManager::concreteType(child->typeInfo);
     if (typeInfo->isLambdaClosure() || typeInfo->isPointer() || typeInfo->isInterface() || typeInfo->isSlice())
     {
         SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoBool, nullptr, child, CASTFLAG_AUTO_BOOL));
