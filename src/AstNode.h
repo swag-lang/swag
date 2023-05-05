@@ -1047,6 +1047,7 @@ struct AstMakePointer : public AstNode
     static const uint16_t SPECFLAG_TOREF = 0x0001;
 
     AstNode* clone(CloneContext& context);
+    bool     mustDeduceType();
 
     AstFuncDecl* lambda;
 };

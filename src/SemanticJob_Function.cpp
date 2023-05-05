@@ -496,8 +496,7 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
 
         // :DeduceLambdaType
         if (funcNode->makePointerLambda &&
-            funcNode->makePointerLambda->parent->hasExtMisc() &&
-            funcNode->makePointerLambda->parent->extMisc()->dependentLambda &&
+            funcNode->makePointerLambda->mustDeduceType() &&
             !(funcNode->specFlags & AstFuncDecl::SPECFLAG_SHORT_LAMBDA))
         {
             auto deducedType = getDeducedLambdaType(context, funcNode->makePointerLambda);

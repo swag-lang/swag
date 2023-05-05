@@ -1232,6 +1232,11 @@ AstNode* AstRange::clone(CloneContext& context)
     return newNode;
 }
 
+bool AstMakePointer::mustDeduceType()
+{
+    return parent && parent->hasExtMisc() && parent->extMisc()->dependentLambda;
+}
+
 AstNode* AstMakePointer::clone(CloneContext& context)
 {
     auto newNode = Ast::newNode<AstMakePointer>();

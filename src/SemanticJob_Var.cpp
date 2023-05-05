@@ -418,11 +418,14 @@ DataSegment* SemanticJob::getSegmentForVar(SemanticContext* context, AstVarDecl*
 // :DeduceLambdaType
 TypeInfo* SemanticJob::getDeducedLambdaType(SemanticContext* context, AstMakePointer* node)
 {
+    SWAG_ASSERT(node->parent->hasExtMisc());
+    SWAG_ASSERT(node->parent->extMisc()->dependentLambda);
+
     TypeInfo* result = node->parent->extMisc()->deducedLambdaType;
     if (result)
         return result;
 
-    if (node->parent->kind == AstNodeKind::FactorOp)
+    if (node->parent->kind == AstNodeKind::AffectOp)
         result = node->parent->childs.front()->typeInfo;
 
     SWAG_ASSERT(result);
@@ -433,19 +436,19 @@ TypeInfo* SemanticJob::getDeducedLambdaType(SemanticContext* context, AstMakePoi
 bool SemanticJob::deduceLambdaParamTypeFrom(SemanticContext* context, AstVarDecl* nodeParam, bool& lambdaExpr, bool& genericType)
 {
     auto mpl = nodeParam->ownerFct->makePointerLambda;
-    if (!mpl || !mpl->parent->hasExtMisc() || !mpl->parent->extMisc()->dependentLambda)
+    if (!mpl || !mpl->mustDeduceType())
         return true;
 
+    auto frontType = getDeducedLambdaType(context, mpl);
+    frontType      = TypeManager::concreteType(frontType);
+
     TypeInfoFuncAttr* typeLambda = nullptr;
-    auto              op         = mpl->parent;
-
-    auto front = op->childs.front();
-    SWAG_ASSERT(op->childs.back() == mpl);
-    SWAG_ASSERT(front->typeInfo);
-
-    auto frontType = TypeManager::concreteType(front->typeInfo);
     if (frontType->isStruct())
     {
+        auto op    = mpl->parent;
+        auto front = op->childs.front();
+        SWAG_ASSERT(op->kind == AstNodeKind::AffectOp);
+
         typeLambda = op->extMisc()->deducedLambdaType;
         if (!typeLambda)
         {
@@ -515,10 +518,10 @@ bool SemanticJob::deduceLambdaParamTypeFrom(SemanticContext* context, AstVarDecl
         return context->report(diag);
     }
 
-    op->extMisc()->deducedLambdaType = typeLambda;
-    nodeParam->typeInfo              = typeLambda->parameters[paramIdx]->typeInfo;
-    lambdaExpr                       = false;
-    genericType                      = false;
+    mpl->parent->extMisc()->deducedLambdaType = typeLambda;
+    nodeParam->typeInfo                       = typeLambda->parameters[paramIdx]->typeInfo;
+    lambdaExpr                                = false;
+    genericType                               = false;
 
     return true;
 }
