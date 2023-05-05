@@ -201,7 +201,7 @@ llvm::DIType* BackendLLVMDbg::getType(TypeInfo* typeInfo, llvm::DIFile* file)
 {
     if (!typeInfo)
         return s32Ty;
-    typeInfo = TypeManager::concreteType(typeInfo, CONCRETE_ALIAS);
+    typeInfo = TypeManager::concreteType(typeInfo, CONCRETE_FORCEALIAS);
 
     auto it = mapTypes.find(typeInfo);
     if (it != mapTypes.end())

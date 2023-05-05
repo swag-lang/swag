@@ -1741,7 +1741,7 @@ bool SemanticJob::matchIdentifierParameters(SemanticContext* context, VectorNati
         // parameters on the source symbol
         if (rawTypeInfo->isAlias())
         {
-            rawTypeInfo = TypeManager::concreteType(rawTypeInfo, CONCRETE_ALIAS);
+            rawTypeInfo = TypeManager::concreteType(rawTypeInfo, CONCRETE_FORCEALIAS);
             if (rawTypeInfo->isStruct())
             {
                 auto typeInfo = CastTypeInfo<TypeInfoStruct>(rawTypeInfo, TypeInfoKind::Struct);

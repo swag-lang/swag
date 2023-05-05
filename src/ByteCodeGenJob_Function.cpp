@@ -1158,12 +1158,12 @@ bool ByteCodeGenJob::emitLambdaCall(ByteCodeGenContext* context)
     auto allParams                        = node->childs.empty() ? nullptr : node->childs.back();
     SWAG_ASSERT(!allParams || allParams->kind == AstNodeKind::FuncCallParams);
 
-    auto typeRef = TypeManager::concreteType(overload->typeInfo, CONCRETE_ALIAS);
+    auto typeRef = TypeManager::concreteType(overload->typeInfo, CONCRETE_FORCEALIAS);
 
     if (node->isSilentCall())
     {
         auto typeArr = CastTypeInfo<TypeInfoArray>(overload->typeInfo, TypeInfoKind::Array);
-        typeRef      = TypeManager::concreteType(typeArr->finalType, CONCRETE_ALIAS);
+        typeRef      = TypeManager::concreteType(typeArr->finalType, CONCRETE_FORCEALIAS);
     }
 
     // A closure is the pointer to the variable, not the function address
@@ -1555,18 +1555,18 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
     {
         // :SilentCall
         auto typeArr = CastTypeInfo<TypeInfoArray>(varNode->typeInfo, TypeInfoKind::Array);
-        auto typeVar = TypeManager::concreteType(typeArr->finalType, CONCRETE_ALIAS);
+        auto typeVar = TypeManager::concreteType(typeArr->finalType, CONCRETE_FORCEALIAS);
         typeInfoFunc = CastTypeInfo<TypeInfoFuncAttr>(typeVar, TypeInfoKind::LambdaClosure);
     }
     else if (varNode->typeInfo->isPointerRef())
     {
-        auto typeVar = TypeManager::concretePtrRefType(varNode->typeInfo, CONCRETE_ALIAS);
+        auto typeVar = TypeManager::concretePtrRefType(varNode->typeInfo, CONCRETE_FORCEALIAS);
         typeInfoFunc = CastTypeInfo<TypeInfoFuncAttr>(typeVar, TypeInfoKind::LambdaClosure);
         EMIT_INST2(context, ByteCodeOp::DeRef64, node->resultRegisterRC, node->resultRegisterRC);
     }
     else
     {
-        auto typeVar = TypeManager::concreteType(varNode->typeInfo, CONCRETE_ALIAS);
+        auto typeVar = TypeManager::concreteType(varNode->typeInfo, CONCRETE_FORCEALIAS);
         typeInfoFunc = CastTypeInfo<TypeInfoFuncAttr>(typeVar, TypeInfoKind::LambdaClosure);
     }
 

@@ -63,7 +63,7 @@ bool ByteCodeGenJob::emitStringRef(ByteCodeGenContext* context)
 bool ByteCodeGenJob::emitArrayRef(ByteCodeGenContext* context)
 {
     auto node          = CastAst<AstArrayPointerIndex>(context->node, AstNodeKind::ArrayPointerIndex);
-    auto typeArray     = TypeManager::concreteType(node->array->typeInfo, CONCRETE_ALIAS);
+    auto typeArray     = TypeManager::concreteType(node->array->typeInfo, CONCRETE_FORCEALIAS);
     auto typeInfoArray = CastTypeInfo<TypeInfoArray>(typeArray, TypeInfoKind::Array);
 
     if (!(node->access->semFlags & SEMFLAG_CAST1))
@@ -202,7 +202,7 @@ bool ByteCodeGenJob::emitTypeDeRef(ByteCodeGenContext* context, RegisterList& r0
 {
     ensureCanBeChangedRC(context, r0);
 
-    typeInfo = TypeManager::concretePtrRefType(typeInfo, CONCRETE_ALIAS);
+    typeInfo = TypeManager::concretePtrRefType(typeInfo, CONCRETE_FORCEALIAS);
 
     if (typeInfo->numRegisters() == 2)
     {
@@ -379,7 +379,7 @@ bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
             EMIT_INST3(context, ByteCodeOp::IncPointer64, node->array->resultRegisterRC, node->access->resultRegisterRC, node->array->resultRegisterRC);
         }
 
-        auto pointedType = TypeManager::concreteType(typeInfoArray->pointedType, CONCRETE_ALIAS);
+        auto pointedType = TypeManager::concreteType(typeInfoArray->pointedType, CONCRETE_FORCEALIAS);
 
         if (pointedType->isString())
             SWAG_CHECK(emitTypeDeRef(context, node->array->resultRegisterRC, pointedType));

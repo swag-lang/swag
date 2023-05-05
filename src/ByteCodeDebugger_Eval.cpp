@@ -213,7 +213,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdPrint(ByteCodeRunContext* context, const
     if (res.type->isVoid())
         return BcDbgCommandResult::Continue;
 
-    auto concrete = TypeManager::concreteType(res.type, CONCRETE_ALIAS);
+    auto concrete = TypeManager::concreteType(res.type, CONCRETE_FORCEALIAS);
     Utf8 str;
     if (hasFormat)
     {
