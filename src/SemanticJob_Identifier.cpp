@@ -1157,8 +1157,9 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* ide
         }
 
         // Setup parent if necessary
-        auto typeInfo = TypeManager::concreteType(identifier->typeInfo, CONCRETE_ALL & ~CONCRETE_FORCEALIAS);
         SWAG_CHECK(setupIdentifierRef(context, identifier));
+
+        auto typeInfo = TypeManager::concretePtrRefType(identifier->typeInfo);
 
         // If this is a 'code' variable, when passing code from one macro to another, then do not generate bytecode
         // for it, as this is not really a variable
@@ -1166,10 +1167,10 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* ide
             identifier->flags |= AST_NO_BYTECODE;
 
         // Lambda call
-        typeInfo = TypeManager::concretePtrRefType(identifier->typeInfo, CONCRETE_ALL & ~CONCRETE_FORCEALIAS);
         if (typeInfo->isLambdaClosure() && identifier->callParameters)
         {
             auto typeInfoRet = CastTypeInfo<TypeInfoFuncAttr>(typeInfo, TypeInfoKind::LambdaClosure)->returnType;
+            typeInfoRet      = TypeManager::concreteType(typeInfoRet, CONCRETE_FORCEALIAS);
 
             // Check return value
             if (!typeInfoRet->isVoid())

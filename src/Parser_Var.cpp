@@ -302,7 +302,7 @@ bool Parser::doVarDecl(AstNode* parent, AstNode** result, AstNodeKind kind)
         if (token.id == TokenId::SymEqual)
         {
             SWAG_CHECK(eatToken());
-            SWAG_CHECK(doInitializationExpression(assignToken, parent, EXPR_FLAG_IN_VAR_DECL, &assign));
+            SWAG_CHECK(doInitializationExpression(assignToken, parent, type ? EXPR_FLAG_IN_VAR_DECL_WITH_TYPE : EXPR_FLAG_IN_VAR_DECL, &assign));
             Ast::removeFromParent(assign);
         }
 

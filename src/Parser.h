@@ -57,15 +57,16 @@ const uint32_t IDENTIFIER_NO_ARRAY        = 0x00000010;
 const uint32_t IDENTIFIER_NO_PARAMS       = IDENTIFIER_NO_FCT_PARAMS | IDENTIFIER_NO_GEN_PARAMS | IDENTIFIER_NO_ARRAY;
 const uint32_t IDENTIFIER_GLOBAL          = 0x00000020;
 
-const uint32_t EXPR_FLAG_NONE        = 0x00000000;
-const uint32_t EXPR_FLAG_SIMPLE      = 0x00000001;
-const uint32_t EXPR_FLAG_ALIAS       = 0x00000002;
-const uint32_t EXPR_FLAG_TYPEOF      = 0x00000004;
-const uint32_t EXPR_FLAG_STOP_AFFECT = 0x00000008;
-const uint32_t EXPR_FLAG_PARAMETER   = 0x00000010;
-const uint32_t EXPR_FLAG_IN_CALL     = 0x00000020;
-const uint32_t EXPR_FLAG_IN_VAR_DECL = 0x00000040;
-const uint32_t EXPR_FLAG_TYPE_EXPR   = 0x00000080;
+const uint32_t EXPR_FLAG_NONE                  = 0x00000000;
+const uint32_t EXPR_FLAG_SIMPLE                = 0x00000001;
+const uint32_t EXPR_FLAG_ALIAS                 = 0x00000002;
+const uint32_t EXPR_FLAG_TYPEOF                = 0x00000004;
+const uint32_t EXPR_FLAG_STOP_AFFECT           = 0x00000008;
+const uint32_t EXPR_FLAG_PARAMETER             = 0x00000010;
+const uint32_t EXPR_FLAG_IN_CALL               = 0x00000020;
+const uint32_t EXPR_FLAG_IN_VAR_DECL           = 0x00000040;
+const uint32_t EXPR_FLAG_TYPE_EXPR             = 0x00000080;
+const uint32_t EXPR_FLAG_IN_VAR_DECL_WITH_TYPE = 0x00000100;
 
 const uint32_t CONTEXT_FLAG_EXPRESSION = 0x00000001;
 

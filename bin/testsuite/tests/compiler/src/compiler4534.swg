@@ -1,13 +1,13 @@
 //#global testerror
 
 #[Swag.Strict]
-alias B = func(s32)
+alias B = closure(s32)
 
 var G = 0
 
 #test
 {
-    var x: B = func(a) { G += a; }
+    var x: B = closure||(a) { G += a; }
     x(1)
     @assert(G == 1)
 }

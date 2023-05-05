@@ -82,8 +82,6 @@ safety, exit stackframe (return local value)
 -------------------------------------
 on doit exporter les implementation d'interface pour un truc public ?
 -------------------------------------
-lambda short form in declaration var x: func(s32) = @(x) {}
--------------------------------------
 closure & ufcs (exemple 3477)
 -------------------------------------
 context & tempallocator, y'a vraiment aucun usage dans std, c'est pas normal, faut se pencher sur l'utilisation de ce truc

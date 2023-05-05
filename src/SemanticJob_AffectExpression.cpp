@@ -44,26 +44,28 @@ bool SemanticJob::resolveAfterKnownType(SemanticContext* context)
 {
     auto node     = context->node;
     auto typeInfo = TypeManager::concreteType(node->typeInfo);
-    if (typeInfo->isLambdaClosure() || typeInfo->isStruct())
+    if (!typeInfo->isLambdaClosure() && !typeInfo->isStruct())
+        return true;
+
+    auto findMpl = node->parent->findChild(AstNodeKind::MakePointerLambda);
+    if (!findMpl)
+        return true;
+    auto mpl = CastAst<AstMakePointer>(findMpl, AstNodeKind::MakePointerLambda);
+    if (!(mpl->specFlags & AstMakePointer::SPECFLAG_DEP_TYPE))
+        return true;
+
+    // Cannot cast from closure to lambda
+    if (node->typeInfo->getCA()->isLambda() && mpl->lambda->typeInfo->getCA()->isClosure())
     {
-        auto findMpl = node->parent->findChild(AstNodeKind::MakePointerLambda);
-        SWAG_ASSERT(findMpl);
-        auto mpl = CastAst<AstMakePointer>(findMpl, AstNodeKind::MakePointerLambda);
-
-        // Cannot cast from closure to lambda
-        if (node->typeInfo->isLambda() && mpl->lambda->typeInfo->isClosure())
-        {
-            Diagnostic diag{mpl, Err(Err0185)};
-            diag.addRange(node, Diagnostic::isType(node->typeInfo));
-            auto note = Diagnostic::help(Hlp(Hlp0003));
-            return context->report(diag, note);
-        }
-
-        ScopedLock lk(mpl->lambda->mutex);
-        mpl->lambda->flags &= ~AST_SPEC_SEMANTIC2;
-        launchResolveSubDecl(context, mpl->lambda);
+        Diagnostic diag{mpl, Err(Err0185)};
+        diag.addRange(node, Diagnostic::isType(node->typeInfo));
+        auto note = Diagnostic::help(Hlp(Hlp0003));
+        return context->report(diag, note);
     }
 
+    ScopedLock lk(mpl->lambda->mutex);
+    mpl->lambda->flags &= ~AST_SPEC_SEMANTIC2;
+    launchResolveSubDecl(context, mpl->lambda);
     return true;
 }
 

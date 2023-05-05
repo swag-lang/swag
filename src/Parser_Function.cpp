@@ -1090,6 +1090,14 @@ bool Parser::doLambdaExpression(AstNode* parent, uint32_t exprFlags, AstNode** r
         deduceMissingType = true;
     }
 
+    // We accept missing types if lambda is in a variable declaration with a type, because we can deduce them from the
+    // type
+    else if (exprFlags & EXPR_FLAG_IN_VAR_DECL_WITH_TYPE)
+    {
+        acceptMissingType = true;
+        deduceMissingType = true;
+    }
+
     AstNode* lambda         = nullptr;
     bool     hasMissingType = false;
 

@@ -110,6 +110,9 @@ void SemanticJob::setVarDeclResolve(AstVarDecl* varNode)
 
 bool SemanticJob::resolveVarDeclAfterType(SemanticContext* context)
 {
+    // :DeduceLambdaType
+    resolveAfterKnownType(context);
+
     auto parent = context->node->parent;
     while (parent && parent->kind != AstNodeKind::VarDecl && parent->kind != AstNodeKind::ConstDecl && parent->kind != AstNodeKind::FuncDeclParam)
         parent = parent->parent;
@@ -425,7 +428,15 @@ TypeInfo* SemanticJob::getDeducedLambdaType(SemanticContext* context, AstMakePoi
         return result;
 
     if (node->parent->kind == AstNodeKind::AffectOp)
+    {
         result = node->parent->childs.front()->typeInfo;
+    }
+    else if (node->parent->kind == AstNodeKind::VarDecl)
+    {
+        auto varDecl = CastAst<AstVarDecl>(node->parent, AstNodeKind::VarDecl);
+        SWAG_ASSERT(varDecl->type);
+        result = varDecl->type->typeInfo;
+    }
 
     SWAG_ASSERT(result);
     return TypeManager::concreteType(result, CONCRETE_FORCEALIAS);
