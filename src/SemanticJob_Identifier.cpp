@@ -110,9 +110,7 @@ bool SemanticJob::setupIdentifierRef(SemanticContext* context, AstNode* node)
     identifierRef->previousResolvedNode = node;
     identifierRef->startScope           = nullptr;
 
-    auto typeInfo = TypeManager::concreteType(node->typeInfo, CONCRETE_FUNC);
-    typeInfo      = TypeManager::concreteType(typeInfo, CONCRETE_ALIAS);
-
+    auto typeInfo  = TypeManager::concreteType(node->typeInfo, CONCRETE_FUNC | CONCRETE_ALIAS);
     auto scopeType = TypeManager::concreteType(typeInfo, CONCRETE_FORCEALIAS);
     if (scopeType->isLambdaClosure())
     {
@@ -129,7 +127,7 @@ bool SemanticJob::setupIdentifierRef(SemanticContext* context, AstNode* node)
     case TypeInfoKind::Enum:
     {
         identifierRef->startScope = CastTypeInfo<TypeInfoEnum>(scopeType, TypeInfoKind::Enum)->scope;
-        node->typeInfo            = typeInfo; // TypeManager::concreteType(typeInfo, CONCRETE_ENUM);
+        node->typeInfo            = typeInfo;
         break;
     }
     case TypeInfoKind::Pointer:
@@ -3304,7 +3302,7 @@ bool SemanticJob::fillMatchContextCallParameters(SemanticContext* context, Symbo
             symbolKind != SymbolKind::TypeAlias &&
             !identifier->isSilentCall() &&
             !symbol->overloads[0]->typeInfo->isKindGeneric() &&
-            !TypeManager::concretePtrRefType(symbol->overloads[0]->typeInfo, CONCRETE_ALIAS)->isLambdaClosure())
+            !TypeManager::concretePtrRefType(symbol->overloads[0]->typeInfo, CONCRETE_FORCEALIAS)->isLambdaClosure())
         {
             auto firstNode = symbol->nodes.front();
             if (symbolKind == SymbolKind::Variable)

@@ -92,7 +92,7 @@ bool SemanticJob::checkIsConstAffect(SemanticContext* context, AstNode* left, As
         for (int i = left->childs.count - 1; i >= 0; i--)
         {
             auto child     = left->childs[i];
-            auto typeChild = TypeManager::concreteType(child->typeInfo, CONCRETE_ALIAS);
+            auto typeChild = TypeManager::concreteType(child->typeInfo, CONCRETE_FORCEALIAS);
             if (!typeChild)
                 continue;
 
