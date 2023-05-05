@@ -82,12 +82,6 @@ void TypeInfoAlias::computeWhateverName(Utf8& resName, uint32_t nameType)
     else
     {
         TypeInfo::computeWhateverName(resName, nameType);
-        if (nameType == COMPUTE_DISPLAY_NAME)
-        {
-            Utf8 str;
-            rawType->getCA()->computeWhateverName(str, nameType);
-            resName += Fmt(" (aka '%s')", str.c_str());
-        }
     }
 }
 

@@ -134,7 +134,7 @@ bool SemanticJob::resolveVarDeclAfterType(SemanticContext* context)
     // :AutoScope
     // Resolution of an affectation to an enum, without having to specify the enum name before
     // 'using', but just for affectation
-    auto typeInfo = TypeManager::concreteType(varDecl->type->typeInfo, CONCRETE_ALIAS);
+    auto typeInfo = TypeManager::concreteType(varDecl->type->typeInfo, CONCRETE_FORCEALIAS);
     if (typeInfo->isEnum())
     {
         auto typeEnum = CastTypeInfo<TypeInfoEnum>(typeInfo, TypeInfoKind::Enum);

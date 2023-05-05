@@ -3414,8 +3414,23 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, Ty
     // Transform typealias to related type
     fromType = TypeManager::concreteType(fromType, (castFlags & CASTFLAG_EXPLICIT) ? CONCRETE_FORCEALIAS : CONCRETE_ALIAS);
     toType   = TypeManager::concreteType(toType, (castFlags & CASTFLAG_EXPLICIT) ? CONCRETE_FORCEALIAS : CONCRETE_ALIAS);
+
     if (fromType->isListTuple() || fromType->isListArray())
+    {
         toType = TypeManager::concreteType(toType, CONCRETE_FORCEALIAS);
+    }
+
+    if (toNode && toNode->resolvedSymbolName && toNode->resolvedSymbolName->kind == SymbolKind::EnumValue)
+    {
+        toType   = TypeManager::concreteType(toType, CONCRETE_FORCEALIAS);
+        fromType = TypeManager::concreteType(fromType, CONCRETE_FORCEALIAS);
+    }
+
+    if (fromNode && fromNode->resolvedSymbolName && fromNode->resolvedSymbolName->kind == SymbolKind::EnumValue)
+    {
+        toType   = TypeManager::concreteType(toType, CONCRETE_FORCEALIAS);
+        fromType = TypeManager::concreteType(fromType, CONCRETE_FORCEALIAS);
+    }
 
     if (fromType == toType)
         return true;
