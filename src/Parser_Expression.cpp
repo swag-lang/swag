@@ -1550,14 +1550,18 @@ bool Parser::doAffectExpression(AstNode* parent, AstNode** result, AstWith* with
             Ast::addChildBack(affectNode, leftNode);
             forceTakeAddress(leftNode);
 
-            auto front = affectNode->childs.front();
-            front->allocateExtension(ExtensionKind::Semantic);
-            front->extSemantic()->semanticAfterFct = SemanticJob::resolveAfterAffectLeft;
-
             if (affectNode->tokenId == TokenId::SymEqual)
                 SWAG_CHECK(doMoveExpression(affectNode->token, affectNode->tokenId, affectNode, EXPR_FLAG_NONE, &dummyResult));
             else
                 SWAG_CHECK(doExpression(affectNode, EXPR_FLAG_NONE, &dummyResult));
+
+            auto back = affectNode->childs.back();
+            if (back->kind == AstNodeKind::MakePointerLambda)
+            {
+                auto front = affectNode->childs.front();
+                front->allocateExtension(ExtensionKind::Semantic);
+                front->extSemantic()->semanticAfterFct = SemanticJob::resolveAfterAffectLeft;
+            }
 
             *result = affectNode;
         }
