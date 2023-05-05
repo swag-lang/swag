@@ -416,6 +416,20 @@ DataSegment* SemanticJob::getSegmentForVar(SemanticContext* context, AstVarDecl*
 }
 
 // :DeduceLambdaType
+TypeInfo* SemanticJob::getDeducedLambdaType(SemanticContext* context, AstMakePointer* node)
+{
+    TypeInfo* result = node->parent->extMisc()->deducedLambdaType;
+    if (result)
+        return result;
+
+    if (node->parent->kind == AstNodeKind::FactorOp)
+        result = node->parent->childs.front()->typeInfo;
+
+    SWAG_ASSERT(result);
+    return result;
+}
+
+// :DeduceLambdaType
 bool SemanticJob::deduceLambdaParamTypeFrom(SemanticContext* context, AstVarDecl* nodeParam, bool& lambdaExpr, bool& genericType)
 {
     auto mpl = nodeParam->ownerFct->makePointerLambda;

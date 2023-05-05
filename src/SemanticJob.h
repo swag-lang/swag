@@ -353,6 +353,7 @@ struct SemanticJob : public Job
     static bool           registerFuncSymbol(SemanticContext* context, AstFuncDecl* funcNode, uint32_t symbolFlags = 0);
     static void           resolveSubDecls(JobContext* context, AstFuncDecl* funcNode);
     static Utf8           getSpecialOpSignature(AstFuncDecl* node);
+    static TypeInfo*      getDeducedLambdaType(SemanticContext* context, AstMakePointer* node);
     static bool           deduceLambdaParamTypeFrom(SemanticContext* context, AstVarDecl* nodeParam, bool& lambdaExpr, bool& genericType);
     static AstFuncDecl*   getFunctionForReturn(AstNode* node);
     static bool           setUnRef(AstNode* node);
