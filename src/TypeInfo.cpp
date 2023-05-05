@@ -153,7 +153,7 @@ TypeInfo* TypeInfo::getFakeAlias()
 {
     if (!(flags & TYPEINFO_FAKE_ALIAS))
         return this;
-    return CastTypeInfo<TypeInfoAlias>(this, kind)->rawType;
+    return ((TypeInfoAlias*) this)->rawType;
 }
 
 TypeInfo* TypeInfo::getCA()
@@ -183,6 +183,8 @@ bool TypeInfo::isPointerTo(NativeTypeKind pointerKind)
     if (kind != TypeInfoKind::Pointer)
         return false;
     auto ptr = CastTypeInfo<TypeInfoPointer>(this, TypeInfoKind::Pointer);
+    if (!ptr->pointedType)
+        return false;
     return ptr->pointedType->getCA()->isNative(pointerKind);
 }
 
@@ -191,6 +193,8 @@ bool TypeInfo::isPointerTo(TypeInfoKind pointerKind)
     if (kind != TypeInfoKind::Pointer)
         return false;
     auto ptr = CastTypeInfo<TypeInfoPointer>(this, TypeInfoKind::Pointer);
+    if (!ptr->pointedType)
+        return false;
     return ptr->pointedType->getCA()->kind == pointerKind;
 }
 
@@ -199,6 +203,8 @@ bool TypeInfo::isPointerTo(TypeInfo* finalType)
     if (kind != TypeInfoKind::Pointer)
         return false;
     auto ptr = CastTypeInfo<TypeInfoPointer>(this, TypeInfoKind::Pointer);
+    if (!ptr->pointedType)
+        return false;
     return ptr->pointedType->getCA() == finalType;
 }
 
@@ -207,6 +213,8 @@ bool TypeInfo::isPointerToTypeInfo()
     if (kind != TypeInfoKind::Pointer)
         return false;
     auto ptr = CastTypeInfo<TypeInfoPointer>(this, TypeInfoKind::Pointer);
+    if (!ptr->pointedType)
+        return false;
     return ptr->pointedType->getCA()->flags & TYPEINFO_STRUCT_TYPEINFO;
 }
 

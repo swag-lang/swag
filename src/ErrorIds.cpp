@@ -833,7 +833,7 @@ void initErrors()
     SWAG_ERROR(Err0069, "unexpected first parameter type for special function '%s' ('%s' expected, '%s' provided)");
     SWAG_ERROR(Err0317, "unexpected floating point number suffix (type is '%s')");
     SWAG_ERROR(Err0087, "unexpected function call at global scope");
-    SWAG_ERROR(Err0732, "unexpected function return type 'void', this is not necessary");
+    SWAG_ERROR(Err0732, "unexpected function return type 'void' (this is not necessary)");
     SWAG_ERROR(Err0054, "unexpected generic %s for %s (a type is expected but a value is provided)");
     SWAG_ERROR(Err0057, "unexpected generic %s for %s (a value is expected but a type is provided)");
     SWAG_ERROR(Err0074, "unexpected generic parameter for special function '%s' ('bool' expected, '%s' provided)");

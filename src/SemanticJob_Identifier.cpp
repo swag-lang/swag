@@ -1369,7 +1369,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* ide
             }
         }
 
-        auto returnType = TypeManager::concreteType(identifier->typeInfo, CONCRETE_ALL & ~CONCRETE_FORCEALIAS);
+        auto returnType = TypeManager::concreteType(identifier->typeInfo);
 
         // Check return value
         if (!returnType->isVoid())

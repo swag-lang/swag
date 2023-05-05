@@ -213,6 +213,7 @@ void SymTable::addVarToDrop(SymbolOverload* overload, TypeInfo* typeInfo, uint32
 
     StructToDrop st;
     SWAG_ASSERT(typeInfo);
+    typeInfo = typeInfo->getCA();
 
     // A struct
     if (typeInfo->isStruct())
@@ -224,7 +225,7 @@ void SymTable::addVarToDrop(SymbolOverload* overload, TypeInfo* typeInfo, uint32
     else if (typeInfo->isArrayOfStruct())
     {
         auto typeArr  = CastTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
-        st.typeStruct = CastTypeInfo<TypeInfoStruct>(typeArr->finalType, TypeInfoKind::Struct);
+        st.typeStruct = CastTypeInfo<TypeInfoStruct>(typeArr->finalType->getCA(), TypeInfoKind::Struct);
     }
     else
     {
