@@ -5,5 +5,6 @@ alias B = closure(s32)
 
 #test
 {
-    var x: B = closure||(a: s32) { @print(a); }
+    var x: B
+    x = closure||(a) { @print(a); }
 }

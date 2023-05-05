@@ -416,13 +416,13 @@ DataSegment* SemanticJob::getSegmentForVar(SemanticContext* context, AstVarDecl*
 }
 
 // :DeduceLambdaType
-bool SemanticJob::deduceLambdaTypeAffect(SemanticContext* context, AstVarDecl* node, bool& lambdaExpr, bool& genericType)
+bool SemanticJob::deduceLambdaParamTypeFrom(SemanticContext* context, AstVarDecl* nodeParam, bool& lambdaExpr, bool& genericType)
 {
-    if (!node->ownerFct->makePointerLambda || node->ownerFct->makePointerLambda->parent->kind != AstNodeKind::AffectOp)
+    if (!nodeParam->ownerFct->makePointerLambda || nodeParam->ownerFct->makePointerLambda->parent->kind != AstNodeKind::AffectOp)
         return true;
 
     TypeInfoFuncAttr* typeLambda = nullptr;
-    auto              op         = CastAst<AstOp>(node->ownerFct->makePointerLambda->parent, AstNodeKind::AffectOp);
+    auto              op         = CastAst<AstOp>(nodeParam->ownerFct->makePointerLambda->parent, AstNodeKind::AffectOp);
     if (!op->dependentLambda)
         return true;
 
@@ -442,10 +442,10 @@ bool SemanticJob::deduceLambdaTypeAffect(SemanticContext* context, AstVarDecl* n
             {
                 auto tryType  = makeType<TypeInfoFuncAttr>();
                 tryType->kind = TypeInfoKind::LambdaClosure;
-                if (node->ownerFct->captureParameters)
+                if (nodeParam->ownerFct->captureParameters)
                     tryType->flags |= TYPEINFO_CLOSURE;
 
-                for (size_t i = 0; i < node->ownerFct->parameters->childs.size(); i++)
+                for (size_t i = 0; i < nodeParam->ownerFct->parameters->childs.size(); i++)
                 {
                     auto p      = g_TypeMgr->makeParam();
                     p->typeInfo = g_TypeMgr->typeInfoUndefined;
@@ -489,22 +489,22 @@ bool SemanticJob::deduceLambdaTypeAffect(SemanticContext* context, AstVarDecl* n
         typeLambda = CastTypeInfo<TypeInfoFuncAttr>(frontType, TypeInfoKind::LambdaClosure);
     }
 
-    auto paramIdx = node->childParentIdx();
+    auto paramIdx = nodeParam->childParentIdx();
 
     // Do not deduce from the context closure generated parameter
     SWAG_ASSERT(typeLambda);
-    if (typeLambda->isClosure() && !node->ownerFct->captureParameters)
+    if (typeLambda->isClosure() && !nodeParam->ownerFct->captureParameters)
         paramIdx += 1;
 
     if (paramIdx >= (uint32_t) typeLambda->parameters.count)
     {
-        Diagnostic diag{node, Fmt(Err(Err0026), (uint32_t) typeLambda->parameters.count, (uint32_t) node->parent->childs.count)};
+        Diagnostic diag{nodeParam, Fmt(Err(Err0026), (uint32_t) typeLambda->parameters.count, (uint32_t) nodeParam->parent->childs.count)};
         diag.hint = Hnt(Hnt0026);
         return context->report(diag);
     }
 
     op->deducedLambdaType = typeLambda;
-    node->typeInfo        = typeLambda->parameters[paramIdx]->typeInfo;
+    nodeParam->typeInfo   = typeLambda->parameters[paramIdx]->typeInfo;
     lambdaExpr            = false;
     genericType           = false;
 
@@ -936,7 +936,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
             lambdaExpr = true;
         if (lambdaExpr)
         {
-            SWAG_CHECK(deduceLambdaTypeAffect(context, node, lambdaExpr, thisIsAGenericType));
+            SWAG_CHECK(deduceLambdaParamTypeFrom(context, node, lambdaExpr, thisIsAGenericType));
             if (context->result != ContextResult::Done)
                 return true;
         }
