@@ -1175,10 +1175,8 @@ bool Parser::doLambdaExpression(AstNode* parent, uint32_t exprFlags, AstNode** r
     {
         exprNode->parent->allocateExtension(ExtensionKind::Misc);
         exprNode->parent->extMisc()->dependentLambda = lambda;
-
-        auto lambdaFunc               = CastAst<AstFuncDecl>(lambda, AstNodeKind::FuncDecl);
-        lambdaFunc->makePointerLambda = exprNode;
-        lambdaFunc->flags |= AST_NO_SEMANTIC | AST_SPEC_SEMANTIC2;
+        lambdaDecl->makePointerLambda                = exprNode;
+        lambdaDecl->flags |= AST_NO_SEMANTIC | AST_SPEC_SEMANTIC2;
     }
 
     *result = exprNode;
