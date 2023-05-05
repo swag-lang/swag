@@ -94,9 +94,6 @@ bool SemanticJob::setupIdentifierRef(SemanticContext* context, AstNode* node)
     if (overload && overload->flags & OVERLOAD_CONST_ASSIGN)
         node->semFlags |= SEMFLAG_IS_CONST_ASSIGN;
 
-    auto typeInfo = TypeManager::concreteType(node->typeInfo, CONCRETE_FUNC);
-    typeInfo      = TypeManager::concreteType(typeInfo, CONCRETE_ALIAS);
-
     if (node->parent->kind != AstNodeKind::IdentifierRef)
         return true;
 
@@ -112,6 +109,9 @@ bool SemanticJob::setupIdentifierRef(SemanticContext* context, AstNode* node)
 
     identifierRef->previousResolvedNode = node;
     identifierRef->startScope           = nullptr;
+
+    auto typeInfo = TypeManager::concreteType(node->typeInfo, CONCRETE_FUNC);
+    typeInfo      = TypeManager::concreteType(typeInfo, CONCRETE_ALIAS);
 
     auto scopeType = TypeManager::concreteType(typeInfo, CONCRETE_FORCEALIAS);
     if (scopeType->isLambdaClosure())
@@ -408,7 +408,7 @@ bool SemanticJob::setSymbolMatchCallParams(SemanticContext* context, AstIdentifi
 
         // If passing a closure
         // :FctCallParamClosure
-        auto toTypeRef = TypeManager::concreteType(toType, CONCRETE_ALIAS);
+        auto toTypeRef = TypeManager::concreteType(toType, CONCRETE_FORCEALIAS);
         auto makePtrL  = nodeCall->childs.empty() ? nullptr : nodeCall->childs.front();
 
         if (makePtrL && toTypeRef && toTypeRef->isClosure())
@@ -944,7 +944,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* ide
     auto symbolKind = symbol->kind;
     if (symbol->kind == SymbolKind::TypeAlias)
     {
-        typeAlias = TypeManager::concreteType(identifier->typeInfo, CONCRETE_ALIAS);
+        typeAlias = TypeManager::concreteType(identifier->typeInfo, CONCRETE_FORCEALIAS);
         if (typeAlias->isStruct())
             symbolKind = SymbolKind::Struct;
         else if (typeAlias->isInterface())
@@ -1715,7 +1715,7 @@ bool SemanticJob::matchIdentifierParameters(SemanticContext* context, VectorNati
         TypeInfo* typeWasForced = nullptr;
         if (node && node->parent && node->parent->inSimpleReturn())
         {
-            rawTypeInfo = TypeManager::concreteType(rawTypeInfo, CONCRETE_ALIAS);
+            rawTypeInfo = TypeManager::concreteType(rawTypeInfo, CONCRETE_FORCEALIAS);
             if (rawTypeInfo->isStruct())
             {
                 auto fctTypeInfo = CastTypeInfo<TypeInfoFuncAttr>(node->ownerFct->typeInfo, TypeInfoKind::FuncAttr);
@@ -3268,13 +3268,13 @@ bool SemanticJob::fillMatchContextCallParameters(SemanticContext* context, Symbo
     auto symbolKind     = symbol->kind;
     auto callParameters = identifier->callParameters;
 
-    auto typeRef = TypeManager::concreteType(overload->typeInfo, CONCRETE_ALIAS);
+    auto typeRef = TypeManager::concreteType(overload->typeInfo, CONCRETE_FORCEALIAS);
 
     if (identifier->isSilentCall())
     {
         SWAG_ASSERT(typeRef->isArray());
         auto typeArr = CastTypeInfo<TypeInfoArray>(overload->typeInfo, TypeInfoKind::Array);
-        typeRef      = TypeManager::concreteType(typeArr->finalType, CONCRETE_ALIAS);
+        typeRef      = TypeManager::concreteType(typeArr->finalType, CONCRETE_FORCEALIAS);
     }
 
     // :ClosureForceFirstParam
