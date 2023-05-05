@@ -793,8 +793,7 @@ impl ListCtrl
         fwnd.wndFlags ^= .ClipChildren
 
         // Adapt header to the frame container
-        list.hookOnEvent = func(wnd, evt)
-        {
+        list.hookOnEvent = func(wnd, evt) {
             if evt.kind != .Resize
                 return false
 

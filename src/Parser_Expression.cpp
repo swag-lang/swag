@@ -1555,8 +1555,9 @@ bool Parser::doAffectExpression(AstNode* parent, AstNode** result, AstWith* with
             else
                 SWAG_CHECK(doExpression(affectNode, EXPR_FLAG_NONE, &dummyResult));
 
+            // :DeduceLambdaType
             auto back = affectNode->childs.back();
-            if (back->kind == AstNodeKind::MakePointerLambda)
+            if (back->kind == AstNodeKind::MakePointerLambda && (back->specFlags & AstMakePointer::SPECFLAG_DEP_TYPE))
             {
                 auto front = affectNode->childs.front();
                 front->allocateExtension(ExtensionKind::Semantic);

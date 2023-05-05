@@ -428,7 +428,7 @@ TypeInfo* SemanticJob::getDeducedLambdaType(SemanticContext* context, AstMakePoi
         result = node->parent->childs.front()->typeInfo;
 
     SWAG_ASSERT(result);
-    return result;
+    return TypeManager::concreteType(result, CONCRETE_FORCEALIAS);
 }
 
 // :DeduceLambdaType
