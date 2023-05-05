@@ -3426,10 +3426,14 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, Ty
         fromType = TypeManager::concreteType(fromType, CONCRETE_FORCEALIAS);
     }
 
-    if (fromNode && fromNode->resolvedSymbolName && fromNode->resolvedSymbolName->kind == SymbolKind::EnumValue)
+    if (fromNode && fromNode->resolvedSymbolName)
     {
-        toType   = TypeManager::concreteType(toType, CONCRETE_FORCEALIAS);
-        fromType = TypeManager::concreteType(fromType, CONCRETE_FORCEALIAS);
+        if (fromNode->resolvedSymbolName->kind == SymbolKind::EnumValue ||
+            fromNode->resolvedSymbolName->kind == SymbolKind::Function)
+        {
+            toType   = TypeManager::concreteType(toType, CONCRETE_FORCEALIAS);
+            fromType = TypeManager::concreteType(fromType, CONCRETE_FORCEALIAS);
+        }
     }
 
     if (fromType == toType)
