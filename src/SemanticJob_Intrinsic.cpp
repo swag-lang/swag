@@ -225,10 +225,10 @@ bool SemanticJob::resolveIntrinsicMakeInterface(SemanticContext* context)
     if (context->result != ContextResult::Done)
         return true;
 
-    auto firstTypeInfo = TypeManager::concreteType(first->typeInfo, CONCRETE_ALIAS);
+    auto firstTypeInfo = TypeManager::concreteType(first->typeInfo, CONCRETE_FORCEALIAS);
     SWAG_VERIFY(firstTypeInfo->isPointer() || firstTypeInfo->isStruct(), context->report({first, Err(Err0793)}));
     SWAG_VERIFY(second->typeInfo->isPointerToTypeInfo(), context->report({second, Err(Err0794)}));
-    auto thirdTypeInfo = TypeManager::concreteType(third->typeInfo, CONCRETE_ALIAS);
+    auto thirdTypeInfo = TypeManager::concreteType(third->typeInfo, CONCRETE_FORCEALIAS);
     SWAG_VERIFY(thirdTypeInfo->isInterface(), context->report({third, Err(Err0795)}));
 
     node->typeInfo = third->typeInfo;
