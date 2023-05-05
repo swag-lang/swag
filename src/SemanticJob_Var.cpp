@@ -418,24 +418,24 @@ DataSegment* SemanticJob::getSegmentForVar(SemanticContext* context, AstVarDecl*
 // :DeduceLambdaType
 bool SemanticJob::deduceLambdaParamTypeFrom(SemanticContext* context, AstVarDecl* nodeParam, bool& lambdaExpr, bool& genericType)
 {
-    if (!nodeParam->ownerFct->makePointerLambda || nodeParam->ownerFct->makePointerLambda->parent->kind != AstNodeKind::AffectOp)
+    auto mpl = nodeParam->ownerFct->makePointerLambda;
+    if (!mpl || mpl->parent->kind != AstNodeKind::AffectOp)
         return true;
 
     TypeInfoFuncAttr* typeLambda = nullptr;
-    auto              op         = CastAst<AstOp>(nodeParam->ownerFct->makePointerLambda->parent, AstNodeKind::AffectOp);
+    auto              op         = CastAst<AstOp>(mpl->parent, AstNodeKind::AffectOp);
     if (!op->dependentLambda)
         return true;
 
     auto front = op->childs.front();
-    auto back  = op->childs.back();
+    SWAG_ASSERT(op->childs.back() == mpl);
     SWAG_ASSERT(front->typeInfo);
 
     auto frontType = TypeManager::concreteType(front->typeInfo);
     if (frontType->isStruct())
     {
-        if (op->deducedLambdaType)
-            typeLambda = op->deducedLambdaType;
-        else
+        typeLambda = op->deducedLambdaType;
+        if (!typeLambda)
         {
             // Generate an undefined type to make the match
             if (!op->tryLambdaType)
@@ -458,15 +458,15 @@ bool SemanticJob::deduceLambdaParamTypeFrom(SemanticContext* context, AstVarDecl
             // op match
             if (op->tokenId == TokenId::SymEqual)
             {
-                back->typeInfo = g_TypeMgr->typeInfoUndefined;
-                SWAG_CHECK(resolveUserOp(context, g_LangSpec->name_opAffect, nullptr, nullptr, front, back, ROP_SIMPLE_CAST));
+                mpl->typeInfo = g_TypeMgr->typeInfoUndefined;
+                SWAG_CHECK(resolveUserOp(context, g_LangSpec->name_opAffect, nullptr, nullptr, front, mpl, ROP_SIMPLE_CAST));
                 if (context->result != ContextResult::Done)
                     return true;
             }
             else
             {
-                back->typeInfo = op->tryLambdaType;
-                SWAG_CHECK(resolveUserOp(context, g_LangSpec->name_opAssign, op->token.text, nullptr, front, back, ROP_SIMPLE_CAST));
+                mpl->typeInfo = op->tryLambdaType;
+                SWAG_CHECK(resolveUserOp(context, g_LangSpec->name_opAssign, op->token.text, nullptr, front, mpl, ROP_SIMPLE_CAST));
                 if (context->result != ContextResult::Done)
                     return true;
             }
