@@ -81,6 +81,8 @@ bool Parser::doIdentifier(AstNode* parent, uint32_t identifierFlags)
         scopeUpValue.id               = TokenId::CompilerUp;
         scopeUpValue.literalType      = LiteralType::TT_UNTYPED_INT;
         scopeUpValue.literalValue.u64 = 1;
+        scopeUpValue.startLocation    = backTickToken.startLocation;
+        scopeUpValue.endLocation      = backTickToken.endLocation;
 
         if (token.id == TokenId::SymLeftParen)
         {
