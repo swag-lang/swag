@@ -1034,12 +1034,13 @@ bool Module::compileString(const Utf8& text)
     SWAG_ASSERT(g_RunContext->ip->node);
     SWAG_ASSERT(g_RunContext->ip->node->sourceFile);
 
-    auto sourceFile = g_RunContext->ip->node->sourceFile;
+    auto ip         = g_RunContext->ip != g_RunContext->bc->out ? g_RunContext->ip - 1 : g_RunContext->ip;
+    auto sourceFile = ip->node->sourceFile;
 
     // Is it still possible to generate some code ?
     if (!acceptsCompileString)
     {
-        Report::report({g_RunContext->ip->node, g_RunContext->ip->node->token, Err(Err0859)});
+        Report::report({ip->node, ip->node->token, Err(Err0859)});
         return false;
     }
 
@@ -1048,7 +1049,7 @@ bool Module::compileString(const Utf8& text)
     JobContext jobContext;
     Parser     parser;
     parser.setup(&jobContext, this, sourceFile);
-    if (!parser.constructEmbeddedAst(text, parent, g_RunContext->ip->node, CompilerAstKind::TopLevelInstruction, true))
+    if (!parser.constructEmbeddedAst(text, parent, ip->node, CompilerAstKind::TopLevelInstruction, true))
         return false;
 
     auto job        = Allocator::alloc<SemanticJob>();

@@ -153,8 +153,8 @@ static void cleanNotes(Vector<Diagnostic*>& notes)
             {
                 for (size_t i = 0; i < note1->ranges.size(); i++)
                 {
-                    bool        canAdd = true;
-                    const auto& r1     = note1->ranges[i];
+                    bool  canAdd = true;
+                    auto& r1     = note1->ranges[i];
                     for (size_t j = 0; j < note->ranges.size(); j++)
                     {
                         auto& r0 = note->ranges[j];
@@ -163,12 +163,11 @@ static void cleanNotes(Vector<Diagnostic*>& notes)
                         if (r0.startLocation.column >= r1.endLocation.column)
                             continue;
 
-                        // Exact same range, but there's no hint. Replace
+                        // Exact same range, but there's no hint. Eat the hint.
                         if (r0.startLocation == r1.startLocation && r0.endLocation == r1.endLocation && r0.hint.empty())
                         {
                             r0.hint = r1.hint;
-                            note1->ranges.erase(note1->ranges.begin() + i);
-                            i--;
+                            r1.hint.clear();
                         }
 
                         canAdd = false;
