@@ -278,7 +278,7 @@ bool SemanticJob::resolveType(SemanticContext* context)
     if (typeNode->typeFlags & TYPEFLAG_IS_CODE)
     {
         auto typeP = typeNode->findParent(AstNodeKind::FuncDeclParam);
-        SWAG_VERIFY(typeP && typeNode->ownerFct, context->report({typeNode, Err(Err0736)}));
+        SWAG_VERIFY(typeP && typeNode->ownerFct, context->report({typeNode, Fmt(Err(Err0696), "code")}));
         typeNode->typeInfo = g_TypeMgr->typeInfoCode;
         return true;
     }
@@ -287,7 +287,7 @@ bool SemanticJob::resolveType(SemanticContext* context)
     if (typeNode->typeFromLiteral && typeNode->typeFromLiteral->flags & TYPEINFO_C_VARIADIC)
     {
         auto typeP = typeNode->findParent(AstNodeKind::FuncDeclParam);
-        SWAG_VERIFY(typeP && typeNode->ownerFct, context->report({typeNode, Err(Err0735)}));
+        SWAG_VERIFY(typeP && typeNode->ownerFct, context->report({typeNode, Fmt(Err(Err0696), "cvarargs")}));
         typeNode->typeInfo = g_TypeMgr->typeInfoCVariadic;
         return true;
     }
@@ -525,7 +525,7 @@ bool SemanticJob::resolveType(SemanticContext* context)
         if (typeNode->typeFlags & TYPEFLAG_IS_MOVE_REF)
         {
             auto typeP = typeNode->findParent(AstNodeKind::FuncDeclParam);
-            SWAG_VERIFY(typeP && typeNode->ownerFct, context->report({typeNode, Err(Err0696)}));
+            SWAG_VERIFY(typeP && typeNode->ownerFct, context->report({typeNode, Fmt(Err(Err0696), "moveref")}));
             ptrFlags |= TYPEINFO_POINTER_MOVE_REF;
         }
 

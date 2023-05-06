@@ -708,7 +708,12 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
         SWAG_ASSERT(node->specFlags & AstVarDecl::SPECFLAG_GENERIC_TYPE);
 
         auto typeRet = TypeManager::concreteType(node->typeConstraint->typeInfo, CONCRETE_ALL);
-        SWAG_VERIFY(typeRet->isBool(), context->report({node->typeConstraint, Fmt(Err(Err0678), typeRet->getDisplayNameC())}));
+        if (!typeRet->isBool())
+        {
+            Diagnostic diag{node->typeConstraint, Fmt(Err(Err0678), typeRet->getDisplayNameC())};
+            diag.hint = Diagnostic::isType(node->typeConstraint);
+            return context->report(diag);
+        }
 
         SWAG_CHECK(checkIsConstExpr(context, node->typeConstraint, Err(Err0128)));
         SWAG_CHECK(evaluateConstExpression(context, node->typeConstraint));
