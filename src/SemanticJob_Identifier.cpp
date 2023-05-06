@@ -988,6 +988,12 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* ide
         break;
 
     case SymbolKind::EnumValue:
+
+        if (idRef &&
+            idRef->previousResolvedNode &&
+            idRef->previousResolvedNode->resolvedSymbolName->kind == SymbolKind::Variable)
+            return context->report({idRef->previousResolvedNode, Fmt(Err(Err0488), idRef->previousResolvedNode->typeInfo->getDisplayNameC())});
+
         SWAG_CHECK(setupIdentifierRef(context, identifier));
         identifier->setFlagsValueIsComputed();
         identifier->flags |= AST_R_VALUE;
