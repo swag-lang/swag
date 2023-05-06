@@ -912,7 +912,7 @@ void initErrors()
     SWAG_ERROR(Err0181, "value '%I64u' does not fit in the type '%s'");
     SWAG_ERROR(Err0183, "value '%s' ('%I64u' in decimal) does not fit in the type '%s'");
     SWAG_ERROR(Err0056, "x64 backend unsupported os '%s'");
-    SWAG_ERROR(Err0073, nullptr);
+    SWAG_ERROR(Err0073, "'with' should not be used on an enum variable (type is '%s')");
     SWAG_ERROR(Err0080, nullptr);
     SWAG_ERROR(Err0144, nullptr);
     SWAG_ERROR(Err0147, nullptr);

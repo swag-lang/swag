@@ -64,22 +64,26 @@ bool SemanticJob::resolveWith(SemanticContext* context)
     // If this is a simple identifier, no bytecode generation
     TypeInfo* typeResolved = nullptr;
     auto      front        = node->childs.front();
+    bool      fromVar      = false;
     if (front->kind == AstNodeKind::IdentifierRef)
     {
         front->flags |= AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDS;
         SWAG_ASSERT(front->resolvedSymbolName);
         SWAG_VERIFY(front->resolvedSymbolOverload, context->report({node, Err(Err0694)}));
         typeResolved = front->resolvedSymbolOverload->typeInfo;
+        fromVar      = front->resolvedSymbolName->kind == SymbolKind::Variable;
     }
     else if (front->kind == AstNodeKind::VarDecl)
     {
         SWAG_VERIFY(front->resolvedSymbolOverload, context->report({node, Err(Err0694)}));
         typeResolved = front->resolvedSymbolOverload->typeInfo;
+        fromVar      = true;
     }
     else if (front->kind == AstNodeKind::AffectOp)
     {
         SWAG_VERIFY(front->childs.front()->resolvedSymbolOverload, context->report({node, Err(Err0694)}));
         typeResolved = front->childs.front()->resolvedSymbolOverload->typeInfo;
+        fromVar      = true;
     }
 
     SWAG_ASSERT(typeResolved);
@@ -91,8 +95,12 @@ bool SemanticJob::resolveWith(SemanticContext* context)
         break;
 
     case TypeInfoKind::Namespace:
-    case TypeInfoKind::Enum:
     case TypeInfoKind::Struct:
+        break;
+
+    case TypeInfoKind::Enum:
+        if (fromVar)
+            return context->report({node, Fmt(Err(Err0073), typeResolved->getDisplayNameC())});
         break;
 
     default:

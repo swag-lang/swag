@@ -41,8 +41,7 @@ impl Point
     // Works also for enums
     {
         enum RGB{R; G; B;}
-        var color: RGB
-        with color
+        with RGB
         {
             x := .R
             @assert(x == RGB.R)
@@ -59,7 +58,7 @@ impl Point
         }
     }
 
-    // Instead of an identifier name, 'with' also accepts a variable declaration
+    // Instead of an identifier name, 'with' also accepts a variable declaration if the variable is a struct or a pointer to a struct
     {
         with pt := Point{1, 2}
         {
@@ -78,16 +77,6 @@ impl Point
         }
 
         @assert(pt.x == 10 and pt.y == 20)
-    }
-
-    {
-        enum RGB{R; G; B;}
-        with var color: RGB
-        {
-            x := .R
-            @assert(x == RGB.R)
-            @assert(x == .R)
-        }
     }
 
     // Or an affect statement
