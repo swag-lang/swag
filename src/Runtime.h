@@ -246,6 +246,9 @@ struct BuildCfg
     BuildCfgBackendOptim   backendOptimize          = BuildCfgBackendOptim::O0;
     uint32_t               backendNumCU             = 0;
 
+    // Linker
+    SwagSlice linkerArgs;
+
     // Specific backend parameters
     BuildCfgBackendLLVM backendLLVM;
     BuildCfgBackendX64  backendX64;

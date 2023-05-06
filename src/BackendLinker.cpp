@@ -23,7 +23,8 @@ namespace BackendLinker
                 startLine = false;
             }
 
-            errMsg += ptr;
+            Utf8 str{ptr, (uint32_t) len};
+            errMsg += str;
 
             if (strstr(ptr, "\n"))
             {
@@ -34,22 +35,35 @@ namespace BackendLinker
                 for (auto& l : subNames)
                 {
                     auto pze = strstr(l.c_str(), ": error:");
-                    if (pze)
+                    auto pzw = strstr(l.c_str(), ": warning:");
+                    if (pze || pzw)
                     {
                         errCount++;
-                        g_Log.setColor(LogColor::Red);
+                        g_Log.setColor(pze ? LogColor::Red : LogColor::Magenta);
                         if (module)
                         {
-                            Utf8 l2 = pze + 8;
-                            l2.trim();
-                            auto l1 = Fmt("linker error: module '%s': %s", module->name.c_str(), l2.c_str());
-                            l       = l1;
+                            if (pze)
+                            {
+                                Utf8 l2 = pze + 8;
+                                l2.trim();
+                                auto l1 = Fmt("module '%s': linker error: %s", module->name.c_str(), l2.c_str());
+                                l       = l1;
+                            }
+                            else
+                            {
+                                Utf8 l2 = pzw + 10;
+                                l2.trim();
+                                auto l1 = Fmt("module '%s': linker warning: %s", module->name.c_str(), l2.c_str());
+                                l       = l1;
+                            }
                         }
 
                         l += "\n";
                         g_Log.print(l);
+
 #ifdef SWAG_DEV_MODE
-                        OS::errorBox("[Developer Mode]", "Error raised !");
+                        if (pze)
+                            OS::errorBox("[Developer Mode]", "Error raised !");
 #endif
                     }
                     else
@@ -197,6 +211,22 @@ namespace BackendLinker
         case BackendObjType::Wasm:
             SWAG_ASSERT(false);
             break;
+        }
+
+        // Add user additional linker arguments
+        if (buildParameters.buildCfg->linkerArgs.count)
+        {
+            const char* pz  = (const char*) buildParameters.buildCfg->linkerArgs.buffer;
+            const char* pze = pz + buildParameters.buildCfg->linkerArgs.count;
+            while (pz < pze)
+            {
+                Utf8 value;
+                while (pz < pze && !SWAG_IS_BLANK(*pz))
+                    value += *pz++;
+                while (pz < pze && SWAG_IS_BLANK(*pz))
+                    pz++;
+                arguments.push_back(value);
+            }
         }
     }
 

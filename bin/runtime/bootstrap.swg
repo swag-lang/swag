@@ -618,6 +618,9 @@ namespace Swag
         backendOptimize           = BuildCfgBackendOptim.O0
         backendNumCU: u32         = 0
 
+        // Linker
+        linkerArgs:     string      // Additional linker arguments
+
         // Specific backend parameters
         backendLLVM:    BuildCfgBackendLLVM
         backendX64:     BuildCfgBackendX64

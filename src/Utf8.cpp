@@ -45,8 +45,9 @@ Utf8::Utf8(const char* from, uint32_t len)
         return;
 
     reserve(len + 1);
-    memcpy(buffer, from, len + 1);
-    count = len;
+    memcpy(buffer, from, len);
+    buffer[len] = 0;
+    count       = len;
 }
 
 Utf8::Utf8(const string& from)
