@@ -291,6 +291,11 @@ void initErrors()
     SWAG_ERROR(Syn0197, "unexpected start of a type declaration for a 'self' parameter");
     SWAG_ERROR(Syn0198, "tuple type ambiguous parameters declaration");
     SWAG_ERROR(Syn0199, "unexpected token '%s' in the lambda type, ',' or ')' are expected here");
+    SWAG_ERROR(Syn0200, "syntax is ambiguous");
+    SWAG_ERROR(Syn0201, nullptr);
+    SWAG_ERROR(Syn0202, nullptr);
+    SWAG_ERROR(Syn0203, nullptr);
+    SWAG_ERROR(Syn0204, nullptr);
 
     /////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////
@@ -1008,8 +1013,8 @@ void initErrors()
     SWAG_ERROR(Hlp0048, "'Swag.Match' valid values are 'validif|self'");
     SWAG_ERROR(Hlp0049, "you could try to take the address of '%s' with '&'");
     SWAG_ERROR(Hlp0050, "only variables can be initialized that way");
-    SWAG_ERROR(Hlp0051, nullptr);
-    SWAG_ERROR(Hlp0052, nullptr);
+    SWAG_ERROR(Hlp0051, "if this is the start of a struct initialization block, considerer removing the blank(s) between '%s' and '{'");
+    SWAG_ERROR(Hlp0052, "if this is the start of a new block, consider putting '{' on another line");
     SWAG_ERROR(Hlp0053, nullptr);
     SWAG_ERROR(Hlp0054, nullptr);
 
@@ -1134,7 +1139,7 @@ void initErrors()
     SWAG_ERROR(Hnt0114, "missing return type");
     SWAG_ERROR(Hnt0115, "one function is declared with 'throw' and the other one is not");
     SWAG_ERROR(Hnt0116, "':=' should be replaced with '=' when used after an explicit 'const' or 'var'");
-    SWAG_ERROR(Hnt0117, nullptr);
+    SWAG_ERROR(Hnt0117, "this could be the start of the initialization of '%s' or the start of a new block");
     SWAG_ERROR(Hnt0118, nullptr);
     SWAG_ERROR(Hnt0119, nullptr);
 
@@ -1242,6 +1247,10 @@ void initErrors()
     SWAG_ERROR(Nte0083, "the interface declaration returns type '%s'");
     SWAG_ERROR(Nte0084, "the ufcs argument comes from an implicit 'using const self' parameter");
     SWAG_ERROR(Nte0085, "the version should be of the form 'version.revision.buildnum', with each number >= 0 or the '?' character");
+    SWAG_ERROR(Nte0086, nullptr);
+    SWAG_ERROR(Nte0087, nullptr);
+    SWAG_ERROR(Nte0088, nullptr);
+    SWAG_ERROR(Nte0089, nullptr);
 
     /////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////

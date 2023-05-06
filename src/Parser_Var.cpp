@@ -294,6 +294,23 @@ bool Parser::doVarDecl(AstNode* parent, AstNode** result, AstNodeKind kind)
             SWAG_CHECK(eatToken());
             SWAG_CHECK(doTypeExpression(parent, EXPR_FLAG_IN_VAR_DECL, &type));
             Ast::removeFromParent(type);
+
+            // Ambigous {
+            if (token.id == TokenId::SymLeftCurly &&
+                (token.flags & TOKENPARSE_LAST_BLANK) &&
+                !(token.flags & TOKENPARSE_LAST_EOL) &&
+                type->kind == AstNodeKind::TypeExpression)
+            {
+                auto typeExpr = CastAst<AstTypeExpression>(type, AstNodeKind::TypeExpression);
+                if (typeExpr->identifier)
+                {
+                    Diagnostic diag{sourceFile, token, Err(Syn0200)};
+                    diag.hint  = Fmt(Hnt(Hnt0117), typeExpr->identifier->token.ctext());
+                    auto note  = Diagnostic::help(Fmt(Hlp(Hlp0051), typeExpr->identifier->token.ctext()));
+                    auto note1 = Diagnostic::help(Hlp(Hlp0052));
+                    return context->report(diag, note, note1);
+                }
+            }
         }
 
         AstNode* assign = nullptr;

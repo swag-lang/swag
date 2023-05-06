@@ -240,7 +240,11 @@ SWAG_ERROR(Syn0196),
 SWAG_ERROR(Syn0197),
 SWAG_ERROR(Syn0198),
 SWAG_ERROR(Syn0199),
-
+SWAG_ERROR(Syn0200),
+SWAG_ERROR(Syn0201),
+SWAG_ERROR(Syn0202),
+SWAG_ERROR(Syn0203),
+SWAG_ERROR(Syn0204),
 
 /////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////
@@ -1202,6 +1206,10 @@ SWAG_ERROR(Nte0082),
 SWAG_ERROR(Nte0083),
 SWAG_ERROR(Nte0084),
 SWAG_ERROR(Nte0085),
+SWAG_ERROR(Nte0086),
+SWAG_ERROR(Nte0087),
+SWAG_ERROR(Nte0088),
+SWAG_ERROR(Nte0089),
 
 /////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////
