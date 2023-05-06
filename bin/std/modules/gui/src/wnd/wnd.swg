@@ -75,7 +75,7 @@ interface IWnd
 #[Swag.EnumFlags]
 enum WndFlags
 {
-    Zero
+    Zero = 0
     NoScroll
     ClipChildren
     Disabled

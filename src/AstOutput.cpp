@@ -1427,10 +1427,12 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
             concat.addEolIndent(context.indent);
             SWAG_CHECK(outputNode(context, concat, funcDecl->content));
             decIndentStatement(funcDecl->content, context.indent);
+            concat.addEol();
         }
         else
         {
             SWAG_CHECK(outputNode(context, concat, front));
+            concat.addEol();
         }
         break;
     }

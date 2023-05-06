@@ -23,6 +23,11 @@ using Swag
         func isPointerRef(t: typeinfo)         => t.flags & .PointerRef
         func isPointerArithmetic(t: typeinfo)  => t.flags & .PointerArithmetic
 
+        func isEnumFlags(t: typeinfo)->bool
+        {
+            return isEnum(t)
+        }
+
         func isSimpleNative(t: typeinfo)->bool
         {
             if !isNative(t)
