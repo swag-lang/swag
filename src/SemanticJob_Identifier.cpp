@@ -2503,8 +2503,11 @@ TypeInfoEnum* SemanticJob::findEnumTypeInContext(SemanticContext* context, TypeI
     return CastTypeInfo<TypeInfoEnum>(typeInfo, TypeInfoKind::Enum);
 }
 
-bool SemanticJob::findEnumTypeInContext(SemanticContext* context, AstNode* node, TypeInfoEnum** res, TypeInfoEnum** has)
+bool SemanticJob::findEnumTypeInContext(SemanticContext* context, AstNode* node, VectorNative<TypeInfoEnum*>& result, VectorNative<TypeInfoEnum*>& has)
 {
+    result.clear();
+    has.clear();
+
     bool done   = false;
     auto parent = node->parent;
 
@@ -2526,10 +2529,7 @@ bool SemanticJob::findEnumTypeInContext(SemanticContext* context, AstNode* node,
             return true;
 
         if (!found || symbolMatch.empty())
-        {
-            *res = nullptr;
             return true;
-        }
 
         // Be sure symbols have been solved, because we need the types to be deduced
         for (const auto& sm : symbolMatch)
@@ -2546,7 +2546,6 @@ bool SemanticJob::findEnumTypeInContext(SemanticContext* context, AstNode* node,
             }
         }
 
-        VectorNative<TypeInfoEnum*> result;
         for (const auto& sm : symbolMatch)
         {
             auto symbol = sm.symbol;
@@ -2567,8 +2566,10 @@ bool SemanticJob::findEnumTypeInContext(SemanticContext* context, AstNode* node,
                 for (auto param : typeFunc->parameters)
                 {
                     auto typeEnum = findEnumTypeInContext(context, param->typeInfo);
-                    *has          = typeEnum;
-                    if (typeEnum && typeEnum->contains(node->token.text))
+                    if (!typeEnum)
+                        continue;
+                    has.push_back(typeEnum);
+                    if (typeEnum->contains(node->token.text))
                         subResult.push_back_once(typeEnum);
                 }
 
@@ -2613,11 +2614,8 @@ bool SemanticJob::findEnumTypeInContext(SemanticContext* context, AstNode* node,
             }
         }
 
-        if (result.size() == 1)
-        {
-            *res = result.front();
+        if (!result.empty())
             return true;
-        }
     }
     else
     {
@@ -2630,7 +2628,8 @@ bool SemanticJob::findEnumTypeInContext(SemanticContext* context, AstNode* node,
                 auto typeInfo = TypeManager::concreteType(funcNode->returnType->typeInfo, CONCRETE_FUNC | CONCRETE_FORCEALIAS);
                 if (typeInfo->isEnum())
                 {
-                    *res = CastTypeInfo<TypeInfoEnum>(typeInfo, TypeInfoKind::Enum);
+                    auto typeEnum = CastTypeInfo<TypeInfoEnum>(typeInfo, TypeInfoKind::Enum);
+                    result.push_back(typeEnum);
                     return true;
                 }
             }
@@ -2649,10 +2648,10 @@ bool SemanticJob::findEnumTypeInContext(SemanticContext* context, AstNode* node,
 
         for (auto c : parent->childs)
         {
-            auto cType = findEnumTypeInContext(context, c->typeInfo);
-            if (cType)
+            auto typeEnum = findEnumTypeInContext(context, c->typeInfo);
+            if (typeEnum)
             {
-                *res = cType;
+                result.push_back(typeEnum);
                 return true;
             }
         }
@@ -2660,7 +2659,6 @@ bool SemanticJob::findEnumTypeInContext(SemanticContext* context, AstNode* node,
         parent = parent->parent;
     }
 
-    *res = nullptr;
     return true;
 }
 
@@ -2765,16 +2763,17 @@ bool SemanticJob::findIdentifierInScopes(SemanticContext* context, VectorNative<
             // We scan the parent hierarchy for an already defined type that can be used for scoping
             if ((identifierRef->specFlags & AstIdentifierRef::SPECFLAG_AUTO_SCOPE) && !(identifierRef->specFlags & AstIdentifierRef::SPECFLAG_WITH_SCOPE))
             {
-                TypeInfoEnum* typeEnum = nullptr;
-                TypeInfoEnum* hasEnum  = nullptr;
-                SWAG_CHECK(findEnumTypeInContext(context, identifierRef, &typeEnum, &hasEnum));
+                VectorNative<TypeInfoEnum*> typeEnum;
+                VectorNative<TypeInfoEnum*> hasEnum;
+                SWAG_CHECK(findEnumTypeInContext(context, identifierRef, typeEnum, hasEnum));
                 if (context->result == ContextResult::Pending)
                     return true;
-                if (typeEnum)
+
+                if (typeEnum.size() == 1)
                 {
-                    identifierRef->startScope = typeEnum->scope;
+                    identifierRef->startScope = typeEnum[0]->scope;
                     scopeHierarchy.clear();
-                    addAlternativeScopeOnce(scopeHierarchy, typeEnum->scope);
+                    addAlternativeScopeOnce(scopeHierarchy, typeEnum[0]->scope);
                 }
                 else
                 {
@@ -2789,7 +2788,7 @@ bool SemanticJob::findIdentifierInScopes(SemanticContext* context, VectorNative<
                         id->flags |= AST_GENERATED;
                         id->specFlags |= AstIdentifier::SPECFLAG_FROM_WITH;
                         id->allocateIdentifierExtension();
-                        id->identifierExtension->alternateEnum    = hasEnum;
+                        id->identifierExtension->alternateEnum    = hasEnum.empty() ? nullptr : hasEnum[0];
                         id->identifierExtension->fromAlternateVar = withNode->childs.front();
                         id->inheritTokenLocation(identifierRef);
                         identifierRef->childs.pop_back();
@@ -3860,15 +3859,15 @@ bool SemanticJob::filterMatchesInContext(SemanticContext* context, VectorNative<
 
     for (size_t i = 0; i < matches.size(); i++)
     {
-        auto          oneMatch = matches[i];
-        auto          over     = oneMatch->symbolOverload;
-        TypeInfoEnum* typeEnum = nullptr;
-        TypeInfoEnum* hasEnum  = nullptr;
-        SWAG_CHECK(findEnumTypeInContext(context, over->node, &typeEnum, &hasEnum));
+        auto                        oneMatch = matches[i];
+        auto                        over     = oneMatch->symbolOverload;
+        VectorNative<TypeInfoEnum*> typeEnum;
+        VectorNative<TypeInfoEnum*> hasEnum;
+        SWAG_CHECK(findEnumTypeInContext(context, over->node, typeEnum, hasEnum));
         if (context->result != ContextResult::Done)
             return true;
 
-        if (typeEnum && typeEnum->scope == oneMatch->scope)
+        if (typeEnum.size() == 1 && typeEnum[0]->scope == oneMatch->scope)
         {
             matches.clear();
             matches.push_back(oneMatch);
