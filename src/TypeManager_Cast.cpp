@@ -2652,11 +2652,14 @@ bool TypeManager::castToPointerRef(SemanticContext* context, TypeInfo* toType, T
     }
 
     // Ufcs, accept type to ref type
-    /*if (castFlags & CASTFLAG_UFCS)
+    if (castFlags & CASTFLAG_UFCS)
     {
         if (toTypePointer->pointedType->isSame(fromType, castFlags | CASTFLAG_CAST))
+        {
+            context->castFlagsResult |= CASTFLAG_RESULT_FORCE_REF;
             return true;
-    }*/
+        }
+    }
 
     return castError(context, toType, fromType, fromNode, castFlags);
 }

@@ -384,6 +384,17 @@ bool SemanticJob::setSymbolMatchCallParams(SemanticContext* context, AstIdentifi
                 else
                     return Report::internalError(nodeCall, "cannot deal with value to pointer ref conversion");
             }
+            else if (context->castFlagsResult & CASTFLAG_RESULT_FORCE_REF)
+            {
+                auto front = nodeCall->childs.front();
+
+                // We have a value, and we need a reference.
+                // Force to keep the address
+                if (front->kind == AstNodeKind::IdentifierRef)
+                {
+                    front->childs.back()->semFlags |= SEMFLAG_FORCE_TAKE_ADDRESS;
+                }
+            }
         }
         else if (oneMatch.solvedParameters.size() && oneMatch.solvedParameters.back() && oneMatch.solvedParameters.back()->typeInfo->isTypedVariadic())
         {
