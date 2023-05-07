@@ -7,6 +7,7 @@ enum Flags
     C
 }
 
+#[Swag.Inline]
 func add(flags: ref Flags, value: Flags)
 {
     flags |= value
@@ -14,12 +15,7 @@ func add(flags: ref Flags, value: Flags)
 
 func toto(add: Flags)
 {
-    var y: Flags
+    var y : Flags
     y.add(add)
     @assert(y == .A)
-}
-
-#test
-{
-    toto(.A)
 }

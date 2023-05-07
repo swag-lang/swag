@@ -4065,13 +4065,34 @@ bool SemanticJob::filterSymbols(SemanticContext* context, AstIdentifier* node)
             }
         }
 
-        // A variable which is name as a function for example...
+        // A variable which is name as a function...
         if (!node->callParameters &&
             oneSymbol->kind == SymbolKind::Function &&
             !isFunctionButNotACall(context, node, oneSymbol))
         {
             p.remove = true;
             continue;
+        }
+
+        // A function call which is named as a variable, and the variable is not a lambda
+        if (node->callParameters &&
+            oneSymbol->kind == SymbolKind::Variable)
+        {
+            bool ok = false;
+            for (auto& o : oneSymbol->overloads)
+            {
+                if (o->typeInfo->isLambdaClosure())
+                {
+                    ok = true;
+                    break;
+                }
+            }
+
+            if (!ok)
+            {
+                p.remove = true;
+                continue;
+            }
         }
 
         // If a generic type does not come from a 'using', it has priority
