@@ -2640,20 +2640,23 @@ bool SemanticJob::findEnumTypeInContext(SemanticContext* context, AstNode* node,
     auto parent = node->parent;
     while (parent)
     {
-        if (parent->kind == AstNodeKind::Statement ||
-            parent->kind == AstNodeKind::SwitchCaseBlock ||
-            parent->kind == AstNodeKind::Module)
-            break;
-
         for (auto c : parent->childs)
         {
             auto typeEnum = findEnumTypeInContext(context, c->typeInfo);
             if (typeEnum && typeEnum->contains(node->token.text))
-            {
                 result.push_back_once(typeEnum);
-                return true;
-            }
         }
+
+        if (!result.empty())
+            return true;
+
+        if (parent->kind == AstNodeKind::Statement ||
+            parent->kind == AstNodeKind::SwitchCaseBlock ||
+            parent->kind == AstNodeKind::FuncDecl ||
+            parent->kind == AstNodeKind::File ||
+            parent->kind == AstNodeKind::Module ||
+            parent->kind == AstNodeKind::VarDecl)
+            break;
 
         parent = parent->parent;
     }
