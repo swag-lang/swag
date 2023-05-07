@@ -2554,6 +2554,8 @@ bool SemanticJob::findEnumTypeInContext(SemanticContext* context, AstNode* node,
                 auto concrete = TypeManager::concreteType(overload->typeInfo, CONCRETE_FORCEALIAS);
                 if (!concrete->isFuncAttr() && !concrete->isLambdaClosure())
                     continue;
+                if (concrete->isGeneric() || concrete->isFromGeneric())
+                    continue;
 
                 auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(concrete, TypeInfoKind::FuncAttr, TypeInfoKind::LambdaClosure);
 

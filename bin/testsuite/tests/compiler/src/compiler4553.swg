@@ -1,4 +1,4 @@
-#global skip
+//#global skip
 #[Swag.EnumFlags]
 enum FlagsA
 {
@@ -19,40 +19,18 @@ func(T) has(flags, value: T)->bool
     return flags & value ? true : false
 }
 
-struct A
-{
-    af: FlagsA = .A
-}
+var af: FlagsA = .A
+var af1: FlagsB = .A
 
-struct B
+func toto()
 {
-    using a: A
-    af1: FlagsB = .A
-}
-
-impl B
-{
-    mtd toto()
+    if af.has(.A)
     {
-        if af.has(.A)
-        {
-            @print("a")
-        }
-
-        if af1.has(.A)
-        {
-            @print("b")
-        }
-
-        /*if af1.has(.A)
-        {
-            @print("b")
-        }*/
+        @print("a")
     }
-}
 
-#test
-{
-    var b: B
-    b.toto()
+    if af1.has(.A)
+    {
+        @print("b")
+    }
 }
