@@ -7,7 +7,10 @@ enum Flags
     C
 }
 
-func add(flags: ref Flags, value: Flags)
+#[Swag.Strict]
+alias A = Flags
+
+func add(flags: ref A, value: A)
 {
     flags |= value
     flags &= value
@@ -16,6 +19,6 @@ func add(flags: ref Flags, value: Flags)
 
 #test
 {
-    var x: Flags
+    var x: A
     //x.add(.A)
 }
