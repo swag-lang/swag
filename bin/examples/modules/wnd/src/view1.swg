@@ -52,8 +52,8 @@ func createView1(_tabView: *Tab, view: *Wnd)
     {
         list := createListSimple(view, 10)
         list.style.setFont(view.getTheme().createDefaultFont(40), .Regular)
-        list.frameFlags |= .FocusBorder
-        list.listFlags |= .HotTrack
+        list.frameFlags.add(.FocusBorder)
+        list.listFlags.add(.HotTrack)
         list.selectionMode = .Single
         list.setPosition({5, 5, 250, 300})
     }
@@ -74,7 +74,7 @@ func createView1(_tabView: *Tab, view: *Wnd)
     {
         list := ListCtrl.createSimple(view, {830, 5, 250, 300})
         list.setFrameForm(FrameWndForm.Round)
-        list.frameFlags ^= .Borders
+        list.frameFlags.remove(.Borders)
         list.selectionMode = .Multi
         list.listFlags |= .HideSelection
         list.horizontalExtent = 500
@@ -98,8 +98,8 @@ func createView1(_tabView: *Tab, view: *Wnd)
 
     {
         list := createListMulti(view, checkable: true)
-        list.frameFlags |= .FocusBorder
-        list.header.headerFlags ^= .Clickable
+        list.frameFlags.add(.FocusBorder)
+        list.header.headerFlags.remove(.Clickable)
         list.setPosition({5, 400, 400, 300})
         list.ensureVisibleLine(list.getLineCount() - 1)
         list.setColumnWidth(0, 150)
@@ -123,7 +123,7 @@ func createView1(_tabView: *Tab, view: *Wnd)
 
     {
         list := createListMulti(view)
-        list.frameFlags |= .FocusBorder
+        list.frameFlags.add(.FocusBorder)
         list.listFlags |= .AlternateLines | .HorzLines | .VertLines
         list.setFrameForm(FrameWndForm.Square)
         list.setPosition({420, 400, 400, 300})

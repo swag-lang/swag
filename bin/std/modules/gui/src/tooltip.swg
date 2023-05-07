@@ -88,7 +88,7 @@ public func show(owner: *Wnd, surfacePos: Math.Point, str: string, delay: Time.D
     // Frame container
     g_Current = Wnd.create'FrameWnd(top, {pos.x, pos.y, 50, 100})
     g_Current.setFrameForm(.Square)
-    g_Current.setWndFlags(.TopMost)
+    g_Current.wndFlags.add(.TopMost)
     g_Current.style.addStyleSheetColors("frameWnd_Bk     $toolTip_Bk")
     g_Current.style.addStyleSheetColors("frameWnd_Border $toolTip_Border")
     g_Current.padding = 0

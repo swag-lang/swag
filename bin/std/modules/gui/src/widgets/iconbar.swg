@@ -56,7 +56,7 @@ impl IconBar
         pos := position
         pos.height = #self.iconSize
         res := Wnd.create'IconBar(parent, null, pos, id)
-        res.setWndFlags(.DispatchToChildsUI)
+        res.wndFlags.add(.DispatchToChildsUI)
         res.iconSize = #self.iconSize
         return res
     }

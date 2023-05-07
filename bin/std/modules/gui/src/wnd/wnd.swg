@@ -251,13 +251,6 @@ impl Wnd
         return res
     }
 
-    // Set wnd flags
-    mtd setWndFlags(add, remove = WndFlags.Zero)
-    {
-        wndFlags |= add
-        wndFlags &= ~remove
-    }
-
     // Destroy the window
     mtd destroyNow()
     {
@@ -268,7 +261,7 @@ impl Wnd
     // Destroy the window
     mtd destroy()
     {
-        wndFlags |= .Hidden
+        wndFlags.add(.Hidden)
         if isPendingDestroy
             return
         isPendingDestroy = true
@@ -285,7 +278,7 @@ impl Wnd
     {
         visit c, i: childs
         {
-            if c.wndFlags & .TopMost
+            if c.wndFlags.has(.TopMost)
                 return i
         }
 
@@ -341,18 +334,18 @@ impl Wnd
             return
         }
 
-        if !(wndFlags & .Hidden)
+        if !wndFlags.has(.Hidden)
             return
-        wndFlags &= ~.Hidden
+        wndFlags.remove(.Hidden)
         parent.invalidate()
     }
 
     // Hide the window
     mtd hide()
     {
-        if wndFlags & .Hidden
+        if wndFlags.has(.Hidden)
             return
-        wndFlags |= .Hidden
+        wndFlags.add(.Hidden)
         getApp().unregisterWnd(self)
         parent.invalidate()
     }
@@ -362,15 +355,15 @@ impl Wnd
     {
         if state
         {
-            if !(wndFlags & .Disabled)
+            if !wndFlags.has(.Disabled)
                 return
-            wndFlags &= ~.Disabled
+            wndFlags.remove(.Disabled)
         }
         else
         {
-            if wndFlags & .Disabled
+            if wndFlags.has(.Disabled)
                 return
-            wndFlags |= .Disabled
+            wndFlags.add(.Disabled)
 
             // Check global state
             if getApp().keybFocusWnd == self
@@ -392,7 +385,7 @@ impl Wnd
         check := self
         while check
         {
-            if check.wndFlags & .Hidden
+            if check.wndFlags.has(.Hidden)
                 return false
             if onlyMe
                 return true
@@ -402,7 +395,7 @@ impl Wnd
         return true
     }
 
-    mtd isVisibleState()->bool => wndFlags & .Hidden ? false : true
+    mtd isVisibleState()->bool => wndFlags.has(.Hidden) ? false : true
 
     // Returns true if window, and all its parents, are enabled
     mtd isEnabled()->bool
@@ -410,7 +403,7 @@ impl Wnd
         check := self
         while check
         {
-            if check.wndFlags & .Disabled
+            if check.wndFlags.has(.Disabled)
                 return false
             check = check.parent
         }
@@ -439,7 +432,7 @@ impl Wnd
 
         // Transmit disabled state to childs
         lastDisabled := bc.isDisabled
-        if wndFlags & .Disabled
+        if wndFlags.has(.Disabled)
             bc.isDisabled = true
 
         // Background
@@ -462,7 +455,7 @@ impl Wnd
         evt.bc = bc
 
         // Pre paint. Clipping is parent. No scroll
-        if wndFlags & .PreChildsPaint
+        if wndFlags.has(.PreChildsPaint)
         {
             evt.kind = .PrePaint
             painter.pushState()
@@ -471,13 +464,13 @@ impl Wnd
         }
 
         // Clipping
-        if wndFlags & .ClipChildren
+        if wndFlags.has(.ClipChildren)
             painter.pushClippingRect(getClientRect())
 
         if !painter.isEmptyClippingRect()
         {
             // Me
-            if !(wndFlags & .NoScroll)
+            if !wndFlags.has(.NoScroll)
                 painter.translateTransform(-scrollPos.x, -scrollPos.y)
             evt.kind = .Paint
             painter.pushState()
@@ -488,11 +481,11 @@ impl Wnd
             // Childs
             visit c: childs
             {
-                if c.wndFlags & .Hidden
+                if c.wndFlags.has(.Hidden)
                     continue
 
                 painter.pushState()
-                if !(c.wndFlags & .NoScroll)
+                if !c.wndFlags.has(.NoScroll)
                     painter.translateTransform(-scrollPos.x, -scrollPos.y)
                 c.paint(bc)
                 painter.popState()
@@ -500,11 +493,11 @@ impl Wnd
         }
 
         // Restore clipping
-        if wndFlags & .ClipChildren
+        if wndFlags.has(.ClipChildren)
             painter.popClippingRect()
 
         // Post paint. Clipping is parent. No scroll
-        if wndFlags & .PostChildsPaint
+        if wndFlags.has(.PostChildsPaint)
         {
             painter.setTransform(curTrs)
             evt.kind = .PostPaint
@@ -691,7 +684,7 @@ impl Wnd
 
         // Put the window at the back, or before the first topmost window
         idxToReplace := parent.childs.count - 1
-        if !(wndFlags & .TopMost)
+        if !wndFlags.has(.TopMost)
         {
             idxToReplace = parent.firstTopMostIndex()
             if idxToReplace == Swag.U64.Max
@@ -889,14 +882,14 @@ impl Wnd
         for i := cast(s32) childs.count - 1; i >= 0; i -= 1
         {
             c := childs[i]
-            if c.wndFlags & .Hidden and !getHidden
+            if c.wndFlags.has(.Hidden) and !getHidden
                 continue
-            if c.wndFlags & .Disabled and !getDisabled
+            if c.wndFlags.has(.Disabled) and !getDisabled
                 continue
 
 
             pt := Math.Point{x - position.x, y - position.y}
-            if !(c.wndFlags & .NoScroll)
+            if !c.wndFlags.has(.NoScroll)
                 pt += scrollPos
             res := c.getWndAt(pt.x, pt.y)
             if res
@@ -1137,7 +1130,7 @@ impl Wnd
         {
             arr.add(p)
 
-            if p == self or p.wndFlags & .DispatchToChildsUI
+            if p == self or p.wndFlags.has(.DispatchToChildsUI)
             {
                 visit c: p.childs
                 {
