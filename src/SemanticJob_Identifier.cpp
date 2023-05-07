@@ -332,6 +332,7 @@ bool SemanticJob::setSymbolMatchCallParams(SemanticContext* context, AstIdentifi
         if (i < oneMatch.solvedParameters.size() && oneMatch.solvedParameters[i])
         {
             PushErrCxtStep ec(context, typeInfoFunc->declNode, ErrCxtStepKind::HereIs, nullptr);
+            context->castFlagsResult = 0;
 
             toType = oneMatch.solvedParameters[i]->typeInfo;
             SWAG_CHECK(TypeManager::makeCompatibles(context, toType, nullptr, nodeCall, castFlags));
