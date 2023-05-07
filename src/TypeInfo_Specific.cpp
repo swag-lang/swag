@@ -471,11 +471,8 @@ bool TypeInfoEnum::isSame(TypeInfo* to, uint64_t castFlags)
     if (!TypeInfo::isSame(to, castFlags))
         return false;
 
-    if (castFlags & CASTFLAG_EXACT)
-    {
-        if (name != to->name)
-            return false;
-    }
+    if (name != to->name)
+        return false;
 
     auto other = static_cast<TypeInfoEnum*>(to);
     if (!rawType->isSame(other->rawType, castFlags))

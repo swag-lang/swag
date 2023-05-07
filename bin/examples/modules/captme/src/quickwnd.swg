@@ -231,7 +231,7 @@ impl QuickWnd
     mtd defaultQuickStyleStep()
     {
         #[Swag.Macro]
-        func add(kind: FormShapeKind, color: Color, backColor: Color)
+        func add(kind: FormStepKind, color: Color, backColor: Color)
         {
             form := Memory.new'FormStep()
             form.borderColor = color
