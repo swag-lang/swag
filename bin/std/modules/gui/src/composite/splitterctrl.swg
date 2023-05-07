@@ -162,7 +162,7 @@ impl IWnd for SplitterCtrl
         {
             rect := getBarRect(cast(u32) idx)
             isHot := hotIdx == idx
-            if isHot or !(splitterFlags & .HideBars)
+            if isHot or !splitterFlags.has(.HideBars)
             {
                 colorBar := isHot ? colors.splitView_BarHot : colors.splitView_Bar
                 if isVertical()
@@ -387,13 +387,13 @@ impl SplitterCtrl
         res.focusStrategy = .None
         res.wndFlags |= .PostChildsPaint
         if vertical
-            res.splitterFlags |= .Vertical
+            res.splitterFlags.add(.Vertical)
         return res
     }
 
 
     #[Swag.Inline]
-    mtd isVertical() => cast(bool) (splitterFlags & .Vertical)
+    mtd isVertical() => splitterFlags.has(.Vertical)
 
     // Add a new pane
     #[Swag.Discardable]

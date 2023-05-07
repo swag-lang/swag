@@ -4,7 +4,7 @@ using Core, Pixel
 #[Swag.EnumFlags]
 enum LabelFlags
 {
-    None
+    Zero = 0
     WordWrap
     LightText
     AutoHeight
@@ -16,7 +16,7 @@ struct Label
 
     icon:               Icon
     iconColor:          Color
-    labelFlags          = LabelFlags.None
+    labelFlags          = LabelFlags.Zero
     horzAlignmentIcon   = StringHorzAlignment.Center
     vertAlignmentIcon   = StringVertAlignment.Center
     horzAlignmentText   = StringHorzAlignment.Center
@@ -91,8 +91,8 @@ impl Label
 
         var sf: retval
         sf.flags |= .Clip
-        if labelFlags & .WordWrap
-            sf.flags |= .WordWrap
+        if labelFlags.has(.WordWrap)
+            sf.flags.add(.WordWrap)
         sf.font = getFont()
         sf.horzAlignment = horzAlignmentText
         sf.vertAlignment = vertAlignmentText
@@ -106,7 +106,7 @@ impl Label
         }
         else
         {
-            if labelFlags & .LightText
+            if labelFlags.has(.LightText)
                 sf.palette[0] = theme.colors.label_TextLight
             else
                 sf.palette[0] = theme.colors.label_Text
@@ -132,7 +132,7 @@ impl Label
     private mtd autoHeight()
     {
         // Recompute height
-        if labelFlags & .AutoHeight
+        if labelFlags.has(.AutoHeight)
         {
             var painter: Painter{fake: true}
             sf := getStringFormat(false)

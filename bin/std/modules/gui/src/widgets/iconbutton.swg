@@ -11,7 +11,7 @@ enum IconButtonForm
 #[Swag.EnumFlags]
 enum IconButtonFlags
 {
-    None
+    Zero = 0
     Checkable
     CheckableToggle
     Popup
@@ -52,7 +52,7 @@ struct IconButton
     using button: Button
 
     form            = IconButtonForm.Square
-    iconBtnFlags    = IconButtonFlags.None
+    iconBtnFlags    = IconButtonFlags.Zero
     checkedForm     = IconButtonCheckedForm.Full
     arrowPos        = IconButtonArrowPos.None
     textPos         = IconButtonTextPos.Bottom
@@ -197,7 +197,7 @@ impl IWnd for IconButton
 
         // Center everything
         marginArrow := metrics.btnIcon_MarginArrow
-        if iconBtnFlags & .Center
+        if iconBtnFlags.has(.Center)
         {
             nw, nh := 0'f32
             marginArrow = 0
@@ -428,13 +428,13 @@ impl IWnd for IconButton
     {
         if processMouseEvent(evt)
         {
-            if iconBtnFlags & .CheckableToggle
+            if iconBtnFlags.has(.CheckableToggle)
             {
                 isChecked = !isChecked
                 postCommandEvent(id)
                 sigCheckChanged.call(self)
             }
-            elif iconBtnFlags & .Checkable
+            elif iconBtnFlags.has(.Checkable)
             {
                 if !isChecked
                 {
@@ -449,7 +449,7 @@ impl IWnd for IconButton
             }
 
             // Display/Hide popup
-            if iconBtnFlags & .Popup
+            if iconBtnFlags.has(.Popup)
             {
                 if popup
                 {
@@ -488,7 +488,7 @@ impl IconButton
     // Set the check state of the button (if the button is checkable)
     mtd setCheck(checked: bool)
     {
-        if !(iconBtnFlags & .Checkable)
+        if !iconBtnFlags.has(.Checkable)
             return
         if isChecked == checked
             return

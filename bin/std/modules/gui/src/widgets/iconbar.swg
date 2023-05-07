@@ -4,7 +4,7 @@ using Core, Pixel
 #[Swag.EnumFlags]
 enum IconBarFlags
 {
-    None
+    Zero
     Vertical
 }
 
@@ -12,7 +12,7 @@ struct IconBar
 {
     using wnd:  Wnd
 
-    iconBarFlags    = IconBarFlags.None
+    iconBarFlags    = IconBarFlags.Zero
     iconSize:       f32
     iconPadding:    f32 = 4
 
@@ -35,7 +35,7 @@ impl IconBar
     {
         visit c: childs
         {
-            if iconBarFlags & .Vertical
+            if iconBarFlags.has(.Vertical)
                 c.dockStyle = .Top
             else
                 c.dockStyle = .Left
@@ -43,7 +43,7 @@ impl IconBar
 
         pad := 2*iconPadding
         size := cast(f32) (childs.count * (iconSize + pad))
-        if iconBarFlags & .Vertical
+        if iconBarFlags.has(.Vertical)
             resize(iconSize + pad, size)
         else
             resize(size, iconSize + pad)
@@ -63,7 +63,7 @@ impl IconBar
 
     // Add a new button
     #[Swag.Discardable]
-    mtd addItem(icon: Icon, btnId: WndId = null, iconBtnFlags = IconButtonFlags.None)->*IconButton
+    mtd addItem(icon: Icon, btnId: WndId = null, iconBtnFlags = IconButtonFlags.Zero)->*IconButton
     {
         iconT := icon
         iconT.sizeX, iconT.sizeY = iconSize
@@ -100,10 +100,10 @@ impl IconBar
     }
 
     // Change bar flags
-    mtd setIconBarFlags(add, remove = IconBarFlags.None)
+    mtd setIconBarFlags(add, remove = IconBarFlags.Zero)
     {
-        iconBarFlags |= add
-        iconBarFlags &= ~remove
+        iconBarFlags.add(add)
+        iconBarFlags.remove(~remove)
         computeLayout()
     }
 }

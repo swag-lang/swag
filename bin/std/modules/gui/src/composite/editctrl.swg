@@ -34,7 +34,7 @@ impl EditCtrl
                 text:     string,
                 position: Math.Rectangle = {},
                 id:       WndId = null,
-                flags:    EditBoxFlags = None)->*EditCtrl
+                flags:    EditBoxFlags = Zero)->*EditCtrl
     {
         metrics := parent.getThemeMetrics()
         pos := position

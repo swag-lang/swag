@@ -4,7 +4,7 @@ using Core, Pixel
 #[Swag.EnumFlags]
 enum ProgressBarFlags
 {
-    None
+    Zero = 0
     Infinite
 }
 
@@ -12,7 +12,7 @@ struct ProgressBar
 {
     using wnd:      Wnd
 
-    prgBarFlags     = ProgressBarFlags.None
+    prgBarFlags     = ProgressBarFlags.Zero
     progression:    f32
 }
 
@@ -60,7 +60,7 @@ impl IWnd for ProgressBar
         // Bar
         posBox := clientRect
         posBox.y = clientRect.vertCenter() - (posBox.height * 0.5)
-        if prgBarFlags & .Infinite
+        if prgBarFlags.has(.Infinite)
         {
             w := Math.max(clientRect.width / 5, 1)
             posBox.width = w

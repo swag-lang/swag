@@ -4,7 +4,7 @@ using Core
 #[Swag.EnumFlags]
 enum GridLayoutCtrlFlags
 {
-    Zero
+    Zero = 0
     AdaptSizeToContent
     AdaptColWidth
     AdaptRowHeight
@@ -37,7 +37,7 @@ impl IWnd for GridLayoutCtrl
 
         // Auto compute width of each cell
         forcedW := 0'f32
-        if gridLayoutFlags & .AdaptColWidth
+        if gridLayoutFlags.has(.AdaptColWidth)
         {
             forcedW = position.width
             forcedW -= (padding.x + padding.z)
@@ -47,7 +47,7 @@ impl IWnd for GridLayoutCtrl
 
         // Auto compute height of each cell
         forcedH := 0'f32
-        if gridLayoutFlags & .AdaptRowHeight
+        if gridLayoutFlags.has(.AdaptRowHeight)
         {
             forcedH = position.height
             forcedH -= (padding.y + padding.w)
@@ -108,7 +108,7 @@ impl IWnd for GridLayoutCtrl
             y += spacingVert
         }
 
-        if gridLayoutFlags & .AdaptSizeToContent
+        if gridLayoutFlags.has(.AdaptSizeToContent)
             resize(maxW, maxH)
         wnd.IWnd.onResizeEvent(evt)
     }

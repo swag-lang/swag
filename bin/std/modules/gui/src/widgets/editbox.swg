@@ -28,7 +28,7 @@ enum EditBoxCheckResult
 #[Swag.EnumFlags]
 enum EditBoxFlags
 {
-    None
+    Zero = 0
     AutoLoseFocus
     ReadOnly
     RightAlign
@@ -181,7 +181,7 @@ impl IWnd for EditBox
         elif caretPos.x - clientRect.x >= scrollPosX + clientRect.width
             scrollPosX = Math.min(caretPos.x - clientRect.x - decalX, maxDecalX)
 
-        if editBoxFlags & .RightAlign
+        if editBoxFlags.has(.RightAlign)
             scrollPosX = Math.min(scrollPosX, 0)
         else
             scrollPosX = Math.max(scrollPosX, 0)
@@ -193,7 +193,7 @@ impl IWnd for EditBox
         if selBeg != selEnd and hasFocus()
         {
             pos := clientRect
-            if editBoxFlags & .RightAlign
+            if editBoxFlags.has(.RightAlign)
                 pos.x = pos.right() - sizeX + posSelBeg
             else
                 pos.x += posSelBeg
@@ -205,7 +205,7 @@ impl IWnd for EditBox
 
         // Content
         y := clientRect.vertCenter() - fontR.height * 0.5
-        if editBoxFlags & .RightAlign
+        if editBoxFlags.has(.RightAlign)
             clientRect.x = clientRect.right() - sizeX
         bc.painter.drawString(clientRect.x, y, text, fontR, colorText)
 
@@ -286,7 +286,7 @@ impl IWnd for EditBox
             if evt.accepted
                 forceVisibleCaret()
         }
-        elif evt.kind == .Rune and !(editBoxFlags & .ReadOnly)
+        elif evt.kind == .Rune and !editBoxFlags.has(.ReadOnly)
         {
             if evt.char < 32
                 evt.accepted = false
@@ -354,13 +354,13 @@ private impl EditBox
 
         case Return:
             sigEnterPressed.call(self)
-            if editBoxFlags & .AutoLoseFocus
+            if editBoxFlags.has(.AutoLoseFocus)
                 getTopView().setFocus()
             return true
 
         case Escape:
             sigEscapePressed.call(self)
-            if editBoxFlags & .AutoLoseFocus
+            if editBoxFlags.has(.AutoLoseFocus)
                 getTopView().setFocus()
             return true
 
@@ -607,7 +607,7 @@ private impl EditBox
         fontR := getFont().regular
         if !text.isEmpty()
         {
-            if editBoxFlags & .RightAlign
+            if editBoxFlags.has(.RightAlign)
             {
                 sizeX := Painter.measureString(text, fontR).width
                 result.x = clientRect.right() - sizeX + posSelEnd - 2
@@ -615,7 +615,7 @@ private impl EditBox
             else
                 result.x += posSelEnd
         }
-        elif editBoxFlags & .RightAlign
+        elif editBoxFlags.has(.RightAlign)
         {
             result.x = clientRect.right() - posSelEnd - 2
         }
@@ -638,7 +638,7 @@ private impl EditBox
         fontR := getFont().regular
 
         // Could be better, of course...
-        if editBoxFlags & .RightAlign
+        if editBoxFlags.has(.RightAlign)
         {
             clientRect := getEditRect()
             sizeX := Painter.measureString(text, fontR).width
@@ -805,7 +805,7 @@ impl EditBox
     // Delete selected text
     mtd deleteSelection()
     {
-        if editBoxFlags & .ReadOnly
+        if editBoxFlags.has(.ReadOnly)
             return
         if deleteSelectionPrivate()
             notifyChanged()

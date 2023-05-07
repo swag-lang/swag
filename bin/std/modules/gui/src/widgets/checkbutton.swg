@@ -11,7 +11,7 @@ enum ButtonCheckState
 #[Swag.EnumFlags]
 enum CheckButtonFlags
 {
-    Zero
+    Zero = 0
     ThreeState
     RightAlign
 }
@@ -94,7 +94,7 @@ impl IWnd for CheckButton
         posBox.height = metrics.btnCheck_Size
         posBox.y = clientRect.vertCenter() - (posBox.height * 0.5)
         posBox.width = posBox.height
-        if checkButtonFlags & .RightAlign
+        if checkButtonFlags.has(.RightAlign)
             posBox.x = clientRect.right() - posBox.width
         theme.drawSubRect(painter, posBox, subRectBk, colorBk)
         theme.drawSubRect(painter, posBox, subRectBorder, colorBorder)
@@ -103,7 +103,7 @@ impl IWnd for CheckButton
         // Content
         var format: RichStringFormat
         theme.setTextColors(&format, colorText)
-        if checkButtonFlags & .RightAlign
+        if checkButtonFlags.has(.RightAlign)
             format.horzAlignment = .Right
         else
             format.horzAlignment = .Left
@@ -111,7 +111,7 @@ impl IWnd for CheckButton
         format.flags = .Clip
         format.font = getFont()
         labelPos := clientRect
-        if !(checkButtonFlags & .RightAlign)
+        if !checkButtonFlags.has(.RightAlign)
             labelPos.x += posBox.width + metrics.btnCheck_Padding
         labelPos.width -= posBox.width + metrics.btnCheck_Padding
         Theme.drawIconText(painter, labelPos, icon, &name, format, metrics.iconText_Margin)
@@ -121,7 +121,7 @@ impl IWnd for CheckButton
     {
         if processMouseEvent(evt)
         {
-            if checked == .UnChecked and (checkButtonFlags & .ThreeState)
+            if checked == .UnChecked and checkButtonFlags.has(.ThreeState)
                 checked = .Undefined
             elif checked == .Checked
                 checked = .UnChecked

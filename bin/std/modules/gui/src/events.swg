@@ -77,7 +77,7 @@ struct CommandUIEvent
     #[Swag.EnumFlags]
     enum SetFlags
     {
-        Zero
+        Zero = 0
         Disabled
         Icon
         Shortcut

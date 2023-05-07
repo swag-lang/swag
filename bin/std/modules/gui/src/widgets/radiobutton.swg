@@ -12,7 +12,7 @@ struct RadioButton
 #[Swag.EnumFlags]
 enum RadioButtonFlags
 {
-    Zero
+    Zero = 0
     RightAlign
 }
 
@@ -81,7 +81,7 @@ impl IWnd for RadioButton
         posBox.height = metrics.btnCheck_Size
         posBox.y = clientRect.vertCenter() - (posBox.height * 0.5)
         posBox.width = posBox.height
-        if radioButtonFlags & .RightAlign
+        if radioButtonFlags.has(.RightAlign)
             posBox.x = clientRect.right() - posBox.width
         theme.drawSubRect(bc.painter, posBox, subRectBk, colorBk)
         theme.drawSubRect(bc.painter, posBox, subRectBorder, colorBorder)
@@ -90,7 +90,7 @@ impl IWnd for RadioButton
         // Content
         var format: RichStringFormat
         theme.setTextColors(&format, colorText)
-        if radioButtonFlags & .RightAlign
+        if radioButtonFlags.has(.RightAlign)
             format.horzAlignment = .Right
         else
             format.horzAlignment = .Left
@@ -98,7 +98,7 @@ impl IWnd for RadioButton
         format.flags = .Clip
         format.font = getFont()
         labelPos := clientRect
-        if !(radioButtonFlags & .RightAlign)
+        if !radioButtonFlags.has(.RightAlign)
             labelPos.x += posBox.width + metrics.btnCheck_Padding
         labelPos.width -= posBox.width + metrics.btnCheck_Padding
         Theme.drawIconText(bc.painter, labelPos, icon, &name, format, metrics.iconText_Margin)

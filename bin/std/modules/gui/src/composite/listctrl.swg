@@ -11,7 +11,7 @@ enum ListSelectionMode
 #[Swag.EnumFlags]
 enum ListFlags
 {
-    None
+    Zero = 0
     HideSelection
     AlternateLines
     HorzLines
@@ -62,7 +62,7 @@ struct ListCtrl
     indentWidth:        f32 = 22
     iconSize:           f32
     iconMarginFirstCol  = true
-    listFlags           = ListFlags.None
+    listFlags           = ListFlags.Zero
     selectionMode       = ListSelectionMode.Single
     leftTextMargin:     f32
 
@@ -312,7 +312,7 @@ impl IWnd for ListView
         }
 
         idx := hitTest(evt.surfacePos)
-        if idx != list.hotIndex and (list.listFlags & .HotTrack)
+        if idx != list.hotIndex and list.listFlags.has(.HotTrack)
         {
             list.hotIndex = idx
             invalidate()
@@ -454,7 +454,7 @@ impl IWnd for ListView
 
         discardMouseRelease = evt.kind == .MousePressed
 
-        canUnsel := idx != Swag.U32.Max or !(list.listFlags & .NoMouseEmptySel)
+        canUnsel := idx != Swag.U32.Max or !list.listFlags.has(.NoMouseEmptySel)
         if canUnsel and (list.selectionMode == .Single or (!ctrl and !shift))
             list.selModel.unselectAll()
 
@@ -524,7 +524,7 @@ impl IWnd for ListView
                 paintLine(bc, i, &line, rect)
                 rect.y = rect.bottom()
 
-                if list.listFlags & .HorzLines
+                if list.listFlags.has(.HorzLines)
                     painter.drawLine(rect.x, rect.y, rect.right(), rect.y, colors.listItem_Line, 1)
             }
         }
@@ -536,12 +536,12 @@ impl IWnd for ListView
                 paintLine(bc, i, line, rect)
                 rect.y = rect.bottom()
 
-                if list.listFlags & .HorzLines
+                if list.listFlags.has(.HorzLines)
                     painter.drawLine(rect.x, rect.y, rect.right(), rect.y, colors.listItem_Line, 1)
             }
         }
 
-        if list.header and list.listFlags & .VertLines
+        if list.header and list.listFlags.has(.VertLines)
         {
             rect = getClientRectPadding()
             loop idx: 1..list.header.items.count-1
@@ -583,7 +583,7 @@ private impl ListView
         // Selection box
         isSelected  := list.isLineSelected(idx)
         canHotTrack := list.isVirtual or !line.separator
-        hideSel := cast(bool) (list.listFlags & .HideSelection)
+        hideSel := list.listFlags.has(.HideSelection)
         if isSelected and (!hideSel or hasFocus()) and !bc.isDisabled
         {
             colorSel := hasFocus() ? colors.listItem_FocusSelectedBk : colors.listItem_SelectedBk
@@ -591,7 +591,7 @@ private impl ListView
         }
 
         // Hot box
-        elif idx == list.hotIndex and (list.listFlags & .HotTrack) and canHotTrack
+        elif idx == list.hotIndex and list.listFlags.has(.HotTrack) and canHotTrack
         {
             painter.fillRect(rect, colors.listItem_HotBk)
         }
@@ -603,7 +603,7 @@ private impl ListView
         }
 
         // Alternate lines
-        elif (list.listFlags & .AlternateLines) and idx % 2 == 1
+        elif list.listFlags.has(.AlternateLines) and idx % 2 == 1
         {
             painter.fillRect(rect, colors.listItem_AlternateBk)
         }
@@ -658,7 +658,7 @@ private impl ListView
 
                 // Expand/collapse mark
                 canExpand := line.canExpand()
-                if canExpand or (list.listFlags & .ForceMarginExpandMark)
+                if canExpand or list.listFlags.has(.ForceMarginExpandMark)
                 {
                     if canExpand
                     {

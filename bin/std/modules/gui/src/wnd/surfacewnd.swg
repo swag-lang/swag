@@ -29,7 +29,7 @@ impl IWnd for SurfaceWnd
         sdw := getThemeMetrics().surfaceWnd_ShadowSize
 
         newSizingBorder := SizingBorder.Zero
-        if surface.flags & .Sizeable
+        if surface.flags.has(.Sizeable)
         {
             const SizeBorder = 10
             if surfacePos.x > sdw - SizeBorder and surfacePos.x < sdw + SizeBorder
@@ -77,7 +77,7 @@ impl IWnd for SurfaceWnd
             if surface.isMaximized
                 break
 
-            if !movingSurface and surface.flags & .Sizeable
+            if !movingSurface and surface.flags.has(.Sizeable)
             {
                 newSizingBorder := hitTestBorders(evt.surfacePos)
                 if newSizingBorder != sizingBorder
@@ -220,14 +220,14 @@ impl IWnd for SurfaceWnd
 
         clientRect := getClientRect()
 
-        if surface.flags & .Border
+        if surface.flags.has(.Border)
         {
             subRect := &rects.wnd_Border
             theme.drawSubRect(bc.painter, clientRect, subRect, colors.wnd_Caption, center: false)
         }
 
         posCaption := clientRect
-        if surface.flags & .BigCaption
+        if surface.flags.has(.BigCaption)
         {
             posCaption.height = surface.wnd.padding.y
             subRect := &rects.wnd_Caption
@@ -235,7 +235,7 @@ impl IWnd for SurfaceWnd
             theme.drawSubRect(bc.painter, posCaption, subRect, colorBk)
         }
 
-        if surface.flags & .SmallCaption
+        if surface.flags.has(.SmallCaption)
         {
             posCaption.height = surface.wnd.padding.y
             subRect := &rects.wnd_CaptionSmall
@@ -243,16 +243,16 @@ impl IWnd for SurfaceWnd
             theme.drawSubRect(bc.painter, posCaption, subRect, colorBk)
         }
 
-        if surface.flags & (.BigCaption | .SmallCaption)
+        if surface.flags.has(.BigCaption | .SmallCaption)
         {
             posCaption.x += theme.metrics.wnd_CaptionMarginTitle
 
             posClip := posCaption
-            if surface.flags & .MinimizeBtn
+            if surface.flags.has(.MinimizeBtn)
                 posClip.setRight(minimizeBtn.position.x)
-            elif surface.flags & .MaximizeBtn
+            elif surface.flags.has(.MaximizeBtn)
                 posClip.setRight(maximizeBtn.position.x)
-            elif surface.flags & .CloseBtn
+            elif surface.flags.has(.CloseBtn)
                 posClip.setRight(closeBtn.position.x)
             bc.painter.pushClippingRect(posClip)
             defer bc.painter.popClippingRect()
@@ -301,7 +301,7 @@ impl SurfaceWnd
         if !theme.intialized
             return
 
-        if surface.flags & .MinimizeBtn
+        if surface.flags.has(.MinimizeBtn)
         {
             if !minimizeBtn
             {
@@ -317,7 +317,7 @@ impl SurfaceWnd
             minimizeBtn = null
         }
 
-        if surface.flags & .MaximizeBtn
+        if surface.flags.has(.MaximizeBtn)
         {
             if !maximizeBtn
             {
@@ -333,7 +333,7 @@ impl SurfaceWnd
             maximizeBtn = null
         }
 
-        if surface.flags & .CloseBtn
+        if surface.flags.has(.CloseBtn)
         {
             if !closeBtn
             {

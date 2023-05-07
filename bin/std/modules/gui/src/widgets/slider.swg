@@ -4,7 +4,7 @@ using Core, Pixel
 #[Swag.EnumFlags]
 enum SliderFlags
 {
-    None
+    Zero = 0
     Range
     HilightBar
     Vertical
@@ -62,11 +62,11 @@ impl IWnd for Slider
         else
         {
             colorBkRight  = colors.slider_BkRight
-            if !(sliderFlags & .Range) and (sliderFlags & .HilightBar)
+            if !sliderFlags.has(.Range) and sliderFlags.has(.HilightBar)
                 colorBkLeft = colors.slider_HilightBk
             else
                 colorBkLeft = colors.slider_BkLeft
-            if (sliderFlags & .Range) and (sliderFlags & .HilightBar)
+            if sliderFlags.has(.Range) and sliderFlags.has(.HilightBar)
                 colorBkMiddle = colors.slider_HilightBk
             else
                 colorBkMiddle = colors.slider_BkMiddle
@@ -93,7 +93,7 @@ impl IWnd for Slider
 
         clientRect := getClientRect()
 
-        isVertical := sliderFlags & .Vertical
+        isVertical := sliderFlags.has(.Vertical)
         if isVertical
         {
             clientRect.y += (posBox1.height * 0.5)
@@ -119,7 +119,7 @@ impl IWnd for Slider
         }
 
         // Bar right
-        valueRight := sliderFlags & .Range ? value2 : value1
+        valueRight := sliderFlags.has(.Range) ? value2 : value1
         right := clientRect
         if isVertical
         {
@@ -135,7 +135,7 @@ impl IWnd for Slider
         }
 
         // Bar middle
-        if sliderFlags & .Range
+        if sliderFlags.has(.Range)
         {
             middle := clientRect
             if isVertical
@@ -162,9 +162,9 @@ impl IWnd for Slider
                 var colorStep: Color = undefined
                 if isHot1 or isHot2 or isMoving
                     colorStep = colors.slider_HotStepBk
-                elif x <= value1 and (sliderFlags & .HilightBar)
+                elif x <= value1 and sliderFlags.has(.HilightBar)
                     colorStep = colors.slider_HilightStepBk
-                elif x >= value1 and x <= value2 and (sliderFlags & .HilightBar) and (sliderFlags & .Range)
+                elif x >= value1 and x <= value2 and sliderFlags.has(.HilightBar) and sliderFlags.has(.Range)
                     colorStep = colors.slider_HilightStepBk
                 else
                     colorStep = colors.slider_StepBk
@@ -175,14 +175,14 @@ impl IWnd for Slider
 
         // Box value1
         theme.drawSubRect(bc.painter, posBox1, &rects.slider_Mark, colorMark1)
-        if sliderFlags & .Range
+        if sliderFlags.has(.Range)
             theme.drawSubRect(bc.painter, posBox2, &rects.slider_Mark, colorMark2)
     }
 
     mtd onMouseEvent(evt: *MouseEvent)
     {
         pos := surfaceToLocal(evt.surfacePos)
-        isVertical := sliderFlags & .Vertical
+        isVertical := sliderFlags.has(.Vertical)
 
         switch evt.kind
         {
@@ -238,7 +238,7 @@ impl IWnd for Slider
                     else
                         correcMoving = pos.x - posBox.horzCenter()
                 }
-                elif !(sliderFlags & .Range)
+                elif !sliderFlags.has(.Range)
                 {
                     correcMoving = 0
                     isPressed1 = true
@@ -310,7 +310,7 @@ private impl Slider
             return r * steps
         }
 
-        if sliderFlags & .Integer
+        if sliderFlags.has(.Integer)
         {
             val := Math.round((min + (max - min) * f))
             return (val - min) / (max - min)
@@ -322,7 +322,7 @@ private impl Slider
     mtd setValue1(f: f32)
     {
         fc := clamp(Math.clamp(f, 0, 1))
-        if sliderFlags & .Range
+        if sliderFlags.has(.Range)
             fc = Math.min(fc, value2)
         if fc == value1 and hasValue1
             return
@@ -335,7 +335,7 @@ private impl Slider
     mtd setValue2(f: f32)
     {
         fc := clamp(Math.clamp(f, 0, 1))
-        if sliderFlags & .Range
+        if sliderFlags.has(.Range)
             fc = Math.max(fc, value1)
         if fc == value2 and hasValue2
             return
@@ -354,7 +354,7 @@ private impl Slider
             isHot1, isHot2 = false
         }
 
-        if sliderFlags & .Range
+        if sliderFlags.has(.Range)
         {
             rect := getPosBox2()
             if rect.contains(pos)
@@ -377,7 +377,7 @@ private impl Slider
     {
         var result: retval = getClientRect()
 
-        if sliderFlags & .Vertical
+        if sliderFlags.has(.Vertical)
         {
             result.y += (result.width * 0.5)
             result.height -= result.width
@@ -395,7 +395,7 @@ private impl Slider
     {
         var result: retval = getOffsetedClientRect()
 
-        if sliderFlags & .Vertical
+        if sliderFlags.has(.Vertical)
         {
             result.y += result.height * val
             result.y -= (size * 0.5)
@@ -467,7 +467,7 @@ impl Slider
     mtd setRangeValues(left, right: f32)
     {
         Debug.assert(left < right)
-        Debug.assert(cast(bool) (sliderFlags & .Range))
+        Debug.assert(sliderFlags.has(.Range))
         diff := max - min
         value1 = (left - min) / diff
         value2 = (right - min) / diff
@@ -499,9 +499,9 @@ impl Slider
 
         res := Wnd.create'Slider(parent, null, pos, id)
         if range
-            res.sliderFlags |= .Range
+            res.sliderFlags.add(.Range)
         if vertical
-            res.sliderFlags |= .Vertical
+            res.sliderFlags.add(.Vertical)
         return res
     }
 }

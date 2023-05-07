@@ -60,21 +60,21 @@ impl Surface
         // Cannot be changed at runtime
         Debug.assert(!(add & .Secondary) and !(remove & .Secondary))
 
-        flags |= add
-        flags &= ~remove
+        flags.add(add)
+        flags.remove(remove)
         applySurfaceFlags()
     }
 
     private mtd applySurfaceFlags()
     {
-        if flags & .BigCaption
+        if flags.has(.BigCaption)
             wnd.padding.y = app.theme.metrics.wnd_BigCaptionCY
-        elif flags & .SmallCaption
+        elif flags.has(.SmallCaption)
             wnd.padding.y = app.theme.metrics.wnd_SmallCaptionCY
         else
             wnd.padding.y = 0
 
-        if flags & .Border
+        if flags.has(.Border)
         {
             size := app.theme.metrics.wnd_BorderSize
             wnd.padding.x = size

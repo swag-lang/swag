@@ -24,7 +24,7 @@ struct HeaderItem
 #[Swag.EnumFlags]
 enum HeaderFlags
 {
-    None
+    Zero = 0
     Clickable
 }
 
@@ -181,7 +181,7 @@ impl IWnd for Header
             // Hot, if not a separator, is disabled if item is not clickable
             if hit != Swag.U32.Max
             {
-                if !(headerFlags & .Clickable) and !sep
+                if !headerFlags.has(.Clickable) and !sep
                     hit = Swag.U32.Max
                 elif !items[hit].clickable
                     hit = Swag.U32.Max

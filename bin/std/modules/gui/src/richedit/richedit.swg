@@ -4,7 +4,7 @@ using Core, Pixel
 #[Swag.EnumFlags]
 enum RichEditFlags
 {
-    None
+    Zero = 0
     ReadOnly
     ShowFocusSel
     CurLineBorder
@@ -30,7 +30,7 @@ struct RichEditMapping
 struct RichEditCtrl
 {
     using frameWnd: FrameWnd
-    richEdFlags     = RichEditFlags.None
+    richEdFlags     = RichEditFlags.Zero
     lineSpacing:    f32
     overwriteMode:  bool
     tabSize:        s32 = 4
@@ -279,7 +279,7 @@ impl RichEditCtrl
     // Set richedit flags
     mtd setRichEdFlags(flags: RichEditFlags)
     {
-        richEdFlags = flags
+        richEdFlags.set(flags)
         recomputeScroll = true
         invalidate()
     }
@@ -339,7 +339,7 @@ impl RichEditCtrl
     {
         ro := false
         sigIsReadOnly.call(&ro)
-        return ro or richEdFlags & .ReadOnly
+        return ro or richEdFlags.has(.ReadOnly)
     }
 
     // Simulate a keyboard character pressed
@@ -364,7 +364,7 @@ impl RichEditCtrl
         if c == "\r"'rune
             c = "\n"'rune
 
-        if c == "\n"'rune and mdf == .None and richEdFlags & .AutoLoseFocus
+        if c == "\n"'rune and mdf == .None and richEdFlags.has(.AutoLoseFocus)
             return
 
         if lexer and lexer.insertRune(self, c)
