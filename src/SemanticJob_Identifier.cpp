@@ -2769,6 +2769,14 @@ bool SemanticJob::findIdentifierInScopes(SemanticContext* context, VectorNative<
                 if (context->result == ContextResult::Pending)
                     return true;
 
+                if (typeEnum.size() > 1)
+                {
+                    Diagnostic diag{identifierRef, Fmt(Err(Err0080), node->token.ctext())};
+                    for (auto t : typeEnum)
+                        diag.remarks.push_back(Fmt(Nte(Nte0086), t->getDisplayNameC()));
+                    return context->report(diag);
+                }
+
                 if (typeEnum.size() == 1)
                 {
                     identifierRef->startScope = typeEnum[0]->scope;

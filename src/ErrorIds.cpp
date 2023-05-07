@@ -913,7 +913,7 @@ void initErrors()
     SWAG_ERROR(Err0183, "value '%s' ('%I64u' in decimal) does not fit in the type '%s'");
     SWAG_ERROR(Err0056, "x64 backend unsupported os '%s'");
     SWAG_ERROR(Err0073, "'with' should not be used on an enum variable (type is '%s')");
-    SWAG_ERROR(Err0080, nullptr);
+    SWAG_ERROR(Err0080, "ambiguous resolution of enum value '%s'");
     SWAG_ERROR(Err0144, nullptr);
     SWAG_ERROR(Err0147, nullptr);
     SWAG_ERROR(Err0148, nullptr);
@@ -1247,7 +1247,7 @@ void initErrors()
     SWAG_ERROR(Nte0083, "the interface declaration returns type '%s'");
     SWAG_ERROR(Nte0084, "the ufcs argument comes from an implicit 'using const self' parameter");
     SWAG_ERROR(Nte0085, "the version should be of the form 'version.revision.buildnum', with each number >= 0 or the '?' character");
-    SWAG_ERROR(Nte0086, nullptr);
+    SWAG_ERROR(Nte0086, "could come from enum '%s'");
     SWAG_ERROR(Nte0087, nullptr);
     SWAG_ERROR(Nte0088, nullptr);
     SWAG_ERROR(Nte0089, nullptr);
