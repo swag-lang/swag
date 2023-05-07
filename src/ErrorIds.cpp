@@ -914,7 +914,7 @@ void initErrors()
     SWAG_ERROR(Err0056, "x64 backend unsupported os '%s'");
     SWAG_ERROR(Err0073, "'with' should not be used on an enum variable (type is '%s')");
     SWAG_ERROR(Err0080, "ambiguous resolution of enum value '%s'");
-    SWAG_ERROR(Err0144, nullptr);
+    SWAG_ERROR(Err0144, "the enum value '%s' cannot be found in enum '%s'");
     SWAG_ERROR(Err0147, nullptr);
     SWAG_ERROR(Err0148, nullptr);
     SWAG_ERROR(Err0149, nullptr);

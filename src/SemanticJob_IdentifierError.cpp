@@ -1,13 +1,8 @@
 #include "pch.h"
 #include "SemanticJob.h"
-#include "ByteCodeGenJob.h"
 #include "Ast.h"
-#include "Workspace.h"
 #include "Generic.h"
 #include "TypeManager.h"
-#include "ThreadManager.h"
-#include "Module.h"
-#include "ErrorIds.h"
 #include "LanguageSpec.h"
 #include "AstOutput.h"
 #include "Naming.h"
@@ -1089,6 +1084,25 @@ void SemanticJob::findClosestMatches(SemanticContext* context, const Utf8& searc
     }
 }
 
+Utf8 SemanticJob::findClosestMatchesMsg(SemanticContext* context, Vector<Utf8>& best)
+{
+    Utf8 appendMsg;
+    switch (best.size())
+    {
+    case 1:
+        appendMsg = Fmt("do you mean '%s' ?", best[0].c_str());
+        break;
+    case 2:
+        appendMsg = Fmt("do you mean '%s' or '%s' ?", best[0].c_str(), best[1].c_str());
+        break;
+    case 3:
+        appendMsg = Fmt("do you mean '%s', '%s' or '%s' ?", best[0].c_str(), best[1].c_str(), best[2].c_str());
+        break;
+    }
+
+    return appendMsg;
+}
+
 void SemanticJob::findClosestMatches(SemanticContext* context, IdentifierSearchFor searchFor, AstNode* node, VectorNative<AlternativeScope>& scopeHierarchy, Vector<Utf8>& best)
 {
     // Do not take some time if file is supposed to fail, in test mode
@@ -1158,25 +1172,6 @@ void SemanticJob::findClosestMatches(SemanticContext* context, IdentifierSearchF
     findClosestMatches(context, node->token.text, searchList, best);
 }
 
-Utf8 SemanticJob::findClosestMatchesMsg(SemanticContext* context, Vector<Utf8>& best)
-{
-    Utf8 appendMsg;
-    switch (best.size())
-    {
-    case 1:
-        appendMsg = Fmt("do you mean '%s' ?", best[0].c_str());
-        break;
-    case 2:
-        appendMsg = Fmt("do you mean '%s' or '%s' ?", best[0].c_str(), best[1].c_str());
-        break;
-    case 3:
-        appendMsg = Fmt("do you mean '%s', '%s' or '%s' ?", best[0].c_str(), best[1].c_str(), best[2].c_str());
-        break;
-    }
-
-    return appendMsg;
-}
-
 void SemanticJob::unknownIdentifier(SemanticContext* context, AstIdentifierRef* identifierRef, AstIdentifier* node)
 {
     auto  job                = context->job;
@@ -1203,10 +1198,7 @@ void SemanticJob::unknownIdentifier(SemanticContext* context, AstIdentifierRef* 
     }
 
     findClosestMatches(context, searchFor, node, scopeHierarchy, best);
-    Utf8 appendMsg;
-    Utf8 bestMatch = findClosestMatchesMsg(context, best);
-    if (!bestMatch.empty())
-        appendMsg = bestMatch;
+    Utf8 appendMsg = findClosestMatchesMsg(context, best);
 
     Vector<const Diagnostic*> notes;
     Diagnostic*               diag = nullptr;

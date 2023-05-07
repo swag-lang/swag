@@ -2769,6 +2769,7 @@ bool SemanticJob::findIdentifierInScopes(SemanticContext* context, VectorNative<
                 if (context->result == ContextResult::Pending)
                     return true;
 
+                // More than one match : ambiguous
                 if (typeEnum.size() > 1)
                 {
                     Diagnostic diag{identifierRef, Fmt(Err(Err0080), node->token.ctext())};
@@ -2777,16 +2778,39 @@ bool SemanticJob::findIdentifierInScopes(SemanticContext* context, VectorNative<
                     return context->report(diag);
                 }
 
+                // One single match : we are done
                 if (typeEnum.size() == 1)
                 {
                     identifierRef->startScope = typeEnum[0]->scope;
                     scopeHierarchy.clear();
                     addAlternativeScopeOnce(scopeHierarchy, typeEnum[0]->scope);
                 }
+
+                // No match, we will try 'with'
                 else
                 {
                     auto withNodeP = node->findParent(AstNodeKind::With);
-                    SWAG_VERIFY(withNodeP, context->report({identifierRef, Fmt(Err(Err0881), node->token.ctext())}));
+                    if (!withNodeP && hasEnum.size() == 1)
+                    {
+                        Diagnostic diag{identifierRef, Fmt(Err(Err0144), node->token.ctext(), hasEnum[0]->getDisplayNameC())};
+
+                        Vector<Utf8> best;
+                        scopeHierarchy.clear();
+                        scopeHierarchy.push_back({hasEnum[0]->scope});
+                        findClosestMatches(context, IdentifierSearchFor::Whatever, node, scopeHierarchy, best);
+                        Utf8 bestMatch = findClosestMatchesMsg(context, best);
+                        if (!bestMatch.empty())
+                            diag.hint = bestMatch;
+
+                        return context->report(diag, Diagnostic::hereIs(hasEnum[0]->declNode));
+                    }
+
+                    if (!withNodeP)
+                    {
+                        Diagnostic diag{identifierRef, Fmt(Err(Err0881), node->token.ctext())};
+                        return context->report(diag);
+                    }
+
                     auto withNode = CastAst<AstWith>(withNodeP, AstNodeKind::With);
 
                     // Prepend the 'with' identifier, and reevaluate
