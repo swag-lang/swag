@@ -1103,7 +1103,7 @@ Utf8 SemanticJob::findClosestMatchesMsg(SemanticContext* context, Vector<Utf8>& 
     return appendMsg;
 }
 
-void SemanticJob::findClosestMatches(SemanticContext* context, IdentifierSearchFor searchFor, AstNode* node, VectorNative<AlternativeScope>& scopeHierarchy, Vector<Utf8>& best)
+void SemanticJob::findClosestMatches(SemanticContext* context, AstNode* node, const VectorNative<AlternativeScope>& scopeHierarchy, Vector<Utf8>& best, IdentifierSearchFor searchFor)
 {
     // Do not take some time if file is supposed to fail, in test mode
     if (context->sourceFile->shouldHaveError && !g_CommandLine.verboseTestErrors)
@@ -1172,6 +1172,13 @@ void SemanticJob::findClosestMatches(SemanticContext* context, IdentifierSearchF
     findClosestMatches(context, node->token.text, searchList, best);
 }
 
+Utf8 SemanticJob::findClosestMatchesMsg(SemanticContext* context, AstNode* node, const VectorNative<AlternativeScope>& scopeHierarchy, IdentifierSearchFor searchFor)
+{
+    Vector<Utf8> best;
+    findClosestMatches(context, node, scopeHierarchy, best, searchFor);
+    return findClosestMatchesMsg(context, best);
+}
+
 void SemanticJob::unknownIdentifier(SemanticContext* context, AstIdentifierRef* identifierRef, AstIdentifier* node)
 {
     auto  job                = context->job;
@@ -1186,7 +1193,6 @@ void SemanticJob::unknownIdentifier(SemanticContext* context, AstIdentifierRef* 
         searchFor = IdentifierSearchFor::Function;
 
     // Find best matches
-    Vector<Utf8> best;
     if (identifierRef->startScope)
     {
         scopeHierarchy.clear();
@@ -1197,8 +1203,7 @@ void SemanticJob::unknownIdentifier(SemanticContext* context, AstIdentifierRef* 
         collectScopeHierarchy(context, scopeHierarchy, scopeHierarchyVars, node, COLLECT_ALL);
     }
 
-    findClosestMatches(context, searchFor, node, scopeHierarchy, best);
-    Utf8 appendMsg = findClosestMatchesMsg(context, best);
+    Utf8 appendMsg = findClosestMatchesMsg(context, node, scopeHierarchy, searchFor);
 
     Vector<const Diagnostic*> notes;
     Diagnostic*               diag = nullptr;

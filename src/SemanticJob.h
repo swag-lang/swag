@@ -303,7 +303,8 @@ struct SemanticJob : public Job
 
     static Utf8           findClosestMatchesMsg(SemanticContext* context, Vector<Utf8>& best);
     static void           findClosestMatches(SemanticContext* context, const Utf8& searchName, const Vector<Utf8>& searchList, Vector<Utf8>& result);
-    static void           findClosestMatches(SemanticContext* context, IdentifierSearchFor searchFor, AstNode* node, VectorNative<AlternativeScope>& scopeHierarchy, Vector<Utf8>& best);
+    static void           findClosestMatches(SemanticContext* context, AstNode* node, const VectorNative<AlternativeScope>& scopeHierarchy, Vector<Utf8>& best, IdentifierSearchFor searchFor = IdentifierSearchFor::Whatever);
+    static Utf8           findClosestMatchesMsg(SemanticContext* context, AstNode* node, const VectorNative<AlternativeScope>& scopeHierarchy, IdentifierSearchFor searchFor = IdentifierSearchFor::Whatever);
     static bool           isFunctionButNotACall(SemanticContext* context, AstNode* node, SymbolName* symbol);
     static bool           cannotMatchIdentifierError(SemanticContext* context, VectorNative<OneTryMatch*>& tryMatches, AstNode* node);
     static bool           matchIdentifierParameters(SemanticContext* context, VectorNative<OneTryMatch*>& tryMatches, AstNode* node, uint32_t flags = 0);
@@ -334,7 +335,7 @@ struct SemanticJob : public Job
     static bool           needToWaitForSymbol(SemanticContext* context, AstIdentifier* identifier, SymbolName* symbol, bool& needToWait);
     static bool           resolveIdentifier(SemanticContext* context, AstIdentifier* identifier, uint32_t riFlags);
     static TypeInfoEnum*  findEnumTypeInContext(SemanticContext* context, TypeInfo* typeInfo);
-    static bool           findEnumTypeInContext(SemanticContext* context, AstNode* node, VectorNative<TypeInfoEnum*> &result, VectorNative<TypeInfoEnum*> &has);
+    static bool           findEnumTypeInContext(SemanticContext* context, AstNode* node, VectorNative<TypeInfoEnum*>& result, VectorNative<TypeInfoEnum*>& has);
     static void           addDependentSymbol(VectorNative<OneSymbolMatch>& symbols, SymbolName* symName, Scope* scope, uint32_t asflags);
     static void           unknownIdentifier(SemanticContext* context, AstIdentifierRef* identifierRef, AstIdentifier* node);
     static bool           ufcsSetFirstParam(SemanticContext* context, AstIdentifierRef* identifierRef, OneMatch& match);

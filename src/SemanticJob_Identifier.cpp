@@ -2793,15 +2793,7 @@ bool SemanticJob::findIdentifierInScopes(SemanticContext* context, VectorNative<
                     if (!withNodeP && hasEnum.size() == 1)
                     {
                         Diagnostic diag{identifierRef, Fmt(Err(Err0144), node->token.ctext(), hasEnum[0]->getDisplayNameC())};
-
-                        Vector<Utf8> best;
-                        scopeHierarchy.clear();
-                        scopeHierarchy.push_back({hasEnum[0]->scope});
-                        findClosestMatches(context, IdentifierSearchFor::Whatever, node, scopeHierarchy, best);
-                        Utf8 bestMatch = findClosestMatchesMsg(context, best);
-                        if (!bestMatch.empty())
-                            diag.hint = bestMatch;
-
+                        diag.hint = findClosestMatchesMsg(context, node, {{hasEnum[0]->scope}});
                         return context->report(diag, Diagnostic::hereIs(hasEnum[0]->declNode));
                     }
 
