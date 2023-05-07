@@ -2525,22 +2525,34 @@ bool SemanticJob::findEnumTypeInContext(SemanticContext* context, AstNode* node,
         if (context->result != ContextResult::Done)
             return true;
 
-        if (found && symbolMatch.size() == 1)
+        if (!found || symbolMatch.empty())
         {
-            auto symbol = symbolMatch.front().symbol;
+            *res = nullptr;
+            return true;
+        }
+
+        // Be sure symbols have been solved, because we need the types to be deduced
+        for (const auto& sm : symbolMatch)
+        {
+            auto symbol = sm.symbol;
             if (symbol->kind != SymbolKind::Function && symbol->kind != SymbolKind::Variable)
-                return true;
+                continue;
 
+            ScopedLock ls(symbol->mutex);
+            if (symbol->cptOverloads)
             {
-                ScopedLock ls(symbol->mutex);
-                if (symbol->cptOverloads)
-                {
-                    context->job->waitSymbolNoLock(symbol);
-                    return true;
-                }
+                context->job->waitSymbolNoLock(symbol);
+                return true;
             }
+        }
 
-            VectorNative<TypeInfoEnum*> result;
+        VectorNative<TypeInfoEnum*> result;
+        for (const auto& sm : symbolMatch)
+        {
+            auto symbol = sm.symbol;
+            if (symbol->kind != SymbolKind::Function && symbol->kind != SymbolKind::Variable)
+                continue;
+
             for (auto& overload : symbol->overloads)
             {
                 auto concrete = TypeManager::concreteType(overload->typeInfo, CONCRETE_FORCEALIAS);
@@ -2567,7 +2579,7 @@ bool SemanticJob::findEnumTypeInContext(SemanticContext* context, AstNode* node,
 
                 // More that one possible type (at least two different enums with the same identical requested name in the function signature)
                 // We are not lucky...
-                else
+                else if (subResult.size() > 1)
                 {
                     int enumIdx = 0;
                     for (size_t i = 0; i < fctCallParam->parent->childs.size(); i++)
@@ -2599,16 +2611,11 @@ bool SemanticJob::findEnumTypeInContext(SemanticContext* context, AstNode* node,
                     }
                 }
             }
-
-            if (result.size() == 1)
-            {
-                *res = result.front();
-                return true;
-            }
         }
-        else
+
+        if (result.size() == 1)
         {
-            *res = nullptr;
+            *res = result.front();
             return true;
         }
     }
