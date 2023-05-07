@@ -3561,11 +3561,13 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, Ty
                 (!toType->isBool() || !(castFlags & CASTFLAG_AUTO_BOOL)) &&
                 (!toType->isNative(NativeTypeKind::U64) || !fromType->isPointer()))
             {
-                bool diff = false;
+                bool toConst   = toType->isConst();
+                bool fromConst = fromType->isConst();
+                bool diff      = false;
                 if (castFlags & CASTFLAG_FOR_GENERIC)
-                    diff = toType->isConst() != fromType->isConst();
+                    diff = toConst != fromConst;
                 else
-                    diff = !toType->isConst() && fromType->isConst();
+                    diff = !toConst && fromConst;
                 if (diff)
                 {
                     if (!(castFlags & CASTFLAG_UNCONST))
