@@ -2503,7 +2503,7 @@ TypeInfoEnum* SemanticJob::findEnumTypeInContext(SemanticContext* context, TypeI
     return CastTypeInfo<TypeInfoEnum>(typeInfo, TypeInfoKind::Enum);
 }
 
-bool SemanticJob::findEnumTypeInContext(SemanticContext* context, AstNode* node, TypeInfoEnum** res, bool genError, TypeInfoEnum** has)
+bool SemanticJob::findEnumTypeInContext(SemanticContext* context, AstNode* node, TypeInfoEnum** res, TypeInfoEnum** has)
 {
     bool done   = false;
     auto parent = node->parent;
@@ -2514,16 +2514,17 @@ bool SemanticJob::findEnumTypeInContext(SemanticContext* context, AstNode* node,
         fctCallParam->parent->kind == AstNodeKind::FuncCallParams &&
         fctCallParam->parent->parent->kind == AstNodeKind::Identifier)
     {
-        AstIdentifierRef*            idref = CastAst<AstIdentifierRef>(fctCallParam->parent->parent->parent, AstNodeKind::IdentifierRef);
-        AstIdentifier*               id    = CastAst<AstIdentifier>(fctCallParam->parent->parent, AstNodeKind::Identifier);
         VectorNative<OneSymbolMatch> symbolMatch;
-        context->silentError++;
 
+        auto idref = CastAst<AstIdentifierRef>(fctCallParam->parent->parent->parent, AstNodeKind::IdentifierRef);
+        auto id    = CastAst<AstIdentifier>(fctCallParam->parent->parent, AstNodeKind::Identifier);
+
+        context->silentError++;
         auto found = findIdentifierInScopes(context, symbolMatch, idref, id);
+        context->silentError--;
         if (context->result != ContextResult::Done)
             return true;
 
-        context->silentError--;
         if (found && symbolMatch.size() == 1)
         {
             auto symbol = symbolMatch.front().symbol;
@@ -2607,12 +2608,6 @@ bool SemanticJob::findEnumTypeInContext(SemanticContext* context, AstNode* node,
         }
         else
         {
-            if (genError)
-            {
-                unknownIdentifier(context, idref, id);
-                return false;
-            }
-
             *res = nullptr;
             return true;
         }
@@ -2765,7 +2760,7 @@ bool SemanticJob::findIdentifierInScopes(SemanticContext* context, VectorNative<
             {
                 TypeInfoEnum* typeEnum = nullptr;
                 TypeInfoEnum* hasEnum  = nullptr;
-                SWAG_CHECK(findEnumTypeInContext(context, identifierRef, &typeEnum, true, &hasEnum));
+                SWAG_CHECK(findEnumTypeInContext(context, identifierRef, &typeEnum, &hasEnum));
                 if (context->result == ContextResult::Pending)
                     return true;
                 if (typeEnum)
@@ -3862,7 +3857,7 @@ bool SemanticJob::filterMatchesInContext(SemanticContext* context, VectorNative<
         auto          over     = oneMatch->symbolOverload;
         TypeInfoEnum* typeEnum = nullptr;
         TypeInfoEnum* hasEnum  = nullptr;
-        SWAG_CHECK(findEnumTypeInContext(context, over->node, &typeEnum, false, &hasEnum));
+        SWAG_CHECK(findEnumTypeInContext(context, over->node, &typeEnum, &hasEnum));
         if (context->result != ContextResult::Done)
             return true;
 
