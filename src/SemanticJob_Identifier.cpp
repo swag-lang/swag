@@ -118,7 +118,6 @@ bool SemanticJob::setupIdentifierRef(SemanticContext* context, AstNode* node)
         scopeType     = TypeManager::concreteType(funcType->returnType, CONCRETE_FORCEALIAS);
     }
 
-    // typeInfo = TypeManager::concreteType(typeInfo, CONCRETE_ENUM);
     if (!(identifierRef->semFlags & SEMFLAG_TYPE_SOLVED))
         identifierRef->typeInfo = typeInfo;
 
