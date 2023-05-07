@@ -11,7 +11,7 @@ enum FrameWndForm
 #[Swag.EnumFlags]
 enum FrameWndFlags
 {
-    Zero
+    Zero = 0
     Borders
     FocusBorder
     SmallShadow
@@ -42,7 +42,7 @@ impl IWnd for FrameWnd
 {
     mtd onPrePaintEvent(evt: *PaintEvent)
     {
-        if frameFlags & .SmallShadow
+        if frameFlags.has(.SmallShadow)
         {
             bc      := evt.bc
             painter := bc.painter
@@ -80,7 +80,7 @@ impl IWnd for FrameWnd
         }
 
         // Display focus borders when the focus wnd is a child of me
-        showFocus := cast(bool) (frameFlags & .FocusBorder)
+        showFocus := frameFlags.has(.FocusBorder)
         if showFocus
         {
             focus := getFocus()
@@ -129,7 +129,7 @@ impl IWnd for FrameWnd
         }
 
         // Display focus borders when the focus wnd is a child of me
-        showFocus := cast(bool) (frameFlags & .FocusBorder)
+        showFocus := frameFlags.has(.FocusBorder)
         if showFocus
         {
             focus := getFocus()
@@ -237,15 +237,15 @@ impl FrameWnd
     // Set the frame wnd flags
     mtd setFrameFlags(add, remove = FrameWndFlags.Zero)
     {
-        frameFlags |= add
-        frameFlags &= ~remove
+        frameFlags.add(add)
+        frameFlags.remove(remove)
 
-        if frameFlags & .SmallShadow
-            wndFlags |= .PreChildsPaint
+        if frameFlags.has(.SmallShadow)
+            wndFlags.add(.PreChildsPaint)
         else
-            wndFlags &= ~.PreChildsPaint
+            wndFlags.remove(.PreChildsPaint)
 
-        if frameFlags & .SmallShadow
+        if frameFlags.has(.SmallShadow)
             invalidatePadding = -getThemeMetrics().frameWnd_SmallShadowSize
         else
             invalidatePadding.clear()
@@ -262,13 +262,13 @@ impl FrameWnd
         switch self.frameForm
         {
         case Square:
-            wndFlags |= .PostChildsPaint
+            wndFlags.add(.PostChildsPaint)
             setAllPaddings(getThemeMetrics().frameWnd_SquarePadding)
         case Round:
-            wndFlags |= .PostChildsPaint
+            wndFlags.add(.PostChildsPaint)
             setAllPaddings(getThemeMetrics().frameWnd_RoundPadding)
         case Transparent:
-            wndFlags &= ~.PostChildsPaint
+            wndFlags.remove(.PostChildsPaint)
             setAllPaddings(0)
         }
 

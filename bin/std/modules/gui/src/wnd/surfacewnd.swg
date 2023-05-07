@@ -1,7 +1,14 @@
 using Core, Pixel, Serialization
 
 #[Swag.EnumFlags]
-public enum SizingBorder{ Zero = 0; Left; Top; Right; Bottom; }
+public enum SizingBorder
+{
+    Zero = 0
+    Left
+    Top
+    Right
+    Bottom
+}
 
 public struct SurfaceWnd
 {

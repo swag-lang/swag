@@ -3,7 +3,7 @@ using Core, Pixel
 #[Swag.EnumFlags]
 public enum ScrollWndFlags
 {
-    Zero
+    Zero = 0
     SmallBar
     ForceHorizontal
     ForceVertical
@@ -213,7 +213,7 @@ public impl IWnd for ScrollWnd
         var colorBk: Color
         switch
         {
-            case scrollWndFlags & .TransparentBar:
+            case scrollWndFlags.has(.TransparentBar):
                 break
             case bc.isDisabled:
                 colorBk = colors.scrollBar_DisabledBk
@@ -352,15 +352,15 @@ impl ScrollWnd
 
         if sy > clientRect.height
             needV = true
-        if needV or scrollWndFlags & .ForceVertical
+        if needV or scrollWndFlags.has(.ForceVertical)
             showBarV = true
 
         if sx > clientRect.width
             needH = true
-        if needH or scrollWndFlags & .ForceHorizontal
+        if needH or scrollWndFlags.has(.ForceHorizontal)
             showBarH = true
 
-        barSize := (scrollWndFlags & .SmallBar) ? metrics.scrollBar_SmallSize : metrics.scrollBar_NormalSize
+        barSize := scrollWndFlags.has(.SmallBar) ? metrics.scrollBar_SmallSize : metrics.scrollBar_NormalSize
 
         paddingZ, paddingW = 0
         if showBarV
