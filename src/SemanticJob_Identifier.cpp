@@ -2508,9 +2508,6 @@ bool SemanticJob::findEnumTypeInContext(SemanticContext* context, AstNode* node,
     result.clear();
     has.clear();
 
-    bool done   = false;
-    auto parent = node->parent;
-
     // If this is a parameter of a function call, we will try to deduce the type with a function signature
     auto fctCallParam = node->findParent(AstNodeKind::FuncCallParam);
     if (fctCallParam &&
@@ -2613,9 +2610,6 @@ bool SemanticJob::findEnumTypeInContext(SemanticContext* context, AstNode* node,
                 }
             }
         }
-
-        if (!result.empty())
-            return true;
     }
     else
     {
@@ -2629,29 +2623,34 @@ bool SemanticJob::findEnumTypeInContext(SemanticContext* context, AstNode* node,
                 if (typeInfo->isEnum())
                 {
                     auto typeEnum = CastTypeInfo<TypeInfoEnum>(typeInfo, TypeInfoKind::Enum);
-                    result.push_back(typeEnum);
-                    return true;
+                    if (typeEnum->contains(node->token.text))
+                    {
+                        result.push_back(typeEnum);
+                        return true;
+                    }
                 }
             }
         }
     }
 
+    if (!result.empty())
+        return true;
+
     // We go up in the hierarchy until we find a statement, or a contextual type to return
-    while (parent && !done)
+    auto parent = node->parent;
+    while (parent)
     {
-        if (parent->kind == AstNodeKind::Statement)
-            break;
-        if (parent->kind == AstNodeKind::SwitchCaseBlock)
-            break;
-        if (parent->kind == AstNodeKind::Module)
+        if (parent->kind == AstNodeKind::Statement ||
+            parent->kind == AstNodeKind::SwitchCaseBlock ||
+            parent->kind == AstNodeKind::Module)
             break;
 
         for (auto c : parent->childs)
         {
             auto typeEnum = findEnumTypeInContext(context, c->typeInfo);
-            if (typeEnum)
+            if (typeEnum && typeEnum->contains(node->token.text))
             {
-                result.push_back(typeEnum);
+                result.push_back_once(typeEnum);
                 return true;
             }
         }
