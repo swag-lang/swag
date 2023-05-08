@@ -468,7 +468,6 @@ impl MainWnd
         {
             .dockStyle = .Top
             .backgroundStyle = .Window
-            .wndFlags.add(.DispatchToChildsUI)
             .style.addStyleSheetColors("wnd_Bk $wnd_Caption")
         }
 

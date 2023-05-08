@@ -83,7 +83,6 @@ enum WndFlags
     PreChildsPaint
     PostChildsPaint
     TopMost
-    DispatchToChildsUI
 }
 
 struct Wnd
@@ -1137,39 +1136,18 @@ impl Wnd
     //////////////////////////////////////////////
 
     // Main function to update command state of various windows/widgets.
+    // This will update the state of this window, and all of its childs
     mtd updateCommandState()
     {
-        var arr: Array'*Wnd
-
-        // Test on the hierarchy of parents/owners
-        // Test also all childs of the current window, and if a parent/owner has the
-        // DispatchToChildsUI flag
-        p := self
-        while p
+        evtState := sendComputeCommandStateEvent(id)
+        if evtState.accepted
         {
-            arr.add(p)
-
-            if p == self or p.wndFlags.has(.DispatchToChildsUI)
-            {
-                visit c: p.childs
-                {
-                    if c.id != null
-                        arr.add(c)
-                }
-            }
-
-            p = p.owner orelse p.parent
+            evtState.kind = .ApplyCommandState
+            sendEvent(&evtState)
         }
 
-        visit c: arr
-        {
-            evt := sendComputeCommandStateEvent(c.id)
-            if evt.accepted
-            {
-                evt.kind = .ApplyCommandState
-                c.sendEvent(&evt)
-            }
-        }
+        visit c: childs
+            c.updateCommandState()
     }
 
     // Send the command state event with the given id to the window.
