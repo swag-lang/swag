@@ -3,6 +3,7 @@ using Gui
 const CmdIdSelectAll        = "CmdIdSelectAll"
 const CmdIdDeSelectAll      = "CmdIdDeSelectAll"
 const CmdIdInvertSelection  = "CmdIdInvertSelection"
+const CmdIdDeleteSelection  = "CmdIdDeleteSelection"
 
 struct ActionSelection {}
 impl IActionUI for ActionSelection
@@ -13,7 +14,8 @@ impl IActionUI for ActionSelection
         {
         case CmdIdSelectAll,
              CmdIdDeSelectAll,
-             CmdIdInvertSelection:
+             CmdIdInvertSelection,
+             CmdIdDeleteSelection:
              return true
         }
 
@@ -42,6 +44,11 @@ impl IActionUI for ActionSelection
             evt.setFlags |= .Disabled | .Name
             evt.disabled = !capture
             evt.name = "Invert Selection"
+
+        case CmdIdDeleteSelection:
+            evt.setFlags |= .Disabled | .Name
+            evt.disabled = !hasSel
+            evt.name = "Delete"
         }
 
         return true
@@ -73,6 +80,10 @@ impl IActionUI for ActionSelection
             }
             capture.selection = newSel
             capture.selectionHasChanged()
+
+        case CmdIdDeleteSelection:
+            undo := capture.newUndo(.DeleteSelection)
+            capture.pushUndo(undo)
         }
 
         return true

@@ -1,6 +1,5 @@
 const CmdIdUndo                 = "CmdIdUndo"
 const CmdIdRedo                 = "CmdIdRedo"
-const CmdIdDeleteSelection      = "CmdIdDeleteSelection"
 const CmdEditText               = "CmdEditText"
 const CmdIdClearImageInside     = "CmdIdClearImageInside"
 const CmdIdLibrary              = "CmdIdLibrary"

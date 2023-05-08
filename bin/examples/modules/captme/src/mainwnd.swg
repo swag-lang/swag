@@ -290,12 +290,6 @@ impl IWnd for MainWnd
                 }
             }
 
-        case CmdIdDeleteSelection:
-            evt.setFlags |= .Disabled | .Name
-            evt.disabled = !hasSel
-            evt.name = "Delete"
-            evt.accepted = true
-
         case CmdIdUndo:
             evt.setFlags |= .Disabled | .Name
             evt.name = "Undo"
@@ -351,10 +345,6 @@ impl IWnd for MainWnd
 
         case CmdIdClearImageInside:
             capture.clearImageInside()
-
-        case CmdIdDeleteSelection:
-            undo = capture.newUndo(.DeleteSelection)
-            evt.accepted = true
 
         case CmdIdFlatten:
             undo = capture.newUndo(.Flatten)
