@@ -281,30 +281,6 @@ impl IWnd for MainWnd
             evt.disabled = !capture or !capture.forms.count
             evt.accepted = true
 
-        case CmdIdZoom1:
-            evt.setFlags |= .Name | .Disabled
-            evt.name = "Actual Size"
-            evt.disabled = !capture
-            evt.accepted = true
-
-        case CmdIdZoomFit:
-            evt.setFlags |= .Name | .Disabled
-            evt.name = "Fit To View"
-            evt.disabled = !capture
-            evt.accepted = true
-
-        case CmdIdZoomIn:
-            evt.setFlags |= .Name | .Disabled
-            evt.name = "Zoom In"
-            evt.disabled = !capture or !editWnd.editView.canZoomIn()
-            evt.accepted = true
-
-        case CmdIdZoomOut:
-            evt.setFlags |= .Name | .Disabled
-            evt.name = "Zoom Out"
-            evt.disabled = !capture or !editWnd.editView.canZoomOut()
-            evt.accepted = true
-
         case CmdIdSnap:
             evt.setFlags |= .Name | .Checked
             evt.name = "Snap To Forms"
@@ -421,17 +397,6 @@ impl IWnd for MainWnd
 
         case CmdIdRecentBig:
             setBottomSize(.Big)
-
-        case CmdIdZoom1:
-            editWnd.editView.setZoom(1)
-
-        case CmdIdZoomFit:
-            editWnd.editView.zoomToFit()
-
-        case CmdIdZoomIn:
-            editWnd.editView.zoomIn()
-        case CmdIdZoomOut:
-            editWnd.editView.zoomOut()
 
         case CmdIdSnap:
             snap = !snap
@@ -645,6 +610,7 @@ impl MainWnd
         registerAction'ActionToolMode()
         registerAction'ActionCopyPaste()
         registerAction'ActionFile()
+        registerAction'ActionZoom()
     }
 
     mtd registerShortcuts()
