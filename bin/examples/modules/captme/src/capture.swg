@@ -1156,6 +1156,8 @@ impl Capture
 
     mtd hitTest(localPos: Math.Point)->u64
     {
+        if !forms.count
+            return Swag.U64.Max
         loop i: forms.count-1..0
         {
             f := forms[i]

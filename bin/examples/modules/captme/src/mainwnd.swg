@@ -383,52 +383,6 @@ impl IWnd for MainWnd
             evt.checked = snap
             evt.accepted = true
 
-        case CmdIdCapture:
-            evt.setFlags |= .Name | .Icon
-            evt.name = "Capture"
-            evt.icon = Icon.from(&icons48, 6)
-            evt.accepted = true
-        case CmdIdCaptureArea:
-            evt.setFlags |= .Name | .Icon
-            evt.name = "Capture Area"
-            evt.icon = Icon.from(&icons24, 7)
-            evt.accepted = true
-        case CmdIdCaptureLastArea:
-            evt.setFlags |= .Name | .Icon
-            evt.name = "Capture Last Area"
-            evt.icon = Icon.from(&icons24, 15)
-            evt.accepted = true
-        case CmdIdCaptureFullScreen:
-            evt.setFlags |= .Name | .Icon
-            evt.name = "Capture Full Screen"
-            evt.icon = Icon.from(&icons24, 6)
-            evt.accepted = true
-        case CmdIdCaptureActiveWnd:
-            evt.setFlags |= .Name | .Icon
-            evt.name = "Capture Active Window"
-            evt.icon = Icon.from(&icons24, 14)
-            evt.accepted = true
-        case CmdIdCaptureScreen0:
-            evt.setFlags |= .Name | .Icon
-            evt.name = Format.toString("Capture Monitor 0 (%x%)", monitors[0].rect.width, monitors[0].rect.height)
-            evt.icon = Icon.from(&icons24, 5)
-            evt.accepted = true
-        case CmdIdCaptureScreen1:
-            evt.setFlags |= .Name | .Icon
-            evt.name = Format.toString("Capture Monitor 1 (%x%)", monitors[1].rect.width, monitors[1].rect.height)
-            evt.icon = Icon.from(&icons24, 5)
-            evt.accepted = true
-        case CmdIdCaptureScreen2:
-            evt.setFlags |= .Name | .Icon
-            evt.name = Format.toString("Capture Monitor 2 (%x%)", monitors[2].rect.width, monitors[2].rect.height)
-            evt.icon = Icon.from(&icons24, 5)
-            evt.accepted = true
-        case CmdIdCaptureScreen3:
-            evt.setFlags |= .Name | .Icon
-            evt.name = Format.toString("Capture Monitor 3 (%x%)", monitors[3].rect.width, monitors[3].rect.height)
-            evt.icon = Icon.from(&icons24, 5)
-            evt.accepted = true
-
         case CmdIdLibrary:
             evt.setFlags |= .Name | .ToolTip | .Checked
             evt.name = "Library"
@@ -839,25 +793,6 @@ impl IWnd for MainWnd
         case CmdIdNewFromClipboard:
             newCapture(Clipboard.getImage())
 
-        case CmdIdCapture:
-            captureScreen(.Area)
-        case CmdIdCaptureArea:
-            captureScreen(.Area)
-        case CmdIdCaptureLastArea:
-            captureScreen(.LastArea)
-        case CmdIdCaptureFullScreen:
-            captureScreen(.FullScreen)
-        case CmdIdCaptureActiveWnd:
-            captureScreen(.ActiveWindow)
-        case CmdIdCaptureScreen0:
-            captureScreen(.Screen0)
-        case CmdIdCaptureScreen1:
-            captureScreen(.Screen1)
-        case CmdIdCaptureScreen2:
-            captureScreen(.Screen2)
-        case CmdIdCaptureScreen3:
-            captureScreen(.Screen3)
-
         case CmdIdLibrary:
             swapLibraryMode()
 
@@ -1163,6 +1098,7 @@ impl MainWnd
     {
         registerAction'ActionDelay()
         registerAction'ActionPixSel()
+        registerAction'ActionCapture()
     }
 
     mtd registerShortcuts()

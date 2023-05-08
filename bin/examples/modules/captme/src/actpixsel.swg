@@ -1,7 +1,7 @@
-const CmdIdPixSelClear          = "CmdIdPixSelClear"
-const CmdIdPixSelFill           = "CmdIdPixSelFill"
-const CmdIdPixSelSmartFill      = "CmdIdPixSelSmartFill"
-const CmdIdPixSelSmartMove      = "CmdIdPixSelSmartMove"
+const CmdIdPixSelClear      = "CmdIdPixSelClear"
+const CmdIdPixSelFill       = "CmdIdPixSelFill"
+const CmdIdPixSelSmartFill  = "CmdIdPixSelSmartFill"
+const CmdIdPixSelSmartMove  = "CmdIdPixSelSmartMove"
 
 struct ActionPixSel {}
 impl IActionUI for ActionPixSel

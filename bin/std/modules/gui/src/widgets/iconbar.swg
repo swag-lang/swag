@@ -4,7 +4,7 @@ using Core, Pixel
 #[Swag.EnumFlags]
 enum IconBarFlags
 {
-    Zero
+    Zero = 0
     Vertical
 }
 
