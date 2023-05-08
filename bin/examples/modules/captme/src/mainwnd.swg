@@ -265,24 +265,6 @@ impl IWnd for MainWnd
             evt.accepted = true
             evt.checked = libraryMode
 
-        case CmdIdSelectAll:
-            evt.setFlags |= .Disabled | .Name
-            evt.disabled = !capture or !capture.forms.count
-            evt.name = "Select All Objects"
-            evt.accepted = true
-
-        case CmdIdDeSelectAll:
-            evt.setFlags |= .Disabled | .Name
-            evt.disabled = !capture or !hasSel
-            evt.name = "Deselect All Objects"
-            evt.accepted = true
-
-        case CmdIdInvertSelection:
-            evt.setFlags |= .Disabled | .Name
-            evt.disabled = !capture
-            evt.name = "Invert Selection"
-            evt.accepted = true
-
         case CmdEditText:
             evt.setFlags |= .Disabled | .Name
             evt.disabled = !hasSel or !lastSelType or lastSelType != FormText
@@ -370,26 +352,6 @@ impl IWnd for MainWnd
 
         case CmdIdLibrary:
             swapLibraryMode()
-
-        case CmdIdSelectAll:
-            capture.selection.clear()
-            loop capture.forms
-                capture.selection.add(@index)
-            capture.selectionHasChanged()
-
-        case CmdIdDeSelectAll:
-            capture.selection.clear()
-            capture.selectionHasChanged()
-
-        case CmdIdInvertSelection:
-            var newSel: Array'u64
-            loop i: capture.forms
-            {
-                if !capture.selection.contains(i)
-                    newSel.add(i)
-            }
-            capture.selection = newSel
-            capture.selectionHasChanged()
 
         case CmdEditText:
             lastSel := cast(*FormText) @dataof(capture.forms[capture.selection.back()])
@@ -569,6 +531,7 @@ impl MainWnd
         registerAction'ActionFile()
         registerAction'ActionZoom()
         registerAction'ActionImage()
+        registerAction'ActionSelection()
     }
 
     mtd registerShortcuts()
