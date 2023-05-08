@@ -216,24 +216,6 @@ impl IWnd for MainWnd
             evt.name = "Restore Default Styles"
             evt.accepted = true
 
-        case CmdIdRecentSmall:
-            evt.setFlags |= .Name | .ToolTip | .Checked
-            evt.toolTip = "Small recent view"
-            evt.checked = bottomSize == .Small
-            evt.accepted = true
-
-        case CmdIdRecentMedium:
-            evt.setFlags |= .Name | .ToolTip | .Checked
-            evt.toolTip = "Medium recent view"
-            evt.checked = bottomSize == .Medium
-            evt.accepted = true
-
-        case CmdIdRecentBig:
-            evt.setFlags |= .Name | .ToolTip | .Checked
-            evt.toolTip = "Big recent view"
-            evt.checked = bottomSize == .Big
-            evt.accepted = true
-
         case CmdIdSnap:
             evt.setFlags |= .Name | .Checked
             evt.name = "Snap To Forms"
@@ -299,15 +281,6 @@ impl IWnd for MainWnd
         case CmdIdResetQuickStyle:
             quickWnd.resetQuickStyles()
 
-        case CmdIdRecentSmall:
-            setBottomSize(.Small)
-
-        case CmdIdRecentMedium:
-            setBottomSize(.Medium)
-
-        case CmdIdRecentBig:
-            setBottomSize(.Big)
-
         case CmdIdSnap:
             snap = !snap
 
@@ -368,22 +341,6 @@ impl MainWnd
         }
 
         return editMode
-    }
-
-    mtd setBottomSize(bottomSize: BottomSize)
-    {
-        self.bottomSize = #self.bottomSize
-        switch self.bottomSize
-        {
-        case Small:
-            recentBar.resize(0, 80)
-        case Medium:
-            recentBar.resize(0, 128)
-        case Big:
-            recentBar.resize(0, 224)
-        }
-
-        applyLayout({position.width, position.height})
     }
 
     mtd swapLibraryMode()
@@ -455,6 +412,7 @@ impl MainWnd
         registerAction'ActionImage()
         registerAction'ActionSelection()
         registerAction'ActionFlatten()
+        registerAction'ActionRecentSize()
     }
 
     mtd registerShortcuts()
