@@ -103,7 +103,7 @@ impl IconBar
     mtd setIconBarFlags(add, remove = IconBarFlags.Zero)
     {
         iconBarFlags.add(add)
-        iconBarFlags.remove(~remove)
+        iconBarFlags.remove(remove)
         computeLayout()
     }
 }
