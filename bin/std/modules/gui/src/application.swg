@@ -250,7 +250,7 @@ private impl Application
                 {
                     id := targetWnd.getKeyShortcut(modifiers, cast(Input.Key) i)
                     if id != null
-                        targetWnd.sendWndId(id)
+                        targetWnd.sendCommandEvent(id)
                 }
             }
             elif lastP and !curP

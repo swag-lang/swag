@@ -20,7 +20,7 @@ impl IActionUI for ActionGlobal
         return false
     }
 
-    mtd update(cxt: ActionContext, evt: *CommandUIEvent)->bool
+    mtd update(cxt: ActionContext, evt: *CommandStateEvent)->bool
     {
         main := cast(*MainWnd) cxt.wnd
 

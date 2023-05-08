@@ -22,7 +22,7 @@ impl IActionUI for ActionZoom
         return false
     }
 
-    mtd update(cxt: ActionContext, evt: *CommandUIEvent)->bool
+    mtd update(cxt: ActionContext, evt: *CommandStateEvent)->bool
     {
         main := cast(*MainWnd) cxt.wnd
         capture := main.getCapture()

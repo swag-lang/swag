@@ -13,7 +13,7 @@ public struct Button
 
 impl IWnd for Button
 {
-    mtd onCommandStateEvent(evt: *CommandUIEvent)
+    mtd onApplyStateEvent(evt: *CommandStateEvent)
     {
         if evt.id != id
             return

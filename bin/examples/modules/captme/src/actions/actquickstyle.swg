@@ -16,7 +16,7 @@ impl IActionUI for ActionQuickStyle
         return false
     }
 
-    mtd update(cxt: ActionContext, evt: *CommandUIEvent)->bool
+    mtd update(cxt: ActionContext, evt: *CommandStateEvent)->bool
     {
         switch cxt.id
         {

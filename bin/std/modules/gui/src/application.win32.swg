@@ -73,7 +73,7 @@ impl Application
 
         (id, target) := getHotKeyShortcut(mdf, key)
         if id and target
-            target.sendWndId(id)
+            target.sendCommandEvent(id)
     }
 
     mtd sendSystemEvents()

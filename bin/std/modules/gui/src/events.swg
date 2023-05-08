@@ -72,7 +72,7 @@ struct CommandEvent
     source:     *Wnd
 }
 
-struct CommandUIEvent
+struct CommandStateEvent
 {
     #[Swag.EnumFlags]
     enum SetFlags

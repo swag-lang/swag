@@ -101,7 +101,7 @@ impl IWnd for IconButton
         hidePopup()
     }
 
-    mtd onCommandStateEvent(evt: *CommandUIEvent)
+    mtd onApplyStateEvent(evt: *CommandStateEvent)
     {
         if evt.id != id
             return
@@ -118,7 +118,7 @@ impl IWnd for IconButton
             invalidate()
         }
 
-        button.IWnd.onCommandStateEvent(evt)
+        button.IWnd.onApplyStateEvent(evt)
     }
 
     mtd onPaintEvent(evt: *PaintEvent)

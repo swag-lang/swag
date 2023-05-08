@@ -66,8 +66,8 @@ interface IWnd
     mtd onTimerEvent(evt: *TimerEvent)
     mtd onFocusEvent(evt: *FocusEvent)
     mtd onCommandEvent(evt: *CommandEvent)
-    mtd onCommandUIEvent(evt: *CommandUIEvent)
-    mtd onCommandStateEvent(evt: *CommandUIEvent)
+    mtd onComputeStateEvent(evt: *CommandStateEvent)
+    mtd onApplyStateEvent(evt: *CommandStateEvent)
     mtd onFrameEvent(evt: *FrameEvent)
     mtd onSerializeStateEvent(evt: *SerializeStateEvent)
 }
@@ -168,13 +168,13 @@ impl IWnd for Wnd
                 return
             itf.onCommandEvent(cast(*CommandEvent) evt)
         case CommandUI:
-            if updateAction(cast(*CommandUIEvent) evt)
+            if updateAction(cast(*CommandStateEvent) evt)
                 return
-            itf.onCommandUIEvent(cast(*CommandUIEvent) evt)
+            itf.onComputeStateEvent(cast(*CommandStateEvent) evt)
         case Frame:
             itf.onFrameEvent(cast(*FrameEvent) evt)
         case CommandState:
-            itf.onCommandStateEvent(cast(*CommandUIEvent) evt)
+            itf.onApplyStateEvent(cast(*CommandStateEvent) evt)
         case SerializeState:
             itf.onSerializeStateEvent(cast(*SerializeStateEvent) evt)
         }
@@ -199,8 +199,8 @@ impl IWnd for Wnd
     mtd onKeyEvent(evt: *KeyEvent)                  { evt.accepted = false; }
     mtd onMouseEvent(evt: *MouseEvent)              { evt.accepted = false; }
     mtd onCommandEvent(evt: *CommandEvent)          { evt.accepted = false; }
-    mtd onCommandUIEvent(evt: *CommandUIEvent)      { evt.accepted = false; }
-    mtd onCommandStateEvent(evt: *CommandUIEvent)   { evt.accepted = false; }
+    mtd onComputeStateEvent(evt: *CommandStateEvent)      { evt.accepted = false; }
+    mtd onApplyStateEvent(evt: *CommandStateEvent)   { evt.accepted = false; }
 }
 
 impl Wnd
@@ -1123,6 +1123,15 @@ impl Wnd
         postEvent(evt)
     }
 
+    mtd processEvent(evt: *Event)
+    {
+        eat := false
+        if hookOnEvent
+            eat = hookOnEvent(self, evt)
+        if !eat
+            itf.onEvent(evt)
+    }
+
     mtd updateCommandState()
     {
         var arr: Array'*Wnd
@@ -1158,20 +1167,20 @@ impl Wnd
         }
     }
 
-    mtd sendCommandUIEvent(cmdId: WndId)->CommandUIEvent
+    mtd sendCommandUIEvent(commandId: WndId)->CommandStateEvent
     {
         var evt: retval
-        if cmdId == null
+        if commandId == null
             return evt
 
-        evt.id = cmdId
+        evt.id = commandId
         evt.source = self
         sendEvent(&evt)
 
         // Is there a keyboard shortcut or a global hot key ?
-        sk := getKeyShortcutNameFor(cmdId)
+        sk := getKeyShortcutNameFor(commandId)
         if !sk.length
-            sk = getApp().getHotKeyShortcutNameFor(cmdId)
+            sk = getApp().getHotKeyShortcutNameFor(commandId)
 
         if sk.length
         {
@@ -1182,53 +1191,36 @@ impl Wnd
         return evt
     }
 
-    mtd sendWndId(wndid: WndId)
+    // Send the given command id to the window.
+    // The command will be updated first, and if not disabled, will be sent.
+    mtd sendCommandEvent(commandId: WndId)
     {
         // We first need to be sure that the target can deal with the event
-        evtui := CommandUIEvent{}
-        evtui.id = wndid
-        sendEvent(&evtui)
+        evtState := CommandStateEvent{}
+        evtState.id = commandId
+        sendEvent(&evtState)
 
         // If it's not disabled, then we can send
-        if !(evtui.setFlags & .Disabled) or !evtui.disabled
+        if !(evtState.setFlags & .Disabled) or !evtState.disabled
         {
             evtc := CommandEvent{}
-            evtc.id = wndid
+            evtc.id = commandId
             sendEvent(&evtc)
         }
     }
 
-    mtd processEvent(evt: *Event)
-    {
-        eat := false
-        if hookOnEvent
-            eat = hookOnEvent(self, evt)
-        if !eat
-            itf.onEvent(evt)
-    }
+    //////////////////////////////////////////////
+    // Actions
+    //////////////////////////////////////////////
 
-    mtd serializeState(ser: *Serialization.Serializer) throw
-    {
-        var evt: SerializeStateEvent
-        evt.accepted = false
-        evt.ser = ser
-        processEvent(&evt)
-
-        if !evt.accepted
-        {
-            visit c: childs
-                c.serializeState(ser)
-        }
-    }
-
-    // Register one new command
+    // Register one new action
     mtd(T) registerAction()
     {
         itfAct := @mkinterface(null, @typeof(T), IActionUI)
         actions.add(itfAct)
     }
 
-    mtd updateAction(evt: *CommandUIEvent)->bool
+    mtd updateAction(evt: *CommandStateEvent)->bool
     {
         var cxt: ActionContext
         cxt.wnd = self
@@ -1264,5 +1256,23 @@ impl Wnd
         }
 
         return false
+    }
+
+    //////////////////////////////////////////////
+    // Serialization
+    //////////////////////////////////////////////
+
+    mtd serializeState(ser: *Serialization.Serializer) throw
+    {
+        var evt: SerializeStateEvent
+        evt.accepted = false
+        evt.ser = ser
+        processEvent(&evt)
+
+        if !evt.accepted
+        {
+            visit c: childs
+                c.serializeState(ser)
+        }
     }
 }
