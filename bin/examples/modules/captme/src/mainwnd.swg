@@ -211,11 +211,6 @@ impl IWnd for MainWnd
             evt.name = "Exit"
             evt.accepted = true
 
-        case CmdIdResetQuickStyle:
-            evt.setFlags |= .Name
-            evt.name = "Restore Default Styles"
-            evt.accepted = true
-
         case CmdIdSnap:
             evt.setFlags |= .Name | .Checked
             evt.name = "Snap To Forms"
@@ -277,9 +272,6 @@ impl IWnd for MainWnd
         case CmdIdExit:
             libWnd.requestClose()
             postQuitEvent()
-
-        case CmdIdResetQuickStyle:
-            quickWnd.resetQuickStyles()
 
         case CmdIdSnap:
             snap = !snap
@@ -413,6 +405,7 @@ impl MainWnd
         registerAction'ActionSelection()
         registerAction'ActionFlatten()
         registerAction'ActionRecentSize()
+        registerAction'ActionQuickStyle()
     }
 
     mtd registerShortcuts()
