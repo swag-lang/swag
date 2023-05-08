@@ -382,7 +382,7 @@ impl MenuCtrl
     {
         visit i: items
         {
-            evt := sendCommandStateEvent(i.id)
+            evt := sendComputeCommandStateEvent(i.id)
             if evt.setFlags & .Disabled
                 i.disabled = evt.disabled
             if evt.setFlags & .Hidden

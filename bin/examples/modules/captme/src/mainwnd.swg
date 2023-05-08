@@ -486,7 +486,6 @@ impl MainWnd
         createBtn(CmdIdModePixSel)
         //createBtn(CmdIdUndo, false)
         //createBtn(CmdIdRedo, false)
-        editToolBar.updateCommandState()
     }
 
     func create(parent: *Wnd)->*MainWnd

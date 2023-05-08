@@ -1136,6 +1136,7 @@ impl Wnd
     // Commands
     //////////////////////////////////////////////
 
+    // Main function to update command state of various windows/widgets.
     mtd updateCommandState()
     {
         var arr: Array'*Wnd
@@ -1162,7 +1163,7 @@ impl Wnd
 
         visit c: arr
         {
-            evt := sendCommandStateEvent(c.id)
+            evt := sendComputeCommandStateEvent(c.id)
             if evt.accepted
             {
                 evt.kind = .ApplyCommandState
@@ -1173,7 +1174,7 @@ impl Wnd
 
     // Send the command state event with the given id to the window.
     // Returns the updated command state.
-    mtd sendCommandStateEvent(cmdId: WndId)->CommandStateEvent
+    mtd sendComputeCommandStateEvent(cmdId: WndId)->CommandStateEvent
     {
         if cmdId == null
             return {}

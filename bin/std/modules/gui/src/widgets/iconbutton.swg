@@ -106,12 +106,12 @@ impl IWnd for IconButton
         if evt.id != id
             return
 
-        if evt.setFlags & .ToolTip
+        if evt.setFlags.has(.ToolTip)
         {
             toolTip = evt.toolTip
         }
 
-        if evt.setFlags & .Checked and isChecked != evt.checked
+        if evt.setFlags.has(.Checked) and isChecked != evt.checked
         {
             evt.accepted = true
             isChecked = evt.checked
