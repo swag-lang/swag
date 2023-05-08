@@ -1,34 +1,5 @@
 impl MainWnd
 {
-    mtd openImage()
-    {
-        var opt: FileDlgOptions
-        with opt
-        {
-            .state = &fileDlgState
-            .mode = .SelectOneFile
-            .title = "Load Image"
-            .btnOkName = "Load"
-            .shortcuts.add({Env.SpecialDirectory.Desktop, "Desktop"})
-            .shortcuts.add({Env.SpecialDirectory.UserPictures, "My Images"})
-            .shortcuts.add({Env.SpecialDirectory.CommonPictures, "Images"})
-            .filters.add({"PNG - Portable Network Graphics (*.png)", ".png"})
-            .filters.add({"JPG - JPEG Image (*.jpg)", ".jpg"})
-            .filters.add({"BMP - Windows Bitmap (*.bmp)", ".bmp"})
-            .filters.add({"TGA - Truevision Targa (*.tga)", ".tga"})
-        }
-
-        dlg := FileDlg.create(surface, opt)
-        if dlg.doModal() != Dialog.BtnOk
-            return
-
-        img := catch Image.load(dlg.getSelectedName())
-        if @err
-            MessageDlg.error(surface, @err, "Failed to load image !")
-        else
-            newCapture(img, dlg.getSelectedName())
-    }
-
     mtd resizeImage()
     {
         #[Swag.Global]
@@ -359,47 +330,6 @@ impl MainWnd
         }
 
         capture.selectionHasChanged()
-    }
-
-    mtd saveAsImage(linked = false)
-    {
-        var opt: FileDlgOptions
-        with opt
-        {
-            .state = &fileDlgState
-            .mode = .CreateFile
-            .title = "Save As Image"
-            .btnOkName = "Save"
-            .shortcuts.add({Env.SpecialDirectory.Desktop, "Desktop"})
-            .shortcuts.add({Env.SpecialDirectory.UserPictures, "My Images"})
-            .shortcuts.add({Env.SpecialDirectory.CommonPictures, "Images"})
-            .editName = Path.getFileNameWithoutExtension(getCapture().file)
-            .filters.add({"PNG - Portable Network Graphics (*.png)", ".png"})
-            .filters.add({"JPG - JPEG Image (*.jpg)", ".jpg"})
-            .filters.add({"BMP - Windows Bitmap (*.bmp)", ".bmp"})
-            .filters.add({"TGA - Truevision Targa (*.tga)", ".tga"})
-        }
-
-        dlg := FileDlg.create(surface, opt)
-        if dlg.doModal() != Dialog.BtnOk
-            return
-
-        Cursor.wait()
-        capture := getCapture()
-        img := capture.toImage()
-        catch img.save(dlg.getSelectedName())
-        if @err
-        {
-            MessageDlg.error(surface, @err, "Failed to save file !")
-            return
-        }
-
-        if linked
-        {
-            capture.linkedImage = dlg.getSelectedName()
-            capture.changed = true
-            catch capture.save()
-        }
     }
 
     mtd newImage()

@@ -224,29 +224,6 @@ impl IWnd for MainWnd
             evt.disabled = !capture
             evt.accepted = true
 
-        case CmdIdSaveAsImage:
-            evt.setFlags |= .Name | .Disabled
-            evt.name = "Save As Image..."
-            evt.disabled = !capture
-            evt.accepted = true
-
-        case CmdIdSaveAsLinkedImage:
-            evt.setFlags |= .Name | .Disabled
-            evt.name = "Save As Linked Image..."
-            evt.disabled = !capture
-            evt.accepted = true
-
-        case CmdIdOpenImage:
-            evt.setFlags |= .Name
-            evt.name = "Open Image..."
-            evt.accepted = true
-
-        case CmdIdUpdateLinkedImage:
-            evt.setFlags |= .Name | .Disabled
-            evt.name = "Update Linked Image"
-            evt.disabled = !capture or capture.linkedImage.length == 0
-            evt.accepted = true
-
         case CmdIdNewImage:
             evt.setFlags |= .Name
             evt.name = "New Image"
@@ -292,12 +269,6 @@ impl IWnd for MainWnd
             evt.checked = bottomSize == .Big
             evt.accepted = true
 
-        case CmdIdDeleteCapture:
-            evt.setFlags |= .Name | .Disabled
-            evt.name = "Delete"
-            evt.disabled = !capture
-            evt.accepted = true
-
         case CmdIdFlatten:
             evt.setFlags |= .Name | .Disabled
             evt.name = "Flatten"
@@ -308,12 +279,6 @@ impl IWnd for MainWnd
             evt.setFlags |= .Name | .Disabled
             evt.name = "Flatten All"
             evt.disabled = !capture or !capture.forms.count
-            evt.accepted = true
-
-        case CmdIdFileLocation:
-            evt.setFlags |= .Name | .Disabled
-            evt.name = "Open File Location"
-            evt.disabled = !capture
             evt.accepted = true
 
         case CmdIdZoom1:
@@ -338,12 +303,6 @@ impl IWnd for MainWnd
             evt.setFlags |= .Name | .Disabled
             evt.name = "Zoom Out"
             evt.disabled = !capture or !editWnd.editView.canZoomOut()
-            evt.accepted = true
-
-        case CmdIdDupCapture:
-            evt.setFlags |= .Name | .Disabled
-            evt.name = "Duplicate"
-            evt.disabled = !capture
             evt.accepted = true
 
         case CmdIdSnap:
@@ -447,23 +406,6 @@ impl IWnd for MainWnd
         case CmdIdTrimCanevas:
             trimCanevas()
 
-        case CmdIdSaveAsImage:
-            saveAsImage()
-        case CmdIdSaveAsLinkedImage:
-            saveAsImage(linked: true)
-        case CmdIdOpenImage:
-            openImage()
-        case CmdIdUpdateLinkedImage:
-            txt := Format.toString("This will overwrite the original image.\n")
-            txt += Format.toString("File is '%'", capture.linkedImage)
-            if MessageDlg.confirm(surface, txt) != Dialog.BtnYes
-                break
-            Cursor.wait()
-            img := capture.toImage()
-            catch img.save(capture.linkedImage)
-            if @err
-                MessageDlg.error(surface, @err, "Failed to update file !")
-
         case CmdIdExit:
             libWnd.requestClose()
             postQuitEvent()
@@ -480,9 +422,6 @@ impl IWnd for MainWnd
         case CmdIdRecentBig:
             setBottomSize(.Big)
 
-        case CmdIdFileLocation:
-            File.locateInExplorer(getCapture().file)
-
         case CmdIdZoom1:
             editWnd.editView.setZoom(1)
 
@@ -493,19 +432,6 @@ impl IWnd for MainWnd
             editWnd.editView.zoomIn()
         case CmdIdZoomOut:
             editWnd.editView.zoomOut()
-
-        case CmdIdDeleteCapture:
-            res := MessageDlg.confirm(surface, "This will delete the capture file.")
-            if res == MessageDlg.BtnYes
-                recentWnd.removeRecent()
-
-        case CmdIdDupCapture:
-            file := Library.newFileName()
-            trycatch File.duplicate(file, capture.file)
-            dupCapture := trycatch recentWnd.addRecent(file)
-            Memory.delete(dupCapture)
-            recentWnd.recentView.select(0)
-            g_Library.addFile(file)
 
         case CmdIdSnap:
             snap = !snap
@@ -718,6 +644,7 @@ impl MainWnd
         registerAction'ActionMoveSel()
         registerAction'ActionToolMode()
         registerAction'ActionCopyPaste()
+        registerAction'ActionFile()
     }
 
     mtd registerShortcuts()
