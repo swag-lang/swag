@@ -108,9 +108,9 @@ impl IWnd for MainWnd
         sf.setPosition({pt.x, pt.y, menu.position.width, menu.position.height})
         sf.constaintToScreen()
         sf.wnd.view.backgroundStyle = .Window
+
         sf.show()
         sf.bringToTop()
-
         while !menu.endModal
             surface.app.runFrame()
         sf.hide()
@@ -1265,7 +1265,7 @@ impl MainWnd
         registerKeyShortcut(.Control,          .Y,              CmdIdRedo)
         registerKeyShortcut(.CtrlShift,        .F,              CmdIdBringForward)
         registerKeyShortcut(.CtrlShift,        .B,              CmdIdSendBackward)
-        registerKeyShortcut(.None,             .Delete,         CmdIdDeleteSelection)
+        registerKeyShortcut(.Zero,             .Delete,         CmdIdDeleteSelection)
         registerKeyShortcut(.CtrlShift,        .A,              CmdIdCopyAsImage)
         registerKeyShortcut(.Control,          .A,              CmdIdSelectAll)
         registerKeyShortcut(.Control,          .D,              CmdIdDeSelectAll)
@@ -1285,10 +1285,10 @@ impl MainWnd
         registerKeyShortcut(.Shift,            .Up,             CmdIdMoveSelTop1)
         registerKeyShortcut(.Shift,            .Right,          CmdIdMoveSelRight1)
         registerKeyShortcut(.Shift,            .Down,           CmdIdMoveSelBottom1)
-        registerKeyShortcut(.None,             .Left,           CmdIdMoveSelLeft)
-        registerKeyShortcut(.None,             .Up,             CmdIdMoveSelTop)
-        registerKeyShortcut(.None,             .Right,          CmdIdMoveSelRight)
-        registerKeyShortcut(.None,             .Down,           CmdIdMoveSelBottom)
+        registerKeyShortcut(.Zero,             .Left,           CmdIdMoveSelLeft)
+        registerKeyShortcut(.Zero,             .Up,             CmdIdMoveSelTop)
+        registerKeyShortcut(.Zero,             .Right,          CmdIdMoveSelRight)
+        registerKeyShortcut(.Zero,             .Down,           CmdIdMoveSelBottom)
 
         errorReg := false
         #[Swag.Mixin]
@@ -1308,7 +1308,7 @@ impl MainWnd
             }
         }
 
-        registerHotKey(.None,      .PrintScreen, CmdIdCaptureArea)
+        registerHotKey(.Zero,      .PrintScreen, CmdIdCaptureArea)
         registerHotKey(.CtrlShift, .PrintScreen, CmdIdCaptureLastArea)
         registerHotKey(.Control,   .PrintScreen, CmdIdCaptureFullScreen)
         registerHotKey(.Alt,       .PrintScreen, CmdIdCaptureActiveWnd)
@@ -1521,7 +1521,7 @@ impl MainWnd
         with res.quickStyleBar = SplitterCtrl.create(res, {0, 0, 300, 600}, vertical: true)
         {
             .dockStyle = .Right
-            .splitterFlags |= .HideBars
+            .splitterFlags.add(.HideBars)
             .backgroundStyle = .Window
         }
 
@@ -1538,6 +1538,7 @@ impl MainWnd
         item := res.quickStyleBar.addPane(res.quickWnd, title: true)
         item.tryPreserveSize = true
         item.label.setText("Quick Styles")
+
         item = res.quickStyleBar.addPane(res.propWnd, title: true)
         item.label.setText("Tool Properties")
 
@@ -1553,7 +1554,7 @@ impl MainWnd
         ic := res.getTheme().getIcon24(ThemeIcons24.Search, 20)
         with res.zoomBtn = IconButton.create(res.editZoomBar, ic, {0, 0, 120, 32})
         {
-            .iconBtnFlags |= .Center
+            .iconBtnFlags.add(.Center)
             .textPos = .Right
             .arrowPos = .RightUp
             .sigPressed += closure|res|(btn) {
@@ -1568,13 +1569,13 @@ impl MainWnd
 
         with res.sizeBtn = IconButton.create(res.editZoomBar, {}, {0, 0, 120, 32})
         {
-            .iconBtnFlags |= .Center
+            .iconBtnFlags.add(.Center)
             .textPos = .Right
             .arrowPos = .RightUp
             .sigPressed += closure|res|(btn) {
                 pos  := btn.getSurfaceRect()
                 menu := MenuCtrl.createPopup(res)
-                menu.menuCtrlFlags |= .NoKeyShortcuts
+                menu.menuCtrlFlags.add(.NoKeyShortcuts)
                 menu.addItem(CmdIdResizeImage)
                 menu.addItem(CmdIdResizeCanevas)
                 discard menu.doModal({pos.horzCenter(), pos.y}, .AnchorBottomCenter, autoDestroy: true)
