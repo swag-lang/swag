@@ -69,12 +69,12 @@ impl IconBar
         iconT.sizeX, iconT.sizeY = iconSize
         size := iconSize + 2*iconPadding
         b := IconButton.create(self, iconT, {0, 0, size, size})
-        b.iconBtnFlags = iconBtnFlags
+        b.iconBtnFlags.set(iconBtnFlags)
         b.id = btnId
         b.dockStyle = .Left
         computeLayout()
 
-        if iconBtnFlags & (.Checkable | .CheckableToggle)
+        if iconBtnFlags.has(.Checkable | .CheckableToggle)
         {
             b.sigCheckChanged += closure|self|(btn) {
                 self.sigCheckChanged.call(btn)

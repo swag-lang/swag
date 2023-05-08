@@ -31,14 +31,16 @@ impl IActionUI for ActionCopyPaste
         switch cxt.id
         {
         case CmdIdCopy:
-            evt.setFlags |= .Disabled | .Name
+            evt.setFlags |= .Disabled | .Name | .Icon
             evt.disabled = !hasSel
             evt.name = "Copy"
+            evt.icon = main.getTheme().getIcon24(.Copy)
 
         case CmdIdPaste:
-            evt.setFlags |= .Disabled | .Name
+            evt.setFlags |= .Disabled | .Name | .Icon
             evt.disabled = !capture or (!Clipboard.hasFormat(main.clipFmt) and !Clipboard.hasImage())
             evt.name = "Paste"
+            evt.icon = main.getTheme().getIcon24(.Paste)
 
         case CmdIdPasteImageInside:
             evt.setFlags |= .Disabled | .Name | .Hidden

@@ -146,7 +146,7 @@ impl PropWnd
             .style.addStyleSheetColors("btnIcon_Bk        $lighterMedium")
             .style.addStyleSheetColors("btnIcon_HotBk     $lighterBig")
             .style.addStyleSheetColors("btnIcon_PressedBk $lighterVeryBig")
-            .iconBtnFlags = .Popup | .CheckableToggle
+            .iconBtnFlags.add(.Popup | .CheckableToggle)
             .arrowPos = .Bottom
             .textPos = .Top
             .checkedForm = .None

@@ -471,7 +471,7 @@ func createView0(tabView: *Tab, view: *Wnd)
             btn.style.addStyleSheetColors("btnIcon_HotBk            $transparent")
             btn.style.addStyleSheetColors("btnIcon_PressedBk        $transparent")
             btn.style.addStyleSheetColors("btnIcon_CheckedPressedBk $transparent")
-            btn.iconBtnFlags = .CheckableToggle
+            btn.iconBtnFlags.set(.CheckableToggle)
         }
 
         btn0 := IconButton.create(view, theme.getIcon24(ThemeIcons24.Search), {80, 660, 48, 48})
@@ -499,7 +499,7 @@ func createView0(tabView: *Tab, view: *Wnd)
         btn0 := IconButton.create(view, theme.getIcon24(ThemeIcons24.Search), {80, 720, 48, 48})
         btn0.setForm(.RoundSquare)
         btn0.checkedForm = .Full
-        btn0.iconBtnFlags = .CheckableToggle
+        btn0.iconBtnFlags.set(.CheckableToggle)
     }
 
     {

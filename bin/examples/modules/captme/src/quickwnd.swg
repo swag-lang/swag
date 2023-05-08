@@ -629,7 +629,7 @@ impl QuickWnd
         visit it: currentStyle.forms
         {
             btn := Wnd.create'QuickButton(layout, null, {0, 0, 64, 64})
-            btn.iconBtnFlags |= .Checkable
+            btn.iconBtnFlags.add(.Checkable)
             btn.setForm(.RoundSquare)
             btn.formItf = it
 

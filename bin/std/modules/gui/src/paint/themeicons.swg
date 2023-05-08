@@ -21,6 +21,11 @@ enum ThemeIcons24
     BringToFront
     Plus
     More
+    Undo
+    Redo
+    Copy
+    Paste
+    Cut
 }
 
 enum ThemeIcons64

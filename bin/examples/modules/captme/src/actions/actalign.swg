@@ -11,7 +11,6 @@ const CmdIdSendToBack   = "CmdIdSendToBack"
 const CmdIdBringForward = "CmdIdBringForward"
 const CmdIdSendBackward = "CmdIdSendBackward"
 
-
 struct ActionMoveSel {}
 impl IActionUI for ActionMoveSel
 {
@@ -79,25 +78,25 @@ impl IActionUI for ActionMoveSel
             evt.setFlags |= .Disabled | .Icon | .Name
             evt.name = "Bring To Front"
             evt.disabled = !hasSel or capture.selection.contains(capture.forms.count - 1)
-            evt.icon = evt.target.getTheme().getIcon24(.BringToFront)
+            evt.icon = main.getTheme().getIcon24(.BringToFront)
 
         case CmdIdSendToBack:
             evt.setFlags |= .Disabled | .Icon | .Name
             evt.name = "Send To Back"
             evt.disabled = !hasSel or capture.selection.contains(0)
-            evt.icon = evt.target.getTheme().getIcon24(.SendToBack)
+            evt.icon = main.getTheme().getIcon24(.SendToBack)
 
         case CmdIdBringForward:
             evt.setFlags |= .Disabled | .Icon | .Name
             evt.name = "Bring Forward"
             evt.disabled = !hasSel or capture.selection.contains(capture.forms.count - 1)
-            evt.icon = evt.target.getTheme().getIcon24(.BringForward)
+            evt.icon = main.getTheme().getIcon24(.BringForward)
 
         case CmdIdSendBackward:
             evt.setFlags |= .Disabled | .Icon | .Name
             evt.name = "Send Backward"
             evt.disabled = !hasSel or capture.selection.contains(0)
-            evt.icon = evt.target.getTheme().getIcon24(.SendBackward)
+            evt.icon = main.getTheme().getIcon24(.SendBackward)
         }
 
         return true

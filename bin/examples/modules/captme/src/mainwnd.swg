@@ -389,6 +389,7 @@ impl MainWnd
             with delayMenu := MenuCtrl.createPopup(captureMenu, owner: self)
             {
                 .addItem(CmdIdCaptureDelay0)
+                .addSeparator()
                 .addItem(CmdIdCaptureDelay1)
                 .addItem(CmdIdCaptureDelay2)
                 .addItem(CmdIdCaptureDelay5)
@@ -452,7 +453,7 @@ impl MainWnd
                 .id = #self.id
                 .style.addStyleSheetColors("btnIcon_CheckedBk    $btnIcon_HotBk")
                 .style.addStyleSheetColors("btnIcon_CheckedHotBk $btnIcon_HotBk")
-                .iconBtnFlags |= .Checkable
+                .iconBtnFlags.add(.Checkable)
                 .checkedForm = .Bottom
             }
         }
