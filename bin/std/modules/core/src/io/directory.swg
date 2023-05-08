@@ -4,7 +4,7 @@
 struct EnumerationOptions
 {
     matchPattern =           "*"
-    skipAttributes =         File.FileAttributes.None
+    skipAttributes =         File.FileAttributes.Zero
     recurse =                false
     wantFiles =              true
     wantDirectories =        true

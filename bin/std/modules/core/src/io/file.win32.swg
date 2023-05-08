@@ -96,7 +96,7 @@ func openRead(fullname: string)->FileStream throw
 // Creates a new file stream for writing
 func openWrite(fullname: string)->FileStream throw
 {
-    return try open(fullname, FileMode.Create, FileAccess.Write, FileShare.None)
+    return try open(fullname, FileMode.Create, FileAccess.Write, FileShare.Zero)
 }
 
 // Locate file in the file explorer

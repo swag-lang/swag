@@ -95,7 +95,7 @@ impl Keyboard
     // Returns the currently pressed key modifiers
     mtd getPressedModifiers()->KeyModifiers
     {
-        var modifiers: Input.KeyModifiers = .None
+        var modifiers: Input.KeyModifiers = .Zero
         if self.isKeyPressed(Input.Key.LShift)   modifiers |= .Shift
         if self.isKeyPressed(Input.Key.RShift)   modifiers |= .Shift
         if self.isKeyPressed(Input.Key.LControl) modifiers |= .Control

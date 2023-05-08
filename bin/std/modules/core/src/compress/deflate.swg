@@ -1163,7 +1163,7 @@ public impl Deflate
         flushBlock(true)
         Debug.assert(!state.lookaheadSize and !state.srcBufLeft)
 
-        if initFlags & .ComputeAdler32
+        if initFlags.has(.ComputeAdler32)
         {
             adler.init()
             adler.update(src)

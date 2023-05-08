@@ -3,6 +3,8 @@
 #[Swag.EnumFlags]
 enum LogFlags
 {
+    Zero = 0
+
     Prefix
     Date
     Time
@@ -11,7 +13,6 @@ enum LogFlags
     Line            // Exclusive with FullLoc
     FullLoc
 
-    None    = 0
     Default = Prefix | Date | Time | LongFileName | FullLoc
 }
 

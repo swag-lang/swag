@@ -9,9 +9,9 @@ impl enum FileAttributes
     {
         using FileAttributes
         if attributes == 0xFFFFFFFF
-            return None
+            return Zero
 
-        var result: FileAttributes = None
+        var result: FileAttributes = Zero
         if attributes & FILE_ATTRIBUTE_READONLY
             result |= ReadOnly
         if attributes & FILE_ATTRIBUTE_HIDDEN

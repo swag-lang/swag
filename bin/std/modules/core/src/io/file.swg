@@ -29,7 +29,7 @@ enum FileMode
 #[Swag.EnumFlags]
 enum FileShare
 {
-    None
+    Zero = 0
     Delete
     Inheritable
     Read

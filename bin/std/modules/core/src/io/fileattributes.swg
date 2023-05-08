@@ -4,7 +4,7 @@
 #[Swag.EnumFlags]
 enum FileAttributes
 {
-    None = 0
+    Zero = 0
     ReadOnly
     Hidden
     System

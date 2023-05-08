@@ -5,7 +5,7 @@ using Time
 struct FileInfo
 {
     fullname:       String
-    attributes =    FileAttributes.None
+    attributes =    FileAttributes.Zero
     creationTime:   DateTime
     lastAccessTime: DateTime
     lastWriteTime:  DateTime
@@ -15,5 +15,5 @@ struct FileInfo
 impl FileInfo
 {
     #[Swag.Inline]
-    mtdc isDirectory() => cast(bool) (attributes & .Directory)
+    mtdc isDirectory() => attributes.has(.Directory)
 }
