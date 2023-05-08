@@ -41,7 +41,7 @@ enum FocusStategy
 
 struct KeyShortcut
 {
-    mdf:    Input.KeyModifiers = None
+    mdf:    Input.KeyModifiers = Zero
     key:    Input.Key = None
     id:     WndId
     target: *Wnd

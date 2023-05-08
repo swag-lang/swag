@@ -17,6 +17,11 @@ var g_CurrentOwner: *Wnd
 
 }
 
+#drop
+{
+    hide()
+}
+
 func update(dt: f32)
 {
     if !g_Pending

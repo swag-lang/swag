@@ -89,7 +89,7 @@ impl IWnd for RichEditView
             // Lose focus with escape or enter
             if ed.richEdFlags & .AutoLoseFocus
             {
-                if evt.key == .Escape or (evt.key == .Enter and evt.modifiers == .None)
+                if evt.key == .Escape or (evt.key == .Enter and evt.modifiers.is(.Zero))
                 {
                     evt.accepted = false
                     getTopView().setFocus()
