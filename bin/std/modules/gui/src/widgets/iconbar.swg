@@ -77,7 +77,6 @@ impl IconBar
         {
             b.sigCheckChanged += closure|self|(btn) {
                 self.sigCheckChanged.call(btn)
-                self.updateCommandState()
             }
         }
 

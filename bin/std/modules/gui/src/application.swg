@@ -285,6 +285,7 @@ private impl Application
         postedEvents.clear()
         mutexPostedEvents.unlock()
 
+        needUpdateState := false
         for i := 0; i < copy.count; i += 1
         {
             evt := copy[i]
@@ -295,13 +296,13 @@ private impl Application
 
             // Special event post process
             if evt.kind == .Command
-            {
-                pevt := cast(*CommandEvent) evt
-                pevt.source.updateCommandState()
-            }
+                needUpdateState = true
 
             toDelete.add({evt, evt.type})
         }
+
+        if needUpdateState
+            updateCommandState()
     }
 
     mtd sendDestroyEvents()
@@ -311,6 +312,13 @@ private impl Application
         visit w: postDestroy
             destroyWnd(w)
         postDestroy.clear()
+    }
+
+    // Update UI state of all surfaces
+    mtd updateCommandState()
+    {
+        visit s: surfaces
+            s.wnd.updateCommandState()
     }
 
     // Remove and destroy the given surface
