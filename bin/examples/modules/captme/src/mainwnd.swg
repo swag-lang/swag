@@ -206,29 +206,6 @@ impl IWnd for MainWnd
             evt.name = "Show Editor"
             evt.accepted = true
 
-        case CmdIdResizeImage:
-            evt.setFlags |= .Name | .Disabled
-            evt.name = "Resize Image..."
-            evt.disabled = !capture
-            evt.accepted = true
-
-        case CmdIdResizeCanevas:
-            evt.setFlags |= .Name | .Disabled
-            evt.name = "Resize Capture..."
-            evt.disabled = !capture
-            evt.accepted = true
-
-        case CmdIdTrimCanevas:
-            evt.setFlags |= .Name | .Disabled
-            evt.name = "Trim"
-            evt.disabled = !capture
-            evt.accepted = true
-
-        case CmdIdNewImage:
-            evt.setFlags |= .Name
-            evt.name = "New Image"
-            evt.accepted = true
-
         case CmdIdNewFromClipboard:
             evt.setFlags |= .Name | .Disabled
             evt.name = "New From Clipboard"
@@ -238,12 +215,6 @@ impl IWnd for MainWnd
         case CmdIdExit:
             evt.setFlags |= .Name
             evt.name = "Exit"
-            evt.accepted = true
-
-        case CmdIdRestoreOrg:
-            evt.setFlags |= .Name | .Disabled
-            evt.name = "Restore to Original"
-            evt.disabled = !capture or !capture.backImgOrg.isValid()
             evt.accepted = true
 
         case CmdIdResetQuickStyle:
@@ -375,13 +346,6 @@ impl IWnd for MainWnd
             surface.show()
             surface.bringToTop()
 
-        case CmdIdResizeImage:
-            resizeImage()
-        case CmdIdResizeCanevas:
-            resizeCanevas()
-        case CmdIdTrimCanevas:
-            trimCanevas()
-
         case CmdIdExit:
             libWnd.requestClose()
             postQuitEvent()
@@ -400,9 +364,6 @@ impl IWnd for MainWnd
 
         case CmdIdSnap:
             snap = !snap
-
-        case CmdIdNewImage:
-            newImage()
 
         case CmdIdNewFromClipboard:
             newCapture(Clipboard.getImage())
@@ -440,10 +401,6 @@ impl IWnd for MainWnd
 
         case CmdIdDeleteSelection:
             undo = capture.newUndo(.DeleteSelection)
-            evt.accepted = true
-
-        case CmdIdRestoreOrg:
-            undo = capture.newUndo(.RestoreOrg)
             evt.accepted = true
 
         case CmdIdFlatten:
@@ -611,6 +568,7 @@ impl MainWnd
         registerAction'ActionCopyPaste()
         registerAction'ActionFile()
         registerAction'ActionZoom()
+        registerAction'ActionImage()
     }
 
     mtd registerShortcuts()

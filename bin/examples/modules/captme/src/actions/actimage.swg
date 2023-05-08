@@ -1,3 +1,82 @@
+const CmdIdTrimCanevas   = "CmdIdTrimCanevas"
+const CmdIdResizeImage   = "CmdIdResizeImage"
+const CmdIdResizeCanevas = "CmdIdResizeCanevas"
+const CmdIdRestoreOrg    = "CmdIdRestoreOrg"
+
+struct ActionImage {}
+impl IActionUI for ActionImage
+{
+    mtd accept(cxt: ActionContext)->bool
+    {
+        switch cxt.id
+        {
+        case CmdIdTrimCanevas,
+             CmdIdResizeImage,
+             CmdIdResizeCanevas,
+             CmdIdRestoreOrg:
+             return true
+        }
+
+        return false
+    }
+
+    mtd update(cxt: ActionContext, evt: *CommandUIEvent)->bool
+    {
+        main := cast(*MainWnd) cxt.wnd
+        capture := main.getCapture()
+
+        switch cxt.id
+        {
+        case CmdIdResizeImage:
+            evt.setFlags |= .Name | .Disabled
+            evt.name = "Resize Image..."
+            evt.disabled = !capture
+
+        case CmdIdResizeCanevas:
+            evt.setFlags |= .Name | .Disabled
+            evt.name = "Resize Capture..."
+            evt.disabled = !capture
+
+        case CmdIdTrimCanevas:
+            evt.setFlags |= .Name | .Disabled
+            evt.name = "Trim"
+            evt.disabled = !capture
+
+        case CmdIdRestoreOrg:
+            evt.setFlags |= .Name | .Disabled
+            evt.name = "Restore to Original"
+            evt.disabled = !capture or !capture.backImgOrg.isValid()
+        }
+
+        return true
+    }
+
+    mtd execute(cxt: ActionContext)->bool
+    {
+        main := cast(*MainWnd) cxt.wnd
+        capture := main.getCapture()
+
+        switch cxt.id
+        {
+        case CmdIdResizeImage:
+            main.resizeImage()
+
+        case CmdIdResizeCanevas:
+            main.resizeCanevas()
+
+        case CmdIdTrimCanevas:
+            main.trimCanevas()
+
+        case CmdIdRestoreOrg:
+            undo := capture.newUndo(.RestoreOrg)
+            capture.pushUndo(undo)
+            main.invalidate()
+        }
+
+        return true
+    }
+}
+
 impl MainWnd
 {
     mtd resizeImage()
@@ -330,24 +409,5 @@ impl MainWnd
         }
 
         capture.selectionHasChanged()
-    }
-
-    mtd newImage()
-    {
-        dlg := Dialog.createDialog(surface, 350, 235, title: "New Image")
-        dlg.addButton("Create", Dialog.BtnOk, true)
-        dlg.addButton("Cancel", Dialog.BtnCancel)
-        edit0 := EditCtrl.create(dlg, "Width", "512", {90, 12}, flags: .RightAlign)
-        edit1 := EditCtrl.create(dlg, "Height", "512", {90, 47}, flags: .RightAlign)
-        edit0.edit.setInputU64(16, 4096)
-        edit1.edit.setInputU64(16, 4096)
-        if dlg.doModal() != Dialog.BtnOk
-            return
-
-        (w, ?, ?) := catch StrConv.parseS32(edit0.edit.text)
-        (h, ?, ?) := catch StrConv.parseS32(edit1.edit.text)
-        img := Image.create(w orelse 512, h orelse 512, .RGB8)
-        img.fill(Argb.White)
-        newCapture(img)
     }
 }

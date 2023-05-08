@@ -7,6 +7,7 @@ const CmdIdUpdateLinkedImage    = "CmdIdUpdateLinkedImage"
 const CmdIdDupCapture           = "CmdIdDupCapture"
 const CmdIdDeleteCapture        = "CmdIdDeleteCapture"
 const CmdIdFileLocation         = "CmdIdFileLocation"
+const CmdIdNewImage             = "CmdIdNewImage"
 
 struct ActionFile {}
 impl IActionUI for ActionFile
@@ -35,6 +36,10 @@ impl IActionUI for ActionFile
 
         switch cxt.id
         {
+        case CmdIdNewImage:
+            evt.setFlags |= .Name
+            evt.name = "New Image"
+
         case CmdIdSaveAsImage:
             evt.setFlags |= .Name | .Disabled
             evt.name = "Save As Image..."
@@ -80,6 +85,9 @@ impl IActionUI for ActionFile
 
         switch cxt.id
         {
+        case CmdIdNewImage:
+            main.newImage()
+
         case CmdIdSaveAsImage:
             main.saveAsImage()
 
@@ -191,5 +199,24 @@ impl MainWnd
             capture.changed = true
             catch capture.save()
         }
+    }
+
+    mtd newImage()
+    {
+        dlg := Dialog.createDialog(surface, 350, 235, title: "New Image")
+        dlg.addButton("Create", Dialog.BtnOk, true)
+        dlg.addButton("Cancel", Dialog.BtnCancel)
+        edit0 := EditCtrl.create(dlg, "Width", "512", {90, 12}, flags: .RightAlign)
+        edit1 := EditCtrl.create(dlg, "Height", "512", {90, 47}, flags: .RightAlign)
+        edit0.edit.setInputU64(16, 4096)
+        edit1.edit.setInputU64(16, 4096)
+        if dlg.doModal() != Dialog.BtnOk
+            return
+
+        (w, ?, ?) := catch StrConv.parseS32(edit0.edit.text)
+        (h, ?, ?) := catch StrConv.parseS32(edit1.edit.text)
+        img := Image.create(w orelse 512, h orelse 512, .RGB8)
+        img.fill(Argb.White)
+        newCapture(img)
     }
 }
