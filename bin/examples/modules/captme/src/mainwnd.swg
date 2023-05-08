@@ -225,10 +225,7 @@ impl MainWnd
 
     mtd updateState()
     {
-        captureBtn.updateCommandState()
-        libraryBtn.updateCommandState()
-        editToolBar.updateCommandState()
-        recentSizeBar.updateCommandState()
+        updateCommandState()
         propWnd.selectionHasChanged()
         quickWnd.updateQuickStyles()
     }
@@ -321,6 +318,7 @@ impl MainWnd
         registerKeyShortcut(.Zero,             .Down,           CmdIdMoveSelBottom)
 
         errorReg := false
+
         #[Swag.Mixin]
         func registerHotKey(mdf: Input.KeyModifiers, key: Input.Key, wndId: WndId)
         {
@@ -483,6 +481,7 @@ impl MainWnd
         createBtn(CmdIdModeStep)
         createBtn(CmdIdModeImage)
         createBtn(CmdIdModePixSel)
+
         //createBtn(CmdIdUndo, false)
         //createBtn(CmdIdRedo, false)
     }
