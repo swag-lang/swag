@@ -234,18 +234,6 @@ impl IWnd for MainWnd
             evt.checked = bottomSize == .Big
             evt.accepted = true
 
-        case CmdIdFlatten:
-            evt.setFlags |= .Name | .Disabled
-            evt.name = "Flatten"
-            evt.disabled = !capture or !hasSel
-            evt.accepted = true
-
-        case CmdIdFlattenAll:
-            evt.setFlags |= .Name | .Disabled
-            evt.name = "Flatten All"
-            evt.disabled = !capture or !capture.forms.count
-            evt.accepted = true
-
         case CmdIdSnap:
             evt.setFlags |= .Name | .Checked
             evt.name = "Snap To Forms"
@@ -345,14 +333,6 @@ impl IWnd for MainWnd
 
         case CmdIdClearImageInside:
             capture.clearImageInside()
-
-        case CmdIdFlatten:
-            undo = capture.newUndo(.Flatten)
-            evt.accepted = true
-
-        case CmdIdFlattenAll:
-            undo = capture.newUndo(.FlattenAll)
-            evt.accepted = true
 
         case CmdIdUndo:
             capture.undo()
@@ -495,6 +475,7 @@ impl MainWnd
         registerAction'ActionZoom()
         registerAction'ActionImage()
         registerAction'ActionSelection()
+        registerAction'ActionFlatten()
     }
 
     mtd registerShortcuts()
