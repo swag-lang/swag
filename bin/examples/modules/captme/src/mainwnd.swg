@@ -403,38 +403,19 @@ impl MainWnd
             editMode = .Selection
             return edMode
         }
-        elif editMode == .Favorites
-        {
-            #[Swag.Complete]
-            switch @kindof(mdlFavorite)
-            {
-            case FormShape:     return EditMode.Shape
-            case FormArrow:     return EditMode.Arrow
-            case FormLine:      return EditMode.Line
-            case FormPolygon:   return EditMode.Polygon
-            case FormText:      return EditMode.Text
-            case FormDraw:      return EditMode.Draw
-            case FormStep:      return EditMode.Step
-            }
-        }
+
+        var kindOf: typeinfo
+        if editMode == .Favorites
+            kindOf = @kindof(mdlFavorite)
         elif editMode == .Highlight
-        {
-            #[Swag.Complete]
-            switch @kindof(mdlHighlight)
-            {
-            case FormShape:     return EditMode.Shape
-            case FormArrow:     return EditMode.Arrow
-            case FormLine:      return EditMode.Line
-            case FormPolygon:   return EditMode.Polygon
-            case FormText:      return EditMode.Text
-            case FormDraw:      return EditMode.Draw
-            case FormStep:      return EditMode.Step
-            }
-        }
+            kindOf = @kindof(mdlHighlight)
         elif editMode == .PixSel
+            kindOf = @kindof(mdlPixSel)
+
+        if kindOf
         {
             #[Swag.Complete]
-            switch @kindof(mdlPixSel)
+            switch kindOf
             {
             case FormShape:     return EditMode.Shape
             case FormArrow:     return EditMode.Arrow
@@ -443,6 +424,7 @@ impl MainWnd
             case FormText:      return EditMode.Text
             case FormDraw:      return EditMode.Draw
             case FormStep:      return EditMode.Step
+            case FormImage:     return EditMode.Image
             }
         }
 
