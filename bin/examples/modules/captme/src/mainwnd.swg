@@ -458,102 +458,6 @@ impl IWnd for MainWnd
             evt.name = "Delete"
             evt.accepted = true
 
-        case CmdIdModeShape:
-            evt.setFlags |= .Icon | .Checked | .Name | .ToolTip
-            evt.icon = Icon.from(&icons48, 0)
-            evt.name = "Shape"
-            evt.toolTip = "Add circles and rectangle to the capture"
-            evt.checked = editMode == .Shape
-            evt.accepted = true
-
-        case CmdIdModeArrow:
-            evt.setFlags |= .Icon | .Checked | .Name | .ToolTip
-            evt.icon = Icon.from(&icons48, 3)
-            evt.name = "Arrow"
-            evt.toolTip = "Add arrows to the capture"
-            evt.checked = editMode == .Arrow
-            evt.accepted = true
-
-        case CmdIdModeLine:
-            evt.setFlags |= .Icon | .Checked | .Name | .ToolTip
-            evt.icon = Icon.from(&icons48, 1)
-            evt.name = "Line"
-            evt.toolTip = "Add lines to the capture"
-            evt.checked = editMode == .Line
-            evt.accepted = true
-
-        case CmdIdModePolygon:
-            evt.setFlags |= .Icon | .Checked | .Name | .ToolTip
-            evt.icon = Icon.from(&icons48, 2)
-            evt.name = "Polygon"
-            evt.toolTip = "Add polygons to the capture"
-            evt.checked = editMode == .Polygon
-            evt.accepted = true
-
-        case CmdIdModeText:
-            evt.setFlags |= .Icon | .Checked | .Name | .ToolTip
-            evt.icon = Icon.from(&icons48, 4)
-            evt.name = "Text"
-            evt.toolTip = "Add some text to the capture"
-            evt.checked = editMode == .Text
-            evt.accepted = true
-
-        case CmdIdModeDraw:
-            evt.setFlags |= .Icon | .Checked | .Name | .ToolTip
-            evt.icon = Icon.from(&icons48, 7)
-            evt.name = "Draw"
-            evt.toolTip = "Add some free hand paint to the capture"
-            evt.checked = editMode == .Draw
-            evt.accepted = true
-
-        case CmdIdModeHighlight:
-            evt.setFlags |= .Icon | .Checked | .Name | .ToolTip
-            evt.icon = Icon.from(&icons48, 9)
-            evt.name = "Highlight"
-            evt.toolTip = "Highlight some parts of the capture"
-            evt.checked = editMode == .Highlight
-            evt.accepted = true
-
-        case CmdIdModeStep:
-            evt.setFlags |= .Icon | .Checked | .Name | .ToolTip
-            evt.icon = Icon.from(&icons48, 12)
-            evt.name = "Step"
-            evt.toolTip = "Add some steps"
-            evt.checked = editMode == .Step
-            evt.accepted = true
-
-        case CmdIdModeImage:
-            evt.setFlags |= .Icon | .Checked | .Name | .ToolTip
-            evt.icon = Icon.from(&icons48, 13)
-            evt.name = "Image"
-            evt.toolTip = "Add some images/effects"
-            evt.checked = editMode == .Image
-            evt.accepted = true
-
-        case CmdIdModePixSel:
-            evt.setFlags |= .Icon | .Checked | .Name | .ToolTip
-            evt.icon = Icon.from(&icons48, 17)
-            evt.name = "PixSel"
-            evt.toolTip = "Pixel selecton"
-            evt.checked = editMode == .PixSel
-            evt.accepted = true
-
-        case CmdIdModeFavorites:
-            evt.setFlags |= .Icon | .Checked | .Name | .ToolTip
-            evt.icon = Icon.from(&icons48, 5)
-            evt.name = "Favorites"
-            evt.toolTip = "Save multiple quick styles in one single location"
-            evt.checked = editMode == .Favorites
-            evt.accepted = true
-
-        case CmdIdModeSelection:
-            evt.setFlags |= .Icon | .Checked | .Name | .ToolTip
-            evt.icon = Icon.from(&icons48, 10)
-            evt.name = "Select"
-            evt.toolTip = "Select forms"
-            evt.checked = editMode == .Selection or (capture and capture.drawSelRect)
-            evt.accepted = true
-
         case CmdIdUndo:
             evt.setFlags |= .Disabled | .Name
             evt.name = "Undo"
@@ -699,56 +603,6 @@ impl IWnd for MainWnd
         case CmdIdDeleteSelection:
             undo = capture.newUndo(.DeleteSelection)
             evt.accepted = true
-
-        case CmdIdModeShape:
-            editMode = .Shape
-            evt.accepted = true
-            updateState()
-        case CmdIdModeArrow:
-            editMode = .Arrow
-            evt.accepted = true
-            updateState()
-        case CmdIdModeLine:
-            editMode = .Line
-            evt.accepted = true
-            updateState()
-        case CmdIdModePolygon:
-            editMode = .Polygon
-            evt.accepted = true
-            updateState()
-        case CmdIdModeText:
-            editMode = .Text
-            evt.accepted = true
-            updateState()
-        case CmdIdModeDraw:
-            editMode = .Draw
-            evt.accepted = true
-            updateState()
-        case CmdIdModeHighlight:
-            editMode = .Highlight
-            evt.accepted = true
-            updateState()
-        case CmdIdModeStep:
-            editMode = .Step
-            evt.accepted = true
-            updateState()
-        case CmdIdModeImage:
-            editMode = .Image
-            evt.accepted = true
-            updateState()
-        case CmdIdModePixSel:
-            editMode = .PixSel
-            evt.accepted = true
-            updateState()
-        case CmdIdModeFavorites:
-            editMode = .Favorites
-            evt.accepted = true
-            updateState()
-        case CmdIdModeSelection:
-            lastEditMode = editMode
-            editMode = .Selection
-            evt.accepted = true
-            updateState()
 
         case CmdIdRestoreOrg:
             undo = capture.newUndo(.RestoreOrg)
@@ -912,6 +766,7 @@ impl MainWnd
         registerAction'ActionPixSel()
         registerAction'ActionCapture()
         registerAction'ActionMoveSel()
+        registerAction'ActionToolMode()
     }
 
     mtd registerShortcuts()
