@@ -112,6 +112,7 @@ struct Wnd
     toolTip:    String
 
     keyShortcuts:   Array'KeyShortcut
+    actions:        Array'IActionUI
 
     margin:         Math.Vector4
     padding:        Math.Vector4
@@ -163,8 +164,12 @@ impl IWnd for Wnd
         case SetFocus, KillFocus:
             itf.onFocusEvent(cast(*FocusEvent) evt)
         case Command:
+            if executeAction(cast(*CommandEvent) evt)
+                return
             itf.onCommandEvent(cast(*CommandEvent) evt)
         case CommandUI:
+            if updateAction(cast(*CommandUIEvent) evt)
+                return
             itf.onCommandUIEvent(cast(*CommandUIEvent) evt)
         case Frame:
             itf.onFrameEvent(cast(*FrameEvent) evt)
@@ -1214,5 +1219,50 @@ impl Wnd
             visit c: childs
                 c.serializeState(ser)
         }
+    }
+
+    // Register one new command
+    mtd(T) registerAction()
+    {
+        itfAct := @mkinterface(null, @typeof(T), IActionUI)
+        actions.add(itfAct)
+    }
+
+    mtd updateAction(evt: *CommandUIEvent)->bool
+    {
+        var cxt: ActionContext
+        cxt.wnd = self
+        cxt.id = evt.id
+
+        visit act: actions
+        {
+            if act.accept(cxt)
+            {
+                evt.accepted = true
+                if act.update(cxt, evt)
+                    return true
+            }
+        }
+
+        return false
+    }
+
+    mtd executeAction(evt: *CommandEvent)->bool
+    {
+        var cxt: ActionContext
+        cxt.wnd = self
+        cxt.id = evt.id
+
+        visit act: actions
+        {
+            if act.accept(cxt)
+            {
+                evt.accepted = true
+                if act.execute(cxt)
+                    return true
+            }
+        }
+
+        return false
     }
 }

@@ -249,44 +249,6 @@ impl IWnd for MainWnd
             evt.disabled = !hasSel
             evt.accepted = true
 
-        case CmdIdCaptureDelay:
-            evt.setFlags |= .Name
-            switch captureDelay
-            {
-            case 0: evt.name = "Delay Before Capture"
-            case 1: evt.name = "Delay Before Capture (1 second)"
-            case 2: evt.name = "Delay Before Capture (2 seconds)"
-            case 5: evt.name = "Delay Before Capture (5 seconds)"
-            case 9: evt.name = "Delay Before Capture (9 seconds)"
-            }
-            evt.accepted = true
-
-        case CmdIdCaptureDelay0:
-            evt.setFlags |= .Name | .Checked
-            evt.name = "No Delay"
-            evt.checked = captureDelay == 0
-            evt.accepted = true
-        case CmdIdCaptureDelay1:
-            evt.setFlags |= .Name | .Checked
-            evt.name = "1 second"
-            evt.checked = captureDelay == 1
-            evt.accepted = true
-        case CmdIdCaptureDelay2:
-            evt.setFlags |= .Name | .Checked
-            evt.name = "2 seconds"
-            evt.checked = captureDelay == 2
-            evt.accepted = true
-        case CmdIdCaptureDelay5:
-            evt.setFlags |= .Name | .Checked
-            evt.name = "5 seconds"
-            evt.checked = captureDelay == 5
-            evt.accepted = true
-        case CmdIdCaptureDelay9:
-            evt.setFlags |= .Name | .Checked
-            evt.name = "9 seconds"
-            evt.checked = captureDelay == 9
-            evt.accepted = true
-
         case CmdIdShowEditor:
             evt.setFlags |= .Name
             evt.name = "Show Editor"
@@ -835,17 +797,6 @@ impl IWnd for MainWnd
             undo.newPosY = 5
             evt.accepted = true
 
-        case CmdIdCaptureDelay0:
-            captureDelay = 0
-        case CmdIdCaptureDelay1:
-            captureDelay = 1
-        case CmdIdCaptureDelay2:
-            captureDelay = 2
-        case CmdIdCaptureDelay5:
-            captureDelay = 5
-        case CmdIdCaptureDelay9:
-            captureDelay = 9
-
         case CmdIdShowEditor:
             surface.show()
             surface.bringToTop()
@@ -1255,6 +1206,11 @@ impl MainWnd
         sizeBtn.invalidate()
     }
 
+    mtd registerActions()
+    {
+        registerAction'ActionDelay()
+    }
+
     mtd registerShortcuts()
     {
         registerKeyShortcut(.Control,          .C,              CmdIdCopy)
@@ -1584,6 +1540,7 @@ impl MainWnd
 
         with res
         {
+            .registerActions()
             .registerShortcuts()
             .updateZoomDisplay()
             .updateSizeDisplay()
