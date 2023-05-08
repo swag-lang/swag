@@ -190,8 +190,6 @@ impl IWnd for MainWnd
         hasSel       := capture and capture.selection.count
         hasSingleSel := capture and capture.selection.count == 1
 
-        hasPixSel := false
-
         var lastSelType: typeinfo
         if capture
         {
@@ -200,46 +198,10 @@ impl IWnd for MainWnd
                 f := capture.forms[capture.selection.back()]
                 lastSelType = @kindof(f)
             }
-
-            visit s: capture.selection
-            {
-                f := capture.forms[s]
-                b := cast(*BaseForm) @dataof(f)
-                hasPixSel = b.subKind == .PixSel
-                if hasPixSel break
-            }
         }
 
         switch evt.id
         {
-        case CmdIdPixSelClear:
-            evt.setFlags |= .Name | .Disabled | .Hidden
-            evt.name = "Clear"
-            evt.disabled = !capture or !hasPixSel
-            evt.hidden = evt.disabled
-            evt.accepted = true
-
-        case CmdIdPixSelFill:
-            evt.setFlags |= .Name | .Disabled | .Hidden
-            evt.name = "Fill"
-            evt.disabled = !capture or !hasPixSel
-            evt.hidden = evt.disabled
-            evt.accepted = true
-
-        case CmdIdPixSelSmartFill:
-            evt.setFlags |= .Name | .Disabled | .Hidden
-            evt.name = "Smart Fill"
-            evt.disabled = !capture or !hasPixSel
-            evt.hidden = evt.disabled
-            evt.accepted = true
-
-        case CmdIdPixSelSmartMove:
-            evt.setFlags |= .Name | .Disabled | .Hidden
-            evt.name = "Smart Move"
-            evt.disabled = !capture or !hasPixSel
-            evt.hidden = evt.disabled
-            evt.accepted = true
-
         case CmdIdMoveSelLeft, CmdIdMoveSelTop, CmdIdMoveSelRight, CmdIdMoveSelBottom:
             evt.setFlags |= .Disabled
             evt.disabled = !hasSel
@@ -755,15 +717,6 @@ impl IWnd for MainWnd
         var undo: *Undo
         switch evt.id
         {
-        case CmdIdPixSelClear:
-            pixSelClear()
-        case CmdIdPixSelFill:
-            pixSelFill()
-        case CmdIdPixSelSmartFill:
-            pixSelSmartFill()
-        case CmdIdPixSelSmartMove:
-            pixSelSmartMove()
-
         case CmdIdMoveSelLeft1:
             undo = capture.newUndo(.OffsetSelection)
             undo.newPosX = -1
@@ -1209,6 +1162,7 @@ impl MainWnd
     mtd registerActions()
     {
         registerAction'ActionDelay()
+        registerAction'ActionPixSel()
     }
 
     mtd registerShortcuts()

@@ -1,3 +1,92 @@
+const CmdIdPixSelClear          = "CmdIdPixSelClear"
+const CmdIdPixSelFill           = "CmdIdPixSelFill"
+const CmdIdPixSelSmartFill      = "CmdIdPixSelSmartFill"
+const CmdIdPixSelSmartMove      = "CmdIdPixSelSmartMove"
+
+struct ActionPixSel {}
+impl IActionUI for ActionPixSel
+{
+    mtd accept(cxt: ActionContext)->bool
+    {
+        switch cxt.id
+        {
+        case CmdIdPixSelClear,
+             CmdIdPixSelFill,
+             CmdIdPixSelSmartFill,
+             CmdIdPixSelSmartMove:
+             return true
+        }
+
+        return false
+    }
+
+    mtd update(cxt: ActionContext, evt: *CommandUIEvent)->bool
+    {
+        main := cast(*MainWnd) cxt.wnd
+        capture := main.getCapture()
+
+        hasPixSel := false
+        if capture
+        {
+            visit s: capture.selection
+            {
+                f := capture.forms[s]
+                b := cast(*BaseForm) @dataof(f)
+                hasPixSel = b.subKind == .PixSel
+                if hasPixSel break
+            }
+        }
+
+        switch cxt.id
+        {
+        case CmdIdPixSelClear:
+            evt.setFlags |= .Name | .Disabled | .Hidden
+            evt.name = "Clear"
+            evt.disabled = !capture or !hasPixSel
+            evt.hidden = evt.disabled
+
+        case CmdIdPixSelFill:
+            evt.setFlags |= .Name | .Disabled | .Hidden
+            evt.name = "Fill"
+            evt.disabled = !capture or !hasPixSel
+            evt.hidden = evt.disabled
+
+        case CmdIdPixSelSmartFill:
+            evt.setFlags |= .Name | .Disabled | .Hidden
+            evt.name = "Smart Fill"
+            evt.disabled = !capture or !hasPixSel
+            evt.hidden = evt.disabled
+
+        case CmdIdPixSelSmartMove:
+            evt.setFlags |= .Name | .Disabled | .Hidden
+            evt.name = "Smart Move"
+            evt.disabled = !capture or !hasPixSel
+            evt.hidden = evt.disabled
+        }
+
+        return true
+    }
+
+    mtd execute(cxt: ActionContext)->bool
+    {
+        main := cast(*MainWnd) cxt.wnd
+
+        switch cxt.id
+        {
+        case CmdIdPixSelClear:
+            main.pixSelClear()
+        case CmdIdPixSelFill:
+            main.pixSelFill()
+        case CmdIdPixSelSmartFill:
+            main.pixSelSmartFill()
+        case CmdIdPixSelSmartMove:
+            main.pixSelSmartMove()
+        }
+
+        return true
+    }
+}
+
 impl MainWnd
 {
     mtd getPixSels()->Array'IForm
