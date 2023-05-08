@@ -29,8 +29,8 @@ enum EventKind
     SetFocus
     KillFocus
     Command
-    CommandUI
-    CommandState
+    ComputeCommandState
+    ApplyCommandState
     Frame
     SerializeState
     Show
@@ -88,7 +88,7 @@ struct CommandStateEvent
         Hidden
     }
 
-    using base: Event{kind: EventKind.CommandUI}
+    using base: Event{kind: EventKind.ComputeCommandState}
     id:         WndId
     source:     *Wnd
 

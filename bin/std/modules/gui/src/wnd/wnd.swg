@@ -167,14 +167,14 @@ impl IWnd for Wnd
             if executeAction(cast(*CommandEvent) evt)
                 return
             itf.onCommandEvent(cast(*CommandEvent) evt)
-        case CommandUI:
+        case ComputeCommandState:
             if updateAction(cast(*CommandStateEvent) evt)
                 return
             itf.onComputeStateEvent(cast(*CommandStateEvent) evt)
+        case ApplyCommandState:
+            itf.onApplyStateEvent(cast(*CommandStateEvent) evt)
         case Frame:
             itf.onFrameEvent(cast(*FrameEvent) evt)
-        case CommandState:
-            itf.onApplyStateEvent(cast(*CommandStateEvent) evt)
         case SerializeState:
             itf.onSerializeStateEvent(cast(*SerializeStateEvent) evt)
         }
@@ -1132,6 +1132,10 @@ impl Wnd
             itf.onEvent(evt)
     }
 
+    //////////////////////////////////////////////
+    // Commands
+    //////////////////////////////////////////////
+
     mtd updateCommandState()
     {
         var arr: Array'*Wnd
@@ -1158,53 +1162,61 @@ impl Wnd
 
         visit c: arr
         {
-            evt := sendCommandUIEvent(c.id)
+            evt := sendCommandStateEvent(c.id)
             if evt.accepted
             {
-                evt.kind = .CommandState
+                evt.kind = .ApplyCommandState
                 c.sendEvent(&evt)
             }
         }
     }
 
-    mtd sendCommandUIEvent(commandId: WndId)->CommandStateEvent
+    // Send the command state event with the given id to the window.
+    // Returns the updated command state.
+    mtd sendCommandStateEvent(cmdId: WndId)->CommandStateEvent
     {
-        var evt: retval
-        if commandId == null
-            return evt
+        if cmdId == null
+            return {}
 
-        evt.id = commandId
-        evt.source = self
-        sendEvent(&evt)
+        var evtState: retval
+
+        // User will fill the state
+        evtState.kind = .ComputeCommandState
+        evtState.id = cmdId
+        evtState.source = self
+        sendEvent(&evtState)
 
         // Is there a keyboard shortcut or a global hot key ?
-        sk := getKeyShortcutNameFor(commandId)
+        sk := getKeyShortcutNameFor(cmdId)
         if !sk.length
-            sk = getApp().getHotKeyShortcutNameFor(commandId)
-
+            sk = getApp().getHotKeyShortcutNameFor(cmdId)
         if sk.length
         {
-            evt.setFlags |= .Shortcut
-            evt.shortcut = sk
+            evtState.setFlags.add(.Shortcut)
+            evtState.shortcut = sk
         }
 
-        return evt
+        return evtState
     }
 
-    // Send the given command id to the window.
-    // The command will be updated first, and if not disabled, will be sent.
-    mtd sendCommandEvent(commandId: WndId)
+    // Send the command event with the given id to the window.
+    // The command will be updated first, and if it is not disabled, it will be sent.
+    mtd sendCommandEvent(cmdId: WndId)
     {
+        if cmdId == null
+            return
+
         // We first need to be sure that the target can deal with the event
         evtState := CommandStateEvent{}
-        evtState.id = commandId
+        evtState.kind = .ComputeCommandState
+        evtState.id = cmdId
         sendEvent(&evtState)
 
         // If it's not disabled, then we can send
-        if !(evtState.setFlags & .Disabled) or !evtState.disabled
+        if !evtState.setFlags.has(.Disabled) or !evtState.disabled
         {
             evtc := CommandEvent{}
-            evtc.id = commandId
+            evtc.id = cmdId
             sendEvent(&evtc)
         }
     }
