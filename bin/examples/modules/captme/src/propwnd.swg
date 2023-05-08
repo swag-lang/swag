@@ -858,9 +858,9 @@ impl PropWnd
             .addCheckableToggleItem(Icon.from(&main.icons24, 16), CmdIdTextBold)
             .addCheckableToggleItem(Icon.from(&main.icons24, 17), CmdIdTextItalic)
 
-            .sigUpdateUI += closure|self|(evt) {
+            .sigUpdateState += closure|self|(evt) {
                 curSel := cast(*FormText) self.getSelectedBaseForm()
-                evt.setFlags |= .Checked
+                evt.setFlags.add(.Checked)
                 evt.accepted = true
 
                 switch evt.id
@@ -916,9 +916,9 @@ impl PropWnd
             .addCheckableItem(Icon.from(&main.icons24, 12), CmdIdTextVCenter)
             .addCheckableItem(Icon.from(&main.icons24, 13), CmdIdTextVBottom)
 
-            .sigUpdateUI += closure|self|(evt) {
+            .sigUpdateState += closure|self|(evt) {
                 curSel := cast(*FormText) self.getSelectedBaseForm()
-                evt.setFlags |= .Checked
+                evt.setFlags.add(.Checked)
                 evt.accepted = true
 
                 switch evt.id

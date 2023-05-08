@@ -192,14 +192,14 @@ impl IWnd for Wnd
     mtd onSerializeStateEvent(evt: *SerializeStateEvent)    {}
     mtd onFrameEvent(evt: *FrameEvent)                      {}
 
-    mtd onSysCommandEvent(evt: *SysCommandEvent)    { evt.accepted = false; }
-    mtd onSysUserEvent(evt: *SysUserEvent)          { evt.accepted = false; }
-    mtd onFocusEvent(evt: *FocusEvent)              { evt.accepted = false; }
-    mtd onKeyEvent(evt: *KeyEvent)                  { evt.accepted = false; }
-    mtd onMouseEvent(evt: *MouseEvent)              { evt.accepted = false; }
-    mtd onCommandEvent(evt: *CommandEvent)          { evt.accepted = false; }
-    mtd onComputeStateEvent(evt: *CommandStateEvent)      { evt.accepted = false; }
-    mtd onApplyStateEvent(evt: *CommandStateEvent)   { evt.accepted = false; }
+    mtd onSysCommandEvent(evt: *SysCommandEvent)        { evt.accepted = false; }
+    mtd onSysUserEvent(evt: *SysUserEvent)              { evt.accepted = false; }
+    mtd onFocusEvent(evt: *FocusEvent)                  { evt.accepted = false; }
+    mtd onKeyEvent(evt: *KeyEvent)                      { evt.accepted = false; }
+    mtd onMouseEvent(evt: *MouseEvent)                  { evt.accepted = false; }
+    mtd onCommandEvent(evt: *CommandEvent)              { evt.accepted = false; }
+    mtd onComputeStateEvent(evt: *CommandStateEvent)    { evt.accepted = false; }
+    mtd onApplyStateEvent(evt: *CommandStateEvent)      { evt.accepted = false; }
 }
 
 impl Wnd
@@ -1144,6 +1144,7 @@ impl Wnd
         {
             evtState.kind = .ApplyCommandState
             sendEvent(&evtState)
+            return
         }
 
         visit c: childs

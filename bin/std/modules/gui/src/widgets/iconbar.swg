@@ -16,7 +16,7 @@ struct IconBar
     iconSize:       f32
     iconPadding:    f32 = 4
 
-    sigUpdateUI:        SigArray'closure(*CommandStateEvent)
+    sigUpdateState:     SigArray'closure(*CommandStateEvent)
     sigCheckChanged:    SigArray'closure(*IconButton)
 }
 
@@ -24,8 +24,7 @@ impl IWnd for IconBar
 {
     mtd onComputeStateEvent(evt: *CommandStateEvent)
     {
-        sigUpdateUI.call(evt)
-        wnd.IWnd.onComputeStateEvent(evt)
+        sigUpdateState.call(evt)
     }
 }
 
@@ -77,6 +76,7 @@ impl IconBar
         {
             b.sigCheckChanged += closure|self|(btn) {
                 self.sigCheckChanged.call(btn)
+                self.updateCommandState()
             }
         }
 
