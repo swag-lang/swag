@@ -1,17 +1,17 @@
 using Gui
 
-const CmdIdModeShape            = "CmdIdModeShape"
-const CmdIdModeLine             = "CmdIdModeLine"
-const CmdIdModeArrow            = "CmdIdModeArrow"
-const CmdIdModePolygon          = "CmdIdModePolygon"
-const CmdIdModeText             = "CmdIdModeText"
-const CmdIdModeFavorites        = "CmdIdModeFavorites"
-const CmdIdModeSelection        = "CmdIdModeSelection"
-const CmdIdModeDraw             = "CmdIdModeDraw"
-const CmdIdModeHighlight        = "CmdIdModeHighlight"
-const CmdIdModeStep             = "CmdIdModeStep"
-const CmdIdModeImage            = "CmdIdModeImage"
-const CmdIdModePixSel           = "CmdIdModePixSel"
+const CmdIdModeShape        = "CmdIdModeShape"
+const CmdIdModeLine         = "CmdIdModeLine"
+const CmdIdModeArrow        = "CmdIdModeArrow"
+const CmdIdModePolygon      = "CmdIdModePolygon"
+const CmdIdModeText         = "CmdIdModeText"
+const CmdIdModeFavorites    = "CmdIdModeFavorites"
+const CmdIdModeSelection    = "CmdIdModeSelection"
+const CmdIdModeDraw         = "CmdIdModeDraw"
+const CmdIdModeHighlight    = "CmdIdModeHighlight"
+const CmdIdModeStep         = "CmdIdModeStep"
+const CmdIdModeImage        = "CmdIdModeImage"
+const CmdIdModePixSel       = "CmdIdModePixSel"
 
 struct ActionToolMode {}
 impl IActionUI for ActionToolMode

@@ -383,44 +383,6 @@ impl IWnd for MainWnd
             evt.name = "Edit"
             evt.accepted = true
 
-        case CmdIdCopy:
-            evt.setFlags |= .Disabled | .Name
-            evt.disabled = !hasSel
-            evt.name = "Copy"
-            evt.accepted = true
-
-        case CmdIdPaste:
-            evt.setFlags |= .Disabled | .Name
-            evt.disabled = !capture or (!Clipboard.hasFormat(clipFmt) and !Clipboard.hasImage())
-            evt.name = "Paste"
-            evt.accepted = true
-
-        case CmdIdPasteImageInside:
-            evt.setFlags |= .Disabled | .Name | .Hidden
-            evt.disabled, evt.hidden = true
-            evt.name = "Paste Inside Image"
-            evt.accepted = true
-
-            hasImg := Clipboard.hasImage()
-            if capture and hasSel
-            {
-                visit it: capture.selection
-                {
-                    itfForm := capture.forms[it]
-                    if @kindof(itfForm) != FormImage
-                        continue
-                    b := cast(*FormImage) @dataof(itfForm)
-                    if b.kind != .Image
-                        continue
-                    evt.hidden = false
-                    if hasImg
-                    {
-                        evt.disabled = false
-                        break
-                    }
-                }
-            }
-
         case CmdIdClearImageInside:
             evt.setFlags |= .Disabled | .Name | .Hidden
             evt.disabled, evt.hidden = true
@@ -445,12 +407,6 @@ impl IWnd for MainWnd
                     }
                 }
             }
-
-        case CmdIdCopyAsImage:
-            evt.setFlags |= .Disabled | .Name
-            evt.disabled = capture == null
-            evt.name = "Copy As Image"
-            evt.accepted = true
 
         case CmdIdDeleteSelection:
             evt.setFlags |= .Disabled | .Name
@@ -588,17 +544,8 @@ impl IWnd for MainWnd
             discard propWnd.editText(lastSel.text)
             capture.selectionHasChanged()
 
-        case CmdIdCopy:
-            capture.copy()
-        case CmdIdPaste:
-            capture.paste()
-        case CmdIdPasteImageInside:
-            capture.pasteImageInside()
         case CmdIdClearImageInside:
             capture.clearImageInside()
-
-        case CmdIdCopyAsImage:
-            capture.copyAll()
 
         case CmdIdDeleteSelection:
             undo = capture.newUndo(.DeleteSelection)
@@ -657,6 +604,7 @@ impl MainWnd
             case FormPolygon:   return EditMode.Polygon
             case FormText:      return EditMode.Text
             case FormDraw:      return EditMode.Draw
+            case FormStep:      return EditMode.Step
             }
         }
         elif editMode == .Highlight
@@ -670,6 +618,7 @@ impl MainWnd
             case FormPolygon:   return EditMode.Polygon
             case FormText:      return EditMode.Text
             case FormDraw:      return EditMode.Draw
+            case FormStep:      return EditMode.Step
             }
         }
         elif editMode == .PixSel
@@ -683,6 +632,7 @@ impl MainWnd
             case FormPolygon:   return EditMode.Polygon
             case FormText:      return EditMode.Text
             case FormDraw:      return EditMode.Draw
+            case FormStep:      return EditMode.Step
             }
         }
 
@@ -767,6 +717,7 @@ impl MainWnd
         registerAction'ActionCapture()
         registerAction'ActionMoveSel()
         registerAction'ActionToolMode()
+        registerAction'ActionCopyPaste()
     }
 
     mtd registerShortcuts()
