@@ -277,18 +277,6 @@ impl IWnd for MainWnd
                     }
                 }
             }
-
-        case CmdIdUndo:
-            evt.setFlags |= .Disabled | .Name
-            evt.name = "Undo"
-            evt.disabled = !capture or !capture.canUndo()
-            evt.accepted = true
-
-        case CmdIdRedo:
-            evt.setFlags |= .Disabled | .Name
-            evt.name = "Redo"
-            evt.disabled = !capture or !capture.canRedo()
-            evt.accepted = true
         }
     }
 
@@ -333,16 +321,6 @@ impl IWnd for MainWnd
 
         case CmdIdClearImageInside:
             capture.clearImageInside()
-
-        case CmdIdUndo:
-            capture.undo()
-            evt.accepted = true
-            capture.selectionHasChanged()
-
-        case CmdIdRedo:
-            capture.redo()
-            evt.accepted = true
-            capture.selectionHasChanged()
         }
 
         if undo
@@ -465,6 +443,7 @@ impl MainWnd
 
     mtd registerActions()
     {
+        registerAction'ActionUndo()
         registerAction'ActionDelay()
         registerAction'ActionPixSel()
         registerAction'ActionCapture()
