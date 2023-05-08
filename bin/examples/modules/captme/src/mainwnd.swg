@@ -236,6 +236,11 @@ impl MainWnd
     mtd captureHasChanged()
     {
         updateSizeDisplay()
+        if recentWnd
+        {
+            editToolBar.updateCommandState()
+            recentWnd.updateRecent()
+        }
     }
 
     mtd getCapture()->*Capture
@@ -446,14 +451,15 @@ impl MainWnd
 
     mtd createToolbar(topBar: *Wnd)
     {
-        mtd createBtn(id: WndId)
+        mtd createBtn(id: WndId, canCheck = true)
         {
             with b := IconButton.create(editToolBar, {}, position: {0, 0, 60, 64})
             {
                 .id = #self.id
                 .style.addStyleSheetColors("btnIcon_CheckedBk    $btnIcon_HotBk")
                 .style.addStyleSheetColors("btnIcon_CheckedHotBk $btnIcon_HotBk")
-                .iconBtnFlags.add(.Checkable)
+                if canCheck
+                    .iconBtnFlags.add(.Checkable)
                 .checkedForm = .Bottom
             }
         }
@@ -462,6 +468,7 @@ impl MainWnd
         {
             .dockStyle = .Top
             .backgroundStyle = .Window
+            .wndFlags.add(.DispatchToChildsUI)
             .style.addStyleSheetColors("wnd_Bk $wnd_Caption")
         }
 
@@ -477,6 +484,8 @@ impl MainWnd
         createBtn(CmdIdModeStep)
         createBtn(CmdIdModeImage)
         createBtn(CmdIdModePixSel)
+        //createBtn(CmdIdUndo, false)
+        //createBtn(CmdIdRedo, false)
         editToolBar.updateCommandState()
     }
 

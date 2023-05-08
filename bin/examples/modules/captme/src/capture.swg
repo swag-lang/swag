@@ -167,8 +167,7 @@ impl Capture
     mtd hasChanged()
     {
         changed = true
-        editView.main.recentWnd.updateRecent()
-        editView.main.updateSizeDisplay()
+        editView.main.captureHasChanged()
     }
 
     mtd save() throw
