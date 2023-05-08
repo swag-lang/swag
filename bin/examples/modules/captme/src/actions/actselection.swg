@@ -4,6 +4,7 @@ const CmdIdSelectAll        = "CmdIdSelectAll"
 const CmdIdDeSelectAll      = "CmdIdDeSelectAll"
 const CmdIdInvertSelection  = "CmdIdInvertSelection"
 const CmdIdDeleteSelection  = "CmdIdDeleteSelection"
+const CmdIdSnap             = "CmdIdSnap"
 
 struct ActionSelection {}
 impl IActionUI for ActionSelection
@@ -15,7 +16,8 @@ impl IActionUI for ActionSelection
         case CmdIdSelectAll,
              CmdIdDeSelectAll,
              CmdIdInvertSelection,
-             CmdIdDeleteSelection:
+             CmdIdDeleteSelection,
+             CmdIdSnap:
              return true
         }
 
@@ -49,6 +51,11 @@ impl IActionUI for ActionSelection
             evt.setFlags |= .Disabled | .Name
             evt.disabled = !hasSel
             evt.name = "Delete"
+
+        case CmdIdSnap:
+            evt.setFlags |= .Name | .Checked
+            evt.name = "Snap To Forms"
+            evt.checked = main.snap
         }
 
         return true
@@ -84,6 +91,9 @@ impl IActionUI for ActionSelection
         case CmdIdDeleteSelection:
             undo := capture.newUndo(.DeleteSelection)
             capture.pushUndo(undo)
+
+        case CmdIdSnap:
+            main.snap = !main.snap
         }
 
         return true

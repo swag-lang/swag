@@ -181,118 +181,6 @@ impl IWnd for MainWnd
             quickWnd.setDefault()
         }
     }
-
-    mtd onCommandUIEvent(evt: *CommandUIEvent)
-    {
-        editView := editWnd  ? cast(*EditView) editWnd.view : null
-        capture  := editView and !libraryMode ? editView.capture : null
-
-        hasSel := capture and capture.selection.count
-
-        var lastSelType: typeinfo
-        if capture
-        {
-            if capture.selection.count
-            {
-                f := capture.forms[capture.selection.back()]
-                lastSelType = @kindof(f)
-            }
-        }
-
-        switch evt.id
-        {
-        case CmdIdShowEditor:
-            evt.setFlags |= .Name
-            evt.name = "Show Editor"
-            evt.accepted = true
-
-        case CmdIdExit:
-            evt.setFlags |= .Name
-            evt.name = "Exit"
-            evt.accepted = true
-
-        case CmdIdSnap:
-            evt.setFlags |= .Name | .Checked
-            evt.name = "Snap To Forms"
-            evt.checked = snap
-            evt.accepted = true
-
-        case CmdIdLibrary:
-            evt.setFlags |= .Name | .ToolTip | .Checked
-            evt.name = "Library"
-            evt.toolTip = "Display captures library"
-            evt.accepted = true
-            evt.checked = libraryMode
-
-        case CmdEditText:
-            evt.setFlags |= .Disabled | .Name
-            evt.disabled = !hasSel or !lastSelType or lastSelType != FormText
-            evt.name = "Edit"
-            evt.accepted = true
-
-        case CmdIdClearImageInside:
-            evt.setFlags |= .Disabled | .Name | .Hidden
-            evt.disabled, evt.hidden = true
-            evt.name = "Clear Inside Image"
-            evt.accepted = true
-
-            if capture and hasSel
-            {
-                visit it: capture.selection
-                {
-                    itfForm := capture.forms[it]
-                    if @kindof(itfForm) != FormImage
-                        continue
-                    b := cast(*FormImage) @dataof(itfForm)
-                    if b.kind != .Image
-                        continue
-                    evt.hidden = false
-                    if b.image.isValid()
-                    {
-                        evt.disabled = false
-                        break
-                    }
-                }
-            }
-        }
-    }
-
-    mtd onCommandEvent(evt: *CommandEvent)
-    {
-        editView := cast(*EditView) editWnd.view
-        capture  := editView.capture
-
-        var undo: *Undo
-        switch evt.id
-        {
-        case CmdIdShowEditor:
-            surface.show()
-            surface.bringToTop()
-
-        case CmdIdExit:
-            libWnd.requestClose()
-            postQuitEvent()
-
-        case CmdIdSnap:
-            snap = !snap
-
-        case CmdIdLibrary:
-            swapLibraryMode()
-
-        case CmdEditText:
-            lastSel := cast(*FormText) @dataof(capture.forms[capture.selection.back()])
-            discard propWnd.editText(lastSel.text)
-            capture.selectionHasChanged()
-
-        case CmdIdClearImageInside:
-            capture.clearImageInside()
-        }
-
-        if undo
-            capture.pushUndo(undo)
-        if evt.accepted
-            invalidate()
-    }
 }
 
 impl MainWnd
@@ -333,24 +221,6 @@ impl MainWnd
         }
 
         return editMode
-    }
-
-    mtd swapLibraryMode()
-    {
-        libraryMode = !libraryMode
-
-        editWnd.show(!libraryMode)
-        quickStyleBar.show(!libraryMode)
-        recentBar.show(!libraryMode)
-        editZoomBar.show(!libraryMode)
-        editToolBar.show(!libraryMode)
-
-        libWnd.show(libraryMode)
-
-        if libraryMode
-            libWnd.fill()
-
-        applyLayout()
     }
 
     mtd updateState()
@@ -406,6 +276,8 @@ impl MainWnd
         registerAction'ActionFlatten()
         registerAction'ActionRecentSize()
         registerAction'ActionQuickStyle()
+        registerAction'ActionEdit()
+        registerAction'ActionGlobal()
     }
 
     mtd registerShortcuts()
