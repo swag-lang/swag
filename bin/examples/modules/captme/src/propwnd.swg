@@ -16,6 +16,15 @@ const BtnColorHeight  = 88.0
 const BtnStyleWidth   = 88.0
 const BtnStyleHeight  = 68.0
 
+const CmdIdTextHLeft    = "CmdIdTextHLeft"
+const CmdIdTextHCenter  = "CmdIdTextHCenter"
+const CmdIdTextHRight   = "CmdIdTextHRight"
+const CmdIdTextVTop     = "CmdIdTextVTop"
+const CmdIdTextVCenter  = "CmdIdTextVCenter"
+const CmdIdTextVBottom  = "CmdIdTextVBottom"
+const CmdIdTextBold     = "CmdIdTextBold"
+const CmdIdTextItalic   = "CmdIdTextItalic"
+
 struct PropWnd
 {
     using scrollWnd:    ScrollWnd

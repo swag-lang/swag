@@ -1,5 +1,7 @@
 var g_Main: *MainWnd
 
+const ClipboardFormat = "Swag.CaptMe"
+
 enum EditMode
 {
     Shape
