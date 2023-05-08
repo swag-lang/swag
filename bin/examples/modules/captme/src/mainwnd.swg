@@ -187,8 +187,7 @@ impl IWnd for MainWnd
         editView := editWnd  ? cast(*EditView) editWnd.view : null
         capture  := editView and !libraryMode ? editView.capture : null
 
-        hasSel       := capture and capture.selection.count
-        hasSingleSel := capture and capture.selection.count == 1
+        hasSel := capture and capture.selection.count
 
         var lastSelType: typeinfo
         if capture
@@ -555,70 +554,6 @@ impl IWnd for MainWnd
             evt.checked = editMode == .Selection or (capture and capture.drawSelRect)
             evt.accepted = true
 
-        case CmdIdAlignLeft:
-            evt.setFlags |= .Disabled | .Name
-            evt.name = "Left"
-            evt.disabled = !hasSel or hasSingleSel
-            evt.accepted = true
-
-        case CmdIdAlignCenter:
-            evt.setFlags |= .Disabled | .Name
-            evt.name = "Center"
-            evt.disabled = !hasSel or hasSingleSel
-            evt.accepted = true
-
-        case CmdIdAlignRight:
-            evt.setFlags |= .Disabled | .Name
-            evt.name = "Right"
-            evt.disabled = !hasSel or hasSingleSel
-            evt.accepted = true
-
-        case CmdIdAlignTop:
-            evt.setFlags |= .Disabled | .Name
-            evt.name = "Top"
-            evt.disabled = !hasSel or hasSingleSel
-            evt.accepted = true
-
-        case CmdIdAlignMiddle:
-            evt.setFlags |= .Disabled | .Name
-            evt.name = "Middle"
-            evt.disabled = !hasSel or hasSingleSel
-            evt.accepted = true
-
-        case CmdIdAlignBottom:
-            evt.setFlags |= .Disabled | .Name
-            evt.name = "Bottom"
-            evt.disabled = !hasSel or hasSingleSel
-            evt.accepted = true
-
-        case CmdIdBringToFront:
-            evt.setFlags |= .Disabled | .Icon | .Name
-            evt.name = "Bring To Front"
-            evt.disabled = !hasSel or capture.selection.contains(capture.forms.count - 1)
-            evt.icon = evt.target.getTheme().getIcon24(.BringToFront)
-            evt.accepted = true
-
-        case CmdIdSendToBack:
-            evt.setFlags |= .Disabled | .Icon | .Name
-            evt.name = "Send To Back"
-            evt.disabled = !hasSel or capture.selection.contains(0)
-            evt.icon = evt.target.getTheme().getIcon24(.SendToBack)
-            evt.accepted = true
-
-        case CmdIdBringForward:
-            evt.setFlags |= .Disabled | .Icon | .Name
-            evt.name = "Bring Forward"
-            evt.disabled = !hasSel or capture.selection.contains(capture.forms.count - 1)
-            evt.icon = evt.target.getTheme().getIcon24(.BringForward)
-            evt.accepted = true
-
-        case CmdIdSendBackward:
-            evt.setFlags |= .Disabled | .Icon | .Name
-            evt.name = "Send Backward"
-            evt.disabled = !hasSel or capture.selection.contains(0)
-            evt.icon = evt.target.getTheme().getIcon24(.SendBackward)
-            evt.accepted = true
-
         case CmdIdUndo:
             evt.setFlags |= .Disabled | .Name
             evt.name = "Undo"
@@ -817,37 +752,6 @@ impl IWnd for MainWnd
 
         case CmdIdRestoreOrg:
             undo = capture.newUndo(.RestoreOrg)
-            evt.accepted = true
-
-        case CmdIdAlignLeft:
-            undo = capture.newUndo(.AlignLeft)
-            evt.accepted = true
-        case CmdIdAlignCenter:
-            undo = capture.newUndo(.AlignCenter)
-            evt.accepted = true
-        case CmdIdAlignRight:
-            undo = capture.newUndo(.AlignRight)
-            evt.accepted = true
-        case CmdIdAlignTop:
-            undo = capture.newUndo(.AlignTop)
-            evt.accepted = true
-        case CmdIdAlignMiddle:
-            undo = capture.newUndo(.AlignMiddle)
-            evt.accepted = true
-        case CmdIdAlignBottom:
-            undo = capture.newUndo(.AlignBottom)
-            evt.accepted = true
-        case CmdIdBringToFront:
-            undo = capture.newUndo(.MoveToFront)
-            evt.accepted = true
-        case CmdIdSendToBack:
-            undo = capture.newUndo(.MoveToBack)
-            evt.accepted = true
-        case CmdIdBringForward:
-            undo = capture.newUndo(.MoveForward)
-            evt.accepted = true
-        case CmdIdSendBackward:
-            undo = capture.newUndo(.MoveBackward)
             evt.accepted = true
 
         case CmdIdFlatten:
