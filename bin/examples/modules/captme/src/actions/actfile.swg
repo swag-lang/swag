@@ -8,6 +8,7 @@ const CmdIdDupCapture           = "CmdIdDupCapture"
 const CmdIdDeleteCapture        = "CmdIdDeleteCapture"
 const CmdIdFileLocation         = "CmdIdFileLocation"
 const CmdIdNewImage             = "CmdIdNewImage"
+const CmdIdNewFromClipboard     = "CmdIdNewFromClipboard"
 
 struct ActionFile {}
 impl IActionUI for ActionFile
@@ -22,7 +23,9 @@ impl IActionUI for ActionFile
              CmdIdUpdateLinkedImage,
              CmdIdDupCapture,
              CmdIdDeleteCapture,
-             CmdIdFileLocation:
+             CmdIdFileLocation,
+             CmdIdNewImage,
+             CmdIdNewFromClipboard:
              return true
         }
 
@@ -39,6 +42,11 @@ impl IActionUI for ActionFile
         case CmdIdNewImage:
             evt.setFlags |= .Name
             evt.name = "New Image"
+
+        case CmdIdNewFromClipboard:
+            evt.setFlags |= .Name | .Disabled
+            evt.name = "New From Clipboard"
+            evt.disabled = !Clipboard.hasImage()
 
         case CmdIdSaveAsImage:
             evt.setFlags |= .Name | .Disabled
@@ -87,6 +95,9 @@ impl IActionUI for ActionFile
         {
         case CmdIdNewImage:
             main.newImage()
+
+        case CmdIdNewFromClipboard:
+            main.newCapture(Clipboard.getImage())
 
         case CmdIdSaveAsImage:
             main.saveAsImage()

@@ -206,12 +206,6 @@ impl IWnd for MainWnd
             evt.name = "Show Editor"
             evt.accepted = true
 
-        case CmdIdNewFromClipboard:
-            evt.setFlags |= .Name | .Disabled
-            evt.name = "New From Clipboard"
-            evt.disabled = !Clipboard.hasImage()
-            evt.accepted = true
-
         case CmdIdExit:
             evt.setFlags |= .Name
             evt.name = "Exit"
@@ -346,9 +340,6 @@ impl IWnd for MainWnd
 
         case CmdIdSnap:
             snap = !snap
-
-        case CmdIdNewFromClipboard:
-            newCapture(Clipboard.getImage())
 
         case CmdIdLibrary:
             swapLibraryMode()
