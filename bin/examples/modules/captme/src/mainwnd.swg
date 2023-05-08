@@ -202,39 +202,9 @@ impl IWnd for MainWnd
 
         switch evt.id
         {
-        case CmdIdMoveSelLeft, CmdIdMoveSelTop, CmdIdMoveSelRight, CmdIdMoveSelBottom:
-            evt.setFlags |= .Disabled
-            evt.disabled = !hasSel
-            evt.accepted = true
-        case CmdIdMoveSelLeft1, CmdIdMoveSelTop1, CmdIdMoveSelRight1, CmdIdMoveSelBottom1:
-            evt.setFlags |= .Disabled
-            evt.disabled = !hasSel
-            evt.accepted = true
-
         case CmdIdShowEditor:
             evt.setFlags |= .Name
             evt.name = "Show Editor"
-            evt.accepted = true
-
-        case CmdIdCaptureHideEditor:
-            evt.setFlags |= .Name | .Checked
-            evt.name = "Hide Editor Before Capture"
-            evt.checked = captureHideEditor
-            evt.accepted = true
-        case CmdIdCaptureShowEditor:
-            evt.setFlags |= .Name | .Checked
-            evt.name = "Show Editor After Capture"
-            evt.checked = captureShowEditor
-            evt.accepted = true
-        case CmdIdCaptureToEditor:
-            evt.setFlags |= .Name | .Checked
-            evt.name = "Send Capture To Editor"
-            evt.checked = captureToEditor
-            evt.accepted = true
-        case CmdIdCaptureToClipboard:
-            evt.setFlags |= .Name | .Checked
-            evt.name = "Send Capture To Clipboard"
-            evt.checked = captureToClipboard
             evt.accepted = true
 
         case CmdIdResizeImage:
@@ -671,51 +641,9 @@ impl IWnd for MainWnd
         var undo: *Undo
         switch evt.id
         {
-        case CmdIdMoveSelLeft1:
-            undo = capture.newUndo(.OffsetSelection)
-            undo.newPosX = -1
-            evt.accepted = true
-        case CmdIdMoveSelTop1:
-            undo = capture.newUndo(.OffsetSelection)
-            undo.newPosY = -1
-            evt.accepted = true
-        case CmdIdMoveSelRight1:
-            undo = capture.newUndo(.OffsetSelection)
-            undo.newPosX = 1
-            evt.accepted = true
-        case CmdIdMoveSelBottom1:
-            undo = capture.newUndo(.OffsetSelection)
-            undo.newPosY = 1
-            evt.accepted = true
-        case CmdIdMoveSelLeft:
-            undo = capture.newUndo(.OffsetSelection)
-            undo.newPosX = -5
-            evt.accepted = true
-        case CmdIdMoveSelTop:
-            undo = capture.newUndo(.OffsetSelection)
-            undo.newPosY = -5
-            evt.accepted = true
-        case CmdIdMoveSelRight:
-            undo = capture.newUndo(.OffsetSelection)
-            undo.newPosX = 5
-            evt.accepted = true
-        case CmdIdMoveSelBottom:
-            undo = capture.newUndo(.OffsetSelection)
-            undo.newPosY = 5
-            evt.accepted = true
-
         case CmdIdShowEditor:
             surface.show()
             surface.bringToTop()
-
-        case CmdIdCaptureHideEditor:
-            captureHideEditor = !captureHideEditor
-        case CmdIdCaptureShowEditor:
-            captureShowEditor = !captureShowEditor
-        case CmdIdCaptureToEditor:
-            captureToEditor = !captureToEditor
-        case CmdIdCaptureToClipboard:
-            captureToClipboard = !captureToClipboard
 
         case CmdIdResizeImage:
             resizeImage()
@@ -757,11 +685,6 @@ impl IWnd for MainWnd
         case CmdIdRecentBig:
             setBottomSize(.Big)
 
-        case CmdIdDeleteCapture:
-            res := MessageDlg.confirm(surface, "This will delete the capture file.")
-            if res == MessageDlg.BtnYes
-                recentWnd.removeRecent()
-
         case CmdIdFileLocation:
             File.locateInExplorer(getCapture().file)
 
@@ -775,6 +698,11 @@ impl IWnd for MainWnd
             editWnd.editView.zoomIn()
         case CmdIdZoomOut:
             editWnd.editView.zoomOut()
+
+        case CmdIdDeleteCapture:
+            res := MessageDlg.confirm(surface, "This will delete the capture file.")
+            if res == MessageDlg.BtnYes
+                recentWnd.removeRecent()
 
         case CmdIdDupCapture:
             file := Library.newFileName()
@@ -841,57 +769,46 @@ impl IWnd for MainWnd
             editMode = .Shape
             evt.accepted = true
             updateState()
-
         case CmdIdModeArrow:
             editMode = .Arrow
             evt.accepted = true
             updateState()
-
         case CmdIdModeLine:
             editMode = .Line
             evt.accepted = true
             updateState()
-
         case CmdIdModePolygon:
             editMode = .Polygon
             evt.accepted = true
             updateState()
-
         case CmdIdModeText:
             editMode = .Text
             evt.accepted = true
             updateState()
-
         case CmdIdModeDraw:
             editMode = .Draw
             evt.accepted = true
             updateState()
-
         case CmdIdModeHighlight:
             editMode = .Highlight
             evt.accepted = true
             updateState()
-
         case CmdIdModeStep:
             editMode = .Step
             evt.accepted = true
             updateState()
-
         case CmdIdModeImage:
             editMode = .Image
             evt.accepted = true
             updateState()
-
         case CmdIdModePixSel:
             editMode = .PixSel
             evt.accepted = true
             updateState()
-
         case CmdIdModeFavorites:
             editMode = .Favorites
             evt.accepted = true
             updateState()
-
         case CmdIdModeSelection:
             lastEditMode = editMode
             editMode = .Selection
@@ -905,39 +822,30 @@ impl IWnd for MainWnd
         case CmdIdAlignLeft:
             undo = capture.newUndo(.AlignLeft)
             evt.accepted = true
-
         case CmdIdAlignCenter:
             undo = capture.newUndo(.AlignCenter)
             evt.accepted = true
-
         case CmdIdAlignRight:
             undo = capture.newUndo(.AlignRight)
             evt.accepted = true
-
         case CmdIdAlignTop:
             undo = capture.newUndo(.AlignTop)
             evt.accepted = true
-
         case CmdIdAlignMiddle:
             undo = capture.newUndo(.AlignMiddle)
             evt.accepted = true
-
         case CmdIdAlignBottom:
             undo = capture.newUndo(.AlignBottom)
             evt.accepted = true
-
         case CmdIdBringToFront:
             undo = capture.newUndo(.MoveToFront)
             evt.accepted = true
-
         case CmdIdSendToBack:
             undo = capture.newUndo(.MoveToBack)
             evt.accepted = true
-
         case CmdIdBringForward:
             undo = capture.newUndo(.MoveForward)
             evt.accepted = true
-
         case CmdIdSendBackward:
             undo = capture.newUndo(.MoveBackward)
             evt.accepted = true
@@ -1099,6 +1007,7 @@ impl MainWnd
         registerAction'ActionDelay()
         registerAction'ActionPixSel()
         registerAction'ActionCapture()
+        registerAction'ActionMoveSel()
     }
 
     mtd registerShortcuts()

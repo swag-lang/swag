@@ -9,6 +9,10 @@ const CmdIdCaptureScreen1       = "CmdIdCaptureScreen1"
 const CmdIdCaptureScreen2       = "CmdIdCaptureScreen2"
 const CmdIdCaptureScreen3       = "CmdIdCaptureScreen3"
 const CmdIdCaptureActiveWnd     = "CmdIdCaptureActiveWnd"
+const CmdIdCaptureHideEditor    = "CmdIdCaptureHideEditor"
+const CmdIdCaptureShowEditor    = "CmdIdCaptureShowEditor"
+const CmdIdCaptureToEditor      = "CmdIdCaptureToEditor"
+const CmdIdCaptureToClipboard   = "CmdIdCaptureToClipboard"
 
 struct ActionCapture {}
 impl IActionUI for ActionCapture
@@ -25,7 +29,11 @@ impl IActionUI for ActionCapture
              CmdIdCaptureScreen1,
              CmdIdCaptureScreen2,
              CmdIdCaptureScreen3,
-             CmdIdCaptureActiveWnd:
+             CmdIdCaptureActiveWnd,
+             CmdIdCaptureHideEditor,
+             CmdIdCaptureShowEditor,
+             CmdIdCaptureToEditor,
+             CmdIdCaptureToClipboard:
              return true
         }
 
@@ -75,6 +83,26 @@ impl IActionUI for ActionCapture
             evt.name = Format.toString("Capture Monitor 3 (%x%)", main.monitors[3].rect.width, main.monitors[3].rect.height)
             evt.icon = Icon.from(&main.icons24, 5)
 
+        case CmdIdCaptureHideEditor:
+            evt.setFlags |= .Name | .Checked
+            evt.name = "Hide Editor Before Capture"
+            evt.checked = main.captureHideEditor
+            evt.accepted = true
+        case CmdIdCaptureShowEditor:
+            evt.setFlags |= .Name | .Checked
+            evt.name = "Show Editor After Capture"
+            evt.checked = main.captureShowEditor
+            evt.accepted = true
+        case CmdIdCaptureToEditor:
+            evt.setFlags |= .Name | .Checked
+            evt.name = "Send Capture To Editor"
+            evt.checked = main.captureToEditor
+            evt.accepted = true
+        case CmdIdCaptureToClipboard:
+            evt.setFlags |= .Name | .Checked
+            evt.name = "Send Capture To Clipboard"
+            evt.checked = main.captureToClipboard
+            evt.accepted = true
         }
 
         return true
@@ -104,8 +132,81 @@ impl IActionUI for ActionCapture
             main.captureScreen(.Screen2)
         case CmdIdCaptureScreen3:
             main.captureScreen(.Screen3)
+
+        case CmdIdCaptureHideEditor:
+            main.captureHideEditor = !main.captureHideEditor
+        case CmdIdCaptureShowEditor:
+            main.captureShowEditor = !main.captureShowEditor
+        case CmdIdCaptureToEditor:
+            main.captureToEditor = !main.captureToEditor
+        case CmdIdCaptureToClipboard:
+            main.captureToClipboard = !main.captureToClipboard
         }
 
         return true
+    }
+}
+
+impl MainWnd
+{
+    mtd newCapture(img: Image, linked: string = null)
+    {
+        if !img.isValid()
+            return
+
+        with capture := Memory.new'Capture()
+        {
+            .changed = true
+            .width, .widthOrg = img.width
+            .height, .heightOrg = img.height
+            .backImg, .backImgOrg = img
+            .linkedImage = linked
+            .file = Library.newFileName()
+        }
+
+        editWnd.editView.setCapture(capture)
+        editWnd.editView.zoomToFit(false)
+
+        capture.computePreview()
+        recentWnd.addRecent(capture.file, capture.preview)
+        recentWnd.recentView.selected = 0
+        catch capture.save()
+        g_Library.addFile(capture.file)
+
+        // Force edition mode
+        if libraryMode
+        {
+            swapLibraryMode()
+            updateState()
+        }
+    }
+
+    mtd captureScreen(mode: CaptureMode)
+    {
+        wasHidden := surface.isHidden
+        if captureHideEditor and !surface.isHidden and !surface.isMinimized
+            surface.hide()
+
+        if captureDelay
+            Threading.Thread.sleep(captureDelay * 1000)
+
+        img := catch screenShot(mode)
+        isValid := !@err and img.width > 0 and img.height > 0
+
+        if (isValid and captureShowEditor) or !wasHidden
+        {
+            if surface.isMinimized
+                surface.showNormal()
+            else
+                surface.show()
+        }
+
+        if !isValid
+            return
+
+        if captureToEditor
+            newCapture(img)
+        if captureToClipboard
+            Clipboard.addImage(img)
     }
 }
