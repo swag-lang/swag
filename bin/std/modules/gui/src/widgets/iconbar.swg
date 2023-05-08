@@ -24,6 +24,7 @@ impl IWnd for IconBar
 {
     mtd onComputeStateEvent(evt: *CommandStateEvent)
     {
+        evt.accepted = false
         sigUpdateState.call(evt)
     }
 }

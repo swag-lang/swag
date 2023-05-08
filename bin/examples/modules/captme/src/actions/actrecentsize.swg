@@ -27,19 +27,22 @@ impl IActionUI for ActionRecentSize
         switch cxt.id
         {
         case CmdIdRecentSmall:
-            evt.setFlags |= .Name | .ToolTip | .Checked
+            evt.setFlags |= .Name | .ToolTip | .Checked | .Icon
             evt.toolTip = "Small recent view"
             evt.checked = main.bottomSize == .Small
+            evt.icon = Icon.from(&main.icons24, 0)
 
         case CmdIdRecentMedium:
-            evt.setFlags |= .Name | .ToolTip | .Checked
+            evt.setFlags |= .Name | .ToolTip | .Checked | .Icon
             evt.toolTip = "Medium recent view"
             evt.checked = main.bottomSize == .Medium
+            evt.icon = Icon.from(&main.icons24, 1)
 
         case CmdIdRecentBig:
-            evt.setFlags |= .Name | .ToolTip | .Checked
+            evt.setFlags |= .Name | .ToolTip | .Checked | .Icon
             evt.toolTip = "Big recent view"
             evt.checked = main.bottomSize == .Big
+            evt.icon = Icon.from(&main.icons24, 2)
         }
 
         return true

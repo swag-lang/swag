@@ -540,9 +540,9 @@ impl MainWnd
             .setIconBarFlags(.Vertical)
             .dockStyle = .Left
             .iconPadding = 0
-            .addItem(Icon.from(&res.icons24, 0), CmdIdRecentSmall, .Checkable)
-            .addItem(Icon.from(&res.icons24, 1), CmdIdRecentMedium, .Checkable)
-            .addItem(Icon.from(&res.icons24, 2), CmdIdRecentBig, .Checkable)
+            .addItem({}, CmdIdRecentSmall, .Checkable)
+            .addItem({}, CmdIdRecentMedium, .Checkable)
+            .addItem({}, CmdIdRecentBig, .Checkable)
         }
 
         // Recent
