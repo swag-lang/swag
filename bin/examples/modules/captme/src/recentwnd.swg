@@ -307,6 +307,7 @@ impl RecentWnd
             {
                 idxSel := i
 
+                // Move the item to the first position
                 if front and i
                 {
                     recentView.items.removeAt(i)
@@ -315,10 +316,7 @@ impl RecentWnd
                 }
 
                 if sel
-                {
-                    recentView.select(idxSel)
-                }
-
+                    recentView.select(idxSel, true)
                 return
             }
         }
