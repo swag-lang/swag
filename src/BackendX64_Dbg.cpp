@@ -975,13 +975,25 @@ DbgTypeIndex BackendX64::dbgGetOrCreateType(X64Gen& pp, TypeInfo* typeInfo, bool
             auto trp                    = dbgAddTypeRecord(pp);
             trp->kind                   = LF_POINTER;
             trp->LF_Pointer.pointeeType = tr0->index;
+            iter.first->second          = trp->index;
             return trp->index;
         }
 
+        iter.first->second = tr0->index;
         return tr0->index;
     }
 
-    return (DbgTypeIndex) SimpleTypeKind::UInt64;
+    switch (typeInfo->sizeOf)
+    {
+    case 1:
+        return (DbgTypeIndex) SimpleTypeKind::UnsignedCharacter;
+    case 2:
+        return (DbgTypeIndex) SimpleTypeKind::UInt16;
+    case 4:
+        return (DbgTypeIndex) SimpleTypeKind::UInt32;
+    default:
+        return (DbgTypeIndex) SimpleTypeKind::UInt64;
+    }
 }
 
 void BackendX64::dbgEmitConstant(X64Gen& pp, Concat& concat, AstNode* node, const Utf8& name)

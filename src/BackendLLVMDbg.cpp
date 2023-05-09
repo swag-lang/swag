@@ -211,6 +211,7 @@ llvm::DIType* BackendLLVMDbg::getType(TypeInfo* typeInfo, llvm::DIFile* file)
     {
     case TypeInfoKind::Enum:
         return getEnumType(typeInfo, file);
+
     case TypeInfoKind::Struct:
         return getStructType(typeInfo, file);
 
@@ -227,6 +228,7 @@ llvm::DIType* BackendLLVMDbg::getType(TypeInfo* typeInfo, llvm::DIFile* file)
         mapTypes[typeInfo]  = result;
         return result;
     }
+
     case TypeInfoKind::Pointer:
     {
         auto          typeInfoPtr = CastTypeInfo<TypeInfoPointer>(typeInfo, TypeInfoKind::Pointer);
@@ -238,19 +240,28 @@ llvm::DIType* BackendLLVMDbg::getType(TypeInfo* typeInfo, llvm::DIFile* file)
         mapTypes[typeInfo] = result;
         return result;
     }
+
     case TypeInfoKind::Slice:
     {
         auto typeInfoPtr = CastTypeInfo<TypeInfoSlice>(typeInfo, TypeInfoKind::Slice);
         return getSliceType(typeInfo, typeInfoPtr->pointedType, file);
     }
+
     case TypeInfoKind::TypedVariadic:
     {
         auto typeInfoPtr = CastTypeInfo<TypeInfoVariadic>(typeInfo, TypeInfoKind::TypedVariadic);
         return getSliceType(typeInfo, typeInfoPtr->rawType, file);
     }
+
     case TypeInfoKind::Variadic:
     {
         return getSliceType(typeInfo, g_TypeMgr->typeInfoAny, file);
+    }
+
+    case TypeInfoKind::LambdaClosure:
+    {
+        auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(typeInfo, TypeInfoKind::LambdaClosure);
+        return dbgBuilder->createPointerType(getFunctionType(typeFunc, file), 64);
     }
 
     case TypeInfoKind::Interface:
@@ -296,7 +307,17 @@ llvm::DIType* BackendLLVMDbg::getType(TypeInfo* typeInfo, llvm::DIFile* file)
         break;
     }
 
-    return s64Ty;
+    switch (typeInfo->sizeOf)
+    {
+    case 1:
+        return s8Ty;
+    case 2:
+        return s16Ty;
+    case 4:
+        return s32Ty;
+    default:
+        return s64Ty;
+    }
 }
 
 llvm::DISubroutineType* BackendLLVMDbg::getFunctionType(TypeInfoFuncAttr* typeFunc, llvm::DIFile* file)
