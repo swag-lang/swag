@@ -365,7 +365,7 @@ impl Array
     mtd insertAt(index: u64, value: T)
         #validif Reflection.canCopy(T)
     {
-        Debug.assert(index <= count, "index out of range")
+        Debug.safetyBoundCheck(index <= count, "index out of range")
         if index == count
             return add(value)
         grow(count + 1)
@@ -389,7 +389,7 @@ impl Array
     // Order is preserved.
     mtd insertAt(index: u64, value: moveref T)
     {
-        Debug.assert(index <= count, "index out of range")
+        Debug.safetyBoundCheck(index <= count, "index out of range")
         if index == count
             return add(moveref value)
         grow(count + 1)
@@ -418,7 +418,7 @@ impl Array
         if !sliceCount
             return
 
-        Debug.assert(index <= count, "index out of range")
+        Debug.safetyBoundCheck(index <= count, "index out of range")
         if index == count
             return add(values)
         grow(count + sliceCount)
@@ -455,7 +455,7 @@ impl Array
         if !sliceCount
             return
 
-        Debug.assert(index <= count, "index out of range")
+        Debug.safetyBoundCheck(index <= count, "index out of range")
         if index == count
             return add(values)
         grow(count + sliceCount)
@@ -513,11 +513,21 @@ impl Array
         }
     }
 
+    // Swap two elements
+    mtd swap(idx0, idx1: u64)
+    {
+        if idx0 == idx1
+            return
+        Debug.safetyBoundCheck(idx0 < count, "index out of range")
+        Debug.safetyBoundCheck(idx1 < count, "index out of range")
+        swap(buffer + idx0, buffer + idx1)
+    }
+
     // Remove 'num' elements starting at 'index'
     mtd remove(index, num: u64)
     {
         if !num return
-        Debug.assert(index + num <= count, "index out of range")
+        Debug.safetyBoundCheck(index + num <= count, "index out of range")
 
         #if !Reflection.hasPostMove(T) and !Reflection.hasDrop(T)
         {
@@ -538,7 +548,7 @@ impl Array
     // Order is not preserved
     mtd removeAt(index: u64)
     {
-        Debug.assert(index < count, "index out of range")
+        Debug.safetyBoundCheck(index < count, "index out of range")
         count -= 1
         if index == count
             @drop(buffer + count)
@@ -552,7 +562,7 @@ impl Array
     {
         if !numValues
             return
-        Debug.assert(index + numValues <= count, "index out of range")
+        Debug.safetyBoundCheck(index + numValues <= count, "index out of range")
         count -= numValues
 
         #if Reflection.hasDrop(T)
