@@ -915,9 +915,9 @@ DbgTypeIndex BackendX64::dbgGetOrCreateType(X64Gen& pp, TypeInfo* typeInfo, bool
 
     // Function
     /////////////////////////////////
-    if (typeInfo->isFuncAttr())
+    if (typeInfo->isFuncAttr() || typeInfo->isLambdaClosure())
     {
-        TypeInfoFuncAttr* typeFunc = CastTypeInfo<TypeInfoFuncAttr>(typeInfo, TypeInfoKind::FuncAttr);
+        TypeInfoFuncAttr* typeFunc = CastTypeInfo<TypeInfoFuncAttr>(typeInfo, TypeInfoKind::FuncAttr, TypeInfoKind::LambdaClosure);
         auto              tr0      = dbgAddTypeRecord(pp);
 
         // Get the arg list type. We construct a string with all parameters to be able to
@@ -968,6 +968,14 @@ DbgTypeIndex BackendX64::dbgGetOrCreateType(X64Gen& pp, TypeInfo* typeInfo, bool
             tr0->LF_Procedure.returnType = dbgGetOrCreateType(pp, typeFunc->returnType);
             tr0->LF_Procedure.numArgs    = numArgs;
             tr0->LF_Procedure.argsType   = argsTypeIndex;
+        }
+
+        if (typeInfo->isLambdaClosure())
+        {
+            auto trp                    = dbgAddTypeRecord(pp);
+            trp->kind                   = LF_POINTER;
+            trp->LF_Pointer.pointeeType = tr0->index;
+            return trp->index;
         }
 
         return tr0->index;
