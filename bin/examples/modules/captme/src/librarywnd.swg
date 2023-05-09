@@ -77,7 +77,7 @@ impl IWnd for LibraryView
 
         if evt.kind == .MouseDoubleClick and selectedItem != Swag.U64.Max and evt.button == .Left
         {
-            item := items[selectedItem]
+            item := &items[selectedItem]
             catch File.touch(item.fi.fullname)
             mainWnd.recentWnd.addRecent(item.fi.fullname, item.capture.preview, front: true, sel: true)
             mainWnd.swapLibraryMode()

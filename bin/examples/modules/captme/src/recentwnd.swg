@@ -298,8 +298,6 @@ impl RecentWnd
 
     mtd addRecent(file: string, preview: Image, front = true, sel = false)
     {
-        item := recentView.items.newPtr()
-
         // Already there ?
         visit it, i: recentView.items
         {
@@ -310,8 +308,7 @@ impl RecentWnd
                 // Move the item to the first position
                 if front and i
                 {
-                    recentView.items.removeAt(i)
-                    recentView.items.insertAt(0, it)
+                    recentView.items.swap(0, i)
                     idxSel = 0
                 }
 
@@ -321,6 +318,7 @@ impl RecentWnd
             }
         }
 
+        item := recentView.items.newPtr()
         item.preview = getApp().getRenderer().addImage(preview)
         item.file = file
         if front
