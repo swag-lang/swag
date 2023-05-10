@@ -593,6 +593,7 @@ struct TypeInfoStruct : public TypeInfo
     VectorMap<Utf8, TypeInfo*>            replaceTypes;
     VectorMap<Utf8, AstNode*>             replaceTypesFrom;
     VectorMap<TypeInfo*, SymbolOverload*> mapOpCast;
+    VectorMap<TypeInfo*, SymbolOverload*> mapOpAffect[4];
     AttributeList                         attributes;
     Utf8                                  structName;
     SharedMutex                           mutexCache;

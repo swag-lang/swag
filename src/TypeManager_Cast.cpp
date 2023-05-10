@@ -126,12 +126,13 @@ bool TypeManager::tryOpAffect(SemanticContext* context, TypeInfo* toType, TypeIn
 
     auto        structNode = CastAst<AstStruct>(typeStruct->declNode, AstNodeKind::StructDecl);
     SymbolName* symbol;
-    bool        isSuffix = false;
+
+    bool isSuffix = false;
     if ((fromNode && fromNode->semFlags & SEMFLAG_LITERAL_SUFFIX) || castFlags & CASTFLAG_LITERAL_SUFFIX)
-    {
         isSuffix = true;
-        symbol   = structNode->scope->symbolOpAffectSuffix;
-    }
+
+    if (isSuffix)
+        symbol = structNode->scope->symbolOpAffectSuffix;
     else
         symbol = structNode->scope->symbolOpAffect;
 
@@ -147,6 +148,36 @@ bool TypeManager::tryOpAffect(SemanticContext* context, TypeInfo* toType, TypeIn
 
     if (!symbol)
         return false;
+
+    int idxMap = isSuffix ? 0 : 2;
+    if (isMoveRef)
+        idxMap++;
+
+    // In the cache of possible matches
+    {
+        SharedLock lkOp(typeStruct->mutexCache);
+
+        auto it = typeStruct->mapOpAffect[idxMap].find(fromType);
+        if (it != typeStruct->mapOpAffect[idxMap].end())
+        {
+            if (!it->second)
+                return false;
+
+            if (fromNode && !(castFlags & CASTFLAG_JUST_CHECK))
+            {
+                fromNode->flags |= AST_OPAFFECT_CAST;
+                fromNode->castedTypeInfo = fromType;
+                fromNode->typeInfo       = toType;
+                fromNode->allocateExtension(ExtensionKind::Misc);
+                fromNode->extMisc()->resolvedUserOpSymbolOverload = it->second;
+            }
+
+            context->castFlagsResult |= CASTFLAG_RESULT_AUTO_OPAFFECT;
+            if (isMoveRef)
+                context->castFlagsResult |= CASTFLAG_RESULT_AUTO_MOVE_OPAFFECT;
+            return true;
+        }
+    }
 
     VectorNative<SymbolOverload*> toAffect;
 
@@ -175,6 +206,15 @@ bool TypeManager::tryOpAffect(SemanticContext* context, TypeInfo* toType, TypeIn
             if (makeCompatibles(context, typeFunc->parameters[1]->typeInfo, fromType, nullptr, nullptr, CASTFLAG_NO_LAST_MINUTE | CASTFLAG_TRY_COERCE | CASTFLAG_JUST_CHECK))
                 toAffect.push_back(over);
         }
+    }
+
+    // Add in the cache of possible matches
+    {
+        ScopedLock lkOp(typeStruct->mutexCache);
+        if (isSuffix)
+            typeStruct->mapOpAffect[idxMap][fromType] = toAffect.empty() ? nullptr : toAffect[0];
+        else
+            typeStruct->mapOpAffect[idxMap][fromType] = toAffect.empty() ? nullptr : toAffect[0];
     }
 
     if (toAffect.empty())
