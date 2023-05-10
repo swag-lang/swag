@@ -1212,7 +1212,7 @@ impl Wnd
         actions.add(itfAct)
     }
 
-    mtd updateAction(evt: *CommandStateEvent)->bool
+    private mtd updateAction(evt: *CommandStateEvent)->bool
     {
         var cxt: ActionContext
         cxt.wnd = self
@@ -1231,7 +1231,7 @@ impl Wnd
         return false
     }
 
-    mtd executeAction(evt: *CommandEvent)->bool
+    private mtd executeAction(evt: *CommandEvent)->bool
     {
         var cxt: ActionContext
         cxt.wnd = self
@@ -1259,6 +1259,7 @@ impl Wnd
         var evt: SerializeStateEvent
         evt.accepted = false
         evt.ser = ser
+        evt.target = self
         processEvent(&evt)
 
         if !evt.accepted
