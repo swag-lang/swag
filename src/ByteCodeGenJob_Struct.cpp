@@ -90,12 +90,8 @@ void ByteCodeGenJob::generateStructAlloc(ByteCodeGenContext* context, TypeInfoSt
         return;
 
     // Type of those functions
-    auto typeInfoFunc    = (TypeInfoFuncAttr*) g_TypeMgr->typeInfoOpCall->clone();
-    auto param0          = typeInfoFunc->parameters[0];
-    param0->typeInfo     = param0->typeInfo->clone();
-    auto typePtr         = CastTypeInfo<TypeInfoPointer>(typeInfoFunc->parameters[0]->typeInfo, TypeInfoKind::Pointer);
-    typePtr->pointedType = typeInfoStruct;
-    typePtr->forceComputeName();
+    auto typeInfoFunc                     = (TypeInfoFuncAttr*) g_TypeMgr->typeInfoOpCall->clone();
+    typeInfoFunc->parameters[0]->typeInfo = g_TypeMgr->makePointerTo(typeInfoStruct, typeInfoFunc->parameters[0]->typeInfo->flags);
     typeInfoFunc->forceComputeName();
 
     for (int i = 0; i < 4; i++)
