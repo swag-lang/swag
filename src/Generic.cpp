@@ -196,10 +196,7 @@ TypeInfo* Generic::doTypeSubstitution(VectorMap<Utf8, TypeInfo*>& replaceTypes, 
         auto newType     = doTypeSubstitution(replaceTypes, typePointer->pointedType);
         if (newType != typePointer->pointedType)
         {
-            typePointer              = CastTypeInfo<TypeInfoPointer>(typePointer->clone(), TypeInfoKind::Pointer);
-            typePointer->pointedType = newType;
-            typePointer->removeGenericFlag();
-            typePointer->forceComputeName();
+            typePointer = g_TypeMgr->makePointerTo(newType, (typePointer->flags & ~TYPEINFO_GENERIC) | TYPEINFO_FROM_GENERIC);
             return typePointer;
         }
 
