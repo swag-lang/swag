@@ -1569,18 +1569,25 @@ void SemanticJob::setupContextualGenericTypeReplacement(SemanticContext* context
         {
             auto nodeFunc = CastAst<AstFuncDecl>(one, AstNodeKind::FuncDecl);
             auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(nodeFunc->typeInfo, TypeInfoKind::FuncAttr);
+
+            oneTryMatch.symMatchContext.genericReplaceTypes.reserve(typeFunc->replaceTypes.size());
             for (auto oneReplace : typeFunc->replaceTypes)
                 oneTryMatch.symMatchContext.genericReplaceTypes[oneReplace.first] = oneReplace.second;
+
+            oneTryMatch.symMatchContext.genericReplaceTypesFrom.reserve(typeFunc->replaceTypesFrom.size());
             for (auto oneReplace : typeFunc->replaceTypesFrom)
                 oneTryMatch.symMatchContext.genericReplaceTypesFrom[oneReplace.first] = oneReplace.second;
         }
-
-        if (one->kind == AstNodeKind::StructDecl)
+        else if (one->kind == AstNodeKind::StructDecl)
         {
             auto nodeStruct = CastAst<AstStruct>(one, AstNodeKind::StructDecl);
             auto typeStruct = CastTypeInfo<TypeInfoStruct>(nodeStruct->typeInfo, TypeInfoKind::Struct);
+
+            oneTryMatch.symMatchContext.genericReplaceTypes.reserve(typeStruct->replaceTypes.size());
             for (auto oneReplace : typeStruct->replaceTypes)
                 oneTryMatch.symMatchContext.genericReplaceTypes[oneReplace.first] = oneReplace.second;
+
+            oneTryMatch.symMatchContext.genericReplaceTypesFrom.reserve(typeStruct->replaceTypesFrom.size());
             for (auto oneReplace : typeStruct->replaceTypesFrom)
                 oneTryMatch.symMatchContext.genericReplaceTypesFrom[oneReplace.first] = oneReplace.second;
         }
