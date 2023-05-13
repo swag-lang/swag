@@ -77,10 +77,10 @@ func addLine(line: string)
 
     if Utf8.startsWith(lineTrim, "# ")
     {
-        g_Buf.addBytes("<h2>")
+        g_Buf.addBytes("<h3>")
         lineTrim.remove(0, 2)
         addLine(lineTrim)
-        g_Buf.addBytes("</h2>")
+        g_Buf.addBytes("</h3>")
         return
     }
 
@@ -301,6 +301,7 @@ func processFile(fileName: string)
 
     // The whole page, this is it...
     g_Buf.addBytes("<div class=\"page\">\n")
+    g_Buf.addBytes("<h1>Swag language reference</h1>\n")
 
     visit v: files
     {
@@ -312,9 +313,9 @@ func processFile(fileName: string)
         title[0] = Latin1.toUpper(title[0])
         title.replace("_", " ")
 
-        g_Buf.addBytes("\n<h1>")
+        g_Buf.addBytes("\n<h2>")
         g_Buf.addBytes(title)
-        g_Buf.addBytes("</h1>\n")
+        g_Buf.addBytes("</h2>\n")
 
         processFile(v.fullname)
     }
