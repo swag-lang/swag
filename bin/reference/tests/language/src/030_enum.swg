@@ -1,6 +1,6 @@
 #test
 {
-    // Enums values, unlike C/C++, must end with ';' or an <eol> (like a normal Swag declaration)
+    // Enums values, unlike C/C++, must end with `;` or an <eol> (like a normal Swag declaration).
     {
         enum Values
         {
@@ -9,7 +9,7 @@
         }
     }
 
-    // By default, an enum is of type 's32'
+    // By default, an enum is of type `s32`.
     {
         enum Values { A; B; }
         type := @typeof(Values)
@@ -20,7 +20,7 @@
         #assert @typeof(Values) == Values
     }
 
-    // '@kindof' will return the underlying type of the enum
+    // `@kindof` will return the underlying type of the enum.
     {
         enum RGB { R; G; B; }
         #assert @typeof(RGB) == RGB
@@ -28,7 +28,7 @@
         #assert @kindof(RGB) == s32
     }
 
-    // You can specify your own type after the enum name
+    // You can specify your own type after the enum name.
     {
         enum Values1: s64
         {
@@ -41,7 +41,7 @@
         #assert @typeof(Values1.A) == Values1
     }
 
-    // Enum values, if not specified, start at 0 and are increased by 1 at each new value
+    // Enum values, if not specified, start at 0 and are increased by 1 at each new value.
     {
         enum Value: s64
         {
@@ -55,7 +55,7 @@
         #assert Value.C == 2
     }
 
-    // You can specify your own values
+    // You can specify your own values.
     {
         enum Value: s64
         {
@@ -69,7 +69,7 @@
         #assert Value.C == 30
     }
 
-    // If you omit one value, it will be assigned to the previous value + 1
+    // If you omit one value, it will be assigned to the previous value + 1.
     {
         enum Value: u32
         {
@@ -83,7 +83,7 @@
         #assert Value.C == 12
     }
 
-    // For non integer types, you *must* specify the values as they cannot be deduced
+    // For non integer types, you **must** specify the values as they cannot be deduced.
     {
         enum Value1: string
         {
@@ -108,7 +108,7 @@
         #assert Value2.C == 6
     }
 
-    // '@countof' returns the number of values of an enum
+    // `@countof` returns the number of values of an enum.
     {
         enum Value: string
         {
@@ -121,7 +121,7 @@
         #assert @countof(Value) == 3
     }
 
-    // You can use the keyword 'using' for an enum
+    // You can use the keyword `using` for an enum.
     {
         enum Value
         {
@@ -143,8 +143,7 @@
         @assert(Value.C == 2)
     }
 
-    // Enum can be a set of flags with the #[Swag.EnumFlags] attribute
-    // Type should be u8, u16, u32, u64 or u64
+    // Enum can be a set of flags with the `#[Swag.EnumFlags]` attribute. Type should be `u8`, `u16`, `u32` or `u64`.
     {
         #[Swag.EnumFlags]
         enum MyFlags: u8
@@ -166,7 +165,7 @@
         @assert(value & MyFlags.C == MyFlags.C)
     }
 
-    // You can have an enum of static arrays
+    // You can have an enum of static arrays.
     {
         enum Value: const [2] s32
         {
@@ -180,7 +179,7 @@
         #assert Value.B[1] == 20
     }
 
-    // You can have an enum of const slices
+    // You can have an enum of const slices.
     {
         enum Value: const [..] s32
         {
@@ -199,7 +198,7 @@
         @assert(y[1] == 20)
     }
 
-    // The type of the enum is not necessary in the assignement expression when declaring a variable
+    // The type of the enum is not necessary in the assignement expression when declaring a variable.
     {
         enum Values { A; B; }
 
@@ -212,7 +211,7 @@
         @assert(x == y)
     }
 
-    // The enum type is not necessary in a case expression of a switch block (it is deduced from the switch expression)
+    // The enum type is not necessary in a case expression of a switch block (it is deduced from the switch expression).
     {
         enum Values { A; B; }
         x := Values.A
@@ -232,7 +231,7 @@
         }
     }
 
-    // In an expression, and if the enum name can be deduced, you can omit it and use the '.Value' syntax
+    // In an expression, and if the enum name can be deduced, you can omit it and use the `.Value` syntax.
     {
         enum Values { A; B; }
 
@@ -244,7 +243,7 @@
         @assert(x != .B)
     }
 
-    // Works also for flags
+    // Works also for flags.
     {
         #[Swag.EnumFlags]
         enum Values { A; B; }
@@ -253,14 +252,14 @@
         @assert((x & .A) and (x & .B))
     }
 
-    // Works also (most of the time), for functions
+    // Works also (most of the time), for functions.
     {
         enum Values { A; B; }
         func toto(v1, v2: Values) {}
         toto(.A, .B)
     }
 
-    // By type reflection, you can loop/visit all values of an enum
+    // By type reflection, you can loop/visit all values of an enum.
     {
         enum RGB { R; G; B; }
 

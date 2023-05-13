@@ -1,7 +1,6 @@
 #test
 {
-    // You can get the type of an expression with '@typeof' or just with the type itself
-    // (in Swag types are values)
+    // You can get the type of an expression with `@typeof` or just with the type itself (in Swag types are values).
     {
         ptr1 := @typeof(s8)
         @assert(ptr1.name == "s8")
@@ -20,8 +19,7 @@
         @assert(ptr4 == s64)
     }
 
-    // The return result of '@typeof' is a const pointer to a Swag.TypeInfo kind of structure
-    // This is an alias for the 'typeinfo' type.
+    // The return result of `@typeof` is a const pointer to a `Swag.TypeInfo` kind of structure. This is an alias for the `typeinfo` type.
     {
         ptr := bool
         @assert(@typeof(ptr) == @typeof(const *Swag.TypeInfoNative))
@@ -31,21 +29,20 @@
         @assert(ptr1.name == "[2] s32")
     }
 
-    // The TypeInfo structure contains a different enum value for each type
+    // The `TypeInfo` structure contains a different enum value for each type.
     {
         ptr := f64
         @assert(@typeof(ptr.kind).fullname == "Swag.TypeInfoKind")
         @assert(ptr.sizeof == @sizeof(f64))
     }
 
-    // @decltype can be used to transform a typeinfo to a real compiler type
-    // This is the opposite of @typeof or @kindof
+    // `@decltype` can be used to transform a `typeinfo` to a real compiler type. This is the opposite of `@typeof` or `@kindof`.
     {
         var x: @decltype(@typeof(s32))
         #assert @typeof(x) == s32
     }
 
-    // @decltype can evaluate a constexpr expression that returns a 'typeinfo' to determine the real type
+    // `@decltype` can evaluate a constexpr expression that returns a `typeinfo` to determine the real type.
     {
         #[Swag.ConstExpr]
         func getType(str: bool)->typeinfo

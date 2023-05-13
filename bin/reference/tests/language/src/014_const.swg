@@ -1,6 +1,5 @@
 /**
-If you use **const** instead of **var**, the value must be known by the compiler.
-There's no memory footprint if the type is a value or a string.
+If you use `const` instead of `var`, the value must be known by the compiler. There's no memory footprint if the type is a value or a string.
 */
 
 #test
@@ -14,14 +13,11 @@ There's no memory footprint if the type is a value or a string.
 }
 
 /**
-Constants can have more than just simple types.
-In that case, there's a memory footprint, because those constants are stored in the data segment.
-But that means also you could take the address of such constants at runtime.
+Constants can have more than just simple types. In that case, there's a memory footprint, because those constants are stored in the data segment. But that means also you could take the address of such constants at runtime.
 */
 #test
 {
-    // This is our first static array.
-    // It contains '3' elements, and the type of the elements is s32.
+    // This is our first static array. It contains '3' elements, and the type of the elements is `s32`.
     {
         const a: [3] s32 = [0, 1, 2]
 
@@ -35,8 +31,7 @@ But that means also you could take the address of such constants at runtime.
         #assert a[2] == 2
     }
 
-    // An example of a multidimensional array as a constant.
-    // We will detail arrays later.
+    // An example of a multidimensional array as a constant. We will detail arrays later.
     {
         const M4x4: [4, 4] f32 = [
             [1, 0, 0, 0],

@@ -1,9 +1,7 @@
 /**
 This is the list of all keywords in the language.
-*/
 
-/**
-Basic types.
+# Basic types
 ```
 s8
 s16
@@ -25,10 +23,7 @@ code
 cstring
 cvarargs
 ```
-*/
-
-/**
-Language keywords.
+# Language keywords
 ```
 if
 else
@@ -80,10 +75,7 @@ alias
 discard
 dref
 ```
-*/
-
-/**
-Compiler keywords.
+# Compiler keywords
 ```
 #arch
 #backend
@@ -130,12 +122,8 @@ Compiler keywords.
 #message
 #premain
 #run
-#test
 ```
-*/
-
-/**
-Intrinsics libc.
+# Intrinsics libc
 ```
 @abs
 @acos
@@ -184,10 +172,7 @@ Intrinsics libc.
 @tanh
 @trunc
 ```
-*/
-
-/**
-Other intrinsics.
+# Other intrinsics
 ```
 @index
 @err
@@ -244,10 +229,7 @@ Other intrinsics.
 @typecmp
 @typeof
 ```
-*/
-
-/**
-Modifiers.
+# Modifiers
 ```
 ,over
 ,nodrop

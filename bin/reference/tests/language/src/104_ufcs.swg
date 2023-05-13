@@ -1,8 +1,9 @@
+/**
+*ufcs* stands for *uniform function call syntax*. It allows every functions to be called with a `param.func()` form when the first parameter of `func()` is of the same type as `param`.
+*/
+
 #test
 {
-    // ufcs stands for "uniform function call syntax"
-    // It allows every functions to be called with a 'param.func()' form when the
-    // first parameter of func() is of the same type as 'param'
     {
         func myFunc(param: bool) => param
 
@@ -10,8 +11,7 @@
         @assert(myFunc(b) == b.myFunc())
     }
 
-    // This means that in Swag, there are only 'static' functions, but which
-    // can be called like 'methods'
+    // This means that in Swag, there are only *static* functions, but which can be called like *methods*.
     {
         struct Point { x, y: s32; }
         func set(using pt: *Point, value: s32) { x, y = value; }

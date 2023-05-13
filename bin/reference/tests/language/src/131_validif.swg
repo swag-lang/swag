@@ -1,15 +1,14 @@
 /**
-On a function, you can use '#validif' to check if the usage of the function is correct.
-If the #validif expression returns false, then the function will not be considered for the call.
-If there's no other overload to match, then the compiler will raise an error.
+On a function, you can use `#validif` to check if the usage of the function is correct.
 
-The #validif expression is evaluated only once, whatever the call, so it is typically used to
-check generic parameters.
+If the `#validif` expression returns false, then the function will not be considered for the call. If there's no other overload to match, then the compiler will raise an error.
+
+The `#validif` expression is evaluated only once, whatever the call, so it is typically used to check generic parameters.
 */
 
 #test
 {
-    // Here we validate the function only if the generic type is 's32' or 's64'.
+    // Here we validate the function only if the generic type is `s32` or `s64`.
     func(T) sum(x: T...)->T
         #validif @typeof(T) == s32 or @typeof(T) == s64
     {
@@ -25,14 +24,13 @@ check generic parameters.
     res2 := sum's64(10, 20)
     @assert(res2 == 30)
 
-    // But the following would generate an error because the type is 'f32'.
-    // So there's no match possible for that type.
+    // But the following would generate an error because the type is `f32`. So there's no match possible for that type.
 
     // res1 := sum'f32(1, 2)
 }
 
 /**
-You can use #validif to make a kind of a generic specialisation.
+You can use `#validif` to make a kind of a generic specialisation.
 */
 #test
 {
@@ -55,7 +53,7 @@ You can use #validif to make a kind of a generic specialisation.
 }
 
 /**
-Instead of a single expression, #validif can be followed by a block that returns a bool.
+Instead of a single expression, `#validif` can be followed by a block that returns a bool.
 */
 #test
 {
@@ -75,7 +73,7 @@ Instead of a single expression, #validif can be followed by a block that returns
 }
 
 /**
-By using '@compilererror', you can then trigger your own errors at compile time if the type is incorrect.
+By using `@compilererror`, you can then trigger your own errors at compile time if the type is incorrect.
 */
 #test
 {
@@ -97,8 +95,8 @@ By using '@compilererror', you can then trigger your own errors at compile time 
 }
 
 /**
-Instead of #validif, you can use #validifx.
-#validifx is evaluated for **each** call, so it can be used to check parameters, as long as they can be evaluated at compile time.
+Instead of `#validif`, you can use `#validifx`.
+`#validifx` is evaluated for **each** call, so it can be used to check parameters, as long as they can be evaluated at compile time.
 */
 #test
 {
@@ -151,7 +149,7 @@ Instead of #validif, you can use #validifx.
 }
 
 /**
-#validif can also be used on a generic struct.
+`#validif` can also be used on a generic struct.
 Unlike functions, if the expression failed, then you will have an error right away because there's no overload in the case of structures.
 */
 #test

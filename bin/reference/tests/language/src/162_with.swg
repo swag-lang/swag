@@ -10,8 +10,7 @@ impl Point
 
 #test
 {
-    // You can use 'with' to avoid repeating the same variable again and again
-    // You can then access fields with a simple '.'
+    // You can use `with` to avoid repeating the same variable again and again. You can then access fields with a simple `.`.
     {
         var pt: Point
         with pt
@@ -24,7 +23,7 @@ impl Point
         @assert(pt.y == 2)
     }
 
-    // Work for function calls to
+    // Work for function calls to.
     {
         var pt: Point
         with pt
@@ -38,10 +37,11 @@ impl Point
         }
     }
 
-    // Works also for enums
+    // Works also for enums.
     {
         enum RGB{R; G; B;}
-        with RGB
+        var color: RGB
+        with color
         {
             x := .R
             @assert(x == RGB.R)
@@ -49,7 +49,7 @@ impl Point
         }
     }
 
-    // Works also with a namespace
+    // Works also with a namespace.
     {
         with NameSpace
         {
@@ -58,7 +58,7 @@ impl Point
         }
     }
 
-    // Instead of an identifier name, 'with' also accepts a variable declaration if the variable is a struct or a pointer to a struct
+    // Instead of an identifier name, `with` also accepts a variable declaration.
     {
         with pt := Point{1, 2}
         {
@@ -77,6 +77,16 @@ impl Point
         }
 
         @assert(pt.x == 10 and pt.y == 20)
+    }
+
+    {
+        enum RGB{R; G; B;}
+        with var color: RGB
+        {
+            x := .R
+            @assert(x == RGB.R)
+            @assert(x == .R)
+        }
     }
 
     // Or an affect statement

@@ -1,7 +1,10 @@
+/**
+`defer` is used to call an expression when the current scope is left.
+*/
+
 #test
 {
-    // 'defer' is used to call an expression when the current scope is left.
-    // It's purely compile time, so it does not evaluate until the block is left
+    // It's purely compile time, so it does not evaluate until the block is left.
     {
         v := 0
         defer @assert(v == 1)
@@ -9,7 +12,7 @@
         // defer expression will be executed here
     }
 
-    // defer can also be used with a block
+    // `defer` can also be used with a block.
     {
         v := 0
         defer
@@ -22,8 +25,7 @@
         // defer block will be executed here
     }
 
-    // defer expressions are called when leaving the corresponding scope, even
-    // with return, break, continue etc., and even inside a loop/while/for etc.
+    // `defer` expressions are called when leaving the corresponding scope, even with return, break, continue etc., and even inside a loop/while/for etc.
     {
         var G = 0
         loop 10
@@ -37,15 +39,14 @@
         @assert(G == 3)
     }
 
-    // 'defer' are executed in reverse order of their declaration
+    // `defer` are executed in reverse order of their declaration.
     {
         x := 1
         defer @assert(x == 2)   // Will be executed second
         defer x *= 2            // Will be executed first
     }
 
-    // It's typically used to unregister/destroy a resource, by putting the release
-    // code just after the creation one
+    // It's typically used to unregister/destroy a resource, by putting the release code just after the creation one.
     {
         func createResource() => true
         func releaseResource(resource: *bool) = dref resource = false

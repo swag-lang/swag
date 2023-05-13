@@ -1,10 +1,10 @@
 /**
-This are the basic operators that can be used to manipulate values.
+These are the basic operators that can be used to manipulate values.
 */
 
 #test
 {
-    // Binary operators.
+    // # Binary operators
     {
         var x: s32 = 10
 
@@ -20,7 +20,7 @@ This are the basic operators that can be used to manipulate values.
         x = x >> 1 // Shift bits right
     }
 
-    // Affect operators.
+    // # Affect operators
     {
         var x: s32 = 10
 
@@ -36,7 +36,7 @@ This are the basic operators that can be used to manipulate values.
         x >>= 1
     }
 
-    // Unary operators.
+    // # Unary operators
     {
         x := true
         x = !x      // Invert boolean
@@ -51,7 +51,7 @@ This are the basic operators that can be used to manipulate values.
         @assert(z == -1)
     }
 
-    // Comparison operators.
+    // # Comparison operators
     {
         a := false
 
@@ -74,7 +74,8 @@ This are the basic operators that can be used to manipulate values.
         @assert(x > 0)
     }
 
-    // Logical operator. This is not '&&' and '||' like in C/C++.
+    // # Logical operators
+    // This is **not** `&&` and `||` like in C/C++.
     {
         a := false
         a = (1 > 10) and (10 < 1)
@@ -83,8 +84,9 @@ This are the basic operators that can be used to manipulate values.
 }
 
 /**
+# Ternary operator
 The ternary operator will test an expression, and will return a value depending on the result of the test.
-A = Expression ? B : C will return B if the expression is true, and will return C if the expression is false.
+`A = Expression ? B : C` will return `B` if the expression is true, and will return `C` if the expression is false.
 */
 #test
 {
@@ -98,10 +100,13 @@ A = Expression ? B : C will return B if the expression is true, and will return 
 }
 
 /**
-The 'two ways' comparison operator returns a s32 of -1, 0 or 1.
+# Spaceshift operator
+It will return a `s32` of -1, 0 or 1.
+```
 A <=> B == -1 if A < B
 A <=> B == 0  if A == B
 A <=> B == 1  if A > B
+```
 */
 #test
 {
@@ -126,12 +131,12 @@ A <=> B == 1  if A > B
 }
 
 /**
-There's also the null conditional operator 'orelse'.
-It will return the left expression if it is not zero, otherwise it will return the right expression.
+# Null-coalescing operator
+The operator `orelse` will return the left expression if it is not zero, otherwise it will return the right expression.
 */
 #test
 {
-    // Works with strings, pointers and structures with the 'opData' special function (we'll see that later).
+    // Works with strings, pointers and structures with the `opData` special function (we'll see that later).
     {
         a := "string1"
         b := "string2"
@@ -155,6 +160,7 @@ It will return the left expression if it is not zero, otherwise it will return t
 }
 
 /**
+# Type promotion
 Unlike C, types are not promoted to 32 bits when dealing with 8 or 16 bits types. But types will be promoted if the two sides of an operation do not have the same type.
 */
 #test

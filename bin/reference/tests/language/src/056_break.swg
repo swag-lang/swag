@@ -1,6 +1,6 @@
 #test
 {
-    // 'break' is used to exit a loop, while, for, switch
+    // `break` is used to exit a loop, while, for, switch.
     {
         loop 10
             break
@@ -10,7 +10,7 @@
             break
     }
 
-    // By default, 'break' will exit the parent scope only
+    // By default, `break` will exit the parent scope only.
     {
         cpt := 0
         loop 10
@@ -27,7 +27,7 @@
         @assert(cpt == 10)
     }
 
-    // But you can name a scope with the 'scope' keyword, and exit to the end of it with a 'break'
+    // But you can name a scope with the `scope` keyword, and exit to the end of it with a `break`.
     {
         cpt := 0
         #scope BigScope
@@ -45,8 +45,7 @@
         @assert(cpt == 1)
     }
 
-    // When used with a scope, a continue is a way to go back
-    // to the start of the scope
+    // When used with a scope, a continue is a way to go back to the start of the scope.
     {
         cpt := 0
         #scope Loop
@@ -60,8 +59,7 @@
         @assert(cpt == 5)
     }
 
-    // You are not obliged to name the scope, so this can also be used (for example)
-    // as an alternative of a bunch of if/else
+    // You are not obliged to name the scope, so this can also be used (for example) as an alternative of a bunch of if/else.
     {
         cpt := 0
         #scope
@@ -86,7 +84,7 @@
         }
     }
 
-    // Note that a scope can be followed by a simple statement, not always a block
+    // Note that a scope can be followed by a simple statement, not always a block.
     {
         #scope Up loop 10
         {

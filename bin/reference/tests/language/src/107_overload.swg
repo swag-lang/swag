@@ -1,4 +1,6 @@
-// Functions can have the same names as long as parameters are different
+/**
+Functions can have the same names as long as parameters are different.
+*/
 #[Swag.ConstExpr]
 {
     func sum(x, y: s32) => x + y
@@ -8,8 +10,9 @@
 #assert sum(1, 2) == 3
 #assert sum(1, 2, 3) == 6
 
-// Note that in Swag, there's no implicit cast for function parameters
-// So you must always specify the right type
+/**
+Note that in Swag, there's no implicit cast for function parameters. So you must always specify the right type.
+*/
 #test
 {
     func over(x, y: s32) => x + y

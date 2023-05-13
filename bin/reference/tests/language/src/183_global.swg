@@ -1,6 +1,6 @@
-#global skip
-
-// A bunch of #global can start a source file
+/**
+A bunch of `#global` can start a source file.
+*/
 
 // Skip the content of the file, like this one (but must be a valid swag file)
 #global skip

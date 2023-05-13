@@ -1,32 +1,35 @@
+/**
+# Single value pointers
+*/
 #test
 {
-    // A pointer to a single element is declared with '*'.
+    // A pointer to a **single element** is declared with `*`.
     {
         var ptr1: *u8   // This is a pointer to one single 'u8'
         var ptr2: **u8  // This is a pointer to one other pointer to one single 'u8'
     }
 
-    // A pointer can be null (i know some of you will collapse here).
+    // A pointer can be `null` (i know some of you will collapse here).
     {
         var ptr1: *u8
         @assert(ptr1 == null)
     }
 
-    // You can take the address of something with '&'.
+    // You can take the address of something with `&`.
     {
         arr := 1
         ptr := &arr // Take the address of the variable 'arr'
         @assert(@typeof(ptr) == *s32)
     }
 
-    // You can get the pointed value with 'dref'.
+    // You can get the pointed value with `dref`.
     {
         arr := 42
         ptr := &arr
         @assert(dref ptr == 42)
     }
 
-    // Pointers can be 'const'
+    // Pointers can be `const`.
     {
         str := "string"
         var ptr: const *u8 = @dataof(str)
@@ -42,19 +45,19 @@
 }
 
 /**
-Use '*' for a pointer to one single value.
-But if you want to enable pointer arithmetic, and make a pointer to multiple values, declare your pointer with ^ instead of *.
+# Multiple values pointers
+If you want to enable **pointer arithmetic**, and make a pointer to **multiple values**, declare your pointer with `^` instead of `*`.
 */
 
 #test
 {
-    // 'ptr' is a pointer to a memory block of 'u8'.
+    // `ptr` is a pointer to a memory block of `u8`.
     {
         var ptr: ^u8
         ptr = ptr - 1 // Pointer arithmetic is now possible
     }
 
-    // Taking the address of an array element enables pointer arithmetic
+    // Taking the address of an array element enables pointer arithmetic.
     {
         var x: [4] s32
         ptr := &x[1]

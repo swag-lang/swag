@@ -1,33 +1,47 @@
-// A function starts with the 'func' keyword
+/**
+A function starts with the 'func' keyword.
+*/
 func toto()
 {
 }
 
-// To return a value, you must add -> followed by the type
+/**
+To return a value, you must add `->` followed by the type.
+*/
 func toto1()->s32
 {
     return 0
 }
 
-// The return type can be deduced in case of a simple expression, with '=>' instead of '->'
+/**
+The return type can be deduced in case of a simple expression, with `=>` instead of `->`.
+*/
 func sum(x, y: s32) => x + y
 
-// A short version exists, in case of a function returning nothing
+/**
+A short version exists, in case of a function returning nothing.
+*/
 func print(val: string) = @print(val)
 
-// Parameters
+/**
+Parameters.
+*/
 func sum1(x, y: s32, unused: f32)->s32
 {
     return x + y
 }
 
-// Parameters can have default values
+/**
+Parameters can have default values.
+*/
 func sum2(x, y: s32, unused: f32 = 666)->s32
 {
     return x + y
 }
 
-// Type of parameters can be deduced in case of a default value
+/**
+Type of parameters can be deduced in case of a default value.
+*/
 func sum3(x, y = 0.0)
 {
     #assert @typeof(x) == f32
@@ -46,14 +60,13 @@ func toto(x: s32, y = Values.A)
     // This are not closure but just functions in a sub scope.
     func sub(x, y: s32) => x - y
 
-    // Simple call
+    // Simple call.
     {
         x := sub(5, 2)
         @assert(x == 3)
     }
 
-    // You can name parameters, and don't have to respect parameters order
-    // in that case
+    // You can name parameters, and don't have to respect parameters order in that case.
     {
         x1 := sub(x: 5, y: 2)
         @assert(x1 == 3)
@@ -68,9 +81,12 @@ func toto(x: s32, y = Values.A)
     }
 }
 
+/**
+# Multiple return values
+*/
 #test
 {
-    // A tuple can be used to return multiple values in a function
+    // A tuple can be used to return multiple values in a function.
     {
         func myFunction() -> {f32, f32}
         {

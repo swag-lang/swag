@@ -1,6 +1,6 @@
 #test
 {
-    // using brings the scope of a namespace, struct or enum in the current one
+    // `using` brings the scope of a namespace, struct or enum in the current one.
     {
         enum RGB { R; G; B; }
         @assert(RGB.R == 0)
@@ -9,7 +9,7 @@
         @assert(G == 1)
     }
 
-    // using can also be used with a variable or a function parameter
+    // `using` can also be used with a variable or a function parameter.
     {
         struct Point { x: s32; y: s32; }
 
@@ -23,7 +23,7 @@
         @assert(pt.y == 2)
     }
 
-    // You can declare a variable with 'using' just before
+    // You can declare a variable with `using` just before.
     {
         struct Point { x: s32; y: s32; }
 
@@ -35,7 +35,7 @@
         @assert(pt.y == 2)
     }
 
-    // using can be the equivalent of the hidden 'this' in C++
+    // `using` can be the equivalent of the hidden `this` in C++.
     {
         struct Point { x: s32; y: s32; }
 
@@ -56,7 +56,7 @@
         @assert(pt.y == 1)
     }
 
-    // using can be used with a field inside a struct
+    // `using` can be used with a field inside a struct.
     {
         struct Point2
         {

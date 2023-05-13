@@ -14,7 +14,7 @@ But your identifiers cannot start with two underscores. This is reserved by the 
 // const __this_is_invalid = 0
 
 /**
-Note that some identifiers may start with **#**. This indicates a compiler special keyword.
+Note that some identifiers may start with `#`. This indicates a **compiler special keyword**.
 
 ```
 #assert
@@ -22,7 +22,7 @@ Note that some identifiers may start with **#**. This indicates a compiler speci
 #main
 ```
 
-Some identifiers can also start with **@**. This indicates an **intrinsic** function.
+Some identifiers can also start with `@`. This indicates an **intrinsic** function.
 
 ```
 @min()

@@ -1,0 +1,326 @@
+// - version tag release sous github, y'a que swag.exe et pas les autres; et y'a mimalloc lib (v15/v16)
+// - File.enumerateFiles ne marche pas avec un pattern si recursif (ça doit filter les folders aussi j'imagine)
+// - slice d'une reference sur struct String[..] par example
+
+#dependencies
+{
+    #import "core" location="swag@std"
+}
+
+using Core
+
+enum State
+{
+    Paragraph
+    Code
+    Test
+}
+
+var g_State:            Array'State
+var g_Buf:              ConcatBuffer
+var g_StateEmpty:       bool
+var g_SeekStartState:   ConcatBufferSeek
+var g_CptBrace:         s32
+
+func stateEnter(st: State)
+{
+    g_StateEmpty = true
+    g_SeekStartState = g_Buf.getSeek()
+
+    switch st
+    {
+    case Paragraph:
+        g_Buf.addBytes("<div>")
+
+    case Code, Test:
+        g_Buf.addBytes("<div class=\"code\">")
+        g_Buf.addBytes("<code style=\"white-space: break-spaces\">")
+    }
+}
+
+func stateLeave(st: State)
+{
+    if g_StateEmpty
+    {
+        g_Buf.setEndSeek(g_SeekStartState)
+        return
+    }
+
+    switch st
+    {
+    case Paragraph:
+        g_Buf.addBytes("</div>\n")
+    case Code, Test:
+        g_Buf.addBytes("</code>")
+        g_Buf.addBytes("</div>")
+    }
+}
+
+func pushState(st: State)
+{
+    stateLeave(g_State.back())
+    stateEnter(st)
+    g_State.add(st)
+}
+
+func popState()
+{
+    stateLeave(g_State.back())
+    g_State.removeBack()
+    stateEnter(g_State.back())
+}
+
+func addLine(line: string)
+{
+    var lineTrim: String = line
+    lineTrim.trim()
+    if Utf8.startsWith(lineTrim, "# ")
+    {
+        g_Buf.addBytes("<h2>")
+        lineTrim.remove(0, 2)
+        addLine(lineTrim)
+        g_Buf.addBytes("</h2>")
+        return
+    }
+
+    g_StateEmpty = false
+
+    stateBold   := false
+    stateItalic := false
+    stateCode   := false
+
+    for i := 0; i < @countof(line); i += 1
+    {
+        if line[i] == "*"'u8 and line[i+1] == "*"'u8
+        {
+            if stateBold
+                g_Buf.addBytes("</b>")
+            else
+                g_Buf.addBytes("<b>")
+            i += 1
+            stateBold = !stateBold
+            continue
+        }
+
+        if line[i] == "*"'u8
+        {
+            if !stateItalic and Latin1.isLetterOrDigit(line[i+1])
+            {
+                stateItalic = true
+                g_Buf.addBytes("<i>")
+                continue
+            }
+
+            if stateItalic
+            {
+                g_Buf.addBytes("</i>")
+                stateItalic = false
+                continue
+            }
+        }
+
+        if line[i] == "`"'u8
+        {
+            if !stateCode
+            {
+                stateCode = true
+                g_Buf.addBytes("<code class=\"incode\">")
+                continue
+            }
+
+            if stateCode
+            {
+                g_Buf.addBytes("</code>")
+                stateCode = false
+                continue
+            }
+        }
+
+        g_Buf.addNative(line[i])
+    }
+
+    g_Buf.addBytes("</br>\n")
+}
+
+func addLineCode(l: string)
+{
+    var lineTrim: String = l
+    lineTrim.trim()
+
+    if lineTrim.length
+        g_StateEmpty = false
+
+    if !g_StateEmpty
+    {
+        if Utf8.startsWith(lineTrim, "//")
+            g_Buf.addBytes("<span class=\"linecomment\">")
+
+        g_Buf.addBytes(l)
+
+        if Utf8.startsWith(lineTrim, "//")
+            g_Buf.addBytes("</span>")
+
+        g_Buf.addBytes("\n")
+    }
+}
+
+func processFile(fileName: string)
+{
+    lines := assume File.readAllLines(fileName)
+
+    stateEnter(.Code)
+    g_State.add(State.Code)
+
+    visit l: lines
+    {
+        lineTrim := l
+        lineTrim.trim()
+
+        var nextLine: String
+        if @index != lines.count - 1
+        {
+            nextLine = lines[@index+1]
+            nextLine.trim()
+        }
+
+        if Utf8.startsWith(lineTrim, "/**")
+        {
+            pushState(.Paragraph)
+            continue
+        }
+
+        curState := g_State.back()
+        switch curState
+        {
+        case Paragraph:
+            if Utf8.startsWith(lineTrim, "```")
+            {
+                pushState(.Code)
+                continue
+            }
+
+            if Utf8.startsWith(lineTrim, "*/")
+            {
+                popState()
+                continue
+            }
+
+            addLine(lineTrim)
+
+        case Test:
+            if lineTrim == "{"
+            {
+                g_CptBrace += 1
+                if g_CptBrace == 1 continue
+            }
+
+            if lineTrim == "}"
+            {
+                g_CptBrace -= 1
+                if g_CptBrace == 0
+                {
+                    popState()
+                    continue
+                }
+            }
+
+            if g_CptBrace == 1 and Utf8.startsWith(lineTrim, "//") and nextLine == "{"
+            {
+                lineTrim.remove(0, 2)
+                popState()
+                pushState(.Paragraph)
+                addLine(lineTrim)
+                popState()
+                pushState(.Test)
+                continue
+            }
+
+            lineLine := l
+            if Utf8.startsWith(lineLine, "    ")
+                lineLine.remove(0, 4)
+            addLineCode(lineLine)
+
+        case Code:
+            if Utf8.startsWith(l, "```")
+            {
+                popState()
+                continue
+            }
+
+            if Utf8.startsWith(l, "#test")
+            {
+                pushState(.Test)
+                continue
+            }
+
+            addLineCode(l)
+        }
+    }
+
+    while g_State.count
+        stateLeave(g_State.popBack())
+}
+
+#run
+{
+    files := assume Directory.enumerateFiles("D:/repo/bin/reference/tests/language/src", recurse: true)
+
+    g_Buf.addBytes("<html lang=\"en\">\n")
+    g_Buf.addBytes("<body>\n")
+
+    // Create styles
+    g_Buf.addBytes(
+    """
+        <style>
+        .code {
+            background-color: LightYellow;
+            border: 1px solid LightGrey;
+            margin: 20px;
+            padding: 20px;
+        }
+
+        .incode {
+            background-color: #eeeeee;
+            padding: 2px;
+            border: 1px dotted #cccc00;
+        }
+
+        .linecomment {
+            color: Grey;
+        }
+
+        .page {
+            width:       1000;
+            font-family: arial;
+            line-height: 1.3em;
+        }
+        </style>
+    """)
+
+    // The whole page, this is it...
+    g_Buf.addBytes("<div class=\"page\">\n")
+
+    visit v: files
+    {
+        if Path.getExtensionLowerCase(v.fullname) != ".swg"
+            continue
+
+        var title: String = Path.getFileNameWithoutExtension(v.fullname)
+        title.remove(0, 4)
+        title[0] = Latin1.toUpper(title[0])
+        title.replace("_", " ")
+
+        g_Buf.addBytes("\n<h1>")
+        g_Buf.addBytes(title)
+        g_Buf.addBytes("</h1>\n")
+
+        processFile(v.fullname)
+    }
+
+    g_Buf.addBytes("</div>\n")
+    g_Buf.addBytes("</body>\n")
+    g_Buf.addBytes("</html>\n")
+
+    var outFile: String = "d:/temp/tt.html"
+    assume File.writeAllBytes(outFile, g_Buf)
+}

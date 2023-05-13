@@ -1,6 +1,6 @@
 #test
 {
-    // 'visit' is used to visit all the elements of a collection
+    // `visit` is used to visit all the elements of a collection.
     {
         visit value: "ABC"
         {
@@ -14,7 +14,7 @@
         }
     }
 
-    // You can name both the value and the loop index, in that order
+    // You can name both the value and the loop index, in that order.
     {
         visit value, index: "ABC"
         {
@@ -28,8 +28,7 @@
         }
     }
 
-    // Both names are optional. In that case, you can use '@alias0' and '@alias1'
-    // '@alias0' for the value, and '@alias1' for the index
+    // Both names are optional. In that case, you can use `@alias0` and `@alias1`. `@alias0` for the value, and `@alias1` for the index
     {
         visit "ABC"
         {
@@ -44,7 +43,7 @@
         }
     }
 
-    // You can visit arrays or slices
+    // You can visit arrays or slices.
     {
         array := [10, 20, 30]
 
@@ -55,7 +54,7 @@
         @assert(result == 10+20+30)
     }
 
-    // Works also for multi dimensional arrays
+    // Works also for multi dimensional arrays.
     {
         var array: [2, 2] s32 = [[10, 20], [30, 40]]
 
@@ -66,8 +65,7 @@
         @assert(result == 10+20+30+40)
     }
 
-    // You can visit with a pointer to the value, and not the value itself, by
-    // adding '&' before the value name
+    // You can visit with a pointer to the value, and not the value itself, by adding `&` before the value name.
     {
         var array: [2, 2] s32 = [[1, 2], [3, 4]]
 

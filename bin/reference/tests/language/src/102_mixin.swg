@@ -1,6 +1,6 @@
 #test
 {
-    // A mixin is declared like a function, with the attribute #[Swag.Mixin]
+    // A mixin is declared like a function, with the attribute `#[Swag.Mixin]`.
     {
         #[Swag.Mixin]
         func myMixin()
@@ -8,7 +8,7 @@
         }
     }
 
-    // A mixin function is inserted in the scope of the caller
+    // A mixin function is inserted in the scope of the caller.
     {
         #[Swag.Mixin]
         func myMixin()
@@ -22,7 +22,7 @@
         @assert(a == 2)
     }
 
-    // This behaves like a function, so you can add parameters
+    // This behaves like a function, so you can add parameters.
     {
         #[Swag.Mixin]
         func myMixin(increment: s32 = 1)
@@ -36,7 +36,7 @@
         @assert(a == 3)
     }
 
-    // A mixin accepts parameters of type 'code'
+    // A mixin accepts parameters of type `code`.
     {
         #[Swag.Mixin]
         func doItTwice(what: code)
@@ -51,8 +51,7 @@
         @assert(a == 2)
     }
 
-    // When the last parameter of a mixin is of type 'code', the caller
-    // can declare that code in a statement just after the call
+    // When the last parameter of a mixin is of type `code`, the caller can declare that code in a statement just after the call.
     {
         #[Swag.Mixin]
         func doItTwice(value: s32, what: code)
@@ -75,7 +74,7 @@
         @assert(a == 12)
     }
 
-    // You can use special name '@alias' to create a named alias for an identifier
+    // You can use the special name `@alias` to create a named alias for an identifier.
     {
         #[Swag.Mixin]
         func inc10()
@@ -104,10 +103,7 @@
         @assert(@alias0 == 30)
     }
 
-    // You can declare special variables named '@mixin?'
-    // Those variables will have a unique name each time the mixin is used
-    // So the same mixin, even if it declares local variables, can be used
-    // multiple time in the same scope
+    // You can declare special variables named `@mixin?`. Those variables will have a unique name each time the mixin is used. So the same mixin, even if it declares local variables, can be used multiple time in the same scope.
     {
         var total: s32
 

@@ -1,11 +1,13 @@
-// Swag contains a *very* simple error system used to deal with function returning errors
-// Will probably be changed/improved at some point
-// This are *not* exceptions !
+/**
+Swag contains a *very* simple error system used to deal with function returning errors.
+Will probably be changed/improved at some point.
 
-// A function that can return an error must be marked with 'throw'
-// It can then raise an error with the 'throw' keyword, passing an error message.
-// When an error is raised by a function, the return value is always equal to the default value,
-// depending on the return type.
+These are **not** exceptions !
+
+A function that can return an error must be marked with `throw`. It can then raise an error with the `throw` keyword, passing an error message.
+
+When an error is raised by a function, the return value is always equal to the default value, depending on the return type.
+*/
 func count(name: string)->u64 throw
 {
     if name == null
@@ -18,9 +20,11 @@ func count(name: string)->u64 throw
     return @countof(name)
 }
 
-// The caller will then have to deal with the error in some way.
-// It can 'catch' it, and test (or not) its value with the '@err' intrinsic
-// Execution will continue at the call site.
+/**
+The caller will then have to deal with the error in some way.
+It can `catch` it, and test (or not) its value with the `@err` intrinsic.
+Execution will continue at the call site.
+*/
 func myFunc()
 {
     // Dismiss the eventual error with 'catch' and continue execution
@@ -39,24 +43,30 @@ func myFunc()
     cpt1 := trycatch count("fileName")
 }
 
-// The caller can stop the execution with 'try', and return to its own caller with the same error raised.
-// The function must then also be marked with 'throw'.
-// Here, the caller of 'myFunc1' will have to deal with the error at its turn.
+/**
+The caller can stop the execution with `try`, and return to its own caller with the same error raised.
+The function must then also be marked with `throw`.
+Here, the caller of `myFunc1` will have to deal with the error at its turn.
+*/
 func myFunc1() throw
 {
     // If 'count()' raises an error, 'myFunc1' will return with the same error
     cpt := try count("filename")
 }
 
-// The caller can also panic if an error is raised, with 'assume'.
-// This can be disabled in release builds (in that case the behaviour is undefined).
+/**
+The caller can also panic if an error is raised, with `assume`.
+This can be disabled in release builds (in that case the behaviour is undefined).
+*/
 func myFunc2()
 {
     // Here the program will stop with a panic message if 'count()' throws an error
     cpt := assume count("filename")
 }
 
-// Note that you can use a block instead of one single statement (this does not create a scope)
+/**
+Note that you can use a block instead of one single statement (this does not create a scope).
+*/
 func myFunc3() throw
 {
     // This is not really necessary, see below, but this is just to show 'try' with a block
@@ -90,9 +100,10 @@ func myFunc3() throw
     }
 }
 
-// When a function is marked with "throw", the "try" for a function call is automatic
-// if not specified.
-// That means that most of the time it's not necessary to specify it.
+/**
+When a function is marked with `throw`, the `try` for a function call is automatic if not specified.
+That means that most of the time it's not necessary to specify it.
+*/
 #test
 {
     func mySubFunc2() throw
@@ -113,8 +124,9 @@ func myFunc3() throw
     @assert(@err == "error")
 }
 
-// 'defer' can have parameters like defer(err) or defer(noerr) to control
-// if it should be executed depending on the error status
+/**
+`defer` can have parameters like `defer(err)` or `defer(noerr)` to control if it should be executed depending on the error status.
+*/
 var g_Defer = 0
 
 func raiseError() throw

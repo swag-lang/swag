@@ -1,6 +1,5 @@
 /**
-'any' is a specific type that can store every other types.
-'any' is **not** a variant. It's a dynamic typed reference to an existing value.
+`any` is a specific type that can store every other types. `any` is **not** a variant. It's a dynamic typed reference to an existing value.
 */
 
 #test
@@ -21,16 +20,14 @@
         @assert(a == true)
     }
 
-    // 'any' is in fact a pointer to the value, and a 'typeinfo'.
-    // '@dataof' can be used to retrieve the pointer to the value.
+    // `any` is in fact a pointer to the value, and a `typeinfo`. `@dataof` can be used to retrieve the pointer to the value.
     {
         var a: any = 6
         ptr := cast(const *s32) @dataof(a)
         @assert(dref ptr == 6)
     }
 
-    // '@typeof' will give you the type 'any', but '@kindof' will give you the real underlying type.
-    // In that case, '@kindof' is evaluted at runtime.
+    // `@typeof` will give you the type `any`, but `@kindof` will give you the real underlying type. In that case, `@kindof` is evaluted at runtime.
     {
         var a: any = "string"
         #assert @typeof(a) == any
@@ -40,7 +37,7 @@
         @assert(@kindof(a) == bool)
     }
 
-    // You can declare an array with multiple types, with 'any'
+    // You can declare an array with multiple types, with `any`.
     {
         var array: [] any = [true, 2, 3.0, "4"]
         @assert(@kindof(array[0]) == bool)
@@ -54,7 +51,7 @@
         @assert(array[3] == "4")
     }
 
-    // An 'any' can be set to null, and tested against null.
+    // An `any` can be set to null, and tested against null.
     {
         var x: any
         @assert(x == null)

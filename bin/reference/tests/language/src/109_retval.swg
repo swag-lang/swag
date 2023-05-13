@@ -1,7 +1,8 @@
+/**
+Inside a function, you can use the `retval` type which is an alias to the function return type.
+*/
 #test
 {
-    // Inside a function, you can use the 'retval' type which is an alias
-    // to the function return type
     {
         func toto()->s32
         {
@@ -12,11 +13,13 @@
 
         @assert(toto() == 10)
     }
+}
 
-    // But 'retval' will also make a direct reference to the caller storage, to
-    // avoid an unnecessary copy (if possible). So this is mostly a hint for the
-    // compiler, and usefull when the function returns a complexe type like a
-    // struct, a tuple or an array.
+/**
+But `retval` will also make a direct reference to the caller storage, to avoid an unnecessary copy (if possible). So this is mostly a hint for the compiler, and usefull when the function returns a complexe type like a struct, a tuple or an array.
+*/
+#test
+{
     {
         struct RGB { x, y, z: f64; }
 

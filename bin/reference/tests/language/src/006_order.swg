@@ -25,6 +25,5 @@ func functionDeclaredLater()
 }
 
 /**
-Note that the order is not relevant in the same file, but it is also irrelevant across multiple files.
-You can for example call a function in one file and declare it in another one. Ordrer does not matter !
+Note that the order is not relevant in the same file, but it is also irrelevant across multiple files. You can for example call a function in one file and declare it in another one. Ordrer does not matter !
 */

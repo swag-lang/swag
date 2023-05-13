@@ -75,8 +75,7 @@ Types of parameters can be deduced.
 }
 
 /**
-When you affect a lambda to a variable, the type of parameters and the return type can also be
-omitted, as they will be deduced from the variable type.
+When you affect a lambda to a variable, the type of parameters and the return type can also be omitted, as they will be deduced from the variable type.
 */
 #test
 {

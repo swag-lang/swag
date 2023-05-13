@@ -1,5 +1,5 @@
 /**
-Swag provides also a simple way of checking generic parameters, without the need of '#validif'.
+Swag provides also a simple way of checking generic parameters, without the need of `#validif`.
 A type constraint can be added when declaring a generic type. If a function or a struct is instantiated with a type that does not conform to the constraint, then an error will be raised.
 */
 
@@ -27,7 +27,7 @@ A type constraint can be added when declaring a generic type. If a function or a
 }
 
 /**
-The type constraint can be any compile time expression, as long as the resulting type is bool.
+The type constraint can be any compile time expression, as long as the resulting type is `bool`.
 So you could do something like this.
 */
 #test

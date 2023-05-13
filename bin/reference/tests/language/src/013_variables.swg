@@ -1,5 +1,5 @@
 /**
-To declare a variable, use the 'var' keyword, followed by ':' and then the type.
+To declare a variable, use the `var` keyword, followed by `:` and then the type.
 */
 #test
 {
@@ -28,8 +28,7 @@ To declare a variable, use the 'var' keyword, followed by ':' and then the type.
 }
 
 /**
-If you don't assign a value, then the variable will be initialized with its default value (0).
-So a variable is **always** initialized.
+If you don't assign a value, then the variable will be initialized with its default value (0). So a variable is **always** initialized.
 */
 #test
 {
@@ -44,8 +43,7 @@ So a variable is **always** initialized.
 }
 
 /**
-But if you really do not want the variable to be initialized, you can assign it with 'undefined'.
-To use with care, of course, but this is sometimes necessary to avoid the initialization cost.
+But if you really do not want the variable to be initialized, you can assign it with `undefined`. To use with care, of course, but this is sometimes necessary to avoid the initialization cost.
 */
 #test
 {
@@ -90,7 +88,7 @@ We have seen that the type is optional in the declaration if it can be deduced f
 }
 
 /**
-And in fact even 'var' is optional if you use the short form with ':='.
+And in fact even `var` is optional if you use the short form with `:=`.
 */
 #test
 {

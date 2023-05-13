@@ -1,7 +1,10 @@
-// '#message' is a special function that will be called by the compiler
-// The parameter is a mask that tells the compiler when to call the function.
+/**
+`#message` is a special function that will be called by the compiler. The parameter is a mask that tells the compiler when to call the function.
+*/
 
-// Here the function will be called each time a function of the module has been typed
+/**
+Here the function will be called each time a function of the module has been typed.
+*/
 #message(Swag.CompilerMsgMask.SemFunctions)
 {
     itf := @compiler()          // Get the interface to communicate with the compiler
@@ -17,8 +20,10 @@
         G += 1
 }
 
-// The compiler will call the following function after the semantic pass
-// So after all the functions of the module have been parsed
+/**
+The compiler will call the following function after the semantic pass.
+So after all the functions of the module have been parsed.
+*/
 #message(Swag.CompilerMsgMask.PassAfterSemantic)
 {
     // We should have found 3 functions starting with "XX"
@@ -31,14 +36,18 @@ func XXTestFunc1() {}
 func XXTestFunc2() {}
 func XXTestFunc3() {}
 
-// This will be called for every global variables of the module
+/**
+This will be called for every global variables of the module.
+*/
 #message(Swag.CompilerMsgMask.SemGlobals)
 {
     itf := @compiler()
     msg := itf.getMessage()
 }
 
-// This will be called for every global types of the module (structs, enums, interfaces...)
+/**
+This will be called for every global types of the module (structs, enums, interfaces...).
+*/
 #message(Swag.CompilerMsgMask.SemTypes)
 {
     itf := @compiler()

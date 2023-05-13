@@ -1,9 +1,13 @@
+/**
+This is the list of all compiler intrinsics.
+All intrinsics start with `@`, which is reserved for them.
+*/
+
 #global skip
 
-// This is the list of all compiler intrinsics
-// All intrinsics start with '@', which is reserved for them
-
-// Base
+/**
+# Base
+*/
 
 func @assert(value: bool);
 func @breakpoint();
@@ -17,7 +21,9 @@ func @args()->const [..] string;
 @compilererror()
 @compilerwarning()
 
-// Buildin
+/**
+# Buildin
+*/
 
 @spread()
 @init()
@@ -44,7 +50,9 @@ func @args()->const [..] string;
 @index
 @err
 
-// Memory related
+/**
+# Memory related
+*/
 
 func @alloc(size: u64)->*void;
 func @realloc(ptr: *void, size: u64)->*void;
@@ -55,7 +63,9 @@ func @memmove(dst: *void, src: const *void, size: u64);
 func @memcmp(dst, src: const *void, size: u64)->s32;
 func @strlen(value: const *u8)->u64;
 
-// Atomic operations
+/**
+# Atomic operations
+*/
 
 func @atomadd(addr: *s8, value: s8)->s8;
 func @atomadd(addr: *s16, value: s16)->s16;
@@ -111,7 +121,9 @@ func @atomcmpxchg(addr: *u16, compareTo, exchangeWith: u16)->u16;
 func @atomcmpxchg(addr: *u32, compareTo, exchangeWith: u32)->u32;
 func @atomcmpxchg(addr: *u64, compareTo, exchangeWith: u64)->u64;
 
-// Math
+/**
+# Math
+*/
 
 func @sqrt(value: f32)->f32;
 func @sqrt(value: f64)->f64;

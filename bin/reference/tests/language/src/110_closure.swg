@@ -1,13 +1,13 @@
 /**
-Swag supports a limited set of the 'closure' concept.
-Only a given amount of bytes of capture are possible (for now 48 bytes).
-That way there's never an hidden allocation.
-Another limitation is that you can only capture 'simple' variables (no struct with 'opDrop', 'opPostCopy', 'opPostMove' for example).
+Swag supports a limited set of the `closure` concept.
+
+Only a given amount of bytes of capture are possible (for now 48 bytes). That way there's never an hidden allocation.
+Another limitation is that you can only capture 'simple' variables (no struct with `opDrop`, `opPostCopy`, `opPostMove` for example).
 */
 
 #test
 {
-    // A closure is declared like a lambda, with the captured variables between |...| before the function parameters
+    // A closure is declared like a lambda, with the captured variables between `|...|` before the function parameters.
     {
         a := 125
         b := 521
@@ -22,7 +22,7 @@ Another limitation is that you can only capture 'simple' variables (no struct wi
         fct()
     }
 
-    // You can also capture by pointer with '&' (otherwise it's a copy)
+    // You can also capture by pointer with `&` (otherwise it's a copy).
     {
         a := 125
 
@@ -39,7 +39,7 @@ Another limitation is that you can only capture 'simple' variables (no struct wi
         @assert(a == 127)
     }
 
-    // You can also capture by reference with 'ref'
+    // You can also capture by reference with `ref`.
     {
         a := 125
 
@@ -56,7 +56,7 @@ Another limitation is that you can only capture 'simple' variables (no struct wi
         @assert(a == 127)
     }
 
-    // You can assign a normal lambda (no capture) to a closure variable
+    // You can assign a normal lambda (no capture) to a closure variable.
     {
         var fct: closure(s32, s32)->s32
 
@@ -64,8 +64,7 @@ Another limitation is that you can only capture 'simple' variables (no struct wi
         @assert(fct(1, 2) == 3)
     }
 
-    // You can capture arrays, structs, slices etc... as long as it fits in the
-    // maximum storage of 'n' bytes (and as long as the struct is a pod)
+    // You can capture arrays, structs, slices etc... as long as it fits in the maximum storage of 'n' bytes (and as long as the struct is a pod).
     {
         x := [1, 2, 3]
 
@@ -85,8 +84,7 @@ Another limitation is that you can only capture 'simple' variables (no struct wi
         @assert(result == 1 + 2 + 3 + 4)
     }
 
-    // Captured variables are mutable, and part of the closure
-    // So you can modify them
+    // Captured variables are mutable, and part of the closure. So you can modify them.
     {
         func getInc()->closure()->s32
         {

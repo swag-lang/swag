@@ -1,6 +1,5 @@
 /**
-A basic test with 'if'. Curlies are optional.
-The expression doesn't need to be enclosed with () unlike C/C++
+A basic test with `if`. Curlies are optional. The expression doesn't need to be enclosed with `()` unlike C/C++.
 */
 
 #test
@@ -40,8 +39,7 @@ The expression doesn't need to be enclosed with () unlike C/C++
 }
 
 /**
-You can also at the same time declare and test one variable in an 'if' expression.
-'var' or 'const' is mandatory in that case.
+You can also at the same time declare and test one variable in an `if` expression. `var` or `const` is mandatory in that case.
 */
 
 #test

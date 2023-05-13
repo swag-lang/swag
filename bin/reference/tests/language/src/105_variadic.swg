@@ -1,6 +1,6 @@
 #test
 {
-    // A function can take a variable number of arguments with '...'
+    // A function can take a variable number of arguments with `...`.
     {
         func myFunction(value: bool, parameters: ...)
         {
@@ -9,7 +9,7 @@
         myFunction(true, 4, "true", 5.6)
     }
 
-    // In that case, 'parameters' is a slice of 'any'
+    // In that case, `parameters` is a slice of `any`.
     {
         func myFunction(parameters: ...)
         {
@@ -30,8 +30,7 @@
         myFunction(4, "true", 5.6)
     }
 
-    // If all variadic parameters are of the same type, you can force it.
-    // Parameters then won't be of type 'any'
+    // If all variadic parameters are of the same type, you can force it. Parameters then won't be of type `any`.
     {
         func myFunction(value: bool, parameters: s32...)
         {
@@ -49,7 +48,7 @@
         myFunction(true, 10, 20, 30, 40)
     }
 
-    // Variadic parameters can be passed from function to function
+    // Variadic parameters can be passed from function to function.
     {
         func A(params: ...)
         {
@@ -67,8 +66,14 @@
 
         B("value", true)
     }
+}
 
-    // You can spread the content of an array or a slice to variadic parameters with '@spread'
+/**
+You can spread the content of an array or a slice to variadic parameters with `@spread`.
+*/
+
+#test
+{
     {
         func sum(params: s32...)->s32
         {

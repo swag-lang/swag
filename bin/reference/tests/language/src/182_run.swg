@@ -1,8 +1,12 @@
-// #run is a special function that will be called at compile time
-// It can be used to precompute some global values for example.
+/**
+`#run` is a special function that will be called at compile time.
+It can be used to precompute some global values for example.
+*/
 var G: [5] f32 = undefined
 
-// Initialize G with [1,2,4,8,16] at compile time
+/**
+Initialize `G` with `[1,2,4,8,16]` at compile time.
+*/
 #run
 {
     value := 1'f32
@@ -13,8 +17,10 @@ var G: [5] f32 = undefined
     }
 }
 
-// #test are executed after #run, even at compile time (during testing)
-// So we can test the values of G here.
+/**
+`#test` are executed after #run, even at compile time (during testing).
+So we can test the values of G here.
+*/
 #test
 {
     @assert(G[0] == 1)
@@ -24,7 +30,9 @@ var G: [5] f32 = undefined
     @assert(G[4] == 16)
 }
 
-// #run can also be used as an expression, to call for example a function not marked with #[Swag.ConstExpr]
+/**
+`#run` can also be used as an expression, to call for example a function not marked with `#[Swag.ConstExpr]`.
+*/
 const SumValue = #run sum(1, 2, 3, 4) + 10
 #assert SumValue == 20
 
@@ -36,8 +44,10 @@ func sum(values: s32...)->s32
     return result
 }
 
-// #run can also be used as an expression block
-// The return type is deduced from the 'return' statement
+/**
+`#run` can also be used as an expression block.
+The return type is deduced from the `return` statement.
+*/
 const Value = #run {
     var result: f32
     loop 10

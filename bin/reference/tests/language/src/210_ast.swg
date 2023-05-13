@@ -1,6 +1,6 @@
 #test
 {
-    // '#ast' is executed at compile time and returns a string that will be compiled inplace
+    // `#ast` is executed at compile time and returns a string that will be compiled inplace.
     {
         #ast "x := 666"
         @assert(x == 666)
@@ -17,7 +17,7 @@
         @assert(cpt == 7)
     }
 
-    // '#ast' can be used to generate the content of a struct/enum
+    // `#ast` can be used to generate the content of a struct/enum.
     {
         struct MyStruct
         {
@@ -32,7 +32,7 @@
         @assert(v.y == 666)
     }
 
-    // Works with generics too, and can be mixed with static declarations
+    // Works with generics too, and can be mixed with static declarations.
     {
         struct(T) MyStruct
         {
@@ -55,7 +55,7 @@
         #assert @typeof(v1.z) == string
     }
 
-    // '#ast' needs to return a 'string like' value, that can be dynamic
+    // `#ast` needs to return a *string like* value, that can be dynamic.
     {
         func append(buf: ^u8, val: string)
         {
@@ -83,17 +83,21 @@
     }
 }
 
-// #ast can also be called on the global scope
+/**
+`#ast` can also be called on the global scope.
+*/
 #ast
 {
     const value = 666
     return "const myGeneratedConst = " ++ value
 }
 
-// You must use '#placeholder' in case you are generating symbols that can be
-// used by something else in the code.
+/**
+You must use `#placeholder` in case you are generating symbols that can be used by something else in the code.
+*/
 #placeholder myGeneratedConst
 
-// Here the #assert will wait for the symbol 'myGeneratedConst' to be replaced with its
-// real content.
+/**
+Here the `#assert` will wait for the symbol `myGeneratedConst` to be replaced with its real content.
+*/
 #assert myGeneratedConst == 666

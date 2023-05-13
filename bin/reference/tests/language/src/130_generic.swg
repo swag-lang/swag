@@ -1,6 +1,6 @@
 /**
-A function can be generic by specifying parameters after 'func'.
-At the call site, you specify the generic parameters with funcCall'(type1, type2, ...)(parameters).
+A function can be generic by specifying parameters after `func`.
+At the call site, you specify the generic parameters with `funcCall'(type1, type2, ...)(parameters)`.
 Note that parenthesis can be ommited if there's only one generic parameter.
 */
 #test
@@ -42,7 +42,7 @@ Note that parenthesis can be ommited if there's only one generic parameter.
 }
 
 /**
-Generic types can be deduced from parameters, so func'type() is not always necessary.
+Generic types can be deduced from parameters, so `func'type()` is not always necessary.
 */
 #test
 {
@@ -57,13 +57,13 @@ You can also specify constants as generic parameters.
 */
 #test
 {
-    // 'N' is a constant a type 's32'
+    // `N` is a constant a type `s32`.
     {
         func(const N: s32) myFunc() = @assert(N == 10)
         myFunc'10()
     }
 
-    // 'const' can also be omitted, as an identifier followed by a type definition is considered to be a constant and not a type.
+    // `const` can also be omitted, as an identifier followed by a type definition is considered to be a constant and not a type.
     {
         func(N: s32) myFunc() = @assert(N == 10)
         myFunc'10()
@@ -75,20 +75,20 @@ You can also specify constants as generic parameters.
         myFunc()
     }
 
-    // You can ommit the type if you declare the constant with 'const'. It will be deduced from the assignment expression.
+    // You can ommit the type if you declare the constant with `const`. It will be deduced from the assignment expression.
     {
         func(const N = 10) myFunc() = @assert(N == 10)
         myFunc()
     }
 }
 
- /**
- You can mix types and constants.
- */
- #test
- {
+/**
+You can mix types and constants.
+*/
+#test
+{
     {
-        // T is a type, N is a constant of type 's32', because remember that an identifier alone is considered to be a generic type.
+        // `T` is a type, `N` is a constant of type `s32`, because remember that an identifier alone is considered to be a generic type.
         func(T, N: s32) myFunc(x: T) => x * N
 
         alias call = myFunc'(s32, 10)

@@ -1,5 +1,5 @@
 /**
-Swag has also references, which are pointers that behave like values.
+Swag has also **references**, which are pointers that behave like values.
 */
 
 #test
@@ -17,8 +17,7 @@ Swag has also references, which are pointers that behave like values.
 }
 
 /**
-When an affectation is done outside of an initialization, you will change the pointed value,
-and not the reference itself.
+When an affectation is done outside of an initialization, you will change the pointed value, and not the reference itself.
 */
 
 #test
@@ -36,7 +35,7 @@ and not the reference itself.
 }
 
 /**
-If you want to change the reference and not the pointed value, you can use 'ref' in the affectation.
+If you want to change the reference and not the pointed value, you can use `ref` in the affectation.
 */
 
 #test
@@ -54,9 +53,7 @@ If you want to change the reference and not the pointed value, you can use 'ref'
 }
 
 /**
-Most of the time, you have to take the address of a variable to make a reference to it.
-The only exception are function parameters, if the reference is 'const'.
-In that case, taking the address is not necessary
+Most of the time, you have to take the address of a variable to make a reference to it. The only exception are function parameters, if the reference is `const`. In that case, taking the address is not necessary
 */
 
 #test

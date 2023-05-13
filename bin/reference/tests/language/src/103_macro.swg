@@ -1,6 +1,6 @@
 #test
 {
-    // A macro, like a mixin, is declared like a function, but with the attribute 'Swag.Macro'
+    // A macro, like a mixin, is declared like a function, but with the attribute `Swag.Macro`.
     {
         #[Swag.Macro]
         func myMacro()
@@ -8,8 +8,7 @@
         }
     }
 
-    // Unlike a mixin, a macro has its own scope, and cannot conflict with the function
-    // it is inserted inside
+    // Unlike a mixin, a macro has its own scope, and cannot conflict with the function it is inserted inside.
     {
         #[Swag.Macro]
         func myMacro()
@@ -22,7 +21,7 @@
         @assert(a == 0)
     }
 
-    // But you can force an identifier to be found outside of the scope of the macro
+    // But you can force an identifier to be found outside of the scope of the macro.
     {
         #[Swag.Macro]
         func myMacro()
@@ -36,7 +35,7 @@
         @assert(a == 2)
     }
 
-    // Like a mixin, macro accepts 'code' parameters
+    // Like a mixin, macro accepts `code` parameters.
     {
         #[Swag.Macro]
         func myMacro(what: code)
@@ -56,9 +55,7 @@
         @assert(a == 2)
     }
 
-    // You can use '#macro' inside a macro to force the code after to be in the
-    // same scope of the caller. That is, no #up is necessary to reference
-    // variables of the caller.
+    // You can use `#macro` inside a macro to force the code after to be in the same scope of the caller. That is, no `#up` is necessary to reference variables of the caller.
     {
         #[Swag.Macro]
         func myMacro(what: code)
@@ -82,8 +79,7 @@
         @assert(a == 3)
     }
 
-    // You can extend the language with macros, without using pointers to functions
-    // (no lambda call cost)
+    // You can extend the language with macros, without using pointers to functions (no lambda call cost).
     {
         #[Swag.Macro]
         func repeat(count: s32, what: code)
@@ -108,8 +104,7 @@
         @assert(a == 10+3)
     }
 
-    // When you need 'break' in the user code to break outside of
-    // a multi loop
+    // When you need `break` in the user code to break outside of a multi loop.
     {
         #[Swag.Macro]
         func repeatSquare(count: u32, what: code)
@@ -139,8 +134,7 @@
         @assert(a == 10)
     }
 
-    // In a macro, you can use special variables named '@alias<num>'
-    // Note that this is also valid for mixins.
+    // In a macro, you can use special variables named `@alias<num>`. Note that this is also valid for mixins.
     {
         #[Swag.Macro]
         func call(v: s32, stmt: code)

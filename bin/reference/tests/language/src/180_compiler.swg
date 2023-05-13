@@ -1,13 +1,18 @@
-// #assert is a static assert (at compile time)
+/**
+`#assert` is a static assert (at compile time).
+*/
 #assert true
 
-// @defined(SYMBOL) returns true, at compile time, if the given symbol exists
-// in the current context
+/**
+`@defined(SYMBOL)` returns true, at compile time, if the given symbol exists in the current context.
+*/
 #assert !@defined(DOES_NOT_EXISTS)
 #assert @defined(Global)
 var Global = 0
 
-// static #if/#elif/#else, with an expression that can be evaluated at compile time
+/**
+A static `#if/#elif/#else`, with an expression that can be evaluated at compile time.
+*/
 const DEBUG = 1
 const RELEASE = 0
 #if DEBUG
@@ -20,7 +25,9 @@ const RELEASE = 0
 {
 }
 
-// #error to raise a compile time error, and #warning to raise a compile time warning
+/**
+`#error` to raise a compile time error, and #warning to raise a compile time warning.
+*/
 #if false
 {
     #error   "this is an error"
@@ -47,7 +54,9 @@ func isThisRelease() => true
     #error "this should not be called !"
 }
 
-// A more complicated #assert
+/**
+A more complicated #assert.
+*/
 #[Swag.ConstExpr]
 func factorial(x: s32)->s32
 {
