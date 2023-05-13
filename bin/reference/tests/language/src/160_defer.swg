@@ -1,10 +1,9 @@
 /**
-`defer` is used to call an expression when the current scope is left.
+`defer` is used to call an expression when the current scope is left. It's purely compile time, so it does not evaluate until the block is left.
 */
 
 #test
 {
-    // It's purely compile time, so it does not evaluate until the block is left.
     {
         v := 0
         defer @assert(v == 1)
@@ -25,7 +24,7 @@
         // defer block will be executed here
     }
 
-    // `defer` expressions are called when leaving the corresponding scope, even with return, break, continue etc., and even inside a loop/while/for etc.
+    // `defer` expressions are called when leaving the corresponding scope, even with `return`, `break`, `continue` etc., and even inside a `loop/while/for` etc.
     {
         var G = 0
         loop 10

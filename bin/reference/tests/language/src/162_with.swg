@@ -1,3 +1,7 @@
+/**
+You can use `with` to avoid repeating the same variable again and again. You can then access fields with a simple `.`.
+*/
+
 struct Point { x, y: s32; }
 
 impl Point
@@ -10,7 +14,7 @@ impl Point
 
 #test
 {
-    // You can use `with` to avoid repeating the same variable again and again. You can then access fields with a simple `.`.
+    // `with` on a variable.
     {
         var pt: Point
         with pt
@@ -23,7 +27,7 @@ impl Point
         @assert(pt.y == 2)
     }
 
-    // Work for function calls to.
+    // Works for function calls to.
     {
         var pt: Point
         with pt
@@ -89,7 +93,7 @@ impl Point
         }
     }
 
-    // Or an affect statement
+    // Or an affectation statement.
     {
         var pt: Point
         with pt = Point{1, 2}

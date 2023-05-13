@@ -1,5 +1,5 @@
 /**
-Functions can have the same names as long as parameters are different.
+Functions can have the same names as long as their parameters are different.
 */
 #[Swag.ConstExpr]
 {
@@ -11,7 +11,7 @@ Functions can have the same names as long as parameters are different.
 #assert sum(1, 2, 3) == 6
 
 /**
-Note that in Swag, there's no implicit cast for function parameters. So you must always specify the right type.
+Note that in Swag, there is no implicit cast for function parameters. So you must always specify the right type.
 */
 #test
 {

@@ -1,5 +1,5 @@
 /**
-A lambda is just a pointer to a function.
+A lambda is just a **pointer to a function**.
 */
 #test
 {
@@ -38,7 +38,8 @@ You can use a lambda as a function parameter type.
 }
 
 /**
-You can also create anonymous functions (functions as literals).
+# Anonymous functions
+You can also create *anonymous functions* (aka functions as literals).
 */
 #test
 {
@@ -62,7 +63,7 @@ Anonymous functions can be passed as parameters to another function.
 }
 
 /**
-Types of parameters can be deduced.
+The types of the parameters can be deduced.
 */
 #test
 {

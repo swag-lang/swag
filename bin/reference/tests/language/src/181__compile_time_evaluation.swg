@@ -55,7 +55,7 @@ func isThisRelease() => true
 }
 
 /**
-A more complicated #assert.
+A more complicated `#assert`.
 */
 #[Swag.ConstExpr]
 func factorial(x: s32)->s32

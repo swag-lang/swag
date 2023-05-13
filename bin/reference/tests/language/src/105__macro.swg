@@ -21,7 +21,7 @@
         @assert(a == 0)
     }
 
-    // But you can force an identifier to be found outside of the scope of the macro.
+    // But you can force an identifier to be found outside of the scope of the macro with `#up`.
     {
         #[Swag.Macro]
         func myMacro()

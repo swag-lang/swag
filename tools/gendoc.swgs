@@ -21,6 +21,7 @@ var g_Buf:              ConcatBuffer
 var g_StateEmpty:       bool
 var g_SeekStartState:   ConcatBufferSeek
 var g_CptBrace:         s32
+var g_SubTitle:         bool
 
 func stateEnter(st: State)
 {
@@ -77,10 +78,10 @@ func addLine(line: string)
 
     if Utf8.startsWith(lineTrim, "# ")
     {
-        g_Buf.addBytes("<h3>")
+        g_Buf.addBytes(g_SubTitle ? "<h4>" : "<h3>")
         lineTrim.remove(0, 2)
         addLine(lineTrim)
-        g_Buf.addBytes("</h3>")
+        g_Buf.addBytes(g_SubTitle ? "</h4>" : "</h3>")
         return
     }
 
@@ -310,12 +311,15 @@ func processFile(fileName: string)
 
         var title: String = Path.getFileNameWithoutExtension(v.fullname)
         title.remove(0, 4)
+        g_SubTitle = title[0] == "_"'u8
+        if g_SubTitle
+            title.remove(0, 1)
         title[0] = Latin1.toUpper(title[0])
         title.replace("_", " ")
 
-        g_Buf.addBytes("\n<h2>")
+        g_Buf.addBytes(g_SubTitle ? "\n<h3>" : "\n<h2>")
         g_Buf.addBytes(title)
-        g_Buf.addBytes("</h2>\n")
+        g_Buf.addBytes(g_SubTitle ? "</h3>\n" : "</h2>\n")
 
         processFile(v.fullname)
     }

@@ -1,3 +1,8 @@
+/**
+`opAffect` is a way of assigning to a struct with `=`.
+You can have more the one opAffect with different types.
+*/
+
 struct Struct
 {
     x, y, z: s32 = 666
@@ -5,8 +10,6 @@ struct Struct
 
 impl Struct
 {
-    // opAffect is a way of assigning to a struct with '='
-    // You can have more the one opAffect with different types
     mtd opAffect(value: s32)  { x, y = value; }
     mtd opAffect(value: bool) { x, y = value ? 1 : 0; }
 }
@@ -32,11 +35,12 @@ impl Struct
     @assert(v1.y == 0)
 }
 
+/**
+If `opAffect` is supposed to initialize the full content of the struct, you can add `#[Swag.Complete]`. This will avoid every variables to be initialized to the default values, then changed later with the `opAffect` call.
+*/
+
 impl Struct
 {
-    // If opAffect is supposed to initialize the full content of the struct, you can add #[Swag.Complete]
-    // This will avoid every variables to be initialized to the default values, then changed later
-    // with the 'opAffect' call.
     #[Swag.Complete]
     mtd opAffect(value: u64)  { x, y, z = cast(s32) value; }
 
@@ -45,10 +49,11 @@ impl Struct
     mtd opAffect(value: u16)  { x, y = cast(s32) value; }
 }
 
+/**
+Here the variable `v` will not be initialized prior to the affectation. This is more optimal, as there's only one initialization.
+*/
 #test
 {
-    // Here the variable 'v' will not be initialized prior to the affectation
-    // This is more optimal, as there's only one initialization
     var v: Struct = 2'u64
     @assert(v.x == 2)
     @assert(v.y == 2)
@@ -78,8 +83,9 @@ impl Struct
     toto(5'u16)
 }
 
-// A structure can be converted to a constant by a call to opAffect if the function is
-// marked with 'Swag.ConstExpr'
+/**
+A structure can be converted to a constant by a call to opAffect if the function is marked with `Swag.ConstExpr`.
+*/
 struct Vector2
 {
     x, y: f32

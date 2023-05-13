@@ -69,7 +69,9 @@ impl MyStruct
     @assert(cpt == 3)
 }
 
-// You can have variants of opVisit by specifying an additional name
+/**
+You can have variants of `opVisit` by specifying an **additional name**.
+*/
 impl MyStruct
 {
     #[Swag.Macro]
@@ -100,7 +102,7 @@ impl MyStruct
     myStruct := MyStruct{}
     cpt := 0
 
-    // To call a variant, add the extra name between parenthesis
+    // To call a variant, add the extra name between parenthesis.
     visit(Reverse) v, i: myStruct
     {
         switch i

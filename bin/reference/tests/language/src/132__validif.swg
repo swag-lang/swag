@@ -1,9 +1,10 @@
 /**
+# One time evaluation
 On a function, you can use `#validif` to check if the usage of the function is correct.
 
 If the `#validif` expression returns false, then the function will not be considered for the call. If there's no other overload to match, then the compiler will raise an error.
 
-The `#validif` expression is evaluated only once, whatever the call, so it is typically used to check generic parameters.
+The `#validif` expression is evaluated **only once**, whatever the call, so it is typically used to check generic parameters.
 */
 
 #test
@@ -53,7 +54,7 @@ You can use `#validif` to make a kind of a generic specialisation.
 }
 
 /**
-Instead of a single expression, `#validif` can be followed by a block that returns a bool.
+Instead of a single expression, `#validif` can be followed by a block that returns a `bool`.
 */
 #test
 {
@@ -94,9 +95,28 @@ By using `@compilererror`, you can then trigger your own errors at compile time 
     // x := sum'f32(1, 2)
 }
 
+
 /**
-Instead of `#validif`, you can use `#validifx`.
-`#validifx` is evaluated for **each** call, so it can be used to check parameters, as long as they can be evaluated at compile time.
+`#validif` can also be used on a generic struct. Unlike functions, if the expression failed, then you will have an error right away because there's no overload in the case of structures.
+*/
+#test
+{
+    struct(T) Point
+        #validif T == f32 or T == f64
+    {
+        x, y: T
+    }
+
+    // Fine.
+    var v: Point'f32
+
+    // Error.
+    //var v: Point's32
+}
+
+/**
+# Multiple evaluations
+Instead of `#validif`, you can use `#validifx`. `#validifx` is evaluated for **each** call, so it can be used to check parameters, as long as they can be **evaluated at compile time**.
 */
 #test
 {
@@ -146,23 +166,4 @@ Instead of `#validif`, you can use `#validifx`.
         var a: s32
         @assert(first(a) == 666)
     }
-}
-
-/**
-`#validif` can also be used on a generic struct.
-Unlike functions, if the expression failed, then you will have an error right away because there's no overload in the case of structures.
-*/
-#test
-{
-    struct(T) Point
-        #validif T == f32 or T == f64
-    {
-        x, y: T
-    }
-
-    // Fine.
-    var v: Point'f32
-
-    // Error.
-    //var v: Point's32
 }
