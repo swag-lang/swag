@@ -38,7 +38,7 @@ A slice is a pointer on a buffer of datas, and a `u64` to count the number of el
         @assert(@countof(a) == 2)
     }
 
-    // You can create a slice with your own pointer and count using `@mkslice`.
+    // You can create a slice with your own `pointer` and `count` using `@mkslice`.
     {
         var array: [4]  u32 = [10, 20, 30, 40]
 
@@ -61,7 +61,13 @@ A slice is a pointer on a buffer of datas, and a `u64` to count the number of el
         @assert(strSlice[0] == "s"'u8)
         @assert(strSlice[1] == "t"'u8)
     }
+}
 
+/**
+# The slicing operator
+*/
+#test
+{
     // Instead of `@mkslice`, you can slice something with the `..` operator. For example you can slice a string.
     {
         var str = "string"

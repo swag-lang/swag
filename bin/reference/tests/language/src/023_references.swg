@@ -86,7 +86,7 @@ struct MyStruct {x: s32; y: s32; }  // Our first little struct !
 
 func titi0(param: const ref {s32, s32})
 {
-    // We'll see later about typles and naming of fields.
+    // We'll see later about tuples and naming of fields.
     @assert(param.item0 == 1)
     @assert(param.item1 == 2)
 }

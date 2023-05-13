@@ -1,5 +1,5 @@
 /**
-`any` is a specific type that can store every other types. `any` is **not** a variant. It's a dynamic typed reference to an existing value.
+`any` is a specific type that can store every other types. `any` is **not a variant**. It's a dynamic typed reference to an existing value.
 */
 
 #test

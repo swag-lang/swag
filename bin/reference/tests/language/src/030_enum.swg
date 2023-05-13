@@ -1,6 +1,6 @@
 #test
 {
-    // Enums values, unlike C/C++, must end with `;` or an <eol> (like a normal Swag declaration).
+    // Enums values, unlike C/C++, must end with `;` or an `eol` (like a normal Swag declaration).
     {
         enum Values
         {
@@ -197,7 +197,13 @@
         @assert(y[0] == 10)
         @assert(y[1] == 20)
     }
+}
 
+/**
+# Enum type inference
+*/
+#test
+{
     // The type of the enum is not necessary in the assignement expression when declaring a variable.
     {
         enum Values { A; B; }
@@ -211,7 +217,7 @@
         @assert(x == y)
     }
 
-    // The enum type is not necessary in a case expression of a switch block (it is deduced from the switch expression).
+    // The enum type is not necessary in a `case` expression of a `switch` block (it is deduced from the switch expression).
     {
         enum Values { A; B; }
         x := Values.A
@@ -258,8 +264,13 @@
         func toto(v1, v2: Values) {}
         toto(.A, .B)
     }
+}
 
-    // By type reflection, you can loop/visit all values of an enum.
+/**
+By type reflection, you can loop/visit all values of an enum.
+*/
+#test
+{
     {
         enum RGB { R; G; B; }
 

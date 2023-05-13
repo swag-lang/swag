@@ -1,5 +1,5 @@
 /**
-Remember that dynamic arrays are part of the 'Std.Core' module. Here we are only talking about native static arrays.
+Remember that dynamic arrays are part of the `Std.Core` module. Here we are only talking about native static arrays.
 */
 
 #test

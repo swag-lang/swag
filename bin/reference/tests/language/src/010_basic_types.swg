@@ -1,6 +1,6 @@
 #test
 {
-    // There are all signed integers types.
+    // These are all signed integers types `s8`, `s16`, `s32` and `s64`.
     {
         var a: s8 = -1      // 8 bits signed integer
         var b: s16 = -2     // 16 bits signed integer
@@ -20,7 +20,7 @@
         @assert(@sizeof(d) == 8)
     }
 
-    // There are all unsigned integers types
+    // These are all unsigned integers types `u8`, `u16`, `u32` and `u64`.
     {
         var a: u8 = 1       // 8 bits unsigned integer
         var b: u16 = 2      // 16 bits unsigned integer
@@ -38,7 +38,7 @@
         @assert(@sizeof(d) == 8)
     }
 
-    // There are all floating point types.
+    // These are all floating point types `f32` and `f64`.
     {
         var a: f32 = 3.14       // 32 bits floating point value
         var b: f64 = 3.14159    // 64 bits floating point value
@@ -50,7 +50,7 @@
         @assert(@sizeof(b) == 8)
     }
 
-    // The boolean type.
+    // The boolean type `bool`.
     {
         var a: bool = true      // Stored in 1 byte
         var b: bool = false     // Stored in 1 byte
@@ -62,14 +62,14 @@
         @assert(@sizeof(b) == 1)
     }
 
-    // The string type. Strings are UTF8, and are stored as two 64 bits (the pointer to the value and the string length in bytes).
+    // The `string` type. Strings are **UTF8**, and are stored as two 64 bits (the pointer to the value and the string length in bytes).
     {
         var a: string = "string 是"
         @assert(a == "string 是")
         @assert(@sizeof(a) == 2 * @sizeof(*void))
     }
 
-    // The 'rune' type uses the string syntax, postfix with the type 'rune'. It's a 32 bits unicode code point.
+    // The `rune` type uses the string syntax, postfix with the type `rune`. It's a 32 bits unicode code point.
     {
         var a: rune = "是"'rune
         @assert(a == "是"'rune)

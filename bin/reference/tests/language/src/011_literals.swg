@@ -1,6 +1,6 @@
 #test
 {
-    // Integers in decimal, hexadecimal or binary forms.
+    // Integers in *decimal*, *hexadecimal* or *binary* forms.
     {
         const a: u32 = 123456           // Decimal
         const b: u32 = 0xFFFF           // Hexadecimal, with '0x'
@@ -36,7 +36,7 @@
         #assert @typeof(d) == u64
     }
 
-    // A boolean is `true` or `false`. Note that as constants are known at compile time, we can again use `#assert` to check the values.
+    // A boolean is `true` or `false`. Note that as constants are known at compile time, we can  use `#assert` to check the values.
     {
         const a = true
         #assert a == true

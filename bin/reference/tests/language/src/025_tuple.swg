@@ -32,28 +32,6 @@
         @assert(tuple.item1 == 0.0)
     }
 
-    // You can unpack a tuple field by field.
-    {
-        tuple1 := {x: 1.0, y: 2.0}
-        var (value0, value1) = tuple1
-        @assert(value0 == 1.0)
-        @assert(value1 == 2.0)
-
-        tuple2 := {"name", true}
-        (name, value) := tuple2
-        @assert(name == "name")
-        @assert(value == true)
-    }
-
-    // You can ignore a tuple field by naming the variable `?`.
-    {
-        tuple1 := {x: 1.0, y: 2.0}
-        (x, ?) := tuple1
-        @assert(x == 1.0)
-        (?, y) := tuple1
-        @assert(y == 2.0)
-    }
-
     // When creating a tuple literal with variables, the tuple fields will take the name of the variables (except if specified).
     {
         x := 555
@@ -77,5 +55,33 @@
 
         // But note that 'x' and 'y' to not have the same type
         #assert @typeof(x) != @typeof(y)
+    }
+}
+
+/**
+# Tuple unpacking
+*/
+#test
+{
+    // You can unpack a tuple field by field.
+    {
+        tuple1 := {x: 1.0, y: 2.0}
+        var (value0, value1) = tuple1
+        @assert(value0 == 1.0)
+        @assert(value1 == 2.0)
+
+        tuple2 := {"name", true}
+        (name, value) := tuple2
+        @assert(name == "name")
+        @assert(value == true)
+    }
+
+    // You can ignore a tuple field by naming the variable `?`.
+    {
+        tuple1 := {x: 1.0, y: 2.0}
+        (x, ?) := tuple1
+        @assert(x == 1.0)
+        (?, y) := tuple1
+        @assert(y == 2.0)
     }
 }
