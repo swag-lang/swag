@@ -74,6 +74,7 @@ func addLine(line: string)
 {
     var lineTrim: String = line
     lineTrim.trim()
+
     if Utf8.startsWith(lineTrim, "# ")
     {
         g_Buf.addBytes("<h2>")
@@ -264,6 +265,7 @@ func processFile(fileName: string)
 #run
 {
     files := assume Directory.enumerateFiles("D:/repo/bin/reference/tests/language/src", recurse: true)
+    files.sort(func(a, b) { return a.fullname <=> b.fullname; })
 
     g_Buf.addBytes("<html lang=\"en\">\n")
     g_Buf.addBytes("<body>\n")
