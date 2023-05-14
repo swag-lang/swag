@@ -17,10 +17,11 @@ enum State
 }
 
 var g_State:            Array'State
-var g_Buf:              ConcatBuffer
+var g_Buf:              String
+var g_Sum:              String
 var g_StateEmpty:       bool
-var g_SeekStartState:   ConcatBufferSeek
-var g_SeekCodeEmptyEol: ConcatBufferSeek
+var g_SeekStartState:   u64
+var g_SeekCodeEmptyEol: u64
 var g_LastEmptyLine:    bool
 var g_CptBrace:         s32
 var g_SubTitle:         bool
@@ -28,16 +29,16 @@ var g_SubTitle:         bool
 func stateEnter(st: State)
 {
     g_StateEmpty = true
-    g_SeekStartState = g_Buf.getSeek()
+    g_SeekStartState = g_Buf.length
 
     switch st
     {
     case Paragraph:
-        g_Buf.addBytes("<div>")
+        g_Buf += "<div>"
 
     case Code, Test:
-        g_Buf.addBytes("<div class=\"code\">")
-        g_Buf.addBytes("<code style=\"white-space: break-spaces\">")
+        g_Buf += "<div class=\"code\">"
+        g_Buf += "<code style=\"white-space: break-spaces\">"
     }
 }
 
@@ -45,20 +46,20 @@ func stateLeave(st: State)
 {
     if g_StateEmpty
     {
-        g_Buf.setEndSeek(g_SeekStartState)
+        g_Buf.length = g_SeekStartState
         return
     }
 
     switch st
     {
     case Paragraph:
-        g_Buf.addBytes("</div>\n")
+        g_Buf += "</div>\n"
 
     case Code, Test:
         if g_LastEmptyLine
-            g_Buf.setEndSeek(g_SeekCodeEmptyEol)
-        g_Buf.addBytes("</code>")
-        g_Buf.addBytes("</div>")
+            g_Buf.length = g_SeekCodeEmptyEol
+        g_Buf += "</code>"
+        g_Buf += "</div>"
     }
 }
 
@@ -83,10 +84,12 @@ func addLine(line: string)
 
     if Utf8.startsWith(lineTrim, "# ")
     {
-        g_Buf.addBytes(g_SubTitle ? "<h4>" : "<h3>")
         lineTrim.remove(0, 2)
+        g_Buf += Format.toString("<h% id=\"%\">", g_SubTitle ? 4 : 3, lineTrim)
         addLine(lineTrim)
-        g_Buf.addBytes(g_SubTitle ? "</h4>" : "</h3>")
+        g_Buf += g_SubTitle ? "</h4>" : "</h3>"
+
+        g_Sum += Format.toString("<li><a href=\"#%\">%</a></li>\n", lineTrim, lineTrim);
         return
     }
 
@@ -101,9 +104,9 @@ func addLine(line: string)
         if line[i] == "*"'u8 and line[i+1] == "*"'u8
         {
             if stateBold
-                g_Buf.addBytes("</b>")
+                g_Buf += "</b>"
             else
-                g_Buf.addBytes("<b>")
+                g_Buf += "<b>"
             i += 1
             stateBold = !stateBold
             continue
@@ -114,13 +117,13 @@ func addLine(line: string)
             if !stateItalic and Latin1.isLetterOrDigit(line[i+1])
             {
                 stateItalic = true
-                g_Buf.addBytes("<i>")
+                g_Buf += "<i>"
                 continue
             }
 
             if stateItalic
             {
-                g_Buf.addBytes("</i>")
+                g_Buf += "</i>"
                 stateItalic = false
                 continue
             }
@@ -131,22 +134,22 @@ func addLine(line: string)
             if !stateCode
             {
                 stateCode = true
-                g_Buf.addBytes("<code class=\"incode\">")
+                g_Buf += "<code class=\"incode\">"
                 continue
             }
 
             if stateCode
             {
-                g_Buf.addBytes("</code>")
+                g_Buf += "</code>"
                 stateCode = false
                 continue
             }
         }
 
-        g_Buf.addNative(line[i])
+        g_Buf += line[i]
     }
 
-    g_Buf.addBytes("</br>\n")
+    g_Buf += "</br>\n"
 }
 
 func addLineCode(l: string)
@@ -161,21 +164,21 @@ func addLineCode(l: string)
     }
     else
     {
-        g_SeekCodeEmptyEol = g_Buf.getSeek()
+        g_SeekCodeEmptyEol = g_Buf.length
         g_LastEmptyLine = true
     }
 
     if !g_StateEmpty
     {
         if Utf8.startsWith(lineTrim, "//")
-            g_Buf.addBytes("<span class=\"linecomment\">")
+            g_Buf += "<span class=\"linecomment\">"
 
-        g_Buf.addBytes(l)
+        g_Buf += l
 
         if Utf8.startsWith(lineTrim, "//")
-            g_Buf.addBytes("</span>")
+            g_Buf += "</span>"
 
-        g_Buf.addBytes("\n")
+        g_Buf += "\n"
     }
 }
 
@@ -281,12 +284,11 @@ func processFile(fileName: string)
     files := assume Directory.enumerateFiles("D:/repo/bin/reference/tests/language/src", recurse: true)
     files.sort(func(a, b) { return a.fullname <=> b.fullname; })
 
-    g_Buf.addBytes("<html lang=\"en\">\n")
-    g_Buf.addBytes("<body>\n")
+    g_Buf += "<html lang=\"en\">\n"
+    g_Buf += "<body>\n"
 
     // Create styles
-    g_Buf.addBytes(
-    """
+    g_Buf += """
         <style>
         .code {
             background-color: LightYellow;
@@ -306,34 +308,51 @@ func processFile(fileName: string)
         }
 
         .container {
-            display: flex;
+            display:        flex;
+            flex-wrap:      nowrap;
             flex-direction: row;
+            height:         100%;
+            font-family:    arial;
+            line-height:    1.3em;
         }
+
         .left {
-            display: block;
-            width: 300;
+            display:    block;
             overflow-y: scroll;
+            width:      450;
+            height:     100%;
         }
+
         .right {
-            display: block;
-            overflow-y: scroll;
-            width:       1000;
+            display:     block;
+            overflow-y:  scroll;
+            width:       100%;
             font-family: arial;
             line-height: 1.3em;
-            padding: 40;
+            height:      100%;
+        }
+
+        .page {
+            width:       1000;
+            margin:      0 auto;
         }
 
         </style>
-    """)
+    """
 
     // Summary
-    g_Buf.addBytes("<div class=\"container\">\n")
-    g_Buf.addBytes("<div class=\"left\">\n")
-    g_Buf.addBytes("</div>\n")
+    g_Buf += "<div class=\"container\">\n"
+    g_Buf += "<div class=\"left\">\n"
+    seekSum := g_Buf.length
+    g_Buf += "</div>\n"
 
     // The whole page, this is it...
-    g_Buf.addBytes("<div class=\"right\">\n")
-    g_Buf.addBytes("<h1>Swag language reference</h1>\n")
+    g_Buf += "<div class=\"right\">\n"
+    g_Buf += "<div class=\"page\">\n"
+    g_Buf += "<h1>Swag language reference</h1>\n"
+
+    g_Sum += "<h1>Table of content</h1>\n"
+    g_Sum += "<ul>\n"
 
     visit v: files
     {
@@ -341,24 +360,47 @@ func processFile(fileName: string)
             continue
 
         var title: String = Path.getFileNameWithoutExtension(v.fullname)
+        fileName := title
         title.remove(0, 4)
+
+        wasSubTitle := g_SubTitle
         g_SubTitle = title[0] == "_"'u8
         if g_SubTitle
             title.remove(0, 1)
+        if !wasSubTitle and g_SubTitle
+        {
+            g_Sum += "<ul>\n"
+        }
+        else if wasSubTitle and !g_SubTitle
+        {
+            g_Sum += "</ul>\n"
+        }
+
         title[0] = Latin1.toUpper(title[0])
         title.replace("_", " ")
 
-        g_Buf.addBytes(g_SubTitle ? "\n<h3>" : "\n<h2>")
-        g_Buf.addBytes(title)
-        g_Buf.addBytes(g_SubTitle ? "</h3>\n" : "</h2>\n")
+        g_Buf += "\n"
+        g_Buf += Format.toString("<h% id=\"%\">", g_SubTitle ? 3 : 2, fileName)
+        g_Buf += title
+        g_Buf += g_SubTitle ? "</h3>\n" : "</h2>\n"
+
+        g_Sum += Format.toString("<li><a href=\"#%\">%</a></li>\n", fileName, title);
+        g_Sum += "<ul>\n"
 
         processFile(v.fullname)
+
+        g_Sum += "</ul>\n"
     }
 
-    g_Buf.addBytes("</div>\n")
-    g_Buf.addBytes("</div>\n")
-    g_Buf.addBytes("</body>\n")
-    g_Buf.addBytes("</html>\n")
+    g_Sum += "</ul>\n"
+
+    g_Buf += "</div>\n"
+    g_Buf += "</div>\n"
+    g_Buf += "</div>\n"
+    g_Buf += "</body>\n"
+    g_Buf += "</html>\n"
+
+    g_Buf.insert(seekSum, g_Sum)
 
     var outFile: String = "d:/temp/tt.html"
     assume File.writeAllBytes(outFile, g_Buf)
