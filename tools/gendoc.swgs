@@ -20,6 +20,8 @@ var g_State:            Array'State
 var g_Buf:              ConcatBuffer
 var g_StateEmpty:       bool
 var g_SeekStartState:   ConcatBufferSeek
+var g_SeekCodeEmptyEol: ConcatBufferSeek
+var g_LastEmptyLine:    bool
 var g_CptBrace:         s32
 var g_SubTitle:         bool
 
@@ -51,7 +53,10 @@ func stateLeave(st: State)
     {
     case Paragraph:
         g_Buf.addBytes("</div>\n")
+
     case Code, Test:
+        if g_LastEmptyLine
+            g_Buf.setEndSeek(g_SeekCodeEmptyEol)
         g_Buf.addBytes("</code>")
         g_Buf.addBytes("</div>")
     }
@@ -150,7 +155,15 @@ func addLineCode(l: string)
     lineTrim.trim()
 
     if lineTrim.length
+    {
         g_StateEmpty = false
+        g_LastEmptyLine = false
+    }
+    else
+    {
+        g_SeekCodeEmptyEol = g_Buf.getSeek()
+        g_LastEmptyLine = true
+    }
 
     if !g_StateEmpty
     {
@@ -292,16 +305,34 @@ func processFile(fileName: string)
             color: Grey;
         }
 
-        .page {
+        .container {
+            display: flex;
+            flex-direction: row;
+        }
+        .left {
+            display: block;
+            width: 300;
+            overflow-y: scroll;
+        }
+        .right {
+            display: block;
+            overflow-y: scroll;
             width:       1000;
             font-family: arial;
             line-height: 1.3em;
+            padding: 40;
         }
+
         </style>
     """)
 
+    // Summary
+    g_Buf.addBytes("<div class=\"container\">\n")
+    g_Buf.addBytes("<div class=\"left\">\n")
+    g_Buf.addBytes("</div>\n")
+
     // The whole page, this is it...
-    g_Buf.addBytes("<div class=\"page\">\n")
+    g_Buf.addBytes("<div class=\"right\">\n")
     g_Buf.addBytes("<h1>Swag language reference</h1>\n")
 
     visit v: files
@@ -324,6 +355,7 @@ func processFile(fileName: string)
         processFile(v.fullname)
     }
 
+    g_Buf.addBytes("</div>\n")
     g_Buf.addBytes("</div>\n")
     g_Buf.addBytes("</body>\n")
     g_Buf.addBytes("</html>\n")
