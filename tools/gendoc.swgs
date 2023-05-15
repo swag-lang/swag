@@ -244,9 +244,11 @@ func processFile(fileName: string)
 
             if g_CptBrace == 1 and Utf8.startsWith(lineTrim, "//") and nextLine == "{"
             {
+                //if g_StateEmpty
                 lineTrim.remove(0, 2)
                 popState()
                 pushState(.Paragraph)
+                addLine("\n")
                 addLine(lineTrim)
                 popState()
                 pushState(.Test)

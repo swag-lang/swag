@@ -74,6 +74,8 @@ You can name parameters, and don't have to respect parameters order in that case
 */
 #test
 {
+    func sub(x, y: s32) => x - y
+
     {
         x1 := sub(x: 5, y: 2)
         @assert(x1 == 3)
