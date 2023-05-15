@@ -1,7 +1,3 @@
-// - version tag release sous github, y'a que swag.exe et pas les autres; et y'a mimalloc lib (v15/v16)
-// - File.enumerateFiles ne marche pas avec un pattern si recursif (ça doit filter les folders aussi j'imagine)
-// - slice d'une reference sur struct String[..] par example
-
 #dependencies
 {
     #import "core" location="swag@std"
@@ -16,9 +12,10 @@ enum State
     Test
 }
 
+var g_Buf:  String  // Will contain the html page
+var g_Sum:  String  // Will contain the left part, i.e. the table of content
+
 var g_State:            Array'State
-var g_Buf:              String
-var g_Sum:              String
 var g_StateEmpty:       bool
 var g_SeekStartState:   u64
 var g_SeekCodeEmptyEol: u64
@@ -283,7 +280,7 @@ func processFile(fileName: string)
 
 #run
 {
-    files := assume Directory.enumerateFiles("D:/repo/bin/reference/tests/language/src", recurse: true)
+    files := assume Directory.enumerateFiles("../bin/reference/tests/language/src", recurse: true)
     files.sort(func(a, b) { return a.fullname <=> b.fullname; })
 
     g_Buf += "<html lang=\"en\">\n"
@@ -348,11 +345,12 @@ func processFile(fileName: string)
     seekSum := g_Buf.length
     g_Buf += "</div>\n"
 
-    // The whole page, this is it...
+    // The whole page, right part, this is it...
     g_Buf += "<div class=\"right\">\n"
     g_Buf += "<div class=\"page\">\n"
     g_Buf += "<h1>Swag language reference</h1>\n"
 
+    // The table of content
     g_Sum += "<h1>Table of content</h1>\n"
     g_Sum += "<ul>\n"
 
@@ -363,29 +361,29 @@ func processFile(fileName: string)
 
         var title: String = Path.getFileNameWithoutExtension(v.fullname)
         fileName := title
-        title.remove(0, 4)
+        title.remove(0, 4)  // Remove 'NNN_'
 
+        // If there's an additional '_' after 'NNN_', then this is a 'sub part'.
         wasSubTitle := g_SubTitle
         g_SubTitle = title[0] == "_"'u8
         if g_SubTitle
             title.remove(0, 1)
         if !wasSubTitle and g_SubTitle
-        {
             g_Sum += "<ul>\n"
-        }
         else if wasSubTitle and !g_SubTitle
-        {
             g_Sum += "</ul>\n"
-        }
 
+        // Normalize filename as a title
         title[0] = Latin1.toUpper(title[0])
         title.replace("_", " ")
 
+        // Add title to output
         g_Buf += "\n"
         g_Buf += Format.toString("<h% id=\"%\">", g_SubTitle ? 3 : 2, fileName)
         g_Buf += title
         g_Buf += g_SubTitle ? "</h3>\n" : "</h2>\n"
 
+        // Add title to table of content
         g_Sum += Format.toString("<li><a href=\"#%\">%</a></li>\n", fileName, title);
         g_Sum += "<ul>\n"
 
@@ -396,14 +394,17 @@ func processFile(fileName: string)
 
     g_Sum += "</ul>\n"
 
-    g_Buf += "</div>\n"
-    g_Buf += "</div>\n"
-    g_Buf += "</div>\n"
-    g_Buf += "</body>\n"
-    g_Buf += "</html>\n"
+    // Close html page
+    g_Buf +=
+        """
+        </div>
+        </div>
+        </div>
+        </body>
+        </html>
+        """
 
     g_Buf.insert(seekSum, g_Sum)
 
-    var outFile: String = "d:/temp/tt.html"
-    assume File.writeAllBytes(outFile, g_Buf)
+    assume File.writeAllBytes("langref.html", g_Buf)
 }
