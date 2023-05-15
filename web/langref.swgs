@@ -13,7 +13,7 @@ enum State
 }
 
 var g_Buf:  String  // Will contain the html page
-var g_Sum:  String  // Will contain the left part, i.e. the table of content
+var g_Toc:  String  // Will contain the left part, i.e. the table of content
 
 var g_State:            Array'State
 var g_StateEmpty:       bool
@@ -86,7 +86,7 @@ func addLine(line: string)
         addLine(lineTrim)
         g_Buf += g_SubTitle ? "</h4>" : "</h3>"
 
-        g_Sum += Format.toString("<li><a href=\"#%\">%</a></li>\n", lineTrim, lineTrim);
+        g_Toc += Format.toString("<li><a href=\"#%\">%</a></li>\n", lineTrim, lineTrim);
         return
     }
 
@@ -241,7 +241,6 @@ func processFile(fileName: string)
 
             if g_CptBrace == 1 and Utf8.startsWith(lineTrim, "//") and nextLine == "{"
             {
-                //if g_StateEmpty
                 lineTrim.remove(0, 2)
                 popState()
                 pushState(.Paragraph)
@@ -281,7 +280,7 @@ func processFile(fileName: string)
 #run
 {
     files := assume Directory.enumerateFiles("../bin/reference/tests/language/src", recurse: true)
-    files.sort(func(a, b) { return a.fullname <=> b.fullname; })
+    files.sort(func(a, b) => a.fullname <=> b.fullname)
 
     g_Buf += "<html lang=\"en\">\n"
     g_Buf += "<body>\n"
@@ -339,20 +338,20 @@ func processFile(fileName: string)
         </style>
     """
 
-    // Summary
+    // Main page (left and right parts, left is for table of content, right is for content)
     g_Buf += "<div class=\"container\">\n"
     g_Buf += "<div class=\"left\">\n"
-    seekSum := g_Buf.length
+    seekToc := g_Buf.length // This will be the place where we will insert the 'g_Toc' table of content
     g_Buf += "</div>\n"
 
-    // The whole page, right part, this is it...
+    // Right page start
     g_Buf += "<div class=\"right\">\n"
     g_Buf += "<div class=\"page\">\n"
     g_Buf += "<h1>Swag language reference</h1>\n"
 
-    // The table of content
-    g_Sum += "<h1>Table of content</h1>\n"
-    g_Sum += "<ul>\n"
+    // Table of content start
+    g_Toc += "<h1>Table of content</h1>\n"
+    g_Toc += "<ul>\n"
 
     visit v: files
     {
@@ -369,9 +368,9 @@ func processFile(fileName: string)
         if g_SubTitle
             title.remove(0, 1)
         if !wasSubTitle and g_SubTitle
-            g_Sum += "<ul>\n"
+            g_Toc += "<ul>\n"
         else if wasSubTitle and !g_SubTitle
-            g_Sum += "</ul>\n"
+            g_Toc += "</ul>\n"
 
         // Normalize filename as a title
         title[0] = Latin1.toUpper(title[0])
@@ -384,15 +383,15 @@ func processFile(fileName: string)
         g_Buf += g_SubTitle ? "</h3>\n" : "</h2>\n"
 
         // Add title to table of content
-        g_Sum += Format.toString("<li><a href=\"#%\">%</a></li>\n", fileName, title);
-        g_Sum += "<ul>\n"
+        g_Toc += Format.toString("<li><a href=\"#%\">%</a></li>\n", fileName, title);
+        g_Toc += "<ul>\n"
 
         processFile(v.fullname)
 
-        g_Sum += "</ul>\n"
+        g_Toc += "</ul>\n"
     }
 
-    g_Sum += "</ul>\n"
+    g_Toc += "</ul>\n"
 
     // Close html page
     g_Buf +=
@@ -404,7 +403,7 @@ func processFile(fileName: string)
         </html>
         """
 
-    g_Buf.insert(seekSum, g_Sum)
+    g_Buf.insert(seekToc, g_Toc)
 
     assume File.writeAllBytes("langref.html", g_Buf)
 }
