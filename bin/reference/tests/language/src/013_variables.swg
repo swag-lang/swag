@@ -56,7 +56,7 @@ We have seen that the type is optional in the declaration if it can be deduced f
 */
 #test
 {
-    // These are a bunch of type inferences.
+    // These are a bunch of **type inferences**.
     {
         var a = 1.5
         @assert(a == 1.5)

@@ -68,6 +68,20 @@ You can concatenate some values if the values are known at compile time. Use the
 }
 
 /**
+A string can be `null` if not defined.
+*/
+#test
+{
+    var a: string
+    @assert(a == null)
+    a = "null"
+    @assert(a != null)
+    a = null
+    @assert(a == null)
+}
+
+/**
+# Escape sequence
 A string and a rune can contain some *escape sequences* to specify special characters.
 */
 #test
@@ -99,6 +113,7 @@ A string and a rune can contain some *escape sequences* to specify special chara
 }
 
 /**
+# Raw string
 A *raw string* does not transform the escape sequences inside it.
 */
 #test
@@ -126,6 +141,7 @@ A *raw string* does not transform the escape sequences inside it.
 }
 
 /**
+# Multiline string
 A multiline string starts and ends with `"""`. Unlike raw strings, they still evaluate escape sequences.
 */
 #test
@@ -157,7 +173,8 @@ A multiline string starts and ends with `"""`. Unlike raw strings, they still ev
 }
 
 /**
-A single *character* can be casted to every unsigned `s64` type.
+# Character
+A single *character* can be casted to every unsigned integer type.
 */
 #test
 {
@@ -185,23 +202,8 @@ A single *character* can be casted to every unsigned `s64` type.
 }
 
 /**
-A string can be `null` if not defined.
-*/
-#test
-{
-    {
-        var a: string
-        @assert(a == null)
-        a = "null"
-        @assert(a != null)
-        a = null
-        @assert(a == null)
-    }
-}
-
-/**
-# @stringof
-You can also use the instrinsic `@stringof` to return at compile time the result of a constant expression as a string.
+# @stringof and @nameof
+You can use the instrinsic `@stringof` to return at compile time the result of a constant expression as a string.
 */
 #test
 {

@@ -26,7 +26,7 @@ const RELEASE = 0
 }
 
 /**
-`#error` to raise a compile time error, and #warning to raise a compile time warning.
+`#error` to raise a compile time error, and `#warning` to raise a compile time warning.
 */
 #if false
 {

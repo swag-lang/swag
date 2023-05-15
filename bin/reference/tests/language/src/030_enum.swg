@@ -142,61 +142,75 @@
         @assert(Value.B == 1)
         @assert(Value.C == 2)
     }
+}
 
-    // Enum can be a set of flags with the `#[Swag.EnumFlags]` attribute. Type should be `u8`, `u16`, `u32` or `u64`.
+/**
+# Enum as flags
+An enum can be a set of flags if you declare it with the `#[Swag.EnumFlags]` **attribute**. Its type should be `u8`, `u16`, `u32` or `u64`.
+
+That kind of enum starts by default at 1, and not 0, and each value should be a power of 2.
+*/
+#test
+{
+    #[Swag.EnumFlags]
+    enum MyFlags: u8
     {
-        #[Swag.EnumFlags]
-        enum MyFlags: u8
-        {
-            A   // First value is 1 and *not* 0
-            B   // Value is 2
-            C   // Value is 4
-            D   // Value is 8
-        }
-
-        #assert MyFlags.A == 0b00000001
-        #assert MyFlags.B == 0b00000010
-        #assert MyFlags.C == 0b00000100
-        #assert MyFlags.D == 0b00001000
-
-        value := MyFlags.B | MyFlags.C
-        @assert(value == 0b00000110)
-        @assert(value & MyFlags.B == MyFlags.B)
-        @assert(value & MyFlags.C == MyFlags.C)
+        A   // First value is 1 and *not* 0
+        B   // Value is 2
+        C   // Value is 4
+        D   // Value is 8
     }
 
-    // You can have an enum of static arrays.
-    {
-        enum Value: const [2] s32
-        {
-            A = [1, 2]
-            B = [10, 20]
-        }
+    #assert MyFlags.A == 0b00000001
+    #assert MyFlags.B == 0b00000010
+    #assert MyFlags.C == 0b00000100
+    #assert MyFlags.D == 0b00001000
 
-        #assert Value.A[0] == 1
-        #assert Value.A[1] == 2
-        #assert Value.B[0] == 10
-        #assert Value.B[1] == 20
+    value := MyFlags.B | MyFlags.C
+    @assert(value == 0b00000110)
+    @assert(value & MyFlags.B == MyFlags.B)
+    @assert(value & MyFlags.C == MyFlags.C)
+}
+
+/**
+# Enum of arrays
+You can have an enum of const static arrays.
+*/
+#test
+{
+    enum Value: const [2] s32
+    {
+        A = [1, 2]
+        B = [10, 20]
     }
 
-    // You can have an enum of const slices.
+    #assert Value.A[0] == 1
+    #assert Value.A[1] == 2
+    #assert Value.B[0] == 10
+    #assert Value.B[1] == 20
+}
+
+/**
+# Enum of slices
+You can have an enum of const slices.
+*/
+#test
+{
+    enum Value: const [..] s32
     {
-        enum Value: const [..] s32
-        {
-            A = [1, 2]
-            B = [10, 20, 30, 40]
-        }
-
-        #assert @countof(Value.A) == 2
-        #assert @countof(Value.B) == 4
-
-        x := Value.A
-        @assert(x[0] == 1)
-        @assert(x[1] == 2)
-        y := Value.B
-        @assert(y[0] == 10)
-        @assert(y[1] == 20)
+        A = [1, 2]
+        B = [10, 20, 30, 40]
     }
+
+    #assert @countof(Value.A) == 2
+    #assert @countof(Value.B) == 4
+
+    x := Value.A
+    @assert(x[0] == 1)
+    @assert(x[1] == 2)
+    y := Value.B
+    @assert(y[0] == 10)
+    @assert(y[1] == 20)
 }
 
 /**

@@ -32,7 +32,7 @@ Remember that dynamic arrays are part of the `Std.Core` module. Here we are only
         @assert(array[1] == 2)
     }
 
-    // An array literal has the form `[...]`.
+    // An array literal has the form `[A, B, ...]`.
     {
         arr := [1, 2, 3, 4]
         #assert @countof(arr) == 4

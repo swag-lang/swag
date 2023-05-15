@@ -73,14 +73,17 @@ These are the basic operators that can be used to manipulate values.
         @assert(x >= 5)
         @assert(x > 0)
     }
+}
 
-    // # Logical operators
-    // This is **not** `&&` and `||` like in C/C++.
-    {
-        a := false
-        a = (1 > 10) and (10 < 1)
-        a = (1 > 10) or (10 < 1)
-    }
+/**
+# Logical operators
+This is **not** `&&` and `||` like in C/C++.
+*/
+#test
+{
+    a := false
+    a = (1 > 10) and (10 < 1)
+    a = (1 > 10) or (10 < 1)
 }
 
 /**

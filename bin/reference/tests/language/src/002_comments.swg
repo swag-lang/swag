@@ -1,6 +1,5 @@
 /**
-Let's start with the basics.
-Swag support classical comments.
+Let's start with the basics. Swag support classical comments.
 */
 
 // One line comment
