@@ -1,7 +1,6 @@
 #test
 {
-    // 'for' accepts a start statement, an expression to test, and an ending statement
-    // This is the same as the C/C++ 'for'
+    // `for` accepts a *start statement*, an *expression to test*, and an *ending statement*. This is in fact the same as the C/C++ `for`.
     {
         cpt := 0
         for i := 0; i < 10; i += 1
@@ -35,7 +34,7 @@
         @assert(cpt == 10)
     }
 
-    // Like 'loop' and 'while', you have access to '@index', the current loop index
+    // Like `loop` and `while`, you have access to `@index`, the **current loop index**.
     {
         cpt := 0'u64
         for var i: u32 = 10; i < 15; i += 1

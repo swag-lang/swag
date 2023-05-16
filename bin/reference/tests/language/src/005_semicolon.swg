@@ -1,8 +1,5 @@
 /**
-In Swag, there's no need to end a statement with ';' like in C/C++.
-Most of the time a end of line is enough.
-
-**#test** starts a new test function which will be executed with the *swag test* command. It's only possible to declare that kind of special function in a test module (which is the case here).
+In Swag, there's no need to end a statement with `;` like in C/C++. Most of the time a `end of line` is enough.
 */
 
 #test
@@ -38,5 +35,7 @@ Semicolons can be usefull if you want to do multiple things on the same line.
 {
     var x = 0; var y = 0
     x += 1; y += 1
+
+    // Two instructions on the same line separated with ';'
     @assert(x == 1); @assert(y == 1)
 }

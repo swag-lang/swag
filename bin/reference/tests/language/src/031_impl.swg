@@ -1,11 +1,12 @@
 /**
-'impl' can be used to declare some stuff in the scope of an enum.
-The keyword 'self' represents the enum value.
+`impl` can be used to declare some stuff in the scope of an enum. The keyword `self` represents the enum value.
 */
 
 enum RGB { R; G; B; }
 
-// Note the 'impl enum' syntax. We'll see later that 'impl' is also used for structs.
+/**
+Note the `impl enum` syntax. We'll see later that `impl` is also used for structs.
+*/
 impl enum RGB
 {
     func isRed(self)       => self == R

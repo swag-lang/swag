@@ -1,17 +1,16 @@
 /**
-Swag comes with a bunch of safety checks which can be activated by module/function/instruction with the #[Swag.Safety] attribute.
+Swag comes with a bunch of safety checks which can be activated by module/function/instruction with the `#[Swag.Safety]` attribute.
 
-Safety checks can also be changed for a specific build configuration (--cfg:<config>) with 'buildCfg.safetyGuards'.
-Swag comes with four predefined configurations : 'debug', 'fast-debug', 'fast-compile' and 'release'
+Safety checks can also be changed for a specific build configuration (`--cfg:<config>`) with `buildCfg.safetyGuards`.
 
-Safety checks are disabled in 'fast-compile' and 'release'.
+Swag comes with four predefined configurations : `debug`, `fast-debug`, `fast-compile` and `release`. Safety checks are disabled in `fast-compile` and `release`.
 */
 
 /**
-#[Swag.Safety("overflow", true)]
+# #[Swag.Safety("overflow", true)]
 Swag will panic if some operators overflow and if we lose some bits during an integer conversion.
 
-Operators that can overflow are : + - * << >> and their equivalent += -= *= <<= >>=
+Operators that can overflow are : `+ - * << >>` and their equivalent `+= -= *= <<= >>=`.
 */
 
 #test
@@ -21,8 +20,7 @@ Operators that can overflow are : + - * << >> and their equivalent += -= *= <<= 
 }
 
 /**
-But if you know what your are doing, you can use a special version of those operators, which will not panic.
-Add the ',over' modifier after the operation. This will disable safety checks.
+But if you know what your are doing, you can use a special version of those operators, which will not panic. Add the `,over` modifier after the operation. This will disable safety checks.
 */
 #test
 {
@@ -32,7 +30,7 @@ Add the ',over' modifier after the operation. This will disable safety checks.
 }
 
 /**
-You can also use #[Swag.Overflow(true)] to authorize overflow on a more global scale.
+You can also use `#[Swag.Overflow(true)]` to authorize overflow on a more global scale.
 */
 #[Swag.Overflow(true)]
 #test
@@ -86,7 +84,7 @@ Rember that you can disable these safety checks with the corresponding attribute
 }
 
 /**
-#[Swag.Safety("any", true)]
+# #[Swag.Safety("any", true)]
 Swag will panic if a bad cast from 'any' is performed.
 */
 
@@ -99,7 +97,7 @@ Swag will panic if a bad cast from 'any' is performed.
 }
 
 /**
-#[Swag.Safety("boundcheck", true)]
+# #[Swag.Safety("boundcheck", true)]
 Swag will panic if an index is out of range when dereferencing a sized value like an array, a slice, a string...
 */
 
@@ -144,7 +142,7 @@ Safety when slicing a sized value.
 }
 
 /**
-#[Swag.Safety("math", true)]
+# #[Swag.Safety("math", true)]
 Swag will panic if some math operations are invalid.
 */
 
@@ -176,16 +174,16 @@ Swag will also check for invalid arguments on some math intrinsics.
 }
 
 /**
-#[Swag.Safety("switch", true)]
+# #[Swag.Safety("switch", true)]
 Swag will panic if a switch is marked with #[Swag.Complete], but the value is not covered by a 'case'.
 */
 
 /**
-#[Swag.Safety("bool", true)]
+# #[Swag.Safety("bool", true)]
 Swag will panic if a boolean value is not 'true' (1) or 'false' (0).
 */
 
 /**
-#[Swag.Safety("nan", true)]
+# #[Swag.Safety("nan", true)]
 Swag will panic if a floating point 'NaN' is used.
 */

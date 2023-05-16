@@ -22,9 +22,7 @@ In Swag, strings are encoded in UTF8.
 }
 
 /**
-You cannot index a string to get a rune, except in ascii strings.
-This is because we didn't want the runtime to come with the cost of UTF8 encoding/decoding.
-But note that the 'Std.Core' module will have all you need to manipulate UTF8 strings.
+You cannot index a string to get a rune, except in ascii strings. This is because we didn't want the runtime to come with the cost of UTF8 encoding/decoding. But note that the `Std.Core` module will have all you need to manipulate UTF8 strings.
 */
 #test
 {
@@ -54,8 +52,7 @@ Multiple adjacent strings are compiled as one.
 }
 
 /**
-You can concatenate some values if the values are known at compile time.
-Use the '++' operator for that.
+You can concatenate some values if the values are known at compile time. Use the `++` operator for that.
 */
 #test
 {
@@ -71,11 +68,25 @@ Use the '++' operator for that.
 }
 
 /**
-A string and a rune can contain some 'escape sequences' to specify special characters.
+A string can be `null` if not defined.
 */
 #test
 {
-    // An escape sequence starts with '\'.
+    var a: string
+    @assert(a == null)
+    a = "null"
+    @assert(a != null)
+    a = null
+    @assert(a == null)
+}
+
+/**
+# Escape sequence
+A string and a rune can contain some *escape sequences* to specify special characters.
+*/
+#test
+{
+    // An escape sequence starts with `\`.
     {
         const a = "this is code ascii 0x00:   \0"
         const b = "this is code ascii 0x07:   \a"
@@ -102,26 +113,26 @@ A string and a rune can contain some 'escape sequences' to specify special chara
 }
 
 /**
-A 'raw string' does not transform the escape sequences inside it.
+# Raw string
+A *raw string* does not transform the escape sequences inside it.
 */
 #test
 {
-    // A raw string starts and ends with the character '@'.
+    // A raw string starts and ends with the character `@`.
     {
         const a = @"\u2F46"@
         #assert a != "⽆"
         #assert a == @"\u2F46"@
     }
 
-    // A raw string can be declared on several lines because <eol> is now part of the string.
+    // A raw string can be declared on several lines because `eol` is now part of the string.
     {
         const a = @"this is
                     a
                     string
                     "@
 
-        // Every blanks before the ending mark '"@' will be removed from every other lines,
-        // so the string before is equivalent to :
+        // Every blanks before the ending mark `"@` will be removed from every other lines, so the string before is equivalent to :
         //
         // this is
         // a
@@ -130,8 +141,8 @@ A 'raw string' does not transform the escape sequences inside it.
 }
 
 /**
-A multiline string starts and ends with """.
-Unlike raw strings, they still evaluate escape sequences.
+# Multiline string
+A multiline string starts and ends with `"""`. Unlike raw strings, they still evaluate escape sequences.
 */
 #test
 {
@@ -147,7 +158,7 @@ Unlike raw strings, they still evaluate escape sequences.
         // string
     }
 
-    // In a multiline or a raw string, if you end a line with '\', the following <eol> will *NOT* be part of the string.
+    // In a multiline or a raw string, if you end a line with `\`, the following <eol> will **not** be part of the string.
     {
         const a = """\
                      this is
@@ -162,7 +173,8 @@ Unlike raw strings, they still evaluate escape sequences.
 }
 
 /**
-A single 'character' can be casted to every unsigned s64 type.
+# Character
+A single *character* can be casted to every unsigned integer type.
 */
 #test
 {
@@ -190,22 +202,8 @@ A single 'character' can be casted to every unsigned s64 type.
 }
 
 /**
-A string can be 'null' if not defined.
-*/
-#test
-{
-    {
-        var a: string
-        @assert(a == null)
-        a = "null"
-        @assert(a != null)
-        a = null
-        @assert(a == null)
-    }
-}
-
-/**
-You can also use the instrinsic '@stringof' to return at compile time the result of a constant expression as a string.
+# @stringof and @nameof
+You can use the instrinsic `@stringof` to return at compile time the result of a constant expression as a string.
 */
 #test
 {
@@ -215,7 +213,7 @@ You can also use the instrinsic '@stringof' to return at compile time the result
         #assert @stringof(X + 10) == "11"
     }
 
-    // You can also use '@nameof' to return the name of a variable, function etc.
+    // You can also use `@nameof` to return the name of a variable, function etc.
     {
         const X = 1
         #assert @nameof(X) == "X"

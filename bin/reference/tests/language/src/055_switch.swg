@@ -1,7 +1,6 @@
 #test
 {
-    // 'switch' works like in C/C++, except that no 'break' is necessary (except if the 'case' is empty)
-    // That means that there's no automatic 'fallthrough' from one case to another
+    // `switch` works like in C/C++, except that no `break` is necessary (except if the `case` is empty). That means that there's no automatic `fallthrough` from one case to another.
     {
         value := 6
         switch value
@@ -20,7 +19,7 @@
         }
     }
 
-    // You can put multiple values on the same 'case'
+    // You can put multiple values on the same `case`.
     {
         value := 6
         switch value
@@ -40,8 +39,8 @@
         }
     }
 
-    // switch works with every types that accept the '==' operator
-    // So you can switch on strings for example
+    // `switch` works with every types that accept the `==` operator.
+    // So you can switch on strings for example.
     {
         value := "myString"
         switch value
@@ -52,7 +51,7 @@
         }
     }
 
-    // If you want to pass from one case to another like in C/C++, use 'fallthrough'
+    // If you want to pass from one case to another like in C/C++, use `fallthrough`.
     {
         value := 6
         switch value
@@ -66,7 +65,7 @@
         }
     }
 
-    // 'break' can be used to exit the current 'case' statement
+    // `break` can be used to exit the current `case` statement.
     {
         value := 6
         switch value
@@ -80,7 +79,7 @@
         }
     }
 
-    // A 'case' statement cannot be empty. Use 'break' if you want to do nothing
+    // A `case` statement cannot be empty. Use `break` if you want to do nothing.
     {
         value := 6
         switch value
@@ -91,8 +90,8 @@
         }
     }
 
-    // switch can be marked with 'Swag.Complete' to force all the cases to be covered.
-    // If one or more values are missing, an error will be raised by the compiler
+    // `switch` can be marked with `Swag.Complete` to force all the cases to be covered.
+    // If one or more values are missing, an error will be raised by the compiler.
     {
         enum Color { Red; Green; Blue; }
         color := Color.Red
@@ -106,8 +105,7 @@
         }
     }
 
-    // If the switch expression is omitted, then it will behave like a serie of if/else,
-    // resolved in order
+    // If the switch expression is omitted, then it will behave like a serie of if/else, resolved in order.
     {
         value  := 6
         value1 := "true"
@@ -124,7 +122,7 @@
         }
     }
 
-    // When used on an 'any' variable, switch is done on the underlying variable type
+    // When used on an `any` variable, switch is done on the underlying variable type.
     {
         var x: any = "value"
 
@@ -135,7 +133,7 @@
         }
     }
 
-    // A switch can also be used with a (constant) range of values
+    // A `switch` can also be used with a (constant) range of values.
     {
         success := false
         x := 6
@@ -148,7 +146,7 @@
         @assert(success)
     }
 
-    // If they overlap, the first valid range will be used
+    // If they overlap, the first valid range will be used.
     {
         success := false
         x := 6
@@ -161,8 +159,7 @@
         @assert(success)
     }
 
-    // A case expression doesn't need to be constant, except if the switch
-    // is marked with 'Swag.Complete'
+    // A `case` expression doesn't need to be constant, except if the switch is marked with `Swag.Complete`.
     {
         test := 2
         a := 0

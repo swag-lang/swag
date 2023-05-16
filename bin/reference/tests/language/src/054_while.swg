@@ -1,6 +1,6 @@
 #test
 {
-    // While is a loop that runs until the expression is false
+    // `while` is a loop that runs **until the expression is false**.
     {
         i := 0
         while i < 10
@@ -8,7 +8,7 @@
         @assert(i == 10)
     }
 
-    // You can also break and continue inside a while
+    // You can also `break` and `continue` inside a `while`.
     {
         i := 0
         while i < 10

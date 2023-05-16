@@ -1,17 +1,16 @@
 /**
-A slice is a pointer on a buffer of datas, and a 'u64' to count the number of elements.
-Unlike a static array, its value can be changed at runtime.
+A slice is a pointer on a buffer of datas, and a `u64` to count the number of elements. Unlike a static array, its value can be changed at runtime.
 */
 
 #test
 {
-    // It is declared with [..]
+    // It is declared with `[..]`.
     {
         var a: [..] bool
         #assert @sizeof(a) == @sizeof(*void) + @sizeof(u64)
     }
 
-    // You can initialize a slice like an array
+    // You can initialize a slice like an array.
     {
         var a: const [..] u32 = [10, 20, 30, 40, 50]
         @assert(@countof(a) == 5)
@@ -26,7 +25,7 @@ Unlike a static array, its value can be changed at runtime.
         @assert(a[1] == 2)
     }
 
-    // At runtime, '@dataof' will return the address of the values, '@countof' the number of elements.
+    // At runtime, `@dataof` will return the address of the values, `@countof` the number of elements.
     {
         var a: const [..] u32 = [10, 20, 30, 40, 50]
         count := @countof(a)
@@ -39,7 +38,7 @@ Unlike a static array, its value can be changed at runtime.
         @assert(@countof(a) == 2)
     }
 
-    // You can create a slice with your own pointer and count using '@mkslice'.
+    // You can create a slice with your own `pointer` and `count` using `@mkslice`.
     {
         var array: [4]  u32 = [10, 20, 30, 40]
 
@@ -55,24 +54,28 @@ Unlike a static array, its value can be changed at runtime.
         @assert(array[2] == 314)
     }
 
-    // For a string, the slice must be 'const' because a string is immutable
+    // For a string, the slice must be `const` because a string is immutable.
     {
         var str = "string"
         var strSlice: const [..] u8 = @mkslice(@dataof(str), 2)
         @assert(strSlice[0] == "s"'u8)
         @assert(strSlice[1] == "t"'u8)
     }
+}
 
-    // Instead of '@mkslice', you can slice something with the '..' operator.
-    // For example you can slice a string.
+/**
+# The slicing operator
+*/
+#test
+{
+    // Instead of `@mkslice`, you can slice something with the `..` operator. For example you can slice a string.
     {
         var str = "string"
         var slice = str[1..3]
         @assert(slice == "tri")
     }
 
-    // The upper limit is included by default. If you want to exclude it,
-    // use '..<' insteand of '..'
+    // The upper limit is included by default. If you want to exclude it, use `..<` insteand of `..`.
     {
         var str = "string"
         var slice = str[1..<3]

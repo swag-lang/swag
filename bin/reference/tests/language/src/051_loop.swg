@@ -1,5 +1,5 @@
 /**
-loop are used to iterate a given amount of time.
+`loop` are used to iterate a given amount of time.
 */
 
 #test
@@ -12,7 +12,7 @@ loop are used to iterate a given amount of time.
         @assert(cpt == 10)
     }
 
-    // The intrinsic '@index' returns the current index of the loop (starting at 0).
+    // The intrinsic `@index` returns the current index of the loop (starting at 0).
     {
         cpt := 0'u64
         loop 5
@@ -40,7 +40,7 @@ loop are used to iterate a given amount of time.
 }
 
 /**
-'loop' can be used on every types that accept the '@countof' intrinsic. So you can loop on a slice, an array, a string... and we'll see later, even on a struct.
+`loop` can be used on every types that accept the `@countof` intrinsic. So you can loop on a slice, an array, a string... and we'll see later, even on a struct.
 */
 #test
 {
@@ -54,9 +54,8 @@ loop are used to iterate a given amount of time.
 }
 
 /**
-Warning !
-On a string, it will loop for each byte, **not** runes (if a rune is encoded in more than one byte).
-If you want to iterate on all runes, you will have to use the Std.Core module.
+**Warning !**
+On a string, it will loop for each byte, **not** runes (if a rune is encoded in more than one byte). If you want to iterate on all runes, you will have to use the `Std.Core` module.
 */
 #test
 {
@@ -69,11 +68,11 @@ If you want to iterate on all runes, you will have to use the Std.Core module.
 }
 
 /**
-'break' and 'continue' can be used inside a loop.
+`break` and `continue` can be used inside a loop.
 */
 #test
 {
-    // You can exit a loop with 'break'
+    // You can exit a loop with `break`.
     {
         cpt := 0
         loop x: 10
@@ -86,7 +85,7 @@ If you want to iterate on all runes, you will have to use the Std.Core module.
         @assert(cpt == 5)
     }
 
-    // You can force to return to the loop evaluation with 'continue'
+    // You can force to return to the loop evaluation with `continue`.
     {
         cpt := 0
         loop x: 10
@@ -105,7 +104,7 @@ Loop can also be used to iterate on a range of signed values.
 */
 #test
 {
-    // Syntax is <lower bound>..<upper bound>
+    // Syntax is `lower bound..upper bound`
     {
         count := 0
         sum   := 0
@@ -119,7 +118,7 @@ Loop can also be used to iterate on a range of signed values.
         @assert(count == 3)
     }
 
-    // With a range, you can loop in reverse order
+    // With a range, you can loop in reverse order.
     {
         // Loop from 5 to 0
         loop 5..0
@@ -132,7 +131,7 @@ Loop can also be used to iterate on a range of signed values.
         }
     }
 
-    // You can exclude the last value with the ..< syntax
+    // You can exclude the last value with the `..<` syntax.
     {
         // Will loop from 1 to 2 and **not** 1 to 3
         cpt := 0
@@ -146,8 +145,7 @@ Loop can also be used to iterate on a range of signed values.
 }
 
 /**
-A loop without an expression but with a block is infinite.
-This is equivalent to while true {}.
+A loop without an expression but with a block is infinite. This is equivalent to `while true {}`.
 */
 #test
 {

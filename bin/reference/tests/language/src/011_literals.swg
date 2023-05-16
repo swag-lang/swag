@@ -1,6 +1,6 @@
 #test
 {
-    // Integers in decimal, hexadecimal or binary forms.
+    // Integers in *decimal*, *hexadecimal* or *binary* forms.
     {
         const a: u32 = 123456           // Decimal
         const b: u32 = 0xFFFF           // Hexadecimal, with '0x'
@@ -10,7 +10,7 @@
         @assert(c == 15)
     }
 
-    // You can separate digits with the '_' character.
+    // You can separate the digits with the `_` character.
     {
         const a: u32 = 123_456
         const b: u32 = 0xF_F_F_F
@@ -20,7 +20,7 @@
         @assert(c == 15)
     }
 
-    // The default type of an hexadecimal number or a binary number is 'u32' or 'u64' depending on its value.
+    // The default type of an hexadecimal number or a binary number is `u32` or `u64` depending on its value.
     {
         // The compiler will deduce that the type of 'a' is 'u32'.
         const a = 0xFF
@@ -36,8 +36,7 @@
         #assert @typeof(d) == u64
     }
 
-    // A boolean is 'true' or 'false'
-    // Note that as constants are known at compile time, we can again use '#assert' to check the values.
+    // A boolean is `true` or `false`. Note that as constants are known at compile time, we can  use `#assert` to check the values.
     {
         const a = true
         #assert a == true
@@ -66,7 +65,7 @@
         @assert(e == -0.1)
     }
 
-    // By default, a floating point value is 'f32', not 'f64' (aka double) like in C/C++.
+    // By default, a floating point value is `f32`, not `f64` (aka `double`) like in C/C++.
     {
         var a = 1.5
         @assert(a == 1.5)
