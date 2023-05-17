@@ -534,7 +534,7 @@ bool ByteCodeGenJob::emitMakeArrayPointerSlicing(ByteCodeGenContext* context)
 {
     auto job     = context->job;
     auto node    = CastAst<AstArrayPointerSlicing>(context->node, AstNodeKind::ArrayPointerSlicing);
-    auto typeVar = TypeManager::concreteType(node->array->typeInfo);
+    auto typeVar = TypeManager::concretePtrRefType(node->array->typeInfo);
 
     if (!(node->lowerBound->semFlags & SEMFLAG_CAST1))
     {

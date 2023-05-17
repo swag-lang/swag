@@ -252,8 +252,9 @@ bool SemanticJob::resolveArrayPointerSlicingUpperBound(SemanticContext* context)
 
 bool SemanticJob::resolveArrayPointerSlicing(SemanticContext* context)
 {
-    auto     node     = CastAst<AstArrayPointerSlicing>(context->node, AstNodeKind::ArrayPointerSlicing);
-    auto     typeVar  = TypeManager::concreteType(node->array->typeInfo);
+    auto node         = CastAst<AstArrayPointerSlicing>(context->node, AstNodeKind::ArrayPointerSlicing);
+    auto typeVar      = getConcreteTypeUnRef(node->array, CONCRETE_ALL);
+    typeVar           = TypeManager::concreteType(typeVar);
     uint64_t maxBound = 0;
 
     {

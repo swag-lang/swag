@@ -377,7 +377,7 @@ void ByteCodeGenJob::emitSafetyArrayPointerSlicing(ByteCodeGenContext* context, 
     bool        freeMaxBoundReg = false;
 
     // Check type, and safety check
-    auto typeVar = TypeManager::concretePtrRefType(node->array->typeInfo);
+    auto typeVar = TypeManager::concreteType(node->array->typeInfo);
     if (typeVar->isArray())
     {
         auto typeArray  = CastTypeInfo<TypeInfoArray>(typeVar, TypeInfoKind::Array);
