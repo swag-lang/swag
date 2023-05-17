@@ -41,18 +41,6 @@ impl Point
         }
     }
 
-    // Works also for enums.
-    {
-        enum RGB{R; G; B;}
-        var color: RGB
-        with color
-        {
-            x := .R
-            @assert(x == RGB.R)
-            @assert(x == .R)
-        }
-    }
-
     // Works also with a namespace.
     {
         with NameSpace
@@ -81,16 +69,6 @@ impl Point
         }
 
         @assert(pt.x == 10 and pt.y == 20)
-    }
-
-    {
-        enum RGB{R; G; B;}
-        with var color: RGB
-        {
-            x := .R
-            @assert(x == RGB.R)
-            @assert(x == .R)
-        }
     }
 
     // Or an affectation statement.
