@@ -68,10 +68,6 @@ TODO
 ****************************************
 
 -------------------------------------
-version tag release sous github, y'a que swag.exe et pas les autres; et y'a mimalloc lib (v15/v16)
--------------------------------------
-File.enumerateFiles ne marche pas avec un pattern si recursif (ça doit filter les folders aussi j'imagine)
--------------------------------------
 @compilererror/warning with an optional hint for the error
 -------------------------------------
 fast math ? (faire les tests de float en u32/U64 comme avant la prise en charge de nan)
@@ -102,6 +98,8 @@ llvm debug, pas à jour
 CORE
 ****************************************
 
+-------------------------------------
+File.enumerateFiles ne marche pas avec un pattern si recursif (ça doit filter les folders aussi j'imagine)
 -------------------------------------
 TagBin, en cas d'erreur plein de trucs à faire (donner plus d'infos...)
 -------------------------------------
