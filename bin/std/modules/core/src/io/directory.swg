@@ -3,7 +3,7 @@
 
 struct EnumerationOptions
 {
-    matchPattern =           "*"
+    matchExtension:          string
     skipAttributes =         File.FileAttributes.Zero
     recurse =                false
     wantFiles =              true
@@ -14,20 +14,20 @@ struct EnumerationOptions
 }
 
 // Get all the files of the given directory
-func enumerateFiles(dirName: string, matchPattern = "*", recurse = false)->Array'(File.FileInfo) throw
+func enumerateFiles(dirName: string, matchExtension: string = null, recurse = false)->Array'(File.FileInfo) throw
 {
     var options: EnumerationOptions
-    options.matchPattern = matchPattern
+    options.matchExtension = matchExtension
     options.wantDirectories = false
     options.recurse = recurse
     return try enumerate(dirName, options)
 }
 
 // Get all the directories in the given directory
-func enumerateDirectories(dirName: string, matchPattern = "*", recurse = false)->Array'(File.FileInfo) throw
+func enumerateDirectories(dirName: string, matchExtension: string = null, recurse = false)->Array'(File.FileInfo) throw
 {
     var options: EnumerationOptions
-    options.matchPattern = matchPattern
+    options.matchExtension = matchExtension
     options.wantFiles = false
     options.recurse = recurse
     return try enumerate(dirName, options)

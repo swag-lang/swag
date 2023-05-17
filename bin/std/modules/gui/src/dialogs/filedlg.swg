@@ -152,7 +152,6 @@ private impl FileDlg
 
         with var options: EnumerationOptions
         {
-            .matchPattern = "*.*"
             .skipAttributes = .Hidden
             .wantFiles = dlgOptions.mode != .SelectFolder
             .wantDirectories = true

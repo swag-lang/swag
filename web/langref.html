@@ -5964,20 +5964,6 @@ impl Point
 }
 </code></div><div>
 </br>
- Works also for enums.</br>
-</div>
-<div class="code"><code style="white-space: break-spaces">{
-    enum RGB{R; G; B;}
-    var color: RGB
-    with color
-    {
-        x := .R
-        @assert(x == RGB.R)
-        @assert(x == .R)
-    }
-}
-</code></div><div>
-</br>
  Works also with a namespace.</br>
 </div>
 <div class="code"><code style="white-space: break-spaces">{
@@ -6009,16 +5995,6 @@ impl Point
     }
 
     @assert(pt.x == 10 and pt.y == 20)
-}
-
-{
-    enum RGB{R; G; B;}
-    with var color: RGB
-    {
-        x := .R
-        @assert(x == RGB.R)
-        @assert(x == .R)
-    }
 }
 </code></div><div>
 </br>

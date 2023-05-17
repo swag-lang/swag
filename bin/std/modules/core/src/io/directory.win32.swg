@@ -30,7 +30,7 @@ func enumerate(dirName: string, options: EnumerationOptions)->Array'(File.FileIn
 {
     using File
     var result: retval
-    if dirName == null or options.matchPattern == null
+    if dirName == null
         return result
 
     var findfile:   WIN32_FIND_DATAW
@@ -46,7 +46,7 @@ func enumerate(dirName: string, options: EnumerationOptions)->Array'(File.FileIn
         toScan := stackPath.popBack()
         if toScan.back() == Path.VolumeSeparatorChar
             toScan += Path.DirectorySeparatorChar
-        searchPath := Path.combine(toScan.toString(), options.matchPattern)
+        searchPath := Path.combine(toScan.toString(), "*")
 
         winPath := Utf16.toZeroTerminated(searchPath)
         h := try FindFirstFileW(@dataof(winPath), &findfile)
@@ -92,8 +92,13 @@ func enumerate(dirName: string, options: EnumerationOptions)->Array'(File.FileIn
                     catch FileTimeToSystemTime(&findfile.ftLastWriteTime, &fileTime)
                     fi.lastWriteTime.setSYSTEMTIME(fileTime)
 
-                    if !options.filterLambda or options.filterLambda(fi)
-                        result.add(moveref &fi)
+                    if !options.matchExtension or Path.isExtension(fi.fullname, options.matchExtension)
+                    {
+                        if !options.filterLambda or options.filterLambda(fi)
+                        {
+                            result.add(moveref &fi)
+                        }
+                    }
                 }
             }
 

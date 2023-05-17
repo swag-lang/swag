@@ -279,7 +279,7 @@ func processFile(fileName: string)
 
 #run
 {
-    files := assume Directory.enumerateFiles("../bin/reference/tests/language/src", recurse: true)
+    files := assume Directory.enumerateFiles("../bin/reference/tests/language/src", ".swg", recurse: true)
     files.sort(func(a, b) => a.fullname <=> b.fullname)
 
     g_Buf += "<html lang=\"en\">\n"

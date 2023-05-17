@@ -99,8 +99,6 @@ CORE
 ****************************************
 
 -------------------------------------
-File.enumerateFiles ne marche pas avec un pattern si recursif (ça doit filter les folders aussi j'imagine)
--------------------------------------
 TagBin, en cas d'erreur plein de trucs à faire (donner plus d'infos...)
 -------------------------------------
 UUID à continuer (parse etc...)
