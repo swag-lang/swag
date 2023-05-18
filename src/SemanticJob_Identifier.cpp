@@ -1003,7 +1003,11 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* ide
         if (idRef &&
             idRef->previousResolvedNode &&
             idRef->previousResolvedNode->resolvedSymbolName->kind == SymbolKind::Variable)
-            return context->report({idRef->previousResolvedNode, Fmt(Err(Err0488), idRef->previousResolvedNode->typeInfo->getDisplayNameC())});
+        {
+            Diagnostic diag{idRef->previousResolvedNode, Fmt(Err(Err0488), idRef->previousResolvedNode->typeInfo->getDisplayNameC())};
+            diag.hint = Hnt(Hnt0119);
+            return context->report(diag);
+        }
 
         SWAG_CHECK(setupIdentifierRef(context, identifier));
         identifier->setFlagsValueIsComputed();

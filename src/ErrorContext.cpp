@@ -53,7 +53,16 @@ void ErrorContext::extract(Diagnostic& diag, Vector<const Diagnostic*>& notes)
                 if (exp.node)
                 {
                     SourceLocation start, end;
-                    exp.node->computeLocation(start, end);
+                    if (exp.locIsToken)
+                    {
+                        start = exp.node->token.startLocation;
+                        end   = exp.node->token.endLocation;
+                    }
+                    else
+                    {
+                        exp.node->computeLocation(start, end);
+                    }
+
                     if (start.line == end.line && start.line == diag.startLocation.line)
                         diag.addRange(start, end, msg);
                 }
