@@ -30,7 +30,7 @@
 
     // You can specify your own type after the enum name.
     {
-        enum Values1: s64
+        enum Values1: s64 // Forced to be 's64' instead of 's32'
         {
             A
             B

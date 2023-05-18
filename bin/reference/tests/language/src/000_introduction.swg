@@ -1,5 +1,5 @@
 /**
-This `swag-lang/swag/bin/reference/language` module provides a brief explanation of the language basic syntax and usage without the need of the Swag standard libraries (Std).
+This `swag-lang/swag/bin/reference/language` module provides a brief explanation of the language basic syntax and usage without the need of the **Swag standard libraries** (`Std`).
 
 More advanced features such as dynamic arrays, dynamic strings or hash maps can be found in the `Std.Core` module and will not be covered in the examples to come. For now we will focus on the language itself.
 

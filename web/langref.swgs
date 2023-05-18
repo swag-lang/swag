@@ -25,7 +25,7 @@ var g_SubTitle:         bool
 
 func stateEnter(st: State)
 {
-    g_StateEmpty = true
+    g_StateEmpty     = true
     g_SeekStartState = g_Buf.length
 
     switch st
@@ -41,6 +41,8 @@ func stateEnter(st: State)
 
 func stateLeave(st: State)
 {
+    // If there's no content in that state, then just revert to the beginning of the state in the
+    // output buffer
     if g_StateEmpty
     {
         g_Buf.length = g_SeekStartState
@@ -205,29 +207,24 @@ func processFile(fileName: string)
         curState := g_State.back()
         switch curState
         {
+        //////////////////////////////////
         case Paragraph:
             if Utf8.startsWith(lineTrim, "```")
-            {
                 pushState(.Code)
-                continue
-            }
-
-            if Utf8.startsWith(lineTrim, "*/")
-            {
+            elif Utf8.startsWith(lineTrim, "*/")
                 popState()
-                continue
-            }
+            else
+                addLine(lineTrim)
 
-            addLine(lineTrim)
-
+        //////////////////////////////////
         case Test:
             if lineTrim == "{"
             {
                 g_CptBrace += 1
-                if g_CptBrace == 1 continue
+                if g_CptBrace == 1
+                    continue
             }
-
-            if lineTrim == "}"
+            elif lineTrim == "}"
             {
                 g_CptBrace -= 1
                 if g_CptBrace == 0
@@ -261,23 +258,18 @@ func processFile(fileName: string)
                 lineLine.remove(0, 4)
             addLineCode(lineLine)
 
+        //////////////////////////////////
         case Code:
             if Utf8.startsWith(l, "```")
-            {
                 popState()
-                continue
-            }
-
-            if Utf8.startsWith(l, "#test")
-            {
+            elif Utf8.startsWith(l, "#test")
                 pushState(.Test)
-                continue
-            }
-
-            addLineCode(l)
+            else
+                addLineCode(l)
         }
     }
 
+    // Unstack all states
     while g_State.count
         stateLeave(g_State.popBack())
 }

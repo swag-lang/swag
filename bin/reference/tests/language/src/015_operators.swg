@@ -77,7 +77,7 @@ These are the basic operators that can be used to manipulate values.
 
 /**
 # Logical operators
-This is **not** `&&` and `||` like in C/C++.
+This is **not** `&&` and `||` like in C/C++, but `and` and `or`.
 */
 #test
 {
@@ -104,7 +104,7 @@ The ternary operator will test an expression, and will return a value depending 
 
 /**
 # Spaceshift operator
-It will return a `s32` of -1, 0 or 1.
+Operator `<=>` will return -1, 0 or 1 if the expression on the left is lower, equal or greater than the expression on the right. The returned type is `s32`.
 ```
 A <=> B == -1 if A < B
 A <=> B == 0  if A == B

@@ -34,7 +34,7 @@ Remember that dynamic arrays are part of the `Std.Core` module. Here we are only
 
     // An array literal has the form `[A, B, ...]`.
     {
-        arr := [1, 2, 3, 4]
+        arr := [1, 2, 3, 4] // An array of four s32
         #assert @countof(arr) == 4
         #assert @typeof(arr) == #type [4] s32
     }

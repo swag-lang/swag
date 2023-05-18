@@ -66,6 +66,8 @@
     // You can unpack a tuple field by field.
     {
         tuple1 := {x: 1.0, y: 2.0}
+
+        // 'value0' will be assigned with 'x', and 'value1' will be assigned with 'y'.
         var (value0, value1) = tuple1
         @assert(value0 == 1.0)
         @assert(value1 == 2.0)

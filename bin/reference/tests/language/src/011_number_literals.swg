@@ -36,7 +36,7 @@
         #assert @typeof(d) == u64
     }
 
-    // A boolean is `true` or `false`. Note that as constants are known at compile time, we can  use `#assert` to check the values.
+    // A boolean is `true` or `false`. Note again that as constants are known at compile time, we can  use `#assert` to check the values.
     {
         const a = true
         #assert a == true
@@ -75,7 +75,8 @@
 }
 
 /**
-You can also postfix a number literal by a type.
+# Postfix
+You can also **postfix** a literal number by a type.
 */
 #test
 {

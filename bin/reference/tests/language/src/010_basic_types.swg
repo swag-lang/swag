@@ -62,7 +62,7 @@
         @assert(@sizeof(b) == 1)
     }
 
-    // The `string` type. Strings are **UTF8**, and are stored as two 64 bits (the pointer to the value and the string length in bytes).
+    // The `string` type. Strings are **UTF8**, and are stored as two 64 bits (the pointer to the value and the string length in bytes). Note that a string literal ends with a null character like in C.
     {
         var a: string = "string 是"
         @assert(a == "string 是")
@@ -79,7 +79,7 @@
 
 /**
 # Type reflection
-Swag has type reflection at compile time and at runtime. We will see that later in more details.
+Swag has **type reflection** at **compile time** and at **runtime**. We will see that later in more details.
 */
 
 #test
@@ -101,11 +101,14 @@ Swag has type reflection at compile time and at runtime. We will see that later 
 
     // Short notice that types are also values, at compile time and at runtime.
     {
-        x := @typeof(s32)
-        @assert(x == s32)
+        x := @typeof(s32)   // 'x' is now a variable that contains a type
+        @assert(x == s32)   // So it can be compared to a type
+
+        // A type is a predefined struct, which contains some fields to inspect it.
+        // You can for example get the name.
         @assert(x.name == "s32")
 
-        // @typeof is not really necessary
+        // @typeof is not really necessary when there's no ambiguity about the expression.
         y := bool
         @assert(y == bool)
     }

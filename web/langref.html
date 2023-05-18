@@ -85,8 +85,9 @@
 <ul>
 <li><a href="#Type reflection">Type reflection</a></li>
 </ul>
-<li><a href="#011_literals">Literals</a></li>
+<li><a href="#011_number_literals">Number literals</a></li>
 <ul>
+<li><a href="#Postfix">Postfix</a></li>
 </ul>
 <li><a href="#012_string">String</a></li>
 <ul>
@@ -373,7 +374,7 @@
 <h1>Swag language reference</h1>
 
 <h2 id="000_introduction">Introduction</h2>
-<div>This <code class="incode">swag-lang/swag/bin/reference/language</code> module provides a brief explanation of the language basic syntax and usage without the need of the Swag standard libraries (Std).</br>
+<div>This <code class="incode">swag-lang/swag/bin/reference/language</code> module provides a brief explanation of the language basic syntax and usage without the need of the <b>Swag standard libraries</b> (<code class="incode">Std</code>).</br>
 </br>
 More advanced features such as dynamic arrays, dynamic strings or hash maps can be found in the <code class="incode">Std.Core</code> module and will not be covered in the examples to come. For now we will focus on the language itself.</br>
 </br>
@@ -390,32 +391,33 @@ If you want to compile and run a single module in the workspace, you can specify
 </div>
 
 <h2 id="001_source">Source</h2>
-<div>All source files in Swag have the <b>.swg</b> extension, except if you write a simple script with the <b>.swgs</b> extension.</br>
+<div>All source files in Swag have the <code class="incode">.swg</code> extension, except if you write a simple script with the <code class="incode">.swgs</code> extension.</br>
 They must be encoded in <b>UTF8</b>.</br>
 </br>
-In Swag you cannot compile a single file (with the exception of <b>.swgs</b> script files). The source code is organized in a <b>workspace</b> which contains one or multiple <b>modules</b>.</br>
+In Swag you cannot compile a single file (with the exception of <code class="incode">.swgs</code> script files). The source code is organized in a <b>workspace</b> which contains one or multiple <b>modules</b>.</br>
 </br>
 For example, the Swag standard library is a collection of modules in the <code class="incode">Std</code> workspace.</br>
 </br>
-A module is a dll (windows) or an executable, and a workspace can include many of them. So a workspace will contain the modules you write (like your main executable) but also all your dependencies (some external modules you use).Typically, the entire workspace is compiled.</br>
+A module is a <code class="incode">dll</code> (under windows) or an executable, and a workspace can include many of them. So a workspace will contain the modules you write (like your main executable) but also all your dependencies (some external modules you use).Typically, the entire workspace is compiled.</br>
 </div>
 
 <h2 id="002_comments">Comments</h2>
-<div>Let's start with the basics. Swag support classical comments.</br>
+<div>Let's start with the basics. Swag support classical single-line and multi-line comments.</br>
 </div>
-<div class="code"><code style="white-space: break-spaces"><span class="linecomment">// One line comment</span>
+<div class="code"><code style="white-space: break-spaces"><span class="linecomment">// Single-line comment</span>
 
 /*
-    Multi lines comment on...
+    Multi-line comment on...
     ... multiple lines
-*/
-
-/*
-    /* You can also nest multi lines comments */
 */
 
 const A = 0 // This is a constant with the value '0' assigned to it
 const B = /* false */ true
+</code></div><div>Nested comments are supported.</br>
+</div>
+<div class="code"><code style="white-space: break-spaces">/*
+    /* You can also nest multi-line comments */
+*/
 </code></div>
 <h2 id="003_identifiers">Identifiers</h2>
 <div>User identifiers (like variables, constants, function names...) must start with an underscore or an ascii letter. Those identifiers can then contain underscores, ascii letters and digit numbers.</br>
@@ -701,7 +703,7 @@ x += 1; y += 1
 @assert(x == 1); @assert(y == 1)
 </code></div>
 <h2 id="006_declaration_order">Declaration order</h2>
-<div>In Swag, the order of all <b>top level</b> declarations does not matter.</br>
+<div>The order of all <b>top level</b> declarations does not matter.</br>
 </div>
 <div class="code"><code style="white-space: break-spaces"><span class="linecomment">// Here we declare a constant 'A' and initialize it with 'B', which is not yet known (neither its value or its type).</span>
 const A = B
@@ -792,7 +794,7 @@ const C: u64 = 1
 }
 </code></div><div>
 </br>
- The <code class="incode">string</code> type. Strings are <b>UTF8</b>, and are stored as two 64 bits (the pointer to the value and the string length in bytes).</br>
+ The <code class="incode">string</code> type. Strings are <b>UTF8</b>, and are stored as two 64 bits (the pointer to the value and the string length in bytes). Note that a string literal ends with a null character like in C.</br>
 </div>
 <div class="code"><code style="white-space: break-spaces">{
     var a: string = "string 是"
@@ -809,7 +811,7 @@ const C: u64 = 1
     @assert(@sizeof(a) == 4)
 }
 </code></div><div><h3 id="Type reflection">Type reflection</br>
-</h3>Swag has type reflection at compile time and at runtime. We will see that later in more details.</br>
+</h3>Swag has <b>type reflection</b> at <b>compile time</b> and at <b>runtime</b>. We will see that later in more details.</br>
 </div>
 <div>
 </br>
@@ -833,16 +835,19 @@ const C: u64 = 1
  Short notice that types are also values, at compile time and at runtime.</br>
 </div>
 <div class="code"><code style="white-space: break-spaces">{
-    x := @typeof(s32)
-    @assert(x == s32)
+    x := @typeof(s32)   // 'x' is now a variable that contains a type
+    @assert(x == s32)   // So it can be compared to a type
+
+<span class="linecomment">    // A type is a predefined struct, which contains some fields to inspect it.</span>
+<span class="linecomment">    // You can for example get the name.</span>
     @assert(x.name == "s32")
 
-<span class="linecomment">    // @typeof is not really necessary</span>
+<span class="linecomment">    // @typeof is not really necessary when there's no ambiguity about the expression.</span>
     y := bool
     @assert(y == bool)
 }
 </code></div>
-<h2 id="011_literals">Literals</h2>
+<h2 id="011_number_literals">Number literals</h2>
 <div>
 </br>
  Integers in <i>decimal</i>, <i>hexadecimal</i> or <i>binary</i> forms.</br>
@@ -887,7 +892,7 @@ const C: u64 = 1
 }
 </code></div><div>
 </br>
- A boolean is <code class="incode">true</code> or <code class="incode">false</code>. Note that as constants are known at compile time, we can  use <code class="incode">#assert</code> to check the values.</br>
+ A boolean is <code class="incode">true</code> or <code class="incode">false</code>. Note again that as constants are known at compile time, we can  use <code class="incode">#assert</code> to check the values.</br>
 </div>
 <div class="code"><code style="white-space: break-spaces">{
     const a = true
@@ -928,7 +933,8 @@ const C: u64 = 1
     #assert @typeof(a) == f32
     #assert @typeof(a) != f64
 }
-</code></div><div>You can also postfix a number literal by a type.</br>
+</code></div><div><h3 id="Postfix">Postfix</br>
+</h3>You can also <b>postfix</b> a literal number by a type.</br>
 </div>
 <div class="code"><code style="white-space: break-spaces"><span class="linecomment">// Declare 'a' to be a 'f64' variable assigned to '1.5'</span>
 var a = 1.5'f64
@@ -1355,7 +1361,7 @@ const b: string = "string"
     @assert(x > 0)
 }
 </code></div><div><h3 id="Logical operators">Logical operators</br>
-</h3>This is <b>not</b> <code class="incode">&&</code> and <code class="incode">||</code> like in C/C++.</br>
+</h3>This is <b>not</b> <code class="incode">&&</code> and <code class="incode">||</code> like in C/C++, but <code class="incode">and</code> and <code class="incode">or</code>.</br>
 </div>
 <div class="code"><code style="white-space: break-spaces">a := false
 a = (1 > 10) and (10 < 1)
@@ -1372,7 +1378,7 @@ var x = true ? 1 : 666
 var y = (x == 52) ? 1 : 666
 @assert(y == 666)
 </code></div><div><h3 id="Spaceshift operator">Spaceshift operator</br>
-</h3>It will return a <code class="incode">s32</code> of -1, 0 or 1.</br>
+</h3>Operator <code class="incode"><=></code> will return -1, 0 or 1 if the expression on the left is lower, equal or greater than the expression on the right. The returned type is <code class="incode">s32</code>.</br>
 </div>
 <div class="code"><code style="white-space: break-spaces">A <=> B == -1 if A < B
 A <=> B == 0  if A == B
@@ -1537,7 +1543,7 @@ var y: u32 = cast,bit(u32) x
  An array literal has the form <code class="incode">[A, B, ...]</code>.</br>
 </div>
 <div class="code"><code style="white-space: break-spaces">{
-    arr := [1, 2, 3, 4]
+    arr := [1, 2, 3, 4] // An array of four s32
     #assert @countof(arr) == 4
     #assert @typeof(arr) == #type [4] s32
 }
@@ -1713,7 +1719,7 @@ var arr1: [5, 10] string = "string"
 }
 </code></div><div>
 </br>
- The upper limit is included by default. If you want to exclude it, use <code class="incode">..<</code> insteand of <code class="incode">..</code>.</br>
+ The upper limit is <b>included</b> by default. If you want to exclude it, use <code class="incode">..<</code> insteand of <code class="incode">..</code>.</br>
 </div>
 <div class="code"><code style="white-space: break-spaces">{
     var str = "string"
@@ -2107,6 +2113,8 @@ func titi2(param: MyStruct)
 </div>
 <div class="code"><code style="white-space: break-spaces">{
     tuple1 := {x: 1.0, y: 2.0}
+
+<span class="linecomment">    // 'value0' will be assigned with 'x', and 'value1' will be assigned with 'y'.</span>
     var (value0, value1) = tuple1
     @assert(value0 == 1.0)
     @assert(value1 == 2.0)
@@ -2168,7 +2176,7 @@ func titi2(param: MyStruct)
  You can specify your own type after the enum name.</br>
 </div>
 <div class="code"><code style="white-space: break-spaces">{
-    enum Values1: s64
+    enum Values1: s64 // Forced to be 's64' instead of 's32'
     {
         A
         B

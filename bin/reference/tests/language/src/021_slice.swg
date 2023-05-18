@@ -75,7 +75,7 @@ A slice is a pointer on a buffer of datas, and a `u64` to count the number of el
         @assert(slice == "tri")
     }
 
-    // The upper limit is included by default. If you want to exclude it, use `..<` insteand of `..`.
+    // The upper limit is **included** by default. If you want to exclude it, use `..<` insteand of `..`.
     {
         var str = "string"
         var slice = str[1..<3]

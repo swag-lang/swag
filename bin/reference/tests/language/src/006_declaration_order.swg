@@ -1,5 +1,5 @@
 /**
-In Swag, the order of all **top level** declarations does not matter.
+The order of all **top level** declarations does not matter.
 */
 
 // Here we declare a constant 'A' and initialize it with 'B', which is not yet known (neither its value or its type).
