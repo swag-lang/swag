@@ -355,6 +355,7 @@ bool SemanticJob::resolveCompareExpression(SemanticContext* context)
     {
         Diagnostic diag{node->sourceFile, node->token, Err(Err0007)};
         diag.hint = Hnt(Hnt0061);
+        diag.addRange(left, Diagnostic::isType(leftTypeInfo));
         diag.addRange(right, Diagnostic::isType(rightTypeInfo));
         return context->report(diag);
     }
@@ -364,6 +365,7 @@ bool SemanticJob::resolveCompareExpression(SemanticContext* context)
     {
         Diagnostic diag{node->sourceFile, node->token, Err(Err0009)};
         diag.hint = Hnt(Hnt0061);
+        diag.addRange(left, Diagnostic::isType(leftTypeInfo));
         diag.addRange(right, Diagnostic::isType(rightTypeInfo));
         return context->report(diag);
     }
@@ -373,6 +375,7 @@ bool SemanticJob::resolveCompareExpression(SemanticContext* context)
     {
         Diagnostic diag{node->sourceFile, node->token, Err(Err0010)};
         diag.hint = Hnt(Hnt0061);
+        diag.addRange(left, Diagnostic::isType(leftTypeInfo));
         diag.addRange(right, Diagnostic::isType(rightTypeInfo));
         return context->report(diag);
     }
