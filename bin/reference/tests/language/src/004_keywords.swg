@@ -178,7 +178,7 @@ dref
 @err
 @alias0
 @alias1
-@alias2 and more generally @alias<N>
+@alias2 // and more generally @aliasN
 @alignof
 @args
 @assert
@@ -196,7 +196,6 @@ dref
 @gettag
 @hastag
 @init
-@interfaceof
 @isbytecode
 @isconstexpr
 @itftableof
@@ -204,7 +203,7 @@ dref
 @location
 @mixin0
 @mixin1
-@mixin2 and more generally @mixinN
+@mixin2 // and more generally @mixinN
 @mkany
 @mkcallback
 @mkinterface

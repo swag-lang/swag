@@ -234,7 +234,6 @@ bool TypeGenStructJob::computeStruct()
                 SWAG_CHECK(typeGen->genExportedTypeValue(baseContext, addrArray + param, storageSegment, storageArray, realType->interfaces[param], cflags));
 
                 // :ItfIsConstantSeg
-                // Compute the storage of the interface for @interfaceof
                 uint32_t fieldOffset = offsetof(ExportedTypeValue, value);
                 uint32_t valueOffset = storageArray + fieldOffset;
                 storageSegment->addInitPtr(valueOffset, realType->interfaces[param]->offset, SegmentKind::Constant);
