@@ -1,6 +1,6 @@
 /**
-Swag contains a *very* simple error system used to deal with function returning errors.
-Will probably be changed/improved at some point.
+Swag contains a **very** simple error system used to deal with function returning errors.
+It will probably be changed/improved at some point.
 
 These are **not** exceptions !
 
