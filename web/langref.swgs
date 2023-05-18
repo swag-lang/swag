@@ -3,7 +3,7 @@
     #import "gui" location="swag@std"
 }
 
-using Core
+using Core, Gui
 
 enum State
 {
@@ -133,17 +133,44 @@ func addLine(line: string)
 
 func flushCode()
 {
+    // Remove empty lines before and after the code block
     while g_Code.length and g_Code[0] == "\n"'u8
         g_Code.remove(0, 1)
     while g_Code.length and g_Code.back() == "\n"'u8
         g_Code.removeBack()
-
     if g_Code.length == 0
         return
 
     g_Buf += "<div class=\"code\">"
     g_Buf += "<code style=\"white-space: break-spaces\">"
-    g_Buf += g_Code
+
+    var g_Edit:      RichEditCtrl
+    var g_LexerSwag: RichEditLexerSwag
+
+    g_Edit.setLexer(cast(IRichEditLexer) g_LexerSwag)
+    g_Edit.setText(g_Code)
+    g_Edit.lexAll()
+
+    res := g_Edit.getTextAndStyles()
+
+    g_Edit.styles[0].colFg = Pixel.Argb.White
+    lastStyle := -1
+    loop i: res.text
+    {
+        if res.styles[i] != lastStyle
+        {
+            if lastStyle != -1
+                g_Buf += "</span>"
+            lastStyle = res.styles[i]
+            g_Buf += Format.toString("<span style=\"color:#%{X}\">", g_Edit.styles[lastStyle].colFg.argb & 0xFFFFFF)
+        }
+
+        g_Buf += res.text[i]
+    }
+
+    g_Buf += "</span>"
+
+    //g_Buf += g_Code
     g_Buf += "</code>"
     g_Buf += "</div>"
 
@@ -257,7 +284,7 @@ func processFile(fileName: string)
     g_Buf += """
         <style>
         .code {
-            background-color: LightYellow;
+            background-color: #333333;
             border: 1px solid LightGrey;
             margin: 20px;
             padding: 20px;

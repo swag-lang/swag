@@ -401,6 +401,7 @@ impl IRichEditLexer for RichEditLexerSwag
         #[Swag.Mixin]
         func seekNext()
         {
+            if seek >= line.chars.count return
             line.styles[seek] = mapStyles[currentState]
             seek += 1
         }

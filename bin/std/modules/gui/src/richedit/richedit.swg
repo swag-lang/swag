@@ -391,4 +391,20 @@ impl RichEditCtrl
         lexer = lex
         lexer.setup(self)
     }
+
+    // Lex the full text
+    mtd lexAll()
+    {
+        if !lexer
+            return
+
+        var prev, cur, next: *RichEditLine
+        loop i: lines
+        {
+            cur = lines[i]
+            next = i == lines.count - 1 ? null : lines[i + 1]
+            lexer.compute(prev, cur, next)
+            prev = cur
+        }
+    }
 }

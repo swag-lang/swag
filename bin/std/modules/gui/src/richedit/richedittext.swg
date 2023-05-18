@@ -423,6 +423,16 @@ public impl RichEditCtrl
         return txt
     }
 
+    // Get the full text with the associated styles per character
+    mtd getTextAndStyles()->{text: Array'rune, styles: Array'u8}
+    {
+        var sel0: RichEditCursor
+        var sel1: RichEditCursor
+        moveCursorStartFile(&sel0)
+        moveCursorEndFile(&sel1)
+        return getTextPrivate(sel0, sel1)
+    }
+
     // Set the text content
     mtd setText(text: string)
     {
