@@ -1,6 +1,6 @@
 #dependencies
 {
-    #import "core" location="swag@std"
+    #import "gui" location="swag@std"
 }
 
 using Core
@@ -14,51 +14,30 @@ enum State
 
 var g_Buf:  String  // Will contain the html page
 var g_Toc:  String  // Will contain the left part, i.e. the table of content
+var g_Code: String
 
 var g_State:            Array'State
-var g_StateEmpty:       bool
-var g_SeekStartState:   u64
-var g_SeekCodeEmptyEol: u64
-var g_LastEmptyLine:    bool
 var g_CptBrace:         s32
 var g_SubTitle:         bool
 
 func stateEnter(st: State)
 {
-    g_StateEmpty     = true
-    g_SeekStartState = g_Buf.length
-
     switch st
     {
     case Paragraph:
         g_Buf += "<div>"
-
-    case Code, Test:
-        g_Buf += "<div class=\"code\">"
-        g_Buf += "<code style=\"white-space: break-spaces\">"
     }
 }
 
 func stateLeave(st: State)
 {
-    // If there's no content in that state, then just revert to the beginning of the state in the
-    // output buffer
-    if g_StateEmpty
-    {
-        g_Buf.length = g_SeekStartState
-        return
-    }
-
     switch st
     {
     case Paragraph:
         g_Buf += "</div>\n"
 
     case Code, Test:
-        if g_LastEmptyLine
-            g_Buf.length = g_SeekCodeEmptyEol
-        g_Buf += "</code>"
-        g_Buf += "</div>"
+        flushCode()
     }
 }
 
@@ -93,8 +72,6 @@ func addLine(line: string)
         g_Toc += Format.toString("<li><a href=\"#%\">%</a></li>\n", lineTrim, lineTrim);
         return
     }
-
-    g_StateEmpty = false
 
     stateBold   := false
     stateItalic := false
@@ -154,36 +131,30 @@ func addLine(line: string)
     g_Buf += "</br>\n"
 }
 
+func flushCode()
+{
+    while g_Code.length and g_Code[0] == "\n"'u8
+        g_Code.remove(0, 1)
+    while g_Code.length and g_Code.back() == "\n"'u8
+        g_Code.removeBack()
+
+    if g_Code.length == 0
+        return
+
+    g_Buf += "<div class=\"code\">"
+    g_Buf += "<code style=\"white-space: break-spaces\">"
+    g_Buf += g_Code
+    g_Buf += "</code>"
+    g_Buf += "</div>"
+
+    g_Code.clear()
+}
+
 // Add one line of code
 func addLineCode(l: string)
 {
-    var lineTrim: String = l
-    lineTrim.trim()
-
-    if lineTrim.length
-    {
-        g_StateEmpty = false
-        g_LastEmptyLine = false
-    }
-    else
-    {
-        g_SeekCodeEmptyEol = g_Buf.length
-        g_LastEmptyLine = true
-    }
-
-    if !g_StateEmpty
-    {
-        lineCmt := Utf8.startsWith(lineTrim, "//")
-        if lineCmt
-            g_Buf += "<span class=\"linecomment\">"
-
-        g_Buf += l
-
-        if lineCmt
-            g_Buf += "</span>"
-
-        g_Buf += "\n"
-    }
+    g_Code += l
+    g_Code += "\n"
 }
 
 func processFile(fileName: string)
