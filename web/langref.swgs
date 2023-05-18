@@ -74,11 +74,13 @@ func popState()
     stateEnter(g_State.back())
 }
 
+// Add one line of 'text'
 func addLine(line: string)
 {
     var lineTrim: String = line
     lineTrim.trim()
 
+    // Sub title if text has the form '# text'
     if Utf8.startsWith(lineTrim, "# ")
     {
         lineTrim.remove(0, 2)
@@ -96,19 +98,19 @@ func addLine(line: string)
     stateItalic := false
     stateCode   := false
 
+    // Process character by character, in order to detect some 'markdown' stuff
     for i := 0; i < @countof(line); i += 1
     {
+        // Bold with '**'
         if line[i] == "*"'u8 and line[i+1] == "*"'u8
         {
-            if stateBold
-                g_Buf += "</b>"
-            else
-                g_Buf += "<b>"
-            i += 1
+            g_Buf += stateBold ? "</b>" : "<b>"
             stateBold = !stateBold
+            i += 1
             continue
         }
 
+        // Italic with '*'
         if line[i] == "*"'u8
         {
             if !stateItalic and Latin1.isLetterOrDigit(line[i+1])
@@ -126,6 +128,7 @@ func addLine(line: string)
             }
         }
 
+        // Inlined code with '`'
         if line[i] == "`"'u8
         {
             if !stateCode
@@ -149,6 +152,7 @@ func addLine(line: string)
     g_Buf += "</br>\n"
 }
 
+// Add one line of code
 func addLineCode(l: string)
 {
     var lineTrim: String = l
@@ -167,12 +171,13 @@ func addLineCode(l: string)
 
     if !g_StateEmpty
     {
-        if Utf8.startsWith(lineTrim, "//")
+        lineCmt := Utf8.startsWith(lineTrim, "//")
+        if lineCmt
             g_Buf += "<span class=\"linecomment\">"
 
         g_Buf += l
 
-        if Utf8.startsWith(lineTrim, "//")
+        if lineCmt
             g_Buf += "</span>"
 
         g_Buf += "\n"
@@ -190,13 +195,6 @@ func processFile(fileName: string)
     {
         lineTrim := l
         lineTrim.trim()
-
-        var nextLine: String
-        if @index != lines.count - 1
-        {
-            nextLine = lines[@index+1]
-            nextLine.trim()
-        }
 
         if Utf8.startsWith(lineTrim, "/**")
         {
@@ -237,6 +235,13 @@ func processFile(fileName: string)
                     popState()
                     continue
                 }
+            }
+
+            var nextLine: String
+            if @index != lines.count - 1
+            {
+                nextLine = lines[@index+1]
+                nextLine.trim()
             }
 
             if g_CptBrace == 1 and Utf8.startsWith(lineTrim, "//") and nextLine == "{"
@@ -360,14 +365,13 @@ func processFile(fileName: string)
 
         var title: String = Path.getFileNameWithoutExtension(v.fullname)
         fileName := title
-        //title.remove(0, 4)  // Remove 'NNN_'
         title = title[4..]
 
         // If there's an additional '_' after 'NNN_', then this is a 'sub part'.
         wasSubTitle := g_SubTitle
         g_SubTitle = title[0] == "_"'u8
         if g_SubTitle
-            title.remove(0, 1)
+            title = title[1..]
         if !wasSubTitle and g_SubTitle
             g_Toc += "<ul>\n"
         else if wasSubTitle and !g_SubTitle
