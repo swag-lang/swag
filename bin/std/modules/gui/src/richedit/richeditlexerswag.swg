@@ -197,6 +197,26 @@ impl IRichEditLexer for RichEditLexerSwag
         mapWords.add("@getpinfos", State.Intrinsic)
         mapWords.add("@modules", State.Intrinsic)
         mapWords.add("@gvtd", State.Intrinsic)
+        mapWords.add("@mixin0", State.Intrinsic)
+        mapWords.add("@mixin1", State.Intrinsic)
+        mapWords.add("@mixin2", State.Intrinsic)
+        mapWords.add("@mixin3", State.Intrinsic)
+        mapWords.add("@mixin4", State.Intrinsic)
+        mapWords.add("@mixin5", State.Intrinsic)
+        mapWords.add("@mixin6", State.Intrinsic)
+        mapWords.add("@mixin7", State.Intrinsic)
+        mapWords.add("@mixin8", State.Intrinsic)
+        mapWords.add("@mixin9", State.Intrinsic)
+        mapWords.add("@alias0", State.Intrinsic)
+        mapWords.add("@alias1", State.Intrinsic)
+        mapWords.add("@alias2", State.Intrinsic)
+        mapWords.add("@alias3", State.Intrinsic)
+        mapWords.add("@alias4", State.Intrinsic)
+        mapWords.add("@alias5", State.Intrinsic)
+        mapWords.add("@alias6", State.Intrinsic)
+        mapWords.add("@alias7", State.Intrinsic)
+        mapWords.add("@alias8", State.Intrinsic)
+        mapWords.add("@alias9", State.Intrinsic)
 
         mapWords.add("opSlice", State.FunctionSpecOp)
         mapWords.add("opBinary", State.FunctionSpecOp)
@@ -410,7 +430,17 @@ impl IRichEditLexer for RichEditLexerSwag
         {
             c  := getCur()
             cn := getNext()
-            if !c break
+            if !c
+            {
+                switch currentState
+                {
+                case State.NumericFrac, State.Numeric:
+                    currentState = State.Default
+                    break
+                }
+
+                break
+            }
 
             switch currentState
             {

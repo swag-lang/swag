@@ -419,8 +419,8 @@ A module is a <code class="incode">dll</code> (under windows) or an executable, 
 <div>User identifiers (like variables, constants, function names...) must start with an underscore or an ascii letter. Those identifiers can then contain underscores, ascii letters and digit numbers.</br>
 </div>
 <div class="code"><code style="white-space: break-spaces"><span style="color:#569CD6">const</span><span style="color:#FFFFFF"> thisIsAValidIdentifier0   = </span><span style="color:#B5CEA8">0</span><span style="color:#FFFFFF">
-const this_is_also_valid        = </span><span style="color:#B5CEA8">0</span><span style="color:#FFFFFF">
-const this_1_is_2_also__3_valid = </span><span style="color:#B5CEA8">0</span></code></div><div>But your identifiers cannot start with two underscores. This is reserved by the compiler.</br>
+</span><span style="color:#569CD6">const</span><span style="color:#FFFFFF"> this_is_also_valid        = </span><span style="color:#B5CEA8">0</span><span style="color:#FFFFFF">
+</span><span style="color:#569CD6">const</span><span style="color:#FFFFFF"> this_1_is_2_also__3_valid = </span><span style="color:#B5CEA8">0</span></code></div><div>But your identifiers cannot start with two underscores. This is reserved by the compiler.</br>
 </div>
 <div class="code"><code style="white-space: break-spaces"><span style="color:#6A9955">// const __this_is_invalid = 0</span></code></div><div>Note that some identifiers may start with <code class="incode">#</code>. This indicates a <b>compiler special keyword</b>.</br>
 </div>
@@ -603,9 +603,9 @@ Some identifiers can also start with <code class="incode">@</code>. This indicat
 </h3></div>
 <div class="code"><code style="white-space: break-spaces"><span style="color:#DCDCAA">@index</span><span style="color:#FFFFFF">
 </span><span style="color:#DCDCAA">@err</span><span style="color:#FFFFFF">
-@alias0
-@alias1
-@alias2 </span><span style="color:#6A9955">// and more generally @alias<N></span><span style="color:#FFFFFF">
+</span><span style="color:#DCDCAA">@alias0</span><span style="color:#FFFFFF">
+</span><span style="color:#DCDCAA">@alias1</span><span style="color:#FFFFFF">
+</span><span style="color:#DCDCAA">@alias2</span><span style="color:#FFFFFF"> </span><span style="color:#6A9955">// and more generally @aliasN</span><span style="color:#FFFFFF">
 </span><span style="color:#DCDCAA">@alignof</span><span style="color:#FFFFFF">
 </span><span style="color:#DCDCAA">@args</span><span style="color:#FFFFFF">
 </span><span style="color:#DCDCAA">@assert</span><span style="color:#FFFFFF">
@@ -628,9 +628,9 @@ Some identifiers can also start with <code class="incode">@</code>. This indicat
 </span><span style="color:#DCDCAA">@itftableof</span><span style="color:#FFFFFF">
 </span><span style="color:#DCDCAA">@kindof</span><span style="color:#FFFFFF">
 </span><span style="color:#DCDCAA">@location</span><span style="color:#FFFFFF">
-@mixin0
-@mixin1
-@mixin2 </span><span style="color:#6A9955">// and more generally @mixinN</span><span style="color:#FFFFFF">
+</span><span style="color:#DCDCAA">@mixin0</span><span style="color:#FFFFFF">
+</span><span style="color:#DCDCAA">@mixin1</span><span style="color:#FFFFFF">
+</span><span style="color:#DCDCAA">@mixin2</span><span style="color:#FFFFFF"> </span><span style="color:#6A9955">// and more generally @mixinN</span><span style="color:#FFFFFF">
 </span><span style="color:#DCDCAA">@mkany</span><span style="color:#FFFFFF">
 </span><span style="color:#DCDCAA">@mkcallback</span><span style="color:#FFFFFF">
 </span><span style="color:#DCDCAA">@mkinterface</span><span style="color:#FFFFFF">
@@ -667,11 +667,11 @@ Some identifiers can also start with <code class="incode">@</code>. This indicat
 <div class="code"><code style="white-space: break-spaces"><span style="color:#6A9955">// Declare two variables x and y of type s32 (signed 32 bits), and initialize them to 1.</span><span style="color:#FFFFFF">
 </span><span style="color:#569CD6">var</span><span style="color:#FFFFFF"> x, y: </span><span style="color:#F6CC86">s32</span><span style="color:#FFFFFF"> = </span><span style="color:#B5CEA8">1</span><span style="color:#FFFFFF">
 
-// </span><span style="color:#4EC9B0">Increment</span><span style="color:#FFFFFF"> x </span><span style="color:#D8A0DF">and</span><span style="color:#FFFFFF"> y by </span><span style="color:#B5CEA8">1.</span><span style="color:#FFFFFF">
+</span><span style="color:#6A9955">// Increment x and y by 1.</span><span style="color:#FFFFFF">
 x += </span><span style="color:#B5CEA8">1</span><span style="color:#FFFFFF">
 y += </span><span style="color:#B5CEA8">1</span><span style="color:#FFFFFF">
 
-// </span><span style="color:#4EC9B0">When</span><span style="color:#FFFFFF"> running the tests, </span><span style="color:#DCDCAA">@assert</span><span style="color:#FFFFFF"> will verify that those values are correct.
+</span><span style="color:#6A9955">// When running the tests, @assert will verify that those values are correct.</span><span style="color:#FFFFFF">
 </span><span style="color:#DCDCAA">@assert</span><span style="color:#FFFFFF">(x == </span><span style="color:#B5CEA8">2</span><span style="color:#FFFFFF">)     </span><span style="color:#6A9955">// Verify that x is equal to 2, and raise an error if not.</span><span style="color:#FFFFFF">
 </span><span style="color:#DCDCAA">@assert</span><span style="color:#FFFFFF">(y == x)     </span><span style="color:#6A9955">// Verify that y is equal to x.</span></code></div><div>The semicolons are not mandatory, but it's possible to use them if you want.</br>
 </div>
@@ -684,7 +684,7 @@ x, y += </span><span style="color:#B5CEA8">1</span><span style="color:#FFFFFF">;
 <div class="code"><code style="white-space: break-spaces"><span style="color:#569CD6">var</span><span style="color:#FFFFFF"> x = </span><span style="color:#B5CEA8">0</span><span style="color:#FFFFFF">; </span><span style="color:#569CD6">var</span><span style="color:#FFFFFF"> y = </span><span style="color:#B5CEA8">0</span><span style="color:#FFFFFF">
 x += </span><span style="color:#B5CEA8">1</span><span style="color:#FFFFFF">; y += </span><span style="color:#B5CEA8">1</span><span style="color:#FFFFFF">
 
-// </span><span style="color:#4EC9B0">Two</span><span style="color:#FFFFFF"> instructions on the same line separated </span><span style="color:#569CD6">with</span><span style="color:#FFFFFF"> ';'
+</span><span style="color:#6A9955">// Two instructions on the same line separated with ';'</span><span style="color:#FFFFFF">
 </span><span style="color:#DCDCAA">@assert</span><span style="color:#FFFFFF">(x == </span><span style="color:#B5CEA8">1</span><span style="color:#FFFFFF">); </span><span style="color:#DCDCAA">@assert</span><span style="color:#FFFFFF">(y == </span><span style="color:#B5CEA8">1</span><span style="color:#FFFFFF">)</span></code></div>
 <h2 id="006_declaration_order">Declaration order</h2>
 <div>The order of all <b>top level</b> declarations does not matter.</br>
@@ -962,10 +962,10 @@ c := </span><span style="color:#B5CEA8">1</span><span style="color:#FFFFFF">'</s
 </span><span style="color:#AAAAAA">#assert</span><span style="color:#FFFFFF"> a == </span><span style="color:#CE9178">"this is a string"</span></code></div><div>You can concatenate some values if the values are known at compile time. Use the <code class="incode">++</code> operator for that.</br>
 </div>
 <div class="code"><code style="white-space: break-spaces"><span style="color:#569CD6">const</span><span style="color:#FFFFFF"> a = </span><span style="color:#CE9178">"the devil number is "</span><span style="color:#FFFFFF"> ++ </span><span style="color:#B5CEA8">666</span><span style="color:#FFFFFF">
-#assert a == </span><span style="color:#CE9178">"the devil number is 666"</span><span style="color:#FFFFFF">
+</span><span style="color:#AAAAAA">#assert</span><span style="color:#FFFFFF"> a == </span><span style="color:#CE9178">"the devil number is 666"</span><span style="color:#FFFFFF">
 
 </span><span style="color:#569CD6">const</span><span style="color:#FFFFFF"> b = </span><span style="color:#B5CEA8">666</span><span style="color:#FFFFFF">
-var c = </span><span style="color:#CE9178">"the devil number is not "</span><span style="color:#FFFFFF"> ++ (b + </span><span style="color:#B5CEA8">1</span><span style="color:#FFFFFF">) ++ </span><span style="color:#CE9178">"!"</span><span style="color:#FFFFFF">
+</span><span style="color:#569CD6">var</span><span style="color:#FFFFFF"> c = </span><span style="color:#CE9178">"the devil number is not "</span><span style="color:#FFFFFF"> ++ (b + </span><span style="color:#B5CEA8">1</span><span style="color:#FFFFFF">) ++ </span><span style="color:#CE9178">"!"</span><span style="color:#FFFFFF">
 </span><span style="color:#DCDCAA">@assert</span><span style="color:#FFFFFF">(c == </span><span style="color:#CE9178">"the devil number is not 667!"</span><span style="color:#FFFFFF">)
 
 </span><span style="color:#569CD6">var</span><span style="color:#FFFFFF"> d = </span><span style="color:#CE9178">"they are "</span><span style="color:#FFFFFF"> ++ </span><span style="color:#B5CEA8">4</span><span style="color:#FFFFFF"> ++ </span><span style="color:#CE9178">" apples in "</span><span style="color:#FFFFFF"> ++ (</span><span style="color:#B5CEA8">2</span><span style="color:#FFFFFF">*</span><span style="color:#B5CEA8">2</span><span style="color:#FFFFFF">) ++ </span><span style="color:#CE9178">" baskets"</span><span style="color:#FFFFFF">
@@ -1172,7 +1172,7 @@ a = </span><span style="color:#569CD6">null</span><span style="color:#FFFFFF">
 }</span></code></div><div>And in fact even <code class="incode">var</code> is optional if you use the short form with <code class="incode">:=</code>.</br>
 </div>
 <div class="code"><code style="white-space: break-spaces"><span style="color:#FFFFFF">a := </span><span style="color:#B5CEA8">1.5</span><span style="color:#FFFFFF">
-@</span><span style="color:#FF7411">assert</span><span style="color:#FFFFFF">(a == </span><span style="color:#B5CEA8">1.5</span><span style="color:#FFFFFF">)
+</span><span style="color:#DCDCAA">@assert</span><span style="color:#FFFFFF">(a == </span><span style="color:#B5CEA8">1.5</span><span style="color:#FFFFFF">)
 </span><span style="color:#AAAAAA">#assert</span><span style="color:#FFFFFF"> </span><span style="color:#DCDCAA">@typeof</span><span style="color:#FFFFFF">(a) == </span><span style="color:#F6CC86">f32</span><span style="color:#FFFFFF">
 
 b := </span><span style="color:#CE9178">"string"</span><span style="color:#FFFFFF">
@@ -1187,9 +1187,9 @@ c := </span><span style="color:#B5CEA8">1.5</span><span style="color:#FFFFFF">'<
 </div>
 <div class="code"><code style="white-space: break-spaces"><span style="color:#6A9955">// This are constants and not variables. So they cannot be changed after the declaration.</span><span style="color:#FFFFFF">
 </span><span style="color:#569CD6">const</span><span style="color:#FFFFFF"> a = </span><span style="color:#B5CEA8">666</span><span style="color:#FFFFFF">
-#assert a == </span><span style="color:#B5CEA8">666</span><span style="color:#FFFFFF">
+</span><span style="color:#AAAAAA">#assert</span><span style="color:#FFFFFF"> a == </span><span style="color:#B5CEA8">666</span><span style="color:#FFFFFF">
 
-const b: </span><span style="color:#F6CC86">string</span><span style="color:#FFFFFF"> = </span><span style="color:#CE9178">"string"</span><span style="color:#FFFFFF">
+</span><span style="color:#569CD6">const</span><span style="color:#FFFFFF"> b: </span><span style="color:#F6CC86">string</span><span style="color:#FFFFFF"> = </span><span style="color:#CE9178">"string"</span><span style="color:#FFFFFF">
 </span><span style="color:#AAAAAA">#assert</span><span style="color:#FFFFFF"> b == </span><span style="color:#CE9178">"string"</span></code></div><div>Constants can have more than just simple types. In that case, there's a memory footprint, because those constants are stored in the data segment. But that means also you could take the address of such constants at runtime.</br>
 </div>
 <div>
@@ -1307,11 +1307,11 @@ a = (</span><span style="color:#B5CEA8">1</span><span style="color:#FFFFFF"> > <
 </div>
 <div class="code"><code style="white-space: break-spaces"><span style="color:#6A9955">// Returns 1 because the expression 'true' is... true.</span><span style="color:#FFFFFF">
 </span><span style="color:#569CD6">var</span><span style="color:#FFFFFF"> x = </span><span style="color:#569CD6">true</span><span style="color:#FFFFFF"> ? </span><span style="color:#B5CEA8">1</span><span style="color:#FFFFFF"> : </span><span style="color:#B5CEA8">666</span><span style="color:#FFFFFF">
-@</span><span style="color:#FF7411">assert</span><span style="color:#FFFFFF">(x == </span><span style="color:#B5CEA8">1</span><span style="color:#FFFFFF">)
+</span><span style="color:#DCDCAA">@assert</span><span style="color:#FFFFFF">(x == </span><span style="color:#B5CEA8">1</span><span style="color:#FFFFFF">)
 
 </span><span style="color:#6A9955">// Returns 666 because the expression 'x == 52' is false.</span><span style="color:#FFFFFF">
 </span><span style="color:#569CD6">var</span><span style="color:#FFFFFF"> y = (x == </span><span style="color:#B5CEA8">52</span><span style="color:#FFFFFF">) ? </span><span style="color:#B5CEA8">1</span><span style="color:#FFFFFF"> : </span><span style="color:#B5CEA8">666</span><span style="color:#FFFFFF">
-@</span><span style="color:#FF7411">assert</span><span style="color:#FFFFFF">(y == </span><span style="color:#B5CEA8">666</span><span style="color:#FFFFFF">)</span></code></div><div><h3 id="Spaceshift operator">Spaceshift operator</br>
+</span><span style="color:#DCDCAA">@assert</span><span style="color:#FFFFFF">(y == </span><span style="color:#B5CEA8">666</span><span style="color:#FFFFFF">)</span></code></div><div><h3 id="Spaceshift operator">Spaceshift operator</br>
 </h3>Operator <code class="incode"><=></code> will return -1, 0 or 1 if the expression on the left is lower, equal or greater than the expression on the right. The returned type is <code class="incode">s32</code>.</br>
 </div>
 <div class="code"><code style="white-space: break-spaces"><span style="color:#4EC9B0">A</span><span style="color:#FFFFFF"> <=> </span><span style="color:#4EC9B0">B</span><span style="color:#FFFFFF"> == -</span><span style="color:#B5CEA8">1</span><span style="color:#FFFFFF"> </span><span style="color:#D8A0DF">if</span><span style="color:#FFFFFF"> </span><span style="color:#4EC9B0">A</span><span style="color:#FFFFFF"> < </span><span style="color:#4EC9B0">B</span><span style="color:#FFFFFF">
@@ -1407,10 +1407,10 @@ a = (</span><span style="color:#B5CEA8">1</span><span style="color:#FFFFFF"> > <
 }</span></code></div><div>Use <code class="incode">cast,bit</code> to convert a native type to another without converting the value. Works only if the two types are of the same size.</br>
 </div>
 <div class="code"><code style="white-space: break-spaces"><span style="color:#569CD6">var</span><span style="color:#FFFFFF"> x: </span><span style="color:#F6CC86">f32</span><span style="color:#FFFFFF"> = </span><span style="color:#B5CEA8">1.0</span><span style="color:#FFFFFF">
-var y: </span><span style="color:#F6CC86">u32</span><span style="color:#FFFFFF"> = </span><span style="color:#569CD6">cast</span><span style="color:#FFFFFF">,</span><span style="color:#FF7411">bit</span><span style="color:#FFFFFF">(</span><span style="color:#F6CC86">u32</span><span style="color:#FFFFFF">) x
+</span><span style="color:#569CD6">var</span><span style="color:#FFFFFF"> y: </span><span style="color:#F6CC86">u32</span><span style="color:#FFFFFF"> = </span><span style="color:#569CD6">cast</span><span style="color:#FFFFFF">,</span><span style="color:#FF7411">bit</span><span style="color:#FFFFFF">(</span><span style="color:#F6CC86">u32</span><span style="color:#FFFFFF">) x
 </span><span style="color:#DCDCAA">@assert</span><span style="color:#FFFFFF">(y == </span><span style="color:#B5CEA8">0</span><span style="color:#FFFFFF">x</span><span style="color:#B5CEA8">3</span><span style="color:#FFFFFF">f</span><span style="color:#B5CEA8">800000</span><span style="color:#FFFFFF">)
 </span><span style="color:#AAAAAA">#assert</span><span style="color:#FFFFFF"> </span><span style="color:#569CD6">cast</span><span style="color:#FFFFFF">,</span><span style="color:#FF7411">bit</span><span style="color:#FFFFFF">(</span><span style="color:#F6CC86">u32</span><span style="color:#FFFFFF">) </span><span style="color:#B5CEA8">1.0</span><span style="color:#FFFFFF"> == </span><span style="color:#B5CEA8">0</span><span style="color:#FFFFFF">x</span><span style="color:#B5CEA8">3</span><span style="color:#FFFFFF">f</span><span style="color:#B5CEA8">800000</span><span style="color:#FFFFFF">
-#assert </span><span style="color:#569CD6">cast</span><span style="color:#FFFFFF">,</span><span style="color:#FF7411">bit</span><span style="color:#FFFFFF">(</span><span style="color:#F6CC86">f32</span><span style="color:#FFFFFF">) </span><span style="color:#B5CEA8">0</span><span style="color:#FFFFFF">x</span><span style="color:#B5CEA8">3</span><span style="color:#FFFFFF">f</span><span style="color:#B5CEA8">800000</span><span style="color:#FFFFFF"> == </span><span style="color:#B5CEA8">1.0</span></code></div><div>Swag can sometimes cast from one type to another for you. This is an <i>implicit</i> cast.</br>
+</span><span style="color:#AAAAAA">#assert</span><span style="color:#FFFFFF"> </span><span style="color:#569CD6">cast</span><span style="color:#FFFFFF">,</span><span style="color:#FF7411">bit</span><span style="color:#FFFFFF">(</span><span style="color:#F6CC86">f32</span><span style="color:#FFFFFF">) </span><span style="color:#B5CEA8">0</span><span style="color:#FFFFFF">x</span><span style="color:#B5CEA8">3</span><span style="color:#FFFFFF">f</span><span style="color:#B5CEA8">800000</span><span style="color:#FFFFFF"> == </span><span style="color:#B5CEA8">1.0</span></code></div><div>Swag can sometimes cast from one type to another for you. This is an <i>implicit</i> cast.</br>
 </div>
 <div>
 </br>
@@ -1786,7 +1786,7 @@ var y: </span><span style="color:#F6CC86">u32</span><span style="color:#FFFFFF">
 </div>
 <div class="code"><code style="white-space: break-spaces"><span style="color:#FFFFFF">x := </span><span style="color:#B5CEA8">42</span><span style="color:#FFFFFF">
 
-// </span><span style="color:#4EC9B0">Use</span><span style="color:#FFFFFF"> '</span><span style="color:#569CD6">ref</span><span style="color:#FFFFFF">' to declare a reference.
+</span><span style="color:#6A9955">// Use 'ref' to declare a reference.</span><span style="color:#FFFFFF">
 </span><span style="color:#6A9955">// Here we declare a reference to the variable 'x'.</span><span style="color:#FFFFFF">
 </span><span style="color:#6A9955">// Note that unlike C++, you have to take the address of 'x' to convert it to a reference.</span><span style="color:#FFFFFF">
 </span><span style="color:#569CD6">var</span><span style="color:#FFFFFF"> myRef: </span><span style="color:#569CD6">const</span><span style="color:#FFFFFF"> </span><span style="color:#569CD6">ref</span><span style="color:#FFFFFF"> </span><span style="color:#F6CC86">s32</span><span style="color:#FFFFFF"> = &x
@@ -1796,12 +1796,12 @@ var y: </span><span style="color:#F6CC86">u32</span><span style="color:#FFFFFF">
 </span><span style="color:#DCDCAA">@assert</span><span style="color:#FFFFFF">(myRef == </span><span style="color:#B5CEA8">42</span><span style="color:#FFFFFF">)</span></code></div><div>When an affectation is done outside of an initialization, you will change the pointed value, and not the reference itself.</br>
 </div>
 <div class="code"><code style="white-space: break-spaces"><span style="color:#FFFFFF">x := </span><span style="color:#B5CEA8">42</span><span style="color:#FFFFFF">
-var myRef: </span><span style="color:#569CD6">ref</span><span style="color:#FFFFFF"> </span><span style="color:#F6CC86">s32</span><span style="color:#FFFFFF"> = &x </span><span style="color:#6A9955">// Note here that the reference is no more 'const'</span><span style="color:#FFFFFF">
+</span><span style="color:#569CD6">var</span><span style="color:#FFFFFF"> myRef: </span><span style="color:#569CD6">ref</span><span style="color:#FFFFFF"> </span><span style="color:#F6CC86">s32</span><span style="color:#FFFFFF"> = &x </span><span style="color:#6A9955">// Note here that the reference is no more 'const'</span><span style="color:#FFFFFF">
 </span><span style="color:#DCDCAA">@assert</span><span style="color:#FFFFFF">(myRef == </span><span style="color:#B5CEA8">42</span><span style="color:#FFFFFF">)
 
 </span><span style="color:#6A9955">// Here we will change the pointed value 'x'</span><span style="color:#FFFFFF">
 myRef = </span><span style="color:#B5CEA8">66</span><span style="color:#FFFFFF">
-@</span><span style="color:#FF7411">assert</span><span style="color:#FFFFFF">(myRef == </span><span style="color:#B5CEA8">66</span><span style="color:#FFFFFF">)
+</span><span style="color:#DCDCAA">@assert</span><span style="color:#FFFFFF">(myRef == </span><span style="color:#B5CEA8">66</span><span style="color:#FFFFFF">)
 
 </span><span style="color:#6A9955">// Remember that 'myRef' is an alias for 'x', so 'x' has also been changed.</span><span style="color:#FFFFFF">
 </span><span style="color:#DCDCAA">@assert</span><span style="color:#FFFFFF">(x == </span><span style="color:#B5CEA8">66</span><span style="color:#FFFFFF">)</span></code></div><div>If you want to change the reference and not the pointed value, you can use <code class="incode">ref</code> in the affectation.</br>
@@ -1809,7 +1809,7 @@ myRef = </span><span style="color:#B5CEA8">66</span><span style="color:#FFFFFF">
 <div class="code"><code style="white-space: break-spaces"><span style="color:#FFFFFF">x := </span><span style="color:#B5CEA8">1</span><span style="color:#FFFFFF">
 y := </span><span style="color:#B5CEA8">1000</span><span style="color:#FFFFFF">
 
-var myRef: </span><span style="color:#569CD6">const</span><span style="color:#FFFFFF"> </span><span style="color:#569CD6">ref</span><span style="color:#FFFFFF"> </span><span style="color:#F6CC86">s32</span><span style="color:#FFFFFF"> = &x
+</span><span style="color:#569CD6">var</span><span style="color:#FFFFFF"> myRef: </span><span style="color:#569CD6">const</span><span style="color:#FFFFFF"> </span><span style="color:#569CD6">ref</span><span style="color:#FFFFFF"> </span><span style="color:#F6CC86">s32</span><span style="color:#FFFFFF"> = &x
 </span><span style="color:#DCDCAA">@assert</span><span style="color:#FFFFFF">(myRef == </span><span style="color:#B5CEA8">1</span><span style="color:#FFFFFF">)
 
 </span><span style="color:#6A9955">// Here we force 'myRef' to point to 'y' and not to 'x' anymore.</span><span style="color:#FFFFFF">
@@ -2176,9 +2176,9 @@ That kind of enum starts by default at 1, and not 0, and each value should be a 
 }
 
 </span><span style="color:#AAAAAA">#assert</span><span style="color:#FFFFFF"> </span><span style="color:#4EC9B0">MyFlags</span><span style="color:#FFFFFF">.</span><span style="color:#4EC9B0">A</span><span style="color:#FFFFFF"> == </span><span style="color:#B5CEA8">0</span><span style="color:#FFFFFF">b</span><span style="color:#B5CEA8">00000001</span><span style="color:#FFFFFF">
-#assert </span><span style="color:#4EC9B0">MyFlags</span><span style="color:#FFFFFF">.</span><span style="color:#4EC9B0">B</span><span style="color:#FFFFFF"> == </span><span style="color:#B5CEA8">0</span><span style="color:#FFFFFF">b</span><span style="color:#B5CEA8">00000010</span><span style="color:#FFFFFF">
-#assert </span><span style="color:#4EC9B0">MyFlags</span><span style="color:#FFFFFF">.</span><span style="color:#4EC9B0">C</span><span style="color:#FFFFFF"> == </span><span style="color:#B5CEA8">0</span><span style="color:#FFFFFF">b</span><span style="color:#B5CEA8">00000100</span><span style="color:#FFFFFF">
-#assert </span><span style="color:#4EC9B0">MyFlags</span><span style="color:#FFFFFF">.</span><span style="color:#4EC9B0">D</span><span style="color:#FFFFFF"> == </span><span style="color:#B5CEA8">0</span><span style="color:#FFFFFF">b</span><span style="color:#B5CEA8">00001000</span><span style="color:#FFFFFF">
+</span><span style="color:#AAAAAA">#assert</span><span style="color:#FFFFFF"> </span><span style="color:#4EC9B0">MyFlags</span><span style="color:#FFFFFF">.</span><span style="color:#4EC9B0">B</span><span style="color:#FFFFFF"> == </span><span style="color:#B5CEA8">0</span><span style="color:#FFFFFF">b</span><span style="color:#B5CEA8">00000010</span><span style="color:#FFFFFF">
+</span><span style="color:#AAAAAA">#assert</span><span style="color:#FFFFFF"> </span><span style="color:#4EC9B0">MyFlags</span><span style="color:#FFFFFF">.</span><span style="color:#4EC9B0">C</span><span style="color:#FFFFFF"> == </span><span style="color:#B5CEA8">0</span><span style="color:#FFFFFF">b</span><span style="color:#B5CEA8">00000100</span><span style="color:#FFFFFF">
+</span><span style="color:#AAAAAA">#assert</span><span style="color:#FFFFFF"> </span><span style="color:#4EC9B0">MyFlags</span><span style="color:#FFFFFF">.</span><span style="color:#4EC9B0">D</span><span style="color:#FFFFFF"> == </span><span style="color:#B5CEA8">0</span><span style="color:#FFFFFF">b</span><span style="color:#B5CEA8">00001000</span><span style="color:#FFFFFF">
 
 value := </span><span style="color:#4EC9B0">MyFlags</span><span style="color:#FFFFFF">.</span><span style="color:#4EC9B0">B</span><span style="color:#FFFFFF"> | </span><span style="color:#4EC9B0">MyFlags</span><span style="color:#FFFFFF">.</span><span style="color:#4EC9B0">C</span><span style="color:#FFFFFF">
 </span><span style="color:#DCDCAA">@assert</span><span style="color:#FFFFFF">(value == </span><span style="color:#B5CEA8">0</span><span style="color:#FFFFFF">b</span><span style="color:#B5CEA8">00000110</span><span style="color:#FFFFFF">)
@@ -2193,9 +2193,9 @@ value := </span><span style="color:#4EC9B0">MyFlags</span><span style="color:#FF
 }
 
 </span><span style="color:#AAAAAA">#assert</span><span style="color:#FFFFFF"> </span><span style="color:#4EC9B0">Value</span><span style="color:#FFFFFF">.</span><span style="color:#4EC9B0">A</span><span style="color:#FFFFFF">[</span><span style="color:#B5CEA8">0</span><span style="color:#FFFFFF">] == </span><span style="color:#B5CEA8">1</span><span style="color:#FFFFFF">
-#assert </span><span style="color:#4EC9B0">Value</span><span style="color:#FFFFFF">.</span><span style="color:#4EC9B0">A</span><span style="color:#FFFFFF">[</span><span style="color:#B5CEA8">1</span><span style="color:#FFFFFF">] == </span><span style="color:#B5CEA8">2</span><span style="color:#FFFFFF">
-#assert </span><span style="color:#4EC9B0">Value</span><span style="color:#FFFFFF">.</span><span style="color:#4EC9B0">B</span><span style="color:#FFFFFF">[</span><span style="color:#B5CEA8">0</span><span style="color:#FFFFFF">] == </span><span style="color:#B5CEA8">10</span><span style="color:#FFFFFF">
-#assert </span><span style="color:#4EC9B0">Value</span><span style="color:#FFFFFF">.</span><span style="color:#4EC9B0">B</span><span style="color:#FFFFFF">[</span><span style="color:#B5CEA8">1</span><span style="color:#FFFFFF">] == </span><span style="color:#B5CEA8">20</span></code></div><div><h3 id="Enum of slices">Enum of slices</br>
+</span><span style="color:#AAAAAA">#assert</span><span style="color:#FFFFFF"> </span><span style="color:#4EC9B0">Value</span><span style="color:#FFFFFF">.</span><span style="color:#4EC9B0">A</span><span style="color:#FFFFFF">[</span><span style="color:#B5CEA8">1</span><span style="color:#FFFFFF">] == </span><span style="color:#B5CEA8">2</span><span style="color:#FFFFFF">
+</span><span style="color:#AAAAAA">#assert</span><span style="color:#FFFFFF"> </span><span style="color:#4EC9B0">Value</span><span style="color:#FFFFFF">.</span><span style="color:#4EC9B0">B</span><span style="color:#FFFFFF">[</span><span style="color:#B5CEA8">0</span><span style="color:#FFFFFF">] == </span><span style="color:#B5CEA8">10</span><span style="color:#FFFFFF">
+</span><span style="color:#AAAAAA">#assert</span><span style="color:#FFFFFF"> </span><span style="color:#4EC9B0">Value</span><span style="color:#FFFFFF">.</span><span style="color:#4EC9B0">B</span><span style="color:#FFFFFF">[</span><span style="color:#B5CEA8">1</span><span style="color:#FFFFFF">] == </span><span style="color:#B5CEA8">20</span></code></div><div><h3 id="Enum of slices">Enum of slices</br>
 </h3>You can have an enum of const slices.</br>
 </div>
 <div class="code"><code style="white-space: break-spaces"><span style="color:#569CD6">enum</span><span style="color:#FFFFFF"> </span><span style="color:#4EC9B0">Value</span><span style="color:#FFFFFF">: </span><span style="color:#569CD6">const</span><span style="color:#FFFFFF"> [..] </span><span style="color:#F6CC86">s32</span><span style="color:#FFFFFF">
@@ -2205,7 +2205,7 @@ value := </span><span style="color:#4EC9B0">MyFlags</span><span style="color:#FF
 }
 
 </span><span style="color:#AAAAAA">#assert</span><span style="color:#FFFFFF"> </span><span style="color:#DCDCAA">@countof</span><span style="color:#FFFFFF">(</span><span style="color:#4EC9B0">Value</span><span style="color:#FFFFFF">.</span><span style="color:#4EC9B0">A</span><span style="color:#FFFFFF">) == </span><span style="color:#B5CEA8">2</span><span style="color:#FFFFFF">
-#assert </span><span style="color:#DCDCAA">@countof</span><span style="color:#FFFFFF">(</span><span style="color:#4EC9B0">Value</span><span style="color:#FFFFFF">.</span><span style="color:#4EC9B0">B</span><span style="color:#FFFFFF">) == </span><span style="color:#B5CEA8">4</span><span style="color:#FFFFFF">
+</span><span style="color:#AAAAAA">#assert</span><span style="color:#FFFFFF"> </span><span style="color:#DCDCAA">@countof</span><span style="color:#FFFFFF">(</span><span style="color:#4EC9B0">Value</span><span style="color:#FFFFFF">.</span><span style="color:#4EC9B0">B</span><span style="color:#FFFFFF">) == </span><span style="color:#B5CEA8">4</span><span style="color:#FFFFFF">
 
 x := </span><span style="color:#4EC9B0">Value</span><span style="color:#FFFFFF">.</span><span style="color:#4EC9B0">A</span><span style="color:#FFFFFF">
 </span><span style="color:#DCDCAA">@assert</span><span style="color:#FFFFFF">(x[</span><span style="color:#B5CEA8">0</span><span style="color:#FFFFFF">] == </span><span style="color:#B5CEA8">1</span><span style="color:#FFFFFF">)
@@ -2353,7 +2353,7 @@ y := </span><span style="color:#4EC9B0">Value</span><span style="color:#FFFFFF">
 <div>A basic test with <code class="incode">if</code>. Curlies are optional. The expression doesn't need to be enclosed with <code class="incode">()</code> unlike C/C++.</br>
 </div>
 <div class="code"><code style="white-space: break-spaces"><span style="color:#FFFFFF">a := </span><span style="color:#B5CEA8">0</span><span style="color:#FFFFFF">
-if a == </span><span style="color:#B5CEA8">1</span><span style="color:#FFFFFF">
+</span><span style="color:#D8A0DF">if</span><span style="color:#FFFFFF"> a == </span><span style="color:#B5CEA8">1</span><span style="color:#FFFFFF">
     </span><span style="color:#DCDCAA">@assert</span><span style="color:#FFFFFF">(</span><span style="color:#569CD6">false</span><span style="color:#FFFFFF">)
 </span><span style="color:#D8A0DF">if</span><span style="color:#FFFFFF"> (a == </span><span style="color:#B5CEA8">1</span><span style="color:#FFFFFF">)
     </span><span style="color:#DCDCAA">@assert</span><span style="color:#FFFFFF">(</span><span style="color:#569CD6">false</span><span style="color:#FFFFFF">)
@@ -2442,16 +2442,16 @@ if a == </span><span style="color:#B5CEA8">1</span><span style="color:#FFFFFF">
 </span><span style="color:#AAAAAA">#assert</span><span style="color:#FFFFFF"> </span><span style="color:#DCDCAA">@countof</span><span style="color:#FFFFFF">(arr) == </span><span style="color:#B5CEA8">4</span><span style="color:#FFFFFF">
 
 cpt := </span><span style="color:#B5CEA8">0</span><span style="color:#FFFFFF">
-loop arr    </span><span style="color:#6A9955">// The array contains 4 elements, so the loop count is 4</span><span style="color:#FFFFFF">
+</span><span style="color:#D8A0DF">loop</span><span style="color:#FFFFFF"> arr    </span><span style="color:#6A9955">// The array contains 4 elements, so the loop count is 4</span><span style="color:#FFFFFF">
     cpt += arr[</span><span style="color:#DCDCAA">@index</span><span style="color:#FFFFFF">]
 </span><span style="color:#DCDCAA">@assert</span><span style="color:#FFFFFF">(cpt == </span><span style="color:#B5CEA8">10</span><span style="color:#FFFFFF">+</span><span style="color:#B5CEA8">20</span><span style="color:#FFFFFF">+</span><span style="color:#B5CEA8">30</span><span style="color:#FFFFFF">+</span><span style="color:#B5CEA8">40</span><span style="color:#FFFFFF">)</span></code></div><div><b>Warning !</b></br>
 On a string, it will loop for each byte, <b>not</b> runes (if a rune is encoded in more than one byte). If you want to iterate on all runes, you will have to use the <code class="incode">Std.Core</code> module.</br>
 </div>
 <div class="code"><code style="white-space: break-spaces"><span style="color:#FFFFFF">cpt := </span><span style="color:#B5CEA8">0</span><span style="color:#FFFFFF">
-loop </span><span style="color:#CE9178">"⻘"</span><span style="color:#FFFFFF">
+</span><span style="color:#D8A0DF">loop</span><span style="color:#FFFFFF"> </span><span style="color:#CE9178">"⻘"</span><span style="color:#FFFFFF">
     cpt += </span><span style="color:#B5CEA8">1</span><span style="color:#FFFFFF">
 
-// cpt is equal to </span><span style="color:#B5CEA8">3</span><span style="color:#FFFFFF"> because '⻘' is endoded </span><span style="color:#569CD6">with</span><span style="color:#FFFFFF"> </span><span style="color:#B5CEA8">3</span><span style="color:#FFFFFF"> bytes
+</span><span style="color:#6A9955">// cpt is equal to 3 because '⻘' is endoded with 3 bytes</span><span style="color:#FFFFFF">
 </span><span style="color:#DCDCAA">@assert</span><span style="color:#FFFFFF">(cpt == </span><span style="color:#B5CEA8">3</span><span style="color:#FFFFFF">)</span></code></div><div><code class="incode">break</code> and <code class="incode">continue</code> can be used inside a loop.</br>
 </div>
 <div>
@@ -2571,13 +2571,13 @@ loop </span><span style="color:#CE9178">"⻘"</span><span style="color:#FFFFFF">
 <div class="code"><code style="white-space: break-spaces"><span style="color:#FFFFFF">{
     </span><span style="color:#D8A0DF">visit</span><span style="color:#FFFFFF"> </span><span style="color:#CE9178">"ABC"</span><span style="color:#FFFFFF">
     {
-        a := @alias1    </span><span style="color:#6A9955">// This is the index</span><span style="color:#FFFFFF">
+        a := </span><span style="color:#DCDCAA">@alias1</span><span style="color:#FFFFFF">    </span><span style="color:#6A9955">// This is the index</span><span style="color:#FFFFFF">
         </span><span style="color:#DCDCAA">@assert</span><span style="color:#FFFFFF">(a == </span><span style="color:#DCDCAA">@index</span><span style="color:#FFFFFF">)
         </span><span style="color:#D8A0DF">switch</span><span style="color:#FFFFFF"> a
         {
-        </span><span style="color:#D8A0DF">case</span><span style="color:#FFFFFF"> </span><span style="color:#B5CEA8">0</span><span style="color:#FFFFFF">: </span><span style="color:#DCDCAA">@assert</span><span style="color:#FFFFFF">(@alias0 == </span><span style="color:#CE9178">"A"</span><span style="color:#FFFFFF">'</span><span style="color:#F6CC86">u8</span><span style="color:#FFFFFF">)
-        </span><span style="color:#D8A0DF">case</span><span style="color:#FFFFFF"> </span><span style="color:#B5CEA8">1</span><span style="color:#FFFFFF">: </span><span style="color:#DCDCAA">@assert</span><span style="color:#FFFFFF">(@alias0 == </span><span style="color:#CE9178">"B"</span><span style="color:#FFFFFF">'</span><span style="color:#F6CC86">u8</span><span style="color:#FFFFFF">)
-        </span><span style="color:#D8A0DF">case</span><span style="color:#FFFFFF"> </span><span style="color:#B5CEA8">2</span><span style="color:#FFFFFF">: </span><span style="color:#DCDCAA">@assert</span><span style="color:#FFFFFF">(@alias0 == </span><span style="color:#CE9178">"C"</span><span style="color:#FFFFFF">'</span><span style="color:#F6CC86">u8</span><span style="color:#FFFFFF">)
+        </span><span style="color:#D8A0DF">case</span><span style="color:#FFFFFF"> </span><span style="color:#B5CEA8">0</span><span style="color:#FFFFFF">: </span><span style="color:#DCDCAA">@assert</span><span style="color:#FFFFFF">(</span><span style="color:#DCDCAA">@alias0</span><span style="color:#FFFFFF"> == </span><span style="color:#CE9178">"A"</span><span style="color:#FFFFFF">'</span><span style="color:#F6CC86">u8</span><span style="color:#FFFFFF">)
+        </span><span style="color:#D8A0DF">case</span><span style="color:#FFFFFF"> </span><span style="color:#B5CEA8">1</span><span style="color:#FFFFFF">: </span><span style="color:#DCDCAA">@assert</span><span style="color:#FFFFFF">(</span><span style="color:#DCDCAA">@alias0</span><span style="color:#FFFFFF"> == </span><span style="color:#CE9178">"B"</span><span style="color:#FFFFFF">'</span><span style="color:#F6CC86">u8</span><span style="color:#FFFFFF">)
+        </span><span style="color:#D8A0DF">case</span><span style="color:#FFFFFF"> </span><span style="color:#B5CEA8">2</span><span style="color:#FFFFFF">: </span><span style="color:#DCDCAA">@assert</span><span style="color:#FFFFFF">(</span><span style="color:#DCDCAA">@alias0</span><span style="color:#FFFFFF"> == </span><span style="color:#CE9178">"C"</span><span style="color:#FFFFFF">'</span><span style="color:#F6CC86">u8</span><span style="color:#FFFFFF">)
         }
     }
 }</span></code></div><div>
@@ -3382,7 +3382,7 @@ v1 = </span><span style="color:#569CD6">false</span><span style="color:#FFFFFF">
 
 </span><span style="color:#569CD6">const</span><span style="color:#FFFFFF"> </span><span style="color:#4EC9B0">One</span><span style="color:#FFFFFF">: </span><span style="color:#4EC9B0">Vector2</span><span style="color:#FFFFFF"> = </span><span style="color:#B5CEA8">1.0</span><span style="color:#FFFFFF">    </span><span style="color:#6A9955">// This will call opAffect(1.0) at compile time</span><span style="color:#FFFFFF">
 </span><span style="color:#AAAAAA">#assert</span><span style="color:#FFFFFF"> </span><span style="color:#4EC9B0">One</span><span style="color:#FFFFFF">.x == </span><span style="color:#B5CEA8">1.0</span><span style="color:#FFFFFF">
-#assert </span><span style="color:#4EC9B0">One</span><span style="color:#FFFFFF">.y == </span><span style="color:#B5CEA8">1.0</span></code></div>
+</span><span style="color:#AAAAAA">#assert</span><span style="color:#FFFFFF"> </span><span style="color:#4EC9B0">One</span><span style="color:#FFFFFF">.y == </span><span style="color:#B5CEA8">1.0</span></code></div>
 <h3 id="064__count">Count</h3>
 <div class="code"><code style="white-space: break-spaces"><span style="color:#569CD6">struct</span><span style="color:#FFFFFF"> </span><span style="color:#4EC9B0">MyStruct</span><span style="color:#FFFFFF">
 {
@@ -3398,10 +3398,10 @@ v1 = </span><span style="color:#569CD6">false</span><span style="color:#FFFFFF">
 
 </span><span style="color:#6A9955">// You can then loop on a struct value if 'opCount' has been defined</span><span style="color:#FFFFFF">
 cpt := </span><span style="color:#B5CEA8">0</span><span style="color:#FFFFFF">
-loop v
+</span><span style="color:#D8A0DF">loop</span><span style="color:#FFFFFF"> v
     cpt += </span><span style="color:#B5CEA8">1</span><span style="color:#FFFFFF">
 
-@</span><span style="color:#FF7411">assert</span><span style="color:#FFFFFF">(cpt == </span><span style="color:#B5CEA8">4</span><span style="color:#FFFFFF">)</span></code></div>
+</span><span style="color:#DCDCAA">@assert</span><span style="color:#FFFFFF">(cpt == </span><span style="color:#B5CEA8">4</span><span style="color:#FFFFFF">)</span></code></div>
 <h3 id="064__post_copy_and_post_move">Post copy and post move</h3>
 <div>Swag accepts copy and move semantics for structures. In this examples, we use a <code class="incode">Vector3</code> to illustrate, even if of course that kind of struct does not need a move semantic, as there's no heap involved.</br>
 </div>
@@ -3521,19 +3521,19 @@ a := </span><span style="color:#4EC9B0">Vector3</span><span style="color:#FFFFFF
             </span><span style="color:#AAAAAA">#macro</span><span style="color:#FFFFFF">
             {
                 </span><span style="color:#6A9955">// @alias0 will be the value</span><span style="color:#FFFFFF">
-                </span><span style="color:#569CD6">var</span><span style="color:#FFFFFF"> @alias0: </span><span style="color:#F6CC86">s32</span><span style="color:#FFFFFF"> = </span><span style="color:#569CD6">undefined</span><span style="color:#FFFFFF">
+                </span><span style="color:#569CD6">var</span><span style="color:#FFFFFF"> </span><span style="color:#DCDCAA">@alias0</span><span style="color:#FFFFFF">: </span><span style="color:#F6CC86">s32</span><span style="color:#FFFFFF"> = </span><span style="color:#569CD6">undefined</span><span style="color:#FFFFFF">
 
                 </span><span style="color:#6A9955">// As this code is in the caller scope, with need to add a #up before 'idx' to reference the</span><span style="color:#FFFFFF">
                 </span><span style="color:#6A9955">// variable of this function (and not a potential variable in the caller scope)</span><span style="color:#FFFFFF">
                 </span><span style="color:#D8A0DF">switch</span><span style="color:#FFFFFF"> </span><span style="color:#D7BA7D">#up</span><span style="color:#FFFFFF"> idx
                 {
-                </span><span style="color:#D8A0DF">case</span><span style="color:#FFFFFF"> </span><span style="color:#B5CEA8">0</span><span style="color:#FFFFFF">: @alias0 = </span><span style="color:#D7BA7D">#up</span><span style="color:#FFFFFF"> </span><span style="color:#F6CC86">self</span><span style="color:#FFFFFF">.x   </span><span style="color:#6A9955">// Same for function parameter 'self'</span><span style="color:#FFFFFF">
-                </span><span style="color:#D8A0DF">case</span><span style="color:#FFFFFF"> </span><span style="color:#B5CEA8">1</span><span style="color:#FFFFFF">: @alias0 = </span><span style="color:#D7BA7D">#up</span><span style="color:#FFFFFF"> </span><span style="color:#F6CC86">self</span><span style="color:#FFFFFF">.y
-                </span><span style="color:#D8A0DF">case</span><span style="color:#FFFFFF"> </span><span style="color:#B5CEA8">2</span><span style="color:#FFFFFF">: @alias0 = </span><span style="color:#D7BA7D">#up</span><span style="color:#FFFFFF"> </span><span style="color:#F6CC86">self</span><span style="color:#FFFFFF">.z
+                </span><span style="color:#D8A0DF">case</span><span style="color:#FFFFFF"> </span><span style="color:#B5CEA8">0</span><span style="color:#FFFFFF">: </span><span style="color:#DCDCAA">@alias0</span><span style="color:#FFFFFF"> = </span><span style="color:#D7BA7D">#up</span><span style="color:#FFFFFF"> </span><span style="color:#F6CC86">self</span><span style="color:#FFFFFF">.x   </span><span style="color:#6A9955">// Same for function parameter 'self'</span><span style="color:#FFFFFF">
+                </span><span style="color:#D8A0DF">case</span><span style="color:#FFFFFF"> </span><span style="color:#B5CEA8">1</span><span style="color:#FFFFFF">: </span><span style="color:#DCDCAA">@alias0</span><span style="color:#FFFFFF"> = </span><span style="color:#D7BA7D">#up</span><span style="color:#FFFFFF"> </span><span style="color:#F6CC86">self</span><span style="color:#FFFFFF">.y
+                </span><span style="color:#D8A0DF">case</span><span style="color:#FFFFFF"> </span><span style="color:#B5CEA8">2</span><span style="color:#FFFFFF">: </span><span style="color:#DCDCAA">@alias0</span><span style="color:#FFFFFF"> = </span><span style="color:#D7BA7D">#up</span><span style="color:#FFFFFF"> </span><span style="color:#F6CC86">self</span><span style="color:#FFFFFF">.z
                 }
 
                 </span><span style="color:#6A9955">// @alias1 will be the index</span><span style="color:#FFFFFF">
-                @alias1 := </span><span style="color:#DCDCAA">@index</span><span style="color:#FFFFFF">
+                </span><span style="color:#DCDCAA">@alias1</span><span style="color:#FFFFFF"> := </span><span style="color:#DCDCAA">@index</span><span style="color:#FFFFFF">
 
                 </span><span style="color:#6A9955">// include user code</span><span style="color:#FFFFFF">
                 </span><span style="color:#AAAAAA">#mixin</span><span style="color:#FFFFFF"> </span><span style="color:#D7BA7D">#up</span><span style="color:#FFFFFF"> stmt
@@ -3543,7 +3543,7 @@ a := </span><span style="color:#4EC9B0">Vector3</span><span style="color:#FFFFFF
 }</span></code></div><div class="code"><code style="white-space: break-spaces"><span style="color:#FFFFFF">myStruct := </span><span style="color:#4EC9B0">MyStruct</span><span style="color:#FFFFFF">{}
 cpt := </span><span style="color:#B5CEA8">0</span><span style="color:#FFFFFF">
 
-// </span><span style="color:#4EC9B0">Visiting</span><span style="color:#FFFFFF"> each field in declaration order
+</span><span style="color:#6A9955">// Visiting each field in declaration order</span><span style="color:#FFFFFF">
 </span><span style="color:#6A9955">// 'v' is an alias for @alias0 (value)</span><span style="color:#FFFFFF">
 </span><span style="color:#6A9955">// 'i' is an alias for @alias1 (index)</span><span style="color:#FFFFFF">
 </span><span style="color:#D8A0DF">visit</span><span style="color:#FFFFFF"> v, i: myStruct
@@ -3570,15 +3570,15 @@ cpt := </span><span style="color:#B5CEA8">0</span><span style="color:#FFFFFF">
         {
             </span><span style="color:#AAAAAA">#macro</span><span style="color:#FFFFFF">
             {
-                </span><span style="color:#569CD6">var</span><span style="color:#FFFFFF"> @alias0: </span><span style="color:#F6CC86">s32</span><span style="color:#FFFFFF"> = </span><span style="color:#569CD6">undefined</span><span style="color:#FFFFFF">
+                </span><span style="color:#569CD6">var</span><span style="color:#FFFFFF"> </span><span style="color:#DCDCAA">@alias0</span><span style="color:#FFFFFF">: </span><span style="color:#F6CC86">s32</span><span style="color:#FFFFFF"> = </span><span style="color:#569CD6">undefined</span><span style="color:#FFFFFF">
                 </span><span style="color:#D8A0DF">switch</span><span style="color:#FFFFFF"> </span><span style="color:#D7BA7D">#up</span><span style="color:#FFFFFF"> idx
                 {
-                </span><span style="color:#D8A0DF">case</span><span style="color:#FFFFFF"> </span><span style="color:#B5CEA8">0</span><span style="color:#FFFFFF">: @alias0 = </span><span style="color:#D7BA7D">#up</span><span style="color:#FFFFFF"> </span><span style="color:#F6CC86">self</span><span style="color:#FFFFFF">.z
-                </span><span style="color:#D8A0DF">case</span><span style="color:#FFFFFF"> </span><span style="color:#B5CEA8">1</span><span style="color:#FFFFFF">: @alias0 = </span><span style="color:#D7BA7D">#up</span><span style="color:#FFFFFF"> </span><span style="color:#F6CC86">self</span><span style="color:#FFFFFF">.y
-                </span><span style="color:#D8A0DF">case</span><span style="color:#FFFFFF"> </span><span style="color:#B5CEA8">2</span><span style="color:#FFFFFF">: @alias0 = </span><span style="color:#D7BA7D">#up</span><span style="color:#FFFFFF"> </span><span style="color:#F6CC86">self</span><span style="color:#FFFFFF">.x
+                </span><span style="color:#D8A0DF">case</span><span style="color:#FFFFFF"> </span><span style="color:#B5CEA8">0</span><span style="color:#FFFFFF">: </span><span style="color:#DCDCAA">@alias0</span><span style="color:#FFFFFF"> = </span><span style="color:#D7BA7D">#up</span><span style="color:#FFFFFF"> </span><span style="color:#F6CC86">self</span><span style="color:#FFFFFF">.z
+                </span><span style="color:#D8A0DF">case</span><span style="color:#FFFFFF"> </span><span style="color:#B5CEA8">1</span><span style="color:#FFFFFF">: </span><span style="color:#DCDCAA">@alias0</span><span style="color:#FFFFFF"> = </span><span style="color:#D7BA7D">#up</span><span style="color:#FFFFFF"> </span><span style="color:#F6CC86">self</span><span style="color:#FFFFFF">.y
+                </span><span style="color:#D8A0DF">case</span><span style="color:#FFFFFF"> </span><span style="color:#B5CEA8">2</span><span style="color:#FFFFFF">: </span><span style="color:#DCDCAA">@alias0</span><span style="color:#FFFFFF"> = </span><span style="color:#D7BA7D">#up</span><span style="color:#FFFFFF"> </span><span style="color:#F6CC86">self</span><span style="color:#FFFFFF">.x
                 }
 
-                @alias1 := </span><span style="color:#DCDCAA">@index</span><span style="color:#FFFFFF">
+                </span><span style="color:#DCDCAA">@alias1</span><span style="color:#FFFFFF"> := </span><span style="color:#DCDCAA">@index</span><span style="color:#FFFFFF">
                 </span><span style="color:#AAAAAA">#mixin</span><span style="color:#FFFFFF"> </span><span style="color:#D7BA7D">#up</span><span style="color:#FFFFFF"> stmt
             }
         }
@@ -3586,7 +3586,7 @@ cpt := </span><span style="color:#B5CEA8">0</span><span style="color:#FFFFFF">
 }</span></code></div><div class="code"><code style="white-space: break-spaces"><span style="color:#FFFFFF">myStruct := </span><span style="color:#4EC9B0">MyStruct</span><span style="color:#FFFFFF">{}
 cpt := </span><span style="color:#B5CEA8">0</span><span style="color:#FFFFFF">
 
-// </span><span style="color:#4EC9B0">To</span><span style="color:#FFFFFF"> call a variant, add the extra name between parenthesis.
+</span><span style="color:#6A9955">// To call a variant, add the extra name between parenthesis.</span><span style="color:#FFFFFF">
 </span><span style="color:#D8A0DF">visit</span><span style="color:#FFFFFF">(</span><span style="color:#4EC9B0">Reverse</span><span style="color:#FFFFFF">) v, i: myStruct
 {
     </span><span style="color:#D8A0DF">switch</span><span style="color:#FFFFFF"> i
@@ -3894,7 +3894,7 @@ x += </span><span style="color:#B5CEA8">1</span><span style="color:#FFFFFF">    
 </span><span style="color:#DCDCAA">@assert</span><span style="color:#FFFFFF">(x == </span><span style="color:#B5CEA8">0</span><span style="color:#FFFFFF">)</span></code></div><div>For 8 or 16 bits, you can promote an operation to 32 bits by using ',up'.</br>
 </div>
 <div class="code"><code style="white-space: break-spaces"><span style="color:#FFFFFF">x := </span><span style="color:#B5CEA8">255</span><span style="color:#FFFFFF">'</span><span style="color:#F6CC86">u8</span><span style="color:#FFFFFF"> +,up </span><span style="color:#B5CEA8">1</span><span style="color:#FFFFFF">
-@</span><span style="color:#FF7411">assert</span><span style="color:#FFFFFF">(x == </span><span style="color:#B5CEA8">256</span><span style="color:#FFFFFF">)
+</span><span style="color:#DCDCAA">@assert</span><span style="color:#FFFFFF">(x == </span><span style="color:#B5CEA8">256</span><span style="color:#FFFFFF">)
 </span><span style="color:#DCDCAA">@assert</span><span style="color:#FFFFFF">(</span><span style="color:#DCDCAA">@typeof</span><span style="color:#FFFFFF">(x) == </span><span style="color:#F6CC86">u32</span><span style="color:#FFFFFF">)</span></code></div><div>Swag will also check that a cast does not lose information.</br>
 </div>
 <div class="code"><code style="white-space: break-spaces"><span style="color:#FFFFFF">x1 := </span><span style="color:#B5CEA8">255</span><span style="color:#FFFFFF">'</span><span style="color:#F6CC86">u8</span><span style="color:#FFFFFF">
@@ -3928,19 +3928,19 @@ y := </span><span style="color:#569CD6">cast</span><span style="color:#FFFFFF">(
 </div>
 <div class="code"><code style="white-space: break-spaces"><span style="color:#FFFFFF">x := [</span><span style="color:#B5CEA8">0</span><span style="color:#FFFFFF">, </span><span style="color:#B5CEA8">1</span><span style="color:#FFFFFF">, </span><span style="color:#B5CEA8">2</span><span style="color:#FFFFFF">]
 idx := </span><span style="color:#B5CEA8">10</span><span style="color:#FFFFFF">
-//</span><span style="color:#DCDCAA">@assert</span><span style="color:#FFFFFF">(x[idx] == </span><span style="color:#B5CEA8">1</span><span style="color:#FFFFFF">)     </span><span style="color:#6A9955">// '10' is out of range, will panic</span></code></div><div>Safety when indexing a slice.</br>
+</span><span style="color:#6A9955">//@assert(x[idx] == 1)     // '10' is out of range, will panic</span></code></div><div>Safety when indexing a slice.</br>
 </div>
 <div class="code"><code style="white-space: break-spaces"><span style="color:#569CD6">var</span><span style="color:#FFFFFF"> x: </span><span style="color:#569CD6">const</span><span style="color:#FFFFFF"> [..] </span><span style="color:#F6CC86">s32</span><span style="color:#FFFFFF"> = [</span><span style="color:#B5CEA8">0</span><span style="color:#FFFFFF">, </span><span style="color:#B5CEA8">1</span><span style="color:#FFFFFF">, </span><span style="color:#B5CEA8">2</span><span style="color:#FFFFFF">]
 idx := </span><span style="color:#B5CEA8">1</span><span style="color:#FFFFFF">
-@</span><span style="color:#FF7411">assert</span><span style="color:#FFFFFF">(x[idx] == </span><span style="color:#B5CEA8">1</span><span style="color:#FFFFFF">)        </span><span style="color:#6A9955">// '1' is in range, ok</span><span style="color:#FFFFFF">
+</span><span style="color:#DCDCAA">@assert</span><span style="color:#FFFFFF">(x[idx] == </span><span style="color:#B5CEA8">1</span><span style="color:#FFFFFF">)        </span><span style="color:#6A9955">// '1' is in range, ok</span><span style="color:#FFFFFF">
 idx += </span><span style="color:#B5CEA8">9</span><span style="color:#FFFFFF">
-//</span><span style="color:#DCDCAA">@assert</span><span style="color:#FFFFFF">(x[idx] == </span><span style="color:#B5CEA8">1</span><span style="color:#FFFFFF">)      </span><span style="color:#6A9955">// '10' is out of range, will panic</span></code></div><div>Safety when slicing a sized value.</br>
+</span><span style="color:#6A9955">//@assert(x[idx] == 1)      // '10' is out of range, will panic</span></code></div><div>Safety when slicing a sized value.</br>
 </div>
 <div class="code"><code style="white-space: break-spaces"><span style="color:#569CD6">var</span><span style="color:#FFFFFF"> x: </span><span style="color:#569CD6">const</span><span style="color:#FFFFFF"> [..] </span><span style="color:#F6CC86">s32</span><span style="color:#FFFFFF"> = [</span><span style="color:#B5CEA8">0</span><span style="color:#FFFFFF">, </span><span style="color:#B5CEA8">1</span><span style="color:#FFFFFF">, </span><span style="color:#B5CEA8">2</span><span style="color:#FFFFFF">]
 </span><span style="color:#6A9955">//slice := x[1..4]              // '4' is out of range, will panic</span><span style="color:#FFFFFF">
 </span><span style="color:#6A9955">//@assert(slice[0] == 1)</span></code></div><div class="code"><code style="white-space: break-spaces"><span style="color:#FFFFFF">x := </span><span style="color:#CE9178">"string"</span><span style="color:#FFFFFF">
 idx := </span><span style="color:#B5CEA8">10</span><span style="color:#FFFFFF">
-//slice := x[</span><span style="color:#B5CEA8">0.</span><span style="color:#FFFFFF">.idx]            </span><span style="color:#6A9955">// '10' is out of range, will panic</span><span style="color:#FFFFFF">
+</span><span style="color:#6A9955">//slice := x[0..idx]            // '10' is out of range, will panic</span><span style="color:#FFFFFF">
 </span><span style="color:#6A9955">//@assert(slice[0] == "s"'u8)</span></code></div><div><h3 id="#[Swag.Safety("math", true)]">#[Swag.Safety("math", true)]</br>
 </h3>Swag will panic if some math operations are invalid.</br>
 </div>
@@ -4347,7 +4347,7 @@ Another limitation is that you can only capture 'simple' variables (no struct wi
     #[</span><span style="color:#4EC9B0">Swag</span><span style="color:#FFFFFF">.</span><span style="color:#4EC9B0">Mixin</span><span style="color:#FFFFFF">]
     </span><span style="color:#569CD6">func</span><span style="color:#FFFFFF"> </span><span style="color:#FF7411">inc10</span><span style="color:#FFFFFF">()
     {
-        @alias0 += </span><span style="color:#B5CEA8">10</span><span style="color:#FFFFFF">
+        </span><span style="color:#DCDCAA">@alias0</span><span style="color:#FFFFFF"> += </span><span style="color:#B5CEA8">10</span><span style="color:#FFFFFF">
     }
 
     a, b := </span><span style="color:#B5CEA8">0</span><span style="color:#FFFFFF">
@@ -4360,7 +4360,7 @@ Another limitation is that you can only capture 'simple' variables (no struct wi
     #[</span><span style="color:#4EC9B0">Swag</span><span style="color:#FFFFFF">.</span><span style="color:#4EC9B0">Mixin</span><span style="color:#FFFFFF">]
     </span><span style="color:#569CD6">func</span><span style="color:#FFFFFF"> </span><span style="color:#FF7411">setVar</span><span style="color:#FFFFFF">(value: </span><span style="color:#F6CC86">s32</span><span style="color:#FFFFFF">)
     {
-        </span><span style="color:#569CD6">var</span><span style="color:#FFFFFF"> @alias0 = value
+        </span><span style="color:#569CD6">var</span><span style="color:#FFFFFF"> </span><span style="color:#DCDCAA">@alias0</span><span style="color:#FFFFFF"> = value
     }
 
     </span><span style="color:#FF7411">setVar</span><span style="color:#FFFFFF">(|a| </span><span style="color:#B5CEA8">10</span><span style="color:#FFFFFF">)  </span><span style="color:#6A9955">// Passing alias name 'a'</span><span style="color:#FFFFFF">
@@ -4368,7 +4368,7 @@ Another limitation is that you can only capture 'simple' variables (no struct wi
     </span><span style="color:#DCDCAA">@assert</span><span style="color:#FFFFFF">(a == </span><span style="color:#B5CEA8">10</span><span style="color:#FFFFFF">)
     </span><span style="color:#DCDCAA">@assert</span><span style="color:#FFFFFF">(b == </span><span style="color:#B5CEA8">20</span><span style="color:#FFFFFF">)
     </span><span style="color:#FF7411">setVar</span><span style="color:#FFFFFF">(</span><span style="color:#B5CEA8">30</span><span style="color:#FFFFFF">)      </span><span style="color:#6A9955">// No alias, so name is @alias0</span><span style="color:#FFFFFF">
-    </span><span style="color:#DCDCAA">@assert</span><span style="color:#FFFFFF">(@alias0 == </span><span style="color:#B5CEA8">30</span><span style="color:#FFFFFF">)
+    </span><span style="color:#DCDCAA">@assert</span><span style="color:#FFFFFF">(</span><span style="color:#DCDCAA">@alias0</span><span style="color:#FFFFFF"> == </span><span style="color:#B5CEA8">30</span><span style="color:#FFFFFF">)
 }</span></code></div><div>
 </br>
  You can declare special variables named <code class="incode">@mixin?</code>. Those variables will have a unique name each time the mixin is used. So the same mixin, even if it declares local variables, can be used multiple time in the same scope.</br>
@@ -4379,8 +4379,8 @@ Another limitation is that you can only capture 'simple' variables (no struct wi
     #[</span><span style="color:#4EC9B0">Swag</span><span style="color:#FFFFFF">.</span><span style="color:#4EC9B0">Mixin</span><span style="color:#FFFFFF">]
     </span><span style="color:#569CD6">func</span><span style="color:#FFFFFF"> </span><span style="color:#FF7411">toScope</span><span style="color:#FFFFFF">()
     {
-        </span><span style="color:#569CD6">var</span><span style="color:#FFFFFF"> @mixin0: </span><span style="color:#F6CC86">s32</span><span style="color:#FFFFFF"> = </span><span style="color:#B5CEA8">1</span><span style="color:#FFFFFF">
-        total += @mixin0
+        </span><span style="color:#569CD6">var</span><span style="color:#FFFFFF"> </span><span style="color:#DCDCAA">@mixin0</span><span style="color:#FFFFFF">: </span><span style="color:#F6CC86">s32</span><span style="color:#FFFFFF"> = </span><span style="color:#B5CEA8">1</span><span style="color:#FFFFFF">
+        total += </span><span style="color:#DCDCAA">@mixin0</span><span style="color:#FFFFFF">
     }
 
     </span><span style="color:#FF7411">toScope</span><span style="color:#FFFFFF">()
@@ -4539,15 +4539,15 @@ Another limitation is that you can only capture 'simple' variables (no struct wi
     #[</span><span style="color:#4EC9B0">Swag</span><span style="color:#FFFFFF">.</span><span style="color:#4EC9B0">Macro</span><span style="color:#FFFFFF">]
     </span><span style="color:#569CD6">func</span><span style="color:#FFFFFF"> </span><span style="color:#FF7411">call</span><span style="color:#FFFFFF">(v: </span><span style="color:#F6CC86">s32</span><span style="color:#FFFFFF">, stmt: </span><span style="color:#F6CC86">code</span><span style="color:#FFFFFF">)
     {
-        @alias0 := v
-        @alias1 := v * </span><span style="color:#B5CEA8">2</span><span style="color:#FFFFFF">
+        </span><span style="color:#DCDCAA">@alias0</span><span style="color:#FFFFFF"> := v
+        </span><span style="color:#DCDCAA">@alias1</span><span style="color:#FFFFFF"> := v * </span><span style="color:#B5CEA8">2</span><span style="color:#FFFFFF">
         </span><span style="color:#AAAAAA">#mixin</span><span style="color:#FFFFFF"> stmt
     }
 
     </span><span style="color:#FF7411">call</span><span style="color:#FFFFFF">(</span><span style="color:#B5CEA8">20</span><span style="color:#FFFFFF">)
     {
-        </span><span style="color:#DCDCAA">@assert</span><span style="color:#FFFFFF">(@alias0 == </span><span style="color:#B5CEA8">20</span><span style="color:#FFFFFF">)
-        </span><span style="color:#DCDCAA">@assert</span><span style="color:#FFFFFF">(@alias1 == </span><span style="color:#B5CEA8">40</span><span style="color:#FFFFFF">)
+        </span><span style="color:#DCDCAA">@assert</span><span style="color:#FFFFFF">(</span><span style="color:#DCDCAA">@alias0</span><span style="color:#FFFFFF"> == </span><span style="color:#B5CEA8">20</span><span style="color:#FFFFFF">)
+        </span><span style="color:#DCDCAA">@assert</span><span style="color:#FFFFFF">(</span><span style="color:#DCDCAA">@alias1</span><span style="color:#FFFFFF"> == </span><span style="color:#B5CEA8">40</span><span style="color:#FFFFFF">)
     }
 
     </span><span style="color:#6A9955">// The caller can then name those special variables</span><span style="color:#FFFFFF">
@@ -4555,7 +4555,7 @@ Another limitation is that you can only capture 'simple' variables (no struct wi
     </span><span style="color:#FF7411">call</span><span style="color:#FFFFFF">(|x| </span><span style="color:#B5CEA8">20</span><span style="color:#FFFFFF">)
     {
         </span><span style="color:#DCDCAA">@assert</span><span style="color:#FFFFFF">(x == </span><span style="color:#B5CEA8">20</span><span style="color:#FFFFFF">)        </span><span style="color:#6A9955">// x is @alias0</span><span style="color:#FFFFFF">
-        </span><span style="color:#DCDCAA">@assert</span><span style="color:#FFFFFF">(@alias1 == </span><span style="color:#B5CEA8">40</span><span style="color:#FFFFFF">)  </span><span style="color:#6A9955">// @alias1 is not renamed</span><span style="color:#FFFFFF">
+        </span><span style="color:#DCDCAA">@assert</span><span style="color:#FFFFFF">(</span><span style="color:#DCDCAA">@alias1</span><span style="color:#FFFFFF"> == </span><span style="color:#B5CEA8">40</span><span style="color:#FFFFFF">)  </span><span style="color:#6A9955">// @alias1 is not renamed</span><span style="color:#FFFFFF">
     }
 
     </span><span style="color:#FF7411">call</span><span style="color:#FFFFFF">(|x, y| </span><span style="color:#B5CEA8">20</span><span style="color:#FFFFFF">)
@@ -4703,7 +4703,7 @@ Another limitation is that you can only capture 'simple' variables (no struct wi
 }
 
 </span><span style="color:#AAAAAA">#assert</span><span style="color:#FFFFFF"> </span><span style="color:#FF7411">sum</span><span style="color:#FFFFFF">(</span><span style="color:#B5CEA8">1</span><span style="color:#FFFFFF">, </span><span style="color:#B5CEA8">2</span><span style="color:#FFFFFF">) == </span><span style="color:#B5CEA8">3</span><span style="color:#FFFFFF">
-#assert </span><span style="color:#FF7411">sum</span><span style="color:#FFFFFF">(</span><span style="color:#B5CEA8">1</span><span style="color:#FFFFFF">, </span><span style="color:#B5CEA8">2</span><span style="color:#FFFFFF">, </span><span style="color:#B5CEA8">3</span><span style="color:#FFFFFF">) == </span><span style="color:#B5CEA8">6</span></code></div><div>Note that in Swag, there is no implicit cast for function parameters. So you must always specify the right type.</br>
+</span><span style="color:#AAAAAA">#assert</span><span style="color:#FFFFFF"> </span><span style="color:#FF7411">sum</span><span style="color:#FFFFFF">(</span><span style="color:#B5CEA8">1</span><span style="color:#FFFFFF">, </span><span style="color:#B5CEA8">2</span><span style="color:#FFFFFF">, </span><span style="color:#B5CEA8">3</span><span style="color:#FFFFFF">) == </span><span style="color:#B5CEA8">6</span></code></div><div>Note that in Swag, there is no implicit cast for function parameters. So you must always specify the right type.</br>
 </div>
 <div class="code"><code style="white-space: break-spaces"><span style="color:#569CD6">func</span><span style="color:#FFFFFF"> </span><span style="color:#FF7411">over</span><span style="color:#FFFFFF">(x, y: </span><span style="color:#F6CC86">s32</span><span style="color:#FFFFFF">) => x + y
 </span><span style="color:#569CD6">func</span><span style="color:#FFFFFF"> </span><span style="color:#FF7411">over</span><span style="color:#FFFFFF">(x, y: </span><span style="color:#F6CC86">s64</span><span style="color:#FFFFFF">) => x * y
@@ -5556,7 +5556,7 @@ pt.</span><span style="color:#FF7411">setOne</span><span style="color:#FFFFFF">(
 value.x = </span><span style="color:#B5CEA8">0</span><span style="color:#FFFFFF"> </span><span style="color:#6A9955">// Equivalent to value.base.x = 0</span><span style="color:#FFFFFF">
 value.y = </span><span style="color:#B5CEA8">0</span><span style="color:#FFFFFF"> </span><span style="color:#6A9955">// Equivalent to value.base.y = 0</span><span style="color:#FFFFFF">
 value.z = </span><span style="color:#B5CEA8">0</span><span style="color:#FFFFFF">
-@</span><span style="color:#FF7411">assert</span><span style="color:#FFFFFF">(&value.x == &value.base.x)
+</span><span style="color:#DCDCAA">@assert</span><span style="color:#FFFFFF">(&value.x == &value.base.x)
 </span><span style="color:#DCDCAA">@assert</span><span style="color:#FFFFFF">(&value.y == &value.base.y)
 
 </span><span style="color:#6A9955">// The compiler can then cast automatically 'Point3' to 'Point2'</span><span style="color:#FFFFFF">
@@ -5819,7 +5819,7 @@ That means that most of the time it's not necessary to specify it.</br>
 </div>
 <div class="code"><code style="white-space: break-spaces"><span style="color:#569CD6">var</span><span style="color:#FFFFFF"> g_Defer = </span><span style="color:#B5CEA8">0</span><span style="color:#FFFFFF">
 
-func </span><span style="color:#FF7411">raiseError</span><span style="color:#FFFFFF">() </span><span style="color:#569CD6">throw</span><span style="color:#FFFFFF">
+</span><span style="color:#569CD6">func</span><span style="color:#FFFFFF"> </span><span style="color:#FF7411">raiseError</span><span style="color:#FFFFFF">() </span><span style="color:#569CD6">throw</span><span style="color:#FFFFFF">
 {
     </span><span style="color:#569CD6">throw</span><span style="color:#FFFFFF"> </span><span style="color:#CE9178">"error"</span><span style="color:#FFFFFF">
 }
@@ -5832,11 +5832,11 @@ func </span><span style="color:#FF7411">raiseError</span><span style="color:#FFF
     </span><span style="color:#D8A0DF">if</span><span style="color:#FFFFFF"> err
         </span><span style="color:#FF7411">raiseError</span><span style="color:#FFFFFF">()
 }</span></code></div><div class="code"><code style="white-space: break-spaces"><span style="color:#FFFFFF">g_Defer = </span><span style="color:#B5CEA8">0</span><span style="color:#FFFFFF">
-catch </span><span style="color:#FF7411">testDefer</span><span style="color:#FFFFFF">(</span><span style="color:#569CD6">true</span><span style="color:#FFFFFF">)
+</span><span style="color:#569CD6">catch</span><span style="color:#FFFFFF"> </span><span style="color:#FF7411">testDefer</span><span style="color:#FFFFFF">(</span><span style="color:#569CD6">true</span><span style="color:#FFFFFF">)
 </span><span style="color:#DCDCAA">@assert</span><span style="color:#FFFFFF">(g_Defer == </span><span style="color:#B5CEA8">4</span><span style="color:#FFFFFF">)   </span><span style="color:#6A9955">// Will call only defer(err) and the normal defer</span><span style="color:#FFFFFF">
 
 g_Defer = </span><span style="color:#B5CEA8">0</span><span style="color:#FFFFFF">
-catch </span><span style="color:#FF7411">testDefer</span><span style="color:#FFFFFF">(</span><span style="color:#569CD6">false</span><span style="color:#FFFFFF">)
+</span><span style="color:#569CD6">catch</span><span style="color:#FFFFFF"> </span><span style="color:#FF7411">testDefer</span><span style="color:#FFFFFF">(</span><span style="color:#569CD6">false</span><span style="color:#FFFFFF">)
 </span><span style="color:#DCDCAA">@assert</span><span style="color:#FFFFFF">(g_Defer == </span><span style="color:#B5CEA8">5</span><span style="color:#FFFFFF">)   </span><span style="color:#6A9955">// Will call only defer(noerr) and the normal defer</span></code></div>
 <h2 id="180_compiler_declarations">Compiler declarations</h2>
 
@@ -5850,8 +5850,8 @@ catch </span><span style="color:#FF7411">testDefer</span><span style="color:#FFF
 </span><span style="color:#569CD6">var</span><span style="color:#FFFFFF"> </span><span style="color:#4EC9B0">Global</span><span style="color:#FFFFFF"> = </span><span style="color:#B5CEA8">0</span></code></div><div>A static <code class="incode">#if/#elif/#else</code>, with an expression that can be evaluated at compile time.</br>
 </div>
 <div class="code"><code style="white-space: break-spaces"><span style="color:#569CD6">const</span><span style="color:#FFFFFF"> </span><span style="color:#4EC9B0">DEBUG</span><span style="color:#FFFFFF"> = </span><span style="color:#B5CEA8">1</span><span style="color:#FFFFFF">
-const </span><span style="color:#4EC9B0">RELEASE</span><span style="color:#FFFFFF"> = </span><span style="color:#B5CEA8">0</span><span style="color:#FFFFFF">
-#</span><span style="color:#D8A0DF">if</span><span style="color:#FFFFFF"> </span><span style="color:#4EC9B0">DEBUG</span><span style="color:#FFFFFF">
+</span><span style="color:#569CD6">const</span><span style="color:#FFFFFF"> </span><span style="color:#4EC9B0">RELEASE</span><span style="color:#FFFFFF"> = </span><span style="color:#B5CEA8">0</span><span style="color:#FFFFFF">
+</span><span style="color:#AAAAAA">#if</span><span style="color:#FFFFFF"> </span><span style="color:#4EC9B0">DEBUG</span><span style="color:#FFFFFF">
 {
 }
 </span><span style="color:#AAAAAA">#elif</span><span style="color:#FFFFFF"> </span><span style="color:#4EC9B0">RELEASE</span><span style="color:#FFFFFF">
@@ -5950,9 +5950,9 @@ So we can test the values of G here.</br>
 </span><span style="color:#DCDCAA">@assert</span><span style="color:#FFFFFF">(</span><span style="color:#4EC9B0">G</span><span style="color:#FFFFFF">[</span><span style="color:#B5CEA8">4</span><span style="color:#FFFFFF">] == </span><span style="color:#B5CEA8">16</span><span style="color:#FFFFFF">)</span></code></div><div><code class="incode">#run</code> can also be used as an expression, to call for example a function not marked with <code class="incode">#[Swag.ConstExpr]</code>.</br>
 </div>
 <div class="code"><code style="white-space: break-spaces"><span style="color:#569CD6">const</span><span style="color:#FFFFFF"> </span><span style="color:#4EC9B0">SumValue</span><span style="color:#FFFFFF"> = </span><span style="color:#FF7411">#run</span><span style="color:#FFFFFF"> </span><span style="color:#FF7411">sum</span><span style="color:#FFFFFF">(</span><span style="color:#B5CEA8">1</span><span style="color:#FFFFFF">, </span><span style="color:#B5CEA8">2</span><span style="color:#FFFFFF">, </span><span style="color:#B5CEA8">3</span><span style="color:#FFFFFF">, </span><span style="color:#B5CEA8">4</span><span style="color:#FFFFFF">) + </span><span style="color:#B5CEA8">10</span><span style="color:#FFFFFF">
-#assert </span><span style="color:#4EC9B0">SumValue</span><span style="color:#FFFFFF"> == </span><span style="color:#B5CEA8">20</span><span style="color:#FFFFFF">
+</span><span style="color:#AAAAAA">#assert</span><span style="color:#FFFFFF"> </span><span style="color:#4EC9B0">SumValue</span><span style="color:#FFFFFF"> == </span><span style="color:#B5CEA8">20</span><span style="color:#FFFFFF">
 
-func </span><span style="color:#FF7411">sum</span><span style="color:#FFFFFF">(values: </span><span style="color:#F6CC86">s32</span><span style="color:#FFFFFF">...)-></span><span style="color:#F6CC86">s32</span><span style="color:#FFFFFF">
+</span><span style="color:#569CD6">func</span><span style="color:#FFFFFF"> </span><span style="color:#FF7411">sum</span><span style="color:#FFFFFF">(values: </span><span style="color:#F6CC86">s32</span><span style="color:#FFFFFF">...)-></span><span style="color:#F6CC86">s32</span><span style="color:#FFFFFF">
 {
     result := </span><span style="color:#B5CEA8">0</span><span style="color:#FFFFFF">'</span><span style="color:#F6CC86">s32</span><span style="color:#FFFFFF">
     </span><span style="color:#D8A0DF">visit</span><span style="color:#FFFFFF"> v: values
@@ -6020,7 +6020,7 @@ The return type is deduced from the <code class="incode">return</code> statement
 <div class="code"><code style="white-space: break-spaces"><span style="color:#FFFFFF">#[</span><span style="color:#4EC9B0">Swag</span><span style="color:#FFFFFF">.</span><span style="color:#4EC9B0">Compiler</span><span style="color:#FFFFFF">]
 </span><span style="color:#569CD6">var</span><span style="color:#FFFFFF"> </span><span style="color:#4EC9B0">G2</span><span style="color:#FFFFFF"> = </span><span style="color:#B5CEA8">0</span><span style="color:#FFFFFF">
 
-#run
+</span><span style="color:#FF7411">#run</span><span style="color:#FFFFFF">
 {
     </span><span style="color:#4EC9B0">G2</span><span style="color:#FFFFFF"> += </span><span style="color:#B5CEA8">5</span><span style="color:#FFFFFF">
 }</span></code></div>
@@ -6243,7 +6243,7 @@ All are located in the reserved <code class="incode">Swag</code> namespace.</br>
 
 </span><span style="color:#569CD6">var</span><span style="color:#FFFFFF"> </span><span style="color:#4EC9B0">G</span><span style="color:#FFFFFF"> = </span><span style="color:#B5CEA8">0</span><span style="color:#FFFFFF">
 
-func </span><span style="color:#4EC9B0">XXTestFunc1</span><span style="color:#FFFFFF">() {}
+</span><span style="color:#569CD6">func</span><span style="color:#FFFFFF"> </span><span style="color:#4EC9B0">XXTestFunc1</span><span style="color:#FFFFFF">() {}
 </span><span style="color:#569CD6">func</span><span style="color:#FFFFFF"> </span><span style="color:#4EC9B0">XXTestFunc2</span><span style="color:#FFFFFF">() {}
 </span><span style="color:#569CD6">func</span><span style="color:#FFFFFF"> </span><span style="color:#4EC9B0">XXTestFunc3</span><span style="color:#FFFFFF">() {}</span></code></div><div>The compiler will call the following function after the semantic pass. So after <b>all the functions</b> of the module have been parsed.</br>
 </div>
