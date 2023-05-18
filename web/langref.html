@@ -2166,7 +2166,7 @@ myRef = </span><span style="color:#569CD6">ref</span><span style="color:#FFFFFF"
 </br>
 That kind of enum starts by default at 1, and not 0, and each value should be a power of 2.</br>
 </div>
-<div class="code"><code style="white-space: break-spaces"><span style="color:#FFFFFF">#[</span><span style="color:#4EC9B0">Swag</span><span style="color:#FFFFFF">.</span><span style="color:#4EC9B0">EnumFlags</span><span style="color:#FFFFFF">]
+<div class="code"><code style="white-space: break-spaces"><span style="color:#AAAAAA">#[Swag.EnumFlags]</span><span style="color:#FFFFFF">
 </span><span style="color:#569CD6">enum</span><span style="color:#FFFFFF"> </span><span style="color:#4EC9B0">MyFlags</span><span style="color:#FFFFFF">: </span><span style="color:#F6CC86">u8</span><span style="color:#FFFFFF">
 {
     </span><span style="color:#4EC9B0">A</span><span style="color:#FFFFFF">   </span><span style="color:#6A9955">// First value is 1 and *not* 0</span><span style="color:#FFFFFF">
@@ -2267,7 +2267,7 @@ y := </span><span style="color:#4EC9B0">Value</span><span style="color:#FFFFFF">
  Works also for flags.</br>
 </div>
 <div class="code"><code style="white-space: break-spaces"><span style="color:#FFFFFF">{
-    #[</span><span style="color:#4EC9B0">Swag</span><span style="color:#FFFFFF">.</span><span style="color:#4EC9B0">EnumFlags</span><span style="color:#FFFFFF">]
+    </span><span style="color:#AAAAAA">#[Swag.EnumFlags]</span><span style="color:#FFFFFF">
     </span><span style="color:#569CD6">enum</span><span style="color:#FFFFFF"> </span><span style="color:#4EC9B0">Values</span><span style="color:#FFFFFF"> { </span><span style="color:#4EC9B0">A</span><span style="color:#FFFFFF">; </span><span style="color:#4EC9B0">B</span><span style="color:#FFFFFF">; }
 
     x := </span><span style="color:#4EC9B0">Values</span><span style="color:#FFFFFF">.</span><span style="color:#4EC9B0">A</span><span style="color:#FFFFFF"> | </span><span style="color:#4EC9B0">Values</span><span style="color:#FFFFFF">.</span><span style="color:#4EC9B0">B</span><span style="color:#FFFFFF">
@@ -2809,7 +2809,7 @@ On a string, it will loop for each byte, <b>not</b> runes (if a rune is encoded 
     </span><span style="color:#569CD6">enum</span><span style="color:#FFFFFF"> </span><span style="color:#4EC9B0">Color</span><span style="color:#FFFFFF"> { </span><span style="color:#4EC9B0">Red</span><span style="color:#FFFFFF">; </span><span style="color:#4EC9B0">Green</span><span style="color:#FFFFFF">; </span><span style="color:#4EC9B0">Blue</span><span style="color:#FFFFFF">; }
     color := </span><span style="color:#4EC9B0">Color</span><span style="color:#FFFFFF">.</span><span style="color:#4EC9B0">Red</span><span style="color:#FFFFFF">
 
-    #[</span><span style="color:#4EC9B0">Swag</span><span style="color:#FFFFFF">.</span><span style="color:#4EC9B0">Complete</span><span style="color:#FFFFFF">]
+    </span><span style="color:#AAAAAA">#[Swag.Complete]</span><span style="color:#FFFFFF">
     </span><span style="color:#D8A0DF">switch</span><span style="color:#FFFFFF"> color
     {
     </span><span style="color:#D8A0DF">case</span><span style="color:#FFFFFF"> </span><span style="color:#4EC9B0">Color</span><span style="color:#FFFFFF">.</span><span style="color:#4EC9B0">Red</span><span style="color:#FFFFFF">:     </span><span style="color:#D8A0DF">break</span><span style="color:#FFFFFF">
@@ -3131,7 +3131,7 @@ On a string, it will loop for each byte, <b>not</b> runes (if a rune is encoded 
 <h3 id="062__impl">Impl</h3>
 <div>Like for an enum, <code class="incode">impl</code> is used to declare some stuff in the scope of a struct.</br>
 </div>
-<div class="code"><code style="white-space: break-spaces"><span style="color:#FFFFFF">#[</span><span style="color:#4EC9B0">Swag</span><span style="color:#FFFFFF">.</span><span style="color:#4EC9B0">ExportType</span><span style="color:#FFFFFF">(</span><span style="color:#CE9178">"methods"</span><span style="color:#FFFFFF">)]   </span><span style="color:#6A9955">// See later, used to export 'methods' in type reflection</span><span style="color:#FFFFFF">
+<div class="code"><code style="white-space: break-spaces"><span style="color:#AAAAAA">#[Swag.ExportType("methods")]</span><span style="color:#FFFFFF">   </span><span style="color:#6A9955">// See later, used to export 'methods' in type reflection</span><span style="color:#FFFFFF">
 </span><span style="color:#569CD6">struct</span><span style="color:#FFFFFF"> </span><span style="color:#4EC9B0">MyStruct</span><span style="color:#FFFFFF">
 {
     x: </span><span style="color:#F6CC86">s32</span><span style="color:#FFFFFF"> = </span><span style="color:#B5CEA8">5</span><span style="color:#FFFFFF">
@@ -3295,7 +3295,7 @@ t := </span><span style="color:#DCDCAA">@typeof</span><span style="color:#FFFFFF
     </span><span style="color:#6A9955">// Called by a 'visit' block</span><span style="color:#FFFFFF">
     </span><span style="color:#6A9955">// Can have multiple versions, by adding a name after 'opVisit'</span><span style="color:#FFFFFF">
     </span><span style="color:#6A9955">// This is the way to go for iterators</span><span style="color:#FFFFFF">
-    #[</span><span style="color:#4EC9B0">Swag</span><span style="color:#FFFFFF">.</span><span style="color:#4EC9B0">Macro</span><span style="color:#FFFFFF">]
+    </span><span style="color:#AAAAAA">#[Swag.Macro]</span><span style="color:#FFFFFF">
     {
         </span><span style="color:#569CD6">func</span><span style="color:#FFFFFF">(ptr: </span><span style="color:#F6CC86">bool</span><span style="color:#FFFFFF">) </span><span style="color:#DCDCAA">opVisit</span><span style="color:#FFFFFF">(</span><span style="color:#569CD6">using</span><span style="color:#FFFFFF"> </span><span style="color:#F6CC86">self</span><span style="color:#FFFFFF">, stmt: </span><span style="color:#F6CC86">code</span><span style="color:#FFFFFF">) {}
         </span><span style="color:#569CD6">func</span><span style="color:#FFFFFF">(ptr: </span><span style="color:#F6CC86">bool</span><span style="color:#FFFFFF">) </span><span style="color:#FF7411">opVisitWhatever</span><span style="color:#FFFFFF">(</span><span style="color:#569CD6">using</span><span style="color:#FFFFFF"> </span><span style="color:#F6CC86">self</span><span style="color:#FFFFFF">, stmt: </span><span style="color:#F6CC86">code</span><span style="color:#FFFFFF">) {}
@@ -3335,11 +3335,11 @@ v1 = </span><span style="color:#569CD6">false</span><span style="color:#FFFFFF">
 </div>
 <div class="code"><code style="white-space: break-spaces"><span style="color:#569CD6">impl</span><span style="color:#FFFFFF"> </span><span style="color:#4EC9B0">Struct</span><span style="color:#FFFFFF">
 {
-    #[</span><span style="color:#4EC9B0">Swag</span><span style="color:#FFFFFF">.</span><span style="color:#4EC9B0">Complete</span><span style="color:#FFFFFF">]
+    </span><span style="color:#AAAAAA">#[Swag.Complete]</span><span style="color:#FFFFFF">
     </span><span style="color:#569CD6">mtd</span><span style="color:#FFFFFF"> </span><span style="color:#DCDCAA">opAffect</span><span style="color:#FFFFFF">(value: </span><span style="color:#F6CC86">u64</span><span style="color:#FFFFFF">)  { x, y, z = </span><span style="color:#569CD6">cast</span><span style="color:#FFFFFF">(</span><span style="color:#F6CC86">s32</span><span style="color:#FFFFFF">) value; }
 
     </span><span style="color:#6A9955">// For later</span><span style="color:#FFFFFF">
-    #[</span><span style="color:#4EC9B0">Swag</span><span style="color:#FFFFFF">.</span><span style="color:#4EC9B0">Implicit</span><span style="color:#FFFFFF">]
+    </span><span style="color:#AAAAAA">#[Swag.Implicit]</span><span style="color:#FFFFFF">
     </span><span style="color:#569CD6">mtd</span><span style="color:#FFFFFF"> </span><span style="color:#DCDCAA">opAffect</span><span style="color:#FFFFFF">(value: </span><span style="color:#F6CC86">u16</span><span style="color:#FFFFFF">)  { x, y = </span><span style="color:#569CD6">cast</span><span style="color:#FFFFFF">(</span><span style="color:#F6CC86">s32</span><span style="color:#FFFFFF">) value; }
 }</span></code></div><div>Here the variable <code class="incode">v</code> will not be initialized prior to the affectation. This is more optimal, as there's only one initialization.</br>
 </div>
@@ -3373,7 +3373,7 @@ v1 = </span><span style="color:#569CD6">false</span><span style="color:#FFFFFF">
 
 </span><span style="color:#569CD6">impl</span><span style="color:#FFFFFF"> </span><span style="color:#4EC9B0">Vector2</span><span style="color:#FFFFFF">
 {
-    #[</span><span style="color:#4EC9B0">Swag</span><span style="color:#FFFFFF">.</span><span style="color:#4EC9B0">ConstExpr</span><span style="color:#FFFFFF">]
+    </span><span style="color:#AAAAAA">#[Swag.ConstExpr]</span><span style="color:#FFFFFF">
     </span><span style="color:#569CD6">mtd</span><span style="color:#FFFFFF"> </span><span style="color:#DCDCAA">opAffect</span><span style="color:#FFFFFF">(one: </span><span style="color:#F6CC86">f32</span><span style="color:#FFFFFF">)
     {
         x, y = one
@@ -3507,7 +3507,7 @@ a := </span><span style="color:#4EC9B0">Vector3</span><span style="color:#FFFFFF
 
 </span><span style="color:#569CD6">impl</span><span style="color:#FFFFFF"> </span><span style="color:#4EC9B0">MyStruct</span><span style="color:#FFFFFF">
 {
-    #[</span><span style="color:#4EC9B0">Swag</span><span style="color:#FFFFFF">.</span><span style="color:#4EC9B0">Macro</span><span style="color:#FFFFFF">]
+    </span><span style="color:#AAAAAA">#[Swag.Macro]</span><span style="color:#FFFFFF">
     </span><span style="color:#569CD6">func</span><span style="color:#FFFFFF">(ptr: </span><span style="color:#F6CC86">bool</span><span style="color:#FFFFFF">) </span><span style="color:#DCDCAA">opVisit</span><span style="color:#FFFFFF">(</span><span style="color:#F6CC86">self</span><span style="color:#FFFFFF">, stmt: </span><span style="color:#F6CC86">code</span><span style="color:#FFFFFF">)
     {
         </span><span style="color:#6A9955">// 'ptr' is a generic parameter that tells if we want to visit by pointer.</span><span style="color:#FFFFFF">
@@ -3562,7 +3562,7 @@ cpt := </span><span style="color:#B5CEA8">0</span><span style="color:#FFFFFF">
 </div>
 <div class="code"><code style="white-space: break-spaces"><span style="color:#569CD6">impl</span><span style="color:#FFFFFF"> </span><span style="color:#4EC9B0">MyStruct</span><span style="color:#FFFFFF">
 {
-    #[</span><span style="color:#4EC9B0">Swag</span><span style="color:#FFFFFF">.</span><span style="color:#4EC9B0">Macro</span><span style="color:#FFFFFF">]
+    </span><span style="color:#AAAAAA">#[Swag.Macro]</span><span style="color:#FFFFFF">
     </span><span style="color:#569CD6">mtd</span><span style="color:#FFFFFF">(ptr: </span><span style="color:#F6CC86">bool</span><span style="color:#FFFFFF">) </span><span style="color:#FF7411">opVisitReverse</span><span style="color:#FFFFFF">(stmt: </span><span style="color:#F6CC86">code</span><span style="color:#FFFFFF">)   </span><span style="color:#6A9955">// We add 'Reverse' in the name</span><span style="color:#FFFFFF">
     {
         </span><span style="color:#6A9955">// Visit fields in reverse order (z, y then x)</span><span style="color:#FFFFFF">
@@ -3611,7 +3611,7 @@ cpt := </span><span style="color:#B5CEA8">0</span><span style="color:#FFFFFF">
         x: </span><span style="color:#F6CC86">s32</span><span style="color:#FFFFFF">
 
         </span><span style="color:#6A9955">// 'y' is located at the same offset as 'x', so they share the same space</span><span style="color:#FFFFFF">
-        #[</span><span style="color:#4EC9B0">Swag</span><span style="color:#FFFFFF">.</span><span style="color:#4EC9B0">Offset</span><span style="color:#FFFFFF">(</span><span style="color:#CE9178">"x"</span><span style="color:#FFFFFF">)]
+        </span><span style="color:#AAAAAA">#[Swag.Offset("x")]</span><span style="color:#FFFFFF">
         y: </span><span style="color:#F6CC86">s32</span><span style="color:#FFFFFF">
     }
 
@@ -3630,7 +3630,7 @@ cpt := </span><span style="color:#B5CEA8">0</span><span style="color:#FFFFFF">
     {
         x, y, z:    </span><span style="color:#F6CC86">f32</span><span style="color:#FFFFFF">
 
-        #[</span><span style="color:#4EC9B0">Swag</span><span style="color:#FFFFFF">.</span><span style="color:#4EC9B0">Offset</span><span style="color:#FFFFFF">(</span><span style="color:#CE9178">"x"</span><span style="color:#FFFFFF">)]
+        </span><span style="color:#AAAAAA">#[Swag.Offset("x")]</span><span style="color:#FFFFFF">
         idx:        [</span><span style="color:#B5CEA8">3</span><span style="color:#FFFFFF">] </span><span style="color:#F6CC86">f32</span><span style="color:#FFFFFF">
     }
 
@@ -3665,7 +3665,7 @@ cpt := </span><span style="color:#B5CEA8">0</span><span style="color:#FFFFFF">
  You can <i>reduce</i> the packing of the fields with <code class="incode">#[Swag.Pack]</code>.</br>
 </div>
 <div class="code"><code style="white-space: break-spaces"><span style="color:#FFFFFF">{
-    #[</span><span style="color:#4EC9B0">Swag</span><span style="color:#FFFFFF">.</span><span style="color:#4EC9B0">Pack</span><span style="color:#FFFFFF">(</span><span style="color:#B5CEA8">1</span><span style="color:#FFFFFF">)]
+    </span><span style="color:#AAAAAA">#[Swag.Pack(1)]</span><span style="color:#FFFFFF">
     </span><span style="color:#569CD6">struct</span><span style="color:#FFFFFF"> </span><span style="color:#4EC9B0">MyStruct1</span><span style="color:#FFFFFF">
     {
         x: </span><span style="color:#F6CC86">bool</span><span style="color:#FFFFFF"> </span><span style="color:#6A9955">// offset 0: 1 byte</span><span style="color:#FFFFFF">
@@ -3676,7 +3676,7 @@ cpt := </span><span style="color:#B5CEA8">0</span><span style="color:#FFFFFF">
     </span><span style="color:#AAAAAA">#assert</span><span style="color:#FFFFFF"> </span><span style="color:#DCDCAA">@offsetof</span><span style="color:#FFFFFF">(</span><span style="color:#4EC9B0">MyStruct1</span><span style="color:#FFFFFF">.y) == </span><span style="color:#B5CEA8">1</span><span style="color:#FFFFFF">
     </span><span style="color:#AAAAAA">#assert</span><span style="color:#FFFFFF"> </span><span style="color:#DCDCAA">@sizeof</span><span style="color:#FFFFFF">(</span><span style="color:#4EC9B0">MyStruct1</span><span style="color:#FFFFFF">)     == </span><span style="color:#B5CEA8">5</span><span style="color:#FFFFFF">
 
-    #[</span><span style="color:#4EC9B0">Swag</span><span style="color:#FFFFFF">.</span><span style="color:#4EC9B0">Pack</span><span style="color:#FFFFFF">(</span><span style="color:#B5CEA8">2</span><span style="color:#FFFFFF">)]
+    </span><span style="color:#AAAAAA">#[Swag.Pack(2)]</span><span style="color:#FFFFFF">
     </span><span style="color:#569CD6">struct</span><span style="color:#FFFFFF"> </span><span style="color:#4EC9B0">MyStruct2</span><span style="color:#FFFFFF">
     {
         x: </span><span style="color:#F6CC86">bool</span><span style="color:#FFFFFF"> </span><span style="color:#6A9955">// offset 0: 1 byte</span><span style="color:#FFFFFF">
@@ -3687,7 +3687,7 @@ cpt := </span><span style="color:#B5CEA8">0</span><span style="color:#FFFFFF">
     </span><span style="color:#AAAAAA">#assert</span><span style="color:#FFFFFF"> </span><span style="color:#DCDCAA">@offsetof</span><span style="color:#FFFFFF">(</span><span style="color:#4EC9B0">MyStruct2</span><span style="color:#FFFFFF">.y) == </span><span style="color:#B5CEA8">2</span><span style="color:#FFFFFF">
     </span><span style="color:#AAAAAA">#assert</span><span style="color:#FFFFFF"> </span><span style="color:#DCDCAA">@sizeof</span><span style="color:#FFFFFF">(</span><span style="color:#4EC9B0">MyStruct2</span><span style="color:#FFFFFF">)     == </span><span style="color:#B5CEA8">6</span><span style="color:#FFFFFF">
 
-    #[</span><span style="color:#4EC9B0">Swag</span><span style="color:#FFFFFF">.</span><span style="color:#4EC9B0">Pack</span><span style="color:#FFFFFF">(</span><span style="color:#B5CEA8">4</span><span style="color:#FFFFFF">)]
+    </span><span style="color:#AAAAAA">#[Swag.Pack(4)]</span><span style="color:#FFFFFF">
     </span><span style="color:#569CD6">struct</span><span style="color:#FFFFFF"> </span><span style="color:#4EC9B0">MyStruct3</span><span style="color:#FFFFFF">
     {
         x: </span><span style="color:#F6CC86">bool</span><span style="color:#FFFFFF"> </span><span style="color:#6A9955">// offset 0: 1 byte</span><span style="color:#FFFFFF">
@@ -3725,7 +3725,7 @@ cpt := </span><span style="color:#B5CEA8">0</span><span style="color:#FFFFFF">
     </span><span style="color:#AAAAAA">#assert</span><span style="color:#FFFFFF"> </span><span style="color:#DCDCAA">@offsetof</span><span style="color:#FFFFFF">(</span><span style="color:#4EC9B0">MyStruct1</span><span style="color:#FFFFFF">.y) == </span><span style="color:#B5CEA8">1</span><span style="color:#FFFFFF">
     </span><span style="color:#AAAAAA">#assert</span><span style="color:#FFFFFF"> </span><span style="color:#DCDCAA">@sizeof</span><span style="color:#FFFFFF">(</span><span style="color:#4EC9B0">MyStruct1</span><span style="color:#FFFFFF">)     == </span><span style="color:#B5CEA8">2</span><span style="color:#FFFFFF">
 
-    #[</span><span style="color:#4EC9B0">Swag</span><span style="color:#FFFFFF">.</span><span style="color:#4EC9B0">Align</span><span style="color:#FFFFFF">(</span><span style="color:#B5CEA8">8</span><span style="color:#FFFFFF">)]
+    </span><span style="color:#AAAAAA">#[Swag.Align(8)]</span><span style="color:#FFFFFF">
     </span><span style="color:#569CD6">struct</span><span style="color:#FFFFFF"> </span><span style="color:#4EC9B0">MyStruct2</span><span style="color:#FFFFFF">
     {
         x: </span><span style="color:#F6CC86">bool</span><span style="color:#FFFFFF">     </span><span style="color:#6A9955">// 1 byte</span><span style="color:#FFFFFF">
@@ -3744,17 +3744,17 @@ cpt := </span><span style="color:#B5CEA8">0</span><span style="color:#FFFFFF">
     </span><span style="color:#569CD6">struct</span><span style="color:#FFFFFF"> </span><span style="color:#4EC9B0">MyStruct1</span><span style="color:#FFFFFF">
     {
         x: </span><span style="color:#F6CC86">bool</span><span style="color:#FFFFFF"> </span><span style="color:#6A9955">// offset 0: 1 byte</span><span style="color:#FFFFFF">
-        #[</span><span style="color:#4EC9B0">Swag</span><span style="color:#FFFFFF">.</span><span style="color:#4EC9B0">Align</span><span style="color:#FFFFFF">(</span><span style="color:#B5CEA8">8</span><span style="color:#FFFFFF">)]
+        </span><span style="color:#AAAAAA">#[Swag.Align(8)]</span><span style="color:#FFFFFF">
         y: </span><span style="color:#F6CC86">bool</span><span style="color:#FFFFFF"> </span><span style="color:#6A9955">// offset 8: aligned to 8 (7 bytes of padding before)</span><span style="color:#FFFFFF">
     }
 
     </span><span style="color:#AAAAAA">#assert</span><span style="color:#FFFFFF"> </span><span style="color:#DCDCAA">@sizeof</span><span style="color:#FFFFFF">(</span><span style="color:#4EC9B0">MyStruct1</span><span style="color:#FFFFFF">) == </span><span style="color:#B5CEA8">9</span><span style="color:#FFFFFF">
 
-    #[</span><span style="color:#4EC9B0">Swag</span><span style="color:#FFFFFF">.</span><span style="color:#4EC9B0">Align</span><span style="color:#FFFFFF">(</span><span style="color:#B5CEA8">8</span><span style="color:#FFFFFF">)]
+    </span><span style="color:#AAAAAA">#[Swag.Align(8)]</span><span style="color:#FFFFFF">
     </span><span style="color:#569CD6">struct</span><span style="color:#FFFFFF"> </span><span style="color:#4EC9B0">MyStruct2</span><span style="color:#FFFFFF">
     {
         x: </span><span style="color:#F6CC86">bool</span><span style="color:#FFFFFF"> </span><span style="color:#6A9955">// offset 0: 1 byte</span><span style="color:#FFFFFF">
-        #[</span><span style="color:#4EC9B0">Swag</span><span style="color:#FFFFFF">.</span><span style="color:#4EC9B0">Align</span><span style="color:#FFFFFF">(</span><span style="color:#B5CEA8">4</span><span style="color:#FFFFFF">)]
+        </span><span style="color:#AAAAAA">#[Swag.Align(4)]</span><span style="color:#FFFFFF">
         y: </span><span style="color:#F6CC86">bool</span><span style="color:#FFFFFF"> </span><span style="color:#6A9955">// offset 4: aligned to 4 (3 bytes of padding before)</span><span style="color:#FFFFFF">
         </span><span style="color:#6A9955">// 3 bytes of padding to be a multiple of 8</span><span style="color:#FFFFFF">
     }
@@ -3889,7 +3889,7 @@ Operators that can overflow are : <code class="incode">+ - * << >></code> and th
 x +=,over </span><span style="color:#B5CEA8">1</span><span style="color:#FFFFFF">     </span><span style="color:#6A9955">// Overflow is expected, so this will wrap around</span><span style="color:#FFFFFF">
 </span><span style="color:#DCDCAA">@assert</span><span style="color:#FFFFFF">(x == </span><span style="color:#B5CEA8">0</span><span style="color:#FFFFFF">)</span></code></div><div>You can also use <code class="incode">#[Swag.Overflow(true)]</code> to authorize overflow on a more global scale.</br>
 </div>
-<div class="code"><code style="white-space: break-spaces"><span style="color:#FFFFFF">#[</span><span style="color:#4EC9B0">Swag</span><span style="color:#FFFFFF">.</span><span style="color:#4EC9B0">Overflow</span><span style="color:#FFFFFF">(</span><span style="color:#569CD6">true</span><span style="color:#FFFFFF">)]</span></code></div><div class="code"><code style="white-space: break-spaces"><span style="color:#FFFFFF">x := </span><span style="color:#B5CEA8">255</span><span style="color:#FFFFFF">'</span><span style="color:#F6CC86">u8</span><span style="color:#FFFFFF">
+<div class="code"><code style="white-space: break-spaces"><span style="color:#AAAAAA">#[Swag.Overflow(true)]</span></code></div><div class="code"><code style="white-space: break-spaces"><span style="color:#FFFFFF">x := </span><span style="color:#B5CEA8">255</span><span style="color:#FFFFFF">'</span><span style="color:#F6CC86">u8</span><span style="color:#FFFFFF">
 x += </span><span style="color:#B5CEA8">1</span><span style="color:#FFFFFF">     </span><span style="color:#6A9955">// No need for operator modifier ',over'</span><span style="color:#FFFFFF">
 </span><span style="color:#DCDCAA">@assert</span><span style="color:#FFFFFF">(x == </span><span style="color:#B5CEA8">0</span><span style="color:#FFFFFF">)</span></code></div><div>For 8 or 16 bits, you can promote an operation to 32 bits by using ',up'.</br>
 </div>
@@ -3911,7 +3911,7 @@ x2 := -</span><span style="color:#B5CEA8">1</span><span style="color:#FFFFFF">'<
 y2 := </span><span style="color:#569CD6">cast</span><span style="color:#FFFFFF">,</span><span style="color:#FF7411">over</span><span style="color:#FFFFFF">(</span><span style="color:#F6CC86">u8</span><span style="color:#FFFFFF">) x2
 </span><span style="color:#DCDCAA">@assert</span><span style="color:#FFFFFF">(y2 == </span><span style="color:#B5CEA8">255</span><span style="color:#FFFFFF">)</span></code></div><div>Rember that you can disable these safety checks with the corresponding attribute.</br>
 </div>
-<div class="code"><code style="white-space: break-spaces"><span style="color:#FFFFFF">#[</span><span style="color:#4EC9B0">Swag</span><span style="color:#FFFFFF">.</span><span style="color:#4EC9B0">Overflow</span><span style="color:#FFFFFF">(</span><span style="color:#569CD6">true</span><span style="color:#FFFFFF">)]</span></code></div><div class="code"><code style="white-space: break-spaces"><span style="color:#FFFFFF">x := </span><span style="color:#B5CEA8">255</span><span style="color:#FFFFFF">'</span><span style="color:#F6CC86">u8</span><span style="color:#FFFFFF">
+<div class="code"><code style="white-space: break-spaces"><span style="color:#AAAAAA">#[Swag.Overflow(true)]</span></code></div><div class="code"><code style="white-space: break-spaces"><span style="color:#FFFFFF">x := </span><span style="color:#B5CEA8">255</span><span style="color:#FFFFFF">'</span><span style="color:#F6CC86">u8</span><span style="color:#FFFFFF">
 x += </span><span style="color:#B5CEA8">255</span><span style="color:#FFFFFF">    </span><span style="color:#6A9955">// 254</span><span style="color:#FFFFFF">
 x += </span><span style="color:#B5CEA8">1</span><span style="color:#FFFFFF">      </span><span style="color:#6A9955">// 255</span><span style="color:#FFFFFF">
 x >>= </span><span style="color:#B5CEA8">1</span><span style="color:#FFFFFF">     </span><span style="color:#6A9955">// 127</span><span style="color:#FFFFFF">
@@ -4265,7 +4265,7 @@ Another limitation is that you can only capture 'simple' variables (no struct wi
  A mixin is declared like a function, with the attribute <code class="incode">#[Swag.Mixin]</code>.</br>
 </div>
 <div class="code"><code style="white-space: break-spaces"><span style="color:#FFFFFF">{
-    #[</span><span style="color:#4EC9B0">Swag</span><span style="color:#FFFFFF">.</span><span style="color:#4EC9B0">Mixin</span><span style="color:#FFFFFF">]
+    </span><span style="color:#AAAAAA">#[Swag.Mixin]</span><span style="color:#FFFFFF">
     </span><span style="color:#569CD6">func</span><span style="color:#FFFFFF"> </span><span style="color:#FF7411">myMixin</span><span style="color:#FFFFFF">()
     {
     }
@@ -4274,7 +4274,7 @@ Another limitation is that you can only capture 'simple' variables (no struct wi
  A mixin function is inserted in the scope of the caller.</br>
 </div>
 <div class="code"><code style="white-space: break-spaces"><span style="color:#FFFFFF">{
-    #[</span><span style="color:#4EC9B0">Swag</span><span style="color:#FFFFFF">.</span><span style="color:#4EC9B0">Mixin</span><span style="color:#FFFFFF">]
+    </span><span style="color:#AAAAAA">#[Swag.Mixin]</span><span style="color:#FFFFFF">
     </span><span style="color:#569CD6">func</span><span style="color:#FFFFFF"> </span><span style="color:#FF7411">myMixin</span><span style="color:#FFFFFF">()
     {
         a += </span><span style="color:#B5CEA8">1</span><span style="color:#FFFFFF">
@@ -4289,7 +4289,7 @@ Another limitation is that you can only capture 'simple' variables (no struct wi
  This behaves like a function, so you can add parameters.</br>
 </div>
 <div class="code"><code style="white-space: break-spaces"><span style="color:#FFFFFF">{
-    #[</span><span style="color:#4EC9B0">Swag</span><span style="color:#FFFFFF">.</span><span style="color:#4EC9B0">Mixin</span><span style="color:#FFFFFF">]
+    </span><span style="color:#AAAAAA">#[Swag.Mixin]</span><span style="color:#FFFFFF">
     </span><span style="color:#569CD6">func</span><span style="color:#FFFFFF"> </span><span style="color:#FF7411">myMixin</span><span style="color:#FFFFFF">(increment: </span><span style="color:#F6CC86">s32</span><span style="color:#FFFFFF"> = </span><span style="color:#B5CEA8">1</span><span style="color:#FFFFFF">)
     {
         a += increment
@@ -4304,7 +4304,7 @@ Another limitation is that you can only capture 'simple' variables (no struct wi
  A mixin accepts parameters of type <code class="incode">code</code>.</br>
 </div>
 <div class="code"><code style="white-space: break-spaces"><span style="color:#FFFFFF">{
-    #[</span><span style="color:#4EC9B0">Swag</span><span style="color:#FFFFFF">.</span><span style="color:#4EC9B0">Mixin</span><span style="color:#FFFFFF">]
+    </span><span style="color:#AAAAAA">#[Swag.Mixin]</span><span style="color:#FFFFFF">
     </span><span style="color:#569CD6">func</span><span style="color:#FFFFFF"> </span><span style="color:#FF7411">doItTwice</span><span style="color:#FFFFFF">(what: </span><span style="color:#F6CC86">code</span><span style="color:#FFFFFF">)
     {
         </span><span style="color:#6A9955">// You can then insert the code with '#mixin'</span><span style="color:#FFFFFF">
@@ -4320,7 +4320,7 @@ Another limitation is that you can only capture 'simple' variables (no struct wi
  When the last parameter of a mixin is of type <code class="incode">code</code>, the caller can declare that code in a statement just after the call.</br>
 </div>
 <div class="code"><code style="white-space: break-spaces"><span style="color:#FFFFFF">{
-    #[</span><span style="color:#4EC9B0">Swag</span><span style="color:#FFFFFF">.</span><span style="color:#4EC9B0">Mixin</span><span style="color:#FFFFFF">]
+    </span><span style="color:#AAAAAA">#[Swag.Mixin]</span><span style="color:#FFFFFF">
     </span><span style="color:#569CD6">func</span><span style="color:#FFFFFF"> </span><span style="color:#FF7411">doItTwice</span><span style="color:#FFFFFF">(value: </span><span style="color:#F6CC86">s32</span><span style="color:#FFFFFF">, what: </span><span style="color:#F6CC86">code</span><span style="color:#FFFFFF">)
     {
         </span><span style="color:#AAAAAA">#mixin</span><span style="color:#FFFFFF"> what
@@ -4344,7 +4344,7 @@ Another limitation is that you can only capture 'simple' variables (no struct wi
  You can use the special name <code class="incode">@alias</code> to create a named alias for an identifier.</br>
 </div>
 <div class="code"><code style="white-space: break-spaces"><span style="color:#FFFFFF">{
-    #[</span><span style="color:#4EC9B0">Swag</span><span style="color:#FFFFFF">.</span><span style="color:#4EC9B0">Mixin</span><span style="color:#FFFFFF">]
+    </span><span style="color:#AAAAAA">#[Swag.Mixin]</span><span style="color:#FFFFFF">
     </span><span style="color:#569CD6">func</span><span style="color:#FFFFFF"> </span><span style="color:#FF7411">inc10</span><span style="color:#FFFFFF">()
     {
         </span><span style="color:#DCDCAA">@alias0</span><span style="color:#FFFFFF"> += </span><span style="color:#B5CEA8">10</span><span style="color:#FFFFFF">
@@ -4357,7 +4357,7 @@ Another limitation is that you can only capture 'simple' variables (no struct wi
 }
 
 {
-    #[</span><span style="color:#4EC9B0">Swag</span><span style="color:#FFFFFF">.</span><span style="color:#4EC9B0">Mixin</span><span style="color:#FFFFFF">]
+    </span><span style="color:#AAAAAA">#[Swag.Mixin]</span><span style="color:#FFFFFF">
     </span><span style="color:#569CD6">func</span><span style="color:#FFFFFF"> </span><span style="color:#FF7411">setVar</span><span style="color:#FFFFFF">(value: </span><span style="color:#F6CC86">s32</span><span style="color:#FFFFFF">)
     {
         </span><span style="color:#569CD6">var</span><span style="color:#FFFFFF"> </span><span style="color:#DCDCAA">@alias0</span><span style="color:#FFFFFF"> = value
@@ -4376,7 +4376,7 @@ Another limitation is that you can only capture 'simple' variables (no struct wi
 <div class="code"><code style="white-space: break-spaces"><span style="color:#FFFFFF">{
     </span><span style="color:#569CD6">var</span><span style="color:#FFFFFF"> total: </span><span style="color:#F6CC86">s32</span><span style="color:#FFFFFF">
 
-    #[</span><span style="color:#4EC9B0">Swag</span><span style="color:#FFFFFF">.</span><span style="color:#4EC9B0">Mixin</span><span style="color:#FFFFFF">]
+    </span><span style="color:#AAAAAA">#[Swag.Mixin]</span><span style="color:#FFFFFF">
     </span><span style="color:#569CD6">func</span><span style="color:#FFFFFF"> </span><span style="color:#FF7411">toScope</span><span style="color:#FFFFFF">()
     {
         </span><span style="color:#569CD6">var</span><span style="color:#FFFFFF"> </span><span style="color:#DCDCAA">@mixin0</span><span style="color:#FFFFFF">: </span><span style="color:#F6CC86">s32</span><span style="color:#FFFFFF"> = </span><span style="color:#B5CEA8">1</span><span style="color:#FFFFFF">
@@ -4395,7 +4395,7 @@ Another limitation is that you can only capture 'simple' variables (no struct wi
  A macro, like a mixin, is declared like a function, but with the attribute <code class="incode">Swag.Macro</code>.</br>
 </div>
 <div class="code"><code style="white-space: break-spaces"><span style="color:#FFFFFF">{
-    #[</span><span style="color:#4EC9B0">Swag</span><span style="color:#FFFFFF">.</span><span style="color:#4EC9B0">Macro</span><span style="color:#FFFFFF">]
+    </span><span style="color:#AAAAAA">#[Swag.Macro]</span><span style="color:#FFFFFF">
     </span><span style="color:#569CD6">func</span><span style="color:#FFFFFF"> </span><span style="color:#FF7411">myMacro</span><span style="color:#FFFFFF">()
     {
     }
@@ -4404,7 +4404,7 @@ Another limitation is that you can only capture 'simple' variables (no struct wi
  Unlike a mixin, a macro has its own scope, and cannot conflict with the function it is inserted inside.</br>
 </div>
 <div class="code"><code style="white-space: break-spaces"><span style="color:#FFFFFF">{
-    #[</span><span style="color:#4EC9B0">Swag</span><span style="color:#FFFFFF">.</span><span style="color:#4EC9B0">Macro</span><span style="color:#FFFFFF">]
+    </span><span style="color:#AAAAAA">#[Swag.Macro]</span><span style="color:#FFFFFF">
     </span><span style="color:#569CD6">func</span><span style="color:#FFFFFF"> </span><span style="color:#FF7411">myMacro</span><span style="color:#FFFFFF">()
     {
         a := </span><span style="color:#B5CEA8">666</span><span style="color:#FFFFFF">    </span><span style="color:#6A9955">// 'a' is declared in the scope of 'myMacro'</span><span style="color:#FFFFFF">
@@ -4418,7 +4418,7 @@ Another limitation is that you can only capture 'simple' variables (no struct wi
  But you can force an identifier to be found outside of the scope of the macro with <code class="incode">#up</code>.</br>
 </div>
 <div class="code"><code style="white-space: break-spaces"><span style="color:#FFFFFF">{
-    #[</span><span style="color:#4EC9B0">Swag</span><span style="color:#FFFFFF">.</span><span style="color:#4EC9B0">Macro</span><span style="color:#FFFFFF">]
+    </span><span style="color:#AAAAAA">#[Swag.Macro]</span><span style="color:#FFFFFF">
     </span><span style="color:#569CD6">func</span><span style="color:#FFFFFF"> </span><span style="color:#FF7411">myMacro</span><span style="color:#FFFFFF">()
     {
         </span><span style="color:#D7BA7D">#up</span><span style="color:#FFFFFF"> a += </span><span style="color:#B5CEA8">1</span><span style="color:#FFFFFF"> </span><span style="color:#6A9955">// Add '#up' before the identifier to reference the 'a' of the caller</span><span style="color:#FFFFFF">
@@ -4433,7 +4433,7 @@ Another limitation is that you can only capture 'simple' variables (no struct wi
  Like a mixin, macro accepts <code class="incode">code</code> parameters.</br>
 </div>
 <div class="code"><code style="white-space: break-spaces"><span style="color:#FFFFFF">{
-    #[</span><span style="color:#4EC9B0">Swag</span><span style="color:#FFFFFF">.</span><span style="color:#4EC9B0">Macro</span><span style="color:#FFFFFF">]
+    </span><span style="color:#AAAAAA">#[Swag.Macro]</span><span style="color:#FFFFFF">
     </span><span style="color:#569CD6">func</span><span style="color:#FFFFFF"> </span><span style="color:#FF7411">myMacro</span><span style="color:#FFFFFF">(what: </span><span style="color:#F6CC86">code</span><span style="color:#FFFFFF">)
     {
         </span><span style="color:#AAAAAA">#mixin</span><span style="color:#FFFFFF"> what
@@ -4454,7 +4454,7 @@ Another limitation is that you can only capture 'simple' variables (no struct wi
  You can use <code class="incode">#macro</code> inside a macro to force the code after to be in the same scope of the caller. That is, no <code class="incode">#up</code> is necessary to reference variables of the caller.</br>
 </div>
 <div class="code"><code style="white-space: break-spaces"><span style="color:#FFFFFF">{
-    #[</span><span style="color:#4EC9B0">Swag</span><span style="color:#FFFFFF">.</span><span style="color:#4EC9B0">Macro</span><span style="color:#FFFFFF">]
+    </span><span style="color:#AAAAAA">#[Swag.Macro]</span><span style="color:#FFFFFF">
     </span><span style="color:#569CD6">func</span><span style="color:#FFFFFF"> </span><span style="color:#FF7411">myMacro</span><span style="color:#FFFFFF">(what: </span><span style="color:#F6CC86">code</span><span style="color:#FFFFFF">)
     {
         </span><span style="color:#6A9955">// No conflict, in its own scope</span><span style="color:#FFFFFF">
@@ -4479,7 +4479,7 @@ Another limitation is that you can only capture 'simple' variables (no struct wi
  You can extend the language with macros, without using pointers to functions (no lambda call cost).</br>
 </div>
 <div class="code"><code style="white-space: break-spaces"><span style="color:#FFFFFF">{
-    #[</span><span style="color:#4EC9B0">Swag</span><span style="color:#FFFFFF">.</span><span style="color:#4EC9B0">Macro</span><span style="color:#FFFFFF">]
+    </span><span style="color:#AAAAAA">#[Swag.Macro]</span><span style="color:#FFFFFF">
     </span><span style="color:#569CD6">func</span><span style="color:#FFFFFF"> </span><span style="color:#FF7411">repeat</span><span style="color:#FFFFFF">(count: </span><span style="color:#F6CC86">s32</span><span style="color:#FFFFFF">, what: </span><span style="color:#F6CC86">code</span><span style="color:#FFFFFF">)
     {
         a := </span><span style="color:#B5CEA8">0</span><span style="color:#FFFFFF">
@@ -4505,7 +4505,7 @@ Another limitation is that you can only capture 'simple' variables (no struct wi
  When you need <code class="incode">break</code> in the user code to break outside of a multi loop.</br>
 </div>
 <div class="code"><code style="white-space: break-spaces"><span style="color:#FFFFFF">{
-    #[</span><span style="color:#4EC9B0">Swag</span><span style="color:#FFFFFF">.</span><span style="color:#4EC9B0">Macro</span><span style="color:#FFFFFF">]
+    </span><span style="color:#AAAAAA">#[Swag.Macro]</span><span style="color:#FFFFFF">
     </span><span style="color:#569CD6">func</span><span style="color:#FFFFFF"> </span><span style="color:#FF7411">repeatSquare</span><span style="color:#FFFFFF">(count: </span><span style="color:#F6CC86">u32</span><span style="color:#FFFFFF">, what: </span><span style="color:#F6CC86">code</span><span style="color:#FFFFFF">)
     {
         </span><span style="color:#AAAAAA">#scope</span><span style="color:#FFFFFF"> </span><span style="color:#4EC9B0">Up</span><span style="color:#FFFFFF"> </span><span style="color:#D8A0DF">loop</span><span style="color:#FFFFFF"> count
@@ -4536,7 +4536,7 @@ Another limitation is that you can only capture 'simple' variables (no struct wi
  In a macro, you can use special variables named <code class="incode">@alias<num></code>. Note that this is also valid for mixins.</br>
 </div>
 <div class="code"><code style="white-space: break-spaces"><span style="color:#FFFFFF">{
-    #[</span><span style="color:#4EC9B0">Swag</span><span style="color:#FFFFFF">.</span><span style="color:#4EC9B0">Macro</span><span style="color:#FFFFFF">]
+    </span><span style="color:#AAAAAA">#[Swag.Macro]</span><span style="color:#FFFFFF">
     </span><span style="color:#569CD6">func</span><span style="color:#FFFFFF"> </span><span style="color:#FF7411">call</span><span style="color:#FFFFFF">(v: </span><span style="color:#F6CC86">s32</span><span style="color:#FFFFFF">, stmt: </span><span style="color:#F6CC86">code</span><span style="color:#FFFFFF">)
     {
         </span><span style="color:#DCDCAA">@alias0</span><span style="color:#FFFFFF"> := v
@@ -4684,7 +4684,7 @@ Another limitation is that you can only capture 'simple' variables (no struct wi
 <h3 id="107__constexpr">Constexpr</h3>
 <div>A function marked with <code class="incode">Swag.ConstExpr</code> can be executed by the compiler if it can.</br>
 </div>
-<div class="code"><code style="white-space: break-spaces"><span style="color:#FFFFFF">#[</span><span style="color:#4EC9B0">Swag</span><span style="color:#FFFFFF">.</span><span style="color:#4EC9B0">ConstExpr</span><span style="color:#FFFFFF">]
+<div class="code"><code style="white-space: break-spaces"><span style="color:#AAAAAA">#[Swag.ConstExpr]</span><span style="color:#FFFFFF">
 </span><span style="color:#569CD6">func</span><span style="color:#FFFFFF"> </span><span style="color:#FF7411">sum</span><span style="color:#FFFFFF">(x, y: </span><span style="color:#F6CC86">f32</span><span style="color:#FFFFFF">) => x + y</span></code></div><div>Here <code class="incode">G</code> will be baked to 3 by the compiler.</br>
 </div>
 <div class="code"><code style="white-space: break-spaces"><span style="color:#569CD6">const</span><span style="color:#FFFFFF"> </span><span style="color:#4EC9B0">G</span><span style="color:#FFFFFF"> = </span><span style="color:#FF7411">sum</span><span style="color:#FFFFFF">(</span><span style="color:#B5CEA8">1</span><span style="color:#FFFFFF">, </span><span style="color:#B5CEA8">2</span><span style="color:#FFFFFF">)
@@ -4696,7 +4696,7 @@ Another limitation is that you can only capture 'simple' variables (no struct wi
 <h3 id="108__function_overloading">Function overloading</h3>
 <div>Functions can have the same names as long as their parameters are different.</br>
 </div>
-<div class="code"><code style="white-space: break-spaces"><span style="color:#FFFFFF">#[</span><span style="color:#4EC9B0">Swag</span><span style="color:#FFFFFF">.</span><span style="color:#4EC9B0">ConstExpr</span><span style="color:#FFFFFF">]
+<div class="code"><code style="white-space: break-spaces"><span style="color:#AAAAAA">#[Swag.ConstExpr]</span><span style="color:#FFFFFF">
 {
     </span><span style="color:#569CD6">func</span><span style="color:#FFFFFF"> </span><span style="color:#FF7411">sum</span><span style="color:#FFFFFF">(x, y: </span><span style="color:#F6CC86">s32</span><span style="color:#FFFFFF">) => x + y
     </span><span style="color:#569CD6">func</span><span style="color:#FFFFFF"> </span><span style="color:#FF7411">sum</span><span style="color:#FFFFFF">(x, y, z: </span><span style="color:#F6CC86">s32</span><span style="color:#FFFFFF">) => x + y + z
@@ -4726,7 +4726,7 @@ res1 := </span><span style="color:#FF7411">over</span><span style="color:#FFFFFF
 </span><span style="color:#6A9955">// To force the return value to be ignored, you can use 'discard' at the call site</span><span style="color:#FFFFFF">
 </span><span style="color:#569CD6">discard</span><span style="color:#FFFFFF"> </span><span style="color:#FF7411">sum</span><span style="color:#FFFFFF">(</span><span style="color:#B5CEA8">2</span><span style="color:#FFFFFF">, </span><span style="color:#B5CEA8">3</span><span style="color:#FFFFFF">)</span></code></div><div>If a function authorizes the caller to not use its return value, because it's not that important, it can be marked with <code class="incode">Swag.Discardable</code>.</br>
 </div>
-<div class="code"><code style="white-space: break-spaces"><span style="color:#FFFFFF">#[</span><span style="color:#4EC9B0">Swag</span><span style="color:#FFFFFF">.</span><span style="color:#4EC9B0">Discardable</span><span style="color:#FFFFFF">]
+<div class="code"><code style="white-space: break-spaces"><span style="color:#AAAAAA">#[Swag.Discardable]</span><span style="color:#FFFFFF">
 </span><span style="color:#569CD6">func</span><span style="color:#FFFFFF"> </span><span style="color:#FF7411">mul</span><span style="color:#FFFFFF">(x, y: </span><span style="color:#F6CC86">s32</span><span style="color:#FFFFFF">)-></span><span style="color:#F6CC86">s32</span><span style="color:#FFFFFF"> => x * y
 
 </span><span style="color:#6A9955">// This is fine to ignore the return value of 'mul' (even if strange)</span><span style="color:#FFFFFF">
@@ -4792,11 +4792,11 @@ The module name can be a swag compiled module, or an external system module (whe
 </div>
 <div>In the case below, the function is located in <code class="incode">kernel32.dll</code> (under windows)</br>
 </div>
-<div class="code"><code style="white-space: break-spaces"><span style="color:#FFFFFF">#[</span><span style="color:#4EC9B0">Swag</span><span style="color:#FFFFFF">.</span><span style="color:#4EC9B0">Foreign</span><span style="color:#FFFFFF">(</span><span style="color:#CE9178">"kernel32"</span><span style="color:#FFFFFF">)]
+<div class="code"><code style="white-space: break-spaces"><span style="color:#AAAAAA">#[Swag.Foreign("kernel32")]</span><span style="color:#FFFFFF">
 </span><span style="color:#569CD6">func</span><span style="color:#FFFFFF"> </span><span style="color:#4EC9B0">ExitProcess</span><span style="color:#FFFFFF">(uExitCode: </span><span style="color:#F6CC86">u32</span><span style="color:#FFFFFF">);
 
 </span><span style="color:#6A9955">// Like for other attributes, you can use a block.</span><span style="color:#FFFFFF">
-#[</span><span style="color:#4EC9B0">Swag</span><span style="color:#FFFFFF">.</span><span style="color:#4EC9B0">Foreign</span><span style="color:#FFFFFF">(</span><span style="color:#CE9178">"kernel32"</span><span style="color:#FFFFFF">)]
+</span><span style="color:#AAAAAA">#[Swag.Foreign("kernel32")]</span><span style="color:#FFFFFF">
 {
     </span><span style="color:#569CD6">func</span><span style="color:#FFFFFF"> </span><span style="color:#4EC9B0">ExitProcess</span><span style="color:#FFFFFF">(uExitCode: </span><span style="color:#F6CC86">u32</span><span style="color:#FFFFFF">);
     </span><span style="color:#569CD6">func</span><span style="color:#FFFFFF"> </span><span style="color:#4EC9B0">Sleep</span><span style="color:#FFFFFF">(dwMilliseconds: </span><span style="color:#F6CC86">u32</span><span style="color:#FFFFFF">);
@@ -5363,7 +5363,7 @@ res2 := sum'</span><span style="color:#F6CC86">s64</span><span style="color:#FFF
 A type constraint can be added when declaring a generic type. If a function or a struct is instantiated with a type that does not conform to the constraint, then an error will be raised.</br>
 </div>
 <div class="code"><code style="white-space: break-spaces"><span style="color:#6A9955">// The type constraint is a compile time function (with #[Swag.ConstExpr]) that should return a bool.</span><span style="color:#FFFFFF">
-#[</span><span style="color:#4EC9B0">Swag</span><span style="color:#FFFFFF">.</span><span style="color:#4EC9B0">ConstExpr</span><span style="color:#FFFFFF">]
+</span><span style="color:#AAAAAA">#[Swag.ConstExpr]</span><span style="color:#FFFFFF">
 </span><span style="color:#569CD6">func</span><span style="color:#FFFFFF"> </span><span style="color:#FF7411">isS32</span><span style="color:#FFFFFF">(t: </span><span style="color:#F6CC86">typeinfo</span><span style="color:#FFFFFF">) => t == </span><span style="color:#F6CC86">s32</span><span style="color:#FFFFFF">
 
 </span><span style="color:#6A9955">// Here we check that the function generic type is 's32' by calling 'isS32'.</span><span style="color:#FFFFFF">
@@ -5383,9 +5383,9 @@ res1 := sum'</span><span style="color:#F6CC86">s32</span><span style="color:#FFF
 </span><span style="color:#6A9955">// res1 := sum'f32(1, 2)</span></code></div><div>The type constraint can be any compile time expression, as long as the resulting type is <code class="incode">bool</code>.</br>
 So you could do something like this.</br>
 </div>
-<div class="code"><code style="white-space: break-spaces"><span style="color:#FFFFFF">#[</span><span style="color:#4EC9B0">Swag</span><span style="color:#FFFFFF">.</span><span style="color:#4EC9B0">ConstExpr</span><span style="color:#FFFFFF">]
+<div class="code"><code style="white-space: break-spaces"><span style="color:#AAAAAA">#[Swag.ConstExpr]</span><span style="color:#FFFFFF">
 </span><span style="color:#569CD6">func</span><span style="color:#FFFFFF"> </span><span style="color:#FF7411">isS32</span><span style="color:#FFFFFF">(t: </span><span style="color:#F6CC86">typeinfo</span><span style="color:#FFFFFF">)  => t == </span><span style="color:#F6CC86">s32</span><span style="color:#FFFFFF">
-#[</span><span style="color:#4EC9B0">Swag</span><span style="color:#FFFFFF">.</span><span style="color:#4EC9B0">ConstExpr</span><span style="color:#FFFFFF">]
+</span><span style="color:#AAAAAA">#[Swag.ConstExpr]</span><span style="color:#FFFFFF">
 </span><span style="color:#569CD6">func</span><span style="color:#FFFFFF"> </span><span style="color:#FF7411">isBool</span><span style="color:#FFFFFF">(t: </span><span style="color:#F6CC86">typeinfo</span><span style="color:#FFFFFF">) => t == </span><span style="color:#F6CC86">bool</span><span style="color:#FFFFFF">
 
 </span><span style="color:#6A9955">// Here we check that the function generic type is 's32' or 'bool'.</span><span style="color:#FFFFFF">
@@ -5396,7 +5396,7 @@ So you could do something like this.</br>
 </span><span style="color:#DCDCAA">@assert</span><span style="color:#FFFFFF">(</span><span style="color:#FF7411">myFunc</span><span style="color:#FFFFFF">(</span><span style="color:#569CD6">true</span><span style="color:#FFFFFF">)  == </span><span style="color:#569CD6">true</span><span style="color:#FFFFFF">)
 </span><span style="color:#DCDCAA">@assert</span><span style="color:#FFFFFF">(</span><span style="color:#FF7411">myFunc</span><span style="color:#FFFFFF">(</span><span style="color:#569CD6">false</span><span style="color:#FFFFFF">) == </span><span style="color:#569CD6">false</span><span style="color:#FFFFFF">)</span></code></div><div>Works also for structs.</br>
 </div>
-<div class="code"><code style="white-space: break-spaces"><span style="color:#FFFFFF">#[</span><span style="color:#4EC9B0">Swag</span><span style="color:#FFFFFF">.</span><span style="color:#4EC9B0">ConstExpr</span><span style="color:#FFFFFF">]
+<div class="code"><code style="white-space: break-spaces"><span style="color:#AAAAAA">#[Swag.ConstExpr]</span><span style="color:#FFFFFF">
 </span><span style="color:#569CD6">func</span><span style="color:#FFFFFF"> </span><span style="color:#FF7411">isFloat</span><span style="color:#FFFFFF">(t: </span><span style="color:#F6CC86">typeinfo</span><span style="color:#FFFFFF">) => t == </span><span style="color:#F6CC86">f32</span><span style="color:#FFFFFF"> </span><span style="color:#D8A0DF">or</span><span style="color:#FFFFFF"> t == </span><span style="color:#F6CC86">f64</span><span style="color:#FFFFFF">
 
 </span><span style="color:#569CD6">struct</span><span style="color:#FFFFFF">(</span><span style="color:#569CD6">var</span><span style="color:#FFFFFF"> </span><span style="color:#4EC9B0">T</span><span style="color:#FFFFFF">: </span><span style="color:#FF7411">isFloat</span><span style="color:#FFFFFF">(</span><span style="color:#4EC9B0">T</span><span style="color:#FFFFFF">)) </span><span style="color:#4EC9B0">Point</span><span style="color:#FFFFFF">
@@ -5687,7 +5687,7 @@ value.z = </span><span style="color:#B5CEA8">0</span><span style="color:#FFFFFF"
  A type alias can be marked with the <code class="incode">Swag.Strict</code> attribute. In that case, implicit cast is not done, but explicit cast is still possible.</br>
 </div>
 <div class="code"><code style="white-space: break-spaces"><span style="color:#FFFFFF">{
-    #[</span><span style="color:#4EC9B0">Swag</span><span style="color:#FFFFFF">.</span><span style="color:#4EC9B0">Strict</span><span style="color:#FFFFFF">]
+    </span><span style="color:#AAAAAA">#[Swag.Strict]</span><span style="color:#FFFFFF">
     </span><span style="color:#569CD6">alias</span><span style="color:#FFFFFF"> </span><span style="color:#4EC9B0">MyType</span><span style="color:#FFFFFF"> = </span><span style="color:#F6CC86">s32</span><span style="color:#FFFFFF">
     </span><span style="color:#AAAAAA">#assert</span><span style="color:#FFFFFF"> </span><span style="color:#DCDCAA">@typeof</span><span style="color:#FFFFFF">(</span><span style="color:#4EC9B0">MyType</span><span style="color:#FFFFFF">) != </span><span style="color:#F6CC86">s32</span><span style="color:#FFFFFF">
     </span><span style="color:#569CD6">var</span><span style="color:#FFFFFF"> x: </span><span style="color:#4EC9B0">MyType</span><span style="color:#FFFFFF"> = </span><span style="color:#569CD6">cast</span><span style="color:#FFFFFF">(</span><span style="color:#4EC9B0">MyType</span><span style="color:#FFFFFF">) </span><span style="color:#B5CEA8">0</span><span style="color:#FFFFFF">
@@ -5869,7 +5869,7 @@ g_Defer = </span><span style="color:#B5CEA8">0</span><span style="color:#FFFFFF"
 
 </span><span style="color:#6A9955">// 'isThisDebug' is marked with 'Swag.ConstExpr', so it can be automatically evaluated</span><span style="color:#FFFFFF">
 </span><span style="color:#6A9955">// at compile time</span><span style="color:#FFFFFF">
-#[</span><span style="color:#4EC9B0">Swag</span><span style="color:#FFFFFF">.</span><span style="color:#4EC9B0">ConstExpr</span><span style="color:#FFFFFF">]
+</span><span style="color:#AAAAAA">#[Swag.ConstExpr]</span><span style="color:#FFFFFF">
 </span><span style="color:#569CD6">func</span><span style="color:#FFFFFF"> </span><span style="color:#FF7411">isThisDebug</span><span style="color:#FFFFFF">() => </span><span style="color:#569CD6">true</span><span style="color:#FFFFFF">
 
 </span><span style="color:#6A9955">// This call is valid</span><span style="color:#FFFFFF">
@@ -5887,7 +5887,7 @@ g_Defer = </span><span style="color:#B5CEA8">0</span><span style="color:#FFFFFF"
     </span><span style="color:#AAAAAA">#error</span><span style="color:#FFFFFF"> </span><span style="color:#CE9178">"this should not be called !"</span><span style="color:#FFFFFF">
 }</span></code></div><div>A more complicated <code class="incode">#assert</code>.</br>
 </div>
-<div class="code"><code style="white-space: break-spaces"><span style="color:#FFFFFF">#[</span><span style="color:#4EC9B0">Swag</span><span style="color:#FFFFFF">.</span><span style="color:#4EC9B0">ConstExpr</span><span style="color:#FFFFFF">]
+<div class="code"><code style="white-space: break-spaces"><span style="color:#AAAAAA">#[Swag.ConstExpr]</span><span style="color:#FFFFFF">
 </span><span style="color:#569CD6">func</span><span style="color:#FFFFFF"> </span><span style="color:#FF7411">factorial</span><span style="color:#FFFFFF">(x: </span><span style="color:#F6CC86">s32</span><span style="color:#FFFFFF">)-></span><span style="color:#F6CC86">s32</span><span style="color:#FFFFFF">
 {
     </span><span style="color:#D8A0DF">if</span><span style="color:#FFFFFF"> x == </span><span style="color:#B5CEA8">1</span><span style="color:#FFFFFF"> </span><span style="color:#D8A0DF">return</span><span style="color:#FFFFFF"> </span><span style="color:#B5CEA8">1</span><span style="color:#FFFFFF">
@@ -5985,7 +5985,7 @@ The return type is deduced from the <code class="incode">return</code> statement
 </span><span style="color:#AAAAAA">#global</span><span style="color:#FFFFFF"> </span><span style="color:#D8A0DF">if</span><span style="color:#FFFFFF"> </span><span style="color:#4EC9B0">DEBUG</span><span style="color:#FFFFFF"> == </span><span style="color:#569CD6">true</span><span style="color:#FFFFFF">
 
 </span><span style="color:#6A9955">// Some attributes can be assigned to the full file</span><span style="color:#FFFFFF">
-</span><span style="color:#AAAAAA">#global</span><span style="color:#FFFFFF"> #[</span><span style="color:#4EC9B0">Swag</span><span style="color:#FFFFFF">.</span><span style="color:#4EC9B0">Safety</span><span style="color:#FFFFFF">(</span><span style="color:#CE9178">""</span><span style="color:#FFFFFF">, </span><span style="color:#569CD6">true</span><span style="color:#FFFFFF">)]
+</span><span style="color:#AAAAAA">#global</span><span style="color:#FFFFFF"> </span><span style="color:#AAAAAA">#[Swag.Safety("", true)]</span><span style="color:#FFFFFF">
 
 </span><span style="color:#6A9955">// The file will be exported for external usage</span><span style="color:#FFFFFF">
 </span><span style="color:#6A9955">// It's like putting everything in public, except that the file will</span><span style="color:#FFFFFF">
@@ -5997,7 +5997,7 @@ The return type is deduced from the <code class="incode">return</code> statement
 <h3 id="185__var">Var</h3>
 <div>A global variable can be tagged with <code class="incode">#[Swag.Tls]</code> to store it in the thread local storage (one copy per thread).</br>
 </div>
-<div class="code"><code style="white-space: break-spaces"><span style="color:#FFFFFF">#[</span><span style="color:#4EC9B0">Swag</span><span style="color:#FFFFFF">.</span><span style="color:#4EC9B0">Tls</span><span style="color:#FFFFFF">]
+<div class="code"><code style="white-space: break-spaces"><span style="color:#AAAAAA">#[Swag.Tls]</span><span style="color:#FFFFFF">
 </span><span style="color:#569CD6">var</span><span style="color:#FFFFFF"> </span><span style="color:#4EC9B0">G</span><span style="color:#FFFFFF"> = </span><span style="color:#B5CEA8">0</span></code></div><div>
 </br>
  A local variable can be tagged with <code class="incode">#[Swag.Global]</code> to make it global (aka <code class="incode">static</code> in C/C++).</br>
@@ -6005,7 +6005,7 @@ The return type is deduced from the <code class="incode">return</code> statement
 <div class="code"><code style="white-space: break-spaces"><span style="color:#FFFFFF">{
     </span><span style="color:#569CD6">func</span><span style="color:#FFFFFF"> </span><span style="color:#FF7411">toto</span><span style="color:#FFFFFF">()-></span><span style="color:#F6CC86">s32</span><span style="color:#FFFFFF">
     {
-        #[</span><span style="color:#4EC9B0">Swag</span><span style="color:#FFFFFF">.</span><span style="color:#4EC9B0">Global</span><span style="color:#FFFFFF">]
+        </span><span style="color:#AAAAAA">#[Swag.Global]</span><span style="color:#FFFFFF">
         </span><span style="color:#569CD6">var</span><span style="color:#FFFFFF"> </span><span style="color:#4EC9B0">G1</span><span style="color:#FFFFFF"> = </span><span style="color:#B5CEA8">0</span><span style="color:#FFFFFF">
 
         </span><span style="color:#4EC9B0">G1</span><span style="color:#FFFFFF"> += </span><span style="color:#B5CEA8">1</span><span style="color:#FFFFFF">
@@ -6017,7 +6017,7 @@ The return type is deduced from the <code class="incode">return</code> statement
     </span><span style="color:#DCDCAA">@assert</span><span style="color:#FFFFFF">(</span><span style="color:#FF7411">toto</span><span style="color:#FFFFFF">() == </span><span style="color:#B5CEA8">3</span><span style="color:#FFFFFF">)
 }</span></code></div><div>A global variable can also be marked as <code class="incode">#[Swag.Compiler]</code>. That kind of variable will not be exported to the runtime and can only be used in compile time code.</br>
 </div>
-<div class="code"><code style="white-space: break-spaces"><span style="color:#FFFFFF">#[</span><span style="color:#4EC9B0">Swag</span><span style="color:#FFFFFF">.</span><span style="color:#4EC9B0">Compiler</span><span style="color:#FFFFFF">]
+<div class="code"><code style="white-space: break-spaces"><span style="color:#AAAAAA">#[Swag.Compiler]</span><span style="color:#FFFFFF">
 </span><span style="color:#569CD6">var</span><span style="color:#FFFFFF"> </span><span style="color:#4EC9B0">G2</span><span style="color:#FFFFFF"> = </span><span style="color:#B5CEA8">0</span><span style="color:#FFFFFF">
 
 </span><span style="color:#FF7411">#run</span><span style="color:#FFFFFF">
@@ -6038,23 +6038,23 @@ The return type is deduced from the <code class="incode">return</code> statement
 </div>
 <div class="code"><code style="white-space: break-spaces"><span style="color:#569CD6">attr</span><span style="color:#FFFFFF"> </span><span style="color:#4EC9B0">AttributeBA</span><span style="color:#FFFFFF">(x: </span><span style="color:#F6CC86">s32</span><span style="color:#FFFFFF">, y: </span><span style="color:#F6CC86">string</span><span style="color:#FFFFFF"> = </span><span style="color:#CE9178">"string"</span><span style="color:#FFFFFF">)</span></code></div><div>You can define a usage before the attribute definition to restrict its usage.</br>
 </div>
-<div class="code"><code style="white-space: break-spaces"><span style="color:#FFFFFF">#[</span><span style="color:#4EC9B0">AttrUsage</span><span style="color:#FFFFFF">(</span><span style="color:#4EC9B0">AttributeUsage</span><span style="color:#FFFFFF">.</span><span style="color:#4EC9B0">Function</span><span style="color:#FFFFFF">)]
+<div class="code"><code style="white-space: break-spaces"><span style="color:#AAAAAA">#[AttrUsage(AttributeUsage.Function)]</span><span style="color:#FFFFFF">
 </span><span style="color:#569CD6">attr</span><span style="color:#FFFFFF"> </span><span style="color:#4EC9B0">AttributeC</span><span style="color:#FFFFFF">()</span></code></div><div>To use an attribute, the syntax is <code class="incode">#[attribute, attribute...]</code>. It should be placed <b>before</b> the thing you want to tag.</br>
 </div>
-<div class="code"><code style="white-space: break-spaces"><span style="color:#FFFFFF">#[</span><span style="color:#4EC9B0">AttributeA</span><span style="color:#FFFFFF">, </span><span style="color:#4EC9B0">AttributeB</span><span style="color:#FFFFFF">(</span><span style="color:#B5CEA8">0</span><span style="color:#FFFFFF">, </span><span style="color:#B5CEA8">0</span><span style="color:#FFFFFF">, </span><span style="color:#CE9178">"string"</span><span style="color:#FFFFFF">)]
+<div class="code"><code style="white-space: break-spaces"><span style="color:#AAAAAA">#[AttributeA, AttributeB(0, 0, "string")]</span><span style="color:#FFFFFF">
 </span><span style="color:#569CD6">func</span><span style="color:#FFFFFF"> </span><span style="color:#FF7411">function1</span><span style="color:#FFFFFF">()
 {
 }</span></code></div><div>You can declare multiple usages.</br>
 </div>
-<div class="code"><code style="white-space: break-spaces"><span style="color:#FFFFFF">#[</span><span style="color:#4EC9B0">AttrUsage</span><span style="color:#FFFFFF">(</span><span style="color:#4EC9B0">AttributeUsage</span><span style="color:#FFFFFF">.</span><span style="color:#4EC9B0">Function</span><span style="color:#FFFFFF"> | </span><span style="color:#4EC9B0">AttributeUsage</span><span style="color:#FFFFFF">.</span><span style="color:#4EC9B0">Struct</span><span style="color:#FFFFFF">)]
+<div class="code"><code style="white-space: break-spaces"><span style="color:#AAAAAA">#[AttrUsage(AttributeUsage.Function | AttributeUsage.Struct)]</span><span style="color:#FFFFFF">
 </span><span style="color:#569CD6">attr</span><span style="color:#FFFFFF"> </span><span style="color:#4EC9B0">AttributeD</span><span style="color:#FFFFFF">(x: </span><span style="color:#F6CC86">s32</span><span style="color:#FFFFFF">);
 
-#[</span><span style="color:#4EC9B0">AttributeD</span><span style="color:#FFFFFF">(</span><span style="color:#B5CEA8">6</span><span style="color:#FFFFFF">)]
+</span><span style="color:#AAAAAA">#[AttributeD(6)]</span><span style="color:#FFFFFF">
 </span><span style="color:#569CD6">func</span><span style="color:#FFFFFF"> </span><span style="color:#FF7411">function2</span><span style="color:#FFFFFF">()
 {
 }
 
-#[</span><span style="color:#4EC9B0">AttributeD</span><span style="color:#FFFFFF">(</span><span style="color:#B5CEA8">150</span><span style="color:#FFFFFF">)]
+</span><span style="color:#AAAAAA">#[AttributeD(150)]</span><span style="color:#FFFFFF">
 </span><span style="color:#569CD6">struct</span><span style="color:#FFFFFF"> struct1
 {
 }</span></code></div><div>Finaly, attributes can be retrieved at runtime thanks to <b>type reflection</b>.</br>
@@ -6067,47 +6067,47 @@ All are located in the reserved <code class="incode">Swag</code> namespace.</br>
 </div>
 <div class="code"><code style="white-space: break-spaces"><span style="color:#AAAAAA">#global</span><span style="color:#FFFFFF"> skip
 
-#[</span><span style="color:#4EC9B0">AttrUsage</span><span style="color:#FFFFFF">(</span><span style="color:#4EC9B0">AttributeUsage</span><span style="color:#FFFFFF">.</span><span style="color:#4EC9B0">Function</span><span style="color:#FFFFFF">)]
+</span><span style="color:#AAAAAA">#[AttrUsage(AttributeUsage.Function)]</span><span style="color:#FFFFFF">
 </span><span style="color:#569CD6">attr</span><span style="color:#FFFFFF"> </span><span style="color:#4EC9B0">ConstExpr</span><span style="color:#FFFFFF">()
 
-#[</span><span style="color:#4EC9B0">AttrUsage</span><span style="color:#FFFFFF">(</span><span style="color:#4EC9B0">AttributeUsage</span><span style="color:#FFFFFF">.</span><span style="color:#4EC9B0">Function</span><span style="color:#FFFFFF">|</span><span style="color:#4EC9B0">AttributeUsage</span><span style="color:#FFFFFF">.</span><span style="color:#4EC9B0">Struct</span><span style="color:#FFFFFF">|</span><span style="color:#4EC9B0">AttributeUsage</span><span style="color:#FFFFFF">.</span><span style="color:#4EC9B0">File</span><span style="color:#FFFFFF">)]
+</span><span style="color:#AAAAAA">#[AttrUsage(AttributeUsage.Function|AttributeUsage.Struct|AttributeUsage.File)]</span><span style="color:#FFFFFF">
 </span><span style="color:#569CD6">attr</span><span style="color:#FFFFFF"> </span><span style="color:#4EC9B0">PrintBc</span><span style="color:#FFFFFF">()
 
-#[</span><span style="color:#4EC9B0">AttrUsage</span><span style="color:#FFFFFF">(</span><span style="color:#4EC9B0">AttributeUsage</span><span style="color:#FFFFFF">.</span><span style="color:#4EC9B0">Function</span><span style="color:#FFFFFF">|</span><span style="color:#4EC9B0">AttributeUsage</span><span style="color:#FFFFFF">.</span><span style="color:#4EC9B0">GlobalVariable</span><span style="color:#FFFFFF">)]
+</span><span style="color:#AAAAAA">#[AttrUsage(AttributeUsage.Function|AttributeUsage.GlobalVariable)]</span><span style="color:#FFFFFF">
 </span><span style="color:#569CD6">attr</span><span style="color:#FFFFFF"> </span><span style="color:#4EC9B0">Compiler</span><span style="color:#FFFFFF">()
 
-#[</span><span style="color:#4EC9B0">AttrUsage</span><span style="color:#FFFFFF">(</span><span style="color:#4EC9B0">AttributeUsage</span><span style="color:#FFFFFF">.</span><span style="color:#4EC9B0">Function</span><span style="color:#FFFFFF">)]
+</span><span style="color:#AAAAAA">#[AttrUsage(AttributeUsage.Function)]</span><span style="color:#FFFFFF">
 </span><span style="color:#569CD6">attr</span><span style="color:#FFFFFF"> </span><span style="color:#4EC9B0">Inline</span><span style="color:#FFFFFF">()
 
-#[</span><span style="color:#4EC9B0">AttrUsage</span><span style="color:#FFFFFF">(</span><span style="color:#4EC9B0">AttributeUsage</span><span style="color:#FFFFFF">.</span><span style="color:#4EC9B0">Function</span><span style="color:#FFFFFF">)]
+</span><span style="color:#AAAAAA">#[AttrUsage(AttributeUsage.Function)]</span><span style="color:#FFFFFF">
 </span><span style="color:#569CD6">attr</span><span style="color:#FFFFFF"> </span><span style="color:#4EC9B0">Macro</span><span style="color:#FFFFFF">()
 
-#[</span><span style="color:#4EC9B0">AttrUsage</span><span style="color:#FFFFFF">(</span><span style="color:#4EC9B0">AttributeUsage</span><span style="color:#FFFFFF">.</span><span style="color:#4EC9B0">Function</span><span style="color:#FFFFFF">)]
+</span><span style="color:#AAAAAA">#[AttrUsage(AttributeUsage.Function)]</span><span style="color:#FFFFFF">
 </span><span style="color:#569CD6">attr</span><span style="color:#FFFFFF"> </span><span style="color:#4EC9B0">Mixin</span><span style="color:#FFFFFF">()
 
-#[</span><span style="color:#4EC9B0">AttrUsage</span><span style="color:#FFFFFF">(</span><span style="color:#4EC9B0">AttributeUsage</span><span style="color:#FFFFFF">.</span><span style="color:#4EC9B0">Function</span><span style="color:#FFFFFF">)]
+</span><span style="color:#AAAAAA">#[AttrUsage(AttributeUsage.Function)]</span><span style="color:#FFFFFF">
 </span><span style="color:#569CD6">attr</span><span style="color:#FFFFFF"> </span><span style="color:#4EC9B0">Test</span><span style="color:#FFFFFF">()
 
-#[</span><span style="color:#4EC9B0">AttrUsage</span><span style="color:#FFFFFF">(</span><span style="color:#4EC9B0">AttributeUsage</span><span style="color:#FFFFFF">.</span><span style="color:#4EC9B0">Function</span><span style="color:#FFFFFF">)]
+</span><span style="color:#AAAAAA">#[AttrUsage(AttributeUsage.Function)]</span><span style="color:#FFFFFF">
 </span><span style="color:#569CD6">attr</span><span style="color:#FFFFFF"> </span><span style="color:#4EC9B0">Implicit</span><span style="color:#FFFFFF">()
 
 </span><span style="color:#6A9955">// Hardcoded also for switch</span><span style="color:#FFFFFF">
-#[</span><span style="color:#4EC9B0">AttrUsage</span><span style="color:#FFFFFF">(</span><span style="color:#4EC9B0">AttributeUsage</span><span style="color:#FFFFFF">.</span><span style="color:#4EC9B0">Function</span><span style="color:#FFFFFF">)]
+</span><span style="color:#AAAAAA">#[AttrUsage(AttributeUsage.Function)]</span><span style="color:#FFFFFF">
 </span><span style="color:#569CD6">attr</span><span style="color:#FFFFFF"> </span><span style="color:#4EC9B0">Complete</span><span style="color:#FFFFFF">()
 
-#[</span><span style="color:#4EC9B0">AttrUsage</span><span style="color:#FFFFFF">(</span><span style="color:#4EC9B0">AttributeUsage</span><span style="color:#FFFFFF">.</span><span style="color:#4EC9B0">Function</span><span style="color:#FFFFFF">)]
+</span><span style="color:#AAAAAA">#[AttrUsage(AttributeUsage.Function)]</span><span style="color:#FFFFFF">
 </span><span style="color:#569CD6">attr</span><span style="color:#FFFFFF"> </span><span style="color:#4EC9B0">NoReturn</span><span style="color:#FFFFFF">()
 
-#[</span><span style="color:#4EC9B0">AttrUsage</span><span style="color:#FFFFFF">(</span><span style="color:#4EC9B0">AttributeUsage</span><span style="color:#FFFFFF">.</span><span style="color:#4EC9B0">Function</span><span style="color:#FFFFFF">)]
+</span><span style="color:#AAAAAA">#[AttrUsage(AttributeUsage.Function)]</span><span style="color:#FFFFFF">
 </span><span style="color:#569CD6">attr</span><span style="color:#FFFFFF"> </span><span style="color:#4EC9B0">Foreign</span><span style="color:#FFFFFF">(module: </span><span style="color:#F6CC86">string</span><span style="color:#FFFFFF">, function: </span><span style="color:#F6CC86">string</span><span style="color:#FFFFFF"> = </span><span style="color:#CE9178">""</span><span style="color:#FFFFFF">);
 
-#[</span><span style="color:#4EC9B0">AttrUsage</span><span style="color:#FFFFFF">(</span><span style="color:#4EC9B0">AttributeUsage</span><span style="color:#FFFFFF">.</span><span style="color:#4EC9B0">Function</span><span style="color:#FFFFFF">)]
+</span><span style="color:#AAAAAA">#[AttrUsage(AttributeUsage.Function)]</span><span style="color:#FFFFFF">
 </span><span style="color:#569CD6">attr</span><span style="color:#FFFFFF"> </span><span style="color:#4EC9B0">Callback</span><span style="color:#FFFFFF">()
 
-#[</span><span style="color:#4EC9B0">AttrUsage</span><span style="color:#FFFFFF">(</span><span style="color:#4EC9B0">AttributeUsage</span><span style="color:#FFFFFF">.</span><span style="color:#4EC9B0">Function</span><span style="color:#FFFFFF">|</span><span style="color:#4EC9B0">AttributeUsage</span><span style="color:#FFFFFF">.</span><span style="color:#4EC9B0">Variable</span><span style="color:#FFFFFF">)]
+</span><span style="color:#AAAAAA">#[AttrUsage(AttributeUsage.Function|AttributeUsage.Variable)]</span><span style="color:#FFFFFF">
 </span><span style="color:#569CD6">attr</span><span style="color:#FFFFFF"> </span><span style="color:#4EC9B0">Discardable</span><span style="color:#FFFFFF">()
 
-#[</span><span style="color:#4EC9B0">AttrUsage</span><span style="color:#FFFFFF">(</span><span style="color:#4EC9B0">AttributeUsage</span><span style="color:#FFFFFF">.</span><span style="color:#4EC9B0">Function</span><span style="color:#FFFFFF">|</span><span style="color:#4EC9B0">AttributeUsage</span><span style="color:#FFFFFF">.</span><span style="color:#4EC9B0">Struct</span><span style="color:#FFFFFF">|</span><span style="color:#4EC9B0">AttributeUsage</span><span style="color:#FFFFFF">.</span><span style="color:#4EC9B0">Enum</span><span style="color:#FFFFFF">|</span><span style="color:#4EC9B0">AttributeUsage</span><span style="color:#FFFFFF">.</span><span style="color:#4EC9B0">EnumValue</span><span style="color:#FFFFFF">)]
+</span><span style="color:#AAAAAA">#[AttrUsage(AttributeUsage.Function|AttributeUsage.Struct|AttributeUsage.Enum|AttributeUsage.EnumValue)]</span><span style="color:#FFFFFF">
 </span><span style="color:#569CD6">attr</span><span style="color:#FFFFFF"> </span><span style="color:#4EC9B0">Deprecated</span><span style="color:#FFFFFF">(msg: </span><span style="color:#F6CC86">string</span><span style="color:#FFFFFF"> = </span><span style="color:#569CD6">null</span><span style="color:#FFFFFF">)
 
 </span><span style="color:#6A9955">// Hardcoded for type alias</span><span style="color:#FFFFFF">
@@ -6119,28 +6119,28 @@ All are located in the reserved <code class="incode">Swag</code> namespace.</br>
 </span><span style="color:#6A9955">// Hardcoded for struct and variables</span><span style="color:#FFFFFF">
 </span><span style="color:#569CD6">attr</span><span style="color:#FFFFFF"> </span><span style="color:#4EC9B0">Align</span><span style="color:#FFFFFF">(value: </span><span style="color:#F6CC86">u8</span><span style="color:#FFFFFF">)
 
-#[</span><span style="color:#4EC9B0">AttrUsage</span><span style="color:#FFFFFF">(</span><span style="color:#4EC9B0">AttributeUsage</span><span style="color:#FFFFFF">.</span><span style="color:#4EC9B0">Struct</span><span style="color:#FFFFFF">)]
+</span><span style="color:#AAAAAA">#[AttrUsage(AttributeUsage.Struct)]</span><span style="color:#FFFFFF">
 </span><span style="color:#569CD6">attr</span><span style="color:#FFFFFF"> </span><span style="color:#4EC9B0">Pack</span><span style="color:#FFFFFF">(value: </span><span style="color:#F6CC86">u8</span><span style="color:#FFFFFF">)
 
-#[</span><span style="color:#4EC9B0">AttrUsage</span><span style="color:#FFFFFF">(</span><span style="color:#4EC9B0">AttributeUsage</span><span style="color:#FFFFFF">.</span><span style="color:#4EC9B0">Struct</span><span style="color:#FFFFFF">)]
+</span><span style="color:#AAAAAA">#[AttrUsage(AttributeUsage.Struct)]</span><span style="color:#FFFFFF">
 </span><span style="color:#569CD6">attr</span><span style="color:#FFFFFF"> </span><span style="color:#4EC9B0">NoCopy</span><span style="color:#FFFFFF">()
 
-#[</span><span style="color:#4EC9B0">AttrUsage</span><span style="color:#FFFFFF">(</span><span style="color:#4EC9B0">AttributeUsage</span><span style="color:#FFFFFF">.</span><span style="color:#4EC9B0">StructVariable</span><span style="color:#FFFFFF">)]
+</span><span style="color:#AAAAAA">#[AttrUsage(AttributeUsage.StructVariable)]</span><span style="color:#FFFFFF">
 </span><span style="color:#569CD6">attr</span><span style="color:#FFFFFF"> </span><span style="color:#4EC9B0">Offset</span><span style="color:#FFFFFF">(name: </span><span style="color:#F6CC86">string</span><span style="color:#FFFFFF">)
 
-#[</span><span style="color:#4EC9B0">AttrUsage</span><span style="color:#FFFFFF">(</span><span style="color:#4EC9B0">AttributeUsage</span><span style="color:#FFFFFF">.</span><span style="color:#4EC9B0">Enum</span><span style="color:#FFFFFF">)]
+</span><span style="color:#AAAAAA">#[AttrUsage(AttributeUsage.Enum)]</span><span style="color:#FFFFFF">
 </span><span style="color:#569CD6">attr</span><span style="color:#FFFFFF"> </span><span style="color:#4EC9B0">EnumFlags</span><span style="color:#FFFFFF">()
 
-#[</span><span style="color:#4EC9B0">AttrUsage</span><span style="color:#FFFFFF">(</span><span style="color:#4EC9B0">AttributeUsage</span><span style="color:#FFFFFF">.</span><span style="color:#4EC9B0">Enum</span><span style="color:#FFFFFF">)]
+</span><span style="color:#AAAAAA">#[AttrUsage(AttributeUsage.Enum)]</span><span style="color:#FFFFFF">
 </span><span style="color:#569CD6">attr</span><span style="color:#FFFFFF"> </span><span style="color:#4EC9B0">EnumIndex</span><span style="color:#FFFFFF">()
 
-#[</span><span style="color:#4EC9B0">AttrUsage</span><span style="color:#FFFFFF">(</span><span style="color:#4EC9B0">AttributeUsage</span><span style="color:#FFFFFF">.</span><span style="color:#4EC9B0">All</span><span style="color:#FFFFFF">|</span><span style="color:#4EC9B0">AttributeUsage</span><span style="color:#FFFFFF">.</span><span style="color:#4EC9B0">File</span><span style="color:#FFFFFF">)]
+</span><span style="color:#AAAAAA">#[AttrUsage(AttributeUsage.All|AttributeUsage.File)]</span><span style="color:#FFFFFF">
 </span><span style="color:#569CD6">attr</span><span style="color:#FFFFFF"> </span><span style="color:#4EC9B0">Safety</span><span style="color:#FFFFFF">(what: </span><span style="color:#F6CC86">string</span><span style="color:#FFFFFF">, value: </span><span style="color:#F6CC86">bool</span><span style="color:#FFFFFF">)
 
-#[</span><span style="color:#4EC9B0">AttrUsage</span><span style="color:#FFFFFF">(</span><span style="color:#4EC9B0">AttributeUsage</span><span style="color:#FFFFFF">.</span><span style="color:#4EC9B0">All</span><span style="color:#FFFFFF">)]
+</span><span style="color:#AAAAAA">#[AttrUsage(AttributeUsage.All)]</span><span style="color:#FFFFFF">
 </span><span style="color:#569CD6">attr</span><span style="color:#FFFFFF"> </span><span style="color:#4EC9B0">SelectIf</span><span style="color:#FFFFFF">(value: </span><span style="color:#F6CC86">bool</span><span style="color:#FFFFFF">)
 
-#[</span><span style="color:#4EC9B0">AttrUsage</span><span style="color:#FFFFFF">(</span><span style="color:#4EC9B0">AttributeUsage</span><span style="color:#FFFFFF">.</span><span style="color:#4EC9B0">Function</span><span style="color:#FFFFFF">|</span><span style="color:#4EC9B0">AttributeUsage</span><span style="color:#FFFFFF">.</span><span style="color:#4EC9B0">File</span><span style="color:#FFFFFF">)]
+</span><span style="color:#AAAAAA">#[AttrUsage(AttributeUsage.Function|AttributeUsage.File)]</span><span style="color:#FFFFFF">
 </span><span style="color:#569CD6">attr</span><span style="color:#FFFFFF"> </span><span style="color:#4EC9B0">Optim</span><span style="color:#FFFFFF">(what: </span><span style="color:#F6CC86">string</span><span style="color:#FFFFFF">, value: </span><span style="color:#F6CC86">bool</span><span style="color:#FFFFFF">)</span></code></div>
 <h2 id="200_type_reflection">Type reflection</h2>
 <div>In Swag, types are also values that can be inspected at compile time or at runtime. The two main intrinsics for this are <code class="incode">@typeof</code> and <code class="incode">@kindof</code>.</br>
@@ -6198,7 +6198,7 @@ All are located in the reserved <code class="incode">Swag</code> namespace.</br>
  <code class="incode">@decltype</code> can evaluate a constexpr expression that returns a <code class="incode">typeinfo</code> to determine the real type.</br>
 </div>
 <div class="code"><code style="white-space: break-spaces"><span style="color:#FFFFFF">{
-    #[</span><span style="color:#4EC9B0">Swag</span><span style="color:#FFFFFF">.</span><span style="color:#4EC9B0">ConstExpr</span><span style="color:#FFFFFF">]
+    </span><span style="color:#AAAAAA">#[Swag.ConstExpr]</span><span style="color:#FFFFFF">
     </span><span style="color:#569CD6">func</span><span style="color:#FFFFFF"> </span><span style="color:#FF7411">getType</span><span style="color:#FFFFFF">(needAString: </span><span style="color:#F6CC86">bool</span><span style="color:#FFFFFF">)-></span><span style="color:#F6CC86">typeinfo</span><span style="color:#FFFFFF">
     {
         </span><span style="color:#D8A0DF">if</span><span style="color:#FFFFFF"> needAString
@@ -6326,7 +6326,7 @@ All are located in the reserved <code class="incode">Swag</code> namespace.</br>
 </span><span style="color:#AAAAAA">#assert</span><span style="color:#FFFFFF"> </span><span style="color:#DCDCAA">@typeof</span><span style="color:#FFFFFF">(v1.y) == </span><span style="color:#F6CC86">f64</span><span style="color:#FFFFFF">
 </span><span style="color:#AAAAAA">#assert</span><span style="color:#FFFFFF"> </span><span style="color:#DCDCAA">@typeof</span><span style="color:#FFFFFF">(v1.z) == </span><span style="color:#F6CC86">string</span></code></div><div><code class="incode">#ast</code> needs to return a <i>string like</i> value, which can of source be dynamically constructed.</br>
 </div>
-<div class="code"><code style="white-space: break-spaces"><span style="color:#FFFFFF">#[</span><span style="color:#4EC9B0">Swag</span><span style="color:#FFFFFF">.</span><span style="color:#4EC9B0">Compiler</span><span style="color:#FFFFFF">]
+<div class="code"><code style="white-space: break-spaces"><span style="color:#AAAAAA">#[Swag.Compiler]</span><span style="color:#FFFFFF">
 </span><span style="color:#569CD6">func</span><span style="color:#FFFFFF"> </span><span style="color:#FF7411">append</span><span style="color:#FFFFFF">(buf: ^</span><span style="color:#F6CC86">u8</span><span style="color:#FFFFFF">, val: </span><span style="color:#F6CC86">string</span><span style="color:#FFFFFF">)
 {
     len := </span><span style="color:#B5CEA8">0</span><span style="color:#FFFFFF">
@@ -6394,11 +6394,11 @@ Here is a real life example from the <code class="incode">Std.Ogl</code> module 
 </div>
 <div>First we declare a new specific attribute, which can then be associated with a function.</br>
 </div>
-<div class="code"><code style="white-space: break-spaces"><span style="color:#FFFFFF">#[</span><span style="color:#4EC9B0">AttrUsage</span><span style="color:#FFFFFF">(</span><span style="color:#4EC9B0">AttributeUsage</span><span style="color:#FFFFFF">.</span><span style="color:#4EC9B0">Function</span><span style="color:#FFFFFF">)]
+<div class="code"><code style="white-space: break-spaces"><span style="color:#AAAAAA">#[AttrUsage(AttributeUsage.Function)]</span><span style="color:#FFFFFF">
 </span><span style="color:#569CD6">attr</span><span style="color:#FFFFFF"> </span><span style="color:#4EC9B0">Extension</span><span style="color:#FFFFFF">()
 
 </span><span style="color:#6A9955">// Here is an example of usage of that attribute.</span><span style="color:#FFFFFF">
-#[</span><span style="color:#4EC9B0">Extension</span><span style="color:#FFFFFF">]
+</span><span style="color:#AAAAAA">#[Extension]</span><span style="color:#FFFFFF">
 {
     </span><span style="color:#569CD6">func</span><span style="color:#FFFFFF"> </span><span style="color:#FF7411">glUniformMatrix2x3fv</span><span style="color:#FFFFFF">(location: </span><span style="color:#4EC9B0">GLint</span><span style="color:#FFFFFF">, count: </span><span style="color:#4EC9B0">GLsizei</span><span style="color:#FFFFFF">, transpose: </span><span style="color:#4EC9B0">GLboolean</span><span style="color:#FFFFFF">, value: </span><span style="color:#569CD6">const</span><span style="color:#FFFFFF"> *</span><span style="color:#4EC9B0">GLfloat</span><span style="color:#FFFFFF">);
     </span><span style="color:#569CD6">func</span><span style="color:#FFFFFF"> </span><span style="color:#FF7411">glUniformMatrix2x4fv</span><span style="color:#FFFFFF">(location: </span><span style="color:#4EC9B0">GLint</span><span style="color:#FFFFFF">, count: </span><span style="color:#4EC9B0">GLsizei</span><span style="color:#FFFFFF">, transpose: </span><span style="color:#4EC9B0">GLboolean</span><span style="color:#FFFFFF">, value: </span><span style="color:#569CD6">const</span><span style="color:#FFFFFF"> *</span><span style="color:#4EC9B0">GLfloat</span><span style="color:#FFFFFF">);
@@ -6414,7 +6414,7 @@ Here is a real life example from the <code class="incode">Std.Ogl</code> module 
     name: </span><span style="color:#F6CC86">string</span><span style="color:#FFFFFF">
 }
 
-#[</span><span style="color:#4EC9B0">Compiler</span><span style="color:#FFFFFF">]
+</span><span style="color:#AAAAAA">#[Compiler]</span><span style="color:#FFFFFF">
 </span><span style="color:#569CD6">var</span><span style="color:#FFFFFF"> g_Functions: </span><span style="color:#4EC9B0">Array</span><span style="color:#FFFFFF">'</span><span style="color:#4EC9B0">OneFunc</span></code></div><div>This <code class="incode">#message</code> will be called for each function of the <code class="incode">Ogl</code> module.</br>
 </div>
 <div class="code"><code style="white-space: break-spaces"><span style="color:#FF7411">#message</span><span style="color:#FFFFFF">(</span><span style="color:#4EC9B0">CompilerMsgMask</span><span style="color:#FFFFFF">.</span><span style="color:#4EC9B0">SemFunctions</span><span style="color:#FFFFFF">)

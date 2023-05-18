@@ -45,6 +45,7 @@ struct RichEditLexerSwag
         String
         Numeric
         NumericFrac
+        Attribute
     }
 
     mapStyles:      [256] RichEditStyleRef
@@ -76,6 +77,7 @@ impl IRichEditLexer for RichEditLexerSwag
         mapStyles[State.String]             = String
         mapStyles[State.Numeric]            = Numeric
         mapStyles[State.NumericFrac]        = Numeric
+        mapStyles[State.Attribute]          = Preprocessor
 
         ed.styles[Comment].colFg      = 0xFF6A9955
         ed.styles[Keyword].colFg      = 0xFF569cd6
@@ -512,7 +514,23 @@ impl IRichEditLexer for RichEditLexerSwag
                     continue
                 }
 
+            case State.Attribute:
+                if c == "]"'rune
+                {
+                    seekNext()
+                    currentState = State.Default
+                    continue
+                }
+
             case State.Default:
+                if c == "#"'rune and cn == "["'rune
+                {
+                    currentState = State.Attribute
+                    seekNext()
+                    seekNext()
+                    continue
+                }
+
                 if Unicode.isLetter(c) or c == "_"'rune or c == "@"'rune or c == "#"'rune
                 {
                     var word: String
