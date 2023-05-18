@@ -168,6 +168,8 @@ static void cleanNotes(Vector<Diagnostic*>& notes)
                         {
                             r0.hint = r1.hint;
                             r1.hint.clear();
+                            if (note1->ranges.size() == 1)
+                                note1->display = false;
                         }
 
                         canAdd = false;
