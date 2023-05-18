@@ -42,7 +42,6 @@ func filter(file: File.FileInfo)->bool
 
     // Enumerate list of files to release
     var options: Directory.EnumerationOptions
-    options.matchPattern    = "*"
     options.wantDirectories = false
     options.recurse         = true
     options.filterLambda    = &filter
