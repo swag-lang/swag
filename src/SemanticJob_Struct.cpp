@@ -1161,7 +1161,7 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
                 {
                     auto attr = typeParam->attributes.getAttribute(g_LangSpec->name_Swag_Offset);
                     SWAG_ASSERT(attr);
-                    return context->report({attr->node, Fmt(Err(Err0673), forceOffset->text.c_str())});
+                    return context->report({attr->node, attr->parameters[0].token, Fmt(Err(Err0673), forceOffset->text.c_str())});
                 }
             }
         }
