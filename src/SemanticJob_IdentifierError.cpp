@@ -1275,6 +1275,8 @@ void SemanticJob::unknownIdentifier(SemanticContext* context, AstIdentifierRef* 
                     if (node->callParameters)
                         what = "function";
                     diag = new Diagnostic{node, node->token, Fmt(Err(Err0112), what.c_str(), node->token.ctext(), typeWhere->getDisplayNameC())};
+                    if (prevIdentifier)
+                        diag->addRange(prevIdentifier, Diagnostic::isType(prevIdentifier));
                 }
                 else
                 {

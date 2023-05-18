@@ -719,7 +719,7 @@ void initErrors()
     SWAG_ERROR(Err0098, "the function '%s' should be called with '()' and not curlies (this is reserved for struct initialization)");
     SWAG_ERROR(Err0766, "the function cannot have a return type because it is flagged with the 'Swag.NoReturn' attribute");
     SWAG_ERROR(Err0123, "the generic value '%s' has already been deduced from parameters to be '%s' (and '%s' is provided here)");
-    SWAG_ERROR(Err0085, "the identifier '%s' cannot be dereferenced like a struct or a pointer (type is '%s')");
+    SWAG_ERROR(Err0085, "the identifier '%s' cannot be dereferenced like a struct or a pointer to struct (type is '%s')");
     SWAG_ERROR(Err0110, "the identifier '%s' cannot be found in %s '%s'");
     SWAG_ERROR(Err0492, "the identifier '%s' cannot be found in enum '%s' or in %s '%s'");
     SWAG_ERROR(Err0093, "the identifier '%s' cannot be found in the tuple");

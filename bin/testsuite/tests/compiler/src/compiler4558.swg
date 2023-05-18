@@ -12,5 +12,4 @@ impl A
     var a: A
     var b: ref A = &a
     c := !b
-    @print(@typeof(c).name)
 }
