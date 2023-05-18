@@ -3,7 +3,7 @@ Swag comes with a bunch of safety checks which can be activated by module/functi
 
 Safety checks can also be changed for a specific build configuration (`--cfg:<config>`) with `buildCfg.safetyGuards`.
 
-Swag comes with four predefined configurations : `debug`, `fast-debug`, `fast-compile` and `release`. Safety checks are disabled in `fast-compile` and `release`.
+> Swag comes with four predefined configurations : `debug`, `fast-debug`, `fast-compile` and `release`. Safety checks are disabled in `fast-compile` and `release`.
 */
 
 /**

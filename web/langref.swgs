@@ -10,6 +10,7 @@ enum State
     Paragraph
     Code
     Test
+    Blockquote
 }
 
 var g_Buf:  String  // Will contain the html page
@@ -26,6 +27,9 @@ func stateEnter(st: State)
     {
     case Paragraph:
         g_Buf += "<div>"
+
+    case Blockquote:
+        g_Buf += "<div class=\"blockquote\">"
     }
 }
 
@@ -33,7 +37,7 @@ func stateLeave(st: State)
 {
     switch st
     {
-    case Paragraph:
+    case Paragraph, Blockquote:
         g_Buf += "</div>\n"
 
     case Code, Test:
@@ -169,8 +173,6 @@ func flushCode()
     }
 
     g_Buf += "</span>"
-
-    //g_Buf += g_Code
     g_Buf += "</code>"
     g_Buf += "</div>"
 
@@ -196,15 +198,35 @@ func processFile(fileName: string)
         lineTrim := l
         lineTrim.trim()
 
+        curState := g_State.back()
+
+        // Some state changes
         if Utf8.startsWith(lineTrim, "/**")
         {
             pushState(.Paragraph)
             continue
         }
 
-        curState := g_State.back()
+        if curState == .Paragraph and Utf8.startsWith(lineTrim, ">")
+        {
+            pushState(.Blockquote)
+            curState = g_State.back()
+        }
+
+        if curState == .Blockquote and !Utf8.startsWith(lineTrim, ">")
+        {
+            popState()
+            curState = g_State.back()
+        }
+
         switch curState
         {
+        //////////////////////////////////
+        case Blockquote:
+            lineTrim.remove(0, 1)
+            lineTrim.trim()
+            addLine(lineTrim)
+
         //////////////////////////////////
         case Paragraph:
             if Utf8.startsWith(lineTrim, "```")
@@ -288,6 +310,12 @@ func processFile(fileName: string)
             border: 1px solid LightGrey;
             margin: 20px;
             padding: 20px;
+        }
+
+        .blockquote {
+            border-left: 2px solid Orange;
+            margin-left: 10px;
+            padding-left: 10px;
         }
 
         .incode {

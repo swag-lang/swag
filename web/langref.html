@@ -9,6 +9,12 @@
         padding: 20px;
     }
 
+    .blockquote {
+        border-left: 2px solid Orange;
+        margin-left: 10px;
+        padding-left: 10px;
+    }
+
     .incode {
         background-color: #eeeeee;
         padding: 2px;
@@ -305,6 +311,7 @@
 </ul>
 <li><a href="#170_error_management">Error management</a></li>
 <ul>
+<li><a href="#defer">defer</a></li>
 </ul>
 <li><a href="#175_safety">Safety</a></li>
 <ul>
@@ -5621,12 +5628,16 @@ value.z = </span><span style="color:#B5CEA8">0</span><span style="color:#FFFFFF"
 <div>Swag contains a <b>very</b> simple error system used to deal with function returning errors.</br>
 It will probably be changed/improved at some point.</br>
 </br>
-These are <b>not</b> exceptions !</br>
-</br>
+</div>
+<div class="blockquote">These are <b>not</b> exceptions !</br>
+</div>
+<div></br>
 A function that can return an error must be marked with <code class="incode">throw</code>. It can then raise an error with the <code class="incode">throw</code> keyword, passing an error message.</br>
 </br>
-When an error is raised by a function, the return value is always equal to the default value, depending on the return type.</br>
 </div>
+<div class="blockquote">When an error is raised by a function, the return value is always equal to the <b>default value</b>, depending on the return type.</br>
+</div>
+<div></div>
 <div class="code"><code style="white-space: break-spaces"><span style="color:#569CD6">func</span><span style="color:#FFFFFF"> </span><span style="color:#FF7411">count</span><span style="color:#FFFFFF">(name: </span><span style="color:#F6CC86">string</span><span style="color:#FFFFFF">)-></span><span style="color:#F6CC86">u64</span><span style="color:#FFFFFF"> </span><span style="color:#569CD6">throw</span><span style="color:#FFFFFF">
 {
     </span><span style="color:#D8A0DF">if</span><span style="color:#FFFFFF"> name == </span><span style="color:#569CD6">null</span><span style="color:#FFFFFF">
@@ -5637,9 +5648,7 @@ When an error is raised by a function, the return value is always equal to the d
     }
 
     </span><span style="color:#D8A0DF">return</span><span style="color:#FFFFFF"> </span><span style="color:#DCDCAA">@countof</span><span style="color:#FFFFFF">(name)
-}</span></code></div><div>The caller will then have to deal with the error in some way.</br>
-It can <code class="incode">catch</code> it, and test (or not) its value with the <code class="incode">@err</code> intrinsic.</br>
-Execution will continue at the call site.</br>
+}</span></code></div><div>The caller will then have to deal with the error in some way. It can <code class="incode">catch</code> it, and test (or not) its value with the <code class="incode">@err</code> intrinsic. The execution will continue at the call site.</br>
 </div>
 <div class="code"><code style="white-space: break-spaces"><span style="color:#569CD6">func</span><span style="color:#FFFFFF"> </span><span style="color:#FF7411">myFunc</span><span style="color:#FFFFFF">()
 {
@@ -5654,11 +5663,11 @@ Execution will continue at the call site.</br>
         </span><span style="color:#D8A0DF">return</span><span style="color:#FFFFFF">
     }
 
-    </span><span style="color:#6A9955">// You can also use 'trycatch', which will return the current function in case</span><span style="color:#FFFFFF">
+    </span><span style="color:#6A9955">// You can also use 'trycatch', which will exit the current function in case</span><span style="color:#FFFFFF">
     </span><span style="color:#6A9955">// an error has been raised (returning the default value if necessary)</span><span style="color:#FFFFFF">
     cpt1 := </span><span style="color:#569CD6">trycatch</span><span style="color:#FFFFFF"> </span><span style="color:#FF7411">count</span><span style="color:#FFFFFF">(</span><span style="color:#CE9178">"fileName"</span><span style="color:#FFFFFF">)
-}</span></code></div><div>The caller can stop the execution with <code class="incode">try</code>, and return to its own caller with the same error raised.</br>
-The function must then also be marked with <code class="incode">throw</code>.</br>
+}</span></code></div><div>The caller can stop the execution with <code class="incode">try</code>, and return to its own caller with the same error raised. The function must then also be marked with <code class="incode">throw</code>.</br>
+</br>
 Here, the caller of <code class="incode">myFunc1</code> will have to deal with the error at its turn.</br>
 </div>
 <div class="code"><code style="white-space: break-spaces"><span style="color:#569CD6">func</span><span style="color:#FFFFFF"> </span><span style="color:#FF7411">myFunc1</span><span style="color:#FFFFFF">() </span><span style="color:#569CD6">throw</span><span style="color:#FFFFFF">
@@ -5666,7 +5675,11 @@ Here, the caller of <code class="incode">myFunc1</code> will have to deal with t
     </span><span style="color:#6A9955">// If 'count()' raises an error, 'myFunc1' will return with the same error</span><span style="color:#FFFFFF">
     cpt := </span><span style="color:#569CD6">try</span><span style="color:#FFFFFF"> </span><span style="color:#FF7411">count</span><span style="color:#FFFFFF">(</span><span style="color:#CE9178">"filename"</span><span style="color:#FFFFFF">)
 }</span></code></div><div>The caller can also panic if an error is raised, with <code class="incode">assume</code>.</br>
-This can be disabled in release builds (in that case the behaviour is undefined).</br>
+</br>
+</div>
+<div class="blockquote">This can be disabled in release builds (in that case the behaviour is undefined).</br>
+</div>
+<div></br>
 </div>
 <div class="code"><code style="white-space: break-spaces"><span style="color:#569CD6">func</span><span style="color:#FFFFFF"> </span><span style="color:#FF7411">myFunc2</span><span style="color:#FFFFFF">()
 {
@@ -5705,8 +5718,7 @@ This can be disabled in release builds (in that case the behaviour is undefined)
         cpt6 := </span><span style="color:#FF7411">count</span><span style="color:#FFFFFF">(</span><span style="color:#CE9178">"filename"</span><span style="color:#FFFFFF">)
         cpt7 := </span><span style="color:#FF7411">count</span><span style="color:#FFFFFF">(</span><span style="color:#CE9178">"other filename"</span><span style="color:#FFFFFF">)
     }
-}</span></code></div><div>When a function is marked with <code class="incode">throw</code>, the <code class="incode">try</code> for a function call is automatic if not specified.</br>
-That means that most of the time it's not necessary to specify it.</br>
+}</span></code></div><div>When a function is marked with <code class="incode">throw</code>, the <code class="incode">try</code> for a function call is automatic if not specified. That means that most of the time it's not necessary to specify it.</br>
 </div>
 <div class="code"><code style="white-space: break-spaces"><span style="color:#569CD6">func</span><span style="color:#FFFFFF"> </span><span style="color:#FF7411">mySubFunc2</span><span style="color:#FFFFFF">() </span><span style="color:#569CD6">throw</span><span style="color:#FFFFFF">
 {
@@ -5723,7 +5735,8 @@ That means that most of the time it's not necessary to specify it.</br>
 }
 
 </span><span style="color:#569CD6">catch</span><span style="color:#FFFFFF"> </span><span style="color:#FF7411">mySubFunc1</span><span style="color:#FFFFFF">()
-</span><span style="color:#DCDCAA">@assert</span><span style="color:#FFFFFF">(</span><span style="color:#DCDCAA">@err</span><span style="color:#FFFFFF"> == </span><span style="color:#CE9178">"error"</span><span style="color:#FFFFFF">)</span></code></div><div><code class="incode">defer</code> can have parameters like <code class="incode">defer(err)</code> or <code class="incode">defer(noerr)</code> to control if it should be executed depending on the error status.</br>
+</span><span style="color:#DCDCAA">@assert</span><span style="color:#FFFFFF">(</span><span style="color:#DCDCAA">@err</span><span style="color:#FFFFFF"> == </span><span style="color:#CE9178">"error"</span><span style="color:#FFFFFF">)</span></code></div><div><h3 id="defer">defer</br>
+</h3><code class="incode">defer</code> can have parameters like <code class="incode">defer(err)</code> or <code class="incode">defer(noerr)</code> to control if it should be executed depending on the error status.</br>
 </div>
 <div class="code"><code style="white-space: break-spaces"><span style="color:#569CD6">var</span><span style="color:#FFFFFF"> g_Defer = </span><span style="color:#B5CEA8">0</span><span style="color:#FFFFFF">
 
@@ -5751,8 +5764,10 @@ g_Defer = </span><span style="color:#B5CEA8">0</span><span style="color:#FFFFFF"
 </br>
 Safety checks can also be changed for a specific build configuration (<code class="incode">--cfg:<config></code>) with <code class="incode">buildCfg.safetyGuards</code>.</br>
 </br>
-Swag comes with four predefined configurations : <code class="incode">debug</code>, <code class="incode">fast-debug</code>, <code class="incode">fast-compile</code> and <code class="incode">release</code>. Safety checks are disabled in <code class="incode">fast-compile</code> and <code class="incode">release</code>.</br>
 </div>
+<div class="blockquote">Swag comes with four predefined configurations : <code class="incode">debug</code>, <code class="incode">fast-debug</code>, <code class="incode">fast-compile</code> and <code class="incode">release</code>. Safety checks are disabled in <code class="incode">fast-compile</code> and <code class="incode">release</code>.</br>
+</div>
+<div></div>
 <div><h3 id="#[Swag.Safety("overflow", true)]">#[Swag.Safety("overflow", true)]</br>
 </h3>Swag will panic if some operators overflow and if we lose some bits during an integer conversion.</br>
 </br>
@@ -6331,7 +6346,7 @@ All are located in the reserved <code class="incode">Swag</code> namespace.</br>
 </span><span style="color:#569CD6">var</span><span style="color:#FFFFFF"> v1: </span><span style="color:#4EC9B0">MyStruct</span><span style="color:#FFFFFF">'</span><span style="color:#F6CC86">f64</span><span style="color:#FFFFFF">
 </span><span style="color:#AAAAAA">#assert</span><span style="color:#FFFFFF"> </span><span style="color:#DCDCAA">@typeof</span><span style="color:#FFFFFF">(v1.x) == </span><span style="color:#F6CC86">f64</span><span style="color:#FFFFFF">
 </span><span style="color:#AAAAAA">#assert</span><span style="color:#FFFFFF"> </span><span style="color:#DCDCAA">@typeof</span><span style="color:#FFFFFF">(v1.y) == </span><span style="color:#F6CC86">f64</span><span style="color:#FFFFFF">
-</span><span style="color:#AAAAAA">#assert</span><span style="color:#FFFFFF"> </span><span style="color:#DCDCAA">@typeof</span><span style="color:#FFFFFF">(v1.z) == </span><span style="color:#F6CC86">string</span></code></div><div><code class="incode">#ast</code> needs to return a <i>string like</i> value, which can of source be dynamically constructed.</br>
+</span><span style="color:#AAAAAA">#assert</span><span style="color:#FFFFFF"> </span><span style="color:#DCDCAA">@typeof</span><span style="color:#FFFFFF">(v1.z) == </span><span style="color:#F6CC86">string</span></code></div><div><code class="incode">#ast</code> needs to return a <i>string like</i> value, which can of course be dynamically constructed.</br>
 </div>
 <div class="code"><code style="white-space: break-spaces"><span style="color:#AAAAAA">#[Swag.Compiler]</span><span style="color:#FFFFFF">
 </span><span style="color:#569CD6">func</span><span style="color:#FFFFFF"> </span><span style="color:#FF7411">append</span><span style="color:#FFFFFF">(buf: ^</span><span style="color:#F6CC86">u8</span><span style="color:#FFFFFF">, val: </span><span style="color:#F6CC86">string</span><span style="color:#FFFFFF">)

@@ -68,7 +68,7 @@ It works with generics too, and can be mixed with static declarations.
 }
 
 /**
-`#ast` needs to return a *string like* value, which can of source be dynamically constructed.
+`#ast` needs to return a *string like* value, which can of course be dynamically constructed.
 */
 #test
 {
