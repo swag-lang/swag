@@ -1015,7 +1015,7 @@ void initErrors()
     SWAG_ERROR(Hlp0050, "only variables can be initialized that way");
     SWAG_ERROR(Hlp0051, "if this is the start of a struct initialization block, considerer removing the blank(s) between '%s' and '{'");
     SWAG_ERROR(Hlp0052, "if this is the start of a new block, consider putting '{' on another line");
-    SWAG_ERROR(Hlp0053, nullptr);
+    SWAG_ERROR(Hlp0053, "use '{}' if ou really want an empty statement");
     SWAG_ERROR(Hlp0054, nullptr);
 
     /////////////////////////////////////////////////////////////////////
@@ -1140,7 +1140,7 @@ void initErrors()
     SWAG_ERROR(Hnt0115, "one function is declared with 'throw' and the other one is not");
     SWAG_ERROR(Hnt0116, "':=' should be replaced with '=' when used after an explicit 'const' or 'var'");
     SWAG_ERROR(Hnt0117, "this could be the start of the initialization of '%s' or the start of a new block");
-    SWAG_ERROR(Hnt0118, nullptr);
+    SWAG_ERROR(Hnt0118, "no corresponding start of multi-line comment '/*' has been found");
     SWAG_ERROR(Hnt0119, nullptr);
 
     /////////////////////////////////////////////////////////////////////

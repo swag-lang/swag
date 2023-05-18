@@ -365,7 +365,8 @@ bool Parser::doEmbeddedStatement(AstNode* parent, AstNode** result)
         return doScopedCurlyStatement(parent, result);
 
     // Empty statement
-    SWAG_VERIFY(token.id != TokenId::SymSemiColon, error(token, Err(Syn0187)));
+    if (token.id == TokenId::SymSemiColon)
+        return error(token, Err(Syn0187), Hlp(Hlp0053));
 
     // One single line, but we need a scope too
     auto     newScope = Ast::newScope(parent, "", ScopeKind::Statement, currentScope);

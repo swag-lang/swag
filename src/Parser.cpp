@@ -191,7 +191,7 @@ bool Parser::eatSemiCol(const char* msg)
             if (token.id == TokenId::SymSlash)
             {
                 token.startLocation = st.startLocation;
-                return error(token, Fmt(Err(Syn0188), msg));
+                return error(token, Fmt(Err(Syn0188), msg), nullptr, Hnt(Hnt0118));
             }
 
             token = st;
