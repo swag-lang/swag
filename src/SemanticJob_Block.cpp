@@ -524,9 +524,15 @@ bool SemanticJob::resolveLoop(SemanticContext* context)
             if (!typeInfo->isEnum())
                 SWAG_CHECK(checkIsConcrete(context, node->expression));
 
-            SWAG_CHECK(resolveIntrinsicCountOf(context, node->expression, node->expression));
-            if (context->result != ContextResult::Done)
-                return true;
+            {
+                PushErrCxtStep ec(
+                    context, node, ErrCxtStepKind::Hint2, [node]()
+                    { return Hnt(Hnt0121); },
+                    true);
+                SWAG_CHECK(resolveIntrinsicCountOf(context, node->expression, node->expression));
+                if (context->result != ContextResult::Done)
+                    return true;
+            }
 
             SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoU64, node->expression->typeInfo, nullptr, node->expression, CASTFLAG_TRY_COERCE));
             node->typeInfo = node->expression->typeInfo;

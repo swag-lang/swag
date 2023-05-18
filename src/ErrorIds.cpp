@@ -1143,7 +1143,7 @@ void initErrors()
     SWAG_ERROR(Hnt0118, "no corresponding start of multi-line comment '/*' has been found");
     SWAG_ERROR(Hnt0119, "this is an enum value");
     SWAG_ERROR(Hnt0120, "wanted a 'bool' type because of this");
-    SWAG_ERROR(Hnt0121, nullptr);
+    SWAG_ERROR(Hnt0121, "there is an implicit '@countof' because of this");
     SWAG_ERROR(Hnt0122, nullptr);
     SWAG_ERROR(Hnt0123, nullptr);
     SWAG_ERROR(Hnt0124, nullptr);
