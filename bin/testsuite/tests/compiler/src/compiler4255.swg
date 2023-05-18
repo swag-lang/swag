@@ -11,7 +11,7 @@ impl V
     mtd opSlice(l, u: u64)->string
     {
         @assert(l == 0)
-        @assert(u == 5)
+        @assert(u == 4)
         return "toto"
     }
 }

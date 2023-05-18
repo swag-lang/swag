@@ -100,11 +100,8 @@ bool ByteCodeGenJob::emitCompareOpSpecialFunc(ByteCodeGenContext* context, AstNo
 {
     SWAG_ASSERT(left->hasSpecialFuncCall());
 
-    auto node = context->node;
-    auto job  = context->job;
-    if (!job->allParamsTmp)
-        job->allParamsTmp = Ast::newFuncCallParams(node->sourceFile, nullptr);
-    job->allParamsTmp->childs.clear();
+    auto job = context->job;
+    job->allocateTempCallParams();
     job->allParamsTmp->childs.push_back(left);
     job->allParamsTmp->childs.push_back(right);
     left->resultRegisterRC  = r0;

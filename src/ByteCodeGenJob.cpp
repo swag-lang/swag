@@ -20,6 +20,13 @@ void ByteCodeGenJob::release()
     Allocator::free<ByteCodeGenJob>(this);
 }
 
+void ByteCodeGenJob::allocateTempCallParams()
+{
+    if (!allParamsTmp)
+        allParamsTmp = Ast::newFuncCallParams(context.node->sourceFile, nullptr);
+    allParamsTmp->childs.clear();
+}
+
 void ByteCodeGenJob::reserveRegisterRC(ByteCodeGenContext* context, RegisterList& rc, int num)
 {
     rc.clear();

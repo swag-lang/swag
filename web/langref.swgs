@@ -360,7 +360,8 @@ func processFile(fileName: string)
 
         var title: String = Path.getFileNameWithoutExtension(v.fullname)
         fileName := title
-        title.remove(0, 4)  // Remove 'NNN_'
+        //title.remove(0, 4)  // Remove 'NNN_'
+        title = title[4..]
 
         // If there's an additional '_' after 'NNN_', then this is a 'sub part'.
         wasSubTitle := g_SubTitle

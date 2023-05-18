@@ -210,6 +210,7 @@ struct ByteCodeGenJob : public Job
     virtual ~ByteCodeGenJob() = default;
     JobResult execute() override;
     void      release() override;
+    void      allocateTempCallParams();
 
     JobResult   waitForDependenciesGenerated();
     static void askForByteCode(Job* job, AstNode* node, uint32_t flags, ByteCode* caller = nullptr);

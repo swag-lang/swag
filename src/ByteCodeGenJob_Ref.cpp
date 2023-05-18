@@ -505,13 +505,12 @@ bool ByteCodeGenJob::emitMakeArrayPointerSlicingUpperBound(ByteCodeGenContext* c
 
     if (upperNode->hasExtMisc() && upperNode->extMisc()->resolvedUserOpSymbolOverload)
     {
-        if (!job->allParamsTmp)
-            job->allParamsTmp = Ast::newFuncCallParams(upperNode->sourceFile, nullptr);
-        job->allParamsTmp->childs.clear();
+        job->allocateTempCallParams();
         job->allParamsTmp->childs.push_back(arrayNode);
         SWAG_CHECK(emitUserOp(context, job->allParamsTmp, nullptr, false));
         if (context->result != ContextResult::Done)
             return true;
+        EMIT_INST1(context, ByteCodeOp::Add64byVB64, upperNode->resultRegisterRC)->b.s64 = -1;
         return true;
     }
 

@@ -727,9 +727,7 @@ bool ByteCodeGenJob::emitCast(ByteCodeGenContext* context, AstNode* exprNode, Ty
         if (!(exprNode->semFlags & SEMFLAG_FLAT_PARAMS))
         {
             exprNode->semFlags |= SEMFLAG_FLAT_PARAMS;
-            if (!job->allParamsTmp)
-                job->allParamsTmp = Ast::newFuncCallParams(exprNode->sourceFile, nullptr);
-            job->allParamsTmp->childs.clear();
+            job->allocateTempCallParams();
             job->allParamsTmp->childs.push_back(exprNode);
             job->allParamsTmp->allocateExtension(ExtensionKind::Misc);
             job->allParamsTmp->extMisc()->resolvedUserOpSymbolOverload = exprNode->extMisc()->resolvedUserOpSymbolOverload;
