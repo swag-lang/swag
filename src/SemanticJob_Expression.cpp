@@ -116,6 +116,9 @@ bool SemanticJob::resolveExpressionListArray(SemanticContext* context)
             node->flags &= ~AST_R_VALUE;
     }
 
+    if (node->flags & AST_CONST_EXPR)
+        typeInfo->setConst();
+
     typeInfo->forceComputeName();
     node->setBcNotifBefore(ByteCodeGenJob::emitExpressionListBefore);
     node->byteCodeFct = ByteCodeGenJob::emitExpressionList;

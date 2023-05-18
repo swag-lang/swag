@@ -573,6 +573,7 @@ bool SemanticJob::resolveIntrinsicSpread(SemanticContext* context)
         typeArr->finalType   = typeArr->pointedType;
         typeArr->sizeOf      = typeArr->count * typeArr->finalType->sizeOf;
         typeArr->totalCount  = typeArr->count;
+        typeArr->setConst();
         typeArr->computeName();
 
         SWAG_CHECK(TypeManager::makeCompatibles(context, typeArr, typeList, nullptr, expr));

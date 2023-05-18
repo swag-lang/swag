@@ -1,7 +1,7 @@
 //#[Swag.PrintBc]
 #test
 {
-    var x: [..] s32
+    var x: const [..] s32
     @assert(x == null)
     x = [1, 2]
     @assert(x != null)

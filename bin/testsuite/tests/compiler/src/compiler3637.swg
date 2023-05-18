@@ -5,7 +5,7 @@ func(T) toto(x: *T)
     G += 1
 }
 
-func(T) toto(x: [..] T)
+func(T) toto(x: const [..] T)
 {
     G += 2
 }
@@ -14,6 +14,6 @@ func(T) toto(x: [..] T)
 {
     var a: s32
     toto(&a)
-    toto(cast([..] s32) [1, 2])
+    toto(cast(const [..] s32) [1, 2])
     @assert(G == 3)
 }

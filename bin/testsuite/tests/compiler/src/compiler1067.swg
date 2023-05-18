@@ -1,5 +1,5 @@
 //#[Swag.PrintBc]
-func toString() -> [..] u8
+func toString() -> const [..] u8
 {
 	return [0, 1, 2, 3]
 }

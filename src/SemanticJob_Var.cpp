@@ -361,7 +361,7 @@ bool SemanticJob::resolveVarDeclAfterAssign(SemanticContext* context)
     return true;
 }
 
-bool SemanticJob::convertTypeListToArray(SemanticContext* context, AstVarDecl* node, bool isCompilerConstant, uint32_t symbolFlags)
+bool SemanticJob::convertTypeListToArray(SemanticContext* context, AstVarDecl* node, bool isCompilerConstant, uint32_t symbolFlags, uint32_t castFlags)
 {
     auto typeList  = CastTypeInfo<TypeInfoList>(node->typeInfo, TypeInfoKind::TypeListArray);
     auto typeArray = TypeManager::convertTypeListToArray(context, typeList, isCompilerConstant);
@@ -369,9 +369,9 @@ bool SemanticJob::convertTypeListToArray(SemanticContext* context, AstVarDecl* n
 
     // For a global variable, no need to collect in the constant segment, as we will collect directly to the mutable segment
     if (symbolFlags & OVERLOAD_VAR_GLOBAL)
-        SWAG_CHECK(TypeManager::makeCompatibles(context, node->typeInfo, nullptr, node->assignment, CASTFLAG_NO_COLLECT));
+        SWAG_CHECK(TypeManager::makeCompatibles(context, node->typeInfo, nullptr, node->assignment, castFlags | CASTFLAG_NO_COLLECT));
     else
-        SWAG_CHECK(TypeManager::makeCompatibles(context, node->typeInfo, nullptr, node->assignment));
+        SWAG_CHECK(TypeManager::makeCompatibles(context, node->typeInfo, nullptr, node->assignment, castFlags));
     node->typeInfo->sizeOf = node->assignment->typeInfo->sizeOf;
 
     return true;
@@ -924,7 +924,12 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
 
         // Convert from initialization list to array
         if (node->typeInfo->isListArray())
-            SWAG_CHECK(convertTypeListToArray(context, node, isCompilerConstant, symbolFlags));
+        {
+            uint32_t castFlags = 0;
+            if (!isCompilerConstant)
+                castFlags = CASTFLAG_FORCE_UNCONST;
+            SWAG_CHECK(convertTypeListToArray(context, node, isCompilerConstant, symbolFlags, castFlags));
+        }
 
         // :ConcreteRef
         if (node->typeInfo->isPointerRef() && setUnRef(node->assignment))

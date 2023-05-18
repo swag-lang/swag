@@ -321,7 +321,7 @@ struct SemanticJob : public Job
     static bool           getConstantArrayPtr(SemanticContext* context, uint32_t* storageOffset, DataSegment** storageSegment);
     static void           forceConstType(SemanticContext* context, AstTypeExpression* node);
     static void           setVarDeclResolve(AstVarDecl* varNode);
-    static bool           convertTypeListToArray(SemanticContext* context, AstVarDecl* node, bool isCompilerConstant, uint32_t symbolFlags);
+    static bool           convertTypeListToArray(SemanticContext* context, AstVarDecl* node, bool isCompilerConstant, uint32_t symbolFlags, uint32_t castFlags = 0);
     static DataSegment*   getSegmentForVar(SemanticContext* context, AstVarDecl* node);
     static bool           getDigitHexa(SemanticContext* context, const char** pz, int& result, const char* errMsg);
     static bool           processLiteralString(SemanticContext* context);

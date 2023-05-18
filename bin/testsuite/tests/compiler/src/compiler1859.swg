@@ -33,7 +33,7 @@ func tt4()->string
 }
 
 //#[Swag.PrintBc]
-func tt5()->[..] s64
+func tt5()->const [..] s64
 {
     return [10, 20, 30, 40]
 }

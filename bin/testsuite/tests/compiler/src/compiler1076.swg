@@ -1,6 +1,6 @@
 
 
-func toto() -> [..] string
+func toto() -> const [..] string
 {
 	return ["str0", "str1"]
 }
