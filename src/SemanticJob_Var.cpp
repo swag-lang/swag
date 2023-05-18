@@ -603,10 +603,6 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
 
     auto concreteNodeType = node->type && node->type->typeInfo ? TypeManager::concreteType(node->type->typeInfo, CONCRETE_FORCEALIAS) : nullptr;
 
-    // Check attributes
-    if (node->attributeFlags & ATTRIBUTE_TLS && node->attributeFlags & ATTRIBUTE_COMPILER)
-        return context->report({node, Err(Err0159)});
-
     // Register public global constant
     if (isCompilerConstant && (node->attributeFlags & ATTRIBUTE_PUBLIC))
     {
@@ -615,7 +611,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
     }
 
     if (node->attributeFlags & ATTRIBUTE_DISCARDABLE && !concreteNodeType->isLambdaClosure())
-        return context->report({node, Fmt(Err(Err0297), concreteNodeType->getDisplayNameC())});
+        return context->report({node, node->token, Fmt(Err(Err0297), concreteNodeType->getDisplayNameC())});
 
     // Check for missing initialization
     // This is ok to not have an initialization for structs, as they are initialized by default

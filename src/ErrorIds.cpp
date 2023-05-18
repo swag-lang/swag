@@ -658,7 +658,7 @@ void initErrors()
     SWAG_ERROR(Err0237, "the '%s' message string cannot be evaluated at compile time");
     SWAG_ERROR(Err0442, "the '@cvastart' intrinsic should only be used in a function with a last parameter of type 'cvarargs'");
     SWAG_ERROR(Err0028, "the 'Swag.Strict' attribute should only be used on a type alias");
-    SWAG_ERROR(Err0159, "the 'Swag.Tls' and 'Swag.Compiler' attributes are exclusive");
+    SWAG_ERROR(Err0159, "unexpected 'Swag.Tls' attribute as 'Swag.Compiler' has already been defined, and they are exclusive");
     SWAG_ERROR(Err0601, "the 'Swag.Using' is empty");
     SWAG_ERROR(Err0126, "the 'opSlice' special function should return a string or a slice ('%s' provided)");
     SWAG_ERROR(Err0771, "the 'retval' type should not be used in a function that returns nothing");
@@ -915,7 +915,7 @@ void initErrors()
     SWAG_ERROR(Err0073, "'with' should not be used on an enum variable (type is '%s')");
     SWAG_ERROR(Err0080, "ambiguous resolution of enum value '%s'");
     SWAG_ERROR(Err0144, "the enum value '%s' cannot be found in enum '%s'");
-    SWAG_ERROR(Err0147, nullptr);
+    SWAG_ERROR(Err0147, "unexpected 'Swag.Compiler' attribute as 'Swag.Tls' has already been defined, and they are exclusive");
     SWAG_ERROR(Err0148, nullptr);
     SWAG_ERROR(Err0149, nullptr);
     SWAG_ERROR(Err0250, nullptr);
