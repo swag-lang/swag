@@ -19,7 +19,7 @@ Note that a simple `visual studio code` [extension](https://marketplace.visualst
 Here is a screen capture software fully written in Swag with the help of the Swag standard libraries (`core`, `pixel`, `gui`...), which could be compiled as a native executable (fast) or just interpreted as a script (less... fast). Code is [there](https://github.com/swag-lang/swag/blob/master/bin/examples/modules/captme/src).
 
 <p align="center">
-    <img width="50%" height="50%" src="https://github.com/swag-lang/swag/blob/master/docs/captme.png">
+    <img width="70%" height="50%" src="https://github.com/swag-lang/swag/blob/master/docs/captme.png">
 </p>
 
 ### Swag is...
