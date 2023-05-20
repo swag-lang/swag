@@ -34,7 +34,7 @@ attr Implicit()
 attr Complete()
 
 #[AttrUsage(AttributeUsage.Function)]
-attr NoReturn()
+attr CalleeReturn()
 
 #[AttrUsage(AttributeUsage.Function)]
 attr Foreign(module: string, function: string = "");

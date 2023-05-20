@@ -276,7 +276,7 @@ impl Deflate
                 if numProbesLeft == 0
                     return
 
-                #[Swag.Mixin, Swag.NoReturn]
+                #[Swag.Mixin, Swag.CalleeReturn]
                 func probe()
                 {
                     nextProbePos = d.next[probePos]

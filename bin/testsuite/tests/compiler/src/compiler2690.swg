@@ -1,6 +1,6 @@
 #global testerror
 
-#[Swag.NoReturn]
+#[Swag.CalleeReturn]
 func toto()
 {
 }

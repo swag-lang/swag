@@ -1,4 +1,4 @@
-#[Swag.Mixin, Swag.NoReturn]
+#[Swag.Mixin, Swag.CalleeReturn]
 func mac(stmt: code)
 {
     #mixin stmt

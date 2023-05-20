@@ -547,13 +547,13 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
             SWAG_VERIFY(!(funcNode->attributeFlags & ATTRIBUTE_MIXIN), context->report({funcNode, funcNode->token, Fmt(Err(Err0762), funcNode->getDisplayNameC())}));
             SWAG_VERIFY(!(funcNode->attributeFlags & ATTRIBUTE_INLINE), context->report({funcNode, funcNode->token, Fmt(Err(Err0763), funcNode->getDisplayNameC())}));
             SWAG_VERIFY(!(funcNode->attributeFlags & ATTRIBUTE_NOT_GENERIC), context->report({funcNode, funcNode->token, Fmt(Err(Err0860), funcNode->getDisplayNameC())}));
-            SWAG_VERIFY(!(funcNode->attributeFlags & ATTRIBUTE_NO_RETURN), context->report({funcNode, funcNode->token, Fmt(Err(Err0512), funcNode->getDisplayNameC())}));
+            SWAG_VERIFY(!(funcNode->attributeFlags & ATTRIBUTE_CALLEE_RETURN), context->report({funcNode, funcNode->token, Fmt(Err(Err0512), funcNode->getDisplayNameC())}));
         }
     }
 
     SWAG_VERIFY(!(funcNode->attributeFlags & ATTRIBUTE_COMPLETE) || funcNode->token.text == g_LangSpec->name_opAffect || funcNode->token.text == g_LangSpec->name_opAffectSuffix, context->report({funcNode, funcNode->token, Fmt(Err(Err0753), funcNode->token.ctext())}));
     SWAG_VERIFY(!(funcNode->attributeFlags & ATTRIBUTE_IMPLICIT) || funcNode->token.text == g_LangSpec->name_opAffect || funcNode->token.text == g_LangSpec->name_opAffectSuffix || funcNode->token.text == g_LangSpec->name_opCast, context->report({funcNode, funcNode->token, Fmt(Err(Err0754), funcNode->token.ctext())}));
-    SWAG_VERIFY(!(funcNode->attributeFlags & ATTRIBUTE_NO_RETURN) || (funcNode->attributeFlags & (ATTRIBUTE_MIXIN | ATTRIBUTE_MACRO)), context->report({funcNode, funcNode->token, Fmt(Err(Err0755), funcNode->getDisplayNameC())}));
+    SWAG_VERIFY(!(funcNode->attributeFlags & ATTRIBUTE_CALLEE_RETURN) || (funcNode->attributeFlags & (ATTRIBUTE_MIXIN | ATTRIBUTE_MACRO)), context->report({funcNode, funcNode->token, Fmt(Err(Err0755), funcNode->getDisplayNameC())}));
 
     // Implicit attribute cannot be used on a generic function
     // This is because "extra" generic parameters must be specified and not deduced, and this is not possible for an implicit cast
@@ -805,7 +805,7 @@ bool SemanticJob::registerFuncSymbol(SemanticContext* context, AstFuncDecl* func
         SWAG_CHECK(checkFuncPrototype(context, funcNode));
 
         // The function wants to return something, but has the 'Swag.NoReturn' attribute
-        if (!funcNode->returnType->typeInfo->isVoid() && (funcNode->attributeFlags & ATTRIBUTE_NO_RETURN))
+        if (!funcNode->returnType->typeInfo->isVoid() && (funcNode->attributeFlags & ATTRIBUTE_CALLEE_RETURN))
         {
             Diagnostic diag{funcNode->returnType->childs.front(), Err(Err0766)};
             diag.hint = Hnt(Hnt0026);
@@ -1224,11 +1224,12 @@ void SemanticJob::propagateReturn(AstNode* node)
 
 AstFuncDecl* SemanticJob::getFunctionForReturn(AstNode* node)
 {
-    // For a return inside an inline block, take the original function, except if it is flagged with 'Swag.noreturn'
+    // For a return inside an inline block, take the inlined function, except for a mixin or 
+    // if the inlined function is flagged with 'Swag.CalleeReturn' (in that case we take the owner function)
     auto funcNode = node->ownerFct;
     if (node->ownerInline && node->ownerInline->isParentOf(node))
     {
-        if (!(node->ownerInline->func->attributeFlags & ATTRIBUTE_NO_RETURN) && !(node->flags & AST_IN_MIXIN))
+        if (!(node->ownerInline->func->attributeFlags & ATTRIBUTE_CALLEE_RETURN) && !(node->flags & AST_IN_MIXIN))
         {
             if (node->kind == AstNodeKind::Return)
                 node->semFlags |= SEMFLAG_EMBEDDED_RETURN;

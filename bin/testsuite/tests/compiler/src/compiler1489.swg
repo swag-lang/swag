@@ -7,7 +7,7 @@ var G = 0
 
 impl S
 {
-    #[Swag.Macro, Swag.NoReturn]
+    #[Swag.Macro, Swag.CalleeReturn]
     func(ptr: bool) opVisit(using self, stmt: code)
     {
         var @alias0 = 0

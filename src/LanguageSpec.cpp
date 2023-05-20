@@ -517,7 +517,7 @@ void LanguageSpec::setupAttributesFlags()
     attributesFlags.add("Complete", ATTRIBUTE_COMPLETE);
     attributesFlags.add("Incomplete", ATTRIBUTE_INCOMPLETE);
     attributesFlags.add("Implicit", ATTRIBUTE_IMPLICIT);
-    attributesFlags.add("NoReturn", ATTRIBUTE_NO_RETURN);
+    attributesFlags.add("CalleeReturn", ATTRIBUTE_CALLEE_RETURN);
     attributesFlags.add("Discardable", ATTRIBUTE_DISCARDABLE);
     attributesFlags.add("Deprecated", ATTRIBUTE_DEPRECATED);
     attributesFlags.add("Global", ATTRIBUTE_GLOBAL);
