@@ -4,19 +4,19 @@
 
 > Work in progress ! There's no "official" release yet.
 
+> To get the compiler latest version for Windows, go the the [release](https://github.com/swag-lang/swag/releases) page.
+
 Swag is a native and/or interpreted programming language made for fun because, let's be honest, **C++** is now an **horrible and ugly beast** ! This is my third compiler (the other ones were developed for AAA game engines), but that one is by far the most advanced.
 
-Website: [https://swag-lang.org/](https://swag-lang.org/)
+You can visit the official [Website](https://swag-lang.org/) or the [YouTube](https://www.youtube.com/channel/UC9dkBu1nNfJDxUML7r7QH1Q) channel. If you want to take a first look at the language, this is [here](https://www.swag-lang.org/doc.php).
 
-If you want to take a look at the language, this is [here](https://www.swag-lang.org/doc.php).
-
-Note that a `visual studio code` extension (Swag) exists for syntax coloration.
+Note that a simple `visual studio code` [extension](https://marketplace.visualstudio.com/items?itemName=swag-lang.swag) exists for syntax coloration.
 
 <p align="center">
     <img width="50%" height="50%" src="https://github.com/swag-lang/swag/blob/master/vscode/images/syntax.png">
 </p>
 
-This is one (wip) example fully written in Swag with the help of the Swag standard libraries (core, pixel, gui...), which could be compiled as a native executable (fast) or just interpreted as a script (less... fast). Code is [there](https://github.com/swag-lang/swag/blob/master/bin/examples/modules/captme/src).
+Here is a screen capture software fully written in Swag with the help of the Swag standard libraries (`core`, `pixel`, `gui`...), which could be compiled as a native executable (fast) or just interpreted as a script (less... fast). Code is [there](https://github.com/swag-lang/swag/blob/master/bin/examples/modules/captme/src).
 
 <p align="center">
     <img width="50%" height="50%" src="https://github.com/swag-lang/swag/blob/master/docs/captme.png">
@@ -30,7 +30,7 @@ This is one (wip) example fully written in Swag with the help of the Swag standa
 * Only for **Windows 10/11** and **x86_64** so far, because this is already a lot of work.
 
 ### Swag is not...
-* **Object oriented**, because you know what, this was not a good idea, after all... But with *interfaces*, a powerful *using* and with *UFCS* (uniform function call syntax), you can have a feeling of object oriented programming without inheritance or encapsulation.
+* **Object oriented**, because you know what, this was not a good idea, after all... But with `interface`, a powerful `using` and with `UFCS` (uniform function call syntax), you can have a feeling of object oriented programming without inheritance or encapsulation.
 * **Safe** at all cost. I want to be the one to make my program safe. I want to be the one to deal with memory. But Swag can help...
 * **32 bits**. Only 64 bits is supported.
 
@@ -65,7 +65,7 @@ This is one (wip) example fully written in Swag with the help of the Swag standa
     @print("Hello mad world !\n")
 }
 ```
-A version that uses the *print* function in the standard *Core* module :
+A version that uses the `print` function in the `Std.Core` module :
 
 ``` swift
 #main
@@ -74,7 +74,7 @@ A version that uses the *print* function in the standard *Core* module :
     Core.Console.printf("%\n", "Hello mad world again !")
 }
 ```
-A *#run* block is executed at compile time, so in the following example the famous message will be printed by the compiler :
+A `#run` block is executed at compile time, so in the following example the famous message will be printed by the compiler :
 
 ``` swift
 #run

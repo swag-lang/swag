@@ -44,10 +44,10 @@ func compute()
                 break
         }
 
-        light := Math.map(cast(f32) n, 0, cast(f32) MaxIterations, 0, 255)
-        pix[0] = acast light
-        pix[1] = acast light
-        pix[2] = acast light
+        light := cast(u8) Math.map(cast(f32) n, 0, cast(f32) MaxIterations, 0, 255)
+        pix[0] = light
+        pix[1] = light
+        pix[2] = light
     }
 }
 
@@ -71,7 +71,6 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
         g_Image   = Image.create(200, 200, .BGR8)
         g_Texture = wnd.getApp().renderer.addImage(g_Image)
 
-        //Time.Stopwatch.scopeMeasure()
         compute()
         return true
 
