@@ -30,7 +30,7 @@ impl Library
 
     mtd fill()
     {
-        files = catch Directory.enumerateFiles(getFolder(), "*.captme")
+        files = catch Directory.enumerateFiles(getFolder(), ".captme")
     }
 
     mtd removeFile(name: string)

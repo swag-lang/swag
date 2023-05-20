@@ -136,6 +136,8 @@ impl IActionUI for ActionToolMode
     mtd execute(cxt: ActionContext)->bool
     {
         main := cast(*MainWnd) cxt.wnd
+        capture := main.getCapture()
+
         switch cxt.id
         {
         case CmdIdModeShape:        main.editMode = .Shape
@@ -152,6 +154,7 @@ impl IActionUI for ActionToolMode
         case CmdIdModeSelection:    main.lastEditMode = main.editMode; main.editMode = .Selection
         }
 
+        capture.selection.clear()
         main.updateState()
         return true
     }
