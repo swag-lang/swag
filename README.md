@@ -16,7 +16,7 @@ Note that a simple `visual studio code` [extension](https://marketplace.visualst
     <img width="50%" height="50%" src="https://github.com/swag-lang/swag/blob/master/vscode/images/syntax.png">
 </p>
 
-Here is a screen capture software fully written in Swag with the help of the Swag standard libraries (`core`, `pixel`, `gui`...), which could be compiled as a native executable (fast) or just interpreted as a script (less... fast). Code is [there](https://github.com/swag-lang/swag/blob/master/bin/examples/modules/captme/src).
+Here is a **screen capture software** fully written in Swag with the help of the Swag standard libraries (`core`, `pixel`, `gui`...). It could be compiled as a native executable (fast) or just interpreted as a script (less... fast). Code is [there](https://github.com/swag-lang/swag/blob/master/bin/examples/modules/captme/src).
 
 <p align="center">
     <img width="70%" height="50%" src="https://github.com/swag-lang/swag/blob/master/docs/captme.png">
@@ -24,13 +24,13 @@ Here is a screen capture software fully written in Swag with the help of the Swa
 
 ### Swag is...
 * **Currently in development** (since 2019), and very very far to be mature. Bugs, unexpected changes, silly decisions, do not use it to send a rocket on the moon ! It's a **toy**.
-* **Low level** (i'm a C++ guy for 20+ years so i had no choice). No garbage collection like in C#, Go or D, no automatic pointer management like in Swift, no ownership like in Rust.
+* **Low level** (i'm a C++ guy for 20+ years so i had no choice). No garbage collection like in `C#`, `Go` or `D`, no automatic pointer management like in `Swift`, no ownership like in `Rust`.
 * **Statically typed** (what else), but lots of automatic type detection if you want.
-* **Inspired** by a lot of things around there, like **Swift** for the syntax, **Jai** (Jonathan Blow) for the great ideas, **Go** for it's simplicity, **C#** for .NET, **Zig** (Andrew Kelley) for the error system, **Rust** for the *impl* thing, and so on.
-* Only for **Windows 10/11** and **x86_64** so far, because this is already a lot of work.
+* **Inspired** by a lot of things around there, like `Swift` for the syntax, `Jai` (Jonathan Blow) for the great ideas, `Go` for it's simplicity, `C#` for `.NET`, `Zig` (Andrew Kelley) for the error system, `Rust` for the `impl` thing, and so on.
+* Only for **Windows 10/11** and **x86_64** so far, because this is already a crazy amount of work.
 
 ### Swag is not...
-* **Object oriented**, because you know what, this was not a good idea, after all... But with `interface`, a powerful `using` and with `UFCS` (uniform function call syntax), you can have a feeling of object oriented programming without inheritance or encapsulation.
+* **Object oriented**, because you know what, i'm not sure this was such a good idea, after all... But with `interface`, a powerful `using` and with `UFCS` (uniform function call syntax), you can have a feeling of object oriented programming without inheritance or encapsulation.
 * **Safe** at all cost. I want to be the one to make my program safe. I want to be the one to deal with memory. But Swag can help...
 * **32 bits**. Only 64 bits is supported.
 
@@ -39,13 +39,13 @@ Here is a screen capture software fully written in Swag with the help of the Swa
 * **Type reflection** at compile time and runtime.
 * **Full compile time execution** (your whole program can be executed by the compiler without any constraint). So Swag can also act like a scripting language.
 * **Meta programming** (you can write code that writes code).
-* **Interfaces** for dynamic dispatch, inspired by *Go*.
+* **Interfaces** for dynamic dispatch, inspired by `Go`.
 * **Modules**, compiled as separate dynamic libraries.
-* **Very fast compile time** (at least in debug with the x64 backend) thanks to heavy multithreading.
+* **Very fast compile time** (at least in debug with the `x64` backend) thanks to heavy multithreading.
 * **Fast interpretation** in script mode. Seems faster than Python or Lua for example (without JIT).
-* **Simple error system**, inspired by *Zig*.
+* **Simple error system**, inspired by `Zig`.
 * **Generics**, for a simple usage. No template nightmare here...
-* **Powerful macro/mixin** system, without the need of a specific syntax, inspired by *Jai*.
+* **Powerful macro/mixin** system, without the need of a specific syntax, inspired by `Jai`.
 * **Unordered global declarations**, which means that the order of global declarations does not matter (they can be in any files and in whatever order).
 
 ### Swag does not have...
