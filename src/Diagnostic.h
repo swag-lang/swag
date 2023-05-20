@@ -223,4 +223,5 @@ struct Diagnostic
     bool currentStackLevel = false;
     bool forceSourceFile   = false;
     bool criticalError     = false;
+    bool isNote            = false;
 };

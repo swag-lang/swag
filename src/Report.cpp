@@ -210,6 +210,8 @@ static void reportInternal(const Diagnostic& diag, const Vector<const Diagnostic
     g_Log.eol();
 
     bool prevHasSomething = true;
+    bool first            = true;
+
     for (auto n : notes)
     {
         if (!n->display)
@@ -219,7 +221,9 @@ static void reportInternal(const Diagnostic& diag, const Vector<const Diagnostic
         if (!hasSomething && !prevHasSomething)
             n->emptyMarginBefore = false;
 
+        n->isNote = !first;
         n->report(verbose);
+        first = false;
 
         prevHasSomething = hasSomething;
     }

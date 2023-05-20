@@ -11,8 +11,8 @@ void Diagnostic::setupColors(bool verboseMode)
 {
     verboseColor         = LogColor::DarkCyan;
     errorColor           = verboseMode ? verboseColor : LogColor::Red;
-    codeColor            = verboseMode ? verboseColor : LogColor::Gray;
-    marginCodeColor      = verboseMode ? verboseColor : LogColor::Cyan;
+    codeColor            = verboseMode ? verboseColor : LogColor::White;
+    marginCodeColor      = verboseMode ? verboseColor : LogColor::Gray;
     hintColor            = verboseMode ? verboseColor : LogColor::White;
     rangeNoteColor       = verboseMode ? verboseColor : LogColor::White;
     warningColor         = verboseMode ? verboseColor : LogColor::Magenta;
@@ -92,7 +92,9 @@ void Diagnostic::printSourceLine()
     if (!g_CommandLine.errorOneLine)
         g_Log.setColor(sourceFileColor);
     g_Log.print(path.string().c_str());
-    if (hasLocation)
+    if (hasLocation && isNote)
+        g_Log.print(Fmt(":%d ", startLocation.line + 1));
+    else if (hasLocation)
         g_Log.print(Fmt(":%d:%d:%d:%d: ", startLocation.line + 1, startLocation.column + 1, endLocation.line + 1, endLocation.column + 1));
     else
         g_Log.print(": ");
