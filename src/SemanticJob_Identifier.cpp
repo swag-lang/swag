@@ -2612,6 +2612,8 @@ bool SemanticJob::findEnumTypeInContext(SemanticContext* context, AstNode* node,
                             if (!enumIdx)
                             {
                                 auto typeEnum = findEnumTypeInContext(context, concreteP);
+                                if (typeEnum)
+                                    has.push_back_once(typeEnum);
                                 if (typeEnum && typeEnum->contains(node->token.text))
                                     result.push_back_once(typeEnum);
                                 break;
@@ -2636,6 +2638,7 @@ bool SemanticJob::findEnumTypeInContext(SemanticContext* context, AstNode* node,
                 if (typeInfo->isEnum())
                 {
                     auto typeEnum = CastTypeInfo<TypeInfoEnum>(typeInfo, TypeInfoKind::Enum);
+                    has.push_back_once(typeEnum);
                     if (typeEnum->contains(node->token.text))
                     {
                         result.push_back(typeEnum);
@@ -2656,6 +2659,8 @@ bool SemanticJob::findEnumTypeInContext(SemanticContext* context, AstNode* node,
         for (auto c : parent->childs)
         {
             auto typeEnum = findEnumTypeInContext(context, c->typeInfo);
+            if (typeEnum)
+                has.push_back_once(typeEnum);
             if (typeEnum && typeEnum->contains(node->token.text))
                 result.push_back_once(typeEnum);
         }

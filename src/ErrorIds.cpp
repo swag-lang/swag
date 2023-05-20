@@ -725,7 +725,7 @@ void initErrors()
     SWAG_ERROR(Err0093, "the identifier '%s' cannot be found in the tuple");
     SWAG_ERROR(Err0127, "the identifier '%s' has call parameters, but is %s and not a function");
     SWAG_ERROR(Err0125, "the identifier '%s' has call parameters, but is a variable of type '%s' and not a function");
-    SWAG_ERROR(Err0881, "the identifier '%s' is preceeded with '.' but no corresponding enum or 'with' can be deduced");
+    SWAG_ERROR(Err0881, "the identifier '%s' is preceeded with '.' but no corresponding 'enum' or 'with' can be deduced");
     SWAG_ERROR(Err0660, "the implementation block for '%s' is not private but the corresponding identifier is");
     SWAG_ERROR(Err0659, "the implementation block for '%s' is private but the corresponding identifier is not");
     SWAG_ERROR(Err0661, "the implementation block is not defined in the same scope as '%s')");
@@ -914,8 +914,8 @@ void initErrors()
     SWAG_ERROR(Err0056, "x64 backend unsupported os '%s'");
     SWAG_ERROR(Err0073, "'with' should not be used on an enum variable (type is '%s')");
     SWAG_ERROR(Err0080, "ambiguous resolution of enum value '%s'");
-    SWAG_ERROR(Err0144, "the enum value '%s' cannot be found in enum '%s'");
-    SWAG_ERROR(Err0147, "unexpected 'Swag.Compiler' attribute as 'Swag.Tls' has already been defined, and they are exclusive");
+    SWAG_ERROR(Err0144, "the enum value '%s' cannot be found in the enum '%s'");
+    SWAG_ERROR(Err0147, "unexpected 'Swag.Compiler' attribute as 'Swag.Tls' has already been defined (and they are exclusive)");
     SWAG_ERROR(Err0148, nullptr);
     SWAG_ERROR(Err0149, nullptr);
     SWAG_ERROR(Err0250, nullptr);
