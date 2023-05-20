@@ -29,6 +29,8 @@ enum class LogColor
     SyntaxType,
     SyntaxKeyword,
     SyntaxLogic,
+    SyntaxNumber,
+    SyntaxString,
 };
 
 enum class LogPassType
@@ -94,6 +96,10 @@ struct Log
             return "\x1b[38;2;86;156;214m";
         case LogColor::SyntaxLogic:
             return "\x1b[38;2;216;160;223m";
+        case LogColor::SyntaxNumber:
+            return "\x1b[38;2;181;206;168m";
+        case LogColor::SyntaxString:
+            return "\x1b[38;2;206;145;120m";
 
         default:
             break;

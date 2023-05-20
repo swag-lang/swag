@@ -422,6 +422,27 @@ Utf8 Diagnostic::syntax(const Utf8& line)
     {
         Utf8 identifier;
 
+        // String
+        if (c == '"')
+        {
+            result += Log::colorToVTS(LogColor::SyntaxString);
+            result += c;
+            while (*pz && *pz != '"')
+            {
+                if (*pz == '\\')
+                    result += *pz++;
+                if (*pz)
+                    result += *pz++;
+            }
+
+            if (*pz == '"')
+                result += *pz++;
+            pz = Utf8::decodeUtf8(pz, c, offset);
+            result += Log::colorToVTS(codeColor);
+            continue;
+        }
+
+        // Line comment
         if (c == '/' && pz[0] == '/')
         {
             result += Log::colorToVTS(LogColor::SyntaxComment);
@@ -433,6 +454,63 @@ Utf8 Diagnostic::syntax(const Utf8& line)
             continue;
         }
 
+        // Binary literal
+        if (c == '0' && (*pz == 'b' || *pz == 'B'))
+        {
+            result += Log::colorToVTS(LogColor::SyntaxNumber);
+            result += c;
+            result += *pz++;
+            while (*pz && (SWAG_IS_HEX(*pz) || *pz == '_'))
+                result += *pz++;
+            pz = Utf8::decodeUtf8(pz, c, offset);
+            result += Log::colorToVTS(codeColor);
+            continue;
+        }
+
+        // Hexadecimal literal
+        if (c == '0' && (*pz == 'x' || *pz == 'X'))
+        {
+            result += Log::colorToVTS(LogColor::SyntaxNumber);
+            result += c;
+            result += *pz++;
+            while (*pz && (SWAG_IS_HEX(*pz) || *pz == '_'))
+                result += *pz++;
+            pz = Utf8::decodeUtf8(pz, c, offset);
+            result += Log::colorToVTS(codeColor);
+            continue;
+        }
+
+        // Number
+        if (SWAG_IS_DIGIT(c))
+        {
+            result += Log::colorToVTS(LogColor::SyntaxNumber);
+            result += c;
+
+            while (*pz && (SWAG_IS_DIGIT(*pz) || *pz == '_'))
+                result += *pz++;
+
+            if (*pz == '.')
+            {
+                result += *pz++;
+                while (*pz && (SWAG_IS_DIGIT(*pz) || *pz == '_'))
+                    result += *pz++;
+            }
+
+            if (*pz == 'e' || *pz == 'E')
+            {
+                result += *pz++;
+                if (*pz == '-' || *pz == '+')
+                    result += *pz++;
+                while (*pz && (SWAG_IS_DIGIT(*pz) || *pz == '_'))
+                    result += *pz++;
+            }
+
+            pz = Utf8::decodeUtf8(pz, c, offset);
+            result += Log::colorToVTS(codeColor);
+            continue;
+        }
+
+        // Word
         if (SWAG_IS_ALPHA(c) || c == '_' || c == '#' || c == '@')
         {
             identifier += c;
@@ -566,6 +644,7 @@ Utf8 Diagnostic::syntax(const Utf8& line)
                     result += identifier;
                 }
             }
+
             continue;
         }
 
