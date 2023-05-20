@@ -428,7 +428,7 @@ Utf8 Diagnostic::syntax(const Utf8& line)
 
         if (c == '/' && pz[0] == '/')
         {
-            result += "\x1b[38;2;106;153;85m";
+            result += Log::colorToVTS(LogColor::SyntaxComment);
             result += c;
             while (*pz && !SWAG_IS_EOL(*pz))
                 result += *pz++;
@@ -489,14 +489,14 @@ Utf8 Diagnostic::syntax(const Utf8& line)
 
                 case TokenId::KwdPublic:
                 case TokenId::KwdPrivate:
-                    result += "\x1b[38;2;86;156;214m";
+                    result += Log::colorToVTS(LogColor::SyntaxKeyword);                        
                     result += identifier;
                     result += Log::colorToVTS(codeColor);
                     break;
 
                 case TokenId::NativeType:
                 case TokenId::CompilerType:
-                    result += "\x1b[38;2;246;204;134m";
+                    result += Log::colorToVTS(LogColor::SyntaxType);                        
                     result += identifier;
                     result += Log::colorToVTS(codeColor);
                     break;
@@ -520,7 +520,7 @@ Utf8 Diagnostic::syntax(const Utf8& line)
                 case TokenId::KwdAnd:
                 case TokenId::KwdOr:
                 case TokenId::KwdOrElse:
-                    result += "\x1b[38;2;216;160;223m";
+                    result += Log::colorToVTS(LogColor::SyntaxLogic);                        
                     result += identifier;
                     result += Log::colorToVTS(codeColor);
                     break;
@@ -531,7 +531,7 @@ Utf8 Diagnostic::syntax(const Utf8& line)
                 case TokenId::CompilerFuncMain:
                 case TokenId::CompilerFuncPreMain:
                 case TokenId::CompilerFuncTest:
-                    result += "\x1b[38;2;255;116;17m";
+                    result += Log::colorToVTS(LogColor::SyntaxCompiler);
                     result += identifier;
                     result += Log::colorToVTS(codeColor);
                     break;
@@ -539,7 +539,7 @@ Utf8 Diagnostic::syntax(const Utf8& line)
                 default:
                     if (identifier[0] == '@')
                     {
-                        result += "\x1b[38;2;220;220;170m";
+                        result += Log::colorToVTS(LogColor::SyntaxIntrinsic);                            
                         result += identifier;
                         result += Log::colorToVTS(codeColor);
                     }
@@ -555,13 +555,13 @@ Utf8 Diagnostic::syntax(const Utf8& line)
             {
                 if (identifier[0] >= 'a' and identifier[0] <= 'z' && (c == '(' || c == '\''))
                 {
-                    result += "\x1b[38;2;255;116;17m";
+                    result += Log::colorToVTS(LogColor::SyntaxFunction);                        
                     result += identifier;
                     result += Log::colorToVTS(codeColor);
                 }
                 else if (identifier[0] >= 'A' and identifier[0] <= 'Z')
                 {
-                    result += "\x1b[38;2;78;201;176m";
+                    result += Log::colorToVTS(LogColor::SyntaxConstant);                        
                     result += identifier;
                     result += Log::colorToVTS(codeColor);
                 }

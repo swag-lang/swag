@@ -20,6 +20,15 @@ enum class LogColor
     DarkYellow,
     DarkMagenta,
     Default,
+
+    SyntaxComment,
+    SyntaxCompiler,
+    SyntaxFunction,
+    SyntaxConstant,
+    SyntaxIntrinsic,
+    SyntaxType,
+    SyntaxKeyword,
+    SyntaxLogic,
 };
 
 enum class LogPassType

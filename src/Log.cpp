@@ -52,6 +52,23 @@ const char* Log::colorToVTS(LogColor color)
     case LogColor::White:
         return "\x1b[97m";
 
+    case LogColor::SyntaxComment:
+        return "\x1b[38;2;106;153;85m";
+    case LogColor::SyntaxCompiler:
+        return "\x1b[38;2;255;116;17m";
+    case LogColor::SyntaxFunction:
+        return "\x1b[38;2;255;116;17m";
+    case LogColor::SyntaxConstant:
+        return "\x1b[38;2;78;201;176m";
+    case LogColor::SyntaxIntrinsic:
+        return "\x1b[38;2;220;220;170m";
+    case LogColor::SyntaxType:
+        return "\x1b[38;2;246;204;134m";
+    case LogColor::SyntaxKeyword:
+        return "\x1b[38;2;86;156;214m";
+    case LogColor::SyntaxLogic:
+        return "\x1b[38;2;216;160;223m";
+
     default:
         break;
     }
