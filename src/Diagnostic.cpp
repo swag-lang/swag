@@ -12,7 +12,7 @@ void Diagnostic::setupColors(bool verboseMode)
     verboseColor         = LogColor::DarkCyan;
     errorColor           = verboseMode ? verboseColor : LogColor::Red;
     codeColor            = verboseMode ? verboseColor : LogColor::Gray;
-    marginCodeColor      = verboseMode ? verboseColor : LogColor::Gray;
+    marginCodeColor      = verboseMode ? verboseColor : LogColor::Cyan;
     hintColor            = verboseMode ? verboseColor : LogColor::White;
     rangeNoteColor       = verboseMode ? verboseColor : LogColor::White;
     warningColor         = verboseMode ? verboseColor : LogColor::Magenta;
