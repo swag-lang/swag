@@ -212,6 +212,7 @@ static void reportInternal(const Diagnostic& diag, const Vector<const Diagnostic
         notes.push_back(new Diagnostic{*n});
 
     cleanNotes(notes);
+    g_Log.eol();
 
     bool prevHasSomething = true;
     for (auto n : notes)
