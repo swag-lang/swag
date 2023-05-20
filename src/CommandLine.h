@@ -22,6 +22,7 @@ struct CommandLine
     bool      run           = false;
     bool      scriptMode    = false;
     bool      scriptCommand = false;
+    bool      genDoc        = false;
 
     // Stats
 #ifdef SWAG_STATS

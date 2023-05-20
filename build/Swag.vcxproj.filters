@@ -602,6 +602,9 @@
     <ClCompile Include="..\src\BackendLLVM_Emit.cpp">
       <Filter>Backend\LLVM</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\ModuleGenDocJob.cpp">
+      <Filter>Jobs</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="../src/ThreadManager.h">
@@ -955,6 +958,9 @@
     </ClInclude>
     <ClInclude Include="..\src\Parser.h">
       <Filter>Syntax\Parser</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\ModuleGenDocJob.h">
+      <Filter>Jobs</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

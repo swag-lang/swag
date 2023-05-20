@@ -278,6 +278,7 @@
     <ClInclude Include="..\src\mimalloc\mimalloc-track.h" />
     <ClInclude Include="..\src\mimalloc\mimalloc-types.h" />
     <ClInclude Include="..\src\mimalloc\mimalloc.h" />
+    <ClInclude Include="..\src\ModuleGenDocJob.h" />
     <ClInclude Include="..\src\Naming.h" />
     <ClInclude Include="../src/Runtime.h" />
     <ClInclude Include="../src/Scope.h" />
@@ -541,6 +542,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release (DevMode)|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="..\src\ModuleGenDocJob.cpp" />
     <ClCompile Include="..\src\Module_CompilerMsg.cpp" />
     <ClCompile Include="..\src\Module_Run.cpp" />
     <ClCompile Include="..\src\Naming.cpp" />

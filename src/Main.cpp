@@ -45,6 +45,7 @@ int main(int argc, const char* argv[])
     // Command
     if (command != "build" &&
         command != "run" &&
+        command != "doc" &&
         command != "test" &&
         command != "new" &&
         command != "clean" &&
@@ -87,6 +88,13 @@ int main(int argc, const char* argv[])
     else if (command == "run")
     {
         g_CommandLine.run = true;
+        g_Workspace->build();
+    }
+    else if (command == "doc")
+    {
+        g_CommandLine.genDoc  = true;
+        g_CommandLine.output  = false;
+        g_CommandLine.rebuild = true;
         g_Workspace->build();
     }
     else if (command == "test")

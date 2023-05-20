@@ -64,6 +64,9 @@ struct CommandLineArgument
 
             if (p == "all" || p == "ru")
                 cmds.insert("run");
+
+            if (p == "all" || p == "doc")
+                cmds.insert("doc");
         }
     }
 };

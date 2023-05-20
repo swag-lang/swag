@@ -3,6 +3,7 @@
 #include "Workspace.h"
 #include "ModuleSemanticJob.h"
 #include "ModuleOutputJob.h"
+#include "ModuleGenDocJob.h"
 #include "Backend.h"
 #include "FileJob.h"
 #include "Module.h"
@@ -727,10 +728,24 @@ JobResult ModuleBuildJob::execute()
             // Do not run native tests or command in script mode, it's already done in bytecode
             if (g_CommandLine.scriptMode)
                 pass = ModuleBuildPass::Done;
+            else if (g_CommandLine.genDoc)
+                pass = ModuleBuildPass::Done;
             else
                 pass = ModuleBuildPass::RunNative;
 
-            if (module->mustOutputSomething())
+            // Generate documentation
+            if (g_CommandLine.genDoc)
+            {
+                module->logPass(ModuleBuildPass::Output);
+                auto outputJob          = Allocator::alloc<ModuleGenDocJob>();
+                outputJob->module       = module;
+                outputJob->dependentJob = this;
+                jobsToAdd.push_back(outputJob);
+                return JobResult::KeepJobAlive;
+            }
+
+            // Generate backend
+            else if (module->mustOutputSomething())
             {
                 module->logPass(ModuleBuildPass::Output);
                 module->sendCompilerMessage(CompilerMsgKind::PassBeforeOutput, this);
