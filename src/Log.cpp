@@ -15,67 +15,6 @@ void Log::unlock()
     mutexAccess.unlock();
 }
 
-const char* Log::colorToVTS(LogColor color)
-{
-    switch (color)
-    {
-    case LogColor::Black:
-        return "\x1b[30m";
-
-    case LogColor::DarkRed:
-        return "\x1b[31m";
-    case LogColor::DarkGreen:
-        return "\x1b[32m";
-    case LogColor::DarkYellow:
-        return "\x1b[33m";
-    case LogColor::DarkBlue:
-        return "\x1b[34m";
-    case LogColor::DarkMagenta:
-        return "\x1b[35m";
-    case LogColor::DarkCyan:
-        return "\x1b[36m";
-    case LogColor::Gray:
-        return "\x1b[37m";
-
-    case LogColor::Red:
-        return "\x1b[91m";
-    case LogColor::Green:
-        return "\x1b[92m";
-    case LogColor::Yellow:
-        return "\x1b[93m";
-    case LogColor::Blue:
-        return "\x1b[94m";
-    case LogColor::Magenta:
-        return "\x1b[95m";
-    case LogColor::Cyan:
-        return "\x1b[96m";
-    case LogColor::White:
-        return "\x1b[97m";
-
-    case LogColor::SyntaxComment:
-        return "\x1b[38;2;106;153;85m";
-    case LogColor::SyntaxCompiler:
-        return "\x1b[38;2;255;116;17m";
-    case LogColor::SyntaxFunction:
-        return "\x1b[38;2;255;116;17m";
-    case LogColor::SyntaxConstant:
-        return "\x1b[38;2;78;201;176m";
-    case LogColor::SyntaxIntrinsic:
-        return "\x1b[38;2;220;220;170m";
-    case LogColor::SyntaxType:
-        return "\x1b[38;2;246;204;134m";
-    case LogColor::SyntaxKeyword:
-        return "\x1b[38;2;86;156;214m";
-    case LogColor::SyntaxLogic:
-        return "\x1b[38;2;216;160;223m";
-
-    default:
-        break;
-    }
-
-    return "";
-}
-
 void Log::setDefaultColor()
 {
     setColor(LogColor::Gray);

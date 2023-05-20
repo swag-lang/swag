@@ -29,9 +29,9 @@ struct BcDbgCommand
 
 struct ByteCodeDebugger
 {
-    static constexpr const char* COLOR_TYPE    = "\x1b[36m"; // DarkCyan
-    static constexpr const char* COLOR_NAME    = "\x1b[33m"; // DarkYellow
-    static constexpr const char* COLOR_DEFAULT = "\x1b[37m"; // Gray
+    static constexpr const char* COLOR_TYPE    = Log::colorToVTS(LogColor::DarkCyan);
+    static constexpr const char* COLOR_NAME    = Log::colorToVTS(LogColor::DarkYellow);
+    static constexpr const char* COLOR_DEFAULT = Log::colorToVTS(LogColor::Gray);
     static const int             LINE_W        = 71;
 
     struct EvaluateResult
