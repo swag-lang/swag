@@ -73,9 +73,8 @@ struct CommandLine
     bool verboseBackendCommand = false;
     bool verboseStages         = false;
     bool errorOneLine          = false;
-    bool errorCompact          = true;
     bool errorAbsolute         = false;
-    bool errorSyntaxColors     = true;
+    bool errorCodeColors       = true;
 
     // Output
     Utf8 buildCfg           = "fast-debug";

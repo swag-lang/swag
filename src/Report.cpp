@@ -69,31 +69,25 @@ static void cleanNotes(Vector<Diagnostic*>& notes)
         }
 
         // Transform a note/help in a hint
-        if (g_CommandLine.errorCompact)
+        if (note->errorLevel == DiagnosticLevel::Note || note->errorLevel == DiagnosticLevel::Help)
         {
-            if (note->errorLevel == DiagnosticLevel::Note || note->errorLevel == DiagnosticLevel::Help)
+            if (note->hint.empty() && note->hasLocation)
             {
-                if (note->hint.empty() && note->hasLocation)
+                note->showErrorLevel = false;
+                if (!note->noteHeader.empty())
                 {
-                    note->showErrorLevel = false;
-                    if (!note->noteHeader.empty())
-                    {
-                        note->hint = note->noteHeader;
-                        note->hint += " ";
-                    }
-
-                    note->hint += note->textMsg;
-                    note->textMsg.clear();
-                    note->showRange = true;
+                    note->hint = note->noteHeader;
+                    note->hint += " ";
                 }
+
+                note->hint += note->textMsg;
+                note->textMsg.clear();
+                note->showRange = true;
             }
         }
 
         note->collectRanges();
     }
-
-    if (!g_CommandLine.errorCompact)
-        return;
 
     for (auto note : notes)
     {
@@ -201,6 +195,7 @@ static void reportInternal(const Diagnostic& diag, const Vector<const Diagnostic
     {
         auto c = new Diagnostic{diag};
         c->reportCompact(verbose);
+        g_Log.setDefaultColor();
         return;
     }
 
@@ -229,6 +224,7 @@ static void reportInternal(const Diagnostic& diag, const Vector<const Diagnostic
         prevHasSomething = hasSomething;
     }
 
+    g_Log.setDefaultColor();
     g_Log.eol();
 }
 

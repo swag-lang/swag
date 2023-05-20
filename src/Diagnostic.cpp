@@ -85,15 +85,9 @@ void Diagnostic::printSourceLine()
     if (checkFile->fileForSourceLocation)
         checkFile = checkFile->fileForSourceLocation;
 
-    // Make it relatif to current path (should be shorter) if possible
     Path path = checkFile->path;
     if (!g_CommandLine.errorAbsolute)
-    {
-        error_code err;
-        auto       path1 = filesystem::relative(path, filesystem::current_path(), err);
-        if (!path1.empty())
-            path = path1;
-    }
+        path = path.filename();
 
     if (!g_CommandLine.errorOneLine)
         g_Log.setColor(sourceFileColor);
@@ -414,7 +408,7 @@ Utf8 Diagnostic::syntax(const Utf8& line)
 {
     if (!g_CommandLine.logColors)
         return line;
-    if (!g_CommandLine.errorSyntaxColors)
+    if (!g_CommandLine.errorCodeColors)
         return line;
 
     const char* pz = line.c_str();
@@ -489,14 +483,14 @@ Utf8 Diagnostic::syntax(const Utf8& line)
 
                 case TokenId::KwdPublic:
                 case TokenId::KwdPrivate:
-                    result += Log::colorToVTS(LogColor::SyntaxKeyword);                        
+                    result += Log::colorToVTS(LogColor::SyntaxKeyword);
                     result += identifier;
                     result += Log::colorToVTS(codeColor);
                     break;
 
                 case TokenId::NativeType:
                 case TokenId::CompilerType:
-                    result += Log::colorToVTS(LogColor::SyntaxType);                        
+                    result += Log::colorToVTS(LogColor::SyntaxType);
                     result += identifier;
                     result += Log::colorToVTS(codeColor);
                     break;
@@ -520,7 +514,7 @@ Utf8 Diagnostic::syntax(const Utf8& line)
                 case TokenId::KwdAnd:
                 case TokenId::KwdOr:
                 case TokenId::KwdOrElse:
-                    result += Log::colorToVTS(LogColor::SyntaxLogic);                        
+                    result += Log::colorToVTS(LogColor::SyntaxLogic);
                     result += identifier;
                     result += Log::colorToVTS(codeColor);
                     break;
@@ -539,7 +533,7 @@ Utf8 Diagnostic::syntax(const Utf8& line)
                 default:
                     if (identifier[0] == '@')
                     {
-                        result += Log::colorToVTS(LogColor::SyntaxIntrinsic);                            
+                        result += Log::colorToVTS(LogColor::SyntaxIntrinsic);
                         result += identifier;
                         result += Log::colorToVTS(codeColor);
                     }
@@ -555,13 +549,13 @@ Utf8 Diagnostic::syntax(const Utf8& line)
             {
                 if (identifier[0] >= 'a' and identifier[0] <= 'z' && (c == '(' || c == '\''))
                 {
-                    result += Log::colorToVTS(LogColor::SyntaxFunction);                        
+                    result += Log::colorToVTS(LogColor::SyntaxFunction);
                     result += identifier;
                     result += Log::colorToVTS(codeColor);
                 }
                 else if (identifier[0] >= 'A' and identifier[0] <= 'Z')
                 {
-                    result += Log::colorToVTS(LogColor::SyntaxConstant);                        
+                    result += Log::colorToVTS(LogColor::SyntaxConstant);
                     result += identifier;
                     result += Log::colorToVTS(codeColor);
                 }
