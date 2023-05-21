@@ -124,7 +124,9 @@ void ModuleGenDocJob::generateToc()
         Utf8::tokenize(c.fullName, '.', tkn);
 
         // Display. The real name, and one level above.
-        if (tkn.size() > 2)
+        if (c.nodes[0]->kind == AstNodeKind::Namespace)
+            c.displayName = c.fullName;
+        else if (tkn.size() > 2)
         {
             c.displayName = tkn[tkn.size() - 2];
             c.displayName += ".";
