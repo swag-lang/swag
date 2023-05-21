@@ -190,6 +190,12 @@ bool Parser::doStruct(AstNode* parent, AstNode** result)
     structNode->allocateExtension(ExtensionKind::Semantic);
     structNode->extSemantic()->semanticAfterFct = SemanticJob::sendCompilerMsgTypeDecl;
 
+    if (!tokenizer.comment.empty())
+    {
+        structNode->allocateExtension(ExtensionKind::Misc);
+        structNode->extMisc()->docComment = std::move(tokenizer.comment);
+    }
+
     // Special case
     SyntaxStructType structType = SyntaxStructType::Struct;
     if (token.id == TokenId::KwdInterface)

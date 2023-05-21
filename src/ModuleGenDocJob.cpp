@@ -20,12 +20,21 @@ Utf8 ModuleGenDocJob::outputNode(AstNode* node)
 
 void ModuleGenDocJob::outputUserLine(const Utf8& user)
 {
+    if (user.empty())
+        return;
     helpContent += user;
 }
 
 void ModuleGenDocJob::outputUserBlock(const Utf8& user)
 {
+    if (user.empty())
+        return;
+
+    helpContent += "<div>\n";
+    helpContent += "<p>\n";
     helpContent += user;
+    helpContent += "</p>\n";
+    helpContent += "</div>\n";
 }
 
 void ModuleGenDocJob::outputCode(const Utf8& code)
@@ -279,12 +288,21 @@ JobResult ModuleGenDocJob::execute()
             }
 
             helpContent += "</table>\n";
+
+            if (structNode->hasExtMisc())
+                outputUserBlock(structNode->extMisc()->docComment);
             break;
         }
 
         case AstNodeKind::InterfaceDecl:
+        {
             helpContent += Fmt("<h3 id=\"%s\">Interface %s</h3>\n", c.nodes[0]->getScopedName().c_str(), c.nodes[0]->token.ctext());
+
+            auto itfNode = CastAst<AstStruct>(c.nodes[0], AstNodeKind::InterfaceDecl);
+            if (itfNode->hasExtMisc())
+                outputUserBlock(itfNode->extMisc()->docComment);
             break;
+        }
 
         case AstNodeKind::EnumDecl:
         {
@@ -294,6 +312,9 @@ JobResult ModuleGenDocJob::execute()
             helpContent += "<table>\n";
             for (auto enumVal : enumNode->scope->symTable.allSymbols)
             {
+                if (enumVal->nodes[0]->kind != AstNodeKind::EnumValue)
+                    continue;
+
                 helpContent += "<tr>\n";
                 helpContent += "<td>\n";
                 helpContent += enumVal->name;
@@ -306,6 +327,9 @@ JobResult ModuleGenDocJob::execute()
             }
 
             helpContent += "</table>\n";
+
+            if (enumNode->hasExtMisc())
+                outputUserBlock(enumNode->extMisc()->docComment);
             break;
         }
 
@@ -316,10 +340,11 @@ JobResult ModuleGenDocJob::execute()
             for (auto n : c.nodes)
             {
                 auto funcNode = CastAst<AstFuncDecl>(n, AstNodeKind::FuncDecl);
-                code += "func ";
+                code += "func";
+                code += outputNode(funcNode->genericParameters);
+                code += " ";
                 code += funcNode->token.text;
                 code += outputNode(funcNode->parameters);
-                code += outputNode(funcNode->genericParameters);
                 code += outputNode(funcNode->returnType);
                 code += "\n";
 
@@ -327,11 +352,7 @@ JobResult ModuleGenDocJob::execute()
                 {
                     outputCode(code);
                     code.clear();
-                    helpContent += "<div>\n";
-                    helpContent += "<p>\n";
                     outputUserBlock(funcNode->extMisc()->docComment);
-                    helpContent += "</p>\n";
-                    helpContent += "</div>\n";
                 }
             }
 

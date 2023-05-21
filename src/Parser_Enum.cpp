@@ -14,6 +14,12 @@ bool Parser::doEnum(AstNode* parent, AstNode** result)
     enumNode->extSemantic()->semanticAfterFct = SemanticJob::sendCompilerMsgTypeDecl;
     *result                                   = enumNode;
 
+    if (!tokenizer.comment.empty())
+    {
+        enumNode->allocateExtension(ExtensionKind::Misc);
+        enumNode->extMisc()->docComment = std::move(tokenizer.comment);
+    }
+
     SWAG_CHECK(eatToken());
     SWAG_VERIFY(token.id == TokenId::Identifier, error(token, Fmt(Err(Syn0074), token.ctext())));
     enumNode->inheritTokenName(token);
