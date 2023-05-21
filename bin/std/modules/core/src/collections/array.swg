@@ -2,8 +2,6 @@
 using Swag
 
 // This is a generic dynamic array.
-//
-// Toto la foule.
 struct(T) Array
 {
     allocator:  IAllocator  // Associated allocator

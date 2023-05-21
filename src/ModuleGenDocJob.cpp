@@ -47,7 +47,6 @@ void ModuleGenDocJob::computeUserBlock(UserBlock& result, const Utf8& txt)
     if (result.shortDesc.back() != '.')
         result.shortDesc += ".";
 
-
     // The main description
     for (int i = endShortDesc + 1; i < lines.size(); i++)
     {
@@ -403,17 +402,15 @@ JobResult ModuleGenDocJob::execute()
 
     for (auto& c : allNodes)
     {
-        UserBlock userBlock;
-
-        if (c.nodes[0]->hasExtMisc())
-            computeUserBlock(userBlock, c.nodes[0]->extMisc()->docComment);
-
         outputTitle(c);
 
         switch (c.nodes[0]->kind)
         {
         case AstNodeKind::Namespace:
         {
+            UserBlock userBlock;
+            if (c.nodes[0]->hasExtMisc())
+                computeUserBlock(userBlock, c.nodes[0]->extMisc()->docComment);
             outputUserBlock(userBlock.shortDesc);
             outputUserBlock(userBlock.desc);
             break;
@@ -422,6 +419,9 @@ JobResult ModuleGenDocJob::execute()
         case AstNodeKind::StructDecl:
         case AstNodeKind::InterfaceDecl:
         {
+            UserBlock userBlock;
+            if (c.nodes[0]->hasExtMisc())
+                computeUserBlock(userBlock, c.nodes[0]->extMisc()->docComment);
             outputUserBlock(userBlock.shortDesc);
 
             // Struct fields
@@ -462,6 +462,9 @@ JobResult ModuleGenDocJob::execute()
 
         case AstNodeKind::EnumDecl:
         {
+            UserBlock userBlock;
+            if (c.nodes[0]->hasExtMisc())
+                computeUserBlock(userBlock, c.nodes[0]->extMisc()->docComment);
             outputUserBlock(userBlock.shortDesc);
 
             auto enumNode = CastAst<AstEnum>(c.nodes[0], AstNodeKind::EnumDecl);
@@ -494,6 +497,10 @@ JobResult ModuleGenDocJob::execute()
             Utf8 code;
             for (auto n : c.nodes)
             {
+                UserBlock userBlock;
+                if (n->hasExtMisc())
+                    computeUserBlock(userBlock, n->extMisc()->docComment);
+
                 auto funcNode = CastAst<AstFuncDecl>(n, AstNodeKind::FuncDecl);
                 code += "func";
                 code += outputNode(funcNode->genericParameters);
@@ -503,7 +510,7 @@ JobResult ModuleGenDocJob::execute()
                 code += outputNode(funcNode->returnType);
                 code += "\n";
 
-                if (funcNode->hasExtMisc() && !funcNode->extMisc()->docComment.empty())
+                if (!userBlock.shortDesc.empty())
                 {
                     outputCode(code);
                     code.clear();

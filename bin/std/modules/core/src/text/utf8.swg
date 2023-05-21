@@ -519,6 +519,7 @@ func contains(src: const [..] u8, what: string)->bool
 }
 
 // Find the last rune occurence of 'what', and returns the byte index of it
+//
 // Returns Swag.U64.Max if not found
 func lastIndexOf(src: const [..] u8, what: rune)->u64
 {
@@ -526,6 +527,7 @@ func lastIndexOf(src: const [..] u8, what: rune)->u64
 }
 
 // Returns the last index (in bytes) of a rune
+//
 // Returns Swag.U64.Max if not found
 func lastIndexOf(src: const [..] u8, what: const [..] rune)->u64
 {
@@ -551,6 +553,7 @@ func lastIndexOf(src: const [..] u8, what: const [..] rune)->u64
 }
 
 // Returns the last index (in bytes) of a string
+//
 // Returns Swag.U64.Max if not found
 func lastIndexOf(src: const [..] u8, what: string, comparisonType = ComparisonType.Latin1)->u64
 {
