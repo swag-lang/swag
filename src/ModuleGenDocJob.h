@@ -17,6 +17,7 @@ struct ModuleGenDocJob : public Job
     void outputUserLine(const Utf8& user);
     void outputUserBlock(const Utf8& user);
     void outputCode(const Utf8& code);
+    void outputStyles();
 
     void generateToc();
 

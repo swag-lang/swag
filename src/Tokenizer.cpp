@@ -230,6 +230,7 @@ bool Tokenizer::nextToken(TokenParse& token)
                 {
                     appendTokenName(token);
                     comment += token.text;
+                    comment += "\n";
                 }
 
                 continue;
@@ -239,7 +240,16 @@ bool Tokenizer::nextToken(TokenParse& token)
             if (curBuffer[0] == '*')
             {
                 readChar();
+
+                startTokenName = curBuffer;
                 SWAG_CHECK(doMultiLineComment(token));
+
+                if (trackComments)
+                {
+                    appendTokenName(token);
+                    comment += token.text;
+                }
+
                 continue;
             }
         }

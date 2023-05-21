@@ -9,20 +9,22 @@
 #include "AstNode.h"
 #include "Workspace.h"
 
-Utf8 ModuleGenDocJob::outputNode(AstNode* node)
-{
-    if (!node)
-        return "";
-    concat.clear();
-    output.outputNode(outputCxt, concat, node);
-    return Utf8{(const char*) concat.firstBucket->datas, (uint32_t) concat.bucketCount(concat.firstBucket)};
-}
-
 void ModuleGenDocJob::outputUserLine(const Utf8& user)
 {
     if (user.empty())
         return;
-    helpContent += user;
+
+    auto pz = user.c_str();
+    while (*pz)
+    {
+        if (*pz == '<')
+            helpContent += "&lt;";
+        else if (*pz == '>')
+            helpContent += "&gt;";
+        else
+            helpContent += *pz;
+        pz++;
+    }
 }
 
 void ModuleGenDocJob::outputUserBlock(const Utf8& user)
@@ -32,7 +34,7 @@ void ModuleGenDocJob::outputUserBlock(const Utf8& user)
 
     helpContent += "<div>\n";
     helpContent += "<p>\n";
-    helpContent += user;
+    outputUserLine(user);
     helpContent += "</p>\n";
     helpContent += "</div>\n";
 }
@@ -46,6 +48,15 @@ void ModuleGenDocJob::outputCode(const Utf8& code)
     helpContent += code;
     helpContent += "</code>\n";
     helpContent += "</div>\n";
+}
+
+Utf8 ModuleGenDocJob::outputNode(AstNode* node)
+{
+    if (!node)
+        return "";
+    concat.clear();
+    output.outputNode(outputCxt, concat, node);
+    return Utf8{(const char*) concat.firstBucket->datas, (uint32_t) concat.bucketCount(concat.firstBucket)};
 }
 
 void ModuleGenDocJob::collectNode(AstNode* node)
@@ -102,6 +113,8 @@ void ModuleGenDocJob::collectScopes(Scope* root)
 
 void ModuleGenDocJob::generateToc()
 {
+    helpContent += Fmt("<h1>Module %s</h1>\n", module->name.c_str());
+
     int curLevel = 0;
     for (auto& c : allNodes)
     {
@@ -121,19 +134,76 @@ void ModuleGenDocJob::generateToc()
                 curLevel++;
             }
         }
-        else if (tkn.size() < curLevel)
-        {
-            helpContent += "</ul>\n";
-            curLevel--;
-        }
         else
         {
+            while (tkn.size() < curLevel)
+            {
+                helpContent += "</ul>\n";
+                curLevel--;
+            }
+
             helpContent += Fmt("<li><a href=\"#%s\">%s</a></li>\n", c.name.c_str(), tkn.back().c_str());
         }
     }
 
     while (curLevel--)
         helpContent += "</ul>\n";
+}
+
+void ModuleGenDocJob::outputStyles()
+{
+    helpContent += "<style>\n";
+    helpContent +=
+        ".container {\n\
+            display:        flex;\n\
+            flex-wrap:      nowrap;\n\
+            flex-direction: row;\n\
+            height:         100%;\n\
+            line-height:    1.3em;\n\
+            font-family:    Segoe UI;\n\
+        }\n\
+        .left {\n\
+            display:    block;\n\
+            overflow-y: scroll;\n\
+            width:      650;\n\
+            height:     100%;\n\
+        }\n\
+        .right {\n\
+            display:     block;\n\
+            overflow-y:  scroll;\n\
+            width:       100%;\n\
+            line-height: 1.3em;\n\
+            height:      100%;\n\
+        }\n\
+        table {\n\
+            border:             1px solid LightGrey;\n\
+            border-collapse:    collapse;\n\
+            width:              100%;\n\
+        }\n\
+        td {\n\
+            padding:            10px;\n\
+            border:             1px solid LightGrey;\n\
+            border-collapse:    collapse;\n\
+            width:              20%;\n\
+        }\n\
+        td:last-child {\n\
+            width:              100%;\n\
+        }\n\
+        .tocbullet {\n\
+            list-style-type:    none;\n\
+            margin-left:        -20px;\n\
+        }\n\
+        .code {\n\
+            background-color:   LightYellow;\n\
+            border:             1px solid LightGrey;\n\
+            padding:            10px;\n\
+            width:              100%;\n\
+        }\n\
+        .page {\n\
+            width:  1000;\n\
+            margin: 0 auto;\n\
+        }\n";
+    helpContent += "</style>\n";
 }
 
 JobResult ModuleGenDocJob::execute()
@@ -172,59 +242,7 @@ JobResult ModuleGenDocJob::execute()
     // helpContent += "<link rel=\"stylesheet\" type=\"text/css\" href=\"/style.css\">\n";
     // helpContent += "</head>\n";
 
-    helpContent += "<style>\n";
-    helpContent +=
-        ".container {\n\
-            display:        flex;\n\
-            flex-wrap:      nowrap;\n\
-            flex-direction: row;\n\
-            height:         100%;\n\
-            font-family:    arial;\n\
-            line-height:    1.3em;\n\
-        }\n\
-        .left {\n\
-            display:    block;\n\
-            overflow-y: scroll;\n\
-            width:      650;\n\
-            height:     100%;\n\
-        }\n\
-        .right {\n\
-            display:     block;\n\
-            overflow-y:  scroll;\n\
-            width:       100%;\n\
-            font-family: arial;\n\
-            line-height: 1.3em;\n\
-            height:      100%;\n\
-        }\n\
-        table {\n\
-            border:             1px solid LightGrey;\n\
-            border-collapse:    collapse;\n\
-            width:              100%;\n\
-        }\n\
-        td {\n\
-            padding:            10px;\n\
-            border:             1px solid LightGrey;\n\
-            border-collapse:    collapse;\n\
-            width:              20%;\n\
-        }\n\
-        td:last-child {\n\
-            width:              100%;\n\
-        }\n\
-        .tocbullet {\n\
-            list-style-type:    none;\n\
-            margin-left:        -20px;\n\
-        }\n\
-        .code {\n\
-            background-color:   LightYellow;\n\
-            border:             1px solid LightGrey;\n\
-            padding:            10px;\n\
-            width:              100%;\n\
-        }\n\
-        .page {\n\
-            width:  1000;\n\
-            margin: 0 auto;\n\
-        }\n";
-    helpContent += "</style>\n";
+    outputStyles();
 
     // Collect content
     collectScopes(module->scopeRoot);
@@ -244,19 +262,18 @@ JobResult ModuleGenDocJob::execute()
     // Right page start
     helpContent += "<div class=\"right\">\n";
     helpContent += "<div class=\"page\">\n";
-    helpContent += Fmt("<h1>Module %s</h1>\n", module->name.c_str());
 
     for (auto& c : allNodes)
     {
         switch (c.nodes[0]->kind)
         {
         case AstNodeKind::Namespace:
-            helpContent += Fmt("<h2 id=\"%s\">Namespace %s</h2>\n", c.nodes[0]->getScopedName().c_str(), c.nodes[0]->token.ctext());
+            helpContent += Fmt("<h2 id=\"%s\">namespace %s</h2>\n", c.nodes[0]->getScopedName().c_str(), c.nodes[0]->token.ctext());
             break;
 
         case AstNodeKind::StructDecl:
         {
-            helpContent += Fmt("<h3 id=\"%s\">Struct %s</h3>\n", c.nodes[0]->getScopedName().c_str(), c.nodes[0]->token.ctext());
+            helpContent += Fmt("<h3 id=\"%s\">struct %s</h3>\n", c.nodes[0]->getScopedName().c_str(), c.nodes[0]->token.ctext());
 
             auto structNode = CastAst<AstStruct>(c.nodes[0], AstNodeKind::StructDecl);
             helpContent += "<table>\n";
@@ -296,7 +313,7 @@ JobResult ModuleGenDocJob::execute()
 
         case AstNodeKind::InterfaceDecl:
         {
-            helpContent += Fmt("<h3 id=\"%s\">Interface %s</h3>\n", c.nodes[0]->getScopedName().c_str(), c.nodes[0]->token.ctext());
+            helpContent += Fmt("<h3 id=\"%s\">interface %s</h3>\n", c.nodes[0]->getScopedName().c_str(), c.nodes[0]->token.ctext());
 
             auto itfNode = CastAst<AstStruct>(c.nodes[0], AstNodeKind::InterfaceDecl);
             if (itfNode->hasExtMisc())
@@ -306,9 +323,10 @@ JobResult ModuleGenDocJob::execute()
 
         case AstNodeKind::EnumDecl:
         {
-            helpContent += Fmt("<h3 id=\"%s\">Enum %s</h3>\n", c.nodes[0]->getScopedName().c_str(), c.nodes[0]->token.ctext());
+            helpContent += Fmt("<h3 id=\"%s\">enum %s</h3>\n", c.nodes[0]->getScopedName().c_str(), c.nodes[0]->token.ctext());
 
             auto enumNode = CastAst<AstEnum>(c.nodes[0], AstNodeKind::EnumDecl);
+
             helpContent += "<table>\n";
             for (auto enumVal : enumNode->scope->symTable.allSymbols)
             {
@@ -334,7 +352,7 @@ JobResult ModuleGenDocJob::execute()
         }
 
         case AstNodeKind::FuncDecl:
-            helpContent += Fmt("<h3 id=\"%s\">%s</h3>\n", c.nodes[0]->getScopedName().c_str(), c.nodes[0]->token.ctext());
+            helpContent += Fmt("<h3 id=\"%s\">func %s</h3>\n", c.nodes[0]->getScopedName().c_str(), c.nodes[0]->token.ctext());
 
             Utf8 code;
             for (auto n : c.nodes)
@@ -367,6 +385,7 @@ JobResult ModuleGenDocJob::execute()
     helpContent += "</body>\n";
     helpContent += "</html>\n";
 
+    // Write file
     fwrite(helpContent.c_str(), 1, helpContent.length(), f);
     fclose(f);
 
