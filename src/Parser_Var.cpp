@@ -354,6 +354,13 @@ bool Parser::doVarDecl(AstNode* parent, AstNode** result, AstNodeKind kind)
         SWAG_CHECK(eatToken());
     }
 
+    if (!tokenizer.comment.empty() && *result)
+    {
+        (*result)->allocateExtension(ExtensionKind::Misc);
+        (*result)->extMisc()->docComment = std::move(tokenizer.comment);
+    }
+
     SWAG_CHECK(eatSemiCol("end of the variable declaration"));
+
     return true;
 }

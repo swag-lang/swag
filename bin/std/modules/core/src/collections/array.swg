@@ -3,10 +3,10 @@ using Swag
 
 struct(T) Array
 {
-    allocator:  IAllocator
-    buffer:     ^T
-    count:      u64
-    capacity:   u64
+    allocator:  IAllocator  // Associated allocator
+    buffer:     ^T          // Memory block of all datas
+    count:      u64         // Number of valid datas
+    capacity:   u64         // Number of elements that can be stored in the buffer
 }
 
 impl Array

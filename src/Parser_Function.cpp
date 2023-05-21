@@ -558,6 +558,12 @@ bool Parser::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId)
     funcNode->allocateExtension(ExtensionKind::Semantic);
     funcNode->extSemantic()->semanticAfterFct = SemanticJob::sendCompilerMsgFuncDecl;
 
+    if (tokenizer.comment.length())
+    {
+        funcNode->allocateExtension(ExtensionKind::Misc);
+        funcNode->extMisc()->docComment = std::move(tokenizer.comment);
+    }
+
     bool isMethod      = token.id == TokenId::KwdMethod;
     bool isConstMethod = token.id == TokenId::KwdConstMethod;
     if (isMethod || isConstMethod)

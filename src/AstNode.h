@@ -354,6 +354,7 @@ struct AstNode
         VectorNative<AlternativeScopeVar> alternativeScopesVars;
         VectorNative<uint32_t>            registersToRelease;
         RegisterList                      additionalRegisterRC;
+        Utf8                              docComment;
 
         SymbolOverload* resolvedUserOpSymbolOverload = nullptr;
         TypeInfo*       collectTypeInfo              = nullptr;

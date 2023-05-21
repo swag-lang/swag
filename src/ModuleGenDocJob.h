@@ -14,6 +14,8 @@ struct ModuleGenDocJob : public Job
     void collectScopes(Scope* root);
 
     Utf8 outputNode(AstNode* node);
+    void outputUserLine(const Utf8& user);
+    void outputUserBlock(const Utf8& user);
     void outputCode(const Utf8& code);
 
     void generateToc();

@@ -155,11 +155,18 @@ bool Parser::doEnumContent(AstNode* parent, AstNode** result)
 bool Parser::doEnumValue(AstNode* parent, AstNode** result)
 {
     SWAG_VERIFY(token.id == TokenId::Identifier, error(token, Fmt(Err(Syn0075), token.ctext())));
+
     auto enumValue = Ast::newNode<AstEnumValue>(this, AstNodeKind::EnumValue, sourceFile, parent);
     *result        = enumValue;
     enumValue->inheritTokenName(token);
     enumValue->semanticFct = SemanticJob::resolveEnumValue;
     currentScope->symTable.registerSymbolName(context, enumValue, SymbolKind::EnumValue);
+
+    if (tokenizer.comment.length())
+    {
+        enumValue->allocateExtension(ExtensionKind::Misc);
+        enumValue->extMisc()->docComment = std::move(tokenizer.comment);
+    }
 
     SWAG_CHECK(eatToken());
     if (token.id == TokenId::SymEqual)

@@ -124,6 +124,7 @@ struct Tokenizer
 
     SourceLocation location;
 
+    Utf8          comment;
     ErrorContext* errorContext        = nullptr;
     char*         curBuffer           = nullptr;
     char*         endBuffer           = nullptr;
@@ -131,6 +132,7 @@ struct Tokenizer
     char*         startTokenName      = nullptr;
     bool          forceLastTokenIsEOL = false;
     bool          realAppendName      = false;
+    bool          trackComments       = false;
     bool          idLetters[256]      = {false};
 
     TokenParse     st_token;

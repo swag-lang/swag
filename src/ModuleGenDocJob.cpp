@@ -18,6 +18,16 @@ Utf8 ModuleGenDocJob::outputNode(AstNode* node)
     return Utf8{(const char*) concat.firstBucket->datas, (uint32_t) concat.bucketCount(concat.firstBucket)};
 }
 
+void ModuleGenDocJob::outputUserLine(const Utf8& user)
+{
+    helpContent += user;
+}
+
+void ModuleGenDocJob::outputUserBlock(const Utf8& user)
+{
+    helpContent += user;
+}
+
 void ModuleGenDocJob::outputCode(const Utf8& code)
 {
     helpContent += "<div class=\"code\">\n";
@@ -196,8 +206,7 @@ JobResult ModuleGenDocJob::execute()
         .code {\n\
             background-color:   LightYellow;\n\
             border:             1px solid LightGrey;\n\
-            margin:             20px;\n\
-            padding:            20px;\n\
+            padding:            10px;\n\
             width:              100%;\n\
         }\n\
         .page {\n\
@@ -260,6 +269,8 @@ JobResult ModuleGenDocJob::execute()
                 helpContent += "</td>\n";
 
                 helpContent += "<td>\n";
+                if (structVal->nodes[0]->hasExtMisc())
+                    outputUserLine(structVal->nodes[0]->extMisc()->docComment);
                 helpContent += "</td>\n";
 
                 helpContent += "</tr>\n";
@@ -286,6 +297,8 @@ JobResult ModuleGenDocJob::execute()
                 helpContent += enumVal->name;
                 helpContent += "</td>\n";
                 helpContent += "<td>\n";
+                if (enumVal->nodes[0]->hasExtMisc())
+                    outputUserLine(enumVal->nodes[0]->extMisc()->docComment);
                 helpContent += "</td>\n";
                 helpContent += "</tr>\n";
             }
@@ -308,8 +321,20 @@ JobResult ModuleGenDocJob::execute()
                 code += outputNode(funcNode->returnType);
                 code += "\n";
             }
-
             outputCode(code);
+
+            helpContent += "<div>\n";
+            for (auto n : c.nodes)
+            {
+                auto funcNode = CastAst<AstFuncDecl>(n, AstNodeKind::FuncDecl);
+                if (!funcNode->hasExtMisc())
+                    continue;
+                helpContent += "<p>\n";
+                outputUserBlock(funcNode->extMisc()->docComment);
+                helpContent += "</p>\n";
+            }
+            helpContent += "</div>\n";
+
             break;
         }
     }

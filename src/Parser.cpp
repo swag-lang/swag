@@ -335,9 +335,10 @@ bool Parser::constructEmbeddedAst(const Utf8& content, AstNode* parent, AstNode*
 
 void Parser::setup(ErrorContext* errorCxt, Module* mdl, SourceFile* file)
 {
-    context    = errorCxt;
-    module     = mdl;
-    sourceFile = file;
+    context                 = errorCxt;
+    module                  = mdl;
+    sourceFile              = file;
+    tokenizer.trackComments = g_CommandLine.genDoc;
 }
 
 bool Parser::generateAst()
