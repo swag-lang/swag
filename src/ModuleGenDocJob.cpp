@@ -175,13 +175,19 @@ JobResult ModuleGenDocJob::execute()
             line-height: 1.3em;\n\
             height:      100%;\n\
         }\n\
-        table, th, td {\n\
+        table {\n\
             border:             1px solid LightGrey;\n\
             border-collapse:    collapse;\n\
             width:              100%;\n\
         }\n\
         td {\n\
             padding:            10px;\n\
+            border:             1px solid LightGrey;\n\
+            border-collapse:    collapse;\n\
+            width:              20%;\n\
+        }\n\
+        td:last-child {\n\
+            width:              100%;\n\
         }\n\
         .tocbullet {\n\
             list-style-type:    none;\n\
