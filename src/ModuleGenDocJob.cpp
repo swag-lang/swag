@@ -9,6 +9,60 @@
 #include "AstNode.h"
 #include "Workspace.h"
 
+void ModuleGenDocJob::outputTitle(OneRef& c)
+{
+    int  level = 0;
+    Utf8 name;
+
+    switch (c.nodes[0]->kind)
+    {
+    case AstNodeKind::Namespace:
+        level = 2;
+        name  = "namespace";
+        break;
+    case AstNodeKind::FuncDecl:
+        level = 3;
+        name  = "func";
+        break;
+    case AstNodeKind::EnumDecl:
+        level = 3;
+        name  = "enum";
+        break;
+    case AstNodeKind::StructDecl:
+        level = 3;
+        name  = "struct";
+        break;
+    case AstNodeKind::InterfaceDecl:
+        level = 3;
+        name  = "interface";
+        break;
+    default:
+        level = 3;
+        break;
+    }
+
+    helpContent += Fmt("<h%d id=\"%s\">", level, c.fullName.c_str());
+
+    Vector<Utf8> tkn;
+    Utf8::tokenize(c.displayName, '.', tkn);
+
+    helpContent += Fmt("<span class=\"titletype\">%s</span> ", name.c_str());
+
+    helpContent += "<span class=\"titlelight\">";
+    for (int i = 0; i < tkn.size() - 1; i++)
+    {
+        helpContent += tkn[i];
+        helpContent += ".";
+    }
+    helpContent += "</span>";
+
+    helpContent += "<span class=\"titlestrong\">";
+    helpContent += tkn.back();
+    helpContent += "</span>";
+
+    helpContent += Fmt("</h%d>\n", level);
+}
+
 void ModuleGenDocJob::outputUserLine(const Utf8& user)
 {
     if (user.empty())
@@ -201,11 +255,33 @@ void ModuleGenDocJob::outputStyles()
             list-style-type:    none;\n\
             margin-left:        -20px;\n\
         }\n\
+        .titletype {\n\
+            font-weight:        normal;\n\
+            font-size:          80%;\n\
+        }\n\
+        .titlelight {\n\
+            font-weight:        normal;\n\
+        }\n\
+        .titlestrong {\n\
+            font-weight:        bold;\n\
+            font-size:          100%;\n\
+        }\n\
+        h2 {\n\
+            margin-top:         50px;\n\
+            margin-bottom:      50px;\n\
+        }\n\
+        h3 {\n\
+            margin-top:         50px;\n\
+            padding-bottom:     5px;\n\
+            border-bottom:      2px solid LightGrey;\n\
+            width:              100%;\n\
+        }\n\
         .code {\n\
             background-color:   LightYellow;\n\
             border:             1px solid LightGrey;\n\
             padding:            10px;\n\
-            width:              100%;\n\
+            width:              90%;\n\
+            margin-left:        20px;\n\
         }\n\
         .page {\n\
             width:  1000;\n\
@@ -283,12 +359,12 @@ JobResult ModuleGenDocJob::execute()
         switch (c.nodes[0]->kind)
         {
         case AstNodeKind::Namespace:
-            helpContent += Fmt("<h2 id=\"%s\">namespace %s</h2>\n", c.fullName.c_str(), c.displayName.c_str());
+            outputTitle(c);
             break;
 
         case AstNodeKind::StructDecl:
         {
-            helpContent += Fmt("<h3 id=\"%s\">struct %s</h3>\n", c.fullName.c_str(), c.displayName.c_str());
+            outputTitle(c);
 
             auto structNode = CastAst<AstStruct>(c.nodes[0], AstNodeKind::StructDecl);
             helpContent += "<table>\n";
@@ -328,7 +404,7 @@ JobResult ModuleGenDocJob::execute()
 
         case AstNodeKind::InterfaceDecl:
         {
-            helpContent += Fmt("<h3 id=\"%s\">interface %s</h3>\n", c.fullName.c_str(), c.displayName.c_str());
+            outputTitle(c);
 
             auto itfNode = CastAst<AstStruct>(c.nodes[0], AstNodeKind::InterfaceDecl);
             if (itfNode->hasExtMisc())
@@ -338,7 +414,7 @@ JobResult ModuleGenDocJob::execute()
 
         case AstNodeKind::EnumDecl:
         {
-            helpContent += Fmt("<h3 id=\"%s\">enum %s</h3>\n", c.fullName.c_str(), c.displayName.c_str());
+            outputTitle(c);
 
             auto enumNode = CastAst<AstEnum>(c.nodes[0], AstNodeKind::EnumDecl);
 
@@ -367,7 +443,7 @@ JobResult ModuleGenDocJob::execute()
         }
 
         case AstNodeKind::FuncDecl:
-            helpContent += Fmt("<h3 id=\"%s\">func %s</h3>\n", c.fullName.c_str(), c.displayName.c_str());
+            outputTitle(c);
 
             Utf8 code;
             for (auto n : c.nodes)

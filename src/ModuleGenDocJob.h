@@ -8,6 +8,13 @@ struct AstFuncDecl;
 
 struct ModuleGenDocJob : public Job
 {
+    struct OneRef
+    {
+        Utf8                   fullName;
+        Utf8                   displayName;
+        VectorNative<AstNode*> nodes;
+    };
+
     JobResult execute() override;
 
     void collectNode(AstNode* node);
@@ -18,15 +25,9 @@ struct ModuleGenDocJob : public Job
     void outputUserBlock(const Utf8& user);
     void outputCode(const Utf8& code);
     void outputStyles();
+    void outputTitle(OneRef& c);
 
     void generateToc();
-
-    struct OneRef
-    {
-        Utf8                   fullName;
-        Utf8                   displayName;
-        VectorNative<AstNode*> nodes;
-    };
 
     Concat                   concat;
     AstOutput                output;
