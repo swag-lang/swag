@@ -8,6 +8,12 @@ struct AstFuncDecl;
 
 struct ModuleGenDocJob : public Job
 {
+    struct UserBlock
+    {
+        Utf8 shortDesc;
+        Utf8 desc;
+    };
+
     struct OneRef
     {
         Utf8                   fullName;
@@ -19,6 +25,8 @@ struct ModuleGenDocJob : public Job
 
     void collectNode(AstNode* node);
     void collectScopes(Scope* root);
+
+    void computeUserBlock(UserBlock& result, const Utf8& txt);
 
     Utf8 outputNode(AstNode* node);
     void outputUserLine(const Utf8& user);

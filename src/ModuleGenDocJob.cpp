@@ -9,6 +9,53 @@
 #include "AstNode.h"
 #include "Workspace.h"
 
+void ModuleGenDocJob::computeUserBlock(UserBlock& result, const Utf8& txt)
+{
+    Vector<Utf8> lines;
+    Utf8::tokenize(txt, '\n', lines);
+
+    // Short description
+    int startShortDesc = 0;
+    while (startShortDesc < lines.size())
+    {
+        lines[startShortDesc].trim();
+        if (!lines[startShortDesc].empty())
+            break;
+        startShortDesc++;
+    }
+
+    if (startShortDesc >= lines.size())
+        return;
+
+    int endShortDesc = startShortDesc + 1;
+    while (endShortDesc < lines.size())
+    {
+        lines[endShortDesc].trim();
+        if (lines[endShortDesc].empty())
+            break;
+        endShortDesc++;
+    }
+
+    for (int i = startShortDesc; i < endShortDesc; i++)
+    {
+        result.shortDesc += lines[i];
+        if (i != endShortDesc - 1)
+            result.shortDesc += "\n";
+    }
+
+    result.shortDesc.trim();
+    if (result.shortDesc.back() != '.')
+        result.shortDesc += ".";
+
+
+    // The main description
+    for (int i = endShortDesc + 1; i < lines.size(); i++)
+    {
+        result.desc += lines[i];
+        result.desc += "\n";
+    }
+}
+
 void ModuleGenDocJob::outputTitle(OneRef& c)
 {
     int  level = 0;
@@ -356,16 +403,28 @@ JobResult ModuleGenDocJob::execute()
 
     for (auto& c : allNodes)
     {
+        UserBlock userBlock;
+
+        if (c.nodes[0]->hasExtMisc())
+            computeUserBlock(userBlock, c.nodes[0]->extMisc()->docComment);
+
+        outputTitle(c);
+
         switch (c.nodes[0]->kind)
         {
         case AstNodeKind::Namespace:
-            outputTitle(c);
+        {
+            outputUserBlock(userBlock.shortDesc);
+            outputUserBlock(userBlock.desc);
             break;
+        }
 
         case AstNodeKind::StructDecl:
+        case AstNodeKind::InterfaceDecl:
         {
-            outputTitle(c);
+            outputUserBlock(userBlock.shortDesc);
 
+            // Struct fields
             auto structNode = CastAst<AstStruct>(c.nodes[0], AstNodeKind::StructDecl);
             helpContent += "<table>\n";
             for (auto structVal : structNode->scope->symTable.allSymbols)
@@ -397,24 +456,13 @@ JobResult ModuleGenDocJob::execute()
 
             helpContent += "</table>\n";
 
-            if (structNode->hasExtMisc())
-                outputUserBlock(structNode->extMisc()->docComment);
-            break;
-        }
-
-        case AstNodeKind::InterfaceDecl:
-        {
-            outputTitle(c);
-
-            auto itfNode = CastAst<AstStruct>(c.nodes[0], AstNodeKind::InterfaceDecl);
-            if (itfNode->hasExtMisc())
-                outputUserBlock(itfNode->extMisc()->docComment);
+            outputUserBlock(userBlock.desc);
             break;
         }
 
         case AstNodeKind::EnumDecl:
         {
-            outputTitle(c);
+            outputUserBlock(userBlock.shortDesc);
 
             auto enumNode = CastAst<AstEnum>(c.nodes[0], AstNodeKind::EnumDecl);
 
@@ -437,14 +485,12 @@ JobResult ModuleGenDocJob::execute()
 
             helpContent += "</table>\n";
 
-            if (enumNode->hasExtMisc())
-                outputUserBlock(enumNode->extMisc()->docComment);
+            outputUserBlock(userBlock.desc);
             break;
         }
 
         case AstNodeKind::FuncDecl:
-            outputTitle(c);
-
+        {
             Utf8 code;
             for (auto n : c.nodes)
             {
@@ -461,12 +507,14 @@ JobResult ModuleGenDocJob::execute()
                 {
                     outputCode(code);
                     code.clear();
-                    outputUserBlock(funcNode->extMisc()->docComment);
+                    outputUserBlock(userBlock.shortDesc);
+                    outputUserBlock(userBlock.desc);
                 }
             }
 
             outputCode(code);
             break;
+        }
         }
     }
 
