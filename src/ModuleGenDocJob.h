@@ -10,8 +10,16 @@ struct ModuleGenDocJob : public Job
 {
     JobResult execute() override;
 
-    void outputNode(AstNode* node);
+    Utf8 outputNode(AstNode* node);
+    void outputCode(const Utf8& code);
+    void generateToc();
     void collectNodes(Scope* root);
+
+    struct OneRef
+    {
+        Utf8                   name;
+        VectorNative<AstNode*> nodes;
+    };
 
     Concat                   concat;
     AstOutput                output;
@@ -19,4 +27,5 @@ struct ModuleGenDocJob : public Job
     Utf8                     helpContent;
 
     MapUtf8<VectorNative<AstNode*>> collect;
+    Vector<OneRef>                  allNodes;
 };

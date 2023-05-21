@@ -324,10 +324,6 @@ func processFile(fileName: string)
             border: 1px dotted #cccc00;
         }
 
-        .linecomment {
-            color: Grey;
-        }
-
         .container {
             display:        flex;
             flex-wrap:      nowrap;
