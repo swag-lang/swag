@@ -105,7 +105,9 @@ void ModuleGenDocJob::collectScopes(Scope* root)
 
     if (!root->owner)
         return;
-    collectNode(root->owner);
+
+    if (!(root->flags & SCOPE_AUTO_GENERATED))
+        collectNode(root->owner);
 
     for (auto c : root->childScopes)
         collectScopes(c);
@@ -119,18 +121,22 @@ void ModuleGenDocJob::generateToc()
     for (auto& c : allNodes)
     {
         Vector<Utf8> tkn;
-        Utf8::tokenize(c.name, '.', tkn);
+        Utf8::tokenize(c.fullName, '.', tkn);
 
-        tkn.erase(tkn.begin());
-        if (tkn.empty())
-            continue;
+        // Display. The real name, and one level above.
+        if (tkn.size() > 2)
+        {
+            c.displayName = tkn[tkn.size() - 2];
+            c.displayName += ".";
+            c.displayName += tkn[tkn.size() - 1];
+        }
 
         if (tkn.size() > curLevel)
         {
             while (tkn.size() > curLevel)
             {
                 helpContent += "<ul class=\"tocbullet\">\n";
-                helpContent += Fmt("<li><a href=\"#%s\">%s</a></li>\n", c.name.c_str(), tkn[curLevel].c_str());
+                helpContent += Fmt("<li><a href=\"#%s\">%s</a></li>\n", c.fullName.c_str(), tkn[curLevel].c_str());
                 curLevel++;
             }
         }
@@ -142,7 +148,7 @@ void ModuleGenDocJob::generateToc()
                 curLevel--;
             }
 
-            helpContent += Fmt("<li><a href=\"#%s\">%s</a></li>\n", c.name.c_str(), tkn.back().c_str());
+            helpContent += Fmt("<li><a href=\"#%s\">%s</a></li>\n", c.fullName.c_str(), tkn.back().c_str());
         }
     }
 
@@ -249,9 +255,16 @@ JobResult ModuleGenDocJob::execute()
 
     // Sort all nodes by scoped name order
     for (auto c : collect)
-        allNodes.push_back({c.first, std::move(c.second)});
+    {
+        OneRef oneRef;
+        oneRef.fullName    = c.first;
+        oneRef.displayName = c.first;
+        oneRef.nodes       = std::move(c.second);
+        allNodes.push_back(oneRef);
+    }
+
     sort(allNodes.begin(), allNodes.end(), [](OneRef& a, OneRef& b)
-         { return strcmp(a.name.buffer, b.name.buffer) < 0; });
+         { return strcmp(a.fullName.buffer, b.fullName.buffer) < 0; });
 
     // Main page (left and right parts, left is for table of content, right is for content)
     helpContent += "<div class=\"container\">\n";
@@ -268,12 +281,12 @@ JobResult ModuleGenDocJob::execute()
         switch (c.nodes[0]->kind)
         {
         case AstNodeKind::Namespace:
-            helpContent += Fmt("<h2 id=\"%s\">namespace %s</h2>\n", c.nodes[0]->getScopedName().c_str(), c.nodes[0]->token.ctext());
+            helpContent += Fmt("<h2 id=\"%s\">namespace %s</h2>\n", c.fullName.c_str(), c.displayName.c_str());
             break;
 
         case AstNodeKind::StructDecl:
         {
-            helpContent += Fmt("<h3 id=\"%s\">struct %s</h3>\n", c.nodes[0]->getScopedName().c_str(), c.nodes[0]->token.ctext());
+            helpContent += Fmt("<h3 id=\"%s\">struct %s</h3>\n", c.fullName.c_str(), c.displayName.c_str());
 
             auto structNode = CastAst<AstStruct>(c.nodes[0], AstNodeKind::StructDecl);
             helpContent += "<table>\n";
@@ -313,7 +326,7 @@ JobResult ModuleGenDocJob::execute()
 
         case AstNodeKind::InterfaceDecl:
         {
-            helpContent += Fmt("<h3 id=\"%s\">interface %s</h3>\n", c.nodes[0]->getScopedName().c_str(), c.nodes[0]->token.ctext());
+            helpContent += Fmt("<h3 id=\"%s\">interface %s</h3>\n", c.fullName.c_str(), c.displayName.c_str());
 
             auto itfNode = CastAst<AstStruct>(c.nodes[0], AstNodeKind::InterfaceDecl);
             if (itfNode->hasExtMisc())
@@ -323,7 +336,7 @@ JobResult ModuleGenDocJob::execute()
 
         case AstNodeKind::EnumDecl:
         {
-            helpContent += Fmt("<h3 id=\"%s\">enum %s</h3>\n", c.nodes[0]->getScopedName().c_str(), c.nodes[0]->token.ctext());
+            helpContent += Fmt("<h3 id=\"%s\">enum %s</h3>\n", c.fullName.c_str(), c.displayName.c_str());
 
             auto enumNode = CastAst<AstEnum>(c.nodes[0], AstNodeKind::EnumDecl);
 
@@ -352,7 +365,7 @@ JobResult ModuleGenDocJob::execute()
         }
 
         case AstNodeKind::FuncDecl:
-            helpContent += Fmt("<h3 id=\"%s\">func %s</h3>\n", c.nodes[0]->getScopedName().c_str(), c.nodes[0]->token.ctext());
+            helpContent += Fmt("<h3 id=\"%s\">func %s</h3>\n", c.fullName.c_str(), c.displayName.c_str());
 
             Utf8 code;
             for (auto n : c.nodes)

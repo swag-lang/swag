@@ -23,7 +23,8 @@ struct ModuleGenDocJob : public Job
 
     struct OneRef
     {
-        Utf8                   name;
+        Utf8                   fullName;
+        Utf8                   displayName;
         VectorNative<AstNode*> nodes;
     };
 
