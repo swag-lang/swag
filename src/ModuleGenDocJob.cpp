@@ -27,29 +27,31 @@ void ModuleGenDocJob::outputCode(const Utf8& code)
     helpContent += "</div>\n";
 }
 
-void ModuleGenDocJob::collectNodes(Scope* root)
+void ModuleGenDocJob::collectNode(AstNode* node)
 {
-    if (root->name.length() > 2 && root->name[0] == '_' && root->name[1] == '_')
+    if (node->token.text.length() > 2 && node->token.text[0] == '_' && node->token.text[1] == '_')
         return;
-    if (!root->owner)
+    if (node->flags & AST_FROM_GENERIC)
         return;
-    if (root->owner && root->owner->flags & AST_FROM_GENERIC)
-        return;
-    if (root->owner && root->owner->flags & AST_GENERATED)
-        return;
-    if (root->flags & SCOPE_IMPORTED)
+    if (node->flags & AST_GENERATED)
         return;
 
     Utf8 name;
-    switch (root->owner->kind)
+    switch (node->kind)
     {
     case AstNodeKind::Namespace:
+        name = node->getScopedName();
+        break;
+
     case AstNodeKind::StructDecl:
     case AstNodeKind::InterfaceDecl:
     case AstNodeKind::FuncDecl:
     case AstNodeKind::EnumDecl:
-        name = root->owner->getScopedName();
+        if (node->sourceFile && !node->sourceFile->forceExport && !(node->attributeFlags & ATTRIBUTE_PUBLIC))
+            return;
+        name = node->getScopedName();
         break;
+
     default:
         break;
     }
@@ -58,13 +60,23 @@ void ModuleGenDocJob::collectNodes(Scope* root)
     {
         auto it = collect.find(name);
         if (it != collect.end())
-            collect[name].push_back(root->owner);
+            collect[name].push_back(node);
         else
-            collect[name] = {root->owner};
+            collect[name] = {node};
     }
+}
+
+void ModuleGenDocJob::collectScopes(Scope* root)
+{
+    if (root->flags & SCOPE_IMPORTED)
+        return;
+
+    if (!root->owner)
+        return;
+    collectNode(root->owner);
 
     for (auto c : root->childScopes)
-        collectNodes(c);
+        collectScopes(c);
 }
 
 void ModuleGenDocJob::generateToc()
@@ -83,7 +95,7 @@ void ModuleGenDocJob::generateToc()
         {
             while (tkn.size() > curLevel)
             {
-                helpContent += "<ul>\n";
+                helpContent += "<ul class=\"tocbullet\">\n";
                 helpContent += Fmt("<li><a href=\"#%s\">%s</a></li>\n", c.name.c_str(), tkn[curLevel].c_str());
                 curLevel++;
             }
@@ -99,7 +111,7 @@ void ModuleGenDocJob::generateToc()
         }
     }
 
-    while(curLevel--)
+    while (curLevel--)
         helpContent += "</ul>\n";
 }
 
@@ -156,6 +168,10 @@ JobResult ModuleGenDocJob::execute()
         td {\n\
             padding:            10px;\n\
         }\n\
+        .tocbullet {\n\
+            list-style-type:    none;\n\
+            margin-left:        -20px;\n\
+        }\n\
         .code {\n\
             background-color:   LightGray;\n\
             border:             1px solid LightGrey;\n\
@@ -170,7 +186,7 @@ JobResult ModuleGenDocJob::execute()
     helpContent += "</style>\n";
 
     // Collect content
-    collectNodes(module->scopeRoot);
+    collectScopes(module->scopeRoot);
 
     // Sort all nodes by scoped name order
     for (auto c : collect)
@@ -221,6 +237,10 @@ JobResult ModuleGenDocJob::execute()
                 helpContent += "<td>\n";
                 helpContent += structVal->name;
                 helpContent += "</td>\n";
+
+                helpContent += "<td>\n";
+                helpContent += "</td>\n";
+
                 helpContent += "</tr>\n";
             }
 
@@ -243,6 +263,8 @@ JobResult ModuleGenDocJob::execute()
                 helpContent += "<tr>\n";
                 helpContent += "<td>\n";
                 helpContent += enumVal->name;
+                helpContent += "</td>\n";
+                helpContent += "<td>\n";
                 helpContent += "</td>\n";
                 helpContent += "</tr>\n";
             }

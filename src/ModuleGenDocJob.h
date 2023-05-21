@@ -10,10 +10,13 @@ struct ModuleGenDocJob : public Job
 {
     JobResult execute() override;
 
+    void collectNode(AstNode* node);
+    void collectScopes(Scope* root);
+
     Utf8 outputNode(AstNode* node);
     void outputCode(const Utf8& code);
+
     void generateToc();
-    void collectNodes(Scope* root);
 
     struct OneRef
     {
