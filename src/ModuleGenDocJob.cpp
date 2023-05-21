@@ -117,7 +117,21 @@ void ModuleGenDocJob::generateToc()
 
 JobResult ModuleGenDocJob::execute()
 {
+    // Setup
     concat.init();
+    outputCxt.checkPublic = false;
+    outputCxt.exportType  = [this](TypeInfo* typeInfo)
+    {
+        if (!typeInfo->declNode || !typeInfo->declNode->sourceFile)
+            return typeInfo->name;
+
+        typeInfo->computeScopedNameExport();
+        Vector<Utf8> tkn;
+        Utf8::tokenize(typeInfo->scopedNameExport, '.', tkn);
+
+        tkn[0].makeLower();
+        return Fmt("<a href=\"%s.html#%s\">%s</a>", tkn[0].c_str(), typeInfo->scopedNameExport.c_str(), typeInfo->name.c_str());
+    };
 
     auto fileName = g_Workspace->targetPath;
     fileName.append(module->name.c_str());
@@ -162,8 +176,9 @@ JobResult ModuleGenDocJob::execute()
             height:      100%;\n\
         }\n\
         table, th, td {\n\
-            border:             1px solid;\n\
+            border:             1px solid LightGrey;\n\
             border-collapse:    collapse;\n\
+            width:              100%;\n\
         }\n\
         td {\n\
             padding:            10px;\n\
@@ -173,7 +188,7 @@ JobResult ModuleGenDocJob::execute()
             margin-left:        -20px;\n\
         }\n\
         .code {\n\
-            background-color:   LightGray;\n\
+            background-color:   LightYellow;\n\
             border:             1px solid LightGrey;\n\
             margin:             20px;\n\
             padding:            20px;\n\
@@ -280,6 +295,7 @@ JobResult ModuleGenDocJob::execute()
             for (auto n : c.nodes)
             {
                 auto funcNode = CastAst<AstFuncDecl>(n, AstNodeKind::FuncDecl);
+                code += "func ";
                 code += funcNode->token.text;
                 code += outputNode(funcNode->parameters);
                 code += outputNode(funcNode->genericParameters);

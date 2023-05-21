@@ -11,7 +11,7 @@
 
 bool AstOutput::checkIsPublic(OutputContext& context, AstNode* testNode, AstNode* usedNode)
 {
-    if (!context.forExport || !testNode)
+    if (!context.forExport || !testNode || !context.checkPublic)
         return true;
 
     auto symbol   = testNode->resolvedSymbolName;
@@ -1065,9 +1065,17 @@ bool AstOutput::outputType(OutputContext& context, Concat& concat, AstNode* node
         typeExport = ((TypeInfoPointer*) typeExport)->pointedType;
     SWAG_CHECK(checkIsPublic(context, typeExport->declNode, node));
 
-    typeInfo->computeScopedNameExport();
-    SWAG_ASSERT(!typeInfo->scopedNameExport.empty());
-    concat.addString(typeInfo->scopedNameExport);
+    // Export type name
+    if (context.exportType)
+    {
+        concat.addString(context.exportType(typeInfo));
+    }
+    else
+    {
+        typeInfo->computeScopedNameExport();
+        SWAG_ASSERT(!typeInfo->scopedNameExport.empty());
+        concat.addString(typeInfo->scopedNameExport);
+    }
 
     return true;
 }
