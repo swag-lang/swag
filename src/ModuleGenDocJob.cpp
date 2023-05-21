@@ -30,6 +30,8 @@ void ModuleGenDocJob::outputUserBlock(const Utf8& user)
 
 void ModuleGenDocJob::outputCode(const Utf8& code)
 {
+    if (code.empty())
+        return;
     helpContent += "<div class=\"code\">\n";
     helpContent += "<code style=\"white-space: break-spaces\">";
     helpContent += code;
@@ -320,21 +322,20 @@ JobResult ModuleGenDocJob::execute()
                 code += outputNode(funcNode->genericParameters);
                 code += outputNode(funcNode->returnType);
                 code += "\n";
+
+                if (funcNode->hasExtMisc() && !funcNode->extMisc()->docComment.empty())
+                {
+                    outputCode(code);
+                    code.clear();
+                    helpContent += "<div>\n";
+                    helpContent += "<p>\n";
+                    outputUserBlock(funcNode->extMisc()->docComment);
+                    helpContent += "</p>\n";
+                    helpContent += "</div>\n";
+                }
             }
+
             outputCode(code);
-
-            helpContent += "<div>\n";
-            for (auto n : c.nodes)
-            {
-                auto funcNode = CastAst<AstFuncDecl>(n, AstNodeKind::FuncDecl);
-                if (!funcNode->hasExtMisc())
-                    continue;
-                helpContent += "<p>\n";
-                outputUserBlock(funcNode->extMisc()->docComment);
-                helpContent += "</p>\n";
-            }
-            helpContent += "</div>\n";
-
             break;
         }
     }
