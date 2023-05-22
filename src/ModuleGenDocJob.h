@@ -28,6 +28,7 @@ struct ModuleGenDocJob : public Job
 
     void computeUserBlock(UserBlock& result, const Utf8& txt);
 
+    Utf8 outputType(TypeInfo* typeInfo);
     Utf8 outputNode(AstNode* node);
     void outputUserLine(const Utf8& user);
     void outputUserBlock(const Utf8& user);

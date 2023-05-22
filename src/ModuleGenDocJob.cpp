@@ -150,6 +150,56 @@ void ModuleGenDocJob::outputCode(const Utf8& code)
     helpContent += "</div>\n";
 }
 
+Utf8 ModuleGenDocJob::outputType(TypeInfo* typeInfo)
+{
+    auto typeRef = typeInfo;
+
+    while (true)
+    {
+        if (typeRef->isPointer())
+        {
+            auto typePtr = CastTypeInfo<TypeInfoPointer>(typeRef, TypeInfoKind::Pointer);
+            typeRef      = typePtr->pointedType;
+            continue;
+        }
+
+        if (typeRef->isArray())
+        {
+            auto typeArr = CastTypeInfo<TypeInfoArray>(typeRef, TypeInfoKind::Array);
+            typeRef      = typeArr->finalType;
+            continue;
+        }
+
+        if (typeRef->isSlice())
+        {
+            auto typeSlice = CastTypeInfo<TypeInfoSlice>(typeRef, TypeInfoKind::Slice);
+            typeRef        = typeSlice->pointedType;
+            continue;
+        }
+
+        break;
+    }
+
+    if (!typeRef->declNode || !typeRef->declNode->sourceFile)
+        return typeInfo->name;
+
+    typeRef->computeScopedNameExport();
+    Vector<Utf8> tkn;
+    Utf8::tokenize(typeRef->scopedNameExport, '.', tkn);
+
+    // Remove the instantiated types to make the reference to the generic original type
+    auto nameExport = typeRef->scopedNameExport;
+    if (typeRef->isFromGeneric())
+    {
+        int p = nameExport.find("'");
+        if (p != -1)
+            nameExport.remove(p, nameExport.length() - p);
+    }
+
+    tkn[0].makeLower();
+    return Fmt("<a href=\"%s.html#%s\">%s</a>", tkn[0].c_str(), nameExport.c_str(), typeInfo->name.c_str());
+}
+
 Utf8 ModuleGenDocJob::outputNode(AstNode* node)
 {
     if (!node)
@@ -342,17 +392,7 @@ JobResult ModuleGenDocJob::execute()
     concat.init();
     outputCxt.checkPublic = false;
     outputCxt.exportType  = [this](TypeInfo* typeInfo)
-    {
-        if (!typeInfo->declNode || !typeInfo->declNode->sourceFile)
-            return typeInfo->name;
-
-        typeInfo->computeScopedNameExport();
-        Vector<Utf8> tkn;
-        Utf8::tokenize(typeInfo->scopedNameExport, '.', tkn);
-
-        tkn[0].makeLower();
-        return Fmt("<a href=\"%s.html#%s\">%s</a>", tkn[0].c_str(), typeInfo->scopedNameExport.c_str(), typeInfo->name.c_str());
-    };
+    { return outputType(typeInfo); };
 
     auto fileName = g_Workspace->targetPath;
     fileName.append(module->name.c_str());
@@ -439,7 +479,7 @@ JobResult ModuleGenDocJob::execute()
                 helpContent += "<tr>\n";
 
                 helpContent += "<td>\n";
-                helpContent += outputNode(varDecl->type);
+                helpContent += outputType(varDecl->typeInfo);
                 helpContent += "</td>\n";
 
                 helpContent += "<td>\n";
