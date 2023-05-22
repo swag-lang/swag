@@ -46,9 +46,6 @@ void ModuleGenDocJob::computeUserComment(UserComment& result, const Utf8& txt)
             }
         }
 
-        if (start == lines.size())
-            break;
-
         for (; start < lines.size(); start++)
         {
             auto line = lines[start];
@@ -67,9 +64,7 @@ void ModuleGenDocJob::computeUserComment(UserComment& result, const Utf8& txt)
         }
 
         if (!blk.lines.empty())
-        {
             result.blocks.emplace_back(std::move(blk));
-        }
     }
 
     // First block is the "short description"
@@ -200,13 +195,13 @@ void ModuleGenDocJob::outputUserBlock(const UserBlock& user)
         break;
     }
 
-    for(int i = 0; i < user.lines.size(); i++)
+    for (int i = 0; i < user.lines.size(); i++)
     {
         outputUserLine(user.lines[i]);
 
         // Add one line break after each line, except the last line from a raw block, because we do
         // not want one useless empty line
-        if(i != user.lines.size() - 1 || user.kind != UserBlockKind::RawParagraph)
+        if (i != user.lines.size() - 1 || user.kind != UserBlockKind::RawParagraph)
             helpContent += "\n";
     }
 
@@ -667,10 +662,11 @@ JobResult ModuleGenDocJob::execute()
                 code += outputNode(funcNode->returnType);
                 code += "\n";
 
-                if (!userComment.blocks.empty())
+                if (!userComment.shortDesc.lines.empty() || !userComment.blocks.empty())
                 {
                     outputCode(code);
                     code.clear();
+                    outputUserBlock(userComment.shortDesc);
                     outputUserComment(userComment);
                 }
             }
