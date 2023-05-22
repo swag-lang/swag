@@ -22,6 +22,7 @@ impl ConvertFormatFloat
     //
     // Format is :
     //
+    // ---
     // [+][fmt][precision]
     //
     // [+]
@@ -35,6 +36,7 @@ impl ConvertFormatFloat
     //      'G' ('E' for large exponents, 'f' otherwise)
     // [precision]
     //      integer, precision of the fractional part
+    // ---
     mtd setFormat(strFormat: string)
     {
         buffer := @dataof(strFormat)
@@ -92,6 +94,7 @@ impl ConvertFormatInt
     //
     // Format is :
     //
+    // ---
     // [+][B|D|X][padding][width]
     //
     // [+]
@@ -102,6 +105,7 @@ impl ConvertFormatInt
     //      padding character, in ascii, mandatory before the next field
     // [width]
     //      width of the output, in characters
+    // ---
     mtd setFormat(strFormat: string)
     {
         buffer := @dataof(strFormat)

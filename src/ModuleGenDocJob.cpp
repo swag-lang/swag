@@ -15,29 +15,54 @@ void ModuleGenDocJob::computeUserComment(UserComment& result, const Utf8& txt)
     Utf8::tokenize(txt, '\n', lines);
     int start = 0;
 
+    for (auto& l : lines)
+    {
+        if (l.back() == '\r')
+            l.removeBack();
+    }
+
     while (start < lines.size())
     {
+        UserBlock blk;
+
         // Zap blank lines at the start of the block
         for (; start < lines.size(); start++)
         {
             auto line = lines[start];
             line.trim();
             if (!line.empty())
+            {
+                if (line == "---")
+                {
+                    blk.kind = UserBlockKind::RawParagraph;
+                    start++;
+                }
+                else
+                {
+                    blk.lines.push_back(lines[start++]);
+                }
+
                 break;
+            }
         }
 
         if (start == lines.size())
             break;
 
-        UserBlock blk;
-        blk.lines.push_back(lines[start++]);
-
         for (; start < lines.size(); start++)
         {
             auto line = lines[start];
             line.trim();
-            if (line.empty())
+
+            if (line.empty() && blk.kind != UserBlockKind::RawParagraph)
                 break;
+
+            if (line == "---")
+            {
+                start++;
+                break;
+            }
+
             blk.lines.push_back(lines[start]);
         }
 
@@ -165,16 +190,27 @@ void ModuleGenDocJob::outputUserBlock(const UserBlock& user)
     if (user.lines.empty())
         return;
 
-    helpContent += "<div>\n";
-    helpContent += "<p>\n";
-
-    for (auto& l : user.lines)
+    switch (user.kind)
     {
-        outputUserLine(l);
+    case UserBlockKind::Paragraph:
+        helpContent += "<p>\n";
+        break;
+    case UserBlockKind::RawParagraph:
+        helpContent += "<p style=\"white-space: break-spaces\">";
+        break;
+    }
+
+    for(int i = 0; i < user.lines.size(); i++)
+    {
+        outputUserLine(user.lines[i]);
+
+        // Add one line break after each line, except the last line from a raw block, because we do
+        // not want one useless empty line
+        if(i != user.lines.size() - 1 || user.kind != UserBlockKind::RawParagraph)
+            helpContent += "\n";
     }
 
     helpContent += "</p>\n";
-    helpContent += "</div>\n";
 }
 
 void ModuleGenDocJob::outputUserComment(const UserComment& user)
@@ -480,9 +516,10 @@ JobResult ModuleGenDocJob::execute()
     helpContent += "<html>\n";
     helpContent += "<body>\n";
 
-    // helpContent += "<head>\n";
+    helpContent += "<head>\n";
+    helpContent += "<meta charset=\"UTF-8\">\n";
     // helpContent += "<link rel=\"stylesheet\" type=\"text/css\" href=\"/style.css\">\n";
-    // helpContent += "</head>\n";
+    helpContent += "</head>\n";
 
     outputStyles();
 

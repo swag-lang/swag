@@ -307,6 +307,9 @@ func generate(in, out: string)
     files.sort(func(a, b) => a.fullname <=> b.fullname)
 
     g_Buf += "<html lang=\"en\">\n"
+    g_Buf += "<head>\n"
+    g_Buf += "<meta charset=\"UTF-8\">\n";
+    g_Buf += "</head>\n"
     g_Buf += "<body>\n"
 
     // Create styles

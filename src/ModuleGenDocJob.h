@@ -11,6 +11,7 @@ struct ModuleGenDocJob : public Job
     enum class UserBlockKind
     {
         Paragraph,
+        RawParagraph,
     };
 
     struct UserBlock
