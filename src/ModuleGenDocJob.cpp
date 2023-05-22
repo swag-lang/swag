@@ -9,49 +9,49 @@
 #include "AstNode.h"
 #include "Workspace.h"
 
-void ModuleGenDocJob::computeUserBlock(UserBlock& result, const Utf8& txt)
+void ModuleGenDocJob::computeUserComment(UserComment& result, const Utf8& txt)
 {
     Vector<Utf8> lines;
     Utf8::tokenize(txt, '\n', lines);
+    int start = 0;
 
-    // Short description
-    int startShortDesc = 0;
-    while (startShortDesc < lines.size())
+    while (start < lines.size())
     {
-        lines[startShortDesc].trim();
-        if (!lines[startShortDesc].empty())
+        // Zap blank lines at the start of the block
+        for (; start < lines.size(); start++)
+        {
+            auto line = lines[start];
+            line.trim();
+            if (!line.empty())
+                break;
+        }
+
+        if (start == lines.size())
             break;
-        startShortDesc++;
+
+        UserBlock blk;
+        blk.lines.push_back(lines[start++]);
+
+        for (; start < lines.size(); start++)
+        {
+            auto line = lines[start];
+            line.trim();
+            if (line.empty())
+                break;
+            blk.lines.push_back(lines[start]);
+        }
+
+        if (!blk.lines.empty())
+        {
+            result.blocks.emplace_back(std::move(blk));
+        }
     }
 
-    if (startShortDesc >= lines.size())
-        return;
-
-    int endShortDesc = startShortDesc + 1;
-    while (endShortDesc < lines.size())
+    // First block is the "short description"
+    if (!result.blocks.empty() && result.blocks[0].kind == UserBlockKind::Paragraph)
     {
-        lines[endShortDesc].trim();
-        if (lines[endShortDesc].empty())
-            break;
-        endShortDesc++;
-    }
-
-    for (int i = startShortDesc; i < endShortDesc; i++)
-    {
-        result.shortDesc += lines[i];
-        if (i != endShortDesc - 1)
-            result.shortDesc += "\n";
-    }
-
-    result.shortDesc.trim();
-    if (result.shortDesc.back() != '.')
-        result.shortDesc += ".";
-
-    // The main description
-    for (int i = endShortDesc + 1; i < lines.size(); i++)
-    {
-        result.desc += lines[i];
-        result.desc += "\n";
+        result.shortDesc = std::move(result.blocks[0]);
+        result.blocks.erase(result.blocks.begin());
     }
 }
 
@@ -160,16 +160,27 @@ void ModuleGenDocJob::outputUserLine(const Utf8& user)
     }
 }
 
-void ModuleGenDocJob::outputUserBlock(const Utf8& user)
+void ModuleGenDocJob::outputUserBlock(const UserBlock& user)
 {
-    if (user.empty())
+    if (user.lines.empty())
         return;
 
     helpContent += "<div>\n";
     helpContent += "<p>\n";
-    outputUserLine(user);
+
+    for (auto& l : user.lines)
+    {
+        outputUserLine(l);
+    }
+
     helpContent += "</p>\n";
     helpContent += "</div>\n";
+}
+
+void ModuleGenDocJob::outputUserComment(const UserComment& user)
+{
+    for (auto& b : user.blocks)
+        outputUserBlock(b);
 }
 
 void ModuleGenDocJob::outputCode(const Utf8& code)
@@ -509,21 +520,24 @@ JobResult ModuleGenDocJob::execute()
         {
         case AstNodeKind::Namespace:
         {
-            UserBlock userBlock;
+            UserComment userComment;
             if (c.nodes[0]->hasExtMisc())
-                computeUserBlock(userBlock, c.nodes[0]->extMisc()->docComment);
-            outputUserBlock(userBlock.shortDesc);
-            outputUserBlock(userBlock.desc);
+            {
+                computeUserComment(userComment, c.nodes[0]->extMisc()->docComment);
+                outputUserComment(userComment);
+            }
             break;
         }
 
         case AstNodeKind::StructDecl:
         case AstNodeKind::InterfaceDecl:
         {
-            UserBlock userBlock;
+            UserComment userComment;
             if (c.nodes[0]->hasExtMisc())
-                computeUserBlock(userBlock, c.nodes[0]->extMisc()->docComment);
-            outputUserBlock(userBlock.shortDesc);
+            {
+                computeUserComment(userComment, c.nodes[0]->extMisc()->docComment);
+                outputUserBlock(userComment.shortDesc);
+            }
 
             // Struct fields
             auto structNode = CastAst<AstStruct>(c.nodes[0], AstNodeKind::StructDecl, AstNodeKind::InterfaceDecl);
@@ -560,16 +574,18 @@ JobResult ModuleGenDocJob::execute()
 
             helpContent += "</table>\n";
 
-            outputUserBlock(userBlock.desc);
+            outputUserComment(userComment);
             break;
         }
 
         case AstNodeKind::EnumDecl:
         {
-            UserBlock userBlock;
+            UserComment userComment;
             if (c.nodes[0]->hasExtMisc())
-                computeUserBlock(userBlock, c.nodes[0]->extMisc()->docComment);
-            outputUserBlock(userBlock.shortDesc);
+            {
+                computeUserComment(userComment, c.nodes[0]->extMisc()->docComment);
+                outputUserBlock(userComment.shortDesc);
+            }
 
             auto enumNode = CastAst<AstEnum>(c.nodes[0], AstNodeKind::EnumDecl);
 
@@ -592,7 +608,7 @@ JobResult ModuleGenDocJob::execute()
 
             helpContent += "</table>\n";
 
-            outputUserBlock(userBlock.desc);
+            outputUserComment(userComment);
             break;
         }
 
@@ -601,9 +617,9 @@ JobResult ModuleGenDocJob::execute()
             Utf8 code;
             for (auto n : c.nodes)
             {
-                UserBlock userBlock;
+                UserComment userComment;
                 if (n->hasExtMisc())
-                    computeUserBlock(userBlock, n->extMisc()->docComment);
+                    computeUserComment(userComment, n->extMisc()->docComment);
 
                 auto funcNode = CastAst<AstFuncDecl>(n, AstNodeKind::FuncDecl);
                 code += "func";
@@ -614,12 +630,11 @@ JobResult ModuleGenDocJob::execute()
                 code += outputNode(funcNode->returnType);
                 code += "\n";
 
-                if (!userBlock.shortDesc.empty())
+                if (!userComment.blocks.empty())
                 {
                     outputCode(code);
                     code.clear();
-                    outputUserBlock(userBlock.shortDesc);
-                    outputUserBlock(userBlock.desc);
+                    outputUserComment(userComment);
                 }
             }
 

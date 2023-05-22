@@ -18,7 +18,8 @@ struct ConvertFormatFloat
 
 impl ConvertFormatFloat
 {
-    // Set some format options with a given user string
+    // Set some format options with a given user string.
+    //
     // Format is :
     //
     // [+][fmt][precision]
@@ -73,6 +74,7 @@ impl ConvertFormatFloat
 }
 
 // Format structure to convert an integer to a string
+//
 // If 'signed' is 'true', the value to convert must be stored in 'signedValue', otherwise it must
 // be stored in 'unsignedValue'.
 struct ConvertFormatInt
@@ -87,6 +89,7 @@ struct ConvertFormatInt
 impl ConvertFormatInt
 {
     // Set some format options with a given user string
+    //
     // Format is :
     //
     // [+][B|D|X][padding][width]

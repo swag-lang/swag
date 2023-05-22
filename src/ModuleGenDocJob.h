@@ -8,10 +8,21 @@ struct AstFuncDecl;
 
 struct ModuleGenDocJob : public Job
 {
+    enum class UserBlockKind
+    {
+        Paragraph,
+    };
+
     struct UserBlock
     {
-        Utf8 shortDesc;
-        Utf8 desc;
+        UserBlockKind kind = UserBlockKind::Paragraph;
+        Vector<Utf8>  lines;
+    };
+
+    struct UserComment
+    {
+        UserBlock         shortDesc;
+        Vector<UserBlock> blocks;
     };
 
     struct OneRef
@@ -26,12 +37,13 @@ struct ModuleGenDocJob : public Job
     void collectNode(AstNode* node);
     void collectScopes(Scope* root);
 
-    void computeUserBlock(UserBlock& result, const Utf8& txt);
+    void computeUserComment(UserComment& result, const Utf8& txt);
 
     Utf8 outputType(TypeInfo* typeInfo);
     Utf8 outputNode(AstNode* node);
     void outputUserLine(const Utf8& user);
-    void outputUserBlock(const Utf8& user);
+    void outputUserBlock(const UserBlock& user);
+    void outputUserComment(const UserComment& user);
     void outputCode(const Utf8& code);
     void outputStyles();
     void outputTitle(OneRef& c);
