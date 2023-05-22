@@ -12,6 +12,7 @@ struct ModuleGenDocJob : public Job
     {
         Paragraph,
         RawParagraph,
+        Code,
     };
 
     struct UserBlock
@@ -43,7 +44,7 @@ struct ModuleGenDocJob : public Job
 
     Utf8 outputType(TypeInfo* typeInfo);
     Utf8 outputNode(AstNode* node);
-    void outputUserLine(const Utf8& user);
+    void outputUserLine(const Utf8& user, UserBlockKind curBlock = UserBlockKind::Paragraph);
     void outputUserBlock(const UserBlock& user);
     void outputUserComment(const UserComment& user);
     void outputCode(const Utf8& code);

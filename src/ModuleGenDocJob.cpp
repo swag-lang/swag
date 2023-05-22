@@ -37,6 +37,11 @@ void ModuleGenDocJob::computeUserComment(UserComment& result, const Utf8& txt)
                     blk.kind = UserBlockKind::RawParagraph;
                     start++;
                 }
+                else if (line == "```")
+                {
+                    blk.kind = UserBlockKind::Code;
+                    start++;
+                }
                 else
                 {
                     blk.lines.push_back(lines[start++]);
@@ -51,12 +56,20 @@ void ModuleGenDocJob::computeUserComment(UserComment& result, const Utf8& txt)
             auto line = lines[start];
             line.trim();
 
-            if (line.empty() && blk.kind != UserBlockKind::RawParagraph)
+            if (line.empty() && blk.kind != UserBlockKind::RawParagraph && blk.kind != UserBlockKind::Code)
                 break;
 
             if (line == "---")
             {
-                start++;
+                if (blk.kind == UserBlockKind::RawParagraph)
+                    start++;
+                break;
+            }
+
+            if (line == "```")
+            {
+                if (blk.kind == UserBlockKind::Code)
+                    start++;
                 break;
             }
 
@@ -129,7 +142,7 @@ void ModuleGenDocJob::outputTitle(OneRef& c)
     helpContent += Fmt("</h%d>\n", level);
 }
 
-void ModuleGenDocJob::outputUserLine(const Utf8& user)
+void ModuleGenDocJob::outputUserLine(const Utf8& user, UserBlockKind curBlock)
 {
     if (user.empty())
         return;
@@ -154,6 +167,14 @@ void ModuleGenDocJob::outputUserLine(const Utf8& user)
             continue;
         }
 
+        if (curBlock == UserBlockKind::Code)
+        {
+            helpContent += *pz++;
+            continue;
+        }
+
+        // Special styles, but not in a code block
+
         if (*pz == '*' && pz[1] == '*')
         {
             inBoldMode = !inBoldMode;
@@ -165,7 +186,7 @@ void ModuleGenDocJob::outputUserLine(const Utf8& user)
             continue;
         }
 
-        if (*pz == '`')
+        if (*pz == '\'' || *pz == '`')
         {
             inCodeMode = !inCodeMode;
             if (inCodeMode)
@@ -185,6 +206,15 @@ void ModuleGenDocJob::outputUserBlock(const UserBlock& user)
     if (user.lines.empty())
         return;
 
+    if (user.kind == UserBlockKind::Code)
+    {
+        Utf8 block;
+        for (auto& l : user.lines)
+            block += l;
+        outputCode(block);
+        return;
+    }
+
     switch (user.kind)
     {
     case UserBlockKind::Paragraph:
@@ -197,15 +227,26 @@ void ModuleGenDocJob::outputUserBlock(const UserBlock& user)
 
     for (int i = 0; i < user.lines.size(); i++)
     {
-        outputUserLine(user.lines[i]);
+        outputUserLine(user.lines[i], user.kind);
 
         // Add one line break after each line, except the last line from a raw block, because we do
         // not want one useless empty line
-        if (i != user.lines.size() - 1 || user.kind != UserBlockKind::RawParagraph)
-            helpContent += "\n";
+        if (user.kind == UserBlockKind::RawParagraph)
+        {
+            if (i != user.lines.size() - 1)
+                helpContent += "\n";
+        }
     }
 
-    helpContent += "</p>\n";
+    switch (user.kind)
+    {
+    case UserBlockKind::Paragraph:
+        helpContent += "</p>\n";
+        break;
+    case UserBlockKind::RawParagraph:
+        helpContent += "</p>\n";
+        break;
+    }
 }
 
 void ModuleGenDocJob::outputUserComment(const UserComment& user)
@@ -218,11 +259,11 @@ void ModuleGenDocJob::outputCode(const Utf8& code)
 {
     if (code.empty())
         return;
-    helpContent += "<div class=\"code\">\n";
+    helpContent += "<p class=\"code\">\n";
     helpContent += "<code style=\"white-space: break-spaces\">";
     helpContent += code;
     helpContent += "</code>\n";
-    helpContent += "</div>\n";
+    helpContent += "</p>\n";
 }
 
 Utf8 ModuleGenDocJob::outputType(TypeInfo* typeInfo)
