@@ -38,9 +38,9 @@ void CommandLineParser::setup(CommandLine* cmdLine)
     addArg("te",                  "--test-bytecode",        "-tb",      CommandLineType::Bool,          &cmdLine->runByteCodeTests, nullptr, "run #test functions as bytecode");
     addArg("te",                  "--test-native",          "-tn",      CommandLineType::Bool,          &cmdLine->runBackendTests, nullptr, "run #test functions as native");
                                                                                                         
-    addArg("bu sc",               "--rebuild",              nullptr,    CommandLineType::Bool,          &cmdLine->rebuild, nullptr, "full rebuild");
-    addArg("bu sc",               "--rebuildall",           nullptr,    CommandLineType::Bool,          &cmdLine->rebuildAll, nullptr, "full rebuild (with all dependencies)");
-    addArg("ge",                  "--force",                nullptr,    CommandLineType::Bool,          &cmdLine->getDepForce, nullptr, "force to flush dependencies");
+    addArg("bu sc doc",           "--rebuild",              nullptr,    CommandLineType::Bool,          &cmdLine->rebuild, nullptr, "full rebuild");
+    addArg("bu sc doc",           "--rebuildall",           nullptr,    CommandLineType::Bool,          &cmdLine->rebuildAll, nullptr, "full rebuild (with all dependencies)");
+    addArg("ge doc",              "--force",                nullptr,    CommandLineType::Bool,          &cmdLine->getDepForce, nullptr, "force to flush dependencies");
                                                                                                         
     addArg("te",                  "--test-filter",          nullptr,    CommandLineType::String,        &cmdLine->testFilter, nullptr, "will only compile and test files that match the filter");
                                                                                                         
