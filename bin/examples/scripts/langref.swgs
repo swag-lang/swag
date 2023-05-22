@@ -331,7 +331,7 @@ func generate(in, out: string)
         .incode {
             background-color: #eeeeee;
             padding: 2px;
-            border: 1px dotted #cccc00;
+            border: 1px dotted #cccccc;
         }
 
         .container {

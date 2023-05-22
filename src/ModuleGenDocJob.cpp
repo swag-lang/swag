@@ -473,7 +473,7 @@ void ModuleGenDocJob::outputStyles()
         .incode {\n\
             background-color:   #eeeeee;\n\
             padding:            2px;\n\
-            border: 1px dotted  #cccc00;\n\
+            border: 1px dotted  #cccccc;\n\
         }\n\
         .code {\n\
             background-color:   LightYellow;\n\

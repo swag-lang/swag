@@ -21,7 +21,7 @@
     .incode {
         background-color: #eeeeee;
         padding: 2px;
-        border: 1px dotted #cccc00;
+        border: 1px dotted #cccccc;
     }
 
     .container {
@@ -376,6 +376,10 @@
 <li><a href="#At global scope">At global scope</a></li>
 </ul>
 <li><a href="#222__compiler_interface">Compiler interface</a></li>
+<ul>
+</ul>
+</ul>
+<li><a href="#230_documentation">Documentation</a></li>
 <ul>
 </ul>
 </ul>
@@ -6504,6 +6508,37 @@ Here is a real life example from the <code class="incode">Std.Ogl</code> module 
     itf.</span><span style="color:#FF7411">compileString</span><span style="color:#FFFFFF">(str.</span><span style="color:#FF7411">toString</span><span style="color:#FFFFFF">())
 }</span></code></div><div></div>
 
+<h2 id="230_documentation">Documentation</h2>
+<div>The Swag compiler can generate documentation for all the modules of a given workspace.</br>
+</div>
+<div class="code"><code style="white-space: break-spaces"><span style="color:#FFFFFF">swag doc -w:myWorkspaceFolder</span></code></div><div></div>
+<div>The documentation comment needs to be placed just before a function, struct or enum.</br>
+</div>
+<div class="code"><code style="white-space: break-spaces"><span style="color:#6A9955">// Everything between empty lines is considered to be a simple paragraph.</span><span style="color:#FFFFFF">
+</span><span style="color:#6A9955">// Which means that if you put several comments on several lines like</span><span style="color:#FFFFFF">
+</span><span style="color:#6A9955">// this, they all will be part of the same paragraph.</span><span style="color:#FFFFFF">
+</span><span style="color:#6A9955">//</span><span style="color:#FFFFFF">
+</span><span style="color:#6A9955">// This is another paragraph because there's an empty line before.</span><span style="color:#FFFFFF">
+</span><span style="color:#6A9955">//</span><span style="color:#FFFFFF">
+</span><span style="color:#6A9955">// ---</span><span style="color:#FFFFFF">
+</span><span style="color:#6A9955">// A paragraph that starts with '---' is a paragraph where every blanks and end of lines</span><span style="color:#FFFFFF">
+</span><span style="color:#6A9955">// are respected. Even...</span><span style="color:#FFFFFF">
+</span><span style="color:#6A9955">//</span><span style="color:#FFFFFF">
+</span><span style="color:#6A9955">// ...empty lines are preserved.</span><span style="color:#FFFFFF">
+</span><span style="color:#6A9955">// You end that kind of paragraph with another '---' alone on its line.</span><span style="color:#FFFFFF">
+</span><span style="color:#6A9955">// ---</span><span style="color:#FFFFFF">
+</span><span style="color:#569CD6">func</span><span style="color:#FFFFFF"> </span><span style="color:#FF7411">test</span><span style="color:#FFFFFF">()
+{
+
+}
+
+</span><span style="color:#6A9955">// Some other markdown markers are also supported:</span><span style="color:#FFFFFF">
+</span><span style="color:#6A9955">// `code` for 'inline' code.</span><span style="color:#FFFFFF">
+</span><span style="color:#6A9955">// **bold**</span><span style="color:#FFFFFF">
+</span><span style="color:#569CD6">struct</span><span style="color:#FFFFFF"> </span><span style="color:#4EC9B0">RGB</span><span style="color:#FFFFFF">
+{
+    r, g, b: </span><span style="color:#F6CC86">s32</span><span style="color:#FFFFFF">
+}</span></code></div>
 </div>
 </div>
 </div>

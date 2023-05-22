@@ -23,18 +23,17 @@ impl ConvertFormatFloat
     // Format is :
     //
     // ---
-    // [+][fmt][precision]
+    // `[+][fmt][precision]`
     //
-    // [+]
+    // `[+]`
     //      force the positive sign if number is positive
-    // [fmt]
-    //      output format:
-    //      'e' (-d.dddde±dd, a decimal exponent)
-    //      'E' (-d.ddddE±dd, a decimal exponent)
-    //      'f' (-ddd.dddd, no exponent)
-    //      'g' ('e' for large exponents, 'f' otherwise)
-    //      'G' ('E' for large exponents, 'f' otherwise)
-    // [precision]
+    // `[fmt]` output format:
+    //      `e (-d.dddde±dd, a decimal exponent)`
+    //      `E (-d.ddddE±dd, a decimal exponent)`
+    //      `f (-ddd.dddd, no exponent)`
+    //      `g ('e' for large exponents, 'f' otherwise)`
+    //      `G ('E' for large exponents, 'f' otherwise)`
+    // `[precision]`
     //      integer, precision of the fractional part
     // ---
     mtd setFormat(strFormat: string)
@@ -95,15 +94,15 @@ impl ConvertFormatInt
     // Format is :
     //
     // ---
-    // [+][B|D|X][padding][width]
+    // `[+][B|D|X][padding][width]`
     //
-    // [+]
+    // `[+]`
     //      force sign for positive numbers
-    // [B|D|X]
+    // `[B|D|X]`
     //      binary, decimal, hexadecimal
-    // [padding]
+    // `[padding]`
     //      padding character, in ascii, mandatory before the next field
-    // [width]
+    // `[width]`
     //      width of the output, in characters
     // ---
     mtd setFormat(strFormat: string)
