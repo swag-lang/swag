@@ -1,5 +1,5 @@
 <p align="center">
-    <img src="https://github.com/swag-lang/swag/blob/master/docs/swag_logo.png">
+    <img src="https://github.com/swag-lang/swag/blob/master/web/imgs/swag_logo.png">
 </p>
 
 > Work in progress ! There's no "official" release yet.
@@ -19,7 +19,7 @@ Note that a simple `visual studio code` [extension](https://marketplace.visualst
 Here is a **screen capture software** fully written in Swag with the help of the Swag standard libraries (`core`, `pixel`, `gui`...). It could be compiled as a native executable (fast) or just interpreted as a script (less... fast). Code is [there](https://github.com/swag-lang/swag/blob/master/bin/examples/modules/captme/src).
 
 <p align="center">
-    <img width="70%" height="50%" src="https://github.com/swag-lang/swag/blob/master/docs/captme.png">
+    <img width="70%" height="50%" src="https://github.com/swag-lang/swag/blob/master/web/imgs/captme.png">
 </p>
 
 ### Swag is...
@@ -152,10 +152,10 @@ func mySillyFunction()->string
 
 # For the braves
 
-* [Start](docs/getting_started.md) your first project, compile it, run it.
-* Use the compiler as a [script](docs/swag_as_script.md) interpreter.
-* [Contribute](docs/contribute_tests.md) to the compiler **test suite**, this will help (a lot).
+* [Start](web/md/getting_started.md) your first project, compile it, run it.
+* Use the compiler as a [script](web/md/swag_as_script.md) interpreter.
+* [Contribute](web/md/contribute_tests.md) to the compiler **test suite**, this will help (a lot).
 
 # For the very braves
 
-* [How to build](docs/how_to_build_swag.md) the compiler with the full source tree.
+* [How to build](web/md/how_to_build_swag.md) the compiler with the full source tree.
