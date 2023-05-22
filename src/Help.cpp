@@ -70,6 +70,18 @@ void help(CommandLineParser& cmdParser, const Utf8& cmd)
     }
 
     ////////////////////////////////////////////////////////
+    if (cmd == "doc")
+    {
+        g_Log.messageInfo("\n");
+        g_Log.messageInfo("Command 'doc' generates the documentation of each module.\n");
+
+        printExamples();
+        g_Log.messageInfo("swag doc --workspace:c:/myWorkspace\n");
+        g_Log.messageInfo("\n");
+        cmdParser.logArguments(cmd);
+    }
+
+    ////////////////////////////////////////////////////////
     if (cmd == "script")
     {
         g_Log.messageInfo("\n");
@@ -156,6 +168,7 @@ void help(CommandLineParser& cmdParser)
     g_Log.messageInfo("        get          synchronize dependencies\n");
     g_Log.messageInfo("        list         list all modules and their dependencies\n");
     g_Log.messageInfo("        script       build and run a script file\n");
+    g_Log.messageInfo("        doc          generate documentation of library modules\n");
 
     g_Log.messageInfo("\n");
     g_Log.messageInfo("To get the list of all arguments for a given command, type 'swag <command> --help'\n");

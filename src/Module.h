@@ -28,6 +28,7 @@ enum class ModuleBuildPass
     RunByteCode,
     Output,
     RunNative,
+    GenerateDoc,
     Done,
     Invalid
 };

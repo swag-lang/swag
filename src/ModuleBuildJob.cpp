@@ -728,25 +728,13 @@ JobResult ModuleBuildJob::execute()
             // Do not run native tests or command in script mode, it's already done in bytecode
             if (g_CommandLine.scriptMode)
                 pass = ModuleBuildPass::Done;
-            // Do not run native tests if generating documentation
             else if (g_CommandLine.genDoc)
-                pass = ModuleBuildPass::Done;
+                pass = ModuleBuildPass::GenerateDoc;
             else
                 pass = ModuleBuildPass::RunNative;
 
-            // Generate documentation
-            if (g_CommandLine.genDoc)
-            {
-                module->logPass(ModuleBuildPass::Output);
-                auto outputJob          = Allocator::alloc<ModuleGenDocJob>();
-                outputJob->module       = module;
-                outputJob->dependentJob = this;
-                jobsToAdd.push_back(outputJob);
-                return JobResult::KeepJobAlive;
-            }
-
             // Generate backend
-            else if (module->mustOutputSomething())
+            if (module->mustOutputSomething())
             {
                 module->logPass(ModuleBuildPass::Output);
                 module->sendCompilerMessage(CompilerMsgKind::PassBeforeOutput, this);
@@ -759,16 +747,40 @@ JobResult ModuleBuildJob::execute()
         }
     }
 
+    // Generate doc pass
+    //////////////////////////////////////////////////
+    if (pass == ModuleBuildPass::GenerateDoc)
+    {
+        checkMissingErrors();
+        if (module->numErrors)
+            return JobResult::ReleaseJob;
+
+        module->logStage("ModuleBuildPass::GenerateDoc\n");
+        pass = ModuleBuildPass::Done;
+
+        if (module->buildCfg.backendKind != BuildCfgBackendKind::Executable &&
+            module->buildCfg.backendKind != BuildCfgBackendKind::Export)
+        {
+            module->logPass(ModuleBuildPass::Output);
+            auto outputJob          = Allocator::alloc<ModuleGenDocJob>();
+            outputJob->module       = module;
+            outputJob->dependentJob = this;
+            jobsToAdd.push_back(outputJob);
+            return JobResult::KeepJobAlive;
+        }
+    }
+
     // Run pass
     //////////////////////////////////////////////////
     if (pass == ModuleBuildPass::RunNative)
     {
         checkMissingErrors();
-        module->logStage("ModuleBuildPass::RunNative\n");
 
-        pass = ModuleBuildPass::Done;
         if (module->numErrors)
             return JobResult::ReleaseJob;
+
+        module->logStage("ModuleBuildPass::RunNative\n");
+        pass = ModuleBuildPass::Done;
 
         // Run test executable
         if (module->mustGenerateTestExe() &&

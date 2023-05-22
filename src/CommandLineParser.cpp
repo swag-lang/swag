@@ -13,15 +13,15 @@ void CommandLineParser::setup(CommandLine* cmdLine)
     addArg("all",                 "--colors",               nullptr,    CommandLineType::Bool,          &cmdLine->logColors, nullptr, "log messages with colors");
                                                                                                         
     addArg("all",                 "--verbose-cmdline",      nullptr,    CommandLineType::Bool,          &cmdLine->verboseCmdLine, nullptr, "log swag command line");
-    addArg("bu sc",               "--verbose-path",         nullptr,    CommandLineType::Bool,          &cmdLine->verbosePath, nullptr, "log global paths");
+    addArg("bu sc doc",           "--verbose-path",         nullptr,    CommandLineType::Bool,          &cmdLine->verbosePath, nullptr, "log global paths");
     addArg("bu sc",               "--verbose-link",         nullptr,    CommandLineType::Bool,          &cmdLine->verboseLink, nullptr, "log linker command line");
     addArg("bu sc",               "--verbose-ctypes",       nullptr,    CommandLineType::Bool,          &cmdLine->verboseConcreteTypes, nullptr, "log generated concrete types");
     addArg("te",                  "--verbose-testerrors",   nullptr,    CommandLineType::Bool,          &cmdLine->verboseTestErrors, nullptr, "log errors during test");
-    addArg("bu sc te",            "--verbose-stages",       nullptr,    CommandLineType::Bool,          &cmdLine->verboseStages, nullptr, "log compiler stages");                                             
+    addArg("bu sc te doc",        "--verbose-stages",       nullptr,    CommandLineType::Bool,          &cmdLine->verboseStages, nullptr, "log compiler stages");                                             
                                   
-    addArg("bu sc",               "--error-oneline",        "-el",      CommandLineType::Bool,          &cmdLine->errorOneLine, nullptr, "display errors in a single line");
-    addArg("bu sc",               "--error-absolute",       "-ea",      CommandLineType::Bool,          &cmdLine->errorAbsolute, nullptr, "display absolute paths when an error is raised");
-    addArg("bu sc",               "--error-code-colors",    "-es",      CommandLineType::Bool,          &cmdLine->errorCodeColors, nullptr, "syntax color code when an error is raised");
+    addArg("bu sc doc",           "--error-oneline",        "-el",      CommandLineType::Bool,          &cmdLine->errorOneLine, nullptr, "display errors in a single line");
+    addArg("bu sc doc",           "--error-absolute",       "-ea",      CommandLineType::Bool,          &cmdLine->errorAbsolute, nullptr, "display absolute paths when an error is raised");
+    addArg("bu sc doc",           "--error-code-colors",    "-es",      CommandLineType::Bool,          &cmdLine->errorCodeColors, nullptr, "syntax color code when an error is raised");
                                   
     addArg("bu ne cl li ge doc",  "--workspace",            "-w",       CommandLineType::StringPath,    &cmdLine->workspacePath, nullptr, "the path to the workspace to work with");
     addArg("bu ne doc",           "--module",               "-m",       CommandLineType::String,        &cmdLine->moduleName, nullptr, "module name");

@@ -92,9 +92,9 @@ int main(int argc, const char* argv[])
     }
     else if (command == "doc")
     {
-        g_CommandLine.genDoc  = true;
-        g_CommandLine.output  = false;
-        g_CommandLine.rebuild = true;
+        g_CommandLine.genDoc   = true;
+        g_CommandLine.rebuild  = true;
+        g_CommandLine.buildCfg = "fast-compile";
         g_Workspace->build();
     }
     else if (command == "test")
