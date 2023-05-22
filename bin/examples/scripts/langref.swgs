@@ -1,7 +1,7 @@
 /*
     This script is used to generate the documentation you can see at swag-lang.org.
 
-    It takes the content of the swag-lang/swag/bin/reference.tests folders, and generates the
+    It takes the content of the swag-lang/swag/bin/reference/tests folders, and generates the
     corresponding documentations.
 */
 
