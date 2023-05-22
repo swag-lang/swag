@@ -182,22 +182,40 @@ Utf8 ModuleGenDocJob::outputType(TypeInfo* typeInfo)
 
     if (!typeRef->declNode || !typeRef->declNode->sourceFile)
         return typeInfo->name;
+    if (typeRef->declNode->sourceFile->isRuntimeFile || typeRef->declNode->sourceFile->isBootstrapFile)
+        return typeInfo->name;
+    if (typeRef->isTuple())
+        return typeInfo->name;
+
+    switch (typeRef->kind)
+    {
+    case TypeInfoKind::Struct:
+    case TypeInfoKind::Interface:
+    case TypeInfoKind::Enum:
+        break;
+    default:
+        return typeInfo->name;
+    }
 
     typeRef->computeScopedNameExport();
     Vector<Utf8> tkn;
     Utf8::tokenize(typeRef->scopedNameExport, '.', tkn);
+    if (tkn.size() < 2)
+        return typeInfo->name;
 
     // Remove the instantiated types to make the reference to the generic original type
     auto nameExport = typeRef->scopedNameExport;
-    if (typeRef->isFromGeneric())
-    {
-        int p = nameExport.find("'");
-        if (p != -1)
-            nameExport.remove(p, nameExport.length() - p);
-    }
+    int  p          = nameExport.find("'");
+    if (p != -1)
+        nameExport.remove(p, nameExport.length() - p);
 
     tkn[0].makeLower();
-    return Fmt("<a href=\"%s.html#%s\">%s</a>", tkn[0].c_str(), nameExport.c_str(), typeInfo->name.c_str());
+    auto wkpName = typeRef->declNode->sourceFile->module->path;
+    wkpName      = wkpName.parent_path();
+    wkpName      = wkpName.parent_path();
+    wkpName      = wkpName.filename();
+
+    return Fmt("<a href=\"%s.%s.html#%s\">%s</a>", wkpName.string().c_str(), tkn[0].c_str(), nameExport.c_str(), typeInfo->name.c_str());
 }
 
 Utf8 ModuleGenDocJob::outputNode(AstNode* node)
@@ -394,14 +412,19 @@ JobResult ModuleGenDocJob::execute()
     outputCxt.exportType  = [this](TypeInfo* typeInfo)
     { return outputType(typeInfo); };
 
-    auto fileName = g_Workspace->targetPath;
-    fileName.append(module->name.c_str());
-    fileName += ".html";
+    auto filePath = g_Workspace->targetPath;
+    filePath.append(g_Workspace->workspacePath.filename().string().c_str());
+    filePath += ".";
+    filePath += module->name.c_str();
+    filePath += ".html";
+
+    Utf8 fileName = filePath.string();
+    fileName.makeLower();
 
     FILE* f = nullptr;
-    if (fopen_s(&f, fileName.string().c_str(), "wb"))
+    if (fopen_s(&f, fileName.c_str(), "wb"))
     {
-        Report::errorOS(Fmt(Err(Err0524), fileName.string().c_str()));
+        Report::errorOS(Fmt(Err(Err0524), fileName.c_str()));
         return JobResult::ReleaseJob;
     }
 
@@ -465,7 +488,7 @@ JobResult ModuleGenDocJob::execute()
             outputUserBlock(userBlock.shortDesc);
 
             // Struct fields
-            auto structNode = CastAst<AstStruct>(c.nodes[0], AstNodeKind::StructDecl);
+            auto structNode = CastAst<AstStruct>(c.nodes[0], AstNodeKind::StructDecl, AstNodeKind::InterfaceDecl);
             helpContent += "<table>\n";
             for (auto structVal : structNode->scope->symTable.allSymbols)
             {
@@ -479,7 +502,10 @@ JobResult ModuleGenDocJob::execute()
                 helpContent += "<tr>\n";
 
                 helpContent += "<td>\n";
-                helpContent += outputType(varDecl->typeInfo);
+                if (varDecl->typeInfo)
+                    helpContent += outputType(varDecl->typeInfo);
+                else
+                    helpContent += outputNode(varDecl->type);
                 helpContent += "</td>\n";
 
                 helpContent += "<td>\n";
