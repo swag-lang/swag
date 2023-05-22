@@ -484,6 +484,21 @@ void ModuleGenDocJob::outputStyles()
     helpContent += "</style>\n";
 }
 
+Utf8 ModuleGenDocJob::getDocComment(AstNode* node)
+{
+    if (node->hasExtMisc() && !node->extMisc()->docComment.empty())
+        return node->extMisc()->docComment;
+
+    while (node->parent && node->parent->kind == AstNodeKind::AttrUse)
+    {
+        if (node->parent->hasExtMisc() && !node->parent->extMisc()->docComment.empty())
+            return node->parent->extMisc()->docComment;
+        node = node->parent;
+    }
+
+    return "";
+}
+
 JobResult ModuleGenDocJob::execute()
 {
     // Setup
@@ -553,9 +568,10 @@ JobResult ModuleGenDocJob::execute()
         case AstNodeKind::Namespace:
         {
             UserComment userComment;
-            if (c.nodes[0]->hasExtMisc())
+            auto        docComment = getDocComment(c.nodes[0]);
+            if (!docComment.empty())
             {
-                computeUserComment(userComment, c.nodes[0]->extMisc()->docComment);
+                computeUserComment(userComment, docComment);
                 outputUserComment(userComment);
             }
             break;
@@ -565,9 +581,10 @@ JobResult ModuleGenDocJob::execute()
         case AstNodeKind::InterfaceDecl:
         {
             UserComment userComment;
-            if (c.nodes[0]->hasExtMisc())
+            auto        docComment = getDocComment(c.nodes[0]);
+            if (!docComment.empty())
             {
-                computeUserComment(userComment, c.nodes[0]->extMisc()->docComment);
+                computeUserComment(userComment, docComment);
                 outputUserBlock(userComment.shortDesc);
             }
 
@@ -597,8 +614,9 @@ JobResult ModuleGenDocJob::execute()
                 helpContent += "</td>\n";
 
                 helpContent += "<td>\n";
-                if (structVal->nodes[0]->hasExtMisc())
-                    outputUserLine(structVal->nodes[0]->extMisc()->docComment);
+                auto subDocComment = getDocComment(structVal->nodes[0]);
+                if (!subDocComment.empty())
+                    outputUserLine(subDocComment);
                 helpContent += "</td>\n";
 
                 helpContent += "</tr>\n";
@@ -613,9 +631,10 @@ JobResult ModuleGenDocJob::execute()
         case AstNodeKind::EnumDecl:
         {
             UserComment userComment;
-            if (c.nodes[0]->hasExtMisc())
+            auto        docComment = getDocComment(c.nodes[0]);
+            if (!docComment.empty())
             {
-                computeUserComment(userComment, c.nodes[0]->extMisc()->docComment);
+                computeUserComment(userComment, docComment);
                 outputUserBlock(userComment.shortDesc);
             }
 
@@ -632,8 +651,9 @@ JobResult ModuleGenDocJob::execute()
                 helpContent += enumVal->name;
                 helpContent += "</td>\n";
                 helpContent += "<td>\n";
-                if (enumVal->nodes[0]->hasExtMisc())
-                    outputUserLine(enumVal->nodes[0]->extMisc()->docComment);
+                auto subDocComment = getDocComment(enumVal->nodes[0]);
+                if (!subDocComment.empty())
+                    outputUserLine(subDocComment);
                 helpContent += "</td>\n";
                 helpContent += "</tr>\n";
             }
@@ -650,8 +670,9 @@ JobResult ModuleGenDocJob::execute()
             for (auto n : c.nodes)
             {
                 UserComment userComment;
-                if (n->hasExtMisc())
-                    computeUserComment(userComment, n->extMisc()->docComment);
+                auto        subDocComment = getDocComment(n);
+                if (!subDocComment.empty())
+                    computeUserComment(userComment, subDocComment);
 
                 auto funcNode = CastAst<AstFuncDecl>(n, AstNodeKind::FuncDecl);
                 code += "func";

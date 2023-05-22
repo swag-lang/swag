@@ -39,6 +39,7 @@ struct ModuleGenDocJob : public Job
     void collectScopes(Scope* root);
 
     void computeUserComment(UserComment& result, const Utf8& txt);
+    Utf8 getDocComment(AstNode* node);
 
     Utf8 outputType(TypeInfo* typeInfo);
     Utf8 outputNode(AstNode* node);
