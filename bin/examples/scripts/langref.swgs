@@ -1,3 +1,10 @@
+/*
+    This script is used to generate the documentation you can see at swag-lang.org.
+
+    It takes the content of the swag-lang/swag/bin/reference.tests folders, and generates the
+    corresponding documentations.
+*/
+
 #dependencies
 {
     #import "gui" location="swag@std"
@@ -294,9 +301,9 @@ func processFile(fileName: string)
         stateLeave(g_State.popBack())
 }
 
-#run
+func generate(in, out: string)
 {
-    files := assume Directory.enumerateFiles("../bin/reference/tests/language/src", ".swg", recurse: true)
+    files := assume Directory.enumerateFiles(in, ".swg", recurse: true)
     files.sort(func(a, b) => a.fullname <=> b.fullname)
 
     g_Buf += "<html lang=\"en\">\n"
@@ -424,5 +431,10 @@ func processFile(fileName: string)
 
     g_Buf.insert(seekToc, g_Toc)
 
-    assume File.writeAllBytes("langref.html", g_Buf)
+    assume File.writeAllBytes(out, g_Buf)
+}
+
+#run
+{
+    generate("../../reference/tests/language/src", "../../../web/language.html")
 }
