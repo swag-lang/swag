@@ -114,16 +114,49 @@ void ModuleGenDocJob::outputUserLine(const Utf8& user)
     if (user.empty())
         return;
 
+    bool inCodeMode = false;
+    bool inBoldMode = false;
+
     auto pz = user.c_str();
     while (*pz)
     {
         if (*pz == '<')
+        {
             helpContent += "&lt;";
-        else if (*pz == '>')
+            pz++;
+            continue;
+        }
+
+        if (*pz == '>')
+        {
             helpContent += "&gt;";
-        else
-            helpContent += *pz;
-        pz++;
+            pz++;
+            continue;
+        }
+
+        if (*pz == '*' && pz[1] == '*')
+        {
+            inBoldMode = !inBoldMode;
+            if (inBoldMode)
+                helpContent += "<b>";
+            else
+                helpContent += "</b>";
+            pz += 2;
+            continue;
+        }
+
+        if (*pz == '`')
+        {
+            inCodeMode = !inCodeMode;
+            if (inCodeMode)
+                helpContent += "<code class = \"incode\">";
+            else
+                helpContent += "</code>";
+            pz++;
+            continue;
+        }
+
+        helpContent += *pz++;
     }
 }
 
@@ -389,6 +422,11 @@ void ModuleGenDocJob::outputStyles()
             padding-bottom:     5px;\n\
             border-bottom:      2px solid LightGrey;\n\
             width:              100%;\n\
+        }\n\
+        .incode {\n\
+            background-color:   #eeeeee;\n\
+            padding:            2px;\n\
+            border: 1px dotted  #cccc00;\n\
         }\n\
         .code {\n\
             background-color:   LightYellow;\n\
