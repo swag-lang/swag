@@ -321,8 +321,6 @@ Utf8 ModuleGenDocJob::outputType(TypeInfo* typeInfo)
 
     if (!typeRef->declNode || !typeRef->declNode->sourceFile)
         return typeInfo->name;
-    if (typeRef->declNode->sourceFile->isRuntimeFile || typeRef->declNode->sourceFile->isBootstrapFile)
-        return typeInfo->name;
     if (typeRef->isTuple())
         return typeInfo->name;
 
@@ -349,12 +347,19 @@ Utf8 ModuleGenDocJob::outputType(TypeInfo* typeInfo)
         nameExport.remove(p, nameExport.length() - p);
 
     tkn[0].makeLower();
-    auto wkpName = typeRef->declNode->sourceFile->module->path;
-    wkpName      = wkpName.parent_path();
-    wkpName      = wkpName.parent_path();
-    wkpName      = wkpName.filename();
 
-    return Fmt("<a href=\"%s.%s.html#%s\">%s</a>", wkpName.string().c_str(), tkn[0].c_str(), nameExport.c_str(), typeInfo->name.c_str());
+    if (typeRef->declNode->sourceFile->isRuntimeFile || typeRef->declNode->sourceFile->isBootstrapFile)
+    {
+        return Fmt("<a href=\"swag.runtime.html#%s\">%s</a>", nameExport.c_str(), typeInfo->name.c_str());
+    }
+    else
+    {
+        auto wkpName = typeRef->declNode->sourceFile->module->path;
+        wkpName      = wkpName.parent_path();
+        wkpName      = wkpName.parent_path();
+        wkpName      = wkpName.filename();
+        return Fmt("<a href=\"%s.%s.html#%s\">%s</a>", wkpName.string().c_str(), tkn[0].c_str(), nameExport.c_str(), typeInfo->name.c_str());
+    }
 }
 
 Utf8 ModuleGenDocJob::outputNode(AstNode* node)
@@ -386,7 +391,11 @@ void ModuleGenDocJob::collectNode(AstNode* node)
     case AstNodeKind::InterfaceDecl:
     case AstNodeKind::FuncDecl:
     case AstNodeKind::EnumDecl:
-        if (node->sourceFile && !node->sourceFile->forceExport && !(node->attributeFlags & ATTRIBUTE_PUBLIC))
+        if (node->sourceFile && node->sourceFile->isRuntimeFile)
+            name = node->getScopedName();
+        else if (node->sourceFile && node->sourceFile->isBootstrapFile)
+            name = node->getScopedName();
+        else if (node->sourceFile && !node->sourceFile->forceExport && !(node->attributeFlags & ATTRIBUTE_PUBLIC))
             return;
         name = node->getScopedName();
         break;
@@ -409,6 +418,8 @@ void ModuleGenDocJob::collectScopes(Scope* root)
 {
     if (root->flags & SCOPE_IMPORTED)
         return;
+    if (root->name.length() > 2 && root->name[0] == '_' && root->name[1] == '_')
+        return;
 
     if (!root->owner)
         return;
@@ -422,7 +433,10 @@ void ModuleGenDocJob::collectScopes(Scope* root)
 
 void ModuleGenDocJob::generateToc()
 {
-    helpContent += Fmt("<h1>Module %s</h1>\n", module->name.c_str());
+    if (!module)
+        helpContent += "<h1>Swag Runtime</h1>\n";
+    else
+        helpContent += Fmt("<h1>Module %s</h1>\n", module->name.c_str());
 
     int curLevel = 0;
     for (auto& c : allNodes)
@@ -578,10 +592,17 @@ JobResult ModuleGenDocJob::execute()
     { return outputType(typeInfo); };
 
     auto filePath = g_Workspace->targetPath;
-    filePath.append(g_Workspace->workspacePath.filename().string().c_str());
-    filePath += ".";
-    filePath += module->name.c_str();
-    filePath += ".html";
+    if (!module)
+    {
+        filePath.append("swag.runtime.html");
+    }
+    else
+    {
+        filePath.append(g_Workspace->workspacePath.filename().string().c_str());
+        filePath += ".";
+        filePath += module->name.c_str();
+        filePath += ".html";
+    }
 
     Utf8 fileName = filePath.string();
     fileName.makeLower();
@@ -604,7 +625,13 @@ JobResult ModuleGenDocJob::execute()
     outputStyles();
 
     // Collect content
-    collectScopes(module->scopeRoot);
+    if (module)
+        collectScopes(module->scopeRoot);
+    else
+    {
+        collectScopes(g_Workspace->runtimeModule->scopeRoot);
+        collectScopes(g_Workspace->bootstrapModule->scopeRoot);
+    }
 
     // Sort all nodes by scoped name order
     for (auto c : collect)

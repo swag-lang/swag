@@ -1241,6 +1241,9 @@ void Module::logPass(ModuleBuildPass pass)
     case ModuleBuildPass::Publish:
         // str = "Publishing";
         break;
+    case ModuleBuildPass::GenerateDoc:
+        str = "Documenting";
+        break;
     case ModuleBuildPass::SemanticModule:
         str = "Compiling";
         break;
@@ -1249,9 +1252,7 @@ void Module::logPass(ModuleBuildPass pass)
             str = "Running ByteCode";
         break;
     case ModuleBuildPass::Output:
-        if (g_CommandLine.genDoc)
-            str = "Documenting";
-        else if (backend->mustCompile)
+        if (backend->mustCompile && !g_CommandLine.genDoc)
             str = "Generating";
         break;
     case ModuleBuildPass::RunNative:

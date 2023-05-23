@@ -758,16 +758,33 @@ JobResult ModuleBuildJob::execute()
         module->logStage("ModuleBuildPass::GenerateDoc\n");
         pass = ModuleBuildPass::Done;
 
+        // Special job to generate the Swag runtime documentation only one time for all modules
+        {
+            static Mutex mtx;
+            static bool  swagDocDone = false;
+            ScopedLock   lk(mtx);
+            if (!swagDocDone)
+            {
+                swagDocDone             = true;
+                auto outputJob          = Allocator::alloc<ModuleGenDocJob>();
+                outputJob->module       = nullptr;
+                outputJob->dependentJob = this;
+                jobsToAdd.push_back(outputJob);
+            }
+        }
+
         if (module->buildCfg.backendKind != BuildCfgBackendKind::Executable &&
             module->buildCfg.backendKind != BuildCfgBackendKind::Export)
         {
-            module->logPass(ModuleBuildPass::Output);
+            module->logPass(ModuleBuildPass::GenerateDoc);
             auto outputJob          = Allocator::alloc<ModuleGenDocJob>();
             outputJob->module       = module;
             outputJob->dependentJob = this;
             jobsToAdd.push_back(outputJob);
-            return JobResult::KeepJobAlive;
         }
+
+        if (!jobsToAdd.empty())
+            return JobResult::KeepJobAlive;
     }
 
     // Run pass
