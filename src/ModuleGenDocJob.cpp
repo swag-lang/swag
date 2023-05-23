@@ -123,7 +123,7 @@ void ModuleGenDocJob::outputTitle(OneRef& c)
         break;
     }
 
-    helpContent += Fmt("<h%d id=\"%s\">", level, c.fullName.c_str());
+    helpContent += Fmt("<h%d class=\"content\" id=\"%s\">", level, c.fullName.c_str());
 
     Vector<Utf8> tkn;
     Utf8::tokenize(c.displayName, '.', tkn);
@@ -453,12 +453,68 @@ void ModuleGenDocJob::collectScopes(Scope* root)
     }
 }
 
+void ModuleGenDocJob::generateTocSection(AstNodeKind kind, const char* name)
+{
+    bool first = true;
+    for (auto& c : allNodes)
+    {
+        if (c.nodes[0]->kind != kind)
+            continue;
+
+        if (first)
+        {
+            helpContent += Fmt("<h2>%s</h2>\n", name);
+            helpContent += "<ul class=\"tocbullet\">\n";
+            first = false;
+        }
+
+        Vector<Utf8> tkn;
+        Utf8::tokenize(c.fullName, '.', tkn);
+
+        for (auto n : c.nodes)
+        {
+            if (kind == AstNodeKind::FuncDecl)
+                helpContent += Fmt("<li><a href=\"#%s\">%s</a></li>\n", c.fullName.c_str(), c.displayName.c_str());
+            else
+                helpContent += Fmt("<li><a href=\"#%s\">%s</a></li>\n", c.fullName.c_str(), n->token.ctext());
+            if (kind != AstNodeKind::ConstDecl)
+                break;
+        }
+    }
+
+    if (!first)
+        helpContent += "</ul>\n";
+}
+
 void ModuleGenDocJob::generateToc()
 {
     if (!module)
         helpContent += "<h1>Swag Runtime</h1>\n";
     else
         helpContent += Fmt("<h1>Module %s</h1>\n", module->name.c_str());
+
+    for (auto& c : allNodes)
+    {
+        Vector<Utf8> tkn;
+        Utf8::tokenize(c.fullName, '.', tkn);
+
+        if (c.nodes[0]->kind == AstNodeKind::Namespace)
+            c.displayName = c.fullName;
+        else if (tkn.size() > 2)
+        {
+            c.displayName = tkn[tkn.size() - 2];
+            c.displayName += ".";
+            c.displayName += tkn[tkn.size() - 1];
+        }
+    }
+
+    generateTocSection(AstNodeKind::Namespace, "Namespaces");
+    generateTocSection(AstNodeKind::StructDecl, "Structs");
+    generateTocSection(AstNodeKind::InterfaceDecl, "Interfaces");
+    generateTocSection(AstNodeKind::EnumDecl, "Enums");
+    generateTocSection(AstNodeKind::ConstDecl, "Constants");
+    generateTocSection(AstNodeKind::FuncDecl, "Functions");
+    return;
 
     int curLevel = 0;
     for (auto& c : allNodes)
@@ -565,11 +621,11 @@ void ModuleGenDocJob::outputStyles()
             font-weight:        bold;\n\
             font-size:          100%;\n\
         }\n\
-        h2 {\n\
+        h2.content {\n\
             margin-top:         50px;\n\
             margin-bottom:      50px;\n\
         }\n\
-        h3 {\n\
+        h3.content {\n\
             margin-top:         50px;\n\
             padding-bottom:     5px;\n\
             border-bottom:      2px solid LightGrey;\n\
