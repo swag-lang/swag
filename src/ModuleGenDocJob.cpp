@@ -391,6 +391,7 @@ void ModuleGenDocJob::collectNode(AstNode* node)
     case AstNodeKind::InterfaceDecl:
     case AstNodeKind::FuncDecl:
     case AstNodeKind::EnumDecl:
+    case AstNodeKind::ConstDecl:
         if (node->sourceFile && node->sourceFile->isRuntimeFile)
             name = node->getScopedName();
         else if (node->sourceFile && node->sourceFile->isBootstrapFile)
@@ -402,6 +403,16 @@ void ModuleGenDocJob::collectNode(AstNode* node)
 
     default:
         break;
+    }
+
+    if (node->kind == AstNodeKind::ConstDecl)
+    {
+        auto pz = strrchr(name.c_str(), '.');
+        SWAG_ASSERT(pz);
+        auto len = (uint32_t) (size_t) (pz - name.c_str());
+        name.remove(len, name.length() - len);
+        name += ".";
+        name += "Constants";
     }
 
     if (!name.empty())
@@ -428,7 +439,18 @@ void ModuleGenDocJob::collectScopes(Scope* root)
         collectNode(root->owner);
 
     for (auto c : root->childScopes)
+    {
         collectScopes(c);
+    }
+
+    if (root->kind == ScopeKind::Namespace)
+    {
+        for (auto s : root->symTable.allSymbols)
+        {
+            if (s->kind == SymbolKind::Variable && !s->nodes.empty())
+                collectNode(s->nodes[0]);
+        }
+    }
 }
 
 void ModuleGenDocJob::generateToc()
@@ -671,6 +693,41 @@ JobResult ModuleGenDocJob::execute()
                 computeUserComment(userComment, docComment);
                 outputUserComment(userComment);
             }
+            break;
+        }
+
+        case AstNodeKind::ConstDecl:
+        {
+            Utf8 code;
+            helpContent += "<table>\n";
+
+            for (auto n : c.nodes)
+            {
+                auto varDecl = CastAst<AstVarDecl>(n, AstNodeKind::ConstDecl);
+                helpContent += "<tr>\n";
+
+                helpContent += "<td>\n";
+                if (varDecl->typeInfo)
+                    helpContent += outputType(varDecl->typeInfo);
+                else
+                    helpContent += outputNode(varDecl->type);
+                helpContent += "</td>\n";
+
+                helpContent += "<td>\n";
+                helpContent += varDecl->token.text;
+                helpContent += "</td>\n";
+
+                helpContent += "<td>\n";
+                auto subDocComment = getDocComment(n);
+                if (!subDocComment.empty())
+                    outputUserLine(subDocComment);
+                helpContent += "</td>\n";
+
+                helpContent += "</tr>\n";
+            }
+
+            helpContent += "</table>\n";
+            outputCode(code);
             break;
         }
 
