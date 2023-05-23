@@ -899,7 +899,10 @@ JobResult ModuleGenDocJob::execute()
                 code += outputNode(funcNode->genericParameters);
                 code += " ";
                 code += funcNode->token.text;
-                code += outputNode(funcNode->parameters);
+                if (!funcNode->parameters)
+                    code += "()";
+                else
+                    code += outputNode(funcNode->parameters);
                 code += outputNode(funcNode->returnType);
                 code += "\n";
 
