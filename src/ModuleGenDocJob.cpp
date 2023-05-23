@@ -85,6 +85,9 @@ void ModuleGenDocJob::computeUserComment(UserComment& result, const Utf8& txt)
     {
         result.shortDesc = std::move(result.blocks[0]);
         result.blocks.erase(result.blocks.begin());
+        result.shortDesc.lines[0].trim();
+        if (result.shortDesc.lines.back() != '.')
+            result.shortDesc.lines[0] += '.';
     }
 }
 

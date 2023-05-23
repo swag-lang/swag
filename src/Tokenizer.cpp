@@ -200,6 +200,7 @@ bool Tokenizer::nextToken(TokenParse& token)
             while (SWAG_IS_EOL(curBuffer[0]))
                 c = readChar();
             token.flags |= TOKENPARSE_LAST_EOL;
+            comment.clear();
             continue;
         }
 
@@ -225,6 +226,12 @@ bool Tokenizer::nextToken(TokenParse& token)
                 startTokenName = curBuffer;
                 while (curBuffer[0] && !SWAG_IS_EOL(curBuffer[0]))
                     readChar();
+
+                if (curBuffer[0])
+                {
+                    token.flags |= TOKENPARSE_LAST_EOL;
+                    readChar();
+                }
 
                 if (trackComments)
                 {
