@@ -134,6 +134,7 @@ func decodeLastRune(buffer: const [..] u8) -> {c: rune, eat: u32}
 }
 
 // Get the unicode rune pointed by 'buffer', and the number of bytes to encode it
+//
 // Will return 'RuneError' for an invalid utf8 sequence
 func decodeRune(buffer: const [..] u8) -> {c: rune, eat: u32}
 {
@@ -227,6 +228,7 @@ func decodeRune(buffer: const [..] u8) -> {c: rune, eat: u32}
 
 // Convert rune 'src' to an utf8 sequence, and returns
 // the number of bytes that were needed to make the conversion.
+//
 // 'dest' must be at least 4 bytes long
 func encodeRune(dest: [..] u8, src: rune)->u32
 {
@@ -265,6 +267,7 @@ func encodeRune(dest: [..] u8, src: rune)->u32
 }
 
 // Convert a rune array to an utf8 buffer
+//
 // Returns the number of bytes written in the destination buffer
 // 'dest' must be at least 4 bytes long
 func fromUnicode(dest: [..] u8, src: const [..] rune)->u64
@@ -295,7 +298,8 @@ func fromUnicode(src: const [..] rune)->String
 }
 
 // Convert an utf16 array to an utf8 buffer
-// Returns the number of bytes written in the destination buffer
+//
+// Returns the number of bytes written in the destination buffer.
 // 'dest' must be at least 4 bytes long
 func fromUtf16(dest: [..] u8, src: const [..] u16)->u64
 {
@@ -347,8 +351,8 @@ func isValidRune(c: rune)->bool
 }
 
 
-// Returns the number of bytes to encode the first rune of the
-// utf8 buffer.
+// Returns the number of bytes to encode the first rune of the utf8 buffer
+//
 // If it's an invalid encoding, returns 1.
 func countBytesAt(buffer: const [..] u8)->u32
 {
@@ -448,14 +452,16 @@ func countRunes(buffer: const [..] u8)->u64
 }
 
 // Find the first occurence of rune 'what', and returns the byte index of it
-// Returns Swag.U64.Max if not found
+//
+// Returns 'Swag.U64.Max' if not found
 func indexOf(src: const [..] u8, what: rune, startByteIndex = 0'u64)->u64
 {
     return indexOf(src, [what], startByteIndex)
 }
 
 // Find one of the runes in 'what', and returns the byte index of it
-// Returns Swag.U64.Max if not found
+//
+// Returns 'Swag.U64.Max' if not found
 func indexOf(src: const [..] u8, what: const [..] rune, startByteIndex = 0'u64)->u64
 {
     length := @countof(src)
@@ -485,7 +491,8 @@ func indexOf(src: const [..] u8, what: const [..] rune, startByteIndex = 0'u64)-
 }
 
 // Find the given string, and returns the byte index of it
-// Returns Swag.U64.Max if not found
+//
+// Returns 'Swag.U64.Max' if not found
 func indexOf(src: const [..] u8, what: string, startByteIndex = 0'u64, comparisonType = ComparisonType.Latin1)->u64
 {
     length := @countof(src)
@@ -520,7 +527,7 @@ func contains(src: const [..] u8, what: string)->bool
 
 // Find the last rune occurence of 'what', and returns the byte index of it
 //
-// Returns Swag.U64.Max if not found
+// Returns 'Swag.U64.Max' if not found
 func lastIndexOf(src: const [..] u8, what: rune)->u64
 {
     return lastIndexOf(src, [what])
@@ -528,7 +535,7 @@ func lastIndexOf(src: const [..] u8, what: rune)->u64
 
 // Returns the last index (in bytes) of a rune
 //
-// Returns Swag.U64.Max if not found
+// Returns 'Swag.U64.Max' if not found
 func lastIndexOf(src: const [..] u8, what: const [..] rune)->u64
 {
     length := @countof(src)
@@ -554,7 +561,7 @@ func lastIndexOf(src: const [..] u8, what: const [..] rune)->u64
 
 // Returns the last index (in bytes) of a string
 //
-// Returns Swag.U64.Max if not found
+// Returns 'Swag.U64.Max' if not found
 func lastIndexOf(src: const [..] u8, what: string, comparisonType = ComparisonType.Latin1)->u64
 {
     length := @countof(src)
@@ -694,9 +701,12 @@ func compare(src, dst: const [..] u8, comparisonType = ComparisonType.Latin1)->s
 }
 
 // Macro to visit the unicode characters of the utf8 sequence
-// @alias0 will contain the character
-// @alias1 will contain the character index
-// @alias2 will contain the byte index of that character within the utf8 sequence
+//
+// ---
+// '@alias0' will contain the character
+// '@alias1' will contain the character index
+// '@alias2' will contain the byte index of that character within the utf8 sequence
+// ---
 #[Swag.Macro]
 func visitRunes(buffer: const [..] u8, stmt: code)
 {

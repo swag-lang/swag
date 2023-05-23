@@ -175,6 +175,7 @@ void ModuleGenDocJob::outputUserLine(const Utf8& user, UserBlockKind curBlock)
 
         // Special styles, but not in a code block
 
+        // Bold
         if (*pz == '*' && pz[1] == '*')
         {
             inBoldMode = !inBoldMode;
@@ -186,7 +187,26 @@ void ModuleGenDocJob::outputUserLine(const Utf8& user, UserBlockKind curBlock)
             continue;
         }
 
-        if (*pz == '\'' || *pz == '`')
+        // 'word'
+        if (*pz == '\'')
+        {
+            auto pz1 = pz + 1;
+            while (*pz1 && !SWAG_IS_BLANK(*pz1) && *pz1 != '\'')
+                pz1++;
+            if (*pz1 == '\'')
+            {
+                helpContent += "<code class = \"incode\">";
+                pz++;
+                while (pz != pz1)
+                    helpContent += *pz++;
+                helpContent += "</code>";
+            }
+            pz++;
+            continue;
+        }
+
+        // embedded code line
+        if (*pz == '`')
         {
             inCodeMode = !inCodeMode;
             if (inCodeMode)
@@ -467,6 +487,16 @@ void ModuleGenDocJob::outputStyles()
             line-height: 1.3em;\n\
             height:      100%;\n\
         }\n\
+        .page {\n\
+            width:  1000;\n\
+            margin: 0 auto;\n\
+        }\n\
+        a {\n\
+            text-decoration: none;\n\
+        }\n\
+        a:hover {\n\
+            text-decoration: underline;\n\
+        }\n\
         table {\n\
             border:             1px solid LightGrey;\n\
             border-collapse:    collapse;\n\
@@ -517,10 +547,6 @@ void ModuleGenDocJob::outputStyles()
             padding:            10px;\n\
             width:              90%;\n\
             margin-left:        20px;\n\
-        }\n\
-        .page {\n\
-            width:  1000;\n\
-            margin: 0 auto;\n\
         }\n";
     helpContent += "</style>\n";
 }
@@ -631,6 +657,16 @@ JobResult ModuleGenDocJob::execute()
 
             // Struct fields
             auto structNode = CastAst<AstStruct>(c.nodes[0], AstNodeKind::StructDecl, AstNodeKind::InterfaceDecl);
+
+            if (structNode->typeInfo && structNode->typeInfo->isGeneric())
+            {
+                Utf8 code;
+                code += "struct ";
+                code += structNode->token.text;
+                code += outputNode(structNode->genericParameters);
+                outputCode(code);
+            }
+
             helpContent += "<table>\n";
             for (auto structVal : structNode->scope->symTable.allSymbols)
             {

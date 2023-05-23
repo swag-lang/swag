@@ -29,7 +29,9 @@ The documentation comment needs to be placed just before a function, struct or e
     }
 
     // Some other markdown markers are also supported:
-    // `code` for 'inline' code.
+    //
+    // `this is code` for 'inline' code.
+    // 'single_word'  for 'inline' code.
     // **bold**
     struct RGB
     {
