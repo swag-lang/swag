@@ -456,8 +456,10 @@ void ModuleGenDocJob::collectScopes(Scope* root)
 void ModuleGenDocJob::generateTocSection(AstNodeKind kind, const char* name)
 {
     bool first = true;
+    Path lastPath;
     for (auto& c : allNodes)
     {
+
         if (c.nodes[0]->kind != kind)
             continue;
 
@@ -466,6 +468,16 @@ void ModuleGenDocJob::generateTocSection(AstNodeKind kind, const char* name)
             helpContent += Fmt("<h2>%s</h2>\n", name);
             helpContent += "<ul class=\"tocbullet\">\n";
             first = false;
+        }
+
+        if (!c.nodes[0]->sourceFile->isRuntimeFile && !c.nodes[0]->sourceFile->isBootstrapFile)
+        {
+            Path p = c.nodes[0]->sourceFile->path.parent_path();
+            if (p != lastPath && p.parent_path() != c.nodes[0]->sourceFile->module->path)
+            {
+                helpContent += Fmt("<h3>%s</h3>\n", p.filename().string().c_str());
+                lastPath = p;
+            }
         }
 
         Vector<Utf8> tkn;
@@ -722,7 +734,10 @@ JobResult ModuleGenDocJob::execute()
     }
 
     sort(allNodes.begin(), allNodes.end(), [](OneRef& a, OneRef& b)
-         { return strcmp(a.fullName.buffer, b.fullName.buffer) < 0; });
+         { 
+            if(a.nodes[0]->sourceFile->path.string() == b.nodes[0]->sourceFile->path.string())
+                return strcmp(a.fullName.buffer, b.fullName.buffer) < 0; 
+            return strcmp(a.nodes[0]->sourceFile->path.parent_path().string().c_str(), b.nodes[0]->sourceFile->path.parent_path().string().c_str()) < 0; });
 
     // Main page (left and right parts, left is for table of content, right is for content)
     helpContent += "<div class=\"container\">\n";
