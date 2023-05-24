@@ -910,7 +910,12 @@ JobResult ModuleGenDocJob::execute()
                     computeUserComment(userComment, subDocComment);
 
                 auto funcNode = CastAst<AstFuncDecl>(n, AstNodeKind::FuncDecl);
-                code += "func";
+                if (funcNode->attributeFlags & ATTRIBUTE_MACRO)
+                    code += "macro";
+                else if (funcNode->attributeFlags & ATTRIBUTE_MIXIN)
+                    code += "mixin";
+                else
+                    code += "func";
                 code += outputNode(funcNode->genericParameters);
                 code += " ";
                 code += funcNode->token.text;
