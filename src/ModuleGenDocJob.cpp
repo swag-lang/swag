@@ -86,7 +86,7 @@ void ModuleGenDocJob::computeUserComment(UserComment& result, const Utf8& txt)
         result.shortDesc = std::move(result.blocks[0]);
         result.blocks.erase(result.blocks.begin());
         result.shortDesc.lines[0].trim();
-        if (result.shortDesc.lines.back() != '.')
+        if (result.shortDesc.lines[0].back() != '.')
             result.shortDesc.lines[0] += '.';
     }
 }
@@ -771,12 +771,13 @@ JobResult ModuleGenDocJob::execute()
     {
         outputTitle(c);
 
-        switch (c.nodes[0]->kind)
+        auto n0 = c.nodes[0];
+        switch (n0->kind)
         {
         case AstNodeKind::Namespace:
         {
             UserComment userComment;
-            auto        docComment = getDocComment(c.nodes[0]);
+            auto        docComment = getDocComment(n0);
             if (!docComment.empty())
             {
                 computeUserComment(userComment, docComment);
@@ -824,7 +825,7 @@ JobResult ModuleGenDocJob::execute()
         case AstNodeKind::InterfaceDecl:
         {
             UserComment userComment;
-            auto        docComment = getDocComment(c.nodes[0]);
+            auto        docComment = getDocComment(n0);
             if (!docComment.empty())
             {
                 computeUserComment(userComment, docComment);
@@ -832,7 +833,7 @@ JobResult ModuleGenDocJob::execute()
             }
 
             // Struct fields
-            auto structNode = CastAst<AstStruct>(c.nodes[0], AstNodeKind::StructDecl, AstNodeKind::InterfaceDecl);
+            auto structNode = CastAst<AstStruct>(n0, AstNodeKind::StructDecl, AstNodeKind::InterfaceDecl);
 
             if (structNode->typeInfo && structNode->typeInfo->isGeneric())
             {
@@ -846,12 +847,15 @@ JobResult ModuleGenDocJob::execute()
             helpContent += "<table>\n";
             for (auto structVal : structNode->scope->symTable.allSymbols)
             {
-                if (structVal->nodes[0]->kind != AstNodeKind::VarDecl)
+                auto n1 = structVal->nodes[0];
+                if (n1->kind != AstNodeKind::VarDecl && n1->kind != AstNodeKind::ConstDecl)
+                    continue;
+                if (!(n1->flags & AST_STRUCT_MEMBER))
                     continue;
                 if (structVal->name.find("item") == 0)
                     continue;
 
-                auto varDecl = CastAst<AstVarDecl>(structVal->nodes[0], AstNodeKind::VarDecl);
+                auto varDecl = CastAst<AstVarDecl>(n1, AstNodeKind::VarDecl, AstNodeKind::ConstDecl);
 
                 helpContent += "<tr>\n";
 
@@ -867,7 +871,7 @@ JobResult ModuleGenDocJob::execute()
                 helpContent += "</td>\n";
 
                 helpContent += "<td>\n";
-                auto subDocComment = getDocComment(structVal->nodes[0]);
+                auto subDocComment = getDocComment(n1);
                 if (!subDocComment.empty())
                     outputUserLine(subDocComment);
                 helpContent += "</td>\n";
@@ -884,14 +888,14 @@ JobResult ModuleGenDocJob::execute()
         case AstNodeKind::EnumDecl:
         {
             UserComment userComment;
-            auto        docComment = getDocComment(c.nodes[0]);
+            auto        docComment = getDocComment(n0);
             if (!docComment.empty())
             {
                 computeUserComment(userComment, docComment);
                 outputUserBlock(userComment.shortDesc);
             }
 
-            auto enumNode = CastAst<AstEnum>(c.nodes[0], AstNodeKind::EnumDecl);
+            auto enumNode = CastAst<AstEnum>(n0, AstNodeKind::EnumDecl);
 
             helpContent += "<table>\n";
             for (auto enumVal : enumNode->scope->symTable.allSymbols)

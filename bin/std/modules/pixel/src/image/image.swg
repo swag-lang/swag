@@ -1,6 +1,7 @@
 #global public
 using Swag, Core, Serialization
 
+// An image buffer, in various pixel formats.
 struct Image
 {
     pixels:             Array'u8
