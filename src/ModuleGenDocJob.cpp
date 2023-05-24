@@ -836,6 +836,14 @@ JobResult ModuleGenDocJob::execute()
                 computeUserComment(userComment, docComment);
                 outputUserComment(userComment);
             }
+
+            auto namespaceDecl = CastAst<AstNameSpace>(n0, AstNodeKind::Namespace);
+            if (namespaceDecl->typeInfo)
+            {
+                auto scope = CastTypeInfo<TypeInfoNamespace>(namespaceDecl->typeInfo, namespaceDecl->typeInfo->kind)->scope;
+                outputTable(scope, AstNodeKind::StructDecl, "Structs");
+            }
+
             break;
         }
 
