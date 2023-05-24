@@ -93,38 +93,30 @@ void ModuleGenDocJob::computeUserComment(UserComment& result, const Utf8& txt)
 
 void ModuleGenDocJob::outputTitle(OneRef& c)
 {
-    int  level = 0;
     Utf8 name;
 
-    auto n = c.nodes[0];
     switch (c.nodes[0]->kind)
     {
     case AstNodeKind::Namespace:
-        level = 2;
-        name  = "namespace";
+        name = "namespace";
         break;
     case AstNodeKind::FuncDecl:
-        level = 3;
-        name  = "func";
+        name = "func";
         break;
     case AstNodeKind::EnumDecl:
-        level = 3;
-        name  = "enum";
+        name = "enum";
         break;
     case AstNodeKind::StructDecl:
-        level = 3;
-        name  = "struct";
+        name = "struct";
         break;
     case AstNodeKind::InterfaceDecl:
-        level = 3;
-        name  = "interface";
+        name = "interface";
         break;
     default:
-        level = 3;
         break;
     }
 
-    helpContent += Fmt("<h%d class=\"content\" id=\"%s\">", level, c.fullName.c_str());
+    helpContent += Fmt("<h3 class=\"content\" id=\"%s\">", c.fullName.c_str());
 
     Vector<Utf8> tkn;
     Utf8::tokenize(c.displayName, '.', tkn);
@@ -143,7 +135,7 @@ void ModuleGenDocJob::outputTitle(OneRef& c)
     helpContent += tkn.back();
     helpContent += "</span>";
 
-    helpContent += Fmt("</h%d>\n", level);
+    helpContent += "</h3>\n";
 }
 
 void ModuleGenDocJob::outputUserLine(const Utf8& user, UserBlockKind curBlock)
@@ -674,6 +666,27 @@ Utf8 ModuleGenDocJob::getDocComment(AstNode* node)
     return "";
 }
 
+int ModuleGenDocJob::sortOrder(AstNodeKind kind)
+{
+    switch (kind)
+    {
+    case AstNodeKind::Namespace:
+        return 0;
+    case AstNodeKind::StructDecl:
+        return 1;
+    case AstNodeKind::InterfaceDecl:
+        return 2;
+    case AstNodeKind::EnumDecl:
+        return 3;
+    case AstNodeKind::ConstDecl:
+        return 4;
+    case AstNodeKind::FuncDecl:
+        return 5;
+    default:
+        return 6;
+    }
+}
+
 JobResult ModuleGenDocJob::execute()
 {
     // Setup
@@ -734,8 +747,12 @@ JobResult ModuleGenDocJob::execute()
         allNodes.push_back(oneRef);
     }
 
-    sort(allNodes.begin(), allNodes.end(), [](OneRef& a, OneRef& b)
+    sort(allNodes.begin(), allNodes.end(), [this](OneRef& a, OneRef& b)
          { 
+            int s0 = sortOrder(a.nodes[0]->kind);
+            int s1 = sortOrder(b.nodes[0]->kind);
+            if (s0 != s1)
+                return s0 < s1;
             if(a.nodes[0]->sourceFile->path.string() == b.nodes[0]->sourceFile->path.string())
                 return strcmp(a.fullName.buffer, b.fullName.buffer) < 0; 
             return strcmp(a.nodes[0]->sourceFile->path.parent_path().string().c_str(), b.nodes[0]->sourceFile->path.parent_path().string().c_str()) < 0; });
