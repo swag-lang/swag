@@ -43,7 +43,7 @@ struct ModuleGenDocJob : public Job
     Utf8 getDocComment(AstNode* node);
     int  sortOrder(AstNodeKind kind);
 
-    void outputFunctions(Scope* scope);
+    void outputTable(Scope* scope, AstNodeKind kind, const char* title);
     Utf8 outputType(TypeInfo* typeInfo);
     Utf8 outputNode(AstNode* node);
     void outputUserLine(const Utf8& user, UserBlockKind curBlock = UserBlockKind::Paragraph);

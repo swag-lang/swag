@@ -91,13 +91,13 @@ void ModuleGenDocJob::computeUserComment(UserComment& result, const Utf8& txt)
     }
 }
 
-void ModuleGenDocJob::outputFunctions(Scope* scope)
+void ModuleGenDocJob::outputTable(Scope* scope, AstNodeKind kind, const char* title)
 {
     VectorNative<AstNode*> symbols;
     for (auto structVal : scope->symTable.allSymbols)
     {
         auto n1 = structVal->nodes[0];
-        if (n1->kind != AstNodeKind::FuncDecl)
+        if (n1->kind != kind)
             continue;
         symbols.push_back(n1);
     }
@@ -110,7 +110,7 @@ void ModuleGenDocJob::outputFunctions(Scope* scope)
     {
         if (first)
         {
-            helpContent += "<h3>Functions</h3>\n";
+            helpContent += Fmt("<h3>%s</h3>\n", title);
             helpContent += "<table>\n";
             first = false;
         }
@@ -938,7 +938,7 @@ JobResult ModuleGenDocJob::execute()
             outputUserComment(userComment);
 
             // Functions
-            outputFunctions(structNode->scope);
+            outputTable(structNode->scope, AstNodeKind::FuncDecl, "Functions");
             break;
         }
 
