@@ -644,6 +644,7 @@ bool Parser::doStructBody(AstNode* parent, SyntaxStructType structType, AstNode*
             typeNode->specFlags |= AstTypeLambda::SPECFLAG_CAN_THROW;
         }
 
+        scope->owner = nullptr;
         funcNode->release();
         break;
     }

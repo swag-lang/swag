@@ -116,8 +116,8 @@ void ModuleGenDocJob::computeUserComment(UserComment& result, const Utf8& txt)
         result.shortDesc = std::move(result.blocks[0]);
         result.blocks.erase(result.blocks.begin());
         result.shortDesc.lines[0].trim();
-        if (result.shortDesc.lines[0].back() != '.')
-            result.shortDesc.lines[0] += '.';
+        if (result.shortDesc.lines.back().back() != '.')
+            result.shortDesc.lines.back() += '.';
     }
 }
 
@@ -517,10 +517,9 @@ void ModuleGenDocJob::collectScopes(Scope* root)
 void ModuleGenDocJob::generateTocSection(AstNodeKind kind, const char* name)
 {
     bool first = true;
-    Path lastPath;
+    Utf8 lastCateg;
     for (auto& c : allNodes)
     {
-
         if (c.nodes[0]->kind != kind)
             continue;
 
@@ -533,11 +532,10 @@ void ModuleGenDocJob::generateTocSection(AstNodeKind kind, const char* name)
 
         if (!c.nodes[0]->sourceFile->isRuntimeFile && !c.nodes[0]->sourceFile->isBootstrapFile)
         {
-            Path p = c.nodes[0]->sourceFile->path.parent_path();
-            if (p != lastPath && p.parent_path() != c.nodes[0]->sourceFile->module->path)
+            if (c.category != lastCateg && !c.category.empty())
             {
-                helpContent += Fmt("<h3>%s</h3>\n", p.filename().string().c_str());
-                lastPath = p;
+                helpContent += Fmt("<h3>%s</h3>\n", c.category.c_str());
+                lastCateg = c.category;
             }
         }
 
@@ -587,47 +585,6 @@ void ModuleGenDocJob::generateToc()
     generateTocSection(AstNodeKind::EnumDecl, "Enums");
     generateTocSection(AstNodeKind::ConstDecl, "Constants");
     generateTocSection(AstNodeKind::FuncDecl, "Functions");
-    return;
-
-    int curLevel = 0;
-    for (auto& c : allNodes)
-    {
-        Vector<Utf8> tkn;
-        Utf8::tokenize(c.fullName, '.', tkn);
-
-        // Display. The real name, and one level above.
-        if (c.nodes[0]->kind == AstNodeKind::Namespace)
-            c.displayName = c.fullName;
-        else if (tkn.size() > 2)
-        {
-            c.displayName = tkn[tkn.size() - 2];
-            c.displayName += ".";
-            c.displayName += tkn[tkn.size() - 1];
-        }
-
-        if (tkn.size() > curLevel)
-        {
-            while (tkn.size() > curLevel)
-            {
-                helpContent += "<ul class=\"tocbullet\">\n";
-                helpContent += Fmt("<li><a href=\"#%s\">%s</a></li>\n", c.fullName.c_str(), tkn[curLevel].c_str());
-                curLevel++;
-            }
-        }
-        else
-        {
-            while (tkn.size() < curLevel)
-            {
-                helpContent += "</ul>\n";
-                curLevel--;
-            }
-
-            helpContent += Fmt("<li><a href=\"#%s\">%s</a></li>\n", c.fullName.c_str(), tkn.back().c_str());
-        }
-    }
-
-    while (curLevel--)
-        helpContent += "</ul>\n";
 }
 
 void ModuleGenDocJob::outputStyles()
@@ -794,6 +751,18 @@ JobResult ModuleGenDocJob::execute()
     for (auto c : collect)
     {
         OneRef oneRef;
+
+        if (module)
+        {
+            oneRef.category = c.second[0]->sourceFile->path.parent_path().string();
+            oneRef.category.remove(0, (uint32_t) c.second[0]->sourceFile->module->path.string().size());
+            if (oneRef.category.length() <= 5)
+                oneRef.category.clear();
+            else
+                oneRef.category.remove(0, 5); // remove /src/
+            oneRef.category.replace("\\", "/");
+        }
+
         oneRef.fullName    = c.first;
         oneRef.displayName = c.first;
         oneRef.nodes       = std::move(c.second);
@@ -806,9 +775,9 @@ JobResult ModuleGenDocJob::execute()
             int s1 = sortOrder(b.nodes[0]->kind);
             if (s0 != s1)
                 return s0 < s1;
-            if(a.nodes[0]->sourceFile->path.string() == b.nodes[0]->sourceFile->path.string())
+            if(a.category == b.category)
                 return strcmp(a.fullName.buffer, b.fullName.buffer) < 0; 
-            return strcmp(a.nodes[0]->sourceFile->path.parent_path().string().c_str(), b.nodes[0]->sourceFile->path.parent_path().string().c_str()) < 0; });
+            return strcmp(a.category.c_str(), b.category.c_str()) < 0; });
 
     // Main page (left and right parts, left is for table of content, right is for content)
     helpContent += "<div class=\"container\">\n";
