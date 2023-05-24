@@ -832,9 +832,9 @@ JobResult ModuleGenDocJob::execute()
                 outputUserBlock(userComment.shortDesc);
             }
 
-            // Struct fields
             auto structNode = CastAst<AstStruct>(n0, AstNodeKind::StructDecl, AstNodeKind::InterfaceDecl);
 
+            // Output signature if structure is generic
             if (structNode->typeInfo && structNode->typeInfo->isGeneric())
             {
                 Utf8 code;
@@ -844,7 +844,8 @@ JobResult ModuleGenDocJob::execute()
                 outputCode(code);
             }
 
-            helpContent += "<table>\n";
+            // Fields
+            bool first = true;
             for (auto structVal : structNode->scope->symTable.allSymbols)
             {
                 auto n1 = structVal->nodes[0];
@@ -854,6 +855,12 @@ JobResult ModuleGenDocJob::execute()
                     continue;
                 if (structVal->name.find("item") == 0)
                     continue;
+
+                if (first)
+                {
+                    helpContent += "<table>\n";
+                    first = false;
+                }
 
                 auto varDecl = CastAst<AstVarDecl>(n1, AstNodeKind::VarDecl, AstNodeKind::ConstDecl);
 
@@ -879,7 +886,44 @@ JobResult ModuleGenDocJob::execute()
                 helpContent += "</tr>\n";
             }
 
-            helpContent += "</table>\n";
+            if (!first)
+                helpContent += "</table>\n";
+
+            // Functions
+            first = true;
+            for (auto structVal : structNode->scope->symTable.allSymbols)
+            {
+                auto n1 = structVal->nodes[0];
+                if (n1->kind != AstNodeKind::FuncDecl)
+                    continue;
+
+                if (first)
+                {
+                    helpContent += "<h3>Functions</h3>\n";
+                    helpContent += "<table>\n";
+                    first = false;
+                }
+
+                helpContent += "<tr>\n";
+                helpContent += "<td>\n";
+                helpContent += Fmt("<a href=\"#%s\">%s</a>", structVal->getFullName().c_str(), structVal->name.c_str());
+                helpContent += "</td>\n";
+
+                helpContent += "<td>\n";
+                auto subDocComment = getDocComment(n1);
+                if (!subDocComment.empty())
+                {
+                    UserComment subUserComment;
+                    computeUserComment(subUserComment, subDocComment);
+                    outputUserBlock(subUserComment.shortDesc);
+                }
+
+                helpContent += "</td>\n";
+                helpContent += "</tr>\n";
+            }
+
+            if (!first)
+                helpContent += "</table>\n";
 
             outputUserComment(userComment);
             break;
