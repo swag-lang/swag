@@ -9,6 +9,36 @@
 #include "AstNode.h"
 #include "Workspace.h"
 
+static bool canCollectNode(AstNode* node)
+{
+    if (node->token.text.length() > 2 && node->token.text[0] == '_' && node->token.text[1] == '_')
+        return false;
+    if (node->flags & AST_FROM_GENERIC)
+        return false;
+    if (node->flags & AST_GENERATED)
+        return false;
+
+    if (node->sourceFile && node->sourceFile->isRuntimeFile)
+        return true;
+    if (node->sourceFile && node->sourceFile->isBootstrapFile)
+        return true;
+    if (node->kind == AstNodeKind::FuncDecl && node->sourceFile && !node->sourceFile->forceExport && !(node->attributeFlags & ATTRIBUTE_PUBLIC))
+        return false;
+
+    switch (node->kind)
+    {
+    case AstNodeKind::Namespace:
+    case AstNodeKind::StructDecl:
+    case AstNodeKind::InterfaceDecl:
+    case AstNodeKind::FuncDecl:
+    case AstNodeKind::EnumDecl:
+    case AstNodeKind::ConstDecl:
+        return true;
+    }
+
+    return false;
+}
+
 void ModuleGenDocJob::computeUserComment(UserComment& result, const Utf8& txt)
 {
     Vector<Utf8> lines;
@@ -91,15 +121,34 @@ void ModuleGenDocJob::computeUserComment(UserComment& result, const Utf8& txt)
     }
 }
 
+Utf8 ModuleGenDocJob::getDocComment(AstNode* node)
+{
+    if (node->hasExtMisc() && !node->extMisc()->docComment.empty())
+        return node->extMisc()->docComment;
+
+    while (node->parent && node->parent->kind == AstNodeKind::AttrUse)
+    {
+        if (node->parent->hasExtMisc() && !node->parent->extMisc()->docComment.empty())
+            return node->parent->extMisc()->docComment;
+        node = node->parent;
+    }
+
+    return "";
+}
+
 void ModuleGenDocJob::outputTable(Scope* scope, AstNodeKind kind, const char* title)
 {
     VectorNative<AstNode*> symbols;
     for (auto structVal : scope->symTable.allSymbols)
     {
-        auto n1 = structVal->nodes[0];
-        if (n1->kind != kind)
-            continue;
-        symbols.push_back(n1);
+        for (auto n1 : structVal->nodes)
+        {
+            if (n1->kind != kind)
+                continue;
+            if (!canCollectNode(n1))
+                continue;
+            symbols.push_back(n1);
+        }
     }
 
     sort(symbols.begin(), symbols.end(), [](AstNode* a, AstNode* b)
@@ -412,37 +461,10 @@ Utf8 ModuleGenDocJob::outputNode(AstNode* node)
 
 void ModuleGenDocJob::collectNode(AstNode* node)
 {
-    if (node->token.text.length() > 2 && node->token.text[0] == '_' && node->token.text[1] == '_')
-        return;
-    if (node->flags & AST_FROM_GENERIC)
-        return;
-    if (node->flags & AST_GENERATED)
+    if (!canCollectNode(node))
         return;
 
-    Utf8 name;
-    switch (node->kind)
-    {
-    case AstNodeKind::Namespace:
-        name = node->getScopedName();
-        break;
-
-    case AstNodeKind::StructDecl:
-    case AstNodeKind::InterfaceDecl:
-    case AstNodeKind::FuncDecl:
-    case AstNodeKind::EnumDecl:
-    case AstNodeKind::ConstDecl:
-        if (node->sourceFile && node->sourceFile->isRuntimeFile)
-            name = node->getScopedName();
-        else if (node->sourceFile && node->sourceFile->isBootstrapFile)
-            name = node->getScopedName();
-        else if (node->sourceFile && !node->sourceFile->forceExport && !(node->attributeFlags & ATTRIBUTE_PUBLIC))
-            return;
-        name = node->getScopedName();
-        break;
-
-    default:
-        break;
-    }
+    Utf8 name = node->getScopedName();
 
     if (node->kind == AstNodeKind::ConstDecl)
     {
@@ -649,7 +671,7 @@ void ModuleGenDocJob::outputStyles()
             width:              100%;\n\
         }\n\
         td {\n\
-            padding:            10px;\n\
+            padding:            6px;\n\
             border:             1px solid LightGrey;\n\
             border-collapse:    collapse;\n\
             width:              20%;\n\
@@ -695,21 +717,6 @@ void ModuleGenDocJob::outputStyles()
             margin-left:        20px;\n\
         }\n";
     helpContent += "</style>\n";
-}
-
-Utf8 ModuleGenDocJob::getDocComment(AstNode* node)
-{
-    if (node->hasExtMisc() && !node->extMisc()->docComment.empty())
-        return node->extMisc()->docComment;
-
-    while (node->parent && node->parent->kind == AstNodeKind::AttrUse)
-    {
-        if (node->parent->hasExtMisc() && !node->parent->extMisc()->docComment.empty())
-            return node->parent->extMisc()->docComment;
-        node = node->parent;
-    }
-
-    return "";
 }
 
 int ModuleGenDocJob::sortOrder(AstNodeKind kind)
@@ -913,14 +920,14 @@ JobResult ModuleGenDocJob::execute()
                 helpContent += "<tr>\n";
 
                 helpContent += "<td>\n";
+                helpContent += structVal->name;
+                helpContent += "</td>\n";
+
+                helpContent += "<td>\n";
                 if (varDecl->typeInfo)
                     helpContent += outputType(varDecl->typeInfo);
                 else
                     helpContent += outputNode(varDecl->type);
-                helpContent += "</td>\n";
-
-                helpContent += "<td>\n";
-                helpContent += structVal->name;
                 helpContent += "</td>\n";
 
                 helpContent += "<td>\n";
