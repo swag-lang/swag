@@ -96,6 +96,7 @@ void ModuleGenDocJob::outputTitle(OneRef& c)
     int  level = 0;
     Utf8 name;
 
+    auto n = c.nodes[0];
     switch (c.nodes[0]->kind)
     {
     case AstNodeKind::Namespace:
@@ -910,12 +911,11 @@ JobResult ModuleGenDocJob::execute()
                     computeUserComment(userComment, subDocComment);
 
                 auto funcNode = CastAst<AstFuncDecl>(n, AstNodeKind::FuncDecl);
-                if (funcNode->attributeFlags & ATTRIBUTE_MACRO)
-                    code += "macro";
-                else if (funcNode->attributeFlags & ATTRIBUTE_MIXIN)
-                    code += "mixin";
-                else
-                    code += "func";
+                if (n->attributeFlags & ATTRIBUTE_MACRO)
+                    code += "#[Swag.Macro]\n";
+                else if (n->attributeFlags & ATTRIBUTE_MIXIN)
+                    code += "#[Swag.Mixin]\n";
+                code += "func";
                 code += outputNode(funcNode->genericParameters);
                 code += " ";
                 code += funcNode->token.text;

@@ -126,12 +126,16 @@ impl Image
     }
 
     // Macro to visit all pixels of the image in parallel chunks
+    //
+    // ---
     // Exported variables:
-    // - pix:   address of the pixel
-    // - image: the processed image
-    // - index: the pixel index
-    // - x, y:  the pixel coordinates
-    // - userData
+    // 'pix'        address of the pixel
+    // 'image'      the processed image
+    // 'index'      the pixel index
+    // 'x'          the pixel x coordinates
+    // 'y'          the pixel y coordinates
+    // 'userData'
+    // ---
     #[Swag.Macro]
     mtdc visitPixels(userData: *void = null, stride: s32 = 1, stmt: code)
     {
