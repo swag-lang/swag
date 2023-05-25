@@ -530,13 +530,10 @@ void ModuleGenDocJob::generateTocSection(AstNodeKind kind, const char* name)
             first = false;
         }
 
-        if (!c.nodes[0]->sourceFile->isRuntimeFile && !c.nodes[0]->sourceFile->isBootstrapFile)
+        if (c.category != lastCateg && !c.category.empty())
         {
-            if (c.category != lastCateg && !c.category.empty())
-            {
-                helpContent += Fmt("<h3>%s</h3>\n", c.category.c_str());
-                lastCateg = c.category;
-            }
+            helpContent += Fmt("<h3>%s</h3>\n", c.category.c_str());
+            lastCateg = c.category;
         }
 
         Vector<Utf8> tkn;
@@ -974,13 +971,18 @@ JobResult ModuleGenDocJob::execute()
 
         if (module)
         {
-            oneRef.category = c.second[0]->sourceFile->path.parent_path().string();
-            oneRef.category.remove(0, (uint32_t) c.second[0]->sourceFile->module->path.string().size());
-            if (oneRef.category.length() <= 5)
-                oneRef.category.clear();
-            else
-                oneRef.category.remove(0, 5); // remove /src/
-            oneRef.category.replace("\\", "/");
+            // A namespace can be defined in multiple places, so do not add a category depending on folder,
+            // as sourceFile can be irrelevant
+            if (c.second[0]->kind != AstNodeKind::Namespace)
+            {
+                oneRef.category = c.second[0]->sourceFile->path.parent_path().string();
+                oneRef.category.remove(0, (uint32_t) c.second[0]->sourceFile->module->path.string().size());
+                if (oneRef.category.length() <= 5)
+                    oneRef.category.clear();
+                else
+                    oneRef.category.remove(0, 5); // remove /src/
+                oneRef.category.replace("\\", "/");
+            }
         }
 
         oneRef.fullName = c.first;
