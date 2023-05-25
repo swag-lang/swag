@@ -734,6 +734,8 @@ void ModuleGenDocJob::generateContent()
             {
                 auto scope = CastTypeInfo<TypeInfoNamespace>(namespaceDecl->typeInfo, namespaceDecl->typeInfo->kind)->scope;
                 outputTable(scope, AstNodeKind::StructDecl, "Structs");
+                outputTable(scope, AstNodeKind::EnumDecl, "Enums");
+                outputTable(scope, AstNodeKind::FuncDecl, "Functions");
             }
 
             break;
