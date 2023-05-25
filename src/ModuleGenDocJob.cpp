@@ -559,6 +559,16 @@ void ModuleGenDocJob::generateTocSection(AstNodeKind kind, const char* name)
 
 void ModuleGenDocJob::generateToc()
 {
+    sort(allNodes.begin(), allNodes.end(), [this](OneRef& a, OneRef& b)
+         {
+            int s0 = sortOrder(a.nodes[0]->kind);
+            int s1 = sortOrder(b.nodes[0]->kind);
+            if (s0 != s1)
+                return s0 < s1;
+            if (a.category == b.category)
+                return strcmp(a.fullName.buffer, b.fullName.buffer) < 0;
+            return strcmp(a.category.c_str(), b.category.c_str()) < 0; });
+
     if (!module)
         helpContent += "<h1>Swag Runtime</h1>\n";
     else
@@ -697,97 +707,10 @@ int ModuleGenDocJob::sortOrder(AstNodeKind kind)
     }
 }
 
-JobResult ModuleGenDocJob::execute()
+void ModuleGenDocJob::generateContent()
 {
-    // Setup
-    concat.init();
-    outputCxt.checkPublic = false;
-    outputCxt.exportType  = [this](TypeInfo* typeInfo)
-    { return outputType(typeInfo); };
-
-    auto filePath = g_Workspace->targetPath;
-    if (!module)
-    {
-        filePath.append("swag.runtime.html");
-    }
-    else
-    {
-        filePath.append(g_Workspace->workspacePath.filename().string().c_str());
-        filePath += ".";
-        filePath += module->name.c_str();
-        filePath += ".html";
-    }
-
-    Utf8 fileName = filePath.string();
-    fileName.makeLower();
-
-    FILE* f = nullptr;
-    if (fopen_s(&f, fileName.c_str(), "wb"))
-    {
-        Report::errorOS(Fmt(Err(Err0524), fileName.c_str()));
-        return JobResult::ReleaseJob;
-    }
-
-    helpContent += "<html>\n";
-    helpContent += "<body>\n";
-
-    helpContent += "<head>\n";
-    helpContent += "<meta charset=\"UTF-8\">\n";
-    // helpContent += "<link rel=\"stylesheet\" type=\"text/css\" href=\"/style.css\">\n";
-    helpContent += "</head>\n";
-
-    outputStyles();
-
-    // Collect content
-    if (module)
-        collectScopes(module->scopeRoot);
-    else
-    {
-        collectScopes(g_Workspace->runtimeModule->scopeRoot);
-        collectScopes(g_Workspace->bootstrapModule->scopeRoot);
-    }
-
-    // Sort all nodes by scoped name order
-    for (auto c : collect)
-    {
-        OneRef oneRef;
-
-        if (module)
-        {
-            oneRef.category = c.second[0]->sourceFile->path.parent_path().string();
-            oneRef.category.remove(0, (uint32_t) c.second[0]->sourceFile->module->path.string().size());
-            if (oneRef.category.length() <= 5)
-                oneRef.category.clear();
-            else
-                oneRef.category.remove(0, 5); // remove /src/
-            oneRef.category.replace("\\", "/");
-        }
-
-        oneRef.fullName    = c.first;
-        oneRef.displayName = c.first;
-        oneRef.nodes       = std::move(c.second);
-        allNodes.push_back(oneRef);
-    }
-
     sort(allNodes.begin(), allNodes.end(), [this](OneRef& a, OneRef& b)
-         { 
-            int s0 = sortOrder(a.nodes[0]->kind);
-            int s1 = sortOrder(b.nodes[0]->kind);
-            if (s0 != s1)
-                return s0 < s1;
-            if(a.category == b.category)
-                return strcmp(a.fullName.buffer, b.fullName.buffer) < 0; 
-            return strcmp(a.category.c_str(), b.category.c_str()) < 0; });
-
-    // Main page (left and right parts, left is for table of content, right is for content)
-    helpContent += "<div class=\"container\">\n";
-    helpContent += "<div class=\"left\">\n";
-    generateToc();
-    helpContent += "</div>\n";
-
-    // Right page start
-    helpContent += "<div class=\"right\">\n";
-    helpContent += "<div class=\"page\">\n";
+         { return strcmp(a.fullName.buffer, b.fullName.buffer) < 0; });
 
     for (auto& c : allNodes)
     {
@@ -1002,7 +925,90 @@ JobResult ModuleGenDocJob::execute()
         }
         }
     }
+}
 
+JobResult ModuleGenDocJob::execute()
+{
+    // Setup
+    concat.init();
+    outputCxt.checkPublic = false;
+    outputCxt.exportType  = [this](TypeInfo* typeInfo)
+    { return outputType(typeInfo); };
+
+    auto filePath = g_Workspace->targetPath;
+    if (!module)
+    {
+        filePath.append("swag.runtime.html");
+    }
+    else
+    {
+        filePath.append(g_Workspace->workspacePath.filename().string().c_str());
+        filePath += ".";
+        filePath += module->name.c_str();
+        filePath += ".html";
+    }
+
+    Utf8 fileName = filePath.string();
+    fileName.makeLower();
+
+    FILE* f = nullptr;
+    if (fopen_s(&f, fileName.c_str(), "wb"))
+    {
+        Report::errorOS(Fmt(Err(Err0524), fileName.c_str()));
+        return JobResult::ReleaseJob;
+    }
+
+    helpContent += "<html>\n";
+    helpContent += "<body>\n";
+
+    helpContent += "<head>\n";
+    helpContent += "<meta charset=\"UTF-8\">\n";
+    // helpContent += "<link rel=\"stylesheet\" type=\"text/css\" href=\"/style.css\">\n";
+    helpContent += "</head>\n";
+
+    outputStyles();
+
+    // Collect content
+    if (module)
+        collectScopes(module->scopeRoot);
+    else
+    {
+        collectScopes(g_Workspace->runtimeModule->scopeRoot);
+        collectScopes(g_Workspace->bootstrapModule->scopeRoot);
+    }
+
+    // Sort all nodes by scoped name order
+    for (auto c : collect)
+    {
+        OneRef oneRef;
+
+        if (module)
+        {
+            oneRef.category = c.second[0]->sourceFile->path.parent_path().string();
+            oneRef.category.remove(0, (uint32_t) c.second[0]->sourceFile->module->path.string().size());
+            if (oneRef.category.length() <= 5)
+                oneRef.category.clear();
+            else
+                oneRef.category.remove(0, 5); // remove /src/
+            oneRef.category.replace("\\", "/");
+        }
+
+        oneRef.fullName    = c.first;
+        oneRef.displayName = c.first;
+        oneRef.nodes       = std::move(c.second);
+        allNodes.push_back(oneRef);
+    }
+
+    // Main page (left and right parts, left is for table of content, right is for content)
+    helpContent += "<div class=\"container\">\n";
+    helpContent += "<div class=\"left\">\n";
+    generateToc();
+    helpContent += "</div>\n";
+
+    // Right page start
+    helpContent += "<div class=\"right\">\n";
+    helpContent += "<div class=\"page\">\n";
+    generateContent();
     helpContent += "</div>\n";
     helpContent += "</div>\n";
     helpContent += "</div>\n";

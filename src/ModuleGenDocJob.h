@@ -54,8 +54,9 @@ struct ModuleGenDocJob : public Job
     void outputStyles();
     void outputTitle(OneRef& c);
 
-    void generateToc();
     void generateTocSection(AstNodeKind kind, const char* name);
+    void generateToc();
+    void generateContent();
 
     Concat                   concat;
     AstOutput                output;
