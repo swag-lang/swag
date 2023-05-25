@@ -74,8 +74,9 @@ struct Token
     }
 };
 
-const uint8_t TOKENPARSE_LAST_EOL   = 0x01;
-const uint8_t TOKENPARSE_LAST_BLANK = 0x02;
+const uint8_t TOKENPARSE_LAST_EOL           = 0x01;
+const uint8_t TOKENPARSE_LAST_BLANK         = 0x02;
+const uint8_t TOKENPARSE_EOL_BEFORE_COMMENT = 0x04;
 
 struct TokenParse : public Token
 {
@@ -133,6 +134,7 @@ struct Tokenizer
     bool          forceLastTokenIsEOL = false;
     bool          realAppendName      = false;
     bool          trackComments       = false;
+    bool          propagateComment    = false;
     bool          idLetters[256]      = {false};
 
     TokenParse     st_token;

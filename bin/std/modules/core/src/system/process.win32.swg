@@ -37,7 +37,7 @@ func startProcess(info: StartInfo)->Process throw
 
 impl Process
 {
-    // For for the process to be done
+    // Wait for the process to be done
     mtd waitForExit()
     {
         Debug.assert(handle != null, "invalid process handle")

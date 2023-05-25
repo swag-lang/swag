@@ -172,9 +172,13 @@ bool Tokenizer::nextToken(TokenParse& token)
 #endif
 
     token.literalType   = LiteralType::TT_MAX;
+    bool hasEol         = forceLastTokenIsEOL;
     token.flags         = forceLastTokenIsEOL ? TOKENPARSE_LAST_EOL : 0;
     forceLastTokenIsEOL = false;
-    comment.clear();
+
+    if(!propagateComment)
+        comment.clear();
+    propagateComment = true;
 
     while (true)
     {
@@ -200,6 +204,7 @@ bool Tokenizer::nextToken(TokenParse& token)
             while (SWAG_IS_EOL(curBuffer[0]))
                 c = readChar();
             token.flags |= TOKENPARSE_LAST_EOL;
+            hasEol = true;
             comment.clear();
             continue;
         }
@@ -223,6 +228,12 @@ bool Tokenizer::nextToken(TokenParse& token)
             {
                 readChar();
 
+                if (hasEol)
+                {
+                    token.flags |= TOKENPARSE_EOL_BEFORE_COMMENT;
+                    hasEol = false;
+                }
+
                 startTokenName = curBuffer;
                 while (curBuffer[0] && !SWAG_IS_EOL(curBuffer[0]))
                     readChar();
@@ -237,7 +248,8 @@ bool Tokenizer::nextToken(TokenParse& token)
                 {
                     appendTokenName(token);
                     comment += token.text;
-                    comment += "\n";
+                    if (comment.back() != '\n')
+                        comment += "\n";
                 }
 
                 continue;

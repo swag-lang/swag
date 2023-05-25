@@ -77,6 +77,8 @@ bool Parser::doGlobalAttributeExpose(AstNode* parent, AstNode** result, bool for
         SWAG_VERIFY(!sourceFile->forceExport, error(token, Fmt(Err(Syn0018), token.ctext())));
         if (newScope->flags & SCOPE_FILE)
             newScope = newScope->parentScope;
+
+        tokenizer.propagateComment = true;
         SWAG_CHECK(eatToken());
         break;
 
