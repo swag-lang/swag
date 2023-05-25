@@ -54,6 +54,7 @@ struct ModuleGenDocJob : public Job
     void outputStyles();
     void outputTitle(OneRef& c);
 
+    void generateTocCateg(bool& first, AstNodeKind kind, const char* sectionName, const char* categName, Vector<OneRef*>& pendingNodes);
     void generateTocSection(AstNodeKind kind, const char* name);
     void generateToc();
     void generateContent();

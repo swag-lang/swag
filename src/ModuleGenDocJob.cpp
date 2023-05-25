@@ -514,38 +514,39 @@ void ModuleGenDocJob::collectScopes(Scope* root)
     }
 }
 
-void ModuleGenDocJob::generateTocSection(AstNodeKind kind, const char* name)
+void ModuleGenDocJob::generateTocCateg(bool& first, AstNodeKind kind, const char* sectionName, const char* categName, Vector<OneRef*>& pendingNodes)
 {
-    bool first = true;
-    Utf8 lastCateg;
-    for (auto& c : allNodes)
+    if (pendingNodes.empty())
+        return;
+
+    sort(pendingNodes.begin(), pendingNodes.end(), [kind](OneRef* a, OneRef* b)
+         {
+        if (kind == AstNodeKind::FuncDecl)
+            return strcmp(a->displayName.c_str(), b->displayName.c_str()) < 0;
+        else
+            return strcmp(a->nodes[0]->token.ctext(), b->nodes[0]->token.ctext()) < 0; });
+
+    if (first)
     {
-        if (c.nodes[0]->kind != kind)
-            continue;
+        helpContent += Fmt("<h2>%s</h2>\n", sectionName);
+        first = false;
+    }
 
-        if (first)
-        {
-            helpContent += Fmt("<h2>%s</h2>\n", name);
-            helpContent += "<ul class=\"tocbullet\">\n";
-            first = false;
-        }
+    helpContent += Fmt("<h3>%s</h3>\n", categName);
+    helpContent += "<ul class=\"tocbullet\">\n";
 
-        if (c.category != lastCateg && !c.category.empty())
-        {
-            helpContent += Fmt("<h3>%s</h3>\n", c.category.c_str());
-            lastCateg = c.category;
-        }
-
+    for (auto& t : pendingNodes)
+    {
         Vector<Utf8> tkn;
-        Utf8::tokenize(c.fullName, '.', tkn);
+        Utf8::tokenize(t->fullName, '.', tkn);
 
-        sort(c.nodes.begin(), c.nodes.end(), [](AstNode* a, AstNode* b)
+        sort(t->nodes.begin(), t->nodes.end(), [](AstNode* a, AstNode* b)
              { return strcmp(a->token.ctext(), b->token.ctext()) < 0; });
 
-        for (auto n : c.nodes)
+        for (auto n : t->nodes)
         {
             if (kind == AstNodeKind::FuncDecl)
-                helpContent += Fmt("<li><a href=\"#%s\">%s</a></li>\n", n->getScopedName().c_str(), c.displayName.c_str());
+                helpContent += Fmt("<li><a href=\"#%s\">%s</a></li>\n", n->getScopedName().c_str(), t->displayName.c_str());
             else
                 helpContent += Fmt("<li><a href=\"#%s\">%s</a></li>\n", n->getScopedName().c_str(), n->token.ctext());
             if (kind != AstNodeKind::ConstDecl)
@@ -553,8 +554,31 @@ void ModuleGenDocJob::generateTocSection(AstNodeKind kind, const char* name)
         }
     }
 
-    if (!first)
-        helpContent += "</ul>\n";
+    helpContent += "</ul>\n";
+    pendingNodes.clear();
+}
+
+void ModuleGenDocJob::generateTocSection(AstNodeKind kind, const char* sectionName)
+{
+    bool first = true;
+    Utf8 lastCateg;
+
+    Vector<OneRef*> pendingNodes;
+    for (auto& c : allNodes)
+    {
+        if (c.nodes[0]->kind != kind)
+            continue;
+
+        if (c.category != lastCateg)
+        {
+            generateTocCateg(first, kind, sectionName, lastCateg, pendingNodes);
+            lastCateg = c.category;
+        }
+
+        pendingNodes.push_back(&c);
+    }
+
+    generateTocCateg(first, kind, sectionName, lastCateg, pendingNodes);
 }
 
 void ModuleGenDocJob::generateToc()
