@@ -210,7 +210,9 @@ bool Parser::doNamespaceOnName(AstNode* parent, AstNode** result, bool forGlobal
         case TokenId::SymSemiColon:
             return error(token, Err(Syn0093));
         default:
-            return error(token, Fmt(Err(Syn0041), token.ctext()));
+            if (!privName)
+                return error(token, Fmt(Err(Syn0041), token.ctext()));
+            break;
         }
 
         // Be sure this is not the swag namespace, except for a runtime file
@@ -283,16 +285,25 @@ bool Parser::doNamespaceOnName(AstNode* parent, AstNode** result, bool forGlobal
     else
     {
         auto startLoc = token.startLocation;
-        SWAG_CHECK(eatToken(TokenId::SymLeftCurly, "to start the namespace body"));
 
         // Content of namespace is toplevel
-        Scoped scoped(this, newScope);
-        while (token.id != TokenId::EndOfFile && token.id != TokenId::SymRightCurly)
+        if (token.id == TokenId::SymLeftCurly)
         {
+            eatToken();
+
+            Scoped scoped(this, newScope);
+            while (token.id != TokenId::EndOfFile && token.id != TokenId::SymRightCurly)
+            {
+                SWAG_CHECK(doTopLevelInstruction(namespaceNode, &dummyResult));
+            }
+
+            SWAG_CHECK(eatCloseToken(TokenId::SymRightCurly, startLoc, "to end the namespace body"));
+        }
+        else
+        {
+            Scoped scoped(this, newScope);
             SWAG_CHECK(doTopLevelInstruction(namespaceNode, &dummyResult));
         }
-
-        SWAG_CHECK(eatCloseToken(TokenId::SymRightCurly, startLoc, "to end the namespace body"));
     }
 
     return true;
