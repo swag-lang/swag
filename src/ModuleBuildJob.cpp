@@ -773,8 +773,7 @@ JobResult ModuleBuildJob::execute()
             }
         }
 
-        if (module->buildCfg.backendKind != BuildCfgBackendKind::Executable &&
-            module->buildCfg.backendKind != BuildCfgBackendKind::Export)
+        if (module->buildCfg.backendKind != BuildCfgBackendKind::Executable)
         {
             module->logPass(ModuleBuildPass::GenerateDoc);
             auto outputJob          = Allocator::alloc<ModuleGenDocJob>();

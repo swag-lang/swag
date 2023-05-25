@@ -542,12 +542,15 @@ void ModuleGenDocJob::generateTocSection(AstNodeKind kind, const char* name)
         Vector<Utf8> tkn;
         Utf8::tokenize(c.fullName, '.', tkn);
 
+        sort(c.nodes.begin(), c.nodes.end(), [](AstNode* a, AstNode* b)
+             { return strcmp(a->token.ctext(), b->token.ctext()) < 0; });
+
         for (auto n : c.nodes)
         {
             if (kind == AstNodeKind::FuncDecl)
-                helpContent += Fmt("<li><a href=\"#%s\">%s</a></li>\n", c.fullName.c_str(), c.displayName.c_str());
+                helpContent += Fmt("<li><a href=\"#%s\">%s</a></li>\n", n->getScopedName().c_str(), c.displayName.c_str());
             else
-                helpContent += Fmt("<li><a href=\"#%s\">%s</a></li>\n", c.fullName.c_str(), n->token.ctext());
+                helpContent += Fmt("<li><a href=\"#%s\">%s</a></li>\n", n->getScopedName().c_str(), n->token.ctext());
             if (kind != AstNodeKind::ConstDecl)
                 break;
         }
@@ -573,21 +576,6 @@ void ModuleGenDocJob::generateToc()
         helpContent += "<h1>Swag Runtime</h1>\n";
     else
         helpContent += Fmt("<h1>Module %s</h1>\n", module->name.c_str());
-
-    for (auto& c : allNodes)
-    {
-        Vector<Utf8> tkn;
-        Utf8::tokenize(c.fullName, '.', tkn);
-
-        if (c.nodes[0]->kind == AstNodeKind::Namespace)
-            c.displayName = c.fullName;
-        else if (tkn.size() > 2)
-        {
-            c.displayName = tkn[tkn.size() - 2];
-            c.displayName += ".";
-            c.displayName += tkn[tkn.size() - 1];
-        }
-    }
 
     generateTocSection(AstNodeKind::Namespace, "Namespaces");
     generateTocSection(AstNodeKind::StructDecl, "Structs");
@@ -748,18 +736,18 @@ void ModuleGenDocJob::generateContent()
 
             for (auto n : c.nodes)
             {
-                auto varDecl = CastAst<AstVarDecl>(n, AstNodeKind::ConstDecl);
                 helpContent += "<tr>\n";
 
                 helpContent += "<td>\n";
+                auto varDecl = CastAst<AstVarDecl>(n, AstNodeKind::ConstDecl);
                 if (varDecl->typeInfo)
                     helpContent += outputType(varDecl->typeInfo);
                 else
                     helpContent += outputNode(varDecl->type);
                 helpContent += "</td>\n";
 
-                helpContent += "<td>\n";
-                helpContent += varDecl->token.text;
+                helpContent += Fmt("<td id=\"%s\">\n", n->getScopedName().c_str());
+                helpContent += n->token.ctext();
                 helpContent += "</td>\n";
 
                 helpContent += "<td>\n";
@@ -995,9 +983,23 @@ JobResult ModuleGenDocJob::execute()
             oneRef.category.replace("\\", "/");
         }
 
-        oneRef.fullName    = c.first;
-        oneRef.displayName = c.first;
-        oneRef.nodes       = std::move(c.second);
+        oneRef.fullName = c.first;
+        oneRef.nodes    = std::move(c.second);
+
+        Vector<Utf8> tkn;
+        Utf8::tokenize(oneRef.fullName, '.', tkn);
+
+        if (oneRef.nodes[0]->kind == AstNodeKind::Namespace)
+            oneRef.displayName = oneRef.fullName;
+        else if (tkn.size() <= 2)
+            oneRef.displayName = oneRef.fullName;
+        else
+        {
+            oneRef.displayName = tkn[tkn.size() - 2];
+            oneRef.displayName += ".";
+            oneRef.displayName += tkn[tkn.size() - 1];
+        }
+
         allNodes.push_back(oneRef);
     }
 
