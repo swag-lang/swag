@@ -296,7 +296,7 @@ struct NOTIFYICONDATAW
     hBalloonIcon:   HICON
 }
 
-namespace Shell32Priv
+#scopefile namespace Shell32Priv
 {
     #[Foreign("shell32")]
     {

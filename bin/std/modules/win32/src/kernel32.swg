@@ -399,7 +399,7 @@ struct PROCESS_INFORMATION
     func FileTimeToLocalFileTime(lpFileTime: const *FILETIME, lpLocalFileTime: *FILETIME)->BOOL;
 }
 
-namespace Win32Priv
+#scopefile namespace Win32Priv
 {
     #[Foreign("kernel32")]
     {
