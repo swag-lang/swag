@@ -519,12 +519,59 @@ void ModuleGenDocJob::generateTocCateg(bool& first, AstNodeKind kind, const char
     if (pendingNodes.empty())
         return;
 
-    sort(pendingNodes.begin(), pendingNodes.end(), [kind](OneRef* a, OneRef* b)
-         {
-        if (kind == AstNodeKind::FuncDecl)
-            return strcmp(a->displayName.c_str(), b->displayName.c_str()) < 0;
-        else
-            return strcmp(a->nodes[0]->token.ctext(), b->nodes[0]->token.ctext()) < 0; });
+    for (auto& n : pendingNodes)
+    {
+        Vector<Utf8> tkn;
+        Utf8::tokenize(n->fullName, '.', tkn);
+
+        int lastIdx = (int) tkn.size() - 1;
+        if (kind == AstNodeKind::FuncDecl && tkn.size() > 1)
+        {
+            lastIdx--;
+            n->tocName = tkn[lastIdx];
+            n->tocName += ".";
+        }
+
+        n->tocName += tkn[tkn.size() - 1];
+    }
+
+    bool recom = true;
+    while (recom)
+    {
+        recom = false;
+
+        SetUtf8 here;
+        SetUtf8 conflict;
+
+        for (auto& n : pendingNodes)
+        {
+            if (here.contains(n->tocName))
+                conflict.insert(n->tocName);
+            else
+                here.insert(n->tocName);
+        }
+
+        for (auto& n : pendingNodes)
+        {
+            if (conflict.contains(n->tocName))
+            {
+                Vector<Utf8> tkn;
+                Utf8::tokenize(n->fullName, '.', tkn);
+                Vector<Utf8> tkn1;
+                Utf8::tokenize(n->tocName, '.', tkn1);
+
+                if (tkn.size() != tkn1.size())
+                {
+                    n->tocName.insert(0, ".");
+                    n->tocName.insert(0, tkn[tkn.size() - tkn1.size() - 1]);
+                    recom = true;
+                }
+            }
+        }
+    }
+
+    sort(pendingNodes.begin(), pendingNodes.end(), [](OneRef* a, OneRef* b)
+         { return strcmp(a->tocName.c_str(), b->tocName.c_str()) < 0; });
 
     if (first)
     {
@@ -540,17 +587,20 @@ void ModuleGenDocJob::generateTocCateg(bool& first, AstNodeKind kind, const char
         Vector<Utf8> tkn;
         Utf8::tokenize(t->fullName, '.', tkn);
 
-        sort(t->nodes.begin(), t->nodes.end(), [](AstNode* a, AstNode* b)
-             { return strcmp(a->token.ctext(), b->token.ctext()) < 0; });
-
-        for (auto n : t->nodes)
+        if (kind == AstNodeKind::ConstDecl)
         {
-            if (kind == AstNodeKind::FuncDecl)
-                helpContent += Fmt("<li><a href=\"#%s\">%s</a></li>\n", n->getScopedName().c_str(), t->displayName.c_str());
-            else
+            sort(t->nodes.begin(), t->nodes.end(), [](AstNode* a, AstNode* b)
+                 { return strcmp(a->token.ctext(), b->token.ctext()) < 0; });
+            for (auto n : t->nodes)
+            {
                 helpContent += Fmt("<li><a href=\"#%s\">%s</a></li>\n", n->getScopedName().c_str(), n->token.ctext());
-            if (kind != AstNodeKind::ConstDecl)
-                break;
+                if (kind != AstNodeKind::ConstDecl)
+                    break;
+            }
+        }
+        else
+        {
+            helpContent += Fmt("<li><a href=\"#%s\">%s</a></li>\n", t->fullName.c_str(), t->tocName.c_str());
         }
     }
 

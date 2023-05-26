@@ -30,6 +30,7 @@ struct ModuleGenDocJob : public Job
     struct OneRef
     {
         Utf8                   category;
+        Utf8                   tocName;
         Utf8                   fullName;
         Utf8                   displayName;
         VectorNative<AstNode*> nodes;
