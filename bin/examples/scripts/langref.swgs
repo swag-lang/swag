@@ -306,10 +306,10 @@ func generate(in, out: string)
     files := assume Directory.enumerateFiles(in, ".swg", recurse: true)
     files.sort(func(a, b) => a.fullname <=> b.fullname)
 
-    g_Buf += "<html lang=\"en\">\n"
-    g_Buf += "<head>\n"
-    g_Buf += "<meta charset=\"UTF-8\">\n";
-    g_Buf += "</head>\n"
+    //g_Buf += "<html lang=\"en\">\n"
+    //g_Buf += "<head>\n"
+    //g_Buf += "<meta charset=\"UTF-8\">\n";
+    //g_Buf += "</head>\n"
     g_Buf += "<body>\n"
 
     // Create styles
@@ -339,7 +339,7 @@ func generate(in, out: string)
             flex-wrap:      nowrap;
             flex-direction: row;
             height:         100%;
-            font-family:    arial;
+            font-family:    Segoe UI;
             line-height:    1.3em;
         }
 
@@ -354,14 +354,25 @@ func generate(in, out: string)
             display:     block;
             overflow-y:  scroll;
             width:       100%;
-            font-family: arial;
-            line-height: 1.3em;
             height:      100%;
         }
 
         .page {
             width:       1000;
             margin:      0 auto;
+        }
+
+        .tocbullet {
+            list-style-type:    none;
+            margin-left:        -20px;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
         }
 
         </style>
@@ -379,7 +390,7 @@ func generate(in, out: string)
     g_Buf += "<h1>Swag language reference</h1>\n"
 
     // Table of content start
-    g_Toc += "<h1>Table of content</h1>\n"
+    g_Toc += "<h1>Content</h1>\n"
     g_Toc += "<ul>\n"
 
     visit v: files
@@ -397,7 +408,7 @@ func generate(in, out: string)
         if g_SubTitle
             title = title[1..]
         if !wasSubTitle and g_SubTitle
-            g_Toc += "<ul>\n"
+            g_Toc += "<ul class=\"tocbullet\">\n"
         else if wasSubTitle and !g_SubTitle
             g_Toc += "</ul>\n"
 
@@ -413,7 +424,7 @@ func generate(in, out: string)
 
         // Add title to table of content
         g_Toc += Format.toString("<li><a href=\"#%\">%</a></li>\n", fileName, title);
-        g_Toc += "<ul>\n"
+        g_Toc += "<ul class=\"tocbullet\">\n"
 
         processFile(v.fullname)
 
@@ -429,8 +440,9 @@ func generate(in, out: string)
         </div>
         </div>
         </body>
-        </html>
         """
+
+    //g_Buf += "</html>\n"
 
     g_Buf.insert(seekToc, g_Toc)
 
