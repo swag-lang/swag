@@ -334,8 +334,13 @@
 <li><a href="#Pixel.Tga.TYPE_RLE_MONO">TYPE_RLE_MONO</a></li>
 <li><a href="#Pixel.Tga.TYPE_RLE_RGB">TYPE_RLE_RGB</a></li>
 </ul>
+<h3>painter</h3>
+<ul class="tocbullet">
+<li><a href="#Pixel.MaxAAEdge">MaxAAEdge</a></li>
+</ul>
 <h3>poly</h3>
 <ul class="tocbullet">
+<li><a href="#Pixel.ClipperScaleCoords">ClipperScaleCoords</a></li>
 <li><a href="#Pixel.Clipper.DefaultArcTolerance">DefaultArcTolerance</a></li>
 <li><a href="#Pixel.Clipper.HiRange">HiRange</a></li>
 <li><a href="#Pixel.Clipper.HorizontalVal">HorizontalVal</a></li>
@@ -347,13 +352,11 @@
 <ul class="tocbullet">
 <li><a href="#Pixel.BasePixelShader">BasePixelShader</a></li>
 <li><a href="#Pixel.BaseVertexShader">BaseVertexShader</a></li>
-<li><a href="#Pixel.ClipperScaleCoords">ClipperScaleCoords</a></li>
 <li><a href="#Pixel.InvalidRenderTargetHandle">InvalidRenderTargetHandle</a></li>
 <li><a href="#Pixel.InvalidRenderTargetSurfaceHandle">InvalidRenderTargetSurfaceHandle</a></li>
 <li><a href="#Pixel.InvalidShaderHandle">InvalidShaderHandle</a></li>
 <li><a href="#Pixel.InvalidShaderParamHandle">InvalidShaderParamHandle</a></li>
 <li><a href="#Pixel.InvalidTextureHandle">InvalidTextureHandle</a></li>
-<li><a href="#Pixel.MaxAAEdge">MaxAAEdge</a></li>
 <li><a href="#Pixel.PixelShaderAA">PixelShaderAA</a></li>
 <li><a href="#Pixel.PixelShaderBlur">PixelShaderBlur</a></li>
 <li><a href="#Pixel.PixelShaderSimple">PixelShaderSimple</a></li>
@@ -1525,6 +1528,25 @@ Zero</td>
 </p>
 <p>
 Get the Argb value that matches <code class = "incode">name</code>.</p>
+<h3 class="content" id="Pixel.BasePixelShader"><span class="titletype"></span> <span class="titlelight">Pixel.</span><span class="titlestrong">Constants</span></h3>
+<table>
+<tr>
+<td>
+const [94] u8</td>
+<td id="Pixel.BasePixelShader">
+BasePixelShader</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+const [1633] u8</td>
+<td id="Pixel.BaseVertexShader">
+BaseVertexShader</td>
+<td>
+</td>
+</tr>
+</table>
 <h3 class="content" id="Pixel.BlendingMode"><span class="titletype">enum</span> <span class="titlelight">Pixel.</span><span class="titlestrong">BlendingMode</span></h3>
 <table>
 <tr>
@@ -1604,7 +1626,7 @@ Max</td>
 </td>
 </tr>
 </table>
-<h3 class="content" id="Pixel.Bmp.Constants"><span class="titletype"></span> <span class="titlelight">Bmp.</span><span class="titlestrong">Constants</span></h3>
+<h3 class="content" id="Pixel.Bmp.BI_BITFIELDS"><span class="titletype"></span> <span class="titlelight">Bmp.</span><span class="titlestrong">Constants</span></h3>
 <table>
 <tr>
 <td>
@@ -1635,38 +1657,6 @@ BI_RLE4</td>
 s32</td>
 <td id="Pixel.Bmp.BI_RLE8">
 BI_RLE8</td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-s32</td>
-<td id="Pixel.Bmp.FILL_RLE_COMMAND">
-FILL_RLE_COMMAND</td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-s32</td>
-<td id="Pixel.Bmp.FILL_RLE_DELTA">
-FILL_RLE_DELTA</td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-s32</td>
-<td id="Pixel.Bmp.FILL_RLE_ENDOFBITMAP">
-FILL_RLE_ENDOFBITMAP</td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-s32</td>
-<td id="Pixel.Bmp.FILL_RLE_ENDOFLINE">
-FILL_RLE_ENDOFLINE</td>
 <td>
 </td>
 </tr>
@@ -1736,6 +1726,41 @@ u16</td>
 <code style="white-space: break-spaces">func encode(using self, result: <a href="std.core.html#Core.ConcatBuffer">*ConcatBuffer</a>, image: <a href="std.pixel.html#Pixel.Image">Image</a>, options: any)
 </code>
 </p>
+<h3 class="content" id="Pixel.Bmp.FILL_RLE_COMMAND"><span class="titletype"></span> <span class="titlelight">Bmp.</span><span class="titlestrong">Constants</span></h3>
+<table>
+<tr>
+<td>
+s32</td>
+<td id="Pixel.Bmp.FILL_RLE_COMMAND">
+FILL_RLE_COMMAND</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+s32</td>
+<td id="Pixel.Bmp.FILL_RLE_DELTA">
+FILL_RLE_DELTA</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+s32</td>
+<td id="Pixel.Bmp.FILL_RLE_ENDOFBITMAP">
+FILL_RLE_ENDOFBITMAP</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+s32</td>
+<td id="Pixel.Bmp.FILL_RLE_ENDOFLINE">
+FILL_RLE_ENDOFLINE</td>
+<td>
+</td>
+</tr>
+</table>
 <h3 class="content" id="Pixel.Bmp.FileHeader"><span class="titletype">struct</span> <span class="titlelight">Bmp.</span><span class="titlestrong">FileHeader</span></h3>
 <table>
 <tr>
@@ -2168,53 +2193,13 @@ Xor</td>
 </td>
 </tr>
 </table>
-<h3 class="content" id="Pixel.Clipper.Constants"><span class="titletype"></span> <span class="titlelight">Clipper.</span><span class="titlestrong">Constants</span></h3>
+<h3 class="content" id="Pixel.Clipper.DefaultArcTolerance"><span class="titletype"></span> <span class="titlelight">Clipper.</span><span class="titlestrong">Constants</span></h3>
 <table>
 <tr>
 <td>
 f64</td>
 <td id="Pixel.Clipper.DefaultArcTolerance">
 DefaultArcTolerance</td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-s64</td>
-<td id="Pixel.Clipper.HiRange">
-HiRange</td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-f32</td>
-<td id="Pixel.Clipper.HorizontalVal">
-HorizontalVal</td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-u32</td>
-<td id="Pixel.Clipper.LoRange">
-LoRange</td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-s32</td>
-<td id="Pixel.Clipper.Skip">
-Skip</td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-s32</td>
-<td id="Pixel.Clipper.Unassigned">
-Unassigned</td>
 <td>
 </td>
 </tr>
@@ -2407,6 +2392,25 @@ Right</td>
 </td>
 </tr>
 </table>
+<h3 class="content" id="Pixel.Clipper.HiRange"><span class="titletype"></span> <span class="titlelight">Clipper.</span><span class="titlestrong">Constants</span></h3>
+<table>
+<tr>
+<td>
+s64</td>
+<td id="Pixel.Clipper.HiRange">
+HiRange</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+f32</td>
+<td id="Pixel.Clipper.HorizontalVal">
+HorizontalVal</td>
+<td>
+</td>
+</tr>
+</table>
 <h3 class="content" id="Pixel.Clipper.InitOptions"><span class="titletype">enum</span> <span class="titlelight">Clipper.</span><span class="titlestrong">InitOptions</span></h3>
 <table>
 <tr>
@@ -2567,6 +2571,17 @@ Round</td>
 <tr>
 <td>
 Miter</td>
+<td>
+</td>
+</tr>
+</table>
+<h3 class="content" id="Pixel.Clipper.LoRange"><span class="titletype"></span> <span class="titlelight">Clipper.</span><span class="titlestrong">Constants</span></h3>
+<table>
+<tr>
+<td>
+u32</td>
+<td id="Pixel.Clipper.LoRange">
+LoRange</td>
 <td>
 </td>
 </tr>
@@ -2900,6 +2915,17 @@ Clip</td>
 </td>
 </tr>
 </table>
+<h3 class="content" id="Pixel.Clipper.Skip"><span class="titletype"></span> <span class="titlelight">Clipper.</span><span class="titlestrong">Constants</span></h3>
+<table>
+<tr>
+<td>
+s32</td>
+<td id="Pixel.Clipper.Skip">
+Skip</td>
+<td>
+</td>
+</tr>
+</table>
 <h3 class="content" id="Pixel.Clipper.Transform"><span class="titletype">struct</span> <span class="titlelight">Clipper.</span><span class="titlestrong">Transform</span></h3>
 <table>
 <tr>
@@ -2946,7 +2972,7 @@ bool</td>
 <td>
 edgeList</td>
 <td>
-<a href="std.core.html#Core.Array">Array'(__clipper_tuple_226)</a></td>
+<a href="std.core.html#Core.Array">Array'(__clipper_tuple_223)</a></td>
 <td>
 </td>
 </tr>
@@ -3051,6 +3077,25 @@ activeEdges</td>
 sortedEdges</td>
 <td>
 <a href="std.pixel.html#Pixel.Clipper.Edge">*Edge</a></td>
+<td>
+</td>
+</tr>
+</table>
+<h3 class="content" id="Pixel.Clipper.Unassigned"><span class="titletype"></span> <span class="titlelight">Clipper.</span><span class="titlestrong">Constants</span></h3>
+<table>
+<tr>
+<td>
+s32</td>
+<td id="Pixel.Clipper.Unassigned">
+Unassigned</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+f64</td>
+<td id="Pixel.ClipperScaleCoords">
+ClipperScaleCoords</td>
 <td>
 </td>
 </tr>
@@ -3714,121 +3759,6 @@ SetShader</td>
 <tr>
 <td>
 SetShaderParam</td>
-<td>
-</td>
-</tr>
-</table>
-<h3 class="content" id="Pixel.Constants"><span class="titletype"></span> <span class="titlelight">Pixel.</span><span class="titlestrong">Constants</span></h3>
-<table>
-<tr>
-<td>
-const [94] u8</td>
-<td id="Pixel.BasePixelShader">
-BasePixelShader</td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-const [1633] u8</td>
-<td id="Pixel.BaseVertexShader">
-BaseVertexShader</td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-f64</td>
-<td id="Pixel.ClipperScaleCoords">
-ClipperScaleCoords</td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-RenderTargetHandle</td>
-<td id="Pixel.InvalidRenderTargetHandle">
-InvalidRenderTargetHandle</td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-RenderTargetSurfaceHandle</td>
-<td id="Pixel.InvalidRenderTargetSurfaceHandle">
-InvalidRenderTargetSurfaceHandle</td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-ShaderHandle</td>
-<td id="Pixel.InvalidShaderHandle">
-InvalidShaderHandle</td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-ShaderParamHandle</td>
-<td id="Pixel.InvalidShaderParamHandle">
-InvalidShaderParamHandle</td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-TextureHandle</td>
-<td id="Pixel.InvalidTextureHandle">
-InvalidTextureHandle</td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-s32</td>
-<td id="Pixel.MaxAAEdge">
-MaxAAEdge</td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-const [2810] u8</td>
-<td id="Pixel.PixelShaderAA">
-PixelShaderAA</td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-const [956] u8</td>
-<td id="Pixel.PixelShaderBlur">
-PixelShaderBlur</td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-const [188] u8</td>
-<td id="Pixel.PixelShaderSimple">
-PixelShaderSimple</td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-const [1604] u8</td>
-<td id="Pixel.VertexShaderAA">
-VertexShaderAA</td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-const [223] u8</td>
-<td id="Pixel.VertexShaderSimple">
-VertexShaderSimple</td>
 <td>
 </td>
 </tr>
@@ -4980,7 +4910,7 @@ f32</td>
 </tr>
 </table>
 <h3 class="content" id="Pixel.Hatch"><span class="titletype">namespace</span> <span class="titlelight">Pixel.</span><span class="titlestrong">Hatch</span></h3>
-<h3 class="content" id="Pixel.Hatch.Constants"><span class="titletype"></span> <span class="titlelight">Hatch.</span><span class="titlestrong">Constants</span></h3>
+<h3 class="content" id="Pixel.Hatch.CheckBoard"><span class="titletype"></span> <span class="titlelight">Hatch.</span><span class="titlestrong">Constants</span></h3>
 <table>
 <tr>
 <td>
@@ -6911,6 +6841,49 @@ Linear</td>
 </td>
 </tr>
 </table>
+<h3 class="content" id="Pixel.InvalidRenderTargetHandle"><span class="titletype"></span> <span class="titlelight">Pixel.</span><span class="titlestrong">Constants</span></h3>
+<table>
+<tr>
+<td>
+RenderTargetHandle</td>
+<td id="Pixel.InvalidRenderTargetHandle">
+InvalidRenderTargetHandle</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+RenderTargetSurfaceHandle</td>
+<td id="Pixel.InvalidRenderTargetSurfaceHandle">
+InvalidRenderTargetSurfaceHandle</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+ShaderHandle</td>
+<td id="Pixel.InvalidShaderHandle">
+InvalidShaderHandle</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+ShaderParamHandle</td>
+<td id="Pixel.InvalidShaderParamHandle">
+InvalidShaderParamHandle</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+TextureHandle</td>
+<td id="Pixel.InvalidTextureHandle">
+InvalidTextureHandle</td>
+<td>
+</td>
+</tr>
+</table>
 <h3 class="content" id="Pixel.JoinStyle"><span class="titletype">enum</span> <span class="titlelight">Pixel.</span><span class="titlestrong">JoinStyle</span></h3>
 <table>
 <tr>
@@ -8301,6 +8274,17 @@ Call fast offset on all paths They must before be flattened.</p>
 </p>
 <p>
 Call quality offset on all paths They must before be flattened.</p>
+<h3 class="content" id="Pixel.MaxAAEdge"><span class="titletype"></span> <span class="titlelight">Pixel.</span><span class="titlestrong">Constants</span></h3>
+<table>
+<tr>
+<td>
+s32</td>
+<td id="Pixel.MaxAAEdge">
+MaxAAEdge</td>
+<td>
+</td>
+</tr>
+</table>
 <h3 class="content" id="Pixel.NativeRenderOgl"><span class="titletype">struct</span> <span class="titlelight">Pixel.</span><span class="titlestrong">NativeRenderOgl</span></h3>
 <h3>Functions</h3>
 <table>
@@ -8537,7 +8521,7 @@ sharedLinePathList</td>
 <td>
 sharedRoundTmp</td>
 <td>
-<a href="std.core.html#Core.Array">Array'(__linepath_tuple_262)</a></td>
+<a href="std.core.html#Core.Array">Array'(__linepath_tuple_243)</a></td>
 <td>
 </td>
 </tr>
@@ -8666,14 +8650,14 @@ Recompute the layout for a given rectangle.</p>
 <td>
 <a href="#Pixel.Painter.drawArc">drawArc</a></td>
 <td>
+<p>
+Draw an arc between two angles.</p>
 </td>
 </tr>
 <tr>
 <td>
 <a href="#Pixel.Painter.drawArc">drawArc</a></td>
 <td>
-<p>
-Draw an arc between two angles.</p>
 </td>
 </tr>
 <tr>
@@ -8694,14 +8678,14 @@ Draw an empty circle.</p>
 <td>
 <a href="#Pixel.Painter.drawEllipse">drawEllipse</a></td>
 <td>
+<p>
+Draw an empty ellipse.</p>
 </td>
 </tr>
 <tr>
 <td>
 <a href="#Pixel.Painter.drawEllipse">drawEllipse</a></td>
 <td>
-<p>
-Draw an empty ellipse.</p>
 </td>
 </tr>
 <tr>
@@ -8745,7 +8729,7 @@ Draw the line path.</p>
 <a href="#Pixel.Painter.drawPath">drawPath</a></td>
 <td>
 <p>
-Draw the line path with the given <code class = "incode">pen</code>.</p>
+Draw the line path.</p>
 </td>
 </tr>
 <tr>
@@ -8753,19 +8737,7 @@ Draw the line path with the given <code class = "incode">pen</code>.</p>
 <a href="#Pixel.Painter.drawPath">drawPath</a></td>
 <td>
 <p>
-Draw the line path.</p>
-</td>
-</tr>
-<tr>
-<td>
-<a href="#Pixel.Painter.drawRect">drawRect</a></td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-<a href="#Pixel.Painter.drawRect">drawRect</a></td>
-<td>
+Draw the line path with the given <code class = "incode">pen</code>.</p>
 </td>
 </tr>
 <tr>
@@ -8774,6 +8746,18 @@ Draw the line path.</p>
 <td>
 <p>
 Draw an empty rectangle.</p>
+</td>
+</tr>
+<tr>
+<td>
+<a href="#Pixel.Painter.drawRect">drawRect</a></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<a href="#Pixel.Painter.drawRect">drawRect</a></td>
+<td>
 </td>
 </tr>
 <tr>
@@ -8857,7 +8841,7 @@ Draw a simple string (centered).</p>
 <a href="#Pixel.Painter.drawTexture">drawTexture</a></td>
 <td>
 <p>
-Draw a texture image.</p>
+Draw a portion of an image.</p>
 </td>
 </tr>
 <tr>
@@ -8877,7 +8861,7 @@ Draw a texture image.</p>
 <a href="#Pixel.Painter.drawTexture">drawTexture</a></td>
 <td>
 <p>
-Draw a portion of an image.</p>
+Draw a texture image.</p>
 </td>
 </tr>
 <tr>
@@ -8900,14 +8884,14 @@ Stop painting in the clipping buffer. Back to normal.</p>
 <td>
 <a href="#Pixel.Painter.fillCircle">fillCircle</a></td>
 <td>
+<p>
+Draw a solid circle.</p>
 </td>
 </tr>
 <tr>
 <td>
 <a href="#Pixel.Painter.fillCircle">fillCircle</a></td>
 <td>
-<p>
-Draw a solid circle.</p>
 </td>
 </tr>
 <tr>
@@ -8922,14 +8906,6 @@ Draw a solid circle.</p>
 <td>
 <p>
 Draw a solid ellipse.</p>
-</td>
-</tr>
-<tr>
-<td>
-<a href="#Pixel.Painter.fillPath">fillPath</a></td>
-<td>
-<p>
-Fill the line path.</p>
 </td>
 </tr>
 <tr>
@@ -8953,15 +8929,15 @@ Fill the line path.</p>
 <a href="#Pixel.Painter.fillPath">fillPath</a></td>
 <td>
 <p>
-Fill the list of paths clockwise = fill, anti-clockwise = hole.</p>
+Fill the line path.</p>
 </td>
 </tr>
 <tr>
 <td>
-<a href="#Pixel.Painter.fillPolygon">fillPolygon</a></td>
+<a href="#Pixel.Painter.fillPath">fillPath</a></td>
 <td>
 <p>
-Fill the polygon with the given color.</p>
+Fill the list of paths clockwise = fill, anti-clockwise = hole.</p>
 </td>
 </tr>
 <tr>
@@ -8974,20 +8950,10 @@ Fill the polygon with the given <code class = "incode">brush</code>.</p>
 </tr>
 <tr>
 <td>
-<a href="#Pixel.Painter.fillRect">fillRect</a></td>
+<a href="#Pixel.Painter.fillPolygon">fillPolygon</a></td>
 <td>
-</td>
-</tr>
-<tr>
-<td>
-<a href="#Pixel.Painter.fillRect">fillRect</a></td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-<a href="#Pixel.Painter.fillRect">fillRect</a></td>
-<td>
+<p>
+Fill the polygon with the given color.</p>
 </td>
 </tr>
 <tr>
@@ -9000,19 +8966,19 @@ Draw a filled rectangle.</p>
 </tr>
 <tr>
 <td>
-<a href="#Pixel.Painter.fillRoundRect">fillRoundRect</a></td>
+<a href="#Pixel.Painter.fillRect">fillRect</a></td>
 <td>
 </td>
 </tr>
 <tr>
 <td>
-<a href="#Pixel.Painter.fillRoundRect">fillRoundRect</a></td>
+<a href="#Pixel.Painter.fillRect">fillRect</a></td>
 <td>
 </td>
 </tr>
 <tr>
 <td>
-<a href="#Pixel.Painter.fillRoundRect">fillRoundRect</a></td>
+<a href="#Pixel.Painter.fillRect">fillRect</a></td>
 <td>
 </td>
 </tr>
@@ -9022,6 +8988,24 @@ Draw a filled rectangle.</p>
 <td>
 <p>
 Draw a filled round rectangle.</p>
+</td>
+</tr>
+<tr>
+<td>
+<a href="#Pixel.Painter.fillRoundRect">fillRoundRect</a></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<a href="#Pixel.Painter.fillRoundRect">fillRoundRect</a></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<a href="#Pixel.Painter.fillRoundRect">fillRoundRect</a></td>
+<td>
 </td>
 </tr>
 <tr>
@@ -10233,6 +10217,33 @@ Returns the number of image channels.</p>
 </p>
 <p>
 Returns true if the given pixel format has an alpha channel.</p>
+<h3 class="content" id="Pixel.PixelShaderAA"><span class="titletype"></span> <span class="titlelight">Pixel.</span><span class="titlestrong">Constants</span></h3>
+<table>
+<tr>
+<td>
+const [2810] u8</td>
+<td id="Pixel.PixelShaderAA">
+PixelShaderAA</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+const [956] u8</td>
+<td id="Pixel.PixelShaderBlur">
+PixelShaderBlur</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+const [188] u8</td>
+<td id="Pixel.PixelShaderSimple">
+PixelShaderSimple</td>
+<td>
+</td>
+</tr>
+</table>
 <h3 class="content" id="Pixel.Png"><span class="titletype">namespace</span> <span class="titlelight">Pixel.</span><span class="titlestrong">Png</span></h3>
 <h3>Structs</h3>
 <table>
@@ -10397,7 +10408,7 @@ stream</td>
 <td>
 stored</td>
 <td>
-<a href="std.pixel.html#Pixel.Png.__privns_192.ChunkBitfield">ChunkBitfield</a></td>
+<a href="std.pixel.html#Pixel.Png.__privns_191.ChunkBitfield">ChunkBitfield</a></td>
 <td>
 </td>
 </tr>
@@ -10405,7 +10416,7 @@ stored</td>
 <td>
 ihdr</td>
 <td>
-<a href="std.pixel.html#Pixel.Png.__privns_192.Ihdr">Ihdr</a></td>
+<a href="std.pixel.html#Pixel.Png.__privns_191.Ihdr">Ihdr</a></td>
 <td>
 </td>
 </tr>
@@ -10413,7 +10424,7 @@ ihdr</td>
 <td>
 currentChunk</td>
 <td>
-<a href="std.pixel.html#Pixel.Png.__privns_192.Chunk">Chunk</a></td>
+<a href="std.pixel.html#Pixel.Png.__privns_191.Chunk">Chunk</a></td>
 <td>
 </td>
 </tr>
@@ -10445,7 +10456,7 @@ crc</td>
 <td>
 subimage</td>
 <td>
-<a href="std.pixel.html#Pixel.Png.__privns_192.SubImage">[7] SubImage</a></td>
+<a href="std.pixel.html#Pixel.Png.__privns_191.SubImage">[7] SubImage</a></td>
 <td>
 </td>
 </tr>
@@ -10533,7 +10544,7 @@ prevScanline</td>
 <td>
 encodeFlags</td>
 <td>
-<a href="std.pixel.html#Pixel.Png.__privns_192.EncodeFlags">EncodeFlags</a></td>
+<a href="std.pixel.html#Pixel.Png.__privns_191.EncodeFlags">EncodeFlags</a></td>
 <td>
 </td>
 </tr>
@@ -10541,7 +10552,7 @@ encodeFlags</td>
 <td>
 rowInfo</td>
 <td>
-<a href="std.pixel.html#Pixel.Png.__privns_192.RowInfo">RowInfo</a></td>
+<a href="std.pixel.html#Pixel.Png.__privns_191.RowInfo">RowInfo</a></td>
 <td>
 </td>
 </tr>
@@ -12761,57 +12772,6 @@ bool</td>
 </td>
 </tr>
 </table>
-<h3 class="content" id="Pixel.Tga.Constants"><span class="titletype"></span> <span class="titlelight">Tga.</span><span class="titlestrong">Constants</span></h3>
-<table>
-<tr>
-<td>
-s32</td>
-<td id="Pixel.Tga.TYPE_MAP">
-TYPE_MAP</td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-s32</td>
-<td id="Pixel.Tga.TYPE_MONO">
-TYPE_MONO</td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-s32</td>
-<td id="Pixel.Tga.TYPE_RGB">
-TYPE_RGB</td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-s32</td>
-<td id="Pixel.Tga.TYPE_RLE_MAP">
-TYPE_RLE_MAP</td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-s32</td>
-<td id="Pixel.Tga.TYPE_RLE_MONO">
-TYPE_RLE_MONO</td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-s32</td>
-<td id="Pixel.Tga.TYPE_RLE_RGB">
-TYPE_RLE_RGB</td>
-<td>
-</td>
-</tr>
-</table>
 <h3 class="content" id="Pixel.Tga.Decoder"><span class="titletype">struct</span> <span class="titlelight">Tga.</span><span class="titlestrong">Decoder</span></h3>
 <h3 class="content" id="Pixel.Tga.Decoder.IImageDecoder.canDecode"><span class="titletype">func</span> <span class="titlelight">IImageDecoder.</span><span class="titlestrong">canDecode</span></h3>
 <p class="code">
@@ -12945,6 +12905,57 @@ u8</td>
 descriptorByte</td>
 <td>
 u8</td>
+<td>
+</td>
+</tr>
+</table>
+<h3 class="content" id="Pixel.Tga.TYPE_MAP"><span class="titletype"></span> <span class="titlelight">Tga.</span><span class="titlestrong">Constants</span></h3>
+<table>
+<tr>
+<td>
+s32</td>
+<td id="Pixel.Tga.TYPE_MAP">
+TYPE_MAP</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+s32</td>
+<td id="Pixel.Tga.TYPE_MONO">
+TYPE_MONO</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+s32</td>
+<td id="Pixel.Tga.TYPE_RGB">
+TYPE_RGB</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+s32</td>
+<td id="Pixel.Tga.TYPE_RLE_MAP">
+TYPE_RLE_MAP</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+s32</td>
+<td id="Pixel.Tga.TYPE_RLE_MONO">
+TYPE_RLE_MONO</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+s32</td>
+<td id="Pixel.Tga.TYPE_RLE_RGB">
+TYPE_RLE_RGB</td>
 <td>
 </td>
 </tr>
@@ -13234,6 +13245,36 @@ aa</td>
 aanum</td>
 <td>
 f32</td>
+<td>
+</td>
+</tr>
+</table>
+<h3 class="content" id="Pixel.VertexShaderAA"><span class="titletype"></span> <span class="titlelight">Pixel.</span><span class="titlestrong">Constants</span></h3>
+<table>
+<tr>
+<td>
+const [1604] u8</td>
+<td id="Pixel.VertexShaderAA">
+VertexShaderAA</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+const [223] u8</td>
+<td id="Pixel.VertexShaderSimple">
+VertexShaderSimple</td>
+<td>
+</td>
+</tr>
+</table>
+<h3 class="content" id="Pixel.VertexShaderSimple"><span class="titletype"></span> <span class="titlelight">Pixel.</span><span class="titlestrong">Constants</span></h3>
+<table>
+<tr>
+<td>
+const [223] u8</td>
+<td id="Pixel.VertexShaderSimple">
+VertexShaderSimple</td>
 <td>
 </td>
 </tr>

@@ -370,6 +370,12 @@
 <li><a href="#Core.Time.DayOfWeek">DayOfWeek</a></li>
 </ul>
 <h2>Constants</h2>
+<h3></h3>
+<ul class="tocbullet">
+<li><a href="#Core.ASSERT">ASSERT</a></li>
+<li><a href="#Core.BIG_ENDIAN">BIG_ENDIAN</a></li>
+<li><a href="#Core.WINDOWS">WINDOWS</a></li>
+</ul>
 <h3>io</h3>
 <ul class="tocbullet">
 <li><a href="#Core.Path.AltDirectorySeparatorChar">AltDirectorySeparatorChar</a></li>
@@ -384,14 +390,14 @@
 <ul class="tocbullet">
 <li><a href="#Core.Noise.Gradients2D">Gradients2D</a></li>
 <li><a href="#Core.Noise.Gradients3D">Gradients3D</a></li>
-<li><a href="#Core.Noise.PrimeX">PrimeX</a></li>
-<li><a href="#Core.Noise.PrimeY">PrimeY</a></li>
-<li><a href="#Core.Noise.PrimeZ">PrimeZ</a></li>
 <li><a href="#Core.Random.LM">LM</a></li>
 <li><a href="#Core.Random.MATRIX_A">MATRIX_A</a></li>
 <li><a href="#Core.Random.MID">MID</a></li>
 <li><a href="#Core.Random.MM">MM</a></li>
 <li><a href="#Core.Random.NN">NN</a></li>
+<li><a href="#Core.Noise.PrimeX">PrimeX</a></li>
+<li><a href="#Core.Noise.PrimeY">PrimeY</a></li>
+<li><a href="#Core.Noise.PrimeZ">PrimeZ</a></li>
 <li><a href="#Core.Random.UM">UM</a></li>
 </ul>
 <h3>system</h3>
@@ -400,11 +406,20 @@
 </ul>
 <h3>text</h3>
 <ul class="tocbullet">
-<li><a href="#Core.ASSERT">ASSERT</a></li>
-<li><a href="#Core.BIG_ENDIAN">BIG_ENDIAN</a></li>
-<li><a href="#Core.StringSmallSize">StringSmallSize</a></li>
-<li><a href="#Core.WINDOWS">WINDOWS</a></li>
+<li><a href="#Core.Utf8.AS">AS</a></li>
+<li><a href="#Core.Utf8.AcceptRanges">AcceptRanges</a></li>
 <li><a href="#Core.Latin1.CharProperties">CharProperties</a></li>
+<li><a href="#Core.Utf8.First">First</a></li>
+<li><a href="#Core.Utf8.HiCB">HiCB</a></li>
+<li><a href="#Core.Utf8.LoCB">LoCB</a></li>
+<li><a href="#Core.Utf8.Mask2">Mask2</a></li>
+<li><a href="#Core.Utf8.Mask3">Mask3</a></li>
+<li><a href="#Core.Utf8.Mask4">Mask4</a></li>
+<li><a href="#Core.Utf8.MaskX">MaskX</a></li>
+<li><a href="#Core.Utf8.MaxRunes">MaxRunes</a></li>
+<li><a href="#Core.StrConv.ParseErrorIncomplete">ParseErrorIncomplete</a></li>
+<li><a href="#Core.StrConv.ParseErrorInvalid">ParseErrorInvalid</a></li>
+<li><a href="#Core.StrConv.ParseErrorOverflow">ParseErrorOverflow</a></li>
 <li><a href="#Core.Parser.RuneAscii">RuneAscii</a></li>
 <li><a href="#Core.Parser.RuneAsciiDigit">RuneAsciiDigit</a></li>
 <li><a href="#Core.Parser.RuneAsciiLetter">RuneAsciiLetter</a></li>
@@ -417,11 +432,20 @@
 <li><a href="#Core.Parser.RuneUnicodeNumber">RuneUnicodeNumber</a></li>
 <li><a href="#Core.Parser.RuneUnicodeSymbol">RuneUnicodeSymbol</a></li>
 <li><a href="#Core.Parser.RuneUnicodeSymbolMath">RuneUnicodeSymbolMath</a></li>
-<li><a href="#Core.StrConv.ParseErrorIncomplete">ParseErrorIncomplete</a></li>
-<li><a href="#Core.StrConv.ParseErrorInvalid">ParseErrorInvalid</a></li>
-<li><a href="#Core.StrConv.ParseErrorOverflow">ParseErrorOverflow</a></li>
-<li><a href="#Core.StrConv.firstPowerOfTen">firstPowerOfTen</a></li>
-<li><a href="#Core.StrConv.stepPowerOfTen">stepPowerOfTen</a></li>
+<li><a href="#Core.Utf8.S1">S1</a></li>
+<li><a href="#Core.Utf8.S2">S2</a></li>
+<li><a href="#Core.Utf8.S3">S3</a></li>
+<li><a href="#Core.Utf8.S4">S4</a></li>
+<li><a href="#Core.Utf8.S5">S5</a></li>
+<li><a href="#Core.Utf8.S6">S6</a></li>
+<li><a href="#Core.Utf8.S7">S7</a></li>
+<li><a href="#Core.StringSmallSize">StringSmallSize</a></li>
+<li><a href="#Core.Utf16.Surr1">Surr1</a></li>
+<li><a href="#Core.Utf16.Surr2">Surr2</a></li>
+<li><a href="#Core.Utf16.Surr3">Surr3</a></li>
+<li><a href="#Core.Utf16.SurrSelf">SurrSelf</a></li>
+<li><a href="#Core.Utf8.SurrogateMax">SurrogateMax</a></li>
+<li><a href="#Core.Utf8.SurrogateMin">SurrogateMin</a></li>
 <li><a href="#Core.Unicode.TableCaseRanges">TableCaseRanges</a></li>
 <li><a href="#Core.Unicode.TableDigit">TableDigit</a></li>
 <li><a href="#Core.Unicode.TableLetter">TableLetter</a></li>
@@ -434,32 +458,11 @@
 <li><a href="#Core.Unicode.TableUpper">TableUpper</a></li>
 <li><a href="#Core.Unicode.TableWhiteSpace">TableWhiteSpace</a></li>
 <li><a href="#Core.Unicode.UpperLower">UpperLower</a></li>
-<li><a href="#Core.Utf16.RuneError">RuneError</a></li>
-<li><a href="#Core.Utf16.Surr1">Surr1</a></li>
-<li><a href="#Core.Utf16.Surr2">Surr2</a></li>
-<li><a href="#Core.Utf16.Surr3">Surr3</a></li>
-<li><a href="#Core.Utf16.SurrSelf">SurrSelf</a></li>
-<li><a href="#Core.Utf8.AS">AS</a></li>
-<li><a href="#Core.Utf8.AcceptRanges">AcceptRanges</a></li>
-<li><a href="#Core.Utf8.First">First</a></li>
-<li><a href="#Core.Utf8.HiCB">HiCB</a></li>
-<li><a href="#Core.Utf8.LoCB">LoCB</a></li>
-<li><a href="#Core.Utf8.Mask2">Mask2</a></li>
-<li><a href="#Core.Utf8.Mask3">Mask3</a></li>
-<li><a href="#Core.Utf8.Mask4">Mask4</a></li>
-<li><a href="#Core.Utf8.MaskX">MaskX</a></li>
-<li><a href="#Core.Utf8.MaxRunes">MaxRunes</a></li>
-<li><a href="#Core.Utf8.RuneError">RuneError</a></li>
-<li><a href="#Core.Utf8.S1">S1</a></li>
-<li><a href="#Core.Utf8.S2">S2</a></li>
-<li><a href="#Core.Utf8.S3">S3</a></li>
-<li><a href="#Core.Utf8.S4">S4</a></li>
-<li><a href="#Core.Utf8.S5">S5</a></li>
-<li><a href="#Core.Utf8.S6">S6</a></li>
-<li><a href="#Core.Utf8.S7">S7</a></li>
-<li><a href="#Core.Utf8.SurrogateMax">SurrogateMax</a></li>
-<li><a href="#Core.Utf8.SurrogateMin">SurrogateMin</a></li>
+<li><a href="#Core.Utf16.RuneError">Utf16.RuneError</a></li>
+<li><a href="#Core.Utf8.RuneError">Utf8.RuneError</a></li>
 <li><a href="#Core.Utf8.XX">XX</a></li>
+<li><a href="#Core.StrConv.firstPowerOfTen">firstPowerOfTen</a></li>
+<li><a href="#Core.StrConv.stepPowerOfTen">stepPowerOfTen</a></li>
 </ul>
 <h3>time</h3>
 <ul class="tocbullet">
@@ -1590,6 +1593,17 @@
 </div>
 <div class="right">
 <div class="page">
+<h3 class="content" id="Core.ASSERT"><span class="titletype"></span> <span class="titlelight">Core.</span><span class="titlestrong">Constants</span></h3>
+<table>
+<tr>
+<td>
+bool</td>
+<td id="Core.ASSERT">
+ASSERT</td>
+<td>
+</td>
+</tr>
+</table>
 <h3 class="content" id="Core.Array"><span class="titletype">struct</span> <span class="titlelight">Core.</span><span class="titlestrong">Array</span></h3>
 <p>
 This is a generic dynamic array.</p>
@@ -2843,6 +2857,17 @@ func xor(addr: *u32, value: u32)->u32
 func xor(addr: *u64, value: u64)->u64
 </code>
 </p>
+<h3 class="content" id="Core.BIG_ENDIAN"><span class="titletype"></span> <span class="titlelight">Core.</span><span class="titlestrong">Constants</span></h3>
+<table>
+<tr>
+<td>
+bool</td>
+<td id="Core.BIG_ENDIAN">
+BIG_ENDIAN</td>
+<td>
+</td>
+</tr>
+</table>
 <h3 class="content" id="Core.BitArray"><span class="titletype">struct</span> <span class="titlelight">Core.</span><span class="titlestrong">BitArray</span></h3>
 <p>
 Manages a compact array of bit values, which are represented as booleans, where <code class = "incode">true</code> indicates that the bit is on (1) and <code class = "incode">false</code> indicates the bit is off (0).</p>
@@ -3768,7 +3793,7 @@ bool</td>
 <td>
 state</td>
 <td>
-<a href="std.core.html#Core.Compress.__privns_176.Compressor">*Compressor</a></td>
+<a href="std.core.html#Core.Compress.__privns_175.Compressor">*Compressor</a></td>
 <td>
 </td>
 </tr>
@@ -4730,41 +4755,6 @@ Disable console output. This is a counter, so can be called multiple times with 
 <code style="white-space: break-spaces">func unlock()
 </code>
 </p>
-<h3 class="content" id="Core.Constants"><span class="titletype"></span> <span class="titlelight">Core.</span><span class="titlestrong">Constants</span></h3>
-<table>
-<tr>
-<td>
-bool</td>
-<td id="Core.ASSERT">
-ASSERT</td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-bool</td>
-<td id="Core.BIG_ENDIAN">
-BIG_ENDIAN</td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-u64</td>
-<td id="Core.StringSmallSize">
-StringSmallSize</td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-bool</td>
-<td id="Core.WINDOWS">
-WINDOWS</td>
-<td>
-</td>
-</tr>
-</table>
 <h3 class="content" id="Core.Debug"><span class="titletype">namespace</span> <span class="titlelight">Core.</span><span class="titlestrong">Debug</span></h3>
 <h3>Functions</h3>
 <table>
@@ -5171,7 +5161,7 @@ Starts a new process with arguments.</p>
 </td>
 </tr>
 </table>
-<h3 class="content" id="Core.Env.Constants"><span class="titletype"></span> <span class="titlelight">Env.</span><span class="titlestrong">Constants</span></h3>
+<h3 class="content" id="Core.Env.EndLine"><span class="titletype"></span> <span class="titlelight">Env.</span><span class="titlestrong">Constants</span></h3>
 <table>
 <tr>
 <td>
@@ -10450,7 +10440,7 @@ Letter</td>
 </td>
 </tr>
 </table>
-<h3 class="content" id="Core.Latin1.Constants"><span class="titletype"></span> <span class="titlelight">Latin1.</span><span class="titlestrong">Constants</span></h3>
+<h3 class="content" id="Core.Latin1.CharProperties"><span class="titletype"></span> <span class="titlelight">Latin1.</span><span class="titlestrong">Constants</span></h3>
 <table>
 <tr>
 <td>
@@ -11308,14 +11298,14 @@ Determin if an integer has a given byte.</p>
 <td>
 <a href="#Core.Math.hasZeroByte">hasZeroByte</a></td>
 <td>
-<p>
-Determin if any of the bytes is zero.</p>
 </td>
 </tr>
 <tr>
 <td>
 <a href="#Core.Math.hasZeroByte">hasZeroByte</a></td>
 <td>
+<p>
+Determin if any of the bytes is zero.</p>
 </td>
 </tr>
 <tr>
@@ -11664,14 +11654,14 @@ Convert a native arch integer to a big endian.</p>
 <td>
 <a href="#Core.Math.reverse">reverse</a></td>
 <td>
+<p>
+Reverse all bits.</p>
 </td>
 </tr>
 <tr>
 <td>
 <a href="#Core.Math.reverse">reverse</a></td>
 <td>
-<p>
-Reverse all bits.</p>
 </td>
 </tr>
 <tr>
@@ -12080,17 +12070,6 @@ T</td>
 Epsilon</td>
 <td>
 T</td>
-<td>
-</td>
-</tr>
-</table>
-<h3 class="content" id="Core.Math.Constants"><span class="titletype"></span> <span class="titlelight">Math.</span><span class="titlestrong">Constants</span></h3>
-<table>
-<tr>
-<td>
-const [256] u8</td>
-<td id="Core.Math.Rev8Arr">
-Rev8Arr</td>
 <td>
 </td>
 </tr>
@@ -13185,6 +13164,17 @@ Perform a Math.trunc operation on all the coordinates.</p>
 </p>
 <p>
 vertical center coordinate (y + height / 2).</p>
+<h3 class="content" id="Core.Math.Rev8Arr"><span class="titletype"></span> <span class="titlelight">Math.</span><span class="titlestrong">Constants</span></h3>
+<table>
+<tr>
+<td>
+const [256] u8</td>
+<td id="Core.Math.Rev8Arr">
+Rev8Arr</td>
+<td>
+</td>
+</tr>
+</table>
 <h3 class="content" id="Core.Math.Transform2"><span class="titletype">struct</span> <span class="titlelight">Math.</span><span class="titlestrong">Transform2</span></h3>
 <table>
 <tr>
@@ -15351,7 +15341,7 @@ Perlin.</p>
 </td>
 </tr>
 </table>
-<h3 class="content" id="Core.Noise.Constants"><span class="titletype"></span> <span class="titlelight">Noise.</span><span class="titlestrong">Constants</span></h3>
+<h3 class="content" id="Core.Noise.Gradients2D"><span class="titletype"></span> <span class="titlelight">Noise.</span><span class="titlestrong">Constants</span></h3>
 <table>
 <tr>
 <td>
@@ -15429,105 +15419,6 @@ Perlin.</p>
 <tr>
 <td>
 <a href="#Core.Parser.RegExp">RegExp</a></td>
-<td>
-</td>
-</tr>
-</table>
-<h3 class="content" id="Core.Parser.Constants"><span class="titletype"></span> <span class="titlelight">Parser.</span><span class="titlestrong">Constants</span></h3>
-<table>
-<tr>
-<td>
-rune</td>
-<td id="Core.Parser.RuneAscii">
-RuneAscii</td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-rune</td>
-<td id="Core.Parser.RuneAsciiDigit">
-RuneAsciiDigit</td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-rune</td>
-<td id="Core.Parser.RuneAsciiLetter">
-RuneAsciiLetter</td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-rune</td>
-<td id="Core.Parser.RuneAsciiLower">
-RuneAsciiLower</td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-rune</td>
-<td id="Core.Parser.RuneAsciiSpace">
-RuneAsciiSpace</td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-rune</td>
-<td id="Core.Parser.RuneAsciiUpper">
-RuneAsciiUpper</td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-rune</td>
-<td id="Core.Parser.RuneUnicodeLetter">
-RuneUnicodeLetter</td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-rune</td>
-<td id="Core.Parser.RuneUnicodeLetterLower">
-RuneUnicodeLetterLower</td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-rune</td>
-<td id="Core.Parser.RuneUnicodeLetterUpper">
-RuneUnicodeLetterUpper</td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-rune</td>
-<td id="Core.Parser.RuneUnicodeNumber">
-RuneUnicodeNumber</td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-rune</td>
-<td id="Core.Parser.RuneUnicodeSymbol">
-RuneUnicodeSymbol</td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-rune</td>
-<td id="Core.Parser.RuneUnicodeSymbolMath">
-RuneUnicodeSymbolMath</td>
 <td>
 </td>
 </tr>
@@ -15758,6 +15649,105 @@ Find all the occurences in the string.</p>
 </p>
 <p>
 Returns true if <code class = "incode">str</code> matches the regexp.</p>
+<h3 class="content" id="Core.Parser.RuneAscii"><span class="titletype"></span> <span class="titlelight">Parser.</span><span class="titlestrong">Constants</span></h3>
+<table>
+<tr>
+<td>
+rune</td>
+<td id="Core.Parser.RuneAscii">
+RuneAscii</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+rune</td>
+<td id="Core.Parser.RuneAsciiDigit">
+RuneAsciiDigit</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+rune</td>
+<td id="Core.Parser.RuneAsciiLetter">
+RuneAsciiLetter</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+rune</td>
+<td id="Core.Parser.RuneAsciiLower">
+RuneAsciiLower</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+rune</td>
+<td id="Core.Parser.RuneAsciiSpace">
+RuneAsciiSpace</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+rune</td>
+<td id="Core.Parser.RuneAsciiUpper">
+RuneAsciiUpper</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+rune</td>
+<td id="Core.Parser.RuneUnicodeLetter">
+RuneUnicodeLetter</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+rune</td>
+<td id="Core.Parser.RuneUnicodeLetterLower">
+RuneUnicodeLetterLower</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+rune</td>
+<td id="Core.Parser.RuneUnicodeLetterUpper">
+RuneUnicodeLetterUpper</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+rune</td>
+<td id="Core.Parser.RuneUnicodeNumber">
+RuneUnicodeNumber</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+rune</td>
+<td id="Core.Parser.RuneUnicodeSymbol">
+RuneUnicodeSymbol</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+rune</td>
+<td id="Core.Parser.RuneUnicodeSymbolMath">
+RuneUnicodeSymbolMath</td>
+<td>
+</td>
+</tr>
+</table>
 <h3 class="content" id="Core.Path"><span class="titletype">namespace</span> <span class="titlelight">Core.</span><span class="titlestrong">Path</span></h3>
 <h3>Functions</h3>
 <table>
@@ -15898,7 +15888,7 @@ Normalize path <code class = "incode">\</code> are replaced with <code class = "
 </td>
 </tr>
 </table>
-<h3 class="content" id="Core.Path.Constants"><span class="titletype"></span> <span class="titlelight">Path.</span><span class="titlestrong">Constants</span></h3>
+<h3 class="content" id="Core.Path.AltDirectorySeparatorChar"><span class="titletype"></span> <span class="titlelight">Path.</span><span class="titlestrong">Constants</span></h3>
 <table>
 <tr>
 <td>
@@ -16137,7 +16127,7 @@ special invalid value (&gt; 4095) to force the seed on first get.</p>
 <code style="white-space: break-spaces">func seedU32(using self, value: u32)
 </code>
 </p>
-<h3 class="content" id="Core.Random.Constants"><span class="titletype"></span> <span class="titlelight">Random.</span><span class="titlestrong">Constants</span></h3>
+<h3 class="content" id="Core.Random.LM"><span class="titletype"></span> <span class="titlelight">Random.</span><span class="titlestrong">Constants</span></h3>
 <table>
 <tr>
 <td>
@@ -16168,22 +16158,6 @@ MID</td>
 s32</td>
 <td id="Core.Random.MM">
 MM</td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-s32</td>
-<td id="Core.Random.NN">
-NN</td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-u64</td>
-<td id="Core.Random.UM">
-UM</td>
 <td>
 </td>
 </tr>
@@ -16290,6 +16264,17 @@ u64</td>
 func seedU64(using self, seed: const [..] u64)
 </code>
 </p>
+<h3 class="content" id="Core.Random.NN"><span class="titletype"></span> <span class="titlelight">Random.</span><span class="titlestrong">Constants</span></h3>
+<table>
+<tr>
+<td>
+s32</td>
+<td id="Core.Random.NN">
+NN</td>
+<td>
+</td>
+</tr>
+</table>
 <h3 class="content" id="Core.Random.Rng"><span class="titletype">struct</span> <span class="titlelight">Random.</span><span class="titlestrong">Rng</span></h3>
 <p class="code">
 <code style="white-space: break-spaces">struct Rng(T = <a href="std.core.html#Core.Random.MWC">MWC</a>)</code>
@@ -16564,6 +16549,17 @@ Seed random generator with a 64 bits value.</p>
 </p>
 <p>
 Randomly change the order of a slice.</p>
+<h3 class="content" id="Core.Random.UM"><span class="titletype"></span> <span class="titlelight">Random.</span><span class="titlestrong">Constants</span></h3>
+<table>
+<tr>
+<td>
+u64</td>
+<td id="Core.Random.UM">
+UM</td>
+<td>
+</td>
+</tr>
+</table>
 <h3 class="content" id="Core.Random.shared"><span class="titletype">func</span> <span class="titlelight">Random.</span><span class="titlestrong">shared</span></h3>
 <p class="code">
 <code style="white-space: break-spaces">func shared()
@@ -20423,49 +20419,6 @@ Convert a size in a displayable format (with Kb, Mb and so on).</p>
 <code style="white-space: break-spaces">func parse(s: const [..] u8)->{value: f64, eat: u32, ovf: bool}
 </code>
 </p>
-<h3 class="content" id="Core.StrConv.Constants"><span class="titletype"></span> <span class="titlelight">StrConv.</span><span class="titlestrong">Constants</span></h3>
-<table>
-<tr>
-<td>
-string</td>
-<td id="Core.StrConv.ParseErrorIncomplete">
-ParseErrorIncomplete</td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-string</td>
-<td id="Core.StrConv.ParseErrorInvalid">
-ParseErrorInvalid</td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-string</td>
-<td id="Core.StrConv.ParseErrorOverflow">
-ParseErrorOverflow</td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-s32</td>
-<td id="Core.StrConv.firstPowerOfTen">
-firstPowerOfTen</td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-s32</td>
-<td id="Core.StrConv.stepPowerOfTen">
-stepPowerOfTen</td>
-<td>
-</td>
-</tr>
-</table>
 <h3 class="content" id="Core.StrConv.ConvertFormat"><span class="titletype">struct</span> <span class="titlelight">StrConv.</span><span class="titlestrong">ConvertFormat</span></h3>
 <table>
 <tr>
@@ -20828,6 +20781,33 @@ minus one digit if original &lt; a.</p>
 </td>
 </tr>
 </table>
+<h3 class="content" id="Core.StrConv.ParseErrorIncomplete"><span class="titletype"></span> <span class="titlelight">StrConv.</span><span class="titlestrong">Constants</span></h3>
+<table>
+<tr>
+<td>
+string</td>
+<td id="Core.StrConv.ParseErrorIncomplete">
+ParseErrorIncomplete</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+string</td>
+<td id="Core.StrConv.ParseErrorInvalid">
+ParseErrorInvalid</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+string</td>
+<td id="Core.StrConv.ParseErrorOverflow">
+ParseErrorOverflow</td>
+<td>
+</td>
+</tr>
+</table>
 <h3 class="content" id="Core.StrConv.StringBuilder"><span class="titletype">struct</span> <span class="titlelight">StrConv.</span><span class="titlestrong">StringBuilder</span></h3>
 <table>
 <tr>
@@ -21068,6 +21048,17 @@ Convert a <code class = "incode">rune</code> to a string, and put the result in 
 </p>
 <p>
 Convert a structure content to an utf8 string, and put the result in a ConcatBuffer.</p>
+<h3 class="content" id="Core.StrConv.firstPowerOfTen"><span class="titletype"></span> <span class="titlelight">StrConv.</span><span class="titlestrong">Constants</span></h3>
+<table>
+<tr>
+<td>
+s32</td>
+<td id="Core.StrConv.firstPowerOfTen">
+firstPowerOfTen</td>
+<td>
+</td>
+</tr>
+</table>
 <h3 class="content" id="Core.StrConv.parseB64"><span class="titletype">func</span> <span class="titlelight">StrConv.</span><span class="titlestrong">parseB64</span></h3>
 <p class="code">
 <code style="white-space: break-spaces">func parseB64(str: string)->{value: u64, eat: u32, ovf: bool}
@@ -21177,6 +21168,17 @@ This function will parse <code class = "incode">buf</code> and poke the correspo
  Accepted types are : - s8,s16,s32,s64,s64,u8,u16,u32,u64,u64,rune,bool,f32,f64 - <code class = "incode">Core.String</code>  literal strings are not supported as <code class = "incode">buf</code> is supposed to be transient - enum           with or without <code class = "incode">Swag.EnumFlags</code> attribute</p>
 <p>
  <code class = "incode">buf</code> can contain multiple values separated with blanks if <code class = "incode">type</code> is: - a static array of the types above - a dynamic <code class = "incode">Core.Array</code> of the types above</p>
+<h3 class="content" id="Core.StrConv.stepPowerOfTen"><span class="titletype"></span> <span class="titlelight">StrConv.</span><span class="titlestrong">Constants</span></h3>
+<table>
+<tr>
+<td>
+s32</td>
+<td id="Core.StrConv.stepPowerOfTen">
+stepPowerOfTen</td>
+<td>
+</td>
+</tr>
+</table>
 <h3 class="content" id="Core.StrConv.toDisplaySize"><span class="titletype">func</span> <span class="titlelight">StrConv.</span><span class="titlestrong">toDisplaySize</span></h3>
 <p class="code">
 <code style="white-space: break-spaces">func toDisplaySize(value: u64)-><a href="std.core.html#Core.String">String</a>
@@ -21931,6 +21933,17 @@ Remove whitespaces at the end of the String.</p>
 </p>
 <p>
 Remove whitespaces at the start of the String.</p>
+<h3 class="content" id="Core.StringSmallSize"><span class="titletype"></span> <span class="titlelight">Core.</span><span class="titlestrong">Constants</span></h3>
+<table>
+<tr>
+<td>
+u64</td>
+<td id="Core.StringSmallSize">
+StringSmallSize</td>
+<td>
+</td>
+</tr>
+</table>
 <h3 class="content" id="Core.Sync"><span class="titletype">namespace</span> <span class="titlelight">Core.</span><span class="titlestrong">Sync</span></h3>
 <h3>Structs</h3>
 <table>
@@ -22715,209 +22728,6 @@ Convert a time to a 64 bits value.</p>
 </td>
 </tr>
 </table>
-<h3 class="content" id="Core.Time.Constants"><span class="titletype"></span> <span class="titlelight">Time.</span><span class="titlestrong">Constants</span></h3>
-<table>
-<tr>
-<td>
-const [7] string</td>
-<td id="Core.Time.DayOfWeekNames">
-DayOfWeekNames</td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-s32</td>
-<td id="Core.Time.DaysPer100Years">
-DaysPer100Years</td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-s32</td>
-<td id="Core.Time.DaysPer400Years">
-DaysPer400Years</td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-s32</td>
-<td id="Core.Time.DaysPer4Years">
-DaysPer4Years</td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-s32</td>
-<td id="Core.Time.DaysPerYear">
-DaysPerYear</td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-u64</td>
-<td id="Core.Time.DaysTo10000">
-DaysTo10000</td>
-<td>
-<p>
-Number of days from 1/1/0001 to 12/31/9999.</p>
-</td>
-</tr>
-<tr>
-<td>
-u64</td>
-<td id="Core.Time.DaysTo1601">
-DaysTo1601</td>
-<td>
-<p>
-Number of days from 1/1/0001 to 12/31/1600.</p>
-</td>
-</tr>
-<tr>
-<td>
-u64</td>
-<td id="Core.Time.DaysTo1899">
-DaysTo1899</td>
-<td>
-<p>
-Number of days from 1/1/0001 to 12/30/1899.</p>
-</td>
-</tr>
-<tr>
-<td>
-u64</td>
-<td id="Core.Time.DaysTo1970">
-DaysTo1970</td>
-<td>
-<p>
-Number of days from 1/1/0001 to 12/31/1969.</p>
-</td>
-</tr>
-<tr>
-<td>
-const [13] u16</td>
-<td id="Core.Time.DaysToMonth365">
-DaysToMonth365</td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-const [13] u16</td>
-<td id="Core.Time.DaysToMonth366">
-DaysToMonth366</td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-u64</td>
-<td id="Core.Time.MaxMilliSeconds">
-MaxMilliSeconds</td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-u64</td>
-<td id="Core.Time.MaxMillis">
-MaxMillis</td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-u64</td>
-<td id="Core.Time.MaxTicks">
-MaxTicks</td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-u64</td>
-<td id="Core.Time.MillisPerDay">
-MillisPerDay</td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-u64</td>
-<td id="Core.Time.MillisPerHour">
-MillisPerHour</td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-u64</td>
-<td id="Core.Time.MillisPerMinute">
-MillisPerMinute</td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-u64</td>
-<td id="Core.Time.MillisPerSecond">
-MillisPerSecond</td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-const [12] string</td>
-<td id="Core.Time.MonthNames">
-MonthNames</td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-u64</td>
-<td id="Core.Time.TicksPerDay">
-TicksPerDay</td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-u64</td>
-<td id="Core.Time.TicksPerHour">
-TicksPerHour</td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-u64</td>
-<td id="Core.Time.TicksPerMilliSecond">
-TicksPerMilliSecond</td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-u64</td>
-<td id="Core.Time.TicksPerMinute">
-TicksPerMinute</td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-u64</td>
-<td id="Core.Time.TicksPerSecond">
-TicksPerSecond</td>
-<td>
-</td>
-</tr>
-</table>
 <h3 class="content" id="Core.Time.DateTime"><span class="titletype">struct</span> <span class="titlelight">Time.</span><span class="titlestrong">DateTime</span></h3>
 <p>
 Represents an instant in time, typically expressed as a date and time of day.</p>
@@ -23209,6 +23019,105 @@ Saturday</td>
 </td>
 </tr>
 </table>
+<h3 class="content" id="Core.Time.DayOfWeekNames"><span class="titletype"></span> <span class="titlelight">Time.</span><span class="titlestrong">Constants</span></h3>
+<table>
+<tr>
+<td>
+const [7] string</td>
+<td id="Core.Time.DayOfWeekNames">
+DayOfWeekNames</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+s32</td>
+<td id="Core.Time.DaysPer100Years">
+DaysPer100Years</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+s32</td>
+<td id="Core.Time.DaysPer400Years">
+DaysPer400Years</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+s32</td>
+<td id="Core.Time.DaysPer4Years">
+DaysPer4Years</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+s32</td>
+<td id="Core.Time.DaysPerYear">
+DaysPerYear</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+u64</td>
+<td id="Core.Time.DaysTo10000">
+DaysTo10000</td>
+<td>
+<p>
+Number of days from 1/1/0001 to 12/31/9999.</p>
+</td>
+</tr>
+<tr>
+<td>
+u64</td>
+<td id="Core.Time.DaysTo1601">
+DaysTo1601</td>
+<td>
+<p>
+Number of days from 1/1/0001 to 12/31/1600.</p>
+</td>
+</tr>
+<tr>
+<td>
+u64</td>
+<td id="Core.Time.DaysTo1899">
+DaysTo1899</td>
+<td>
+<p>
+Number of days from 1/1/0001 to 12/30/1899.</p>
+</td>
+</tr>
+<tr>
+<td>
+u64</td>
+<td id="Core.Time.DaysTo1970">
+DaysTo1970</td>
+<td>
+<p>
+Number of days from 1/1/0001 to 12/31/1969.</p>
+</td>
+</tr>
+<tr>
+<td>
+const [13] u16</td>
+<td id="Core.Time.DaysToMonth365">
+DaysToMonth365</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+const [13] u16</td>
+<td id="Core.Time.DaysToMonth366">
+DaysToMonth366</td>
+<td>
+</td>
+</tr>
+</table>
 <h3 class="content" id="Core.Time.Duration"><span class="titletype">struct</span> <span class="titlelight">Time.</span><span class="titlestrong">Duration</span></h3>
 <table>
 <tr>
@@ -23357,6 +23266,73 @@ Unpause frame timing & count.</p>
 </p>
 <p>
 Update frame timers.</p>
+<h3 class="content" id="Core.Time.MaxMilliSeconds"><span class="titletype"></span> <span class="titlelight">Time.</span><span class="titlestrong">Constants</span></h3>
+<table>
+<tr>
+<td>
+u64</td>
+<td id="Core.Time.MaxMilliSeconds">
+MaxMilliSeconds</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+u64</td>
+<td id="Core.Time.MaxMillis">
+MaxMillis</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+u64</td>
+<td id="Core.Time.MaxTicks">
+MaxTicks</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+u64</td>
+<td id="Core.Time.MillisPerDay">
+MillisPerDay</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+u64</td>
+<td id="Core.Time.MillisPerHour">
+MillisPerHour</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+u64</td>
+<td id="Core.Time.MillisPerMinute">
+MillisPerMinute</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+u64</td>
+<td id="Core.Time.MillisPerSecond">
+MillisPerSecond</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+const [12] string</td>
+<td id="Core.Time.MonthNames">
+MonthNames</td>
+<td>
+</td>
+</tr>
+</table>
 <h3 class="content" id="Core.Time.Stopwatch"><span class="titletype">struct</span> <span class="titlelight">Time.</span><span class="titlestrong">Stopwatch</span></h3>
 <p>
 Provides a set of methods and properties that you can use to accurately measure elapsed time.</p>
@@ -23525,6 +23501,49 @@ Starts, or resumes, measuring elapsed time for an interval.</p>
 </p>
 <p>
 Stops measuring elapsed time for an interval.</p>
+<h3 class="content" id="Core.Time.TicksPerDay"><span class="titletype"></span> <span class="titlelight">Time.</span><span class="titlestrong">Constants</span></h3>
+<table>
+<tr>
+<td>
+u64</td>
+<td id="Core.Time.TicksPerDay">
+TicksPerDay</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+u64</td>
+<td id="Core.Time.TicksPerHour">
+TicksPerHour</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+u64</td>
+<td id="Core.Time.TicksPerMilliSecond">
+TicksPerMilliSecond</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+u64</td>
+<td id="Core.Time.TicksPerMinute">
+TicksPerMinute</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+u64</td>
+<td id="Core.Time.TicksPerSecond">
+TicksPerSecond</td>
+<td>
+</td>
+</tr>
+</table>
 <h3 class="content" id="Core.Time.TimeSpan"><span class="titletype">struct</span> <span class="titlelight">Time.</span><span class="titlestrong">TimeSpan</span></h3>
 <p>
 Represents an interval of time, stored as a 64 bits integer.</p>
@@ -24332,7 +24351,34 @@ delta</td>
 </td>
 </tr>
 </table>
-<h3 class="content" id="Core.Unicode.Constants"><span class="titletype"></span> <span class="titlelight">Unicode.</span><span class="titlestrong">Constants</span></h3>
+<h3 class="content" id="Core.Unicode.Range"><span class="titletype">struct</span> <span class="titlelight">Unicode.</span><span class="titlestrong">Range</span></h3>
+<table>
+<tr>
+<td>
+lo</td>
+<td>
+rune</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+hi</td>
+<td>
+rune</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+stride</td>
+<td>
+u32</td>
+<td>
+</td>
+</tr>
+</table>
+<h3 class="content" id="Core.Unicode.TableCaseRanges"><span class="titletype"></span> <span class="titlelight">Unicode.</span><span class="titlestrong">Constants</span></h3>
 <table>
 <tr>
 <td>
@@ -24427,33 +24473,6 @@ TableWhiteSpace</td>
 s32</td>
 <td id="Core.Unicode.UpperLower">
 UpperLower</td>
-<td>
-</td>
-</tr>
-</table>
-<h3 class="content" id="Core.Unicode.Range"><span class="titletype">struct</span> <span class="titlelight">Unicode.</span><span class="titlestrong">Range</span></h3>
-<table>
-<tr>
-<td>
-lo</td>
-<td>
-rune</td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-hi</td>
-<td>
-rune</td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-stride</td>
-<td>
-u32</td>
 <td>
 </td>
 </tr>
@@ -24654,7 +24673,7 @@ Convert string to an utf16 array, zero terminated.</p>
 </td>
 </tr>
 </table>
-<h3 class="content" id="Core.Utf16.Constants"><span class="titletype"></span> <span class="titlelight">Utf16.</span><span class="titlestrong">Constants</span></h3>
+<h3 class="content" id="Core.Utf16.RuneError"><span class="titletype"></span> <span class="titlelight">Utf16.</span><span class="titlestrong">Constants</span></h3>
 <table>
 <tr>
 <td>
@@ -24973,6 +24992,19 @@ Macro to visit the unicode characters of the utf8 sequence.</p>
 </td>
 </tr>
 </table>
+<h3 class="content" id="Core.Utf8.AS"><span class="titletype"></span> <span class="titlelight">Utf8.</span><span class="titlestrong">Constants</span></h3>
+<table>
+<tr>
+<td>
+u32</td>
+<td id="Core.Utf8.AS">
+AS</td>
+<td>
+<p>
+ASCII: size 1.</p>
+</td>
+</tr>
+</table>
 <h3 class="content" id="Core.Utf8.AcceptRange"><span class="titletype">struct</span> <span class="titlelight">Utf8.</span><span class="titlestrong">AcceptRange</span></h3>
 <table>
 <tr>
@@ -24988,6 +25020,17 @@ u8</td>
 hi</td>
 <td>
 u8</td>
+<td>
+</td>
+</tr>
+</table>
+<h3 class="content" id="Core.Utf8.AcceptRanges"><span class="titletype"></span> <span class="titlelight">Utf8.</span><span class="titlestrong">Constants</span></h3>
+<table>
+<tr>
+<td>
+<a href="std.core.html#Core.Utf8.AcceptRange">const [5] struct AcceptRange</a></td>
+<td id="Core.Utf8.AcceptRanges">
+AcceptRanges</td>
 <td>
 </td>
 </tr>
@@ -25019,26 +25062,8 @@ UnicodeNoCase</td>
 </td>
 </tr>
 </table>
-<h3 class="content" id="Core.Utf8.Constants"><span class="titletype"></span> <span class="titlelight">Utf8.</span><span class="titlestrong">Constants</span></h3>
+<h3 class="content" id="Core.Utf8.First"><span class="titletype"></span> <span class="titlelight">Utf8.</span><span class="titlestrong">Constants</span></h3>
 <table>
-<tr>
-<td>
-u32</td>
-<td id="Core.Utf8.AS">
-AS</td>
-<td>
-<p>
-ASCII: size 1.</p>
-</td>
-</tr>
-<tr>
-<td>
-<a href="std.core.html#Core.Utf8.AcceptRange">const [5] struct AcceptRange</a></td>
-<td id="Core.Utf8.AcceptRanges">
-AcceptRanges</td>
-<td>
-</td>
-</tr>
 <tr>
 <td>
 const [256] u8</td>
@@ -25401,6 +25426,17 @@ Macro to visit the unicode characters of the utf8 sequence.</p>
 <p style="white-space: break-spaces"> <code class = "incode">@alias0</code> will contain the character
  <code class = "incode">@alias1</code> will contain the character index
  <code class = "incode">@alias2</code> will contain the byte index of that character within the utf8 sequence</p>
+<h3 class="content" id="Core.WINDOWS"><span class="titletype"></span> <span class="titlelight">Core.</span><span class="titlestrong">Constants</span></h3>
+<table>
+<tr>
+<td>
+bool</td>
+<td id="Core.WINDOWS">
+WINDOWS</td>
+<td>
+</td>
+</tr>
+</table>
 <h3 class="content" id="Core.add"><span class="titletype">func</span> <span class="titlelight">Core.</span><span class="titlestrong">add</span></h3>
 <p class="code">
 <code style="white-space: break-spaces">func(T) add(flags: ref T, value: T)

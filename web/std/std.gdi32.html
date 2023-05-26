@@ -274,6 +274,49 @@
 </div>
 <div class="right">
 <div class="page">
+<h3 class="content" id="Gdi32.ANSI_CHARSET"><span class="titletype"></span> <span class="titlelight">Gdi32.</span><span class="titlestrong">Constants</span></h3>
+<table>
+<tr>
+<td>
+s32</td>
+<td id="Gdi32.ANSI_CHARSET">
+ANSI_CHARSET</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+s32</td>
+<td id="Gdi32.ANSI_FIXED_FONT">
+ANSI_FIXED_FONT</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+s32</td>
+<td id="Gdi32.ANSI_VAR_FONT">
+ANSI_VAR_FONT</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+s32</td>
+<td id="Gdi32.ARABIC_CHARSET">
+ARABIC_CHARSET</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+s32</td>
+<td id="Gdi32.BALTIC_CHARSET">
+BALTIC_CHARSET</td>
+<td>
+</td>
+</tr>
+</table>
 <h3 class="content" id="Gdi32.BITMAP"><span class="titletype">struct</span> <span class="titlelight">Gdi32.</span><span class="titlestrong">BITMAP</span></h3>
 <table>
 <tr>
@@ -443,58 +486,8 @@ DWORD</td>
 </td>
 </tr>
 </table>
-<h3 class="content" id="Gdi32.BitBlt"><span class="titletype">func</span> <span class="titlelight">Gdi32.</span><span class="titlestrong">BitBlt</span></h3>
-<p class="code">
-<code style="white-space: break-spaces">func BitBlt(hdc: HDC, x: s32, y: s32, cx: s32, cy: s32, hdcSrc: HDC, x1: s32, y1: s32, rop: DWORD)
-</code>
-</p>
-<h3 class="content" id="Gdi32.ChoosePixelFormat"><span class="titletype">func</span> <span class="titlelight">Gdi32.</span><span class="titlestrong">ChoosePixelFormat</span></h3>
-<p class="code">
-<code style="white-space: break-spaces">func ChoosePixelFormat(hdc: HDC, ppfd: <a href="std.gdi32.html#Gdi32.PIXELFORMATDESCRIPTOR">const *PIXELFORMATDESCRIPTOR</a>)->s32
-</code>
-</p>
-<h3 class="content" id="Gdi32.Constants"><span class="titletype"></span> <span class="titlelight">Gdi32.</span><span class="titlestrong">Constants</span></h3>
+<h3 class="content" id="Gdi32.BI_BITFIELDS"><span class="titletype"></span> <span class="titlelight">Gdi32.</span><span class="titlestrong">Constants</span></h3>
 <table>
-<tr>
-<td>
-s32</td>
-<td id="Gdi32.ANSI_CHARSET">
-ANSI_CHARSET</td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-s32</td>
-<td id="Gdi32.ANSI_FIXED_FONT">
-ANSI_FIXED_FONT</td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-s32</td>
-<td id="Gdi32.ANSI_VAR_FONT">
-ANSI_VAR_FONT</td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-s32</td>
-<td id="Gdi32.ARABIC_CHARSET">
-ARABIC_CHARSET</td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-s32</td>
-<td id="Gdi32.BALTIC_CHARSET">
-BALTIC_CHARSET</td>
-<td>
-</td>
-</tr>
 <tr>
 <td>
 s32</td>
@@ -575,6 +568,14 @@ BLACK_PEN</td>
 <td>
 </td>
 </tr>
+</table>
+<h3 class="content" id="Gdi32.BitBlt"><span class="titletype">func</span> <span class="titlelight">Gdi32.</span><span class="titlestrong">BitBlt</span></h3>
+<p class="code">
+<code style="white-space: break-spaces">func BitBlt(hdc: HDC, x: s32, y: s32, cx: s32, cy: s32, hdcSrc: HDC, x1: s32, y1: s32, rop: DWORD)
+</code>
+</p>
+<h3 class="content" id="Gdi32.CAPTUREBLT"><span class="titletype"></span> <span class="titlelight">Gdi32.</span><span class="titlestrong">Constants</span></h3>
+<table>
 <tr>
 <td>
 DWORD</td>
@@ -591,6 +592,49 @@ CHINESEBIG5_CHARSET</td>
 <td>
 </td>
 </tr>
+</table>
+<h3 class="content" id="Gdi32.ChoosePixelFormat"><span class="titletype">func</span> <span class="titlelight">Gdi32.</span><span class="titlestrong">ChoosePixelFormat</span></h3>
+<p class="code">
+<code style="white-space: break-spaces">func ChoosePixelFormat(hdc: HDC, ppfd: <a href="std.gdi32.html#Gdi32.PIXELFORMATDESCRIPTOR">const *PIXELFORMATDESCRIPTOR</a>)->s32
+</code>
+</p>
+<h3 class="content" id="Gdi32.CreateCompatibleBitmap"><span class="titletype">func</span> <span class="titlelight">Gdi32.</span><span class="titlestrong">CreateCompatibleBitmap</span></h3>
+<p class="code">
+<code style="white-space: break-spaces">func CreateCompatibleBitmap(hdc: HDC, cx: s32, cy: s32)->HBITMAP
+</code>
+</p>
+<h3 class="content" id="Gdi32.CreateCompatibleDC"><span class="titletype">func</span> <span class="titlelight">Gdi32.</span><span class="titlestrong">CreateCompatibleDC</span></h3>
+<p class="code">
+<code style="white-space: break-spaces">func CreateCompatibleDC(hdc: HDC)->HDC
+</code>
+</p>
+<h3 class="content" id="Gdi32.CreateDIBSection"><span class="titletype">func</span> <span class="titlelight">Gdi32.</span><span class="titlestrong">CreateDIBSection</span></h3>
+<p class="code">
+<code style="white-space: break-spaces">func CreateDIBSection(hdc: HDC, pbmi: <a href="std.gdi32.html#Gdi32.BITMAPINFO">const *BITMAPINFO</a>, usage: UINT, ppvBits: **void, hSection: HANDLE, offset: DWORD)->HBITMAP
+</code>
+</p>
+<h3 class="content" id="Gdi32.CreateFontIndirectA"><span class="titletype">func</span> <span class="titlelight">Gdi32.</span><span class="titlestrong">CreateFontIndirectA</span></h3>
+<p class="code">
+<code style="white-space: break-spaces">func CreateFontIndirectA(lplf: <a href="std.gdi32.html#Gdi32.LOGFONTA">const *LOGFONTA</a>)->HFONT
+</code>
+</p>
+<h3 class="content" id="Gdi32.CreateFontIndirectW"><span class="titletype">func</span> <span class="titlelight">Gdi32.</span><span class="titlestrong">CreateFontIndirectW</span></h3>
+<p class="code">
+<code style="white-space: break-spaces">func CreateFontIndirectW(lplf: <a href="std.gdi32.html#Gdi32.LOGFONTW">const *LOGFONTW</a>)->HFONT
+</code>
+</p>
+<h3 class="content" id="Gdi32.CreatePen"><span class="titletype">func</span> <span class="titlelight">Gdi32.</span><span class="titlestrong">CreatePen</span></h3>
+<p class="code">
+<code style="white-space: break-spaces">func CreatePen(iStyle: s32, cWidth: s32, color: DWORD)->HPEN
+</code>
+</p>
+<h3 class="content" id="Gdi32.CreateSolidBrush"><span class="titletype">func</span> <span class="titlelight">Gdi32.</span><span class="titlestrong">CreateSolidBrush</span></h3>
+<p class="code">
+<code style="white-space: break-spaces">func CreateSolidBrush(color: DWORD)->HBRUSH
+</code>
+</p>
+<h3 class="content" id="Gdi32.DEFAULT_CHARSET"><span class="titletype"></span> <span class="titlelight">Gdi32.</span><span class="titlestrong">Constants</span></h3>
+<table>
 <tr>
 <td>
 s32</td>
@@ -655,6 +699,24 @@ DSTINVERT</td>
 <td>
 </td>
 </tr>
+</table>
+<h3 class="content" id="Gdi32.DeleteDC"><span class="titletype">func</span> <span class="titlelight">Gdi32.</span><span class="titlestrong">DeleteDC</span></h3>
+<p class="code">
+<code style="white-space: break-spaces">func DeleteDC(hdc: HDC)
+</code>
+</p>
+<h3 class="content" id="Gdi32.DeleteObject"><span class="titletype">func</span> <span class="titlelight">Gdi32.</span><span class="titlestrong">DeleteObject</span></h3>
+<p class="code">
+<code style="white-space: break-spaces">func DeleteObject(ho: HGDIOBJ)
+</code>
+</p>
+<h3 class="content" id="Gdi32.DescribePixelFormat"><span class="titletype">func</span> <span class="titlelight">Gdi32.</span><span class="titlestrong">DescribePixelFormat</span></h3>
+<p class="code">
+<code style="white-space: break-spaces">func DescribePixelFormat(hdc: HDC, iPixelFormat: s32, nBytes: UINT, ppfd: <a href="std.gdi32.html#Gdi32.PIXELFORMATDESCRIPTOR">*PIXELFORMATDESCRIPTOR</a>)->s32
+</code>
+</p>
+<h3 class="content" id="Gdi32.EASTEUROPE_CHARSET"><span class="titletype"></span> <span class="titlelight">Gdi32.</span><span class="titlestrong">Constants</span></h3>
+<table>
 <tr>
 <td>
 s32</td>
@@ -663,6 +725,99 @@ EASTEUROPE_CHARSET</td>
 <td>
 </td>
 </tr>
+</table>
+<h3 class="content" id="Gdi32.ENUMLOGFONTEXA"><span class="titletype">struct</span> <span class="titlelight">Gdi32.</span><span class="titlestrong">ENUMLOGFONTEXA</span></h3>
+<table>
+<tr>
+<td>
+elfLogFont</td>
+<td>
+<a href="std.gdi32.html#Gdi32.LOGFONTA">LOGFONTA</a></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+elfFullName</td>
+<td>
+[64] BYTE</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+elfStyle</td>
+<td>
+[32] BYTE</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+elfScript</td>
+<td>
+[32] BYTE</td>
+<td>
+</td>
+</tr>
+</table>
+<h3 class="content" id="Gdi32.ENUMLOGFONTEXW"><span class="titletype">struct</span> <span class="titlelight">Gdi32.</span><span class="titlestrong">ENUMLOGFONTEXW</span></h3>
+<table>
+<tr>
+<td>
+elfLogFont</td>
+<td>
+<a href="std.gdi32.html#Gdi32.LOGFONTW">LOGFONTW</a></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+elfFullName</td>
+<td>
+[64] WCHAR</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+elfStyle</td>
+<td>
+[32] WCHAR</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+elfScript</td>
+<td>
+[32] WCHAR</td>
+<td>
+</td>
+</tr>
+</table>
+<h3 class="content" id="Gdi32.EnumFontFamiliesA"><span class="titletype">func</span> <span class="titlelight">Gdi32.</span><span class="titlestrong">EnumFontFamiliesA</span></h3>
+<p class="code">
+<code style="white-space: break-spaces">func EnumFontFamiliesA(hdc: HDC, lpLogfont: LPCSTR, lpProc: FONTENUMPROCA, lParam: LPARAM)->s32
+</code>
+</p>
+<h3 class="content" id="Gdi32.EnumFontFamiliesExA"><span class="titletype">func</span> <span class="titlelight">Gdi32.</span><span class="titlestrong">EnumFontFamiliesExA</span></h3>
+<p class="code">
+<code style="white-space: break-spaces">func EnumFontFamiliesExA(hdc: HDC, lpLogfont: <a href="std.gdi32.html#Gdi32.LOGFONTA">const *LOGFONTA</a>, lpProc: FONTENUMPROCA, lParam: LPARAM, dwFlags: DWORD)->s32
+</code>
+</p>
+<h3 class="content" id="Gdi32.EnumFontFamiliesExW"><span class="titletype">func</span> <span class="titlelight">Gdi32.</span><span class="titlestrong">EnumFontFamiliesExW</span></h3>
+<p class="code">
+<code style="white-space: break-spaces">func EnumFontFamiliesExW(hdc: HDC, lpLogfont: <a href="std.gdi32.html#Gdi32.LOGFONTW">const *LOGFONTW</a>, lpProc: FONTENUMPROCW, lParam: LPARAM, dwFlags: DWORD)->s32
+</code>
+</p>
+<h3 class="content" id="Gdi32.EnumFontFamiliesW"><span class="titletype">func</span> <span class="titlelight">Gdi32.</span><span class="titlestrong">EnumFontFamiliesW</span></h3>
+<p class="code">
+<code style="white-space: break-spaces">func EnumFontFamiliesW(hdc: HDC, lpLogfont: LPCWSTR, lpProc: FONTENUMPROCW, lParam: LPARAM)->s32
+</code>
+</p>
+<h3 class="content" id="Gdi32.FW_BLACK"><span class="titletype"></span> <span class="titlelight">Gdi32.</span><span class="titlestrong">Constants</span></h3>
+<table>
 <tr>
 <td>
 s32</td>
@@ -815,6 +970,46 @@ GREEK_CHARSET</td>
 <td>
 </td>
 </tr>
+</table>
+<h3 class="content" id="Gdi32.GetBitmapBits"><span class="titletype">func</span> <span class="titlelight">Gdi32.</span><span class="titlestrong">GetBitmapBits</span></h3>
+<p class="code">
+<code style="white-space: break-spaces">func GetBitmapBits(hbit: HBITMAP, cb: LONG, lpvBits: LPVOID)
+</code>
+</p>
+<h3 class="content" id="Gdi32.GetDIBits"><span class="titletype">func</span> <span class="titlelight">Gdi32.</span><span class="titlestrong">GetDIBits</span></h3>
+<p class="code">
+<code style="white-space: break-spaces">func GetDIBits(hdc: HDC, hbm: HBITMAP, start: UINT, cLines: UINT, lpvBits: LPVOID, lpbmi: <a href="std.gdi32.html#Gdi32.BITMAPINFO">*BITMAPINFO</a>, usage: UINT)->s32
+</code>
+</p>
+<h3 class="content" id="Gdi32.GetFontData"><span class="titletype">func</span> <span class="titlelight">Gdi32.</span><span class="titlestrong">GetFontData</span></h3>
+<p class="code">
+<code style="white-space: break-spaces">func GetFontData(hdc: HDC, dwTable: DWORD, dwOffset: DWORD, pvBuffer: LPVOID, cjBuffer: DWORD)->DWORD
+</code>
+</p>
+<h3 class="content" id="Gdi32.GetObjectA"><span class="titletype">func</span> <span class="titlelight">Gdi32.</span><span class="titlestrong">GetObjectA</span></h3>
+<p class="code">
+<code style="white-space: break-spaces">func GetObjectA(h: HANDLE, c: s32, pv: LPVOID)->s32
+func GetObjectA(h: HANDLE, c: s32, pv: LPVOID)
+</code>
+</p>
+<h3 class="content" id="Gdi32.GetObjectW"><span class="titletype">func</span> <span class="titlelight">Gdi32.</span><span class="titlestrong">GetObjectW</span></h3>
+<p class="code">
+<code style="white-space: break-spaces">func GetObjectW(h: HANDLE, c: s32, pv: LPVOID)->s32
+func GetObjectW(h: HANDLE, c: s32, pv: LPVOID)
+</code>
+</p>
+<h3 class="content" id="Gdi32.GetPixel"><span class="titletype">func</span> <span class="titlelight">Gdi32.</span><span class="titlestrong">GetPixel</span></h3>
+<p class="code">
+<code style="white-space: break-spaces">func GetPixel(hdc: HDC, x: s32, y: s32)->DWORD
+</code>
+</p>
+<h3 class="content" id="Gdi32.GetStockObject"><span class="titletype">func</span> <span class="titlelight">Gdi32.</span><span class="titlestrong">GetStockObject</span></h3>
+<p class="code">
+<code style="white-space: break-spaces">func GetStockObject(i: s32)->HGDIOBJ
+</code>
+</p>
+<h3 class="content" id="Gdi32.HANGEUL_CHARSET"><span class="titletype"></span> <span class="titlelight">Gdi32.</span><span class="titlestrong">Constants</span></h3>
+<table>
 <tr>
 <td>
 s32</td>
@@ -871,728 +1066,7 @@ LF_FULLFACESIZE</td>
 <td>
 </td>
 </tr>
-<tr>
-<td>
-s32</td>
-<td id="Gdi32.LTGRAY_BRUSH">
-LTGRAY_BRUSH</td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-s32</td>
-<td id="Gdi32.MAC_CHARSET">
-MAC_CHARSET</td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-DWORD</td>
-<td id="Gdi32.MERGECOPY">
-MERGECOPY</td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-DWORD</td>
-<td id="Gdi32.MERGEPAINT">
-MERGEPAINT</td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-DWORD</td>
-<td id="Gdi32.NOMIRRORBITMAP">
-NOMIRRORBITMAP</td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-DWORD</td>
-<td id="Gdi32.NOTSRCCOPY">
-NOTSRCCOPY</td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-DWORD</td>
-<td id="Gdi32.NOTSRCERASE">
-NOTSRCERASE</td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-s32</td>
-<td id="Gdi32.NULL_BRUSH">
-NULL_BRUSH</td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-s32</td>
-<td id="Gdi32.NULL_PEN">
-NULL_PEN</td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-s32</td>
-<td id="Gdi32.OEM_CHARSET">
-OEM_CHARSET</td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-s32</td>
-<td id="Gdi32.OEM_FIXED_FONT">
-OEM_FIXED_FONT</td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-s32</td>
-<td id="Gdi32.OPAQUE">
-OPAQUE</td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-DWORD</td>
-<td id="Gdi32.PATCOPY">
-PATCOPY</td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-DWORD</td>
-<td id="Gdi32.PATINVERT">
-PATINVERT</td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-DWORD</td>
-<td id="Gdi32.PATPAINT">
-PATPAINT</td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-u32</td>
-<td id="Gdi32.PFD_DEPTH_DONTCARE">
-PFD_DEPTH_DONTCARE</td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-u32</td>
-<td id="Gdi32.PFD_DIRECT3D_ACCELERATED">
-PFD_DIRECT3D_ACCELERATED</td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-u32</td>
-<td id="Gdi32.PFD_DOUBLEBUFFER">
-PFD_DOUBLEBUFFER</td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-u32</td>
-<td id="Gdi32.PFD_DOUBLEBUFFER_DONTCARE">
-PFD_DOUBLEBUFFER_DONTCARE</td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-u32</td>
-<td id="Gdi32.PFD_DRAW_TO_BITMAP">
-PFD_DRAW_TO_BITMAP</td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-u32</td>
-<td id="Gdi32.PFD_DRAW_TO_WINDOW">
-PFD_DRAW_TO_WINDOW</td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-u32</td>
-<td id="Gdi32.PFD_GENERIC_ACCELERATED">
-PFD_GENERIC_ACCELERATED</td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-u32</td>
-<td id="Gdi32.PFD_GENERIC_FORMAT">
-PFD_GENERIC_FORMAT</td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-s32</td>
-<td id="Gdi32.PFD_MAIN_PLANE">
-PFD_MAIN_PLANE</td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-u32</td>
-<td id="Gdi32.PFD_NEED_PALETTE">
-PFD_NEED_PALETTE</td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-u32</td>
-<td id="Gdi32.PFD_NEED_SYSTEM_PALETTE">
-PFD_NEED_SYSTEM_PALETTE</td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-s32</td>
-<td id="Gdi32.PFD_OVERLAY_PLANE">
-PFD_OVERLAY_PLANE</td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-u32</td>
-<td id="Gdi32.PFD_STEREO">
-PFD_STEREO</td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-u32</td>
-<td id="Gdi32.PFD_STEREO_DONTCARE">
-PFD_STEREO_DONTCARE</td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-u32</td>
-<td id="Gdi32.PFD_SUPPORT_COMPOSITION">
-PFD_SUPPORT_COMPOSITION</td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-u32</td>
-<td id="Gdi32.PFD_SUPPORT_DIRECTDRAW">
-PFD_SUPPORT_DIRECTDRAW</td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-u32</td>
-<td id="Gdi32.PFD_SUPPORT_GDI">
-PFD_SUPPORT_GDI</td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-u32</td>
-<td id="Gdi32.PFD_SUPPORT_OPENGL">
-PFD_SUPPORT_OPENGL</td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-u32</td>
-<td id="Gdi32.PFD_SWAP_COPY">
-PFD_SWAP_COPY</td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-u32</td>
-<td id="Gdi32.PFD_SWAP_EXCHANGE">
-PFD_SWAP_EXCHANGE</td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-u32</td>
-<td id="Gdi32.PFD_SWAP_LAYER_BUFFERS">
-PFD_SWAP_LAYER_BUFFERS</td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-s32</td>
-<td id="Gdi32.PFD_TYPE_COLORINDEX">
-PFD_TYPE_COLORINDEX</td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-s32</td>
-<td id="Gdi32.PFD_TYPE_RGBA">
-PFD_TYPE_RGBA</td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-s32</td>
-<td id="Gdi32.PFD_UNDERLAY_PLANE">
-PFD_UNDERLAY_PLANE</td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-s32</td>
-<td id="Gdi32.PS_ALTERNATE">
-PS_ALTERNATE</td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-s32</td>
-<td id="Gdi32.PS_DASH">
-PS_DASH</td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-s32</td>
-<td id="Gdi32.PS_DASHDOT">
-PS_DASHDOT</td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-s32</td>
-<td id="Gdi32.PS_DASHDOTDOT">
-PS_DASHDOTDOT</td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-s32</td>
-<td id="Gdi32.PS_DOT">
-PS_DOT</td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-s32</td>
-<td id="Gdi32.PS_INSIDEFRAME">
-PS_INSIDEFRAME</td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-s32</td>
-<td id="Gdi32.PS_NULL">
-PS_NULL</td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-s32</td>
-<td id="Gdi32.PS_SOLID">
-PS_SOLID</td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-u32</td>
-<td id="Gdi32.PS_STYLE_MASK">
-PS_STYLE_MASK</td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-s32</td>
-<td id="Gdi32.PS_USERSTYLE">
-PS_USERSTYLE</td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-u32</td>
-<td id="Gdi32.RASTER_FONTTYPE">
-RASTER_FONTTYPE</td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-s32</td>
-<td id="Gdi32.RUSSIAN_CHARSET">
-RUSSIAN_CHARSET</td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-s32</td>
-<td id="Gdi32.SHIFTJIS_CHARSET">
-SHIFTJIS_CHARSET</td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-DWORD</td>
-<td id="Gdi32.SRCAND">
-SRCAND</td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-DWORD</td>
-<td id="Gdi32.SRCCOPY">
-SRCCOPY</td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-DWORD</td>
-<td id="Gdi32.SRCERASE">
-SRCERASE</td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-DWORD</td>
-<td id="Gdi32.SRCINVERT">
-SRCINVERT</td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-DWORD</td>
-<td id="Gdi32.SRCPAINT">
-SRCPAINT</td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-s32</td>
-<td id="Gdi32.SYMBOL_CHARSET">
-SYMBOL_CHARSET</td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-s32</td>
-<td id="Gdi32.SYSTEM_FIXED_FONT">
-SYSTEM_FIXED_FONT</td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-s32</td>
-<td id="Gdi32.SYSTEM_FONT">
-SYSTEM_FONT</td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-s32</td>
-<td id="Gdi32.THAI_CHARSET">
-THAI_CHARSET</td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-s32</td>
-<td id="Gdi32.TRANSPARENT">
-TRANSPARENT</td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-u32</td>
-<td id="Gdi32.TRUETYPE_FONTTYPE">
-TRUETYPE_FONTTYPE</td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-s32</td>
-<td id="Gdi32.TURKISH_CHARSET">
-TURKISH_CHARSET</td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-s32</td>
-<td id="Gdi32.VIETNAMESE_CHARSET">
-VIETNAMESE_CHARSET</td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-DWORD</td>
-<td id="Gdi32.WHITENESS">
-WHITENESS</td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-s32</td>
-<td id="Gdi32.WHITE_BRUSH">
-WHITE_BRUSH</td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-s32</td>
-<td id="Gdi32.WHITE_PEN">
-WHITE_PEN</td>
-<td>
-</td>
-</tr>
 </table>
-<h3 class="content" id="Gdi32.CreateCompatibleBitmap"><span class="titletype">func</span> <span class="titlelight">Gdi32.</span><span class="titlestrong">CreateCompatibleBitmap</span></h3>
-<p class="code">
-<code style="white-space: break-spaces">func CreateCompatibleBitmap(hdc: HDC, cx: s32, cy: s32)->HBITMAP
-</code>
-</p>
-<h3 class="content" id="Gdi32.CreateCompatibleDC"><span class="titletype">func</span> <span class="titlelight">Gdi32.</span><span class="titlestrong">CreateCompatibleDC</span></h3>
-<p class="code">
-<code style="white-space: break-spaces">func CreateCompatibleDC(hdc: HDC)->HDC
-</code>
-</p>
-<h3 class="content" id="Gdi32.CreateDIBSection"><span class="titletype">func</span> <span class="titlelight">Gdi32.</span><span class="titlestrong">CreateDIBSection</span></h3>
-<p class="code">
-<code style="white-space: break-spaces">func CreateDIBSection(hdc: HDC, pbmi: <a href="std.gdi32.html#Gdi32.BITMAPINFO">const *BITMAPINFO</a>, usage: UINT, ppvBits: **void, hSection: HANDLE, offset: DWORD)->HBITMAP
-</code>
-</p>
-<h3 class="content" id="Gdi32.CreateFontIndirectA"><span class="titletype">func</span> <span class="titlelight">Gdi32.</span><span class="titlestrong">CreateFontIndirectA</span></h3>
-<p class="code">
-<code style="white-space: break-spaces">func CreateFontIndirectA(lplf: <a href="std.gdi32.html#Gdi32.LOGFONTA">const *LOGFONTA</a>)->HFONT
-</code>
-</p>
-<h3 class="content" id="Gdi32.CreateFontIndirectW"><span class="titletype">func</span> <span class="titlelight">Gdi32.</span><span class="titlestrong">CreateFontIndirectW</span></h3>
-<p class="code">
-<code style="white-space: break-spaces">func CreateFontIndirectW(lplf: <a href="std.gdi32.html#Gdi32.LOGFONTW">const *LOGFONTW</a>)->HFONT
-</code>
-</p>
-<h3 class="content" id="Gdi32.CreatePen"><span class="titletype">func</span> <span class="titlelight">Gdi32.</span><span class="titlestrong">CreatePen</span></h3>
-<p class="code">
-<code style="white-space: break-spaces">func CreatePen(iStyle: s32, cWidth: s32, color: DWORD)->HPEN
-</code>
-</p>
-<h3 class="content" id="Gdi32.CreateSolidBrush"><span class="titletype">func</span> <span class="titlelight">Gdi32.</span><span class="titlestrong">CreateSolidBrush</span></h3>
-<p class="code">
-<code style="white-space: break-spaces">func CreateSolidBrush(color: DWORD)->HBRUSH
-</code>
-</p>
-<h3 class="content" id="Gdi32.DeleteDC"><span class="titletype">func</span> <span class="titlelight">Gdi32.</span><span class="titlestrong">DeleteDC</span></h3>
-<p class="code">
-<code style="white-space: break-spaces">func DeleteDC(hdc: HDC)
-</code>
-</p>
-<h3 class="content" id="Gdi32.DeleteObject"><span class="titletype">func</span> <span class="titlelight">Gdi32.</span><span class="titlestrong">DeleteObject</span></h3>
-<p class="code">
-<code style="white-space: break-spaces">func DeleteObject(ho: HGDIOBJ)
-</code>
-</p>
-<h3 class="content" id="Gdi32.DescribePixelFormat"><span class="titletype">func</span> <span class="titlelight">Gdi32.</span><span class="titlestrong">DescribePixelFormat</span></h3>
-<p class="code">
-<code style="white-space: break-spaces">func DescribePixelFormat(hdc: HDC, iPixelFormat: s32, nBytes: UINT, ppfd: <a href="std.gdi32.html#Gdi32.PIXELFORMATDESCRIPTOR">*PIXELFORMATDESCRIPTOR</a>)->s32
-</code>
-</p>
-<h3 class="content" id="Gdi32.ENUMLOGFONTEXA"><span class="titletype">struct</span> <span class="titlelight">Gdi32.</span><span class="titlestrong">ENUMLOGFONTEXA</span></h3>
-<table>
-<tr>
-<td>
-elfLogFont</td>
-<td>
-<a href="std.gdi32.html#Gdi32.LOGFONTA">LOGFONTA</a></td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-elfFullName</td>
-<td>
-[64] BYTE</td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-elfStyle</td>
-<td>
-[32] BYTE</td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-elfScript</td>
-<td>
-[32] BYTE</td>
-<td>
-</td>
-</tr>
-</table>
-<h3 class="content" id="Gdi32.ENUMLOGFONTEXW"><span class="titletype">struct</span> <span class="titlelight">Gdi32.</span><span class="titlestrong">ENUMLOGFONTEXW</span></h3>
-<table>
-<tr>
-<td>
-elfLogFont</td>
-<td>
-<a href="std.gdi32.html#Gdi32.LOGFONTW">LOGFONTW</a></td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-elfFullName</td>
-<td>
-[64] WCHAR</td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-elfStyle</td>
-<td>
-[32] WCHAR</td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-elfScript</td>
-<td>
-[32] WCHAR</td>
-<td>
-</td>
-</tr>
-</table>
-<h3 class="content" id="Gdi32.EnumFontFamiliesA"><span class="titletype">func</span> <span class="titlelight">Gdi32.</span><span class="titlestrong">EnumFontFamiliesA</span></h3>
-<p class="code">
-<code style="white-space: break-spaces">func EnumFontFamiliesA(hdc: HDC, lpLogfont: LPCSTR, lpProc: FONTENUMPROCA, lParam: LPARAM)->s32
-</code>
-</p>
-<h3 class="content" id="Gdi32.EnumFontFamiliesExA"><span class="titletype">func</span> <span class="titlelight">Gdi32.</span><span class="titlestrong">EnumFontFamiliesExA</span></h3>
-<p class="code">
-<code style="white-space: break-spaces">func EnumFontFamiliesExA(hdc: HDC, lpLogfont: <a href="std.gdi32.html#Gdi32.LOGFONTA">const *LOGFONTA</a>, lpProc: FONTENUMPROCA, lParam: LPARAM, dwFlags: DWORD)->s32
-</code>
-</p>
-<h3 class="content" id="Gdi32.EnumFontFamiliesExW"><span class="titletype">func</span> <span class="titlelight">Gdi32.</span><span class="titlestrong">EnumFontFamiliesExW</span></h3>
-<p class="code">
-<code style="white-space: break-spaces">func EnumFontFamiliesExW(hdc: HDC, lpLogfont: <a href="std.gdi32.html#Gdi32.LOGFONTW">const *LOGFONTW</a>, lpProc: FONTENUMPROCW, lParam: LPARAM, dwFlags: DWORD)->s32
-</code>
-</p>
-<h3 class="content" id="Gdi32.EnumFontFamiliesW"><span class="titletype">func</span> <span class="titlelight">Gdi32.</span><span class="titlestrong">EnumFontFamiliesW</span></h3>
-<p class="code">
-<code style="white-space: break-spaces">func EnumFontFamiliesW(hdc: HDC, lpLogfont: LPCWSTR, lpProc: FONTENUMPROCW, lParam: LPARAM)->s32
-</code>
-</p>
-<h3 class="content" id="Gdi32.GetBitmapBits"><span class="titletype">func</span> <span class="titlelight">Gdi32.</span><span class="titlestrong">GetBitmapBits</span></h3>
-<p class="code">
-<code style="white-space: break-spaces">func GetBitmapBits(hbit: HBITMAP, cb: LONG, lpvBits: LPVOID)
-</code>
-</p>
-<h3 class="content" id="Gdi32.GetDIBits"><span class="titletype">func</span> <span class="titlelight">Gdi32.</span><span class="titlestrong">GetDIBits</span></h3>
-<p class="code">
-<code style="white-space: break-spaces">func GetDIBits(hdc: HDC, hbm: HBITMAP, start: UINT, cLines: UINT, lpvBits: LPVOID, lpbmi: <a href="std.gdi32.html#Gdi32.BITMAPINFO">*BITMAPINFO</a>, usage: UINT)->s32
-</code>
-</p>
-<h3 class="content" id="Gdi32.GetFontData"><span class="titletype">func</span> <span class="titlelight">Gdi32.</span><span class="titlestrong">GetFontData</span></h3>
-<p class="code">
-<code style="white-space: break-spaces">func GetFontData(hdc: HDC, dwTable: DWORD, dwOffset: DWORD, pvBuffer: LPVOID, cjBuffer: DWORD)->DWORD
-</code>
-</p>
-<h3 class="content" id="Gdi32.GetObjectA"><span class="titletype">func</span> <span class="titlelight">Gdi32.</span><span class="titlestrong">GetObjectA</span></h3>
-<p class="code">
-<code style="white-space: break-spaces">func GetObjectA(h: HANDLE, c: s32, pv: LPVOID)->s32
-func GetObjectA(h: HANDLE, c: s32, pv: LPVOID)
-</code>
-</p>
-<h3 class="content" id="Gdi32.GetObjectW"><span class="titletype">func</span> <span class="titlelight">Gdi32.</span><span class="titlestrong">GetObjectW</span></h3>
-<p class="code">
-<code style="white-space: break-spaces">func GetObjectW(h: HANDLE, c: s32, pv: LPVOID)->s32
-func GetObjectW(h: HANDLE, c: s32, pv: LPVOID)
-</code>
-</p>
-<h3 class="content" id="Gdi32.GetPixel"><span class="titletype">func</span> <span class="titlelight">Gdi32.</span><span class="titlestrong">GetPixel</span></h3>
-<p class="code">
-<code style="white-space: break-spaces">func GetPixel(hdc: HDC, x: s32, y: s32)->DWORD
-</code>
-</p>
-<h3 class="content" id="Gdi32.GetStockObject"><span class="titletype">func</span> <span class="titlelight">Gdi32.</span><span class="titlestrong">GetStockObject</span></h3>
-<p class="code">
-<code style="white-space: break-spaces">func GetStockObject(i: s32)->HGDIOBJ
-</code>
-</p>
 <h3 class="content" id="Gdi32.LOGFONTA"><span class="titletype">struct</span> <span class="titlelight">Gdi32.</span><span class="titlestrong">LOGFONTA</span></h3>
 <table>
 <tr>
@@ -1823,11 +1297,49 @@ lfFaceName</td>
 </td>
 </tr>
 </table>
+<h3 class="content" id="Gdi32.LTGRAY_BRUSH"><span class="titletype"></span> <span class="titlelight">Gdi32.</span><span class="titlestrong">Constants</span></h3>
+<table>
+<tr>
+<td>
+s32</td>
+<td id="Gdi32.LTGRAY_BRUSH">
+LTGRAY_BRUSH</td>
+<td>
+</td>
+</tr>
+</table>
 <h3 class="content" id="Gdi32.LineTo"><span class="titletype">func</span> <span class="titlelight">Gdi32.</span><span class="titlestrong">LineTo</span></h3>
 <p class="code">
 <code style="white-space: break-spaces">func LineTo(hdc: HDC, x: s32, y: s32)->BOOL
 </code>
 </p>
+<h3 class="content" id="Gdi32.MAC_CHARSET"><span class="titletype"></span> <span class="titlelight">Gdi32.</span><span class="titlestrong">Constants</span></h3>
+<table>
+<tr>
+<td>
+s32</td>
+<td id="Gdi32.MAC_CHARSET">
+MAC_CHARSET</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+DWORD</td>
+<td id="Gdi32.MERGECOPY">
+MERGECOPY</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+DWORD</td>
+<td id="Gdi32.MERGEPAINT">
+MERGEPAINT</td>
+<td>
+</td>
+</tr>
+</table>
 <h3 class="content" id="Gdi32.MoveTo"><span class="titletype">func</span> <span class="titlelight">Gdi32.</span><span class="titlestrong">MoveTo</span></h3>
 <p class="code">
 <code style="white-space: break-spaces">func MoveTo(hdc: HDC, x: s32, y: s32)->BOOL
@@ -2223,6 +1735,289 @@ UINT</td>
 </td>
 </tr>
 </table>
+<h3 class="content" id="Gdi32.NOMIRRORBITMAP"><span class="titletype"></span> <span class="titlelight">Gdi32.</span><span class="titlestrong">Constants</span></h3>
+<table>
+<tr>
+<td>
+DWORD</td>
+<td id="Gdi32.NOMIRRORBITMAP">
+NOMIRRORBITMAP</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+DWORD</td>
+<td id="Gdi32.NOTSRCCOPY">
+NOTSRCCOPY</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+DWORD</td>
+<td id="Gdi32.NOTSRCERASE">
+NOTSRCERASE</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+s32</td>
+<td id="Gdi32.NULL_BRUSH">
+NULL_BRUSH</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+s32</td>
+<td id="Gdi32.NULL_PEN">
+NULL_PEN</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+s32</td>
+<td id="Gdi32.OEM_CHARSET">
+OEM_CHARSET</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+s32</td>
+<td id="Gdi32.OEM_FIXED_FONT">
+OEM_FIXED_FONT</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+s32</td>
+<td id="Gdi32.OPAQUE">
+OPAQUE</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+DWORD</td>
+<td id="Gdi32.PATCOPY">
+PATCOPY</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+DWORD</td>
+<td id="Gdi32.PATINVERT">
+PATINVERT</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+DWORD</td>
+<td id="Gdi32.PATPAINT">
+PATPAINT</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+u32</td>
+<td id="Gdi32.PFD_DEPTH_DONTCARE">
+PFD_DEPTH_DONTCARE</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+u32</td>
+<td id="Gdi32.PFD_DIRECT3D_ACCELERATED">
+PFD_DIRECT3D_ACCELERATED</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+u32</td>
+<td id="Gdi32.PFD_DOUBLEBUFFER">
+PFD_DOUBLEBUFFER</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+u32</td>
+<td id="Gdi32.PFD_DOUBLEBUFFER_DONTCARE">
+PFD_DOUBLEBUFFER_DONTCARE</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+u32</td>
+<td id="Gdi32.PFD_DRAW_TO_BITMAP">
+PFD_DRAW_TO_BITMAP</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+u32</td>
+<td id="Gdi32.PFD_DRAW_TO_WINDOW">
+PFD_DRAW_TO_WINDOW</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+u32</td>
+<td id="Gdi32.PFD_GENERIC_ACCELERATED">
+PFD_GENERIC_ACCELERATED</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+u32</td>
+<td id="Gdi32.PFD_GENERIC_FORMAT">
+PFD_GENERIC_FORMAT</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+s32</td>
+<td id="Gdi32.PFD_MAIN_PLANE">
+PFD_MAIN_PLANE</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+u32</td>
+<td id="Gdi32.PFD_NEED_PALETTE">
+PFD_NEED_PALETTE</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+u32</td>
+<td id="Gdi32.PFD_NEED_SYSTEM_PALETTE">
+PFD_NEED_SYSTEM_PALETTE</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+s32</td>
+<td id="Gdi32.PFD_OVERLAY_PLANE">
+PFD_OVERLAY_PLANE</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+u32</td>
+<td id="Gdi32.PFD_STEREO">
+PFD_STEREO</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+u32</td>
+<td id="Gdi32.PFD_STEREO_DONTCARE">
+PFD_STEREO_DONTCARE</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+u32</td>
+<td id="Gdi32.PFD_SUPPORT_COMPOSITION">
+PFD_SUPPORT_COMPOSITION</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+u32</td>
+<td id="Gdi32.PFD_SUPPORT_DIRECTDRAW">
+PFD_SUPPORT_DIRECTDRAW</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+u32</td>
+<td id="Gdi32.PFD_SUPPORT_GDI">
+PFD_SUPPORT_GDI</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+u32</td>
+<td id="Gdi32.PFD_SUPPORT_OPENGL">
+PFD_SUPPORT_OPENGL</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+u32</td>
+<td id="Gdi32.PFD_SWAP_COPY">
+PFD_SWAP_COPY</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+u32</td>
+<td id="Gdi32.PFD_SWAP_EXCHANGE">
+PFD_SWAP_EXCHANGE</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+u32</td>
+<td id="Gdi32.PFD_SWAP_LAYER_BUFFERS">
+PFD_SWAP_LAYER_BUFFERS</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+s32</td>
+<td id="Gdi32.PFD_TYPE_COLORINDEX">
+PFD_TYPE_COLORINDEX</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+s32</td>
+<td id="Gdi32.PFD_TYPE_RGBA">
+PFD_TYPE_RGBA</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+s32</td>
+<td id="Gdi32.PFD_UNDERLAY_PLANE">
+PFD_UNDERLAY_PLANE</td>
+<td>
+</td>
+</tr>
+</table>
 <h3 class="content" id="Gdi32.PIXELFORMATDESCRIPTOR"><span class="titletype">struct</span> <span class="titlelight">Gdi32.</span><span class="titlestrong">PIXELFORMATDESCRIPTOR</span></h3>
 <table>
 <tr>
@@ -2434,6 +2229,97 @@ DWORD</td>
 </td>
 </tr>
 </table>
+<h3 class="content" id="Gdi32.PS_ALTERNATE"><span class="titletype"></span> <span class="titlelight">Gdi32.</span><span class="titlestrong">Constants</span></h3>
+<table>
+<tr>
+<td>
+s32</td>
+<td id="Gdi32.PS_ALTERNATE">
+PS_ALTERNATE</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+s32</td>
+<td id="Gdi32.PS_DASH">
+PS_DASH</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+s32</td>
+<td id="Gdi32.PS_DASHDOT">
+PS_DASHDOT</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+s32</td>
+<td id="Gdi32.PS_DASHDOTDOT">
+PS_DASHDOTDOT</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+s32</td>
+<td id="Gdi32.PS_DOT">
+PS_DOT</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+s32</td>
+<td id="Gdi32.PS_INSIDEFRAME">
+PS_INSIDEFRAME</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+s32</td>
+<td id="Gdi32.PS_NULL">
+PS_NULL</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+s32</td>
+<td id="Gdi32.PS_SOLID">
+PS_SOLID</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+u32</td>
+<td id="Gdi32.PS_STYLE_MASK">
+PS_STYLE_MASK</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+s32</td>
+<td id="Gdi32.PS_USERSTYLE">
+PS_USERSTYLE</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+u32</td>
+<td id="Gdi32.RASTER_FONTTYPE">
+RASTER_FONTTYPE</td>
+<td>
+</td>
+</tr>
+</table>
 <h3 class="content" id="Gdi32.RGB"><span class="titletype">func</span> <span class="titlelight">Gdi32.</span><span class="titlestrong">RGB</span></h3>
 <p class="code">
 <code style="white-space: break-spaces">func RGB(r: s32, g: s32, b: s32)->DWORD
@@ -2474,11 +2360,97 @@ BYTE</td>
 </td>
 </tr>
 </table>
+<h3 class="content" id="Gdi32.RUSSIAN_CHARSET"><span class="titletype"></span> <span class="titlelight">Gdi32.</span><span class="titlestrong">Constants</span></h3>
+<table>
+<tr>
+<td>
+s32</td>
+<td id="Gdi32.RUSSIAN_CHARSET">
+RUSSIAN_CHARSET</td>
+<td>
+</td>
+</tr>
+</table>
 <h3 class="content" id="Gdi32.Rectangle"><span class="titletype">func</span> <span class="titlelight">Gdi32.</span><span class="titlestrong">Rectangle</span></h3>
 <p class="code">
 <code style="white-space: break-spaces">func Rectangle(hdc: HDC, left: s32, top: s32, right: s32, bottom: s32)->BOOL
 </code>
 </p>
+<h3 class="content" id="Gdi32.SHIFTJIS_CHARSET"><span class="titletype"></span> <span class="titlelight">Gdi32.</span><span class="titlestrong">Constants</span></h3>
+<table>
+<tr>
+<td>
+s32</td>
+<td id="Gdi32.SHIFTJIS_CHARSET">
+SHIFTJIS_CHARSET</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+DWORD</td>
+<td id="Gdi32.SRCAND">
+SRCAND</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+DWORD</td>
+<td id="Gdi32.SRCCOPY">
+SRCCOPY</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+DWORD</td>
+<td id="Gdi32.SRCERASE">
+SRCERASE</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+DWORD</td>
+<td id="Gdi32.SRCINVERT">
+SRCINVERT</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+DWORD</td>
+<td id="Gdi32.SRCPAINT">
+SRCPAINT</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+s32</td>
+<td id="Gdi32.SYMBOL_CHARSET">
+SYMBOL_CHARSET</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+s32</td>
+<td id="Gdi32.SYSTEM_FIXED_FONT">
+SYSTEM_FIXED_FONT</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+s32</td>
+<td id="Gdi32.SYSTEM_FONT">
+SYSTEM_FONT</td>
+<td>
+</td>
+</tr>
+</table>
 <h3 class="content" id="Gdi32.SelectObject"><span class="titletype">func</span> <span class="titlelight">Gdi32.</span><span class="titlestrong">SelectObject</span></h3>
 <p class="code">
 <code style="white-space: break-spaces">func SelectObject(hdc: HDC, h: HGDIOBJ)->HGDIOBJ
@@ -2840,6 +2812,41 @@ BYTE</td>
 </td>
 </tr>
 </table>
+<h3 class="content" id="Gdi32.THAI_CHARSET"><span class="titletype"></span> <span class="titlelight">Gdi32.</span><span class="titlestrong">Constants</span></h3>
+<table>
+<tr>
+<td>
+s32</td>
+<td id="Gdi32.THAI_CHARSET">
+THAI_CHARSET</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+s32</td>
+<td id="Gdi32.TRANSPARENT">
+TRANSPARENT</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+u32</td>
+<td id="Gdi32.TRUETYPE_FONTTYPE">
+TRUETYPE_FONTTYPE</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+s32</td>
+<td id="Gdi32.TURKISH_CHARSET">
+TURKISH_CHARSET</td>
+<td>
+</td>
+</tr>
+</table>
 <h3 class="content" id="Gdi32.TextOutA"><span class="titletype">func</span> <span class="titlelight">Gdi32.</span><span class="titlestrong">TextOutA</span></h3>
 <p class="code">
 <code style="white-space: break-spaces">func TextOutA(hdc: HDC, x: s32, y: s32, lpString: LPCSTR, c: s32)->BOOL
@@ -2850,6 +2857,98 @@ BYTE</td>
 <code style="white-space: break-spaces">func TextOutW(hdc: HDC, x: s32, y: s32, lpString: LPCWSTR, c: s32)->BOOL
 </code>
 </p>
+<h3 class="content" id="Gdi32.VIETNAMESE_CHARSET"><span class="titletype"></span> <span class="titlelight">Gdi32.</span><span class="titlestrong">Constants</span></h3>
+<table>
+<tr>
+<td>
+s32</td>
+<td id="Gdi32.VIETNAMESE_CHARSET">
+VIETNAMESE_CHARSET</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+DWORD</td>
+<td id="Gdi32.WHITENESS">
+WHITENESS</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+s32</td>
+<td id="Gdi32.WHITE_BRUSH">
+WHITE_BRUSH</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+s32</td>
+<td id="Gdi32.WHITE_PEN">
+WHITE_PEN</td>
+<td>
+</td>
+</tr>
+</table>
+<h3 class="content" id="Gdi32.WHITENESS"><span class="titletype"></span> <span class="titlelight">Gdi32.</span><span class="titlestrong">Constants</span></h3>
+<table>
+<tr>
+<td>
+DWORD</td>
+<td id="Gdi32.WHITENESS">
+WHITENESS</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+s32</td>
+<td id="Gdi32.WHITE_BRUSH">
+WHITE_BRUSH</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+s32</td>
+<td id="Gdi32.WHITE_PEN">
+WHITE_PEN</td>
+<td>
+</td>
+</tr>
+</table>
+<h3 class="content" id="Gdi32.WHITE_BRUSH"><span class="titletype"></span> <span class="titlelight">Gdi32.</span><span class="titlestrong">Constants</span></h3>
+<table>
+<tr>
+<td>
+s32</td>
+<td id="Gdi32.WHITE_BRUSH">
+WHITE_BRUSH</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+s32</td>
+<td id="Gdi32.WHITE_PEN">
+WHITE_PEN</td>
+<td>
+</td>
+</tr>
+</table>
+<h3 class="content" id="Gdi32.WHITE_PEN"><span class="titletype"></span> <span class="titlelight">Gdi32.</span><span class="titlestrong">Constants</span></h3>
+<table>
+<tr>
+<td>
+s32</td>
+<td id="Gdi32.WHITE_PEN">
+WHITE_PEN</td>
+<td>
+</td>
+</tr>
+</table>
 </div>
 </div>
 </div>

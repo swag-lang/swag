@@ -233,7 +233,10 @@ void ModuleGenDocJob::outputTitle(OneRef& c)
     helpContent += "</span>";
 
     helpContent += "<span class=\"titlestrong\">";
-    helpContent += tkn.back();
+    if (c.nodes[0]->kind == AstNodeKind::ConstDecl)
+        helpContent += "Constants";
+    else
+        helpContent += tkn.back();
     helpContent += "</span>";
 
     helpContent += "</h3>\n";
@@ -471,17 +474,6 @@ void ModuleGenDocJob::collectNode(AstNode* node)
         return;
 
     Utf8 name = node->getScopedName();
-
-    if (node->kind == AstNodeKind::ConstDecl)
-    {
-        auto pz = strrchr(name.c_str(), '.');
-        SWAG_ASSERT(pz);
-        auto len = (uint32_t) (size_t) (pz - name.c_str());
-        name.remove(len, name.length() - len);
-        name += ".";
-        name += "Constants";
-    }
-
     if (!name.empty())
     {
         auto it = collect.find(name);
@@ -530,11 +522,9 @@ void ModuleGenDocJob::generateTocCateg(bool& first, AstNodeKind kind, const char
         Vector<Utf8> tkn;
         Utf8::tokenize(n->fullName, '.', tkn);
 
-        int lastIdx = (int) tkn.size() - 1;
         if (kind == AstNodeKind::FuncDecl && tkn.size() > 1)
         {
-            lastIdx--;
-            n->tocName = tkn[lastIdx];
+            n->tocName = tkn[tkn.size() - 2];
             n->tocName += ".";
         }
 
@@ -587,30 +577,10 @@ void ModuleGenDocJob::generateTocCateg(bool& first, AstNodeKind kind, const char
 
     helpContent += Fmt("<h3>%s</h3>\n", categName);
     helpContent += "<ul class=\"tocbullet\">\n";
-
     for (auto& t : pendingNodes)
-    {
-        Vector<Utf8> tkn;
-        Utf8::tokenize(t->fullName, '.', tkn);
-
-        if (kind == AstNodeKind::ConstDecl)
-        {
-            sort(t->nodes.begin(), t->nodes.end(), [](AstNode* a, AstNode* b)
-                 { return strcmp(a->token.ctext(), b->token.ctext()) < 0; });
-            for (auto n : t->nodes)
-            {
-                helpContent += Fmt("<li><a href=\"#%s\">%s</a></li>\n", n->getScopedName().c_str(), n->token.ctext());
-                if (kind != AstNodeKind::ConstDecl)
-                    break;
-            }
-        }
-        else
-        {
-            helpContent += Fmt("<li><a href=\"#%s\">%s</a></li>\n", t->fullName.c_str(), t->tocName.c_str());
-        }
-    }
-
+        helpContent += Fmt("<li><a href=\"#%s\">%s</a></li>\n", t->fullName.c_str(), t->tocName.c_str());
     helpContent += "</ul>\n";
+
     pendingNodes.clear();
 }
 
@@ -777,15 +747,17 @@ void ModuleGenDocJob::generateContent()
     sort(allNodes.begin(), allNodes.end(), [this](OneRef& a, OneRef& b)
          { return strcmp(a.fullName.buffer, b.fullName.buffer) < 0; });
 
-    for (auto& c : allNodes)
+    for (int i = 0; i < allNodes.size(); i++)
     {
-        outputTitle(c);
+        auto& c  = allNodes[i];
+        auto  n0 = c.nodes[0];
 
-        auto n0 = c.nodes[0];
         switch (n0->kind)
         {
         case AstNodeKind::Namespace:
         {
+            outputTitle(c);
+
             UserComment userComment;
             auto        docComment = getDocComment(n0);
             if (!docComment.empty())
@@ -808,11 +780,20 @@ void ModuleGenDocJob::generateContent()
 
         case AstNodeKind::ConstDecl:
         {
-            Utf8 code;
+            outputTitle(c);
+
             helpContent += "<table>\n";
 
-            for (auto n : c.nodes)
+            for (int j = i; j < allNodes.size(); j++)
             {
+                auto& c1 = allNodes[j];
+                auto  n  = c1.nodes[0];
+                if (n->kind != AstNodeKind::ConstDecl)
+                {
+                    i = j - 1;
+                    break;
+                }
+
                 helpContent += "<tr>\n";
 
                 helpContent += "<td>\n";
@@ -838,13 +819,14 @@ void ModuleGenDocJob::generateContent()
             }
 
             helpContent += "</table>\n";
-            outputCode(code);
             break;
         }
 
         case AstNodeKind::StructDecl:
         case AstNodeKind::InterfaceDecl:
         {
+            outputTitle(c);
+
             UserComment userComment;
             auto        docComment = getDocComment(n0);
             if (!docComment.empty())
@@ -920,6 +902,8 @@ void ModuleGenDocJob::generateContent()
 
         case AstNodeKind::EnumDecl:
         {
+            outputTitle(c);
+
             UserComment userComment;
             auto        docComment = getDocComment(n0);
             if (!docComment.empty())
@@ -959,6 +943,8 @@ void ModuleGenDocJob::generateContent()
 
         case AstNodeKind::FuncDecl:
         {
+            outputTitle(c);
+
             Utf8 code;
             for (auto n : c.nodes)
             {

@@ -1205,7 +1205,7 @@ modalSurfaces</td>
 <td>
 toDelete</td>
 <td>
-<a href="std.core.html#Core.Array">Array'(__application_tuple_410)</a></td>
+<a href="std.core.html#Core.Array">Array'(__application_tuple_411)</a></td>
 <td>
 </td>
 </tr>
@@ -3250,7 +3250,155 @@ Hidden</td>
 </td>
 </tr>
 </table>
-<h3 class="content" id="Gui.Constants"><span class="titletype"></span> <span class="titlelight">Gui.</span><span class="titlestrong">Constants</span></h3>
+<h3 class="content" id="Gui.CreateEvent"><span class="titletype">struct</span> <span class="titlelight">Gui.</span><span class="titlestrong">CreateEvent</span></h3>
+<table>
+<tr>
+<td>
+base</td>
+<td>
+<a href="std.gui.html#Gui.Event">Event</a></td>
+<td>
+</td>
+</tr>
+</table>
+<h3 class="content" id="Gui.Cursor"><span class="titletype">struct</span> <span class="titlelight">Gui.</span><span class="titlestrong">Cursor</span></h3>
+<table>
+<tr>
+<td>
+native</td>
+<td>
+<a href="std.gui.html#Gui.NativeCursor">NativeCursor</a></td>
+<td>
+</td>
+</tr>
+</table>
+<h3>Functions</h3>
+<table>
+<tr>
+<td>
+<a href="#Gui.Cursor.apply">apply</a></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<a href="#Gui.Cursor.clear">clear</a></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<a href="#Gui.Cursor.from">from</a></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<a href="#Gui.Cursor.wait">wait</a></td>
+<td>
+<p>
+Force the wait cursor.</p>
+</td>
+</tr>
+</table>
+<h3 class="content" id="Gui.Cursor.apply"><span class="titletype">func</span> <span class="titlelight">Cursor.</span><span class="titlestrong">apply</span></h3>
+<p class="code">
+<code style="white-space: break-spaces">func apply(cursor: <a href="std.gui.html#Gui.Cursor">Cursor</a>)
+</code>
+</p>
+<h3 class="content" id="Gui.Cursor.clear"><span class="titletype">func</span> <span class="titlelight">Cursor.</span><span class="titlestrong">clear</span></h3>
+<p class="code">
+<code style="white-space: break-spaces">func clear(using self)
+</code>
+</p>
+<h3 class="content" id="Gui.Cursor.from"><span class="titletype">func</span> <span class="titlelight">Cursor.</span><span class="titlestrong">from</span></h3>
+<p class="code">
+<code style="white-space: break-spaces">func from(shape: <a href="std.gui.html#Gui.CursorShape">CursorShape</a>)-><a href="std.gui.html#Gui.Cursor">Cursor</a>
+</code>
+</p>
+<h3 class="content" id="Gui.Cursor.wait"><span class="titletype">func</span> <span class="titlelight">Cursor.</span><span class="titlestrong">wait</span></h3>
+<p class="code">
+<code style="white-space: break-spaces">func wait()
+</code>
+</p>
+<p>
+Force the wait cursor.</p>
+<h3 class="content" id="Gui.CursorShape"><span class="titletype">enum</span> <span class="titlelight">Gui.</span><span class="titlestrong">CursorShape</span></h3>
+<table>
+<tr>
+<td>
+Arrow</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+SizeWE</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+SizeNS</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+SizeNWSE</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+SizeNESW</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+SizeAll</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+Cross</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+Help</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+Hand</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+IBeam</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+No</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+Wait</td>
+<td>
+</td>
+</tr>
+</table>
+<h3 class="content" id="Gui.DefaultFontBold"><span class="titletype"></span> <span class="titlelight">Gui.</span><span class="titlestrong">Constants</span></h3>
 <table>
 <tr>
 <td>
@@ -3441,154 +3589,6 @@ DefaultSpin</td>
 string</td>
 <td id="Gui.DefaultSpinName">
 DefaultSpinName</td>
-<td>
-</td>
-</tr>
-</table>
-<h3 class="content" id="Gui.CreateEvent"><span class="titletype">struct</span> <span class="titlelight">Gui.</span><span class="titlestrong">CreateEvent</span></h3>
-<table>
-<tr>
-<td>
-base</td>
-<td>
-<a href="std.gui.html#Gui.Event">Event</a></td>
-<td>
-</td>
-</tr>
-</table>
-<h3 class="content" id="Gui.Cursor"><span class="titletype">struct</span> <span class="titlelight">Gui.</span><span class="titlestrong">Cursor</span></h3>
-<table>
-<tr>
-<td>
-native</td>
-<td>
-<a href="std.gui.html#Gui.NativeCursor">NativeCursor</a></td>
-<td>
-</td>
-</tr>
-</table>
-<h3>Functions</h3>
-<table>
-<tr>
-<td>
-<a href="#Gui.Cursor.apply">apply</a></td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-<a href="#Gui.Cursor.clear">clear</a></td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-<a href="#Gui.Cursor.from">from</a></td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-<a href="#Gui.Cursor.wait">wait</a></td>
-<td>
-<p>
-Force the wait cursor.</p>
-</td>
-</tr>
-</table>
-<h3 class="content" id="Gui.Cursor.apply"><span class="titletype">func</span> <span class="titlelight">Cursor.</span><span class="titlestrong">apply</span></h3>
-<p class="code">
-<code style="white-space: break-spaces">func apply(cursor: <a href="std.gui.html#Gui.Cursor">Cursor</a>)
-</code>
-</p>
-<h3 class="content" id="Gui.Cursor.clear"><span class="titletype">func</span> <span class="titlelight">Cursor.</span><span class="titlestrong">clear</span></h3>
-<p class="code">
-<code style="white-space: break-spaces">func clear(using self)
-</code>
-</p>
-<h3 class="content" id="Gui.Cursor.from"><span class="titletype">func</span> <span class="titlelight">Cursor.</span><span class="titlestrong">from</span></h3>
-<p class="code">
-<code style="white-space: break-spaces">func from(shape: <a href="std.gui.html#Gui.CursorShape">CursorShape</a>)-><a href="std.gui.html#Gui.Cursor">Cursor</a>
-</code>
-</p>
-<h3 class="content" id="Gui.Cursor.wait"><span class="titletype">func</span> <span class="titlelight">Cursor.</span><span class="titlestrong">wait</span></h3>
-<p class="code">
-<code style="white-space: break-spaces">func wait()
-</code>
-</p>
-<p>
-Force the wait cursor.</p>
-<h3 class="content" id="Gui.CursorShape"><span class="titletype">enum</span> <span class="titlelight">Gui.</span><span class="titlestrong">CursorShape</span></h3>
-<table>
-<tr>
-<td>
-Arrow</td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-SizeWE</td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-SizeNS</td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-SizeNWSE</td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-SizeNESW</td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-SizeAll</td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-Cross</td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-Help</td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-Hand</td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-IBeam</td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-No</td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-Wait</td>
 <td>
 </td>
 </tr>
@@ -3877,7 +3877,7 @@ func(*void, *EditBox)->EditBoxCheckResult</td>
 <td>
 minMax</td>
 <td>
-__editbox_tuple_265</td>
+__editbox_tuple_279</td>
 <td>
 </td>
 </tr>
@@ -4986,7 +4986,7 @@ mode</td>
 <td>
 filters</td>
 <td>
-<a href="std.core.html#Core.Array">Array'(__filedlg_tuple_284)</a></td>
+<a href="std.core.html#Core.Array">Array'(__filedlg_tuple_300)</a></td>
 <td>
 </td>
 </tr>
@@ -4994,7 +4994,7 @@ filters</td>
 <td>
 shortcuts</td>
 <td>
-<a href="std.core.html#Core.Array">Array'(__filedlg_tuple_285)</a></td>
+<a href="std.core.html#Core.Array">Array'(__filedlg_tuple_302)</a></td>
 <td>
 </td>
 </tr>
@@ -11036,7 +11036,7 @@ Insert a rune.</p>
 <a href="#Gui.RichEditCtrl.insertText">insertText</a></td>
 <td>
 <p>
-Insert a text with a given style.</p>
+Insert a text with a style per character.</p>
 </td>
 </tr>
 <tr>
@@ -11044,7 +11044,7 @@ Insert a text with a given style.</p>
 <a href="#Gui.RichEditCtrl.insertText">insertText</a></td>
 <td>
 <p>
-Insert a text with a style per character.</p>
+Insert a text with a given style.</p>
 </td>
 </tr>
 <tr>
@@ -12720,7 +12720,7 @@ TransparentBar</td>
 <td>
 selection</td>
 <td>
-<a href="std.core.html#Core.Array">Array'(__selmodel_tuple_409)</a></td>
+<a href="std.core.html#Core.Array">Array'(__selmodel_tuple_410)</a></td>
 <td>
 </td>
 </tr>
