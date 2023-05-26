@@ -2946,7 +2946,7 @@ bool</td>
 <td>
 edgeList</td>
 <td>
-<a href="std.core.html#Core.Array">Array'(__clipper_tuple_225)</a></td>
+<a href="std.core.html#Core.Array">Array'(__clipper_tuple_238)</a></td>
 <td>
 </td>
 </tr>
@@ -5805,7 +5805,7 @@ Free the working buffer if allocated.</p>
 <a href="#Pixel.Image.from">from</a></td>
 <td>
 <p>
-Creates an image from a windows HICON.</p>
+Creates an image from a windows HBITMAP.</p>
 </td>
 </tr>
 <tr>
@@ -5813,7 +5813,7 @@ Creates an image from a windows HICON.</p>
 <a href="#Pixel.Image.from">from</a></td>
 <td>
 <p>
-Creates an image from a windows HBITMAP.</p>
+Creates an image from a windows HICON.</p>
 </td>
 </tr>
 <tr>
@@ -8534,7 +8534,7 @@ sharedLinePathList</td>
 <td>
 sharedRoundTmp</td>
 <td>
-<a href="std.core.html#Core.Array">Array'(__linepath_tuple_235)</a></td>
+<a href="std.core.html#Core.Array">Array'(__linepath_tuple_275)</a></td>
 <td>
 </td>
 </tr>
@@ -8663,14 +8663,14 @@ Recompute the layout for a given rectangle.</p>
 <td>
 <a href="#Pixel.Painter.drawArc">drawArc</a></td>
 <td>
+<p>
+Draw an arc between two angles.</p>
 </td>
 </tr>
 <tr>
 <td>
 <a href="#Pixel.Painter.drawArc">drawArc</a></td>
 <td>
-<p>
-Draw an arc between two angles.</p>
 </td>
 </tr>
 <tr>
@@ -8691,14 +8691,14 @@ Draw an empty circle.</p>
 <td>
 <a href="#Pixel.Painter.drawEllipse">drawEllipse</a></td>
 <td>
+<p>
+Draw an empty ellipse.</p>
 </td>
 </tr>
 <tr>
 <td>
 <a href="#Pixel.Painter.drawEllipse">drawEllipse</a></td>
 <td>
-<p>
-Draw an empty ellipse.</p>
 </td>
 </tr>
 <tr>
@@ -8734,23 +8734,29 @@ Draw the line path.</p>
 <a href="#Pixel.Painter.drawPath">drawPath</a></td>
 <td>
 <p>
+Draw the line path.</p>
+</td>
+</tr>
+<tr>
+<td>
+<a href="#Pixel.Painter.drawPath">drawPath</a></td>
+<td>
+<p>
+Draw the line path.</p>
+</td>
+</tr>
+<tr>
+<td>
+<a href="#Pixel.Painter.drawPath">drawPath</a></td>
+<td>
+<p>
 Draw the line path with the given <code class = "incode">pen</code>.</p>
 </td>
 </tr>
 <tr>
 <td>
-<a href="#Pixel.Painter.drawPath">drawPath</a></td>
+<a href="#Pixel.Painter.drawRect">drawRect</a></td>
 <td>
-<p>
-Draw the line path.</p>
-</td>
-</tr>
-<tr>
-<td>
-<a href="#Pixel.Painter.drawPath">drawPath</a></td>
-<td>
-<p>
-Draw the line path.</p>
 </td>
 </tr>
 <tr>
@@ -8775,12 +8781,6 @@ Draw an empty rectangle.</p>
 </tr>
 <tr>
 <td>
-<a href="#Pixel.Painter.drawRect">drawRect</a></td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
 <a href="#Pixel.Painter.drawRichString">drawRichString</a></td>
 <td>
 <p>
@@ -8791,26 +8791,26 @@ Draw a rich string. A rich string can be multiline, and accepts The layout will 
 <td>
 <a href="#Pixel.Painter.drawRoundRect">drawRoundRect</a></td>
 <td>
-</td>
-</tr>
-<tr>
-<td>
-<a href="#Pixel.Painter.drawRoundRect">drawRoundRect</a></td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-<a href="#Pixel.Painter.drawRoundRect">drawRoundRect</a></td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-<a href="#Pixel.Painter.drawRoundRect">drawRoundRect</a></td>
-<td>
 <p>
 Draw an empty round rectangle.</p>
+</td>
+</tr>
+<tr>
+<td>
+<a href="#Pixel.Painter.drawRoundRect">drawRoundRect</a></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<a href="#Pixel.Painter.drawRoundRect">drawRoundRect</a></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<a href="#Pixel.Painter.drawRoundRect">drawRoundRect</a></td>
+<td>
 </td>
 </tr>
 <tr>
@@ -8835,6 +8835,14 @@ Draw a simple string.</p>
 <td>
 <p>
 Draw a simple string (centered).</p>
+</td>
+</tr>
+<tr>
+<td>
+<a href="#Pixel.Painter.drawTexture">drawTexture</a></td>
+<td>
+<p>
+Draw a texture image.</p>
 </td>
 </tr>
 <tr>
@@ -8867,14 +8875,6 @@ Draw a portion of an image.</p>
 <td>
 <a href="#Pixel.Painter.drawTexture">drawTexture</a></td>
 <td>
-</td>
-</tr>
-<tr>
-<td>
-<a href="#Pixel.Painter.drawTexture">drawTexture</a></td>
-<td>
-<p>
-Draw a texture image.</p>
 </td>
 </tr>
 <tr>
@@ -8926,14 +8926,6 @@ Draw a solid ellipse.</p>
 <a href="#Pixel.Painter.fillPath">fillPath</a></td>
 <td>
 <p>
-Fill the list of paths clockwise = fill, anti-clockwise = hole.</p>
-</td>
-</tr>
-<tr>
-<td>
-<a href="#Pixel.Painter.fillPath">fillPath</a></td>
-<td>
-<p>
 Fill the line path.</p>
 </td>
 </tr>
@@ -8955,10 +8947,10 @@ Fill the line path.</p>
 </tr>
 <tr>
 <td>
-<a href="#Pixel.Painter.fillPolygon">fillPolygon</a></td>
+<a href="#Pixel.Painter.fillPath">fillPath</a></td>
 <td>
 <p>
-Fill the polygon with the given <code class = "incode">brush</code>.</p>
+Fill the list of paths clockwise = fill, anti-clockwise = hole.</p>
 </td>
 </tr>
 <tr>
@@ -8971,6 +8963,32 @@ Fill the polygon with the given color.</p>
 </tr>
 <tr>
 <td>
+<a href="#Pixel.Painter.fillPolygon">fillPolygon</a></td>
+<td>
+<p>
+Fill the polygon with the given <code class = "incode">brush</code>.</p>
+</td>
+</tr>
+<tr>
+<td>
+<a href="#Pixel.Painter.fillRect">fillRect</a></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<a href="#Pixel.Painter.fillRect">fillRect</a></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<a href="#Pixel.Painter.fillRect">fillRect</a></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
 <a href="#Pixel.Painter.fillRect">fillRect</a></td>
 <td>
 <p>
@@ -8979,46 +8997,28 @@ Draw a filled rectangle.</p>
 </tr>
 <tr>
 <td>
-<a href="#Pixel.Painter.fillRect">fillRect</a></td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-<a href="#Pixel.Painter.fillRect">fillRect</a></td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-<a href="#Pixel.Painter.fillRect">fillRect</a></td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-<a href="#Pixel.Painter.fillRoundRect">fillRoundRect</a></td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-<a href="#Pixel.Painter.fillRoundRect">fillRoundRect</a></td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-<a href="#Pixel.Painter.fillRoundRect">fillRoundRect</a></td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
 <a href="#Pixel.Painter.fillRoundRect">fillRoundRect</a></td>
 <td>
 <p>
 Draw a filled round rectangle.</p>
+</td>
+</tr>
+<tr>
+<td>
+<a href="#Pixel.Painter.fillRoundRect">fillRoundRect</a></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<a href="#Pixel.Painter.fillRoundRect">fillRoundRect</a></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<a href="#Pixel.Painter.fillRoundRect">fillRoundRect</a></td>
+<td>
 </td>
 </tr>
 <tr>

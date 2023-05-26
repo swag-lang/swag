@@ -18,13 +18,6 @@ static bool canCollectNode(AstNode* node)
     if (node->flags & AST_GENERATED)
         return false;
 
-    if (node->sourceFile && node->sourceFile->isRuntimeFile)
-        return true;
-    if (node->sourceFile && node->sourceFile->isBootstrapFile)
-        return true;
-    if (node->kind == AstNodeKind::FuncDecl && node->sourceFile && !node->sourceFile->forceExport && !(node->attributeFlags & ATTRIBUTE_PUBLIC))
-        return false;
-
     switch (node->kind)
     {
     case AstNodeKind::Namespace:
@@ -33,8 +26,17 @@ static bool canCollectNode(AstNode* node)
     case AstNodeKind::FuncDecl:
     case AstNodeKind::EnumDecl:
     case AstNodeKind::ConstDecl:
-        return true;
+        break;
+    default:
+        return false;
     }
+
+    if (node->sourceFile && node->sourceFile->isRuntimeFile)
+        return true;
+    if (node->sourceFile && node->sourceFile->isBootstrapFile)
+        return true;
+    if (node->kind == AstNodeKind::FuncDecl && node->sourceFile && !node->sourceFile->forceExport && !(node->attributeFlags & ATTRIBUTE_PUBLIC))
+        return false;
 
     return false;
 }
@@ -208,6 +210,7 @@ void ModuleGenDocJob::outputTitle(OneRef& c)
         name = "interface";
         break;
     default:
+        SWAG_ASSERT(false);
         break;
     }
 
@@ -990,6 +993,9 @@ void ModuleGenDocJob::generateContent()
 
 JobResult ModuleGenDocJob::execute()
 {
+    if (module)
+        return JobResult::ReleaseJob;
+
     // Setup
     concat.init();
     outputCxt.checkPublic = false;
