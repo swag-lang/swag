@@ -46,8 +46,11 @@
             border-collapse:    collapse;
             width:              20%;
         }
+        td.tdtype {
+            width:              auto;
+        }
         td:last-child {
-            width:              100%;
+            width:              auto;
         }
         .tocbullet {
             list-style-type:    none;
@@ -1531,18 +1534,18 @@ Get the Argb value that matches <code class = "incode">name</code>.</p>
 <h3 class="content" id="Pixel.BasePixelShader"><span class="titletype"></span> <span class="titlelight">Pixel.</span><span class="titlestrong">Constants</span></h3>
 <table>
 <tr>
-<td>
-const [94] u8</td>
 <td id="Pixel.BasePixelShader">
 BasePixelShader</td>
+<td class="tdtype">
+const [94] u8</td>
 <td>
 </td>
 </tr>
 <tr>
-<td>
-const [1633] u8</td>
 <td id="Pixel.BaseVertexShader">
 BaseVertexShader</td>
+<td class="tdtype">
+const [1633] u8</td>
 <td>
 </td>
 </tr>
@@ -1629,34 +1632,34 @@ Max</td>
 <h3 class="content" id="Pixel.Bmp.BI_BITFIELDS"><span class="titletype"></span> <span class="titlelight">Bmp.</span><span class="titlestrong">Constants</span></h3>
 <table>
 <tr>
-<td>
-s32</td>
 <td id="Pixel.Bmp.BI_BITFIELDS">
 BI_BITFIELDS</td>
+<td class="tdtype">
+s32</td>
 <td>
 </td>
 </tr>
 <tr>
-<td>
-s32</td>
 <td id="Pixel.Bmp.BI_RGB">
 BI_RGB</td>
+<td class="tdtype">
+s32</td>
 <td>
 </td>
 </tr>
 <tr>
-<td>
-s32</td>
 <td id="Pixel.Bmp.BI_RLE4">
 BI_RLE4</td>
+<td class="tdtype">
+s32</td>
 <td>
 </td>
 </tr>
 <tr>
-<td>
-s32</td>
 <td id="Pixel.Bmp.BI_RLE8">
 BI_RLE8</td>
+<td class="tdtype">
+s32</td>
 <td>
 </td>
 </tr>
@@ -1666,7 +1669,7 @@ BI_RLE8</td>
 <tr>
 <td>
 bcSize</td>
-<td>
+<td class="tdtype">
 u32</td>
 <td>
 </td>
@@ -1674,7 +1677,7 @@ u32</td>
 <tr>
 <td>
 bcWidth</td>
-<td>
+<td class="tdtype">
 u16</td>
 <td>
 </td>
@@ -1682,7 +1685,7 @@ u16</td>
 <tr>
 <td>
 bcHeight</td>
-<td>
+<td class="tdtype">
 u16</td>
 <td>
 </td>
@@ -1690,7 +1693,7 @@ u16</td>
 <tr>
 <td>
 bcPlanes</td>
-<td>
+<td class="tdtype">
 u16</td>
 <td>
 </td>
@@ -1698,7 +1701,7 @@ u16</td>
 <tr>
 <td>
 bcBitCount</td>
-<td>
+<td class="tdtype">
 u16</td>
 <td>
 </td>
@@ -1712,7 +1715,7 @@ u16</td>
 </p>
 <h3 class="content" id="Pixel.Bmp.Decoder.IImageDecoder.decode"><span class="titletype">func</span> <span class="titlelight">IImageDecoder.</span><span class="titlestrong">decode</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func decode(using self, buffer: const [..] u8, options: <a href="std.pixel.html#Pixel.DecodeOptions">DecodeOptions</a>)-><a href="std.pixel.html#Pixel.Image">Image</a>
+<code style="white-space: break-spaces">func decode(using self, buffer: const [..] u8, options: <a href="std.pixel.html#Pixel.DecodeOptions">DecodeOptions</a>)-><a href="std.pixel.html#Pixel.Image">Image</a> throw
 </code>
 </p>
 <h3 class="content" id="Pixel.Bmp.Encoder"><span class="titletype">struct</span> <span class="titlelight">Bmp.</span><span class="titlestrong">Encoder</span></h3>
@@ -1723,40 +1726,40 @@ u16</td>
 </p>
 <h3 class="content" id="Pixel.Bmp.Encoder.IImageEncoder.encode"><span class="titletype">func</span> <span class="titlelight">IImageEncoder.</span><span class="titlestrong">encode</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func encode(using self, result: <a href="std.core.html#Core.ConcatBuffer">*ConcatBuffer</a>, image: <a href="std.pixel.html#Pixel.Image">Image</a>, options: any)
+<code style="white-space: break-spaces">func encode(using self, result: <a href="std.core.html#Core.ConcatBuffer">*ConcatBuffer</a>, image: <a href="std.pixel.html#Pixel.Image">Image</a>, options: any) throw
 </code>
 </p>
 <h3 class="content" id="Pixel.Bmp.FILL_RLE_COMMAND"><span class="titletype"></span> <span class="titlelight">Bmp.</span><span class="titlestrong">Constants</span></h3>
 <table>
 <tr>
-<td>
-s32</td>
 <td id="Pixel.Bmp.FILL_RLE_COMMAND">
 FILL_RLE_COMMAND</td>
+<td class="tdtype">
+s32</td>
 <td>
 </td>
 </tr>
 <tr>
-<td>
-s32</td>
 <td id="Pixel.Bmp.FILL_RLE_DELTA">
 FILL_RLE_DELTA</td>
+<td class="tdtype">
+s32</td>
 <td>
 </td>
 </tr>
 <tr>
-<td>
-s32</td>
 <td id="Pixel.Bmp.FILL_RLE_ENDOFBITMAP">
 FILL_RLE_ENDOFBITMAP</td>
+<td class="tdtype">
+s32</td>
 <td>
 </td>
 </tr>
 <tr>
-<td>
-s32</td>
 <td id="Pixel.Bmp.FILL_RLE_ENDOFLINE">
 FILL_RLE_ENDOFLINE</td>
+<td class="tdtype">
+s32</td>
 <td>
 </td>
 </tr>
@@ -1766,7 +1769,7 @@ FILL_RLE_ENDOFLINE</td>
 <tr>
 <td>
 bfType</td>
-<td>
+<td class="tdtype">
 u16</td>
 <td>
 </td>
@@ -1774,7 +1777,7 @@ u16</td>
 <tr>
 <td>
 bfSize</td>
-<td>
+<td class="tdtype">
 u32</td>
 <td>
 </td>
@@ -1782,7 +1785,7 @@ u32</td>
 <tr>
 <td>
 bfReserved1</td>
-<td>
+<td class="tdtype">
 u16</td>
 <td>
 </td>
@@ -1790,7 +1793,7 @@ u16</td>
 <tr>
 <td>
 bfReserved2</td>
-<td>
+<td class="tdtype">
 u16</td>
 <td>
 </td>
@@ -1798,7 +1801,7 @@ u16</td>
 <tr>
 <td>
 bfOffBits</td>
-<td>
+<td class="tdtype">
 u32</td>
 <td>
 </td>
@@ -1809,7 +1812,7 @@ u32</td>
 <tr>
 <td>
 biSize</td>
-<td>
+<td class="tdtype">
 u32</td>
 <td>
 </td>
@@ -1817,7 +1820,7 @@ u32</td>
 <tr>
 <td>
 biWidth</td>
-<td>
+<td class="tdtype">
 s32</td>
 <td>
 </td>
@@ -1825,7 +1828,7 @@ s32</td>
 <tr>
 <td>
 biHeight</td>
-<td>
+<td class="tdtype">
 s32</td>
 <td>
 </td>
@@ -1833,7 +1836,7 @@ s32</td>
 <tr>
 <td>
 biPlanes</td>
-<td>
+<td class="tdtype">
 u16</td>
 <td>
 </td>
@@ -1841,7 +1844,7 @@ u16</td>
 <tr>
 <td>
 biBitCount</td>
-<td>
+<td class="tdtype">
 u16</td>
 <td>
 </td>
@@ -1849,7 +1852,7 @@ u16</td>
 <tr>
 <td>
 biCompression</td>
-<td>
+<td class="tdtype">
 u32</td>
 <td>
 </td>
@@ -1857,7 +1860,7 @@ u32</td>
 <tr>
 <td>
 biSizeImage</td>
-<td>
+<td class="tdtype">
 u32</td>
 <td>
 </td>
@@ -1865,7 +1868,7 @@ u32</td>
 <tr>
 <td>
 biXPelsPerMeter</td>
-<td>
+<td class="tdtype">
 u32</td>
 <td>
 </td>
@@ -1873,7 +1876,7 @@ u32</td>
 <tr>
 <td>
 biYPelsPerMeter</td>
-<td>
+<td class="tdtype">
 u32</td>
 <td>
 </td>
@@ -1881,7 +1884,7 @@ u32</td>
 <tr>
 <td>
 biClrUsed</td>
-<td>
+<td class="tdtype">
 u32</td>
 <td>
 </td>
@@ -1889,7 +1892,7 @@ u32</td>
 <tr>
 <td>
 biClrImportant</td>
-<td>
+<td class="tdtype">
 u32</td>
 <td>
 </td>
@@ -1915,7 +1918,7 @@ Inside</td>
 <tr>
 <td>
 color</td>
-<td>
+<td class="tdtype">
 <a href="std.pixel.html#Pixel.Color">Color</a></td>
 <td>
 </td>
@@ -1923,7 +1926,7 @@ color</td>
 <tr>
 <td>
 type</td>
-<td>
+<td class="tdtype">
 <a href="std.pixel.html#Pixel.BrushType">BrushType</a></td>
 <td>
 </td>
@@ -1931,7 +1934,7 @@ type</td>
 <tr>
 <td>
 hatch</td>
-<td>
+<td class="tdtype">
 <a href="std.pixel.html#Pixel.HatchStyle">HatchStyle</a></td>
 <td>
 </td>
@@ -1939,7 +1942,7 @@ hatch</td>
 <tr>
 <td>
 texture</td>
-<td>
+<td class="tdtype">
 <a href="std.pixel.html#Pixel.Texture">Texture</a></td>
 <td>
 </td>
@@ -1947,7 +1950,7 @@ texture</td>
 <tr>
 <td>
 uvMode</td>
-<td>
+<td class="tdtype">
 <a href="std.pixel.html#Pixel.UVMode">UVMode</a></td>
 <td>
 </td>
@@ -1955,7 +1958,7 @@ uvMode</td>
 <tr>
 <td>
 uvRect</td>
-<td>
+<td class="tdtype">
 <a href="std.core.html#Core.Math.Rectangle">Rectangle</a></td>
 <td>
 </td>
@@ -2196,10 +2199,10 @@ Xor</td>
 <h3 class="content" id="Pixel.Clipper.DefaultArcTolerance"><span class="titletype"></span> <span class="titlelight">Clipper.</span><span class="titlestrong">Constants</span></h3>
 <table>
 <tr>
-<td>
-f64</td>
 <td id="Pixel.Clipper.DefaultArcTolerance">
 DefaultArcTolerance</td>
+<td class="tdtype">
+f64</td>
 <td>
 </td>
 </tr>
@@ -2224,7 +2227,7 @@ LeftToRight</td>
 <tr>
 <td>
 x</td>
-<td>
+<td class="tdtype">
 f64</td>
 <td>
 </td>
@@ -2232,7 +2235,7 @@ f64</td>
 <tr>
 <td>
 y</td>
-<td>
+<td class="tdtype">
 f64</td>
 <td>
 </td>
@@ -2243,7 +2246,7 @@ f64</td>
 <tr>
 <td>
 bot</td>
-<td>
+<td class="tdtype">
 <a href="std.pixel.html#Pixel.Clipper.IntPoint">IntPoint</a></td>
 <td>
 </td>
@@ -2251,7 +2254,7 @@ bot</td>
 <tr>
 <td>
 curr</td>
-<td>
+<td class="tdtype">
 <a href="std.pixel.html#Pixel.Clipper.IntPoint">IntPoint</a></td>
 <td>
 </td>
@@ -2259,7 +2262,7 @@ curr</td>
 <tr>
 <td>
 top</td>
-<td>
+<td class="tdtype">
 <a href="std.pixel.html#Pixel.Clipper.IntPoint">IntPoint</a></td>
 <td>
 </td>
@@ -2267,7 +2270,7 @@ top</td>
 <tr>
 <td>
 dx</td>
-<td>
+<td class="tdtype">
 f64</td>
 <td>
 </td>
@@ -2275,7 +2278,7 @@ f64</td>
 <tr>
 <td>
 polyType</td>
-<td>
+<td class="tdtype">
 <a href="std.pixel.html#Pixel.Clipper.PolyType">PolyType</a></td>
 <td>
 </td>
@@ -2283,7 +2286,7 @@ polyType</td>
 <tr>
 <td>
 side</td>
-<td>
+<td class="tdtype">
 <a href="std.pixel.html#Pixel.Clipper.EdgeSide">EdgeSide</a></td>
 <td>
 </td>
@@ -2291,7 +2294,7 @@ side</td>
 <tr>
 <td>
 windDelta</td>
-<td>
+<td class="tdtype">
 s32</td>
 <td>
 </td>
@@ -2299,7 +2302,7 @@ s32</td>
 <tr>
 <td>
 windCnt</td>
-<td>
+<td class="tdtype">
 s32</td>
 <td>
 </td>
@@ -2307,7 +2310,7 @@ s32</td>
 <tr>
 <td>
 windCnt2</td>
-<td>
+<td class="tdtype">
 s32</td>
 <td>
 </td>
@@ -2315,7 +2318,7 @@ s32</td>
 <tr>
 <td>
 outIdx</td>
-<td>
+<td class="tdtype">
 s32</td>
 <td>
 </td>
@@ -2323,7 +2326,7 @@ s32</td>
 <tr>
 <td>
 next</td>
-<td>
+<td class="tdtype">
 <a href="std.pixel.html#Pixel.Clipper.Edge">*Edge</a></td>
 <td>
 </td>
@@ -2331,7 +2334,7 @@ next</td>
 <tr>
 <td>
 prev</td>
-<td>
+<td class="tdtype">
 <a href="std.pixel.html#Pixel.Clipper.Edge">*Edge</a></td>
 <td>
 </td>
@@ -2339,7 +2342,7 @@ prev</td>
 <tr>
 <td>
 nextInLML</td>
-<td>
+<td class="tdtype">
 <a href="std.pixel.html#Pixel.Clipper.Edge">*Edge</a></td>
 <td>
 </td>
@@ -2347,7 +2350,7 @@ nextInLML</td>
 <tr>
 <td>
 nextInAEL</td>
-<td>
+<td class="tdtype">
 <a href="std.pixel.html#Pixel.Clipper.Edge">*Edge</a></td>
 <td>
 </td>
@@ -2355,7 +2358,7 @@ nextInAEL</td>
 <tr>
 <td>
 prevInAEL</td>
-<td>
+<td class="tdtype">
 <a href="std.pixel.html#Pixel.Clipper.Edge">*Edge</a></td>
 <td>
 </td>
@@ -2363,7 +2366,7 @@ prevInAEL</td>
 <tr>
 <td>
 nextInSEL</td>
-<td>
+<td class="tdtype">
 <a href="std.pixel.html#Pixel.Clipper.Edge">*Edge</a></td>
 <td>
 </td>
@@ -2371,7 +2374,7 @@ nextInSEL</td>
 <tr>
 <td>
 prevInSEL</td>
-<td>
+<td class="tdtype">
 <a href="std.pixel.html#Pixel.Clipper.Edge">*Edge</a></td>
 <td>
 </td>
@@ -2395,18 +2398,18 @@ Right</td>
 <h3 class="content" id="Pixel.Clipper.HiRange"><span class="titletype"></span> <span class="titlelight">Clipper.</span><span class="titlestrong">Constants</span></h3>
 <table>
 <tr>
-<td>
-s64</td>
 <td id="Pixel.Clipper.HiRange">
 HiRange</td>
+<td class="tdtype">
+s64</td>
 <td>
 </td>
 </tr>
 <tr>
-<td>
-f32</td>
 <td id="Pixel.Clipper.HorizontalVal">
 HorizontalVal</td>
+<td class="tdtype">
+f32</td>
 <td>
 </td>
 </tr>
@@ -2437,7 +2440,7 @@ PreserveCollinear</td>
 <tr>
 <td>
 x</td>
-<td>
+<td class="tdtype">
 CInt</td>
 <td>
 </td>
@@ -2445,7 +2448,7 @@ CInt</td>
 <tr>
 <td>
 y</td>
-<td>
+<td class="tdtype">
 CInt</td>
 <td>
 </td>
@@ -2470,7 +2473,7 @@ CInt</td>
 <tr>
 <td>
 left</td>
-<td>
+<td class="tdtype">
 CInt</td>
 <td>
 </td>
@@ -2478,7 +2481,7 @@ CInt</td>
 <tr>
 <td>
 top</td>
-<td>
+<td class="tdtype">
 CInt</td>
 <td>
 </td>
@@ -2486,7 +2489,7 @@ CInt</td>
 <tr>
 <td>
 right</td>
-<td>
+<td class="tdtype">
 CInt</td>
 <td>
 </td>
@@ -2494,7 +2497,7 @@ CInt</td>
 <tr>
 <td>
 bottom</td>
-<td>
+<td class="tdtype">
 CInt</td>
 <td>
 </td>
@@ -2505,7 +2508,7 @@ CInt</td>
 <tr>
 <td>
 edge1</td>
-<td>
+<td class="tdtype">
 <a href="std.pixel.html#Pixel.Clipper.Edge">*Edge</a></td>
 <td>
 </td>
@@ -2513,7 +2516,7 @@ edge1</td>
 <tr>
 <td>
 edge2</td>
-<td>
+<td class="tdtype">
 <a href="std.pixel.html#Pixel.Clipper.Edge">*Edge</a></td>
 <td>
 </td>
@@ -2521,7 +2524,7 @@ edge2</td>
 <tr>
 <td>
 pt</td>
-<td>
+<td class="tdtype">
 <a href="std.pixel.html#Pixel.Clipper.IntPoint">IntPoint</a></td>
 <td>
 </td>
@@ -2532,7 +2535,7 @@ pt</td>
 <tr>
 <td>
 outPt1</td>
-<td>
+<td class="tdtype">
 <a href="std.pixel.html#Pixel.Clipper.OutPt">*OutPt</a></td>
 <td>
 </td>
@@ -2540,7 +2543,7 @@ outPt1</td>
 <tr>
 <td>
 outPt2</td>
-<td>
+<td class="tdtype">
 <a href="std.pixel.html#Pixel.Clipper.OutPt">*OutPt</a></td>
 <td>
 </td>
@@ -2548,7 +2551,7 @@ outPt2</td>
 <tr>
 <td>
 offPt</td>
-<td>
+<td class="tdtype">
 <a href="std.pixel.html#Pixel.Clipper.IntPoint">IntPoint</a></td>
 <td>
 </td>
@@ -2578,10 +2581,10 @@ Miter</td>
 <h3 class="content" id="Pixel.Clipper.LoRange"><span class="titletype"></span> <span class="titlelight">Clipper.</span><span class="titlestrong">Constants</span></h3>
 <table>
 <tr>
-<td>
-u32</td>
 <td id="Pixel.Clipper.LoRange">
 LoRange</td>
+<td class="tdtype">
+u32</td>
 <td>
 </td>
 </tr>
@@ -2591,7 +2594,7 @@ LoRange</td>
 <tr>
 <td>
 y</td>
-<td>
+<td class="tdtype">
 CInt</td>
 <td>
 </td>
@@ -2599,7 +2602,7 @@ CInt</td>
 <tr>
 <td>
 leftBound</td>
-<td>
+<td class="tdtype">
 <a href="std.pixel.html#Pixel.Clipper.Edge">*Edge</a></td>
 <td>
 </td>
@@ -2607,7 +2610,7 @@ leftBound</td>
 <tr>
 <td>
 rightBound</td>
-<td>
+<td class="tdtype">
 <a href="std.pixel.html#Pixel.Clipper.Edge">*Edge</a></td>
 <td>
 </td>
@@ -2618,7 +2621,7 @@ rightBound</td>
 <tr>
 <td>
 miterLimit</td>
-<td>
+<td class="tdtype">
 f64</td>
 <td>
 </td>
@@ -2626,7 +2629,7 @@ f64</td>
 <tr>
 <td>
 arcTolerance</td>
-<td>
+<td class="tdtype">
 f64</td>
 <td>
 </td>
@@ -2634,7 +2637,7 @@ f64</td>
 <tr>
 <td>
 destPolys</td>
-<td>
+<td class="tdtype">
 <a href="std.core.html#Core.Array">Array'(Array'(IntPoint))</a></td>
 <td>
 </td>
@@ -2642,7 +2645,7 @@ destPolys</td>
 <tr>
 <td>
 srcPoly</td>
-<td>
+<td class="tdtype">
 <a href="std.core.html#Core.Array">Array'(IntPoint)</a></td>
 <td>
 </td>
@@ -2650,7 +2653,7 @@ srcPoly</td>
 <tr>
 <td>
 destPoly</td>
-<td>
+<td class="tdtype">
 <a href="std.core.html#Core.Array">Array'(IntPoint)</a></td>
 <td>
 </td>
@@ -2658,7 +2661,7 @@ destPoly</td>
 <tr>
 <td>
 normals</td>
-<td>
+<td class="tdtype">
 <a href="std.core.html#Core.Array">Array'(DoublePoint)</a></td>
 <td>
 </td>
@@ -2666,7 +2669,7 @@ normals</td>
 <tr>
 <td>
 deltaVal</td>
-<td>
+<td class="tdtype">
 f64</td>
 <td>
 </td>
@@ -2674,7 +2677,7 @@ f64</td>
 <tr>
 <td>
 sinaVal</td>
-<td>
+<td class="tdtype">
 f64</td>
 <td>
 </td>
@@ -2682,7 +2685,7 @@ f64</td>
 <tr>
 <td>
 sinVal</td>
-<td>
+<td class="tdtype">
 f64</td>
 <td>
 </td>
@@ -2690,7 +2693,7 @@ f64</td>
 <tr>
 <td>
 cosVal</td>
-<td>
+<td class="tdtype">
 f64</td>
 <td>
 </td>
@@ -2698,7 +2701,7 @@ f64</td>
 <tr>
 <td>
 miterLim</td>
-<td>
+<td class="tdtype">
 f64</td>
 <td>
 </td>
@@ -2706,7 +2709,7 @@ f64</td>
 <tr>
 <td>
 stepsPerRad</td>
-<td>
+<td class="tdtype">
 f64</td>
 <td>
 </td>
@@ -2714,7 +2717,7 @@ f64</td>
 <tr>
 <td>
 lowest</td>
-<td>
+<td class="tdtype">
 <a href="std.pixel.html#Pixel.Clipper.IntPoint">IntPoint</a></td>
 <td>
 </td>
@@ -2722,7 +2725,7 @@ lowest</td>
 <tr>
 <td>
 polyNodes</td>
-<td>
+<td class="tdtype">
 <a href="std.pixel.html#Pixel.Clipper.PolyNode">PolyNode</a></td>
 <td>
 </td>
@@ -2733,7 +2736,7 @@ polyNodes</td>
 <tr>
 <td>
 idx</td>
-<td>
+<td class="tdtype">
 s32</td>
 <td>
 </td>
@@ -2741,7 +2744,7 @@ s32</td>
 <tr>
 <td>
 pt</td>
-<td>
+<td class="tdtype">
 <a href="std.pixel.html#Pixel.Clipper.IntPoint">IntPoint</a></td>
 <td>
 </td>
@@ -2749,7 +2752,7 @@ pt</td>
 <tr>
 <td>
 next</td>
-<td>
+<td class="tdtype">
 <a href="std.pixel.html#Pixel.Clipper.OutPt">*OutPt</a></td>
 <td>
 </td>
@@ -2757,7 +2760,7 @@ next</td>
 <tr>
 <td>
 prev</td>
-<td>
+<td class="tdtype">
 <a href="std.pixel.html#Pixel.Clipper.OutPt">*OutPt</a></td>
 <td>
 </td>
@@ -2768,7 +2771,7 @@ prev</td>
 <tr>
 <td>
 idx</td>
-<td>
+<td class="tdtype">
 s32</td>
 <td>
 </td>
@@ -2776,7 +2779,7 @@ s32</td>
 <tr>
 <td>
 isHole</td>
-<td>
+<td class="tdtype">
 bool</td>
 <td>
 </td>
@@ -2784,7 +2787,7 @@ bool</td>
 <tr>
 <td>
 isOpen</td>
-<td>
+<td class="tdtype">
 bool</td>
 <td>
 </td>
@@ -2792,7 +2795,7 @@ bool</td>
 <tr>
 <td>
 firstLeft</td>
-<td>
+<td class="tdtype">
 <a href="std.pixel.html#Pixel.Clipper.OutRec">*OutRec</a></td>
 <td>
 </td>
@@ -2800,7 +2803,7 @@ firstLeft</td>
 <tr>
 <td>
 polyNd</td>
-<td>
+<td class="tdtype">
 <a href="std.pixel.html#Pixel.Clipper.PolyNode">*PolyNode</a></td>
 <td>
 </td>
@@ -2808,7 +2811,7 @@ polyNd</td>
 <tr>
 <td>
 pts</td>
-<td>
+<td class="tdtype">
 <a href="std.pixel.html#Pixel.Clipper.OutPt">*OutPt</a></td>
 <td>
 </td>
@@ -2816,7 +2819,7 @@ pts</td>
 <tr>
 <td>
 bottomPt</td>
-<td>
+<td class="tdtype">
 <a href="std.pixel.html#Pixel.Clipper.OutPt">*OutPt</a></td>
 <td>
 </td>
@@ -2854,7 +2857,7 @@ Negative</td>
 <tr>
 <td>
 index</td>
-<td>
+<td class="tdtype">
 u32</td>
 <td>
 </td>
@@ -2862,7 +2865,7 @@ u32</td>
 <tr>
 <td>
 isOpen</td>
-<td>
+<td class="tdtype">
 bool</td>
 <td>
 </td>
@@ -2870,7 +2873,7 @@ bool</td>
 <tr>
 <td>
 jointype</td>
-<td>
+<td class="tdtype">
 <a href="std.pixel.html#Pixel.Clipper.JoinType">JoinType</a></td>
 <td>
 </td>
@@ -2878,7 +2881,7 @@ jointype</td>
 <tr>
 <td>
 contour</td>
-<td>
+<td class="tdtype">
 <a href="std.core.html#Core.Array">Array'(IntPoint)</a></td>
 <td>
 </td>
@@ -2886,7 +2889,7 @@ contour</td>
 <tr>
 <td>
 childs</td>
-<td>
+<td class="tdtype">
 <a href="std.core.html#Core.Array">Array'(*PolyNode)</a></td>
 <td>
 </td>
@@ -2894,7 +2897,7 @@ childs</td>
 <tr>
 <td>
 parent</td>
-<td>
+<td class="tdtype">
 <a href="std.pixel.html#Pixel.Clipper.PolyNode">*PolyNode</a></td>
 <td>
 </td>
@@ -2918,10 +2921,10 @@ Clip</td>
 <h3 class="content" id="Pixel.Clipper.Skip"><span class="titletype"></span> <span class="titlelight">Clipper.</span><span class="titlestrong">Constants</span></h3>
 <table>
 <tr>
-<td>
-s32</td>
 <td id="Pixel.Clipper.Skip">
 Skip</td>
+<td class="tdtype">
+s32</td>
 <td>
 </td>
 </tr>
@@ -2931,7 +2934,7 @@ Skip</td>
 <tr>
 <td>
 useFullRange</td>
-<td>
+<td class="tdtype">
 bool</td>
 <td>
 </td>
@@ -2939,7 +2942,7 @@ bool</td>
 <tr>
 <td>
 preserveCollinear</td>
-<td>
+<td class="tdtype">
 bool</td>
 <td>
 </td>
@@ -2947,7 +2950,7 @@ bool</td>
 <tr>
 <td>
 usingPolyTree</td>
-<td>
+<td class="tdtype">
 bool</td>
 <td>
 </td>
@@ -2955,7 +2958,7 @@ bool</td>
 <tr>
 <td>
 strictSimple</td>
-<td>
+<td class="tdtype">
 bool</td>
 <td>
 </td>
@@ -2963,7 +2966,7 @@ bool</td>
 <tr>
 <td>
 reverseOutput</td>
-<td>
+<td class="tdtype">
 bool</td>
 <td>
 </td>
@@ -2971,15 +2974,15 @@ bool</td>
 <tr>
 <td>
 edgeList</td>
-<td>
-<a href="std.core.html#Core.Array">Array'(__clipper_tuple_221)</a></td>
+<td class="tdtype">
+<a href="std.core.html#Core.Array">Array'(__clipper_tuple_227)</a></td>
 <td>
 </td>
 </tr>
 <tr>
 <td>
 minimaList</td>
-<td>
+<td class="tdtype">
 <a href="std.core.html#Core.Array">Array'(LocalMinimum)</a></td>
 <td>
 </td>
@@ -2987,7 +2990,7 @@ minimaList</td>
 <tr>
 <td>
 polyOuts</td>
-<td>
+<td class="tdtype">
 <a href="std.core.html#Core.Array">Array'(*OutRec)</a></td>
 <td>
 </td>
@@ -2995,7 +2998,7 @@ polyOuts</td>
 <tr>
 <td>
 joinList</td>
-<td>
+<td class="tdtype">
 <a href="std.core.html#Core.Array">Array'(*Join)</a></td>
 <td>
 </td>
@@ -3003,7 +3006,7 @@ joinList</td>
 <tr>
 <td>
 ghostJoinList</td>
-<td>
+<td class="tdtype">
 <a href="std.core.html#Core.Array">Array'(*Join)</a></td>
 <td>
 </td>
@@ -3011,7 +3014,7 @@ ghostJoinList</td>
 <tr>
 <td>
 intersectList</td>
-<td>
+<td class="tdtype">
 <a href="std.core.html#Core.Array">Array'(*IntersectNode)</a></td>
 <td>
 </td>
@@ -3019,7 +3022,7 @@ intersectList</td>
 <tr>
 <td>
 scanBeamList</td>
-<td>
+<td class="tdtype">
 <a href="std.core.html#Core.Array">Array'(CInt)</a></td>
 <td>
 </td>
@@ -3027,7 +3030,7 @@ scanBeamList</td>
 <tr>
 <td>
 maximaList</td>
-<td>
+<td class="tdtype">
 <a href="std.core.html#Core.Array">Array'(CInt)</a></td>
 <td>
 </td>
@@ -3035,7 +3038,7 @@ maximaList</td>
 <tr>
 <td>
 clipFillType</td>
-<td>
+<td class="tdtype">
 <a href="std.pixel.html#Pixel.Clipper.PolyFillType">PolyFillType</a></td>
 <td>
 </td>
@@ -3043,7 +3046,7 @@ clipFillType</td>
 <tr>
 <td>
 subjFillType</td>
-<td>
+<td class="tdtype">
 <a href="std.pixel.html#Pixel.Clipper.PolyFillType">PolyFillType</a></td>
 <td>
 </td>
@@ -3051,7 +3054,7 @@ subjFillType</td>
 <tr>
 <td>
 clipType</td>
-<td>
+<td class="tdtype">
 <a href="std.pixel.html#Pixel.Clipper.ClipType">ClipType</a></td>
 <td>
 </td>
@@ -3059,7 +3062,7 @@ clipType</td>
 <tr>
 <td>
 currentLM</td>
-<td>
+<td class="tdtype">
 u64</td>
 <td>
 </td>
@@ -3067,7 +3070,7 @@ u64</td>
 <tr>
 <td>
 activeEdges</td>
-<td>
+<td class="tdtype">
 <a href="std.pixel.html#Pixel.Clipper.Edge">*Edge</a></td>
 <td>
 </td>
@@ -3075,7 +3078,7 @@ activeEdges</td>
 <tr>
 <td>
 sortedEdges</td>
-<td>
+<td class="tdtype">
 <a href="std.pixel.html#Pixel.Clipper.Edge">*Edge</a></td>
 <td>
 </td>
@@ -3084,18 +3087,18 @@ sortedEdges</td>
 <h3 class="content" id="Pixel.Clipper.Unassigned"><span class="titletype"></span> <span class="titlelight">Clipper.</span><span class="titlestrong">Constants</span></h3>
 <table>
 <tr>
-<td>
-s32</td>
 <td id="Pixel.Clipper.Unassigned">
 Unassigned</td>
+<td class="tdtype">
+s32</td>
 <td>
 </td>
 </tr>
 <tr>
-<td>
-f64</td>
 <td id="Pixel.ClipperScaleCoords">
 ClipperScaleCoords</td>
+<td class="tdtype">
+f64</td>
 <td>
 </td>
 </tr>
@@ -3120,7 +3123,7 @@ Clear</td>
 <tr>
 <td>
 a</td>
-<td>
+<td class="tdtype">
 u8</td>
 <td>
 </td>
@@ -3128,7 +3131,7 @@ u8</td>
 <tr>
 <td>
 r</td>
-<td>
+<td class="tdtype">
 u8</td>
 <td>
 </td>
@@ -3136,7 +3139,7 @@ u8</td>
 <tr>
 <td>
 g</td>
-<td>
+<td class="tdtype">
 u8</td>
 <td>
 </td>
@@ -3144,7 +3147,7 @@ u8</td>
 <tr>
 <td>
 b</td>
-<td>
+<td class="tdtype">
 u8</td>
 <td>
 </td>
@@ -3152,7 +3155,7 @@ u8</td>
 <tr>
 <td>
 argb</td>
-<td>
+<td class="tdtype">
 u32</td>
 <td>
 </td>
@@ -3389,7 +3392,7 @@ Retrieve all components as floating point values between 0 and 1.</p>
 </table>
 <h3 class="content" id="Pixel.Color.IPokeValue.poke"><span class="titletype">func</span> <span class="titlelight">IPokeValue.</span><span class="titlestrong">poke</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func poke(using self, buf: string)->string
+<code style="white-space: break-spaces">func poke(using self, buf: string)->string throw
 </code>
 </p>
 <h3 class="content" id="Pixel.Color.fromAbgr"><span class="titletype">func</span> <span class="titlelight">Color.</span><span class="titlestrong">fromAbgr</span></h3>
@@ -3573,7 +3576,7 @@ Retrieve all components as floating point values between 0 and 1.</p>
 <tr>
 <td>
 r</td>
-<td>
+<td class="tdtype">
 bool</td>
 <td>
 </td>
@@ -3581,7 +3584,7 @@ bool</td>
 <tr>
 <td>
 g</td>
-<td>
+<td class="tdtype">
 bool</td>
 <td>
 </td>
@@ -3589,7 +3592,7 @@ bool</td>
 <tr>
 <td>
 b</td>
-<td>
+<td class="tdtype">
 bool</td>
 <td>
 </td>
@@ -3597,7 +3600,7 @@ bool</td>
 <tr>
 <td>
 a</td>
-<td>
+<td class="tdtype">
 bool</td>
 <td>
 </td>
@@ -3608,7 +3611,7 @@ bool</td>
 <tr>
 <td>
 id</td>
-<td>
+<td class="tdtype">
 <a href="std.pixel.html#Pixel.CommandId">CommandId</a></td>
 <td>
 </td>
@@ -3616,8 +3619,8 @@ id</td>
 <tr>
 <td>
 params</td>
-<td>
-__painter_tuple_198</td>
+<td class="tdtype">
+__painter_tuple_200</td>
 <td>
 </td>
 </tr>
@@ -3768,7 +3771,7 @@ SetShaderParam</td>
 <tr>
 <td>
 posBuffer</td>
-<td>
+<td class="tdtype">
 <a href="std.core.html#Core.Array">Array'(Vector2)</a></td>
 <td>
 </td>
@@ -3776,7 +3779,7 @@ posBuffer</td>
 <tr>
 <td>
 penSize</td>
-<td>
+<td class="tdtype">
 f32</td>
 <td>
 </td>
@@ -3784,7 +3787,7 @@ f32</td>
 <tr>
 <td>
 penSize2</td>
-<td>
+<td class="tdtype">
 f32</td>
 <td>
 </td>
@@ -3792,7 +3795,7 @@ f32</td>
 <tr>
 <td>
 beginLine</td>
-<td>
+<td class="tdtype">
 bool</td>
 <td>
 </td>
@@ -3800,7 +3803,7 @@ bool</td>
 <tr>
 <td>
 firstLine</td>
-<td>
+<td class="tdtype">
 bool</td>
 <td>
 </td>
@@ -3808,7 +3811,7 @@ bool</td>
 <tr>
 <td>
 lastLineInvalid</td>
-<td>
+<td class="tdtype">
 bool</td>
 <td>
 </td>
@@ -3816,7 +3819,7 @@ bool</td>
 <tr>
 <td>
 normalPrev</td>
-<td>
+<td class="tdtype">
 <a href="std.core.html#Core.Math.Vector2">Vector2</a></td>
 <td>
 </td>
@@ -3824,7 +3827,7 @@ normalPrev</td>
 <tr>
 <td>
 normalFirst</td>
-<td>
+<td class="tdtype">
 <a href="std.core.html#Core.Math.Vector2">Vector2</a></td>
 <td>
 </td>
@@ -3832,7 +3835,7 @@ normalFirst</td>
 <tr>
 <td>
 normal</td>
-<td>
+<td class="tdtype">
 <a href="std.core.html#Core.Math.Vector2">Vector2</a></td>
 <td>
 </td>
@@ -3840,7 +3843,7 @@ normal</td>
 <tr>
 <td>
 prim1</td>
-<td>
+<td class="tdtype">
 u64</td>
 <td>
 </td>
@@ -3848,7 +3851,7 @@ u64</td>
 <tr>
 <td>
 prim2</td>
-<td>
+<td class="tdtype">
 u64</td>
 <td>
 </td>
@@ -3856,7 +3859,7 @@ u64</td>
 <tr>
 <td>
 prev</td>
-<td>
+<td class="tdtype">
 <a href="std.core.html#Core.Math.Vector2">Vector2</a></td>
 <td>
 </td>
@@ -3864,7 +3867,7 @@ prev</td>
 <tr>
 <td>
 path</td>
-<td>
+<td class="tdtype">
 <a href="std.pixel.html#Pixel.LinePath">const *LinePath</a></td>
 <td>
 </td>
@@ -3872,7 +3875,7 @@ path</td>
 <tr>
 <td>
 pen</td>
-<td>
+<td class="tdtype">
 <a href="std.pixel.html#Pixel.Pen">const *Pen</a></td>
 <td>
 </td>
@@ -3880,7 +3883,7 @@ pen</td>
 <tr>
 <td>
 offsetPath</td>
-<td>
+<td class="tdtype">
 f32</td>
 <td>
 </td>
@@ -3888,7 +3891,7 @@ f32</td>
 <tr>
 <td>
 remainingPatternLen</td>
-<td>
+<td class="tdtype">
 f32</td>
 <td>
 </td>
@@ -3896,7 +3899,7 @@ f32</td>
 <tr>
 <td>
 patternTotalLen</td>
-<td>
+<td class="tdtype">
 f32</td>
 <td>
 </td>
@@ -3904,7 +3907,7 @@ f32</td>
 <tr>
 <td>
 patternIndex</td>
-<td>
+<td class="tdtype">
 s32</td>
 <td>
 </td>
@@ -3912,7 +3915,7 @@ s32</td>
 <tr>
 <td>
 error</td>
-<td>
+<td class="tdtype">
 f32</td>
 <td>
 </td>
@@ -3920,7 +3923,7 @@ f32</td>
 <tr>
 <td>
 divError</td>
-<td>
+<td class="tdtype">
 f32</td>
 <td>
 </td>
@@ -3928,7 +3931,7 @@ f32</td>
 <tr>
 <td>
 pattern</td>
-<td>
+<td class="tdtype">
 const ^f32</td>
 <td>
 </td>
@@ -3936,7 +3939,7 @@ const ^f32</td>
 <tr>
 <td>
 patternCount</td>
-<td>
+<td class="tdtype">
 s32</td>
 <td>
 </td>
@@ -4007,7 +4010,7 @@ DashDot</td>
 <tr>
 <td>
 decodePixels</td>
-<td>
+<td class="tdtype">
 bool</td>
 <td>
 </td>
@@ -4048,7 +4051,7 @@ Merge</td>
 <tr>
 <td>
 type</td>
-<td>
+<td class="tdtype">
 <a href="std.pixel.html#Pixel.ElementType">ElementType</a></td>
 <td>
 </td>
@@ -4056,7 +4059,7 @@ type</td>
 <tr>
 <td>
 position</td>
-<td>
+<td class="tdtype">
 <a href="std.core.html#Core.Math.Vector2">Vector2</a></td>
 <td>
 </td>
@@ -4064,7 +4067,7 @@ position</td>
 <tr>
 <td>
 p1</td>
-<td>
+<td class="tdtype">
 <a href="std.core.html#Core.Math.Vector2">Vector2</a></td>
 <td>
 </td>
@@ -4072,7 +4075,7 @@ p1</td>
 <tr>
 <td>
 p2</td>
-<td>
+<td class="tdtype">
 <a href="std.core.html#Core.Math.Vector2">Vector2</a></td>
 <td>
 </td>
@@ -4116,7 +4119,7 @@ Curve</td>
 <tr>
 <td>
 ascent</td>
-<td>
+<td class="tdtype">
 f32</td>
 <td>
 </td>
@@ -4124,7 +4127,7 @@ f32</td>
 <tr>
 <td>
 descent</td>
-<td>
+<td class="tdtype">
 f32</td>
 <td>
 </td>
@@ -4132,7 +4135,7 @@ f32</td>
 <tr>
 <td>
 height</td>
-<td>
+<td class="tdtype">
 f32</td>
 <td>
 </td>
@@ -4140,7 +4143,7 @@ f32</td>
 <tr>
 <td>
 underlinePos</td>
-<td>
+<td class="tdtype">
 f32</td>
 <td>
 </td>
@@ -4148,7 +4151,7 @@ f32</td>
 <tr>
 <td>
 underlineSize</td>
-<td>
+<td class="tdtype">
 f32</td>
 <td>
 </td>
@@ -4156,7 +4159,7 @@ f32</td>
 <tr>
 <td>
 forceBold</td>
-<td>
+<td class="tdtype">
 bool</td>
 <td>
 </td>
@@ -4164,7 +4167,7 @@ bool</td>
 <tr>
 <td>
 forceItalic</td>
-<td>
+<td class="tdtype">
 bool</td>
 <td>
 </td>
@@ -4172,7 +4175,7 @@ bool</td>
 <tr>
 <td>
 fullname</td>
-<td>
+<td class="tdtype">
 <a href="std.core.html#Core.String">String</a></td>
 <td>
 </td>
@@ -4180,7 +4183,7 @@ fullname</td>
 <tr>
 <td>
 typeFace</td>
-<td>
+<td class="tdtype">
 <a href="std.pixel.html#Pixel.TypeFace">*TypeFace</a></td>
 <td>
 </td>
@@ -4188,7 +4191,7 @@ typeFace</td>
 <tr>
 <td>
 size</td>
-<td>
+<td class="tdtype">
 u32</td>
 <td>
 </td>
@@ -4196,7 +4199,7 @@ u32</td>
 <tr>
 <td>
 atlases</td>
-<td>
+<td class="tdtype">
 <a href="std.core.html#Core.Array">Array'(GlyphAtlas)</a></td>
 <td>
 </td>
@@ -4204,7 +4207,7 @@ atlases</td>
 <tr>
 <td>
 asciiRef</td>
-<td>
+<td class="tdtype">
 <a href="std.pixel.html#Pixel.GlyphDesc">[128] GlyphDesc</a></td>
 <td>
 </td>
@@ -4212,7 +4215,7 @@ asciiRef</td>
 <tr>
 <td>
 unicodeRef</td>
-<td>
+<td class="tdtype">
 <a href="std.core.html#Core.HashTable">HashTable'(rune, *GlyphDesc)</a></td>
 <td>
 </td>
@@ -4220,7 +4223,7 @@ unicodeRef</td>
 <tr>
 <td>
 dirty</td>
-<td>
+<td class="tdtype">
 bool</td>
 <td>
 </td>
@@ -4269,7 +4272,7 @@ Release the given font.</p>
 <p>
 Creates a new Font of the given typeface and size.</p>
 <p class="code">
-<code style="white-space: break-spaces">func create(fullname: string, size: u32, forceBold = false, forceItalic = false)-><a href="std.pixel.html#Pixel.Font">*Font</a>
+<code style="white-space: break-spaces">func create(fullname: string, size: u32, forceBold = false, forceItalic = false)-><a href="std.pixel.html#Pixel.Font">*Font</a> throw
 </code>
 </p>
 <p>
@@ -4293,7 +4296,7 @@ Release the given font.</p>
 <tr>
 <td>
 regular</td>
-<td>
+<td class="tdtype">
 <a href="std.pixel.html#Pixel.Font">*Font</a></td>
 <td>
 </td>
@@ -4301,7 +4304,7 @@ regular</td>
 <tr>
 <td>
 bold</td>
-<td>
+<td class="tdtype">
 <a href="std.pixel.html#Pixel.Font">*Font</a></td>
 <td>
 </td>
@@ -4309,7 +4312,7 @@ bold</td>
 <tr>
 <td>
 italic</td>
-<td>
+<td class="tdtype">
 <a href="std.pixel.html#Pixel.Font">*Font</a></td>
 <td>
 </td>
@@ -4317,7 +4320,7 @@ italic</td>
 <tr>
 <td>
 boldItalic</td>
-<td>
+<td class="tdtype">
 <a href="std.pixel.html#Pixel.Font">*Font</a></td>
 <td>
 </td>
@@ -4368,7 +4371,7 @@ Set the font corresponding to a given style.</p>
 </table>
 <h3 class="content" id="Pixel.FontFamily.createTypeFace"><span class="titletype">func</span> <span class="titlelight">FontFamily.</span><span class="titlestrong">createTypeFace</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func createTypeFace(enumerate: <a href="std.pixel.html#Pixel.FontFamilyEnumerate">FontFamilyEnumerate</a>, style: <a href="std.pixel.html#Pixel.FontFamilyStyle">FontFamilyStyle</a>)-><a href="std.pixel.html#Pixel.TypeFace">*TypeFace</a>
+<code style="white-space: break-spaces">func createTypeFace(enumerate: <a href="std.pixel.html#Pixel.FontFamilyEnumerate">FontFamilyEnumerate</a>, style: <a href="std.pixel.html#Pixel.FontFamilyStyle">FontFamilyStyle</a>)-><a href="std.pixel.html#Pixel.TypeFace">*TypeFace</a> throw
 </code>
 </p>
 <p>
@@ -4406,7 +4409,7 @@ Set the font corresponding to a given style.</p>
 <tr>
 <td>
 name</td>
-<td>
+<td class="tdtype">
 <a href="std.core.html#Core.String">String</a></td>
 <td>
 </td>
@@ -4414,7 +4417,7 @@ name</td>
 <tr>
 <td>
 faces</td>
-<td>
+<td class="tdtype">
 <a href="std.pixel.html#Pixel.FontFamilyStyleEnumerate">[4] FontFamilyStyleEnumerate</a></td>
 <td>
 </td>
@@ -4452,7 +4455,7 @@ BoldItalic</td>
 <tr>
 <td>
 name</td>
-<td>
+<td class="tdtype">
 <a href="std.core.html#Core.String">String</a></td>
 <td>
 </td>
@@ -4460,7 +4463,7 @@ name</td>
 <tr>
 <td>
 face</td>
-<td>
+<td class="tdtype">
 <a href="std.gdi32.html#Gdi32.LOGFONTW">LOGFONTW</a></td>
 <td>
 </td>
@@ -4481,7 +4484,7 @@ face</td>
 <tr>
 <td>
 fd</td>
-<td>
+<td class="tdtype">
 s32</td>
 <td>
 </td>
@@ -4489,7 +4492,7 @@ s32</td>
 <tr>
 <td>
 width</td>
-<td>
+<td class="tdtype">
 u16</td>
 <td>
 </td>
@@ -4497,7 +4500,7 @@ u16</td>
 <tr>
 <td>
 height</td>
-<td>
+<td class="tdtype">
 u16</td>
 <td>
 </td>
@@ -4505,7 +4508,7 @@ u16</td>
 <tr>
 <td>
 depth</td>
-<td>
+<td class="tdtype">
 u16</td>
 <td>
 </td>
@@ -4513,7 +4516,7 @@ u16</td>
 <tr>
 <td>
 loopCount</td>
-<td>
+<td class="tdtype">
 u16</td>
 <td>
 </td>
@@ -4521,7 +4524,7 @@ u16</td>
 <tr>
 <td>
 numFrames</td>
-<td>
+<td class="tdtype">
 s32</td>
 <td>
 </td>
@@ -4529,39 +4532,39 @@ s32</td>
 <tr>
 <td>
 gce</td>
-<td>
-<a href="std.pixel.html#Pixel.Gif.__privns_190.Gce">Gce</a></td>
+<td class="tdtype">
+<a href="std.pixel.html#Pixel.Gif.__privns_191.Gce">Gce</a></td>
 <td>
 </td>
 </tr>
 <tr>
 <td>
 palette</td>
-<td>
-<a href="std.pixel.html#Pixel.Gif.__privns_190.Palette">*Palette</a></td>
+<td class="tdtype">
+<a href="std.pixel.html#Pixel.Gif.__privns_191.Palette">*Palette</a></td>
 <td>
 </td>
 </tr>
 <tr>
 <td>
 lct</td>
-<td>
-<a href="std.pixel.html#Pixel.Gif.__privns_190.Palette">Palette</a></td>
+<td class="tdtype">
+<a href="std.pixel.html#Pixel.Gif.__privns_191.Palette">Palette</a></td>
 <td>
 </td>
 </tr>
 <tr>
 <td>
 gct</td>
-<td>
-<a href="std.pixel.html#Pixel.Gif.__privns_190.Palette">Palette</a></td>
+<td class="tdtype">
+<a href="std.pixel.html#Pixel.Gif.__privns_191.Palette">Palette</a></td>
 <td>
 </td>
 </tr>
 <tr>
 <td>
 fx</td>
-<td>
+<td class="tdtype">
 u16</td>
 <td>
 </td>
@@ -4569,7 +4572,7 @@ u16</td>
 <tr>
 <td>
 fy</td>
-<td>
+<td class="tdtype">
 u16</td>
 <td>
 </td>
@@ -4577,7 +4580,7 @@ u16</td>
 <tr>
 <td>
 fw</td>
-<td>
+<td class="tdtype">
 u16</td>
 <td>
 </td>
@@ -4585,7 +4588,7 @@ u16</td>
 <tr>
 <td>
 fh</td>
-<td>
+<td class="tdtype">
 u16</td>
 <td>
 </td>
@@ -4593,7 +4596,7 @@ u16</td>
 <tr>
 <td>
 bgIndex</td>
-<td>
+<td class="tdtype">
 u8</td>
 <td>
 </td>
@@ -4601,7 +4604,7 @@ u8</td>
 <tr>
 <td>
 canvas</td>
-<td>
+<td class="tdtype">
 ^u8</td>
 <td>
 </td>
@@ -4609,7 +4612,7 @@ canvas</td>
 <tr>
 <td>
 frame</td>
-<td>
+<td class="tdtype">
 <a href="std.core.html#Core.Array">Array'(u8)</a></td>
 <td>
 </td>
@@ -4617,15 +4620,15 @@ frame</td>
 <tr>
 <td>
 table</td>
-<td>
-<a href="std.pixel.html#Pixel.Gif.__privns_190.Table">Table</a></td>
+<td class="tdtype">
+<a href="std.pixel.html#Pixel.Gif.__privns_191.Table">Table</a></td>
 <td>
 </td>
 </tr>
 <tr>
 <td>
 animStart</td>
-<td>
+<td class="tdtype">
 u64</td>
 <td>
 </td>
@@ -4633,7 +4636,7 @@ u64</td>
 <tr>
 <td>
 animRemain</td>
-<td>
+<td class="tdtype">
 u64</td>
 <td>
 </td>
@@ -4641,7 +4644,7 @@ u64</td>
 <tr>
 <td>
 reachEnd</td>
-<td>
+<td class="tdtype">
 bool</td>
 <td>
 </td>
@@ -4649,7 +4652,7 @@ bool</td>
 <tr>
 <td>
 initDone</td>
-<td>
+<td class="tdtype">
 bool</td>
 <td>
 </td>
@@ -4657,7 +4660,7 @@ bool</td>
 <tr>
 <td>
 streamStart</td>
-<td>
+<td class="tdtype">
 const ^u8</td>
 <td>
 </td>
@@ -4665,7 +4668,7 @@ const ^u8</td>
 <tr>
 <td>
 stream</td>
-<td>
+<td class="tdtype">
 const ^u8</td>
 <td>
 </td>
@@ -4673,7 +4676,7 @@ const ^u8</td>
 <tr>
 <td>
 streamLen</td>
-<td>
+<td class="tdtype">
 u64</td>
 <td>
 </td>
@@ -4729,7 +4732,7 @@ Restart at frame 0.</p>
 </p>
 <h3 class="content" id="Pixel.Gif.Decoder.IImageDecoder.decode"><span class="titletype">func</span> <span class="titlelight">IImageDecoder.</span><span class="titlestrong">decode</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func decode(using self, buffer: const [..] u8, options: <a href="std.pixel.html#Pixel.DecodeOptions">DecodeOptions</a>)-><a href="std.pixel.html#Pixel.Image">Image</a>
+<code style="white-space: break-spaces">func decode(using self, buffer: const [..] u8, options: <a href="std.pixel.html#Pixel.DecodeOptions">DecodeOptions</a>)-><a href="std.pixel.html#Pixel.Image">Image</a> throw
 </code>
 </p>
 <h3 class="content" id="Pixel.Gif.Decoder.getFrame"><span class="titletype">func</span> <span class="titlelight">Decoder.</span><span class="titlestrong">getFrame</span></h3>
@@ -4741,21 +4744,21 @@ Restart at frame 0.</p>
 Create an image for the current frame.</p>
 <h3 class="content" id="Pixel.Gif.Decoder.getNumFrames"><span class="titletype">func</span> <span class="titlelight">Decoder.</span><span class="titlestrong">getNumFrames</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func getNumFrames(using self)->s32
+<code style="white-space: break-spaces">func getNumFrames(using self)->s32 throw
 </code>
 </p>
 <p>
 Returns the number of frames As Gif does not store it, we need to go threw all images (!).</p>
 <h3 class="content" id="Pixel.Gif.Decoder.init"><span class="titletype">func</span> <span class="titlelight">Decoder.</span><span class="titlestrong">init</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func init(using self, buffer: const [..] u8, decodePixels: bool)
+<code style="white-space: break-spaces">func init(using self, buffer: const [..] u8, decodePixels: bool) throw
 </code>
 </p>
 <p>
 Initialize the decoder.</p>
 <h3 class="content" id="Pixel.Gif.Decoder.nextFrame"><span class="titletype">func</span> <span class="titlelight">Decoder.</span><span class="titlestrong">nextFrame</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func nextFrame(using self, img: <a href="std.pixel.html#Pixel.Image">*Image</a>)->bool
+<code style="white-space: break-spaces">func nextFrame(using self, img: <a href="std.pixel.html#Pixel.Image">*Image</a>)->bool throw
 </code>
 </p>
 <p>
@@ -4772,7 +4775,7 @@ Restart at frame 0.</p>
 <tr>
 <td>
 texture</td>
-<td>
+<td class="tdtype">
 <a href="std.pixel.html#Pixel.Texture">Texture</a></td>
 <td>
 </td>
@@ -4780,7 +4783,7 @@ texture</td>
 <tr>
 <td>
 width</td>
-<td>
+<td class="tdtype">
 u32</td>
 <td>
 </td>
@@ -4788,7 +4791,7 @@ u32</td>
 <tr>
 <td>
 height</td>
-<td>
+<td class="tdtype">
 u32</td>
 <td>
 </td>
@@ -4796,7 +4799,7 @@ u32</td>
 <tr>
 <td>
 bpp</td>
-<td>
+<td class="tdtype">
 u32</td>
 <td>
 </td>
@@ -4804,7 +4807,7 @@ u32</td>
 <tr>
 <td>
 datas</td>
-<td>
+<td class="tdtype">
 <a href="std.core.html#Core.Array">Array'(u8)</a></td>
 <td>
 </td>
@@ -4812,7 +4815,7 @@ datas</td>
 <tr>
 <td>
 dirty</td>
-<td>
+<td class="tdtype">
 bool</td>
 <td>
 </td>
@@ -4820,7 +4823,7 @@ bool</td>
 <tr>
 <td>
 curX</td>
-<td>
+<td class="tdtype">
 s32</td>
 <td>
 </td>
@@ -4828,7 +4831,7 @@ s32</td>
 <tr>
 <td>
 curY</td>
-<td>
+<td class="tdtype">
 s32</td>
 <td>
 </td>
@@ -4836,7 +4839,7 @@ s32</td>
 <tr>
 <td>
 nextY</td>
-<td>
+<td class="tdtype">
 s32</td>
 <td>
 </td>
@@ -4847,7 +4850,7 @@ s32</td>
 <tr>
 <td>
 uv</td>
-<td>
+<td class="tdtype">
 <a href="std.core.html#Core.Math.Rectangle">Rectangle</a></td>
 <td>
 </td>
@@ -4855,7 +4858,7 @@ uv</td>
 <tr>
 <td>
 atlasIndex</td>
-<td>
+<td class="tdtype">
 s32</td>
 <td>
 </td>
@@ -4863,7 +4866,7 @@ s32</td>
 <tr>
 <td>
 advanceX</td>
-<td>
+<td class="tdtype">
 f32</td>
 <td>
 </td>
@@ -4871,7 +4874,7 @@ f32</td>
 <tr>
 <td>
 advanceY</td>
-<td>
+<td class="tdtype">
 f32</td>
 <td>
 </td>
@@ -4879,7 +4882,7 @@ f32</td>
 <tr>
 <td>
 shiftX</td>
-<td>
+<td class="tdtype">
 f32</td>
 <td>
 </td>
@@ -4887,7 +4890,7 @@ f32</td>
 <tr>
 <td>
 shiftY</td>
-<td>
+<td class="tdtype">
 f32</td>
 <td>
 </td>
@@ -4895,7 +4898,7 @@ f32</td>
 <tr>
 <td>
 width</td>
-<td>
+<td class="tdtype">
 f32</td>
 <td>
 </td>
@@ -4903,7 +4906,7 @@ f32</td>
 <tr>
 <td>
 height</td>
-<td>
+<td class="tdtype">
 f32</td>
 <td>
 </td>
@@ -4913,290 +4916,290 @@ f32</td>
 <h3 class="content" id="Pixel.Hatch.CheckBoard"><span class="titletype"></span> <span class="titlelight">Hatch.</span><span class="titlestrong">Constants</span></h3>
 <table>
 <tr>
-<td>
-const [64] u8</td>
 <td id="Pixel.Hatch.CheckBoard">
 CheckBoard</td>
+<td class="tdtype">
+const [64] u8</td>
 <td>
 </td>
 </tr>
 <tr>
-<td>
-const [64] u8</td>
 <td id="Pixel.Hatch.CheckBoardLarge">
 CheckBoardLarge</td>
+<td class="tdtype">
+const [64] u8</td>
 <td>
 </td>
 </tr>
 <tr>
-<td>
-const [64] u8</td>
 <td id="Pixel.Hatch.Cross">
 Cross</td>
+<td class="tdtype">
+const [64] u8</td>
 <td>
 </td>
 </tr>
 <tr>
-<td>
-const [64] u8</td>
 <td id="Pixel.Hatch.CrossLarge">
 CrossLarge</td>
+<td class="tdtype">
+const [64] u8</td>
 <td>
 </td>
 </tr>
 <tr>
-<td>
-const [64] u8</td>
 <td id="Pixel.Hatch.DiagonalBackward">
 DiagonalBackward</td>
+<td class="tdtype">
+const [64] u8</td>
 <td>
 </td>
 </tr>
 <tr>
-<td>
-const [64] u8</td>
 <td id="Pixel.Hatch.DiagonalBackwardLight">
 DiagonalBackwardLight</td>
+<td class="tdtype">
+const [64] u8</td>
 <td>
 </td>
 </tr>
 <tr>
-<td>
-const [64] u8</td>
 <td id="Pixel.Hatch.DiagonalCross">
 DiagonalCross</td>
+<td class="tdtype">
+const [64] u8</td>
 <td>
 </td>
 </tr>
 <tr>
-<td>
-const [64] u8</td>
 <td id="Pixel.Hatch.DiagonalForward">
 DiagonalForward</td>
+<td class="tdtype">
+const [64] u8</td>
 <td>
 </td>
 </tr>
 <tr>
-<td>
-const [64] u8</td>
 <td id="Pixel.Hatch.DiagonalForwardLight">
 DiagonalForwardLight</td>
+<td class="tdtype">
+const [64] u8</td>
 <td>
 </td>
 </tr>
 <tr>
-<td>
-const [64] u8</td>
 <td id="Pixel.Hatch.Dot">
 Dot</td>
+<td class="tdtype">
+const [64] u8</td>
 <td>
 </td>
 </tr>
 <tr>
-<td>
-const [64] u8</td>
 <td id="Pixel.Hatch.Grid">
 Grid</td>
+<td class="tdtype">
+const [64] u8</td>
 <td>
 </td>
 </tr>
 <tr>
-<td>
-const [64] u8</td>
 <td id="Pixel.Hatch.GridDotted">
 GridDotted</td>
+<td class="tdtype">
+const [64] u8</td>
 <td>
 </td>
 </tr>
 <tr>
-<td>
-const [64] u8</td>
 <td id="Pixel.Hatch.GridLarge">
 GridLarge</td>
+<td class="tdtype">
+const [64] u8</td>
 <td>
 </td>
 </tr>
 <tr>
-<td>
-const [64] u8</td>
 <td id="Pixel.Hatch.Horizontal">
 Horizontal</td>
+<td class="tdtype">
+const [64] u8</td>
 <td>
 </td>
 </tr>
 <tr>
-<td>
-const [64] u8</td>
 <td id="Pixel.Hatch.HorizontalDark">
 HorizontalDark</td>
+<td class="tdtype">
+const [64] u8</td>
 <td>
 </td>
 </tr>
 <tr>
-<td>
-const [64] u8</td>
 <td id="Pixel.Hatch.HorizontalLight">
 HorizontalLight</td>
+<td class="tdtype">
+const [64] u8</td>
 <td>
 </td>
 </tr>
 <tr>
-<td>
-const [64] u8</td>
 <td id="Pixel.Hatch.HorizontalNarrow">
 HorizontalNarrow</td>
+<td class="tdtype">
+const [64] u8</td>
 <td>
 </td>
 </tr>
 <tr>
-<td>
-const [64] u8</td>
 <td id="Pixel.Hatch.OutlinedDiamond">
 OutlinedDiamond</td>
+<td class="tdtype">
+const [64] u8</td>
 <td>
 </td>
 </tr>
 <tr>
-<td>
-const [64] u8</td>
 <td id="Pixel.Hatch.Percent10">
 Percent10</td>
+<td class="tdtype">
+const [64] u8</td>
 <td>
 </td>
 </tr>
 <tr>
-<td>
-const [64] u8</td>
 <td id="Pixel.Hatch.Percent20">
 Percent20</td>
+<td class="tdtype">
+const [64] u8</td>
 <td>
 </td>
 </tr>
 <tr>
-<td>
-const [64] u8</td>
 <td id="Pixel.Hatch.Percent25">
 Percent25</td>
+<td class="tdtype">
+const [64] u8</td>
 <td>
 </td>
 </tr>
 <tr>
-<td>
-const [64] u8</td>
 <td id="Pixel.Hatch.Percent30">
 Percent30</td>
+<td class="tdtype">
+const [64] u8</td>
 <td>
 </td>
 </tr>
 <tr>
-<td>
-const [64] u8</td>
 <td id="Pixel.Hatch.Percent40">
 Percent40</td>
+<td class="tdtype">
+const [64] u8</td>
 <td>
 </td>
 </tr>
 <tr>
-<td>
-const [64] u8</td>
 <td id="Pixel.Hatch.Percent5">
 Percent5</td>
+<td class="tdtype">
+const [64] u8</td>
 <td>
 </td>
 </tr>
 <tr>
-<td>
-const [64] u8</td>
 <td id="Pixel.Hatch.Percent50">
 Percent50</td>
+<td class="tdtype">
+const [64] u8</td>
 <td>
 </td>
 </tr>
 <tr>
-<td>
-const [64] u8</td>
 <td id="Pixel.Hatch.Percent60">
 Percent60</td>
+<td class="tdtype">
+const [64] u8</td>
 <td>
 </td>
 </tr>
 <tr>
-<td>
-const [64] u8</td>
 <td id="Pixel.Hatch.Percent70">
 Percent70</td>
+<td class="tdtype">
+const [64] u8</td>
 <td>
 </td>
 </tr>
 <tr>
-<td>
-const [64] u8</td>
 <td id="Pixel.Hatch.Percent75">
 Percent75</td>
+<td class="tdtype">
+const [64] u8</td>
 <td>
 </td>
 </tr>
 <tr>
-<td>
-const [64] u8</td>
 <td id="Pixel.Hatch.Percent80">
 Percent80</td>
+<td class="tdtype">
+const [64] u8</td>
 <td>
 </td>
 </tr>
 <tr>
-<td>
-const [64] u8</td>
 <td id="Pixel.Hatch.Percent90">
 Percent90</td>
+<td class="tdtype">
+const [64] u8</td>
 <td>
 </td>
 </tr>
 <tr>
-<td>
-const [64] u8</td>
 <td id="Pixel.Hatch.SolidDiamond">
 SolidDiamond</td>
+<td class="tdtype">
+const [64] u8</td>
 <td>
 </td>
 </tr>
 <tr>
-<td>
-const [64] u8</td>
 <td id="Pixel.Hatch.Vertical">
 Vertical</td>
+<td class="tdtype">
+const [64] u8</td>
 <td>
 </td>
 </tr>
 <tr>
-<td>
-const [64] u8</td>
 <td id="Pixel.Hatch.VerticalDark">
 VerticalDark</td>
+<td class="tdtype">
+const [64] u8</td>
 <td>
 </td>
 </tr>
 <tr>
-<td>
-const [64] u8</td>
 <td id="Pixel.Hatch.VerticalLight">
 VerticalLight</td>
+<td class="tdtype">
+const [64] u8</td>
 <td>
 </td>
 </tr>
 <tr>
-<td>
-const [64] u8</td>
 <td id="Pixel.Hatch.VerticalNarrow">
 VerticalNarrow</td>
+<td class="tdtype">
+const [64] u8</td>
 <td>
 </td>
 </tr>
 <tr>
-<td>
-const [64] u8</td>
 <td id="Pixel.Hatch.Weave">
 Weave</td>
+<td class="tdtype">
+const [64] u8</td>
 <td>
 </td>
 </tr>
@@ -5427,7 +5430,7 @@ Interface to decode a buffer.</p>
 <tr>
 <td>
 canDecode</td>
-<td>
+<td class="tdtype">
 func(*IImageDecoder, string)->bool</td>
 <td>
 </td>
@@ -5435,7 +5438,7 @@ func(*IImageDecoder, string)->bool</td>
 <tr>
 <td>
 decode</td>
-<td>
+<td class="tdtype">
 func(*IImageDecoder, const [..] u8, const ref DecodeOptions)->Image throw</td>
 <td>
 </td>
@@ -5448,7 +5451,7 @@ Interface to decode a buffer.</p>
 <tr>
 <td>
 canEncode</td>
-<td>
+<td class="tdtype">
 func(*IImageEncoder, string)->bool</td>
 <td>
 </td>
@@ -5456,7 +5459,7 @@ func(*IImageEncoder, string)->bool</td>
 <tr>
 <td>
 encode</td>
-<td>
+<td class="tdtype">
 func(*IImageEncoder, *ConcatBuffer, const ref Image, any) throw</td>
 <td>
 </td>
@@ -5469,7 +5472,7 @@ An image buffer, in various pixel formats.</p>
 <tr>
 <td>
 pixels</td>
-<td>
+<td class="tdtype">
 <a href="std.core.html#Core.Array">Array'(u8)</a></td>
 <td>
 </td>
@@ -5477,7 +5480,7 @@ pixels</td>
 <tr>
 <td>
 size</td>
-<td>
+<td class="tdtype">
 u64</td>
 <td>
 </td>
@@ -5485,7 +5488,7 @@ u64</td>
 <tr>
 <td>
 width</td>
-<td>
+<td class="tdtype">
 s32</td>
 <td>
 </td>
@@ -5493,7 +5496,7 @@ s32</td>
 <tr>
 <td>
 height</td>
-<td>
+<td class="tdtype">
 s32</td>
 <td>
 </td>
@@ -5501,7 +5504,7 @@ s32</td>
 <tr>
 <td>
 width8</td>
-<td>
+<td class="tdtype">
 s32</td>
 <td>
 </td>
@@ -5509,7 +5512,7 @@ s32</td>
 <tr>
 <td>
 pf</td>
-<td>
+<td class="tdtype">
 <a href="std.pixel.html#Pixel.PixelFormat">PixelFormat</a></td>
 <td>
 </td>
@@ -5517,7 +5520,7 @@ pf</td>
 <tr>
 <td>
 bpp</td>
-<td>
+<td class="tdtype">
 u8</td>
 <td>
 <p>
@@ -5527,7 +5530,7 @@ Bits per pixel.</p>
 <tr>
 <td>
 bpp8</td>
-<td>
+<td class="tdtype">
 u8</td>
 <td>
 </td>
@@ -5535,7 +5538,7 @@ u8</td>
 <tr>
 <td>
 workingBuffer</td>
-<td>
+<td class="tdtype">
 <a href="std.pixel.html#Pixel.Image">*Image</a></td>
 <td>
 </td>
@@ -5909,14 +5912,14 @@ Apply a kernel to the image.</p>
 <td>
 <a href="#Pixel.Image.toCrop">toCrop</a></td>
 <td>
+<p>
+Crop image.</p>
 </td>
 </tr>
 <tr>
 <td>
 <a href="#Pixel.Image.toCrop">toCrop</a></td>
 <td>
-<p>
-Crop image.</p>
 </td>
 </tr>
 <tr>
@@ -6495,7 +6498,7 @@ Crop image.</p>
 </p>
 <h3 class="content" id="Pixel.Image.decode"><span class="titletype">func</span> <span class="titlelight">Image.</span><span class="titlestrong">decode</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func decode(fileName: string, bytes: const [..] u8, options: <a href="std.pixel.html#Pixel.DecodeOptions">DecodeOptions</a> = {})-><a href="std.pixel.html#Pixel.Image">Image</a>
+<code style="white-space: break-spaces">func decode(fileName: string, bytes: const [..] u8, options: <a href="std.pixel.html#Pixel.DecodeOptions">DecodeOptions</a> = {})-><a href="std.pixel.html#Pixel.Image">Image</a> throw
 </code>
 </p>
 <p>
@@ -6549,13 +6552,13 @@ Flip image vertically.</p>
 Free the working buffer if allocated.</p>
 <h3 class="content" id="Pixel.Image.from"><span class="titletype">func</span> <span class="titlelight">Image.</span><span class="titlestrong">from</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func from(hicon: HICON)-><a href="std.pixel.html#Pixel.Image">Image</a>
+<code style="white-space: break-spaces">func from(hicon: HICON)-><a href="std.pixel.html#Pixel.Image">Image</a> throw
 </code>
 </p>
 <p>
 Creates an image from a windows HICON.</p>
 <p class="code">
-<code style="white-space: break-spaces">func from(hbitmap: HBITMAP)-><a href="std.pixel.html#Pixel.Image">Image</a>
+<code style="white-space: break-spaces">func from(hbitmap: HBITMAP)-><a href="std.pixel.html#Pixel.Image">Image</a> throw
 </code>
 </p>
 <p>
@@ -6618,7 +6621,7 @@ Returns true if the image is valid.</p>
 Change the lightness. <code class = "incode">factor</code> is [-1, 1].</p>
 <h3 class="content" id="Pixel.Image.load"><span class="titletype">func</span> <span class="titlelight">Image.</span><span class="titlestrong">load</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func load(fileName: string, options: <a href="std.pixel.html#Pixel.DecodeOptions">DecodeOptions</a> = {})-><a href="std.pixel.html#Pixel.Image">Image</a>
+<code style="white-space: break-spaces">func load(fileName: string, options: <a href="std.pixel.html#Pixel.DecodeOptions">DecodeOptions</a> = {})-><a href="std.pixel.html#Pixel.Image">Image</a> throw
 </code>
 </p>
 <p>
@@ -6659,7 +6662,7 @@ Release the content of the image.</p>
 Resize image Put <code class = "incode">newWidth</code> or <code class = "incode">newHeight</code> to 0 to keep aspect ratio.</p>
 <h3 class="content" id="Pixel.Image.save"><span class="titletype">func</span> <span class="titlelight">Image.</span><span class="titlestrong">save</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func save(using self, fileName: string, options: any = null)
+<code style="white-space: break-spaces">func save(using self, fileName: string, options: any = null) throw
 </code>
 </p>
 <p>
@@ -6719,7 +6722,7 @@ Crop image.</p>
 Flip image vertically.</p>
 <h3 class="content" id="Pixel.Image.toHICON"><span class="titletype">func</span> <span class="titlelight">Image.</span><span class="titlestrong">toHICON</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func toHICON(using self)->HICON
+<code style="white-space: break-spaces">func toHICON(using self)->HICON throw
 </code>
 </p>
 <p>
@@ -6793,7 +6796,7 @@ Macro to visit all pixels of the image in parallel chunks.</p>
 <tr>
 <td>
 type</td>
-<td>
+<td class="tdtype">
 <a href="swag.runtime.html#Swag.TypeInfoStruct">const *TypeInfoStruct</a></td>
 <td>
 </td>
@@ -6801,7 +6804,7 @@ type</td>
 <tr>
 <td>
 itf</td>
-<td>
+<td class="tdtype">
 <a href="std.pixel.html#Pixel.IImageDecoder">IImageDecoder</a></td>
 <td>
 </td>
@@ -6812,7 +6815,7 @@ itf</td>
 <tr>
 <td>
 type</td>
-<td>
+<td class="tdtype">
 <a href="swag.runtime.html#Swag.TypeInfoStruct">const *TypeInfoStruct</a></td>
 <td>
 </td>
@@ -6820,7 +6823,7 @@ type</td>
 <tr>
 <td>
 itf</td>
-<td>
+<td class="tdtype">
 <a href="std.pixel.html#Pixel.IImageEncoder">IImageEncoder</a></td>
 <td>
 </td>
@@ -6844,42 +6847,42 @@ Linear</td>
 <h3 class="content" id="Pixel.InvalidRenderTargetHandle"><span class="titletype"></span> <span class="titlelight">Pixel.</span><span class="titlestrong">Constants</span></h3>
 <table>
 <tr>
-<td>
-RenderTargetHandle</td>
 <td id="Pixel.InvalidRenderTargetHandle">
 InvalidRenderTargetHandle</td>
+<td class="tdtype">
+RenderTargetHandle</td>
 <td>
 </td>
 </tr>
 <tr>
-<td>
-RenderTargetSurfaceHandle</td>
 <td id="Pixel.InvalidRenderTargetSurfaceHandle">
 InvalidRenderTargetSurfaceHandle</td>
+<td class="tdtype">
+RenderTargetSurfaceHandle</td>
 <td>
 </td>
 </tr>
 <tr>
-<td>
-ShaderHandle</td>
 <td id="Pixel.InvalidShaderHandle">
 InvalidShaderHandle</td>
+<td class="tdtype">
+ShaderHandle</td>
 <td>
 </td>
 </tr>
 <tr>
-<td>
-ShaderParamHandle</td>
 <td id="Pixel.InvalidShaderParamHandle">
 InvalidShaderParamHandle</td>
+<td class="tdtype">
+ShaderParamHandle</td>
 <td>
 </td>
 </tr>
 <tr>
-<td>
-TextureHandle</td>
 <td id="Pixel.InvalidTextureHandle">
 InvalidTextureHandle</td>
+<td class="tdtype">
+TextureHandle</td>
 <td>
 </td>
 </tr>
@@ -6944,7 +6947,7 @@ MiterBevel</td>
 <tr>
 <td>
 stream</td>
-<td>
+<td class="tdtype">
 const ^u8</td>
 <td>
 </td>
@@ -6952,7 +6955,7 @@ const ^u8</td>
 <tr>
 <td>
 inBufOfs</td>
-<td>
+<td class="tdtype">
 ^u8</td>
 <td>
 </td>
@@ -6960,7 +6963,7 @@ inBufOfs</td>
 <tr>
 <td>
 pSampleBuf</td>
-<td>
+<td class="tdtype">
 ^u8</td>
 <td>
 </td>
@@ -6968,7 +6971,7 @@ pSampleBuf</td>
 <tr>
 <td>
 imageSizeX</td>
-<td>
+<td class="tdtype">
 s32</td>
 <td>
 </td>
@@ -6976,7 +6979,7 @@ s32</td>
 <tr>
 <td>
 imageSizeY</td>
-<td>
+<td class="tdtype">
 s32</td>
 <td>
 </td>
@@ -6984,7 +6987,7 @@ s32</td>
 <tr>
 <td>
 streamLen</td>
-<td>
+<td class="tdtype">
 s32</td>
 <td>
 </td>
@@ -6992,7 +6995,7 @@ s32</td>
 <tr>
 <td>
 streamSeek</td>
-<td>
+<td class="tdtype">
 s32</td>
 <td>
 </td>
@@ -7000,7 +7003,7 @@ s32</td>
 <tr>
 <td>
 bitBuf</td>
-<td>
+<td class="tdtype">
 u32</td>
 <td>
 </td>
@@ -7008,7 +7011,7 @@ u32</td>
 <tr>
 <td>
 bitsLeft</td>
-<td>
+<td class="tdtype">
 s32</td>
 <td>
 </td>
@@ -7016,7 +7019,7 @@ s32</td>
 <tr>
 <td>
 inBufLeft</td>
-<td>
+<td class="tdtype">
 s32</td>
 <td>
 </td>
@@ -7024,7 +7027,7 @@ s32</td>
 <tr>
 <td>
 temFlag</td>
-<td>
+<td class="tdtype">
 s32</td>
 <td>
 </td>
@@ -7032,7 +7035,7 @@ s32</td>
 <tr>
 <td>
 eofReached</td>
-<td>
+<td class="tdtype">
 s32</td>
 <td>
 </td>
@@ -7040,7 +7043,7 @@ s32</td>
 <tr>
 <td>
 totalBytesRead</td>
-<td>
+<td class="tdtype">
 s32</td>
 <td>
 </td>
@@ -7048,7 +7051,7 @@ s32</td>
 <tr>
 <td>
 compsInFrame</td>
-<td>
+<td class="tdtype">
 s32</td>
 <td>
 </td>
@@ -7056,7 +7059,7 @@ s32</td>
 <tr>
 <td>
 restartInterval</td>
-<td>
+<td class="tdtype">
 s32</td>
 <td>
 </td>
@@ -7064,7 +7067,7 @@ s32</td>
 <tr>
 <td>
 scanType</td>
-<td>
+<td class="tdtype">
 s32</td>
 <td>
 </td>
@@ -7072,7 +7075,7 @@ s32</td>
 <tr>
 <td>
 maxBlocksPerMcu</td>
-<td>
+<td class="tdtype">
 s32</td>
 <td>
 </td>
@@ -7080,7 +7083,7 @@ s32</td>
 <tr>
 <td>
 maxMcuSizeX</td>
-<td>
+<td class="tdtype">
 s32</td>
 <td>
 </td>
@@ -7088,7 +7091,7 @@ s32</td>
 <tr>
 <td>
 maxMcuSizeY</td>
-<td>
+<td class="tdtype">
 s32</td>
 <td>
 </td>
@@ -7096,7 +7099,7 @@ s32</td>
 <tr>
 <td>
 blocksPerMcu</td>
-<td>
+<td class="tdtype">
 u32</td>
 <td>
 </td>
@@ -7104,7 +7107,7 @@ u32</td>
 <tr>
 <td>
 maxMcusPerRow</td>
-<td>
+<td class="tdtype">
 s32</td>
 <td>
 </td>
@@ -7112,7 +7115,7 @@ s32</td>
 <tr>
 <td>
 maxMcusPerCol</td>
-<td>
+<td class="tdtype">
 s32</td>
 <td>
 </td>
@@ -7120,7 +7123,7 @@ s32</td>
 <tr>
 <td>
 maxBlocksPerRow</td>
-<td>
+<td class="tdtype">
 s32</td>
 <td>
 </td>
@@ -7128,7 +7131,7 @@ s32</td>
 <tr>
 <td>
 totalLinesLeft</td>
-<td>
+<td class="tdtype">
 s32</td>
 <td>
 </td>
@@ -7136,7 +7139,7 @@ s32</td>
 <tr>
 <td>
 mcuLinesLeft</td>
-<td>
+<td class="tdtype">
 s32</td>
 <td>
 </td>
@@ -7144,7 +7147,7 @@ s32</td>
 <tr>
 <td>
 spectralStart</td>
-<td>
+<td class="tdtype">
 s32</td>
 <td>
 </td>
@@ -7152,7 +7155,7 @@ s32</td>
 <tr>
 <td>
 spectralEnd</td>
-<td>
+<td class="tdtype">
 s32</td>
 <td>
 </td>
@@ -7160,7 +7163,7 @@ s32</td>
 <tr>
 <td>
 successiveLow</td>
-<td>
+<td class="tdtype">
 s32</td>
 <td>
 </td>
@@ -7168,7 +7171,7 @@ s32</td>
 <tr>
 <td>
 successiveHigh</td>
-<td>
+<td class="tdtype">
 s32</td>
 <td>
 </td>
@@ -7176,7 +7179,7 @@ s32</td>
 <tr>
 <td>
 mcusPerRow</td>
-<td>
+<td class="tdtype">
 s32</td>
 <td>
 </td>
@@ -7184,7 +7187,7 @@ s32</td>
 <tr>
 <td>
 mcusPerCol</td>
-<td>
+<td class="tdtype">
 s32</td>
 <td>
 </td>
@@ -7192,7 +7195,7 @@ s32</td>
 <tr>
 <td>
 eobRun</td>
-<td>
+<td class="tdtype">
 s32</td>
 <td>
 </td>
@@ -7200,7 +7203,7 @@ s32</td>
 <tr>
 <td>
 restartsLeft</td>
-<td>
+<td class="tdtype">
 s32</td>
 <td>
 </td>
@@ -7208,7 +7211,7 @@ s32</td>
 <tr>
 <td>
 nextRestartNum</td>
-<td>
+<td class="tdtype">
 s32</td>
 <td>
 </td>
@@ -7216,7 +7219,7 @@ s32</td>
 <tr>
 <td>
 compsInScan</td>
-<td>
+<td class="tdtype">
 u32</td>
 <td>
 </td>
@@ -7224,7 +7227,7 @@ u32</td>
 <tr>
 <td>
 destBytesPerPixel</td>
-<td>
+<td class="tdtype">
 s32</td>
 <td>
 </td>
@@ -7232,7 +7235,7 @@ s32</td>
 <tr>
 <td>
 realDestBytesPerScanLine</td>
-<td>
+<td class="tdtype">
 s32</td>
 <td>
 </td>
@@ -7240,7 +7243,7 @@ s32</td>
 <tr>
 <td>
 destBytesPerScanLine</td>
-<td>
+<td class="tdtype">
 s32</td>
 <td>
 </td>
@@ -7248,7 +7251,7 @@ s32</td>
 <tr>
 <td>
 acceptMetaDatas</td>
-<td>
+<td class="tdtype">
 bool</td>
 <td>
 </td>
@@ -7256,7 +7259,7 @@ bool</td>
 <tr>
 <td>
 progressiveFlag</td>
-<td>
+<td class="tdtype">
 bool</td>
 <td>
 </td>
@@ -7264,7 +7267,7 @@ bool</td>
 <tr>
 <td>
 inBuf</td>
-<td>
+<td class="tdtype">
 [4224] u8</td>
 <td>
 </td>
@@ -7272,7 +7275,7 @@ inBuf</td>
 <tr>
 <td>
 compSampH</td>
-<td>
+<td class="tdtype">
 [4] s32</td>
 <td>
 </td>
@@ -7280,7 +7283,7 @@ compSampH</td>
 <tr>
 <td>
 compSampV</td>
-<td>
+<td class="tdtype">
 [4] s32</td>
 <td>
 </td>
@@ -7288,7 +7291,7 @@ compSampV</td>
 <tr>
 <td>
 compQuant</td>
-<td>
+<td class="tdtype">
 [4] u32</td>
 <td>
 </td>
@@ -7296,7 +7299,7 @@ compQuant</td>
 <tr>
 <td>
 compIdent</td>
-<td>
+<td class="tdtype">
 [4] s32</td>
 <td>
 </td>
@@ -7304,7 +7307,7 @@ compIdent</td>
 <tr>
 <td>
 blockMaxZagSet</td>
-<td>
+<td class="tdtype">
 [6144] s32</td>
 <td>
 </td>
@@ -7312,7 +7315,7 @@ blockMaxZagSet</td>
 <tr>
 <td>
 blockSeg</td>
-<td>
+<td class="tdtype">
 [6144] ^s16</td>
 <td>
 </td>
@@ -7320,7 +7323,7 @@ blockSeg</td>
 <tr>
 <td>
 compList</td>
-<td>
+<td class="tdtype">
 [4] u32</td>
 <td>
 </td>
@@ -7328,7 +7331,7 @@ compList</td>
 <tr>
 <td>
 compDcTab</td>
-<td>
+<td class="tdtype">
 [4] s32</td>
 <td>
 </td>
@@ -7336,7 +7339,7 @@ compDcTab</td>
 <tr>
 <td>
 compAcTab</td>
-<td>
+<td class="tdtype">
 [4] s32</td>
 <td>
 </td>
@@ -7344,7 +7347,7 @@ compAcTab</td>
 <tr>
 <td>
 compBlocksH</td>
-<td>
+<td class="tdtype">
 [4] s32</td>
 <td>
 </td>
@@ -7352,7 +7355,7 @@ compBlocksH</td>
 <tr>
 <td>
 compBlocksV</td>
-<td>
+<td class="tdtype">
 [4] s32</td>
 <td>
 </td>
@@ -7360,7 +7363,7 @@ compBlocksV</td>
 <tr>
 <td>
 mcuOrg</td>
-<td>
+<td class="tdtype">
 [10] u32</td>
 <td>
 </td>
@@ -7368,7 +7371,7 @@ mcuOrg</td>
 <tr>
 <td>
 h</td>
-<td>
+<td class="tdtype">
 <a href="std.pixel.html#Pixel.Jpg.__privns_189.HuffTables">[8] HuffTables</a></td>
 <td>
 </td>
@@ -7376,7 +7379,7 @@ h</td>
 <tr>
 <td>
 dcHuffSeg</td>
-<td>
+<td class="tdtype">
 <a href="std.pixel.html#Pixel.Jpg.__privns_189.HuffTables">[10] *HuffTables</a></td>
 <td>
 </td>
@@ -7384,7 +7387,7 @@ dcHuffSeg</td>
 <tr>
 <td>
 acHuffSeg</td>
-<td>
+<td class="tdtype">
 <a href="std.pixel.html#Pixel.Jpg.__privns_189.HuffTables">[10] *HuffTables</a></td>
 <td>
 </td>
@@ -7392,7 +7395,7 @@ acHuffSeg</td>
 <tr>
 <td>
 blockMcuY</td>
-<td>
+<td class="tdtype">
 [4] s32</td>
 <td>
 </td>
@@ -7400,7 +7403,7 @@ blockMcuY</td>
 <tr>
 <td>
 component</td>
-<td>
+<td class="tdtype">
 [10] *u32</td>
 <td>
 </td>
@@ -7408,7 +7411,7 @@ component</td>
 <tr>
 <td>
 lastDcVal</td>
-<td>
+<td class="tdtype">
 [4] u32</td>
 <td>
 </td>
@@ -7416,7 +7419,7 @@ lastDcVal</td>
 <tr>
 <td>
 dcCoeffs</td>
-<td>
+<td class="tdtype">
 <a href="std.pixel.html#Pixel.Jpg.__privns_189.CoeffBuf">[4] CoeffBuf</a></td>
 <td>
 </td>
@@ -7424,7 +7427,7 @@ dcCoeffs</td>
 <tr>
 <td>
 acCoeffs</td>
-<td>
+<td class="tdtype">
 <a href="std.pixel.html#Pixel.Jpg.__privns_189.CoeffBuf">[4] CoeffBuf</a></td>
 <td>
 </td>
@@ -7432,7 +7435,7 @@ acCoeffs</td>
 <tr>
 <td>
 tempBlock</td>
-<td>
+<td class="tdtype">
 [64] s16</td>
 <td>
 </td>
@@ -7440,7 +7443,7 @@ tempBlock</td>
 <tr>
 <td>
 crr</td>
-<td>
+<td class="tdtype">
 [256] s32</td>
 <td>
 </td>
@@ -7448,7 +7451,7 @@ crr</td>
 <tr>
 <td>
 cbb</td>
-<td>
+<td class="tdtype">
 [256] s32</td>
 <td>
 </td>
@@ -7456,7 +7459,7 @@ cbb</td>
 <tr>
 <td>
 crg</td>
-<td>
+<td class="tdtype">
 [256] s32</td>
 <td>
 </td>
@@ -7464,7 +7467,7 @@ crg</td>
 <tr>
 <td>
 cbg</td>
-<td>
+<td class="tdtype">
 [256] s32</td>
 <td>
 </td>
@@ -7472,7 +7475,7 @@ cbg</td>
 <tr>
 <td>
 huffNum</td>
-<td>
+<td class="tdtype">
 <a href="std.core.html#Core.Array">[8] Array'(u8)</a></td>
 <td>
 </td>
@@ -7480,7 +7483,7 @@ huffNum</td>
 <tr>
 <td>
 huffVal</td>
-<td>
+<td class="tdtype">
 <a href="std.core.html#Core.Array">[8] Array'(u8)</a></td>
 <td>
 </td>
@@ -7488,7 +7491,7 @@ huffVal</td>
 <tr>
 <td>
 quant</td>
-<td>
+<td class="tdtype">
 <a href="std.core.html#Core.Array">[4] Array'(s16)</a></td>
 <td>
 </td>
@@ -7496,7 +7499,7 @@ quant</td>
 <tr>
 <td>
 scanLine0</td>
-<td>
+<td class="tdtype">
 <a href="std.core.html#Core.Array">Array'(u8)</a></td>
 <td>
 </td>
@@ -7504,7 +7507,7 @@ scanLine0</td>
 <tr>
 <td>
 scanLine1</td>
-<td>
+<td class="tdtype">
 <a href="std.core.html#Core.Array">Array'(u8)</a></td>
 <td>
 </td>
@@ -7512,7 +7515,7 @@ scanLine1</td>
 <tr>
 <td>
 quantBuf</td>
-<td>
+<td class="tdtype">
 <a href="std.core.html#Core.Array">Array'(u8)</a></td>
 <td>
 </td>
@@ -7520,7 +7523,7 @@ quantBuf</td>
 <tr>
 <td>
 sampleBuf</td>
-<td>
+<td class="tdtype">
 <a href="std.core.html#Core.Array">Array'(u8)</a></td>
 <td>
 </td>
@@ -7533,7 +7536,7 @@ sampleBuf</td>
 </p>
 <h3 class="content" id="Pixel.Jpg.Decoder.IImageDecoder.decode"><span class="titletype">func</span> <span class="titlelight">IImageDecoder.</span><span class="titlestrong">decode</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func decode(using self, buffer: const [..] u8, options: <a href="std.pixel.html#Pixel.DecodeOptions">DecodeOptions</a>)-><a href="std.pixel.html#Pixel.Image">Image</a>
+<code style="white-space: break-spaces">func decode(using self, buffer: const [..] u8, options: <a href="std.pixel.html#Pixel.DecodeOptions">DecodeOptions</a>)-><a href="std.pixel.html#Pixel.Image">Image</a> throw
 </code>
 </p>
 <h3 class="content" id="Pixel.Jpg.EncodeOptions"><span class="titletype">struct</span> <span class="titlelight">Jpg.</span><span class="titlestrong">EncodeOptions</span></h3>
@@ -7541,7 +7544,7 @@ sampleBuf</td>
 <tr>
 <td>
 quality</td>
-<td>
+<td class="tdtype">
 u8</td>
 <td>
 <p>
@@ -7554,7 +7557,7 @@ Encoding quality between 1 and 100.</p>
 <tr>
 <td>
 imageX</td>
-<td>
+<td class="tdtype">
 u16</td>
 <td>
 </td>
@@ -7562,7 +7565,7 @@ u16</td>
 <tr>
 <td>
 imageY</td>
-<td>
+<td class="tdtype">
 u16</td>
 <td>
 </td>
@@ -7570,7 +7573,7 @@ u16</td>
 <tr>
 <td>
 bufferRGB</td>
-<td>
+<td class="tdtype">
 <a href="std.core.html#Core.Array">Array'(ColorRGB)</a></td>
 <td>
 </td>
@@ -7578,7 +7581,7 @@ bufferRGB</td>
 <tr>
 <td>
 stream</td>
-<td>
+<td class="tdtype">
 <a href="std.core.html#Core.ConcatBuffer">*ConcatBuffer</a></td>
 <td>
 </td>
@@ -7586,7 +7589,7 @@ stream</td>
 <tr>
 <td>
 srcImage</td>
-<td>
+<td class="tdtype">
 <a href="std.pixel.html#Pixel.Image">const *Image</a></td>
 <td>
 </td>
@@ -7594,7 +7597,7 @@ srcImage</td>
 <tr>
 <td>
 bytenew</td>
-<td>
+<td class="tdtype">
 u8</td>
 <td>
 </td>
@@ -7602,7 +7605,7 @@ u8</td>
 <tr>
 <td>
 bytepos</td>
-<td>
+<td class="tdtype">
 s8</td>
 <td>
 </td>
@@ -7610,7 +7613,7 @@ s8</td>
 <tr>
 <td>
 scaleFactor</td>
-<td>
+<td class="tdtype">
 u8</td>
 <td>
 </td>
@@ -7618,55 +7621,55 @@ u8</td>
 <tr>
 <td>
 dqtInfo</td>
-<td>
-<a href="std.pixel.html#Pixel.Jpg.__privns_193.DQTInfoType">DQTInfoType</a></td>
+<td class="tdtype">
+<a href="std.pixel.html#Pixel.Jpg.__privns_194.DQTInfoType">DQTInfoType</a></td>
 <td>
 </td>
 </tr>
 <tr>
 <td>
 dhtInfo</td>
-<td>
-<a href="std.pixel.html#Pixel.Jpg.__privns_193.DHTInfoType">DHTInfoType</a></td>
+<td class="tdtype">
+<a href="std.pixel.html#Pixel.Jpg.__privns_194.DHTInfoType">DHTInfoType</a></td>
 <td>
 </td>
 </tr>
 <tr>
 <td>
 htYDC</td>
-<td>
-<a href="std.pixel.html#Pixel.Jpg.__privns_193.BitString">[12] BitString</a></td>
+<td class="tdtype">
+<a href="std.pixel.html#Pixel.Jpg.__privns_194.BitString">[12] BitString</a></td>
 <td>
 </td>
 </tr>
 <tr>
 <td>
 htCbDC</td>
-<td>
-<a href="std.pixel.html#Pixel.Jpg.__privns_193.BitString">[12] BitString</a></td>
+<td class="tdtype">
+<a href="std.pixel.html#Pixel.Jpg.__privns_194.BitString">[12] BitString</a></td>
 <td>
 </td>
 </tr>
 <tr>
 <td>
 htYAC</td>
-<td>
-<a href="std.pixel.html#Pixel.Jpg.__privns_193.BitString">[256] BitString</a></td>
+<td class="tdtype">
+<a href="std.pixel.html#Pixel.Jpg.__privns_194.BitString">[256] BitString</a></td>
 <td>
 </td>
 </tr>
 <tr>
 <td>
 htCbAC</td>
-<td>
-<a href="std.pixel.html#Pixel.Jpg.__privns_193.BitString">[256] BitString</a></td>
+<td class="tdtype">
+<a href="std.pixel.html#Pixel.Jpg.__privns_194.BitString">[256] BitString</a></td>
 <td>
 </td>
 </tr>
 <tr>
 <td>
 fdtblY</td>
-<td>
+<td class="tdtype">
 [64] f32</td>
 <td>
 </td>
@@ -7674,7 +7677,7 @@ fdtblY</td>
 <tr>
 <td>
 fdtblCb</td>
-<td>
+<td class="tdtype">
 [64] f32</td>
 <td>
 </td>
@@ -7682,7 +7685,7 @@ fdtblCb</td>
 <tr>
 <td>
 duY</td>
-<td>
+<td class="tdtype">
 [64] s8</td>
 <td>
 </td>
@@ -7690,7 +7693,7 @@ duY</td>
 <tr>
 <td>
 duCb</td>
-<td>
+<td class="tdtype">
 [64] s8</td>
 <td>
 </td>
@@ -7698,7 +7701,7 @@ duCb</td>
 <tr>
 <td>
 duCr</td>
-<td>
+<td class="tdtype">
 [64] s8</td>
 <td>
 </td>
@@ -7706,7 +7709,7 @@ duCr</td>
 <tr>
 <td>
 duDct</td>
-<td>
+<td class="tdtype">
 [64] s16</td>
 <td>
 </td>
@@ -7714,7 +7717,7 @@ duDct</td>
 <tr>
 <td>
 du</td>
-<td>
+<td class="tdtype">
 [64] s16</td>
 <td>
 </td>
@@ -7722,7 +7725,7 @@ du</td>
 <tr>
 <td>
 categoryAlloc</td>
-<td>
+<td class="tdtype">
 <a href="std.core.html#Core.Array">Array'(u8)</a></td>
 <td>
 </td>
@@ -7730,7 +7733,7 @@ categoryAlloc</td>
 <tr>
 <td>
 category</td>
-<td>
+<td class="tdtype">
 ^u8</td>
 <td>
 </td>
@@ -7738,7 +7741,7 @@ category</td>
 <tr>
 <td>
 bitcodeAlloc</td>
-<td>
+<td class="tdtype">
 <a href="std.core.html#Core.Array">Array'(BitString)</a></td>
 <td>
 </td>
@@ -7746,8 +7749,8 @@ bitcodeAlloc</td>
 <tr>
 <td>
 bitcode</td>
-<td>
-<a href="std.pixel.html#Pixel.Jpg.__privns_193.BitString">^BitString</a></td>
+<td class="tdtype">
+<a href="std.pixel.html#Pixel.Jpg.__privns_194.BitString">^BitString</a></td>
 <td>
 </td>
 </tr>
@@ -7759,7 +7762,7 @@ bitcode</td>
 </p>
 <h3 class="content" id="Pixel.Jpg.Encoder.IImageEncoder.encode"><span class="titletype">func</span> <span class="titlelight">IImageEncoder.</span><span class="titlestrong">encode</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func encode(using self, result: <a href="std.core.html#Core.ConcatBuffer">*ConcatBuffer</a>, image: <a href="std.pixel.html#Pixel.Image">Image</a>, options: any)
+<code style="white-space: break-spaces">func encode(using self, result: <a href="std.core.html#Core.ConcatBuffer">*ConcatBuffer</a>, image: <a href="std.pixel.html#Pixel.Image">Image</a>, options: any) throw
 </code>
 </p>
 <h3 class="content" id="Pixel.LineCapStyle"><span class="titletype">enum</span> <span class="titlelight">Pixel.</span><span class="titlestrong">LineCapStyle</span></h3>
@@ -7806,7 +7809,7 @@ SquareAnchor</td>
 <tr>
 <td>
 elements</td>
-<td>
+<td class="tdtype">
 <a href="std.core.html#Core.Array">Array'(Element)</a></td>
 <td>
 </td>
@@ -7814,7 +7817,7 @@ elements</td>
 <tr>
 <td>
 startPoint</td>
-<td>
+<td class="tdtype">
 <a href="std.core.html#Core.Math.Vector2">Vector2</a></td>
 <td>
 </td>
@@ -7822,7 +7825,7 @@ startPoint</td>
 <tr>
 <td>
 endPoint</td>
-<td>
+<td class="tdtype">
 <a href="std.core.html#Core.Math.Vector2">Vector2</a></td>
 <td>
 </td>
@@ -7830,7 +7833,7 @@ endPoint</td>
 <tr>
 <td>
 isClosed</td>
-<td>
+<td class="tdtype">
 bool</td>
 <td>
 </td>
@@ -7838,7 +7841,7 @@ bool</td>
 <tr>
 <td>
 isDirty</td>
-<td>
+<td class="tdtype">
 bool</td>
 <td>
 </td>
@@ -7846,7 +7849,7 @@ bool</td>
 <tr>
 <td>
 serial</td>
-<td>
+<td class="tdtype">
 s32</td>
 <td>
 </td>
@@ -7854,7 +7857,7 @@ s32</td>
 <tr>
 <td>
 flattenQuality</td>
-<td>
+<td class="tdtype">
 <a href="std.pixel.html#Pixel.PaintQuality">PaintQuality</a></td>
 <td>
 </td>
@@ -7862,7 +7865,7 @@ flattenQuality</td>
 <tr>
 <td>
 isPolyOnly</td>
-<td>
+<td class="tdtype">
 bool</td>
 <td>
 </td>
@@ -7870,7 +7873,7 @@ bool</td>
 <tr>
 <td>
 isFlatten</td>
-<td>
+<td class="tdtype">
 bool</td>
 <td>
 </td>
@@ -7878,7 +7881,7 @@ bool</td>
 <tr>
 <td>
 bvMin</td>
-<td>
+<td class="tdtype">
 <a href="std.core.html#Core.Math.Vector2">Vector2</a></td>
 <td>
 </td>
@@ -7886,7 +7889,7 @@ bvMin</td>
 <tr>
 <td>
 bvMax</td>
-<td>
+<td class="tdtype">
 <a href="std.core.html#Core.Math.Vector2">Vector2</a></td>
 <td>
 </td>
@@ -7894,7 +7897,7 @@ bvMax</td>
 <tr>
 <td>
 endPosBuffer</td>
-<td>
+<td class="tdtype">
 <a href="std.core.html#Core.Math.Vector2">Vector2</a></td>
 <td>
 </td>
@@ -7902,7 +7905,7 @@ endPosBuffer</td>
 <tr>
 <td>
 polygon</td>
-<td>
+<td class="tdtype">
 <a href="std.pixel.html#Pixel.Polygon">Polygon</a></td>
 <td>
 </td>
@@ -7910,7 +7913,7 @@ polygon</td>
 <tr>
 <td>
 points</td>
-<td>
+<td class="tdtype">
 <a href="std.core.html#Core.Array">Array'(*Point)</a></td>
 <td>
 </td>
@@ -7918,7 +7921,7 @@ points</td>
 <tr>
 <td>
 triangles</td>
-<td>
+<td class="tdtype">
 <a href="std.core.html#Core.Array">Array'(*Triangle)</a></td>
 <td>
 </td>
@@ -7926,7 +7929,7 @@ triangles</td>
 <tr>
 <td>
 edgeList</td>
-<td>
+<td class="tdtype">
 <a href="std.core.html#Core.Array">Array'(*Edge)</a></td>
 <td>
 </td>
@@ -8149,7 +8152,7 @@ Reset the path.</p>
 <tr>
 <td>
 paths</td>
-<td>
+<td class="tdtype">
 <a href="std.core.html#Core.Array">Array'(*LinePath)</a></td>
 <td>
 </td>
@@ -8157,7 +8160,7 @@ paths</td>
 <tr>
 <td>
 bvMin</td>
-<td>
+<td class="tdtype">
 <a href="std.core.html#Core.Math.Vector2">Vector2</a></td>
 <td>
 </td>
@@ -8165,7 +8168,7 @@ bvMin</td>
 <tr>
 <td>
 bvMax</td>
-<td>
+<td class="tdtype">
 <a href="std.core.html#Core.Math.Vector2">Vector2</a></td>
 <td>
 </td>
@@ -8277,10 +8280,10 @@ Call quality offset on all paths They must before be flattened.</p>
 <h3 class="content" id="Pixel.MaxAAEdge"><span class="titletype"></span> <span class="titlelight">Pixel.</span><span class="titlestrong">Constants</span></h3>
 <table>
 <tr>
-<td>
-s32</td>
 <td id="Pixel.MaxAAEdge">
 MaxAAEdge</td>
+<td class="tdtype">
+s32</td>
 <td>
 </td>
 </tr>
@@ -8321,8 +8324,8 @@ MaxAAEdge</td>
 </table>
 <h3 class="content" id="Pixel.NativeRenderOgl.createContext"><span class="titletype">func</span> <span class="titlelight">NativeRenderOgl.</span><span class="titlestrong">createContext</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func createContext(using self, hWnd: HWND, width: s32, height: s32, mainRC: HGLRC = null)-><a href="std.pixel.html#Pixel.RenderingContext">RenderingContext</a>
-func createContext(using self, hdc: HDC, width: s32, height: s32, mainRC: HGLRC = null)-><a href="std.pixel.html#Pixel.RenderingContext">RenderingContext</a>
+<code style="white-space: break-spaces">func createContext(using self, hWnd: HWND, width: s32, height: s32, mainRC: HGLRC = null)-><a href="std.pixel.html#Pixel.RenderingContext">RenderingContext</a> throw
+func createContext(using self, hdc: HDC, width: s32, height: s32, mainRC: HGLRC = null)-><a href="std.pixel.html#Pixel.RenderingContext">RenderingContext</a> throw
 </code>
 </p>
 <h3 class="content" id="Pixel.NativeRenderOgl.dropContext"><span class="titletype">func</span> <span class="titlelight">NativeRenderOgl.</span><span class="titlestrong">dropContext</span></h3>
@@ -8381,7 +8384,7 @@ Normal</td>
 <tr>
 <td>
 paintParams</td>
-<td>
+<td class="tdtype">
 <a href="std.pixel.html#Pixel.PaintParams">PaintParams</a></td>
 <td>
 </td>
@@ -8389,7 +8392,7 @@ paintParams</td>
 <tr>
 <td>
 paintQuality</td>
-<td>
+<td class="tdtype">
 <a href="std.pixel.html#Pixel.PaintQuality">PaintQuality</a></td>
 <td>
 </td>
@@ -8397,7 +8400,7 @@ paintQuality</td>
 <tr>
 <td>
 transform</td>
-<td>
+<td class="tdtype">
 <a href="std.core.html#Core.Math.Transform2">Transform2</a></td>
 <td>
 </td>
@@ -8405,7 +8408,7 @@ transform</td>
 <tr>
 <td>
 blendingMode</td>
-<td>
+<td class="tdtype">
 <a href="std.pixel.html#Pixel.BlendingMode">BlendingMode</a></td>
 <td>
 </td>
@@ -8413,7 +8416,7 @@ blendingMode</td>
 <tr>
 <td>
 interpolationMode</td>
-<td>
+<td class="tdtype">
 <a href="std.pixel.html#Pixel.InterpolationMode">InterpolationMode</a></td>
 <td>
 </td>
@@ -8421,7 +8424,7 @@ interpolationMode</td>
 <tr>
 <td>
 clippingRect</td>
-<td>
+<td class="tdtype">
 <a href="std.core.html#Core.Math.Rectangle">Rectangle</a></td>
 <td>
 </td>
@@ -8429,7 +8432,7 @@ clippingRect</td>
 <tr>
 <td>
 stackClipRect</td>
-<td>
+<td class="tdtype">
 <a href="std.core.html#Core.Array">Array'(Rectangle)</a></td>
 <td>
 </td>
@@ -8437,7 +8440,7 @@ stackClipRect</td>
 <tr>
 <td>
 clippingRectOn</td>
-<td>
+<td class="tdtype">
 bool</td>
 <td>
 </td>
@@ -8445,7 +8448,7 @@ bool</td>
 <tr>
 <td>
 colorMask</td>
-<td>
+<td class="tdtype">
 <a href="std.pixel.html#Pixel.ColorMask">ColorMask</a></td>
 <td>
 </td>
@@ -8456,7 +8459,7 @@ colorMask</td>
 <tr>
 <td>
 commandBuffer</td>
-<td>
+<td class="tdtype">
 <a href="std.core.html#Core.Array">Array'(Command)</a></td>
 <td>
 </td>
@@ -8464,7 +8467,7 @@ commandBuffer</td>
 <tr>
 <td>
 vertexBuffer</td>
-<td>
+<td class="tdtype">
 <a href="std.core.html#Core.Array">Array'(VertexLayout)</a></td>
 <td>
 </td>
@@ -8472,7 +8475,7 @@ vertexBuffer</td>
 <tr>
 <td>
 triangulateIdx</td>
-<td>
+<td class="tdtype">
 <a href="std.core.html#Core.Array">Array'(s32)</a></td>
 <td>
 </td>
@@ -8480,7 +8483,7 @@ triangulateIdx</td>
 <tr>
 <td>
 fake</td>
-<td>
+<td class="tdtype">
 bool</td>
 <td>
 </td>
@@ -8488,7 +8491,7 @@ bool</td>
 <tr>
 <td>
 sharedSolidPen</td>
-<td>
+<td class="tdtype">
 <a href="std.pixel.html#Pixel.Pen">Pen</a></td>
 <td>
 </td>
@@ -8496,7 +8499,7 @@ sharedSolidPen</td>
 <tr>
 <td>
 sharedSolidBrush</td>
-<td>
+<td class="tdtype">
 <a href="std.pixel.html#Pixel.Brush">Brush</a></td>
 <td>
 </td>
@@ -8504,7 +8507,7 @@ sharedSolidBrush</td>
 <tr>
 <td>
 sharedLinePath</td>
-<td>
+<td class="tdtype">
 <a href="std.pixel.html#Pixel.LinePath">LinePath</a></td>
 <td>
 </td>
@@ -8512,7 +8515,7 @@ sharedLinePath</td>
 <tr>
 <td>
 sharedLinePathList</td>
-<td>
+<td class="tdtype">
 <a href="std.pixel.html#Pixel.LinePathList">LinePathList</a></td>
 <td>
 </td>
@@ -8520,15 +8523,15 @@ sharedLinePathList</td>
 <tr>
 <td>
 sharedRoundTmp</td>
-<td>
-<a href="std.core.html#Core.Array">Array'(__linepath_tuple_246)</a></td>
+<td class="tdtype">
+<a href="std.core.html#Core.Array">Array'(__linepath_tuple_257)</a></td>
 <td>
 </td>
 </tr>
 <tr>
 <td>
 curState</td>
-<td>
+<td class="tdtype">
 <a href="std.pixel.html#Pixel.PaintState">PaintState</a></td>
 <td>
 </td>
@@ -8536,7 +8539,7 @@ curState</td>
 <tr>
 <td>
 stackState</td>
-<td>
+<td class="tdtype">
 <a href="std.core.html#Core.Array">Array'(PaintState)</a></td>
 <td>
 </td>
@@ -8544,7 +8547,7 @@ stackState</td>
 <tr>
 <td>
 lastTexture0Type</td>
-<td>
+<td class="tdtype">
 <a href="std.pixel.html#Pixel.BrushType">BrushType</a></td>
 <td>
 </td>
@@ -8552,7 +8555,7 @@ lastTexture0Type</td>
 <tr>
 <td>
 stackRT</td>
-<td>
+<td class="tdtype">
 <a href="std.core.html#Core.Array">Array'(*RenderTarget)</a></td>
 <td>
 </td>
@@ -8560,7 +8563,7 @@ stackRT</td>
 <tr>
 <td>
 curRT</td>
-<td>
+<td class="tdtype">
 <a href="std.pixel.html#Pixel.RenderTarget">*RenderTarget</a></td>
 <td>
 </td>
@@ -8568,7 +8571,7 @@ curRT</td>
 <tr>
 <td>
 lastTexture0Handle</td>
-<td>
+<td class="tdtype">
 TextureHandle</td>
 <td>
 </td>
@@ -8576,7 +8579,7 @@ TextureHandle</td>
 <tr>
 <td>
 hasTextureFont</td>
-<td>
+<td class="tdtype">
 bool</td>
 <td>
 </td>
@@ -8584,7 +8587,7 @@ bool</td>
 <tr>
 <td>
 drawingBegin</td>
-<td>
+<td class="tdtype">
 bool</td>
 <td>
 </td>
@@ -8592,7 +8595,7 @@ bool</td>
 <tr>
 <td>
 overlapMode</td>
-<td>
+<td class="tdtype">
 bool</td>
 <td>
 </td>
@@ -8600,7 +8603,7 @@ bool</td>
 <tr>
 <td>
 canSetTexture0</td>
-<td>
+<td class="tdtype">
 bool</td>
 <td>
 </td>
@@ -8678,14 +8681,14 @@ Draw an empty circle.</p>
 <td>
 <a href="#Pixel.Painter.drawEllipse">drawEllipse</a></td>
 <td>
+<p>
+Draw an empty ellipse.</p>
 </td>
 </tr>
 <tr>
 <td>
 <a href="#Pixel.Painter.drawEllipse">drawEllipse</a></td>
 <td>
-<p>
-Draw an empty ellipse.</p>
 </td>
 </tr>
 <tr>
@@ -8744,20 +8747,20 @@ Draw the line path.</p>
 <td>
 <a href="#Pixel.Painter.drawRect">drawRect</a></td>
 <td>
-</td>
-</tr>
-<tr>
-<td>
-<a href="#Pixel.Painter.drawRect">drawRect</a></td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-<a href="#Pixel.Painter.drawRect">drawRect</a></td>
-<td>
 <p>
 Draw an empty rectangle.</p>
+</td>
+</tr>
+<tr>
+<td>
+<a href="#Pixel.Painter.drawRect">drawRect</a></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<a href="#Pixel.Painter.drawRect">drawRect</a></td>
+<td>
 </td>
 </tr>
 <tr>
@@ -8778,26 +8781,26 @@ Draw a rich string. A rich string can be multiline, and accepts The layout will 
 <td>
 <a href="#Pixel.Painter.drawRoundRect">drawRoundRect</a></td>
 <td>
+</td>
+</tr>
+<tr>
+<td>
+<a href="#Pixel.Painter.drawRoundRect">drawRoundRect</a></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<a href="#Pixel.Painter.drawRoundRect">drawRoundRect</a></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<a href="#Pixel.Painter.drawRoundRect">drawRoundRect</a></td>
+<td>
 <p>
 Draw an empty round rectangle.</p>
-</td>
-</tr>
-<tr>
-<td>
-<a href="#Pixel.Painter.drawRoundRect">drawRoundRect</a></td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-<a href="#Pixel.Painter.drawRoundRect">drawRoundRect</a></td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-<a href="#Pixel.Painter.drawRoundRect">drawRoundRect</a></td>
-<td>
 </td>
 </tr>
 <tr>
@@ -8841,7 +8844,7 @@ Draw a simple string (centered).</p>
 <a href="#Pixel.Painter.drawTexture">drawTexture</a></td>
 <td>
 <p>
-Draw a texture image.</p>
+Draw a portion of an image.</p>
 </td>
 </tr>
 <tr>
@@ -8861,7 +8864,7 @@ Draw a texture image.</p>
 <a href="#Pixel.Painter.drawTexture">drawTexture</a></td>
 <td>
 <p>
-Draw a portion of an image.</p>
+Draw a texture image.</p>
 </td>
 </tr>
 <tr>
@@ -8884,14 +8887,14 @@ Stop painting in the clipping buffer. Back to normal.</p>
 <td>
 <a href="#Pixel.Painter.fillCircle">fillCircle</a></td>
 <td>
-<p>
-Draw a solid circle.</p>
 </td>
 </tr>
 <tr>
 <td>
 <a href="#Pixel.Painter.fillCircle">fillCircle</a></td>
 <td>
+<p>
+Draw a solid circle.</p>
 </td>
 </tr>
 <tr>
@@ -8921,7 +8924,7 @@ Fill the line path.</p>
 <a href="#Pixel.Painter.fillPath">fillPath</a></td>
 <td>
 <p>
-Fill the line path with the given <code class = "incode">brush</code>.</p>
+Fill the list of paths clockwise = fill, anti-clockwise = hole.</p>
 </td>
 </tr>
 <tr>
@@ -8937,15 +8940,7 @@ Fill the line path.</p>
 <a href="#Pixel.Painter.fillPath">fillPath</a></td>
 <td>
 <p>
-Fill the list of paths clockwise = fill, anti-clockwise = hole.</p>
-</td>
-</tr>
-<tr>
-<td>
-<a href="#Pixel.Painter.fillPolygon">fillPolygon</a></td>
-<td>
-<p>
-Fill the polygon with the given color.</p>
+Fill the line path with the given <code class = "incode">brush</code>.</p>
 </td>
 </tr>
 <tr>
@@ -8958,20 +8953,10 @@ Fill the polygon with the given <code class = "incode">brush</code>.</p>
 </tr>
 <tr>
 <td>
-<a href="#Pixel.Painter.fillRect">fillRect</a></td>
+<a href="#Pixel.Painter.fillPolygon">fillPolygon</a></td>
 <td>
-</td>
-</tr>
-<tr>
-<td>
-<a href="#Pixel.Painter.fillRect">fillRect</a></td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-<a href="#Pixel.Painter.fillRect">fillRect</a></td>
-<td>
+<p>
+Fill the polygon with the given color.</p>
 </td>
 </tr>
 <tr>
@@ -8980,6 +8965,24 @@ Fill the polygon with the given <code class = "incode">brush</code>.</p>
 <td>
 <p>
 Draw a filled rectangle.</p>
+</td>
+</tr>
+<tr>
+<td>
+<a href="#Pixel.Painter.fillRect">fillRect</a></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<a href="#Pixel.Painter.fillRect">fillRect</a></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<a href="#Pixel.Painter.fillRect">fillRect</a></td>
+<td>
 </td>
 </tr>
 <tr>
@@ -9395,7 +9398,7 @@ Recompute the layout for a given rectangle.</p>
 <tr>
 <td>
 measure</td>
-<td>
+<td class="tdtype">
 <a href="std.pixel.html#Pixel.StringMetrics">StringMetrics</a></td>
 <td>
 </td>
@@ -9403,7 +9406,7 @@ measure</td>
 <tr>
 <td>
 start</td>
-<td>
+<td class="tdtype">
 s32</td>
 <td>
 </td>
@@ -9411,7 +9414,7 @@ s32</td>
 <tr>
 <td>
 end</td>
-<td>
+<td class="tdtype">
 s32</td>
 <td>
 </td>
@@ -9419,7 +9422,7 @@ s32</td>
 <tr>
 <td>
 countSpaces</td>
-<td>
+<td class="tdtype">
 s32</td>
 <td>
 </td>
@@ -9427,7 +9430,7 @@ s32</td>
 <tr>
 <td>
 whiteSpaces</td>
-<td>
+<td class="tdtype">
 f32</td>
 <td>
 </td>
@@ -9435,7 +9438,7 @@ f32</td>
 <tr>
 <td>
 hasEol</td>
-<td>
+<td class="tdtype">
 bool</td>
 <td>
 </td>
@@ -9986,7 +9989,7 @@ Bind a render target.</p>
 <tr>
 <td>
 size</td>
-<td>
+<td class="tdtype">
 f32</td>
 <td>
 </td>
@@ -9994,7 +9997,7 @@ f32</td>
 <tr>
 <td>
 brush</td>
-<td>
+<td class="tdtype">
 <a href="std.pixel.html#Pixel.Brush">Brush</a></td>
 <td>
 </td>
@@ -10002,7 +10005,7 @@ brush</td>
 <tr>
 <td>
 pattern</td>
-<td>
+<td class="tdtype">
 <a href="std.core.html#Core.Array">Array'(f32)</a></td>
 <td>
 </td>
@@ -10010,7 +10013,7 @@ pattern</td>
 <tr>
 <td>
 dashBeginCapStyle</td>
-<td>
+<td class="tdtype">
 <a href="std.pixel.html#Pixel.DashCapStyle">DashCapStyle</a></td>
 <td>
 </td>
@@ -10018,7 +10021,7 @@ dashBeginCapStyle</td>
 <tr>
 <td>
 dashEndCapStyle</td>
-<td>
+<td class="tdtype">
 <a href="std.pixel.html#Pixel.DashCapStyle">DashCapStyle</a></td>
 <td>
 </td>
@@ -10026,7 +10029,7 @@ dashEndCapStyle</td>
 <tr>
 <td>
 borderPos</td>
-<td>
+<td class="tdtype">
 <a href="std.pixel.html#Pixel.BorderPos">BorderPos</a></td>
 <td>
 </td>
@@ -10034,7 +10037,7 @@ borderPos</td>
 <tr>
 <td>
 capStartScaleX</td>
-<td>
+<td class="tdtype">
 f32</td>
 <td>
 </td>
@@ -10042,7 +10045,7 @@ f32</td>
 <tr>
 <td>
 capStartScaleY</td>
-<td>
+<td class="tdtype">
 f32</td>
 <td>
 </td>
@@ -10050,7 +10053,7 @@ f32</td>
 <tr>
 <td>
 capEndScaleX</td>
-<td>
+<td class="tdtype">
 f32</td>
 <td>
 </td>
@@ -10058,7 +10061,7 @@ f32</td>
 <tr>
 <td>
 capEndScaleY</td>
-<td>
+<td class="tdtype">
 f32</td>
 <td>
 </td>
@@ -10066,7 +10069,7 @@ f32</td>
 <tr>
 <td>
 joinMiterLimit</td>
-<td>
+<td class="tdtype">
 f32</td>
 <td>
 </td>
@@ -10074,7 +10077,7 @@ f32</td>
 <tr>
 <td>
 plotOffset</td>
-<td>
+<td class="tdtype">
 f32</td>
 <td>
 </td>
@@ -10082,7 +10085,7 @@ f32</td>
 <tr>
 <td>
 dashStyle</td>
-<td>
+<td class="tdtype">
 <a href="std.pixel.html#Pixel.DashStyle">DashStyle</a></td>
 <td>
 </td>
@@ -10090,7 +10093,7 @@ dashStyle</td>
 <tr>
 <td>
 beginCapStyle</td>
-<td>
+<td class="tdtype">
 <a href="std.pixel.html#Pixel.LineCapStyle">LineCapStyle</a></td>
 <td>
 </td>
@@ -10098,7 +10101,7 @@ beginCapStyle</td>
 <tr>
 <td>
 endCapStyle</td>
-<td>
+<td class="tdtype">
 <a href="std.pixel.html#Pixel.LineCapStyle">LineCapStyle</a></td>
 <td>
 </td>
@@ -10106,7 +10109,7 @@ endCapStyle</td>
 <tr>
 <td>
 joinStyle</td>
-<td>
+<td class="tdtype">
 <a href="std.pixel.html#Pixel.JoinStyle">JoinStyle</a></td>
 <td>
 </td>
@@ -10220,26 +10223,26 @@ Returns true if the given pixel format has an alpha channel.</p>
 <h3 class="content" id="Pixel.PixelShaderAA"><span class="titletype"></span> <span class="titlelight">Pixel.</span><span class="titlestrong">Constants</span></h3>
 <table>
 <tr>
-<td>
-const [2810] u8</td>
 <td id="Pixel.PixelShaderAA">
 PixelShaderAA</td>
+<td class="tdtype">
+const [2810] u8</td>
 <td>
 </td>
 </tr>
 <tr>
-<td>
-const [956] u8</td>
 <td id="Pixel.PixelShaderBlur">
 PixelShaderBlur</td>
+<td class="tdtype">
+const [956] u8</td>
 <td>
 </td>
 </tr>
 <tr>
-<td>
-const [188] u8</td>
 <td id="Pixel.PixelShaderSimple">
 PixelShaderSimple</td>
+<td class="tdtype">
+const [188] u8</td>
 <td>
 </td>
 </tr>
@@ -10271,7 +10274,7 @@ PixelShaderSimple</td>
 <tr>
 <td>
 decOptions</td>
-<td>
+<td class="tdtype">
 <a href="std.pixel.html#Pixel.DecodeOptions">const *DecodeOptions</a></td>
 <td>
 </td>
@@ -10279,7 +10282,7 @@ decOptions</td>
 <tr>
 <td>
 stream</td>
-<td>
+<td class="tdtype">
 <a href="std.core.html#Core.Compress.BitStream">BitStream</a></td>
 <td>
 </td>
@@ -10287,7 +10290,7 @@ stream</td>
 <tr>
 <td>
 header</td>
-<td>
+<td class="tdtype">
 <a href="std.pixel.html#Pixel.Png.__privns_188.Header">Header</a></td>
 <td>
 </td>
@@ -10295,7 +10298,7 @@ header</td>
 <tr>
 <td>
 inChannels</td>
-<td>
+<td class="tdtype">
 s32</td>
 <td>
 </td>
@@ -10303,7 +10306,7 @@ s32</td>
 <tr>
 <td>
 outChannels</td>
-<td>
+<td class="tdtype">
 s32</td>
 <td>
 </td>
@@ -10311,7 +10314,7 @@ s32</td>
 <tr>
 <td>
 dcmpBuf</td>
-<td>
+<td class="tdtype">
 <a href="std.core.html#Core.Array">Array'(u8)</a></td>
 <td>
 </td>
@@ -10319,7 +10322,7 @@ dcmpBuf</td>
 <tr>
 <td>
 dstPixels</td>
-<td>
+<td class="tdtype">
 ^u8</td>
 <td>
 </td>
@@ -10327,7 +10330,7 @@ dstPixels</td>
 <tr>
 <td>
 dstPixelsSize</td>
-<td>
+<td class="tdtype">
 u64</td>
 <td>
 </td>
@@ -10335,7 +10338,7 @@ u64</td>
 <tr>
 <td>
 chunkTRNS</td>
-<td>
+<td class="tdtype">
 <a href="std.pixel.html#Pixel.Png.__privns_188.Chunk">Chunk</a></td>
 <td>
 </td>
@@ -10343,7 +10346,7 @@ chunkTRNS</td>
 <tr>
 <td>
 seenTRSN</td>
-<td>
+<td class="tdtype">
 bool</td>
 <td>
 </td>
@@ -10351,7 +10354,7 @@ bool</td>
 <tr>
 <td>
 seenBKGD</td>
-<td>
+<td class="tdtype">
 bool</td>
 <td>
 </td>
@@ -10359,7 +10362,7 @@ bool</td>
 <tr>
 <td>
 orderDefilter</td>
-<td>
+<td class="tdtype">
 bool</td>
 <td>
 </td>
@@ -10372,7 +10375,7 @@ bool</td>
 </p>
 <h3 class="content" id="Pixel.Png.Decoder.IImageDecoder.decode"><span class="titletype">func</span> <span class="titlelight">IImageDecoder.</span><span class="titlestrong">decode</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func decode(using self, buffer: const [..] u8, options: <a href="std.pixel.html#Pixel.DecodeOptions">DecodeOptions</a>)-><a href="std.pixel.html#Pixel.Image">Image</a>
+<code style="white-space: break-spaces">func decode(using self, buffer: const [..] u8, options: <a href="std.pixel.html#Pixel.DecodeOptions">DecodeOptions</a>)-><a href="std.pixel.html#Pixel.Image">Image</a> throw
 </code>
 </p>
 <h3 class="content" id="Pixel.Png.EncodeOptions"><span class="titletype">struct</span> <span class="titlelight">Png.</span><span class="titlestrong">EncodeOptions</span></h3>
@@ -10380,7 +10383,7 @@ bool</td>
 <tr>
 <td>
 compressionLevel</td>
-<td>
+<td class="tdtype">
 <a href="std.core.html#Core.Compress.Deflate.CompressionLevel">CompressionLevel</a></td>
 <td>
 </td>
@@ -10388,7 +10391,7 @@ compressionLevel</td>
 <tr>
 <td>
 filtering</td>
-<td>
+<td class="tdtype">
 bool</td>
 <td>
 </td>
@@ -10399,7 +10402,7 @@ bool</td>
 <tr>
 <td>
 stream</td>
-<td>
+<td class="tdtype">
 <a href="std.core.html#Core.ConcatBuffer">*ConcatBuffer</a></td>
 <td>
 </td>
@@ -10407,31 +10410,31 @@ stream</td>
 <tr>
 <td>
 stored</td>
-<td>
-<a href="std.pixel.html#Pixel.Png.__privns_192.ChunkBitfield">ChunkBitfield</a></td>
+<td class="tdtype">
+<a href="std.pixel.html#Pixel.Png.__privns_193.ChunkBitfield">ChunkBitfield</a></td>
 <td>
 </td>
 </tr>
 <tr>
 <td>
 ihdr</td>
-<td>
-<a href="std.pixel.html#Pixel.Png.__privns_192.Ihdr">Ihdr</a></td>
+<td class="tdtype">
+<a href="std.pixel.html#Pixel.Png.__privns_193.Ihdr">Ihdr</a></td>
 <td>
 </td>
 </tr>
 <tr>
 <td>
 currentChunk</td>
-<td>
-<a href="std.pixel.html#Pixel.Png.__privns_192.Chunk">Chunk</a></td>
+<td class="tdtype">
+<a href="std.pixel.html#Pixel.Png.__privns_193.Chunk">Chunk</a></td>
 <td>
 </td>
 </tr>
 <tr>
 <td>
 tmpBuf</td>
-<td>
+<td class="tdtype">
 [256] u8</td>
 <td>
 </td>
@@ -10439,7 +10442,7 @@ tmpBuf</td>
 <tr>
 <td>
 writePtr</td>
-<td>
+<td class="tdtype">
 ^u8</td>
 <td>
 </td>
@@ -10447,7 +10450,7 @@ writePtr</td>
 <tr>
 <td>
 crc</td>
-<td>
+<td class="tdtype">
 <a href="std.core.html#Core.Hash.Crc32">Crc32</a></td>
 <td>
 </td>
@@ -10455,15 +10458,15 @@ crc</td>
 <tr>
 <td>
 subimage</td>
-<td>
-<a href="std.pixel.html#Pixel.Png.__privns_192.SubImage">[7] SubImage</a></td>
+<td class="tdtype">
+<a href="std.pixel.html#Pixel.Png.__privns_193.SubImage">[7] SubImage</a></td>
 <td>
 </td>
 </tr>
 <tr>
 <td>
 widestPass</td>
-<td>
+<td class="tdtype">
 s32</td>
 <td>
 </td>
@@ -10471,7 +10474,7 @@ s32</td>
 <tr>
 <td>
 lastPass</td>
-<td>
+<td class="tdtype">
 s32</td>
 <td>
 </td>
@@ -10479,7 +10482,7 @@ s32</td>
 <tr>
 <td>
 bytesPerPixel</td>
-<td>
+<td class="tdtype">
 u32</td>
 <td>
 </td>
@@ -10487,7 +10490,7 @@ u32</td>
 <tr>
 <td>
 scanlineBuf</td>
-<td>
+<td class="tdtype">
 ^u8</td>
 <td>
 </td>
@@ -10495,7 +10498,7 @@ scanlineBuf</td>
 <tr>
 <td>
 prevScanlineBuf</td>
-<td>
+<td class="tdtype">
 ^u8</td>
 <td>
 </td>
@@ -10503,7 +10506,7 @@ prevScanlineBuf</td>
 <tr>
 <td>
 row_buf</td>
-<td>
+<td class="tdtype">
 ^u8</td>
 <td>
 </td>
@@ -10511,7 +10514,7 @@ row_buf</td>
 <tr>
 <td>
 filteredScanlineBuf</td>
-<td>
+<td class="tdtype">
 ^u8</td>
 <td>
 </td>
@@ -10519,7 +10522,7 @@ filteredScanlineBuf</td>
 <tr>
 <td>
 filteredScanline</td>
-<td>
+<td class="tdtype">
 ^u8</td>
 <td>
 </td>
@@ -10527,7 +10530,7 @@ filteredScanline</td>
 <tr>
 <td>
 scanline</td>
-<td>
+<td class="tdtype">
 ^u8</td>
 <td>
 </td>
@@ -10535,7 +10538,7 @@ scanline</td>
 <tr>
 <td>
 prevScanline</td>
-<td>
+<td class="tdtype">
 ^u8</td>
 <td>
 </td>
@@ -10543,23 +10546,23 @@ prevScanline</td>
 <tr>
 <td>
 encodeFlags</td>
-<td>
-<a href="std.pixel.html#Pixel.Png.__privns_192.EncodeFlags">EncodeFlags</a></td>
+<td class="tdtype">
+<a href="std.pixel.html#Pixel.Png.__privns_193.EncodeFlags">EncodeFlags</a></td>
 <td>
 </td>
 </tr>
 <tr>
 <td>
 rowInfo</td>
-<td>
-<a href="std.pixel.html#Pixel.Png.__privns_192.RowInfo">RowInfo</a></td>
+<td class="tdtype">
+<a href="std.pixel.html#Pixel.Png.__privns_193.RowInfo">RowInfo</a></td>
 <td>
 </td>
 </tr>
 <tr>
 <td>
 pixelSize</td>
-<td>
+<td class="tdtype">
 u32</td>
 <td>
 </td>
@@ -10567,7 +10570,7 @@ u32</td>
 <tr>
 <td>
 bufferToCompress</td>
-<td>
+<td class="tdtype">
 <a href="std.core.html#Core.Array">Array'(u8)</a></td>
 <td>
 </td>
@@ -10575,7 +10578,7 @@ bufferToCompress</td>
 <tr>
 <td>
 swapRB</td>
-<td>
+<td class="tdtype">
 bool</td>
 <td>
 </td>
@@ -10583,7 +10586,7 @@ bool</td>
 <tr>
 <td>
 userOptions</td>
-<td>
+<td class="tdtype">
 <a href="std.pixel.html#Pixel.Png.EncodeOptions">EncodeOptions</a></td>
 <td>
 </td>
@@ -10596,7 +10599,7 @@ userOptions</td>
 </p>
 <h3 class="content" id="Pixel.Png.Encoder.IImageEncoder.encode"><span class="titletype">func</span> <span class="titlelight">IImageEncoder.</span><span class="titlestrong">encode</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func encode(using self, result: <a href="std.core.html#Core.ConcatBuffer">*ConcatBuffer</a>, image: <a href="std.pixel.html#Pixel.Image">Image</a>, options: any)
+<code style="white-space: break-spaces">func encode(using self, result: <a href="std.core.html#Core.ConcatBuffer">*ConcatBuffer</a>, image: <a href="std.pixel.html#Pixel.Image">Image</a>, options: any) throw
 </code>
 </p>
 <h3 class="content" id="Pixel.Poly2Tri"><span class="titletype">namespace</span> <span class="titlelight">Pixel.</span><span class="titlestrong">Poly2Tri</span></h3>
@@ -10665,7 +10668,7 @@ userOptions</td>
 <tr>
 <td>
 head</td>
-<td>
+<td class="tdtype">
 <a href="std.pixel.html#Pixel.Poly2Tri.Node">*Node</a></td>
 <td>
 </td>
@@ -10673,7 +10676,7 @@ head</td>
 <tr>
 <td>
 tail</td>
-<td>
+<td class="tdtype">
 <a href="std.pixel.html#Pixel.Poly2Tri.Node">*Node</a></td>
 <td>
 </td>
@@ -10681,7 +10684,7 @@ tail</td>
 <tr>
 <td>
 searchNode</td>
-<td>
+<td class="tdtype">
 <a href="std.pixel.html#Pixel.Poly2Tri.Node">*Node</a></td>
 <td>
 </td>
@@ -10692,7 +10695,7 @@ searchNode</td>
 <tr>
 <td>
 leftNode</td>
-<td>
+<td class="tdtype">
 <a href="std.pixel.html#Pixel.Poly2Tri.Node">*Node</a></td>
 <td>
 </td>
@@ -10700,7 +10703,7 @@ leftNode</td>
 <tr>
 <td>
 bottomNode</td>
-<td>
+<td class="tdtype">
 <a href="std.pixel.html#Pixel.Poly2Tri.Node">*Node</a></td>
 <td>
 </td>
@@ -10708,7 +10711,7 @@ bottomNode</td>
 <tr>
 <td>
 rightNode</td>
-<td>
+<td class="tdtype">
 <a href="std.pixel.html#Pixel.Poly2Tri.Node">*Node</a></td>
 <td>
 </td>
@@ -10716,7 +10719,7 @@ rightNode</td>
 <tr>
 <td>
 width</td>
-<td>
+<td class="tdtype">
 f64</td>
 <td>
 </td>
@@ -10724,7 +10727,7 @@ f64</td>
 <tr>
 <td>
 leftHighest</td>
-<td>
+<td class="tdtype">
 bool</td>
 <td>
 </td>
@@ -10735,7 +10738,7 @@ bool</td>
 <tr>
 <td>
 p</td>
-<td>
+<td class="tdtype">
 <a href="std.pixel.html#Pixel.Poly2Tri.Point">*Point</a></td>
 <td>
 </td>
@@ -10743,7 +10746,7 @@ p</td>
 <tr>
 <td>
 q</td>
-<td>
+<td class="tdtype">
 <a href="std.pixel.html#Pixel.Poly2Tri.Point">*Point</a></td>
 <td>
 </td>
@@ -10754,7 +10757,7 @@ q</td>
 <tr>
 <td>
 constrainedEdge</td>
-<td>
+<td class="tdtype">
 <a href="std.pixel.html#Pixel.Poly2Tri.Edge">*Edge</a></td>
 <td>
 </td>
@@ -10762,7 +10765,7 @@ constrainedEdge</td>
 <tr>
 <td>
 right</td>
-<td>
+<td class="tdtype">
 bool</td>
 <td>
 </td>
@@ -10773,7 +10776,7 @@ bool</td>
 <tr>
 <td>
 point</td>
-<td>
+<td class="tdtype">
 <a href="std.pixel.html#Pixel.Poly2Tri.Point">*Point</a></td>
 <td>
 </td>
@@ -10781,7 +10784,7 @@ point</td>
 <tr>
 <td>
 triangle</td>
-<td>
+<td class="tdtype">
 <a href="std.pixel.html#Pixel.Poly2Tri.Triangle">*Triangle</a></td>
 <td>
 </td>
@@ -10789,7 +10792,7 @@ triangle</td>
 <tr>
 <td>
 next</td>
-<td>
+<td class="tdtype">
 <a href="std.pixel.html#Pixel.Poly2Tri.Node">*Node</a></td>
 <td>
 </td>
@@ -10797,7 +10800,7 @@ next</td>
 <tr>
 <td>
 prev</td>
-<td>
+<td class="tdtype">
 <a href="std.pixel.html#Pixel.Poly2Tri.Node">*Node</a></td>
 <td>
 </td>
@@ -10805,7 +10808,7 @@ prev</td>
 <tr>
 <td>
 value</td>
-<td>
+<td class="tdtype">
 f64</td>
 <td>
 </td>
@@ -10837,7 +10840,7 @@ Collinear</td>
 <tr>
 <td>
 v</td>
-<td>
+<td class="tdtype">
 <a href="std.core.html#Core.Math.Vector2">Vector2</a></td>
 <td>
 </td>
@@ -10845,7 +10848,7 @@ v</td>
 <tr>
 <td>
 edgeList</td>
-<td>
+<td class="tdtype">
 <a href="std.core.html#Core.Array">Array'(*Edge)</a></td>
 <td>
 </td>
@@ -10853,7 +10856,7 @@ edgeList</td>
 <tr>
 <td>
 border</td>
-<td>
+<td class="tdtype">
 <a href="std.pixel.html#Pixel.Poly2Tri.Edge">[2] *Edge</a></td>
 <td>
 </td>
@@ -10864,7 +10867,7 @@ border</td>
 <tr>
 <td>
 basin</td>
-<td>
+<td class="tdtype">
 <a href="std.pixel.html#Pixel.Poly2Tri.Basin">Basin</a></td>
 <td>
 </td>
@@ -10872,7 +10875,7 @@ basin</td>
 <tr>
 <td>
 edgeEvent</td>
-<td>
+<td class="tdtype">
 <a href="std.pixel.html#Pixel.Poly2Tri.EdgeEvent">EdgeEvent</a></td>
 <td>
 </td>
@@ -10880,7 +10883,7 @@ edgeEvent</td>
 <tr>
 <td>
 triangles</td>
-<td>
+<td class="tdtype">
 <a href="std.core.html#Core.Array">Array'(*Triangle)</a></td>
 <td>
 </td>
@@ -10888,7 +10891,7 @@ triangles</td>
 <tr>
 <td>
 map</td>
-<td>
+<td class="tdtype">
 <a href="std.core.html#Core.Array">Array'(*Triangle)</a></td>
 <td>
 </td>
@@ -10896,7 +10899,7 @@ map</td>
 <tr>
 <td>
 edgeList</td>
-<td>
+<td class="tdtype">
 <a href="std.core.html#Core.Array">Array'(*Edge)</a></td>
 <td>
 </td>
@@ -10904,7 +10907,7 @@ edgeList</td>
 <tr>
 <td>
 points</td>
-<td>
+<td class="tdtype">
 <a href="std.core.html#Core.Array">Array'(*Point)</a></td>
 <td>
 </td>
@@ -10912,7 +10915,7 @@ points</td>
 <tr>
 <td>
 nodes</td>
-<td>
+<td class="tdtype">
 <a href="std.core.html#Core.Array">Array'(*Node)</a></td>
 <td>
 </td>
@@ -10920,7 +10923,7 @@ nodes</td>
 <tr>
 <td>
 front</td>
-<td>
+<td class="tdtype">
 <a href="std.pixel.html#Pixel.Poly2Tri.AdvancingFront">AdvancingFront</a></td>
 <td>
 </td>
@@ -10928,7 +10931,7 @@ front</td>
 <tr>
 <td>
 head</td>
-<td>
+<td class="tdtype">
 <a href="std.pixel.html#Pixel.Poly2Tri.Point">*Point</a></td>
 <td>
 </td>
@@ -10936,7 +10939,7 @@ head</td>
 <tr>
 <td>
 tail</td>
-<td>
+<td class="tdtype">
 <a href="std.pixel.html#Pixel.Poly2Tri.Point">*Point</a></td>
 <td>
 </td>
@@ -10944,7 +10947,7 @@ tail</td>
 <tr>
 <td>
 afHead</td>
-<td>
+<td class="tdtype">
 <a href="std.pixel.html#Pixel.Poly2Tri.Node">*Node</a></td>
 <td>
 </td>
@@ -10952,7 +10955,7 @@ afHead</td>
 <tr>
 <td>
 afMiddle</td>
-<td>
+<td class="tdtype">
 <a href="std.pixel.html#Pixel.Poly2Tri.Node">*Node</a></td>
 <td>
 </td>
@@ -10960,7 +10963,7 @@ afMiddle</td>
 <tr>
 <td>
 afTail</td>
-<td>
+<td class="tdtype">
 <a href="std.pixel.html#Pixel.Poly2Tri.Node">*Node</a></td>
 <td>
 </td>
@@ -10968,7 +10971,7 @@ afTail</td>
 <tr>
 <td>
 polyStart</td>
-<td>
+<td class="tdtype">
 u64</td>
 <td>
 </td>
@@ -11072,7 +11075,7 @@ Triangulate.</p>
 <tr>
 <td>
 constrainedEdge</td>
-<td>
+<td class="tdtype">
 [3] bool</td>
 <td>
 </td>
@@ -11080,7 +11083,7 @@ constrainedEdge</td>
 <tr>
 <td>
 delaunayEdge</td>
-<td>
+<td class="tdtype">
 [3] bool</td>
 <td>
 </td>
@@ -11088,7 +11091,7 @@ delaunayEdge</td>
 <tr>
 <td>
 points</td>
-<td>
+<td class="tdtype">
 <a href="std.pixel.html#Pixel.Poly2Tri.Point">[3] *Point</a></td>
 <td>
 </td>
@@ -11096,7 +11099,7 @@ points</td>
 <tr>
 <td>
 neighbors</td>
-<td>
+<td class="tdtype">
 <a href="std.pixel.html#Pixel.Poly2Tri.Triangle">[3] *Triangle</a></td>
 <td>
 </td>
@@ -11104,7 +11107,7 @@ neighbors</td>
 <tr>
 <td>
 interior</td>
-<td>
+<td class="tdtype">
 bool</td>
 <td>
 </td>
@@ -11115,7 +11118,7 @@ bool</td>
 <tr>
 <td>
 points</td>
-<td>
+<td class="tdtype">
 <a href="std.core.html#Core.Array">Array'(Vector2)</a></td>
 <td>
 </td>
@@ -11123,7 +11126,7 @@ points</td>
 <tr>
 <td>
 isClockwise</td>
-<td>
+<td class="tdtype">
 bool</td>
 <td>
 </td>
@@ -11131,7 +11134,7 @@ bool</td>
 <tr>
 <td>
 isConvex</td>
-<td>
+<td class="tdtype">
 bool</td>
 <td>
 </td>
@@ -11139,7 +11142,7 @@ bool</td>
 <tr>
 <td>
 area</td>
-<td>
+<td class="tdtype">
 f32</td>
 <td>
 </td>
@@ -11147,7 +11150,7 @@ f32</td>
 <tr>
 <td>
 totalLen</td>
-<td>
+<td class="tdtype">
 f32</td>
 <td>
 </td>
@@ -11155,7 +11158,7 @@ f32</td>
 <tr>
 <td>
 bvMin</td>
-<td>
+<td class="tdtype">
 <a href="std.core.html#Core.Math.Vector2">Vector2</a></td>
 <td>
 </td>
@@ -11163,7 +11166,7 @@ bvMin</td>
 <tr>
 <td>
 bvMax</td>
-<td>
+<td class="tdtype">
 <a href="std.core.html#Core.Math.Vector2">Vector2</a></td>
 <td>
 </td>
@@ -11340,7 +11343,7 @@ Slow but quality offset with a joinStyle.</p>
 <tr>
 <td>
 native</td>
-<td>
+<td class="tdtype">
 <a href="std.pixel.html#Pixel.NativeRenderOgl">NativeRenderOgl</a></td>
 <td>
 </td>
@@ -11348,7 +11351,7 @@ native</td>
 <tr>
 <td>
 vertexbuffer</td>
-<td>
+<td class="tdtype">
 GLuint</td>
 <td>
 </td>
@@ -11356,7 +11359,7 @@ GLuint</td>
 <tr>
 <td>
 shaderSimple</td>
-<td>
+<td class="tdtype">
 <a href="std.pixel.html#Pixel.ShaderSimple">ShaderSimple</a></td>
 <td>
 </td>
@@ -11364,7 +11367,7 @@ shaderSimple</td>
 <tr>
 <td>
 shaderAA</td>
-<td>
+<td class="tdtype">
 <a href="std.pixel.html#Pixel.ShaderAA">ShaderAA</a></td>
 <td>
 </td>
@@ -11372,7 +11375,7 @@ shaderAA</td>
 <tr>
 <td>
 shaderBlur</td>
-<td>
+<td class="tdtype">
 <a href="std.pixel.html#Pixel.ShaderBlur">ShaderBlur</a></td>
 <td>
 </td>
@@ -11380,7 +11383,7 @@ shaderBlur</td>
 <tr>
 <td>
 worldTransform</td>
-<td>
+<td class="tdtype">
 <a href="std.core.html#Core.Math.Transform2">Transform2</a></td>
 <td>
 </td>
@@ -11388,7 +11391,7 @@ worldTransform</td>
 <tr>
 <td>
 orthoMatrix</td>
-<td>
+<td class="tdtype">
 <a href="std.core.html#Core.Math.Matrix4x4">Matrix4x4</a></td>
 <td>
 </td>
@@ -11396,7 +11399,7 @@ orthoMatrix</td>
 <tr>
 <td>
 modelMatrix</td>
-<td>
+<td class="tdtype">
 <a href="std.core.html#Core.Math.Matrix4x4">Matrix4x4</a></td>
 <td>
 </td>
@@ -11404,7 +11407,7 @@ modelMatrix</td>
 <tr>
 <td>
 whiteTexture</td>
-<td>
+<td class="tdtype">
 GLuint</td>
 <td>
 </td>
@@ -11412,7 +11415,7 @@ GLuint</td>
 <tr>
 <td>
 hatchTextures</td>
-<td>
+<td class="tdtype">
 [36] GLuint</td>
 <td>
 </td>
@@ -11420,7 +11423,7 @@ hatchTextures</td>
 <tr>
 <td>
 blendingMode</td>
-<td>
+<td class="tdtype">
 <a href="std.pixel.html#Pixel.BlendingMode">BlendingMode</a></td>
 <td>
 </td>
@@ -11428,7 +11431,7 @@ blendingMode</td>
 <tr>
 <td>
 curRC</td>
-<td>
+<td class="tdtype">
 <a href="std.pixel.html#Pixel.RenderingContext">RenderingContext</a></td>
 <td>
 </td>
@@ -11436,7 +11439,7 @@ curRC</td>
 <tr>
 <td>
 stackReleasedRT</td>
-<td>
+<td class="tdtype">
 <a href="std.core.html#Core.Array">Array'(*RenderTarget)</a></td>
 <td>
 </td>
@@ -11444,7 +11447,7 @@ stackReleasedRT</td>
 <tr>
 <td>
 stackRT</td>
-<td>
+<td class="tdtype">
 <a href="std.core.html#Core.Array">Array'(*RenderTarget)</a></td>
 <td>
 </td>
@@ -11452,7 +11455,7 @@ stackRT</td>
 <tr>
 <td>
 curRT</td>
-<td>
+<td class="tdtype">
 <a href="std.pixel.html#Pixel.RenderTarget">*RenderTarget</a></td>
 <td>
 </td>
@@ -11460,7 +11463,7 @@ curRT</td>
 <tr>
 <td>
 curShader</td>
-<td>
+<td class="tdtype">
 <a href="std.pixel.html#Pixel.ShaderBase">*ShaderBase</a></td>
 <td>
 </td>
@@ -11468,7 +11471,7 @@ curShader</td>
 <tr>
 <td>
 overlapMode</td>
-<td>
+<td class="tdtype">
 bool</td>
 <td>
 </td>
@@ -11747,7 +11750,7 @@ Clear current render buffers.</p>
 Create a render target.</p>
 <h3 class="content" id="Pixel.RenderOgl.createShader"><span class="titletype">func</span> <span class="titlelight">RenderOgl.</span><span class="titlestrong">createShader</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func createShader(using self, base: <a href="std.pixel.html#Pixel.ShaderBase">*ShaderBase</a>, vertex: const [..] u8, pixel: const [..] u8)
+<code style="white-space: break-spaces">func createShader(using self, base: <a href="std.pixel.html#Pixel.ShaderBase">*ShaderBase</a>, vertex: const [..] u8, pixel: const [..] u8) throw
 </code>
 </p>
 <p>
@@ -11908,7 +11911,7 @@ Update content of texture.</p>
 <tr>
 <td>
 handle</td>
-<td>
+<td class="tdtype">
 RenderTargetHandle</td>
 <td>
 </td>
@@ -11916,7 +11919,7 @@ RenderTargetHandle</td>
 <tr>
 <td>
 colorBuffer</td>
-<td>
+<td class="tdtype">
 <a href="std.pixel.html#Pixel.Texture">Texture</a></td>
 <td>
 </td>
@@ -11924,7 +11927,7 @@ colorBuffer</td>
 <tr>
 <td>
 depthStencil</td>
-<td>
+<td class="tdtype">
 RenderTargetSurfaceHandle</td>
 <td>
 </td>
@@ -11932,7 +11935,7 @@ RenderTargetSurfaceHandle</td>
 <tr>
 <td>
 paintAlpha</td>
-<td>
+<td class="tdtype">
 bool</td>
 <td>
 </td>
@@ -11940,7 +11943,7 @@ bool</td>
 <tr>
 <td>
 paintAlphaIdx</td>
-<td>
+<td class="tdtype">
 u64</td>
 <td>
 </td>
@@ -11951,7 +11954,7 @@ u64</td>
 <tr>
 <td>
 hDC</td>
-<td>
+<td class="tdtype">
 HDC</td>
 <td>
 </td>
@@ -11959,7 +11962,7 @@ HDC</td>
 <tr>
 <td>
 hRC</td>
-<td>
+<td class="tdtype">
 HGLRC</td>
 <td>
 </td>
@@ -11967,7 +11970,7 @@ HGLRC</td>
 <tr>
 <td>
 width</td>
-<td>
+<td class="tdtype">
 s32</td>
 <td>
 </td>
@@ -11975,7 +11978,7 @@ s32</td>
 <tr>
 <td>
 height</td>
-<td>
+<td class="tdtype">
 s32</td>
 <td>
 </td>
@@ -12002,7 +12005,7 @@ s32</td>
 <tr>
 <td>
 weights</td>
-<td>
+<td class="tdtype">
 <a href="std.core.html#Core.Array">Array'(f64)</a></td>
 <td>
 </td>
@@ -12010,7 +12013,7 @@ weights</td>
 <tr>
 <td>
 left</td>
-<td>
+<td class="tdtype">
 s64</td>
 <td>
 </td>
@@ -12018,7 +12021,7 @@ s64</td>
 <tr>
 <td>
 right</td>
-<td>
+<td class="tdtype">
 s64</td>
 <td>
 </td>
@@ -12029,7 +12032,7 @@ s64</td>
 <tr>
 <td>
 row</td>
-<td>
+<td class="tdtype">
 <a href="std.core.html#Core.Array">Array'(Contribution)</a></td>
 <td>
 </td>
@@ -12037,7 +12040,7 @@ row</td>
 <tr>
 <td>
 windowSize</td>
-<td>
+<td class="tdtype">
 s64</td>
 <td>
 </td>
@@ -12045,7 +12048,7 @@ s64</td>
 <tr>
 <td>
 lineLength</td>
-<td>
+<td class="tdtype">
 s64</td>
 <td>
 </td>
@@ -12056,7 +12059,7 @@ s64</td>
 <tr>
 <td>
 slice</td>
-<td>
+<td class="tdtype">
 string</td>
 <td>
 </td>
@@ -12064,7 +12067,7 @@ string</td>
 <tr>
 <td>
 fontStyle</td>
-<td>
+<td class="tdtype">
 <a href="std.pixel.html#Pixel.FontFamilyStyle">FontFamilyStyle</a></td>
 <td>
 </td>
@@ -12072,7 +12075,7 @@ fontStyle</td>
 <tr>
 <td>
 hasFontStyle</td>
-<td>
+<td class="tdtype">
 bool</td>
 <td>
 </td>
@@ -12080,7 +12083,7 @@ bool</td>
 <tr>
 <td>
 isSpace</td>
-<td>
+<td class="tdtype">
 bool</td>
 <td>
 </td>
@@ -12088,7 +12091,7 @@ bool</td>
 <tr>
 <td>
 isEol</td>
-<td>
+<td class="tdtype">
 bool</td>
 <td>
 </td>
@@ -12096,7 +12099,7 @@ bool</td>
 <tr>
 <td>
 colorIdx</td>
-<td>
+<td class="tdtype">
 s32</td>
 <td>
 </td>
@@ -12104,7 +12107,7 @@ s32</td>
 <tr>
 <td>
 boundRect</td>
-<td>
+<td class="tdtype">
 <a href="std.core.html#Core.Math.Rectangle">Rectangle</a></td>
 <td>
 </td>
@@ -12112,7 +12115,7 @@ boundRect</td>
 <tr>
 <td>
 pos</td>
-<td>
+<td class="tdtype">
 <a href="std.core.html#Core.Math.Point">Point</a></td>
 <td>
 </td>
@@ -12120,7 +12123,7 @@ pos</td>
 <tr>
 <td>
 font</td>
-<td>
+<td class="tdtype">
 <a href="std.pixel.html#Pixel.Font">*Font</a></td>
 <td>
 </td>
@@ -12128,7 +12131,7 @@ font</td>
 <tr>
 <td>
 under</td>
-<td>
+<td class="tdtype">
 <a href="std.pixel.html#Pixel.UnderlineStyle">UnderlineStyle</a></td>
 <td>
 </td>
@@ -12139,7 +12142,7 @@ under</td>
 <tr>
 <td>
 raw</td>
-<td>
+<td class="tdtype">
 <a href="std.core.html#Core.String">String</a></td>
 <td>
 </td>
@@ -12147,7 +12150,7 @@ raw</td>
 <tr>
 <td>
 chunks</td>
-<td>
+<td class="tdtype">
 <a href="std.core.html#Core.Array">Array'(RichChunk)</a></td>
 <td>
 </td>
@@ -12155,7 +12158,7 @@ chunks</td>
 <tr>
 <td>
 layoutRect</td>
-<td>
+<td class="tdtype">
 <a href="std.core.html#Core.Math.Rectangle">Rectangle</a></td>
 <td>
 </td>
@@ -12163,7 +12166,7 @@ layoutRect</td>
 <tr>
 <td>
 boundRect</td>
-<td>
+<td class="tdtype">
 <a href="std.core.html#Core.Math.Rectangle">Rectangle</a></td>
 <td>
 </td>
@@ -12171,7 +12174,7 @@ boundRect</td>
 <tr>
 <td>
 dirty</td>
-<td>
+<td class="tdtype">
 bool</td>
 <td>
 </td>
@@ -12274,7 +12277,7 @@ Associate a string (can have multiple lines) Accepted markers are : &lt;u&gt;  .
 <tr>
 <td>
 font</td>
-<td>
+<td class="tdtype">
 <a href="std.pixel.html#Pixel.FontFamily">FontFamily</a></td>
 <td>
 </td>
@@ -12282,7 +12285,7 @@ font</td>
 <tr>
 <td>
 fontStyle</td>
-<td>
+<td class="tdtype">
 <a href="std.pixel.html#Pixel.FontFamilyStyle">FontFamilyStyle</a></td>
 <td>
 </td>
@@ -12290,7 +12293,7 @@ fontStyle</td>
 <tr>
 <td>
 palette</td>
-<td>
+<td class="tdtype">
 <a href="std.pixel.html#Pixel.Color">[4] Color</a></td>
 <td>
 </td>
@@ -12298,7 +12301,7 @@ palette</td>
 <tr>
 <td>
 brush</td>
-<td>
+<td class="tdtype">
 <a href="std.pixel.html#Pixel.Brush">Brush</a></td>
 <td>
 </td>
@@ -12306,7 +12309,7 @@ brush</td>
 <tr>
 <td>
 horzAlignment</td>
-<td>
+<td class="tdtype">
 <a href="std.pixel.html#Pixel.StringHorzAlignment">StringHorzAlignment</a></td>
 <td>
 </td>
@@ -12314,7 +12317,7 @@ horzAlignment</td>
 <tr>
 <td>
 vertAlignment</td>
-<td>
+<td class="tdtype">
 <a href="std.pixel.html#Pixel.StringVertAlignment">StringVertAlignment</a></td>
 <td>
 </td>
@@ -12322,7 +12325,7 @@ vertAlignment</td>
 <tr>
 <td>
 lineGap</td>
-<td>
+<td class="tdtype">
 s32</td>
 <td>
 </td>
@@ -12330,7 +12333,7 @@ s32</td>
 <tr>
 <td>
 flags</td>
-<td>
+<td class="tdtype">
 <a href="std.pixel.html#Pixel.StringFormatFlags">StringFormatFlags</a></td>
 <td>
 </td>
@@ -12341,7 +12344,7 @@ flags</td>
 <tr>
 <td>
 base</td>
-<td>
+<td class="tdtype">
 <a href="std.pixel.html#Pixel.ShaderBase">ShaderBase</a></td>
 <td>
 </td>
@@ -12352,7 +12355,7 @@ base</td>
 <tr>
 <td>
 handle</td>
-<td>
+<td class="tdtype">
 ShaderHandle</td>
 <td>
 </td>
@@ -12360,7 +12363,7 @@ ShaderHandle</td>
 <tr>
 <td>
 mvp</td>
-<td>
+<td class="tdtype">
 ShaderParamHandle</td>
 <td>
 </td>
@@ -12368,7 +12371,7 @@ ShaderParamHandle</td>
 <tr>
 <td>
 mdl</td>
-<td>
+<td class="tdtype">
 ShaderParamHandle</td>
 <td>
 </td>
@@ -12376,7 +12379,7 @@ ShaderParamHandle</td>
 <tr>
 <td>
 boundRect</td>
-<td>
+<td class="tdtype">
 ShaderParamHandle</td>
 <td>
 </td>
@@ -12384,7 +12387,7 @@ ShaderParamHandle</td>
 <tr>
 <td>
 textureRect</td>
-<td>
+<td class="tdtype">
 ShaderParamHandle</td>
 <td>
 </td>
@@ -12392,7 +12395,7 @@ ShaderParamHandle</td>
 <tr>
 <td>
 uvMode</td>
-<td>
+<td class="tdtype">
 ShaderParamHandle</td>
 <td>
 </td>
@@ -12400,7 +12403,7 @@ ShaderParamHandle</td>
 <tr>
 <td>
 copyMode</td>
-<td>
+<td class="tdtype">
 ShaderParamHandle</td>
 <td>
 </td>
@@ -12408,7 +12411,7 @@ ShaderParamHandle</td>
 <tr>
 <td>
 textureW</td>
-<td>
+<td class="tdtype">
 ShaderParamHandle</td>
 <td>
 </td>
@@ -12416,7 +12419,7 @@ ShaderParamHandle</td>
 <tr>
 <td>
 textureH</td>
-<td>
+<td class="tdtype">
 ShaderParamHandle</td>
 <td>
 </td>
@@ -12427,7 +12430,7 @@ ShaderParamHandle</td>
 <tr>
 <td>
 base</td>
-<td>
+<td class="tdtype">
 <a href="std.pixel.html#Pixel.ShaderBase">ShaderBase</a></td>
 <td>
 </td>
@@ -12435,7 +12438,7 @@ base</td>
 <tr>
 <td>
 radius</td>
-<td>
+<td class="tdtype">
 ShaderParamHandle</td>
 <td>
 </td>
@@ -12443,7 +12446,7 @@ ShaderParamHandle</td>
 <tr>
 <td>
 axis</td>
-<td>
+<td class="tdtype">
 ShaderParamHandle</td>
 <td>
 </td>
@@ -12454,7 +12457,7 @@ ShaderParamHandle</td>
 <tr>
 <td>
 base</td>
-<td>
+<td class="tdtype">
 <a href="std.pixel.html#Pixel.ShaderBase">ShaderBase</a></td>
 <td>
 </td>
@@ -12513,7 +12516,7 @@ Justify</td>
 <tr>
 <td>
 ascent</td>
-<td>
+<td class="tdtype">
 f32</td>
 <td>
 <p>
@@ -12523,7 +12526,7 @@ Maximum size above baseline.</p>
 <tr>
 <td>
 descent</td>
-<td>
+<td class="tdtype">
 f32</td>
 <td>
 <p>
@@ -12533,7 +12536,7 @@ Maximum size below baseline.</p>
 <tr>
 <td>
 width</td>
-<td>
+<td class="tdtype">
 f32</td>
 <td>
 </td>
@@ -12541,7 +12544,7 @@ f32</td>
 <tr>
 <td>
 height</td>
-<td>
+<td class="tdtype">
 f32</td>
 <td>
 <p>
@@ -12554,7 +12557,7 @@ ascent + descent.</p>
 <tr>
 <td>
 str</td>
-<td>
+<td class="tdtype">
 <a href="std.pixel.html#Pixel.RichString">RichString</a></td>
 <td>
 </td>
@@ -12562,7 +12565,7 @@ str</td>
 <tr>
 <td>
 fmt</td>
-<td>
+<td class="tdtype">
 <a href="std.pixel.html#Pixel.RichStringFormat">RichStringFormat</a></td>
 <td>
 </td>
@@ -12687,7 +12690,7 @@ Bottom</td>
 <tr>
 <td>
 handle</td>
-<td>
+<td class="tdtype">
 TextureHandle</td>
 <td>
 </td>
@@ -12695,7 +12698,7 @@ TextureHandle</td>
 <tr>
 <td>
 pf</td>
-<td>
+<td class="tdtype">
 <a href="std.pixel.html#Pixel.PixelFormat">PixelFormat</a></td>
 <td>
 </td>
@@ -12703,7 +12706,7 @@ pf</td>
 <tr>
 <td>
 width</td>
-<td>
+<td class="tdtype">
 s32</td>
 <td>
 </td>
@@ -12711,7 +12714,7 @@ s32</td>
 <tr>
 <td>
 height</td>
-<td>
+<td class="tdtype">
 s32</td>
 <td>
 </td>
@@ -12719,7 +12722,7 @@ s32</td>
 <tr>
 <td>
 valid</td>
-<td>
+<td class="tdtype">
 bool</td>
 <td>
 </td>
@@ -12780,7 +12783,7 @@ bool</td>
 </p>
 <h3 class="content" id="Pixel.Tga.Decoder.IImageDecoder.decode"><span class="titletype">func</span> <span class="titlelight">IImageDecoder.</span><span class="titlestrong">decode</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func decode(using self, buffer: const [..] u8, options: <a href="std.pixel.html#Pixel.DecodeOptions">DecodeOptions</a>)-><a href="std.pixel.html#Pixel.Image">Image</a>
+<code style="white-space: break-spaces">func decode(using self, buffer: const [..] u8, options: <a href="std.pixel.html#Pixel.DecodeOptions">DecodeOptions</a>)-><a href="std.pixel.html#Pixel.Image">Image</a> throw
 </code>
 </p>
 <h3 class="content" id="Pixel.Tga.Encoder"><span class="titletype">struct</span> <span class="titlelight">Tga.</span><span class="titlestrong">Encoder</span></h3>
@@ -12791,7 +12794,7 @@ bool</td>
 </p>
 <h3 class="content" id="Pixel.Tga.Encoder.IImageEncoder.encode"><span class="titletype">func</span> <span class="titlelight">IImageEncoder.</span><span class="titlestrong">encode</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func encode(using self, result: <a href="std.core.html#Core.ConcatBuffer">*ConcatBuffer</a>, image: <a href="std.pixel.html#Pixel.Image">Image</a>, options: any)
+<code style="white-space: break-spaces">func encode(using self, result: <a href="std.core.html#Core.ConcatBuffer">*ConcatBuffer</a>, image: <a href="std.pixel.html#Pixel.Image">Image</a>, options: any) throw
 </code>
 </p>
 <h3 class="content" id="Pixel.Tga.Header"><span class="titletype">struct</span> <span class="titlelight">Tga.</span><span class="titlestrong">Header</span></h3>
@@ -12799,7 +12802,7 @@ bool</td>
 <tr>
 <td>
 size</td>
-<td>
+<td class="tdtype">
 u8</td>
 <td>
 </td>
@@ -12807,7 +12810,7 @@ u8</td>
 <tr>
 <td>
 colorMapType</td>
-<td>
+<td class="tdtype">
 u8</td>
 <td>
 </td>
@@ -12815,7 +12818,7 @@ u8</td>
 <tr>
 <td>
 imageTypeCode</td>
-<td>
+<td class="tdtype">
 u8</td>
 <td>
 </td>
@@ -12823,7 +12826,7 @@ u8</td>
 <tr>
 <td>
 originL</td>
-<td>
+<td class="tdtype">
 u8</td>
 <td>
 </td>
@@ -12831,7 +12834,7 @@ u8</td>
 <tr>
 <td>
 originH</td>
-<td>
+<td class="tdtype">
 u8</td>
 <td>
 </td>
@@ -12839,7 +12842,7 @@ u8</td>
 <tr>
 <td>
 paletteLengthL</td>
-<td>
+<td class="tdtype">
 u8</td>
 <td>
 </td>
@@ -12847,7 +12850,7 @@ u8</td>
 <tr>
 <td>
 paletteLengthH</td>
-<td>
+<td class="tdtype">
 u8</td>
 <td>
 </td>
@@ -12855,7 +12858,7 @@ u8</td>
 <tr>
 <td>
 bpcInPalette</td>
-<td>
+<td class="tdtype">
 u8</td>
 <td>
 </td>
@@ -12863,7 +12866,7 @@ u8</td>
 <tr>
 <td>
 left</td>
-<td>
+<td class="tdtype">
 u16</td>
 <td>
 </td>
@@ -12871,7 +12874,7 @@ u16</td>
 <tr>
 <td>
 top</td>
-<td>
+<td class="tdtype">
 u16</td>
 <td>
 </td>
@@ -12879,7 +12882,7 @@ u16</td>
 <tr>
 <td>
 width</td>
-<td>
+<td class="tdtype">
 u16</td>
 <td>
 </td>
@@ -12887,7 +12890,7 @@ u16</td>
 <tr>
 <td>
 height</td>
-<td>
+<td class="tdtype">
 u16</td>
 <td>
 </td>
@@ -12895,7 +12898,7 @@ u16</td>
 <tr>
 <td>
 bpp</td>
-<td>
+<td class="tdtype">
 u8</td>
 <td>
 </td>
@@ -12903,7 +12906,7 @@ u8</td>
 <tr>
 <td>
 descriptorByte</td>
-<td>
+<td class="tdtype">
 u8</td>
 <td>
 </td>
@@ -12912,50 +12915,50 @@ u8</td>
 <h3 class="content" id="Pixel.Tga.TYPE_MAP"><span class="titletype"></span> <span class="titlelight">Tga.</span><span class="titlestrong">Constants</span></h3>
 <table>
 <tr>
-<td>
-s32</td>
 <td id="Pixel.Tga.TYPE_MAP">
 TYPE_MAP</td>
+<td class="tdtype">
+s32</td>
 <td>
 </td>
 </tr>
 <tr>
-<td>
-s32</td>
 <td id="Pixel.Tga.TYPE_MONO">
 TYPE_MONO</td>
+<td class="tdtype">
+s32</td>
 <td>
 </td>
 </tr>
 <tr>
-<td>
-s32</td>
 <td id="Pixel.Tga.TYPE_RGB">
 TYPE_RGB</td>
+<td class="tdtype">
+s32</td>
 <td>
 </td>
 </tr>
 <tr>
-<td>
-s32</td>
 <td id="Pixel.Tga.TYPE_RLE_MAP">
 TYPE_RLE_MAP</td>
+<td class="tdtype">
+s32</td>
 <td>
 </td>
 </tr>
 <tr>
-<td>
-s32</td>
 <td id="Pixel.Tga.TYPE_RLE_MONO">
 TYPE_RLE_MONO</td>
+<td class="tdtype">
+s32</td>
 <td>
 </td>
 </tr>
 <tr>
-<td>
-s32</td>
 <td id="Pixel.Tga.TYPE_RLE_RGB">
 TYPE_RLE_RGB</td>
+<td class="tdtype">
+s32</td>
 <td>
 </td>
 </tr>
@@ -12965,7 +12968,7 @@ TYPE_RLE_RGB</td>
 <tr>
 <td>
 fullname</td>
-<td>
+<td class="tdtype">
 string</td>
 <td>
 </td>
@@ -12973,7 +12976,7 @@ string</td>
 <tr>
 <td>
 buffer</td>
-<td>
+<td class="tdtype">
 <a href="std.core.html#Core.Array">Array'(u8)</a></td>
 <td>
 </td>
@@ -12981,7 +12984,7 @@ buffer</td>
 <tr>
 <td>
 face</td>
-<td>
+<td class="tdtype">
 FT_Face</td>
 <td>
 </td>
@@ -12989,7 +12992,7 @@ FT_Face</td>
 <tr>
 <td>
 forceBoldDiv</td>
-<td>
+<td class="tdtype">
 u32</td>
 <td>
 </td>
@@ -12997,7 +13000,7 @@ u32</td>
 <tr>
 <td>
 forceItalic</td>
-<td>
+<td class="tdtype">
 bool</td>
 <td>
 </td>
@@ -13005,7 +13008,7 @@ bool</td>
 <tr>
 <td>
 forceBold</td>
-<td>
+<td class="tdtype">
 bool</td>
 <td>
 </td>
@@ -13096,14 +13099,14 @@ Render one glyph.</p>
 </table>
 <h3 class="content" id="Pixel.TypeFace.create"><span class="titletype">func</span> <span class="titlelight">TypeFace.</span><span class="titlestrong">create</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func create(fullname: string, bytes: const [..] u8)-><a href="std.pixel.html#Pixel.TypeFace">*TypeFace</a>
+<code style="white-space: break-spaces">func create(fullname: string, bytes: const [..] u8)-><a href="std.pixel.html#Pixel.TypeFace">*TypeFace</a> throw
 </code>
 </p>
 <p>
 Get or create a new typeface from a memory buffer.</p>
 <h3 class="content" id="Pixel.TypeFace.createFromHFONT"><span class="titletype">func</span> <span class="titlelight">TypeFace.</span><span class="titlestrong">createFromHFONT</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func createFromHFONT(fullname: string, hf: HFONT)-><a href="std.pixel.html#Pixel.TypeFace">*TypeFace</a>
+<code style="white-space: break-spaces">func createFromHFONT(fullname: string, hf: HFONT)-><a href="std.pixel.html#Pixel.TypeFace">*TypeFace</a> throw
 </code>
 </p>
 <p>
@@ -13117,14 +13120,14 @@ Create a new typeface from a HFONT.</p>
 Returns the underlying font family name.</p>
 <h3 class="content" id="Pixel.TypeFace.getRuneOutline"><span class="titletype">func</span> <span class="titlelight">TypeFace.</span><span class="titlestrong">getRuneOutline</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func getRuneOutline(using self, pathList: <a href="std.pixel.html#Pixel.LinePathList">*LinePathList</a>, c: rune, size: u32, embolden: u32 = 0)->f32
+<code style="white-space: break-spaces">func getRuneOutline(using self, pathList: <a href="std.pixel.html#Pixel.LinePathList">*LinePathList</a>, c: rune, size: u32, embolden: u32 = 0)->f32 throw
 </code>
 </p>
 <p>
 Convert a rune to its outline, at a given size.</p>
 <h3 class="content" id="Pixel.TypeFace.getStringOutline"><span class="titletype">func</span> <span class="titlelight">TypeFace.</span><span class="titlestrong">getStringOutline</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func getStringOutline(using self, pathList: <a href="std.pixel.html#Pixel.LinePathList">*LinePathList</a>, text: string, size: u32, embolden: u32 = 0)
+<code style="white-space: break-spaces">func getStringOutline(using self, pathList: <a href="std.pixel.html#Pixel.LinePathList">*LinePathList</a>, text: string, size: u32, embolden: u32 = 0) throw
 </code>
 </p>
 <p>
@@ -13145,7 +13148,7 @@ Returns true if the typeface is bold.</p>
 Returns true if the typeface is italic.</p>
 <h3 class="content" id="Pixel.TypeFace.load"><span class="titletype">func</span> <span class="titlelight">TypeFace.</span><span class="titlestrong">load</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func load(fullname: string)-><a href="std.pixel.html#Pixel.TypeFace">*TypeFace</a>
+<code style="white-space: break-spaces">func load(fullname: string)-><a href="std.pixel.html#Pixel.TypeFace">*TypeFace</a> throw
 </code>
 </p>
 <p>
@@ -13159,7 +13162,7 @@ Get or load a new typeface.</p>
 Release the given typeface.</p>
 <h3 class="content" id="Pixel.TypeFace.renderGlyph"><span class="titletype">func</span> <span class="titlelight">TypeFace.</span><span class="titlestrong">renderGlyph</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func renderGlyph(using self, c: rune, size: u32, forceBold = false, forceItalic = false)-><a href="std.freetype.html#FreeType.FT_Bitmap">const *FT_Bitmap</a>
+<code style="white-space: break-spaces">func renderGlyph(using self, c: rune, size: u32, forceBold = false, forceItalic = false)-><a href="std.freetype.html#FreeType.FT_Bitmap">const *FT_Bitmap</a> throw
 </code>
 </p>
 <p>
@@ -13211,7 +13214,7 @@ Strikeout</td>
 <tr>
 <td>
 pos</td>
-<td>
+<td class="tdtype">
 <a href="std.core.html#Core.Math.Vector2">Vector2</a></td>
 <td>
 </td>
@@ -13219,7 +13222,7 @@ pos</td>
 <tr>
 <td>
 uv</td>
-<td>
+<td class="tdtype">
 <a href="std.core.html#Core.Math.Vector2">Vector2</a></td>
 <td>
 </td>
@@ -13227,7 +13230,7 @@ uv</td>
 <tr>
 <td>
 color</td>
-<td>
+<td class="tdtype">
 u32</td>
 <td>
 </td>
@@ -13235,7 +13238,7 @@ u32</td>
 <tr>
 <td>
 aa</td>
-<td>
+<td class="tdtype">
 <a href="std.core.html#Core.Math.Vector4">[12] Vector4</a></td>
 <td>
 </td>
@@ -13243,7 +13246,7 @@ aa</td>
 <tr>
 <td>
 aanum</td>
-<td>
+<td class="tdtype">
 f32</td>
 <td>
 </td>
@@ -13252,18 +13255,18 @@ f32</td>
 <h3 class="content" id="Pixel.VertexShaderAA"><span class="titletype"></span> <span class="titlelight">Pixel.</span><span class="titlestrong">Constants</span></h3>
 <table>
 <tr>
-<td>
-const [1604] u8</td>
 <td id="Pixel.VertexShaderAA">
 VertexShaderAA</td>
+<td class="tdtype">
+const [1604] u8</td>
 <td>
 </td>
 </tr>
 <tr>
-<td>
-const [223] u8</td>
 <td id="Pixel.VertexShaderSimple">
 VertexShaderSimple</td>
+<td class="tdtype">
+const [223] u8</td>
 <td>
 </td>
 </tr>
@@ -13271,10 +13274,10 @@ VertexShaderSimple</td>
 <h3 class="content" id="Pixel.VertexShaderSimple"><span class="titletype"></span> <span class="titlelight">Pixel.</span><span class="titlestrong">Constants</span></h3>
 <table>
 <tr>
-<td>
-const [223] u8</td>
 <td id="Pixel.VertexShaderSimple">
 VertexShaderSimple</td>
+<td class="tdtype">
+const [223] u8</td>
 <td>
 </td>
 </tr>

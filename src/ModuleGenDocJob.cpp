@@ -26,6 +26,7 @@ static bool canCollectNode(AstNode* node)
     case AstNodeKind::FuncDecl:
     case AstNodeKind::EnumDecl:
     case AstNodeKind::ConstDecl:
+    case AstNodeKind::AttrDecl:
         break;
     default:
         return false;
@@ -36,6 +37,8 @@ static bool canCollectNode(AstNode* node)
     if (node->sourceFile && node->sourceFile->isBootstrapFile)
         return true;
     if (node->kind == AstNodeKind::FuncDecl && node->sourceFile && !node->sourceFile->forceExport && !(node->attributeFlags & ATTRIBUTE_PUBLIC))
+        return false;
+    if (node->kind == AstNodeKind::AttrDecl && node->sourceFile && !node->sourceFile->forceExport && !(node->attributeFlags & ATTRIBUTE_PUBLIC))
         return false;
 
     return true;
@@ -211,6 +214,9 @@ void ModuleGenDocJob::outputTitle(OneRef& c)
         break;
     case AstNodeKind::InterfaceDecl:
         name = "interface";
+        break;
+    case AstNodeKind::AttrDecl:
+        name = "attr";
         break;
     default:
         SWAG_ASSERT(false);
@@ -629,6 +635,7 @@ void ModuleGenDocJob::generateToc()
     generateTocSection(AstNodeKind::InterfaceDecl, "Interfaces");
     generateTocSection(AstNodeKind::EnumDecl, "Enums");
     generateTocSection(AstNodeKind::ConstDecl, "Constants");
+    generateTocSection(AstNodeKind::AttrDecl, "Attributes");
     generateTocSection(AstNodeKind::FuncDecl, "Functions");
 }
 
@@ -678,8 +685,11 @@ void ModuleGenDocJob::outputStyles()
             border-collapse:    collapse;\n\
             width:              20%;\n\
         }\n\
+        td.tdtype {\n\
+            width:              auto;\n\
+        }\n\
         td:last-child {\n\
-            width:              100%;\n\
+            width:              auto;\n\
         }\n\
         .tocbullet {\n\
             list-style-type:    none;\n\
@@ -737,8 +747,10 @@ int ModuleGenDocJob::sortOrder(AstNodeKind kind)
         return 4;
     case AstNodeKind::FuncDecl:
         return 5;
-    default:
+    case AstNodeKind::AttrDecl:
         return 6;
+    default:
+        return 7;
     }
 }
 
@@ -773,6 +785,7 @@ void ModuleGenDocJob::generateContent()
                 outputTable(scope, AstNodeKind::StructDecl, "Structs");
                 outputTable(scope, AstNodeKind::EnumDecl, "Enums");
                 outputTable(scope, AstNodeKind::FuncDecl, "Functions");
+                outputTable(scope, AstNodeKind::FuncDecl, "Attributes");
             }
 
             break;
@@ -796,16 +809,16 @@ void ModuleGenDocJob::generateContent()
 
                 helpContent += "<tr>\n";
 
-                helpContent += "<td>\n";
+                helpContent += Fmt("<td id=\"%s\">\n", n->getScopedName().c_str());
+                helpContent += n->token.ctext();
+                helpContent += "</td>\n";
+
+                helpContent += "<td class=\"tdtype\">\n";
                 auto varDecl = CastAst<AstVarDecl>(n, AstNodeKind::ConstDecl);
                 if (varDecl->typeInfo)
                     helpContent += outputType(varDecl->typeInfo);
                 else
                     helpContent += outputNode(varDecl->type);
-                helpContent += "</td>\n";
-
-                helpContent += Fmt("<td id=\"%s\">\n", n->getScopedName().c_str());
-                helpContent += n->token.ctext();
                 helpContent += "</td>\n";
 
                 helpContent += "<td>\n";
@@ -873,7 +886,7 @@ void ModuleGenDocJob::generateContent()
                 helpContent += structVal->name;
                 helpContent += "</td>\n";
 
-                helpContent += "<td>\n";
+                helpContent += "<td class=\"tdtype\">\n";
                 if (varDecl->typeInfo)
                     helpContent += outputType(varDecl->typeInfo);
                 else
@@ -953,10 +966,12 @@ void ModuleGenDocJob::generateContent()
                 computeUserComments(subUserComment, subDocComment);
 
                 auto funcNode = CastAst<AstFuncDecl>(n, AstNodeKind::FuncDecl);
+
                 if (n->attributeFlags & ATTRIBUTE_MACRO)
                     code += "#[Swag.Macro]\n";
                 else if (n->attributeFlags & ATTRIBUTE_MIXIN)
                     code += "#[Swag.Mixin]\n";
+
                 code += "func";
                 code += outputNode(funcNode->genericParameters);
                 code += " ";
@@ -966,6 +981,40 @@ void ModuleGenDocJob::generateContent()
                 else
                     code += outputNode(funcNode->parameters);
                 code += outputNode(funcNode->returnType);
+                if (funcNode->specFlags & AstFuncDecl::SPECFLAG_THROW)
+                    code += " throw";
+                code += "\n";
+
+                if (!subUserComment.shortDesc.lines.empty() || !subUserComment.blocks.empty())
+                {
+                    outputCode(code);
+                    code.clear();
+                    outputUserBlock(subUserComment.shortDesc);
+                    outputUserComment(subUserComment);
+                }
+            }
+
+            outputCode(code);
+            break;
+        }
+
+        case AstNodeKind::AttrDecl:
+        {
+            outputTitle(c);
+
+            Utf8 code;
+            for (auto n : c.nodes)
+            {
+                UserComment subUserComment;
+                auto        subDocComment = getDocComment(n);
+                computeUserComments(subUserComment, subDocComment);
+
+                auto funcNode = CastAst<AstAttrDecl>(n, AstNodeKind::AttrDecl);
+
+                code += "attr ";
+                code += funcNode->token.text;
+                if (funcNode->parameters)
+                    code += outputNode(funcNode->parameters);
                 code += "\n";
 
                 if (!subUserComment.shortDesc.lines.empty() || !subUserComment.blocks.empty())

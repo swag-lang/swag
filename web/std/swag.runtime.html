@@ -46,8 +46,11 @@
             border-collapse:    collapse;
             width:              20%;
         }
+        td.tdtype {
+            width:              auto;
+        }
         td:last-child {
-            width:              100%;
+            width:              auto;
         }
         .tocbullet {
             list-style-type:    none;
@@ -217,6 +220,44 @@
 <li><a href="#Swag.U64.Min">U64.Min</a></li>
 <li><a href="#Swag.U8.Max">U8.Max</a></li>
 <li><a href="#Swag.U8.Min">U8.Min</a></li>
+</ul>
+<h2>Attributes</h2>
+<h3></h3>
+<ul class="tocbullet">
+<li><a href="#Swag.Align">Align</a></li>
+<li><a href="#Swag.AttrMulti">AttrMulti</a></li>
+<li><a href="#Swag.AttrUsage">AttrUsage</a></li>
+<li><a href="#Swag.CalleeReturn">CalleeReturn</a></li>
+<li><a href="#Swag.Compiler">Compiler</a></li>
+<li><a href="#Swag.Complete">Complete</a></li>
+<li><a href="#Swag.ConstExpr">ConstExpr</a></li>
+<li><a href="#Swag.Deprecated">Deprecated</a></li>
+<li><a href="#Swag.Discardable">Discardable</a></li>
+<li><a href="#Swag.EnumFlags">EnumFlags</a></li>
+<li><a href="#Swag.EnumIndex">EnumIndex</a></li>
+<li><a href="#Swag.ExportType">ExportType</a></li>
+<li><a href="#Swag.Foreign">Foreign</a></li>
+<li><a href="#Swag.Global">Global</a></li>
+<li><a href="#Swag.Implicit">Implicit</a></li>
+<li><a href="#Swag.Incomplete">Incomplete</a></li>
+<li><a href="#Swag.Inline">Inline</a></li>
+<li><a href="#Swag.Macro">Macro</a></li>
+<li><a href="#Swag.Match">Match</a></li>
+<li><a href="#Swag.Mixin">Mixin</a></li>
+<li><a href="#Swag.NoCopy">NoCopy</a></li>
+<li><a href="#Swag.NoInline">NoInline</a></li>
+<li><a href="#Swag.NotGeneric">NotGeneric</a></li>
+<li><a href="#Swag.Offset">Offset</a></li>
+<li><a href="#Swag.Opaque">Opaque</a></li>
+<li><a href="#Swag.Optim">Optim</a></li>
+<li><a href="#Swag.Overflow">Overflow</a></li>
+<li><a href="#Swag.Pack">Pack</a></li>
+<li><a href="#Swag.PrintBc">PrintBc</a></li>
+<li><a href="#Swag.Safety">Safety</a></li>
+<li><a href="#Swag.Strict">Strict</a></li>
+<li><a href="#Swag.Tls">Tls</a></li>
+<li><a href="#Swag.Using">Using</a></li>
+<li><a href="#Swag.Warn">Warn</a></li>
 </ul>
 <h2>Functions</h2>
 <h3></h3>
@@ -762,7 +803,7 @@ func @trunc(value: f64)->f64
 <tr>
 <td>
 v</td>
-<td>
+<td class="tdtype">
 SRWLOCK</td>
 <td>
 </td>
@@ -1106,6 +1147,11 @@ Will be put just before the returned address.</p>
 </td>
 </tr>
 </table>
+<h3 class="content" id="Swag.Align"><span class="titletype">attr</span> <span class="titlelight">Swag.</span><span class="titlestrong">Align</span></h3>
+<p class="code">
+<code style="white-space: break-spaces">attr Align(value: u8)
+</code>
+</p>
 <h3 class="content" id="Swag.AllocatorMode"><span class="titletype">enum</span> <span class="titlelight">Swag.</span><span class="titlestrong">AllocatorMode</span></h3>
 <table>
 <tr>
@@ -1144,7 +1190,7 @@ AssertIsAllocated</td>
 <tr>
 <td>
 callerLoc</td>
-<td>
+<td class="tdtype">
 <a href="swag.runtime.html#Swag.SourceCodeLocation">SourceCodeLocation</a></td>
 <td>
 </td>
@@ -1152,7 +1198,7 @@ callerLoc</td>
 <tr>
 <td>
 hint</td>
-<td>
+<td class="tdtype">
 string</td>
 <td>
 </td>
@@ -1160,7 +1206,7 @@ string</td>
 <tr>
 <td>
 address</td>
-<td>
+<td class="tdtype">
 *void</td>
 <td>
 </td>
@@ -1168,7 +1214,7 @@ address</td>
 <tr>
 <td>
 size</td>
-<td>
+<td class="tdtype">
 u64</td>
 <td>
 </td>
@@ -1176,7 +1222,7 @@ u64</td>
 <tr>
 <td>
 oldSize</td>
-<td>
+<td class="tdtype">
 u64</td>
 <td>
 </td>
@@ -1184,7 +1230,7 @@ u64</td>
 <tr>
 <td>
 mode</td>
-<td>
+<td class="tdtype">
 <a href="swag.runtime.html#Swag.AllocatorMode">AllocatorMode</a></td>
 <td>
 </td>
@@ -1192,18 +1238,28 @@ mode</td>
 <tr>
 <td>
 alignement</td>
-<td>
+<td class="tdtype">
 u32</td>
 <td>
 </td>
 </tr>
 </table>
+<h3 class="content" id="Swag.AttrMulti"><span class="titletype">attr</span> <span class="titlelight">Swag.</span><span class="titlestrong">AttrMulti</span></h3>
+<p class="code">
+<code style="white-space: break-spaces">attr AttrMulti
+</code>
+</p>
+<h3 class="content" id="Swag.AttrUsage"><span class="titletype">attr</span> <span class="titlelight">Swag.</span><span class="titlestrong">AttrUsage</span></h3>
+<p class="code">
+<code style="white-space: break-spaces">attr AttrUsage(usage: <a href="swag.runtime.html#Swag.AttributeUsage">AttributeUsage</a>)
+</code>
+</p>
 <h3 class="content" id="Swag.Attribute"><span class="titletype">struct</span> <span class="titlelight">Swag.</span><span class="titlestrong">Attribute</span></h3>
 <table>
 <tr>
 <td>
 type</td>
-<td>
+<td class="tdtype">
 <a href="swag.runtime.html#Swag.TypeInfo">const *TypeInfo</a></td>
 <td>
 </td>
@@ -1211,7 +1267,7 @@ type</td>
 <tr>
 <td>
 params</td>
-<td>
+<td class="tdtype">
 <a href="swag.runtime.html#Swag.AttributeParam">const [..] AttributeParam</a></td>
 <td>
 </td>
@@ -1222,7 +1278,7 @@ params</td>
 <tr>
 <td>
 name</td>
-<td>
+<td class="tdtype">
 string</td>
 <td>
 </td>
@@ -1230,7 +1286,7 @@ string</td>
 <tr>
 <td>
 value</td>
-<td>
+<td class="tdtype">
 any</td>
 <td>
 </td>
@@ -1345,7 +1401,7 @@ LLVM</td>
 <tr>
 <td>
 moduleVersion</td>
-<td>
+<td class="tdtype">
 u32</td>
 <td>
 </td>
@@ -1353,7 +1409,7 @@ u32</td>
 <tr>
 <td>
 moduleRevision</td>
-<td>
+<td class="tdtype">
 u32</td>
 <td>
 </td>
@@ -1361,7 +1417,7 @@ u32</td>
 <tr>
 <td>
 moduleBuildNum</td>
-<td>
+<td class="tdtype">
 u32</td>
 <td>
 </td>
@@ -1369,7 +1425,7 @@ u32</td>
 <tr>
 <td>
 moduleNamespace</td>
-<td>
+<td class="tdtype">
 string</td>
 <td>
 </td>
@@ -1377,7 +1433,7 @@ string</td>
 <tr>
 <td>
 embbedImports</td>
-<td>
+<td class="tdtype">
 bool</td>
 <td>
 </td>
@@ -1385,7 +1441,7 @@ bool</td>
 <tr>
 <td>
 scratchAllocatorCapacity</td>
-<td>
+<td class="tdtype">
 s32</td>
 <td>
 <p>
@@ -1395,7 +1451,7 @@ Debug Default capacity of the <code class = "incode">temp</code> allocator (in b
 <tr>
 <td>
 safetyGuards</td>
-<td>
+<td class="tdtype">
 u16</td>
 <td>
 </td>
@@ -1403,7 +1459,7 @@ u16</td>
 <tr>
 <td>
 debugAllocator</td>
-<td>
+<td class="tdtype">
 bool</td>
 <td>
 <p>
@@ -1413,7 +1469,7 @@ Use Swag.DebugAllocator by default.</p>
 <tr>
 <td>
 debugAllocatorCaptureStack</td>
-<td>
+<td class="tdtype">
 bool</td>
 <td>
 <p>
@@ -1423,7 +1479,7 @@ Capture the call stack for each allocation.</p>
 <tr>
 <td>
 debugAllocatorLeaks</td>
-<td>
+<td class="tdtype">
 bool</td>
 <td>
 <p>
@@ -1433,7 +1489,7 @@ Detect memory leaks.</p>
 <tr>
 <td>
 stackTrace</td>
-<td>
+<td class="tdtype">
 bool</td>
 <td>
 </td>
@@ -1441,7 +1497,7 @@ bool</td>
 <tr>
 <td>
 warnAsErrors</td>
-<td>
+<td class="tdtype">
 string</td>
 <td>
 <p>
@@ -1451,7 +1507,7 @@ Warnings Format is "wrnXXXX|wrnXXXX...".</p>
 <tr>
 <td>
 warnAsWarning</td>
-<td>
+<td class="tdtype">
 string</td>
 <td>
 </td>
@@ -1459,7 +1515,7 @@ string</td>
 <tr>
 <td>
 warnAsDisabled</td>
-<td>
+<td class="tdtype">
 string</td>
 <td>
 </td>
@@ -1467,7 +1523,7 @@ string</td>
 <tr>
 <td>
 warnDefaultDisabled</td>
-<td>
+<td class="tdtype">
 bool</td>
 <td>
 <p>
@@ -1477,7 +1533,7 @@ All warning are disabled, except those specified above.</p>
 <tr>
 <td>
 warnDefaultErrors</td>
-<td>
+<td class="tdtype">
 bool</td>
 <td>
 </td>
@@ -1485,7 +1541,7 @@ bool</td>
 <tr>
 <td>
 byteCodeOptimizeLevel</td>
-<td>
+<td class="tdtype">
 s32</td>
 <td>
 </td>
@@ -1493,7 +1549,7 @@ s32</td>
 <tr>
 <td>
 byteCodeDebugInline</td>
-<td>
+<td class="tdtype">
 bool</td>
 <td>
 </td>
@@ -1501,7 +1557,7 @@ bool</td>
 <tr>
 <td>
 byteCodeEmitAssume</td>
-<td>
+<td class="tdtype">
 bool</td>
 <td>
 </td>
@@ -1509,7 +1565,7 @@ bool</td>
 <tr>
 <td>
 byteCodeInline</td>
-<td>
+<td class="tdtype">
 bool</td>
 <td>
 <p>
@@ -1519,7 +1575,7 @@ Enable bytecode inlining with #[Swag.Inline].</p>
 <tr>
 <td>
 byteCodeAutoInline</td>
-<td>
+<td class="tdtype">
 bool</td>
 <td>
 </td>
@@ -1527,7 +1583,7 @@ bool</td>
 <tr>
 <td>
 backendKind</td>
-<td>
+<td class="tdtype">
 <a href="swag.runtime.html#Swag.BuildCfgBackendKind">BuildCfgBackendKind</a></td>
 <td>
 </td>
@@ -1535,7 +1591,7 @@ backendKind</td>
 <tr>
 <td>
 backendSubKind</td>
-<td>
+<td class="tdtype">
 <a href="swag.runtime.html#Swag.BuildCfgBackendSubKind">BuildCfgBackendSubKind</a></td>
 <td>
 </td>
@@ -1543,7 +1599,7 @@ backendSubKind</td>
 <tr>
 <td>
 backendDebugInformations</td>
-<td>
+<td class="tdtype">
 bool</td>
 <td>
 </td>
@@ -1551,7 +1607,7 @@ bool</td>
 <tr>
 <td>
 backendOptimize</td>
-<td>
+<td class="tdtype">
 <a href="swag.runtime.html#Swag.BuildCfgBackendOptim">BuildCfgBackendOptim</a></td>
 <td>
 </td>
@@ -1559,7 +1615,7 @@ backendOptimize</td>
 <tr>
 <td>
 backendNumCU</td>
-<td>
+<td class="tdtype">
 u32</td>
 <td>
 </td>
@@ -1567,7 +1623,7 @@ u32</td>
 <tr>
 <td>
 linkerArgs</td>
-<td>
+<td class="tdtype">
 string</td>
 <td>
 </td>
@@ -1575,7 +1631,7 @@ string</td>
 <tr>
 <td>
 backendLLVM</td>
-<td>
+<td class="tdtype">
 <a href="swag.runtime.html#Swag.BuildCfgBackendLLVM">BuildCfgBackendLLVM</a></td>
 <td>
 </td>
@@ -1583,7 +1639,7 @@ backendLLVM</td>
 <tr>
 <td>
 backendX64</td>
-<td>
+<td class="tdtype">
 <a href="swag.runtime.html#Swag.BuildCfgBackendX64">BuildCfgBackendX64</a></td>
 <td>
 </td>
@@ -1621,7 +1677,7 @@ DynamicLib</td>
 <tr>
 <td>
 outputIR</td>
-<td>
+<td class="tdtype">
 bool</td>
 <td>
 </td>
@@ -1629,7 +1685,7 @@ bool</td>
 <tr>
 <td>
 fpMathFma</td>
-<td>
+<td class="tdtype">
 bool</td>
 <td>
 <p>
@@ -1639,7 +1695,7 @@ true in <code class = "incode">release</code>.</p>
 <tr>
 <td>
 fpMathNoNaN</td>
-<td>
+<td class="tdtype">
 bool</td>
 <td>
 <p>
@@ -1649,7 +1705,7 @@ true in <code class = "incode">release</code>.</p>
 <tr>
 <td>
 fpMathNoInf</td>
-<td>
+<td class="tdtype">
 bool</td>
 <td>
 <p>
@@ -1659,7 +1715,7 @@ true in <code class = "incode">release</code>.</p>
 <tr>
 <td>
 fpMathNoSignedZero</td>
-<td>
+<td class="tdtype">
 bool</td>
 <td>
 <p>
@@ -1669,7 +1725,7 @@ true in <code class = "incode">release</code>.</p>
 <tr>
 <td>
 fpMathUnsafe</td>
-<td>
+<td class="tdtype">
 bool</td>
 <td>
 </td>
@@ -1677,7 +1733,7 @@ bool</td>
 <tr>
 <td>
 fpMathApproxFunc</td>
-<td>
+<td class="tdtype">
 bool</td>
 <td>
 </td>
@@ -1743,18 +1799,28 @@ Console</td>
 <tr>
 <td>
 buf</td>
-<td>
+<td class="tdtype">
 [2048] u8</td>
 <td>
 </td>
 </tr>
 </table>
+<h3 class="content" id="Swag.CalleeReturn"><span class="titletype">attr</span> <span class="titlelight">Swag.</span><span class="titlestrong">CalleeReturn</span></h3>
+<p class="code">
+<code style="white-space: break-spaces">attr CalleeReturn
+</code>
+</p>
+<h3 class="content" id="Swag.Compiler"><span class="titletype">attr</span> <span class="titlelight">Swag.</span><span class="titlestrong">Compiler</span></h3>
+<p class="code">
+<code style="white-space: break-spaces">attr Compiler
+</code>
+</p>
 <h3 class="content" id="Swag.CompilerMessage"><span class="titletype">struct</span> <span class="titlelight">Swag.</span><span class="titlestrong">CompilerMessage</span></h3>
 <table>
 <tr>
 <td>
 moduleName</td>
-<td>
+<td class="tdtype">
 string</td>
 <td>
 </td>
@@ -1762,7 +1828,7 @@ string</td>
 <tr>
 <td>
 name</td>
-<td>
+<td class="tdtype">
 string</td>
 <td>
 </td>
@@ -1770,7 +1836,7 @@ string</td>
 <tr>
 <td>
 type</td>
-<td>
+<td class="tdtype">
 <a href="swag.runtime.html#Swag.TypeInfo">const *TypeInfo</a></td>
 <td>
 </td>
@@ -1778,7 +1844,7 @@ type</td>
 <tr>
 <td>
 kind</td>
-<td>
+<td class="tdtype">
 <a href="swag.runtime.html#Swag.CompilerMsgKind">CompilerMsgKind</a></td>
 <td>
 </td>
@@ -1892,12 +1958,24 @@ All</td>
 </td>
 </tr>
 </table>
+<h3 class="content" id="Swag.Complete"><span class="titletype">attr</span> <span class="titlelight">Swag.</span><span class="titlestrong">Complete</span></h3>
+<p class="code">
+<code style="white-space: break-spaces">attr Complete
+</code>
+</p>
+<p>
+Also hardcoded for switch.</p>
+<h3 class="content" id="Swag.ConstExpr"><span class="titletype">attr</span> <span class="titlelight">Swag.</span><span class="titlestrong">ConstExpr</span></h3>
+<p class="code">
+<code style="white-space: break-spaces">attr ConstExpr
+</code>
+</p>
 <h3 class="content" id="Swag.Context"><span class="titletype">struct</span> <span class="titlelight">Swag.</span><span class="titlestrong">Context</span></h3>
 <table>
 <tr>
 <td>
 allocator</td>
-<td>
+<td class="tdtype">
 <a href="swag.runtime.html#Swag.IAllocator">IAllocator</a></td>
 <td>
 </td>
@@ -1905,7 +1983,7 @@ allocator</td>
 <tr>
 <td>
 flags</td>
-<td>
+<td class="tdtype">
 <a href="swag.runtime.html#Swag.ContextFlags">ContextFlags</a></td>
 <td>
 </td>
@@ -1913,7 +1991,7 @@ flags</td>
 <tr>
 <td>
 tempAllocator</td>
-<td>
+<td class="tdtype">
 <a href="swag.runtime.html#Swag.ScratchAllocator">ScratchAllocator</a></td>
 <td>
 </td>
@@ -1921,7 +1999,7 @@ tempAllocator</td>
 <tr>
 <td>
 errorMsg</td>
-<td>
+<td class="tdtype">
 [128] u8</td>
 <td>
 </td>
@@ -1929,7 +2007,7 @@ errorMsg</td>
 <tr>
 <td>
 errorMsgStart</td>
-<td>
+<td class="tdtype">
 u32</td>
 <td>
 </td>
@@ -1937,7 +2015,7 @@ u32</td>
 <tr>
 <td>
 errorMsgLen</td>
-<td>
+<td class="tdtype">
 u32</td>
 <td>
 </td>
@@ -1945,7 +2023,7 @@ u32</td>
 <tr>
 <td>
 traceIndex</td>
-<td>
+<td class="tdtype">
 u32</td>
 <td>
 </td>
@@ -1953,7 +2031,7 @@ u32</td>
 <tr>
 <td>
 trace</td>
-<td>
+<td class="tdtype">
 <a href="swag.runtime.html#Swag.SourceCodeLocation">[32] const *SourceCodeLocation</a></td>
 <td>
 </td>
@@ -1961,7 +2039,7 @@ trace</td>
 <tr>
 <td>
 exceptionLoc</td>
-<td>
+<td class="tdtype">
 <a href="swag.runtime.html#Swag.SourceCodeLocation">SourceCodeLocation</a></td>
 <td>
 </td>
@@ -1969,7 +2047,7 @@ exceptionLoc</td>
 <tr>
 <td>
 exceptionParams</td>
-<td>
+<td class="tdtype">
 [4] const *void</td>
 <td>
 </td>
@@ -1977,7 +2055,7 @@ exceptionParams</td>
 <tr>
 <td>
 panic</td>
-<td>
+<td class="tdtype">
 func(string, const ref SourceCodeLocation)</td>
 <td>
 </td>
@@ -2009,7 +2087,7 @@ ByteCode</td>
 <tr>
 <td>
 allocator</td>
-<td>
+<td class="tdtype">
 <a href="swag.runtime.html#Swag.IAllocator">IAllocator</a></td>
 <td>
 </td>
@@ -2017,7 +2095,7 @@ allocator</td>
 <tr>
 <td>
 mutex</td>
-<td>
+<td class="tdtype">
 MutexRW</td>
 <td>
 </td>
@@ -2025,7 +2103,7 @@ MutexRW</td>
 <tr>
 <td>
 firstAlloc</td>
-<td>
+<td class="tdtype">
 <a href="swag.runtime.html#Swag.DebugAllocatorHeader">*DebugAllocatorHeader</a></td>
 <td>
 <p>
@@ -2035,7 +2113,7 @@ First allocated block.</p>
 <tr>
 <td>
 firstFree</td>
-<td>
+<td class="tdtype">
 <a href="swag.runtime.html#Swag.DebugAllocatorHeader">*DebugAllocatorHeader</a></td>
 <td>
 <p>
@@ -2045,7 +2123,7 @@ First freed block.</p>
 <tr>
 <td>
 lastFree</td>
-<td>
+<td class="tdtype">
 <a href="swag.runtime.html#Swag.DebugAllocatorHeader">*DebugAllocatorHeader</a></td>
 <td>
 <p>
@@ -2055,7 +2133,7 @@ Last freed block.</p>
 <tr>
 <td>
 sizeAlloc</td>
-<td>
+<td class="tdtype">
 u64</td>
 <td>
 <p>
@@ -2065,7 +2143,7 @@ Total allocated memory, in bytes.</p>
 <tr>
 <td>
 sizeFree</td>
-<td>
+<td class="tdtype">
 u64</td>
 <td>
 <p>
@@ -2075,7 +2153,7 @@ Total of free blocks in quarantine.</p>
 <tr>
 <td>
 countAlloc</td>
-<td>
+<td class="tdtype">
 u32</td>
 <td>
 <p>
@@ -2085,7 +2163,7 @@ Number of allocated blocks.</p>
 <tr>
 <td>
 nextId</td>
-<td>
+<td class="tdtype">
 u32</td>
 <td>
 </td>
@@ -2093,7 +2171,7 @@ u32</td>
 <tr>
 <td>
 maxFreeSize</td>
-<td>
+<td class="tdtype">
 u64</td>
 <td>
 <p>
@@ -2103,7 +2181,7 @@ Debug/behaviour parameters Maximum total size (in kbs) of free blocks in quarant
 <tr>
 <td>
 breakOnAllocId</td>
-<td>
+<td class="tdtype">
 u32</td>
 <td>
 <p>
@@ -2113,7 +2191,7 @@ Will @assert when the current allocation id reaches that value.</p>
 <tr>
 <td>
 showMaxLeaks</td>
-<td>
+<td class="tdtype">
 u32</td>
 <td>
 <p>
@@ -2123,7 +2201,7 @@ Maximum number of memory leaks to show.</p>
 <tr>
 <td>
 captureAllocStack</td>
-<td>
+<td class="tdtype">
 bool</td>
 <td>
 <p>
@@ -2133,7 +2211,7 @@ For each allocation, capture stack.</p>
 <tr>
 <td>
 detectLeaks</td>
-<td>
+<td class="tdtype">
 bool</td>
 <td>
 <p>
@@ -2286,7 +2364,7 @@ Will be put just after the returned address.</p>
 <tr>
 <td>
 magic</td>
-<td>
+<td class="tdtype">
 u32</td>
 <td>
 </td>
@@ -2299,7 +2377,7 @@ Will be put just before the returned address.</p>
 <tr>
 <td>
 loc</td>
-<td>
+<td class="tdtype">
 <a href="swag.runtime.html#Swag.SourceCodeLocation">SourceCodeLocation</a></td>
 <td>
 </td>
@@ -2307,7 +2385,7 @@ loc</td>
 <tr>
 <td>
 allocAddr</td>
-<td>
+<td class="tdtype">
 ^void</td>
 <td>
 </td>
@@ -2315,7 +2393,7 @@ allocAddr</td>
 <tr>
 <td>
 allocSize</td>
-<td>
+<td class="tdtype">
 u64</td>
 <td>
 </td>
@@ -2323,7 +2401,7 @@ u64</td>
 <tr>
 <td>
 userSize</td>
-<td>
+<td class="tdtype">
 u64</td>
 <td>
 </td>
@@ -2331,7 +2409,7 @@ u64</td>
 <tr>
 <td>
 hint</td>
-<td>
+<td class="tdtype">
 string</td>
 <td>
 </td>
@@ -2339,7 +2417,7 @@ string</td>
 <tr>
 <td>
 prev</td>
-<td>
+<td class="tdtype">
 <a href="swag.runtime.html#Swag.DebugAllocatorHeader">*DebugAllocatorHeader</a></td>
 <td>
 </td>
@@ -2347,7 +2425,7 @@ prev</td>
 <tr>
 <td>
 next</td>
-<td>
+<td class="tdtype">
 <a href="swag.runtime.html#Swag.DebugAllocatorHeader">*DebugAllocatorHeader</a></td>
 <td>
 </td>
@@ -2355,7 +2433,7 @@ next</td>
 <tr>
 <td>
 stack</td>
-<td>
+<td class="tdtype">
 [16] *void</td>
 <td>
 </td>
@@ -2363,7 +2441,7 @@ stack</td>
 <tr>
 <td>
 stackCount</td>
-<td>
+<td class="tdtype">
 u32</td>
 <td>
 </td>
@@ -2371,7 +2449,7 @@ u32</td>
 <tr>
 <td>
 magic</td>
-<td>
+<td class="tdtype">
 u32</td>
 <td>
 </td>
@@ -2379,12 +2457,32 @@ u32</td>
 <tr>
 <td>
 allocId</td>
-<td>
+<td class="tdtype">
 u32</td>
 <td>
 </td>
 </tr>
 </table>
+<h3 class="content" id="Swag.Deprecated"><span class="titletype">attr</span> <span class="titlelight">Swag.</span><span class="titlestrong">Deprecated</span></h3>
+<p class="code">
+<code style="white-space: break-spaces">attr Deprecated(msg: string = null)
+</code>
+</p>
+<h3 class="content" id="Swag.Discardable"><span class="titletype">attr</span> <span class="titlelight">Swag.</span><span class="titlestrong">Discardable</span></h3>
+<p class="code">
+<code style="white-space: break-spaces">attr Discardable
+</code>
+</p>
+<h3 class="content" id="Swag.EnumFlags"><span class="titletype">attr</span> <span class="titlelight">Swag.</span><span class="titlestrong">EnumFlags</span></h3>
+<p class="code">
+<code style="white-space: break-spaces">attr EnumFlags
+</code>
+</p>
+<h3 class="content" id="Swag.EnumIndex"><span class="titletype">attr</span> <span class="titlelight">Swag.</span><span class="titlestrong">EnumIndex</span></h3>
+<p class="code">
+<code style="white-space: break-spaces">attr EnumIndex
+</code>
+</p>
 <h3 class="content" id="Swag.ExceptionKind"><span class="titletype">enum</span> <span class="titlelight">Swag.</span><span class="titlestrong">ExceptionKind</span></h3>
 <table>
 <tr>
@@ -2406,70 +2504,75 @@ Warning</td>
 </td>
 </tr>
 </table>
+<h3 class="content" id="Swag.ExportType"><span class="titletype">attr</span> <span class="titlelight">Swag.</span><span class="titlestrong">ExportType</span></h3>
+<p class="code">
+<code style="white-space: break-spaces">attr ExportType(what: string)
+</code>
+</p>
 <h3 class="content" id="Swag.F32"><span class="titletype">namespace</span> <span class="titlelight">Swag.</span><span class="titlestrong">F32</span></h3>
 <h3 class="content" id="Swag.F32.Bias"><span class="titletype"></span> <span class="titlelight">F32.</span><span class="titlestrong">Constants</span></h3>
 <table>
 <tr>
-<td>
-s32</td>
 <td id="Swag.F32.Bias">
 Bias</td>
+<td class="tdtype">
+s32</td>
 <td>
 </td>
 </tr>
 <tr>
-<td>
-s32</td>
 <td id="Swag.F32.ExpBits">
 ExpBits</td>
+<td class="tdtype">
+s32</td>
 <td>
 </td>
 </tr>
 <tr>
-<td>
-f32</td>
 <td id="Swag.F32.Inf">
 Inf</td>
+<td class="tdtype">
+f32</td>
 <td>
 </td>
 </tr>
 <tr>
-<td>
-s32</td>
 <td id="Swag.F32.MantBits">
 MantBits</td>
+<td class="tdtype">
+s32</td>
 <td>
 </td>
 </tr>
 <tr>
-<td>
-f32</td>
 <td id="Swag.F32.Max">
 Max</td>
+<td class="tdtype">
+f32</td>
 <td>
 </td>
 </tr>
 <tr>
-<td>
-f32</td>
 <td id="Swag.F32.Min">
 Min</td>
+<td class="tdtype">
+f32</td>
 <td>
 </td>
 </tr>
 <tr>
-<td>
-f32</td>
 <td id="Swag.F32.Nan">
 Nan</td>
+<td class="tdtype">
+f32</td>
 <td>
 </td>
 </tr>
 <tr>
-<td>
-f32</td>
 <td id="Swag.F32.NegInf">
 NegInf</td>
+<td class="tdtype">
+f32</td>
 <td>
 </td>
 </tr>
@@ -2478,76 +2581,86 @@ NegInf</td>
 <h3 class="content" id="Swag.F64.Bias"><span class="titletype"></span> <span class="titlelight">F64.</span><span class="titlestrong">Constants</span></h3>
 <table>
 <tr>
-<td>
-s32</td>
 <td id="Swag.F64.Bias">
 Bias</td>
+<td class="tdtype">
+s32</td>
 <td>
 </td>
 </tr>
 <tr>
-<td>
-s32</td>
 <td id="Swag.F64.ExpBits">
 ExpBits</td>
+<td class="tdtype">
+s32</td>
 <td>
 </td>
 </tr>
 <tr>
-<td>
-f64</td>
 <td id="Swag.F64.Inf">
 Inf</td>
+<td class="tdtype">
+f64</td>
 <td>
 </td>
 </tr>
 <tr>
-<td>
-s32</td>
 <td id="Swag.F64.MantBits">
 MantBits</td>
+<td class="tdtype">
+s32</td>
 <td>
 </td>
 </tr>
 <tr>
-<td>
-f64</td>
 <td id="Swag.F64.Max">
 Max</td>
+<td class="tdtype">
+f64</td>
 <td>
 </td>
 </tr>
 <tr>
-<td>
-f64</td>
 <td id="Swag.F64.Min">
 Min</td>
+<td class="tdtype">
+f64</td>
 <td>
 </td>
 </tr>
 <tr>
-<td>
-f64</td>
 <td id="Swag.F64.Nan">
 Nan</td>
+<td class="tdtype">
+f64</td>
 <td>
 </td>
 </tr>
 <tr>
-<td>
-f64</td>
 <td id="Swag.F64.NegInf">
 NegInf</td>
+<td class="tdtype">
+f64</td>
 <td>
 </td>
 </tr>
 </table>
+<h3 class="content" id="Swag.Foreign"><span class="titletype">attr</span> <span class="titlelight">Swag.</span><span class="titlestrong">Foreign</span></h3>
+<p class="code">
+<code style="white-space: break-spaces">attr Foreign(module: string, function: string = "")
+</code>
+</p>
+<h3 class="content" id="Swag.Global"><span class="titletype">attr</span> <span class="titlelight">Swag.</span><span class="titlestrong">Global</span></h3>
+<p class="code">
+<code style="white-space: break-spaces">attr Global
+</code>
+</p>
 <h3 class="content" id="Swag.Gvtd"><span class="titletype">struct</span> <span class="titlelight">Swag.</span><span class="titlestrong">Gvtd</span></h3>
 <table>
 <tr>
 <td>
 ptr</td>
-<td>
+<td class="tdtype">
 *void</td>
 <td>
 </td>
@@ -2555,7 +2668,7 @@ ptr</td>
 <tr>
 <td>
 opDrop</td>
-<td>
+<td class="tdtype">
 func(*void)</td>
 <td>
 </td>
@@ -2566,7 +2679,7 @@ func(*void)</td>
 <tr>
 <td>
 req</td>
-<td>
+<td class="tdtype">
 func(*IAllocator, *AllocatorRequest)</td>
 <td>
 </td>
@@ -2579,7 +2692,7 @@ This is the interface to communicate with the compiler.</p>
 <tr>
 <td>
 getMessage</td>
-<td>
+<td class="tdtype">
 func(*ICompiler)->const *CompilerMessage</td>
 <td>
 <p>
@@ -2589,7 +2702,7 @@ Returns the compiler message in a <code class = "incode">#message</code> functio
 <tr>
 <td>
 getBuildCfg</td>
-<td>
+<td class="tdtype">
 func(*ICompiler)->*BuildCfg</td>
 <td>
 <p>
@@ -2599,7 +2712,7 @@ Returns the build configuration of the current module.</p>
 <tr>
 <td>
 compileString</td>
-<td>
+<td class="tdtype">
 func(*ICompiler, string)</td>
 <td>
 <p>
@@ -2609,12 +2722,27 @@ Compile a global string.</p>
 </table>
 <p>
  The intrinsic <code class = "incode">@compiler</code> will return that interface at compile-time, and <code class = "incode">null</code> at runtime.</p>
+<h3 class="content" id="Swag.Implicit"><span class="titletype">attr</span> <span class="titlelight">Swag.</span><span class="titlestrong">Implicit</span></h3>
+<p class="code">
+<code style="white-space: break-spaces">attr Implicit
+</code>
+</p>
+<h3 class="content" id="Swag.Incomplete"><span class="titletype">attr</span> <span class="titlelight">Swag.</span><span class="titlestrong">Incomplete</span></h3>
+<p class="code">
+<code style="white-space: break-spaces">attr Incomplete
+</code>
+</p>
+<h3 class="content" id="Swag.Inline"><span class="titletype">attr</span> <span class="titlelight">Swag.</span><span class="titlestrong">Inline</span></h3>
+<p class="code">
+<code style="white-space: break-spaces">attr Inline
+</code>
+</p>
 <h3 class="content" id="Swag.Interface"><span class="titletype">struct</span> <span class="titlelight">Swag.</span><span class="titlestrong">Interface</span></h3>
 <table>
 <tr>
 <td>
 obj</td>
-<td>
+<td class="tdtype">
 *void</td>
 <td>
 </td>
@@ -2622,37 +2750,52 @@ obj</td>
 <tr>
 <td>
 itable</td>
-<td>
+<td class="tdtype">
 const ^^void</td>
 <td>
 </td>
 </tr>
 </table>
+<h3 class="content" id="Swag.Macro"><span class="titletype">attr</span> <span class="titlelight">Swag.</span><span class="titlestrong">Macro</span></h3>
+<p class="code">
+<code style="white-space: break-spaces">attr Macro
+</code>
+</p>
+<h3 class="content" id="Swag.Match"><span class="titletype">attr</span> <span class="titlelight">Swag.</span><span class="titlestrong">Match</span></h3>
+<p class="code">
+<code style="white-space: break-spaces">attr Match(what: string, value: bool)
+</code>
+</p>
 <h3 class="content" id="Swag.MaxLenErrorMsg"><span class="titletype"></span> <span class="titlelight">Swag.</span><span class="titlestrong">Constants</span></h3>
 <table>
 <tr>
-<td>
-s32</td>
 <td id="Swag.MaxLenErrorMsg">
 MaxLenErrorMsg</td>
+<td class="tdtype">
+s32</td>
 <td>
 </td>
 </tr>
 <tr>
-<td>
-s32</td>
 <td id="Swag.MaxTrace">
 MaxTrace</td>
+<td class="tdtype">
+s32</td>
 <td>
 </td>
 </tr>
 </table>
+<h3 class="content" id="Swag.Mixin"><span class="titletype">attr</span> <span class="titlelight">Swag.</span><span class="titlestrong">Mixin</span></h3>
+<p class="code">
+<code style="white-space: break-spaces">attr Mixin
+</code>
+</p>
 <h3 class="content" id="Swag.Module"><span class="titletype">struct</span> <span class="titlelight">Swag.</span><span class="titlestrong">Module</span></h3>
 <table>
 <tr>
 <td>
 name</td>
-<td>
+<td class="tdtype">
 string</td>
 <td>
 </td>
@@ -2660,18 +2803,63 @@ string</td>
 <tr>
 <td>
 types</td>
-<td>
+<td class="tdtype">
 <a href="swag.runtime.html#Swag.TypeInfo">const [..] const *TypeInfo</a></td>
 <td>
 </td>
 </tr>
 </table>
+<h3 class="content" id="Swag.NoCopy"><span class="titletype">attr</span> <span class="titlelight">Swag.</span><span class="titlestrong">NoCopy</span></h3>
+<p class="code">
+<code style="white-space: break-spaces">attr NoCopy
+</code>
+</p>
+<h3 class="content" id="Swag.NoInline"><span class="titletype">attr</span> <span class="titlelight">Swag.</span><span class="titlestrong">NoInline</span></h3>
+<p class="code">
+<code style="white-space: break-spaces">attr NoInline
+</code>
+</p>
+<h3 class="content" id="Swag.NotGeneric"><span class="titletype">attr</span> <span class="titlelight">Swag.</span><span class="titlestrong">NotGeneric</span></h3>
+<p class="code">
+<code style="white-space: break-spaces">attr NotGeneric
+</code>
+</p>
+<h3 class="content" id="Swag.Offset"><span class="titletype">attr</span> <span class="titlelight">Swag.</span><span class="titlestrong">Offset</span></h3>
+<p class="code">
+<code style="white-space: break-spaces">attr Offset(name: string)
+</code>
+</p>
+<h3 class="content" id="Swag.Opaque"><span class="titletype">attr</span> <span class="titlelight">Swag.</span><span class="titlestrong">Opaque</span></h3>
+<p class="code">
+<code style="white-space: break-spaces">attr Opaque
+</code>
+</p>
+<h3 class="content" id="Swag.Optim"><span class="titletype">attr</span> <span class="titlelight">Swag.</span><span class="titlestrong">Optim</span></h3>
+<p class="code">
+<code style="white-space: break-spaces">attr Optim(what: string, value: bool)
+</code>
+</p>
+<h3 class="content" id="Swag.Overflow"><span class="titletype">attr</span> <span class="titlelight">Swag.</span><span class="titlestrong">Overflow</span></h3>
+<p class="code">
+<code style="white-space: break-spaces">attr Overflow(value: bool)
+</code>
+</p>
+<h3 class="content" id="Swag.Pack"><span class="titletype">attr</span> <span class="titlelight">Swag.</span><span class="titlestrong">Pack</span></h3>
+<p class="code">
+<code style="white-space: break-spaces">attr Pack(value: u8)
+</code>
+</p>
+<h3 class="content" id="Swag.PrintBc"><span class="titletype">attr</span> <span class="titlelight">Swag.</span><span class="titlestrong">PrintBc</span></h3>
+<p class="code">
+<code style="white-space: break-spaces">attr PrintBc
+</code>
+</p>
 <h3 class="content" id="Swag.ProcessInfos"><span class="titletype">struct</span> <span class="titlelight">Swag.</span><span class="titlestrong">ProcessInfos</span></h3>
 <table>
 <tr>
 <td>
 modules</td>
-<td>
+<td class="tdtype">
 <a href="swag.runtime.html#Swag.Module">const [..] Module</a></td>
 <td>
 </td>
@@ -2679,7 +2867,7 @@ modules</td>
 <tr>
 <td>
 args</td>
-<td>
+<td class="tdtype">
 string</td>
 <td>
 </td>
@@ -2704,18 +2892,18 @@ FromCompiler</td>
 <h3 class="content" id="Swag.S16.Max"><span class="titletype"></span> <span class="titlelight">S16.</span><span class="titlestrong">Constants</span></h3>
 <table>
 <tr>
-<td>
-s16</td>
 <td id="Swag.S16.Max">
 Max</td>
+<td class="tdtype">
+s16</td>
 <td>
 </td>
 </tr>
 <tr>
-<td>
-s16</td>
 <td id="Swag.S16.Min">
 Min</td>
+<td class="tdtype">
+s16</td>
 <td>
 </td>
 </tr>
@@ -2724,18 +2912,18 @@ Min</td>
 <h3 class="content" id="Swag.S32.Max"><span class="titletype"></span> <span class="titlelight">S32.</span><span class="titlestrong">Constants</span></h3>
 <table>
 <tr>
-<td>
-s32</td>
 <td id="Swag.S32.Max">
 Max</td>
+<td class="tdtype">
+s32</td>
 <td>
 </td>
 </tr>
 <tr>
-<td>
-s32</td>
 <td id="Swag.S32.Min">
 Min</td>
+<td class="tdtype">
+s32</td>
 <td>
 </td>
 </tr>
@@ -2744,18 +2932,18 @@ Min</td>
 <h3 class="content" id="Swag.S64.Max"><span class="titletype"></span> <span class="titlelight">S64.</span><span class="titlestrong">Constants</span></h3>
 <table>
 <tr>
-<td>
-s64</td>
 <td id="Swag.S64.Max">
 Max</td>
+<td class="tdtype">
+s64</td>
 <td>
 </td>
 </tr>
 <tr>
-<td>
-s64</td>
 <td id="Swag.S64.Min">
 Min</td>
+<td class="tdtype">
+s64</td>
 <td>
 </td>
 </tr>
@@ -2764,90 +2952,98 @@ Min</td>
 <h3 class="content" id="Swag.S8.Max"><span class="titletype"></span> <span class="titlelight">S8.</span><span class="titlestrong">Constants</span></h3>
 <table>
 <tr>
-<td>
-s8</td>
 <td id="Swag.S8.Max">
 Max</td>
+<td class="tdtype">
+s8</td>
 <td>
 </td>
 </tr>
 <tr>
-<td>
-s8</td>
 <td id="Swag.S8.Min">
 Min</td>
+<td class="tdtype">
+s8</td>
 <td>
 </td>
 </tr>
+</table>
+<h3 class="content" id="Swag.Safety"><span class="titletype">attr</span> <span class="titlelight">Swag.</span><span class="titlestrong">Safety</span></h3>
+<p class="code">
+<code style="white-space: break-spaces">attr Safety(what: string, value: bool)
+</code>
+</p>
+<h3 class="content" id="Swag.SafetyAll"><span class="titletype"></span> <span class="titlelight">Swag.</span><span class="titlestrong">Constants</span></h3>
+<table>
 <tr>
-<td>
-u32</td>
 <td id="Swag.SafetyAll">
 SafetyAll</td>
+<td class="tdtype">
+u32</td>
 <td>
 </td>
 </tr>
 <tr>
-<td>
-u32</td>
 <td id="Swag.SafetyAny">
 SafetyAny</td>
+<td class="tdtype">
+u32</td>
 <td>
 </td>
 </tr>
 <tr>
-<td>
-u32</td>
 <td id="Swag.SafetyBool">
 SafetyBool</td>
+<td class="tdtype">
+u32</td>
 <td>
 </td>
 </tr>
 <tr>
-<td>
-u32</td>
 <td id="Swag.SafetyBoundCheck">
 SafetyBoundCheck</td>
+<td class="tdtype">
+u32</td>
 <td>
 </td>
 </tr>
 <tr>
-<td>
-u32</td>
 <td id="Swag.SafetyMath">
 SafetyMath</td>
+<td class="tdtype">
+u32</td>
 <td>
 </td>
 </tr>
 <tr>
-<td>
-u32</td>
 <td id="Swag.SafetyNaN">
 SafetyNaN</td>
+<td class="tdtype">
+u32</td>
 <td>
 </td>
 </tr>
 <tr>
-<td>
-u32</td>
 <td id="Swag.SafetyOverflow">
 SafetyOverflow</td>
+<td class="tdtype">
+u32</td>
 <td>
 </td>
 </tr>
 <tr>
-<td>
-u32</td>
 <td id="Swag.SafetySanity">
 SafetySanity</td>
+<td class="tdtype">
+u32</td>
 <td>
 </td>
 </tr>
 <tr>
-<td>
-u32</td>
 <td id="Swag.SafetySwitch">
 SafetySwitch</td>
+<td class="tdtype">
+u32</td>
 <td>
 </td>
 </tr>
@@ -2857,7 +3053,7 @@ SafetySwitch</td>
 <tr>
 <td>
 allocator</td>
-<td>
+<td class="tdtype">
 <a href="swag.runtime.html#Swag.IAllocator">IAllocator</a></td>
 <td>
 </td>
@@ -2865,7 +3061,7 @@ allocator</td>
 <tr>
 <td>
 block</td>
-<td>
+<td class="tdtype">
 ^u8</td>
 <td>
 </td>
@@ -2873,7 +3069,7 @@ block</td>
 <tr>
 <td>
 capacity</td>
-<td>
+<td class="tdtype">
 u64</td>
 <td>
 </td>
@@ -2881,7 +3077,7 @@ u64</td>
 <tr>
 <td>
 used</td>
-<td>
+<td class="tdtype">
 u64</td>
 <td>
 </td>
@@ -2889,7 +3085,7 @@ u64</td>
 <tr>
 <td>
 maxUsed</td>
-<td>
+<td class="tdtype">
 u64</td>
 <td>
 </td>
@@ -2897,7 +3093,7 @@ u64</td>
 <tr>
 <td>
 firstLeak</td>
-<td>
+<td class="tdtype">
 *void</td>
 <td>
 </td>
@@ -2905,7 +3101,7 @@ firstLeak</td>
 <tr>
 <td>
 totalLeak</td>
-<td>
+<td class="tdtype">
 u64</td>
 <td>
 </td>
@@ -2913,7 +3109,7 @@ u64</td>
 <tr>
 <td>
 maxLeak</td>
-<td>
+<td class="tdtype">
 u64</td>
 <td>
 </td>
@@ -2984,7 +3180,7 @@ This will call <code class = "incode">release</code> prior to changing the capac
 <tr>
 <td>
 prev</td>
-<td>
+<td class="tdtype">
 <a href="swag.runtime.html#Swag.ScratchAllocator.LeakHeader">*LeakHeader</a></td>
 <td>
 </td>
@@ -2992,7 +3188,7 @@ prev</td>
 <tr>
 <td>
 next</td>
-<td>
+<td class="tdtype">
 <a href="swag.runtime.html#Swag.ScratchAllocator.LeakHeader">*LeakHeader</a></td>
 <td>
 </td>
@@ -3000,7 +3196,7 @@ next</td>
 <tr>
 <td>
 size</td>
-<td>
+<td class="tdtype">
 u64</td>
 <td>
 </td>
@@ -3047,7 +3243,7 @@ This will call <code class = "incode">release</code> prior to changing the capac
 <tr>
 <td>
 fileName</td>
-<td>
+<td class="tdtype">
 string</td>
 <td>
 </td>
@@ -3055,7 +3251,7 @@ string</td>
 <tr>
 <td>
 lineStart</td>
-<td>
+<td class="tdtype">
 u32</td>
 <td>
 </td>
@@ -3063,7 +3259,7 @@ u32</td>
 <tr>
 <td>
 colStart</td>
-<td>
+<td class="tdtype">
 u32</td>
 <td>
 </td>
@@ -3071,7 +3267,7 @@ u32</td>
 <tr>
 <td>
 lineEnd</td>
-<td>
+<td class="tdtype">
 u32</td>
 <td>
 </td>
@@ -3079,12 +3275,17 @@ u32</td>
 <tr>
 <td>
 colEnd</td>
-<td>
+<td class="tdtype">
 u32</td>
 <td>
 </td>
 </tr>
 </table>
+<h3 class="content" id="Swag.Strict"><span class="titletype">attr</span> <span class="titlelight">Swag.</span><span class="titlestrong">Strict</span></h3>
+<p class="code">
+<code style="white-space: break-spaces">attr Strict
+</code>
+</p>
 <h3 class="content" id="Swag.SystemAllocator"><span class="titletype">struct</span> <span class="titlelight">Swag.</span><span class="titlestrong">SystemAllocator</span></h3>
 <h3 class="content" id="Swag.SystemAllocator.IAllocator.free"><span class="titletype">func</span> <span class="titlelight">IAllocator.</span><span class="titlestrong">free</span></h3>
 <p class="code">
@@ -3126,6 +3327,11 @@ MaxOSX</td>
 </td>
 </tr>
 </table>
+<h3 class="content" id="Swag.Tls"><span class="titletype">attr</span> <span class="titlelight">Swag.</span><span class="titlestrong">Tls</span></h3>
+<p class="code">
+<code style="white-space: break-spaces">attr Tls
+</code>
+</p>
 <h3 class="content" id="Swag.TypeCmpFlags"><span class="titletype">enum</span> <span class="titlelight">Swag.</span><span class="titlestrong">TypeCmpFlags</span></h3>
 <table>
 <tr>
@@ -3146,7 +3352,7 @@ CastAny</td>
 <tr>
 <td>
 fullname</td>
-<td>
+<td class="tdtype">
 string</td>
 <td>
 </td>
@@ -3154,7 +3360,7 @@ string</td>
 <tr>
 <td>
 name</td>
-<td>
+<td class="tdtype">
 string</td>
 <td>
 </td>
@@ -3162,7 +3368,7 @@ string</td>
 <tr>
 <td>
 sizeof</td>
-<td>
+<td class="tdtype">
 u64</td>
 <td>
 </td>
@@ -3170,7 +3376,7 @@ u64</td>
 <tr>
 <td>
 crc32</td>
-<td>
+<td class="tdtype">
 u32</td>
 <td>
 </td>
@@ -3178,7 +3384,7 @@ u32</td>
 <tr>
 <td>
 flags</td>
-<td>
+<td class="tdtype">
 <a href="swag.runtime.html#Swag.TypeInfoFlags">TypeInfoFlags</a></td>
 <td>
 </td>
@@ -3186,7 +3392,7 @@ flags</td>
 <tr>
 <td>
 kind</td>
-<td>
+<td class="tdtype">
 <a href="swag.runtime.html#Swag.TypeInfoKind">TypeInfoKind</a></td>
 <td>
 </td>
@@ -3194,7 +3400,7 @@ kind</td>
 <tr>
 <td>
 padding</td>
-<td>
+<td class="tdtype">
 [3] u8</td>
 <td>
 </td>
@@ -3205,7 +3411,7 @@ padding</td>
 <tr>
 <td>
 base</td>
-<td>
+<td class="tdtype">
 <a href="swag.runtime.html#Swag.TypeInfo">TypeInfo</a></td>
 <td>
 </td>
@@ -3213,7 +3419,7 @@ base</td>
 <tr>
 <td>
 rawType</td>
-<td>
+<td class="tdtype">
 <a href="swag.runtime.html#Swag.TypeInfo">const *TypeInfo</a></td>
 <td>
 </td>
@@ -3224,7 +3430,7 @@ rawType</td>
 <tr>
 <td>
 base</td>
-<td>
+<td class="tdtype">
 <a href="swag.runtime.html#Swag.TypeInfo">TypeInfo</a></td>
 <td>
 </td>
@@ -3232,7 +3438,7 @@ base</td>
 <tr>
 <td>
 pointedType</td>
-<td>
+<td class="tdtype">
 <a href="swag.runtime.html#Swag.TypeInfo">const *TypeInfo</a></td>
 <td>
 </td>
@@ -3240,7 +3446,7 @@ pointedType</td>
 <tr>
 <td>
 finalType</td>
-<td>
+<td class="tdtype">
 <a href="swag.runtime.html#Swag.TypeInfo">const *TypeInfo</a></td>
 <td>
 </td>
@@ -3248,7 +3454,7 @@ finalType</td>
 <tr>
 <td>
 count</td>
-<td>
+<td class="tdtype">
 u64</td>
 <td>
 </td>
@@ -3256,7 +3462,7 @@ u64</td>
 <tr>
 <td>
 totalCount</td>
-<td>
+<td class="tdtype">
 u64</td>
 <td>
 </td>
@@ -3267,7 +3473,7 @@ u64</td>
 <tr>
 <td>
 base</td>
-<td>
+<td class="tdtype">
 <a href="swag.runtime.html#Swag.TypeInfo">TypeInfo</a></td>
 <td>
 </td>
@@ -3275,7 +3481,7 @@ base</td>
 <tr>
 <td>
 values</td>
-<td>
+<td class="tdtype">
 <a href="swag.runtime.html#Swag.TypeValue">const [..] TypeValue</a></td>
 <td>
 </td>
@@ -3283,7 +3489,7 @@ values</td>
 <tr>
 <td>
 rawType</td>
-<td>
+<td class="tdtype">
 <a href="swag.runtime.html#Swag.TypeInfo">const *TypeInfo</a></td>
 <td>
 </td>
@@ -3291,7 +3497,7 @@ rawType</td>
 <tr>
 <td>
 attributes</td>
-<td>
+<td class="tdtype">
 <a href="swag.runtime.html#Swag.Attribute">const [..] Attribute</a></td>
 <td>
 </td>
@@ -3401,7 +3607,7 @@ PointerArithmetic</td>
 <tr>
 <td>
 base</td>
-<td>
+<td class="tdtype">
 <a href="swag.runtime.html#Swag.TypeInfo">TypeInfo</a></td>
 <td>
 </td>
@@ -3409,7 +3615,7 @@ base</td>
 <tr>
 <td>
 generics</td>
-<td>
+<td class="tdtype">
 <a href="swag.runtime.html#Swag.TypeValue">const [..] TypeValue</a></td>
 <td>
 </td>
@@ -3417,7 +3623,7 @@ generics</td>
 <tr>
 <td>
 parameters</td>
-<td>
+<td class="tdtype">
 <a href="swag.runtime.html#Swag.TypeValue">const [..] TypeValue</a></td>
 <td>
 </td>
@@ -3425,7 +3631,7 @@ parameters</td>
 <tr>
 <td>
 returnType</td>
-<td>
+<td class="tdtype">
 <a href="swag.runtime.html#Swag.TypeInfo">const *TypeInfo</a></td>
 <td>
 </td>
@@ -3433,7 +3639,7 @@ returnType</td>
 <tr>
 <td>
 attributes</td>
-<td>
+<td class="tdtype">
 <a href="swag.runtime.html#Swag.Attribute">const [..] Attribute</a></td>
 <td>
 </td>
@@ -3444,7 +3650,7 @@ attributes</td>
 <tr>
 <td>
 base</td>
-<td>
+<td class="tdtype">
 <a href="swag.runtime.html#Swag.TypeInfo">TypeInfo</a></td>
 <td>
 </td>
@@ -3452,7 +3658,7 @@ base</td>
 <tr>
 <td>
 rawType</td>
-<td>
+<td class="tdtype">
 <a href="swag.runtime.html#Swag.TypeInfo">const *TypeInfo</a></td>
 <td>
 </td>
@@ -3586,7 +3792,7 @@ Attribute</td>
 <tr>
 <td>
 base</td>
-<td>
+<td class="tdtype">
 <a href="swag.runtime.html#Swag.TypeInfo">TypeInfo</a></td>
 <td>
 </td>
@@ -3597,7 +3803,7 @@ base</td>
 <tr>
 <td>
 base</td>
-<td>
+<td class="tdtype">
 <a href="swag.runtime.html#Swag.TypeInfo">TypeInfo</a></td>
 <td>
 </td>
@@ -3605,7 +3811,7 @@ base</td>
 <tr>
 <td>
 nativeKind</td>
-<td>
+<td class="tdtype">
 <a href="swag.runtime.html#Swag.TypeInfoNativeKind">TypeInfoNativeKind</a></td>
 <td>
 </td>
@@ -3721,7 +3927,7 @@ Undefined</td>
 <tr>
 <td>
 base</td>
-<td>
+<td class="tdtype">
 <a href="swag.runtime.html#Swag.TypeInfo">TypeInfo</a></td>
 <td>
 </td>
@@ -3729,7 +3935,7 @@ base</td>
 <tr>
 <td>
 pointedType</td>
-<td>
+<td class="tdtype">
 <a href="swag.runtime.html#Swag.TypeInfo">const *TypeInfo</a></td>
 <td>
 </td>
@@ -3740,7 +3946,7 @@ pointedType</td>
 <tr>
 <td>
 base</td>
-<td>
+<td class="tdtype">
 <a href="swag.runtime.html#Swag.TypeInfo">TypeInfo</a></td>
 <td>
 </td>
@@ -3748,7 +3954,7 @@ base</td>
 <tr>
 <td>
 pointedType</td>
-<td>
+<td class="tdtype">
 <a href="swag.runtime.html#Swag.TypeInfo">const *TypeInfo</a></td>
 <td>
 </td>
@@ -3759,7 +3965,7 @@ pointedType</td>
 <tr>
 <td>
 base</td>
-<td>
+<td class="tdtype">
 <a href="swag.runtime.html#Swag.TypeInfo">TypeInfo</a></td>
 <td>
 </td>
@@ -3767,7 +3973,7 @@ base</td>
 <tr>
 <td>
 opInit</td>
-<td>
+<td class="tdtype">
 func(*void)</td>
 <td>
 </td>
@@ -3775,7 +3981,7 @@ func(*void)</td>
 <tr>
 <td>
 opDrop</td>
-<td>
+<td class="tdtype">
 func(*void)</td>
 <td>
 </td>
@@ -3783,7 +3989,7 @@ func(*void)</td>
 <tr>
 <td>
 opPostCopy</td>
-<td>
+<td class="tdtype">
 func(*void)</td>
 <td>
 </td>
@@ -3791,7 +3997,7 @@ func(*void)</td>
 <tr>
 <td>
 opPostMove</td>
-<td>
+<td class="tdtype">
 func(*void)</td>
 <td>
 </td>
@@ -3799,7 +4005,7 @@ func(*void)</td>
 <tr>
 <td>
 structName</td>
-<td>
+<td class="tdtype">
 string</td>
 <td>
 </td>
@@ -3807,7 +4013,7 @@ string</td>
 <tr>
 <td>
 fromGeneric</td>
-<td>
+<td class="tdtype">
 <a href="swag.runtime.html#Swag.TypeInfo">const *TypeInfo</a></td>
 <td>
 </td>
@@ -3815,7 +4021,7 @@ fromGeneric</td>
 <tr>
 <td>
 generics</td>
-<td>
+<td class="tdtype">
 <a href="swag.runtime.html#Swag.TypeValue">const [..] TypeValue</a></td>
 <td>
 </td>
@@ -3823,7 +4029,7 @@ generics</td>
 <tr>
 <td>
 fields</td>
-<td>
+<td class="tdtype">
 <a href="swag.runtime.html#Swag.TypeValue">const [..] TypeValue</a></td>
 <td>
 </td>
@@ -3831,7 +4037,7 @@ fields</td>
 <tr>
 <td>
 methods</td>
-<td>
+<td class="tdtype">
 <a href="swag.runtime.html#Swag.TypeValue">const [..] TypeValue</a></td>
 <td>
 </td>
@@ -3839,7 +4045,7 @@ methods</td>
 <tr>
 <td>
 interfaces</td>
-<td>
+<td class="tdtype">
 <a href="swag.runtime.html#Swag.TypeValue">const [..] TypeValue</a></td>
 <td>
 </td>
@@ -3847,7 +4053,7 @@ interfaces</td>
 <tr>
 <td>
 attributes</td>
-<td>
+<td class="tdtype">
 <a href="swag.runtime.html#Swag.Attribute">const [..] Attribute</a></td>
 <td>
 </td>
@@ -3858,7 +4064,7 @@ attributes</td>
 <tr>
 <td>
 base</td>
-<td>
+<td class="tdtype">
 <a href="swag.runtime.html#Swag.TypeInfo">TypeInfo</a></td>
 <td>
 </td>
@@ -3866,7 +4072,7 @@ base</td>
 <tr>
 <td>
 rawType</td>
-<td>
+<td class="tdtype">
 <a href="swag.runtime.html#Swag.TypeInfo">const *TypeInfo</a></td>
 <td>
 </td>
@@ -3877,7 +4083,7 @@ rawType</td>
 <tr>
 <td>
 name</td>
-<td>
+<td class="tdtype">
 string</td>
 <td>
 </td>
@@ -3885,7 +4091,7 @@ string</td>
 <tr>
 <td>
 pointedType</td>
-<td>
+<td class="tdtype">
 <a href="swag.runtime.html#Swag.TypeInfo">const *TypeInfo</a></td>
 <td>
 </td>
@@ -3893,7 +4099,7 @@ pointedType</td>
 <tr>
 <td>
 value</td>
-<td>
+<td class="tdtype">
 const *void</td>
 <td>
 </td>
@@ -3901,7 +4107,7 @@ const *void</td>
 <tr>
 <td>
 attributes</td>
-<td>
+<td class="tdtype">
 <a href="swag.runtime.html#Swag.Attribute">const [..] Attribute</a></td>
 <td>
 </td>
@@ -3909,7 +4115,7 @@ attributes</td>
 <tr>
 <td>
 offset</td>
-<td>
+<td class="tdtype">
 u32</td>
 <td>
 </td>
@@ -3917,7 +4123,7 @@ u32</td>
 <tr>
 <td>
 crc32</td>
-<td>
+<td class="tdtype">
 u32</td>
 <td>
 </td>
@@ -3927,18 +4133,18 @@ u32</td>
 <h3 class="content" id="Swag.U16.Max"><span class="titletype"></span> <span class="titlelight">U16.</span><span class="titlestrong">Constants</span></h3>
 <table>
 <tr>
-<td>
-u16</td>
 <td id="Swag.U16.Max">
 Max</td>
+<td class="tdtype">
+u16</td>
 <td>
 </td>
 </tr>
 <tr>
-<td>
-u16</td>
 <td id="Swag.U16.Min">
 Min</td>
+<td class="tdtype">
+u16</td>
 <td>
 </td>
 </tr>
@@ -3947,18 +4153,18 @@ Min</td>
 <h3 class="content" id="Swag.U32.Max"><span class="titletype"></span> <span class="titlelight">U32.</span><span class="titlestrong">Constants</span></h3>
 <table>
 <tr>
-<td>
-u32</td>
 <td id="Swag.U32.Max">
 Max</td>
+<td class="tdtype">
+u32</td>
 <td>
 </td>
 </tr>
 <tr>
-<td>
-u32</td>
 <td id="Swag.U32.Min">
 Min</td>
+<td class="tdtype">
+u32</td>
 <td>
 </td>
 </tr>
@@ -3967,18 +4173,18 @@ Min</td>
 <h3 class="content" id="Swag.U64.Max"><span class="titletype"></span> <span class="titlelight">U64.</span><span class="titlestrong">Constants</span></h3>
 <table>
 <tr>
-<td>
-u64</td>
 <td id="Swag.U64.Max">
 Max</td>
+<td class="tdtype">
+u64</td>
 <td>
 </td>
 </tr>
 <tr>
-<td>
-u64</td>
 <td id="Swag.U64.Min">
 Min</td>
+<td class="tdtype">
+u64</td>
 <td>
 </td>
 </tr>
@@ -3987,26 +4193,36 @@ Min</td>
 <h3 class="content" id="Swag.U8.Max"><span class="titletype"></span> <span class="titlelight">U8.</span><span class="titlestrong">Constants</span></h3>
 <table>
 <tr>
-<td>
-u8</td>
 <td id="Swag.U8.Max">
 Max</td>
+<td class="tdtype">
+u8</td>
 <td>
 <p>
 Max <code class = "incode">u8</code> value.</p>
 </td>
 </tr>
 <tr>
-<td>
-u8</td>
 <td id="Swag.U8.Min">
 Min</td>
+<td class="tdtype">
+u8</td>
 <td>
 <p>
 Min <code class = "incode">u8</code> value.</p>
 </td>
 </tr>
 </table>
+<h3 class="content" id="Swag.Using"><span class="titletype">attr</span> <span class="titlelight">Swag.</span><span class="titlestrong">Using</span></h3>
+<p class="code">
+<code style="white-space: break-spaces">attr Using(what: const *TypeInfo...)
+</code>
+</p>
+<h3 class="content" id="Swag.Warn"><span class="titletype">attr</span> <span class="titlelight">Swag.</span><span class="titlestrong">Warn</span></h3>
+<p class="code">
+<code style="white-space: break-spaces">attr Warn(what: string, level: <a href="swag.runtime.html#Swag.WarnLevel">WarnLevel</a>)
+</code>
+</p>
 <h3 class="content" id="Swag.WarnLevel"><span class="titletype">enum</span> <span class="titlelight">Swag.</span><span class="titlestrong">WarnLevel</span></h3>
 <table>
 <tr>

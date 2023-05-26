@@ -46,8 +46,11 @@
             border-collapse:    collapse;
             width:              20%;
         }
+        td.tdtype {
+            width:              auto;
+        }
         td:last-child {
-            width:              100%;
+            width:              auto;
         }
         .tocbullet {
             list-style-type:    none;
@@ -181,7 +184,7 @@
 <tr>
 <td>
 xMin</td>
-<td>
+<td class="tdtype">
 FT_Pos</td>
 <td>
 </td>
@@ -189,7 +192,7 @@ FT_Pos</td>
 <tr>
 <td>
 yMin</td>
-<td>
+<td class="tdtype">
 FT_Pos</td>
 <td>
 </td>
@@ -197,7 +200,7 @@ FT_Pos</td>
 <tr>
 <td>
 xMax</td>
-<td>
+<td class="tdtype">
 FT_Pos</td>
 <td>
 </td>
@@ -205,7 +208,7 @@ FT_Pos</td>
 <tr>
 <td>
 yMax</td>
-<td>
+<td class="tdtype">
 FT_Pos</td>
 <td>
 </td>
@@ -216,7 +219,7 @@ FT_Pos</td>
 <tr>
 <td>
 rows</td>
-<td>
+<td class="tdtype">
 u32</td>
 <td>
 </td>
@@ -224,7 +227,7 @@ u32</td>
 <tr>
 <td>
 width</td>
-<td>
+<td class="tdtype">
 u32</td>
 <td>
 </td>
@@ -232,7 +235,7 @@ u32</td>
 <tr>
 <td>
 pitch</td>
-<td>
+<td class="tdtype">
 s32</td>
 <td>
 </td>
@@ -240,7 +243,7 @@ s32</td>
 <tr>
 <td>
 buffer</td>
-<td>
+<td class="tdtype">
 ^u8</td>
 <td>
 </td>
@@ -248,7 +251,7 @@ buffer</td>
 <tr>
 <td>
 num_grays</td>
-<td>
+<td class="tdtype">
 u16</td>
 <td>
 </td>
@@ -256,7 +259,7 @@ u16</td>
 <tr>
 <td>
 pixel_mode</td>
-<td>
+<td class="tdtype">
 u8</td>
 <td>
 </td>
@@ -264,7 +267,7 @@ u8</td>
 <tr>
 <td>
 palette_mode</td>
-<td>
+<td class="tdtype">
 u8</td>
 <td>
 </td>
@@ -272,7 +275,7 @@ u8</td>
 <tr>
 <td>
 palette</td>
-<td>
+<td class="tdtype">
 ^void</td>
 <td>
 </td>
@@ -283,7 +286,7 @@ palette</td>
 <tr>
 <td>
 height</td>
-<td>
+<td class="tdtype">
 FT_Short</td>
 <td>
 </td>
@@ -291,7 +294,7 @@ FT_Short</td>
 <tr>
 <td>
 width</td>
-<td>
+<td class="tdtype">
 FT_Short</td>
 <td>
 </td>
@@ -299,7 +302,7 @@ FT_Short</td>
 <tr>
 <td>
 size</td>
-<td>
+<td class="tdtype">
 FT_Pos</td>
 <td>
 </td>
@@ -307,7 +310,7 @@ FT_Pos</td>
 <tr>
 <td>
 x_ppem</td>
-<td>
+<td class="tdtype">
 FT_Pos</td>
 <td>
 </td>
@@ -315,7 +318,7 @@ FT_Pos</td>
 <tr>
 <td>
 y_ppem</td>
-<td>
+<td class="tdtype">
 FT_Pos</td>
 <td>
 </td>
@@ -326,7 +329,7 @@ FT_Pos</td>
 <tr>
 <td>
 face</td>
-<td>
+<td class="tdtype">
 FT_Face</td>
 <td>
 </td>
@@ -334,7 +337,7 @@ FT_Face</td>
 <tr>
 <td>
 encoding</td>
-<td>
+<td class="tdtype">
 u32</td>
 <td>
 <p>
@@ -344,7 +347,7 @@ FT_Encoding.</p>
 <tr>
 <td>
 platform_id</td>
-<td>
+<td class="tdtype">
 FT_UShort</td>
 <td>
 </td>
@@ -352,7 +355,7 @@ FT_UShort</td>
 <tr>
 <td>
 encoding_id</td>
-<td>
+<td class="tdtype">
 FT_UShort</td>
 <td>
 </td>
@@ -365,7 +368,7 @@ FT_UShort</td>
 </p>
 <h3 class="content" id="FreeType.FT_Done_FreeType"><span class="titletype">func</span> <span class="titlelight">FreeType.</span><span class="titlestrong">FT_Done_FreeType</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func FT_Done_FreeType(alibrary: FT_Library)
+<code style="white-space: break-spaces">func FT_Done_FreeType(alibrary: FT_Library) throw
 </code>
 </p>
 <h3 class="content" id="FreeType.FT_FaceRec"><span class="titletype">struct</span> <span class="titlelight">FreeType.</span><span class="titlestrong">FT_FaceRec</span></h3>
@@ -373,7 +376,7 @@ FT_UShort</td>
 <tr>
 <td>
 num_faces</td>
-<td>
+<td class="tdtype">
 FT_Long</td>
 <td>
 </td>
@@ -381,7 +384,7 @@ FT_Long</td>
 <tr>
 <td>
 face_index</td>
-<td>
+<td class="tdtype">
 FT_Long</td>
 <td>
 </td>
@@ -389,7 +392,7 @@ FT_Long</td>
 <tr>
 <td>
 face_flags</td>
-<td>
+<td class="tdtype">
 FT_Long</td>
 <td>
 </td>
@@ -397,7 +400,7 @@ FT_Long</td>
 <tr>
 <td>
 style_flags</td>
-<td>
+<td class="tdtype">
 FT_Long</td>
 <td>
 </td>
@@ -405,7 +408,7 @@ FT_Long</td>
 <tr>
 <td>
 num_glyphs</td>
-<td>
+<td class="tdtype">
 FT_Long</td>
 <td>
 </td>
@@ -413,7 +416,7 @@ FT_Long</td>
 <tr>
 <td>
 family_name</td>
-<td>
+<td class="tdtype">
 ^FT_String</td>
 <td>
 </td>
@@ -421,7 +424,7 @@ family_name</td>
 <tr>
 <td>
 style_name</td>
-<td>
+<td class="tdtype">
 ^FT_String</td>
 <td>
 </td>
@@ -429,7 +432,7 @@ style_name</td>
 <tr>
 <td>
 num_fixed_sizes</td>
-<td>
+<td class="tdtype">
 FT_Int</td>
 <td>
 </td>
@@ -437,7 +440,7 @@ FT_Int</td>
 <tr>
 <td>
 available_sizes</td>
-<td>
+<td class="tdtype">
 <a href="std.freetype.html#FreeType.FT_Bitmap_Size">^FT_Bitmap_Size</a></td>
 <td>
 </td>
@@ -445,7 +448,7 @@ available_sizes</td>
 <tr>
 <td>
 num_charmaps</td>
-<td>
+<td class="tdtype">
 FT_Int</td>
 <td>
 </td>
@@ -453,7 +456,7 @@ FT_Int</td>
 <tr>
 <td>
 charmaps</td>
-<td>
+<td class="tdtype">
 ^FT_CharMap</td>
 <td>
 </td>
@@ -461,7 +464,7 @@ charmaps</td>
 <tr>
 <td>
 generic</td>
-<td>
+<td class="tdtype">
 <a href="std.freetype.html#FreeType.FT_Generic">FT_Generic</a></td>
 <td>
 </td>
@@ -469,7 +472,7 @@ generic</td>
 <tr>
 <td>
 bbox</td>
-<td>
+<td class="tdtype">
 <a href="std.freetype.html#FreeType.FT_BBox">FT_BBox</a></td>
 <td>
 </td>
@@ -477,7 +480,7 @@ bbox</td>
 <tr>
 <td>
 units_per_EM</td>
-<td>
+<td class="tdtype">
 FT_UShort</td>
 <td>
 </td>
@@ -485,7 +488,7 @@ FT_UShort</td>
 <tr>
 <td>
 ascender</td>
-<td>
+<td class="tdtype">
 FT_Short</td>
 <td>
 </td>
@@ -493,7 +496,7 @@ FT_Short</td>
 <tr>
 <td>
 descender</td>
-<td>
+<td class="tdtype">
 FT_Short</td>
 <td>
 </td>
@@ -501,7 +504,7 @@ FT_Short</td>
 <tr>
 <td>
 height</td>
-<td>
+<td class="tdtype">
 FT_Short</td>
 <td>
 </td>
@@ -509,7 +512,7 @@ FT_Short</td>
 <tr>
 <td>
 max_advance_width</td>
-<td>
+<td class="tdtype">
 FT_Short</td>
 <td>
 </td>
@@ -517,7 +520,7 @@ FT_Short</td>
 <tr>
 <td>
 max_advance_height</td>
-<td>
+<td class="tdtype">
 FT_Short</td>
 <td>
 </td>
@@ -525,7 +528,7 @@ FT_Short</td>
 <tr>
 <td>
 underline_position</td>
-<td>
+<td class="tdtype">
 FT_Short</td>
 <td>
 </td>
@@ -533,7 +536,7 @@ FT_Short</td>
 <tr>
 <td>
 underline_thickness</td>
-<td>
+<td class="tdtype">
 FT_Short</td>
 <td>
 </td>
@@ -541,7 +544,7 @@ FT_Short</td>
 <tr>
 <td>
 glyph</td>
-<td>
+<td class="tdtype">
 FT_GlyphSlot</td>
 <td>
 </td>
@@ -549,7 +552,7 @@ FT_GlyphSlot</td>
 <tr>
 <td>
 size</td>
-<td>
+<td class="tdtype">
 FT_Size</td>
 <td>
 </td>
@@ -557,7 +560,7 @@ FT_Size</td>
 <tr>
 <td>
 charmap</td>
-<td>
+<td class="tdtype">
 FT_CharMap</td>
 <td>
 </td>
@@ -565,7 +568,7 @@ FT_CharMap</td>
 <tr>
 <td>
 driver</td>
-<td>
+<td class="tdtype">
 FT_Driver</td>
 <td>
 </td>
@@ -573,7 +576,7 @@ FT_Driver</td>
 <tr>
 <td>
 memory</td>
-<td>
+<td class="tdtype">
 FT_Memory</td>
 <td>
 </td>
@@ -581,7 +584,7 @@ FT_Memory</td>
 <tr>
 <td>
 stream</td>
-<td>
+<td class="tdtype">
 FT_Stream</td>
 <td>
 </td>
@@ -589,7 +592,7 @@ FT_Stream</td>
 <tr>
 <td>
 sizes_list</td>
-<td>
+<td class="tdtype">
 <a href="std.freetype.html#FreeType.FT_ListRec">FT_ListRec</a></td>
 <td>
 </td>
@@ -597,7 +600,7 @@ sizes_list</td>
 <tr>
 <td>
 autohint</td>
-<td>
+<td class="tdtype">
 <a href="std.freetype.html#FreeType.FT_Generic">FT_Generic</a></td>
 <td>
 </td>
@@ -605,7 +608,7 @@ autohint</td>
 <tr>
 <td>
 extensions</td>
-<td>
+<td class="tdtype">
 ^void</td>
 <td>
 </td>
@@ -613,7 +616,7 @@ extensions</td>
 <tr>
 <td>
 internal</td>
-<td>
+<td class="tdtype">
 FT_Face_Internal</td>
 <td>
 </td>
@@ -624,7 +627,7 @@ FT_Face_Internal</td>
 <tr>
 <td>
 data</td>
-<td>
+<td class="tdtype">
 *void</td>
 <td>
 </td>
@@ -632,7 +635,7 @@ data</td>
 <tr>
 <td>
 finalizer</td>
-<td>
+<td class="tdtype">
 *void</td>
 <td>
 <p>
@@ -650,7 +653,7 @@ FT_Generic_Finalizer.</p>
 <tr>
 <td>
 library</td>
-<td>
+<td class="tdtype">
 FT_Library</td>
 <td>
 </td>
@@ -658,7 +661,7 @@ FT_Library</td>
 <tr>
 <td>
 face</td>
-<td>
+<td class="tdtype">
 FT_Face</td>
 <td>
 </td>
@@ -666,7 +669,7 @@ FT_Face</td>
 <tr>
 <td>
 next</td>
-<td>
+<td class="tdtype">
 FT_GlyphSlot</td>
 <td>
 </td>
@@ -674,7 +677,7 @@ FT_GlyphSlot</td>
 <tr>
 <td>
 glyph_index</td>
-<td>
+<td class="tdtype">
 FT_UInt</td>
 <td>
 </td>
@@ -682,7 +685,7 @@ FT_UInt</td>
 <tr>
 <td>
 generic</td>
-<td>
+<td class="tdtype">
 <a href="std.freetype.html#FreeType.FT_Generic">FT_Generic</a></td>
 <td>
 </td>
@@ -690,7 +693,7 @@ generic</td>
 <tr>
 <td>
 metrics</td>
-<td>
+<td class="tdtype">
 <a href="std.freetype.html#FreeType.FT_Glyph_Metrics">FT_Glyph_Metrics</a></td>
 <td>
 </td>
@@ -698,7 +701,7 @@ metrics</td>
 <tr>
 <td>
 linearHoriAdvance</td>
-<td>
+<td class="tdtype">
 FT_Fixed</td>
 <td>
 </td>
@@ -706,7 +709,7 @@ FT_Fixed</td>
 <tr>
 <td>
 linearVertAdvance</td>
-<td>
+<td class="tdtype">
 FT_Fixed</td>
 <td>
 </td>
@@ -714,7 +717,7 @@ FT_Fixed</td>
 <tr>
 <td>
 advance</td>
-<td>
+<td class="tdtype">
 <a href="std.freetype.html#FreeType.FT_Vector">FT_Vector</a></td>
 <td>
 </td>
@@ -722,7 +725,7 @@ advance</td>
 <tr>
 <td>
 format</td>
-<td>
+<td class="tdtype">
 <a href="std.freetype.html#FreeType.FT_Glyph_Format">FT_Glyph_Format</a></td>
 <td>
 </td>
@@ -730,7 +733,7 @@ format</td>
 <tr>
 <td>
 bitmap</td>
-<td>
+<td class="tdtype">
 <a href="std.freetype.html#FreeType.FT_Bitmap">FT_Bitmap</a></td>
 <td>
 </td>
@@ -738,7 +741,7 @@ bitmap</td>
 <tr>
 <td>
 bitmap_left</td>
-<td>
+<td class="tdtype">
 FT_Int</td>
 <td>
 </td>
@@ -746,7 +749,7 @@ FT_Int</td>
 <tr>
 <td>
 bitmap_top</td>
-<td>
+<td class="tdtype">
 FT_Int</td>
 <td>
 </td>
@@ -754,7 +757,7 @@ FT_Int</td>
 <tr>
 <td>
 outline</td>
-<td>
+<td class="tdtype">
 <a href="std.freetype.html#FreeType.FT_Outline">FT_Outline</a></td>
 <td>
 </td>
@@ -762,7 +765,7 @@ outline</td>
 <tr>
 <td>
 num_subglyphs</td>
-<td>
+<td class="tdtype">
 FT_UInt</td>
 <td>
 </td>
@@ -770,7 +773,7 @@ FT_UInt</td>
 <tr>
 <td>
 subglyphs</td>
-<td>
+<td class="tdtype">
 FT_SubGlyph</td>
 <td>
 </td>
@@ -778,7 +781,7 @@ FT_SubGlyph</td>
 <tr>
 <td>
 control_data</td>
-<td>
+<td class="tdtype">
 *void</td>
 <td>
 </td>
@@ -786,7 +789,7 @@ control_data</td>
 <tr>
 <td>
 control_len</td>
-<td>
+<td class="tdtype">
 s32</td>
 <td>
 </td>
@@ -794,7 +797,7 @@ s32</td>
 <tr>
 <td>
 lsb_delta</td>
-<td>
+<td class="tdtype">
 FT_Pos</td>
 <td>
 </td>
@@ -802,7 +805,7 @@ FT_Pos</td>
 <tr>
 <td>
 rsb_delta</td>
-<td>
+<td class="tdtype">
 FT_Pos</td>
 <td>
 </td>
@@ -810,7 +813,7 @@ FT_Pos</td>
 <tr>
 <td>
 other</td>
-<td>
+<td class="tdtype">
 *void</td>
 <td>
 </td>
@@ -818,7 +821,7 @@ other</td>
 <tr>
 <td>
 internal</td>
-<td>
+<td class="tdtype">
 FT_Slot_Internal</td>
 <td>
 </td>
@@ -867,7 +870,7 @@ FT_GLYPH_FORMAT_POLTTER</td>
 <tr>
 <td>
 width</td>
-<td>
+<td class="tdtype">
 FT_Pos</td>
 <td>
 </td>
@@ -875,7 +878,7 @@ FT_Pos</td>
 <tr>
 <td>
 height</td>
-<td>
+<td class="tdtype">
 FT_Pos</td>
 <td>
 </td>
@@ -883,7 +886,7 @@ FT_Pos</td>
 <tr>
 <td>
 horiBearingX</td>
-<td>
+<td class="tdtype">
 FT_Pos</td>
 <td>
 </td>
@@ -891,7 +894,7 @@ FT_Pos</td>
 <tr>
 <td>
 horiBearingY</td>
-<td>
+<td class="tdtype">
 FT_Pos</td>
 <td>
 </td>
@@ -899,7 +902,7 @@ FT_Pos</td>
 <tr>
 <td>
 horiAdvance</td>
-<td>
+<td class="tdtype">
 FT_Pos</td>
 <td>
 </td>
@@ -907,7 +910,7 @@ FT_Pos</td>
 <tr>
 <td>
 vertBearingX</td>
-<td>
+<td class="tdtype">
 FT_Pos</td>
 <td>
 </td>
@@ -915,7 +918,7 @@ FT_Pos</td>
 <tr>
 <td>
 vertBearingY</td>
-<td>
+<td class="tdtype">
 FT_Pos</td>
 <td>
 </td>
@@ -923,7 +926,7 @@ FT_Pos</td>
 <tr>
 <td>
 vertAdvance</td>
-<td>
+<td class="tdtype">
 FT_Pos</td>
 <td>
 </td>
@@ -936,160 +939,160 @@ FT_Pos</td>
 </p>
 <h3 class="content" id="FreeType.FT_Init_FreeType"><span class="titletype">func</span> <span class="titlelight">FreeType.</span><span class="titlestrong">FT_Init_FreeType</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func FT_Init_FreeType(alibrary: *FT_Library)
+<code style="white-space: break-spaces">func FT_Init_FreeType(alibrary: *FT_Library) throw
 </code>
 </p>
 <h3 class="content" id="FreeType.FT_LOAD_ADVANCE_ONLY"><span class="titletype"></span> <span class="titlelight">FreeType.</span><span class="titlestrong">Constants</span></h3>
 <table>
 <tr>
-<td>
-s32</td>
 <td id="FreeType.FT_LOAD_ADVANCE_ONLY">
 FT_LOAD_ADVANCE_ONLY</td>
+<td class="tdtype">
+s32</td>
 <td>
 </td>
 </tr>
 <tr>
-<td>
-s32</td>
 <td id="FreeType.FT_LOAD_BITMAP_METRICS_ONLY">
 FT_LOAD_BITMAP_METRICS_ONLY</td>
+<td class="tdtype">
+s32</td>
 <td>
 </td>
 </tr>
 <tr>
-<td>
-s32</td>
 <td id="FreeType.FT_LOAD_COLOR">
 FT_LOAD_COLOR</td>
+<td class="tdtype">
+s32</td>
 <td>
 </td>
 </tr>
 <tr>
-<td>
-s32</td>
 <td id="FreeType.FT_LOAD_COMPUTE_METRICS">
 FT_LOAD_COMPUTE_METRICS</td>
+<td class="tdtype">
+s32</td>
 <td>
 </td>
 </tr>
 <tr>
-<td>
-s32</td>
 <td id="FreeType.FT_LOAD_CROP_BITMAP">
 FT_LOAD_CROP_BITMAP</td>
+<td class="tdtype">
+s32</td>
 <td>
 </td>
 </tr>
 <tr>
-<td>
-u32</td>
 <td id="FreeType.FT_LOAD_DEFAULT">
 FT_LOAD_DEFAULT</td>
+<td class="tdtype">
+u32</td>
 <td>
 </td>
 </tr>
 <tr>
-<td>
-s32</td>
 <td id="FreeType.FT_LOAD_FORCE_AUTOHINT">
 FT_LOAD_FORCE_AUTOHINT</td>
+<td class="tdtype">
+s32</td>
 <td>
 </td>
 </tr>
 <tr>
-<td>
-s32</td>
 <td id="FreeType.FT_LOAD_IGNORE_GLOBAL_ADVANCE_WIDTH">
 FT_LOAD_IGNORE_GLOBAL_ADVANCE_WIDTH</td>
+<td class="tdtype">
+s32</td>
 <td>
 </td>
 </tr>
 <tr>
-<td>
-s32</td>
 <td id="FreeType.FT_LOAD_IGNORE_TRANSFORM">
 FT_LOAD_IGNORE_TRANSFORM</td>
+<td class="tdtype">
+s32</td>
 <td>
 </td>
 </tr>
 <tr>
-<td>
-s32</td>
 <td id="FreeType.FT_LOAD_LINEAR_DESIGN">
 FT_LOAD_LINEAR_DESIGN</td>
+<td class="tdtype">
+s32</td>
 <td>
 </td>
 </tr>
 <tr>
-<td>
-s32</td>
 <td id="FreeType.FT_LOAD_MONOCHROME">
 FT_LOAD_MONOCHROME</td>
+<td class="tdtype">
+s32</td>
 <td>
 </td>
 </tr>
 <tr>
-<td>
-s32</td>
 <td id="FreeType.FT_LOAD_NO_AUTOHINT">
 FT_LOAD_NO_AUTOHINT</td>
+<td class="tdtype">
+s32</td>
 <td>
 </td>
 </tr>
 <tr>
-<td>
-s32</td>
 <td id="FreeType.FT_LOAD_NO_BITMAP">
 FT_LOAD_NO_BITMAP</td>
+<td class="tdtype">
+s32</td>
 <td>
 </td>
 </tr>
 <tr>
-<td>
-s32</td>
 <td id="FreeType.FT_LOAD_NO_HINTING">
 FT_LOAD_NO_HINTING</td>
+<td class="tdtype">
+s32</td>
 <td>
 </td>
 </tr>
 <tr>
-<td>
-s32</td>
 <td id="FreeType.FT_LOAD_NO_RECURSE">
 FT_LOAD_NO_RECURSE</td>
+<td class="tdtype">
+s32</td>
 <td>
 </td>
 </tr>
 <tr>
-<td>
-s32</td>
 <td id="FreeType.FT_LOAD_NO_SCALE">
 FT_LOAD_NO_SCALE</td>
+<td class="tdtype">
+s32</td>
 <td>
 </td>
 </tr>
 <tr>
-<td>
-s32</td>
 <td id="FreeType.FT_LOAD_PEDANTIC">
 FT_LOAD_PEDANTIC</td>
+<td class="tdtype">
+s32</td>
 <td>
 </td>
 </tr>
 <tr>
-<td>
-s32</td>
 <td id="FreeType.FT_LOAD_RENDER">
 FT_LOAD_RENDER</td>
+<td class="tdtype">
+s32</td>
 <td>
 </td>
 </tr>
 <tr>
-<td>
-s32</td>
 <td id="FreeType.FT_LOAD_SBITS_ONLY">
 FT_LOAD_SBITS_ONLY</td>
+<td class="tdtype">
+s32</td>
 <td>
 </td>
 </tr>
@@ -1102,50 +1105,50 @@ FT_LOAD_SBITS_ONLY</td>
 <h3 class="content" id="FreeType.FT_LOAD_TARGET_LCD"><span class="titletype"></span> <span class="titlelight">FreeType.</span><span class="titlestrong">Constants</span></h3>
 <table>
 <tr>
-<td>
-s32</td>
 <td id="FreeType.FT_LOAD_TARGET_LCD">
 FT_LOAD_TARGET_LCD</td>
+<td class="tdtype">
+s32</td>
 <td>
 </td>
 </tr>
 <tr>
-<td>
-s32</td>
 <td id="FreeType.FT_LOAD_TARGET_LCD_V">
 FT_LOAD_TARGET_LCD_V</td>
+<td class="tdtype">
+s32</td>
 <td>
 </td>
 </tr>
 <tr>
-<td>
-s32</td>
 <td id="FreeType.FT_LOAD_TARGET_LIGHT">
 FT_LOAD_TARGET_LIGHT</td>
+<td class="tdtype">
+s32</td>
 <td>
 </td>
 </tr>
 <tr>
-<td>
-s32</td>
 <td id="FreeType.FT_LOAD_TARGET_MONO">
 FT_LOAD_TARGET_MONO</td>
+<td class="tdtype">
+s32</td>
 <td>
 </td>
 </tr>
 <tr>
-<td>
-s32</td>
 <td id="FreeType.FT_LOAD_TARGET_NORMAL">
 FT_LOAD_TARGET_NORMAL</td>
+<td class="tdtype">
+s32</td>
 <td>
 </td>
 </tr>
 <tr>
-<td>
-s32</td>
 <td id="FreeType.FT_LOAD_VERTICAL_LAYOUT">
 FT_LOAD_VERTICAL_LAYOUT</td>
+<td class="tdtype">
+s32</td>
 <td>
 </td>
 </tr>
@@ -1194,7 +1197,7 @@ FT_LCD_FILTER_MAX</td>
 <tr>
 <td>
 memory</td>
-<td>
+<td class="tdtype">
 FT_Memory</td>
 <td>
 </td>
@@ -1202,7 +1205,7 @@ FT_Memory</td>
 <tr>
 <td>
 version_major</td>
-<td>
+<td class="tdtype">
 FT_Int</td>
 <td>
 </td>
@@ -1210,7 +1213,7 @@ FT_Int</td>
 <tr>
 <td>
 version_minor</td>
-<td>
+<td class="tdtype">
 FT_Int</td>
 <td>
 </td>
@@ -1218,7 +1221,7 @@ FT_Int</td>
 <tr>
 <td>
 version_patch</td>
-<td>
+<td class="tdtype">
 FT_Int</td>
 <td>
 </td>
@@ -1226,7 +1229,7 @@ FT_Int</td>
 <tr>
 <td>
 num_modules</td>
-<td>
+<td class="tdtype">
 FT_UInt</td>
 <td>
 </td>
@@ -1234,7 +1237,7 @@ FT_UInt</td>
 <tr>
 <td>
 modules</td>
-<td>
+<td class="tdtype">
 [32] FT_Module</td>
 <td>
 </td>
@@ -1242,7 +1245,7 @@ modules</td>
 <tr>
 <td>
 renderers</td>
-<td>
+<td class="tdtype">
 <a href="std.freetype.html#FreeType.FT_ListRec">FT_ListRec</a></td>
 <td>
 </td>
@@ -1250,7 +1253,7 @@ renderers</td>
 <tr>
 <td>
 cur_renderer</td>
-<td>
+<td class="tdtype">
 FT_Renderer</td>
 <td>
 </td>
@@ -1258,7 +1261,7 @@ FT_Renderer</td>
 <tr>
 <td>
 auto_hinter</td>
-<td>
+<td class="tdtype">
 FT_Module</td>
 <td>
 </td>
@@ -1266,7 +1269,7 @@ FT_Module</td>
 <tr>
 <td>
 debug_hooks</td>
-<td>
+<td class="tdtype">
 [4] FT_DebugHook_Func</td>
 <td>
 </td>
@@ -1274,7 +1277,7 @@ debug_hooks</td>
 <tr>
 <td>
 lcd_geometry</td>
-<td>
+<td class="tdtype">
 <a href="std.freetype.html#FreeType.FT_Vector">[3] FT_Vector</a></td>
 <td>
 </td>
@@ -1282,7 +1285,7 @@ lcd_geometry</td>
 <tr>
 <td>
 refcount</td>
-<td>
+<td class="tdtype">
 FT_Int</td>
 <td>
 </td>
@@ -1290,12 +1293,12 @@ FT_Int</td>
 </table>
 <h3 class="content" id="FreeType.FT_Library_SetLcdFilter"><span class="titletype">func</span> <span class="titlelight">FreeType.</span><span class="titlestrong">FT_Library_SetLcdFilter</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func FT_Library_SetLcdFilter(library: FT_Library, filter: <a href="std.freetype.html#FreeType.FT_LcdFilter">FT_LcdFilter</a>)
+<code style="white-space: break-spaces">func FT_Library_SetLcdFilter(library: FT_Library, filter: <a href="std.freetype.html#FreeType.FT_LcdFilter">FT_LcdFilter</a>) throw
 </code>
 </p>
 <h3 class="content" id="FreeType.FT_Library_SetLcdFilterWeights"><span class="titletype">func</span> <span class="titlelight">FreeType.</span><span class="titlestrong">FT_Library_SetLcdFilterWeights</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func FT_Library_SetLcdFilterWeights(library: FT_Library, weights: const *u8)
+<code style="white-space: break-spaces">func FT_Library_SetLcdFilterWeights(library: FT_Library, weights: const *u8) throw
 </code>
 </p>
 <h3 class="content" id="FreeType.FT_ListRec"><span class="titletype">struct</span> <span class="titlelight">FreeType.</span><span class="titlestrong">FT_ListRec</span></h3>
@@ -1303,7 +1306,7 @@ FT_Int</td>
 <tr>
 <td>
 head</td>
-<td>
+<td class="tdtype">
 FT_ListNode</td>
 <td>
 </td>
@@ -1311,7 +1314,7 @@ FT_ListNode</td>
 <tr>
 <td>
 tail</td>
-<td>
+<td class="tdtype">
 FT_ListNode</td>
 <td>
 </td>
@@ -1319,21 +1322,21 @@ FT_ListNode</td>
 </table>
 <h3 class="content" id="FreeType.FT_Load_Char"><span class="titletype">func</span> <span class="titlelight">FreeType.</span><span class="titlestrong">FT_Load_Char</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func FT_Load_Char(face: FT_Face, char_code: FT_ULong, load_flags: FT_Int32)
+<code style="white-space: break-spaces">func FT_Load_Char(face: FT_Face, char_code: FT_ULong, load_flags: FT_Int32) throw
 </code>
 </p>
 <h3 class="content" id="FreeType.FT_Load_Glyph"><span class="titletype">func</span> <span class="titlelight">FreeType.</span><span class="titlestrong">FT_Load_Glyph</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func FT_Load_Glyph(face: FT_Face, glyph_index: FT_UInt, load_flags: FT_Int32)
+<code style="white-space: break-spaces">func FT_Load_Glyph(face: FT_Face, glyph_index: FT_UInt, load_flags: FT_Int32) throw
 </code>
 </p>
 <h3 class="content" id="FreeType.FT_MAX_MODULES"><span class="titletype"></span> <span class="titlelight">FreeType.</span><span class="titlestrong">Constants</span></h3>
 <table>
 <tr>
-<td>
-s32</td>
 <td id="FreeType.FT_MAX_MODULES">
 FT_MAX_MODULES</td>
+<td class="tdtype">
+s32</td>
 <td>
 </td>
 </tr>
@@ -1343,7 +1346,7 @@ FT_MAX_MODULES</td>
 <tr>
 <td>
 xx</td>
-<td>
+<td class="tdtype">
 FT_Fixed</td>
 <td>
 </td>
@@ -1351,7 +1354,7 @@ FT_Fixed</td>
 <tr>
 <td>
 xy</td>
-<td>
+<td class="tdtype">
 FT_Fixed</td>
 <td>
 </td>
@@ -1359,7 +1362,7 @@ FT_Fixed</td>
 <tr>
 <td>
 yx</td>
-<td>
+<td class="tdtype">
 FT_Fixed</td>
 <td>
 </td>
@@ -1367,7 +1370,7 @@ FT_Fixed</td>
 <tr>
 <td>
 yy</td>
-<td>
+<td class="tdtype">
 FT_Fixed</td>
 <td>
 </td>
@@ -1375,7 +1378,7 @@ FT_Fixed</td>
 </table>
 <h3 class="content" id="FreeType.FT_New_Memory_Face"><span class="titletype">func</span> <span class="titlelight">FreeType.</span><span class="titlestrong">FT_New_Memory_Face</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func FT_New_Memory_Face(library: FT_Library, file_base: const *FT_Byte, file_size: FT_Long, face_index: FT_Long, aface: *FT_Face)
+<code style="white-space: break-spaces">func FT_New_Memory_Face(library: FT_Library, file_base: const *FT_Byte, file_size: FT_Long, face_index: FT_Long, aface: *FT_Face) throw
 </code>
 </p>
 <h3 class="content" id="FreeType.FT_Outline"><span class="titletype">struct</span> <span class="titlelight">FreeType.</span><span class="titlestrong">FT_Outline</span></h3>
@@ -1383,7 +1386,7 @@ FT_Fixed</td>
 <tr>
 <td>
 n_contours</td>
-<td>
+<td class="tdtype">
 s16</td>
 <td>
 </td>
@@ -1391,7 +1394,7 @@ s16</td>
 <tr>
 <td>
 n_points</td>
-<td>
+<td class="tdtype">
 s16</td>
 <td>
 </td>
@@ -1399,7 +1402,7 @@ s16</td>
 <tr>
 <td>
 points</td>
-<td>
+<td class="tdtype">
 <a href="std.freetype.html#FreeType.FT_Vector">^FT_Vector</a></td>
 <td>
 </td>
@@ -1407,7 +1410,7 @@ points</td>
 <tr>
 <td>
 tags</td>
-<td>
+<td class="tdtype">
 ^u8</td>
 <td>
 </td>
@@ -1415,7 +1418,7 @@ tags</td>
 <tr>
 <td>
 contours</td>
-<td>
+<td class="tdtype">
 ^s16</td>
 <td>
 </td>
@@ -1423,7 +1426,7 @@ contours</td>
 <tr>
 <td>
 flags</td>
-<td>
+<td class="tdtype">
 s32</td>
 <td>
 </td>
@@ -1431,12 +1434,12 @@ s32</td>
 </table>
 <h3 class="content" id="FreeType.FT_Outline_Decompose"><span class="titletype">func</span> <span class="titlelight">FreeType.</span><span class="titlestrong">FT_Outline_Decompose</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func FT_Outline_Decompose(outline: <a href="std.freetype.html#FreeType.FT_Outline">*FT_Outline</a>, func_interface: <a href="std.freetype.html#FreeType.FT_Outline_Funcs">const *FT_Outline_Funcs</a>, user: *void)
+<code style="white-space: break-spaces">func FT_Outline_Decompose(outline: <a href="std.freetype.html#FreeType.FT_Outline">*FT_Outline</a>, func_interface: <a href="std.freetype.html#FreeType.FT_Outline_Funcs">const *FT_Outline_Funcs</a>, user: *void) throw
 </code>
 </p>
 <h3 class="content" id="FreeType.FT_Outline_Embolden"><span class="titletype">func</span> <span class="titlelight">FreeType.</span><span class="titlestrong">FT_Outline_Embolden</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func FT_Outline_Embolden(outline: <a href="std.freetype.html#FreeType.FT_Outline">*FT_Outline</a>, strength: FT_Pos)
+<code style="white-space: break-spaces">func FT_Outline_Embolden(outline: <a href="std.freetype.html#FreeType.FT_Outline">*FT_Outline</a>, strength: FT_Pos) throw
 </code>
 </p>
 <h3 class="content" id="FreeType.FT_Outline_Funcs"><span class="titletype">struct</span> <span class="titlelight">FreeType.</span><span class="titlestrong">FT_Outline_Funcs</span></h3>
@@ -1444,7 +1447,7 @@ s32</td>
 <tr>
 <td>
 move_to</td>
-<td>
+<td class="tdtype">
 *void</td>
 <td>
 <p>
@@ -1454,7 +1457,7 @@ FT_Outline_MoveToFunc.</p>
 <tr>
 <td>
 line_to</td>
-<td>
+<td class="tdtype">
 *void</td>
 <td>
 <p>
@@ -1464,7 +1467,7 @@ FT_Outline_LineToFunc.</p>
 <tr>
 <td>
 conic_to</td>
-<td>
+<td class="tdtype">
 *void</td>
 <td>
 <p>
@@ -1474,7 +1477,7 @@ FT_Outline_ConicToFunc.</p>
 <tr>
 <td>
 cubic_to</td>
-<td>
+<td class="tdtype">
 *void</td>
 <td>
 <p>
@@ -1484,7 +1487,7 @@ FT_Outline_CubicToFunc.</p>
 <tr>
 <td>
 shift</td>
-<td>
+<td class="tdtype">
 s32</td>
 <td>
 </td>
@@ -1492,7 +1495,7 @@ s32</td>
 <tr>
 <td>
 delta</td>
-<td>
+<td class="tdtype">
 FT_Pos</td>
 <td>
 </td>
@@ -1567,7 +1570,7 @@ FT_PIXEL_MODE_MAX</td>
 </table>
 <h3 class="content" id="FreeType.FT_Render_Glyph"><span class="titletype">func</span> <span class="titlelight">FreeType.</span><span class="titlestrong">FT_Render_Glyph</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func FT_Render_Glyph(slot: FT_GlyphSlot, render_mode: <a href="std.freetype.html#FreeType.FT_Render_Mode">FT_Render_Mode</a>)
+<code style="white-space: break-spaces">func FT_Render_Glyph(slot: FT_GlyphSlot, render_mode: <a href="std.freetype.html#FreeType.FT_Render_Mode">FT_Render_Mode</a>) throw
 </code>
 </p>
 <h3 class="content" id="FreeType.FT_Render_Mode"><span class="titletype">enum</span> <span class="titlelight">FreeType.</span><span class="titlestrong">FT_Render_Mode</span></h3>
@@ -1612,25 +1615,25 @@ FT_RENDER_MODE_MAX</td>
 <h3 class="content" id="FreeType.FT_STYLE_FLAG_BOLD"><span class="titletype"></span> <span class="titlelight">FreeType.</span><span class="titlestrong">Constants</span></h3>
 <table>
 <tr>
-<td>
-s32</td>
 <td id="FreeType.FT_STYLE_FLAG_BOLD">
 FT_STYLE_FLAG_BOLD</td>
+<td class="tdtype">
+s32</td>
 <td>
 </td>
 </tr>
 <tr>
-<td>
-s32</td>
 <td id="FreeType.FT_STYLE_FLAG_ITALIC">
 FT_STYLE_FLAG_ITALIC</td>
+<td class="tdtype">
+s32</td>
 <td>
 </td>
 </tr>
 </table>
 <h3 class="content" id="FreeType.FT_Set_Pixel_Sizes"><span class="titletype">func</span> <span class="titlelight">FreeType.</span><span class="titlestrong">FT_Set_Pixel_Sizes</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func FT_Set_Pixel_Sizes(face: FT_Face, pixel_width: FT_UInt, pixel_height: FT_UInt)
+<code style="white-space: break-spaces">func FT_Set_Pixel_Sizes(face: FT_Face, pixel_width: FT_UInt, pixel_height: FT_UInt) throw
 </code>
 </p>
 <h3 class="content" id="FreeType.FT_SizeRec"><span class="titletype">struct</span> <span class="titlelight">FreeType.</span><span class="titlestrong">FT_SizeRec</span></h3>
@@ -1638,7 +1641,7 @@ FT_STYLE_FLAG_ITALIC</td>
 <tr>
 <td>
 face</td>
-<td>
+<td class="tdtype">
 FT_Face</td>
 <td>
 </td>
@@ -1646,7 +1649,7 @@ FT_Face</td>
 <tr>
 <td>
 generic</td>
-<td>
+<td class="tdtype">
 <a href="std.freetype.html#FreeType.FT_Generic">FT_Generic</a></td>
 <td>
 </td>
@@ -1654,7 +1657,7 @@ generic</td>
 <tr>
 <td>
 metrics</td>
-<td>
+<td class="tdtype">
 <a href="std.freetype.html#FreeType.FT_Size_Metrics">FT_Size_Metrics</a></td>
 <td>
 </td>
@@ -1662,7 +1665,7 @@ metrics</td>
 <tr>
 <td>
 internal</td>
-<td>
+<td class="tdtype">
 FT_Size_Internal</td>
 <td>
 </td>
@@ -1673,7 +1676,7 @@ FT_Size_Internal</td>
 <tr>
 <td>
 x_ppem</td>
-<td>
+<td class="tdtype">
 FT_UShort</td>
 <td>
 </td>
@@ -1681,7 +1684,7 @@ FT_UShort</td>
 <tr>
 <td>
 y_ppem</td>
-<td>
+<td class="tdtype">
 FT_UShort</td>
 <td>
 </td>
@@ -1689,7 +1692,7 @@ FT_UShort</td>
 <tr>
 <td>
 x_scale</td>
-<td>
+<td class="tdtype">
 FT_Fixed</td>
 <td>
 </td>
@@ -1697,7 +1700,7 @@ FT_Fixed</td>
 <tr>
 <td>
 y_scale</td>
-<td>
+<td class="tdtype">
 FT_Fixed</td>
 <td>
 </td>
@@ -1705,7 +1708,7 @@ FT_Fixed</td>
 <tr>
 <td>
 ascender</td>
-<td>
+<td class="tdtype">
 FT_Pos</td>
 <td>
 </td>
@@ -1713,7 +1716,7 @@ FT_Pos</td>
 <tr>
 <td>
 descender</td>
-<td>
+<td class="tdtype">
 FT_Pos</td>
 <td>
 </td>
@@ -1721,7 +1724,7 @@ FT_Pos</td>
 <tr>
 <td>
 height</td>
-<td>
+<td class="tdtype">
 FT_Pos</td>
 <td>
 </td>
@@ -1729,7 +1732,7 @@ FT_Pos</td>
 <tr>
 <td>
 max_advance</td>
-<td>
+<td class="tdtype">
 FT_Pos</td>
 <td>
 </td>
@@ -1740,7 +1743,7 @@ FT_Pos</td>
 <tr>
 <td>
 index</td>
-<td>
+<td class="tdtype">
 FT_Int</td>
 <td>
 </td>
@@ -1748,7 +1751,7 @@ FT_Int</td>
 <tr>
 <td>
 flags</td>
-<td>
+<td class="tdtype">
 FT_UShort</td>
 <td>
 </td>
@@ -1756,7 +1759,7 @@ FT_UShort</td>
 <tr>
 <td>
 arg1</td>
-<td>
+<td class="tdtype">
 FT_Int</td>
 <td>
 </td>
@@ -1764,7 +1767,7 @@ FT_Int</td>
 <tr>
 <td>
 arg2</td>
-<td>
+<td class="tdtype">
 FT_Int</td>
 <td>
 </td>
@@ -1772,7 +1775,7 @@ FT_Int</td>
 <tr>
 <td>
 transform</td>
-<td>
+<td class="tdtype">
 <a href="std.freetype.html#FreeType.FT_Matrix">FT_Matrix</a></td>
 <td>
 </td>
@@ -1783,7 +1786,7 @@ transform</td>
 <tr>
 <td>
 x</td>
-<td>
+<td class="tdtype">
 FT_Pos</td>
 <td>
 </td>
@@ -1791,7 +1794,7 @@ FT_Pos</td>
 <tr>
 <td>
 y</td>
-<td>
+<td class="tdtype">
 FT_Pos</td>
 <td>
 </td>
