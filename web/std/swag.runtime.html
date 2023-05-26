@@ -340,6 +340,8 @@ func @acos(value: f64)->f64
 <code style="white-space: break-spaces">func @alloc(size: u64)->*void
 </code>
 </p>
+<p>
+Make a system allocation of <code class = "incode">size</code> bytes.</p>
 <h3 class="content" id="@args"><span class="titletype">func</span> <span class="titlelight"></span><span class="titlestrong">@args</span></h3>
 <p class="code">
 <code style="white-space: break-spaces">func @args()->const [..] string
@@ -534,9 +536,11 @@ func @floor(value: f64)->f64
 </p>
 <h3 class="content" id="@free"><span class="titletype">func</span> <span class="titlelight"></span><span class="titlestrong">@free</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func @free(ptr: *void)
+<code style="white-space: break-spaces">func @free(ptr: ^void)
 </code>
 </p>
+<p>
+Free a system memory block.</p>
 <h3 class="content" id="@getcontext"><span class="titletype">func</span> <span class="titlelight"></span><span class="titlestrong">@getcontext</span></h3>
 <p class="code">
 <code style="white-space: break-spaces">func @getcontext()-><a href="swag.runtime.html#Swag.Context">*Context</a>
@@ -596,24 +600,32 @@ func @max(value1: f64, value2: f64)->f64
 </p>
 <h3 class="content" id="@memcmp"><span class="titletype">func</span> <span class="titlelight"></span><span class="titlestrong">@memcmp</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func @memcmp(dst: const *void, src: const *void, size: u64)->s32
+<code style="white-space: break-spaces">func @memcmp(dst: const ^void, src: const ^void, size: u64)->s32
 </code>
 </p>
+<p>
+Compare two memory block, and returns -1, 0 if equal, or 1.</p>
 <h3 class="content" id="@memcpy"><span class="titletype">func</span> <span class="titlelight"></span><span class="titlestrong">@memcpy</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func @memcpy(dst: *void, src: const *void, size: u64)
+<code style="white-space: break-spaces">func @memcpy(dst: ^void, src: const ^void, size: u64)
 </code>
 </p>
+<p>
+Copy one memory block to another address.</p>
 <h3 class="content" id="@memmove"><span class="titletype">func</span> <span class="titlelight"></span><span class="titlestrong">@memmove</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func @memmove(dst: *void, src: const *void, size: u64)
+<code style="white-space: break-spaces">func @memmove(dst: ^void, src: const ^void, size: u64)
 </code>
 </p>
+<p>
+Move one memory block to another address.</p>
 <h3 class="content" id="@memset"><span class="titletype">func</span> <span class="titlelight"></span><span class="titlestrong">@memset</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func @memset(dst: *void, value: u8, size: u64)
+<code style="white-space: break-spaces">func @memset(dst: ^void, value: u8, size: u64)
 </code>
 </p>
+<p>
+Set all bytes of a given memory block to <code class = "incode">value</code>.</p>
 <h3 class="content" id="@min"><span class="titletype">func</span> <span class="titlelight"></span><span class="titlestrong">@min</span></h3>
 <p class="code">
 <code style="white-space: break-spaces">func @min(value1: s8, value2: s8)->s8
@@ -657,9 +669,11 @@ func @pow(value1: f64, value2: f64)->f64
 </p>
 <h3 class="content" id="@realloc"><span class="titletype">func</span> <span class="titlelight"></span><span class="titlestrong">@realloc</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func @realloc(ptr: *void, size: u64)->*void
+<code style="white-space: break-spaces">func @realloc(ptr: ^void, size: u64)->*void
 </code>
 </p>
+<p>
+Realloc a system memory block.</p>
 <h3 class="content" id="@round"><span class="titletype">func</span> <span class="titlelight"></span><span class="titlestrong">@round</span></h3>
 <p class="code">
 <code style="white-space: break-spaces">func @round(value: f32)->f32
@@ -699,6 +713,8 @@ func @sqrt(value: f64)->f64
 <code style="white-space: break-spaces">func @strcmp(str1: cstring, str2: cstring)->s32
 </code>
 </p>
+<p>
+Compare two zero terminated strings, and returns -1, 0 if equal, or 1.</p>
 <h3 class="content" id="@stringcmp"><span class="titletype">func</span> <span class="titlelight"></span><span class="titlestrong">@stringcmp</span></h3>
 <p class="code">
 <code style="white-space: break-spaces">func @stringcmp(str1: string, str2: string)->bool
@@ -711,6 +727,8 @@ Compares two strings, and returns <code class = "incode">true</code> if they are
 <code style="white-space: break-spaces">func @strlen(str: cstring)->u64
 </code>
 </p>
+<p>
+Returns the length of the given 0 terminated string.</p>
 <h3 class="content" id="@sysalloc"><span class="titletype">func</span> <span class="titlelight"></span><span class="titlestrong">@sysalloc</span></h3>
 <p class="code">
 <code style="white-space: break-spaces">func @sysalloc()
@@ -2555,6 +2573,8 @@ func(*IAllocator, *AllocatorRequest)</td>
 </tr>
 </table>
 <h3 class="content" id="Swag.ICompiler"><span class="titletype">interface</span> <span class="titlelight">Swag.</span><span class="titlestrong">ICompiler</span></h3>
+<p>
+This is the interface to communicate with the compiler.</p>
 <table>
 <tr>
 <td>
@@ -2562,6 +2582,8 @@ getMessage</td>
 <td>
 func(*ICompiler)->const *CompilerMessage</td>
 <td>
+<p>
+Returns the compiler message in a <code class = "incode">#message</code> function.</p>
 </td>
 </tr>
 <tr>
@@ -2570,6 +2592,8 @@ getBuildCfg</td>
 <td>
 func(*ICompiler)->*BuildCfg</td>
 <td>
+<p>
+Returns the build configuration of the current module.</p>
 </td>
 </tr>
 <tr>
@@ -2578,9 +2602,13 @@ compileString</td>
 <td>
 func(*ICompiler, string)</td>
 <td>
+<p>
+Compile a global string.</p>
 </td>
 </tr>
 </table>
+<p>
+ The intrinsic <code class = "incode">@compiler</code> will return that interface at compile-time, and <code class = "incode">null</code> at runtime.</p>
 <h3 class="content" id="Swag.Interface"><span class="titletype">struct</span> <span class="titlelight">Swag.</span><span class="titlestrong">Interface</span></h3>
 <table>
 <tr>

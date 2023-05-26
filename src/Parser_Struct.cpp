@@ -599,6 +599,7 @@ bool Parser::doStructBody(AstNode* parent, SyntaxStructType structType, AstNode*
 
         auto funcNode = Ast::newNode<AstFuncDecl>(this, AstNodeKind::FuncDecl, sourceFile, nullptr);
         SWAG_CHECK(checkIsValidUserName(funcNode));
+
         SWAG_VERIFY(token.id == TokenId::Identifier, error(token, Fmt(Err(Syn0089), token.ctext())));
         SWAG_CHECK(eatToken());
 
@@ -646,6 +647,13 @@ bool Parser::doStructBody(AstNode* parent, SyntaxStructType structType, AstNode*
 
         scope->owner = nullptr;
         funcNode->release();
+
+        if (!tokenizer.comment.empty())
+        {
+            varNode->allocateExtension(ExtensionKind::Misc);
+            varNode->extMisc()->docComment = std::move(tokenizer.comment);
+        }
+
         break;
     }
 

@@ -664,11 +664,14 @@ namespace Swag
         kind:           CompilerMsgKind = undefined
     }
 
+    // This is the interface to communicate with the compiler.
+    //
+    // The intrinsic '@compiler' will return that interface at compile-time, and 'null' at runtime.
     interface ICompiler
     {
-        mtd getMessage()->const* CompilerMessage
-        mtd getBuildCfg()->*BuildCfg
-        mtd compileString(str: string)
+        mtd getMessage()->const* CompilerMessage    // Returns the compiler message in a '#message' function
+        mtd getBuildCfg()->*BuildCfg                // Returns the build configuration of the current module
+        mtd compileString(str: string)              // Compile a global string
     }
 
     struct SourceCodeLocation
@@ -698,14 +701,23 @@ func @compiler()->Swag.ICompiler;
 func @modules()->const [..] Swag.Module;
 func @gvtd()->const [..] Swag.Gvtd;
 
+// Make a system allocation of 'size' bytes.
 func @alloc(size: u64)->*void;
-func @realloc(ptr: *void, size: u64)->*void;
-func @free(ptr: *void);
-func @memset(dst: *void, value: u8, size: u64);
-func @memcpy(dst: *void, src: const *void, size: u64);
-func @memmove(dst: *void, src: const *void, size: u64);
-func @memcmp(dst, src: const *void, size: u64)->s32;
+// Realloc a system memory block
+func @realloc(ptr: ^void, size: u64)->*void;
+// Free a system memory block
+func @free(ptr: ^void);
+// Set all bytes of a given memory block to 'value'
+func @memset(dst: ^void, value: u8, size: u64);
+// Copy one memory block to another address.
+func @memcpy(dst: ^void, src: const ^void, size: u64);
+// Move one memory block to another address.
+func @memmove(dst: ^void, src: const ^void, size: u64);
+// Compare two memory block, and returns -1, 0 if equal, or 1.
+func @memcmp(dst, src: const ^void, size: u64)->s32;
+// Returns the length of the given 0 terminated string.
 func @strlen(str: cstring)->u64;
+// Compare two zero terminated strings, and returns -1, 0 if equal, or 1.
 func @strcmp(str1, str2: cstring)->s32;
 
 // Atomic operations
