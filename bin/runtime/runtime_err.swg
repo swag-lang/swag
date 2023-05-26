@@ -1,6 +1,7 @@
 using Swag
 
 ////////////////////////////////////////////////////////////
+
 func __seterr(value: string)
 {
     cxt := @getcontext()
@@ -84,6 +85,7 @@ func __checkAny(typeA, typeB: typeinfo, loc: SourceCodeLocation)
 }
 
 ////////////////////////////////////////////////////////////
+
 func __initStackTrace()
 {
     cxt := @getcontext()
@@ -100,6 +102,7 @@ func __stackTrace(loc: SourceCodeLocation)
 }
 
 ////////////////////////////////////////////////////////////
+
 func @compilererror(message: string, loc: Swag.SourceCodeLocation)
 {
     // If the compiler is around, just let it deal with the message

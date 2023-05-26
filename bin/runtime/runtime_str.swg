@@ -1,6 +1,7 @@
 using Swag
 
 ////////////////////////////////////////////////////////////
+
 func __strcat(start: ^u8, max: s32, src: string)
 {
     dstLen := @strlen(start)
@@ -221,6 +222,8 @@ func @print(params: ...)
 }
 
 ////////////////////////////////////////////////////////////
+
+// Compares two strings, and returns 'true' if they are equal.
 func @stringcmp(str1: string, str2: string)->bool
 {
     num1 := @countof(str1)

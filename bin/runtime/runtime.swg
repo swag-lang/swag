@@ -9,6 +9,7 @@ namespace Swag
 }
 
 ////////////////////////////////////////////////////////////
+
 func __concreteAlias(type1: typeinfo)->typeinfo
 {
     if type1.kind != TypeInfoKind.Alias or type1.flags & TypeInfoFlags.Strict
@@ -54,6 +55,7 @@ func @typecmp(typeA, typeB: typeinfo, cmpFlags: TypeCmpFlags)->bool
 }
 
 ////////////////////////////////////////////////////////////
+
 #[Safety("", false)]
 func @itftableof(structType, itfType: const *TypeInfoStruct)->const *void
 {
@@ -68,6 +70,7 @@ func @itftableof(structType, itfType: const *TypeInfoStruct)->const *void
 
 
 ////////////////////////////////////////////////////////////
+
 const __MAX_ARGUMENTS = 512
 var __argv: [__MAX_ARGUMENTS] string
 var __argc = 0'u32
@@ -115,6 +118,7 @@ func @args()->const [..] string
 }
 
 ////////////////////////////////////////////////////////////
+
 var __runtimeFlags: RuntimeFlags = Zero
 var __debugAlloc:   *DebugAllocator
 var __sysAlloc:     SystemAllocator

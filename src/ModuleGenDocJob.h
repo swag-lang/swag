@@ -41,7 +41,7 @@ struct ModuleGenDocJob : public Job
     void collectNode(AstNode* node);
     void collectScopes(Scope* root);
 
-    void computeUserComment(UserComment& result, const Utf8& txt);
+    void computeUserComments(UserComment& result, const Utf8& txt);
     Utf8 getDocComment(AstNode* node);
     int  sortOrder(AstNodeKind kind);
 

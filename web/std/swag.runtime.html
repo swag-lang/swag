@@ -492,8 +492,6 @@ func @ceil(value: f64)->f64
 <code style="white-space: break-spaces">func @compilererror(message: string, loc: <a href="swag.runtime.html#Swag.SourceCodeLocation">SourceCodeLocation</a>)
 </code>
 </p>
-<p>
-//////////////////////////////////////////////////////////.</p>
 <h3 class="content" id="@compilerwarning"><span class="titletype">func</span> <span class="titlelight"></span><span class="titlestrong">@compilerwarning</span></h3>
 <p class="code">
 <code style="white-space: break-spaces">func @compilerwarning(message: string, loc: <a href="swag.runtime.html#Swag.SourceCodeLocation">SourceCodeLocation</a>)
@@ -564,8 +562,6 @@ func @floor(value: f64)->f64
 <code style="white-space: break-spaces">func @itftableof(structType: <a href="swag.runtime.html#Swag.TypeInfoStruct">const *TypeInfoStruct</a>, itfType: <a href="swag.runtime.html#Swag.TypeInfoStruct">const *TypeInfoStruct</a>)->const *void
 </code>
 </p>
-<p>
-//////////////////////////////////////////////////////////.</p>
 <h3 class="content" id="@log"><span class="titletype">func</span> <span class="titlelight"></span><span class="titlestrong">@log</span></h3>
 <p class="code">
 <code style="white-space: break-spaces">func @log(value: f32)->f32
@@ -709,7 +705,7 @@ func @sqrt(value: f64)->f64
 </code>
 </p>
 <p>
-//////////////////////////////////////////////////////////.</p>
+Compares two strings, and returns <code class = "incode">true</code> if they are equal.</p>
 <h3 class="content" id="@strlen"><span class="titletype">func</span> <span class="titlelight"></span><span class="titlestrong">@strlen</span></h3>
 <p class="code">
 <code style="white-space: break-spaces">func @strlen(str: cstring)->u64
@@ -1290,7 +1286,6 @@ Constant</td>
 <td>
 Multi</td>
 <td>
-
 </td>
 </tr>
 <tr>
@@ -1375,8 +1370,8 @@ scratchAllocatorCapacity</td>
 <td>
 s32</td>
 <td>
- Debug
- Default capacity of the <code class = "incode">temp</code> allocator (in bytes)
+<p>
+Debug Default capacity of the <code class = "incode">temp</code> allocator (in bytes).</p>
 </td>
 </tr>
 <tr>
@@ -1393,7 +1388,8 @@ debugAllocator</td>
 <td>
 bool</td>
 <td>
- Use Swag.DebugAllocator by default
+<p>
+Use Swag.DebugAllocator by default.</p>
 </td>
 </tr>
 <tr>
@@ -1402,7 +1398,8 @@ debugAllocatorCaptureStack</td>
 <td>
 bool</td>
 <td>
- Capture the call stack for each allocation
+<p>
+Capture the call stack for each allocation.</p>
 </td>
 </tr>
 <tr>
@@ -1411,7 +1408,8 @@ debugAllocatorLeaks</td>
 <td>
 bool</td>
 <td>
- Detect memory leaks
+<p>
+Detect memory leaks.</p>
 </td>
 </tr>
 <tr>
@@ -1428,8 +1426,8 @@ warnAsErrors</td>
 <td>
 string</td>
 <td>
- Warnings
- Format is "wrnXXXX|wrnXXXX..."
+<p>
+Warnings Format is "wrnXXXX|wrnXXXX...".</p>
 </td>
 </tr>
 <tr>
@@ -1454,7 +1452,8 @@ warnDefaultDisabled</td>
 <td>
 bool</td>
 <td>
- All warning are disabled, except those specified above
+<p>
+All warning are disabled, except those specified above.</p>
 </td>
 </tr>
 <tr>
@@ -1495,7 +1494,8 @@ byteCodeInline</td>
 <td>
 bool</td>
 <td>
- Enable bytecode inlining with #[Swag.Inline]
+<p>
+Enable bytecode inlining with #[Swag.Inline].</p>
 </td>
 </tr>
 <tr>
@@ -1614,7 +1614,8 @@ fpMathFma</td>
 <td>
 bool</td>
 <td>
- true in <code class = "incode">release</code>
+<p>
+true in <code class = "incode">release</code>.</p>
 </td>
 </tr>
 <tr>
@@ -1623,7 +1624,8 @@ fpMathNoNaN</td>
 <td>
 bool</td>
 <td>
- true in <code class = "incode">release</code>
+<p>
+true in <code class = "incode">release</code>.</p>
 </td>
 </tr>
 <tr>
@@ -1632,7 +1634,8 @@ fpMathNoInf</td>
 <td>
 bool</td>
 <td>
- true in <code class = "incode">release</code>
+<p>
+true in <code class = "incode">release</code>.</p>
 </td>
 </tr>
 <tr>
@@ -1641,7 +1644,8 @@ fpMathNoSignedZero</td>
 <td>
 bool</td>
 <td>
- true in <code class = "incode">release</code>
+<p>
+true in <code class = "incode">release</code>.</p>
 </td>
 </tr>
 <tr>
@@ -2097,7 +2101,8 @@ firstAlloc</td>
 <td>
 <a href="swag.runtime.html#Swag.DebugAllocatorHeader">*DebugAllocatorHeader</a></td>
 <td>
- First allocated block
+<p>
+First allocated block.</p>
 </td>
 </tr>
 <tr>
@@ -2106,7 +2111,8 @@ firstFree</td>
 <td>
 <a href="swag.runtime.html#Swag.DebugAllocatorHeader">*DebugAllocatorHeader</a></td>
 <td>
- First freed block
+<p>
+First freed block.</p>
 </td>
 </tr>
 <tr>
@@ -2115,7 +2121,8 @@ lastFree</td>
 <td>
 <a href="swag.runtime.html#Swag.DebugAllocatorHeader">*DebugAllocatorHeader</a></td>
 <td>
- Last freed block
+<p>
+Last freed block.</p>
 </td>
 </tr>
 <tr>
@@ -2124,7 +2131,8 @@ sizeAlloc</td>
 <td>
 u64</td>
 <td>
- Total allocated memory, in bytes
+<p>
+Total allocated memory, in bytes.</p>
 </td>
 </tr>
 <tr>
@@ -2133,7 +2141,8 @@ sizeFree</td>
 <td>
 u64</td>
 <td>
- Total of free blocks in quarantine
+<p>
+Total of free blocks in quarantine.</p>
 </td>
 </tr>
 <tr>
@@ -2142,7 +2151,8 @@ countAlloc</td>
 <td>
 u32</td>
 <td>
- Number of allocated blocks
+<p>
+Number of allocated blocks.</p>
 </td>
 </tr>
 <tr>
@@ -2159,8 +2169,8 @@ maxFreeSize</td>
 <td>
 u64</td>
 <td>
- Debug/behaviour parameters
- Maximum total size (in kbs) of free blocks in quarantine
+<p>
+Debug/behaviour parameters Maximum total size (in kbs) of free blocks in quarantine.</p>
 </td>
 </tr>
 <tr>
@@ -2169,7 +2179,8 @@ breakOnAllocId</td>
 <td>
 u32</td>
 <td>
- Will @assert when the current allocation id reaches that value
+<p>
+Will @assert when the current allocation id reaches that value.</p>
 </td>
 </tr>
 <tr>
@@ -2178,7 +2189,8 @@ showMaxLeaks</td>
 <td>
 u32</td>
 <td>
- Maximum number of memory leaks to show
+<p>
+Maximum number of memory leaks to show.</p>
 </td>
 </tr>
 <tr>
@@ -2187,7 +2199,8 @@ captureAllocStack</td>
 <td>
 bool</td>
 <td>
- For each allocation, capture stack
+<p>
+For each allocation, capture stack.</p>
 </td>
 </tr>
 <tr>
@@ -2196,7 +2209,8 @@ detectLeaks</td>
 <td>
 bool</td>
 <td>
- Detect memory leaks if true
+<p>
+Detect memory leaks if true.</p>
 </td>
 </tr>
 </table>
@@ -3950,7 +3964,8 @@ u8</td>
 <td id="Swag.U8.Max">
 Max</td>
 <td>
- Max <code class = "incode">u8</code> value
+<p>
+Max <code class = "incode">u8</code> value.</p>
 </td>
 </tr>
 <tr>
@@ -3959,7 +3974,8 @@ u8</td>
 <td id="Swag.U8.Min">
 Min</td>
 <td>
- Min <code class = "incode">u8</code> value
+<p>
+Min <code class = "incode">u8</code> value.</p>
 </td>
 </tr>
 </table>

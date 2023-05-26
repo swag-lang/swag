@@ -38,11 +38,14 @@ static bool canCollectNode(AstNode* node)
     if (node->kind == AstNodeKind::FuncDecl && node->sourceFile && !node->sourceFile->forceExport && !(node->attributeFlags & ATTRIBUTE_PUBLIC))
         return false;
 
-    return false;
+    return true;
 }
 
-void ModuleGenDocJob::computeUserComment(UserComment& result, const Utf8& txt)
+void ModuleGenDocJob::computeUserComments(UserComment& result, const Utf8& txt)
 {
+    if (txt.empty())
+        return;
+
     Vector<Utf8> lines;
     Utf8::tokenize(txt, '\n', lines);
     int start = 0;
@@ -176,7 +179,7 @@ void ModuleGenDocJob::outputTable(Scope* scope, AstNodeKind kind, const char* ti
         if (!subDocComment.empty())
         {
             UserComment subUserComment;
-            computeUserComment(subUserComment, subDocComment);
+            computeUserComments(subUserComment, subDocComment);
             outputUserBlock(subUserComment.shortDesc);
         }
 
@@ -787,7 +790,7 @@ void ModuleGenDocJob::generateContent()
             auto        docComment = getDocComment(n0);
             if (!docComment.empty())
             {
-                computeUserComment(userComment, docComment);
+                computeUserComments(userComment, docComment);
                 outputUserComment(userComment);
             }
 
@@ -825,9 +828,10 @@ void ModuleGenDocJob::generateContent()
                 helpContent += "</td>\n";
 
                 helpContent += "<td>\n";
-                auto subDocComment = getDocComment(n);
-                if (!subDocComment.empty())
-                    outputUserLine(subDocComment);
+                UserComment subUserComment;
+                auto        subDocComment = getDocComment(n);
+                computeUserComments(subUserComment, subDocComment);
+                outputUserBlock(subUserComment.shortDesc);
                 helpContent += "</td>\n";
 
                 helpContent += "</tr>\n";
@@ -845,7 +849,7 @@ void ModuleGenDocJob::generateContent()
             auto        docComment = getDocComment(n0);
             if (!docComment.empty())
             {
-                computeUserComment(userComment, docComment);
+                computeUserComments(userComment, docComment);
                 outputUserBlock(userComment.shortDesc);
             }
 
@@ -895,9 +899,10 @@ void ModuleGenDocJob::generateContent()
                 helpContent += "</td>\n";
 
                 helpContent += "<td>\n";
-                auto subDocComment = getDocComment(n1);
-                if (!subDocComment.empty())
-                    outputUserLine(subDocComment);
+                UserComment subUserComment;
+                auto        subDocComment = getDocComment(varDecl);
+                computeUserComments(subUserComment, subDocComment);
+                outputUserBlock(subUserComment.shortDesc);
                 helpContent += "</td>\n";
 
                 helpContent += "</tr>\n";
@@ -919,7 +924,7 @@ void ModuleGenDocJob::generateContent()
             auto        docComment = getDocComment(n0);
             if (!docComment.empty())
             {
-                computeUserComment(userComment, docComment);
+                computeUserComments(userComment, docComment);
                 outputUserBlock(userComment.shortDesc);
             }
 
@@ -935,11 +940,14 @@ void ModuleGenDocJob::generateContent()
                 helpContent += "<td>\n";
                 helpContent += enumVal->name;
                 helpContent += "</td>\n";
+
                 helpContent += "<td>\n";
-                auto subDocComment = getDocComment(enumVal->nodes[0]);
-                if (!subDocComment.empty())
-                    outputUserLine(subDocComment);
+                UserComment subUserComment;
+                auto        subDocComment = getDocComment(enumVal->nodes[0]);
+                computeUserComments(subUserComment, subDocComment);
+                outputUserBlock(subUserComment.shortDesc);
                 helpContent += "</td>\n";
+
                 helpContent += "</tr>\n";
             }
 
@@ -954,10 +962,9 @@ void ModuleGenDocJob::generateContent()
             Utf8 code;
             for (auto n : c.nodes)
             {
-                UserComment userComment;
+                UserComment subUserComment;
                 auto        subDocComment = getDocComment(n);
-                if (!subDocComment.empty())
-                    computeUserComment(userComment, subDocComment);
+                computeUserComments(subUserComment, subDocComment);
 
                 auto funcNode = CastAst<AstFuncDecl>(n, AstNodeKind::FuncDecl);
                 if (n->attributeFlags & ATTRIBUTE_MACRO)
@@ -975,12 +982,12 @@ void ModuleGenDocJob::generateContent()
                 code += outputNode(funcNode->returnType);
                 code += "\n";
 
-                if (!userComment.shortDesc.lines.empty() || !userComment.blocks.empty())
+                if (!subUserComment.shortDesc.lines.empty() || !subUserComment.blocks.empty())
                 {
                     outputCode(code);
                     code.clear();
-                    outputUserBlock(userComment.shortDesc);
-                    outputUserComment(userComment);
+                    outputUserBlock(subUserComment.shortDesc);
+                    outputUserComment(subUserComment);
                 }
             }
 
@@ -993,9 +1000,6 @@ void ModuleGenDocJob::generateContent()
 
 JobResult ModuleGenDocJob::execute()
 {
-    if (module)
-        return JobResult::ReleaseJob;
-
     // Setup
     concat.init();
     outputCxt.checkPublic = false;
