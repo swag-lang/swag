@@ -248,7 +248,7 @@ void ModuleGenDocJob::outputTitle(OneRef& c)
     helpContent += "</h3>\n";
 }
 
-void ModuleGenDocJob::outputUserLine(const Utf8& user, UserBlockKind curBlock)
+void ModuleGenDocJob::outputUserLine(const Utf8& user)
 {
     if (user.empty())
         return;
@@ -273,13 +273,19 @@ void ModuleGenDocJob::outputUserLine(const Utf8& user, UserBlockKind curBlock)
             continue;
         }
 
-        if (curBlock == UserBlockKind::Code)
+        if (SWAG_IS_ALPHA(*pz) || *pz == '#' || *pz == '@')
         {
-            helpContent += *pz++;
+            Utf8 name;
+            name += *pz++;
+            while (*pz && (SWAG_IS_ALNUM(*pz) || *pz == '_' || *pz == '.'))
+                name += *pz++;
+            auto it = collectInvert.find(name);
+            if (it != collectInvert.end())
+                helpContent += Fmt("<a href=\"%s#%s\">%s</a>", fileName.c_str(), it->second.c_str(), name.c_str());
+            else
+                helpContent += name;
             continue;
         }
-
-        // Special styles, but not in a code block
 
         // Bold
         if (*pz == '*' && pz[1] == '*')
@@ -353,7 +359,7 @@ void ModuleGenDocJob::outputUserBlock(const UserBlock& user)
 
     for (int i = 0; i < user.lines.size(); i++)
     {
-        outputUserLine(user.lines[i], user.kind);
+        outputUserLine(user.lines[i]);
 
         // Add one line break after each line, except the last line from a raw block, because we do
         // not want one useless empty line
@@ -390,79 +396,6 @@ void ModuleGenDocJob::outputCode(const Utf8& code)
     helpContent += code;
     helpContent += "</code>\n";
     helpContent += "</p>\n";
-}
-
-Utf8 ModuleGenDocJob::outputType(TypeInfo* typeInfo)
-{
-    auto typeRef = typeInfo;
-
-    while (true)
-    {
-        if (typeRef->isPointer())
-        {
-            auto typePtr = CastTypeInfo<TypeInfoPointer>(typeRef, TypeInfoKind::Pointer);
-            typeRef      = typePtr->pointedType;
-            continue;
-        }
-
-        if (typeRef->isArray())
-        {
-            auto typeArr = CastTypeInfo<TypeInfoArray>(typeRef, TypeInfoKind::Array);
-            typeRef      = typeArr->finalType;
-            continue;
-        }
-
-        if (typeRef->isSlice())
-        {
-            auto typeSlice = CastTypeInfo<TypeInfoSlice>(typeRef, TypeInfoKind::Slice);
-            typeRef        = typeSlice->pointedType;
-            continue;
-        }
-
-        break;
-    }
-
-    if (!typeRef->declNode || !typeRef->declNode->sourceFile)
-        return typeInfo->name;
-    if (typeRef->isTuple())
-        return typeInfo->name;
-
-    switch (typeRef->kind)
-    {
-    case TypeInfoKind::Struct:
-    case TypeInfoKind::Interface:
-    case TypeInfoKind::Enum:
-        break;
-    default:
-        return typeInfo->name;
-    }
-
-    typeRef->computeScopedNameExport();
-    Vector<Utf8> tkn;
-    Utf8::tokenize(typeRef->scopedNameExport, '.', tkn);
-    if (tkn.size() < 2)
-        return typeInfo->name;
-
-    // Remove the instantiated types to make the reference to the generic original type
-    auto nameExport = typeRef->scopedNameExport;
-    int  p          = nameExport.find("'");
-    if (p != -1)
-        nameExport.remove(p, nameExport.length() - p);
-
-    tkn[0].makeLower();
-
-    if (typeRef->declNode->sourceFile->isRuntimeFile || typeRef->declNode->sourceFile->isBootstrapFile)
-    {
-        return Fmt("<a href=\"swag.runtime.html#%s\">%s</a>", nameExport.c_str(), typeInfo->name.c_str());
-    }
-    else
-    {
-        auto wkpName = typeRef->declNode->sourceFile->module->path;
-        wkpName      = wkpName.parent_path();
-        wkpName      = wkpName.parent_path();
-        wkpName      = wkpName.filename();
-        return Fmt("<a href=\"%s.%s.html#%s\">%s</a>", wkpName.string().c_str(), tkn[0].c_str(), nameExport.c_str(), typeInfo->name.c_str());
-    }
 }
 
 Utf8 ModuleGenDocJob::outputNode(AstNode* node)
@@ -571,6 +504,10 @@ void ModuleGenDocJob::generateTocCateg(bool& first, AstNodeKind kind, const char
             }
         }
     }
+
+    // Invert references
+    for (auto& n : pendingNodes)
+        collectInvert[n->tocName] = n->fullName;
 
     sort(pendingNodes.begin(), pendingNodes.end(), [](OneRef* a, OneRef* b)
          { return strcmp(a->tocName.c_str(), b->tocName.c_str()) < 0; });
@@ -816,9 +753,9 @@ void ModuleGenDocJob::generateContent()
                 helpContent += "<td class=\"tdtype\">\n";
                 auto varDecl = CastAst<AstVarDecl>(n, AstNodeKind::ConstDecl);
                 if (varDecl->typeInfo)
-                    helpContent += outputType(varDecl->typeInfo);
+                    outputUserLine(varDecl->typeInfo->name);
                 else
-                    helpContent += outputNode(varDecl->type);
+                    outputUserLine(outputNode(varDecl->type));
                 helpContent += "</td>\n";
 
                 helpContent += "<td>\n";
@@ -888,9 +825,9 @@ void ModuleGenDocJob::generateContent()
 
                 helpContent += "<td class=\"tdtype\">\n";
                 if (varDecl->typeInfo)
-                    helpContent += outputType(varDecl->typeInfo);
+                    outputUserLine(varDecl->typeInfo->name);
                 else
-                    helpContent += outputNode(varDecl->type);
+                    outputUserLine(outputNode(varDecl->type));
                 helpContent += "</td>\n";
 
                 helpContent += "<td>\n";
@@ -1039,7 +976,7 @@ JobResult ModuleGenDocJob::execute()
     concat.init();
     outputCxt.checkPublic = false;
     outputCxt.exportType  = [this](TypeInfo* typeInfo)
-    { return outputType(typeInfo); };
+    { return typeInfo->name; };
 
     auto filePath = g_Workspace->targetPath;
     if (!module)
@@ -1054,7 +991,7 @@ JobResult ModuleGenDocJob::execute()
         filePath += ".html";
     }
 
-    Utf8 fileName = filePath.string();
+    fileName = filePath.string();
     fileName.makeLower();
 
     FILE* f = nullptr;

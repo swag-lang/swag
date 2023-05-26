@@ -831,7 +831,7 @@ u32</td>
 </p>
 <h3 class="content" id="Libc.acrt_iob_func"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">acrt_iob_func</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func acrt_iob_func(index: u32)-><a href="std.libc.html#Libc.FILE">*FILE</a>
+<code style="white-space: break-spaces">func acrt_iob_func(index: u32)->*FILE
 </code>
 </p>
 <h3 class="content" id="Libc.aligned_alloc"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">aligned_alloc</span></h3>
@@ -841,7 +841,7 @@ u32</td>
 </p>
 <h3 class="content" id="Libc.asctime"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">asctime</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func asctime(timeptr: <a href="std.libc.html#Libc.tm">*tm</a>)->*u8
+<code style="white-space: break-spaces">func asctime(timeptr: *tm)->*u8
 </code>
 </p>
 <h3 class="content" id="Libc.asin"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">asin</span></h3>
@@ -946,7 +946,7 @@ u32</td>
 </p>
 <h3 class="content" id="Libc.clearerr"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">clearerr</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func clearerr(stream: <a href="std.libc.html#Libc.FILE">*FILE</a>)
+<code style="white-space: break-spaces">func clearerr(stream: *FILE)
 </code>
 </p>
 <h3 class="content" id="Libc.clock"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">clock</span></h3>
@@ -996,7 +996,7 @@ u32</td>
 </p>
 <h3 class="content" id="Libc.div"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">div</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func div(numer: s32, denom: s32)-><a href="std.libc.html#Libc.div_t">div_t</a>
+<code style="white-space: break-spaces">func div(numer: s32, denom: s32)->div_t
 </code>
 </p>
 <h3 class="content" id="Libc.div_t"><span class="titletype">struct</span> <span class="titlelight">Libc.</span><span class="titlestrong">div_t</span></h3>
@@ -1087,7 +1087,7 @@ func atexit(fn: *void)-&gt;s32;func at_quick_exit(fn: *void)-&gt;s32;.</p>
 </p>
 <h3 class="content" id="Libc.fclose"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">fclose</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func fclose(stream: <a href="std.libc.html#Libc.FILE">*FILE</a>)->s64
+<code style="white-space: break-spaces">func fclose(stream: *FILE)->s64
 </code>
 </p>
 <h3 class="content" id="Libc.fdim"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">fdim</span></h3>
@@ -1102,32 +1102,32 @@ func atexit(fn: *void)-&gt;s32;func at_quick_exit(fn: *void)-&gt;s32;.</p>
 </p>
 <h3 class="content" id="Libc.feof"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">feof</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func feof(stream: <a href="std.libc.html#Libc.FILE">*FILE</a>)->s64
+<code style="white-space: break-spaces">func feof(stream: *FILE)->s64
 </code>
 </p>
 <h3 class="content" id="Libc.ferror"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">ferror</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func ferror(stream: <a href="std.libc.html#Libc.FILE">*FILE</a>)->s64
+<code style="white-space: break-spaces">func ferror(stream: *FILE)->s64
 </code>
 </p>
 <h3 class="content" id="Libc.fflush"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">fflush</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func fflush(stream: <a href="std.libc.html#Libc.FILE">*FILE</a>)->s64
+<code style="white-space: break-spaces">func fflush(stream: *FILE)->s64
 </code>
 </p>
 <h3 class="content" id="Libc.fgetc"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">fgetc</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func fgetc(stream: <a href="std.libc.html#Libc.FILE">*FILE</a>)->s64
+<code style="white-space: break-spaces">func fgetc(stream: *FILE)->s64
 </code>
 </p>
 <h3 class="content" id="Libc.fgetpos"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">fgetpos</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func fgetpos(stream: <a href="std.libc.html#Libc.FILE">*FILE</a>, pos: *fpos_t)->s64
+<code style="white-space: break-spaces">func fgetpos(stream: *FILE, pos: *fpos_t)->s64
 </code>
 </p>
 <h3 class="content" id="Libc.fgets"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">fgets</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func fgets(s: *u8, n: s64, stream: <a href="std.libc.html#Libc.FILE">*FILE</a>)->*u8
+<code style="white-space: break-spaces">func fgets(s: *u8, n: s64, stream: *FILE)->*u8
 </code>
 </p>
 <h3 class="content" id="Libc.floor"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">floor</span></h3>
@@ -1182,7 +1182,7 @@ func atexit(fn: *void)-&gt;s32;func at_quick_exit(fn: *void)-&gt;s32;.</p>
 </p>
 <h3 class="content" id="Libc.fopen"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">fopen</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func fopen(filename: cstring, mode: cstring)-><a href="std.libc.html#Libc.FILE">*FILE</a>
+<code style="white-space: break-spaces">func fopen(filename: cstring, mode: cstring)->*FILE
 </code>
 </p>
 <h3 class="content" id="Libc.fpclassify"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">fpclassify</span></h3>
@@ -1197,17 +1197,17 @@ func atexit(fn: *void)-&gt;s32;func at_quick_exit(fn: *void)-&gt;s32;.</p>
 </p>
 <h3 class="content" id="Libc.fprintf"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">fprintf</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func fprintf(file: <a href="std.libc.html#Libc.FILE">*FILE</a>, format: cstring, args: cvarargs)->s64
+<code style="white-space: break-spaces">func fprintf(file: *FILE, format: cstring, args: cvarargs)->s64
 </code>
 </p>
 <h3 class="content" id="Libc.fputc"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">fputc</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func fputc(s: cstring, stream: <a href="std.libc.html#Libc.FILE">*FILE</a>)->s64
+<code style="white-space: break-spaces">func fputc(s: cstring, stream: *FILE)->s64
 </code>
 </p>
 <h3 class="content" id="Libc.fread"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">fread</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func fread(ptr: *void, size: size_t, stream: <a href="std.libc.html#Libc.FILE">*FILE</a>)->size_t
+<code style="white-space: break-spaces">func fread(ptr: *void, size: size_t, stream: *FILE)->size_t
 </code>
 </p>
 <h3 class="content" id="Libc.free"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">free</span></h3>
@@ -1217,7 +1217,7 @@ func atexit(fn: *void)-&gt;s32;func at_quick_exit(fn: *void)-&gt;s32;.</p>
 </p>
 <h3 class="content" id="Libc.freopen"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">freopen</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func freopen(filename: cstring, mode: cstring, stream: <a href="std.libc.html#Libc.FILE">*FILE</a>)-><a href="std.libc.html#Libc.FILE">*FILE</a>
+<code style="white-space: break-spaces">func freopen(filename: cstring, mode: cstring, stream: *FILE)->*FILE
 </code>
 </p>
 <h3 class="content" id="Libc.frexp"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">frexp</span></h3>
@@ -1232,32 +1232,32 @@ func atexit(fn: *void)-&gt;s32;func at_quick_exit(fn: *void)-&gt;s32;.</p>
 </p>
 <h3 class="content" id="Libc.fscanf"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">fscanf</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func fscanf(file: <a href="std.libc.html#Libc.FILE">*FILE</a>, format: cstring, args: cvarargs)->s64
+<code style="white-space: break-spaces">func fscanf(file: *FILE, format: cstring, args: cvarargs)->s64
 </code>
 </p>
 <h3 class="content" id="Libc.fseek"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">fseek</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func fseek(stream: <a href="std.libc.html#Libc.FILE">*FILE</a>, offset: s32, whence: s64)->s64
+<code style="white-space: break-spaces">func fseek(stream: *FILE, offset: s32, whence: s64)->s64
 </code>
 </p>
 <h3 class="content" id="Libc.fsetpos"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">fsetpos</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func fsetpos(stream: <a href="std.libc.html#Libc.FILE">*FILE</a>, pos: *fpos_t)->s64
+<code style="white-space: break-spaces">func fsetpos(stream: *FILE, pos: *fpos_t)->s64
 </code>
 </p>
 <h3 class="content" id="Libc.ftell"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">ftell</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func ftell(stream: <a href="std.libc.html#Libc.FILE">*FILE</a>)->s32
+<code style="white-space: break-spaces">func ftell(stream: *FILE)->s32
 </code>
 </p>
 <h3 class="content" id="Libc.fwrite"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">fwrite</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func fwrite(ptr: *void, size: size_t, nmemb: size_t, stream: <a href="std.libc.html#Libc.FILE">*FILE</a>)->size_t
+<code style="white-space: break-spaces">func fwrite(ptr: *void, size: size_t, nmemb: size_t, stream: *FILE)->size_t
 </code>
 </p>
 <h3 class="content" id="Libc.getc"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">getc</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func getc(stream: <a href="std.libc.html#Libc.FILE">*FILE</a>)->s64
+<code style="white-space: break-spaces">func getc(stream: *FILE)->s64
 </code>
 </p>
 <h3 class="content" id="Libc.getchar"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">getchar</span></h3>
@@ -1272,7 +1272,7 @@ func atexit(fn: *void)-&gt;s32;func at_quick_exit(fn: *void)-&gt;s32;.</p>
 </p>
 <h3 class="content" id="Libc.gmtime"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">gmtime</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func gmtime(timer: *time_t)-><a href="std.libc.html#Libc.tm">*tm</a>
+<code style="white-space: break-spaces">func gmtime(timer: *time_t)->*tm
 </code>
 </p>
 <h3 class="content" id="Libc.hypot"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">hypot</span></h3>
@@ -1432,7 +1432,7 @@ func isunordered(x: f64, y: f64)
 </p>
 <h3 class="content" id="Libc.ldiv"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">ldiv</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func ldiv(numer: s32, denom: s32)-><a href="std.libc.html#Libc.ldiv_t">ldiv_t</a>
+<code style="white-space: break-spaces">func ldiv(numer: s32, denom: s32)->ldiv_t
 </code>
 </p>
 <h3 class="content" id="Libc.ldiv_t"><span class="titletype">struct</span> <span class="titlelight">Libc.</span><span class="titlestrong">ldiv_t</span></h3>
@@ -1471,7 +1471,7 @@ s32</td>
 </p>
 <h3 class="content" id="Libc.lldiv"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">lldiv</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func lldiv(numer: s64, denom: s64)-><a href="std.libc.html#Libc.lldiv_t">lldiv_t</a>
+<code style="white-space: break-spaces">func lldiv(numer: s64, denom: s64)->lldiv_t
 </code>
 </p>
 <h3 class="content" id="Libc.lldiv_t"><span class="titletype">struct</span> <span class="titlelight">Libc.</span><span class="titlestrong">lldiv_t</span></h3>
@@ -1515,7 +1515,7 @@ s64</td>
 </p>
 <h3 class="content" id="Libc.localtime"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">localtime</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func localtime(timer: *time_t)-><a href="std.libc.html#Libc.tm">*tm</a>
+<code style="white-space: break-spaces">func localtime(timer: *time_t)->*tm
 </code>
 </p>
 <h3 class="content" id="Libc.log"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">log</span></h3>
@@ -1635,7 +1635,7 @@ s64</td>
 </p>
 <h3 class="content" id="Libc.mktime"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">mktime</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func mktime(timeptr: <a href="std.libc.html#Libc.tm">*tm</a>)->time_t
+<code style="white-space: break-spaces">func mktime(timeptr: *tm)->time_t
 </code>
 </p>
 <h3 class="content" id="Libc.modf"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">modf</span></h3>
@@ -1700,7 +1700,7 @@ s64</td>
 </p>
 <h3 class="content" id="Libc.putc"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">putc</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func putc(c: s64, stream: <a href="std.libc.html#Libc.FILE">*FILE</a>)->s64
+<code style="white-space: break-spaces">func putc(c: s64, stream: *FILE)->s64
 </code>
 </p>
 <h3 class="content" id="Libc.putchar"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">putchar</span></h3>
@@ -1765,7 +1765,7 @@ s64</td>
 </p>
 <h3 class="content" id="Libc.rewind"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">rewind</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func rewind(stream: <a href="std.libc.html#Libc.FILE">*FILE</a>)
+<code style="white-space: break-spaces">func rewind(stream: *FILE)
 </code>
 </p>
 <h3 class="content" id="Libc.rint"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">rint</span></h3>
@@ -1815,12 +1815,12 @@ s64</td>
 </p>
 <h3 class="content" id="Libc.setbuf"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">setbuf</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func setbuf(stream: <a href="std.libc.html#Libc.FILE">*FILE</a>, buf: *u8)
+<code style="white-space: break-spaces">func setbuf(stream: *FILE, buf: *u8)
 </code>
 </p>
 <h3 class="content" id="Libc.setvbuf"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">setvbuf</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func setvbuf(stream: <a href="std.libc.html#Libc.FILE">*FILE</a>, buf: *u8, mode: s64, size: size_t)->s64
+<code style="white-space: break-spaces">func setvbuf(stream: *FILE, buf: *u8, mode: s64, size: size_t)->s64
 </code>
 </p>
 <h3 class="content" id="Libc.signbit"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">signbit</span></h3>
@@ -1881,12 +1881,12 @@ func signbit(x: f64)
 </p>
 <h3 class="content" id="Libc.stdio_common_vfprintf"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">stdio_common_vfprintf</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func stdio_common_vfprintf(_Options: u64, _Stream: <a href="std.libc.html#Libc.FILE">*FILE</a>, _Format: cstring, _Locale: *void, _ArgList: *void)->s32
+<code style="white-space: break-spaces">func stdio_common_vfprintf(_Options: u64, _Stream: *FILE, _Format: cstring, _Locale: *void, _ArgList: *void)->s32
 </code>
 </p>
 <h3 class="content" id="Libc.stdio_common_vfscanf"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">stdio_common_vfscanf</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func stdio_common_vfscanf(_Options: u64, _Stream: <a href="std.libc.html#Libc.FILE">*FILE</a>, _Format: cstring, _Locale: *void, _ArgList: *void)->s32
+<code style="white-space: break-spaces">func stdio_common_vfscanf(_Options: u64, _Stream: *FILE, _Format: cstring, _Locale: *void, _ArgList: *void)->s32
 </code>
 </p>
 <h3 class="content" id="Libc.stdio_common_vsprintf"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">stdio_common_vsprintf</span></h3>
@@ -1936,7 +1936,7 @@ func signbit(x: f64)
 </p>
 <h3 class="content" id="Libc.strftime"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">strftime</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func strftime(s: *u8, maxsize: size_t, format: const *u8, timeptr: <a href="std.libc.html#Libc.tm">*tm</a>)->size_t
+<code style="white-space: break-spaces">func strftime(s: *u8, maxsize: size_t, format: const *u8, timeptr: *tm)->size_t
 </code>
 </p>
 <h3 class="content" id="Libc.strlen"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">strlen</span></h3>
@@ -2136,7 +2136,7 @@ s32</td>
 </table>
 <h3 class="content" id="Libc.tmpfile"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">tmpfile</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func tmpfile()-><a href="std.libc.html#Libc.FILE">*FILE</a>
+<code style="white-space: break-spaces">func tmpfile()->*FILE
 </code>
 </p>
 <h3 class="content" id="Libc.tmpnam"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">tmpnam</span></h3>
@@ -2166,54 +2166,54 @@ s32</td>
 </p>
 <h3 class="content" id="Libc.ungetc"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">ungetc</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func ungetc(c: s64, stream: <a href="std.libc.html#Libc.FILE">*FILE</a>)->s64
+<code style="white-space: break-spaces">func ungetc(c: s64, stream: *FILE)->s64
 </code>
 </p>
 <h3 class="content" id="Libc.va_end"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">va_end</span></h3>
 <p class="code">
 <code style="white-space: break-spaces">#[Swag.Macro]
-func va_end(vl: <a href="swag.runtime.html#Swag.CVaList">*CVaList</a>)
+func va_end(vl: *CVaList)
 </code>
 </p>
 <h3 class="content" id="Libc.va_start"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">va_start</span></h3>
 <p class="code">
 <code style="white-space: break-spaces">#[Swag.Macro]
-func va_start(vl: <a href="swag.runtime.html#Swag.CVaList">*CVaList</a>, dummy: any)
+func va_start(vl: *CVaList, dummy: any)
 </code>
 </p>
 <h3 class="content" id="Libc.vfprintf"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">vfprintf</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func vfprintf(file: <a href="std.libc.html#Libc.FILE">*FILE</a>, format: cstring, args: <a href="swag.runtime.html#Swag.CVaList">*CVaList</a>)->s64
+<code style="white-space: break-spaces">func vfprintf(file: *FILE, format: cstring, args: *CVaList)->s64
 </code>
 </p>
 <h3 class="content" id="Libc.vfscanf"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">vfscanf</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func vfscanf(file: <a href="std.libc.html#Libc.FILE">*FILE</a>, format: cstring, args: <a href="swag.runtime.html#Swag.CVaList">*CVaList</a>)->s64
+<code style="white-space: break-spaces">func vfscanf(file: *FILE, format: cstring, args: *CVaList)->s64
 </code>
 </p>
 <h3 class="content" id="Libc.vprintf"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">vprintf</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func vprintf(format: cstring, args: <a href="swag.runtime.html#Swag.CVaList">*CVaList</a>)->s64
+<code style="white-space: break-spaces">func vprintf(format: cstring, args: *CVaList)->s64
 </code>
 </p>
 <h3 class="content" id="Libc.vscanf"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">vscanf</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func vscanf(format: cstring, args: <a href="swag.runtime.html#Swag.CVaList">*CVaList</a>)->s64
+<code style="white-space: break-spaces">func vscanf(format: cstring, args: *CVaList)->s64
 </code>
 </p>
 <h3 class="content" id="Libc.vsnprintf"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">vsnprintf</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func vsnprintf(s: *u8, count: size_t, format: cstring, args: <a href="swag.runtime.html#Swag.CVaList">*CVaList</a>)->s64
+<code style="white-space: break-spaces">func vsnprintf(s: *u8, count: size_t, format: cstring, args: *CVaList)->s64
 </code>
 </p>
 <h3 class="content" id="Libc.vsprintf"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">vsprintf</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func vsprintf(s: *u8, format: cstring, args: <a href="swag.runtime.html#Swag.CVaList">*CVaList</a>)->s64
+<code style="white-space: break-spaces">func vsprintf(s: *u8, format: cstring, args: *CVaList)->s64
 </code>
 </p>
 <h3 class="content" id="Libc.vsscanf"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">vsscanf</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func vsscanf(s: cstring, format: cstring, args: <a href="swag.runtime.html#Swag.CVaList">*CVaList</a>)->s64
+<code style="white-space: break-spaces">func vsscanf(s: cstring, format: cstring, args: *CVaList)->s64
 </code>
 </p>
 <h3 class="content" id="Libc.wcstombs"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">wcstombs</span></h3>

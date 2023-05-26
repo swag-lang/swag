@@ -1526,11 +1526,11 @@ Zero</td>
 </table>
 <h3 class="content" id="Pixel.Argb.fromName"><span class="titletype">func</span> <span class="titlelight">Argb.</span><span class="titlestrong">fromName</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func fromName(name: string)-><a href="std.pixel.html#Pixel.Argb">Argb</a>
+<code style="white-space: break-spaces">func fromName(name: string)->Argb
 </code>
 </p>
 <p>
-Get the Argb value that matches <code class = "incode">name</code>.</p>
+Get the <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Argb">Argb</a> value that matches <code class = "incode">name</code>.</p>
 <h3 class="content" id="Pixel.BasePixelShader"><span class="titletype"></span> <span class="titlelight">Pixel.</span><span class="titlestrong">Constants</span></h3>
 <table>
 <tr>
@@ -1715,7 +1715,7 @@ u16</td>
 </p>
 <h3 class="content" id="Pixel.Bmp.Decoder.IImageDecoder.decode"><span class="titletype">func</span> <span class="titlelight">IImageDecoder.</span><span class="titlestrong">decode</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func decode(using self, buffer: const [..] u8, options: <a href="std.pixel.html#Pixel.DecodeOptions">DecodeOptions</a>)-><a href="std.pixel.html#Pixel.Image">Image</a> throw
+<code style="white-space: break-spaces">func decode(using self, buffer: const [..] u8, options: DecodeOptions)->Image throw
 </code>
 </p>
 <h3 class="content" id="Pixel.Bmp.Encoder"><span class="titletype">struct</span> <span class="titlelight">Bmp.</span><span class="titlestrong">Encoder</span></h3>
@@ -1726,7 +1726,7 @@ u16</td>
 </p>
 <h3 class="content" id="Pixel.Bmp.Encoder.IImageEncoder.encode"><span class="titletype">func</span> <span class="titlelight">IImageEncoder.</span><span class="titlestrong">encode</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func encode(using self, result: <a href="std.core.html#Core.ConcatBuffer">*ConcatBuffer</a>, image: <a href="std.pixel.html#Pixel.Image">Image</a>, options: any) throw
+<code style="white-space: break-spaces">func encode(using self, result: *ConcatBuffer, image: Image, options: any) throw
 </code>
 </p>
 <h3 class="content" id="Pixel.Bmp.FILL_RLE_COMMAND"><span class="titletype"></span> <span class="titlelight">Bmp.</span><span class="titlestrong">Constants</span></h3>
@@ -1919,7 +1919,7 @@ Inside</td>
 <td>
 color</td>
 <td class="tdtype">
-<a href="std.pixel.html#Pixel.Color">Color</a></td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Color">Color</a></td>
 <td>
 </td>
 </tr>
@@ -1927,7 +1927,7 @@ color</td>
 <td>
 type</td>
 <td class="tdtype">
-<a href="std.pixel.html#Pixel.BrushType">BrushType</a></td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.BrushType">BrushType</a></td>
 <td>
 </td>
 </tr>
@@ -1935,7 +1935,7 @@ type</td>
 <td>
 hatch</td>
 <td class="tdtype">
-<a href="std.pixel.html#Pixel.HatchStyle">HatchStyle</a></td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.HatchStyle">HatchStyle</a></td>
 <td>
 </td>
 </tr>
@@ -1943,7 +1943,7 @@ hatch</td>
 <td>
 texture</td>
 <td class="tdtype">
-<a href="std.pixel.html#Pixel.Texture">Texture</a></td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Texture">Texture</a></td>
 <td>
 </td>
 </tr>
@@ -1951,7 +1951,7 @@ texture</td>
 <td>
 uvMode</td>
 <td class="tdtype">
-<a href="std.pixel.html#Pixel.UVMode">UVMode</a></td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.UVMode">UVMode</a></td>
 <td>
 </td>
 </tr>
@@ -1959,7 +1959,7 @@ uvMode</td>
 <td>
 uvRect</td>
 <td class="tdtype">
-<a href="std.core.html#Core.Math.Rectangle">Rectangle</a></td>
+Rectangle</td>
 <td>
 </td>
 </tr>
@@ -2001,28 +2001,28 @@ Returns a tiled texture brush.</p>
 </table>
 <h3 class="content" id="Pixel.Brush.createHatch"><span class="titletype">func</span> <span class="titlelight">Brush.</span><span class="titlestrong">createHatch</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func createHatch(style: <a href="std.pixel.html#Pixel.HatchStyle">HatchStyle</a>, color: <a href="std.pixel.html#Pixel.Color">Color</a>)-><a href="std.pixel.html#Pixel.Brush">Brush</a>
+<code style="white-space: break-spaces">func createHatch(style: HatchStyle, color: Color)->Brush
 </code>
 </p>
 <p>
 Returns a hatch brush.</p>
 <h3 class="content" id="Pixel.Brush.createSolid"><span class="titletype">func</span> <span class="titlelight">Brush.</span><span class="titlestrong">createSolid</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func createSolid(color: <a href="std.pixel.html#Pixel.Color">Color</a>)-><a href="std.pixel.html#Pixel.Brush">Brush</a>
+<code style="white-space: break-spaces">func createSolid(color: Color)->Brush
 </code>
 </p>
 <p>
 Returns a solid color brush.</p>
 <h3 class="content" id="Pixel.Brush.createTexture"><span class="titletype">func</span> <span class="titlelight">Brush.</span><span class="titlestrong">createTexture</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func createTexture(texture: <a href="std.pixel.html#Pixel.Texture">Texture</a>)-><a href="std.pixel.html#Pixel.Brush">Brush</a>
+<code style="white-space: break-spaces">func createTexture(texture: Texture)->Brush
 </code>
 </p>
 <p>
 Returns a full texture brush.</p>
 <h3 class="content" id="Pixel.Brush.createTiled"><span class="titletype">func</span> <span class="titlelight">Brush.</span><span class="titlestrong">createTiled</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func createTiled(texture: <a href="std.pixel.html#Pixel.Texture">Texture</a>)-><a href="std.pixel.html#Pixel.Brush">Brush</a>
+<code style="white-space: break-spaces">func createTiled(texture: Texture)->Brush
 </code>
 </p>
 <p>
@@ -2247,7 +2247,7 @@ f64</td>
 <td>
 bot</td>
 <td class="tdtype">
-<a href="std.pixel.html#Pixel.Clipper.IntPoint">IntPoint</a></td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Clipper.IntPoint">IntPoint</a></td>
 <td>
 </td>
 </tr>
@@ -2255,7 +2255,7 @@ bot</td>
 <td>
 curr</td>
 <td class="tdtype">
-<a href="std.pixel.html#Pixel.Clipper.IntPoint">IntPoint</a></td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Clipper.IntPoint">IntPoint</a></td>
 <td>
 </td>
 </tr>
@@ -2263,7 +2263,7 @@ curr</td>
 <td>
 top</td>
 <td class="tdtype">
-<a href="std.pixel.html#Pixel.Clipper.IntPoint">IntPoint</a></td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Clipper.IntPoint">IntPoint</a></td>
 <td>
 </td>
 </tr>
@@ -2279,7 +2279,7 @@ f64</td>
 <td>
 polyType</td>
 <td class="tdtype">
-<a href="std.pixel.html#Pixel.Clipper.PolyType">PolyType</a></td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Clipper.PolyType">PolyType</a></td>
 <td>
 </td>
 </tr>
@@ -2287,7 +2287,7 @@ polyType</td>
 <td>
 side</td>
 <td class="tdtype">
-<a href="std.pixel.html#Pixel.Clipper.EdgeSide">EdgeSide</a></td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Clipper.EdgeSide">EdgeSide</a></td>
 <td>
 </td>
 </tr>
@@ -2327,7 +2327,7 @@ s32</td>
 <td>
 next</td>
 <td class="tdtype">
-<a href="std.pixel.html#Pixel.Clipper.Edge">*Edge</a></td>
+*Edge</td>
 <td>
 </td>
 </tr>
@@ -2335,7 +2335,7 @@ next</td>
 <td>
 prev</td>
 <td class="tdtype">
-<a href="std.pixel.html#Pixel.Clipper.Edge">*Edge</a></td>
+*Edge</td>
 <td>
 </td>
 </tr>
@@ -2343,7 +2343,7 @@ prev</td>
 <td>
 nextInLML</td>
 <td class="tdtype">
-<a href="std.pixel.html#Pixel.Clipper.Edge">*Edge</a></td>
+*Edge</td>
 <td>
 </td>
 </tr>
@@ -2351,7 +2351,7 @@ nextInLML</td>
 <td>
 nextInAEL</td>
 <td class="tdtype">
-<a href="std.pixel.html#Pixel.Clipper.Edge">*Edge</a></td>
+*Edge</td>
 <td>
 </td>
 </tr>
@@ -2359,7 +2359,7 @@ nextInAEL</td>
 <td>
 prevInAEL</td>
 <td class="tdtype">
-<a href="std.pixel.html#Pixel.Clipper.Edge">*Edge</a></td>
+*Edge</td>
 <td>
 </td>
 </tr>
@@ -2367,7 +2367,7 @@ prevInAEL</td>
 <td>
 nextInSEL</td>
 <td class="tdtype">
-<a href="std.pixel.html#Pixel.Clipper.Edge">*Edge</a></td>
+*Edge</td>
 <td>
 </td>
 </tr>
@@ -2375,7 +2375,7 @@ nextInSEL</td>
 <td>
 prevInSEL</td>
 <td class="tdtype">
-<a href="std.pixel.html#Pixel.Clipper.Edge">*Edge</a></td>
+*Edge</td>
 <td>
 </td>
 </tr>
@@ -2465,7 +2465,7 @@ CInt</td>
 </table>
 <h3 class="content" id="Pixel.Clipper.IntPoint.opEquals"><span class="titletype">func</span> <span class="titlelight">IntPoint.</span><span class="titlestrong">opEquals</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func opEquals(using self, other: <a href="std.pixel.html#Pixel.Clipper.IntPoint">IntPoint</a>)->bool
+<code style="white-space: break-spaces">func opEquals(using self, other: IntPoint)->bool
 </code>
 </p>
 <h3 class="content" id="Pixel.Clipper.IntRect"><span class="titletype">struct</span> <span class="titlelight">Clipper.</span><span class="titlestrong">IntRect</span></h3>
@@ -2509,7 +2509,7 @@ CInt</td>
 <td>
 edge1</td>
 <td class="tdtype">
-<a href="std.pixel.html#Pixel.Clipper.Edge">*Edge</a></td>
+*Edge</td>
 <td>
 </td>
 </tr>
@@ -2517,7 +2517,7 @@ edge1</td>
 <td>
 edge2</td>
 <td class="tdtype">
-<a href="std.pixel.html#Pixel.Clipper.Edge">*Edge</a></td>
+*Edge</td>
 <td>
 </td>
 </tr>
@@ -2525,7 +2525,7 @@ edge2</td>
 <td>
 pt</td>
 <td class="tdtype">
-<a href="std.pixel.html#Pixel.Clipper.IntPoint">IntPoint</a></td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Clipper.IntPoint">IntPoint</a></td>
 <td>
 </td>
 </tr>
@@ -2536,7 +2536,7 @@ pt</td>
 <td>
 outPt1</td>
 <td class="tdtype">
-<a href="std.pixel.html#Pixel.Clipper.OutPt">*OutPt</a></td>
+*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Clipper.OutPt">OutPt</a></td>
 <td>
 </td>
 </tr>
@@ -2544,7 +2544,7 @@ outPt1</td>
 <td>
 outPt2</td>
 <td class="tdtype">
-<a href="std.pixel.html#Pixel.Clipper.OutPt">*OutPt</a></td>
+*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Clipper.OutPt">OutPt</a></td>
 <td>
 </td>
 </tr>
@@ -2552,7 +2552,7 @@ outPt2</td>
 <td>
 offPt</td>
 <td class="tdtype">
-<a href="std.pixel.html#Pixel.Clipper.IntPoint">IntPoint</a></td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Clipper.IntPoint">IntPoint</a></td>
 <td>
 </td>
 </tr>
@@ -2603,7 +2603,7 @@ CInt</td>
 <td>
 leftBound</td>
 <td class="tdtype">
-<a href="std.pixel.html#Pixel.Clipper.Edge">*Edge</a></td>
+*Edge</td>
 <td>
 </td>
 </tr>
@@ -2611,7 +2611,7 @@ leftBound</td>
 <td>
 rightBound</td>
 <td class="tdtype">
-<a href="std.pixel.html#Pixel.Clipper.Edge">*Edge</a></td>
+*Edge</td>
 <td>
 </td>
 </tr>
@@ -2638,7 +2638,7 @@ f64</td>
 <td>
 destPolys</td>
 <td class="tdtype">
-<a href="std.core.html#Core.Array">Array'(Array'(IntPoint))</a></td>
+Array<code class = "incode">(Array</code>(<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Clipper.IntPoint">IntPoint</a>))</td>
 <td>
 </td>
 </tr>
@@ -2646,7 +2646,7 @@ destPolys</td>
 <td>
 srcPoly</td>
 <td class="tdtype">
-<a href="std.core.html#Core.Array">Array'(IntPoint)</a></td>
+Array(<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Clipper.IntPoint">IntPoint</a>)</td>
 <td>
 </td>
 </tr>
@@ -2654,7 +2654,7 @@ srcPoly</td>
 <td>
 destPoly</td>
 <td class="tdtype">
-<a href="std.core.html#Core.Array">Array'(IntPoint)</a></td>
+Array(<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Clipper.IntPoint">IntPoint</a>)</td>
 <td>
 </td>
 </tr>
@@ -2662,7 +2662,7 @@ destPoly</td>
 <td>
 normals</td>
 <td class="tdtype">
-<a href="std.core.html#Core.Array">Array'(DoublePoint)</a></td>
+Array(<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Clipper.DoublePoint">DoublePoint</a>)</td>
 <td>
 </td>
 </tr>
@@ -2718,7 +2718,7 @@ f64</td>
 <td>
 lowest</td>
 <td class="tdtype">
-<a href="std.pixel.html#Pixel.Clipper.IntPoint">IntPoint</a></td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Clipper.IntPoint">IntPoint</a></td>
 <td>
 </td>
 </tr>
@@ -2726,7 +2726,7 @@ lowest</td>
 <td>
 polyNodes</td>
 <td class="tdtype">
-<a href="std.pixel.html#Pixel.Clipper.PolyNode">PolyNode</a></td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Clipper.PolyNode">PolyNode</a></td>
 <td>
 </td>
 </tr>
@@ -2745,7 +2745,7 @@ s32</td>
 <td>
 pt</td>
 <td class="tdtype">
-<a href="std.pixel.html#Pixel.Clipper.IntPoint">IntPoint</a></td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Clipper.IntPoint">IntPoint</a></td>
 <td>
 </td>
 </tr>
@@ -2753,7 +2753,7 @@ pt</td>
 <td>
 next</td>
 <td class="tdtype">
-<a href="std.pixel.html#Pixel.Clipper.OutPt">*OutPt</a></td>
+*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Clipper.OutPt">OutPt</a></td>
 <td>
 </td>
 </tr>
@@ -2761,7 +2761,7 @@ next</td>
 <td>
 prev</td>
 <td class="tdtype">
-<a href="std.pixel.html#Pixel.Clipper.OutPt">*OutPt</a></td>
+*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Clipper.OutPt">OutPt</a></td>
 <td>
 </td>
 </tr>
@@ -2796,7 +2796,7 @@ bool</td>
 <td>
 firstLeft</td>
 <td class="tdtype">
-<a href="std.pixel.html#Pixel.Clipper.OutRec">*OutRec</a></td>
+*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Clipper.OutRec">OutRec</a></td>
 <td>
 </td>
 </tr>
@@ -2804,7 +2804,7 @@ firstLeft</td>
 <td>
 polyNd</td>
 <td class="tdtype">
-<a href="std.pixel.html#Pixel.Clipper.PolyNode">*PolyNode</a></td>
+*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Clipper.PolyNode">PolyNode</a></td>
 <td>
 </td>
 </tr>
@@ -2812,7 +2812,7 @@ polyNd</td>
 <td>
 pts</td>
 <td class="tdtype">
-<a href="std.pixel.html#Pixel.Clipper.OutPt">*OutPt</a></td>
+*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Clipper.OutPt">OutPt</a></td>
 <td>
 </td>
 </tr>
@@ -2820,7 +2820,7 @@ pts</td>
 <td>
 bottomPt</td>
 <td class="tdtype">
-<a href="std.pixel.html#Pixel.Clipper.OutPt">*OutPt</a></td>
+*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Clipper.OutPt">OutPt</a></td>
 <td>
 </td>
 </tr>
@@ -2874,7 +2874,7 @@ bool</td>
 <td>
 jointype</td>
 <td class="tdtype">
-<a href="std.pixel.html#Pixel.Clipper.JoinType">JoinType</a></td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Clipper.JoinType">JoinType</a></td>
 <td>
 </td>
 </tr>
@@ -2882,7 +2882,7 @@ jointype</td>
 <td>
 contour</td>
 <td class="tdtype">
-<a href="std.core.html#Core.Array">Array'(IntPoint)</a></td>
+Array(<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Clipper.IntPoint">IntPoint</a>)</td>
 <td>
 </td>
 </tr>
@@ -2890,7 +2890,7 @@ contour</td>
 <td>
 childs</td>
 <td class="tdtype">
-<a href="std.core.html#Core.Array">Array'(*PolyNode)</a></td>
+Array(*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Clipper.PolyNode">PolyNode</a>)</td>
 <td>
 </td>
 </tr>
@@ -2898,7 +2898,7 @@ childs</td>
 <td>
 parent</td>
 <td class="tdtype">
-<a href="std.pixel.html#Pixel.Clipper.PolyNode">*PolyNode</a></td>
+*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Clipper.PolyNode">PolyNode</a></td>
 <td>
 </td>
 </tr>
@@ -2975,7 +2975,7 @@ bool</td>
 <td>
 edgeList</td>
 <td class="tdtype">
-<a href="std.core.html#Core.Array">Array'(__clipper_tuple_227)</a></td>
+Array(__clipper_tuple_225)</td>
 <td>
 </td>
 </tr>
@@ -2983,7 +2983,7 @@ edgeList</td>
 <td>
 minimaList</td>
 <td class="tdtype">
-<a href="std.core.html#Core.Array">Array'(LocalMinimum)</a></td>
+Array(<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Clipper.LocalMinimum">LocalMinimum</a>)</td>
 <td>
 </td>
 </tr>
@@ -2991,7 +2991,7 @@ minimaList</td>
 <td>
 polyOuts</td>
 <td class="tdtype">
-<a href="std.core.html#Core.Array">Array'(*OutRec)</a></td>
+Array(*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Clipper.OutRec">OutRec</a>)</td>
 <td>
 </td>
 </tr>
@@ -2999,7 +2999,7 @@ polyOuts</td>
 <td>
 joinList</td>
 <td class="tdtype">
-<a href="std.core.html#Core.Array">Array'(*Join)</a></td>
+Array(*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Clipper.Join">Join</a>)</td>
 <td>
 </td>
 </tr>
@@ -3007,7 +3007,7 @@ joinList</td>
 <td>
 ghostJoinList</td>
 <td class="tdtype">
-<a href="std.core.html#Core.Array">Array'(*Join)</a></td>
+Array(*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Clipper.Join">Join</a>)</td>
 <td>
 </td>
 </tr>
@@ -3015,7 +3015,7 @@ ghostJoinList</td>
 <td>
 intersectList</td>
 <td class="tdtype">
-<a href="std.core.html#Core.Array">Array'(*IntersectNode)</a></td>
+Array(*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Clipper.IntersectNode">IntersectNode</a>)</td>
 <td>
 </td>
 </tr>
@@ -3023,7 +3023,7 @@ intersectList</td>
 <td>
 scanBeamList</td>
 <td class="tdtype">
-<a href="std.core.html#Core.Array">Array'(CInt)</a></td>
+Array(CInt)</td>
 <td>
 </td>
 </tr>
@@ -3031,7 +3031,7 @@ scanBeamList</td>
 <td>
 maximaList</td>
 <td class="tdtype">
-<a href="std.core.html#Core.Array">Array'(CInt)</a></td>
+Array(CInt)</td>
 <td>
 </td>
 </tr>
@@ -3039,7 +3039,7 @@ maximaList</td>
 <td>
 clipFillType</td>
 <td class="tdtype">
-<a href="std.pixel.html#Pixel.Clipper.PolyFillType">PolyFillType</a></td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Clipper.PolyFillType">PolyFillType</a></td>
 <td>
 </td>
 </tr>
@@ -3047,7 +3047,7 @@ clipFillType</td>
 <td>
 subjFillType</td>
 <td class="tdtype">
-<a href="std.pixel.html#Pixel.Clipper.PolyFillType">PolyFillType</a></td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Clipper.PolyFillType">PolyFillType</a></td>
 <td>
 </td>
 </tr>
@@ -3055,7 +3055,7 @@ subjFillType</td>
 <td>
 clipType</td>
 <td class="tdtype">
-<a href="std.pixel.html#Pixel.Clipper.ClipType">ClipType</a></td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Clipper.ClipType">ClipType</a></td>
 <td>
 </td>
 </tr>
@@ -3071,7 +3071,7 @@ u64</td>
 <td>
 activeEdges</td>
 <td class="tdtype">
-<a href="std.pixel.html#Pixel.Clipper.Edge">*Edge</a></td>
+*Edge</td>
 <td>
 </td>
 </tr>
@@ -3079,7 +3079,7 @@ activeEdges</td>
 <td>
 sortedEdges</td>
 <td class="tdtype">
-<a href="std.pixel.html#Pixel.Clipper.Edge">*Edge</a></td>
+*Edge</td>
 <td>
 </td>
 </tr>
@@ -3168,7 +3168,7 @@ u32</td>
 <a href="#Pixel.Color.fromAbgr">fromAbgr</a></td>
 <td>
 <p>
-Create a new Color with specified values.</p>
+Create a new <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Color">Color</a> with specified values.</p>
 </td>
 </tr>
 <tr>
@@ -3176,7 +3176,7 @@ Create a new Color with specified values.</p>
 <a href="#Pixel.Color.fromArgb">fromArgb</a></td>
 <td>
 <p>
-Create a new Color with specified values.</p>
+Create a new <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Color">Color</a> with specified values.</p>
 </td>
 </tr>
 <tr>
@@ -3184,7 +3184,7 @@ Create a new Color with specified values.</p>
 <a href="#Pixel.Color.fromArgb">fromArgb</a></td>
 <td>
 <p>
-Create a new Color with specified values.</p>
+Create a new <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Color">Color</a> with specified values.</p>
 </td>
 </tr>
 <tr>
@@ -3192,7 +3192,7 @@ Create a new Color with specified values.</p>
 <a href="#Pixel.Color.fromArgb">fromArgb</a></td>
 <td>
 <p>
-Create a new Color with specified values.</p>
+Create a new <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Color">Color</a> with specified values.</p>
 </td>
 </tr>
 <tr>
@@ -3200,7 +3200,7 @@ Create a new Color with specified values.</p>
 <a href="#Pixel.Color.fromArgb">fromArgb</a></td>
 <td>
 <p>
-Create a new Color with specified values.</p>
+Create a new <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Color">Color</a> with specified values.</p>
 </td>
 </tr>
 <tr>
@@ -3208,7 +3208,7 @@ Create a new Color with specified values.</p>
 <a href="#Pixel.Color.fromArgbf">fromArgbf</a></td>
 <td>
 <p>
-Create a new Color with specified values.</p>
+Create a new <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Color">Color</a> with specified values.</p>
 </td>
 </tr>
 <tr>
@@ -3216,7 +3216,7 @@ Create a new Color with specified values.</p>
 <a href="#Pixel.Color.fromHsl">fromHsl</a></td>
 <td>
 <p>
-Create a new Color with specified values.</p>
+Create a new <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Color">Color</a> with specified values.</p>
 </td>
 </tr>
 <tr>
@@ -3224,7 +3224,7 @@ Create a new Color with specified values.</p>
 <a href="#Pixel.Color.fromRgb">fromRgb</a></td>
 <td>
 <p>
-Create a new Color with specified values.</p>
+Create a new <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Color">Color</a> with specified values.</p>
 </td>
 </tr>
 <tr>
@@ -3232,7 +3232,7 @@ Create a new Color with specified values.</p>
 <a href="#Pixel.Color.fromRgbf">fromRgbf</a></td>
 <td>
 <p>
-Create a new Color with specified values.</p>
+Create a new <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Color">Color</a> with specified values.</p>
 </td>
 </tr>
 <tr>
@@ -3397,95 +3397,95 @@ Retrieve all components as floating point values between 0 and 1.</p>
 </p>
 <h3 class="content" id="Pixel.Color.fromAbgr"><span class="titletype">func</span> <span class="titlelight">Color.</span><span class="titlestrong">fromAbgr</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func fromAbgr(abgr: u32)-><a href="std.pixel.html#Pixel.Color">Color</a>
+<code style="white-space: break-spaces">func fromAbgr(abgr: u32)->Color
 </code>
 </p>
 <p>
-Create a new Color with specified values.</p>
+Create a new <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Color">Color</a> with specified values.</p>
 <h3 class="content" id="Pixel.Color.fromArgb"><span class="titletype">func</span> <span class="titlelight">Color.</span><span class="titlestrong">fromArgb</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func fromArgb(a: u8, r: u8, g: u8, b: u8)-><a href="std.pixel.html#Pixel.Color">Color</a>
+<code style="white-space: break-spaces">func fromArgb(a: u8, r: u8, g: u8, b: u8)->Color
 </code>
 </p>
 <p>
-Create a new Color with specified values.</p>
+Create a new <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Color">Color</a> with specified values.</p>
 <p class="code">
-<code style="white-space: break-spaces">func fromArgb(argb: <a href="std.pixel.html#Pixel.Argb">Argb</a>)-><a href="std.pixel.html#Pixel.Color">Color</a>
+<code style="white-space: break-spaces">func fromArgb(argb: Argb)->Color
 </code>
 </p>
 <p>
-Create a new Color with specified values.</p>
+Create a new <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Color">Color</a> with specified values.</p>
 <p class="code">
-<code style="white-space: break-spaces">func fromArgb(alpha: u8, argb: <a href="std.pixel.html#Pixel.Argb">Argb</a>)-><a href="std.pixel.html#Pixel.Color">Color</a>
+<code style="white-space: break-spaces">func fromArgb(alpha: u8, argb: Argb)->Color
 </code>
 </p>
 <p>
-Create a new Color with specified values.</p>
+Create a new <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Color">Color</a> with specified values.</p>
 <p class="code">
-<code style="white-space: break-spaces">func fromArgb(argb: u32)-><a href="std.pixel.html#Pixel.Color">Color</a>
+<code style="white-space: break-spaces">func fromArgb(argb: u32)->Color
 </code>
 </p>
 <p>
-Create a new Color with specified values.</p>
+Create a new <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Color">Color</a> with specified values.</p>
 <h3 class="content" id="Pixel.Color.fromArgbf"><span class="titletype">func</span> <span class="titlelight">Color.</span><span class="titlestrong">fromArgbf</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func fromArgbf(a: f32, r: f32, g: f32, b: f32)-><a href="std.pixel.html#Pixel.Color">Color</a>
+<code style="white-space: break-spaces">func fromArgbf(a: f32, r: f32, g: f32, b: f32)->Color
 </code>
 </p>
 <p>
-Create a new Color with specified values.</p>
+Create a new <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Color">Color</a> with specified values.</p>
 <h3 class="content" id="Pixel.Color.fromHsl"><span class="titletype">func</span> <span class="titlelight">Color.</span><span class="titlestrong">fromHsl</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func fromHsl(h: f32, s: f32, l: f32)-><a href="std.pixel.html#Pixel.Color">Color</a>
+<code style="white-space: break-spaces">func fromHsl(h: f32, s: f32, l: f32)->Color
 </code>
 </p>
 <p>
-Create a new Color with specified values.</p>
+Create a new <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Color">Color</a> with specified values.</p>
 <h3 class="content" id="Pixel.Color.fromRgb"><span class="titletype">func</span> <span class="titlelight">Color.</span><span class="titlestrong">fromRgb</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func fromRgb(r: u8, g: u8, b: u8)-><a href="std.pixel.html#Pixel.Color">Color</a>
+<code style="white-space: break-spaces">func fromRgb(r: u8, g: u8, b: u8)->Color
 </code>
 </p>
 <p>
-Create a new Color with specified values.</p>
+Create a new <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Color">Color</a> with specified values.</p>
 <h3 class="content" id="Pixel.Color.fromRgbf"><span class="titletype">func</span> <span class="titlelight">Color.</span><span class="titlestrong">fromRgbf</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func fromRgbf(r: f32, g: f32, b: f32)-><a href="std.pixel.html#Pixel.Color">Color</a>
+<code style="white-space: break-spaces">func fromRgbf(r: f32, g: f32, b: f32)->Color
 </code>
 </p>
 <p>
-Create a new Color with specified values.</p>
+Create a new <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Color">Color</a> with specified values.</p>
 <h3 class="content" id="Pixel.Color.getBlend"><span class="titletype">func</span> <span class="titlelight">Color.</span><span class="titlestrong">getBlend</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func getBlend(col0: <a href="std.pixel.html#Pixel.Color">Color</a>, col1: <a href="std.pixel.html#Pixel.Color">Color</a>, factor: f32)-><a href="std.pixel.html#Pixel.Color">Color</a>
+<code style="white-space: break-spaces">func getBlend(col0: Color, col1: Color, factor: f32)->Color
 </code>
 </p>
 <p>
 Blend two colors.</p>
 <h3 class="content" id="Pixel.Color.getBlendKeepAlpha"><span class="titletype">func</span> <span class="titlelight">Color.</span><span class="titlestrong">getBlendKeepAlpha</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func getBlendKeepAlpha(col0: <a href="std.pixel.html#Pixel.Color">Color</a>, col1: <a href="std.pixel.html#Pixel.Color">Color</a>, factor: f32)-><a href="std.pixel.html#Pixel.Color">Color</a>
+<code style="white-space: break-spaces">func getBlendKeepAlpha(col0: Color, col1: Color, factor: f32)->Color
 </code>
 </p>
 <p>
 Blend two colors, keeping the alpha channel of <code class = "incode">col0</code> untouched.</p>
 <h3 class="content" id="Pixel.Color.getDarker"><span class="titletype">func</span> <span class="titlelight">Color.</span><span class="titlestrong">getDarker</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func getDarker(col: <a href="std.pixel.html#Pixel.Color">Color</a>, factor: f32)-><a href="std.pixel.html#Pixel.Color">Color</a>
+<code style="white-space: break-spaces">func getDarker(col: Color, factor: f32)->Color
 </code>
 </p>
 <p>
 Returns a darker color.</p>
 <h3 class="content" id="Pixel.Color.getDistanceRgb"><span class="titletype">func</span> <span class="titlelight">Color.</span><span class="titlestrong">getDistanceRgb</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func getDistanceRgb(using self, col: <a href="std.pixel.html#Pixel.Color">Color</a>)->f32
+<code style="white-space: break-spaces">func getDistanceRgb(using self, col: Color)->f32
 </code>
 </p>
 <p>
 Returns the distance between the other color.</p>
 <h3 class="content" id="Pixel.Color.getLighter"><span class="titletype">func</span> <span class="titlelight">Color.</span><span class="titlestrong">getLighter</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func getLighter(col: <a href="std.pixel.html#Pixel.Color">Color</a>, factor: f32)-><a href="std.pixel.html#Pixel.Color">Color</a>
+<code style="white-space: break-spaces">func getLighter(col: Color, factor: f32)->Color
 </code>
 </p>
 <p>
@@ -3498,15 +3498,15 @@ Returns a lighter color.</p>
 <h3 class="content" id="Pixel.Color.opAffect"><span class="titletype">func</span> <span class="titlelight">Color.</span><span class="titlestrong">opAffect</span></h3>
 <p class="code">
 <code style="white-space: break-spaces">func opAffect(self, argb: u32)
-func opAffect(self, argb: <a href="std.pixel.html#Pixel.Argb">Argb</a>)
+func opAffect(self, argb: Argb)
 func opAffect(self, name: string)
 </code>
 </p>
 <h3 class="content" id="Pixel.Color.opEquals"><span class="titletype">func</span> <span class="titlelight">Color.</span><span class="titlestrong">opEquals</span></h3>
 <p class="code">
 <code style="white-space: break-spaces">func opEquals(self, argb: u32)
-func opEquals(self, argb: <a href="std.pixel.html#Pixel.Argb">Argb</a>)
-func opEquals(self, other: <a href="std.pixel.html#Pixel.Color">Color</a>)
+func opEquals(self, argb: Argb)
+func opEquals(self, other: Color)
 </code>
 </p>
 <h3 class="content" id="Pixel.Color.setArgb"><span class="titletype">func</span> <span class="titlelight">Color.</span><span class="titlestrong">setArgb</span></h3>
@@ -3538,7 +3538,7 @@ Initialize color with hue, saturation, lightness.</p>
 <p>
 Just set r, g and b components. Alpha will be Opaque.</p>
 <p class="code">
-<code style="white-space: break-spaces">func setRgb(using self, rgb: <a href="std.pixel.html#Pixel.Color">Color</a>)
+<code style="white-space: break-spaces">func setRgb(using self, rgb: Color)
 </code>
 </p>
 <p>
@@ -3612,7 +3612,7 @@ bool</td>
 <td>
 id</td>
 <td class="tdtype">
-<a href="std.pixel.html#Pixel.CommandId">CommandId</a></td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.CommandId">CommandId</a></td>
 <td>
 </td>
 </tr>
@@ -3620,7 +3620,7 @@ id</td>
 <td>
 params</td>
 <td class="tdtype">
-__painter_tuple_200</td>
+__painter_tuple_198</td>
 <td>
 </td>
 </tr>
@@ -3772,7 +3772,7 @@ SetShaderParam</td>
 <td>
 posBuffer</td>
 <td class="tdtype">
-<a href="std.core.html#Core.Array">Array'(Vector2)</a></td>
+Array(Vector2)</td>
 <td>
 </td>
 </tr>
@@ -3820,7 +3820,7 @@ bool</td>
 <td>
 normalPrev</td>
 <td class="tdtype">
-<a href="std.core.html#Core.Math.Vector2">Vector2</a></td>
+Vector2</td>
 <td>
 </td>
 </tr>
@@ -3828,7 +3828,7 @@ normalPrev</td>
 <td>
 normalFirst</td>
 <td class="tdtype">
-<a href="std.core.html#Core.Math.Vector2">Vector2</a></td>
+Vector2</td>
 <td>
 </td>
 </tr>
@@ -3836,7 +3836,7 @@ normalFirst</td>
 <td>
 normal</td>
 <td class="tdtype">
-<a href="std.core.html#Core.Math.Vector2">Vector2</a></td>
+Vector2</td>
 <td>
 </td>
 </tr>
@@ -3860,7 +3860,7 @@ u64</td>
 <td>
 prev</td>
 <td class="tdtype">
-<a href="std.core.html#Core.Math.Vector2">Vector2</a></td>
+Vector2</td>
 <td>
 </td>
 </tr>
@@ -3868,7 +3868,7 @@ prev</td>
 <td>
 path</td>
 <td class="tdtype">
-<a href="std.pixel.html#Pixel.LinePath">const *LinePath</a></td>
+const *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.LinePath">LinePath</a></td>
 <td>
 </td>
 </tr>
@@ -3876,7 +3876,7 @@ path</td>
 <td>
 pen</td>
 <td class="tdtype">
-<a href="std.pixel.html#Pixel.Pen">const *Pen</a></td>
+const *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Pen">Pen</a></td>
 <td>
 </td>
 </tr>
@@ -4052,7 +4052,7 @@ Merge</td>
 <td>
 type</td>
 <td class="tdtype">
-<a href="std.pixel.html#Pixel.ElementType">ElementType</a></td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.ElementType">ElementType</a></td>
 <td>
 </td>
 </tr>
@@ -4060,7 +4060,7 @@ type</td>
 <td>
 position</td>
 <td class="tdtype">
-<a href="std.core.html#Core.Math.Vector2">Vector2</a></td>
+Vector2</td>
 <td>
 </td>
 </tr>
@@ -4068,7 +4068,7 @@ position</td>
 <td>
 p1</td>
 <td class="tdtype">
-<a href="std.core.html#Core.Math.Vector2">Vector2</a></td>
+Vector2</td>
 <td>
 </td>
 </tr>
@@ -4076,7 +4076,7 @@ p1</td>
 <td>
 p2</td>
 <td class="tdtype">
-<a href="std.core.html#Core.Math.Vector2">Vector2</a></td>
+Vector2</td>
 <td>
 </td>
 </tr>
@@ -4176,7 +4176,7 @@ bool</td>
 <td>
 fullname</td>
 <td class="tdtype">
-<a href="std.core.html#Core.String">String</a></td>
+String</td>
 <td>
 </td>
 </tr>
@@ -4184,7 +4184,7 @@ fullname</td>
 <td>
 typeFace</td>
 <td class="tdtype">
-<a href="std.pixel.html#Pixel.TypeFace">*TypeFace</a></td>
+*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.TypeFace">TypeFace</a></td>
 <td>
 </td>
 </tr>
@@ -4200,7 +4200,7 @@ u32</td>
 <td>
 atlases</td>
 <td class="tdtype">
-<a href="std.core.html#Core.Array">Array'(GlyphAtlas)</a></td>
+Array(<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.GlyphAtlas">GlyphAtlas</a>)</td>
 <td>
 </td>
 </tr>
@@ -4208,7 +4208,7 @@ atlases</td>
 <td>
 asciiRef</td>
 <td class="tdtype">
-<a href="std.pixel.html#Pixel.GlyphDesc">[128] GlyphDesc</a></td>
+[128] <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.GlyphDesc">GlyphDesc</a></td>
 <td>
 </td>
 </tr>
@@ -4216,7 +4216,7 @@ asciiRef</td>
 <td>
 unicodeRef</td>
 <td class="tdtype">
-<a href="std.core.html#Core.HashTable">HashTable'(rune, *GlyphDesc)</a></td>
+HashTable(rune, *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.GlyphDesc">GlyphDesc</a>)</td>
 <td>
 </td>
 </tr>
@@ -4236,7 +4236,7 @@ bool</td>
 <a href="#Pixel.Font.create">create</a></td>
 <td>
 <p>
-Creates a new Font of the given typeface and size.</p>
+Creates a new <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Font">Font</a> of the given typeface and size.</p>
 </td>
 </tr>
 <tr>
@@ -4244,7 +4244,7 @@ Creates a new Font of the given typeface and size.</p>
 <a href="#Pixel.Font.create">create</a></td>
 <td>
 <p>
-Creates a new Font with the given filename and size.</p>
+Creates a new <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Font">Font</a> with the given filename and size.</p>
 </td>
 </tr>
 <tr>
@@ -4266,27 +4266,27 @@ Release the given font.</p>
 </table>
 <h3 class="content" id="Pixel.Font.create"><span class="titletype">func</span> <span class="titlelight">Font.</span><span class="titlestrong">create</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func create(typeFace: <a href="std.pixel.html#Pixel.TypeFace">*TypeFace</a>, size: u32, forceBold = false, forceItalic = false)-><a href="std.pixel.html#Pixel.Font">*Font</a>
+<code style="white-space: break-spaces">func create(typeFace: *TypeFace, size: u32, forceBold = false, forceItalic = false)->*Font
 </code>
 </p>
 <p>
-Creates a new Font of the given typeface and size.</p>
+Creates a new <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Font">Font</a> of the given typeface and size.</p>
 <p class="code">
-<code style="white-space: break-spaces">func create(fullname: string, size: u32, forceBold = false, forceItalic = false)-><a href="std.pixel.html#Pixel.Font">*Font</a> throw
+<code style="white-space: break-spaces">func create(fullname: string, size: u32, forceBold = false, forceItalic = false)->*Font throw
 </code>
 </p>
 <p>
-Creates a new Font with the given filename and size.</p>
+Creates a new <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Font">Font</a> with the given filename and size.</p>
 <h3 class="content" id="Pixel.Font.getGlyphDesc"><span class="titletype">func</span> <span class="titlelight">Font.</span><span class="titlestrong">getGlyphDesc</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func getGlyphDesc(using self, c: rune)-><a href="std.pixel.html#Pixel.GlyphDesc">const *GlyphDesc</a>
+<code style="white-space: break-spaces">func getGlyphDesc(using self, c: rune)->const *GlyphDesc
 </code>
 </p>
 <p>
 Returns the glyph descriptor of a given rune.</p>
 <h3 class="content" id="Pixel.Font.release"><span class="titletype">func</span> <span class="titlelight">Font.</span><span class="titlestrong">release</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func release(font: <a href="std.pixel.html#Pixel.Font">*Font</a>)
+<code style="white-space: break-spaces">func release(font: *Font)
 </code>
 </p>
 <p>
@@ -4297,7 +4297,7 @@ Release the given font.</p>
 <td>
 regular</td>
 <td class="tdtype">
-<a href="std.pixel.html#Pixel.Font">*Font</a></td>
+*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Font">Font</a></td>
 <td>
 </td>
 </tr>
@@ -4305,7 +4305,7 @@ regular</td>
 <td>
 bold</td>
 <td class="tdtype">
-<a href="std.pixel.html#Pixel.Font">*Font</a></td>
+*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Font">Font</a></td>
 <td>
 </td>
 </tr>
@@ -4313,7 +4313,7 @@ bold</td>
 <td>
 italic</td>
 <td class="tdtype">
-<a href="std.pixel.html#Pixel.Font">*Font</a></td>
+*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Font">Font</a></td>
 <td>
 </td>
 </tr>
@@ -4321,7 +4321,7 @@ italic</td>
 <td>
 boldItalic</td>
 <td class="tdtype">
-<a href="std.pixel.html#Pixel.Font">*Font</a></td>
+*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Font">Font</a></td>
 <td>
 </td>
 </tr>
@@ -4333,7 +4333,7 @@ boldItalic</td>
 <a href="#Pixel.FontFamily.createTypeFace">createTypeFace</a></td>
 <td>
 <p>
-Creates a typeface from a FontFamilyEnumerate and FontFamilyStyle.</p>
+Creates a typeface from a <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.FontFamilyEnumerate">FontFamilyEnumerate</a> and FontFamilyStyle.</p>
 </td>
 </tr>
 <tr>
@@ -4357,7 +4357,7 @@ Get the font corresponding to the style. If not evailable, get another one.</p>
 <a href="#Pixel.FontFamily.getFromOs">getFromOs</a></td>
 <td>
 <p>
-Get a FontFamilyEnumerate from a font family name.</p>
+Get a <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.FontFamilyEnumerate">FontFamilyEnumerate</a> from a font family name.</p>
 </td>
 </tr>
 <tr>
@@ -4371,35 +4371,35 @@ Set the font corresponding to a given style.</p>
 </table>
 <h3 class="content" id="Pixel.FontFamily.createTypeFace"><span class="titletype">func</span> <span class="titlelight">FontFamily.</span><span class="titlestrong">createTypeFace</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func createTypeFace(enumerate: <a href="std.pixel.html#Pixel.FontFamilyEnumerate">FontFamilyEnumerate</a>, style: <a href="std.pixel.html#Pixel.FontFamilyStyle">FontFamilyStyle</a>)-><a href="std.pixel.html#Pixel.TypeFace">*TypeFace</a> throw
+<code style="white-space: break-spaces">func createTypeFace(enumerate: FontFamilyEnumerate, style: FontFamilyStyle)->*TypeFace throw
 </code>
 </p>
 <p>
-Creates a typeface from a FontFamilyEnumerate and FontFamilyStyle.</p>
+Creates a typeface from a <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.FontFamilyEnumerate">FontFamilyEnumerate</a> and FontFamilyStyle.</p>
 <h3 class="content" id="Pixel.FontFamily.enumerateFromOs"><span class="titletype">func</span> <span class="titlelight">FontFamily.</span><span class="titlestrong">enumerateFromOs</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func enumerateFromOs()-><a href="std.core.html#Core.Array">Array'(FontFamilyEnumerate)</a>
+<code style="white-space: break-spaces">func enumerateFromOs()->Array'(FontFamilyEnumerate)
 </code>
 </p>
 <p>
 Enumerate the font families available in the os.</p>
 <h3 class="content" id="Pixel.FontFamily.getFont"><span class="titletype">func</span> <span class="titlelight">FontFamily.</span><span class="titlestrong">getFont</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func getFont(using self, style: <a href="std.pixel.html#Pixel.FontFamilyStyle">FontFamilyStyle</a>)-><a href="std.pixel.html#Pixel.Font">*Font</a>
+<code style="white-space: break-spaces">func getFont(using self, style: FontFamilyStyle)->*Font
 </code>
 </p>
 <p>
 Get the font corresponding to the style. If not evailable, get another one.</p>
 <h3 class="content" id="Pixel.FontFamily.getFromOs"><span class="titletype">func</span> <span class="titlelight">FontFamily.</span><span class="titlestrong">getFromOs</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func getFromOs(fontFamily: string)-><a href="std.pixel.html#Pixel.FontFamilyEnumerate">FontFamilyEnumerate</a>
+<code style="white-space: break-spaces">func getFromOs(fontFamily: string)->FontFamilyEnumerate
 </code>
 </p>
 <p>
-Get a FontFamilyEnumerate from a font family name.</p>
+Get a <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.FontFamilyEnumerate">FontFamilyEnumerate</a> from a font family name.</p>
 <h3 class="content" id="Pixel.FontFamily.setFont"><span class="titletype">func</span> <span class="titlelight">FontFamily.</span><span class="titlestrong">setFont</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func setFont(using self, fnt: <a href="std.pixel.html#Pixel.Font">*Font</a>, style: <a href="std.pixel.html#Pixel.FontFamilyStyle">FontFamilyStyle</a>)
+<code style="white-space: break-spaces">func setFont(using self, fnt: *Font, style: FontFamilyStyle)
 </code>
 </p>
 <p>
@@ -4410,7 +4410,7 @@ Set the font corresponding to a given style.</p>
 <td>
 name</td>
 <td class="tdtype">
-<a href="std.core.html#Core.String">String</a></td>
+String</td>
 <td>
 </td>
 </tr>
@@ -4418,7 +4418,7 @@ name</td>
 <td>
 faces</td>
 <td class="tdtype">
-<a href="std.pixel.html#Pixel.FontFamilyStyleEnumerate">[4] FontFamilyStyleEnumerate</a></td>
+[4] <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.FontFamilyStyleEnumerate">FontFamilyStyleEnumerate</a></td>
 <td>
 </td>
 </tr>
@@ -4456,7 +4456,7 @@ BoldItalic</td>
 <td>
 name</td>
 <td class="tdtype">
-<a href="std.core.html#Core.String">String</a></td>
+String</td>
 <td>
 </td>
 </tr>
@@ -4464,7 +4464,7 @@ name</td>
 <td>
 face</td>
 <td class="tdtype">
-<a href="std.gdi32.html#Gdi32.LOGFONTW">LOGFONTW</a></td>
+LOGFONTW</td>
 <td>
 </td>
 </tr>
@@ -4533,7 +4533,7 @@ s32</td>
 <td>
 gce</td>
 <td class="tdtype">
-<a href="std.pixel.html#Pixel.Gif.__privns_191.Gce">Gce</a></td>
+Gce</td>
 <td>
 </td>
 </tr>
@@ -4541,7 +4541,7 @@ gce</td>
 <td>
 palette</td>
 <td class="tdtype">
-<a href="std.pixel.html#Pixel.Gif.__privns_191.Palette">*Palette</a></td>
+*Palette</td>
 <td>
 </td>
 </tr>
@@ -4549,7 +4549,7 @@ palette</td>
 <td>
 lct</td>
 <td class="tdtype">
-<a href="std.pixel.html#Pixel.Gif.__privns_191.Palette">Palette</a></td>
+Palette</td>
 <td>
 </td>
 </tr>
@@ -4557,7 +4557,7 @@ lct</td>
 <td>
 gct</td>
 <td class="tdtype">
-<a href="std.pixel.html#Pixel.Gif.__privns_191.Palette">Palette</a></td>
+Palette</td>
 <td>
 </td>
 </tr>
@@ -4613,7 +4613,7 @@ canvas</td>
 <td>
 frame</td>
 <td class="tdtype">
-<a href="std.core.html#Core.Array">Array'(u8)</a></td>
+Array(u8)</td>
 <td>
 </td>
 </tr>
@@ -4621,7 +4621,7 @@ frame</td>
 <td>
 table</td>
 <td class="tdtype">
-<a href="std.pixel.html#Pixel.Gif.__privns_191.Table">Table</a></td>
+Table</td>
 <td>
 </td>
 </tr>
@@ -4697,7 +4697,7 @@ Create an image for the current frame.</p>
 <a href="#Pixel.Gif.Decoder.getNumFrames">getNumFrames</a></td>
 <td>
 <p>
-Returns the number of frames As Gif does not store it, we need to go threw all images (!).</p>
+Returns the number of frames As <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Gif">Gif</a> does not store it, we need to go threw all images (!).</p>
 </td>
 </tr>
 <tr>
@@ -4732,12 +4732,12 @@ Restart at frame 0.</p>
 </p>
 <h3 class="content" id="Pixel.Gif.Decoder.IImageDecoder.decode"><span class="titletype">func</span> <span class="titlelight">IImageDecoder.</span><span class="titlestrong">decode</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func decode(using self, buffer: const [..] u8, options: <a href="std.pixel.html#Pixel.DecodeOptions">DecodeOptions</a>)-><a href="std.pixel.html#Pixel.Image">Image</a> throw
+<code style="white-space: break-spaces">func decode(using self, buffer: const [..] u8, options: DecodeOptions)->Image throw
 </code>
 </p>
 <h3 class="content" id="Pixel.Gif.Decoder.getFrame"><span class="titletype">func</span> <span class="titlelight">Decoder.</span><span class="titlestrong">getFrame</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func getFrame(using self, image: <a href="std.pixel.html#Pixel.Image">*Image</a>, decodePixels = true)
+<code style="white-space: break-spaces">func getFrame(using self, image: *Image, decodePixels = true)
 </code>
 </p>
 <p>
@@ -4748,7 +4748,7 @@ Create an image for the current frame.</p>
 </code>
 </p>
 <p>
-Returns the number of frames As Gif does not store it, we need to go threw all images (!).</p>
+Returns the number of frames As <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Gif">Gif</a> does not store it, we need to go threw all images (!).</p>
 <h3 class="content" id="Pixel.Gif.Decoder.init"><span class="titletype">func</span> <span class="titlelight">Decoder.</span><span class="titlestrong">init</span></h3>
 <p class="code">
 <code style="white-space: break-spaces">func init(using self, buffer: const [..] u8, decodePixels: bool) throw
@@ -4758,7 +4758,7 @@ Returns the number of frames As Gif does not store it, we need to go threw all i
 Initialize the decoder.</p>
 <h3 class="content" id="Pixel.Gif.Decoder.nextFrame"><span class="titletype">func</span> <span class="titlelight">Decoder.</span><span class="titlestrong">nextFrame</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func nextFrame(using self, img: <a href="std.pixel.html#Pixel.Image">*Image</a>)->bool throw
+<code style="white-space: break-spaces">func nextFrame(using self, img: *Image)->bool throw
 </code>
 </p>
 <p>
@@ -4776,7 +4776,7 @@ Restart at frame 0.</p>
 <td>
 texture</td>
 <td class="tdtype">
-<a href="std.pixel.html#Pixel.Texture">Texture</a></td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Texture">Texture</a></td>
 <td>
 </td>
 </tr>
@@ -4808,7 +4808,7 @@ u32</td>
 <td>
 datas</td>
 <td class="tdtype">
-<a href="std.core.html#Core.Array">Array'(u8)</a></td>
+Array(u8)</td>
 <td>
 </td>
 </tr>
@@ -4851,7 +4851,7 @@ s32</td>
 <td>
 uv</td>
 <td class="tdtype">
-<a href="std.core.html#Core.Math.Rectangle">Rectangle</a></td>
+Rectangle</td>
 <td>
 </td>
 </tr>
@@ -5431,7 +5431,7 @@ Interface to decode a buffer.</p>
 <td>
 canDecode</td>
 <td class="tdtype">
-func(*IImageDecoder, string)->bool</td>
+func(*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.IImageDecoder">IImageDecoder</a>, string)-&gt;bool</td>
 <td>
 </td>
 </tr>
@@ -5439,7 +5439,7 @@ func(*IImageDecoder, string)->bool</td>
 <td>
 decode</td>
 <td class="tdtype">
-func(*IImageDecoder, const [..] u8, const ref DecodeOptions)->Image throw</td>
+func(*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.IImageDecoder">IImageDecoder</a>, const [..] u8, const ref <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.DecodeOptions">DecodeOptions</a>)-&gt;<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Image">Image</a> throw</td>
 <td>
 </td>
 </tr>
@@ -5452,7 +5452,7 @@ Interface to decode a buffer.</p>
 <td>
 canEncode</td>
 <td class="tdtype">
-func(*IImageEncoder, string)->bool</td>
+func(*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.IImageEncoder">IImageEncoder</a>, string)-&gt;bool</td>
 <td>
 </td>
 </tr>
@@ -5460,7 +5460,7 @@ func(*IImageEncoder, string)->bool</td>
 <td>
 encode</td>
 <td class="tdtype">
-func(*IImageEncoder, *ConcatBuffer, const ref Image, any) throw</td>
+func(*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.IImageEncoder">IImageEncoder</a>, *ConcatBuffer, const ref <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Image">Image</a>, any) throw</td>
 <td>
 </td>
 </tr>
@@ -5473,7 +5473,7 @@ An image buffer, in various pixel formats.</p>
 <td>
 pixels</td>
 <td class="tdtype">
-<a href="std.core.html#Core.Array">Array'(u8)</a></td>
+Array(u8)</td>
 <td>
 </td>
 </tr>
@@ -5513,7 +5513,7 @@ s32</td>
 <td>
 pf</td>
 <td class="tdtype">
-<a href="std.pixel.html#Pixel.PixelFormat">PixelFormat</a></td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.PixelFormat">PixelFormat</a></td>
 <td>
 </td>
 </tr>
@@ -5539,7 +5539,7 @@ u8</td>
 <td>
 workingBuffer</td>
 <td class="tdtype">
-<a href="std.pixel.html#Pixel.Image">*Image</a></td>
+*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Image">Image</a></td>
 <td>
 </td>
 </tr>
@@ -5771,7 +5771,7 @@ Returns the color at the given coordinate.</p>
 <a href="#Pixel.Image.grayScale">grayScale</a></td>
 <td>
 <p>
-Transform image to grayscale, with a given factor.</p>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Clipper.Transform">Transform</a> image to grayscale, with a given factor.</p>
 </td>
 </tr>
 <tr>
@@ -5912,14 +5912,14 @@ Apply a kernel to the image.</p>
 <td>
 <a href="#Pixel.Image.toCrop">toCrop</a></td>
 <td>
-<p>
-Crop image.</p>
 </td>
 </tr>
 <tr>
 <td>
 <a href="#Pixel.Image.toCrop">toCrop</a></td>
 <td>
+<p>
+Crop image.</p>
 </td>
 </tr>
 <tr>
@@ -5935,7 +5935,7 @@ Flip image vertically.</p>
 <a href="#Pixel.Image.toHICON">toHICON</a></td>
 <td>
 <p>
-Transform an image to a windows icon.</p>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Clipper.Transform">Transform</a> an image to a windows icon.</p>
 </td>
 </tr>
 <tr>
@@ -6154,7 +6154,7 @@ RedGreen</td>
 </table>
 <h3 class="content" id="Pixel.Image.Kernel"><span class="titletype">enum</span> <span class="titlelight">Image.</span><span class="titlestrong">Kernel</span></h3>
 <p>
-Kernel format is : kernelSize, kernelNormalizeValue, kernelValues...</p>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Image.Kernel">Kernel</a> format is : kernelSize, kernelNormalizeValue, kernelValues...</p>
 <table>
 <tr>
 <td>
@@ -6417,14 +6417,14 @@ Allocate pixels.</p>
 <p>
 Allocate a computing buffer with current image size.</p>
 <p class="code">
-<code style="white-space: break-spaces">func allocWorkingBuffer(using self, newWidth: s32, newHeight: s32, newPf: <a href="std.pixel.html#Pixel.PixelFormat">PixelFormat</a>)
+<code style="white-space: break-spaces">func allocWorkingBuffer(using self, newWidth: s32, newHeight: s32, newPf: PixelFormat)
 </code>
 </p>
 <p>
 Allocate a computing buffer with new sizes.</p>
 <h3 class="content" id="Pixel.Image.applyKernel"><span class="titletype">func</span> <span class="titlelight">Image.</span><span class="titlestrong">applyKernel</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func applyKernel(using self, kernel: <a href="std.pixel.html#Pixel.Image.Kernel">Kernel</a>)
+<code style="white-space: break-spaces">func applyKernel(using self, kernel: Kernel)
 </code>
 </p>
 <p>
@@ -6480,7 +6480,7 @@ Change the contrast. <code class = "incode">factor</code> is [-1, 1].</p>
 Copy one pixel, depending on bpp.</p>
 <h3 class="content" id="Pixel.Image.create"><span class="titletype">func</span> <span class="titlelight">Image.</span><span class="titlestrong">create</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func create(width: s32, height: s32, pf: <a href="std.pixel.html#Pixel.PixelFormat">PixelFormat</a>, buffer: const [..] u8 = null)-><a href="std.pixel.html#Pixel.Image">Image</a>
+<code style="white-space: break-spaces">func create(width: s32, height: s32, pf: PixelFormat, buffer: const [..] u8 = null)->Image
 </code>
 </p>
 <p>
@@ -6493,47 +6493,47 @@ Creates a new image.</p>
 <p>
 Crop image.</p>
 <p class="code">
-<code style="white-space: break-spaces">func crop(using self, cropRect: <a href="std.core.html#Core.Math.Rectangle">Rectangle</a>)
+<code style="white-space: break-spaces">func crop(using self, cropRect: Rectangle)
 </code>
 </p>
 <h3 class="content" id="Pixel.Image.decode"><span class="titletype">func</span> <span class="titlelight">Image.</span><span class="titlestrong">decode</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func decode(fileName: string, bytes: const [..] u8, options: <a href="std.pixel.html#Pixel.DecodeOptions">DecodeOptions</a> = {})-><a href="std.pixel.html#Pixel.Image">Image</a> throw
+<code style="white-space: break-spaces">func decode(fileName: string, bytes: const [..] u8, options: DecodeOptions = {})->Image throw
 </code>
 </p>
 <p>
 Decode the given image buffer.</p>
 <h3 class="content" id="Pixel.Image.fade"><span class="titletype">func</span> <span class="titlelight">Image.</span><span class="titlestrong">fade</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func fade(using self, color: <a href="std.pixel.html#Pixel.Color">Color</a>, factor: f32 = 0.5)
+<code style="white-space: break-spaces">func fade(using self, color: Color, factor: f32 = 0.5)
 </code>
 </p>
 <p>
 Fade to a given color. <code class = "incode">factor</code> is [0, 1].</p>
 <h3 class="content" id="Pixel.Image.fill"><span class="titletype">func</span> <span class="titlelight">Image.</span><span class="titlestrong">fill</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func fill(using self, color: <a href="std.pixel.html#Pixel.Color">Color</a>)
+<code style="white-space: break-spaces">func fill(using self, color: Color)
 </code>
 </p>
 <p>
 Fill image with <code class = "incode">color</code>.</p>
 <h3 class="content" id="Pixel.Image.fillGradient2"><span class="titletype">func</span> <span class="titlelight">Image.</span><span class="titlestrong">fillGradient2</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func fillGradient2(using self, color0: <a href="std.pixel.html#Pixel.Color">Color</a>, color1: <a href="std.pixel.html#Pixel.Color">Color</a>)
+<code style="white-space: break-spaces">func fillGradient2(using self, color0: Color, color1: Color)
 </code>
 </p>
 <p>
 Fill with an horizontal gradient from <code class = "incode">color0</code> to <code class = "incode">color1</code>.</p>
 <h3 class="content" id="Pixel.Image.fillGradient4"><span class="titletype">func</span> <span class="titlelight">Image.</span><span class="titlestrong">fillGradient4</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func fillGradient4(using self, topLeft: <a href="std.pixel.html#Pixel.Color">Color</a>, topRight: <a href="std.pixel.html#Pixel.Color">Color</a>, bottomLeft: <a href="std.pixel.html#Pixel.Color">Color</a>, bottomRight: <a href="std.pixel.html#Pixel.Color">Color</a>)
+<code style="white-space: break-spaces">func fillGradient4(using self, topLeft: Color, topRight: Color, bottomLeft: Color, bottomRight: Color)
 </code>
 </p>
 <p>
 Fill with a gradient with a different color at each corner.</p>
 <h3 class="content" id="Pixel.Image.fillHsl"><span class="titletype">func</span> <span class="titlelight">Image.</span><span class="titlestrong">fillHsl</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func fillHsl(using self, fillType: <a href="std.pixel.html#Pixel.Image.FillHslType">FillHslType</a>, color: <a href="std.pixel.html#Pixel.Color">Color</a> = Argb.White)
+<code style="white-space: break-spaces">func fillHsl(using self, fillType: FillHslType, color: Color = Argb.White)
 </code>
 </p>
 <h3 class="content" id="Pixel.Image.flip"><span class="titletype">func</span> <span class="titlelight">Image.</span><span class="titlestrong">flip</span></h3>
@@ -6552,13 +6552,13 @@ Flip image vertically.</p>
 Free the working buffer if allocated.</p>
 <h3 class="content" id="Pixel.Image.from"><span class="titletype">func</span> <span class="titlelight">Image.</span><span class="titlestrong">from</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func from(hicon: HICON)-><a href="std.pixel.html#Pixel.Image">Image</a> throw
+<code style="white-space: break-spaces">func from(hicon: HICON)->Image throw
 </code>
 </p>
 <p>
 Creates an image from a windows HICON.</p>
 <p class="code">
-<code style="white-space: break-spaces">func from(hbitmap: HBITMAP)-><a href="std.pixel.html#Pixel.Image">Image</a> throw
+<code style="white-space: break-spaces">func from(hbitmap: HBITMAP)->Image throw
 </code>
 </p>
 <p>
@@ -6572,7 +6572,7 @@ Creates an image from a windows HBITMAP.</p>
 Change the gamma.</p>
 <h3 class="content" id="Pixel.Image.getPixelColor"><span class="titletype">func</span> <span class="titlelight">Image.</span><span class="titlestrong">getPixelColor</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func getPixelColor(using self, pixX: s32, pixY: s32)-><a href="std.pixel.html#Pixel.Color">Color</a>
+<code style="white-space: break-spaces">func getPixelColor(using self, pixX: s32, pixY: s32)->Color
 </code>
 </p>
 <p>
@@ -6583,7 +6583,7 @@ Returns the color at the given coordinate.</p>
 </code>
 </p>
 <p>
-Transform image to grayscale, with a given factor.</p>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Clipper.Transform">Transform</a> image to grayscale, with a given factor.</p>
 <h3 class="content" id="Pixel.Image.halfSize"><span class="titletype">func</span> <span class="titlelight">Image.</span><span class="titlestrong">halfSize</span></h3>
 <p class="code">
 <code style="white-space: break-spaces">func halfSize(using self)
@@ -6593,7 +6593,7 @@ Transform image to grayscale, with a given factor.</p>
 Divide image size by 2 with a bilinear 2x2 filter.</p>
 <h3 class="content" id="Pixel.Image.init"><span class="titletype">func</span> <span class="titlelight">Image.</span><span class="titlestrong">init</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func init(using self, width: s32, height: s32, pf: <a href="std.pixel.html#Pixel.PixelFormat">PixelFormat</a>)
+<code style="white-space: break-spaces">func init(using self, width: s32, height: s32, pf: PixelFormat)
 </code>
 </p>
 <p>
@@ -6621,7 +6621,7 @@ Returns true if the image is valid.</p>
 Change the lightness. <code class = "incode">factor</code> is [-1, 1].</p>
 <h3 class="content" id="Pixel.Image.load"><span class="titletype">func</span> <span class="titlelight">Image.</span><span class="titlestrong">load</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func load(fileName: string, options: <a href="std.pixel.html#Pixel.DecodeOptions">DecodeOptions</a> = {})-><a href="std.pixel.html#Pixel.Image">Image</a> throw
+<code style="white-space: break-spaces">func load(fileName: string, options: DecodeOptions = {})->Image throw
 </code>
 </p>
 <p>
@@ -6635,7 +6635,7 @@ Load the given image file.</p>
 Flip image horizontally.</p>
 <h3 class="content" id="Pixel.Image.mix"><span class="titletype">func</span> <span class="titlelight">Image.</span><span class="titlestrong">mix</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func mix(using self, srcImage: <a href="std.pixel.html#Pixel.Image">Image</a>, x: s32, y: s32, mode = MixMode.Copy)
+<code style="white-space: break-spaces">func mix(using self, srcImage: Image, x: s32, y: s32, mode = MixMode.Copy)
 </code>
 </p>
 <p>
@@ -6676,46 +6676,46 @@ Save the image to a file.</p>
 Change the alpha channel.</p>
 <h3 class="content" id="Pixel.Image.setChannel"><span class="titletype">func</span> <span class="titlelight">Image.</span><span class="titlestrong">setChannel</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func setChannel(using self, mode: <a href="std.pixel.html#Pixel.Image.ChannelMode">ChannelMode</a>, value: <a href="std.pixel.html#Pixel.Image.ChannelValueMode">ChannelValueMode</a>, color: u8 = 0)
+<code style="white-space: break-spaces">func setChannel(using self, mode: ChannelMode, value: ChannelValueMode, color: u8 = 0)
 </code>
 </p>
 <p>
 Change specified color channels.</p>
 <h3 class="content" id="Pixel.Image.setPixelFormat"><span class="titletype">func</span> <span class="titlelight">Image.</span><span class="titlestrong">setPixelFormat</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func setPixelFormat(using self, newPf: <a href="std.pixel.html#Pixel.PixelFormat">PixelFormat</a>)
+<code style="white-space: break-spaces">func setPixelFormat(using self, newPf: PixelFormat)
 </code>
 </p>
 <p>
 Change image pixel format.</p>
 <h3 class="content" id="Pixel.Image.setPixelRGBA8"><span class="titletype">func</span> <span class="titlelight">Image.</span><span class="titlestrong">setPixelRGBA8</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func(PF: <a href="std.pixel.html#Pixel.PixelFormat">PixelFormat</a>) setPixelRGBA8(pixDst: ^u8, r: u8, g: u8, b: u8, _a: u8)
+<code style="white-space: break-spaces">func(PF: PixelFormat) setPixelRGBA8(pixDst: ^u8, r: u8, g: u8, b: u8, _a: u8)
 </code>
 </p>
 <p>
 Set pixel values depending on pixel format.</p>
 <h3 class="content" id="Pixel.Image.toApplyKernel"><span class="titletype">func</span> <span class="titlelight">Image.</span><span class="titlestrong">toApplyKernel</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func toApplyKernel(using self, kernel: <a href="std.pixel.html#Pixel.Image.Kernel">Kernel</a>)-><a href="std.pixel.html#Pixel.Image">Image</a>
+<code style="white-space: break-spaces">func toApplyKernel(using self, kernel: Kernel)->Image
 </code>
 </p>
 <p>
 Apply a kernel to the image.</p>
 <h3 class="content" id="Pixel.Image.toCrop"><span class="titletype">func</span> <span class="titlelight">Image.</span><span class="titlestrong">toCrop</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func toCrop(using const self, x: s32, y: s32, w: s32, h: s32)-><a href="std.pixel.html#Pixel.Image">Image</a>
+<code style="white-space: break-spaces">func toCrop(using const self, x: s32, y: s32, w: s32, h: s32)->Image
 </code>
 </p>
 <p>
 Crop image.</p>
 <p class="code">
-<code style="white-space: break-spaces">func toCrop(using const self, cropRect: <a href="std.core.html#Core.Math.Rectangle">Rectangle</a>)-><a href="std.pixel.html#Pixel.Image">Image</a>
+<code style="white-space: break-spaces">func toCrop(using const self, cropRect: Rectangle)->Image
 </code>
 </p>
 <h3 class="content" id="Pixel.Image.toFlip"><span class="titletype">func</span> <span class="titlelight">Image.</span><span class="titlestrong">toFlip</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func toFlip(using const self)-><a href="std.pixel.html#Pixel.Image">Image</a>
+<code style="white-space: break-spaces">func toFlip(using const self)->Image
 </code>
 </p>
 <p>
@@ -6726,52 +6726,52 @@ Flip image vertically.</p>
 </code>
 </p>
 <p>
-Transform an image to a windows icon.</p>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Clipper.Transform">Transform</a> an image to a windows icon.</p>
 <h3 class="content" id="Pixel.Image.toHalfSize"><span class="titletype">func</span> <span class="titlelight">Image.</span><span class="titlestrong">toHalfSize</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func toHalfSize(using const self)-><a href="std.pixel.html#Pixel.Image">Image</a>
+<code style="white-space: break-spaces">func toHalfSize(using const self)->Image
 </code>
 </p>
 <p>
 Divide image size by 2 with a bilinear 2x2 filter.</p>
 <h3 class="content" id="Pixel.Image.toMirror"><span class="titletype">func</span> <span class="titlelight">Image.</span><span class="titlestrong">toMirror</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func toMirror(using const self)-><a href="std.pixel.html#Pixel.Image">Image</a>
+<code style="white-space: break-spaces">func toMirror(using const self)->Image
 </code>
 </p>
 <p>
 Flip image horizontally.</p>
 <h3 class="content" id="Pixel.Image.toMix"><span class="titletype">func</span> <span class="titlelight">Image.</span><span class="titlestrong">toMix</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func toMix(using const self, srcImage: <a href="std.pixel.html#Pixel.Image">Image</a>, x: s32, y: s32, mode = MixMode.Copy)-><a href="std.pixel.html#Pixel.Image">Image</a>
+<code style="white-space: break-spaces">func toMix(using const self, srcImage: Image, x: s32, y: s32, mode = MixMode.Copy)->Image
 </code>
 </p>
 <p>
 Mix with another image.</p>
 <h3 class="content" id="Pixel.Image.toResize"><span class="titletype">func</span> <span class="titlelight">Image.</span><span class="titlestrong">toResize</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func toResize(using const self, newWidth: s32, newHeight: s32, mode = ResizeMode.Raw)-><a href="std.pixel.html#Pixel.Image">Image</a>
+<code style="white-space: break-spaces">func toResize(using const self, newWidth: s32, newHeight: s32, mode = ResizeMode.Raw)->Image
 </code>
 </p>
 <p>
 Resize image Put <code class = "incode">newWidth</code> or <code class = "incode">newHeight</code> to 0 to keep aspect ratio.</p>
 <h3 class="content" id="Pixel.Image.toSetPixelFormat"><span class="titletype">func</span> <span class="titlelight">Image.</span><span class="titlestrong">toSetPixelFormat</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func toSetPixelFormat(using const self, newPf: <a href="std.pixel.html#Pixel.PixelFormat">PixelFormat</a>)-><a href="std.pixel.html#Pixel.Image">Image</a>
+<code style="white-space: break-spaces">func toSetPixelFormat(using const self, newPf: PixelFormat)->Image
 </code>
 </p>
 <p>
 Change image pixel format.</p>
 <h3 class="content" id="Pixel.Image.toTurn"><span class="titletype">func</span> <span class="titlelight">Image.</span><span class="titlestrong">toTurn</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func toTurn(using const self, angle: <a href="std.pixel.html#Pixel.Image.TurnAngle">TurnAngle</a>)-><a href="std.pixel.html#Pixel.Image">Image</a>
+<code style="white-space: break-spaces">func toTurn(using const self, angle: TurnAngle)->Image
 </code>
 </p>
 <p>
 Turn image by a given predefined angle.</p>
 <h3 class="content" id="Pixel.Image.turn"><span class="titletype">func</span> <span class="titlelight">Image.</span><span class="titlestrong">turn</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func turn(using self, angle: <a href="std.pixel.html#Pixel.Image.TurnAngle">TurnAngle</a>)
+<code style="white-space: break-spaces">func turn(using self, angle: TurnAngle)
 </code>
 </p>
 <p>
@@ -6797,7 +6797,7 @@ Macro to visit all pixels of the image in parallel chunks.</p>
 <td>
 type</td>
 <td class="tdtype">
-<a href="swag.runtime.html#Swag.TypeInfoStruct">const *TypeInfoStruct</a></td>
+const *TypeInfoStruct</td>
 <td>
 </td>
 </tr>
@@ -6805,7 +6805,7 @@ type</td>
 <td>
 itf</td>
 <td class="tdtype">
-<a href="std.pixel.html#Pixel.IImageDecoder">IImageDecoder</a></td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.IImageDecoder">IImageDecoder</a></td>
 <td>
 </td>
 </tr>
@@ -6816,7 +6816,7 @@ itf</td>
 <td>
 type</td>
 <td class="tdtype">
-<a href="swag.runtime.html#Swag.TypeInfoStruct">const *TypeInfoStruct</a></td>
+const *TypeInfoStruct</td>
 <td>
 </td>
 </tr>
@@ -6824,7 +6824,7 @@ type</td>
 <td>
 itf</td>
 <td class="tdtype">
-<a href="std.pixel.html#Pixel.IImageEncoder">IImageEncoder</a></td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.IImageEncoder">IImageEncoder</a></td>
 <td>
 </td>
 </tr>
@@ -7372,7 +7372,7 @@ mcuOrg</td>
 <td>
 h</td>
 <td class="tdtype">
-<a href="std.pixel.html#Pixel.Jpg.__privns_189.HuffTables">[8] HuffTables</a></td>
+[8] HuffTables</td>
 <td>
 </td>
 </tr>
@@ -7380,7 +7380,7 @@ h</td>
 <td>
 dcHuffSeg</td>
 <td class="tdtype">
-<a href="std.pixel.html#Pixel.Jpg.__privns_189.HuffTables">[10] *HuffTables</a></td>
+[10] *HuffTables</td>
 <td>
 </td>
 </tr>
@@ -7388,7 +7388,7 @@ dcHuffSeg</td>
 <td>
 acHuffSeg</td>
 <td class="tdtype">
-<a href="std.pixel.html#Pixel.Jpg.__privns_189.HuffTables">[10] *HuffTables</a></td>
+[10] *HuffTables</td>
 <td>
 </td>
 </tr>
@@ -7420,7 +7420,7 @@ lastDcVal</td>
 <td>
 dcCoeffs</td>
 <td class="tdtype">
-<a href="std.pixel.html#Pixel.Jpg.__privns_189.CoeffBuf">[4] CoeffBuf</a></td>
+[4] CoeffBuf</td>
 <td>
 </td>
 </tr>
@@ -7428,7 +7428,7 @@ dcCoeffs</td>
 <td>
 acCoeffs</td>
 <td class="tdtype">
-<a href="std.pixel.html#Pixel.Jpg.__privns_189.CoeffBuf">[4] CoeffBuf</a></td>
+[4] CoeffBuf</td>
 <td>
 </td>
 </tr>
@@ -7476,7 +7476,7 @@ cbg</td>
 <td>
 huffNum</td>
 <td class="tdtype">
-<a href="std.core.html#Core.Array">[8] Array'(u8)</a></td>
+[8] Array(u8)</td>
 <td>
 </td>
 </tr>
@@ -7484,7 +7484,7 @@ huffNum</td>
 <td>
 huffVal</td>
 <td class="tdtype">
-<a href="std.core.html#Core.Array">[8] Array'(u8)</a></td>
+[8] Array(u8)</td>
 <td>
 </td>
 </tr>
@@ -7492,7 +7492,7 @@ huffVal</td>
 <td>
 quant</td>
 <td class="tdtype">
-<a href="std.core.html#Core.Array">[4] Array'(s16)</a></td>
+[4] Array(s16)</td>
 <td>
 </td>
 </tr>
@@ -7500,7 +7500,7 @@ quant</td>
 <td>
 scanLine0</td>
 <td class="tdtype">
-<a href="std.core.html#Core.Array">Array'(u8)</a></td>
+Array(u8)</td>
 <td>
 </td>
 </tr>
@@ -7508,7 +7508,7 @@ scanLine0</td>
 <td>
 scanLine1</td>
 <td class="tdtype">
-<a href="std.core.html#Core.Array">Array'(u8)</a></td>
+Array(u8)</td>
 <td>
 </td>
 </tr>
@@ -7516,7 +7516,7 @@ scanLine1</td>
 <td>
 quantBuf</td>
 <td class="tdtype">
-<a href="std.core.html#Core.Array">Array'(u8)</a></td>
+Array(u8)</td>
 <td>
 </td>
 </tr>
@@ -7524,7 +7524,7 @@ quantBuf</td>
 <td>
 sampleBuf</td>
 <td class="tdtype">
-<a href="std.core.html#Core.Array">Array'(u8)</a></td>
+Array(u8)</td>
 <td>
 </td>
 </tr>
@@ -7536,7 +7536,7 @@ sampleBuf</td>
 </p>
 <h3 class="content" id="Pixel.Jpg.Decoder.IImageDecoder.decode"><span class="titletype">func</span> <span class="titlelight">IImageDecoder.</span><span class="titlestrong">decode</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func decode(using self, buffer: const [..] u8, options: <a href="std.pixel.html#Pixel.DecodeOptions">DecodeOptions</a>)-><a href="std.pixel.html#Pixel.Image">Image</a> throw
+<code style="white-space: break-spaces">func decode(using self, buffer: const [..] u8, options: DecodeOptions)->Image throw
 </code>
 </p>
 <h3 class="content" id="Pixel.Jpg.EncodeOptions"><span class="titletype">struct</span> <span class="titlelight">Jpg.</span><span class="titlestrong">EncodeOptions</span></h3>
@@ -7574,7 +7574,7 @@ u16</td>
 <td>
 bufferRGB</td>
 <td class="tdtype">
-<a href="std.core.html#Core.Array">Array'(ColorRGB)</a></td>
+Array(ColorRGB)</td>
 <td>
 </td>
 </tr>
@@ -7582,7 +7582,7 @@ bufferRGB</td>
 <td>
 stream</td>
 <td class="tdtype">
-<a href="std.core.html#Core.ConcatBuffer">*ConcatBuffer</a></td>
+*ConcatBuffer</td>
 <td>
 </td>
 </tr>
@@ -7590,7 +7590,7 @@ stream</td>
 <td>
 srcImage</td>
 <td class="tdtype">
-<a href="std.pixel.html#Pixel.Image">const *Image</a></td>
+const *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Image">Image</a></td>
 <td>
 </td>
 </tr>
@@ -7622,7 +7622,7 @@ u8</td>
 <td>
 dqtInfo</td>
 <td class="tdtype">
-<a href="std.pixel.html#Pixel.Jpg.__privns_194.DQTInfoType">DQTInfoType</a></td>
+DQTInfoType</td>
 <td>
 </td>
 </tr>
@@ -7630,7 +7630,7 @@ dqtInfo</td>
 <td>
 dhtInfo</td>
 <td class="tdtype">
-<a href="std.pixel.html#Pixel.Jpg.__privns_194.DHTInfoType">DHTInfoType</a></td>
+DHTInfoType</td>
 <td>
 </td>
 </tr>
@@ -7638,7 +7638,7 @@ dhtInfo</td>
 <td>
 htYDC</td>
 <td class="tdtype">
-<a href="std.pixel.html#Pixel.Jpg.__privns_194.BitString">[12] BitString</a></td>
+[12] BitString</td>
 <td>
 </td>
 </tr>
@@ -7646,7 +7646,7 @@ htYDC</td>
 <td>
 htCbDC</td>
 <td class="tdtype">
-<a href="std.pixel.html#Pixel.Jpg.__privns_194.BitString">[12] BitString</a></td>
+[12] BitString</td>
 <td>
 </td>
 </tr>
@@ -7654,7 +7654,7 @@ htCbDC</td>
 <td>
 htYAC</td>
 <td class="tdtype">
-<a href="std.pixel.html#Pixel.Jpg.__privns_194.BitString">[256] BitString</a></td>
+[256] BitString</td>
 <td>
 </td>
 </tr>
@@ -7662,7 +7662,7 @@ htYAC</td>
 <td>
 htCbAC</td>
 <td class="tdtype">
-<a href="std.pixel.html#Pixel.Jpg.__privns_194.BitString">[256] BitString</a></td>
+[256] BitString</td>
 <td>
 </td>
 </tr>
@@ -7726,7 +7726,7 @@ du</td>
 <td>
 categoryAlloc</td>
 <td class="tdtype">
-<a href="std.core.html#Core.Array">Array'(u8)</a></td>
+Array(u8)</td>
 <td>
 </td>
 </tr>
@@ -7742,7 +7742,7 @@ category</td>
 <td>
 bitcodeAlloc</td>
 <td class="tdtype">
-<a href="std.core.html#Core.Array">Array'(BitString)</a></td>
+Array(BitString)</td>
 <td>
 </td>
 </tr>
@@ -7750,7 +7750,7 @@ bitcodeAlloc</td>
 <td>
 bitcode</td>
 <td class="tdtype">
-<a href="std.pixel.html#Pixel.Jpg.__privns_194.BitString">^BitString</a></td>
+^BitString</td>
 <td>
 </td>
 </tr>
@@ -7762,7 +7762,7 @@ bitcode</td>
 </p>
 <h3 class="content" id="Pixel.Jpg.Encoder.IImageEncoder.encode"><span class="titletype">func</span> <span class="titlelight">IImageEncoder.</span><span class="titlestrong">encode</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func encode(using self, result: <a href="std.core.html#Core.ConcatBuffer">*ConcatBuffer</a>, image: <a href="std.pixel.html#Pixel.Image">Image</a>, options: any) throw
+<code style="white-space: break-spaces">func encode(using self, result: *ConcatBuffer, image: Image, options: any) throw
 </code>
 </p>
 <h3 class="content" id="Pixel.LineCapStyle"><span class="titletype">enum</span> <span class="titlelight">Pixel.</span><span class="titlestrong">LineCapStyle</span></h3>
@@ -7810,7 +7810,7 @@ SquareAnchor</td>
 <td>
 elements</td>
 <td class="tdtype">
-<a href="std.core.html#Core.Array">Array'(Element)</a></td>
+Array(<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Element">Element</a>)</td>
 <td>
 </td>
 </tr>
@@ -7818,7 +7818,7 @@ elements</td>
 <td>
 startPoint</td>
 <td class="tdtype">
-<a href="std.core.html#Core.Math.Vector2">Vector2</a></td>
+Vector2</td>
 <td>
 </td>
 </tr>
@@ -7826,7 +7826,7 @@ startPoint</td>
 <td>
 endPoint</td>
 <td class="tdtype">
-<a href="std.core.html#Core.Math.Vector2">Vector2</a></td>
+Vector2</td>
 <td>
 </td>
 </tr>
@@ -7858,7 +7858,7 @@ s32</td>
 <td>
 flattenQuality</td>
 <td class="tdtype">
-<a href="std.pixel.html#Pixel.PaintQuality">PaintQuality</a></td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.PaintQuality">PaintQuality</a></td>
 <td>
 </td>
 </tr>
@@ -7882,7 +7882,7 @@ bool</td>
 <td>
 bvMin</td>
 <td class="tdtype">
-<a href="std.core.html#Core.Math.Vector2">Vector2</a></td>
+Vector2</td>
 <td>
 </td>
 </tr>
@@ -7890,7 +7890,7 @@ bvMin</td>
 <td>
 bvMax</td>
 <td class="tdtype">
-<a href="std.core.html#Core.Math.Vector2">Vector2</a></td>
+Vector2</td>
 <td>
 </td>
 </tr>
@@ -7898,7 +7898,7 @@ bvMax</td>
 <td>
 endPosBuffer</td>
 <td class="tdtype">
-<a href="std.core.html#Core.Math.Vector2">Vector2</a></td>
+Vector2</td>
 <td>
 </td>
 </tr>
@@ -7906,7 +7906,7 @@ endPosBuffer</td>
 <td>
 polygon</td>
 <td class="tdtype">
-<a href="std.pixel.html#Pixel.Polygon">Polygon</a></td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Polygon">Polygon</a></td>
 <td>
 </td>
 </tr>
@@ -7914,7 +7914,7 @@ polygon</td>
 <td>
 points</td>
 <td class="tdtype">
-<a href="std.core.html#Core.Array">Array'(*Point)</a></td>
+Array(*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Poly2Tri.Point">Point</a>)</td>
 <td>
 </td>
 </tr>
@@ -7922,7 +7922,7 @@ points</td>
 <td>
 triangles</td>
 <td class="tdtype">
-<a href="std.core.html#Core.Array">Array'(*Triangle)</a></td>
+Array(*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Poly2Tri.Triangle">Triangle</a>)</td>
 <td>
 </td>
 </tr>
@@ -7930,7 +7930,7 @@ triangles</td>
 <td>
 edgeList</td>
 <td class="tdtype">
-<a href="std.core.html#Core.Array">Array'(*Edge)</a></td>
+Array(*Edge)</td>
 <td>
 </td>
 </tr>
@@ -8052,7 +8052,7 @@ Reset the path.</p>
 </table>
 <h3 class="content" id="Pixel.LinePath.arcTo"><span class="titletype">func</span> <span class="titlelight">LinePath.</span><span class="titlestrong">arcTo</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func arcTo(using self, centerX: f32, centerY: f32, radiusX: f32, radiusY: f32, initAngle: <a href="std.core.html#Core.Math.Angle">Angle</a>, maxAngle: <a href="std.core.html#Core.Math.Angle">Angle</a>)
+<code style="white-space: break-spaces">func arcTo(using self, centerX: f32, centerY: f32, radiusX: f32, radiusY: f32, initAngle: Angle, maxAngle: Angle)
 </code>
 </p>
 <p>
@@ -8107,7 +8107,7 @@ Convert the path to a list of points.</p>
 Add a line from the previous point to <code class = "incode">pt</code>.</p>
 <h3 class="content" id="Pixel.LinePath.setArc"><span class="titletype">func</span> <span class="titlelight">LinePath.</span><span class="titlestrong">setArc</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func setArc(using self, centerX: f32, centerY: f32, radius: f32, startAngle: <a href="std.core.html#Core.Math.Angle">Angle</a>, endAngle: <a href="std.core.html#Core.Math.Angle">Angle</a>)
+<code style="white-space: break-spaces">func setArc(using self, centerX: f32, centerY: f32, radius: f32, startAngle: Angle, endAngle: Angle)
 </code>
 </p>
 <p>
@@ -8153,7 +8153,7 @@ Reset the path.</p>
 <td>
 paths</td>
 <td class="tdtype">
-<a href="std.core.html#Core.Array">Array'(*LinePath)</a></td>
+Array(*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.LinePath">LinePath</a>)</td>
 <td>
 </td>
 </tr>
@@ -8161,7 +8161,7 @@ paths</td>
 <td>
 bvMin</td>
 <td class="tdtype">
-<a href="std.core.html#Core.Math.Vector2">Vector2</a></td>
+Vector2</td>
 <td>
 </td>
 </tr>
@@ -8169,7 +8169,7 @@ bvMin</td>
 <td>
 bvMax</td>
 <td class="tdtype">
-<a href="std.core.html#Core.Math.Vector2">Vector2</a></td>
+Vector2</td>
 <td>
 </td>
 </tr>
@@ -8252,14 +8252,14 @@ Remove all internal line paths.</p>
 </p>
 <h3 class="content" id="Pixel.LinePathList.flatten"><span class="titletype">func</span> <span class="titlelight">LinePathList.</span><span class="titlestrong">flatten</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func flatten(using self, quality: <a href="std.pixel.html#Pixel.PaintQuality">PaintQuality</a>)
+<code style="white-space: break-spaces">func flatten(using self, quality: PaintQuality)
 </code>
 </p>
 <p>
 Flatten all paths.</p>
 <h3 class="content" id="Pixel.LinePathList.newPath"><span class="titletype">func</span> <span class="titlelight">LinePathList.</span><span class="titlestrong">newPath</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func newPath(using self)-><a href="std.pixel.html#Pixel.LinePath">*LinePath</a>
+<code style="white-space: break-spaces">func newPath(using self)->*LinePath
 </code>
 </p>
 <p>
@@ -8272,7 +8272,7 @@ Returns a new path.</p>
 <p>
 Call fast offset on all paths They must before be flattened.</p>
 <p class="code">
-<code style="white-space: break-spaces">func offset(using self, value: f32, joinStyle: <a href="std.pixel.html#Pixel.JoinStyle">JoinStyle</a>, toler: f32 = 0.5)
+<code style="white-space: break-spaces">func offset(using self, value: f32, joinStyle: JoinStyle, toler: f32 = 0.5)
 </code>
 </p>
 <p>
@@ -8324,23 +8324,23 @@ s32</td>
 </table>
 <h3 class="content" id="Pixel.NativeRenderOgl.createContext"><span class="titletype">func</span> <span class="titlelight">NativeRenderOgl.</span><span class="titlestrong">createContext</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func createContext(using self, hWnd: HWND, width: s32, height: s32, mainRC: HGLRC = null)-><a href="std.pixel.html#Pixel.RenderingContext">RenderingContext</a> throw
-func createContext(using self, hdc: HDC, width: s32, height: s32, mainRC: HGLRC = null)-><a href="std.pixel.html#Pixel.RenderingContext">RenderingContext</a> throw
+<code style="white-space: break-spaces">func createContext(using self, hWnd: HWND, width: s32, height: s32, mainRC: HGLRC = null)->RenderingContext throw
+func createContext(using self, hdc: HDC, width: s32, height: s32, mainRC: HGLRC = null)->RenderingContext throw
 </code>
 </p>
 <h3 class="content" id="Pixel.NativeRenderOgl.dropContext"><span class="titletype">func</span> <span class="titlelight">NativeRenderOgl.</span><span class="titlestrong">dropContext</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func dropContext(using self, rc: <a href="std.pixel.html#Pixel.RenderingContext">RenderingContext</a>)
+<code style="white-space: break-spaces">func dropContext(using self, rc: RenderingContext)
 </code>
 </p>
 <h3 class="content" id="Pixel.NativeRenderOgl.setCurrentContext"><span class="titletype">func</span> <span class="titlelight">NativeRenderOgl.</span><span class="titlestrong">setCurrentContext</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func setCurrentContext(using self, rc: <a href="std.pixel.html#Pixel.RenderingContext">RenderingContext</a>)
+<code style="white-space: break-spaces">func setCurrentContext(using self, rc: RenderingContext)
 </code>
 </p>
 <h3 class="content" id="Pixel.NativeRenderOgl.swapBuffers"><span class="titletype">func</span> <span class="titlelight">NativeRenderOgl.</span><span class="titlestrong">swapBuffers</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func swapBuffers(using self, rc: <a href="std.pixel.html#Pixel.RenderingContext">RenderingContext</a>)
+<code style="white-space: break-spaces">func swapBuffers(using self, rc: RenderingContext)
 </code>
 </p>
 <h3 class="content" id="Pixel.PaintParams"><span class="titletype">enum</span> <span class="titlelight">Pixel.</span><span class="titlestrong">PaintParams</span></h3>
@@ -8385,7 +8385,7 @@ Normal</td>
 <td>
 paintParams</td>
 <td class="tdtype">
-<a href="std.pixel.html#Pixel.PaintParams">PaintParams</a></td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.PaintParams">PaintParams</a></td>
 <td>
 </td>
 </tr>
@@ -8393,7 +8393,7 @@ paintParams</td>
 <td>
 paintQuality</td>
 <td class="tdtype">
-<a href="std.pixel.html#Pixel.PaintQuality">PaintQuality</a></td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.PaintQuality">PaintQuality</a></td>
 <td>
 </td>
 </tr>
@@ -8401,7 +8401,7 @@ paintQuality</td>
 <td>
 transform</td>
 <td class="tdtype">
-<a href="std.core.html#Core.Math.Transform2">Transform2</a></td>
+Transform2</td>
 <td>
 </td>
 </tr>
@@ -8409,7 +8409,7 @@ transform</td>
 <td>
 blendingMode</td>
 <td class="tdtype">
-<a href="std.pixel.html#Pixel.BlendingMode">BlendingMode</a></td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.BlendingMode">BlendingMode</a></td>
 <td>
 </td>
 </tr>
@@ -8417,7 +8417,7 @@ blendingMode</td>
 <td>
 interpolationMode</td>
 <td class="tdtype">
-<a href="std.pixel.html#Pixel.InterpolationMode">InterpolationMode</a></td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.InterpolationMode">InterpolationMode</a></td>
 <td>
 </td>
 </tr>
@@ -8425,7 +8425,7 @@ interpolationMode</td>
 <td>
 clippingRect</td>
 <td class="tdtype">
-<a href="std.core.html#Core.Math.Rectangle">Rectangle</a></td>
+Rectangle</td>
 <td>
 </td>
 </tr>
@@ -8433,7 +8433,7 @@ clippingRect</td>
 <td>
 stackClipRect</td>
 <td class="tdtype">
-<a href="std.core.html#Core.Array">Array'(Rectangle)</a></td>
+Array(Rectangle)</td>
 <td>
 </td>
 </tr>
@@ -8449,7 +8449,7 @@ bool</td>
 <td>
 colorMask</td>
 <td class="tdtype">
-<a href="std.pixel.html#Pixel.ColorMask">ColorMask</a></td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.ColorMask">ColorMask</a></td>
 <td>
 </td>
 </tr>
@@ -8460,7 +8460,7 @@ colorMask</td>
 <td>
 commandBuffer</td>
 <td class="tdtype">
-<a href="std.core.html#Core.Array">Array'(Command)</a></td>
+Array(<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Command">Command</a>)</td>
 <td>
 </td>
 </tr>
@@ -8468,7 +8468,7 @@ commandBuffer</td>
 <td>
 vertexBuffer</td>
 <td class="tdtype">
-<a href="std.core.html#Core.Array">Array'(VertexLayout)</a></td>
+Array(<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.VertexLayout">VertexLayout</a>)</td>
 <td>
 </td>
 </tr>
@@ -8476,7 +8476,7 @@ vertexBuffer</td>
 <td>
 triangulateIdx</td>
 <td class="tdtype">
-<a href="std.core.html#Core.Array">Array'(s32)</a></td>
+Array(s32)</td>
 <td>
 </td>
 </tr>
@@ -8492,7 +8492,7 @@ bool</td>
 <td>
 sharedSolidPen</td>
 <td class="tdtype">
-<a href="std.pixel.html#Pixel.Pen">Pen</a></td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Pen">Pen</a></td>
 <td>
 </td>
 </tr>
@@ -8500,7 +8500,7 @@ sharedSolidPen</td>
 <td>
 sharedSolidBrush</td>
 <td class="tdtype">
-<a href="std.pixel.html#Pixel.Brush">Brush</a></td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Brush">Brush</a></td>
 <td>
 </td>
 </tr>
@@ -8508,7 +8508,7 @@ sharedSolidBrush</td>
 <td>
 sharedLinePath</td>
 <td class="tdtype">
-<a href="std.pixel.html#Pixel.LinePath">LinePath</a></td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.LinePath">LinePath</a></td>
 <td>
 </td>
 </tr>
@@ -8516,7 +8516,7 @@ sharedLinePath</td>
 <td>
 sharedLinePathList</td>
 <td class="tdtype">
-<a href="std.pixel.html#Pixel.LinePathList">LinePathList</a></td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.LinePathList">LinePathList</a></td>
 <td>
 </td>
 </tr>
@@ -8524,7 +8524,7 @@ sharedLinePathList</td>
 <td>
 sharedRoundTmp</td>
 <td class="tdtype">
-<a href="std.core.html#Core.Array">Array'(__linepath_tuple_257)</a></td>
+Array(__linepath_tuple_261)</td>
 <td>
 </td>
 </tr>
@@ -8532,7 +8532,7 @@ sharedRoundTmp</td>
 <td>
 curState</td>
 <td class="tdtype">
-<a href="std.pixel.html#Pixel.PaintState">PaintState</a></td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.PaintState">PaintState</a></td>
 <td>
 </td>
 </tr>
@@ -8540,7 +8540,7 @@ curState</td>
 <td>
 stackState</td>
 <td class="tdtype">
-<a href="std.core.html#Core.Array">Array'(PaintState)</a></td>
+Array(<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.PaintState">PaintState</a>)</td>
 <td>
 </td>
 </tr>
@@ -8548,7 +8548,7 @@ stackState</td>
 <td>
 lastTexture0Type</td>
 <td class="tdtype">
-<a href="std.pixel.html#Pixel.BrushType">BrushType</a></td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.BrushType">BrushType</a></td>
 <td>
 </td>
 </tr>
@@ -8556,7 +8556,7 @@ lastTexture0Type</td>
 <td>
 stackRT</td>
 <td class="tdtype">
-<a href="std.core.html#Core.Array">Array'(*RenderTarget)</a></td>
+Array(*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.RenderTarget">RenderTarget</a>)</td>
 <td>
 </td>
 </tr>
@@ -8564,7 +8564,7 @@ stackRT</td>
 <td>
 curRT</td>
 <td class="tdtype">
-<a href="std.pixel.html#Pixel.RenderTarget">*RenderTarget</a></td>
+*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.RenderTarget">RenderTarget</a></td>
 <td>
 </td>
 </tr>
@@ -8681,14 +8681,14 @@ Draw an empty circle.</p>
 <td>
 <a href="#Pixel.Painter.drawEllipse">drawEllipse</a></td>
 <td>
-<p>
-Draw an empty ellipse.</p>
 </td>
 </tr>
 <tr>
 <td>
 <a href="#Pixel.Painter.drawEllipse">drawEllipse</a></td>
 <td>
+<p>
+Draw an empty ellipse.</p>
 </td>
 </tr>
 <tr>
@@ -8747,26 +8747,26 @@ Draw the line path.</p>
 <td>
 <a href="#Pixel.Painter.drawRect">drawRect</a></td>
 <td>
+</td>
+</tr>
+<tr>
+<td>
+<a href="#Pixel.Painter.drawRect">drawRect</a></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<a href="#Pixel.Painter.drawRect">drawRect</a></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<a href="#Pixel.Painter.drawRect">drawRect</a></td>
+<td>
 <p>
 Draw an empty rectangle.</p>
-</td>
-</tr>
-<tr>
-<td>
-<a href="#Pixel.Painter.drawRect">drawRect</a></td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-<a href="#Pixel.Painter.drawRect">drawRect</a></td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-<a href="#Pixel.Painter.drawRect">drawRect</a></td>
-<td>
 </td>
 </tr>
 <tr>
@@ -8781,26 +8781,26 @@ Draw a rich string. A rich string can be multiline, and accepts The layout will 
 <td>
 <a href="#Pixel.Painter.drawRoundRect">drawRoundRect</a></td>
 <td>
-</td>
-</tr>
-<tr>
-<td>
-<a href="#Pixel.Painter.drawRoundRect">drawRoundRect</a></td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-<a href="#Pixel.Painter.drawRoundRect">drawRoundRect</a></td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-<a href="#Pixel.Painter.drawRoundRect">drawRoundRect</a></td>
-<td>
 <p>
 Draw an empty round rectangle.</p>
+</td>
+</tr>
+<tr>
+<td>
+<a href="#Pixel.Painter.drawRoundRect">drawRoundRect</a></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<a href="#Pixel.Painter.drawRoundRect">drawRoundRect</a></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<a href="#Pixel.Painter.drawRoundRect">drawRoundRect</a></td>
+<td>
 </td>
 </tr>
 <tr>
@@ -8844,7 +8844,7 @@ Draw a simple string (centered).</p>
 <a href="#Pixel.Painter.drawTexture">drawTexture</a></td>
 <td>
 <p>
-Draw a portion of an image.</p>
+Draw a texture image.</p>
 </td>
 </tr>
 <tr>
@@ -8864,7 +8864,7 @@ Draw a portion of an image.</p>
 <a href="#Pixel.Painter.drawTexture">drawTexture</a></td>
 <td>
 <p>
-Draw a texture image.</p>
+Draw a portion of an image.</p>
 </td>
 </tr>
 <tr>
@@ -8924,7 +8924,7 @@ Fill the line path.</p>
 <a href="#Pixel.Painter.fillPath">fillPath</a></td>
 <td>
 <p>
-Fill the list of paths clockwise = fill, anti-clockwise = hole.</p>
+Fill the line path with the given <code class = "incode">brush</code>.</p>
 </td>
 </tr>
 <tr>
@@ -8940,15 +8940,7 @@ Fill the line path.</p>
 <a href="#Pixel.Painter.fillPath">fillPath</a></td>
 <td>
 <p>
-Fill the line path with the given <code class = "incode">brush</code>.</p>
-</td>
-</tr>
-<tr>
-<td>
-<a href="#Pixel.Painter.fillPolygon">fillPolygon</a></td>
-<td>
-<p>
-Fill the polygon with the given <code class = "incode">brush</code>.</p>
+Fill the list of paths clockwise = fill, anti-clockwise = hole.</p>
 </td>
 </tr>
 <tr>
@@ -8961,16 +8953,24 @@ Fill the polygon with the given color.</p>
 </tr>
 <tr>
 <td>
-<a href="#Pixel.Painter.fillRect">fillRect</a></td>
+<a href="#Pixel.Painter.fillPolygon">fillPolygon</a></td>
 <td>
 <p>
-Draw a filled rectangle.</p>
+Fill the polygon with the given <code class = "incode">brush</code>.</p>
 </td>
 </tr>
 <tr>
 <td>
 <a href="#Pixel.Painter.fillRect">fillRect</a></td>
 <td>
+</td>
+</tr>
+<tr>
+<td>
+<a href="#Pixel.Painter.fillRect">fillRect</a></td>
+<td>
+<p>
+Draw a filled rectangle.</p>
 </td>
 </tr>
 <tr>
@@ -9362,7 +9362,7 @@ Bind a render target.</p>
 </table>
 <h3 class="content" id="Pixel.Painter.addParams"><span class="titletype">func</span> <span class="titlelight">Painter.</span><span class="titlestrong">addParams</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func addParams(using self, add: <a href="std.pixel.html#Pixel.PaintParams">PaintParams</a>)
+<code style="white-space: break-spaces">func addParams(using self, add: PaintParams)
 </code>
 </p>
 <h3 class="content" id="Pixel.Painter.begin"><span class="titletype">func</span> <span class="titlelight">Painter.</span><span class="titlestrong">begin</span></h3>
@@ -9374,21 +9374,21 @@ Bind a render target.</p>
 Call this before drawing.</p>
 <h3 class="content" id="Pixel.Painter.bindRenderTarget"><span class="titletype">func</span> <span class="titlelight">Painter.</span><span class="titlestrong">bindRenderTarget</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func bindRenderTarget(using self, tgt: <a href="std.pixel.html#Pixel.RenderTarget">*RenderTarget</a>, paintAlpha = false)
+<code style="white-space: break-spaces">func bindRenderTarget(using self, tgt: *RenderTarget, paintAlpha = false)
 </code>
 </p>
 <p>
 Bind a render target.</p>
 <h3 class="content" id="Pixel.Painter.clear"><span class="titletype">func</span> <span class="titlelight">Painter.</span><span class="titlestrong">clear</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func clear(using self, color: <a href="std.pixel.html#Pixel.Color">Color</a>)
+<code style="white-space: break-spaces">func clear(using self, color: Color)
 </code>
 </p>
 <p>
 Clear the rendering surface.</p>
 <h3 class="content" id="Pixel.Painter.computeLayout"><span class="titletype">func</span> <span class="titlelight">Painter.</span><span class="titlestrong">computeLayout</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func computeLayout(using self, pos: <a href="std.core.html#Core.Math.Rectangle">Rectangle</a>, text: <a href="std.pixel.html#Pixel.RichString">*RichString</a>, format: <a href="std.pixel.html#Pixel.RichStringFormat">RichStringFormat</a>)
+<code style="white-space: break-spaces">func computeLayout(using self, pos: Rectangle, text: *RichString, format: RichStringFormat)
 </code>
 </p>
 <p>
@@ -9399,7 +9399,7 @@ Recompute the layout for a given rectangle.</p>
 <td>
 measure</td>
 <td class="tdtype">
-<a href="std.pixel.html#Pixel.StringMetrics">StringMetrics</a></td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.StringMetrics">StringMetrics</a></td>
 <td>
 </td>
 </tr>
@@ -9446,145 +9446,145 @@ bool</td>
 </table>
 <h3 class="content" id="Pixel.Painter.drawArc"><span class="titletype">func</span> <span class="titlelight">Painter.</span><span class="titlestrong">drawArc</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func drawArc(using self, centerX: f32, centerY: f32, radius: f32, startAngle: <a href="std.core.html#Core.Math.Angle">Angle</a>, endAngle: <a href="std.core.html#Core.Math.Angle">Angle</a>, color: <a href="std.pixel.html#Pixel.Color">Color</a>, penSize: f32 = 1)
+<code style="white-space: break-spaces">func drawArc(using self, centerX: f32, centerY: f32, radius: f32, startAngle: Angle, endAngle: Angle, color: Color, penSize: f32 = 1)
 </code>
 </p>
 <p>
 Draw an arc between two angles.</p>
 <p class="code">
-<code style="white-space: break-spaces">func drawArc(using self, centerX: f32, centerY: f32, radius: f32, startAngle: <a href="std.core.html#Core.Math.Angle">Angle</a>, endAngle: <a href="std.core.html#Core.Math.Angle">Angle</a>, pen: <a href="std.pixel.html#Pixel.Pen">Pen</a>)
+<code style="white-space: break-spaces">func drawArc(using self, centerX: f32, centerY: f32, radius: f32, startAngle: Angle, endAngle: Angle, pen: Pen)
 </code>
 </p>
 <h3 class="content" id="Pixel.Painter.drawCircle"><span class="titletype">func</span> <span class="titlelight">Painter.</span><span class="titlestrong">drawCircle</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func drawCircle(using self, centerX: f32, centerY: f32, radius: f32, color: <a href="std.pixel.html#Pixel.Color">Color</a>, penSize: f32 = 1)
+<code style="white-space: break-spaces">func drawCircle(using self, centerX: f32, centerY: f32, radius: f32, color: Color, penSize: f32 = 1)
 </code>
 </p>
 <p>
 Draw an empty circle.</p>
 <p class="code">
-<code style="white-space: break-spaces">func drawCircle(using self, centerX: f32, centerY: f32, radius: f32, pen: <a href="std.pixel.html#Pixel.Pen">Pen</a>)
+<code style="white-space: break-spaces">func drawCircle(using self, centerX: f32, centerY: f32, radius: f32, pen: Pen)
 </code>
 </p>
 <h3 class="content" id="Pixel.Painter.drawEllipse"><span class="titletype">func</span> <span class="titlelight">Painter.</span><span class="titlestrong">drawEllipse</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func drawEllipse(using self, centerX: f32, centerY: f32, radiusX: f32, radiusY: f32, color: <a href="std.pixel.html#Pixel.Color">Color</a>, penSize: f32 = 1)
+<code style="white-space: break-spaces">func drawEllipse(using self, centerX: f32, centerY: f32, radiusX: f32, radiusY: f32, color: Color, penSize: f32 = 1)
 </code>
 </p>
 <p>
 Draw an empty ellipse.</p>
 <p class="code">
-<code style="white-space: break-spaces">func drawEllipse(using self, centerX: f32, centerY: f32, radiusX: f32, radiusY: f32, pen: <a href="std.pixel.html#Pixel.Pen">Pen</a>)
+<code style="white-space: break-spaces">func drawEllipse(using self, centerX: f32, centerY: f32, radiusX: f32, radiusY: f32, pen: Pen)
 </code>
 </p>
 <h3 class="content" id="Pixel.Painter.drawLine"><span class="titletype">func</span> <span class="titlelight">Painter.</span><span class="titlestrong">drawLine</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func drawLine(using self, start: <a href="std.core.html#Core.Math.Vector2">Vector2</a>, end: <a href="std.core.html#Core.Math.Vector2">Vector2</a>, pen: <a href="std.pixel.html#Pixel.Pen">Pen</a>)
+<code style="white-space: break-spaces">func drawLine(using self, start: Vector2, end: Vector2, pen: Pen)
 </code>
 </p>
 <p>
 Draw a line.</p>
 <p class="code">
-<code style="white-space: break-spaces">func drawLine(using self, startX: f32, startY: f32, endX: f32, endY: f32, color: <a href="std.pixel.html#Pixel.Color">Color</a>, penSize: f32 = 1)
-func drawLine(using self, startX: f32, startY: f32, endX: f32, endY: f32, pen: <a href="std.pixel.html#Pixel.Pen">Pen</a>)
+<code style="white-space: break-spaces">func drawLine(using self, startX: f32, startY: f32, endX: f32, endY: f32, color: Color, penSize: f32 = 1)
+func drawLine(using self, startX: f32, startY: f32, endX: f32, endY: f32, pen: Pen)
 </code>
 </p>
 <h3 class="content" id="Pixel.Painter.drawPath"><span class="titletype">func</span> <span class="titlelight">Painter.</span><span class="titlestrong">drawPath</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func drawPath(using self, path: <a href="std.pixel.html#Pixel.LinePath">*LinePath</a>, color: <a href="std.pixel.html#Pixel.Color">Color</a>, penSize: f32)
+<code style="white-space: break-spaces">func drawPath(using self, path: *LinePath, color: Color, penSize: f32)
 </code>
 </p>
 <p>
 Draw the line path.</p>
 <p class="code">
-<code style="white-space: break-spaces">func drawPath(using self, path: <a href="std.pixel.html#Pixel.LinePath">*LinePath</a>, pen: <a href="std.pixel.html#Pixel.Pen">Pen</a>)
+<code style="white-space: break-spaces">func drawPath(using self, path: *LinePath, pen: Pen)
 </code>
 </p>
 <p>
 Draw the line path with the given <code class = "incode">pen</code>.</p>
 <p class="code">
-<code style="white-space: break-spaces">func drawPath(using self, pathList: <a href="std.pixel.html#Pixel.LinePathList">*LinePathList</a>, pen: <a href="std.pixel.html#Pixel.Pen">Pen</a>, mode: <a href="std.pixel.html#Pixel.DrawPathListMode">DrawPathListMode</a> = .Separate)
+<code style="white-space: break-spaces">func drawPath(using self, pathList: *LinePathList, pen: Pen, mode: DrawPathListMode = .Separate)
 </code>
 </p>
 <p>
 Draw the line path.</p>
 <p class="code">
-<code style="white-space: break-spaces">func drawPath(using self, pathList: <a href="std.pixel.html#Pixel.LinePathList">*LinePathList</a>, color: <a href="std.pixel.html#Pixel.Color">Color</a>, penSize: f32, mode: <a href="std.pixel.html#Pixel.DrawPathListMode">DrawPathListMode</a> = .Separate)
+<code style="white-space: break-spaces">func drawPath(using self, pathList: *LinePathList, color: Color, penSize: f32, mode: DrawPathListMode = .Separate)
 </code>
 </p>
 <p>
 Draw the line path.</p>
 <h3 class="content" id="Pixel.Painter.drawRect"><span class="titletype">func</span> <span class="titlelight">Painter.</span><span class="titlestrong">drawRect</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func drawRect(using self, left: f32, top: f32, width: f32, height: f32, color: <a href="std.pixel.html#Pixel.Color">Color</a>, penSize: f32 = 1)
+<code style="white-space: break-spaces">func drawRect(using self, left: f32, top: f32, width: f32, height: f32, color: Color, penSize: f32 = 1)
 </code>
 </p>
 <p>
 Draw an empty rectangle.</p>
 <p class="code">
-<code style="white-space: break-spaces">func drawRect(using self, rect: <a href="std.core.html#Core.Math.Rectangle">Rectangle</a>, color: <a href="std.pixel.html#Pixel.Color">Color</a>, penSize: f32 = 1)
-func drawRect(using self, left: f32, top: f32, width: f32, height: f32, pen: <a href="std.pixel.html#Pixel.Pen">Pen</a>)
-func drawRect(using self, rect: <a href="std.core.html#Core.Math.Rectangle">Rectangle</a>, pen: <a href="std.pixel.html#Pixel.Pen">Pen</a>)
+<code style="white-space: break-spaces">func drawRect(using self, rect: Rectangle, color: Color, penSize: f32 = 1)
+func drawRect(using self, left: f32, top: f32, width: f32, height: f32, pen: Pen)
+func drawRect(using self, rect: Rectangle, pen: Pen)
 </code>
 </p>
 <h3 class="content" id="Pixel.Painter.drawRichString"><span class="titletype">func</span> <span class="titlelight">Painter.</span><span class="titlestrong">drawRichString</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func drawRichString(using self, pos: <a href="std.core.html#Core.Math.Rectangle">Rectangle</a>, text: <a href="std.pixel.html#Pixel.RichString">*RichString</a>, format: <a href="std.pixel.html#Pixel.RichStringFormat">RichStringFormat</a>, forceCompute = false)
+<code style="white-space: break-spaces">func drawRichString(using self, pos: Rectangle, text: *RichString, format: RichStringFormat, forceCompute = false)
 </code>
 </p>
 <p>
 Draw a rich string. A rich string can be multiline, and accepts The layout will be computed at the first call, and each time <code class = "incode">pos</code> has changed.</p>
 <h3 class="content" id="Pixel.Painter.drawRoundRect"><span class="titletype">func</span> <span class="titlelight">Painter.</span><span class="titlestrong">drawRoundRect</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func drawRoundRect(using self, left: f32, top: f32, width: f32, height: f32, radiusX: f32, radiusY: f32, color: <a href="std.pixel.html#Pixel.Color">Color</a>, penSize: f32 = 1)
+<code style="white-space: break-spaces">func drawRoundRect(using self, left: f32, top: f32, width: f32, height: f32, radiusX: f32, radiusY: f32, color: Color, penSize: f32 = 1)
 </code>
 </p>
 <p>
 Draw an empty round rectangle.</p>
 <p class="code">
-<code style="white-space: break-spaces">func drawRoundRect(using self, left: f32, top: f32, width: f32, height: f32, radiusX: f32, radiusY: f32, pen: <a href="std.pixel.html#Pixel.Pen">Pen</a>)
-func drawRoundRect(using self, rect: <a href="std.core.html#Core.Math.Rectangle">Rectangle</a>, radiusX: f32, radiusY: f32, pen: <a href="std.pixel.html#Pixel.Pen">Pen</a>)
-func drawRoundRect(using self, rect: <a href="std.core.html#Core.Math.Rectangle">Rectangle</a>, radiusX: f32, radiusY: f32, color: <a href="std.pixel.html#Pixel.Color">Color</a>, penSize: f32 = 1)
+<code style="white-space: break-spaces">func drawRoundRect(using self, left: f32, top: f32, width: f32, height: f32, radiusX: f32, radiusY: f32, pen: Pen)
+func drawRoundRect(using self, rect: Rectangle, radiusX: f32, radiusY: f32, pen: Pen)
+func drawRoundRect(using self, rect: Rectangle, radiusX: f32, radiusY: f32, color: Color, penSize: f32 = 1)
 </code>
 </p>
 <h3 class="content" id="Pixel.Painter.drawString"><span class="titletype">func</span> <span class="titlelight">Painter.</span><span class="titlestrong">drawString</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func drawString(using self, left: f32, top: f32, text: string, font: <a href="std.pixel.html#Pixel.Font">*Font</a>, color: <a href="std.pixel.html#Pixel.Color">Color</a>, under = UnderlineStyle.None)
+<code style="white-space: break-spaces">func drawString(using self, left: f32, top: f32, text: string, font: *Font, color: Color, under = UnderlineStyle.None)
 </code>
 </p>
 <p>
 Draw a simple string.</p>
 <p class="code">
-<code style="white-space: break-spaces">func drawString(using self, left: f32, top: f32, text: string, font: <a href="std.pixel.html#Pixel.Font">*Font</a>, brush: <a href="std.pixel.html#Pixel.Brush">Brush</a>, under = UnderlineStyle.None)
+<code style="white-space: break-spaces">func drawString(using self, left: f32, top: f32, text: string, font: *Font, brush: Brush, under = UnderlineStyle.None)
 </code>
 </p>
 <p>
 Draw a simple string.</p>
 <h3 class="content" id="Pixel.Painter.drawStringCenter"><span class="titletype">func</span> <span class="titlelight">Painter.</span><span class="titlestrong">drawStringCenter</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func drawStringCenter(using self, x: f32, y: f32, text: string, font: <a href="std.pixel.html#Pixel.Font">*Font</a>, color: <a href="std.pixel.html#Pixel.Color">Color</a>, under = UnderlineStyle.None)
+<code style="white-space: break-spaces">func drawStringCenter(using self, x: f32, y: f32, text: string, font: *Font, color: Color, under = UnderlineStyle.None)
 </code>
 </p>
 <p>
 Draw a simple string (centered).</p>
 <h3 class="content" id="Pixel.Painter.drawTexture"><span class="titletype">func</span> <span class="titlelight">Painter.</span><span class="titlestrong">drawTexture</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func drawTexture(using self, x: f32, y: f32, width: f32, height: f32, texture: <a href="std.pixel.html#Pixel.Texture">Texture</a>, color: <a href="std.pixel.html#Pixel.Color">Color</a> = Argb.White)
+<code style="white-space: break-spaces">func drawTexture(using self, x: f32, y: f32, width: f32, height: f32, texture: Texture, color: Color = Argb.White)
 </code>
 </p>
 <p>
 Draw a texture image.</p>
 <p class="code">
-<code style="white-space: break-spaces">func drawTexture(using self, rect: <a href="std.core.html#Core.Math.Rectangle">Rectangle</a>, texture: <a href="std.pixel.html#Pixel.Texture">Texture</a>, color: <a href="std.pixel.html#Pixel.Color">Color</a> = Argb.White)
-func drawTexture(using self, x: f32, y: f32, texture: <a href="std.pixel.html#Pixel.Texture">Texture</a>, color: <a href="std.pixel.html#Pixel.Color">Color</a> = Argb.White)
-func drawTexture(using self, x: f32, y: f32, width: f32, height: f32, srcRect: <a href="std.core.html#Core.Math.Rectangle">Rectangle</a>, texture: <a href="std.pixel.html#Pixel.Texture">Texture</a>, color: <a href="std.pixel.html#Pixel.Color">Color</a> = Argb.White)
+<code style="white-space: break-spaces">func drawTexture(using self, rect: Rectangle, texture: Texture, color: Color = Argb.White)
+func drawTexture(using self, x: f32, y: f32, texture: Texture, color: Color = Argb.White)
+func drawTexture(using self, x: f32, y: f32, width: f32, height: f32, srcRect: Rectangle, texture: Texture, color: Color = Argb.White)
 </code>
 </p>
 <p>
 Draw a portion of an image.</p>
 <p class="code">
-<code style="white-space: break-spaces">func drawTexture(using self, dstRect: <a href="std.core.html#Core.Math.Rectangle">Rectangle</a>, srcRect: <a href="std.core.html#Core.Math.Rectangle">Rectangle</a>, texture: <a href="std.pixel.html#Pixel.Texture">Texture</a>, color: <a href="std.pixel.html#Pixel.Color">Color</a> = Argb.White)
-func drawTexture(using self, x: f32, y: f32, srcRect: <a href="std.core.html#Core.Math.Rectangle">Rectangle</a>, texture: <a href="std.pixel.html#Pixel.Texture">Texture</a>, color: <a href="std.pixel.html#Pixel.Color">Color</a> = Argb.White)
+<code style="white-space: break-spaces">func drawTexture(using self, dstRect: Rectangle, srcRect: Rectangle, texture: Texture, color: Color = Argb.White)
+func drawTexture(using self, x: f32, y: f32, srcRect: Rectangle, texture: Texture, color: Color = Argb.White)
 </code>
 </p>
 <h3 class="content" id="Pixel.Painter.end"><span class="titletype">func</span> <span class="titlelight">Painter.</span><span class="titlestrong">end</span></h3>
@@ -9603,106 +9603,106 @@ Call this after drawing.</p>
 Stop painting in the clipping buffer. Back to normal.</p>
 <h3 class="content" id="Pixel.Painter.fillCircle"><span class="titletype">func</span> <span class="titlelight">Painter.</span><span class="titlestrong">fillCircle</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func fillCircle(using self, centerX: f32, centerY: f32, radius: f32, brush: <a href="std.pixel.html#Pixel.Brush">Brush</a>)
+<code style="white-space: break-spaces">func fillCircle(using self, centerX: f32, centerY: f32, radius: f32, brush: Brush)
 </code>
 </p>
 <p>
 Draw a solid circle.</p>
 <p class="code">
-<code style="white-space: break-spaces">func fillCircle(using self, centerX: f32, centerY: f32, radius: f32, color: <a href="std.pixel.html#Pixel.Color">Color</a>)
+<code style="white-space: break-spaces">func fillCircle(using self, centerX: f32, centerY: f32, radius: f32, color: Color)
 </code>
 </p>
 <h3 class="content" id="Pixel.Painter.fillEllipse"><span class="titletype">func</span> <span class="titlelight">Painter.</span><span class="titlestrong">fillEllipse</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func fillEllipse(using self, centerX: f32, centerY: f32, radiusX: f32, radiusY: f32, brush: <a href="std.pixel.html#Pixel.Brush">Brush</a>)
+<code style="white-space: break-spaces">func fillEllipse(using self, centerX: f32, centerY: f32, radiusX: f32, radiusY: f32, brush: Brush)
 </code>
 </p>
 <p>
 Draw a solid ellipse.</p>
 <p class="code">
-<code style="white-space: break-spaces">func fillEllipse(using self, centerX: f32, centerY: f32, radiusX: f32, radiusY: f32, color: <a href="std.pixel.html#Pixel.Color">Color</a>)
+<code style="white-space: break-spaces">func fillEllipse(using self, centerX: f32, centerY: f32, radiusX: f32, radiusY: f32, color: Color)
 </code>
 </p>
 <h3 class="content" id="Pixel.Painter.fillPath"><span class="titletype">func</span> <span class="titlelight">Painter.</span><span class="titlestrong">fillPath</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func fillPath(using self, pathList: <a href="std.pixel.html#Pixel.LinePathList">*LinePathList</a>, color: <a href="std.pixel.html#Pixel.Color">Color</a>)
+<code style="white-space: break-spaces">func fillPath(using self, pathList: *LinePathList, color: Color)
 </code>
 </p>
 <p>
 Fill the line path.</p>
 <p class="code">
-<code style="white-space: break-spaces">func fillPath(using self, path: <a href="std.pixel.html#Pixel.LinePath">*LinePath</a>, brush: <a href="std.pixel.html#Pixel.Brush">Brush</a>)
+<code style="white-space: break-spaces">func fillPath(using self, path: *LinePath, brush: Brush)
 </code>
 </p>
 <p>
 Fill the line path with the given <code class = "incode">brush</code>.</p>
 <p class="code">
-<code style="white-space: break-spaces">func fillPath(using self, path: <a href="std.pixel.html#Pixel.LinePath">*LinePath</a>, color: <a href="std.pixel.html#Pixel.Color">Color</a>)
+<code style="white-space: break-spaces">func fillPath(using self, path: *LinePath, color: Color)
 </code>
 </p>
 <p>
 Fill the line path.</p>
 <p class="code">
-<code style="white-space: break-spaces">func fillPath(using self, pathList: <a href="std.pixel.html#Pixel.LinePathList">*LinePathList</a>, brush: <a href="std.pixel.html#Pixel.Brush">Brush</a>)
+<code style="white-space: break-spaces">func fillPath(using self, pathList: *LinePathList, brush: Brush)
 </code>
 </p>
 <p>
 Fill the list of paths clockwise = fill, anti-clockwise = hole.</p>
 <h3 class="content" id="Pixel.Painter.fillPolygon"><span class="titletype">func</span> <span class="titlelight">Painter.</span><span class="titlestrong">fillPolygon</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func fillPolygon(using self, path: <a href="std.pixel.html#Pixel.LinePath">*LinePath</a>, color: <a href="std.pixel.html#Pixel.Color">Color</a>)
+<code style="white-space: break-spaces">func fillPolygon(using self, path: *LinePath, color: Color)
 </code>
 </p>
 <p>
 Fill the polygon with the given color.</p>
 <p class="code">
-<code style="white-space: break-spaces">func fillPolygon(using self, path: <a href="std.pixel.html#Pixel.LinePath">*LinePath</a>, brush: <a href="std.pixel.html#Pixel.Brush">Brush</a>)
+<code style="white-space: break-spaces">func fillPolygon(using self, path: *LinePath, brush: Brush)
 </code>
 </p>
 <p>
 Fill the polygon with the given <code class = "incode">brush</code>.</p>
 <h3 class="content" id="Pixel.Painter.fillRect"><span class="titletype">func</span> <span class="titlelight">Painter.</span><span class="titlestrong">fillRect</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func fillRect(using self, left: f32, top: f32, width: f32, height: f32, brush: <a href="std.pixel.html#Pixel.Brush">Brush</a>)
+<code style="white-space: break-spaces">func fillRect(using self, left: f32, top: f32, width: f32, height: f32, brush: Brush)
 </code>
 </p>
 <p>
 Draw a filled rectangle.</p>
 <p class="code">
-<code style="white-space: break-spaces">func fillRect(using self, rect: <a href="std.core.html#Core.Math.Rectangle">Rectangle</a>, brush: <a href="std.pixel.html#Pixel.Brush">Brush</a>)
-func fillRect(using self, left: f32, top: f32, width: f32, height: f32, color: <a href="std.pixel.html#Pixel.Color">Color</a>)
-func fillRect(using self, rect: <a href="std.core.html#Core.Math.Rectangle">Rectangle</a>, color: <a href="std.pixel.html#Pixel.Color">Color</a>)
+<code style="white-space: break-spaces">func fillRect(using self, rect: Rectangle, brush: Brush)
+func fillRect(using self, left: f32, top: f32, width: f32, height: f32, color: Color)
+func fillRect(using self, rect: Rectangle, color: Color)
 </code>
 </p>
 <h3 class="content" id="Pixel.Painter.fillRoundRect"><span class="titletype">func</span> <span class="titlelight">Painter.</span><span class="titlestrong">fillRoundRect</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func fillRoundRect(using self, left: f32, top: f32, width: f32, height: f32, radiusX: f32, radiusY: f32, brush: <a href="std.pixel.html#Pixel.Brush">Brush</a>)
+<code style="white-space: break-spaces">func fillRoundRect(using self, left: f32, top: f32, width: f32, height: f32, radiusX: f32, radiusY: f32, brush: Brush)
 </code>
 </p>
 <p>
 Draw a filled round rectangle.</p>
 <p class="code">
-<code style="white-space: break-spaces">func fillRoundRect(using self, rect: <a href="std.core.html#Core.Math.Rectangle">Rectangle</a>, radiusX: f32, radiusY: f32, brush: <a href="std.pixel.html#Pixel.Brush">Brush</a>)
-func fillRoundRect(using self, left: f32, top: f32, width: f32, height: f32, radiusX: f32, radiusY: f32, color: <a href="std.pixel.html#Pixel.Color">Color</a>)
-func fillRoundRect(using self, rect: <a href="std.core.html#Core.Math.Rectangle">Rectangle</a>, radiusX: f32, radiusY: f32, color: <a href="std.pixel.html#Pixel.Color">Color</a>)
+<code style="white-space: break-spaces">func fillRoundRect(using self, rect: Rectangle, radiusX: f32, radiusY: f32, brush: Brush)
+func fillRoundRect(using self, left: f32, top: f32, width: f32, height: f32, radiusX: f32, radiusY: f32, color: Color)
+func fillRoundRect(using self, rect: Rectangle, radiusX: f32, radiusY: f32, color: Color)
 </code>
 </p>
 <h3 class="content" id="Pixel.Painter.getClippingRect"><span class="titletype">func</span> <span class="titlelight">Painter.</span><span class="titlestrong">getClippingRect</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func getClippingRect(using self)-><a href="std.core.html#Core.Math.Rectangle">Rectangle</a>
+<code style="white-space: break-spaces">func getClippingRect(using self)->Rectangle
 </code>
 </p>
 <p>
 Get the current clipping rectangle.</p>
 <h3 class="content" id="Pixel.Painter.getGlyphs"><span class="titletype">func</span> <span class="titlelight">Painter.</span><span class="titlestrong">getGlyphs</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func getGlyphs(text: string, font: <a href="std.pixel.html#Pixel.Font">*Font</a>)-><a href="std.core.html#Core.Array">Array'(const *GlyphDesc)</a>
+<code style="white-space: break-spaces">func getGlyphs(text: string, font: *Font)->Array'(const *GlyphDesc)
 </code>
 </p>
 <p>
 Returns all the glyphs for a given string and font.</p>
 <p class="code">
-<code style="white-space: break-spaces">func getGlyphs(text: <a href="std.core.html#Core.Array">Array'(rune)</a>, font: <a href="std.pixel.html#Pixel.Font">*Font</a>)-><a href="std.core.html#Core.Array">Array'(const *GlyphDesc)</a>
+<code style="white-space: break-spaces">func getGlyphs(text: Array'(rune), font: *Font)->Array'(const *GlyphDesc)
 </code>
 </p>
 <p>
@@ -9719,7 +9719,7 @@ Returns all the glyphs for a given string and font.</p>
 </p>
 <h3 class="content" id="Pixel.Painter.getTransform"><span class="titletype">func</span> <span class="titlelight">Painter.</span><span class="titlestrong">getTransform</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func getTransform(using self)-><a href="std.core.html#Core.Math.Transform2">Transform2</a>
+<code style="white-space: break-spaces">func getTransform(using self)->Transform2
 </code>
 </p>
 <p>
@@ -9733,20 +9733,20 @@ Returns the current tranformation.</p>
 Returns true if the current clipping rectangle is empty (no drawing !).</p>
 <h3 class="content" id="Pixel.Painter.measureRune"><span class="titletype">func</span> <span class="titlelight">Painter.</span><span class="titlestrong">measureRune</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func measureRune(c: rune, font: <a href="std.pixel.html#Pixel.Font">*Font</a>)-><a href="std.core.html#Core.Math.Point">Point</a>
+<code style="white-space: break-spaces">func measureRune(c: rune, font: *Font)->Point
 </code>
 </p>
 <p>
 Get a rune size for a given font.</p>
 <h3 class="content" id="Pixel.Painter.measureString"><span class="titletype">func</span> <span class="titlelight">Painter.</span><span class="titlestrong">measureString</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func measureString(text: string, font: <a href="std.pixel.html#Pixel.Font">*Font</a>)-><a href="std.pixel.html#Pixel.StringMetrics">StringMetrics</a>
+<code style="white-space: break-spaces">func measureString(text: string, font: *Font)->StringMetrics
 </code>
 </p>
 <p>
 Returns the metrics of a given text.</p>
 <p class="code">
-<code style="white-space: break-spaces">func measureString(text: <a href="std.core.html#Core.Array">Array'(const *GlyphDesc)</a>)-><a href="std.pixel.html#Pixel.StringMetrics">StringMetrics</a>
+<code style="white-space: break-spaces">func measureString(text: Array'(const *GlyphDesc))->StringMetrics
 </code>
 </p>
 <p>
@@ -9767,14 +9767,14 @@ Restore the original clipping rectangle.</p>
 Restore the last paint state.</p>
 <h3 class="content" id="Pixel.Painter.pushClippingRect"><span class="titletype">func</span> <span class="titlelight">Painter.</span><span class="titlestrong">pushClippingRect</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func pushClippingRect(using self, rect: <a href="std.core.html#Core.Math.Rectangle">Rectangle</a>, isSurfacePos = false)
+<code style="white-space: break-spaces">func pushClippingRect(using self, rect: Rectangle, isSurfacePos = false)
 </code>
 </p>
 <p>
 Interface the given rectangle with the current clipping rectangle.</p>
 <h3 class="content" id="Pixel.Painter.pushClippingSurfaceRect"><span class="titletype">func</span> <span class="titlelight">Painter.</span><span class="titlestrong">pushClippingSurfaceRect</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func pushClippingSurfaceRect(using self, rect: <a href="std.core.html#Core.Math.Rectangle">Rectangle</a>)
+<code style="white-space: break-spaces">func pushClippingSurfaceRect(using self, rect: Rectangle)
 </code>
 </p>
 <p>
@@ -9788,14 +9788,14 @@ Interface the given rectangle with the current clipping rectangle.</p>
 Save the current paint state.</p>
 <h3 class="content" id="Pixel.Painter.releaseRenderTarget"><span class="titletype">func</span> <span class="titlelight">Painter.</span><span class="titlestrong">releaseRenderTarget</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func releaseRenderTarget(using self, tgt: <a href="std.pixel.html#Pixel.RenderTarget">*RenderTarget</a>)
+<code style="white-space: break-spaces">func releaseRenderTarget(using self, tgt: *RenderTarget)
 </code>
 </p>
 <p>
 Release the render target.</p>
 <h3 class="content" id="Pixel.Painter.removeParams"><span class="titletype">func</span> <span class="titlelight">Painter.</span><span class="titlestrong">removeParams</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func removeParams(using self, remove: <a href="std.pixel.html#Pixel.PaintParams">PaintParams</a>)
+<code style="white-space: break-spaces">func removeParams(using self, remove: PaintParams)
 </code>
 </p>
 <h3 class="content" id="Pixel.Painter.resetClippingRect"><span class="titletype">func</span> <span class="titlelight">Painter.</span><span class="titlestrong">resetClippingRect</span></h3>
@@ -9828,13 +9828,13 @@ Reset the current painting state.</p>
 Reset the paint position, rotation, scale.</p>
 <h3 class="content" id="Pixel.Painter.rotateTransform"><span class="titletype">func</span> <span class="titlelight">Painter.</span><span class="titlestrong">rotateTransform</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func rotateTransform(using self, angle: <a href="std.core.html#Core.Math.Angle">Angle</a>)
+<code style="white-space: break-spaces">func rotateTransform(using self, angle: Angle)
 </code>
 </p>
 <p>
 Set the paint rotation, in degrees.</p>
 <p class="code">
-<code style="white-space: break-spaces">func rotateTransform(using self, angle: <a href="std.core.html#Core.Math.Angle">Angle</a>, centerX: f32, centerY: f32)
+<code style="white-space: break-spaces">func rotateTransform(using self, angle: Angle, centerX: f32, centerY: f32)
 </code>
 </p>
 <p>
@@ -9855,7 +9855,7 @@ Set the paint scale.</p>
 Set antialiased mode on/off.</p>
 <h3 class="content" id="Pixel.Painter.setBlendingMode"><span class="titletype">func</span> <span class="titlelight">Painter.</span><span class="titlestrong">setBlendingMode</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func setBlendingMode(using self, mode: <a href="std.pixel.html#Pixel.BlendingMode">BlendingMode</a>)
+<code style="white-space: break-spaces">func setBlendingMode(using self, mode: BlendingMode)
 </code>
 </p>
 <p>
@@ -9868,21 +9868,21 @@ Set the current blending mode.</p>
 <p>
 Set the current clipping rectangle.</p>
 <p class="code">
-<code style="white-space: break-spaces">func setClippingRect(using self, rect: <a href="std.core.html#Core.Math.Rectangle">Rectangle</a>)
+<code style="white-space: break-spaces">func setClippingRect(using self, rect: Rectangle)
 </code>
 </p>
 <p>
 Set the current clipping rectangle.</p>
 <h3 class="content" id="Pixel.Painter.setClippingRegionMode"><span class="titletype">func</span> <span class="titlelight">Painter.</span><span class="titlestrong">setClippingRegionMode</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func setClippingRegionMode(using self, mode: <a href="std.pixel.html#Pixel.ClippingMode">ClippingMode</a>)
+<code style="white-space: break-spaces">func setClippingRegionMode(using self, mode: ClippingMode)
 </code>
 </p>
 <p>
 Set the clipping region mode.</p>
 <h3 class="content" id="Pixel.Painter.setColorMask"><span class="titletype">func</span> <span class="titlelight">Painter.</span><span class="titlestrong">setColorMask</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func setColorMask(using self, cm: <a href="std.pixel.html#Pixel.ColorMask">ColorMask</a>)
+<code style="white-space: break-spaces">func setColorMask(using self, cm: ColorMask)
 </code>
 </p>
 <p>
@@ -9910,28 +9910,28 @@ Set color mask.</p>
 </p>
 <h3 class="content" id="Pixel.Painter.setInterpolationMode"><span class="titletype">func</span> <span class="titlelight">Painter.</span><span class="titlestrong">setInterpolationMode</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func setInterpolationMode(using self, mode: <a href="std.pixel.html#Pixel.InterpolationMode">InterpolationMode</a>)
+<code style="white-space: break-spaces">func setInterpolationMode(using self, mode: InterpolationMode)
 </code>
 </p>
 <p>
 Set the texture interpolation mode.</p>
 <h3 class="content" id="Pixel.Painter.setParams"><span class="titletype">func</span> <span class="titlelight">Painter.</span><span class="titlestrong">setParams</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func setParams(using self, add: <a href="std.pixel.html#Pixel.PaintParams">PaintParams</a>, remove: <a href="std.pixel.html#Pixel.PaintParams">PaintParams</a> = .Zero)
+<code style="white-space: break-spaces">func setParams(using self, add: PaintParams, remove: PaintParams = .Zero)
 </code>
 </p>
 <p>
 Set the paint parameters.</p>
 <h3 class="content" id="Pixel.Painter.setQuality"><span class="titletype">func</span> <span class="titlelight">Painter.</span><span class="titlestrong">setQuality</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func setQuality(using self, quality: <a href="std.pixel.html#Pixel.PaintQuality">PaintQuality</a>)
+<code style="white-space: break-spaces">func setQuality(using self, quality: PaintQuality)
 </code>
 </p>
 <p>
 Set the paint quality.</p>
 <h3 class="content" id="Pixel.Painter.setShader"><span class="titletype">func</span> <span class="titlelight">Painter.</span><span class="titlestrong">setShader</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func setShader(using self, shader: <a href="std.pixel.html#Pixel.ShaderBase">*ShaderBase</a> = null)
+<code style="white-space: break-spaces">func setShader(using self, shader: *ShaderBase = null)
 </code>
 </p>
 <p>
@@ -9951,14 +9951,14 @@ Set a shader parameter.</p>
 Set a shader parameter.</p>
 <h3 class="content" id="Pixel.Painter.setState"><span class="titletype">func</span> <span class="titlelight">Painter.</span><span class="titlestrong">setState</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func setState(using self, state: <a href="std.pixel.html#Pixel.PaintState">PaintState</a>)
+<code style="white-space: break-spaces">func setState(using self, state: PaintState)
 </code>
 </p>
 <p>
 Set the current painting state.</p>
 <h3 class="content" id="Pixel.Painter.setTransform"><span class="titletype">func</span> <span class="titlelight">Painter.</span><span class="titlestrong">setTransform</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func setTransform(using self, tr: <a href="std.core.html#Core.Math.Transform2">Transform2</a>)
+<code style="white-space: break-spaces">func setTransform(using self, tr: Transform2)
 </code>
 </p>
 <p>
@@ -9998,7 +9998,7 @@ f32</td>
 <td>
 brush</td>
 <td class="tdtype">
-<a href="std.pixel.html#Pixel.Brush">Brush</a></td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Brush">Brush</a></td>
 <td>
 </td>
 </tr>
@@ -10006,7 +10006,7 @@ brush</td>
 <td>
 pattern</td>
 <td class="tdtype">
-<a href="std.core.html#Core.Array">Array'(f32)</a></td>
+Array(f32)</td>
 <td>
 </td>
 </tr>
@@ -10014,7 +10014,7 @@ pattern</td>
 <td>
 dashBeginCapStyle</td>
 <td class="tdtype">
-<a href="std.pixel.html#Pixel.DashCapStyle">DashCapStyle</a></td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.DashCapStyle">DashCapStyle</a></td>
 <td>
 </td>
 </tr>
@@ -10022,7 +10022,7 @@ dashBeginCapStyle</td>
 <td>
 dashEndCapStyle</td>
 <td class="tdtype">
-<a href="std.pixel.html#Pixel.DashCapStyle">DashCapStyle</a></td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.DashCapStyle">DashCapStyle</a></td>
 <td>
 </td>
 </tr>
@@ -10030,7 +10030,7 @@ dashEndCapStyle</td>
 <td>
 borderPos</td>
 <td class="tdtype">
-<a href="std.pixel.html#Pixel.BorderPos">BorderPos</a></td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.BorderPos">BorderPos</a></td>
 <td>
 </td>
 </tr>
@@ -10086,7 +10086,7 @@ f32</td>
 <td>
 dashStyle</td>
 <td class="tdtype">
-<a href="std.pixel.html#Pixel.DashStyle">DashStyle</a></td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.DashStyle">DashStyle</a></td>
 <td>
 </td>
 </tr>
@@ -10094,7 +10094,7 @@ dashStyle</td>
 <td>
 beginCapStyle</td>
 <td class="tdtype">
-<a href="std.pixel.html#Pixel.LineCapStyle">LineCapStyle</a></td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.LineCapStyle">LineCapStyle</a></td>
 <td>
 </td>
 </tr>
@@ -10102,7 +10102,7 @@ beginCapStyle</td>
 <td>
 endCapStyle</td>
 <td class="tdtype">
-<a href="std.pixel.html#Pixel.LineCapStyle">LineCapStyle</a></td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.LineCapStyle">LineCapStyle</a></td>
 <td>
 </td>
 </tr>
@@ -10110,7 +10110,7 @@ endCapStyle</td>
 <td>
 joinStyle</td>
 <td class="tdtype">
-<a href="std.pixel.html#Pixel.JoinStyle">JoinStyle</a></td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.JoinStyle">JoinStyle</a></td>
 <td>
 </td>
 </tr>
@@ -10144,21 +10144,21 @@ Returns a solid color pen.</p>
 </table>
 <h3 class="content" id="Pixel.Pen.createDash"><span class="titletype">func</span> <span class="titlelight">Pen.</span><span class="titlestrong">createDash</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func createDash(style: <a href="std.pixel.html#Pixel.DashStyle">DashStyle</a>, color: <a href="std.pixel.html#Pixel.Color">Color</a>, size: f32 = 1)-><a href="std.pixel.html#Pixel.Pen">Pen</a>
+<code style="white-space: break-spaces">func createDash(style: DashStyle, color: Color, size: f32 = 1)->Pen
 </code>
 </p>
 <p>
 Returns a dash pen.</p>
 <h3 class="content" id="Pixel.Pen.createHatch"><span class="titletype">func</span> <span class="titlelight">Pen.</span><span class="titlestrong">createHatch</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func createHatch(type: <a href="std.pixel.html#Pixel.HatchStyle">HatchStyle</a>, color: <a href="std.pixel.html#Pixel.Color">Color</a>, size: f32 = 1)-><a href="std.pixel.html#Pixel.Pen">Pen</a>
+<code style="white-space: break-spaces">func createHatch(type: HatchStyle, color: Color, size: f32 = 1)->Pen
 </code>
 </p>
 <p>
 Return a predefined hatch pen.</p>
 <h3 class="content" id="Pixel.Pen.createSolid"><span class="titletype">func</span> <span class="titlelight">Pen.</span><span class="titlestrong">createSolid</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func createSolid(color: <a href="std.pixel.html#Pixel.Color">Color</a>, size: f32 = 1)-><a href="std.pixel.html#Pixel.Pen">Pen</a>
+<code style="white-space: break-spaces">func createSolid(color: Color, size: f32 = 1)->Pen
 </code>
 </p>
 <p>
@@ -10275,7 +10275,7 @@ const [188] u8</td>
 <td>
 decOptions</td>
 <td class="tdtype">
-<a href="std.pixel.html#Pixel.DecodeOptions">const *DecodeOptions</a></td>
+const *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.DecodeOptions">DecodeOptions</a></td>
 <td>
 </td>
 </tr>
@@ -10283,7 +10283,7 @@ decOptions</td>
 <td>
 stream</td>
 <td class="tdtype">
-<a href="std.core.html#Core.Compress.BitStream">BitStream</a></td>
+BitStream</td>
 <td>
 </td>
 </tr>
@@ -10291,7 +10291,7 @@ stream</td>
 <td>
 header</td>
 <td class="tdtype">
-<a href="std.pixel.html#Pixel.Png.__privns_188.Header">Header</a></td>
+Header</td>
 <td>
 </td>
 </tr>
@@ -10315,7 +10315,7 @@ s32</td>
 <td>
 dcmpBuf</td>
 <td class="tdtype">
-<a href="std.core.html#Core.Array">Array'(u8)</a></td>
+Array(u8)</td>
 <td>
 </td>
 </tr>
@@ -10339,7 +10339,7 @@ u64</td>
 <td>
 chunkTRNS</td>
 <td class="tdtype">
-<a href="std.pixel.html#Pixel.Png.__privns_188.Chunk">Chunk</a></td>
+Chunk</td>
 <td>
 </td>
 </tr>
@@ -10375,7 +10375,7 @@ bool</td>
 </p>
 <h3 class="content" id="Pixel.Png.Decoder.IImageDecoder.decode"><span class="titletype">func</span> <span class="titlelight">IImageDecoder.</span><span class="titlestrong">decode</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func decode(using self, buffer: const [..] u8, options: <a href="std.pixel.html#Pixel.DecodeOptions">DecodeOptions</a>)-><a href="std.pixel.html#Pixel.Image">Image</a> throw
+<code style="white-space: break-spaces">func decode(using self, buffer: const [..] u8, options: DecodeOptions)->Image throw
 </code>
 </p>
 <h3 class="content" id="Pixel.Png.EncodeOptions"><span class="titletype">struct</span> <span class="titlelight">Png.</span><span class="titlestrong">EncodeOptions</span></h3>
@@ -10384,7 +10384,7 @@ bool</td>
 <td>
 compressionLevel</td>
 <td class="tdtype">
-<a href="std.core.html#Core.Compress.Deflate.CompressionLevel">CompressionLevel</a></td>
+CompressionLevel</td>
 <td>
 </td>
 </tr>
@@ -10403,7 +10403,7 @@ bool</td>
 <td>
 stream</td>
 <td class="tdtype">
-<a href="std.core.html#Core.ConcatBuffer">*ConcatBuffer</a></td>
+*ConcatBuffer</td>
 <td>
 </td>
 </tr>
@@ -10411,7 +10411,7 @@ stream</td>
 <td>
 stored</td>
 <td class="tdtype">
-<a href="std.pixel.html#Pixel.Png.__privns_193.ChunkBitfield">ChunkBitfield</a></td>
+ChunkBitfield</td>
 <td>
 </td>
 </tr>
@@ -10419,7 +10419,7 @@ stored</td>
 <td>
 ihdr</td>
 <td class="tdtype">
-<a href="std.pixel.html#Pixel.Png.__privns_193.Ihdr">Ihdr</a></td>
+Ihdr</td>
 <td>
 </td>
 </tr>
@@ -10427,7 +10427,7 @@ ihdr</td>
 <td>
 currentChunk</td>
 <td class="tdtype">
-<a href="std.pixel.html#Pixel.Png.__privns_193.Chunk">Chunk</a></td>
+Chunk</td>
 <td>
 </td>
 </tr>
@@ -10451,7 +10451,7 @@ writePtr</td>
 <td>
 crc</td>
 <td class="tdtype">
-<a href="std.core.html#Core.Hash.Crc32">Crc32</a></td>
+Crc32</td>
 <td>
 </td>
 </tr>
@@ -10459,7 +10459,7 @@ crc</td>
 <td>
 subimage</td>
 <td class="tdtype">
-<a href="std.pixel.html#Pixel.Png.__privns_193.SubImage">[7] SubImage</a></td>
+[7] SubImage</td>
 <td>
 </td>
 </tr>
@@ -10547,7 +10547,7 @@ prevScanline</td>
 <td>
 encodeFlags</td>
 <td class="tdtype">
-<a href="std.pixel.html#Pixel.Png.__privns_193.EncodeFlags">EncodeFlags</a></td>
+EncodeFlags</td>
 <td>
 </td>
 </tr>
@@ -10555,7 +10555,7 @@ encodeFlags</td>
 <td>
 rowInfo</td>
 <td class="tdtype">
-<a href="std.pixel.html#Pixel.Png.__privns_193.RowInfo">RowInfo</a></td>
+RowInfo</td>
 <td>
 </td>
 </tr>
@@ -10571,7 +10571,7 @@ u32</td>
 <td>
 bufferToCompress</td>
 <td class="tdtype">
-<a href="std.core.html#Core.Array">Array'(u8)</a></td>
+Array(u8)</td>
 <td>
 </td>
 </tr>
@@ -10587,7 +10587,7 @@ bool</td>
 <td>
 userOptions</td>
 <td class="tdtype">
-<a href="std.pixel.html#Pixel.Png.EncodeOptions">EncodeOptions</a></td>
+EncodeOptions</td>
 <td>
 </td>
 </tr>
@@ -10599,7 +10599,7 @@ userOptions</td>
 </p>
 <h3 class="content" id="Pixel.Png.Encoder.IImageEncoder.encode"><span class="titletype">func</span> <span class="titlelight">IImageEncoder.</span><span class="titlestrong">encode</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func encode(using self, result: <a href="std.core.html#Core.ConcatBuffer">*ConcatBuffer</a>, image: <a href="std.pixel.html#Pixel.Image">Image</a>, options: any) throw
+<code style="white-space: break-spaces">func encode(using self, result: *ConcatBuffer, image: Image, options: any) throw
 </code>
 </p>
 <h3 class="content" id="Pixel.Poly2Tri"><span class="titletype">namespace</span> <span class="titlelight">Pixel.</span><span class="titlestrong">Poly2Tri</span></h3>
@@ -10669,7 +10669,7 @@ userOptions</td>
 <td>
 head</td>
 <td class="tdtype">
-<a href="std.pixel.html#Pixel.Poly2Tri.Node">*Node</a></td>
+*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Poly2Tri.Node">Node</a></td>
 <td>
 </td>
 </tr>
@@ -10677,7 +10677,7 @@ head</td>
 <td>
 tail</td>
 <td class="tdtype">
-<a href="std.pixel.html#Pixel.Poly2Tri.Node">*Node</a></td>
+*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Poly2Tri.Node">Node</a></td>
 <td>
 </td>
 </tr>
@@ -10685,7 +10685,7 @@ tail</td>
 <td>
 searchNode</td>
 <td class="tdtype">
-<a href="std.pixel.html#Pixel.Poly2Tri.Node">*Node</a></td>
+*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Poly2Tri.Node">Node</a></td>
 <td>
 </td>
 </tr>
@@ -10696,7 +10696,7 @@ searchNode</td>
 <td>
 leftNode</td>
 <td class="tdtype">
-<a href="std.pixel.html#Pixel.Poly2Tri.Node">*Node</a></td>
+*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Poly2Tri.Node">Node</a></td>
 <td>
 </td>
 </tr>
@@ -10704,7 +10704,7 @@ leftNode</td>
 <td>
 bottomNode</td>
 <td class="tdtype">
-<a href="std.pixel.html#Pixel.Poly2Tri.Node">*Node</a></td>
+*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Poly2Tri.Node">Node</a></td>
 <td>
 </td>
 </tr>
@@ -10712,7 +10712,7 @@ bottomNode</td>
 <td>
 rightNode</td>
 <td class="tdtype">
-<a href="std.pixel.html#Pixel.Poly2Tri.Node">*Node</a></td>
+*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Poly2Tri.Node">Node</a></td>
 <td>
 </td>
 </tr>
@@ -10739,7 +10739,7 @@ bool</td>
 <td>
 p</td>
 <td class="tdtype">
-<a href="std.pixel.html#Pixel.Poly2Tri.Point">*Point</a></td>
+*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Poly2Tri.Point">Point</a></td>
 <td>
 </td>
 </tr>
@@ -10747,7 +10747,7 @@ p</td>
 <td>
 q</td>
 <td class="tdtype">
-<a href="std.pixel.html#Pixel.Poly2Tri.Point">*Point</a></td>
+*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Poly2Tri.Point">Point</a></td>
 <td>
 </td>
 </tr>
@@ -10758,7 +10758,7 @@ q</td>
 <td>
 constrainedEdge</td>
 <td class="tdtype">
-<a href="std.pixel.html#Pixel.Poly2Tri.Edge">*Edge</a></td>
+*Edge</td>
 <td>
 </td>
 </tr>
@@ -10777,7 +10777,7 @@ bool</td>
 <td>
 point</td>
 <td class="tdtype">
-<a href="std.pixel.html#Pixel.Poly2Tri.Point">*Point</a></td>
+*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Poly2Tri.Point">Point</a></td>
 <td>
 </td>
 </tr>
@@ -10785,7 +10785,7 @@ point</td>
 <td>
 triangle</td>
 <td class="tdtype">
-<a href="std.pixel.html#Pixel.Poly2Tri.Triangle">*Triangle</a></td>
+*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Poly2Tri.Triangle">Triangle</a></td>
 <td>
 </td>
 </tr>
@@ -10793,7 +10793,7 @@ triangle</td>
 <td>
 next</td>
 <td class="tdtype">
-<a href="std.pixel.html#Pixel.Poly2Tri.Node">*Node</a></td>
+*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Poly2Tri.Node">Node</a></td>
 <td>
 </td>
 </tr>
@@ -10801,7 +10801,7 @@ next</td>
 <td>
 prev</td>
 <td class="tdtype">
-<a href="std.pixel.html#Pixel.Poly2Tri.Node">*Node</a></td>
+*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Poly2Tri.Node">Node</a></td>
 <td>
 </td>
 </tr>
@@ -10841,7 +10841,7 @@ Collinear</td>
 <td>
 v</td>
 <td class="tdtype">
-<a href="std.core.html#Core.Math.Vector2">Vector2</a></td>
+Vector2</td>
 <td>
 </td>
 </tr>
@@ -10849,7 +10849,7 @@ v</td>
 <td>
 edgeList</td>
 <td class="tdtype">
-<a href="std.core.html#Core.Array">Array'(*Edge)</a></td>
+Array(*Edge)</td>
 <td>
 </td>
 </tr>
@@ -10857,7 +10857,7 @@ edgeList</td>
 <td>
 border</td>
 <td class="tdtype">
-<a href="std.pixel.html#Pixel.Poly2Tri.Edge">[2] *Edge</a></td>
+[2] *Edge</td>
 <td>
 </td>
 </tr>
@@ -10868,7 +10868,7 @@ border</td>
 <td>
 basin</td>
 <td class="tdtype">
-<a href="std.pixel.html#Pixel.Poly2Tri.Basin">Basin</a></td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Poly2Tri.Basin">Basin</a></td>
 <td>
 </td>
 </tr>
@@ -10876,7 +10876,7 @@ basin</td>
 <td>
 edgeEvent</td>
 <td class="tdtype">
-<a href="std.pixel.html#Pixel.Poly2Tri.EdgeEvent">EdgeEvent</a></td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Poly2Tri.EdgeEvent">EdgeEvent</a></td>
 <td>
 </td>
 </tr>
@@ -10884,7 +10884,7 @@ edgeEvent</td>
 <td>
 triangles</td>
 <td class="tdtype">
-<a href="std.core.html#Core.Array">Array'(*Triangle)</a></td>
+Array(*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Poly2Tri.Triangle">Triangle</a>)</td>
 <td>
 </td>
 </tr>
@@ -10892,7 +10892,7 @@ triangles</td>
 <td>
 map</td>
 <td class="tdtype">
-<a href="std.core.html#Core.Array">Array'(*Triangle)</a></td>
+Array(*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Poly2Tri.Triangle">Triangle</a>)</td>
 <td>
 </td>
 </tr>
@@ -10900,7 +10900,7 @@ map</td>
 <td>
 edgeList</td>
 <td class="tdtype">
-<a href="std.core.html#Core.Array">Array'(*Edge)</a></td>
+Array(*Edge)</td>
 <td>
 </td>
 </tr>
@@ -10908,7 +10908,7 @@ edgeList</td>
 <td>
 points</td>
 <td class="tdtype">
-<a href="std.core.html#Core.Array">Array'(*Point)</a></td>
+Array(*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Poly2Tri.Point">Point</a>)</td>
 <td>
 </td>
 </tr>
@@ -10916,7 +10916,7 @@ points</td>
 <td>
 nodes</td>
 <td class="tdtype">
-<a href="std.core.html#Core.Array">Array'(*Node)</a></td>
+Array(*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Poly2Tri.Node">Node</a>)</td>
 <td>
 </td>
 </tr>
@@ -10924,7 +10924,7 @@ nodes</td>
 <td>
 front</td>
 <td class="tdtype">
-<a href="std.pixel.html#Pixel.Poly2Tri.AdvancingFront">AdvancingFront</a></td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Poly2Tri.AdvancingFront">AdvancingFront</a></td>
 <td>
 </td>
 </tr>
@@ -10932,7 +10932,7 @@ front</td>
 <td>
 head</td>
 <td class="tdtype">
-<a href="std.pixel.html#Pixel.Poly2Tri.Point">*Point</a></td>
+*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Poly2Tri.Point">Point</a></td>
 <td>
 </td>
 </tr>
@@ -10940,7 +10940,7 @@ head</td>
 <td>
 tail</td>
 <td class="tdtype">
-<a href="std.pixel.html#Pixel.Poly2Tri.Point">*Point</a></td>
+*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Poly2Tri.Point">Point</a></td>
 <td>
 </td>
 </tr>
@@ -10948,7 +10948,7 @@ tail</td>
 <td>
 afHead</td>
 <td class="tdtype">
-<a href="std.pixel.html#Pixel.Poly2Tri.Node">*Node</a></td>
+*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Poly2Tri.Node">Node</a></td>
 <td>
 </td>
 </tr>
@@ -10956,7 +10956,7 @@ afHead</td>
 <td>
 afMiddle</td>
 <td class="tdtype">
-<a href="std.pixel.html#Pixel.Poly2Tri.Node">*Node</a></td>
+*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Poly2Tri.Node">Node</a></td>
 <td>
 </td>
 </tr>
@@ -10964,7 +10964,7 @@ afMiddle</td>
 <td>
 afTail</td>
 <td class="tdtype">
-<a href="std.pixel.html#Pixel.Poly2Tri.Node">*Node</a></td>
+*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Poly2Tri.Node">Node</a></td>
 <td>
 </td>
 </tr>
@@ -11051,7 +11051,7 @@ Clear content.</p>
 To call to register the polyline.</p>
 <h3 class="content" id="Pixel.Poly2Tri.Tesselate.getTriangles"><span class="titletype">func</span> <span class="titlelight">Tesselate.</span><span class="titlestrong">getTriangles</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func getTriangles(using self)-><a href="std.pixel.html#Pixel.Poly2Tri.Triangle">[..] *Triangle</a>
+<code style="white-space: break-spaces">func getTriangles(using self)->[..] *Triangle
 </code>
 </p>
 <p>
@@ -11092,7 +11092,7 @@ delaunayEdge</td>
 <td>
 points</td>
 <td class="tdtype">
-<a href="std.pixel.html#Pixel.Poly2Tri.Point">[3] *Point</a></td>
+[3] *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Poly2Tri.Point">Point</a></td>
 <td>
 </td>
 </tr>
@@ -11100,7 +11100,7 @@ points</td>
 <td>
 neighbors</td>
 <td class="tdtype">
-<a href="std.pixel.html#Pixel.Poly2Tri.Triangle">[3] *Triangle</a></td>
+[3] *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Poly2Tri.Triangle">Triangle</a></td>
 <td>
 </td>
 </tr>
@@ -11119,7 +11119,7 @@ bool</td>
 <td>
 points</td>
 <td class="tdtype">
-<a href="std.core.html#Core.Array">Array'(Vector2)</a></td>
+Array(Vector2)</td>
 <td>
 </td>
 </tr>
@@ -11159,7 +11159,7 @@ f32</td>
 <td>
 bvMin</td>
 <td class="tdtype">
-<a href="std.core.html#Core.Math.Vector2">Vector2</a></td>
+Vector2</td>
 <td>
 </td>
 </tr>
@@ -11167,7 +11167,7 @@ bvMin</td>
 <td>
 bvMax</td>
 <td class="tdtype">
-<a href="std.core.html#Core.Math.Vector2">Vector2</a></td>
+Vector2</td>
 <td>
 </td>
 </tr>
@@ -11265,7 +11265,7 @@ Slow but quality offset with a joinStyle.</p>
 </table>
 <h3 class="content" id="Pixel.Polygon.add"><span class="titletype">func</span> <span class="titlelight">Polygon.</span><span class="titlestrong">add</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func add(using self, v: <a href="std.core.html#Core.Math.Vector2">Vector2</a>)
+<code style="white-space: break-spaces">func add(using self, v: Vector2)
 </code>
 </p>
 <p>
@@ -11293,27 +11293,27 @@ Clear all points.</p>
 Compute internal values, like convex/clockwise Call it once the polygon contains all its points.</p>
 <h3 class="content" id="Pixel.Polygon.getClean"><span class="titletype">func</span> <span class="titlelight">Polygon.</span><span class="titlestrong">getClean</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func getClean(using self)-><a href="std.pixel.html#Pixel.LinePathList">LinePathList</a>
+<code style="white-space: break-spaces">func getClean(using self)->LinePathList
 </code>
 </p>
 <p>
 Clean polygon by removing bad/unecessary points.</p>
 <h3 class="content" id="Pixel.Polygon.getOffset"><span class="titletype">func</span> <span class="titlelight">Polygon.</span><span class="titlestrong">getOffset</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func getOffset(using self, value: f32, joinStyle: <a href="std.pixel.html#Pixel.JoinStyle">JoinStyle</a>, toler: f32 = 0.5)-><a href="std.pixel.html#Pixel.LinePathList">LinePathList</a>
+<code style="white-space: break-spaces">func getOffset(using self, value: f32, joinStyle: JoinStyle, toler: f32 = 0.5)->LinePathList
 </code>
 </p>
 <p>
 Slow but quality offset with a joinStyle.</p>
 <h3 class="content" id="Pixel.Polygon.getPoint"><span class="titletype">func</span> <span class="titlelight">Polygon.</span><span class="titlestrong">getPoint</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func getPoint(using self, i: u64)-><a href="std.core.html#Core.Math.Vector2">Vector2</a>
+<code style="white-space: break-spaces">func getPoint(using self, i: u64)->Vector2
 </code>
 </p>
 <p>
 Get the given point.</p>
 <p class="code">
-<code style="white-space: break-spaces">func getPoint(using self, i: u64, offset: f32)-><a href="std.core.html#Core.Math.Vector2">Vector2</a>
+<code style="white-space: break-spaces">func getPoint(using self, i: u64, offset: f32)->Vector2
 </code>
 </p>
 <p>
@@ -11333,7 +11333,7 @@ Divide by adding points if two points are too far away.</p>
 <p>
 Fast expand polygon by a given amount.</p>
 <p class="code">
-<code style="white-space: break-spaces">func offset(using self, value: f32, joinStyle: <a href="std.pixel.html#Pixel.JoinStyle">JoinStyle</a>, toler: f32 = 0.5)
+<code style="white-space: break-spaces">func offset(using self, value: f32, joinStyle: JoinStyle, toler: f32 = 0.5)
 </code>
 </p>
 <p>
@@ -11344,7 +11344,7 @@ Slow but quality offset with a joinStyle.</p>
 <td>
 native</td>
 <td class="tdtype">
-<a href="std.pixel.html#Pixel.NativeRenderOgl">NativeRenderOgl</a></td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.NativeRenderOgl">NativeRenderOgl</a></td>
 <td>
 </td>
 </tr>
@@ -11360,7 +11360,7 @@ GLuint</td>
 <td>
 shaderSimple</td>
 <td class="tdtype">
-<a href="std.pixel.html#Pixel.ShaderSimple">ShaderSimple</a></td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.ShaderSimple">ShaderSimple</a></td>
 <td>
 </td>
 </tr>
@@ -11368,7 +11368,7 @@ shaderSimple</td>
 <td>
 shaderAA</td>
 <td class="tdtype">
-<a href="std.pixel.html#Pixel.ShaderAA">ShaderAA</a></td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.ShaderAA">ShaderAA</a></td>
 <td>
 </td>
 </tr>
@@ -11376,7 +11376,7 @@ shaderAA</td>
 <td>
 shaderBlur</td>
 <td class="tdtype">
-<a href="std.pixel.html#Pixel.ShaderBlur">ShaderBlur</a></td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.ShaderBlur">ShaderBlur</a></td>
 <td>
 </td>
 </tr>
@@ -11384,7 +11384,7 @@ shaderBlur</td>
 <td>
 worldTransform</td>
 <td class="tdtype">
-<a href="std.core.html#Core.Math.Transform2">Transform2</a></td>
+Transform2</td>
 <td>
 </td>
 </tr>
@@ -11392,7 +11392,7 @@ worldTransform</td>
 <td>
 orthoMatrix</td>
 <td class="tdtype">
-<a href="std.core.html#Core.Math.Matrix4x4">Matrix4x4</a></td>
+Matrix4x4</td>
 <td>
 </td>
 </tr>
@@ -11400,7 +11400,7 @@ orthoMatrix</td>
 <td>
 modelMatrix</td>
 <td class="tdtype">
-<a href="std.core.html#Core.Math.Matrix4x4">Matrix4x4</a></td>
+Matrix4x4</td>
 <td>
 </td>
 </tr>
@@ -11424,7 +11424,7 @@ hatchTextures</td>
 <td>
 blendingMode</td>
 <td class="tdtype">
-<a href="std.pixel.html#Pixel.BlendingMode">BlendingMode</a></td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.BlendingMode">BlendingMode</a></td>
 <td>
 </td>
 </tr>
@@ -11432,7 +11432,7 @@ blendingMode</td>
 <td>
 curRC</td>
 <td class="tdtype">
-<a href="std.pixel.html#Pixel.RenderingContext">RenderingContext</a></td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.RenderingContext">RenderingContext</a></td>
 <td>
 </td>
 </tr>
@@ -11440,7 +11440,7 @@ curRC</td>
 <td>
 stackReleasedRT</td>
 <td class="tdtype">
-<a href="std.core.html#Core.Array">Array'(*RenderTarget)</a></td>
+Array(*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.RenderTarget">RenderTarget</a>)</td>
 <td>
 </td>
 </tr>
@@ -11448,7 +11448,7 @@ stackReleasedRT</td>
 <td>
 stackRT</td>
 <td class="tdtype">
-<a href="std.core.html#Core.Array">Array'(*RenderTarget)</a></td>
+Array(*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.RenderTarget">RenderTarget</a>)</td>
 <td>
 </td>
 </tr>
@@ -11456,7 +11456,7 @@ stackRT</td>
 <td>
 curRT</td>
 <td class="tdtype">
-<a href="std.pixel.html#Pixel.RenderTarget">*RenderTarget</a></td>
+*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.RenderTarget">RenderTarget</a></td>
 <td>
 </td>
 </tr>
@@ -11464,7 +11464,7 @@ curRT</td>
 <td>
 curShader</td>
 <td class="tdtype">
-<a href="std.pixel.html#Pixel.ShaderBase">*ShaderBase</a></td>
+*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.ShaderBase">ShaderBase</a></td>
 <td>
 </td>
 </tr>
@@ -11710,21 +11710,21 @@ Update content of texture.</p>
 </table>
 <h3 class="content" id="Pixel.RenderOgl.addImage"><span class="titletype">func</span> <span class="titlelight">RenderOgl.</span><span class="titlestrong">addImage</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func addImage(using self, image: <a href="std.pixel.html#Pixel.Image">Image</a>)-><a href="std.pixel.html#Pixel.Texture">Texture</a>
+<code style="white-space: break-spaces">func addImage(using self, image: Image)->Texture
 </code>
 </p>
 <p>
 Register an image for rendering.</p>
 <h3 class="content" id="Pixel.RenderOgl.begin"><span class="titletype">func</span> <span class="titlelight">RenderOgl.</span><span class="titlestrong">begin</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func begin(using self, rc: <a href="std.pixel.html#Pixel.RenderingContext">RenderingContext</a>)
+<code style="white-space: break-spaces">func begin(using self, rc: RenderingContext)
 </code>
 </p>
 <p>
 To be called before rendering.</p>
 <h3 class="content" id="Pixel.RenderOgl.bindRenderTarget"><span class="titletype">func</span> <span class="titlelight">RenderOgl.</span><span class="titlestrong">bindRenderTarget</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func bindRenderTarget(using self, rt: <a href="std.pixel.html#Pixel.RenderTarget">*RenderTarget</a>, vp: <a href="std.core.html#Core.Math.Rectangle">*Rectangle</a> = null)
+<code style="white-space: break-spaces">func bindRenderTarget(using self, rt: *RenderTarget, vp: *Rectangle = null)
 </code>
 </p>
 <p>
@@ -11743,28 +11743,28 @@ Clear current render buffers.</p>
 </p>
 <h3 class="content" id="Pixel.RenderOgl.createRenderTarget"><span class="titletype">func</span> <span class="titlelight">RenderOgl.</span><span class="titlestrong">createRenderTarget</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func createRenderTarget(using self, w: s32, h: s32)-><a href="std.pixel.html#Pixel.RenderTarget">RenderTarget</a>
+<code style="white-space: break-spaces">func createRenderTarget(using self, w: s32, h: s32)->RenderTarget
 </code>
 </p>
 <p>
 Create a render target.</p>
 <h3 class="content" id="Pixel.RenderOgl.createShader"><span class="titletype">func</span> <span class="titlelight">RenderOgl.</span><span class="titlestrong">createShader</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func createShader(using self, base: <a href="std.pixel.html#Pixel.ShaderBase">*ShaderBase</a>, vertex: const [..] u8, pixel: const [..] u8) throw
+<code style="white-space: break-spaces">func createShader(using self, base: *ShaderBase, vertex: const [..] u8, pixel: const [..] u8) throw
 </code>
 </p>
 <p>
 Create the given shader.</p>
 <h3 class="content" id="Pixel.RenderOgl.deleteRenderTarget"><span class="titletype">func</span> <span class="titlelight">RenderOgl.</span><span class="titlestrong">deleteRenderTarget</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func deleteRenderTarget(using self, rt: <a href="std.pixel.html#Pixel.RenderTarget">*RenderTarget</a>)
+<code style="white-space: break-spaces">func deleteRenderTarget(using self, rt: *RenderTarget)
 </code>
 </p>
 <p>
 Delete a render target.</p>
 <h3 class="content" id="Pixel.RenderOgl.draw"><span class="titletype">func</span> <span class="titlelight">RenderOgl.</span><span class="titlestrong">draw</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func draw(using self, dc: <a href="std.pixel.html#Pixel.Painter">*Painter</a>)
+<code style="white-space: break-spaces">func draw(using self, dc: *Painter)
 </code>
 </p>
 <p>
@@ -11778,7 +11778,7 @@ Draw the given painter.</p>
 To be called after rendering.</p>
 <h3 class="content" id="Pixel.RenderOgl.getRenderTarget"><span class="titletype">func</span> <span class="titlelight">RenderOgl.</span><span class="titlestrong">getRenderTarget</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func getRenderTarget(using self, w: s32, h: s32)-><a href="std.pixel.html#Pixel.RenderTarget">*RenderTarget</a>
+<code style="white-space: break-spaces">func getRenderTarget(using self, w: s32, h: s32)->*RenderTarget
 </code>
 </p>
 <p>
@@ -11792,7 +11792,7 @@ Get a render target of the given size releaseRenderTarget must be called to rele
 Get the actual render target size.</p>
 <h3 class="content" id="Pixel.RenderOgl.getTexturePixels"><span class="titletype">func</span> <span class="titlelight">RenderOgl.</span><span class="titlestrong">getTexturePixels</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func getTexturePixels(using self, texture: <a href="std.pixel.html#Pixel.Texture">Texture</a>, pf: <a href="std.pixel.html#Pixel.PixelFormat">PixelFormat</a>)-><a href="std.core.html#Core.Array">Array'(u8)</a>
+<code style="white-space: break-spaces">func getTexturePixels(using self, texture: Texture, pf: PixelFormat)->Array'(u8)
 </code>
 </p>
 <p>
@@ -11806,19 +11806,19 @@ Returns the pixels associated to a texture.</p>
 First init.</p>
 <h3 class="content" id="Pixel.RenderOgl.pixelFormatToNative"><span class="titletype">func</span> <span class="titlelight">RenderOgl.</span><span class="titlestrong">pixelFormatToNative</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func pixelFormatToNative(pf: <a href="std.pixel.html#Pixel.PixelFormat">PixelFormat</a>)->GLenum
+<code style="white-space: break-spaces">func pixelFormatToNative(pf: PixelFormat)->GLenum
 </code>
 </p>
 <h3 class="content" id="Pixel.RenderOgl.releaseRenderTarget"><span class="titletype">func</span> <span class="titlelight">RenderOgl.</span><span class="titlestrong">releaseRenderTarget</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func releaseRenderTarget(using self, tgt: <a href="std.pixel.html#Pixel.RenderTarget">*RenderTarget</a>)
+<code style="white-space: break-spaces">func releaseRenderTarget(using self, tgt: *RenderTarget)
 </code>
 </p>
 <p>
 Release the given render target.</p>
 <h3 class="content" id="Pixel.RenderOgl.removeTexture"><span class="titletype">func</span> <span class="titlelight">RenderOgl.</span><span class="titlestrong">removeTexture</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func removeTexture(using self, texture: <a href="std.pixel.html#Pixel.Texture">*Texture</a>)
+<code style="white-space: break-spaces">func removeTexture(using self, texture: *Texture)
 </code>
 </p>
 <p>
@@ -11839,13 +11839,13 @@ Reset the scissor.</p>
 Reset the world transform.</p>
 <h3 class="content" id="Pixel.RenderOgl.rotateTransform"><span class="titletype">func</span> <span class="titlelight">RenderOgl.</span><span class="titlestrong">rotateTransform</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func rotateTransform(using self, angle: <a href="std.core.html#Core.Math.Angle">Angle</a>)
+<code style="white-space: break-spaces">func rotateTransform(using self, angle: Angle)
 </code>
 </p>
 <p>
 Rotate the world transform.</p>
 <p class="code">
-<code style="white-space: break-spaces">func rotateTransform(using self, angle: <a href="std.core.html#Core.Math.Angle">Angle</a>, centerX: f32, centerY: f32)
+<code style="white-space: break-spaces">func rotateTransform(using self, angle: Angle, centerX: f32, centerY: f32)
 </code>
 </p>
 <p>
@@ -11859,21 +11859,21 @@ Rotate the world transform.</p>
 Scale the world transform.</p>
 <h3 class="content" id="Pixel.RenderOgl.setCurrentContext"><span class="titletype">func</span> <span class="titlelight">RenderOgl.</span><span class="titlestrong">setCurrentContext</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func setCurrentContext(using self, rc: <a href="std.pixel.html#Pixel.RenderingContext">RenderingContext</a>)
+<code style="white-space: break-spaces">func setCurrentContext(using self, rc: RenderingContext)
 </code>
 </p>
 <p>
 Set the current rendering context.</p>
 <h3 class="content" id="Pixel.RenderOgl.setScissorRect"><span class="titletype">func</span> <span class="titlelight">RenderOgl.</span><span class="titlestrong">setScissorRect</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func setScissorRect(using self, rect: <a href="std.core.html#Core.Math.Rectangle">Rectangle</a>)
+<code style="white-space: break-spaces">func setScissorRect(using self, rect: Rectangle)
 </code>
 </p>
 <p>
 Force the scissor.</p>
 <h3 class="content" id="Pixel.RenderOgl.setShader"><span class="titletype">func</span> <span class="titlelight">RenderOgl.</span><span class="titlestrong">setShader</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func setShader(using self, shader: <a href="std.pixel.html#Pixel.ShaderBase">*ShaderBase</a> = null)
+<code style="white-space: break-spaces">func setShader(using self, shader: *ShaderBase = null)
 </code>
 </p>
 <p>
@@ -11894,14 +11894,14 @@ Translate the world transform.</p>
 Go back to the previous render target, or frame buffer.</p>
 <h3 class="content" id="Pixel.RenderOgl.unbindRenderTargetToImage"><span class="titletype">func</span> <span class="titlelight">RenderOgl.</span><span class="titlestrong">unbindRenderTargetToImage</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func unbindRenderTargetToImage(using self, x: s32, y: s32, w: s32, h: s32)-><a href="std.pixel.html#Pixel.Image">Image</a>
+<code style="white-space: break-spaces">func unbindRenderTargetToImage(using self, x: s32, y: s32, w: s32, h: s32)->Image
 </code>
 </p>
 <p>
 Get current render target pixels.</p>
 <h3 class="content" id="Pixel.RenderOgl.updateTexture"><span class="titletype">func</span> <span class="titlelight">RenderOgl.</span><span class="titlestrong">updateTexture</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func updateTexture(using self, texture: <a href="std.pixel.html#Pixel.Texture">Texture</a>, pixels: const *u8)
+<code style="white-space: break-spaces">func updateTexture(using self, texture: Texture, pixels: const *u8)
 </code>
 </p>
 <p>
@@ -11920,7 +11920,7 @@ RenderTargetHandle</td>
 <td>
 colorBuffer</td>
 <td class="tdtype">
-<a href="std.pixel.html#Pixel.Texture">Texture</a></td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Texture">Texture</a></td>
 <td>
 </td>
 </tr>
@@ -12006,7 +12006,7 @@ s32</td>
 <td>
 weights</td>
 <td class="tdtype">
-<a href="std.core.html#Core.Array">Array'(f64)</a></td>
+Array(f64)</td>
 <td>
 </td>
 </tr>
@@ -12033,7 +12033,7 @@ s64</td>
 <td>
 row</td>
 <td class="tdtype">
-<a href="std.core.html#Core.Array">Array'(Contribution)</a></td>
+Array(<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.ResizeTools.Contribution">Contribution</a>)</td>
 <td>
 </td>
 </tr>
@@ -12068,7 +12068,7 @@ string</td>
 <td>
 fontStyle</td>
 <td class="tdtype">
-<a href="std.pixel.html#Pixel.FontFamilyStyle">FontFamilyStyle</a></td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.FontFamilyStyle">FontFamilyStyle</a></td>
 <td>
 </td>
 </tr>
@@ -12108,7 +12108,7 @@ s32</td>
 <td>
 boundRect</td>
 <td class="tdtype">
-<a href="std.core.html#Core.Math.Rectangle">Rectangle</a></td>
+Rectangle</td>
 <td>
 </td>
 </tr>
@@ -12116,7 +12116,7 @@ boundRect</td>
 <td>
 pos</td>
 <td class="tdtype">
-<a href="std.core.html#Core.Math.Point">Point</a></td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Poly2Tri.Point">Point</a></td>
 <td>
 </td>
 </tr>
@@ -12124,7 +12124,7 @@ pos</td>
 <td>
 font</td>
 <td class="tdtype">
-<a href="std.pixel.html#Pixel.Font">*Font</a></td>
+*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Font">Font</a></td>
 <td>
 </td>
 </tr>
@@ -12132,7 +12132,7 @@ font</td>
 <td>
 under</td>
 <td class="tdtype">
-<a href="std.pixel.html#Pixel.UnderlineStyle">UnderlineStyle</a></td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.UnderlineStyle">UnderlineStyle</a></td>
 <td>
 </td>
 </tr>
@@ -12143,7 +12143,7 @@ under</td>
 <td>
 raw</td>
 <td class="tdtype">
-<a href="std.core.html#Core.String">String</a></td>
+String</td>
 <td>
 </td>
 </tr>
@@ -12151,7 +12151,7 @@ raw</td>
 <td>
 chunks</td>
 <td class="tdtype">
-<a href="std.core.html#Core.Array">Array'(RichChunk)</a></td>
+Array(<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.RichChunk">RichChunk</a>)</td>
 <td>
 </td>
 </tr>
@@ -12159,7 +12159,7 @@ chunks</td>
 <td>
 layoutRect</td>
 <td class="tdtype">
-<a href="std.core.html#Core.Math.Rectangle">Rectangle</a></td>
+Rectangle</td>
 <td>
 </td>
 </tr>
@@ -12167,7 +12167,7 @@ layoutRect</td>
 <td>
 boundRect</td>
 <td class="tdtype">
-<a href="std.core.html#Core.Math.Rectangle">Rectangle</a></td>
+Rectangle</td>
 <td>
 </td>
 </tr>
@@ -12278,7 +12278,7 @@ Associate a string (can have multiple lines) Accepted markers are : &lt;u&gt;  .
 <td>
 font</td>
 <td class="tdtype">
-<a href="std.pixel.html#Pixel.FontFamily">FontFamily</a></td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.FontFamily">FontFamily</a></td>
 <td>
 </td>
 </tr>
@@ -12286,7 +12286,7 @@ font</td>
 <td>
 fontStyle</td>
 <td class="tdtype">
-<a href="std.pixel.html#Pixel.FontFamilyStyle">FontFamilyStyle</a></td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.FontFamilyStyle">FontFamilyStyle</a></td>
 <td>
 </td>
 </tr>
@@ -12294,7 +12294,7 @@ fontStyle</td>
 <td>
 palette</td>
 <td class="tdtype">
-<a href="std.pixel.html#Pixel.Color">[4] Color</a></td>
+[4] <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Color">Color</a></td>
 <td>
 </td>
 </tr>
@@ -12302,7 +12302,7 @@ palette</td>
 <td>
 brush</td>
 <td class="tdtype">
-<a href="std.pixel.html#Pixel.Brush">Brush</a></td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Brush">Brush</a></td>
 <td>
 </td>
 </tr>
@@ -12310,7 +12310,7 @@ brush</td>
 <td>
 horzAlignment</td>
 <td class="tdtype">
-<a href="std.pixel.html#Pixel.StringHorzAlignment">StringHorzAlignment</a></td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.StringHorzAlignment">StringHorzAlignment</a></td>
 <td>
 </td>
 </tr>
@@ -12318,7 +12318,7 @@ horzAlignment</td>
 <td>
 vertAlignment</td>
 <td class="tdtype">
-<a href="std.pixel.html#Pixel.StringVertAlignment">StringVertAlignment</a></td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.StringVertAlignment">StringVertAlignment</a></td>
 <td>
 </td>
 </tr>
@@ -12334,7 +12334,7 @@ s32</td>
 <td>
 flags</td>
 <td class="tdtype">
-<a href="std.pixel.html#Pixel.StringFormatFlags">StringFormatFlags</a></td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.StringFormatFlags">StringFormatFlags</a></td>
 <td>
 </td>
 </tr>
@@ -12345,7 +12345,7 @@ flags</td>
 <td>
 base</td>
 <td class="tdtype">
-<a href="std.pixel.html#Pixel.ShaderBase">ShaderBase</a></td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.ShaderBase">ShaderBase</a></td>
 <td>
 </td>
 </tr>
@@ -12431,7 +12431,7 @@ ShaderParamHandle</td>
 <td>
 base</td>
 <td class="tdtype">
-<a href="std.pixel.html#Pixel.ShaderBase">ShaderBase</a></td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.ShaderBase">ShaderBase</a></td>
 <td>
 </td>
 </tr>
@@ -12458,7 +12458,7 @@ ShaderParamHandle</td>
 <td>
 base</td>
 <td class="tdtype">
-<a href="std.pixel.html#Pixel.ShaderBase">ShaderBase</a></td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.ShaderBase">ShaderBase</a></td>
 <td>
 </td>
 </tr>
@@ -12558,7 +12558,7 @@ ascent + descent.</p>
 <td>
 str</td>
 <td class="tdtype">
-<a href="std.pixel.html#Pixel.RichString">RichString</a></td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.RichString">RichString</a></td>
 <td>
 </td>
 </tr>
@@ -12566,7 +12566,7 @@ str</td>
 <td>
 fmt</td>
 <td class="tdtype">
-<a href="std.pixel.html#Pixel.RichStringFormat">RichStringFormat</a></td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.RichStringFormat">RichStringFormat</a></td>
 <td>
 </td>
 </tr>
@@ -12624,42 +12624,42 @@ Set vertical alignment.</p>
 </table>
 <h3 class="content" id="Pixel.StringPainter.color"><span class="titletype">func</span> <span class="titlelight">StringPainter.</span><span class="titlestrong">color</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func color(using self, col: <a href="std.pixel.html#Pixel.Color">Color</a>)
+<code style="white-space: break-spaces">func color(using self, col: Color)
 </code>
 </p>
 <p>
 Set text color.</p>
 <h3 class="content" id="Pixel.StringPainter.draw"><span class="titletype">func</span> <span class="titlelight">StringPainter.</span><span class="titlestrong">draw</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func draw(using self, painter: <a href="std.pixel.html#Pixel.Painter">*Painter</a>, rect: <a href="std.core.html#Core.Math.Rectangle">Rectangle</a>, what: string)
+<code style="white-space: break-spaces">func draw(using self, painter: *Painter, rect: Rectangle, what: string)
 </code>
 </p>
 <p>
 Draw string.</p>
 <h3 class="content" id="Pixel.StringPainter.flags"><span class="titletype">func</span> <span class="titlelight">StringPainter.</span><span class="titlestrong">flags</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func flags(using self, f: <a href="std.pixel.html#Pixel.StringFormatFlags">StringFormatFlags</a>)
+<code style="white-space: break-spaces">func flags(using self, f: StringFormatFlags)
 </code>
 </p>
 <p>
 Set drawing flags.</p>
 <h3 class="content" id="Pixel.StringPainter.font"><span class="titletype">func</span> <span class="titlelight">StringPainter.</span><span class="titlestrong">font</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func font(using self, font: <a href="std.pixel.html#Pixel.Font">*Font</a>)
+<code style="white-space: break-spaces">func font(using self, font: *Font)
 </code>
 </p>
 <p>
 Set font.</p>
 <h3 class="content" id="Pixel.StringPainter.horzAlign"><span class="titletype">func</span> <span class="titlelight">StringPainter.</span><span class="titlestrong">horzAlign</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func horzAlign(using self, align: <a href="std.pixel.html#Pixel.StringHorzAlignment">StringHorzAlignment</a>)
+<code style="white-space: break-spaces">func horzAlign(using self, align: StringHorzAlignment)
 </code>
 </p>
 <p>
 Set horizontal alignment.</p>
 <h3 class="content" id="Pixel.StringPainter.vertAlign"><span class="titletype">func</span> <span class="titlelight">StringPainter.</span><span class="titlestrong">vertAlign</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func vertAlign(using self, align: <a href="std.pixel.html#Pixel.StringVertAlignment">StringVertAlignment</a>)
+<code style="white-space: break-spaces">func vertAlign(using self, align: StringVertAlignment)
 </code>
 </p>
 <p>
@@ -12699,7 +12699,7 @@ TextureHandle</td>
 <td>
 pf</td>
 <td class="tdtype">
-<a href="std.pixel.html#Pixel.PixelFormat">PixelFormat</a></td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.PixelFormat">PixelFormat</a></td>
 <td>
 </td>
 </tr>
@@ -12783,7 +12783,7 @@ bool</td>
 </p>
 <h3 class="content" id="Pixel.Tga.Decoder.IImageDecoder.decode"><span class="titletype">func</span> <span class="titlelight">IImageDecoder.</span><span class="titlestrong">decode</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func decode(using self, buffer: const [..] u8, options: <a href="std.pixel.html#Pixel.DecodeOptions">DecodeOptions</a>)-><a href="std.pixel.html#Pixel.Image">Image</a> throw
+<code style="white-space: break-spaces">func decode(using self, buffer: const [..] u8, options: DecodeOptions)->Image throw
 </code>
 </p>
 <h3 class="content" id="Pixel.Tga.Encoder"><span class="titletype">struct</span> <span class="titlelight">Tga.</span><span class="titlestrong">Encoder</span></h3>
@@ -12794,7 +12794,7 @@ bool</td>
 </p>
 <h3 class="content" id="Pixel.Tga.Encoder.IImageEncoder.encode"><span class="titletype">func</span> <span class="titlelight">IImageEncoder.</span><span class="titlestrong">encode</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func encode(using self, result: <a href="std.core.html#Core.ConcatBuffer">*ConcatBuffer</a>, image: <a href="std.pixel.html#Pixel.Image">Image</a>, options: any) throw
+<code style="white-space: break-spaces">func encode(using self, result: *ConcatBuffer, image: Image, options: any) throw
 </code>
 </p>
 <h3 class="content" id="Pixel.Tga.Header"><span class="titletype">struct</span> <span class="titlelight">Tga.</span><span class="titlestrong">Header</span></h3>
@@ -12977,7 +12977,7 @@ string</td>
 <td>
 buffer</td>
 <td class="tdtype">
-<a href="std.core.html#Core.Array">Array'(u8)</a></td>
+Array(u8)</td>
 <td>
 </td>
 </tr>
@@ -13099,14 +13099,14 @@ Render one glyph.</p>
 </table>
 <h3 class="content" id="Pixel.TypeFace.create"><span class="titletype">func</span> <span class="titlelight">TypeFace.</span><span class="titlestrong">create</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func create(fullname: string, bytes: const [..] u8)-><a href="std.pixel.html#Pixel.TypeFace">*TypeFace</a> throw
+<code style="white-space: break-spaces">func create(fullname: string, bytes: const [..] u8)->*TypeFace throw
 </code>
 </p>
 <p>
 Get or create a new typeface from a memory buffer.</p>
 <h3 class="content" id="Pixel.TypeFace.createFromHFONT"><span class="titletype">func</span> <span class="titlelight">TypeFace.</span><span class="titlestrong">createFromHFONT</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func createFromHFONT(fullname: string, hf: HFONT)-><a href="std.pixel.html#Pixel.TypeFace">*TypeFace</a> throw
+<code style="white-space: break-spaces">func createFromHFONT(fullname: string, hf: HFONT)->*TypeFace throw
 </code>
 </p>
 <p>
@@ -13120,14 +13120,14 @@ Create a new typeface from a HFONT.</p>
 Returns the underlying font family name.</p>
 <h3 class="content" id="Pixel.TypeFace.getRuneOutline"><span class="titletype">func</span> <span class="titlelight">TypeFace.</span><span class="titlestrong">getRuneOutline</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func getRuneOutline(using self, pathList: <a href="std.pixel.html#Pixel.LinePathList">*LinePathList</a>, c: rune, size: u32, embolden: u32 = 0)->f32 throw
+<code style="white-space: break-spaces">func getRuneOutline(using self, pathList: *LinePathList, c: rune, size: u32, embolden: u32 = 0)->f32 throw
 </code>
 </p>
 <p>
 Convert a rune to its outline, at a given size.</p>
 <h3 class="content" id="Pixel.TypeFace.getStringOutline"><span class="titletype">func</span> <span class="titlelight">TypeFace.</span><span class="titlestrong">getStringOutline</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func getStringOutline(using self, pathList: <a href="std.pixel.html#Pixel.LinePathList">*LinePathList</a>, text: string, size: u32, embolden: u32 = 0) throw
+<code style="white-space: break-spaces">func getStringOutline(using self, pathList: *LinePathList, text: string, size: u32, embolden: u32 = 0) throw
 </code>
 </p>
 <p>
@@ -13148,21 +13148,21 @@ Returns true if the typeface is bold.</p>
 Returns true if the typeface is italic.</p>
 <h3 class="content" id="Pixel.TypeFace.load"><span class="titletype">func</span> <span class="titlelight">TypeFace.</span><span class="titlestrong">load</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func load(fullname: string)-><a href="std.pixel.html#Pixel.TypeFace">*TypeFace</a> throw
+<code style="white-space: break-spaces">func load(fullname: string)->*TypeFace throw
 </code>
 </p>
 <p>
 Get or load a new typeface.</p>
 <h3 class="content" id="Pixel.TypeFace.release"><span class="titletype">func</span> <span class="titlelight">TypeFace.</span><span class="titlestrong">release</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func release(typeface: <a href="std.pixel.html#Pixel.TypeFace">*TypeFace</a>)
+<code style="white-space: break-spaces">func release(typeface: *TypeFace)
 </code>
 </p>
 <p>
 Release the given typeface.</p>
 <h3 class="content" id="Pixel.TypeFace.renderGlyph"><span class="titletype">func</span> <span class="titlelight">TypeFace.</span><span class="titlestrong">renderGlyph</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func renderGlyph(using self, c: rune, size: u32, forceBold = false, forceItalic = false)-><a href="std.freetype.html#FreeType.FT_Bitmap">const *FT_Bitmap</a> throw
+<code style="white-space: break-spaces">func renderGlyph(using self, c: rune, size: u32, forceBold = false, forceItalic = false)->const *FT_Bitmap throw
 </code>
 </p>
 <p>
@@ -13215,7 +13215,7 @@ Strikeout</td>
 <td>
 pos</td>
 <td class="tdtype">
-<a href="std.core.html#Core.Math.Vector2">Vector2</a></td>
+Vector2</td>
 <td>
 </td>
 </tr>
@@ -13223,7 +13223,7 @@ pos</td>
 <td>
 uv</td>
 <td class="tdtype">
-<a href="std.core.html#Core.Math.Vector2">Vector2</a></td>
+Vector2</td>
 <td>
 </td>
 </tr>
@@ -13239,7 +13239,7 @@ u32</td>
 <td>
 aa</td>
 <td class="tdtype">
-<a href="std.core.html#Core.Math.Vector4">[12] Vector4</a></td>
+[12] Vector4</td>
 <td>
 </td>
 </tr>

@@ -383,6 +383,8 @@ func @acos(value: f64)->f64
 </p>
 <p>
 Make a system allocation of <code class = "incode">size</code> bytes.</p>
+<p>
+ Use <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\swag.runtime.html#@free">@free</a> to release the allocated memory.</p>
 <h3 class="content" id="@args"><span class="titletype">func</span> <span class="titlelight"></span><span class="titlestrong">@args</span></h3>
 <p class="code">
 <code style="white-space: break-spaces">func @args()->const [..] string
@@ -527,17 +529,17 @@ func @ceil(value: f64)->f64
 </p>
 <h3 class="content" id="@compiler"><span class="titletype">func</span> <span class="titlelight"></span><span class="titlestrong">@compiler</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func @compiler()-><a href="swag.runtime.html#Swag.ICompiler">ICompiler</a>
+<code style="white-space: break-spaces">func @compiler()->ICompiler
 </code>
 </p>
 <h3 class="content" id="@compilererror"><span class="titletype">func</span> <span class="titlelight"></span><span class="titlestrong">@compilererror</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func @compilererror(message: string, loc: <a href="swag.runtime.html#Swag.SourceCodeLocation">SourceCodeLocation</a>)
+<code style="white-space: break-spaces">func @compilererror(message: string, loc: SourceCodeLocation)
 </code>
 </p>
 <h3 class="content" id="@compilerwarning"><span class="titletype">func</span> <span class="titlelight"></span><span class="titlestrong">@compilerwarning</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func @compilerwarning(message: string, loc: <a href="swag.runtime.html#Swag.SourceCodeLocation">SourceCodeLocation</a>)
+<code style="white-space: break-spaces">func @compilerwarning(message: string, loc: SourceCodeLocation)
 </code>
 </p>
 <h3 class="content" id="@cos"><span class="titletype">func</span> <span class="titlelight"></span><span class="titlestrong">@cos</span></h3>
@@ -584,17 +586,17 @@ func @floor(value: f64)->f64
 Free a system memory block.</p>
 <h3 class="content" id="@getcontext"><span class="titletype">func</span> <span class="titlelight"></span><span class="titlestrong">@getcontext</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func @getcontext()-><a href="swag.runtime.html#Swag.Context">*Context</a>
+<code style="white-space: break-spaces">func @getcontext()->*Context
 </code>
 </p>
 <h3 class="content" id="@getpinfos"><span class="titletype">func</span> <span class="titlelight"></span><span class="titlestrong">@getpinfos</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func @getpinfos()-><a href="swag.runtime.html#Swag.ProcessInfos">*ProcessInfos</a>
+<code style="white-space: break-spaces">func @getpinfos()->*ProcessInfos
 </code>
 </p>
 <h3 class="content" id="@gvtd"><span class="titletype">func</span> <span class="titlelight"></span><span class="titlestrong">@gvtd</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func @gvtd()-><a href="swag.runtime.html#Swag.Gvtd">const [..] Gvtd</a>
+<code style="white-space: break-spaces">func @gvtd()->const [..] Gvtd
 </code>
 </p>
 <h3 class="content" id="@isbytecode"><span class="titletype">func</span> <span class="titlelight"></span><span class="titlestrong">@isbytecode</span></h3>
@@ -604,7 +606,7 @@ Free a system memory block.</p>
 </p>
 <h3 class="content" id="@itftableof"><span class="titletype">func</span> <span class="titlelight"></span><span class="titlestrong">@itftableof</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func @itftableof(structType: <a href="swag.runtime.html#Swag.TypeInfoStruct">const *TypeInfoStruct</a>, itfType: <a href="swag.runtime.html#Swag.TypeInfoStruct">const *TypeInfoStruct</a>)->const *void
+<code style="white-space: break-spaces">func @itftableof(structType: const *TypeInfoStruct, itfType: const *TypeInfoStruct)->const *void
 </code>
 </p>
 <h3 class="content" id="@log"><span class="titletype">func</span> <span class="titlelight"></span><span class="titlestrong">@log</span></h3>
@@ -683,7 +685,7 @@ func @min(value1: f64, value2: f64)->f64
 </p>
 <h3 class="content" id="@modules"><span class="titletype">func</span> <span class="titlelight"></span><span class="titlestrong">@modules</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func @modules()-><a href="swag.runtime.html#Swag.Module">const [..] Module</a>
+<code style="white-space: break-spaces">func @modules()->const [..] Module
 </code>
 </p>
 <h3 class="content" id="@muladd"><span class="titletype">func</span> <span class="titlelight"></span><span class="titlestrong">@muladd</span></h3>
@@ -694,7 +696,7 @@ func @muladd(val1: f64, val2: f64, val3: f64)->f64
 </p>
 <h3 class="content" id="@panic"><span class="titletype">func</span> <span class="titlelight"></span><span class="titlestrong">@panic</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func @panic(message: string, loc: <a href="swag.runtime.html#Swag.SourceCodeLocation">SourceCodeLocation</a>)
+<code style="white-space: break-spaces">func @panic(message: string, loc: SourceCodeLocation)
 </code>
 </p>
 <h3 class="content" id="@pow"><span class="titletype">func</span> <span class="titlelight"></span><span class="titlestrong">@pow</span></h3>
@@ -728,7 +730,7 @@ func @round(value: f64)->f64
 </p>
 <h3 class="content" id="@setcontext"><span class="titletype">func</span> <span class="titlelight"></span><span class="titlestrong">@setcontext</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func @setcontext(context: <a href="swag.runtime.html#Swag.Context">const *Context</a>)
+<code style="white-space: break-spaces">func @setcontext(context: const *Context)
 </code>
 </p>
 <h3 class="content" id="@sin"><span class="titletype">func</span> <span class="titlelight"></span><span class="titlestrong">@sin</span></h3>
@@ -795,7 +797,7 @@ func @trunc(value: f64)->f64
 </p>
 <h3 class="content" id="@typecmp"><span class="titletype">func</span> <span class="titlelight"></span><span class="titlestrong">@typecmp</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func @typecmp(typeA: <a href="swag.runtime.html#Swag.TypeInfo">const *TypeInfo</a>, typeB: <a href="swag.runtime.html#Swag.TypeInfo">const *TypeInfo</a>, cmpFlags: <a href="swag.runtime.html#Swag.TypeCmpFlags">TypeCmpFlags</a>)->bool
+<code style="white-space: break-spaces">func @typecmp(typeA: const *TypeInfo, typeB: const *TypeInfo, cmpFlags: TypeCmpFlags)->bool
 </code>
 </p>
 <h3 class="content" id="MutexRW"><span class="titletype">struct</span> <span class="titlelight"></span><span class="titlestrong">MutexRW</span></h3>
@@ -1191,7 +1193,7 @@ AssertIsAllocated</td>
 <td>
 callerLoc</td>
 <td class="tdtype">
-<a href="swag.runtime.html#Swag.SourceCodeLocation">SourceCodeLocation</a></td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\swag.runtime.html#Swag.SourceCodeLocation">SourceCodeLocation</a></td>
 <td>
 </td>
 </tr>
@@ -1231,7 +1233,7 @@ u64</td>
 <td>
 mode</td>
 <td class="tdtype">
-<a href="swag.runtime.html#Swag.AllocatorMode">AllocatorMode</a></td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\swag.runtime.html#Swag.AllocatorMode">AllocatorMode</a></td>
 <td>
 </td>
 </tr>
@@ -1251,7 +1253,7 @@ u32</td>
 </p>
 <h3 class="content" id="Swag.AttrUsage"><span class="titletype">attr</span> <span class="titlelight">Swag.</span><span class="titlestrong">AttrUsage</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">attr AttrUsage(usage: <a href="swag.runtime.html#Swag.AttributeUsage">AttributeUsage</a>)
+<code style="white-space: break-spaces">attr AttrUsage(usage: AttributeUsage)
 </code>
 </p>
 <h3 class="content" id="Swag.Attribute"><span class="titletype">struct</span> <span class="titlelight">Swag.</span><span class="titlestrong">Attribute</span></h3>
@@ -1260,7 +1262,7 @@ u32</td>
 <td>
 type</td>
 <td class="tdtype">
-<a href="swag.runtime.html#Swag.TypeInfo">const *TypeInfo</a></td>
+const *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\swag.runtime.html#Swag.TypeInfo">TypeInfo</a></td>
 <td>
 </td>
 </tr>
@@ -1268,7 +1270,7 @@ type</td>
 <td>
 params</td>
 <td class="tdtype">
-<a href="swag.runtime.html#Swag.AttributeParam">const [..] AttributeParam</a></td>
+const [..] <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\swag.runtime.html#Swag.AttributeParam">AttributeParam</a></td>
 <td>
 </td>
 </tr>
@@ -1584,7 +1586,7 @@ bool</td>
 <td>
 backendKind</td>
 <td class="tdtype">
-<a href="swag.runtime.html#Swag.BuildCfgBackendKind">BuildCfgBackendKind</a></td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\swag.runtime.html#Swag.BuildCfgBackendKind">BuildCfgBackendKind</a></td>
 <td>
 </td>
 </tr>
@@ -1592,7 +1594,7 @@ backendKind</td>
 <td>
 backendSubKind</td>
 <td class="tdtype">
-<a href="swag.runtime.html#Swag.BuildCfgBackendSubKind">BuildCfgBackendSubKind</a></td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\swag.runtime.html#Swag.BuildCfgBackendSubKind">BuildCfgBackendSubKind</a></td>
 <td>
 </td>
 </tr>
@@ -1608,7 +1610,7 @@ bool</td>
 <td>
 backendOptimize</td>
 <td class="tdtype">
-<a href="swag.runtime.html#Swag.BuildCfgBackendOptim">BuildCfgBackendOptim</a></td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\swag.runtime.html#Swag.BuildCfgBackendOptim">BuildCfgBackendOptim</a></td>
 <td>
 </td>
 </tr>
@@ -1632,7 +1634,7 @@ string</td>
 <td>
 backendLLVM</td>
 <td class="tdtype">
-<a href="swag.runtime.html#Swag.BuildCfgBackendLLVM">BuildCfgBackendLLVM</a></td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\swag.runtime.html#Swag.BuildCfgBackendLLVM">BuildCfgBackendLLVM</a></td>
 <td>
 </td>
 </tr>
@@ -1640,7 +1642,7 @@ backendLLVM</td>
 <td>
 backendX64</td>
 <td class="tdtype">
-<a href="swag.runtime.html#Swag.BuildCfgBackendX64">BuildCfgBackendX64</a></td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\swag.runtime.html#Swag.BuildCfgBackendX64">BuildCfgBackendX64</a></td>
 <td>
 </td>
 </tr>
@@ -1837,7 +1839,7 @@ string</td>
 <td>
 type</td>
 <td class="tdtype">
-<a href="swag.runtime.html#Swag.TypeInfo">const *TypeInfo</a></td>
+const *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\swag.runtime.html#Swag.TypeInfo">TypeInfo</a></td>
 <td>
 </td>
 </tr>
@@ -1845,7 +1847,7 @@ type</td>
 <td>
 kind</td>
 <td class="tdtype">
-<a href="swag.runtime.html#Swag.CompilerMsgKind">CompilerMsgKind</a></td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\swag.runtime.html#Swag.CompilerMsgKind">CompilerMsgKind</a></td>
 <td>
 </td>
 </tr>
@@ -1976,7 +1978,7 @@ Also hardcoded for switch.</p>
 <td>
 allocator</td>
 <td class="tdtype">
-<a href="swag.runtime.html#Swag.IAllocator">IAllocator</a></td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\swag.runtime.html#Swag.IAllocator">IAllocator</a></td>
 <td>
 </td>
 </tr>
@@ -1984,7 +1986,7 @@ allocator</td>
 <td>
 flags</td>
 <td class="tdtype">
-<a href="swag.runtime.html#Swag.ContextFlags">ContextFlags</a></td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\swag.runtime.html#Swag.ContextFlags">ContextFlags</a></td>
 <td>
 </td>
 </tr>
@@ -1992,7 +1994,7 @@ flags</td>
 <td>
 tempAllocator</td>
 <td class="tdtype">
-<a href="swag.runtime.html#Swag.ScratchAllocator">ScratchAllocator</a></td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\swag.runtime.html#Swag.ScratchAllocator">ScratchAllocator</a></td>
 <td>
 </td>
 </tr>
@@ -2032,7 +2034,7 @@ u32</td>
 <td>
 trace</td>
 <td class="tdtype">
-<a href="swag.runtime.html#Swag.SourceCodeLocation">[32] const *SourceCodeLocation</a></td>
+[32] const *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\swag.runtime.html#Swag.SourceCodeLocation">SourceCodeLocation</a></td>
 <td>
 </td>
 </tr>
@@ -2040,7 +2042,7 @@ trace</td>
 <td>
 exceptionLoc</td>
 <td class="tdtype">
-<a href="swag.runtime.html#Swag.SourceCodeLocation">SourceCodeLocation</a></td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\swag.runtime.html#Swag.SourceCodeLocation">SourceCodeLocation</a></td>
 <td>
 </td>
 </tr>
@@ -2056,7 +2058,7 @@ exceptionParams</td>
 <td>
 panic</td>
 <td class="tdtype">
-func(string, const ref SourceCodeLocation)</td>
+func(string, const ref <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\swag.runtime.html#Swag.SourceCodeLocation">SourceCodeLocation</a>)</td>
 <td>
 </td>
 </tr>
@@ -2088,7 +2090,7 @@ ByteCode</td>
 <td>
 allocator</td>
 <td class="tdtype">
-<a href="swag.runtime.html#Swag.IAllocator">IAllocator</a></td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\swag.runtime.html#Swag.IAllocator">IAllocator</a></td>
 <td>
 </td>
 </tr>
@@ -2096,7 +2098,7 @@ allocator</td>
 <td>
 mutex</td>
 <td class="tdtype">
-MutexRW</td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\swag.runtime.html#MutexRW">MutexRW</a></td>
 <td>
 </td>
 </tr>
@@ -2104,7 +2106,7 @@ MutexRW</td>
 <td>
 firstAlloc</td>
 <td class="tdtype">
-<a href="swag.runtime.html#Swag.DebugAllocatorHeader">*DebugAllocatorHeader</a></td>
+*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\swag.runtime.html#Swag.DebugAllocatorHeader">DebugAllocatorHeader</a></td>
 <td>
 <p>
 First allocated block.</p>
@@ -2114,7 +2116,7 @@ First allocated block.</p>
 <td>
 firstFree</td>
 <td class="tdtype">
-<a href="swag.runtime.html#Swag.DebugAllocatorHeader">*DebugAllocatorHeader</a></td>
+*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\swag.runtime.html#Swag.DebugAllocatorHeader">DebugAllocatorHeader</a></td>
 <td>
 <p>
 First freed block.</p>
@@ -2124,7 +2126,7 @@ First freed block.</p>
 <td>
 lastFree</td>
 <td class="tdtype">
-<a href="swag.runtime.html#Swag.DebugAllocatorHeader">*DebugAllocatorHeader</a></td>
+*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\swag.runtime.html#Swag.DebugAllocatorHeader">DebugAllocatorHeader</a></td>
 <td>
 <p>
 Last freed block.</p>
@@ -2185,7 +2187,7 @@ breakOnAllocId</td>
 u32</td>
 <td>
 <p>
-Will @assert when the current allocation id reaches that value.</p>
+Will <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\swag.runtime.html#@assert">@assert</a> when the current allocation id reaches that value.</p>
 </td>
 </tr>
 <tr>
@@ -2286,12 +2288,12 @@ Setup the allocator.</p>
 </table>
 <h3 class="content" id="Swag.DebugAllocator.IAllocator.alloc"><span class="titletype">func</span> <span class="titlelight">IAllocator.</span><span class="titlestrong">alloc</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func alloc(using self, request: <a href="swag.runtime.html#Swag.AllocatorRequest">*AllocatorRequest</a>)
+<code style="white-space: break-spaces">func alloc(using self, request: *AllocatorRequest)
 </code>
 </p>
 <h3 class="content" id="Swag.DebugAllocator.IAllocator.free"><span class="titletype">func</span> <span class="titlelight">IAllocator.</span><span class="titlestrong">free</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func free(using self, request: <a href="swag.runtime.html#Swag.AllocatorRequest">*AllocatorRequest</a>)
+<code style="white-space: break-spaces">func free(using self, request: *AllocatorRequest)
 </code>
 </p>
 <h3 class="content" id="Swag.DebugAllocator.IAllocator.releaseLast"><span class="titletype">func</span> <span class="titlelight">IAllocator.</span><span class="titlestrong">releaseLast</span></h3>
@@ -2301,7 +2303,7 @@ Setup the allocator.</p>
 </p>
 <h3 class="content" id="Swag.DebugAllocator.IAllocator.req"><span class="titletype">func</span> <span class="titlelight">IAllocator.</span><span class="titlestrong">req</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func req(using self, request: <a href="swag.runtime.html#Swag.AllocatorRequest">*AllocatorRequest</a>)
+<code style="white-space: break-spaces">func req(using self, request: *AllocatorRequest)
 </code>
 </p>
 <h3 class="content" id="Swag.DebugAllocator.assertIsAllocated"><span class="titletype">func</span> <span class="titlelight">DebugAllocator.</span><span class="titlestrong">assertIsAllocated</span></h3>
@@ -2320,12 +2322,12 @@ This function will assert if the given user address is not conform to an allocat
 Check all allocated blocks.</p>
 <h3 class="content" id="Swag.DebugAllocator.checkIsAllocated"><span class="titletype">func</span> <span class="titlelight">DebugAllocator.</span><span class="titlestrong">checkIsAllocated</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func checkIsAllocated(using self, ptrHeader: <a href="swag.runtime.html#Swag.DebugAllocatorHeader">^DebugAllocatorHeader</a>, callerLoc = #callerlocation)
+<code style="white-space: break-spaces">func checkIsAllocated(using self, ptrHeader: ^DebugAllocatorHeader, callerLoc = #callerlocation)
 </code>
 </p>
 <h3 class="content" id="Swag.DebugAllocator.checkIsFreed"><span class="titletype">func</span> <span class="titlelight">DebugAllocator.</span><span class="titlestrong">checkIsFreed</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func checkIsFreed(using self, ptrHeader: <a href="swag.runtime.html#Swag.DebugAllocatorHeader">^DebugAllocatorHeader</a>)
+<code style="white-space: break-spaces">func checkIsFreed(using self, ptrHeader: ^DebugAllocatorHeader)
 </code>
 </p>
 <h3 class="content" id="Swag.DebugAllocator.memAlign"><span class="titletype">func</span> <span class="titlelight">DebugAllocator.</span><span class="titlestrong">memAlign</span></h3>
@@ -2352,7 +2354,7 @@ Check all allocated blocks.</p>
 Output to the console the list of all allocated blocks (leaks).</p>
 <h3 class="content" id="Swag.DebugAllocator.setup"><span class="titletype">func</span> <span class="titlelight">DebugAllocator.</span><span class="titlestrong">setup</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func setup(using self, allocator: <a href="swag.runtime.html#Swag.IAllocator">IAllocator</a>)
+<code style="white-space: break-spaces">func setup(using self, allocator: IAllocator)
 </code>
 </p>
 <p>
@@ -2378,7 +2380,7 @@ Will be put just before the returned address.</p>
 <td>
 loc</td>
 <td class="tdtype">
-<a href="swag.runtime.html#Swag.SourceCodeLocation">SourceCodeLocation</a></td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\swag.runtime.html#Swag.SourceCodeLocation">SourceCodeLocation</a></td>
 <td>
 </td>
 </tr>
@@ -2418,7 +2420,7 @@ string</td>
 <td>
 prev</td>
 <td class="tdtype">
-<a href="swag.runtime.html#Swag.DebugAllocatorHeader">*DebugAllocatorHeader</a></td>
+*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\swag.runtime.html#Swag.DebugAllocatorHeader">DebugAllocatorHeader</a></td>
 <td>
 </td>
 </tr>
@@ -2426,7 +2428,7 @@ prev</td>
 <td>
 next</td>
 <td class="tdtype">
-<a href="swag.runtime.html#Swag.DebugAllocatorHeader">*DebugAllocatorHeader</a></td>
+*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\swag.runtime.html#Swag.DebugAllocatorHeader">DebugAllocatorHeader</a></td>
 <td>
 </td>
 </tr>
@@ -2680,7 +2682,7 @@ func(*void)</td>
 <td>
 req</td>
 <td class="tdtype">
-func(*IAllocator, *AllocatorRequest)</td>
+func(*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\swag.runtime.html#Swag.IAllocator">IAllocator</a>, *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\swag.runtime.html#Swag.AllocatorRequest">AllocatorRequest</a>)</td>
 <td>
 </td>
 </tr>
@@ -2693,7 +2695,7 @@ This is the interface to communicate with the compiler.</p>
 <td>
 getMessage</td>
 <td class="tdtype">
-func(*ICompiler)->const *CompilerMessage</td>
+func(*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\swag.runtime.html#Swag.ICompiler">ICompiler</a>)-&gt;const *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\swag.runtime.html#Swag.CompilerMessage">CompilerMessage</a></td>
 <td>
 <p>
 Returns the compiler message in a <code class = "incode">#message</code> function.</p>
@@ -2703,7 +2705,7 @@ Returns the compiler message in a <code class = "incode">#message</code> functio
 <td>
 getBuildCfg</td>
 <td class="tdtype">
-func(*ICompiler)->*BuildCfg</td>
+func(*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\swag.runtime.html#Swag.ICompiler">ICompiler</a>)-&gt;*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\swag.runtime.html#Swag.BuildCfg">BuildCfg</a></td>
 <td>
 <p>
 Returns the build configuration of the current module.</p>
@@ -2713,7 +2715,7 @@ Returns the build configuration of the current module.</p>
 <td>
 compileString</td>
 <td class="tdtype">
-func(*ICompiler, string)</td>
+func(*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\swag.runtime.html#Swag.ICompiler">ICompiler</a>, string)</td>
 <td>
 <p>
 Compile a global string.</p>
@@ -2804,7 +2806,7 @@ string</td>
 <td>
 types</td>
 <td class="tdtype">
-<a href="swag.runtime.html#Swag.TypeInfo">const [..] const *TypeInfo</a></td>
+const [..] const *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\swag.runtime.html#Swag.TypeInfo">TypeInfo</a></td>
 <td>
 </td>
 </tr>
@@ -2860,7 +2862,7 @@ types</td>
 <td>
 modules</td>
 <td class="tdtype">
-<a href="swag.runtime.html#Swag.Module">const [..] Module</a></td>
+const [..] <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\swag.runtime.html#Swag.Module">Module</a></td>
 <td>
 </td>
 </tr>
@@ -3054,7 +3056,7 @@ u32</td>
 <td>
 allocator</td>
 <td class="tdtype">
-<a href="swag.runtime.html#Swag.IAllocator">IAllocator</a></td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\swag.runtime.html#Swag.IAllocator">IAllocator</a></td>
 <td>
 </td>
 </tr>
@@ -3162,17 +3164,17 @@ This will call <code class = "incode">release</code> prior to changing the capac
 </table>
 <h3 class="content" id="Swag.ScratchAllocator.IAllocator.alloc"><span class="titletype">func</span> <span class="titlelight">IAllocator.</span><span class="titlestrong">alloc</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func alloc(using self, request: <a href="swag.runtime.html#Swag.AllocatorRequest">*AllocatorRequest</a>)
+<code style="white-space: break-spaces">func alloc(using self, request: *AllocatorRequest)
 </code>
 </p>
 <h3 class="content" id="Swag.ScratchAllocator.IAllocator.free"><span class="titletype">func</span> <span class="titlelight">IAllocator.</span><span class="titlestrong">free</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func free(using self, request: <a href="swag.runtime.html#Swag.AllocatorRequest">*AllocatorRequest</a>)
+<code style="white-space: break-spaces">func free(using self, request: *AllocatorRequest)
 </code>
 </p>
 <h3 class="content" id="Swag.ScratchAllocator.IAllocator.req"><span class="titletype">func</span> <span class="titlelight">IAllocator.</span><span class="titlestrong">req</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func req(using self, request: <a href="swag.runtime.html#Swag.AllocatorRequest">*AllocatorRequest</a>)
+<code style="white-space: break-spaces">func req(using self, request: *AllocatorRequest)
 </code>
 </p>
 <h3 class="content" id="Swag.ScratchAllocator.LeakHeader"><span class="titletype">struct</span> <span class="titlelight">ScratchAllocator.</span><span class="titlestrong">LeakHeader</span></h3>
@@ -3181,7 +3183,7 @@ This will call <code class = "incode">release</code> prior to changing the capac
 <td>
 prev</td>
 <td class="tdtype">
-<a href="swag.runtime.html#Swag.ScratchAllocator.LeakHeader">*LeakHeader</a></td>
+*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\swag.runtime.html#Swag.ScratchAllocator.LeakHeader">LeakHeader</a></td>
 <td>
 </td>
 </tr>
@@ -3189,7 +3191,7 @@ prev</td>
 <td>
 next</td>
 <td class="tdtype">
-<a href="swag.runtime.html#Swag.ScratchAllocator.LeakHeader">*LeakHeader</a></td>
+*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\swag.runtime.html#Swag.ScratchAllocator.LeakHeader">LeakHeader</a></td>
 <td>
 </td>
 </tr>
@@ -3233,7 +3235,7 @@ Restore all memory.</p>
 Release the allocated block.</p>
 <h3 class="content" id="Swag.ScratchAllocator.setCapacity"><span class="titletype">func</span> <span class="titlelight">ScratchAllocator.</span><span class="titlestrong">setCapacity</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func setCapacity(using self, newCapacity: u64, allocator: <a href="swag.runtime.html#Swag.IAllocator">IAllocator</a>)
+<code style="white-space: break-spaces">func setCapacity(using self, newCapacity: u64, allocator: IAllocator)
 </code>
 </p>
 <p>
@@ -3289,12 +3291,12 @@ u32</td>
 <h3 class="content" id="Swag.SystemAllocator"><span class="titletype">struct</span> <span class="titlelight">Swag.</span><span class="titlestrong">SystemAllocator</span></h3>
 <h3 class="content" id="Swag.SystemAllocator.IAllocator.free"><span class="titletype">func</span> <span class="titlelight">IAllocator.</span><span class="titlestrong">free</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func free(request: <a href="swag.runtime.html#Swag.AllocatorRequest">*AllocatorRequest</a>)
+<code style="white-space: break-spaces">func free(request: *AllocatorRequest)
 </code>
 </p>
 <h3 class="content" id="Swag.SystemAllocator.IAllocator.req"><span class="titletype">func</span> <span class="titlelight">IAllocator.</span><span class="titlestrong">req</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func req(using self, request: <a href="swag.runtime.html#Swag.AllocatorRequest">*AllocatorRequest</a>)
+<code style="white-space: break-spaces">func req(using self, request: *AllocatorRequest)
 </code>
 </p>
 <h3 class="content" id="Swag.TargetArch"><span class="titletype">enum</span> <span class="titlelight">Swag.</span><span class="titlestrong">TargetArch</span></h3>
@@ -3385,7 +3387,7 @@ u32</td>
 <td>
 flags</td>
 <td class="tdtype">
-<a href="swag.runtime.html#Swag.TypeInfoFlags">TypeInfoFlags</a></td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\swag.runtime.html#Swag.TypeInfoFlags">TypeInfoFlags</a></td>
 <td>
 </td>
 </tr>
@@ -3393,7 +3395,7 @@ flags</td>
 <td>
 kind</td>
 <td class="tdtype">
-<a href="swag.runtime.html#Swag.TypeInfoKind">TypeInfoKind</a></td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\swag.runtime.html#Swag.TypeInfoKind">TypeInfoKind</a></td>
 <td>
 </td>
 </tr>
@@ -3412,7 +3414,7 @@ padding</td>
 <td>
 base</td>
 <td class="tdtype">
-<a href="swag.runtime.html#Swag.TypeInfo">TypeInfo</a></td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\swag.runtime.html#Swag.TypeInfo">TypeInfo</a></td>
 <td>
 </td>
 </tr>
@@ -3420,7 +3422,7 @@ base</td>
 <td>
 rawType</td>
 <td class="tdtype">
-<a href="swag.runtime.html#Swag.TypeInfo">const *TypeInfo</a></td>
+const *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\swag.runtime.html#Swag.TypeInfo">TypeInfo</a></td>
 <td>
 </td>
 </tr>
@@ -3431,7 +3433,7 @@ rawType</td>
 <td>
 base</td>
 <td class="tdtype">
-<a href="swag.runtime.html#Swag.TypeInfo">TypeInfo</a></td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\swag.runtime.html#Swag.TypeInfo">TypeInfo</a></td>
 <td>
 </td>
 </tr>
@@ -3439,7 +3441,7 @@ base</td>
 <td>
 pointedType</td>
 <td class="tdtype">
-<a href="swag.runtime.html#Swag.TypeInfo">const *TypeInfo</a></td>
+const *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\swag.runtime.html#Swag.TypeInfo">TypeInfo</a></td>
 <td>
 </td>
 </tr>
@@ -3447,7 +3449,7 @@ pointedType</td>
 <td>
 finalType</td>
 <td class="tdtype">
-<a href="swag.runtime.html#Swag.TypeInfo">const *TypeInfo</a></td>
+const *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\swag.runtime.html#Swag.TypeInfo">TypeInfo</a></td>
 <td>
 </td>
 </tr>
@@ -3474,7 +3476,7 @@ u64</td>
 <td>
 base</td>
 <td class="tdtype">
-<a href="swag.runtime.html#Swag.TypeInfo">TypeInfo</a></td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\swag.runtime.html#Swag.TypeInfo">TypeInfo</a></td>
 <td>
 </td>
 </tr>
@@ -3482,7 +3484,7 @@ base</td>
 <td>
 values</td>
 <td class="tdtype">
-<a href="swag.runtime.html#Swag.TypeValue">const [..] TypeValue</a></td>
+const [..] <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\swag.runtime.html#Swag.TypeValue">TypeValue</a></td>
 <td>
 </td>
 </tr>
@@ -3490,7 +3492,7 @@ values</td>
 <td>
 rawType</td>
 <td class="tdtype">
-<a href="swag.runtime.html#Swag.TypeInfo">const *TypeInfo</a></td>
+const *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\swag.runtime.html#Swag.TypeInfo">TypeInfo</a></td>
 <td>
 </td>
 </tr>
@@ -3498,7 +3500,7 @@ rawType</td>
 <td>
 attributes</td>
 <td class="tdtype">
-<a href="swag.runtime.html#Swag.Attribute">const [..] Attribute</a></td>
+const [..] <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\swag.runtime.html#Swag.Attribute">Attribute</a></td>
 <td>
 </td>
 </tr>
@@ -3608,7 +3610,7 @@ PointerArithmetic</td>
 <td>
 base</td>
 <td class="tdtype">
-<a href="swag.runtime.html#Swag.TypeInfo">TypeInfo</a></td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\swag.runtime.html#Swag.TypeInfo">TypeInfo</a></td>
 <td>
 </td>
 </tr>
@@ -3616,7 +3618,7 @@ base</td>
 <td>
 generics</td>
 <td class="tdtype">
-<a href="swag.runtime.html#Swag.TypeValue">const [..] TypeValue</a></td>
+const [..] <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\swag.runtime.html#Swag.TypeValue">TypeValue</a></td>
 <td>
 </td>
 </tr>
@@ -3624,7 +3626,7 @@ generics</td>
 <td>
 parameters</td>
 <td class="tdtype">
-<a href="swag.runtime.html#Swag.TypeValue">const [..] TypeValue</a></td>
+const [..] <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\swag.runtime.html#Swag.TypeValue">TypeValue</a></td>
 <td>
 </td>
 </tr>
@@ -3632,7 +3634,7 @@ parameters</td>
 <td>
 returnType</td>
 <td class="tdtype">
-<a href="swag.runtime.html#Swag.TypeInfo">const *TypeInfo</a></td>
+const *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\swag.runtime.html#Swag.TypeInfo">TypeInfo</a></td>
 <td>
 </td>
 </tr>
@@ -3640,7 +3642,7 @@ returnType</td>
 <td>
 attributes</td>
 <td class="tdtype">
-<a href="swag.runtime.html#Swag.Attribute">const [..] Attribute</a></td>
+const [..] <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\swag.runtime.html#Swag.Attribute">Attribute</a></td>
 <td>
 </td>
 </tr>
@@ -3651,7 +3653,7 @@ attributes</td>
 <td>
 base</td>
 <td class="tdtype">
-<a href="swag.runtime.html#Swag.TypeInfo">TypeInfo</a></td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\swag.runtime.html#Swag.TypeInfo">TypeInfo</a></td>
 <td>
 </td>
 </tr>
@@ -3659,7 +3661,7 @@ base</td>
 <td>
 rawType</td>
 <td class="tdtype">
-<a href="swag.runtime.html#Swag.TypeInfo">const *TypeInfo</a></td>
+const *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\swag.runtime.html#Swag.TypeInfo">TypeInfo</a></td>
 <td>
 </td>
 </tr>
@@ -3793,7 +3795,7 @@ Attribute</td>
 <td>
 base</td>
 <td class="tdtype">
-<a href="swag.runtime.html#Swag.TypeInfo">TypeInfo</a></td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\swag.runtime.html#Swag.TypeInfo">TypeInfo</a></td>
 <td>
 </td>
 </tr>
@@ -3804,7 +3806,7 @@ base</td>
 <td>
 base</td>
 <td class="tdtype">
-<a href="swag.runtime.html#Swag.TypeInfo">TypeInfo</a></td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\swag.runtime.html#Swag.TypeInfo">TypeInfo</a></td>
 <td>
 </td>
 </tr>
@@ -3812,7 +3814,7 @@ base</td>
 <td>
 nativeKind</td>
 <td class="tdtype">
-<a href="swag.runtime.html#Swag.TypeInfoNativeKind">TypeInfoNativeKind</a></td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\swag.runtime.html#Swag.TypeInfoNativeKind">TypeInfoNativeKind</a></td>
 <td>
 </td>
 </tr>
@@ -3928,7 +3930,7 @@ Undefined</td>
 <td>
 base</td>
 <td class="tdtype">
-<a href="swag.runtime.html#Swag.TypeInfo">TypeInfo</a></td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\swag.runtime.html#Swag.TypeInfo">TypeInfo</a></td>
 <td>
 </td>
 </tr>
@@ -3936,7 +3938,7 @@ base</td>
 <td>
 pointedType</td>
 <td class="tdtype">
-<a href="swag.runtime.html#Swag.TypeInfo">const *TypeInfo</a></td>
+const *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\swag.runtime.html#Swag.TypeInfo">TypeInfo</a></td>
 <td>
 </td>
 </tr>
@@ -3947,7 +3949,7 @@ pointedType</td>
 <td>
 base</td>
 <td class="tdtype">
-<a href="swag.runtime.html#Swag.TypeInfo">TypeInfo</a></td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\swag.runtime.html#Swag.TypeInfo">TypeInfo</a></td>
 <td>
 </td>
 </tr>
@@ -3955,7 +3957,7 @@ base</td>
 <td>
 pointedType</td>
 <td class="tdtype">
-<a href="swag.runtime.html#Swag.TypeInfo">const *TypeInfo</a></td>
+const *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\swag.runtime.html#Swag.TypeInfo">TypeInfo</a></td>
 <td>
 </td>
 </tr>
@@ -3966,7 +3968,7 @@ pointedType</td>
 <td>
 base</td>
 <td class="tdtype">
-<a href="swag.runtime.html#Swag.TypeInfo">TypeInfo</a></td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\swag.runtime.html#Swag.TypeInfo">TypeInfo</a></td>
 <td>
 </td>
 </tr>
@@ -4014,7 +4016,7 @@ string</td>
 <td>
 fromGeneric</td>
 <td class="tdtype">
-<a href="swag.runtime.html#Swag.TypeInfo">const *TypeInfo</a></td>
+const *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\swag.runtime.html#Swag.TypeInfo">TypeInfo</a></td>
 <td>
 </td>
 </tr>
@@ -4022,7 +4024,7 @@ fromGeneric</td>
 <td>
 generics</td>
 <td class="tdtype">
-<a href="swag.runtime.html#Swag.TypeValue">const [..] TypeValue</a></td>
+const [..] <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\swag.runtime.html#Swag.TypeValue">TypeValue</a></td>
 <td>
 </td>
 </tr>
@@ -4030,7 +4032,7 @@ generics</td>
 <td>
 fields</td>
 <td class="tdtype">
-<a href="swag.runtime.html#Swag.TypeValue">const [..] TypeValue</a></td>
+const [..] <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\swag.runtime.html#Swag.TypeValue">TypeValue</a></td>
 <td>
 </td>
 </tr>
@@ -4038,7 +4040,7 @@ fields</td>
 <td>
 methods</td>
 <td class="tdtype">
-<a href="swag.runtime.html#Swag.TypeValue">const [..] TypeValue</a></td>
+const [..] <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\swag.runtime.html#Swag.TypeValue">TypeValue</a></td>
 <td>
 </td>
 </tr>
@@ -4046,7 +4048,7 @@ methods</td>
 <td>
 interfaces</td>
 <td class="tdtype">
-<a href="swag.runtime.html#Swag.TypeValue">const [..] TypeValue</a></td>
+const [..] <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\swag.runtime.html#Swag.TypeValue">TypeValue</a></td>
 <td>
 </td>
 </tr>
@@ -4054,7 +4056,7 @@ interfaces</td>
 <td>
 attributes</td>
 <td class="tdtype">
-<a href="swag.runtime.html#Swag.Attribute">const [..] Attribute</a></td>
+const [..] <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\swag.runtime.html#Swag.Attribute">Attribute</a></td>
 <td>
 </td>
 </tr>
@@ -4065,7 +4067,7 @@ attributes</td>
 <td>
 base</td>
 <td class="tdtype">
-<a href="swag.runtime.html#Swag.TypeInfo">TypeInfo</a></td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\swag.runtime.html#Swag.TypeInfo">TypeInfo</a></td>
 <td>
 </td>
 </tr>
@@ -4073,7 +4075,7 @@ base</td>
 <td>
 rawType</td>
 <td class="tdtype">
-<a href="swag.runtime.html#Swag.TypeInfo">const *TypeInfo</a></td>
+const *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\swag.runtime.html#Swag.TypeInfo">TypeInfo</a></td>
 <td>
 </td>
 </tr>
@@ -4092,7 +4094,7 @@ string</td>
 <td>
 pointedType</td>
 <td class="tdtype">
-<a href="swag.runtime.html#Swag.TypeInfo">const *TypeInfo</a></td>
+const *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\swag.runtime.html#Swag.TypeInfo">TypeInfo</a></td>
 <td>
 </td>
 </tr>
@@ -4108,7 +4110,7 @@ const *void</td>
 <td>
 attributes</td>
 <td class="tdtype">
-<a href="swag.runtime.html#Swag.Attribute">const [..] Attribute</a></td>
+const [..] <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\swag.runtime.html#Swag.Attribute">Attribute</a></td>
 <td>
 </td>
 </tr>
@@ -4220,7 +4222,7 @@ Min <code class = "incode">u8</code> value.</p>
 </p>
 <h3 class="content" id="Swag.Warn"><span class="titletype">attr</span> <span class="titlelight">Swag.</span><span class="titlestrong">Warn</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">attr Warn(what: string, level: <a href="swag.runtime.html#Swag.WarnLevel">WarnLevel</a>)
+<code style="white-space: break-spaces">attr Warn(what: string, level: WarnLevel)
 </code>
 </p>
 <h3 class="content" id="Swag.WarnLevel"><span class="titletype">enum</span> <span class="titlelight">Swag.</span><span class="titlestrong">WarnLevel</span></h3>

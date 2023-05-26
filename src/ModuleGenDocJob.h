@@ -46,9 +46,8 @@ struct ModuleGenDocJob : public Job
     int  sortOrder(AstNodeKind kind);
 
     void outputTable(Scope* scope, AstNodeKind kind, const char* title);
-    Utf8 outputType(TypeInfo* typeInfo);
     Utf8 outputNode(AstNode* node);
-    void outputUserLine(const Utf8& user, UserBlockKind curBlock = UserBlockKind::Paragraph);
+    void outputUserLine(const Utf8& user);
     void outputUserBlock(const UserBlock& user);
     void outputUserComment(const UserComment& user);
     void outputCode(const Utf8& code);
@@ -64,7 +63,9 @@ struct ModuleGenDocJob : public Job
     AstOutput                output;
     AstOutput::OutputContext outputCxt;
     Utf8                     helpContent;
+    Utf8                     fileName;
 
     MapUtf8<VectorNative<AstNode*>> collect;
+    MapUtf8<Utf8>                   collectInvert;
     Vector<OneRef>                  allNodes;
 };

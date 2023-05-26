@@ -702,6 +702,8 @@ func @modules()->const [..] Swag.Module;
 func @gvtd()->const [..] Swag.Gvtd;
 
 // Make a system allocation of 'size' bytes.
+//
+// Use @free to release the allocated memory.
 func @alloc(size: u64)->*void;
 // Realloc a system memory block
 func @realloc(ptr: ^void, size: u64)->*void;

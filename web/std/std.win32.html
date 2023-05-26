@@ -1403,7 +1403,7 @@ u32</td>
 </table>
 <h3 class="content" id="Win32.BeginPaint"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">BeginPaint</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func BeginPaint(hWnd: HWND, lpPaint: <a href="std.win32.html#Win32.PAINTSTRUCT">*PAINTSTRUCT</a>)->HDC
+<code style="white-space: break-spaces">func BeginPaint(hWnd: HWND, lpPaint: *PAINTSTRUCT)->HDC
 </code>
 </p>
 <h3 class="content" id="Win32.BringWindowToTop"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">BringWindowToTop</span></h3>
@@ -1556,7 +1556,7 @@ u32</td>
 <td>
 dwSize</td>
 <td class="tdtype">
-<a href="std.win32.html#Win32.COORD">COORD</a></td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.win32.html#Win32.COORD">COORD</a></td>
 <td>
 </td>
 </tr>
@@ -1564,7 +1564,7 @@ dwSize</td>
 <td>
 dwCursorPosition</td>
 <td class="tdtype">
-<a href="std.win32.html#Win32.COORD">COORD</a></td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.win32.html#Win32.COORD">COORD</a></td>
 <td>
 </td>
 </tr>
@@ -1580,7 +1580,7 @@ WORD</td>
 <td>
 srWindow</td>
 <td class="tdtype">
-<a href="std.win32.html#Win32.SMALL_RECT">SMALL_RECT</a></td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.win32.html#Win32.SMALL_RECT">SMALL_RECT</a></td>
 <td>
 </td>
 </tr>
@@ -1588,7 +1588,7 @@ srWindow</td>
 <td>
 dwMaximumWindowSize</td>
 <td class="tdtype">
-<a href="std.win32.html#Win32.COORD">COORD</a></td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.win32.html#Win32.COORD">COORD</a></td>
 <td>
 </td>
 </tr>
@@ -2617,17 +2617,17 @@ s32</td>
 </p>
 <h3 class="content" id="Win32.ChildWindowFromPoint"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">ChildWindowFromPoint</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func ChildWindowFromPoint(hWnd: HWND, pt: <a href="std.win32.html#Win32.POINT">POINT</a>)->HWND
+<code style="white-space: break-spaces">func ChildWindowFromPoint(hWnd: HWND, pt: POINT)->HWND
 </code>
 </p>
 <h3 class="content" id="Win32.ChildWindowFromPointEx"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">ChildWindowFromPointEx</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func ChildWindowFromPointEx(hwnd: HWND, pt: <a href="std.win32.html#Win32.POINT">POINT</a>, flags: UINT)->HWND
+<code style="white-space: break-spaces">func ChildWindowFromPointEx(hwnd: HWND, pt: POINT, flags: UINT)->HWND
 </code>
 </p>
 <h3 class="content" id="Win32.ClientToScreen"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">ClientToScreen</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func ClientToScreen(hWnd: HWND, lpPoint: <a href="std.win32.html#Win32.POINT">*POINT</a>)->BOOL
+<code style="white-space: break-spaces">func ClientToScreen(hWnd: HWND, lpPoint: *POINT)->BOOL
 </code>
 </p>
 <h3 class="content" id="Win32.CloseClipboard"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">CloseClipboard</span></h3>
@@ -2642,67 +2642,67 @@ s32</td>
 </p>
 <h3 class="content" id="Win32.CreateConsoleScreenBuffer"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">CreateConsoleScreenBuffer</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func CreateConsoleScreenBuffer(dwDesiredAccess: DWORD, dwShareMode: DWORD, lpSecurityAttributes: <a href="std.win32.html#Win32.SECURITY_ATTRIBUTES">const *SECURITY_ATTRIBUTES</a>, dwFlags: DWORD, lpScreenBufferData: LPVOID)->HANDLE
+<code style="white-space: break-spaces">func CreateConsoleScreenBuffer(dwDesiredAccess: DWORD, dwShareMode: DWORD, lpSecurityAttributes: const *SECURITY_ATTRIBUTES, dwFlags: DWORD, lpScreenBufferData: LPVOID)->HANDLE
 </code>
 </p>
 <h3 class="content" id="Win32.CreateDirectoryA"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">CreateDirectoryA</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func CreateDirectoryA(lpPathName: LPCSTR, lpSecurityAttributes: <a href="std.win32.html#Win32.SECURITY_ATTRIBUTES">*SECURITY_ATTRIBUTES</a>) throw
+<code style="white-space: break-spaces">func CreateDirectoryA(lpPathName: LPCSTR, lpSecurityAttributes: *SECURITY_ATTRIBUTES) throw
 </code>
 </p>
 <h3 class="content" id="Win32.CreateDirectoryW"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">CreateDirectoryW</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func CreateDirectoryW(lpPathName: LPCWSTR, lpSecurityAttributes: <a href="std.win32.html#Win32.SECURITY_ATTRIBUTES">*SECURITY_ATTRIBUTES</a>) throw
+<code style="white-space: break-spaces">func CreateDirectoryW(lpPathName: LPCWSTR, lpSecurityAttributes: *SECURITY_ATTRIBUTES) throw
 </code>
 </p>
 <h3 class="content" id="Win32.CreateEventA"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">CreateEventA</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func CreateEventA(lpEventAttributes: <a href="std.win32.html#Win32.SECURITY_ATTRIBUTES">*SECURITY_ATTRIBUTES</a>, bManualReset: BOOL, bInitialState: BOOL, lpName: LPCSTR)->HANDLE throw
+<code style="white-space: break-spaces">func CreateEventA(lpEventAttributes: *SECURITY_ATTRIBUTES, bManualReset: BOOL, bInitialState: BOOL, lpName: LPCSTR)->HANDLE throw
 </code>
 </p>
 <h3 class="content" id="Win32.CreateEventW"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">CreateEventW</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func CreateEventW(lpEventAttributes: <a href="std.win32.html#Win32.SECURITY_ATTRIBUTES">*SECURITY_ATTRIBUTES</a>, bManualReset: BOOL, bInitialState: BOOL, lpName: LPCWSTR)->HANDLE throw
+<code style="white-space: break-spaces">func CreateEventW(lpEventAttributes: *SECURITY_ATTRIBUTES, bManualReset: BOOL, bInitialState: BOOL, lpName: LPCWSTR)->HANDLE throw
 </code>
 </p>
 <h3 class="content" id="Win32.CreateFileA"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">CreateFileA</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func CreateFileA(lpFileName: LPCSTR, dwDesiredAccess: DWORD, dwShareMode: DWORD, lpSecurityAttributes: <a href="std.win32.html#Win32.SECURITY_ATTRIBUTES">*SECURITY_ATTRIBUTES</a>, dwCreationDisposition: DWORD, dwFlagsAndAttributes: DWORD, hTemplateFile: HANDLE)->HANDLE throw
+<code style="white-space: break-spaces">func CreateFileA(lpFileName: LPCSTR, dwDesiredAccess: DWORD, dwShareMode: DWORD, lpSecurityAttributes: *SECURITY_ATTRIBUTES, dwCreationDisposition: DWORD, dwFlagsAndAttributes: DWORD, hTemplateFile: HANDLE)->HANDLE throw
 </code>
 </p>
 <h3 class="content" id="Win32.CreateFileW"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">CreateFileW</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func CreateFileW(lpFileName: LPCWSTR, dwDesiredAccess: DWORD, dwShareMode: DWORD, lpSecurityAttributes: <a href="std.win32.html#Win32.SECURITY_ATTRIBUTES">*SECURITY_ATTRIBUTES</a>, dwCreationDisposition: DWORD, dwFlagsAndAttributes: DWORD, hTemplateFile: HANDLE)->HANDLE throw
+<code style="white-space: break-spaces">func CreateFileW(lpFileName: LPCWSTR, dwDesiredAccess: DWORD, dwShareMode: DWORD, lpSecurityAttributes: *SECURITY_ATTRIBUTES, dwCreationDisposition: DWORD, dwFlagsAndAttributes: DWORD, hTemplateFile: HANDLE)->HANDLE throw
 </code>
 </p>
 <h3 class="content" id="Win32.CreateIconIndirect"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">CreateIconIndirect</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func CreateIconIndirect(piconinfo: <a href="std.win32.html#Win32.ICONINFO">*ICONINFO</a>)->HICON throw
+<code style="white-space: break-spaces">func CreateIconIndirect(piconinfo: *ICONINFO)->HICON throw
 </code>
 </p>
 <h3 class="content" id="Win32.CreateMutexA"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">CreateMutexA</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func CreateMutexA(lpMutexAttributes: <a href="std.win32.html#Win32.SECURITY_ATTRIBUTES">*SECURITY_ATTRIBUTES</a>, bInitialOwner: BOOL, lpName: LPCSTR)->HANDLE throw
+<code style="white-space: break-spaces">func CreateMutexA(lpMutexAttributes: *SECURITY_ATTRIBUTES, bInitialOwner: BOOL, lpName: LPCSTR)->HANDLE throw
 </code>
 </p>
 <h3 class="content" id="Win32.CreateMutexW"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">CreateMutexW</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func CreateMutexW(lpMutexAttributes: <a href="std.win32.html#Win32.SECURITY_ATTRIBUTES">*SECURITY_ATTRIBUTES</a>, bInitialOwner: BOOL, lpName: LPCWSTR)->HANDLE throw
+<code style="white-space: break-spaces">func CreateMutexW(lpMutexAttributes: *SECURITY_ATTRIBUTES, bInitialOwner: BOOL, lpName: LPCWSTR)->HANDLE throw
 </code>
 </p>
 <h3 class="content" id="Win32.CreateProcessA"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">CreateProcessA</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func CreateProcessA(lpApplicationName: LPCSTR, lpCommandLine: LPCSTR, lpProcessAttributes: <a href="std.win32.html#Win32.SECURITY_ATTRIBUTES">*SECURITY_ATTRIBUTES</a>, lpThreadAttributes: <a href="std.win32.html#Win32.SECURITY_ATTRIBUTES">*SECURITY_ATTRIBUTES</a>, bInheritHandles: BOOL, dwCreationFlags: DWORD, lpEnvironment: LPVOID, lpCurrentDirectory: LPCSTR, lpStartupInfo: <a href="std.win32.html#Win32.STARTUPINFOA">*STARTUPINFOA</a>, lpProcessInformation: <a href="std.win32.html#Win32.PROCESS_INFORMATION">*PROCESS_INFORMATION</a>) throw
+<code style="white-space: break-spaces">func CreateProcessA(lpApplicationName: LPCSTR, lpCommandLine: LPCSTR, lpProcessAttributes: *SECURITY_ATTRIBUTES, lpThreadAttributes: *SECURITY_ATTRIBUTES, bInheritHandles: BOOL, dwCreationFlags: DWORD, lpEnvironment: LPVOID, lpCurrentDirectory: LPCSTR, lpStartupInfo: *STARTUPINFOA, lpProcessInformation: *PROCESS_INFORMATION) throw
 </code>
 </p>
 <h3 class="content" id="Win32.CreateProcessW"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">CreateProcessW</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func CreateProcessW(lpApplicationName: LPCWSTR, lpCommandLine: LPCWSTR, lpProcessAttributes: <a href="std.win32.html#Win32.SECURITY_ATTRIBUTES">*SECURITY_ATTRIBUTES</a>, lpThreadAttributes: <a href="std.win32.html#Win32.SECURITY_ATTRIBUTES">*SECURITY_ATTRIBUTES</a>, bInheritHandles: BOOL, dwCreationFlags: DWORD, lpEnvironment: LPVOID, lpCurrentDirectory: LPCWSTR, lpStartupInfo: <a href="std.win32.html#Win32.STARTUPINFOW">*STARTUPINFOW</a>, lpProcessInformation: <a href="std.win32.html#Win32.PROCESS_INFORMATION">*PROCESS_INFORMATION</a>) throw
+<code style="white-space: break-spaces">func CreateProcessW(lpApplicationName: LPCWSTR, lpCommandLine: LPCWSTR, lpProcessAttributes: *SECURITY_ATTRIBUTES, lpThreadAttributes: *SECURITY_ATTRIBUTES, bInheritHandles: BOOL, dwCreationFlags: DWORD, lpEnvironment: LPVOID, lpCurrentDirectory: LPCWSTR, lpStartupInfo: *STARTUPINFOW, lpProcessInformation: *PROCESS_INFORMATION) throw
 </code>
 </p>
 <h3 class="content" id="Win32.CreateThread"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">CreateThread</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func CreateThread(lpThreadAttributes: <a href="std.win32.html#Win32.SECURITY_ATTRIBUTES">*SECURITY_ATTRIBUTES</a>, dwStackSize: SIZE_T, lpStartAddress: LPTHREAD_START_ROUTINE, lpParameter: *void, dwCreationFlags: DWORD, lpThreadId: *DWORD)->HANDLE throw
+<code style="white-space: break-spaces">func CreateThread(lpThreadAttributes: *SECURITY_ATTRIBUTES, dwStackSize: SIZE_T, lpStartAddress: LPTHREAD_START_ROUTINE, lpParameter: *void, dwCreationFlags: DWORD, lpThreadId: *DWORD)->HANDLE throw
 </code>
 </p>
 <h3 class="content" id="Win32.CreateTimerQueueTimer"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">CreateTimerQueueTimer</span></h3>
@@ -2712,12 +2712,12 @@ s32</td>
 </p>
 <h3 class="content" id="Win32.CreateWaitableTimerA"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">CreateWaitableTimerA</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func CreateWaitableTimerA(lpTimerAttributes: <a href="std.win32.html#Win32.SECURITY_ATTRIBUTES">*SECURITY_ATTRIBUTES</a>, bManualReset: BOOL, lpTimerName: LPCSTR)->HANDLE
+<code style="white-space: break-spaces">func CreateWaitableTimerA(lpTimerAttributes: *SECURITY_ATTRIBUTES, bManualReset: BOOL, lpTimerName: LPCSTR)->HANDLE
 </code>
 </p>
 <h3 class="content" id="Win32.CreateWaitableTimerW"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">CreateWaitableTimerW</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func CreateWaitableTimerW(lpTimerAttributes: <a href="std.win32.html#Win32.SECURITY_ATTRIBUTES">*SECURITY_ATTRIBUTES</a>, bManualReset: BOOL, lpTimerName: LPCWSTR)->HANDLE
+<code style="white-space: break-spaces">func CreateWaitableTimerW(lpTimerAttributes: *SECURITY_ATTRIBUTES, bManualReset: BOOL, lpTimerName: LPCWSTR)->HANDLE
 </code>
 </p>
 <h3 class="content" id="Win32.CreateWindowExA"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">CreateWindowExA</span></h3>
@@ -2796,12 +2796,12 @@ u32</td>
 </p>
 <h3 class="content" id="Win32.DispatchMessageA"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">DispatchMessageA</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func DispatchMessageA(lpMsg: <a href="std.win32.html#Win32.MSG">const *MSG</a>)->LRESULT
+<code style="white-space: break-spaces">func DispatchMessageA(lpMsg: const *MSG)->LRESULT
 </code>
 </p>
 <h3 class="content" id="Win32.DispatchMessageW"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">DispatchMessageW</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func DispatchMessageW(lpMsg: <a href="std.win32.html#Win32.MSG">const *MSG</a>)->LRESULT
+<code style="white-space: break-spaces">func DispatchMessageW(lpMsg: const *MSG)->LRESULT
 </code>
 </p>
 <h3 class="content" id="Win32.ERROR_DEVICE_NOT_CONNECTED"><span class="titletype"></span> <span class="titlelight">Win32.</span><span class="titlestrong">Constants</span></h3>
@@ -2859,12 +2859,12 @@ s32</td>
 </p>
 <h3 class="content" id="Win32.EndPaint"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">EndPaint</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func EndPaint(hWnd: HWND, lpPaint: <a href="std.win32.html#Win32.PAINTSTRUCT">const *PAINTSTRUCT</a>)->BOOL
+<code style="white-space: break-spaces">func EndPaint(hWnd: HWND, lpPaint: const *PAINTSTRUCT)->BOOL
 </code>
 </p>
 <h3 class="content" id="Win32.EnumDisplayMonitors"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">EnumDisplayMonitors</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func EnumDisplayMonitors(hdc: HDC, lprcClip: <a href="std.win32.html#Win32.RECT">*RECT</a>, lpfnEnum: const *void, dwData: LPARAM)->BOOL
+<code style="white-space: break-spaces">func EnumDisplayMonitors(hdc: HDC, lprcClip: *RECT, lpfnEnum: const *void, dwData: LPARAM)->BOOL
 </code>
 </p>
 <h3 class="content" id="Win32.EnumWindows"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">EnumWindows</span></h3>
@@ -3258,17 +3258,17 @@ u32</td>
 </table>
 <h3 class="content" id="Win32.FileTimeToLocalFileTime"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">FileTimeToLocalFileTime</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func FileTimeToLocalFileTime(lpFileTime: <a href="std.win32.html#Win32.FILETIME">const *FILETIME</a>, lpLocalFileTime: <a href="std.win32.html#Win32.FILETIME">*FILETIME</a>)->BOOL
+<code style="white-space: break-spaces">func FileTimeToLocalFileTime(lpFileTime: const *FILETIME, lpLocalFileTime: *FILETIME)->BOOL
 </code>
 </p>
 <h3 class="content" id="Win32.FileTimeToSystemTime"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">FileTimeToSystemTime</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func FileTimeToSystemTime(lpFileTime: <a href="std.win32.html#Win32.FILETIME">const *FILETIME</a>, lpSystemTime: <a href="std.win32.html#Win32.SYSTEMTIME">*SYSTEMTIME</a>) throw
+<code style="white-space: break-spaces">func FileTimeToSystemTime(lpFileTime: const *FILETIME, lpSystemTime: *SYSTEMTIME) throw
 </code>
 </p>
 <h3 class="content" id="Win32.FillRect"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">FillRect</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func FillRect(hDC: HDC, lprc: <a href="std.win32.html#Win32.RECT">const *RECT</a>, hbr: HBRUSH)->s32
+<code style="white-space: break-spaces">func FillRect(hDC: HDC, lprc: const *RECT, hbr: HBRUSH)->s32
 </code>
 </p>
 <h3 class="content" id="Win32.FindClose"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">FindClose</span></h3>
@@ -3278,12 +3278,12 @@ u32</td>
 </p>
 <h3 class="content" id="Win32.FindFirstFileA"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">FindFirstFileA</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func FindFirstFileA(lpFileName: LPCSTR, lpFindFileData: <a href="std.win32.html#Win32.WIN32_FIND_DATAA">*WIN32_FIND_DATAA</a>)->HANDLE throw
+<code style="white-space: break-spaces">func FindFirstFileA(lpFileName: LPCSTR, lpFindFileData: *WIN32_FIND_DATAA)->HANDLE throw
 </code>
 </p>
 <h3 class="content" id="Win32.FindFirstFileW"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">FindFirstFileW</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func FindFirstFileW(lpFileName: LPCWSTR, lpFindFileData: <a href="std.win32.html#Win32.WIN32_FIND_DATAW">*WIN32_FIND_DATAW</a>)->HANDLE throw
+<code style="white-space: break-spaces">func FindFirstFileW(lpFileName: LPCWSTR, lpFindFileData: *WIN32_FIND_DATAW)->HANDLE throw
 </code>
 </p>
 <h3 class="content" id="Win32.FindFirstVolumeA"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">FindFirstVolumeA</span></h3>
@@ -3298,12 +3298,12 @@ u32</td>
 </p>
 <h3 class="content" id="Win32.FindNextFileA"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">FindNextFileA</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func FindNextFileA(hFindFile: HANDLE, lpFindFileData: <a href="std.win32.html#Win32.WIN32_FIND_DATAA">*WIN32_FIND_DATAA</a>)->BOOL throw
+<code style="white-space: break-spaces">func FindNextFileA(hFindFile: HANDLE, lpFindFileData: *WIN32_FIND_DATAA)->BOOL throw
 </code>
 </p>
 <h3 class="content" id="Win32.FindNextFileW"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">FindNextFileW</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func FindNextFileW(hFindFile: HANDLE, lpFindFileData: <a href="std.win32.html#Win32.WIN32_FIND_DATAW">*WIN32_FIND_DATAW</a>)->BOOL throw
+<code style="white-space: break-spaces">func FindNextFileW(hFindFile: HANDLE, lpFindFileData: *WIN32_FIND_DATAW)->BOOL throw
 </code>
 </p>
 <h3 class="content" id="Win32.FindNextVolumeA"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">FindNextVolumeA</span></h3>
@@ -3665,7 +3665,7 @@ u32</td>
 </p>
 <h3 class="content" id="Win32.GetAdaptersInfo"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">GetAdaptersInfo</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func GetAdaptersInfo(adapterInfo: <a href="std.win32.html#Win32.IP_ADAPTER_INFO">*IP_ADAPTER_INFO</a>, sizePointer: *ULONG)->ULONG
+<code style="white-space: break-spaces">func GetAdaptersInfo(adapterInfo: *IP_ADAPTER_INFO, sizePointer: *ULONG)->ULONG
 </code>
 </p>
 <h3 class="content" id="Win32.GetAsyncKeyState"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">GetAsyncKeyState</span></h3>
@@ -3675,7 +3675,7 @@ u32</td>
 </p>
 <h3 class="content" id="Win32.GetClientRect"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">GetClientRect</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func GetClientRect(hWnd: HWND, lpRect: <a href="std.win32.html#Win32.RECT">*RECT</a>)->BOOL
+<code style="white-space: break-spaces">func GetClientRect(hWnd: HWND, lpRect: *RECT)->BOOL
 </code>
 </p>
 <h3 class="content" id="Win32.GetClipboardData"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">GetClipboardData</span></h3>
@@ -3685,7 +3685,7 @@ u32</td>
 </p>
 <h3 class="content" id="Win32.GetConsoleScreenBufferInfo"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">GetConsoleScreenBufferInfo</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func GetConsoleScreenBufferInfo(hConsoleOutput: HANDLE, lpConsoleScreenBufferInfo: <a href="std.win32.html#Win32.CONSOLE_SCREEN_BUFFER_INFO">*CONSOLE_SCREEN_BUFFER_INFO</a>) throw
+<code style="white-space: break-spaces">func GetConsoleScreenBufferInfo(hConsoleOutput: HANDLE, lpConsoleScreenBufferInfo: *CONSOLE_SCREEN_BUFFER_INFO) throw
 </code>
 </p>
 <h3 class="content" id="Win32.GetCurrentDirectoryA"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">GetCurrentDirectoryA</span></h3>
@@ -3720,7 +3720,7 @@ u32</td>
 </p>
 <h3 class="content" id="Win32.GetCursorPos"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">GetCursorPos</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func GetCursorPos(lpPoint: <a href="std.win32.html#Win32.POINT">*POINT</a>)->BOOL
+<code style="white-space: break-spaces">func GetCursorPos(lpPoint: *POINT)->BOOL
 </code>
 </p>
 <h3 class="content" id="Win32.GetDC"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">GetDC</span></h3>
@@ -3740,12 +3740,12 @@ u32</td>
 </p>
 <h3 class="content" id="Win32.GetFileAttributesExA"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">GetFileAttributesExA</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func GetFileAttributesExA(lpFileName: LPCSTR, fInfoLevelId: <a href="std.win32.html#Win32.GET_FILEEX_INFO_LEVELS">GET_FILEEX_INFO_LEVELS</a>, lpFileInformation: LPVOID) throw
+<code style="white-space: break-spaces">func GetFileAttributesExA(lpFileName: LPCSTR, fInfoLevelId: GET_FILEEX_INFO_LEVELS, lpFileInformation: LPVOID) throw
 </code>
 </p>
 <h3 class="content" id="Win32.GetFileAttributesExW"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">GetFileAttributesExW</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func GetFileAttributesExW(lpFileName: LPCWSTR, fInfoLevelId: <a href="std.win32.html#Win32.GET_FILEEX_INFO_LEVELS">GET_FILEEX_INFO_LEVELS</a>, lpFileInformation: LPVOID) throw
+<code style="white-space: break-spaces">func GetFileAttributesExW(lpFileName: LPCWSTR, fInfoLevelId: GET_FILEEX_INFO_LEVELS, lpFileInformation: LPVOID) throw
 </code>
 </p>
 <h3 class="content" id="Win32.GetFileAttributesW"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">GetFileAttributesW</span></h3>
@@ -3775,7 +3775,7 @@ u32</td>
 </p>
 <h3 class="content" id="Win32.GetIconInfo"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">GetIconInfo</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func GetIconInfo(hIcon: HICON, piconinfo: <a href="std.win32.html#Win32.ICONINFO">*ICONINFO</a>) throw
+<code style="white-space: break-spaces">func GetIconInfo(hIcon: HICON, piconinfo: *ICONINFO) throw
 </code>
 </p>
 <h3 class="content" id="Win32.GetKeyboardState"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">GetKeyboardState</span></h3>
@@ -3790,17 +3790,17 @@ u32</td>
 </p>
 <h3 class="content" id="Win32.GetLocalTime"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">GetLocalTime</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func GetLocalTime(lpSystemTime: <a href="std.win32.html#Win32.SYSTEMTIME">*SYSTEMTIME</a>)
+<code style="white-space: break-spaces">func GetLocalTime(lpSystemTime: *SYSTEMTIME)
 </code>
 </p>
 <h3 class="content" id="Win32.GetMessageA"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">GetMessageA</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func GetMessageA(lpMsg: <a href="std.win32.html#Win32.MSG">*MSG</a>, hWnd: HWND, wMsgFilterMin: UINT, wMsgFilterMax: UINT)->BOOL
+<code style="white-space: break-spaces">func GetMessageA(lpMsg: *MSG, hWnd: HWND, wMsgFilterMin: UINT, wMsgFilterMax: UINT)->BOOL
 </code>
 </p>
 <h3 class="content" id="Win32.GetMessageW"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">GetMessageW</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func GetMessageW(lpMsg: <a href="std.win32.html#Win32.MSG">*MSG</a>, hWnd: HWND, wMsgFilterMin: UINT, wMsgFilterMax: UINT)->BOOL
+<code style="white-space: break-spaces">func GetMessageW(lpMsg: *MSG, hWnd: HWND, wMsgFilterMin: UINT, wMsgFilterMax: UINT)->BOOL
 </code>
 </p>
 <h3 class="content" id="Win32.GetModuleHandleA"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">GetModuleHandleA</span></h3>
@@ -3815,12 +3815,12 @@ u32</td>
 </p>
 <h3 class="content" id="Win32.GetMonitorInfoA"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">GetMonitorInfoA</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func GetMonitorInfoA(hMonitor: HMONITOR, lpmi: <a href="std.win32.html#Win32.MONITORINFO">*MONITORINFO</a>) throw
+<code style="white-space: break-spaces">func GetMonitorInfoA(hMonitor: HMONITOR, lpmi: *MONITORINFO) throw
 </code>
 </p>
 <h3 class="content" id="Win32.GetMonitorInfoW"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">GetMonitorInfoW</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func GetMonitorInfoW(hMonitor: HMONITOR, lpmi: <a href="std.win32.html#Win32.MONITORINFO">*MONITORINFO</a>) throw
+<code style="white-space: break-spaces">func GetMonitorInfoW(hMonitor: HMONITOR, lpmi: *MONITORINFO) throw
 </code>
 </p>
 <h3 class="content" id="Win32.GetNextWindow"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">GetNextWindow</span></h3>
@@ -3840,7 +3840,7 @@ u32</td>
 </p>
 <h3 class="content" id="Win32.GetSystemInfo"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">GetSystemInfo</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func GetSystemInfo(lpSystemInfo: <a href="std.win32.html#Win32.SYSTEM_INFO">*SYSTEM_INFO</a>)
+<code style="white-space: break-spaces">func GetSystemInfo(lpSystemInfo: *SYSTEM_INFO)
 </code>
 </p>
 <h3 class="content" id="Win32.GetSystemMetrics"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">GetSystemMetrics</span></h3>
@@ -3850,7 +3850,7 @@ u32</td>
 </p>
 <h3 class="content" id="Win32.GetSystemTime"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">GetSystemTime</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func GetSystemTime(lpSystemTime: <a href="std.win32.html#Win32.SYSTEMTIME">*SYSTEMTIME</a>)
+<code style="white-space: break-spaces">func GetSystemTime(lpSystemTime: *SYSTEMTIME)
 </code>
 </p>
 <h3 class="content" id="Win32.GetTopWindow"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">GetTopWindow</span></h3>
@@ -3885,7 +3885,7 @@ u32</td>
 </p>
 <h3 class="content" id="Win32.GetWindowRect"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">GetWindowRect</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func GetWindowRect(hWnd: HWND, lpRect: <a href="std.win32.html#Win32.RECT">*RECT</a>)->BOOL
+<code style="white-space: break-spaces">func GetWindowRect(hWnd: HWND, lpRect: *RECT)->BOOL
 </code>
 </p>
 <h3 class="content" id="Win32.GetWindowTextA"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">GetWindowTextA</span></h3>
@@ -4290,7 +4290,7 @@ DWORD</td>
 <td>
 next</td>
 <td class="tdtype">
-<a href="std.win32.html#Win32.IP_ADAPTER_INFO">*IP_ADAPTER_INFO</a></td>
+*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.win32.html#Win32.IP_ADAPTER_INFO">IP_ADAPTER_INFO</a></td>
 <td>
 </td>
 </tr>
@@ -4362,7 +4362,7 @@ UINT</td>
 <td>
 currentIpAddress</td>
 <td class="tdtype">
-<a href="std.win32.html#Win32.IP_ADDR_STRING">*IP_ADDR_STRING</a></td>
+*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.win32.html#Win32.IP_ADDR_STRING">IP_ADDR_STRING</a></td>
 <td>
 </td>
 </tr>
@@ -4370,7 +4370,7 @@ currentIpAddress</td>
 <td>
 ipAddressList</td>
 <td class="tdtype">
-<a href="std.win32.html#Win32.IP_ADDR_STRING">IP_ADDR_STRING</a></td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.win32.html#Win32.IP_ADDR_STRING">IP_ADDR_STRING</a></td>
 <td>
 </td>
 </tr>
@@ -4378,7 +4378,7 @@ ipAddressList</td>
 <td>
 gatewayList</td>
 <td class="tdtype">
-<a href="std.win32.html#Win32.IP_ADDR_STRING">IP_ADDR_STRING</a></td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.win32.html#Win32.IP_ADDR_STRING">IP_ADDR_STRING</a></td>
 <td>
 </td>
 </tr>
@@ -4386,7 +4386,7 @@ gatewayList</td>
 <td>
 dhcpServer</td>
 <td class="tdtype">
-<a href="std.win32.html#Win32.IP_ADDR_STRING">IP_ADDR_STRING</a></td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.win32.html#Win32.IP_ADDR_STRING">IP_ADDR_STRING</a></td>
 <td>
 </td>
 </tr>
@@ -4402,7 +4402,7 @@ BOOL</td>
 <td>
 primaryWinsServer</td>
 <td class="tdtype">
-<a href="std.win32.html#Win32.IP_ADDR_STRING">IP_ADDR_STRING</a></td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.win32.html#Win32.IP_ADDR_STRING">IP_ADDR_STRING</a></td>
 <td>
 </td>
 </tr>
@@ -4410,7 +4410,7 @@ primaryWinsServer</td>
 <td>
 secondaryWinsServer</td>
 <td class="tdtype">
-<a href="std.win32.html#Win32.IP_ADDR_STRING">IP_ADDR_STRING</a></td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.win32.html#Win32.IP_ADDR_STRING">IP_ADDR_STRING</a></td>
 <td>
 </td>
 </tr>
@@ -4448,7 +4448,7 @@ str</td>
 <td>
 next</td>
 <td class="tdtype">
-<a href="std.win32.html#Win32.IP_ADDR_STRING">*IP_ADDR_STRING</a></td>
+*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.win32.html#Win32.IP_ADDR_STRING">IP_ADDR_STRING</a></td>
 <td>
 </td>
 </tr>
@@ -4456,7 +4456,7 @@ next</td>
 <td>
 ipAddress</td>
 <td class="tdtype">
-<a href="std.win32.html#Win32.IP_ADDRESS_STRING">IP_ADDRESS_STRING</a></td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.win32.html#Win32.IP_ADDRESS_STRING">IP_ADDRESS_STRING</a></td>
 <td>
 </td>
 </tr>
@@ -4464,7 +4464,7 @@ ipAddress</td>
 <td>
 ipMask</td>
 <td class="tdtype">
-<a href="std.win32.html#Win32.IP_ADDRESS_STRING">IP_ADDRESS_STRING</a></td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.win32.html#Win32.IP_ADDRESS_STRING">IP_ADDRESS_STRING</a></td>
 <td>
 </td>
 </tr>
@@ -4484,7 +4484,7 @@ DWORD</td>
 </p>
 <h3 class="content" id="Win32.InvalidateRect"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">InvalidateRect</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func InvalidateRect(hWnd: HWND, lpRect: <a href="std.win32.html#Win32.RECT">const *RECT</a>, bErase: BOOL)->BOOL
+<code style="white-space: break-spaces">func InvalidateRect(hWnd: HWND, lpRect: const *RECT, bErase: BOOL)->BOOL
 </code>
 </p>
 <h3 class="content" id="Win32.IsClipboardFormatAvailable"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">IsClipboardFormatAvailable</span></h3>
@@ -4936,7 +4936,7 @@ u32</td>
 <td>
 ptReserved</td>
 <td class="tdtype">
-<a href="std.win32.html#Win32.POINT">POINT</a></td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.win32.html#Win32.POINT">POINT</a></td>
 <td>
 </td>
 </tr>
@@ -4944,7 +4944,7 @@ ptReserved</td>
 <td>
 ptMaxSize</td>
 <td class="tdtype">
-<a href="std.win32.html#Win32.POINT">POINT</a></td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.win32.html#Win32.POINT">POINT</a></td>
 <td>
 </td>
 </tr>
@@ -4952,7 +4952,7 @@ ptMaxSize</td>
 <td>
 ptMaxPosition</td>
 <td class="tdtype">
-<a href="std.win32.html#Win32.POINT">POINT</a></td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.win32.html#Win32.POINT">POINT</a></td>
 <td>
 </td>
 </tr>
@@ -4960,7 +4960,7 @@ ptMaxPosition</td>
 <td>
 ptMinTrackSize</td>
 <td class="tdtype">
-<a href="std.win32.html#Win32.POINT">POINT</a></td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.win32.html#Win32.POINT">POINT</a></td>
 <td>
 </td>
 </tr>
@@ -4968,7 +4968,7 @@ ptMinTrackSize</td>
 <td>
 ptMaxTrackSize</td>
 <td class="tdtype">
-<a href="std.win32.html#Win32.POINT">POINT</a></td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.win32.html#Win32.POINT">POINT</a></td>
 <td>
 </td>
 </tr>
@@ -5038,7 +5038,7 @@ DWORD</td>
 <td>
 rcMonitor</td>
 <td class="tdtype">
-<a href="std.win32.html#Win32.RECT">RECT</a></td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.win32.html#Win32.RECT">RECT</a></td>
 <td>
 </td>
 </tr>
@@ -5046,7 +5046,7 @@ rcMonitor</td>
 <td>
 rcWork</td>
 <td class="tdtype">
-<a href="std.win32.html#Win32.RECT">RECT</a></td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.win32.html#Win32.RECT">RECT</a></td>
 <td>
 </td>
 </tr>
@@ -5132,7 +5132,7 @@ DWORD</td>
 <td>
 pt</td>
 <td class="tdtype">
-<a href="std.win32.html#Win32.POINT">POINT</a></td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.win32.html#Win32.POINT">POINT</a></td>
 <td>
 </td>
 </tr>
@@ -5167,7 +5167,7 @@ DWORD</td>
 </p>
 <h3 class="content" id="Win32.MonitorFromPoint"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">MonitorFromPoint</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func MonitorFromPoint(pt: <a href="std.win32.html#Win32.POINT">POINT</a>, dwFlags: DWORD)->HMONITOR
+<code style="white-space: break-spaces">func MonitorFromPoint(pt: POINT, dwFlags: DWORD)->HMONITOR
 </code>
 </p>
 <h3 class="content" id="Win32.MonitorFromWindow"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">MonitorFromWindow</span></h3>
@@ -5373,7 +5373,7 @@ szInfo</td>
 <td>
 DUMMYUNIONNAME</td>
 <td class="tdtype">
-__shell32_tuple_30</td>
+__shell32_tuple_26</td>
 <td>
 </td>
 </tr>
@@ -5397,7 +5397,7 @@ DWORD</td>
 <td>
 guidItem</td>
 <td class="tdtype">
-<a href="std.win32.html#Win32.GUID">GUID</a></td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.win32.html#Win32.GUID">GUID</a></td>
 <td>
 </td>
 </tr>
@@ -5496,7 +5496,7 @@ szInfo</td>
 <td>
 DUMMYUNIONNAME</td>
 <td class="tdtype">
-__shell32_tuple_31</td>
+__shell32_tuple_28</td>
 <td>
 </td>
 </tr>
@@ -5520,7 +5520,7 @@ DWORD</td>
 <td>
 guidItem</td>
 <td class="tdtype">
-<a href="std.win32.html#Win32.GUID">GUID</a></td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.win32.html#Win32.GUID">GUID</a></td>
 <td>
 </td>
 </tr>
@@ -5589,7 +5589,7 @@ BOOL</td>
 <td>
 rcPaint</td>
 <td class="tdtype">
-<a href="std.win32.html#Win32.RECT">RECT</a></td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.win32.html#Win32.RECT">RECT</a></td>
 <td>
 </td>
 </tr>
@@ -5701,12 +5701,12 @@ DWORD</td>
 </table>
 <h3 class="content" id="Win32.PeekMessageA"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">PeekMessageA</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func PeekMessageA(lpMsg: <a href="std.win32.html#Win32.MSG">*MSG</a>, hWnd: HWND, wMsgFilterMin: UINT, wMsgFilterMax: UINT, wRemoveMsg: UINT)->BOOL
+<code style="white-space: break-spaces">func PeekMessageA(lpMsg: *MSG, hWnd: HWND, wMsgFilterMin: UINT, wMsgFilterMax: UINT, wRemoveMsg: UINT)->BOOL
 </code>
 </p>
 <h3 class="content" id="Win32.PeekMessageW"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">PeekMessageW</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func PeekMessageW(lpMsg: <a href="std.win32.html#Win32.MSG">*MSG</a>, hWnd: HWND, wMsgFilterMin: UINT, wMsgFilterMax: UINT, wRemoveMsg: UINT)->BOOL
+<code style="white-space: break-spaces">func PeekMessageW(lpMsg: *MSG, hWnd: HWND, wMsgFilterMin: UINT, wMsgFilterMax: UINT, wRemoveMsg: UINT)->BOOL
 </code>
 </p>
 <h3 class="content" id="Win32.PostMessageA"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">PostMessageA</span></h3>
@@ -5776,12 +5776,12 @@ LONG</td>
 </p>
 <h3 class="content" id="Win32.RegisterClassA"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">RegisterClassA</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func RegisterClassA(lpWndClass: <a href="std.win32.html#Win32.WNDCLASSA">const *WNDCLASSA</a>)->ATOM throw
+<code style="white-space: break-spaces">func RegisterClassA(lpWndClass: const *WNDCLASSA)->ATOM throw
 </code>
 </p>
 <h3 class="content" id="Win32.RegisterClassW"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">RegisterClassW</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func RegisterClassW(lpWndClass: <a href="std.win32.html#Win32.WNDCLASSW">const *WNDCLASSW</a>)->ATOM throw
+<code style="white-space: break-spaces">func RegisterClassW(lpWndClass: const *WNDCLASSW)->ATOM throw
 </code>
 </p>
 <h3 class="content" id="Win32.RegisterClipboardFormatA"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">RegisterClipboardFormatA</span></h3>
@@ -6359,12 +6359,12 @@ u32</td>
 </table>
 <h3 class="content" id="Win32.SHGetFileInfoA"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">SHGetFileInfoA</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func SHGetFileInfoA(pszPath: LPCSTR, dwFileAttributes: DWORD, psfi: <a href="std.win32.html#Win32.SHFILEINFOA">*SHFILEINFOA</a>, cbFileInfo: UINT, uFlags: UINT)->DWORD_PTR
+<code style="white-space: break-spaces">func SHGetFileInfoA(pszPath: LPCSTR, dwFileAttributes: DWORD, psfi: *SHFILEINFOA, cbFileInfo: UINT, uFlags: UINT)->DWORD_PTR
 </code>
 </p>
 <h3 class="content" id="Win32.SHGetFileInfoW"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">SHGetFileInfoW</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func SHGetFileInfoW(pszPath: LPCWSTR, dwFileAttributes: DWORD, psfi: <a href="std.win32.html#Win32.SHFILEINFOW">*SHFILEINFOW</a>, cbFileInfo: UINT, uFlags: UINT)->DWORD_PTR
+<code style="white-space: break-spaces">func SHGetFileInfoW(pszPath: LPCWSTR, dwFileAttributes: DWORD, psfi: *SHFILEINFOW, cbFileInfo: UINT, uFlags: UINT)->DWORD_PTR
 </code>
 </p>
 <h3 class="content" id="Win32.SHGetSpecialFolderPathA"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">SHGetSpecialFolderPathA</span></h3>
@@ -6379,7 +6379,7 @@ u32</td>
 </p>
 <h3 class="content" id="Win32.SHGetStockIconInfo"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">SHGetStockIconInfo</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func SHGetStockIconInfo(siid: <a href="std.win32.html#Win32.SHSTOCKICONID">SHSTOCKICONID</a>, uFlags: UINT, psii: <a href="std.win32.html#Win32.SHSTOCKICONINFO">SHSTOCKICONINFO</a>) throw
+<code style="white-space: break-spaces">func SHGetStockIconInfo(siid: SHSTOCKICONID, uFlags: UINT, psii: SHSTOCKICONINFO) throw
 </code>
 </p>
 <h3 class="content" id="Win32.SHSTOCKICONID"><span class="titletype">enum</span> <span class="titlelight">Win32.</span><span class="titlestrong">SHSTOCKICONID</span></h3>
@@ -8758,7 +8758,7 @@ HRESULT</td>
 </table>
 <h3 class="content" id="Win32.ScreenToClient"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">ScreenToClient</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func ScreenToClient(hWnd: HWND, lpPoint: <a href="std.win32.html#Win32.POINT">*POINT</a>)->BOOL
+<code style="white-space: break-spaces">func ScreenToClient(hWnd: HWND, lpPoint: *POINT)->BOOL
 </code>
 </p>
 <h3 class="content" id="Win32.SetActiveWindow"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">SetActiveWindow</span></h3>
@@ -8823,7 +8823,7 @@ HRESULT</td>
 </p>
 <h3 class="content" id="Win32.SetFileTime"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">SetFileTime</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func SetFileTime(hFile: HANDLE, lpCreationTime: <a href="std.win32.html#Win32.FILETIME">const *FILETIME</a>, lpLastAccessTime: <a href="std.win32.html#Win32.FILETIME">const *FILETIME</a>, lpLastWriteTime: <a href="std.win32.html#Win32.FILETIME">const *FILETIME</a>) throw
+<code style="white-space: break-spaces">func SetFileTime(hFile: HANDLE, lpCreationTime: const *FILETIME, lpLastAccessTime: const *FILETIME, lpLastWriteTime: const *FILETIME) throw
 </code>
 </p>
 <h3 class="content" id="Win32.SetFocus"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">SetFocus</span></h3>
@@ -8863,12 +8863,12 @@ HRESULT</td>
 </p>
 <h3 class="content" id="Win32.Shell_NotifyIconA"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">Shell_NotifyIconA</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func Shell_NotifyIconA(dwMessage: DWORD, lpData: <a href="std.win32.html#Win32.NOTIFYICONDATAA">*NOTIFYICONDATAA</a>) throw
+<code style="white-space: break-spaces">func Shell_NotifyIconA(dwMessage: DWORD, lpData: *NOTIFYICONDATAA) throw
 </code>
 </p>
 <h3 class="content" id="Win32.Shell_NotifyIconW"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">Shell_NotifyIconW</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func Shell_NotifyIconW(dwMessage: DWORD, lpData: <a href="std.win32.html#Win32.NOTIFYICONDATAW">*NOTIFYICONDATAW</a>) throw
+<code style="white-space: break-spaces">func Shell_NotifyIconW(dwMessage: DWORD, lpData: *NOTIFYICONDATAW) throw
 </code>
 </p>
 <h3 class="content" id="Win32.ShowCursor"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">ShowCursor</span></h3>
@@ -8898,7 +8898,7 @@ HRESULT</td>
 </p>
 <h3 class="content" id="Win32.SystemTimeToFileTime"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">SystemTimeToFileTime</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func SystemTimeToFileTime(lpSystemTime: <a href="std.win32.html#Win32.SYSTEMTIME">const *SYSTEMTIME</a>, lpFileTime: <a href="std.win32.html#Win32.FILETIME">*FILETIME</a>) throw
+<code style="white-space: break-spaces">func SystemTimeToFileTime(lpSystemTime: const *SYSTEMTIME, lpFileTime: *FILETIME) throw
 </code>
 </p>
 <h3 class="content" id="Win32.THREAD_PRIORITY_ABOVE_NORMAL"><span class="titletype"></span> <span class="titlelight">Win32.</span><span class="titlestrong">Constants</span></h3>
@@ -8967,7 +8967,7 @@ u32</td>
 </p>
 <h3 class="content" id="Win32.TranslateMessage"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">TranslateMessage</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func TranslateMessage(lpMsg: <a href="std.win32.html#Win32.MSG">const *MSG</a>)->BOOL
+<code style="white-space: break-spaces">func TranslateMessage(lpMsg: const *MSG)->BOOL
 </code>
 </p>
 <h3 class="content" id="Win32.TryAcquireSRWLockExclusive"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">TryAcquireSRWLockExclusive</span></h3>
@@ -10607,7 +10607,7 @@ DWORD</td>
 <td>
 ftCreationTime</td>
 <td class="tdtype">
-<a href="std.win32.html#Win32.FILETIME">FILETIME</a></td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.win32.html#Win32.FILETIME">FILETIME</a></td>
 <td>
 </td>
 </tr>
@@ -10615,7 +10615,7 @@ ftCreationTime</td>
 <td>
 ftLastAccessTime</td>
 <td class="tdtype">
-<a href="std.win32.html#Win32.FILETIME">FILETIME</a></td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.win32.html#Win32.FILETIME">FILETIME</a></td>
 <td>
 </td>
 </tr>
@@ -10623,7 +10623,7 @@ ftLastAccessTime</td>
 <td>
 ftLastWriteTime</td>
 <td class="tdtype">
-<a href="std.win32.html#Win32.FILETIME">FILETIME</a></td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.win32.html#Win32.FILETIME">FILETIME</a></td>
 <td>
 </td>
 </tr>
@@ -10658,7 +10658,7 @@ DWORD</td>
 <td>
 ftCreationTime</td>
 <td class="tdtype">
-<a href="std.win32.html#Win32.FILETIME">FILETIME</a></td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.win32.html#Win32.FILETIME">FILETIME</a></td>
 <td>
 </td>
 </tr>
@@ -10666,7 +10666,7 @@ ftCreationTime</td>
 <td>
 ftLastAccessTime</td>
 <td class="tdtype">
-<a href="std.win32.html#Win32.FILETIME">FILETIME</a></td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.win32.html#Win32.FILETIME">FILETIME</a></td>
 <td>
 </td>
 </tr>
@@ -10674,7 +10674,7 @@ ftLastAccessTime</td>
 <td>
 ftLastWriteTime</td>
 <td class="tdtype">
-<a href="std.win32.html#Win32.FILETIME">FILETIME</a></td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.win32.html#Win32.FILETIME">FILETIME</a></td>
 <td>
 </td>
 </tr>
@@ -10765,7 +10765,7 @@ DWORD</td>
 <td>
 ftCreationTime</td>
 <td class="tdtype">
-<a href="std.win32.html#Win32.FILETIME">FILETIME</a></td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.win32.html#Win32.FILETIME">FILETIME</a></td>
 <td>
 </td>
 </tr>
@@ -10773,7 +10773,7 @@ ftCreationTime</td>
 <td>
 ftLastAccessTime</td>
 <td class="tdtype">
-<a href="std.win32.html#Win32.FILETIME">FILETIME</a></td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.win32.html#Win32.FILETIME">FILETIME</a></td>
 <td>
 </td>
 </tr>
@@ -10781,7 +10781,7 @@ ftLastAccessTime</td>
 <td>
 ftLastWriteTime</td>
 <td class="tdtype">
-<a href="std.win32.html#Win32.FILETIME">FILETIME</a></td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.win32.html#Win32.FILETIME">FILETIME</a></td>
 <td>
 </td>
 </tr>
@@ -13509,7 +13509,7 @@ u32</td>
 </p>
 <h3 class="content" id="Win32.WindowFromPoint"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">WindowFromPoint</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func WindowFromPoint(pt: <a href="std.win32.html#Win32.POINT">POINT</a>)->HWND
+<code style="white-space: break-spaces">func WindowFromPoint(pt: POINT)->HWND
 </code>
 </p>
 <h3 class="content" id="Win32.WriteConsoleOutputCharacterA"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">WriteConsoleOutputCharacterA</span></h3>
