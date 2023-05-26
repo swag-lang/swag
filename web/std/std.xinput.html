@@ -1,0 +1,353 @@
+<html>
+<body>
+<head>
+<meta charset="UTF-8">
+</head>
+<style>
+.container {
+            display:        flex;
+            flex-wrap:      nowrap;
+            flex-direction: row;
+            height:         100%;
+            line-height:    1.3em;
+            font-family:    Segoe UI;
+        }
+        .left {
+            display:    block;
+            overflow-y: scroll;
+            width:      650;
+            height:     100%;
+        }
+        .right {
+            display:     block;
+            overflow-y:  scroll;
+            width:       100%;
+            line-height: 1.3em;
+            height:      100%;
+        }
+        .page {
+            width:  1000;
+            margin: 0 auto;
+        }
+        a {
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        table {
+            border:             1px solid LightGrey;
+            border-collapse:    collapse;
+            width:              100%;
+        }
+        td {
+            padding:            6px;
+            border:             1px solid LightGrey;
+            border-collapse:    collapse;
+            width:              20%;
+        }
+        td:last-child {
+            width:              100%;
+        }
+        .tocbullet {
+            list-style-type:    none;
+            margin-left:        -20px;
+        }
+        .titletype {
+            font-weight:        normal;
+            font-size:          80%;
+        }
+        .titlelight {
+            font-weight:        normal;
+        }
+        .titlestrong {
+            font-weight:        bold;
+            font-size:          100%;
+        }
+        h2.content {
+            margin-top:         50px;
+            margin-bottom:      50px;
+        }
+        h3.content {
+            margin-top:         50px;
+            padding-bottom:     5px;
+            border-bottom:      2px solid LightGrey;
+            width:              100%;
+        }
+        .incode {
+            background-color:   #eeeeee;
+            padding:            2px;
+            border: 1px dotted  #cccccc;
+        }
+        .code {
+            background-color:   LightYellow;
+            border:             1px solid LightGrey;
+            padding:            10px;
+            width:              90%;
+            margin-left:        20px;
+        }
+</style>
+<div class="container">
+<div class="left">
+<h1>Module xinput</h1>
+<h2>Structs</h2>
+<h3></h3>
+<ul class="tocbullet">
+<li><a href="#XInput.XINPUT_GAMEPAD">XINPUT_GAMEPAD</a></li>
+<li><a href="#XInput.XINPUT_STATE">XINPUT_STATE</a></li>
+<li><a href="#XInput.XINPUT_VIBRATION">XINPUT_VIBRATION</a></li>
+</ul>
+<h2>Constants</h2>
+<h3></h3>
+<ul class="tocbullet">
+<li><a href="#XInput.XINPUT_GAMEPAD_A">XINPUT_GAMEPAD_A</a></li>
+<li><a href="#XInput.XINPUT_GAMEPAD_B">XINPUT_GAMEPAD_B</a></li>
+<li><a href="#XInput.XINPUT_GAMEPAD_BACK">XINPUT_GAMEPAD_BACK</a></li>
+<li><a href="#XInput.XINPUT_GAMEPAD_DPAD_DOWN">XINPUT_GAMEPAD_DPAD_DOWN</a></li>
+<li><a href="#XInput.XINPUT_GAMEPAD_DPAD_LEFT">XINPUT_GAMEPAD_DPAD_LEFT</a></li>
+<li><a href="#XInput.XINPUT_GAMEPAD_DPAD_RIGHT">XINPUT_GAMEPAD_DPAD_RIGHT</a></li>
+<li><a href="#XInput.XINPUT_GAMEPAD_DPAD_UP">XINPUT_GAMEPAD_DPAD_UP</a></li>
+<li><a href="#XInput.XINPUT_GAMEPAD_LEFT_SHOULDER">XINPUT_GAMEPAD_LEFT_SHOULDER</a></li>
+<li><a href="#XInput.XINPUT_GAMEPAD_LEFT_THUMB">XINPUT_GAMEPAD_LEFT_THUMB</a></li>
+<li><a href="#XInput.XINPUT_GAMEPAD_RIGHT_SHOULDER">XINPUT_GAMEPAD_RIGHT_SHOULDER</a></li>
+<li><a href="#XInput.XINPUT_GAMEPAD_RIGHT_THUMB">XINPUT_GAMEPAD_RIGHT_THUMB</a></li>
+<li><a href="#XInput.XINPUT_GAMEPAD_START">XINPUT_GAMEPAD_START</a></li>
+<li><a href="#XInput.XINPUT_GAMEPAD_X">XINPUT_GAMEPAD_X</a></li>
+<li><a href="#XInput.XINPUT_GAMEPAD_Y">XINPUT_GAMEPAD_Y</a></li>
+</ul>
+<h2>Functions</h2>
+<h3></h3>
+<ul class="tocbullet">
+<li><a href="#XInput.XInputGetState">XInput.XInputGetState</a></li>
+<li><a href="#XInput.XInputSetState">XInput.XInputSetState</a></li>
+</ul>
+</div>
+<div class="right">
+<div class="page">
+<h3 class="content" id="XInput.Constants"><span class="titletype"></span> <span class="titlelight">XInput.</span><span class="titlestrong">Constants</span></h3>
+<table>
+<tr>
+<td>
+u16</td>
+<td id="XInput.XINPUT_GAMEPAD_A">
+XINPUT_GAMEPAD_A</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+u16</td>
+<td id="XInput.XINPUT_GAMEPAD_B">
+XINPUT_GAMEPAD_B</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+u16</td>
+<td id="XInput.XINPUT_GAMEPAD_BACK">
+XINPUT_GAMEPAD_BACK</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+u16</td>
+<td id="XInput.XINPUT_GAMEPAD_DPAD_DOWN">
+XINPUT_GAMEPAD_DPAD_DOWN</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+u16</td>
+<td id="XInput.XINPUT_GAMEPAD_DPAD_LEFT">
+XINPUT_GAMEPAD_DPAD_LEFT</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+u16</td>
+<td id="XInput.XINPUT_GAMEPAD_DPAD_RIGHT">
+XINPUT_GAMEPAD_DPAD_RIGHT</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+u16</td>
+<td id="XInput.XINPUT_GAMEPAD_DPAD_UP">
+XINPUT_GAMEPAD_DPAD_UP</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+u16</td>
+<td id="XInput.XINPUT_GAMEPAD_LEFT_SHOULDER">
+XINPUT_GAMEPAD_LEFT_SHOULDER</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+u16</td>
+<td id="XInput.XINPUT_GAMEPAD_LEFT_THUMB">
+XINPUT_GAMEPAD_LEFT_THUMB</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+u16</td>
+<td id="XInput.XINPUT_GAMEPAD_RIGHT_SHOULDER">
+XINPUT_GAMEPAD_RIGHT_SHOULDER</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+u16</td>
+<td id="XInput.XINPUT_GAMEPAD_RIGHT_THUMB">
+XINPUT_GAMEPAD_RIGHT_THUMB</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+u16</td>
+<td id="XInput.XINPUT_GAMEPAD_START">
+XINPUT_GAMEPAD_START</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+u16</td>
+<td id="XInput.XINPUT_GAMEPAD_X">
+XINPUT_GAMEPAD_X</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+u16</td>
+<td id="XInput.XINPUT_GAMEPAD_Y">
+XINPUT_GAMEPAD_Y</td>
+<td>
+</td>
+</tr>
+</table>
+<h3 class="content" id="XInput.XINPUT_GAMEPAD"><span class="titletype">struct</span> <span class="titlelight">XInput.</span><span class="titlestrong">XINPUT_GAMEPAD</span></h3>
+<table>
+<tr>
+<td>
+wButtons</td>
+<td>
+WORD</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+bLeftTrigger</td>
+<td>
+BYTE</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+bRightTrigger</td>
+<td>
+BYTE</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+sThumbLX</td>
+<td>
+SHORT</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+sThumbLY</td>
+<td>
+SHORT</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+sThumbRX</td>
+<td>
+SHORT</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+sThumbRY</td>
+<td>
+SHORT</td>
+<td>
+</td>
+</tr>
+</table>
+<h3 class="content" id="XInput.XINPUT_STATE"><span class="titletype">struct</span> <span class="titlelight">XInput.</span><span class="titlestrong">XINPUT_STATE</span></h3>
+<table>
+<tr>
+<td>
+dwPacketNumber</td>
+<td>
+DWORD</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+Gamepad</td>
+<td>
+<a href="std.xinput.html#XInput.XINPUT_GAMEPAD">XINPUT_GAMEPAD</a></td>
+<td>
+</td>
+</tr>
+</table>
+<h3 class="content" id="XInput.XINPUT_VIBRATION"><span class="titletype">struct</span> <span class="titlelight">XInput.</span><span class="titlestrong">XINPUT_VIBRATION</span></h3>
+<table>
+<tr>
+<td>
+wLeftMotorSpeed</td>
+<td>
+WORD</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+wRightMotorSpeed</td>
+<td>
+WORD</td>
+<td>
+</td>
+</tr>
+</table>
+<h3 class="content" id="XInput.XInputGetState"><span class="titletype">func</span> <span class="titlelight">XInput.</span><span class="titlestrong">XInputGetState</span></h3>
+<p class="code">
+<code style="white-space: break-spaces">func XInputGetState(dwUserIndex: DWORD, pState: <a href="std.xinput.html#XInput.XINPUT_STATE">*XINPUT_STATE</a>)->DWORD
+</code>
+</p>
+<h3 class="content" id="XInput.XInputSetState"><span class="titletype">func</span> <span class="titlelight">XInput.</span><span class="titlestrong">XInputSetState</span></h3>
+<p class="code">
+<code style="white-space: break-spaces">func XInputSetState(dwUserIndex: DWORD, pVibration: <a href="std.xinput.html#XInput.XINPUT_VIBRATION">*XINPUT_VIBRATION</a>)->DWORD
+</code>
+</p>
+</div>
+</div>
+</div>
+</body>
+</html>

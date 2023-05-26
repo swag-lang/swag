@@ -1,0 +1,1789 @@
+<html>
+<body>
+<head>
+<meta charset="UTF-8">
+</head>
+<style>
+.container {
+            display:        flex;
+            flex-wrap:      nowrap;
+            flex-direction: row;
+            height:         100%;
+            line-height:    1.3em;
+            font-family:    Segoe UI;
+        }
+        .left {
+            display:    block;
+            overflow-y: scroll;
+            width:      650;
+            height:     100%;
+        }
+        .right {
+            display:     block;
+            overflow-y:  scroll;
+            width:       100%;
+            line-height: 1.3em;
+            height:      100%;
+        }
+        .page {
+            width:  1000;
+            margin: 0 auto;
+        }
+        a {
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        table {
+            border:             1px solid LightGrey;
+            border-collapse:    collapse;
+            width:              100%;
+        }
+        td {
+            padding:            6px;
+            border:             1px solid LightGrey;
+            border-collapse:    collapse;
+            width:              20%;
+        }
+        td:last-child {
+            width:              100%;
+        }
+        .tocbullet {
+            list-style-type:    none;
+            margin-left:        -20px;
+        }
+        .titletype {
+            font-weight:        normal;
+            font-size:          80%;
+        }
+        .titlelight {
+            font-weight:        normal;
+        }
+        .titlestrong {
+            font-weight:        bold;
+            font-size:          100%;
+        }
+        h2.content {
+            margin-top:         50px;
+            margin-bottom:      50px;
+        }
+        h3.content {
+            margin-top:         50px;
+            padding-bottom:     5px;
+            border-bottom:      2px solid LightGrey;
+            width:              100%;
+        }
+        .incode {
+            background-color:   #eeeeee;
+            padding:            2px;
+            border: 1px dotted  #cccccc;
+        }
+        .code {
+            background-color:   LightYellow;
+            border:             1px solid LightGrey;
+            padding:            10px;
+            width:              90%;
+            margin-left:        20px;
+        }
+</style>
+<div class="container">
+<div class="left">
+<h1>Module freetype</h1>
+<h2>Structs</h2>
+<h3></h3>
+<ul class="tocbullet">
+<li><a href="#FreeType.FT_BBox">FT_BBox</a></li>
+<li><a href="#FreeType.FT_Bitmap">FT_Bitmap</a></li>
+<li><a href="#FreeType.FT_Bitmap_Size">FT_Bitmap_Size</a></li>
+<li><a href="#FreeType.FT_CharMapRec">FT_CharMapRec</a></li>
+<li><a href="#FreeType.FT_FaceRec">FT_FaceRec</a></li>
+<li><a href="#FreeType.FT_Generic">FT_Generic</a></li>
+<li><a href="#FreeType.FT_GlyphSlotRec">FT_GlyphSlotRec</a></li>
+<li><a href="#FreeType.FT_Glyph_Metrics">FT_Glyph_Metrics</a></li>
+<li><a href="#FreeType.FT_LibraryRec">FT_LibraryRec</a></li>
+<li><a href="#FreeType.FT_ListRec">FT_ListRec</a></li>
+<li><a href="#FreeType.FT_Matrix">FT_Matrix</a></li>
+<li><a href="#FreeType.FT_Outline">FT_Outline</a></li>
+<li><a href="#FreeType.FT_Outline_Funcs">FT_Outline_Funcs</a></li>
+<li><a href="#FreeType.FT_SizeRec">FT_SizeRec</a></li>
+<li><a href="#FreeType.FT_Size_Metrics">FT_Size_Metrics</a></li>
+<li><a href="#FreeType.FT_SubGlyphRec">FT_SubGlyphRec</a></li>
+<li><a href="#FreeType.FT_Vector">FT_Vector</a></li>
+</ul>
+<h2>Enums</h2>
+<h3></h3>
+<ul class="tocbullet">
+<li><a href="#FreeType.FT_Glyph_Format">FT_Glyph_Format</a></li>
+<li><a href="#FreeType.FT_LcdFilter">FT_LcdFilter</a></li>
+<li><a href="#FreeType.FT_Pixel_Mode">FT_Pixel_Mode</a></li>
+<li><a href="#FreeType.FT_Render_Mode">FT_Render_Mode</a></li>
+</ul>
+<h2>Constants</h2>
+<h3></h3>
+<ul class="tocbullet">
+<li><a href="#FreeType.FT_LOAD_ADVANCE_ONLY">FT_LOAD_ADVANCE_ONLY</a></li>
+<li><a href="#FreeType.FT_LOAD_BITMAP_METRICS_ONLY">FT_LOAD_BITMAP_METRICS_ONLY</a></li>
+<li><a href="#FreeType.FT_LOAD_COLOR">FT_LOAD_COLOR</a></li>
+<li><a href="#FreeType.FT_LOAD_COMPUTE_METRICS">FT_LOAD_COMPUTE_METRICS</a></li>
+<li><a href="#FreeType.FT_LOAD_CROP_BITMAP">FT_LOAD_CROP_BITMAP</a></li>
+<li><a href="#FreeType.FT_LOAD_DEFAULT">FT_LOAD_DEFAULT</a></li>
+<li><a href="#FreeType.FT_LOAD_FORCE_AUTOHINT">FT_LOAD_FORCE_AUTOHINT</a></li>
+<li><a href="#FreeType.FT_LOAD_IGNORE_GLOBAL_ADVANCE_WIDTH">FT_LOAD_IGNORE_GLOBAL_ADVANCE_WIDTH</a></li>
+<li><a href="#FreeType.FT_LOAD_IGNORE_TRANSFORM">FT_LOAD_IGNORE_TRANSFORM</a></li>
+<li><a href="#FreeType.FT_LOAD_LINEAR_DESIGN">FT_LOAD_LINEAR_DESIGN</a></li>
+<li><a href="#FreeType.FT_LOAD_MONOCHROME">FT_LOAD_MONOCHROME</a></li>
+<li><a href="#FreeType.FT_LOAD_NO_AUTOHINT">FT_LOAD_NO_AUTOHINT</a></li>
+<li><a href="#FreeType.FT_LOAD_NO_BITMAP">FT_LOAD_NO_BITMAP</a></li>
+<li><a href="#FreeType.FT_LOAD_NO_HINTING">FT_LOAD_NO_HINTING</a></li>
+<li><a href="#FreeType.FT_LOAD_NO_RECURSE">FT_LOAD_NO_RECURSE</a></li>
+<li><a href="#FreeType.FT_LOAD_NO_SCALE">FT_LOAD_NO_SCALE</a></li>
+<li><a href="#FreeType.FT_LOAD_PEDANTIC">FT_LOAD_PEDANTIC</a></li>
+<li><a href="#FreeType.FT_LOAD_RENDER">FT_LOAD_RENDER</a></li>
+<li><a href="#FreeType.FT_LOAD_SBITS_ONLY">FT_LOAD_SBITS_ONLY</a></li>
+<li><a href="#FreeType.FT_LOAD_TARGET_LCD">FT_LOAD_TARGET_LCD</a></li>
+<li><a href="#FreeType.FT_LOAD_TARGET_LCD_V">FT_LOAD_TARGET_LCD_V</a></li>
+<li><a href="#FreeType.FT_LOAD_TARGET_LIGHT">FT_LOAD_TARGET_LIGHT</a></li>
+<li><a href="#FreeType.FT_LOAD_TARGET_MONO">FT_LOAD_TARGET_MONO</a></li>
+<li><a href="#FreeType.FT_LOAD_TARGET_NORMAL">FT_LOAD_TARGET_NORMAL</a></li>
+<li><a href="#FreeType.FT_LOAD_VERTICAL_LAYOUT">FT_LOAD_VERTICAL_LAYOUT</a></li>
+<li><a href="#FreeType.FT_MAX_MODULES">FT_MAX_MODULES</a></li>
+<li><a href="#FreeType.FT_STYLE_FLAG_BOLD">FT_STYLE_FLAG_BOLD</a></li>
+<li><a href="#FreeType.FT_STYLE_FLAG_ITALIC">FT_STYLE_FLAG_ITALIC</a></li>
+</ul>
+<h2>Functions</h2>
+<h3></h3>
+<ul class="tocbullet">
+<li><a href="#FreeType.FT_Done_Face">FreeType.FT_Done_Face</a></li>
+<li><a href="#FreeType.FT_Done_FreeType">FreeType.FT_Done_FreeType</a></li>
+<li><a href="#FreeType.FT_Get_Char_Index">FreeType.FT_Get_Char_Index</a></li>
+<li><a href="#FreeType.FT_GlyphSlot_Oblique">FreeType.FT_GlyphSlot_Oblique</a></li>
+<li><a href="#FreeType.FT_IMAGE_TAG">FreeType.FT_IMAGE_TAG</a></li>
+<li><a href="#FreeType.FT_Init_FreeType">FreeType.FT_Init_FreeType</a></li>
+<li><a href="#FreeType.FT_LOAD_TARGET">FreeType.FT_LOAD_TARGET</a></li>
+<li><a href="#FreeType.FT_Library_SetLcdFilter">FreeType.FT_Library_SetLcdFilter</a></li>
+<li><a href="#FreeType.FT_Library_SetLcdFilterWeights">FreeType.FT_Library_SetLcdFilterWeights</a></li>
+<li><a href="#FreeType.FT_Load_Char">FreeType.FT_Load_Char</a></li>
+<li><a href="#FreeType.FT_Load_Glyph">FreeType.FT_Load_Glyph</a></li>
+<li><a href="#FreeType.FT_New_Memory_Face">FreeType.FT_New_Memory_Face</a></li>
+<li><a href="#FreeType.FT_Outline_Decompose">FreeType.FT_Outline_Decompose</a></li>
+<li><a href="#FreeType.FT_Outline_Embolden">FreeType.FT_Outline_Embolden</a></li>
+<li><a href="#FreeType.FT_Outline_Transform">FreeType.FT_Outline_Transform</a></li>
+<li><a href="#FreeType.FT_Outline_Translate">FreeType.FT_Outline_Translate</a></li>
+<li><a href="#FreeType.FT_Render_Glyph">FreeType.FT_Render_Glyph</a></li>
+<li><a href="#FreeType.FT_Set_Pixel_Sizes">FreeType.FT_Set_Pixel_Sizes</a></li>
+</ul>
+</div>
+<div class="right">
+<div class="page">
+<h3 class="content" id="FreeType.Constants"><span class="titletype"></span> <span class="titlelight">FreeType.</span><span class="titlestrong">Constants</span></h3>
+<table>
+<tr>
+<td>
+s32</td>
+<td id="FreeType.FT_LOAD_ADVANCE_ONLY">
+FT_LOAD_ADVANCE_ONLY</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+s32</td>
+<td id="FreeType.FT_LOAD_BITMAP_METRICS_ONLY">
+FT_LOAD_BITMAP_METRICS_ONLY</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+s32</td>
+<td id="FreeType.FT_LOAD_COLOR">
+FT_LOAD_COLOR</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+s32</td>
+<td id="FreeType.FT_LOAD_COMPUTE_METRICS">
+FT_LOAD_COMPUTE_METRICS</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+s32</td>
+<td id="FreeType.FT_LOAD_CROP_BITMAP">
+FT_LOAD_CROP_BITMAP</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+u32</td>
+<td id="FreeType.FT_LOAD_DEFAULT">
+FT_LOAD_DEFAULT</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+s32</td>
+<td id="FreeType.FT_LOAD_FORCE_AUTOHINT">
+FT_LOAD_FORCE_AUTOHINT</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+s32</td>
+<td id="FreeType.FT_LOAD_IGNORE_GLOBAL_ADVANCE_WIDTH">
+FT_LOAD_IGNORE_GLOBAL_ADVANCE_WIDTH</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+s32</td>
+<td id="FreeType.FT_LOAD_IGNORE_TRANSFORM">
+FT_LOAD_IGNORE_TRANSFORM</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+s32</td>
+<td id="FreeType.FT_LOAD_LINEAR_DESIGN">
+FT_LOAD_LINEAR_DESIGN</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+s32</td>
+<td id="FreeType.FT_LOAD_MONOCHROME">
+FT_LOAD_MONOCHROME</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+s32</td>
+<td id="FreeType.FT_LOAD_NO_AUTOHINT">
+FT_LOAD_NO_AUTOHINT</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+s32</td>
+<td id="FreeType.FT_LOAD_NO_BITMAP">
+FT_LOAD_NO_BITMAP</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+s32</td>
+<td id="FreeType.FT_LOAD_NO_HINTING">
+FT_LOAD_NO_HINTING</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+s32</td>
+<td id="FreeType.FT_LOAD_NO_RECURSE">
+FT_LOAD_NO_RECURSE</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+s32</td>
+<td id="FreeType.FT_LOAD_NO_SCALE">
+FT_LOAD_NO_SCALE</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+s32</td>
+<td id="FreeType.FT_LOAD_PEDANTIC">
+FT_LOAD_PEDANTIC</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+s32</td>
+<td id="FreeType.FT_LOAD_RENDER">
+FT_LOAD_RENDER</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+s32</td>
+<td id="FreeType.FT_LOAD_SBITS_ONLY">
+FT_LOAD_SBITS_ONLY</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+s32</td>
+<td id="FreeType.FT_LOAD_TARGET_LCD">
+FT_LOAD_TARGET_LCD</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+s32</td>
+<td id="FreeType.FT_LOAD_TARGET_LCD_V">
+FT_LOAD_TARGET_LCD_V</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+s32</td>
+<td id="FreeType.FT_LOAD_TARGET_LIGHT">
+FT_LOAD_TARGET_LIGHT</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+s32</td>
+<td id="FreeType.FT_LOAD_TARGET_MONO">
+FT_LOAD_TARGET_MONO</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+s32</td>
+<td id="FreeType.FT_LOAD_TARGET_NORMAL">
+FT_LOAD_TARGET_NORMAL</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+s32</td>
+<td id="FreeType.FT_LOAD_VERTICAL_LAYOUT">
+FT_LOAD_VERTICAL_LAYOUT</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+s32</td>
+<td id="FreeType.FT_MAX_MODULES">
+FT_MAX_MODULES</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+s32</td>
+<td id="FreeType.FT_STYLE_FLAG_BOLD">
+FT_STYLE_FLAG_BOLD</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+s32</td>
+<td id="FreeType.FT_STYLE_FLAG_ITALIC">
+FT_STYLE_FLAG_ITALIC</td>
+<td>
+</td>
+</tr>
+</table>
+<h3 class="content" id="FreeType.FT_BBox"><span class="titletype">struct</span> <span class="titlelight">FreeType.</span><span class="titlestrong">FT_BBox</span></h3>
+<table>
+<tr>
+<td>
+xMin</td>
+<td>
+FT_Pos</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+yMin</td>
+<td>
+FT_Pos</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+xMax</td>
+<td>
+FT_Pos</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+yMax</td>
+<td>
+FT_Pos</td>
+<td>
+</td>
+</tr>
+</table>
+<h3 class="content" id="FreeType.FT_Bitmap"><span class="titletype">struct</span> <span class="titlelight">FreeType.</span><span class="titlestrong">FT_Bitmap</span></h3>
+<table>
+<tr>
+<td>
+rows</td>
+<td>
+u32</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+width</td>
+<td>
+u32</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+pitch</td>
+<td>
+s32</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+buffer</td>
+<td>
+^u8</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+num_grays</td>
+<td>
+u16</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+pixel_mode</td>
+<td>
+u8</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+palette_mode</td>
+<td>
+u8</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+palette</td>
+<td>
+^void</td>
+<td>
+</td>
+</tr>
+</table>
+<h3 class="content" id="FreeType.FT_Bitmap_Size"><span class="titletype">struct</span> <span class="titlelight">FreeType.</span><span class="titlestrong">FT_Bitmap_Size</span></h3>
+<table>
+<tr>
+<td>
+height</td>
+<td>
+FT_Short</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+width</td>
+<td>
+FT_Short</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+size</td>
+<td>
+FT_Pos</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+x_ppem</td>
+<td>
+FT_Pos</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+y_ppem</td>
+<td>
+FT_Pos</td>
+<td>
+</td>
+</tr>
+</table>
+<h3 class="content" id="FreeType.FT_CharMapRec"><span class="titletype">struct</span> <span class="titlelight">FreeType.</span><span class="titlestrong">FT_CharMapRec</span></h3>
+<table>
+<tr>
+<td>
+face</td>
+<td>
+FT_Face</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+encoding</td>
+<td>
+u32</td>
+<td>
+ FT_Encoding
+</td>
+</tr>
+<tr>
+<td>
+platform_id</td>
+<td>
+FT_UShort</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+encoding_id</td>
+<td>
+FT_UShort</td>
+<td>
+</td>
+</tr>
+</table>
+<h3 class="content" id="FreeType.FT_Done_Face"><span class="titletype">func</span> <span class="titlelight">FreeType.</span><span class="titlestrong">FT_Done_Face</span></h3>
+<p class="code">
+<code style="white-space: break-spaces">func FT_Done_Face(face: FT_Face)
+</code>
+</p>
+<h3 class="content" id="FreeType.FT_Done_FreeType"><span class="titletype">func</span> <span class="titlelight">FreeType.</span><span class="titlestrong">FT_Done_FreeType</span></h3>
+<p class="code">
+<code style="white-space: break-spaces">func FT_Done_FreeType(alibrary: FT_Library)
+</code>
+</p>
+<h3 class="content" id="FreeType.FT_FaceRec"><span class="titletype">struct</span> <span class="titlelight">FreeType.</span><span class="titlestrong">FT_FaceRec</span></h3>
+<table>
+<tr>
+<td>
+num_faces</td>
+<td>
+FT_Long</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+face_index</td>
+<td>
+FT_Long</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+face_flags</td>
+<td>
+FT_Long</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+style_flags</td>
+<td>
+FT_Long</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+num_glyphs</td>
+<td>
+FT_Long</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+family_name</td>
+<td>
+^FT_String</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+style_name</td>
+<td>
+^FT_String</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+num_fixed_sizes</td>
+<td>
+FT_Int</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+available_sizes</td>
+<td>
+<a href="std.freetype.html#FreeType.FT_Bitmap_Size">^FT_Bitmap_Size</a></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+num_charmaps</td>
+<td>
+FT_Int</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+charmaps</td>
+<td>
+^FT_CharMap</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+generic</td>
+<td>
+<a href="std.freetype.html#FreeType.FT_Generic">FT_Generic</a></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+bbox</td>
+<td>
+<a href="std.freetype.html#FreeType.FT_BBox">FT_BBox</a></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+units_per_EM</td>
+<td>
+FT_UShort</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+ascender</td>
+<td>
+FT_Short</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+descender</td>
+<td>
+FT_Short</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+height</td>
+<td>
+FT_Short</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+max_advance_width</td>
+<td>
+FT_Short</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+max_advance_height</td>
+<td>
+FT_Short</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+underline_position</td>
+<td>
+FT_Short</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+underline_thickness</td>
+<td>
+FT_Short</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+glyph</td>
+<td>
+FT_GlyphSlot</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+size</td>
+<td>
+FT_Size</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+charmap</td>
+<td>
+FT_CharMap</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+driver</td>
+<td>
+FT_Driver</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+memory</td>
+<td>
+FT_Memory</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+stream</td>
+<td>
+FT_Stream</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+sizes_list</td>
+<td>
+<a href="std.freetype.html#FreeType.FT_ListRec">FT_ListRec</a></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+autohint</td>
+<td>
+<a href="std.freetype.html#FreeType.FT_Generic">FT_Generic</a></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+extensions</td>
+<td>
+^void</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+internal</td>
+<td>
+FT_Face_Internal</td>
+<td>
+</td>
+</tr>
+</table>
+<h3 class="content" id="FreeType.FT_Generic"><span class="titletype">struct</span> <span class="titlelight">FreeType.</span><span class="titlestrong">FT_Generic</span></h3>
+<table>
+<tr>
+<td>
+data</td>
+<td>
+*void</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+finalizer</td>
+<td>
+*void</td>
+<td>
+ FT_Generic_Finalizer
+</td>
+</tr>
+</table>
+<h3 class="content" id="FreeType.FT_Get_Char_Index"><span class="titletype">func</span> <span class="titlelight">FreeType.</span><span class="titlestrong">FT_Get_Char_Index</span></h3>
+<p class="code">
+<code style="white-space: break-spaces">func FT_Get_Char_Index(face: FT_Face, charcode: FT_ULong)->FT_UInt
+</code>
+</p>
+<h3 class="content" id="FreeType.FT_GlyphSlotRec"><span class="titletype">struct</span> <span class="titlelight">FreeType.</span><span class="titlestrong">FT_GlyphSlotRec</span></h3>
+<table>
+<tr>
+<td>
+library</td>
+<td>
+FT_Library</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+face</td>
+<td>
+FT_Face</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+next</td>
+<td>
+FT_GlyphSlot</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+glyph_index</td>
+<td>
+FT_UInt</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+generic</td>
+<td>
+<a href="std.freetype.html#FreeType.FT_Generic">FT_Generic</a></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+metrics</td>
+<td>
+<a href="std.freetype.html#FreeType.FT_Glyph_Metrics">FT_Glyph_Metrics</a></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+linearHoriAdvance</td>
+<td>
+FT_Fixed</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+linearVertAdvance</td>
+<td>
+FT_Fixed</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+advance</td>
+<td>
+<a href="std.freetype.html#FreeType.FT_Vector">FT_Vector</a></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+format</td>
+<td>
+<a href="std.freetype.html#FreeType.FT_Glyph_Format">FT_Glyph_Format</a></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+bitmap</td>
+<td>
+<a href="std.freetype.html#FreeType.FT_Bitmap">FT_Bitmap</a></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+bitmap_left</td>
+<td>
+FT_Int</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+bitmap_top</td>
+<td>
+FT_Int</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+outline</td>
+<td>
+<a href="std.freetype.html#FreeType.FT_Outline">FT_Outline</a></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+num_subglyphs</td>
+<td>
+FT_UInt</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+subglyphs</td>
+<td>
+FT_SubGlyph</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+control_data</td>
+<td>
+*void</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+control_len</td>
+<td>
+s32</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+lsb_delta</td>
+<td>
+FT_Pos</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+rsb_delta</td>
+<td>
+FT_Pos</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+other</td>
+<td>
+*void</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+internal</td>
+<td>
+FT_Slot_Internal</td>
+<td>
+</td>
+</tr>
+</table>
+<h3 class="content" id="FreeType.FT_GlyphSlot_Oblique"><span class="titletype">func</span> <span class="titlelight">FreeType.</span><span class="titlestrong">FT_GlyphSlot_Oblique</span></h3>
+<p class="code">
+<code style="white-space: break-spaces">func FT_GlyphSlot_Oblique(slot: FT_GlyphSlot)
+</code>
+</p>
+<h3 class="content" id="FreeType.FT_Glyph_Format"><span class="titletype">enum</span> <span class="titlelight">FreeType.</span><span class="titlestrong">FT_Glyph_Format</span></h3>
+<table>
+<tr>
+<td>
+FT_GLYPH_FORMAT_NONE</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+FT_GLYPH_FORMAT_COMPOSITE</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+FT_GLYPH_FORMAT_BITMAP</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+FT_GLYPH_FORMAT_OUTLINE</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+FT_GLYPH_FORMAT_POLTTER</td>
+<td>
+</td>
+</tr>
+</table>
+<h3 class="content" id="FreeType.FT_Glyph_Metrics"><span class="titletype">struct</span> <span class="titlelight">FreeType.</span><span class="titlestrong">FT_Glyph_Metrics</span></h3>
+<table>
+<tr>
+<td>
+width</td>
+<td>
+FT_Pos</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+height</td>
+<td>
+FT_Pos</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+horiBearingX</td>
+<td>
+FT_Pos</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+horiBearingY</td>
+<td>
+FT_Pos</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+horiAdvance</td>
+<td>
+FT_Pos</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+vertBearingX</td>
+<td>
+FT_Pos</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+vertBearingY</td>
+<td>
+FT_Pos</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+vertAdvance</td>
+<td>
+FT_Pos</td>
+<td>
+</td>
+</tr>
+</table>
+<h3 class="content" id="FreeType.FT_IMAGE_TAG"><span class="titletype">func</span> <span class="titlelight">FreeType.</span><span class="titlestrong">FT_IMAGE_TAG</span></h3>
+<p class="code">
+<code style="white-space: break-spaces">func FT_IMAGE_TAG(x1: u32, x2: u32, x3: u32, x4: u32)->u32
+</code>
+</p>
+<h3 class="content" id="FreeType.FT_Init_FreeType"><span class="titletype">func</span> <span class="titlelight">FreeType.</span><span class="titlestrong">FT_Init_FreeType</span></h3>
+<p class="code">
+<code style="white-space: break-spaces">func FT_Init_FreeType(alibrary: *FT_Library)
+</code>
+</p>
+<h3 class="content" id="FreeType.FT_LOAD_TARGET"><span class="titletype">func</span> <span class="titlelight">FreeType.</span><span class="titlestrong">FT_LOAD_TARGET</span></h3>
+<p class="code">
+<code style="white-space: break-spaces">func FT_LOAD_TARGET(x: FT_Int32)
+</code>
+</p>
+<h3 class="content" id="FreeType.FT_LcdFilter"><span class="titletype">enum</span> <span class="titlelight">FreeType.</span><span class="titlestrong">FT_LcdFilter</span></h3>
+<table>
+<tr>
+<td>
+FT_LCD_FILTER_NONE</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+FT_LCD_FILTER_DEFAULT</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+FT_LCD_FILTER_LIGHT</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+FT_LCD_FILTER_LEGACY1</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+FT_LCD_FILTER_LEGACY</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+FT_LCD_FILTER_MAX</td>
+<td>
+</td>
+</tr>
+</table>
+<h3 class="content" id="FreeType.FT_LibraryRec"><span class="titletype">struct</span> <span class="titlelight">FreeType.</span><span class="titlestrong">FT_LibraryRec</span></h3>
+<table>
+<tr>
+<td>
+memory</td>
+<td>
+FT_Memory</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+version_major</td>
+<td>
+FT_Int</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+version_minor</td>
+<td>
+FT_Int</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+version_patch</td>
+<td>
+FT_Int</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+num_modules</td>
+<td>
+FT_UInt</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+modules</td>
+<td>
+[32] FT_Module</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+renderers</td>
+<td>
+<a href="std.freetype.html#FreeType.FT_ListRec">FT_ListRec</a></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+cur_renderer</td>
+<td>
+FT_Renderer</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+auto_hinter</td>
+<td>
+FT_Module</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+debug_hooks</td>
+<td>
+[4] FT_DebugHook_Func</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+lcd_geometry</td>
+<td>
+<a href="std.freetype.html#FreeType.FT_Vector">[3] FT_Vector</a></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+refcount</td>
+<td>
+FT_Int</td>
+<td>
+</td>
+</tr>
+</table>
+<h3 class="content" id="FreeType.FT_Library_SetLcdFilter"><span class="titletype">func</span> <span class="titlelight">FreeType.</span><span class="titlestrong">FT_Library_SetLcdFilter</span></h3>
+<p class="code">
+<code style="white-space: break-spaces">func FT_Library_SetLcdFilter(library: FT_Library, filter: <a href="std.freetype.html#FreeType.FT_LcdFilter">FT_LcdFilter</a>)
+</code>
+</p>
+<h3 class="content" id="FreeType.FT_Library_SetLcdFilterWeights"><span class="titletype">func</span> <span class="titlelight">FreeType.</span><span class="titlestrong">FT_Library_SetLcdFilterWeights</span></h3>
+<p class="code">
+<code style="white-space: break-spaces">func FT_Library_SetLcdFilterWeights(library: FT_Library, weights: const *u8)
+</code>
+</p>
+<h3 class="content" id="FreeType.FT_ListRec"><span class="titletype">struct</span> <span class="titlelight">FreeType.</span><span class="titlestrong">FT_ListRec</span></h3>
+<table>
+<tr>
+<td>
+head</td>
+<td>
+FT_ListNode</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+tail</td>
+<td>
+FT_ListNode</td>
+<td>
+</td>
+</tr>
+</table>
+<h3 class="content" id="FreeType.FT_Load_Char"><span class="titletype">func</span> <span class="titlelight">FreeType.</span><span class="titlestrong">FT_Load_Char</span></h3>
+<p class="code">
+<code style="white-space: break-spaces">func FT_Load_Char(face: FT_Face, char_code: FT_ULong, load_flags: FT_Int32)
+</code>
+</p>
+<h3 class="content" id="FreeType.FT_Load_Glyph"><span class="titletype">func</span> <span class="titlelight">FreeType.</span><span class="titlestrong">FT_Load_Glyph</span></h3>
+<p class="code">
+<code style="white-space: break-spaces">func FT_Load_Glyph(face: FT_Face, glyph_index: FT_UInt, load_flags: FT_Int32)
+</code>
+</p>
+<h3 class="content" id="FreeType.FT_Matrix"><span class="titletype">struct</span> <span class="titlelight">FreeType.</span><span class="titlestrong">FT_Matrix</span></h3>
+<table>
+<tr>
+<td>
+xx</td>
+<td>
+FT_Fixed</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+xy</td>
+<td>
+FT_Fixed</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+yx</td>
+<td>
+FT_Fixed</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+yy</td>
+<td>
+FT_Fixed</td>
+<td>
+</td>
+</tr>
+</table>
+<h3 class="content" id="FreeType.FT_New_Memory_Face"><span class="titletype">func</span> <span class="titlelight">FreeType.</span><span class="titlestrong">FT_New_Memory_Face</span></h3>
+<p class="code">
+<code style="white-space: break-spaces">func FT_New_Memory_Face(library: FT_Library, file_base: const *FT_Byte, file_size: FT_Long, face_index: FT_Long, aface: *FT_Face)
+</code>
+</p>
+<h3 class="content" id="FreeType.FT_Outline"><span class="titletype">struct</span> <span class="titlelight">FreeType.</span><span class="titlestrong">FT_Outline</span></h3>
+<table>
+<tr>
+<td>
+n_contours</td>
+<td>
+s16</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+n_points</td>
+<td>
+s16</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+points</td>
+<td>
+<a href="std.freetype.html#FreeType.FT_Vector">^FT_Vector</a></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+tags</td>
+<td>
+^u8</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+contours</td>
+<td>
+^s16</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+flags</td>
+<td>
+s32</td>
+<td>
+</td>
+</tr>
+</table>
+<h3 class="content" id="FreeType.FT_Outline_Decompose"><span class="titletype">func</span> <span class="titlelight">FreeType.</span><span class="titlestrong">FT_Outline_Decompose</span></h3>
+<p class="code">
+<code style="white-space: break-spaces">func FT_Outline_Decompose(outline: <a href="std.freetype.html#FreeType.FT_Outline">*FT_Outline</a>, func_interface: <a href="std.freetype.html#FreeType.FT_Outline_Funcs">const *FT_Outline_Funcs</a>, user: *void)
+</code>
+</p>
+<h3 class="content" id="FreeType.FT_Outline_Embolden"><span class="titletype">func</span> <span class="titlelight">FreeType.</span><span class="titlestrong">FT_Outline_Embolden</span></h3>
+<p class="code">
+<code style="white-space: break-spaces">func FT_Outline_Embolden(outline: <a href="std.freetype.html#FreeType.FT_Outline">*FT_Outline</a>, strength: FT_Pos)
+</code>
+</p>
+<h3 class="content" id="FreeType.FT_Outline_Funcs"><span class="titletype">struct</span> <span class="titlelight">FreeType.</span><span class="titlestrong">FT_Outline_Funcs</span></h3>
+<table>
+<tr>
+<td>
+move_to</td>
+<td>
+*void</td>
+<td>
+ FT_Outline_MoveToFunc
+</td>
+</tr>
+<tr>
+<td>
+line_to</td>
+<td>
+*void</td>
+<td>
+ FT_Outline_LineToFunc
+</td>
+</tr>
+<tr>
+<td>
+conic_to</td>
+<td>
+*void</td>
+<td>
+ FT_Outline_ConicToFunc
+</td>
+</tr>
+<tr>
+<td>
+cubic_to</td>
+<td>
+*void</td>
+<td>
+ FT_Outline_CubicToFunc
+</td>
+</tr>
+<tr>
+<td>
+shift</td>
+<td>
+s32</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+delta</td>
+<td>
+FT_Pos</td>
+<td>
+</td>
+</tr>
+</table>
+<h3 class="content" id="FreeType.FT_Outline_Transform"><span class="titletype">func</span> <span class="titlelight">FreeType.</span><span class="titlestrong">FT_Outline_Transform</span></h3>
+<p class="code">
+<code style="white-space: break-spaces">func FT_Outline_Transform(outline: <a href="std.freetype.html#FreeType.FT_Outline">const *FT_Outline</a>, matrix: <a href="std.freetype.html#FreeType.FT_Matrix">const *FT_Matrix</a>)
+</code>
+</p>
+<h3 class="content" id="FreeType.FT_Outline_Translate"><span class="titletype">func</span> <span class="titlelight">FreeType.</span><span class="titlestrong">FT_Outline_Translate</span></h3>
+<p class="code">
+<code style="white-space: break-spaces">func FT_Outline_Translate(outline: <a href="std.freetype.html#FreeType.FT_Outline">const *FT_Outline</a>, xOffset: FT_Pos, yOffset: FT_Pos)
+</code>
+</p>
+<h3 class="content" id="FreeType.FT_Pixel_Mode"><span class="titletype">enum</span> <span class="titlelight">FreeType.</span><span class="titlestrong">FT_Pixel_Mode</span></h3>
+<table>
+<tr>
+<td>
+FT_PIXEL_MODE_NONE</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+FT_PIXEL_MODE_MONO</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+FT_PIXEL_MODE_GRAY</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+FT_PIXEL_MODE_GRAY2</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+FT_PIXEL_MODE_GRAY4</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+FT_PIXEL_MODE_LCD</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+FT_PIXEL_MODE_LCD_V</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+FT_PIXEL_MODE_BGRA</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+FT_PIXEL_MODE_MAX</td>
+<td>
+</td>
+</tr>
+</table>
+<h3 class="content" id="FreeType.FT_Render_Glyph"><span class="titletype">func</span> <span class="titlelight">FreeType.</span><span class="titlestrong">FT_Render_Glyph</span></h3>
+<p class="code">
+<code style="white-space: break-spaces">func FT_Render_Glyph(slot: FT_GlyphSlot, render_mode: <a href="std.freetype.html#FreeType.FT_Render_Mode">FT_Render_Mode</a>)
+</code>
+</p>
+<h3 class="content" id="FreeType.FT_Render_Mode"><span class="titletype">enum</span> <span class="titlelight">FreeType.</span><span class="titlestrong">FT_Render_Mode</span></h3>
+<table>
+<tr>
+<td>
+FT_RENDER_MODE_NORMAL</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+FT_RENDER_MODE_LIGHT</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+FT_RENDER_MODE_MONO</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+FT_RENDER_MODE_LCD</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+FT_RENDER_MODE_LCD_V</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+FT_RENDER_MODE_MAX</td>
+<td>
+</td>
+</tr>
+</table>
+<h3 class="content" id="FreeType.FT_Set_Pixel_Sizes"><span class="titletype">func</span> <span class="titlelight">FreeType.</span><span class="titlestrong">FT_Set_Pixel_Sizes</span></h3>
+<p class="code">
+<code style="white-space: break-spaces">func FT_Set_Pixel_Sizes(face: FT_Face, pixel_width: FT_UInt, pixel_height: FT_UInt)
+</code>
+</p>
+<h3 class="content" id="FreeType.FT_SizeRec"><span class="titletype">struct</span> <span class="titlelight">FreeType.</span><span class="titlestrong">FT_SizeRec</span></h3>
+<table>
+<tr>
+<td>
+face</td>
+<td>
+FT_Face</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+generic</td>
+<td>
+<a href="std.freetype.html#FreeType.FT_Generic">FT_Generic</a></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+metrics</td>
+<td>
+<a href="std.freetype.html#FreeType.FT_Size_Metrics">FT_Size_Metrics</a></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+internal</td>
+<td>
+FT_Size_Internal</td>
+<td>
+</td>
+</tr>
+</table>
+<h3 class="content" id="FreeType.FT_Size_Metrics"><span class="titletype">struct</span> <span class="titlelight">FreeType.</span><span class="titlestrong">FT_Size_Metrics</span></h3>
+<table>
+<tr>
+<td>
+x_ppem</td>
+<td>
+FT_UShort</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+y_ppem</td>
+<td>
+FT_UShort</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+x_scale</td>
+<td>
+FT_Fixed</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+y_scale</td>
+<td>
+FT_Fixed</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+ascender</td>
+<td>
+FT_Pos</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+descender</td>
+<td>
+FT_Pos</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+height</td>
+<td>
+FT_Pos</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+max_advance</td>
+<td>
+FT_Pos</td>
+<td>
+</td>
+</tr>
+</table>
+<h3 class="content" id="FreeType.FT_SubGlyphRec"><span class="titletype">struct</span> <span class="titlelight">FreeType.</span><span class="titlestrong">FT_SubGlyphRec</span></h3>
+<table>
+<tr>
+<td>
+index</td>
+<td>
+FT_Int</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+flags</td>
+<td>
+FT_UShort</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+arg1</td>
+<td>
+FT_Int</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+arg2</td>
+<td>
+FT_Int</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+transform</td>
+<td>
+<a href="std.freetype.html#FreeType.FT_Matrix">FT_Matrix</a></td>
+<td>
+</td>
+</tr>
+</table>
+<h3 class="content" id="FreeType.FT_Vector"><span class="titletype">struct</span> <span class="titlelight">FreeType.</span><span class="titlestrong">FT_Vector</span></h3>
+<table>
+<tr>
+<td>
+x</td>
+<td>
+FT_Pos</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+y</td>
+<td>
+FT_Pos</td>
+<td>
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+</body>
+</html>
