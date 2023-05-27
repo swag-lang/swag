@@ -4,6 +4,7 @@
         <ul class="text-white flex text-md">
             <li class="mr-5"><a href="/" class="hover:underline">Home</a></li>
             <li class="mr-5"><a href="doc.php" class="hover:underline">Documentation</a></li>
+            <li class="mr-5"><a href="libraries.php" class="hover:underline">Libraries</a></li>
             <li><a href="https://github.com/swag-lang/swag" target="_blank" class="hover:underline">Github</a></li>
         </ul>
     </div>

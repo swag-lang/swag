@@ -1,5 +1,7 @@
-<?php include('html_start.php'); ?>
-<?php include('header.php'); ?>
+<?php
+include('html_start.php');
+include('header.php');
+?>
 
 <div class="lg:m-auto lg:w-[70rem] pt-2 lg:pt-10 overflow-hidden p-5">
 
