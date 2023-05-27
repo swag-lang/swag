@@ -172,11 +172,43 @@ void ModuleGenDocJob::outputTable(Scope* scope, AstNodeKind kind, const char* ti
             first = false;
         }
 
+        // Name
         helpContent += "<tr>\n";
         helpContent += "<td class=\"enumeration\">\n";
-        helpContent += Fmt("<a href=\"#%s\">%s</a>", n1->getScopedName().c_str(), n1->token.ctext());
+        Utf8 name = n1->token.text;
+
+        if (kind == AstNodeKind::FuncDecl)
+        {
+            AstFuncDecl* funcNode = CastAst<AstFuncDecl>(n1, AstNodeKind::FuncDecl);
+            name += "(";
+            if (funcNode->parameters && !funcNode->parameters->childs.empty())
+            {
+                bool firstParam = true;
+                for (auto c : funcNode->parameters->childs)
+                {
+                    if (c->kind != AstNodeKind::FuncDeclParam)
+                        continue;
+                    AstVarDecl* varNode = CastAst<AstVarDecl>(c, AstNodeKind::FuncDeclParam);
+                    if (!varNode->type && !varNode->typeInfo)
+                        continue;
+                    if (!firstParam)
+                        name += ", ";
+                    if (varNode->typeInfo && varNode->typeInfo->flags & TYPEINFO_SELF)
+                        name += "self";
+                    else if (varNode->typeInfo)
+                        name += varNode->typeInfo->name;
+                    else
+                        name += outputNode(varNode->type);
+                    firstParam = false;
+                }
+            }
+            name += ")";
+        }
+
+        helpContent += Fmt("<a href=\"#%s\">%s</a>", n1->getScopedName().c_str(), name.c_str());
         helpContent += "</td>\n";
 
+        // Short desc
         helpContent += "<td class=\"enumeration\">\n";
         auto subDocComment = getDocComment(n1);
         if (!subDocComment.empty())
@@ -720,7 +752,7 @@ void ModuleGenDocJob::outputStyles()
             padding:            6px;\n\
             border:             1px solid LightGrey;\n\
             border-collapse:    collapse;\n\
-            width:              20%;\n\
+            width:              30%;\n\
         }\n\
         td.tdname {\n\
             padding:            6px;\n\

@@ -50,7 +50,7 @@
             padding:            6px;
             border:             1px solid LightGrey;
             border-collapse:    collapse;
-            width:              20%;
+            width:              30%;
         }
         td.tdname {
             padding:            6px;
@@ -1490,13 +1490,13 @@ SRWLOCK</td>
 <table class="enumeration">
 <tr>
 <td class="enumeration">
-<a href="#MutexRW.lock">lock</a></td>
+<a href="#MutexRW.lock">lock(self)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#MutexRW.unlock">unlock</a></td>
+<a href="#MutexRW.unlock">unlock(self)</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -3324,7 +3324,7 @@ Detect memory leaks if true.</p>
 <table class="enumeration">
 <tr>
 <td class="enumeration">
-<a href="#Swag.DebugAllocator.assertIsAllocated">assertIsAllocated</a></td>
+<a href="#Swag.DebugAllocator.assertIsAllocated">assertIsAllocated(self, *void, const ref SourceCodeLocation)</a></td>
 <td class="enumeration">
 <p>
 This function will assert if the given user address is not conform to an allocated block.</p>
@@ -3332,7 +3332,7 @@ This function will assert if the given user address is not conform to an allocat
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Swag.DebugAllocator.checkAllMemory">checkAllMemory</a></td>
+<a href="#Swag.DebugAllocator.checkAllMemory">checkAllMemory(self)</a></td>
 <td class="enumeration">
 <p>
 Check all allocated blocks.</p>
@@ -3340,37 +3340,37 @@ Check all allocated blocks.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Swag.DebugAllocator.checkIsAllocated">checkIsAllocated</a></td>
+<a href="#Swag.DebugAllocator.checkIsAllocated">checkIsAllocated(self, ^DebugAllocatorHeader, const ref SourceCodeLocation)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Swag.DebugAllocator.checkIsFreed">checkIsFreed</a></td>
+<a href="#Swag.DebugAllocator.checkIsFreed">checkIsFreed(self, ^DebugAllocatorHeader)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Swag.DebugAllocator.memAlign">memAlign</a></td>
+<a href="#Swag.DebugAllocator.memAlign">memAlign(u64, u32)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Swag.DebugAllocator.opDrop">opDrop</a></td>
+<a href="#Swag.DebugAllocator.opDrop">opDrop(self)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Swag.DebugAllocator.printDisplaySize">printDisplaySize</a></td>
+<a href="#Swag.DebugAllocator.printDisplaySize">printDisplaySize(u64)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Swag.DebugAllocator.printLeaks">printLeaks</a></td>
+<a href="#Swag.DebugAllocator.printLeaks">printLeaks(self)</a></td>
 <td class="enumeration">
 <p>
 Output to the console the list of all allocated blocks (leaks).</p>
@@ -3378,7 +3378,7 @@ Output to the console the list of all allocated blocks (leaks).</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Swag.DebugAllocator.setup">setup</a></td>
+<a href="#Swag.DebugAllocator.setup">setup(self, IAllocator)</a></td>
 <td class="enumeration">
 <p>
 Setup the allocator.</p>
@@ -4830,25 +4830,25 @@ u64</td>
 <table class="enumeration">
 <tr>
 <td class="enumeration">
-<a href="#Swag.ScratchAllocator.align">align</a></td>
+<a href="#Swag.ScratchAllocator.align">align(u64, u32)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Swag.ScratchAllocator.alloc">alloc</a></td>
+<a href="#Swag.ScratchAllocator.alloc">alloc(self, u64, u32)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Swag.ScratchAllocator.free">free</a></td>
+<a href="#Swag.ScratchAllocator.free">free(self, *void, u64)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Swag.ScratchAllocator.freeAll">freeAll</a></td>
+<a href="#Swag.ScratchAllocator.freeAll">freeAll(self)</a></td>
 <td class="enumeration">
 <p>
 Restore all memory.</p>
@@ -4856,7 +4856,7 @@ Restore all memory.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Swag.ScratchAllocator.release">release</a></td>
+<a href="#Swag.ScratchAllocator.release">release(self)</a></td>
 <td class="enumeration">
 <p>
 Release the allocated block.</p>
@@ -4864,7 +4864,7 @@ Release the allocated block.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Swag.ScratchAllocator.setCapacity">setCapacity</a></td>
+<a href="#Swag.ScratchAllocator.setCapacity">setCapacity(self, u64, IAllocator)</a></td>
 <td class="enumeration">
 <p>
 This will call <code class = "incode">release</code> prior to changing the capacity, so this must be called at an early stage.</p>

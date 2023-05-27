@@ -50,7 +50,7 @@
             padding:            6px;
             border:             1px solid LightGrey;
             border-collapse:    collapse;
-            width:              20%;
+            width:              30%;
         }
         td.tdname {
             padding:            6px;
@@ -2171,7 +2171,7 @@ Rectangle</td>
 <table class="enumeration">
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Brush.createHatch">createHatch</a></td>
+<a href="#Pixel.Brush.createHatch">createHatch(HatchStyle, const ref Color)</a></td>
 <td class="enumeration">
 <p>
 Returns a hatch brush.</p>
@@ -2179,7 +2179,7 @@ Returns a hatch brush.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Brush.createSolid">createSolid</a></td>
+<a href="#Pixel.Brush.createSolid">createSolid(const ref Color)</a></td>
 <td class="enumeration">
 <p>
 Returns a solid color brush.</p>
@@ -2187,7 +2187,7 @@ Returns a solid color brush.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Brush.createTexture">createTexture</a></td>
+<a href="#Pixel.Brush.createTexture">createTexture(const ref Texture)</a></td>
 <td class="enumeration">
 <p>
 Returns a full texture brush.</p>
@@ -2195,7 +2195,7 @@ Returns a full texture brush.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Brush.createTiled">createTiled</a></td>
+<a href="#Pixel.Brush.createTiled">createTiled(const ref Texture)</a></td>
 <td class="enumeration">
 <p>
 Returns a tiled texture brush.</p>
@@ -2811,7 +2811,7 @@ CInt</td>
 <table class="enumeration">
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Clipper.IntPoint.opEquals">opEquals</a></td>
+<a href="#Pixel.Clipper.IntPoint.opEquals">opEquals(self, const ref IntPoint)</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -3478,7 +3478,7 @@ bool</td>
 <td class="tdname">
 edgeList</td>
 <td class="tdtype">
-Array(__clipper_tuple_225)</td>
+Array(__clipper_tuple_222)</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -3698,7 +3698,7 @@ u32</td>
 <table class="enumeration">
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Color.fromAbgr">fromAbgr</a></td>
+<a href="#Pixel.Color.fromAbgr">fromAbgr(u32)</a></td>
 <td class="enumeration">
 <p>
 Create a new Color with specified values.</p>
@@ -3706,7 +3706,7 @@ Create a new Color with specified values.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Color.fromArgb">fromArgb</a></td>
+<a href="#Pixel.Color.fromArgb">fromArgb(u8, u8, u8, u8)</a></td>
 <td class="enumeration">
 <p>
 Create a new Color with specified values.</p>
@@ -3714,7 +3714,7 @@ Create a new Color with specified values.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Color.fromArgb">fromArgb</a></td>
+<a href="#Pixel.Color.fromArgb">fromArgb(Argb)</a></td>
 <td class="enumeration">
 <p>
 Create a new Color with specified values.</p>
@@ -3722,7 +3722,7 @@ Create a new Color with specified values.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Color.fromArgb">fromArgb</a></td>
+<a href="#Pixel.Color.fromArgb">fromArgb(u8, Argb)</a></td>
 <td class="enumeration">
 <p>
 Create a new Color with specified values.</p>
@@ -3730,7 +3730,7 @@ Create a new Color with specified values.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Color.fromArgb">fromArgb</a></td>
+<a href="#Pixel.Color.fromArgb">fromArgb(u32)</a></td>
 <td class="enumeration">
 <p>
 Create a new Color with specified values.</p>
@@ -3738,7 +3738,7 @@ Create a new Color with specified values.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Color.fromArgbf">fromArgbf</a></td>
+<a href="#Pixel.Color.fromArgbf">fromArgbf(f32, f32, f32, f32)</a></td>
 <td class="enumeration">
 <p>
 Create a new Color with specified values.</p>
@@ -3746,7 +3746,7 @@ Create a new Color with specified values.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Color.fromHsl">fromHsl</a></td>
+<a href="#Pixel.Color.fromHsl">fromHsl(f32, f32, f32)</a></td>
 <td class="enumeration">
 <p>
 Create a new Color with specified values.</p>
@@ -3754,7 +3754,7 @@ Create a new Color with specified values.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Color.fromRgb">fromRgb</a></td>
+<a href="#Pixel.Color.fromRgb">fromRgb(u8, u8, u8)</a></td>
 <td class="enumeration">
 <p>
 Create a new Color with specified values.</p>
@@ -3762,7 +3762,7 @@ Create a new Color with specified values.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Color.fromRgbf">fromRgbf</a></td>
+<a href="#Pixel.Color.fromRgbf">fromRgbf(f32, f32, f32)</a></td>
 <td class="enumeration">
 <p>
 Create a new Color with specified values.</p>
@@ -3770,7 +3770,7 @@ Create a new Color with specified values.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Color.getBlend">getBlend</a></td>
+<a href="#Pixel.Color.getBlend">getBlend(const ref Color, const ref Color, f32)</a></td>
 <td class="enumeration">
 <p>
 Blend two colors.</p>
@@ -3778,7 +3778,7 @@ Blend two colors.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Color.getBlendKeepAlpha">getBlendKeepAlpha</a></td>
+<a href="#Pixel.Color.getBlendKeepAlpha">getBlendKeepAlpha(const ref Color, const ref Color, f32)</a></td>
 <td class="enumeration">
 <p>
 Blend two colors, keeping the alpha channel of <code class = "incode">col0</code> untouched.</p>
@@ -3786,7 +3786,7 @@ Blend two colors, keeping the alpha channel of <code class = "incode">col0</code
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Color.getDarker">getDarker</a></td>
+<a href="#Pixel.Color.getDarker">getDarker(const ref Color, f32)</a></td>
 <td class="enumeration">
 <p>
 Returns a darker color.</p>
@@ -3794,7 +3794,7 @@ Returns a darker color.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Color.getDistanceRgb">getDistanceRgb</a></td>
+<a href="#Pixel.Color.getDistanceRgb">getDistanceRgb(self, const ref Color)</a></td>
 <td class="enumeration">
 <p>
 Returns the distance between the other color.</p>
@@ -3802,7 +3802,7 @@ Returns the distance between the other color.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Color.getLighter">getLighter</a></td>
+<a href="#Pixel.Color.getLighter">getLighter(const ref Color, f32)</a></td>
 <td class="enumeration">
 <p>
 Returns a lighter color.</p>
@@ -3810,49 +3810,49 @@ Returns a lighter color.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Color.isOpaque">isOpaque</a></td>
+<a href="#Pixel.Color.isOpaque">isOpaque(self)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Color.opAffect">opAffect</a></td>
+<a href="#Pixel.Color.opAffect">opAffect(self, u32)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Color.opAffect">opAffect</a></td>
+<a href="#Pixel.Color.opAffect">opAffect(self, Argb)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Color.opAffect">opAffect</a></td>
+<a href="#Pixel.Color.opAffect">opAffect(self, string)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Color.opEquals">opEquals</a></td>
+<a href="#Pixel.Color.opEquals">opEquals(self, u32)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Color.opEquals">opEquals</a></td>
+<a href="#Pixel.Color.opEquals">opEquals(self, Argb)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Color.opEquals">opEquals</a></td>
+<a href="#Pixel.Color.opEquals">opEquals(self, const ref Color)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Color.setArgb">setArgb</a></td>
+<a href="#Pixel.Color.setArgb">setArgb(self, u8, u8, u8, u8)</a></td>
 <td class="enumeration">
 <p>
 Set all components.</p>
@@ -3860,7 +3860,7 @@ Set all components.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Color.setArgbf">setArgbf</a></td>
+<a href="#Pixel.Color.setArgbf">setArgbf(self, f32, f32, f32, f32)</a></td>
 <td class="enumeration">
 <p>
 Set all components with floats in the range [0 1].</p>
@@ -3868,7 +3868,7 @@ Set all components with floats in the range [0 1].</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Color.setHsl">setHsl</a></td>
+<a href="#Pixel.Color.setHsl">setHsl(self, f32, f32, f32)</a></td>
 <td class="enumeration">
 <p>
 Initialize color with hue, saturation, lightness.</p>
@@ -3876,7 +3876,7 @@ Initialize color with hue, saturation, lightness.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Color.setRgb">setRgb</a></td>
+<a href="#Pixel.Color.setRgb">setRgb(self, u8, u8, u8)</a></td>
 <td class="enumeration">
 <p>
 Just set r, g and b components. Alpha will be Opaque.</p>
@@ -3884,7 +3884,7 @@ Just set r, g and b components. Alpha will be Opaque.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Color.setRgb">setRgb</a></td>
+<a href="#Pixel.Color.setRgb">setRgb(self, const ref Color)</a></td>
 <td class="enumeration">
 <p>
 Just set r, g and b components. Alpha will be Opaque.</p>
@@ -3892,7 +3892,7 @@ Just set r, g and b components. Alpha will be Opaque.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Color.setRgbf">setRgbf</a></td>
+<a href="#Pixel.Color.setRgbf">setRgbf(self, f32, f32, f32)</a></td>
 <td class="enumeration">
 <p>
 Set r,g,b with floats in the range [0 1] Alpha will be Opaque.</p>
@@ -3900,7 +3900,7 @@ Set r,g,b with floats in the range [0 1] Alpha will be Opaque.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Color.toArgbf">toArgbf</a></td>
+<a href="#Pixel.Color.toArgbf">toArgbf(self)</a></td>
 <td class="enumeration">
 <p>
 Retrieve all components as floating point values between 0 and 1.</p>
@@ -3908,7 +3908,7 @@ Retrieve all components as floating point values between 0 and 1.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Color.toHsl">toHsl</a></td>
+<a href="#Pixel.Color.toHsl">toHsl(self)</a></td>
 <td class="enumeration">
 <p>
 Returns hue, saturation, lightness.</p>
@@ -3916,7 +3916,7 @@ Returns hue, saturation, lightness.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Color.toRgbf">toRgbf</a></td>
+<a href="#Pixel.Color.toRgbf">toRgbf(self)</a></td>
 <td class="enumeration">
 <p>
 Retrieve all components as floating point values between 0 and 1.</p>
@@ -4403,7 +4403,7 @@ id</td>
 <td class="tdname">
 params</td>
 <td class="tdtype">
-__painter_tuple_199</td>
+__painter_tuple_201</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -5116,7 +5116,7 @@ bool</td>
 <table class="enumeration">
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Font.create">create</a></td>
+<a href="#Pixel.Font.create">create(*TypeFace, u32, bool, bool)</a></td>
 <td class="enumeration">
 <p>
 Creates a new Font of the given typeface and size.</p>
@@ -5124,7 +5124,7 @@ Creates a new Font of the given typeface and size.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Font.create">create</a></td>
+<a href="#Pixel.Font.create">create(string, u32, bool, bool)</a></td>
 <td class="enumeration">
 <p>
 Creates a new Font with the given filename and size.</p>
@@ -5132,7 +5132,7 @@ Creates a new Font with the given filename and size.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Font.getGlyphDesc">getGlyphDesc</a></td>
+<a href="#Pixel.Font.getGlyphDesc">getGlyphDesc(self, rune)</a></td>
 <td class="enumeration">
 <p>
 Returns the glyph descriptor of a given rune.</p>
@@ -5140,7 +5140,7 @@ Returns the glyph descriptor of a given rune.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Font.release">release</a></td>
+<a href="#Pixel.Font.release">release(*Font)</a></td>
 <td class="enumeration">
 <p>
 Release the given font.</p>
@@ -5253,7 +5253,7 @@ boldItalic</td>
 <table class="enumeration">
 <tr>
 <td class="enumeration">
-<a href="#Pixel.FontFamily.createTypeFace">createTypeFace</a></td>
+<a href="#Pixel.FontFamily.createTypeFace">createTypeFace(const ref FontFamilyEnumerate, FontFamilyStyle)</a></td>
 <td class="enumeration">
 <p>
 Creates a typeface from a FontFamilyEnumerate and FontFamilyStyle.</p>
@@ -5261,7 +5261,7 @@ Creates a typeface from a FontFamilyEnumerate and FontFamilyStyle.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.FontFamily.enumerateFromOs">enumerateFromOs</a></td>
+<a href="#Pixel.FontFamily.enumerateFromOs">enumerateFromOs()</a></td>
 <td class="enumeration">
 <p>
 Enumerate the font families available in the os.</p>
@@ -5269,7 +5269,7 @@ Enumerate the font families available in the os.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.FontFamily.getFont">getFont</a></td>
+<a href="#Pixel.FontFamily.getFont">getFont(self, FontFamilyStyle)</a></td>
 <td class="enumeration">
 <p>
 Get the font corresponding to the style. If not evailable, get another one.</p>
@@ -5277,7 +5277,7 @@ Get the font corresponding to the style. If not evailable, get another one.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.FontFamily.getFromOs">getFromOs</a></td>
+<a href="#Pixel.FontFamily.getFromOs">getFromOs(string)</a></td>
 <td class="enumeration">
 <p>
 Get a FontFamilyEnumerate from a font family name.</p>
@@ -5285,7 +5285,7 @@ Get a FontFamilyEnumerate from a font family name.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.FontFamily.setFont">setFont</a></td>
+<a href="#Pixel.FontFamily.setFont">setFont(self, *Font, FontFamilyStyle)</a></td>
 <td class="enumeration">
 <p>
 Set the font corresponding to a given style.</p>
@@ -5709,7 +5709,7 @@ u64</td>
 <table class="enumeration">
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Gif.Decoder.getFrame">getFrame</a></td>
+<a href="#Pixel.Gif.Decoder.getFrame">getFrame(self, *Image, bool)</a></td>
 <td class="enumeration">
 <p>
 Create an image for the current frame.</p>
@@ -5717,7 +5717,7 @@ Create an image for the current frame.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Gif.Decoder.getNumFrames">getNumFrames</a></td>
+<a href="#Pixel.Gif.Decoder.getNumFrames">getNumFrames(self)</a></td>
 <td class="enumeration">
 <p>
 Returns the number of frames As Gif does not store it, we need to go threw all images (!).</p>
@@ -5725,7 +5725,7 @@ Returns the number of frames As Gif does not store it, we need to go threw all i
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Gif.Decoder.init">init</a></td>
+<a href="#Pixel.Gif.Decoder.init">init(self, const [..] u8, bool)</a></td>
 <td class="enumeration">
 <p>
 Initialize the decoder.</p>
@@ -5733,7 +5733,7 @@ Initialize the decoder.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Gif.Decoder.nextFrame">nextFrame</a></td>
+<a href="#Pixel.Gif.Decoder.nextFrame">nextFrame(self, *Image)</a></td>
 <td class="enumeration">
 <p>
 Get the next frame. Returns false if we have reached the end.</p>
@@ -5741,7 +5741,7 @@ Get the next frame. Returns false if we have reached the end.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Gif.Decoder.rewind">rewind</a></td>
+<a href="#Pixel.Gif.Decoder.rewind">rewind(self)</a></td>
 <td class="enumeration">
 <p>
 Restart at frame 0.</p>
@@ -6723,7 +6723,7 @@ workingBuffer</td>
 <table class="enumeration">
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Image.addDecoder">addDecoder</a></td>
+<a href="#Pixel.Image.addDecoder">addDecoder()</a></td>
 <td class="enumeration">
 <p>
 Register an image decoder.</p>
@@ -6731,7 +6731,7 @@ Register an image decoder.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Image.addEncoder">addEncoder</a></td>
+<a href="#Pixel.Image.addEncoder">addEncoder()</a></td>
 <td class="enumeration">
 <p>
 Register an image encoder.</p>
@@ -6739,7 +6739,7 @@ Register an image encoder.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Image.allocPixels">allocPixels</a></td>
+<a href="#Pixel.Image.allocPixels">allocPixels(self)</a></td>
 <td class="enumeration">
 <p>
 Allocate pixels.</p>
@@ -6747,7 +6747,7 @@ Allocate pixels.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Image.allocWorkingBuffer">allocWorkingBuffer</a></td>
+<a href="#Pixel.Image.allocWorkingBuffer">allocWorkingBuffer(self, s32, s32, PixelFormat)</a></td>
 <td class="enumeration">
 <p>
 Allocate a computing buffer with new sizes.</p>
@@ -6755,7 +6755,7 @@ Allocate a computing buffer with new sizes.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Image.allocWorkingBuffer">allocWorkingBuffer</a></td>
+<a href="#Pixel.Image.allocWorkingBuffer">allocWorkingBuffer(self)</a></td>
 <td class="enumeration">
 <p>
 Allocate a computing buffer with current image size.</p>
@@ -6763,7 +6763,7 @@ Allocate a computing buffer with current image size.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Image.applyKernel">applyKernel</a></td>
+<a href="#Pixel.Image.applyKernel">applyKernel(self, Kernel)</a></td>
 <td class="enumeration">
 <p>
 Apply a kernel to the image.</p>
@@ -6771,7 +6771,7 @@ Apply a kernel to the image.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Image.applyWorkingBuffer">applyWorkingBuffer</a></td>
+<a href="#Pixel.Image.applyWorkingBuffer">applyWorkingBuffer(self)</a></td>
 <td class="enumeration">
 <p>
 Replace the current image content with the working buffer.</p>
@@ -6779,7 +6779,7 @@ Replace the current image content with the working buffer.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Image.canLoad">canLoad</a></td>
+<a href="#Pixel.Image.canLoad">canLoad(string)</a></td>
 <td class="enumeration">
 <p>
 Returns <code class = "incode">true</code> if the given filename has a corresponding decoder.</p>
@@ -6787,7 +6787,7 @@ Returns <code class = "incode">true</code> if the given filename has a correspon
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Image.canSave">canSave</a></td>
+<a href="#Pixel.Image.canSave">canSave(string)</a></td>
 <td class="enumeration">
 <p>
 Returns <code class = "incode">true</code> if the given filename has a corresponding encoder.</p>
@@ -6795,7 +6795,7 @@ Returns <code class = "incode">true</code> if the given filename has a correspon
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Image.clear">clear</a></td>
+<a href="#Pixel.Image.clear">clear(self)</a></td>
 <td class="enumeration">
 <p>
 Clear the content of the image.</p>
@@ -6803,7 +6803,7 @@ Clear the content of the image.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Image.colorize">colorize</a></td>
+<a href="#Pixel.Image.colorize">colorize(self, f32, f32, f32)</a></td>
 <td class="enumeration">
 <p>
 Colorize the image by setting the hue and saturation.</p>
@@ -6811,7 +6811,7 @@ Colorize the image by setting the hue and saturation.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Image.contrast">contrast</a></td>
+<a href="#Pixel.Image.contrast">contrast(self, f32)</a></td>
 <td class="enumeration">
 <p>
 Change the contrast. <code class = "incode">factor</code> is [-1, 1].</p>
@@ -6819,7 +6819,7 @@ Change the contrast. <code class = "incode">factor</code> is [-1, 1].</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Image.copyPixel">copyPixel</a></td>
+<a href="#Pixel.Image.copyPixel">copyPixel(^u8, ^u8)</a></td>
 <td class="enumeration">
 <p>
 Copy one pixel, depending on bpp.</p>
@@ -6827,7 +6827,7 @@ Copy one pixel, depending on bpp.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Image.create">create</a></td>
+<a href="#Pixel.Image.create">create(s32, s32, PixelFormat, const [..] u8)</a></td>
 <td class="enumeration">
 <p>
 Creates a new image.</p>
@@ -6835,7 +6835,7 @@ Creates a new image.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Image.crop">crop</a></td>
+<a href="#Pixel.Image.crop">crop(self, s32, s32, s32, s32)</a></td>
 <td class="enumeration">
 <p>
 Crop image.</p>
@@ -6843,13 +6843,13 @@ Crop image.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Image.crop">crop</a></td>
+<a href="#Pixel.Image.crop">crop(self, const ref Rectangle)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Image.decode">decode</a></td>
+<a href="#Pixel.Image.decode">decode(string, const [..] u8, const ref DecodeOptions)</a></td>
 <td class="enumeration">
 <p>
 Decode the given image buffer.</p>
@@ -6857,7 +6857,7 @@ Decode the given image buffer.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Image.fade">fade</a></td>
+<a href="#Pixel.Image.fade">fade(self, const ref Color, f32)</a></td>
 <td class="enumeration">
 <p>
 Fade to a given color. <code class = "incode">factor</code> is [0, 1].</p>
@@ -6865,7 +6865,7 @@ Fade to a given color. <code class = "incode">factor</code> is [0, 1].</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Image.fill">fill</a></td>
+<a href="#Pixel.Image.fill">fill(self, const ref Color)</a></td>
 <td class="enumeration">
 <p>
 Fill image with <code class = "incode">color</code>.</p>
@@ -6873,7 +6873,7 @@ Fill image with <code class = "incode">color</code>.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Image.fillGradient2">fillGradient2</a></td>
+<a href="#Pixel.Image.fillGradient2">fillGradient2(self, const ref Color, const ref Color)</a></td>
 <td class="enumeration">
 <p>
 Fill with an horizontal gradient from <code class = "incode">color0</code> to <code class = "incode">color1</code>.</p>
@@ -6881,7 +6881,7 @@ Fill with an horizontal gradient from <code class = "incode">color0</code> to <c
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Image.fillGradient4">fillGradient4</a></td>
+<a href="#Pixel.Image.fillGradient4">fillGradient4(self, const ref Color, const ref Color, const ref Color, const ref Color)</a></td>
 <td class="enumeration">
 <p>
 Fill with a gradient with a different color at each corner.</p>
@@ -6889,13 +6889,13 @@ Fill with a gradient with a different color at each corner.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Image.fillHsl">fillHsl</a></td>
+<a href="#Pixel.Image.fillHsl">fillHsl(self, FillHslType, const ref Color)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Image.flip">flip</a></td>
+<a href="#Pixel.Image.flip">flip(self)</a></td>
 <td class="enumeration">
 <p>
 Flip image vertically.</p>
@@ -6903,7 +6903,7 @@ Flip image vertically.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Image.freeWorkingBuffer">freeWorkingBuffer</a></td>
+<a href="#Pixel.Image.freeWorkingBuffer">freeWorkingBuffer(self)</a></td>
 <td class="enumeration">
 <p>
 Free the working buffer if allocated.</p>
@@ -6911,7 +6911,7 @@ Free the working buffer if allocated.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Image.from">from</a></td>
+<a href="#Pixel.Image.from">from(HBITMAP)</a></td>
 <td class="enumeration">
 <p>
 Creates an image from a windows HBITMAP.</p>
@@ -6919,7 +6919,7 @@ Creates an image from a windows HBITMAP.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Image.from">from</a></td>
+<a href="#Pixel.Image.from">from(HICON)</a></td>
 <td class="enumeration">
 <p>
 Creates an image from a windows HICON.</p>
@@ -6927,7 +6927,7 @@ Creates an image from a windows HICON.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Image.gamma">gamma</a></td>
+<a href="#Pixel.Image.gamma">gamma(self, f32)</a></td>
 <td class="enumeration">
 <p>
 Change the gamma.</p>
@@ -6935,7 +6935,7 @@ Change the gamma.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Image.getPixelColor">getPixelColor</a></td>
+<a href="#Pixel.Image.getPixelColor">getPixelColor(self, s32, s32)</a></td>
 <td class="enumeration">
 <p>
 Returns the color at the given coordinate.</p>
@@ -6943,7 +6943,7 @@ Returns the color at the given coordinate.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Image.grayScale">grayScale</a></td>
+<a href="#Pixel.Image.grayScale">grayScale(self, f32)</a></td>
 <td class="enumeration">
 <p>
 Transform image to grayscale, with a given factor.</p>
@@ -6951,7 +6951,7 @@ Transform image to grayscale, with a given factor.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Image.halfSize">halfSize</a></td>
+<a href="#Pixel.Image.halfSize">halfSize(self)</a></td>
 <td class="enumeration">
 <p>
 Divide image size by 2 with a bilinear 2x2 filter.</p>
@@ -6959,7 +6959,7 @@ Divide image size by 2 with a bilinear 2x2 filter.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Image.init">init</a></td>
+<a href="#Pixel.Image.init">init(self, s32, s32, PixelFormat)</a></td>
 <td class="enumeration">
 <p>
 Initialize image informations <code class = "incode">pixels</code> is set to null, and must be initialized after a call to that function This gives the opportunity to set the pixels with an external buffer.</p>
@@ -6967,7 +6967,7 @@ Initialize image informations <code class = "incode">pixels</code> is set to nul
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Image.invert">invert</a></td>
+<a href="#Pixel.Image.invert">invert(self)</a></td>
 <td class="enumeration">
 <p>
 Invert colors.</p>
@@ -6975,7 +6975,7 @@ Invert colors.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Image.isValid">isValid</a></td>
+<a href="#Pixel.Image.isValid">isValid(self)</a></td>
 <td class="enumeration">
 <p>
 Returns true if the image is valid.</p>
@@ -6983,7 +6983,7 @@ Returns true if the image is valid.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Image.lightness">lightness</a></td>
+<a href="#Pixel.Image.lightness">lightness(self, f32)</a></td>
 <td class="enumeration">
 <p>
 Change the lightness. <code class = "incode">factor</code> is [-1, 1].</p>
@@ -6991,7 +6991,7 @@ Change the lightness. <code class = "incode">factor</code> is [-1, 1].</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Image.load">load</a></td>
+<a href="#Pixel.Image.load">load(string, const ref DecodeOptions)</a></td>
 <td class="enumeration">
 <p>
 Load the given image file.</p>
@@ -6999,7 +6999,7 @@ Load the given image file.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Image.mirror">mirror</a></td>
+<a href="#Pixel.Image.mirror">mirror(self)</a></td>
 <td class="enumeration">
 <p>
 Flip image horizontally.</p>
@@ -7007,7 +7007,7 @@ Flip image horizontally.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Image.mix">mix</a></td>
+<a href="#Pixel.Image.mix">mix(self, const ref Image, s32, s32, MixMode)</a></td>
 <td class="enumeration">
 <p>
 Mix with another image.</p>
@@ -7015,13 +7015,13 @@ Mix with another image.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Image.opVisit">opVisit</a></td>
+<a href="#Pixel.Image.opVisit">opVisit(self, code)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Image.release">release</a></td>
+<a href="#Pixel.Image.release">release(self)</a></td>
 <td class="enumeration">
 <p>
 Release the content of the image.</p>
@@ -7029,7 +7029,7 @@ Release the content of the image.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Image.resize">resize</a></td>
+<a href="#Pixel.Image.resize">resize(self, s32, s32, ResizeMode)</a></td>
 <td class="enumeration">
 <p>
 Resize image Put <code class = "incode">newWidth</code> or <code class = "incode">newHeight</code> to 0 to keep aspect ratio.</p>
@@ -7037,7 +7037,7 @@ Resize image Put <code class = "incode">newWidth</code> or <code class = "incode
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Image.save">save</a></td>
+<a href="#Pixel.Image.save">save(self, string, any)</a></td>
 <td class="enumeration">
 <p>
 Save the image to a file.</p>
@@ -7045,7 +7045,7 @@ Save the image to a file.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Image.setAlpha">setAlpha</a></td>
+<a href="#Pixel.Image.setAlpha">setAlpha(self, u8)</a></td>
 <td class="enumeration">
 <p>
 Change the alpha channel.</p>
@@ -7053,7 +7053,7 @@ Change the alpha channel.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Image.setChannel">setChannel</a></td>
+<a href="#Pixel.Image.setChannel">setChannel(self, ChannelMode, ChannelValueMode, u8)</a></td>
 <td class="enumeration">
 <p>
 Change specified color channels.</p>
@@ -7061,7 +7061,7 @@ Change specified color channels.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Image.setPixelFormat">setPixelFormat</a></td>
+<a href="#Pixel.Image.setPixelFormat">setPixelFormat(self, PixelFormat)</a></td>
 <td class="enumeration">
 <p>
 Change image pixel format.</p>
@@ -7069,7 +7069,7 @@ Change image pixel format.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Image.setPixelRGBA8">setPixelRGBA8</a></td>
+<a href="#Pixel.Image.setPixelRGBA8">setPixelRGBA8(^u8, u8, u8, u8, u8)</a></td>
 <td class="enumeration">
 <p>
 Set pixel values depending on pixel format.</p>
@@ -7077,7 +7077,7 @@ Set pixel values depending on pixel format.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Image.toApplyKernel">toApplyKernel</a></td>
+<a href="#Pixel.Image.toApplyKernel">toApplyKernel(self, Kernel)</a></td>
 <td class="enumeration">
 <p>
 Apply a kernel to the image.</p>
@@ -7085,13 +7085,13 @@ Apply a kernel to the image.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Image.toCrop">toCrop</a></td>
+<a href="#Pixel.Image.toCrop">toCrop(self, const ref Rectangle)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Image.toCrop">toCrop</a></td>
+<a href="#Pixel.Image.toCrop">toCrop(self, s32, s32, s32, s32)</a></td>
 <td class="enumeration">
 <p>
 Crop image.</p>
@@ -7099,7 +7099,7 @@ Crop image.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Image.toFlip">toFlip</a></td>
+<a href="#Pixel.Image.toFlip">toFlip(self)</a></td>
 <td class="enumeration">
 <p>
 Flip image vertically.</p>
@@ -7107,7 +7107,7 @@ Flip image vertically.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Image.toHICON">toHICON</a></td>
+<a href="#Pixel.Image.toHICON">toHICON(self)</a></td>
 <td class="enumeration">
 <p>
 Transform an image to a windows icon.</p>
@@ -7115,7 +7115,7 @@ Transform an image to a windows icon.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Image.toHalfSize">toHalfSize</a></td>
+<a href="#Pixel.Image.toHalfSize">toHalfSize(self)</a></td>
 <td class="enumeration">
 <p>
 Divide image size by 2 with a bilinear 2x2 filter.</p>
@@ -7123,7 +7123,7 @@ Divide image size by 2 with a bilinear 2x2 filter.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Image.toMirror">toMirror</a></td>
+<a href="#Pixel.Image.toMirror">toMirror(self)</a></td>
 <td class="enumeration">
 <p>
 Flip image horizontally.</p>
@@ -7131,7 +7131,7 @@ Flip image horizontally.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Image.toMix">toMix</a></td>
+<a href="#Pixel.Image.toMix">toMix(self, const ref Image, s32, s32, MixMode)</a></td>
 <td class="enumeration">
 <p>
 Mix with another image.</p>
@@ -7139,7 +7139,7 @@ Mix with another image.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Image.toResize">toResize</a></td>
+<a href="#Pixel.Image.toResize">toResize(self, s32, s32, ResizeMode)</a></td>
 <td class="enumeration">
 <p>
 Resize image Put <code class = "incode">newWidth</code> or <code class = "incode">newHeight</code> to 0 to keep aspect ratio.</p>
@@ -7147,7 +7147,7 @@ Resize image Put <code class = "incode">newWidth</code> or <code class = "incode
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Image.toSetPixelFormat">toSetPixelFormat</a></td>
+<a href="#Pixel.Image.toSetPixelFormat">toSetPixelFormat(self, PixelFormat)</a></td>
 <td class="enumeration">
 <p>
 Change image pixel format.</p>
@@ -7155,7 +7155,7 @@ Change image pixel format.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Image.toTurn">toTurn</a></td>
+<a href="#Pixel.Image.toTurn">toTurn(self, TurnAngle)</a></td>
 <td class="enumeration">
 <p>
 Turn image by a given predefined angle.</p>
@@ -7163,7 +7163,7 @@ Turn image by a given predefined angle.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Image.turn">turn</a></td>
+<a href="#Pixel.Image.turn">turn(self, TurnAngle)</a></td>
 <td class="enumeration">
 <p>
 Turn image by a given predefined angle.</p>
@@ -7171,7 +7171,7 @@ Turn image by a given predefined angle.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Image.visitPixels">visitPixels</a></td>
+<a href="#Pixel.Image.visitPixels">visitPixels(self, *void, s32, code)</a></td>
 <td class="enumeration">
 <p>
 Macro to visit all pixels of the image in parallel chunks.</p>
@@ -9874,7 +9874,7 @@ Array(*Edge)</td>
 <table class="enumeration">
 <tr>
 <td class="enumeration">
-<a href="#Pixel.LinePath.arcTo">arcTo</a></td>
+<a href="#Pixel.LinePath.arcTo">arcTo(self, f32, f32, f32, f32, const ref Angle, const ref Angle)</a></td>
 <td class="enumeration">
 <p>
 Add an arc from the previous point.</p>
@@ -9882,7 +9882,7 @@ Add an arc from the previous point.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.LinePath.bezierTo">bezierTo</a></td>
+<a href="#Pixel.LinePath.bezierTo">bezierTo(self, f32, f32, f32, f32)</a></td>
 <td class="enumeration">
 <p>
 Add a curve from the previous point to <code class = "incode">pt</code>.</p>
@@ -9890,7 +9890,7 @@ Add a curve from the previous point to <code class = "incode">pt</code>.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.LinePath.bezierTo">bezierTo</a></td>
+<a href="#Pixel.LinePath.bezierTo">bezierTo(self, f32, f32, f32, f32, f32, f32)</a></td>
 <td class="enumeration">
 <p>
 Add a curve from the previous point to <code class = "incode">pt</code>.</p>
@@ -9898,7 +9898,7 @@ Add a curve from the previous point to <code class = "incode">pt</code>.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.LinePath.clearCache">clearCache</a></td>
+<a href="#Pixel.LinePath.clearCache">clearCache(self)</a></td>
 <td class="enumeration">
 <p>
 Clear internal cache.</p>
@@ -9906,7 +9906,7 @@ Clear internal cache.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.LinePath.close">close</a></td>
+<a href="#Pixel.LinePath.close">close(self)</a></td>
 <td class="enumeration">
 <p>
 Close the figure Will add a line or a curve to the first point if necessary.</p>
@@ -9914,7 +9914,7 @@ Close the figure Will add a line or a curve to the first point if necessary.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.LinePath.curveTo">curveTo</a></td>
+<a href="#Pixel.LinePath.curveTo">curveTo(self, f32, f32)</a></td>
 <td class="enumeration">
 <p>
 Add a curve from the previous point to <code class = "incode">pt</code>.</p>
@@ -9922,7 +9922,7 @@ Add a curve from the previous point to <code class = "incode">pt</code>.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.LinePath.flatten">flatten</a></td>
+<a href="#Pixel.LinePath.flatten">flatten(self, PaintQuality)</a></td>
 <td class="enumeration">
 <p>
 Convert the path to a list of points.</p>
@@ -9930,7 +9930,7 @@ Convert the path to a list of points.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.LinePath.lineTo">lineTo</a></td>
+<a href="#Pixel.LinePath.lineTo">lineTo(self, f32, f32)</a></td>
 <td class="enumeration">
 <p>
 Add a line from the previous point to <code class = "incode">pt</code>.</p>
@@ -9938,7 +9938,7 @@ Add a line from the previous point to <code class = "incode">pt</code>.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.LinePath.setArc">setArc</a></td>
+<a href="#Pixel.LinePath.setArc">setArc(self, f32, f32, f32, const ref Angle, const ref Angle)</a></td>
 <td class="enumeration">
 <p>
 Initialize the path with an arc.</p>
@@ -9946,7 +9946,7 @@ Initialize the path with an arc.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.LinePath.setCircle">setCircle</a></td>
+<a href="#Pixel.LinePath.setCircle">setCircle(self, f32, f32, f32)</a></td>
 <td class="enumeration">
 <p>
 Initialize the path with a circle.</p>
@@ -9954,7 +9954,7 @@ Initialize the path with a circle.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.LinePath.setEllipse">setEllipse</a></td>
+<a href="#Pixel.LinePath.setEllipse">setEllipse(self, f32, f32, f32, f32)</a></td>
 <td class="enumeration">
 <p>
 Initialize the path with an ellipse.</p>
@@ -9962,7 +9962,7 @@ Initialize the path with an ellipse.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.LinePath.setRect">setRect</a></td>
+<a href="#Pixel.LinePath.setRect">setRect(self, f32, f32, f32, f32)</a></td>
 <td class="enumeration">
 <p>
 Initialize the path with a rectangle.</p>
@@ -9970,7 +9970,7 @@ Initialize the path with a rectangle.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.LinePath.setRoundRect">setRoundRect</a></td>
+<a href="#Pixel.LinePath.setRoundRect">setRoundRect(self, f32, f32, f32, f32, f32, f32)</a></td>
 <td class="enumeration">
 <p>
 Initialize the path with a round rectangle.</p>
@@ -9978,7 +9978,7 @@ Initialize the path with a round rectangle.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.LinePath.start">start</a></td>
+<a href="#Pixel.LinePath.start">start(self, f32, f32)</a></td>
 <td class="enumeration">
 <p>
 Reset the path.</p>
@@ -10253,7 +10253,7 @@ Vector2</td>
 <table class="enumeration">
 <tr>
 <td class="enumeration">
-<a href="#Pixel.LinePathList.clean">clean</a></td>
+<a href="#Pixel.LinePathList.clean">clean(self)</a></td>
 <td class="enumeration">
 <p>
 Clean all paths They must before be flattened.</p>
@@ -10261,7 +10261,7 @@ Clean all paths They must before be flattened.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.LinePathList.clear">clear</a></td>
+<a href="#Pixel.LinePathList.clear">clear(self)</a></td>
 <td class="enumeration">
 <p>
 Remove all internal line paths.</p>
@@ -10269,13 +10269,13 @@ Remove all internal line paths.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.LinePathList.count">count</a></td>
+<a href="#Pixel.LinePathList.count">count(self)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.LinePathList.flatten">flatten</a></td>
+<a href="#Pixel.LinePathList.flatten">flatten(self, PaintQuality)</a></td>
 <td class="enumeration">
 <p>
 Flatten all paths.</p>
@@ -10283,7 +10283,7 @@ Flatten all paths.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.LinePathList.newPath">newPath</a></td>
+<a href="#Pixel.LinePathList.newPath">newPath(self)</a></td>
 <td class="enumeration">
 <p>
 Returns a new path.</p>
@@ -10291,7 +10291,7 @@ Returns a new path.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.LinePathList.offset">offset</a></td>
+<a href="#Pixel.LinePathList.offset">offset(self, f32)</a></td>
 <td class="enumeration">
 <p>
 Call fast offset on all paths They must before be flattened.</p>
@@ -10299,7 +10299,7 @@ Call fast offset on all paths They must before be flattened.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.LinePathList.offset">offset</a></td>
+<a href="#Pixel.LinePathList.offset">offset(self, f32, JoinStyle, f32)</a></td>
 <td class="enumeration">
 <p>
 Call quality offset on all paths They must before be flattened.</p>
@@ -10448,31 +10448,31 @@ s32</td>
 <table class="enumeration">
 <tr>
 <td class="enumeration">
-<a href="#Pixel.NativeRenderOgl.createContext">createContext</a></td>
+<a href="#Pixel.NativeRenderOgl.createContext">createContext(self, HWND, s32, s32, HGLRC)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.NativeRenderOgl.createContext">createContext</a></td>
+<a href="#Pixel.NativeRenderOgl.createContext">createContext(self, HDC, s32, s32, HGLRC)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.NativeRenderOgl.dropContext">dropContext</a></td>
+<a href="#Pixel.NativeRenderOgl.dropContext">dropContext(self, const ref RenderingContext)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.NativeRenderOgl.setCurrentContext">setCurrentContext</a></td>
+<a href="#Pixel.NativeRenderOgl.setCurrentContext">setCurrentContext(self, const ref RenderingContext)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.NativeRenderOgl.swapBuffers">swapBuffers</a></td>
+<a href="#Pixel.NativeRenderOgl.swapBuffers">swapBuffers(self, const ref RenderingContext)</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -10759,7 +10759,7 @@ sharedLinePathList</td>
 <td class="tdname">
 sharedRoundTmp</td>
 <td class="tdtype">
-Array(__linepath_tuple_244)</td>
+Array(__linepath_tuple_241)</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -10848,13 +10848,13 @@ bool</td>
 <table class="enumeration">
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Painter.addParams">addParams</a></td>
+<a href="#Pixel.Painter.addParams">addParams(self, PaintParams)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Painter.begin">begin</a></td>
+<a href="#Pixel.Painter.begin">begin(self)</a></td>
 <td class="enumeration">
 <p>
 Call this before drawing.</p>
@@ -10862,7 +10862,7 @@ Call this before drawing.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Painter.bindRenderTarget">bindRenderTarget</a></td>
+<a href="#Pixel.Painter.bindRenderTarget">bindRenderTarget(self, *RenderTarget, bool)</a></td>
 <td class="enumeration">
 <p>
 Bind a render target.</p>
@@ -10870,7 +10870,7 @@ Bind a render target.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Painter.clear">clear</a></td>
+<a href="#Pixel.Painter.clear">clear(self, const ref Color)</a></td>
 <td class="enumeration">
 <p>
 Clear the rendering surface.</p>
@@ -10878,7 +10878,7 @@ Clear the rendering surface.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Painter.computeLayout">computeLayout</a></td>
+<a href="#Pixel.Painter.computeLayout">computeLayout(self, const ref Rectangle, *RichString, const ref RichStringFormat)</a></td>
 <td class="enumeration">
 <p>
 Recompute the layout for a given rectangle.</p>
@@ -10886,13 +10886,7 @@ Recompute the layout for a given rectangle.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Painter.drawArc">drawArc</a></td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="enumeration">
-<a href="#Pixel.Painter.drawArc">drawArc</a></td>
+<a href="#Pixel.Painter.drawArc">drawArc(self, f32, f32, f32, const ref Angle, const ref Angle, const ref Color, f32)</a></td>
 <td class="enumeration">
 <p>
 Draw an arc between two angles.</p>
@@ -10900,13 +10894,13 @@ Draw an arc between two angles.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Painter.drawCircle">drawCircle</a></td>
+<a href="#Pixel.Painter.drawArc">drawArc(self, f32, f32, f32, const ref Angle, const ref Angle, const ref Pen)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Painter.drawCircle">drawCircle</a></td>
+<a href="#Pixel.Painter.drawCircle">drawCircle(self, f32, f32, f32, const ref Color, f32)</a></td>
 <td class="enumeration">
 <p>
 Draw an empty circle.</p>
@@ -10914,13 +10908,19 @@ Draw an empty circle.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Painter.drawEllipse">drawEllipse</a></td>
+<a href="#Pixel.Painter.drawCircle">drawCircle(self, f32, f32, f32, const ref Pen)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Painter.drawEllipse">drawEllipse</a></td>
+<a href="#Pixel.Painter.drawEllipse">drawEllipse(self, f32, f32, f32, f32, const ref Pen)</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Pixel.Painter.drawEllipse">drawEllipse(self, f32, f32, f32, f32, const ref Color, f32)</a></td>
 <td class="enumeration">
 <p>
 Draw an empty ellipse.</p>
@@ -10928,7 +10928,7 @@ Draw an empty ellipse.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Painter.drawLine">drawLine</a></td>
+<a href="#Pixel.Painter.drawLine">drawLine(self, const ref Vector2, const ref Vector2, const ref Pen)</a></td>
 <td class="enumeration">
 <p>
 Draw a line.</p>
@@ -10936,35 +10936,19 @@ Draw a line.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Painter.drawLine">drawLine</a></td>
+<a href="#Pixel.Painter.drawLine">drawLine(self, f32, f32, f32, f32, const ref Color, f32)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Painter.drawLine">drawLine</a></td>
+<a href="#Pixel.Painter.drawLine">drawLine(self, f32, f32, f32, f32, const ref Pen)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Painter.drawPath">drawPath</a></td>
-<td class="enumeration">
-<p>
-Draw the line path.</p>
-</td>
-</tr>
-<tr>
-<td class="enumeration">
-<a href="#Pixel.Painter.drawPath">drawPath</a></td>
-<td class="enumeration">
-<p>
-Draw the line path.</p>
-</td>
-</tr>
-<tr>
-<td class="enumeration">
-<a href="#Pixel.Painter.drawPath">drawPath</a></td>
+<a href="#Pixel.Painter.drawPath">drawPath(self, *LinePath, const ref Pen)</a></td>
 <td class="enumeration">
 <p>
 Draw the line path with the given <code class = "incode">pen</code>.</p>
@@ -10972,7 +10956,7 @@ Draw the line path with the given <code class = "incode">pen</code>.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Painter.drawPath">drawPath</a></td>
+<a href="#Pixel.Painter.drawPath">drawPath(self, *LinePath, const ref Color, f32)</a></td>
 <td class="enumeration">
 <p>
 Draw the line path.</p>
@@ -10980,19 +10964,35 @@ Draw the line path.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Painter.drawRect">drawRect</a></td>
+<a href="#Pixel.Painter.drawPath">drawPath(self, *LinePathList, const ref Pen, DrawPathListMode)</a></td>
+<td class="enumeration">
+<p>
+Draw the line path.</p>
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Pixel.Painter.drawPath">drawPath(self, *LinePathList, const ref Color, f32, DrawPathListMode)</a></td>
+<td class="enumeration">
+<p>
+Draw the line path.</p>
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Pixel.Painter.drawRect">drawRect(self, const ref Rectangle, const ref Pen)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Painter.drawRect">drawRect</a></td>
+<a href="#Pixel.Painter.drawRect">drawRect(self, f32, f32, f32, f32, const ref Pen)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Painter.drawRect">drawRect</a></td>
+<a href="#Pixel.Painter.drawRect">drawRect(self, f32, f32, f32, f32, const ref Color, f32)</a></td>
 <td class="enumeration">
 <p>
 Draw an empty rectangle.</p>
@@ -11000,13 +11000,13 @@ Draw an empty rectangle.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Painter.drawRect">drawRect</a></td>
+<a href="#Pixel.Painter.drawRect">drawRect(self, const ref Rectangle, const ref Color, f32)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Painter.drawRichString">drawRichString</a></td>
+<a href="#Pixel.Painter.drawRichString">drawRichString(self, const ref Rectangle, *RichString, const ref RichStringFormat, bool)</a></td>
 <td class="enumeration">
 <p>
 Draw a rich string. A rich string can be multiline, and accepts The layout will be computed at the first call, and each time <code class = "incode">pos</code> has changed.</p>
@@ -11014,7 +11014,7 @@ Draw a rich string. A rich string can be multiline, and accepts The layout will 
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Painter.drawRoundRect">drawRoundRect</a></td>
+<a href="#Pixel.Painter.drawRoundRect">drawRoundRect(self, f32, f32, f32, f32, f32, f32, const ref Color, f32)</a></td>
 <td class="enumeration">
 <p>
 Draw an empty round rectangle.</p>
@@ -11022,25 +11022,25 @@ Draw an empty round rectangle.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Painter.drawRoundRect">drawRoundRect</a></td>
+<a href="#Pixel.Painter.drawRoundRect">drawRoundRect(self, f32, f32, f32, f32, f32, f32, const ref Pen)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Painter.drawRoundRect">drawRoundRect</a></td>
+<a href="#Pixel.Painter.drawRoundRect">drawRoundRect(self, const ref Rectangle, f32, f32, const ref Pen)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Painter.drawRoundRect">drawRoundRect</a></td>
+<a href="#Pixel.Painter.drawRoundRect">drawRoundRect(self, const ref Rectangle, f32, f32, const ref Color, f32)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Painter.drawString">drawString</a></td>
+<a href="#Pixel.Painter.drawString">drawString(self, f32, f32, string, *Font, const ref Color, UnderlineStyle)</a></td>
 <td class="enumeration">
 <p>
 Draw a simple string.</p>
@@ -11048,7 +11048,7 @@ Draw a simple string.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Painter.drawString">drawString</a></td>
+<a href="#Pixel.Painter.drawString">drawString(self, f32, f32, string, *Font, const ref Brush, UnderlineStyle)</a></td>
 <td class="enumeration">
 <p>
 Draw a simple string.</p>
@@ -11056,7 +11056,7 @@ Draw a simple string.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Painter.drawStringCenter">drawStringCenter</a></td>
+<a href="#Pixel.Painter.drawStringCenter">drawStringCenter(self, f32, f32, string, *Font, const ref Color, UnderlineStyle)</a></td>
 <td class="enumeration">
 <p>
 Draw a simple string (centered).</p>
@@ -11064,19 +11064,19 @@ Draw a simple string (centered).</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Painter.drawTexture">drawTexture</a></td>
+<a href="#Pixel.Painter.drawTexture">drawTexture(self, const ref Rectangle, const ref Texture, const ref Color)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Painter.drawTexture">drawTexture</a></td>
+<a href="#Pixel.Painter.drawTexture">drawTexture(self, f32, f32, const ref Texture, const ref Color)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Painter.drawTexture">drawTexture</a></td>
+<a href="#Pixel.Painter.drawTexture">drawTexture(self, f32, f32, f32, f32, const ref Rectangle, const ref Texture, const ref Color)</a></td>
 <td class="enumeration">
 <p>
 Draw a portion of an image.</p>
@@ -11084,7 +11084,13 @@ Draw a portion of an image.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Painter.drawTexture">drawTexture</a></td>
+<a href="#Pixel.Painter.drawTexture">drawTexture(self, const ref Rectangle, const ref Rectangle, const ref Texture, const ref Color)</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Pixel.Painter.drawTexture">drawTexture(self, f32, f32, f32, f32, const ref Texture, const ref Color)</a></td>
 <td class="enumeration">
 <p>
 Draw a texture image.</p>
@@ -11092,19 +11098,13 @@ Draw a texture image.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Painter.drawTexture">drawTexture</a></td>
+<a href="#Pixel.Painter.drawTexture">drawTexture(self, f32, f32, const ref Rectangle, const ref Texture, const ref Color)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Painter.drawTexture">drawTexture</a></td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="enumeration">
-<a href="#Pixel.Painter.end">end</a></td>
+<a href="#Pixel.Painter.end">end(self)</a></td>
 <td class="enumeration">
 <p>
 Call this after drawing.</p>
@@ -11112,7 +11112,7 @@ Call this after drawing.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Painter.endClippingRegion">endClippingRegion</a></td>
+<a href="#Pixel.Painter.endClippingRegion">endClippingRegion(self)</a></td>
 <td class="enumeration">
 <p>
 Stop painting in the clipping buffer. Back to normal.</p>
@@ -11120,7 +11120,7 @@ Stop painting in the clipping buffer. Back to normal.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Painter.fillCircle">fillCircle</a></td>
+<a href="#Pixel.Painter.fillCircle">fillCircle(self, f32, f32, f32, const ref Brush)</a></td>
 <td class="enumeration">
 <p>
 Draw a solid circle.</p>
@@ -11128,19 +11128,13 @@ Draw a solid circle.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Painter.fillCircle">fillCircle</a></td>
+<a href="#Pixel.Painter.fillCircle">fillCircle(self, f32, f32, f32, const ref Color)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Painter.fillEllipse">fillEllipse</a></td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="enumeration">
-<a href="#Pixel.Painter.fillEllipse">fillEllipse</a></td>
+<a href="#Pixel.Painter.fillEllipse">fillEllipse(self, f32, f32, f32, f32, const ref Brush)</a></td>
 <td class="enumeration">
 <p>
 Draw a solid ellipse.</p>
@@ -11148,7 +11142,13 @@ Draw a solid ellipse.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Painter.fillPath">fillPath</a></td>
+<a href="#Pixel.Painter.fillEllipse">fillEllipse(self, f32, f32, f32, f32, const ref Color)</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Pixel.Painter.fillPath">fillPath(self, *LinePathList, const ref Brush)</a></td>
 <td class="enumeration">
 <p>
 Fill the list of paths clockwise = fill, anti-clockwise = hole.</p>
@@ -11156,7 +11156,7 @@ Fill the list of paths clockwise = fill, anti-clockwise = hole.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Painter.fillPath">fillPath</a></td>
+<a href="#Pixel.Painter.fillPath">fillPath(self, *LinePath, const ref Color)</a></td>
 <td class="enumeration">
 <p>
 Fill the line path.</p>
@@ -11164,7 +11164,7 @@ Fill the line path.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Painter.fillPath">fillPath</a></td>
+<a href="#Pixel.Painter.fillPath">fillPath(self, *LinePath, const ref Brush)</a></td>
 <td class="enumeration">
 <p>
 Fill the line path with the given <code class = "incode">brush</code>.</p>
@@ -11172,7 +11172,7 @@ Fill the line path with the given <code class = "incode">brush</code>.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Painter.fillPath">fillPath</a></td>
+<a href="#Pixel.Painter.fillPath">fillPath(self, *LinePathList, const ref Color)</a></td>
 <td class="enumeration">
 <p>
 Fill the line path.</p>
@@ -11180,15 +11180,7 @@ Fill the line path.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Painter.fillPolygon">fillPolygon</a></td>
-<td class="enumeration">
-<p>
-Fill the polygon with the given color.</p>
-</td>
-</tr>
-<tr>
-<td class="enumeration">
-<a href="#Pixel.Painter.fillPolygon">fillPolygon</a></td>
+<a href="#Pixel.Painter.fillPolygon">fillPolygon(self, *LinePath, const ref Brush)</a></td>
 <td class="enumeration">
 <p>
 Fill the polygon with the given <code class = "incode">brush</code>.</p>
@@ -11196,25 +11188,15 @@ Fill the polygon with the given <code class = "incode">brush</code>.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Painter.fillRect">fillRect</a></td>
+<a href="#Pixel.Painter.fillPolygon">fillPolygon(self, *LinePath, const ref Color)</a></td>
 <td class="enumeration">
+<p>
+Fill the polygon with the given color.</p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Painter.fillRect">fillRect</a></td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="enumeration">
-<a href="#Pixel.Painter.fillRect">fillRect</a></td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="enumeration">
-<a href="#Pixel.Painter.fillRect">fillRect</a></td>
+<a href="#Pixel.Painter.fillRect">fillRect(self, f32, f32, f32, f32, const ref Brush)</a></td>
 <td class="enumeration">
 <p>
 Draw a filled rectangle.</p>
@@ -11222,25 +11204,43 @@ Draw a filled rectangle.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Painter.fillRoundRect">fillRoundRect</a></td>
+<a href="#Pixel.Painter.fillRect">fillRect(self, const ref Rectangle, const ref Brush)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Painter.fillRoundRect">fillRoundRect</a></td>
+<a href="#Pixel.Painter.fillRect">fillRect(self, const ref Rectangle, const ref Color)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Painter.fillRoundRect">fillRoundRect</a></td>
+<a href="#Pixel.Painter.fillRect">fillRect(self, f32, f32, f32, f32, const ref Color)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Painter.fillRoundRect">fillRoundRect</a></td>
+<a href="#Pixel.Painter.fillRoundRect">fillRoundRect(self, const ref Rectangle, f32, f32, const ref Brush)</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Pixel.Painter.fillRoundRect">fillRoundRect(self, f32, f32, f32, f32, f32, f32, const ref Color)</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Pixel.Painter.fillRoundRect">fillRoundRect(self, const ref Rectangle, f32, f32, const ref Color)</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Pixel.Painter.fillRoundRect">fillRoundRect(self, f32, f32, f32, f32, f32, f32, const ref Brush)</a></td>
 <td class="enumeration">
 <p>
 Draw a filled round rectangle.</p>
@@ -11248,7 +11248,7 @@ Draw a filled round rectangle.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Painter.getClippingRect">getClippingRect</a></td>
+<a href="#Pixel.Painter.getClippingRect">getClippingRect(self)</a></td>
 <td class="enumeration">
 <p>
 Get the current clipping rectangle.</p>
@@ -11256,7 +11256,7 @@ Get the current clipping rectangle.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Painter.getGlyphs">getGlyphs</a></td>
+<a href="#Pixel.Painter.getGlyphs">getGlyphs(const ref Array'(rune), *Font)</a></td>
 <td class="enumeration">
 <p>
 Returns all the glyphs for a given string and font.</p>
@@ -11264,7 +11264,7 @@ Returns all the glyphs for a given string and font.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Painter.getGlyphs">getGlyphs</a></td>
+<a href="#Pixel.Painter.getGlyphs">getGlyphs(string, *Font)</a></td>
 <td class="enumeration">
 <p>
 Returns all the glyphs for a given string and font.</p>
@@ -11272,19 +11272,19 @@ Returns all the glyphs for a given string and font.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Painter.getParams">getParams</a></td>
+<a href="#Pixel.Painter.getParams">getParams(self)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Painter.getQuality">getQuality</a></td>
+<a href="#Pixel.Painter.getQuality">getQuality(self)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Painter.getTransform">getTransform</a></td>
+<a href="#Pixel.Painter.getTransform">getTransform(self)</a></td>
 <td class="enumeration">
 <p>
 Returns the current tranformation.</p>
@@ -11292,7 +11292,7 @@ Returns the current tranformation.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Painter.isEmptyClippingRect">isEmptyClippingRect</a></td>
+<a href="#Pixel.Painter.isEmptyClippingRect">isEmptyClippingRect(self)</a></td>
 <td class="enumeration">
 <p>
 Returns true if the current clipping rectangle is empty (no drawing !).</p>
@@ -11300,7 +11300,7 @@ Returns true if the current clipping rectangle is empty (no drawing !).</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Painter.measureRune">measureRune</a></td>
+<a href="#Pixel.Painter.measureRune">measureRune(rune, *Font)</a></td>
 <td class="enumeration">
 <p>
 Get a rune size for a given font.</p>
@@ -11308,7 +11308,7 @@ Get a rune size for a given font.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Painter.measureString">measureString</a></td>
+<a href="#Pixel.Painter.measureString">measureString(string, *Font)</a></td>
 <td class="enumeration">
 <p>
 Returns the metrics of a given text.</p>
@@ -11316,7 +11316,7 @@ Returns the metrics of a given text.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Painter.measureString">measureString</a></td>
+<a href="#Pixel.Painter.measureString">measureString(const ref Array'(const *GlyphDesc))</a></td>
 <td class="enumeration">
 <p>
 Returns the bounding rectangle if a given text, at a given position.</p>
@@ -11324,7 +11324,7 @@ Returns the bounding rectangle if a given text, at a given position.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Painter.popClippingRect">popClippingRect</a></td>
+<a href="#Pixel.Painter.popClippingRect">popClippingRect(self)</a></td>
 <td class="enumeration">
 <p>
 Restore the original clipping rectangle.</p>
@@ -11332,7 +11332,7 @@ Restore the original clipping rectangle.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Painter.popState">popState</a></td>
+<a href="#Pixel.Painter.popState">popState(self)</a></td>
 <td class="enumeration">
 <p>
 Restore the last paint state.</p>
@@ -11340,7 +11340,7 @@ Restore the last paint state.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Painter.pushClippingRect">pushClippingRect</a></td>
+<a href="#Pixel.Painter.pushClippingRect">pushClippingRect(self, const ref Rectangle, bool)</a></td>
 <td class="enumeration">
 <p>
 Interface the given rectangle with the current clipping rectangle.</p>
@@ -11348,7 +11348,7 @@ Interface the given rectangle with the current clipping rectangle.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Painter.pushClippingSurfaceRect">pushClippingSurfaceRect</a></td>
+<a href="#Pixel.Painter.pushClippingSurfaceRect">pushClippingSurfaceRect(self, const ref Rectangle)</a></td>
 <td class="enumeration">
 <p>
 Interface the given rectangle with the current clipping rectangle.</p>
@@ -11356,7 +11356,7 @@ Interface the given rectangle with the current clipping rectangle.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Painter.pushState">pushState</a></td>
+<a href="#Pixel.Painter.pushState">pushState(self)</a></td>
 <td class="enumeration">
 <p>
 Save the current paint state.</p>
@@ -11364,7 +11364,7 @@ Save the current paint state.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Painter.releaseRenderTarget">releaseRenderTarget</a></td>
+<a href="#Pixel.Painter.releaseRenderTarget">releaseRenderTarget(self, *RenderTarget)</a></td>
 <td class="enumeration">
 <p>
 Release the render target.</p>
@@ -11372,13 +11372,13 @@ Release the render target.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Painter.removeParams">removeParams</a></td>
+<a href="#Pixel.Painter.removeParams">removeParams(self, PaintParams)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Painter.resetClippingRect">resetClippingRect</a></td>
+<a href="#Pixel.Painter.resetClippingRect">resetClippingRect(self)</a></td>
 <td class="enumeration">
 <p>
 Reset the current clipping rectangle.</p>
@@ -11386,7 +11386,7 @@ Reset the current clipping rectangle.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Painter.resetClippingRegion">resetClippingRegion</a></td>
+<a href="#Pixel.Painter.resetClippingRegion">resetClippingRegion(self)</a></td>
 <td class="enumeration">
 <p>
 Reset clipping buffer to its default value (no more clipping).</p>
@@ -11394,7 +11394,7 @@ Reset clipping buffer to its default value (no more clipping).</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Painter.resetState">resetState</a></td>
+<a href="#Pixel.Painter.resetState">resetState(self)</a></td>
 <td class="enumeration">
 <p>
 Reset the current painting state.</p>
@@ -11402,7 +11402,7 @@ Reset the current painting state.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Painter.resetTransform">resetTransform</a></td>
+<a href="#Pixel.Painter.resetTransform">resetTransform(self)</a></td>
 <td class="enumeration">
 <p>
 Reset the paint position, rotation, scale.</p>
@@ -11410,7 +11410,7 @@ Reset the paint position, rotation, scale.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Painter.rotateTransform">rotateTransform</a></td>
+<a href="#Pixel.Painter.rotateTransform">rotateTransform(self, const ref Angle, f32, f32)</a></td>
 <td class="enumeration">
 <p>
 Set the paint rotation, in degrees.</p>
@@ -11418,7 +11418,7 @@ Set the paint rotation, in degrees.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Painter.rotateTransform">rotateTransform</a></td>
+<a href="#Pixel.Painter.rotateTransform">rotateTransform(self, const ref Angle)</a></td>
 <td class="enumeration">
 <p>
 Set the paint rotation, in degrees.</p>
@@ -11426,7 +11426,7 @@ Set the paint rotation, in degrees.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Painter.scaleTransform">scaleTransform</a></td>
+<a href="#Pixel.Painter.scaleTransform">scaleTransform(self, f32, f32)</a></td>
 <td class="enumeration">
 <p>
 Set the paint scale.</p>
@@ -11434,7 +11434,7 @@ Set the paint scale.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Painter.setAntialiased">setAntialiased</a></td>
+<a href="#Pixel.Painter.setAntialiased">setAntialiased(self, bool)</a></td>
 <td class="enumeration">
 <p>
 Set antialiased mode on/off.</p>
@@ -11442,7 +11442,7 @@ Set antialiased mode on/off.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Painter.setBlendingMode">setBlendingMode</a></td>
+<a href="#Pixel.Painter.setBlendingMode">setBlendingMode(self, BlendingMode)</a></td>
 <td class="enumeration">
 <p>
 Set the current blending mode.</p>
@@ -11450,7 +11450,7 @@ Set the current blending mode.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Painter.setClippingRect">setClippingRect</a></td>
+<a href="#Pixel.Painter.setClippingRect">setClippingRect(self, const ref Rectangle)</a></td>
 <td class="enumeration">
 <p>
 Set the current clipping rectangle.</p>
@@ -11458,7 +11458,7 @@ Set the current clipping rectangle.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Painter.setClippingRect">setClippingRect</a></td>
+<a href="#Pixel.Painter.setClippingRect">setClippingRect(self, f32, f32, f32, f32)</a></td>
 <td class="enumeration">
 <p>
 Set the current clipping rectangle.</p>
@@ -11466,7 +11466,7 @@ Set the current clipping rectangle.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Painter.setClippingRegionMode">setClippingRegionMode</a></td>
+<a href="#Pixel.Painter.setClippingRegionMode">setClippingRegionMode(self, ClippingMode)</a></td>
 <td class="enumeration">
 <p>
 Set the clipping region mode.</p>
@@ -11474,7 +11474,7 @@ Set the clipping region mode.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Painter.setColorMask">setColorMask</a></td>
+<a href="#Pixel.Painter.setColorMask">setColorMask(self, const ref ColorMask)</a></td>
 <td class="enumeration">
 <p>
 Set color mask.</p>
@@ -11482,7 +11482,7 @@ Set color mask.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Painter.setColorMask">setColorMask</a></td>
+<a href="#Pixel.Painter.setColorMask">setColorMask(self, bool, bool, bool, bool)</a></td>
 <td class="enumeration">
 <p>
 Set color mask.</p>
@@ -11490,25 +11490,25 @@ Set color mask.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Painter.setColorMaskAlpha">setColorMaskAlpha</a></td>
+<a href="#Pixel.Painter.setColorMaskAlpha">setColorMaskAlpha(self)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Painter.setColorMaskColor">setColorMaskColor</a></td>
+<a href="#Pixel.Painter.setColorMaskColor">setColorMaskColor(self)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Painter.setColorMaskFull">setColorMaskFull</a></td>
+<a href="#Pixel.Painter.setColorMaskFull">setColorMaskFull(self)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Painter.setInterpolationMode">setInterpolationMode</a></td>
+<a href="#Pixel.Painter.setInterpolationMode">setInterpolationMode(self, InterpolationMode)</a></td>
 <td class="enumeration">
 <p>
 Set the texture interpolation mode.</p>
@@ -11516,7 +11516,7 @@ Set the texture interpolation mode.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Painter.setParams">setParams</a></td>
+<a href="#Pixel.Painter.setParams">setParams(self, PaintParams, PaintParams)</a></td>
 <td class="enumeration">
 <p>
 Set the paint parameters.</p>
@@ -11524,7 +11524,7 @@ Set the paint parameters.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Painter.setQuality">setQuality</a></td>
+<a href="#Pixel.Painter.setQuality">setQuality(self, PaintQuality)</a></td>
 <td class="enumeration">
 <p>
 Set the paint quality.</p>
@@ -11532,7 +11532,7 @@ Set the paint quality.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Painter.setShader">setShader</a></td>
+<a href="#Pixel.Painter.setShader">setShader(self, *ShaderBase)</a></td>
 <td class="enumeration">
 <p>
 Set the current shader.</p>
@@ -11540,7 +11540,7 @@ Set the current shader.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Painter.setShaderParam">setShaderParam</a></td>
+<a href="#Pixel.Painter.setShaderParam">setShaderParam(self, ShaderParamHandle, f32)</a></td>
 <td class="enumeration">
 <p>
 Set a shader parameter.</p>
@@ -11548,7 +11548,7 @@ Set a shader parameter.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Painter.setShaderParam">setShaderParam</a></td>
+<a href="#Pixel.Painter.setShaderParam">setShaderParam(self, ShaderParamHandle, s32)</a></td>
 <td class="enumeration">
 <p>
 Set a shader parameter.</p>
@@ -11556,7 +11556,7 @@ Set a shader parameter.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Painter.setState">setState</a></td>
+<a href="#Pixel.Painter.setState">setState(self, const ref PaintState)</a></td>
 <td class="enumeration">
 <p>
 Set the current painting state.</p>
@@ -11564,7 +11564,7 @@ Set the current painting state.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Painter.setTransform">setTransform</a></td>
+<a href="#Pixel.Painter.setTransform">setTransform(self, const ref Transform2)</a></td>
 <td class="enumeration">
 <p>
 Set the paint transformation.</p>
@@ -11572,7 +11572,7 @@ Set the paint transformation.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Painter.startClippingRegion">startClippingRegion</a></td>
+<a href="#Pixel.Painter.startClippingRegion">startClippingRegion(self, ClippingMode)</a></td>
 <td class="enumeration">
 <p>
 Start painting in the clipping buffer.</p>
@@ -11580,7 +11580,7 @@ Start painting in the clipping buffer.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Painter.translateTransform">translateTransform</a></td>
+<a href="#Pixel.Painter.translateTransform">translateTransform(self, f32, f32)</a></td>
 <td class="enumeration">
 <p>
 Set the paint position.</p>
@@ -11588,7 +11588,7 @@ Set the paint position.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Painter.unbindRenderTarget">unbindRenderTarget</a></td>
+<a href="#Pixel.Painter.unbindRenderTarget">unbindRenderTarget(self)</a></td>
 <td class="enumeration">
 <p>
 Bind a render target.</p>
@@ -13004,7 +13004,7 @@ joinStyle</td>
 <table class="enumeration">
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Pen.createDash">createDash</a></td>
+<a href="#Pixel.Pen.createDash">createDash(DashStyle, const ref Color, f32)</a></td>
 <td class="enumeration">
 <p>
 Returns a dash pen.</p>
@@ -13012,7 +13012,7 @@ Returns a dash pen.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Pen.createHatch">createHatch</a></td>
+<a href="#Pixel.Pen.createHatch">createHatch(HatchStyle, const ref Color, f32)</a></td>
 <td class="enumeration">
 <p>
 Return a predefined hatch pen.</p>
@@ -13020,7 +13020,7 @@ Return a predefined hatch pen.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Pen.createSolid">createSolid</a></td>
+<a href="#Pixel.Pen.createSolid">createSolid(const ref Color, f32)</a></td>
 <td class="enumeration">
 <p>
 Returns a solid color pen.</p>
@@ -14126,7 +14126,7 @@ u64</td>
 <table class="enumeration">
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Poly2Tri.Tesselate.addPoint">addPoint</a></td>
+<a href="#Pixel.Poly2Tri.Tesselate.addPoint">addPoint(self, f32, f32)</a></td>
 <td class="enumeration">
 <p>
 Register a new point.</p>
@@ -14134,7 +14134,7 @@ Register a new point.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Poly2Tri.Tesselate.clear">clear</a></td>
+<a href="#Pixel.Poly2Tri.Tesselate.clear">clear(self)</a></td>
 <td class="enumeration">
 <p>
 Clear content.</p>
@@ -14142,7 +14142,7 @@ Clear content.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Poly2Tri.Tesselate.endPolyLine">endPolyLine</a></td>
+<a href="#Pixel.Poly2Tri.Tesselate.endPolyLine">endPolyLine(self)</a></td>
 <td class="enumeration">
 <p>
 To call to register the polyline.</p>
@@ -14150,7 +14150,7 @@ To call to register the polyline.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Poly2Tri.Tesselate.getTriangles">getTriangles</a></td>
+<a href="#Pixel.Poly2Tri.Tesselate.getTriangles">getTriangles(self)</a></td>
 <td class="enumeration">
 <p>
 Returns the list of triangles.</p>
@@ -14158,7 +14158,7 @@ Returns the list of triangles.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Poly2Tri.Tesselate.startPolyLine">startPolyLine</a></td>
+<a href="#Pixel.Poly2Tri.Tesselate.startPolyLine">startPolyLine(self)</a></td>
 <td class="enumeration">
 <p>
 To call before adding a polyline.</p>
@@ -14166,7 +14166,7 @@ To call before adding a polyline.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Poly2Tri.Tesselate.triangulate">triangulate</a></td>
+<a href="#Pixel.Poly2Tri.Tesselate.triangulate">triangulate(self)</a></td>
 <td class="enumeration">
 <p>
 Triangulate.</p>
@@ -14401,7 +14401,7 @@ Vector2</td>
 <table class="enumeration">
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Polygon.add">add</a></td>
+<a href="#Pixel.Polygon.add">add(self, const ref Vector2)</a></td>
 <td class="enumeration">
 <p>
 Add a new point.</p>
@@ -14409,7 +14409,7 @@ Add a new point.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Polygon.clean">clean</a></td>
+<a href="#Pixel.Polygon.clean">clean(self)</a></td>
 <td class="enumeration">
 <p>
 Clean polygon by removing bad/unecessary points.</p>
@@ -14417,7 +14417,7 @@ Clean polygon by removing bad/unecessary points.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Polygon.clear">clear</a></td>
+<a href="#Pixel.Polygon.clear">clear(self)</a></td>
 <td class="enumeration">
 <p>
 Clear all points.</p>
@@ -14425,7 +14425,7 @@ Clear all points.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Polygon.compute">compute</a></td>
+<a href="#Pixel.Polygon.compute">compute(self)</a></td>
 <td class="enumeration">
 <p>
 Compute internal values, like convex/clockwise Call it once the polygon contains all its points.</p>
@@ -14433,7 +14433,7 @@ Compute internal values, like convex/clockwise Call it once the polygon contains
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Polygon.getClean">getClean</a></td>
+<a href="#Pixel.Polygon.getClean">getClean(self)</a></td>
 <td class="enumeration">
 <p>
 Clean polygon by removing bad/unecessary points.</p>
@@ -14441,7 +14441,7 @@ Clean polygon by removing bad/unecessary points.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Polygon.getOffset">getOffset</a></td>
+<a href="#Pixel.Polygon.getOffset">getOffset(self, f32, JoinStyle, f32)</a></td>
 <td class="enumeration">
 <p>
 Slow but quality offset with a joinStyle.</p>
@@ -14449,7 +14449,7 @@ Slow but quality offset with a joinStyle.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Polygon.getPoint">getPoint</a></td>
+<a href="#Pixel.Polygon.getPoint">getPoint(self, u64)</a></td>
 <td class="enumeration">
 <p>
 Get the given point.</p>
@@ -14457,7 +14457,7 @@ Get the given point.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Polygon.getPoint">getPoint</a></td>
+<a href="#Pixel.Polygon.getPoint">getPoint(self, u64, f32)</a></td>
 <td class="enumeration">
 <p>
 Get the given point, with an optional offset.</p>
@@ -14465,7 +14465,7 @@ Get the given point, with an optional offset.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Polygon.normalizeDist">normalizeDist</a></td>
+<a href="#Pixel.Polygon.normalizeDist">normalizeDist(self, f32, bool)</a></td>
 <td class="enumeration">
 <p>
 Divide by adding points if two points are too far away.</p>
@@ -14473,7 +14473,7 @@ Divide by adding points if two points are too far away.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Polygon.offset">offset</a></td>
+<a href="#Pixel.Polygon.offset">offset(self, f32)</a></td>
 <td class="enumeration">
 <p>
 Fast expand polygon by a given amount.</p>
@@ -14481,7 +14481,7 @@ Fast expand polygon by a given amount.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Polygon.offset">offset</a></td>
+<a href="#Pixel.Polygon.offset">offset(self, f32, JoinStyle, f32)</a></td>
 <td class="enumeration">
 <p>
 Slow but quality offset with a joinStyle.</p>
@@ -14806,7 +14806,7 @@ bool</td>
 <table class="enumeration">
 <tr>
 <td class="enumeration">
-<a href="#Pixel.RenderOgl.addImage">addImage</a></td>
+<a href="#Pixel.RenderOgl.addImage">addImage(self, const ref Image)</a></td>
 <td class="enumeration">
 <p>
 Register an image for rendering.</p>
@@ -14814,7 +14814,7 @@ Register an image for rendering.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.RenderOgl.begin">begin</a></td>
+<a href="#Pixel.RenderOgl.begin">begin(self, const ref RenderingContext)</a></td>
 <td class="enumeration">
 <p>
 To be called before rendering.</p>
@@ -14822,7 +14822,7 @@ To be called before rendering.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.RenderOgl.bindRenderTarget">bindRenderTarget</a></td>
+<a href="#Pixel.RenderOgl.bindRenderTarget">bindRenderTarget(self, *RenderTarget, *Rectangle)</a></td>
 <td class="enumeration">
 <p>
 Set the current render target.</p>
@@ -14830,7 +14830,7 @@ Set the current render target.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.RenderOgl.clear">clear</a></td>
+<a href="#Pixel.RenderOgl.clear">clear(self)</a></td>
 <td class="enumeration">
 <p>
 Clear current render buffers.</p>
@@ -14838,13 +14838,13 @@ Clear current render buffers.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.RenderOgl.computeMatrices">computeMatrices</a></td>
+<a href="#Pixel.RenderOgl.computeMatrices">computeMatrices(self, ShaderParamHandle, ShaderParamHandle)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.RenderOgl.createRenderTarget">createRenderTarget</a></td>
+<a href="#Pixel.RenderOgl.createRenderTarget">createRenderTarget(self, s32, s32)</a></td>
 <td class="enumeration">
 <p>
 Create a render target.</p>
@@ -14852,7 +14852,7 @@ Create a render target.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.RenderOgl.createShader">createShader</a></td>
+<a href="#Pixel.RenderOgl.createShader">createShader(self, *ShaderBase, const [..] u8, const [..] u8)</a></td>
 <td class="enumeration">
 <p>
 Create the given shader.</p>
@@ -14860,7 +14860,7 @@ Create the given shader.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.RenderOgl.deleteRenderTarget">deleteRenderTarget</a></td>
+<a href="#Pixel.RenderOgl.deleteRenderTarget">deleteRenderTarget(self, *RenderTarget)</a></td>
 <td class="enumeration">
 <p>
 Delete a render target.</p>
@@ -14868,7 +14868,7 @@ Delete a render target.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.RenderOgl.draw">draw</a></td>
+<a href="#Pixel.RenderOgl.draw">draw(self, *Painter)</a></td>
 <td class="enumeration">
 <p>
 Draw the given painter.</p>
@@ -14876,7 +14876,7 @@ Draw the given painter.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.RenderOgl.end">end</a></td>
+<a href="#Pixel.RenderOgl.end">end(self)</a></td>
 <td class="enumeration">
 <p>
 To be called after rendering.</p>
@@ -14884,7 +14884,7 @@ To be called after rendering.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.RenderOgl.getRenderTarget">getRenderTarget</a></td>
+<a href="#Pixel.RenderOgl.getRenderTarget">getRenderTarget(self, s32, s32)</a></td>
 <td class="enumeration">
 <p>
 Get a render target of the given size releaseRenderTarget must be called to release it.</p>
@@ -14892,7 +14892,7 @@ Get a render target of the given size releaseRenderTarget must be called to rele
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.RenderOgl.getTargetSize">getTargetSize</a></td>
+<a href="#Pixel.RenderOgl.getTargetSize">getTargetSize(self)</a></td>
 <td class="enumeration">
 <p>
 Get the actual render target size.</p>
@@ -14900,7 +14900,7 @@ Get the actual render target size.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.RenderOgl.getTexturePixels">getTexturePixels</a></td>
+<a href="#Pixel.RenderOgl.getTexturePixels">getTexturePixels(self, const ref Texture, PixelFormat)</a></td>
 <td class="enumeration">
 <p>
 Returns the pixels associated to a texture.</p>
@@ -14908,7 +14908,7 @@ Returns the pixels associated to a texture.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.RenderOgl.init">init</a></td>
+<a href="#Pixel.RenderOgl.init">init(self)</a></td>
 <td class="enumeration">
 <p>
 First init.</p>
@@ -14916,13 +14916,13 @@ First init.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.RenderOgl.pixelFormatToNative">pixelFormatToNative</a></td>
+<a href="#Pixel.RenderOgl.pixelFormatToNative">pixelFormatToNative(PixelFormat)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.RenderOgl.releaseRenderTarget">releaseRenderTarget</a></td>
+<a href="#Pixel.RenderOgl.releaseRenderTarget">releaseRenderTarget(self, *RenderTarget)</a></td>
 <td class="enumeration">
 <p>
 Release the given render target.</p>
@@ -14930,7 +14930,7 @@ Release the given render target.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.RenderOgl.removeTexture">removeTexture</a></td>
+<a href="#Pixel.RenderOgl.removeTexture">removeTexture(self, *Texture)</a></td>
 <td class="enumeration">
 <p>
 Unregister a texture created with <code class = "incode">addImage</code>.</p>
@@ -14938,7 +14938,7 @@ Unregister a texture created with <code class = "incode">addImage</code>.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.RenderOgl.resetScissorRect">resetScissorRect</a></td>
+<a href="#Pixel.RenderOgl.resetScissorRect">resetScissorRect(self)</a></td>
 <td class="enumeration">
 <p>
 Reset the scissor.</p>
@@ -14946,7 +14946,7 @@ Reset the scissor.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.RenderOgl.resetTransform">resetTransform</a></td>
+<a href="#Pixel.RenderOgl.resetTransform">resetTransform(self)</a></td>
 <td class="enumeration">
 <p>
 Reset the world transform.</p>
@@ -14954,7 +14954,7 @@ Reset the world transform.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.RenderOgl.rotateTransform">rotateTransform</a></td>
+<a href="#Pixel.RenderOgl.rotateTransform">rotateTransform(self, const ref Angle)</a></td>
 <td class="enumeration">
 <p>
 Rotate the world transform.</p>
@@ -14962,7 +14962,7 @@ Rotate the world transform.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.RenderOgl.rotateTransform">rotateTransform</a></td>
+<a href="#Pixel.RenderOgl.rotateTransform">rotateTransform(self, const ref Angle, f32, f32)</a></td>
 <td class="enumeration">
 <p>
 Rotate the world transform.</p>
@@ -14970,7 +14970,7 @@ Rotate the world transform.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.RenderOgl.scaleTransform">scaleTransform</a></td>
+<a href="#Pixel.RenderOgl.scaleTransform">scaleTransform(self, f32, f32)</a></td>
 <td class="enumeration">
 <p>
 Scale the world transform.</p>
@@ -14978,7 +14978,7 @@ Scale the world transform.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.RenderOgl.setCurrentContext">setCurrentContext</a></td>
+<a href="#Pixel.RenderOgl.setCurrentContext">setCurrentContext(self, const ref RenderingContext)</a></td>
 <td class="enumeration">
 <p>
 Set the current rendering context.</p>
@@ -14986,7 +14986,7 @@ Set the current rendering context.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.RenderOgl.setScissorRect">setScissorRect</a></td>
+<a href="#Pixel.RenderOgl.setScissorRect">setScissorRect(self, const ref Rectangle)</a></td>
 <td class="enumeration">
 <p>
 Force the scissor.</p>
@@ -14994,7 +14994,7 @@ Force the scissor.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.RenderOgl.setShader">setShader</a></td>
+<a href="#Pixel.RenderOgl.setShader">setShader(self, *ShaderBase)</a></td>
 <td class="enumeration">
 <p>
 Set the current shader.</p>
@@ -15002,7 +15002,7 @@ Set the current shader.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.RenderOgl.translateTransform">translateTransform</a></td>
+<a href="#Pixel.RenderOgl.translateTransform">translateTransform(self, f32, f32)</a></td>
 <td class="enumeration">
 <p>
 Translate the world transform.</p>
@@ -15010,7 +15010,7 @@ Translate the world transform.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.RenderOgl.unbindRenderTarget">unbindRenderTarget</a></td>
+<a href="#Pixel.RenderOgl.unbindRenderTarget">unbindRenderTarget(self)</a></td>
 <td class="enumeration">
 <p>
 Go back to the previous render target, or frame buffer.</p>
@@ -15018,7 +15018,7 @@ Go back to the previous render target, or frame buffer.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.RenderOgl.unbindRenderTargetToImage">unbindRenderTargetToImage</a></td>
+<a href="#Pixel.RenderOgl.unbindRenderTargetToImage">unbindRenderTargetToImage(self, s32, s32, s32, s32)</a></td>
 <td class="enumeration">
 <p>
 Get current render target pixels.</p>
@@ -15026,7 +15026,7 @@ Get current render target pixels.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.RenderOgl.updateTexture">updateTexture</a></td>
+<a href="#Pixel.RenderOgl.updateTexture">updateTexture(self, const ref Texture, const *u8)</a></td>
 <td class="enumeration">
 <p>
 Update content of texture.</p>
@@ -15859,7 +15859,7 @@ bool</td>
 <table class="enumeration">
 <tr>
 <td class="enumeration">
-<a href="#Pixel.RichString.compute">compute</a></td>
+<a href="#Pixel.RichString.compute">compute(self)</a></td>
 <td class="enumeration">
 <p>
 Compute layout.</p>
@@ -15867,7 +15867,7 @@ Compute layout.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.RichString.invalidate">invalidate</a></td>
+<a href="#Pixel.RichString.invalidate">invalidate(self)</a></td>
 <td class="enumeration">
 <p>
 Force to be repainted.</p>
@@ -15875,31 +15875,31 @@ Force to be repainted.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.RichString.isEmpty">isEmpty</a></td>
+<a href="#Pixel.RichString.isEmpty">isEmpty(self)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.RichString.opAffect">opAffect</a></td>
+<a href="#Pixel.RichString.opAffect">opAffect(self, string)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.RichString.opCount">opCount</a></td>
+<a href="#Pixel.RichString.opCount">opCount(self)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.RichString.opEquals">opEquals</a></td>
+<a href="#Pixel.RichString.opEquals">opEquals(self, string)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.RichString.set">set</a></td>
+<a href="#Pixel.RichString.set">set(self, string)</a></td>
 <td class="enumeration">
 <p>
 Associate a string (can have multiple lines) Accepted markers are : &lt;u&gt;  ... &lt;u&gt;  =&gt; underline &lt;b&gt;  ... &lt;b&gt;  =&gt; bold &lt;i&gt;  ... &lt;i&gt;  =&gt; italic &lt;p1&gt; ... &lt;p1&gt; =&gt; color palette 1 &lt;p2&gt; ... &lt;p2&gt; =&gt; color palette 2 &lt;p3&gt; ... &lt;p3&gt; =&gt; color palette 3.</p>
@@ -16410,7 +16410,7 @@ fmt</td>
 <table class="enumeration">
 <tr>
 <td class="enumeration">
-<a href="#Pixel.StringPainter.color">color</a></td>
+<a href="#Pixel.StringPainter.color">color(self, const ref Color)</a></td>
 <td class="enumeration">
 <p>
 Set text color.</p>
@@ -16418,7 +16418,7 @@ Set text color.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.StringPainter.draw">draw</a></td>
+<a href="#Pixel.StringPainter.draw">draw(self, *Painter, const ref Rectangle, string)</a></td>
 <td class="enumeration">
 <p>
 Draw string.</p>
@@ -16426,7 +16426,7 @@ Draw string.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.StringPainter.flags">flags</a></td>
+<a href="#Pixel.StringPainter.flags">flags(self, StringFormatFlags)</a></td>
 <td class="enumeration">
 <p>
 Set drawing flags.</p>
@@ -16434,7 +16434,7 @@ Set drawing flags.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.StringPainter.font">font</a></td>
+<a href="#Pixel.StringPainter.font">font(self, *Font)</a></td>
 <td class="enumeration">
 <p>
 Set font.</p>
@@ -16442,7 +16442,7 @@ Set font.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.StringPainter.horzAlign">horzAlign</a></td>
+<a href="#Pixel.StringPainter.horzAlign">horzAlign(self, StringHorzAlignment)</a></td>
 <td class="enumeration">
 <p>
 Set horizontal alignment.</p>
@@ -16450,7 +16450,7 @@ Set horizontal alignment.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.StringPainter.vertAlign">vertAlign</a></td>
+<a href="#Pixel.StringPainter.vertAlign">vertAlign(self, StringVertAlignment)</a></td>
 <td class="enumeration">
 <p>
 Set vertical alignment.</p>
@@ -16647,13 +16647,13 @@ bool</td>
 <table class="enumeration">
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Texture.getByteSize">getByteSize</a></td>
+<a href="#Pixel.Texture.getByteSize">getByteSize(self)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Texture.isValid">isValid</a></td>
+<a href="#Pixel.Texture.isValid">isValid(self)</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -17053,7 +17053,7 @@ bool</td>
 <table class="enumeration">
 <tr>
 <td class="enumeration">
-<a href="#Pixel.TypeFace.create">create</a></td>
+<a href="#Pixel.TypeFace.create">create(string, const [..] u8)</a></td>
 <td class="enumeration">
 <p>
 Get or create a new typeface from a memory buffer.</p>
@@ -17061,7 +17061,7 @@ Get or create a new typeface from a memory buffer.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.TypeFace.createFromHFONT">createFromHFONT</a></td>
+<a href="#Pixel.TypeFace.createFromHFONT">createFromHFONT(string, HFONT)</a></td>
 <td class="enumeration">
 <p>
 Create a new typeface from a HFONT.</p>
@@ -17069,7 +17069,7 @@ Create a new typeface from a HFONT.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.TypeFace.getFamilyName">getFamilyName</a></td>
+<a href="#Pixel.TypeFace.getFamilyName">getFamilyName(self)</a></td>
 <td class="enumeration">
 <p>
 Returns the underlying font family name.</p>
@@ -17077,7 +17077,7 @@ Returns the underlying font family name.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.TypeFace.getRuneOutline">getRuneOutline</a></td>
+<a href="#Pixel.TypeFace.getRuneOutline">getRuneOutline(self, *LinePathList, rune, u32, u32)</a></td>
 <td class="enumeration">
 <p>
 Convert a rune to its outline, at a given size.</p>
@@ -17085,7 +17085,7 @@ Convert a rune to its outline, at a given size.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.TypeFace.getStringOutline">getStringOutline</a></td>
+<a href="#Pixel.TypeFace.getStringOutline">getStringOutline(self, *LinePathList, string, u32, u32)</a></td>
 <td class="enumeration">
 <p>
 Convert a string to its outline, at a given size.</p>
@@ -17093,7 +17093,7 @@ Convert a string to its outline, at a given size.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.TypeFace.isBold">isBold</a></td>
+<a href="#Pixel.TypeFace.isBold">isBold(self)</a></td>
 <td class="enumeration">
 <p>
 Returns true if the typeface is bold.</p>
@@ -17101,7 +17101,7 @@ Returns true if the typeface is bold.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.TypeFace.isItalic">isItalic</a></td>
+<a href="#Pixel.TypeFace.isItalic">isItalic(self)</a></td>
 <td class="enumeration">
 <p>
 Returns true if the typeface is italic.</p>
@@ -17109,7 +17109,7 @@ Returns true if the typeface is italic.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.TypeFace.load">load</a></td>
+<a href="#Pixel.TypeFace.load">load(string)</a></td>
 <td class="enumeration">
 <p>
 Get or load a new typeface.</p>
@@ -17117,7 +17117,7 @@ Get or load a new typeface.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.TypeFace.release">release</a></td>
+<a href="#Pixel.TypeFace.release">release(*TypeFace)</a></td>
 <td class="enumeration">
 <p>
 Release the given typeface.</p>
@@ -17125,7 +17125,7 @@ Release the given typeface.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.TypeFace.renderGlyph">renderGlyph</a></td>
+<a href="#Pixel.TypeFace.renderGlyph">renderGlyph(self, rune, u32, bool, bool)</a></td>
 <td class="enumeration">
 <p>
 Render one glyph.</p>

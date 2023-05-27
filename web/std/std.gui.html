@@ -50,7 +50,7 @@
             padding:            6px;
             border:             1px solid LightGrey;
             border-collapse:    collapse;
-            width:              20%;
+            width:              30%;
         }
         td.tdname {
             padding:            6px;
@@ -1267,7 +1267,7 @@ Array(*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std
 <td class="tdname">
 toDelete</td>
 <td class="tdtype">
-Array(__application_tuple_396)</td>
+Array(__application_tuple_385)</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -1324,7 +1324,7 @@ Array(<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.
 <table class="enumeration">
 <tr>
 <td class="enumeration">
-<a href="#Gui.Application.addTimer">addTimer</a></td>
+<a href="#Gui.Application.addTimer">addTimer(self, const ref Duration, *Wnd)</a></td>
 <td class="enumeration">
 <p>
 Register a new timer for the given <code class = "incode">target</code>.</p>
@@ -1332,7 +1332,7 @@ Register a new timer for the given <code class = "incode">target</code>.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.Application.createSurface">createSurface</a></td>
+<a href="#Gui.Application.createSurface">createSurface(self, s32, s32, s32, s32, SurfaceFlags, *Wnd, HookEvent)</a></td>
 <td class="enumeration">
 <p>
 Creates a new surface.</p>
@@ -1340,7 +1340,7 @@ Creates a new surface.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.Application.deleteTimer">deleteTimer</a></td>
+<a href="#Gui.Application.deleteTimer">deleteTimer(self, *Timer)</a></td>
 <td class="enumeration">
 <p>
 Delete and unregister timer.</p>
@@ -1348,7 +1348,7 @@ Delete and unregister timer.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.Application.destroyWnd">destroyWnd</a></td>
+<a href="#Gui.Application.destroyWnd">destroyWnd(self, *Wnd)</a></td>
 <td class="enumeration">
 <p>
 Destroy a window To cleanly close a window, you should call wnd.destroy().</p>
@@ -1356,13 +1356,13 @@ Destroy a window To cleanly close a window, you should call wnd.destroy().</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.Application.doModalLoop">doModalLoop</a></td>
+<a href="#Gui.Application.doModalLoop">doModalLoop(self, *Surface, func(*void, *Application))</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.Application.exitModal">exitModal</a></td>
+<a href="#Gui.Application.exitModal">exitModal(self, string)</a></td>
 <td class="enumeration">
 <p>
 End current modal loop.</p>
@@ -1370,25 +1370,25 @@ End current modal loop.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.Application.getDirectoryIcon">getDirectoryIcon</a></td>
+<a href="#Gui.Application.getDirectoryIcon">getDirectoryIcon(self, string, bool)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.Application.getDt">getDt</a></td>
+<a href="#Gui.Application.getDt">getDt(self)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.Application.getFileIcon">getFileIcon</a></td>
+<a href="#Gui.Application.getFileIcon">getFileIcon(self, string, bool)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.Application.getHotKeyShortcut">getHotKeyShortcut</a></td>
+<a href="#Gui.Application.getHotKeyShortcut">getHotKeyShortcut(self, KeyModifiers, Key)</a></td>
 <td class="enumeration">
 <p>
 Get the id associated with a shortcut. null if none.</p>
@@ -1396,7 +1396,7 @@ Get the id associated with a shortcut. null if none.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.Application.getHotKeyShortcutNameFor">getHotKeyShortcutNameFor</a></td>
+<a href="#Gui.Application.getHotKeyShortcutNameFor">getHotKeyShortcutNameFor(self, WndId)</a></td>
 <td class="enumeration">
 <p>
 Get the name associated with a given id shortcut.</p>
@@ -1404,19 +1404,19 @@ Get the name associated with a given id shortcut.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.Application.getKeyboard">getKeyboard</a></td>
+<a href="#Gui.Application.getKeyboard">getKeyboard(self)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.Application.getMouse">getMouse</a></td>
+<a href="#Gui.Application.getMouse">getMouse(self)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.Application.getMouseCapture">getMouseCapture</a></td>
+<a href="#Gui.Application.getMouseCapture">getMouseCapture(self)</a></td>
 <td class="enumeration">
 <p>
 Return the captured wnd for mouse.</p>
@@ -1424,13 +1424,13 @@ Return the captured wnd for mouse.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.Application.getRenderer">getRenderer</a></td>
+<a href="#Gui.Application.getRenderer">getRenderer(self)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.Application.getWndAtMouse">getWndAtMouse</a></td>
+<a href="#Gui.Application.getWndAtMouse">getWndAtMouse(self)</a></td>
 <td class="enumeration">
 <p>
 Returns the window under the given point.</p>
@@ -1438,7 +1438,7 @@ Returns the window under the given point.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.Application.invalidate">invalidate</a></td>
+<a href="#Gui.Application.invalidate">invalidate(self)</a></td>
 <td class="enumeration">
 <p>
 Force all surfaces to be painted.</p>
@@ -1446,7 +1446,7 @@ Force all surfaces to be painted.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.Application.loadState">loadState</a></td>
+<a href="#Gui.Application.loadState">loadState(self)</a></td>
 <td class="enumeration">
 <p>
 Load the application state.</p>
@@ -1454,7 +1454,7 @@ Load the application state.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.Application.popCursor">popCursor</a></td>
+<a href="#Gui.Application.popCursor">popCursor(self)</a></td>
 <td class="enumeration">
 <p>
 Pop a new mouse cursor.</p>
@@ -1462,7 +1462,7 @@ Pop a new mouse cursor.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.Application.postEvent">postEvent</a></td>
+<a href="#Gui.Application.postEvent">postEvent(self, *Event)</a></td>
 <td class="enumeration">
 <p>
 Post a new event (thread safe).</p>
@@ -1470,7 +1470,7 @@ Post a new event (thread safe).</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.Application.postQuitEvent">postQuitEvent</a></td>
+<a href="#Gui.Application.postQuitEvent">postQuitEvent(self, s32)</a></td>
 <td class="enumeration">
 <p>
 Ask to exit the application.</p>
@@ -1478,7 +1478,7 @@ Ask to exit the application.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.Application.pushCursor">pushCursor</a></td>
+<a href="#Gui.Application.pushCursor">pushCursor(self, const ref Cursor)</a></td>
 <td class="enumeration">
 <p>
 Push a new mouse cursor.</p>
@@ -1486,7 +1486,7 @@ Push a new mouse cursor.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.Application.registerFrameEvent">registerFrameEvent</a></td>
+<a href="#Gui.Application.registerFrameEvent">registerFrameEvent(self, *Wnd)</a></td>
 <td class="enumeration">
 <p>
 Register a window to receive a FrameEvent each running loop.</p>
@@ -1494,7 +1494,7 @@ Register a window to receive a FrameEvent each running loop.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.Application.registerHookEvents">registerHookEvents</a></td>
+<a href="#Gui.Application.registerHookEvents">registerHookEvents(self, *Wnd)</a></td>
 <td class="enumeration">
 <p>
 Register a window to receive hook events.</p>
@@ -1502,7 +1502,7 @@ Register a window to receive hook events.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.Application.registerHotKey">registerHotKey</a></td>
+<a href="#Gui.Application.registerHotKey">registerHotKey(self, KeyModifiers, Key, WndId, *Wnd)</a></td>
 <td class="enumeration">
 <p>
 Register a global os key action.</p>
@@ -1510,7 +1510,7 @@ Register a global os key action.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.Application.run">run</a></td>
+<a href="#Gui.Application.run">run(self)</a></td>
 <td class="enumeration">
 <p>
 Run until exit.</p>
@@ -1518,13 +1518,13 @@ Run until exit.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.Application.runFrame">runFrame</a></td>
+<a href="#Gui.Application.runFrame">runFrame(self)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.Application.runSurface">runSurface</a></td>
+<a href="#Gui.Application.runSurface">runSurface(s32, s32, s32, s32, string, *Wnd, bool, bool, HookEvent, func(*Application))</a></td>
 <td class="enumeration">
 <p>
 Create a main surface, and run.</p>
@@ -1532,7 +1532,7 @@ Create a main surface, and run.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.Application.saveState">saveState</a></td>
+<a href="#Gui.Application.saveState">saveState(self)</a></td>
 <td class="enumeration">
 <p>
 Save the application state.</p>
@@ -1540,13 +1540,13 @@ Save the application state.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.Application.sendEvent">sendEvent</a></td>
+<a href="#Gui.Application.sendEvent">sendEvent(self, *Event)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.Application.setActivated">setActivated</a></td>
+<a href="#Gui.Application.setActivated">setActivated(self, bool)</a></td>
 <td class="enumeration">
 <p>
 Set activated state.</p>
@@ -1554,7 +1554,7 @@ Set activated state.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.Application.setAppIcon">setAppIcon</a></td>
+<a href="#Gui.Application.setAppIcon">setAppIcon(self, const ref Image)</a></td>
 <td class="enumeration">
 <p>
 Associate a configuration file.</p>
@@ -1562,7 +1562,7 @@ Associate a configuration file.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.Application.setConfigPath">setConfigPath</a></td>
+<a href="#Gui.Application.setConfigPath">setConfigPath(self, string)</a></td>
 <td class="enumeration">
 <p>
 Associate a configuration file.</p>
@@ -1570,7 +1570,7 @@ Associate a configuration file.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.Application.unregisterFrameEvent">unregisterFrameEvent</a></td>
+<a href="#Gui.Application.unregisterFrameEvent">unregisterFrameEvent(self, *Wnd)</a></td>
 <td class="enumeration">
 <p>
 Unregister a window that receives a FrameEvent each running loop.</p>
@@ -1578,7 +1578,7 @@ Unregister a window that receives a FrameEvent each running loop.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.Application.unregisterHookEvents">unregisterHookEvents</a></td>
+<a href="#Gui.Application.unregisterHookEvents">unregisterHookEvents(self, *Wnd)</a></td>
 <td class="enumeration">
 <p>
 Unregister a window to receive hook events.</p>
@@ -2423,7 +2423,7 @@ sigChanged</td>
 <table class="enumeration">
 <tr>
 <td class="enumeration">
-<a href="#Gui.CheckButton.create">create</a></td>
+<a href="#Gui.CheckButton.create">create(*Wnd, string, const ref Rectangle, WndId)</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -2519,7 +2519,7 @@ RightAlign</td>
 <table class="enumeration">
 <tr>
 <td class="enumeration">
-<a href="#Gui.Clipboard.addData">addData</a></td>
+<a href="#Gui.Clipboard.addData">addData(Format, const [..] u8)</a></td>
 <td class="enumeration">
 <p>
 Add data of a given format to the clipboard.</p>
@@ -2527,7 +2527,7 @@ Add data of a given format to the clipboard.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.Clipboard.addImage">addImage</a></td>
+<a href="#Gui.Clipboard.addImage">addImage(const ref Image)</a></td>
 <td class="enumeration">
 <p>
 Add an image.</p>
@@ -2535,7 +2535,7 @@ Add an image.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.Clipboard.addString">addString</a></td>
+<a href="#Gui.Clipboard.addString">addString(string)</a></td>
 <td class="enumeration">
 <p>
 Add string to clipboard.</p>
@@ -2543,7 +2543,7 @@ Add string to clipboard.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.Clipboard.getData">getData</a></td>
+<a href="#Gui.Clipboard.getData">getData(Format)</a></td>
 <td class="enumeration">
 <p>
 Get data of the given format.</p>
@@ -2551,7 +2551,7 @@ Get data of the given format.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.Clipboard.getImage">getImage</a></td>
+<a href="#Gui.Clipboard.getImage">getImage()</a></td>
 <td class="enumeration">
 <p>
 Get image from clipboard.</p>
@@ -2559,7 +2559,7 @@ Get image from clipboard.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.Clipboard.getString">getString</a></td>
+<a href="#Gui.Clipboard.getString">getString()</a></td>
 <td class="enumeration">
 <p>
 Get utf8 string from clipboard.</p>
@@ -2567,7 +2567,7 @@ Get utf8 string from clipboard.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.Clipboard.hasFormat">hasFormat</a></td>
+<a href="#Gui.Clipboard.hasFormat">hasFormat(Format)</a></td>
 <td class="enumeration">
 <p>
 Returns true if the clipboard contains the given format.</p>
@@ -2575,7 +2575,7 @@ Returns true if the clipboard contains the given format.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.Clipboard.hasImage">hasImage</a></td>
+<a href="#Gui.Clipboard.hasImage">hasImage()</a></td>
 <td class="enumeration">
 <p>
 Returns true if the clipbboard contains an image.</p>
@@ -2583,7 +2583,7 @@ Returns true if the clipbboard contains an image.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.Clipboard.hasString">hasString</a></td>
+<a href="#Gui.Clipboard.hasString">hasString()</a></td>
 <td class="enumeration">
 <p>
 Returns true if the clipboard contains a string.</p>
@@ -2591,7 +2591,7 @@ Returns true if the clipboard contains a string.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.Clipboard.registerFormat">registerFormat</a></td>
+<a href="#Gui.Clipboard.registerFormat">registerFormat(string)</a></td>
 <td class="enumeration">
 <p>
 Register a new format.</p>
@@ -2602,7 +2602,7 @@ Register a new format.</p>
 <table class="enumeration">
 <tr>
 <td class="enumeration">
-<a href="#Gui.Clipboard.addData">addData</a></td>
+<a href="#Gui.Clipboard.addData">addData(Format, const [..] u8)</a></td>
 <td class="enumeration">
 <p>
 Add data of a given format to the clipboard.</p>
@@ -2610,7 +2610,7 @@ Add data of a given format to the clipboard.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.Clipboard.addImage">addImage</a></td>
+<a href="#Gui.Clipboard.addImage">addImage(const ref Image)</a></td>
 <td class="enumeration">
 <p>
 Add an image.</p>
@@ -2618,7 +2618,7 @@ Add an image.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.Clipboard.addString">addString</a></td>
+<a href="#Gui.Clipboard.addString">addString(string)</a></td>
 <td class="enumeration">
 <p>
 Add string to clipboard.</p>
@@ -2626,7 +2626,7 @@ Add string to clipboard.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.Clipboard.getData">getData</a></td>
+<a href="#Gui.Clipboard.getData">getData(Format)</a></td>
 <td class="enumeration">
 <p>
 Get data of the given format.</p>
@@ -2634,7 +2634,7 @@ Get data of the given format.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.Clipboard.getImage">getImage</a></td>
+<a href="#Gui.Clipboard.getImage">getImage()</a></td>
 <td class="enumeration">
 <p>
 Get image from clipboard.</p>
@@ -2642,7 +2642,7 @@ Get image from clipboard.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.Clipboard.getString">getString</a></td>
+<a href="#Gui.Clipboard.getString">getString()</a></td>
 <td class="enumeration">
 <p>
 Get utf8 string from clipboard.</p>
@@ -2650,7 +2650,7 @@ Get utf8 string from clipboard.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.Clipboard.hasFormat">hasFormat</a></td>
+<a href="#Gui.Clipboard.hasFormat">hasFormat(Format)</a></td>
 <td class="enumeration">
 <p>
 Returns true if the clipboard contains the given format.</p>
@@ -2658,7 +2658,7 @@ Returns true if the clipboard contains the given format.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.Clipboard.hasImage">hasImage</a></td>
+<a href="#Gui.Clipboard.hasImage">hasImage()</a></td>
 <td class="enumeration">
 <p>
 Returns true if the clipbboard contains an image.</p>
@@ -2666,7 +2666,7 @@ Returns true if the clipbboard contains an image.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.Clipboard.hasString">hasString</a></td>
+<a href="#Gui.Clipboard.hasString">hasString()</a></td>
 <td class="enumeration">
 <p>
 Returns true if the clipboard contains a string.</p>
@@ -2674,7 +2674,7 @@ Returns true if the clipboard contains a string.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.Clipboard.registerFormat">registerFormat</a></td>
+<a href="#Gui.Clipboard.registerFormat">registerFormat(string)</a></td>
 <td class="enumeration">
 <p>
 Register a new format.</p>
@@ -2996,7 +2996,7 @@ s32</td>
 <table class="enumeration">
 <tr>
 <td class="enumeration">
-<a href="#Gui.ColorPicker.change">change</a></td>
+<a href="#Gui.ColorPicker.change">change(self, f32, f32, f32, f32)</a></td>
 <td class="enumeration">
 <p>
 Change one component, HSL or alpha.</p>
@@ -3004,13 +3004,13 @@ Change one component, HSL or alpha.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.ColorPicker.create">create</a></td>
+<a href="#Gui.ColorPicker.create">create(*Wnd, const ref Rectangle, WndId)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.ColorPicker.getColor">getColor</a></td>
+<a href="#Gui.ColorPicker.getColor">getColor(self)</a></td>
 <td class="enumeration">
 <p>
 Returns the selected color.</p>
@@ -3018,7 +3018,7 @@ Returns the selected color.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.ColorPicker.setColor">setColor</a></td>
+<a href="#Gui.ColorPicker.setColor">setColor(self, const ref Color)</a></td>
 <td class="enumeration">
 <p>
 Set the base color, and repaint.</p>
@@ -3026,7 +3026,7 @@ Set the base color, and repaint.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.ColorPicker.setMode">setMode</a></td>
+<a href="#Gui.ColorPicker.setMode">setMode(self, ColorPickerMode)</a></td>
 <td class="enumeration">
 <p>
 Set the color picker box mode.</p>
@@ -3361,13 +3361,13 @@ radioB</td>
 <table class="enumeration">
 <tr>
 <td class="enumeration">
-<a href="#Gui.ColorPickerCtrl.create">create</a></td>
+<a href="#Gui.ColorPickerCtrl.create">create(*Wnd, const ref Rectangle, WndId)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.ColorPickerCtrl.getColor">getColor</a></td>
+<a href="#Gui.ColorPickerCtrl.getColor">getColor(self)</a></td>
 <td class="enumeration">
 <p>
 Returns the selected color.</p>
@@ -3375,7 +3375,7 @@ Returns the selected color.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.ColorPickerCtrl.setColor">setColor</a></td>
+<a href="#Gui.ColorPickerCtrl.setColor">setColor(self, const ref Color)</a></td>
 <td class="enumeration">
 <p>
 Set the selected color.</p>
@@ -3383,7 +3383,7 @@ Set the selected color.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.ColorPickerCtrl.setMode">setMode</a></td>
+<a href="#Gui.ColorPickerCtrl.setMode">setMode(self, ColorPickerViewMode)</a></td>
 <td class="enumeration">
 <p>
 Change the display mode.</p>
@@ -3750,7 +3750,7 @@ s32</td>
 <table class="enumeration">
 <tr>
 <td class="enumeration">
-<a href="#Gui.ComboBox.addItem">addItem</a></td>
+<a href="#Gui.ComboBox.addItem">addItem(self, string, WndId, const ref Icon, *void, *void)</a></td>
 <td class="enumeration">
 <p>
 Add a new item.</p>
@@ -3758,7 +3758,7 @@ Add a new item.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.ComboBox.addSeparator">addSeparator</a></td>
+<a href="#Gui.ComboBox.addSeparator">addSeparator(self)</a></td>
 <td class="enumeration">
 <p>
 Add a separator.</p>
@@ -3766,7 +3766,7 @@ Add a separator.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.ComboBox.clear">clear</a></td>
+<a href="#Gui.ComboBox.clear">clear(self)</a></td>
 <td class="enumeration">
 <p>
 Remove all items.</p>
@@ -3774,13 +3774,13 @@ Remove all items.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.ComboBox.create">create</a></td>
+<a href="#Gui.ComboBox.create">create(*Wnd, const ref Rectangle, WndId, ComboBoxKind)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.ComboBox.getSelectedItem">getSelectedItem</a></td>
+<a href="#Gui.ComboBox.getSelectedItem">getSelectedItem(self)</a></td>
 <td class="enumeration">
 <p>
 Returns the selected item.</p>
@@ -3788,7 +3788,7 @@ Returns the selected item.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.ComboBox.selectItem">selectItem</a></td>
+<a href="#Gui.ComboBox.selectItem">selectItem(self, u32)</a></td>
 <td class="enumeration">
 <p>
 Set the selected item index.</p>
@@ -4057,7 +4057,7 @@ combo</td>
 <table class="enumeration">
 <tr>
 <td class="enumeration">
-<a href="#Gui.ComboCtrl.create">create</a></td>
+<a href="#Gui.ComboCtrl.create">create(*Wnd, string, const ref Rectangle, WndId)</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -4351,25 +4351,25 @@ native</td>
 <table class="enumeration">
 <tr>
 <td class="enumeration">
-<a href="#Gui.Cursor.apply">apply</a></td>
+<a href="#Gui.Cursor.apply">apply(const ref Cursor)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.Cursor.clear">clear</a></td>
+<a href="#Gui.Cursor.clear">clear(self)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.Cursor.from">from</a></td>
+<a href="#Gui.Cursor.from">from(CursorShape)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.Cursor.wait">wait</a></td>
+<a href="#Gui.Cursor.wait">wait()</a></td>
 <td class="enumeration">
 <p>
 Force the wait cursor.</p>
@@ -4798,7 +4798,7 @@ func(*void, *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_
 <table class="enumeration">
 <tr>
 <td class="enumeration">
-<a href="#Gui.Dialog.addButton">addButton</a></td>
+<a href="#Gui.Dialog.addButton">addButton(self, string, WndId, bool)</a></td>
 <td class="enumeration">
 <p>
 Add a button.</p>
@@ -4806,7 +4806,7 @@ Add a button.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.Dialog.createDialog">createDialog</a></td>
+<a href="#Gui.Dialog.createDialog">createDialog(*Surface, s32, s32, string)</a></td>
 <td class="enumeration">
 <p>
 Creates a simple dialog box.</p>
@@ -4814,7 +4814,7 @@ Creates a simple dialog box.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.Dialog.createSurface">createSurface</a></td>
+<a href="#Gui.Dialog.createSurface">createSurface(self, *Surface, s32, s32, s32, s32, SurfaceFlags)</a></td>
 <td class="enumeration">
 <p>
 Creates an associated surface.</p>
@@ -4822,7 +4822,7 @@ Creates an associated surface.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.Dialog.doModal">doModal</a></td>
+<a href="#Gui.Dialog.doModal">doModal(self)</a></td>
 <td class="enumeration">
 <p>
 Display dialog as modal, and returns the user selected window id.</p>
@@ -4830,7 +4830,7 @@ Display dialog as modal, and returns the user selected window id.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.Dialog.validateId">validateId</a></td>
+<a href="#Gui.Dialog.validateId">validateId(self, WndId)</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -5132,7 +5132,7 @@ func(*void, *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_
 <td class="tdname">
 minMax</td>
 <td class="tdtype">
-__editbox_tuple_266</td>
+__editbox_tuple_261</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -5229,13 +5229,13 @@ s32</td>
 <table class="enumeration">
 <tr>
 <td class="enumeration">
-<a href="#Gui.EditBox.create">create</a></td>
+<a href="#Gui.EditBox.create">create(*Wnd, string, const ref Rectangle, WndId)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.EditBox.deleteSelection">deleteSelection</a></td>
+<a href="#Gui.EditBox.deleteSelection">deleteSelection(self)</a></td>
 <td class="enumeration">
 <p>
 Delete selected text.</p>
@@ -5243,7 +5243,7 @@ Delete selected text.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.EditBox.selectAll">selectAll</a></td>
+<a href="#Gui.EditBox.selectAll">selectAll(self)</a></td>
 <td class="enumeration">
 <p>
 Select all text.</p>
@@ -5251,7 +5251,7 @@ Select all text.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.EditBox.setForm">setForm</a></td>
+<a href="#Gui.EditBox.setForm">setForm(self, EditBoxForm)</a></td>
 <td class="enumeration">
 <p>
 Set the editbox form.</p>
@@ -5259,7 +5259,7 @@ Set the editbox form.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.EditBox.setInputF64">setInputF64</a></td>
+<a href="#Gui.EditBox.setInputF64">setInputF64(self, f64, f64)</a></td>
 <td class="enumeration">
 <p>
 Editbox will edit floating points.</p>
@@ -5267,7 +5267,7 @@ Editbox will edit floating points.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.EditBox.setInputS64">setInputS64</a></td>
+<a href="#Gui.EditBox.setInputS64">setInputS64(self, s64, s64)</a></td>
 <td class="enumeration">
 <p>
 Editbox will edit signed integers.</p>
@@ -5275,7 +5275,7 @@ Editbox will edit signed integers.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.EditBox.setInputU64">setInputU64</a></td>
+<a href="#Gui.EditBox.setInputU64">setInputU64(self, u64, u64)</a></td>
 <td class="enumeration">
 <p>
 Editbox will edit unsigned integers.</p>
@@ -5283,7 +5283,7 @@ Editbox will edit unsigned integers.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.EditBox.setNote">setNote</a></td>
+<a href="#Gui.EditBox.setNote">setNote(self, string)</a></td>
 <td class="enumeration">
 <p>
 Set the editbox note.</p>
@@ -5291,7 +5291,7 @@ Set the editbox note.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.EditBox.setSelection">setSelection</a></td>
+<a href="#Gui.EditBox.setSelection">setSelection(self, u64, u64)</a></td>
 <td class="enumeration">
 <p>
 Set current selection.</p>
@@ -5299,7 +5299,7 @@ Set current selection.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.EditBox.setText">setText</a></td>
+<a href="#Gui.EditBox.setText">setText(self, string)</a></td>
 <td class="enumeration">
 <p>
 Set the editbox content.</p>
@@ -5307,7 +5307,7 @@ Set the editbox content.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.EditBox.setTextSilent">setTextSilent</a></td>
+<a href="#Gui.EditBox.setTextSilent">setTextSilent(self, string)</a></td>
 <td class="enumeration">
 <p>
 Set the editbox content, but do not notify change.</p>
@@ -5779,7 +5779,7 @@ edit</td>
 <table class="enumeration">
 <tr>
 <td class="enumeration">
-<a href="#Gui.EditCtrl.create">create</a></td>
+<a href="#Gui.EditCtrl.create">create(*Wnd, string, string, const ref Rectangle, WndId, EditBoxFlags)</a></td>
 <td class="enumeration">
 <p>
 Create the popup list, but do not display it.</p>
@@ -5867,7 +5867,7 @@ richEdit</td>
 <table class="enumeration">
 <tr>
 <td class="enumeration">
-<a href="#Gui.EditDlg.createMultiLine">createMultiLine</a></td>
+<a href="#Gui.EditDlg.createMultiLine">createMultiLine(*Surface, s32)</a></td>
 <td class="enumeration">
 <p>
 Creates the message box.</p>
@@ -5875,7 +5875,7 @@ Creates the message box.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.EditDlg.createSingleLine">createSingleLine</a></td>
+<a href="#Gui.EditDlg.createSingleLine">createSingleLine(*Surface)</a></td>
 <td class="enumeration">
 <p>
 Creates the message box.</p>
@@ -5883,7 +5883,7 @@ Creates the message box.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.EditDlg.getText">getText</a></td>
+<a href="#Gui.EditDlg.getText">getText(self)</a></td>
 <td class="enumeration">
 <p>
 Get the text.</p>
@@ -5891,7 +5891,7 @@ Get the text.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.EditDlg.setMessage">setMessage</a></td>
+<a href="#Gui.EditDlg.setMessage">setMessage(self, string, s32)</a></td>
 <td class="enumeration">
 <p>
 Associate a message above the editbox.</p>
@@ -5899,7 +5899,7 @@ Associate a message above the editbox.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.EditDlg.setText">setText</a></td>
+<a href="#Gui.EditDlg.setText">setText(self, string)</a></td>
 <td class="enumeration">
 <p>
 Set the text.</p>
@@ -6024,7 +6024,7 @@ label</td>
 <table class="enumeration">
 <tr>
 <td class="enumeration">
-<a href="#Gui.EmbInfoCtrl.create">create</a></td>
+<a href="#Gui.EmbInfoCtrl.create">create(*Wnd, string, EmbInfoCtrlKind, s32, bool)</a></td>
 <td class="enumeration">
 <p>
 Create the popup list, but do not display it.</p>
@@ -6122,13 +6122,13 @@ bool</td>
 <table class="enumeration">
 <tr>
 <td class="enumeration">
-<a href="#Gui.Event.create">create</a></td>
+<a href="#Gui.Event.create">create()</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.Event.create">create</a></td>
+<a href="#Gui.Event.create">create(EventKind)</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -6471,7 +6471,7 @@ Array(FileInfo)</td>
 <table class="enumeration">
 <tr>
 <td class="enumeration">
-<a href="#Gui.FileDlg.create">create</a></td>
+<a href="#Gui.FileDlg.create">create(*Surface, const ref FileDlgOptions)</a></td>
 <td class="enumeration">
 <p>
 Creates the message box.</p>
@@ -6479,7 +6479,7 @@ Creates the message box.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.FileDlg.getSelectedName">getSelectedName</a></td>
+<a href="#Gui.FileDlg.getSelectedName">getSelectedName(self)</a></td>
 <td class="enumeration">
 <p>
 Get the first selection.</p>
@@ -6487,7 +6487,7 @@ Get the first selection.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.FileDlg.getSelectedNames">getSelectedNames</a></td>
+<a href="#Gui.FileDlg.getSelectedNames">getSelectedNames(self)</a></td>
 <td class="enumeration">
 <p>
 Get all selections.</p>
@@ -6661,7 +6661,7 @@ mode</td>
 <td class="tdname">
 filters</td>
 <td class="tdtype">
-Array(__filedlg_tuple_284)</td>
+Array(__filedlg_tuple_281)</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -6669,7 +6669,7 @@ Array(__filedlg_tuple_284)</td>
 <td class="tdname">
 shortcuts</td>
 <td class="tdtype">
-Array(__filedlg_tuple_285)</td>
+Array(__filedlg_tuple_282)</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -6867,13 +6867,13 @@ Color</td>
 <table class="enumeration">
 <tr>
 <td class="enumeration">
-<a href="#Gui.FrameWnd.createView">createView</a></td>
+<a href="#Gui.FrameWnd.createView">createView(self, HookEvent)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.FrameWnd.setFrameFlags">setFrameFlags</a></td>
+<a href="#Gui.FrameWnd.setFrameFlags">setFrameFlags(self, FrameWndFlags, FrameWndFlags)</a></td>
 <td class="enumeration">
 <p>
 Set the frame wnd flags.</p>
@@ -6881,7 +6881,7 @@ Set the frame wnd flags.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.FrameWnd.setFrameForm">setFrameForm</a></td>
+<a href="#Gui.FrameWnd.setFrameForm">setFrameForm(self, FrameWndForm)</a></td>
 <td class="enumeration">
 <p>
 Set the frame wnd form.</p>
@@ -6889,7 +6889,7 @@ Set the frame wnd form.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.FrameWnd.setView">setView</a></td>
+<a href="#Gui.FrameWnd.setView">setView(self, *Wnd)</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -7218,7 +7218,7 @@ Array(f32)</td>
 <table class="enumeration">
 <tr>
 <td class="enumeration">
-<a href="#Gui.GridLayoutCtrl.computeLayout">computeLayout</a></td>
+<a href="#Gui.GridLayoutCtrl.computeLayout">computeLayout(self)</a></td>
 <td class="enumeration">
 <p>
 Recompute layout of all childs.</p>
@@ -7226,7 +7226,7 @@ Recompute layout of all childs.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.GridLayoutCtrl.create">create</a></td>
+<a href="#Gui.GridLayoutCtrl.create">create(*Wnd, s32, s32, const ref Rectangle)</a></td>
 <td class="enumeration">
 <p>
 Create a layout control.</p>
@@ -7234,7 +7234,7 @@ Create a layout control.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.GridLayoutCtrl.setColRowChild">setColRowChild</a></td>
+<a href="#Gui.GridLayoutCtrl.setColRowChild">setColRowChild(self, *Wnd, s32, s32, s32, s32)</a></td>
 <td class="enumeration">
 <p>
 Set the wnd associated with the given <code class = "incode">col</code> and <code class = "incode">row</code>. Window can cover multiple columns and rows.</p>
@@ -7242,7 +7242,7 @@ Set the wnd associated with the given <code class = "incode">col</code> and <cod
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.GridLayoutCtrl.setColSize">setColSize</a></td>
+<a href="#Gui.GridLayoutCtrl.setColSize">setColSize(self, s32, f32)</a></td>
 <td class="enumeration">
 <p>
 Set size, in pixel, of a given column.</p>
@@ -7250,7 +7250,7 @@ Set size, in pixel, of a given column.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.GridLayoutCtrl.setRowSize">setRowSize</a></td>
+<a href="#Gui.GridLayoutCtrl.setRowSize">setRowSize(self, s32, f32)</a></td>
 <td class="enumeration">
 <p>
 Set size, in pixel, of a given row.</p>
@@ -7515,7 +7515,7 @@ s32</td>
 <table class="enumeration">
 <tr>
 <td class="enumeration">
-<a href="#Gui.Header.addItem">addItem</a></td>
+<a href="#Gui.Header.addItem">addItem(self, string, f32, const ref Icon)</a></td>
 <td class="enumeration">
 <p>
 Add a new view.</p>
@@ -7523,13 +7523,13 @@ Add a new view.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.Header.create">create</a></td>
+<a href="#Gui.Header.create">create(*Wnd, const ref Rectangle, WndId)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.Header.getItem">getItem</a></td>
+<a href="#Gui.Header.getItem">getItem(self, u32)</a></td>
 <td class="enumeration">
 <p>
 Returns the given item, by index.</p>
@@ -7537,7 +7537,7 @@ Returns the given item, by index.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.Header.getItemByCol">getItemByCol</a></td>
+<a href="#Gui.Header.getItemByCol">getItemByCol(self, u32)</a></td>
 <td class="enumeration">
 <p>
 Returns the given item, by column.</p>
@@ -7545,7 +7545,7 @@ Returns the given item, by column.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.Header.getItemPosition">getItemPosition</a></td>
+<a href="#Gui.Header.getItemPosition">getItemPosition(self, u32)</a></td>
 <td class="enumeration">
 <p>
 Get an item position by index.</p>
@@ -7553,7 +7553,7 @@ Get an item position by index.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.Header.getItemPositionByCol">getItemPositionByCol</a></td>
+<a href="#Gui.Header.getItemPositionByCol">getItemPositionByCol(self, u32)</a></td>
 <td class="enumeration">
 <p>
 Get an item position by column.</p>
@@ -7561,7 +7561,7 @@ Get an item position by column.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.Header.getItemWidth">getItemWidth</a></td>
+<a href="#Gui.Header.getItemWidth">getItemWidth(self, u32)</a></td>
 <td class="enumeration">
 <p>
 Get an item width by index.</p>
@@ -7569,7 +7569,7 @@ Get an item width by index.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.Header.getItemWidthByCol">getItemWidthByCol</a></td>
+<a href="#Gui.Header.getItemWidthByCol">getItemWidthByCol(self, u32)</a></td>
 <td class="enumeration">
 <p>
 Get an item width by column.</p>
@@ -7577,7 +7577,7 @@ Get an item width by column.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.Header.getTotalItemsWidth">getTotalItemsWidth</a></td>
+<a href="#Gui.Header.getTotalItemsWidth">getTotalItemsWidth(self)</a></td>
 <td class="enumeration">
 <p>
 Get the header total width.</p>
@@ -7585,7 +7585,7 @@ Get the header total width.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.Header.setItemWidth">setItemWidth</a></td>
+<a href="#Gui.Header.setItemWidth">setItemWidth(self, u32, f32)</a></td>
 <td class="enumeration">
 <p>
 Set an item width by index.</p>
@@ -7593,7 +7593,7 @@ Set an item width by index.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.Header.setItemWidthByCol">setItemWidthByCol</a></td>
+<a href="#Gui.Header.setItemWidthByCol">setItemWidthByCol(self, u32, f32)</a></td>
 <td class="enumeration">
 <p>
 Set an item width by column.</p>
@@ -8275,7 +8275,7 @@ f32</td>
 <table class="enumeration">
 <tr>
 <td class="enumeration">
-<a href="#Gui.Icon.clear">clear</a></td>
+<a href="#Gui.Icon.clear">clear(self)</a></td>
 <td class="enumeration">
 <p>
 Set icon to invalid.</p>
@@ -8283,7 +8283,7 @@ Set icon to invalid.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.Icon.from">from</a></td>
+<a href="#Gui.Icon.from">from(*ImageList, s32, f32, f32)</a></td>
 <td class="enumeration">
 <p>
 Initialize the icon from an image list.</p>
@@ -8291,19 +8291,19 @@ Initialize the icon from an image list.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.Icon.isValid">isValid</a></td>
+<a href="#Gui.Icon.isValid">isValid(self)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.Icon.opEquals">opEquals</a></td>
+<a href="#Gui.Icon.opEquals">opEquals(self, const ref Icon)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.Icon.paint">paint</a></td>
+<a href="#Gui.Icon.paint">paint(self, *Painter, f32, f32, const ref Color)</a></td>
 <td class="enumeration">
 <p>
 Paint icon at the given position.</p>
@@ -8311,7 +8311,7 @@ Paint icon at the given position.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.Icon.set">set</a></td>
+<a href="#Gui.Icon.set">set(self, *ImageList, s32, f32, f32)</a></td>
 <td class="enumeration">
 <p>
 Initialize the icon from an image list.</p>
@@ -8481,7 +8481,7 @@ sigCheckChanged</td>
 <table class="enumeration">
 <tr>
 <td class="enumeration">
-<a href="#Gui.IconBar.addCheckableItem">addCheckableItem</a></td>
+<a href="#Gui.IconBar.addCheckableItem">addCheckableItem(self, const ref Icon, WndId)</a></td>
 <td class="enumeration">
 <p>
 Add a new checkable button.</p>
@@ -8489,7 +8489,7 @@ Add a new checkable button.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.IconBar.addCheckableToggleItem">addCheckableToggleItem</a></td>
+<a href="#Gui.IconBar.addCheckableToggleItem">addCheckableToggleItem(self, const ref Icon, WndId)</a></td>
 <td class="enumeration">
 <p>
 Add a new checkable button.</p>
@@ -8497,7 +8497,7 @@ Add a new checkable button.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.IconBar.addItem">addItem</a></td>
+<a href="#Gui.IconBar.addItem">addItem(self, const ref Icon, WndId, IconButtonFlags)</a></td>
 <td class="enumeration">
 <p>
 Add a new button.</p>
@@ -8505,13 +8505,13 @@ Add a new button.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.IconBar.create">create</a></td>
+<a href="#Gui.IconBar.create">create(*Wnd, f32, const ref Rectangle, WndId)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.IconBar.setIconBarFlags">setIconBarFlags</a></td>
+<a href="#Gui.IconBar.setIconBarFlags">setIconBarFlags(self, IconBarFlags, IconBarFlags)</a></td>
 <td class="enumeration">
 <p>
 Change bar flags.</p>
@@ -8754,13 +8754,13 @@ popup</td>
 <table class="enumeration">
 <tr>
 <td class="enumeration">
-<a href="#Gui.IconButton.create">create</a></td>
+<a href="#Gui.IconButton.create">create(*Wnd, const ref Icon, const ref Rectangle, WndId)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.IconButton.setCheck">setCheck</a></td>
+<a href="#Gui.IconButton.setCheck">setCheck(self, bool)</a></td>
 <td class="enumeration">
 <p>
 Set the check state of the button (if the button is checkable).</p>
@@ -8768,7 +8768,7 @@ Set the check state of the button (if the button is checkable).</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.IconButton.setForm">setForm</a></td>
+<a href="#Gui.IconButton.setForm">setForm(self, IconButtonForm)</a></td>
 <td class="enumeration">
 <p>
 Set the button form.</p>
@@ -9178,19 +9178,19 @@ s32</td>
 <table class="enumeration">
 <tr>
 <td class="enumeration">
-<a href="#Gui.ImageList.countX">countX</a></td>
+<a href="#Gui.ImageList.countX">countX(self)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.ImageList.countY">countY</a></td>
+<a href="#Gui.ImageList.countY">countY(self)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.ImageList.set">set</a></td>
+<a href="#Gui.ImageList.set">set(self, const ref Texture, s32, s32, s32)</a></td>
 <td class="enumeration">
 <p>
 Initialize image list.</p>
@@ -9285,19 +9285,19 @@ Texture</td>
 <table class="enumeration">
 <tr>
 <td class="enumeration">
-<a href="#Gui.ImageRect.clear">clear</a></td>
+<a href="#Gui.ImageRect.clear">clear(self)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.ImageRect.create">create</a></td>
+<a href="#Gui.ImageRect.create">create(*Wnd, const ref Rectangle, WndId)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.ImageRect.setFile">setFile</a></td>
+<a href="#Gui.ImageRect.setFile">setFile(self, string)</a></td>
 <td class="enumeration">
 <p>
 Load and set movie.</p>
@@ -9305,7 +9305,7 @@ Load and set movie.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.ImageRect.setImage">setImage</a></td>
+<a href="#Gui.ImageRect.setImage">setImage(self, const ref ImageList)</a></td>
 <td class="enumeration">
 <p>
 Associate image.</p>
@@ -9313,7 +9313,7 @@ Associate image.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.ImageRect.setImage">setImage</a></td>
+<a href="#Gui.ImageRect.setImage">setImage(self, const ref Texture)</a></td>
 <td class="enumeration">
 <p>
 Associate image.</p>
@@ -9321,7 +9321,7 @@ Associate image.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.ImageRect.setImage">setImage</a></td>
+<a href="#Gui.ImageRect.setImage">setImage(self, const ref Image)</a></td>
 <td class="enumeration">
 <p>
 Associate image.</p>
@@ -9329,7 +9329,7 @@ Associate image.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.ImageRect.setMovie">setMovie</a></td>
+<a href="#Gui.ImageRect.setMovie">setMovie(self, const ref ImageList)</a></td>
 <td class="enumeration">
 <p>
 Set movie as an image list.</p>
@@ -9684,13 +9684,13 @@ Vector4</td>
 <table class="enumeration">
 <tr>
 <td class="enumeration">
-<a href="#Gui.Label.create">create</a></td>
+<a href="#Gui.Label.create">create(*Wnd, string, const ref Rectangle, WndId)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.Label.setText">setText</a></td>
+<a href="#Gui.Label.setText">setText(self, string)</a></td>
 <td class="enumeration">
 <p>
 Change the text.</p>
@@ -10053,7 +10053,7 @@ bool</td>
 <table class="enumeration">
 <tr>
 <td class="enumeration">
-<a href="#Gui.ListCtrl.addColumn">addColumn</a></td>
+<a href="#Gui.ListCtrl.addColumn">addColumn(self, string, f32, const ref Icon)</a></td>
 <td class="enumeration">
 <p>
 Add one column in a multi columns list.</p>
@@ -10061,7 +10061,7 @@ Add one column in a multi columns list.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.ListCtrl.clear">clear</a></td>
+<a href="#Gui.ListCtrl.clear">clear(self)</a></td>
 <td class="enumeration">
 <p>
 Clear all lines.</p>
@@ -10069,7 +10069,7 @@ Clear all lines.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.ListCtrl.collapse">collapse</a></td>
+<a href="#Gui.ListCtrl.collapse">collapse(self, *ListLine)</a></td>
 <td class="enumeration">
 <p>
 Collapse the given line.</p>
@@ -10077,7 +10077,7 @@ Collapse the given line.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.ListCtrl.collapseAll">collapseAll</a></td>
+<a href="#Gui.ListCtrl.collapseAll">collapseAll(self)</a></td>
 <td class="enumeration">
 <p>
 Collapse all lines.</p>
@@ -10085,7 +10085,7 @@ Collapse all lines.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.ListCtrl.computeLayout">computeLayout</a></td>
+<a href="#Gui.ListCtrl.computeLayout">computeLayout(self)</a></td>
 <td class="enumeration">
 <p>
 Compute global layout, once all lines have been added.</p>
@@ -10093,7 +10093,7 @@ Compute global layout, once all lines have been added.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.ListCtrl.createLine">createLine</a></td>
+<a href="#Gui.ListCtrl.createLine">createLine(self, *ListLine)</a></td>
 <td class="enumeration">
 <p>
 Add one new line.</p>
@@ -10101,7 +10101,7 @@ Add one new line.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.ListCtrl.createLine">createLine</a></td>
+<a href="#Gui.ListCtrl.createLine">createLine(self, string, const ref Icon, *ListLine)</a></td>
 <td class="enumeration">
 <p>
 Add one line, and set first column.</p>
@@ -10109,19 +10109,19 @@ Add one line, and set first column.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.ListCtrl.createMultiColumns">createMultiColumns</a></td>
+<a href="#Gui.ListCtrl.createMultiColumns">createMultiColumns(*Wnd, const ref Rectangle, WndId)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.ListCtrl.createSimple">createSimple</a></td>
+<a href="#Gui.ListCtrl.createSimple">createSimple(*Wnd, const ref Rectangle, WndId)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.ListCtrl.ensureVisibleLine">ensureVisibleLine</a></td>
+<a href="#Gui.ListCtrl.ensureVisibleLine">ensureVisibleLine(self, u32)</a></td>
 <td class="enumeration">
 <p>
 Set the corresponding line visible.</p>
@@ -10129,7 +10129,7 @@ Set the corresponding line visible.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.ListCtrl.expand">expand</a></td>
+<a href="#Gui.ListCtrl.expand">expand(self, *ListLine)</a></td>
 <td class="enumeration">
 <p>
 Expand the given line.</p>
@@ -10137,7 +10137,7 @@ Expand the given line.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.ListCtrl.getCheckedLines">getCheckedLines</a></td>
+<a href="#Gui.ListCtrl.getCheckedLines">getCheckedLines(self)</a></td>
 <td class="enumeration">
 <p>
 Get all the checked lines.</p>
@@ -10145,7 +10145,7 @@ Get all the checked lines.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.ListCtrl.getFirstVisibleLineIndex">getFirstVisibleLineIndex</a></td>
+<a href="#Gui.ListCtrl.getFirstVisibleLineIndex">getFirstVisibleLineIndex(self)</a></td>
 <td class="enumeration">
 <p>
 Returns the first visible line index.</p>
@@ -10153,7 +10153,7 @@ Returns the first visible line index.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.ListCtrl.getFocusLine">getFocusLine</a></td>
+<a href="#Gui.ListCtrl.getFocusLine">getFocusLine(self)</a></td>
 <td class="enumeration">
 <p>
 Get the line with the keyboard focus.</p>
@@ -10161,7 +10161,7 @@ Get the line with the keyboard focus.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.ListCtrl.getLastVisibleLineIndex">getLastVisibleLineIndex</a></td>
+<a href="#Gui.ListCtrl.getLastVisibleLineIndex">getLastVisibleLineIndex(self)</a></td>
 <td class="enumeration">
 <p>
 Returns the last visible line index.</p>
@@ -10169,7 +10169,7 @@ Returns the last visible line index.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.ListCtrl.getLine">getLine</a></td>
+<a href="#Gui.ListCtrl.getLine">getLine(self, u32)</a></td>
 <td class="enumeration">
 <p>
 Get a line by index.</p>
@@ -10177,7 +10177,7 @@ Get a line by index.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.ListCtrl.getLineCount">getLineCount</a></td>
+<a href="#Gui.ListCtrl.getLineCount">getLineCount(self)</a></td>
 <td class="enumeration">
 <p>
 Returns the number of lines in the list.</p>
@@ -10185,7 +10185,7 @@ Returns the number of lines in the list.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.ListCtrl.getLineHeight">getLineHeight</a></td>
+<a href="#Gui.ListCtrl.getLineHeight">getLineHeight(self)</a></td>
 <td class="enumeration">
 <p>
 Get the height of one line.</p>
@@ -10193,7 +10193,7 @@ Get the height of one line.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.ListCtrl.getSelectedLine">getSelectedLine</a></td>
+<a href="#Gui.ListCtrl.getSelectedLine">getSelectedLine(self)</a></td>
 <td class="enumeration">
 <p>
 Returns a selected line Mostly for singlesel mode.</p>
@@ -10201,7 +10201,7 @@ Returns a selected line Mostly for singlesel mode.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.ListCtrl.getSelectedLines">getSelectedLines</a></td>
+<a href="#Gui.ListCtrl.getSelectedLines">getSelectedLines(self)</a></td>
 <td class="enumeration">
 <p>
 Get all the selected lines.</p>
@@ -10209,7 +10209,7 @@ Get all the selected lines.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.ListCtrl.isLineSelected">isLineSelected</a></td>
+<a href="#Gui.ListCtrl.isLineSelected">isLineSelected(self, u32)</a></td>
 <td class="enumeration">
 <p>
 Returns.</p>
@@ -10217,7 +10217,7 @@ Returns.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.ListCtrl.isSelectedLine">isSelectedLine</a></td>
+<a href="#Gui.ListCtrl.isSelectedLine">isSelectedLine(self, u32)</a></td>
 <td class="enumeration">
 <p>
 Returns true if the line at the given index is selected.</p>
@@ -10225,7 +10225,7 @@ Returns true if the line at the given index is selected.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.ListCtrl.selectLine">selectLine</a></td>
+<a href="#Gui.ListCtrl.selectLine">selectLine(self, u32, bool)</a></td>
 <td class="enumeration">
 <p>
 Select of unselect the given line.</p>
@@ -10233,7 +10233,7 @@ Select of unselect the given line.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.ListCtrl.selectLines">selectLines</a></td>
+<a href="#Gui.ListCtrl.selectLines">selectLines(self, u32, u32, bool)</a></td>
 <td class="enumeration">
 <p>
 Select a range of lines.</p>
@@ -10241,7 +10241,7 @@ Select a range of lines.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.ListCtrl.setColumnWidth">setColumnWidth</a></td>
+<a href="#Gui.ListCtrl.setColumnWidth">setColumnWidth(self, u32, f32)</a></td>
 <td class="enumeration">
 <p>
 Set the column width.</p>
@@ -10249,7 +10249,7 @@ Set the column width.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.ListCtrl.setFocus">setFocus</a></td>
+<a href="#Gui.ListCtrl.setFocus">setFocus(self)</a></td>
 <td class="enumeration">
 <p>
 Set focus to the list.</p>
@@ -10257,7 +10257,7 @@ Set focus to the list.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.ListCtrl.setVirtualCount">setVirtualCount</a></td>
+<a href="#Gui.ListCtrl.setVirtualCount">setVirtualCount(self, u32)</a></td>
 <td class="enumeration">
 <p>
 Set the number of lines in a virtual list.</p>
@@ -10265,7 +10265,7 @@ Set the number of lines in a virtual list.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.ListCtrl.sort">sort</a></td>
+<a href="#Gui.ListCtrl.sort">sort(self, u32, bool, bool)</a></td>
 <td class="enumeration">
 <p>
 Sort the list by a given column If <code class = "incode">persistent</code> is true, then the sorted column will be displayed in the header (if it exists).</p>
@@ -10273,7 +10273,7 @@ Sort the list by a given column If <code class = "incode">persistent</code> is t
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.ListCtrl.sort">sort</a></td>
+<a href="#Gui.ListCtrl.sort">sort(self)</a></td>
 <td class="enumeration">
 <p>
 Sort list as before.</p>
@@ -10281,7 +10281,7 @@ Sort list as before.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.ListCtrl.toggleExpand">toggleExpand</a></td>
+<a href="#Gui.ListCtrl.toggleExpand">toggleExpand(self, *ListLine)</a></td>
 <td class="enumeration">
 <p>
 Collapse the given line.</p>
@@ -10289,7 +10289,7 @@ Collapse the given line.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.ListCtrl.unselectAll">unselectAll</a></td>
+<a href="#Gui.ListCtrl.unselectAll">unselectAll(self)</a></td>
 <td class="enumeration">
 <p>
 Unselect all lines.</p>
@@ -11060,13 +11060,13 @@ bool</td>
 <table class="enumeration">
 <tr>
 <td class="enumeration">
-<a href="#Gui.ListLine.canExpand">canExpand</a></td>
+<a href="#Gui.ListLine.canExpand">canExpand(self)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.ListLine.getItem">getItem</a></td>
+<a href="#Gui.ListLine.getItem">getItem(self, u32)</a></td>
 <td class="enumeration">
 <p>
 Get an item by index.</p>
@@ -11074,13 +11074,13 @@ Get an item by index.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.ListLine.isParentOf">isParentOf</a></td>
+<a href="#Gui.ListLine.isParentOf">isParentOf(self, *ListLine)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.ListLine.setItem">setItem</a></td>
+<a href="#Gui.ListLine.setItem">setItem(self, u32, string, const ref Icon)</a></td>
 <td class="enumeration">
 <p>
 Initialize a given column item.</p>
@@ -11461,7 +11461,7 @@ bool</td>
 <table class="enumeration">
 <tr>
 <td class="enumeration">
-<a href="#Gui.MenuCtrl.addItem">addItem</a></td>
+<a href="#Gui.MenuCtrl.addItem">addItem(self, WndId)</a></td>
 <td class="enumeration">
 <p>
 Add a new item.</p>
@@ -11469,7 +11469,7 @@ Add a new item.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.MenuCtrl.addItem">addItem</a></td>
+<a href="#Gui.MenuCtrl.addItem">addItem(self, string, WndId, const ref Icon, string, bool, bool)</a></td>
 <td class="enumeration">
 <p>
 Add a new item.</p>
@@ -11477,7 +11477,7 @@ Add a new item.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.MenuCtrl.addPopup">addPopup</a></td>
+<a href="#Gui.MenuCtrl.addPopup">addPopup(self, *MenuCtrl, WndId)</a></td>
 <td class="enumeration">
 <p>
 Add a new popup item.</p>
@@ -11485,7 +11485,7 @@ Add a new popup item.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.MenuCtrl.addPopup">addPopup</a></td>
+<a href="#Gui.MenuCtrl.addPopup">addPopup(self, string, *MenuCtrl, const ref Icon, WndId)</a></td>
 <td class="enumeration">
 <p>
 Add a new popup item.</p>
@@ -11493,7 +11493,7 @@ Add a new popup item.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.MenuCtrl.addSeparator">addSeparator</a></td>
+<a href="#Gui.MenuCtrl.addSeparator">addSeparator(self)</a></td>
 <td class="enumeration">
 <p>
 Add a separator.</p>
@@ -11501,25 +11501,25 @@ Add a separator.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.MenuCtrl.computeLayoutPopup">computeLayoutPopup</a></td>
+<a href="#Gui.MenuCtrl.computeLayoutPopup">computeLayoutPopup(self)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.MenuCtrl.createBar">createBar</a></td>
+<a href="#Gui.MenuCtrl.createBar">createBar(*Wnd, const ref Rectangle, WndId, *Wnd)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.MenuCtrl.createPopup">createPopup</a></td>
+<a href="#Gui.MenuCtrl.createPopup">createPopup(*Wnd, WndId, *Wnd)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.MenuCtrl.doModal">doModal</a></td>
+<a href="#Gui.MenuCtrl.doModal">doModal(self, const ref Point, PopupPos, bool)</a></td>
 <td class="enumeration">
 <p>
 Make the popup menu modal Will return the selected id.</p>
@@ -11527,7 +11527,7 @@ Make the popup menu modal Will return the selected id.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.MenuCtrl.updateState">updateState</a></td>
+<a href="#Gui.MenuCtrl.updateState">updateState(self)</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -11783,7 +11783,7 @@ label</td>
 <table class="enumeration">
 <tr>
 <td class="enumeration">
-<a href="#Gui.MessageDlg.confirm">confirm</a></td>
+<a href="#Gui.MessageDlg.confirm">confirm(*Surface, string, string)</a></td>
 <td class="enumeration">
 <p>
 Message box to <code class = "incode">confirm</code> something.</p>
@@ -11791,7 +11791,7 @@ Message box to <code class = "incode">confirm</code> something.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.MessageDlg.create">create</a></td>
+<a href="#Gui.MessageDlg.create">create(*Surface, string, const ref Icon)</a></td>
 <td class="enumeration">
 <p>
 Creates the message box.</p>
@@ -11799,7 +11799,7 @@ Creates the message box.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.MessageDlg.doModal">doModal</a></td>
+<a href="#Gui.MessageDlg.doModal">doModal(self, *Surface)</a></td>
 <td class="enumeration">
 <p>
 Display the box, centered, and returns the id of the pressed button.</p>
@@ -11807,7 +11807,7 @@ Display the box, centered, and returns the id of the pressed button.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.MessageDlg.error">error</a></td>
+<a href="#Gui.MessageDlg.error">error(*Surface, string, string)</a></td>
 <td class="enumeration">
 <p>
 Message box to show an error.</p>
@@ -11815,7 +11815,7 @@ Message box to show an error.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.MessageDlg.ok">ok</a></td>
+<a href="#Gui.MessageDlg.ok">ok(*Surface, string, const ref Icon)</a></td>
 <td class="enumeration">
 <p>
 Message box with a <code class = "incode">ok</code>.</p>
@@ -11823,7 +11823,7 @@ Message box with a <code class = "incode">ok</code>.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.MessageDlg.okCancel">okCancel</a></td>
+<a href="#Gui.MessageDlg.okCancel">okCancel(*Surface, string, string, const ref Icon)</a></td>
 <td class="enumeration">
 <p>
 Message box with a <code class = "incode">ok</code> and <code class = "incode">cancel</code> button.</p>
@@ -11831,7 +11831,7 @@ Message box with a <code class = "incode">ok</code> and <code class = "incode">c
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.MessageDlg.setIcon">setIcon</a></td>
+<a href="#Gui.MessageDlg.setIcon">setIcon(self, const ref Icon, const ref Color)</a></td>
 <td class="enumeration">
 <p>
 Set big icon.</p>
@@ -11839,7 +11839,7 @@ Set big icon.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.MessageDlg.setIconColor">setIconColor</a></td>
+<a href="#Gui.MessageDlg.setIconColor">setIconColor(self, const ref Color)</a></td>
 <td class="enumeration">
 <p>
 Set big icon color (icon must has been set before).</p>
@@ -11847,7 +11847,7 @@ Set big icon color (icon must has been set before).</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.MessageDlg.yesNo">yesNo</a></td>
+<a href="#Gui.MessageDlg.yesNo">yesNo(*Surface, string, string, string, const ref Icon)</a></td>
 <td class="enumeration">
 <p>
 Message box with a <code class = "incode">yes</code> and <code class = "incode">no</code> button.</p>
@@ -11855,7 +11855,7 @@ Message box with a <code class = "incode">yes</code> and <code class = "incode">
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.MessageDlg.yesNoCancel">yesNoCancel</a></td>
+<a href="#Gui.MessageDlg.yesNoCancel">yesNoCancel(*Surface, string, string, const ref Icon)</a></td>
 <td class="enumeration">
 <p>
 Message box with a <code class = "incode">yes</code> and <code class = "incode">no</code> button.</p>
@@ -12251,13 +12251,13 @@ bool</td>
 <table class="enumeration">
 <tr>
 <td class="enumeration">
-<a href="#Gui.Movie.clear">clear</a></td>
+<a href="#Gui.Movie.clear">clear(self)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.Movie.isValid">isValid</a></td>
+<a href="#Gui.Movie.isValid">isValid(self)</a></td>
 <td class="enumeration">
 <p>
 Returns true if the movie has valid content.</p>
@@ -12265,7 +12265,7 @@ Returns true if the movie has valid content.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.Movie.pause">pause</a></td>
+<a href="#Gui.Movie.pause">pause(self, bool)</a></td>
 <td class="enumeration">
 <p>
 Set/Reset pause state.</p>
@@ -12273,7 +12273,7 @@ Set/Reset pause state.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.Movie.set">set</a></td>
+<a href="#Gui.Movie.set">set(self, const ref ImageList)</a></td>
 <td class="enumeration">
 <p>
 Associate an image list.</p>
@@ -12281,7 +12281,7 @@ Associate an image list.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.Movie.set">set</a></td>
+<a href="#Gui.Movie.set">set(self, string)</a></td>
 <td class="enumeration">
 <p>
 Associate a filename.</p>
@@ -12289,7 +12289,7 @@ Associate a filename.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.Movie.setFrameIndex">setFrameIndex</a></td>
+<a href="#Gui.Movie.setFrameIndex">setFrameIndex(self, s32)</a></td>
 <td class="enumeration">
 <p>
 Set the current video frame.</p>
@@ -12297,7 +12297,7 @@ Set the current video frame.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.Movie.update">update</a></td>
+<a href="#Gui.Movie.update">update(self, f32)</a></td>
 <td class="enumeration">
 <p>
 Update timing and change frames.</p>
@@ -12630,7 +12630,7 @@ func(*void, *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_
 <table class="enumeration">
 <tr>
 <td class="enumeration">
-<a href="#Gui.PaintImage.draw">draw</a></td>
+<a href="#Gui.PaintImage.draw">draw(self, func(*void, *Application, *Painter))</a></td>
 <td class="enumeration">
 <p>
 Draw to an image by calling the closure.</p>
@@ -12638,7 +12638,7 @@ Draw to an image by calling the closure.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.PaintImage.draw">draw</a></td>
+<a href="#Gui.PaintImage.draw">draw(s32, s32, func(*void, *Application, *Painter))</a></td>
 <td class="enumeration">
 <p>
 One shot paint to image.</p>
@@ -12646,7 +12646,7 @@ One shot paint to image.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.PaintImage.init">init</a></td>
+<a href="#Gui.PaintImage.init">init(self, s32, s32)</a></td>
 <td class="enumeration">
 <p>
 First init the PaintImage instance.</p>
@@ -12774,7 +12774,7 @@ s32</td>
 <table class="enumeration">
 <tr>
 <td class="enumeration">
-<a href="#Gui.PalettePicker.addColor">addColor</a></td>
+<a href="#Gui.PalettePicker.addColor">addColor(self, const ref Color)</a></td>
 <td class="enumeration">
 <p>
 Add a color.</p>
@@ -12782,7 +12782,7 @@ Add a color.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.PalettePicker.addHueColors">addHueColors</a></td>
+<a href="#Gui.PalettePicker.addHueColors">addHueColors(self, s32, f32, f32)</a></td>
 <td class="enumeration">
 <p>
 Add a range of changing <code class = "incode">hue</code>.</p>
@@ -12790,7 +12790,7 @@ Add a range of changing <code class = "incode">hue</code>.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.PalettePicker.addLumColors">addLumColors</a></td>
+<a href="#Gui.PalettePicker.addLumColors">addLumColors(self, s32, const ref Color)</a></td>
 <td class="enumeration">
 <p>
 Add a range of changing <code class = "incode">luminance</code>.</p>
@@ -12798,7 +12798,7 @@ Add a range of changing <code class = "incode">luminance</code>.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.PalettePicker.addSatColors">addSatColors</a></td>
+<a href="#Gui.PalettePicker.addSatColors">addSatColors(self, s32, const ref Color, f32)</a></td>
 <td class="enumeration">
 <p>
 Add a range of changing <code class = "incode">saturation</code>.</p>
@@ -12806,7 +12806,7 @@ Add a range of changing <code class = "incode">saturation</code>.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.PalettePicker.create">create</a></td>
+<a href="#Gui.PalettePicker.create">create(*Wnd, const ref Rectangle, WndId)</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -13029,7 +13029,7 @@ s32</td>
 <table class="enumeration">
 <tr>
 <td class="enumeration">
-<a href="#Gui.PopupListCtrl.addItem">addItem</a></td>
+<a href="#Gui.PopupListCtrl.addItem">addItem(self, string, WndId, const ref Icon, *void, *void)</a></td>
 <td class="enumeration">
 <p>
 Add a new item in the list.</p>
@@ -13037,7 +13037,7 @@ Add a new item in the list.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.PopupListCtrl.addSeparator">addSeparator</a></td>
+<a href="#Gui.PopupListCtrl.addSeparator">addSeparator(self)</a></td>
 <td class="enumeration">
 <p>
 Add a separator.</p>
@@ -13045,7 +13045,7 @@ Add a separator.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.PopupListCtrl.create">create</a></td>
+<a href="#Gui.PopupListCtrl.create">create(*Wnd)</a></td>
 <td class="enumeration">
 <p>
 Create the popup list, but do not display it.</p>
@@ -13053,7 +13053,7 @@ Create the popup list, but do not display it.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.PopupListCtrl.show">show</a></td>
+<a href="#Gui.PopupListCtrl.show">show(self, f32, f32, f32)</a></td>
 <td class="enumeration">
 <p>
 Show popup.</p>
@@ -13388,13 +13388,13 @@ f32</td>
 <table class="enumeration">
 <tr>
 <td class="enumeration">
-<a href="#Gui.ProgressBar.create">create</a></td>
+<a href="#Gui.ProgressBar.create">create(*Wnd, const ref Rectangle, WndId)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.ProgressBar.setProgression">setProgression</a></td>
+<a href="#Gui.ProgressBar.setProgression">setProgression(self, f32)</a></td>
 <td class="enumeration">
 <p>
 Set the progression in [0..1] range.</p>
@@ -13554,7 +13554,7 @@ edView</td>
 <table class="enumeration">
 <tr>
 <td class="enumeration">
-<a href="#Gui.PropertyList.addItem">addItem</a></td>
+<a href="#Gui.PropertyList.addItem">addItem(self, any)</a></td>
 <td class="enumeration">
 <p>
 Add a new struct to display.</p>
@@ -13562,13 +13562,13 @@ Add a new struct to display.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.PropertyList.create">create</a></td>
+<a href="#Gui.PropertyList.create">create(*Wnd, const ref Rectangle, WndId)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.PropertyList.refresh">refresh</a></td>
+<a href="#Gui.PropertyList.refresh">refresh(self)</a></td>
 <td class="enumeration">
 <p>
 Refresh displayed values.</p>
@@ -13576,7 +13576,7 @@ Refresh displayed values.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.PropertyList.setStringFilter">setStringFilter</a></td>
+<a href="#Gui.PropertyList.setStringFilter">setStringFilter(self, string)</a></td>
 <td class="enumeration">
 <p>
 Show hiden content depending on the input filter.</p>
@@ -13826,7 +13826,7 @@ form</td>
 <table class="enumeration">
 <tr>
 <td class="enumeration">
-<a href="#Gui.PushButton.create">create</a></td>
+<a href="#Gui.PushButton.create">create(*Wnd, string, const ref Rectangle, WndId)</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -13991,13 +13991,13 @@ sigChanged</td>
 <table class="enumeration">
 <tr>
 <td class="enumeration">
-<a href="#Gui.RadioButton.create">create</a></td>
+<a href="#Gui.RadioButton.create">create(*Wnd, string, const ref Rectangle, WndId)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.RadioButton.setChecked">setChecked</a></td>
+<a href="#Gui.RadioButton.setChecked">setChecked(self, bool)</a></td>
 <td class="enumeration">
 <p>
 Set the checked state.</p>
@@ -14756,13 +14756,13 @@ selBegUndo</td>
 <table class="enumeration">
 <tr>
 <td class="enumeration">
-<a href="#Gui.RichEditCtrl.addMapping">addMapping</a></td>
+<a href="#Gui.RichEditCtrl.addMapping">addMapping(self, Key, KeyModifiers, RichEditCommand)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.RichEditCtrl.addText">addText</a></td>
+<a href="#Gui.RichEditCtrl.addText">addText(self, string, RichEditStyleRef)</a></td>
 <td class="enumeration">
 <p>
 Append a text with a given style.</p>
@@ -14770,19 +14770,19 @@ Append a text with a given style.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.RichEditCtrl.canRedo">canRedo</a></td>
+<a href="#Gui.RichEditCtrl.canRedo">canRedo(self)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.RichEditCtrl.canUndo">canUndo</a></td>
+<a href="#Gui.RichEditCtrl.canUndo">canUndo(self)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.RichEditCtrl.charPressed">charPressed</a></td>
+<a href="#Gui.RichEditCtrl.charPressed">charPressed(self, Key, rune, KeyModifiers)</a></td>
 <td class="enumeration">
 <p>
 Simulate a keyboard character pressed.</p>
@@ -14790,13 +14790,13 @@ Simulate a keyboard character pressed.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.RichEditCtrl.checkSelection">checkSelection</a></td>
+<a href="#Gui.RichEditCtrl.checkSelection">checkSelection(self)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.RichEditCtrl.clear">clear</a></td>
+<a href="#Gui.RichEditCtrl.clear">clear(self)</a></td>
 <td class="enumeration">
 <p>
 Clear content.</p>
@@ -14804,37 +14804,37 @@ Clear content.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.RichEditCtrl.clearMapping">clearMapping</a></td>
+<a href="#Gui.RichEditCtrl.clearMapping">clearMapping(self)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.RichEditCtrl.clearSelection">clearSelection</a></td>
+<a href="#Gui.RichEditCtrl.clearSelection">clearSelection(self)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.RichEditCtrl.clearUndo">clearUndo</a></td>
+<a href="#Gui.RichEditCtrl.clearUndo">clearUndo(self)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.RichEditCtrl.copyToClipboard">copyToClipboard</a></td>
+<a href="#Gui.RichEditCtrl.copyToClipboard">copyToClipboard(self)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.RichEditCtrl.create">create</a></td>
+<a href="#Gui.RichEditCtrl.create">create(*Wnd, const ref Rectangle, WndId)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.RichEditCtrl.deleteBegLine">deleteBegLine</a></td>
+<a href="#Gui.RichEditCtrl.deleteBegLine">deleteBegLine(self, string, bool)</a></td>
 <td class="enumeration">
 <p>
 Delete a given text at the start of each selected line.</p>
@@ -14842,55 +14842,55 @@ Delete a given text at the start of each selected line.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.RichEditCtrl.deleteLeft">deleteLeft</a></td>
+<a href="#Gui.RichEditCtrl.deleteLeft">deleteLeft(self)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.RichEditCtrl.deleteLine">deleteLine</a></td>
+<a href="#Gui.RichEditCtrl.deleteLine">deleteLine(self)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.RichEditCtrl.deleteRight">deleteRight</a></td>
+<a href="#Gui.RichEditCtrl.deleteRight">deleteRight(self)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.RichEditCtrl.deleteSelection">deleteSelection</a></td>
+<a href="#Gui.RichEditCtrl.deleteSelection">deleteSelection(self)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.RichEditCtrl.deleteWordLeft">deleteWordLeft</a></td>
+<a href="#Gui.RichEditCtrl.deleteWordLeft">deleteWordLeft(self)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.RichEditCtrl.deleteWordRight">deleteWordRight</a></td>
+<a href="#Gui.RichEditCtrl.deleteWordRight">deleteWordRight(self)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.RichEditCtrl.ensureCaretIsVisible">ensureCaretIsVisible</a></td>
+<a href="#Gui.RichEditCtrl.ensureCaretIsVisible">ensureCaretIsVisible(self, bool)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.RichEditCtrl.ensureCursorIsVisible">ensureCursorIsVisible</a></td>
+<a href="#Gui.RichEditCtrl.ensureCursorIsVisible">ensureCursorIsVisible(self, const ref RichEditCursor, bool)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.RichEditCtrl.evaluateSize">evaluateSize</a></td>
+<a href="#Gui.RichEditCtrl.evaluateSize">evaluateSize(self)</a></td>
 <td class="enumeration">
 <p>
 Evaluate the rendering size.</p>
@@ -14898,7 +14898,7 @@ Evaluate the rendering size.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.RichEditCtrl.executeCommand">executeCommand</a></td>
+<a href="#Gui.RichEditCtrl.executeCommand">executeCommand(self, RichEditCommand)</a></td>
 <td class="enumeration">
 <p>
 Execute a command.</p>
@@ -14906,43 +14906,43 @@ Execute a command.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.RichEditCtrl.getBegSelection">getBegSelection</a></td>
+<a href="#Gui.RichEditCtrl.getBegSelection">getBegSelection(self)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.RichEditCtrl.getCaretPos">getCaretPos</a></td>
+<a href="#Gui.RichEditCtrl.getCaretPos">getCaretPos(self, const ref RichEditCursor)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.RichEditCtrl.getCursorDisplayPos">getCursorDisplayPos</a></td>
+<a href="#Gui.RichEditCtrl.getCursorDisplayPos">getCursorDisplayPos(self, const ref RichEditCursor)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.RichEditCtrl.getCursorPosFromPoint">getCursorPosFromPoint</a></td>
+<a href="#Gui.RichEditCtrl.getCursorPosFromPoint">getCursorPosFromPoint(self, const ref Point)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.RichEditCtrl.getEndSelection">getEndSelection</a></td>
+<a href="#Gui.RichEditCtrl.getEndSelection">getEndSelection(self)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.RichEditCtrl.getMappingCommand">getMappingCommand</a></td>
+<a href="#Gui.RichEditCtrl.getMappingCommand">getMappingCommand(self, Key, KeyModifiers)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.RichEditCtrl.getRune">getRune</a></td>
+<a href="#Gui.RichEditCtrl.getRune">getRune(self, const ref RichEditCursor)</a></td>
 <td class="enumeration">
 <p>
 Get the rune at the given cursor pos.</p>
@@ -14950,13 +14950,13 @@ Get the rune at the given cursor pos.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.RichEditCtrl.getRuneSize">getRuneSize</a></td>
+<a href="#Gui.RichEditCtrl.getRuneSize">getRuneSize(self, *RichEditLine, u64, f32)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.RichEditCtrl.getSelectedText">getSelectedText</a></td>
+<a href="#Gui.RichEditCtrl.getSelectedText">getSelectedText(self)</a></td>
 <td class="enumeration">
 <p>
 Get the selected text.</p>
@@ -14964,13 +14964,13 @@ Get the selected text.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.RichEditCtrl.getTabOffset">getTabOffset</a></td>
+<a href="#Gui.RichEditCtrl.getTabOffset">getTabOffset(self, s32, *s32)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.RichEditCtrl.getText">getText</a></td>
+<a href="#Gui.RichEditCtrl.getText">getText(self)</a></td>
 <td class="enumeration">
 <p>
 Get the full text.</p>
@@ -14978,7 +14978,7 @@ Get the full text.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.RichEditCtrl.getTextAndStyles">getTextAndStyles</a></td>
+<a href="#Gui.RichEditCtrl.getTextAndStyles">getTextAndStyles(self)</a></td>
 <td class="enumeration">
 <p>
 Get the full text with the associated styles per character.</p>
@@ -14986,13 +14986,13 @@ Get the full text with the associated styles per character.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.RichEditCtrl.getXExtent">getXExtent</a></td>
+<a href="#Gui.RichEditCtrl.getXExtent">getXExtent(self)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.RichEditCtrl.insertBegLine">insertBegLine</a></td>
+<a href="#Gui.RichEditCtrl.insertBegLine">insertBegLine(self, string)</a></td>
 <td class="enumeration">
 <p>
 Insert text at the start of each selected line.</p>
@@ -15000,7 +15000,7 @@ Insert text at the start of each selected line.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.RichEditCtrl.insertRune">insertRune</a></td>
+<a href="#Gui.RichEditCtrl.insertRune">insertRune(self, rune)</a></td>
 <td class="enumeration">
 <p>
 Insert a rune.</p>
@@ -15008,15 +15008,7 @@ Insert a rune.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.RichEditCtrl.insertText">insertText</a></td>
-<td class="enumeration">
-<p>
-Insert a text with a given style.</p>
-</td>
-</tr>
-<tr>
-<td class="enumeration">
-<a href="#Gui.RichEditCtrl.insertText">insertText</a></td>
+<a href="#Gui.RichEditCtrl.insertText">insertText(self, string, const ref Array'(u8))</a></td>
 <td class="enumeration">
 <p>
 Insert a text with a style per character.</p>
@@ -15024,7 +15016,15 @@ Insert a text with a style per character.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.RichEditCtrl.isReadOnly">isReadOnly</a></td>
+<a href="#Gui.RichEditCtrl.insertText">insertText(self, string)</a></td>
+<td class="enumeration">
+<p>
+Insert a text with a given style.</p>
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Gui.RichEditCtrl.isReadOnly">isReadOnly(self)</a></td>
 <td class="enumeration">
 <p>
 Returns true if the rich edit is read only.</p>
@@ -15032,13 +15032,13 @@ Returns true if the rich edit is read only.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.RichEditCtrl.isSelectionEmpty">isSelectionEmpty</a></td>
+<a href="#Gui.RichEditCtrl.isSelectionEmpty">isSelectionEmpty(self)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.RichEditCtrl.keyPressed">keyPressed</a></td>
+<a href="#Gui.RichEditCtrl.keyPressed">keyPressed(self, Key, KeyModifiers)</a></td>
 <td class="enumeration">
 <p>
 Simulate a keyboard pressed.</p>
@@ -15046,7 +15046,7 @@ Simulate a keyboard pressed.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.RichEditCtrl.lexAll">lexAll</a></td>
+<a href="#Gui.RichEditCtrl.lexAll">lexAll(self)</a></td>
 <td class="enumeration">
 <p>
 Lex the full text.</p>
@@ -15054,145 +15054,145 @@ Lex the full text.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.RichEditCtrl.moveCursorDown">moveCursorDown</a></td>
+<a href="#Gui.RichEditCtrl.moveCursorDown">moveCursorDown(self, *RichEditCursor)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.RichEditCtrl.moveCursorEndFile">moveCursorEndFile</a></td>
+<a href="#Gui.RichEditCtrl.moveCursorEndFile">moveCursorEndFile(self, *RichEditCursor)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.RichEditCtrl.moveCursorEndLine">moveCursorEndLine</a></td>
+<a href="#Gui.RichEditCtrl.moveCursorEndLine">moveCursorEndLine(self, *RichEditCursor)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.RichEditCtrl.moveCursorLeft">moveCursorLeft</a></td>
+<a href="#Gui.RichEditCtrl.moveCursorLeft">moveCursorLeft(self, *RichEditCursor)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.RichEditCtrl.moveCursorPageDown">moveCursorPageDown</a></td>
+<a href="#Gui.RichEditCtrl.moveCursorPageDown">moveCursorPageDown(self, *RichEditCursor)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.RichEditCtrl.moveCursorPageUp">moveCursorPageUp</a></td>
+<a href="#Gui.RichEditCtrl.moveCursorPageUp">moveCursorPageUp(self, *RichEditCursor)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.RichEditCtrl.moveCursorRight">moveCursorRight</a></td>
+<a href="#Gui.RichEditCtrl.moveCursorRight">moveCursorRight(self, *RichEditCursor)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.RichEditCtrl.moveCursorStartFile">moveCursorStartFile</a></td>
+<a href="#Gui.RichEditCtrl.moveCursorStartFile">moveCursorStartFile(self, *RichEditCursor)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.RichEditCtrl.moveCursorStartLine">moveCursorStartLine</a></td>
+<a href="#Gui.RichEditCtrl.moveCursorStartLine">moveCursorStartLine(self, *RichEditCursor)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.RichEditCtrl.moveCursorUp">moveCursorUp</a></td>
+<a href="#Gui.RichEditCtrl.moveCursorUp">moveCursorUp(self, *RichEditCursor)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.RichEditCtrl.moveCursorWordLeft">moveCursorWordLeft</a></td>
+<a href="#Gui.RichEditCtrl.moveCursorWordLeft">moveCursorWordLeft(self, *RichEditCursor)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.RichEditCtrl.moveCursorWordRight">moveCursorWordRight</a></td>
+<a href="#Gui.RichEditCtrl.moveCursorWordRight">moveCursorWordRight(self, *RichEditCursor, bool)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.RichEditCtrl.pasteFromClipboard">pasteFromClipboard</a></td>
+<a href="#Gui.RichEditCtrl.pasteFromClipboard">pasteFromClipboard(self)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.RichEditCtrl.popUndo">popUndo</a></td>
+<a href="#Gui.RichEditCtrl.popUndo">popUndo(self)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.RichEditCtrl.pushUndo">pushUndo</a></td>
+<a href="#Gui.RichEditCtrl.pushUndo">pushUndo(self)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.RichEditCtrl.redo">redo</a></td>
+<a href="#Gui.RichEditCtrl.redo">redo(self)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.RichEditCtrl.scrollLineDown">scrollLineDown</a></td>
+<a href="#Gui.RichEditCtrl.scrollLineDown">scrollLineDown(self)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.RichEditCtrl.scrollLineUp">scrollLineUp</a></td>
+<a href="#Gui.RichEditCtrl.scrollLineUp">scrollLineUp(self)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.RichEditCtrl.selectAll">selectAll</a></td>
+<a href="#Gui.RichEditCtrl.selectAll">selectAll(self)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.RichEditCtrl.selectWord">selectWord</a></td>
+<a href="#Gui.RichEditCtrl.selectWord">selectWord(self)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.RichEditCtrl.setCursorPos">setCursorPos</a></td>
+<a href="#Gui.RichEditCtrl.setCursorPos">setCursorPos(self, const ref RichEditCursor)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.RichEditCtrl.setDefaultMapping">setDefaultMapping</a></td>
+<a href="#Gui.RichEditCtrl.setDefaultMapping">setDefaultMapping(self)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.RichEditCtrl.setFocus">setFocus</a></td>
+<a href="#Gui.RichEditCtrl.setFocus">setFocus(self)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.RichEditCtrl.setForm">setForm</a></td>
+<a href="#Gui.RichEditCtrl.setForm">setForm(self, RichEditForm)</a></td>
 <td class="enumeration">
 <p>
 Set form.</p>
@@ -15200,7 +15200,7 @@ Set form.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.RichEditCtrl.setLexer">setLexer</a></td>
+<a href="#Gui.RichEditCtrl.setLexer">setLexer(self, IRichEditLexer)</a></td>
 <td class="enumeration">
 <p>
 Associate a lexer.</p>
@@ -15208,13 +15208,13 @@ Associate a lexer.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.RichEditCtrl.setRectangularSelection">setRectangularSelection</a></td>
+<a href="#Gui.RichEditCtrl.setRectangularSelection">setRectangularSelection(self, bool)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.RichEditCtrl.setRichEdFlags">setRichEdFlags</a></td>
+<a href="#Gui.RichEditCtrl.setRichEdFlags">setRichEdFlags(self, RichEditFlags)</a></td>
 <td class="enumeration">
 <p>
 Set richedit flags.</p>
@@ -15222,13 +15222,13 @@ Set richedit flags.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.RichEditCtrl.setSelection">setSelection</a></td>
+<a href="#Gui.RichEditCtrl.setSelection">setSelection(self, const ref RichEditCursor, const ref RichEditCursor)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.RichEditCtrl.setText">setText</a></td>
+<a href="#Gui.RichEditCtrl.setText">setText(self, string)</a></td>
 <td class="enumeration">
 <p>
 Set the text content.</p>
@@ -15236,7 +15236,7 @@ Set the text content.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.RichEditCtrl.undo">undo</a></td>
+<a href="#Gui.RichEditCtrl.undo">undo(self)</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -16970,7 +16970,7 @@ UnderlineStyle</td>
 <table class="enumeration">
 <tr>
 <td class="enumeration">
-<a href="#Gui.RichEditRuneStyle.opEquals">opEquals</a></td>
+<a href="#Gui.RichEditRuneStyle.opEquals">opEquals(self, const ref RichEditRuneStyle)</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -17476,13 +17476,13 @@ Point</td>
 <table class="enumeration">
 <tr>
 <td class="enumeration">
-<a href="#Gui.ScrollWnd.getClientScrollRect">getClientScrollRect</a></td>
+<a href="#Gui.ScrollWnd.getClientScrollRect">getClientScrollRect(self)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.ScrollWnd.getScrollPos">getScrollPos</a></td>
+<a href="#Gui.ScrollWnd.getScrollPos">getScrollPos(self)</a></td>
 <td class="enumeration">
 <p>
 Get the current scroll position.</p>
@@ -17490,7 +17490,7 @@ Get the current scroll position.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.ScrollWnd.setScrollPos">setScrollPos</a></td>
+<a href="#Gui.ScrollWnd.setScrollPos">setScrollPos(self, const ref Point)</a></td>
 <td class="enumeration">
 <p>
 Set the current scroll position.</p>
@@ -17498,13 +17498,13 @@ Set the current scroll position.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.ScrollWnd.setScrollPos">setScrollPos</a></td>
+<a href="#Gui.ScrollWnd.setScrollPos">setScrollPos(self, f32, f32)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.ScrollWnd.setScrollSize">setScrollSize</a></td>
+<a href="#Gui.ScrollWnd.setScrollSize">setScrollSize(self, f32, f32)</a></td>
 <td class="enumeration">
 <p>
 Set the scroll size (window virtual size).</p>
@@ -17685,7 +17685,7 @@ TransparentBar</td>
 <td class="tdname">
 selection</td>
 <td class="tdtype">
-Array(__selmodel_tuple_395)</td>
+Array(__selmodel_tuple_384)</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -17694,31 +17694,31 @@ Array(__selmodel_tuple_395)</td>
 <table class="enumeration">
 <tr>
 <td class="enumeration">
-<a href="#Gui.SelModel.getSelectedRangeIndex">getSelectedRangeIndex</a></td>
+<a href="#Gui.SelModel.getSelectedRangeIndex">getSelectedRangeIndex(self, u32)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.SelModel.isEmpty">isEmpty</a></td>
+<a href="#Gui.SelModel.isEmpty">isEmpty(self)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.SelModel.isSelected">isSelected</a></td>
+<a href="#Gui.SelModel.isSelected">isSelected(self, u32)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.SelModel.opVisit">opVisit</a></td>
+<a href="#Gui.SelModel.opVisit">opVisit(self, code)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.SelModel.select">select</a></td>
+<a href="#Gui.SelModel.select">select(self, u32, bool)</a></td>
 <td class="enumeration">
 <p>
 Select the given index.</p>
@@ -17726,7 +17726,7 @@ Select the given index.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.SelModel.unselectAll">unselectAll</a></td>
+<a href="#Gui.SelModel.unselectAll">unselectAll(self)</a></td>
 <td class="enumeration">
 <p>
 Unselect all.</p>
@@ -17930,25 +17930,25 @@ s32</td>
 <table class="enumeration">
 <tr>
 <td class="enumeration">
-<a href="#Gui.SigArray.call">call</a></td>
+<a href="#Gui.SigArray.call">call(self, ...)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.SigArray.disable">disable</a></td>
+<a href="#Gui.SigArray.disable">disable(self)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.SigArray.enable">enable</a></td>
+<a href="#Gui.SigArray.enable">enable(self)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.SigArray.opAssign">opAssign</a></td>
+<a href="#Gui.SigArray.opAssign">opAssign(self, T)</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -18217,37 +18217,37 @@ f32</td>
 <table class="enumeration">
 <tr>
 <td class="enumeration">
-<a href="#Gui.Slider.create">create</a></td>
+<a href="#Gui.Slider.create">create(*Wnd, const ref Rectangle, WndId, bool, bool)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.Slider.getValue">getValue</a></td>
+<a href="#Gui.Slider.getValue">getValue(self)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.Slider.getValueLeft">getValueLeft</a></td>
+<a href="#Gui.Slider.getValueLeft">getValueLeft(self)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.Slider.getValueRight">getValueRight</a></td>
+<a href="#Gui.Slider.getValueRight">getValueRight(self)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.Slider.setMinMax">setMinMax</a></td>
+<a href="#Gui.Slider.setMinMax">setMinMax(self, f32, f32, f32)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.Slider.setRangeValues">setRangeValues</a></td>
+<a href="#Gui.Slider.setRangeValues">setRangeValues(self, f32, f32)</a></td>
 <td class="enumeration">
 <p>
 Set left and right values, for a range.</p>
@@ -18255,19 +18255,19 @@ Set left and right values, for a range.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.Slider.setValue">setValue</a></td>
+<a href="#Gui.Slider.setValue">setValue(self, f32)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.Slider.setValueLeft">setValueLeft</a></td>
+<a href="#Gui.Slider.setValueLeft">setValueLeft(self, f32)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.Slider.setValueRight">setValueRight</a></td>
+<a href="#Gui.Slider.setValueRight">setValueRight(self, f32)</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -18504,7 +18504,7 @@ edit</td>
 <table class="enumeration">
 <tr>
 <td class="enumeration">
-<a href="#Gui.SliderCtrl.create">create</a></td>
+<a href="#Gui.SliderCtrl.create">create(*Wnd, string, const ref Rectangle, WndId)</a></td>
 <td class="enumeration">
 <p>
 Create the popup list, but do not display it.</p>
@@ -18512,7 +18512,7 @@ Create the popup list, but do not display it.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.SliderCtrl.setMinMaxF32">setMinMaxF32</a></td>
+<a href="#Gui.SliderCtrl.setMinMaxF32">setMinMaxF32(self, f32, f32)</a></td>
 <td class="enumeration">
 <p>
 Set a f32 range.</p>
@@ -18520,7 +18520,7 @@ Set a f32 range.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.SliderCtrl.setMinMaxS64">setMinMaxS64</a></td>
+<a href="#Gui.SliderCtrl.setMinMaxS64">setMinMaxS64(self, s64, s64)</a></td>
 <td class="enumeration">
 <p>
 Set a f64 range.</p>
@@ -18528,7 +18528,7 @@ Set a f64 range.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.SliderCtrl.setMinMaxU64">setMinMaxU64</a></td>
+<a href="#Gui.SliderCtrl.setMinMaxU64">setMinMaxU64(self, u64, u64)</a></td>
 <td class="enumeration">
 <p>
 Set a u64 range.</p>
@@ -18536,7 +18536,7 @@ Set a u64 range.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.SliderCtrl.setValue">setValue</a></td>
+<a href="#Gui.SliderCtrl.setValue">setValue(self, f32)</a></td>
 <td class="enumeration">
 <p>
 Set the slider current value.</p>
@@ -18751,7 +18751,7 @@ bool</td>
 <table class="enumeration">
 <tr>
 <td class="enumeration">
-<a href="#Gui.SplitterCtrl.addPane">addPane</a></td>
+<a href="#Gui.SplitterCtrl.addPane">addPane(self, *Wnd, f32, bool)</a></td>
 <td class="enumeration">
 <p>
 Add a new pane.</p>
@@ -18759,19 +18759,19 @@ Add a new pane.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.SplitterCtrl.create">create</a></td>
+<a href="#Gui.SplitterCtrl.create">create(*Wnd, const ref Rectangle, bool, WndId)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.SplitterCtrl.isVertical">isVertical</a></td>
+<a href="#Gui.SplitterCtrl.isVertical">isVertical(self)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.SplitterCtrl.setPaneSize">setPaneSize</a></td>
+<a href="#Gui.SplitterCtrl.setPaneSize">setPaneSize(self, u32, f32)</a></td>
 <td class="enumeration">
 <p>
 Set the pane size (size of the first view).</p>
@@ -19020,7 +19020,7 @@ f32</td>
 <table class="enumeration">
 <tr>
 <td class="enumeration">
-<a href="#Gui.StackLayoutCtrl.computeLayout">computeLayout</a></td>
+<a href="#Gui.StackLayoutCtrl.computeLayout">computeLayout(self)</a></td>
 <td class="enumeration">
 <p>
 Recompute layout of all childs.</p>
@@ -19028,7 +19028,7 @@ Recompute layout of all childs.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.StackLayoutCtrl.create">create</a></td>
+<a href="#Gui.StackLayoutCtrl.create">create(*Wnd, StackLayoutKind, const ref Rectangle)</a></td>
 <td class="enumeration">
 <p>
 Create a layout control.</p>
@@ -19325,7 +19325,7 @@ state</td>
 <table class="enumeration">
 <tr>
 <td class="enumeration">
-<a href="#Gui.Surface.bringToTop">bringToTop</a></td>
+<a href="#Gui.Surface.bringToTop">bringToTop(self)</a></td>
 <td class="enumeration">
 <p>
 Bring the surface at the top of the Z order.</p>
@@ -19333,7 +19333,7 @@ Bring the surface at the top of the Z order.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.Surface.center">center</a></td>
+<a href="#Gui.Surface.center">center(self, *Surface)</a></td>
 <td class="enumeration">
 <p>
 Center this surface relative to <code class = "incode">from</code>.</p>
@@ -19341,7 +19341,7 @@ Center this surface relative to <code class = "incode">from</code>.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.Surface.constaintToScreen">constaintToScreen</a></td>
+<a href="#Gui.Surface.constaintToScreen">constaintToScreen(self)</a></td>
 <td class="enumeration">
 <p>
 Constraint a window to be inside the closest monitor.</p>
@@ -19349,7 +19349,7 @@ Constraint a window to be inside the closest monitor.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.Surface.create">create</a></td>
+<a href="#Gui.Surface.create">create(*Surface, s32, s32, s32, s32, SurfaceFlags, *Surface)</a></td>
 <td class="enumeration">
 <p>
 Creates the surface.</p>
@@ -19357,7 +19357,7 @@ Creates the surface.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.Surface.destroy">destroy</a></td>
+<a href="#Gui.Surface.destroy">destroy(self)</a></td>
 <td class="enumeration">
 <p>
 Destroy the surface.</p>
@@ -19365,7 +19365,7 @@ Destroy the surface.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.Surface.disable">disable</a></td>
+<a href="#Gui.Surface.disable">disable(self)</a></td>
 <td class="enumeration">
 <p>
 Enable the surface.</p>
@@ -19373,7 +19373,7 @@ Enable the surface.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.Surface.enable">enable</a></td>
+<a href="#Gui.Surface.enable">enable(self)</a></td>
 <td class="enumeration">
 <p>
 Enable the surface.</p>
@@ -19381,7 +19381,7 @@ Enable the surface.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.Surface.getView">getView</a></td>
+<a href="#Gui.Surface.getView">getView(self)</a></td>
 <td class="enumeration">
 <p>
 Returns inside view.</p>
@@ -19389,7 +19389,7 @@ Returns inside view.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.Surface.hide">hide</a></td>
+<a href="#Gui.Surface.hide">hide(self)</a></td>
 <td class="enumeration">
 <p>
 Hide the surface.</p>
@@ -19397,7 +19397,7 @@ Hide the surface.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.Surface.invalidate">invalidate</a></td>
+<a href="#Gui.Surface.invalidate">invalidate(self)</a></td>
 <td class="enumeration">
 <p>
 Invalidate the full surface to be painted.</p>
@@ -19405,7 +19405,7 @@ Invalidate the full surface to be painted.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.Surface.invalidateRect">invalidateRect</a></td>
+<a href="#Gui.Surface.invalidateRect">invalidateRect(self, const ref Rectangle)</a></td>
 <td class="enumeration">
 <p>
 Invalidate one part of the surface to be painted.</p>
@@ -19413,7 +19413,7 @@ Invalidate one part of the surface to be painted.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.Surface.paint">paint</a></td>
+<a href="#Gui.Surface.paint">paint(self)</a></td>
 <td class="enumeration">
 <p>
 Main surface paint function.</p>
@@ -19421,7 +19421,7 @@ Main surface paint function.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.Surface.screenToSurface">screenToSurface</a></td>
+<a href="#Gui.Surface.screenToSurface">screenToSurface(self, *Point)</a></td>
 <td class="enumeration">
 <p>
 Transform a point in screen space relative to the surface.</p>
@@ -19429,7 +19429,7 @@ Transform a point in screen space relative to the surface.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.Surface.setIcon">setIcon</a></td>
+<a href="#Gui.Surface.setIcon">setIcon(self, const ref Icon)</a></td>
 <td class="enumeration">
 <p>
 Set the surface icon.</p>
@@ -19437,7 +19437,7 @@ Set the surface icon.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.Surface.setPosition">setPosition</a></td>
+<a href="#Gui.Surface.setPosition">setPosition(self, const ref Rectangle)</a></td>
 <td class="enumeration">
 <p>
 Set the surface position.</p>
@@ -19445,7 +19445,7 @@ Set the surface position.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.Surface.setSurfaceFlags">setSurfaceFlags</a></td>
+<a href="#Gui.Surface.setSurfaceFlags">setSurfaceFlags(self, SurfaceFlags, SurfaceFlags)</a></td>
 <td class="enumeration">
 <p>
 Change flag surfaces.</p>
@@ -19453,7 +19453,7 @@ Change flag surfaces.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.Surface.setTitle">setTitle</a></td>
+<a href="#Gui.Surface.setTitle">setTitle(self, string)</a></td>
 <td class="enumeration">
 <p>
 Set the surface title.</p>
@@ -19461,13 +19461,13 @@ Set the surface title.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.Surface.setView">setView</a></td>
+<a href="#Gui.Surface.setView">setView(self, *Wnd)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.Surface.show">show</a></td>
+<a href="#Gui.Surface.show">show(self)</a></td>
 <td class="enumeration">
 <p>
 Show the surface.</p>
@@ -19475,7 +19475,7 @@ Show the surface.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.Surface.showMaximized">showMaximized</a></td>
+<a href="#Gui.Surface.showMaximized">showMaximized(self)</a></td>
 <td class="enumeration">
 <p>
 Show the surface as maximized.</p>
@@ -19483,7 +19483,7 @@ Show the surface as maximized.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.Surface.showMinimized">showMinimized</a></td>
+<a href="#Gui.Surface.showMinimized">showMinimized(self)</a></td>
 <td class="enumeration">
 <p>
 Show the surface as minimized.</p>
@@ -19491,7 +19491,7 @@ Show the surface as minimized.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.Surface.showNormal">showNormal</a></td>
+<a href="#Gui.Surface.showNormal">showNormal(self)</a></td>
 <td class="enumeration">
 <p>
 Show the surface in its default state.</p>
@@ -19499,7 +19499,7 @@ Show the surface in its default state.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.Surface.surfaceToScreen">surfaceToScreen</a></td>
+<a href="#Gui.Surface.surfaceToScreen">surfaceToScreen(self, *Point)</a></td>
 <td class="enumeration">
 <p>
 Transform a point relative to the surface in screen space.</p>
@@ -20326,7 +20326,7 @@ f32</td>
 <table class="enumeration">
 <tr>
 <td class="enumeration">
-<a href="#Gui.Tab.addItem">addItem</a></td>
+<a href="#Gui.Tab.addItem">addItem(self, string, const ref Icon, *Wnd)</a></td>
 <td class="enumeration">
 <p>
 Add a new view.</p>
@@ -20334,13 +20334,13 @@ Add a new view.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.Tab.create">create</a></td>
+<a href="#Gui.Tab.create">create(*Wnd, const ref Rectangle, WndId)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.Tab.select">select</a></td>
+<a href="#Gui.Tab.select">select(self, u32)</a></td>
 <td class="enumeration">
 <p>
 Select one tab at the given index.</p>
@@ -20348,7 +20348,7 @@ Select one tab at the given index.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.Tab.setForm">setForm</a></td>
+<a href="#Gui.Tab.setForm">setForm(self, TabForm)</a></td>
 <td class="enumeration">
 <p>
 Set the tab form.</p>
@@ -20742,7 +20742,7 @@ colors</td>
 <table class="enumeration">
 <tr>
 <td class="enumeration">
-<a href="#Gui.Theme.createDefaultFont">createDefaultFont</a></td>
+<a href="#Gui.Theme.createDefaultFont">createDefaultFont(self, u32, FontFamilyStyle)</a></td>
 <td class="enumeration">
 <p>
 Create a default font with the given size.</p>
@@ -20750,7 +20750,7 @@ Create a default font with the given size.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.Theme.createDefaultFontFS">createDefaultFontFS</a></td>
+<a href="#Gui.Theme.createDefaultFontFS">createDefaultFontFS(self, u32, FontFamilyStyle)</a></td>
 <td class="enumeration">
 <p>
 Create a default font (fixed size) with the given size.</p>
@@ -20758,37 +20758,37 @@ Create a default font (fixed size) with the given size.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.Theme.drawIconText">drawIconText</a></td>
+<a href="#Gui.Theme.drawIconText">drawIconText(*Painter, const ref Rectangle, const ref Icon, *RichString, const ref RichStringFormat, f32)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.Theme.drawSubRect">drawSubRect</a></td>
+<a href="#Gui.Theme.drawSubRect">drawSubRect(self, *Painter, const ref Rectangle, *ThemeImageRect, const ref Color, bool, InterpolationMode)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.Theme.drawSubRect">drawSubRect</a></td>
+<a href="#Gui.Theme.drawSubRect">drawSubRect(*Painter, const ref Texture, const ref Rectangle, *ThemeImageRect, const ref Color, bool, InterpolationMode)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.Theme.getIcon24">getIcon24</a></td>
+<a href="#Gui.Theme.getIcon24">getIcon24(self, ThemeIcons24, f32)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.Theme.getIcon64">getIcon64</a></td>
+<a href="#Gui.Theme.getIcon64">getIcon64(self, ThemeIcons64, f32)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.Theme.setTextColors">setTextColors</a></td>
+<a href="#Gui.Theme.setTextColors">setTextColors(self, *RichStringFormat, const ref Color)</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -25177,31 +25177,31 @@ FontFamily</td>
 <table class="enumeration">
 <tr>
 <td class="enumeration">
-<a href="#Gui.ThemeStyle.addStyleSheetColors">addStyleSheetColors</a></td>
+<a href="#Gui.ThemeStyle.addStyleSheetColors">addStyleSheetColors(self, string)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.ThemeStyle.addStyleSheetMetrics">addStyleSheetMetrics</a></td>
+<a href="#Gui.ThemeStyle.addStyleSheetMetrics">addStyleSheetMetrics(self, string)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.ThemeStyle.clearFont">clearFont</a></td>
+<a href="#Gui.ThemeStyle.clearFont">clearFont(self)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.ThemeStyle.clearStyleSheetColors">clearStyleSheetColors</a></td>
+<a href="#Gui.ThemeStyle.clearStyleSheetColors">clearStyleSheetColors(self)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.ThemeStyle.create">create</a></td>
+<a href="#Gui.ThemeStyle.create">create(self, *ThemeStyle)</a></td>
 <td class="enumeration">
 <p>
 Create a specific style based on the parent.</p>
@@ -25209,31 +25209,31 @@ Create a specific style based on the parent.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.ThemeStyle.getFont">getFont</a></td>
+<a href="#Gui.ThemeStyle.getFont">getFont(self)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.ThemeStyle.setFont">setFont</a></td>
+<a href="#Gui.ThemeStyle.setFont">setFont(self, const ref FontFamily)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.ThemeStyle.setFont">setFont</a></td>
+<a href="#Gui.ThemeStyle.setFont">setFont(self, *Font, FontFamilyStyle)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.ThemeStyle.setStyleSheetColors">setStyleSheetColors</a></td>
+<a href="#Gui.ThemeStyle.setStyleSheetColors">setStyleSheetColors(self, string)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.ThemeStyle.setStyleSheetMetrics">setStyleSheetMetrics</a></td>
+<a href="#Gui.ThemeStyle.setStyleSheetMetrics">setStyleSheetMetrics(self, string)</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -25446,7 +25446,7 @@ Stopwatch</td>
 <table class="enumeration">
 <tr>
 <td class="enumeration">
-<a href="#Gui.Timer.restart">restart</a></td>
+<a href="#Gui.Timer.restart">restart(self)</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -25536,7 +25536,7 @@ func(*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.
 <table class="enumeration">
 <tr>
 <td class="enumeration">
-<a href="#Gui.ToggleButton.create">create</a></td>
+<a href="#Gui.ToggleButton.create">create(*Wnd, const ref Rectangle, WndId)</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -25601,7 +25601,7 @@ func(*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.
 <table class="enumeration">
 <tr>
 <td class="enumeration">
-<a href="#Gui.ToolTip.hide">hide</a></td>
+<a href="#Gui.ToolTip.hide">hide()</a></td>
 <td class="enumeration">
 <p>
 Hide the current tooltip, if visible.</p>
@@ -25609,7 +25609,7 @@ Hide the current tooltip, if visible.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.ToolTip.show">show</a></td>
+<a href="#Gui.ToolTip.show">show(*Wnd, const ref Point, string, const ref Duration)</a></td>
 <td class="enumeration">
 <p>
 Show a tooltip.</p>
@@ -25620,7 +25620,7 @@ Show a tooltip.</p>
 <table class="enumeration">
 <tr>
 <td class="enumeration">
-<a href="#Gui.ToolTip.hide">hide</a></td>
+<a href="#Gui.ToolTip.hide">hide()</a></td>
 <td class="enumeration">
 <p>
 Hide the current tooltip, if visible.</p>
@@ -25628,7 +25628,7 @@ Hide the current tooltip, if visible.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.ToolTip.show">show</a></td>
+<a href="#Gui.ToolTip.show">show(*Wnd, const ref Point, string, const ref Duration)</a></td>
 <td class="enumeration">
 <p>
 Show a tooltip.</p>
@@ -25926,7 +25926,7 @@ HookEvent</td>
 <table class="enumeration">
 <tr>
 <td class="enumeration">
-<a href="#Gui.Wnd.applyLayout">applyLayout</a></td>
+<a href="#Gui.Wnd.applyLayout">applyLayout(self)</a></td>
 <td class="enumeration">
 <p>
 Apply the current layout (childs constraints).</p>
@@ -25934,13 +25934,13 @@ Apply the current layout (childs constraints).</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.Wnd.applyLayout">applyLayout</a></td>
+<a href="#Gui.Wnd.applyLayout">applyLayout(self, const ref Point)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.Wnd.bringToFront">bringToFront</a></td>
+<a href="#Gui.Wnd.bringToFront">bringToFront(self)</a></td>
 <td class="enumeration">
 <p>
 Force the window to be the first painted (before all siblings).</p>
@@ -25948,7 +25948,7 @@ Force the window to be the first painted (before all siblings).</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.Wnd.bringToTop">bringToTop</a></td>
+<a href="#Gui.Wnd.bringToTop">bringToTop(self)</a></td>
 <td class="enumeration">
 <p>
 Force the window to be the last painted (on top of siblings).</p>
@@ -25956,37 +25956,37 @@ Force the window to be the last painted (on top of siblings).</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.Wnd.captureMouse">captureMouse</a></td>
+<a href="#Gui.Wnd.captureMouse">captureMouse(self)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.Wnd.computeStyle">computeStyle</a></td>
+<a href="#Gui.Wnd.computeStyle">computeStyle(self)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.Wnd.create">create</a></td>
+<a href="#Gui.Wnd.create">create(*Wnd, WndId, HookEvent)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.Wnd.create">create</a></td>
+<a href="#Gui.Wnd.create">create(*Wnd, const ref Rectangle, WndId, HookEvent)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.Wnd.create">create</a></td>
+<a href="#Gui.Wnd.create">create(*Wnd, string, const ref Rectangle, WndId, HookEvent)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.Wnd.destroy">destroy</a></td>
+<a href="#Gui.Wnd.destroy">destroy(self)</a></td>
 <td class="enumeration">
 <p>
 Destroy the window.</p>
@@ -25994,7 +25994,7 @@ Destroy the window.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.Wnd.destroyNow">destroyNow</a></td>
+<a href="#Gui.Wnd.destroyNow">destroyNow(self)</a></td>
 <td class="enumeration">
 <p>
 Destroy the window.</p>
@@ -26002,7 +26002,7 @@ Destroy the window.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.Wnd.disable">disable</a></td>
+<a href="#Gui.Wnd.disable">disable(self)</a></td>
 <td class="enumeration">
 <p>
 Disable the window.</p>
@@ -26010,7 +26010,7 @@ Disable the window.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.Wnd.enable">enable</a></td>
+<a href="#Gui.Wnd.enable">enable(self, bool)</a></td>
 <td class="enumeration">
 <p>
 Enable/Disable the window.</p>
@@ -26018,7 +26018,7 @@ Enable/Disable the window.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.Wnd.fitPosInParent">fitPosInParent</a></td>
+<a href="#Gui.Wnd.fitPosInParent">fitPosInParent(self, f32, f32, bool, bool)</a></td>
 <td class="enumeration">
 <p>
 Be sure rect is fully inside the parent rectangle (if possible).</p>
@@ -26026,13 +26026,13 @@ Be sure rect is fully inside the parent rectangle (if possible).</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.Wnd.getApp">getApp</a></td>
+<a href="#Gui.Wnd.getApp">getApp(self)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.Wnd.getChildById">getChildById</a></td>
+<a href="#Gui.Wnd.getChildById">getChildById(self, string)</a></td>
 <td class="enumeration">
 <p>
 Retrieve the child with the given id.</p>
@@ -26040,7 +26040,7 @@ Retrieve the child with the given id.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.Wnd.getClientRect">getClientRect</a></td>
+<a href="#Gui.Wnd.getClientRect">getClientRect(self)</a></td>
 <td class="enumeration">
 <p>
 Returns the client area.</p>
@@ -26048,7 +26048,7 @@ Returns the client area.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.Wnd.getClientRectPadding">getClientRectPadding</a></td>
+<a href="#Gui.Wnd.getClientRectPadding">getClientRectPadding(self)</a></td>
 <td class="enumeration">
 <p>
 Returns the client area, with <code class = "incode">padding</code> applied.</p>
@@ -26056,7 +26056,7 @@ Returns the client area, with <code class = "incode">padding</code> applied.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.Wnd.getFocus">getFocus</a></td>
+<a href="#Gui.Wnd.getFocus">getFocus(self)</a></td>
 <td class="enumeration">
 <p>
 Get the window with the keyboard focus.</p>
@@ -26064,13 +26064,13 @@ Get the window with the keyboard focus.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.Wnd.getFont">getFont</a></td>
+<a href="#Gui.Wnd.getFont">getFont(self)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.Wnd.getKeyShortcut">getKeyShortcut</a></td>
+<a href="#Gui.Wnd.getKeyShortcut">getKeyShortcut(self, KeyModifiers, Key)</a></td>
 <td class="enumeration">
 <p>
 Get the id associated with a shortcut. null if none.</p>
@@ -26078,7 +26078,7 @@ Get the id associated with a shortcut. null if none.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.Wnd.getKeyShortcutNameFor">getKeyShortcutNameFor</a></td>
+<a href="#Gui.Wnd.getKeyShortcutNameFor">getKeyShortcutNameFor(self, WndId)</a></td>
 <td class="enumeration">
 <p>
 Get the name associated with a given id shortcut.</p>
@@ -26086,13 +26086,13 @@ Get the name associated with a given id shortcut.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.Wnd.getMouseCapture">getMouseCapture</a></td>
+<a href="#Gui.Wnd.getMouseCapture">getMouseCapture(self)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.Wnd.getParentById">getParentById</a></td>
+<a href="#Gui.Wnd.getParentById">getParentById(self, string)</a></td>
 <td class="enumeration">
 <p>
 Retrieve the parent with the given id.</p>
@@ -26100,7 +26100,7 @@ Retrieve the parent with the given id.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.Wnd.getSurfaceRect">getSurfaceRect</a></td>
+<a href="#Gui.Wnd.getSurfaceRect">getSurfaceRect(self)</a></td>
 <td class="enumeration">
 <p>
 Get the wnd position in the surface.</p>
@@ -26108,49 +26108,49 @@ Get the wnd position in the surface.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.Wnd.getTheme">getTheme</a></td>
+<a href="#Gui.Wnd.getTheme">getTheme(self)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.Wnd.getThemeColors">getThemeColors</a></td>
+<a href="#Gui.Wnd.getThemeColors">getThemeColors(self)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.Wnd.getThemeMetrics">getThemeMetrics</a></td>
+<a href="#Gui.Wnd.getThemeMetrics">getThemeMetrics(self)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.Wnd.getThemeRects">getThemeRects</a></td>
+<a href="#Gui.Wnd.getThemeRects">getThemeRects(self)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.Wnd.getTiming">getTiming</a></td>
+<a href="#Gui.Wnd.getTiming">getTiming(self)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.Wnd.getTopView">getTopView</a></td>
+<a href="#Gui.Wnd.getTopView">getTopView(self)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.Wnd.getTopWnd">getTopWnd</a></td>
+<a href="#Gui.Wnd.getTopWnd">getTopWnd(self)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.Wnd.getWndAt">getWndAt</a></td>
+<a href="#Gui.Wnd.getWndAt">getWndAt(self, f32, f32, bool, bool)</a></td>
 <td class="enumeration">
 <p>
 Get the child window at the given coordinate Coordinate is expressed in the parent system.</p>
@@ -26158,7 +26158,7 @@ Get the child window at the given coordinate Coordinate is expressed in the pare
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.Wnd.hasFocus">hasFocus</a></td>
+<a href="#Gui.Wnd.hasFocus">hasFocus(self)</a></td>
 <td class="enumeration">
 <p>
 Returns true if the window has the keyboard focus.</p>
@@ -26166,7 +26166,7 @@ Returns true if the window has the keyboard focus.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.Wnd.hide">hide</a></td>
+<a href="#Gui.Wnd.hide">hide(self)</a></td>
 <td class="enumeration">
 <p>
 Hide the window.</p>
@@ -26174,7 +26174,7 @@ Hide the window.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.Wnd.invalidate">invalidate</a></td>
+<a href="#Gui.Wnd.invalidate">invalidate(self)</a></td>
 <td class="enumeration">
 <p>
 Force the window to be repainted.</p>
@@ -26182,7 +26182,7 @@ Force the window to be repainted.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.Wnd.invalidateRect">invalidateRect</a></td>
+<a href="#Gui.Wnd.invalidateRect">invalidateRect(self, const ref Rectangle)</a></td>
 <td class="enumeration">
 <p>
 Force o local position to be repainted.</p>
@@ -26190,7 +26190,7 @@ Force o local position to be repainted.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.Wnd.isEnabled">isEnabled</a></td>
+<a href="#Gui.Wnd.isEnabled">isEnabled(self)</a></td>
 <td class="enumeration">
 <p>
 Returns true if window, and all its parents, are enabled.</p>
@@ -26198,7 +26198,7 @@ Returns true if window, and all its parents, are enabled.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.Wnd.isParentOf">isParentOf</a></td>
+<a href="#Gui.Wnd.isParentOf">isParentOf(self, *Wnd)</a></td>
 <td class="enumeration">
 <p>
 Returns true if <code class = "incode">child</code> is in the child hieararchy of <code class = "incode">self</code>.</p>
@@ -26206,7 +26206,7 @@ Returns true if <code class = "incode">child</code> is in the child hieararchy o
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.Wnd.isVisible">isVisible</a></td>
+<a href="#Gui.Wnd.isVisible">isVisible(self, bool)</a></td>
 <td class="enumeration">
 <p>
 Returns true if window, and all its parents, are visible.</p>
@@ -26214,13 +26214,13 @@ Returns true if window, and all its parents, are visible.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.Wnd.isVisibleState">isVisibleState</a></td>
+<a href="#Gui.Wnd.isVisibleState">isVisibleState(self)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.Wnd.localToSurface">localToSurface</a></td>
+<a href="#Gui.Wnd.localToSurface">localToSurface(self, const ref Rectangle)</a></td>
 <td class="enumeration">
 <p>
 Convert a local coordinate to a surface coordinate.</p>
@@ -26228,7 +26228,7 @@ Convert a local coordinate to a surface coordinate.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.Wnd.localToSurface">localToSurface</a></td>
+<a href="#Gui.Wnd.localToSurface">localToSurface(self, const ref Point)</a></td>
 <td class="enumeration">
 <p>
 Convert a local coordinate to a surface coordinate.</p>
@@ -26236,7 +26236,7 @@ Convert a local coordinate to a surface coordinate.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.Wnd.move">move</a></td>
+<a href="#Gui.Wnd.move">move(self, f32, f32)</a></td>
 <td class="enumeration">
 <p>
 Move the wnd.</p>
@@ -26244,49 +26244,49 @@ Move the wnd.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.Wnd.paint">paint</a></td>
+<a href="#Gui.Wnd.paint">paint(self, *PaintContext)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.Wnd.postCommandEvent">postCommandEvent</a></td>
+<a href="#Gui.Wnd.postCommandEvent">postCommandEvent(self, WndId)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.Wnd.postEvent">postEvent</a></td>
+<a href="#Gui.Wnd.postEvent">postEvent(self, *Event)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.Wnd.postInvalidateEvent">postInvalidateEvent</a></td>
+<a href="#Gui.Wnd.postInvalidateEvent">postInvalidateEvent(self)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.Wnd.postQuitEvent">postQuitEvent</a></td>
+<a href="#Gui.Wnd.postQuitEvent">postQuitEvent(self)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.Wnd.postResizeEvent">postResizeEvent</a></td>
+<a href="#Gui.Wnd.postResizeEvent">postResizeEvent(self)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.Wnd.processEvent">processEvent</a></td>
+<a href="#Gui.Wnd.processEvent">processEvent(self, *Event)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.Wnd.registerAction">registerAction</a></td>
+<a href="#Gui.Wnd.registerAction">registerAction(self)</a></td>
 <td class="enumeration">
 <p>
 Register one new action.</p>
@@ -26294,7 +26294,7 @@ Register one new action.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.Wnd.registerKeyShortcut">registerKeyShortcut</a></td>
+<a href="#Gui.Wnd.registerKeyShortcut">registerKeyShortcut(self, KeyModifiers, Key, WndId)</a></td>
 <td class="enumeration">
 <p>
 Register a keyboard shortcut.</p>
@@ -26302,13 +26302,13 @@ Register a keyboard shortcut.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.Wnd.releaseMouse">releaseMouse</a></td>
+<a href="#Gui.Wnd.releaseMouse">releaseMouse(self)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.Wnd.resize">resize</a></td>
+<a href="#Gui.Wnd.resize">resize(self, f32, f32, bool)</a></td>
 <td class="enumeration">
 <p>
 Resize the wnd.</p>
@@ -26316,7 +26316,7 @@ Resize the wnd.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.Wnd.screenToSurface">screenToSurface</a></td>
+<a href="#Gui.Wnd.screenToSurface">screenToSurface(self, const ref Point)</a></td>
 <td class="enumeration">
 <p>
 Convert a screen coordinate to a surface coordinate (relative to my surface).</p>
@@ -26324,7 +26324,7 @@ Convert a screen coordinate to a surface coordinate (relative to my surface).</p
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.Wnd.sendCommandEvent">sendCommandEvent</a></td>
+<a href="#Gui.Wnd.sendCommandEvent">sendCommandEvent(self, WndId)</a></td>
 <td class="enumeration">
 <p>
 Send the command event with the given id to the window. The command will be updated first, and if it is not disabled, it will be sent.</p>
@@ -26332,7 +26332,7 @@ Send the command event with the given id to the window. The command will be upda
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.Wnd.sendComputeCommandStateEvent">sendComputeCommandStateEvent</a></td>
+<a href="#Gui.Wnd.sendComputeCommandStateEvent">sendComputeCommandStateEvent(self, WndId)</a></td>
 <td class="enumeration">
 <p>
 Send the command state event with the given id to the window. Returns the updated command state.</p>
@@ -26340,61 +26340,61 @@ Send the command state event with the given id to the window. Returns the update
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.Wnd.sendCreateEvent">sendCreateEvent</a></td>
+<a href="#Gui.Wnd.sendCreateEvent">sendCreateEvent(self)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.Wnd.sendEvent">sendEvent</a></td>
+<a href="#Gui.Wnd.sendEvent">sendEvent(self, *Event)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.Wnd.sendResizeEvent">sendResizeEvent</a></td>
+<a href="#Gui.Wnd.sendResizeEvent">sendResizeEvent(self)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.Wnd.sendStateEvent">sendStateEvent</a></td>
+<a href="#Gui.Wnd.sendStateEvent">sendStateEvent(self, EventKind)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.Wnd.serializeState">serializeState</a></td>
+<a href="#Gui.Wnd.serializeState">serializeState(self, *Serializer)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.Wnd.setAllMargins">setAllMargins</a></td>
+<a href="#Gui.Wnd.setAllMargins">setAllMargins(self, const ref Vector4)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.Wnd.setAllMargins">setAllMargins</a></td>
+<a href="#Gui.Wnd.setAllMargins">setAllMargins(self, f32)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.Wnd.setAllPaddings">setAllPaddings</a></td>
+<a href="#Gui.Wnd.setAllPaddings">setAllPaddings(self, f32)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.Wnd.setAllPaddings">setAllPaddings</a></td>
+<a href="#Gui.Wnd.setAllPaddings">setAllPaddings(self, const ref Vector4)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.Wnd.setFocus">setFocus</a></td>
+<a href="#Gui.Wnd.setFocus">setFocus(self)</a></td>
 <td class="enumeration">
 <p>
 Set the keyboard focus.</p>
@@ -26402,7 +26402,7 @@ Set the keyboard focus.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.Wnd.setMargin">setMargin</a></td>
+<a href="#Gui.Wnd.setMargin">setMargin(self, f32, f32, f32, f32)</a></td>
 <td class="enumeration">
 <p>
 Set margin for childs If a value is Swag.F32.Inf, then it wont be changed.</p>
@@ -26410,7 +26410,7 @@ Set margin for childs If a value is Swag.F32.Inf, then it wont be changed.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.Wnd.setPadding">setPadding</a></td>
+<a href="#Gui.Wnd.setPadding">setPadding(self, f32, f32, f32, f32)</a></td>
 <td class="enumeration">
 <p>
 Set padding for childs If a value is Swag.F32.Inf, then it wont be changed.</p>
@@ -26418,7 +26418,7 @@ Set padding for childs If a value is Swag.F32.Inf, then it wont be changed.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.Wnd.setParent">setParent</a></td>
+<a href="#Gui.Wnd.setParent">setParent(self, *Wnd)</a></td>
 <td class="enumeration">
 <p>
 Set window parent.</p>
@@ -26426,7 +26426,7 @@ Set window parent.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.Wnd.setPosition">setPosition</a></td>
+<a href="#Gui.Wnd.setPosition">setPosition(self, const ref Rectangle, bool)</a></td>
 <td class="enumeration">
 <p>
 Move and size the wnd.</p>
@@ -26434,7 +26434,7 @@ Move and size the wnd.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.Wnd.setPosition">setPosition</a></td>
+<a href="#Gui.Wnd.setPosition">setPosition(self, f32, f32, f32, f32, bool)</a></td>
 <td class="enumeration">
 <p>
 Move and size the wnd.</p>
@@ -26442,7 +26442,7 @@ Move and size the wnd.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.Wnd.show">show</a></td>
+<a href="#Gui.Wnd.show">show(self, bool)</a></td>
 <td class="enumeration">
 <p>
 Show the window.</p>
@@ -26450,7 +26450,7 @@ Show the window.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.Wnd.surfaceToLocal">surfaceToLocal</a></td>
+<a href="#Gui.Wnd.surfaceToLocal">surfaceToLocal(self, const ref Point)</a></td>
 <td class="enumeration">
 <p>
 Convert a surface coordinate to a local coordinate (relative to me).</p>
@@ -26458,7 +26458,7 @@ Convert a surface coordinate to a local coordinate (relative to me).</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.Wnd.updateCommandState">updateCommandState</a></td>
+<a href="#Gui.Wnd.updateCommandState">updateCommandState(self)</a></td>
 <td class="enumeration">
 <p>
 Main function to update command state of various windows/widgets. This will update the state of this window, and all of its childs.</p>
@@ -28033,7 +28033,7 @@ f32</td>
 <table class="enumeration">
 <tr>
 <td class="enumeration">
-<a href="#Gui.WrapLayoutCtrl.computeLayout">computeLayout</a></td>
+<a href="#Gui.WrapLayoutCtrl.computeLayout">computeLayout(self)</a></td>
 <td class="enumeration">
 <p>
 Recompute layout of all childs.</p>
@@ -28041,7 +28041,7 @@ Recompute layout of all childs.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.WrapLayoutCtrl.create">create</a></td>
+<a href="#Gui.WrapLayoutCtrl.create">create(*Wnd, const ref Rectangle)</a></td>
 <td class="enumeration">
 <p>
 Create a layout control.</p>
