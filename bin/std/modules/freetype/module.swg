@@ -17,5 +17,6 @@
         cfg.moduleBuildNum = #swagbuildnum
         cfg.moduleNamespace = "FreeType"
         cfg.backendKind = .Export
+        cfg.repoPath = "https://github.com/swag-lang/swag/blob/master/bin/std/modules/freetype"
     }
 }

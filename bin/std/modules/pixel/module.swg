@@ -13,5 +13,6 @@
         cfg.moduleBuildNum = #swagbuildnum
         cfg.moduleNamespace = "Pixel"
         cfg.backendKind = .DynamicLib
+        cfg.repoPath = "https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel"
     }
 }
