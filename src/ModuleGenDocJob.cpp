@@ -248,7 +248,7 @@ void ModuleGenDocJob::outputTitle(OneRef& c)
     helpContent += "</h3>\n";
 }
 
-void ModuleGenDocJob::outputUserLine(const Utf8& user)
+void ModuleGenDocJob::outputUserLine(const Utf8& user, bool autoRef)
 {
     if (user.empty())
         return;
@@ -273,18 +273,48 @@ void ModuleGenDocJob::outputUserLine(const Utf8& user)
             continue;
         }
 
-        if (SWAG_IS_ALPHA(*pz) || *pz == '#' || *pz == '@')
+        // [reference] to create an html link to the current document
+        if (autoRef || *pz == '[')
         {
-            Utf8 name;
-            name += *pz++;
-            while (*pz && (SWAG_IS_ALNUM(*pz) || *pz == '_' || *pz == '.'))
+            bool startBracket = false;
+            if (*pz == '[')
+            {
+                startBracket = true;
+                pz++;
+            }
+
+            if (SWAG_IS_ALPHA(*pz) || *pz == '#' || *pz == '@')
+            {
+                Utf8 name;
                 name += *pz++;
-            auto it = collectInvert.find(name);
-            if (it != collectInvert.end())
-                helpContent += Fmt("<a href=\"%s#%s\">%s</a>", fileName.c_str(), it->second.c_str(), name.c_str());
-            else
-                helpContent += name;
-            continue;
+                while (*pz && (SWAG_IS_ALNUM(*pz) || *pz == '_' || *pz == '.'))
+                    name += *pz++;
+
+                if (startBracket && *pz != ']')
+                {
+                    helpContent += "[";
+                    helpContent += name;
+                }
+                else
+                {
+                    if (*pz == ']')
+                        pz++;
+                    auto it = collectInvert.find(name);
+                    if (it != collectInvert.end())
+                        helpContent += Fmt("<a href=\"%s#%s\">%s</a>", fileName.c_str(), it->second.c_str(), name.c_str());
+                    else
+                    {
+                        if (startBracket)
+                            helpContent += "[";
+                        helpContent += name;
+                        if (startBracket)
+                            helpContent += "]";
+                    }
+                }
+                continue;
+            }
+            else if (startBracket)
+                helpContent += "[";
         }
 
         // Bold
@@ -752,10 +782,7 @@ void ModuleGenDocJob::generateContent()
 
                 helpContent += "<td class=\"tdtype\">\n";
                 auto varDecl = CastAst<AstVarDecl>(n, AstNodeKind::ConstDecl);
-                if (varDecl->typeInfo)
-                    outputUserLine(varDecl->typeInfo->name);
-                else
-                    outputUserLine(outputNode(varDecl->type));
+                outputUserLine(varDecl->typeInfo ? varDecl->typeInfo->name : outputNode(varDecl->type), true);
                 helpContent += "</td>\n";
 
                 helpContent += "<td>\n";
@@ -824,10 +851,7 @@ void ModuleGenDocJob::generateContent()
                 helpContent += "</td>\n";
 
                 helpContent += "<td class=\"tdtype\">\n";
-                if (varDecl->typeInfo)
-                    outputUserLine(varDecl->typeInfo->name);
-                else
-                    outputUserLine(outputNode(varDecl->type));
+                outputUserLine(varDecl->typeInfo ? varDecl->typeInfo->name : outputNode(varDecl->type), true);
                 helpContent += "</td>\n";
 
                 helpContent += "<td>\n";

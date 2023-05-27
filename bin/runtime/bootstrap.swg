@@ -674,11 +674,16 @@ namespace Swag
         mtd compileString(str: string)              // Compile a global string
     }
 
+    // Represent a part of a source code file.
+    //
+    // This is typically what will be returned by '#location' or '#callerlocation'.
     struct SourceCodeLocation
     {
-        fileName:               string
-        lineStart, colStart:    u32
-        lineEnd, colEnd:        u32
+        fileName:   string  // Full path name of the source file
+        lineStart:  u32     // Start line (starts at 0)
+        colStart:   u32     // Start column
+        lineEnd:    u32     // End line
+        colEnd:     u32     // End column
     }
 
     struct CVaList
@@ -697,28 +702,38 @@ func @getcontext()->*Swag.Context;
 func @setcontext(context: const *Swag.Context);
 func @getpinfos()->*Swag.ProcessInfos;
 func @isbytecode()->bool;
-func @compiler()->Swag.ICompiler;
 func @modules()->const [..] Swag.Module;
 func @gvtd()->const [..] Swag.Gvtd;
 
-// Make a system allocation of 'size' bytes.
+// Returns an [ICompiler] interface to communicate with the compiler.
+func @compiler()->Swag.ICompiler;
+
+// Returns a system allocated memory block of 'size' bytes.
 //
-// Use @free to release the allocated memory.
+// Use [@free] to release the allocated memory.
 func @alloc(size: u64)->*void;
-// Realloc a system memory block
+
+// Realloc a system memory block allocated with [@alloc]
 func @realloc(ptr: ^void, size: u64)->*void;
-// Free a system memory block
+
+// Free a system memory block allocated with [@alloc]
 func @free(ptr: ^void);
+
 // Set all bytes of a given memory block to 'value'
 func @memset(dst: ^void, value: u8, size: u64);
+
 // Copy one memory block to another address.
 func @memcpy(dst: ^void, src: const ^void, size: u64);
+
 // Move one memory block to another address.
 func @memmove(dst: ^void, src: const ^void, size: u64);
+
 // Compare two memory block, and returns -1, 0 if equal, or 1.
 func @memcmp(dst, src: const ^void, size: u64)->s32;
+
 // Returns the length of the given 0 terminated string.
 func @strlen(str: cstring)->u64;
+
 // Compare two zero terminated strings, and returns -1, 0 if equal, or 1.
 func @strcmp(str1, str2: cstring)->s32;
 

@@ -6537,16 +6537,33 @@ Here is a real life example from the <code class="incode">Std.Ogl</code> module 
 </span><span style="color:#569CD6">func</span><span style="color:#FFFFFF"> </span><span style="color:#FF7411">test</span><span style="color:#FFFFFF">()
 {
 
+}</span></code></div><div>For constants or enum values, the document comment is the one declared at the end of the line.</br>
+</div>
+<div class="code"><code style="white-space: break-spaces"><span style="color:#569CD6">const</span><span style="color:#FFFFFF"> </span><span style="color:#4EC9B0">A</span><span style="color:#FFFFFF"> = </span><span style="color:#B5CEA8">0</span><span style="color:#FFFFFF"> </span><span style="color:#6A9955">// This is a documentation comment</span><span style="color:#FFFFFF">
+</span><span style="color:#569CD6">enum</span><span style="color:#FFFFFF"> </span><span style="color:#4EC9B0">Color</span><span style="color:#FFFFFF">
+{
+    </span><span style="color:#4EC9B0">Red</span><span style="color:#FFFFFF"> </span><span style="color:#6A9955">// This is a documentation comment</span><span style="color:#FFFFFF">
+}</span></code></div><div>Some other markdown markers are also supported.</br>
+</div>
+<div class="code"><code style="white-space: break-spaces"><span style="color:#FFFFFF"> </span><span style="color:#FF7411">#test</span><span style="color:#FFFFFF">
+ {
+    </span><span style="color:#6A9955">// `this is code` (backtick) for 'inline' code.</span><span style="color:#FFFFFF">
+    </span><span style="color:#6A9955">// 'single_word'  (tick) for 'inline' code.</span><span style="color:#FFFFFF">
+    </span><span style="color:#6A9955">// **bold**</span><span style="color:#FFFFFF">
+    </span><span style="color:#569CD6">struct</span><span style="color:#FFFFFF"> </span><span style="color:#4EC9B0">RGB</span><span style="color:#FFFFFF">
+    {
+        r, g, b: </span><span style="color:#F6CC86">s32</span><span style="color:#FFFFFF">
+    }
+}</span></code></div><div>You can create a reference to something of the current package with [name] or [name1.name2 etc.]</br>
+</div>
+<div class="code"><code style="white-space: break-spaces"><span style="color:#6A9955">// This is a function with a 'value' parameter.</span><span style="color:#FFFFFF">
+</span><span style="color:#569CD6">func</span><span style="color:#FFFFFF"> </span><span style="color:#FF7411">one</span><span style="color:#FFFFFF">(value: </span><span style="color:#F6CC86">s32</span><span style="color:#FFFFFF">)
+{
 }
 
-</span><span style="color:#6A9955">// Some other markdown markers are also supported:</span><span style="color:#FFFFFF">
-</span><span style="color:#6A9955">//</span><span style="color:#FFFFFF">
-</span><span style="color:#6A9955">// `this is code` for 'inline' code.</span><span style="color:#FFFFFF">
-</span><span style="color:#6A9955">// 'single_word'  for 'inline' code.</span><span style="color:#FFFFFF">
-</span><span style="color:#6A9955">// **bold**</span><span style="color:#FFFFFF">
-</span><span style="color:#569CD6">struct</span><span style="color:#FFFFFF"> </span><span style="color:#4EC9B0">RGB</span><span style="color:#FFFFFF">
+</span><span style="color:#6A9955">// This is a reference to [one]</span><span style="color:#FFFFFF">
+</span><span style="color:#569CD6">func</span><span style="color:#FFFFFF"> </span><span style="color:#FF7411">two</span><span style="color:#FFFFFF">()
 {
-    r, g, b: </span><span style="color:#F6CC86">s32</span><span style="color:#FFFFFF">
 }</span></code></div>
 </div>
 </div>

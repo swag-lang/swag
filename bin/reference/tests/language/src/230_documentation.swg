@@ -27,14 +27,46 @@ The documentation comment needs to be placed just before a function, struct or e
     {
 
     }
+}
 
-    // Some other markdown markers are also supported:
-    //
-    // `this is code` for 'inline' code.
-    // 'single_word'  for 'inline' code.
+/**
+For constants or enum values, the document comment is the one declared at the end of the line.
+*/
+#test
+{
+    const A = 0 // This is a documentation comment
+    enum Color
+    {
+        Red // This is a documentation comment
+    }
+}
+
+ /**
+ Some other markdown markers are also supported.
+ */
+ #test
+ {
+    // `this is code` (backtick) for 'inline' code.
+    // 'single_word'  (tick) for 'inline' code.
     // **bold**
     struct RGB
     {
         r, g, b: s32
+    }
+}
+
+/**
+You can create a reference to something of the current package with [name] or [name1.name2 etc.]
+*/
+#test
+{
+    // This is a function with a 'value' parameter.
+    func one(value: s32)
+    {
+    }
+
+    // This is a reference to [one]
+    func two()
+    {
     }
 }

@@ -47,7 +47,7 @@ struct ModuleGenDocJob : public Job
 
     void outputTable(Scope* scope, AstNodeKind kind, const char* title);
     Utf8 outputNode(AstNode* node);
-    void outputUserLine(const Utf8& user);
+    void outputUserLine(const Utf8& user, bool autoRef = false);
     void outputUserBlock(const UserBlock& user);
     void outputUserComment(const UserComment& user);
     void outputCode(const Utf8& code);

@@ -382,7 +382,7 @@ func @acos(value: f64)->f64
 </code>
 </p>
 <p>
-Make a system allocation of <code class = "incode">size</code> bytes.</p>
+Returns a system allocated memory block of <code class = "incode">size</code> bytes.</p>
 <p>
  Use <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\swag.runtime.html#@free">@free</a> to release the allocated memory.</p>
 <h3 class="content" id="@args"><span class="titletype">func</span> <span class="titlelight"></span><span class="titlestrong">@args</span></h3>
@@ -532,6 +532,8 @@ func @ceil(value: f64)->f64
 <code style="white-space: break-spaces">func @compiler()->ICompiler
 </code>
 </p>
+<p>
+Returns an <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\swag.runtime.html#Swag.ICompiler">ICompiler</a> interface to communicate with the compiler.</p>
 <h3 class="content" id="@compilererror"><span class="titletype">func</span> <span class="titlelight"></span><span class="titlestrong">@compilererror</span></h3>
 <p class="code">
 <code style="white-space: break-spaces">func @compilererror(message: string, loc: SourceCodeLocation)
@@ -583,7 +585,7 @@ func @floor(value: f64)->f64
 </code>
 </p>
 <p>
-Free a system memory block.</p>
+Free a system memory block allocated with <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\swag.runtime.html#@alloc">@alloc</a>.</p>
 <h3 class="content" id="@getcontext"><span class="titletype">func</span> <span class="titlelight"></span><span class="titlestrong">@getcontext</span></h3>
 <p class="code">
 <code style="white-space: break-spaces">func @getcontext()->*Context
@@ -716,7 +718,7 @@ func @pow(value1: f64, value2: f64)->f64
 </code>
 </p>
 <p>
-Realloc a system memory block.</p>
+Realloc a system memory block allocated with <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\swag.runtime.html#@alloc">@alloc</a>.</p>
 <h3 class="content" id="@round"><span class="titletype">func</span> <span class="titlelight"></span><span class="titlestrong">@round</span></h3>
 <p class="code">
 <code style="white-space: break-spaces">func @round(value: f32)->f32
@@ -949,6 +951,8 @@ Will be put just before the returned address.</p>
 <td>
 <a href="#Swag.SourceCodeLocation">SourceCodeLocation</a></td>
 <td>
+<p>
+Represent a part of a source code file.</p>
 </td>
 </tr>
 <tr>
@@ -2187,7 +2191,7 @@ breakOnAllocId</td>
 u32</td>
 <td>
 <p>
-Will <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\swag.runtime.html#@assert">@assert</a> when the current allocation id reaches that value.</p>
+Will @assert when the current allocation id reaches that value.</p>
 </td>
 </tr>
 <tr>
@@ -3241,6 +3245,8 @@ Release the allocated block.</p>
 <p>
 This will call <code class = "incode">release</code> prior to changing the capacity, so this must be called at an early stage.</p>
 <h3 class="content" id="Swag.SourceCodeLocation"><span class="titletype">struct</span> <span class="titlelight">Swag.</span><span class="titlestrong">SourceCodeLocation</span></h3>
+<p>
+Represent a part of a source code file.</p>
 <table>
 <tr>
 <td>
@@ -3248,6 +3254,8 @@ fileName</td>
 <td class="tdtype">
 string</td>
 <td>
+<p>
+Full path name of the source file.</p>
 </td>
 </tr>
 <tr>
@@ -3256,6 +3264,8 @@ lineStart</td>
 <td class="tdtype">
 u32</td>
 <td>
+<p>
+Start line (starts at 0).</p>
 </td>
 </tr>
 <tr>
@@ -3264,6 +3274,8 @@ colStart</td>
 <td class="tdtype">
 u32</td>
 <td>
+<p>
+Start column.</p>
 </td>
 </tr>
 <tr>
@@ -3272,6 +3284,8 @@ lineEnd</td>
 <td class="tdtype">
 u32</td>
 <td>
+<p>
+End line.</p>
 </td>
 </tr>
 <tr>
@@ -3280,9 +3294,13 @@ colEnd</td>
 <td class="tdtype">
 u32</td>
 <td>
+<p>
+End column.</p>
 </td>
 </tr>
 </table>
+<p>
+ This is typically what will be returned by <code class = "incode">#location</code> or <code class = "incode">#callerlocation</code>.</p>
 <h3 class="content" id="Swag.Strict"><span class="titletype">attr</span> <span class="titlelight">Swag.</span><span class="titlestrong">Strict</span></h3>
 <p class="code">
 <code style="white-space: break-spaces">attr Strict
