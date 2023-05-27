@@ -306,6 +306,7 @@ func generate(in, out: string)
     files := assume Directory.enumerateFiles(in, ".swg", recurse: true)
     files.sort(func(a, b) => a.fullname <=> b.fullname)
 
+    g_Buf += "<?php include('html_start.php'); include('header.php'); ?>\n"
     //g_Buf += "<html lang=\"en\">\n"
     //g_Buf += "<head>\n"
     //g_Buf += "<meta charset=\"UTF-8\">\n";
@@ -443,6 +444,7 @@ func generate(in, out: string)
         """
 
     //g_Buf += "</html>\n"
+    g_Buf += "<?php include('html_end.php'); ?>\n"
 
     g_Buf.insert(seekToc, g_Toc)
 
