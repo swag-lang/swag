@@ -884,7 +884,7 @@ void ModuleGenDocJob::generateContent()
                 outputTable(scope, AstNodeKind::StructDecl, "Structs");
                 outputTable(scope, AstNodeKind::EnumDecl, "Enums");
                 outputTable(scope, AstNodeKind::FuncDecl, "Functions");
-                outputTable(scope, AstNodeKind::FuncDecl, "Attributes");
+                outputTable(scope, AstNodeKind::AttrDecl, "Attributes");
             }
 
             break;

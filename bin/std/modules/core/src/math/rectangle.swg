@@ -5,10 +5,10 @@
 #[Serialization.PodFinal]
 struct Rectangle
 {
-    x:      f32
-    y:      f32
-    width:  f32
-    height: f32
+    x:      f32     // Left position
+    y:      f32     // Top position
+    width:  f32     // Rectangle width
+    height: f32     // Rectangle height
 }
 
 impl Rectangle
@@ -30,14 +30,14 @@ impl Rectangle
         height = Math.abs(bottomRight.y - topLeft.y)
     }
 
-    // horizontal center coordinate (x + width / 2)
+    // Horizontal center coordinate (x + width / 2)
     #[Swag.Inline]
     mtdc horzCenter()->f32
     {
         return x + (width * 0.5)
     }
 
-    // vertical center coordinate (y + height / 2)
+    // Vertical center coordinate (y + height / 2)
     #[Swag.Inline]
     mtdc vertCenter()->f32
     {
@@ -50,28 +50,28 @@ impl Rectangle
         return Point{horzCenter(), vertCenter()}
     }
 
-    // right coordinate (x + width)
+    // Right coordinate (x + width)
     #[Swag.Inline]
     mtdc right()->f32
     {
         return x + width
     }
 
-    // right coordinate (x + width)
+    // Right coordinate (x + width)
     #[Swag.Inline]
     mtd setRight(value: f32)
     {
         width = value - x
     }
 
-    // bottom coordinate (y + height)
+    // Bottom coordinate (y + height)
     #[Swag.Inline]
     mtdc bottom()->f32
     {
         return y + height
     }
 
-    // bottom coordinate (y + height)
+    // Bottom coordinate (y + height)
     #[Swag.Inline]
     mtd setBottom(value: f32)
     {
@@ -134,7 +134,7 @@ impl Rectangle
         x, y += offsetXY
     }
 
-    // Offset the rectangle position by a given value
+    // Offset the rectangle position by a x and y values
     mtd offset(offsetX, offsetY: f32)
     {
         x += offsetX
@@ -157,19 +157,20 @@ impl Rectangle
         height -= (padding.y + padding.w)
     }
 
-    // Multiply the width and height of the rectangle by a given value
+    // Multiply the width and height of the rectangle by a given 'value'
     mtd scale(value: f32)
     {
         width, height *= value
     }
 
+    // Multiply the width by 'x' and the height by 'y'
     func scale(self, x, y: f32)
     {
         self.width *= x
         self.height *= y
     }
 
-    // Inflates the rectangle by the given amount
+    // Inflates the rectangle by the given 'value'
     mtd inflate(value: f32)
     {
         x -= value
@@ -178,6 +179,7 @@ impl Rectangle
         height += value * 2
     }
 
+    // Inflates the rectangle by the given amount in 'x' and 'y' directions
     func inflate(self, x, y: f32)
     {
         self.x -= x
