@@ -845,6 +845,8 @@ SRWLOCK</td>
 <td>
 <a href="#Swag.AllocatorRequest">AllocatorRequest</a></td>
 <td>
+<p>
+Represents the request for a given allocator.</p>
 </td>
 </tr>
 <tr>
@@ -1046,6 +1048,8 @@ Represent a part of a source code file.</p>
 <td>
 <a href="#Swag.AllocatorMode">AllocatorMode</a></td>
 <td>
+<p>
+The <code class = "incode">mode</code> of an <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\swag.runtime.html#Swag.AllocatorRequest">AllocatorRequest</a>.</p>
 </td>
 </tr>
 <tr>
@@ -1159,39 +1163,53 @@ Represent a part of a source code file.</p>
 </code>
 </p>
 <h3 class="content" id="Swag.AllocatorMode"><span class="titletype">enum</span> <span class="titlelight">Swag.</span><span class="titlestrong">AllocatorMode</span></h3>
+<p>
+The <code class = "incode">mode</code> of an <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\swag.runtime.html#Swag.AllocatorRequest">AllocatorRequest</a>.</p>
 <table>
 <tr>
 <td>
 Alloc</td>
 <td>
+<p>
+Allocate a block of memory.</p>
 </td>
 </tr>
 <tr>
 <td>
 Free</td>
 <td>
+<p>
+Free a block of memory.</p>
 </td>
 </tr>
 <tr>
 <td>
 Realloc</td>
 <td>
+<p>
+Reallocate a block of memory.</p>
 </td>
 </tr>
 <tr>
 <td>
 FreeAll</td>
 <td>
+<p>
+Free all memory allocated with the underlying allocator (ff possible).</p>
 </td>
 </tr>
 <tr>
 <td>
 AssertIsAllocated</td>
 <td>
+<p>
+The allocator must assert if the address is not currently allocated (if possible).</p>
 </td>
 </tr>
 </table>
 <h3 class="content" id="Swag.AllocatorRequest"><span class="titletype">struct</span> <span class="titlelight">Swag.</span><span class="titlestrong">AllocatorRequest</span></h3>
+<p>
+Represents the request for a given allocator.</p>
 <table>
 <tr>
 <td>
@@ -1199,6 +1217,8 @@ callerLoc</td>
 <td class="tdtype">
 <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\swag.runtime.html#Swag.SourceCodeLocation">SourceCodeLocation</a></td>
 <td>
+<p>
+The caller code, to help tracking leaks. Optional.</p>
 </td>
 </tr>
 <tr>
@@ -1207,6 +1227,8 @@ hint</td>
 <td class="tdtype">
 string</td>
 <td>
+<p>
+A hint message, to help tracking leaks. Optional.</p>
 </td>
 </tr>
 <tr>
@@ -1215,6 +1237,8 @@ address</td>
 <td class="tdtype">
 *void</td>
 <td>
+<p>
+The returned address or the address to deal with.</p>
 </td>
 </tr>
 <tr>
@@ -1223,6 +1247,8 @@ size</td>
 <td class="tdtype">
 u64</td>
 <td>
+<p>
+The requested size or the size to deal with.</p>
 </td>
 </tr>
 <tr>
@@ -1231,6 +1257,8 @@ oldSize</td>
 <td class="tdtype">
 u64</td>
 <td>
+<p>
+When reallocating.</p>
 </td>
 </tr>
 <tr>
@@ -1239,6 +1267,8 @@ mode</td>
 <td class="tdtype">
 <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\swag.runtime.html#Swag.AllocatorMode">AllocatorMode</a></td>
 <td>
+<p>
+Alloc, free, reallocate...</p>
 </td>
 </tr>
 <tr>
@@ -1247,9 +1277,35 @@ alignement</td>
 <td class="tdtype">
 u32</td>
 <td>
+<p>
+Alignement constraint.</p>
 </td>
 </tr>
 </table>
+<p>
+ To allocate:<ul>
+<li> <code class = "incode">mode</code> must be <b>AllocatorMode.Alloc</b></li>
+<li> <code class = "incode">size</code> must be the size in bytes to allocate</li>
+<li> <code class = "incode">alignement</code> must be the alignement constraint in bytes (or 0)</li>
+<li> <code class = "incode">address</code> will be the returned allocated memory address</li>
+</ul>
+</p>
+<p>
+ To free:<ul>
+<li> <code class = "incode">mode</code> must be <b>AllocatorMode.Free</b></li>
+<li> <code class = "incode">size</code> must be the original allocated size in bytes of <code class = "incode">address</code></li>
+<li> <code class = "incode">address</code> must be the memory address to release</li>
+</ul>
+</p>
+<p>
+ To reallocate:<ul>
+<li> <code class = "incode">mode</code> must be <b>AllocatorMode.Realloc</b></li>
+<li> <code class = "incode">size</code> must be the original allocated size in bytes of <code class = "incode">address</code></li>
+<li> <code class = "incode">address</code> must be the memory address to reallocate</li>
+</ul>
+</p>
+<p>
+ See <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\swag.runtime.html#Swag.IAllocator">IAllocator</a></p>
 <h3 class="content" id="Swag.AttrMulti"><span class="titletype">attr</span> <span class="titlelight">Swag.</span><span class="titlestrong">AttrMulti</span></h3>
 <p class="code">
 <code style="white-space: break-spaces">attr AttrMulti

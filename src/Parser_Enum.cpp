@@ -168,17 +168,17 @@ bool Parser::doEnumValue(AstNode* parent, AstNode** result)
     enumValue->semanticFct = SemanticJob::resolveEnumValue;
     currentScope->symTable.registerSymbolName(context, enumValue, SymbolKind::EnumValue);
 
-    if (tokenizer.comment.length())
-    {
-        enumValue->allocateExtension(ExtensionKind::Misc);
-        enumValue->extMisc()->docComment = std::move(tokenizer.comment);
-    }
-
     SWAG_CHECK(eatToken());
     if (token.id == TokenId::SymEqual)
     {
         SWAG_CHECK(eatToken(TokenId::SymEqual));
         SWAG_CHECK(doExpression(enumValue, EXPR_FLAG_NONE, &dummyResult));
+    }
+
+    if (tokenizer.comment.length())
+    {
+        enumValue->allocateExtension(ExtensionKind::Misc);
+        enumValue->extMisc()->docComment = std::move(tokenizer.comment);
     }
 
     SWAG_CHECK(eatSemiCol("enum value"));

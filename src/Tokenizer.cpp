@@ -66,6 +66,7 @@ void Tokenizer::saveState(const TokenParse& token)
     st_curBuffer           = curBuffer;
     st_location            = location;
     st_forceLastTokenIsEOL = forceLastTokenIsEOL;
+    st_comment             = comment;
 }
 
 void Tokenizer::restoreState(TokenParse& token)
@@ -74,6 +75,7 @@ void Tokenizer::restoreState(TokenParse& token)
     curBuffer           = st_curBuffer;
     location            = st_location;
     forceLastTokenIsEOL = st_forceLastTokenIsEOL;
+    comment             = st_comment;
 }
 
 uint32_t Tokenizer::peekChar(unsigned& offset)
@@ -176,7 +178,7 @@ bool Tokenizer::nextToken(TokenParse& token)
     token.flags         = forceLastTokenIsEOL ? TOKENPARSE_LAST_EOL : 0;
     forceLastTokenIsEOL = false;
 
-    if(!propagateComment)
+    if (!propagateComment)
         comment.clear();
     propagateComment = true;
 

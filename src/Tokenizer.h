@@ -141,4 +141,5 @@ struct Tokenizer
     char*          st_curBuffer = nullptr;
     SourceLocation st_location;
     bool           st_forceLastTokenIsEOL = false;
+    Utf8           st_comment;
 };

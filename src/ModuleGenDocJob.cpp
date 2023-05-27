@@ -387,9 +387,34 @@ void ModuleGenDocJob::outputUserBlock(const UserBlock& user)
         break;
     }
 
+    bool startList = false;
     for (int i = 0; i < user.lines.size(); i++)
     {
-        outputUserLine(user.lines[i]);
+        auto line = user.lines[i];
+        line.trim();
+        if (line.length() && line[0] == '*')
+        {
+            if (!startList)
+            {
+                startList = true;
+                helpContent += "<ul>\n";
+            }
+
+            helpContent += "<li>";
+            line.remove(0, 1);
+            outputUserLine(line);
+            helpContent += "</li>\n";
+        }
+        else
+        {
+            if (startList)
+            {
+                startList = false;
+                helpContent += "</ul>\n";
+            }
+
+            outputUserLine(user.lines[i]);
+        }
 
         // Add one line break after each line, except the last line from a raw block, because we do
         // not want one useless empty line
@@ -398,6 +423,12 @@ void ModuleGenDocJob::outputUserBlock(const UserBlock& user)
             if (i != user.lines.size() - 1)
                 helpContent += "\n";
         }
+    }
+
+    if (startList)
+    {
+        startList = false;
+        helpContent += "</ul>\n";
     }
 
     switch (user.kind)

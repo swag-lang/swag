@@ -228,24 +228,44 @@ namespace Swag
     // Context & allocators
     // #########################################################
 
+    // The 'mode' of an [AllocatorRequest].
     enum AllocatorMode
     {
-        Alloc
-        Free
-        Realloc
-        FreeAll
-        AssertIsAllocated
+        Alloc               // Allocate a block of memory
+        Free                // Free a block of memory
+        Realloc             // Reallocate a block of memory
+        FreeAll             // Free all memory allocated with the underlying allocator (ff possible).
+        AssertIsAllocated   // The allocator must assert if the address is not currently allocated (if possible).
     }
 
+    // Represents the request for a given allocator.
+    //
+    // To allocate:
+    // * 'mode' must be **AllocatorMode.Alloc**
+    // * 'size' must be the size in bytes to allocate
+    // * 'alignement' must be the alignement constraint in bytes (or 0)
+    // * 'address' will be the returned allocated memory address
+    //
+    // To free:
+    // * 'mode' must be **AllocatorMode.Free**
+    // * 'size' must be the original allocated size in bytes of 'address'
+    // * 'address' must be the memory address to release
+    //
+    // To reallocate:
+    // * 'mode' must be **AllocatorMode.Realloc**
+    // * 'size' must be the original allocated size in bytes of 'address'
+    // * 'address' must be the memory address to reallocate
+    //
+    // See [IAllocator]
     struct AllocatorRequest
     {
-        callerLoc:  SourceCodeLocation
-        hint:       string
-        address:	*void
-        size:		u64
-        oldSize:	u64
-        mode =		AllocatorMode.Alloc
-        alignement: u32
+        callerLoc:  SourceCodeLocation      // The caller code, to help tracking leaks. Optional.
+        hint:       string                  // A hint message, to help tracking leaks. Optional.
+        address:	*void                   // The returned address or the address to deal with.
+        size:		u64                     // The requested size or the size to deal with.
+        oldSize:	u64                     // When reallocating.
+        mode =		AllocatorMode.Alloc     // Alloc, free, reallocate...
+        alignement: u32                     // Alignement constraint.
     }
 
     interface IAllocator
