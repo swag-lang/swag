@@ -106,7 +106,7 @@
             border: 1px dotted  #cccccc;
         }
         .code {
-            background-color:   LightYellow;
+            background-color:   #eeeeee;
             border:             1px solid LightGrey;
             padding:            10px;
             width:              90%;
@@ -1596,12 +1596,12 @@ Unregister a window to receive hook events.</p>
 </tr>
 </table>
 </p>
+<p>
+Register a new timer for the given <code class = "incode">target</code>.</p>
 <p class="code">
 <code style="white-space: break-spaces">func addTimer(using self, time: Duration, target: *Wnd)->*Timer
 </code>
 </p>
-<p>
-Register a new timer for the given <code class = "incode">target</code>.</p>
 <p>
 <table class="h3">
 <tr>
@@ -1613,12 +1613,12 @@ Register a new timer for the given <code class = "incode">target</code>.</p>
 </tr>
 </table>
 </p>
+<p>
+Creates a new surface.</p>
 <p class="code">
 <code style="white-space: break-spaces">func createSurface(using self, x: s32, y: s32, width: s32, height: s32, flags = SurfaceFlags.OverlappedWindow, view: *Wnd = null, hook: HookEvent = null)->*Surface throw
 </code>
 </p>
-<p>
-Creates a new surface.</p>
 <p>
 <table class="h3">
 <tr>
@@ -1630,12 +1630,12 @@ Creates a new surface.</p>
 </tr>
 </table>
 </p>
+<p>
+Delete and unregister timer.</p>
 <p class="code">
 <code style="white-space: break-spaces">func deleteTimer(using self, timer: *Timer)
 </code>
 </p>
-<p>
-Delete and unregister timer.</p>
 <p>
 <table class="h3">
 <tr>
@@ -1647,12 +1647,12 @@ Delete and unregister timer.</p>
 </tr>
 </table>
 </p>
+<p>
+Destroy a window To cleanly close a window, you should call wnd.destroy().</p>
 <p class="code">
 <code style="white-space: break-spaces">func destroyWnd(using self, wnd: *Wnd)
 </code>
 </p>
-<p>
-Destroy a window To cleanly close a window, you should call wnd.destroy().</p>
 <p>
 <table class="h3">
 <tr>
@@ -1679,12 +1679,12 @@ Destroy a window To cleanly close a window, you should call wnd.destroy().</p>
 </tr>
 </table>
 </p>
+<p>
+End current modal loop.</p>
 <p class="code">
 <code style="white-space: break-spaces">func exitModal(using self, exitId: string = "")
 </code>
 </p>
-<p>
-End current modal loop.</p>
 <p>
 <table class="h3">
 <tr>
@@ -1741,12 +1741,12 @@ End current modal loop.</p>
 </tr>
 </table>
 </p>
+<p>
+Get the id associated with a shortcut. null if none.</p>
 <p class="code">
 <code style="white-space: break-spaces">func getHotKeyShortcut(using self, mdf: KeyModifiers, key: Key)->{WndId, *Wnd}
 </code>
 </p>
-<p>
-Get the id associated with a shortcut. null if none.</p>
 <p>
 <table class="h3">
 <tr>
@@ -1758,12 +1758,12 @@ Get the id associated with a shortcut. null if none.</p>
 </tr>
 </table>
 </p>
+<p>
+Get the name associated with a given id shortcut.</p>
 <p class="code">
 <code style="white-space: break-spaces">func getHotKeyShortcutNameFor(using self, wndId: WndId)->String
 </code>
 </p>
-<p>
-Get the name associated with a given id shortcut.</p>
 <p>
 <table class="h3">
 <tr>
@@ -1805,12 +1805,12 @@ Get the name associated with a given id shortcut.</p>
 </tr>
 </table>
 </p>
+<p>
+Return the captured wnd for mouse.</p>
 <p class="code">
 <code style="white-space: break-spaces">func getMouseCapture(using self)->*Wnd
 </code>
 </p>
-<p>
-Return the captured wnd for mouse.</p>
 <p>
 <table class="h3">
 <tr>
@@ -1837,12 +1837,12 @@ Return the captured wnd for mouse.</p>
 </tr>
 </table>
 </p>
+<p>
+Returns the window under the given point.</p>
 <p class="code">
 <code style="white-space: break-spaces">func getWndAtMouse(using self)->*Wnd
 </code>
 </p>
-<p>
-Returns the window under the given point.</p>
 <p>
 <table class="h3">
 <tr>
@@ -1854,12 +1854,12 @@ Returns the window under the given point.</p>
 </tr>
 </table>
 </p>
+<p>
+Force all surfaces to be painted.</p>
 <p class="code">
 <code style="white-space: break-spaces">func invalidate(using self)
 </code>
 </p>
-<p>
-Force all surfaces to be painted.</p>
 <p>
 <table class="h3">
 <tr>
@@ -1871,12 +1871,12 @@ Force all surfaces to be painted.</p>
 </tr>
 </table>
 </p>
+<p>
+Load the application state.</p>
 <p class="code">
 <code style="white-space: break-spaces">func loadState(using self) throw
 </code>
 </p>
-<p>
-Load the application state.</p>
 <p>
 <table class="h3">
 <tr>
@@ -1888,12 +1888,12 @@ Load the application state.</p>
 </tr>
 </table>
 </p>
+<p>
+Pop a new mouse cursor.</p>
 <p class="code">
 <code style="white-space: break-spaces">func popCursor(using self)
 </code>
 </p>
-<p>
-Pop a new mouse cursor.</p>
 <p>
 <table class="h3">
 <tr>
@@ -1905,12 +1905,12 @@ Pop a new mouse cursor.</p>
 </tr>
 </table>
 </p>
+<p>
+Post a new event (thread safe).</p>
 <p class="code">
 <code style="white-space: break-spaces">func postEvent(using self, event: *Event)
 </code>
 </p>
-<p>
-Post a new event (thread safe).</p>
 <p>
 <table class="h3">
 <tr>
@@ -1922,12 +1922,12 @@ Post a new event (thread safe).</p>
 </tr>
 </table>
 </p>
+<p>
+Ask to exit the application.</p>
 <p class="code">
 <code style="white-space: break-spaces">func postQuitEvent(using self, quitCode: s32 = 0)
 </code>
 </p>
-<p>
-Ask to exit the application.</p>
 <p>
 <table class="h3">
 <tr>
@@ -1939,12 +1939,12 @@ Ask to exit the application.</p>
 </tr>
 </table>
 </p>
+<p>
+Push a new mouse cursor.</p>
 <p class="code">
 <code style="white-space: break-spaces">func pushCursor(using self, cursor: Cursor)
 </code>
 </p>
-<p>
-Push a new mouse cursor.</p>
 <p>
 <table class="h3">
 <tr>
@@ -1956,12 +1956,12 @@ Push a new mouse cursor.</p>
 </tr>
 </table>
 </p>
+<p>
+Register a window to receive a FrameEvent each running loop.</p>
 <p class="code">
 <code style="white-space: break-spaces">func registerFrameEvent(using self, target: *Wnd)
 </code>
 </p>
-<p>
-Register a window to receive a FrameEvent each running loop.</p>
 <p>
 <table class="h3">
 <tr>
@@ -1973,12 +1973,12 @@ Register a window to receive a FrameEvent each running loop.</p>
 </tr>
 </table>
 </p>
+<p>
+Register a window to receive hook events.</p>
 <p class="code">
 <code style="white-space: break-spaces">func registerHookEvents(using self, target: *Wnd)
 </code>
 </p>
-<p>
-Register a window to receive hook events.</p>
 <p>
 <table class="h3">
 <tr>
@@ -1990,12 +1990,12 @@ Register a window to receive hook events.</p>
 </tr>
 </table>
 </p>
+<p>
+Register a global os key action.</p>
 <p class="code">
 <code style="white-space: break-spaces">func registerHotKey(using self, mdf: KeyModifiers, key: Key, wndId: WndId, target: *Wnd) throw
 </code>
 </p>
-<p>
-Register a global os key action.</p>
 <p>
 <table class="h3">
 <tr>
@@ -2007,12 +2007,12 @@ Register a global os key action.</p>
 </tr>
 </table>
 </p>
+<p>
+Run until exit.</p>
 <p class="code">
 <code style="white-space: break-spaces">func run(using self)->s32
 </code>
 </p>
-<p>
-Run until exit.</p>
 <p>
 <table class="h3">
 <tr>
@@ -2039,12 +2039,12 @@ Run until exit.</p>
 </tr>
 </table>
 </p>
+<p>
+Create a main surface, and run.</p>
 <p class="code">
 <code style="white-space: break-spaces">func runSurface(x: s32, y: s32, width: s32, height: s32, title: string = null, view: *Wnd = null, borders = true, canSize = true, hook: HookEvent = null, init: func(*Application) = null)
 </code>
 </p>
-<p>
-Create a main surface, and run.</p>
 <p>
 <table class="h3">
 <tr>
@@ -2056,12 +2056,12 @@ Create a main surface, and run.</p>
 </tr>
 </table>
 </p>
+<p>
+Save the application state.</p>
 <p class="code">
 <code style="white-space: break-spaces">func saveState(using self) throw
 </code>
 </p>
-<p>
-Save the application state.</p>
 <p>
 <table class="h3">
 <tr>
@@ -2088,12 +2088,12 @@ Save the application state.</p>
 </tr>
 </table>
 </p>
+<p>
+Set activated state.</p>
 <p class="code">
 <code style="white-space: break-spaces">func setActivated(using self, activated: bool)
 </code>
 </p>
-<p>
-Set activated state.</p>
 <p>
 <table class="h3">
 <tr>
@@ -2105,12 +2105,12 @@ Set activated state.</p>
 </tr>
 </table>
 </p>
+<p>
+Associate a configuration file.</p>
 <p class="code">
 <code style="white-space: break-spaces">func setAppIcon(using self, img: Image)
 </code>
 </p>
-<p>
-Associate a configuration file.</p>
 <p>
 <table class="h3">
 <tr>
@@ -2122,12 +2122,12 @@ Associate a configuration file.</p>
 </tr>
 </table>
 </p>
+<p>
+Associate a configuration file.</p>
 <p class="code">
 <code style="white-space: break-spaces">func setConfigPath(using self, path: string)
 </code>
 </p>
-<p>
-Associate a configuration file.</p>
 <p>
 <table class="h3">
 <tr>
@@ -2139,12 +2139,12 @@ Associate a configuration file.</p>
 </tr>
 </table>
 </p>
+<p>
+Unregister a window that receives a FrameEvent each running loop.</p>
 <p class="code">
 <code style="white-space: break-spaces">func unregisterFrameEvent(using self, target: *Wnd)
 </code>
 </p>
-<p>
-Unregister a window that receives a FrameEvent each running loop.</p>
 <p>
 <table class="h3">
 <tr>
@@ -2156,12 +2156,12 @@ Unregister a window that receives a FrameEvent each running loop.</p>
 </tr>
 </table>
 </p>
+<p>
+Unregister a window to receive hook events.</p>
 <p class="code">
 <code style="white-space: break-spaces">func unregisterHookEvents(using self, target: *Wnd)
 </code>
 </p>
-<p>
-Unregister a window to receive hook events.</p>
 <p>
 <table class="h3">
 <tr>
@@ -2609,12 +2609,12 @@ Register a new format.</p>
 </tr>
 </table>
 </p>
+<p>
+Add data of a given format to the clipboard.</p>
 <p class="code">
 <code style="white-space: break-spaces">func addData(fmt: Format, data: const [..] u8)
 </code>
 </p>
-<p>
-Add data of a given format to the clipboard.</p>
 <p>
 <table class="h3">
 <tr>
@@ -2626,12 +2626,12 @@ Add data of a given format to the clipboard.</p>
 </tr>
 </table>
 </p>
+<p>
+Add an image.</p>
 <p class="code">
 <code style="white-space: break-spaces">func addImage(image: Image)
 </code>
 </p>
-<p>
-Add an image.</p>
 <p>
 <table class="h3">
 <tr>
@@ -2643,12 +2643,12 @@ Add an image.</p>
 </tr>
 </table>
 </p>
+<p>
+Add string to clipboard.</p>
 <p class="code">
 <code style="white-space: break-spaces">func addString(str: string)
 </code>
 </p>
-<p>
-Add string to clipboard.</p>
 <p>
 <table class="h3">
 <tr>
@@ -2660,12 +2660,12 @@ Add string to clipboard.</p>
 </tr>
 </table>
 </p>
+<p>
+Get data of the given format.</p>
 <p class="code">
 <code style="white-space: break-spaces">func getData(fmt: Format)->Array'(u8)
 </code>
 </p>
-<p>
-Get data of the given format.</p>
 <p>
 <table class="h3">
 <tr>
@@ -2677,12 +2677,12 @@ Get data of the given format.</p>
 </tr>
 </table>
 </p>
+<p>
+Get image from clipboard.</p>
 <p class="code">
 <code style="white-space: break-spaces">func getImage()->Image
 </code>
 </p>
-<p>
-Get image from clipboard.</p>
 <p>
 <table class="h3">
 <tr>
@@ -2694,12 +2694,12 @@ Get image from clipboard.</p>
 </tr>
 </table>
 </p>
+<p>
+Get utf8 string from clipboard.</p>
 <p class="code">
 <code style="white-space: break-spaces">func getString()->String
 </code>
 </p>
-<p>
-Get utf8 string from clipboard.</p>
 <p>
 <table class="h3">
 <tr>
@@ -2711,12 +2711,12 @@ Get utf8 string from clipboard.</p>
 </tr>
 </table>
 </p>
+<p>
+Returns true if the clipboard contains the given format.</p>
 <p class="code">
 <code style="white-space: break-spaces">func hasFormat(fmt: Format)->bool
 </code>
 </p>
-<p>
-Returns true if the clipboard contains the given format.</p>
 <p>
 <table class="h3">
 <tr>
@@ -2728,12 +2728,12 @@ Returns true if the clipboard contains the given format.</p>
 </tr>
 </table>
 </p>
+<p>
+Returns true if the clipbboard contains an image.</p>
 <p class="code">
 <code style="white-space: break-spaces">func hasImage()->bool
 </code>
 </p>
-<p>
-Returns true if the clipbboard contains an image.</p>
 <p>
 <table class="h3">
 <tr>
@@ -2745,12 +2745,12 @@ Returns true if the clipbboard contains an image.</p>
 </tr>
 </table>
 </p>
+<p>
+Returns true if the clipboard contains a string.</p>
 <p class="code">
 <code style="white-space: break-spaces">func hasString()->bool
 </code>
 </p>
-<p>
-Returns true if the clipboard contains a string.</p>
 <p>
 <table class="h3">
 <tr>
@@ -2762,12 +2762,12 @@ Returns true if the clipboard contains a string.</p>
 </tr>
 </table>
 </p>
+<p>
+Register a new format.</p>
 <p class="code">
 <code style="white-space: break-spaces">func registerFormat(name: string)->Format throw
 </code>
 </p>
-<p>
-Register a new format.</p>
 <p>
 <table class="h3">
 <tr>
@@ -3021,12 +3021,12 @@ Set the color picker box mode.</p>
 </tr>
 </table>
 </p>
+<p>
+Change one component, HSL or alpha.</p>
 <p class="code">
 <code style="white-space: break-spaces">func change(using self, h: f32 = -1, s: f32 = -1, l: f32 = -1, a: f32 = -1)
 </code>
 </p>
-<p>
-Change one component, HSL or alpha.</p>
 <p>
 <table class="h3">
 <tr>
@@ -3053,12 +3053,12 @@ Change one component, HSL or alpha.</p>
 </tr>
 </table>
 </p>
+<p>
+Returns the selected color.</p>
 <p class="code">
 <code style="white-space: break-spaces">func getColor(using self)->Color
 </code>
 </p>
-<p>
-Returns the selected color.</p>
 <p>
 <table class="h3">
 <tr>
@@ -3070,12 +3070,12 @@ Returns the selected color.</p>
 </tr>
 </table>
 </p>
+<p>
+Set the base color, and repaint.</p>
 <p class="code">
 <code style="white-space: break-spaces">func setColor(using self, col: Color)
 </code>
 </p>
-<p>
-Set the base color, and repaint.</p>
 <p>
 <table class="h3">
 <tr>
@@ -3087,12 +3087,12 @@ Set the base color, and repaint.</p>
 </tr>
 </table>
 </p>
+<p>
+Set the color picker box mode.</p>
 <p class="code">
 <code style="white-space: break-spaces">func setMode(using self, mode: ColorPickerMode)
 </code>
 </p>
-<p>
-Set the color picker box mode.</p>
 <p>
 <table class="h3">
 <tr>
@@ -3348,12 +3348,12 @@ Change the display mode.</p>
 </tr>
 </table>
 </p>
+<p>
+Returns the selected color.</p>
 <p class="code">
 <code style="white-space: break-spaces">func getColor(using self)->Color
 </code>
 </p>
-<p>
-Returns the selected color.</p>
 <p>
 <table class="h3">
 <tr>
@@ -3365,12 +3365,12 @@ Returns the selected color.</p>
 </tr>
 </table>
 </p>
+<p>
+Set the selected color.</p>
 <p class="code">
 <code style="white-space: break-spaces">func setColor(using self, color: Color)
 </code>
 </p>
-<p>
-Set the selected color.</p>
 <p>
 <table class="h3">
 <tr>
@@ -3382,12 +3382,12 @@ Set the selected color.</p>
 </tr>
 </table>
 </p>
+<p>
+Change the display mode.</p>
 <p class="code">
 <code style="white-space: break-spaces">func setMode(using self, mode: ColorPickerViewMode)
 </code>
 </p>
-<p>
-Change the display mode.</p>
 <p>
 <table class="h3">
 <tr>
@@ -3768,12 +3768,12 @@ Set the selected item index.</p>
 </tr>
 </table>
 </p>
+<p>
+Add a new item.</p>
 <p class="code">
 <code style="white-space: break-spaces">func addItem(using self, name: string, id: WndId = null, icon: Icon = {}, userData0: *void = null, userData1: *void = null)->*ComboBoxItem
 </code>
 </p>
-<p>
-Add a new item.</p>
 <p>
 <table class="h3">
 <tr>
@@ -3785,12 +3785,12 @@ Add a new item.</p>
 </tr>
 </table>
 </p>
+<p>
+Add a separator.</p>
 <p class="code">
 <code style="white-space: break-spaces">func addSeparator(using self)
 </code>
 </p>
-<p>
-Add a separator.</p>
 <p>
 <table class="h3">
 <tr>
@@ -3802,12 +3802,12 @@ Add a separator.</p>
 </tr>
 </table>
 </p>
+<p>
+Remove all items.</p>
 <p class="code">
 <code style="white-space: break-spaces">func clear(using self)
 </code>
 </p>
-<p>
-Remove all items.</p>
 <p>
 <table class="h3">
 <tr>
@@ -3834,12 +3834,12 @@ Remove all items.</p>
 </tr>
 </table>
 </p>
+<p>
+Returns the selected item.</p>
 <p class="code">
 <code style="white-space: break-spaces">func getSelectedItem(using self)->*ComboBoxItem
 </code>
 </p>
-<p>
-Returns the selected item.</p>
 <p>
 <table class="h3">
 <tr>
@@ -3851,12 +3851,12 @@ Returns the selected item.</p>
 </tr>
 </table>
 </p>
+<p>
+Set the selected item index.</p>
 <p class="code">
 <code style="white-space: break-spaces">func selectItem(using self, idx: u32)
 </code>
 </p>
-<p>
-Set the selected item index.</p>
 <p>
 <table class="h3">
 <tr>
@@ -4349,12 +4349,12 @@ Force the wait cursor.</p>
 </tr>
 </table>
 </p>
+<p>
+Force the wait cursor.</p>
 <p class="code">
 <code style="white-space: break-spaces">func wait()
 </code>
 </p>
-<p>
-Force the wait cursor.</p>
 <p>
 <table class="h3">
 <tr>
@@ -4793,12 +4793,12 @@ Display dialog as modal, and returns the user selected window id.</p>
 </tr>
 </table>
 </p>
+<p>
+Add a button.</p>
 <p class="code">
 <code style="white-space: break-spaces">func addButton(using self, str: string, id: WndId, isDefault: bool = false)->*PushButton
 </code>
 </p>
-<p>
-Add a button.</p>
 <p>
 <table class="h3">
 <tr>
@@ -4810,12 +4810,12 @@ Add a button.</p>
 </tr>
 </table>
 </p>
+<p>
+Creates a simple dialog box.</p>
 <p class="code">
 <code style="white-space: break-spaces">func createDialog(from: *Surface, width = 512, height = 300, title: string = null)->*Dialog
 </code>
 </p>
-<p>
-Creates a simple dialog box.</p>
 <p>
 <table class="h3">
 <tr>
@@ -4827,12 +4827,12 @@ Creates a simple dialog box.</p>
 </tr>
 </table>
 </p>
+<p>
+Creates an associated surface.</p>
 <p class="code">
 <code style="white-space: break-spaces">func createSurface(using self, from: *Surface, x: s32, y: s32, width = 512, height = 300, flags = SurfaceFlags.Zero)->*Surface
 </code>
 </p>
-<p>
-Creates an associated surface.</p>
 <p>
 <table class="h3">
 <tr>
@@ -4844,12 +4844,12 @@ Creates an associated surface.</p>
 </tr>
 </table>
 </p>
+<p>
+Display dialog as modal, and returns the user selected window id.</p>
 <p class="code">
 <code style="white-space: break-spaces">func doModal(using self)->string
 </code>
 </p>
-<p>
-Display dialog as modal, and returns the user selected window id.</p>
 <p>
 <table class="h3">
 <tr>
@@ -5049,7 +5049,7 @@ func(*void, *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_
 <td class="tdname">
 minMax</td>
 <td class="tdtype">
-__editbox_tuple_264</td>
+__editbox_tuple_266</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -5332,12 +5332,12 @@ Set the editbox content, but do not notify change.</p>
 </tr>
 </table>
 </p>
+<p>
+Delete selected text.</p>
 <p class="code">
 <code style="white-space: break-spaces">func deleteSelection(using self)
 </code>
 </p>
-<p>
-Delete selected text.</p>
 <p>
 <table class="h3">
 <tr>
@@ -5349,12 +5349,12 @@ Delete selected text.</p>
 </tr>
 </table>
 </p>
+<p>
+Select all text.</p>
 <p class="code">
 <code style="white-space: break-spaces">func selectAll(using self)
 </code>
 </p>
-<p>
-Select all text.</p>
 <p>
 <table class="h3">
 <tr>
@@ -5366,12 +5366,12 @@ Select all text.</p>
 </tr>
 </table>
 </p>
+<p>
+Set the editbox form.</p>
 <p class="code">
 <code style="white-space: break-spaces">func setForm(using self, form: EditBoxForm)
 </code>
 </p>
-<p>
-Set the editbox form.</p>
 <p>
 <table class="h3">
 <tr>
@@ -5383,12 +5383,12 @@ Set the editbox form.</p>
 </tr>
 </table>
 </p>
+<p>
+Editbox will edit floating points.</p>
 <p class="code">
 <code style="white-space: break-spaces">func setInputF64(using self, min = -Swag.F64.Max, max = Swag.F64.Max)
 </code>
 </p>
-<p>
-Editbox will edit floating points.</p>
 <p>
 <table class="h3">
 <tr>
@@ -5400,12 +5400,12 @@ Editbox will edit floating points.</p>
 </tr>
 </table>
 </p>
+<p>
+Editbox will edit signed integers.</p>
 <p class="code">
 <code style="white-space: break-spaces">func setInputS64(using self, min = Swag.S64.Min, max = Swag.S64.Max)
 </code>
 </p>
-<p>
-Editbox will edit signed integers.</p>
 <p>
 <table class="h3">
 <tr>
@@ -5417,12 +5417,12 @@ Editbox will edit signed integers.</p>
 </tr>
 </table>
 </p>
+<p>
+Editbox will edit unsigned integers.</p>
 <p class="code">
 <code style="white-space: break-spaces">func setInputU64(using self, min = 0'u64, max = Swag.U64.Max)
 </code>
 </p>
-<p>
-Editbox will edit unsigned integers.</p>
 <p>
 <table class="h3">
 <tr>
@@ -5434,12 +5434,12 @@ Editbox will edit unsigned integers.</p>
 </tr>
 </table>
 </p>
+<p>
+Set the editbox note.</p>
 <p class="code">
 <code style="white-space: break-spaces">func setNote(using self, note: string)
 </code>
 </p>
-<p>
-Set the editbox note.</p>
 <p>
 <table class="h3">
 <tr>
@@ -5451,12 +5451,12 @@ Set the editbox note.</p>
 </tr>
 </table>
 </p>
+<p>
+Set current selection.</p>
 <p class="code">
 <code style="white-space: break-spaces">func setSelection(using self, start: u64, end: u64)
 </code>
 </p>
-<p>
-Set current selection.</p>
 <p>
 <table class="h3">
 <tr>
@@ -5468,12 +5468,12 @@ Set current selection.</p>
 </tr>
 </table>
 </p>
+<p>
+Set the editbox content.</p>
 <p class="code">
 <code style="white-space: break-spaces">func setText(using self, str: string)
 </code>
 </p>
-<p>
-Set the editbox content.</p>
 <p>
 <table class="h3">
 <tr>
@@ -5485,12 +5485,12 @@ Set the editbox content.</p>
 </tr>
 </table>
 </p>
+<p>
+Set the editbox content, but do not notify change.</p>
 <p class="code">
 <code style="white-space: break-spaces">func setTextSilent(using self, str: string)
 </code>
 </p>
-<p>
-Set the editbox content, but do not notify change.</p>
 <p>
 <table class="h3">
 <tr>
@@ -5729,12 +5729,12 @@ Create the popup list, but do not display it.</p>
 </tr>
 </table>
 </p>
+<p>
+Create the popup list, but do not display it.</p>
 <p class="code">
 <code style="white-space: break-spaces">func create(parent: *Wnd, name: string, text: string, position: Rectangle = {}, id: WndId = null, flags: EditBoxFlags = Zero)->*EditCtrl
 </code>
 </p>
-<p>
-Create the popup list, but do not display it.</p>
 <p>
 <table class="h3">
 <tr>
@@ -5834,12 +5834,12 @@ Set the text.</p>
 </tr>
 </table>
 </p>
+<p>
+Creates the message box.</p>
 <p class="code">
 <code style="white-space: break-spaces">func createMultiLine(from: *Surface, heightEdit = 150)->*EditDlg
 </code>
 </p>
-<p>
-Creates the message box.</p>
 <p>
 <table class="h3">
 <tr>
@@ -5851,12 +5851,12 @@ Creates the message box.</p>
 </tr>
 </table>
 </p>
+<p>
+Creates the message box.</p>
 <p class="code">
 <code style="white-space: break-spaces">func createSingleLine(from: *Surface)->*EditDlg
 </code>
 </p>
-<p>
-Creates the message box.</p>
 <p>
 <table class="h3">
 <tr>
@@ -5868,12 +5868,12 @@ Creates the message box.</p>
 </tr>
 </table>
 </p>
+<p>
+Get the text.</p>
 <p class="code">
 <code style="white-space: break-spaces">func getText(using self)->String
 </code>
 </p>
-<p>
-Get the text.</p>
 <p>
 <table class="h3">
 <tr>
@@ -5885,12 +5885,12 @@ Get the text.</p>
 </tr>
 </table>
 </p>
+<p>
+Associate a message above the editbox.</p>
 <p class="code">
 <code style="white-space: break-spaces">func setMessage(using self, message: string, height: s32 = 40)
 </code>
 </p>
-<p>
-Associate a message above the editbox.</p>
 <p>
 <table class="h3">
 <tr>
@@ -5902,12 +5902,12 @@ Associate a message above the editbox.</p>
 </tr>
 </table>
 </p>
+<p>
+Set the text.</p>
 <p class="code">
 <code style="white-space: break-spaces">func setText(using self, text: string)
 </code>
 </p>
-<p>
-Set the text.</p>
 <p>
 <table class="h3">
 <tr>
@@ -5959,12 +5959,12 @@ Create the popup list, but do not display it.</p>
 </tr>
 </table>
 </p>
+<p>
+Create the popup list, but do not display it.</p>
 <p class="code">
 <code style="white-space: break-spaces">func create(parent: *Wnd, name: string, kind: EmbInfoCtrlKind, height = 40, top = true)->*EmbInfoCtrl
 </code>
 </p>
-<p>
-Create the popup list, but do not display it.</p>
 <p>
 <table class="h3">
 <tr>
@@ -6437,12 +6437,12 @@ Get all selections.</p>
 </tr>
 </table>
 </p>
+<p>
+Creates the message box.</p>
 <p class="code">
 <code style="white-space: break-spaces">func create(from: *Surface, opt: FileDlgOptions = {})->*FileDlg
 </code>
 </p>
-<p>
-Creates the message box.</p>
 <p>
 <table class="h3">
 <tr>
@@ -6454,12 +6454,12 @@ Creates the message box.</p>
 </tr>
 </table>
 </p>
+<p>
+Get the first selection.</p>
 <p class="code">
 <code style="white-space: break-spaces">func getSelectedName(using self)->String
 </code>
 </p>
-<p>
-Get the first selection.</p>
 <p>
 <table class="h3">
 <tr>
@@ -6471,12 +6471,12 @@ Get the first selection.</p>
 </tr>
 </table>
 </p>
+<p>
+Get all selections.</p>
 <p class="code">
 <code style="white-space: break-spaces">func getSelectedNames(using self)->Array'(String)
 </code>
 </p>
-<p>
-Get all selections.</p>
 <p>
 <table class="h3">
 <tr>
@@ -6578,7 +6578,7 @@ mode</td>
 <td class="tdname">
 filters</td>
 <td class="tdtype">
-Array(__filedlg_tuple_284)</td>
+Array(__filedlg_tuple_286)</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -6586,7 +6586,7 @@ Array(__filedlg_tuple_284)</td>
 <td class="tdname">
 shortcuts</td>
 <td class="tdtype">
-Array(__filedlg_tuple_285)</td>
+Array(__filedlg_tuple_287)</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -6897,12 +6897,12 @@ Set the frame wnd form.</p>
 </tr>
 </table>
 </p>
+<p>
+Set the frame wnd flags.</p>
 <p class="code">
 <code style="white-space: break-spaces">func setFrameFlags(using self, add = FrameWndFlags.Zero, remove = FrameWndFlags.Zero)
 </code>
 </p>
-<p>
-Set the frame wnd flags.</p>
 <p>
 <table class="h3">
 <tr>
@@ -6914,12 +6914,12 @@ Set the frame wnd flags.</p>
 </tr>
 </table>
 </p>
+<p>
+Set the frame wnd form.</p>
 <p class="code">
 <code style="white-space: break-spaces">func setFrameForm(using self, form: FrameWndForm)
 </code>
 </p>
-<p>
-Set the frame wnd form.</p>
 <p>
 <table class="h3">
 <tr>
@@ -7200,12 +7200,12 @@ Set size, in pixel, of a given row.</p>
 </tr>
 </table>
 </p>
+<p>
+Recompute layout of all childs.</p>
 <p class="code">
 <code style="white-space: break-spaces">func computeLayout(using self)
 </code>
 </p>
-<p>
-Recompute layout of all childs.</p>
 <p>
 <table class="h3">
 <tr>
@@ -7217,12 +7217,12 @@ Recompute layout of all childs.</p>
 </tr>
 </table>
 </p>
+<p>
+Create a layout control.</p>
 <p class="code">
 <code style="white-space: break-spaces">func create(parent: *Wnd, numColumns: s32, numRows: s32, position: Rectangle = {})->*GridLayoutCtrl
 </code>
 </p>
-<p>
-Create a layout control.</p>
 <p>
 <table class="h3">
 <tr>
@@ -7234,12 +7234,12 @@ Create a layout control.</p>
 </tr>
 </table>
 </p>
+<p>
+Set the wnd associated with the given <code class = "incode">col</code> and <code class = "incode">row</code>. Window can cover multiple columns and rows.</p>
 <p class="code">
 <code style="white-space: break-spaces">func setColRowChild(using self, child: *Wnd, col: s32, row: s32, spanH: s32 = 1, spanV: s32 = 1)
 </code>
 </p>
-<p>
-Set the wnd associated with the given <code class = "incode">col</code> and <code class = "incode">row</code>. Window can cover multiple columns and rows.</p>
 <p>
 <table class="h3">
 <tr>
@@ -7251,12 +7251,12 @@ Set the wnd associated with the given <code class = "incode">col</code> and <cod
 </tr>
 </table>
 </p>
+<p>
+Set size, in pixel, of a given column.</p>
 <p class="code">
 <code style="white-space: break-spaces">func setColSize(using self, col: s32, size: f32)
 </code>
 </p>
-<p>
-Set size, in pixel, of a given column.</p>
 <p>
 <table class="h3">
 <tr>
@@ -7268,12 +7268,12 @@ Set size, in pixel, of a given column.</p>
 </tr>
 </table>
 </p>
+<p>
+Set size, in pixel, of a given row.</p>
 <p class="code">
 <code style="white-space: break-spaces">func setRowSize(using self, row: s32, size: f32)
 </code>
 </p>
-<p>
-Set size, in pixel, of a given row.</p>
 <p>
 <table class="h3">
 <tr>
@@ -7573,12 +7573,12 @@ Set an item width by column.</p>
 </tr>
 </table>
 </p>
+<p>
+Add a new view.</p>
 <p class="code">
 <code style="white-space: break-spaces">func addItem(using self, tabName: string, width = 100'f32, icon: Icon = {})->*HeaderItem
 </code>
 </p>
-<p>
-Add a new view.</p>
 <p>
 <table class="h3">
 <tr>
@@ -7605,12 +7605,12 @@ Add a new view.</p>
 </tr>
 </table>
 </p>
+<p>
+Returns the given item, by index.</p>
 <p class="code">
 <code style="white-space: break-spaces">func getItem(using self, idx: u32)->*HeaderItem
 </code>
 </p>
-<p>
-Returns the given item, by index.</p>
 <p>
 <table class="h3">
 <tr>
@@ -7622,12 +7622,12 @@ Returns the given item, by index.</p>
 </tr>
 </table>
 </p>
+<p>
+Returns the given item, by column.</p>
 <p class="code">
 <code style="white-space: break-spaces">func getItemByCol(using self, column: u32)->*HeaderItem
 </code>
 </p>
-<p>
-Returns the given item, by column.</p>
 <p>
 <table class="h3">
 <tr>
@@ -7639,12 +7639,12 @@ Returns the given item, by column.</p>
 </tr>
 </table>
 </p>
+<p>
+Get an item position by index.</p>
 <p class="code">
 <code style="white-space: break-spaces">func getItemPosition(using self, idx: u32)->f32
 </code>
 </p>
-<p>
-Get an item position by index.</p>
 <p>
 <table class="h3">
 <tr>
@@ -7656,12 +7656,12 @@ Get an item position by index.</p>
 </tr>
 </table>
 </p>
+<p>
+Get an item position by column.</p>
 <p class="code">
 <code style="white-space: break-spaces">func getItemPositionByCol(using self, column: u32)->f32
 </code>
 </p>
-<p>
-Get an item position by column.</p>
 <p>
 <table class="h3">
 <tr>
@@ -7673,12 +7673,12 @@ Get an item position by column.</p>
 </tr>
 </table>
 </p>
+<p>
+Get an item width by index.</p>
 <p class="code">
 <code style="white-space: break-spaces">func getItemWidth(using self, idx: u32)->f32
 </code>
 </p>
-<p>
-Get an item width by index.</p>
 <p>
 <table class="h3">
 <tr>
@@ -7690,12 +7690,12 @@ Get an item width by index.</p>
 </tr>
 </table>
 </p>
+<p>
+Get an item width by column.</p>
 <p class="code">
 <code style="white-space: break-spaces">func getItemWidthByCol(using self, column: u32)->f32
 </code>
 </p>
-<p>
-Get an item width by column.</p>
 <p>
 <table class="h3">
 <tr>
@@ -7707,12 +7707,12 @@ Get an item width by column.</p>
 </tr>
 </table>
 </p>
+<p>
+Get the header total width.</p>
 <p class="code">
 <code style="white-space: break-spaces">func getTotalItemsWidth(using self)->f32
 </code>
 </p>
-<p>
-Get the header total width.</p>
 <p>
 <table class="h3">
 <tr>
@@ -7724,12 +7724,12 @@ Get the header total width.</p>
 </tr>
 </table>
 </p>
+<p>
+Set an item width by index.</p>
 <p class="code">
 <code style="white-space: break-spaces">func setItemWidth(using self, idx: u32, width: f32)
 </code>
 </p>
-<p>
-Set an item width by index.</p>
 <p>
 <table class="h3">
 <tr>
@@ -7741,12 +7741,12 @@ Set an item width by index.</p>
 </tr>
 </table>
 </p>
+<p>
+Set an item width by column.</p>
 <p class="code">
 <code style="white-space: break-spaces">func setItemWidthByCol(using self, column: u32, width: f32)
 </code>
 </p>
-<p>
-Set an item width by column.</p>
 <p>
 <table class="h3">
 <tr>
@@ -8246,12 +8246,12 @@ Initialize the icon from an image list.</p>
 </tr>
 </table>
 </p>
+<p>
+Set icon to invalid.</p>
 <p class="code">
 <code style="white-space: break-spaces">func clear(using self)
 </code>
 </p>
-<p>
-Set icon to invalid.</p>
 <p>
 <table class="h3">
 <tr>
@@ -8263,12 +8263,12 @@ Set icon to invalid.</p>
 </tr>
 </table>
 </p>
+<p>
+Initialize the icon from an image list.</p>
 <p class="code">
 <code style="white-space: break-spaces">func from(imageList: *ImageList, index: s32, sizeX: f32 = 0, sizeY: f32 = 0)->Icon
 </code>
 </p>
-<p>
-Initialize the icon from an image list.</p>
 <p>
 <table class="h3">
 <tr>
@@ -8310,12 +8310,12 @@ Initialize the icon from an image list.</p>
 </tr>
 </table>
 </p>
+<p>
+Paint icon at the given position.</p>
 <p class="code">
 <code style="white-space: break-spaces">func paint(using const self, painter: *Painter, x: f32, y: f32, color: Color = Argb.White)
 </code>
 </p>
-<p>
-Paint icon at the given position.</p>
 <p>
 <table class="h3">
 <tr>
@@ -8327,12 +8327,12 @@ Paint icon at the given position.</p>
 </tr>
 </table>
 </p>
+<p>
+Initialize the icon from an image list.</p>
 <p class="code">
 <code style="white-space: break-spaces">func set(using self, imageList: *ImageList, index: s32, sizeX: f32 = 0, sizeY: f32 = 0)
 </code>
 </p>
-<p>
-Initialize the icon from an image list.</p>
 <p>
 <table class="h3">
 <tr>
@@ -8461,12 +8461,12 @@ Change bar flags.</p>
 </tr>
 </table>
 </p>
+<p>
+Add a new checkable button.</p>
 <p class="code">
 <code style="white-space: break-spaces">func addCheckableItem(using self, icon: Icon, btnId: WndId = null)->*IconButton
 </code>
 </p>
-<p>
-Add a new checkable button.</p>
 <p>
 <table class="h3">
 <tr>
@@ -8478,12 +8478,12 @@ Add a new checkable button.</p>
 </tr>
 </table>
 </p>
+<p>
+Add a new checkable button.</p>
 <p class="code">
 <code style="white-space: break-spaces">func addCheckableToggleItem(using self, icon: Icon, btnId: WndId = null)->*IconButton
 </code>
 </p>
-<p>
-Add a new checkable button.</p>
 <p>
 <table class="h3">
 <tr>
@@ -8495,12 +8495,12 @@ Add a new checkable button.</p>
 </tr>
 </table>
 </p>
+<p>
+Add a new button.</p>
 <p class="code">
 <code style="white-space: break-spaces">func addItem(using self, icon: Icon, btnId: WndId = null, iconBtnFlags = IconButtonFlags.Zero)->*IconButton
 </code>
 </p>
-<p>
-Add a new button.</p>
 <p>
 <table class="h3">
 <tr>
@@ -8527,12 +8527,12 @@ Add a new button.</p>
 </tr>
 </table>
 </p>
+<p>
+Change bar flags.</p>
 <p class="code">
 <code style="white-space: break-spaces">func setIconBarFlags(using self, add = IconBarFlags.Zero, remove = IconBarFlags.Zero)
 </code>
 </p>
-<p>
-Change bar flags.</p>
 <p>
 <table class="h3">
 <tr>
@@ -8808,12 +8808,12 @@ Set the button form.</p>
 </tr>
 </table>
 </p>
+<p>
+Set the check state of the button (if the button is checkable).</p>
 <p class="code">
 <code style="white-space: break-spaces">func setCheck(using self, checked: bool)
 </code>
 </p>
-<p>
-Set the check state of the button (if the button is checkable).</p>
 <p>
 <table class="h3">
 <tr>
@@ -8825,12 +8825,12 @@ Set the check state of the button (if the button is checkable).</p>
 </tr>
 </table>
 </p>
+<p>
+Set the button form.</p>
 <p class="code">
 <code style="white-space: break-spaces">func setForm(using self, form: IconButtonForm)
 </code>
 </p>
-<p>
-Set the button form.</p>
 <p>
 <table class="h3">
 <tr>
@@ -9155,12 +9155,12 @@ Initialize image list.</p>
 </tr>
 </table>
 </p>
+<p>
+Initialize image list.</p>
 <p class="code">
 <code style="white-space: break-spaces">func set(using self, texture: Texture, fsx: s32 = 0, fsy: s32 = 0, cpt: s32 = 0)
 </code>
 </p>
-<p>
-Initialize image list.</p>
 <p>
 <table class="h3">
 <tr>
@@ -9309,12 +9309,12 @@ Set movie as an image list.</p>
 </tr>
 </table>
 </p>
+<p>
+Load and set movie.</p>
 <p class="code">
 <code style="white-space: break-spaces">func setFile(using self, fileName: string) throw
 </code>
 </p>
-<p>
-Load and set movie.</p>
 <p>
 <table class="h3">
 <tr>
@@ -9326,6 +9326,8 @@ Load and set movie.</p>
 </tr>
 </table>
 </p>
+<p>
+Associate image.</p>
 <p class="code">
 <code style="white-space: break-spaces">func setImage(using self, image: ImageList)
 </code>
@@ -9343,8 +9345,6 @@ Associate image.</p>
 </code>
 </p>
 <p>
-Associate image.</p>
-<p>
 <table class="h3">
 <tr>
 <td class="h3">
@@ -9355,12 +9355,12 @@ Associate image.</p>
 </tr>
 </table>
 </p>
+<p>
+Set movie as an image list.</p>
 <p class="code">
 <code style="white-space: break-spaces">func setMovie(using self, image: ImageList)
 </code>
 </p>
-<p>
-Set movie as an image list.</p>
 <p>
 <table class="h3">
 <tr>
@@ -9670,12 +9670,12 @@ Change the text.</p>
 </tr>
 </table>
 </p>
+<p>
+Change the text.</p>
 <p class="code">
 <code style="white-space: break-spaces">func setText(using self, text: string)
 </code>
 </p>
-<p>
-Change the text.</p>
 <p>
 <table class="h3">
 <tr>
@@ -10224,12 +10224,12 @@ Unselect all lines.</p>
 </tr>
 </table>
 </p>
+<p>
+Add one column in a multi columns list.</p>
 <p class="code">
 <code style="white-space: break-spaces">func addColumn(using self, name: string, width: f32 = 100, icon: Icon = {})
 </code>
 </p>
-<p>
-Add one column in a multi columns list.</p>
 <p>
 <table class="h3">
 <tr>
@@ -10241,12 +10241,12 @@ Add one column in a multi columns list.</p>
 </tr>
 </table>
 </p>
+<p>
+Clear all lines.</p>
 <p class="code">
 <code style="white-space: break-spaces">func clear(using self)
 </code>
 </p>
-<p>
-Clear all lines.</p>
 <p>
 <table class="h3">
 <tr>
@@ -10258,12 +10258,12 @@ Clear all lines.</p>
 </tr>
 </table>
 </p>
+<p>
+Collapse the given line.</p>
 <p class="code">
 <code style="white-space: break-spaces">func collapse(using self, line: *ListLine)
 </code>
 </p>
-<p>
-Collapse the given line.</p>
 <p>
 <table class="h3">
 <tr>
@@ -10275,12 +10275,12 @@ Collapse the given line.</p>
 </tr>
 </table>
 </p>
+<p>
+Collapse all lines.</p>
 <p class="code">
 <code style="white-space: break-spaces">func collapseAll(using self)
 </code>
 </p>
-<p>
-Collapse all lines.</p>
 <p>
 <table class="h3">
 <tr>
@@ -10292,12 +10292,12 @@ Collapse all lines.</p>
 </tr>
 </table>
 </p>
+<p>
+Compute global layout, once all lines have been added.</p>
 <p class="code">
 <code style="white-space: break-spaces">func computeLayout(using self)
 </code>
 </p>
-<p>
-Compute global layout, once all lines have been added.</p>
 <p>
 <table class="h3">
 <tr>
@@ -10309,18 +10309,18 @@ Compute global layout, once all lines have been added.</p>
 </tr>
 </table>
 </p>
+<p>
+Add one new line.</p>
 <p class="code">
 <code style="white-space: break-spaces">func createLine(using self, parentLine: *ListLine)->*ListLine
 </code>
 </p>
 <p>
-Add one new line.</p>
+Add one line, and set first column.</p>
 <p class="code">
 <code style="white-space: break-spaces">func createLine(using self, name: string, icon: Icon = {}, parentLine: *ListLine = null)->*ListLine
 </code>
 </p>
-<p>
-Add one line, and set first column.</p>
 <p>
 <table class="h3">
 <tr>
@@ -10362,12 +10362,12 @@ Add one line, and set first column.</p>
 </tr>
 </table>
 </p>
+<p>
+Set the corresponding line visible.</p>
 <p class="code">
 <code style="white-space: break-spaces">func ensureVisibleLine(using self, idx: u32)
 </code>
 </p>
-<p>
-Set the corresponding line visible.</p>
 <p>
 <table class="h3">
 <tr>
@@ -10379,12 +10379,12 @@ Set the corresponding line visible.</p>
 </tr>
 </table>
 </p>
+<p>
+Expand the given line.</p>
 <p class="code">
 <code style="white-space: break-spaces">func expand(using self, line: *ListLine)
 </code>
 </p>
-<p>
-Expand the given line.</p>
 <p>
 <table class="h3">
 <tr>
@@ -10396,12 +10396,12 @@ Expand the given line.</p>
 </tr>
 </table>
 </p>
+<p>
+Get all the checked lines.</p>
 <p class="code">
 <code style="white-space: break-spaces">func getCheckedLines(using const self)->Array'(*ListLine)
 </code>
 </p>
-<p>
-Get all the checked lines.</p>
 <p>
 <table class="h3">
 <tr>
@@ -10413,12 +10413,12 @@ Get all the checked lines.</p>
 </tr>
 </table>
 </p>
+<p>
+Returns the first visible line index.</p>
 <p class="code">
 <code style="white-space: break-spaces">func getFirstVisibleLineIndex(using self)->u32
 </code>
 </p>
-<p>
-Returns the first visible line index.</p>
 <p>
 <table class="h3">
 <tr>
@@ -10430,12 +10430,12 @@ Returns the first visible line index.</p>
 </tr>
 </table>
 </p>
+<p>
+Get the line with the keyboard focus.</p>
 <p class="code">
 <code style="white-space: break-spaces">func getFocusLine(using const self)->*ListLine
 </code>
 </p>
-<p>
-Get the line with the keyboard focus.</p>
 <p>
 <table class="h3">
 <tr>
@@ -10447,12 +10447,12 @@ Get the line with the keyboard focus.</p>
 </tr>
 </table>
 </p>
+<p>
+Returns the last visible line index.</p>
 <p class="code">
 <code style="white-space: break-spaces">func getLastVisibleLineIndex(using self)->u32
 </code>
 </p>
-<p>
-Returns the last visible line index.</p>
 <p>
 <table class="h3">
 <tr>
@@ -10464,12 +10464,12 @@ Returns the last visible line index.</p>
 </tr>
 </table>
 </p>
+<p>
+Get a line by index.</p>
 <p class="code">
 <code style="white-space: break-spaces">func getLine(using self, idx: u32)->*ListLine
 </code>
 </p>
-<p>
-Get a line by index.</p>
 <p>
 <table class="h3">
 <tr>
@@ -10481,12 +10481,12 @@ Get a line by index.</p>
 </tr>
 </table>
 </p>
+<p>
+Returns the number of lines in the list.</p>
 <p class="code">
 <code style="white-space: break-spaces">func getLineCount(using self)->u32
 </code>
 </p>
-<p>
-Returns the number of lines in the list.</p>
 <p>
 <table class="h3">
 <tr>
@@ -10498,12 +10498,12 @@ Returns the number of lines in the list.</p>
 </tr>
 </table>
 </p>
+<p>
+Get the height of one line.</p>
 <p class="code">
 <code style="white-space: break-spaces">func getLineHeight(using self)->f32
 </code>
 </p>
-<p>
-Get the height of one line.</p>
 <p>
 <table class="h3">
 <tr>
@@ -10515,12 +10515,12 @@ Get the height of one line.</p>
 </tr>
 </table>
 </p>
+<p>
+Returns a selected line Mostly for singlesel mode.</p>
 <p class="code">
 <code style="white-space: break-spaces">func getSelectedLine(using const self)->*ListLine
 </code>
 </p>
-<p>
-Returns a selected line Mostly for singlesel mode.</p>
 <p>
 <table class="h3">
 <tr>
@@ -10532,12 +10532,12 @@ Returns a selected line Mostly for singlesel mode.</p>
 </tr>
 </table>
 </p>
+<p>
+Get all the selected lines.</p>
 <p class="code">
 <code style="white-space: break-spaces">func getSelectedLines(using const self)->Array'(*ListLine)
 </code>
 </p>
-<p>
-Get all the selected lines.</p>
 <p>
 <table class="h3">
 <tr>
@@ -10549,12 +10549,12 @@ Get all the selected lines.</p>
 </tr>
 </table>
 </p>
+<p>
+Returns.</p>
 <p class="code">
 <code style="white-space: break-spaces">func isLineSelected(using self, idx: u32)->bool
 </code>
 </p>
-<p>
-Returns.</p>
 <p>
 <table class="h3">
 <tr>
@@ -10566,12 +10566,12 @@ Returns.</p>
 </tr>
 </table>
 </p>
+<p>
+Returns true if the line at the given index is selected.</p>
 <p class="code">
 <code style="white-space: break-spaces">func isSelectedLine(using const self, idx: u32)->bool
 </code>
 </p>
-<p>
-Returns true if the line at the given index is selected.</p>
 <p>
 <table class="h3">
 <tr>
@@ -10583,12 +10583,12 @@ Returns true if the line at the given index is selected.</p>
 </tr>
 </table>
 </p>
+<p>
+Select of unselect the given line.</p>
 <p class="code">
 <code style="white-space: break-spaces">func selectLine(using self, idx: u32, select: bool = true)
 </code>
 </p>
-<p>
-Select of unselect the given line.</p>
 <p>
 <table class="h3">
 <tr>
@@ -10600,12 +10600,12 @@ Select of unselect the given line.</p>
 </tr>
 </table>
 </p>
+<p>
+Select a range of lines.</p>
 <p class="code">
 <code style="white-space: break-spaces">func selectLines(using self, start: u32, end: u32, select: bool = true)
 </code>
 </p>
-<p>
-Select a range of lines.</p>
 <p>
 <table class="h3">
 <tr>
@@ -10617,12 +10617,12 @@ Select a range of lines.</p>
 </tr>
 </table>
 </p>
+<p>
+Set the column width.</p>
 <p class="code">
 <code style="white-space: break-spaces">func setColumnWidth(using self, idx: u32, width: f32)
 </code>
 </p>
-<p>
-Set the column width.</p>
 <p>
 <table class="h3">
 <tr>
@@ -10634,12 +10634,12 @@ Set the column width.</p>
 </tr>
 </table>
 </p>
+<p>
+Set focus to the list.</p>
 <p class="code">
 <code style="white-space: break-spaces">func setFocus(using self)
 </code>
 </p>
-<p>
-Set focus to the list.</p>
 <p>
 <table class="h3">
 <tr>
@@ -10651,12 +10651,12 @@ Set focus to the list.</p>
 </tr>
 </table>
 </p>
+<p>
+Set the number of lines in a virtual list.</p>
 <p class="code">
 <code style="white-space: break-spaces">func setVirtualCount(using self, count: u32)
 </code>
 </p>
-<p>
-Set the number of lines in a virtual list.</p>
 <p>
 <table class="h3">
 <tr>
@@ -10668,18 +10668,18 @@ Set the number of lines in a virtual list.</p>
 </tr>
 </table>
 </p>
+<p>
+Sort the list by a given column If <code class = "incode">persistent</code> is true, then the sorted column will be displayed in the header (if it exists).</p>
 <p class="code">
 <code style="white-space: break-spaces">func sort(using self, column: u32, descentOrder = false, persistent = false)
 </code>
 </p>
 <p>
-Sort the list by a given column If <code class = "incode">persistent</code> is true, then the sorted column will be displayed in the header (if it exists).</p>
+Sort list as before.</p>
 <p class="code">
 <code style="white-space: break-spaces">func sort(using self)
 </code>
 </p>
-<p>
-Sort list as before.</p>
 <p>
 <table class="h3">
 <tr>
@@ -10691,12 +10691,12 @@ Sort list as before.</p>
 </tr>
 </table>
 </p>
+<p>
+Collapse the given line.</p>
 <p class="code">
 <code style="white-space: break-spaces">func toggleExpand(using self, line: *ListLine)
 </code>
 </p>
-<p>
-Collapse the given line.</p>
 <p>
 <table class="h3">
 <tr>
@@ -10708,12 +10708,12 @@ Collapse the given line.</p>
 </tr>
 </table>
 </p>
+<p>
+Unselect all lines.</p>
 <p class="code">
 <code style="white-space: break-spaces">func unselectAll(using self)
 </code>
 </p>
-<p>
-Unselect all lines.</p>
 <p>
 <table class="h3">
 <tr>
@@ -11030,12 +11030,12 @@ Initialize a given column item.</p>
 </tr>
 </table>
 </p>
+<p>
+Get an item by index.</p>
 <p class="code">
 <code style="white-space: break-spaces">func getItem(using self, column: u32)->*ListItem
 </code>
 </p>
-<p>
-Get an item by index.</p>
 <p>
 <table class="h3">
 <tr>
@@ -11062,12 +11062,12 @@ Get an item by index.</p>
 </tr>
 </table>
 </p>
+<p>
+Initialize a given column item.</p>
 <p class="code">
 <code style="white-space: break-spaces">func setItem(using self, column: u32, name: string, icon: Icon = {})->*ListItem
 </code>
 </p>
-<p>
-Initialize a given column item.</p>
 <p>
 <table class="h3">
 <tr>
@@ -11505,6 +11505,8 @@ Make the popup menu modal Will return the selected id.</p>
 </tr>
 </table>
 </p>
+<p>
+Add a new item.</p>
 <p class="code">
 <code style="white-space: break-spaces">func addItem(using self, id: WndId)
 </code>
@@ -11516,8 +11518,6 @@ Add a new item.</p>
 </code>
 </p>
 <p>
-Add a new item.</p>
-<p>
 <table class="h3">
 <tr>
 <td class="h3">
@@ -11528,6 +11528,8 @@ Add a new item.</p>
 </tr>
 </table>
 </p>
+<p>
+Add a new popup item.</p>
 <p class="code">
 <code style="white-space: break-spaces">func addPopup(using self, popup: *MenuCtrl, id: WndId)
 </code>
@@ -11539,8 +11541,6 @@ Add a new popup item.</p>
 </code>
 </p>
 <p>
-Add a new popup item.</p>
-<p>
 <table class="h3">
 <tr>
 <td class="h3">
@@ -11551,12 +11551,12 @@ Add a new popup item.</p>
 </tr>
 </table>
 </p>
+<p>
+Add a separator.</p>
 <p class="code">
 <code style="white-space: break-spaces">func addSeparator(using self)
 </code>
 </p>
-<p>
-Add a separator.</p>
 <p>
 <table class="h3">
 <tr>
@@ -11613,12 +11613,12 @@ Add a separator.</p>
 </tr>
 </table>
 </p>
+<p>
+Make the popup menu modal Will return the selected id.</p>
 <p class="code">
 <code style="white-space: break-spaces">func doModal(using self, surfacePos: Point, pos = PopupPos.TopLeft, autoDestroy: bool = false)->WndId
 </code>
 </p>
-<p>
-Make the popup menu modal Will return the selected id.</p>
 <p>
 <table class="h3">
 <tr>
@@ -11790,12 +11790,12 @@ Message box with a <code class = "incode">yes</code> and <code class = "incode">
 </tr>
 </table>
 </p>
+<p>
+Message box to <code class = "incode">confirm</code> something.</p>
 <p class="code">
 <code style="white-space: break-spaces">func confirm(from: *Surface, message: string, question: string = null)->WndId
 </code>
 </p>
-<p>
-Message box to <code class = "incode">confirm</code> something.</p>
 <p>
 <table class="h3">
 <tr>
@@ -11807,12 +11807,12 @@ Message box to <code class = "incode">confirm</code> something.</p>
 </tr>
 </table>
 </p>
+<p>
+Creates the message box.</p>
 <p class="code">
 <code style="white-space: break-spaces">func create(from: *Surface, message: string, icon: Icon = {})->*MessageDlg
 </code>
 </p>
-<p>
-Creates the message box.</p>
 <p>
 <table class="h3">
 <tr>
@@ -11824,12 +11824,12 @@ Creates the message box.</p>
 </tr>
 </table>
 </p>
+<p>
+Display the box, centered, and returns the id of the pressed button.</p>
 <p class="code">
 <code style="white-space: break-spaces">func doModal(using self, from: *Surface)->string
 </code>
 </p>
-<p>
-Display the box, centered, and returns the id of the pressed button.</p>
 <p>
 <table class="h3">
 <tr>
@@ -11841,12 +11841,12 @@ Display the box, centered, and returns the id of the pressed button.</p>
 </tr>
 </table>
 </p>
+<p>
+Message box to show an error.</p>
 <p class="code">
 <code style="white-space: break-spaces">func error(from: *Surface, error: string, message: string = null)
 </code>
 </p>
-<p>
-Message box to show an error.</p>
 <p>
 <table class="h3">
 <tr>
@@ -11858,12 +11858,12 @@ Message box to show an error.</p>
 </tr>
 </table>
 </p>
+<p>
+Message box with a <code class = "incode">ok</code>.</p>
 <p class="code">
 <code style="white-space: break-spaces">func ok(from: *Surface, message: string, icon: Icon = {})
 </code>
 </p>
-<p>
-Message box with a <code class = "incode">ok</code>.</p>
 <p>
 <table class="h3">
 <tr>
@@ -11875,12 +11875,12 @@ Message box with a <code class = "incode">ok</code>.</p>
 </tr>
 </table>
 </p>
+<p>
+Message box with a <code class = "incode">ok</code> and <code class = "incode">cancel</code> button.</p>
 <p class="code">
 <code style="white-space: break-spaces">func okCancel(from: *Surface, message: string, defaultId = Dialog.BtnCancel, icon: Icon = {})->WndId
 </code>
 </p>
-<p>
-Message box with a <code class = "incode">ok</code> and <code class = "incode">cancel</code> button.</p>
 <p>
 <table class="h3">
 <tr>
@@ -11892,12 +11892,12 @@ Message box with a <code class = "incode">ok</code> and <code class = "incode">c
 </tr>
 </table>
 </p>
+<p>
+Set big icon.</p>
 <p class="code">
 <code style="white-space: break-spaces">func setIcon(using self, icon: Icon, color: Color = Argb.Zero)
 </code>
 </p>
-<p>
-Set big icon.</p>
 <p>
 <table class="h3">
 <tr>
@@ -11909,12 +11909,12 @@ Set big icon.</p>
 </tr>
 </table>
 </p>
+<p>
+Set big icon color (icon must has been set before).</p>
 <p class="code">
 <code style="white-space: break-spaces">func setIconColor(using self, color: Color)
 </code>
 </p>
-<p>
-Set big icon color (icon must has been set before).</p>
 <p>
 <table class="h3">
 <tr>
@@ -11926,12 +11926,12 @@ Set big icon color (icon must has been set before).</p>
 </tr>
 </table>
 </p>
+<p>
+Message box with a <code class = "incode">yes</code> and <code class = "incode">no</code> button.</p>
 <p class="code">
 <code style="white-space: break-spaces">func yesNo(from: *Surface, message: string, title: string = null, defaultId = Dialog.BtnNo, icon: Icon = {})->WndId
 </code>
 </p>
-<p>
-Message box with a <code class = "incode">yes</code> and <code class = "incode">no</code> button.</p>
 <p>
 <table class="h3">
 <tr>
@@ -11943,12 +11943,12 @@ Message box with a <code class = "incode">yes</code> and <code class = "incode">
 </tr>
 </table>
 </p>
+<p>
+Message box with a <code class = "incode">yes</code> and <code class = "incode">no</code> button.</p>
 <p class="code">
 <code style="white-space: break-spaces">func yesNoCancel(from: *Surface, message: string, defaultId = Dialog.BtnCancel, icon: Icon = {})->WndId
 </code>
 </p>
-<p>
-Message box with a <code class = "incode">yes</code> and <code class = "incode">no</code> button.</p>
 <p>
 <table class="h3">
 <tr>
@@ -12247,12 +12247,12 @@ Update timing and change frames.</p>
 </tr>
 </table>
 </p>
+<p>
+Returns true if the movie has valid content.</p>
 <p class="code">
 <code style="white-space: break-spaces">func isValid(using self)->bool
 </code>
 </p>
-<p>
-Returns true if the movie has valid content.</p>
 <p>
 <table class="h3">
 <tr>
@@ -12264,12 +12264,12 @@ Returns true if the movie has valid content.</p>
 </tr>
 </table>
 </p>
+<p>
+Set/Reset pause state.</p>
 <p class="code">
 <code style="white-space: break-spaces">func pause(using self, state: bool)
 </code>
 </p>
-<p>
-Set/Reset pause state.</p>
 <p>
 <table class="h3">
 <tr>
@@ -12281,18 +12281,18 @@ Set/Reset pause state.</p>
 </tr>
 </table>
 </p>
+<p>
+Associate an image list.</p>
 <p class="code">
 <code style="white-space: break-spaces">func set(using self, imageList: ImageList)
 </code>
 </p>
 <p>
-Associate an image list.</p>
+Associate a filename.</p>
 <p class="code">
 <code style="white-space: break-spaces">func set(using self, fileName: string) throw
 </code>
 </p>
-<p>
-Associate a filename.</p>
 <p>
 <table class="h3">
 <tr>
@@ -12304,12 +12304,12 @@ Associate a filename.</p>
 </tr>
 </table>
 </p>
+<p>
+Set the current video frame.</p>
 <p class="code">
 <code style="white-space: break-spaces">func setFrameIndex(using self, idx: s32)
 </code>
 </p>
-<p>
-Set the current video frame.</p>
 <p>
 <table class="h3">
 <tr>
@@ -12321,12 +12321,12 @@ Set the current video frame.</p>
 </tr>
 </table>
 </p>
+<p>
+Update timing and change frames.</p>
 <p class="code">
 <code style="white-space: break-spaces">func update(using self, dt: f32)->bool
 </code>
 </p>
-<p>
-Update timing and change frames.</p>
 <p>
 <table class="h3">
 <tr>
@@ -12581,18 +12581,18 @@ First init the PaintImage instance.</p>
 </tr>
 </table>
 </p>
+<p>
+Draw to an image by calling the closure.</p>
 <p class="code">
 <code style="white-space: break-spaces">func draw(using self, call: closure(*Application, *Painter))->Image
 </code>
 </p>
 <p>
-Draw to an image by calling the closure.</p>
+One shot paint to image.</p>
 <p class="code">
 <code style="white-space: break-spaces">func draw(w: s32, h: s32, call: closure(*Application, *Painter))->Image
 </code>
 </p>
-<p>
-One shot paint to image.</p>
 <p>
 <table class="h3">
 <tr>
@@ -12604,12 +12604,12 @@ One shot paint to image.</p>
 </tr>
 </table>
 </p>
+<p>
+First init the PaintImage instance.</p>
 <p class="code">
 <code style="white-space: break-spaces">func init(using self, w: s32, h: s32)
 </code>
 </p>
-<p>
-First init the PaintImage instance.</p>
 <p>
 <table class="h3">
 <tr>
@@ -12769,12 +12769,12 @@ Add a range of changing <code class = "incode">saturation</code>.</p>
 </tr>
 </table>
 </p>
+<p>
+Add a color.</p>
 <p class="code">
 <code style="white-space: break-spaces">func addColor(using self, c: Color)
 </code>
 </p>
-<p>
-Add a color.</p>
 <p>
 <table class="h3">
 <tr>
@@ -12786,12 +12786,12 @@ Add a color.</p>
 </tr>
 </table>
 </p>
+<p>
+Add a range of changing <code class = "incode">hue</code>.</p>
 <p class="code">
 <code style="white-space: break-spaces">func addHueColors(using self, numColors: s32, sat: f32, lum: f32)
 </code>
 </p>
-<p>
-Add a range of changing <code class = "incode">hue</code>.</p>
 <p>
 <table class="h3">
 <tr>
@@ -12803,12 +12803,12 @@ Add a range of changing <code class = "incode">hue</code>.</p>
 </tr>
 </table>
 </p>
+<p>
+Add a range of changing <code class = "incode">luminance</code>.</p>
 <p class="code">
 <code style="white-space: break-spaces">func addLumColors(using self, numColors: s32, base: Color)
 </code>
 </p>
-<p>
-Add a range of changing <code class = "incode">luminance</code>.</p>
 <p>
 <table class="h3">
 <tr>
@@ -12820,12 +12820,12 @@ Add a range of changing <code class = "incode">luminance</code>.</p>
 </tr>
 </table>
 </p>
+<p>
+Add a range of changing <code class = "incode">saturation</code>.</p>
 <p class="code">
 <code style="white-space: break-spaces">func addSatColors(using self, numColors: s32, base: Color, lum: f32 = 0.5)
 </code>
 </p>
-<p>
-Add a range of changing <code class = "incode">saturation</code>.</p>
 <p>
 <table class="h3">
 <tr>
@@ -12988,12 +12988,12 @@ Show popup.</p>
 </tr>
 </table>
 </p>
+<p>
+Add a new item in the list.</p>
 <p class="code">
 <code style="white-space: break-spaces">func addItem(using self, name: string, id: WndId = null, icon: Icon = {}, userData0: *void = null, userData1: *void = null)
 </code>
 </p>
-<p>
-Add a new item in the list.</p>
 <p>
 <table class="h3">
 <tr>
@@ -13005,12 +13005,12 @@ Add a new item in the list.</p>
 </tr>
 </table>
 </p>
+<p>
+Add a separator.</p>
 <p class="code">
 <code style="white-space: break-spaces">func addSeparator(using self)
 </code>
 </p>
-<p>
-Add a separator.</p>
 <p>
 <table class="h3">
 <tr>
@@ -13022,12 +13022,12 @@ Add a separator.</p>
 </tr>
 </table>
 </p>
+<p>
+Create the popup list, but do not display it.</p>
 <p class="code">
 <code style="white-space: break-spaces">func create(owner: *Wnd)->*PopupListCtrl
 </code>
 </p>
-<p>
-Create the popup list, but do not display it.</p>
 <p>
 <table class="h3">
 <tr>
@@ -13039,12 +13039,12 @@ Create the popup list, but do not display it.</p>
 </tr>
 </table>
 </p>
+<p>
+Show popup.</p>
 <p class="code">
 <code style="white-space: break-spaces">func show(using self, x: f32, y: f32, width: f32 = 10)
 </code>
 </p>
-<p>
-Show popup.</p>
 <p>
 <table class="h3">
 <tr>
@@ -13359,12 +13359,12 @@ Set the progression in [0..1] range.</p>
 </tr>
 </table>
 </p>
+<p>
+Set the progression in [0..1] range.</p>
 <p class="code">
 <code style="white-space: break-spaces">func setProgression(using self, prg: f32)
 </code>
 </p>
-<p>
-Set the progression in [0..1] range.</p>
 <p>
 <table class="h3">
 <tr>
@@ -13541,12 +13541,12 @@ Show hiden content depending on the input filter.</p>
 </tr>
 </table>
 </p>
+<p>
+Add a new struct to display.</p>
 <p class="code">
 <code style="white-space: break-spaces">func addItem(using self, val: any)
 </code>
 </p>
-<p>
-Add a new struct to display.</p>
 <p>
 <table class="h3">
 <tr>
@@ -13573,12 +13573,12 @@ Add a new struct to display.</p>
 </tr>
 </table>
 </p>
+<p>
+Refresh displayed values.</p>
 <p class="code">
 <code style="white-space: break-spaces">func refresh(using self)
 </code>
 </p>
-<p>
-Refresh displayed values.</p>
 <p>
 <table class="h3">
 <tr>
@@ -13590,12 +13590,12 @@ Refresh displayed values.</p>
 </tr>
 </table>
 </p>
+<p>
+Show hiden content depending on the input filter.</p>
 <p class="code">
 <code style="white-space: break-spaces">func setStringFilter(using self, filter: string)
 </code>
 </p>
-<p>
-Show hiden content depending on the input filter.</p>
 <p>
 <table class="h3">
 <tr>
@@ -13977,12 +13977,12 @@ Set the checked state.</p>
 </tr>
 </table>
 </p>
+<p>
+Set the checked state.</p>
 <p class="code">
 <code style="white-space: break-spaces">func setChecked(using self, checked: bool)
 </code>
 </p>
-<p>
-Set the checked state.</p>
 <p>
 <table class="h3">
 <tr>
@@ -15184,12 +15184,12 @@ Set the text content.</p>
 </tr>
 </table>
 </p>
+<p>
+Append a text with a given style.</p>
 <p class="code">
 <code style="white-space: break-spaces">func addText(using self, text: string, txtStyle: RichEditStyleRef = 0)
 </code>
 </p>
-<p>
-Append a text with a given style.</p>
 <p>
 <table class="h3">
 <tr>
@@ -15231,12 +15231,12 @@ Append a text with a given style.</p>
 </tr>
 </table>
 </p>
+<p>
+Simulate a keyboard character pressed.</p>
 <p class="code">
 <code style="white-space: break-spaces">func charPressed(using self, key: Key, ch: rune, mdf: KeyModifiers)
 </code>
 </p>
-<p>
-Simulate a keyboard character pressed.</p>
 <p>
 <table class="h3">
 <tr>
@@ -15263,12 +15263,12 @@ Simulate a keyboard character pressed.</p>
 </tr>
 </table>
 </p>
+<p>
+Clear content.</p>
 <p class="code">
 <code style="white-space: break-spaces">func clear(using self)
 </code>
 </p>
-<p>
-Clear content.</p>
 <p>
 <table class="h3">
 <tr>
@@ -15355,12 +15355,12 @@ Clear content.</p>
 </tr>
 </table>
 </p>
+<p>
+Delete a given text at the start of each selected line.</p>
 <p class="code">
 <code style="white-space: break-spaces">func deleteBegLine(using self, txt: string, lastLine: bool)
 </code>
 </p>
-<p>
-Delete a given text at the start of each selected line.</p>
 <p>
 <table class="h3">
 <tr>
@@ -15492,12 +15492,12 @@ Delete a given text at the start of each selected line.</p>
 </tr>
 </table>
 </p>
+<p>
+Evaluate the rendering size.</p>
 <p class="code">
 <code style="white-space: break-spaces">func evaluateSize(using self)->{w: f32, h: f32}
 </code>
 </p>
-<p>
-Evaluate the rendering size.</p>
 <p>
 <table class="h3">
 <tr>
@@ -15509,12 +15509,12 @@ Evaluate the rendering size.</p>
 </tr>
 </table>
 </p>
+<p>
+Execute a command.</p>
 <p class="code">
 <code style="white-space: break-spaces">func executeCommand(using self, cmd: RichEditCommand)
 </code>
 </p>
-<p>
-Execute a command.</p>
 <p>
 <table class="h3">
 <tr>
@@ -15616,12 +15616,12 @@ Execute a command.</p>
 </tr>
 </table>
 </p>
+<p>
+Get the rune at the given cursor pos.</p>
 <p class="code">
 <code style="white-space: break-spaces">func getRune(using self, cp: RichEditCursor)->{char: rune, style: RichEditStyleRef}
 </code>
 </p>
-<p>
-Get the rune at the given cursor pos.</p>
 <p>
 <table class="h3">
 <tr>
@@ -15648,12 +15648,12 @@ Get the rune at the given cursor pos.</p>
 </tr>
 </table>
 </p>
+<p>
+Get the selected text.</p>
 <p class="code">
 <code style="white-space: break-spaces">func getSelectedText(using self)->String
 </code>
 </p>
-<p>
-Get the selected text.</p>
 <p>
 <table class="h3">
 <tr>
@@ -15680,12 +15680,12 @@ Get the selected text.</p>
 </tr>
 </table>
 </p>
+<p>
+Get the full text.</p>
 <p class="code">
 <code style="white-space: break-spaces">func getText(using self)->String
 </code>
 </p>
-<p>
-Get the full text.</p>
 <p>
 <table class="h3">
 <tr>
@@ -15697,12 +15697,12 @@ Get the full text.</p>
 </tr>
 </table>
 </p>
+<p>
+Get the full text with the associated styles per character.</p>
 <p class="code">
 <code style="white-space: break-spaces">func getTextAndStyles(using self)->{text: Array'(rune), styles: Array'(u8)}
 </code>
 </p>
-<p>
-Get the full text with the associated styles per character.</p>
 <p>
 <table class="h3">
 <tr>
@@ -15729,12 +15729,12 @@ Get the full text with the associated styles per character.</p>
 </tr>
 </table>
 </p>
+<p>
+Insert text at the start of each selected line.</p>
 <p class="code">
 <code style="white-space: break-spaces">func insertBegLine(using self, txt: string)
 </code>
 </p>
-<p>
-Insert text at the start of each selected line.</p>
 <p>
 <table class="h3">
 <tr>
@@ -15746,12 +15746,12 @@ Insert text at the start of each selected line.</p>
 </tr>
 </table>
 </p>
+<p>
+Insert a rune.</p>
 <p class="code">
 <code style="white-space: break-spaces">func insertRune(using self, ch: rune)
 </code>
 </p>
-<p>
-Insert a rune.</p>
 <p>
 <table class="h3">
 <tr>
@@ -15763,18 +15763,18 @@ Insert a rune.</p>
 </tr>
 </table>
 </p>
+<p>
+Insert a text with a given style.</p>
 <p class="code">
 <code style="white-space: break-spaces">func insertText(using self, text: string)
 </code>
 </p>
 <p>
-Insert a text with a given style.</p>
+Insert a text with a style per character.</p>
 <p class="code">
 <code style="white-space: break-spaces">func insertText(using self, text: string, txtStyles: Array'(u8))
 </code>
 </p>
-<p>
-Insert a text with a style per character.</p>
 <p>
 <table class="h3">
 <tr>
@@ -15786,12 +15786,12 @@ Insert a text with a style per character.</p>
 </tr>
 </table>
 </p>
+<p>
+Returns true if the rich edit is read only.</p>
 <p class="code">
 <code style="white-space: break-spaces">func isReadOnly(using self)->bool
 </code>
 </p>
-<p>
-Returns true if the rich edit is read only.</p>
 <p>
 <table class="h3">
 <tr>
@@ -15818,12 +15818,12 @@ Returns true if the rich edit is read only.</p>
 </tr>
 </table>
 </p>
+<p>
+Simulate a keyboard pressed.</p>
 <p class="code">
 <code style="white-space: break-spaces">func keyPressed(using self, key: Key, mdf: KeyModifiers)
 </code>
 </p>
-<p>
-Simulate a keyboard pressed.</p>
 <p>
 <table class="h3">
 <tr>
@@ -15835,12 +15835,12 @@ Simulate a keyboard pressed.</p>
 </tr>
 </table>
 </p>
+<p>
+Lex the full text.</p>
 <p class="code">
 <code style="white-space: break-spaces">func lexAll(using self)
 </code>
 </p>
-<p>
-Lex the full text.</p>
 <p>
 <table class="h3">
 <tr>
@@ -16197,12 +16197,12 @@ Lex the full text.</p>
 </tr>
 </table>
 </p>
+<p>
+Set form.</p>
 <p class="code">
 <code style="white-space: break-spaces">func setForm(using self, form: RichEditForm)
 </code>
 </p>
-<p>
-Set form.</p>
 <p>
 <table class="h3">
 <tr>
@@ -16214,12 +16214,12 @@ Set form.</p>
 </tr>
 </table>
 </p>
+<p>
+Associate a lexer.</p>
 <p class="code">
 <code style="white-space: break-spaces">func setLexer(using self, lex: IRichEditLexer)
 </code>
 </p>
-<p>
-Associate a lexer.</p>
 <p>
 <table class="h3">
 <tr>
@@ -16246,12 +16246,12 @@ Associate a lexer.</p>
 </tr>
 </table>
 </p>
+<p>
+Set richedit flags.</p>
 <p class="code">
 <code style="white-space: break-spaces">func setRichEdFlags(using self, flags: RichEditFlags)
 </code>
 </p>
-<p>
-Set richedit flags.</p>
 <p>
 <table class="h3">
 <tr>
@@ -16278,12 +16278,12 @@ Set richedit flags.</p>
 </tr>
 </table>
 </p>
+<p>
+Set the text content.</p>
 <p class="code">
 <code style="white-space: break-spaces">func setText(using self, text: string)
 </code>
 </p>
-<p>
-Set the text content.</p>
 <p>
 <table class="h3">
 <tr>
@@ -17499,12 +17499,12 @@ Set the scroll size (window virtual size).</p>
 </tr>
 </table>
 </p>
+<p>
+Get the current scroll position.</p>
 <p class="code">
 <code style="white-space: break-spaces">func getScrollPos(using self)->Point
 </code>
 </p>
-<p>
-Get the current scroll position.</p>
 <p>
 <table class="h3">
 <tr>
@@ -17516,12 +17516,12 @@ Get the current scroll position.</p>
 </tr>
 </table>
 </p>
+<p>
+Set the current scroll position.</p>
 <p class="code">
 <code style="white-space: break-spaces">func setScrollPos(using self, pt: Point)
 </code>
 </p>
-<p>
-Set the current scroll position.</p>
 <p class="code">
 <code style="white-space: break-spaces">func setScrollPos(using self, x: f32, y: f32)
 </code>
@@ -17537,12 +17537,12 @@ Set the current scroll position.</p>
 </tr>
 </table>
 </p>
+<p>
+Set the scroll size (window virtual size).</p>
 <p class="code">
 <code style="white-space: break-spaces">func setScrollSize(using self, x: f32, y: f32)
 </code>
 </p>
-<p>
-Set the scroll size (window virtual size).</p>
 <p>
 <table class="h3">
 <tr>
@@ -17722,12 +17722,12 @@ func(ptr: bool) opVisit(using self, stmt: code)
 </tr>
 </table>
 </p>
+<p>
+Select the given index.</p>
 <p class="code">
 <code style="white-space: break-spaces">func select(using self, idx: u32, select: bool)
 </code>
 </p>
-<p>
-Select the given index.</p>
 <p>
 <table class="h3">
 <tr>
@@ -17739,12 +17739,12 @@ Select the given index.</p>
 </tr>
 </table>
 </p>
+<p>
+Unselect all.</p>
 <p class="code">
 <code style="white-space: break-spaces">func unselectAll(using self)
 </code>
 </p>
-<p>
-Unselect all.</p>
 <p>
 <table class="h3">
 <tr>
@@ -18305,12 +18305,12 @@ Set left and right values, for a range.</p>
 </tr>
 </table>
 </p>
+<p>
+Set left and right values, for a range.</p>
 <p class="code">
 <code style="white-space: break-spaces">func setRangeValues(using self, left: f32, right: f32)
 </code>
 </p>
-<p>
-Set left and right values, for a range.</p>
 <p>
 <table class="h3">
 <tr>
@@ -18486,12 +18486,12 @@ Set the slider current value.</p>
 </tr>
 </table>
 </p>
+<p>
+Create the popup list, but do not display it.</p>
 <p class="code">
 <code style="white-space: break-spaces">func create(parent: *Wnd, name: string, position: Rectangle = {}, id: WndId = null)->*SliderCtrl
 </code>
 </p>
-<p>
-Create the popup list, but do not display it.</p>
 <p>
 <table class="h3">
 <tr>
@@ -18503,12 +18503,12 @@ Create the popup list, but do not display it.</p>
 </tr>
 </table>
 </p>
+<p>
+Set a f32 range.</p>
 <p class="code">
 <code style="white-space: break-spaces">func setMinMaxF32(using self, min: f32, max: f32)
 </code>
 </p>
-<p>
-Set a f32 range.</p>
 <p>
 <table class="h3">
 <tr>
@@ -18520,12 +18520,12 @@ Set a f32 range.</p>
 </tr>
 </table>
 </p>
+<p>
+Set a f64 range.</p>
 <p class="code">
 <code style="white-space: break-spaces">func setMinMaxS64(using self, min: s64, max: s64)
 </code>
 </p>
-<p>
-Set a f64 range.</p>
 <p>
 <table class="h3">
 <tr>
@@ -18537,12 +18537,12 @@ Set a f64 range.</p>
 </tr>
 </table>
 </p>
+<p>
+Set a u64 range.</p>
 <p class="code">
 <code style="white-space: break-spaces">func setMinMaxU64(using self, min: u64, max: u64)
 </code>
 </p>
-<p>
-Set a u64 range.</p>
 <p>
 <table class="h3">
 <tr>
@@ -18554,12 +18554,12 @@ Set a u64 range.</p>
 </tr>
 </table>
 </p>
+<p>
+Set the slider current value.</p>
 <p class="code">
 <code style="white-space: break-spaces">func setValue(using self, value: f32)
 </code>
 </p>
-<p>
-Set the slider current value.</p>
 <p>
 <table class="h3">
 <tr>
@@ -18751,12 +18751,12 @@ Set the pane size (size of the first view).</p>
 </tr>
 </table>
 </p>
+<p>
+Add a new pane.</p>
 <p class="code">
 <code style="white-space: break-spaces">func addPane(using self, pane: *Wnd, paneSize: f32 = 100, title = false)->*SplitterItem
 </code>
 </p>
-<p>
-Add a new pane.</p>
 <p>
 <table class="h3">
 <tr>
@@ -18798,12 +18798,12 @@ Add a new pane.</p>
 </tr>
 </table>
 </p>
+<p>
+Set the pane size (size of the first view).</p>
 <p class="code">
 <code style="white-space: break-spaces">func setPaneSize(using self, idx: u32, newSize: f32)
 </code>
 </p>
-<p>
-Set the pane size (size of the first view).</p>
 <p>
 <table class="h3">
 <tr>
@@ -18978,12 +18978,12 @@ Create a layout control.</p>
 </tr>
 </table>
 </p>
+<p>
+Recompute layout of all childs.</p>
 <p class="code">
 <code style="white-space: break-spaces">func computeLayout(using self)
 </code>
 </p>
-<p>
-Recompute layout of all childs.</p>
 <p>
 <table class="h3">
 <tr>
@@ -18995,12 +18995,12 @@ Recompute layout of all childs.</p>
 </tr>
 </table>
 </p>
+<p>
+Create a layout control.</p>
 <p class="code">
 <code style="white-space: break-spaces">func create(parent: *Wnd, kind: StackLayoutKind = .Top, position: Rectangle = {})->*StackLayoutCtrl
 </code>
 </p>
-<p>
-Create a layout control.</p>
 <p>
 <table class="h3">
 <tr>
@@ -19434,12 +19434,12 @@ Transform a point relative to the surface in screen space.</p>
 </tr>
 </table>
 </p>
+<p>
+Bring the surface at the top of the Z order.</p>
 <p class="code">
 <code style="white-space: break-spaces">func bringToTop(using self)
 </code>
 </p>
-<p>
-Bring the surface at the top of the Z order.</p>
 <p>
 <table class="h3">
 <tr>
@@ -19451,12 +19451,12 @@ Bring the surface at the top of the Z order.</p>
 </tr>
 </table>
 </p>
+<p>
+Center this surface relative to <code class = "incode">from</code>.</p>
 <p class="code">
 <code style="white-space: break-spaces">func center(using self, from: *Surface)
 </code>
 </p>
-<p>
-Center this surface relative to <code class = "incode">from</code>.</p>
 <p>
 <table class="h3">
 <tr>
@@ -19468,12 +19468,12 @@ Center this surface relative to <code class = "incode">from</code>.</p>
 </tr>
 </table>
 </p>
+<p>
+Constraint a window to be inside the closest monitor.</p>
 <p class="code">
 <code style="white-space: break-spaces">func constaintToScreen(using self)
 </code>
 </p>
-<p>
-Constraint a window to be inside the closest monitor.</p>
 <p>
 <table class="h3">
 <tr>
@@ -19485,12 +19485,12 @@ Constraint a window to be inside the closest monitor.</p>
 </tr>
 </table>
 </p>
+<p>
+Creates the surface.</p>
 <p class="code">
 <code style="white-space: break-spaces">func create(surface: *Surface, x: s32, y: s32, width: s32, height: s32, flags: SurfaceFlags, mainSurface: *Surface) throw
 </code>
 </p>
-<p>
-Creates the surface.</p>
 <p>
 <table class="h3">
 <tr>
@@ -19502,12 +19502,12 @@ Creates the surface.</p>
 </tr>
 </table>
 </p>
+<p>
+Destroy the surface.</p>
 <p class="code">
 <code style="white-space: break-spaces">func destroy(using self)
 </code>
 </p>
-<p>
-Destroy the surface.</p>
 <p>
 <table class="h3">
 <tr>
@@ -19519,12 +19519,12 @@ Destroy the surface.</p>
 </tr>
 </table>
 </p>
+<p>
+Enable the surface.</p>
 <p class="code">
 <code style="white-space: break-spaces">func disable(using self)
 </code>
 </p>
-<p>
-Enable the surface.</p>
 <p>
 <table class="h3">
 <tr>
@@ -19536,12 +19536,12 @@ Enable the surface.</p>
 </tr>
 </table>
 </p>
+<p>
+Enable the surface.</p>
 <p class="code">
 <code style="white-space: break-spaces">func enable(using self)
 </code>
 </p>
-<p>
-Enable the surface.</p>
 <p>
 <table class="h3">
 <tr>
@@ -19553,12 +19553,12 @@ Enable the surface.</p>
 </tr>
 </table>
 </p>
+<p>
+Returns inside view.</p>
 <p class="code">
 <code style="white-space: break-spaces">func getView(using self)
 </code>
 </p>
-<p>
-Returns inside view.</p>
 <p>
 <table class="h3">
 <tr>
@@ -19570,12 +19570,12 @@ Returns inside view.</p>
 </tr>
 </table>
 </p>
+<p>
+Hide the surface.</p>
 <p class="code">
 <code style="white-space: break-spaces">func hide(using self)
 </code>
 </p>
-<p>
-Hide the surface.</p>
 <p>
 <table class="h3">
 <tr>
@@ -19587,12 +19587,12 @@ Hide the surface.</p>
 </tr>
 </table>
 </p>
+<p>
+Invalidate the full surface to be painted.</p>
 <p class="code">
 <code style="white-space: break-spaces">func invalidate(using self)
 </code>
 </p>
-<p>
-Invalidate the full surface to be painted.</p>
 <p>
 <table class="h3">
 <tr>
@@ -19604,12 +19604,12 @@ Invalidate the full surface to be painted.</p>
 </tr>
 </table>
 </p>
+<p>
+Invalidate one part of the surface to be painted.</p>
 <p class="code">
 <code style="white-space: break-spaces">func invalidateRect(using self, rect: Rectangle)
 </code>
 </p>
-<p>
-Invalidate one part of the surface to be painted.</p>
 <p>
 <table class="h3">
 <tr>
@@ -19621,12 +19621,12 @@ Invalidate one part of the surface to be painted.</p>
 </tr>
 </table>
 </p>
+<p>
+Main surface paint function.</p>
 <p class="code">
 <code style="white-space: break-spaces">func paint(using self)
 </code>
 </p>
-<p>
-Main surface paint function.</p>
 <p>
 <table class="h3">
 <tr>
@@ -19638,12 +19638,12 @@ Main surface paint function.</p>
 </tr>
 </table>
 </p>
+<p>
+Transform a point in screen space relative to the surface.</p>
 <p class="code">
 <code style="white-space: break-spaces">func screenToSurface(using self, pt: *Point)
 </code>
 </p>
-<p>
-Transform a point in screen space relative to the surface.</p>
 <p>
 <table class="h3">
 <tr>
@@ -19655,12 +19655,12 @@ Transform a point in screen space relative to the surface.</p>
 </tr>
 </table>
 </p>
+<p>
+Set the surface icon.</p>
 <p class="code">
 <code style="white-space: break-spaces">func setIcon(using self, icon: Icon)
 </code>
 </p>
-<p>
-Set the surface icon.</p>
 <p>
 <table class="h3">
 <tr>
@@ -19672,12 +19672,12 @@ Set the surface icon.</p>
 </tr>
 </table>
 </p>
+<p>
+Set the surface position.</p>
 <p class="code">
 <code style="white-space: break-spaces">func setPosition(using self, pos: Rectangle)
 </code>
 </p>
-<p>
-Set the surface position.</p>
 <p>
 <table class="h3">
 <tr>
@@ -19689,12 +19689,12 @@ Set the surface position.</p>
 </tr>
 </table>
 </p>
+<p>
+Change flag surfaces.</p>
 <p class="code">
 <code style="white-space: break-spaces">func setSurfaceFlags(using self, add = SurfaceFlags.Zero, remove = SurfaceFlags.Zero)
 </code>
 </p>
-<p>
-Change flag surfaces.</p>
 <p>
 <table class="h3">
 <tr>
@@ -19706,12 +19706,12 @@ Change flag surfaces.</p>
 </tr>
 </table>
 </p>
+<p>
+Set the surface title.</p>
 <p class="code">
 <code style="white-space: break-spaces">func setTitle(using self, name: string)
 </code>
 </p>
-<p>
-Set the surface title.</p>
 <p>
 <table class="h3">
 <tr>
@@ -19738,12 +19738,12 @@ Set the surface title.</p>
 </tr>
 </table>
 </p>
+<p>
+Show the surface.</p>
 <p class="code">
 <code style="white-space: break-spaces">func show(using self)
 </code>
 </p>
-<p>
-Show the surface.</p>
 <p>
 <table class="h3">
 <tr>
@@ -19755,12 +19755,12 @@ Show the surface.</p>
 </tr>
 </table>
 </p>
+<p>
+Show the surface as maximized.</p>
 <p class="code">
 <code style="white-space: break-spaces">func showMaximized(using self)
 </code>
 </p>
-<p>
-Show the surface as maximized.</p>
 <p>
 <table class="h3">
 <tr>
@@ -19772,12 +19772,12 @@ Show the surface as maximized.</p>
 </tr>
 </table>
 </p>
+<p>
+Show the surface as minimized.</p>
 <p class="code">
 <code style="white-space: break-spaces">func showMinimized(using self)
 </code>
 </p>
-<p>
-Show the surface as minimized.</p>
 <p>
 <table class="h3">
 <tr>
@@ -19789,12 +19789,12 @@ Show the surface as minimized.</p>
 </tr>
 </table>
 </p>
+<p>
+Show the surface in its default state.</p>
 <p class="code">
 <code style="white-space: break-spaces">func showNormal(using self)
 </code>
 </p>
-<p>
-Show the surface in its default state.</p>
 <p>
 <table class="h3">
 <tr>
@@ -19806,12 +19806,12 @@ Show the surface in its default state.</p>
 </tr>
 </table>
 </p>
+<p>
+Transform a point relative to the surface in screen space.</p>
 <p class="code">
 <code style="white-space: break-spaces">func surfaceToScreen(using self, pt: *Point)
 </code>
 </p>
-<p>
-Transform a point relative to the surface in screen space.</p>
 <p>
 <table class="h3">
 <tr>
@@ -20343,12 +20343,12 @@ Set the tab form.</p>
 </tr>
 </table>
 </p>
+<p>
+Add a new view.</p>
 <p class="code">
 <code style="white-space: break-spaces">func addItem(using self, tabName: string, icon: Icon, view: *Wnd = null)
 </code>
 </p>
-<p>
-Add a new view.</p>
 <p>
 <table class="h3">
 <tr>
@@ -20375,12 +20375,12 @@ Add a new view.</p>
 </tr>
 </table>
 </p>
+<p>
+Select one tab at the given index.</p>
 <p class="code">
 <code style="white-space: break-spaces">func select(using self, idx: u32)
 </code>
 </p>
-<p>
-Select one tab at the given index.</p>
 <p>
 <table class="h3">
 <tr>
@@ -20392,12 +20392,12 @@ Select one tab at the given index.</p>
 </tr>
 </table>
 </p>
+<p>
+Set the tab form.</p>
 <p class="code">
 <code style="white-space: break-spaces">func setForm(using self, tabForm: TabForm)
 </code>
 </p>
-<p>
-Set the tab form.</p>
 <p>
 <table class="h3">
 <tr>
@@ -20721,12 +20721,12 @@ Create a default font (fixed size) with the given size.</p>
 </tr>
 </table>
 </p>
+<p>
+Create a default font with the given size.</p>
 <p class="code">
 <code style="white-space: break-spaces">func createDefaultFont(using self, size: u32, style = FontFamilyStyle.Regular)->*Font
 </code>
 </p>
-<p>
-Create a default font with the given size.</p>
 <p>
 <table class="h3">
 <tr>
@@ -20738,12 +20738,12 @@ Create a default font with the given size.</p>
 </tr>
 </table>
 </p>
+<p>
+Create a default font (fixed size) with the given size.</p>
 <p class="code">
 <code style="white-space: break-spaces">func createDefaultFontFS(using self, size: u32, style = FontFamilyStyle.Regular)->*Font
 </code>
 </p>
-<p>
-Create a default font (fixed size) with the given size.</p>
 <p>
 <table class="h3">
 <tr>
@@ -25226,12 +25226,12 @@ Create a specific style based on the parent.</p>
 </tr>
 </table>
 </p>
+<p>
+Create a specific style based on the parent.</p>
 <p class="code">
 <code style="white-space: break-spaces">func create(using self, parent: *ThemeStyle)
 </code>
 </p>
-<p>
-Create a specific style based on the parent.</p>
 <p>
 <table class="h3">
 <tr>
@@ -25544,12 +25544,12 @@ Show a tooltip.</p>
 </tr>
 </table>
 </p>
+<p>
+Hide the current tooltip, if visible.</p>
 <p class="code">
 <code style="white-space: break-spaces">func hide()
 </code>
 </p>
-<p>
-Hide the current tooltip, if visible.</p>
 <p>
 <table class="h3">
 <tr>
@@ -25561,12 +25561,12 @@ Hide the current tooltip, if visible.</p>
 </tr>
 </table>
 </p>
+<p>
+Show a tooltip.</p>
 <p class="code">
 <code style="white-space: break-spaces">func show(owner: *Wnd, surfacePos: Point, str: string, delay: Duration = 500'ms)
 </code>
 </p>
-<p>
-Show a tooltip.</p>
 <p>
 <table class="h3">
 <tr>
@@ -26689,12 +26689,12 @@ Main function to update command state of various windows/widgets. This will upda
 </tr>
 </table>
 </p>
+<p>
+Apply the current layout (childs constraints).</p>
 <p class="code">
 <code style="white-space: break-spaces">func applyLayout(using self)
 </code>
 </p>
-<p>
-Apply the current layout (childs constraints).</p>
 <p class="code">
 <code style="white-space: break-spaces">func applyLayout(using self, oldSize: Point)
 </code>
@@ -26710,12 +26710,12 @@ Apply the current layout (childs constraints).</p>
 </tr>
 </table>
 </p>
+<p>
+Force the window to be the first painted (before all siblings).</p>
 <p class="code">
 <code style="white-space: break-spaces">func bringToFront(using self)
 </code>
 </p>
-<p>
-Force the window to be the first painted (before all siblings).</p>
 <p>
 <table class="h3">
 <tr>
@@ -26727,12 +26727,12 @@ Force the window to be the first painted (before all siblings).</p>
 </tr>
 </table>
 </p>
+<p>
+Force the window to be the last painted (on top of siblings).</p>
 <p class="code">
 <code style="white-space: break-spaces">func bringToTop(using self)
 </code>
 </p>
-<p>
-Force the window to be the last painted (on top of siblings).</p>
 <p>
 <table class="h3">
 <tr>
@@ -26791,12 +26791,12 @@ func(T) create(parent: *Wnd, name: string, position: Rectangle, id: WndId = null
 </tr>
 </table>
 </p>
+<p>
+Destroy the window.</p>
 <p class="code">
 <code style="white-space: break-spaces">func destroy(using self)
 </code>
 </p>
-<p>
-Destroy the window.</p>
 <p>
 <table class="h3">
 <tr>
@@ -26808,12 +26808,12 @@ Destroy the window.</p>
 </tr>
 </table>
 </p>
+<p>
+Destroy the window.</p>
 <p class="code">
 <code style="white-space: break-spaces">func destroyNow(using self)
 </code>
 </p>
-<p>
-Destroy the window.</p>
 <p>
 <table class="h3">
 <tr>
@@ -26825,12 +26825,12 @@ Destroy the window.</p>
 </tr>
 </table>
 </p>
+<p>
+Disable the window.</p>
 <p class="code">
 <code style="white-space: break-spaces">func disable(using self)
 </code>
 </p>
-<p>
-Disable the window.</p>
 <p>
 <table class="h3">
 <tr>
@@ -26842,12 +26842,12 @@ Disable the window.</p>
 </tr>
 </table>
 </p>
+<p>
+Enable/Disable the window.</p>
 <p class="code">
 <code style="white-space: break-spaces">func enable(using self, state = true)
 </code>
 </p>
-<p>
-Enable/Disable the window.</p>
 <p>
 <table class="h3">
 <tr>
@@ -26859,12 +26859,12 @@ Enable/Disable the window.</p>
 </tr>
 </table>
 </p>
+<p>
+Be sure rect is fully inside the parent rectangle (if possible).</p>
 <p class="code">
 <code style="white-space: break-spaces">func fitPosInParent(using self, marginW: f32 = 0, marginH: f32 = 0, simX = false, simY = false)
 </code>
 </p>
-<p>
-Be sure rect is fully inside the parent rectangle (if possible).</p>
 <p>
 <table class="h3">
 <tr>
@@ -26891,12 +26891,12 @@ Be sure rect is fully inside the parent rectangle (if possible).</p>
 </tr>
 </table>
 </p>
+<p>
+Retrieve the child with the given id.</p>
 <p class="code">
 <code style="white-space: break-spaces">func getChildById(using self, childId: string)->*Wnd
 </code>
 </p>
-<p>
-Retrieve the child with the given id.</p>
 <p>
 <table class="h3">
 <tr>
@@ -26908,12 +26908,12 @@ Retrieve the child with the given id.</p>
 </tr>
 </table>
 </p>
+<p>
+Returns the client area.</p>
 <p class="code">
 <code style="white-space: break-spaces">func getClientRect(using self)->Rectangle
 </code>
 </p>
-<p>
-Returns the client area.</p>
 <p>
 <table class="h3">
 <tr>
@@ -26925,12 +26925,12 @@ Returns the client area.</p>
 </tr>
 </table>
 </p>
+<p>
+Returns the client area, with <code class = "incode">padding</code> applied.</p>
 <p class="code">
 <code style="white-space: break-spaces">func getClientRectPadding(using self)->Rectangle
 </code>
 </p>
-<p>
-Returns the client area, with <code class = "incode">padding</code> applied.</p>
 <p>
 <table class="h3">
 <tr>
@@ -26942,12 +26942,12 @@ Returns the client area, with <code class = "incode">padding</code> applied.</p>
 </tr>
 </table>
 </p>
+<p>
+Get the window with the keyboard focus.</p>
 <p class="code">
 <code style="white-space: break-spaces">func getFocus(using self)->*Wnd
 </code>
 </p>
-<p>
-Get the window with the keyboard focus.</p>
 <p>
 <table class="h3">
 <tr>
@@ -26974,12 +26974,12 @@ Get the window with the keyboard focus.</p>
 </tr>
 </table>
 </p>
+<p>
+Get the id associated with a shortcut. null if none.</p>
 <p class="code">
 <code style="white-space: break-spaces">func getKeyShortcut(using self, mdf: KeyModifiers, key: Key)->WndId
 </code>
 </p>
-<p>
-Get the id associated with a shortcut. null if none.</p>
 <p>
 <table class="h3">
 <tr>
@@ -26991,12 +26991,12 @@ Get the id associated with a shortcut. null if none.</p>
 </tr>
 </table>
 </p>
+<p>
+Get the name associated with a given id shortcut.</p>
 <p class="code">
 <code style="white-space: break-spaces">func getKeyShortcutNameFor(using self, wndId: WndId)->String
 </code>
 </p>
-<p>
-Get the name associated with a given id shortcut.</p>
 <p>
 <table class="h3">
 <tr>
@@ -27023,12 +27023,12 @@ Get the name associated with a given id shortcut.</p>
 </tr>
 </table>
 </p>
+<p>
+Retrieve the parent with the given id.</p>
 <p class="code">
 <code style="white-space: break-spaces">func getParentById(using self, parentId: string)->*Wnd
 </code>
 </p>
-<p>
-Retrieve the parent with the given id.</p>
 <p>
 <table class="h3">
 <tr>
@@ -27040,12 +27040,12 @@ Retrieve the parent with the given id.</p>
 </tr>
 </table>
 </p>
+<p>
+Get the wnd position in the surface.</p>
 <p class="code">
 <code style="white-space: break-spaces">func getSurfaceRect(using self)->Rectangle
 </code>
 </p>
-<p>
-Get the wnd position in the surface.</p>
 <p>
 <table class="h3">
 <tr>
@@ -27162,12 +27162,12 @@ Get the wnd position in the surface.</p>
 </tr>
 </table>
 </p>
+<p>
+Get the child window at the given coordinate Coordinate is expressed in the parent system.</p>
 <p class="code">
 <code style="white-space: break-spaces">func getWndAt(using self, x: f32, y: f32, getDisabled = false, getHidden = false)->*Wnd
 </code>
 </p>
-<p>
-Get the child window at the given coordinate Coordinate is expressed in the parent system.</p>
 <p>
 <table class="h3">
 <tr>
@@ -27179,12 +27179,12 @@ Get the child window at the given coordinate Coordinate is expressed in the pare
 </tr>
 </table>
 </p>
+<p>
+Returns true if the window has the keyboard focus.</p>
 <p class="code">
 <code style="white-space: break-spaces">func hasFocus(using self)
 </code>
 </p>
-<p>
-Returns true if the window has the keyboard focus.</p>
 <p>
 <table class="h3">
 <tr>
@@ -27196,12 +27196,12 @@ Returns true if the window has the keyboard focus.</p>
 </tr>
 </table>
 </p>
+<p>
+Hide the window.</p>
 <p class="code">
 <code style="white-space: break-spaces">func hide(using self)
 </code>
 </p>
-<p>
-Hide the window.</p>
 <p>
 <table class="h3">
 <tr>
@@ -27213,12 +27213,12 @@ Hide the window.</p>
 </tr>
 </table>
 </p>
+<p>
+Force the window to be repainted.</p>
 <p class="code">
 <code style="white-space: break-spaces">func invalidate(using self)
 </code>
 </p>
-<p>
-Force the window to be repainted.</p>
 <p>
 <table class="h3">
 <tr>
@@ -27230,12 +27230,12 @@ Force the window to be repainted.</p>
 </tr>
 </table>
 </p>
+<p>
+Force o local position to be repainted.</p>
 <p class="code">
 <code style="white-space: break-spaces">func invalidateRect(using self, rect: Rectangle)
 </code>
 </p>
-<p>
-Force o local position to be repainted.</p>
 <p>
 <table class="h3">
 <tr>
@@ -27247,12 +27247,12 @@ Force o local position to be repainted.</p>
 </tr>
 </table>
 </p>
+<p>
+Returns true if window, and all its parents, are enabled.</p>
 <p class="code">
 <code style="white-space: break-spaces">func isEnabled(using self)->bool
 </code>
 </p>
-<p>
-Returns true if window, and all its parents, are enabled.</p>
 <p>
 <table class="h3">
 <tr>
@@ -27264,12 +27264,12 @@ Returns true if window, and all its parents, are enabled.</p>
 </tr>
 </table>
 </p>
+<p>
+Returns true if <code class = "incode">child</code> is in the child hieararchy of <code class = "incode">self</code>.</p>
 <p class="code">
 <code style="white-space: break-spaces">func isParentOf(using self, child: *Wnd)->bool
 </code>
 </p>
-<p>
-Returns true if <code class = "incode">child</code> is in the child hieararchy of <code class = "incode">self</code>.</p>
 <p>
 <table class="h3">
 <tr>
@@ -27281,12 +27281,12 @@ Returns true if <code class = "incode">child</code> is in the child hieararchy o
 </tr>
 </table>
 </p>
+<p>
+Returns true if window, and all its parents, are visible.</p>
 <p class="code">
 <code style="white-space: break-spaces">func isVisible(using self, onlyMe = false)->bool
 </code>
 </p>
-<p>
-Returns true if window, and all its parents, are visible.</p>
 <p>
 <table class="h3">
 <tr>
@@ -27313,6 +27313,8 @@ Returns true if window, and all its parents, are visible.</p>
 </tr>
 </table>
 </p>
+<p>
+Convert a local coordinate to a surface coordinate.</p>
 <p class="code">
 <code style="white-space: break-spaces">func localToSurface(using self, pos: Point)->Point
 </code>
@@ -27324,8 +27326,6 @@ Convert a local coordinate to a surface coordinate.</p>
 </code>
 </p>
 <p>
-Convert a local coordinate to a surface coordinate.</p>
-<p>
 <table class="h3">
 <tr>
 <td class="h3">
@@ -27336,12 +27336,12 @@ Convert a local coordinate to a surface coordinate.</p>
 </tr>
 </table>
 </p>
+<p>
+Move the wnd.</p>
 <p class="code">
 <code style="white-space: break-spaces">func move(using self, x: f32, y: f32)
 </code>
 </p>
-<p>
-Move the wnd.</p>
 <p>
 <table class="h3">
 <tr>
@@ -27458,12 +27458,12 @@ Move the wnd.</p>
 </tr>
 </table>
 </p>
+<p>
+Register one new action.</p>
 <p class="code">
 <code style="white-space: break-spaces">func(T) registerAction(using self)
 </code>
 </p>
-<p>
-Register one new action.</p>
 <p>
 <table class="h3">
 <tr>
@@ -27475,12 +27475,12 @@ Register one new action.</p>
 </tr>
 </table>
 </p>
+<p>
+Register a keyboard shortcut.</p>
 <p class="code">
 <code style="white-space: break-spaces">func registerKeyShortcut(using self, mdf: KeyModifiers, key: Key, wndId: WndId)
 </code>
 </p>
-<p>
-Register a keyboard shortcut.</p>
 <p>
 <table class="h3">
 <tr>
@@ -27507,12 +27507,12 @@ Register a keyboard shortcut.</p>
 </tr>
 </table>
 </p>
+<p>
+Resize the wnd.</p>
 <p class="code">
 <code style="white-space: break-spaces">func resize(using self, width: f32, height: f32, computeLayout = true)
 </code>
 </p>
-<p>
-Resize the wnd.</p>
 <p>
 <table class="h3">
 <tr>
@@ -27524,12 +27524,12 @@ Resize the wnd.</p>
 </tr>
 </table>
 </p>
+<p>
+Convert a screen coordinate to a surface coordinate (relative to my surface).</p>
 <p class="code">
 <code style="white-space: break-spaces">func screenToSurface(using self, pos: Point)->Point
 </code>
 </p>
-<p>
-Convert a screen coordinate to a surface coordinate (relative to my surface).</p>
 <p>
 <table class="h3">
 <tr>
@@ -27541,12 +27541,12 @@ Convert a screen coordinate to a surface coordinate (relative to my surface).</p
 </tr>
 </table>
 </p>
+<p>
+Send the command event with the given id to the window. The command will be updated first, and if it is not disabled, it will be sent.</p>
 <p class="code">
 <code style="white-space: break-spaces">func sendCommandEvent(using self, cmdId: WndId)
 </code>
 </p>
-<p>
-Send the command event with the given id to the window. The command will be updated first, and if it is not disabled, it will be sent.</p>
 <p>
 <table class="h3">
 <tr>
@@ -27558,12 +27558,12 @@ Send the command event with the given id to the window. The command will be upda
 </tr>
 </table>
 </p>
+<p>
+Send the command state event with the given id to the window. Returns the updated command state.</p>
 <p class="code">
 <code style="white-space: break-spaces">func sendComputeCommandStateEvent(using self, cmdId: WndId)->CommandStateEvent
 </code>
 </p>
-<p>
-Send the command state event with the given id to the window. Returns the updated command state.</p>
 <p>
 <table class="h3">
 <tr>
@@ -27682,12 +27682,12 @@ func setAllPaddings(using self, value: Vector4)
 </tr>
 </table>
 </p>
+<p>
+Set the keyboard focus.</p>
 <p class="code">
 <code style="white-space: break-spaces">func setFocus(using self)
 </code>
 </p>
-<p>
-Set the keyboard focus.</p>
 <p>
 <table class="h3">
 <tr>
@@ -27699,12 +27699,12 @@ Set the keyboard focus.</p>
 </tr>
 </table>
 </p>
+<p>
+Set margin for childs If a value is Swag.F32.Inf, then it wont be changed.</p>
 <p class="code">
 <code style="white-space: break-spaces">func setMargin(using self, left: f32 = Swag.F32.Inf, top: f32 = Swag.F32.Inf, right: f32 = Swag.F32.Inf, bottom: f32 = Swag.F32.Inf)
 </code>
 </p>
-<p>
-Set margin for childs If a value is Swag.F32.Inf, then it wont be changed.</p>
 <p>
 <table class="h3">
 <tr>
@@ -27716,12 +27716,12 @@ Set margin for childs If a value is Swag.F32.Inf, then it wont be changed.</p>
 </tr>
 </table>
 </p>
+<p>
+Set padding for childs If a value is Swag.F32.Inf, then it wont be changed.</p>
 <p class="code">
 <code style="white-space: break-spaces">func setPadding(using self, left: f32 = Swag.F32.Inf, top: f32 = Swag.F32.Inf, right: f32 = Swag.F32.Inf, bottom: f32 = Swag.F32.Inf)
 </code>
 </p>
-<p>
-Set padding for childs If a value is Swag.F32.Inf, then it wont be changed.</p>
 <p>
 <table class="h3">
 <tr>
@@ -27733,12 +27733,12 @@ Set padding for childs If a value is Swag.F32.Inf, then it wont be changed.</p>
 </tr>
 </table>
 </p>
+<p>
+Set window parent.</p>
 <p class="code">
 <code style="white-space: break-spaces">func setParent(using self, who: *Wnd)
 </code>
 </p>
-<p>
-Set window parent.</p>
 <p>
 <table class="h3">
 <tr>
@@ -27750,6 +27750,8 @@ Set window parent.</p>
 </tr>
 </table>
 </p>
+<p>
+Move and size the wnd.</p>
 <p class="code">
 <code style="white-space: break-spaces">func setPosition(using self, rect: Rectangle, computeLayout = true)
 </code>
@@ -27761,8 +27763,6 @@ Move and size the wnd.</p>
 </code>
 </p>
 <p>
-Move and size the wnd.</p>
-<p>
 <table class="h3">
 <tr>
 <td class="h3">
@@ -27773,12 +27773,12 @@ Move and size the wnd.</p>
 </tr>
 </table>
 </p>
+<p>
+Show the window.</p>
 <p class="code">
 <code style="white-space: break-spaces">func show(using self, b = true)
 </code>
 </p>
-<p>
-Show the window.</p>
 <p>
 <table class="h3">
 <tr>
@@ -27790,12 +27790,12 @@ Show the window.</p>
 </tr>
 </table>
 </p>
+<p>
+Convert a surface coordinate to a local coordinate (relative to me).</p>
 <p class="code">
 <code style="white-space: break-spaces">func surfaceToLocal(using self, pos: Point)->Point
 </code>
 </p>
-<p>
-Convert a surface coordinate to a local coordinate (relative to me).</p>
 <p>
 <table class="h3">
 <tr>
@@ -27807,12 +27807,12 @@ Convert a surface coordinate to a local coordinate (relative to me).</p>
 </tr>
 </table>
 </p>
+<p>
+Main function to update command state of various windows/widgets. This will update the state of this window, and all of its childs.</p>
 <p class="code">
 <code style="white-space: break-spaces">func updateCommandState(using self)
 </code>
 </p>
-<p>
-Main function to update command state of various windows/widgets. This will update the state of this window, and all of its childs.</p>
 <p>
 <table class="h3">
 <tr>
@@ -27972,12 +27972,12 @@ Create a layout control.</p>
 </tr>
 </table>
 </p>
+<p>
+Recompute layout of all childs.</p>
 <p class="code">
 <code style="white-space: break-spaces">func computeLayout(using self)
 </code>
 </p>
-<p>
-Recompute layout of all childs.</p>
 <p>
 <table class="h3">
 <tr>
@@ -27989,12 +27989,12 @@ Recompute layout of all childs.</p>
 </tr>
 </table>
 </p>
+<p>
+Create a layout control.</p>
 <p class="code">
 <code style="white-space: break-spaces">func create(parent: *Wnd, position: Rectangle = {})->*WrapLayoutCtrl
 </code>
 </p>
-<p>
-Create a layout control.</p>
 </div>
 </div>
 </div>

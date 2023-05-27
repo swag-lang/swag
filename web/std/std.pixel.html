@@ -106,7 +106,7 @@
             border: 1px dotted  #cccccc;
         }
         .code {
-            background-color:   LightYellow;
+            background-color:   #eeeeee;
             border:             1px solid LightGrey;
             padding:            10px;
             width:              90%;
@@ -1568,12 +1568,12 @@ Zero</td>
 </tr>
 </table>
 </p>
+<p>
+Get the Argb value that matches <code class = "incode">name</code>.</p>
 <p class="code">
 <code style="white-space: break-spaces">func fromName(name: string)->Argb
 </code>
 </p>
-<p>
-Get the Argb value that matches <code class = "incode">name</code>.</p>
 <p>
 <table class="h3">
 <tr>
@@ -2213,12 +2213,12 @@ Returns a tiled texture brush.</p>
 </tr>
 </table>
 </p>
+<p>
+Returns a hatch brush.</p>
 <p class="code">
 <code style="white-space: break-spaces">func createHatch(style: HatchStyle, color: Color)->Brush
 </code>
 </p>
-<p>
-Returns a hatch brush.</p>
 <p>
 <table class="h3">
 <tr>
@@ -2230,12 +2230,12 @@ Returns a hatch brush.</p>
 </tr>
 </table>
 </p>
+<p>
+Returns a solid color brush.</p>
 <p class="code">
 <code style="white-space: break-spaces">func createSolid(color: Color)->Brush
 </code>
 </p>
-<p>
-Returns a solid color brush.</p>
 <p>
 <table class="h3">
 <tr>
@@ -2247,12 +2247,12 @@ Returns a solid color brush.</p>
 </tr>
 </table>
 </p>
+<p>
+Returns a full texture brush.</p>
 <p class="code">
 <code style="white-space: break-spaces">func createTexture(texture: Texture)->Brush
 </code>
 </p>
-<p>
-Returns a full texture brush.</p>
 <p>
 <table class="h3">
 <tr>
@@ -2264,12 +2264,12 @@ Returns a full texture brush.</p>
 </tr>
 </table>
 </p>
+<p>
+Returns a tiled texture brush.</p>
 <p class="code">
 <code style="white-space: break-spaces">func createTiled(texture: Texture)->Brush
 </code>
 </p>
-<p>
-Returns a tiled texture brush.</p>
 <p>
 <table class="h3">
 <tr>
@@ -3478,7 +3478,7 @@ bool</td>
 <td class="tdname">
 edgeList</td>
 <td class="tdtype">
-Array(__clipper_tuple_221)</td>
+Array(__clipper_tuple_224)</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -3949,12 +3949,12 @@ Retrieve all components as floating point values between 0 and 1.</p>
 </tr>
 </table>
 </p>
+<p>
+Create a new Color with specified values.</p>
 <p class="code">
 <code style="white-space: break-spaces">func fromAbgr(abgr: u32)->Color
 </code>
 </p>
-<p>
-Create a new Color with specified values.</p>
 <p>
 <table class="h3">
 <tr>
@@ -3966,6 +3966,8 @@ Create a new Color with specified values.</p>
 </tr>
 </table>
 </p>
+<p>
+Create a new Color with specified values.</p>
 <p class="code">
 <code style="white-space: break-spaces">func fromArgb(a: u8, r: u8, g: u8, b: u8)->Color
 </code>
@@ -3989,8 +3991,6 @@ Create a new Color with specified values.</p>
 </code>
 </p>
 <p>
-Create a new Color with specified values.</p>
-<p>
 <table class="h3">
 <tr>
 <td class="h3">
@@ -4001,12 +4001,12 @@ Create a new Color with specified values.</p>
 </tr>
 </table>
 </p>
+<p>
+Create a new Color with specified values.</p>
 <p class="code">
 <code style="white-space: break-spaces">func fromArgbf(a: f32, r: f32, g: f32, b: f32)->Color
 </code>
 </p>
-<p>
-Create a new Color with specified values.</p>
 <p>
 <table class="h3">
 <tr>
@@ -4018,12 +4018,12 @@ Create a new Color with specified values.</p>
 </tr>
 </table>
 </p>
+<p>
+Create a new Color with specified values.</p>
 <p class="code">
 <code style="white-space: break-spaces">func fromHsl(h: f32, s: f32, l: f32)->Color
 </code>
 </p>
-<p>
-Create a new Color with specified values.</p>
 <p>
 <table class="h3">
 <tr>
@@ -4035,12 +4035,12 @@ Create a new Color with specified values.</p>
 </tr>
 </table>
 </p>
+<p>
+Create a new Color with specified values.</p>
 <p class="code">
 <code style="white-space: break-spaces">func fromRgb(r: u8, g: u8, b: u8)->Color
 </code>
 </p>
-<p>
-Create a new Color with specified values.</p>
 <p>
 <table class="h3">
 <tr>
@@ -4052,12 +4052,12 @@ Create a new Color with specified values.</p>
 </tr>
 </table>
 </p>
+<p>
+Create a new Color with specified values.</p>
 <p class="code">
 <code style="white-space: break-spaces">func fromRgbf(r: f32, g: f32, b: f32)->Color
 </code>
 </p>
-<p>
-Create a new Color with specified values.</p>
 <p>
 <table class="h3">
 <tr>
@@ -4069,12 +4069,12 @@ Create a new Color with specified values.</p>
 </tr>
 </table>
 </p>
+<p>
+Blend two colors.</p>
 <p class="code">
 <code style="white-space: break-spaces">func getBlend(col0: Color, col1: Color, factor: f32)->Color
 </code>
 </p>
-<p>
-Blend two colors.</p>
 <p>
 <table class="h3">
 <tr>
@@ -4086,12 +4086,12 @@ Blend two colors.</p>
 </tr>
 </table>
 </p>
+<p>
+Blend two colors, keeping the alpha channel of <code class = "incode">col0</code> untouched.</p>
 <p class="code">
 <code style="white-space: break-spaces">func getBlendKeepAlpha(col0: Color, col1: Color, factor: f32)->Color
 </code>
 </p>
-<p>
-Blend two colors, keeping the alpha channel of <code class = "incode">col0</code> untouched.</p>
 <p>
 <table class="h3">
 <tr>
@@ -4103,12 +4103,12 @@ Blend two colors, keeping the alpha channel of <code class = "incode">col0</code
 </tr>
 </table>
 </p>
+<p>
+Returns a darker color.</p>
 <p class="code">
 <code style="white-space: break-spaces">func getDarker(col: Color, factor: f32)->Color
 </code>
 </p>
-<p>
-Returns a darker color.</p>
 <p>
 <table class="h3">
 <tr>
@@ -4120,12 +4120,12 @@ Returns a darker color.</p>
 </tr>
 </table>
 </p>
+<p>
+Returns the distance between the other color.</p>
 <p class="code">
 <code style="white-space: break-spaces">func getDistanceRgb(using self, col: Color)->f32
 </code>
 </p>
-<p>
-Returns the distance between the other color.</p>
 <p>
 <table class="h3">
 <tr>
@@ -4137,12 +4137,12 @@ Returns the distance between the other color.</p>
 </tr>
 </table>
 </p>
+<p>
+Returns a lighter color.</p>
 <p class="code">
 <code style="white-space: break-spaces">func getLighter(col: Color, factor: f32)->Color
 </code>
 </p>
-<p>
-Returns a lighter color.</p>
 <p>
 <table class="h3">
 <tr>
@@ -4203,12 +4203,12 @@ func opEquals(self, other: Color)
 </tr>
 </table>
 </p>
+<p>
+Set all components.</p>
 <p class="code">
 <code style="white-space: break-spaces">func setArgb(self, a: u8, r: u8, g: u8, b: u8)
 </code>
 </p>
-<p>
-Set all components.</p>
 <p>
 <table class="h3">
 <tr>
@@ -4220,12 +4220,12 @@ Set all components.</p>
 </tr>
 </table>
 </p>
+<p>
+Set all components with floats in the range [0 1].</p>
 <p class="code">
 <code style="white-space: break-spaces">func setArgbf(self, a: f32, r: f32, g: f32, b: f32)
 </code>
 </p>
-<p>
-Set all components with floats in the range [0 1].</p>
 <p>
 <table class="h3">
 <tr>
@@ -4237,12 +4237,12 @@ Set all components with floats in the range [0 1].</p>
 </tr>
 </table>
 </p>
+<p>
+Initialize color with hue, saturation, lightness.</p>
 <p class="code">
 <code style="white-space: break-spaces">func setHsl(using self, h: f32, s: f32, l: f32)
 </code>
 </p>
-<p>
-Initialize color with hue, saturation, lightness.</p>
 <p>
 <table class="h3">
 <tr>
@@ -4254,6 +4254,8 @@ Initialize color with hue, saturation, lightness.</p>
 </tr>
 </table>
 </p>
+<p>
+Just set r, g and b components. Alpha will be Opaque.</p>
 <p class="code">
 <code style="white-space: break-spaces">func setRgb(self, r: u8, g: u8, b: u8)
 </code>
@@ -4265,8 +4267,6 @@ Just set r, g and b components. Alpha will be Opaque.</p>
 </code>
 </p>
 <p>
-Just set r, g and b components. Alpha will be Opaque.</p>
-<p>
 <table class="h3">
 <tr>
 <td class="h3">
@@ -4277,12 +4277,12 @@ Just set r, g and b components. Alpha will be Opaque.</p>
 </tr>
 </table>
 </p>
+<p>
+Set r,g,b with floats in the range [0 1] Alpha will be Opaque.</p>
 <p class="code">
 <code style="white-space: break-spaces">func setRgbf(self, r: f32, g: f32, b: f32)
 </code>
 </p>
-<p>
-Set r,g,b with floats in the range [0 1] Alpha will be Opaque.</p>
 <p>
 <table class="h3">
 <tr>
@@ -4294,12 +4294,12 @@ Set r,g,b with floats in the range [0 1] Alpha will be Opaque.</p>
 </tr>
 </table>
 </p>
+<p>
+Retrieve all components as floating point values between 0 and 1.</p>
 <p class="code">
 <code style="white-space: break-spaces">func toArgbf(const self)->{a: f32, r: f32, g: f32, b: f32}
 </code>
 </p>
-<p>
-Retrieve all components as floating point values between 0 and 1.</p>
 <p>
 <table class="h3">
 <tr>
@@ -4311,12 +4311,12 @@ Retrieve all components as floating point values between 0 and 1.</p>
 </tr>
 </table>
 </p>
+<p>
+Returns hue, saturation, lightness.</p>
 <p class="code">
 <code style="white-space: break-spaces">func toHsl(using const self)->{h: f32, s: f32, l: f32}
 </code>
 </p>
-<p>
-Returns hue, saturation, lightness.</p>
 <p>
 <table class="h3">
 <tr>
@@ -4328,12 +4328,12 @@ Returns hue, saturation, lightness.</p>
 </tr>
 </table>
 </p>
+<p>
+Retrieve all components as floating point values between 0 and 1.</p>
 <p class="code">
 <code style="white-space: break-spaces">func toRgbf(const self)->{r: f32, g: f32, b: f32}
 </code>
 </p>
-<p>
-Retrieve all components as floating point values between 0 and 1.</p>
 <p>
 <table class="h3">
 <tr>
@@ -4403,7 +4403,7 @@ id</td>
 <td class="tdname">
 params</td>
 <td class="tdtype">
-__painter_tuple_198</td>
+__painter_tuple_200</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -5158,18 +5158,18 @@ Release the given font.</p>
 </tr>
 </table>
 </p>
+<p>
+Creates a new Font of the given typeface and size.</p>
 <p class="code">
 <code style="white-space: break-spaces">func create(typeFace: *TypeFace, size: u32, forceBold = false, forceItalic = false)->*Font
 </code>
 </p>
 <p>
-Creates a new Font of the given typeface and size.</p>
+Creates a new Font with the given filename and size.</p>
 <p class="code">
 <code style="white-space: break-spaces">func create(fullname: string, size: u32, forceBold = false, forceItalic = false)->*Font throw
 </code>
 </p>
-<p>
-Creates a new Font with the given filename and size.</p>
 <p>
 <table class="h3">
 <tr>
@@ -5181,12 +5181,12 @@ Creates a new Font with the given filename and size.</p>
 </tr>
 </table>
 </p>
+<p>
+Returns the glyph descriptor of a given rune.</p>
 <p class="code">
 <code style="white-space: break-spaces">func getGlyphDesc(using self, c: rune)->const *GlyphDesc
 </code>
 </p>
-<p>
-Returns the glyph descriptor of a given rune.</p>
 <p>
 <table class="h3">
 <tr>
@@ -5198,12 +5198,12 @@ Returns the glyph descriptor of a given rune.</p>
 </tr>
 </table>
 </p>
+<p>
+Release the given font.</p>
 <p class="code">
 <code style="white-space: break-spaces">func release(font: *Font)
 </code>
 </p>
-<p>
-Release the given font.</p>
 <p>
 <table class="h3">
 <tr>
@@ -5303,12 +5303,12 @@ Set the font corresponding to a given style.</p>
 </tr>
 </table>
 </p>
+<p>
+Creates a typeface from a FontFamilyEnumerate and FontFamilyStyle.</p>
 <p class="code">
 <code style="white-space: break-spaces">func createTypeFace(enumerate: FontFamilyEnumerate, style: FontFamilyStyle)->*TypeFace throw
 </code>
 </p>
-<p>
-Creates a typeface from a FontFamilyEnumerate and FontFamilyStyle.</p>
 <p>
 <table class="h3">
 <tr>
@@ -5320,12 +5320,12 @@ Creates a typeface from a FontFamilyEnumerate and FontFamilyStyle.</p>
 </tr>
 </table>
 </p>
+<p>
+Enumerate the font families available in the os.</p>
 <p class="code">
 <code style="white-space: break-spaces">func enumerateFromOs()->Array'(FontFamilyEnumerate)
 </code>
 </p>
-<p>
-Enumerate the font families available in the os.</p>
 <p>
 <table class="h3">
 <tr>
@@ -5337,12 +5337,12 @@ Enumerate the font families available in the os.</p>
 </tr>
 </table>
 </p>
+<p>
+Get the font corresponding to the style. If not evailable, get another one.</p>
 <p class="code">
 <code style="white-space: break-spaces">func getFont(using self, style: FontFamilyStyle)->*Font
 </code>
 </p>
-<p>
-Get the font corresponding to the style. If not evailable, get another one.</p>
 <p>
 <table class="h3">
 <tr>
@@ -5354,12 +5354,12 @@ Get the font corresponding to the style. If not evailable, get another one.</p>
 </tr>
 </table>
 </p>
+<p>
+Get a FontFamilyEnumerate from a font family name.</p>
 <p class="code">
 <code style="white-space: break-spaces">func getFromOs(fontFamily: string)->FontFamilyEnumerate
 </code>
 </p>
-<p>
-Get a FontFamilyEnumerate from a font family name.</p>
 <p>
 <table class="h3">
 <tr>
@@ -5371,12 +5371,12 @@ Get a FontFamilyEnumerate from a font family name.</p>
 </tr>
 </table>
 </p>
+<p>
+Set the font corresponding to a given style.</p>
 <p class="code">
 <code style="white-space: break-spaces">func setFont(using self, fnt: *Font, style: FontFamilyStyle)
 </code>
 </p>
-<p>
-Set the font corresponding to a given style.</p>
 <p>
 <table class="h3">
 <tr>
@@ -5789,12 +5789,12 @@ Restart at frame 0.</p>
 </tr>
 </table>
 </p>
+<p>
+Create an image for the current frame.</p>
 <p class="code">
 <code style="white-space: break-spaces">func getFrame(using self, image: *Image, decodePixels = true)
 </code>
 </p>
-<p>
-Create an image for the current frame.</p>
 <p>
 <table class="h3">
 <tr>
@@ -5806,12 +5806,12 @@ Create an image for the current frame.</p>
 </tr>
 </table>
 </p>
+<p>
+Returns the number of frames As Gif does not store it, we need to go threw all images (!).</p>
 <p class="code">
 <code style="white-space: break-spaces">func getNumFrames(using self)->s32 throw
 </code>
 </p>
-<p>
-Returns the number of frames As Gif does not store it, we need to go threw all images (!).</p>
 <p>
 <table class="h3">
 <tr>
@@ -5823,12 +5823,12 @@ Returns the number of frames As Gif does not store it, we need to go threw all i
 </tr>
 </table>
 </p>
+<p>
+Initialize the decoder.</p>
 <p class="code">
 <code style="white-space: break-spaces">func init(using self, buffer: const [..] u8, decodePixels: bool) throw
 </code>
 </p>
-<p>
-Initialize the decoder.</p>
 <p>
 <table class="h3">
 <tr>
@@ -5840,12 +5840,12 @@ Initialize the decoder.</p>
 </tr>
 </table>
 </p>
+<p>
+Get the next frame. Returns false if we have reached the end.</p>
 <p class="code">
 <code style="white-space: break-spaces">func nextFrame(using self, img: *Image)->bool throw
 </code>
 </p>
-<p>
-Get the next frame. Returns false if we have reached the end.</p>
 <p>
 <table class="h3">
 <tr>
@@ -5857,12 +5857,12 @@ Get the next frame. Returns false if we have reached the end.</p>
 </tr>
 </table>
 </p>
+<p>
+Restart at frame 0.</p>
 <p class="code">
 <code style="white-space: break-spaces">func rewind(using self)
 </code>
 </p>
-<p>
-Restart at frame 0.</p>
 <p>
 <table class="h3">
 <tr>
@@ -6835,16 +6835,16 @@ Creates a new image.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Image.crop">crop(self, const ref Rectangle)</a></td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="enumeration">
 <a href="#Pixel.Image.crop">crop(self, s32, s32, s32, s32)</a></td>
 <td class="enumeration">
 <p>
 Crop image.</p>
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Pixel.Image.crop">crop(self, const ref Rectangle)</a></td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -7644,12 +7644,12 @@ T270</td>
 </tr>
 </table>
 </p>
+<p>
+Register an image decoder.</p>
 <p class="code">
 <code style="white-space: break-spaces">func(T) addDecoder()
 </code>
 </p>
-<p>
-Register an image decoder.</p>
 <p>
 <table class="h3">
 <tr>
@@ -7661,12 +7661,12 @@ Register an image decoder.</p>
 </tr>
 </table>
 </p>
+<p>
+Register an image encoder.</p>
 <p class="code">
 <code style="white-space: break-spaces">func(T) addEncoder()
 </code>
 </p>
-<p>
-Register an image encoder.</p>
 <p>
 <table class="h3">
 <tr>
@@ -7678,12 +7678,12 @@ Register an image encoder.</p>
 </tr>
 </table>
 </p>
+<p>
+Allocate pixels.</p>
 <p class="code">
 <code style="white-space: break-spaces">func allocPixels(using self)
 </code>
 </p>
-<p>
-Allocate pixels.</p>
 <p>
 <table class="h3">
 <tr>
@@ -7695,18 +7695,18 @@ Allocate pixels.</p>
 </tr>
 </table>
 </p>
+<p>
+Allocate a computing buffer with current image size.</p>
 <p class="code">
 <code style="white-space: break-spaces">func allocWorkingBuffer(using self)
 </code>
 </p>
 <p>
-Allocate a computing buffer with current image size.</p>
+Allocate a computing buffer with new sizes.</p>
 <p class="code">
 <code style="white-space: break-spaces">func allocWorkingBuffer(using self, newWidth: s32, newHeight: s32, newPf: PixelFormat)
 </code>
 </p>
-<p>
-Allocate a computing buffer with new sizes.</p>
 <p>
 <table class="h3">
 <tr>
@@ -7718,12 +7718,12 @@ Allocate a computing buffer with new sizes.</p>
 </tr>
 </table>
 </p>
+<p>
+Apply a kernel to the image.</p>
 <p class="code">
 <code style="white-space: break-spaces">func applyKernel(using self, kernel: Kernel)
 </code>
 </p>
-<p>
-Apply a kernel to the image.</p>
 <p>
 <table class="h3">
 <tr>
@@ -7735,12 +7735,12 @@ Apply a kernel to the image.</p>
 </tr>
 </table>
 </p>
+<p>
+Replace the current image content with the working buffer.</p>
 <p class="code">
 <code style="white-space: break-spaces">func applyWorkingBuffer(using self)
 </code>
 </p>
-<p>
-Replace the current image content with the working buffer.</p>
 <p>
 <table class="h3">
 <tr>
@@ -7752,12 +7752,12 @@ Replace the current image content with the working buffer.</p>
 </tr>
 </table>
 </p>
+<p>
+Returns <code class = "incode">true</code> if the given filename has a corresponding decoder.</p>
 <p class="code">
 <code style="white-space: break-spaces">func canLoad(fileName: string)->bool
 </code>
 </p>
-<p>
-Returns <code class = "incode">true</code> if the given filename has a corresponding decoder.</p>
 <p>
 <table class="h3">
 <tr>
@@ -7769,12 +7769,12 @@ Returns <code class = "incode">true</code> if the given filename has a correspon
 </tr>
 </table>
 </p>
+<p>
+Returns <code class = "incode">true</code> if the given filename has a corresponding encoder.</p>
 <p class="code">
 <code style="white-space: break-spaces">func canSave(fileName: string)->bool
 </code>
 </p>
-<p>
-Returns <code class = "incode">true</code> if the given filename has a corresponding encoder.</p>
 <p>
 <table class="h3">
 <tr>
@@ -7786,12 +7786,12 @@ Returns <code class = "incode">true</code> if the given filename has a correspon
 </tr>
 </table>
 </p>
+<p>
+Clear the content of the image.</p>
 <p class="code">
 <code style="white-space: break-spaces">func clear(using self)
 </code>
 </p>
-<p>
-Clear the content of the image.</p>
 <p>
 <table class="h3">
 <tr>
@@ -7803,12 +7803,12 @@ Clear the content of the image.</p>
 </tr>
 </table>
 </p>
+<p>
+Colorize the image by setting the hue and saturation.</p>
 <p class="code">
 <code style="white-space: break-spaces">func colorize(using self, hue: f32, saturation: f32, strength = 1.0)
 </code>
 </p>
-<p>
-Colorize the image by setting the hue and saturation.</p>
 <p>
 <table class="h3">
 <tr>
@@ -7820,12 +7820,12 @@ Colorize the image by setting the hue and saturation.</p>
 </tr>
 </table>
 </p>
+<p>
+Change the contrast. <code class = "incode">factor</code> is [-1, 1].</p>
 <p class="code">
 <code style="white-space: break-spaces">func contrast(using self, factor: f32 = 0.5)
 </code>
 </p>
-<p>
-Change the contrast. <code class = "incode">factor</code> is [-1, 1].</p>
 <p>
 <table class="h3">
 <tr>
@@ -7837,12 +7837,12 @@ Change the contrast. <code class = "incode">factor</code> is [-1, 1].</p>
 </tr>
 </table>
 </p>
+<p>
+Copy one pixel, depending on bpp.</p>
 <p class="code">
 <code style="white-space: break-spaces">func(BPP: u8) copyPixel(pixDst: ^u8, pixSrc: ^u8)
 </code>
 </p>
-<p>
-Copy one pixel, depending on bpp.</p>
 <p>
 <table class="h3">
 <tr>
@@ -7854,12 +7854,12 @@ Copy one pixel, depending on bpp.</p>
 </tr>
 </table>
 </p>
+<p>
+Creates a new image.</p>
 <p class="code">
 <code style="white-space: break-spaces">func create(width: s32, height: s32, pf: PixelFormat, buffer: const [..] u8 = null)->Image
 </code>
 </p>
-<p>
-Creates a new image.</p>
 <p>
 <table class="h3">
 <tr>
@@ -7871,12 +7871,12 @@ Creates a new image.</p>
 </tr>
 </table>
 </p>
+<p>
+Crop image.</p>
 <p class="code">
 <code style="white-space: break-spaces">func crop(using self, x: s32, y: s32, w: s32, h: s32)
 </code>
 </p>
-<p>
-Crop image.</p>
 <p class="code">
 <code style="white-space: break-spaces">func crop(using self, cropRect: Rectangle)
 </code>
@@ -7892,12 +7892,12 @@ Crop image.</p>
 </tr>
 </table>
 </p>
+<p>
+Decode the given image buffer.</p>
 <p class="code">
 <code style="white-space: break-spaces">func decode(fileName: string, bytes: const [..] u8, options: DecodeOptions = {})->Image throw
 </code>
 </p>
-<p>
-Decode the given image buffer.</p>
 <p>
 <table class="h3">
 <tr>
@@ -7909,12 +7909,12 @@ Decode the given image buffer.</p>
 </tr>
 </table>
 </p>
+<p>
+Fade to a given color. <code class = "incode">factor</code> is [0, 1].</p>
 <p class="code">
 <code style="white-space: break-spaces">func fade(using self, color: Color, factor: f32 = 0.5)
 </code>
 </p>
-<p>
-Fade to a given color. <code class = "incode">factor</code> is [0, 1].</p>
 <p>
 <table class="h3">
 <tr>
@@ -7926,12 +7926,12 @@ Fade to a given color. <code class = "incode">factor</code> is [0, 1].</p>
 </tr>
 </table>
 </p>
+<p>
+Fill image with <code class = "incode">color</code>.</p>
 <p class="code">
 <code style="white-space: break-spaces">func fill(using self, color: Color)
 </code>
 </p>
-<p>
-Fill image with <code class = "incode">color</code>.</p>
 <p>
 <table class="h3">
 <tr>
@@ -7943,12 +7943,12 @@ Fill image with <code class = "incode">color</code>.</p>
 </tr>
 </table>
 </p>
+<p>
+Fill with an horizontal gradient from <code class = "incode">color0</code> to <code class = "incode">color1</code>.</p>
 <p class="code">
 <code style="white-space: break-spaces">func fillGradient2(using self, color0: Color, color1: Color)
 </code>
 </p>
-<p>
-Fill with an horizontal gradient from <code class = "incode">color0</code> to <code class = "incode">color1</code>.</p>
 <p>
 <table class="h3">
 <tr>
@@ -7960,12 +7960,12 @@ Fill with an horizontal gradient from <code class = "incode">color0</code> to <c
 </tr>
 </table>
 </p>
+<p>
+Fill with a gradient with a different color at each corner.</p>
 <p class="code">
 <code style="white-space: break-spaces">func fillGradient4(using self, topLeft: Color, topRight: Color, bottomLeft: Color, bottomRight: Color)
 </code>
 </p>
-<p>
-Fill with a gradient with a different color at each corner.</p>
 <p>
 <table class="h3">
 <tr>
@@ -7992,12 +7992,12 @@ Fill with a gradient with a different color at each corner.</p>
 </tr>
 </table>
 </p>
+<p>
+Flip image vertically.</p>
 <p class="code">
 <code style="white-space: break-spaces">func flip(using self)
 </code>
 </p>
-<p>
-Flip image vertically.</p>
 <p>
 <table class="h3">
 <tr>
@@ -8009,12 +8009,12 @@ Flip image vertically.</p>
 </tr>
 </table>
 </p>
+<p>
+Free the working buffer if allocated.</p>
 <p class="code">
 <code style="white-space: break-spaces">func freeWorkingBuffer(using self)
 </code>
 </p>
-<p>
-Free the working buffer if allocated.</p>
 <p>
 <table class="h3">
 <tr>
@@ -8026,18 +8026,18 @@ Free the working buffer if allocated.</p>
 </tr>
 </table>
 </p>
+<p>
+Creates an image from a windows HICON.</p>
 <p class="code">
 <code style="white-space: break-spaces">func from(hicon: HICON)->Image throw
 </code>
 </p>
 <p>
-Creates an image from a windows HICON.</p>
+Creates an image from a windows HBITMAP.</p>
 <p class="code">
 <code style="white-space: break-spaces">func from(hbitmap: HBITMAP)->Image throw
 </code>
 </p>
-<p>
-Creates an image from a windows HBITMAP.</p>
 <p>
 <table class="h3">
 <tr>
@@ -8049,12 +8049,12 @@ Creates an image from a windows HBITMAP.</p>
 </tr>
 </table>
 </p>
+<p>
+Change the gamma.</p>
 <p class="code">
 <code style="white-space: break-spaces">func gamma(using self, level: f32 = 2.2)
 </code>
 </p>
-<p>
-Change the gamma.</p>
 <p>
 <table class="h3">
 <tr>
@@ -8066,12 +8066,12 @@ Change the gamma.</p>
 </tr>
 </table>
 </p>
+<p>
+Returns the color at the given coordinate.</p>
 <p class="code">
 <code style="white-space: break-spaces">func getPixelColor(using self, pixX: s32, pixY: s32)->Color
 </code>
 </p>
-<p>
-Returns the color at the given coordinate.</p>
 <p>
 <table class="h3">
 <tr>
@@ -8083,12 +8083,12 @@ Returns the color at the given coordinate.</p>
 </tr>
 </table>
 </p>
+<p>
+Transform image to grayscale, with a given factor.</p>
 <p class="code">
 <code style="white-space: break-spaces">func grayScale(using self, factor: f32 = 1)
 </code>
 </p>
-<p>
-Transform image to grayscale, with a given factor.</p>
 <p>
 <table class="h3">
 <tr>
@@ -8100,12 +8100,12 @@ Transform image to grayscale, with a given factor.</p>
 </tr>
 </table>
 </p>
+<p>
+Divide image size by 2 with a bilinear 2x2 filter.</p>
 <p class="code">
 <code style="white-space: break-spaces">func halfSize(using self)
 </code>
 </p>
-<p>
-Divide image size by 2 with a bilinear 2x2 filter.</p>
 <p>
 <table class="h3">
 <tr>
@@ -8117,12 +8117,12 @@ Divide image size by 2 with a bilinear 2x2 filter.</p>
 </tr>
 </table>
 </p>
+<p>
+Initialize image informations <code class = "incode">pixels</code> is set to null, and must be initialized after a call to that function This gives the opportunity to set the pixels with an external buffer.</p>
 <p class="code">
 <code style="white-space: break-spaces">func init(using self, width: s32, height: s32, pf: PixelFormat)
 </code>
 </p>
-<p>
-Initialize image informations <code class = "incode">pixels</code> is set to null, and must be initialized after a call to that function This gives the opportunity to set the pixels with an external buffer.</p>
 <p>
 <table class="h3">
 <tr>
@@ -8134,12 +8134,12 @@ Initialize image informations <code class = "incode">pixels</code> is set to nul
 </tr>
 </table>
 </p>
+<p>
+Invert colors.</p>
 <p class="code">
 <code style="white-space: break-spaces">func invert(using self)
 </code>
 </p>
-<p>
-Invert colors.</p>
 <p>
 <table class="h3">
 <tr>
@@ -8151,12 +8151,12 @@ Invert colors.</p>
 </tr>
 </table>
 </p>
+<p>
+Returns true if the image is valid.</p>
 <p class="code">
 <code style="white-space: break-spaces">func isValid(using const self)
 </code>
 </p>
-<p>
-Returns true if the image is valid.</p>
 <p>
 <table class="h3">
 <tr>
@@ -8168,12 +8168,12 @@ Returns true if the image is valid.</p>
 </tr>
 </table>
 </p>
+<p>
+Change the lightness. <code class = "incode">factor</code> is [-1, 1].</p>
 <p class="code">
 <code style="white-space: break-spaces">func lightness(using self, factor: f32 = 0.5)
 </code>
 </p>
-<p>
-Change the lightness. <code class = "incode">factor</code> is [-1, 1].</p>
 <p>
 <table class="h3">
 <tr>
@@ -8185,12 +8185,12 @@ Change the lightness. <code class = "incode">factor</code> is [-1, 1].</p>
 </tr>
 </table>
 </p>
+<p>
+Load the given image file.</p>
 <p class="code">
 <code style="white-space: break-spaces">func load(fileName: string, options: DecodeOptions = {})->Image throw
 </code>
 </p>
-<p>
-Load the given image file.</p>
 <p>
 <table class="h3">
 <tr>
@@ -8202,12 +8202,12 @@ Load the given image file.</p>
 </tr>
 </table>
 </p>
+<p>
+Flip image horizontally.</p>
 <p class="code">
 <code style="white-space: break-spaces">func mirror(using self)
 </code>
 </p>
-<p>
-Flip image horizontally.</p>
 <p>
 <table class="h3">
 <tr>
@@ -8219,12 +8219,12 @@ Flip image horizontally.</p>
 </tr>
 </table>
 </p>
+<p>
+Mix with another image.</p>
 <p class="code">
 <code style="white-space: break-spaces">func mix(using self, srcImage: Image, x: s32, y: s32, mode = MixMode.Copy)
 </code>
 </p>
-<p>
-Mix with another image.</p>
 <p>
 <table class="h3">
 <tr>
@@ -8252,12 +8252,12 @@ func(ptr: bool) opVisit(using self, stmt: code)
 </tr>
 </table>
 </p>
+<p>
+Release the content of the image.</p>
 <p class="code">
 <code style="white-space: break-spaces">func release(using self)
 </code>
 </p>
-<p>
-Release the content of the image.</p>
 <p>
 <table class="h3">
 <tr>
@@ -8269,12 +8269,12 @@ Release the content of the image.</p>
 </tr>
 </table>
 </p>
+<p>
+Resize image Put <code class = "incode">newWidth</code> or <code class = "incode">newHeight</code> to 0 to keep aspect ratio.</p>
 <p class="code">
 <code style="white-space: break-spaces">func resize(using self, newWidth: s32, newHeight: s32, mode = ResizeMode.Raw)
 </code>
 </p>
-<p>
-Resize image Put <code class = "incode">newWidth</code> or <code class = "incode">newHeight</code> to 0 to keep aspect ratio.</p>
 <p>
 <table class="h3">
 <tr>
@@ -8286,12 +8286,12 @@ Resize image Put <code class = "incode">newWidth</code> or <code class = "incode
 </tr>
 </table>
 </p>
+<p>
+Save the image to a file.</p>
 <p class="code">
 <code style="white-space: break-spaces">func save(using self, fileName: string, options: any = null) throw
 </code>
 </p>
-<p>
-Save the image to a file.</p>
 <p>
 <table class="h3">
 <tr>
@@ -8303,12 +8303,12 @@ Save the image to a file.</p>
 </tr>
 </table>
 </p>
+<p>
+Change the alpha channel.</p>
 <p class="code">
 <code style="white-space: break-spaces">func setAlpha(using self, value: u8 = 0)
 </code>
 </p>
-<p>
-Change the alpha channel.</p>
 <p>
 <table class="h3">
 <tr>
@@ -8320,12 +8320,12 @@ Change the alpha channel.</p>
 </tr>
 </table>
 </p>
+<p>
+Change specified color channels.</p>
 <p class="code">
 <code style="white-space: break-spaces">func setChannel(using self, mode: ChannelMode, value: ChannelValueMode, color: u8 = 0)
 </code>
 </p>
-<p>
-Change specified color channels.</p>
 <p>
 <table class="h3">
 <tr>
@@ -8337,12 +8337,12 @@ Change specified color channels.</p>
 </tr>
 </table>
 </p>
+<p>
+Change image pixel format.</p>
 <p class="code">
 <code style="white-space: break-spaces">func setPixelFormat(using self, newPf: PixelFormat)
 </code>
 </p>
-<p>
-Change image pixel format.</p>
 <p>
 <table class="h3">
 <tr>
@@ -8354,12 +8354,12 @@ Change image pixel format.</p>
 </tr>
 </table>
 </p>
+<p>
+Set pixel values depending on pixel format.</p>
 <p class="code">
 <code style="white-space: break-spaces">func(PF: PixelFormat) setPixelRGBA8(pixDst: ^u8, r: u8, g: u8, b: u8, _a: u8)
 </code>
 </p>
-<p>
-Set pixel values depending on pixel format.</p>
 <p>
 <table class="h3">
 <tr>
@@ -8371,12 +8371,12 @@ Set pixel values depending on pixel format.</p>
 </tr>
 </table>
 </p>
+<p>
+Apply a kernel to the image.</p>
 <p class="code">
 <code style="white-space: break-spaces">func toApplyKernel(using self, kernel: Kernel)->Image
 </code>
 </p>
-<p>
-Apply a kernel to the image.</p>
 <p>
 <table class="h3">
 <tr>
@@ -8388,12 +8388,12 @@ Apply a kernel to the image.</p>
 </tr>
 </table>
 </p>
+<p>
+Crop image.</p>
 <p class="code">
 <code style="white-space: break-spaces">func toCrop(using const self, x: s32, y: s32, w: s32, h: s32)->Image
 </code>
 </p>
-<p>
-Crop image.</p>
 <p class="code">
 <code style="white-space: break-spaces">func toCrop(using const self, cropRect: Rectangle)->Image
 </code>
@@ -8409,12 +8409,12 @@ Crop image.</p>
 </tr>
 </table>
 </p>
+<p>
+Flip image vertically.</p>
 <p class="code">
 <code style="white-space: break-spaces">func toFlip(using const self)->Image
 </code>
 </p>
-<p>
-Flip image vertically.</p>
 <p>
 <table class="h3">
 <tr>
@@ -8426,12 +8426,12 @@ Flip image vertically.</p>
 </tr>
 </table>
 </p>
+<p>
+Transform an image to a windows icon.</p>
 <p class="code">
 <code style="white-space: break-spaces">func toHICON(using self)->HICON throw
 </code>
 </p>
-<p>
-Transform an image to a windows icon.</p>
 <p>
 <table class="h3">
 <tr>
@@ -8443,12 +8443,12 @@ Transform an image to a windows icon.</p>
 </tr>
 </table>
 </p>
+<p>
+Divide image size by 2 with a bilinear 2x2 filter.</p>
 <p class="code">
 <code style="white-space: break-spaces">func toHalfSize(using const self)->Image
 </code>
 </p>
-<p>
-Divide image size by 2 with a bilinear 2x2 filter.</p>
 <p>
 <table class="h3">
 <tr>
@@ -8460,12 +8460,12 @@ Divide image size by 2 with a bilinear 2x2 filter.</p>
 </tr>
 </table>
 </p>
+<p>
+Flip image horizontally.</p>
 <p class="code">
 <code style="white-space: break-spaces">func toMirror(using const self)->Image
 </code>
 </p>
-<p>
-Flip image horizontally.</p>
 <p>
 <table class="h3">
 <tr>
@@ -8477,12 +8477,12 @@ Flip image horizontally.</p>
 </tr>
 </table>
 </p>
+<p>
+Mix with another image.</p>
 <p class="code">
 <code style="white-space: break-spaces">func toMix(using const self, srcImage: Image, x: s32, y: s32, mode = MixMode.Copy)->Image
 </code>
 </p>
-<p>
-Mix with another image.</p>
 <p>
 <table class="h3">
 <tr>
@@ -8494,12 +8494,12 @@ Mix with another image.</p>
 </tr>
 </table>
 </p>
+<p>
+Resize image Put <code class = "incode">newWidth</code> or <code class = "incode">newHeight</code> to 0 to keep aspect ratio.</p>
 <p class="code">
 <code style="white-space: break-spaces">func toResize(using const self, newWidth: s32, newHeight: s32, mode = ResizeMode.Raw)->Image
 </code>
 </p>
-<p>
-Resize image Put <code class = "incode">newWidth</code> or <code class = "incode">newHeight</code> to 0 to keep aspect ratio.</p>
 <p>
 <table class="h3">
 <tr>
@@ -8511,12 +8511,12 @@ Resize image Put <code class = "incode">newWidth</code> or <code class = "incode
 </tr>
 </table>
 </p>
+<p>
+Change image pixel format.</p>
 <p class="code">
 <code style="white-space: break-spaces">func toSetPixelFormat(using const self, newPf: PixelFormat)->Image
 </code>
 </p>
-<p>
-Change image pixel format.</p>
 <p>
 <table class="h3">
 <tr>
@@ -8528,12 +8528,12 @@ Change image pixel format.</p>
 </tr>
 </table>
 </p>
+<p>
+Turn image by a given predefined angle.</p>
 <p class="code">
 <code style="white-space: break-spaces">func toTurn(using const self, angle: TurnAngle)->Image
 </code>
 </p>
-<p>
-Turn image by a given predefined angle.</p>
 <p>
 <table class="h3">
 <tr>
@@ -8545,12 +8545,12 @@ Turn image by a given predefined angle.</p>
 </tr>
 </table>
 </p>
+<p>
+Turn image by a given predefined angle.</p>
 <p class="code">
 <code style="white-space: break-spaces">func turn(using self, angle: TurnAngle)
 </code>
 </p>
-<p>
-Turn image by a given predefined angle.</p>
 <p>
 <table class="h3">
 <tr>
@@ -8562,13 +8562,13 @@ Turn image by a given predefined angle.</p>
 </tr>
 </table>
 </p>
+<p>
+Macro to visit all pixels of the image in parallel chunks.</p>
 <p class="code">
 <code style="white-space: break-spaces">#[Swag.Macro]
 func visitPixels(using const self, userData: *void = null, stride: s32 = 1, stmt: code)
 </code>
 </p>
-<p>
-Macro to visit all pixels of the image in parallel chunks.</p>
 <p style="white-space: break-spaces"> Exported variables:
  <code class = "incode">pix</code>        address of the pixel
  <code class = "incode">image</code>      the processed image
@@ -9996,12 +9996,12 @@ Reset the path.</p>
 </tr>
 </table>
 </p>
+<p>
+Add an arc from the previous point.</p>
 <p class="code">
 <code style="white-space: break-spaces">func arcTo(using self, centerX: f32, centerY: f32, radiusX: f32, radiusY: f32, initAngle: Angle, maxAngle: Angle)
 </code>
 </p>
-<p>
-Add an arc from the previous point.</p>
 <p>
 <table class="h3">
 <tr>
@@ -10013,6 +10013,8 @@ Add an arc from the previous point.</p>
 </tr>
 </table>
 </p>
+<p>
+Add a curve from the previous point to <code class = "incode">pt</code>.</p>
 <p class="code">
 <code style="white-space: break-spaces">func bezierTo(using self, x: f32, y: f32, ctx: f32, cty: f32)
 </code>
@@ -10024,8 +10026,6 @@ Add a curve from the previous point to <code class = "incode">pt</code>.</p>
 </code>
 </p>
 <p>
-Add a curve from the previous point to <code class = "incode">pt</code>.</p>
-<p>
 <table class="h3">
 <tr>
 <td class="h3">
@@ -10036,12 +10036,12 @@ Add a curve from the previous point to <code class = "incode">pt</code>.</p>
 </tr>
 </table>
 </p>
+<p>
+Clear internal cache.</p>
 <p class="code">
 <code style="white-space: break-spaces">func clearCache(using self)
 </code>
 </p>
-<p>
-Clear internal cache.</p>
 <p>
 <table class="h3">
 <tr>
@@ -10053,12 +10053,12 @@ Clear internal cache.</p>
 </tr>
 </table>
 </p>
+<p>
+Close the figure Will add a line or a curve to the first point if necessary.</p>
 <p class="code">
 <code style="white-space: break-spaces">func close(using self)
 </code>
 </p>
-<p>
-Close the figure Will add a line or a curve to the first point if necessary.</p>
 <p>
 <table class="h3">
 <tr>
@@ -10070,12 +10070,12 @@ Close the figure Will add a line or a curve to the first point if necessary.</p>
 </tr>
 </table>
 </p>
+<p>
+Add a curve from the previous point to <code class = "incode">pt</code>.</p>
 <p class="code">
 <code style="white-space: break-spaces">func curveTo(using self, x: f32, y: f32)
 </code>
 </p>
-<p>
-Add a curve from the previous point to <code class = "incode">pt</code>.</p>
 <p>
 <table class="h3">
 <tr>
@@ -10087,12 +10087,12 @@ Add a curve from the previous point to <code class = "incode">pt</code>.</p>
 </tr>
 </table>
 </p>
+<p>
+Convert the path to a list of points.</p>
 <p class="code">
 <code style="white-space: break-spaces">func flatten(using self, quality = PaintQuality.Normal)
 </code>
 </p>
-<p>
-Convert the path to a list of points.</p>
 <p>
 <table class="h3">
 <tr>
@@ -10104,12 +10104,12 @@ Convert the path to a list of points.</p>
 </tr>
 </table>
 </p>
+<p>
+Add a line from the previous point to <code class = "incode">pt</code>.</p>
 <p class="code">
 <code style="white-space: break-spaces">func lineTo(using self, x: f32, y: f32)
 </code>
 </p>
-<p>
-Add a line from the previous point to <code class = "incode">pt</code>.</p>
 <p>
 <table class="h3">
 <tr>
@@ -10121,12 +10121,12 @@ Add a line from the previous point to <code class = "incode">pt</code>.</p>
 </tr>
 </table>
 </p>
+<p>
+Initialize the path with an arc.</p>
 <p class="code">
 <code style="white-space: break-spaces">func setArc(using self, centerX: f32, centerY: f32, radius: f32, startAngle: Angle, endAngle: Angle)
 </code>
 </p>
-<p>
-Initialize the path with an arc.</p>
 <p>
 <table class="h3">
 <tr>
@@ -10138,12 +10138,12 @@ Initialize the path with an arc.</p>
 </tr>
 </table>
 </p>
+<p>
+Initialize the path with a circle.</p>
 <p class="code">
 <code style="white-space: break-spaces">func setCircle(using self, centerX: f32, centerY: f32, radius: f32)
 </code>
 </p>
-<p>
-Initialize the path with a circle.</p>
 <p>
 <table class="h3">
 <tr>
@@ -10155,12 +10155,12 @@ Initialize the path with a circle.</p>
 </tr>
 </table>
 </p>
+<p>
+Initialize the path with an ellipse.</p>
 <p class="code">
 <code style="white-space: break-spaces">func setEllipse(using self, centerX: f32, centerY: f32, radiusX: f32, radiusY: f32)
 </code>
 </p>
-<p>
-Initialize the path with an ellipse.</p>
 <p>
 <table class="h3">
 <tr>
@@ -10172,12 +10172,12 @@ Initialize the path with an ellipse.</p>
 </tr>
 </table>
 </p>
+<p>
+Initialize the path with a rectangle.</p>
 <p class="code">
 <code style="white-space: break-spaces">func setRect(using self, left: f32, top: f32, width: f32, height: f32)
 </code>
 </p>
-<p>
-Initialize the path with a rectangle.</p>
 <p>
 <table class="h3">
 <tr>
@@ -10189,12 +10189,12 @@ Initialize the path with a rectangle.</p>
 </tr>
 </table>
 </p>
+<p>
+Initialize the path with a round rectangle.</p>
 <p class="code">
 <code style="white-space: break-spaces">func setRoundRect(using self, left: f32, top: f32, width: f32, height: f32, radiusX: f32, radiusY: f32)
 </code>
 </p>
-<p>
-Initialize the path with a round rectangle.</p>
 <p>
 <table class="h3">
 <tr>
@@ -10206,12 +10206,12 @@ Initialize the path with a round rectangle.</p>
 </tr>
 </table>
 </p>
+<p>
+Reset the path.</p>
 <p class="code">
 <code style="white-space: break-spaces">func start(using self, startX: f32, startY: f32)
 </code>
 </p>
-<p>
-Reset the path.</p>
 <p>
 <table class="h3">
 <tr>
@@ -10317,12 +10317,12 @@ Call quality offset on all paths They must before be flattened.</p>
 </tr>
 </table>
 </p>
+<p>
+Clean all paths They must before be flattened.</p>
 <p class="code">
 <code style="white-space: break-spaces">func clean(using self)
 </code>
 </p>
-<p>
-Clean all paths They must before be flattened.</p>
 <p>
 <table class="h3">
 <tr>
@@ -10334,12 +10334,12 @@ Clean all paths They must before be flattened.</p>
 </tr>
 </table>
 </p>
+<p>
+Remove all internal line paths.</p>
 <p class="code">
 <code style="white-space: break-spaces">func clear(using self)
 </code>
 </p>
-<p>
-Remove all internal line paths.</p>
 <p>
 <table class="h3">
 <tr>
@@ -10366,12 +10366,12 @@ Remove all internal line paths.</p>
 </tr>
 </table>
 </p>
+<p>
+Flatten all paths.</p>
 <p class="code">
 <code style="white-space: break-spaces">func flatten(using self, quality: PaintQuality)
 </code>
 </p>
-<p>
-Flatten all paths.</p>
 <p>
 <table class="h3">
 <tr>
@@ -10383,12 +10383,12 @@ Flatten all paths.</p>
 </tr>
 </table>
 </p>
+<p>
+Returns a new path.</p>
 <p class="code">
 <code style="white-space: break-spaces">func newPath(using self)->*LinePath
 </code>
 </p>
-<p>
-Returns a new path.</p>
 <p>
 <table class="h3">
 <tr>
@@ -10400,18 +10400,18 @@ Returns a new path.</p>
 </tr>
 </table>
 </p>
+<p>
+Call fast offset on all paths They must before be flattened.</p>
 <p class="code">
 <code style="white-space: break-spaces">func offset(using self, value: f32)
 </code>
 </p>
 <p>
-Call fast offset on all paths They must before be flattened.</p>
+Call quality offset on all paths They must before be flattened.</p>
 <p class="code">
 <code style="white-space: break-spaces">func offset(using self, value: f32, joinStyle: JoinStyle, toler: f32 = 0.5)
 </code>
 </p>
-<p>
-Call quality offset on all paths They must before be flattened.</p>
 <p>
 <table class="h3">
 <tr>
@@ -10759,7 +10759,7 @@ sharedLinePathList</td>
 <td class="tdname">
 sharedRoundTmp</td>
 <td class="tdtype">
-Array(__linepath_tuple_268)</td>
+Array(__linepath_tuple_247)</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -10948,18 +10948,18 @@ Draw a line.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Painter.drawPath">drawPath(self, *LinePath, const ref Color, f32)</a></td>
-<td class="enumeration">
-<p>
-Draw the line path.</p>
-</td>
-</tr>
-<tr>
-<td class="enumeration">
 <a href="#Pixel.Painter.drawPath">drawPath(self, *LinePath, const ref Pen)</a></td>
 <td class="enumeration">
 <p>
 Draw the line path with the given <code class = "incode">pen</code>.</p>
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Pixel.Painter.drawPath">drawPath(self, *LinePath, const ref Color, f32)</a></td>
+<td class="enumeration">
+<p>
+Draw the line path.</p>
 </td>
 </tr>
 <tr>
@@ -11196,16 +11196,14 @@ Fill the polygon with the given <code class = "incode">brush</code>.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Painter.fillRect">fillRect(self, const ref Rectangle, const ref Color)</a></td>
+<a href="#Pixel.Painter.fillRect">fillRect(self, f32, f32, f32, f32, const ref Color)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Painter.fillRect">fillRect(self, f32, f32, f32, f32, const ref Brush)</a></td>
+<a href="#Pixel.Painter.fillRect">fillRect(self, const ref Rectangle, const ref Color)</a></td>
 <td class="enumeration">
-<p>
-Draw a filled rectangle.</p>
 </td>
 </tr>
 <tr>
@@ -11216,16 +11214,10 @@ Draw a filled rectangle.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Painter.fillRect">fillRect(self, f32, f32, f32, f32, const ref Color)</a></td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="enumeration">
-<a href="#Pixel.Painter.fillRoundRect">fillRoundRect(self, f32, f32, f32, f32, f32, f32, const ref Brush)</a></td>
+<a href="#Pixel.Painter.fillRect">fillRect(self, f32, f32, f32, f32, const ref Brush)</a></td>
 <td class="enumeration">
 <p>
-Draw a filled round rectangle.</p>
+Draw a filled rectangle.</p>
 </td>
 </tr>
 <tr>
@@ -11244,6 +11236,14 @@ Draw a filled round rectangle.</p>
 <td class="enumeration">
 <a href="#Pixel.Painter.fillRoundRect">fillRoundRect(self, const ref Rectangle, f32, f32, const ref Brush)</a></td>
 <td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Pixel.Painter.fillRoundRect">fillRoundRect(self, f32, f32, f32, f32, f32, f32, const ref Brush)</a></td>
+<td class="enumeration">
+<p>
+Draw a filled round rectangle.</p>
 </td>
 </tr>
 <tr>
@@ -11410,7 +11410,7 @@ Reset the paint position, rotation, scale.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Painter.rotateTransform">rotateTransform(self, const ref Angle)</a></td>
+<a href="#Pixel.Painter.rotateTransform">rotateTransform(self, const ref Angle, f32, f32)</a></td>
 <td class="enumeration">
 <p>
 Set the paint rotation, in degrees.</p>
@@ -11418,7 +11418,7 @@ Set the paint rotation, in degrees.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Painter.rotateTransform">rotateTransform(self, const ref Angle, f32, f32)</a></td>
+<a href="#Pixel.Painter.rotateTransform">rotateTransform(self, const ref Angle)</a></td>
 <td class="enumeration">
 <p>
 Set the paint rotation, in degrees.</p>
@@ -11450,7 +11450,7 @@ Set the current blending mode.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Painter.setClippingRect">setClippingRect(self, const ref Rectangle)</a></td>
+<a href="#Pixel.Painter.setClippingRect">setClippingRect(self, f32, f32, f32, f32)</a></td>
 <td class="enumeration">
 <p>
 Set the current clipping rectangle.</p>
@@ -11458,7 +11458,7 @@ Set the current clipping rectangle.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Painter.setClippingRect">setClippingRect(self, f32, f32, f32, f32)</a></td>
+<a href="#Pixel.Painter.setClippingRect">setClippingRect(self, const ref Rectangle)</a></td>
 <td class="enumeration">
 <p>
 Set the current clipping rectangle.</p>
@@ -11621,12 +11621,12 @@ Bind a render target.</p>
 </tr>
 </table>
 </p>
+<p>
+Call this before drawing.</p>
 <p class="code">
 <code style="white-space: break-spaces">func begin(using self)
 </code>
 </p>
-<p>
-Call this before drawing.</p>
 <p>
 <table class="h3">
 <tr>
@@ -11638,12 +11638,12 @@ Call this before drawing.</p>
 </tr>
 </table>
 </p>
+<p>
+Bind a render target.</p>
 <p class="code">
 <code style="white-space: break-spaces">func bindRenderTarget(using self, tgt: *RenderTarget, paintAlpha = false)
 </code>
 </p>
-<p>
-Bind a render target.</p>
 <p>
 <table class="h3">
 <tr>
@@ -11655,12 +11655,12 @@ Bind a render target.</p>
 </tr>
 </table>
 </p>
+<p>
+Clear the rendering surface.</p>
 <p class="code">
 <code style="white-space: break-spaces">func clear(using self, color: Color)
 </code>
 </p>
-<p>
-Clear the rendering surface.</p>
 <p>
 <table class="h3">
 <tr>
@@ -11672,12 +11672,12 @@ Clear the rendering surface.</p>
 </tr>
 </table>
 </p>
+<p>
+Recompute the layout for a given rectangle.</p>
 <p class="code">
 <code style="white-space: break-spaces">func computeLayout(using self, pos: Rectangle, text: *RichString, format: RichStringFormat)
 </code>
 </p>
-<p>
-Recompute the layout for a given rectangle.</p>
 <p>
 <table class="h3">
 <tr>
@@ -11750,12 +11750,12 @@ bool</td>
 </tr>
 </table>
 </p>
+<p>
+Draw an arc between two angles.</p>
 <p class="code">
 <code style="white-space: break-spaces">func drawArc(using self, centerX: f32, centerY: f32, radius: f32, startAngle: Angle, endAngle: Angle, color: Color, penSize: f32 = 1)
 </code>
 </p>
-<p>
-Draw an arc between two angles.</p>
 <p class="code">
 <code style="white-space: break-spaces">func drawArc(using self, centerX: f32, centerY: f32, radius: f32, startAngle: Angle, endAngle: Angle, pen: Pen)
 </code>
@@ -11771,12 +11771,12 @@ Draw an arc between two angles.</p>
 </tr>
 </table>
 </p>
+<p>
+Draw an empty circle.</p>
 <p class="code">
 <code style="white-space: break-spaces">func drawCircle(using self, centerX: f32, centerY: f32, radius: f32, color: Color, penSize: f32 = 1)
 </code>
 </p>
-<p>
-Draw an empty circle.</p>
 <p class="code">
 <code style="white-space: break-spaces">func drawCircle(using self, centerX: f32, centerY: f32, radius: f32, pen: Pen)
 </code>
@@ -11792,12 +11792,12 @@ Draw an empty circle.</p>
 </tr>
 </table>
 </p>
+<p>
+Draw an empty ellipse.</p>
 <p class="code">
 <code style="white-space: break-spaces">func drawEllipse(using self, centerX: f32, centerY: f32, radiusX: f32, radiusY: f32, color: Color, penSize: f32 = 1)
 </code>
 </p>
-<p>
-Draw an empty ellipse.</p>
 <p class="code">
 <code style="white-space: break-spaces">func drawEllipse(using self, centerX: f32, centerY: f32, radiusX: f32, radiusY: f32, pen: Pen)
 </code>
@@ -11813,12 +11813,12 @@ Draw an empty ellipse.</p>
 </tr>
 </table>
 </p>
+<p>
+Draw a line.</p>
 <p class="code">
 <code style="white-space: break-spaces">func drawLine(using self, start: Vector2, end: Vector2, pen: Pen)
 </code>
 </p>
-<p>
-Draw a line.</p>
 <p class="code">
 <code style="white-space: break-spaces">func drawLine(using self, startX: f32, startY: f32, endX: f32, endY: f32, color: Color, penSize: f32 = 1)
 func drawLine(using self, startX: f32, startY: f32, endX: f32, endY: f32, pen: Pen)
@@ -11835,18 +11835,20 @@ func drawLine(using self, startX: f32, startY: f32, endX: f32, endY: f32, pen: P
 </tr>
 </table>
 </p>
+<p>
+Draw the line path.</p>
 <p class="code">
 <code style="white-space: break-spaces">func drawPath(using self, path: *LinePath, color: Color, penSize: f32)
 </code>
 </p>
 <p>
-Draw the line path.</p>
+Draw the line path with the given <code class = "incode">pen</code>.</p>
 <p class="code">
 <code style="white-space: break-spaces">func drawPath(using self, path: *LinePath, pen: Pen)
 </code>
 </p>
 <p>
-Draw the line path with the given <code class = "incode">pen</code>.</p>
+Draw the line path.</p>
 <p class="code">
 <code style="white-space: break-spaces">func drawPath(using self, pathList: *LinePathList, pen: Pen, mode: DrawPathListMode = .Separate)
 </code>
@@ -11858,8 +11860,6 @@ Draw the line path.</p>
 </code>
 </p>
 <p>
-Draw the line path.</p>
-<p>
 <table class="h3">
 <tr>
 <td class="h3">
@@ -11870,12 +11870,12 @@ Draw the line path.</p>
 </tr>
 </table>
 </p>
+<p>
+Draw an empty rectangle.</p>
 <p class="code">
 <code style="white-space: break-spaces">func drawRect(using self, left: f32, top: f32, width: f32, height: f32, color: Color, penSize: f32 = 1)
 </code>
 </p>
-<p>
-Draw an empty rectangle.</p>
 <p class="code">
 <code style="white-space: break-spaces">func drawRect(using self, rect: Rectangle, color: Color, penSize: f32 = 1)
 func drawRect(using self, left: f32, top: f32, width: f32, height: f32, pen: Pen)
@@ -11893,12 +11893,12 @@ func drawRect(using self, rect: Rectangle, pen: Pen)
 </tr>
 </table>
 </p>
+<p>
+Draw a rich string. A rich string can be multiline, and accepts The layout will be computed at the first call, and each time <code class = "incode">pos</code> has changed.</p>
 <p class="code">
 <code style="white-space: break-spaces">func drawRichString(using self, pos: Rectangle, text: *RichString, format: RichStringFormat, forceCompute = false)
 </code>
 </p>
-<p>
-Draw a rich string. A rich string can be multiline, and accepts The layout will be computed at the first call, and each time <code class = "incode">pos</code> has changed.</p>
 <p>
 <table class="h3">
 <tr>
@@ -11910,12 +11910,12 @@ Draw a rich string. A rich string can be multiline, and accepts The layout will 
 </tr>
 </table>
 </p>
+<p>
+Draw an empty round rectangle.</p>
 <p class="code">
 <code style="white-space: break-spaces">func drawRoundRect(using self, left: f32, top: f32, width: f32, height: f32, radiusX: f32, radiusY: f32, color: Color, penSize: f32 = 1)
 </code>
 </p>
-<p>
-Draw an empty round rectangle.</p>
 <p class="code">
 <code style="white-space: break-spaces">func drawRoundRect(using self, left: f32, top: f32, width: f32, height: f32, radiusX: f32, radiusY: f32, pen: Pen)
 func drawRoundRect(using self, rect: Rectangle, radiusX: f32, radiusY: f32, pen: Pen)
@@ -11933,6 +11933,8 @@ func drawRoundRect(using self, rect: Rectangle, radiusX: f32, radiusY: f32, colo
 </tr>
 </table>
 </p>
+<p>
+Draw a simple string.</p>
 <p class="code">
 <code style="white-space: break-spaces">func drawString(using self, left: f32, top: f32, text: string, font: *Font, color: Color, under = UnderlineStyle.None)
 </code>
@@ -11944,8 +11946,6 @@ Draw a simple string.</p>
 </code>
 </p>
 <p>
-Draw a simple string.</p>
-<p>
 <table class="h3">
 <tr>
 <td class="h3">
@@ -11956,12 +11956,12 @@ Draw a simple string.</p>
 </tr>
 </table>
 </p>
+<p>
+Draw a simple string (centered).</p>
 <p class="code">
 <code style="white-space: break-spaces">func drawStringCenter(using self, x: f32, y: f32, text: string, font: *Font, color: Color, under = UnderlineStyle.None)
 </code>
 </p>
-<p>
-Draw a simple string (centered).</p>
 <p>
 <table class="h3">
 <tr>
@@ -11973,20 +11973,20 @@ Draw a simple string (centered).</p>
 </tr>
 </table>
 </p>
+<p>
+Draw a texture image.</p>
 <p class="code">
 <code style="white-space: break-spaces">func drawTexture(using self, x: f32, y: f32, width: f32, height: f32, texture: Texture, color: Color = Argb.White)
 </code>
 </p>
 <p>
-Draw a texture image.</p>
+Draw a portion of an image.</p>
 <p class="code">
 <code style="white-space: break-spaces">func drawTexture(using self, rect: Rectangle, texture: Texture, color: Color = Argb.White)
 func drawTexture(using self, x: f32, y: f32, texture: Texture, color: Color = Argb.White)
 func drawTexture(using self, x: f32, y: f32, width: f32, height: f32, srcRect: Rectangle, texture: Texture, color: Color = Argb.White)
 </code>
 </p>
-<p>
-Draw a portion of an image.</p>
 <p class="code">
 <code style="white-space: break-spaces">func drawTexture(using self, dstRect: Rectangle, srcRect: Rectangle, texture: Texture, color: Color = Argb.White)
 func drawTexture(using self, x: f32, y: f32, srcRect: Rectangle, texture: Texture, color: Color = Argb.White)
@@ -12003,12 +12003,12 @@ func drawTexture(using self, x: f32, y: f32, srcRect: Rectangle, texture: Textur
 </tr>
 </table>
 </p>
+<p>
+Call this after drawing.</p>
 <p class="code">
 <code style="white-space: break-spaces">func end(using self)
 </code>
 </p>
-<p>
-Call this after drawing.</p>
 <p>
 <table class="h3">
 <tr>
@@ -12020,12 +12020,12 @@ Call this after drawing.</p>
 </tr>
 </table>
 </p>
+<p>
+Stop painting in the clipping buffer. Back to normal.</p>
 <p class="code">
 <code style="white-space: break-spaces">func endClippingRegion(using self)
 </code>
 </p>
-<p>
-Stop painting in the clipping buffer. Back to normal.</p>
 <p>
 <table class="h3">
 <tr>
@@ -12037,12 +12037,12 @@ Stop painting in the clipping buffer. Back to normal.</p>
 </tr>
 </table>
 </p>
+<p>
+Draw a solid circle.</p>
 <p class="code">
 <code style="white-space: break-spaces">func fillCircle(using self, centerX: f32, centerY: f32, radius: f32, brush: Brush)
 </code>
 </p>
-<p>
-Draw a solid circle.</p>
 <p class="code">
 <code style="white-space: break-spaces">func fillCircle(using self, centerX: f32, centerY: f32, radius: f32, color: Color)
 </code>
@@ -12058,12 +12058,12 @@ Draw a solid circle.</p>
 </tr>
 </table>
 </p>
+<p>
+Draw a solid ellipse.</p>
 <p class="code">
 <code style="white-space: break-spaces">func fillEllipse(using self, centerX: f32, centerY: f32, radiusX: f32, radiusY: f32, brush: Brush)
 </code>
 </p>
-<p>
-Draw a solid ellipse.</p>
 <p class="code">
 <code style="white-space: break-spaces">func fillEllipse(using self, centerX: f32, centerY: f32, radiusX: f32, radiusY: f32, color: Color)
 </code>
@@ -12079,30 +12079,30 @@ Draw a solid ellipse.</p>
 </tr>
 </table>
 </p>
+<p>
+Fill the line path.</p>
 <p class="code">
 <code style="white-space: break-spaces">func fillPath(using self, pathList: *LinePathList, color: Color)
 </code>
 </p>
 <p>
-Fill the line path.</p>
+Fill the line path with the given <code class = "incode">brush</code>.</p>
 <p class="code">
 <code style="white-space: break-spaces">func fillPath(using self, path: *LinePath, brush: Brush)
 </code>
 </p>
 <p>
-Fill the line path with the given <code class = "incode">brush</code>.</p>
+Fill the line path.</p>
 <p class="code">
 <code style="white-space: break-spaces">func fillPath(using self, path: *LinePath, color: Color)
 </code>
 </p>
 <p>
-Fill the line path.</p>
+Fill the list of paths clockwise = fill, anti-clockwise = hole.</p>
 <p class="code">
 <code style="white-space: break-spaces">func fillPath(using self, pathList: *LinePathList, brush: Brush)
 </code>
 </p>
-<p>
-Fill the list of paths clockwise = fill, anti-clockwise = hole.</p>
 <p>
 <table class="h3">
 <tr>
@@ -12114,18 +12114,18 @@ Fill the list of paths clockwise = fill, anti-clockwise = hole.</p>
 </tr>
 </table>
 </p>
+<p>
+Fill the polygon with the given color.</p>
 <p class="code">
 <code style="white-space: break-spaces">func fillPolygon(using self, path: *LinePath, color: Color)
 </code>
 </p>
 <p>
-Fill the polygon with the given color.</p>
+Fill the polygon with the given <code class = "incode">brush</code>.</p>
 <p class="code">
 <code style="white-space: break-spaces">func fillPolygon(using self, path: *LinePath, brush: Brush)
 </code>
 </p>
-<p>
-Fill the polygon with the given <code class = "incode">brush</code>.</p>
 <p>
 <table class="h3">
 <tr>
@@ -12137,12 +12137,12 @@ Fill the polygon with the given <code class = "incode">brush</code>.</p>
 </tr>
 </table>
 </p>
+<p>
+Draw a filled rectangle.</p>
 <p class="code">
 <code style="white-space: break-spaces">func fillRect(using self, left: f32, top: f32, width: f32, height: f32, brush: Brush)
 </code>
 </p>
-<p>
-Draw a filled rectangle.</p>
 <p class="code">
 <code style="white-space: break-spaces">func fillRect(using self, rect: Rectangle, brush: Brush)
 func fillRect(using self, left: f32, top: f32, width: f32, height: f32, color: Color)
@@ -12160,12 +12160,12 @@ func fillRect(using self, rect: Rectangle, color: Color)
 </tr>
 </table>
 </p>
+<p>
+Draw a filled round rectangle.</p>
 <p class="code">
 <code style="white-space: break-spaces">func fillRoundRect(using self, left: f32, top: f32, width: f32, height: f32, radiusX: f32, radiusY: f32, brush: Brush)
 </code>
 </p>
-<p>
-Draw a filled round rectangle.</p>
 <p class="code">
 <code style="white-space: break-spaces">func fillRoundRect(using self, rect: Rectangle, radiusX: f32, radiusY: f32, brush: Brush)
 func fillRoundRect(using self, left: f32, top: f32, width: f32, height: f32, radiusX: f32, radiusY: f32, color: Color)
@@ -12183,12 +12183,12 @@ func fillRoundRect(using self, rect: Rectangle, radiusX: f32, radiusY: f32, colo
 </tr>
 </table>
 </p>
+<p>
+Get the current clipping rectangle.</p>
 <p class="code">
 <code style="white-space: break-spaces">func getClippingRect(using self)->Rectangle
 </code>
 </p>
-<p>
-Get the current clipping rectangle.</p>
 <p>
 <table class="h3">
 <tr>
@@ -12200,6 +12200,8 @@ Get the current clipping rectangle.</p>
 </tr>
 </table>
 </p>
+<p>
+Returns all the glyphs for a given string and font.</p>
 <p class="code">
 <code style="white-space: break-spaces">func getGlyphs(text: string, font: *Font)->Array'(const *GlyphDesc)
 </code>
@@ -12210,8 +12212,6 @@ Returns all the glyphs for a given string and font.</p>
 <code style="white-space: break-spaces">func getGlyphs(text: Array'(rune), font: *Font)->Array'(const *GlyphDesc)
 </code>
 </p>
-<p>
-Returns all the glyphs for a given string and font.</p>
 <p>
 <table class="h3">
 <tr>
@@ -12253,12 +12253,12 @@ Returns all the glyphs for a given string and font.</p>
 </tr>
 </table>
 </p>
+<p>
+Returns the current tranformation.</p>
 <p class="code">
 <code style="white-space: break-spaces">func getTransform(using self)->Transform2
 </code>
 </p>
-<p>
-Returns the current tranformation.</p>
 <p>
 <table class="h3">
 <tr>
@@ -12270,12 +12270,12 @@ Returns the current tranformation.</p>
 </tr>
 </table>
 </p>
+<p>
+Returns true if the current clipping rectangle is empty (no drawing !).</p>
 <p class="code">
 <code style="white-space: break-spaces">func isEmptyClippingRect(using self)->bool
 </code>
 </p>
-<p>
-Returns true if the current clipping rectangle is empty (no drawing !).</p>
 <p>
 <table class="h3">
 <tr>
@@ -12287,12 +12287,12 @@ Returns true if the current clipping rectangle is empty (no drawing !).</p>
 </tr>
 </table>
 </p>
+<p>
+Get a rune size for a given font.</p>
 <p class="code">
 <code style="white-space: break-spaces">func measureRune(c: rune, font: *Font)->Point
 </code>
 </p>
-<p>
-Get a rune size for a given font.</p>
 <p>
 <table class="h3">
 <tr>
@@ -12304,18 +12304,18 @@ Get a rune size for a given font.</p>
 </tr>
 </table>
 </p>
+<p>
+Returns the metrics of a given text.</p>
 <p class="code">
 <code style="white-space: break-spaces">func measureString(text: string, font: *Font)->StringMetrics
 </code>
 </p>
 <p>
-Returns the metrics of a given text.</p>
+Returns the bounding rectangle if a given text, at a given position.</p>
 <p class="code">
 <code style="white-space: break-spaces">func measureString(text: Array'(const *GlyphDesc))->StringMetrics
 </code>
 </p>
-<p>
-Returns the bounding rectangle if a given text, at a given position.</p>
 <p>
 <table class="h3">
 <tr>
@@ -12327,12 +12327,12 @@ Returns the bounding rectangle if a given text, at a given position.</p>
 </tr>
 </table>
 </p>
+<p>
+Restore the original clipping rectangle.</p>
 <p class="code">
 <code style="white-space: break-spaces">func popClippingRect(using self)
 </code>
 </p>
-<p>
-Restore the original clipping rectangle.</p>
 <p>
 <table class="h3">
 <tr>
@@ -12344,12 +12344,12 @@ Restore the original clipping rectangle.</p>
 </tr>
 </table>
 </p>
+<p>
+Restore the last paint state.</p>
 <p class="code">
 <code style="white-space: break-spaces">func popState(using self)
 </code>
 </p>
-<p>
-Restore the last paint state.</p>
 <p>
 <table class="h3">
 <tr>
@@ -12361,12 +12361,12 @@ Restore the last paint state.</p>
 </tr>
 </table>
 </p>
+<p>
+Interface the given rectangle with the current clipping rectangle.</p>
 <p class="code">
 <code style="white-space: break-spaces">func pushClippingRect(using self, rect: Rectangle, isSurfacePos = false)
 </code>
 </p>
-<p>
-Interface the given rectangle with the current clipping rectangle.</p>
 <p>
 <table class="h3">
 <tr>
@@ -12378,12 +12378,12 @@ Interface the given rectangle with the current clipping rectangle.</p>
 </tr>
 </table>
 </p>
+<p>
+Interface the given rectangle with the current clipping rectangle.</p>
 <p class="code">
 <code style="white-space: break-spaces">func pushClippingSurfaceRect(using self, rect: Rectangle)
 </code>
 </p>
-<p>
-Interface the given rectangle with the current clipping rectangle.</p>
 <p>
 <table class="h3">
 <tr>
@@ -12395,12 +12395,12 @@ Interface the given rectangle with the current clipping rectangle.</p>
 </tr>
 </table>
 </p>
+<p>
+Save the current paint state.</p>
 <p class="code">
 <code style="white-space: break-spaces">func pushState(using self)
 </code>
 </p>
-<p>
-Save the current paint state.</p>
 <p>
 <table class="h3">
 <tr>
@@ -12412,12 +12412,12 @@ Save the current paint state.</p>
 </tr>
 </table>
 </p>
+<p>
+Release the render target.</p>
 <p class="code">
 <code style="white-space: break-spaces">func releaseRenderTarget(using self, tgt: *RenderTarget)
 </code>
 </p>
-<p>
-Release the render target.</p>
 <p>
 <table class="h3">
 <tr>
@@ -12444,12 +12444,12 @@ Release the render target.</p>
 </tr>
 </table>
 </p>
+<p>
+Reset the current clipping rectangle.</p>
 <p class="code">
 <code style="white-space: break-spaces">func resetClippingRect(using self)
 </code>
 </p>
-<p>
-Reset the current clipping rectangle.</p>
 <p>
 <table class="h3">
 <tr>
@@ -12461,12 +12461,12 @@ Reset the current clipping rectangle.</p>
 </tr>
 </table>
 </p>
+<p>
+Reset clipping buffer to its default value (no more clipping).</p>
 <p class="code">
 <code style="white-space: break-spaces">func resetClippingRegion(using self)
 </code>
 </p>
-<p>
-Reset clipping buffer to its default value (no more clipping).</p>
 <p>
 <table class="h3">
 <tr>
@@ -12478,12 +12478,12 @@ Reset clipping buffer to its default value (no more clipping).</p>
 </tr>
 </table>
 </p>
+<p>
+Reset the current painting state.</p>
 <p class="code">
 <code style="white-space: break-spaces">func resetState(using self)
 </code>
 </p>
-<p>
-Reset the current painting state.</p>
 <p>
 <table class="h3">
 <tr>
@@ -12495,12 +12495,12 @@ Reset the current painting state.</p>
 </tr>
 </table>
 </p>
+<p>
+Reset the paint position, rotation, scale.</p>
 <p class="code">
 <code style="white-space: break-spaces">func resetTransform(using self)
 </code>
 </p>
-<p>
-Reset the paint position, rotation, scale.</p>
 <p>
 <table class="h3">
 <tr>
@@ -12512,6 +12512,8 @@ Reset the paint position, rotation, scale.</p>
 </tr>
 </table>
 </p>
+<p>
+Set the paint rotation, in degrees.</p>
 <p class="code">
 <code style="white-space: break-spaces">func rotateTransform(using self, angle: Angle)
 </code>
@@ -12523,8 +12525,6 @@ Set the paint rotation, in degrees.</p>
 </code>
 </p>
 <p>
-Set the paint rotation, in degrees.</p>
-<p>
 <table class="h3">
 <tr>
 <td class="h3">
@@ -12535,12 +12535,12 @@ Set the paint rotation, in degrees.</p>
 </tr>
 </table>
 </p>
+<p>
+Set the paint scale.</p>
 <p class="code">
 <code style="white-space: break-spaces">func scaleTransform(using self, x: f32, y: f32)
 </code>
 </p>
-<p>
-Set the paint scale.</p>
 <p>
 <table class="h3">
 <tr>
@@ -12552,12 +12552,12 @@ Set the paint scale.</p>
 </tr>
 </table>
 </p>
+<p>
+Set antialiased mode on/off.</p>
 <p class="code">
 <code style="white-space: break-spaces">func setAntialiased(using self, aa = true)
 </code>
 </p>
-<p>
-Set antialiased mode on/off.</p>
 <p>
 <table class="h3">
 <tr>
@@ -12569,12 +12569,12 @@ Set antialiased mode on/off.</p>
 </tr>
 </table>
 </p>
+<p>
+Set the current blending mode.</p>
 <p class="code">
 <code style="white-space: break-spaces">func setBlendingMode(using self, mode: BlendingMode)
 </code>
 </p>
-<p>
-Set the current blending mode.</p>
 <p>
 <table class="h3">
 <tr>
@@ -12586,6 +12586,8 @@ Set the current blending mode.</p>
 </tr>
 </table>
 </p>
+<p>
+Set the current clipping rectangle.</p>
 <p class="code">
 <code style="white-space: break-spaces">func setClippingRect(using self, x: f32, y: f32, width: f32, height: f32)
 </code>
@@ -12597,8 +12599,6 @@ Set the current clipping rectangle.</p>
 </code>
 </p>
 <p>
-Set the current clipping rectangle.</p>
-<p>
 <table class="h3">
 <tr>
 <td class="h3">
@@ -12609,12 +12609,12 @@ Set the current clipping rectangle.</p>
 </tr>
 </table>
 </p>
+<p>
+Set the clipping region mode.</p>
 <p class="code">
 <code style="white-space: break-spaces">func setClippingRegionMode(using self, mode: ClippingMode)
 </code>
 </p>
-<p>
-Set the clipping region mode.</p>
 <p>
 <table class="h3">
 <tr>
@@ -12626,6 +12626,8 @@ Set the clipping region mode.</p>
 </tr>
 </table>
 </p>
+<p>
+Set color mask.</p>
 <p class="code">
 <code style="white-space: break-spaces">func setColorMask(using self, cm: ColorMask)
 </code>
@@ -12636,8 +12638,6 @@ Set color mask.</p>
 <code style="white-space: break-spaces">func setColorMask(using self, r: bool, g: bool, b: bool, a: bool)
 </code>
 </p>
-<p>
-Set color mask.</p>
 <p>
 <table class="h3">
 <tr>
@@ -12694,12 +12694,12 @@ Set color mask.</p>
 </tr>
 </table>
 </p>
+<p>
+Set the texture interpolation mode.</p>
 <p class="code">
 <code style="white-space: break-spaces">func setInterpolationMode(using self, mode: InterpolationMode)
 </code>
 </p>
-<p>
-Set the texture interpolation mode.</p>
 <p>
 <table class="h3">
 <tr>
@@ -12711,12 +12711,12 @@ Set the texture interpolation mode.</p>
 </tr>
 </table>
 </p>
+<p>
+Set the paint parameters.</p>
 <p class="code">
 <code style="white-space: break-spaces">func setParams(using self, add: PaintParams, remove: PaintParams = .Zero)
 </code>
 </p>
-<p>
-Set the paint parameters.</p>
 <p>
 <table class="h3">
 <tr>
@@ -12728,12 +12728,12 @@ Set the paint parameters.</p>
 </tr>
 </table>
 </p>
+<p>
+Set the paint quality.</p>
 <p class="code">
 <code style="white-space: break-spaces">func setQuality(using self, quality: PaintQuality)
 </code>
 </p>
-<p>
-Set the paint quality.</p>
 <p>
 <table class="h3">
 <tr>
@@ -12745,12 +12745,12 @@ Set the paint quality.</p>
 </tr>
 </table>
 </p>
+<p>
+Set the current shader.</p>
 <p class="code">
 <code style="white-space: break-spaces">func setShader(using self, shader: *ShaderBase = null)
 </code>
 </p>
-<p>
-Set the current shader.</p>
 <p>
 <table class="h3">
 <tr>
@@ -12762,6 +12762,8 @@ Set the current shader.</p>
 </tr>
 </table>
 </p>
+<p>
+Set a shader parameter.</p>
 <p class="code">
 <code style="white-space: break-spaces">func setShaderParam(using self, param: ShaderParamHandle, val: s32)
 </code>
@@ -12773,8 +12775,6 @@ Set a shader parameter.</p>
 </code>
 </p>
 <p>
-Set a shader parameter.</p>
-<p>
 <table class="h3">
 <tr>
 <td class="h3">
@@ -12785,12 +12785,12 @@ Set a shader parameter.</p>
 </tr>
 </table>
 </p>
+<p>
+Set the current painting state.</p>
 <p class="code">
 <code style="white-space: break-spaces">func setState(using self, state: PaintState)
 </code>
 </p>
-<p>
-Set the current painting state.</p>
 <p>
 <table class="h3">
 <tr>
@@ -12802,12 +12802,12 @@ Set the current painting state.</p>
 </tr>
 </table>
 </p>
+<p>
+Set the paint transformation.</p>
 <p class="code">
 <code style="white-space: break-spaces">func setTransform(using self, tr: Transform2)
 </code>
 </p>
-<p>
-Set the paint transformation.</p>
 <p>
 <table class="h3">
 <tr>
@@ -12819,12 +12819,12 @@ Set the paint transformation.</p>
 </tr>
 </table>
 </p>
+<p>
+Start painting in the clipping buffer.</p>
 <p class="code">
 <code style="white-space: break-spaces">func startClippingRegion(using self, mode = ClippingMode.Set)
 </code>
 </p>
-<p>
-Start painting in the clipping buffer.</p>
 <p>
 <table class="h3">
 <tr>
@@ -12836,12 +12836,12 @@ Start painting in the clipping buffer.</p>
 </tr>
 </table>
 </p>
+<p>
+Set the paint position.</p>
 <p class="code">
 <code style="white-space: break-spaces">func translateTransform(using self, x: f32, y: f32)
 </code>
 </p>
-<p>
-Set the paint position.</p>
 <p>
 <table class="h3">
 <tr>
@@ -12853,12 +12853,12 @@ Set the paint position.</p>
 </tr>
 </table>
 </p>
+<p>
+Bind a render target.</p>
 <p class="code">
 <code style="white-space: break-spaces">func unbindRenderTarget(using self)
 </code>
 </p>
-<p>
-Bind a render target.</p>
 <p>
 <table class="h3">
 <tr>
@@ -13038,12 +13038,12 @@ Returns a solid color pen.</p>
 </tr>
 </table>
 </p>
+<p>
+Returns a dash pen.</p>
 <p class="code">
 <code style="white-space: break-spaces">func createDash(style: DashStyle, color: Color, size: f32 = 1)->Pen
 </code>
 </p>
-<p>
-Returns a dash pen.</p>
 <p>
 <table class="h3">
 <tr>
@@ -13055,12 +13055,12 @@ Returns a dash pen.</p>
 </tr>
 </table>
 </p>
+<p>
+Return a predefined hatch pen.</p>
 <p class="code">
 <code style="white-space: break-spaces">func createHatch(type: HatchStyle, color: Color, size: f32 = 1)->Pen
 </code>
 </p>
-<p>
-Return a predefined hatch pen.</p>
 <p>
 <table class="h3">
 <tr>
@@ -13072,12 +13072,12 @@ Return a predefined hatch pen.</p>
 </tr>
 </table>
 </p>
+<p>
+Returns a solid color pen.</p>
 <p class="code">
 <code style="white-space: break-spaces">func createSolid(color: Color, size: f32 = 1)->Pen
 </code>
 </p>
-<p>
-Returns a solid color pen.</p>
 <p>
 <table class="h3">
 <tr>
@@ -13128,12 +13128,12 @@ RGBA8</td>
 </tr>
 </table>
 </p>
+<p>
+Returns the bit depth of each channel.</p>
 <p class="code">
 <code style="white-space: break-spaces">func bitDepth(self)->u8
 </code>
 </p>
-<p>
-Returns the bit depth of each channel.</p>
 <p>
 <table class="h3">
 <tr>
@@ -13145,12 +13145,12 @@ Returns the bit depth of each channel.</p>
 </tr>
 </table>
 </p>
+<p>
+Returns the bpp (bits per pixel) of the given pixel format.</p>
 <p class="code">
 <code style="white-space: break-spaces">func bpp(self)->u8
 </code>
 </p>
-<p>
-Returns the bpp (bits per pixel) of the given pixel format.</p>
 <p>
 <table class="h3">
 <tr>
@@ -13162,12 +13162,12 @@ Returns the bpp (bits per pixel) of the given pixel format.</p>
 </tr>
 </table>
 </p>
+<p>
+Returns the number of image channels.</p>
 <p class="code">
 <code style="white-space: break-spaces">func channels(self)->u8
 </code>
 </p>
-<p>
-Returns the number of image channels.</p>
 <p>
 <table class="h3">
 <tr>
@@ -13179,12 +13179,12 @@ Returns the number of image channels.</p>
 </tr>
 </table>
 </p>
+<p>
+Returns true if the given pixel format has an alpha channel.</p>
 <p class="code">
 <code style="white-space: break-spaces">func hasAlpha(self)->bool
 </code>
 </p>
-<p>
-Returns true if the given pixel format has an alpha channel.</p>
 <p>
 <table class="h3">
 <tr>
@@ -14184,12 +14184,12 @@ Triangulate.</p>
 </tr>
 </table>
 </p>
+<p>
+Register a new point.</p>
 <p class="code">
 <code style="white-space: break-spaces">func addPoint(using self, x: f32, y: f32)
 </code>
 </p>
-<p>
-Register a new point.</p>
 <p>
 <table class="h3">
 <tr>
@@ -14201,12 +14201,12 @@ Register a new point.</p>
 </tr>
 </table>
 </p>
+<p>
+Clear content.</p>
 <p class="code">
 <code style="white-space: break-spaces">func clear(using self)
 </code>
 </p>
-<p>
-Clear content.</p>
 <p>
 <table class="h3">
 <tr>
@@ -14218,12 +14218,12 @@ Clear content.</p>
 </tr>
 </table>
 </p>
+<p>
+To call to register the polyline.</p>
 <p class="code">
 <code style="white-space: break-spaces">func endPolyLine(using self)
 </code>
 </p>
-<p>
-To call to register the polyline.</p>
 <p>
 <table class="h3">
 <tr>
@@ -14235,12 +14235,12 @@ To call to register the polyline.</p>
 </tr>
 </table>
 </p>
+<p>
+Returns the list of triangles.</p>
 <p class="code">
 <code style="white-space: break-spaces">func getTriangles(using self)->[..] *Triangle
 </code>
 </p>
-<p>
-Returns the list of triangles.</p>
 <p>
 <table class="h3">
 <tr>
@@ -14252,12 +14252,12 @@ Returns the list of triangles.</p>
 </tr>
 </table>
 </p>
+<p>
+To call before adding a polyline.</p>
 <p class="code">
 <code style="white-space: break-spaces">func startPolyLine(using self)
 </code>
 </p>
-<p>
-To call before adding a polyline.</p>
 <p>
 <table class="h3">
 <tr>
@@ -14269,12 +14269,12 @@ To call before adding a polyline.</p>
 </tr>
 </table>
 </p>
+<p>
+Triangulate.</p>
 <p class="code">
 <code style="white-space: break-spaces">func triangulate(using self)
 </code>
 </p>
-<p>
-Triangulate.</p>
 <p>
 <table class="h3">
 <tr>
@@ -14499,12 +14499,12 @@ Slow but quality offset with a joinStyle.</p>
 </tr>
 </table>
 </p>
+<p>
+Add a new point.</p>
 <p class="code">
 <code style="white-space: break-spaces">func add(using self, v: Vector2)
 </code>
 </p>
-<p>
-Add a new point.</p>
 <p>
 <table class="h3">
 <tr>
@@ -14516,12 +14516,12 @@ Add a new point.</p>
 </tr>
 </table>
 </p>
+<p>
+Clean polygon by removing bad/unecessary points.</p>
 <p class="code">
 <code style="white-space: break-spaces">func clean(using self)
 </code>
 </p>
-<p>
-Clean polygon by removing bad/unecessary points.</p>
 <p>
 <table class="h3">
 <tr>
@@ -14533,12 +14533,12 @@ Clean polygon by removing bad/unecessary points.</p>
 </tr>
 </table>
 </p>
+<p>
+Clear all points.</p>
 <p class="code">
 <code style="white-space: break-spaces">func clear(using self)
 </code>
 </p>
-<p>
-Clear all points.</p>
 <p>
 <table class="h3">
 <tr>
@@ -14550,12 +14550,12 @@ Clear all points.</p>
 </tr>
 </table>
 </p>
+<p>
+Compute internal values, like convex/clockwise Call it once the polygon contains all its points.</p>
 <p class="code">
 <code style="white-space: break-spaces">func compute(using self)
 </code>
 </p>
-<p>
-Compute internal values, like convex/clockwise Call it once the polygon contains all its points.</p>
 <p>
 <table class="h3">
 <tr>
@@ -14567,12 +14567,12 @@ Compute internal values, like convex/clockwise Call it once the polygon contains
 </tr>
 </table>
 </p>
+<p>
+Clean polygon by removing bad/unecessary points.</p>
 <p class="code">
 <code style="white-space: break-spaces">func getClean(using self)->LinePathList
 </code>
 </p>
-<p>
-Clean polygon by removing bad/unecessary points.</p>
 <p>
 <table class="h3">
 <tr>
@@ -14584,12 +14584,12 @@ Clean polygon by removing bad/unecessary points.</p>
 </tr>
 </table>
 </p>
+<p>
+Slow but quality offset with a joinStyle.</p>
 <p class="code">
 <code style="white-space: break-spaces">func getOffset(using self, value: f32, joinStyle: JoinStyle, toler: f32 = 0.5)->LinePathList
 </code>
 </p>
-<p>
-Slow but quality offset with a joinStyle.</p>
 <p>
 <table class="h3">
 <tr>
@@ -14601,18 +14601,18 @@ Slow but quality offset with a joinStyle.</p>
 </tr>
 </table>
 </p>
+<p>
+Get the given point.</p>
 <p class="code">
 <code style="white-space: break-spaces">func getPoint(using self, i: u64)->Vector2
 </code>
 </p>
 <p>
-Get the given point.</p>
+Get the given point, with an optional offset.</p>
 <p class="code">
 <code style="white-space: break-spaces">func getPoint(using self, i: u64, offset: f32)->Vector2
 </code>
 </p>
-<p>
-Get the given point, with an optional offset.</p>
 <p>
 <table class="h3">
 <tr>
@@ -14624,12 +14624,12 @@ Get the given point, with an optional offset.</p>
 </tr>
 </table>
 </p>
+<p>
+Divide by adding points if two points are too far away.</p>
 <p class="code">
 <code style="white-space: break-spaces">func normalizeDist(using self, dist: f32, closed: bool = true)
 </code>
 </p>
-<p>
-Divide by adding points if two points are too far away.</p>
 <p>
 <table class="h3">
 <tr>
@@ -14641,18 +14641,18 @@ Divide by adding points if two points are too far away.</p>
 </tr>
 </table>
 </p>
+<p>
+Fast expand polygon by a given amount.</p>
 <p class="code">
 <code style="white-space: break-spaces">func offset(using self, value: f32)
 </code>
 </p>
 <p>
-Fast expand polygon by a given amount.</p>
+Slow but quality offset with a joinStyle.</p>
 <p class="code">
 <code style="white-space: break-spaces">func offset(using self, value: f32, joinStyle: JoinStyle, toler: f32 = 0.5)
 </code>
 </p>
-<p>
-Slow but quality offset with a joinStyle.</p>
 <p>
 <table class="h3">
 <tr>
@@ -15044,12 +15044,12 @@ Update content of texture.</p>
 </tr>
 </table>
 </p>
+<p>
+Register an image for rendering.</p>
 <p class="code">
 <code style="white-space: break-spaces">func addImage(using self, image: Image)->Texture
 </code>
 </p>
-<p>
-Register an image for rendering.</p>
 <p>
 <table class="h3">
 <tr>
@@ -15061,12 +15061,12 @@ Register an image for rendering.</p>
 </tr>
 </table>
 </p>
+<p>
+To be called before rendering.</p>
 <p class="code">
 <code style="white-space: break-spaces">func begin(using self, rc: RenderingContext)
 </code>
 </p>
-<p>
-To be called before rendering.</p>
 <p>
 <table class="h3">
 <tr>
@@ -15078,12 +15078,12 @@ To be called before rendering.</p>
 </tr>
 </table>
 </p>
+<p>
+Set the current render target.</p>
 <p class="code">
 <code style="white-space: break-spaces">func bindRenderTarget(using self, rt: *RenderTarget, vp: *Rectangle = null)
 </code>
 </p>
-<p>
-Set the current render target.</p>
 <p>
 <table class="h3">
 <tr>
@@ -15095,12 +15095,12 @@ Set the current render target.</p>
 </tr>
 </table>
 </p>
+<p>
+Clear current render buffers.</p>
 <p class="code">
 <code style="white-space: break-spaces">func clear(using self)
 </code>
 </p>
-<p>
-Clear current render buffers.</p>
 <p>
 <table class="h3">
 <tr>
@@ -15127,12 +15127,12 @@ Clear current render buffers.</p>
 </tr>
 </table>
 </p>
+<p>
+Create a render target.</p>
 <p class="code">
 <code style="white-space: break-spaces">func createRenderTarget(using self, w: s32, h: s32)->RenderTarget
 </code>
 </p>
-<p>
-Create a render target.</p>
 <p>
 <table class="h3">
 <tr>
@@ -15144,12 +15144,12 @@ Create a render target.</p>
 </tr>
 </table>
 </p>
+<p>
+Create the given shader.</p>
 <p class="code">
 <code style="white-space: break-spaces">func createShader(using self, base: *ShaderBase, vertex: const [..] u8, pixel: const [..] u8) throw
 </code>
 </p>
-<p>
-Create the given shader.</p>
 <p>
 <table class="h3">
 <tr>
@@ -15161,12 +15161,12 @@ Create the given shader.</p>
 </tr>
 </table>
 </p>
+<p>
+Delete a render target.</p>
 <p class="code">
 <code style="white-space: break-spaces">func deleteRenderTarget(using self, rt: *RenderTarget)
 </code>
 </p>
-<p>
-Delete a render target.</p>
 <p>
 <table class="h3">
 <tr>
@@ -15178,12 +15178,12 @@ Delete a render target.</p>
 </tr>
 </table>
 </p>
+<p>
+Draw the given painter.</p>
 <p class="code">
 <code style="white-space: break-spaces">func draw(using self, dc: *Painter)
 </code>
 </p>
-<p>
-Draw the given painter.</p>
 <p>
 <table class="h3">
 <tr>
@@ -15195,12 +15195,12 @@ Draw the given painter.</p>
 </tr>
 </table>
 </p>
+<p>
+To be called after rendering.</p>
 <p class="code">
 <code style="white-space: break-spaces">func end(using self)
 </code>
 </p>
-<p>
-To be called after rendering.</p>
 <p>
 <table class="h3">
 <tr>
@@ -15212,12 +15212,12 @@ To be called after rendering.</p>
 </tr>
 </table>
 </p>
+<p>
+Get a render target of the given size releaseRenderTarget must be called to release it.</p>
 <p class="code">
 <code style="white-space: break-spaces">func getRenderTarget(using self, w: s32, h: s32)->*RenderTarget
 </code>
 </p>
-<p>
-Get a render target of the given size releaseRenderTarget must be called to release it.</p>
 <p>
 <table class="h3">
 <tr>
@@ -15229,12 +15229,12 @@ Get a render target of the given size releaseRenderTarget must be called to rele
 </tr>
 </table>
 </p>
+<p>
+Get the actual render target size.</p>
 <p class="code">
 <code style="white-space: break-spaces">func getTargetSize(using self)->{s32, s32}
 </code>
 </p>
-<p>
-Get the actual render target size.</p>
 <p>
 <table class="h3">
 <tr>
@@ -15246,12 +15246,12 @@ Get the actual render target size.</p>
 </tr>
 </table>
 </p>
+<p>
+Returns the pixels associated to a texture.</p>
 <p class="code">
 <code style="white-space: break-spaces">func getTexturePixels(using self, texture: Texture, pf: PixelFormat)->Array'(u8)
 </code>
 </p>
-<p>
-Returns the pixels associated to a texture.</p>
 <p>
 <table class="h3">
 <tr>
@@ -15263,12 +15263,12 @@ Returns the pixels associated to a texture.</p>
 </tr>
 </table>
 </p>
+<p>
+First init.</p>
 <p class="code">
 <code style="white-space: break-spaces">func init(using self)
 </code>
 </p>
-<p>
-First init.</p>
 <p>
 <table class="h3">
 <tr>
@@ -15295,12 +15295,12 @@ First init.</p>
 </tr>
 </table>
 </p>
+<p>
+Release the given render target.</p>
 <p class="code">
 <code style="white-space: break-spaces">func releaseRenderTarget(using self, tgt: *RenderTarget)
 </code>
 </p>
-<p>
-Release the given render target.</p>
 <p>
 <table class="h3">
 <tr>
@@ -15312,12 +15312,12 @@ Release the given render target.</p>
 </tr>
 </table>
 </p>
+<p>
+Unregister a texture created with <code class = "incode">addImage</code>.</p>
 <p class="code">
 <code style="white-space: break-spaces">func removeTexture(using self, texture: *Texture)
 </code>
 </p>
-<p>
-Unregister a texture created with <code class = "incode">addImage</code>.</p>
 <p>
 <table class="h3">
 <tr>
@@ -15329,12 +15329,12 @@ Unregister a texture created with <code class = "incode">addImage</code>.</p>
 </tr>
 </table>
 </p>
+<p>
+Reset the scissor.</p>
 <p class="code">
 <code style="white-space: break-spaces">func resetScissorRect(using self)
 </code>
 </p>
-<p>
-Reset the scissor.</p>
 <p>
 <table class="h3">
 <tr>
@@ -15346,12 +15346,12 @@ Reset the scissor.</p>
 </tr>
 </table>
 </p>
+<p>
+Reset the world transform.</p>
 <p class="code">
 <code style="white-space: break-spaces">func resetTransform(using self)
 </code>
 </p>
-<p>
-Reset the world transform.</p>
 <p>
 <table class="h3">
 <tr>
@@ -15363,6 +15363,8 @@ Reset the world transform.</p>
 </tr>
 </table>
 </p>
+<p>
+Rotate the world transform.</p>
 <p class="code">
 <code style="white-space: break-spaces">func rotateTransform(using self, angle: Angle)
 </code>
@@ -15374,8 +15376,6 @@ Rotate the world transform.</p>
 </code>
 </p>
 <p>
-Rotate the world transform.</p>
-<p>
 <table class="h3">
 <tr>
 <td class="h3">
@@ -15386,12 +15386,12 @@ Rotate the world transform.</p>
 </tr>
 </table>
 </p>
+<p>
+Scale the world transform.</p>
 <p class="code">
 <code style="white-space: break-spaces">func scaleTransform(using self, x: f32, y: f32)
 </code>
 </p>
-<p>
-Scale the world transform.</p>
 <p>
 <table class="h3">
 <tr>
@@ -15403,12 +15403,12 @@ Scale the world transform.</p>
 </tr>
 </table>
 </p>
+<p>
+Set the current rendering context.</p>
 <p class="code">
 <code style="white-space: break-spaces">func setCurrentContext(using self, rc: RenderingContext)
 </code>
 </p>
-<p>
-Set the current rendering context.</p>
 <p>
 <table class="h3">
 <tr>
@@ -15420,12 +15420,12 @@ Set the current rendering context.</p>
 </tr>
 </table>
 </p>
+<p>
+Force the scissor.</p>
 <p class="code">
 <code style="white-space: break-spaces">func setScissorRect(using self, rect: Rectangle)
 </code>
 </p>
-<p>
-Force the scissor.</p>
 <p>
 <table class="h3">
 <tr>
@@ -15437,12 +15437,12 @@ Force the scissor.</p>
 </tr>
 </table>
 </p>
+<p>
+Set the current shader.</p>
 <p class="code">
 <code style="white-space: break-spaces">func setShader(using self, shader: *ShaderBase = null)
 </code>
 </p>
-<p>
-Set the current shader.</p>
 <p>
 <table class="h3">
 <tr>
@@ -15454,12 +15454,12 @@ Set the current shader.</p>
 </tr>
 </table>
 </p>
+<p>
+Translate the world transform.</p>
 <p class="code">
 <code style="white-space: break-spaces">func translateTransform(using self, x: f32, y: f32)
 </code>
 </p>
-<p>
-Translate the world transform.</p>
 <p>
 <table class="h3">
 <tr>
@@ -15471,12 +15471,12 @@ Translate the world transform.</p>
 </tr>
 </table>
 </p>
+<p>
+Go back to the previous render target, or frame buffer.</p>
 <p class="code">
 <code style="white-space: break-spaces">func unbindRenderTarget(using self)
 </code>
 </p>
-<p>
-Go back to the previous render target, or frame buffer.</p>
 <p>
 <table class="h3">
 <tr>
@@ -15488,12 +15488,12 @@ Go back to the previous render target, or frame buffer.</p>
 </tr>
 </table>
 </p>
+<p>
+Get current render target pixels.</p>
 <p class="code">
 <code style="white-space: break-spaces">func unbindRenderTargetToImage(using self, x: s32, y: s32, w: s32, h: s32)->Image
 </code>
 </p>
-<p>
-Get current render target pixels.</p>
 <p>
 <table class="h3">
 <tr>
@@ -15505,12 +15505,12 @@ Get current render target pixels.</p>
 </tr>
 </table>
 </p>
+<p>
+Update content of texture.</p>
 <p class="code">
 <code style="white-space: break-spaces">func updateTexture(using self, texture: Texture, pixels: const *u8)
 </code>
 </p>
-<p>
-Update content of texture.</p>
 <p>
 <table class="h3">
 <tr>
@@ -15917,12 +15917,12 @@ Associate a string (can have multiple lines) Accepted markers are : &lt;u&gt;  .
 </tr>
 </table>
 </p>
+<p>
+Compute layout.</p>
 <p class="code">
 <code style="white-space: break-spaces">func compute(using self)
 </code>
 </p>
-<p>
-Compute layout.</p>
 <p>
 <table class="h3">
 <tr>
@@ -15934,12 +15934,12 @@ Compute layout.</p>
 </tr>
 </table>
 </p>
+<p>
+Force to be repainted.</p>
 <p class="code">
 <code style="white-space: break-spaces">func invalidate(using self)
 </code>
 </p>
-<p>
-Force to be repainted.</p>
 <p>
 <table class="h3">
 <tr>
@@ -16011,12 +16011,12 @@ Force to be repainted.</p>
 </tr>
 </table>
 </p>
+<p>
+Associate a string (can have multiple lines) Accepted markers are : &lt;u&gt;  ... &lt;u&gt;  =&gt; underline &lt;b&gt;  ... &lt;b&gt;  =&gt; bold &lt;i&gt;  ... &lt;i&gt;  =&gt; italic &lt;p1&gt; ... &lt;p1&gt; =&gt; color palette 1 &lt;p2&gt; ... &lt;p2&gt; =&gt; color palette 2 &lt;p3&gt; ... &lt;p3&gt; =&gt; color palette 3.</p>
 <p class="code">
 <code style="white-space: break-spaces">func set(using self, text: string)
 </code>
 </p>
-<p>
-Associate a string (can have multiple lines) Accepted markers are : &lt;u&gt;  ... &lt;u&gt;  =&gt; underline &lt;b&gt;  ... &lt;b&gt;  =&gt; bold &lt;i&gt;  ... &lt;i&gt;  =&gt; italic &lt;p1&gt; ... &lt;p1&gt; =&gt; color palette 1 &lt;p2&gt; ... &lt;p2&gt; =&gt; color palette 2 &lt;p3&gt; ... &lt;p3&gt; =&gt; color palette 3.</p>
 <p>
 <table class="h3">
 <tr>
@@ -16468,12 +16468,12 @@ Set vertical alignment.</p>
 </tr>
 </table>
 </p>
+<p>
+Set text color.</p>
 <p class="code">
 <code style="white-space: break-spaces">func color(using self, col: Color)
 </code>
 </p>
-<p>
-Set text color.</p>
 <p>
 <table class="h3">
 <tr>
@@ -16485,12 +16485,12 @@ Set text color.</p>
 </tr>
 </table>
 </p>
+<p>
+Draw string.</p>
 <p class="code">
 <code style="white-space: break-spaces">func draw(using self, painter: *Painter, rect: Rectangle, what: string)
 </code>
 </p>
-<p>
-Draw string.</p>
 <p>
 <table class="h3">
 <tr>
@@ -16502,12 +16502,12 @@ Draw string.</p>
 </tr>
 </table>
 </p>
+<p>
+Set drawing flags.</p>
 <p class="code">
 <code style="white-space: break-spaces">func flags(using self, f: StringFormatFlags)
 </code>
 </p>
-<p>
-Set drawing flags.</p>
 <p>
 <table class="h3">
 <tr>
@@ -16519,12 +16519,12 @@ Set drawing flags.</p>
 </tr>
 </table>
 </p>
+<p>
+Set font.</p>
 <p class="code">
 <code style="white-space: break-spaces">func font(using self, font: *Font)
 </code>
 </p>
-<p>
-Set font.</p>
 <p>
 <table class="h3">
 <tr>
@@ -16536,12 +16536,12 @@ Set font.</p>
 </tr>
 </table>
 </p>
+<p>
+Set horizontal alignment.</p>
 <p class="code">
 <code style="white-space: break-spaces">func horzAlign(using self, align: StringHorzAlignment)
 </code>
 </p>
-<p>
-Set horizontal alignment.</p>
 <p>
 <table class="h3">
 <tr>
@@ -16553,12 +16553,12 @@ Set horizontal alignment.</p>
 </tr>
 </table>
 </p>
+<p>
+Set vertical alignment.</p>
 <p class="code">
 <code style="white-space: break-spaces">func vertAlign(using self, align: StringVertAlignment)
 </code>
 </p>
-<p>
-Set vertical alignment.</p>
 <p>
 <table class="h3">
 <tr>
@@ -17143,12 +17143,12 @@ Render one glyph.</p>
 </tr>
 </table>
 </p>
+<p>
+Get or create a new typeface from a memory buffer.</p>
 <p class="code">
 <code style="white-space: break-spaces">func create(fullname: string, bytes: const [..] u8)->*TypeFace throw
 </code>
 </p>
-<p>
-Get or create a new typeface from a memory buffer.</p>
 <p>
 <table class="h3">
 <tr>
@@ -17160,12 +17160,12 @@ Get or create a new typeface from a memory buffer.</p>
 </tr>
 </table>
 </p>
+<p>
+Create a new typeface from a HFONT.</p>
 <p class="code">
 <code style="white-space: break-spaces">func createFromHFONT(fullname: string, hf: HFONT)->*TypeFace throw
 </code>
 </p>
-<p>
-Create a new typeface from a HFONT.</p>
 <p>
 <table class="h3">
 <tr>
@@ -17177,12 +17177,12 @@ Create a new typeface from a HFONT.</p>
 </tr>
 </table>
 </p>
+<p>
+Returns the underlying font family name.</p>
 <p class="code">
 <code style="white-space: break-spaces">func getFamilyName(using const self)->string
 </code>
 </p>
-<p>
-Returns the underlying font family name.</p>
 <p>
 <table class="h3">
 <tr>
@@ -17194,12 +17194,12 @@ Returns the underlying font family name.</p>
 </tr>
 </table>
 </p>
+<p>
+Convert a rune to its outline, at a given size.</p>
 <p class="code">
 <code style="white-space: break-spaces">func getRuneOutline(using self, pathList: *LinePathList, c: rune, size: u32, embolden: u32 = 0)->f32 throw
 </code>
 </p>
-<p>
-Convert a rune to its outline, at a given size.</p>
 <p>
 <table class="h3">
 <tr>
@@ -17211,12 +17211,12 @@ Convert a rune to its outline, at a given size.</p>
 </tr>
 </table>
 </p>
+<p>
+Convert a string to its outline, at a given size.</p>
 <p class="code">
 <code style="white-space: break-spaces">func getStringOutline(using self, pathList: *LinePathList, text: string, size: u32, embolden: u32 = 0) throw
 </code>
 </p>
-<p>
-Convert a string to its outline, at a given size.</p>
 <p>
 <table class="h3">
 <tr>
@@ -17228,12 +17228,12 @@ Convert a string to its outline, at a given size.</p>
 </tr>
 </table>
 </p>
+<p>
+Returns true if the typeface is bold.</p>
 <p class="code">
 <code style="white-space: break-spaces">func isBold(using const self)->bool
 </code>
 </p>
-<p>
-Returns true if the typeface is bold.</p>
 <p>
 <table class="h3">
 <tr>
@@ -17245,12 +17245,12 @@ Returns true if the typeface is bold.</p>
 </tr>
 </table>
 </p>
+<p>
+Returns true if the typeface is italic.</p>
 <p class="code">
 <code style="white-space: break-spaces">func isItalic(using const self)->bool
 </code>
 </p>
-<p>
-Returns true if the typeface is italic.</p>
 <p>
 <table class="h3">
 <tr>
@@ -17262,12 +17262,12 @@ Returns true if the typeface is italic.</p>
 </tr>
 </table>
 </p>
+<p>
+Get or load a new typeface.</p>
 <p class="code">
 <code style="white-space: break-spaces">func load(fullname: string)->*TypeFace throw
 </code>
 </p>
-<p>
-Get or load a new typeface.</p>
 <p>
 <table class="h3">
 <tr>
@@ -17279,12 +17279,12 @@ Get or load a new typeface.</p>
 </tr>
 </table>
 </p>
+<p>
+Release the given typeface.</p>
 <p class="code">
 <code style="white-space: break-spaces">func release(typeface: *TypeFace)
 </code>
 </p>
-<p>
-Release the given typeface.</p>
 <p>
 <table class="h3">
 <tr>
@@ -17296,12 +17296,12 @@ Release the given typeface.</p>
 </tr>
 </table>
 </p>
+<p>
+Render one glyph.</p>
 <p class="code">
 <code style="white-space: break-spaces">func renderGlyph(using self, c: rune, size: u32, forceBold = false, forceItalic = false)->const *FT_Bitmap throw
 </code>
 </p>
-<p>
-Render one glyph.</p>
 <p>
 <table class="h3">
 <tr>

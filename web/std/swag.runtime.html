@@ -106,7 +106,7 @@
             border: 1px dotted  #cccccc;
         }
         .code {
-            background-color:   LightYellow;
+            background-color:   #eeeeee;
             border:             1px solid LightGrey;
             padding:            10px;
             width:              90%;
@@ -430,12 +430,12 @@ func @acos(value: f64)->f64
 </tr>
 </table>
 </p>
+<p>
+Returns a system allocated memory block of <code class = "incode">size</code> bytes.</p>
 <p class="code">
 <code style="white-space: break-spaces">func @alloc(size: u64)->*void
 </code>
 </p>
-<p>
-Returns a system allocated memory block of <code class = "incode">size</code> bytes.</p>
 <p>
  Use <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\swag.runtime.html#@free">@free</a> to release the allocated memory.</p>
 <p>
@@ -761,12 +761,12 @@ func @ceil(value: f64)->f64
 </tr>
 </table>
 </p>
+<p>
+Returns an <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\swag.runtime.html#Swag.ICompiler">ICompiler</a> interface to communicate with the compiler.</p>
 <p class="code">
 <code style="white-space: break-spaces">func @compiler()->ICompiler
 </code>
 </p>
-<p>
-Returns an <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\swag.runtime.html#Swag.ICompiler">ICompiler</a> interface to communicate with the compiler.</p>
 <p>
 <table class="h3">
 <tr>
@@ -903,12 +903,12 @@ func @floor(value: f64)->f64
 </tr>
 </table>
 </p>
+<p>
+Free a system memory block allocated with <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\swag.runtime.html#@alloc">@alloc</a>.</p>
 <p class="code">
 <code style="white-space: break-spaces">func @free(ptr: ^void)
 </code>
 </p>
-<p>
-Free a system memory block allocated with <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\swag.runtime.html#@alloc">@alloc</a>.</p>
 <p>
 <table class="h3">
 <tr>
@@ -1067,12 +1067,12 @@ func @max(value1: f64, value2: f64)->f64
 </tr>
 </table>
 </p>
+<p>
+Compare two memory block, and returns -1, 0 if equal, or 1.</p>
 <p class="code">
 <code style="white-space: break-spaces">func @memcmp(dst: const ^void, src: const ^void, size: u64)->s32
 </code>
 </p>
-<p>
-Compare two memory block, and returns -1, 0 if equal, or 1.</p>
 <p>
 <table class="h3">
 <tr>
@@ -1084,12 +1084,12 @@ Compare two memory block, and returns -1, 0 if equal, or 1.</p>
 </tr>
 </table>
 </p>
+<p>
+Copy one memory block to another address.</p>
 <p class="code">
 <code style="white-space: break-spaces">func @memcpy(dst: ^void, src: const ^void, size: u64)
 </code>
 </p>
-<p>
-Copy one memory block to another address.</p>
 <p>
 <table class="h3">
 <tr>
@@ -1101,12 +1101,12 @@ Copy one memory block to another address.</p>
 </tr>
 </table>
 </p>
+<p>
+Move one memory block to another address.</p>
 <p class="code">
 <code style="white-space: break-spaces">func @memmove(dst: ^void, src: const ^void, size: u64)
 </code>
 </p>
-<p>
-Move one memory block to another address.</p>
 <p>
 <table class="h3">
 <tr>
@@ -1118,12 +1118,12 @@ Move one memory block to another address.</p>
 </tr>
 </table>
 </p>
+<p>
+Set all bytes of a given memory block to <code class = "incode">value</code>.</p>
 <p class="code">
 <code style="white-space: break-spaces">func @memset(dst: ^void, value: u8, size: u64)
 </code>
 </p>
-<p>
-Set all bytes of a given memory block to <code class = "incode">value</code>.</p>
 <p>
 <table class="h3">
 <tr>
@@ -1236,12 +1236,12 @@ func @pow(value1: f64, value2: f64)->f64
 </tr>
 </table>
 </p>
+<p>
+Realloc a system memory block allocated with <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\swag.runtime.html#@alloc">@alloc</a>.</p>
 <p class="code">
 <code style="white-space: break-spaces">func @realloc(ptr: ^void, size: u64)->*void
 </code>
 </p>
-<p>
-Realloc a system memory block allocated with <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\swag.runtime.html#@alloc">@alloc</a>.</p>
 <p>
 <table class="h3">
 <tr>
@@ -1347,12 +1347,12 @@ func @sqrt(value: f64)->f64
 </tr>
 </table>
 </p>
+<p>
+Compare two zero terminated strings, and returns -1, 0 if equal, or 1.</p>
 <p class="code">
 <code style="white-space: break-spaces">func @strcmp(str1: cstring, str2: cstring)->s32
 </code>
 </p>
-<p>
-Compare two zero terminated strings, and returns -1, 0 if equal, or 1.</p>
 <p>
 <table class="h3">
 <tr>
@@ -1364,12 +1364,12 @@ Compare two zero terminated strings, and returns -1, 0 if equal, or 1.</p>
 </tr>
 </table>
 </p>
+<p>
+Compares two strings, and returns <code class = "incode">true</code> if they are equal.</p>
 <p class="code">
 <code style="white-space: break-spaces">func @stringcmp(str1: string, str2: string)->bool
 </code>
 </p>
-<p>
-Compares two strings, and returns <code class = "incode">true</code> if they are equal.</p>
 <p>
 <table class="h3">
 <tr>
@@ -1381,12 +1381,12 @@ Compares two strings, and returns <code class = "incode">true</code> if they are
 </tr>
 </table>
 </p>
+<p>
+Returns the length of the given 0 terminated string.</p>
 <p class="code">
 <code style="white-space: break-spaces">func @strlen(str: cstring)->u64
 </code>
 </p>
-<p>
-Returns the length of the given 0 terminated string.</p>
 <p>
 <table class="h3">
 <tr>
@@ -3665,12 +3665,12 @@ Setup the allocator.</p>
 </tr>
 </table>
 </p>
+<p>
+This function will assert if the given user address is not conform to an allocated block.</p>
 <p class="code">
 <code style="white-space: break-spaces">func assertIsAllocated(using self, addr: *void, callerLoc = #callerlocation)
 </code>
 </p>
-<p>
-This function will assert if the given user address is not conform to an allocated block.</p>
 <p>
 <table class="h3">
 <tr>
@@ -3682,12 +3682,12 @@ This function will assert if the given user address is not conform to an allocat
 </tr>
 </table>
 </p>
+<p>
+Check all allocated blocks.</p>
 <p class="code">
 <code style="white-space: break-spaces">func checkAllMemory(using self)
 </code>
 </p>
-<p>
-Check all allocated blocks.</p>
 <p>
 <table class="h3">
 <tr>
@@ -3774,12 +3774,12 @@ Check all allocated blocks.</p>
 </tr>
 </table>
 </p>
+<p>
+Output to the console the list of all allocated blocks (leaks).</p>
 <p class="code">
 <code style="white-space: break-spaces">func printLeaks(using self)
 </code>
 </p>
-<p>
-Output to the console the list of all allocated blocks (leaks).</p>
 <p>
 <table class="h3">
 <tr>
@@ -3791,12 +3791,12 @@ Output to the console the list of all allocated blocks (leaks).</p>
 </tr>
 </table>
 </p>
+<p>
+Setup the allocator.</p>
 <p class="code">
 <code style="white-space: break-spaces">func setup(using self, allocator: IAllocator)
 </code>
 </p>
-<p>
-Setup the allocator.</p>
 <p>
 <table class="h3">
 <tr>
@@ -5218,12 +5218,12 @@ u64</td>
 </tr>
 </table>
 </p>
+<p>
+Restore all memory.</p>
 <p class="code">
 <code style="white-space: break-spaces">func freeAll(using self)
 </code>
 </p>
-<p>
-Restore all memory.</p>
 <p>
 <table class="h3">
 <tr>
@@ -5235,12 +5235,12 @@ Restore all memory.</p>
 </tr>
 </table>
 </p>
+<p>
+Release the allocated block.</p>
 <p class="code">
 <code style="white-space: break-spaces">func release(using self)
 </code>
 </p>
-<p>
-Release the allocated block.</p>
 <p>
 <table class="h3">
 <tr>
@@ -5252,12 +5252,12 @@ Release the allocated block.</p>
 </tr>
 </table>
 </p>
+<p>
+This will call <code class = "incode">release</code> prior to changing the capacity, so this must be called at an early stage.</p>
 <p class="code">
 <code style="white-space: break-spaces">func setCapacity(using self, newCapacity: u64, allocator: IAllocator)
 </code>
 </p>
-<p>
-This will call <code class = "incode">release</code> prior to changing the capacity, so this must be called at an early stage.</p>
 <p>
 <table class="h3">
 <tr>

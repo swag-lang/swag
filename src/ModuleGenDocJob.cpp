@@ -808,7 +808,7 @@ void ModuleGenDocJob::outputStyles()
             border: 1px dotted  #cccccc;\n\
         }\n\
         .code {\n\
-            background-color:   LightYellow;\n\
+            background-color:   #eeeeee;\n\
             border:             1px solid LightGrey;\n\
             padding:            10px;\n\
             width:              90%;\n\
@@ -1080,9 +1080,9 @@ void ModuleGenDocJob::generateContent()
 
                 if (!subUserComment.shortDesc.lines.empty() || !subUserComment.blocks.empty())
                 {
+                    outputUserBlock(subUserComment.shortDesc);
                     outputCode(code);
                     code.clear();
-                    outputUserBlock(subUserComment.shortDesc);
                     outputUserComment(subUserComment);
                 }
             }

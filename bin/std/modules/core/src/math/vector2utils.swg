@@ -68,12 +68,15 @@ impl Vector2
     }
 
     // Returns the minimal segment between two segments (and the minimal distance)
+    //
+    // ---
     // David Eberly, Geometric Tools, Redmond WA 98052
     // Copyright (c) 1998-2022
     // Distributed under the Boost Software License, Version 1.0.
     // https://www.boost.org/LICENSE_1_0.txt
     // https://www.geometrictools.com/License/Boost/LICENSE_1_0.txt
     // https://www.geometrictools.com/GTE/Mathematics/DistSegmentSegment.h
+    // ---
     func nearestPointsSegSeg(p0, p1, q0, q1: Math.Vector2)->{a: Math.Vector2, b: Math.Vector2, dist: f32}
     {
         p1p0 := p1 - p0
