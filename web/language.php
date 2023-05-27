@@ -23,8 +23,8 @@
     }
 
     .blockquote {
-        border-left:  2px solid Orange;
-        margin-left:  10px;
+        border-left: 2px solid Orange;
+        margin-left: 10px;
         padding-left: 10px;
     }
 
@@ -6572,7 +6572,6 @@ Here is a real life example from the <code class="incode">Std.Ogl</code> module 
 </span><span style="color:#569CD6">func</span><span style="color:#FFFFFF"> </span><span style="color:#FF7411">two</span><span style="color:#FFFFFF">()
 {
 }</span></code></div>
-</div>
 </div>
 </div>
 </div>

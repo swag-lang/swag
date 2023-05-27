@@ -1,11 +1,25 @@
 <?php include('html_start.php'); include('header.php'); ?>
 
     <style>
+    html, body {
+        height: 100%;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+        margin: revert;
+        font-size: revert;
+        font-weight: revert;
+    }
+
     .code {
         background-color: #333333;
         border: 1px solid LightGrey;
         margin: 20px;
         padding: 20px;
+    }
+
+    code {
+        font-size: 0.8em;
     }
 
     .blockquote {
@@ -22,35 +36,27 @@
 
     .container {
         display:        flex;
-        flex-wrap:      nowrap;
-        flex-direction: row;
         height:         100%;
         font-family:    Segoe UI;
         line-height:    1.3em;
     }
 
     .left {
-        display:    block;
         overflow-y: scroll;
-        width:      450;
+        width:      450px;
         height:     100%;
     }
 
     .right {
-        display:     block;
-        overflow-y:  scroll;
-        width:       100%;
-        height:      100%;
+        overflow-y:   scroll;
+        width:        100%;
+        height:       100%;
+        padding-left: 10px;
     }
 
-    .page {
-        width:       1000;
-        margin:      0 auto;
-    }
-
-    .tocbullet {
-        list-style-type:    none;
-        margin-left:        -20px;
+    .container ul, .tocbullet {
+        list-style-type: revert;
+        padding: revert;
     }
 
     a {
@@ -62,8 +68,9 @@
     }
 
     </style>
+<div class="lg:m-auto lg:w-[70rem] pt-2 lg:pt-10 overflow-hidden p-5" style="height: 93%;">
 <div class="container">
-<div class="left">
+<div class="left hidden lg:block">
 <h1>Content</h1>
 <ul>
 <li><a href="#000_introduction">Introduction</a></li>
