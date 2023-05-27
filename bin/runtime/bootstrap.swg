@@ -260,10 +260,10 @@ namespace Swag
     {
         callerLoc:  SourceCodeLocation      // The caller code, to help tracking leaks. Optional.
         hint:       string                  // A hint message, to help tracking leaks. Optional.
-        address:	*void                   // The returned address or the address to deal with.
-        size:		u64                     // The requested size or the size to deal with.
-        oldSize:	u64                     // When reallocating.
-        mode =		AllocatorMode.Alloc     // Alloc, free, reallocate...
+        address:    *void                   // The returned address or the address to deal with.
+        size:       u64                     // The requested size or the size to deal with.
+        oldSize:    u64                     // When reallocating.
+        mode =      AllocatorMode.Alloc     // Alloc, free, reallocate...
         alignement: u32                     // Alignement constraint.
     }
 
@@ -405,23 +405,23 @@ namespace Swag
 
     struct AttributeParam
     {
-        name:	string
-        value:	any
+        name:    string
+        value:   any
     }
 
     struct Attribute
     {
         type:   const *TypeInfo
-        params:	const [..] AttributeParam
+        params: const [..] AttributeParam
     }
 
     struct TypeValue
     {
-        name:		    string
-        pointedType:	const *TypeInfo
-        value:			const *void
-        attributes:	    const [..] Attribute
-        offset:			u32
+        name:           string
+        pointedType:    const *TypeInfo
+        value:          const *void
+        attributes:     const [..] Attribute
+        offset:         u32
         crc32:          u32
     }
 
@@ -432,86 +432,86 @@ namespace Swag
         sizeof:     u64
         crc32:      u32
         flags       = TypeInfoFlags.Zero
-        kind 	    = TypeInfoKind.Invalid
+        kind        = TypeInfoKind.Invalid
         padding:    [3] u8
     }
 
     struct TypeInfoNative
     {
         using base:     TypeInfo
-        nativeKind:		TypeInfoNativeKind = TypeInfoNativeKind.Void
+        nativeKind:     TypeInfoNativeKind = TypeInfoNativeKind.Void
     }
 
     struct TypeInfoPointer
     {
-        using base: 	TypeInfo
-        pointedType:	const *TypeInfo
+        using base:     TypeInfo
+        pointedType:    const *TypeInfo
     }
 
     struct TypeInfoAlias
     {
-        using base: 	TypeInfo
-        rawType:		const *TypeInfo
+        using base:     TypeInfo
+        rawType:        const *TypeInfo
     }
 
     struct TypeInfoStruct
     {
-        using base: 	TypeInfo
+        using base:     TypeInfo
         opInit:         func(*void)
         opDrop:         func(*void)
         opPostCopy:     func(*void)
         opPostMove:     func(*void)
-        structName:	    string
+        structName:     string
         fromGeneric:    const *TypeInfo
-        generics:		const [..] TypeValue
-        fields:		    const [..] TypeValue
-        methods:	    const [..] TypeValue
+        generics:       const [..] TypeValue
+        fields:         const [..] TypeValue
+        methods:        const [..] TypeValue
         interfaces:     const [..] TypeValue
-        attributes:	    const [..] Attribute
+        attributes:     const [..] Attribute
     }
 
     struct TypeInfoFunc
     {
-        using base: 	TypeInfo
-        generics:		const [..] TypeValue
-        parameters:		const [..] TypeValue
-        returnType:		const *TypeInfo
-        attributes:	    const [..] Attribute
+        using base:     TypeInfo
+        generics:       const [..] TypeValue
+        parameters:     const [..] TypeValue
+        returnType:     const *TypeInfo
+        attributes:     const [..] Attribute
     }
 
     struct TypeInfoEnum
     {
         using base:     TypeInfo
-        values:		    const [..] TypeValue
-        rawType:	    const *TypeInfo
-        attributes:	    const [..] Attribute
+        values:         const [..] TypeValue
+        rawType:        const *TypeInfo
+        attributes:     const [..] Attribute
     }
 
     struct TypeInfoArray
     {
-        using base: 	TypeInfo
-        pointedType:	const *TypeInfo
-        finalType:		const *TypeInfo
-        count:			u64
-        totalCount:		u64
+        using base:     TypeInfo
+        pointedType:    const *TypeInfo
+        finalType:      const *TypeInfo
+        count:          u64
+        totalCount:     u64
     }
 
     struct TypeInfoSlice
     {
-        using base: 	TypeInfo
-        pointedType:	const *TypeInfo
+        using base:     TypeInfo
+        pointedType:    const *TypeInfo
     }
 
     struct TypeInfoVariadic
     {
-        using base:	TypeInfo
-        rawType:	const *TypeInfo
+        using base: TypeInfo
+        rawType:    const *TypeInfo
     }
 
     struct TypeInfoGeneric
     {
         using base: TypeInfo
-        rawType:	const *TypeInfo
+        rawType:    const *TypeInfo
     }
 
     struct TypeInfoNamespace
@@ -639,6 +639,8 @@ namespace Swag
 
         backendLLVM:    BuildCfgBackendLLVM     // Specific LLVM options
         backendX64:     BuildCfgBackendX64      // Specific X86_64 options
+
+        repoPath:  string  // Repository access path to the module
     }
 
     // #########################################################
@@ -655,7 +657,7 @@ namespace Swag
         SemTypes
         SemGlobals
         AttributeGen
-	}
+    }
 
     #[EnumFlags]
     enum CompilerMsgMask : u64
@@ -669,12 +671,12 @@ namespace Swag
         SemGlobals =            1 << cast(u32) CompilerMsgKind.SemGlobals
         AttributeGen =          1 << cast(u32) CompilerMsgKind.AttributeGen
         All =                   0xFFFFFFFF_FFFFFFFF
-	}
+    }
 
     struct CompilerMessage
     {
         moduleName:     string
-	    name:           string
+        name:           string
         type:           const* TypeInfo
         kind:           CompilerMsgKind = undefined
     }

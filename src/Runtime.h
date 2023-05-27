@@ -252,6 +252,9 @@ struct BuildCfg
     // Specific backend parameters
     BuildCfgBackendLLVM backendLLVM;
     BuildCfgBackendX64  backendX64;
+
+    // Paths
+    SwagSlice repoPath;
 };
 
 enum class TypeInfoKind : uint8_t

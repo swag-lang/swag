@@ -168,16 +168,16 @@ void ModuleGenDocJob::outputTable(Scope* scope, AstNodeKind kind, const char* ti
         if (first)
         {
             helpContent += Fmt("<h3>%s</h3>\n", title);
-            helpContent += "<table>\n";
+            helpContent += "<table class=\"enumeration\">\n";
             first = false;
         }
 
         helpContent += "<tr>\n";
-        helpContent += "<td>\n";
+        helpContent += "<td class=\"enumeration\">\n";
         helpContent += Fmt("<a href=\"#%s\">%s</a>", n1->getScopedName().c_str(), n1->token.ctext());
         helpContent += "</td>\n";
 
-        helpContent += "<td>\n";
+        helpContent += "<td class=\"enumeration\">\n";
         auto subDocComment = getDocComment(n1);
         if (!subDocComment.empty())
         {
@@ -218,11 +218,18 @@ void ModuleGenDocJob::outputTitle(OneRef& c)
     case AstNodeKind::AttrDecl:
         name = "attr";
         break;
+    case AstNodeKind::ConstDecl:
+        name = "const";
+        break;
     default:
         SWAG_ASSERT(false);
         break;
     }
 
+    helpContent += "<p>\n";
+    helpContent += "<table class=\"h3\">\n";
+    helpContent += "<tr>\n";
+    helpContent += "<td class=\"h3\">\n";
     helpContent += Fmt("<h3 class=\"content\" id=\"%s\">", c.fullName.c_str());
 
     Vector<Utf8> tkn;
@@ -246,6 +253,33 @@ void ModuleGenDocJob::outputTitle(OneRef& c)
     helpContent += "</span>";
 
     helpContent += "</h3>\n";
+    helpContent += "</td>\n";
+
+    // Add a reference to the source code
+    helpContent += "<td class=\"srcref\">\n";
+    auto srcModule = module ? module : g_Workspace->runtimeModule;
+    if (srcModule->buildCfg.repoPath.buffer)
+    {
+        Path str = Utf8((const char*) srcModule->buildCfg.repoPath.buffer, (uint32_t) srcModule->buildCfg.repoPath.count).c_str();
+        if (module)
+        {
+            str.append(SWAG_SRC_FOLDER);
+            Utf8 pathFile = c.nodes[0]->sourceFile->path.string();
+            pathFile.remove(0, (uint32_t) srcModule->path.string().size());
+            str.append(pathFile.c_str());
+        }
+        else
+        {
+            str.append(c.nodes[0]->sourceFile->name.c_str());
+        }
+
+        helpContent += Fmt("<a href=\"%s#L%d\" class=\"src\">src</a>", str.string().c_str(), c.nodes[0]->token.startLocation.line + 1);
+    }
+
+    helpContent += "</td>\n";
+    helpContent += "</tr>\n";
+    helpContent += "</table>\n";
+    helpContent += "</p>\n";
 }
 
 void ModuleGenDocJob::outputUserLine(const Utf8& user, bool autoRef)
@@ -672,22 +706,34 @@ void ModuleGenDocJob::outputStyles()
         a:hover {\n\
             text-decoration: underline;\n\
         }\n\
-        table {\n\
+        a.src {\n\
+            font-size:          90%;\n\
+            color:              Grey;\n\
+        }\n\
+        table.enumeration {\n\
             border:             1px solid LightGrey;\n\
             border-collapse:    collapse;\n\
             width:              100%;\n\
             font-size:          90%;\n\
         }\n\
-        td {\n\
+        td.enumeration {\n\
             padding:            6px;\n\
             border:             1px solid LightGrey;\n\
             border-collapse:    collapse;\n\
             width:              20%;\n\
         }\n\
-        td.tdname{\n\
+        td.tdname {\n\
+            padding:            6px;\n\
+            border:             1px solid LightGrey;\n\
+            border-collapse:    collapse;\n\
+            width:              20%;\n\
             background-color:   #f8f8f8;\n\
         }\n\
         td.tdtype {\n\
+            padding:            6px;\n\
+            border:             1px solid LightGrey;\n\
+            border-collapse:    collapse;\n\
+            width:              20%;\n\
             width:              auto;\n\
         }\n\
         td:last-child {\n\
@@ -712,11 +758,17 @@ void ModuleGenDocJob::outputStyles()
             margin-top:         50px;\n\
             margin-bottom:      50px;\n\
         }\n\
-        h3.content {\n\
-            margin-top:         50px;\n\
-            padding-bottom:     5px;\n\
+        table.h3 {\n\
             border-bottom:      2px solid LightGrey;\n\
+            border-collapse:    collapse;\n\
             width:              100%;\n\
+            margin-top:         50px;\n\
+        }\n\
+        h3.content {\n\
+            margin-bottom:      2px;\n\
+        }\n\
+        .srcref {\n\
+            text-align:         right;\n\
         }\n\
         .incode {\n\
             background-color:   #eeeeee;\n\
@@ -797,7 +849,7 @@ void ModuleGenDocJob::generateContent()
         {
             outputTitle(c);
 
-            helpContent += "<table>\n";
+            helpContent += "<table class=\"enumeration\">\n";
 
             for (int j = i; j < allNodes.size(); j++)
             {
@@ -820,7 +872,7 @@ void ModuleGenDocJob::generateContent()
                 outputUserLine(varDecl->typeInfo ? varDecl->typeInfo->name : outputNode(varDecl->type), true);
                 helpContent += "</td>\n";
 
-                helpContent += "<td>\n";
+                helpContent += "<td class=\"enumeration\">\n";
                 UserComment subUserComment;
                 auto        subDocComment = getDocComment(n);
                 computeUserComments(subUserComment, subDocComment);
@@ -873,7 +925,7 @@ void ModuleGenDocJob::generateContent()
 
                 if (first)
                 {
-                    helpContent += "<table>\n";
+                    helpContent += "<table class=\"enumeration\">\n";
                     first = false;
                 }
 
@@ -889,7 +941,7 @@ void ModuleGenDocJob::generateContent()
                 outputUserLine(varDecl->typeInfo ? varDecl->typeInfo->name : outputNode(varDecl->type), true);
                 helpContent += "</td>\n";
 
-                helpContent += "<td>\n";
+                helpContent += "<td class=\"enumeration\">\n";
                 UserComment subUserComment;
                 auto        subDocComment = getDocComment(varDecl);
                 computeUserComments(subUserComment, subDocComment);
@@ -923,7 +975,7 @@ void ModuleGenDocJob::generateContent()
 
             auto enumNode = CastAst<AstEnum>(n0, AstNodeKind::EnumDecl);
 
-            helpContent += "<table>\n";
+            helpContent += "<table class=\"enumeration\">\n";
             for (auto enumVal : enumNode->scope->symTable.allSymbols)
             {
                 if (enumVal->nodes[0]->kind != AstNodeKind::EnumValue)
@@ -934,7 +986,7 @@ void ModuleGenDocJob::generateContent()
                 helpContent += enumVal->name;
                 helpContent += "</td>\n";
 
-                helpContent += "<td>\n";
+                helpContent += "<td class=\"enumeration\">\n";
                 UserComment subUserComment;
                 auto        subDocComment = getDocComment(enumVal->nodes[0]);
                 computeUserComments(subUserComment, subDocComment);
@@ -1075,7 +1127,13 @@ JobResult ModuleGenDocJob::execute()
         collectScopes(module->scopeRoot);
     else
     {
+        static const char* p = "https://github.com/swag-lang/swag/blob/master/bin/runtime";
+
+        g_Workspace->runtimeModule->buildCfg.repoPath.buffer = (void*) p;
+        g_Workspace->runtimeModule->buildCfg.repoPath.count  = strlen(p);
+
         collectScopes(g_Workspace->runtimeModule->scopeRoot);
+
         collectScopes(g_Workspace->bootstrapModule->scopeRoot);
     }
 

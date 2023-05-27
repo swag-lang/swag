@@ -35,22 +35,34 @@
         a:hover {
             text-decoration: underline;
         }
-        table {
+        a.src {
+            font-size:          90%;
+            color:              Grey;
+        }
+        table.enumeration {
             border:             1px solid LightGrey;
             border-collapse:    collapse;
             width:              100%;
             font-size:          90%;
         }
-        td {
+        td.enumeration {
             padding:            6px;
             border:             1px solid LightGrey;
             border-collapse:    collapse;
             width:              20%;
         }
-        td.tdname{
+        td.tdname {
+            padding:            6px;
+            border:             1px solid LightGrey;
+            border-collapse:    collapse;
+            width:              20%;
             background-color:   #f8f8f8;
         }
         td.tdtype {
+            padding:            6px;
+            border:             1px solid LightGrey;
+            border-collapse:    collapse;
+            width:              20%;
             width:              auto;
         }
         td:last-child {
@@ -75,11 +87,17 @@
             margin-top:         50px;
             margin-bottom:      50px;
         }
-        h3.content {
-            margin-top:         50px;
-            padding-bottom:     5px;
+        table.h3 {
             border-bottom:      2px solid LightGrey;
+            border-collapse:    collapse;
             width:              100%;
+            margin-top:         50px;
+        }
+        h3.content {
+            margin-bottom:      2px;
+        }
+        .srcref {
+            text-align:         right;
         }
         .incode {
             background-color:   #eeeeee;
@@ -183,14 +201,24 @@
 </div>
 <div class="right">
 <div class="page">
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="FreeType.FT_BBox"><span class="titletype">struct</span> <span class="titlelight">FreeType.</span><span class="titlestrong">FT_BBox</span></h3>
-<table>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
+<table class="enumeration">
 <tr>
 <td class="tdname">
 xMin</td>
 <td class="tdtype">
 FT_Pos</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -198,7 +226,7 @@ FT_Pos</td>
 yMin</td>
 <td class="tdtype">
 FT_Pos</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -206,7 +234,7 @@ FT_Pos</td>
 xMax</td>
 <td class="tdtype">
 FT_Pos</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -214,18 +242,28 @@ FT_Pos</td>
 yMax</td>
 <td class="tdtype">
 FT_Pos</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 </table>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="FreeType.FT_Bitmap"><span class="titletype">struct</span> <span class="titlelight">FreeType.</span><span class="titlestrong">FT_Bitmap</span></h3>
-<table>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
+<table class="enumeration">
 <tr>
 <td class="tdname">
 rows</td>
 <td class="tdtype">
 u32</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -233,7 +271,7 @@ u32</td>
 width</td>
 <td class="tdtype">
 u32</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -241,7 +279,7 @@ u32</td>
 pitch</td>
 <td class="tdtype">
 s32</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -249,7 +287,7 @@ s32</td>
 buffer</td>
 <td class="tdtype">
 ^u8</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -257,7 +295,7 @@ buffer</td>
 num_grays</td>
 <td class="tdtype">
 u16</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -265,7 +303,7 @@ u16</td>
 pixel_mode</td>
 <td class="tdtype">
 u8</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -273,7 +311,7 @@ u8</td>
 palette_mode</td>
 <td class="tdtype">
 u8</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -281,18 +319,28 @@ u8</td>
 palette</td>
 <td class="tdtype">
 ^void</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 </table>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="FreeType.FT_Bitmap_Size"><span class="titletype">struct</span> <span class="titlelight">FreeType.</span><span class="titlestrong">FT_Bitmap_Size</span></h3>
-<table>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
+<table class="enumeration">
 <tr>
 <td class="tdname">
 height</td>
 <td class="tdtype">
 FT_Short</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -300,7 +348,7 @@ FT_Short</td>
 width</td>
 <td class="tdtype">
 FT_Short</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -308,7 +356,7 @@ FT_Short</td>
 size</td>
 <td class="tdtype">
 FT_Pos</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -316,7 +364,7 @@ FT_Pos</td>
 x_ppem</td>
 <td class="tdtype">
 FT_Pos</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -324,18 +372,28 @@ FT_Pos</td>
 y_ppem</td>
 <td class="tdtype">
 FT_Pos</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 </table>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="FreeType.FT_CharMapRec"><span class="titletype">struct</span> <span class="titlelight">FreeType.</span><span class="titlestrong">FT_CharMapRec</span></h3>
-<table>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
+<table class="enumeration">
 <tr>
 <td class="tdname">
 face</td>
 <td class="tdtype">
 FT_Face</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -343,7 +401,7 @@ FT_Face</td>
 encoding</td>
 <td class="tdtype">
 u32</td>
-<td>
+<td class="enumeration">
 <p>
 FT_Encoding.</p>
 </td>
@@ -353,7 +411,7 @@ FT_Encoding.</p>
 platform_id</td>
 <td class="tdtype">
 FT_UShort</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -361,28 +419,58 @@ FT_UShort</td>
 encoding_id</td>
 <td class="tdtype">
 FT_UShort</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 </table>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="FreeType.FT_Done_Face"><span class="titletype">func</span> <span class="titlelight">FreeType.</span><span class="titlestrong">FT_Done_Face</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func FT_Done_Face(face: FT_Face)
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="FreeType.FT_Done_FreeType"><span class="titletype">func</span> <span class="titlelight">FreeType.</span><span class="titlestrong">FT_Done_FreeType</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func FT_Done_FreeType(alibrary: FT_Library) throw
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="FreeType.FT_FaceRec"><span class="titletype">struct</span> <span class="titlelight">FreeType.</span><span class="titlestrong">FT_FaceRec</span></h3>
-<table>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
+<table class="enumeration">
 <tr>
 <td class="tdname">
 num_faces</td>
 <td class="tdtype">
 FT_Long</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -390,7 +478,7 @@ FT_Long</td>
 face_index</td>
 <td class="tdtype">
 FT_Long</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -398,7 +486,7 @@ FT_Long</td>
 face_flags</td>
 <td class="tdtype">
 FT_Long</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -406,7 +494,7 @@ FT_Long</td>
 style_flags</td>
 <td class="tdtype">
 FT_Long</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -414,7 +502,7 @@ FT_Long</td>
 num_glyphs</td>
 <td class="tdtype">
 FT_Long</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -422,7 +510,7 @@ FT_Long</td>
 family_name</td>
 <td class="tdtype">
 ^FT_String</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -430,7 +518,7 @@ family_name</td>
 style_name</td>
 <td class="tdtype">
 ^FT_String</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -438,7 +526,7 @@ style_name</td>
 num_fixed_sizes</td>
 <td class="tdtype">
 FT_Int</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -446,7 +534,7 @@ FT_Int</td>
 available_sizes</td>
 <td class="tdtype">
 ^<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.freetype.html#FreeType.FT_Bitmap_Size">FT_Bitmap_Size</a></td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -454,7 +542,7 @@ available_sizes</td>
 num_charmaps</td>
 <td class="tdtype">
 FT_Int</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -462,7 +550,7 @@ FT_Int</td>
 charmaps</td>
 <td class="tdtype">
 ^FT_CharMap</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -470,7 +558,7 @@ charmaps</td>
 generic</td>
 <td class="tdtype">
 <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.freetype.html#FreeType.FT_Generic">FT_Generic</a></td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -478,7 +566,7 @@ generic</td>
 bbox</td>
 <td class="tdtype">
 <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.freetype.html#FreeType.FT_BBox">FT_BBox</a></td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -486,7 +574,7 @@ bbox</td>
 units_per_EM</td>
 <td class="tdtype">
 FT_UShort</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -494,7 +582,7 @@ FT_UShort</td>
 ascender</td>
 <td class="tdtype">
 FT_Short</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -502,7 +590,7 @@ FT_Short</td>
 descender</td>
 <td class="tdtype">
 FT_Short</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -510,7 +598,7 @@ FT_Short</td>
 height</td>
 <td class="tdtype">
 FT_Short</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -518,7 +606,7 @@ FT_Short</td>
 max_advance_width</td>
 <td class="tdtype">
 FT_Short</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -526,7 +614,7 @@ FT_Short</td>
 max_advance_height</td>
 <td class="tdtype">
 FT_Short</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -534,7 +622,7 @@ FT_Short</td>
 underline_position</td>
 <td class="tdtype">
 FT_Short</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -542,7 +630,7 @@ FT_Short</td>
 underline_thickness</td>
 <td class="tdtype">
 FT_Short</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -550,7 +638,7 @@ FT_Short</td>
 glyph</td>
 <td class="tdtype">
 FT_GlyphSlot</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -558,7 +646,7 @@ FT_GlyphSlot</td>
 size</td>
 <td class="tdtype">
 FT_Size</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -566,7 +654,7 @@ FT_Size</td>
 charmap</td>
 <td class="tdtype">
 FT_CharMap</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -574,7 +662,7 @@ FT_CharMap</td>
 driver</td>
 <td class="tdtype">
 FT_Driver</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -582,7 +670,7 @@ FT_Driver</td>
 memory</td>
 <td class="tdtype">
 FT_Memory</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -590,7 +678,7 @@ FT_Memory</td>
 stream</td>
 <td class="tdtype">
 FT_Stream</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -598,7 +686,7 @@ FT_Stream</td>
 sizes_list</td>
 <td class="tdtype">
 <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.freetype.html#FreeType.FT_ListRec">FT_ListRec</a></td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -606,7 +694,7 @@ sizes_list</td>
 autohint</td>
 <td class="tdtype">
 <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.freetype.html#FreeType.FT_Generic">FT_Generic</a></td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -614,7 +702,7 @@ autohint</td>
 extensions</td>
 <td class="tdtype">
 ^void</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -622,18 +710,28 @@ extensions</td>
 internal</td>
 <td class="tdtype">
 FT_Face_Internal</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 </table>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="FreeType.FT_Generic"><span class="titletype">struct</span> <span class="titlelight">FreeType.</span><span class="titlestrong">FT_Generic</span></h3>
-<table>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
+<table class="enumeration">
 <tr>
 <td class="tdname">
 data</td>
 <td class="tdtype">
 *void</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -641,25 +739,45 @@ data</td>
 finalizer</td>
 <td class="tdtype">
 *void</td>
-<td>
+<td class="enumeration">
 <p>
 FT_Generic_Finalizer.</p>
 </td>
 </tr>
 </table>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="FreeType.FT_Get_Char_Index"><span class="titletype">func</span> <span class="titlelight">FreeType.</span><span class="titlestrong">FT_Get_Char_Index</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func FT_Get_Char_Index(face: FT_Face, charcode: FT_ULong)->FT_UInt
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="FreeType.FT_GlyphSlotRec"><span class="titletype">struct</span> <span class="titlelight">FreeType.</span><span class="titlestrong">FT_GlyphSlotRec</span></h3>
-<table>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
+<table class="enumeration">
 <tr>
 <td class="tdname">
 library</td>
 <td class="tdtype">
 FT_Library</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -667,7 +785,7 @@ FT_Library</td>
 face</td>
 <td class="tdtype">
 FT_Face</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -675,7 +793,7 @@ FT_Face</td>
 next</td>
 <td class="tdtype">
 FT_GlyphSlot</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -683,7 +801,7 @@ FT_GlyphSlot</td>
 glyph_index</td>
 <td class="tdtype">
 FT_UInt</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -691,7 +809,7 @@ FT_UInt</td>
 generic</td>
 <td class="tdtype">
 <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.freetype.html#FreeType.FT_Generic">FT_Generic</a></td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -699,7 +817,7 @@ generic</td>
 metrics</td>
 <td class="tdtype">
 <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.freetype.html#FreeType.FT_Glyph_Metrics">FT_Glyph_Metrics</a></td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -707,7 +825,7 @@ metrics</td>
 linearHoriAdvance</td>
 <td class="tdtype">
 FT_Fixed</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -715,7 +833,7 @@ FT_Fixed</td>
 linearVertAdvance</td>
 <td class="tdtype">
 FT_Fixed</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -723,7 +841,7 @@ FT_Fixed</td>
 advance</td>
 <td class="tdtype">
 <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.freetype.html#FreeType.FT_Vector">FT_Vector</a></td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -731,7 +849,7 @@ advance</td>
 format</td>
 <td class="tdtype">
 <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.freetype.html#FreeType.FT_Glyph_Format">FT_Glyph_Format</a></td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -739,7 +857,7 @@ format</td>
 bitmap</td>
 <td class="tdtype">
 <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.freetype.html#FreeType.FT_Bitmap">FT_Bitmap</a></td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -747,7 +865,7 @@ bitmap</td>
 bitmap_left</td>
 <td class="tdtype">
 FT_Int</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -755,7 +873,7 @@ FT_Int</td>
 bitmap_top</td>
 <td class="tdtype">
 FT_Int</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -763,7 +881,7 @@ FT_Int</td>
 outline</td>
 <td class="tdtype">
 <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.freetype.html#FreeType.FT_Outline">FT_Outline</a></td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -771,7 +889,7 @@ outline</td>
 num_subglyphs</td>
 <td class="tdtype">
 FT_UInt</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -779,7 +897,7 @@ FT_UInt</td>
 subglyphs</td>
 <td class="tdtype">
 FT_SubGlyph</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -787,7 +905,7 @@ FT_SubGlyph</td>
 control_data</td>
 <td class="tdtype">
 *void</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -795,7 +913,7 @@ control_data</td>
 control_len</td>
 <td class="tdtype">
 s32</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -803,7 +921,7 @@ s32</td>
 lsb_delta</td>
 <td class="tdtype">
 FT_Pos</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -811,7 +929,7 @@ FT_Pos</td>
 rsb_delta</td>
 <td class="tdtype">
 FT_Pos</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -819,7 +937,7 @@ FT_Pos</td>
 other</td>
 <td class="tdtype">
 *void</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -827,56 +945,86 @@ other</td>
 internal</td>
 <td class="tdtype">
 FT_Slot_Internal</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 </table>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="FreeType.FT_GlyphSlot_Oblique"><span class="titletype">func</span> <span class="titlelight">FreeType.</span><span class="titlestrong">FT_GlyphSlot_Oblique</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func FT_GlyphSlot_Oblique(slot: FT_GlyphSlot)
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="FreeType.FT_Glyph_Format"><span class="titletype">enum</span> <span class="titlelight">FreeType.</span><span class="titlestrong">FT_Glyph_Format</span></h3>
-<table>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
+<table class="enumeration">
 <tr>
 <td class="tdname">
 FT_GLYPH_FORMAT_NONE</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="tdname">
 FT_GLYPH_FORMAT_COMPOSITE</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="tdname">
 FT_GLYPH_FORMAT_BITMAP</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="tdname">
 FT_GLYPH_FORMAT_OUTLINE</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="tdname">
 FT_GLYPH_FORMAT_POLTTER</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 </table>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="FreeType.FT_Glyph_Metrics"><span class="titletype">struct</span> <span class="titlelight">FreeType.</span><span class="titlestrong">FT_Glyph_Metrics</span></h3>
-<table>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
+<table class="enumeration">
 <tr>
 <td class="tdname">
 width</td>
 <td class="tdtype">
 FT_Pos</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -884,7 +1032,7 @@ FT_Pos</td>
 height</td>
 <td class="tdtype">
 FT_Pos</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -892,7 +1040,7 @@ FT_Pos</td>
 horiBearingX</td>
 <td class="tdtype">
 FT_Pos</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -900,7 +1048,7 @@ FT_Pos</td>
 horiBearingY</td>
 <td class="tdtype">
 FT_Pos</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -908,7 +1056,7 @@ FT_Pos</td>
 horiAdvance</td>
 <td class="tdtype">
 FT_Pos</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -916,7 +1064,7 @@ FT_Pos</td>
 vertBearingX</td>
 <td class="tdtype">
 FT_Pos</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -924,7 +1072,7 @@ FT_Pos</td>
 vertBearingY</td>
 <td class="tdtype">
 FT_Pos</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -932,28 +1080,58 @@ FT_Pos</td>
 vertAdvance</td>
 <td class="tdtype">
 FT_Pos</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 </table>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="FreeType.FT_IMAGE_TAG"><span class="titletype">func</span> <span class="titlelight">FreeType.</span><span class="titlestrong">FT_IMAGE_TAG</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func FT_IMAGE_TAG(x1: u32, x2: u32, x3: u32, x4: u32)->u32
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="FreeType.FT_Init_FreeType"><span class="titletype">func</span> <span class="titlelight">FreeType.</span><span class="titlestrong">FT_Init_FreeType</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func FT_Init_FreeType(alibrary: *FT_Library) throw
 </code>
 </p>
-<h3 class="content" id="FreeType.FT_LOAD_ADVANCE_ONLY"><span class="titletype"></span> <span class="titlelight">FreeType.</span><span class="titlestrong">Constants</span></h3>
-<table>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="FreeType.FT_LOAD_ADVANCE_ONLY"><span class="titletype">const</span> <span class="titlelight">FreeType.</span><span class="titlestrong">Constants</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
+<table class="enumeration">
 <tr>
 <td id="FreeType.FT_LOAD_ADVANCE_ONLY" class="tdname">
 FT_LOAD_ADVANCE_ONLY</td>
 <td class="tdtype">
 s32</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -961,7 +1139,7 @@ s32</td>
 FT_LOAD_BITMAP_METRICS_ONLY</td>
 <td class="tdtype">
 s32</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -969,7 +1147,7 @@ s32</td>
 FT_LOAD_COLOR</td>
 <td class="tdtype">
 s32</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -977,7 +1155,7 @@ s32</td>
 FT_LOAD_COMPUTE_METRICS</td>
 <td class="tdtype">
 s32</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -985,7 +1163,7 @@ s32</td>
 FT_LOAD_CROP_BITMAP</td>
 <td class="tdtype">
 s32</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -993,7 +1171,7 @@ s32</td>
 FT_LOAD_DEFAULT</td>
 <td class="tdtype">
 u32</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -1001,7 +1179,7 @@ u32</td>
 FT_LOAD_FORCE_AUTOHINT</td>
 <td class="tdtype">
 s32</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -1009,7 +1187,7 @@ s32</td>
 FT_LOAD_IGNORE_GLOBAL_ADVANCE_WIDTH</td>
 <td class="tdtype">
 s32</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -1017,7 +1195,7 @@ s32</td>
 FT_LOAD_IGNORE_TRANSFORM</td>
 <td class="tdtype">
 s32</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -1025,7 +1203,7 @@ s32</td>
 FT_LOAD_LINEAR_DESIGN</td>
 <td class="tdtype">
 s32</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -1033,7 +1211,7 @@ s32</td>
 FT_LOAD_MONOCHROME</td>
 <td class="tdtype">
 s32</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -1041,7 +1219,7 @@ s32</td>
 FT_LOAD_NO_AUTOHINT</td>
 <td class="tdtype">
 s32</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -1049,7 +1227,7 @@ s32</td>
 FT_LOAD_NO_BITMAP</td>
 <td class="tdtype">
 s32</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -1057,7 +1235,7 @@ s32</td>
 FT_LOAD_NO_HINTING</td>
 <td class="tdtype">
 s32</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -1065,7 +1243,7 @@ s32</td>
 FT_LOAD_NO_RECURSE</td>
 <td class="tdtype">
 s32</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -1073,7 +1251,7 @@ s32</td>
 FT_LOAD_NO_SCALE</td>
 <td class="tdtype">
 s32</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -1081,7 +1259,7 @@ s32</td>
 FT_LOAD_PEDANTIC</td>
 <td class="tdtype">
 s32</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -1089,7 +1267,7 @@ s32</td>
 FT_LOAD_RENDER</td>
 <td class="tdtype">
 s32</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -1097,23 +1275,43 @@ s32</td>
 FT_LOAD_SBITS_ONLY</td>
 <td class="tdtype">
 s32</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 </table>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="FreeType.FT_LOAD_TARGET"><span class="titletype">func</span> <span class="titlelight">FreeType.</span><span class="titlestrong">FT_LOAD_TARGET</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func FT_LOAD_TARGET(x: FT_Int32)
 </code>
 </p>
-<h3 class="content" id="FreeType.FT_LOAD_TARGET_LCD"><span class="titletype"></span> <span class="titlelight">FreeType.</span><span class="titlestrong">Constants</span></h3>
-<table>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="FreeType.FT_LOAD_TARGET_LCD"><span class="titletype">const</span> <span class="titlelight">FreeType.</span><span class="titlestrong">Constants</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
+<table class="enumeration">
 <tr>
 <td id="FreeType.FT_LOAD_TARGET_LCD" class="tdname">
 FT_LOAD_TARGET_LCD</td>
 <td class="tdtype">
 s32</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -1121,7 +1319,7 @@ s32</td>
 FT_LOAD_TARGET_LCD_V</td>
 <td class="tdtype">
 s32</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -1129,7 +1327,7 @@ s32</td>
 FT_LOAD_TARGET_LIGHT</td>
 <td class="tdtype">
 s32</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -1137,7 +1335,7 @@ s32</td>
 FT_LOAD_TARGET_MONO</td>
 <td class="tdtype">
 s32</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -1145,7 +1343,7 @@ s32</td>
 FT_LOAD_TARGET_NORMAL</td>
 <td class="tdtype">
 s32</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -1153,57 +1351,77 @@ s32</td>
 FT_LOAD_VERTICAL_LAYOUT</td>
 <td class="tdtype">
 s32</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 </table>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="FreeType.FT_LcdFilter"><span class="titletype">enum</span> <span class="titlelight">FreeType.</span><span class="titlestrong">FT_LcdFilter</span></h3>
-<table>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
+<table class="enumeration">
 <tr>
 <td class="tdname">
 FT_LCD_FILTER_NONE</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="tdname">
 FT_LCD_FILTER_DEFAULT</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="tdname">
 FT_LCD_FILTER_LIGHT</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="tdname">
 FT_LCD_FILTER_LEGACY1</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="tdname">
 FT_LCD_FILTER_LEGACY</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="tdname">
 FT_LCD_FILTER_MAX</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 </table>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="FreeType.FT_LibraryRec"><span class="titletype">struct</span> <span class="titlelight">FreeType.</span><span class="titlestrong">FT_LibraryRec</span></h3>
-<table>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
+<table class="enumeration">
 <tr>
 <td class="tdname">
 memory</td>
 <td class="tdtype">
 FT_Memory</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -1211,7 +1429,7 @@ FT_Memory</td>
 version_major</td>
 <td class="tdtype">
 FT_Int</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -1219,7 +1437,7 @@ FT_Int</td>
 version_minor</td>
 <td class="tdtype">
 FT_Int</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -1227,7 +1445,7 @@ FT_Int</td>
 version_patch</td>
 <td class="tdtype">
 FT_Int</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -1235,7 +1453,7 @@ FT_Int</td>
 num_modules</td>
 <td class="tdtype">
 FT_UInt</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -1243,7 +1461,7 @@ FT_UInt</td>
 modules</td>
 <td class="tdtype">
 [32] FT_Module</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -1251,7 +1469,7 @@ modules</td>
 renderers</td>
 <td class="tdtype">
 <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.freetype.html#FreeType.FT_ListRec">FT_ListRec</a></td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -1259,7 +1477,7 @@ renderers</td>
 cur_renderer</td>
 <td class="tdtype">
 FT_Renderer</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -1267,7 +1485,7 @@ FT_Renderer</td>
 auto_hinter</td>
 <td class="tdtype">
 FT_Module</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -1275,7 +1493,7 @@ FT_Module</td>
 debug_hooks</td>
 <td class="tdtype">
 [4] FT_DebugHook_Func</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -1283,7 +1501,7 @@ debug_hooks</td>
 lcd_geometry</td>
 <td class="tdtype">
 [3] <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.freetype.html#FreeType.FT_Vector">FT_Vector</a></td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -1291,28 +1509,58 @@ lcd_geometry</td>
 refcount</td>
 <td class="tdtype">
 FT_Int</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 </table>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="FreeType.FT_Library_SetLcdFilter"><span class="titletype">func</span> <span class="titlelight">FreeType.</span><span class="titlestrong">FT_Library_SetLcdFilter</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func FT_Library_SetLcdFilter(library: FT_Library, filter: FT_LcdFilter) throw
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="FreeType.FT_Library_SetLcdFilterWeights"><span class="titletype">func</span> <span class="titlelight">FreeType.</span><span class="titlestrong">FT_Library_SetLcdFilterWeights</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func FT_Library_SetLcdFilterWeights(library: FT_Library, weights: const *u8) throw
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="FreeType.FT_ListRec"><span class="titletype">struct</span> <span class="titlelight">FreeType.</span><span class="titlestrong">FT_ListRec</span></h3>
-<table>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
+<table class="enumeration">
 <tr>
 <td class="tdname">
 head</td>
 <td class="tdtype">
 FT_ListNode</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -1320,39 +1568,79 @@ FT_ListNode</td>
 tail</td>
 <td class="tdtype">
 FT_ListNode</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 </table>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="FreeType.FT_Load_Char"><span class="titletype">func</span> <span class="titlelight">FreeType.</span><span class="titlestrong">FT_Load_Char</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func FT_Load_Char(face: FT_Face, char_code: FT_ULong, load_flags: FT_Int32) throw
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="FreeType.FT_Load_Glyph"><span class="titletype">func</span> <span class="titlelight">FreeType.</span><span class="titlestrong">FT_Load_Glyph</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func FT_Load_Glyph(face: FT_Face, glyph_index: FT_UInt, load_flags: FT_Int32) throw
 </code>
 </p>
-<h3 class="content" id="FreeType.FT_MAX_MODULES"><span class="titletype"></span> <span class="titlelight">FreeType.</span><span class="titlestrong">Constants</span></h3>
-<table>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="FreeType.FT_MAX_MODULES"><span class="titletype">const</span> <span class="titlelight">FreeType.</span><span class="titlestrong">Constants</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
+<table class="enumeration">
 <tr>
 <td id="FreeType.FT_MAX_MODULES" class="tdname">
 FT_MAX_MODULES</td>
 <td class="tdtype">
 s32</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 </table>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="FreeType.FT_Matrix"><span class="titletype">struct</span> <span class="titlelight">FreeType.</span><span class="titlestrong">FT_Matrix</span></h3>
-<table>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
+<table class="enumeration">
 <tr>
 <td class="tdname">
 xx</td>
 <td class="tdtype">
 FT_Fixed</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -1360,7 +1648,7 @@ FT_Fixed</td>
 xy</td>
 <td class="tdtype">
 FT_Fixed</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -1368,7 +1656,7 @@ FT_Fixed</td>
 yx</td>
 <td class="tdtype">
 FT_Fixed</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -1376,23 +1664,43 @@ FT_Fixed</td>
 yy</td>
 <td class="tdtype">
 FT_Fixed</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 </table>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="FreeType.FT_New_Memory_Face"><span class="titletype">func</span> <span class="titlelight">FreeType.</span><span class="titlestrong">FT_New_Memory_Face</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func FT_New_Memory_Face(library: FT_Library, file_base: const *FT_Byte, file_size: FT_Long, face_index: FT_Long, aface: *FT_Face) throw
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="FreeType.FT_Outline"><span class="titletype">struct</span> <span class="titlelight">FreeType.</span><span class="titlestrong">FT_Outline</span></h3>
-<table>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
+<table class="enumeration">
 <tr>
 <td class="tdname">
 n_contours</td>
 <td class="tdtype">
 s16</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -1400,7 +1708,7 @@ s16</td>
 n_points</td>
 <td class="tdtype">
 s16</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -1408,7 +1716,7 @@ s16</td>
 points</td>
 <td class="tdtype">
 ^<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.freetype.html#FreeType.FT_Vector">FT_Vector</a></td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -1416,7 +1724,7 @@ points</td>
 tags</td>
 <td class="tdtype">
 ^u8</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -1424,7 +1732,7 @@ tags</td>
 contours</td>
 <td class="tdtype">
 ^s16</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -1432,28 +1740,58 @@ contours</td>
 flags</td>
 <td class="tdtype">
 s32</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 </table>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="FreeType.FT_Outline_Decompose"><span class="titletype">func</span> <span class="titlelight">FreeType.</span><span class="titlestrong">FT_Outline_Decompose</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func FT_Outline_Decompose(outline: *FT_Outline, func_interface: const *FT_Outline_Funcs, user: *void) throw
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="FreeType.FT_Outline_Embolden"><span class="titletype">func</span> <span class="titlelight">FreeType.</span><span class="titlestrong">FT_Outline_Embolden</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func FT_Outline_Embolden(outline: *FT_Outline, strength: FT_Pos) throw
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="FreeType.FT_Outline_Funcs"><span class="titletype">struct</span> <span class="titlelight">FreeType.</span><span class="titlestrong">FT_Outline_Funcs</span></h3>
-<table>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
+<table class="enumeration">
 <tr>
 <td class="tdname">
 move_to</td>
 <td class="tdtype">
 *void</td>
-<td>
+<td class="enumeration">
 <p>
 FT_Outline_MoveToFunc.</p>
 </td>
@@ -1463,7 +1801,7 @@ FT_Outline_MoveToFunc.</p>
 line_to</td>
 <td class="tdtype">
 *void</td>
-<td>
+<td class="enumeration">
 <p>
 FT_Outline_LineToFunc.</p>
 </td>
@@ -1473,7 +1811,7 @@ FT_Outline_LineToFunc.</p>
 conic_to</td>
 <td class="tdtype">
 *void</td>
-<td>
+<td class="enumeration">
 <p>
 FT_Outline_ConicToFunc.</p>
 </td>
@@ -1483,7 +1821,7 @@ FT_Outline_ConicToFunc.</p>
 cubic_to</td>
 <td class="tdtype">
 *void</td>
-<td>
+<td class="enumeration">
 <p>
 FT_Outline_CubicToFunc.</p>
 </td>
@@ -1493,7 +1831,7 @@ FT_Outline_CubicToFunc.</p>
 shift</td>
 <td class="tdtype">
 s32</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -1501,129 +1839,189 @@ s32</td>
 delta</td>
 <td class="tdtype">
 FT_Pos</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 </table>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="FreeType.FT_Outline_Transform"><span class="titletype">func</span> <span class="titlelight">FreeType.</span><span class="titlestrong">FT_Outline_Transform</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func FT_Outline_Transform(outline: const *FT_Outline, matrix: const *FT_Matrix)
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="FreeType.FT_Outline_Translate"><span class="titletype">func</span> <span class="titlelight">FreeType.</span><span class="titlestrong">FT_Outline_Translate</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func FT_Outline_Translate(outline: const *FT_Outline, xOffset: FT_Pos, yOffset: FT_Pos)
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="FreeType.FT_Pixel_Mode"><span class="titletype">enum</span> <span class="titlelight">FreeType.</span><span class="titlestrong">FT_Pixel_Mode</span></h3>
-<table>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
+<table class="enumeration">
 <tr>
 <td class="tdname">
 FT_PIXEL_MODE_NONE</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="tdname">
 FT_PIXEL_MODE_MONO</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="tdname">
 FT_PIXEL_MODE_GRAY</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="tdname">
 FT_PIXEL_MODE_GRAY2</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="tdname">
 FT_PIXEL_MODE_GRAY4</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="tdname">
 FT_PIXEL_MODE_LCD</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="tdname">
 FT_PIXEL_MODE_LCD_V</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="tdname">
 FT_PIXEL_MODE_BGRA</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="tdname">
 FT_PIXEL_MODE_MAX</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 </table>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="FreeType.FT_Render_Glyph"><span class="titletype">func</span> <span class="titlelight">FreeType.</span><span class="titlestrong">FT_Render_Glyph</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func FT_Render_Glyph(slot: FT_GlyphSlot, render_mode: FT_Render_Mode) throw
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="FreeType.FT_Render_Mode"><span class="titletype">enum</span> <span class="titlelight">FreeType.</span><span class="titlestrong">FT_Render_Mode</span></h3>
-<table>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
+<table class="enumeration">
 <tr>
 <td class="tdname">
 FT_RENDER_MODE_NORMAL</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="tdname">
 FT_RENDER_MODE_LIGHT</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="tdname">
 FT_RENDER_MODE_MONO</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="tdname">
 FT_RENDER_MODE_LCD</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="tdname">
 FT_RENDER_MODE_LCD_V</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="tdname">
 FT_RENDER_MODE_MAX</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 </table>
-<h3 class="content" id="FreeType.FT_STYLE_FLAG_BOLD"><span class="titletype"></span> <span class="titlelight">FreeType.</span><span class="titlestrong">Constants</span></h3>
-<table>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="FreeType.FT_STYLE_FLAG_BOLD"><span class="titletype">const</span> <span class="titlelight">FreeType.</span><span class="titlestrong">Constants</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
+<table class="enumeration">
 <tr>
 <td id="FreeType.FT_STYLE_FLAG_BOLD" class="tdname">
 FT_STYLE_FLAG_BOLD</td>
 <td class="tdtype">
 s32</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -1631,23 +2029,43 @@ s32</td>
 FT_STYLE_FLAG_ITALIC</td>
 <td class="tdtype">
 s32</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 </table>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="FreeType.FT_Set_Pixel_Sizes"><span class="titletype">func</span> <span class="titlelight">FreeType.</span><span class="titlestrong">FT_Set_Pixel_Sizes</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func FT_Set_Pixel_Sizes(face: FT_Face, pixel_width: FT_UInt, pixel_height: FT_UInt) throw
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="FreeType.FT_SizeRec"><span class="titletype">struct</span> <span class="titlelight">FreeType.</span><span class="titlestrong">FT_SizeRec</span></h3>
-<table>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
+<table class="enumeration">
 <tr>
 <td class="tdname">
 face</td>
 <td class="tdtype">
 FT_Face</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -1655,7 +2073,7 @@ FT_Face</td>
 generic</td>
 <td class="tdtype">
 <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.freetype.html#FreeType.FT_Generic">FT_Generic</a></td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -1663,7 +2081,7 @@ generic</td>
 metrics</td>
 <td class="tdtype">
 <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.freetype.html#FreeType.FT_Size_Metrics">FT_Size_Metrics</a></td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -1671,18 +2089,28 @@ metrics</td>
 internal</td>
 <td class="tdtype">
 FT_Size_Internal</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 </table>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="FreeType.FT_Size_Metrics"><span class="titletype">struct</span> <span class="titlelight">FreeType.</span><span class="titlestrong">FT_Size_Metrics</span></h3>
-<table>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
+<table class="enumeration">
 <tr>
 <td class="tdname">
 x_ppem</td>
 <td class="tdtype">
 FT_UShort</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -1690,7 +2118,7 @@ FT_UShort</td>
 y_ppem</td>
 <td class="tdtype">
 FT_UShort</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -1698,7 +2126,7 @@ FT_UShort</td>
 x_scale</td>
 <td class="tdtype">
 FT_Fixed</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -1706,7 +2134,7 @@ FT_Fixed</td>
 y_scale</td>
 <td class="tdtype">
 FT_Fixed</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -1714,7 +2142,7 @@ FT_Fixed</td>
 ascender</td>
 <td class="tdtype">
 FT_Pos</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -1722,7 +2150,7 @@ FT_Pos</td>
 descender</td>
 <td class="tdtype">
 FT_Pos</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -1730,7 +2158,7 @@ FT_Pos</td>
 height</td>
 <td class="tdtype">
 FT_Pos</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -1738,18 +2166,28 @@ FT_Pos</td>
 max_advance</td>
 <td class="tdtype">
 FT_Pos</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 </table>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="FreeType.FT_SubGlyphRec"><span class="titletype">struct</span> <span class="titlelight">FreeType.</span><span class="titlestrong">FT_SubGlyphRec</span></h3>
-<table>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
+<table class="enumeration">
 <tr>
 <td class="tdname">
 index</td>
 <td class="tdtype">
 FT_Int</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -1757,7 +2195,7 @@ FT_Int</td>
 flags</td>
 <td class="tdtype">
 FT_UShort</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -1765,7 +2203,7 @@ FT_UShort</td>
 arg1</td>
 <td class="tdtype">
 FT_Int</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -1773,7 +2211,7 @@ FT_Int</td>
 arg2</td>
 <td class="tdtype">
 FT_Int</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -1781,18 +2219,28 @@ FT_Int</td>
 transform</td>
 <td class="tdtype">
 <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.freetype.html#FreeType.FT_Matrix">FT_Matrix</a></td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 </table>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="FreeType.FT_Vector"><span class="titletype">struct</span> <span class="titlelight">FreeType.</span><span class="titlestrong">FT_Vector</span></h3>
-<table>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
+<table class="enumeration">
 <tr>
 <td class="tdname">
 x</td>
 <td class="tdtype">
 FT_Pos</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -1800,7 +2248,7 @@ FT_Pos</td>
 y</td>
 <td class="tdtype">
 FT_Pos</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 </table>

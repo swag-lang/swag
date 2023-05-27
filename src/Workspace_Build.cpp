@@ -155,7 +155,7 @@ void Workspace::addBootstrap()
     modules.push_back(bootstrapModule);
 
     auto file  = Allocator::alloc<SourceFile>();
-    file->name = "swag.bootstrap.swg";
+    file->name = "bootstrap.swg";
     file->path = g_CommandLine.exePath.parent_path();
     file->path.append("runtime");
     file->path.append("bootstrap.swg");

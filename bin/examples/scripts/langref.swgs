@@ -303,14 +303,21 @@ func processFile(fileName: string)
 
 func generate(in, out: string)
 {
+    g_Buf.clear()
+    g_Toc.clear()
+    g_Code.clear()
+    g_State.clear()
+    g_CptBrace = 0
+    g_SubTitle = false
+
     files := assume Directory.enumerateFiles(in, ".swg", recurse: true)
     files.sort(func(a, b) => a.fullname <=> b.fullname)
 
+    g_Buf += "<?php include('html_start.php'); include('header.php'); ?>\n"
     //g_Buf += "<html lang=\"en\">\n"
     //g_Buf += "<head>\n"
     //g_Buf += "<meta charset=\"UTF-8\">\n";
     //g_Buf += "</head>\n"
-    g_Buf += "<body>\n"
 
     // Create styles
     g_Buf += """
@@ -439,10 +446,10 @@ func generate(in, out: string)
         </div>
         </div>
         </div>
-        </body>
         """
 
     //g_Buf += "</html>\n"
+    g_Buf += "<?php include('html_end.php'); ?>\n"
 
     g_Buf.insert(seekToc, g_Toc)
 
@@ -452,4 +459,5 @@ func generate(in, out: string)
 #run
 {
     generate("../../reference/tests/language/src", "../../../web/language.html")
+    generate("../../reference/tests/language/src", "../../../web/language.php")
 }
