@@ -676,12 +676,16 @@ void ModuleGenDocJob::outputStyles()
             border:             1px solid LightGrey;\n\
             border-collapse:    collapse;\n\
             width:              100%;\n\
+            font-size:          90%;\n\
         }\n\
         td {\n\
             padding:            6px;\n\
             border:             1px solid LightGrey;\n\
             border-collapse:    collapse;\n\
             width:              20%;\n\
+        }\n\
+        td.tdname{\n\
+            background-color:   #f8f8f8;\n\
         }\n\
         td.tdtype {\n\
             width:              auto;\n\
@@ -807,7 +811,7 @@ void ModuleGenDocJob::generateContent()
 
                 helpContent += "<tr>\n";
 
-                helpContent += Fmt("<td id=\"%s\">\n", n->getScopedName().c_str());
+                helpContent += Fmt("<td id=\"%s\" class=\"tdname\">\n", n->getScopedName().c_str());
                 helpContent += n->token.ctext();
                 helpContent += "</td>\n";
 
@@ -877,7 +881,7 @@ void ModuleGenDocJob::generateContent()
 
                 helpContent += "<tr>\n";
 
-                helpContent += "<td>\n";
+                helpContent += "<td class=\"tdname\">\n";
                 helpContent += structVal->name;
                 helpContent += "</td>\n";
 
@@ -926,7 +930,7 @@ void ModuleGenDocJob::generateContent()
                     continue;
 
                 helpContent += "<tr>\n";
-                helpContent += "<td>\n";
+                helpContent += "<td class=\"tdname\">\n";
                 helpContent += enumVal->name;
                 helpContent += "</td>\n";
 

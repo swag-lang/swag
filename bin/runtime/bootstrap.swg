@@ -1,20 +1,19 @@
 namespace Swag
 {
-    // #[flags] is forced by the compiler
     enum AttributeUsage : u32
     {
-        Enum                = 0x00000001
-        EnumValue           = 0x00000002
-        StructVariable      = 0x00000004
-        GlobalVariable      = 0x00000008
-        Variable            = 0x00000010
-        Struct              = 0x00000020
-        Function            = 0x00000040
-        FunctionParameter   = 0x00000080
-        File                = 0x00000100
-        Constant            = 0x00000200
-        //
-        Multi               = 0x01000000
+        Enum                = 0x00000001    // Attribute can be used on an enum
+        EnumValue           = 0x00000002    // Attribute can be used on an enum value
+        StructVariable      = 0x00000004    // Attribute can be used on an struct member
+        GlobalVariable      = 0x00000008    // Attribute can be used on a global variable
+        Variable            = 0x00000010    // Attribute can be used on any variable
+        Struct              = 0x00000020    // Attribute can be used on a struct
+        Function            = 0x00000040    // Attribute can be used on a function
+        FunctionParameter   = 0x00000080    // Attribute can be used on a struct parameter
+        File                = 0x00000100    // Attribute can be used with '#global'
+        Constant            = 0x00000200    // Attribute can be used on a constant
+
+        Multi               = 0x01000000    // Attribute can be used more than once
         Gen                 = 0x02000000
         All                 = 0x04000000
     }

@@ -207,8 +207,7 @@ bool Tokenizer::nextToken(TokenParse& token)
                 c = readChar();
             token.flags |= TOKENPARSE_LAST_EOL;
             hasEol = true;
-            if (token.flags & TOKENPARSE_EOL_BEFORE_COMMENT)
-                comment.clear();
+            comment.clear();
             continue;
         }
 
@@ -253,6 +252,13 @@ bool Tokenizer::nextToken(TokenParse& token)
                     comment += token.text;
                     if (comment.back() != '\n')
                         comment += "\n";
+
+                    // In case of end of line comments, skip all blanks after
+                    if (!(token.flags & TOKENPARSE_EOL_BEFORE_COMMENT))
+                    {
+                        while (curBuffer[0] && (SWAG_IS_EOL(curBuffer[0]) || SWAG_IS_BLANK(curBuffer[0])))
+                            readChar();
+                    }
                 }
 
                 continue;
