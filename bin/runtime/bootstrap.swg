@@ -600,50 +600,46 @@ namespace Swag
         Oz
     }
 
+    // The current module build configuration.
+    //
+    // See [ICompiler]
     struct BuildCfg
     {
-        // Module infos
-        moduleVersion:      u32 = 0
-        moduleRevision:     u32 = 0
-        moduleBuildNum:     u32 = 0
-        moduleNamespace:    string
-        embbedImports       = false
+        moduleVersion:      u32 = 0     // The module version
+        moduleRevision:     u32 = 0     // The module revision
+        moduleBuildNum:     u32 = 0     // The module build value
+        moduleNamespace:    string      // The namespace name of the module
+        embbedImports       = false     // Module should embbed all its dependencies
 
-        // Debug
         scratchAllocatorCapacity    = 4'u32 * 1024 * 1024 // Default capacity of the 'temp' allocator (in bytes)
-        safetyGuards: u16           = SafetyAll
-        debugAllocator              = true  // Use Swag.DebugAllocator by default
-        debugAllocatorCaptureStack  = true  // Capture the call stack for each allocation
-        debugAllocatorLeaks         = true  // Detect memory leaks
-        stackTrace                  = true
+        safetyGuards: u16           = SafetyAll           // Activate specific safety checks
+        debugAllocator              = true                // Use Swag.DebugAllocator by default
+        debugAllocatorCaptureStack  = true                // Capture the call stack for each allocation
+        debugAllocatorLeaks         = true                // Detect memory leaks
+        stackTrace                  = true                // Add stack trace in case an error is raised
 
-        // Warnings
-        warnAsErrors:           string  // Format is "wrnXXXX|wrnXXXX..."
-        warnAsWarning:          string
-        warnAsDisabled:         string
+        warnAsErrors:           string  // Force some warnings to be treated as errors. Format is "wrnXXXX|wrnXXXX..."
+        warnAsWarning:          string  // Override 'warnAsErrors', restoring warnings as warnings
+        warnAsDisabled:         string  // Disable some specific warnings
         warnDefaultDisabled:    bool    // All warning are disabled, except those specified above
         warnDefaultErrors:      bool    // All warning are treated as errors, except those specified above
 
-        // Bytecode
-        byteCodeOptimizeLevel   = 1
+        byteCodeOptimizeLevel   = 1     // Optimization level of bytecode [0, 1 or 2]
         byteCodeDebugInline     = true
-        byteCodeEmitAssume      = true
+        byteCodeEmitAssume      = true  // 'assume' will assert if 'true'
         byteCodeInline          = true  // Enable bytecode inlining with #[Swag.Inline]
         byteCodeAutoInline      = true  // Automatic inlining of some other functions
 
-        // Backend common
-        backendKind               = BuildCfgBackendKind.Executable
-        backendSubKind            = BuildCfgBackendSubKind.Console
-        backendDebugInformations  = false
-        backendOptimize           = BuildCfgBackendOptim.O0
+        backendKind               = BuildCfgBackendKind.Executable  // Backend type (executable, dynamic lib...)
+        backendSubKind            = BuildCfgBackendSubKind.Console  // Backend sub kind
+        backendDebugInformations  = false                           // Output debug informations if 'true'
+        backendOptimize           = BuildCfgBackendOptim.O0         // Backend optimization level
         backendNumCU: u32         = 0
 
-        // Linker
-        linkerArgs:     string      // Additional linker arguments
+        linkerArgs:     string                  // Additional linker arguments
 
-        // Specific backend parameters
-        backendLLVM:    BuildCfgBackendLLVM
-        backendX64:     BuildCfgBackendX64
+        backendLLVM:    BuildCfgBackendLLVM     // Specific LLVM options
+        backendX64:     BuildCfgBackendX64      // Specific X86_64 options
     }
 
     // #########################################################

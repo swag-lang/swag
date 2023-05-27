@@ -1214,7 +1214,7 @@ Array(*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std
 <td>
 toDelete</td>
 <td class="tdtype">
-Array(__application_tuple_396)</td>
+Array(__application_tuple_392)</td>
 <td>
 </td>
 </tr>
@@ -1305,6 +1305,8 @@ Destroy a window To cleanly close a window, you should call wnd.destroy().</p>
 <td>
 <a href="#Gui.Application.doModalLoop">doModalLoop</a></td>
 <td>
+<p>
+Auto exit.</p>
 </td>
 </tr>
 <tr>
@@ -1380,7 +1382,7 @@ Return the captured wnd for mouse.</p>
 <a href="#Gui.Application.getWndAtMouse">getWndAtMouse</a></td>
 <td>
 <p>
-Returns the window under the given point.</p>
+Remove from parent Returns the window under the given point.</p>
 </td>
 </tr>
 <tr>
@@ -1565,6 +1567,8 @@ Destroy a window To cleanly close a window, you should call wnd.destroy().</p>
 <code style="white-space: break-spaces">func doModalLoop(using self, surface: *Surface, cb: closure(self) = null)->WndId
 </code>
 </p>
+<p>
+Auto exit.</p>
 <h3 class="content" id="Gui.Application.exitModal"><span class="titletype">func</span> <span class="titlelight">Application.</span><span class="titlestrong">exitModal</span></h3>
 <p class="code">
 <code style="white-space: break-spaces">func exitModal(using self, exitId: string = "")
@@ -1629,7 +1633,7 @@ Return the captured wnd for mouse.</p>
 </code>
 </p>
 <p>
-Returns the window under the given point.</p>
+Remove from parent Returns the window under the given point.</p>
 <h3 class="content" id="Gui.Application.invalidate"><span class="titletype">func</span> <span class="titlelight">Application.</span><span class="titlestrong">invalidate</span></h3>
 <p class="code">
 <code style="white-space: break-spaces">func invalidate(using self)
@@ -2043,7 +2047,7 @@ Add string to clipboard.</p>
 <a href="#Gui.Clipboard.getData">getData</a></td>
 <td>
 <p>
-Get data of the given format.</p>
+Store the size in the first u64 Get data of the given format.</p>
 </td>
 </tr>
 <tr>
@@ -2051,7 +2055,7 @@ Get data of the given format.</p>
 <a href="#Gui.Clipboard.getImage">getImage</a></td>
 <td>
 <p>
-Get image from clipboard.</p>
+We want best speed Get image from clipboard.</p>
 </td>
 </tr>
 <tr>
@@ -2059,7 +2063,7 @@ Get image from clipboard.</p>
 <a href="#Gui.Clipboard.getString">getString</a></td>
 <td>
 <p>
-Get utf8 string from clipboard.</p>
+Ansi/utf8 Utf16 Get utf8 string from clipboard.</p>
 </td>
 </tr>
 <tr>
@@ -2126,7 +2130,7 @@ Add string to clipboard.</p>
 <a href="#Gui.Clipboard.getData">getData</a></td>
 <td>
 <p>
-Get data of the given format.</p>
+Store the size in the first u64 Get data of the given format.</p>
 </td>
 </tr>
 <tr>
@@ -2134,7 +2138,7 @@ Get data of the given format.</p>
 <a href="#Gui.Clipboard.getImage">getImage</a></td>
 <td>
 <p>
-Get image from clipboard.</p>
+We want best speed Get image from clipboard.</p>
 </td>
 </tr>
 <tr>
@@ -2142,7 +2146,7 @@ Get image from clipboard.</p>
 <a href="#Gui.Clipboard.getString">getString</a></td>
 <td>
 <p>
-Get utf8 string from clipboard.</p>
+Ansi/utf8 Utf16 Get utf8 string from clipboard.</p>
 </td>
 </tr>
 <tr>
@@ -2205,21 +2209,21 @@ Add string to clipboard.</p>
 </code>
 </p>
 <p>
-Get data of the given format.</p>
+Store the size in the first u64 Get data of the given format.</p>
 <h3 class="content" id="Gui.Clipboard.getImage"><span class="titletype">func</span> <span class="titlelight">Clipboard.</span><span class="titlestrong">getImage</span></h3>
 <p class="code">
 <code style="white-space: break-spaces">func getImage()->Image
 </code>
 </p>
 <p>
-Get image from clipboard.</p>
+We want best speed Get image from clipboard.</p>
 <h3 class="content" id="Gui.Clipboard.getString"><span class="titletype">func</span> <span class="titlelight">Clipboard.</span><span class="titlestrong">getString</span></h3>
 <p class="code">
 <code style="white-space: break-spaces">func getString()->String
 </code>
 </p>
 <p>
-Get utf8 string from clipboard.</p>
+Ansi/utf8 Utf16 Get utf8 string from clipboard.</p>
 <h3 class="content" id="Gui.Clipboard.hasFormat"><span class="titletype">func</span> <span class="titlelight">Clipboard.</span><span class="titlestrong">hasFormat</span></h3>
 <p class="code">
 <code style="white-space: break-spaces">func hasFormat(fmt: Format)->bool
@@ -3969,7 +3973,7 @@ func(*void, *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_
 <td>
 minMax</td>
 <td class="tdtype">
-__editbox_tuple_262</td>
+__editbox_tuple_266</td>
 <td>
 </td>
 </tr>
@@ -4166,6 +4170,8 @@ Set the editbox content, but do not notify change.</p>
 <code style="white-space: break-spaces">func onMouseEvent(using self, evt: *MouseEvent)
 </code>
 </p>
+<p>
+Compute scroll position Selection Content Caret.</p>
 <h3 class="content" id="Gui.EditBox.IWnd.onPaintEvent"><span class="titletype">func</span> <span class="titlelight">IWnd.</span><span class="titlestrong">onPaintEvent</span></h3>
 <p class="code">
 <code style="white-space: break-spaces">func onPaintEvent(using self, evt: *PaintEvent)
@@ -4951,7 +4957,7 @@ Array(FileInfo)</td>
 <a href="#Gui.FileDlg.create">create</a></td>
 <td>
 <p>
-Creates the message box.</p>
+Filter Content Creates the message box.</p>
 </td>
 </tr>
 <tr>
@@ -4959,7 +4965,7 @@ Creates the message box.</p>
 <a href="#Gui.FileDlg.getSelectedName">getSelectedName</a></td>
 <td>
 <p>
-Get the first selection.</p>
+Top////////////////////// Bottom////////////////////// Take care of state Get the first selection.</p>
 </td>
 </tr>
 <tr>
@@ -4982,14 +4988,14 @@ Get all selections.</p>
 </code>
 </p>
 <p>
-Creates the message box.</p>
+Filter Content Creates the message box.</p>
 <h3 class="content" id="Gui.FileDlg.getSelectedName"><span class="titletype">func</span> <span class="titlelight">FileDlg.</span><span class="titlestrong">getSelectedName</span></h3>
 <p class="code">
 <code style="white-space: break-spaces">func getSelectedName(using self)->String
 </code>
 </p>
 <p>
-Get the first selection.</p>
+Top////////////////////// Bottom////////////////////// Take care of state Get the first selection.</p>
 <h3 class="content" id="Gui.FileDlg.getSelectedNames"><span class="titletype">func</span> <span class="titlelight">FileDlg.</span><span class="titlestrong">getSelectedNames</span></h3>
 <p class="code">
 <code style="white-space: break-spaces">func getSelectedNames(using self)->Array'(String)
@@ -5078,7 +5084,7 @@ mode</td>
 <td>
 filters</td>
 <td class="tdtype">
-Array(__filedlg_tuple_282)</td>
+Array(__filedlg_tuple_284)</td>
 <td>
 </td>
 </tr>
@@ -5086,7 +5092,7 @@ Array(__filedlg_tuple_282)</td>
 <td>
 shortcuts</td>
 <td class="tdtype">
-Array(__filedlg_tuple_283)</td>
+Array(__filedlg_tuple_285)</td>
 <td>
 </td>
 </tr>
@@ -5271,6 +5277,8 @@ Set the frame wnd form.</p>
 <code style="white-space: break-spaces">func onPostPaintEvent(using self, evt: *PaintEvent)
 </code>
 </p>
+<p>
+Display focus borders when the focus wnd is a child of me.</p>
 <h3 class="content" id="Gui.FrameWnd.IWnd.onPrePaintEvent"><span class="titletype">func</span> <span class="titlelight">IWnd.</span><span class="titlestrong">onPrePaintEvent</span></h3>
 <p class="code">
 <code style="white-space: break-spaces">func onPrePaintEvent(using self, evt: *PaintEvent)
@@ -5772,6 +5780,8 @@ Set an item width by column.</p>
 <code style="white-space: break-spaces">func onMouseEvent(using self, evt: *MouseEvent)
 </code>
 </p>
+<p>
+Background bar Clipping, take care of padding Paint all except selected one, which will be painted last.</p>
 <h3 class="content" id="Gui.Header.IWnd.onPaintEvent"><span class="titletype">func</span> <span class="titlelight">IWnd.</span><span class="titlestrong">onPaintEvent</span></h3>
 <p class="code">
 <code style="white-space: break-spaces">func onPaintEvent(using self, evt: *PaintEvent)
@@ -6563,6 +6573,8 @@ popup</td>
 <td>
 <a href="#Gui.IconButton.create">create</a></td>
 <td>
+<p>
+Display/Hide popup.</p>
 </td>
 </tr>
 <tr>
@@ -6607,6 +6619,8 @@ Set the button form.</p>
 <code style="white-space: break-spaces">func onMouseEvent(using self, evt: *MouseEvent)
 </code>
 </p>
+<p>
+Icon.</p>
 <h3 class="content" id="Gui.IconButton.IWnd.onPaintEvent"><span class="titletype">func</span> <span class="titlelight">IWnd.</span><span class="titlestrong">onPaintEvent</span></h3>
 <p class="code">
 <code style="white-space: break-spaces">func onPaintEvent(using self, evt: *PaintEvent)
@@ -6617,6 +6631,8 @@ Set the button form.</p>
 <code style="white-space: break-spaces">func create(parent: *Wnd, icon: Icon, position: Rectangle = {}, id: WndId = null)->*IconButton
 </code>
 </p>
+<p>
+Display/Hide popup.</p>
 <h3 class="content" id="Gui.IconButton.setCheck"><span class="titletype">func</span> <span class="titlelight">IconButton.</span><span class="titlestrong">setCheck</span></h3>
 <p class="code">
 <code style="white-space: break-spaces">func setCheck(using self, checked: bool)
@@ -7529,7 +7545,7 @@ Clear all lines.</p>
 <a href="#Gui.ListCtrl.collapse">collapse</a></td>
 <td>
 <p>
-Collapse the given line.</p>
+Auto sort Update indexes after the insertion Insert at the right position Collapse the given line.</p>
 </td>
 </tr>
 <tr>
@@ -7537,7 +7553,7 @@ Collapse the given line.</p>
 <a href="#Gui.ListCtrl.collapseAll">collapseAll</a></td>
 <td>
 <p>
-Collapse all lines.</p>
+Insert at the right position Update indexes after the insertion Update selection Collapse all lines.</p>
 </td>
 </tr>
 <tr>
@@ -7749,7 +7765,7 @@ Collapse the given line.</p>
 <a href="#Gui.ListCtrl.unselectAll">unselectAll</a></td>
 <td>
 <p>
-Unselect all lines.</p>
+Adapt header to the frame container Header Need to recompute layout when header size has changed Scroll that contains the list view ListCtrl view Unselect all lines.</p>
 </td>
 </tr>
 </table>
@@ -7773,14 +7789,14 @@ Clear all lines.</p>
 </code>
 </p>
 <p>
-Collapse the given line.</p>
+Auto sort Update indexes after the insertion Insert at the right position Collapse the given line.</p>
 <h3 class="content" id="Gui.ListCtrl.collapseAll"><span class="titletype">func</span> <span class="titlelight">ListCtrl.</span><span class="titlestrong">collapseAll</span></h3>
 <p class="code">
 <code style="white-space: break-spaces">func collapseAll(using self)
 </code>
 </p>
 <p>
-Collapse all lines.</p>
+Insert at the right position Update indexes after the insertion Update selection Collapse all lines.</p>
 <h3 class="content" id="Gui.ListCtrl.computeLayout"><span class="titletype">func</span> <span class="titlelight">ListCtrl.</span><span class="titlestrong">computeLayout</span></h3>
 <p class="code">
 <code style="white-space: break-spaces">func computeLayout(using self)
@@ -7963,7 +7979,7 @@ Collapse the given line.</p>
 </code>
 </p>
 <p>
-Unselect all lines.</p>
+Adapt header to the frame container Header Need to recompute layout when header size has changed Scroll that contains the list view ListCtrl view Unselect all lines.</p>
 <h3 class="content" id="Gui.ListFlags"><span class="titletype">enum</span> <span class="titlelight">Gui.</span><span class="titlestrong">ListFlags</span></h3>
 <table>
 <tr>
@@ -8311,6 +8327,8 @@ bool</td>
 <code style="white-space: break-spaces">func onPaintEvent(using self, evt: *PaintEvent)
 </code>
 </p>
+<p>
+We select by mouse release when the hittest line is selected Range selection Invert selection.</p>
 <h3 class="content" id="Gui.ListView.IWnd.onResizeEvent"><span class="titletype">func</span> <span class="titlelight">IWnd.</span><span class="titlestrong">onResizeEvent</span></h3>
 <p class="code">
 <code style="white-space: break-spaces">func onResizeEvent(using self, evt: *ResizeEvent)
@@ -8532,6 +8550,8 @@ Add a separator.</p>
 <td>
 <a href="#Gui.MenuCtrl.createPopup">createPopup</a></td>
 <td>
+<p>
+Add shadow size Add padding.</p>
 </td>
 </tr>
 <tr>
@@ -8559,6 +8579,8 @@ Make the popup menu modal Will return the selected id.</p>
 <code style="white-space: break-spaces">func onPaintEvent(using self, evt: *PaintEvent)
 </code>
 </p>
+<p>
+Text right Right icon.</p>
 <h3 class="content" id="Gui.MenuCtrl.IWnd.onTimerEvent"><span class="titletype">func</span> <span class="titlelight">IWnd.</span><span class="titlestrong">onTimerEvent</span></h3>
 <p class="code">
 <code style="white-space: break-spaces">func onTimerEvent(using self, evt: *TimerEvent)
@@ -8612,6 +8634,8 @@ Add a separator.</p>
 <code style="white-space: break-spaces">func createPopup(parent: *Wnd, id: WndId = null, owner: *Wnd = null)->*MenuCtrl
 </code>
 </p>
+<p>
+Add shadow size Add padding.</p>
 <h3 class="content" id="Gui.MenuCtrl.doModal"><span class="titletype">func</span> <span class="titlelight">MenuCtrl.</span><span class="titlestrong">doModal</span></h3>
 <p class="code">
 <code style="white-space: break-spaces">func doModal(using self, surfacePos: Point, pos = PopupPos.TopLeft, autoDestroy: bool = false)->WndId
@@ -8729,7 +8753,7 @@ Set big icon.</p>
 <a href="#Gui.MessageDlg.setIconColor">setIconColor</a></td>
 <td>
 <p>
-Set big icon color (icon must has been set before).</p>
+Width Height Set big icon color (icon must has been set before).</p>
 </td>
 </tr>
 <tr>
@@ -8804,7 +8828,7 @@ Set big icon.</p>
 </code>
 </p>
 <p>
-Set big icon color (icon must has been set before).</p>
+Width Height Set big icon color (icon must has been set before).</p>
 <h3 class="content" id="Gui.MessageDlg.yesNo"><span class="titletype">func</span> <span class="titlelight">MessageDlg.</span><span class="titlestrong">yesNo</span></h3>
 <p class="code">
 <code style="white-space: break-spaces">func yesNo(from: *Surface, message: string, title: string = null, defaultId = Dialog.BtnNo, icon: Icon = {})->WndId
@@ -9415,6 +9439,8 @@ Add a range of changing <code class = "incode">saturation</code>.</p>
 <td>
 <a href="#Gui.PalettePicker.create">create</a></td>
 <td>
+<p>
+Hit test.</p>
 </td>
 </tr>
 </table>
@@ -9461,6 +9487,8 @@ Add a range of changing <code class = "incode">saturation</code>.</p>
 <code style="white-space: break-spaces">func create(parent: *Wnd, position: Rectangle = {}, id: WndId = null)->*PalettePicker
 </code>
 </p>
+<p>
+Hit test.</p>
 <h3 class="content" id="Gui.PopupListCtrl"><span class="titletype">struct</span> <span class="titlelight">Gui.</span><span class="titlestrong">PopupListCtrl</span></h3>
 <table>
 <tr>
@@ -9575,7 +9603,7 @@ Add a separator.</p>
 <a href="#Gui.PopupListCtrl.create">create</a></td>
 <td>
 <p>
-Create the popup list, but do not display it.</p>
+Separator Back selection Icon Text Check mark Create the popup list, but do not display it.</p>
 </td>
 </tr>
 <tr>
@@ -9607,7 +9635,7 @@ Add a separator.</p>
 </code>
 </p>
 <p>
-Create the popup list, but do not display it.</p>
+Separator Back selection Icon Text Check mark Create the popup list, but do not display it.</p>
 <h3 class="content" id="Gui.PopupListCtrl.show"><span class="titletype">func</span> <span class="titlelight">PopupListCtrl.</span><span class="titlestrong">show</span></h3>
 <p class="code">
 <code style="white-space: break-spaces">func show(using self, x: f32, y: f32, width: f32 = 10)
@@ -9797,6 +9825,8 @@ f32</td>
 <td>
 <a href="#Gui.ProgressBar.create">create</a></td>
 <td>
+<p>
+Bk Bar Automatic update of progresssion Border.</p>
 </td>
 </tr>
 <tr>
@@ -9818,6 +9848,8 @@ Set the progression in [0..1] range.</p>
 <code style="white-space: break-spaces">func create(parent: *Wnd, position: Rectangle = {}, id: WndId = null)->*ProgressBar
 </code>
 </p>
+<p>
+Bk Bar Automatic update of progresssion Border.</p>
 <h3 class="content" id="Gui.ProgressBar.setProgression"><span class="titletype">func</span> <span class="titlelight">ProgressBar.</span><span class="titlestrong">setProgression</span></h3>
 <p class="code">
 <code style="white-space: break-spaces">func setProgression(using self, prg: f32)
@@ -10945,6 +10977,8 @@ Clear content.</p>
 <td>
 <a href="#Gui.RichEditCtrl.clearUndo">clearUndo</a></td>
 <td>
+<p>
+Its impossible to restore an unmodified state in that case.</p>
 </td>
 </tr>
 <tr>
@@ -10964,7 +10998,7 @@ Clear content.</p>
 <a href="#Gui.RichEditCtrl.deleteBegLine">deleteBegLine</a></td>
 <td>
 <p>
-Delete a given text at the start of each selected line.</p>
+A dummy undo just to restore the selection Delete a given text at the start of each selected line.</p>
 </td>
 </tr>
 <tr>
@@ -11020,7 +11054,7 @@ Delete a given text at the start of each selected line.</p>
 <a href="#Gui.RichEditCtrl.evaluateSize">evaluateSize</a></td>
 <td>
 <p>
-Evaluate the rendering size.</p>
+Go to the first non white character X is the request position Delete Next line A dummy undo just to restore the selection Evaluate the rendering size.</p>
 </td>
 </tr>
 <tr>
@@ -11053,6 +11087,8 @@ Execute a command.</p>
 <td>
 <a href="#Gui.RichEditCtrl.getCursorPosFromPoint">getCursorPosFromPoint</a></td>
 <td>
+<p>
+Need to change horz scroll Need to change vertical scroll.</p>
 </td>
 </tr>
 <tr>
@@ -11122,7 +11158,7 @@ Get the full text with the associated styles per character.</p>
 <a href="#Gui.RichEditCtrl.insertBegLine">insertBegLine</a></td>
 <td>
 <p>
-Insert text at the start of each selected line.</p>
+Do action Insert text at the start of each selected line.</p>
 </td>
 </tr>
 <tr>
@@ -11168,7 +11204,7 @@ Returns true if the rich edit is read only.</p>
 <a href="#Gui.RichEditCtrl.keyPressed">keyPressed</a></td>
 <td>
 <p>
-Simulate a keyboard pressed.</p>
+If there is a corresponding command, do nothing Simulate a keyboard pressed.</p>
 </td>
 </tr>
 <tr>
@@ -11261,6 +11297,8 @@ Lex the full text.</p>
 <td>
 <a href="#Gui.RichEditCtrl.popUndo">popUndo</a></td>
 <td>
+<p>
+Nested undo, do not increment serial.</p>
 </td>
 </tr>
 <tr>
@@ -11285,6 +11323,8 @@ Lex the full text.</p>
 <td>
 <a href="#Gui.RichEditCtrl.scrollLineUp">scrollLineUp</a></td>
 <td>
+<p>
+Blanks A word Nothing.</p>
 </td>
 </tr>
 <tr>
@@ -11303,6 +11343,8 @@ Lex the full text.</p>
 <td>
 <a href="#Gui.RichEditCtrl.setCursorPos">setCursorPos</a></td>
 <td>
+<p>
+Before the first visible line Before the first character At the end of line At the end of file Check visibility.</p>
 </td>
 </tr>
 <tr>
@@ -11424,6 +11466,8 @@ Clear content.</p>
 <code style="white-space: break-spaces">func clearUndo(using self)
 </code>
 </p>
+<p>
+Its impossible to restore an unmodified state in that case.</p>
 <h3 class="content" id="Gui.RichEditCtrl.copyToClipboard"><span class="titletype">func</span> <span class="titlelight">RichEditCtrl.</span><span class="titlestrong">copyToClipboard</span></h3>
 <p class="code">
 <code style="white-space: break-spaces">func copyToClipboard(using self)
@@ -11440,7 +11484,7 @@ Clear content.</p>
 </code>
 </p>
 <p>
-Delete a given text at the start of each selected line.</p>
+A dummy undo just to restore the selection Delete a given text at the start of each selected line.</p>
 <h3 class="content" id="Gui.RichEditCtrl.deleteLeft"><span class="titletype">func</span> <span class="titlelight">RichEditCtrl.</span><span class="titlestrong">deleteLeft</span></h3>
 <p class="code">
 <code style="white-space: break-spaces">func deleteLeft(using self)
@@ -11487,7 +11531,7 @@ Delete a given text at the start of each selected line.</p>
 </code>
 </p>
 <p>
-Evaluate the rendering size.</p>
+Go to the first non white character X is the request position Delete Next line A dummy undo just to restore the selection Evaluate the rendering size.</p>
 <h3 class="content" id="Gui.RichEditCtrl.executeCommand"><span class="titletype">func</span> <span class="titlelight">RichEditCtrl.</span><span class="titlestrong">executeCommand</span></h3>
 <p class="code">
 <code style="white-space: break-spaces">func executeCommand(using self, cmd: RichEditCommand)
@@ -11515,6 +11559,8 @@ Execute a command.</p>
 <code style="white-space: break-spaces">func getCursorPosFromPoint(using self, pt: Point)->RichEditCursor
 </code>
 </p>
+<p>
+Need to change horz scroll Need to change vertical scroll.</p>
 <h3 class="content" id="Gui.RichEditCtrl.getEndSelection"><span class="titletype">func</span> <span class="titlelight">RichEditCtrl.</span><span class="titlestrong">getEndSelection</span></h3>
 <p class="code">
 <code style="white-space: break-spaces">func getEndSelection(using self)->RichEditCursor
@@ -11574,7 +11620,7 @@ Get the full text with the associated styles per character.</p>
 </code>
 </p>
 <p>
-Insert text at the start of each selected line.</p>
+Do action Insert text at the start of each selected line.</p>
 <h3 class="content" id="Gui.RichEditCtrl.insertRune"><span class="titletype">func</span> <span class="titlelight">RichEditCtrl.</span><span class="titlestrong">insertRune</span></h3>
 <p class="code">
 <code style="white-space: break-spaces">func insertRune(using self, ch: rune)
@@ -11613,7 +11659,7 @@ Returns true if the rich edit is read only.</p>
 </code>
 </p>
 <p>
-Simulate a keyboard pressed.</p>
+If there is a corresponding command, do nothing Simulate a keyboard pressed.</p>
 <h3 class="content" id="Gui.RichEditCtrl.lexAll"><span class="titletype">func</span> <span class="titlelight">RichEditCtrl.</span><span class="titlestrong">lexAll</span></h3>
 <p class="code">
 <code style="white-space: break-spaces">func lexAll(using self)
@@ -11691,6 +11737,8 @@ Lex the full text.</p>
 <code style="white-space: break-spaces">func popUndo(using self)
 </code>
 </p>
+<p>
+Nested undo, do not increment serial.</p>
 <h3 class="content" id="Gui.RichEditCtrl.pushUndo"><span class="titletype">func</span> <span class="titlelight">RichEditCtrl.</span><span class="titlestrong">pushUndo</span></h3>
 <p class="code">
 <code style="white-space: break-spaces">func pushUndo(using self)
@@ -11711,6 +11759,8 @@ Lex the full text.</p>
 <code style="white-space: break-spaces">func scrollLineUp(using self)
 </code>
 </p>
+<p>
+Blanks A word Nothing.</p>
 <h3 class="content" id="Gui.RichEditCtrl.selectAll"><span class="titletype">func</span> <span class="titlelight">RichEditCtrl.</span><span class="titlestrong">selectAll</span></h3>
 <p class="code">
 <code style="white-space: break-spaces">func selectAll(using self)
@@ -11726,6 +11776,8 @@ Lex the full text.</p>
 <code style="white-space: break-spaces">func setCursorPos(using self, cp: RichEditCursor)
 </code>
 </p>
+<p>
+Before the first visible line Before the first character At the end of line At the end of file Check visibility.</p>
 <h3 class="content" id="Gui.RichEditCtrl.setDefaultMapping"><span class="titletype">func</span> <span class="titlelight">RichEditCtrl.</span><span class="titlestrong">setDefaultMapping</span></h3>
 <p class="code">
 <code style="white-space: break-spaces">func setDefaultMapping(using self)
@@ -12822,7 +12874,7 @@ TransparentBar</td>
 <td>
 selection</td>
 <td class="tdtype">
-Array(__selmodel_tuple_395)</td>
+Array(__selmodel_tuple_393)</td>
 <td>
 </td>
 </tr>
@@ -12851,6 +12903,8 @@ Array(__selmodel_tuple_395)</td>
 <td>
 <a href="#Gui.SelModel.opVisit">opVisit</a></td>
 <td>
+<p>
+Prepend/Append to an existing range Need to make a new range.</p>
 </td>
 </tr>
 <tr>
@@ -12891,6 +12945,8 @@ Unselect all.</p>
 func(ptr: bool) opVisit(using self, stmt: code)
 </code>
 </p>
+<p>
+Prepend/Append to an existing range Need to make a new range.</p>
 <h3 class="content" id="Gui.SelModel.select"><span class="titletype">func</span> <span class="titlelight">SelModel.</span><span class="titlestrong">select</span></h3>
 <p class="code">
 <code style="white-space: break-spaces">func select(using self, idx: u32, select: bool)
@@ -13264,6 +13320,8 @@ Set left and right values, for a range.</p>
 <code style="white-space: break-spaces">func onMouseEvent(using self, evt: *MouseEvent)
 </code>
 </p>
+<p>
+Box value1.</p>
 <h3 class="content" id="Gui.Slider.IWnd.onPaintEvent"><span class="titletype">func</span> <span class="titlelight">IWnd.</span><span class="titlestrong">onPaintEvent</span></h3>
 <p class="code">
 <code style="white-space: break-spaces">func onPaintEvent(using self, evt: *PaintEvent)
@@ -14697,6 +14755,8 @@ Set the tab form.</p>
 <code style="white-space: break-spaces">func onResizeEvent(using self, evt: *ResizeEvent)
 </code>
 </p>
+<p>
+Paint all except selected one, which will be painted last Paint selected item.</p>
 <h3 class="content" id="Gui.Tab.IWnd.paintItem"><span class="titletype">func</span> <span class="titlelight">IWnd.</span><span class="titlestrong">paintItem</span></h3>
 <p class="code">
 <code style="white-space: break-spaces">func paintItem(using self, painter: *Painter, v: *TabItem, idx: u32)
@@ -14967,6 +15027,8 @@ Create a default font (fixed size) with the given size.</p>
 <td>
 <a href="#Gui.Theme.setTextColors">setTextColors</a></td>
 <td>
+<p>
+Icon alone Text + icon Text Icon.</p>
 </td>
 </tr>
 </table>
@@ -15010,6 +15072,8 @@ func drawSubRect(painter: *Painter, texture: Texture, dstRect: Rectangle, subRec
 <code style="white-space: break-spaces">func setTextColors(using self, fmt: *RichStringFormat, mainColor: Color)
 </code>
 </p>
+<p>
+Icon alone Text + icon Text Icon.</p>
 <h3 class="content" id="Gui.ThemeColors"><span class="titletype">struct</span> <span class="titlelight">Gui.</span><span class="titlestrong">ThemeColors</span></h3>
 <table>
 <tr>
@@ -19433,6 +19497,8 @@ func(*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.
 <code style="white-space: break-spaces">func onMouseEvent(using self, evt: *MouseEvent)
 </code>
 </p>
+<p>
+Box Content.</p>
 <h3 class="content" id="Gui.ToggleButton.IWnd.onPaintEvent"><span class="titletype">func</span> <span class="titlelight">IWnd.</span><span class="titlestrong">onPaintEvent</span></h3>
 <p class="code">
 <code style="white-space: break-spaces">func onPaintEvent(using self, evt: *PaintEvent)
@@ -19451,7 +19517,7 @@ func(*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.
 <a href="#Gui.ToolTip.hide">hide</a></td>
 <td>
 <p>
-Hide the current tooltip, if visible.</p>
+Make a copy because g_Pending will be destroy by <code class = "incode">show</code> Hide the current tooltip, if visible.</p>
 </td>
 </tr>
 <tr>
@@ -19470,7 +19536,7 @@ Show a tooltip.</p>
 <a href="#Gui.ToolTip.hide">hide</a></td>
 <td>
 <p>
-Hide the current tooltip, if visible.</p>
+Make a copy because g_Pending will be destroy by <code class = "incode">show</code> Hide the current tooltip, if visible.</p>
 </td>
 </tr>
 <tr>
@@ -19488,7 +19554,7 @@ Show a tooltip.</p>
 </code>
 </p>
 <p>
-Hide the current tooltip, if visible.</p>
+Make a copy because g_Pending will be destroy by <code class = "incode">show</code> Hide the current tooltip, if visible.</p>
 <h3 class="content" id="Gui.ToolTip.show"><span class="titletype">func</span> <span class="titlelight">ToolTip.</span><span class="titlestrong">show</span></h3>
 <p class="code">
 <code style="white-space: break-spaces">func show(owner: *Wnd, surfacePos: Point, str: string, delay: Duration = 500'ms)
@@ -19822,7 +19888,7 @@ Destroy the window.</p>
 <a href="#Gui.Wnd.disable">disable</a></td>
 <td>
 <p>
-Disable the window.</p>
+Check global state Disable the window.</p>
 </td>
 </tr>
 <tr>
@@ -19994,7 +20060,7 @@ Hide the window.</p>
 <a href="#Gui.Wnd.invalidate">invalidate</a></td>
 <td>
 <p>
-Force the window to be repainted.</p>
+Recompute style if necessary Transmit disabled state to childs Background Pre paint. Clipping is parent. No scroll Clipping Me Childs Restore clipping Post paint. Clipping is parent. No scroll Force the window to be repainted.</p>
 </td>
 </tr>
 <tr>
@@ -20018,7 +20084,7 @@ Returns true if window, and all its parents, are enabled.</p>
 <a href="#Gui.Wnd.isParentOf">isParentOf</a></td>
 <td>
 <p>
-Returns true if <code class = "incode">child</code> is in the child hieararchy of <code class = "incode">self</code>.</p>
+Top level window is the last one painted, so its the last in the array. So we must visit in revert order Returns true if <code class = "incode">child</code> is in the child hieararchy of <code class = "incode">self</code>.</p>
 </td>
 </tr>
 <tr>
@@ -20144,7 +20210,7 @@ Convert a screen coordinate to a surface coordinate (relative to my surface).</p
 <a href="#Gui.Wnd.sendCommandEvent">sendCommandEvent</a></td>
 <td>
 <p>
-Send the command event with the given id to the window. The command will be updated first, and if it is not disabled, it will be sent.</p>
+User will fill the state Is there a keyboard shortcut or a global hot key ? Send the command event with the given id to the window. The command will be updated first, and if it is not disabled, it will be sent.</p>
 </td>
 </tr>
 <tr>
@@ -20246,7 +20312,7 @@ Set window parent.</p>
 <a href="#Gui.Wnd.setPosition">setPosition</a></td>
 <td>
 <p>
-Move and size the wnd.</p>
+Put the window at the back, or before the first topmost window Move and size the wnd.</p>
 </td>
 </tr>
 <tr>
@@ -20449,7 +20515,7 @@ Destroy the window.</p>
 </code>
 </p>
 <p>
-Disable the window.</p>
+Check global state Disable the window.</p>
 <h3 class="content" id="Gui.Wnd.enable"><span class="titletype">func</span> <span class="titlelight">Wnd.</span><span class="titlestrong">enable</span></h3>
 <p class="code">
 <code style="white-space: break-spaces">func enable(using self, state = true)
@@ -20597,7 +20663,7 @@ Hide the window.</p>
 </code>
 </p>
 <p>
-Force the window to be repainted.</p>
+Recompute style if necessary Transmit disabled state to childs Background Pre paint. Clipping is parent. No scroll Clipping Me Childs Restore clipping Post paint. Clipping is parent. No scroll Force the window to be repainted.</p>
 <h3 class="content" id="Gui.Wnd.invalidateRect"><span class="titletype">func</span> <span class="titlelight">Wnd.</span><span class="titlestrong">invalidateRect</span></h3>
 <p class="code">
 <code style="white-space: break-spaces">func invalidateRect(using self, rect: Rectangle)
@@ -20618,7 +20684,7 @@ Returns true if window, and all its parents, are enabled.</p>
 </code>
 </p>
 <p>
-Returns true if <code class = "incode">child</code> is in the child hieararchy of <code class = "incode">self</code>.</p>
+Top level window is the last one painted, so its the last in the array. So we must visit in revert order Returns true if <code class = "incode">child</code> is in the child hieararchy of <code class = "incode">self</code>.</p>
 <h3 class="content" id="Gui.Wnd.isVisible"><span class="titletype">func</span> <span class="titlelight">Wnd.</span><span class="titlestrong">isVisible</span></h3>
 <p class="code">
 <code style="white-space: break-spaces">func isVisible(using self, onlyMe = false)->bool
@@ -20725,7 +20791,7 @@ Convert a screen coordinate to a surface coordinate (relative to my surface).</p
 </code>
 </p>
 <p>
-Send the command event with the given id to the window. The command will be updated first, and if it is not disabled, it will be sent.</p>
+User will fill the state Is there a keyboard shortcut or a global hot key ? Send the command event with the given id to the window. The command will be updated first, and if it is not disabled, it will be sent.</p>
 <h3 class="content" id="Gui.Wnd.sendComputeCommandStateEvent"><span class="titletype">func</span> <span class="titlelight">Wnd.</span><span class="titlestrong">sendComputeCommandStateEvent</span></h3>
 <p class="code">
 <code style="white-space: break-spaces">func sendComputeCommandStateEvent(using self, cmdId: WndId)->CommandStateEvent
@@ -20804,7 +20870,7 @@ Set window parent.</p>
 </code>
 </p>
 <p>
-Move and size the wnd.</p>
+Put the window at the back, or before the first topmost window Move and size the wnd.</p>
 <p class="code">
 <code style="white-space: break-spaces">func setPosition(using self, x: f32, y: f32, w: f32, h: f32, computeLayout = true)
 </code>

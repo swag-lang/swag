@@ -2204,6 +2204,11 @@ DefaultArcTolerance</td>
 <td class="tdtype">
 f64</td>
 <td>
+<p>
+:LICENCE    This code is based on the Clipper library (http://www.angusj.com)    The original code has been modified for Swag    See LICENCE.md for the corresponding licence.<ul>
+<li>/.</li>
+</ul>
+</p>
 </td>
 </tr>
 </table>
@@ -2586,6 +2591,11 @@ LoRange</td>
 <td class="tdtype">
 u32</td>
 <td>
+<p>
+:LICENCE    This code is based on the Clipper library (http://www.angusj.com/delphi/clipper.php)    The original code has been modified for Swag    See LICENCE.md for the corresponding licence.<ul>
+<li>/.</li>
+</ul>
+</p>
 </td>
 </tr>
 </table>
@@ -2975,7 +2985,7 @@ bool</td>
 <td>
 edgeList</td>
 <td class="tdtype">
-Array(__clipper_tuple_224)</td>
+Array(__clipper_tuple_218)</td>
 <td>
 </td>
 </tr>
@@ -4013,6 +4023,8 @@ decodePixels</td>
 <td class="tdtype">
 bool</td>
 <td>
+<p>
+Decode image informations (width, height...) but do no read pixels Used to fast retrieve informations about the image.</p>
 </td>
 </tr>
 </table>
@@ -4689,7 +4701,7 @@ u64</td>
 <a href="#Pixel.Gif.Decoder.getFrame">getFrame</a></td>
 <td>
 <p>
-Create an image for the current frame.</p>
+Presence of GCT Color spaces depth */ Ignore sort flag */ GCT Size */ Background color index */ Aspect ratio */ Create an image for the current frame.</p>
 </td>
 </tr>
 <tr>
@@ -4741,7 +4753,7 @@ Restart at frame 0.</p>
 </code>
 </p>
 <p>
-Create an image for the current frame.</p>
+Presence of GCT Color spaces depth */ Ignore sort flag */ GCT Size */ Background color index */ Aspect ratio */ Create an image for the current frame.</p>
 <h3 class="content" id="Pixel.Gif.Decoder.getNumFrames"><span class="titletype">func</span> <span class="titlelight">Decoder.</span><span class="titlestrong">getNumFrames</span></h3>
 <p class="code">
 <code style="white-space: break-spaces">func getNumFrames(using self)->s32 throw
@@ -5533,6 +5545,8 @@ bpp8</td>
 <td class="tdtype">
 u8</td>
 <td>
+<p>
+Bytes per pixel.</p>
 </td>
 </tr>
 <tr>
@@ -5551,7 +5565,7 @@ workingBuffer</td>
 <a href="#Pixel.Image.addDecoder">addDecoder</a></td>
 <td>
 <p>
-Register an image decoder.</p>
+Create a decoder instance Decode Load an image from file Register an image decoder.</p>
 </td>
 </tr>
 <tr>
@@ -5591,7 +5605,7 @@ Allocate a computing buffer with current image size.</p>
 <a href="#Pixel.Image.applyKernel">applyKernel</a></td>
 <td>
 <p>
-Apply a kernel to the image.</p>
+unsupported pixel format Fast case when we are not around borders Go to next line Slowest case, near the borders Apply a kernel to the image.</p>
 </td>
 </tr>
 <tr>
@@ -5881,7 +5895,7 @@ Change the alpha channel.</p>
 <a href="#Pixel.Image.setChannel">setChannel</a></td>
 <td>
 <p>
-Change specified color channels.</p>
+unsupported Change specified color channels.</p>
 </td>
 </tr>
 <tr>
@@ -6394,7 +6408,7 @@ T270</td>
 </code>
 </p>
 <p>
-Register an image decoder.</p>
+Create a decoder instance Decode Load an image from file Register an image decoder.</p>
 <h3 class="content" id="Pixel.Image.addEncoder"><span class="titletype">func</span> <span class="titlelight">Image.</span><span class="titlestrong">addEncoder</span></h3>
 <p class="code">
 <code style="white-space: break-spaces">func(T) addEncoder()
@@ -6428,7 +6442,7 @@ Allocate a computing buffer with new sizes.</p>
 </code>
 </p>
 <p>
-Apply a kernel to the image.</p>
+unsupported pixel format Fast case when we are not around borders Go to next line Slowest case, near the borders Apply a kernel to the image.</p>
 <h3 class="content" id="Pixel.Image.applyWorkingBuffer"><span class="titletype">func</span> <span class="titlelight">Image.</span><span class="titlestrong">applyWorkingBuffer</span></h3>
 <p class="code">
 <code style="white-space: break-spaces">func applyWorkingBuffer(using self)
@@ -6680,7 +6694,7 @@ Change the alpha channel.</p>
 </code>
 </p>
 <p>
-Change specified color channels.</p>
+unsupported Change specified color channels.</p>
 <h3 class="content" id="Pixel.Image.setPixelFormat"><span class="titletype">func</span> <span class="titlelight">Image.</span><span class="titlestrong">setPixelFormat</span></h3>
 <p class="code">
 <code style="white-space: break-spaces">func setPixelFormat(using self, newPf: PixelFormat)
@@ -7860,6 +7874,8 @@ flattenQuality</td>
 <td class="tdtype">
 <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.PaintQuality">PaintQuality</a></td>
 <td>
+<p>
+Flatten infos.</p>
 </td>
 </tr>
 <tr>
@@ -8219,7 +8235,7 @@ Returns a new path.</p>
 <a href="#Pixel.LinePathList.offset">offset</a></td>
 <td>
 <p>
-Call fast offset on all paths They must before be flattened.</p>
+Flatten all path, and compute BV Call fast offset on all paths They must before be flattened.</p>
 </td>
 </tr>
 <tr>
@@ -8270,7 +8286,7 @@ Returns a new path.</p>
 </code>
 </p>
 <p>
-Call fast offset on all paths They must before be flattened.</p>
+Flatten all path, and compute BV Call fast offset on all paths They must before be flattened.</p>
 <p class="code">
 <code style="white-space: break-spaces">func offset(using self, value: f32, joinStyle: JoinStyle, toler: f32 = 0.5)
 </code>
@@ -8524,7 +8540,7 @@ sharedLinePathList</td>
 <td>
 sharedRoundTmp</td>
 <td class="tdtype">
-Array(__linepath_tuple_389)</td>
+Array(__linepath_tuple_246)</td>
 <td>
 </td>
 </tr>
@@ -8646,7 +8662,7 @@ Clear the rendering surface.</p>
 <a href="#Pixel.Painter.computeLayout">computeLayout</a></td>
 <td>
 <p>
-Recompute the layout for a given rectangle.</p>
+Set brush main texture Underline Recompute the layout for a given rectangle.</p>
 </td>
 </tr>
 <tr>
@@ -8667,14 +8683,14 @@ Draw an arc between two angles.</p>
 <td>
 <a href="#Pixel.Painter.drawCircle">drawCircle</a></td>
 <td>
-<p>
-Draw an empty circle.</p>
 </td>
 </tr>
 <tr>
 <td>
 <a href="#Pixel.Painter.drawCircle">drawCircle</a></td>
 <td>
+<p>
+Draw an empty circle.</p>
 </td>
 </tr>
 <tr>
@@ -8724,23 +8740,41 @@ Draw the line path.</p>
 <a href="#Pixel.Painter.drawPath">drawPath</a></td>
 <td>
 <p>
+Draw the line path.</p>
+</td>
+</tr>
+<tr>
+<td>
+<a href="#Pixel.Painter.drawPath">drawPath</a></td>
+<td>
+<p>
+Line caps. Draw them before the line, so that the line will overwrite them a little if necessary Draw all except last point, because of potential offset for the last point (because of cap styles) Last point AA end edge if no end cap Closing join between the end and the beginning in case of a closed path Draw the line path.</p>
+</td>
+</tr>
+<tr>
+<td>
+<a href="#Pixel.Painter.drawPath">drawPath</a></td>
+<td>
+<p>
 Draw the line path with the given <code class = "incode">pen</code>.</p>
 </td>
 </tr>
 <tr>
 <td>
-<a href="#Pixel.Painter.drawPath">drawPath</a></td>
+<a href="#Pixel.Painter.drawRect">drawRect</a></td>
 <td>
-<p>
-Draw the line path.</p>
 </td>
 </tr>
 <tr>
 <td>
-<a href="#Pixel.Painter.drawPath">drawPath</a></td>
+<a href="#Pixel.Painter.drawRect">drawRect</a></td>
 <td>
-<p>
-Draw the line path.</p>
+</td>
+</tr>
+<tr>
+<td>
+<a href="#Pixel.Painter.drawRect">drawRect</a></td>
+<td>
 </td>
 </tr>
 <tr>
@@ -8753,46 +8787,10 @@ Draw an empty rectangle.</p>
 </tr>
 <tr>
 <td>
-<a href="#Pixel.Painter.drawRect">drawRect</a></td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-<a href="#Pixel.Painter.drawRect">drawRect</a></td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-<a href="#Pixel.Painter.drawRect">drawRect</a></td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
 <a href="#Pixel.Painter.drawRichString">drawRichString</a></td>
 <td>
 <p>
-Draw a rich string. A rich string can be multiline, and accepts The layout will be computed at the first call, and each time <code class = "incode">pos</code> has changed.</p>
-</td>
-</tr>
-<tr>
-<td>
-<a href="#Pixel.Painter.drawRoundRect">drawRoundRect</a></td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-<a href="#Pixel.Painter.drawRoundRect">drawRoundRect</a></td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-<a href="#Pixel.Painter.drawRoundRect">drawRoundRect</a></td>
-<td>
+Y correction if single line Layout Draw a rich string. A rich string can be multiline, and accepts The layout will be computed at the first call, and each time <code class = "incode">pos</code> has changed.</p>
 </td>
 </tr>
 <tr>
@@ -8801,6 +8799,24 @@ Draw a rich string. A rich string can be multiline, and accepts The layout will 
 <td>
 <p>
 Draw an empty round rectangle.</p>
+</td>
+</tr>
+<tr>
+<td>
+<a href="#Pixel.Painter.drawRoundRect">drawRoundRect</a></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<a href="#Pixel.Painter.drawRoundRect">drawRoundRect</a></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<a href="#Pixel.Painter.drawRoundRect">drawRoundRect</a></td>
+<td>
 </td>
 </tr>
 <tr>
@@ -8844,7 +8860,7 @@ Draw a simple string (centered).</p>
 <a href="#Pixel.Painter.drawTexture">drawTexture</a></td>
 <td>
 <p>
-Draw a portion of an image.</p>
+Draw a texture image.</p>
 </td>
 </tr>
 <tr>
@@ -8864,7 +8880,7 @@ Draw a portion of an image.</p>
 <a href="#Pixel.Painter.drawTexture">drawTexture</a></td>
 <td>
 <p>
-Draw a texture image.</p>
+Draw a portion of an image.</p>
 </td>
 </tr>
 <tr>
@@ -8916,23 +8932,7 @@ Draw a solid ellipse.</p>
 <a href="#Pixel.Painter.fillPath">fillPath</a></td>
 <td>
 <p>
-Fill the line path.</p>
-</td>
-</tr>
-<tr>
-<td>
-<a href="#Pixel.Painter.fillPath">fillPath</a></td>
-<td>
-<p>
-Fill the list of paths clockwise = fill, anti-clockwise = hole.</p>
-</td>
-</tr>
-<tr>
-<td>
-<a href="#Pixel.Painter.fillPath">fillPath</a></td>
-<td>
-<p>
-Fill the line path.</p>
+Triangulation "Eat" points, triangles and edges t.triangles only contains <code class = "incode">interior</code> triangles, so we need to delete all other allocated triangles to avoid a leak Paint Fill the line path.</p>
 </td>
 </tr>
 <tr>
@@ -8945,10 +8945,18 @@ Fill the line path with the given <code class = "incode">brush</code>.</p>
 </tr>
 <tr>
 <td>
-<a href="#Pixel.Painter.fillPolygon">fillPolygon</a></td>
+<a href="#Pixel.Painter.fillPath">fillPath</a></td>
 <td>
 <p>
-Fill the polygon with the given <code class = "incode">brush</code>.</p>
+Convex shape : faster Convex shape : 1 triangle Convex shape : 2 triangles Convex shape: add a triangle from the center of the shape to each pair of vertices Non convex shape: complex painting (triangulation) Fill the line path.</p>
+</td>
+</tr>
+<tr>
+<td>
+<a href="#Pixel.Painter.fillPath">fillPath</a></td>
+<td>
+<p>
+Fill the list of paths clockwise = fill, anti-clockwise = hole.</p>
 </td>
 </tr>
 <tr>
@@ -8961,28 +8969,36 @@ Fill the polygon with the given color.</p>
 </tr>
 <tr>
 <td>
+<a href="#Pixel.Painter.fillPolygon">fillPolygon</a></td>
+<td>
+<p>
+Fill the polygon with the given <code class = "incode">brush</code>.</p>
+</td>
+</tr>
+<tr>
+<td>
+<a href="#Pixel.Painter.fillRect">fillRect</a></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<a href="#Pixel.Painter.fillRect">fillRect</a></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<a href="#Pixel.Painter.fillRect">fillRect</a></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
 <a href="#Pixel.Painter.fillRect">fillRect</a></td>
 <td>
 <p>
 Draw a filled rectangle.</p>
-</td>
-</tr>
-<tr>
-<td>
-<a href="#Pixel.Painter.fillRect">fillRect</a></td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-<a href="#Pixel.Painter.fillRect">fillRect</a></td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-<a href="#Pixel.Painter.fillRect">fillRect</a></td>
-<td>
 </td>
 </tr>
 <tr>
@@ -9392,7 +9408,7 @@ Clear the rendering surface.</p>
 </code>
 </p>
 <p>
-Recompute the layout for a given rectangle.</p>
+Set brush main texture Underline Recompute the layout for a given rectangle.</p>
 <h3 class="content" id="Pixel.Painter.computeLayout.computeLayout.OneLine"><span class="titletype">struct</span> <span class="titlelight">computeLayout.</span><span class="titlestrong">OneLine</span></h3>
 <table>
 <tr>
@@ -9495,7 +9511,7 @@ func drawLine(using self, startX: f32, startY: f32, endX: f32, endY: f32, pen: P
 </code>
 </p>
 <p>
-Draw the line path.</p>
+Line caps. Draw them before the line, so that the line will overwrite them a little if necessary Draw all except last point, because of potential offset for the last point (because of cap styles) Last point AA end edge if no end cap Closing join between the end and the beginning in case of a closed path Draw the line path.</p>
 <p class="code">
 <code style="white-space: break-spaces">func drawPath(using self, path: *LinePath, pen: Pen)
 </code>
@@ -9533,7 +9549,7 @@ func drawRect(using self, rect: Rectangle, pen: Pen)
 </code>
 </p>
 <p>
-Draw a rich string. A rich string can be multiline, and accepts The layout will be computed at the first call, and each time <code class = "incode">pos</code> has changed.</p>
+Y correction if single line Layout Draw a rich string. A rich string can be multiline, and accepts The layout will be computed at the first call, and each time <code class = "incode">pos</code> has changed.</p>
 <h3 class="content" id="Pixel.Painter.drawRoundRect"><span class="titletype">func</span> <span class="titlelight">Painter.</span><span class="titlestrong">drawRoundRect</span></h3>
 <p class="code">
 <code style="white-space: break-spaces">func drawRoundRect(using self, left: f32, top: f32, width: f32, height: f32, radiusX: f32, radiusY: f32, color: Color, penSize: f32 = 1)
@@ -9629,7 +9645,7 @@ Draw a solid ellipse.</p>
 </code>
 </p>
 <p>
-Fill the line path.</p>
+Triangulation "Eat" points, triangles and edges t.triangles only contains <code class = "incode">interior</code> triangles, so we need to delete all other allocated triangles to avoid a leak Paint Fill the line path.</p>
 <p class="code">
 <code style="white-space: break-spaces">func fillPath(using self, path: *LinePath, brush: Brush)
 </code>
@@ -9641,7 +9657,7 @@ Fill the line path with the given <code class = "incode">brush</code>.</p>
 </code>
 </p>
 <p>
-Fill the line path.</p>
+Convex shape : faster Convex shape : 1 triangle Convex shape : 2 triangles Convex shape: add a triangle from the center of the shape to each pair of vertices Non convex shape: complex painting (triangulation) Fill the line path.</p>
 <p class="code">
 <code style="white-space: break-spaces">func fillPath(using self, pathList: *LinePathList, brush: Brush)
 </code>
@@ -10373,6 +10389,8 @@ bool</td>
 <code style="white-space: break-spaces">func canDecode(using self, fileName: string)->bool
 </code>
 </p>
+<p>
+Grayscale without alpha channel, no transparency Grayscale without alpha channel, but transparency Grayscale with alpha channel Color without alpha but transparency.</p>
 <h3 class="content" id="Pixel.Png.Decoder.IImageDecoder.decode"><span class="titletype">func</span> <span class="titlelight">IImageDecoder.</span><span class="titlestrong">decode</span></h3>
 <p class="code">
 <code style="white-space: break-spaces">func decode(using self, buffer: const [..] u8, options: DecodeOptions)->Image throw
@@ -10660,6 +10678,11 @@ EncodeOptions</td>
 <td>
 <a href="#Pixel.Poly2Tri.Orientation">Orientation</a></td>
 <td>
+<p>
+:LICENCE    This code is based on the Poly2Tri library (https://github.com/jhasse/poly2tri)    The original code has been modified for Swag    See LICENCE.md for the corresponding licence.<ul>
+<li>/.</li>
+</ul>
+</p>
 </td>
 </tr>
 </table>
@@ -10815,6 +10838,11 @@ f64</td>
 </tr>
 </table>
 <h3 class="content" id="Pixel.Poly2Tri.Orientation"><span class="titletype">enum</span> <span class="titlelight">Poly2Tri.</span><span class="titlestrong">Orientation</span></h3>
+<p>
+:LICENCE    This code is based on the Poly2Tri library (https://github.com/jhasse/poly2tri)    The original code has been modified for Swag    See LICENCE.md for the corresponding licence.<ul>
+<li>/.</li>
+</ul>
+</p>
 <table>
 <tr>
 <td>
@@ -11129,6 +11157,8 @@ isClockwise</td>
 <td class="tdtype">
 bool</td>
 <td>
+<p>
+Fill with a call to compute().</p>
 </td>
 </tr>
 <tr>
@@ -11187,7 +11217,7 @@ Add a new point.</p>
 <a href="#Pixel.Polygon.clean">clean</a></td>
 <td>
 <p>
-Clean polygon by removing bad/unecessary points.</p>
+Compute Clean polygon by removing bad/unecessary points.</p>
 </td>
 </tr>
 <tr>
@@ -11259,7 +11289,7 @@ Fast expand polygon by a given amount.</p>
 <a href="#Pixel.Polygon.offset">offset</a></td>
 <td>
 <p>
-Slow but quality offset with a joinStyle.</p>
+Compute Slow but quality offset with a joinStyle.</p>
 </td>
 </tr>
 </table>
@@ -11276,7 +11306,7 @@ Add a new point.</p>
 </code>
 </p>
 <p>
-Clean polygon by removing bad/unecessary points.</p>
+Compute Clean polygon by removing bad/unecessary points.</p>
 <h3 class="content" id="Pixel.Polygon.clear"><span class="titletype">func</span> <span class="titlelight">Polygon.</span><span class="titlestrong">clear</span></h3>
 <p class="code">
 <code style="white-space: break-spaces">func clear(using self)
@@ -11337,7 +11367,7 @@ Fast expand polygon by a given amount.</p>
 </code>
 </p>
 <p>
-Slow but quality offset with a joinStyle.</p>
+Compute Slow but quality offset with a joinStyle.</p>
 <h3 class="content" id="Pixel.RenderOgl"><span class="titletype">struct</span> <span class="titlelight">Pixel.</span><span class="titlestrong">RenderOgl</span></h3>
 <table>
 <tr>
@@ -11500,7 +11530,7 @@ To be called before rendering.</p>
 <a href="#Pixel.RenderOgl.bindRenderTarget">bindRenderTarget</a></td>
 <td>
 <p>
-Set the current render target.</p>
+aa aanum Generate predefined textures Set the current render target.</p>
 </td>
 </tr>
 <tr>
@@ -11672,7 +11702,7 @@ Force the scissor.</p>
 <a href="#Pixel.RenderOgl.setShader">setShader</a></td>
 <td>
 <p>
-Set the current shader.</p>
+Default shader Default state Set the current shader.</p>
 </td>
 </tr>
 <tr>
@@ -11728,7 +11758,7 @@ To be called before rendering.</p>
 </code>
 </p>
 <p>
-Set the current render target.</p>
+aa aanum Generate predefined textures Set the current render target.</p>
 <h3 class="content" id="Pixel.RenderOgl.clear"><span class="titletype">func</span> <span class="titlelight">RenderOgl.</span><span class="titlestrong">clear</span></h3>
 <p class="code">
 <code style="white-space: break-spaces">func clear(using self)
@@ -11877,7 +11907,7 @@ Force the scissor.</p>
 </code>
 </p>
 <p>
-Set the current shader.</p>
+Default shader Default state Set the current shader.</p>
 <h3 class="content" id="Pixel.RenderOgl.translateTransform"><span class="titletype">func</span> <span class="titlelight">RenderOgl.</span><span class="titlestrong">translateTransform</span></h3>
 <p class="code">
 <code style="white-space: break-spaces">func translateTransform(using self, x: f32, y: f32)
@@ -12062,6 +12092,8 @@ slice</td>
 <td class="tdtype">
 string</td>
 <td>
+<p>
+From <code class = "incode">set</code>.</p>
 </td>
 </tr>
 <tr>
@@ -12110,6 +12142,8 @@ boundRect</td>
 <td class="tdtype">
 Rectangle</td>
 <td>
+<p>
+From <code class = "incode">computeLayout</code>.</p>
 </td>
 </tr>
 <tr>

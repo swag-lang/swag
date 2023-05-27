@@ -1747,7 +1747,7 @@ Create a working buffer.</p>
 <a href="#Core.Array.createTemp">createTemp</a></td>
 <td>
 <p>
-Create a temporary array.</p>
+Need to drop every structs Create a temporary array.</p>
 </td>
 </tr>
 <tr>
@@ -1779,7 +1779,7 @@ Reserve room at the end of the array for <code class = "incode">num</code> eleme
 <a href="#Core.Array.free">free</a></td>
 <td>
 <p>
-Free the array content.</p>
+Need to call opPostMove on every existing element if the buffer has not been reallocated in place Free the array content.</p>
 </td>
 </tr>
 <tr>
@@ -2035,7 +2035,7 @@ Sort array in reverse order (from biggest to lowest value).</p>
 <a href="#Core.Array.swap">swap</a></td>
 <td>
 <p>
-Swap two elements.</p>
+Do not add myself if theres not enough room (because we will reallocate) Swap two elements.</p>
 </td>
 </tr>
 <tr>
@@ -2114,7 +2114,7 @@ Create a working buffer.</p>
 </code>
 </p>
 <p>
-Create a temporary array.</p>
+Need to drop every structs Create a temporary array.</p>
 <h3 class="content" id="Core.Array.emplaceAddress"><span class="titletype">func</span> <span class="titlelight">Array.</span><span class="titlestrong">emplaceAddress</span></h3>
 <p class="code">
 <code style="white-space: break-spaces">func emplaceAddress(using self, num: u32 = 1)->^T
@@ -2142,7 +2142,7 @@ Reserve room at the end of the array for <code class = "incode">num</code> eleme
 </code>
 </p>
 <p>
-Free the array content.</p>
+Need to call opPostMove on every existing element if the buffer has not been reallocated in place Free the array content.</p>
 <h3 class="content" id="Core.Array.front"><span class="titletype">func</span> <span class="titlelight">Array.</span><span class="titlestrong">front</span></h3>
 <p class="code">
 <code style="white-space: break-spaces">func front(using self)->T
@@ -2353,7 +2353,7 @@ Sort array in reverse order (from biggest to lowest value).</p>
 </code>
 </p>
 <p>
-Swap two elements.</p>
+Do not add myself if theres not enough room (because we will reallocate) Swap two elements.</p>
 <h3 class="content" id="Core.Array.toSlice"><span class="titletype">func</span> <span class="titlelight">Array.</span><span class="titlestrong">toSlice</span></h3>
 <p class="code">
 <code style="white-space: break-spaces">func toSlice(using self)->[..] T
@@ -3826,6 +3826,8 @@ Unicode</td>
 <td>
 <a href="#Core.CommandLine.getField">getField</a></td>
 <td>
+<p>
+Clean all arguments.</p>
 </td>
 </tr>
 <tr>
@@ -3841,7 +3843,7 @@ Returns true if <code class = "incode">oneArg</code> is a valid option (starting
 <a href="#Core.CommandLine.parse">parse</a></td>
 <td>
 <p>
-Parse all the arguments and fill the result.</p>
+Test normal name (field) Test name alias Parse all the arguments and fill the result.</p>
 </td>
 </tr>
 <tr>
@@ -3859,6 +3861,8 @@ Clean and split a list of arguments -option:value or -option=value =&gt; -option
 <td>
 <a href="#Core.CommandLine.getField">getField</a></td>
 <td>
+<p>
+Clean all arguments.</p>
 </td>
 </tr>
 <tr>
@@ -3874,7 +3878,7 @@ Returns true if <code class = "incode">oneArg</code> is a valid option (starting
 <a href="#Core.CommandLine.parse">parse</a></td>
 <td>
 <p>
-Parse all the arguments and fill the result.</p>
+Test normal name (field) Test name alias Parse all the arguments and fill the result.</p>
 </td>
 </tr>
 <tr>
@@ -3915,6 +3919,8 @@ isSet</td>
 <code style="white-space: break-spaces">func getField(typeStruct: const *TypeInfoStruct, name: string)->const *TypeValue
 </code>
 </p>
+<p>
+Clean all arguments.</p>
 <h3 class="content" id="Core.CommandLine.isOption"><span class="titletype">func</span> <span class="titlelight">CommandLine.</span><span class="titlestrong">isOption</span></h3>
 <p class="code">
 <code style="white-space: break-spaces">func isOption(oneArg: string, _options: ParseOptions)->bool
@@ -3928,7 +3934,7 @@ Returns true if <code class = "incode">oneArg</code> is a valid option (starting
 </code>
 </p>
 <p>
-Parse all the arguments and fill the result.</p>
+Test normal name (field) Test name alias Parse all the arguments and fill the result.</p>
 <h3 class="content" id="Core.CommandLine.parse.parse.checkNext"><span class="titletype">func</span> <span class="titlelight">parse.</span><span class="titlestrong">checkNext</span></h3>
 <p class="code">
 <code style="white-space: break-spaces">func checkNext() throw
@@ -4042,6 +4048,8 @@ bool</td>
 <td>
 <a href="#Core.Compress.BitStream.peek32">peek32</a></td>
 <td>
+<p>
+To optim.</p>
 </td>
 </tr>
 <tr>
@@ -4130,6 +4138,8 @@ bool</td>
 <code style="white-space: break-spaces">func peek32(using self, dest: ^u8)
 </code>
 </p>
+<p>
+To optim.</p>
 <h3 class="content" id="Core.Compress.BitStream.peek32Be"><span class="titletype">func</span> <span class="titlelight">BitStream.</span><span class="titlestrong">peek32Be</span></h3>
 <p class="code">
 <code style="white-space: break-spaces">func peek32Be(using self, dest: ^u8)
@@ -4361,7 +4371,7 @@ adler</td>
 <a href="#Core.Compress.Inflate.decompress">decompress</a></td>
 <td>
 <p>
-Decompress the associated stream.</p>
+Copy an already decoded sequence of bytes, and repeat the last one Decompress the associated stream.</p>
 </td>
 </tr>
 </table>
@@ -4371,7 +4381,7 @@ Decompress the associated stream.</p>
 </code>
 </p>
 <p>
-Decompress the associated stream.</p>
+Copy an already decoded sequence of bytes, and repeat the last one Decompress the associated stream.</p>
 <h3 class="content" id="Core.Compress.ZLib"><span class="titletype">struct</span> <span class="titlelight">Compress.</span><span class="titlestrong">ZLib</span></h3>
 <table>
 <tr>
@@ -4516,7 +4526,7 @@ Append one byte to the buffer.</p>
 <a href="#Core.ConcatBuffer.addStruct">addStruct</a></td>
 <td>
 <p>
-Append the content of a struct.</p>
+If not enough room in the current bucket, then we have to split the content with the next bucket Append the content of a struct.</p>
 </td>
 </tr>
 <tr>
@@ -4546,7 +4556,7 @@ Returns the number of bytes.</p>
 <a href="#Core.ConcatBuffer.getOffset">getOffset</a></td>
 <td>
 <p>
-Get the linearized seek offset.</p>
+Be sure we have a buffer Divide the slice in the given amount of buckets if necessary Overwrite We have reached the end So we must grow Append Will alloc a new bucket as the current one is full We should have enough size in the last bucket to store the rest of the slice Get the linearized seek offset.</p>
 </td>
 </tr>
 <tr>
@@ -4586,7 +4596,7 @@ Seek current write pointer.</p>
 <a href="#Core.ConcatBuffer.moveToString">moveToString</a></td>
 <td>
 <p>
-Move the content.</p>
+Must be linear ? Move the content.</p>
 </td>
 </tr>
 <tr>
@@ -4616,7 +4626,7 @@ Release all allocated buffers.</p>
 <a href="#Core.ConcatBuffer.setAllocator">setAllocator</a></td>
 <td>
 <p>
-Associate an allocator with the buffer. The allocator can only be changed if the buffer has no pending buckets.</p>
+Enough room in the last bucket Not enough room in the last bucket, but with have a bucket after that can old the bytes (because of a previous clear()) Need to allocate a new bucket Each bucket knows the total count before it Associate an allocator with the buffer. The allocator can only be changed if the buffer has no pending buckets.</p>
 </td>
 </tr>
 <tr>
@@ -4688,7 +4698,7 @@ Append one byte to the buffer.</p>
 </code>
 </p>
 <p>
-Append the content of a struct.</p>
+If not enough room in the current bucket, then we have to split the content with the next bucket Append the content of a struct.</p>
 <h3 class="content" id="Core.ConcatBuffer.clear"><span class="titletype">func</span> <span class="titlelight">ConcatBuffer.</span><span class="titlestrong">clear</span></h3>
 <p class="code">
 <code style="white-space: break-spaces">func clear(using self)
@@ -4714,7 +4724,7 @@ Returns the number of bytes.</p>
 </code>
 </p>
 <p>
-Get the linearized seek offset.</p>
+Be sure we have a buffer Divide the slice in the given amount of buckets if necessary Overwrite We have reached the end So we must grow Append Will alloc a new bucket as the current one is full We should have enough size in the last bucket to store the rest of the slice Get the linearized seek offset.</p>
 <h3 class="content" id="Core.ConcatBuffer.getSeek"><span class="titletype">func</span> <span class="titlelight">ConcatBuffer.</span><span class="titlestrong">getSeek</span></h3>
 <p class="code">
 <code style="white-space: break-spaces">func getSeek(using self)->ConcatBufferSeek
@@ -4749,7 +4759,7 @@ Seek current write pointer.</p>
 </code>
 </p>
 <p>
-Move the content.</p>
+Must be linear ? Move the content.</p>
 <h3 class="content" id="Core.ConcatBuffer.opCount"><span class="titletype">func</span> <span class="titlelight">ConcatBuffer.</span><span class="titlestrong">opCount</span></h3>
 <p class="code">
 <code style="white-space: break-spaces">func opCount(using self)->u64
@@ -4776,7 +4786,7 @@ Release all allocated buffers.</p>
 </code>
 </p>
 <p>
-Associate an allocator with the buffer. The allocator can only be changed if the buffer has no pending buckets.</p>
+Enough room in the last bucket Not enough room in the last bucket, but with have a bucket after that can old the bytes (because of a previous clear()) Need to allocate a new bucket Each bucket knows the total count before it Associate an allocator with the buffer. The allocator can only be changed if the buffer has no pending buckets.</p>
 <h3 class="content" id="Core.ConcatBuffer.setBucketSize"><span class="titletype">func</span> <span class="titlelight">ConcatBuffer.</span><span class="titlestrong">setBucketSize</span></h3>
 <p class="code">
 <code style="white-space: break-spaces">func setBucketSize(using self, size: u64)
@@ -5466,7 +5476,7 @@ Returns true if the given directory exists.</p>
 <a href="#Core.Directory.getCurrent">getCurrent</a></td>
 <td>
 <p>
-Returns the current directory.</p>
+Filter by file/folder Add file/folder to the result Returns the current directory.</p>
 </td>
 </tr>
 <tr>
@@ -5531,7 +5541,7 @@ Returns true if the given directory exists.</p>
 <a href="#Core.Directory.getCurrent">getCurrent</a></td>
 <td>
 <p>
-Returns the current directory.</p>
+Filter by file/folder Add file/folder to the result Returns the current directory.</p>
 </td>
 </tr>
 <tr>
@@ -5649,7 +5659,7 @@ Returns true if the given directory exists.</p>
 </code>
 </p>
 <p>
-Returns the current directory.</p>
+Filter by file/folder Add file/folder to the result Returns the current directory.</p>
 <h3 class="content" id="Core.Directory.getDrives"><span class="titletype">func</span> <span class="titlelight">Directory.</span><span class="titlestrong">getDrives</span></h3>
 <p class="code">
 <code style="white-space: break-spaces">func getDrives()->Array'(String) throw
@@ -5893,7 +5903,7 @@ ProcessHandle</td>
 <a href="#Core.Env.Process.waitForExit">waitForExit</a></td>
 <td>
 <p>
-Wait for the process to be done.</p>
+Launch Wait for the process to be done.</p>
 </td>
 </tr>
 </table>
@@ -5903,7 +5913,7 @@ Wait for the process to be done.</p>
 </code>
 </p>
 <p>
-Wait for the process to be done.</p>
+Launch Wait for the process to be done.</p>
 <h3 class="content" id="Core.Env.SpecialDirectory"><span class="titletype">enum</span> <span class="titlelight">Env.</span><span class="titlestrong">SpecialDirectory</span></h3>
 <table>
 <tr>
@@ -6950,7 +6960,7 @@ Close the reader.</p>
 <a href="#Core.File.TextReader.open">open</a></td>
 <td>
 <p>
-Open the reader.</p>
+First init. Fill force 4 bytes of the decode buffer to be 0 to read the bom BOM Open the reader.</p>
 </td>
 </tr>
 <tr>
@@ -6966,7 +6976,7 @@ Read one line of text. Returns false at the end.</p>
 <a href="#Core.File.TextReader.readToEnd">readToEnd</a></td>
 <td>
 <p>
-Read from the current position to the end, and returns the corresponding utf8 string.</p>
+u64 by u64 u8 by u8 We have reached the end of the buffer without finding an eol Restart + 1 because we eat the eol If we have an <code class = "incode">\r</code>, then eat the following <code class = "incode">\n</code> if it exists Read from the current position to the end, and returns the corresponding utf8 string.</p>
 </td>
 </tr>
 </table>
@@ -6983,7 +6993,7 @@ Close the reader.</p>
 </code>
 </p>
 <p>
-Open the reader.</p>
+First init. Fill force 4 bytes of the decode buffer to be 0 to read the bom BOM Open the reader.</p>
 <h3 class="content" id="Core.File.TextReader.readLine"><span class="titletype">func</span> <span class="titlelight">TextReader.</span><span class="titlestrong">readLine</span></h3>
 <p class="code">
 <code style="white-space: break-spaces">func readLine(using self, result: ref String)->bool
@@ -6997,7 +7007,7 @@ Read one line of text. Returns false at the end.</p>
 </code>
 </p>
 <p>
-Read from the current position to the end, and returns the corresponding utf8 string.</p>
+u64 by u64 u8 by u8 We have reached the end of the buffer without finding an eol Restart + 1 because we eat the eol If we have an <code class = "incode">\r</code>, then eat the following <code class = "incode">\n</code> if it exists Read from the current position to the end, and returns the corresponding utf8 string.</p>
 <h3 class="content" id="Core.File.TweakFile"><span class="titletype">struct</span> <span class="titlelight">File.</span><span class="titlestrong">TweakFile</span></h3>
 <table>
 <tr>
@@ -7264,7 +7274,7 @@ Format a string in <code class = "incode">dest</code> Can be lot faster than the
 <a href="#Core.Format.toInterp">toInterp</a></td>
 <td>
 <p>
-String interolation Format is "my {&lt;value to interpolate&gt;:format}.</p>
+Deal with the parameter Add remaining text String interolation Format is "my {&lt;value to interpolate&gt;:format}.</p>
 </td>
 </tr>
 <tr>
@@ -7323,7 +7333,7 @@ Format a string in <code class = "incode">dest</code> Can be lot faster than the
 <a href="#Core.Format.toInterp">toInterp</a></td>
 <td>
 <p>
-String interolation Format is "my {&lt;value to interpolate&gt;:format}.</p>
+Deal with the parameter Add remaining text String interolation Format is "my {&lt;value to interpolate&gt;:format}.</p>
 </td>
 </tr>
 <tr>
@@ -7378,7 +7388,7 @@ func toInterp(buf: *ConcatBuffer, exp: string)
 </code>
 </p>
 <p>
-String interolation Format is "my {&lt;value to interpolate&gt;:format}.</p>
+Deal with the parameter Add remaining text String interolation Format is "my {&lt;value to interpolate&gt;:format}.</p>
 <p class="code">
 <code style="white-space: break-spaces">#[Swag.Macro]
 func toInterp(exp: string)->String
@@ -7470,6 +7480,8 @@ decimalSeparator</td>
 <td class="tdtype">
 u8</td>
 <td>
+<p>
+The byte that denotes that the associated number is negative. The default is "-". The byte that denotes that the associated number is positive. The default is "+". The byte to use as the decimal separator in numeric values. The default is ".".</p>
 </td>
 </tr>
 </table>
@@ -7540,6 +7552,8 @@ Number of processors.</p>
 <td>
 <a href="#Core.Hash.Adler32">Adler32</a></td>
 <td>
+<p>
+https://tools.ietf.org/html/rfc1950#section-9 https://github.com/madler/zlib/blob/master/adler32.c.</p>
 </td>
 </tr>
 <tr>
@@ -7584,6 +7598,8 @@ Hash the given value and returns the corresponding u32.</p>
 </tr>
 </table>
 <h3 class="content" id="Core.Hash.Adler32"><span class="titletype">struct</span> <span class="titlelight">Hash.</span><span class="titlestrong">Adler32</span></h3>
+<p>
+https://tools.ietf.org/html/rfc1950#section-9 https://github.com/madler/zlib/blob/master/adler32.c.</p>
 <table>
 <tr>
 <td>
@@ -7754,7 +7770,7 @@ buffer</td>
 <a href="#Core.Hash.Md5.compute">compute</a></td>
 <td>
 <p>
-Returns the md5 value for the given buffer.</p>
+Only deal with 32 bits size Returns the md5 value for the given buffer.</p>
 </td>
 </tr>
 <tr>
@@ -7788,7 +7804,7 @@ Update the hash value with <code class = "incode">buffer</code> content.</p>
 </code>
 </p>
 <p>
-Returns the md5 value for the given buffer.</p>
+Only deal with 32 bits size Returns the md5 value for the given buffer.</p>
 <h3 class="content" id="Core.Hash.Md5.final"><span class="titletype">func</span> <span class="titlelight">Md5.</span><span class="titlestrong">final</span></h3>
 <p class="code">
 <code style="white-space: break-spaces">func final(using self, digest: Digest)
@@ -8006,7 +8022,7 @@ Number of deleted entries.</p>
 <a href="#Core.HashSet.add">add</a></td>
 <td>
 <p>
-Add a new key.</p>
+Be sure hash entry is 0 Copy the last table to the new table, removing deleted entries Add a new key.</p>
 </td>
 </tr>
 <tr>
@@ -8051,6 +8067,8 @@ Add a new key.</p>
 <td>
 <a href="#Core.HashSet.grow">grow</a></td>
 <td>
+<p>
+Need to drop every structs.</p>
 </td>
 </tr>
 <tr>
@@ -8096,7 +8114,7 @@ Remove the given key if it exists.</p>
 <a href="#Core.HashSet.reserve">reserve</a></td>
 <td>
 <p>
-Reserve <code class = "incode">newCapacity</code> elements in the table.</p>
+We need to trigger the growing of the table is theres not enough room Reserve <code class = "incode">newCapacity</code> elements in the table.</p>
 </td>
 </tr>
 </table>
@@ -8106,7 +8124,7 @@ Reserve <code class = "incode">newCapacity</code> elements in the table.</p>
 </code>
 </p>
 <p>
-Add a new key.</p>
+Be sure hash entry is 0 Copy the last table to the new table, removing deleted entries Add a new key.</p>
 <p class="code">
 <code style="white-space: break-spaces">func add(using self, key: moveref K)->*HashSetEntry'(K)
 </code>
@@ -8144,6 +8162,8 @@ Add a new key.</p>
 <code style="white-space: break-spaces">func grow(using self)
 </code>
 </p>
+<p>
+Need to drop every structs.</p>
 <h3 class="content" id="Core.HashSet.hashKey"><span class="titletype">func</span> <span class="titlelight">HashSet.</span><span class="titlestrong">hashKey</span></h3>
 <p class="code">
 <code style="white-space: break-spaces">func hashKey(key: K)->u32
@@ -8183,7 +8203,7 @@ Remove the given key if it exists.</p>
 </code>
 </p>
 <p>
-Reserve <code class = "incode">newCapacity</code> elements in the table.</p>
+We need to trigger the growing of the table is theres not enough room Reserve <code class = "incode">newCapacity</code> elements in the table.</p>
 <h3 class="content" id="Core.HashSetEntry"><span class="titletype">struct</span> <span class="titlelight">Core.</span><span class="titlestrong">HashSetEntry</span></h3>
 <p class="code">
 <code style="white-space: break-spaces">struct HashSetEntry(K)</code>
@@ -8297,7 +8317,7 @@ Number of deleted entries.</p>
 <a href="#Core.HashTable.add">add</a></td>
 <td>
 <p>
-Add a new key value pair. If the key already exists, then the value will be replaced.</p>
+Be sure hash entry is 0 Copy the last table to the new table, removing deleted entries Add a new key value pair. If the key already exists, then the value will be replaced.</p>
 </td>
 </tr>
 <tr>
@@ -8345,7 +8365,7 @@ Find the given key, and returns the corresponding entry. Returns null if the key
 <a href="#Core.HashTable.free">free</a></td>
 <td>
 <p>
-Free the hashtable content.</p>
+We need to trigger the growing of the table is theres not enough room Free the hashtable content.</p>
 </td>
 </tr>
 <tr>
@@ -8399,7 +8419,7 @@ Remove the given key if it exists.</p>
 <a href="#Core.HashTable.reserve">reserve</a></td>
 <td>
 <p>
-Reserve <code class = "incode">newCapacity</code> elements in the table.</p>
+Need to drop every structs Reserve <code class = "incode">newCapacity</code> elements in the table.</p>
 </td>
 </tr>
 </table>
@@ -8409,7 +8429,7 @@ Reserve <code class = "incode">newCapacity</code> elements in the table.</p>
 </code>
 </p>
 <p>
-Add a new key value pair. If the key already exists, then the value will be replaced.</p>
+Be sure hash entry is 0 Copy the last table to the new table, removing deleted entries Add a new key value pair. If the key already exists, then the value will be replaced.</p>
 <p class="code">
 <code style="white-space: break-spaces">func add(using self, key: K, value: moveref V)->*HashTableEntry'(K, V)
 </code>
@@ -8450,7 +8470,7 @@ Find the given key, and returns the corresponding entry. Returns null if the key
 </code>
 </p>
 <p>
-Free the hashtable content.</p>
+We need to trigger the growing of the table is theres not enough room Free the hashtable content.</p>
 <h3 class="content" id="Core.HashTable.grow"><span class="titletype">func</span> <span class="titlelight">HashTable.</span><span class="titlestrong">grow</span></h3>
 <p class="code">
 <code style="white-space: break-spaces">func grow(using self)
@@ -8497,7 +8517,7 @@ Remove the given key if it exists.</p>
 </code>
 </p>
 <p>
-Reserve <code class = "incode">newCapacity</code> elements in the table.</p>
+Need to drop every structs Reserve <code class = "incode">newCapacity</code> elements in the table.</p>
 <h3 class="content" id="Core.HashTableEntry"><span class="titletype">struct</span> <span class="titlelight">Core.</span><span class="titlestrong">HashTableEntry</span></h3>
 <p class="code">
 <code style="white-space: break-spaces">struct HashTableEntry(K, V)</code>
@@ -8625,6 +8645,8 @@ Defines the keys on a keyboard.</p>
 <td>
 <a href="#Core.Input.KeyModifiers">KeyModifiers</a></td>
 <td>
+<p>
+Represents a virtual system key.</p>
 </td>
 </tr>
 <tr>
@@ -8738,6 +8760,8 @@ connected</td>
 <td class="tdtype">
 bool</td>
 <td>
+<p>
+The pad index associated with that GamePad instance true if the corresponding padIndex is connected.</p>
 </td>
 </tr>
 </table>
@@ -10245,6 +10269,8 @@ Zoom</td>
 </tr>
 </table>
 <h3 class="content" id="Core.Input.KeyModifiers"><span class="titletype">enum</span> <span class="titlelight">Input.</span><span class="titlestrong">KeyModifiers</span></h3>
+<p>
+Represents a virtual system key.</p>
 <table>
 <tr>
 <td>
@@ -10335,6 +10361,8 @@ canRepeat</td>
 <td class="tdtype">
 bool</td>
 <td>
+<p>
+Delay, in milliseconds, before a repeated key stroke starts Delay, in miliseconds, between two repeated key strokes Allow key stroke repetition if true.</p>
 </td>
 </tr>
 </table>
@@ -10345,7 +10373,7 @@ bool</td>
 <a href="#Core.Input.Keyboard.clear">clear</a></td>
 <td>
 <p>
-Reset the keyboard state.</p>
+Repetition First pressed time First repetition Reset the keyboard state.</p>
 </td>
 </tr>
 <tr>
@@ -10431,7 +10459,7 @@ Compute current state of the keyboard (all keys).</p>
 </code>
 </p>
 <p>
-Reset the keyboard state.</p>
+Repetition First pressed time First repetition Reset the keyboard state.</p>
 <h3 class="content" id="Core.Input.Keyboard.getPressedModifiers"><span class="titletype">func</span> <span class="titlelight">Keyboard.</span><span class="titlestrong">getPressedModifiers</span></h3>
 <p class="code">
 <code style="white-space: break-spaces">func getPressedModifiers(using self)->KeyModifiers
@@ -10606,7 +10634,7 @@ u32</td>
 <a href="#Core.Input.Mouse.clear">clear</a></td>
 <td>
 <p>
-Reset the mouse state to its default value.</p>
+Dbl click Reset the mouse state to its default value.</p>
 </td>
 </tr>
 <tr>
@@ -10694,7 +10722,7 @@ Compute the current state of the mouse.</p>
 </code>
 </p>
 <p>
-Reset the mouse state to its default value.</p>
+Dbl click Reset the mouse state to its default value.</p>
 <h3 class="content" id="Core.Input.Mouse.getMove"><span class="titletype">func</span> <span class="titlelight">Mouse.</span><span class="titlestrong">getMove</span></h3>
 <p class="code">
 <code style="white-space: break-spaces">func getMove(using self)->Point
@@ -10847,7 +10875,7 @@ Reset the state to its default value.</p>
 <a href="#Core.Input.MouseState.update">update</a></td>
 <td>
 <p>
-Compute the actual state of the mouse.</p>
+Represents a mouse state with cursor position and button press information Compute the actual state of the mouse.</p>
 </td>
 </tr>
 </table>
@@ -10864,7 +10892,7 @@ Reset the state to its default value.</p>
 </code>
 </p>
 <p>
-Compute the actual state of the mouse.</p>
+Represents a mouse state with cursor position and button press information Compute the actual state of the mouse.</p>
 <h3 class="content" id="Core.Input.getKeyName"><span class="titletype">func</span> <span class="titlelight">Input.</span><span class="titlestrong">getKeyName</span></h3>
 <p class="code">
 <code style="white-space: break-spaces">func getKeyName(mdf: KeyModifiers, key: Key)->String
@@ -10947,7 +10975,7 @@ Returns true is the job system has been initialized.</p>
 <a href="#Core.Jobs.parallelFor">parallelFor</a></td>
 <td>
 <p>
-Do a for loop in parallel chunks Exposed variables: - @alias0: current loop index - @alias1: userData as passed to the macro.</p>
+Sync Do a for loop in parallel chunks Exposed variables: - @alias0: current loop index - @alias1: userData as passed to the macro.</p>
 </td>
 </tr>
 <tr>
@@ -10955,7 +10983,7 @@ Do a for loop in parallel chunks Exposed variables: - @alias0: current loop inde
 <a href="#Core.Jobs.parallelVisit">parallelVisit</a></td>
 <td>
 <p>
-Operate on a range in parallel chunks Exposed variables: - buffer: address of the element of the range to process - data:   userData as passed to the macro.</p>
+Fast exit, without lock Job already done Job still in pending list, we can execute it right away and leave Here, job is being processed by another thread, so we participate to job execution until done flag is set Operate on a range in parallel chunks Exposed variables: - buffer: address of the element of the range to process - data:   userData as passed to the macro.</p>
 </td>
 </tr>
 <tr>
@@ -11014,7 +11042,7 @@ Returns true is the job system has been initialized.</p>
 <a href="#Core.Jobs.parallelFor">parallelFor</a></td>
 <td>
 <p>
-Do a for loop in parallel chunks Exposed variables: - @alias0: current loop index - @alias1: userData as passed to the macro.</p>
+Sync Do a for loop in parallel chunks Exposed variables: - @alias0: current loop index - @alias1: userData as passed to the macro.</p>
 </td>
 </tr>
 <tr>
@@ -11022,7 +11050,7 @@ Do a for loop in parallel chunks Exposed variables: - @alias0: current loop inde
 <a href="#Core.Jobs.parallelVisit">parallelVisit</a></td>
 <td>
 <p>
-Operate on a range in parallel chunks Exposed variables: - buffer: address of the element of the range to process - data:   userData as passed to the macro.</p>
+Fast exit, without lock Job already done Job still in pending list, we can execute it right away and leave Here, job is being processed by another thread, so we participate to job execution until done flag is set Operate on a range in parallel chunks Exposed variables: - buffer: address of the element of the range to process - data:   userData as passed to the macro.</p>
 </td>
 </tr>
 <tr>
@@ -11117,6 +11145,8 @@ state</td>
 <td class="tdtype">
 <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Jobs.JobState">JobState</a></td>
 <td>
+<p>
+Internal state.</p>
 </td>
 </tr>
 <tr>
@@ -11208,7 +11238,7 @@ func parallelFor(count: u32, userData: *void = null, stmt: code)
 </code>
 </p>
 <p>
-Do a for loop in parallel chunks Exposed variables: - @alias0: current loop index - @alias1: userData as passed to the macro.</p>
+Sync Do a for loop in parallel chunks Exposed variables: - @alias0: current loop index - @alias1: userData as passed to the macro.</p>
 <h3 class="content" id="Core.Jobs.parallelVisit"><span class="titletype">func</span> <span class="titlelight">Jobs.</span><span class="titlestrong">parallelVisit</span></h3>
 <p class="code">
 <code style="white-space: break-spaces">#[Swag.Macro]
@@ -11216,7 +11246,7 @@ func(T) parallelVisit(range: [..] T, offset: u32 = 1, userData: *void = null, st
 </code>
 </p>
 <p>
-Operate on a range in parallel chunks Exposed variables: - buffer: address of the element of the range to process - data:   userData as passed to the macro.</p>
+Fast exit, without lock Job already done Job still in pending list, we can execute it right away and leave Here, job is being processed by another thread, so we participate to job execution until done flag is set Operate on a range in parallel chunks Exposed variables: - buffer: address of the element of the range to process - data:   userData as passed to the macro.</p>
 <h3 class="content" id="Core.Jobs.scheduleJob"><span class="titletype">func</span> <span class="titlelight">Jobs.</span><span class="titlestrong">scheduleJob</span></h3>
 <p class="code">
 <code style="white-space: break-spaces">func scheduleJob(job: *Job)
@@ -11252,6 +11282,11 @@ Wait for a given job to be finished.</p>
 <td>
 <a href="#Core.Latin1.CharAttribute">CharAttribute</a></td>
 <td>
+<p>
+:LICENCE    This code is based on the Go library (https://golang.org/src/unicode/tables.go)    The original code has been modified for Swag    See LICENCE.md for the corresponding licence.<ul>
+<li>/.</li>
+</ul>
+</p>
 </td>
 </tr>
 </table>
@@ -11506,6 +11541,11 @@ Make an utf8 buffer upper case, dealing only with latin1 table.</p>
 </tr>
 </table>
 <h3 class="content" id="Core.Latin1.CharAttribute"><span class="titletype">enum</span> <span class="titlelight">Latin1.</span><span class="titlestrong">CharAttribute</span></h3>
+<p>
+:LICENCE    This code is based on the Go library (https://golang.org/src/unicode/tables.go)    The original code has been modified for Swag    See LICENCE.md for the corresponding licence.<ul>
+<li>/.</li>
+</ul>
+</p>
 <table>
 <tr>
 <td>
@@ -11606,6 +11646,8 @@ CharProperties</td>
 <td class="tdtype">
 const [256] <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Latin1.CharAttribute">CharAttribute</a></td>
 <td>
+<p>
+<code class = "incode">\x00</code> <code class = "incode">\x01</code> <code class = "incode">\x02</code> <code class = "incode">\x03</code> <code class = "incode">\x04</code> <code class = "incode">\x05</code> <code class = "incode">\x06</code> <code class = "incode">\a</code> <code class = "incode">\b</code> <code class = "incode">\t</code> <code class = "incode">\n</code> <code class = "incode">\v</code> <code class = "incode">\f</code> <code class = "incode">\r</code> <code class = "incode">\x0e</code> <code class = "incode">\x0f</code> <code class = "incode">\x10</code> <code class = "incode">\x11</code> <code class = "incode">\x12</code> <code class = "incode">\x13</code> <code class = "incode">\x14</code> <code class = "incode">\x15</code> <code class = "incode">\x16</code> <code class = "incode">\x17</code> <code class = "incode">\x18</code> <code class = "incode">\x19</code> <code class = "incode">\x1a</code> <code class = "incode">\x1b</code> <code class = "incode">\x1c</code> <code class = "incode">\x1d</code> <code class = "incode">\x1e</code> <code class = "incode">\x1f</code>   <code class = "incode">!</code> <code class = "incode">"</code> <code class = "incode">#</code> <code class = "incode">$</code> <code class = "incode">%</code> <code class = "incode">&</code> <code class = "incode">\</code> <code class = "incode">(</code> <code class = "incode">)</code> <code class = "incode">*</code> <code class = "incode">+</code> <code class = "incode">,</code> <code class = "incode">-</code> <code class = "incode">.</code> <code class = "incode">/</code> <code class = "incode">0</code> <code class = "incode">1</code> <code class = "incode">2</code> <code class = "incode">3</code> <code class = "incode">4</code> <code class = "incode">5</code> <code class = "incode">6</code> <code class = "incode">7</code> <code class = "incode">8</code> <code class = "incode">9</code> <code class = "incode">:</code> <code class = "incode">;</code> <code class = "incode"><</code> <code class = "incode">=</code> <code class = "incode">></code> <code class = "incode">?</code> <code class = "incode">@</code> <code class = "incode">A</code> <code class = "incode">B</code> <code class = "incode">C</code> <code class = "incode">D</code> <code class = "incode">E</code> <code class = "incode">F</code> <code class = "incode">G</code> <code class = "incode">H</code> <code class = "incode">I</code> <code class = "incode">J</code> <code class = "incode">K</code> <code class = "incode">L</code> <code class = "incode">M</code> <code class = "incode">N</code> <code class = "incode">O</code> <code class = "incode">P</code> <code class = "incode">Q</code> <code class = "incode">R</code> <code class = "incode">S</code> <code class = "incode">T</code> <code class = "incode">U</code> <code class = "incode">V</code> <code class = "incode">W</code> <code class = "incode">X</code> <code class = "incode">Y</code> <code class = "incode">Z</code> <code class = "incode">[</code> <code class = "incode">\\</code> <code class = "incode">]</code> <code class = "incode">^</code> <code class = "incode">_</code> <code class = "incode">`</code> <code class = "incode">a</code> <code class = "incode">b</code> <code class = "incode">c</code> <code class = "incode">d</code> <code class = "incode">e</code> <code class = "incode">f</code> <code class = "incode">g</code> <code class = "incode">h</code> <code class = "incode">i</code> <code class = "incode">j</code> <code class = "incode">k</code> <code class = "incode">l</code> <code class = "incode">m</code> <code class = "incode">n</code> <code class = "incode">o</code> <code class = "incode">p</code> <code class = "incode">q</code> <code class = "incode">r</code> <code class = "incode">s</code> <code class = "incode">t</code> <code class = "incode">u</code> <code class = "incode">v</code> <code class = "incode">w</code> <code class = "incode">x</code> <code class = "incode">y</code> <code class = "incode">z</code> <code class = "incode">{</code> <code class = "incode">|</code> <code class = "incode">}</code> <code class = "incode">~</code> <code class = "incode">\u007f</code> <code class = "incode">\u0080</code> <code class = "incode">\u0081</code> <code class = "incode">\u0082</code> <code class = "incode">\u0083</code> <code class = "incode">\u0084</code> <code class = "incode">\u0085</code> <code class = "incode">\u0086</code> <code class = "incode">\u0087</code> <code class = "incode">\u0088</code> <code class = "incode">\u0089</code> <code class = "incode">\u008a</code> <code class = "incode">\u008b</code> <code class = "incode">\u008c</code> <code class = "incode">\u008d</code> <code class = "incode">\u008e</code> <code class = "incode">\u008f</code> <code class = "incode">\u0090</code> <code class = "incode">\u0091</code> <code class = "incode">\u0092</code> <code class = "incode">\u0093</code> <code class = "incode">\u0094</code> <code class = "incode">\u0095</code> <code class = "incode">\u0096</code> <code class = "incode">\u0097</code> <code class = "incode">\u0098</code> <code class = "incode">\u0099</code> <code class = "incode">\u009a</code> <code class = "incode">\u009b</code> <code class = "incode">\u009c</code> <code class = "incode">\u009d</code> <code class = "incode">\u009e</code> <code class = "incode">\u009f</code> <code class = "incode">\u00a0</code> <code class = "incode">¡</code> <code class = "incode">¢</code> <code class = "incode">£</code> <code class = "incode">¤</code> <code class = "incode">¥</code> <code class = "incode">¦</code> <code class = "incode">§</code> <code class = "incode">¨</code> <code class = "incode">©</code> <code class = "incode">ª</code> <code class = "incode">«</code> <code class = "incode">¬</code> <code class = "incode">\u00ad</code> <code class = "incode">®</code> <code class = "incode">¯</code> <code class = "incode">°</code> <code class = "incode">±</code> <code class = "incode">²</code> <code class = "incode">³</code> <code class = "incode">´</code> <code class = "incode">µ</code> <code class = "incode">¶</code> <code class = "incode">·</code> <code class = "incode">¸</code> <code class = "incode">¹</code> <code class = "incode">º</code> <code class = "incode">»</code> <code class = "incode">¼</code> <code class = "incode">½</code> <code class = "incode">¾</code> <code class = "incode">¿</code> <code class = "incode">À</code> <code class = "incode">Á</code> <code class = "incode">Â</code> <code class = "incode">Ã</code> <code class = "incode">Ä</code> <code class = "incode">Å</code> <code class = "incode">Æ</code> <code class = "incode">Ç</code> <code class = "incode">È</code> <code class = "incode">É</code> <code class = "incode">Ê</code> <code class = "incode">Ë</code> <code class = "incode">Ì</code> <code class = "incode">Í</code> <code class = "incode">Î</code> <code class = "incode">Ï</code> <code class = "incode">Ð</code> <code class = "incode">Ñ</code> <code class = "incode">Ò</code> <code class = "incode">Ó</code> <code class = "incode">Ô</code> <code class = "incode">Õ</code> <code class = "incode">Ö</code> <code class = "incode">×</code> <code class = "incode">Ø</code> <code class = "incode">Ù</code> <code class = "incode">Ú</code> <code class = "incode">Û</code> <code class = "incode">Ü</code> <code class = "incode">Ý</code> <code class = "incode">Þ</code> <code class = "incode">ß</code> <code class = "incode">à</code> <code class = "incode">á</code> <code class = "incode">â</code> <code class = "incode">ã</code> <code class = "incode">ä</code> <code class = "incode">å</code> <code class = "incode">æ</code> <code class = "incode">ç</code> <code class = "incode">è</code> <code class = "incode">é</code> <code class = "incode">ê</code> <code class = "incode">ë</code> <code class = "incode">ì</code> <code class = "incode">í</code> <code class = "incode">î</code> <code class = "incode">ï</code> <code class = "incode">ð</code> <code class = "incode">ñ</code> <code class = "incode">ò</code> <code class = "incode">ó</code> <code class = "incode">ô</code> <code class = "incode">õ</code> <code class = "incode">ö</code> <code class = "incode">÷</code> <code class = "incode">ø</code> <code class = "incode">ù</code> <code class = "incode">ú</code> <code class = "incode">û</code> <code class = "incode">ü</code> <code class = "incode">ý</code> <code class = "incode">þ</code> <code class = "incode">ÿ</code>.</p>
 </td>
 </tr>
 </table>
@@ -12380,6 +12422,12 @@ Convert a big endian integer to current arch native format.</p>
 <td>
 <a href="#Core.Math.countOnes">countOnes</a></td>
 <td>
+</td>
+</tr>
+<tr>
+<td>
+<a href="#Core.Math.countOnes">countOnes</a></td>
+<td>
 <p>
 Returns the number of bits set to 1.</p>
 </td>
@@ -12392,12 +12440,6 @@ Returns the number of bits set to 1.</p>
 </tr>
 <tr>
 <td>
-<a href="#Core.Math.countOnes">countOnes</a></td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
 <a href="#Core.Math.exp">exp</a></td>
 <td>
 </td>
@@ -12429,6 +12471,18 @@ Returns the number of bits set to 1.</p>
 <tr>
 <td>
 <a href="#Core.Math.floor">floor</a></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<a href="#Core.Math.hasByte">hasByte</a></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<a href="#Core.Math.hasByte">hasByte</a></td>
 <td>
 </td>
 </tr>
@@ -12442,28 +12496,16 @@ Determin if an integer has a given byte.</p>
 </tr>
 <tr>
 <td>
-<a href="#Core.Math.hasByte">hasByte</a></td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-<a href="#Core.Math.hasByte">hasByte</a></td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-<a href="#Core.Math.hasZeroByte">hasZeroByte</a></td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
 <a href="#Core.Math.hasZeroByte">hasZeroByte</a></td>
 <td>
 <p>
 Determin if any of the bytes is zero.</p>
+</td>
+</tr>
+<tr>
+<td>
+<a href="#Core.Math.hasZeroByte">hasZeroByte</a></td>
+<td>
 </td>
 </tr>
 <tr>
@@ -12518,26 +12560,26 @@ Determin if any of the bytes is zero.</p>
 <td>
 <a href="#Core.Math.leadingZeros">leadingZeros</a></td>
 <td>
-</td>
-</tr>
-<tr>
-<td>
-<a href="#Core.Math.leadingZeros">leadingZeros</a></td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-<a href="#Core.Math.leadingZeros">leadingZeros</a></td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-<a href="#Core.Math.leadingZeros">leadingZeros</a></td>
-<td>
 <p>
 Returns the number of bits set to 0 from the left.</p>
+</td>
+</tr>
+<tr>
+<td>
+<a href="#Core.Math.leadingZeros">leadingZeros</a></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<a href="#Core.Math.leadingZeros">leadingZeros</a></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<a href="#Core.Math.leadingZeros">leadingZeros</a></td>
+<td>
 </td>
 </tr>
 <tr>
@@ -12780,6 +12822,11 @@ Make a 64 bits by repeating a given byte 0x20 =&gt; 0x20202020_20202020.</p>
 <td>
 <a href="#Core.Math.mulU64">mulU64</a></td>
 <td>
+<p>
+:LICENCE    This code is based on the Go library (https://github.com/golang/go/blob/master/src/math/bits/bits.go)    The original code has been modified for Swag    See LICENCE.md for the corresponding licence.<ul>
+<li>/.</li>
+</ul>
+</p>
 </td>
 </tr>
 <tr>
@@ -12850,6 +12897,8 @@ Reverse all bits.</p>
 <td>
 <a href="#Core.Math.roundUpToPowerOf2">roundUpToPowerOf2</a></td>
 <td>
+<p>
+Some magical integer tricks comes from https://graphics.stanford.edu/~seander/bithacks.html#ValueInWord.</p>
 </td>
 </tr>
 <tr>
@@ -12993,18 +13042,6 @@ Reverse all bits.</p>
 <tr>
 <td>
 <a href="#Core.Math.toRadians">toRadians</a></td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-<a href="#Core.Math.trailingZeros">trailingZeros</a></td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-<a href="#Core.Math.trailingZeros">trailingZeros</a></td>
 <td>
 </td>
 </tr>
@@ -13020,6 +13057,18 @@ Reverse all bits.</p>
 <td>
 <p>
 Returns the number of bits set to 0 from the right.</p>
+</td>
+</tr>
+<tr>
+<td>
+<a href="#Core.Math.trailingZeros">trailingZeros</a></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<a href="#Core.Math.trailingZeros">trailingZeros</a></td>
+<td>
 </td>
 </tr>
 <tr>
@@ -13181,6 +13230,12 @@ Convert a big endian integer to current arch native format.</p>
 <td>
 <a href="#Core.Math.countOnes">countOnes</a></td>
 <td>
+</td>
+</tr>
+<tr>
+<td>
+<a href="#Core.Math.countOnes">countOnes</a></td>
+<td>
 <p>
 Returns the number of bits set to 1.</p>
 </td>
@@ -13193,12 +13248,6 @@ Returns the number of bits set to 1.</p>
 </tr>
 <tr>
 <td>
-<a href="#Core.Math.countOnes">countOnes</a></td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
 <a href="#Core.Math.exp">exp</a></td>
 <td>
 </td>
@@ -13230,6 +13279,18 @@ Returns the number of bits set to 1.</p>
 <tr>
 <td>
 <a href="#Core.Math.floor">floor</a></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<a href="#Core.Math.hasByte">hasByte</a></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<a href="#Core.Math.hasByte">hasByte</a></td>
 <td>
 </td>
 </tr>
@@ -13243,28 +13304,16 @@ Determin if an integer has a given byte.</p>
 </tr>
 <tr>
 <td>
-<a href="#Core.Math.hasByte">hasByte</a></td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-<a href="#Core.Math.hasByte">hasByte</a></td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-<a href="#Core.Math.hasZeroByte">hasZeroByte</a></td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
 <a href="#Core.Math.hasZeroByte">hasZeroByte</a></td>
 <td>
 <p>
 Determin if any of the bytes is zero.</p>
+</td>
+</tr>
+<tr>
+<td>
+<a href="#Core.Math.hasZeroByte">hasZeroByte</a></td>
+<td>
 </td>
 </tr>
 <tr>
@@ -13319,26 +13368,26 @@ Determin if any of the bytes is zero.</p>
 <td>
 <a href="#Core.Math.leadingZeros">leadingZeros</a></td>
 <td>
-</td>
-</tr>
-<tr>
-<td>
-<a href="#Core.Math.leadingZeros">leadingZeros</a></td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-<a href="#Core.Math.leadingZeros">leadingZeros</a></td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-<a href="#Core.Math.leadingZeros">leadingZeros</a></td>
-<td>
 <p>
 Returns the number of bits set to 0 from the left.</p>
+</td>
+</tr>
+<tr>
+<td>
+<a href="#Core.Math.leadingZeros">leadingZeros</a></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<a href="#Core.Math.leadingZeros">leadingZeros</a></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<a href="#Core.Math.leadingZeros">leadingZeros</a></td>
+<td>
 </td>
 </tr>
 <tr>
@@ -13581,6 +13630,11 @@ Make a 64 bits by repeating a given byte 0x20 =&gt; 0x20202020_20202020.</p>
 <td>
 <a href="#Core.Math.mulU64">mulU64</a></td>
 <td>
+<p>
+:LICENCE    This code is based on the Go library (https://github.com/golang/go/blob/master/src/math/bits/bits.go)    The original code has been modified for Swag    See LICENCE.md for the corresponding licence.<ul>
+<li>/.</li>
+</ul>
+</p>
 </td>
 </tr>
 <tr>
@@ -13651,6 +13705,8 @@ Reverse all bits.</p>
 <td>
 <a href="#Core.Math.roundUpToPowerOf2">roundUpToPowerOf2</a></td>
 <td>
+<p>
+Some magical integer tricks comes from https://graphics.stanford.edu/~seander/bithacks.html#ValueInWord.</p>
 </td>
 </tr>
 <tr>
@@ -13794,18 +13850,6 @@ Reverse all bits.</p>
 <tr>
 <td>
 <a href="#Core.Math.toRadians">toRadians</a></td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-<a href="#Core.Math.trailingZeros">trailingZeros</a></td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-<a href="#Core.Math.trailingZeros">trailingZeros</a></td>
 <td>
 </td>
 </tr>
@@ -13821,6 +13865,18 @@ Reverse all bits.</p>
 <td>
 <p>
 Returns the number of bits set to 0 from the right.</p>
+</td>
+</tr>
+<tr>
+<td>
+<a href="#Core.Math.trailingZeros">trailingZeros</a></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<a href="#Core.Math.trailingZeros">trailingZeros</a></td>
+<td>
 </td>
 </tr>
 <tr>
@@ -15338,7 +15394,7 @@ Drop the variant content (if necessary).</p>
 <a href="#Core.Math.Variant.get">get</a></td>
 <td>
 <p>
-Get the variant value of the given type Will assert if the current type does not match.</p>
+Drop previous value if necessary Get the variant value of the given type Will assert if the current type does not match.</p>
 </td>
 </tr>
 <tr>
@@ -15404,7 +15460,7 @@ Drop the variant content (if necessary).</p>
 </code>
 </p>
 <p>
-Get the variant value of the given type Will assert if the current type does not match.</p>
+Drop previous value if necessary Get the variant value of the given type Will assert if the current type does not match.</p>
 <h3 class="content" id="Core.Math.Variant.opAffect"><span class="titletype">func</span> <span class="titlelight">Variant.</span><span class="titlestrong">opAffect</span></h3>
 <p class="code">
 <code style="white-space: break-spaces">func(TN) opAffect(using self, other: TN)
@@ -15620,7 +15676,7 @@ Returns the squared length of the vector.</p>
 <a href="#Core.Math.Vector2.lineLineIntersect">lineLineIntersect</a></td>
 <td>
 <p>
-Compute the intersection point of two lines.</p>
+Parallel lines Compute the intersection point of two lines.</p>
 </td>
 </tr>
 <tr>
@@ -15924,7 +15980,7 @@ Returns the squared length of the vector.</p>
 </code>
 </p>
 <p>
-Compute the intersection point of two lines.</p>
+Parallel lines Compute the intersection point of two lines.</p>
 <h3 class="content" id="Core.Math.Vector2.max"><span class="titletype">func</span> <span class="titlelight">Vector2.</span><span class="titlestrong">max</span></h3>
 <p class="code">
 <code style="white-space: break-spaces">func max(a: Vector2, b: Vector2)->Vector2
@@ -16529,12 +16585,12 @@ Set the vector to zero.</p>
 </p>
 <h3 class="content" id="Core.Math.abs"><span class="titletype">func</span> <span class="titlelight">Math.</span><span class="titlestrong">abs</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func abs(x: f32)
-func abs(x: f64)
-func abs(x: s8)
+<code style="white-space: break-spaces">func abs(x: s8)
 func abs(x: s16)
 func abs(x: s32)
 func abs(x: s64)
+func abs(x: f32)
+func abs(x: f64)
 </code>
 </p>
 <h3 class="content" id="Core.Math.acos"><span class="titletype">func</span> <span class="titlelight">Math.</span><span class="titlestrong">acos</span></h3>
@@ -16742,11 +16798,11 @@ func map(val: f64, minSrc: f64, maxSrc: f64, minDst: f64, maxDst: f64)->f64
 </p>
 <h3 class="content" id="Core.Math.max"><span class="titletype">func</span> <span class="titlelight">Math.</span><span class="titlestrong">max</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func max(x: f32, y: f32)
-func max(x: f64, y: f64)
-func(T) max(x: T, y: T, z: T)->T
+<code style="white-space: break-spaces">func(T) max(x: T, y: T, z: T)->T
 func max(x: s8, y: s8)
+func max(x: f32, y: f32)
 func max(x: s16, y: s16)
+func max(x: f64, y: f64)
 func max(x: s32, y: s32)
 func max(x: s64, y: s64)
 func max(x: u8, y: u8)
@@ -16757,13 +16813,13 @@ func max(x: u64, y: u64)
 </p>
 <h3 class="content" id="Core.Math.min"><span class="titletype">func</span> <span class="titlelight">Math.</span><span class="titlestrong">min</span></h3>
 <p class="code">
-<code style="white-space: break-spaces">func min(x: f32, y: f32)
-func min(x: f64, y: f64)
-func(T) min(x: T, y: T, z: T)->T
+<code style="white-space: break-spaces">func(T) min(x: T, y: T, z: T)->T
 func min(x: s8, y: s8)
 func min(x: s16, y: s16)
+func min(x: f32, y: f32)
 func min(x: s32, y: s32)
 func min(x: s64, y: s64)
+func min(x: f64, y: f64)
 func min(x: u8, y: u8)
 func min(x: u16, y: u16)
 func min(x: u32, y: u32)
@@ -16780,6 +16836,11 @@ func mulAdd(x: f64, y: f64, z: f64)
 <p class="code">
 <code style="white-space: break-spaces">func mulU64(x: u64, y: u64)->{hi: u64, lo: u64}
 </code>
+</p>
+<p>
+:LICENCE    This code is based on the Go library (https://github.com/golang/go/blob/master/src/math/bits/bits.go)    The original code has been modified for Swag    See LICENCE.md for the corresponding licence.<ul>
+<li>/.</li>
+</ul>
 </p>
 <h3 class="content" id="Core.Math.nativeToBigEndian"><span class="titletype">func</span> <span class="titlelight">Math.</span><span class="titlestrong">nativeToBigEndian</span></h3>
 <p class="code">
@@ -16823,6 +16884,8 @@ func round(x: f64)
 <code style="white-space: break-spaces">func roundUpToPowerOf2(x: u32)->u32
 </code>
 </p>
+<p>
+Some magical integer tricks comes from https://graphics.stanford.edu/~seander/bithacks.html#ValueInWord.</p>
 <h3 class="content" id="Core.Math.saturate"><span class="titletype">func</span> <span class="titlelight">Math.</span><span class="titlestrong">saturate</span></h3>
 <p class="code">
 <code style="white-space: break-spaces">func saturate(x: f32)
@@ -17935,7 +17998,7 @@ Returns true if the two paths are equal.</p>
 <a href="#Core.Path.getAbsolute">getAbsolute</a></td>
 <td>
 <p>
-Transform <code class = "incode">fullname</code> to an absolute path.</p>
+Drive rooted (\foo) is one character UNC (\\?\UNC\ or \\), scan past the next two directory separators at most (e.g. to \\?\UNC\Server\Share or \\Server\Share\) Maximum separators to skip Path is at least longer than where we expect a colon, and has a colon (\\?\A:, A:) If the colon is followed by a directory separator,,move past it Transform <code class = "incode">fullname</code> to an absolute path.</p>
 </td>
 </tr>
 <tr>
@@ -18074,7 +18137,7 @@ Returns true if the two paths are equal.</p>
 <a href="#Core.Path.getAbsolute">getAbsolute</a></td>
 <td>
 <p>
-Transform <code class = "incode">fullname</code> to an absolute path.</p>
+Drive rooted (\foo) is one character UNC (\\?\UNC\ or \\), scan past the next two directory separators at most (e.g. to \\?\UNC\Server\Share or \\Server\Share\) Maximum separators to skip Path is at least longer than where we expect a colon, and has a colon (\\?\A:, A:) If the colon is followed by a directory separator,,move past it Transform <code class = "incode">fullname</code> to an absolute path.</p>
 </td>
 </tr>
 <tr>
@@ -18237,7 +18300,7 @@ Returns true if the two paths are equal.</p>
 </code>
 </p>
 <p>
-Transform <code class = "incode">fullname</code> to an absolute path.</p>
+Drive rooted (\foo) is one character UNC (\\?\UNC\ or \\), scan past the next two directory separators at most (e.g. to \\?\UNC\Server\Share or \\Server\Share\) Maximum separators to skip Path is at least longer than where we expect a colon, and has a colon (\\?\A:, A:) If the colon is followed by a directory separator,,move past it Transform <code class = "incode">fullname</code> to an absolute path.</p>
 <h3 class="content" id="Core.Path.getDirectoryName"><span class="titletype">func</span> <span class="titlelight">Path.</span><span class="titlestrong">getDirectoryName</span></h3>
 <p class="code">
 <code style="white-space: break-spaces">func getDirectoryName(fullname: string)->string
@@ -18343,12 +18406,16 @@ Normalize path <code class = "incode">\</code> are replaced with <code class = "
 <td>
 <a href="#Core.Random.CMWC4096">CMWC4096</a></td>
 <td>
+<p>
+George Marsaglias CMWC (complementary multiply with carry) generator.</p>
 </td>
 </tr>
 <tr>
 <td>
 <a href="#Core.Random.MWC">MWC</a></td>
 <td>
+<p>
+George Marsaglias MWC (multiply with carry) generator.</p>
 </td>
 </tr>
 <tr>
@@ -18387,6 +18454,8 @@ Get the default per thread random generator.</p>
 </tr>
 </table>
 <h3 class="content" id="Core.Random.CMWC4096"><span class="titletype">struct</span> <span class="titlelight">Random.</span><span class="titlestrong">CMWC4096</span></h3>
+<p>
+George Marsaglias CMWC (complementary multiply with carry) generator.</p>
 <table>
 <tr>
 <td>
@@ -18476,6 +18545,8 @@ s32</td>
 </tr>
 </table>
 <h3 class="content" id="Core.Random.MWC"><span class="titletype">struct</span> <span class="titlelight">Random.</span><span class="titlestrong">MWC</span></h3>
+<p>
+George Marsaglias MWC (multiply with carry) generator.</p>
 <table>
 <tr>
 <td>
@@ -18585,6 +18656,11 @@ NN</td>
 <td class="tdtype">
 s32</td>
 <td>
+<p>
+:LICENCE    Mt19937-64 Mersenne Twister 64 bits.    This code is based on the C-program by Matt Gallagher    (https://github.com/mattgallagher/CwlUtils/blob/master/Sources/ReferenceRandomGenerators/mt19937-64.c)    (http://www.cocoawithlove.com/blog/2016/05/19/random-numbers.html)    Original code by Takuji Nishimura and Makoto Matsumoto.    See LICENCE.md for the corresponding licence.<ul>
+<li>/.</li>
+</ul>
+</p>
 </td>
 </tr>
 </table>
@@ -19204,7 +19280,7 @@ Transform an enum type to its underling real native type.</p>
 <a href="#Core.Reflection.maxSizeOf">maxSizeOf</a></td>
 <td>
 <p>
-Returns the maximum sizeof a bunch of <code class = "incode">typeinfo</code>.</p>
+For a normal enum, stop if this is a match For a flags enum, just append the name if the bit is set Returns the maximum sizeof a bunch of <code class = "incode">typeinfo</code>.</p>
 </td>
 </tr>
 <tr>
@@ -19563,7 +19639,7 @@ Transform an enum type to its underling real native type.</p>
 <a href="#Core.Reflection.maxSizeOf">maxSizeOf</a></td>
 <td>
 <p>
-Returns the maximum sizeof a bunch of <code class = "incode">typeinfo</code>.</p>
+For a normal enum, stop if this is a match For a flags enum, just append the name if the bit is set Returns the maximum sizeof a bunch of <code class = "incode">typeinfo</code>.</p>
 </td>
 </tr>
 <tr>
@@ -19870,7 +19946,7 @@ Transform an enum type to its underling real native type.</p>
 </code>
 </p>
 <p>
-Returns the maximum sizeof a bunch of <code class = "incode">typeinfo</code>.</p>
+For a normal enum, stop if this is a match For a flags enum, just append the name if the bit is set Returns the maximum sizeof a bunch of <code class = "incode">typeinfo</code>.</p>
 <h3 class="content" id="Core.Reflection.nameToType"><span class="titletype">func</span> <span class="titlelight">Reflection.</span><span class="titlestrong">nameToType</span></h3>
 <p class="code">
 <code style="white-space: break-spaces">func nameToType(name: string)->const *TypeInfo
@@ -20022,7 +20098,7 @@ Read a full struct.</p>
 <a href="#Core.Serialization.Decoder.start">start</a></td>
 <td>
 <p>
-Start reading.</p>
+Core.String Core.Array A structure with an implementation of ISerialize Generic struct load Inform user code we are done Static array Start reading.</p>
 </td>
 </tr>
 </table>
@@ -20156,7 +20232,7 @@ Read a full struct.</p>
 </code>
 </p>
 <p>
-Start reading.</p>
+Core.String Core.Array A structure with an implementation of ISerialize Generic struct load Inform user code we are done Static array Start reading.</p>
 <h3 class="content" id="Core.Serialization.DecoderFlags"><span class="titletype">enum</span> <span class="titlelight">Serialization.</span><span class="titlestrong">DecoderFlags</span></h3>
 <table>
 <tr>
@@ -20219,7 +20295,7 @@ Start serialization.</p>
 <a href="#Core.Serialization.Encoder.writeAll">writeAll</a></td>
 <td>
 <p>
-Write a full struct.</p>
+Core.String Core.Array A structure with an implementation of ISerialize Start a fields section Generic structure save A static array Write a full struct.</p>
 </td>
 </tr>
 <tr>
@@ -20354,7 +20430,7 @@ Start serialization.</p>
 </code>
 </p>
 <p>
-Write a full struct.</p>
+Core.String Core.Array A structure with an implementation of ISerialize Start a fields section Generic structure save A static array Write a full struct.</p>
 <h3 class="content" id="Core.Serialization.Encoder.writeTypeValue"><span class="titletype">func</span> <span class="titlelight">Encoder.</span><span class="titlestrong">writeTypeValue</span></h3>
 <p class="code">
 <code style="white-space: break-spaces">func writeTypeValue(using self, typeVal: TypeValue, data: const ^void) throw
@@ -20772,6 +20848,8 @@ The struct does not need versionning an can be serialized in place.</p>
 <td>
 <a href="#Core.Serialization.Read.TagBinSection">TagBinSection</a></td>
 <td>
+<p>
+Binary serializer with forward/backward compatibility    Changes that are supported from V to V+1 are :.</p>
 </td>
 </tr>
 </table>
@@ -21089,6 +21167,8 @@ bool</td>
 <td>
 <a href="#Core.Serialization.Read.TagBin.beginStruct">beginStruct</a></td>
 <td>
+<p>
+Fat is after the datas. We need to be sure to point to whats next, except in raw mode where we are already at the correct offset.</p>
 </td>
 </tr>
 <tr>
@@ -21101,6 +21181,8 @@ bool</td>
 <td>
 <a href="#Core.Serialization.Read.TagBin.endElement">endElement</a></td>
 <td>
+<p>
+If section is raw, then we just have values without versionning If section is ordered, then we do not have a fat, but just elements descriptors followed by values If ent is null, then we are requesting a field that do not exist in the stream So check for aliases No alias, the field is not there, just ignore it Read name signature Read type signature. If they match, we are done Type from the stream does not exists anymore Type cannot be converted Its an array in the stream, and we do not want one Skip header.</p>
 </td>
 </tr>
 <tr>
@@ -21113,18 +21195,24 @@ bool</td>
 <td>
 <a href="#Core.Serialization.Read.TagBin.endSection">endSection</a></td>
 <td>
+<p>
+Read fat position and count We have a fat, but we do not want it ! Signature Crc Element seek Seek to fat and read it.</p>
 </td>
 </tr>
 <tr>
 <td>
 <a href="#Core.Serialization.Read.TagBin.endSequence">endSequence</a></td>
 <td>
+<p>
+Its not an array in the stream, but we want one 0 for a dynamic array, &gt; 0 for a static array If we need to type conversion, we must read element by element Dynamic array of raw serializable types Just read them in one batch Static array of raw serializable types.</p>
 </td>
 </tr>
 <tr>
 <td>
 <a href="#Core.Serialization.Read.TagBin.endStruct">endStruct</a></td>
 <td>
+<p>
+Read version Deal with version Stream version is more recent than current code. Error, except if we want to try forward compatibility If this is the exact same version, then no need to read the fat.</p>
 </td>
 </tr>
 <tr>
@@ -21149,6 +21237,8 @@ bool</td>
 <td>
 <a href="#Core.Serialization.Read.TagBin.startRead">startRead</a></td>
 <td>
+<p>
+s64/float/bool/rune to s64/float/bool/rune Array to array, this is fine, we will deal with size change Static array to dynamic array Static array to single struct value Static array to single value Dynamic array to something... Dynamic array to Static array Dynamic array to dynamic array Dynamic array to single value Conversion from simple value to array To dynamic array... Conversion from simple value to Core.Array Struct to struct... 2 pod structs with the same size.</p>
 </td>
 </tr>
 <tr>
@@ -21183,6 +21273,8 @@ bool</td>
 <code style="white-space: break-spaces">func beginStruct(using self, structType: const *TypeInfo, _structData: const *u8)->bool throw
 </code>
 </p>
+<p>
+Fat is after the datas. We need to be sure to point to whats next, except in raw mode where we are already at the correct offset.</p>
 <h3 class="content" id="Core.Serialization.Read.TagBin.beginValue"><span class="titletype">func</span> <span class="titlelight">TagBin.</span><span class="titlestrong">beginValue</span></h3>
 <p class="code">
 <code style="white-space: break-spaces">func beginValue(using self) throw
@@ -21193,6 +21285,8 @@ bool</td>
 <code style="white-space: break-spaces">func endElement(using self) throw
 </code>
 </p>
+<p>
+If section is raw, then we just have values without versionning If section is ordered, then we do not have a fat, but just elements descriptors followed by values If ent is null, then we are requesting a field that do not exist in the stream So check for aliases No alias, the field is not there, just ignore it Read name signature Read type signature. If they match, we are done Type from the stream does not exists anymore Type cannot be converted Its an array in the stream, and we do not want one Skip header.</p>
 <h3 class="content" id="Core.Serialization.Read.TagBin.endRoot"><span class="titletype">func</span> <span class="titlelight">TagBin.</span><span class="titlestrong">endRoot</span></h3>
 <p class="code">
 <code style="white-space: break-spaces">func endRoot(using self) throw
@@ -21203,16 +21297,22 @@ bool</td>
 <code style="white-space: break-spaces">func endSection(using self) throw
 </code>
 </p>
+<p>
+Read fat position and count We have a fat, but we do not want it ! Signature Crc Element seek Seek to fat and read it.</p>
 <h3 class="content" id="Core.Serialization.Read.TagBin.endSequence"><span class="titletype">func</span> <span class="titlelight">TagBin.</span><span class="titlestrong">endSequence</span></h3>
 <p class="code">
 <code style="white-space: break-spaces">func endSequence(using self) throw
 </code>
 </p>
+<p>
+Its not an array in the stream, but we want one 0 for a dynamic array, &gt; 0 for a static array If we need to type conversion, we must read element by element Dynamic array of raw serializable types Just read them in one batch Static array of raw serializable types.</p>
 <h3 class="content" id="Core.Serialization.Read.TagBin.endStruct"><span class="titletype">func</span> <span class="titlelight">TagBin.</span><span class="titlestrong">endStruct</span></h3>
 <p class="code">
 <code style="white-space: break-spaces">func endStruct(using self) throw
 </code>
 </p>
+<p>
+Read version Deal with version Stream version is more recent than current code. Error, except if we want to try forward compatibility If this is the exact same version, then no need to read the fat.</p>
 <h3 class="content" id="Core.Serialization.Read.TagBin.endValue"><span class="titletype">func</span> <span class="titlelight">TagBin.</span><span class="titlestrong">endValue</span></h3>
 <p class="code">
 <code style="white-space: break-spaces">func endValue(using self) throw
@@ -21233,6 +21333,8 @@ bool</td>
 <code style="white-space: break-spaces">func startRead(using self, input: const [..] u8) throw
 </code>
 </p>
+<p>
+s64/float/bool/rune to s64/float/bool/rune Array to array, this is fine, we will deal with size change Static array to dynamic array Static array to single struct value Static array to single value Dynamic array to something... Dynamic array to Static array Dynamic array to dynamic array Dynamic array to single value Conversion from simple value to array To dynamic array... Conversion from simple value to Core.Array Struct to struct... 2 pod structs with the same size.</p>
 <h3 class="content" id="Core.Serialization.Read.TagBin.toNextSequenceElement"><span class="titletype">func</span> <span class="titlelight">TagBin.</span><span class="titlestrong">toNextSequenceElement</span></h3>
 <p class="code">
 <code style="white-space: break-spaces">func toNextSequenceElement(using self, countElem: *u64)->bool
@@ -21252,6 +21354,8 @@ Accept to try to read a newest version, otherwise error.</p>
 </tr>
 </table>
 <h3 class="content" id="Core.Serialization.Read.TagBinSection"><span class="titletype">struct</span> <span class="titlelight">Read.</span><span class="titlestrong">TagBinSection</span></h3>
+<p>
+Binary serializer with forward/backward compatibility    Changes that are supported from V to V+1 are :.</p>
 <table>
 <tr>
 <td>
@@ -21294,6 +21398,17 @@ bool</td>
 </td>
 </tr>
 </table>
+<p>
+    - Add a new field. The new field will stay at the default value    - Remove a field. It will just be ignored    - Reorder of fields, as long as their name/type are the same    - Rename a field with <code class = "incode">Serialization.Alias</code></p>
+<p>
+    Supported type changes are :    - Change the size of a static array    - Convert a static array to a dynamic array, and vice versa    - Conversion from integer/float/rune/bool to integer/float/rune/bool    - Conversion from single value to array/Core.Array, and vice versa</p>
+<p>
+    Supported attributes are :</p>
+<p>
+    - Serialisation.Version     If version is specified, then loading will not have versioning if versions are the same    - Serialization.Alias       To rename a field. Multiple aliases are supported.    - Serialization.Final       The struct will be loaded/saved without versioning (faster and lower serialization size)    - Serialization.PodFinal    The struct will be loaded/saved in place without versioning<ul>
+<li>/</li>
+</ul>
+</p>
 <h3 class="content" id="Core.Serialization.SectionKind"><span class="titletype">enum</span> <span class="titlelight">Serialization.</span><span class="titlestrong">SectionKind</span></h3>
 <table>
 <tr>
@@ -21591,6 +21706,8 @@ lastSeekValue</td>
 <td>
 <a href="#Core.Serialization.Write.JSon.beginSequence">beginSequence</a></td>
 <td>
+<p>
+Remove last <code class = "incode">,</code>.</p>
 </td>
 </tr>
 <tr>
@@ -21680,6 +21797,8 @@ lastSeekValue</td>
 <code style="white-space: break-spaces">func beginSequence(using self, _typeElem: const *TypeInfo, _data: const *void, _countElem: u64)->bool
 </code>
 </p>
+<p>
+Remove last <code class = "incode">,</code>.</p>
 <h3 class="content" id="Core.Serialization.Write.JSon.beginStruct"><span class="titletype">func</span> <span class="titlelight">JSon.</span><span class="titlestrong">beginStruct</span></h3>
 <p class="code">
 <code style="white-space: break-spaces">func beginStruct(using self, _structType: const *TypeInfo, _structData: const *u8)->bool
@@ -21811,6 +21930,8 @@ sections</td>
 <td>
 <a href="#Core.Serialization.Write.TagBin.beginStruct">beginStruct</a></td>
 <td>
+<p>
+Patch fat table seek and count Write fat table Crc Linear seek inside the buffer.</p>
 </td>
 </tr>
 <tr>
@@ -21823,6 +21944,8 @@ sections</td>
 <td>
 <a href="#Core.Serialization.Write.TagBin.endElement">endElement</a></td>
 <td>
+<p>
+If section is raw, then we just have values without versionning Register the current seek for the fat generation Write element signature.</p>
 </td>
 </tr>
 <tr>
@@ -21835,18 +21958,24 @@ sections</td>
 <td>
 <a href="#Core.Serialization.Write.TagBin.endSection">endSection</a></td>
 <td>
+<p>
+Will store the fat offset here Will store the fat count here.</p>
 </td>
 </tr>
 <tr>
 <td>
 <a href="#Core.Serialization.Write.TagBin.endSequence">endSequence</a></td>
 <td>
+<p>
+Dynamic array of raw serializable types Just write them in one batch Static array of raw serializable types.</p>
 </td>
 </tr>
 <tr>
 <td>
 <a href="#Core.Serialization.Write.TagBin.endStruct">endStruct</a></td>
 <td>
+<p>
+Struct version Start unordered section.</p>
 </td>
 </tr>
 <tr>
@@ -21893,6 +22022,8 @@ sections</td>
 <code style="white-space: break-spaces">func beginStruct(using self, structType: const *TypeInfo, _structData: const *u8)->bool
 </code>
 </p>
+<p>
+Patch fat table seek and count Write fat table Crc Linear seek inside the buffer.</p>
 <h3 class="content" id="Core.Serialization.Write.TagBin.beginValue"><span class="titletype">func</span> <span class="titlelight">TagBin.</span><span class="titlestrong">beginValue</span></h3>
 <p class="code">
 <code style="white-space: break-spaces">func beginValue(using self)
@@ -21903,6 +22034,8 @@ sections</td>
 <code style="white-space: break-spaces">func endElement(using self)
 </code>
 </p>
+<p>
+If section is raw, then we just have values without versionning Register the current seek for the fat generation Write element signature.</p>
 <h3 class="content" id="Core.Serialization.Write.TagBin.endRoot"><span class="titletype">func</span> <span class="titlelight">TagBin.</span><span class="titlestrong">endRoot</span></h3>
 <p class="code">
 <code style="white-space: break-spaces">func endRoot(using self)
@@ -21913,16 +22046,22 @@ sections</td>
 <code style="white-space: break-spaces">func endSection(using self)
 </code>
 </p>
+<p>
+Will store the fat offset here Will store the fat count here.</p>
 <h3 class="content" id="Core.Serialization.Write.TagBin.endSequence"><span class="titletype">func</span> <span class="titlelight">TagBin.</span><span class="titlestrong">endSequence</span></h3>
 <p class="code">
 <code style="white-space: break-spaces">func endSequence(using self)
 </code>
 </p>
+<p>
+Dynamic array of raw serializable types Just write them in one batch Static array of raw serializable types.</p>
 <h3 class="content" id="Core.Serialization.Write.TagBin.endStruct"><span class="titletype">func</span> <span class="titlelight">TagBin.</span><span class="titlestrong">endStruct</span></h3>
 <p class="code">
 <code style="white-space: break-spaces">func endStruct(using self)
 </code>
 </p>
+<p>
+Struct version Start unordered section.</p>
 <h3 class="content" id="Core.Serialization.Write.TagBin.endValue"><span class="titletype">func</span> <span class="titlelight">TagBin.</span><span class="titlestrong">endValue</span></h3>
 <p class="code">
 <code style="white-space: break-spaces">func endValue(using self)
@@ -22445,7 +22584,7 @@ Insert a value at the given index. If <code class = "incode">index</code> is equ
 <a href="#Core.StaticArray.isEmpty">isEmpty</a></td>
 <td>
 <p>
-Returns true if the array is empty.</p>
+Need to drop every structs Returns true if the array is empty.</p>
 </td>
 </tr>
 <tr>
@@ -22750,7 +22889,7 @@ Insert some values at the given index. If <code class = "incode">index</code> is
 </code>
 </p>
 <p>
-Returns true if the array is empty.</p>
+Need to drop every structs Returns true if the array is empty.</p>
 <h3 class="content" id="Core.StaticArray.opAffect"><span class="titletype">func</span> <span class="titlelight">StaticArray.</span><span class="titlestrong">opAffect</span></h3>
 <p class="code">
 <code style="white-space: break-spaces">func opAffect(using self, arr: const [..] T)
@@ -22920,7 +23059,7 @@ Format structure to convert a float to a string.</p>
 <a href="#Core.StrConv.ConvertFormatInt">ConvertFormatInt</a></td>
 <td>
 <p>
-Format structure to convert an integer to a string.</p>
+Force sign for positive numbers Format Precision Format structure to convert an integer to a string.</p>
 </td>
 </tr>
 <tr>
@@ -22971,7 +23110,7 @@ Templated version. Convert a value of type <code class = "incode">T</code>.</p>
 <a href="#Core.StrConv.convertAny">convertAny</a></td>
 <td>
 <p>
-Convert a value to an utf8 string, and append the result in a ConcatBuffer.</p>
+Force sign for positive numbers Base Next comes the padding characters Next comes the padding width Convert a value to an utf8 string, and append the result in a ConcatBuffer.</p>
 </td>
 </tr>
 <tr>
@@ -22987,7 +23126,7 @@ Convert a <code class = "incode">bool</code> to a string, and put the result in 
 <a href="#Core.StrConv.convertFloat">convertFloat</a></td>
 <td>
 <p>
-Convert a float to an utf8 string, and put the result in a ConcatBuffer.</p>
+Core.String Core.Array Trick to get the struct content This rely on the fact that the Array struct layout is the same whatever the underlying type is A structure with an implementation of IConvert Do it field by field Convert a float to an utf8 string, and put the result in a ConcatBuffer.</p>
 </td>
 </tr>
 <tr>
@@ -22995,7 +23134,7 @@ Convert a float to an utf8 string, and put the result in a ConcatBuffer.</p>
 <a href="#Core.StrConv.convertFloat">convertFloat</a></td>
 <td>
 <p>
-Convert a float to an utf8 string, and put the result in a ConcatBuffer.</p>
+Special case for the lower digit of Swag.S64.Min We have 9_223_372_036_854_775_807, and we want -9_223_372_036_854_775_808 So use <code class = "incode">8</code> instead of <code class = "incode">7</code> Fill the remaining place with the padding character, so that the total result is <code class = "incode">fmt.width</code> long Prepend the negative character Convert a float to an utf8 string, and put the result in a ConcatBuffer.</p>
 </td>
 </tr>
 <tr>
@@ -23027,7 +23166,7 @@ Convert a <code class = "incode">rune</code> to a string, and put the result in 
 <a href="#Core.StrConv.convertStruct">convertStruct</a></td>
 <td>
 <p>
-Convert a structure content to an utf8 string, and put the result in a ConcatBuffer.</p>
+An enum value A struct A slice A static array Any Convert a structure content to an utf8 string, and put the result in a ConcatBuffer.</p>
 </td>
 </tr>
 <tr>
@@ -23051,7 +23190,7 @@ Convert an utf8 buffer to a boolean Returns the value and the number of bytes us
 <a href="#Core.StrConv.parseF32">parseF32</a></td>
 <td>
 <p>
-Convert an utf8 buffer to a floating point value Returns the value and the number of bytes used to make the conversion <code class = "incode">ovf</code> will be true in case of overflow.</p>
+Does the number starts with the negative/positive sign ? Parse the rest Convert an utf8 buffer to a floating point value Returns the value and the number of bytes used to make the conversion <code class = "incode">ovf</code> will be true in case of overflow.</p>
 </td>
 </tr>
 <tr>
@@ -23099,7 +23238,7 @@ Convert an utf8 buffer to a simple rune.</p>
 <a href="#Core.StrConv.parseS8">parseS8</a></td>
 <td>
 <p>
-Convert an utf8 buffer to an signed integer value Returns the value and the number of bytes used to make the conversion <code class = "incode">ovf</code> will be true in case of overflow.</p>
+Detect 0x for hexa, 0b for binary Convert an utf8 buffer to an signed integer value Returns the value and the number of bytes used to make the conversion <code class = "incode">ovf</code> will be true in case of overflow.</p>
 </td>
 </tr>
 <tr>
@@ -23194,6 +23333,8 @@ Convert a size in a displayable format (with Kb, Mb and so on).</p>
 <td>
 <a href="#Core.StrConv.toS8">toS8</a></td>
 <td>
+<p>
+End dilimiter Escape character.</p>
 </td>
 </tr>
 <tr>
@@ -23236,7 +23377,7 @@ Templated version. Convert a value of type <code class = "incode">T</code>.</p>
 <a href="#Core.StrConv.convertAny">convertAny</a></td>
 <td>
 <p>
-Convert a value to an utf8 string, and append the result in a ConcatBuffer.</p>
+Force sign for positive numbers Base Next comes the padding characters Next comes the padding width Convert a value to an utf8 string, and append the result in a ConcatBuffer.</p>
 </td>
 </tr>
 <tr>
@@ -23252,7 +23393,7 @@ Convert a <code class = "incode">bool</code> to a string, and put the result in 
 <a href="#Core.StrConv.convertFloat">convertFloat</a></td>
 <td>
 <p>
-Convert a float to an utf8 string, and put the result in a ConcatBuffer.</p>
+Core.String Core.Array Trick to get the struct content This rely on the fact that the Array struct layout is the same whatever the underlying type is A structure with an implementation of IConvert Do it field by field Convert a float to an utf8 string, and put the result in a ConcatBuffer.</p>
 </td>
 </tr>
 <tr>
@@ -23260,7 +23401,7 @@ Convert a float to an utf8 string, and put the result in a ConcatBuffer.</p>
 <a href="#Core.StrConv.convertFloat">convertFloat</a></td>
 <td>
 <p>
-Convert a float to an utf8 string, and put the result in a ConcatBuffer.</p>
+Special case for the lower digit of Swag.S64.Min We have 9_223_372_036_854_775_807, and we want -9_223_372_036_854_775_808 So use <code class = "incode">8</code> instead of <code class = "incode">7</code> Fill the remaining place with the padding character, so that the total result is <code class = "incode">fmt.width</code> long Prepend the negative character Convert a float to an utf8 string, and put the result in a ConcatBuffer.</p>
 </td>
 </tr>
 <tr>
@@ -23292,7 +23433,7 @@ Convert a <code class = "incode">rune</code> to a string, and put the result in 
 <a href="#Core.StrConv.convertStruct">convertStruct</a></td>
 <td>
 <p>
-Convert a structure content to an utf8 string, and put the result in a ConcatBuffer.</p>
+An enum value A struct A slice A static array Any Convert a structure content to an utf8 string, and put the result in a ConcatBuffer.</p>
 </td>
 </tr>
 <tr>
@@ -23316,7 +23457,7 @@ Convert an utf8 buffer to a boolean Returns the value and the number of bytes us
 <a href="#Core.StrConv.parseF32">parseF32</a></td>
 <td>
 <p>
-Convert an utf8 buffer to a floating point value Returns the value and the number of bytes used to make the conversion <code class = "incode">ovf</code> will be true in case of overflow.</p>
+Does the number starts with the negative/positive sign ? Parse the rest Convert an utf8 buffer to a floating point value Returns the value and the number of bytes used to make the conversion <code class = "incode">ovf</code> will be true in case of overflow.</p>
 </td>
 </tr>
 <tr>
@@ -23364,7 +23505,7 @@ Convert an utf8 buffer to a simple rune.</p>
 <a href="#Core.StrConv.parseS8">parseS8</a></td>
 <td>
 <p>
-Convert an utf8 buffer to an signed integer value Returns the value and the number of bytes used to make the conversion <code class = "incode">ovf</code> will be true in case of overflow.</p>
+Detect 0x for hexa, 0b for binary Convert an utf8 buffer to an signed integer value Returns the value and the number of bytes used to make the conversion <code class = "incode">ovf</code> will be true in case of overflow.</p>
 </td>
 </tr>
 <tr>
@@ -23459,6 +23600,8 @@ Convert a size in a displayable format (with Kb, Mb and so on).</p>
 <td>
 <a href="#Core.StrConv.toS8">toS8</a></td>
 <td>
+<p>
+End dilimiter Escape character.</p>
 </td>
 </tr>
 <tr>
@@ -23594,7 +23737,7 @@ Set some format options with a given user string.</p>
       integer, precision of the fractional part</p>
 <h3 class="content" id="Core.StrConv.ConvertFormatInt"><span class="titletype">struct</span> <span class="titlelight">StrConv.</span><span class="titlestrong">ConvertFormatInt</span></h3>
 <p>
-Format structure to convert an integer to a string.</p>
+Force sign for positive numbers Format Precision Format structure to convert an integer to a string.</p>
 <table>
 <tr>
 <td>
@@ -23787,7 +23930,7 @@ bool</td>
 <a href="#Core.StrConv.Dtoa.parse">parse</a></td>
 <td>
 <p>
-The format <code class = "incode">fmt</code> is one of <code class = "incode">e</code> (-d.dddde±dd, a decimal exponent) <code class = "incode">E</code> (-d.ddddE±dd, a decimal exponent) <code class = "incode">f</code> (-ddd.dddd, no exponent) <code class = "incode">g</code> (<code class = "incode">e</code> for large exponents, <code class = "incode">f</code> otherwise) <code class = "incode">G</code> (<code class = "incode">E</code> for large exponents, <code class = "incode">f</code> otherwise) Negative precision means "only as much as needed to be exact.".</p>
+The upper and lower bounds are possible outputs only if the original mantissa is even, so that IEEE round-to-even would round to the original mantissa and not the neighbors. As we walk the digits we want to know whether rounding up would fall within the upper bound. This is tracked by upperdelta:.</p>
 </td>
 </tr>
 </table>
@@ -23798,7 +23941,7 @@ The format <code class = "incode">fmt</code> is one of <code class = "incode">e<
 <a href="#Core.StrConv.Dtoa.parse">parse</a></td>
 <td>
 <p>
-The format <code class = "incode">fmt</code> is one of <code class = "incode">e</code> (-d.dddde±dd, a decimal exponent) <code class = "incode">E</code> (-d.ddddE±dd, a decimal exponent) <code class = "incode">f</code> (-ddd.dddd, no exponent) <code class = "incode">g</code> (<code class = "incode">e</code> for large exponents, <code class = "incode">f</code> otherwise) <code class = "incode">G</code> (<code class = "incode">E</code> for large exponents, <code class = "incode">f</code> otherwise) Negative precision means "only as much as needed to be exact.".</p>
+The upper and lower bounds are possible outputs only if the original mantissa is even, so that IEEE round-to-even would round to the original mantissa and not the neighbors. As we walk the digits we want to know whether rounding up would fall within the upper bound. This is tracked by upperdelta:.</p>
 </td>
 </tr>
 </table>
@@ -23808,7 +23951,13 @@ The format <code class = "incode">fmt</code> is one of <code class = "incode">e<
 </code>
 </p>
 <p>
-The format <code class = "incode">fmt</code> is one of <code class = "incode">e</code> (-d.dddde±dd, a decimal exponent) <code class = "incode">E</code> (-d.ddddE±dd, a decimal exponent) <code class = "incode">f</code> (-ddd.dddd, no exponent) <code class = "incode">g</code> (<code class = "incode">e</code> for large exponents, <code class = "incode">f</code> otherwise) <code class = "incode">G</code> (<code class = "incode">E</code> for large exponents, <code class = "incode">f</code> otherwise) Negative precision means "only as much as needed to be exact.".</p>
+The upper and lower bounds are possible outputs only if the original mantissa is even, so that IEEE round-to-even would round to the original mantissa and not the neighbors. As we walk the digits we want to know whether rounding up would fall within the upper bound. This is tracked by upperdelta:.</p>
+<p>
+ If upperdelta == 0, the digits of d and upper are the same so far.</p>
+<p>
+ If upperdelta == 1, we saw a difference of 1 between d and upper on a previous digit and subsequently only 9s for d and 0s for upper. (Thus rounding up may fall outside the bound, if it is exclusive.)</p>
+<p>
+ If upperdelta == 2, then the difference is greater than 1 and we know that rounding up falls within the bound. Now we can figure out the minimum number of digits required. Walk along until d has distinguished itself from upper and lower. lower, d, and upper may have the decimal points at different places. In this case upper is the longest, so we iterate from ui==0 and start li and mi at (possibly) -1. lower digit middle digit upper digit Okay to round down (truncate) if lower has a different digit or if lower is inclusive and is exactly the result of rounding down (i.e., and we have reached the final digit of lower). Example: m = 12345xxx u = 12347xxx Example: m = 12345xxx u = 12346xxx Example: m = 1234598x u = 1234600x Okay to round up if upper has a different digit and either upper is inclusive or upper is bigger than the result of rounding up. If its okay to do either, then round to the nearest one. If its okay to do only one, do it. The format <code class = "incode">fmt</code> is one of <code class = "incode">e</code> (-d.dddde±dd, a decimal exponent) <code class = "incode">E</code> (-d.ddddE±dd, a decimal exponent) <code class = "incode">f</code> (-ddd.dddd, no exponent) <code class = "incode">g</code> (<code class = "incode">e</code> for large exponents, <code class = "incode">f</code> otherwise) <code class = "incode">G</code> (<code class = "incode">E</code> for large exponents, <code class = "incode">f</code> otherwise) Negative precision means "only as much as needed to be exact."</p>
 <h3 class="content" id="Core.StrConv.FloatExt"><span class="titletype">struct</span> <span class="titlelight">StrConv.</span><span class="titlestrong">FloatExt</span></h3>
 <p>
 An extFloat represents an extended floating-point number, with more precision than a float64. It does not try to save bits: the number represented by the structure is mant*(2^exp), with a negative sign if neg is true.</p>
@@ -24102,7 +24251,7 @@ Templated version. Convert a value of type <code class = "incode">T</code>.</p>
 </code>
 </p>
 <p>
-Convert a value to an utf8 string, and append the result in a ConcatBuffer.</p>
+Force sign for positive numbers Base Next comes the padding characters Next comes the padding width Convert a value to an utf8 string, and append the result in a ConcatBuffer.</p>
 <h3 class="content" id="Core.StrConv.convertBool"><span class="titletype">func</span> <span class="titlelight">StrConv.</span><span class="titlestrong">convertBool</span></h3>
 <p class="code">
 <code style="white-space: break-spaces">func convertBool(buf: *ConcatBuffer, value: bool)
@@ -24116,13 +24265,13 @@ Convert a <code class = "incode">bool</code> to a string, and put the result in 
 </code>
 </p>
 <p>
-Convert a float to an utf8 string, and put the result in a ConcatBuffer.</p>
+Core.String Core.Array Trick to get the struct content This rely on the fact that the Array struct layout is the same whatever the underlying type is A structure with an implementation of IConvert Do it field by field Convert a float to an utf8 string, and put the result in a ConcatBuffer.</p>
 <p class="code">
 <code style="white-space: break-spaces">func convertFloat(buf: *ConcatBuffer, value: any, strFormat: string)
 </code>
 </p>
 <p>
-Convert a float to an utf8 string, and put the result in a ConcatBuffer.</p>
+Special case for the lower digit of Swag.S64.Min We have 9_223_372_036_854_775_807, and we want -9_223_372_036_854_775_808 So use <code class = "incode">8</code> instead of <code class = "incode">7</code> Fill the remaining place with the padding character, so that the total result is <code class = "incode">fmt.width</code> long Prepend the negative character Convert a float to an utf8 string, and put the result in a ConcatBuffer.</p>
 <h3 class="content" id="Core.StrConv.convertInt"><span class="titletype">func</span> <span class="titlelight">StrConv.</span><span class="titlestrong">convertInt</span></h3>
 <p class="code">
 <code style="white-space: break-spaces">func convertInt(buf: *ConcatBuffer, fmt: ConvertFormatInt)
@@ -24149,7 +24298,7 @@ Convert a <code class = "incode">rune</code> to a string, and put the result in 
 </code>
 </p>
 <p>
-Convert a structure content to an utf8 string, and put the result in a ConcatBuffer.</p>
+An enum value A struct A slice A static array Any Convert a structure content to an utf8 string, and put the result in a ConcatBuffer.</p>
 <h3 class="content" id="Core.StrConv.firstPowerOfTen"><span class="titletype"></span> <span class="titlelight">StrConv.</span><span class="titlestrong">Constants</span></h3>
 <table>
 <tr>
@@ -24158,6 +24307,8 @@ firstPowerOfTen</td>
 <td class="tdtype">
 s32</td>
 <td>
+<p>
+Powers of ten taken from double-conversion library. https://code.google.com/p/double-conversion/.</p>
 </td>
 </tr>
 </table>
@@ -24181,7 +24332,7 @@ Convert an utf8 buffer to a boolean Returns the value and the number of bytes us
 </code>
 </p>
 <p>
-Convert an utf8 buffer to a floating point value Returns the value and the number of bytes used to make the conversion <code class = "incode">ovf</code> will be true in case of overflow.</p>
+Does the number starts with the negative/positive sign ? Parse the rest Convert an utf8 buffer to a floating point value Returns the value and the number of bytes used to make the conversion <code class = "incode">ovf</code> will be true in case of overflow.</p>
 <h3 class="content" id="Core.StrConv.parseF64"><span class="titletype">func</span> <span class="titlelight">StrConv.</span><span class="titlestrong">parseF64</span></h3>
 <p class="code">
 <code style="white-space: break-spaces">func parseF64(str: string)->{value: f64, eat: u32, ovf: bool} throw
@@ -24222,7 +24373,7 @@ Convert an utf8 buffer to a simple rune.</p>
 </code>
 </p>
 <p>
-Convert an utf8 buffer to an signed integer value Returns the value and the number of bytes used to make the conversion <code class = "incode">ovf</code> will be true in case of overflow.</p>
+Detect 0x for hexa, 0b for binary Convert an utf8 buffer to an signed integer value Returns the value and the number of bytes used to make the conversion <code class = "incode">ovf</code> will be true in case of overflow.</p>
 <h3 class="content" id="Core.StrConv.parseString"><span class="titletype">func</span> <span class="titlelight">StrConv.</span><span class="titlestrong">parseString</span></h3>
 <p class="code">
 <code style="white-space: break-spaces">func parseString(str: string)->{value: String, eat: u32} throw
@@ -24318,6 +24469,8 @@ Convert a size in a displayable format (with Kb, Mb and so on).</p>
 <code style="white-space: break-spaces">func toS8(str: string)->s8 throw
 </code>
 </p>
+<p>
+End dilimiter Escape character.</p>
 <h3 class="content" id="Core.StrConv.toU16"><span class="titletype">func</span> <span class="titlelight">StrConv.</span><span class="titlestrong">toU16</span></h3>
 <p class="code">
 <code style="white-space: break-spaces">func toU16(str: string)->u16 throw
@@ -24565,6 +24718,8 @@ Convert the string inplace to upper case.</p>
 <td>
 <a href="#Core.String.opCmp">opCmp</a></td>
 <td>
+<p>
+true if null.</p>
 </td>
 </tr>
 <tr>
@@ -24736,7 +24891,7 @@ Remove whitespaces at the end of the String.</p>
 <a href="#Core.String.trimStart">trimStart</a></td>
 <td>
 <p>
-Remove whitespaces at the start of the String.</p>
+Small size, just be sure with have a valid buffer address Free dynamic memory if this is not a small string This is a small string again We were in small size mode, and we are no more We were in dynamic mode, so just realloc memory Remove whitespaces at the start of the String.</p>
 </td>
 </tr>
 </table>
@@ -24886,6 +25041,8 @@ func opCast(using const self)->const [..] u8
 <code style="white-space: break-spaces">func opCmp(using const self, other: string)->s32
 </code>
 </p>
+<p>
+true if null.</p>
 <h3 class="content" id="Core.String.opCount"><span class="titletype">func</span> <span class="titlelight">String.</span><span class="titlestrong">opCount</span></h3>
 <p class="code">
 <code style="white-space: break-spaces">func opCount(using const self)->u64
@@ -25034,7 +25191,7 @@ Remove whitespaces at the end of the String.</p>
 </code>
 </p>
 <p>
-Remove whitespaces at the start of the String.</p>
+Small size, just be sure with have a valid buffer address Free dynamic memory if this is not a small string This is a small string again We were in small size mode, and we are no more We were in dynamic mode, so just realloc memory Remove whitespaces at the start of the String.</p>
 <h3 class="content" id="Core.StringSmallSize"><span class="titletype"></span> <span class="titlelight">Core.</span><span class="titlestrong">Constants</span></h3>
 <table>
 <tr>
@@ -25592,7 +25749,7 @@ Set the thread priority.</p>
 <a href="#Core.Threading.Thread.sleep">sleep</a></td>
 <td>
 <p>
-Sleep the current thread for a given amount of milliseconds.</p>
+Close all Sleep the current thread for a given amount of milliseconds.</p>
 </td>
 </tr>
 <tr>
@@ -25600,7 +25757,7 @@ Sleep the current thread for a given amount of milliseconds.</p>
 <a href="#Core.Threading.Thread.start">start</a></td>
 <td>
 <p>
-Resume the given thread, if it was paused.</p>
+Get a copy of current context, and initialize a temporary allocator for that thread Resume the given thread, if it was paused.</p>
 </td>
 </tr>
 <tr>
@@ -25661,14 +25818,14 @@ Set the thread priority.</p>
 </code>
 </p>
 <p>
-Sleep the current thread for a given amount of milliseconds.</p>
+Close all Sleep the current thread for a given amount of milliseconds.</p>
 <h3 class="content" id="Core.Threading.Thread.start"><span class="titletype">func</span> <span class="titlelight">Thread.</span><span class="titlestrong">start</span></h3>
 <p class="code">
 <code style="white-space: break-spaces">func start(using self) throw
 </code>
 </p>
 <p>
-Resume the given thread, if it was paused.</p>
+Get a copy of current context, and initialize a temporary allocator for that thread Resume the given thread, if it was paused.</p>
 <h3 class="content" id="Core.Threading.Thread.wait"><span class="titletype">func</span> <span class="titlelight">Thread.</span><span class="titlestrong">wait</span></h3>
 <p class="code">
 <code style="white-space: break-spaces">func wait(using self)
@@ -25855,7 +26012,7 @@ Convert a 64 bits value to a date.</p>
 <a href="#Core.Time.ticksToTime">ticksToTime</a></td>
 <td>
 <p>
-Convert a 64 bits tick value to a time.</p>
+totalSeconds is bounded by 2^31 * 2^12 + 2^31 * 2^8 + 2^31, which is less than 2^44, meaning we wont overflow totalSeconds. Convert a 64 bits tick value to a time.</p>
 </td>
 </tr>
 <tr>
@@ -25938,7 +26095,7 @@ Convert a 64 bits value to a date.</p>
 <a href="#Core.Time.ticksToTime">ticksToTime</a></td>
 <td>
 <p>
-Convert a 64 bits tick value to a time.</p>
+totalSeconds is bounded by 2^31 * 2^12 + 2^31 * 2^8 + 2^31, which is less than 2^44, meaning we wont overflow totalSeconds. Convert a 64 bits tick value to a time.</p>
 </td>
 </tr>
 <tr>
@@ -26086,7 +26243,7 @@ Initialize the structure with the current local date and time.</p>
 <a href="#Core.Time.DateTime.toString">toString</a></td>
 <td>
 <p>
-Convert to string.</p>
+Blank Month name Blank Day Blank Year Check day of week Year Month Day Blank Hour Minute Seconds Milliseconds Convert to string.</p>
 </td>
 </tr>
 </table>
@@ -26160,7 +26317,7 @@ Initialize the structure with the current local date and time.</p>
 </code>
 </p>
 <p>
-Convert to string.</p>
+Blank Month name Blank Day Blank Year Check day of week Year Month Day Blank Hour Minute Seconds Milliseconds Convert to string.</p>
 <h3 class="content" id="Core.Time.DateTimeFormat"><span class="titletype">enum</span> <span class="titlelight">Time.</span><span class="titlestrong">DateTimeFormat</span></h3>
 <table>
 <tr>
@@ -26421,6 +26578,8 @@ frameCount</td>
 <td class="tdtype">
 u32</td>
 <td>
+<p>
+Frame counter.</p>
 </td>
 </tr>
 <tr>
@@ -26447,7 +26606,7 @@ bool</td>
 <a href="#Core.Time.FrameTiming.pause">pause</a></td>
 <td>
 <p>
-Pause frame timing & count.</p>
+First frame Delta time Setup for next frame Pause frame timing & count.</p>
 </td>
 </tr>
 <tr>
@@ -26473,7 +26632,7 @@ Update frame timers.</p>
 </code>
 </p>
 <p>
-Pause frame timing & count.</p>
+First frame Delta time Setup for next frame Pause frame timing & count.</p>
 <h3 class="content" id="Core.Time.FrameTiming.unpause"><span class="titletype">func</span> <span class="titlelight">FrameTiming.</span><span class="titlestrong">unpause</span></h3>
 <p class="code">
 <code style="white-space: break-spaces">func unpause(using self)
@@ -27150,7 +27309,7 @@ Convert a 64 bits value to a date.</p>
 </code>
 </p>
 <p>
-Convert a 64 bits tick value to a time.</p>
+totalSeconds is bounded by 2^31 * 2^12 + 2^31 * 2^8 + 2^31, which is less than 2^44, meaning we wont overflow totalSeconds. Convert a 64 bits tick value to a time.</p>
 <h3 class="content" id="Core.Time.timeToTicks"><span class="titletype">func</span> <span class="titlelight">Time.</span><span class="titlestrong">timeToTicks</span></h3>
 <p class="code">
 <code style="white-space: break-spaces">func timeToTicks(hour: u16, minute: u16, second: u16, millisecond: u16)->Ticks
@@ -27198,7 +27357,7 @@ Returns a sub string starting at <code class = "incode">startByteIndex</code> an
 <a href="#Core.Tokenize.getToSpace">getToSpace</a></td>
 <td>
 <p>
-Returns the first substring of <code class = "incode">str</code>, stopping at the first blank character.</p>
+Remove separator at the start done Add all real characters until we found a separator done Have we reached the maximum number of split ? Returns the first substring of <code class = "incode">str</code>, stopping at the first blank character.</p>
 </td>
 </tr>
 <tr>
@@ -27273,7 +27432,7 @@ Returns a sub string starting at <code class = "incode">startByteIndex</code> an
 <a href="#Core.Tokenize.getToSpace">getToSpace</a></td>
 <td>
 <p>
-Returns the first substring of <code class = "incode">str</code>, stopping at the first blank character.</p>
+Remove separator at the start done Add all real characters until we found a separator done Have we reached the maximum number of split ? Returns the first substring of <code class = "incode">str</code>, stopping at the first blank character.</p>
 </td>
 </tr>
 <tr>
@@ -27343,7 +27502,7 @@ Returns a sub string starting at <code class = "incode">startByteIndex</code> an
 </code>
 </p>
 <p>
-Returns the first substring of <code class = "incode">str</code>, stopping at the first blank character.</p>
+Remove separator at the start done Add all real characters until we found a separator done Have we reached the maximum number of split ? Returns the first substring of <code class = "incode">str</code>, stopping at the first blank character.</p>
 <h3 class="content" id="Core.Tokenize.getWhileAlnum"><span class="titletype">func</span> <span class="titlelight">Tokenize.</span><span class="titlestrong">getWhileAlnum</span></h3>
 <p class="code">
 <code style="white-space: break-spaces">func getWhileAlnum(str: string)->string
@@ -27389,7 +27548,7 @@ __uuid_tuple_24</td>
 <a href="#Core.UUID.clear">clear</a></td>
 <td>
 <p>
-Clear id.</p>
+Version 4 Variant is 10 Clear id.</p>
 </td>
 </tr>
 <tr>
@@ -27439,7 +27598,7 @@ Convert uuid to a string.</p>
 </code>
 </p>
 <p>
-Clear id.</p>
+Version 4 Variant is 10 Clear id.</p>
 <h3 class="content" id="Core.UUID.getRandom"><span class="titletype">func</span> <span class="titlelight">UUID.</span><span class="titlestrong">getRandom</span></h3>
 <p class="code">
 <code style="white-space: break-spaces">func getRandom()->UUID
@@ -27894,6 +28053,11 @@ TableWhiteSpace</td>
 <td class="tdtype">
 const [7] struct <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Unicode.Range">Range</a></td>
 <td>
+<p>
+:LICENCE    This code is based on the Go library (https://golang.org/src/unicode/tables.go)    The original code has been modified for Swag    See LICENCE.md for the corresponding licence.<ul>
+<li>/.</li>
+</ul>
+</p>
 </td>
 </tr>
 <tr>
@@ -27902,6 +28066,8 @@ UpperLower</td>
 <td class="tdtype">
 s32</td>
 <td>
+<p>
+//////// TABLES ////////.</p>
 </td>
 </tr>
 </table>
@@ -28291,7 +28457,7 @@ Convert string to an utf16 array, zero terminated.</p>
 <a href="#Core.Utf8.byteIndex">byteIndex</a></td>
 <td>
 <p>
-Returns the byte index of the given rune index.</p>
+Ascii Invalid first byte Be sure input buffer is large enough to hold the requested encoded size Returns the byte index of the given rune index.</p>
 </td>
 </tr>
 <tr>
@@ -28339,7 +28505,7 @@ Get the last unicode rune of the utf8 slice, and the number of bytes to encode i
 <a href="#Core.Utf8.decodeRune">decodeRune</a></td>
 <td>
 <p>
-Get the unicode rune pointed by <code class = "incode">buffer</code>, and the number of bytes to encode it.</p>
+Ascii Get the unicode rune pointed by <code class = "incode">buffer</code>, and the number of bytes to encode it.</p>
 </td>
 </tr>
 <tr>
@@ -28347,7 +28513,7 @@ Get the unicode rune pointed by <code class = "incode">buffer</code>, and the nu
 <a href="#Core.Utf8.encodeRune">encodeRune</a></td>
 <td>
 <p>
-Convert rune <code class = "incode">src</code> to an utf8 sequence, and returns the number of bytes that were needed to make the conversion.</p>
+Ascii Invalid first byte Be sure input buffer is large enough to hold the requested encoded size Length == 2 Length == 3 Length == 4 Convert rune <code class = "incode">src</code> to an utf8 sequence, and returns the number of bytes that were needed to make the conversion.</p>
 </td>
 </tr>
 <tr>
@@ -28494,7 +28660,7 @@ Macro to visit the unicode characters of the utf8 sequence.</p>
 <a href="#Core.Utf8.byteIndex">byteIndex</a></td>
 <td>
 <p>
-Returns the byte index of the given rune index.</p>
+Ascii Invalid first byte Be sure input buffer is large enough to hold the requested encoded size Returns the byte index of the given rune index.</p>
 </td>
 </tr>
 <tr>
@@ -28542,7 +28708,7 @@ Get the last unicode rune of the utf8 slice, and the number of bytes to encode i
 <a href="#Core.Utf8.decodeRune">decodeRune</a></td>
 <td>
 <p>
-Get the unicode rune pointed by <code class = "incode">buffer</code>, and the number of bytes to encode it.</p>
+Ascii Get the unicode rune pointed by <code class = "incode">buffer</code>, and the number of bytes to encode it.</p>
 </td>
 </tr>
 <tr>
@@ -28550,7 +28716,7 @@ Get the unicode rune pointed by <code class = "incode">buffer</code>, and the nu
 <a href="#Core.Utf8.encodeRune">encodeRune</a></td>
 <td>
 <p>
-Convert rune <code class = "incode">src</code> to an utf8 sequence, and returns the number of bytes that were needed to make the conversion.</p>
+Ascii Invalid first byte Be sure input buffer is large enough to hold the requested encoded size Length == 2 Length == 3 Length == 4 Convert rune <code class = "incode">src</code> to an utf8 sequence, and returns the number of bytes that were needed to make the conversion.</p>
 </td>
 </tr>
 <tr>
@@ -28768,6 +28934,8 @@ First</td>
 <td class="tdtype">
 const [256] u8</td>
 <td>
+<p>
+accept 4, size 4 first is information about the first byte in a UTF-8 sequence.   1   2   3   4   5   6   7   8   9   A   B   C   D   E   F 0x00-0x0F 0x10-0x1F 0x20-0x2F 0x30-0x3F 0x40-0x4F 0x50-0x5F 0x60-0x6F 0x70-0x7F   1   2   3   4   5   6   7   8   9   A   B   C   D   E   F 0x80-0x8F 0x90-0x9F 0xA0-0xAF 0xB0-0xBF 0xC0-0xCF 0xD0-0xDF 0xE0-0xEF 0xF0-0xFF.</p>
 </td>
 </tr>
 <tr>
@@ -28784,6 +28952,8 @@ LoCB</td>
 <td class="tdtype">
 u32</td>
 <td>
+<p>
+The default lowest and highest continuation byte.</p>
 </td>
 </tr>
 <tr>
@@ -28832,6 +29002,11 @@ RuneError</td>
 <td class="tdtype">
 rune</td>
 <td>
+<p>
+:LICENCE    This code is based on the Go library (https://github.com/golang/go/blob/master/src/unicode/utf8/Utf8.go)    The original code has been modified for Swag    See LICENCE.md for the corresponding licence.<ul>
+<li>/.</li>
+</ul>
+</p>
 </td>
 </tr>
 <tr>
@@ -28935,7 +29110,7 @@ These names of these constants are chosen to give nice alignment in the table be
 </code>
 </p>
 <p>
-Returns the byte index of the given rune index.</p>
+Ascii Invalid first byte Be sure input buffer is large enough to hold the requested encoded size Returns the byte index of the given rune index.</p>
 <h3 class="content" id="Core.Utf8.compare"><span class="titletype">func</span> <span class="titlelight">Utf8.</span><span class="titlestrong">compare</span></h3>
 <p class="code">
 <code style="white-space: break-spaces">func compare(src: const [..] u8, dst: const [..] u8, comparisonType = ComparisonType.Latin1)->s32
@@ -28979,7 +29154,7 @@ Get the last unicode rune of the utf8 slice, and the number of bytes to encode i
 </code>
 </p>
 <p>
-Get the unicode rune pointed by <code class = "incode">buffer</code>, and the number of bytes to encode it.</p>
+Ascii Get the unicode rune pointed by <code class = "incode">buffer</code>, and the number of bytes to encode it.</p>
 <p>
  Will return <code class = "incode">RuneError</code> for an invalid utf8 sequence</p>
 <h3 class="content" id="Core.Utf8.encodeRune"><span class="titletype">func</span> <span class="titlelight">Utf8.</span><span class="titlestrong">encodeRune</span></h3>
@@ -28988,7 +29163,7 @@ Get the unicode rune pointed by <code class = "incode">buffer</code>, and the nu
 </code>
 </p>
 <p>
-Convert rune <code class = "incode">src</code> to an utf8 sequence, and returns the number of bytes that were needed to make the conversion.</p>
+Ascii Invalid first byte Be sure input buffer is large enough to hold the requested encoded size Length == 2 Length == 3 Length == 4 Convert rune <code class = "incode">src</code> to an utf8 sequence, and returns the number of bytes that were needed to make the conversion.</p>
 <p>
  <code class = "incode">dest</code> must be at least 4 bytes long</p>
 <h3 class="content" id="Core.Utf8.endsWith"><span class="titletype">func</span> <span class="titlelight">Utf8.</span><span class="titlestrong">endsWith</span></h3>

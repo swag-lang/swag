@@ -207,7 +207,8 @@ bool Tokenizer::nextToken(TokenParse& token)
                 c = readChar();
             token.flags |= TOKENPARSE_LAST_EOL;
             hasEol = true;
-            comment.clear();
+            if (token.flags & TOKENPARSE_EOL_BEFORE_COMMENT)
+                comment.clear();
             continue;
         }
 

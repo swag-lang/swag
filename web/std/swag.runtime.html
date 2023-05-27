@@ -544,6 +544,8 @@ Returns an <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64
 <code style="white-space: break-spaces">func @compilerwarning(message: string, loc: SourceCodeLocation)
 </code>
 </p>
+<p>
+If the compiler is around, just let it deal with the message.</p>
 <h3 class="content" id="@cos"><span class="titletype">func</span> <span class="titlelight"></span><span class="titlestrong">@cos</span></h3>
 <p class="code">
 <code style="white-space: break-spaces">func @cos(value: f32)->f32
@@ -701,6 +703,8 @@ func @muladd(val1: f64, val2: f64, val3: f64)->f64
 <code style="white-space: break-spaces">func @panic(message: string, loc: SourceCodeLocation)
 </code>
 </p>
+<p>
+If the compiler is around, just let it deal with the message.</p>
 <h3 class="content" id="@pow"><span class="titletype">func</span> <span class="titlelight"></span><span class="titlestrong">@pow</span></h3>
 <p class="code">
 <code style="white-space: break-spaces">func @pow(value1: f32, value2: f32)->f32
@@ -865,6 +869,8 @@ Represents the request for a given allocator.</p>
 <td>
 <a href="#Swag.BuildCfg">BuildCfg</a></td>
 <td>
+<p>
+The current module build configuration.</p>
 </td>
 </tr>
 <tr>
@@ -1459,6 +1465,8 @@ LLVM</td>
 </tr>
 </table>
 <h3 class="content" id="Swag.BuildCfg"><span class="titletype">struct</span> <span class="titlelight">Swag.</span><span class="titlestrong">BuildCfg</span></h3>
+<p>
+The current module build configuration.</p>
 <table>
 <tr>
 <td>
@@ -1466,6 +1474,8 @@ moduleVersion</td>
 <td class="tdtype">
 u32</td>
 <td>
+<p>
+The module version.</p>
 </td>
 </tr>
 <tr>
@@ -1474,6 +1484,8 @@ moduleRevision</td>
 <td class="tdtype">
 u32</td>
 <td>
+<p>
+The module revision.</p>
 </td>
 </tr>
 <tr>
@@ -1482,6 +1494,8 @@ moduleBuildNum</td>
 <td class="tdtype">
 u32</td>
 <td>
+<p>
+The module build value.</p>
 </td>
 </tr>
 <tr>
@@ -1490,6 +1504,8 @@ moduleNamespace</td>
 <td class="tdtype">
 string</td>
 <td>
+<p>
+The namespace name of the module.</p>
 </td>
 </tr>
 <tr>
@@ -1498,6 +1514,8 @@ embbedImports</td>
 <td class="tdtype">
 bool</td>
 <td>
+<p>
+Module should embbed all its dependencies.</p>
 </td>
 </tr>
 <tr>
@@ -1507,7 +1525,7 @@ scratchAllocatorCapacity</td>
 s32</td>
 <td>
 <p>
-Debug Default capacity of the <code class = "incode">temp</code> allocator (in bytes).</p>
+Default capacity of the <code class = "incode">temp</code> allocator (in bytes).</p>
 </td>
 </tr>
 <tr>
@@ -1516,6 +1534,8 @@ safetyGuards</td>
 <td class="tdtype">
 u16</td>
 <td>
+<p>
+Activate specific safety checks.</p>
 </td>
 </tr>
 <tr>
@@ -1554,6 +1574,8 @@ stackTrace</td>
 <td class="tdtype">
 bool</td>
 <td>
+<p>
+Add stack trace in case an error is raised.</p>
 </td>
 </tr>
 <tr>
@@ -1563,7 +1585,7 @@ warnAsErrors</td>
 string</td>
 <td>
 <p>
-Warnings Format is "wrnXXXX|wrnXXXX...".</p>
+Force some warnings to be treated as errors. Format is "wrnXXXX|wrnXXXX...".</p>
 </td>
 </tr>
 <tr>
@@ -1572,6 +1594,8 @@ warnAsWarning</td>
 <td class="tdtype">
 string</td>
 <td>
+<p>
+Override <code class = "incode">warnAsErrors</code>, restoring warnings as warnings.</p>
 </td>
 </tr>
 <tr>
@@ -1580,6 +1604,8 @@ warnAsDisabled</td>
 <td class="tdtype">
 string</td>
 <td>
+<p>
+Disable some specific warnings.</p>
 </td>
 </tr>
 <tr>
@@ -1598,6 +1624,8 @@ warnDefaultErrors</td>
 <td class="tdtype">
 bool</td>
 <td>
+<p>
+All warning are treated as errors, except those specified above.</p>
 </td>
 </tr>
 <tr>
@@ -1606,6 +1634,8 @@ byteCodeOptimizeLevel</td>
 <td class="tdtype">
 s32</td>
 <td>
+<p>
+Optimization level of bytecode [0, 1 or 2].</p>
 </td>
 </tr>
 <tr>
@@ -1622,6 +1652,8 @@ byteCodeEmitAssume</td>
 <td class="tdtype">
 bool</td>
 <td>
+<p>
+<code class = "incode">assume</code> will assert if <code class = "incode">true</code>.</p>
 </td>
 </tr>
 <tr>
@@ -1640,6 +1672,8 @@ byteCodeAutoInline</td>
 <td class="tdtype">
 bool</td>
 <td>
+<p>
+Automatic inlining of some other functions.</p>
 </td>
 </tr>
 <tr>
@@ -1648,6 +1682,8 @@ backendKind</td>
 <td class="tdtype">
 <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\swag.runtime.html#Swag.BuildCfgBackendKind">BuildCfgBackendKind</a></td>
 <td>
+<p>
+Backend type (executable, dynamic lib...).</p>
 </td>
 </tr>
 <tr>
@@ -1656,6 +1692,8 @@ backendSubKind</td>
 <td class="tdtype">
 <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\swag.runtime.html#Swag.BuildCfgBackendSubKind">BuildCfgBackendSubKind</a></td>
 <td>
+<p>
+Backend sub kind.</p>
 </td>
 </tr>
 <tr>
@@ -1664,6 +1702,8 @@ backendDebugInformations</td>
 <td class="tdtype">
 bool</td>
 <td>
+<p>
+Output debug informations if <code class = "incode">true</code>.</p>
 </td>
 </tr>
 <tr>
@@ -1672,6 +1712,8 @@ backendOptimize</td>
 <td class="tdtype">
 <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\swag.runtime.html#Swag.BuildCfgBackendOptim">BuildCfgBackendOptim</a></td>
 <td>
+<p>
+Backend optimization level.</p>
 </td>
 </tr>
 <tr>
@@ -1688,6 +1730,8 @@ linkerArgs</td>
 <td class="tdtype">
 string</td>
 <td>
+<p>
+Additional linker arguments.</p>
 </td>
 </tr>
 <tr>
@@ -1696,6 +1740,8 @@ backendLLVM</td>
 <td class="tdtype">
 <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\swag.runtime.html#Swag.BuildCfgBackendLLVM">BuildCfgBackendLLVM</a></td>
 <td>
+<p>
+Specific LLVM options.</p>
 </td>
 </tr>
 <tr>
@@ -1704,9 +1750,13 @@ backendX64</td>
 <td class="tdtype">
 <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\swag.runtime.html#Swag.BuildCfgBackendX64">BuildCfgBackendX64</a></td>
 <td>
+<p>
+Specific X86_64 options.</p>
 </td>
 </tr>
 </table>
+<p>
+ See <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\swag.runtime.html#Swag.ICompiler">ICompiler</a></p>
 <h3 class="content" id="Swag.BuildCfgBackendKind"><span class="titletype">enum</span> <span class="titlelight">Swag.</span><span class="titlestrong">BuildCfgBackendKind</span></h3>
 <table>
 <tr>
@@ -2032,6 +2082,8 @@ Also hardcoded for switch.</p>
 <code style="white-space: break-spaces">attr ConstExpr
 </code>
 </p>
+<p>
+Hardcoded usage.</p>
 <h3 class="content" id="Swag.Context"><span class="titletype">struct</span> <span class="titlelight">Swag.</span><span class="titlestrong">Context</span></h3>
 <table>
 <tr>
@@ -2040,6 +2092,8 @@ allocator</td>
 <td class="tdtype">
 <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\swag.runtime.html#Swag.IAllocator">IAllocator</a></td>
 <td>
+<p>
+Must stay first, in that order, for backend generation.</p>
 </td>
 </tr>
 <tr>
@@ -2056,6 +2110,8 @@ tempAllocator</td>
 <td class="tdtype">
 <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\swag.runtime.html#Swag.ScratchAllocator">ScratchAllocator</a></td>
 <td>
+<p>
+Other fields, can be in any order.</p>
 </td>
 </tr>
 <tr>
@@ -2237,7 +2293,7 @@ maxFreeSize</td>
 u64</td>
 <td>
 <p>
-Debug/behaviour parameters Maximum total size (in kbs) of free blocks in quarantine.</p>
+The next allocated id to assign Debug/behaviour parameters Maximum total size (in kbs) of free blocks in quarantine.</p>
 </td>
 </tr>
 <tr>
@@ -2288,7 +2344,7 @@ Detect memory leaks if true.</p>
 <a href="#Swag.DebugAllocator.assertIsAllocated">assertIsAllocated</a></td>
 <td>
 <p>
-This function will assert if the given user address is not conform to an allocated block.</p>
+One leak Stack Next Clamp This function will assert if the given user address is not conform to an allocated block.</p>
 </td>
 </tr>
 <tr>
@@ -2342,7 +2398,7 @@ Output to the console the list of all allocated blocks (leaks).</p>
 <a href="#Swag.DebugAllocator.setup">setup</a></td>
 <td>
 <p>
-Setup the allocator.</p>
+Free all blocks in quarantine Setup the allocator.</p>
 </td>
 </tr>
 </table>
@@ -2361,18 +2417,22 @@ Setup the allocator.</p>
 <code style="white-space: break-spaces">func releaseLast(using self)
 </code>
 </p>
+<p>
+Unlink from allocated list Stats Fill the user memory area with garbage Change header/footer This is the norm... Link to the start of the free list Purge oldest memory blocks if necessary, until we are in the quarantine budget again.</p>
 <h3 class="content" id="Swag.DebugAllocator.IAllocator.req"><span class="titletype">func</span> <span class="titlelight">IAllocator.</span><span class="titlestrong">req</span></h3>
 <p class="code">
 <code style="white-space: break-spaces">func req(using self, request: *AllocatorRequest)
 </code>
 </p>
+<p>
+Special case In case of a reallocation, get the previous allocated user sizeAlloc This will be used to fill with garbage the difference Unlink now, before the realloc, because that block could become invalid in case of a reallocation Adapt sizeAlloc to be able to store additional informations Take care of alignement request, because we need to be sure that the returned memory block is well aligned Make the real allocation This is the aligned returned user address Setup header Setup footer Fill with garbage Stats Set the new user address Set a unique id To but a breakpoint on a given allocator id Link to list of allocated blocks.</p>
 <h3 class="content" id="Swag.DebugAllocator.assertIsAllocated"><span class="titletype">func</span> <span class="titlelight">DebugAllocator.</span><span class="titlestrong">assertIsAllocated</span></h3>
 <p class="code">
 <code style="white-space: break-spaces">func assertIsAllocated(using self, addr: *void, callerLoc = #callerlocation)
 </code>
 </p>
 <p>
-This function will assert if the given user address is not conform to an allocated block.</p>
+One leak Stack Next Clamp This function will assert if the given user address is not conform to an allocated block.</p>
 <h3 class="content" id="Swag.DebugAllocator.checkAllMemory"><span class="titletype">func</span> <span class="titlelight">DebugAllocator.</span><span class="titlestrong">checkAllMemory</span></h3>
 <p class="code">
 <code style="white-space: break-spaces">func checkAllMemory(using self)
@@ -2418,7 +2478,7 @@ Output to the console the list of all allocated blocks (leaks).</p>
 </code>
 </p>
 <p>
-Setup the allocator.</p>
+Free all blocks in quarantine Setup the allocator.</p>
 <h3 class="content" id="Swag.DebugAllocatorFooter"><span class="titletype">struct</span> <span class="titlelight">Swag.</span><span class="titlestrong">DebugAllocatorFooter</span></h3>
 <p>
 Will be put just after the returned address.</p>
@@ -3227,6 +3287,8 @@ This will call <code class = "incode">release</code> prior to changing the capac
 <code style="white-space: break-spaces">func alloc(using self, request: *AllocatorRequest)
 </code>
 </p>
+<p>
+If this is the last allocated block in the buffer, we can free it by changing the allocated used size If the pointer is in the buffer, then we are done. We cannot free. Otherwise we assume its a leak. We unlink it, and free it with the allocator.</p>
 <h3 class="content" id="Swag.ScratchAllocator.IAllocator.free"><span class="titletype">func</span> <span class="titlelight">IAllocator.</span><span class="titlestrong">free</span></h3>
 <p class="code">
 <code style="white-space: break-spaces">func free(using self, request: *AllocatorRequest)
@@ -3237,6 +3299,8 @@ This will call <code class = "incode">release</code> prior to changing the capac
 <code style="white-space: break-spaces">func req(using self, request: *AllocatorRequest)
 </code>
 </p>
+<p>
+Special case Allocate in the buffer if there is enough room Otherwise this is a leak We prepend a LeakHeader to the user block, and linked it in the chained list of leak allocations (at the first position) user block is after the header.</p>
 <h3 class="content" id="Swag.ScratchAllocator.LeakHeader"><span class="titletype">struct</span> <span class="titlelight">ScratchAllocator.</span><span class="titlestrong">LeakHeader</span></h3>
 <table>
 <tr>
@@ -4294,6 +4358,8 @@ Min <code class = "incode">u8</code> value.</p>
 <code style="white-space: break-spaces">attr Using(what: const *TypeInfo...)
 </code>
 </p>
+<p>
+Special attribute that cannot be defined in the boostrap, because we need typeinfo to be defined.</p>
 <h3 class="content" id="Swag.Warn"><span class="titletype">attr</span> <span class="titlelight">Swag.</span><span class="titlestrong">Warn</span></h3>
 <p class="code">
 <code style="white-space: break-spaces">attr Warn(what: string, level: WarnLevel)
