@@ -13,5 +13,6 @@
         cfg.moduleBuildNum = #swagbuildnum
         cfg.moduleNamespace = "XInput"
         cfg.backendKind = .Export
+        cfg.repoPath = "https://github.com/swag-lang/swag/blob/master/bin/std/modules/xinput"
     }
 }
