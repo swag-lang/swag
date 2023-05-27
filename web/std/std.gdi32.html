@@ -35,22 +35,34 @@
         a:hover {
             text-decoration: underline;
         }
-        table {
+        a.src {
+            font-size:          90%;
+            color:              Grey;
+        }
+        table.enumeration {
             border:             1px solid LightGrey;
             border-collapse:    collapse;
             width:              100%;
             font-size:          90%;
         }
-        td {
+        td.enumeration {
             padding:            6px;
             border:             1px solid LightGrey;
             border-collapse:    collapse;
             width:              20%;
         }
-        td.tdname{
+        td.tdname {
+            padding:            6px;
+            border:             1px solid LightGrey;
+            border-collapse:    collapse;
+            width:              20%;
             background-color:   #f8f8f8;
         }
         td.tdtype {
+            padding:            6px;
+            border:             1px solid LightGrey;
+            border-collapse:    collapse;
+            width:              20%;
             width:              auto;
         }
         td:last-child {
@@ -75,11 +87,17 @@
             margin-top:         50px;
             margin-bottom:      50px;
         }
-        h3.content {
-            margin-top:         50px;
-            padding-bottom:     5px;
+        table.h3 {
             border-bottom:      2px solid LightGrey;
+            border-collapse:    collapse;
             width:              100%;
+            margin-top:         50px;
+        }
+        h3.content {
+            margin-bottom:      2px;
+        }
+        .srcref {
+            text-align:         right;
         }
         .incode {
             background-color:   #eeeeee;
@@ -281,14 +299,24 @@
 </div>
 <div class="right">
 <div class="page">
-<h3 class="content" id="Gdi32.ANSI_CHARSET"><span class="titletype"></span> <span class="titlelight">Gdi32.</span><span class="titlestrong">Constants</span></h3>
-<table>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Gdi32.ANSI_CHARSET"><span class="titletype">const</span> <span class="titlelight">Gdi32.</span><span class="titlestrong">Constants</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
+<table class="enumeration">
 <tr>
 <td id="Gdi32.ANSI_CHARSET" class="tdname">
 ANSI_CHARSET</td>
 <td class="tdtype">
 s32</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -296,7 +324,7 @@ s32</td>
 ANSI_FIXED_FONT</td>
 <td class="tdtype">
 s32</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -304,7 +332,7 @@ s32</td>
 ANSI_VAR_FONT</td>
 <td class="tdtype">
 s32</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -312,7 +340,7 @@ s32</td>
 ARABIC_CHARSET</td>
 <td class="tdtype">
 s32</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -320,18 +348,28 @@ s32</td>
 BALTIC_CHARSET</td>
 <td class="tdtype">
 s32</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 </table>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Gdi32.BITMAP"><span class="titletype">struct</span> <span class="titlelight">Gdi32.</span><span class="titlestrong">BITMAP</span></h3>
-<table>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
+<table class="enumeration">
 <tr>
 <td class="tdname">
 bmType</td>
 <td class="tdtype">
 LONG</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -339,7 +377,7 @@ LONG</td>
 bmWidth</td>
 <td class="tdtype">
 LONG</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -347,7 +385,7 @@ LONG</td>
 bmHeight</td>
 <td class="tdtype">
 LONG</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -355,7 +393,7 @@ LONG</td>
 bmWidthBytes</td>
 <td class="tdtype">
 LONG</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -363,7 +401,7 @@ LONG</td>
 bmPlanes</td>
 <td class="tdtype">
 WORD</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -371,7 +409,7 @@ WORD</td>
 bmBitsPixel</td>
 <td class="tdtype">
 WORD</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -379,18 +417,28 @@ WORD</td>
 bmBits</td>
 <td class="tdtype">
 LPVOID</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 </table>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Gdi32.BITMAPINFO"><span class="titletype">struct</span> <span class="titlelight">Gdi32.</span><span class="titlestrong">BITMAPINFO</span></h3>
-<table>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
+<table class="enumeration">
 <tr>
 <td class="tdname">
 bmiHeader</td>
 <td class="tdtype">
 <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gdi32.html#Gdi32.BITMAPINFOHEADER">BITMAPINFOHEADER</a></td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -398,18 +446,28 @@ bmiHeader</td>
 bmiColors</td>
 <td class="tdtype">
 [1] <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gdi32.html#Gdi32.RGBQUAD">RGBQUAD</a></td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 </table>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Gdi32.BITMAPINFOHEADER"><span class="titletype">struct</span> <span class="titlelight">Gdi32.</span><span class="titlestrong">BITMAPINFOHEADER</span></h3>
-<table>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
+<table class="enumeration">
 <tr>
 <td class="tdname">
 biSize</td>
 <td class="tdtype">
 DWORD</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -417,7 +475,7 @@ DWORD</td>
 biWidth</td>
 <td class="tdtype">
 LONG</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -425,7 +483,7 @@ LONG</td>
 biHeight</td>
 <td class="tdtype">
 LONG</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -433,7 +491,7 @@ LONG</td>
 biPlanes</td>
 <td class="tdtype">
 WORD</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -441,7 +499,7 @@ WORD</td>
 biBitCount</td>
 <td class="tdtype">
 WORD</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -449,7 +507,7 @@ WORD</td>
 biCompression</td>
 <td class="tdtype">
 DWORD</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -457,7 +515,7 @@ DWORD</td>
 biSizeImage</td>
 <td class="tdtype">
 DWORD</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -465,7 +523,7 @@ DWORD</td>
 biXPelsPerMeter</td>
 <td class="tdtype">
 LONG</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -473,7 +531,7 @@ LONG</td>
 biYPelsPerMeter</td>
 <td class="tdtype">
 LONG</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -481,7 +539,7 @@ LONG</td>
 biClrUsed</td>
 <td class="tdtype">
 DWORD</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -489,18 +547,28 @@ DWORD</td>
 biClrImportant</td>
 <td class="tdtype">
 DWORD</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 </table>
-<h3 class="content" id="Gdi32.BI_BITFIELDS"><span class="titletype"></span> <span class="titlelight">Gdi32.</span><span class="titlestrong">Constants</span></h3>
-<table>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Gdi32.BI_BITFIELDS"><span class="titletype">const</span> <span class="titlelight">Gdi32.</span><span class="titlestrong">Constants</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
+<table class="enumeration">
 <tr>
 <td id="Gdi32.BI_BITFIELDS" class="tdname">
 BI_BITFIELDS</td>
 <td class="tdtype">
 s32</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -508,7 +576,7 @@ s32</td>
 BI_JPEG</td>
 <td class="tdtype">
 s32</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -516,7 +584,7 @@ s32</td>
 BI_PNG</td>
 <td class="tdtype">
 s32</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -524,7 +592,7 @@ s32</td>
 BI_RGB</td>
 <td class="tdtype">
 s32</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -532,7 +600,7 @@ s32</td>
 BI_RLE4</td>
 <td class="tdtype">
 s32</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -540,7 +608,7 @@ s32</td>
 BI_RLE8</td>
 <td class="tdtype">
 s32</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -548,7 +616,7 @@ s32</td>
 BKMODE_LAST</td>
 <td class="tdtype">
 s32</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -556,7 +624,7 @@ s32</td>
 BLACKNESS</td>
 <td class="tdtype">
 DWORD</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -564,7 +632,7 @@ DWORD</td>
 BLACK_BRUSH</td>
 <td class="tdtype">
 s32</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -572,23 +640,43 @@ s32</td>
 BLACK_PEN</td>
 <td class="tdtype">
 s32</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 </table>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Gdi32.BitBlt"><span class="titletype">func</span> <span class="titlelight">Gdi32.</span><span class="titlestrong">BitBlt</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func BitBlt(hdc: HDC, x: s32, y: s32, cx: s32, cy: s32, hdcSrc: HDC, x1: s32, y1: s32, rop: DWORD) throw
 </code>
 </p>
-<h3 class="content" id="Gdi32.CAPTUREBLT"><span class="titletype"></span> <span class="titlelight">Gdi32.</span><span class="titlestrong">Constants</span></h3>
-<table>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Gdi32.CAPTUREBLT"><span class="titletype">const</span> <span class="titlelight">Gdi32.</span><span class="titlestrong">Constants</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
+<table class="enumeration">
 <tr>
 <td id="Gdi32.CAPTUREBLT" class="tdname">
 CAPTUREBLT</td>
 <td class="tdtype">
 DWORD</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -596,58 +684,148 @@ DWORD</td>
 CHINESEBIG5_CHARSET</td>
 <td class="tdtype">
 s32</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 </table>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Gdi32.ChoosePixelFormat"><span class="titletype">func</span> <span class="titlelight">Gdi32.</span><span class="titlestrong">ChoosePixelFormat</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func ChoosePixelFormat(hdc: HDC, ppfd: const *PIXELFORMATDESCRIPTOR)->s32 throw
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Gdi32.CreateCompatibleBitmap"><span class="titletype">func</span> <span class="titlelight">Gdi32.</span><span class="titlestrong">CreateCompatibleBitmap</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func CreateCompatibleBitmap(hdc: HDC, cx: s32, cy: s32)->HBITMAP throw
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Gdi32.CreateCompatibleDC"><span class="titletype">func</span> <span class="titlelight">Gdi32.</span><span class="titlestrong">CreateCompatibleDC</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func CreateCompatibleDC(hdc: HDC)->HDC throw
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Gdi32.CreateDIBSection"><span class="titletype">func</span> <span class="titlelight">Gdi32.</span><span class="titlestrong">CreateDIBSection</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func CreateDIBSection(hdc: HDC, pbmi: const *BITMAPINFO, usage: UINT, ppvBits: **void, hSection: HANDLE, offset: DWORD)->HBITMAP throw
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Gdi32.CreateFontIndirectA"><span class="titletype">func</span> <span class="titlelight">Gdi32.</span><span class="titlestrong">CreateFontIndirectA</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func CreateFontIndirectA(lplf: const *LOGFONTA)->HFONT throw
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Gdi32.CreateFontIndirectW"><span class="titletype">func</span> <span class="titlelight">Gdi32.</span><span class="titlestrong">CreateFontIndirectW</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func CreateFontIndirectW(lplf: const *LOGFONTW)->HFONT throw
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Gdi32.CreatePen"><span class="titletype">func</span> <span class="titlelight">Gdi32.</span><span class="titlestrong">CreatePen</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func CreatePen(iStyle: s32, cWidth: s32, color: DWORD)->HPEN throw
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Gdi32.CreateSolidBrush"><span class="titletype">func</span> <span class="titlelight">Gdi32.</span><span class="titlestrong">CreateSolidBrush</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func CreateSolidBrush(color: DWORD)->HBRUSH throw
 </code>
 </p>
-<h3 class="content" id="Gdi32.DEFAULT_CHARSET"><span class="titletype"></span> <span class="titlelight">Gdi32.</span><span class="titlestrong">Constants</span></h3>
-<table>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Gdi32.DEFAULT_CHARSET"><span class="titletype">const</span> <span class="titlelight">Gdi32.</span><span class="titlestrong">Constants</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
+<table class="enumeration">
 <tr>
 <td id="Gdi32.DEFAULT_CHARSET" class="tdname">
 DEFAULT_CHARSET</td>
 <td class="tdtype">
 s32</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -655,7 +833,7 @@ s32</td>
 DEFAULT_PALETTE</td>
 <td class="tdtype">
 s32</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -663,7 +841,7 @@ s32</td>
 DEVICE_DEFAULT_FONT</td>
 <td class="tdtype">
 s32</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -671,7 +849,7 @@ s32</td>
 DEVICE_FONTTYPE</td>
 <td class="tdtype">
 u32</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -679,7 +857,7 @@ u32</td>
 DIB_PAL_COLORS</td>
 <td class="tdtype">
 s32</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -687,7 +865,7 @@ s32</td>
 DIB_RGB_COLORS</td>
 <td class="tdtype">
 s32</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -695,7 +873,7 @@ s32</td>
 DKGRAY_BRUSH</td>
 <td class="tdtype">
 s32</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -703,44 +881,94 @@ s32</td>
 DSTINVERT</td>
 <td class="tdtype">
 DWORD</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 </table>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Gdi32.DeleteDC"><span class="titletype">func</span> <span class="titlelight">Gdi32.</span><span class="titlestrong">DeleteDC</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func DeleteDC(hdc: HDC) throw
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Gdi32.DeleteObject"><span class="titletype">func</span> <span class="titlelight">Gdi32.</span><span class="titlestrong">DeleteObject</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func DeleteObject(ho: HGDIOBJ) throw
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Gdi32.DescribePixelFormat"><span class="titletype">func</span> <span class="titlelight">Gdi32.</span><span class="titlestrong">DescribePixelFormat</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func DescribePixelFormat(hdc: HDC, iPixelFormat: s32, nBytes: UINT, ppfd: *PIXELFORMATDESCRIPTOR)->s32 throw
 </code>
 </p>
-<h3 class="content" id="Gdi32.EASTEUROPE_CHARSET"><span class="titletype"></span> <span class="titlelight">Gdi32.</span><span class="titlestrong">Constants</span></h3>
-<table>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Gdi32.EASTEUROPE_CHARSET"><span class="titletype">const</span> <span class="titlelight">Gdi32.</span><span class="titlestrong">Constants</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
+<table class="enumeration">
 <tr>
 <td id="Gdi32.EASTEUROPE_CHARSET" class="tdname">
 EASTEUROPE_CHARSET</td>
 <td class="tdtype">
 s32</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 </table>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Gdi32.ENUMLOGFONTEXA"><span class="titletype">struct</span> <span class="titlelight">Gdi32.</span><span class="titlestrong">ENUMLOGFONTEXA</span></h3>
-<table>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
+<table class="enumeration">
 <tr>
 <td class="tdname">
 elfLogFont</td>
 <td class="tdtype">
 <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gdi32.html#Gdi32.LOGFONTA">LOGFONTA</a></td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -748,7 +976,7 @@ elfLogFont</td>
 elfFullName</td>
 <td class="tdtype">
 [64] BYTE</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -756,7 +984,7 @@ elfFullName</td>
 elfStyle</td>
 <td class="tdtype">
 [32] BYTE</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -764,18 +992,28 @@ elfStyle</td>
 elfScript</td>
 <td class="tdtype">
 [32] BYTE</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 </table>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Gdi32.ENUMLOGFONTEXW"><span class="titletype">struct</span> <span class="titlelight">Gdi32.</span><span class="titlestrong">ENUMLOGFONTEXW</span></h3>
-<table>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
+<table class="enumeration">
 <tr>
 <td class="tdname">
 elfLogFont</td>
 <td class="tdtype">
 <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gdi32.html#Gdi32.LOGFONTW">LOGFONTW</a></td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -783,7 +1021,7 @@ elfLogFont</td>
 elfFullName</td>
 <td class="tdtype">
 [64] WCHAR</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -791,7 +1029,7 @@ elfFullName</td>
 elfStyle</td>
 <td class="tdtype">
 [32] WCHAR</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -799,38 +1037,88 @@ elfStyle</td>
 elfScript</td>
 <td class="tdtype">
 [32] WCHAR</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 </table>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Gdi32.EnumFontFamiliesA"><span class="titletype">func</span> <span class="titlelight">Gdi32.</span><span class="titlestrong">EnumFontFamiliesA</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func EnumFontFamiliesA(hdc: HDC, lpLogfont: LPCSTR, lpProc: FONTENUMPROCA, lParam: LPARAM)->s32
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Gdi32.EnumFontFamiliesExA"><span class="titletype">func</span> <span class="titlelight">Gdi32.</span><span class="titlestrong">EnumFontFamiliesExA</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func EnumFontFamiliesExA(hdc: HDC, lpLogfont: const *LOGFONTA, lpProc: FONTENUMPROCA, lParam: LPARAM, dwFlags: DWORD)->s32
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Gdi32.EnumFontFamiliesExW"><span class="titletype">func</span> <span class="titlelight">Gdi32.</span><span class="titlestrong">EnumFontFamiliesExW</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func EnumFontFamiliesExW(hdc: HDC, lpLogfont: const *LOGFONTW, lpProc: FONTENUMPROCW, lParam: LPARAM, dwFlags: DWORD)->s32
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Gdi32.EnumFontFamiliesW"><span class="titletype">func</span> <span class="titlelight">Gdi32.</span><span class="titlestrong">EnumFontFamiliesW</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func EnumFontFamiliesW(hdc: HDC, lpLogfont: LPCWSTR, lpProc: FONTENUMPROCW, lParam: LPARAM)->s32
 </code>
 </p>
-<h3 class="content" id="Gdi32.FW_BLACK"><span class="titletype"></span> <span class="titlelight">Gdi32.</span><span class="titlestrong">Constants</span></h3>
-<table>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Gdi32.FW_BLACK"><span class="titletype">const</span> <span class="titlelight">Gdi32.</span><span class="titlestrong">Constants</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
+<table class="enumeration">
 <tr>
 <td id="Gdi32.FW_BLACK" class="tdname">
 FW_BLACK</td>
 <td class="tdtype">
 s32</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -838,7 +1126,7 @@ s32</td>
 FW_BOLD</td>
 <td class="tdtype">
 s32</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -846,7 +1134,7 @@ s32</td>
 FW_DEMIBOLD</td>
 <td class="tdtype">
 s32</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -854,7 +1142,7 @@ s32</td>
 FW_DONTCARE</td>
 <td class="tdtype">
 s32</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -862,7 +1150,7 @@ s32</td>
 FW_EXTRABOLD</td>
 <td class="tdtype">
 s32</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -870,7 +1158,7 @@ s32</td>
 FW_EXTRALIGHT</td>
 <td class="tdtype">
 s32</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -878,7 +1166,7 @@ s32</td>
 FW_HEAVY</td>
 <td class="tdtype">
 s32</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -886,7 +1174,7 @@ s32</td>
 FW_LIGHT</td>
 <td class="tdtype">
 s32</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -894,7 +1182,7 @@ s32</td>
 FW_MEDIUM</td>
 <td class="tdtype">
 s32</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -902,7 +1190,7 @@ s32</td>
 FW_NORMAL</td>
 <td class="tdtype">
 s32</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -910,7 +1198,7 @@ s32</td>
 FW_REGULAR</td>
 <td class="tdtype">
 s32</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -918,7 +1206,7 @@ s32</td>
 FW_SEMIBOLD</td>
 <td class="tdtype">
 s32</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -926,7 +1214,7 @@ s32</td>
 FW_THIN</td>
 <td class="tdtype">
 s32</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -934,7 +1222,7 @@ s32</td>
 FW_ULTRABOLD</td>
 <td class="tdtype">
 s32</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -942,7 +1230,7 @@ s32</td>
 FW_ULTRALIGHT</td>
 <td class="tdtype">
 s32</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -950,7 +1238,7 @@ s32</td>
 GB2312_CHARSET</td>
 <td class="tdtype">
 s32</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -958,7 +1246,7 @@ s32</td>
 GDI_ERROR</td>
 <td class="tdtype">
 u32</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -966,7 +1254,7 @@ u32</td>
 GRAY_BRUSH</td>
 <td class="tdtype">
 s32</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -974,55 +1262,135 @@ s32</td>
 GREEK_CHARSET</td>
 <td class="tdtype">
 s32</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 </table>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Gdi32.GetBitmapBits"><span class="titletype">func</span> <span class="titlelight">Gdi32.</span><span class="titlestrong">GetBitmapBits</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func GetBitmapBits(hbit: HBITMAP, cb: LONG, lpvBits: LPVOID) throw
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Gdi32.GetDIBits"><span class="titletype">func</span> <span class="titlelight">Gdi32.</span><span class="titlestrong">GetDIBits</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func GetDIBits(hdc: HDC, hbm: HBITMAP, start: UINT, cLines: UINT, lpvBits: LPVOID, lpbmi: *BITMAPINFO, usage: UINT)->s32 throw
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Gdi32.GetFontData"><span class="titletype">func</span> <span class="titlelight">Gdi32.</span><span class="titlestrong">GetFontData</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func GetFontData(hdc: HDC, dwTable: DWORD, dwOffset: DWORD, pvBuffer: LPVOID, cjBuffer: DWORD)->DWORD throw
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Gdi32.GetObjectA"><span class="titletype">func</span> <span class="titlelight">Gdi32.</span><span class="titlestrong">GetObjectA</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func GetObjectA(h: HANDLE, c: s32, pv: LPVOID)->s32
 func GetObjectA(h: HANDLE, c: s32, pv: LPVOID) throw
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Gdi32.GetObjectW"><span class="titletype">func</span> <span class="titlelight">Gdi32.</span><span class="titlestrong">GetObjectW</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func GetObjectW(h: HANDLE, c: s32, pv: LPVOID)->s32
 func GetObjectW(h: HANDLE, c: s32, pv: LPVOID) throw
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Gdi32.GetPixel"><span class="titletype">func</span> <span class="titlelight">Gdi32.</span><span class="titlestrong">GetPixel</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func GetPixel(hdc: HDC, x: s32, y: s32)->DWORD
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Gdi32.GetStockObject"><span class="titletype">func</span> <span class="titlelight">Gdi32.</span><span class="titlestrong">GetStockObject</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func GetStockObject(i: s32)->HGDIOBJ
 </code>
 </p>
-<h3 class="content" id="Gdi32.HANGEUL_CHARSET"><span class="titletype"></span> <span class="titlelight">Gdi32.</span><span class="titlestrong">Constants</span></h3>
-<table>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Gdi32.HANGEUL_CHARSET"><span class="titletype">const</span> <span class="titlelight">Gdi32.</span><span class="titlestrong">Constants</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
+<table class="enumeration">
 <tr>
 <td id="Gdi32.HANGEUL_CHARSET" class="tdname">
 HANGEUL_CHARSET</td>
 <td class="tdtype">
 s32</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -1030,7 +1398,7 @@ s32</td>
 HANGUL_CHARSET</td>
 <td class="tdtype">
 s32</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -1038,7 +1406,7 @@ s32</td>
 HEBREW_CHARSET</td>
 <td class="tdtype">
 s32</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -1046,7 +1414,7 @@ s32</td>
 HOLLOW_BRUSH</td>
 <td class="tdtype">
 s32</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -1054,7 +1422,7 @@ s32</td>
 JOHAB_CHARSET</td>
 <td class="tdtype">
 s32</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -1062,7 +1430,7 @@ s32</td>
 LF_FACESIZE</td>
 <td class="tdtype">
 s32</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -1070,18 +1438,28 @@ s32</td>
 LF_FULLFACESIZE</td>
 <td class="tdtype">
 s32</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 </table>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Gdi32.LOGFONTA"><span class="titletype">struct</span> <span class="titlelight">Gdi32.</span><span class="titlestrong">LOGFONTA</span></h3>
-<table>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
+<table class="enumeration">
 <tr>
 <td class="tdname">
 lfHeight</td>
 <td class="tdtype">
 LONG</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -1089,7 +1467,7 @@ LONG</td>
 lfWidth</td>
 <td class="tdtype">
 LONG</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -1097,7 +1475,7 @@ LONG</td>
 lfEscapement</td>
 <td class="tdtype">
 LONG</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -1105,7 +1483,7 @@ LONG</td>
 lfOrientation</td>
 <td class="tdtype">
 LONG</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -1113,7 +1491,7 @@ LONG</td>
 lfWeight</td>
 <td class="tdtype">
 LONG</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -1121,7 +1499,7 @@ LONG</td>
 lfItalic</td>
 <td class="tdtype">
 BYTE</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -1129,7 +1507,7 @@ BYTE</td>
 lfUnderline</td>
 <td class="tdtype">
 BYTE</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -1137,7 +1515,7 @@ BYTE</td>
 lfStrikeOut</td>
 <td class="tdtype">
 BYTE</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -1145,7 +1523,7 @@ BYTE</td>
 lfCharSet</td>
 <td class="tdtype">
 BYTE</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -1153,7 +1531,7 @@ BYTE</td>
 lfOutPrecision</td>
 <td class="tdtype">
 BYTE</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -1161,7 +1539,7 @@ BYTE</td>
 lfClipPrecision</td>
 <td class="tdtype">
 BYTE</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -1169,7 +1547,7 @@ BYTE</td>
 lfQuality</td>
 <td class="tdtype">
 BYTE</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -1177,7 +1555,7 @@ BYTE</td>
 lfPitchAndFamily</td>
 <td class="tdtype">
 BYTE</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -1185,18 +1563,28 @@ BYTE</td>
 lfFaceName</td>
 <td class="tdtype">
 [32] CHAR</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 </table>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Gdi32.LOGFONTW"><span class="titletype">struct</span> <span class="titlelight">Gdi32.</span><span class="titlestrong">LOGFONTW</span></h3>
-<table>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
+<table class="enumeration">
 <tr>
 <td class="tdname">
 lfHeight</td>
 <td class="tdtype">
 LONG</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -1204,7 +1592,7 @@ LONG</td>
 lfWidth</td>
 <td class="tdtype">
 LONG</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -1212,7 +1600,7 @@ LONG</td>
 lfEscapement</td>
 <td class="tdtype">
 LONG</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -1220,7 +1608,7 @@ LONG</td>
 lfOrientation</td>
 <td class="tdtype">
 LONG</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -1228,7 +1616,7 @@ LONG</td>
 lfWeight</td>
 <td class="tdtype">
 LONG</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -1236,7 +1624,7 @@ LONG</td>
 lfItalic</td>
 <td class="tdtype">
 BYTE</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -1244,7 +1632,7 @@ BYTE</td>
 lfUnderline</td>
 <td class="tdtype">
 BYTE</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -1252,7 +1640,7 @@ BYTE</td>
 lfStrikeOut</td>
 <td class="tdtype">
 BYTE</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -1260,7 +1648,7 @@ BYTE</td>
 lfCharSet</td>
 <td class="tdtype">
 BYTE</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -1268,7 +1656,7 @@ BYTE</td>
 lfOutPrecision</td>
 <td class="tdtype">
 BYTE</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -1276,7 +1664,7 @@ BYTE</td>
 lfClipPrecision</td>
 <td class="tdtype">
 BYTE</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -1284,7 +1672,7 @@ BYTE</td>
 lfQuality</td>
 <td class="tdtype">
 BYTE</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -1292,7 +1680,7 @@ BYTE</td>
 lfPitchAndFamily</td>
 <td class="tdtype">
 BYTE</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -1300,34 +1688,64 @@ BYTE</td>
 lfFaceName</td>
 <td class="tdtype">
 [32] WCHAR</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 </table>
-<h3 class="content" id="Gdi32.LTGRAY_BRUSH"><span class="titletype"></span> <span class="titlelight">Gdi32.</span><span class="titlestrong">Constants</span></h3>
-<table>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Gdi32.LTGRAY_BRUSH"><span class="titletype">const</span> <span class="titlelight">Gdi32.</span><span class="titlestrong">Constants</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
+<table class="enumeration">
 <tr>
 <td id="Gdi32.LTGRAY_BRUSH" class="tdname">
 LTGRAY_BRUSH</td>
 <td class="tdtype">
 s32</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 </table>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Gdi32.LineTo"><span class="titletype">func</span> <span class="titlelight">Gdi32.</span><span class="titlestrong">LineTo</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func LineTo(hdc: HDC, x: s32, y: s32)->BOOL
 </code>
 </p>
-<h3 class="content" id="Gdi32.MAC_CHARSET"><span class="titletype"></span> <span class="titlelight">Gdi32.</span><span class="titlestrong">Constants</span></h3>
-<table>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Gdi32.MAC_CHARSET"><span class="titletype">const</span> <span class="titlelight">Gdi32.</span><span class="titlestrong">Constants</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
+<table class="enumeration">
 <tr>
 <td id="Gdi32.MAC_CHARSET" class="tdname">
 MAC_CHARSET</td>
 <td class="tdtype">
 s32</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -1335,7 +1753,7 @@ s32</td>
 MERGECOPY</td>
 <td class="tdtype">
 DWORD</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -1343,23 +1761,43 @@ DWORD</td>
 MERGEPAINT</td>
 <td class="tdtype">
 DWORD</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 </table>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Gdi32.MoveTo"><span class="titletype">func</span> <span class="titlelight">Gdi32.</span><span class="titlestrong">MoveTo</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func MoveTo(hdc: HDC, x: s32, y: s32)->BOOL
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Gdi32.NEWTEXTMETRICA"><span class="titletype">struct</span> <span class="titlelight">Gdi32.</span><span class="titlestrong">NEWTEXTMETRICA</span></h3>
-<table>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
+<table class="enumeration">
 <tr>
 <td class="tdname">
 tmHeight</td>
 <td class="tdtype">
 LONG</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -1367,7 +1805,7 @@ LONG</td>
 tmAscent</td>
 <td class="tdtype">
 LONG</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -1375,7 +1813,7 @@ LONG</td>
 tmDescent</td>
 <td class="tdtype">
 LONG</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -1383,7 +1821,7 @@ LONG</td>
 tmInternalLeading</td>
 <td class="tdtype">
 LONG</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -1391,7 +1829,7 @@ LONG</td>
 tmExternalLeading</td>
 <td class="tdtype">
 LONG</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -1399,7 +1837,7 @@ LONG</td>
 tmAveCharWidth</td>
 <td class="tdtype">
 LONG</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -1407,7 +1845,7 @@ LONG</td>
 tmMaxCharWidth</td>
 <td class="tdtype">
 LONG</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -1415,7 +1853,7 @@ LONG</td>
 tmWeight</td>
 <td class="tdtype">
 LONG</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -1423,7 +1861,7 @@ LONG</td>
 tmOverhang</td>
 <td class="tdtype">
 LONG</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -1431,7 +1869,7 @@ LONG</td>
 tmDigitizedAspectX</td>
 <td class="tdtype">
 LONG</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -1439,7 +1877,7 @@ LONG</td>
 tmDigitizedAspectY</td>
 <td class="tdtype">
 LONG</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -1447,7 +1885,7 @@ LONG</td>
 tmFirstChar</td>
 <td class="tdtype">
 BYTE</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -1455,7 +1893,7 @@ BYTE</td>
 tmLastChar</td>
 <td class="tdtype">
 BYTE</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -1463,7 +1901,7 @@ BYTE</td>
 tmDefaultChar</td>
 <td class="tdtype">
 BYTE</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -1471,7 +1909,7 @@ BYTE</td>
 tmBreakChar</td>
 <td class="tdtype">
 BYTE</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -1479,7 +1917,7 @@ BYTE</td>
 tmItalic</td>
 <td class="tdtype">
 BYTE</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -1487,7 +1925,7 @@ BYTE</td>
 tmUnderlined</td>
 <td class="tdtype">
 BYTE</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -1495,7 +1933,7 @@ BYTE</td>
 tmStruckOut</td>
 <td class="tdtype">
 BYTE</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -1503,7 +1941,7 @@ BYTE</td>
 tmPitchAndFamily</td>
 <td class="tdtype">
 BYTE</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -1511,7 +1949,7 @@ BYTE</td>
 tmCharSet</td>
 <td class="tdtype">
 BYTE</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -1519,7 +1957,7 @@ BYTE</td>
 ntmFlags</td>
 <td class="tdtype">
 DWORD</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -1527,7 +1965,7 @@ DWORD</td>
 ntmSizeEM</td>
 <td class="tdtype">
 UINT</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -1535,7 +1973,7 @@ UINT</td>
 ntmCellHeight</td>
 <td class="tdtype">
 UINT</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -1543,18 +1981,28 @@ UINT</td>
 ntmAvgWidth</td>
 <td class="tdtype">
 UINT</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 </table>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Gdi32.NEWTEXTMETRICW"><span class="titletype">struct</span> <span class="titlelight">Gdi32.</span><span class="titlestrong">NEWTEXTMETRICW</span></h3>
-<table>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
+<table class="enumeration">
 <tr>
 <td class="tdname">
 tmHeight</td>
 <td class="tdtype">
 LONG</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -1562,7 +2010,7 @@ LONG</td>
 tmAscent</td>
 <td class="tdtype">
 LONG</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -1570,7 +2018,7 @@ LONG</td>
 tmDescent</td>
 <td class="tdtype">
 LONG</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -1578,7 +2026,7 @@ LONG</td>
 tmInternalLeading</td>
 <td class="tdtype">
 LONG</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -1586,7 +2034,7 @@ LONG</td>
 tmExternalLeading</td>
 <td class="tdtype">
 LONG</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -1594,7 +2042,7 @@ LONG</td>
 tmAveCharWidth</td>
 <td class="tdtype">
 LONG</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -1602,7 +2050,7 @@ LONG</td>
 tmMaxCharWidth</td>
 <td class="tdtype">
 LONG</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -1610,7 +2058,7 @@ LONG</td>
 tmWeight</td>
 <td class="tdtype">
 LONG</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -1618,7 +2066,7 @@ LONG</td>
 tmOverhang</td>
 <td class="tdtype">
 LONG</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -1626,7 +2074,7 @@ LONG</td>
 tmDigitizedAspectX</td>
 <td class="tdtype">
 LONG</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -1634,7 +2082,7 @@ LONG</td>
 tmDigitizedAspectY</td>
 <td class="tdtype">
 LONG</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -1642,7 +2090,7 @@ LONG</td>
 tmFirstChar</td>
 <td class="tdtype">
 WCHAR</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -1650,7 +2098,7 @@ WCHAR</td>
 tmLastChar</td>
 <td class="tdtype">
 WCHAR</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -1658,7 +2106,7 @@ WCHAR</td>
 tmDefaultChar</td>
 <td class="tdtype">
 WCHAR</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -1666,7 +2114,7 @@ WCHAR</td>
 tmBreakChar</td>
 <td class="tdtype">
 WCHAR</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -1674,7 +2122,7 @@ WCHAR</td>
 tmItalic</td>
 <td class="tdtype">
 BYTE</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -1682,7 +2130,7 @@ BYTE</td>
 tmUnderlined</td>
 <td class="tdtype">
 BYTE</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -1690,7 +2138,7 @@ BYTE</td>
 tmStruckOut</td>
 <td class="tdtype">
 BYTE</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -1698,7 +2146,7 @@ BYTE</td>
 tmPitchAndFamily</td>
 <td class="tdtype">
 BYTE</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -1706,7 +2154,7 @@ BYTE</td>
 tmCharSet</td>
 <td class="tdtype">
 BYTE</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -1714,7 +2162,7 @@ BYTE</td>
 ntmFlags</td>
 <td class="tdtype">
 DWORD</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -1722,7 +2170,7 @@ DWORD</td>
 ntmSizeEM</td>
 <td class="tdtype">
 UINT</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -1730,7 +2178,7 @@ UINT</td>
 ntmCellHeight</td>
 <td class="tdtype">
 UINT</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -1738,18 +2186,28 @@ UINT</td>
 ntmAvgWidth</td>
 <td class="tdtype">
 UINT</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 </table>
-<h3 class="content" id="Gdi32.NOMIRRORBITMAP"><span class="titletype"></span> <span class="titlelight">Gdi32.</span><span class="titlestrong">Constants</span></h3>
-<table>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Gdi32.NOMIRRORBITMAP"><span class="titletype">const</span> <span class="titlelight">Gdi32.</span><span class="titlestrong">Constants</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
+<table class="enumeration">
 <tr>
 <td id="Gdi32.NOMIRRORBITMAP" class="tdname">
 NOMIRRORBITMAP</td>
 <td class="tdtype">
 DWORD</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -1757,7 +2215,7 @@ DWORD</td>
 NOTSRCCOPY</td>
 <td class="tdtype">
 DWORD</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -1765,7 +2223,7 @@ DWORD</td>
 NOTSRCERASE</td>
 <td class="tdtype">
 DWORD</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -1773,7 +2231,7 @@ DWORD</td>
 NULL_BRUSH</td>
 <td class="tdtype">
 s32</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -1781,7 +2239,7 @@ s32</td>
 NULL_PEN</td>
 <td class="tdtype">
 s32</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -1789,7 +2247,7 @@ s32</td>
 OEM_CHARSET</td>
 <td class="tdtype">
 s32</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -1797,7 +2255,7 @@ s32</td>
 OEM_FIXED_FONT</td>
 <td class="tdtype">
 s32</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -1805,7 +2263,7 @@ s32</td>
 OPAQUE</td>
 <td class="tdtype">
 s32</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -1813,7 +2271,7 @@ s32</td>
 PATCOPY</td>
 <td class="tdtype">
 DWORD</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -1821,7 +2279,7 @@ DWORD</td>
 PATINVERT</td>
 <td class="tdtype">
 DWORD</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -1829,7 +2287,7 @@ DWORD</td>
 PATPAINT</td>
 <td class="tdtype">
 DWORD</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -1837,7 +2295,7 @@ DWORD</td>
 PFD_DEPTH_DONTCARE</td>
 <td class="tdtype">
 u32</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -1845,7 +2303,7 @@ u32</td>
 PFD_DIRECT3D_ACCELERATED</td>
 <td class="tdtype">
 u32</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -1853,7 +2311,7 @@ u32</td>
 PFD_DOUBLEBUFFER</td>
 <td class="tdtype">
 u32</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -1861,7 +2319,7 @@ u32</td>
 PFD_DOUBLEBUFFER_DONTCARE</td>
 <td class="tdtype">
 u32</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -1869,7 +2327,7 @@ u32</td>
 PFD_DRAW_TO_BITMAP</td>
 <td class="tdtype">
 u32</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -1877,7 +2335,7 @@ u32</td>
 PFD_DRAW_TO_WINDOW</td>
 <td class="tdtype">
 u32</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -1885,7 +2343,7 @@ u32</td>
 PFD_GENERIC_ACCELERATED</td>
 <td class="tdtype">
 u32</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -1893,7 +2351,7 @@ u32</td>
 PFD_GENERIC_FORMAT</td>
 <td class="tdtype">
 u32</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -1901,7 +2359,7 @@ u32</td>
 PFD_MAIN_PLANE</td>
 <td class="tdtype">
 s32</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -1909,7 +2367,7 @@ s32</td>
 PFD_NEED_PALETTE</td>
 <td class="tdtype">
 u32</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -1917,7 +2375,7 @@ u32</td>
 PFD_NEED_SYSTEM_PALETTE</td>
 <td class="tdtype">
 u32</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -1925,7 +2383,7 @@ u32</td>
 PFD_OVERLAY_PLANE</td>
 <td class="tdtype">
 s32</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -1933,7 +2391,7 @@ s32</td>
 PFD_STEREO</td>
 <td class="tdtype">
 u32</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -1941,7 +2399,7 @@ u32</td>
 PFD_STEREO_DONTCARE</td>
 <td class="tdtype">
 u32</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -1949,7 +2407,7 @@ u32</td>
 PFD_SUPPORT_COMPOSITION</td>
 <td class="tdtype">
 u32</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -1957,7 +2415,7 @@ u32</td>
 PFD_SUPPORT_DIRECTDRAW</td>
 <td class="tdtype">
 u32</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -1965,7 +2423,7 @@ u32</td>
 PFD_SUPPORT_GDI</td>
 <td class="tdtype">
 u32</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -1973,7 +2431,7 @@ u32</td>
 PFD_SUPPORT_OPENGL</td>
 <td class="tdtype">
 u32</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -1981,7 +2439,7 @@ u32</td>
 PFD_SWAP_COPY</td>
 <td class="tdtype">
 u32</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -1989,7 +2447,7 @@ u32</td>
 PFD_SWAP_EXCHANGE</td>
 <td class="tdtype">
 u32</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -1997,7 +2455,7 @@ u32</td>
 PFD_SWAP_LAYER_BUFFERS</td>
 <td class="tdtype">
 u32</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -2005,7 +2463,7 @@ u32</td>
 PFD_TYPE_COLORINDEX</td>
 <td class="tdtype">
 s32</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -2013,7 +2471,7 @@ s32</td>
 PFD_TYPE_RGBA</td>
 <td class="tdtype">
 s32</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -2021,18 +2479,28 @@ s32</td>
 PFD_UNDERLAY_PLANE</td>
 <td class="tdtype">
 s32</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 </table>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Gdi32.PIXELFORMATDESCRIPTOR"><span class="titletype">struct</span> <span class="titlelight">Gdi32.</span><span class="titlestrong">PIXELFORMATDESCRIPTOR</span></h3>
-<table>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
+<table class="enumeration">
 <tr>
 <td class="tdname">
 nSize</td>
 <td class="tdtype">
 WORD</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -2040,7 +2508,7 @@ WORD</td>
 nVersion</td>
 <td class="tdtype">
 WORD</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -2048,7 +2516,7 @@ WORD</td>
 dwFlags</td>
 <td class="tdtype">
 DWORD</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -2056,7 +2524,7 @@ DWORD</td>
 iPixelType</td>
 <td class="tdtype">
 BYTE</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -2064,7 +2532,7 @@ BYTE</td>
 cColorBits</td>
 <td class="tdtype">
 BYTE</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -2072,7 +2540,7 @@ BYTE</td>
 cRedBits</td>
 <td class="tdtype">
 BYTE</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -2080,7 +2548,7 @@ BYTE</td>
 cRedShift</td>
 <td class="tdtype">
 BYTE</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -2088,7 +2556,7 @@ BYTE</td>
 cGreenBits</td>
 <td class="tdtype">
 BYTE</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -2096,7 +2564,7 @@ BYTE</td>
 cGreenShift</td>
 <td class="tdtype">
 BYTE</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -2104,7 +2572,7 @@ BYTE</td>
 cBlueBits</td>
 <td class="tdtype">
 BYTE</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -2112,7 +2580,7 @@ BYTE</td>
 cBlueShift</td>
 <td class="tdtype">
 BYTE</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -2120,7 +2588,7 @@ BYTE</td>
 cAlphaBits</td>
 <td class="tdtype">
 BYTE</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -2128,7 +2596,7 @@ BYTE</td>
 cAlphaShift</td>
 <td class="tdtype">
 BYTE</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -2136,7 +2604,7 @@ BYTE</td>
 cAccumBits</td>
 <td class="tdtype">
 BYTE</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -2144,7 +2612,7 @@ BYTE</td>
 cAccumRedBits</td>
 <td class="tdtype">
 BYTE</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -2152,7 +2620,7 @@ BYTE</td>
 cAccumGreenBits</td>
 <td class="tdtype">
 BYTE</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -2160,7 +2628,7 @@ BYTE</td>
 cAccumBlueBits</td>
 <td class="tdtype">
 BYTE</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -2168,7 +2636,7 @@ BYTE</td>
 cAccumAlphaBits</td>
 <td class="tdtype">
 BYTE</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -2176,7 +2644,7 @@ BYTE</td>
 cDepthBits</td>
 <td class="tdtype">
 BYTE</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -2184,7 +2652,7 @@ BYTE</td>
 cStencilBits</td>
 <td class="tdtype">
 BYTE</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -2192,7 +2660,7 @@ BYTE</td>
 cAuxBuffers</td>
 <td class="tdtype">
 BYTE</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -2200,7 +2668,7 @@ BYTE</td>
 iLayerType</td>
 <td class="tdtype">
 BYTE</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -2208,7 +2676,7 @@ BYTE</td>
 bReserved</td>
 <td class="tdtype">
 BYTE</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -2216,7 +2684,7 @@ BYTE</td>
 dwLayerMask</td>
 <td class="tdtype">
 DWORD</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -2224,7 +2692,7 @@ DWORD</td>
 dwVisibleMask</td>
 <td class="tdtype">
 DWORD</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -2232,18 +2700,28 @@ DWORD</td>
 dwDamageMask</td>
 <td class="tdtype">
 DWORD</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 </table>
-<h3 class="content" id="Gdi32.PS_ALTERNATE"><span class="titletype"></span> <span class="titlelight">Gdi32.</span><span class="titlestrong">Constants</span></h3>
-<table>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Gdi32.PS_ALTERNATE"><span class="titletype">const</span> <span class="titlelight">Gdi32.</span><span class="titlestrong">Constants</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
+<table class="enumeration">
 <tr>
 <td id="Gdi32.PS_ALTERNATE" class="tdname">
 PS_ALTERNATE</td>
 <td class="tdtype">
 s32</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -2251,7 +2729,7 @@ s32</td>
 PS_DASH</td>
 <td class="tdtype">
 s32</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -2259,7 +2737,7 @@ s32</td>
 PS_DASHDOT</td>
 <td class="tdtype">
 s32</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -2267,7 +2745,7 @@ s32</td>
 PS_DASHDOTDOT</td>
 <td class="tdtype">
 s32</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -2275,7 +2753,7 @@ s32</td>
 PS_DOT</td>
 <td class="tdtype">
 s32</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -2283,7 +2761,7 @@ s32</td>
 PS_INSIDEFRAME</td>
 <td class="tdtype">
 s32</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -2291,7 +2769,7 @@ s32</td>
 PS_NULL</td>
 <td class="tdtype">
 s32</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -2299,7 +2777,7 @@ s32</td>
 PS_SOLID</td>
 <td class="tdtype">
 s32</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -2307,7 +2785,7 @@ s32</td>
 PS_STYLE_MASK</td>
 <td class="tdtype">
 u32</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -2315,7 +2793,7 @@ u32</td>
 PS_USERSTYLE</td>
 <td class="tdtype">
 s32</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -2323,23 +2801,43 @@ s32</td>
 RASTER_FONTTYPE</td>
 <td class="tdtype">
 u32</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 </table>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Gdi32.RGB"><span class="titletype">func</span> <span class="titlelight">Gdi32.</span><span class="titlestrong">RGB</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func RGB(r: s32, g: s32, b: s32)->DWORD
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Gdi32.RGBQUAD"><span class="titletype">struct</span> <span class="titlelight">Gdi32.</span><span class="titlestrong">RGBQUAD</span></h3>
-<table>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
+<table class="enumeration">
 <tr>
 <td class="tdname">
 rgbBlue</td>
 <td class="tdtype">
 BYTE</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -2347,7 +2845,7 @@ BYTE</td>
 rgbGreen</td>
 <td class="tdtype">
 BYTE</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -2355,7 +2853,7 @@ BYTE</td>
 rgbRed</td>
 <td class="tdtype">
 BYTE</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -2363,34 +2861,64 @@ BYTE</td>
 rgbReserved</td>
 <td class="tdtype">
 BYTE</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 </table>
-<h3 class="content" id="Gdi32.RUSSIAN_CHARSET"><span class="titletype"></span> <span class="titlelight">Gdi32.</span><span class="titlestrong">Constants</span></h3>
-<table>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Gdi32.RUSSIAN_CHARSET"><span class="titletype">const</span> <span class="titlelight">Gdi32.</span><span class="titlestrong">Constants</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
+<table class="enumeration">
 <tr>
 <td id="Gdi32.RUSSIAN_CHARSET" class="tdname">
 RUSSIAN_CHARSET</td>
 <td class="tdtype">
 s32</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 </table>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Gdi32.Rectangle"><span class="titletype">func</span> <span class="titlelight">Gdi32.</span><span class="titlestrong">Rectangle</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func Rectangle(hdc: HDC, left: s32, top: s32, right: s32, bottom: s32)->BOOL
 </code>
 </p>
-<h3 class="content" id="Gdi32.SHIFTJIS_CHARSET"><span class="titletype"></span> <span class="titlelight">Gdi32.</span><span class="titlestrong">Constants</span></h3>
-<table>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Gdi32.SHIFTJIS_CHARSET"><span class="titletype">const</span> <span class="titlelight">Gdi32.</span><span class="titlestrong">Constants</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
+<table class="enumeration">
 <tr>
 <td id="Gdi32.SHIFTJIS_CHARSET" class="tdname">
 SHIFTJIS_CHARSET</td>
 <td class="tdtype">
 s32</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -2398,7 +2926,7 @@ s32</td>
 SRCAND</td>
 <td class="tdtype">
 DWORD</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -2406,7 +2934,7 @@ DWORD</td>
 SRCCOPY</td>
 <td class="tdtype">
 DWORD</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -2414,7 +2942,7 @@ DWORD</td>
 SRCERASE</td>
 <td class="tdtype">
 DWORD</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -2422,7 +2950,7 @@ DWORD</td>
 SRCINVERT</td>
 <td class="tdtype">
 DWORD</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -2430,7 +2958,7 @@ DWORD</td>
 SRCPAINT</td>
 <td class="tdtype">
 DWORD</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -2438,7 +2966,7 @@ DWORD</td>
 SYMBOL_CHARSET</td>
 <td class="tdtype">
 s32</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -2446,7 +2974,7 @@ s32</td>
 SYSTEM_FIXED_FONT</td>
 <td class="tdtype">
 s32</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -2454,53 +2982,133 @@ s32</td>
 SYSTEM_FONT</td>
 <td class="tdtype">
 s32</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 </table>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Gdi32.SelectObject"><span class="titletype">func</span> <span class="titlelight">Gdi32.</span><span class="titlestrong">SelectObject</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func SelectObject(hdc: HDC, h: HGDIOBJ)->HGDIOBJ
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Gdi32.SetBitmapBits"><span class="titletype">func</span> <span class="titlelight">Gdi32.</span><span class="titlestrong">SetBitmapBits</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func SetBitmapBits(hbit: HBITMAP, cb: DWORD, lpvBits: LPVOID) throw
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Gdi32.SetBkColor"><span class="titletype">func</span> <span class="titlelight">Gdi32.</span><span class="titlestrong">SetBkColor</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func SetBkColor(hdc: HDC, color: DWORD)->DWORD
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Gdi32.SetBkMode"><span class="titletype">func</span> <span class="titlelight">Gdi32.</span><span class="titlestrong">SetBkMode</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func SetBkMode(hdc: HDC, mode: s32)->s32
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Gdi32.SetPixelFormat"><span class="titletype">func</span> <span class="titlelight">Gdi32.</span><span class="titlestrong">SetPixelFormat</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func SetPixelFormat(hdc: HDC, fmt: s32, ppfd: const *PIXELFORMATDESCRIPTOR) throw
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Gdi32.SetTextColor"><span class="titletype">func</span> <span class="titlelight">Gdi32.</span><span class="titlestrong">SetTextColor</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func SetTextColor(hdc: HDC, color: DWORD)->DWORD
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Gdi32.SwapBuffers"><span class="titletype">func</span> <span class="titlelight">Gdi32.</span><span class="titlestrong">SwapBuffers</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func SwapBuffers(arg1: HDC) throw
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Gdi32.TEXTMETRICA"><span class="titletype">struct</span> <span class="titlelight">Gdi32.</span><span class="titlestrong">TEXTMETRICA</span></h3>
-<table>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
+<table class="enumeration">
 <tr>
 <td class="tdname">
 tmHeight</td>
 <td class="tdtype">
 LONG</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -2508,7 +3116,7 @@ LONG</td>
 tmAscent</td>
 <td class="tdtype">
 LONG</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -2516,7 +3124,7 @@ LONG</td>
 tmDescent</td>
 <td class="tdtype">
 LONG</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -2524,7 +3132,7 @@ LONG</td>
 tmInternalLeading</td>
 <td class="tdtype">
 LONG</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -2532,7 +3140,7 @@ LONG</td>
 tmExternalLeading</td>
 <td class="tdtype">
 LONG</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -2540,7 +3148,7 @@ LONG</td>
 tmAveCharWidth</td>
 <td class="tdtype">
 LONG</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -2548,7 +3156,7 @@ LONG</td>
 tmMaxCharWidth</td>
 <td class="tdtype">
 LONG</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -2556,7 +3164,7 @@ LONG</td>
 tmWeight</td>
 <td class="tdtype">
 LONG</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -2564,7 +3172,7 @@ LONG</td>
 tmOverhang</td>
 <td class="tdtype">
 LONG</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -2572,7 +3180,7 @@ LONG</td>
 tmDigitizedAspectX</td>
 <td class="tdtype">
 LONG</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -2580,7 +3188,7 @@ LONG</td>
 tmDigitizedAspectY</td>
 <td class="tdtype">
 LONG</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -2588,7 +3196,7 @@ LONG</td>
 tmFirstChar</td>
 <td class="tdtype">
 BYTE</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -2596,7 +3204,7 @@ BYTE</td>
 tmLastChar</td>
 <td class="tdtype">
 BYTE</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -2604,7 +3212,7 @@ BYTE</td>
 tmDefaultChar</td>
 <td class="tdtype">
 BYTE</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -2612,7 +3220,7 @@ BYTE</td>
 tmBreakChar</td>
 <td class="tdtype">
 BYTE</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -2620,7 +3228,7 @@ BYTE</td>
 tmItalic</td>
 <td class="tdtype">
 BYTE</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -2628,7 +3236,7 @@ BYTE</td>
 tmUnderlined</td>
 <td class="tdtype">
 BYTE</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -2636,7 +3244,7 @@ BYTE</td>
 tmStruckOut</td>
 <td class="tdtype">
 BYTE</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -2644,7 +3252,7 @@ BYTE</td>
 tmPitchAndFamily</td>
 <td class="tdtype">
 BYTE</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -2652,18 +3260,28 @@ BYTE</td>
 tmCharSet</td>
 <td class="tdtype">
 BYTE</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 </table>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Gdi32.TEXTMETRICW"><span class="titletype">struct</span> <span class="titlelight">Gdi32.</span><span class="titlestrong">TEXTMETRICW</span></h3>
-<table>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
+<table class="enumeration">
 <tr>
 <td class="tdname">
 tmHeight</td>
 <td class="tdtype">
 LONG</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -2671,7 +3289,7 @@ LONG</td>
 tmAscent</td>
 <td class="tdtype">
 LONG</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -2679,7 +3297,7 @@ LONG</td>
 tmDescent</td>
 <td class="tdtype">
 LONG</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -2687,7 +3305,7 @@ LONG</td>
 tmInternalLeading</td>
 <td class="tdtype">
 LONG</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -2695,7 +3313,7 @@ LONG</td>
 tmExternalLeading</td>
 <td class="tdtype">
 LONG</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -2703,7 +3321,7 @@ LONG</td>
 tmAveCharWidth</td>
 <td class="tdtype">
 LONG</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -2711,7 +3329,7 @@ LONG</td>
 tmMaxCharWidth</td>
 <td class="tdtype">
 LONG</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -2719,7 +3337,7 @@ LONG</td>
 tmWeight</td>
 <td class="tdtype">
 LONG</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -2727,7 +3345,7 @@ LONG</td>
 tmOverhang</td>
 <td class="tdtype">
 LONG</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -2735,7 +3353,7 @@ LONG</td>
 tmDigitizedAspectX</td>
 <td class="tdtype">
 LONG</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -2743,7 +3361,7 @@ LONG</td>
 tmDigitizedAspectY</td>
 <td class="tdtype">
 LONG</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -2751,7 +3369,7 @@ LONG</td>
 tmFirstChar</td>
 <td class="tdtype">
 WCHAR</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -2759,7 +3377,7 @@ WCHAR</td>
 tmLastChar</td>
 <td class="tdtype">
 WCHAR</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -2767,7 +3385,7 @@ WCHAR</td>
 tmDefaultChar</td>
 <td class="tdtype">
 WCHAR</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -2775,7 +3393,7 @@ WCHAR</td>
 tmBreakChar</td>
 <td class="tdtype">
 WCHAR</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -2783,7 +3401,7 @@ WCHAR</td>
 tmItalic</td>
 <td class="tdtype">
 BYTE</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -2791,7 +3409,7 @@ BYTE</td>
 tmUnderlined</td>
 <td class="tdtype">
 BYTE</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -2799,7 +3417,7 @@ BYTE</td>
 tmStruckOut</td>
 <td class="tdtype">
 BYTE</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -2807,7 +3425,7 @@ BYTE</td>
 tmPitchAndFamily</td>
 <td class="tdtype">
 BYTE</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -2815,18 +3433,28 @@ BYTE</td>
 tmCharSet</td>
 <td class="tdtype">
 BYTE</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 </table>
-<h3 class="content" id="Gdi32.THAI_CHARSET"><span class="titletype"></span> <span class="titlelight">Gdi32.</span><span class="titlestrong">Constants</span></h3>
-<table>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Gdi32.THAI_CHARSET"><span class="titletype">const</span> <span class="titlelight">Gdi32.</span><span class="titlestrong">Constants</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
+<table class="enumeration">
 <tr>
 <td id="Gdi32.THAI_CHARSET" class="tdname">
 THAI_CHARSET</td>
 <td class="tdtype">
 s32</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -2834,7 +3462,7 @@ s32</td>
 TRANSPARENT</td>
 <td class="tdtype">
 s32</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -2842,7 +3470,7 @@ s32</td>
 TRUETYPE_FONTTYPE</td>
 <td class="tdtype">
 u32</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -2850,28 +3478,58 @@ u32</td>
 TURKISH_CHARSET</td>
 <td class="tdtype">
 s32</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 </table>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Gdi32.TextOutA"><span class="titletype">func</span> <span class="titlelight">Gdi32.</span><span class="titlestrong">TextOutA</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func TextOutA(hdc: HDC, x: s32, y: s32, lpString: LPCSTR, c: s32)->BOOL
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Gdi32.TextOutW"><span class="titletype">func</span> <span class="titlelight">Gdi32.</span><span class="titlestrong">TextOutW</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func TextOutW(hdc: HDC, x: s32, y: s32, lpString: LPCWSTR, c: s32)->BOOL
 </code>
 </p>
-<h3 class="content" id="Gdi32.VIETNAMESE_CHARSET"><span class="titletype"></span> <span class="titlelight">Gdi32.</span><span class="titlestrong">Constants</span></h3>
-<table>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Gdi32.VIETNAMESE_CHARSET"><span class="titletype">const</span> <span class="titlelight">Gdi32.</span><span class="titlestrong">Constants</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
+<table class="enumeration">
 <tr>
 <td id="Gdi32.VIETNAMESE_CHARSET" class="tdname">
 VIETNAMESE_CHARSET</td>
 <td class="tdtype">
 s32</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -2879,7 +3537,7 @@ s32</td>
 WHITENESS</td>
 <td class="tdtype">
 DWORD</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -2887,7 +3545,7 @@ DWORD</td>
 WHITE_BRUSH</td>
 <td class="tdtype">
 s32</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -2895,18 +3553,28 @@ s32</td>
 WHITE_PEN</td>
 <td class="tdtype">
 s32</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 </table>
-<h3 class="content" id="Gdi32.WHITENESS"><span class="titletype"></span> <span class="titlelight">Gdi32.</span><span class="titlestrong">Constants</span></h3>
-<table>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Gdi32.WHITENESS"><span class="titletype">const</span> <span class="titlelight">Gdi32.</span><span class="titlestrong">Constants</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
+<table class="enumeration">
 <tr>
 <td id="Gdi32.WHITENESS" class="tdname">
 WHITENESS</td>
 <td class="tdtype">
 DWORD</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -2914,7 +3582,7 @@ DWORD</td>
 WHITE_BRUSH</td>
 <td class="tdtype">
 s32</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -2922,18 +3590,28 @@ s32</td>
 WHITE_PEN</td>
 <td class="tdtype">
 s32</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 </table>
-<h3 class="content" id="Gdi32.WHITE_BRUSH"><span class="titletype"></span> <span class="titlelight">Gdi32.</span><span class="titlestrong">Constants</span></h3>
-<table>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Gdi32.WHITE_BRUSH"><span class="titletype">const</span> <span class="titlelight">Gdi32.</span><span class="titlestrong">Constants</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
+<table class="enumeration">
 <tr>
 <td id="Gdi32.WHITE_BRUSH" class="tdname">
 WHITE_BRUSH</td>
 <td class="tdtype">
 s32</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -2941,18 +3619,28 @@ s32</td>
 WHITE_PEN</td>
 <td class="tdtype">
 s32</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 </table>
-<h3 class="content" id="Gdi32.WHITE_PEN"><span class="titletype"></span> <span class="titlelight">Gdi32.</span><span class="titlestrong">Constants</span></h3>
-<table>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Gdi32.WHITE_PEN"><span class="titletype">const</span> <span class="titlelight">Gdi32.</span><span class="titlestrong">Constants</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
+<table class="enumeration">
 <tr>
 <td id="Gdi32.WHITE_PEN" class="tdname">
 WHITE_PEN</td>
 <td class="tdtype">
 s32</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 </table>

@@ -35,22 +35,34 @@
         a:hover {
             text-decoration: underline;
         }
-        table {
+        a.src {
+            font-size:          90%;
+            color:              Grey;
+        }
+        table.enumeration {
             border:             1px solid LightGrey;
             border-collapse:    collapse;
             width:              100%;
             font-size:          90%;
         }
-        td {
+        td.enumeration {
             padding:            6px;
             border:             1px solid LightGrey;
             border-collapse:    collapse;
             width:              20%;
         }
-        td.tdname{
+        td.tdname {
+            padding:            6px;
+            border:             1px solid LightGrey;
+            border-collapse:    collapse;
+            width:              20%;
             background-color:   #f8f8f8;
         }
         td.tdtype {
+            padding:            6px;
+            border:             1px solid LightGrey;
+            border-collapse:    collapse;
+            width:              20%;
             width:              auto;
         }
         td:last-child {
@@ -75,11 +87,17 @@
             margin-top:         50px;
             margin-bottom:      50px;
         }
-        h3.content {
-            margin-top:         50px;
-            padding-bottom:     5px;
+        table.h3 {
             border-bottom:      2px solid LightGrey;
+            border-collapse:    collapse;
             width:              100%;
+            margin-top:         50px;
+        }
+        h3.content {
+            margin-bottom:      2px;
+        }
+        .srcref {
+            text-align:         right;
         }
         .incode {
             background-color:   #eeeeee;
@@ -131,14 +149,24 @@
 </div>
 <div class="right">
 <div class="page">
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="XInput.XINPUT_GAMEPAD"><span class="titletype">struct</span> <span class="titlelight">XInput.</span><span class="titlestrong">XINPUT_GAMEPAD</span></h3>
-<table>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
+<table class="enumeration">
 <tr>
 <td class="tdname">
 wButtons</td>
 <td class="tdtype">
 WORD</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -146,7 +174,7 @@ WORD</td>
 bLeftTrigger</td>
 <td class="tdtype">
 BYTE</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -154,7 +182,7 @@ BYTE</td>
 bRightTrigger</td>
 <td class="tdtype">
 BYTE</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -162,7 +190,7 @@ BYTE</td>
 sThumbLX</td>
 <td class="tdtype">
 SHORT</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -170,7 +198,7 @@ SHORT</td>
 sThumbLY</td>
 <td class="tdtype">
 SHORT</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -178,7 +206,7 @@ SHORT</td>
 sThumbRX</td>
 <td class="tdtype">
 SHORT</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -186,18 +214,28 @@ SHORT</td>
 sThumbRY</td>
 <td class="tdtype">
 SHORT</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 </table>
-<h3 class="content" id="XInput.XINPUT_GAMEPAD_A"><span class="titletype"></span> <span class="titlelight">XInput.</span><span class="titlestrong">Constants</span></h3>
-<table>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="XInput.XINPUT_GAMEPAD_A"><span class="titletype">const</span> <span class="titlelight">XInput.</span><span class="titlestrong">Constants</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
+<table class="enumeration">
 <tr>
 <td id="XInput.XINPUT_GAMEPAD_A" class="tdname">
 XINPUT_GAMEPAD_A</td>
 <td class="tdtype">
 u16</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -205,7 +243,7 @@ u16</td>
 XINPUT_GAMEPAD_B</td>
 <td class="tdtype">
 u16</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -213,7 +251,7 @@ u16</td>
 XINPUT_GAMEPAD_BACK</td>
 <td class="tdtype">
 u16</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -221,7 +259,7 @@ u16</td>
 XINPUT_GAMEPAD_DPAD_DOWN</td>
 <td class="tdtype">
 u16</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -229,7 +267,7 @@ u16</td>
 XINPUT_GAMEPAD_DPAD_LEFT</td>
 <td class="tdtype">
 u16</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -237,7 +275,7 @@ u16</td>
 XINPUT_GAMEPAD_DPAD_RIGHT</td>
 <td class="tdtype">
 u16</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -245,7 +283,7 @@ u16</td>
 XINPUT_GAMEPAD_DPAD_UP</td>
 <td class="tdtype">
 u16</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -253,7 +291,7 @@ u16</td>
 XINPUT_GAMEPAD_LEFT_SHOULDER</td>
 <td class="tdtype">
 u16</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -261,7 +299,7 @@ u16</td>
 XINPUT_GAMEPAD_LEFT_THUMB</td>
 <td class="tdtype">
 u16</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -269,7 +307,7 @@ u16</td>
 XINPUT_GAMEPAD_RIGHT_SHOULDER</td>
 <td class="tdtype">
 u16</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -277,7 +315,7 @@ u16</td>
 XINPUT_GAMEPAD_RIGHT_THUMB</td>
 <td class="tdtype">
 u16</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -285,7 +323,7 @@ u16</td>
 XINPUT_GAMEPAD_START</td>
 <td class="tdtype">
 u16</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -293,7 +331,7 @@ u16</td>
 XINPUT_GAMEPAD_X</td>
 <td class="tdtype">
 u16</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -301,18 +339,28 @@ u16</td>
 XINPUT_GAMEPAD_Y</td>
 <td class="tdtype">
 u16</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 </table>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="XInput.XINPUT_STATE"><span class="titletype">struct</span> <span class="titlelight">XInput.</span><span class="titlestrong">XINPUT_STATE</span></h3>
-<table>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
+<table class="enumeration">
 <tr>
 <td class="tdname">
 dwPacketNumber</td>
 <td class="tdtype">
 DWORD</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -320,18 +368,28 @@ DWORD</td>
 Gamepad</td>
 <td class="tdtype">
 <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.xinput.html#XInput.XINPUT_GAMEPAD">XINPUT_GAMEPAD</a></td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 </table>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="XInput.XINPUT_VIBRATION"><span class="titletype">struct</span> <span class="titlelight">XInput.</span><span class="titlestrong">XINPUT_VIBRATION</span></h3>
-<table>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
+<table class="enumeration">
 <tr>
 <td class="tdname">
 wLeftMotorSpeed</td>
 <td class="tdtype">
 WORD</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -339,16 +397,36 @@ WORD</td>
 wRightMotorSpeed</td>
 <td class="tdtype">
 WORD</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 </table>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="XInput.XInputGetState"><span class="titletype">func</span> <span class="titlelight">XInput.</span><span class="titlestrong">XInputGetState</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func XInputGetState(dwUserIndex: DWORD, pState: *XINPUT_STATE)->DWORD
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="XInput.XInputSetState"><span class="titletype">func</span> <span class="titlelight">XInput.</span><span class="titlestrong">XInputSetState</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func XInputSetState(dwUserIndex: DWORD, pVibration: *XINPUT_VIBRATION)->DWORD
 </code>

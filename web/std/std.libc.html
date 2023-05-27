@@ -35,22 +35,34 @@
         a:hover {
             text-decoration: underline;
         }
-        table {
+        a.src {
+            font-size:          90%;
+            color:              Grey;
+        }
+        table.enumeration {
             border:             1px solid LightGrey;
             border-collapse:    collapse;
             width:              100%;
             font-size:          90%;
         }
-        td {
+        td.enumeration {
             padding:            6px;
             border:             1px solid LightGrey;
             border-collapse:    collapse;
             width:              20%;
         }
-        td.tdname{
+        td.tdname {
+            padding:            6px;
+            border:             1px solid LightGrey;
+            border-collapse:    collapse;
+            width:              20%;
             background-color:   #f8f8f8;
         }
         td.tdtype {
+            padding:            6px;
+            border:             1px solid LightGrey;
+            border-collapse:    collapse;
+            width:              20%;
             width:              auto;
         }
         td:last-child {
@@ -75,11 +87,17 @@
             margin-top:         50px;
             margin-bottom:      50px;
         }
-        h3.content {
-            margin-top:         50px;
-            padding-bottom:     5px;
+        table.h3 {
             border-bottom:      2px solid LightGrey;
+            border-collapse:    collapse;
             width:              100%;
+            margin-top:         50px;
+        }
+        h3.content {
+            margin-bottom:      2px;
+        }
+        .srcref {
+            text-align:         right;
         }
         .incode {
             background-color:   #eeeeee;
@@ -420,14 +438,24 @@
 </div>
 <div class="right">
 <div class="page">
-<h3 class="content" id="Libc.BUFSIZ"><span class="titletype"></span> <span class="titlelight">Libc.</span><span class="titlestrong">Constants</span></h3>
-<table>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Libc.BUFSIZ"><span class="titletype">const</span> <span class="titlelight">Libc.</span><span class="titlestrong">Constants</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
+<table class="enumeration">
 <tr>
 <td id="Libc.BUFSIZ" class="tdname">
 BUFSIZ</td>
 <td class="tdtype">
 s32</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -435,7 +463,7 @@ s32</td>
 CLOCKS_PER_SEC</td>
 <td class="tdtype">
 s32</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -443,7 +471,7 @@ s32</td>
 EOF</td>
 <td class="tdtype">
 s32</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -451,7 +479,7 @@ s32</td>
 EXIT_FAILURE</td>
 <td class="tdtype">
 s32</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -459,19 +487,39 @@ s32</td>
 EXIT_SUCCESS</td>
 <td class="tdtype">
 s32</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 </table>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.FILE"><span class="titletype">struct</span> <span class="titlelight">Libc.</span><span class="titlestrong">FILE</span></h3>
-<h3 class="content" id="Libc.FILENAME_MAX"><span class="titletype"></span> <span class="titlelight">Libc.</span><span class="titlestrong">Constants</span></h3>
-<table>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Libc.FILENAME_MAX"><span class="titletype">const</span> <span class="titlelight">Libc.</span><span class="titlestrong">Constants</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
+<table class="enumeration">
 <tr>
 <td id="Libc.FILENAME_MAX" class="tdname">
 FILENAME_MAX</td>
 <td class="tdtype">
 s32</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -479,7 +527,7 @@ s32</td>
 FOPEN_MAX</td>
 <td class="tdtype">
 s32</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -487,7 +535,7 @@ s32</td>
 FP_ILOGB0</td>
 <td class="tdtype">
 s32</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -495,7 +543,7 @@ s32</td>
 FP_ILOGBNAN</td>
 <td class="tdtype">
 s32</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -503,7 +551,7 @@ s32</td>
 FP_INFINITE</td>
 <td class="tdtype">
 s32</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -511,7 +559,7 @@ s32</td>
 FP_NAN</td>
 <td class="tdtype">
 s32</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -519,7 +567,7 @@ s32</td>
 FP_NORMAL</td>
 <td class="tdtype">
 s32</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -527,7 +575,7 @@ s32</td>
 FP_SUBNORMAL</td>
 <td class="tdtype">
 s32</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -535,7 +583,7 @@ s32</td>
 FP_ZERO</td>
 <td class="tdtype">
 s32</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -543,7 +591,7 @@ s32</td>
 ForeignLib</td>
 <td class="tdtype">
 string</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -551,7 +599,7 @@ string</td>
 HUGE_VAL</td>
 <td class="tdtype">
 f64</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -559,7 +607,7 @@ f64</td>
 HUGE_VALF</td>
 <td class="tdtype">
 f32</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -567,7 +615,7 @@ f32</td>
 INFINITY</td>
 <td class="tdtype">
 f32</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -575,7 +623,7 @@ f32</td>
 INT16_MAX</td>
 <td class="tdtype">
 s16</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -583,7 +631,7 @@ s16</td>
 INT16_MIN</td>
 <td class="tdtype">
 s16</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -591,7 +639,7 @@ s16</td>
 INT32_MAX</td>
 <td class="tdtype">
 s32</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -599,7 +647,7 @@ s32</td>
 INT32_MIN</td>
 <td class="tdtype">
 s32</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -607,7 +655,7 @@ s32</td>
 INT64_MAX</td>
 <td class="tdtype">
 s64</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -615,7 +663,7 @@ s64</td>
 INT64_MIN</td>
 <td class="tdtype">
 s64</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -623,7 +671,7 @@ s64</td>
 INT8_MAX</td>
 <td class="tdtype">
 s8</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -631,7 +679,7 @@ s8</td>
 INT8_MIN</td>
 <td class="tdtype">
 s8</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -639,7 +687,7 @@ s8</td>
 L_tmpnam</td>
 <td class="tdtype">
 s32</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -647,7 +695,7 @@ s32</td>
 MATH_ERREXCEPT</td>
 <td class="tdtype">
 s32</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -655,7 +703,7 @@ s32</td>
 MATH_ERRNO</td>
 <td class="tdtype">
 s32</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -663,7 +711,7 @@ s32</td>
 NAN</td>
 <td class="tdtype">
 f64</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -671,7 +719,7 @@ f64</td>
 NULL</td>
 <td class="tdtype">
 const *void</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -679,7 +727,7 @@ const *void</td>
 PTRDIFF_MAX</td>
 <td class="tdtype">
 s64</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -687,7 +735,7 @@ s64</td>
 PTRDIFF_MIN</td>
 <td class="tdtype">
 s64</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -695,7 +743,7 @@ s64</td>
 SEEK_CUR</td>
 <td class="tdtype">
 s32</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -703,7 +751,7 @@ s32</td>
 SEEK_END</td>
 <td class="tdtype">
 s32</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -711,7 +759,7 @@ s32</td>
 SEEK_SET</td>
 <td class="tdtype">
 s32</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -719,7 +767,7 @@ s32</td>
 SIZE_MAX</td>
 <td class="tdtype">
 u64</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -727,7 +775,7 @@ u64</td>
 TIME_UTC</td>
 <td class="tdtype">
 s32</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -735,7 +783,7 @@ s32</td>
 TMP_MAX</td>
 <td class="tdtype">
 s32</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -743,7 +791,7 @@ s32</td>
 UINT16_MAX</td>
 <td class="tdtype">
 u16</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -751,7 +799,7 @@ u16</td>
 UINT32_MAX</td>
 <td class="tdtype">
 u32</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -759,7 +807,7 @@ u32</td>
 UINT64_MAX</td>
 <td class="tdtype">
 u64</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -767,23 +815,43 @@ u64</td>
 UINT8_MAX</td>
 <td class="tdtype">
 u8</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 </table>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc._Exit"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">_Exit</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func _Exit(status: s32)
 </code>
 </p>
-<h3 class="content" id="Libc._IOFBF"><span class="titletype"></span> <span class="titlelight">Libc.</span><span class="titlestrong">Constants</span></h3>
-<table>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Libc._IOFBF"><span class="titletype">const</span> <span class="titlelight">Libc.</span><span class="titlestrong">Constants</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
+<table class="enumeration">
 <tr>
 <td id="Libc._IOFBF" class="tdname">
 _IOFBF</td>
 <td class="tdtype">
 u32</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -791,7 +859,7 @@ u32</td>
 _IOLBF</td>
 <td class="tdtype">
 u32</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -799,218 +867,628 @@ u32</td>
 _IONBF</td>
 <td class="tdtype">
 u32</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 </table>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.abort"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">abort</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func abort()
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.abs"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">abs</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func abs(j: s32)->s32
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.acos"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">acos</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func acos(x: f64)->f64
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.acosf"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">acosf</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func acosf(x: f32)->f32
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.acosh"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">acosh</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func acosh(x: f64)->f64
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.acoshf"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">acoshf</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func acoshf(x: f32)->f32
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.acrt_iob_func"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">acrt_iob_func</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func acrt_iob_func(index: u32)->*FILE
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.aligned_alloc"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">aligned_alloc</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func aligned_alloc(aligment: size_t, size: size_t)->*void
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.asctime"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">asctime</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func asctime(timeptr: *tm)->*u8
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.asin"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">asin</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func asin(x: f64)->f64
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.asinf"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">asinf</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func asinf(x: f32)->f32
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.asinh"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">asinh</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func asinh(x: f64)->f64
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.asinhf"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">asinhf</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func asinhf(x: f32)->f32
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.atan"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">atan</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func atan(x: f64)->f64
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.atan2"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">atan2</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func atan2(y: f64, x: f64)->f64
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.atan2f"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">atan2f</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func atan2f(y: f32, x: f32)->f32
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.atanf"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">atanf</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func atanf(x: f32)->f32
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.atanh"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">atanh</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func atanh(x: f64)->f64
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.atanhf"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">atanhf</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func atanhf(x: f32)->f32
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.atof"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">atof</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func atof(nptr: cstring)->f64
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.atoi"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">atoi</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func atoi(nptr: cstring)->s32
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.atol"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">atol</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func atol(nptr: cstring)->s32
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.atoll"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">atoll</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func atoll(nptr: cstring)->s64
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.bsearch"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">bsearch</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func bsearch(key: *void, base: *void, nmemb: size_t, size: size_t, compar: *void)->*void
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.calloc"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">calloc</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func calloc(nmemb: size_t, size: size_t)->*void
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.cbrt"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">cbrt</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func cbrt(x: f64)->f64
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.cbrtf"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">cbrtf</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func cbrtf(x: f32)->f32
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.ceil"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">ceil</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func ceil(x: f64)->f64
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.ceilf"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">ceilf</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func ceilf(x: f32)->f32
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.clearerr"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">clearerr</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func clearerr(stream: *FILE)
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.clock"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">clock</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func clock()->clock_t
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.copysign"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">copysign</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func copysign(x: f64, y: f64)->f64
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.copysignf"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">copysignf</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func copysignf(x: f32, y: f32)->f32
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.cos"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">cos</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func cos(x: f64)->f64
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.cosf"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">cosf</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func cosf(x: f32)->f32
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.cosh"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">cosh</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func cosh(x: f64)->f64
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.coshf"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">coshf</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func coshf(x: f32)->f32
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.ctime"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">ctime</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func ctime(timer: const *time_t)->*u8
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.difftime"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">difftime</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func difftime(time1: time_t, time2: time_t)->f64
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.div"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">div</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func div(numer: s32, denom: s32)->div_t
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.div_t"><span class="titletype">struct</span> <span class="titlelight">Libc.</span><span class="titlestrong">div_t</span></h3>
-<table>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
+<table class="enumeration">
 <tr>
 <td class="tdname">
 quot</td>
 <td class="tdtype">
 s32</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -1018,435 +1496,1255 @@ s32</td>
 rem</td>
 <td class="tdtype">
 s32</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 </table>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.erf"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">erf</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func erf(x: f64)->f64
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.erfc"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">erfc</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func erfc(x: f64)->f64
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.erfcf"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">erfcf</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func erfcf(x: f32)->f32
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.erff"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">erff</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func erff(x: f32)->f32
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.exit"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">exit</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func exit(status: s32)
 </code>
 </p>
 <p>
 func atexit(fn: *void)-&gt;s32;func at_quick_exit(fn: *void)-&gt;s32;.</p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.exp"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">exp</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func exp(x: f64)->f64
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.exp2"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">exp2</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func exp2(x: f64)->f64
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.exp2f"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">exp2f</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func exp2f(x: f32)->f32
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.expf"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">expf</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func expf(x: f32)->f32
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.expm1"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">expm1</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func expm1(x: f64)->f64
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.expm1f"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">expm1f</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func expm1f(x: f32)->f32
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.fabs"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">fabs</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func fabs(x: f64)->f64
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.fabsf"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">fabsf</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func fabsf(x: f32)->f32
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.fclose"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">fclose</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func fclose(stream: *FILE)->s64
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.fdim"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">fdim</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func fdim(x: f64, y: f64)->f64
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.fdimf"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">fdimf</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func fdimf(x: f32, y: f32)->f32
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.feof"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">feof</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func feof(stream: *FILE)->s64
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.ferror"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">ferror</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func ferror(stream: *FILE)->s64
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.fflush"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">fflush</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func fflush(stream: *FILE)->s64
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.fgetc"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">fgetc</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func fgetc(stream: *FILE)->s64
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.fgetpos"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">fgetpos</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func fgetpos(stream: *FILE, pos: *fpos_t)->s64
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.fgets"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">fgets</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func fgets(s: *u8, n: s64, stream: *FILE)->*u8
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.floor"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">floor</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func floor(x: f64)->f64
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.floorf"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">floorf</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func floorf(x: f32)->f32
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.fma"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">fma</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func fma(x: f64, y: f64, z: f64)->f64
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.fmaf"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">fmaf</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func fmaf(x: f32, y: f32, z: f32)->f32
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.fmax"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">fmax</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func fmax(x: f64, y: f64)->f64
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.fmaxf"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">fmaxf</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func fmaxf(x: f32, y: f32)->f32
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.fmin"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">fmin</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func fmin(x: f64, y: f64)->f64
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.fminf"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">fminf</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func fminf(x: f32, y: f32)->f32
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.fmod"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">fmod</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func fmod(x: f64, y: f64)->f64
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.fmodf"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">fmodf</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func fmodf(x: f32, y: f32)->f32
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.fopen"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">fopen</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func fopen(filename: cstring, mode: cstring)->*FILE
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.fpclassify"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">fpclassify</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func fpclassify(x: f64)->s32
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.fpclassifyf"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">fpclassifyf</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func fpclassifyf(x: f32)->s32
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.fprintf"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">fprintf</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func fprintf(file: *FILE, format: cstring, args: cvarargs)->s64
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.fputc"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">fputc</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func fputc(s: cstring, stream: *FILE)->s64
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.fread"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">fread</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func fread(ptr: *void, size: size_t, stream: *FILE)->size_t
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.free"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">free</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func free(ptr: *void)
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.freopen"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">freopen</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func freopen(filename: cstring, mode: cstring, stream: *FILE)->*FILE
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.frexp"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">frexp</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func frexp(value: f64, exp: *s64)->f64
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.frexpf"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">frexpf</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func frexpf(value: f32, exp: *s64)->f32
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.fscanf"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">fscanf</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func fscanf(file: *FILE, format: cstring, args: cvarargs)->s64
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.fseek"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">fseek</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func fseek(stream: *FILE, offset: s32, whence: s64)->s64
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.fsetpos"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">fsetpos</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func fsetpos(stream: *FILE, pos: *fpos_t)->s64
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.ftell"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">ftell</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func ftell(stream: *FILE)->s32
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.fwrite"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">fwrite</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func fwrite(ptr: *void, size: size_t, nmemb: size_t, stream: *FILE)->size_t
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.getc"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">getc</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func getc(stream: *FILE)->s64
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.getchar"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">getchar</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func getchar()->s64
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.getenv"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">getenv</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func getenv(name: cstring)->*u8
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.gmtime"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">gmtime</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func gmtime(timer: *time_t)->*tm
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.hypot"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">hypot</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func hypot(x: f64, y: f64)->f64
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.hypotf"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">hypotf</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func hypotf(x: f32, y: f32)->f32
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.ilogb"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">ilogb</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func ilogb(x: f64)->s64
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.ilogbf"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">ilogbf</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func ilogbf(x: f32)->s64
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.isalnum"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">isalnum</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func isalnum(c: s32)->s32
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.isalpha"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">isalpha</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func isalpha(c: s32)->s32
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.isblank"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">isblank</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func isblank(c: s32)->s32
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.iscntrl"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">iscntrl</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func iscntrl(c: s32)->s32
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.isdigit"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">isdigit</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func isdigit(c: s32)->s32
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.isfinite"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">isfinite</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func isfinite(x: f32)
 func isfinite(x: f64)
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.isgraph"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">isgraph</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func isgraph(c: s32)->s32
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.isgreater"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">isgreater</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func isgreater(x: f32, y: f32)
 func isgreater(x: f64, y: f64)
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.isgreaterequal"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">isgreaterequal</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func isgreaterequal(x: f32, y: f32)
 func isgreaterequal(x: f64, y: f64)
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.isinf"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">isinf</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func isinf(x: f32)
 func isinf(x: f64)
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.isless"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">isless</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func isless(x: f32, y: f32)
 func isless(x: f64, y: f64)
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.islessequal"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">islessequal</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func islessequal(x: f32, y: f32)
 func islessequal(x: f64, y: f64)
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.islessgreater"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">islessgreater</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func islessgreater(x: f32, y: f32)
 func islessgreater(x: f64, y: f64)
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.islower"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">islower</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func islower(c: s32)->s32
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.isnan"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">isnan</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func isnan(x: f32)
 func isnan(x: f64)
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.isnormal"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">isnormal</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func isnormal(x: f32)
 func isnormal(x: f64)
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.isprint"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">isprint</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func isprint(c: s32)->s32
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.ispunct"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">ispunct</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func ispunct(c: s32)->s32
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.isspace"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">isspace</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func isspace(c: s32)->s32
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.isunordered"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">isunordered</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func isunordered(x: f32, y: f32)
 func isunordered(x: f64, y: f64)
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.isupper"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">isupper</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func isupper(c: s32)->s32
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.isxdigi"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">isxdigi</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func isxdigi(c: s32)->s32
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.labs"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">labs</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func labs(j: s32)->s32
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.ldexp"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">ldexp</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func ldexp(x: f64, exp: s64)->f64
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.ldexpf"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">ldexpf</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func ldexpf(x: f32, exp: s64)->f32
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.ldiv"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">ldiv</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func ldiv(numer: s32, denom: s32)->ldiv_t
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.ldiv_t"><span class="titletype">struct</span> <span class="titlelight">Libc.</span><span class="titlestrong">ldiv_t</span></h3>
-<table>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
+<table class="enumeration">
 <tr>
 <td class="tdname">
 quot</td>
 <td class="tdtype">
 s32</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -1454,38 +2752,88 @@ s32</td>
 rem</td>
 <td class="tdtype">
 s32</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 </table>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.lgamma"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">lgamma</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func lgamma(x: f64)->f64
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.lgammaf"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">lgammaf</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func lgammaf(x: f32)->f32
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.llabs"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">llabs</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func llabs(j: s64)->s64
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.lldiv"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">lldiv</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func lldiv(numer: s64, denom: s64)->lldiv_t
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.lldiv_t"><span class="titletype">struct</span> <span class="titlelight">Libc.</span><span class="titlestrong">lldiv_t</span></h3>
-<table>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
+<table class="enumeration">
 <tr>
 <td class="tdname">
 quot</td>
 <td class="tdtype">
 s64</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -1493,584 +2841,1724 @@ s64</td>
 rem</td>
 <td class="tdtype">
 s64</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 </table>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.llrint"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">llrint</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func llrint(x: f64)->s64
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.llrintf"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">llrintf</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func llrintf(x: f32)->s64
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.llround"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">llround</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func llround(x: f64)->s64
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.llroundf"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">llroundf</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func llroundf(x: f32)->s64
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.localtime"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">localtime</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func localtime(timer: *time_t)->*tm
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.log"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">log</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func log(x: f64)->f64
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.log10"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">log10</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func log10(x: f64)->f64
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.log10f"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">log10f</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func log10f(x: f32)->f32
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.log1p"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">log1p</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func log1p(x: f64)->f64
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.log1pf"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">log1pf</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func log1pf(x: f32)->f32
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.log2"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">log2</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func log2(x: f64)->f64
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.log2f"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">log2f</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func log2f(x: f32)->f32
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.logb"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">logb</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func logb(x: f64)->f64
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.logbf"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">logbf</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func logbf(x: f32)->f32
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.logf"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">logf</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func logf(x: f32)->f32
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.lrint"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">lrint</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func lrint(x: f64)->s32
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.lrintf"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">lrintf</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func lrintf(x: f32)->s32
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.lround"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">lround</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func lround(x: f64)->s32
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.lroundf"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">lroundf</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func lroundf(x: f32)->s32
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.malloc"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">malloc</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func malloc(size: size_t)->*void
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.mblen"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">mblen</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func mblen(s: cstring, n: size_t)->s32
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.mbstowcs"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">mbstowcs</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func mbstowcs(pwcs: *wchar_t, s: cstring, n: size_t)->size_t
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.mbtowc"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">mbtowc</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func mbtowc(pwc: *wchar_t, s: cstring, n: size_t)->s32
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.memchr"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">memchr</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func memchr(ptr: const *void, value: s32, num: size_t)->*void
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.memcmp"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">memcmp</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func memcmp(ptr1: const *void, ptr2: const *void, num: size_t)->s32
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.memcpy"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">memcpy</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func memcpy(dst: *void, src: const *void, num: size_t)->*void
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.memmove"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">memmove</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func memmove(dst: *void, src: const *void, num: size_t)->*void
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.memset"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">memset</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func memset(ptr: *void, value: s32, num: size_t)->*void
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.mktime"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">mktime</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func mktime(timeptr: *tm)->time_t
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.modf"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">modf</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func modf(value: f64, iptr: *f64)->f64
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.modff"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">modff</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func modff(value: f32, iptr: *f32)->f32
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.nan"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">nan</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func nan(tagp: cstring)->f64
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.nanf"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">nanf</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func nanf(tagp: cstring)->f32
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.nearbyint"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">nearbyint</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func nearbyint(x: f64)->f64
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.nearbyintf"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">nearbyintf</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func nearbyintf(x: f32)->f32
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.nextafter"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">nextafter</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func nextafter(x: f64, y: f64)->f64
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.nextafterf"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">nextafterf</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func nextafterf(x: f32, y: f32)->f32
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.perror"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">perror</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func perror(s: cstring)
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.pow"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">pow</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func pow(x: f64, y: f64)->f64
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.powf"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">powf</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func powf(x: f32, y: f32)->f32
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.printf"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">printf</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func printf(format: cstring, args: cvarargs)->s64
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.putc"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">putc</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func putc(c: s64, stream: *FILE)->s64
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.putchar"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">putchar</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func putchar()->s64
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.puts"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">puts</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func puts(s: cstring)->s64
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.qsort"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">qsort</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func qsort(base: *void, num: size_t, size: size_t, compar: *void)
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.quick_exit"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">quick_exit</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func quick_exit(status: s32)
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.rand"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">rand</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func rand()->s32
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.realloc"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">realloc</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func realloc(ptr: *void, size: size_t)->*void
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.remainder"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">remainder</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func remainder(x: f64, y: f64)->f64
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.remainderf"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">remainderf</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func remainderf(x: f32, y: f32)->f32
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.remove"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">remove</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func remove(filename: cstring)->s64
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.remquo"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">remquo</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func remquo(x: f64, y: f64, quo: *s64)->f64
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.remquof"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">remquof</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func remquof(x: f32, y: f32, quo: *s64)->f32
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.rename"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">rename</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func rename(old: cstring, new: cstring)->s64
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.rewind"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">rewind</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func rewind(stream: *FILE)
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.rint"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">rint</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func rint(x: f64)->f64
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.rintf"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">rintf</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func rintf(x: f32)->f32
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.round"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">round</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func round(x: f64)->f64
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.roundf"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">roundf</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func roundf(x: f32)->f32
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.scalbln"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">scalbln</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func scalbln(x: f64, n: s32)->f64
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.scalblnf"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">scalblnf</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func scalblnf(x: f32, n: s32)->f32
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.scalbn"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">scalbn</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func scalbn(x: f64, n: s64)->f64
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.scalbnf"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">scalbnf</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func scalbnf(x: f32, n: s64)->f32
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.scanf"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">scanf</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func scanf(format: cstring, args: cvarargs)->s64
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.setbuf"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">setbuf</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func setbuf(stream: *FILE, buf: *u8)
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.setvbuf"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">setvbuf</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func setvbuf(stream: *FILE, buf: *u8, mode: s64, size: size_t)->s64
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.signbit"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">signbit</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func signbit(x: f32)
 func signbit(x: f64)
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.sin"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">sin</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func sin(x: f64)->f64
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.sinf"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">sinf</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func sinf(x: f32)->f32
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.sinh"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">sinh</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func sinh(x: f64)->f64
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.sinhf"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">sinhf</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func sinhf(x: f32)->f32
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.snprintf"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">snprintf</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func snprintf(s: *u8, count: size_t, format: cstring, args: cvarargs)->s64
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.sprintf"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">sprintf</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func sprintf(s: *u8, format: cstring, args: cvarargs)->s64
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.sqrt"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">sqrt</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func sqrt(x: f64)->f64
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.sqrtf"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">sqrtf</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func sqrtf(x: f32)->f32
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.srand"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">srand</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func srand(seed: u32)
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.sscanf"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">sscanf</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func sscanf(s: cstring, format: cstring, args: cvarargs)->s64
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.stdio_common_vfprintf"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">stdio_common_vfprintf</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func stdio_common_vfprintf(_Options: u64, _Stream: *FILE, _Format: cstring, _Locale: *void, _ArgList: *void)->s32
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.stdio_common_vfscanf"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">stdio_common_vfscanf</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func stdio_common_vfscanf(_Options: u64, _Stream: *FILE, _Format: cstring, _Locale: *void, _ArgList: *void)->s32
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.stdio_common_vsprintf"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">stdio_common_vsprintf</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func stdio_common_vsprintf(_Options: u64, _Buffer: *u8, _BufferCount: size_t, _Format: cstring, _Locale: *void, _ArgList: *void)->s32
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.stdio_common_vsscanf"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">stdio_common_vsscanf</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func stdio_common_vsscanf(_Options: u64, _Buffer: cstring, _BufferCount: size_t, _Format: cstring, _Locale: *void, _ArgList: *void)->s32
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.strcat"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">strcat</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func strcat(dst: *u8, src: cstring)->*u8
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.strchr"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">strchr</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func strchr(str: cstring, character: s32)->*u8
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.strcmp"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">strcmp</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func strcmp(str1: cstring, str2: cstring)->s32
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.strcoll"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">strcoll</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func strcoll(str1: cstring, str2: cstring)->s32
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.strcpy"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">strcpy</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func strcpy(dst: *u8, src: cstring)->*u8
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.strcspn"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">strcspn</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func strcspn(str1: cstring, str2: cstring)->size_t
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.strerror"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">strerror</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func strerror(errnum: s32)->cstring
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.strftime"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">strftime</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func strftime(s: *u8, maxsize: size_t, format: const *u8, timeptr: *tm)->size_t
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.strlen"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">strlen</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func strlen(s: cstring)->size_t
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.strncat"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">strncat</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func strncat(dst: *u8, src: cstring, num: size_t)->*u8
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.strncmp"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">strncmp</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func strncmp(str1: cstring, str2: cstring, num: u64)->s32
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.strncpy"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">strncpy</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func strncpy(dst: *u8, src: cstring, num: size_t)->*u8
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.strpbrk"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">strpbrk</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func strpbrk(str1: *u8, str2: cstring)->*u8
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.strrchr"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">strrchr</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func strrchr(str: *u8, character: s32)->*u8
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.strspn"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">strspn</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func strspn(str1: cstring, str2: cstring)->size_t
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.strstr"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">strstr</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func strstr(str1: *u8, str2: cstring)->*u8
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.strtod"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">strtod</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func strtod(nptr: cstring, endptr: **u8)->f64
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.strtof"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">strtof</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func strtof(nptr: cstring, endptr: **u8)->f32
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.strtok"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">strtok</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func strtok(str: *u8, delimiters: cstring)->*u8
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.strtol"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">strtol</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func strtol(nptr: cstring, endptr: **u8, base: s32)->s32
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.strtoll"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">strtoll</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func strtoll(nptr: cstring, endptr: **u8, base: s32)->s64
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.strtoul"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">strtoul</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func strtoul(nptr: cstring, endptr: **u8, base: s32)->u32
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.strtoull"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">strtoull</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func strtoull(nptr: cstring, endptr: **u8, base: s32)->u64
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.strxfrm"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">strxfrm</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func strxfrm(dst: *u8, src: cstring, num: size_t)->size_t
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.system"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">system</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func system(cmd: cstring)->s32
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.tan"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">tan</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func tan(x: f64)->f64
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.tanf"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">tanf</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func tanf(x: f32)->f32
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.tanh"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">tanh</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func tanh(x: f64)->f64
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.tanhf"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">tanhf</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func tanhf(x: f32)->f32
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.tgamma"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">tgamma</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func tgamma(x: f64)->f64
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.tgammaf"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">tgammaf</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func tgammaf(x: f32)->f32
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.time"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">time</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func time(timer: *time_t)->time_t
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.tm"><span class="titletype">struct</span> <span class="titlelight">Libc.</span><span class="titlestrong">tm</span></h3>
-<table>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
+<table class="enumeration">
 <tr>
 <td class="tdname">
 tm_sec</td>
 <td class="tdtype">
 s32</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -2078,7 +4566,7 @@ s32</td>
 tm_min</td>
 <td class="tdtype">
 s32</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -2086,7 +4574,7 @@ s32</td>
 tm_hour</td>
 <td class="tdtype">
 s32</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -2094,7 +4582,7 @@ s32</td>
 tm_mday</td>
 <td class="tdtype">
 s32</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -2102,7 +4590,7 @@ s32</td>
 tm_mon</td>
 <td class="tdtype">
 s32</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -2110,7 +4598,7 @@ s32</td>
 tm_year</td>
 <td class="tdtype">
 s32</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -2118,7 +4606,7 @@ s32</td>
 tm_wday</td>
 <td class="tdtype">
 s32</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -2126,7 +4614,7 @@ s32</td>
 tm_yday</td>
 <td class="tdtype">
 s32</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -2134,98 +4622,278 @@ s32</td>
 tm_isdst</td>
 <td class="tdtype">
 s32</td>
-<td>
+<td class="enumeration">
 </td>
 </tr>
 </table>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.tmpfile"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">tmpfile</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func tmpfile()->*FILE
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.tmpnam"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">tmpnam</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func tmpnam(s: *u8)->*u8
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.tolower"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">tolower</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func tolower(c: s32)->s32
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.toupper"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">toupper</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func toupper(c: s32)->s32
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.trunc"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">trunc</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func trunc(x: f64)->f64
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.truncf"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">truncf</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func truncf(x: f32)->f32
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.ungetc"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">ungetc</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func ungetc(c: s64, stream: *FILE)->s64
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.va_end"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">va_end</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">#[Swag.Macro]
 func va_end(vl: *CVaList)
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.va_start"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">va_start</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">#[Swag.Macro]
 func va_start(vl: *CVaList, dummy: any)
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.vfprintf"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">vfprintf</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func vfprintf(file: *FILE, format: cstring, args: *CVaList)->s64
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.vfscanf"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">vfscanf</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func vfscanf(file: *FILE, format: cstring, args: *CVaList)->s64
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.vprintf"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">vprintf</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func vprintf(format: cstring, args: *CVaList)->s64
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.vscanf"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">vscanf</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func vscanf(format: cstring, args: *CVaList)->s64
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.vsnprintf"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">vsnprintf</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func vsnprintf(s: *u8, count: size_t, format: cstring, args: *CVaList)->s64
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.vsprintf"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">vsprintf</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func vsprintf(s: *u8, format: cstring, args: *CVaList)->s64
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.vsscanf"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">vsscanf</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func vsscanf(s: cstring, format: cstring, args: *CVaList)->s64
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.wcstombs"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">wcstombs</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func wcstombs(s: *u8, pwcs: *wchar_t, n: size_t)->size_t
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Libc.wctomb"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">wctomb</span></h3>
+</td>
+<td class="srcref">
+</td>
+</tr>
+</table>
+</p>
 <p class="code">
 <code style="white-space: break-spaces">func wctomb(s: *u8, wc: wchar_t)->s32
 </code>
