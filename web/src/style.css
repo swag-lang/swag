@@ -5,3 +5,5 @@
 header {
     background: #111111;
 }
+
+/* npx tailwindcss -i src/style.css -o css/style.css --watch */

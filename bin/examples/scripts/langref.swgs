@@ -380,11 +380,11 @@ func generate(in, out: string)
             padding: revert;
         }
 
-        a {
+        .container a {
             text-decoration: none;
         }
 
-        a:hover {
+        .container a:hover {
             text-decoration: underline;
         }
 
@@ -392,7 +392,7 @@ func generate(in, out: string)
     """
 
     // Main page (left and right parts, left is for table of content, right is for content)
-    g_Buf += "<div class=\"lg:m-auto lg:w-[70rem] pt-2 lg:pt-10 overflow-hidden p-5\" style=\"height: 93%;\">\n"
+    g_Buf += "<div class=\"lg:m-auto lg:w-[76rem] pt-2 lg:pt-10 overflow-hidden p-5\" style=\"height: 93%;\">\n"
     g_Buf += "<div class=\"container\">\n"
     g_Buf += "<div class=\"left hidden lg:block\">\n"
     seekToc := g_Buf.length // This will be the place where we will insert the 'g_Toc' table of content

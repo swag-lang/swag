@@ -1,4 +1,7 @@
-<?php include('html_start.php'); include('header.php'); ?>
+<?php
+include('html_start.php');
+include('header.php');
+?>
 
     <style>
     html, body {
@@ -59,16 +62,16 @@
         padding: revert;
     }
 
-    a {
+    .container a {
         text-decoration: none;
     }
 
-    a:hover {
+    .container a:hover {
         text-decoration: underline;
     }
 
     </style>
-<div class="lg:m-auto lg:w-[70rem] pt-2 lg:pt-10 overflow-hidden p-5" style="height: 93%;">
+<div class="lg:m-auto lg:w-[76rem] pt-2 lg:pt-10 overflow-hidden p-5" style="height: 93%;">
 <div class="container">
 <div class="left hidden lg:block">
 <h1>Content</h1>

@@ -3,7 +3,7 @@ include('html_start.php');
 include('header.php');
 ?>
 
-<div class="lg:m-auto lg:w-[70rem] pt-2 lg:pt-10 overflow-hidden p-5">
+<div class="lg:m-auto lg:w-[76rem] pt-2 lg:pt-10 overflow-hidden p-5">
 
     <div class="bg-amber-100 border-l-4 border-amber-300 p-3 rounded">Work in progress ! There's no "official" release yet.</div>
 
