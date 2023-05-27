@@ -258,11 +258,12 @@ void ModuleGenDocJob::outputTitle(OneRef& c)
     // Add a reference to the source code
     helpContent += "<td class=\"srcref\">\n";
     auto srcModule = module ? module : g_Workspace->runtimeModule;
-    if (srcModule->buildCfg.docModulePath.buffer)
+    if (srcModule->buildCfg.repoPath.buffer)
     {
-        Path str = Utf8((const char*) srcModule->buildCfg.docModulePath.buffer, (uint32_t) srcModule->buildCfg.docModulePath.count).c_str();
+        Path str = Utf8((const char*) srcModule->buildCfg.repoPath.buffer, (uint32_t) srcModule->buildCfg.repoPath.count).c_str();
         if (module)
         {
+            str.append(SWAG_SRC_FOLDER);
             Utf8 pathFile = c.nodes[0]->sourceFile->path.string();
             pathFile.remove(0, (uint32_t) srcModule->path.string().size());
             str.append(pathFile.c_str());
@@ -1128,8 +1129,8 @@ JobResult ModuleGenDocJob::execute()
     {
         static const char* p = "https://github.com/swag-lang/swag/blob/master/bin/runtime";
 
-        g_Workspace->runtimeModule->buildCfg.docModulePath.buffer = (void*) p;
-        g_Workspace->runtimeModule->buildCfg.docModulePath.count  = strlen(p);
+        g_Workspace->runtimeModule->buildCfg.repoPath.buffer = (void*) p;
+        g_Workspace->runtimeModule->buildCfg.repoPath.count  = strlen(p);
 
         collectScopes(g_Workspace->runtimeModule->scopeRoot);
 

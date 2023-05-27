@@ -640,7 +640,7 @@ namespace Swag
         backendLLVM:    BuildCfgBackendLLVM     // Specific LLVM options
         backendX64:     BuildCfgBackendX64      // Specific X86_64 options
 
-        docModulePath:  string  // Link to the module path, to make references when generating documentation
+        repoPath:  string  // Repository access path to the module
     }
 
     // #########################################################
