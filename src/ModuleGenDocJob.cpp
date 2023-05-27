@@ -701,6 +701,7 @@ void ModuleGenDocJob::outputStyles()
         }\n\
         a {\n\
             text-decoration: none;\n\
+            color:           DoggerBlue;\n\
         }\n\
         a:hover {\n\
             text-decoration: underline;\n\
@@ -758,7 +759,7 @@ void ModuleGenDocJob::outputStyles()
             margin-bottom:      50px;\n\
         }\n\
         table.h3 {\n\
-            border-bottom:      2px solid LightGrey;\n\
+            border-bottom:      2px solid Orange;\n\
             border-collapse:    collapse;\n\
             width:              100%;\n\
             margin-top:         50px;\n\

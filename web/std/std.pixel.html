@@ -31,6 +31,7 @@
         }
         a {
             text-decoration: none;
+            color:           DoggerBlue;
         }
         a:hover {
             text-decoration: underline;
@@ -88,7 +89,7 @@
             margin-bottom:      50px;
         }
         table.h3 {
-            border-bottom:      2px solid LightGrey;
+            border-bottom:      2px solid Orange;
             border-collapse:    collapse;
             width:              100%;
             margin-top:         50px;
@@ -3477,7 +3478,7 @@ bool</td>
 <td class="tdname">
 edgeList</td>
 <td class="tdtype">
-Array(__clipper_tuple_225)</td>
+Array(__clipper_tuple_221)</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -4402,7 +4403,7 @@ id</td>
 <td class="tdname">
 params</td>
 <td class="tdtype">
-__painter_tuple_204</td>
+__painter_tuple_198</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -6913,7 +6914,7 @@ Free the working buffer if allocated.</p>
 <a href="#Pixel.Image.from">from</a></td>
 <td class="enumeration">
 <p>
-Creates an image from a windows HICON.</p>
+Creates an image from a windows HBITMAP.</p>
 </td>
 </tr>
 <tr>
@@ -6921,7 +6922,7 @@ Creates an image from a windows HICON.</p>
 <a href="#Pixel.Image.from">from</a></td>
 <td class="enumeration">
 <p>
-Creates an image from a windows HBITMAP.</p>
+Creates an image from a windows HICON.</p>
 </td>
 </tr>
 <tr>
@@ -10758,7 +10759,7 @@ sharedLinePathList</td>
 <td class="tdname">
 sharedRoundTmp</td>
 <td class="tdtype">
-Array(__linepath_tuple_250)</td>
+Array(__linepath_tuple_242)</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -10887,14 +10888,14 @@ Recompute the layout for a given rectangle.</p>
 <td class="enumeration">
 <a href="#Pixel.Painter.drawArc">drawArc</a></td>
 <td class="enumeration">
-<p>
-Draw an arc between two angles.</p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Pixel.Painter.drawArc">drawArc</a></td>
 <td class="enumeration">
+<p>
+Draw an arc between two angles.</p>
 </td>
 </tr>
 <tr>
@@ -10987,14 +10988,14 @@ Draw the line path.</p>
 <td class="enumeration">
 <a href="#Pixel.Painter.drawRect">drawRect</a></td>
 <td class="enumeration">
-<p>
-Draw an empty rectangle.</p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Pixel.Painter.drawRect">drawRect</a></td>
 <td class="enumeration">
+<p>
+Draw an empty rectangle.</p>
 </td>
 </tr>
 <tr>
@@ -11071,6 +11072,12 @@ Draw a simple string (centered).</p>
 <td class="enumeration">
 <a href="#Pixel.Painter.drawTexture">drawTexture</a></td>
 <td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Pixel.Painter.drawTexture">drawTexture</a></td>
+<td class="enumeration">
 <p>
 Draw a texture image.</p>
 </td>
@@ -11085,20 +11092,14 @@ Draw a texture image.</p>
 <td class="enumeration">
 <a href="#Pixel.Painter.drawTexture">drawTexture</a></td>
 <td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Pixel.Painter.drawTexture">drawTexture</a></td>
+<td class="enumeration">
 <p>
 Draw a portion of an image.</p>
-</td>
-</tr>
-<tr>
-<td class="enumeration">
-<a href="#Pixel.Painter.drawTexture">drawTexture</a></td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="enumeration">
-<a href="#Pixel.Painter.drawTexture">drawTexture</a></td>
-<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -11121,14 +11122,14 @@ Stop painting in the clipping buffer. Back to normal.</p>
 <td class="enumeration">
 <a href="#Pixel.Painter.fillCircle">fillCircle</a></td>
 <td class="enumeration">
-<p>
-Draw a solid circle.</p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Pixel.Painter.fillCircle">fillCircle</a></td>
 <td class="enumeration">
+<p>
+Draw a solid circle.</p>
 </td>
 </tr>
 <tr>
@@ -11182,7 +11183,7 @@ Fill the list of paths clockwise = fill, anti-clockwise = hole.</p>
 <a href="#Pixel.Painter.fillPolygon">fillPolygon</a></td>
 <td class="enumeration">
 <p>
-Fill the polygon with the given <code class = "incode">brush</code>.</p>
+Fill the polygon with the given color.</p>
 </td>
 </tr>
 <tr>
@@ -11190,7 +11191,25 @@ Fill the polygon with the given <code class = "incode">brush</code>.</p>
 <a href="#Pixel.Painter.fillPolygon">fillPolygon</a></td>
 <td class="enumeration">
 <p>
-Fill the polygon with the given color.</p>
+Fill the polygon with the given <code class = "incode">brush</code>.</p>
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Pixel.Painter.fillRect">fillRect</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Pixel.Painter.fillRect">fillRect</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Pixel.Painter.fillRect">fillRect</a></td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -11203,19 +11222,13 @@ Draw a filled rectangle.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Painter.fillRect">fillRect</a></td>
+<a href="#Pixel.Painter.fillRoundRect">fillRoundRect</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Painter.fillRect">fillRect</a></td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="enumeration">
-<a href="#Pixel.Painter.fillRect">fillRect</a></td>
+<a href="#Pixel.Painter.fillRoundRect">fillRoundRect</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -11231,18 +11244,6 @@ Draw a filled rectangle.</p>
 <td class="enumeration">
 <p>
 Draw a filled round rectangle.</p>
-</td>
-</tr>
-<tr>
-<td class="enumeration">
-<a href="#Pixel.Painter.fillRoundRect">fillRoundRect</a></td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="enumeration">
-<a href="#Pixel.Painter.fillRoundRect">fillRoundRect</a></td>
-<td class="enumeration">
 </td>
 </tr>
 <tr>
