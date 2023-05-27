@@ -4,10 +4,9 @@ include('header.php');
 ?>
 
 <div class="lg:m-auto lg:w-[70rem] pt-2 lg:pt-10 overflow-hidden p-5">
+   
+    <div class="text-2xl">Standard Modules</div>
 
-    <div class="text-2xl">Libraries</div>
-
-    <ul class="mt-5 list-disc">
 
         <?php
         $files = [];
@@ -20,15 +19,16 @@ include('header.php');
         }
         sort($files);
         foreach ($files as $file) {
+            if($file != "swag.runtime.html") {
             ?>
                 <li>
-                    - <a href="<?=$dir . $file?>" class="hover:underline" target="_blank"><?=str_replace('.html', '', $file)?></a>
+                    <a href="<?=$dir . $file?>" class="hover:underline" target="_blank"><?=str_replace('.html', '', $file)?></a>
                 </li>
             <?php
+            }
         }
         ?>
-
-    </ul>
+    
 </div>
 
 <?php include('html_end.php'); ?>

@@ -8,7 +8,7 @@
 
 Swag is a native and/or interpreted programming language made for fun because, let's be honest, **C++** is now an **horrible and ugly beast** ! This is my third compiler (the other ones were developed for AAA game engines), but that one is by far the most advanced.
 
-You can visit the official [Website](https://swag-lang.org/) or the [YouTube](https://www.youtube.com/channel/UC9dkBu1nNfJDxUML7r7QH1Q) channel. If you want to take a first look at the language, this is [here](https://www.swag-lang.org/language.html).
+You can visit the official [Website](https://swag-lang.org/) or the [YouTube](https://www.youtube.com/channel/UC9dkBu1nNfJDxUML7r7QH1Q) channel. If you want to take a first look at the language, this is [here](https://www.swag-lang.org/language.php).
 
 Note that a simple `visual studio code` [extension](https://marketplace.visualstudio.com/items?itemName=swag-lang.swag) exists for syntax coloration.
 
@@ -16,7 +16,7 @@ Note that a simple `visual studio code` [extension](https://marketplace.visualst
     <img width="50%" height="50%" src="https://github.com/swag-lang/swag/blob/master/vscode/images/syntax.png">
 </p>
 
-Here is a **screen capture software** fully written in Swag with the help of the [Swag standard libraries](web/md/std.md) (`core`, `pixel`, `gui`...). It could be compiled as a native executable (fast) or just interpreted as a script (less... fast). Code is [there](https://github.com/swag-lang/swag/blob/master/bin/examples/modules/captme/src).
+Here is a **screen capture software** fully written in Swag with the help of the [Swag standard modules](https://www.swag-lang.org/libraries.php) (`core`, `pixel`, `gui`...). It could be compiled as a native executable (fast) or just interpreted as a script (less... fast). Code is [there](https://github.com/swag-lang/swag/blob/master/bin/examples/modules/captme/src).
 
 <p align="center">
     <img width="70%" height="50%" src="https://github.com/swag-lang/swag/blob/master/web/imgs/captme.png">
