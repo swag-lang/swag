@@ -270,6 +270,7 @@ struct Module
     Vector<Utf8>                                     contentJobGeneratedFile;
     VectorNative<uint32_t>                           countLinesGeneratedFile;
     VectorNative<DataSegment*>                       compilerSegmentPerThread;
+    Utf8                                             docComment;
 
     struct GlobalVarToDrop
     {

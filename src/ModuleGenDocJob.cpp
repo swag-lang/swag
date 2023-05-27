@@ -810,6 +810,19 @@ int ModuleGenDocJob::sortOrder(AstNodeKind kind)
 
 void ModuleGenDocJob::generateContent()
 {
+    // Output module description
+    if (module)
+    {
+        UserComment userComment;
+        computeUserComments(userComment, module->docComment);
+        if (!userComment.shortDesc.lines.empty())
+        {
+            helpContent += "<h3>Overview</h3>\n";
+            outputUserBlock(userComment.shortDesc);
+            outputUserComment(userComment);
+        }
+    }
+
     sort(allNodes.begin(), allNodes.end(), [this](OneRef& a, OneRef& b)
          { return strcmp(a.fullName.buffer, b.fullName.buffer) < 0; });
 
@@ -1133,7 +1146,6 @@ JobResult ModuleGenDocJob::execute()
         g_Workspace->runtimeModule->buildCfg.repoPath.count  = strlen(p);
 
         collectScopes(g_Workspace->runtimeModule->scopeRoot);
-
         collectScopes(g_Workspace->bootstrapModule->scopeRoot);
     }
 

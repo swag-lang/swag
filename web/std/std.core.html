@@ -1632,6 +1632,11 @@
 </div>
 <div class="right">
 <div class="page">
+<h3>Overview</h3>
+<p>
+The <code class = "incode">Std.core</code> module contains basic types and algorithms. It is the base of all other modules of the standard <code class = "incode">Std</code> workspace.</p>
+<p>
+ You will find collections like <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Array">Array</a> or <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.HashTable">HashTable</a>, a dynamic <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.String">String</a> and so on.</p>
 <p>
 <table class="h3">
 <tr>
@@ -10193,7 +10198,7 @@ Number of processors.</p>
 <h3 class="content" id="Core.Hash"><span class="titletype">namespace</span> <span class="titlelight">Core.</span><span class="titlestrong">Hash</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\crypto\md5.swg#L1" class="src">src</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\crypto\sha256.swg#L1" class="src">src</a></td>
 </tr>
 </table>
 </p>
@@ -16633,24 +16638,24 @@ Convert a big endian integer to current arch native format.</p>
 <td class="enumeration">
 <a href="#Core.Math.countOnes">countOnes</a></td>
 <td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Core.Math.countOnes">countOnes</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Core.Math.countOnes">countOnes</a></td>
+<td class="enumeration">
 <p>
 Returns the number of bits set to 1.</p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Core.Math.countOnes">countOnes</a></td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="enumeration">
-<a href="#Core.Math.countOnes">countOnes</a></td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="enumeration">
 <a href="#Core.Math.exp">exp</a></td>
 <td class="enumeration">
 </td>
@@ -16682,18 +16687,6 @@ Returns the number of bits set to 1.</p>
 <tr>
 <td class="enumeration">
 <a href="#Core.Math.floor">floor</a></td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="enumeration">
-<a href="#Core.Math.hasByte">hasByte</a></td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="enumeration">
-<a href="#Core.Math.hasByte">hasByte</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -16707,22 +16700,34 @@ Determin if an integer has a given byte.</p>
 </tr>
 <tr>
 <td class="enumeration">
+<a href="#Core.Math.hasByte">hasByte</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Core.Math.hasByte">hasByte</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Core.Math.hasZeroByte">hasZeroByte</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Core.Math.hasZeroByte">hasZeroByte</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="enumeration">
 <a href="#Core.Math.hasZeroByte">hasZeroByte</a></td>
 <td class="enumeration">
 <p>
 Determin if any of the bytes is zero.</p>
-</td>
-</tr>
-<tr>
-<td class="enumeration">
-<a href="#Core.Math.hasZeroByte">hasZeroByte</a></td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="enumeration">
-<a href="#Core.Math.hasZeroByte">hasZeroByte</a></td>
-<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -16777,20 +16782,20 @@ Determin if any of the bytes is zero.</p>
 <td class="enumeration">
 <a href="#Core.Math.leadingZeros">leadingZeros</a></td>
 <td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="enumeration">
-<a href="#Core.Math.leadingZeros">leadingZeros</a></td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="enumeration">
-<a href="#Core.Math.leadingZeros">leadingZeros</a></td>
-<td class="enumeration">
 <p>
 Returns the number of bits set to 0 from the left.</p>
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Core.Math.leadingZeros">leadingZeros</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Core.Math.leadingZeros">leadingZeros</a></td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -17059,14 +17064,14 @@ Convert a native arch integer to a big endian.</p>
 <td class="enumeration">
 <a href="#Core.Math.reverse">reverse</a></td>
 <td class="enumeration">
+<p>
+Reverse all bits.</p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core.Math.reverse">reverse</a></td>
 <td class="enumeration">
-<p>
-Reverse all bits.</p>
 </td>
 </tr>
 <tr>
@@ -17259,20 +17264,20 @@ Reverse all bits.</p>
 <td class="enumeration">
 <a href="#Core.Math.trailingZeros">trailingZeros</a></td>
 <td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="enumeration">
-<a href="#Core.Math.trailingZeros">trailingZeros</a></td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="enumeration">
-<a href="#Core.Math.trailingZeros">trailingZeros</a></td>
-<td class="enumeration">
 <p>
 Returns the number of bits set to 0 from the right.</p>
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Core.Math.trailingZeros">trailingZeros</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Core.Math.trailingZeros">trailingZeros</a></td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -17434,24 +17439,24 @@ Convert a big endian integer to current arch native format.</p>
 <td class="enumeration">
 <a href="#Core.Math.countOnes">countOnes</a></td>
 <td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Core.Math.countOnes">countOnes</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Core.Math.countOnes">countOnes</a></td>
+<td class="enumeration">
 <p>
 Returns the number of bits set to 1.</p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Core.Math.countOnes">countOnes</a></td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="enumeration">
-<a href="#Core.Math.countOnes">countOnes</a></td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="enumeration">
 <a href="#Core.Math.exp">exp</a></td>
 <td class="enumeration">
 </td>
@@ -17483,18 +17488,6 @@ Returns the number of bits set to 1.</p>
 <tr>
 <td class="enumeration">
 <a href="#Core.Math.floor">floor</a></td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="enumeration">
-<a href="#Core.Math.hasByte">hasByte</a></td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="enumeration">
-<a href="#Core.Math.hasByte">hasByte</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -17508,22 +17501,34 @@ Determin if an integer has a given byte.</p>
 </tr>
 <tr>
 <td class="enumeration">
+<a href="#Core.Math.hasByte">hasByte</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Core.Math.hasByte">hasByte</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Core.Math.hasZeroByte">hasZeroByte</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Core.Math.hasZeroByte">hasZeroByte</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="enumeration">
 <a href="#Core.Math.hasZeroByte">hasZeroByte</a></td>
 <td class="enumeration">
 <p>
 Determin if any of the bytes is zero.</p>
-</td>
-</tr>
-<tr>
-<td class="enumeration">
-<a href="#Core.Math.hasZeroByte">hasZeroByte</a></td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="enumeration">
-<a href="#Core.Math.hasZeroByte">hasZeroByte</a></td>
-<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -17578,20 +17583,20 @@ Determin if any of the bytes is zero.</p>
 <td class="enumeration">
 <a href="#Core.Math.leadingZeros">leadingZeros</a></td>
 <td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="enumeration">
-<a href="#Core.Math.leadingZeros">leadingZeros</a></td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="enumeration">
-<a href="#Core.Math.leadingZeros">leadingZeros</a></td>
-<td class="enumeration">
 <p>
 Returns the number of bits set to 0 from the left.</p>
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Core.Math.leadingZeros">leadingZeros</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Core.Math.leadingZeros">leadingZeros</a></td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -17860,14 +17865,14 @@ Convert a native arch integer to a big endian.</p>
 <td class="enumeration">
 <a href="#Core.Math.reverse">reverse</a></td>
 <td class="enumeration">
+<p>
+Reverse all bits.</p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core.Math.reverse">reverse</a></td>
 <td class="enumeration">
-<p>
-Reverse all bits.</p>
 </td>
 </tr>
 <tr>
@@ -18060,20 +18065,20 @@ Reverse all bits.</p>
 <td class="enumeration">
 <a href="#Core.Math.trailingZeros">trailingZeros</a></td>
 <td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="enumeration">
-<a href="#Core.Math.trailingZeros">trailingZeros</a></td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="enumeration">
-<a href="#Core.Math.trailingZeros">trailingZeros</a></td>
-<td class="enumeration">
 <p>
 Returns the number of bits set to 0 from the right.</p>
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Core.Math.trailingZeros">trailingZeros</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Core.Math.trailingZeros">trailingZeros</a></td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -22886,8 +22891,6 @@ func map(val: f64, minSrc: f64, maxSrc: f64, minDst: f64, maxDst: f64)->f64
 </p>
 <p class="code">
 <code style="white-space: break-spaces">func(T) max(x: T, y: T, z: T)->T
-func max(x: f32, y: f32)
-func max(x: f64, y: f64)
 func max(x: s8, y: s8)
 func max(x: s16, y: s16)
 func max(x: s32, y: s32)
@@ -22896,6 +22899,8 @@ func max(x: u8, y: u8)
 func max(x: u16, y: u16)
 func max(x: u32, y: u32)
 func max(x: u64, y: u64)
+func max(x: f32, y: f32)
+func max(x: f64, y: f64)
 </code>
 </p>
 <p>
@@ -22911,8 +22916,6 @@ func max(x: u64, y: u64)
 </p>
 <p class="code">
 <code style="white-space: break-spaces">func(T) min(x: T, y: T, z: T)->T
-func min(x: f32, y: f32)
-func min(x: f64, y: f64)
 func min(x: s8, y: s8)
 func min(x: s16, y: s16)
 func min(x: s32, y: s32)
@@ -22921,6 +22924,8 @@ func min(x: u8, y: u8)
 func min(x: u16, y: u16)
 func min(x: u32, y: u32)
 func min(x: u64, y: u64)
+func min(x: f32, y: f32)
+func min(x: f64, y: f64)
 </code>
 </p>
 <p>

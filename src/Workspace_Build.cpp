@@ -128,6 +128,7 @@ Module* Workspace::createOrUseModule(const Utf8& moduleName, const Path& moduleP
         module->buildParameters.globalUsings = cfgModule->buildParameters.globalUsings;
         module->moduleDependencies           = cfgModule->moduleDependencies;
         module->includes                     = cfgModule->includes;
+        module->docComment                   = std::move(cfgModule->docComment);
     }
 
     // Is this the module we want to build ?

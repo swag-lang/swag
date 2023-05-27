@@ -613,6 +613,13 @@ bool Parser::doCompilerDependencies(AstNode* parent)
     SWAG_VERIFY(parent->kind == AstNodeKind::File, context->report({sourceFile, token, Err(Syn0182)}));
 
     auto node = Ast::newNode<AstNode>(this, AstNodeKind::CompilerDependencies, sourceFile, parent);
+
+    // Module global comment must be put in module.swg, just before the #dependencies block
+    if (!tokenizer.comment.empty())
+    {
+        module->docComment = std::move(tokenizer.comment);
+    }
+
     SWAG_CHECK(eatToken());
     SWAG_CHECK(doCurlyStatement(node, &dummyResult));
 

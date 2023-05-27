@@ -1,3 +1,7 @@
+// The 'Std.core' module contains basic types and algorithms.
+// It is the base of all other modules of the standard 'Std' workspace.
+//
+// You will find collections like [Array] or [HashTable], a dynamic [String] and so on.
 #dependencies
 {
     #if #os == Swag.TargetOs.Windows
