@@ -12,6 +12,12 @@
             line-height:    1.3em;
             font-family:    Segoe UI;
         }
+        blockquote {
+            background-color:   LightYellow;
+            border-left:        6px solid Orange;
+            padding:            10px;
+            margin-right:       10px;
+        }
         .left {
             display:    block;
             overflow-y: scroll;
@@ -63,7 +69,6 @@
             padding:            6px;
             border:             1px solid LightGrey;
             border-collapse:    collapse;
-            width:              20%;
             width:              auto;
         }
         td:last-child {
@@ -383,6 +388,8 @@
 </div>
 <div class="right">
 <div class="page">
+<blockquote>
+<p>Work in progress</p><p>Generated documentation (Swag doc 0.18.0)</p></blockquote>
 <h2 class="content">Content</h2>
 <p>
 <table class="h3">
@@ -3568,12 +3575,6 @@ Check all allocated blocks.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Swag.DebugAllocator.opDrop">opDrop(self)</a></td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="enumeration">
 <a href="#Swag.DebugAllocator.printDisplaySize">printDisplaySize(u64)</a></td>
 <td class="enumeration">
 </td>
@@ -3592,6 +3593,15 @@ Output to the console the list of all allocated blocks (leaks).</p>
 <td class="enumeration">
 <p>
 Setup the allocator.</p>
+</td>
+</tr>
+</table>
+<h3>Special Functions</h3>
+<table class="enumeration">
+<tr>
+<td class="enumeration">
+<a href="#Swag.DebugAllocator.opDrop">opDrop(self)</a></td>
+<td class="enumeration">
 </td>
 </tr>
 </table>

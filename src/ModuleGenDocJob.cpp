@@ -8,6 +8,7 @@
 #include "Report.h"
 #include "AstNode.h"
 #include "Workspace.h"
+#include "Version.h"
 
 static bool canCollectNode(AstNode* node)
 {
@@ -144,15 +145,24 @@ Utf8 ModuleGenDocJob::getDocComment(AstNode* node)
     return "";
 }
 
-void ModuleGenDocJob::outputTable(Scope* scope, AstNodeKind kind, const char* title)
+const uint32_t COLLECT_TABLE_ZERO     = 0x00000000;
+const uint32_t COLLECT_TABLE_SPECFUNC = 0x00000001;
+
+void ModuleGenDocJob::outputTable(Scope* scope, AstNodeKind kind, const char* title, uint32_t collectFlags)
 {
     VectorNative<AstNode*> symbols;
-    for (auto structVal : scope->symTable.allSymbols)
+    for (auto sym : scope->symTable.allSymbols)
     {
-        for (auto n1 : structVal->nodes)
+        for (auto n1 : sym->nodes)
         {
             if (n1->kind != kind)
                 continue;
+
+            if (kind == AstNodeKind::FuncDecl && (collectFlags & COLLECT_TABLE_SPECFUNC) && !n1->isSpecialFunctionName())
+                continue;
+            if (kind == AstNodeKind::FuncDecl && !(collectFlags & COLLECT_TABLE_SPECFUNC) && n1->isSpecialFunctionName())
+                continue;
+
             if (!canCollectNode(n1))
                 continue;
             symbols.push_back(n1);
@@ -714,6 +724,12 @@ void ModuleGenDocJob::outputStyles()
             line-height:    1.3em;\n\
             font-family:    Segoe UI;\n\
         }\n\
+        blockquote {\n\
+            background-color:   LightYellow;\n\
+            border-left:        6px solid Orange;\n\
+            padding:            10px;\n\
+            margin-right:       10px;\n\
+        }\n\
         .left {\n\
             display:    block;\n\
             overflow-y: scroll;\n\
@@ -765,7 +781,6 @@ void ModuleGenDocJob::outputStyles()
             padding:            6px;\n\
             border:             1px solid LightGrey;\n\
             border-collapse:    collapse;\n\
-            width:              20%;\n\
             width:              auto;\n\
         }\n\
         td:last-child {\n\
@@ -842,6 +857,11 @@ int ModuleGenDocJob::sortOrder(AstNodeKind kind)
 
 void ModuleGenDocJob::generateContent()
 {
+    helpContent += "<blockquote>\n";
+    helpContent += "<p>Work in progress</p>";
+    helpContent += Fmt("<p>Generated documentation (Swag doc %d.%d.%d)</p>", SWAG_BUILD_VERSION, SWAG_BUILD_REVISION, SWAG_BUILD_NUM);
+    helpContent += "</blockquote>\n";
+
     // Output module description
     if (module)
     {
@@ -883,10 +903,10 @@ void ModuleGenDocJob::generateContent()
             if (namespaceDecl->typeInfo)
             {
                 auto scope = CastTypeInfo<TypeInfoNamespace>(namespaceDecl->typeInfo, namespaceDecl->typeInfo->kind)->scope;
-                outputTable(scope, AstNodeKind::StructDecl, "Structs");
-                outputTable(scope, AstNodeKind::EnumDecl, "Enums");
-                outputTable(scope, AstNodeKind::FuncDecl, "Functions");
-                outputTable(scope, AstNodeKind::AttrDecl, "Attributes");
+                outputTable(scope, AstNodeKind::StructDecl, "Structs", COLLECT_TABLE_ZERO);
+                outputTable(scope, AstNodeKind::EnumDecl, "Enums", COLLECT_TABLE_ZERO);
+                outputTable(scope, AstNodeKind::FuncDecl, "Functions", COLLECT_TABLE_ZERO);
+                outputTable(scope, AstNodeKind::AttrDecl, "Attributes", COLLECT_TABLE_ZERO);
             }
 
             break;
@@ -1004,7 +1024,8 @@ void ModuleGenDocJob::generateContent()
             outputUserComment(userComment);
 
             // Functions
-            outputTable(structNode->scope, AstNodeKind::FuncDecl, "Functions");
+            outputTable(structNode->scope, AstNodeKind::FuncDecl, "Functions", COLLECT_TABLE_ZERO);
+            outputTable(structNode->scope, AstNodeKind::FuncDecl, "Special Functions", COLLECT_TABLE_SPECFUNC);
             break;
         }
 

@@ -12,6 +12,12 @@
             line-height:    1.3em;
             font-family:    Segoe UI;
         }
+        blockquote {
+            background-color:   LightYellow;
+            border-left:        6px solid Orange;
+            padding:            10px;
+            margin-right:       10px;
+        }
         .left {
             display:    block;
             overflow-y: scroll;
@@ -63,7 +69,6 @@
             padding:            6px;
             border:             1px solid LightGrey;
             border-collapse:    collapse;
-            width:              20%;
             width:              auto;
         }
         td:last-child {
@@ -138,9 +143,13 @@
 <li><a href="#Core.Jobs">Jobs</a></li>
 <li><a href="#Core.Latin1">Latin1</a></li>
 <li><a href="#Core.Math">Math</a></li>
+<li><a href="#Core.Noise">Noise</a></li>
 <li><a href="#Core.Parser">Parser</a></li>
 <li><a href="#Core.Path">Path</a></li>
+<li><a href="#Core.Random">Random</a></li>
+<li><a href="#Core.Serialization.Read">Read</a></li>
 <li><a href="#Core.Reflection">Reflection</a></li>
+<li><a href="#Core.Serialization">Serialization</a></li>
 <li><a href="#Core.Slice">Slice</a></li>
 <li><a href="#Core.StrConv">StrConv</a></li>
 <li><a href="#Core.Sync">Sync</a></li>
@@ -151,6 +160,7 @@
 <li><a href="#Core.Unicode">Unicode</a></li>
 <li><a href="#Core.Utf16">Utf16</a></li>
 <li><a href="#Core.Utf8">Utf8</a></li>
+<li><a href="#Core.Serialization.Write">Write</a></li>
 </ul>
 <h2>Structs</h2>
 <h3>collections</h3>
@@ -171,7 +181,10 @@
 </ul>
 <h3>compress</h3>
 <ul class="tocbullet">
+<li><a href="#Core.Compress.BitStream">BitStream</a></li>
 <li><a href="#Core.Compress.Deflate">Deflate</a></li>
+<li><a href="#Core.Compress.Inflate">Inflate</a></li>
+<li><a href="#Core.Compress.ZLib">ZLib</a></li>
 </ul>
 <h3>crypto</h3>
 <ul class="tocbullet">
@@ -225,6 +238,33 @@
 <li><a href="#Core.Math.Vector2">Vector2</a></li>
 <li><a href="#Core.Math.Vector3">Vector3</a></li>
 <li><a href="#Core.Math.Vector4">Vector4</a></li>
+</ul>
+<h3>rand</h3>
+<ul class="tocbullet">
+<li><a href="#Core.Random.CMWC4096">CMWC4096</a></li>
+<li><a href="#Core.Random.MWC">MWC</a></li>
+<li><a href="#Core.Random.Mt64">Mt64</a></li>
+<li><a href="#Core.Random.Rng">Rng</a></li>
+</ul>
+<h3>serialization</h3>
+<ul class="tocbullet">
+<li><a href="#Core.Serialization.Serializer">Serializer</a></li>
+</ul>
+<h3>serialization/read</h3>
+<ul class="tocbullet">
+<li><a href="#Core.Serialization.Decoder">Decoder</a></li>
+<li><a href="#Core.Serialization.Read.JSon">JSon</a></li>
+<li><a href="#Core.Serialization.Read.TagBin">TagBin</a></li>
+<li><a href="#Core.Serialization.Read.TagBinOptions">TagBinOptions</a></li>
+<li><a href="#Core.Serialization.Read.TagBinSection">TagBinSection</a></li>
+</ul>
+<h3>serialization/write</h3>
+<ul class="tocbullet">
+<li><a href="#Core.Serialization.Encoder">Encoder</a></li>
+<li><a href="#Core.Serialization.Write.JSon">JSon</a></li>
+<li><a href="#Core.Serialization.Write.JSonOptions">JSonOptions</a></li>
+<li><a href="#Core.Serialization.Write.TagBin">TagBin</a></li>
+<li><a href="#Core.Serialization.Write.TagBinSection">TagBinSection</a></li>
 </ul>
 <h3>system</h3>
 <ul class="tocbullet">
@@ -283,6 +323,18 @@
 <ul class="tocbullet">
 <li><a href="#Core.ILogWriter">ILogWriter</a></li>
 </ul>
+<h3>serialization</h3>
+<ul class="tocbullet">
+<li><a href="#Core.Serialization.ISerialize">ISerialize</a></li>
+</ul>
+<h3>serialization/read</h3>
+<ul class="tocbullet">
+<li><a href="#Core.Serialization.IDecoder">IDecoder</a></li>
+</ul>
+<h3>serialization/write</h3>
+<ul class="tocbullet">
+<li><a href="#Core.Serialization.IEncoder">IEncoder</a></li>
+</ul>
 <h3>text</h3>
 <ul class="tocbullet">
 <li><a href="#Core.StrConv.IConvert">IConvert</a></li>
@@ -317,6 +369,15 @@
 <li><a href="#Core.File.SeekOrigin">SeekOrigin</a></li>
 <li><a href="#Core.File.TextEncoding">TextEncoding</a></li>
 </ul>
+<h3>serialization/read</h3>
+<ul class="tocbullet">
+<li><a href="#Core.Serialization.DecoderFlags">DecoderFlags</a></li>
+</ul>
+<h3>serialization/write</h3>
+<ul class="tocbullet">
+<li><a href="#Core.Serialization.SectionKind">SectionKind</a></li>
+<li><a href="#Core.Serialization.Write.TagBinSignatures">TagBinSignatures</a></li>
+</ul>
 <h3>system</h3>
 <ul class="tocbullet">
 <li><a href="#Core.Env.SpecialDirectory">SpecialDirectory</a></li>
@@ -348,6 +409,20 @@
 <h3>math</h3>
 <ul class="tocbullet">
 <li><a href="#Core.Math.Rev8Arr">Rev8Arr</a></li>
+</ul>
+<h3>rand</h3>
+<ul class="tocbullet">
+<li><a href="#Core.Noise.Gradients2D">Gradients2D</a></li>
+<li><a href="#Core.Noise.Gradients3D">Gradients3D</a></li>
+<li><a href="#Core.Random.LM">LM</a></li>
+<li><a href="#Core.Random.MATRIX_A">MATRIX_A</a></li>
+<li><a href="#Core.Random.MID">MID</a></li>
+<li><a href="#Core.Random.MM">MM</a></li>
+<li><a href="#Core.Random.NN">NN</a></li>
+<li><a href="#Core.Noise.PrimeX">PrimeX</a></li>
+<li><a href="#Core.Noise.PrimeY">PrimeY</a></li>
+<li><a href="#Core.Noise.PrimeZ">PrimeZ</a></li>
+<li><a href="#Core.Random.UM">UM</a></li>
 </ul>
 <h3>system</h3>
 <ul class="tocbullet">
@@ -441,6 +516,14 @@
 <li><a href="#Core.Time.TicksPerSecond">TicksPerSecond</a></li>
 </ul>
 <h2>Attributes</h2>
+<h3>serialization</h3>
+<ul class="tocbullet">
+<li><a href="#Core.Serialization.Alias">Alias</a></li>
+<li><a href="#Core.Serialization.Final">Final</a></li>
+<li><a href="#Core.Serialization.NoSerialize">NoSerialize</a></li>
+<li><a href="#Core.Serialization.PodFinal">PodFinal</a></li>
+<li><a href="#Core.Serialization.Version">Version</a></li>
+</ul>
 <h3>system</h3>
 <ul class="tocbullet">
 <li><a href="#Core.CommandLine.ArgParams">ArgParams</a></li>
@@ -591,6 +674,72 @@
 <li><a href="#Core.Math.Variant.opPostMove">Variant.opPostMove</a></li>
 <li><a href="#Core.Math.Variant.set">Variant.set</a></li>
 </ul>
+<h3>serialization</h3>
+<ul class="tocbullet">
+<li><a href="#Core.Serialization.Serializer.beginSection">Serializer.beginSection</a></li>
+<li><a href="#Core.Serialization.Serializer.end">Serializer.end</a></li>
+<li><a href="#Core.Serialization.Serializer.endSection">Serializer.endSection</a></li>
+<li><a href="#Core.Serialization.Serializer.isReading">Serializer.isReading</a></li>
+<li><a href="#Core.Serialization.Serializer.isWriting">Serializer.isWriting</a></li>
+<li><a href="#Core.Serialization.Serializer.serialize">Serializer.serialize</a></li>
+<li><a href="#Core.Serialization.Serializer.startRead">Serializer.startRead</a></li>
+<li><a href="#Core.Serialization.Serializer.startWrite">Serializer.startWrite</a></li>
+</ul>
+<h3>serialization/read</h3>
+<ul class="tocbullet">
+<li><a href="#Core.Serialization.Decoder.end">Decoder.end</a></li>
+<li><a href="#Core.Serialization.Decoder.readAll">Decoder.readAll</a></li>
+<li><a href="#Core.Serialization.Decoder.readTypeValue">Decoder.readTypeValue</a></li>
+<li><a href="#Core.Serialization.Decoder.readValue">Decoder.readValue</a></li>
+<li><a href="#Core.Serialization.Decoder.start">Decoder.start</a></li>
+<li><a href="#Core.Serialization.Decoder.IDecoder.beginField">IDecoder.beginField</a></li>
+<li><a href="#Core.Serialization.Decoder.IDecoder.beginSection">IDecoder.beginSection</a></li>
+<li><a href="#Core.Serialization.Decoder.IDecoder.end">IDecoder.end</a></li>
+<li><a href="#Core.Serialization.Decoder.IDecoder.endField">IDecoder.endField</a></li>
+<li><a href="#Core.Serialization.Decoder.IDecoder.endSection">IDecoder.endSection</a></li>
+<li><a href="#Core.Serialization.Decoder.IDecoder.getVersion">IDecoder.getVersion</a></li>
+<li><a href="#Core.Serialization.Decoder.IDecoder.read">IDecoder.read</a></li>
+<li><a href="#Core.Serialization.Decoder.IDecoder.readBool">IDecoder.readBool</a></li>
+<li><a href="#Core.Serialization.Decoder.IDecoder.readBufferU8">IDecoder.readBufferU8</a></li>
+<li><a href="#Core.Serialization.Decoder.IDecoder.readF32">IDecoder.readF32</a></li>
+<li><a href="#Core.Serialization.Decoder.IDecoder.readF64">IDecoder.readF64</a></li>
+<li><a href="#Core.Serialization.Decoder.IDecoder.readS16">IDecoder.readS16</a></li>
+<li><a href="#Core.Serialization.Decoder.IDecoder.readS32">IDecoder.readS32</a></li>
+<li><a href="#Core.Serialization.Decoder.IDecoder.readS64">IDecoder.readS64</a></li>
+<li><a href="#Core.Serialization.Decoder.IDecoder.readS8">IDecoder.readS8</a></li>
+<li><a href="#Core.Serialization.Decoder.IDecoder.readU16">IDecoder.readU16</a></li>
+<li><a href="#Core.Serialization.Decoder.IDecoder.readU32">IDecoder.readU32</a></li>
+<li><a href="#Core.Serialization.Decoder.IDecoder.readU64">IDecoder.readU64</a></li>
+<li><a href="#Core.Serialization.Decoder.IDecoder.readU8">IDecoder.readU8</a></li>
+<li><a href="#Core.Serialization.Decoder.IDecoder.start">IDecoder.start</a></li>
+</ul>
+<h3>serialization/write</h3>
+<ul class="tocbullet">
+<li><a href="#Core.Serialization.Encoder.end">Encoder.end</a></li>
+<li><a href="#Core.Serialization.Encoder.start">Encoder.start</a></li>
+<li><a href="#Core.Serialization.Encoder.writeAll">Encoder.writeAll</a></li>
+<li><a href="#Core.Serialization.Encoder.writeTypeValue">Encoder.writeTypeValue</a></li>
+<li><a href="#Core.Serialization.Encoder.writeValue">Encoder.writeValue</a></li>
+<li><a href="#Core.Serialization.Encoder.IEncoder.beginField">IEncoder.beginField</a></li>
+<li><a href="#Core.Serialization.Encoder.IEncoder.beginSection">IEncoder.beginSection</a></li>
+<li><a href="#Core.Serialization.Encoder.IEncoder.end">IEncoder.end</a></li>
+<li><a href="#Core.Serialization.Encoder.IEncoder.endField">IEncoder.endField</a></li>
+<li><a href="#Core.Serialization.Encoder.IEncoder.endSection">IEncoder.endSection</a></li>
+<li><a href="#Core.Serialization.Encoder.IEncoder.start">IEncoder.start</a></li>
+<li><a href="#Core.Serialization.Encoder.IEncoder.write">IEncoder.write</a></li>
+<li><a href="#Core.Serialization.Encoder.IEncoder.writeBool">IEncoder.writeBool</a></li>
+<li><a href="#Core.Serialization.Encoder.IEncoder.writeBufferU8">IEncoder.writeBufferU8</a></li>
+<li><a href="#Core.Serialization.Encoder.IEncoder.writeF32">IEncoder.writeF32</a></li>
+<li><a href="#Core.Serialization.Encoder.IEncoder.writeF64">IEncoder.writeF64</a></li>
+<li><a href="#Core.Serialization.Encoder.IEncoder.writeS16">IEncoder.writeS16</a></li>
+<li><a href="#Core.Serialization.Encoder.IEncoder.writeS32">IEncoder.writeS32</a></li>
+<li><a href="#Core.Serialization.Encoder.IEncoder.writeS64">IEncoder.writeS64</a></li>
+<li><a href="#Core.Serialization.Encoder.IEncoder.writeS8">IEncoder.writeS8</a></li>
+<li><a href="#Core.Serialization.Encoder.IEncoder.writeU16">IEncoder.writeU16</a></li>
+<li><a href="#Core.Serialization.Encoder.IEncoder.writeU32">IEncoder.writeU32</a></li>
+<li><a href="#Core.Serialization.Encoder.IEncoder.writeU64">IEncoder.writeU64</a></li>
+<li><a href="#Core.Serialization.Encoder.IEncoder.writeU8">IEncoder.writeU8</a></li>
+</ul>
 <h3>slice</h3>
 <ul class="tocbullet">
 <li><a href="#Core.Slice.contains">Slice.contains</a></li>
@@ -615,6 +764,8 @@
 </div>
 <div class="right">
 <div class="page">
+<blockquote>
+<p>Work in progress</p><p>Generated documentation (Swag doc 0.18.0)</p></blockquote>
 <h2 class="content">Overview</h2>
 <p>
 The <code class = "incode">Std.core</code> module contains basic types and algorithms. It is the base of all other modules of the standard <code class = "incode">Std</code> workspace.</p>
@@ -688,18 +839,18 @@ Add a copy of one element at the end of the array.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Core.Array.add">add(*Array, const [..] T)</a></td>
-<td class="enumeration">
-<p>
-Append a slice to the end of this instance.</p>
-</td>
-</tr>
-<tr>
-<td class="enumeration">
 <a href="#Core.Array.add">add(*Array, T)</a></td>
 <td class="enumeration">
 <p>
 Move one element at the end of the array.</p>
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Core.Array.add">add(*Array, const [..] T)</a></td>
+<td class="enumeration">
+<p>
+Append a slice to the end of this instance.</p>
 </td>
 </tr>
 <tr>
@@ -816,10 +967,10 @@ Ensure the Array is big enough to store at least <code class = "incode">newCount
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Core.Array.insertAt">insertAt(*Array, u64, T)</a></td>
+<a href="#Core.Array.insertAt">insertAt(*Array, u64, const [..] T)</a></td>
 <td class="enumeration">
 <p>
-Move a value at the given index. If <code class = "incode">index</code> is equal to <code class = "incode">count</code>, then the value is added at the end of the array. Order is preserved.</p>
+Insert some values at the given index. If <code class = "incode">index</code> is equal to <code class = "incode">count</code>, then the values are added at the end of the array. Order is preserved.</p>
 </td>
 </tr>
 <tr>
@@ -832,10 +983,10 @@ Insert a value at the given index. If <code class = "incode">index</code> is equ
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Core.Array.insertAt">insertAt(*Array, u64, const [..] T)</a></td>
+<a href="#Core.Array.insertAt">insertAt(*Array, u64, T)</a></td>
 <td class="enumeration">
 <p>
-Insert some values at the given index. If <code class = "incode">index</code> is equal to <code class = "incode">count</code>, then the values are added at the end of the array. Order is preserved.</p>
+Move a value at the given index. If <code class = "incode">index</code> is equal to <code class = "incode">count</code>, then the value is added at the end of the array. Order is preserved.</p>
 </td>
 </tr>
 <tr>
@@ -844,96 +995,6 @@ Insert some values at the given index. If <code class = "incode">index</code> is
 <td class="enumeration">
 <p>
 Returns true if the array is empty.</p>
-</td>
-</tr>
-<tr>
-<td class="enumeration">
-<a href="#Core.Array.opAffect">opAffect(*Array, const [..] T)</a></td>
-<td class="enumeration">
-<p>
-Initializes an Array that contains values copied from the specified array.</p>
-</td>
-</tr>
-<tr>
-<td class="enumeration">
-<a href="#Core.Array.opCast">opCast(*Array)</a></td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="enumeration">
-<a href="#Core.Array.opCast">opCast(*Array)</a></td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="enumeration">
-<a href="#Core.Array.opCount">opCount(*Array)</a></td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="enumeration">
-<a href="#Core.Array.opData">opData(*Array)</a></td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="enumeration">
-<a href="#Core.Array.opDrop">opDrop(*Array)</a></td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="enumeration">
-<a href="#Core.Array.opIndex">opIndex(const *Array, u64)</a></td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="enumeration">
-<a href="#Core.Array.opIndex">opIndex(const *Array, u64)</a></td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="enumeration">
-<a href="#Core.Array.opIndexAffect">opIndexAffect(*Array, u64, T)</a></td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="enumeration">
-<a href="#Core.Array.opIndexAssign">opIndexAssign(*Array, u64, T)</a></td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="enumeration">
-<a href="#Core.Array.opPostCopy">opPostCopy(*Array)</a></td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="enumeration">
-<a href="#Core.Array.opSlice">opSlice(*Array, u64, u64)</a></td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="enumeration">
-<a href="#Core.Array.opVisit">opVisit(const *Array, code)</a></td>
-<td class="enumeration">
-<p>
-Visit every elements of the array.</p>
-</td>
-</tr>
-<tr>
-<td class="enumeration">
-<a href="#Core.Array.opVisitBack">opVisitBack(const *Array, code)</a></td>
-<td class="enumeration">
-<p>
-Visit every elements of the array from end to start.</p>
 </td>
 </tr>
 <tr>
@@ -1052,6 +1113,99 @@ Swap two elements.</p>
 <td class="enumeration">
 <p>
 Returns a slice.</p>
+</td>
+</tr>
+</table>
+<h3>Special Functions</h3>
+<table class="enumeration">
+<tr>
+<td class="enumeration">
+<a href="#Core.Array.opAffect">opAffect(*Array, const [..] T)</a></td>
+<td class="enumeration">
+<p>
+Initializes an Array that contains values copied from the specified array.</p>
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Core.Array.opCast">opCast(*Array)</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Core.Array.opCast">opCast(*Array)</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Core.Array.opCount">opCount(*Array)</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Core.Array.opData">opData(*Array)</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Core.Array.opDrop">opDrop(*Array)</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Core.Array.opIndex">opIndex(const *Array, u64)</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Core.Array.opIndex">opIndex(const *Array, u64)</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Core.Array.opIndexAffect">opIndexAffect(*Array, u64, T)</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Core.Array.opIndexAssign">opIndexAssign(*Array, u64, T)</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Core.Array.opPostCopy">opPostCopy(*Array)</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Core.Array.opSlice">opSlice(*Array, u64, u64)</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Core.Array.opVisit">opVisit(const *Array, code)</a></td>
+<td class="enumeration">
+<p>
+Visit every elements of the array.</p>
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Core.Array.opVisitBack">opVisitBack(const *Array, code)</a></td>
+<td class="enumeration">
+<p>
+Visit every elements of the array from end to start.</p>
 </td>
 </tr>
 </table>
@@ -1842,6 +1996,9 @@ Delete one pointer allocated here.</p>
 Allocate a new pointer by using the contextual allocator.</p>
 </td>
 </tr>
+</table>
+<h3>Special Functions</h3>
+<table class="enumeration">
 <tr>
 <td class="enumeration">
 <a href="#Core.ArrayPtr.opDrop">opDrop(*ArrayPtr)</a></td>
@@ -2288,7 +2445,78 @@ Clean and split a list of arguments -option:value or -option=value =&gt; -option
 <table class="enumeration">
 <tr>
 <td class="enumeration">
+<a href="#Core.Compress.BitStream">BitStream</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="enumeration">
 <a href="#Core.Compress.Deflate">Deflate</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Core.Compress.Inflate">Inflate</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Core.Compress.ZLib">ZLib</a></td>
+<td class="enumeration">
+</td>
+</tr>
+</table>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Core.Compress.BitStream"><span class="titletype">struct</span> <span class="titlelight">Compress.</span><span class="titlestrong">BitStream</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\compress\bitstream.swg#L4" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<table class="enumeration">
+<tr>
+<td class="tdname">
+stream</td>
+<td class="tdtype">
+const [..] u8</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+curByte</td>
+<td class="tdtype">
+u64</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+codeBuffer</td>
+<td class="tdtype">
+u32</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+numBits</td>
+<td class="tdtype">
+u8</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+eof</td>
+<td class="tdtype">
+bool</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -2443,6 +2671,72 @@ Rle</td>
 <tr>
 <td class="tdname">
 Fixed</td>
+<td class="enumeration">
+</td>
+</tr>
+</table>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Core.Compress.Inflate"><span class="titletype">struct</span> <span class="titlelight">Compress.</span><span class="titlestrong">Inflate</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\compress\inflate.swg#L142" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<table class="enumeration">
+<tr>
+<td class="tdname">
+stream</td>
+<td class="tdtype">
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Compress.BitStream">BitStream</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+windowSize</td>
+<td class="tdtype">
+u32</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+adler</td>
+<td class="tdtype">
+Hash.Adler32</td>
+<td class="enumeration">
+</td>
+</tr>
+</table>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Core.Compress.ZLib"><span class="titletype">struct</span> <span class="titlelight">Compress.</span><span class="titlestrong">ZLib</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\compress\zlib.swg#L5" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<table class="enumeration">
+<tr>
+<td class="tdname">
+decoder</td>
+<td class="tdtype">
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Compress.Inflate">Inflate</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+encoder</td>
+<td class="tdtype">
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Compress.Deflate">Deflate</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -4113,6 +4407,25 @@ Add a new key.</p>
 </tr>
 <tr>
 <td class="enumeration">
+<a href="#Core.HashSet.remove">remove(*HashSet, K)</a></td>
+<td class="enumeration">
+<p>
+Remove the given key if it exists.</p>
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Core.HashSet.reserve">reserve(*HashSet, u64)</a></td>
+<td class="enumeration">
+<p>
+Reserve <code class = "incode">newCapacity</code> elements in the table.</p>
+</td>
+</tr>
+</table>
+<h3>Special Functions</h3>
+<table class="enumeration">
+<tr>
+<td class="enumeration">
 <a href="#Core.HashSet.opCount">opCount(*HashSet)</a></td>
 <td class="enumeration">
 </td>
@@ -4133,22 +4446,6 @@ Add a new key.</p>
 <td class="enumeration">
 <a href="#Core.HashSet.opVisit">opVisit(const *HashSet, code)</a></td>
 <td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="enumeration">
-<a href="#Core.HashSet.remove">remove(*HashSet, K)</a></td>
-<td class="enumeration">
-<p>
-Remove the given key if it exists.</p>
-</td>
-</tr>
-<tr>
-<td class="enumeration">
-<a href="#Core.HashSet.reserve">reserve(*HashSet, u64)</a></td>
-<td class="enumeration">
-<p>
-Reserve <code class = "incode">newCapacity</code> elements in the table.</p>
 </td>
 </tr>
 </table>
@@ -4557,6 +4854,25 @@ Free the hashtable content.</p>
 </tr>
 <tr>
 <td class="enumeration">
+<a href="#Core.HashTable.remove">remove(*HashTable, K)</a></td>
+<td class="enumeration">
+<p>
+Remove the given key if it exists.</p>
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Core.HashTable.reserve">reserve(*HashTable, u64)</a></td>
+<td class="enumeration">
+<p>
+Reserve <code class = "incode">newCapacity</code> elements in the table.</p>
+</td>
+</tr>
+</table>
+<h3>Special Functions</h3>
+<table class="enumeration">
+<tr>
+<td class="enumeration">
 <a href="#Core.HashTable.opCount">opCount(*HashTable)</a></td>
 <td class="enumeration">
 </td>
@@ -4579,22 +4895,6 @@ Free the hashtable content.</p>
 <td class="enumeration">
 <p>
 alias0 is the key, and alias1 is the value.</p>
-</td>
-</tr>
-<tr>
-<td class="enumeration">
-<a href="#Core.HashTable.remove">remove(*HashTable, K)</a></td>
-<td class="enumeration">
-<p>
-Remove the given key if it exists.</p>
-</td>
-</tr>
-<tr>
-<td class="enumeration">
-<a href="#Core.HashTable.reserve">reserve(*HashTable, u64)</a></td>
-<td class="enumeration">
-<p>
-Reserve <code class = "incode">newCapacity</code> elements in the table.</p>
 </td>
 </tr>
 </table>
@@ -7151,6 +7451,9 @@ Insert a node before the reference.</p>
 <td class="enumeration">
 </td>
 </tr>
+</table>
+<h3>Special Functions</h3>
+<table class="enumeration">
 <tr>
 <td class="enumeration">
 <a href="#Core.List.opDrop">opDrop(*List)</a></td>
@@ -7852,6 +8155,17 @@ Multiply & Add.</p>
 </tr>
 <tr>
 <td class="enumeration">
+<a href="#Core.Math.NumericArray.set">set(*NumericArray, ...)</a></td>
+<td class="enumeration">
+<p>
+Set all values.</p>
+</td>
+</tr>
+</table>
+<h3>Special Functions</h3>
+<table class="enumeration">
+<tr>
+<td class="enumeration">
 <a href="#Core.Math.NumericArray.opAffect">opAffect(*NumericArray, T)</a></td>
 <td class="enumeration">
 </td>
@@ -7890,14 +8204,6 @@ Multiply & Add.</p>
 <td class="enumeration">
 <a href="#Core.Math.NumericArray.opIndex">opIndex(const *NumericArray, u64)</a></td>
 <td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="enumeration">
-<a href="#Core.Math.NumericArray.set">set(*NumericArray, ...)</a></td>
-<td class="enumeration">
-<p>
-Set all values.</p>
 </td>
 </tr>
 </table>
@@ -8288,6 +8594,17 @@ Get the variant value of the given type Will assert if the current type does not
 </tr>
 <tr>
 <td class="enumeration">
+<a href="#Core.Math.Variant.set">set(*Variant, TN)</a></td>
+<td class="enumeration">
+<p>
+Set the variant value.</p>
+</td>
+</tr>
+</table>
+<h3>Special Functions</h3>
+<table class="enumeration">
+<tr>
+<td class="enumeration">
 <a href="#Core.Math.Variant.opAffect">opAffect(*Variant, TN)</a></td>
 <td class="enumeration">
 </td>
@@ -8320,14 +8637,6 @@ Get the variant value of the given type Will assert if the current type does not
 <td class="enumeration">
 <a href="#Core.Math.Variant.opPostMove">opPostMove(*Variant)</a></td>
 <td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="enumeration">
-<a href="#Core.Math.Variant.set">set(*Variant, TN)</a></td>
-<td class="enumeration">
-<p>
-Set the variant value.</p>
 </td>
 </tr>
 </table>
@@ -8631,6 +8940,70 @@ next</td>
 value</td>
 <td class="tdtype">
 T</td>
+<td class="enumeration">
+</td>
+</tr>
+</table>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Core.Noise"><span class="titletype">namespace</span> <span class="titlelight">Core.</span><span class="titlestrong">Noise</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\rand\noise.swg#L7" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Core.Noise.Gradients2D"><span class="titletype">const</span> <span class="titlelight">Noise.</span><span class="titlestrong">Constants</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\rand\noise.swg#L16" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<table class="enumeration">
+<tr>
+<td id="Core.Noise.Gradients2D" class="tdname">
+Gradients2D</td>
+<td class="tdtype">
+[] f32</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td id="Core.Noise.Gradients3D" class="tdname">
+Gradients3D</td>
+<td class="tdtype">
+[] f32</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td id="Core.Noise.PrimeX" class="tdname">
+PrimeX</td>
+<td class="tdtype">
+</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td id="Core.Noise.PrimeY" class="tdname">
+PrimeY</td>
+<td class="tdtype">
+</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td id="Core.Noise.PrimeZ" class="tdname">
+PrimeZ</td>
+<td class="tdtype">
+</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -9022,6 +9395,257 @@ VolumeSeparatorChar</td>
 <table class="h3">
 <tr>
 <td class="h3">
+<h3 class="content" id="Core.Random"><span class="titletype">namespace</span> <span class="titlelight">Core.</span><span class="titlestrong">Random</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\rand\mt64.swg#L11" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<h3>Structs</h3>
+<table class="enumeration">
+<tr>
+<td class="enumeration">
+<a href="#Core.Random.CMWC4096">CMWC4096</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Core.Random.MWC">MWC</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Core.Random.Mt64">Mt64</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Core.Random.Rng">Rng</a></td>
+<td class="enumeration">
+</td>
+</tr>
+</table>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Core.Random.CMWC4096"><span class="titletype">struct</span> <span class="titlelight">Random.</span><span class="titlestrong">CMWC4096</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\rand\cmwc.swg#L5" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<table class="enumeration">
+<tr>
+<td class="tdname">
+q</td>
+<td class="tdtype">
+[4096] u32</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+c</td>
+<td class="tdtype">
+u32</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+i</td>
+<td class="tdtype">
+u32</td>
+<td class="enumeration">
+<p>
+special invalid value (&gt; 4095) to force the seed on first get.</p>
+</td>
+</tr>
+</table>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Core.Random.LM"><span class="titletype">const</span> <span class="titlelight">Random.</span><span class="titlestrong">Constants</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\rand\mt64.swg#L18" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<table class="enumeration">
+<tr>
+<td id="Core.Random.LM" class="tdname">
+LM</td>
+<td class="tdtype">
+</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td id="Core.Random.MATRIX_A" class="tdname">
+MATRIX_A</td>
+<td class="tdtype">
+</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td id="Core.Random.MID" class="tdname">
+MID</td>
+<td class="tdtype">
+</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td id="Core.Random.MM" class="tdname">
+MM</td>
+<td class="tdtype">
+</td>
+<td class="enumeration">
+</td>
+</tr>
+</table>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Core.Random.MWC"><span class="titletype">struct</span> <span class="titlelight">Random.</span><span class="titlestrong">MWC</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\rand\mwc.swg#L5" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<table class="enumeration">
+<tr>
+<td class="tdname">
+w</td>
+<td class="tdtype">
+u32</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+z</td>
+<td class="tdtype">
+u32</td>
+<td class="enumeration">
+</td>
+</tr>
+</table>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Core.Random.Mt64"><span class="titletype">struct</span> <span class="titlelight">Random.</span><span class="titlestrong">Mt64</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\rand\mt64.swg#L20" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<table class="enumeration">
+<tr>
+<td class="tdname">
+mt</td>
+<td class="tdtype">
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Random.NN">NN</a> u64</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+mti</td>
+<td class="tdtype">
+u64</td>
+<td class="enumeration">
+</td>
+</tr>
+</table>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Core.Random.NN"><span class="titletype">const</span> <span class="titlelight">Random.</span><span class="titlestrong">Constants</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\rand\mt64.swg#L13" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<table class="enumeration">
+<tr>
+<td id="Core.Random.NN" class="tdname">
+NN</td>
+<td class="tdtype">
+</td>
+<td class="enumeration">
+</td>
+</tr>
+</table>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Core.Random.Rng"><span class="titletype">struct</span> <span class="titlelight">Random.</span><span class="titlestrong">Rng</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\rand\rng.swg#L4" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<table class="enumeration">
+<tr>
+<td class="tdname">
+rng</td>
+<td class="tdtype">
+T</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+seedDone</td>
+<td class="tdtype">
+bool</td>
+<td class="enumeration">
+</td>
+</tr>
+</table>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Core.Random.UM"><span class="titletype">const</span> <span class="titlelight">Random.</span><span class="titlestrong">Constants</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\rand\mt64.swg#L17" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<table class="enumeration">
+<tr>
+<td id="Core.Random.UM" class="tdname">
+UM</td>
+<td class="tdtype">
+</td>
+<td class="enumeration">
+</td>
+</tr>
+</table>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Core.Reflection"><span class="titletype">namespace</span> <span class="titlelight">Core.</span><span class="titlestrong">Reflection</span></h3>
 </td>
 <td class="srcref">
@@ -9029,6 +9653,1881 @@ VolumeSeparatorChar</td>
 </tr>
 </table>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Core.Serialization"><span class="titletype">namespace</span> <span class="titlelight">Core.</span><span class="titlestrong">Serialization</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\tagbin.swg#L1" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<h3>Structs</h3>
+<table class="enumeration">
+<tr>
+<td class="enumeration">
+<a href="#Core.Serialization.Decoder">Decoder</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Core.Serialization.Encoder">Encoder</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Core.Serialization.Serializer">Serializer</a></td>
+<td class="enumeration">
+</td>
+</tr>
+</table>
+<h3>Enums</h3>
+<table class="enumeration">
+<tr>
+<td class="enumeration">
+<a href="#Core.Serialization.DecoderFlags">DecoderFlags</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Core.Serialization.SectionKind">SectionKind</a></td>
+<td class="enumeration">
+</td>
+</tr>
+</table>
+<h3>Attributes</h3>
+<table class="enumeration">
+<tr>
+<td class="enumeration">
+<a href="#Core.Serialization.Alias">Alias</a></td>
+<td class="enumeration">
+<p>
+Accept this other name for the field.</p>
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Core.Serialization.Final">Final</a></td>
+<td class="enumeration">
+<p>
+The struct does not need versionning.</p>
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Core.Serialization.NoSerialize">NoSerialize</a></td>
+<td class="enumeration">
+<p>
+Do not serialize a struct or a field.</p>
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Core.Serialization.PodFinal">PodFinal</a></td>
+<td class="enumeration">
+<p>
+The struct does not need versionning an can be serialized in place.</p>
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Core.Serialization.Version">Version</a></td>
+<td class="enumeration">
+<p>
+Set the struct version number.</p>
+</td>
+</tr>
+</table>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Core.Serialization.Alias"><span class="titletype">attr</span> <span class="titlelight">Serialization.</span><span class="titlestrong">Alias</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\serialize.swg#L19" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p class="code">
+<code style="white-space: break-spaces">attr Alias(name: string)
+</code>
+</p>
+<p>
+Accept this other name for the field.</p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Core.Serialization.Decoder"><span class="titletype">struct</span> <span class="titlelight">Serialization.</span><span class="titlestrong">Decoder</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\decoder.swg#L39" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<table class="enumeration">
+<tr>
+<td class="tdname">
+serializer</td>
+<td class="tdtype">
+T</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+flags</td>
+<td class="tdtype">
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Serialization.DecoderFlags">DecoderFlags</a></td>
+<td class="enumeration">
+</td>
+</tr>
+</table>
+<h3>Functions</h3>
+<table class="enumeration">
+<tr>
+<td class="enumeration">
+<a href="#Core.Serialization.Decoder.end">end(*Decoder)</a></td>
+<td class="enumeration">
+<p>
+Finish reading.</p>
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Core.Serialization.Decoder.readAll">readAll(*Decoder, const [..] u8)</a></td>
+<td class="enumeration">
+<p>
+Read a full struct.</p>
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Core.Serialization.Decoder.readTypeValue">readTypeValue(*Decoder, TypeValue, ^void)</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Core.Serialization.Decoder.readValue">readValue(*Decoder, ^void, const *TypeInfo)</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Core.Serialization.Decoder.start">start(*Decoder, const [..] u8)</a></td>
+<td class="enumeration">
+<p>
+Start reading.</p>
+</td>
+</tr>
+</table>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Core.Serialization.Decoder.IDecoder.beginField"><span class="titletype">func</span> <span class="titlelight">IDecoder.</span><span class="titlestrong">beginField</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\decoder.swg#L271" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p class="code">
+<code style="white-space: break-spaces">func beginField(using self, val: Swag.TypeValue)->bool throw
+</code>
+</p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Core.Serialization.Decoder.IDecoder.beginSection"><span class="titletype">func</span> <span class="titlelight">IDecoder.</span><span class="titlestrong">beginSection</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\decoder.swg#L285" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p class="code">
+<code style="white-space: break-spaces">func beginSection(using self, kind: SectionKind) throw
+</code>
+</p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Core.Serialization.Decoder.IDecoder.end"><span class="titletype">func</span> <span class="titlelight">IDecoder.</span><span class="titlestrong">end</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\decoder.swg#L266" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p class="code">
+<code style="white-space: break-spaces">func end(using self) throw
+</code>
+</p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Core.Serialization.Decoder.IDecoder.endField"><span class="titletype">func</span> <span class="titlelight">IDecoder.</span><span class="titlestrong">endField</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\decoder.swg#L279" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p class="code">
+<code style="white-space: break-spaces">func endField(using self) throw
+</code>
+</p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Core.Serialization.Decoder.IDecoder.endSection"><span class="titletype">func</span> <span class="titlelight">IDecoder.</span><span class="titlestrong">endSection</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\decoder.swg#L290" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p class="code">
+<code style="white-space: break-spaces">func endSection(using self) throw
+</code>
+</p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Core.Serialization.Decoder.IDecoder.getVersion"><span class="titletype">func</span> <span class="titlelight">IDecoder.</span><span class="titlestrong">getVersion</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\decoder.swg#L295" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p class="code">
+<code style="white-space: break-spaces">func getVersion(using self)->u32
+</code>
+</p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Core.Serialization.Decoder.IDecoder.read"><span class="titletype">func</span> <span class="titlelight">IDecoder.</span><span class="titlestrong">read</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\decoder.swg#L300" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p class="code">
+<code style="white-space: break-spaces">func read(using self, data: *void, dataType: const *TypeInfo) throw
+</code>
+</p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Core.Serialization.Decoder.IDecoder.readBool"><span class="titletype">func</span> <span class="titlelight">IDecoder.</span><span class="titlestrong">readBool</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\decoder.swg#L328" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p class="code">
+<code style="white-space: break-spaces">func readBool(using self)->bool throw
+</code>
+</p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Core.Serialization.Decoder.IDecoder.readBufferU8"><span class="titletype">func</span> <span class="titlelight">IDecoder.</span><span class="titlestrong">readBufferU8</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\decoder.swg#L305" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p class="code">
+<code style="white-space: break-spaces">func readBufferU8(using self, count: u64)->*u8 throw
+</code>
+</p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Core.Serialization.Decoder.IDecoder.readF32"><span class="titletype">func</span> <span class="titlelight">IDecoder.</span><span class="titlestrong">readF32</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\decoder.swg#L337" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p class="code">
+<code style="white-space: break-spaces">func readF32(using self)->f32 throw
+</code>
+</p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Core.Serialization.Decoder.IDecoder.readF64"><span class="titletype">func</span> <span class="titlelight">IDecoder.</span><span class="titlestrong">readF64</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\decoder.swg#L338" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p class="code">
+<code style="white-space: break-spaces">func readF64(using self)->f64 throw
+</code>
+</p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Core.Serialization.Decoder.IDecoder.readS16"><span class="titletype">func</span> <span class="titlelight">IDecoder.</span><span class="titlestrong">readS16</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\decoder.swg#L330" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p class="code">
+<code style="white-space: break-spaces">func readS16(using self)->s16 throw
+</code>
+</p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Core.Serialization.Decoder.IDecoder.readS32"><span class="titletype">func</span> <span class="titlelight">IDecoder.</span><span class="titlestrong">readS32</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\decoder.swg#L331" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p class="code">
+<code style="white-space: break-spaces">func readS32(using self)->s32 throw
+</code>
+</p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Core.Serialization.Decoder.IDecoder.readS64"><span class="titletype">func</span> <span class="titlelight">IDecoder.</span><span class="titlestrong">readS64</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\decoder.swg#L332" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p class="code">
+<code style="white-space: break-spaces">func readS64(using self)->s64 throw
+</code>
+</p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Core.Serialization.Decoder.IDecoder.readS8"><span class="titletype">func</span> <span class="titlelight">IDecoder.</span><span class="titlestrong">readS8</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\decoder.swg#L329" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p class="code">
+<code style="white-space: break-spaces">func readS8(using self)->s8 throw
+</code>
+</p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Core.Serialization.Decoder.IDecoder.readU16"><span class="titletype">func</span> <span class="titlelight">IDecoder.</span><span class="titlestrong">readU16</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\decoder.swg#L334" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p class="code">
+<code style="white-space: break-spaces">func readU16(using self)->u16 throw
+</code>
+</p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Core.Serialization.Decoder.IDecoder.readU32"><span class="titletype">func</span> <span class="titlelight">IDecoder.</span><span class="titlestrong">readU32</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\decoder.swg#L335" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p class="code">
+<code style="white-space: break-spaces">func readU32(using self)->u32 throw
+</code>
+</p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Core.Serialization.Decoder.IDecoder.readU64"><span class="titletype">func</span> <span class="titlelight">IDecoder.</span><span class="titlestrong">readU64</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\decoder.swg#L336" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p class="code">
+<code style="white-space: break-spaces">func readU64(using self)->u64 throw
+</code>
+</p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Core.Serialization.Decoder.IDecoder.readU8"><span class="titletype">func</span> <span class="titlelight">IDecoder.</span><span class="titlestrong">readU8</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\decoder.swg#L333" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p class="code">
+<code style="white-space: break-spaces">func readU8(using self)->u8 throw
+</code>
+</p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Core.Serialization.Decoder.IDecoder.start"><span class="titletype">func</span> <span class="titlelight">IDecoder.</span><span class="titlestrong">start</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\decoder.swg#L260" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p class="code">
+<code style="white-space: break-spaces">func start(using self, input: const [..] u8) throw
+</code>
+</p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Core.Serialization.Decoder.end"><span class="titletype">func</span> <span class="titlelight">Decoder.</span><span class="titlestrong">end</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\decoder.swg#L236" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>
+Finish reading.</p>
+<p class="code">
+<code style="white-space: break-spaces">func end(using self) throw
+</code>
+</p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Core.Serialization.Decoder.readAll"><span class="titletype">func</span> <span class="titlelight">Decoder.</span><span class="titlestrong">readAll</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\decoder.swg#L242" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>
+Read a full struct.</p>
+<p class="code">
+<code style="white-space: break-spaces">func(TR) readAll(using self, input: const [..] u8)->*TR throw
+</code>
+</p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Core.Serialization.Decoder.readTypeValue"><span class="titletype">func</span> <span class="titlelight">Decoder.</span><span class="titlestrong">readTypeValue</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\decoder.swg#L47" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p class="code">
+<code style="white-space: break-spaces">func readTypeValue(using self, typeVal: TypeValue, data: ^void) throw
+</code>
+</p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Core.Serialization.Decoder.readValue"><span class="titletype">func</span> <span class="titlelight">Decoder.</span><span class="titlestrong">readValue</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\decoder.swg#L54" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p class="code">
+<code style="white-space: break-spaces">func readValue(using self, data: ^void, dataType: const *TypeInfo) throw
+</code>
+</p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Core.Serialization.Decoder.start"><span class="titletype">func</span> <span class="titlelight">Decoder.</span><span class="titlestrong">start</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\decoder.swg#L229" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>
+Start reading.</p>
+<p class="code">
+<code style="white-space: break-spaces">func start(using self, input: const [..] u8) throw
+</code>
+</p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Core.Serialization.DecoderFlags"><span class="titletype">enum</span> <span class="titlelight">Serialization.</span><span class="titlestrong">DecoderFlags</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\decoder.swg#L33" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<table class="enumeration">
+<tr>
+<td class="tdname">
+Zero</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+IgnoreStructFieldError</td>
+<td class="enumeration">
+</td>
+</tr>
+</table>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Core.Serialization.Encoder"><span class="titletype">struct</span> <span class="titlelight">Serialization.</span><span class="titlestrong">Encoder</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\encoder.swg#L38" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<table class="enumeration">
+<tr>
+<td class="tdname">
+serializer</td>
+<td class="tdtype">
+T</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+errorIfUnknown</td>
+<td class="tdtype">
+bool</td>
+<td class="enumeration">
+<p>
+If true, raise an error if a type cannot be saved, and just ignore if false.</p>
+</td>
+</tr>
+</table>
+<h3>Functions</h3>
+<table class="enumeration">
+<tr>
+<td class="enumeration">
+<a href="#Core.Serialization.Encoder.end">end(*Encoder)</a></td>
+<td class="enumeration">
+<p>
+End serialization.</p>
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Core.Serialization.Encoder.start">start(*Encoder, *ConcatBuffer)</a></td>
+<td class="enumeration">
+<p>
+Start serialization.</p>
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Core.Serialization.Encoder.writeAll">writeAll(*Encoder, *ConcatBuffer, any)</a></td>
+<td class="enumeration">
+<p>
+Write a full struct.</p>
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Core.Serialization.Encoder.writeTypeValue">writeTypeValue(*Encoder, TypeValue, const ^void)</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Core.Serialization.Encoder.writeValue">writeValue(*Encoder, const ^void, const *TypeInfo)</a></td>
+<td class="enumeration">
+</td>
+</tr>
+</table>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Core.Serialization.Encoder.IEncoder.beginField"><span class="titletype">func</span> <span class="titlelight">IEncoder.</span><span class="titlestrong">beginField</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\encoder.swg#L262" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p class="code">
+<code style="white-space: break-spaces">func beginField(using self, val: Swag.TypeValue) throw
+</code>
+</p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Core.Serialization.Encoder.IEncoder.beginSection"><span class="titletype">func</span> <span class="titlelight">IEncoder.</span><span class="titlestrong">beginSection</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\encoder.swg#L274" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p class="code">
+<code style="white-space: break-spaces">func beginSection(using self, kind: SectionKind) throw
+</code>
+</p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Core.Serialization.Encoder.IEncoder.end"><span class="titletype">func</span> <span class="titlelight">IEncoder.</span><span class="titlestrong">end</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\encoder.swg#L257" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>
+End serialization.</p>
+<p class="code">
+<code style="white-space: break-spaces">func end(using self) throw
+</code>
+</p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Core.Serialization.Encoder.IEncoder.endField"><span class="titletype">func</span> <span class="titlelight">IEncoder.</span><span class="titlestrong">endField</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\encoder.swg#L268" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p class="code">
+<code style="white-space: break-spaces">func endField(using self) throw
+</code>
+</p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Core.Serialization.Encoder.IEncoder.endSection"><span class="titletype">func</span> <span class="titlelight">IEncoder.</span><span class="titlestrong">endSection</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\encoder.swg#L279" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p class="code">
+<code style="white-space: break-spaces">func endSection(using self) throw
+</code>
+</p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Core.Serialization.Encoder.IEncoder.start"><span class="titletype">func</span> <span class="titlelight">IEncoder.</span><span class="titlestrong">start</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\encoder.swg#L250" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>
+Start serialization.</p>
+<p class="code">
+<code style="white-space: break-spaces">func start(using self, result: *ConcatBuffer) throw
+</code>
+</p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Core.Serialization.Encoder.IEncoder.write"><span class="titletype">func</span> <span class="titlelight">IEncoder.</span><span class="titlestrong">write</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\encoder.swg#L284" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p class="code">
+<code style="white-space: break-spaces">func write(using self, data: const ^void, type: const *TypeInfo) throw
+</code>
+</p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Core.Serialization.Encoder.IEncoder.writeBool"><span class="titletype">func</span> <span class="titlelight">IEncoder.</span><span class="titlestrong">writeBool</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\encoder.swg#L307" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p class="code">
+<code style="white-space: break-spaces">func writeBool(using self, value: bool)
+</code>
+</p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Core.Serialization.Encoder.IEncoder.writeBufferU8"><span class="titletype">func</span> <span class="titlelight">IEncoder.</span><span class="titlestrong">writeBufferU8</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\encoder.swg#L289" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p class="code">
+<code style="white-space: break-spaces">func writeBufferU8(using self, data: const ^u8, count: u64) throw
+</code>
+</p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Core.Serialization.Encoder.IEncoder.writeF32"><span class="titletype">func</span> <span class="titlelight">IEncoder.</span><span class="titlestrong">writeF32</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\encoder.swg#L316" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p class="code">
+<code style="white-space: break-spaces">func writeF32(using self, value: f32)
+</code>
+</p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Core.Serialization.Encoder.IEncoder.writeF64"><span class="titletype">func</span> <span class="titlelight">IEncoder.</span><span class="titlestrong">writeF64</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\encoder.swg#L317" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p class="code">
+<code style="white-space: break-spaces">func writeF64(using self, value: f64)
+</code>
+</p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Core.Serialization.Encoder.IEncoder.writeS16"><span class="titletype">func</span> <span class="titlelight">IEncoder.</span><span class="titlestrong">writeS16</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\encoder.swg#L309" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p class="code">
+<code style="white-space: break-spaces">func writeS16(using self, value: s16)
+</code>
+</p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Core.Serialization.Encoder.IEncoder.writeS32"><span class="titletype">func</span> <span class="titlelight">IEncoder.</span><span class="titlestrong">writeS32</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\encoder.swg#L310" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p class="code">
+<code style="white-space: break-spaces">func writeS32(using self, value: s32)
+</code>
+</p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Core.Serialization.Encoder.IEncoder.writeS64"><span class="titletype">func</span> <span class="titlelight">IEncoder.</span><span class="titlestrong">writeS64</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\encoder.swg#L311" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p class="code">
+<code style="white-space: break-spaces">func writeS64(using self, value: s64)
+</code>
+</p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Core.Serialization.Encoder.IEncoder.writeS8"><span class="titletype">func</span> <span class="titlelight">IEncoder.</span><span class="titlestrong">writeS8</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\encoder.swg#L308" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p class="code">
+<code style="white-space: break-spaces">func writeS8(using self, value: s8)
+</code>
+</p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Core.Serialization.Encoder.IEncoder.writeU16"><span class="titletype">func</span> <span class="titlelight">IEncoder.</span><span class="titlestrong">writeU16</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\encoder.swg#L313" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p class="code">
+<code style="white-space: break-spaces">func writeU16(using self, value: u16)
+</code>
+</p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Core.Serialization.Encoder.IEncoder.writeU32"><span class="titletype">func</span> <span class="titlelight">IEncoder.</span><span class="titlestrong">writeU32</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\encoder.swg#L314" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p class="code">
+<code style="white-space: break-spaces">func writeU32(using self, value: u32)
+</code>
+</p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Core.Serialization.Encoder.IEncoder.writeU64"><span class="titletype">func</span> <span class="titlelight">IEncoder.</span><span class="titlestrong">writeU64</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\encoder.swg#L315" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p class="code">
+<code style="white-space: break-spaces">func writeU64(using self, value: u64)
+</code>
+</p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Core.Serialization.Encoder.IEncoder.writeU8"><span class="titletype">func</span> <span class="titlelight">IEncoder.</span><span class="titlestrong">writeU8</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\encoder.swg#L312" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p class="code">
+<code style="white-space: break-spaces">func writeU8(using self, value: u8)
+</code>
+</p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Core.Serialization.Encoder.end"><span class="titletype">func</span> <span class="titlelight">Encoder.</span><span class="titlestrong">end</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\encoder.swg#L54" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>
+End serialization.</p>
+<p class="code">
+<code style="white-space: break-spaces">func end(using self) throw
+</code>
+</p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Core.Serialization.Encoder.start"><span class="titletype">func</span> <span class="titlelight">Encoder.</span><span class="titlestrong">start</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\encoder.swg#L47" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>
+Start serialization.</p>
+<p class="code">
+<code style="white-space: break-spaces">func start(using self, result: *ConcatBuffer) throw
+</code>
+</p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Core.Serialization.Encoder.writeAll"><span class="titletype">func</span> <span class="titlelight">Encoder.</span><span class="titlestrong">writeAll</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\encoder.swg#L238" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>
+Write a full struct.</p>
+<p class="code">
+<code style="white-space: break-spaces">func writeAll(using self, result: *ConcatBuffer, value: any) throw
+</code>
+</p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Core.Serialization.Encoder.writeTypeValue"><span class="titletype">func</span> <span class="titlelight">Encoder.</span><span class="titlestrong">writeTypeValue</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\encoder.swg#L59" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p class="code">
+<code style="white-space: break-spaces">func writeTypeValue(using self, typeVal: TypeValue, data: const ^void) throw
+</code>
+</p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Core.Serialization.Encoder.writeValue"><span class="titletype">func</span> <span class="titlelight">Encoder.</span><span class="titlestrong">writeValue</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\encoder.swg#L66" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p class="code">
+<code style="white-space: break-spaces">func writeValue(using self, data: const ^void, dataType: const *TypeInfo) throw
+</code>
+</p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Core.Serialization.Final"><span class="titletype">attr</span> <span class="titlelight">Serialization.</span><span class="titlestrong">Final</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\serialize.swg#L11" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p class="code">
+<code style="white-space: break-spaces">attr Final
+</code>
+</p>
+<p>
+The struct does not need versionning.</p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Core.Serialization.IDecoder"><span class="titletype">interface</span> <span class="titlelight">Serialization.</span><span class="titlestrong">IDecoder</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\decoder.swg#L5" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Core.Serialization.IEncoder"><span class="titletype">interface</span> <span class="titlelight">Serialization.</span><span class="titlestrong">IEncoder</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\encoder.swg#L12" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Core.Serialization.ISerialize"><span class="titletype">interface</span> <span class="titlelight">Serialization.</span><span class="titlestrong">ISerialize</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\serialize.swg#L25" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Core.Serialization.NoSerialize"><span class="titletype">attr</span> <span class="titlelight">Serialization.</span><span class="titlestrong">NoSerialize</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\serialize.swg#L23" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p class="code">
+<code style="white-space: break-spaces">attr NoSerialize
+</code>
+</p>
+<p>
+Do not serialize a struct or a field.</p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Core.Serialization.PodFinal"><span class="titletype">attr</span> <span class="titlelight">Serialization.</span><span class="titlestrong">PodFinal</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\serialize.swg#L15" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p class="code">
+<code style="white-space: break-spaces">attr PodFinal
+</code>
+</p>
+<p>
+The struct does not need versionning an can be serialized in place.</p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Core.Serialization.Read"><span class="titletype">namespace</span> <span class="titlelight">Core.Serialization.</span><span class="titlestrong">Read</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\tagbin.swg#L1" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<h3>Structs</h3>
+<table class="enumeration">
+<tr>
+<td class="enumeration">
+<a href="#Core.Serialization.Read.JSon">JSon</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Core.Serialization.Read.TagBin">TagBin</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Core.Serialization.Read.TagBinOptions">TagBinOptions</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Core.Serialization.Read.TagBinSection">TagBinSection</a></td>
+<td class="enumeration">
+</td>
+</tr>
+</table>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Core.Serialization.Read.JSon"><span class="titletype">struct</span> <span class="titlelight">Read.</span><span class="titlestrong">JSon</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\json.swg#L4" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<table class="enumeration">
+<tr>
+<td class="tdname">
+stream</td>
+<td class="tdtype">
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.ByteStream">ByteStream</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+line</td>
+<td class="tdtype">
+u64</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+col</td>
+<td class="tdtype">
+u64</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+propName</td>
+<td class="tdtype">
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.String">String</a></td>
+<td class="enumeration">
+</td>
+</tr>
+</table>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Core.Serialization.Read.TagBin"><span class="titletype">struct</span> <span class="titlelight">Read.</span><span class="titlestrong">TagBin</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\tagbin.swg#L42" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<table class="enumeration">
+<tr>
+<td class="tdname">
+stream</td>
+<td class="tdtype">
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.ByteStream">ByteStream</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+options</td>
+<td class="tdtype">
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Serialization.Read.TagBinOptions">TagBinOptions</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+freeSections</td>
+<td class="tdtype">
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.ArrayPtr">ArrayPtr</a>(<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Serialization.Write.TagBinSection">TagBinSection</a>)</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+sections</td>
+<td class="tdtype">
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.ArrayPtr">ArrayPtr</a>(<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Serialization.Write.TagBinSection">TagBinSection</a>)</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+convertNextNative</td>
+<td class="tdtype">
+const *Swag.TypeInfoNative</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+convertValToArray</td>
+<td class="tdtype">
+bool</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+convertArrayToVal</td>
+<td class="tdtype">
+bool</td>
+<td class="enumeration">
+</td>
+</tr>
+</table>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Core.Serialization.Read.TagBinOptions"><span class="titletype">struct</span> <span class="titlelight">Read.</span><span class="titlestrong">TagBinOptions</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\tagbin.swg#L37" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<table class="enumeration">
+<tr>
+<td class="tdname">
+tryForward</td>
+<td class="tdtype">
+bool</td>
+<td class="enumeration">
+<p>
+Accept to try to read a newest version, otherwise error.</p>
+</td>
+</tr>
+</table>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Core.Serialization.Read.TagBinSection"><span class="titletype">struct</span> <span class="titlelight">Read.</span><span class="titlestrong">TagBinSection</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\tagbin.swg#L28" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<table class="enumeration">
+<tr>
+<td class="tdname">
+mapSeek</td>
+<td class="tdtype">
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.HashTable">HashTable</a>(u32, u64)</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+afterFatSeek</td>
+<td class="tdtype">
+u64</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+version</td>
+<td class="tdtype">
+u32</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+kind</td>
+<td class="tdtype">
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Serialization.SectionKind">SectionKind</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+skipFat</td>
+<td class="tdtype">
+bool</td>
+<td class="enumeration">
+</td>
+</tr>
+</table>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Core.Serialization.SectionKind"><span class="titletype">enum</span> <span class="titlelight">Serialization.</span><span class="titlestrong">SectionKind</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\encoder.swg#L5" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<table class="enumeration">
+<tr>
+<td class="tdname">
+Raw</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+Unordered</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+Ordered</td>
+<td class="enumeration">
+</td>
+</tr>
+</table>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Core.Serialization.Serializer"><span class="titletype">struct</span> <span class="titlelight">Serialization.</span><span class="titlestrong">Serializer</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\serialize.swg#L34" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<table class="enumeration">
+<tr>
+<td class="tdname">
+encode</td>
+<td class="tdtype">
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Serialization.IEncoder">IEncoder</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+decode</td>
+<td class="tdtype">
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Serialization.IDecoder">IDecoder</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+isWrite</td>
+<td class="tdtype">
+bool</td>
+<td class="enumeration">
+</td>
+</tr>
+</table>
+<h3>Functions</h3>
+<table class="enumeration">
+<tr>
+<td class="enumeration">
+<a href="#Core.Serialization.Serializer.beginSection">beginSection(*Serializer)</a></td>
+<td class="enumeration">
+<p>
+Start a new section.</p>
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Core.Serialization.Serializer.end">end(*Serializer)</a></td>
+<td class="enumeration">
+<p>
+End encoding/decoding.</p>
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Core.Serialization.Serializer.endSection">endSection(*Serializer)</a></td>
+<td class="enumeration">
+<p>
+End the previous section.</p>
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Core.Serialization.Serializer.isReading">isReading(*Serializer)</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Core.Serialization.Serializer.isWriting">isWriting(*Serializer)</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Core.Serialization.Serializer.serialize">serialize(*Serializer, string, u32, *MT)</a></td>
+<td class="enumeration">
+<p>
+Serialize one value.</p>
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Core.Serialization.Serializer.serialize">serialize(*Serializer, string, *MT)</a></td>
+<td class="enumeration">
+<p>
+Serialize one value.</p>
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Core.Serialization.Serializer.startRead">startRead(*Serializer, IDecoder, const [..] u8)</a></td>
+<td class="enumeration">
+<p>
+Start decoding.</p>
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Core.Serialization.Serializer.startWrite">startWrite(*Serializer, IEncoder, *ConcatBuffer)</a></td>
+<td class="enumeration">
+<p>
+Start encoding.</p>
+</td>
+</tr>
+</table>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Core.Serialization.Serializer.beginSection"><span class="titletype">func</span> <span class="titlelight">Serializer.</span><span class="titlestrong">beginSection</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\serialize.swg#L74" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>
+Start a new section.</p>
+<p class="code">
+<code style="white-space: break-spaces">func beginSection(using self, kind = SectionKind.Unordered) throw
+</code>
+</p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Core.Serialization.Serializer.end"><span class="titletype">func</span> <span class="titlelight">Serializer.</span><span class="titlestrong">end</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\serialize.swg#L65" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>
+End encoding/decoding.</p>
+<p class="code">
+<code style="white-space: break-spaces">func end(using self) throw
+</code>
+</p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Core.Serialization.Serializer.endSection"><span class="titletype">func</span> <span class="titlelight">Serializer.</span><span class="titlestrong">endSection</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\serialize.swg#L83" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>
+End the previous section.</p>
+<p class="code">
+<code style="white-space: break-spaces">func endSection(using self) throw
+</code>
+</p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Core.Serialization.Serializer.isReading"><span class="titletype">func</span> <span class="titlelight">Serializer.</span><span class="titlestrong">isReading</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\serialize.swg#L46" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p class="code">
+<code style="white-space: break-spaces">func isReading(using self)
+</code>
+</p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Core.Serialization.Serializer.isWriting"><span class="titletype">func</span> <span class="titlelight">Serializer.</span><span class="titlestrong">isWriting</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\serialize.swg#L44" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p class="code">
+<code style="white-space: break-spaces">func isWriting(using self)
+</code>
+</p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Core.Serialization.Serializer.serialize"><span class="titletype">func</span> <span class="titlelight">Serializer.</span><span class="titlestrong">serialize</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\serialize.swg#L93" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>
+Serialize one value.</p>
+<p class="code">
+<code style="white-space: break-spaces">func(MT) serialize(using self, name: string, crc32: u32, res: *MT) throw
+</code>
+</p>
+<p>
+Serialize one value.</p>
+<p class="code">
+<code style="white-space: break-spaces">func(MT) serialize(using self, name: string, res: *MT) throw
+</code>
+</p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Core.Serialization.Serializer.startRead"><span class="titletype">func</span> <span class="titlelight">Serializer.</span><span class="titlestrong">startRead</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\serialize.swg#L57" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>
+Start decoding.</p>
+<p class="code">
+<code style="white-space: break-spaces">func startRead(using self, decoder: IDecoder, input: const [..] u8) throw
+</code>
+</p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Core.Serialization.Serializer.startWrite"><span class="titletype">func</span> <span class="titlelight">Serializer.</span><span class="titlestrong">startWrite</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\serialize.swg#L49" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>
+Start encoding.</p>
+<p class="code">
+<code style="white-space: break-spaces">func startWrite(using self, encoder: IEncoder, output: *ConcatBuffer) throw
+</code>
+</p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Core.Serialization.Version"><span class="titletype">attr</span> <span class="titlelight">Serialization.</span><span class="titlestrong">Version</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\serialize.swg#L7" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p class="code">
+<code style="white-space: break-spaces">attr Version(v: u32)
+</code>
+</p>
+<p>
+Set the struct version number.</p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Core.Serialization.Write"><span class="titletype">namespace</span> <span class="titlelight">Core.Serialization.</span><span class="titlestrong">Write</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\tagbin.swg#L1" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<h3>Structs</h3>
+<table class="enumeration">
+<tr>
+<td class="enumeration">
+<a href="#Core.Serialization.Write.JSon">JSon</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Core.Serialization.Write.JSonOptions">JSonOptions</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Core.Serialization.Write.TagBin">TagBin</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Core.Serialization.Write.TagBinSection">TagBinSection</a></td>
+<td class="enumeration">
+</td>
+</tr>
+</table>
+<h3>Enums</h3>
+<table class="enumeration">
+<tr>
+<td class="enumeration">
+<a href="#Core.Serialization.Write.TagBinSignatures">TagBinSignatures</a></td>
+<td class="enumeration">
+</td>
+</tr>
+</table>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Core.Serialization.Write.JSon"><span class="titletype">struct</span> <span class="titlelight">Write.</span><span class="titlestrong">JSon</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\json.swg#L11" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<table class="enumeration">
+<tr>
+<td class="tdname">
+options</td>
+<td class="tdtype">
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Serialization.Write.JSonOptions">JSonOptions</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+output</td>
+<td class="tdtype">
+*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.ConcatBuffer">ConcatBuffer</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+indent</td>
+<td class="tdtype">
+u32</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+fmtInt</td>
+<td class="tdtype">
+StrConv.ConvertFormatInt</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+fmtFloat</td>
+<td class="tdtype">
+StrConv.ConvertFormatFloat{fmt:"g"u8}</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+lastSeekValue</td>
+<td class="tdtype">
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.ConcatBufferSeek">ConcatBufferSeek</a></td>
+<td class="enumeration">
+</td>
+</tr>
+</table>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Core.Serialization.Write.JSonOptions"><span class="titletype">struct</span> <span class="titlelight">Write.</span><span class="titlestrong">JSonOptions</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\json.swg#L5" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<table class="enumeration">
+<tr>
+<td class="tdname">
+indentLevel</td>
+<td class="tdtype">
+u32</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+saveBlanks</td>
+<td class="tdtype">
+bool</td>
+<td class="enumeration">
+</td>
+</tr>
+</table>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Core.Serialization.Write.TagBin"><span class="titletype">struct</span> <span class="titlelight">Write.</span><span class="titlestrong">TagBin</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\tagbin.swg#L20" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<table class="enumeration">
+<tr>
+<td class="tdname">
+output</td>
+<td class="tdtype">
+*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.ConcatBuffer">ConcatBuffer</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+freeSections</td>
+<td class="tdtype">
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.ArrayPtr">ArrayPtr</a>(<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Serialization.Write.TagBinSection">TagBinSection</a>)</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+sections</td>
+<td class="tdtype">
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.ArrayPtr">ArrayPtr</a>(<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Serialization.Write.TagBinSection">TagBinSection</a>)</td>
+<td class="enumeration">
+</td>
+</tr>
+</table>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Core.Serialization.Write.TagBinSection"><span class="titletype">struct</span> <span class="titlelight">Write.</span><span class="titlestrong">TagBinSection</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\tagbin.swg#L13" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<table class="enumeration">
+<tr>
+<td class="tdname">
+startSeek</td>
+<td class="tdtype">
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.ConcatBufferSeek">ConcatBufferSeek</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+mapSeek</td>
+<td class="tdtype">
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.HashTable">HashTable</a>(u32, <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.ConcatBufferSeek">ConcatBufferSeek</a>)</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+kind</td>
+<td class="tdtype">
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Serialization.SectionKind">SectionKind</a></td>
+<td class="enumeration">
+</td>
+</tr>
+</table>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Core.Serialization.Write.TagBinSignatures"><span class="titletype">enum</span> <span class="titlelight">Write.</span><span class="titlestrong">TagBinSignatures</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\tagbin.swg#L5" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<table class="enumeration">
+<tr>
+<td class="tdname">
+Root</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+Fat</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+Sequence</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+Version</td>
+<td class="enumeration">
+</td>
+</tr>
+</table>
 <p>
 <table class="h3">
 <tr>
@@ -9354,14 +11853,6 @@ u64</td>
 <table class="enumeration">
 <tr>
 <td class="enumeration">
-<a href="#Core.StaticArray.add">add(*StaticArray, const [..] T)</a></td>
-<td class="enumeration">
-<p>
-Append a slice to the end of this instance.</p>
-</td>
-</tr>
-<tr>
-<td class="enumeration">
 <a href="#Core.StaticArray.add">add(*StaticArray, T)</a></td>
 <td class="enumeration">
 <p>
@@ -9374,6 +11865,14 @@ Add a copy of one element at the end of the array.</p>
 <td class="enumeration">
 <p>
 Move one element at the end of the array.</p>
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Core.StaticArray.add">add(*StaticArray, const [..] T)</a></td>
+<td class="enumeration">
+<p>
+Append a slice to the end of this instance.</p>
 </td>
 </tr>
 <tr>
@@ -9466,10 +11965,10 @@ Returns the address of the first element.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Core.StaticArray.insertAt">insertAt(*StaticArray, u64, const [..] T)</a></td>
+<a href="#Core.StaticArray.insertAt">insertAt(*StaticArray, u64, T)</a></td>
 <td class="enumeration">
 <p>
-Insert some values at the given index. If <code class = "incode">index</code> is equal to <code class = "incode">count</code>, then the values are added at the end of the array. Order is preserved.</p>
+Insert a value at the given index. If <code class = "incode">index</code> is equal to <code class = "incode">count</code>, then the value is added at the end of the array. Order is preserved.</p>
 </td>
 </tr>
 <tr>
@@ -9482,10 +11981,10 @@ Move a value at the given index. If <code class = "incode">index</code> is equal
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Core.StaticArray.insertAt">insertAt(*StaticArray, u64, T)</a></td>
+<a href="#Core.StaticArray.insertAt">insertAt(*StaticArray, u64, const [..] T)</a></td>
 <td class="enumeration">
 <p>
-Insert a value at the given index. If <code class = "incode">index</code> is equal to <code class = "incode">count</code>, then the value is added at the end of the array. Order is preserved.</p>
+Insert some values at the given index. If <code class = "incode">index</code> is equal to <code class = "incode">count</code>, then the values are added at the end of the array. Order is preserved.</p>
 </td>
 </tr>
 <tr>
@@ -9494,90 +11993,6 @@ Insert a value at the given index. If <code class = "incode">index</code> is equ
 <td class="enumeration">
 <p>
 Returns true if the array is empty.</p>
-</td>
-</tr>
-<tr>
-<td class="enumeration">
-<a href="#Core.StaticArray.opAffect">opAffect(*StaticArray, const [..] T)</a></td>
-<td class="enumeration">
-<p>
-Initializes an Array that contains values copied from the specified array.</p>
-</td>
-</tr>
-<tr>
-<td class="enumeration">
-<a href="#Core.StaticArray.opCast">opCast(*StaticArray)</a></td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="enumeration">
-<a href="#Core.StaticArray.opCast">opCast(*StaticArray)</a></td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="enumeration">
-<a href="#Core.StaticArray.opCount">opCount(*StaticArray)</a></td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="enumeration">
-<a href="#Core.StaticArray.opData">opData(*StaticArray)</a></td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="enumeration">
-<a href="#Core.StaticArray.opDrop">opDrop(*StaticArray)</a></td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="enumeration">
-<a href="#Core.StaticArray.opIndex">opIndex(const *StaticArray, u64)</a></td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="enumeration">
-<a href="#Core.StaticArray.opIndex">opIndex(const *StaticArray, u64)</a></td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="enumeration">
-<a href="#Core.StaticArray.opIndexAffect">opIndexAffect(*StaticArray, u64, T)</a></td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="enumeration">
-<a href="#Core.StaticArray.opIndexAssign">opIndexAssign(*StaticArray, u64, T)</a></td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="enumeration">
-<a href="#Core.StaticArray.opSlice">opSlice(*StaticArray, u64, u64)</a></td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="enumeration">
-<a href="#Core.StaticArray.opVisit">opVisit(const *StaticArray, code)</a></td>
-<td class="enumeration">
-<p>
-Vist every elements of the array.</p>
-</td>
-</tr>
-<tr>
-<td class="enumeration">
-<a href="#Core.StaticArray.opVisitBack">opVisitBack(const *StaticArray, code)</a></td>
-<td class="enumeration">
-<p>
-Vist every elements of the array from end to start.</p>
 </td>
 </tr>
 <tr>
@@ -9674,6 +12089,93 @@ Sort array in reverse order (from biggest to lowest value).</p>
 <td class="enumeration">
 <p>
 Returns a slice.</p>
+</td>
+</tr>
+</table>
+<h3>Special Functions</h3>
+<table class="enumeration">
+<tr>
+<td class="enumeration">
+<a href="#Core.StaticArray.opAffect">opAffect(*StaticArray, const [..] T)</a></td>
+<td class="enumeration">
+<p>
+Initializes an Array that contains values copied from the specified array.</p>
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Core.StaticArray.opCast">opCast(*StaticArray)</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Core.StaticArray.opCast">opCast(*StaticArray)</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Core.StaticArray.opCount">opCount(*StaticArray)</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Core.StaticArray.opData">opData(*StaticArray)</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Core.StaticArray.opDrop">opDrop(*StaticArray)</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Core.StaticArray.opIndex">opIndex(const *StaticArray, u64)</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Core.StaticArray.opIndex">opIndex(const *StaticArray, u64)</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Core.StaticArray.opIndexAffect">opIndexAffect(*StaticArray, u64, T)</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Core.StaticArray.opIndexAssign">opIndexAssign(*StaticArray, u64, T)</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Core.StaticArray.opSlice">opSlice(*StaticArray, u64, u64)</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Core.StaticArray.opVisit">opVisit(const *StaticArray, code)</a></td>
+<td class="enumeration">
+<p>
+Vist every elements of the array.</p>
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Core.StaticArray.opVisitBack">opVisitBack(const *StaticArray, code)</a></td>
+<td class="enumeration">
+<p>
+Vist every elements of the array from end to start.</p>
 </td>
 </tr>
 </table>
@@ -10913,7 +13415,7 @@ StringSmallSize</td>
 <h3 class="content" id="Core.Sync"><span class="titletype">namespace</span> <span class="titlelight">Core.</span><span class="titlestrong">Sync</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\thread\rwlock.win32.swg#L3" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\thread\sync.swg#L1" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -12200,7 +14702,7 @@ SurrSelf</td>
 <h3 class="content" id="Core.Utf8.AS"><span class="titletype">const</span> <span class="titlelight">Utf8.</span><span class="titlestrong">Constants</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\utf8.swg#L32" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\utf8.swg#L33" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -12223,7 +14725,7 @@ ASCII: size 1.</p>
 <h3 class="content" id="Core.Utf8.AcceptRange"><span class="titletype">struct</span> <span class="titlelight">Utf8.</span><span class="titlestrong">AcceptRange</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\utf8.swg#L63" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\utf8.swg#L64" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -12252,7 +14754,7 @@ u8</td>
 <h3 class="content" id="Core.Utf8.AcceptRanges"><span class="titletype">const</span> <span class="titlelight">Utf8.</span><span class="titlestrong">Constants</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\utf8.swg#L69" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\utf8.swg#L70" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -12273,7 +14775,7 @@ AcceptRanges</td>
 <h3 class="content" id="Core.Utf8.ComparisonType"><span class="titletype">enum</span> <span class="titlelight">Utf8.</span><span class="titlestrong">ComparisonType</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\utf8.swg#L637" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\utf8.swg#L638" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -12310,7 +14812,7 @@ UnicodeNoCase</td>
 <h3 class="content" id="Core.Utf8.First"><span class="titletype">const</span> <span class="titlelight">Utf8.</span><span class="titlestrong">Constants</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\utf8.swg#L42" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\utf8.swg#L43" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -12480,7 +14982,7 @@ XX</td>
 </td>
 <td class="enumeration">
 <p>
-These names of these constants are chosen to give nice alignment in the table below. The first nibble is an index into AcceptRanges or F for special one-byte cases. The second nibble is the Rune length or the Status for the special one-byte case. invalid: size 1.</p>
+Status for the special one-byte case. invalid: size 1.</p>
 </td>
 </tr>
 </table>

@@ -27,6 +27,7 @@ private
 	// These names of these constants are chosen to give nice alignment in the
 	// table below. The first nibble is an index into AcceptRanges or F for
 	// special one-byte cases. The second nibble is the Rune length or the
+
 	// Status for the special one-byte case.
 	const XX = 0xF1 // invalid: size 1
 	const AS = 0xF0 // ASCII: size 1
