@@ -9,7 +9,7 @@ $ swag new -f:myScript
 => type 'swag script -f:myScript.swgs' to run that script
 ```
 
-``` csharp
+```
 // Swag script file
 #dependencies
 {
@@ -44,7 +44,7 @@ To run one of them from the console, go to the folder and type for example `swag
 
 You can add external dependencies, and they will be compiled and used as native code.
 
-``` csharp
+```
 #dependencies
 {
     // Import the standard module `core` from the swag standard workspace (which comes with the compiler)
@@ -60,7 +60,7 @@ A special hidden workspace (in the Swag cache folder) will be created to contain
 
 If your script is divided in more than one single file, you can add `#load <filename>` in the `#dependencies` block.
 
-``` csharp
+```
 #dependencies
 {
     #load "myOtherFile.swgs"

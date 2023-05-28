@@ -11,16 +11,22 @@
         font-weight: revert;
     }
 
-    pre {
+    p code {
         background-color: #eeeeee;
-        border: 1px solid LightGrey;
-        margin: 20px;
-        padding: 20px;
+        border:             1px dotted #cccccc;
+        padding:            2px;
+        margin:             0px;
+        font-size:          0.8em;
     }
 
-    code {
-        font-size: 0.8em;
+    pre {
+        background-color: #eeeeee;
+        border:             1px solid LightGrey;
+        margin:             20px;
+        padding:            20px;
+        font-size:          0.8em;
     }
+
 </style>
 
 <h1 id="how-to-build-swag">How to build Swag</h1>

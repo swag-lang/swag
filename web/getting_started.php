@@ -11,16 +11,22 @@
         font-weight: revert;
     }
 
-    pre {
+    p code {
         background-color: #eeeeee;
-        border: 1px solid LightGrey;
-        margin: 20px;
-        padding: 20px;
+        border:             1px dotted #cccccc;
+        padding:            2px;
+        margin:             0px;
+        font-size:          0.8em;
     }
 
-    code {
-        font-size: 0.8em;
+    pre {
+        background-color: #eeeeee;
+        border:             1px solid LightGrey;
+        margin:             20px;
+        padding:            20px;
+        font-size:          0.8em;
     }
+
 </style>
 
 <h1 id="your-first-install">Your first install</h1>
@@ -50,11 +56,10 @@ compile to a dynamic library or an executable.</p>
 <p>This will also create a simple executable module <em>first</em> to
 print “Hello world !”.</p>
 <p><em>F:/first/modules/first/src/main.swg</em></p>
-<div class="sourceCode" id="cb3"><pre
-class="sourceCode csharp"><code class="sourceCode cs"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>#main</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    @<span class="fu">print</span><span class="op">(</span><span class="st">&quot;Hello world!</span><span class="sc">\n</span><span class="st">&quot;</span><span class="op">)</span></span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<pre><code>#main
+{
+    @print(&quot;Hello world!\n&quot;)
+}</code></pre>
 <p>A workspace contains a predefined number of sub folders : *
 <code>modules/</code> contains all the modules (sub folders) of that
 workspace. * <code>output/</code> (generated) contains the result of the

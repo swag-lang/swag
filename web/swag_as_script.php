@@ -11,16 +11,22 @@
         font-weight: revert;
     }
 
-    pre {
+    p code {
         background-color: #eeeeee;
-        border: 1px solid LightGrey;
-        margin: 20px;
-        padding: 20px;
+        border:             1px dotted #cccccc;
+        padding:            2px;
+        margin:             0px;
+        font-size:          0.8em;
     }
 
-    code {
-        font-size: 0.8em;
+    pre {
+        background-color: #eeeeee;
+        border:             1px solid LightGrey;
+        margin:             20px;
+        padding:            20px;
+        font-size:          0.8em;
     }
+
 </style>
 
 <h1 id="script-file">Script file</h1>
@@ -32,18 +38,17 @@ extension ‘swgs’:</p>
 <pre><code>$ swag new -f:myScript
 =&gt; script file &#39;myScript.swgs&#39; has been created
 =&gt; type &#39;swag script -f:myScript.swgs&#39; to run that script</code></pre>
-<div class="sourceCode" id="cb2"><pre
-class="sourceCode csharp"><code class="sourceCode cs"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co">// Swag script file</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>#dependencies</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Here you can add your external dependencies</span></span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>    <span class="co">// #import &quot;core&quot; location=&quot;swag@std&quot;</span></span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>#run</span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
-<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>    @<span class="fu">print</span><span class="op">(</span><span class="st">&quot;Hello world !</span><span class="sc">\n</span><span class="st">&quot;</span><span class="op">)</span></span>
-<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<pre><code>// Swag script file
+#dependencies
+{
+    // Here you can add your external dependencies
+    // #import &quot;core&quot; location=&quot;swag@std&quot;
+}
+
+#run
+{
+    @print(&quot;Hello world !\n&quot;)
+}</code></pre>
 <p>You can then run your script with the ‘script’ command.</p>
 <pre><code>$ swag script -f:myScript
 Hello world !</code></pre>
@@ -58,12 +63,11 @@ console, go to the folder and type for example
 <h2 id="dependencies">Dependencies</h2>
 <p>You can add external dependencies, and they will be compiled and used
 as native code.</p>
-<div class="sourceCode" id="cb5"><pre
-class="sourceCode csharp"><code class="sourceCode cs"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>#dependencies</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Import the standard module `core` from the swag standard workspace (which comes with the compiler)</span></span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    #import <span class="st">&quot;core&quot;</span> location<span class="op">=</span><span class="st">&quot;swag@std&quot;</span></span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<pre><code>#dependencies
+{
+    // Import the standard module `core` from the swag standard workspace (which comes with the compiler)
+    #import &quot;core&quot; location=&quot;swag@std&quot;
+}</code></pre>
 <p>A special hidden workspace (in the Swag cache folder) will be created
 to contain all the corresponding native code. * To locate the Swag cache
 folder, add <code>--verbose-path</code> to the command line. * To force
@@ -73,12 +77,11 @@ line.</p>
 <p>If your script is divided in more than one single file, you can add
 <code>#load &lt;filename&gt;</code> in the <code>#dependencies</code>
 block.</p>
-<div class="sourceCode" id="cb6"><pre
-class="sourceCode csharp"><code class="sourceCode cs"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>#dependencies</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    #load <span class="st">&quot;myOtherFile.swgs&quot;</span></span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>    #load <span class="st">&quot;folder/myOtherOtherFile.swgs&quot;</span></span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<pre><code>#dependencies
+{
+    #load &quot;myOtherFile.swgs&quot;
+    #load &quot;folder/myOtherOtherFile.swgs&quot;
+}</code></pre>
 <h2 id="debug">Debug</h2>
 <p>The compiler comes with a bytecode debugger that can be used to trace
 and debug compile time execution. Add <code>@breakpoint()</code> in your
