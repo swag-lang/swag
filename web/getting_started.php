@@ -29,12 +29,21 @@
         overflow-wrap:      break-word;
     }
 
+    p a {
+        text-decoration: none;
+        color:           Blue;
+    }
+
+    p a:hover {
+        text-decoration: underline;
+    }
 </style>
 
 <div class="lg:m-auto lg:w-[76rem] pt-2 lg:pt-10 overflow-hidden p-5">
 <h1 id="your-first-install">Your first install</h1>
-<p>Download the latest release from github, and unzip it in a folder. Of
-course SSD is better.</p>
+<p><a href="https://github.com/swag-lang/swag/releases">Download</a> the
+latest release from github, and unzip it in a folder. Of course a
+<em>SSD</em> is better.</p>
 <h4 id="under-windows-1011">Under windows 10/11</h4>
 <p>You should register the location of the swag compiler
 (<code>swag.exe</code>) in the PATH environment variable to be able to
@@ -102,7 +111,8 @@ Defender realtime protection</h4>
 <p>It’s activated by default under Windows 10, and runs each time you
 launch an executable or a process. This can increase the compile time of
 your project, so consider excluding your Swag folder from it !</p>
-<p>https://support.microsoft.com/en-us/windows/add-an-exclusion-to-windows-security-811816c0-4dfd-af4a-47e4-c301afe13b26#:~:text=Go%20to%20Start%20%3E%20Settings%20%3E%20Update,%2C%20file%20types%2C%20or%20process.</p>
+<p><a
+href="https://support.microsoft.com/en-us/windows/add-an-exclusion-to-windows-security-811816c0-4dfd-af4a-47e4-c301afe13b26#:~:text=Go%20to%20Start%20%3E%20Settings%20%3E%20Update,%2C%20file%20types%2C%20or%20process">Reference</a></p>
 <h1 id="content-of-the-swag-folder">Content of the Swag folder</h1>
 <p>The Swag folder contains the compiler <code>swag.exe</code>, but also
 a bunch of sub folders. * <code>examples/</code> is a workspace with

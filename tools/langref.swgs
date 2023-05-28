@@ -33,10 +33,10 @@ func stateEnter(st: State)
     switch st
     {
     case Paragraph:
-        g_Buf += "<div>"
+        g_Buf += "<p>"
 
     case Blockquote:
-        g_Buf += "<div class=\"blockquote\">"
+        g_Buf += "<p class=\"blockquote\">"
     }
 }
 
@@ -44,8 +44,10 @@ func stateLeave(st: State)
 {
     switch st
     {
-    case Paragraph, Blockquote:
-        g_Buf += "</div>\n"
+    case Paragraph:
+        g_Buf += "</p>\n"
+    case Blockquote:
+        g_Buf += "</p>\n"
 
     case Code, Test:
         flushCode()
@@ -390,6 +392,15 @@ func generate(in, out: string)
             overflow-wrap:      break-word;
         }
 
+        p a {
+            text-decoration: none;
+            color:           Blue;
+        }
+
+        p a:hover {
+            text-decoration: underline;
+        }
+
         .blockquote {
             border-left:    2px solid Orange;
             margin-left:    10px;
@@ -419,14 +430,6 @@ func generate(in, out: string)
         .container ul, .tocbullet {
             list-style-type:    revert;
             padding:            revert;
-        }
-
-        .container a {
-            text-decoration: none;
-        }
-
-        .container a:hover {
-            text-decoration: underline;
         }
 
         </style>
