@@ -31,6 +31,7 @@
 
 </style>
 
+<div class="lg:m-auto lg:w-[76rem] pt-2 lg:pt-10 overflow-hidden p-5">
 <h1 id="script-file">Script file</h1>
 <p>Instead of a workspace, Swag can also be used to build and run a
 simple script file, thanks to the fact that the compiler can run
@@ -91,4 +92,6 @@ code when you want the debugger to trigger.</p>
 <p>The debugger command set is inspired by <a
 href="https://docs.python.org/3/library/pdb.html">Pdb</a>, the python
 debugger.</p>
+</div>
+
 <?php include('html_end.php'); ?>
