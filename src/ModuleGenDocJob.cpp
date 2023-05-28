@@ -304,7 +304,7 @@ void ModuleGenDocJob::outputTitle(OneRef& c)
             str.append(c.nodes[0]->sourceFile->name.c_str());
         }
 
-        helpContent += Fmt("<a href=\"%s#L%d\" class=\"src\">src</a>", str.string().c_str(), c.nodes[0]->token.startLocation.line + 1);
+        helpContent += Fmt("<a href=\"%s#L%d\" class=\"src\">[src]</a>", str.string().c_str(), c.nodes[0]->token.startLocation.line + 1);
     }
 
     helpContent += "</td>\n";
@@ -849,7 +849,7 @@ void ModuleGenDocJob::generateContent()
         computeUserComments(userComment, module->docComment);
         if (!userComment.shortDesc.lines.empty())
         {
-            helpContent += "<h3>Overview</h3>\n";
+            helpContent += "<h2 class=\"content\">Overview</h2>\n";
             outputUserBlock(userComment.shortDesc);
             outputUserComment(userComment);
         }
@@ -857,6 +857,8 @@ void ModuleGenDocJob::generateContent()
 
     sort(allNodes.begin(), allNodes.end(), [this](OneRef& a, OneRef& b)
          { return strcmp(a.fullName.buffer, b.fullName.buffer) < 0; });
+
+    helpContent += "<h2 class=\"content\">Content</h2>\n";
 
     for (int i = 0; i < allNodes.size(); i++)
     {
