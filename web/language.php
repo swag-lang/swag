@@ -76,16 +76,19 @@
 <li><a href="#000_introduction">Introduction</a></li>
 <ul class="tocbullet">
 </ul>
-<li><a href="#001_source">Source</a></li>
+<li><a href="#001_hello_mad_world">Hello mad world</a></li>
 <ul class="tocbullet">
 </ul>
-<li><a href="#002_comments">Comments</a></li>
+<li><a href="#002_source_code_organization">Source code organization</a></li>
 <ul class="tocbullet">
 </ul>
-<li><a href="#003_identifiers">Identifiers</a></li>
+<li><a href="#003_comments">Comments</a></li>
 <ul class="tocbullet">
 </ul>
-<li><a href="#004_keywords">Keywords</a></li>
+<li><a href="#004_identifiers">Identifiers</a></li>
+<ul class="tocbullet">
+</ul>
+<li><a href="#005_keywords">Keywords</a></li>
 <ul class="tocbullet">
 <li><a href="#Basic types">Basic types</a></li>
 <li><a href="#Language keywords">Language keywords</a></li>
@@ -94,10 +97,10 @@
 <li><a href="#Other intrinsics">Other intrinsics</a></li>
 <li><a href="#Modifiers">Modifiers</a></li>
 </ul>
-<li><a href="#005_semicolon">Semicolon</a></li>
+<li><a href="#006_semicolon">Semicolon</a></li>
 <ul class="tocbullet">
 </ul>
-<li><a href="#006_declaration_order">Declaration order</a></li>
+<li><a href="#007_declaration_order">Declaration order</a></li>
 <ul class="tocbullet">
 </ul>
 <li><a href="#010_basic_types">Basic types</a></li>
@@ -403,32 +406,126 @@
 <h1>Swag language reference</h1>
 
 <h2 id="000_introduction">Introduction</h2>
-<div>This <code class="incode">swag-lang/swag/bin/reference/language</code> module provides a brief explanation of the language basic syntax and usage without the need of the <b>Swag standard libraries</b> (<code class="incode">Std</code>).</br>
+<div>This <code class="incode">swag-lang/swag/bin/reference/language</code> module provides a brief explanation of the language basic syntax and usage without the need of the <a href="libraries.php">Swag standard modules</a> (<code class="incode">Std</code>).</br>
 </br>
-More advanced features such as dynamic arrays, dynamic strings or hash maps can be found in the <code class="incode">Std.Core</code> module and will not be covered in the examples to come. For now we will focus on the language itself.</br>
+More advanced features such as dynamic arrays, dynamic strings or hash maps can be found in the <a href="std/std.core.html">Std.Core</a> module and will not be covered in the examples to come. For now we will focus on the language itself.</br>
 </br>
 As <code class="incode">reference/language</code> is written as a test module, you can run it with :</br>
 </div>
 <div class="code"><code style="white-space: break-spaces"><span style="color:#FFFFFF">swag test --workspace:c:/swag-lang/swag/bin/reference
 swag test -w:c:/swag-lang/swag/bin/reference</span></code></div><div>This will run all the test modules of the specified workspace (including this one). You can also omit the <code class="incode">--workspace</code> parameter (or <code class="incode">-w</code> in its short form) if you run Swag directly from the workspace folder.</br>
 </br>
-If you want to compile and run a single module in the workspace, you can specify it with the <code class="incode">--module</code> (<code class="incode">-m</code>) parameter.</br>
+Note that if you want to compile and run a single module in the workspace, you can specify it with the <code class="incode">--module</code> (<code class="incode">-m</code>) parameter.</br>
 </div>
-<div class="code"><code style="white-space: break-spaces"><span style="color:#FFFFFF">swag test -w:c:/swag-lang/swag/bin/reference -m:test_language</span></code></div><div>Note that as this is a test module, its name is prefixed with <code class="incode">test_</code>.</br>
-</div>
+<div class="code"><code style="white-space: break-spaces"><span style="color:#FFFFFF">swag test -w:c:/swag-lang/swag/bin/reference -m:test_language</span></code></div><div></div>
 
-<h2 id="001_source">Source</h2>
+<h2 id="001_hello_mad_world">Hello mad world</h2>
+<div>Let's start with the most simple version of the "hello word" example. This is a version that does not require external dependencies like the <a href="libraries.php">Swag standard modules</a>.</br>
+</br>
+<code class="incode">#main</code> is the <b>program entry point</b>, a special compiler function (that's why the name starts with <code class="incode">#</code>). It must be defined only once for a native executable.</br>
+<code class="incode">@print</code> is an <b>intrinsic</b>, a special built-in function (that's why the name starts with <code class="incode">@</code>). It is part of the <a href="std/swag.runtime.html">compiler runtime</a> which comes with the compiler.</br>
+</div>
+<div class="code"><code style="white-space: break-spaces"><span style="color:#FF7411">#main</span><span style="color:#FFFFFF">
+{
+    </span><span style="color:#DCDCAA">@print</span><span style="color:#FFFFFF">(</span><span style="color:#CE9178">"Hello mad world !\n"</span><span style="color:#FFFFFF">)
+}</span></code></div><div></div>
+<div>Next, a version that this time uses the <code class="incode">Console.print</code> function in the <a href="std/std.core.html">Std.Core</a> module.</br>
+The <code class="incode">Std.Core</code> module would have to be imported in order to be used, but let's keep it simple.</br>
+</div>
+<div class="code"><code style="white-space: break-spaces"><span style="color:#FF7411">#main</span><span style="color:#FFFFFF">
+{
+    </span><span style="color:#4EC9B0">Core</span><span style="color:#FFFFFF">.</span><span style="color:#4EC9B0">Console</span><span style="color:#FFFFFF">.</span><span style="color:#FF7411">print</span><span style="color:#FFFFFF">(</span><span style="color:#CE9178">"Hello mad world !"</span><span style="color:#FFFFFF">, </span><span style="color:#CE9178">"\n"</span><span style="color:#FFFFFF">)
+    </span><span style="color:#4EC9B0">Core</span><span style="color:#FFFFFF">.</span><span style="color:#4EC9B0">Console</span><span style="color:#FFFFFF">.</span><span style="color:#FF7411">printf</span><span style="color:#FFFFFF">(</span><span style="color:#CE9178">"%\n"</span><span style="color:#FFFFFF">, </span><span style="color:#CE9178">"Hello mad world again !"</span><span style="color:#FFFFFF">)
+}</span></code></div><div></div>
+<div>A <code class="incode">#run</code> block is executed at <b>compile time</b>, and can make Swag behaves like a kind of a <b>scripting language</b>.</br>
+So in the following example, the famous message will be printed by the compiler during compilation.</br>
+</div>
+<div class="code"><code style="white-space: break-spaces"><span style="color:#FF7411">#run</span><span style="color:#FFFFFF">
+{
+    </span><span style="color:#569CD6">const</span><span style="color:#FFFFFF"> </span><span style="color:#4EC9B0">Msg</span><span style="color:#FFFFFF"> = </span><span style="color:#CE9178">"Hello mad world !\n"</span><span style="color:#FFFFFF">   </span><span style="color:#6A9955">// Creates a compiler constant of type 'string'</span><span style="color:#FFFFFF">
+    </span><span style="color:#4EC9B0">Core</span><span style="color:#FFFFFF">.</span><span style="color:#4EC9B0">Console</span><span style="color:#FFFFFF">.</span><span style="color:#FF7411">print</span><span style="color:#FFFFFF">(</span><span style="color:#4EC9B0">Msg</span><span style="color:#FFFFFF">)             </span><span style="color:#6A9955">// And call 'Console.print' at compile time</span><span style="color:#FFFFFF">
+}</span></code></div><div></div>
+<div>A version that calls a <b>nested function</b> at compile time (only) to initialize the string constant to print.</br>
+</div>
+<div class="code"><code style="white-space: break-spaces"><span style="color:#6A9955">// Brings the 'Core' namespace into scope, to avoid repeating it again and again</span><span style="color:#FFFFFF">
+</span><span style="color:#569CD6">using</span><span style="color:#FFFFFF"> </span><span style="color:#4EC9B0">Core</span><span style="color:#FFFFFF">
+
+</span><span style="color:#FF7411">#main</span><span style="color:#FFFFFF">
+{
+    </span><span style="color:#AAAAAA">#[Swag.ConstExpr]</span><span style="color:#FFFFFF">
+    </span><span style="color:#569CD6">func</span><span style="color:#FFFFFF"> </span><span style="color:#FF7411">nestedFunc</span><span style="color:#FFFFFF">() => </span><span style="color:#CE9178">"Hello mad world !\n"</span><span style="color:#FFFFFF">   </span><span style="color:#6A9955">// Function short syntax</span><span style="color:#FFFFFF">
+
+    </span><span style="color:#6A9955">// nestedFunc() can be called at compile time because it is marked with the 'Swag.ConstExpr' attribute.</span><span style="color:#FFFFFF">
+    </span><span style="color:#569CD6">const</span><span style="color:#FFFFFF"> </span><span style="color:#4EC9B0">Msg</span><span style="color:#FFFFFF"> = </span><span style="color:#FF7411">nestedFunc</span><span style="color:#FFFFFF">()
+    </span><span style="color:#4EC9B0">Console</span><span style="color:#FFFFFF">.</span><span style="color:#FF7411">print</span><span style="color:#FFFFFF">(</span><span style="color:#4EC9B0">Msg</span><span style="color:#FFFFFF">)
+}</span></code></div><div></div>
+<div>Now a stupid version that generates the code to do the print thanks to <b>meta programming</b>.</br>
+</div>
+<div class="code"><code style="white-space: break-spaces"><span style="color:#569CD6">using</span><span style="color:#FFFFFF"> </span><span style="color:#4EC9B0">Core</span><span style="color:#FFFFFF">
+
+</span><span style="color:#FF7411">#main</span><span style="color:#FFFFFF">
+{
+    </span><span style="color:#569CD6">const</span><span style="color:#FFFFFF"> </span><span style="color:#4EC9B0">Msg</span><span style="color:#FFFFFF"> = </span><span style="color:#CE9178">"Hello mad world !\n"</span><span style="color:#FFFFFF">
+
+    </span><span style="color:#6A9955">// The result of an '#ast' block is a string that will be compiled in place.</span><span style="color:#FFFFFF">
+    </span><span style="color:#6A9955">// So this whole thing is equivalent to a simple 'Console.print(Msg)'.</span><span style="color:#FFFFFF">
+    </span><span style="color:#FF7411">#ast</span><span style="color:#FFFFFF">
+    {
+        sb := </span><span style="color:#4EC9B0">StrConv</span><span style="color:#FFFFFF">.</span><span style="color:#4EC9B0">StringBuilder</span><span style="color:#FFFFFF">{}
+        sb.</span><span style="color:#FF7411">appendString</span><span style="color:#FFFFFF">(</span><span style="color:#CE9178">"Console.print(Msg)"</span><span style="color:#FFFFFF">)
+        </span><span style="color:#D8A0DF">return</span><span style="color:#FFFFFF"> sb.</span><span style="color:#FF7411">toString</span><span style="color:#FFFFFF">()
+    }
+}</span></code></div><div></div>
+<div>And finally let's be more and more crazy.</br>
+</div>
+<div class="code"><code style="white-space: break-spaces"><span style="color:#569CD6">using</span><span style="color:#FFFFFF"> </span><span style="color:#4EC9B0">Core</span><span style="color:#FFFFFF">
+
+</span><span style="color:#FF7411">#main</span><span style="color:#FFFFFF">
+{
+    </span><span style="color:#6A9955">// #run will force the call of mySillyFunction() at compile time even if it's not marked with #[Swag.ConstExpr]</span><span style="color:#FFFFFF">
+    </span><span style="color:#569CD6">const</span><span style="color:#FFFFFF"> </span><span style="color:#4EC9B0">Msg</span><span style="color:#FFFFFF"> = </span><span style="color:#FF7411">#run</span><span style="color:#FFFFFF"> </span><span style="color:#FF7411">mySillyFunction</span><span style="color:#FFFFFF">()
+    </span><span style="color:#4EC9B0">Console</span><span style="color:#FFFFFF">.</span><span style="color:#FF7411">print</span><span style="color:#FFFFFF">(</span><span style="color:#4EC9B0">Msg</span><span style="color:#FFFFFF">)
+}
+
+</span><span style="color:#6A9955">// The attribute #[Swag.Compiler] tells Swag that this is a compile time function only.</span><span style="color:#FFFFFF">
+</span><span style="color:#6A9955">// So this function will not be exported to the final executable or module.</span><span style="color:#FFFFFF">
+</span><span style="color:#AAAAAA">#[Swag.Compiler]</span><span style="color:#FFFFFF">
+</span><span style="color:#569CD6">func</span><span style="color:#FFFFFF"> </span><span style="color:#FF7411">mySillyFunction</span><span style="color:#FFFFFF">()-></span><span style="color:#F6CC86">string</span><span style="color:#FFFFFF">
+{
+    </span><span style="color:#4EC9B0">Console</span><span style="color:#FFFFFF">.</span><span style="color:#FF7411">print</span><span style="color:#FFFFFF">(</span><span style="color:#CE9178">"Hello mad world at compile time !\n"</span><span style="color:#FFFFFF">)
+
+    </span><span style="color:#6A9955">// This creates a constant named 'MyConst'</span><span style="color:#FFFFFF">
+    </span><span style="color:#FF7411">#ast</span><span style="color:#FFFFFF">
+    {
+        sb := </span><span style="color:#4EC9B0">StrConv</span><span style="color:#FFFFFF">.</span><span style="color:#4EC9B0">StringBuilder</span><span style="color:#FFFFFF">{}
+        sb.</span><span style="color:#FF7411">appendString</span><span style="color:#FFFFFF">(</span><span style="color:#CE9178">"const MyConst = \"Hello "</span><span style="color:#FFFFFF">)
+        sb.</span><span style="color:#FF7411">appendString</span><span style="color:#FFFFFF">(</span><span style="color:#CE9178">"mad world "</span><span style="color:#FFFFFF">)
+        sb.</span><span style="color:#FF7411">appendString</span><span style="color:#FFFFFF">(</span><span style="color:#CE9178">"at runtime !\""</span><span style="color:#FFFFFF">)
+        </span><span style="color:#D8A0DF">return</span><span style="color:#FFFFFF"> sb.</span><span style="color:#FF7411">toString</span><span style="color:#FFFFFF">()
+    }
+
+    </span><span style="color:#D8A0DF">return</span><span style="color:#FFFFFF"> </span><span style="color:#4EC9B0">MyConst</span><span style="color:#FFFFFF">
+}</span></code></div><div></div>
+<div>This whole piece of code is equivalent to...</br>
+</div>
+<div class="code"><code style="white-space: break-spaces"><span style="color:#FF7411">#main</span><span style="color:#FFFFFF">
+{
+    </span><span style="color:#4EC9B0">Core</span><span style="color:#FFFFFF">.</span><span style="color:#4EC9B0">Console</span><span style="color:#FFFFFF">.</span><span style="color:#FF7411">print</span><span style="color:#FFFFFF">(</span><span style="color:#CE9178">"Hello mad world at runtime !"</span><span style="color:#FFFFFF">)
+}</span></code></div><div></div>
+
+<h2 id="002_source_code_organization">Source code organization</h2>
 <div>All source files in Swag have the <code class="incode">.swg</code> extension, except if you write a simple script with the <code class="incode">.swgs</code> extension.</br>
 They must be encoded in <b>UTF8</b>.</br>
 </br>
 In Swag you cannot compile a single file (with the exception of <code class="incode">.swgs</code> script files). The source code is organized in a <b>workspace</b> which contains one or multiple <b>modules</b>.</br>
 </br>
-For example, the Swag standard library is a collection of modules in the <code class="incode">Std</code> workspace.</br>
+For example, <code class="incode">Std</code> is a workspace that contains all the Swag standard modules.</br>
 </br>
-A module is a <code class="incode">dll</code> (under windows) or an executable, and a workspace can include many of them. So a workspace will contain the modules you write (like your main executable) but also all your dependencies (some external modules you use).Typically, the entire workspace is compiled.</br>
+A module is a <code class="incode">dll</code> (under windows) or an executable, and a workspace can include many of them.</br>
+So a workspace will contain the modules you write (like your main executable) but also all your dependencies (some external modules you use).Typically, the entire workspace is compiled.</br>
 </div>
 
-<h2 id="002_comments">Comments</h2>
+<h2 id="003_comments">Comments</h2>
 <div>Let's start with the basics. Swag support classical single-line and multi-line comments.</br>
 </div>
 <div class="code"><code style="white-space: break-spaces"><span style="color:#6A9955">// Single-line comment</span><span style="color:#FFFFFF">
@@ -444,7 +541,7 @@ A module is a <code class="incode">dll</code> (under windows) or an executable, 
 <div class="code"><code style="white-space: break-spaces"><span style="color:#6A9955">/*</span><span style="color:#FFFFFF">
 </span><span style="color:#6A9955">    /* You can also nest multi-line comments */</span><span style="color:#FFFFFF">
 </span><span style="color:#6A9955">*/</span></code></div>
-<h2 id="003_identifiers">Identifiers</h2>
+<h2 id="004_identifiers">Identifiers</h2>
 <div>User identifiers (like variables, constants, function names...) must start with an underscore or an ascii letter. Those identifiers can then contain underscores, ascii letters and digit numbers.</br>
 </div>
 <div class="code"><code style="white-space: break-spaces"><span style="color:#569CD6">const</span><span style="color:#FFFFFF"> thisIsAValidIdentifier0   = </span><span style="color:#B5CEA8">0</span><span style="color:#FFFFFF">
@@ -460,9 +557,10 @@ Some identifiers can also start with <code class="incode">@</code>. This indicat
 </div>
 <div class="code"><code style="white-space: break-spaces"><span style="color:#F67F56">@min</span><span style="color:#FFFFFF">()
 </span><span style="color:#F67F56">@max</span><span style="color:#FFFFFF">()
-</span><span style="color:#F67F56">@sqrt</span><span style="color:#FFFFFF">()</span></code></div><div></div>
+</span><span style="color:#F67F56">@sqrt</span><span style="color:#FFFFFF">()
+</span><span style="color:#DCDCAA">@print</span><span style="color:#FFFFFF">()</span></code></div><div></div>
 
-<h2 id="004_keywords">Keywords</h2>
+<h2 id="005_keywords">Keywords</h2>
 <div>This is the list of all keywords in the language.</br>
 </br>
 <h3 id="Basic types">Basic types</br>
@@ -690,7 +788,7 @@ Some identifiers can also start with <code class="incode">@</code>. This indicat
 ,move
 ,moveraw</span></code></div><div></div>
 
-<h2 id="005_semicolon">Semicolon</h2>
+<h2 id="006_semicolon">Semicolon</h2>
 <div>In Swag, there's no need to end a statement with <code class="incode">;</code> like in C/C++. Most of the time a <code class="incode">end of line</code> is enough.</br>
 </div>
 <div class="code"><code style="white-space: break-spaces"><span style="color:#6A9955">// Declare two variables x and y of type s32 (signed 32 bits), and initialize them to 1.</span><span style="color:#FFFFFF">
@@ -715,7 +813,7 @@ x += </span><span style="color:#B5CEA8">1</span><span style="color:#FFFFFF">; y 
 
 </span><span style="color:#6A9955">// Two instructions on the same line separated with ';'</span><span style="color:#FFFFFF">
 </span><span style="color:#DCDCAA">@assert</span><span style="color:#FFFFFF">(x == </span><span style="color:#B5CEA8">1</span><span style="color:#FFFFFF">); </span><span style="color:#DCDCAA">@assert</span><span style="color:#FFFFFF">(y == </span><span style="color:#B5CEA8">1</span><span style="color:#FFFFFF">)</span></code></div>
-<h2 id="006_declaration_order">Declaration order</h2>
+<h2 id="007_declaration_order">Declaration order</h2>
 <div>The order of all <b>top level</b> declarations does not matter.</br>
 </div>
 <div class="code"><code style="white-space: break-spaces"><span style="color:#6A9955">// Here we declare a constant 'A' and initialize it with 'B', which is not yet known (neither its value or its type).</span><span style="color:#FFFFFF">
@@ -1461,7 +1559,7 @@ a = (</span><span style="color:#B5CEA8">1</span><span style="color:#FFFFFF"> > <
 </div>
 <div>
 </br>
- A static array is declared with <code class="incode">[N]</code> followed by the type, where <code class="incode">N</code> is the dimension.</br>
+ A static array is declared with <code class="incode">[N] followed by the type, where </code>N<code class="incode"> is the dimension.</br>
 </div>
 <div class="code"><code style="white-space: break-spaces"><span style="color:#FFFFFF">{
     </span><span style="color:#569CD6">var</span><span style="color:#FFFFFF"> array: [</span><span style="color:#B5CEA8">2</span><span style="color:#FFFFFF">] </span><span style="color:#F6CC86">s32</span><span style="color:#FFFFFF">  </span><span style="color:#6A9955">// Static array of two s32</span><span style="color:#FFFFFF">
@@ -1492,7 +1590,7 @@ a = (</span><span style="color:#B5CEA8">1</span><span style="color:#FFFFFF"> > <
     </span><span style="color:#DCDCAA">@assert</span><span style="color:#FFFFFF">(array[</span><span style="color:#B5CEA8">1</span><span style="color:#FFFFFF">] == </span><span style="color:#B5CEA8">2</span><span style="color:#FFFFFF">)
 }</span></code></div><div>
 </br>
- An array literal has the form <code class="incode">[A, B, ...]</code>.</br>
+ An array literal has the form <code class="incode">[A, B, ...].</br>
 </div>
 <div class="code"><code style="white-space: break-spaces"><span style="color:#FFFFFF">{
     arr := [</span><span style="color:#B5CEA8">1</span><span style="color:#FFFFFF">, </span><span style="color:#B5CEA8">2</span><span style="color:#FFFFFF">, </span><span style="color:#B5CEA8">3</span><span style="color:#FFFFFF">, </span><span style="color:#B5CEA8">4</span><span style="color:#FFFFFF">] </span><span style="color:#6A9955">// An array of four s32</span><span style="color:#FFFFFF">
@@ -1531,7 +1629,7 @@ a = (</span><span style="color:#B5CEA8">1</span><span style="color:#FFFFFF"> > <
 </div>
 <div>
 </br>
- Syntax is <b>not</b> <code class="incode">[X][Y]</code> like in C/C++, but is <code class="incode">[X, Y]</code>.</br>
+ Syntax is <b>not</b> <code class="incode">[X]Y]</code> like in C/C++, but is <code class="incode">[X, Y].</br>
 </div>
 <div class="code"><code style="white-space: break-spaces"><span style="color:#FFFFFF">{
     </span><span style="color:#569CD6">var</span><span style="color:#FFFFFF"> array: [</span><span style="color:#B5CEA8">2</span><span style="color:#FFFFFF">, </span><span style="color:#B5CEA8">2</span><span style="color:#FFFFFF">] </span><span style="color:#F6CC86">s32</span><span style="color:#FFFFFF">
@@ -1583,7 +1681,7 @@ a = (</span><span style="color:#B5CEA8">1</span><span style="color:#FFFFFF"> > <
 </div>
 <div>
 </br>
- It is declared with <code class="incode">[..]</code>.</br>
+ It is declared with <code class="incode">[..].</br>
 </div>
 <div class="code"><code style="white-space: break-spaces"><span style="color:#FFFFFF">{
     </span><span style="color:#569CD6">var</span><span style="color:#FFFFFF"> a: [..] </span><span style="color:#F6CC86">bool</span><span style="color:#FFFFFF">
@@ -2191,7 +2289,7 @@ myRef = </span><span style="color:#569CD6">ref</span><span style="color:#FFFFFF"
     </span><span style="color:#DCDCAA">@assert</span><span style="color:#FFFFFF">(</span><span style="color:#4EC9B0">Value</span><span style="color:#FFFFFF">.</span><span style="color:#4EC9B0">B</span><span style="color:#FFFFFF"> == </span><span style="color:#B5CEA8">1</span><span style="color:#FFFFFF">)
     </span><span style="color:#DCDCAA">@assert</span><span style="color:#FFFFFF">(</span><span style="color:#4EC9B0">Value</span><span style="color:#FFFFFF">.</span><span style="color:#4EC9B0">C</span><span style="color:#FFFFFF"> == </span><span style="color:#B5CEA8">2</span><span style="color:#FFFFFF">)
 }</span></code></div><div><h3 id="Enum as flags">Enum as flags</br>
-</h3>An enum can be a set of flags if you declare it with the <code class="incode">#[Swag.EnumFlags]</code> <b>attribute</b>. Its type should be <code class="incode">u8</code>, <code class="incode">u16</code>, <code class="incode">u32</code> or <code class="incode">u64</code>.</br>
+</h3>An enum can be a set of flags if you declare it with the <code class="incode">#[Swag.EnumFlags] <b>attribute</b>. Its type should be </code>u8<code class="incode">, </code>u16<code class="incode">, </code>u32<code class="incode"> or </code>u64<code class="incode">.</br>
 </br>
 That kind of enum starts by default at 1, and not 0, and each value should be a power of 2.</br>
 </div>
@@ -3195,7 +3293,7 @@ Other than that, it's exactly the same. So this is just <b>syntaxic sugar</b> to
 </span><span style="color:#DCDCAA">@assert</span><span style="color:#FFFFFF">(c.</span><span style="color:#FF7411">methodReturnX</span><span style="color:#FFFFFF">() == </span><span style="color:#B5CEA8">5</span><span style="color:#FFFFFF">)
 </span><span style="color:#DCDCAA">@assert</span><span style="color:#FFFFFF">(c.</span><span style="color:#FF7411">funcReturnX</span><span style="color:#FFFFFF">() == </span><span style="color:#B5CEA8">5</span><span style="color:#FFFFFF">)
 </span><span style="color:#DCDCAA">@assert</span><span style="color:#FFFFFF">(c.</span><span style="color:#FF7411">returnY</span><span style="color:#FFFFFF">() == </span><span style="color:#B5CEA8">10</span><span style="color:#FFFFFF">)
-</span><span style="color:#DCDCAA">@assert</span><span style="color:#FFFFFF">(c.</span><span style="color:#FF7411">returnZ</span><span style="color:#FFFFFF">() == </span><span style="color:#B5CEA8">20</span><span style="color:#FFFFFF">)</span></code></div><div>All functions in an impl block can be retrieved by reflection, as long as the struct is declared with <code class="incode">#[Swag.ExportType("methods")]</code> (by default, methods are not exported).</br>
+</span><span style="color:#DCDCAA">@assert</span><span style="color:#FFFFFF">(c.</span><span style="color:#FF7411">returnZ</span><span style="color:#FFFFFF">() == </span><span style="color:#B5CEA8">20</span><span style="color:#FFFFFF">)</span></code></div><div>All functions in an impl block can be retrieved by reflection, as long as the struct is declared with <code class="incode">#[Swag.ExportType("methods")] (by default, methods are not exported).</br>
 </div>
 <div class="code"><code style="white-space: break-spaces"><span style="color:#6A9955">// Creates a type alias named 'Lambda'</span><span style="color:#FFFFFF">
 </span><span style="color:#569CD6">alias</span><span style="color:#FFFFFF"> </span><span style="color:#4EC9B0">Lambda</span><span style="color:#FFFFFF"> = </span><span style="color:#569CD6">func</span><span style="color:#FFFFFF">(</span><span style="color:#4EC9B0">MyStruct</span><span style="color:#FFFFFF">)-></span><span style="color:#F6CC86">s32</span><span style="color:#FFFFFF">
@@ -3360,7 +3458,7 @@ You can have more the one opAffect with different types.</br>
 </span><span style="color:#6A9955">// This will call opAffect(bool) with 'false'</span><span style="color:#FFFFFF">
 v1 = </span><span style="color:#569CD6">false</span><span style="color:#FFFFFF">
 </span><span style="color:#DCDCAA">@assert</span><span style="color:#FFFFFF">(v1.x == </span><span style="color:#B5CEA8">0</span><span style="color:#FFFFFF">)
-</span><span style="color:#DCDCAA">@assert</span><span style="color:#FFFFFF">(v1.y == </span><span style="color:#B5CEA8">0</span><span style="color:#FFFFFF">)</span></code></div><div>If <code class="incode">opAffect</code> is supposed to initialize the full content of the struct, you can add <code class="incode">#[Swag.Complete]</code>. This will avoid every variables to be initialized to the default values, then changed later with the <code class="incode">opAffect</code> call.</br>
+</span><span style="color:#DCDCAA">@assert</span><span style="color:#FFFFFF">(v1.y == </span><span style="color:#B5CEA8">0</span><span style="color:#FFFFFF">)</span></code></div><div>If <code class="incode">opAffect</code> is supposed to initialize the full content of the struct, you can add <code class="incode">#[Swag.Complete]. This will avoid every variables to be initialized to the default values, then changed later with the </code>opAffect<code class="incode"> call.</br>
 </div>
 <div class="code"><code style="white-space: break-spaces"><span style="color:#569CD6">impl</span><span style="color:#FFFFFF"> </span><span style="color:#4EC9B0">Struct</span><span style="color:#FFFFFF">
 {
@@ -3670,11 +3768,11 @@ cpt := </span><span style="color:#B5CEA8">0</span><span style="color:#FFFFFF">
     </span><span style="color:#DCDCAA">@assert</span><span style="color:#FFFFFF">(v.idx[</span><span style="color:#B5CEA8">2</span><span style="color:#FFFFFF">] == v.z)
 }</span></code></div>
 <h3 id="068__packing">Packing</h3>
-<div>You can also control the struct layout with two attributes: <code class="incode">#[Swag.Pack]</code> and <code class="incode">#[Swag.Align]</code>.</br>
+<div>You can also control the struct layout with two attributes: <code class="incode">#[Swag.Pack] and </code>#[Swag.Align].</br>
 </div>
 <div>
 </br>
- The default struct packing is the same as in C: each field is aligned to the size of the type. This is the equivalent of <code class="incode">#[Swag.Pack(0)]</code>.</br>
+ The default struct packing is the same as in C: each field is aligned to the size of the type. This is the equivalent of <code class="incode">#[Swag.Pack(0)].</br>
 </div>
 <div class="code"><code style="white-space: break-spaces"><span style="color:#FFFFFF">{
     </span><span style="color:#569CD6">struct</span><span style="color:#FFFFFF"> </span><span style="color:#4EC9B0">MyStruct</span><span style="color:#FFFFFF">
@@ -3691,7 +3789,7 @@ cpt := </span><span style="color:#B5CEA8">0</span><span style="color:#FFFFFF">
     </span><span style="color:#AAAAAA">#assert</span><span style="color:#FFFFFF"> </span><span style="color:#DCDCAA">@sizeof</span><span style="color:#FFFFFF">(</span><span style="color:#4EC9B0">MyStruct</span><span style="color:#FFFFFF">)     == </span><span style="color:#B5CEA8">16</span><span style="color:#FFFFFF">
 }</span></code></div><div>
 </br>
- You can <i>reduce</i> the packing of the fields with <code class="incode">#[Swag.Pack]</code>.</br>
+ You can <i>reduce</i> the packing of the fields with <code class="incode">#[Swag.Pack].</br>
 </div>
 <div class="code"><code style="white-space: break-spaces"><span style="color:#FFFFFF">{
     </span><span style="color:#AAAAAA">#[Swag.Pack(1)]</span><span style="color:#FFFFFF">
@@ -3741,7 +3839,7 @@ cpt := </span><span style="color:#B5CEA8">0</span><span style="color:#FFFFFF">
     </span><span style="color:#AAAAAA">#assert</span><span style="color:#FFFFFF"> </span><span style="color:#DCDCAA">@sizeof</span><span style="color:#FFFFFF">(</span><span style="color:#4EC9B0">MyStruct1</span><span style="color:#FFFFFF">) == </span><span style="color:#B5CEA8">8</span><span style="color:#FFFFFF">
 }</span></code></div><div>
 </br>
- You can force the struct alignement with <code class="incode">#[Swag.Align]</code>.</br>
+ You can force the struct alignement with <code class="incode">#[Swag.Align].</br>
 </div>
 <div class="code"><code style="white-space: break-spaces"><span style="color:#FFFFFF">{
     </span><span style="color:#569CD6">struct</span><span style="color:#FFFFFF"> </span><span style="color:#4EC9B0">MyStruct1</span><span style="color:#FFFFFF">
@@ -4192,7 +4290,7 @@ Another limitation is that you can only capture 'simple' variables (no struct wi
 <h3 id="104__mixin">Mixin</h3>
 <div>
 </br>
- A mixin is declared like a function, with the attribute <code class="incode">#[Swag.Mixin]</code>.</br>
+ A mixin is declared like a function, with the attribute <code class="incode">#[Swag.Mixin].</br>
 </div>
 <div class="code"><code style="white-space: break-spaces"><span style="color:#FFFFFF">{
     </span><span style="color:#AAAAAA">#[Swag.Mixin]</span><span style="color:#FFFFFF">
@@ -5777,7 +5875,7 @@ g_Defer = </span><span style="color:#B5CEA8">0</span><span style="color:#FFFFFF"
 </span><span style="color:#569CD6">catch</span><span style="color:#FFFFFF"> </span><span style="color:#FF7411">testDefer</span><span style="color:#FFFFFF">(</span><span style="color:#569CD6">false</span><span style="color:#FFFFFF">)
 </span><span style="color:#DCDCAA">@assert</span><span style="color:#FFFFFF">(g_Defer == </span><span style="color:#B5CEA8">5</span><span style="color:#FFFFFF">)   </span><span style="color:#6A9955">// Will call only defer(noerr) and the normal defer</span></code></div>
 <h2 id="175_safety">Safety</h2>
-<div>Swag comes with a bunch of safety checks which can be activated by module/function/instruction with the <code class="incode">#[Swag.Safety]</code> attribute.</br>
+<div>Swag comes with a bunch of safety checks which can be activated by module/function/instruction with the <code class="incode">#[Swag.Safety] attribute.</br>
 </br>
 Safety checks can also be changed for a specific build configuration (<code class="incode">--cfg:<config></code>) with <code class="incode">buildCfg.safetyGuards</code>.</br>
 </br>
@@ -5795,7 +5893,7 @@ Operators that can overflow are : <code class="incode">+ - * << >></code> and th
 </div>
 <div class="code"><code style="white-space: break-spaces"><span style="color:#FFFFFF">x := </span><span style="color:#B5CEA8">255</span><span style="color:#FFFFFF">'</span><span style="color:#F6CC86">u8</span><span style="color:#FFFFFF">
 x +=,over </span><span style="color:#B5CEA8">1</span><span style="color:#FFFFFF">     </span><span style="color:#6A9955">// Overflow is expected, so this will wrap around</span><span style="color:#FFFFFF">
-</span><span style="color:#DCDCAA">@assert</span><span style="color:#FFFFFF">(x == </span><span style="color:#B5CEA8">0</span><span style="color:#FFFFFF">)</span></code></div><div>You can also use <code class="incode">#[Swag.Overflow(true)]</code> to authorize overflow on a more global scale.</br>
+</span><span style="color:#DCDCAA">@assert</span><span style="color:#FFFFFF">(x == </span><span style="color:#B5CEA8">0</span><span style="color:#FFFFFF">)</span></code></div><div>You can also use <code class="incode">#[Swag.Overflow(true)] to authorize overflow on a more global scale.</br>
 </div>
 <div class="code"><code style="white-space: break-spaces"><span style="color:#AAAAAA">#[Swag.Overflow(true)]</span></code></div><div class="code"><code style="white-space: break-spaces"><span style="color:#FFFFFF">x := </span><span style="color:#B5CEA8">255</span><span style="color:#FFFFFF">'</span><span style="color:#F6CC86">u8</span><span style="color:#FFFFFF">
 x += </span><span style="color:#B5CEA8">1</span><span style="color:#FFFFFF">     </span><span style="color:#6A9955">// No need for operator modifier ',over'</span><span style="color:#FFFFFF">
@@ -5868,7 +5966,7 @@ y := </span><span style="color:#B5CEA8">0</span><span style="color:#FFFFFF">'</s
 </span><span style="color:#6A9955">//@sqrt(-2'f32)</span><span style="color:#FFFFFF">
 </span><span style="color:#6A9955">//@asin(-2'f32)</span><span style="color:#FFFFFF">
 </span><span style="color:#6A9955">//@acos(2'f32)</span></code></div><div><h3 id="#[Swag.Safety("switch", true)]">#[Swag.Safety("switch", true)]</br>
-</h3>Swag will panic if a switch is marked with #[Swag.Complete], but the value is not covered by a 'case'.</br>
+</h3>Swag will panic if a switch is marked with #[Swag.Complete] but the value is not covered by a 'case'.</br>
 </div>
 <div><h3 id="#[Swag.Safety("bool", true)]">#[Swag.Safety("bool", true)]</br>
 </h3>Swag will panic if a boolean value is not 'true' (1) or 'false' (0).</br>
@@ -5969,7 +6067,7 @@ Order of #drop in the same module is undefined (but is always the inverse order 
 <div><code class="incode">#run</code> is a special function that will be called at compile time.</br>
 It can be used to precompute some global values for example.</br>
 </div>
-<div class="code"><code style="white-space: break-spaces"><span style="color:#569CD6">var</span><span style="color:#FFFFFF"> </span><span style="color:#4EC9B0">G</span><span style="color:#FFFFFF">: [</span><span style="color:#B5CEA8">5</span><span style="color:#FFFFFF">] </span><span style="color:#F6CC86">f32</span><span style="color:#FFFFFF"> = </span><span style="color:#569CD6">undefined</span></code></div><div>Initialize <code class="incode">G</code> with <code class="incode">[1,2,4,8,16]</code> at compile time.</br>
+<div class="code"><code style="white-space: break-spaces"><span style="color:#569CD6">var</span><span style="color:#FFFFFF"> </span><span style="color:#4EC9B0">G</span><span style="color:#FFFFFF">: [</span><span style="color:#B5CEA8">5</span><span style="color:#FFFFFF">] </span><span style="color:#F6CC86">f32</span><span style="color:#FFFFFF"> = </span><span style="color:#569CD6">undefined</span></code></div><div>Initialize <code class="incode">G</code> with <code class="incode">[1,2,4,8,16] at compile time.</br>
 </div>
 <div class="code"><code style="white-space: break-spaces"><span style="color:#FF7411">#run</span><span style="color:#FFFFFF">
 {
@@ -5986,7 +6084,7 @@ So we can test the values of G here.</br>
 </span><span style="color:#DCDCAA">@assert</span><span style="color:#FFFFFF">(</span><span style="color:#4EC9B0">G</span><span style="color:#FFFFFF">[</span><span style="color:#B5CEA8">1</span><span style="color:#FFFFFF">] == </span><span style="color:#B5CEA8">2</span><span style="color:#FFFFFF">)
 </span><span style="color:#DCDCAA">@assert</span><span style="color:#FFFFFF">(</span><span style="color:#4EC9B0">G</span><span style="color:#FFFFFF">[</span><span style="color:#B5CEA8">2</span><span style="color:#FFFFFF">] == </span><span style="color:#B5CEA8">4</span><span style="color:#FFFFFF">)
 </span><span style="color:#DCDCAA">@assert</span><span style="color:#FFFFFF">(</span><span style="color:#4EC9B0">G</span><span style="color:#FFFFFF">[</span><span style="color:#B5CEA8">3</span><span style="color:#FFFFFF">] == </span><span style="color:#B5CEA8">8</span><span style="color:#FFFFFF">)
-</span><span style="color:#DCDCAA">@assert</span><span style="color:#FFFFFF">(</span><span style="color:#4EC9B0">G</span><span style="color:#FFFFFF">[</span><span style="color:#B5CEA8">4</span><span style="color:#FFFFFF">] == </span><span style="color:#B5CEA8">16</span><span style="color:#FFFFFF">)</span></code></div><div><code class="incode">#run</code> can also be used as an expression, to call for example a function not marked with <code class="incode">#[Swag.ConstExpr]</code>.</br>
+</span><span style="color:#DCDCAA">@assert</span><span style="color:#FFFFFF">(</span><span style="color:#4EC9B0">G</span><span style="color:#FFFFFF">[</span><span style="color:#B5CEA8">4</span><span style="color:#FFFFFF">] == </span><span style="color:#B5CEA8">16</span><span style="color:#FFFFFF">)</span></code></div><div><code class="incode">#run</code> can also be used as an expression, to call for example a function not marked with <code class="incode">#[Swag.ConstExpr].</br>
 </div>
 <div class="code"><code style="white-space: break-spaces"><span style="color:#569CD6">const</span><span style="color:#FFFFFF"> </span><span style="color:#4EC9B0">SumValue</span><span style="color:#FFFFFF"> = </span><span style="color:#FF7411">#run</span><span style="color:#FFFFFF"> </span><span style="color:#FF7411">sum</span><span style="color:#FFFFFF">(</span><span style="color:#B5CEA8">1</span><span style="color:#FFFFFF">, </span><span style="color:#B5CEA8">2</span><span style="color:#FFFFFF">, </span><span style="color:#B5CEA8">3</span><span style="color:#FFFFFF">, </span><span style="color:#B5CEA8">4</span><span style="color:#FFFFFF">) + </span><span style="color:#B5CEA8">10</span><span style="color:#FFFFFF">
 </span><span style="color:#AAAAAA">#assert</span><span style="color:#FFFFFF"> </span><span style="color:#4EC9B0">SumValue</span><span style="color:#FFFFFF"> == </span><span style="color:#B5CEA8">20</span><span style="color:#FFFFFF">
@@ -6034,12 +6132,12 @@ The return type is deduced from the <code class="incode">return</code> statement
 </span><span style="color:#6A9955">// Link with a given external library</span><span style="color:#FFFFFF">
 </span><span style="color:#AAAAAA">#foreignlib</span><span style="color:#FFFFFF"> </span><span style="color:#CE9178">"windows.lib"</span></code></div>
 <h3 id="185__var">Var</h3>
-<div>A global variable can be tagged with <code class="incode">#[Swag.Tls]</code> to store it in the thread local storage (one copy per thread).</br>
+<div>A global variable can be tagged with <code class="incode">#[Swag.Tls] to store it in the thread local storage (one copy per thread).</br>
 </div>
 <div class="code"><code style="white-space: break-spaces"><span style="color:#AAAAAA">#[Swag.Tls]</span><span style="color:#FFFFFF">
 </span><span style="color:#569CD6">var</span><span style="color:#FFFFFF"> </span><span style="color:#4EC9B0">G</span><span style="color:#FFFFFF"> = </span><span style="color:#B5CEA8">0</span></code></div><div>
 </br>
- A local variable can be tagged with <code class="incode">#[Swag.Global]</code> to make it global (aka <code class="incode">static</code> in C/C++).</br>
+ A local variable can be tagged with <code class="incode">#[Swag.Global] to make it global (aka </code>static<code class="incode"> in C/C++).</br>
 </div>
 <div class="code"><code style="white-space: break-spaces"><span style="color:#FFFFFF">{
     </span><span style="color:#569CD6">func</span><span style="color:#FFFFFF"> </span><span style="color:#FF7411">toto</span><span style="color:#FFFFFF">()-></span><span style="color:#F6CC86">s32</span><span style="color:#FFFFFF">
@@ -6054,7 +6152,7 @@ The return type is deduced from the <code class="incode">return</code> statement
     </span><span style="color:#DCDCAA">@assert</span><span style="color:#FFFFFF">(</span><span style="color:#FF7411">toto</span><span style="color:#FFFFFF">() == </span><span style="color:#B5CEA8">1</span><span style="color:#FFFFFF">)
     </span><span style="color:#DCDCAA">@assert</span><span style="color:#FFFFFF">(</span><span style="color:#FF7411">toto</span><span style="color:#FFFFFF">() == </span><span style="color:#B5CEA8">2</span><span style="color:#FFFFFF">)
     </span><span style="color:#DCDCAA">@assert</span><span style="color:#FFFFFF">(</span><span style="color:#FF7411">toto</span><span style="color:#FFFFFF">() == </span><span style="color:#B5CEA8">3</span><span style="color:#FFFFFF">)
-}</span></code></div><div>A global variable can also be marked as <code class="incode">#[Swag.Compiler]</code>. That kind of variable will not be exported to the runtime and can only be used in compile time code.</br>
+}</span></code></div><div>A global variable can also be marked as <code class="incode">#[Swag.Compiler]. That kind of variable will not be exported to the runtime and can only be used in compile time code.</br>
 </div>
 <div class="code"><code style="white-space: break-spaces"><span style="color:#AAAAAA">#[Swag.Compiler]</span><span style="color:#FFFFFF">
 </span><span style="color:#569CD6">var</span><span style="color:#FFFFFF"> </span><span style="color:#4EC9B0">G2</span><span style="color:#FFFFFF"> = </span><span style="color:#B5CEA8">0</span><span style="color:#FFFFFF">
@@ -6078,7 +6176,7 @@ The return type is deduced from the <code class="incode">return</code> statement
 <div class="code"><code style="white-space: break-spaces"><span style="color:#569CD6">attr</span><span style="color:#FFFFFF"> </span><span style="color:#4EC9B0">AttributeBA</span><span style="color:#FFFFFF">(x: </span><span style="color:#F6CC86">s32</span><span style="color:#FFFFFF">, y: </span><span style="color:#F6CC86">string</span><span style="color:#FFFFFF"> = </span><span style="color:#CE9178">"string"</span><span style="color:#FFFFFF">)</span></code></div><div>You can define a usage before the attribute definition to restrict its usage.</br>
 </div>
 <div class="code"><code style="white-space: break-spaces"><span style="color:#AAAAAA">#[AttrUsage(AttributeUsage.Function)]</span><span style="color:#FFFFFF">
-</span><span style="color:#569CD6">attr</span><span style="color:#FFFFFF"> </span><span style="color:#4EC9B0">AttributeC</span><span style="color:#FFFFFF">()</span></code></div><div>To use an attribute, the syntax is <code class="incode">#[attribute, attribute...]</code>. It should be placed <b>before</b> the thing you want to tag.</br>
+</span><span style="color:#569CD6">attr</span><span style="color:#FFFFFF"> </span><span style="color:#4EC9B0">AttributeC</span><span style="color:#FFFFFF">()</span></code></div><div>To use an attribute, the syntax is <code class="incode">#[attribute, attribute...]. It should be placed <b>before</b> the thing you want to tag.</br>
 </div>
 <div class="code"><code style="white-space: break-spaces"><span style="color:#AAAAAA">#[AttributeA, AttributeB(0, 0, "string")]</span><span style="color:#FFFFFF">
 </span><span style="color:#569CD6">func</span><span style="color:#FFFFFF"> </span><span style="color:#FF7411">function1</span><span style="color:#FFFFFF">()
@@ -6561,7 +6659,7 @@ Here is a real life example from the <code class="incode">Std.Ogl</code> module 
     {
         r, g, b: </span><span style="color:#F6CC86">s32</span><span style="color:#FFFFFF">
     }
-}</span></code></div><div>You can create a reference to something of the current package with [name] or [name1.name2 etc.]</br>
+}</span></code></div><div>You can create a reference to something of the current package with [name]or [name1.name2 etc.]</br>
 </div>
 <div class="code"><code style="white-space: break-spaces"><span style="color:#6A9955">// This is a function with a 'value' parameter.</span><span style="color:#FFFFFF">
 </span><span style="color:#569CD6">func</span><span style="color:#FFFFFF"> </span><span style="color:#FF7411">one</span><span style="color:#FFFFFF">(value: </span><span style="color:#F6CC86">s32</span><span style="color:#FFFFFF">)

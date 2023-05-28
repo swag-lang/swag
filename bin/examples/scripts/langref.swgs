@@ -136,6 +136,40 @@ func addLine(line: string)
             }
         }
 
+        // Reference
+        if line[i] == "["'u8
+        {
+            var linkName: String
+            i += 1
+            while line[i] and line[i] != "]"'u8
+            {
+                linkName += line[i]
+                i += 1
+            }
+
+            if line[i]
+                i += 1
+
+            if line[i] != "("'u8
+            {
+                g_Buf += "["
+                g_Buf += linkName
+                g_Buf += "]"
+                continue
+            }
+
+            i += 1
+            var linkValue: String
+            while line[i] and line[i] != ")"'u8
+            {
+                linkValue += line[i]
+                i += 1
+            }
+
+            g_Buf += Format.toString("<a href=\"%\">%</a>", linkValue, linkName)
+            continue
+        }
+
         g_Buf += line[i]
     }
 
