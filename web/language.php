@@ -4,10 +4,6 @@ include('header.php');
 ?>
 
     <style>
-    html, body {
-        height: 100%;
-    }
-
     h1, h2, h3, h4, h5, h6 {
         margin: revert;
         font-size: revert;
@@ -17,7 +13,7 @@ include('header.php');
     .code {
         background-color: #333333;
         border: 1px solid LightGrey;
-        margin: 20px;
+        margin: 20px 0;
         padding: 20px;
     }
 
@@ -38,7 +34,6 @@ include('header.php');
     }
 
     .container {
-        display:        flex;
         height:         100%;
         font-family:    Segoe UI;
         line-height:    1.3em;
@@ -46,15 +41,10 @@ include('header.php');
 
     .left {
         overflow-y: scroll;
-        width:      450px;
-        height:     100%;
     }
 
     .right {
-        overflow-y:   scroll;
-        width:        100%;
-        height:       100%;
-        padding-left: 10px;
+        overflow-y: scroll;
     }
 
     .container ul, .tocbullet {
@@ -70,12 +60,24 @@ include('header.php');
         text-decoration: underline;
     }
 
+    @media (min-width: 1024px) {
+        html, body {
+            height: 100%;
+        }
+
+        .code {
+            margin: 20px;
+        }
+    }
     </style>
-<div class="lg:m-auto lg:w-[76rem] pt-2 lg:pt-10 overflow-hidden p-5" style="height: 93%;">
-<div class="container">
-<div class="left hidden lg:block">
-<h1>Content</h1>
-<ul>
+<div class="lg:m-auto lg:w-[76rem] pt-5 lg:pt-10 overflow-hidden p-5" style="height: 93%;">
+<div class="container lg:flex">
+<div class="left lg:w-[450px] lg:h-full" x-data="{ open_content: false }">
+<div class="flex items-center justify-between border lg:border-0 rounded pt-1 px-2" @click="open_content = ! open_content">
+    <h1 class="leading-8 m-0 lg:my-5">Content</h1>
+    <div class="leading-8 block lg:hidden"><img src="imgs/chevron.png" alt="" class="w-5" :class="open_content ? 'rotate-90' : ''" /></div>
+</div>
+<ul class="mt-5" :class="open_content ? '' : 'hidden lg:block'">
 <li><a href="#000_introduction">Introduction</a></li>
 <ul class="tocbullet">
 </ul>
@@ -401,9 +403,9 @@ include('header.php');
 </ul>
 </ul>
 </div>
-<div class="right">
+<div class="right lg:w-full lg:h-full lg:pl-2">
 <div class="page">
-<h1>Swag language reference</h1>
+<h1 class="leading-8 mt-10 lg:my-5">Swag language reference</h1>
 
 <h2 id="000_introduction">Introduction</h2>
 <div>This <code class="incode">swag-lang/swag/bin/reference/language</code> module provides a brief explanation of the language basic syntax and usage without the need of the <b>Swag standard libraries</b> (<code class="incode">Std</code>).</br>

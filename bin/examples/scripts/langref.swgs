@@ -322,10 +322,6 @@ func generate(in, out: string)
     // Create styles
     g_Buf += """
         <style>
-        html, body {
-            height: 100%;
-        }
-
         h1, h2, h3, h4, h5, h6 {
             margin: revert;
             font-size: revert;
@@ -335,7 +331,7 @@ func generate(in, out: string)
         .code {
             background-color: #333333;
             border: 1px solid LightGrey;
-            margin: 20px;
+            margin: 20px 0;
             padding: 20px;
         }
 
@@ -356,22 +352,17 @@ func generate(in, out: string)
         }
 
         .container {
-            display:        flex;
-            height:         100%;
-            font-family:    Segoe UI;
-            line-height:    1.3em;
+            height: 100%;
+            font-family: Segoe UI;
+            line-height: 1.3em;
         }
 
         .left {
             overflow-y: scroll;
-            width:      450px;
-            height:     100%;
         }
 
         .right {
-            overflow-y:   scroll;
-            width:        100%;
-            height:       100%;
+            overflow-y: scroll;
             padding-left: 10px;
         }
 
@@ -388,24 +379,36 @@ func generate(in, out: string)
             text-decoration: underline;
         }
 
+        @media (min-width: 1024px) {
+            html, body {
+                height: 100%;
+            }
+
+            .code {
+                margin: 20px;
+            }
+        }
         </style>
     """
 
     // Main page (left and right parts, left is for table of content, right is for content)
-    g_Buf += "<div class=\"lg:m-auto lg:w-[76rem] pt-2 lg:pt-10 overflow-hidden p-5\" style=\"height: 93%;\">\n"
-    g_Buf += "<div class=\"container\">\n"
-    g_Buf += "<div class=\"left hidden lg:block\">\n"
+    g_Buf += "<div class=\"lg:m-auto lg:w-[76rem] pt-5 lg:pt-10 overflow-hidden p-5\" style=\"height: 93%;\">\n"
+    g_Buf += "<div class=\"container lg:flex\">\n"
+    g_Buf += "<div class=\"left lg:w-[450px] lg:h-full x-data=\"{ open_content: false }\"\">\n"
     seekToc := g_Buf.length // This will be the place where we will insert the 'g_Toc' table of content
     g_Buf += "</div>\n"
 
     // Right page start
-    g_Buf += "<div class=\"right\">\n"
+    g_Buf += "<div class=\"right lg:w-full lg:h-full lg:pl-2\">\n"
     g_Buf += "<div class=\"page\">\n"
-    g_Buf += "<h1>Swag language reference</h1>\n"
+    g_Buf += "<h1 class=\"leading-8 mt-10 lg:my-5\">Swag language reference</h1>\n"
 
     // Table of content start
-    g_Toc += "<h1>Content</h1>\n"
-    g_Toc += "<ul>\n"
+    g_Toc += "<div class=\"flex items-center justify-between border lg:border-0 rounded pt-1 px-2\" @click=\"open_content = ! open_content\">\n"
+    g_Toc += "<h1 class=\"leading-8 m-0 lg:my-5\">Content</h1>\n"
+    g_Toc += "<div class=\"leading-8 block lg:hidden\"><img src=\"imgs/chevron.png\" alt=\"\" class=\"w-5\" :class=\"open_content ? 'rotate-90' : ''\" /></div>\n"
+    g_Toc += "</div>\n"
+    g_Toc += "<ul class=\"mt-5\" :class=\"open_content ? '' : 'hidden lg:block'\">\n"
 
     visit v: files
     {
