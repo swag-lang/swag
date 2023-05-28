@@ -29,6 +29,14 @@
         overflow-wrap:      break-word;
     }
 
+    p a {
+        text-decoration: none;
+        color:           Blue;
+    }
+
+    p a:hover {
+        text-decoration: underline;
+    }
 </style>
 
 <div class="lg:m-auto lg:w-[76rem] pt-2 lg:pt-10 overflow-hidden p-5">

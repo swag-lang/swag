@@ -1,5 +1,5 @@
 # Your first install
-Download the latest release from github, and unzip it in a folder. Of course SSD is better.
+[Download](https://github.com/swag-lang/swag/releases) the latest release from github, and unzip it in a folder. Of course a *SSD* is better.
 
 #### Under windows 10/11
 You should register the location of the swag compiler (`swag.exe`) in the PATH environment variable to be able to call it from everywhere.
@@ -82,7 +82,7 @@ Hello world!
 It's activated by default under Windows 10, and runs each time you launch an executable or a process.
 This can increase the compile time of your project, so consider excluding your Swag folder from it !
 
-https://support.microsoft.com/en-us/windows/add-an-exclusion-to-windows-security-811816c0-4dfd-af4a-47e4-c301afe13b26#:~:text=Go%20to%20Start%20%3E%20Settings%20%3E%20Update,%2C%20file%20types%2C%20or%20process.
+[Reference](https://support.microsoft.com/en-us/windows/add-an-exclusion-to-windows-security-811816c0-4dfd-af4a-47e4-c301afe13b26#:~:text=Go%20to%20Start%20%3E%20Settings%20%3E%20Update,%2C%20file%20types%2C%20or%20process)
 
 # Content of the Swag folder
 The Swag folder contains the compiler `swag.exe`, but also a bunch of sub folders.
