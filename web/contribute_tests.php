@@ -25,6 +25,8 @@
         margin:             20px;
         padding:            20px;
         font-size:          0.8em;
+        white-space:        break-spaces;
+        overflow-wrap:      break-word;
     }
 
 </style>
