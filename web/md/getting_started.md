@@ -34,7 +34,7 @@ This will also create a simple executable module *first* to print "Hello world !
 
 *F:/first/modules/first/src/main.swg*
 
-``` csharp
+```
 #main
 {
     @print("Hello world!\n")

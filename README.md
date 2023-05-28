@@ -4,7 +4,7 @@
 
 > Work in progress ! There's no "official" release yet.
 
-> To get the compiler latest version for Windows, go the the [release](https://github.com/swag-lang/swag/releases) page.
+> To get the compiler latest version for Windows, go to the [release](https://github.com/swag-lang/swag/releases) page.
 
 Swag is a native and/or interpreted programming language made for fun because, let's be honest, **C++** is now an **horrible and ugly beast** ! This is my third compiler (the other ones were developed for AAA game engines), but that one is by far the most advanced.
 
@@ -54,108 +54,12 @@ Here is a **screen capture software** fully written in Swag with the help of the
 * **Mandatory semicolons**, yeah...
 * **Tagged unions**, **bitfields**, **inline assembly**..., but who knows...
 
-# Hello mad world !
-
-`#main` is the program entry point, a special compiler function. That's why the name starts with `#`.
-`@print` is an intrinsic, a special built-in function. That's why the name starts with `@`.
-
-``` swift
-#main
-{
-    @print("Hello mad world !\n")
-}
-```
-A version that uses the `print` function in the `Std.Core` module :
-
-``` swift
-#main
-{
-    Core.Console.print("Hello mad world !, "\n")
-    Core.Console.printf("%\n", "Hello mad world again !")
-}
-```
-A `#run` block is executed at compile time, so in the following example the famous message will be printed by the compiler :
-
-``` swift
-#run
-{
-    const Msg = "Hello mad world !\n"
-    Core.Console.print(Msg)
-}
-```
-A stupid version that generates the code to do the print (meta programming) :
-
-``` swift
-using Core
-
-#main
-{
-    const Msg = "Hello mad world !\n"
-
-    // The result of #ast is a string that will be compiled in place
-    #ast
-    {
-        sb := StrConv.StringBuilder{}
-        sb.appendString("Console.print(Msg)")
-        return sb.toString()
-    }
-}
-```
-
-A version that calls a nested function at compile time (only) to initialize the string constant to print :
-
-``` swift
-using Swag, Core
-
-#main
-{
-    #[ConstExpr]
-    func nestedFunc() => "Hello mad world !\n"   // Function short syntax
-
-    // nestedFunc() can be called at compile time because it is marked with 'Swag.ConstExpr'
-    const Msg = nestedFunc()
-    Console.print(Msg)
-}
-```
-
-More and more crazy :
-
-``` swift
-using Core
-
-#main
-{
-    // #run will force the call of mySillyFunction() at compile time
-    const Msg = #run mySillyFunction()
-    Console.print(Msg)
-}
-
-// This is a compile time function only
-#[Swag.Compiler]
-func mySillyFunction()->string
-{
-    Console.print("Hello mad world at compile time !\n")
-
-    // This creates a constant named 'MyConst'
-    #ast
-    {
-        sb := StrConv.StringBuilder{}
-        sb.appendString("const MyConst = \"Hello ")
-        sb.appendString("mad world ")
-        sb.appendString("at runtime !\"")
-        return sb.toString()
-    }
-
-    return MyConst
-}
-```
-
 # For the braves
 
-* [Start](web/md/getting_started.md) your first project, compile it, run it.
-* Use the compiler as a [script](web/md/swag_as_script.md) interpreter.
-* [Contribute](web/md/contribute_tests.md) to the compiler **test suite**, this will help (a lot).
+* [Start](https://swag-lang.org/getting_started.php) your first project, compile it, run it.
+* Use the compiler as a [script](https://swag-lang.org/swag_as_script.php) interpreter.
+* [Contribute](https://swag-lang.org/contribute_tests.php) to the compiler **test suite**, this will help (a lot).
 
 # For the very braves
 
-* [How to build](web/md/how_to_build_swag.md) the compiler with the full source tree.
+* [How to build](https://swag-lang.org/how_to_build_swag.php) the compiler with the full source tree.

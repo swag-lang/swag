@@ -25,5 +25,6 @@ Some identifiers can also start with `@`. This indicates an **intrinsic** functi
 @min()
 @max()
 @sqrt()
+@print()
 ```
 */

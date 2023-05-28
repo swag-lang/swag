@@ -124,7 +124,7 @@ func addLine(line: string)
             if !stateCode
             {
                 stateCode = true
-                g_Buf += "<code class=\"incode\">"
+                g_Buf += "<code>"
                 continue
             }
 
@@ -134,6 +134,40 @@ func addLine(line: string)
                 stateCode = false
                 continue
             }
+        }
+
+        // Reference
+        if line[i] == "["'u8
+        {
+            var linkName: String
+            i += 1
+            while line[i] and line[i] != "]"'u8
+            {
+                linkName += line[i]
+                i += 1
+            }
+
+            if line[i]
+                i += 1
+
+            if line[i] != "("'u8
+            {
+                g_Buf += "["
+                g_Buf += linkName
+                g_Buf += "]"
+                continue
+            }
+
+            i += 1
+            var linkValue: String
+            while line[i] and line[i] != ")"'u8
+            {
+                linkValue += line[i]
+                i += 1
+            }
+
+            g_Buf += Format.toString("<a href=\"%\">%</a>", linkValue, linkName)
+            continue
         }
 
         g_Buf += line[i]
@@ -152,8 +186,8 @@ func flushCode()
     if g_Code.length == 0
         return
 
-    g_Buf += "<div class=\"code\">"
-    g_Buf += "<code style=\"white-space: break-spaces\">"
+    g_Buf += "<pre>"
+    g_Buf += "<code>"
 
     var g_Edit:      RichEditCtrl
     var g_LexerSwag: RichEditLexerSwag
@@ -164,7 +198,7 @@ func flushCode()
 
     res := g_Edit.getTextAndStyles()
 
-    g_Edit.styles[0].colFg = Pixel.Argb.White
+    g_Edit.styles[0].colFg = Pixel.Argb.Black
     lastStyle := -1
     loop i: res.text
     {
@@ -173,7 +207,13 @@ func flushCode()
             if lastStyle != -1
                 g_Buf += "</span>"
             lastStyle = res.styles[i]
-            g_Buf += Format.toString("<span style=\"color:#%{X}\">", g_Edit.styles[lastStyle].colFg.argb & 0xFFFFFF)
+
+            color := g_Edit.styles[lastStyle].colFg
+            hsl := color.toHsl()
+            hsl.l = Math.clamp(hsl.l, 0, 0.5)
+            color = Pixel.Color.fromHsl(hsl.h, hsl.s, hsl.l)
+
+            g_Buf += Format.toString("<span style=\"color:#%{X}\">", color.argb & 0xFFFFFF)
         }
 
         g_Buf += res.text[i]
@@ -181,7 +221,7 @@ func flushCode()
 
     g_Buf += "</span>"
     g_Buf += "</code>"
-    g_Buf += "</div>"
+    g_Buf += "</pre>"
 
     g_Code.clear()
 }
@@ -323,32 +363,33 @@ func generate(in, out: string)
     g_Buf += """
         <style>
         h1, h2, h3, h4, h5, h6 {
-            margin: revert;
-            font-size: revert;
-            font-weight: revert;
+            margin:         revert;
+            font-size:      revert;
+            font-weight:    revert;
         }
 
-        .code {
-            background-color: #333333;
-            border: 1px solid LightGrey;
-            margin: 20px 0;
-            padding: 20px;
+        p code {
+            background-color:   #eeeeee;
+            border:             1px dotted #cccccc;
+            padding:            2px;
+            margin:             0px;
+            font-size:          0.8em;
         }
 
-        code {
-            font-size: 0.8em;
+        pre {
+            background-color:   #eeeeee;
+            border:             1px solid LightGrey;
+            margin:             20px 0;
+            padding:            20px;
+            font-size:          0.8em;
+            white-space:        break-spaces;
+            overflow-wrap:      break-word;
         }
 
         .blockquote {
-            border-left: 2px solid Orange;
-            margin-left: 10px;
-            padding-left: 10px;
-        }
-
-        .incode {
-            background-color: #eeeeee;
-            padding: 2px;
-            border: 1px dotted #cccccc;
+            border-left:    2px solid Orange;
+            margin-left:    10px;
+            padding-left:   10px;
         }
 
         .container {
@@ -367,8 +408,8 @@ func generate(in, out: string)
         }
 
         .container ul, .tocbullet {
-            list-style-type: revert;
-            padding: revert;
+            list-style-type:    revert;
+            padding:            revert;
         }
 
         .container a {
@@ -384,7 +425,7 @@ func generate(in, out: string)
                 height: 100%;
             }
 
-            .code {
+            pre {
                 margin: 20px;
             }
         }
@@ -468,6 +509,5 @@ func generate(in, out: string)
 
 #run
 {
-    generate("../../reference/tests/language/src", "../../../web/language.html")
-    generate("../../reference/tests/language/src", "../../../web/language.php")
+    generate("../bin/reference/tests/language/src", "../web/language.php")
 }
