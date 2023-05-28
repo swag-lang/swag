@@ -4,7 +4,7 @@
 
 > Work in progress ! There's no "official" release yet.
 
-> To get the compiler latest version for Windows, go the the [release](https://github.com/swag-lang/swag/releases) page.
+> To get the compiler latest version for Windows, go to the [release](https://github.com/swag-lang/swag/releases) page.
 
 Swag is a native and/or interpreted programming language made for fun because, let's be honest, **C++** is now an **horrible and ugly beast** ! This is my third compiler (the other ones were developed for AAA game engines), but that one is by far the most advanced.
 
@@ -56,10 +56,10 @@ Here is a **screen capture software** fully written in Swag with the help of the
 
 # For the braves
 
-* [Start](web/md/getting_started.md) your first project, compile it, run it.
-* Use the compiler as a [script](web/md/swag_as_script.md) interpreter.
-* [Contribute](web/md/contribute_tests.md) to the compiler **test suite**, this will help (a lot).
+* [Start](https://swag-lang.org/getting_started.php) your first project, compile it, run it.
+* Use the compiler as a [script](https://swag-lang.org/swag_as_script.php) interpreter.
+* [Contribute](https://swag-lang.org/contribute_tests.php) to the compiler **test suite**, this will help (a lot).
 
 # For the very braves
 
-* [How to build](web/md/how_to_build_swag.md) the compiler with the full source tree.
+* [How to build](https://swag-lang.org/how_to_build_swag.php) the compiler with the full source tree.
