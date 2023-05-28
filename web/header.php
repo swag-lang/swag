@@ -10,7 +10,7 @@
             <li class="lg:mr-5 mb-1 lg:mb-0 ml-2 lg:ml-0"><a href="index.php" class="<?=$_SERVER['REQUEST_URI'] == '/index.php' ? 'border-b' : ''?> hover:border-b">Home</a></li>
             <li class="lg:mr-5 mb-1 lg:mb-0 ml-2 lg:ml-0"><a href="language.php" class="<?=$_SERVER['REQUEST_URI'] == '/language.php' ? 'border-b' : ''?> hover:border-b">Overview</a></li>
             <li class="lg:mr-5 mb-1 lg:mb-0 ml-2 lg:ml-0"><a href="std/swag.runtime.html" target="_blank" class="hover:border-b">Runtime</a></li>
-            <li class="lg:mr-5 mb-1 lg:mb-0 ml-2 lg:ml-0"><a href="libraries.php" class="<?=$_SERVER['REQUEST_URI'] == '/libraries.php' ? 'border-b' : ''?> hover:border-b">Std</a></li>
+            <li class="lg:mr-5 mb-1 lg:mb-0 ml-2 lg:ml-0"><a href="std.php" class="<?=$_SERVER['REQUEST_URI'] == '/std.php' ? 'border-b' : ''?> hover:border-b">Std</a></li>
             <li class="mb-1 lg:mb-0 ml-2 lg:ml-0"><a href="https://github.com/swag-lang/swag" target="_blank" class="hover:border-b">Github</a></li>
         </ul>
     </div>

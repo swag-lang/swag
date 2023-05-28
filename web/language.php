@@ -34,10 +34,11 @@
         text-decoration: underline;
     }
 
-    .blockquote {
-        border-left:    2px solid Orange;
-        margin-left:    10px;
-        padding-left:   10px;
+    blockquote {
+        background-color:   LightYellow;
+        border-left:        6px solid Orange;
+        padding:            10px;
+        margin-right:       10px;
     }
 
     .container {
@@ -1572,7 +1573,7 @@ a = (</span><span style="color:#74A35B">1</span><span style="color:#0"> > </span
 </p>
 <p>
 </br>
- A static array is declared with <code>[N] followed by the type, where </code>N<code> is the dimension.</br>
+ A static array is declared with <code>[N]</code> followed by the type, where <code>N</code> is the dimension.</br>
 </p>
 <pre><code><span style="color:#0">{
     </span><span style="color:#3186CD">var</span><span style="color:#0"> array: [</span><span style="color:#74A35B">2</span><span style="color:#0">] </span><span style="color:#ED9A11">s32</span><span style="color:#0">  </span><span style="color:#6A9955">// Static array of two s32</span><span style="color:#0">
@@ -1603,7 +1604,7 @@ a = (</span><span style="color:#74A35B">1</span><span style="color:#0"> > </span
     </span><span style="color:#B4B44A">@assert</span><span style="color:#0">(array[</span><span style="color:#74A35B">1</span><span style="color:#0">] == </span><span style="color:#74A35B">2</span><span style="color:#0">)
 }</span></code></pre><p>
 </br>
- An array literal has the form <code>[A, B, ...].</br>
+ An array literal has the form <code>[A, B, ...]</code>.</br>
 </p>
 <pre><code><span style="color:#0">{
     arr := [</span><span style="color:#74A35B">1</span><span style="color:#0">, </span><span style="color:#74A35B">2</span><span style="color:#0">, </span><span style="color:#74A35B">3</span><span style="color:#0">, </span><span style="color:#74A35B">4</span><span style="color:#0">] </span><span style="color:#6A9955">// An array of four s32</span><span style="color:#0">
@@ -1642,7 +1643,7 @@ a = (</span><span style="color:#74A35B">1</span><span style="color:#0"> > </span
 </p>
 <p>
 </br>
- Syntax is <b>not</b> <code>[X]Y]</code> like in C/C++, but is <code>[X, Y].</br>
+ Syntax is <b>not</b> <code>[X][Y]</code> like in C/C++, but is <code>[X, Y]</code>.</br>
 </p>
 <pre><code><span style="color:#0">{
     </span><span style="color:#3186CD">var</span><span style="color:#0"> array: [</span><span style="color:#74A35B">2</span><span style="color:#0">, </span><span style="color:#74A35B">2</span><span style="color:#0">] </span><span style="color:#ED9A11">s32</span><span style="color:#0">
@@ -1694,7 +1695,7 @@ a = (</span><span style="color:#74A35B">1</span><span style="color:#0"> > </span
 </p>
 <p>
 </br>
- It is declared with <code>[..].</br>
+ It is declared with <code>[..]</code>.</br>
 </p>
 <pre><code><span style="color:#0">{
     </span><span style="color:#3186CD">var</span><span style="color:#0"> a: [..] </span><span style="color:#ED9A11">bool</span><span style="color:#0">
@@ -2302,7 +2303,7 @@ myRef = </span><span style="color:#3186CD">ref</span><span style="color:#0"> &y
     </span><span style="color:#B4B44A">@assert</span><span style="color:#0">(</span><span style="color:#3BC3A7">Value</span><span style="color:#0">.</span><span style="color:#3BC3A7">B</span><span style="color:#0"> == </span><span style="color:#74A35B">1</span><span style="color:#0">)
     </span><span style="color:#B4B44A">@assert</span><span style="color:#0">(</span><span style="color:#3BC3A7">Value</span><span style="color:#0">.</span><span style="color:#3BC3A7">C</span><span style="color:#0"> == </span><span style="color:#74A35B">2</span><span style="color:#0">)
 }</span></code></pre><p><h3 id="Enum as flags">Enum as flags</br>
-</h3>An enum can be a set of flags if you declare it with the <code>#[Swag.EnumFlags] <b>attribute</b>. Its type should be </code>u8<code>, </code>u16<code>, </code>u32<code> or </code>u64<code>.</br>
+</h3>An enum can be a set of flags if you declare it with the <code>#[Swag.EnumFlags]</code> <b>attribute</b>. Its type should be <code>u8</code>, <code>u16</code>, <code>u32</code> or <code>u64</code>.</br>
 </br>
 That kind of enum starts by default at 1, and not 0, and each value should be a power of 2.</br>
 </p>
@@ -3306,7 +3307,7 @@ Other than that, it's exactly the same. So this is just <b>syntaxic sugar</b> to
 </span><span style="color:#B4B44A">@assert</span><span style="color:#0">(c.</span><span style="color:#FF6A00">methodReturnX</span><span style="color:#0">() == </span><span style="color:#74A35B">5</span><span style="color:#0">)
 </span><span style="color:#B4B44A">@assert</span><span style="color:#0">(c.</span><span style="color:#FF6A00">funcReturnX</span><span style="color:#0">() == </span><span style="color:#74A35B">5</span><span style="color:#0">)
 </span><span style="color:#B4B44A">@assert</span><span style="color:#0">(c.</span><span style="color:#FF6A00">returnY</span><span style="color:#0">() == </span><span style="color:#74A35B">10</span><span style="color:#0">)
-</span><span style="color:#B4B44A">@assert</span><span style="color:#0">(c.</span><span style="color:#FF6A00">returnZ</span><span style="color:#0">() == </span><span style="color:#74A35B">20</span><span style="color:#0">)</span></code></pre><p>All functions in an impl block can be retrieved by reflection, as long as the struct is declared with <code>#[Swag.ExportType("methods")] (by default, methods are not exported).</br>
+</span><span style="color:#B4B44A">@assert</span><span style="color:#0">(c.</span><span style="color:#FF6A00">returnZ</span><span style="color:#0">() == </span><span style="color:#74A35B">20</span><span style="color:#0">)</span></code></pre><p>All functions in an impl block can be retrieved by reflection, as long as the struct is declared with <code>#[Swag.ExportType("methods")]</code> (by default, methods are not exported).</br>
 </p>
 <pre><code><span style="color:#6A9955">// Creates a type alias named 'Lambda'</span><span style="color:#0">
 </span><span style="color:#3186CD">alias</span><span style="color:#0"> </span><span style="color:#3BC3A7">Lambda</span><span style="color:#0"> = </span><span style="color:#3186CD">func</span><span style="color:#0">(</span><span style="color:#3BC3A7">MyStruct</span><span style="color:#0">)-></span><span style="color:#ED9A11">s32</span><span style="color:#0">
@@ -3471,7 +3472,7 @@ You can have more the one opAffect with different types.</br>
 </span><span style="color:#6A9955">// This will call opAffect(bool) with 'false'</span><span style="color:#0">
 v1 = </span><span style="color:#3186CD">false</span><span style="color:#0">
 </span><span style="color:#B4B44A">@assert</span><span style="color:#0">(v1.x == </span><span style="color:#74A35B">0</span><span style="color:#0">)
-</span><span style="color:#B4B44A">@assert</span><span style="color:#0">(v1.y == </span><span style="color:#74A35B">0</span><span style="color:#0">)</span></code></pre><p>If <code>opAffect</code> is supposed to initialize the full content of the struct, you can add <code>#[Swag.Complete]. This will avoid every variables to be initialized to the default values, then changed later with the </code>opAffect<code> call.</br>
+</span><span style="color:#B4B44A">@assert</span><span style="color:#0">(v1.y == </span><span style="color:#74A35B">0</span><span style="color:#0">)</span></code></pre><p>If <code>opAffect</code> is supposed to initialize the full content of the struct, you can add <code>#[Swag.Complete]</code>. This will avoid every variables to be initialized to the default values, then changed later with the <code>opAffect</code> call.</br>
 </p>
 <pre><code><span style="color:#3186CD">impl</span><span style="color:#0"> </span><span style="color:#3BC3A7">Struct</span><span style="color:#0">
 {
@@ -3781,11 +3782,11 @@ cpt := </span><span style="color:#74A35B">0</span><span style="color:#0">
     </span><span style="color:#B4B44A">@assert</span><span style="color:#0">(v.idx[</span><span style="color:#74A35B">2</span><span style="color:#0">] == v.z)
 }</span></code></pre>
 <h3 id="068__packing">Packing</h3>
-<p>You can also control the struct layout with two attributes: <code>#[Swag.Pack] and </code>#[Swag.Align].</br>
+<p>You can also control the struct layout with two attributes: <code>#[Swag.Pack]</code> and <code>#[Swag.Align]</code>.</br>
 </p>
 <p>
 </br>
- The default struct packing is the same as in C: each field is aligned to the size of the type. This is the equivalent of <code>#[Swag.Pack(0)].</br>
+ The default struct packing is the same as in C: each field is aligned to the size of the type. This is the equivalent of <code>#[Swag.Pack(0)]</code>.</br>
 </p>
 <pre><code><span style="color:#0">{
     </span><span style="color:#3186CD">struct</span><span style="color:#0"> </span><span style="color:#3BC3A7">MyStruct</span><span style="color:#0">
@@ -3802,7 +3803,7 @@ cpt := </span><span style="color:#74A35B">0</span><span style="color:#0">
     </span><span style="color:#7F7F7F">#assert</span><span style="color:#0"> </span><span style="color:#B4B44A">@sizeof</span><span style="color:#0">(</span><span style="color:#3BC3A7">MyStruct</span><span style="color:#0">)     == </span><span style="color:#74A35B">16</span><span style="color:#0">
 }</span></code></pre><p>
 </br>
- You can <i>reduce</i> the packing of the fields with <code>#[Swag.Pack].</br>
+ You can <i>reduce</i> the packing of the fields with <code>#[Swag.Pack]</code>.</br>
 </p>
 <pre><code><span style="color:#0">{
     </span><span style="color:#7F7F7F">#[Swag.Pack(1)]</span><span style="color:#0">
@@ -3852,7 +3853,7 @@ cpt := </span><span style="color:#74A35B">0</span><span style="color:#0">
     </span><span style="color:#7F7F7F">#assert</span><span style="color:#0"> </span><span style="color:#B4B44A">@sizeof</span><span style="color:#0">(</span><span style="color:#3BC3A7">MyStruct1</span><span style="color:#0">) == </span><span style="color:#74A35B">8</span><span style="color:#0">
 }</span></code></pre><p>
 </br>
- You can force the struct alignement with <code>#[Swag.Align].</br>
+ You can force the struct alignement with <code>#[Swag.Align]</code>.</br>
 </p>
 <pre><code><span style="color:#0">{
     </span><span style="color:#3186CD">struct</span><span style="color:#0"> </span><span style="color:#3BC3A7">MyStruct1</span><span style="color:#0">
@@ -4303,7 +4304,7 @@ Another limitation is that you can only capture 'simple' variables (no struct wi
 <h3 id="104__mixin">Mixin</h3>
 <p>
 </br>
- A mixin is declared like a function, with the attribute <code>#[Swag.Mixin].</br>
+ A mixin is declared like a function, with the attribute <code>#[Swag.Mixin]</code>.</br>
 </p>
 <pre><code><span style="color:#0">{
     </span><span style="color:#7F7F7F">#[Swag.Mixin]</span><span style="color:#0">
@@ -5757,14 +5758,14 @@ value.z = </span><span style="color:#74A35B">0</span><span style="color:#0">
 It will probably be changed/improved at some point.</br>
 </br>
 </p>
-<p class="blockquote">These are <b>not</b> exceptions !</br>
-</p>
+<blockquote><p>These are <b>not</b> exceptions !</br>
+</p></blockquote>
 <p></br>
 A function that can return an error must be marked with <code>throw</code>. It can then raise an error with the <code>throw</code> keyword, passing an error message.</br>
 </br>
 </p>
-<p class="blockquote">When an error is raised by a function, the return value is always equal to the <b>default value</b>, depending on the return type.</br>
-</p>
+<blockquote><p>When an error is raised by a function, the return value is always equal to the <b>default value</b>, depending on the return type.</br>
+</p></blockquote>
 <p></p>
 <pre><code><span style="color:#3186CD">func</span><span style="color:#0"> </span><span style="color:#FF6A00">count</span><span style="color:#0">(name: </span><span style="color:#ED9A11">string</span><span style="color:#0">)-></span><span style="color:#ED9A11">u64</span><span style="color:#0"> </span><span style="color:#3186CD">throw</span><span style="color:#0">
 {
@@ -5805,8 +5806,8 @@ Here, the caller of <code>myFunc1</code> will have to deal with the error at its
 }</span></code></pre><p>The caller can also panic if an error is raised, with <code>assume</code>.</br>
 </br>
 </p>
-<p class="blockquote">This can be disabled in release builds (in that case the behaviour is undefined).</br>
-</p>
+<blockquote><p>This can be disabled in release builds (in that case the behaviour is undefined).</br>
+</p></blockquote>
 <p></br>
 </p>
 <pre><code><span style="color:#3186CD">func</span><span style="color:#0"> </span><span style="color:#FF6A00">myFunc2</span><span style="color:#0">()
@@ -5888,13 +5889,13 @@ g_Defer = </span><span style="color:#74A35B">0</span><span style="color:#0">
 </span><span style="color:#3186CD">catch</span><span style="color:#0"> </span><span style="color:#FF6A00">testDefer</span><span style="color:#0">(</span><span style="color:#3186CD">false</span><span style="color:#0">)
 </span><span style="color:#B4B44A">@assert</span><span style="color:#0">(g_Defer == </span><span style="color:#74A35B">5</span><span style="color:#0">)   </span><span style="color:#6A9955">// Will call only defer(noerr) and the normal defer</span></code></pre>
 <h2 id="175_safety">Safety</h2>
-<p>Swag comes with a bunch of safety checks which can be activated by module/function/instruction with the <code>#[Swag.Safety] attribute.</br>
+<p>Swag comes with a bunch of safety checks which can be activated by module/function/instruction with the <code>#[Swag.Safety]</code> attribute.</br>
 </br>
 Safety checks can also be changed for a specific build configuration (<code>--cfg:<config></code>) with <code>buildCfg.safetyGuards</code>.</br>
 </br>
 </p>
-<p class="blockquote">Swag comes with four predefined configurations : <code>debug</code>, <code>fast-debug</code>, <code>fast-compile</code> and <code>release</code>. Safety checks are disabled in <code>fast-compile</code> and <code>release</code>.</br>
-</p>
+<blockquote><p>Swag comes with four predefined configurations : <code>debug</code>, <code>fast-debug</code>, <code>fast-compile</code> and <code>release</code>. Safety checks are disabled in <code>fast-compile</code> and <code>release</code>.</br>
+</p></blockquote>
 <p></p>
 <p><h3 id="#[Swag.Safety("overflow", true)]">#[Swag.Safety("overflow", true)]</br>
 </h3>Swag will panic if some operators overflow and if we lose some bits during an integer conversion.</br>
@@ -5906,7 +5907,7 @@ Operators that can overflow are : <code>+ - * << >></code> and their equivalent 
 </p>
 <pre><code><span style="color:#0">x := </span><span style="color:#74A35B">255</span><span style="color:#0">'</span><span style="color:#ED9A11">u8</span><span style="color:#0">
 x +=,over </span><span style="color:#74A35B">1</span><span style="color:#0">     </span><span style="color:#6A9955">// Overflow is expected, so this will wrap around</span><span style="color:#0">
-</span><span style="color:#B4B44A">@assert</span><span style="color:#0">(x == </span><span style="color:#74A35B">0</span><span style="color:#0">)</span></code></pre><p>You can also use <code>#[Swag.Overflow(true)] to authorize overflow on a more global scale.</br>
+</span><span style="color:#B4B44A">@assert</span><span style="color:#0">(x == </span><span style="color:#74A35B">0</span><span style="color:#0">)</span></code></pre><p>You can also use <code>#[Swag.Overflow(true)]</code> to authorize overflow on a more global scale.</br>
 </p>
 <pre><code><span style="color:#7F7F7F">#[Swag.Overflow(true)]</span></code></pre><pre><code><span style="color:#0">x := </span><span style="color:#74A35B">255</span><span style="color:#0">'</span><span style="color:#ED9A11">u8</span><span style="color:#0">
 x += </span><span style="color:#74A35B">1</span><span style="color:#0">     </span><span style="color:#6A9955">// No need for operator modifier ',over'</span><span style="color:#0">
@@ -5979,7 +5980,7 @@ y := </span><span style="color:#74A35B">0</span><span style="color:#0">'</span><
 </span><span style="color:#6A9955">//@sqrt(-2'f32)</span><span style="color:#0">
 </span><span style="color:#6A9955">//@asin(-2'f32)</span><span style="color:#0">
 </span><span style="color:#6A9955">//@acos(2'f32)</span></code></pre><p><h3 id="#[Swag.Safety("switch", true)]">#[Swag.Safety("switch", true)]</br>
-</h3>Swag will panic if a switch is marked with #[Swag.Complete] but the value is not covered by a 'case'.</br>
+</h3>Swag will panic if a switch is marked with #[Swag.Complete], but the value is not covered by a 'case'.</br>
 </p>
 <p><h3 id="#[Swag.Safety("bool", true)]">#[Swag.Safety("bool", true)]</br>
 </h3>Swag will panic if a boolean value is not 'true' (1) or 'false' (0).</br>
@@ -6080,7 +6081,7 @@ Order of #drop in the same module is undefined (but is always the inverse order 
 <p><code>#run</code> is a special function that will be called at compile time.</br>
 It can be used to precompute some global values for example.</br>
 </p>
-<pre><code><span style="color:#3186CD">var</span><span style="color:#0"> </span><span style="color:#3BC3A7">G</span><span style="color:#0">: [</span><span style="color:#74A35B">5</span><span style="color:#0">] </span><span style="color:#ED9A11">f32</span><span style="color:#0"> = </span><span style="color:#3186CD">undefined</span></code></pre><p>Initialize <code>G</code> with <code>[1,2,4,8,16] at compile time.</br>
+<pre><code><span style="color:#3186CD">var</span><span style="color:#0"> </span><span style="color:#3BC3A7">G</span><span style="color:#0">: [</span><span style="color:#74A35B">5</span><span style="color:#0">] </span><span style="color:#ED9A11">f32</span><span style="color:#0"> = </span><span style="color:#3186CD">undefined</span></code></pre><p>Initialize <code>G</code> with <code>[1,2,4,8,16]</code> at compile time.</br>
 </p>
 <pre><code><span style="color:#FF6A00">#run</span><span style="color:#0">
 {
@@ -6097,7 +6098,7 @@ So we can test the values of G here.</br>
 </span><span style="color:#B4B44A">@assert</span><span style="color:#0">(</span><span style="color:#3BC3A7">G</span><span style="color:#0">[</span><span style="color:#74A35B">1</span><span style="color:#0">] == </span><span style="color:#74A35B">2</span><span style="color:#0">)
 </span><span style="color:#B4B44A">@assert</span><span style="color:#0">(</span><span style="color:#3BC3A7">G</span><span style="color:#0">[</span><span style="color:#74A35B">2</span><span style="color:#0">] == </span><span style="color:#74A35B">4</span><span style="color:#0">)
 </span><span style="color:#B4B44A">@assert</span><span style="color:#0">(</span><span style="color:#3BC3A7">G</span><span style="color:#0">[</span><span style="color:#74A35B">3</span><span style="color:#0">] == </span><span style="color:#74A35B">8</span><span style="color:#0">)
-</span><span style="color:#B4B44A">@assert</span><span style="color:#0">(</span><span style="color:#3BC3A7">G</span><span style="color:#0">[</span><span style="color:#74A35B">4</span><span style="color:#0">] == </span><span style="color:#74A35B">16</span><span style="color:#0">)</span></code></pre><p><code>#run</code> can also be used as an expression, to call for example a function not marked with <code>#[Swag.ConstExpr].</br>
+</span><span style="color:#B4B44A">@assert</span><span style="color:#0">(</span><span style="color:#3BC3A7">G</span><span style="color:#0">[</span><span style="color:#74A35B">4</span><span style="color:#0">] == </span><span style="color:#74A35B">16</span><span style="color:#0">)</span></code></pre><p><code>#run</code> can also be used as an expression, to call for example a function not marked with <code>#[Swag.ConstExpr]</code>.</br>
 </p>
 <pre><code><span style="color:#3186CD">const</span><span style="color:#0"> </span><span style="color:#3BC3A7">SumValue</span><span style="color:#0"> = </span><span style="color:#FF6A00">#run</span><span style="color:#0"> </span><span style="color:#FF6A00">sum</span><span style="color:#0">(</span><span style="color:#74A35B">1</span><span style="color:#0">, </span><span style="color:#74A35B">2</span><span style="color:#0">, </span><span style="color:#74A35B">3</span><span style="color:#0">, </span><span style="color:#74A35B">4</span><span style="color:#0">) + </span><span style="color:#74A35B">10</span><span style="color:#0">
 </span><span style="color:#7F7F7F">#assert</span><span style="color:#0"> </span><span style="color:#3BC3A7">SumValue</span><span style="color:#0"> == </span><span style="color:#74A35B">20</span><span style="color:#0">
@@ -6145,12 +6146,12 @@ The return type is deduced from the <code>return</code> statement.</br>
 </span><span style="color:#6A9955">// Link with a given external library</span><span style="color:#0">
 </span><span style="color:#7F7F7F">#foreignlib</span><span style="color:#0"> </span><span style="color:#BB6643">"windows.lib"</span></code></pre>
 <h3 id="185__var">Var</h3>
-<p>A global variable can be tagged with <code>#[Swag.Tls] to store it in the thread local storage (one copy per thread).</br>
+<p>A global variable can be tagged with <code>#[Swag.Tls]</code> to store it in the thread local storage (one copy per thread).</br>
 </p>
 <pre><code><span style="color:#7F7F7F">#[Swag.Tls]</span><span style="color:#0">
 </span><span style="color:#3186CD">var</span><span style="color:#0"> </span><span style="color:#3BC3A7">G</span><span style="color:#0"> = </span><span style="color:#74A35B">0</span></code></pre><p>
 </br>
- A local variable can be tagged with <code>#[Swag.Global] to make it global (aka </code>static<code> in C/C++).</br>
+ A local variable can be tagged with <code>#[Swag.Global]</code> to make it global (aka <code>static</code> in C/C++).</br>
 </p>
 <pre><code><span style="color:#0">{
     </span><span style="color:#3186CD">func</span><span style="color:#0"> </span><span style="color:#FF6A00">toto</span><span style="color:#0">()-></span><span style="color:#ED9A11">s32</span><span style="color:#0">
@@ -6165,7 +6166,7 @@ The return type is deduced from the <code>return</code> statement.</br>
     </span><span style="color:#B4B44A">@assert</span><span style="color:#0">(</span><span style="color:#FF6A00">toto</span><span style="color:#0">() == </span><span style="color:#74A35B">1</span><span style="color:#0">)
     </span><span style="color:#B4B44A">@assert</span><span style="color:#0">(</span><span style="color:#FF6A00">toto</span><span style="color:#0">() == </span><span style="color:#74A35B">2</span><span style="color:#0">)
     </span><span style="color:#B4B44A">@assert</span><span style="color:#0">(</span><span style="color:#FF6A00">toto</span><span style="color:#0">() == </span><span style="color:#74A35B">3</span><span style="color:#0">)
-}</span></code></pre><p>A global variable can also be marked as <code>#[Swag.Compiler]. That kind of variable will not be exported to the runtime and can only be used in compile time code.</br>
+}</span></code></pre><p>A global variable can also be marked as <code>#[Swag.Compiler]</code>. That kind of variable will not be exported to the runtime and can only be used in compile time code.</br>
 </p>
 <pre><code><span style="color:#7F7F7F">#[Swag.Compiler]</span><span style="color:#0">
 </span><span style="color:#3186CD">var</span><span style="color:#0"> </span><span style="color:#3BC3A7">G2</span><span style="color:#0"> = </span><span style="color:#74A35B">0</span><span style="color:#0">
@@ -6189,7 +6190,7 @@ The return type is deduced from the <code>return</code> statement.</br>
 <pre><code><span style="color:#3186CD">attr</span><span style="color:#0"> </span><span style="color:#3BC3A7">AttributeBA</span><span style="color:#0">(x: </span><span style="color:#ED9A11">s32</span><span style="color:#0">, y: </span><span style="color:#ED9A11">string</span><span style="color:#0"> = </span><span style="color:#BB6643">"string"</span><span style="color:#0">)</span></code></pre><p>You can define a usage before the attribute definition to restrict its usage.</br>
 </p>
 <pre><code><span style="color:#7F7F7F">#[AttrUsage(AttributeUsage.Function)]</span><span style="color:#0">
-</span><span style="color:#3186CD">attr</span><span style="color:#0"> </span><span style="color:#3BC3A7">AttributeC</span><span style="color:#0">()</span></code></pre><p>To use an attribute, the syntax is <code>#[attribute, attribute...]. It should be placed <b>before</b> the thing you want to tag.</br>
+</span><span style="color:#3186CD">attr</span><span style="color:#0"> </span><span style="color:#3BC3A7">AttributeC</span><span style="color:#0">()</span></code></pre><p>To use an attribute, the syntax is <code>#[attribute, attribute...]</code>. It should be placed <b>before</b> the thing you want to tag.</br>
 </p>
 <pre><code><span style="color:#7F7F7F">#[AttributeA, AttributeB(0, 0, "string")]</span><span style="color:#0">
 </span><span style="color:#3186CD">func</span><span style="color:#0"> </span><span style="color:#FF6A00">function1</span><span style="color:#0">()
@@ -6672,7 +6673,7 @@ Here is a real life example from the <code>Std.Ogl</code> module (opengl wrapper
     {
         r, g, b: </span><span style="color:#ED9A11">s32</span><span style="color:#0">
     }
-}</span></code></pre><p>You can create a reference to something of the current package with [name]or [name1.name2 etc.]</br>
+}</span></code></pre><p>You can create a reference to something of the current package with [name] or [name1.name2 etc.]</br>
 </p>
 <pre><code><span style="color:#6A9955">// This is a function with a 'value' parameter.</span><span style="color:#0">
 </span><span style="color:#3186CD">func</span><span style="color:#0"> </span><span style="color:#FF6A00">one</span><span style="color:#0">(value: </span><span style="color:#ED9A11">s32</span><span style="color:#0">)

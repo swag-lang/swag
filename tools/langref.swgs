@@ -36,7 +36,7 @@ func stateEnter(st: State)
         g_Buf += "<p>"
 
     case Blockquote:
-        g_Buf += "<p class=\"blockquote\">"
+        g_Buf += "<blockquote><p>"
     }
 }
 
@@ -47,7 +47,7 @@ func stateLeave(st: State)
     case Paragraph:
         g_Buf += "</p>\n"
     case Blockquote:
-        g_Buf += "</p>\n"
+        g_Buf += "</p></blockquote>\n"
 
     case Code, Test:
         flushCode()
@@ -157,6 +157,7 @@ func addLine(line: string)
                 g_Buf += "["
                 g_Buf += linkName
                 g_Buf += "]"
+                i -= 1
                 continue
             }
 
@@ -397,10 +398,11 @@ func generate(in, out: string)
             text-decoration: underline;
         }
 
-        .blockquote {
-            border-left:    2px solid Orange;
-            margin-left:    10px;
-            padding-left:   10px;
+        blockquote {
+            background-color:   LightYellow;
+            border-left:        6px solid Orange;
+            padding:            10px;
+            margin-right:       10px;
         }
 
         .container {

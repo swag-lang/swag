@@ -1,14 +1,15 @@
 <?php include('html_start.php'); include('header.php'); ?>
 
 <style>
-    html, body {
-        height: 100%;
-    }
-
     h1, h2, h3, h4, h5, h6 {
         margin: revert;
         font-size: revert;
         font-weight: revert;
+    }
+
+    p {
+        margin-top:     10px;
+        margin-bottom:  10px;
     }
 
     p code {
@@ -36,6 +37,13 @@
 
     p a:hover {
         text-decoration: underline;
+    }
+
+    blockquote {
+        background-color:   LightYellow;
+        border-left:        6px solid Orange;
+        padding:            10px;
+        margin-right:       10px;
     }
 </style>
 
