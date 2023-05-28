@@ -3478,7 +3478,7 @@ bool</td>
 <td class="tdname">
 edgeList</td>
 <td class="tdtype">
-Array(__clipper_tuple_224)</td>
+Array(__clipper_tuple_306)</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -4403,7 +4403,7 @@ id</td>
 <td class="tdname">
 params</td>
 <td class="tdtype">
-__painter_tuple_200</td>
+__painter_tuple_220</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -6835,16 +6835,16 @@ Creates a new image.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Image.crop">crop(self, s32, s32, s32, s32)</a></td>
+<a href="#Pixel.Image.crop">crop(self, const ref Rectangle)</a></td>
 <td class="enumeration">
-<p>
-Crop image.</p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Image.crop">crop(self, const ref Rectangle)</a></td>
+<a href="#Pixel.Image.crop">crop(self, s32, s32, s32, s32)</a></td>
 <td class="enumeration">
+<p>
+Crop image.</p>
 </td>
 </tr>
 <tr>
@@ -6911,18 +6911,18 @@ Free the working buffer if allocated.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Image.from">from(HBITMAP)</a></td>
-<td class="enumeration">
-<p>
-Creates an image from a windows HBITMAP.</p>
-</td>
-</tr>
-<tr>
-<td class="enumeration">
 <a href="#Pixel.Image.from">from(HICON)</a></td>
 <td class="enumeration">
 <p>
 Creates an image from a windows HICON.</p>
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Pixel.Image.from">from(HBITMAP)</a></td>
+<td class="enumeration">
+<p>
+Creates an image from a windows HBITMAP.</p>
 </td>
 </tr>
 <tr>
@@ -10759,7 +10759,7 @@ sharedLinePathList</td>
 <td class="tdname">
 sharedRoundTmp</td>
 <td class="tdtype">
-Array(__linepath_tuple_247)</td>
+Array(__linepath_tuple_366)</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -10914,16 +10914,16 @@ Draw an empty circle.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Painter.drawEllipse">drawEllipse(self, f32, f32, f32, f32, const ref Pen)</a></td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="enumeration">
 <a href="#Pixel.Painter.drawEllipse">drawEllipse(self, f32, f32, f32, f32, const ref Color, f32)</a></td>
 <td class="enumeration">
 <p>
 Draw an empty ellipse.</p>
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Pixel.Painter.drawEllipse">drawEllipse(self, f32, f32, f32, f32, const ref Pen)</a></td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -10948,18 +10948,18 @@ Draw a line.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Painter.drawPath">drawPath(self, *LinePath, const ref Pen)</a></td>
-<td class="enumeration">
-<p>
-Draw the line path with the given <code class = "incode">pen</code>.</p>
-</td>
-</tr>
-<tr>
-<td class="enumeration">
 <a href="#Pixel.Painter.drawPath">drawPath(self, *LinePath, const ref Color, f32)</a></td>
 <td class="enumeration">
 <p>
 Draw the line path.</p>
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Pixel.Painter.drawPath">drawPath(self, *LinePath, const ref Pen)</a></td>
+<td class="enumeration">
+<p>
+Draw the line path with the given <code class = "incode">pen</code>.</p>
 </td>
 </tr>
 <tr>
@@ -11196,6 +11196,12 @@ Fill the polygon with the given <code class = "incode">brush</code>.</p>
 </tr>
 <tr>
 <td class="enumeration">
+<a href="#Pixel.Painter.fillRect">fillRect(self, const ref Rectangle, const ref Brush)</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="enumeration">
 <a href="#Pixel.Painter.fillRect">fillRect(self, f32, f32, f32, f32, const ref Color)</a></td>
 <td class="enumeration">
 </td>
@@ -11203,12 +11209,6 @@ Fill the polygon with the given <code class = "incode">brush</code>.</p>
 <tr>
 <td class="enumeration">
 <a href="#Pixel.Painter.fillRect">fillRect(self, const ref Rectangle, const ref Color)</a></td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="enumeration">
-<a href="#Pixel.Painter.fillRect">fillRect(self, const ref Rectangle, const ref Brush)</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -11474,7 +11474,7 @@ Set the clipping region mode.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Painter.setColorMask">setColorMask(self, const ref ColorMask)</a></td>
+<a href="#Pixel.Painter.setColorMask">setColorMask(self, bool, bool, bool, bool)</a></td>
 <td class="enumeration">
 <p>
 Set color mask.</p>
@@ -11482,7 +11482,7 @@ Set color mask.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Painter.setColorMask">setColorMask(self, bool, bool, bool, bool)</a></td>
+<a href="#Pixel.Painter.setColorMask">setColorMask(self, const ref ColorMask)</a></td>
 <td class="enumeration">
 <p>
 Set color mask.</p>

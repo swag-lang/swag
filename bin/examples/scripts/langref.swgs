@@ -465,6 +465,5 @@ func generate(in, out: string)
 
 #run
 {
-    generate("../../reference/tests/language/src", "../../../web/language.html")
     generate("../../reference/tests/language/src", "../../../web/language.php")
 }

@@ -1,7 +1,4 @@
-<?php
-include('html_start.php');
-include('header.php');
-?>
+<?php include('html_start.php'); include('header.php'); ?>
 
     <style>
     html, body {
