@@ -446,7 +446,7 @@ func generate(in, out: string)
     // Main page (left and right parts, left is for table of content, right is for content)
     g_Buf += "<div class=\"lg:m-auto lg:w-[76rem] pt-5 lg:pt-10 overflow-hidden p-5\" style=\"height: 93%;\">\n"
     g_Buf += "<div class=\"container lg:flex\">\n"
-    g_Buf += "<div class=\"left lg:w-[450px] lg:h-full x-data=\"{ open_content: false }\"\">\n"
+    g_Buf += "<div class=\"left lg:w-[450px] lg:h-full\" x-data=\"{ open_content: false }\">\n"
     seekToc := g_Buf.length // This will be the place where we will insert the 'g_Toc' table of content
     g_Buf += "</div>\n"
 

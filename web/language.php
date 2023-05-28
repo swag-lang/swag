@@ -80,7 +80,7 @@
     </style>
 <div class="lg:m-auto lg:w-[76rem] pt-5 lg:pt-10 overflow-hidden p-5" style="height: 93%;">
 <div class="container lg:flex">
-<div class="left lg:w-[450px] lg:h-full x-data="{ open_content: false }"">
+<div class="left lg:w-[450px] lg:h-full" x-data="{ open_content: false }">
 <div class="flex items-center justify-between border lg:border-0 rounded pt-1 px-2" @click="open_content = ! open_content">
 <h1 class="leading-8 m-0 lg:my-5">Content</h1>
 <div class="leading-8 block lg:hidden"><img src="imgs/chevron.png" alt="" class="w-5" :class="open_content ? 'rotate-90' : ''" /></div>
