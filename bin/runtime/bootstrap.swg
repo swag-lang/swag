@@ -205,22 +205,25 @@ namespace Swag
     // Process Infos
     // #########################################################
 
+    // Defined some informations about a loaded module
     struct Module
     {
-        name:   string
-        types:  const [..] const *TypeInfo
+        name:   string                      // Name of the module
+        types:  const [..] const *TypeInfo  // All exported types
     }
 
+    // Defined some informations about the current process
     struct ProcessInfos
     {
-        modules: const [..] Module
-        args:    string
+        modules: const [..] Module          // The list of all modules
+        args:    string                     // The application arguments, as returned by [@args]
     }
 
+    // Defined a global variable
     struct Gvtd
     {
-        ptr:    *void
-        opDrop: func(*void)
+        ptr:    *void           // Pointer to the global variable memory
+        opDrop: func(*void)     // The 'opDrop' function to call when the process must exit
     }
 
     // #########################################################
@@ -299,9 +302,10 @@ namespace Swag
         Warning
     }
 
-    const MaxLenErrorMsg = 128
-    const MaxTrace = 32
+    const MaxLenErrorMsg = 128  // Maximum length of an error message
+    const MaxTrace = 32         // Maximum stack trace
 
+    // Thread context as returned by [@context]
     struct Context
     {
         // Must stay first, in that order, for backend generation
@@ -535,18 +539,20 @@ namespace Swag
         X86_64
     }
 
+    // The 'OS' to target when generating native code
     enum TargetOs
     {
-        Windows
-        Linux
-        MaxOSX
+        Windows     // Windows 10/11
+        Linux       // Linux (**unsupported**)
+        MaxOSX      // MacOS (**unsupported**)
     }
 
+    // The type of backend to use
     enum Backend
     {
-        ByteCode
-        X64
-        LLVM
+        ByteCode    // Bytecode
+        X64         // X86_64 backend
+        LLVM        // LLVM backend
     }
 
     const SafetyBoundCheck  = 0x0001
@@ -559,6 +565,7 @@ namespace Swag
     const SafetySanity      = 0x0080
     const SafetyAll         = 0xFFFF
 
+    // 'LLVM' backend specific options
     struct BuildCfgBackendLLVM
     {
         outputIR:           bool = false
@@ -575,28 +582,36 @@ namespace Swag
     {
     }
 
+    // The kind of native backend to generate.
     enum BuildCfgBackendKind
     {
-        None
-        Export
-        Executable
-        DynamicLib
+        None            // Nothing
+        Export          // The module is an 'export' module which does not have its own code.
+        Executable      // The module needs to be compiled to an executable application.
+        DynamicLib      // The module needs to be compiled to an dynamic library.
     }
 
+    // The native backend sub category.
+    //
+    // Under windows, by default, the application will be compiled to make a 'windowed' application. But you can
+    // change it and force the application to behave like a 'console' one.
     enum BuildCfgBackendSubKind
     {
         Default
         Console
     }
 
+    // These are the optimization levels for the backend.
+    //
+    // Only 'LLVM' backend uses this, as the 'X86_64' backend does not have an optimization pass.
     enum BuildCfgBackendOptim
     {
-        O0
-        O1
-        O2
-        O3
-        Os
-        Oz
+        O0  // No optimization
+        O1  // Optimizations level 1
+        O2  // Optimizations level 2
+        O3  // Optimizations level 3
+        Os  // Optim for size level 1
+        Oz  // Optim for size level 2
     }
 
     // The current module build configuration.
@@ -624,7 +639,7 @@ namespace Swag
         warnDefaultErrors:      bool    // All warning are treated as errors, except those specified above
 
         byteCodeOptimizeLevel   = 1     // Optimization level of bytecode [0, 1 or 2]
-        byteCodeDebugInline     = true
+        byteCodeDebugInline     = true  // Trace into inlined code when generating debug infos
         byteCodeEmitAssume      = true  // 'assume' will assert if 'true'
         byteCodeInline          = true  // Enable bytecode inlining with #[Swag.Inline]
         byteCodeAutoInline      = true  // Automatic inlining of some other functions
@@ -647,18 +662,22 @@ namespace Swag
     // Compiler
     // #########################################################
 
+    // The kind of message in [CompilerMessage]
     enum CompilerMsgKind : u32
     {
-        PassAfterSemantic
-        PassBeforeRunByteCode
-        PassBeforeOutput
-        PassAllDone
-        SemFunctions
-        SemTypes
-        SemGlobals
+        PassAfterSemantic       // Called once the program semantic has been done
+        PassBeforeRunByteCode   // Called just before running bytecode
+        PassBeforeOutput        // Called just before generating the native code
+        PassAllDone             // Called when everything has be done
+        SemFunctions            // Called for each function in the module
+        SemTypes                // Called for each type in the module
+        SemGlobals              // Called for each global variable in the module
         AttributeGen
     }
 
+    // The type of message you want to retreive in a '#message' function.
+    //
+    // The function could be called for more than one reason, as this is a mask.
     #[EnumFlags]
     enum CompilerMsgMask : u64
     {
@@ -673,12 +692,16 @@ namespace Swag
         All =                   0xFFFFFFFF_FFFFFFFF
     }
 
+    // A message received in a '#message' function.
+    //
+    // In a '#message' function, you can retreive the associated message by calling 'getMessage' of the
+    // interface returned by [@compiler]
     struct CompilerMessage
     {
-        moduleName:     string
-        name:           string
-        type:           const* TypeInfo
-        kind:           CompilerMsgKind = undefined
+        moduleName:     string                          // Name of the module for which the message is sent.
+        name:           string                          // Depends on 'kind'
+        type:           const* TypeInfo                 // Depends on 'kind'
+        kind:           CompilerMsgKind = undefined     // Kind of the message
     }
 
     // This is the interface to communicate with the compiler.
@@ -710,18 +733,25 @@ namespace Swag
 }
 
 //
-// Intrinsic
+// Intrinsics
 //
 
+// Panic if the expression is false. Typically used in tests.
 func @assert(value: bool);
+// Stop a bytecode execution, and launch the bytecode debugger.
 func @breakpoint();
+// Get the current thread context.
 func @getcontext()->*Swag.Context;
+// Replace the current thread context.
 func @setcontext(context: const *Swag.Context);
+// Get informations about the current process.
 func @getpinfos()->*Swag.ProcessInfos;
+// Returns 'true' is the current execution is bytecode.
 func @isbytecode()->bool;
+// Returns the list of all loaded modules.
 func @modules()->const [..] Swag.Module;
+// Returns the list of all global variables.
 func @gvtd()->const [..] Swag.Gvtd;
-
 // Returns an [ICompiler] interface to communicate with the compiler.
 func @compiler()->Swag.ICompiler;
 
