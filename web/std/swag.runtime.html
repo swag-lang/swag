@@ -392,7 +392,7 @@
 <h3 class="content" id="@abs"><span class="titletype">func</span> <span class="titlelight"></span><span class="titlestrong">@abs</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L922" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L928" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -412,7 +412,7 @@ func @abs(value: f64)->f64
 <h3 class="content" id="@acos"><span class="titletype">func</span> <span class="titlelight"></span><span class="titlestrong">@acos</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L901" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L907" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -435,7 +435,7 @@ func @acos(value: f64)->f64
 <p>
 Returns a system allocated memory block of <code class = "incode">size</code> bytes.</p>
 <p class="code">
-<code style="white-space: break-spaces">func @alloc(size: u64)->*void
+<code style="white-space: break-spaces">func @alloc(size: u64)->^void
 </code>
 </p>
 <p>
@@ -462,7 +462,7 @@ Returns a system allocated memory block of <code class = "incode">size</code> by
 <h3 class="content" id="@asin"><span class="titletype">func</span> <span class="titlelight"></span><span class="titlestrong">@asin</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L899" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L905" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -495,7 +495,7 @@ Panic if the expression is false. Typically used in tests.</p>
 <h3 class="content" id="@atan"><span class="titletype">func</span> <span class="titlelight"></span><span class="titlestrong">@atan</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L903" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L909" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -511,7 +511,7 @@ func @atan(value: f64)->f64
 <h3 class="content" id="@atan2"><span class="titletype">func</span> <span class="titlelight"></span><span class="titlestrong">@atan2</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L935" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L941" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -527,13 +527,18 @@ func @atan2(value1: f64, value2: f64)->f64
 <h3 class="content" id="@atomadd"><span class="titletype">func</span> <span class="titlelight"></span><span class="titlestrong">@atomadd</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L824" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L825" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
+<p>
+Atomic <code class = "incode">add</code>.</p>
 <p class="code">
 <code style="white-space: break-spaces">func @atomadd(addr: *s8, value: s8)->s8
-func @atomadd(addr: *s16, value: s16)->s16
+</code>
+</p>
+<p class="code">
+<code style="white-space: break-spaces">func @atomadd(addr: *s16, value: s16)->s16
 func @atomadd(addr: *s32, value: s32)->s32
 func @atomadd(addr: *s64, value: s64)->s64
 func @atomadd(addr: *u8, value: u8)->u8
@@ -549,13 +554,18 @@ func @atomadd(addr: *u64, value: u64)->u64
 <h3 class="content" id="@atomand"><span class="titletype">func</span> <span class="titlelight"></span><span class="titlestrong">@atomand</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L833" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L835" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
+<p>
+Atomic <code class = "incode">and</code>.</p>
 <p class="code">
 <code style="white-space: break-spaces">func @atomand(addr: *s8, value: s8)->s8
-func @atomand(addr: *s16, value: s16)->s16
+</code>
+</p>
+<p class="code">
+<code style="white-space: break-spaces">func @atomand(addr: *s16, value: s16)->s16
 func @atomand(addr: *s32, value: s32)->s32
 func @atomand(addr: *s64, value: s64)->s64
 func @atomand(addr: *u8, value: u8)->u8
@@ -571,13 +581,18 @@ func @atomand(addr: *u64, value: u64)->u64
 <h3 class="content" id="@atomcmpxchg"><span class="titletype">func</span> <span class="titlelight"></span><span class="titlestrong">@atomcmpxchg</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L869" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L875" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
+<p>
+Atomic compare and exchange.</p>
 <p class="code">
 <code style="white-space: break-spaces">func @atomcmpxchg(addr: *s8, compareTo: s8, exchangeWith: s8)->s8
-func @atomcmpxchg(addr: *s16, compareTo: s16, exchangeWith: s16)->s16
+</code>
+</p>
+<p class="code">
+<code style="white-space: break-spaces">func @atomcmpxchg(addr: *s16, compareTo: s16, exchangeWith: s16)->s16
 func @atomcmpxchg(addr: *s32, compareTo: s32, exchangeWith: s32)->s32
 func @atomcmpxchg(addr: *s64, compareTo: s64, exchangeWith: s64)->s64
 func @atomcmpxchg(addr: *u8, compareTo: u8, exchangeWith: u8)->u8
@@ -593,13 +608,18 @@ func @atomcmpxchg(addr: *u64, compareTo: u64, exchangeWith: u64)->u64
 <h3 class="content" id="@atomor"><span class="titletype">func</span> <span class="titlelight"></span><span class="titlestrong">@atomor</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L842" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L845" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
+<p>
+Atomic <code class = "incode">or</code>.</p>
 <p class="code">
 <code style="white-space: break-spaces">func @atomor(addr: *s8, value: s8)->s8
-func @atomor(addr: *s16, value: s16)->s16
+</code>
+</p>
+<p class="code">
+<code style="white-space: break-spaces">func @atomor(addr: *s16, value: s16)->s16
 func @atomor(addr: *s32, value: s32)->s32
 func @atomor(addr: *s64, value: s64)->s64
 func @atomor(addr: *u8, value: u8)->u8
@@ -615,13 +635,18 @@ func @atomor(addr: *u64, value: u64)->u64
 <h3 class="content" id="@atomxchg"><span class="titletype">func</span> <span class="titlelight"></span><span class="titlestrong">@atomxchg</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L860" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L865" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
+<p>
+Atomic <code class = "incode">exchange</code>.</p>
 <p class="code">
 <code style="white-space: break-spaces">func @atomxchg(addr: *s8, exchangeWith: s8)->s8
-func @atomxchg(addr: *s16, exchangeWith: s16)->s16
+</code>
+</p>
+<p class="code">
+<code style="white-space: break-spaces">func @atomxchg(addr: *s16, exchangeWith: s16)->s16
 func @atomxchg(addr: *s32, exchangeWith: s32)->s32
 func @atomxchg(addr: *s64, exchangeWith: s64)->s64
 func @atomxchg(addr: *u8, exchangeWith: u8)->u8
@@ -637,13 +662,18 @@ func @atomxchg(addr: *u64, exchangeWith: u64)->u64
 <h3 class="content" id="@atomxor"><span class="titletype">func</span> <span class="titlelight"></span><span class="titlestrong">@atomxor</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L851" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L855" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
+<p>
+Atomic <code class = "incode">xor</code>.</p>
 <p class="code">
 <code style="white-space: break-spaces">func @atomxor(addr: *s8, value: s8)->s8
-func @atomxor(addr: *s16, value: s16)->s16
+</code>
+</p>
+<p class="code">
+<code style="white-space: break-spaces">func @atomxor(addr: *s16, value: s16)->s16
 func @atomxor(addr: *s32, value: s32)->s32
 func @atomxor(addr: *s64, value: s64)->s64
 func @atomxor(addr: *u8, value: u8)->u8
@@ -659,13 +689,18 @@ func @atomxor(addr: *u64, value: u64)->u64
 <h3 class="content" id="@bitcountlz"><span class="titletype">func</span> <span class="titlelight"></span><span class="titlestrong">@bitcountlz</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L968" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L979" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
+<p>
+Returns the index+1 of the first set bit, starting from the left (msb). 0 if all zero.</p>
 <p class="code">
 <code style="white-space: break-spaces">func @bitcountlz(value: u8)->u8
-func @bitcountlz(value: u16)->u16
+</code>
+</p>
+<p class="code">
+<code style="white-space: break-spaces">func @bitcountlz(value: u16)->u16
 func @bitcountlz(value: u32)->u32
 func @bitcountlz(value: u64)->u64
 </code>
@@ -677,13 +712,18 @@ func @bitcountlz(value: u64)->u64
 <h3 class="content" id="@bitcountnz"><span class="titletype">func</span> <span class="titlelight"></span><span class="titlestrong">@bitcountnz</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L960" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L967" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
+<p>
+Count the number of bits set to 1.</p>
 <p class="code">
 <code style="white-space: break-spaces">func @bitcountnz(value: u8)->u8
-func @bitcountnz(value: u16)->u16
+</code>
+</p>
+<p class="code">
+<code style="white-space: break-spaces">func @bitcountnz(value: u16)->u16
 func @bitcountnz(value: u32)->u32
 func @bitcountnz(value: u64)->u64
 </code>
@@ -695,13 +735,18 @@ func @bitcountnz(value: u64)->u64
 <h3 class="content" id="@bitcounttz"><span class="titletype">func</span> <span class="titlelight"></span><span class="titlestrong">@bitcounttz</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L964" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L973" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
+<p>
+Returns the index+1 of the first set bit, starting from right (lsb). 0 if all zero.</p>
 <p class="code">
 <code style="white-space: break-spaces">func @bitcounttz(value: u8)->u8
-func @bitcounttz(value: u16)->u16
+</code>
+</p>
+<p class="code">
+<code style="white-space: break-spaces">func @bitcounttz(value: u16)->u16
 func @bitcounttz(value: u32)->u32
 func @bitcounttz(value: u64)->u64
 </code>
@@ -730,13 +775,18 @@ Stop a bytecode execution, and launch the bytecode debugger.</p>
 <h3 class="content" id="@byteswap"><span class="titletype">func</span> <span class="titlelight"></span><span class="titlestrong">@byteswap</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L973" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L985" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
+<p>
+Reverses the order of bytes in an integer.</p>
 <p class="code">
 <code style="white-space: break-spaces">func @byteswap(value: u16)->u16
-func @byteswap(value: u32)->u32
+</code>
+</p>
+<p class="code">
+<code style="white-space: break-spaces">func @byteswap(value: u32)->u32
 func @byteswap(value: u64)->u64
 </code>
 </p>
@@ -747,7 +797,7 @@ func @byteswap(value: u64)->u64
 <h3 class="content" id="@ceil"><span class="titletype">func</span> <span class="titlelight"></span><span class="titlestrong">@ceil</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L915" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L921" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -814,7 +864,7 @@ Raise a compiler warning at the given source location.</p>
 <h3 class="content" id="@cos"><span class="titletype">func</span> <span class="titlelight"></span><span class="titlestrong">@cos</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L887" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L893" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -830,7 +880,7 @@ func @cos(value: f64)->f64
 <h3 class="content" id="@cosh"><span class="titletype">func</span> <span class="titlelight"></span><span class="titlestrong">@cosh</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L894" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L900" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -861,7 +911,7 @@ func @cosh(value: f64)->f64
 <h3 class="content" id="@exp"><span class="titletype">func</span> <span class="titlelight"></span><span class="titlestrong">@exp</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L929" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L935" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -877,7 +927,7 @@ func @exp(value: f64)->f64
 <h3 class="content" id="@exp2"><span class="titletype">func</span> <span class="titlelight"></span><span class="titlestrong">@exp2</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L931" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L937" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -893,7 +943,7 @@ func @exp2(value: f64)->f64
 <h3 class="content" id="@floor"><span class="titletype">func</span> <span class="titlelight"></span><span class="titlestrong">@floor</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L913" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L919" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -1009,7 +1059,7 @@ Returns <code class = "incode">true</code> is the current execution is bytecode.
 <h3 class="content" id="@log"><span class="titletype">func</span> <span class="titlelight"></span><span class="titlestrong">@log</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L906" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L912" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -1025,7 +1075,7 @@ func @log(value: f64)->f64
 <h3 class="content" id="@log10"><span class="titletype">func</span> <span class="titlelight"></span><span class="titlestrong">@log10</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L910" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L916" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -1041,7 +1091,7 @@ func @log10(value: f64)->f64
 <h3 class="content" id="@log2"><span class="titletype">func</span> <span class="titlelight"></span><span class="titlestrong">@log2</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L908" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L914" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -1057,7 +1107,7 @@ func @log2(value: f64)->f64
 <h3 class="content" id="@max"><span class="titletype">func</span> <span class="titlelight"></span><span class="titlestrong">@max</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L949" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L955" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -1086,7 +1136,7 @@ func @max(value1: f64, value2: f64)->f64
 </table>
 </p>
 <p>
-Compare two memory block, and returns -1, 0 if equal, or 1.</p>
+Compare two memory blocks, and returns -1, 0 if equal, or 1.</p>
 <p class="code">
 <code style="white-space: break-spaces">func @memcmp(dst: const ^void, src: const ^void, size: u64)->s32
 </code>
@@ -1149,7 +1199,7 @@ Set all bytes of a given memory block to <code class = "incode">value</code>.</p
 <h3 class="content" id="@min"><span class="titletype">func</span> <span class="titlelight"></span><span class="titlestrong">@min</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L938" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L944" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -1190,13 +1240,18 @@ Returns the list of all loaded modules.</p>
 <h3 class="content" id="@muladd"><span class="titletype">func</span> <span class="titlelight"></span><span class="titlestrong">@muladd</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L977" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L990" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
+<p>
+Returns (val1 * val2) + val3.</p>
 <p class="code">
 <code style="white-space: break-spaces">func @muladd(val1: f32, val2: f32, val3: f32)->f32
-func @muladd(val1: f64, val2: f64, val3: f64)->f64
+</code>
+</p>
+<p class="code">
+<code style="white-space: break-spaces">func @muladd(val1: f64, val2: f64, val3: f64)->f64
 </code>
 </p>
 <p>
@@ -1223,7 +1278,7 @@ Stop the execution and panic.</p>
 <h3 class="content" id="@pow"><span class="titletype">func</span> <span class="titlelight"></span><span class="titlestrong">@pow</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L933" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L939" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -1263,7 +1318,7 @@ Basic print to console function.</p>
 <p>
 Realloc a system memory block allocated with <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\swag.runtime.html#@alloc">@alloc</a>.</p>
 <p class="code">
-<code style="white-space: break-spaces">func @realloc(ptr: ^void, size: u64)->*void
+<code style="white-space: break-spaces">func @realloc(ptr: ^void, size: u64)->^void
 </code>
 </p>
 <p>
@@ -1273,7 +1328,7 @@ Realloc a system memory block allocated with <a href="f:\swag-lang\swag\bin\std\
 <h3 class="content" id="@round"><span class="titletype">func</span> <span class="titlelight"></span><span class="titlestrong">@round</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L919" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L925" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -1321,7 +1376,7 @@ Replace the current thread context.</p>
 <h3 class="content" id="@sin"><span class="titletype">func</span> <span class="titlelight"></span><span class="titlestrong">@sin</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L885" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L891" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -1337,7 +1392,7 @@ func @sin(value: f64)->f64
 <h3 class="content" id="@sinh"><span class="titletype">func</span> <span class="titlelight"></span><span class="titlestrong">@sinh</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L892" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L898" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -1353,7 +1408,7 @@ func @sinh(value: f64)->f64
 <h3 class="content" id="@sqrt"><span class="titletype">func</span> <span class="titlelight"></span><span class="titlestrong">@sqrt</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L882" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L888" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -1435,7 +1490,7 @@ Returns the length of the given 0 terminated string.</p>
 <h3 class="content" id="@tan"><span class="titletype">func</span> <span class="titlelight"></span><span class="titlestrong">@tan</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L889" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L895" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -1451,7 +1506,7 @@ func @tan(value: f64)->f64
 <h3 class="content" id="@tanh"><span class="titletype">func</span> <span class="titlelight"></span><span class="titlestrong">@tanh</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L896" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L902" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -1467,7 +1522,7 @@ func @tanh(value: f64)->f64
 <h3 class="content" id="@trunc"><span class="titletype">func</span> <span class="titlelight"></span><span class="titlestrong">@trunc</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L917" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L923" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -1829,12 +1884,16 @@ The <code class = "incode">OS</code> to target when generating native code.</p>
 <td class="enumeration">
 <a href="#Swag.TypeInfoKind">TypeInfoKind</a></td>
 <td class="enumeration">
+<p>
+The kind of the typeinfo.</p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Swag.TypeInfoNativeKind">TypeInfoNativeKind</a></td>
 <td class="enumeration">
+<p>
+The native type if the type is... native.</p>
 </td>
 </tr>
 <tr>
@@ -2323,7 +2382,7 @@ Alignement constraint.</p>
 <h3 class="content" id="Swag.Attribute"><span class="titletype">struct</span> <span class="titlelight">Swag.</span><span class="titlestrong">Attribute</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L450" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L454" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -2352,7 +2411,7 @@ const [..] <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64
 <h3 class="content" id="Swag.AttributeParam"><span class="titletype">struct</span> <span class="titlelight">Swag.</span><span class="titlestrong">AttributeParam</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L444" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L448" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -2494,7 +2553,7 @@ All</td>
 <h3 class="content" id="Swag.Backend"><span class="titletype">enum</span> <span class="titlelight">Swag.</span><span class="titlestrong">Backend</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L585" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L589" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -2533,7 +2592,7 @@ LLVM backend.</p>
 <h3 class="content" id="Swag.BuildCfg"><span class="titletype">struct</span> <span class="titlelight">Swag.</span><span class="titlestrong">BuildCfg</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L654" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L658" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -2848,7 +2907,7 @@ Repository access path to the module.</p>
 <h3 class="content" id="Swag.BuildCfgBackendKind"><span class="titletype">enum</span> <span class="titlelight">Swag.</span><span class="titlestrong">BuildCfgBackendKind</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L620" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L624" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -2895,7 +2954,7 @@ The module needs to be compiled to an dynamic library.</p>
 <h3 class="content" id="Swag.BuildCfgBackendLLVM"><span class="titletype">struct</span> <span class="titlelight">Swag.</span><span class="titlestrong">BuildCfgBackendLLVM</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L603" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L607" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -2908,6 +2967,8 @@ outputIR</td>
 <td class="tdtype">
 bool</td>
 <td class="enumeration">
+<p>
+Output IR in a file.</p>
 </td>
 </tr>
 <tr>
@@ -2974,7 +3035,7 @@ bool</td>
 <h3 class="content" id="Swag.BuildCfgBackendOptim"><span class="titletype">enum</span> <span class="titlelight">Swag.</span><span class="titlestrong">BuildCfgBackendOptim</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L641" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L645" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -3039,7 +3100,7 @@ Optim for size level 2.</p>
 <h3 class="content" id="Swag.BuildCfgBackendSubKind"><span class="titletype">enum</span> <span class="titlelight">Swag.</span><span class="titlestrong">BuildCfgBackendSubKind</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L632" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L636" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -3068,7 +3129,7 @@ Console</td>
 <h3 class="content" id="Swag.BuildCfgBackendX64"><span class="titletype">struct</span> <span class="titlelight">Swag.</span><span class="titlestrong">BuildCfgBackendX64</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L615" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L619" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -3079,7 +3140,7 @@ Console</td>
 <h3 class="content" id="Swag.CVaList"><span class="titletype">struct</span> <span class="titlelight">Swag.</span><span class="titlestrong">CVaList</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L763" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L767" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -3134,7 +3195,7 @@ The following function or variable is only defined at compile time.</p>
 <h3 class="content" id="Swag.CompilerMessage"><span class="titletype">struct</span> <span class="titlelight">Swag.</span><span class="titlestrong">CompilerMessage</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L733" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L737" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -3191,7 +3252,7 @@ Kind of the message.</p>
 <h3 class="content" id="Swag.CompilerMsgKind"><span class="titletype">enum</span> <span class="titlelight">Swag.</span><span class="titlestrong">CompilerMsgKind</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L700" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L704" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -3268,7 +3329,7 @@ AttributeGen</td>
 <h3 class="content" id="Swag.CompilerMsgMask"><span class="titletype">enum</span> <span class="titlelight">Swag.</span><span class="titlestrong">CompilerMsgMask</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L716" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L720" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -4429,7 +4490,7 @@ func(*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\swag
 <h3 class="content" id="Swag.ICompiler"><span class="titletype">interface</span> <span class="titlelight">Swag.</span><span class="titlestrong">ICompiler</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L744" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L748" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -4527,7 +4588,7 @@ Force a function to be inlined.</p>
 <h3 class="content" id="Swag.Interface"><span class="titletype">struct</span> <span class="titlelight">Swag.</span><span class="titlestrong">Interface</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L438" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L442" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -4880,7 +4941,7 @@ The application arguments, as returned by <a href="f:\swag-lang\swag\bin\std\out
 <h3 class="content" id="Swag.RuntimeFlags"><span class="titletype">enum</span> <span class="titlelight">Swag.</span><span class="titlestrong">RuntimeFlags</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L565" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L569" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -5082,7 +5143,7 @@ Enable/Disable a given safety check.</p>
 <h3 class="content" id="Swag.SafetyAll"><span class="titletype">const</span> <span class="titlelight">Swag.</span><span class="titlestrong">Constants</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L600" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L604" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -5467,7 +5528,7 @@ This will call <code class = "incode">release</code> prior to changing the capac
 <h3 class="content" id="Swag.SourceCodeLocation"><span class="titletype">struct</span> <span class="titlelight">Swag.</span><span class="titlestrong">SourceCodeLocation</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L754" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L758" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -5590,7 +5651,7 @@ End column.</p>
 <h3 class="content" id="Swag.TargetArch"><span class="titletype">enum</span> <span class="titlelight">Swag.</span><span class="titlestrong">TargetArch</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L571" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L575" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -5609,7 +5670,7 @@ X86_64</td>
 <h3 class="content" id="Swag.TargetOs"><span class="titletype">enum</span> <span class="titlelight">Swag.</span><span class="titlestrong">TargetOs</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L577" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L581" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -5692,7 +5753,7 @@ CastAny</td>
 <h3 class="content" id="Swag.TypeInfo"><span class="titletype">struct</span> <span class="titlelight">Swag.</span><span class="titlestrong">TypeInfo</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L466" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L470" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -5761,7 +5822,7 @@ padding</td>
 <h3 class="content" id="Swag.TypeInfoAlias"><span class="titletype">struct</span> <span class="titlelight">Swag.</span><span class="titlestrong">TypeInfoAlias</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L489" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L493" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -5790,7 +5851,7 @@ const *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\swa
 <h3 class="content" id="Swag.TypeInfoArray"><span class="titletype">struct</span> <span class="titlelight">Swag.</span><span class="titlestrong">TypeInfoArray</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L528" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L532" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -5843,7 +5904,7 @@ u64</td>
 <h3 class="content" id="Swag.TypeInfoEnum"><span class="titletype">struct</span> <span class="titlelight">Swag.</span><span class="titlestrong">TypeInfoEnum</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L520" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L524" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -5888,7 +5949,7 @@ const [..] <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64
 <h3 class="content" id="Swag.TypeInfoFlags"><span class="titletype">enum</span> <span class="titlelight">Swag.</span><span class="titlestrong">TypeInfoFlags</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L418" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L422" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -5997,7 +6058,7 @@ PointerArithmetic</td>
 <h3 class="content" id="Swag.TypeInfoFunc"><span class="titletype">struct</span> <span class="titlelight">Swag.</span><span class="titlestrong">TypeInfoFunc</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L511" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L515" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -6050,7 +6111,7 @@ const [..] <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64
 <h3 class="content" id="Swag.TypeInfoGeneric"><span class="titletype">struct</span> <span class="titlelight">Swag.</span><span class="titlestrong">TypeInfoGeneric</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L549" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L553" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -6079,10 +6140,12 @@ const *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\swa
 <h3 class="content" id="Swag.TypeInfoKind"><span class="titletype">enum</span> <span class="titlelight">Swag.</span><span class="titlestrong">TypeInfoKind</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L372" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L373" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
+<p>
+The kind of the typeinfo.</p>
 <table class="enumeration">
 <tr>
 <td class="tdname">
@@ -6094,114 +6157,152 @@ Invalid</td>
 <td class="tdname">
 Native</td>
 <td class="enumeration">
+<p>
+The typeinfo is a <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\swag.runtime.html#Swag.TypeInfoNative">TypeInfoNative</a>. See <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\swag.runtime.html#Swag.TypeInfoNativeKind">TypeInfoNativeKind</a> for the underlying type.</p>
 </td>
 </tr>
 <tr>
 <td class="tdname">
 Namespace</td>
 <td class="enumeration">
+<p>
+The typeinfo is a <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\swag.runtime.html#Swag.TypeInfoNamespace">TypeInfoNamespace</a>.</p>
 </td>
 </tr>
 <tr>
 <td class="tdname">
 Enum</td>
 <td class="enumeration">
+<p>
+The typeinfo is a <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\swag.runtime.html#Swag.TypeInfoEnum">TypeInfoEnum</a>.</p>
 </td>
 </tr>
 <tr>
 <td class="tdname">
 Func</td>
 <td class="enumeration">
+<p>
+The typeinfo is a <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\swag.runtime.html#Swag.TypeInfoFunc">TypeInfoFunc</a>.</p>
 </td>
 </tr>
 <tr>
 <td class="tdname">
 Lambda</td>
 <td class="enumeration">
+<p>
+The typeinfo is a <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\swag.runtime.html#Swag.TypeInfoFunc">TypeInfoFunc</a>, but this is a lambda or a closure.</p>
 </td>
 </tr>
 <tr>
 <td class="tdname">
 Pointer</td>
 <td class="enumeration">
+<p>
+The typeinfo is a <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\swag.runtime.html#Swag.TypeInfoPointer">TypeInfoPointer</a>.</p>
 </td>
 </tr>
 <tr>
 <td class="tdname">
 Array</td>
 <td class="enumeration">
+<p>
+The typeinfo is a <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\swag.runtime.html#Swag.TypeInfoArray">TypeInfoArray</a>.</p>
 </td>
 </tr>
 <tr>
 <td class="tdname">
 Slice</td>
 <td class="enumeration">
+<p>
+The typeinfo is a <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\swag.runtime.html#Swag.TypeInfoSlice">TypeInfoSlice</a>.</p>
 </td>
 </tr>
 <tr>
 <td class="tdname">
 TypeListTuple</td>
 <td class="enumeration">
+<p>
+The typeinfo is a <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\swag.runtime.html#Swag.TypeInfoStruct">TypeInfoStruct</a>.</p>
 </td>
 </tr>
 <tr>
 <td class="tdname">
 TypeListArray</td>
 <td class="enumeration">
+<p>
+The typeinfo is a <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\swag.runtime.html#Swag.TypeInfoArray">TypeInfoArray</a>.</p>
 </td>
 </tr>
 <tr>
 <td class="tdname">
 Variadic</td>
 <td class="enumeration">
+<p>
+The typeinfo is a <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\swag.runtime.html#Swag.TypeInfoVariadic">TypeInfoVariadic</a>.</p>
 </td>
 </tr>
 <tr>
 <td class="tdname">
 TypedVariadic</td>
 <td class="enumeration">
+<p>
+The typeinfo is a <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\swag.runtime.html#Swag.TypeInfoVariadic">TypeInfoVariadic</a>.</p>
 </td>
 </tr>
 <tr>
 <td class="tdname">
 CVariadic</td>
 <td class="enumeration">
+<p>
+The typeinfo is a <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\swag.runtime.html#Swag.TypeInfoVariadic">TypeInfoVariadic</a>.</p>
 </td>
 </tr>
 <tr>
 <td class="tdname">
 Struct</td>
 <td class="enumeration">
+<p>
+The typeinfo is a <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\swag.runtime.html#Swag.TypeInfoStruct">TypeInfoStruct</a>.</p>
 </td>
 </tr>
 <tr>
 <td class="tdname">
 Generic</td>
 <td class="enumeration">
+<p>
+The typeinfo is a <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\swag.runtime.html#Swag.TypeInfoGeneric">TypeInfoGeneric</a>.</p>
 </td>
 </tr>
 <tr>
 <td class="tdname">
 Alias</td>
 <td class="enumeration">
+<p>
+The typeinfo is a <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\swag.runtime.html#Swag.TypeInfoAlias">TypeInfoAlias</a>.</p>
 </td>
 </tr>
 <tr>
 <td class="tdname">
 Code</td>
 <td class="enumeration">
+<p>
+The typeinfo is a <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\swag.runtime.html#Swag.TypeInfo">TypeInfo</a>.</p>
 </td>
 </tr>
 <tr>
 <td class="tdname">
 Interface</td>
 <td class="enumeration">
+<p>
+The typeinfo is a <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\swag.runtime.html#Swag.TypeInfoStruct">TypeInfoStruct</a>, but this is an interface.</p>
 </td>
 </tr>
 <tr>
 <td class="tdname">
 Attribute</td>
 <td class="enumeration">
+<p>
+The typeinfo is a <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\swag.runtime.html#Swag.TypeInfoFunc">TypeInfoFunc</a>, but this is an attribute.</p>
 </td>
 </tr>
 </table>
@@ -6212,7 +6313,7 @@ Attribute</td>
 <h3 class="content" id="Swag.TypeInfoNamespace"><span class="titletype">struct</span> <span class="titlelight">Swag.</span><span class="titlestrong">TypeInfoNamespace</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L555" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L559" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -6233,7 +6334,7 @@ base</td>
 <h3 class="content" id="Swag.TypeInfoNative"><span class="titletype">struct</span> <span class="titlelight">Swag.</span><span class="titlestrong">TypeInfoNative</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L477" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L481" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -6262,10 +6363,12 @@ nativeKind</td>
 <h3 class="content" id="Swag.TypeInfoNativeKind"><span class="titletype">enum</span> <span class="titlelight">Swag.</span><span class="titlestrong">TypeInfoNativeKind</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L396" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L400" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
+<p>
+The native type if the type is... native.</p>
 <table class="enumeration">
 <tr>
 <td class="tdname">
@@ -6371,13 +6474,15 @@ Undefined</td>
 </tr>
 </table>
 <p>
+ If the <code class = "incode">kind</code> of the type is <code class = "incode">TypeInfoKind.Native</code>, then this is the real native type.</p>
+<p>
 <table class="h3">
 <tr>
 <td class="h3">
 <h3 class="content" id="Swag.TypeInfoPointer"><span class="titletype">struct</span> <span class="titlelight">Swag.</span><span class="titlestrong">TypeInfoPointer</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L483" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L487" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -6406,7 +6511,7 @@ const *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\swa
 <h3 class="content" id="Swag.TypeInfoSlice"><span class="titletype">struct</span> <span class="titlelight">Swag.</span><span class="titlestrong">TypeInfoSlice</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L537" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L541" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -6435,7 +6540,7 @@ const *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\swa
 <h3 class="content" id="Swag.TypeInfoStruct"><span class="titletype">struct</span> <span class="titlelight">Swag.</span><span class="titlestrong">TypeInfoStruct</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L495" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L499" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -6544,7 +6649,7 @@ const [..] <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64
 <h3 class="content" id="Swag.TypeInfoVariadic"><span class="titletype">struct</span> <span class="titlelight">Swag.</span><span class="titlestrong">TypeInfoVariadic</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L543" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L547" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -6573,7 +6678,7 @@ const *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\swa
 <h3 class="content" id="Swag.TypeValue"><span class="titletype">struct</span> <span class="titlelight">Swag.</span><span class="titlestrong">TypeValue</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L456" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L460" class="src">[src]</a></td>
 </tr>
 </table>
 </p>

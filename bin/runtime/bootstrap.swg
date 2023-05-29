@@ -369,30 +369,34 @@ namespace Swag
         CastAny = 1
     }
 
+    // The kind of the typeinfo.
     enum TypeInfoKind: u8
     {
         Invalid
-        Native
-        Namespace
-        Enum
-        Func
-        Lambda
-        Pointer
-        Array
-        Slice
-        TypeListTuple
-        TypeListArray
-        Variadic
-        TypedVariadic
-        CVariadic
-        Struct
-        Generic
-        Alias
-        Code
-        Interface
-        Attribute
+        Native          // The typeinfo is a [TypeInfoNative]. See [TypeInfoNativeKind] for the underlying type.
+        Namespace       // The typeinfo is a [TypeInfoNamespace]
+        Enum            // The typeinfo is a [TypeInfoEnum]
+        Func            // The typeinfo is a [TypeInfoFunc]
+        Lambda          // The typeinfo is a [TypeInfoFunc], but this is a lambda or a closure
+        Pointer         // The typeinfo is a [TypeInfoPointer]
+        Array           // The typeinfo is a [TypeInfoArray]
+        Slice           // The typeinfo is a [TypeInfoSlice]
+        TypeListTuple   // The typeinfo is a [TypeInfoStruct]
+        TypeListArray   // The typeinfo is a [TypeInfoArray]
+        Variadic        // The typeinfo is a [TypeInfoVariadic]
+        TypedVariadic   // The typeinfo is a [TypeInfoVariadic]
+        CVariadic       // The typeinfo is a [TypeInfoVariadic]
+        Struct          // The typeinfo is a [TypeInfoStruct]
+        Generic         // The typeinfo is a [TypeInfoGeneric]
+        Alias           // The typeinfo is a [TypeInfoAlias]
+        Code            // The typeinfo is a [TypeInfo]
+        Interface       // The typeinfo is a [TypeInfoStruct], but this is an interface
+        Attribute       // The typeinfo is a [TypeInfoFunc], but this is an attribute
     }
 
+    // The native type if the type is... native.
+    //
+    // If the 'kind' of the type is 'TypeInfoKind.Native', then this is the real native type.
     enum TypeInfoNativeKind : u8
     {
         Void
@@ -602,7 +606,7 @@ namespace Swag
     // 'LLVM' backend specific options
     struct BuildCfgBackendLLVM
     {
-        outputIR:           bool = false
+        outputIR:           bool = false    // Output IR in a file
 
         fpMathFma:          bool = false    // true in 'release'
         fpMathNoNaN:        bool = false    // true in 'release'
@@ -766,10 +770,6 @@ namespace Swag
     }
 }
 
-//
-// Intrinsics
-//
-
 // Panic if the expression is false. Typically used in tests.
 func @assert(value: bool);
 // Stop a bytecode execution, and launch the bytecode debugger.
@@ -809,7 +809,7 @@ func @memcpy(dst: ^void, src: const ^void, size: u64);
 // Move one memory block to another address.
 func @memmove(dst: ^void, src: const ^void, size: u64);
 
-// Compare two memory block, and returns -1, 0 if equal, or 1.
+// Compare two memory blocks, and returns -1, 0 if equal, or 1.
 func @memcmp(dst, src: const ^void, size: u64)->s32;
 
 // Returns the length of the given 0 terminated string.
@@ -821,6 +821,7 @@ func @strcmp(str1, str2: cstring)->s32;
 // Atomic operations
 #[Swag.Discardable]
 {
+    // Atomic 'add'
     func @atomadd(addr: *s8, value: s8)->s8;
     func @atomadd(addr: *s16, value: s16)->s16;
     func @atomadd(addr: *s32, value: s32)->s32;
@@ -830,6 +831,7 @@ func @strcmp(str1, str2: cstring)->s32;
     func @atomadd(addr: *u32, value: u32)->u32;
     func @atomadd(addr: *u64, value: u64)->u64;
 
+    // Atomic 'and'
     func @atomand(addr: *s8, value: s8)->s8;
     func @atomand(addr: *s16, value: s16)->s16;
     func @atomand(addr: *s32, value: s32)->s32;
@@ -839,6 +841,7 @@ func @strcmp(str1, str2: cstring)->s32;
     func @atomand(addr: *u32, value: u32)->u32;
     func @atomand(addr: *u64, value: u64)->u64;
 
+    // Atomic 'or'
     func @atomor(addr: *s8, value: s8)->s8;
     func @atomor(addr: *s16, value: s16)->s16;
     func @atomor(addr: *s32, value: s32)->s32;
@@ -848,6 +851,7 @@ func @strcmp(str1, str2: cstring)->s32;
     func @atomor(addr: *u32, value: u32)->u32;
     func @atomor(addr: *u64, value: u64)->u64;
 
+    // Atomic 'xor'
     func @atomxor(addr: *s8, value: s8)->s8;
     func @atomxor(addr: *s16, value: s16)->s16;
     func @atomxor(addr: *s32, value: s32)->s32;
@@ -857,6 +861,7 @@ func @strcmp(str1, str2: cstring)->s32;
     func @atomxor(addr: *u32, value: u32)->u32;
     func @atomxor(addr: *u64, value: u64)->u64;
 
+    // Atomic 'exchange'
     func @atomxchg(addr: *s8,  exchangeWith: s8)->s8;
     func @atomxchg(addr: *s16, exchangeWith: s16)->s16;
     func @atomxchg(addr: *s32, exchangeWith: s32)->s32;
@@ -866,6 +871,7 @@ func @strcmp(str1, str2: cstring)->s32;
     func @atomxchg(addr: *u32, exchangeWith: u32)->u32;
     func @atomxchg(addr: *u64, exchangeWith: u64)->u64;
 
+    // Atomic 'compare and exchange'
     func @atomcmpxchg(addr: *s8,  compareTo, exchangeWith: s8)->s8;
     func @atomcmpxchg(addr: *s16, compareTo, exchangeWith: s16)->s16;
     func @atomcmpxchg(addr: *s32, compareTo, exchangeWith: s32)->s32;
@@ -957,23 +963,30 @@ func @strcmp(str1, str2: cstring)->s32;
     func @max(value1, value2: f32)->f32;
     func @max(value1, value2: f64)->f64;
 
+    // Count the number of bits set to 1
     func @bitcountnz(value: u8)->u8;
     func @bitcountnz(value: u16)->u16;
     func @bitcountnz(value: u32)->u32;
     func @bitcountnz(value: u64)->u64;
+
+    // Returns the index+1 of the first set bit, starting from right (lsb). 0 if all zero.
     func @bitcounttz(value: u8)->u8;
     func @bitcounttz(value: u16)->u16;
     func @bitcounttz(value: u32)->u32;
     func @bitcounttz(value: u64)->u64;
+
+    // Returns the index+1 of the first set bit, starting from the left (msb). 0 if all zero.
     func @bitcountlz(value: u8)->u8;
     func @bitcountlz(value: u16)->u16;
     func @bitcountlz(value: u32)->u32;
     func @bitcountlz(value: u64)->u64;
 
+    // Reverses the order of bytes in an integer.
     func @byteswap(value: u16)->u16;
     func @byteswap(value: u32)->u32;
     func @byteswap(value: u64)->u64;
 
+    // Returns '(val1 * val2) + val3'
     func @muladd(val1, val2, val3: f32)->f32;
     func @muladd(val1, val2, val3: f64)->f64;
 }
