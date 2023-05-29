@@ -1736,18 +1736,18 @@ Add a copy of one element at the end of the array.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Core.Array.add">add(self, moveref T)</a></td>
-<td class="enumeration">
-<p>
-Move one element at the end of the array.</p>
-</td>
-</tr>
-<tr>
-<td class="enumeration">
 <a href="#Core.Array.add">add(self, const [..] T)</a></td>
 <td class="enumeration">
 <p>
 Append a slice to the end of this instance.</p>
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Core.Array.add">add(self, moveref T)</a></td>
+<td class="enumeration">
+<p>
+Move one element at the end of the array.</p>
 </td>
 </tr>
 <tr>
@@ -1864,18 +1864,18 @@ Ensure the Array is big enough to store at least <code class = "incode">newCount
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Core.Array.insertAt">insertAt(self, u64, const [..] T)</a></td>
-<td class="enumeration">
-<p>
-Insert some values at the given index. If <code class = "incode">index</code> is equal to <code class = "incode">count</code>, then the values are added at the end of the array. Order is preserved.</p>
-</td>
-</tr>
-<tr>
-<td class="enumeration">
 <a href="#Core.Array.insertAt">insertAt(self, u64, T)</a></td>
 <td class="enumeration">
 <p>
 Insert a value at the given index. If <code class = "incode">index</code> is equal to <code class = "incode">count</code>, then the value is added at the end of the array. Order is preserved.</p>
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Core.Array.insertAt">insertAt(self, u64, const [..] T)</a></td>
+<td class="enumeration">
+<p>
+Insert some values at the given index. If <code class = "incode">index</code> is equal to <code class = "incode">count</code>, then the values are added at the end of the array. Order is preserved.</p>
 </td>
 </tr>
 <tr>
@@ -1910,18 +1910,18 @@ Returns a copy of the last element, and remove it from the array.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Core.Array.remove">remove(self, u64, u64)</a></td>
-<td class="enumeration">
-<p>
-Remove <code class = "incode">num</code> elements starting at <code class = "incode">index</code>.</p>
-</td>
-</tr>
-<tr>
-<td class="enumeration">
 <a href="#Core.Array.remove">remove(self, V)</a></td>
 <td class="enumeration">
 <p>
 Remove the given <code class = "incode">value</code> If not found, does nothing.</p>
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Core.Array.remove">remove(self, u64, u64)</a></td>
+<td class="enumeration">
+<p>
+Remove <code class = "incode">num</code> elements starting at <code class = "incode">index</code>.</p>
 </td>
 </tr>
 <tr>
@@ -3006,12 +3006,6 @@ Allocate a new pointer by using the contextual allocator.</p>
 <table class="enumeration">
 <tr>
 <td class="enumeration">
-<a href="#Core.Atomic.add">add(*s8, s8)</a></td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="enumeration">
 <a href="#Core.Atomic.add">add(*s16, s16)</a></td>
 <td class="enumeration">
 </td>
@@ -3030,7 +3024,7 @@ Allocate a new pointer by using the contextual allocator.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Core.Atomic.add">add(*u8, u8)</a></td>
+<a href="#Core.Atomic.add">add(*s8, s8)</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -3054,7 +3048,7 @@ Allocate a new pointer by using the contextual allocator.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Core.Atomic.and">and(*s8, s8)</a></td>
+<a href="#Core.Atomic.add">add(*u8, u8)</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -3078,7 +3072,7 @@ Allocate a new pointer by using the contextual allocator.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Core.Atomic.and">and(*u8, u8)</a></td>
+<a href="#Core.Atomic.and">and(*s8, s8)</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -3102,13 +3096,7 @@ Allocate a new pointer by using the contextual allocator.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Core.Atomic.compareExchange">compareExchange(*s64, s64, s64)</a></td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="enumeration">
-<a href="#Core.Atomic.compareExchange">compareExchange(*s32, s32, s32)</a></td>
+<a href="#Core.Atomic.and">and(*u8, u8)</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -3120,13 +3108,19 @@ Allocate a new pointer by using the contextual allocator.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Core.Atomic.compareExchange">compareExchange(*s8, s8, s8)</a></td>
+<a href="#Core.Atomic.compareExchange">compareExchange(*s32, s32, s32)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Core.Atomic.compareExchange">compareExchange(*u8, u8, u8)</a></td>
+<a href="#Core.Atomic.compareExchange">compareExchange(*s64, s64, s64)</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Core.Atomic.compareExchange">compareExchange(*s8, s8, s8)</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -3150,37 +3144,7 @@ Allocate a new pointer by using the contextual allocator.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Core.Atomic.exchange">exchange(*u64, u64)</a></td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="enumeration">
-<a href="#Core.Atomic.exchange">exchange(*s64, s64)</a></td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="enumeration">
-<a href="#Core.Atomic.exchange">exchange(*u32, u32)</a></td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="enumeration">
-<a href="#Core.Atomic.exchange">exchange(*u16, u16)</a></td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="enumeration">
-<a href="#Core.Atomic.exchange">exchange(*u8, u8)</a></td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="enumeration">
-<a href="#Core.Atomic.exchange">exchange(*s32, s32)</a></td>
+<a href="#Core.Atomic.compareExchange">compareExchange(*u8, u8, u8)</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -3192,13 +3156,43 @@ Allocate a new pointer by using the contextual allocator.</p>
 </tr>
 <tr>
 <td class="enumeration">
+<a href="#Core.Atomic.exchange">exchange(*s32, s32)</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Core.Atomic.exchange">exchange(*s64, s64)</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="enumeration">
 <a href="#Core.Atomic.exchange">exchange(*s8, s8)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Core.Atomic.get">get(*s8)</a></td>
+<a href="#Core.Atomic.exchange">exchange(*u16, u16)</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Core.Atomic.exchange">exchange(*u32, u32)</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Core.Atomic.exchange">exchange(*u64, u64)</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Core.Atomic.exchange">exchange(*u8, u8)</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -3222,7 +3216,7 @@ Allocate a new pointer by using the contextual allocator.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Core.Atomic.get">get(*u8)</a></td>
+<a href="#Core.Atomic.get">get(*s8)</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -3246,7 +3240,13 @@ Allocate a new pointer by using the contextual allocator.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Core.Atomic.or">or(*s64, s64)</a></td>
+<a href="#Core.Atomic.get">get(*u8)</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Core.Atomic.or">or(*s16, s16)</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -3258,7 +3258,7 @@ Allocate a new pointer by using the contextual allocator.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Core.Atomic.or">or(*s16, s16)</a></td>
+<a href="#Core.Atomic.or">or(*s64, s64)</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -3276,19 +3276,43 @@ Allocate a new pointer by using the contextual allocator.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Core.Atomic.or">or(*u64, u64)</a></td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="enumeration">
 <a href="#Core.Atomic.or">or(*u32, u32)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
+<a href="#Core.Atomic.or">or(*u64, u64)</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="enumeration">
 <a href="#Core.Atomic.or">or(*u8, u8)</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Core.Atomic.xor">xor(*s16, s16)</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Core.Atomic.xor">xor(*s32, s32)</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Core.Atomic.xor">xor(*s64, s64)</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Core.Atomic.xor">xor(*s8, s8)</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -3312,31 +3336,7 @@ Allocate a new pointer by using the contextual allocator.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Core.Atomic.xor">xor(*s64, s64)</a></td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="enumeration">
-<a href="#Core.Atomic.xor">xor(*s32, s32)</a></td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="enumeration">
-<a href="#Core.Atomic.xor">xor(*s16, s16)</a></td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="enumeration">
 <a href="#Core.Atomic.xor">xor(*u8, u8)</a></td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="enumeration">
-<a href="#Core.Atomic.xor">xor(*s8, s8)</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -8540,7 +8540,7 @@ folders</td>
 <table class="enumeration">
 <tr>
 <td class="enumeration">
-<a href="#Core.File.TweakFile.parse">parse(self, string)</a></td>
+<a href="#Core.File.TweakFile.parse">parse(self, const ref Array'(string))</a></td>
 <td class="enumeration">
 <p>
 Parse a list of lines.</p>
@@ -8548,7 +8548,7 @@ Parse a list of lines.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Core.File.TweakFile.parse">parse(self, const ref Array'(string))</a></td>
+<a href="#Core.File.TweakFile.parse">parse(self, string)</a></td>
 <td class="enumeration">
 <p>
 Parse a list of lines.</p>
@@ -13275,18 +13275,18 @@ Determines whether the specified mouse button has just been released.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Core.Input.Mouse.isButtonPressed">isButtonPressed(MouseButton)</a></td>
-<td class="enumeration">
-<p>
-Determins if one given mouse button is pressed or not.</p>
-</td>
-</tr>
-<tr>
-<td class="enumeration">
 <a href="#Core.Input.Mouse.isButtonPressed">isButtonPressed(self, MouseButton)</a></td>
 <td class="enumeration">
 <p>
 Determines whether the specified mouse button is pressed.</p>
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Core.Input.Mouse.isButtonPressed">isButtonPressed(MouseButton)</a></td>
+<td class="enumeration">
+<p>
+Determins if one given mouse button is pressed or not.</p>
 </td>
 </tr>
 <tr>
@@ -15397,7 +15397,7 @@ A simple rectangle with 4 coordinates.</p>
 <table class="enumeration">
 <tr>
 <td class="enumeration">
-<a href="#Core.Math.abs">abs(s16)</a></td>
+<a href="#Core.Math.abs">abs(f32)</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -15409,19 +15409,7 @@ A simple rectangle with 4 coordinates.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Core.Math.abs">abs(s8)</a></td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="enumeration">
-<a href="#Core.Math.abs">abs(f32)</a></td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="enumeration">
-<a href="#Core.Math.abs">abs(s64)</a></td>
+<a href="#Core.Math.abs">abs(s16)</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -15433,7 +15421,13 @@ A simple rectangle with 4 coordinates.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Core.Math.acos">acos(f64)</a></td>
+<a href="#Core.Math.abs">abs(s64)</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Core.Math.abs">abs(s8)</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -15445,13 +15439,19 @@ A simple rectangle with 4 coordinates.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Core.Math.asin">asin(f64)</a></td>
+<a href="#Core.Math.acos">acos(f64)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core.Math.asin">asin(f32)</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Core.Math.asin">asin(f64)</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -15489,13 +15489,13 @@ Convert a big endian integer to current arch native format.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Core.Math.ceil">ceil(f64)</a></td>
+<a href="#Core.Math.ceil">ceil(f32)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Core.Math.ceil">ceil(f32)</a></td>
+<a href="#Core.Math.ceil">ceil(f64)</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -15507,19 +15507,13 @@ Convert a big endian integer to current arch native format.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Core.Math.cos">cos(f64)</a></td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="enumeration">
 <a href="#Core.Math.cos">cos(f32)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Core.Math.cosh">cosh(f64)</a></td>
+<a href="#Core.Math.cos">cos(f64)</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -15531,16 +15525,14 @@ Convert a big endian integer to current arch native format.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Core.Math.countOnes">countOnes(u16)</a></td>
+<a href="#Core.Math.cosh">cosh(f64)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Core.Math.countOnes">countOnes(u8)</a></td>
+<a href="#Core.Math.countOnes">countOnes(u16)</a></td>
 <td class="enumeration">
-<p>
-Returns the number of bits set to 1.</p>
 </td>
 </tr>
 <tr>
@@ -15557,8 +15549,10 @@ Returns the number of bits set to 1.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Core.Math.exp">exp(f64)</a></td>
+<a href="#Core.Math.countOnes">countOnes(u8)</a></td>
 <td class="enumeration">
+<p>
+Returns the number of bits set to 1.</p>
 </td>
 </tr>
 <tr>
@@ -15569,7 +15563,7 @@ Returns the number of bits set to 1.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Core.Math.exp2">exp2(f64)</a></td>
+<a href="#Core.Math.exp">exp(f64)</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -15581,7 +15575,7 @@ Returns the number of bits set to 1.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Core.Math.floor">floor(f64)</a></td>
+<a href="#Core.Math.exp2">exp2(f64)</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -15593,7 +15587,7 @@ Returns the number of bits set to 1.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Core.Math.hasByte">hasByte(u32, u8)</a></td>
+<a href="#Core.Math.floor">floor(f64)</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -15607,19 +15601,13 @@ Determin if an integer has a given byte.</p>
 </tr>
 <tr>
 <td class="enumeration">
+<a href="#Core.Math.hasByte">hasByte(u32, u8)</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="enumeration">
 <a href="#Core.Math.hasByte">hasByte(u64, u8)</a></td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="enumeration">
-<a href="#Core.Math.hasZeroByte">hasZeroByte(u64)</a></td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="enumeration">
-<a href="#Core.Math.hasZeroByte">hasZeroByte(u32)</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -15633,7 +15621,13 @@ Determin if any of the bytes is zero.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Core.Math.isEqualEpsilon">isEqualEpsilon(f64, f64, f64)</a></td>
+<a href="#Core.Math.hasZeroByte">hasZeroByte(u32)</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Core.Math.hasZeroByte">hasZeroByte(u64)</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -15645,13 +15639,19 @@ Determin if any of the bytes is zero.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Core.Math.isNan">isNan(f64)</a></td>
+<a href="#Core.Math.isEqualEpsilon">isEqualEpsilon(f64, f64, f64)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core.Math.isNan">isNan(f32)</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Core.Math.isNan">isNan(f64)</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -15675,14 +15675,6 @@ Determin if any of the bytes is zero.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Core.Math.leadingZeros">leadingZeros(u8)</a></td>
-<td class="enumeration">
-<p>
-Returns the number of bits set to 0 from the left.</p>
-</td>
-</tr>
-<tr>
-<td class="enumeration">
 <a href="#Core.Math.leadingZeros">leadingZeros(u16)</a></td>
 <td class="enumeration">
 </td>
@@ -15697,6 +15689,14 @@ Returns the number of bits set to 0 from the left.</p>
 <td class="enumeration">
 <a href="#Core.Math.leadingZeros">leadingZeros(u64)</a></td>
 <td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Core.Math.leadingZeros">leadingZeros(u8)</a></td>
+<td class="enumeration">
+<p>
+Returns the number of bits set to 0 from the left.</p>
 </td>
 </tr>
 <tr>
@@ -15721,19 +15721,13 @@ Convert a little endian integer to current arch native format.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Core.Math.log">log(f64)</a></td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="enumeration">
 <a href="#Core.Math.log">log(f32)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Core.Math.log10">log10(f64)</a></td>
+<a href="#Core.Math.log">log(f64)</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -15745,13 +15739,19 @@ Convert a little endian integer to current arch native format.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Core.Math.log2">log2(f64)</a></td>
+<a href="#Core.Math.log10">log10(f64)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core.Math.log2">log2(f32)</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Core.Math.log2">log2(f64)</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -15793,7 +15793,7 @@ Make a 64 bits by repeating a given byte 0x20 =&gt; 0x20202020_20202020.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Core.Math.max">max(s8, s8)</a></td>
+<a href="#Core.Math.max">max(T, T, T)</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -15805,43 +15805,7 @@ Make a 64 bits by repeating a given byte 0x20 =&gt; 0x20202020_20202020.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Core.Math.max">max(u64, u64)</a></td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="enumeration">
 <a href="#Core.Math.max">max(f64, f64)</a></td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="enumeration">
-<a href="#Core.Math.max">max(u16, u16)</a></td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="enumeration">
-<a href="#Core.Math.max">max(u8, u8)</a></td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="enumeration">
-<a href="#Core.Math.max">max(s64, s64)</a></td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="enumeration">
-<a href="#Core.Math.max">max(s32, s32)</a></td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="enumeration">
-<a href="#Core.Math.max">max(T, T, T)</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -15853,67 +15817,43 @@ Make a 64 bits by repeating a given byte 0x20 =&gt; 0x20202020_20202020.</p>
 </tr>
 <tr>
 <td class="enumeration">
+<a href="#Core.Math.max">max(s32, s32)</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Core.Math.max">max(s64, s64)</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Core.Math.max">max(s8, s8)</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Core.Math.max">max(u16, u16)</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="enumeration">
 <a href="#Core.Math.max">max(u32, u32)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Core.Math.min">min(s64, s64)</a></td>
+<a href="#Core.Math.max">max(u64, u64)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Core.Math.min">min(u64, u64)</a></td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="enumeration">
-<a href="#Core.Math.min">min(u32, u32)</a></td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="enumeration">
-<a href="#Core.Math.min">min(u16, u16)</a></td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="enumeration">
-<a href="#Core.Math.min">min(u8, u8)</a></td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="enumeration">
-<a href="#Core.Math.min">min(s32, s32)</a></td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="enumeration">
-<a href="#Core.Math.min">min(s16, s16)</a></td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="enumeration">
-<a href="#Core.Math.min">min(s8, s8)</a></td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="enumeration">
-<a href="#Core.Math.min">min(f64, f64)</a></td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="enumeration">
-<a href="#Core.Math.min">min(f32, f32)</a></td>
+<a href="#Core.Math.max">max(u8, u8)</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -15925,13 +15865,73 @@ Make a 64 bits by repeating a given byte 0x20 =&gt; 0x20202020_20202020.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Core.Math.mulAdd">mulAdd(f64, f64, f64)</a></td>
+<a href="#Core.Math.min">min(f32, f32)</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Core.Math.min">min(f64, f64)</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Core.Math.min">min(s16, s16)</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Core.Math.min">min(s32, s32)</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Core.Math.min">min(s64, s64)</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Core.Math.min">min(s8, s8)</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Core.Math.min">min(u16, u16)</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Core.Math.min">min(u32, u32)</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Core.Math.min">min(u64, u64)</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Core.Math.min">min(u8, u8)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core.Math.mulAdd">mulAdd(f32, f32, f32)</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Core.Math.mulAdd">mulAdd(f64, f64, f64)</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -15951,13 +15951,13 @@ Convert a native arch integer to a big endian.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Core.Math.pow">pow(f64, f64)</a></td>
+<a href="#Core.Math.pow">pow(f32, f32)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Core.Math.pow">pow(f32, f32)</a></td>
+<a href="#Core.Math.pow">pow(f64, f64)</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -15989,13 +15989,13 @@ Reverse all bits.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Core.Math.round">round(f64)</a></td>
+<a href="#Core.Math.round">round(f32)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Core.Math.round">round(f32)</a></td>
+<a href="#Core.Math.round">round(f64)</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -16013,13 +16013,13 @@ Reverse all bits.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Core.Math.saturate">saturate(f64)</a></td>
+<a href="#Core.Math.saturate">saturate(f32)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Core.Math.saturate">saturate(f32)</a></td>
+<a href="#Core.Math.saturate">saturate(f64)</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -16032,12 +16032,6 @@ Reverse all bits.</p>
 <tr>
 <td class="enumeration">
 <a href="#Core.Math.sign">sign(f64)</a></td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="enumeration">
-<a href="#Core.Math.sign">sign(s8)</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -16061,6 +16055,12 @@ Reverse all bits.</p>
 </tr>
 <tr>
 <td class="enumeration">
+<a href="#Core.Math.sign">sign(s8)</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="enumeration">
 <a href="#Core.Math.sin">sin(f32)</a></td>
 <td class="enumeration">
 </td>
@@ -16073,25 +16073,25 @@ Reverse all bits.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Core.Math.sinh">sinh(f64)</a></td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="enumeration">
 <a href="#Core.Math.sinh">sinh(f32)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Core.Math.smoothstep">smoothstep(f64, f64, f64)</a></td>
+<a href="#Core.Math.sinh">sinh(f64)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core.Math.smoothstep">smoothstep(f32, f32, f32)</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Core.Math.smoothstep">smoothstep(f64, f64, f64)</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -16109,19 +16109,13 @@ Reverse all bits.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Core.Math.tan">tan(f64)</a></td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="enumeration">
 <a href="#Core.Math.tan">tan(f32)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Core.Math.tanh">tanh(f64)</a></td>
+<a href="#Core.Math.tan">tan(f64)</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -16133,13 +16127,19 @@ Reverse all bits.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Core.Math.toDegrees">toDegrees(f64)</a></td>
+<a href="#Core.Math.tanh">tanh(f64)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core.Math.toDegrees">toDegrees(f32)</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Core.Math.toDegrees">toDegrees(f64)</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -16153,14 +16153,6 @@ Reverse all bits.</p>
 <td class="enumeration">
 <a href="#Core.Math.toRadians">toRadians(f64)</a></td>
 <td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="enumeration">
-<a href="#Core.Math.trailingZeros">trailingZeros(u8)</a></td>
-<td class="enumeration">
-<p>
-Returns the number of bits set to 0 from the right.</p>
 </td>
 </tr>
 <tr>
@@ -16179,6 +16171,14 @@ Returns the number of bits set to 0 from the right.</p>
 <td class="enumeration">
 <a href="#Core.Math.trailingZeros">trailingZeros(u64)</a></td>
 <td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Core.Math.trailingZeros">trailingZeros(u8)</a></td>
+<td class="enumeration">
+<p>
+Returns the number of bits set to 0 from the right.</p>
 </td>
 </tr>
 <tr>
@@ -16687,18 +16687,18 @@ buf</td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Core.Math.NumericArray.mulAdd">mulAdd(self, T, T)</a></td>
-<td class="enumeration">
-<p>
-Multiply & add.</p>
-</td>
-</tr>
-<tr>
-<td class="enumeration">
 <a href="#Core.Math.NumericArray.mulAdd">mulAdd(self, NumericArray'(T, u32), NumericArray'(T, u32))</a></td>
 <td class="enumeration">
 <p>
 Multiply & Add.</p>
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Core.Math.NumericArray.mulAdd">mulAdd(self, T, T)</a></td>
+<td class="enumeration">
+<p>
+Multiply & add.</p>
 </td>
 </tr>
 <tr>
@@ -16726,13 +16726,13 @@ Set all values.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Core.Math.NumericArray.opAssign">opAssign(self, T)</a></td>
+<a href="#Core.Math.NumericArray.opAssign">opAssign(self, NumericArray'(T, u32))</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Core.Math.NumericArray.opAssign">opAssign(self, NumericArray'(T, u32))</a></td>
+<a href="#Core.Math.NumericArray.opAssign">opAssign(self, T)</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -17364,14 +17364,6 @@ Constrain the rectangle to be inside another one, without changing its size (so 
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Core.Math.Rectangle.contains">contains(self, f32, f32)</a></td>
-<td class="enumeration">
-<p>
-Determines if the specfied point is contained within the rectangular region.</p>
-</td>
-</tr>
-<tr>
-<td class="enumeration">
 <a href="#Core.Math.Rectangle.contains">contains(self, const ref Point)</a></td>
 <td class="enumeration">
 <p>
@@ -17384,6 +17376,14 @@ Determines if the specfied point is contained within the rectangular region.</p>
 <td class="enumeration">
 <p>
 Determines if the specfied rectangle is contained within the rectangular region.</p>
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Core.Math.Rectangle.contains">contains(self, f32, f32)</a></td>
+<td class="enumeration">
+<p>
+Determines if the specfied point is contained within the rectangular region.</p>
 </td>
 </tr>
 <tr>
@@ -17516,6 +17516,14 @@ Move the left coordinate, reducing the width.</p>
 </tr>
 <tr>
 <td class="enumeration">
+<a href="#Core.Math.Rectangle.offset">offset(self, const ref Point)</a></td>
+<td class="enumeration">
+<p>
+Offset the rectangle position by a given value.</p>
+</td>
+</tr>
+<tr>
+<td class="enumeration">
 <a href="#Core.Math.Rectangle.offset">offset(self, f32)</a></td>
 <td class="enumeration">
 <p>
@@ -17528,14 +17536,6 @@ Offset the rectangle position by a given value.</p>
 <td class="enumeration">
 <p>
 Offset the rectangle position by a x and y values.</p>
-</td>
-</tr>
-<tr>
-<td class="enumeration">
-<a href="#Core.Math.Rectangle.offset">offset(self, const ref Point)</a></td>
-<td class="enumeration">
-<p>
-Offset the rectangle position by a given value.</p>
 </td>
 </tr>
 <tr>
@@ -18779,18 +18779,18 @@ Returns the cosine angle with another vector.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Core.Math.Vector2.cross">cross(self, f32)</a></td>
-<td class="enumeration">
-<p>
-Returns the perpendicular vector in the 2D plane. <code class = "incode">axis</code> will give the sign of the result.</p>
-</td>
-</tr>
-<tr>
-<td class="enumeration">
 <a href="#Core.Math.Vector2.cross">cross(self, const ref Vector2)</a></td>
 <td class="enumeration">
 <p>
 Returns the Z signed length of the perpendicular vector.</p>
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Core.Math.Vector2.cross">cross(self, f32)</a></td>
+<td class="enumeration">
+<p>
+Returns the perpendicular vector in the 2D plane. <code class = "incode">axis</code> will give the sign of the result.</p>
 </td>
 </tr>
 <tr>
@@ -21416,18 +21416,18 @@ func trunc(x: f64)
 <table class="enumeration">
 <tr>
 <td class="enumeration">
-<a href="#Core.Memory.align">align(u64, u32)</a></td>
-<td class="enumeration">
-<p>
-Align a value to the given amount.</p>
-</td>
-</tr>
-<tr>
-<td class="enumeration">
 <a href="#Core.Memory.align">align(const ^void, u32)</a></td>
 <td class="enumeration">
 <p>
 Align a pointer to the given amount.</p>
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Core.Memory.align">align(u64, u32)</a></td>
+<td class="enumeration">
+<p>
+Align a value to the given amount.</p>
 </td>
 </tr>
 <tr>
@@ -21488,18 +21488,18 @@ Drop and release memory of the given type.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Core.Memory.delete">delete(*void, const *TypeInfo, IAllocator, string, const ref SourceCodeLocation)</a></td>
-<td class="enumeration">
-<p>
-Drop and release memory of the given type.</p>
-</td>
-</tr>
-<tr>
-<td class="enumeration">
 <a href="#Core.Memory.delete">delete(^T, u64, IAllocator, string, const ref SourceCodeLocation)</a></td>
 <td class="enumeration">
 <p>
 Drop and release memory of an array of the given type.</p>
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Core.Memory.delete">delete(*void, const *TypeInfo, IAllocator, string, const ref SourceCodeLocation)</a></td>
+<td class="enumeration">
+<p>
+Drop and release memory of the given type.</p>
 </td>
 </tr>
 <tr>
@@ -21536,14 +21536,6 @@ Clear the temporary allocator.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Core.Memory.new">new(const *TypeInfo, IAllocator, u32, string, const ref SourceCodeLocation)</a></td>
-<td class="enumeration">
-<p>
-Allocate and initialize the given type.</p>
-</td>
-</tr>
-<tr>
-<td class="enumeration">
 <a href="#Core.Memory.new">new(IAllocator, u32, string, const ref SourceCodeLocation)</a></td>
 <td class="enumeration">
 <p>
@@ -21556,6 +21548,14 @@ Allocate and initialize the given type.</p>
 <td class="enumeration">
 <p>
 Allocate and initialize an array of the given type.</p>
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Core.Memory.new">new(const *TypeInfo, IAllocator, u32, string, const ref SourceCodeLocation)</a></td>
+<td class="enumeration">
+<p>
+Allocate and initialize the given type.</p>
 </td>
 </tr>
 <tr>
@@ -21992,16 +21992,16 @@ T</td>
 <table class="enumeration">
 <tr>
 <td class="enumeration">
-<a href="#Core.Noise.perlin">perlin(f32, f32, s32)</a></td>
+<a href="#Core.Noise.perlin">perlin(f32, f32, f32, s32)</a></td>
 <td class="enumeration">
-<p>
-Perlin.</p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Core.Noise.perlin">perlin(f32, f32, f32, s32)</a></td>
+<a href="#Core.Noise.perlin">perlin(f32, f32, s32)</a></td>
 <td class="enumeration">
+<p>
+Perlin.</p>
 </td>
 </tr>
 </table>
@@ -23313,13 +23313,13 @@ u64</td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Core.Random.Mt64.seedU64">seedU64(self, u64)</a></td>
+<a href="#Core.Random.Mt64.seedU64">seedU64(self, const [..] u64)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Core.Random.Mt64.seedU64">seedU64(self, const [..] u64)</a></td>
+<a href="#Core.Random.Mt64.seedU64">seedU64(self, u64)</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -27453,7 +27453,7 @@ End the previous section.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Core.Serialization.Serializer.serialize">serialize(self, string, u32, *MT)</a></td>
+<a href="#Core.Serialization.Serializer.serialize">serialize(self, string, *MT)</a></td>
 <td class="enumeration">
 <p>
 Serialize one value.</p>
@@ -27461,7 +27461,7 @@ Serialize one value.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Core.Serialization.Serializer.serialize">serialize(self, string, *MT)</a></td>
+<a href="#Core.Serialization.Serializer.serialize">serialize(self, string, u32, *MT)</a></td>
 <td class="enumeration">
 <p>
 Serialize one value.</p>
@@ -28856,18 +28856,18 @@ Add a copy of one element at the end of the array.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Core.StaticArray.add">add(self, moveref T)</a></td>
-<td class="enumeration">
-<p>
-Move one element at the end of the array.</p>
-</td>
-</tr>
-<tr>
-<td class="enumeration">
 <a href="#Core.StaticArray.add">add(self, const [..] T)</a></td>
 <td class="enumeration">
 <p>
 Append a slice to the end of this instance.</p>
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Core.StaticArray.add">add(self, moveref T)</a></td>
+<td class="enumeration">
+<p>
+Move one element at the end of the array.</p>
 </td>
 </tr>
 <tr>
@@ -28968,18 +28968,18 @@ Insert a value at the given index. If <code class = "incode">index</code> is equ
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Core.StaticArray.insertAt">insertAt(self, u64, moveref T)</a></td>
-<td class="enumeration">
-<p>
-Move a value at the given index. If <code class = "incode">index</code> is equal to <code class = "incode">count</code>, then the value is added at the end of the array. Order is preserved.</p>
-</td>
-</tr>
-<tr>
-<td class="enumeration">
 <a href="#Core.StaticArray.insertAt">insertAt(self, u64, const [..] T)</a></td>
 <td class="enumeration">
 <p>
 Insert some values at the given index. If <code class = "incode">index</code> is equal to <code class = "incode">count</code>, then the values are added at the end of the array. Order is preserved.</p>
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Core.StaticArray.insertAt">insertAt(self, u64, moveref T)</a></td>
+<td class="enumeration">
+<p>
+Move a value at the given index. If <code class = "incode">index</code> is equal to <code class = "incode">count</code>, then the value is added at the end of the array. Order is preserved.</p>
 </td>
 </tr>
 <tr>
@@ -29000,18 +29000,18 @@ Returns a copy of the last element, and remove it from the array.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Core.StaticArray.remove">remove(self, u64, u64)</a></td>
-<td class="enumeration">
-<p>
-Remove <code class = "incode">num</code> elements starting at <code class = "incode">index</code>.</p>
-</td>
-</tr>
-<tr>
-<td class="enumeration">
 <a href="#Core.StaticArray.remove">remove(self, V)</a></td>
 <td class="enumeration">
 <p>
 Remove the given <code class = "incode">value</code> If not found, does nothing.</p>
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Core.StaticArray.remove">remove(self, u64, u64)</a></td>
+<td class="enumeration">
+<p>
+Remove <code class = "incode">num</code> elements starting at <code class = "incode">index</code>.</p>
 </td>
 </tr>
 <tr>
@@ -29889,14 +29889,6 @@ Convert a <code class = "incode">bool</code> to a string, and put the result in 
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Core.StrConv.convertFloat">convertFloat(*ConcatBuffer, const ref ConvertFormatFloat)</a></td>
-<td class="enumeration">
-<p>
-Convert a float to an utf8 string, and put the result in a ConcatBuffer.</p>
-</td>
-</tr>
-<tr>
-<td class="enumeration">
 <a href="#Core.StrConv.convertFloat">convertFloat(*ConcatBuffer, any, string)</a></td>
 <td class="enumeration">
 <p>
@@ -29905,7 +29897,15 @@ Convert a float to an utf8 string, and put the result in a ConcatBuffer.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Core.StrConv.convertInt">convertInt(*ConcatBuffer, const ref ConvertFormatInt)</a></td>
+<a href="#Core.StrConv.convertFloat">convertFloat(*ConcatBuffer, const ref ConvertFormatFloat)</a></td>
+<td class="enumeration">
+<p>
+Convert a float to an utf8 string, and put the result in a ConcatBuffer.</p>
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Core.StrConv.convertInt">convertInt(*ConcatBuffer, any, string)</a></td>
 <td class="enumeration">
 <p>
 Convert an integer to an utf8 string, and put the result in a ConcatBuffer.</p>
@@ -29913,7 +29913,7 @@ Convert an integer to an utf8 string, and put the result in a ConcatBuffer.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Core.StrConv.convertInt">convertInt(*ConcatBuffer, any, string)</a></td>
+<a href="#Core.StrConv.convertInt">convertInt(*ConcatBuffer, const ref ConvertFormatInt)</a></td>
 <td class="enumeration">
 <p>
 Convert an integer to an utf8 string, and put the result in a ConcatBuffer.</p>
@@ -31665,14 +31665,6 @@ padding</td>
 <table class="enumeration">
 <tr>
 <td class="enumeration">
-<a href="#Core.String.append">append(self, u8)</a></td>
-<td class="enumeration">
-<p>
-Append a byte to the String.</p>
-</td>
-</tr>
-<tr>
-<td class="enumeration">
 <a href="#Core.String.append">append(self, rune)</a></td>
 <td class="enumeration">
 <p>
@@ -31685,6 +31677,14 @@ Append a rune to the String.</p>
 <td class="enumeration">
 <p>
 Append a string to the String.</p>
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Core.String.append">append(self, u8)</a></td>
+<td class="enumeration">
+<p>
+Append a byte to the String.</p>
 </td>
 </tr>
 <tr>
@@ -31922,13 +31922,13 @@ Remove whitespaces at the start of the String.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Core.String.opAssign">opAssign(self, string)</a></td>
+<a href="#Core.String.opAssign">opAssign(self, rune)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Core.String.opAssign">opAssign(self, rune)</a></td>
+<a href="#Core.String.opAssign">opAssign(self, string)</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -35885,18 +35885,18 @@ Returns the first substring of <code class = "incode">str</code> containing only
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Core.Tokenize.split">split(string, rune, u32, bool)</a></td>
-<td class="enumeration">
-<p>
-Split string into sub strings, given a rune separator Note that this returns an array of native strings, not copies. All strings will be invalid if <code class = "incode">src</code> is destroyed.</p>
-</td>
-</tr>
-<tr>
-<td class="enumeration">
 <a href="#Core.Tokenize.split">split(string, const [..] rune, u32, bool)</a></td>
 <td class="enumeration">
 <p>
 Split string into sub strings, given an array of rune separators Note that this returns an array of native strings, not copies. All strings will be invalid if <code class = "incode">src</code> String is destroyed.</p>
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Core.Tokenize.split">split(string, rune, u32, bool)</a></td>
+<td class="enumeration">
+<p>
+Split string into sub strings, given a rune separator Note that this returns an array of native strings, not copies. All strings will be invalid if <code class = "incode">src</code> is destroyed.</p>
 </td>
 </tr>
 <tr>
@@ -36091,18 +36091,18 @@ Get a version 4 UUID (random).</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Core.UUID.toString">toString(self, [..] u8)</a></td>
-<td class="enumeration">
-<p>
-Convert uuid to a string of the form xxxxxxxx-xxxx-Mxxx-Nxxx-xxxxxxxxxxxx.</p>
-</td>
-</tr>
-<tr>
-<td class="enumeration">
 <a href="#Core.UUID.toString">toString(self)</a></td>
 <td class="enumeration">
 <p>
 Convert uuid to a string.</p>
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Core.UUID.toString">toString(self, [..] u8)</a></td>
+<td class="enumeration">
+<p>
+Convert uuid to a string of the form xxxxxxxx-xxxx-Mxxx-Nxxx-xxxxxxxxxxxx.</p>
 </td>
 </tr>
 </table>
@@ -37284,18 +37284,18 @@ Convert an utf16 buffer to a String.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Core.Utf8.indexOf">indexOf(const [..] u8, rune, u64)</a></td>
-<td class="enumeration">
-<p>
-Find the first occurence of rune <code class = "incode">what</code>, and returns the byte index of it.</p>
-</td>
-</tr>
-<tr>
-<td class="enumeration">
 <a href="#Core.Utf8.indexOf">indexOf(const [..] u8, const [..] rune, u64)</a></td>
 <td class="enumeration">
 <p>
 Find one of the runes in <code class = "incode">what</code>, and returns the byte index of it.</p>
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Core.Utf8.indexOf">indexOf(const [..] u8, rune, u64)</a></td>
+<td class="enumeration">
+<p>
+Find the first occurence of rune <code class = "incode">what</code>, and returns the byte index of it.</p>
 </td>
 </tr>
 <tr>
@@ -37324,18 +37324,18 @@ Returns true if the given unicode rune can be encoded in utf8.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Core.Utf8.lastIndexOf">lastIndexOf(const [..] u8, rune)</a></td>
-<td class="enumeration">
-<p>
-Find the last rune occurence of <code class = "incode">what</code>, and returns the byte index of it.</p>
-</td>
-</tr>
-<tr>
-<td class="enumeration">
 <a href="#Core.Utf8.lastIndexOf">lastIndexOf(const [..] u8, const [..] rune)</a></td>
 <td class="enumeration">
 <p>
 Returns the last index (in bytes) of a rune.</p>
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Core.Utf8.lastIndexOf">lastIndexOf(const [..] u8, rune)</a></td>
+<td class="enumeration">
+<p>
+Find the last rune occurence of <code class = "incode">what</code>, and returns the byte index of it.</p>
 </td>
 </tr>
 <tr>

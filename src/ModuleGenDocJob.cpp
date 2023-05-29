@@ -172,7 +172,10 @@ void ModuleGenDocJob::outputTable(Scope* scope, AstNodeKind kind, const char* ti
     }
 
     sort(symbols.begin(), symbols.end(), [](AstNode* a, AstNode* b)
-         { return strcmp(a->token.ctext(), b->token.ctext()) < 0; });
+         {
+            auto a0 = a->typeInfo->computeWhateverName(COMPUTE_SCOPED_NAME);
+            auto b0 = b->typeInfo->computeWhateverName(COMPUTE_SCOPED_NAME);
+            return strcmp(a0.c_str(), b0.c_str()) < 0; });
 
     bool first = true;
     for (auto n1 : symbols)

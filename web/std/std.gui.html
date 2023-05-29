@@ -1275,7 +1275,7 @@ Array(*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std
 <td class="tdname">
 toDelete</td>
 <td class="tdtype">
-Array(__application_tuple_412)</td>
+Array(__application_tuple_407)</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -5057,7 +5057,7 @@ func(*void, *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_
 <td class="tdname">
 minMax</td>
 <td class="tdtype">
-__editbox_tuple_265</td>
+__editbox_tuple_267</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -9241,7 +9241,7 @@ Associate image.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.ImageRect.setImage">setImage(self, const ref Texture)</a></td>
+<a href="#Gui.ImageRect.setImage">setImage(self, const ref Image)</a></td>
 <td class="enumeration">
 <p>
 Associate image.</p>
@@ -9249,7 +9249,7 @@ Associate image.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.ImageRect.setImage">setImage(self, const ref Image)</a></td>
+<a href="#Gui.ImageRect.setImage">setImage(self, const ref Texture)</a></td>
 <td class="enumeration">
 <p>
 Associate image.</p>
@@ -10193,18 +10193,18 @@ Set the number of lines in a virtual list.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.ListCtrl.sort">sort(self, u32, bool, bool)</a></td>
-<td class="enumeration">
-<p>
-Sort the list by a given column If <code class = "incode">persistent</code> is true, then the sorted column will be displayed in the header (if it exists).</p>
-</td>
-</tr>
-<tr>
-<td class="enumeration">
 <a href="#Gui.ListCtrl.sort">sort(self)</a></td>
 <td class="enumeration">
 <p>
 Sort list as before.</p>
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Gui.ListCtrl.sort">sort(self, u32, bool, bool)</a></td>
+<td class="enumeration">
+<p>
+Sort the list by a given column If <code class = "incode">persistent</code> is true, then the sorted column will be displayed in the header (if it exists).</p>
 </td>
 </tr>
 <tr>
@@ -14936,18 +14936,18 @@ Insert a rune.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.RichEditCtrl.insertText">insertText(self, string, const ref Array'(u8))</a></td>
-<td class="enumeration">
-<p>
-Insert a text with a style per character.</p>
-</td>
-</tr>
-<tr>
-<td class="enumeration">
 <a href="#Gui.RichEditCtrl.insertText">insertText(self, string)</a></td>
 <td class="enumeration">
 <p>
 Insert a text with a given style.</p>
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Gui.RichEditCtrl.insertText">insertText(self, string, const ref Array'(u8))</a></td>
+<td class="enumeration">
+<p>
+Insert a text with a style per character.</p>
 </td>
 </tr>
 <tr>
@@ -17613,7 +17613,7 @@ TransparentBar</td>
 <td class="tdname">
 selection</td>
 <td class="tdtype">
-Array(__selmodel_tuple_411)</td>
+Array(__selmodel_tuple_408)</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -25149,13 +25149,13 @@ Create a specific style based on the parent.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.ThemeStyle.setFont">setFont(self, const ref FontFamily)</a></td>
+<a href="#Gui.ThemeStyle.setFont">setFont(self, *Font, FontFamilyStyle)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.ThemeStyle.setFont">setFont(self, *Font, FontFamilyStyle)</a></td>
+<a href="#Gui.ThemeStyle.setFont">setFont(self, const ref FontFamily)</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -26135,7 +26135,7 @@ Returns true if window, and all its parents, are visible.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.Wnd.localToSurface">localToSurface(self, const ref Rectangle)</a></td>
+<a href="#Gui.Wnd.localToSurface">localToSurface(self, const ref Point)</a></td>
 <td class="enumeration">
 <p>
 Convert a local coordinate to a surface coordinate.</p>
@@ -26143,7 +26143,7 @@ Convert a local coordinate to a surface coordinate.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.Wnd.localToSurface">localToSurface(self, const ref Point)</a></td>
+<a href="#Gui.Wnd.localToSurface">localToSurface(self, const ref Rectangle)</a></td>
 <td class="enumeration">
 <p>
 Convert a local coordinate to a surface coordinate.</p>
@@ -26297,13 +26297,13 @@ Send the command state event with the given id to the window. Returns the update
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.Wnd.setAllPaddings">setAllPaddings(self, f32)</a></td>
+<a href="#Gui.Wnd.setAllPaddings">setAllPaddings(self, const ref Vector4)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.Wnd.setAllPaddings">setAllPaddings(self, const ref Vector4)</a></td>
+<a href="#Gui.Wnd.setAllPaddings">setAllPaddings(self, f32)</a></td>
 <td class="enumeration">
 </td>
 </tr>
