@@ -5,6 +5,7 @@
 </style>
 
 <div class="lg:m-auto lg:w-[76rem] pt-2 lg:pt-10 overflow-hidden p-5">
+<div class="container">
 <h1 id="how-to-build-swag">How to build Swag</h1>
 <h2 id="llvm">LLVM</h2>
 <p>Swag has two backends, a <code>x86_64</code> custom backend written
@@ -47,5 +48,6 @@ is”.</p>
 dependencies to some other libraries from the SDK. You will find those
 dependencies in the <code>publish</code> folder of the corresponding
 module.</p>
+</div>
 </div>
 <?php include('html_end.php'); ?>

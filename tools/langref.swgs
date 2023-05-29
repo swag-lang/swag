@@ -366,11 +366,6 @@ func generate(in, out: string)
     g_Buf += """
         <style>
         <?php include('css/style.php'); ?>
-        .container {
-            height: 100%;
-            font-family: Segoe UI;
-            line-height: 1.3em;
-        }
 
         .left {
             overflow-y: scroll;
@@ -381,17 +376,16 @@ func generate(in, out: string)
             padding-left: 10px;
         }
 
-        .container ul, .tocbullet {
-            list-style-type:    revert;
-            padding:            revert;
+        .left h1 {
+            margin-bottom: 0px;
         }
 
-        .container a {
-            text-decoration: none;
+        .left ul {
+            padding-left: 20px;
         }
 
-        .container a:hover {
-            text-decoration: underline;
+        .left a {
+            color: black;
         }
 
         @media (min-width: 1024px) {
@@ -440,7 +434,7 @@ func generate(in, out: string)
         if g_SubTitle
             title = title[1..]
         if !wasSubTitle and g_SubTitle
-            g_Toc += "<ul class=\"tocbullet\">\n"
+            g_Toc += "<ul>\n"
         else if wasSubTitle and !g_SubTitle
             g_Toc += "</ul>\n"
 
@@ -456,7 +450,7 @@ func generate(in, out: string)
 
         // Add title to table of content
         g_Toc += Format.toString("<li><a href=\"#%\">%</a></li>\n", fileName, title);
-        g_Toc += "<ul class=\"tocbullet\">\n"
+        g_Toc += "<ul>\n"
 
         processFile(v.fullname)
 

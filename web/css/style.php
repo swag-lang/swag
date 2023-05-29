@@ -1,12 +1,18 @@
+.container {
+    height:      100%;
+    font-family: Segoe UI;
+    line-height: 1.3em;
+}
+
 h1, h2, h3, h4, h5, h6 {
-    margin: revert;
-    font-size: revert;
+    margin:      revert;
+    font-size:   revert;
     font-weight: revert;
 }
 
-p {
-    margin-top:     10px;
-    margin-bottom:  10px;
+.container p {
+    margin-top:     15px;
+    margin-bottom:  15px;
 }
 
 p code {
@@ -27,7 +33,12 @@ pre {
     overflow-wrap:      break-word;
 }
 
-p a {
+.container ul {
+    list-style-type:    revert;
+    padding:            revert;
+}
+
+.container a {
     text-decoration: none;
     color:           Blue;
 }

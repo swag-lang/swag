@@ -5,6 +5,7 @@
 </style>
 
 <div class="lg:m-auto lg:w-[76rem] pt-2 lg:pt-10 overflow-hidden p-5">
+<div class="container">
 <ul>
 <li><a href="std/std.core.html">std.core</a></li>
 <li><a href="std/std.pixel.html">std.pixel</a></li>
@@ -16,5 +17,6 @@
 <li><a href="std/std.gdi32.html">std.gdi32</a></li>
 <li><a href="std/std.xinput.html">std.xinput</a></li>
 </ul>
+</div>
 </div>
 <?php include('html_end.php'); ?>

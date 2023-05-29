@@ -2,11 +2,6 @@
 
     <style>
     <?php include('css/style.php'); ?>
-    .container {
-        height: 100%;
-        font-family: Segoe UI;
-        line-height: 1.3em;
-    }
 
     .left {
         overflow-y: scroll;
@@ -17,17 +12,16 @@
         padding-left: 10px;
     }
 
-    .container ul, .tocbullet {
-        list-style-type:    revert;
-        padding:            revert;
+    .left h1 {
+        margin-bottom: 0px;
     }
 
-    .container a {
-        text-decoration: none;
+    .left ul {
+        padding-left: 20px;
     }
 
-    .container a:hover {
-        text-decoration: underline;
+    .left a {
+        color: black;
     }
 
     @media (min-width: 1024px) {
@@ -49,22 +43,22 @@
 </div>
 <ul class="mt-5" :class="open_content ? '' : 'hidden lg:block'">
 <li><a href="#000_introduction">Introduction</a></li>
-<ul class="tocbullet">
+<ul>
 </ul>
 <li><a href="#001_hello_mad_world">Hello mad world</a></li>
-<ul class="tocbullet">
+<ul>
 </ul>
 <li><a href="#002_source_code_organization">Source code organization</a></li>
-<ul class="tocbullet">
+<ul>
 </ul>
 <li><a href="#003_comments">Comments</a></li>
-<ul class="tocbullet">
+<ul>
 </ul>
 <li><a href="#004_identifiers">Identifiers</a></li>
-<ul class="tocbullet">
+<ul>
 </ul>
 <li><a href="#005_keywords">Keywords</a></li>
-<ul class="tocbullet">
+<ul>
 <li><a href="#Basic types">Basic types</a></li>
 <li><a href="#Language keywords">Language keywords</a></li>
 <li><a href="#Compiler keywords">Compiler keywords</a></li>
@@ -73,21 +67,21 @@
 <li><a href="#Modifiers">Modifiers</a></li>
 </ul>
 <li><a href="#006_semicolon">Semicolon</a></li>
-<ul class="tocbullet">
+<ul>
 </ul>
 <li><a href="#007_declaration_order">Declaration order</a></li>
-<ul class="tocbullet">
+<ul>
 </ul>
 <li><a href="#010_basic_types">Basic types</a></li>
-<ul class="tocbullet">
+<ul>
 <li><a href="#Type reflection">Type reflection</a></li>
 </ul>
 <li><a href="#011_number_literals">Number literals</a></li>
-<ul class="tocbullet">
+<ul>
 <li><a href="#Postfix">Postfix</a></li>
 </ul>
 <li><a href="#012_string">String</a></li>
-<ul class="tocbullet">
+<ul>
 <li><a href="#Escape sequence">Escape sequence</a></li>
 <li><a href="#Raw string">Raw string</a></li>
 <li><a href="#Multiline string">Multiline string</a></li>
@@ -95,13 +89,13 @@
 <li><a href="#@stringof and @nameof">@stringof and @nameof</a></li>
 </ul>
 <li><a href="#013_variables">Variables</a></li>
-<ul class="tocbullet">
+<ul>
 </ul>
 <li><a href="#014_const">Const</a></li>
-<ul class="tocbullet">
+<ul>
 </ul>
 <li><a href="#015_operators">Operators</a></li>
-<ul class="tocbullet">
+<ul>
 <li><a href="#Binary operators">Binary operators</a></li>
 <li><a href="#Affect operators">Affect operators</a></li>
 <li><a href="#Unary operators">Unary operators</a></li>
@@ -113,147 +107,147 @@
 <li><a href="#Type promotion">Type promotion</a></li>
 </ul>
 <li><a href="#016_cast">Cast</a></li>
-<ul class="tocbullet">
+<ul>
 </ul>
 <li><a href="#020_array">Array</a></li>
-<ul class="tocbullet">
+<ul>
 </ul>
 <li><a href="#021_slice">Slice</a></li>
-<ul class="tocbullet">
+<ul>
 <li><a href="#The slicing operator">The slicing operator</a></li>
 </ul>
 <li><a href="#022_pointers">Pointers</a></li>
-<ul class="tocbullet">
+<ul>
 <li><a href="#Single value pointers">Single value pointers</a></li>
 <li><a href="#Multiple values pointers">Multiple values pointers</a></li>
 </ul>
 <li><a href="#023_references">References</a></li>
-<ul class="tocbullet">
+<ul>
 </ul>
 <li><a href="#024_any">Any</a></li>
-<ul class="tocbullet">
+<ul>
 </ul>
 <li><a href="#025_tuple">Tuple</a></li>
-<ul class="tocbullet">
+<ul>
 <li><a href="#Tuple unpacking">Tuple unpacking</a></li>
 </ul>
 <li><a href="#030_enum">Enum</a></li>
-<ul class="tocbullet">
+<ul>
 <li><a href="#Enum as flags">Enum as flags</a></li>
 <li><a href="#Enum of arrays">Enum of arrays</a></li>
 <li><a href="#Enum of slices">Enum of slices</a></li>
 <li><a href="#Enum type inference">Enum type inference</a></li>
 </ul>
 <li><a href="#031_impl">Impl</a></li>
-<ul class="tocbullet">
+<ul>
 </ul>
 <li><a href="#035_namespace">Namespace</a></li>
-<ul class="tocbullet">
+<ul>
 </ul>
 <li><a href="#050_if">If</a></li>
-<ul class="tocbullet">
+<ul>
 </ul>
 <li><a href="#051_loop">Loop</a></li>
-<ul class="tocbullet">
+<ul>
 </ul>
 <li><a href="#052_visit">Visit</a></li>
-<ul class="tocbullet">
+<ul>
 </ul>
 <li><a href="#053_for">For</a></li>
-<ul class="tocbullet">
+<ul>
 </ul>
 <li><a href="#054_while">While</a></li>
-<ul class="tocbullet">
+<ul>
 </ul>
 <li><a href="#055_switch">Switch</a></li>
-<ul class="tocbullet">
+<ul>
 </ul>
 <li><a href="#056_break">Break</a></li>
-<ul class="tocbullet">
+<ul>
 </ul>
 <li><a href="#060_struct">Struct</a></li>
-<ul class="tocbullet">
+<ul>
 </ul>
-<ul class="tocbullet">
+<ul>
 <li><a href="#061__declaration">Declaration</a></li>
-<ul class="tocbullet">
+<ul>
 </ul>
 <li><a href="#062__impl">Impl</a></li>
-<ul class="tocbullet">
+<ul>
 </ul>
 <li><a href="#063__special_functions">Special functions</a></li>
-<ul class="tocbullet">
+<ul>
 </ul>
 <li><a href="#064__affectation">Affectation</a></li>
-<ul class="tocbullet">
+<ul>
 </ul>
 <li><a href="#064__count">Count</a></li>
-<ul class="tocbullet">
+<ul>
 </ul>
 <li><a href="#064__post_copy_and_post_move">Post copy and post move</a></li>
-<ul class="tocbullet">
+<ul>
 </ul>
 <li><a href="#064__visit">Visit</a></li>
-<ul class="tocbullet">
+<ul>
 </ul>
 <li><a href="#067__offset">Offset</a></li>
-<ul class="tocbullet">
+<ul>
 </ul>
 <li><a href="#068__packing">Packing</a></li>
-<ul class="tocbullet">
+<ul>
 </ul>
 </ul>
 <li><a href="#070_union">Union</a></li>
-<ul class="tocbullet">
+<ul>
 </ul>
 <li><a href="#075_interface">Interface</a></li>
-<ul class="tocbullet">
+<ul>
 </ul>
 <li><a href="#100_function">Function</a></li>
-<ul class="tocbullet">
+<ul>
 </ul>
-<ul class="tocbullet">
+<ul>
 <li><a href="#101__declaration">Declaration</a></li>
-<ul class="tocbullet">
+<ul>
 <li><a href="#Multiple return values">Multiple return values</a></li>
 </ul>
 <li><a href="#102__lambda">Lambda</a></li>
-<ul class="tocbullet">
+<ul>
 <li><a href="#Anonymous functions">Anonymous functions</a></li>
 </ul>
 <li><a href="#103__closure">Closure</a></li>
-<ul class="tocbullet">
+<ul>
 </ul>
 <li><a href="#104__mixin">Mixin</a></li>
-<ul class="tocbullet">
+<ul>
 </ul>
 <li><a href="#105__macro">Macro</a></li>
-<ul class="tocbullet">
+<ul>
 </ul>
 <li><a href="#105__variadic_parameters">Variadic parameters</a></li>
-<ul class="tocbullet">
+<ul>
 </ul>
 <li><a href="#106__ufcs">Ufcs</a></li>
-<ul class="tocbullet">
+<ul>
 </ul>
 <li><a href="#107__constexpr">Constexpr</a></li>
-<ul class="tocbullet">
+<ul>
 </ul>
 <li><a href="#108__function_overloading">Function overloading</a></li>
-<ul class="tocbullet">
+<ul>
 </ul>
 <li><a href="#109__discard">Discard</a></li>
-<ul class="tocbullet">
+<ul>
 </ul>
 <li><a href="#110__retval">Retval</a></li>
-<ul class="tocbullet">
+<ul>
 </ul>
 <li><a href="#111__foreign">Foreign</a></li>
-<ul class="tocbullet">
+<ul>
 </ul>
 </ul>
 <li><a href="#120_compiler_intrinsics">Compiler intrinsics</a></li>
-<ul class="tocbullet">
+<ul>
 <li><a href="#Base">Base</a></li>
 <li><a href="#Buildin">Buildin</a></li>
 <li><a href="#Memory related">Memory related</a></li>
@@ -261,51 +255,51 @@
 <li><a href="#Math">Math</a></li>
 </ul>
 <li><a href="#121_init">Init</a></li>
-<ul class="tocbullet">
+<ul>
 <li><a href="#@init">@init</a></li>
 <li><a href="#@drop">@drop</a></li>
 </ul>
 <li><a href="#130_generic">Generic</a></li>
-<ul class="tocbullet">
+<ul>
 </ul>
-<ul class="tocbullet">
+<ul>
 <li><a href="#131__declaration">Declaration</a></li>
-<ul class="tocbullet">
+<ul>
 </ul>
 <li><a href="#132__validif">Validif</a></li>
-<ul class="tocbullet">
+<ul>
 <li><a href="#One time evaluation">One time evaluation</a></li>
 <li><a href="#Multiple evaluations">Multiple evaluations</a></li>
 </ul>
 <li><a href="#133__constraint">Constraint</a></li>
-<ul class="tocbullet">
+<ul>
 </ul>
 </ul>
 <li><a href="#160_scoping">Scoping</a></li>
-<ul class="tocbullet">
+<ul>
 </ul>
-<ul class="tocbullet">
+<ul>
 <li><a href="#161__defer">Defer</a></li>
-<ul class="tocbullet">
+<ul>
 </ul>
 <li><a href="#162__using">Using</a></li>
-<ul class="tocbullet">
+<ul>
 <li><a href="#For a function parameter">For a function parameter</a></li>
 <li><a href="#For a field">For a field</a></li>
 </ul>
 <li><a href="#163__with">With</a></li>
-<ul class="tocbullet">
+<ul>
 </ul>
 </ul>
 <li><a href="#164_alias">Alias</a></li>
-<ul class="tocbullet">
+<ul>
 </ul>
 <li><a href="#170_error_management">Error management</a></li>
-<ul class="tocbullet">
+<ul>
 <li><a href="#defer">defer</a></li>
 </ul>
 <li><a href="#175_safety">Safety</a></li>
-<ul class="tocbullet">
+<ul>
 <li><a href="##[Swag.Safety("overflow", true)]">#[Swag.Safety("overflow", true)]</a></li>
 <li><a href="##[Swag.Safety("any", true)]">#[Swag.Safety("any", true)]</a></li>
 <li><a href="##[Swag.Safety("boundcheck", true)]">#[Swag.Safety("boundcheck", true)]</a></li>
@@ -315,14 +309,14 @@
 <li><a href="##[Swag.Safety("nan", true)]">#[Swag.Safety("nan", true)]</a></li>
 </ul>
 <li><a href="#180_compiler_declarations">Compiler declarations</a></li>
-<ul class="tocbullet">
+<ul>
 </ul>
-<ul class="tocbullet">
+<ul>
 <li><a href="#181__compile_time_evaluation">Compile time evaluation</a></li>
-<ul class="tocbullet">
+<ul>
 </ul>
 <li><a href="#182__special_functions">Special functions</a></li>
-<ul class="tocbullet">
+<ul>
 <li><a href="##test">#test</a></li>
 <li><a href="##main">#main</a></li>
 <li><a href="##init">#init</a></li>
@@ -330,49 +324,49 @@
 <li><a href="##premain">#premain</a></li>
 </ul>
 <li><a href="#183__run">Run</a></li>
-<ul class="tocbullet">
+<ul>
 </ul>
 <li><a href="#184__global">Global</a></li>
-<ul class="tocbullet">
+<ul>
 </ul>
 <li><a href="#185__var">Var</a></li>
-<ul class="tocbullet">
+<ul>
 </ul>
 </ul>
 <li><a href="#190_attributes">Attributes</a></li>
-<ul class="tocbullet">
+<ul>
 </ul>
-<ul class="tocbullet">
+<ul>
 <li><a href="#191__user_attributes">User attributes</a></li>
-<ul class="tocbullet">
+<ul>
 </ul>
 <li><a href="#192__predefined_attributes">Predefined attributes</a></li>
-<ul class="tocbullet">
+<ul>
 </ul>
 </ul>
 <li><a href="#200_type_reflection">Type reflection</a></li>
-<ul class="tocbullet">
+<ul>
 <li><a href="#@decltype">@decltype</a></li>
 </ul>
 <li><a href="#210_code_inspection">Code inspection</a></li>
-<ul class="tocbullet">
+<ul>
 </ul>
 <li><a href="#220_meta_programmation">Meta programmation</a></li>
-<ul class="tocbullet">
+<ul>
 </ul>
-<ul class="tocbullet">
+<ul>
 <li><a href="#221__ast">Ast</a></li>
-<ul class="tocbullet">
+<ul>
 <li><a href="#Struct and enums">Struct and enums</a></li>
 <li><a href="#For example">For example</a></li>
 <li><a href="#At global scope">At global scope</a></li>
 </ul>
 <li><a href="#222__compiler_interface">Compiler interface</a></li>
-<ul class="tocbullet">
+<ul>
 </ul>
 </ul>
 <li><a href="#230_documentation">Documentation</a></li>
-<ul class="tocbullet">
+<ul>
 </ul>
 </ul>
 </div>

@@ -5,6 +5,7 @@
 </style>
 
 <div class="lg:m-auto lg:w-[76rem] pt-2 lg:pt-10 overflow-hidden p-5">
+<div class="container">
 <p align="center">
 <img src="imgs/swag_logo.png">
 </p>
@@ -22,5 +23,6 @@ engines), but that one is by far the most advanced.</p>
 href="language.php">here</a>.</p>
 <p>If you want to take a look at the standard list of modules, this is
 <a href="std.php">here</a>.</p>
+</div>
 </div>
 <?php include('html_end.php'); ?>

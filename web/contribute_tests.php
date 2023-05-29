@@ -5,6 +5,7 @@
 </style>
 
 <div class="lg:m-auto lg:w-[76rem] pt-2 lg:pt-10 overflow-hidden p-5">
+<div class="container">
 <h1 id="contribute-to-the-test-suite">Contribute to the test suite</h1>
 <p>You can help by writing small tests to debug the compiler (and the
 compiler alone).</p>
@@ -36,5 +37,6 @@ there.</li>
 <strong>write another one</strong> ! This is useful for testing
 regression.</li>
 </ul>
+</div>
 </div>
 <?php include('html_end.php'); ?>
