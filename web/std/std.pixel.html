@@ -3486,7 +3486,7 @@ bool</td>
 <td class="tdname">
 edgeList</td>
 <td class="tdtype">
-Array(__clipper_tuple_244)</td>
+Array(__clipper_tuple_228)</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -4414,7 +4414,7 @@ id</td>
 <td class="tdname">
 params</td>
 <td class="tdtype">
-__painter_tuple_225</td>
+__painter_tuple_200</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -10773,7 +10773,7 @@ sharedLinePathList</td>
 <td class="tdname">
 sharedRoundTmp</td>
 <td class="tdtype">
-Array(__linepath_tuple_263)</td>
+Array(__linepath_tuple_251)</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -10900,16 +10900,16 @@ Recompute the layout for a given rectangle.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Painter.drawArc">drawArc(self, f32, f32, f32, const ref Angle, const ref Angle, const ref Color, f32)</a></td>
+<a href="#Pixel.Painter.drawArc">drawArc(self, f32, f32, f32, const ref Angle, const ref Angle, const ref Pen)</a></td>
 <td class="enumeration">
-<p>
-Draw an arc between two angles.</p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Painter.drawArc">drawArc(self, f32, f32, f32, const ref Angle, const ref Angle, const ref Pen)</a></td>
+<a href="#Pixel.Painter.drawArc">drawArc(self, f32, f32, f32, const ref Angle, const ref Angle, const ref Color, f32)</a></td>
 <td class="enumeration">
+<p>
+Draw an arc between two angles.</p>
 </td>
 </tr>
 <tr>
@@ -10962,6 +10962,14 @@ Draw a line.</p>
 </tr>
 <tr>
 <td class="enumeration">
+<a href="#Pixel.Painter.drawPath">drawPath(self, *LinePathList, const ref Color, f32, DrawPathListMode)</a></td>
+<td class="enumeration">
+<p>
+Draw the line path.</p>
+</td>
+</tr>
+<tr>
+<td class="enumeration">
 <a href="#Pixel.Painter.drawPath">drawPath(self, *LinePathList, const ref Pen, DrawPathListMode)</a></td>
 <td class="enumeration">
 <p>
@@ -10986,10 +10994,10 @@ Draw the line path.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Painter.drawPath">drawPath(self, *LinePathList, const ref Color, f32, DrawPathListMode)</a></td>
+<a href="#Pixel.Painter.drawRect">drawRect(self, f32, f32, f32, f32, const ref Color, f32)</a></td>
 <td class="enumeration">
 <p>
-Draw the line path.</p>
+Draw an empty rectangle.</p>
 </td>
 </tr>
 <tr>
@@ -11000,21 +11008,13 @@ Draw the line path.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Painter.drawRect">drawRect(self, f32, f32, f32, f32, const ref Color, f32)</a></td>
+<a href="#Pixel.Painter.drawRect">drawRect(self, f32, f32, f32, f32, const ref Pen)</a></td>
 <td class="enumeration">
-<p>
-Draw an empty rectangle.</p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Pixel.Painter.drawRect">drawRect(self, const ref Rectangle, const ref Color, f32)</a></td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="enumeration">
-<a href="#Pixel.Painter.drawRect">drawRect(self, f32, f32, f32, f32, const ref Pen)</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -11034,14 +11034,6 @@ Draw a rich string. A rich string can be multiline, and accepts The layout will 
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Painter.drawRoundRect">drawRoundRect(self, f32, f32, f32, f32, f32, f32, const ref Color, f32)</a></td>
-<td class="enumeration">
-<p>
-Draw an empty round rectangle.</p>
-</td>
-</tr>
-<tr>
-<td class="enumeration">
 <a href="#Pixel.Painter.drawRoundRect">drawRoundRect(self, const ref Rectangle, f32, f32, const ref Pen)</a></td>
 <td class="enumeration">
 </td>
@@ -11054,7 +11046,15 @@ Draw an empty round rectangle.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Painter.drawString">drawString(self, f32, f32, string, *Font, const ref Color, UnderlineStyle)</a></td>
+<a href="#Pixel.Painter.drawRoundRect">drawRoundRect(self, f32, f32, f32, f32, f32, f32, const ref Color, f32)</a></td>
+<td class="enumeration">
+<p>
+Draw an empty round rectangle.</p>
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Pixel.Painter.drawString">drawString(self, f32, f32, string, *Font, const ref Brush, UnderlineStyle)</a></td>
 <td class="enumeration">
 <p>
 Draw a simple string.</p>
@@ -11062,7 +11062,7 @@ Draw a simple string.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Painter.drawString">drawString(self, f32, f32, string, *Font, const ref Brush, UnderlineStyle)</a></td>
+<a href="#Pixel.Painter.drawString">drawString(self, f32, f32, string, *Font, const ref Color, UnderlineStyle)</a></td>
 <td class="enumeration">
 <p>
 Draw a simple string.</p>
@@ -11134,6 +11134,12 @@ Stop painting in the clipping buffer. Back to normal.</p>
 </tr>
 <tr>
 <td class="enumeration">
+<a href="#Pixel.Painter.fillCircle">fillCircle(self, f32, f32, f32, const ref Color)</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="enumeration">
 <a href="#Pixel.Painter.fillCircle">fillCircle(self, f32, f32, f32, const ref Brush)</a></td>
 <td class="enumeration">
 <p>
@@ -11142,7 +11148,7 @@ Draw a solid circle.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Painter.fillCircle">fillCircle(self, f32, f32, f32, const ref Color)</a></td>
+<a href="#Pixel.Painter.fillEllipse">fillEllipse(self, f32, f32, f32, f32, const ref Color)</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -11156,13 +11162,7 @@ Draw a solid ellipse.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Painter.fillEllipse">fillEllipse(self, f32, f32, f32, f32, const ref Color)</a></td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="enumeration">
-<a href="#Pixel.Painter.fillPath">fillPath(self, *LinePath, const ref Color)</a></td>
+<a href="#Pixel.Painter.fillPath">fillPath(self, *LinePathList, const ref Color)</a></td>
 <td class="enumeration">
 <p>
 Fill the line path.</p>
@@ -11178,7 +11178,7 @@ Fill the list of paths clockwise = fill, anti-clockwise = hole.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Painter.fillPath">fillPath(self, *LinePathList, const ref Color)</a></td>
+<a href="#Pixel.Painter.fillPath">fillPath(self, *LinePath, const ref Color)</a></td>
 <td class="enumeration">
 <p>
 Fill the line path.</p>
@@ -11236,7 +11236,7 @@ Draw a filled rectangle.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Painter.fillRoundRect">fillRoundRect(self, const ref Rectangle, f32, f32, const ref Brush)</a></td>
+<a href="#Pixel.Painter.fillRoundRect">fillRoundRect(self, f32, f32, f32, f32, f32, f32, const ref Color)</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -11248,7 +11248,7 @@ Draw a filled rectangle.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Painter.fillRoundRect">fillRoundRect(self, f32, f32, f32, f32, f32, f32, const ref Color)</a></td>
+<a href="#Pixel.Painter.fillRoundRect">fillRoundRect(self, const ref Rectangle, f32, f32, const ref Brush)</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -11270,7 +11270,7 @@ Get the current clipping rectangle.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Painter.getGlyphs">getGlyphs(const ref Array'(rune), *Font)</a></td>
+<a href="#Pixel.Painter.getGlyphs">getGlyphs(string, *Font)</a></td>
 <td class="enumeration">
 <p>
 Returns all the glyphs for a given string and font.</p>
@@ -11278,7 +11278,7 @@ Returns all the glyphs for a given string and font.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Painter.getGlyphs">getGlyphs(string, *Font)</a></td>
+<a href="#Pixel.Painter.getGlyphs">getGlyphs(const ref Array'(rune), *Font)</a></td>
 <td class="enumeration">
 <p>
 Returns all the glyphs for a given string and font.</p>
@@ -11424,7 +11424,7 @@ Reset the paint position, rotation, scale.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Painter.rotateTransform">rotateTransform(self, const ref Angle)</a></td>
+<a href="#Pixel.Painter.rotateTransform">rotateTransform(self, const ref Angle, f32, f32)</a></td>
 <td class="enumeration">
 <p>
 Set the paint rotation, in degrees.</p>
@@ -11432,7 +11432,7 @@ Set the paint rotation, in degrees.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Painter.rotateTransform">rotateTransform(self, const ref Angle, f32, f32)</a></td>
+<a href="#Pixel.Painter.rotateTransform">rotateTransform(self, const ref Angle)</a></td>
 <td class="enumeration">
 <p>
 Set the paint rotation, in degrees.</p>
@@ -11488,7 +11488,7 @@ Set the clipping region mode.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Painter.setColorMask">setColorMask(self, const ref ColorMask)</a></td>
+<a href="#Pixel.Painter.setColorMask">setColorMask(self, bool, bool, bool, bool)</a></td>
 <td class="enumeration">
 <p>
 Set color mask.</p>
@@ -11496,7 +11496,7 @@ Set color mask.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Painter.setColorMask">setColorMask(self, bool, bool, bool, bool)</a></td>
+<a href="#Pixel.Painter.setColorMask">setColorMask(self, const ref ColorMask)</a></td>
 <td class="enumeration">
 <p>
 Set color mask.</p>
