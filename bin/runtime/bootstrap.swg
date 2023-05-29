@@ -454,27 +454,29 @@ namespace Swag
     struct Attribute
     {
         type:   const *TypeInfo
-        params: const [..] AttributeParam
+        params: const [..] AttributeParam       // Attribute parameters
     }
 
+    // Represents a value, like a function parameter or an enum value
     struct TypeValue
     {
-        name:           string
-        pointedType:    const *TypeInfo
-        value:          const *void
-        attributes:     const [..] Attribute
-        offset:         u32
-        crc32:          u32
+        name:           string                  // Name of the value
+        pointedType:    const *TypeInfo         // Type of the value
+        value:          const *void             // Pointer to the constant value
+        attributes:     const [..] Attribute    // Associated attributes
+        offset:         u32                     // Offset, in bytes.
+        crc32:          u32                     // Unique crc32
     }
 
+    // Will be available for all types
     struct TypeInfo
     {
-        fullname:   string
-        name:       string
-        sizeof:     u64
-        crc32:      u32
-        flags       = TypeInfoFlags.Zero
-        kind        = TypeInfoKind.Invalid
+        fullname:   string                      // The full scoped name of the type
+        name:       string                      // The unscoped name
+        sizeof:     u64                         // Size in bytes
+        crc32:      u32                         // A unique CRC to identify the type
+        flags       = TypeInfoFlags.Zero        // Some additional flags
+        kind        = TypeInfoKind.Invalid      // The kind of the type
         padding:    [3] u8
     }
 
@@ -487,67 +489,67 @@ namespace Swag
     struct TypeInfoPointer
     {
         using base:     TypeInfo
-        pointedType:    const *TypeInfo
+        pointedType:    const *TypeInfo         // The pointed type
     }
 
     struct TypeInfoAlias
     {
         using base:     TypeInfo
-        rawType:        const *TypeInfo
+        rawType:        const *TypeInfo         // The underlying type
     }
 
     struct TypeInfoStruct
     {
         using base:     TypeInfo
-        opInit:         func(*void)
-        opDrop:         func(*void)
-        opPostCopy:     func(*void)
-        opPostMove:     func(*void)
-        structName:     string
-        fromGeneric:    const *TypeInfo
-        generics:       const [..] TypeValue
-        fields:         const [..] TypeValue
-        methods:        const [..] TypeValue
-        interfaces:     const [..] TypeValue
-        attributes:     const [..] Attribute
+        opInit:         func(*void)             // Pointer to the function to initialize an instance of that struct
+        opDrop:         func(*void)             // Pointer to the function to drop an instance of that struct
+        opPostCopy:     func(*void)             // Pointer to the function to call after a copy
+        opPostMove:     func(*void)             // Pointer to the function to call after a move
+        structName:     string                  // User name of the struct
+        fromGeneric:    const *TypeInfo         // If it comes from a generic instantiation, this is the original generic struct
+        generics:       const [..] TypeValue    // Generic parameters
+        fields:         const [..] TypeValue    // All the fields
+        methods:        const [..] TypeValue    // All the methods, if exported
+        interfaces:     const [..] TypeValue    // All the interfaces
+        attributes:     const [..] Attribute    // All the attributes
     }
 
     struct TypeInfoFunc
     {
         using base:     TypeInfo
-        generics:       const [..] TypeValue
-        parameters:     const [..] TypeValue
-        returnType:     const *TypeInfo
-        attributes:     const [..] Attribute
+        generics:       const [..] TypeValue    // Generic parameters
+        parameters:     const [..] TypeValue    // Parameters
+        returnType:     const *TypeInfo         // The return type, or 'null'
+        attributes:     const [..] Attribute    // All the attributes
     }
 
     struct TypeInfoEnum
     {
         using base:     TypeInfo
-        values:         const [..] TypeValue
-        rawType:        const *TypeInfo
-        attributes:     const [..] Attribute
+        values:         const [..] TypeValue    // All the values
+        rawType:        const *TypeInfo         // The underlying enum type
+        attributes:     const [..] Attribute    // All the attributes
     }
 
     struct TypeInfoArray
     {
         using base:     TypeInfo
-        pointedType:    const *TypeInfo
-        finalType:      const *TypeInfo
-        count:          u64
-        totalCount:     u64
+        pointedType:    const *TypeInfo         // The underlying type
+        finalType:      const *TypeInfo         // If this is an array with multiple dimensions, this will be the final type
+        count:          u64                     // Number of elements in the array
+        totalCount:     u64                     // The total number of elements in case this has multiple dimensions
     }
 
     struct TypeInfoSlice
     {
         using base:     TypeInfo
-        pointedType:    const *TypeInfo
+        pointedType:    const *TypeInfo         // The underlying type
     }
 
     struct TypeInfoVariadic
     {
         using base: TypeInfo
-        rawType:    const *TypeInfo
+        rawType:    const *TypeInfo             // The underlying type
     }
 
     struct TypeInfoGeneric
