@@ -792,10 +792,10 @@ func @compiler()->Swag.ICompiler;
 // Returns a system allocated memory block of 'size' bytes.
 //
 // Use [@free] to release the allocated memory.
-func @alloc(size: u64)->*void;
+func @alloc(size: u64)->^void;
 
 // Realloc a system memory block allocated with [@alloc]
-func @realloc(ptr: ^void, size: u64)->*void;
+func @realloc(ptr: ^void, size: u64)->^void;
 
 // Free a system memory block allocated with [@alloc]
 func @free(ptr: ^void);
