@@ -6,7 +6,7 @@
 
 > To get the compiler latest version for Windows, go to the [release](https://github.com/swag-lang/swag/releases) page.
 
-Swag is a native and/or interpreted programming language made for fun because, let's be honest, **C++** is now an **horrible and ugly beast** ! This is my third compiler (the other ones were developed for AAA game engines), but that one is by far the most advanced.
+Swag is a native and/or interpreted system programming language made for fun because, let's be honest, **C++** is now an **horrible and ugly beast** ! This is my third compiler (the other ones were developed for AAA game engines), but that one is by far the most advanced.
 
 You can visit the official [Website](https://swag-lang.org/) or the [YouTube](https://www.youtube.com/channel/UC9dkBu1nNfJDxUML7r7QH1Q) channel. If you want to take a first look at the language, this is [here](https://www.swag-lang.org/language.php).
 

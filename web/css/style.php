@@ -50,6 +50,6 @@ p a:hover {
 blockquote {
     background-color:   LightYellow;
     border-left:        6px solid Orange;
-    padding:            10px;
-    margin-right:       10px;
+    padding:            5px;
+    margin-right:       0px;
 }
