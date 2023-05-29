@@ -126,11 +126,13 @@ namespace __Win32RT
 // MUTEX
 ////////////////////////////////////////////////////////////
 
+#[Swag.NoDoc]
 struct MutexRW
 {
     v: __Win32RT.SRWLOCK = __Win32RT.SRWLOCK_INIT
 }
 
+#[Swag.NoDoc]
 impl MutexRW
 {
     func lock(using self)
@@ -201,21 +203,25 @@ impl MutexRW
     func strcmp(a, b: const ^u8)->s32;
 }
 
+#[Swag.NoDoc]
 func memset(dst: *void, value: s32, size: u64)
 {
     __Win32RT.RtlFillMemory(dst, size, value)
 }
 
+#[Swag.NoDoc]
 func memcpy(dst: *void, src: const *void, size: u64)
 {
     __Win32RT.RtlCopyMemory(dst, src, size)
 }
 
+#[Swag.NoDoc]
 func memmove(dst: *void, src: const *void, size: u64)
 {
     __Win32RT.RtlMoveMemory(dst, src, size)
 }
 
+#[Swag.NoDoc]
 func memcmp(dst, src: const ^void, size: u64)->s32
 {
     len := __Win32RT.RtlCompareMemory(dst, src, size)

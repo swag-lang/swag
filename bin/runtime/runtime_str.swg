@@ -161,6 +161,7 @@ func __printF64(value: f64)
     __printString(str)
 }
 
+// Basic print to console function
 func @print(params: ...)
 {
     visit v: params
@@ -211,7 +212,7 @@ func @print(params: ...)
         case u32:       __printU64(cast(u64) cast(u32) v)
         case rune:      __printU64(cast(u64) cast(rune) v)
         case u64:       __printU64(cast(u64) v)
-        case u64:      __printU64(cast(u64) cast(u64) v)
+        case u64:       __printU64(cast(u64) cast(u64) v)
         case f32:       __printF64(cast(f64) cast(f32) v)
         case f64:       __printF64(cast(f64) v)
         case string:    __printString(cast(string) v)

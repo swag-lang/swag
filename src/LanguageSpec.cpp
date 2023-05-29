@@ -526,6 +526,7 @@ void LanguageSpec::setupAttributesFlags()
     attributesFlags.add("NoCopy", ATTRIBUTE_NO_COPY);
     attributesFlags.add("Opaque", ATTRIBUTE_OPAQUE);
     attributesFlags.add("NotGeneric", ATTRIBUTE_NOT_GENERIC);
+    attributesFlags.add("NoDoc", ATTRIBUTE_NO_DOC);
 }
 
 void LanguageSpec::setup()

@@ -103,6 +103,7 @@ func __stackTrace(loc: SourceCodeLocation)
 
 ////////////////////////////////////////////////////////////
 
+// Raise a compiler error at the given source location
 func @compilererror(message: string, loc: Swag.SourceCodeLocation)
 {
     // If the compiler is around, just let it deal with the message
@@ -114,6 +115,7 @@ func @compilererror(message: string, loc: Swag.SourceCodeLocation)
     }
 }
 
+// Raise a compiler warning at the given source location
 func @compilerwarning(message: string, loc: Swag.SourceCodeLocation)
 {
     // If the compiler is around, just let it deal with the message
@@ -125,6 +127,7 @@ func @compilerwarning(message: string, loc: Swag.SourceCodeLocation)
     }
 }
 
+// Stop the execution and panic
 #[Swag.Safety("", false)]
 func @panic(message: string, loc: SourceCodeLocation)
 {

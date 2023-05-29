@@ -95,6 +95,10 @@ namespace Swag
     #[AttrUsage(AttributeUsage.Struct)]
     attr ExportType(what: string)
 
+    // Do not generate documentation
+    #[AttrUsage(AttributeUsage.All|AttributeUsage.File)]
+    attr NoDoc()
+
     #[AttrUsage(AttributeUsage.All|AttributeUsage.File)]
     #[AttrMulti]
     attr Safety(what: string, value: bool)

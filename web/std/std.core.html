@@ -15397,7 +15397,7 @@ A simple rectangle with 4 coordinates.</p>
 <table class="enumeration">
 <tr>
 <td class="enumeration">
-<a href="#Core.Math.abs">abs(s64)</a></td>
+<a href="#Core.Math.abs">abs(s8)</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -15427,19 +15427,19 @@ A simple rectangle with 4 coordinates.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Core.Math.abs">abs(s8)</a></td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="enumeration">
-<a href="#Core.Math.acos">acos(f32)</a></td>
+<a href="#Core.Math.abs">abs(s64)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core.Math.acos">acos(f64)</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Core.Math.acos">acos(f32)</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -15457,25 +15457,25 @@ A simple rectangle with 4 coordinates.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Core.Math.atan">atan(f32)</a></td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="enumeration">
 <a href="#Core.Math.atan">atan(f64)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Core.Math.atan2">atan2(f32, f32)</a></td>
+<a href="#Core.Math.atan">atan(f32)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core.Math.atan2">atan2(f64, f64)</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Core.Math.atan2">atan2(f32, f32)</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -15489,13 +15489,13 @@ Convert a big endian integer to current arch native format.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Core.Math.ceil">ceil(f64)</a></td>
+<a href="#Core.Math.ceil">ceil(f32)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Core.Math.ceil">ceil(f32)</a></td>
+<a href="#Core.Math.ceil">ceil(f64)</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -15519,22 +15519,14 @@ Convert a big endian integer to current arch native format.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Core.Math.cosh">cosh(f64)</a></td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="enumeration">
 <a href="#Core.Math.cosh">cosh(f32)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Core.Math.countOnes">countOnes(u8)</a></td>
+<a href="#Core.Math.cosh">cosh(f64)</a></td>
 <td class="enumeration">
-<p>
-Returns the number of bits set to 1.</p>
 </td>
 </tr>
 <tr>
@@ -15557,13 +15549,21 @@ Returns the number of bits set to 1.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Core.Math.exp">exp(f64)</a></td>
+<a href="#Core.Math.countOnes">countOnes(u8)</a></td>
 <td class="enumeration">
+<p>
+Returns the number of bits set to 1.</p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core.Math.exp">exp(f32)</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Core.Math.exp">exp(f64)</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -15593,14 +15593,6 @@ Returns the number of bits set to 1.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Core.Math.hasByte">hasByte(u16, u8)</a></td>
-<td class="enumeration">
-<p>
-Determin if an integer has a given byte.</p>
-</td>
-</tr>
-<tr>
-<td class="enumeration">
 <a href="#Core.Math.hasByte">hasByte(u32, u8)</a></td>
 <td class="enumeration">
 </td>
@@ -15613,16 +15605,18 @@ Determin if an integer has a given byte.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Core.Math.hasZeroByte">hasZeroByte(u16)</a></td>
+<a href="#Core.Math.hasByte">hasByte(u16, u8)</a></td>
 <td class="enumeration">
 <p>
-Determin if any of the bytes is zero.</p>
+Determin if an integer has a given byte.</p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Core.Math.hasZeroByte">hasZeroByte(u32)</a></td>
+<a href="#Core.Math.hasZeroByte">hasZeroByte(u16)</a></td>
 <td class="enumeration">
+<p>
+Determin if any of the bytes is zero.</p>
 </td>
 </tr>
 <tr>
@@ -15633,7 +15627,7 @@ Determin if any of the bytes is zero.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Core.Math.isEqualEpsilon">isEqualEpsilon(f64, f64, f64)</a></td>
+<a href="#Core.Math.hasZeroByte">hasZeroByte(u32)</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -15645,13 +15639,19 @@ Determin if any of the bytes is zero.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Core.Math.isNan">isNan(f64)</a></td>
+<a href="#Core.Math.isEqualEpsilon">isEqualEpsilon(f64, f64, f64)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core.Math.isNan">isNan(f32)</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Core.Math.isNan">isNan(f64)</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -15675,20 +15675,6 @@ Determin if any of the bytes is zero.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Core.Math.leadingZeros">leadingZeros(u8)</a></td>
-<td class="enumeration">
-<p>
-Returns the number of bits set to 0 from the left.</p>
-</td>
-</tr>
-<tr>
-<td class="enumeration">
-<a href="#Core.Math.leadingZeros">leadingZeros(u16)</a></td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="enumeration">
 <a href="#Core.Math.leadingZeros">leadingZeros(u64)</a></td>
 <td class="enumeration">
 </td>
@@ -15701,13 +15687,27 @@ Returns the number of bits set to 0 from the left.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Core.Math.lerp">lerp(f64, f64, f64)</a></td>
+<a href="#Core.Math.leadingZeros">leadingZeros(u16)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
+<a href="#Core.Math.leadingZeros">leadingZeros(u8)</a></td>
+<td class="enumeration">
+<p>
+Returns the number of bits set to 0 from the left.</p>
+</td>
+</tr>
+<tr>
+<td class="enumeration">
 <a href="#Core.Math.lerp">lerp(f32, f32, f32)</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Core.Math.lerp">lerp(f64, f64, f64)</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -15733,13 +15733,13 @@ Convert a little endian integer to current arch native format.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Core.Math.log10">log10(f64)</a></td>
+<a href="#Core.Math.log10">log10(f32)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Core.Math.log10">log10(f32)</a></td>
+<a href="#Core.Math.log10">log10(f64)</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -15793,42 +15793,6 @@ Make a 64 bits by repeating a given byte 0x20 =&gt; 0x20202020_20202020.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Core.Math.max">max(s8, s8)</a></td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="enumeration">
-<a href="#Core.Math.max">max(T, T, T)</a></td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="enumeration">
-<a href="#Core.Math.max">max(f32, f32)</a></td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="enumeration">
-<a href="#Core.Math.max">max(f64, f64)</a></td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="enumeration">
-<a href="#Core.Math.max">max(s16, s16)</a></td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="enumeration">
-<a href="#Core.Math.max">max(s32, s32)</a></td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="enumeration">
 <a href="#Core.Math.max">max(u8, u8)</a></td>
 <td class="enumeration">
 </td>
@@ -15841,13 +15805,37 @@ Make a 64 bits by repeating a given byte 0x20 =&gt; 0x20202020_20202020.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Core.Math.max">max(u16, u16)</a></td>
+<a href="#Core.Math.max">max(s16, s16)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Core.Math.max">max(u32, u32)</a></td>
+<a href="#Core.Math.max">max(s8, s8)</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Core.Math.max">max(T, T, T)</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Core.Math.max">max(s32, s32)</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Core.Math.max">max(f64, f64)</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Core.Math.max">max(f32, f32)</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -15859,55 +15847,19 @@ Make a 64 bits by repeating a given byte 0x20 =&gt; 0x20202020_20202020.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Core.Math.min">min(f32, f32)</a></td>
+<a href="#Core.Math.max">max(u32, u32)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Core.Math.min">min(T, T, T)</a></td>
+<a href="#Core.Math.max">max(u16, u16)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Core.Math.min">min(u32, u32)</a></td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="enumeration">
-<a href="#Core.Math.min">min(u16, u16)</a></td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="enumeration">
-<a href="#Core.Math.min">min(u8, u8)</a></td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="enumeration">
-<a href="#Core.Math.min">min(u64, u64)</a></td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="enumeration">
-<a href="#Core.Math.min">min(s64, s64)</a></td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="enumeration">
-<a href="#Core.Math.min">min(s32, s32)</a></td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="enumeration">
-<a href="#Core.Math.min">min(s16, s16)</a></td>
+<a href="#Core.Math.min">min(f64, f64)</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -15919,7 +15871,55 @@ Make a 64 bits by repeating a given byte 0x20 =&gt; 0x20202020_20202020.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Core.Math.min">min(f64, f64)</a></td>
+<a href="#Core.Math.min">min(T, T, T)</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Core.Math.min">min(s32, s32)</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Core.Math.min">min(s64, s64)</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Core.Math.min">min(u8, u8)</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Core.Math.min">min(u16, u16)</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Core.Math.min">min(u32, u32)</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Core.Math.min">min(u64, u64)</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Core.Math.min">min(f32, f32)</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Core.Math.min">min(s16, s16)</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -15951,20 +15951,22 @@ Convert a native arch integer to a big endian.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Core.Math.pow">pow(f64, f64)</a></td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="enumeration">
 <a href="#Core.Math.pow">pow(f32, f32)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Core.Math.reverse">reverse(u16)</a></td>
+<a href="#Core.Math.pow">pow(f64, f64)</a></td>
 <td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Core.Math.reverse">reverse(u8)</a></td>
+<td class="enumeration">
+<p>
+Reverse all bits.</p>
 </td>
 </tr>
 <tr>
@@ -15981,21 +15983,19 @@ Convert a native arch integer to a big endian.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Core.Math.reverse">reverse(u8)</a></td>
-<td class="enumeration">
-<p>
-Reverse all bits.</p>
-</td>
-</tr>
-<tr>
-<td class="enumeration">
-<a href="#Core.Math.round">round(f32)</a></td>
+<a href="#Core.Math.reverse">reverse(u16)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core.Math.round">round(f64)</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Core.Math.round">round(f32)</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -16025,19 +16025,7 @@ Reverse all bits.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Core.Math.sign">sign(f32)</a></td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="enumeration">
 <a href="#Core.Math.sign">sign(s8)</a></td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="enumeration">
-<a href="#Core.Math.sign">sign(f64)</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -16049,13 +16037,25 @@ Reverse all bits.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Core.Math.sign">sign(s32)</a></td>
+<a href="#Core.Math.sign">sign(f32)</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Core.Math.sign">sign(f64)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core.Math.sign">sign(s16)</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Core.Math.sign">sign(s32)</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -16109,25 +16109,25 @@ Reverse all bits.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Core.Math.tan">tan(f32)</a></td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="enumeration">
 <a href="#Core.Math.tan">tan(f64)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Core.Math.tanh">tanh(f32)</a></td>
+<a href="#Core.Math.tan">tan(f32)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core.Math.tanh">tanh(f64)</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Core.Math.tanh">tanh(f32)</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -16145,25 +16145,19 @@ Reverse all bits.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Core.Math.toRadians">toRadians(f64)</a></td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="enumeration">
 <a href="#Core.Math.toRadians">toRadians(f32)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Core.Math.trailingZeros">trailingZeros(u64)</a></td>
+<a href="#Core.Math.toRadians">toRadians(f64)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Core.Math.trailingZeros">trailingZeros(u32)</a></td>
+<a href="#Core.Math.trailingZeros">trailingZeros(u16)</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -16177,7 +16171,13 @@ Returns the number of bits set to 0 from the right.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Core.Math.trailingZeros">trailingZeros(u16)</a></td>
+<a href="#Core.Math.trailingZeros">trailingZeros(u32)</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Core.Math.trailingZeros">trailingZeros(u64)</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -20521,17 +20521,17 @@ Set the vector to zero.</p>
 <h3 class="content" id="Core.Math.abs"><span class="titletype">func</span> <span class="titlelight">Math.</span><span class="titlestrong">abs</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L126" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\integer.swg#L129" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func abs(x: f32)
-func abs(x: f64)
-func abs(x: s8)
+<code style="white-space: break-spaces">func abs(x: s8)
 func abs(x: s16)
 func abs(x: s32)
 func abs(x: s64)
+func abs(x: f32)
+func abs(x: f64)
 </code>
 </p>
 <p>
@@ -21040,8 +21040,6 @@ func map(val: f64, minSrc: f64, maxSrc: f64, minDst: f64, maxDst: f64)->f64
 </p>
 <p class="code">
 <code style="white-space: break-spaces">func(T) max(x: T, y: T, z: T)->T
-func max(x: f32, y: f32)
-func max(x: f64, y: f64)
 func max(x: s8, y: s8)
 func max(x: s16, y: s16)
 func max(x: s32, y: s32)
@@ -21050,6 +21048,8 @@ func max(x: u8, y: u8)
 func max(x: u16, y: u16)
 func max(x: u32, y: u32)
 func max(x: u64, y: u64)
+func max(x: f32, y: f32)
+func max(x: f64, y: f64)
 </code>
 </p>
 <p>
@@ -21065,8 +21065,6 @@ func max(x: u64, y: u64)
 </p>
 <p class="code">
 <code style="white-space: break-spaces">func(T) min(x: T, y: T, z: T)->T
-func min(x: f32, y: f32)
-func min(x: f64, y: f64)
 func min(x: s8, y: s8)
 func min(x: s16, y: s16)
 func min(x: s32, y: s32)
@@ -21075,6 +21073,8 @@ func min(x: u8, y: u8)
 func min(x: u16, y: u16)
 func min(x: u32, y: u32)
 func min(x: u64, y: u64)
+func min(x: f32, y: f32)
+func min(x: f64, y: f64)
 </code>
 </p>
 <p>
