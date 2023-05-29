@@ -2124,15 +2124,15 @@ Add a copy of one element at the end of the array.</p>
 </code>
 </p>
 <p>
-Move one element at the end of the array.</p>
-<p class="code">
-<code style="white-space: break-spaces">func add(using self, value: moveref T)
-</code>
-</p>
-<p>
 Append a slice to the end of this instance.</p>
 <p class="code">
 <code style="white-space: break-spaces">func add(using self, values: const [..] T)
+</code>
+</p>
+<p>
+Move one element at the end of the array.</p>
+<p class="code">
+<code style="white-space: break-spaces">func add(using self, value: moveref T)
 </code>
 </p>
 <p>
@@ -2391,15 +2391,15 @@ Insert a value at the given index. If <code class = "incode">index</code> is equ
 </code>
 </p>
 <p>
-Move a value at the given index. If <code class = "incode">index</code> is equal to <code class = "incode">count</code>, then the value is added at the end of the array. Order is preserved.</p>
-<p class="code">
-<code style="white-space: break-spaces">func insertAt(using self, index: u64, value: moveref T)
-</code>
-</p>
-<p>
 Insert some values at the given index. If <code class = "incode">index</code> is equal to <code class = "incode">count</code>, then the values are added at the end of the array. Order is preserved.</p>
 <p class="code">
 <code style="white-space: break-spaces">func insertAt(using self, index: u64, values: const [..] T)
+</code>
+</p>
+<p>
+Move a value at the given index. If <code class = "incode">index</code> is equal to <code class = "incode">count</code>, then the value is added at the end of the array. Order is preserved.</p>
+<p class="code">
+<code style="white-space: break-spaces">func insertAt(using self, index: u64, value: moveref T)
 </code>
 </p>
 <p>
@@ -2504,13 +2504,13 @@ func opCast(using self)->const [..] T
 <h3 class="content" id="Core.Array.opIndex"><span class="titletype">func</span> <span class="titlelight">Array.</span><span class="titlestrong">opIndex</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\array.swg#L74" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\array.swg#L82" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func opIndex(using const self, index: u64)->ref T
-func opIndex(using const self, index: u64)->T
+<code style="white-space: break-spaces">func opIndex(using const self, index: u64)->T
+func opIndex(using const self, index: u64)->ref T
 </code>
 </p>
 <p>
@@ -2648,20 +2648,20 @@ Returns a copy of the last element, and remove it from the array.</p>
 <h3 class="content" id="Core.Array.remove"><span class="titletype">func</span> <span class="titlelight">Array.</span><span class="titlestrong">remove</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\array.swg#L528" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\array.swg#L595" class="src">[src]</a></td>
 </tr>
 </table>
-</p>
-<p>
-Remove <code class = "incode">num</code> elements starting at <code class = "incode">index</code>.</p>
-<p class="code">
-<code style="white-space: break-spaces">func remove(using self, index: u64, num: u64)
-</code>
 </p>
 <p>
 Remove the given <code class = "incode">value</code> If not found, does nothing.</p>
 <p class="code">
 <code style="white-space: break-spaces">func(V) remove(using self, value: V)
+</code>
+</p>
+<p>
+Remove <code class = "incode">num</code> elements starting at <code class = "incode">index</code>.</p>
+<p class="code">
+<code style="white-space: break-spaces">func remove(using self, index: u64, num: u64)
 </code>
 </p>
 <p>
@@ -3348,19 +3348,19 @@ Allocate a new pointer by using the contextual allocator.</p>
 <h3 class="content" id="Core.Atomic.add"><span class="titletype">func</span> <span class="titlelight">Atomic.</span><span class="titlestrong">add</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\thread\atomic.swg#L6" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\thread\atomic.swg#L7" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func add(addr: *s8, value: s8)->s8
-func add(addr: *s16, value: s16)->s16
+<code style="white-space: break-spaces">func add(addr: *s16, value: s16)->s16
 func add(addr: *s32, value: s32)->s32
 func add(addr: *s64, value: s64)->s64
-func add(addr: *u8, value: u8)->u8
+func add(addr: *s8, value: s8)->s8
 func add(addr: *u16, value: u16)->u16
 func add(addr: *u32, value: u32)->u32
 func add(addr: *u64, value: u64)->u64
+func add(addr: *u8, value: u8)->u8
 </code>
 </p>
 <p>
@@ -3370,19 +3370,19 @@ func add(addr: *u64, value: u64)->u64
 <h3 class="content" id="Core.Atomic.and"><span class="titletype">func</span> <span class="titlelight">Atomic.</span><span class="titlestrong">and</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\thread\atomic.swg#L15" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\thread\atomic.swg#L16" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func and(addr: *s8, value: s8)->s8
-func and(addr: *s16, value: s16)->s16
+<code style="white-space: break-spaces">func and(addr: *s16, value: s16)->s16
 func and(addr: *s32, value: s32)->s32
 func and(addr: *s64, value: s64)->s64
-func and(addr: *u8, value: u8)->u8
+func and(addr: *s8, value: s8)->s8
 func and(addr: *u16, value: u16)->u16
 func and(addr: *u32, value: u32)->u32
 func and(addr: *u64, value: u64)->u64
+func and(addr: *u8, value: u8)->u8
 </code>
 </p>
 <p>
@@ -3392,19 +3392,19 @@ func and(addr: *u64, value: u64)->u64
 <h3 class="content" id="Core.Atomic.compareExchange"><span class="titletype">func</span> <span class="titlelight">Atomic.</span><span class="titlestrong">compareExchange</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\thread\atomic.swg#L51" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\thread\atomic.swg#L52" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func compareExchange(addr: *s8, compareTo: s8, exchangeWith: s8)->s8
-func compareExchange(addr: *s16, compareTo: s16, exchangeWith: s16)->s16
+<code style="white-space: break-spaces">func compareExchange(addr: *s16, compareTo: s16, exchangeWith: s16)->s16
 func compareExchange(addr: *s32, compareTo: s32, exchangeWith: s32)->s32
 func compareExchange(addr: *s64, compareTo: s64, exchangeWith: s64)->s64
-func compareExchange(addr: *u8, compareTo: u8, exchangeWith: u8)->u8
+func compareExchange(addr: *s8, compareTo: s8, exchangeWith: s8)->s8
 func compareExchange(addr: *u16, compareTo: u16, exchangeWith: u16)->u16
 func compareExchange(addr: *u32, compareTo: u32, exchangeWith: u32)->u32
 func compareExchange(addr: *u64, compareTo: u64, exchangeWith: u64)->u64
+func compareExchange(addr: *u8, compareTo: u8, exchangeWith: u8)->u8
 </code>
 </p>
 <p>
@@ -3414,19 +3414,19 @@ func compareExchange(addr: *u64, compareTo: u64, exchangeWith: u64)->u64
 <h3 class="content" id="Core.Atomic.exchange"><span class="titletype">func</span> <span class="titlelight">Atomic.</span><span class="titlestrong">exchange</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\thread\atomic.swg#L42" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\thread\atomic.swg#L43" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func exchange(addr: *s8, exchangeWith: s8)->s8
-func exchange(addr: *s16, exchangeWith: s16)->s16
+<code style="white-space: break-spaces">func exchange(addr: *s16, exchangeWith: s16)->s16
 func exchange(addr: *s32, exchangeWith: s32)->s32
 func exchange(addr: *s64, exchangeWith: s64)->s64
-func exchange(addr: *u8, exchangeWith: u8)->u8
+func exchange(addr: *s8, exchangeWith: s8)->s8
 func exchange(addr: *u16, exchangeWith: u16)->u16
 func exchange(addr: *u32, exchangeWith: u32)->u32
 func exchange(addr: *u64, exchangeWith: u64)->u64
+func exchange(addr: *u8, exchangeWith: u8)->u8
 </code>
 </p>
 <p>
@@ -3436,19 +3436,19 @@ func exchange(addr: *u64, exchangeWith: u64)->u64
 <h3 class="content" id="Core.Atomic.get"><span class="titletype">func</span> <span class="titlelight">Atomic.</span><span class="titlestrong">get</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\thread\atomic.swg#L60" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\thread\atomic.swg#L61" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func get(addr: *s8)->s8
-func get(addr: *s16)->s16
+<code style="white-space: break-spaces">func get(addr: *s16)->s16
 func get(addr: *s32)->s32
 func get(addr: *s64)->s64
-func get(addr: *u8)->u8
+func get(addr: *s8)->s8
 func get(addr: *u16)->u16
 func get(addr: *u32)->u32
 func get(addr: *u64)->u64
+func get(addr: *u8)->u8
 </code>
 </p>
 <p>
@@ -3458,19 +3458,19 @@ func get(addr: *u64)->u64
 <h3 class="content" id="Core.Atomic.or"><span class="titletype">func</span> <span class="titlelight">Atomic.</span><span class="titlestrong">or</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\thread\atomic.swg#L24" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\thread\atomic.swg#L25" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func or(addr: *s8, value: s8)->s8
-func or(addr: *s16, value: s16)->s16
+<code style="white-space: break-spaces">func or(addr: *s16, value: s16)->s16
 func or(addr: *s32, value: s32)->s32
 func or(addr: *s64, value: s64)->s64
-func or(addr: *u8, value: u8)->u8
+func or(addr: *s8, value: s8)->s8
 func or(addr: *u16, value: u16)->u16
 func or(addr: *u32, value: u32)->u32
 func or(addr: *u64, value: u64)->u64
+func or(addr: *u8, value: u8)->u8
 </code>
 </p>
 <p>
@@ -3480,19 +3480,19 @@ func or(addr: *u64, value: u64)->u64
 <h3 class="content" id="Core.Atomic.xor"><span class="titletype">func</span> <span class="titlelight">Atomic.</span><span class="titlestrong">xor</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\thread\atomic.swg#L33" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\thread\atomic.swg#L34" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func xor(addr: *s8, value: s8)->s8
-func xor(addr: *s16, value: s16)->s16
+<code style="white-space: break-spaces">func xor(addr: *s16, value: s16)->s16
 func xor(addr: *s32, value: s32)->s32
 func xor(addr: *s64, value: s64)->s64
-func xor(addr: *u8, value: u8)->u8
+func xor(addr: *s8, value: s8)->s8
 func xor(addr: *u16, value: u16)->u16
 func xor(addr: *u32, value: u32)->u32
 func xor(addr: *u64, value: u64)->u64
+func xor(addr: *u8, value: u8)->u8
 </code>
 </p>
 <p>
@@ -8578,20 +8578,20 @@ Register a new structure to be parsed.</p>
 <h3 class="content" id="Core.File.TweakFile.parse"><span class="titletype">func</span> <span class="titlelight">TweakFile.</span><span class="titlestrong">parse</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\tweakfile.swg#L34" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\tweakfile.swg#L41" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p>
 Parse a list of lines.</p>
 <p class="code">
-<code style="white-space: break-spaces">func parse(using self, content: string) throw
+<code style="white-space: break-spaces">func parse(using self, lines: Array'(string)) throw
 </code>
 </p>
 <p>
 Parse a list of lines.</p>
 <p class="code">
-<code style="white-space: break-spaces">func parse(using self, lines: Array'(string)) throw
+<code style="white-space: break-spaces">func parse(using self, content: string) throw
 </code>
 </p>
 <p>
@@ -13430,20 +13430,20 @@ Determines whether the specified mouse button has just been released.</p>
 <h3 class="content" id="Core.Input.Mouse.isButtonPressed"><span class="titletype">func</span> <span class="titlelight">Mouse.</span><span class="titlestrong">isButtonPressed</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\input\mouse.swg#L50" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\input\mouse.swg#L66" class="src">[src]</a></td>
 </tr>
 </table>
-</p>
-<p>
-Determins if one given mouse button is pressed or not.</p>
-<p class="code">
-<code style="white-space: break-spaces">func isButtonPressed(button: MouseButton)->bool
-</code>
 </p>
 <p>
 Determines whether the specified mouse button is pressed.</p>
 <p class="code">
 <code style="white-space: break-spaces">func isButtonPressed(using self, button: MouseButton)->bool
+</code>
+</p>
+<p>
+Determins if one given mouse button is pressed or not.</p>
+<p class="code">
+<code style="white-space: break-spaces">func isButtonPressed(button: MouseButton)->bool
 </code>
 </p>
 <p>
@@ -15403,24 +15403,6 @@ A simple rectangle with 4 coordinates.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Core.Math.abs">abs(s32)</a></td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="enumeration">
-<a href="#Core.Math.abs">abs(s64)</a></td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="enumeration">
-<a href="#Core.Math.abs">abs(f32)</a></td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="enumeration">
 <a href="#Core.Math.abs">abs(f64)</a></td>
 <td class="enumeration">
 </td>
@@ -15433,7 +15415,19 @@ A simple rectangle with 4 coordinates.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Core.Math.acos">acos(f32)</a></td>
+<a href="#Core.Math.abs">abs(f32)</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Core.Math.abs">abs(s64)</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Core.Math.abs">abs(s32)</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -15445,13 +15439,19 @@ A simple rectangle with 4 coordinates.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Core.Math.asin">asin(f32)</a></td>
+<a href="#Core.Math.acos">acos(f32)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core.Math.asin">asin(f64)</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Core.Math.asin">asin(f32)</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -15519,19 +15519,19 @@ Convert a big endian integer to current arch native format.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Core.Math.cosh">cosh(f32)</a></td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="enumeration">
 <a href="#Core.Math.cosh">cosh(f64)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Core.Math.countOnes">countOnes(u64)</a></td>
+<a href="#Core.Math.cosh">cosh(f32)</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Core.Math.countOnes">countOnes(u16)</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -15545,13 +15545,13 @@ Returns the number of bits set to 1.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Core.Math.countOnes">countOnes(u16)</a></td>
+<a href="#Core.Math.countOnes">countOnes(u32)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Core.Math.countOnes">countOnes(u32)</a></td>
+<a href="#Core.Math.countOnes">countOnes(u64)</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -15581,19 +15581,13 @@ Returns the number of bits set to 1.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Core.Math.floor">floor(f32)</a></td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="enumeration">
 <a href="#Core.Math.floor">floor(f64)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Core.Math.hasByte">hasByte(u64, u8)</a></td>
+<a href="#Core.Math.floor">floor(f32)</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -15613,10 +15607,8 @@ Determin if an integer has a given byte.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Core.Math.hasZeroByte">hasZeroByte(u16)</a></td>
+<a href="#Core.Math.hasByte">hasByte(u64, u8)</a></td>
 <td class="enumeration">
-<p>
-Determin if any of the bytes is zero.</p>
 </td>
 </tr>
 <tr>
@@ -15629,6 +15621,14 @@ Determin if any of the bytes is zero.</p>
 <td class="enumeration">
 <a href="#Core.Math.hasZeroByte">hasZeroByte(u32)</a></td>
 <td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Core.Math.hasZeroByte">hasZeroByte(u16)</a></td>
+<td class="enumeration">
+<p>
+Determin if any of the bytes is zero.</p>
 </td>
 </tr>
 <tr>
@@ -15663,19 +15663,27 @@ Determin if any of the bytes is zero.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Core.Math.isZeroEpsilon">isZeroEpsilon(f64, f64)</a></td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="enumeration">
 <a href="#Core.Math.isZeroEpsilon">isZeroEpsilon(f32, f32)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Core.Math.leadingZeros">leadingZeros(u64)</a></td>
+<a href="#Core.Math.isZeroEpsilon">isZeroEpsilon(f64, f64)</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Core.Math.leadingZeros">leadingZeros(u8)</a></td>
+<td class="enumeration">
+<p>
+Returns the number of bits set to 0 from the left.</p>
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Core.Math.leadingZeros">leadingZeros(u16)</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -15687,16 +15695,8 @@ Determin if any of the bytes is zero.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Core.Math.leadingZeros">leadingZeros(u16)</a></td>
+<a href="#Core.Math.leadingZeros">leadingZeros(u64)</a></td>
 <td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="enumeration">
-<a href="#Core.Math.leadingZeros">leadingZeros(u8)</a></td>
-<td class="enumeration">
-<p>
-Returns the number of bits set to 0 from the left.</p>
 </td>
 </tr>
 <tr>
@@ -15799,49 +15799,7 @@ Make a 64 bits by repeating a given byte 0x20 =&gt; 0x20202020_20202020.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Core.Math.max">max(s16, s16)</a></td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="enumeration">
-<a href="#Core.Math.max">max(s32, s32)</a></td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="enumeration">
-<a href="#Core.Math.max">max(s64, s64)</a></td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="enumeration">
-<a href="#Core.Math.max">max(u16, u16)</a></td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="enumeration">
-<a href="#Core.Math.max">max(T, T, T)</a></td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="enumeration">
 <a href="#Core.Math.max">max(f32, f32)</a></td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="enumeration">
-<a href="#Core.Math.max">max(u8, u8)</a></td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="enumeration">
-<a href="#Core.Math.max">max(f64, f64)</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -15853,7 +15811,67 @@ Make a 64 bits by repeating a given byte 0x20 =&gt; 0x20202020_20202020.</p>
 </tr>
 <tr>
 <td class="enumeration">
+<a href="#Core.Math.max">max(f64, f64)</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Core.Math.max">max(u16, u16)</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Core.Math.max">max(u8, u8)</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Core.Math.max">max(s64, s64)</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Core.Math.max">max(s32, s32)</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Core.Math.max">max(T, T, T)</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Core.Math.max">max(s16, s16)</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="enumeration">
 <a href="#Core.Math.max">max(u32, u32)</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Core.Math.min">min(s64, s64)</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Core.Math.min">min(u64, u64)</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Core.Math.min">min(u32, u32)</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -15866,12 +15884,6 @@ Make a 64 bits by repeating a given byte 0x20 =&gt; 0x20202020_20202020.</p>
 <tr>
 <td class="enumeration">
 <a href="#Core.Math.min">min(u8, u8)</a></td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="enumeration">
-<a href="#Core.Math.min">min(s64, s64)</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -15901,25 +15913,13 @@ Make a 64 bits by repeating a given byte 0x20 =&gt; 0x20202020_20202020.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Core.Math.min">min(T, T, T)</a></td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="enumeration">
 <a href="#Core.Math.min">min(f32, f32)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Core.Math.min">min(u64, u64)</a></td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="enumeration">
-<a href="#Core.Math.min">min(u32, u32)</a></td>
+<a href="#Core.Math.min">min(T, T, T)</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -15951,13 +15951,13 @@ Convert a native arch integer to a big endian.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Core.Math.pow">pow(f32, f32)</a></td>
+<a href="#Core.Math.pow">pow(f64, f64)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Core.Math.pow">pow(f64, f64)</a></td>
+<a href="#Core.Math.pow">pow(f32, f32)</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -15965,14 +15965,6 @@ Convert a native arch integer to a big endian.</p>
 <td class="enumeration">
 <a href="#Core.Math.reverse">reverse(u16)</a></td>
 <td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="enumeration">
-<a href="#Core.Math.reverse">reverse(u8)</a></td>
-<td class="enumeration">
-<p>
-Reverse all bits.</p>
 </td>
 </tr>
 <tr>
@@ -15989,13 +15981,21 @@ Reverse all bits.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Core.Math.round">round(f32)</a></td>
+<a href="#Core.Math.reverse">reverse(u8)</a></td>
 <td class="enumeration">
+<p>
+Reverse all bits.</p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core.Math.round">round(f64)</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Core.Math.round">round(f32)</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -16013,19 +16013,13 @@ Reverse all bits.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Core.Math.saturate">saturate(f32)</a></td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="enumeration">
 <a href="#Core.Math.saturate">saturate(f64)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Core.Math.sign">sign(s64)</a></td>
+<a href="#Core.Math.saturate">saturate(f32)</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -16037,13 +16031,7 @@ Reverse all bits.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Core.Math.sign">sign(s32)</a></td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="enumeration">
-<a href="#Core.Math.sign">sign(s16)</a></td>
+<a href="#Core.Math.sign">sign(f64)</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -16055,13 +16043,19 @@ Reverse all bits.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Core.Math.sign">sign(f64)</a></td>
+<a href="#Core.Math.sign">sign(s16)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Core.Math.sin">sin(f64)</a></td>
+<a href="#Core.Math.sign">sign(s32)</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Core.Math.sign">sign(s64)</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -16073,7 +16067,7 @@ Reverse all bits.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Core.Math.sinh">sinh(f32)</a></td>
+<a href="#Core.Math.sin">sin(f64)</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -16085,7 +16079,7 @@ Reverse all bits.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Core.Math.smoothstep">smoothstep(f32, f32, f32)</a></td>
+<a href="#Core.Math.sinh">sinh(f32)</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -16097,13 +16091,19 @@ Reverse all bits.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Core.Math.sqrt">sqrt(f64)</a></td>
+<a href="#Core.Math.smoothstep">smoothstep(f32, f32, f32)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core.Math.sqrt">sqrt(f32)</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Core.Math.sqrt">sqrt(f64)</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -16121,19 +16121,13 @@ Reverse all bits.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Core.Math.tanh">tanh(f32)</a></td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="enumeration">
 <a href="#Core.Math.tanh">tanh(f64)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Core.Math.toDegrees">toDegrees(f32)</a></td>
+<a href="#Core.Math.tanh">tanh(f32)</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -16145,7 +16139,7 @@ Reverse all bits.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Core.Math.toRadians">toRadians(f64)</a></td>
+<a href="#Core.Math.toDegrees">toDegrees(f32)</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -16157,7 +16151,21 @@ Reverse all bits.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Core.Math.trailingZeros">trailingZeros(u64)</a></td>
+<a href="#Core.Math.toRadians">toRadians(f64)</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Core.Math.trailingZeros">trailingZeros(u8)</a></td>
+<td class="enumeration">
+<p>
+Returns the number of bits set to 0 from the right.</p>
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Core.Math.trailingZeros">trailingZeros(u16)</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -16169,16 +16177,8 @@ Reverse all bits.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Core.Math.trailingZeros">trailingZeros(u16)</a></td>
+<a href="#Core.Math.trailingZeros">trailingZeros(u64)</a></td>
 <td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="enumeration">
-<a href="#Core.Math.trailingZeros">trailingZeros(u8)</a></td>
-<td class="enumeration">
-<p>
-Returns the number of bits set to 0 from the right.</p>
 </td>
 </tr>
 <tr>
@@ -16777,20 +16777,20 @@ Set all values.</p>
 <h3 class="content" id="Core.Math.NumericArray.mulAdd"><span class="titletype">func</span> <span class="titlelight">NumericArray.</span><span class="titlestrong">mulAdd</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\numericarray.swg#L118" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\numericarray.swg#L126" class="src">[src]</a></td>
 </tr>
 </table>
-</p>
-<p>
-Multiply & add.</p>
-<p class="code">
-<code style="white-space: break-spaces">func mulAdd(using self, value1: T, value2: T)
-</code>
 </p>
 <p>
 Multiply & Add.</p>
 <p class="code">
 <code style="white-space: break-spaces">func mulAdd(using self, value1: NumericArray'(T, u32), value2: NumericArray'(T, u32))
+</code>
+</p>
+<p>
+Multiply & add.</p>
+<p class="code">
+<code style="white-space: break-spaces">func mulAdd(using self, value1: T, value2: T)
 </code>
 </p>
 <p>
@@ -16816,13 +16816,13 @@ func opAffect(using self, what: const [..] T)
 <h3 class="content" id="Core.Math.NumericArray.opAssign"><span class="titletype">func</span> <span class="titlelight">NumericArray.</span><span class="titlestrong">opAssign</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\numericarray.swg#L48" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\numericarray.swg#L65" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func(op: string) opAssign(using self, value: T)
-func(op: string) opAssign(using self, value: NumericArray'(T, u32))
+<code style="white-space: break-spaces">func(op: string) opAssign(using self, value: NumericArray'(T, u32))
+func(op: string) opAssign(using self, value: T)
 </code>
 </p>
 <p>
@@ -17737,15 +17737,9 @@ Constrain the rectangle to be inside another one, without changing its size (so 
 <h3 class="content" id="Core.Math.Rectangle.contains"><span class="titletype">func</span> <span class="titlelight">Rectangle.</span><span class="titlestrong">contains</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\rectangle.swg#L231" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\rectangle.swg#L237" class="src">[src]</a></td>
 </tr>
 </table>
-</p>
-<p>
-Determines if the specfied point is contained within the rectangular region.</p>
-<p class="code">
-<code style="white-space: break-spaces">func contains(const self, x: f32, y: f32)->bool
-</code>
 </p>
 <p>
 Determines if the specfied point is contained within the rectangular region.</p>
@@ -17757,6 +17751,12 @@ Determines if the specfied point is contained within the rectangular region.</p>
 Determines if the specfied rectangle is contained within the rectangular region.</p>
 <p class="code">
 <code style="white-space: break-spaces">func contains(using const self, rect: Rectangle)->bool
+</code>
+</p>
+<p>
+Determines if the specfied point is contained within the rectangular region.</p>
+<p class="code">
+<code style="white-space: break-spaces">func contains(const self, x: f32, y: f32)->bool
 </code>
 </p>
 <p>
@@ -18016,9 +18016,15 @@ Move the left coordinate, reducing the width.</p>
 <h3 class="content" id="Core.Math.Rectangle.offset"><span class="titletype">func</span> <span class="titlelight">Rectangle.</span><span class="titlestrong">offset</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\rectangle.swg#L132" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\rectangle.swg#L145" class="src">[src]</a></td>
 </tr>
 </table>
+</p>
+<p>
+Offset the rectangle position by a given value.</p>
+<p class="code">
+<code style="white-space: break-spaces">func offset(using self, offset: Point)
+</code>
 </p>
 <p>
 Offset the rectangle position by a given value.</p>
@@ -18030,12 +18036,6 @@ Offset the rectangle position by a given value.</p>
 Offset the rectangle position by a x and y values.</p>
 <p class="code">
 <code style="white-space: break-spaces">func offset(using self, offsetX: f32, offsetY: f32)
-</code>
-</p>
-<p>
-Offset the rectangle position by a given value.</p>
-<p class="code">
-<code style="white-space: break-spaces">func offset(using self, offset: Point)
 </code>
 </p>
 <p>
@@ -19146,20 +19146,20 @@ Returns the cosine angle with another vector.</p>
 <h3 class="content" id="Core.Math.Vector2.cross"><span class="titletype">func</span> <span class="titlelight">Vector2.</span><span class="titlestrong">cross</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L94" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L100" class="src">[src]</a></td>
 </tr>
 </table>
-</p>
-<p>
-Returns the perpendicular vector in the 2D plane. <code class = "incode">axis</code> will give the sign of the result.</p>
-<p class="code">
-<code style="white-space: break-spaces">func cross(using const self, axis: f32)->Vector2
-</code>
 </p>
 <p>
 Returns the Z signed length of the perpendicular vector.</p>
 <p class="code">
 <code style="white-space: break-spaces">func cross(using const self, other: Vector2)->f32
+</code>
+</p>
+<p>
+Returns the perpendicular vector in the 2D plane. <code class = "incode">axis</code> will give the sign of the result.</p>
+<p class="code">
+<code style="white-space: break-spaces">func cross(using const self, axis: f32)->Vector2
 </code>
 </p>
 <p>
@@ -20521,17 +20521,17 @@ Set the vector to zero.</p>
 <h3 class="content" id="Core.Math.abs"><span class="titletype">func</span> <span class="titlelight">Math.</span><span class="titlestrong">abs</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\integer.swg#L129" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L126" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func abs(x: s8)
+<code style="white-space: break-spaces">func abs(x: f32)
+func abs(x: f64)
 func abs(x: s16)
 func abs(x: s32)
 func abs(x: s64)
-func abs(x: f32)
-func abs(x: f64)
+func abs(x: s8)
 </code>
 </p>
 <p>
@@ -20685,20 +20685,17 @@ func cosh(x: f64)
 <h3 class="content" id="Core.Math.countOnes"><span class="titletype">func</span> <span class="titlelight">Math.</span><span class="titlestrong">countOnes</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\bits.swg#L39" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\bits.swg#L40" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p>
 Returns the number of bits set to 1.</p>
 <p class="code">
-<code style="white-space: break-spaces">func countOnes(x: u8)->u8
-</code>
-</p>
-<p class="code">
 <code style="white-space: break-spaces">func countOnes(x: u16)->u16
 func countOnes(x: u32)->u32
 func countOnes(x: u64)->u64
+func countOnes(x: u8)->u8
 </code>
 </p>
 <p>
@@ -20863,20 +20860,17 @@ func isZeroEpsilon(x: f64, eps = ConstF64.Epsilon)
 <h3 class="content" id="Core.Math.leadingZeros"><span class="titletype">func</span> <span class="titlelight">Math.</span><span class="titlestrong">leadingZeros</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\bits.swg#L27" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\bits.swg#L28" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p>
 Returns the number of bits set to 0 from the left.</p>
 <p class="code">
-<code style="white-space: break-spaces">func leadingZeros(x: u8)->u8
-</code>
-</p>
-<p class="code">
 <code style="white-space: break-spaces">func leadingZeros(x: u16)->u16
 func leadingZeros(x: u32)->u32
 func leadingZeros(x: u64)->u64
+func leadingZeros(x: u8)->u8
 </code>
 </p>
 <p>
@@ -21042,14 +21036,14 @@ func map(val: f64, minSrc: f64, maxSrc: f64, minDst: f64, maxDst: f64)->f64
 <code style="white-space: break-spaces">func(T) max(x: T, y: T, z: T)->T
 func max(x: f32, y: f32)
 func max(x: f64, y: f64)
-func max(x: s8, y: s8)
 func max(x: s16, y: s16)
 func max(x: s32, y: s32)
 func max(x: s64, y: s64)
-func max(x: u8, y: u8)
+func max(x: s8, y: s8)
 func max(x: u16, y: u16)
 func max(x: u32, y: u32)
 func max(x: u64, y: u64)
+func max(x: u8, y: u8)
 </code>
 </p>
 <p>
@@ -21067,14 +21061,14 @@ func max(x: u64, y: u64)
 <code style="white-space: break-spaces">func(T) min(x: T, y: T, z: T)->T
 func min(x: f32, y: f32)
 func min(x: f64, y: f64)
-func min(x: s8, y: s8)
 func min(x: s16, y: s16)
 func min(x: s32, y: s32)
 func min(x: s64, y: s64)
-func min(x: u8, y: u8)
+func min(x: s8, y: s8)
 func min(x: u16, y: u16)
 func min(x: u32, y: u32)
 func min(x: u64, y: u64)
+func min(x: u8, y: u8)
 </code>
 </p>
 <p>
@@ -21148,20 +21142,17 @@ func pow(x: f64, y: f64)
 <h3 class="content" id="Core.Math.reverse"><span class="titletype">func</span> <span class="titlelight">Math.</span><span class="titlestrong">reverse</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\bits.swg#L47" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\bits.swg#L53" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p>
 Reverse all bits.</p>
 <p class="code">
-<code style="white-space: break-spaces">func reverse(x: u8)->u8
-</code>
-</p>
-<p class="code">
 <code style="white-space: break-spaces">func reverse(x: u16)->u16
 func reverse(x: u32)->u32
 func reverse(x: u64)->u64
+func reverse(x: u8)->u8
 </code>
 </p>
 <p>
@@ -21240,10 +21231,10 @@ func saturate(x: f64)
 <p class="code">
 <code style="white-space: break-spaces">func sign(x: f32)
 func sign(x: f64)
-func sign(x: s8)
 func sign(x: s16)
 func sign(x: s32)
 func sign(x: s64)
+func sign(x: s8)
 </code>
 </p>
 <p>
@@ -21381,20 +21372,17 @@ func toRadians(x: f64)
 <h3 class="content" id="Core.Math.trailingZeros"><span class="titletype">func</span> <span class="titlelight">Math.</span><span class="titlestrong">trailingZeros</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\bits.swg#L33" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\bits.swg#L34" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p>
 Returns the number of bits set to 0 from the right.</p>
 <p class="code">
-<code style="white-space: break-spaces">func trailingZeros(x: u8)->u8
-</code>
-</p>
-<p class="code">
 <code style="white-space: break-spaces">func trailingZeros(x: u16)->u16
 func trailingZeros(x: u32)->u32
 func trailingZeros(x: u64)->u64
+func trailingZeros(x: u8)->u8
 </code>
 </p>
 <p>
@@ -21618,20 +21606,20 @@ Allocate a given amount of bytes in the temporary allocator.</p>
 <h3 class="content" id="Core.Memory.align"><span class="titletype">func</span> <span class="titlelight">Memory.</span><span class="titlestrong">align</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\memory\memory.swg#L43" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\memory\memory.swg#L50" class="src">[src]</a></td>
 </tr>
 </table>
-</p>
-<p>
-Align a value to the given amount.</p>
-<p class="code">
-<code style="white-space: break-spaces">func align(value: u64, alignement: u32)->u64
-</code>
 </p>
 <p>
 Align a pointer to the given amount.</p>
 <p class="code">
 <code style="white-space: break-spaces">func align(value: const ^void, alignement: u32)->const ^void
+</code>
+</p>
+<p>
+Align a value to the given amount.</p>
+<p class="code">
+<code style="white-space: break-spaces">func align(value: u64, alignement: u32)->u64
 </code>
 </p>
 <p>
@@ -21754,15 +21742,15 @@ Drop and release memory of the given type.</p>
 </code>
 </p>
 <p>
-Drop and release memory of the given type.</p>
-<p class="code">
-<code style="white-space: break-spaces">func delete(ptr: *void, type: const *TypeInfo, allocator: IAllocator = null, hint: string = null, loc = #callerlocation)
-</code>
-</p>
-<p>
 Drop and release memory of an array of the given type.</p>
 <p class="code">
 <code style="white-space: break-spaces">func(T) delete(ptr: ^T, num: u64, allocator: IAllocator = null, hint: string = null, loc = #callerlocation)
+</code>
+</p>
+<p>
+Drop and release memory of the given type.</p>
+<p class="code">
+<code style="white-space: break-spaces">func delete(ptr: *void, type: const *TypeInfo, allocator: IAllocator = null, hint: string = null, loc = #callerlocation)
 </code>
 </p>
 <p>
@@ -21840,15 +21828,9 @@ Clear the temporary allocator.</p>
 <h3 class="content" id="Core.Memory.new"><span class="titletype">func</span> <span class="titlelight">Memory.</span><span class="titlestrong">new</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\memory\alloc.swg#L97" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\memory\alloc.swg#L112" class="src">[src]</a></td>
 </tr>
 </table>
-</p>
-<p>
-Allocate and initialize the given type.</p>
-<p class="code">
-<code style="white-space: break-spaces">func new(type: const *TypeInfo, allocator: IAllocator = null, alignement: u32 = 0, hint: string = null, loc = #callerlocation)->*u8
-</code>
 </p>
 <p>
 Allocate and initialize the given type.</p>
@@ -21860,6 +21842,12 @@ Allocate and initialize the given type.</p>
 Allocate and initialize an array of the given type.</p>
 <p class="code">
 <code style="white-space: break-spaces">func(T) new(num: u64, allocator: IAllocator = null, alignement: u32 = 0, hint: string = null, loc = #callerlocation)->^T
+</code>
+</p>
+<p>
+Allocate and initialize the given type.</p>
+<p class="code">
+<code style="white-space: break-spaces">func new(type: const *TypeInfo, allocator: IAllocator = null, alignement: u32 = 0, hint: string = null, loc = #callerlocation)->*u8
 </code>
 </p>
 <p>
@@ -22077,18 +22065,15 @@ s32</td>
 <h3 class="content" id="Core.Noise.perlin"><span class="titletype">func</span> <span class="titlelight">Noise.</span><span class="titlestrong">perlin</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\rand\noise.swg#L114" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\rand\noise.swg#L138" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p>
 Perlin.</p>
 <p class="code">
-<code style="white-space: break-spaces">func perlin(x: f32, y: f32, seed: s32 = 1337)->f32
-</code>
-</p>
-<p class="code">
 <code style="white-space: break-spaces">func perlin(x: f32, y: f32, z: f32, seed: s32 = 1337)->f32
+func perlin(x: f32, y: f32, seed: s32 = 1337)->f32
 </code>
 </p>
 <p>
@@ -23361,13 +23346,13 @@ u64</td>
 <h3 class="content" id="Core.Random.Mt64.seedU64"><span class="titletype">func</span> <span class="titlelight">Mt64.</span><span class="titlestrong">seedU64</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\rand\mt64.swg#L29" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\rand\mt64.swg#L41" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func seedU64(using self, seed: u64)
-func seedU64(using self, seed: const [..] u64)
+<code style="white-space: break-spaces">func seedU64(using self, seed: const [..] u64)
+func seedU64(using self, seed: u64)
 </code>
 </p>
 <p>
@@ -24247,20 +24232,20 @@ Convert a crc to a registered typeinfo.</p>
 <h3 class="content" id="Core.Reflection.getAttribute"><span class="titletype">func</span> <span class="titlelight">Reflection.</span><span class="titlestrong">getAttribute</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\system\reflection.swg#L265" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\system\reflection.swg#L317" class="src">[src]</a></td>
 </tr>
 </table>
-</p>
-<p>
-Returns the given associated <code class = "incode">attribute</code> to <code class = "incode">value</code> or null.</p>
-<p class="code">
-<code style="white-space: break-spaces">func getAttribute(value: const *TypeValue, attribute: const *TypeInfo)->const *Attribute
-</code>
 </p>
 <p>
 Returns the given associated <code class = "incode">attribute</code> to <code class = "incode">type</code> or null.</p>
 <p class="code">
 <code style="white-space: break-spaces">func getAttribute(type: const *TypeInfo, attribute: const *TypeInfo)->const *Attribute
+</code>
+</p>
+<p>
+Returns the given associated <code class = "incode">attribute</code> to <code class = "incode">value</code> or null.</p>
+<p class="code">
+<code style="white-space: break-spaces">func getAttribute(value: const *TypeValue, attribute: const *TypeInfo)->const *Attribute
 </code>
 </p>
 <p>
@@ -24270,14 +24255,14 @@ Returns the given associated <code class = "incode">attribute</code> to <code cl
 <h3 class="content" id="Core.Reflection.getAttributeValue"><span class="titletype">func</span> <span class="titlelight">Reflection.</span><span class="titlestrong">getAttributeValue</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\system\reflection.swg#L222" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\system\reflection.swg#L240" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p>
 Returns the given attribute value, or null.</p>
 <p class="code">
-<code style="white-space: break-spaces">func getAttributeValue(type: const *TypeValue, attribute: const *TypeInfo, value: string)->any
+<code style="white-space: break-spaces">func getAttributeValue(attribute: const *Attribute, value: string)->any
 </code>
 </p>
 <p>
@@ -24289,7 +24274,7 @@ Returns the given attribute value, or null.</p>
 <p>
 Returns the given attribute value, or null.</p>
 <p class="code">
-<code style="white-space: break-spaces">func getAttributeValue(attribute: const *Attribute, value: string)->any
+<code style="white-space: break-spaces">func getAttributeValue(type: const *TypeValue, attribute: const *TypeInfo, value: string)->any
 </code>
 </p>
 <p>
@@ -24299,20 +24284,20 @@ Returns the given attribute value, or null.</p>
 <h3 class="content" id="Core.Reflection.getAttributes"><span class="titletype">func</span> <span class="titlelight">Reflection.</span><span class="titlestrong">getAttributes</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\system\reflection.swg#L252" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\system\reflection.swg#L283" class="src">[src]</a></td>
 </tr>
 </table>
-</p>
-<p>
-Returns the given associated attributes to <code class = "incode">value</code>.</p>
-<p class="code">
-<code style="white-space: break-spaces">func getAttributes(value: const *TypeValue, attribute: const *TypeInfo)->Array'(const *Attribute)
-</code>
 </p>
 <p>
 Returns the given associated attributes to <code class = "incode">type</code>.</p>
 <p class="code">
 <code style="white-space: break-spaces">func getAttributes(type: const *TypeInfo, attribute: const *TypeInfo)->Array'(const *Attribute)
+</code>
+</p>
+<p>
+Returns the given associated attributes to <code class = "incode">value</code>.</p>
+<p class="code">
+<code style="white-space: break-spaces">func getAttributes(value: const *TypeValue, attribute: const *TypeInfo)->Array'(const *Attribute)
 </code>
 </p>
 <p>
@@ -24407,20 +24392,20 @@ Get information about a specific mtd in a given struct Returns null if the mtd d
 <h3 class="content" id="Core.Reflection.hasAttribute"><span class="titletype">func</span> <span class="titlelight">Reflection.</span><span class="titlestrong">hasAttribute</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\system\reflection.swg#L277" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\system\reflection.swg#L350" class="src">[src]</a></td>
 </tr>
 </table>
-</p>
-<p>
-Returns true if the given <code class = "incode">value</code> has the associated <code class = "incode">attribute</code>.</p>
-<p class="code">
-<code style="white-space: break-spaces">func hasAttribute(value: const *TypeValue, attribute: const *TypeInfo)->bool
-</code>
 </p>
 <p>
 Returns true if the given <code class = "incode">type</code> has the associated <code class = "incode">attribute</code>.</p>
 <p class="code">
 <code style="white-space: break-spaces">func hasAttribute(type: const *TypeInfo, attribute: const *TypeInfo)->bool
+</code>
+</p>
+<p>
+Returns true if the given <code class = "incode">value</code> has the associated <code class = "incode">attribute</code>.</p>
+<p class="code">
+<code style="white-space: break-spaces">func hasAttribute(value: const *TypeValue, attribute: const *TypeInfo)->bool
 </code>
 </p>
 <p>
@@ -27587,21 +27572,21 @@ End the previous section.</p>
 <h3 class="content" id="Core.Serialization.Serializer.serialize"><span class="titletype">func</span> <span class="titlelight">Serializer.</span><span class="titlestrong">serialize</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\serialize.swg#L93" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\serialize.swg#L165" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p>
 Serialize one value.</p>
 <p class="code">
-<code style="white-space: break-spaces">func(MT) serialize(using self, name: string, crc32: u32, res: *MT) throw
+<code style="white-space: break-spaces">#[Swag.Macro]
+func(MT) serialize(using self, name: string, res: *MT) throw
 </code>
 </p>
 <p>
 Serialize one value.</p>
 <p class="code">
-<code style="white-space: break-spaces">#[Swag.Macro]
-func(MT) serialize(using self, name: string, res: *MT) throw
+<code style="white-space: break-spaces">func(MT) serialize(using self, name: string, crc32: u32, res: *MT) throw
 </code>
 </p>
 <p>
@@ -29207,15 +29192,15 @@ Add a copy of one element at the end of the array.</p>
 </code>
 </p>
 <p>
-Move one element at the end of the array.</p>
-<p class="code">
-<code style="white-space: break-spaces">func add(using self, value: moveref T)
-</code>
-</p>
-<p>
 Append a slice to the end of this instance.</p>
 <p class="code">
 <code style="white-space: break-spaces">func add(using self, values: const [..] T)
+</code>
+</p>
+<p>
+Move one element at the end of the array.</p>
+<p class="code">
+<code style="white-space: break-spaces">func add(using self, value: moveref T)
 </code>
 </p>
 <p>
@@ -29423,15 +29408,15 @@ Insert a value at the given index. If <code class = "incode">index</code> is equ
 </code>
 </p>
 <p>
-Move a value at the given index. If <code class = "incode">index</code> is equal to <code class = "incode">count</code>, then the value is added at the end of the array. Order is preserved.</p>
-<p class="code">
-<code style="white-space: break-spaces">func insertAt(using self, index: u64, value: moveref T)
-</code>
-</p>
-<p>
 Insert some values at the given index. If <code class = "incode">index</code> is equal to <code class = "incode">count</code>, then the values are added at the end of the array. Order is preserved.</p>
 <p class="code">
 <code style="white-space: break-spaces">func insertAt(using self, index: u64, values: const [..] T)
+</code>
+</p>
+<p>
+Move a value at the given index. If <code class = "incode">index</code> is equal to <code class = "incode">count</code>, then the value is added at the end of the array. Order is preserved.</p>
+<p class="code">
+<code style="white-space: break-spaces">func insertAt(using self, index: u64, value: moveref T)
 </code>
 </p>
 <p>
@@ -29536,13 +29521,13 @@ func opCast(using self)->const [..] T
 <h3 class="content" id="Core.StaticArray.opIndex"><span class="titletype">func</span> <span class="titlelight">StaticArray.</span><span class="titlestrong">opIndex</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\staticarray.swg#L51" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\staticarray.swg#L59" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func opIndex(using const self, index: u64)->ref T
-func opIndex(using const self, index: u64)->T
+<code style="white-space: break-spaces">func opIndex(using const self, index: u64)->T
+func opIndex(using const self, index: u64)->ref T
 </code>
 </p>
 <p>
@@ -29650,20 +29635,20 @@ Returns a copy of the last element, and remove it from the array.</p>
 <h3 class="content" id="Core.StaticArray.remove"><span class="titletype">func</span> <span class="titlelight">StaticArray.</span><span class="titlestrong">remove</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\staticarray.swg#L415" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\staticarray.swg#L482" class="src">[src]</a></td>
 </tr>
 </table>
-</p>
-<p>
-Remove <code class = "incode">num</code> elements starting at <code class = "incode">index</code>.</p>
-<p class="code">
-<code style="white-space: break-spaces">func remove(using self, index: u64, num: u64)
-</code>
 </p>
 <p>
 Remove the given <code class = "incode">value</code> If not found, does nothing.</p>
 <p class="code">
 <code style="white-space: break-spaces">func(V) remove(using self, value: V)
+</code>
+</p>
+<p>
+Remove <code class = "incode">num</code> elements starting at <code class = "incode">index</code>.</p>
+<p class="code">
+<code style="white-space: break-spaces">func remove(using self, index: u64, num: u64)
 </code>
 </p>
 <p>
@@ -31062,20 +31047,20 @@ Convert a <code class = "incode">bool</code> to a string, and put the result in 
 <h3 class="content" id="Core.StrConv.convertFloat"><span class="titletype">func</span> <span class="titlelight">StrConv.</span><span class="titlestrong">convertFloat</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\convert.swg#L368" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\convert.swg#L487" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p>
 Convert a float to an utf8 string, and put the result in a ConcatBuffer.</p>
 <p class="code">
-<code style="white-space: break-spaces">func convertFloat(buf: *ConcatBuffer, fmt: ConvertFormatFloat)
+<code style="white-space: break-spaces">func convertFloat(buf: *ConcatBuffer, value: any, strFormat: string)
 </code>
 </p>
 <p>
 Convert a float to an utf8 string, and put the result in a ConcatBuffer.</p>
 <p class="code">
-<code style="white-space: break-spaces">func convertFloat(buf: *ConcatBuffer, value: any, strFormat: string)
+<code style="white-space: break-spaces">func convertFloat(buf: *ConcatBuffer, fmt: ConvertFormatFloat)
 </code>
 </p>
 <p>
@@ -31085,20 +31070,20 @@ Convert a float to an utf8 string, and put the result in a ConcatBuffer.</p>
 <h3 class="content" id="Core.StrConv.convertInt"><span class="titletype">func</span> <span class="titlelight">StrConv.</span><span class="titlestrong">convertInt</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\convert.swg#L388" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\convert.swg#L498" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p>
 Convert an integer to an utf8 string, and put the result in a ConcatBuffer.</p>
 <p class="code">
-<code style="white-space: break-spaces">func convertInt(buf: *ConcatBuffer, fmt: ConvertFormatInt)
+<code style="white-space: break-spaces">func convertInt(buf: *ConcatBuffer, value: any, strFormat: string)
 </code>
 </p>
 <p>
 Convert an integer to an utf8 string, and put the result in a ConcatBuffer.</p>
 <p class="code">
-<code style="white-space: break-spaces">func convertInt(buf: *ConcatBuffer, value: any, strFormat: string)
+<code style="white-space: break-spaces">func convertInt(buf: *ConcatBuffer, fmt: ConvertFormatInt)
 </code>
 </p>
 <p>
@@ -32060,15 +32045,9 @@ Visit the string runes See Utf8.visitRunes for aliases.</p>
 <h3 class="content" id="Core.String.append"><span class="titletype">func</span> <span class="titlelight">String.</span><span class="titlestrong">append</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\string.swg#L318" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\string.swg#L327" class="src">[src]</a></td>
 </tr>
 </table>
-</p>
-<p>
-Append a byte to the String.</p>
-<p class="code">
-<code style="white-space: break-spaces">func append(using self, value: u8)
-</code>
 </p>
 <p>
 Append a rune to the String.</p>
@@ -32080,6 +32059,12 @@ Append a rune to the String.</p>
 Append a string to the String.</p>
 <p class="code">
 <code style="white-space: break-spaces">func append(using self, value: string)
+</code>
+</p>
+<p>
+Append a byte to the String.</p>
+<p class="code">
+<code style="white-space: break-spaces">func append(using self, value: u8)
 </code>
 </p>
 <p>
@@ -32342,13 +32327,13 @@ Convert the string inplace to upper case.</p>
 <h3 class="content" id="Core.String.opAssign"><span class="titletype">func</span> <span class="titlelight">String.</span><span class="titlestrong">opAssign</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\string.swg#L107" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\string.swg#L115" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func(op: string) opAssign(using self, value: string)
-func(op: string) opAssign(using self, value: rune)
+<code style="white-space: break-spaces">func(op: string) opAssign(using self, value: rune)
+func(op: string) opAssign(using self, value: string)
 func(op: string) opAssign(using self, value: u8)
 </code>
 </p>
@@ -32359,14 +32344,14 @@ func(op: string) opAssign(using self, value: u8)
 <h3 class="content" id="Core.String.opCast"><span class="titletype">func</span> <span class="titlelight">String.</span><span class="titlestrong">opCast</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\string.swg#L37" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\string.swg#L49" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func opCast(using const self)->cstring
+<code style="white-space: break-spaces">func opCast(using const self)->const [..] u8
+func opCast(using const self)->cstring
 func opCast(using const self)->string
-func opCast(using const self)->const [..] u8
 </code>
 </p>
 <p>
@@ -36032,20 +36017,20 @@ Returns the first substring of <code class = "incode">str</code> containing only
 <h3 class="content" id="Core.Tokenize.split"><span class="titletype">func</span> <span class="titlelight">Tokenize.</span><span class="titlestrong">split</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\tokenize.swg#L68" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\tokenize.swg#L76" class="src">[src]</a></td>
 </tr>
 </table>
-</p>
-<p>
-Split string into sub strings, given a rune separator Note that this returns an array of native strings, not copies. All strings will be invalid if <code class = "incode">src</code> is destroyed.</p>
-<p class="code">
-<code style="white-space: break-spaces">func split(src: string, separator: rune, maxSplit: u32 = 0, removeEmpty = true)->Array'(string)
-</code>
 </p>
 <p>
 Split string into sub strings, given an array of rune separators Note that this returns an array of native strings, not copies. All strings will be invalid if <code class = "incode">src</code> String is destroyed.</p>
 <p class="code">
 <code style="white-space: break-spaces">func split(src: string, separators: const [..] rune, maxSplit: u32 = 0, removeEmpty = true)->Array'(string)
+</code>
+</p>
+<p>
+Split string into sub strings, given a rune separator Note that this returns an array of native strings, not copies. All strings will be invalid if <code class = "incode">src</code> is destroyed.</p>
+<p class="code">
+<code style="white-space: break-spaces">func split(src: string, separator: rune, maxSplit: u32 = 0, removeEmpty = true)->Array'(string)
 </code>
 </p>
 <p>
@@ -36216,20 +36201,20 @@ Get a version 4 UUID (random).</p>
 <h3 class="content" id="Core.UUID.toString"><span class="titletype">func</span> <span class="titlelight">UUID.</span><span class="titlestrong">toString</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\system\uuid.swg#L59" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\system\uuid.swg#L108" class="src">[src]</a></td>
 </tr>
 </table>
-</p>
-<p>
-Convert uuid to a string of the form xxxxxxxx-xxxx-Mxxx-Nxxx-xxxxxxxxxxxx.</p>
-<p class="code">
-<code style="white-space: break-spaces">func toString(using self, result: [..] u8)
-</code>
 </p>
 <p>
 Convert uuid to a string.</p>
 <p class="code">
 <code style="white-space: break-spaces">func toString(using self)->String
+</code>
+</p>
+<p>
+Convert uuid to a string of the form xxxxxxxx-xxxx-Mxxx-Nxxx-xxxxxxxxxxxx.</p>
+<p class="code">
+<code style="white-space: break-spaces">func toString(using self, result: [..] u8)
 </code>
 </p>
 <p>
@@ -37910,22 +37895,22 @@ Convert an utf16 buffer to a String.</p>
 <h3 class="content" id="Core.Utf8.indexOf"><span class="titletype">func</span> <span class="titlelight">Utf8.</span><span class="titlestrong">indexOf</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\utf8.swg#L458" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\utf8.swg#L466" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p>
-Find the first occurence of rune <code class = "incode">what</code>, and returns the byte index of it.</p>
+Find one of the runes in <code class = "incode">what</code>, and returns the byte index of it.</p>
 <p class="code">
-<code style="white-space: break-spaces">func indexOf(src: const [..] u8, what: rune, startByteIndex = 0'u64)->u64
+<code style="white-space: break-spaces">func indexOf(src: const [..] u8, what: const [..] rune, startByteIndex = 0'u64)->u64
 </code>
 </p>
 <p>
  Returns <code class = "incode">Swag.U64.Max</code> if not found</p>
 <p>
-Find one of the runes in <code class = "incode">what</code>, and returns the byte index of it.</p>
+Find the first occurence of rune <code class = "incode">what</code>, and returns the byte index of it.</p>
 <p class="code">
-<code style="white-space: break-spaces">func indexOf(src: const [..] u8, what: const [..] rune, startByteIndex = 0'u64)->u64
+<code style="white-space: break-spaces">func indexOf(src: const [..] u8, what: rune, startByteIndex = 0'u64)->u64
 </code>
 </p>
 <p>
@@ -37979,22 +37964,22 @@ Returns true if the given unicode rune can be encoded in utf8.</p>
 <h3 class="content" id="Core.Utf8.lastIndexOf"><span class="titletype">func</span> <span class="titlelight">Utf8.</span><span class="titlestrong">lastIndexOf</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\utf8.swg#L532" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\utf8.swg#L540" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p>
-Find the last rune occurence of <code class = "incode">what</code>, and returns the byte index of it.</p>
+Returns the last index (in bytes) of a rune.</p>
 <p class="code">
-<code style="white-space: break-spaces">func lastIndexOf(src: const [..] u8, what: rune)->u64
+<code style="white-space: break-spaces">func lastIndexOf(src: const [..] u8, what: const [..] rune)->u64
 </code>
 </p>
 <p>
  Returns <code class = "incode">Swag.U64.Max</code> if not found</p>
 <p>
-Returns the last index (in bytes) of a rune.</p>
+Find the last rune occurence of <code class = "incode">what</code>, and returns the byte index of it.</p>
 <p class="code">
-<code style="white-space: break-spaces">func lastIndexOf(src: const [..] u8, what: const [..] rune)->u64
+<code style="white-space: break-spaces">func lastIndexOf(src: const [..] u8, what: rune)->u64
 </code>
 </p>
 <p>

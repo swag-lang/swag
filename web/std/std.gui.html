@@ -5057,7 +5057,7 @@ func(*void, *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_
 <td class="tdname">
 minMax</td>
 <td class="tdtype">
-__editbox_tuple_266</td>
+__editbox_tuple_265</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -6586,7 +6586,7 @@ mode</td>
 <td class="tdname">
 filters</td>
 <td class="tdtype">
-Array(__filedlg_tuple_304)</td>
+Array(__filedlg_tuple_285)</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -6594,7 +6594,7 @@ Array(__filedlg_tuple_304)</td>
 <td class="tdname">
 shortcuts</td>
 <td class="tdtype">
-Array(__filedlg_tuple_305)</td>
+Array(__filedlg_tuple_286)</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -9346,13 +9346,13 @@ Associate image.</p>
 <p>
 Associate image.</p>
 <p class="code">
-<code style="white-space: break-spaces">func setImage(using self, image: Texture)
+<code style="white-space: break-spaces">func setImage(using self, image: Image)
 </code>
 </p>
 <p>
 Associate image.</p>
 <p class="code">
-<code style="white-space: break-spaces">func setImage(using self, image: Image)
+<code style="white-space: break-spaces">func setImage(using self, image: Texture)
 </code>
 </p>
 <p>
@@ -10675,20 +10675,20 @@ Set the number of lines in a virtual list.</p>
 <h3 class="content" id="Gui.ListCtrl.sort"><span class="titletype">func</span> <span class="titlelight">ListCtrl.</span><span class="titlestrong">sort</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\composite\listctrl.swg#L1170" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\composite\listctrl.swg#L1189" class="src">[src]</a></td>
 </tr>
 </table>
-</p>
-<p>
-Sort the list by a given column If <code class = "incode">persistent</code> is true, then the sorted column will be displayed in the header (if it exists).</p>
-<p class="code">
-<code style="white-space: break-spaces">func sort(using self, column: u32, descentOrder = false, persistent = false)
-</code>
 </p>
 <p>
 Sort list as before.</p>
 <p class="code">
 <code style="white-space: break-spaces">func sort(using self)
+</code>
+</p>
+<p>
+Sort the list by a given column If <code class = "incode">persistent</code> is true, then the sorted column will be displayed in the header (if it exists).</p>
+<p class="code">
+<code style="white-space: break-spaces">func sort(using self, column: u32, descentOrder = false, persistent = false)
 </code>
 </p>
 <p>
@@ -14936,18 +14936,18 @@ Insert a rune.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Gui.RichEditCtrl.insertText">insertText(self, string)</a></td>
-<td class="enumeration">
-<p>
-Insert a text with a given style.</p>
-</td>
-</tr>
-<tr>
-<td class="enumeration">
 <a href="#Gui.RichEditCtrl.insertText">insertText(self, string, const ref Array'(u8))</a></td>
 <td class="enumeration">
 <p>
 Insert a text with a style per character.</p>
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Gui.RichEditCtrl.insertText">insertText(self, string)</a></td>
+<td class="enumeration">
+<p>
+Insert a text with a given style.</p>
 </td>
 </tr>
 <tr>
@@ -25271,13 +25271,13 @@ Create a specific style based on the parent.</p>
 <h3 class="content" id="Gui.ThemeStyle.setFont"><span class="titletype">func</span> <span class="titlelight">ThemeStyle.</span><span class="titlestrong">setFont</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\paint\themestyle.swg#L159" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\paint\themestyle.swg#L165" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func setFont(using self, fnt: FontFamily)
-func setFont(using self, fnt: *Font, style: FontFamilyStyle)
+<code style="white-space: break-spaces">func setFont(using self, fnt: *Font, style: FontFamilyStyle)
+func setFont(using self, fnt: FontFamily)
 </code>
 </p>
 <p>
@@ -27663,13 +27663,13 @@ Send the command state event with the given id to the window. Returns the update
 <h3 class="content" id="Gui.Wnd.setAllMargins"><span class="titletype">func</span> <span class="titlelight">Wnd.</span><span class="titlestrong">setAllMargins</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L640" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L641" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func setAllMargins(using self, value: f32)
-func setAllMargins(using self, value: Vector4)
+<code style="white-space: break-spaces">func setAllMargins(using self, value: Vector4)
+func setAllMargins(using self, value: f32)
 </code>
 </p>
 <p>
@@ -27679,13 +27679,13 @@ func setAllMargins(using self, value: Vector4)
 <h3 class="content" id="Gui.Wnd.setAllPaddings"><span class="titletype">func</span> <span class="titlelight">Wnd.</span><span class="titlestrong">setAllPaddings</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L662" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L663" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func setAllPaddings(using self, value: f32)
-func setAllPaddings(using self, value: Vector4)
+<code style="white-space: break-spaces">func setAllPaddings(using self, value: Vector4)
+func setAllPaddings(using self, value: f32)
 </code>
 </p>
 <p>

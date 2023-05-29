@@ -3973,20 +3973,20 @@ Create a new Color with specified values.</p>
 <h3 class="content" id="Pixel.Color.fromArgb"><span class="titletype">func</span> <span class="titlelight">Color.</span><span class="titlestrong">fromArgb</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\types\color.swg#L135" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\types\color.swg#L144" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p>
 Create a new Color with specified values.</p>
 <p class="code">
-<code style="white-space: break-spaces">func fromArgb(a: u8, r: u8, g: u8, b: u8)->Color
+<code style="white-space: break-spaces">func fromArgb(argb: Argb)->Color
 </code>
 </p>
 <p>
 Create a new Color with specified values.</p>
 <p class="code">
-<code style="white-space: break-spaces">func fromArgb(argb: Argb)->Color
+<code style="white-space: break-spaces">func fromArgb(argb: u32)->Color
 </code>
 </p>
 <p>
@@ -3998,7 +3998,7 @@ Create a new Color with specified values.</p>
 <p>
 Create a new Color with specified values.</p>
 <p class="code">
-<code style="white-space: break-spaces">func fromArgb(argb: u32)->Color
+<code style="white-space: break-spaces">func fromArgb(a: u8, r: u8, g: u8, b: u8)->Color
 </code>
 </p>
 <p>
@@ -4176,14 +4176,14 @@ Returns a lighter color.</p>
 <h3 class="content" id="Pixel.Color.opAffect"><span class="titletype">func</span> <span class="titlelight">Color.</span><span class="titlestrong">opAffect</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\types\color.swg#L24" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\types\color.swg#L26" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func opAffect(self, argb: u32)
-func opAffect(self, argb: Argb)
+<code style="white-space: break-spaces">func opAffect(self, argb: Argb)
 func opAffect(self, name: string)
+func opAffect(self, argb: u32)
 </code>
 </p>
 <p>
@@ -4193,14 +4193,14 @@ func opAffect(self, name: string)
 <h3 class="content" id="Pixel.Color.opEquals"><span class="titletype">func</span> <span class="titlelight">Color.</span><span class="titlestrong">opEquals</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\types\color.swg#L31" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\types\color.swg#L33" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func opEquals(self, argb: u32)
-func opEquals(self, argb: Argb)
+<code style="white-space: break-spaces">func opEquals(self, argb: Argb)
 func opEquals(self, other: Color)
+func opEquals(self, argb: u32)
 </code>
 </p>
 <p>
@@ -4261,20 +4261,20 @@ Initialize color with hue, saturation, lightness.</p>
 <h3 class="content" id="Pixel.Color.setRgb"><span class="titletype">func</span> <span class="titlelight">Color.</span><span class="titlestrong">setRgb</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\types\color.swg#L63" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\types\color.swg#L74" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p>
 Just set r, g and b components. Alpha will be Opaque.</p>
 <p class="code">
-<code style="white-space: break-spaces">func setRgb(self, r: u8, g: u8, b: u8)
+<code style="white-space: break-spaces">func setRgb(using self, rgb: Color)
 </code>
 </p>
 <p>
 Just set r, g and b components. Alpha will be Opaque.</p>
 <p class="code">
-<code style="white-space: break-spaces">func setRgb(using self, rgb: Color)
+<code style="white-space: break-spaces">func setRgb(self, r: u8, g: u8, b: u8)
 </code>
 </p>
 <p>
@@ -4414,7 +4414,7 @@ id</td>
 <td class="tdname">
 params</td>
 <td class="tdtype">
-__painter_tuple_200</td>
+__painter_tuple_205</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -6922,18 +6922,18 @@ Free the working buffer if allocated.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Image.from">from(HICON)</a></td>
-<td class="enumeration">
-<p>
-Creates an image from a windows HICON.</p>
-</td>
-</tr>
-<tr>
-<td class="enumeration">
 <a href="#Pixel.Image.from">from(HBITMAP)</a></td>
 <td class="enumeration">
 <p>
 Creates an image from a windows HBITMAP.</p>
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Pixel.Image.from">from(HICON)</a></td>
+<td class="enumeration">
+<p>
+Creates an image from a windows HICON.</p>
 </td>
 </tr>
 <tr>
@@ -7090,16 +7090,16 @@ Apply a kernel to the image.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Image.toCrop">toCrop(self, const ref Rectangle)</a></td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="enumeration">
 <a href="#Pixel.Image.toCrop">toCrop(self, s32, s32, s32, s32)</a></td>
 <td class="enumeration">
 <p>
 Crop image.</p>
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Pixel.Image.toCrop">toCrop(self, const ref Rectangle)</a></td>
+<td class="enumeration">
 </td>
 </tr>
 <tr>
@@ -7881,18 +7881,15 @@ Creates a new image.</p>
 <h3 class="content" id="Pixel.Image.crop"><span class="titletype">func</span> <span class="titlelight">Image.</span><span class="titlestrong">crop</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\image\transform\crop.swg#L18" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\image\transform\crop.swg#L31" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p>
 Crop image.</p>
 <p class="code">
-<code style="white-space: break-spaces">func crop(using self, x: s32, y: s32, w: s32, h: s32)
-</code>
-</p>
-<p class="code">
 <code style="white-space: break-spaces">func crop(using self, cropRect: Rectangle)
+func crop(using self, x: s32, y: s32, w: s32, h: s32)
 </code>
 </p>
 <p>
@@ -8036,20 +8033,20 @@ Free the working buffer if allocated.</p>
 <h3 class="content" id="Pixel.Image.from"><span class="titletype">func</span> <span class="titlelight">Image.</span><span class="titlestrong">from</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\image\image.win32.swg#L32" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\image\image.win32.swg#L49" class="src">[src]</a></td>
 </tr>
 </table>
-</p>
-<p>
-Creates an image from a windows HICON.</p>
-<p class="code">
-<code style="white-space: break-spaces">func from(hicon: HICON)->Image throw
-</code>
 </p>
 <p>
 Creates an image from a windows HBITMAP.</p>
 <p class="code">
 <code style="white-space: break-spaces">func from(hbitmap: HBITMAP)->Image throw
+</code>
+</p>
+<p>
+Creates an image from a windows HICON.</p>
+<p class="code">
+<code style="white-space: break-spaces">func from(hicon: HICON)->Image throw
 </code>
 </p>
 <p>
@@ -8398,18 +8395,15 @@ Apply a kernel to the image.</p>
 <h3 class="content" id="Pixel.Image.toCrop"><span class="titletype">func</span> <span class="titlelight">Image.</span><span class="titlestrong">toCrop</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\image\transform\crop.swg#L37" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\image\transform\crop.swg#L50" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p>
 Crop image.</p>
 <p class="code">
-<code style="white-space: break-spaces">func toCrop(using const self, x: s32, y: s32, w: s32, h: s32)->Image
-</code>
-</p>
-<p class="code">
 <code style="white-space: break-spaces">func toCrop(using const self, cropRect: Rectangle)->Image
+func toCrop(using const self, x: s32, y: s32, w: s32, h: s32)->Image
 </code>
 </p>
 <p>
@@ -10498,13 +10492,13 @@ s32</td>
 <h3 class="content" id="Pixel.NativeRenderOgl.createContext"><span class="titletype">func</span> <span class="titlelight">NativeRenderOgl.</span><span class="titlestrong">createContext</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\render\ogl\renderogl.win32.swg#L19" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\render\ogl\renderogl.win32.swg#L25" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func createContext(using self, hWnd: HWND, width: s32, height: s32, mainRC: HGLRC = null)->RenderingContext throw
-func createContext(using self, hdc: HDC, width: s32, height: s32, mainRC: HGLRC = null)->RenderingContext throw
+<code style="white-space: break-spaces">func createContext(using self, hdc: HDC, width: s32, height: s32, mainRC: HGLRC = null)->RenderingContext throw
+func createContext(using self, hWnd: HWND, width: s32, height: s32, mainRC: HGLRC = null)->RenderingContext throw
 </code>
 </p>
 <p>
@@ -10773,7 +10767,7 @@ sharedLinePathList</td>
 <td class="tdname">
 sharedRoundTmp</td>
 <td class="tdtype">
-Array(__linepath_tuple_251)</td>
+Array(__linepath_tuple_259)</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -11864,13 +11858,13 @@ Draw the line path with the given <code class = "incode">pen</code>.</p>
 <p>
 Draw the line path.</p>
 <p class="code">
-<code style="white-space: break-spaces">func drawPath(using self, pathList: *LinePathList, pen: Pen, mode: DrawPathListMode = .Separate)
+<code style="white-space: break-spaces">func drawPath(using self, pathList: *LinePathList, color: Color, penSize: f32, mode: DrawPathListMode = .Separate)
 </code>
 </p>
 <p>
 Draw the line path.</p>
 <p class="code">
-<code style="white-space: break-spaces">func drawPath(using self, pathList: *LinePathList, color: Color, penSize: f32, mode: DrawPathListMode = .Separate)
+<code style="white-space: break-spaces">func drawPath(using self, pathList: *LinePathList, pen: Pen, mode: DrawPathListMode = .Separate)
 </code>
 </p>
 <p>
@@ -11880,20 +11874,20 @@ Draw the line path.</p>
 <h3 class="content" id="Pixel.Painter.drawRect"><span class="titletype">func</span> <span class="titlelight">Painter.</span><span class="titlestrong">drawRect</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\painter\drawrect.swg#L7" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\painter\drawrect.swg#L17" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p>
 Draw an empty rectangle.</p>
 <p class="code">
-<code style="white-space: break-spaces">func drawRect(using self, left: f32, top: f32, width: f32, height: f32, color: Color, penSize: f32 = 1)
+<code style="white-space: break-spaces">func drawRect(using self, rect: Rectangle, color: Color, penSize: f32 = 1)
+func drawRect(using self, rect: Rectangle, pen: Pen)
+func drawRect(using self, left: f32, top: f32, width: f32, height: f32, color: Color, penSize: f32 = 1)
 </code>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func drawRect(using self, rect: Rectangle, color: Color, penSize: f32 = 1)
-func drawRect(using self, left: f32, top: f32, width: f32, height: f32, pen: Pen)
-func drawRect(using self, rect: Rectangle, pen: Pen)
+<code style="white-space: break-spaces">func drawRect(using self, left: f32, top: f32, width: f32, height: f32, pen: Pen)
 </code>
 </p>
 <p>
@@ -11920,20 +11914,20 @@ Draw a rich string. A rich string can be multiline, and accepts The layout will 
 <h3 class="content" id="Pixel.Painter.drawRoundRect"><span class="titletype">func</span> <span class="titlelight">Painter.</span><span class="titlestrong">drawRoundRect</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\painter\drawrect.swg#L112" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\painter\drawrect.swg#L168" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p>
 Draw an empty round rectangle.</p>
 <p class="code">
-<code style="white-space: break-spaces">func drawRoundRect(using self, left: f32, top: f32, width: f32, height: f32, radiusX: f32, radiusY: f32, color: Color, penSize: f32 = 1)
+<code style="white-space: break-spaces">func drawRoundRect(using self, rect: Rectangle, radiusX: f32, radiusY: f32, color: Color, penSize: f32 = 1)
+func drawRoundRect(using self, rect: Rectangle, radiusX: f32, radiusY: f32, pen: Pen)
+func drawRoundRect(using self, left: f32, top: f32, width: f32, height: f32, radiusX: f32, radiusY: f32, color: Color, penSize: f32 = 1)
 </code>
 </p>
 <p class="code">
 <code style="white-space: break-spaces">func drawRoundRect(using self, left: f32, top: f32, width: f32, height: f32, radiusX: f32, radiusY: f32, pen: Pen)
-func drawRoundRect(using self, rect: Rectangle, radiusX: f32, radiusY: f32, pen: Pen)
-func drawRoundRect(using self, rect: Rectangle, radiusX: f32, radiusY: f32, color: Color, penSize: f32 = 1)
 </code>
 </p>
 <p>
@@ -11943,20 +11937,20 @@ func drawRoundRect(using self, rect: Rectangle, radiusX: f32, radiusY: f32, colo
 <h3 class="content" id="Pixel.Painter.drawString"><span class="titletype">func</span> <span class="titlelight">Painter.</span><span class="titlestrong">drawString</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\painter\drawstring.swg#L128" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\painter\drawstring.swg#L138" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p>
 Draw a simple string.</p>
 <p class="code">
-<code style="white-space: break-spaces">func drawString(using self, left: f32, top: f32, text: string, font: *Font, color: Color, under = UnderlineStyle.None)
+<code style="white-space: break-spaces">func drawString(using self, left: f32, top: f32, text: string, font: *Font, brush: Brush, under = UnderlineStyle.None)
 </code>
 </p>
 <p>
 Draw a simple string.</p>
 <p class="code">
-<code style="white-space: break-spaces">func drawString(using self, left: f32, top: f32, text: string, font: *Font, brush: Brush, under = UnderlineStyle.None)
+<code style="white-space: break-spaces">func drawString(using self, left: f32, top: f32, text: string, font: *Font, color: Color, under = UnderlineStyle.None)
 </code>
 </p>
 <p>
@@ -11983,27 +11977,24 @@ Draw a simple string (centered).</p>
 <h3 class="content" id="Pixel.Painter.drawTexture"><span class="titletype">func</span> <span class="titlelight">Painter.</span><span class="titlestrong">drawTexture</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\painter\drawtexture.swg#L7" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\painter\drawtexture.swg#L47" class="src">[src]</a></td>
 </tr>
 </table>
+</p>
+<p>
+Draw a portion of an image.</p>
+<p class="code">
+<code style="white-space: break-spaces">func drawTexture(using self, dstRect: Rectangle, srcRect: Rectangle, texture: Texture, color: Color = Argb.White)
+func drawTexture(using self, rect: Rectangle, texture: Texture, color: Color = Argb.White)
+func drawTexture(using self, x: f32, y: f32, srcRect: Rectangle, texture: Texture, color: Color = Argb.White)
+func drawTexture(using self, x: f32, y: f32, texture: Texture, color: Color = Argb.White)
+func drawTexture(using self, x: f32, y: f32, width: f32, height: f32, srcRect: Rectangle, texture: Texture, color: Color = Argb.White)
+</code>
 </p>
 <p>
 Draw a texture image.</p>
 <p class="code">
 <code style="white-space: break-spaces">func drawTexture(using self, x: f32, y: f32, width: f32, height: f32, texture: Texture, color: Color = Argb.White)
-</code>
-</p>
-<p>
-Draw a portion of an image.</p>
-<p class="code">
-<code style="white-space: break-spaces">func drawTexture(using self, rect: Rectangle, texture: Texture, color: Color = Argb.White)
-func drawTexture(using self, x: f32, y: f32, texture: Texture, color: Color = Argb.White)
-func drawTexture(using self, x: f32, y: f32, width: f32, height: f32, srcRect: Rectangle, texture: Texture, color: Color = Argb.White)
-</code>
-</p>
-<p class="code">
-<code style="white-space: break-spaces">func drawTexture(using self, dstRect: Rectangle, srcRect: Rectangle, texture: Texture, color: Color = Argb.White)
-func drawTexture(using self, x: f32, y: f32, srcRect: Rectangle, texture: Texture, color: Color = Argb.White)
 </code>
 </p>
 <p>
@@ -12089,15 +12080,9 @@ Draw a solid ellipse.</p>
 <h3 class="content" id="Pixel.Painter.fillPath"><span class="titletype">func</span> <span class="titlelight">Painter.</span><span class="titlestrong">fillPath</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\painter\fillpath.swg#L59" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\painter\fillpath.swg#L69" class="src">[src]</a></td>
 </tr>
 </table>
-</p>
-<p>
-Fill the line path.</p>
-<p class="code">
-<code style="white-space: break-spaces">func fillPath(using self, pathList: *LinePathList, color: Color)
-</code>
 </p>
 <p>
 Fill the line path with the given <code class = "incode">brush</code>.</p>
@@ -12118,26 +12103,32 @@ Fill the list of paths clockwise = fill, anti-clockwise = hole.</p>
 </code>
 </p>
 <p>
+Fill the line path.</p>
+<p class="code">
+<code style="white-space: break-spaces">func fillPath(using self, pathList: *LinePathList, color: Color)
+</code>
+</p>
+<p>
 <table class="h3">
 <tr>
 <td class="h3">
 <h3 class="content" id="Pixel.Painter.fillPolygon"><span class="titletype">func</span> <span class="titlelight">Painter.</span><span class="titlestrong">fillPolygon</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\painter\fillpath.swg#L255" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\painter\fillpath.swg#L263" class="src">[src]</a></td>
 </tr>
 </table>
-</p>
-<p>
-Fill the polygon with the given color.</p>
-<p class="code">
-<code style="white-space: break-spaces">func fillPolygon(using self, path: *LinePath, color: Color)
-</code>
 </p>
 <p>
 Fill the polygon with the given <code class = "incode">brush</code>.</p>
 <p class="code">
 <code style="white-space: break-spaces">func fillPolygon(using self, path: *LinePath, brush: Brush)
+</code>
+</p>
+<p>
+Fill the polygon with the given color.</p>
+<p class="code">
+<code style="white-space: break-spaces">func fillPolygon(using self, path: *LinePath, color: Color)
 </code>
 </p>
 <p>
@@ -12147,20 +12138,20 @@ Fill the polygon with the given <code class = "incode">brush</code>.</p>
 <h3 class="content" id="Pixel.Painter.fillRect"><span class="titletype">func</span> <span class="titlelight">Painter.</span><span class="titlestrong">fillRect</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\painter\drawrect.swg#L69" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\painter\drawrect.swg#L92" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p>
 Draw a filled rectangle.</p>
 <p class="code">
-<code style="white-space: break-spaces">func fillRect(using self, left: f32, top: f32, width: f32, height: f32, brush: Brush)
+<code style="white-space: break-spaces">func fillRect(using self, rect: Rectangle, brush: Brush)
+func fillRect(using self, rect: Rectangle, color: Color)
+func fillRect(using self, left: f32, top: f32, width: f32, height: f32, brush: Brush)
 </code>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func fillRect(using self, rect: Rectangle, brush: Brush)
-func fillRect(using self, left: f32, top: f32, width: f32, height: f32, color: Color)
-func fillRect(using self, rect: Rectangle, color: Color)
+<code style="white-space: break-spaces">func fillRect(using self, left: f32, top: f32, width: f32, height: f32, color: Color)
 </code>
 </p>
 <p>
@@ -12170,20 +12161,20 @@ func fillRect(using self, rect: Rectangle, color: Color)
 <h3 class="content" id="Pixel.Painter.fillRoundRect"><span class="titletype">func</span> <span class="titlelight">Painter.</span><span class="titlestrong">fillRoundRect</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\painter\drawrect.swg#L177" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\painter\drawrect.swg#L185" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p>
 Draw a filled round rectangle.</p>
 <p class="code">
-<code style="white-space: break-spaces">func fillRoundRect(using self, left: f32, top: f32, width: f32, height: f32, radiusX: f32, radiusY: f32, brush: Brush)
+<code style="white-space: break-spaces">func fillRoundRect(using self, rect: Rectangle, radiusX: f32, radiusY: f32, brush: Brush)
+func fillRoundRect(using self, rect: Rectangle, radiusX: f32, radiusY: f32, color: Color)
+func fillRoundRect(using self, left: f32, top: f32, width: f32, height: f32, radiusX: f32, radiusY: f32, brush: Brush)
 </code>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func fillRoundRect(using self, rect: Rectangle, radiusX: f32, radiusY: f32, brush: Brush)
-func fillRoundRect(using self, left: f32, top: f32, width: f32, height: f32, radiusX: f32, radiusY: f32, color: Color)
-func fillRoundRect(using self, rect: Rectangle, radiusX: f32, radiusY: f32, color: Color)
+<code style="white-space: break-spaces">func fillRoundRect(using self, left: f32, top: f32, width: f32, height: f32, radiusX: f32, radiusY: f32, color: Color)
 </code>
 </p>
 <p>
@@ -12210,20 +12201,20 @@ Get the current clipping rectangle.</p>
 <h3 class="content" id="Pixel.Painter.getGlyphs"><span class="titletype">func</span> <span class="titlelight">Painter.</span><span class="titlestrong">getGlyphs</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\painter\drawstring.swg#L57" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\painter\drawstring.swg#L71" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p>
 Returns all the glyphs for a given string and font.</p>
 <p class="code">
-<code style="white-space: break-spaces">func getGlyphs(text: string, font: *Font)->Array'(const *GlyphDesc)
+<code style="white-space: break-spaces">func getGlyphs(text: Array'(rune), font: *Font)->Array'(const *GlyphDesc)
 </code>
 </p>
 <p>
 Returns all the glyphs for a given string and font.</p>
 <p class="code">
-<code style="white-space: break-spaces">func getGlyphs(text: Array'(rune), font: *Font)->Array'(const *GlyphDesc)
+<code style="white-space: break-spaces">func getGlyphs(text: string, font: *Font)->Array'(const *GlyphDesc)
 </code>
 </p>
 <p>
@@ -12314,20 +12305,20 @@ Get a rune size for a given font.</p>
 <h3 class="content" id="Pixel.Painter.measureString"><span class="titletype">func</span> <span class="titlelight">Painter.</span><span class="titlestrong">measureString</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\painter\drawstring.swg#L95" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\painter\drawstring.swg#L102" class="src">[src]</a></td>
 </tr>
 </table>
-</p>
-<p>
-Returns the metrics of a given text.</p>
-<p class="code">
-<code style="white-space: break-spaces">func measureString(text: string, font: *Font)->StringMetrics
-</code>
 </p>
 <p>
 Returns the bounding rectangle if a given text, at a given position.</p>
 <p class="code">
 <code style="white-space: break-spaces">func measureString(text: Array'(const *GlyphDesc))->StringMetrics
+</code>
+</p>
+<p>
+Returns the metrics of a given text.</p>
+<p class="code">
+<code style="white-space: break-spaces">func measureString(text: string, font: *Font)->StringMetrics
 </code>
 </p>
 <p>
@@ -12596,20 +12587,20 @@ Set the current blending mode.</p>
 <h3 class="content" id="Pixel.Painter.setClippingRect"><span class="titletype">func</span> <span class="titlelight">Painter.</span><span class="titlestrong">setClippingRect</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\painter\painter.swg#L578" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\painter\painter.swg#L584" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p>
 Set the current clipping rectangle.</p>
 <p class="code">
-<code style="white-space: break-spaces">func setClippingRect(using self, x: f32, y: f32, width: f32, height: f32)
+<code style="white-space: break-spaces">func setClippingRect(using self, rect: Rectangle)
 </code>
 </p>
 <p>
 Set the current clipping rectangle.</p>
 <p class="code">
-<code style="white-space: break-spaces">func setClippingRect(using self, rect: Rectangle)
+<code style="white-space: break-spaces">func setClippingRect(using self, x: f32, y: f32, width: f32, height: f32)
 </code>
 </p>
 <p>
@@ -12636,20 +12627,20 @@ Set the clipping region mode.</p>
 <h3 class="content" id="Pixel.Painter.setColorMask"><span class="titletype">func</span> <span class="titlelight">Painter.</span><span class="titlestrong">setColorMask</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\painter\painter.swg#L695" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\painter\painter.swg#L703" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p>
 Set color mask.</p>
 <p class="code">
-<code style="white-space: break-spaces">func setColorMask(using self, cm: ColorMask)
+<code style="white-space: break-spaces">func setColorMask(using self, r: bool, g: bool, b: bool, a: bool)
 </code>
 </p>
 <p>
 Set color mask.</p>
 <p class="code">
-<code style="white-space: break-spaces">func setColorMask(using self, r: bool, g: bool, b: bool, a: bool)
+<code style="white-space: break-spaces">func setColorMask(using self, cm: ColorMask)
 </code>
 </p>
 <p>
@@ -12772,20 +12763,20 @@ Set the current shader.</p>
 <h3 class="content" id="Pixel.Painter.setShaderParam"><span class="titletype">func</span> <span class="titlelight">Painter.</span><span class="titlestrong">setShaderParam</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\painter\painter.swg#L763" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\painter\painter.swg#L772" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p>
 Set a shader parameter.</p>
 <p class="code">
-<code style="white-space: break-spaces">func setShaderParam(using self, param: ShaderParamHandle, val: s32)
+<code style="white-space: break-spaces">func setShaderParam(using self, param: ShaderParamHandle, val: f32)
 </code>
 </p>
 <p>
 Set a shader parameter.</p>
 <p class="code">
-<code style="white-space: break-spaces">func setShaderParam(using self, param: ShaderParamHandle, val: f32)
+<code style="white-space: break-spaces">func setShaderParam(using self, param: ShaderParamHandle, val: s32)
 </code>
 </p>
 <p>
