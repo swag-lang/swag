@@ -121,11 +121,6 @@
 <div class="container">
 <div class="left">
 <h1>Module ogl</h1>
-<h2>Namespaces</h2>
-<h3></h3>
-<ul class="tocbullet">
-<li><a href="#Ogl.PrivOgl">PrivOgl</a></li>
-</ul>
 <h2>Structs</h2>
 <h3></h3>
 <ul class="tocbullet">
@@ -2091,10 +2086,6 @@
 <li><a href="#Ogl.wglGetProcAddress">Ogl.wglGetProcAddress</a></li>
 <li><a href="#Ogl.wglMakeCurrent">Ogl.wglMakeCurrent</a></li>
 <li><a href="#Ogl.wglShareLists">Ogl.wglShareLists</a></li>
-<li><a href="#Ogl.PrivOgl.wglCreateContext">PrivOgl.wglCreateContext</a></li>
-<li><a href="#Ogl.PrivOgl.wglDeleteContext">PrivOgl.wglDeleteContext</a></li>
-<li><a href="#Ogl.PrivOgl.wglMakeCurrent">PrivOgl.wglMakeCurrent</a></li>
-<li><a href="#Ogl.PrivOgl.wglShareLists">PrivOgl.wglShareLists</a></li>
 </ul>
 </div>
 <div class="right">
@@ -12512,104 +12503,6 @@ string</td>
 </td>
 </tr>
 </table>
-<p>
-<table class="h3">
-<tr>
-<td class="h3">
-<h3 class="content" id="Ogl.PrivOgl"><span class="titletype">namespace</span> <span class="titlelight">Ogl.</span><span class="titlestrong">PrivOgl</span></h3>
-</td>
-<td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/ogl\src\ogl.win32.swg#L14" class="src">[src]</a></td>
-</tr>
-</table>
-</p>
-<h3>Functions</h3>
-<table class="enumeration">
-<tr>
-<td class="enumeration">
-<a href="#Ogl.PrivOgl.wglCreateContext">wglCreateContext(HDC)</a></td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="enumeration">
-<a href="#Ogl.PrivOgl.wglDeleteContext">wglDeleteContext(HGLRC)</a></td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="enumeration">
-<a href="#Ogl.PrivOgl.wglMakeCurrent">wglMakeCurrent(HDC, HGLRC)</a></td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="enumeration">
-<a href="#Ogl.PrivOgl.wglShareLists">wglShareLists(HGLRC, HGLRC)</a></td>
-<td class="enumeration">
-</td>
-</tr>
-</table>
-<p>
-<table class="h3">
-<tr>
-<td class="h3">
-<h3 class="content" id="Ogl.PrivOgl.wglCreateContext"><span class="titletype">func</span> <span class="titlelight">PrivOgl.</span><span class="titlestrong">wglCreateContext</span></h3>
-</td>
-<td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/ogl\src\ogl.win32.swg#L18" class="src">[src]</a></td>
-</tr>
-</table>
-</p>
-<p class="code">
-<code style="white-space: break-spaces">func wglCreateContext(hDc: HDC)->HGLRC
-</code>
-</p>
-<p>
-<table class="h3">
-<tr>
-<td class="h3">
-<h3 class="content" id="Ogl.PrivOgl.wglDeleteContext"><span class="titletype">func</span> <span class="titlelight">PrivOgl.</span><span class="titlestrong">wglDeleteContext</span></h3>
-</td>
-<td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/ogl\src\ogl.win32.swg#L19" class="src">[src]</a></td>
-</tr>
-</table>
-</p>
-<p class="code">
-<code style="white-space: break-spaces">func wglDeleteContext(hRc: HGLRC)->BOOL
-</code>
-</p>
-<p>
-<table class="h3">
-<tr>
-<td class="h3">
-<h3 class="content" id="Ogl.PrivOgl.wglMakeCurrent"><span class="titletype">func</span> <span class="titlelight">PrivOgl.</span><span class="titlestrong">wglMakeCurrent</span></h3>
-</td>
-<td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/ogl\src\ogl.win32.swg#L20" class="src">[src]</a></td>
-</tr>
-</table>
-</p>
-<p class="code">
-<code style="white-space: break-spaces">func wglMakeCurrent(hDc: HDC, hRc: HGLRC)->BOOL
-</code>
-</p>
-<p>
-<table class="h3">
-<tr>
-<td class="h3">
-<h3 class="content" id="Ogl.PrivOgl.wglShareLists"><span class="titletype">func</span> <span class="titlelight">PrivOgl.</span><span class="titlestrong">wglShareLists</span></h3>
-</td>
-<td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/ogl\src\ogl.win32.swg#L21" class="src">[src]</a></td>
-</tr>
-</table>
-</p>
-<p class="code">
-<code style="white-space: break-spaces">func wglShareLists(hRc0: HGLRC, hRc1: HGLRC)->BOOL
-</code>
-</p>
 <p>
 <table class="h3">
 <tr>
