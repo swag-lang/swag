@@ -1137,9 +1137,9 @@ void ModuleGenDocJob::generateContent()
 
                 if (!subUserComment.shortDesc.lines.empty() || !subUserComment.blocks.empty())
                 {
+                    outputUserBlock(subUserComment.shortDesc);
                     outputCode(code);
                     code.clear();
-                    outputUserBlock(subUserComment.shortDesc);
                     outputUserComment(subUserComment);
                 }
             }
