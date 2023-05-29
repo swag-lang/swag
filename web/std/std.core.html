@@ -4660,7 +4660,7 @@ Clean and split a list of arguments -option:value or -option=value =&gt; -option
 <h3 class="content" id="Core.Compress"><span class="titletype">namespace</span> <span class="titlelight">Core.</span><span class="titlestrong">Compress</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\compress\deflate.swg#L8" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\compress\zlib.swg#L2" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -7495,7 +7495,7 @@ Starts a new process with arguments.</p>
 <h3 class="content" id="Core.File"><span class="titletype">namespace</span> <span class="titlelight">Core.</span><span class="titlestrong">File</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\tweakfile.swg#L1" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\file.swg#L2" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -12842,18 +12842,18 @@ Determines whether given key has just been released.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Core.Input.Keyboard.isKeyPressed">isKeyPressed(self, Key)</a></td>
-<td class="enumeration">
-<p>
-Determines whether given key is currently being pressed.</p>
-</td>
-</tr>
-<tr>
-<td class="enumeration">
 <a href="#Core.Input.Keyboard.isKeyPressed">isKeyPressed(Key)</a></td>
 <td class="enumeration">
 <p>
 Returns true if the given key is pressed.</p>
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Core.Input.Keyboard.isKeyPressed">isKeyPressed(self, Key)</a></td>
+<td class="enumeration">
+<p>
+Determines whether given key is currently being pressed.</p>
 </td>
 </tr>
 <tr>
@@ -12968,20 +12968,20 @@ Determines whether given key has just been released.</p>
 <h3 class="content" id="Core.Input.Keyboard.isKeyPressed"><span class="titletype">func</span> <span class="titlelight">Keyboard.</span><span class="titlestrong">isKeyPressed</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\input\keyboard.swg#L72" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\input\keyboard.win32.swg#L225" class="src">[src]</a></td>
 </tr>
 </table>
-</p>
-<p>
-Determines whether given key is currently being pressed.</p>
-<p class="code">
-<code style="white-space: break-spaces">func isKeyPressed(using self, key: Key)->bool
-</code>
 </p>
 <p>
 Returns true if the given key is pressed.</p>
 <p class="code">
 <code style="white-space: break-spaces">func isKeyPressed(key: Key)->bool
+</code>
+</p>
+<p>
+Determines whether given key is currently being pressed.</p>
+<p class="code">
+<code style="white-space: break-spaces">func isKeyPressed(using self, key: Key)->bool
 </code>
 </p>
 <p>
@@ -15397,7 +15397,13 @@ A simple rectangle with 4 coordinates.</p>
 <table class="enumeration">
 <tr>
 <td class="enumeration">
-<a href="#Core.Math.abs">abs(f32)</a></td>
+<a href="#Core.Math.abs">abs(f64)</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Core.Math.abs">abs(s8)</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -15421,25 +15427,19 @@ A simple rectangle with 4 coordinates.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Core.Math.abs">abs(f64)</a></td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="enumeration">
-<a href="#Core.Math.abs">abs(s8)</a></td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="enumeration">
-<a href="#Core.Math.acos">acos(f32)</a></td>
+<a href="#Core.Math.abs">abs(f32)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core.Math.acos">acos(f64)</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Core.Math.acos">acos(f32)</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -15489,13 +15489,13 @@ Convert a big endian integer to current arch native format.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Core.Math.ceil">ceil(f64)</a></td>
+<a href="#Core.Math.ceil">ceil(f32)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Core.Math.ceil">ceil(f32)</a></td>
+<a href="#Core.Math.ceil">ceil(f64)</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -15519,31 +15519,19 @@ Convert a big endian integer to current arch native format.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Core.Math.cosh">cosh(f64)</a></td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="enumeration">
 <a href="#Core.Math.cosh">cosh(f32)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
+<a href="#Core.Math.cosh">cosh(f64)</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="enumeration">
 <a href="#Core.Math.countOnes">countOnes(u64)</a></td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="enumeration">
-<a href="#Core.Math.countOnes">countOnes(u32)</a></td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="enumeration">
-<a href="#Core.Math.countOnes">countOnes(u16)</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -15557,7 +15545,13 @@ Returns the number of bits set to 1.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Core.Math.exp">exp(f64)</a></td>
+<a href="#Core.Math.countOnes">countOnes(u16)</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Core.Math.countOnes">countOnes(u32)</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -15569,7 +15563,7 @@ Returns the number of bits set to 1.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Core.Math.exp2">exp2(f32)</a></td>
+<a href="#Core.Math.exp">exp(f64)</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -15581,13 +15575,19 @@ Returns the number of bits set to 1.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Core.Math.floor">floor(f32)</a></td>
+<a href="#Core.Math.exp2">exp2(f32)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core.Math.floor">floor(f64)</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Core.Math.floor">floor(f32)</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -15601,20 +15601,22 @@ Determin if an integer has a given byte.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Core.Math.hasByte">hasByte(u64, u8)</a></td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="enumeration">
 <a href="#Core.Math.hasByte">hasByte(u32, u8)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Core.Math.hasZeroByte">hasZeroByte(u64)</a></td>
+<a href="#Core.Math.hasByte">hasByte(u64, u8)</a></td>
 <td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Core.Math.hasZeroByte">hasZeroByte(u16)</a></td>
+<td class="enumeration">
+<p>
+Determin if any of the bytes is zero.</p>
 </td>
 </tr>
 <tr>
@@ -15625,10 +15627,8 @@ Determin if an integer has a given byte.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Core.Math.hasZeroByte">hasZeroByte(u16)</a></td>
+<a href="#Core.Math.hasZeroByte">hasZeroByte(u64)</a></td>
 <td class="enumeration">
-<p>
-Determin if any of the bytes is zero.</p>
 </td>
 </tr>
 <tr>
@@ -15645,13 +15645,13 @@ Determin if any of the bytes is zero.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Core.Math.isNan">isNan(f32)</a></td>
+<a href="#Core.Math.isNan">isNan(f64)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Core.Math.isNan">isNan(f64)</a></td>
+<a href="#Core.Math.isNan">isNan(f32)</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -15663,13 +15663,13 @@ Determin if any of the bytes is zero.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Core.Math.isZeroEpsilon">isZeroEpsilon(f64, f64)</a></td>
+<a href="#Core.Math.isZeroEpsilon">isZeroEpsilon(f32, f32)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Core.Math.isZeroEpsilon">isZeroEpsilon(f32, f32)</a></td>
+<a href="#Core.Math.isZeroEpsilon">isZeroEpsilon(f64, f64)</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -15681,13 +15681,13 @@ Determin if any of the bytes is zero.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Core.Math.leadingZeros">leadingZeros(u64)</a></td>
+<a href="#Core.Math.leadingZeros">leadingZeros(u32)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Core.Math.leadingZeros">leadingZeros(u32)</a></td>
+<a href="#Core.Math.leadingZeros">leadingZeros(u64)</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -15733,13 +15733,13 @@ Convert a little endian integer to current arch native format.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Core.Math.log10">log10(f32)</a></td>
+<a href="#Core.Math.log10">log10(f64)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Core.Math.log10">log10(f64)</a></td>
+<a href="#Core.Math.log10">log10(f32)</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -15781,61 +15781,25 @@ Make a 64 bits by repeating a given byte 0x20 =&gt; 0x20202020_20202020.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Core.Math.map">map(f64, f64, f64, f64, f64)</a></td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="enumeration">
 <a href="#Core.Math.map">map(f32, f32, f32, f32, f32)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Core.Math.max">max(u8, u8)</a></td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="enumeration">
-<a href="#Core.Math.max">max(u16, u16)</a></td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="enumeration">
-<a href="#Core.Math.max">max(u64, u64)</a></td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="enumeration">
-<a href="#Core.Math.max">max(f64, f64)</a></td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="enumeration">
-<a href="#Core.Math.max">max(s8, s8)</a></td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="enumeration">
-<a href="#Core.Math.max">max(u32, u32)</a></td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="enumeration">
-<a href="#Core.Math.max">max(f32, f32)</a></td>
+<a href="#Core.Math.map">map(f64, f64, f64, f64, f64)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core.Math.max">max(T, T, T)</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Core.Math.max">max(f64, f64)</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -15859,55 +15823,43 @@ Make a 64 bits by repeating a given byte 0x20 =&gt; 0x20202020_20202020.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Core.Math.min">min(s64, s64)</a></td>
+<a href="#Core.Math.max">max(u64, u64)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Core.Math.min">min(s32, s32)</a></td>
+<a href="#Core.Math.max">max(s8, s8)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Core.Math.min">min(f32, f32)</a></td>
+<a href="#Core.Math.max">max(u8, u8)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Core.Math.min">min(u32, u32)</a></td>
+<a href="#Core.Math.max">max(u16, u16)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Core.Math.min">min(T, T, T)</a></td>
+<a href="#Core.Math.max">max(u32, u32)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Core.Math.min">min(s16, s16)</a></td>
+<a href="#Core.Math.max">max(f32, f32)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core.Math.min">min(u64, u64)</a></td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="enumeration">
-<a href="#Core.Math.min">min(u8, u8)</a></td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="enumeration">
-<a href="#Core.Math.min">min(u16, u16)</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -15925,13 +15877,61 @@ Make a 64 bits by repeating a given byte 0x20 =&gt; 0x20202020_20202020.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Core.Math.mulAdd">mulAdd(f32, f32, f32)</a></td>
+<a href="#Core.Math.min">min(s16, s16)</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Core.Math.min">min(s32, s32)</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Core.Math.min">min(s64, s64)</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Core.Math.min">min(u8, u8)</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Core.Math.min">min(u32, u32)</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Core.Math.min">min(f32, f32)</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Core.Math.min">min(T, T, T)</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Core.Math.min">min(u16, u16)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core.Math.mulAdd">mulAdd(f64, f64, f64)</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Core.Math.mulAdd">mulAdd(f32, f32, f32)</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -15989,13 +15989,13 @@ Reverse all bits.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Core.Math.round">round(f32)</a></td>
+<a href="#Core.Math.round">round(f64)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Core.Math.round">round(f64)</a></td>
+<a href="#Core.Math.round">round(f32)</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -16013,37 +16013,13 @@ Reverse all bits.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Core.Math.saturate">saturate(f32)</a></td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="enumeration">
 <a href="#Core.Math.saturate">saturate(f64)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Core.Math.sign">sign(f64)</a></td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="enumeration">
-<a href="#Core.Math.sign">sign(f32)</a></td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="enumeration">
-<a href="#Core.Math.sign">sign(s16)</a></td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="enumeration">
-<a href="#Core.Math.sign">sign(s32)</a></td>
+<a href="#Core.Math.saturate">saturate(f32)</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -16055,19 +16031,43 @@ Reverse all bits.</p>
 </tr>
 <tr>
 <td class="enumeration">
+<a href="#Core.Math.sign">sign(s32)</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Core.Math.sign">sign(s16)</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Core.Math.sign">sign(f64)</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="enumeration">
 <a href="#Core.Math.sign">sign(s8)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Core.Math.sin">sin(f32)</a></td>
+<a href="#Core.Math.sign">sign(f32)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core.Math.sin">sin(f64)</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Core.Math.sin">sin(f32)</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -16097,19 +16097,13 @@ Reverse all bits.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Core.Math.sqrt">sqrt(f64)</a></td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="enumeration">
 <a href="#Core.Math.sqrt">sqrt(f32)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Core.Math.tan">tan(f32)</a></td>
+<a href="#Core.Math.sqrt">sqrt(f64)</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -16121,13 +16115,19 @@ Reverse all bits.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Core.Math.tanh">tanh(f32)</a></td>
+<a href="#Core.Math.tan">tan(f32)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core.Math.tanh">tanh(f64)</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Core.Math.tanh">tanh(f32)</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -16157,6 +16157,12 @@ Reverse all bits.</p>
 </tr>
 <tr>
 <td class="enumeration">
+<a href="#Core.Math.trailingZeros">trailingZeros(u16)</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="enumeration">
 <a href="#Core.Math.trailingZeros">trailingZeros(u8)</a></td>
 <td class="enumeration">
 <p>
@@ -16165,19 +16171,13 @@ Returns the number of bits set to 0 from the right.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Core.Math.trailingZeros">trailingZeros(u16)</a></td>
+<a href="#Core.Math.trailingZeros">trailingZeros(u64)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core.Math.trailingZeros">trailingZeros(u32)</a></td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="enumeration">
-<a href="#Core.Math.trailingZeros">trailingZeros(u64)</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -21034,14 +21034,14 @@ func map(val: f64, minSrc: f64, maxSrc: f64, minDst: f64, maxDst: f64)->f64
 <h3 class="content" id="Core.Math.max"><span class="titletype">func</span> <span class="titlelight">Math.</span><span class="titlestrong">max</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L81" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\helpers.swg#L8" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func max(x: f32, y: f32)
+<code style="white-space: break-spaces">func(T) max(x: T, y: T, z: T)->T
+func max(x: f32, y: f32)
 func max(x: f64, y: f64)
-func(T) max(x: T, y: T, z: T)->T
 func max(x: s8, y: s8)
 func max(x: s16, y: s16)
 func max(x: s32, y: s32)
@@ -21059,14 +21059,14 @@ func max(x: u64, y: u64)
 <h3 class="content" id="Core.Math.min"><span class="titletype">func</span> <span class="titlelight">Math.</span><span class="titlestrong">min</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L79" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\helpers.swg#L7" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func min(x: f32, y: f32)
+<code style="white-space: break-spaces">func(T) min(x: T, y: T, z: T)->T
+func min(x: f32, y: f32)
 func min(x: f64, y: f64)
-func(T) min(x: T, y: T, z: T)->T
 func min(x: s8, y: s8)
 func min(x: s16, y: s16)
 func min(x: s32, y: s32)
@@ -28542,7 +28542,7 @@ Determin if a type can be serialized by a simple copy.</p>
 <h3 class="content" id="Core.Slice"><span class="titletype">namespace</span> <span class="titlelight">Core.</span><span class="titlestrong">Slice</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\slice\sort.swg#L2" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\slice\treat.swg#L2" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -29815,7 +29815,7 @@ Returns a slice.</p>
 <h3 class="content" id="Core.StrConv"><span class="titletype">namespace</span> <span class="titlelight">Core.</span><span class="titlestrong">StrConv</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\decimal.swg#L8" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\parse.swg#L2" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -33404,7 +33404,7 @@ func pushContext(cxt: Context, stmt: code)
 <h3 class="content" id="Core.Threading"><span class="titletype">namespace</span> <span class="titlelight">Core.</span><span class="titlestrong">Threading</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\thread\thread.swg#L2" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\thread\thread.win32.swg#L3" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -36081,7 +36081,7 @@ Split the string into an array of lines Note that this returns an array of nativ
 <td class="tdname">
 uuid</td>
 <td class="tdtype">
-__uuid_tuple_24</td>
+__uuid_tuple_29</td>
 <td class="enumeration">
 </td>
 </tr>

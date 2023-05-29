@@ -1244,6 +1244,11 @@ JobResult ModuleGenDocJob::execute()
             oneRef.displayName += tkn[tkn.size() - 1];
         }
 
+        sort(oneRef.nodes.begin(), oneRef.nodes.end(), [](AstNode* a, AstNode* b)
+             { 
+                auto a0 = a->typeInfo->computeWhateverName(COMPUTE_SCOPED_NAME);
+                auto b0 = a->typeInfo->computeWhateverName(COMPUTE_SCOPED_NAME);
+                return strcmp(a0.c_str(), b0.c_str()) < 0; });
         allNodes.push_back(oneRef);
     }
 
