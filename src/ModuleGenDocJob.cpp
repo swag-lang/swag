@@ -746,7 +746,7 @@ void ModuleGenDocJob::outputStyles()
             background-color:   LightYellow;\n\
             border-left:        6px solid Orange;\n\
             padding:            10px;\n\
-            margin-right:       10px;\n\
+            width:              90%;\n\
         }\n\
         .left {\n\
             display:    block;\n\
@@ -827,10 +827,13 @@ void ModuleGenDocJob::outputStyles()
             background-color:   Black;\n\
             color:              White;\n\
             width:              100%;\n\
-            margin-top:         60px;\n\
+            margin-top:         70px;\n\
+            margin-right:       0px;\n\
         }\n\
         h3.content {\n\
             margin-bottom:      2px;\n\
+            margin-right:       0px;\n\
+            width:              100%;\n\
         }\n\
         .srcref {\n\
             text-align:         right;\n\
@@ -844,7 +847,7 @@ void ModuleGenDocJob::outputStyles()
             background-color:   #eeeeee;\n\
             border:             1px solid LightGrey;\n\
             padding:            10px;\n\
-            width:              90%;\n\
+            width:              94%;\n\
             margin-left:        20px;\n\
         }\n";
     helpContent += "</style>\n";
@@ -876,8 +879,7 @@ int ModuleGenDocJob::sortOrder(AstNodeKind kind)
 void ModuleGenDocJob::generateContent()
 {
     helpContent += "<blockquote>\n";
-    helpContent += "<p>Work in progress</p>";
-    helpContent += Fmt("<p>Generated documentation (Swag doc %d.%d.%d)</p>", SWAG_BUILD_VERSION, SWAG_BUILD_REVISION, SWAG_BUILD_NUM);
+    helpContent += Fmt("<b>Work in progress</b>. Generated documentation (swag doc %d.%d.%d)", SWAG_BUILD_VERSION, SWAG_BUILD_REVISION, SWAG_BUILD_NUM);
     helpContent += "</blockquote>\n";
 
     // Output module description
