@@ -177,7 +177,7 @@ Wrapper for Microsoft DirectX Input.</p>
 <td class="tdname">
 wButtons</td>
 <td class="tdtype">
-WORD</td>
+Win32.WORD</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -185,7 +185,7 @@ WORD</td>
 <td class="tdname">
 bLeftTrigger</td>
 <td class="tdtype">
-BYTE</td>
+Win32.BYTE</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -193,7 +193,7 @@ BYTE</td>
 <td class="tdname">
 bRightTrigger</td>
 <td class="tdtype">
-BYTE</td>
+Win32.BYTE</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -201,7 +201,7 @@ BYTE</td>
 <td class="tdname">
 sThumbLX</td>
 <td class="tdtype">
-SHORT</td>
+Win32.SHORT</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -209,7 +209,7 @@ SHORT</td>
 <td class="tdname">
 sThumbLY</td>
 <td class="tdtype">
-SHORT</td>
+Win32.SHORT</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -217,7 +217,7 @@ SHORT</td>
 <td class="tdname">
 sThumbRX</td>
 <td class="tdtype">
-SHORT</td>
+Win32.SHORT</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -225,7 +225,7 @@ SHORT</td>
 <td class="tdname">
 sThumbRY</td>
 <td class="tdtype">
-SHORT</td>
+Win32.SHORT</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -371,7 +371,7 @@ u16</td>
 <td class="tdname">
 dwPacketNumber</td>
 <td class="tdtype">
-DWORD</td>
+Win32.DWORD</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -379,7 +379,7 @@ DWORD</td>
 <td class="tdname">
 Gamepad</td>
 <td class="tdtype">
-<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.xinput.html#XInput.XINPUT_GAMEPAD">XINPUT_GAMEPAD</a></td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.xinput.html#XInput.XINPUT_GAMEPAD">XInput.XINPUT_GAMEPAD</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -400,7 +400,7 @@ Gamepad</td>
 <td class="tdname">
 wLeftMotorSpeed</td>
 <td class="tdtype">
-WORD</td>
+Win32.WORD</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -408,7 +408,7 @@ WORD</td>
 <td class="tdname">
 wRightMotorSpeed</td>
 <td class="tdtype">
-WORD</td>
+Win32.WORD</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -425,7 +425,7 @@ WORD</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func XInputGetState(dwUserIndex: DWORD, pState: *XINPUT_STATE)->DWORD
+<code style="white-space: break-spaces">func XInputGetState(dwUserIndex: DWORD, pState: XINPUT_STATE)->DWORD
 </code>
 </p>
 <p>
@@ -440,7 +440,7 @@ WORD</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func XInputSetState(dwUserIndex: DWORD, pVibration: *XINPUT_VIBRATION)->DWORD
+<code style="white-space: break-spaces">func XInputSetState(dwUserIndex: DWORD, pVibration: XINPUT_VIBRATION)->DWORD
 </code>
 </p>
 </div>

@@ -985,7 +985,7 @@ u32</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func acrt_iob_func(index: u32)->*FILE
+<code style="white-space: break-spaces">func acrt_iob_func(index: u32)->FILE
 </code>
 </p>
 <p>
@@ -1015,7 +1015,7 @@ u32</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func asctime(timeptr: *tm)->*u8
+<code style="white-space: break-spaces">func asctime(timeptr: tm)->*u8
 </code>
 </p>
 <p>
@@ -1330,7 +1330,7 @@ u32</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func clearerr(stream: *FILE)
+<code style="white-space: break-spaces">func clearerr(stream: FILE)
 </code>
 </p>
 <p>
@@ -1450,7 +1450,7 @@ u32</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func ctime(timer: const *time_t)->*u8
+<code style="white-space: break-spaces">func ctime(timer: time_t)->*u8
 </code>
 </p>
 <p>
@@ -1721,7 +1721,7 @@ func atexit(fn: *void)-&gt;s32;func at_quick_exit(fn: *void)-&gt;s32;.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func fclose(stream: *FILE)->s64
+<code style="white-space: break-spaces">func fclose(stream: FILE)->s64
 </code>
 </p>
 <p>
@@ -1766,7 +1766,7 @@ func atexit(fn: *void)-&gt;s32;func at_quick_exit(fn: *void)-&gt;s32;.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func feof(stream: *FILE)->s64
+<code style="white-space: break-spaces">func feof(stream: FILE)->s64
 </code>
 </p>
 <p>
@@ -1781,7 +1781,7 @@ func atexit(fn: *void)-&gt;s32;func at_quick_exit(fn: *void)-&gt;s32;.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func ferror(stream: *FILE)->s64
+<code style="white-space: break-spaces">func ferror(stream: FILE)->s64
 </code>
 </p>
 <p>
@@ -1796,7 +1796,7 @@ func atexit(fn: *void)-&gt;s32;func at_quick_exit(fn: *void)-&gt;s32;.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func fflush(stream: *FILE)->s64
+<code style="white-space: break-spaces">func fflush(stream: FILE)->s64
 </code>
 </p>
 <p>
@@ -1811,7 +1811,7 @@ func atexit(fn: *void)-&gt;s32;func at_quick_exit(fn: *void)-&gt;s32;.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func fgetc(stream: *FILE)->s64
+<code style="white-space: break-spaces">func fgetc(stream: FILE)->s64
 </code>
 </p>
 <p>
@@ -1826,7 +1826,7 @@ func atexit(fn: *void)-&gt;s32;func at_quick_exit(fn: *void)-&gt;s32;.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func fgetpos(stream: *FILE, pos: *fpos_t)->s64
+<code style="white-space: break-spaces">func fgetpos(stream: FILE, pos: fpos_t)->s64
 </code>
 </p>
 <p>
@@ -1841,7 +1841,7 @@ func atexit(fn: *void)-&gt;s32;func at_quick_exit(fn: *void)-&gt;s32;.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func fgets(s: *u8, n: s64, stream: *FILE)->*u8
+<code style="white-space: break-spaces">func fgets(s: *u8, n: s64, stream: FILE)->*u8
 </code>
 </p>
 <p>
@@ -2006,7 +2006,7 @@ func atexit(fn: *void)-&gt;s32;func at_quick_exit(fn: *void)-&gt;s32;.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func fopen(filename: cstring, mode: cstring)->*FILE
+<code style="white-space: break-spaces">func fopen(filename: cstring, mode: cstring)->FILE
 </code>
 </p>
 <p>
@@ -2051,7 +2051,7 @@ func atexit(fn: *void)-&gt;s32;func at_quick_exit(fn: *void)-&gt;s32;.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func fprintf(file: *FILE, format: cstring, args: cvarargs)->s64
+<code style="white-space: break-spaces">func fprintf(file: FILE, format: cstring, args: cvarargs)->s64
 </code>
 </p>
 <p>
@@ -2066,7 +2066,7 @@ func atexit(fn: *void)-&gt;s32;func at_quick_exit(fn: *void)-&gt;s32;.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func fputc(s: cstring, stream: *FILE)->s64
+<code style="white-space: break-spaces">func fputc(s: cstring, stream: FILE)->s64
 </code>
 </p>
 <p>
@@ -2081,7 +2081,7 @@ func atexit(fn: *void)-&gt;s32;func at_quick_exit(fn: *void)-&gt;s32;.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func fread(ptr: *void, size: size_t, stream: *FILE)->size_t
+<code style="white-space: break-spaces">func fread(ptr: *void, size: size_t, stream: FILE)->size_t
 </code>
 </p>
 <p>
@@ -2111,7 +2111,7 @@ func atexit(fn: *void)-&gt;s32;func at_quick_exit(fn: *void)-&gt;s32;.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func freopen(filename: cstring, mode: cstring, stream: *FILE)->*FILE
+<code style="white-space: break-spaces">func freopen(filename: cstring, mode: cstring, stream: FILE)->FILE
 </code>
 </p>
 <p>
@@ -2156,7 +2156,7 @@ func atexit(fn: *void)-&gt;s32;func at_quick_exit(fn: *void)-&gt;s32;.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func fscanf(file: *FILE, format: cstring, args: cvarargs)->s64
+<code style="white-space: break-spaces">func fscanf(file: FILE, format: cstring, args: cvarargs)->s64
 </code>
 </p>
 <p>
@@ -2171,7 +2171,7 @@ func atexit(fn: *void)-&gt;s32;func at_quick_exit(fn: *void)-&gt;s32;.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func fseek(stream: *FILE, offset: s32, whence: s64)->s64
+<code style="white-space: break-spaces">func fseek(stream: FILE, offset: s32, whence: s64)->s64
 </code>
 </p>
 <p>
@@ -2186,7 +2186,7 @@ func atexit(fn: *void)-&gt;s32;func at_quick_exit(fn: *void)-&gt;s32;.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func fsetpos(stream: *FILE, pos: *fpos_t)->s64
+<code style="white-space: break-spaces">func fsetpos(stream: FILE, pos: fpos_t)->s64
 </code>
 </p>
 <p>
@@ -2201,7 +2201,7 @@ func atexit(fn: *void)-&gt;s32;func at_quick_exit(fn: *void)-&gt;s32;.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func ftell(stream: *FILE)->s32
+<code style="white-space: break-spaces">func ftell(stream: FILE)->s32
 </code>
 </p>
 <p>
@@ -2216,7 +2216,7 @@ func atexit(fn: *void)-&gt;s32;func at_quick_exit(fn: *void)-&gt;s32;.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func fwrite(ptr: *void, size: size_t, nmemb: size_t, stream: *FILE)->size_t
+<code style="white-space: break-spaces">func fwrite(ptr: *void, size: size_t, nmemb: size_t, stream: FILE)->size_t
 </code>
 </p>
 <p>
@@ -2231,7 +2231,7 @@ func atexit(fn: *void)-&gt;s32;func at_quick_exit(fn: *void)-&gt;s32;.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func getc(stream: *FILE)->s64
+<code style="white-space: break-spaces">func getc(stream: FILE)->s64
 </code>
 </p>
 <p>
@@ -2276,7 +2276,7 @@ func atexit(fn: *void)-&gt;s32;func at_quick_exit(fn: *void)-&gt;s32;.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func gmtime(timer: *time_t)->*tm
+<code style="white-space: break-spaces">func gmtime(timer: time_t)->tm
 </code>
 </p>
 <p>
@@ -2929,7 +2929,7 @@ s64</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func localtime(timer: *time_t)->*tm
+<code style="white-space: break-spaces">func localtime(timer: time_t)->tm
 </code>
 </p>
 <p>
@@ -3184,7 +3184,7 @@ s64</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func mbstowcs(pwcs: *wchar_t, s: cstring, n: size_t)->size_t
+<code style="white-space: break-spaces">func mbstowcs(pwcs: wchar_t, s: cstring, n: size_t)->size_t
 </code>
 </p>
 <p>
@@ -3199,7 +3199,7 @@ s64</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func mbtowc(pwc: *wchar_t, s: cstring, n: size_t)->s32
+<code style="white-space: break-spaces">func mbtowc(pwc: wchar_t, s: cstring, n: size_t)->s32
 </code>
 </p>
 <p>
@@ -3289,7 +3289,7 @@ s64</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func mktime(timeptr: *tm)->time_t
+<code style="white-space: break-spaces">func mktime(timeptr: tm)->time_t
 </code>
 </p>
 <p>
@@ -3484,7 +3484,7 @@ s64</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func putc(c: s64, stream: *FILE)->s64
+<code style="white-space: break-spaces">func putc(c: s64, stream: FILE)->s64
 </code>
 </p>
 <p>
@@ -3679,7 +3679,7 @@ s64</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func rewind(stream: *FILE)
+<code style="white-space: break-spaces">func rewind(stream: FILE)
 </code>
 </p>
 <p>
@@ -3829,7 +3829,7 @@ s64</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func setbuf(stream: *FILE, buf: *u8)
+<code style="white-space: break-spaces">func setbuf(stream: FILE, buf: *u8)
 </code>
 </p>
 <p>
@@ -3844,7 +3844,7 @@ s64</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func setvbuf(stream: *FILE, buf: *u8, mode: s64, size: size_t)->s64
+<code style="white-space: break-spaces">func setvbuf(stream: FILE, buf: *u8, mode: s64, size: size_t)->s64
 </code>
 </p>
 <p>
@@ -4025,7 +4025,7 @@ func signbit(x: f64)
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func stdio_common_vfprintf(_Options: u64, _Stream: *FILE, _Format: cstring, _Locale: *void, _ArgList: *void)->s32
+<code style="white-space: break-spaces">func stdio_common_vfprintf(_Options: u64, _Stream: FILE, _Format: cstring, _Locale: *void, _ArgList: *void)->s32
 </code>
 </p>
 <p>
@@ -4040,7 +4040,7 @@ func signbit(x: f64)
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func stdio_common_vfscanf(_Options: u64, _Stream: *FILE, _Format: cstring, _Locale: *void, _ArgList: *void)->s32
+<code style="white-space: break-spaces">func stdio_common_vfscanf(_Options: u64, _Stream: FILE, _Format: cstring, _Locale: *void, _ArgList: *void)->s32
 </code>
 </p>
 <p>
@@ -4190,7 +4190,7 @@ func signbit(x: f64)
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func strftime(s: *u8, maxsize: size_t, format: const *u8, timeptr: *tm)->size_t
+<code style="white-space: break-spaces">func strftime(s: *u8, maxsize: size_t, format: const *u8, timeptr: tm)->size_t
 </code>
 </p>
 <p>
@@ -4550,7 +4550,7 @@ func signbit(x: f64)
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func time(timer: *time_t)->time_t
+<code style="white-space: break-spaces">func time(timer: time_t)->time_t
 </code>
 </p>
 <p>
@@ -4650,7 +4650,7 @@ s32</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func tmpfile()->*FILE
+<code style="white-space: break-spaces">func tmpfile()->FILE
 </code>
 </p>
 <p>
@@ -4740,7 +4740,7 @@ s32</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func ungetc(c: s64, stream: *FILE)->s64
+<code style="white-space: break-spaces">func ungetc(c: s64, stream: FILE)->s64
 </code>
 </p>
 <p>
@@ -4756,7 +4756,7 @@ s32</td>
 </p>
 <p class="code">
 <code style="white-space: break-spaces">#[Swag.Macro]
-func va_end(vl: *CVaList)
+func va_end(vl: CVaList)
 </code>
 </p>
 <p>
@@ -4772,7 +4772,7 @@ func va_end(vl: *CVaList)
 </p>
 <p class="code">
 <code style="white-space: break-spaces">#[Swag.Macro]
-func va_start(vl: *CVaList, dummy: any)
+func va_start(vl: CVaList, dummy: any)
 </code>
 </p>
 <p>
@@ -4787,7 +4787,7 @@ func va_start(vl: *CVaList, dummy: any)
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func vfprintf(file: *FILE, format: cstring, args: *CVaList)->s64
+<code style="white-space: break-spaces">func vfprintf(file: FILE, format: cstring, args: CVaList)->s64
 </code>
 </p>
 <p>
@@ -4802,7 +4802,7 @@ func va_start(vl: *CVaList, dummy: any)
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func vfscanf(file: *FILE, format: cstring, args: *CVaList)->s64
+<code style="white-space: break-spaces">func vfscanf(file: FILE, format: cstring, args: CVaList)->s64
 </code>
 </p>
 <p>
@@ -4817,7 +4817,7 @@ func va_start(vl: *CVaList, dummy: any)
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func vprintf(format: cstring, args: *CVaList)->s64
+<code style="white-space: break-spaces">func vprintf(format: cstring, args: CVaList)->s64
 </code>
 </p>
 <p>
@@ -4832,7 +4832,7 @@ func va_start(vl: *CVaList, dummy: any)
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func vscanf(format: cstring, args: *CVaList)->s64
+<code style="white-space: break-spaces">func vscanf(format: cstring, args: CVaList)->s64
 </code>
 </p>
 <p>
@@ -4847,7 +4847,7 @@ func va_start(vl: *CVaList, dummy: any)
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func vsnprintf(s: *u8, count: size_t, format: cstring, args: *CVaList)->s64
+<code style="white-space: break-spaces">func vsnprintf(s: *u8, count: size_t, format: cstring, args: CVaList)->s64
 </code>
 </p>
 <p>
@@ -4862,7 +4862,7 @@ func va_start(vl: *CVaList, dummy: any)
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func vsprintf(s: *u8, format: cstring, args: *CVaList)->s64
+<code style="white-space: break-spaces">func vsprintf(s: *u8, format: cstring, args: CVaList)->s64
 </code>
 </p>
 <p>
@@ -4877,7 +4877,7 @@ func va_start(vl: *CVaList, dummy: any)
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func vsscanf(s: cstring, format: cstring, args: *CVaList)->s64
+<code style="white-space: break-spaces">func vsscanf(s: cstring, format: cstring, args: CVaList)->s64
 </code>
 </p>
 <p>
@@ -4892,7 +4892,7 @@ func va_start(vl: *CVaList, dummy: any)
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func wcstombs(s: *u8, pwcs: *wchar_t, n: size_t)->size_t
+<code style="white-space: break-spaces">func wcstombs(s: *u8, pwcs: wchar_t, n: size_t)->size_t
 </code>
 </p>
 <p>

@@ -10,6 +10,9 @@
 #include "Workspace.h"
 #include "Version.h"
 
+const uint32_t COLLECT_TABLE_ZERO     = 0x00000000;
+const uint32_t COLLECT_TABLE_SPECFUNC = 0x00000001;
+
 static bool canCollectNode(AstNode* node)
 {
     if (node->token.text.length() > 2 && node->token.text[0] == '_' && node->token.text[1] == '_')
@@ -147,8 +150,11 @@ Utf8 ModuleGenDocJob::getDocComment(AstNode* node)
     return "";
 }
 
-const uint32_t COLLECT_TABLE_ZERO     = 0x00000000;
-const uint32_t COLLECT_TABLE_SPECFUNC = 0x00000001;
+void ModuleGenDocJob::outputType(AstNode* node)
+{
+    node->typeInfo->computeScopedNameExport();
+    outputUserLine(node->typeInfo->scopedNameExport, true);
+}
 
 void ModuleGenDocJob::outputTable(Scope* scope, AstNodeKind kind, const char* title, uint32_t collectFlags)
 {
@@ -648,7 +654,10 @@ void ModuleGenDocJob::generateTocCateg(bool& first, AstNodeKind kind, const char
 
     // Invert references
     for (auto& n : pendingNodes)
-        collectInvert[n->tocName] = n->fullName;
+    {
+        collectInvert[n->tocName]  = n->fullName;
+        collectInvert[n->fullName] = n->fullName;
+    }
 
     sort(pendingNodes.begin(), pendingNodes.end(), [](OneRef* a, OneRef* b)
          { return strcmp(a->tocName.c_str(), b->tocName.c_str()) < 0; });
@@ -941,7 +950,7 @@ void ModuleGenDocJob::generateContent()
 
                 helpContent += "<td class=\"tdtype\">\n";
                 auto varDecl = CastAst<AstVarDecl>(n, AstNodeKind::ConstDecl);
-                outputUserLine(varDecl->typeInfo ? varDecl->typeInfo->name : outputNode(varDecl->type), true);
+                outputType(varDecl);
                 helpContent += "</td>\n";
 
                 helpContent += "<td class=\"enumeration\">\n";
@@ -1010,7 +1019,7 @@ void ModuleGenDocJob::generateContent()
                 helpContent += "</td>\n";
 
                 helpContent += "<td class=\"tdtype\">\n";
-                outputUserLine(varDecl->typeInfo ? varDecl->typeInfo->name : outputNode(varDecl->type), true);
+                outputType(varDecl);
                 helpContent += "</td>\n";
 
                 helpContent += "<td class=\"enumeration\">\n";
@@ -1160,7 +1169,15 @@ JobResult ModuleGenDocJob::execute()
     concat.init();
     outputCxt.checkPublic = false;
     outputCxt.exportType  = [this](TypeInfo* typeInfo)
-    { return typeInfo->name; };
+    {
+        if (typeInfo->isNative() || typeInfo->isVariadic())
+            return typeInfo->name;
+
+        Vector<Utf8> tkn;
+        typeInfo->computeScopedNameExport();
+        Utf8::tokenize(typeInfo->scopedNameExport, '.', tkn);
+        return tkn.back();
+    };
 
     auto filePath = g_Workspace->targetPath;
     if (!module)

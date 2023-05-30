@@ -1394,7 +1394,7 @@ Wrappers for Microsoft Windows Sdk Libraries. 10.0.19041.0.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func AcquireSRWLockExclusive(SRWLock: *SRWLOCK)
+<code style="white-space: break-spaces">func AcquireSRWLockExclusive(SRWLock: SRWLOCK)
 </code>
 </p>
 <p>
@@ -1409,7 +1409,7 @@ Wrappers for Microsoft Windows Sdk Libraries. 10.0.19041.0.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func AcquireSRWLockShared(SRWLock: *SRWLOCK)
+<code style="white-space: break-spaces">func AcquireSRWLockShared(SRWLock: SRWLOCK)
 </code>
 </p>
 <p>
@@ -1477,7 +1477,7 @@ u32</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func BeginPaint(hWnd: HWND, lpPaint: *PAINTSTRUCT)->HDC
+<code style="white-space: break-spaces">func BeginPaint(hWnd: HWND, lpPaint: PAINTSTRUCT)->HDC
 </code>
 </p>
 <p>
@@ -1660,7 +1660,7 @@ u32</td>
 <td class="tdname">
 dwSize</td>
 <td class="tdtype">
-<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.win32.html#Win32.COORD">COORD</a></td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.win32.html#Win32.COORD">Win32.COORD</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -1668,7 +1668,7 @@ dwSize</td>
 <td class="tdname">
 dwCursorPosition</td>
 <td class="tdtype">
-<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.win32.html#Win32.COORD">COORD</a></td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.win32.html#Win32.COORD">Win32.COORD</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -1676,7 +1676,7 @@ dwCursorPosition</td>
 <td class="tdname">
 wAttributes</td>
 <td class="tdtype">
-WORD</td>
+Win32.WORD</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -1684,7 +1684,7 @@ WORD</td>
 <td class="tdname">
 srWindow</td>
 <td class="tdtype">
-<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.win32.html#Win32.SMALL_RECT">SMALL_RECT</a></td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.win32.html#Win32.SMALL_RECT">Win32.SMALL_RECT</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -1692,7 +1692,7 @@ srWindow</td>
 <td class="tdname">
 dwMaximumWindowSize</td>
 <td class="tdtype">
-<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.win32.html#Win32.COORD">COORD</a></td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.win32.html#Win32.COORD">Win32.COORD</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -1734,7 +1734,7 @@ u32</td>
 <td class="tdname">
 x</td>
 <td class="tdtype">
-WORD</td>
+Win32.WORD</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -1742,7 +1742,7 @@ WORD</td>
 <td class="tdname">
 y</td>
 <td class="tdtype">
-WORD</td>
+Win32.WORD</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -1763,7 +1763,7 @@ WORD</td>
 <td class="tdname">
 lpCreateParams</td>
 <td class="tdtype">
-LPVOID</td>
+Win32.LPVOID</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -1771,7 +1771,7 @@ LPVOID</td>
 <td class="tdname">
 hInstance</td>
 <td class="tdtype">
-HANDLE</td>
+Win32.HANDLE</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -1779,7 +1779,7 @@ HANDLE</td>
 <td class="tdname">
 hMenu</td>
 <td class="tdtype">
-HMENU</td>
+Win32.HMENU</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -1787,7 +1787,7 @@ HMENU</td>
 <td class="tdname">
 hwndParent</td>
 <td class="tdtype">
-HWND</td>
+Win32.HWND</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -1827,7 +1827,7 @@ s32</td>
 <td class="tdname">
 style</td>
 <td class="tdtype">
-LONG</td>
+Win32.LONG</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -1835,7 +1835,7 @@ LONG</td>
 <td class="tdname">
 lpszName</td>
 <td class="tdtype">
-LPCSTR</td>
+Win32.LPCSTR</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -1843,7 +1843,7 @@ LPCSTR</td>
 <td class="tdname">
 lpszClass</td>
 <td class="tdtype">
-LPCSTR</td>
+Win32.LPCSTR</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -1851,7 +1851,7 @@ LPCSTR</td>
 <td class="tdname">
 dwExStyle</td>
 <td class="tdtype">
-DWORD</td>
+Win32.DWORD</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -1872,7 +1872,7 @@ DWORD</td>
 <td class="tdname">
 lpCreateParams</td>
 <td class="tdtype">
-LPVOID</td>
+Win32.LPVOID</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -1880,7 +1880,7 @@ LPVOID</td>
 <td class="tdname">
 hInstance</td>
 <td class="tdtype">
-HANDLE</td>
+Win32.HANDLE</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -1888,7 +1888,7 @@ HANDLE</td>
 <td class="tdname">
 hMenu</td>
 <td class="tdtype">
-HMENU</td>
+Win32.HMENU</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -1896,7 +1896,7 @@ HMENU</td>
 <td class="tdname">
 hwndParent</td>
 <td class="tdtype">
-HWND</td>
+Win32.HWND</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -1936,7 +1936,7 @@ s32</td>
 <td class="tdname">
 style</td>
 <td class="tdtype">
-LONG</td>
+Win32.LONG</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -1944,7 +1944,7 @@ LONG</td>
 <td class="tdname">
 lpszName</td>
 <td class="tdtype">
-LPCWSTR</td>
+Win32.LPCWSTR</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -1952,7 +1952,7 @@ LPCWSTR</td>
 <td class="tdname">
 lpszClass</td>
 <td class="tdtype">
-LPCWSTR</td>
+Win32.LPCWSTR</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -1960,7 +1960,7 @@ LPCWSTR</td>
 <td class="tdname">
 dwExStyle</td>
 <td class="tdtype">
-DWORD</td>
+Win32.DWORD</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -2823,7 +2823,7 @@ s32</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func ClientToScreen(hWnd: HWND, lpPoint: *POINT)->BOOL
+<code style="white-space: break-spaces">func ClientToScreen(hWnd: HWND, lpPoint: POINT)->BOOL
 </code>
 </p>
 <p>
@@ -2868,7 +2868,7 @@ s32</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func CreateConsoleScreenBuffer(dwDesiredAccess: DWORD, dwShareMode: DWORD, lpSecurityAttributes: const *SECURITY_ATTRIBUTES, dwFlags: DWORD, lpScreenBufferData: LPVOID)->HANDLE
+<code style="white-space: break-spaces">func CreateConsoleScreenBuffer(dwDesiredAccess: DWORD, dwShareMode: DWORD, lpSecurityAttributes: SECURITY_ATTRIBUTES, dwFlags: DWORD, lpScreenBufferData: LPVOID)->HANDLE
 </code>
 </p>
 <p>
@@ -2883,7 +2883,7 @@ s32</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func CreateDirectoryA(lpPathName: LPCSTR, lpSecurityAttributes: *SECURITY_ATTRIBUTES) throw
+<code style="white-space: break-spaces">func CreateDirectoryA(lpPathName: LPCSTR, lpSecurityAttributes: SECURITY_ATTRIBUTES) throw
 </code>
 </p>
 <p>
@@ -2898,7 +2898,7 @@ s32</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func CreateDirectoryW(lpPathName: LPCWSTR, lpSecurityAttributes: *SECURITY_ATTRIBUTES) throw
+<code style="white-space: break-spaces">func CreateDirectoryW(lpPathName: LPCWSTR, lpSecurityAttributes: SECURITY_ATTRIBUTES) throw
 </code>
 </p>
 <p>
@@ -2913,7 +2913,7 @@ s32</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func CreateEventA(lpEventAttributes: *SECURITY_ATTRIBUTES, bManualReset: BOOL, bInitialState: BOOL, lpName: LPCSTR)->HANDLE throw
+<code style="white-space: break-spaces">func CreateEventA(lpEventAttributes: SECURITY_ATTRIBUTES, bManualReset: BOOL, bInitialState: BOOL, lpName: LPCSTR)->HANDLE throw
 </code>
 </p>
 <p>
@@ -2928,7 +2928,7 @@ s32</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func CreateEventW(lpEventAttributes: *SECURITY_ATTRIBUTES, bManualReset: BOOL, bInitialState: BOOL, lpName: LPCWSTR)->HANDLE throw
+<code style="white-space: break-spaces">func CreateEventW(lpEventAttributes: SECURITY_ATTRIBUTES, bManualReset: BOOL, bInitialState: BOOL, lpName: LPCWSTR)->HANDLE throw
 </code>
 </p>
 <p>
@@ -2943,7 +2943,7 @@ s32</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func CreateFileA(lpFileName: LPCSTR, dwDesiredAccess: DWORD, dwShareMode: DWORD, lpSecurityAttributes: *SECURITY_ATTRIBUTES, dwCreationDisposition: DWORD, dwFlagsAndAttributes: DWORD, hTemplateFile: HANDLE)->HANDLE throw
+<code style="white-space: break-spaces">func CreateFileA(lpFileName: LPCSTR, dwDesiredAccess: DWORD, dwShareMode: DWORD, lpSecurityAttributes: SECURITY_ATTRIBUTES, dwCreationDisposition: DWORD, dwFlagsAndAttributes: DWORD, hTemplateFile: HANDLE)->HANDLE throw
 </code>
 </p>
 <p>
@@ -2958,7 +2958,7 @@ s32</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func CreateFileW(lpFileName: LPCWSTR, dwDesiredAccess: DWORD, dwShareMode: DWORD, lpSecurityAttributes: *SECURITY_ATTRIBUTES, dwCreationDisposition: DWORD, dwFlagsAndAttributes: DWORD, hTemplateFile: HANDLE)->HANDLE throw
+<code style="white-space: break-spaces">func CreateFileW(lpFileName: LPCWSTR, dwDesiredAccess: DWORD, dwShareMode: DWORD, lpSecurityAttributes: SECURITY_ATTRIBUTES, dwCreationDisposition: DWORD, dwFlagsAndAttributes: DWORD, hTemplateFile: HANDLE)->HANDLE throw
 </code>
 </p>
 <p>
@@ -2973,7 +2973,7 @@ s32</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func CreateIconIndirect(piconinfo: *ICONINFO)->HICON throw
+<code style="white-space: break-spaces">func CreateIconIndirect(piconinfo: ICONINFO)->HICON throw
 </code>
 </p>
 <p>
@@ -2988,7 +2988,7 @@ s32</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func CreateMutexA(lpMutexAttributes: *SECURITY_ATTRIBUTES, bInitialOwner: BOOL, lpName: LPCSTR)->HANDLE throw
+<code style="white-space: break-spaces">func CreateMutexA(lpMutexAttributes: SECURITY_ATTRIBUTES, bInitialOwner: BOOL, lpName: LPCSTR)->HANDLE throw
 </code>
 </p>
 <p>
@@ -3003,7 +3003,7 @@ s32</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func CreateMutexW(lpMutexAttributes: *SECURITY_ATTRIBUTES, bInitialOwner: BOOL, lpName: LPCWSTR)->HANDLE throw
+<code style="white-space: break-spaces">func CreateMutexW(lpMutexAttributes: SECURITY_ATTRIBUTES, bInitialOwner: BOOL, lpName: LPCWSTR)->HANDLE throw
 </code>
 </p>
 <p>
@@ -3018,7 +3018,7 @@ s32</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func CreateProcessA(lpApplicationName: LPCSTR, lpCommandLine: LPCSTR, lpProcessAttributes: *SECURITY_ATTRIBUTES, lpThreadAttributes: *SECURITY_ATTRIBUTES, bInheritHandles: BOOL, dwCreationFlags: DWORD, lpEnvironment: LPVOID, lpCurrentDirectory: LPCSTR, lpStartupInfo: *STARTUPINFOA, lpProcessInformation: *PROCESS_INFORMATION) throw
+<code style="white-space: break-spaces">func CreateProcessA(lpApplicationName: LPCSTR, lpCommandLine: LPCSTR, lpProcessAttributes: SECURITY_ATTRIBUTES, lpThreadAttributes: SECURITY_ATTRIBUTES, bInheritHandles: BOOL, dwCreationFlags: DWORD, lpEnvironment: LPVOID, lpCurrentDirectory: LPCSTR, lpStartupInfo: STARTUPINFOA, lpProcessInformation: PROCESS_INFORMATION) throw
 </code>
 </p>
 <p>
@@ -3033,7 +3033,7 @@ s32</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func CreateProcessW(lpApplicationName: LPCWSTR, lpCommandLine: LPCWSTR, lpProcessAttributes: *SECURITY_ATTRIBUTES, lpThreadAttributes: *SECURITY_ATTRIBUTES, bInheritHandles: BOOL, dwCreationFlags: DWORD, lpEnvironment: LPVOID, lpCurrentDirectory: LPCWSTR, lpStartupInfo: *STARTUPINFOW, lpProcessInformation: *PROCESS_INFORMATION) throw
+<code style="white-space: break-spaces">func CreateProcessW(lpApplicationName: LPCWSTR, lpCommandLine: LPCWSTR, lpProcessAttributes: SECURITY_ATTRIBUTES, lpThreadAttributes: SECURITY_ATTRIBUTES, bInheritHandles: BOOL, dwCreationFlags: DWORD, lpEnvironment: LPVOID, lpCurrentDirectory: LPCWSTR, lpStartupInfo: STARTUPINFOW, lpProcessInformation: PROCESS_INFORMATION) throw
 </code>
 </p>
 <p>
@@ -3048,7 +3048,7 @@ s32</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func CreateThread(lpThreadAttributes: *SECURITY_ATTRIBUTES, dwStackSize: SIZE_T, lpStartAddress: LPTHREAD_START_ROUTINE, lpParameter: *void, dwCreationFlags: DWORD, lpThreadId: *DWORD)->HANDLE throw
+<code style="white-space: break-spaces">func CreateThread(lpThreadAttributes: SECURITY_ATTRIBUTES, dwStackSize: SIZE_T, lpStartAddress: LPTHREAD_START_ROUTINE, lpParameter: *void, dwCreationFlags: DWORD, lpThreadId: DWORD)->HANDLE throw
 </code>
 </p>
 <p>
@@ -3063,7 +3063,7 @@ s32</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func CreateTimerQueueTimer(phNewTimer: *HANDLE, timerQueue: HANDLE, callback: WAITORTIMERCALLBACK, parameter: *void, dueTime: DWORD, period: DWORD, flags: ULONG) throw
+<code style="white-space: break-spaces">func CreateTimerQueueTimer(phNewTimer: HANDLE, timerQueue: HANDLE, callback: WAITORTIMERCALLBACK, parameter: *void, dueTime: DWORD, period: DWORD, flags: ULONG) throw
 </code>
 </p>
 <p>
@@ -3078,7 +3078,7 @@ s32</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func CreateWaitableTimerA(lpTimerAttributes: *SECURITY_ATTRIBUTES, bManualReset: BOOL, lpTimerName: LPCSTR)->HANDLE
+<code style="white-space: break-spaces">func CreateWaitableTimerA(lpTimerAttributes: SECURITY_ATTRIBUTES, bManualReset: BOOL, lpTimerName: LPCSTR)->HANDLE
 </code>
 </p>
 <p>
@@ -3093,7 +3093,7 @@ s32</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func CreateWaitableTimerW(lpTimerAttributes: *SECURITY_ATTRIBUTES, bManualReset: BOOL, lpTimerName: LPCWSTR)->HANDLE
+<code style="white-space: break-spaces">func CreateWaitableTimerW(lpTimerAttributes: SECURITY_ATTRIBUTES, bManualReset: BOOL, lpTimerName: LPCWSTR)->HANDLE
 </code>
 </p>
 <p>
@@ -3302,7 +3302,7 @@ u32</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func DispatchMessageA(lpMsg: const *MSG)->LRESULT
+<code style="white-space: break-spaces">func DispatchMessageA(lpMsg: MSG)->LRESULT
 </code>
 </p>
 <p>
@@ -3317,7 +3317,7 @@ u32</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func DispatchMessageW(lpMsg: const *MSG)->LRESULT
+<code style="white-space: break-spaces">func DispatchMessageW(lpMsg: MSG)->LRESULT
 </code>
 </p>
 <p>
@@ -3415,7 +3415,7 @@ s32</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func EndPaint(hWnd: HWND, lpPaint: const *PAINTSTRUCT)->BOOL
+<code style="white-space: break-spaces">func EndPaint(hWnd: HWND, lpPaint: PAINTSTRUCT)->BOOL
 </code>
 </p>
 <p>
@@ -3430,7 +3430,7 @@ s32</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func EnumDisplayMonitors(hdc: HDC, lprcClip: *RECT, lpfnEnum: const *void, dwData: LPARAM)->BOOL
+<code style="white-space: break-spaces">func EnumDisplayMonitors(hdc: HDC, lprcClip: RECT, lpfnEnum: const *void, dwData: LPARAM)->BOOL
 </code>
 </p>
 <p>
@@ -3475,7 +3475,7 @@ s32</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func ExtractIconExA(lpszFile: LPCSTR, nIconIndex: s32, phiconLarge: *HICON, phiconSmall: *HICON, nIcons: UINT)->UINT throw
+<code style="white-space: break-spaces">func ExtractIconExA(lpszFile: LPCSTR, nIconIndex: s32, phiconLarge: HICON, phiconSmall: HICON, nIcons: UINT)->UINT throw
 </code>
 </p>
 <p>
@@ -3490,7 +3490,7 @@ s32</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func ExtractIconExW(lpszFile: LPCWSTR, nIconIndex: s32, phiconLarge: *HICON, phiconSmall: *HICON, nIcons: UINT)->UINT throw
+<code style="white-space: break-spaces">func ExtractIconExW(lpszFile: LPCWSTR, nIconIndex: s32, phiconLarge: HICON, phiconSmall: HICON, nIcons: UINT)->UINT throw
 </code>
 </p>
 <p>
@@ -3530,7 +3530,7 @@ s32</td>
 <td class="tdname">
 dwLowDateTime</td>
 <td class="tdtype">
-DWORD</td>
+Win32.DWORD</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -3538,7 +3538,7 @@ DWORD</td>
 <td class="tdname">
 dwHighDateTime</td>
 <td class="tdtype">
-DWORD</td>
+Win32.DWORD</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -3904,7 +3904,7 @@ u32</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func FileTimeToLocalFileTime(lpFileTime: const *FILETIME, lpLocalFileTime: *FILETIME)->BOOL
+<code style="white-space: break-spaces">func FileTimeToLocalFileTime(lpFileTime: FILETIME, lpLocalFileTime: FILETIME)->BOOL
 </code>
 </p>
 <p>
@@ -3919,7 +3919,7 @@ u32</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func FileTimeToSystemTime(lpFileTime: const *FILETIME, lpSystemTime: *SYSTEMTIME) throw
+<code style="white-space: break-spaces">func FileTimeToSystemTime(lpFileTime: FILETIME, lpSystemTime: SYSTEMTIME) throw
 </code>
 </p>
 <p>
@@ -3934,7 +3934,7 @@ u32</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func FillRect(hDC: HDC, lprc: const *RECT, hbr: HBRUSH)->s32
+<code style="white-space: break-spaces">func FillRect(hDC: HDC, lprc: RECT, hbr: HBRUSH)->s32
 </code>
 </p>
 <p>
@@ -3964,7 +3964,7 @@ u32</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func FindFirstFileA(lpFileName: LPCSTR, lpFindFileData: *WIN32_FIND_DATAA)->HANDLE throw
+<code style="white-space: break-spaces">func FindFirstFileA(lpFileName: LPCSTR, lpFindFileData: WIN32_FIND_DATAA)->HANDLE throw
 </code>
 </p>
 <p>
@@ -3979,7 +3979,7 @@ u32</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func FindFirstFileW(lpFileName: LPCWSTR, lpFindFileData: *WIN32_FIND_DATAW)->HANDLE throw
+<code style="white-space: break-spaces">func FindFirstFileW(lpFileName: LPCWSTR, lpFindFileData: WIN32_FIND_DATAW)->HANDLE throw
 </code>
 </p>
 <p>
@@ -4024,7 +4024,7 @@ u32</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func FindNextFileA(hFindFile: HANDLE, lpFindFileData: *WIN32_FIND_DATAA)->BOOL throw
+<code style="white-space: break-spaces">func FindNextFileA(hFindFile: HANDLE, lpFindFileData: WIN32_FIND_DATAA)->BOOL throw
 </code>
 </p>
 <p>
@@ -4039,7 +4039,7 @@ u32</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func FindNextFileW(hFindFile: HANDLE, lpFindFileData: *WIN32_FIND_DATAW)->BOOL throw
+<code style="white-space: break-spaces">func FindNextFileW(hFindFile: HANDLE, lpFindFileData: WIN32_FIND_DATAW)->BOOL throw
 </code>
 </p>
 <p>
@@ -4129,7 +4129,7 @@ u32</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func FormatMessageA(dwFlags: DWORD, lpSource: LPCVOID, dwMessageId: DWORD, dwLanguageId: DWORD, lpBuffer: LPCSTR, nSize: DWORD, Arguments: *va_list)->DWORD
+<code style="white-space: break-spaces">func FormatMessageA(dwFlags: DWORD, lpSource: LPCVOID, dwMessageId: DWORD, dwLanguageId: DWORD, lpBuffer: LPCSTR, nSize: DWORD, Arguments: va_list)->DWORD
 </code>
 </p>
 <p>
@@ -4561,7 +4561,7 @@ u32</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func GetAdaptersInfo(adapterInfo: *IP_ADAPTER_INFO, sizePointer: *ULONG)->ULONG
+<code style="white-space: break-spaces">func GetAdaptersInfo(adapterInfo: IP_ADAPTER_INFO, sizePointer: ULONG)->ULONG
 </code>
 </p>
 <p>
@@ -4591,7 +4591,7 @@ u32</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func GetClientRect(hWnd: HWND, lpRect: *RECT)->BOOL
+<code style="white-space: break-spaces">func GetClientRect(hWnd: HWND, lpRect: RECT)->BOOL
 </code>
 </p>
 <p>
@@ -4621,7 +4621,7 @@ u32</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func GetConsoleScreenBufferInfo(hConsoleOutput: HANDLE, lpConsoleScreenBufferInfo: *CONSOLE_SCREEN_BUFFER_INFO) throw
+<code style="white-space: break-spaces">func GetConsoleScreenBufferInfo(hConsoleOutput: HANDLE, lpConsoleScreenBufferInfo: CONSOLE_SCREEN_BUFFER_INFO) throw
 </code>
 </p>
 <p>
@@ -4726,7 +4726,7 @@ u32</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func GetCursorPos(lpPoint: *POINT)->BOOL
+<code style="white-space: break-spaces">func GetCursorPos(lpPoint: POINT)->BOOL
 </code>
 </p>
 <p>
@@ -4861,7 +4861,7 @@ u32</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func GetFullPathNameA(lpFileName: LPCSTR, nBufferLength: DWORD, lpBuffer: LPSTR, lpFilePart: *LPSTR)->DWORD throw
+<code style="white-space: break-spaces">func GetFullPathNameA(lpFileName: LPCSTR, nBufferLength: DWORD, lpBuffer: LPSTR, lpFilePart: LPSTR)->DWORD throw
 </code>
 </p>
 <p>
@@ -4876,7 +4876,7 @@ u32</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func GetFullPathNameW(lpFileName: LPCTSTR, nBufferLength: DWORD, lpBuffer: LPWSTR, lpFilePart: *LPWSTR)->DWORD throw
+<code style="white-space: break-spaces">func GetFullPathNameW(lpFileName: LPCTSTR, nBufferLength: DWORD, lpBuffer: LPWSTR, lpFilePart: LPWSTR)->DWORD throw
 </code>
 </p>
 <p>
@@ -4891,7 +4891,7 @@ u32</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func GetIconInfo(hIcon: HICON, piconinfo: *ICONINFO) throw
+<code style="white-space: break-spaces">func GetIconInfo(hIcon: HICON, piconinfo: ICONINFO) throw
 </code>
 </p>
 <p>
@@ -4936,7 +4936,7 @@ u32</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func GetLocalTime(lpSystemTime: *SYSTEMTIME)
+<code style="white-space: break-spaces">func GetLocalTime(lpSystemTime: SYSTEMTIME)
 </code>
 </p>
 <p>
@@ -4951,7 +4951,7 @@ u32</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func GetMessageA(lpMsg: *MSG, hWnd: HWND, wMsgFilterMin: UINT, wMsgFilterMax: UINT)->BOOL
+<code style="white-space: break-spaces">func GetMessageA(lpMsg: MSG, hWnd: HWND, wMsgFilterMin: UINT, wMsgFilterMax: UINT)->BOOL
 </code>
 </p>
 <p>
@@ -4966,7 +4966,7 @@ u32</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func GetMessageW(lpMsg: *MSG, hWnd: HWND, wMsgFilterMin: UINT, wMsgFilterMax: UINT)->BOOL
+<code style="white-space: break-spaces">func GetMessageW(lpMsg: MSG, hWnd: HWND, wMsgFilterMin: UINT, wMsgFilterMax: UINT)->BOOL
 </code>
 </p>
 <p>
@@ -5011,7 +5011,7 @@ u32</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func GetMonitorInfoA(hMonitor: HMONITOR, lpmi: *MONITORINFO) throw
+<code style="white-space: break-spaces">func GetMonitorInfoA(hMonitor: HMONITOR, lpmi: MONITORINFO) throw
 </code>
 </p>
 <p>
@@ -5026,7 +5026,7 @@ u32</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func GetMonitorInfoW(hMonitor: HMONITOR, lpmi: *MONITORINFO) throw
+<code style="white-space: break-spaces">func GetMonitorInfoW(hMonitor: HMONITOR, lpmi: MONITORINFO) throw
 </code>
 </p>
 <p>
@@ -5086,7 +5086,7 @@ u32</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func GetSystemInfo(lpSystemInfo: *SYSTEM_INFO)
+<code style="white-space: break-spaces">func GetSystemInfo(lpSystemInfo: SYSTEM_INFO)
 </code>
 </p>
 <p>
@@ -5116,7 +5116,7 @@ u32</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func GetSystemTime(lpSystemTime: *SYSTEMTIME)
+<code style="white-space: break-spaces">func GetSystemTime(lpSystemTime: SYSTEMTIME)
 </code>
 </p>
 <p>
@@ -5146,7 +5146,7 @@ u32</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func GetVolumePathNamesForVolumeNameA(lpszVolumeName: LPCSTR, lpszVolumePathNames: LPCH, cchBufferLength: DWORD, lpcchReturnLength: *DWORD) throw
+<code style="white-space: break-spaces">func GetVolumePathNamesForVolumeNameA(lpszVolumeName: LPCSTR, lpszVolumePathNames: LPCH, cchBufferLength: DWORD, lpcchReturnLength: DWORD) throw
 </code>
 </p>
 <p>
@@ -5161,7 +5161,7 @@ u32</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func GetVolumePathNamesForVolumeNameW(lpszVolumeName: LPCWSTR, lpszVolumePathNames: LPWCH, cchBufferLength: DWORD, lpcchReturnLength: *DWORD) throw
+<code style="white-space: break-spaces">func GetVolumePathNamesForVolumeNameW(lpszVolumeName: LPCWSTR, lpszVolumePathNames: LPWCH, cchBufferLength: DWORD, lpcchReturnLength: DWORD) throw
 </code>
 </p>
 <p>
@@ -5191,7 +5191,7 @@ u32</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func GetWindowLongPtrA(hWnd: HWND, nIndex: s32)->*LONG
+<code style="white-space: break-spaces">func GetWindowLongPtrA(hWnd: HWND, nIndex: s32)->LONG
 </code>
 </p>
 <p>
@@ -5206,7 +5206,7 @@ u32</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func GetWindowLongPtrW(hWnd: HWND, nIndex: s32)->*LONG
+<code style="white-space: break-spaces">func GetWindowLongPtrW(hWnd: HWND, nIndex: s32)->LONG
 </code>
 </p>
 <p>
@@ -5221,7 +5221,7 @@ u32</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func GetWindowRect(hWnd: HWND, lpRect: *RECT)->BOOL
+<code style="white-space: break-spaces">func GetWindowRect(hWnd: HWND, lpRect: RECT)->BOOL
 </code>
 </p>
 <p>
@@ -5345,7 +5345,7 @@ u32</td>
 <td id="Win32.HWND_BOTTOM" class="tdname">
 HWND_BOTTOM</td>
 <td class="tdtype">
-HWND</td>
+Win32.HWND</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -5353,7 +5353,7 @@ HWND</td>
 <td id="Win32.HWND_NOTOPMOST" class="tdname">
 HWND_NOTOPMOST</td>
 <td class="tdtype">
-HWND</td>
+Win32.HWND</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -5361,7 +5361,7 @@ HWND</td>
 <td id="Win32.HWND_TOP" class="tdname">
 HWND_TOP</td>
 <td class="tdtype">
-HWND</td>
+Win32.HWND</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -5369,7 +5369,7 @@ HWND</td>
 <td id="Win32.HWND_TOPMOST" class="tdname">
 HWND_TOPMOST</td>
 <td class="tdtype">
-HWND</td>
+Win32.HWND</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -5390,7 +5390,7 @@ HWND</td>
 <td class="tdname">
 fIcon</td>
 <td class="tdtype">
-BOOL</td>
+Win32.BOOL</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -5398,7 +5398,7 @@ BOOL</td>
 <td class="tdname">
 xHotspot</td>
 <td class="tdtype">
-DWORD</td>
+Win32.DWORD</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -5406,7 +5406,7 @@ DWORD</td>
 <td class="tdname">
 yHotspot</td>
 <td class="tdtype">
-DWORD</td>
+Win32.DWORD</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -5414,7 +5414,7 @@ DWORD</td>
 <td class="tdname">
 hbmMask</td>
 <td class="tdtype">
-HBITMAP</td>
+Win32.HBITMAP</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -5422,7 +5422,7 @@ HBITMAP</td>
 <td class="tdname">
 hbmColor</td>
 <td class="tdtype">
-HBITMAP</td>
+Win32.HBITMAP</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -5691,7 +5691,7 @@ u32</td>
 <td id="Win32.INVALID_FILE_ATTRIBUTES" class="tdname">
 INVALID_FILE_ATTRIBUTES</td>
 <td class="tdtype">
-DWORD</td>
+Win32.DWORD</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -5699,7 +5699,7 @@ DWORD</td>
 <td id="Win32.INVALID_FILE_SIZE" class="tdname">
 INVALID_FILE_SIZE</td>
 <td class="tdtype">
-DWORD</td>
+Win32.DWORD</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -5707,7 +5707,7 @@ DWORD</td>
 <td id="Win32.INVALID_HANDLE_VALUE" class="tdname">
 INVALID_HANDLE_VALUE</td>
 <td class="tdtype">
-HANDLE</td>
+Win32.HANDLE</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -5715,7 +5715,7 @@ HANDLE</td>
 <td id="Win32.INVALID_SET_FILE_POINTER" class="tdname">
 INVALID_SET_FILE_POINTER</td>
 <td class="tdtype">
-DWORD</td>
+Win32.DWORD</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -5736,7 +5736,7 @@ DWORD</td>
 <td class="tdname">
 next</td>
 <td class="tdtype">
-*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.win32.html#Win32.IP_ADAPTER_INFO">IP_ADAPTER_INFO</a></td>
+*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.win32.html#Win32.IP_ADAPTER_INFO">Win32.IP_ADAPTER_INFO</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -5744,7 +5744,7 @@ next</td>
 <td class="tdname">
 comboIndex</td>
 <td class="tdtype">
-DWORD</td>
+Win32.DWORD</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -5768,7 +5768,7 @@ description</td>
 <td class="tdname">
 addressLength</td>
 <td class="tdtype">
-UINT</td>
+Win32.UINT</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -5776,7 +5776,7 @@ UINT</td>
 <td class="tdname">
 address</td>
 <td class="tdtype">
-[8] BYTE</td>
+[8] Win32.BYTE</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -5784,7 +5784,7 @@ address</td>
 <td class="tdname">
 index</td>
 <td class="tdtype">
-DWORD</td>
+Win32.DWORD</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -5792,7 +5792,7 @@ DWORD</td>
 <td class="tdname">
 type</td>
 <td class="tdtype">
-UINT</td>
+Win32.UINT</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -5800,7 +5800,7 @@ UINT</td>
 <td class="tdname">
 dhcpEnabled</td>
 <td class="tdtype">
-UINT</td>
+Win32.UINT</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -5808,7 +5808,7 @@ UINT</td>
 <td class="tdname">
 currentIpAddress</td>
 <td class="tdtype">
-*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.win32.html#Win32.IP_ADDR_STRING">IP_ADDR_STRING</a></td>
+*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.win32.html#Win32.IP_ADDR_STRING">Win32.IP_ADDR_STRING</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -5816,7 +5816,7 @@ currentIpAddress</td>
 <td class="tdname">
 ipAddressList</td>
 <td class="tdtype">
-<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.win32.html#Win32.IP_ADDR_STRING">IP_ADDR_STRING</a></td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.win32.html#Win32.IP_ADDR_STRING">Win32.IP_ADDR_STRING</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -5824,7 +5824,7 @@ ipAddressList</td>
 <td class="tdname">
 gatewayList</td>
 <td class="tdtype">
-<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.win32.html#Win32.IP_ADDR_STRING">IP_ADDR_STRING</a></td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.win32.html#Win32.IP_ADDR_STRING">Win32.IP_ADDR_STRING</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -5832,7 +5832,7 @@ gatewayList</td>
 <td class="tdname">
 dhcpServer</td>
 <td class="tdtype">
-<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.win32.html#Win32.IP_ADDR_STRING">IP_ADDR_STRING</a></td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.win32.html#Win32.IP_ADDR_STRING">Win32.IP_ADDR_STRING</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -5840,7 +5840,7 @@ dhcpServer</td>
 <td class="tdname">
 haveWins</td>
 <td class="tdtype">
-BOOL</td>
+Win32.BOOL</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -5848,7 +5848,7 @@ BOOL</td>
 <td class="tdname">
 primaryWinsServer</td>
 <td class="tdtype">
-<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.win32.html#Win32.IP_ADDR_STRING">IP_ADDR_STRING</a></td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.win32.html#Win32.IP_ADDR_STRING">Win32.IP_ADDR_STRING</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -5856,7 +5856,7 @@ primaryWinsServer</td>
 <td class="tdname">
 secondaryWinsServer</td>
 <td class="tdtype">
-<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.win32.html#Win32.IP_ADDR_STRING">IP_ADDR_STRING</a></td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.win32.html#Win32.IP_ADDR_STRING">Win32.IP_ADDR_STRING</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -5864,7 +5864,7 @@ secondaryWinsServer</td>
 <td class="tdname">
 leaseObtained</td>
 <td class="tdtype">
-time_t</td>
+Win32.time_t</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -5872,7 +5872,7 @@ time_t</td>
 <td class="tdname">
 leaseExpires</td>
 <td class="tdtype">
-time_t</td>
+Win32.time_t</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -5914,7 +5914,7 @@ str</td>
 <td class="tdname">
 next</td>
 <td class="tdtype">
-*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.win32.html#Win32.IP_ADDR_STRING">IP_ADDR_STRING</a></td>
+*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.win32.html#Win32.IP_ADDR_STRING">Win32.IP_ADDR_STRING</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -5922,7 +5922,7 @@ next</td>
 <td class="tdname">
 ipAddress</td>
 <td class="tdtype">
-<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.win32.html#Win32.IP_ADDRESS_STRING">IP_ADDRESS_STRING</a></td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.win32.html#Win32.IP_ADDRESS_STRING">Win32.IP_ADDRESS_STRING</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -5930,7 +5930,7 @@ ipAddress</td>
 <td class="tdname">
 ipMask</td>
 <td class="tdtype">
-<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.win32.html#Win32.IP_ADDRESS_STRING">IP_ADDRESS_STRING</a></td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.win32.html#Win32.IP_ADDRESS_STRING">Win32.IP_ADDRESS_STRING</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -5938,7 +5938,7 @@ ipMask</td>
 <td class="tdname">
 context</td>
 <td class="tdtype">
-DWORD</td>
+Win32.DWORD</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -5955,7 +5955,7 @@ DWORD</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func InitializeSRWLock(SRWLock: *SRWLOCK)
+<code style="white-space: break-spaces">func InitializeSRWLock(SRWLock: SRWLOCK)
 </code>
 </p>
 <p>
@@ -5970,7 +5970,7 @@ DWORD</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func InvalidateRect(hWnd: HWND, lpRect: const *RECT, bErase: BOOL)->BOOL
+<code style="white-space: break-spaces">func InvalidateRect(hWnd: HWND, lpRect: RECT, bErase: BOOL)->BOOL
 </code>
 </p>
 <p>
@@ -6562,7 +6562,7 @@ u32</td>
 <td class="tdname">
 ptReserved</td>
 <td class="tdtype">
-<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.win32.html#Win32.POINT">POINT</a></td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.win32.html#Win32.POINT">Win32.POINT</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -6570,7 +6570,7 @@ ptReserved</td>
 <td class="tdname">
 ptMaxSize</td>
 <td class="tdtype">
-<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.win32.html#Win32.POINT">POINT</a></td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.win32.html#Win32.POINT">Win32.POINT</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -6578,7 +6578,7 @@ ptMaxSize</td>
 <td class="tdname">
 ptMaxPosition</td>
 <td class="tdtype">
-<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.win32.html#Win32.POINT">POINT</a></td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.win32.html#Win32.POINT">Win32.POINT</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -6586,7 +6586,7 @@ ptMaxPosition</td>
 <td class="tdname">
 ptMinTrackSize</td>
 <td class="tdtype">
-<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.win32.html#Win32.POINT">POINT</a></td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.win32.html#Win32.POINT">Win32.POINT</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -6594,7 +6594,7 @@ ptMinTrackSize</td>
 <td class="tdname">
 ptMaxTrackSize</td>
 <td class="tdtype">
-<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.win32.html#Win32.POINT">POINT</a></td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.win32.html#Win32.POINT">Win32.POINT</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -6676,7 +6676,7 @@ u32</td>
 <td class="tdname">
 cbSize</td>
 <td class="tdtype">
-DWORD</td>
+Win32.DWORD</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -6684,7 +6684,7 @@ DWORD</td>
 <td class="tdname">
 rcMonitor</td>
 <td class="tdtype">
-<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.win32.html#Win32.RECT">RECT</a></td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.win32.html#Win32.RECT">Win32.RECT</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -6692,7 +6692,7 @@ rcMonitor</td>
 <td class="tdname">
 rcWork</td>
 <td class="tdtype">
-<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.win32.html#Win32.RECT">RECT</a></td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.win32.html#Win32.RECT">Win32.RECT</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -6700,7 +6700,7 @@ rcWork</td>
 <td class="tdname">
 dwFlags</td>
 <td class="tdtype">
-DWORD</td>
+Win32.DWORD</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -6758,7 +6758,7 @@ u32</td>
 <td class="tdname">
 hwnd</td>
 <td class="tdtype">
-HWND</td>
+Win32.HWND</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -6766,7 +6766,7 @@ HWND</td>
 <td class="tdname">
 message</td>
 <td class="tdtype">
-UINT</td>
+Win32.UINT</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -6774,7 +6774,7 @@ UINT</td>
 <td class="tdname">
 wParam</td>
 <td class="tdtype">
-WPARAM</td>
+Win32.WPARAM</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -6782,7 +6782,7 @@ WPARAM</td>
 <td class="tdname">
 lParam</td>
 <td class="tdtype">
-LPARAM</td>
+Win32.LPARAM</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -6790,7 +6790,7 @@ LPARAM</td>
 <td class="tdname">
 time</td>
 <td class="tdtype">
-DWORD</td>
+Win32.DWORD</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -6798,7 +6798,7 @@ DWORD</td>
 <td class="tdname">
 pt</td>
 <td class="tdtype">
-<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.win32.html#Win32.POINT">POINT</a></td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.win32.html#Win32.POINT">Win32.POINT</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -6806,7 +6806,7 @@ pt</td>
 <td class="tdname">
 lPrivate</td>
 <td class="tdtype">
-DWORD</td>
+Win32.DWORD</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -7049,7 +7049,7 @@ u32</td>
 <td class="tdname">
 cbSize</td>
 <td class="tdtype">
-DWORD</td>
+Win32.DWORD</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -7057,7 +7057,7 @@ DWORD</td>
 <td class="tdname">
 hWnd</td>
 <td class="tdtype">
-HWND</td>
+Win32.HWND</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -7065,7 +7065,7 @@ HWND</td>
 <td class="tdname">
 uID</td>
 <td class="tdtype">
-UINT</td>
+Win32.UINT</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -7073,7 +7073,7 @@ UINT</td>
 <td class="tdname">
 uFlags</td>
 <td class="tdtype">
-UINT</td>
+Win32.UINT</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -7081,7 +7081,7 @@ UINT</td>
 <td class="tdname">
 uCallbackMessage</td>
 <td class="tdtype">
-UINT</td>
+Win32.UINT</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -7089,7 +7089,7 @@ UINT</td>
 <td class="tdname">
 hIcon</td>
 <td class="tdtype">
-HICON</td>
+Win32.HICON</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -7097,7 +7097,7 @@ HICON</td>
 <td class="tdname">
 szTip</td>
 <td class="tdtype">
-[128] CHAR</td>
+[128] Win32.CHAR</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -7105,7 +7105,7 @@ szTip</td>
 <td class="tdname">
 dwState</td>
 <td class="tdtype">
-DWORD</td>
+Win32.DWORD</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -7113,7 +7113,7 @@ DWORD</td>
 <td class="tdname">
 dwStateMask</td>
 <td class="tdtype">
-DWORD</td>
+Win32.DWORD</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -7121,7 +7121,7 @@ DWORD</td>
 <td class="tdname">
 szInfo</td>
 <td class="tdtype">
-[256] CHAR</td>
+[256] Win32.CHAR</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -7129,7 +7129,7 @@ szInfo</td>
 <td class="tdname">
 DUMMYUNIONNAME</td>
 <td class="tdtype">
-__shell32_tuple_27</td>
+{uTimeout: Win32.UINT, uVersion: Win32.UINT}</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -7137,7 +7137,7 @@ __shell32_tuple_27</td>
 <td class="tdname">
 szInfoTitle</td>
 <td class="tdtype">
-[64] CHAR</td>
+[64] Win32.CHAR</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -7145,7 +7145,7 @@ szInfoTitle</td>
 <td class="tdname">
 dwInfoFlags</td>
 <td class="tdtype">
-DWORD</td>
+Win32.DWORD</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -7153,7 +7153,7 @@ DWORD</td>
 <td class="tdname">
 guidItem</td>
 <td class="tdtype">
-<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.win32.html#Win32.GUID">GUID</a></td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.win32.html#Win32.GUID">Win32.GUID</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -7161,7 +7161,7 @@ guidItem</td>
 <td class="tdname">
 hBalloonIcon</td>
 <td class="tdtype">
-HICON</td>
+Win32.HICON</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -7182,7 +7182,7 @@ HICON</td>
 <td class="tdname">
 cbSize</td>
 <td class="tdtype">
-DWORD</td>
+Win32.DWORD</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -7190,7 +7190,7 @@ DWORD</td>
 <td class="tdname">
 hWnd</td>
 <td class="tdtype">
-HWND</td>
+Win32.HWND</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -7198,7 +7198,7 @@ HWND</td>
 <td class="tdname">
 uID</td>
 <td class="tdtype">
-UINT</td>
+Win32.UINT</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -7206,7 +7206,7 @@ UINT</td>
 <td class="tdname">
 uFlags</td>
 <td class="tdtype">
-UINT</td>
+Win32.UINT</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -7214,7 +7214,7 @@ UINT</td>
 <td class="tdname">
 uCallbackMessage</td>
 <td class="tdtype">
-UINT</td>
+Win32.UINT</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -7222,7 +7222,7 @@ UINT</td>
 <td class="tdname">
 hIcon</td>
 <td class="tdtype">
-HICON</td>
+Win32.HICON</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -7230,7 +7230,7 @@ HICON</td>
 <td class="tdname">
 szTip</td>
 <td class="tdtype">
-[128] WCHAR</td>
+[128] Win32.WCHAR</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -7238,7 +7238,7 @@ szTip</td>
 <td class="tdname">
 dwState</td>
 <td class="tdtype">
-DWORD</td>
+Win32.DWORD</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -7246,7 +7246,7 @@ DWORD</td>
 <td class="tdname">
 dwStateMask</td>
 <td class="tdtype">
-DWORD</td>
+Win32.DWORD</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -7254,7 +7254,7 @@ DWORD</td>
 <td class="tdname">
 szInfo</td>
 <td class="tdtype">
-[256] WCHAR</td>
+[256] Win32.WCHAR</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -7262,7 +7262,7 @@ szInfo</td>
 <td class="tdname">
 DUMMYUNIONNAME</td>
 <td class="tdtype">
-__shell32_tuple_28</td>
+{uTimeout: Win32.UINT, uVersion: Win32.UINT}</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -7270,7 +7270,7 @@ __shell32_tuple_28</td>
 <td class="tdname">
 szInfoTitle</td>
 <td class="tdtype">
-[64] WCHAR</td>
+[64] Win32.WCHAR</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -7278,7 +7278,7 @@ szInfoTitle</td>
 <td class="tdname">
 dwInfoFlags</td>
 <td class="tdtype">
-DWORD</td>
+Win32.DWORD</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -7286,7 +7286,7 @@ DWORD</td>
 <td class="tdname">
 guidItem</td>
 <td class="tdtype">
-<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.win32.html#Win32.GUID">GUID</a></td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.win32.html#Win32.GUID">Win32.GUID</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -7294,7 +7294,7 @@ guidItem</td>
 <td class="tdname">
 hBalloonIcon</td>
 <td class="tdtype">
-HICON</td>
+Win32.HICON</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -7389,7 +7389,7 @@ u32</td>
 <td class="tdname">
 hdc</td>
 <td class="tdtype">
-HDC</td>
+Win32.HDC</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -7397,7 +7397,7 @@ HDC</td>
 <td class="tdname">
 fErase</td>
 <td class="tdtype">
-BOOL</td>
+Win32.BOOL</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -7405,7 +7405,7 @@ BOOL</td>
 <td class="tdname">
 rcPaint</td>
 <td class="tdtype">
-<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.win32.html#Win32.RECT">RECT</a></td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.win32.html#Win32.RECT">Win32.RECT</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -7413,7 +7413,7 @@ rcPaint</td>
 <td class="tdname">
 fRestore</td>
 <td class="tdtype">
-BOOL</td>
+Win32.BOOL</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -7421,7 +7421,7 @@ BOOL</td>
 <td class="tdname">
 fIncUpdate</td>
 <td class="tdtype">
-BOOL</td>
+Win32.BOOL</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -7429,7 +7429,7 @@ BOOL</td>
 <td class="tdname">
 rgbReserved</td>
 <td class="tdtype">
-[32] BYTE</td>
+[32] Win32.BYTE</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -7487,7 +7487,7 @@ u32</td>
 <td class="tdname">
 x</td>
 <td class="tdtype">
-LONG</td>
+Win32.LONG</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -7495,7 +7495,7 @@ LONG</td>
 <td class="tdname">
 y</td>
 <td class="tdtype">
-LONG</td>
+Win32.LONG</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -7516,7 +7516,7 @@ LONG</td>
 <td class="tdname">
 hProcess</td>
 <td class="tdtype">
-HANDLE</td>
+Win32.HANDLE</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -7524,7 +7524,7 @@ HANDLE</td>
 <td class="tdname">
 hThread</td>
 <td class="tdtype">
-HANDLE</td>
+Win32.HANDLE</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -7532,7 +7532,7 @@ HANDLE</td>
 <td class="tdname">
 dwProcessId</td>
 <td class="tdtype">
-DWORD</td>
+Win32.DWORD</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -7540,7 +7540,7 @@ DWORD</td>
 <td class="tdname">
 dwThreadId</td>
 <td class="tdtype">
-DWORD</td>
+Win32.DWORD</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -7557,7 +7557,7 @@ DWORD</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func PeekMessageA(lpMsg: *MSG, hWnd: HWND, wMsgFilterMin: UINT, wMsgFilterMax: UINT, wRemoveMsg: UINT)->BOOL
+<code style="white-space: break-spaces">func PeekMessageA(lpMsg: MSG, hWnd: HWND, wMsgFilterMin: UINT, wMsgFilterMax: UINT, wRemoveMsg: UINT)->BOOL
 </code>
 </p>
 <p>
@@ -7572,7 +7572,7 @@ DWORD</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func PeekMessageW(lpMsg: *MSG, hWnd: HWND, wMsgFilterMin: UINT, wMsgFilterMax: UINT, wRemoveMsg: UINT)->BOOL
+<code style="white-space: break-spaces">func PeekMessageW(lpMsg: MSG, hWnd: HWND, wMsgFilterMin: UINT, wMsgFilterMax: UINT, wRemoveMsg: UINT)->BOOL
 </code>
 </p>
 <p>
@@ -7632,7 +7632,7 @@ DWORD</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func QueryPerformanceCounter(lpPerformanceCount: *LARGE_INTEGER)
+<code style="white-space: break-spaces">func QueryPerformanceCounter(lpPerformanceCount: LARGE_INTEGER)
 </code>
 </p>
 <p>
@@ -7647,7 +7647,7 @@ DWORD</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func QueryPerformanceFrequency(lpFrequency: *LARGE_INTEGER)
+<code style="white-space: break-spaces">func QueryPerformanceFrequency(lpFrequency: LARGE_INTEGER)
 </code>
 </p>
 <p>
@@ -7666,7 +7666,7 @@ DWORD</td>
 <td class="tdname">
 left</td>
 <td class="tdtype">
-LONG</td>
+Win32.LONG</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -7674,7 +7674,7 @@ LONG</td>
 <td class="tdname">
 top</td>
 <td class="tdtype">
-LONG</td>
+Win32.LONG</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -7682,7 +7682,7 @@ LONG</td>
 <td class="tdname">
 right</td>
 <td class="tdtype">
-LONG</td>
+Win32.LONG</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -7690,7 +7690,7 @@ LONG</td>
 <td class="tdname">
 bottom</td>
 <td class="tdtype">
-LONG</td>
+Win32.LONG</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -7722,7 +7722,7 @@ LONG</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func RegisterClassA(lpWndClass: const *WNDCLASSA)->ATOM throw
+<code style="white-space: break-spaces">func RegisterClassA(lpWndClass: WNDCLASSA)->ATOM throw
 </code>
 </p>
 <p>
@@ -7737,7 +7737,7 @@ LONG</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func RegisterClassW(lpWndClass: const *WNDCLASSW)->ATOM throw
+<code style="white-space: break-spaces">func RegisterClassW(lpWndClass: WNDCLASSW)->ATOM throw
 </code>
 </p>
 <p>
@@ -7842,7 +7842,7 @@ LONG</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func ReleaseSRWLockExclusive(SRWLock: *SRWLOCK)
+<code style="white-space: break-spaces">func ReleaseSRWLockExclusive(SRWLock: SRWLOCK)
 </code>
 </p>
 <p>
@@ -7857,7 +7857,7 @@ LONG</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func ReleaseSRWLockShared(SRWLock: *SRWLOCK)
+<code style="white-space: break-spaces">func ReleaseSRWLockShared(SRWLock: SRWLOCK)
 </code>
 </p>
 <p>
@@ -8079,7 +8079,7 @@ u32</td>
 <td class="tdname">
 nLength</td>
 <td class="tdtype">
-DWORD</td>
+Win32.DWORD</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -8087,7 +8087,7 @@ DWORD</td>
 <td class="tdname">
 lpSecurityDescriptor</td>
 <td class="tdtype">
-LPVOID</td>
+Win32.LPVOID</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -8095,7 +8095,7 @@ LPVOID</td>
 <td class="tdname">
 bInheritHandle</td>
 <td class="tdtype">
-BOOL</td>
+Win32.BOOL</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -8116,7 +8116,7 @@ BOOL</td>
 <td class="tdname">
 hIcon</td>
 <td class="tdtype">
-HICON</td>
+Win32.HICON</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -8132,7 +8132,7 @@ s32</td>
 <td class="tdname">
 dwAttributes</td>
 <td class="tdtype">
-DWORD</td>
+Win32.DWORD</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -8140,7 +8140,7 @@ DWORD</td>
 <td class="tdname">
 szDisplayName</td>
 <td class="tdtype">
-[260] CHAR</td>
+[260] Win32.CHAR</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -8148,7 +8148,7 @@ szDisplayName</td>
 <td class="tdname">
 szTypeName</td>
 <td class="tdtype">
-[80] CHAR</td>
+[80] Win32.CHAR</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -8169,7 +8169,7 @@ szTypeName</td>
 <td class="tdname">
 hIcon</td>
 <td class="tdtype">
-HICON</td>
+Win32.HICON</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -8185,7 +8185,7 @@ s32</td>
 <td class="tdname">
 dwAttributes</td>
 <td class="tdtype">
-DWORD</td>
+Win32.DWORD</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -8193,7 +8193,7 @@ DWORD</td>
 <td class="tdname">
 szDisplayName</td>
 <td class="tdtype">
-[260] WCHAR</td>
+[260] Win32.WCHAR</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -8201,7 +8201,7 @@ szDisplayName</td>
 <td class="tdname">
 szTypeName</td>
 <td class="tdtype">
-[80] WCHAR</td>
+[80] Win32.WCHAR</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -8477,7 +8477,7 @@ u32</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func SHGetFileInfoA(pszPath: LPCSTR, dwFileAttributes: DWORD, psfi: *SHFILEINFOA, cbFileInfo: UINT, uFlags: UINT)->DWORD_PTR
+<code style="white-space: break-spaces">func SHGetFileInfoA(pszPath: LPCSTR, dwFileAttributes: DWORD, psfi: SHFILEINFOA, cbFileInfo: UINT, uFlags: UINT)->DWORD_PTR
 </code>
 </p>
 <p>
@@ -8492,7 +8492,7 @@ u32</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func SHGetFileInfoW(pszPath: LPCWSTR, dwFileAttributes: DWORD, psfi: *SHFILEINFOW, cbFileInfo: UINT, uFlags: UINT)->DWORD_PTR
+<code style="white-space: break-spaces">func SHGetFileInfoW(pszPath: LPCWSTR, dwFileAttributes: DWORD, psfi: SHFILEINFOW, cbFileInfo: UINT, uFlags: UINT)->DWORD_PTR
 </code>
 </p>
 <p>
@@ -9319,7 +9319,7 @@ SIID_MAX_ICONS</td>
 <td class="tdname">
 cbSize</td>
 <td class="tdtype">
-DWORD</td>
+Win32.DWORD</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -9327,7 +9327,7 @@ DWORD</td>
 <td class="tdname">
 hIcon</td>
 <td class="tdtype">
-HICON</td>
+Win32.HICON</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -9351,7 +9351,7 @@ s32</td>
 <td class="tdname">
 szPath</td>
 <td class="tdtype">
-[260] WCHAR</td>
+[260] Win32.WCHAR</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -9372,7 +9372,7 @@ szPath</td>
 <td class="tdname">
 left</td>
 <td class="tdtype">
-WORD</td>
+Win32.WORD</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -9380,7 +9380,7 @@ WORD</td>
 <td class="tdname">
 top</td>
 <td class="tdtype">
-WORD</td>
+Win32.WORD</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -9388,7 +9388,7 @@ WORD</td>
 <td class="tdname">
 right</td>
 <td class="tdtype">
-WORD</td>
+Win32.WORD</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -9396,7 +9396,7 @@ WORD</td>
 <td class="tdname">
 bottom</td>
 <td class="tdtype">
-WORD</td>
+Win32.WORD</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -10225,7 +10225,7 @@ s32</td>
 <td id="Win32.SRWLOCK_INIT" class="tdname">
 SRWLOCK_INIT</td>
 <td class="tdtype">
-SRWLOCK</td>
+Win32.SRWLOCK</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -10246,7 +10246,7 @@ SRWLOCK</td>
 <td class="tdname">
 cb</td>
 <td class="tdtype">
-DWORD</td>
+Win32.DWORD</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -10254,7 +10254,7 @@ DWORD</td>
 <td class="tdname">
 lpReserved</td>
 <td class="tdtype">
-LPSTR</td>
+Win32.LPSTR</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -10262,7 +10262,7 @@ LPSTR</td>
 <td class="tdname">
 lpDesktop</td>
 <td class="tdtype">
-LPSTR</td>
+Win32.LPSTR</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -10270,7 +10270,7 @@ LPSTR</td>
 <td class="tdname">
 lpTitle</td>
 <td class="tdtype">
-LPSTR</td>
+Win32.LPSTR</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -10278,7 +10278,7 @@ LPSTR</td>
 <td class="tdname">
 dwX</td>
 <td class="tdtype">
-DWORD</td>
+Win32.DWORD</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -10286,7 +10286,7 @@ DWORD</td>
 <td class="tdname">
 dwY</td>
 <td class="tdtype">
-DWORD</td>
+Win32.DWORD</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -10294,7 +10294,7 @@ DWORD</td>
 <td class="tdname">
 dwXSize</td>
 <td class="tdtype">
-DWORD</td>
+Win32.DWORD</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -10302,7 +10302,7 @@ DWORD</td>
 <td class="tdname">
 dwYSize</td>
 <td class="tdtype">
-DWORD</td>
+Win32.DWORD</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -10310,7 +10310,7 @@ DWORD</td>
 <td class="tdname">
 dwXCountChars</td>
 <td class="tdtype">
-DWORD</td>
+Win32.DWORD</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -10318,7 +10318,7 @@ DWORD</td>
 <td class="tdname">
 dwYCountChars</td>
 <td class="tdtype">
-DWORD</td>
+Win32.DWORD</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -10326,7 +10326,7 @@ DWORD</td>
 <td class="tdname">
 dwFillAttribute</td>
 <td class="tdtype">
-DWORD</td>
+Win32.DWORD</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -10334,7 +10334,7 @@ DWORD</td>
 <td class="tdname">
 dwFlags</td>
 <td class="tdtype">
-DWORD</td>
+Win32.DWORD</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -10342,7 +10342,7 @@ DWORD</td>
 <td class="tdname">
 wShowWindow</td>
 <td class="tdtype">
-WORD</td>
+Win32.WORD</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -10350,7 +10350,7 @@ WORD</td>
 <td class="tdname">
 cbReserved2</td>
 <td class="tdtype">
-WORD</td>
+Win32.WORD</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -10358,7 +10358,7 @@ WORD</td>
 <td class="tdname">
 lpReserved2</td>
 <td class="tdtype">
-LPBYTE</td>
+Win32.LPBYTE</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -10366,7 +10366,7 @@ LPBYTE</td>
 <td class="tdname">
 hStdInput</td>
 <td class="tdtype">
-HANDLE</td>
+Win32.HANDLE</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -10374,7 +10374,7 @@ HANDLE</td>
 <td class="tdname">
 hStdOutput</td>
 <td class="tdtype">
-HANDLE</td>
+Win32.HANDLE</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -10382,7 +10382,7 @@ HANDLE</td>
 <td class="tdname">
 hStdError</td>
 <td class="tdtype">
-HANDLE</td>
+Win32.HANDLE</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -10403,7 +10403,7 @@ HANDLE</td>
 <td class="tdname">
 cb</td>
 <td class="tdtype">
-DWORD</td>
+Win32.DWORD</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -10411,7 +10411,7 @@ DWORD</td>
 <td class="tdname">
 lpReserved</td>
 <td class="tdtype">
-LPWSTR</td>
+Win32.LPWSTR</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -10419,7 +10419,7 @@ LPWSTR</td>
 <td class="tdname">
 lpDesktop</td>
 <td class="tdtype">
-LPWSTR</td>
+Win32.LPWSTR</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -10427,7 +10427,7 @@ LPWSTR</td>
 <td class="tdname">
 lpTitle</td>
 <td class="tdtype">
-LPWSTR</td>
+Win32.LPWSTR</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -10435,7 +10435,7 @@ LPWSTR</td>
 <td class="tdname">
 dwX</td>
 <td class="tdtype">
-DWORD</td>
+Win32.DWORD</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -10443,7 +10443,7 @@ DWORD</td>
 <td class="tdname">
 dwY</td>
 <td class="tdtype">
-DWORD</td>
+Win32.DWORD</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -10451,7 +10451,7 @@ DWORD</td>
 <td class="tdname">
 dwXSize</td>
 <td class="tdtype">
-DWORD</td>
+Win32.DWORD</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -10459,7 +10459,7 @@ DWORD</td>
 <td class="tdname">
 dwYSize</td>
 <td class="tdtype">
-DWORD</td>
+Win32.DWORD</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -10467,7 +10467,7 @@ DWORD</td>
 <td class="tdname">
 dwXCountChars</td>
 <td class="tdtype">
-DWORD</td>
+Win32.DWORD</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -10475,7 +10475,7 @@ DWORD</td>
 <td class="tdname">
 dwYCountChars</td>
 <td class="tdtype">
-DWORD</td>
+Win32.DWORD</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -10483,7 +10483,7 @@ DWORD</td>
 <td class="tdname">
 dwFillAttribute</td>
 <td class="tdtype">
-DWORD</td>
+Win32.DWORD</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -10491,7 +10491,7 @@ DWORD</td>
 <td class="tdname">
 dwFlags</td>
 <td class="tdtype">
-DWORD</td>
+Win32.DWORD</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -10499,7 +10499,7 @@ DWORD</td>
 <td class="tdname">
 wShowWindow</td>
 <td class="tdtype">
-WORD</td>
+Win32.WORD</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -10507,7 +10507,7 @@ WORD</td>
 <td class="tdname">
 cbReserved2</td>
 <td class="tdtype">
-WORD</td>
+Win32.WORD</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -10515,7 +10515,7 @@ WORD</td>
 <td class="tdname">
 lpReserved2</td>
 <td class="tdtype">
-LPBYTE</td>
+Win32.LPBYTE</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -10523,7 +10523,7 @@ LPBYTE</td>
 <td class="tdname">
 hStdInput</td>
 <td class="tdtype">
-HANDLE</td>
+Win32.HANDLE</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -10531,7 +10531,7 @@ HANDLE</td>
 <td class="tdname">
 hStdOutput</td>
 <td class="tdtype">
-HANDLE</td>
+Win32.HANDLE</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -10539,7 +10539,7 @@ HANDLE</td>
 <td class="tdname">
 hStdError</td>
 <td class="tdtype">
-HANDLE</td>
+Win32.HANDLE</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -10560,7 +10560,7 @@ HANDLE</td>
 <td id="Win32.STD_INPUT_HANDLE" class="tdname">
 STD_INPUT_HANDLE</td>
 <td class="tdtype">
-DWORD</td>
+Win32.DWORD</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -10568,7 +10568,7 @@ DWORD</td>
 <td id="Win32.STD_OUTPUT_HANDLE" class="tdname">
 STD_OUTPUT_HANDLE</td>
 <td class="tdtype">
-DWORD</td>
+Win32.DWORD</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -10837,7 +10837,7 @@ s32</td>
 <td class="tdname">
 wYear</td>
 <td class="tdtype">
-WORD</td>
+Win32.WORD</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -10845,7 +10845,7 @@ WORD</td>
 <td class="tdname">
 wMonth</td>
 <td class="tdtype">
-WORD</td>
+Win32.WORD</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -10853,7 +10853,7 @@ WORD</td>
 <td class="tdname">
 wDayOfWeek</td>
 <td class="tdtype">
-WORD</td>
+Win32.WORD</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -10861,7 +10861,7 @@ WORD</td>
 <td class="tdname">
 wDay</td>
 <td class="tdtype">
-WORD</td>
+Win32.WORD</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -10869,7 +10869,7 @@ WORD</td>
 <td class="tdname">
 wHour</td>
 <td class="tdtype">
-WORD</td>
+Win32.WORD</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -10877,7 +10877,7 @@ WORD</td>
 <td class="tdname">
 wMinute</td>
 <td class="tdtype">
-WORD</td>
+Win32.WORD</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -10885,7 +10885,7 @@ WORD</td>
 <td class="tdname">
 wSecond</td>
 <td class="tdtype">
-WORD</td>
+Win32.WORD</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -10893,7 +10893,7 @@ WORD</td>
 <td class="tdname">
 wMilliseconds</td>
 <td class="tdtype">
-WORD</td>
+Win32.WORD</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -10914,7 +10914,7 @@ WORD</td>
 <td class="tdname">
 dwOemId</td>
 <td class="tdtype">
-DWORD</td>
+Win32.DWORD</td>
 <td class="enumeration">
 <p>
 Must be updated to an union.</p>
@@ -10924,7 +10924,7 @@ Must be updated to an union.</p>
 <td class="tdname">
 dwPageSize</td>
 <td class="tdtype">
-DWORD</td>
+Win32.DWORD</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -10932,7 +10932,7 @@ DWORD</td>
 <td class="tdname">
 lpMinimumApplicationAddress</td>
 <td class="tdtype">
-LPVOID</td>
+Win32.LPVOID</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -10940,7 +10940,7 @@ LPVOID</td>
 <td class="tdname">
 lpMaximumApplicationAddress</td>
 <td class="tdtype">
-LPVOID</td>
+Win32.LPVOID</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -10948,7 +10948,7 @@ LPVOID</td>
 <td class="tdname">
 dwActiveProcessorMask</td>
 <td class="tdtype">
-DWORD_PTR</td>
+Win32.DWORD_PTR</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -10956,7 +10956,7 @@ DWORD_PTR</td>
 <td class="tdname">
 dwNumberOfProcessors</td>
 <td class="tdtype">
-DWORD</td>
+Win32.DWORD</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -10964,7 +10964,7 @@ DWORD</td>
 <td class="tdname">
 dwProcessorType</td>
 <td class="tdtype">
-DWORD</td>
+Win32.DWORD</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -10972,7 +10972,7 @@ DWORD</td>
 <td class="tdname">
 dwAllocationGranularity</td>
 <td class="tdtype">
-DWORD</td>
+Win32.DWORD</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -10980,7 +10980,7 @@ DWORD</td>
 <td class="tdname">
 wProcessorLevel</td>
 <td class="tdtype">
-WORD</td>
+Win32.WORD</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -10988,7 +10988,7 @@ WORD</td>
 <td class="tdname">
 wProcessorRevision</td>
 <td class="tdtype">
-WORD</td>
+Win32.WORD</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -11009,7 +11009,7 @@ WORD</td>
 <td id="Win32.S_OK" class="tdname">
 S_OK</td>
 <td class="tdtype">
-HRESULT</td>
+Win32.HRESULT</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -11026,7 +11026,7 @@ HRESULT</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func ScreenToClient(hWnd: HWND, lpPoint: *POINT)->BOOL
+<code style="white-space: break-spaces">func ScreenToClient(hWnd: HWND, lpPoint: POINT)->BOOL
 </code>
 </p>
 <p>
@@ -11221,7 +11221,7 @@ HRESULT</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func SetFileTime(hFile: HANDLE, lpCreationTime: const *FILETIME, lpLastAccessTime: const *FILETIME, lpLastWriteTime: const *FILETIME) throw
+<code style="white-space: break-spaces">func SetFileTime(hFile: HANDLE, lpCreationTime: FILETIME, lpLastAccessTime: FILETIME, lpLastWriteTime: FILETIME) throw
 </code>
 </p>
 <p>
@@ -11281,7 +11281,7 @@ HRESULT</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func SetWaitableTimer(hTimer: HANDLE, lpDueTime: const *LARGE_INTEGER, lPeriod: LONG, pfnCompletionRoutine: *void, lpArgToCompletionRoutine: LPVOID, fResume: BOOL)->BOOL
+<code style="white-space: break-spaces">func SetWaitableTimer(hTimer: HANDLE, lpDueTime: LARGE_INTEGER, lPeriod: LONG, pfnCompletionRoutine: *void, lpArgToCompletionRoutine: LPVOID, fResume: BOOL)->BOOL
 </code>
 </p>
 <p>
@@ -11296,7 +11296,7 @@ HRESULT</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func SetWindowLongPtrA(hWnd: HWND, nIndex: s32, dwNewLong: *LONG)->*LONG
+<code style="white-space: break-spaces">func SetWindowLongPtrA(hWnd: HWND, nIndex: s32, dwNewLong: LONG)->LONG
 </code>
 </p>
 <p>
@@ -11311,7 +11311,7 @@ HRESULT</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func SetWindowLongPtrW(hWnd: HWND, nIndex: s32, dwNewLong: *LONG)->*LONG
+<code style="white-space: break-spaces">func SetWindowLongPtrW(hWnd: HWND, nIndex: s32, dwNewLong: LONG)->LONG
 </code>
 </p>
 <p>
@@ -11341,7 +11341,7 @@ HRESULT</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func Shell_NotifyIconA(dwMessage: DWORD, lpData: *NOTIFYICONDATAA) throw
+<code style="white-space: break-spaces">func Shell_NotifyIconA(dwMessage: DWORD, lpData: NOTIFYICONDATAA) throw
 </code>
 </p>
 <p>
@@ -11356,7 +11356,7 @@ HRESULT</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func Shell_NotifyIconW(dwMessage: DWORD, lpData: *NOTIFYICONDATAW) throw
+<code style="white-space: break-spaces">func Shell_NotifyIconW(dwMessage: DWORD, lpData: NOTIFYICONDATAW) throw
 </code>
 </p>
 <p>
@@ -11446,7 +11446,7 @@ HRESULT</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func SystemTimeToFileTime(lpSystemTime: const *SYSTEMTIME, lpFileTime: *FILETIME) throw
+<code style="white-space: break-spaces">func SystemTimeToFileTime(lpSystemTime: SYSTEMTIME, lpFileTime: FILETIME) throw
 </code>
 </p>
 <p>
@@ -11530,7 +11530,7 @@ u32</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func ToUnicode(wVirtKey: UINT, wScanCode: UINT, lpKeyState: const *BYTE, pwszBuff: LPWSTR, cchBuff: s32, wFlags: UINT)->s32
+<code style="white-space: break-spaces">func ToUnicode(wVirtKey: UINT, wScanCode: UINT, lpKeyState: BYTE, pwszBuff: LPWSTR, cchBuff: s32, wFlags: UINT)->s32
 </code>
 </p>
 <p>
@@ -11545,7 +11545,7 @@ u32</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func TranslateMessage(lpMsg: const *MSG)->BOOL
+<code style="white-space: break-spaces">func TranslateMessage(lpMsg: MSG)->BOOL
 </code>
 </p>
 <p>
@@ -11560,7 +11560,7 @@ u32</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func TryAcquireSRWLockExclusive(SRWLock: *SRWLOCK)->BOOL
+<code style="white-space: break-spaces">func TryAcquireSRWLockExclusive(SRWLock: SRWLOCK)->BOOL
 </code>
 </p>
 <p>
@@ -11575,7 +11575,7 @@ u32</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func TryAcquireSRWLockShared(SRWLock: *SRWLOCK)->BOOL
+<code style="white-space: break-spaces">func TryAcquireSRWLockShared(SRWLock: SRWLOCK)->BOOL
 </code>
 </p>
 <p>
@@ -13237,7 +13237,7 @@ s32</td>
 <td class="tdname">
 dwFileAttributes</td>
 <td class="tdtype">
-DWORD</td>
+Win32.DWORD</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -13245,7 +13245,7 @@ DWORD</td>
 <td class="tdname">
 ftCreationTime</td>
 <td class="tdtype">
-<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.win32.html#Win32.FILETIME">FILETIME</a></td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.win32.html#Win32.FILETIME">Win32.FILETIME</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -13253,7 +13253,7 @@ ftCreationTime</td>
 <td class="tdname">
 ftLastAccessTime</td>
 <td class="tdtype">
-<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.win32.html#Win32.FILETIME">FILETIME</a></td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.win32.html#Win32.FILETIME">Win32.FILETIME</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -13261,7 +13261,7 @@ ftLastAccessTime</td>
 <td class="tdname">
 ftLastWriteTime</td>
 <td class="tdtype">
-<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.win32.html#Win32.FILETIME">FILETIME</a></td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.win32.html#Win32.FILETIME">Win32.FILETIME</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -13269,7 +13269,7 @@ ftLastWriteTime</td>
 <td class="tdname">
 nFileSizeHigh</td>
 <td class="tdtype">
-DWORD</td>
+Win32.DWORD</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -13277,7 +13277,7 @@ DWORD</td>
 <td class="tdname">
 nFileSizeLow</td>
 <td class="tdtype">
-DWORD</td>
+Win32.DWORD</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -13298,7 +13298,7 @@ DWORD</td>
 <td class="tdname">
 dwFileAttributes</td>
 <td class="tdtype">
-DWORD</td>
+Win32.DWORD</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -13306,7 +13306,7 @@ DWORD</td>
 <td class="tdname">
 ftCreationTime</td>
 <td class="tdtype">
-<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.win32.html#Win32.FILETIME">FILETIME</a></td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.win32.html#Win32.FILETIME">Win32.FILETIME</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -13314,7 +13314,7 @@ ftCreationTime</td>
 <td class="tdname">
 ftLastAccessTime</td>
 <td class="tdtype">
-<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.win32.html#Win32.FILETIME">FILETIME</a></td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.win32.html#Win32.FILETIME">Win32.FILETIME</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -13322,7 +13322,7 @@ ftLastAccessTime</td>
 <td class="tdname">
 ftLastWriteTime</td>
 <td class="tdtype">
-<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.win32.html#Win32.FILETIME">FILETIME</a></td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.win32.html#Win32.FILETIME">Win32.FILETIME</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -13330,7 +13330,7 @@ ftLastWriteTime</td>
 <td class="tdname">
 nFileSizeHigh</td>
 <td class="tdtype">
-DWORD</td>
+Win32.DWORD</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -13338,7 +13338,7 @@ DWORD</td>
 <td class="tdname">
 nFileSizeLow</td>
 <td class="tdtype">
-DWORD</td>
+Win32.DWORD</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -13346,7 +13346,7 @@ DWORD</td>
 <td class="tdname">
 dwReserved0</td>
 <td class="tdtype">
-DWORD</td>
+Win32.DWORD</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -13354,7 +13354,7 @@ DWORD</td>
 <td class="tdname">
 dwReserved1</td>
 <td class="tdtype">
-DWORD</td>
+Win32.DWORD</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -13362,7 +13362,7 @@ DWORD</td>
 <td class="tdname">
 cFileName</td>
 <td class="tdtype">
-[260] CHAR</td>
+[260] Win32.CHAR</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -13370,7 +13370,7 @@ cFileName</td>
 <td class="tdname">
 cAlternateFileName</td>
 <td class="tdtype">
-[14] CHAR</td>
+[14] Win32.CHAR</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -13378,7 +13378,7 @@ cAlternateFileName</td>
 <td class="tdname">
 dwFileType</td>
 <td class="tdtype">
-DWORD</td>
+Win32.DWORD</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -13386,7 +13386,7 @@ DWORD</td>
 <td class="tdname">
 dwCreatorType</td>
 <td class="tdtype">
-DWORD</td>
+Win32.DWORD</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -13394,7 +13394,7 @@ DWORD</td>
 <td class="tdname">
 wFinderFlags</td>
 <td class="tdtype">
-WORD</td>
+Win32.WORD</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -13415,7 +13415,7 @@ WORD</td>
 <td class="tdname">
 dwFileAttributes</td>
 <td class="tdtype">
-DWORD</td>
+Win32.DWORD</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -13423,7 +13423,7 @@ DWORD</td>
 <td class="tdname">
 ftCreationTime</td>
 <td class="tdtype">
-<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.win32.html#Win32.FILETIME">FILETIME</a></td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.win32.html#Win32.FILETIME">Win32.FILETIME</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -13431,7 +13431,7 @@ ftCreationTime</td>
 <td class="tdname">
 ftLastAccessTime</td>
 <td class="tdtype">
-<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.win32.html#Win32.FILETIME">FILETIME</a></td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.win32.html#Win32.FILETIME">Win32.FILETIME</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -13439,7 +13439,7 @@ ftLastAccessTime</td>
 <td class="tdname">
 ftLastWriteTime</td>
 <td class="tdtype">
-<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.win32.html#Win32.FILETIME">FILETIME</a></td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.win32.html#Win32.FILETIME">Win32.FILETIME</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -13447,7 +13447,7 @@ ftLastWriteTime</td>
 <td class="tdname">
 nFileSizeHigh</td>
 <td class="tdtype">
-DWORD</td>
+Win32.DWORD</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -13455,7 +13455,7 @@ DWORD</td>
 <td class="tdname">
 nFileSizeLow</td>
 <td class="tdtype">
-DWORD</td>
+Win32.DWORD</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -13463,7 +13463,7 @@ DWORD</td>
 <td class="tdname">
 dwReserved0</td>
 <td class="tdtype">
-DWORD</td>
+Win32.DWORD</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -13471,7 +13471,7 @@ DWORD</td>
 <td class="tdname">
 dwReserved1</td>
 <td class="tdtype">
-DWORD</td>
+Win32.DWORD</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -13479,7 +13479,7 @@ DWORD</td>
 <td class="tdname">
 cFileName</td>
 <td class="tdtype">
-[260] WCHAR</td>
+[260] Win32.WCHAR</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -13487,7 +13487,7 @@ cFileName</td>
 <td class="tdname">
 cAlternateFileName</td>
 <td class="tdtype">
-[14] WCHAR</td>
+[14] Win32.WCHAR</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -13495,7 +13495,7 @@ cAlternateFileName</td>
 <td class="tdname">
 dwFileType</td>
 <td class="tdtype">
-DWORD</td>
+Win32.DWORD</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -13503,7 +13503,7 @@ DWORD</td>
 <td class="tdname">
 dwCreatorType</td>
 <td class="tdtype">
-DWORD</td>
+Win32.DWORD</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -13511,7 +13511,7 @@ DWORD</td>
 <td class="tdname">
 wFinderFlags</td>
 <td class="tdtype">
-WORD</td>
+Win32.WORD</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -13532,7 +13532,7 @@ WORD</td>
 <td class="tdname">
 hwnd</td>
 <td class="tdtype">
-HWND</td>
+Win32.HWND</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -13540,7 +13540,7 @@ HWND</td>
 <td class="tdname">
 hwndInsertAfter</td>
 <td class="tdtype">
-HWND</td>
+Win32.HWND</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -13580,7 +13580,7 @@ s32</td>
 <td class="tdname">
 flags</td>
 <td class="tdtype">
-UINT</td>
+Win32.UINT</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -15630,7 +15630,7 @@ u32</td>
 <td class="tdname">
 style</td>
 <td class="tdtype">
-UINT</td>
+Win32.UINT</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -15662,7 +15662,7 @@ s32</td>
 <td class="tdname">
 hInstance</td>
 <td class="tdtype">
-HANDLE</td>
+Win32.HANDLE</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -15670,7 +15670,7 @@ HANDLE</td>
 <td class="tdname">
 hIcon</td>
 <td class="tdtype">
-HICON</td>
+Win32.HICON</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -15678,7 +15678,7 @@ HICON</td>
 <td class="tdname">
 hCursor</td>
 <td class="tdtype">
-HCURSOR</td>
+Win32.HCURSOR</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -15686,7 +15686,7 @@ HCURSOR</td>
 <td class="tdname">
 hbrBackground</td>
 <td class="tdtype">
-HBRUSH</td>
+Win32.HBRUSH</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -15694,7 +15694,7 @@ HBRUSH</td>
 <td class="tdname">
 lpszMenuName</td>
 <td class="tdtype">
-LPCSTR</td>
+Win32.LPCSTR</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -15702,7 +15702,7 @@ LPCSTR</td>
 <td class="tdname">
 lpszClassName</td>
 <td class="tdtype">
-LPCSTR</td>
+Win32.LPCSTR</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -15723,7 +15723,7 @@ LPCSTR</td>
 <td class="tdname">
 style</td>
 <td class="tdtype">
-UINT</td>
+Win32.UINT</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -15755,7 +15755,7 @@ s32</td>
 <td class="tdname">
 hInstance</td>
 <td class="tdtype">
-HANDLE</td>
+Win32.HANDLE</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -15763,7 +15763,7 @@ HANDLE</td>
 <td class="tdname">
 hIcon</td>
 <td class="tdtype">
-HICON</td>
+Win32.HICON</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -15771,7 +15771,7 @@ HICON</td>
 <td class="tdname">
 hCursor</td>
 <td class="tdtype">
-HCURSOR</td>
+Win32.HCURSOR</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -15779,7 +15779,7 @@ HCURSOR</td>
 <td class="tdname">
 hbrBackground</td>
 <td class="tdtype">
-HBRUSH</td>
+Win32.HBRUSH</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -15787,7 +15787,7 @@ HBRUSH</td>
 <td class="tdname">
 lpszMenuName</td>
 <td class="tdtype">
-LPCWSTR</td>
+Win32.LPCWSTR</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -15795,7 +15795,7 @@ LPCWSTR</td>
 <td class="tdname">
 lpszClassName</td>
 <td class="tdtype">
-LPCWSTR</td>
+Win32.LPCWSTR</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -16217,7 +16217,7 @@ u32</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func WaitForMultipleObjects(nCount: DWORD, lpHandles: const *HANDLE, bWaitAll: BOOL, dwMilliseconds: DWORD)->DWORD throw
+<code style="white-space: break-spaces">func WaitForMultipleObjects(nCount: DWORD, lpHandles: HANDLE, bWaitAll: BOOL, dwMilliseconds: DWORD)->DWORD throw
 </code>
 </p>
 <p>

@@ -1687,7 +1687,7 @@ This is a generic dynamic array.</p>
 <td class="tdname">
 allocator</td>
 <td class="tdtype">
-IAllocator</td>
+Swag.IAllocator</td>
 <td class="enumeration">
 <p>
 Associated allocator.</p>
@@ -2126,7 +2126,7 @@ Add a copy of one element at the end of the array.</p>
 <p>
 Append a slice to the end of this instance.</p>
 <p class="code">
-<code style="white-space: break-spaces">func add(using self, values: const [..] T)
+<code style="white-space: break-spaces">func add(using self, values: ] T)
 </code>
 </p>
 <p>
@@ -2285,7 +2285,7 @@ Reserve room at the end of the array for <code class = "incode">num</code> eleme
 <p>
 Move some values at the given index. If <code class = "incode">index</code> is equal to <code class = "incode">count</code>, then the values are moved at the end of the array. Order is preserved.</p>
 <p class="code">
-<code style="white-space: break-spaces">func emplaceAt(using self, index: u64, values: [..] T)
+<code style="white-space: break-spaces">func emplaceAt(using self, index: u64, values: ] T)
 </code>
 </p>
 <p>
@@ -2393,7 +2393,7 @@ Insert a value at the given index. If <code class = "incode">index</code> is equ
 <p>
 Insert some values at the given index. If <code class = "incode">index</code> is equal to <code class = "incode">count</code>, then the values are added at the end of the array. Order is preserved.</p>
 <p class="code">
-<code style="white-space: break-spaces">func insertAt(using self, index: u64, values: const [..] T)
+<code style="white-space: break-spaces">func insertAt(using self, index: u64, values: ] T)
 </code>
 </p>
 <p>
@@ -2433,7 +2433,7 @@ Returns true if the array is empty.</p>
 <p>
 Initializes an Array that contains values copied from the specified array.</p>
 <p class="code">
-<code style="white-space: break-spaces">func opAffect(using self, arr: const [..] T)
+<code style="white-space: break-spaces">func opAffect(using self, arr: ] T)
 </code>
 </p>
 <p>
@@ -2448,8 +2448,8 @@ Initializes an Array that contains values copied from the specified array.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func opCast(using self)->[..] T
-func opCast(using self)->const [..] T
+<code style="white-space: break-spaces">func opCast(using self)->] T
+func opCast(using self)->] T
 </code>
 </p>
 <p>
@@ -2570,7 +2570,7 @@ func opIndex(using const self, index: u64)->ref T
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func opSlice(using self, lower: u64, upper: u64)->[..] T
+<code style="white-space: break-spaces">func opSlice(using self, lower: u64, upper: u64)->] T
 </code>
 </p>
 <p>
@@ -2837,7 +2837,7 @@ Swap two elements.</p>
 <p>
 Returns a slice.</p>
 <p class="code">
-<code style="white-space: break-spaces">func toSlice(using self)->[..] T
+<code style="white-space: break-spaces">func toSlice(using self)->] T
 </code>
 </p>
 <p>
@@ -2859,7 +2859,7 @@ Returns a slice.</p>
 <td class="tdname">
 base</td>
 <td class="tdtype">
-<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Array">Array</a>(*T)</td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Array">Core.Array</a>(*T)</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -3542,7 +3542,7 @@ buffer</td>
 <td class="tdname">
 allocator</td>
 <td class="tdtype">
-IAllocator</td>
+Swag.IAllocator</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -3779,7 +3779,7 @@ Inverts all the bit values, so that elements set to <code class = "incode">true<
 <p>
 Initializes a <code class = "incode">BitArray</code> that contains bit values copied from the specified array of booleans.</p>
 <p class="code">
-<code style="white-space: break-spaces">func opAffect(using self, what: const [..] bool)
+<code style="white-space: break-spaces">func opAffect(using self, what: ] bool)
 </code>
 </p>
 <p>
@@ -3985,7 +3985,7 @@ const [..] u8</td>
 <td class="tdname">
 writeBuffer</td>
 <td class="tdtype">
-*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Array">Array</a>(u8)</td>
+*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Array">Core.Array</a>(u8)</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -4219,7 +4219,7 @@ Seek to the next byte.</p>
 <p>
 Creates a byte stream to read from a slice.</p>
 <p class="code">
-<code style="white-space: break-spaces">func openRead(readBuffer: const [..] u8)->ByteStream
+<code style="white-space: break-spaces">func openRead(readBuffer: ] u8)->ByteStream
 </code>
 </p>
 <p>
@@ -4236,7 +4236,7 @@ Creates a byte stream to read from a slice.</p>
 <p>
 Creates a byte stream to write to an array.</p>
 <p class="code">
-<code style="white-space: break-spaces">func openWrite(writeBuffer: *Array'(u8))->ByteStream
+<code style="white-space: break-spaces">func openWrite(writeBuffer: Array'(u8))->ByteStream
 </code>
 </p>
 <p>
@@ -4338,7 +4338,7 @@ Read one byte and seek.</p>
 <p>
 Returns a slice of the remaing bytes to read.</p>
 <p class="code">
-<code style="white-space: break-spaces">func remainReadToSlice(using self)->const [..] u8
+<code style="white-space: break-spaces">func remainReadToSlice(using self)->] u8
 </code>
 </p>
 <p>
@@ -4389,7 +4389,7 @@ Seek to the given position.</p>
 <p>
 Write the given amount of bytes.</p>
 <p class="code">
-<code style="white-space: break-spaces">func writeBytes(using self, slice: const [..] u8)
+<code style="white-space: break-spaces">func writeBytes(using self, slice: ] u8)
 </code>
 </p>
 <p>
@@ -4567,7 +4567,7 @@ Clean and split a list of arguments -option:value or -option=value =&gt; -option
 <td class="tdname">
 isSet</td>
 <td class="tdtype">
-<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.CommandLine.IsSet">IsSet</a>(T)</td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.CommandLine.IsSet">Core.CommandLine.IsSet</a>(T)</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -4584,7 +4584,7 @@ isSet</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func getField(typeStruct: const *TypeInfoStruct, name: string)->const *TypeValue
+<code style="white-space: break-spaces">func getField(typeStruct: TypeInfoStruct, name: string)->TypeValue
 </code>
 </p>
 <p>
@@ -4618,7 +4618,7 @@ Returns true if <code class = "incode">oneArg</code> is a valid option (starting
 <p>
 Parse all the arguments and fill the result.</p>
 <p class="code">
-<code style="white-space: break-spaces">func(T) parse(st: *T, args: const [..] string, options = CommandLine.ParseOptions{})->Result'(T) throw
+<code style="white-space: break-spaces">func(T) parse(st: *T, args: ] string, options = CommandLine.ParseOptions{})->Result'(T) throw
 </code>
 </p>
 <p>
@@ -4650,7 +4650,7 @@ Parse all the arguments and fill the result.</p>
 <p>
 Clean and split a list of arguments -option:value or -option=value =&gt; -option value.</p>
 <p class="code">
-<code style="white-space: break-spaces">func splitArguments(args: const [..] string, options: ParseOptions)->Array'(string)
+<code style="white-space: break-spaces">func splitArguments(args: ] string, options: ParseOptions)->Array'(string)
 </code>
 </p>
 <p>
@@ -4894,7 +4894,7 @@ bool</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func init(using self, buf: const [..] u8)
+<code style="white-space: break-spaces">func init(using self, buf: ] u8)
 </code>
 </p>
 <p>
@@ -5078,7 +5078,7 @@ bool</td>
 <td class="tdname">
 state</td>
 <td class="tdtype">
-*Compressor</td>
+*Core.Compress.__privns_175.Compressor</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -5086,7 +5086,7 @@ state</td>
 <td class="tdname">
 adler</td>
 <td class="tdtype">
-<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Hash.Adler32">Adler32</a></td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Hash.Adler32">Core.Hash.Adler32</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -5094,7 +5094,7 @@ adler</td>
 <td class="tdname">
 initFlags</td>
 <td class="tdtype">
-<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Compress.Deflate.CompressionFlags">CompressionFlags</a></td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Compress.Deflate.CompressionFlags">Core.Compress.Deflate.CompressionFlags</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -5249,7 +5249,7 @@ Fixed</td>
 <p>
 Compress the source buffer.</p>
 <p class="code">
-<code style="white-space: break-spaces">func compress(using self, result: *Array'(u8), src: const [..] u8) throw
+<code style="white-space: break-spaces">func compress(using self, result: Array'(u8), src: ] u8) throw
 </code>
 </p>
 <p>
@@ -5285,7 +5285,7 @@ Initialize the compressor Can be called multiple times.</p>
 <td class="tdname">
 stream</td>
 <td class="tdtype">
-<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Compress.BitStream">BitStream</a></td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Compress.BitStream">Core.Compress.BitStream</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -5301,7 +5301,7 @@ u32</td>
 <td class="tdname">
 adler</td>
 <td class="tdtype">
-<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Hash.Adler32">Adler32</a></td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Hash.Adler32">Core.Hash.Adler32</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -5331,7 +5331,7 @@ Decompress the associated stream.</p>
 <p>
 Decompress the associated stream.</p>
 <p class="code">
-<code style="white-space: break-spaces">func decompress(using self, buf: const [..] u8, winSize: u32 = InflateMaxDistance)->Array'(u8) throw
+<code style="white-space: break-spaces">func decompress(using self, buf: ] u8, winSize: u32 = InflateMaxDistance)->Array'(u8) throw
 </code>
 </p>
 <p>
@@ -5350,7 +5350,7 @@ Decompress the associated stream.</p>
 <td class="tdname">
 decoder</td>
 <td class="tdtype">
-<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Compress.Inflate">Inflate</a></td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Compress.Inflate">Core.Compress.Inflate</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -5358,7 +5358,7 @@ decoder</td>
 <td class="tdname">
 encoder</td>
 <td class="tdtype">
-<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Compress.Deflate">Deflate</a></td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Compress.Deflate">Core.Compress.Deflate</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -5396,7 +5396,7 @@ Decompress stream.</p>
 <p>
 Decompress stream.</p>
 <p class="code">
-<code style="white-space: break-spaces">func compress(using self, buffer: const [..] u8, level = Deflate.CompressionLevel.Default)->Array'(u8) throw
+<code style="white-space: break-spaces">func compress(using self, buffer: ] u8, level = Deflate.CompressionLevel.Default)->Array'(u8) throw
 </code>
 </p>
 <p>
@@ -5413,7 +5413,7 @@ Decompress stream.</p>
 <p>
 Decompress stream.</p>
 <p class="code">
-<code style="white-space: break-spaces">func decompress(using self, buffer: const [..] u8)->Array'(u8) throw
+<code style="white-space: break-spaces">func decompress(using self, buffer: ] u8)->Array'(u8) throw
 </code>
 </p>
 <p>
@@ -5434,7 +5434,7 @@ Represents a growable buffer, which is divided in buckets to avoid a copy/reallo
 <td class="tdname">
 allocator</td>
 <td class="tdtype">
-IAllocator</td>
+Swag.IAllocator</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -5442,7 +5442,7 @@ IAllocator</td>
 <td class="tdname">
 firstBucket</td>
 <td class="tdtype">
-*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.ConcatBufferBucket">ConcatBufferBucket</a></td>
+*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.ConcatBufferBucket">Core.ConcatBufferBucket</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -5450,7 +5450,7 @@ firstBucket</td>
 <td class="tdname">
 curBucket</td>
 <td class="tdtype">
-*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.ConcatBufferBucket">ConcatBufferBucket</a></td>
+*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.ConcatBufferBucket">Core.ConcatBufferBucket</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -5458,7 +5458,7 @@ curBucket</td>
 <td class="tdname">
 lastBucket</td>
 <td class="tdtype">
-*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.ConcatBufferBucket">ConcatBufferBucket</a></td>
+*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.ConcatBufferBucket">Core.ConcatBufferBucket</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -5490,7 +5490,7 @@ bool</td>
 <td class="tdname">
 viewFirstBucket</td>
 <td class="tdtype">
-<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.ConcatBufferBucket">ConcatBufferBucket</a></td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.ConcatBufferBucket">Core.ConcatBufferBucket</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -5687,7 +5687,7 @@ Visit all valid buckets.</p>
 <p>
 Append a slice of bytes to the buffer If <code class = "incode">contiguous</code> is false, the slice will be divided in chunks if necessary.</p>
 <p class="code">
-<code style="white-space: break-spaces">func addBytes(using self, bytes: const [..] u8, contiguous = true)
+<code style="white-space: break-spaces">func addBytes(using self, bytes: ] u8, contiguous = true)
 </code>
 </p>
 <p>
@@ -5990,7 +5990,7 @@ Set the end <code class = "incode">seek</code>.</p>
 <p>
 Share <code class = "incode">data</code> with the firstBucket.</p>
 <p class="code">
-<code style="white-space: break-spaces">func setFirstBucket(using self, data: [..] u8)
+<code style="white-space: break-spaces">func setFirstBucket(using self, data: ] u8)
 </code>
 </p>
 <p>
@@ -6024,7 +6024,7 @@ Set the current <code class = "incode">seek</code>.</p>
 <p>
 Convert to a slice *only* if the buffer is linear (see <code class = "incode">makeLinear</code>).</p>
 <p class="code">
-<code style="white-space: break-spaces">func toSlice(using self)->[..] u8
+<code style="white-space: break-spaces">func toSlice(using self)->] u8
 </code>
 </p>
 <p>
@@ -6068,7 +6068,7 @@ datas</td>
 <td class="tdname">
 next</td>
 <td class="tdtype">
-*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.ConcatBufferBucket">ConcatBufferBucket</a></td>
+*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.ConcatBufferBucket">Core.ConcatBufferBucket</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -6113,7 +6113,7 @@ u64</td>
 <td class="tdname">
 bucket</td>
 <td class="tdtype">
-*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.ConcatBufferBucket">ConcatBufferBucket</a></td>
+*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.ConcatBufferBucket">Core.ConcatBufferBucket</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -6844,7 +6844,7 @@ string</td>
 <td class="tdname">
 skipAttributes</td>
 <td class="tdtype">
-<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.File.FileAttributes">FileAttributes</a></td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.File.FileAttributes">Core.File.FileAttributes</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -6884,7 +6884,7 @@ bool</td>
 <td class="tdname">
 filterLambda</td>
 <td class="tdtype">
-func(const ref <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.File.FileInfo">FileInfo</a>)-&gt;bool</td>
+func(<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.File.FileInfo">Core.File.FileInfo</a>)-&gt;bool</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -6918,7 +6918,7 @@ func(const ref <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x8
 <p>
 Enumerate a directory.</p>
 <p class="code">
-<code style="white-space: break-spaces">func enumerate(dirName: string, options: EnumerationOptions)->Array'(FileInfo) throw
+<code style="white-space: break-spaces">func enumerate(dirName: string, options: EnumerationOptions)->FileInfo) throw
 </code>
 </p>
 <p>
@@ -6935,7 +6935,7 @@ Enumerate a directory.</p>
 <p>
 Get all the directories in the given directory.</p>
 <p class="code">
-<code style="white-space: break-spaces">func enumerateDirectories(dirName: string, matchExtension: string = null, recurse = false)->Array'(FileInfo) throw
+<code style="white-space: break-spaces">func enumerateDirectories(dirName: string, matchExtension: string = null, recurse = false)->FileInfo) throw
 </code>
 </p>
 <p>
@@ -6952,7 +6952,7 @@ Get all the directories in the given directory.</p>
 <p>
 Get all the files of the given directory.</p>
 <p class="code">
-<code style="white-space: break-spaces">func enumerateFiles(dirName: string, matchExtension: string = null, recurse = false)->Array'(FileInfo) throw
+<code style="white-space: break-spaces">func enumerateFiles(dirName: string, matchExtension: string = null, recurse = false)->FileInfo) throw
 </code>
 </p>
 <p>
@@ -7003,7 +7003,7 @@ Returns the current directory.</p>
 <p>
 Get the list of logical drives.</p>
 <p class="code">
-<code style="white-space: break-spaces">func getDrives()->Array'(String) throw
+<code style="white-space: break-spaces">func getDrives()->String) throw
 </code>
 </p>
 <p>
@@ -7176,7 +7176,7 @@ string</td>
 <td class="tdname">
 rect</td>
 <td class="tdtype">
-<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Math.Rectangle">Rectangle</a></td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Math.Rectangle">Core.Math.Rectangle</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -7184,7 +7184,7 @@ rect</td>
 <td class="tdname">
 work</td>
 <td class="tdtype">
-<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Math.Rectangle">Rectangle</a></td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Math.Rectangle">Core.Math.Rectangle</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -7205,7 +7205,7 @@ work</td>
 <td class="tdname">
 handle</td>
 <td class="tdtype">
-ProcessHandle</td>
+Core.Env.ProcessHandle</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -7428,7 +7428,7 @@ Get the program command line arguments as a [..] string.</p>
 <p>
 Get the list of all monitors.</p>
 <p class="code">
-<code style="white-space: break-spaces">func getMonitors()->Array'(Monitor)
+<code style="white-space: break-spaces">func getMonitors()->Monitor)
 </code>
 </p>
 <p>
@@ -7868,7 +7868,7 @@ Encrypted</td>
 <td class="tdname">
 fullname</td>
 <td class="tdtype">
-<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.String">String</a></td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.String">Core.String</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -7876,7 +7876,7 @@ fullname</td>
 <td class="tdname">
 attributes</td>
 <td class="tdtype">
-<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.File.FileAttributes">FileAttributes</a></td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.File.FileAttributes">Core.File.FileAttributes</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -7884,7 +7884,7 @@ attributes</td>
 <td class="tdname">
 creationTime</td>
 <td class="tdtype">
-<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Time.DateTime">DateTime</a></td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Time.DateTime">Core.Time.DateTime</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -7892,7 +7892,7 @@ creationTime</td>
 <td class="tdname">
 lastAccessTime</td>
 <td class="tdtype">
-<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Time.DateTime">DateTime</a></td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Time.DateTime">Core.Time.DateTime</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -7900,7 +7900,7 @@ lastAccessTime</td>
 <td class="tdname">
 lastWriteTime</td>
 <td class="tdtype">
-<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Time.DateTime">DateTime</a></td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Time.DateTime">Core.Time.DateTime</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -8051,7 +8051,7 @@ ReadWrite</td>
 <td class="tdname">
 name</td>
 <td class="tdtype">
-<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.String">String</a></td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.String">Core.String</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -8059,7 +8059,7 @@ name</td>
 <td class="tdname">
 handle</td>
 <td class="tdtype">
-FileHandle</td>
+Core.File.FileHandle</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -8282,7 +8282,7 @@ Write to the given file stream, and returns the number of written bytes.</p>
 <td class="tdname">
 type</td>
 <td class="tdtype">
-const *TypeInfo</td>
+const *Swag.TypeInfo</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -8367,7 +8367,7 @@ Utf8</td>
 <td class="tdname">
 stream</td>
 <td class="tdtype">
-<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.File.FileStream">FileStream</a></td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.File.FileStream">Core.File.FileStream</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -8375,7 +8375,7 @@ stream</td>
 <td class="tdname">
 buffer</td>
 <td class="tdtype">
-<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Array">Array</a>(u8)</td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Array">Core.Array</a>(u8)</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -8383,7 +8383,7 @@ buffer</td>
 <td class="tdname">
 encodingType</td>
 <td class="tdtype">
-<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.File.TextEncoding">TextEncoding</a></td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.File.TextEncoding">Core.File.TextEncoding</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -8495,7 +8495,7 @@ Open the reader.</p>
 <p>
 Read one line of text. Returns false at the end.</p>
 <p class="code">
-<code style="white-space: break-spaces">func readLine(using self, result: ref String)->bool
+<code style="white-space: break-spaces">func readLine(using self, result: String)->bool
 </code>
 </p>
 <p>
@@ -8531,7 +8531,7 @@ Read from the current position to the end, and returns the corresponding utf8 st
 <td class="tdname">
 folders</td>
 <td class="tdtype">
-<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Array">Array</a>(<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.File.Folder">Folder</a>)</td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Array">Core.Array</a>(<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.File.Folder">Core.File.Folder</a>)</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -8610,7 +8610,7 @@ Parse a list of lines.</p>
 <td class="tdname">
 folder</td>
 <td class="tdtype">
-*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.File.Folder">Folder</a></td>
+*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.File.Folder">Core.File.Folder</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -8618,7 +8618,7 @@ folder</td>
 <td class="tdname">
 src</td>
 <td class="tdtype">
-*TypeValue</td>
+*Swag.TypeValue</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -8626,7 +8626,7 @@ src</td>
 <td class="tdname">
 dst</td>
 <td class="tdtype">
-*TypeValue</td>
+*Swag.TypeValue</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -8866,7 +8866,7 @@ Read a file, and store the result in an array of bytes.</p>
 <p>
 Read all the lines of a file.</p>
 <p class="code">
-<code style="white-space: break-spaces">func readAllLines(fullname: string, encoding = TextEncoding.Utf8)->Array'(String) throw
+<code style="white-space: break-spaces">func readAllLines(fullname: string, encoding = TextEncoding.Utf8)->String) throw
 </code>
 </p>
 <p>
@@ -8935,7 +8935,7 @@ Change the file write date/time.</p>
 <p>
 Write a file with the content of a slice of bytes.</p>
 <p class="code">
-<code style="white-space: break-spaces">func writeAllBytes(fullname: string, buffer: const [..] u8)->u64 throw
+<code style="white-space: break-spaces">func writeAllBytes(fullname: string, buffer: ] u8)->u64 throw
 </code>
 </p>
 <p>
@@ -9045,7 +9045,7 @@ Format a string and returns the result as a String.</p>
 <p>
 Format a string and put the result in a ConcatBuffer.</p>
 <p class="code">
-<code style="white-space: break-spaces">func append(buf: *ConcatBuffer, fmt: string, values: ...)
+<code style="white-space: break-spaces">func append(buf: ConcatBuffer, fmt: string, values: ...)
 </code>
 </p>
 <p>
@@ -9096,7 +9096,7 @@ Count the number of valid <code class = "incode">%</code> placeholders in the st
 <p>
 Format a string in <code class = "incode">dest</code> Can be lot faster than the convenient version which returns a string.</p>
 <p class="code">
-<code style="white-space: break-spaces">func replaceString(dest: *String, fmt: string, values: ...)
+<code style="white-space: break-spaces">func replaceString(dest: String, fmt: string, values: ...)
 </code>
 </p>
 <p>
@@ -9114,7 +9114,7 @@ Format a string in <code class = "incode">dest</code> Can be lot faster than the
 String interolation Format is "my {&lt;value to interpolate&gt;:format}.</p>
 <p class="code">
 <code style="white-space: break-spaces">#[Swag.Macro]
-func toInterp(buf: *ConcatBuffer, exp: string)
+func toInterp(buf: ConcatBuffer, exp: string)
 </code>
 </p>
 <p>
@@ -9196,7 +9196,7 @@ Returns the global culture info structure.</p>
 <td class="tdname">
 numberFormat</td>
 <td class="tdtype">
-<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Globalization.NumberFormatInfo">NumberFormatInfo</a></td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Globalization.NumberFormatInfo">Core.Globalization.NumberFormatInfo</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -9254,7 +9254,7 @@ u8</td>
 <p>
 Returns the global culture info structure.</p>
 <p class="code">
-<code style="white-space: break-spaces">func getCultureInfo()->*CultureInfo
+<code style="white-space: break-spaces">func getCultureInfo()->CultureInfo
 </code>
 </p>
 <p>
@@ -9432,7 +9432,7 @@ Update the hash value with <code class = "incode">buffer</code> content.</p>
 <p>
 Returns the adler32 hash value for the given buffer.</p>
 <p class="code">
-<code style="white-space: break-spaces">func compute(buffer: const [..] u8)->u32
+<code style="white-space: break-spaces">func compute(buffer: ] u8)->u32
 </code>
 </p>
 <p>
@@ -9466,7 +9466,7 @@ Initialize the hashing sequence.</p>
 <p>
 Update the hash value with <code class = "incode">buffer</code> content.</p>
 <p class="code">
-<code style="white-space: break-spaces">func update(using self, buffer: const [..] u8)
+<code style="white-space: break-spaces">func update(using self, buffer: ] u8)
 </code>
 </p>
 <p>
@@ -9531,7 +9531,7 @@ Update the hash value with <code class = "incode">buffer</code> content.</p>
 <p>
 Returns the crc32 hash value for the given buffer.</p>
 <p class="code">
-<code style="white-space: break-spaces">func compute(buffer: const [..] u8)->u32
+<code style="white-space: break-spaces">func compute(buffer: ] u8)->u32
 </code>
 </p>
 <p>
@@ -9565,7 +9565,7 @@ Initialize the hashing sequence.</p>
 <p>
 Update the hash value with <code class = "incode">buffer</code> content.</p>
 <p class="code">
-<code style="white-space: break-spaces">func update(using self, data: const [..] u8)
+<code style="white-space: break-spaces">func update(using self, data: ] u8)
 </code>
 </p>
 <p>
@@ -9584,7 +9584,7 @@ Update the hash value with <code class = "incode">buffer</code> content.</p>
 <td class="tdname">
 compute</td>
 <td class="tdtype">
-func(const *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Hash.IHash32">IHash32</a>)-&gt;u32</td>
+func(const *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Hash.IHash32">Core.Hash.IHash32</a>)-&gt;u32</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -9683,7 +9683,7 @@ Update the hash value with <code class = "incode">buffer</code> content.</p>
 <p>
 Returns the md5 value for the given buffer.</p>
 <p class="code">
-<code style="white-space: break-spaces">func compute(buffer: const [..] u8)->Digest
+<code style="white-space: break-spaces">func compute(buffer: ] u8)->Digest
 </code>
 </p>
 <p>
@@ -9734,7 +9734,7 @@ Initialize the hashing sequence.</p>
 <p>
 Update the hash value with <code class = "incode">buffer</code> content.</p>
 <p class="code">
-<code style="white-space: break-spaces">func update(using self, data: const [..] u8)
+<code style="white-space: break-spaces">func update(using self, data: ] u8)
 </code>
 </p>
 <p>
@@ -9831,7 +9831,7 @@ Update the hash value with <code class = "incode">buffer</code> content.</p>
 <p>
 Returns the sha256 value for the given buffer.</p>
 <p class="code">
-<code style="white-space: break-spaces">func compute(buffer: const [..] u8)->Digest
+<code style="white-space: break-spaces">func compute(buffer: ] u8)->Digest
 </code>
 </p>
 <p>
@@ -9882,7 +9882,7 @@ Initialize the hashing sequence.</p>
 <p>
 Update the hash value with <code class = "incode">buffer</code> content.</p>
 <p class="code">
-<code style="white-space: break-spaces">func update(using self, buffer: const [..] u8)
+<code style="white-space: break-spaces">func update(using self, buffer: ] u8)
 </code>
 </p>
 <p>
@@ -9953,7 +9953,7 @@ s32</td>
 <td class="tdname">
 allocator</td>
 <td class="tdtype">
-IAllocator</td>
+Swag.IAllocator</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -9961,7 +9961,7 @@ IAllocator</td>
 <td class="tdname">
 table</td>
 <td class="tdtype">
-^<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.HashSetEntry">HashSetEntry</a>(K)</td>
+^<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.HashSetEntry">Core.HashSetEntry</a>(K)</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -10114,13 +10114,13 @@ Reserve <code class = "incode">newCapacity</code> elements in the table.</p>
 <p>
 Add a new key.</p>
 <p class="code">
-<code style="white-space: break-spaces">func add(using self, key: K)->*HashSetEntry'(K)
+<code style="white-space: break-spaces">func add(using self, key: K)->HashSetEntry'(K)
 </code>
 </p>
 <p>
 Add a new key.</p>
 <p class="code">
-<code style="white-space: break-spaces">func add(using self, key: moveref K)->*HashSetEntry'(K)
+<code style="white-space: break-spaces">func add(using self, key: moveref K)->HashSetEntry'(K)
 </code>
 </p>
 <p>
@@ -10171,7 +10171,7 @@ Returns true if the table contains the given key.</p>
 <p>
 Add a new key.</p>
 <p class="code">
-<code style="white-space: break-spaces">func emplaceInternal(using self, hashVal: u32, key: ref K)->*HashSetEntry'(K)
+<code style="white-space: break-spaces">func emplaceInternal(using self, hashVal: u32, key: ref K)->HashSetEntry'(K)
 </code>
 </p>
 <p>
@@ -10397,7 +10397,7 @@ s32</td>
 <td class="tdname">
 allocator</td>
 <td class="tdtype">
-IAllocator</td>
+Swag.IAllocator</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -10405,7 +10405,7 @@ IAllocator</td>
 <td class="tdname">
 table</td>
 <td class="tdtype">
-^<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.HashTableEntry">HashTableEntry</a>(K, V)</td>
+^<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.HashTableEntry">Core.HashTableEntry</a>(K, V)</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -10570,13 +10570,13 @@ alias0 is the key, and alias1 is the value.</p>
 <p>
 Add a new key value pair. If the key already exists, then the value will be replaced.</p>
 <p class="code">
-<code style="white-space: break-spaces">func add(using self, key: K, value: V)->*HashTableEntry'(K, V)
+<code style="white-space: break-spaces">func add(using self, key: K, value: V)->HashTableEntry'(K, V)
 </code>
 </p>
 <p>
 Add a new key value pair. If the key already exists, then the value will be replaced.</p>
 <p class="code">
-<code style="white-space: break-spaces">func add(using self, key: K, value: moveref V)->*HashTableEntry'(K, V)
+<code style="white-space: break-spaces">func add(using self, key: K, value: moveref V)->HashTableEntry'(K, V)
 </code>
 </p>
 <p>
@@ -10627,7 +10627,7 @@ Returns true if the table contains the given key.</p>
 <p>
 Use with care !.</p>
 <p class="code">
-<code style="white-space: break-spaces">func emplaceInternal(using self, hashVal: u32, key: ref K, value: ref V)->*HashTableEntry'(K, V)
+<code style="white-space: break-spaces">func emplaceInternal(using self, hashVal: u32, key: ref K, value: ref V)->HashTableEntry'(K, V)
 </code>
 </p>
 <p>
@@ -10644,7 +10644,7 @@ Use with care !.</p>
 <p>
 Find the given key, and returns the corresponding entry. Returns null if the key is not there.</p>
 <p class="code">
-<code style="white-space: break-spaces">func find(using self, key: K)->*HashTableEntry'(K, V)
+<code style="white-space: break-spaces">func find(using self, key: K)->HashTableEntry'(K, V)
 </code>
 </p>
 <p>
@@ -10847,7 +10847,7 @@ V</td>
 <td class="tdname">
 print</td>
 <td class="tdtype">
-func(*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.ILogWriter">ILogWriter</a>, string)</td>
+func(*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.ILogWriter">Core.ILogWriter</a>, string)</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -11010,7 +11010,7 @@ Represents a gamepad.</p>
 <td class="tdname">
 previousState</td>
 <td class="tdtype">
-<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Input.GamePadState">GamePadState</a></td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Input.GamePadState">Core.Input.GamePadState</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -11018,7 +11018,7 @@ previousState</td>
 <td class="tdname">
 currentState</td>
 <td class="tdtype">
-<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Input.GamePadState">GamePadState</a></td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Input.GamePadState">Core.Input.GamePadState</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -11491,7 +11491,7 @@ pressed</td>
 <td class="tdname">
 position</td>
 <td class="tdtype">
-[25] <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Math.Point">Point</a></td>
+[25] <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Math.Point">Core.Math.Point</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -12753,7 +12753,7 @@ Allows getting keystrokes from keyboard.</p>
 <td class="tdname">
 previousState</td>
 <td class="tdtype">
-<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Input.KeyboardState">KeyboardState</a></td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Input.KeyboardState">Core.Input.KeyboardState</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -12761,7 +12761,7 @@ previousState</td>
 <td class="tdname">
 currentState</td>
 <td class="tdtype">
-<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Input.KeyboardState">KeyboardState</a></td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Input.KeyboardState">Core.Input.KeyboardState</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -13083,7 +13083,7 @@ Represents one keyboard state.</p>
 <td class="tdname">
 native</td>
 <td class="tdtype">
-<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Input.KeyboardStateNative">KeyboardStateNative</a></td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Input.KeyboardStateNative">Core.Input.KeyboardStateNative</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -13165,7 +13165,7 @@ Compute current keyboard state.</p>
 <td class="tdname">
 nativeState</td>
 <td class="tdtype">
-[256] BYTE</td>
+[256] Win32.BYTE</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -13188,7 +13188,7 @@ Allows reading position and button click information from mouse.</p>
 <td class="tdname">
 previousState</td>
 <td class="tdtype">
-<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Input.MouseState">MouseState</a></td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Input.MouseState">Core.Input.MouseState</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -13196,7 +13196,7 @@ previousState</td>
 <td class="tdname">
 currentState</td>
 <td class="tdtype">
-<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Input.MouseState">MouseState</a></td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Input.MouseState">Core.Input.MouseState</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -13557,7 +13557,7 @@ pressedTime</td>
 <td class="tdname">
 pressedPos</td>
 <td class="tdtype">
-[5] <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Math.Point">Point</a></td>
+[5] <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Math.Point">Core.Math.Point</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -13565,7 +13565,7 @@ pressedPos</td>
 <td class="tdname">
 position</td>
 <td class="tdtype">
-<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Math.Point">Point</a></td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Math.Point">Core.Math.Point</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -13815,7 +13815,7 @@ Wait for a given job to be finished.</p>
 <td class="tdname">
 base</td>
 <td class="tdtype">
-<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Jobs.Job">Job</a></td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Jobs.Job">Core.Jobs.Job</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -13876,7 +13876,7 @@ data</td>
 <td class="tdname">
 state</td>
 <td class="tdtype">
-<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Jobs.JobState">JobState</a></td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Jobs.JobState">Core.Jobs.JobState</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -13939,7 +13939,7 @@ Done</td>
 <td class="tdname">
 base</td>
 <td class="tdtype">
-<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Jobs.Job">Job</a></td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Jobs.Job">Core.Jobs.Job</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -14035,7 +14035,7 @@ func parallelFor(count: u32, userData: *void = null, stmt: code)
 Operate on a range in parallel chunks Exposed variables: - buffer: address of the element of the range to process - data:   userData as passed to the macro.</p>
 <p class="code">
 <code style="white-space: break-spaces">#[Swag.Macro]
-func(T) parallelVisit(range: [..] T, offset: u32 = 1, userData: *void = null, stmt: code)
+func(T) parallelVisit(range: ] T, offset: u32 = 1, userData: *void = null, stmt: code)
 </code>
 </p>
 <p>
@@ -14052,7 +14052,7 @@ func(T) parallelVisit(range: [..] T, offset: u32 = 1, userData: *void = null, st
 <p>
 Schedule a job to execute.</p>
 <p class="code">
-<code style="white-space: break-spaces">func scheduleJob(job: *Job)
+<code style="white-space: break-spaces">func scheduleJob(job: Job)
 </code>
 </p>
 <p>
@@ -14103,7 +14103,7 @@ Wait for all registered jobs to be finished.</p>
 <p>
 Wait for a given job to be finished.</p>
 <p class="code">
-<code style="white-space: break-spaces">func waitJob(job: *Job)
+<code style="white-space: break-spaces">func waitJob(job: Job)
 </code>
 </p>
 <p>
@@ -14370,7 +14370,7 @@ Letter</td>
 <td id="Core.Latin1.CharProperties" class="tdname">
 CharProperties</td>
 <td class="tdtype">
-const [256] <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Latin1.CharAttribute">CharAttribute</a></td>
+const [256] <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Latin1.CharAttribute">Core.Latin1.CharAttribute</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -14389,7 +14389,7 @@ const [256] <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_6
 <p>
 Compare two utf8 strings, dealing only with latin1 table Returns -1, 0 or 1.</p>
 <p class="code">
-<code style="white-space: break-spaces">func compare(src: const [..] u8, dst: const [..] u8, ignoreCase = false)->s32
+<code style="white-space: break-spaces">func compare(src: ] u8, dst: ] u8, ignoreCase = false)->s32
 </code>
 </p>
 <p>
@@ -14406,7 +14406,7 @@ Compare two utf8 strings, dealing only with latin1 table Returns -1, 0 or 1.</p>
 <p>
 Compare two utf8 strings in a natural way, dealing only with latin1 table Returns -1, 0 or 1.</p>
 <p class="code">
-<code style="white-space: break-spaces">func compareNatural(src: const [..] u8, dst: const [..] u8, ignoreCase = false)->s32
+<code style="white-space: break-spaces">func compareNatural(src: ] u8, dst: ] u8, ignoreCase = false)->s32
 </code>
 </p>
 <p>
@@ -14620,7 +14620,7 @@ Compare two utf8 strings in a natural way, dealing only with latin1 table Return
 <p>
 Make an utf8 buffer lower case, dealing only with latin1 table.</p>
 <p class="code">
-<code style="white-space: break-spaces">func makeLower(buffer: [..] u8)
+<code style="white-space: break-spaces">func makeLower(buffer: ] u8)
 </code>
 </p>
 <p>
@@ -14637,7 +14637,7 @@ Make an utf8 buffer lower case, dealing only with latin1 table.</p>
 <p>
 Make an utf8 buffer upper case, dealing only with latin1 table.</p>
 <p class="code">
-<code style="white-space: break-spaces">func makeUpper(buffer: [..] u8)
+<code style="white-space: break-spaces">func makeUpper(buffer: ] u8)
 </code>
 </p>
 <p>
@@ -14689,7 +14689,7 @@ Make an utf8 buffer upper case, dealing only with latin1 table.</p>
 <td class="tdname">
 head</td>
 <td class="tdtype">
-*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Node">Node</a>(T)</td>
+*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Node">Core.Node</a>(T)</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -14697,7 +14697,7 @@ head</td>
 <td class="tdname">
 tail</td>
 <td class="tdtype">
-*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Node">Node</a>(T)</td>
+*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Node">Core.Node</a>(T)</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -14820,13 +14820,13 @@ Visit every elements of the list from tail to head @alias0 is the value @alias1 
 <p>
 Add a new element on front.</p>
 <p class="code">
-<code style="white-space: break-spaces">func addBack(using self, value: T)->*Node'(T)
+<code style="white-space: break-spaces">func addBack(using self, value: T)->Node'(T)
 </code>
 </p>
 <p>
 Add a new element on front.</p>
 <p class="code">
-<code style="white-space: break-spaces">func addBack(using self, value: moveref T)->*Node'(T)
+<code style="white-space: break-spaces">func addBack(using self, value: moveref T)->Node'(T)
 </code>
 </p>
 <p>
@@ -14843,13 +14843,13 @@ Add a new element on front.</p>
 <p>
 Add a new element on front.</p>
 <p class="code">
-<code style="white-space: break-spaces">func addFront(using self, value: T)->*Node'(T)
+<code style="white-space: break-spaces">func addFront(using self, value: T)->Node'(T)
 </code>
 </p>
 <p>
 Add a new element on front.</p>
 <p class="code">
-<code style="white-space: break-spaces">func addFront(using self, value: moveref T)->*Node'(T)
+<code style="white-space: break-spaces">func addFront(using self, value: moveref T)->Node'(T)
 </code>
 </p>
 <p>
@@ -14883,11 +14883,11 @@ Clear all elements.</p>
 <p>
 Insert a node before the reference.</p>
 <p class="code">
-<code style="white-space: break-spaces">func insertAfter(using self, node: *Node'(T), value: T)->*Node'(T)
+<code style="white-space: break-spaces">func insertAfter(using self, node: Node'(T), value: T)->Node'(T)
 </code>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func insertAfter(using self, node: *Node'(T), value: moveref T)->*Node'(T)
+<code style="white-space: break-spaces">func insertAfter(using self, node: Node'(T), value: moveref T)->Node'(T)
 </code>
 </p>
 <p>
@@ -14904,11 +14904,11 @@ Insert a node before the reference.</p>
 <p>
 Insert a node before the reference.</p>
 <p class="code">
-<code style="white-space: break-spaces">func insertBefore(using self, node: *Node'(T), value: T)->*Node'(T)
+<code style="white-space: break-spaces">func insertBefore(using self, node: Node'(T), value: T)->Node'(T)
 </code>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func insertBefore(using self, node: *Node'(T), value: moveref T)->*Node'(T)
+<code style="white-space: break-spaces">func insertBefore(using self, node: Node'(T), value: moveref T)->Node'(T)
 </code>
 </p>
 <p>
@@ -14978,7 +14978,7 @@ func(ptr: bool) opVisitBack(using self, stmt: code)
 <td class="tdname">
 lock</td>
 <td class="tdtype">
-<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Sync.Mutex">Mutex</a></td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Sync.Mutex">Core.Sync.Mutex</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -14986,7 +14986,7 @@ lock</td>
 <td class="tdname">
 buf</td>
 <td class="tdtype">
-<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.StrConv.StringBuilder">StringBuilder</a></td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.StrConv.StringBuilder">Core.StrConv.StringBuilder</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -14994,7 +14994,7 @@ buf</td>
 <td class="tdname">
 dt</td>
 <td class="tdtype">
-<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Time.DateTime">DateTime</a></td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Time.DateTime">Core.Time.DateTime</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -15002,7 +15002,7 @@ dt</td>
 <td class="tdname">
 writers</td>
 <td class="tdtype">
-<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Array">Array</a>(<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.ILogWriter">ILogWriter</a>)</td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Array">Core.Array</a>(<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.ILogWriter">Core.ILogWriter</a>)</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -15018,7 +15018,7 @@ string</td>
 <td class="tdname">
 flags</td>
 <td class="tdtype">
-<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.LogFlags">LogFlags</a></td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.LogFlags">Core.LogFlags</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -15304,7 +15304,7 @@ Default</td>
 <h3 class="content" id="Core.Math"><span class="titletype">namespace</span> <span class="titlelight">Core.</span><span class="titlestrong">Math</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\integer64.swg#L9" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\bits.swg#L2" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -16767,7 +16767,7 @@ Set all values.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func from(values: T...)->NumericArray'(T, u32)
+<code style="white-space: break-spaces">func from(values: T)->NumericArray'(T, u32)
 </code>
 </p>
 <p>
@@ -16806,7 +16806,7 @@ Multiply & add.</p>
 </p>
 <p class="code">
 <code style="white-space: break-spaces">func opAffect(using self, what: T)
-func opAffect(using self, what: const [..] T)
+func opAffect(using self, what: ] T)
 </code>
 </p>
 <p>
@@ -16884,7 +16884,7 @@ func(op: string) opAssign(using self, value: T)
 <p>
 Set all values.</p>
 <p class="code">
-<code style="white-space: break-spaces">func set(using self, values: T...)
+<code style="white-space: break-spaces">func set(using self, values: T)
 </code>
 </p>
 <p>
@@ -18458,14 +18458,14 @@ Set transform to identity.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">struct Variant(T: const [..] const *TypeInfo)</code>
+<code style="white-space: break-spaces">struct Variant(T: TypeInfo)</code>
 </p>
 <table class="enumeration">
 <tr>
 <td class="tdname">
 type</td>
 <td class="tdtype">
-const *TypeInfo</td>
+const *Swag.TypeInfo</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -18570,7 +18570,7 @@ Set the variant value.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func checkValidType(t: const [..] const *TypeInfo, tn: const *TypeInfo)->bool
+<code style="white-space: break-spaces">func checkValidType(t: TypeInfo, tn: TypeInfo)->bool
 </code>
 </p>
 <p>
@@ -19599,7 +19599,7 @@ func(op: string) opBinary(using const self, value: f32)->Vector2
 <p>
 Returns true if the given point is inside the polygon PNPoly by W. Randolph Franklin.</p>
 <p class="code">
-<code style="white-space: break-spaces">func polyContains(poly: Array'(Vector2), pt: Vector2)->bool
+<code style="white-space: break-spaces">func polyContains(poly: Vector2), pt: Vector2)->bool
 </code>
 </p>
 <p>
@@ -21750,7 +21750,7 @@ Drop and release memory of an array of the given type.</p>
 <p>
 Drop and release memory of the given type.</p>
 <p class="code">
-<code style="white-space: break-spaces">func delete(ptr: *void, type: const *TypeInfo, allocator: IAllocator = null, hint: string = null, loc = #callerlocation)
+<code style="white-space: break-spaces">func delete(ptr: *void, type: TypeInfo, allocator: IAllocator = null, hint: string = null, loc = #callerlocation)
 </code>
 </p>
 <p>
@@ -21847,7 +21847,7 @@ Allocate and initialize an array of the given type.</p>
 <p>
 Allocate and initialize the given type.</p>
 <p class="code">
-<code style="white-space: break-spaces">func new(type: const *TypeInfo, allocator: IAllocator = null, alignement: u32 = 0, hint: string = null, loc = #callerlocation)->*u8
+<code style="white-space: break-spaces">func new(type: TypeInfo, allocator: IAllocator = null, alignement: u32 = 0, hint: string = null, loc = #callerlocation)->*u8
 </code>
 </p>
 <p>
@@ -21956,7 +21956,7 @@ Allocate a given amount of bytes in the temporary allocator.</p>
 <td class="tdname">
 prev</td>
 <td class="tdtype">
-*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Node">Node</a>(T)</td>
+*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Node">Core.Node</a>(T)</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -21964,7 +21964,7 @@ prev</td>
 <td class="tdname">
 next</td>
 <td class="tdtype">
-*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Node">Node</a>(T)</td>
+*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Node">Core.Node</a>(T)</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -22130,7 +22130,7 @@ func perlin(x: f32, y: f32, seed: s32 = 1337)->f32
 <td class="tdname">
 table</td>
 <td class="tdtype">
-<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.HashSet">HashSet</a>(*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Parser.NfaNode">NfaNode</a>)</td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.HashSet">Core.HashSet</a>(*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Parser.NfaNode">Core.Parser.NfaNode</a>)</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -22138,7 +22138,7 @@ table</td>
 <td class="tdname">
 transitions</td>
 <td class="tdtype">
-<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.HashTable">HashTable</a>(rune, *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Parser.DfaNode">DfaNode</a>)</td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.HashTable">Core.HashTable</a>(rune, *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Parser.DfaNode">Core.Parser.DfaNode</a>)</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -22167,7 +22167,7 @@ bool</td>
 <td class="tdname">
 transitions</td>
 <td class="tdtype">
-<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.HashTable">HashTable</a>(rune, <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Array">Array</a>(*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Parser.NfaNode">NfaNode</a>))</td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.HashTable">Core.HashTable</a>(rune, <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Array">Core.Array</a>(*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Parser.NfaNode">Core.Parser.NfaNode</a>))</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -22204,7 +22204,7 @@ u32</td>
 <td class="tdname">
 nodes</td>
 <td class="tdtype">
-<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Array">Array</a>(*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Parser.NfaNode">NfaNode</a>)</td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Array">Core.Array</a>(*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Parser.NfaNode">Core.Parser.NfaNode</a>)</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -22225,7 +22225,7 @@ nodes</td>
 <td class="tdname">
 nfaNodes</td>
 <td class="tdtype">
-<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Array">Array</a>(*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Parser.NfaNode">NfaNode</a>)</td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Array">Core.Array</a>(*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Parser.NfaNode">Core.Parser.NfaNode</a>)</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -22233,7 +22233,7 @@ nfaNodes</td>
 <td class="tdname">
 dfaNodes</td>
 <td class="tdtype">
-<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Array">Array</a>(*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Parser.DfaNode">DfaNode</a>)</td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Array">Core.Array</a>(*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Parser.DfaNode">Core.Parser.DfaNode</a>)</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -22241,7 +22241,7 @@ dfaNodes</td>
 <td class="tdname">
 nfaStack</td>
 <td class="tdtype">
-<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Array">Array</a>(*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Parser.NfaTable">NfaTable</a>)</td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Array">Core.Array</a>(*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Parser.NfaTable">Core.Parser.NfaTable</a>)</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -22249,7 +22249,7 @@ nfaStack</td>
 <td class="tdname">
 nfaTables</td>
 <td class="tdtype">
-<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Array">Array</a>(*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Parser.NfaTable">NfaTable</a>)</td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Array">Core.Array</a>(*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Parser.NfaTable">Core.Parser.NfaTable</a>)</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -22257,7 +22257,7 @@ nfaTables</td>
 <td class="tdname">
 charSet</td>
 <td class="tdtype">
-<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.HashSet">HashSet</a>(rune)</td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.HashSet">Core.HashSet</a>(rune)</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -22265,7 +22265,7 @@ charSet</td>
 <td class="tdname">
 openParen</td>
 <td class="tdtype">
-<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Array">Array</a>(u32)</td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Array">Core.Array</a>(u32)</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -22273,7 +22273,7 @@ openParen</td>
 <td class="tdname">
 orOpStack</td>
 <td class="tdtype">
-<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Array">Array</a>(rune)</td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Array">Core.Array</a>(rune)</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -22281,7 +22281,7 @@ orOpStack</td>
 <td class="tdname">
 orOpLevel</td>
 <td class="tdtype">
-<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Array">Array</a>(u32)</td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Array">Core.Array</a>(u32)</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -22289,7 +22289,7 @@ orOpLevel</td>
 <td class="tdname">
 preprocessed</td>
 <td class="tdtype">
-<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Array">Array</a>(rune)</td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Array">Core.Array</a>(rune)</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -22740,7 +22740,7 @@ u8</td>
 <p>
 Combine multiple paths into one, by adding a directory separator between them if necessary.</p>
 <p class="code">
-<code style="white-space: break-spaces">func combine(fullnames: string...)->String
+<code style="white-space: break-spaces">func combine(fullnames: string)->String
 </code>
 </p>
 <p>
@@ -23012,7 +23012,7 @@ Returns true if the given path name is valid.</p>
 <p>
 Normalize path <code class = "incode">\</code> are replaced with <code class = "incode">/</code> as this is the std norm for paths.</p>
 <p class="code">
-<code style="white-space: break-spaces">func normalize(fullname: *String)
+<code style="white-space: break-spaces">func normalize(fullname: String)
 </code>
 </p>
 <p>
@@ -23351,7 +23351,7 @@ u64</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func seedU64(using self, seed: const [..] u64)
+<code style="white-space: break-spaces">func seedU64(using self, seed: ] u64)
 func seedU64(using self, seed: u64)
 </code>
 </p>
@@ -23767,7 +23767,7 @@ Seed random generator with a 64 bits value.</p>
 <p>
 Randomly change the order of a slice.</p>
 <p class="code">
-<code style="white-space: break-spaces">func(V) shuffle(using self, slice: [..] V)
+<code style="white-space: break-spaces">func(V) shuffle(using self, slice: ] V)
 </code>
 </p>
 <p>
@@ -24190,7 +24190,7 @@ Set a field value with a given runtime type.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func canCopy(type: const *TypeInfo)->bool
+<code style="white-space: break-spaces">func canCopy(type: TypeInfo)->bool
 </code>
 </p>
 <p>
@@ -24205,7 +24205,7 @@ Set a field value with a given runtime type.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func copy(dst: *void, src: *void, type: const *TypeInfo)
+<code style="white-space: break-spaces">func copy(dst: *void, src: *void, type: TypeInfo)
 </code>
 </p>
 <p>
@@ -24222,7 +24222,7 @@ Set a field value with a given runtime type.</p>
 <p>
 Convert a crc to a registered typeinfo.</p>
 <p class="code">
-<code style="white-space: break-spaces">func crcToType(crc: u32)->const *TypeInfo
+<code style="white-space: break-spaces">func crcToType(crc: u32)->TypeInfo
 </code>
 </p>
 <p>
@@ -24239,13 +24239,13 @@ Convert a crc to a registered typeinfo.</p>
 <p>
 Returns the given associated <code class = "incode">attribute</code> to <code class = "incode">type</code> or null.</p>
 <p class="code">
-<code style="white-space: break-spaces">func getAttribute(type: const *TypeInfo, attribute: const *TypeInfo)->const *Attribute
+<code style="white-space: break-spaces">func getAttribute(type: TypeInfo, attribute: TypeInfo)->Attribute
 </code>
 </p>
 <p>
 Returns the given associated <code class = "incode">attribute</code> to <code class = "incode">value</code> or null.</p>
 <p class="code">
-<code style="white-space: break-spaces">func getAttribute(value: const *TypeValue, attribute: const *TypeInfo)->const *Attribute
+<code style="white-space: break-spaces">func getAttribute(value: TypeValue, attribute: TypeInfo)->Attribute
 </code>
 </p>
 <p>
@@ -24262,19 +24262,19 @@ Returns the given associated <code class = "incode">attribute</code> to <code cl
 <p>
 Returns the given attribute value, or null.</p>
 <p class="code">
-<code style="white-space: break-spaces">func getAttributeValue(attribute: const *Attribute, value: string)->any
+<code style="white-space: break-spaces">func getAttributeValue(attribute: Attribute, value: string)->any
 </code>
 </p>
 <p>
 Returns the given attribute value, or null.</p>
 <p class="code">
-<code style="white-space: break-spaces">func getAttributeValue(type: const *TypeInfo, attribute: const *TypeInfo, value: string)->any
+<code style="white-space: break-spaces">func getAttributeValue(type: TypeInfo, attribute: TypeInfo, value: string)->any
 </code>
 </p>
 <p>
 Returns the given attribute value, or null.</p>
 <p class="code">
-<code style="white-space: break-spaces">func getAttributeValue(type: const *TypeValue, attribute: const *TypeInfo, value: string)->any
+<code style="white-space: break-spaces">func getAttributeValue(type: TypeValue, attribute: TypeInfo, value: string)->any
 </code>
 </p>
 <p>
@@ -24291,13 +24291,13 @@ Returns the given attribute value, or null.</p>
 <p>
 Returns the given associated attributes to <code class = "incode">type</code>.</p>
 <p class="code">
-<code style="white-space: break-spaces">func getAttributes(type: const *TypeInfo, attribute: const *TypeInfo)->Array'(const *Attribute)
+<code style="white-space: break-spaces">func getAttributes(type: TypeInfo, attribute: TypeInfo)->Attribute)
 </code>
 </p>
 <p>
 Returns the given associated attributes to <code class = "incode">value</code>.</p>
 <p class="code">
-<code style="white-space: break-spaces">func getAttributes(value: const *TypeValue, attribute: const *TypeInfo)->Array'(const *Attribute)
+<code style="white-space: break-spaces">func getAttributes(value: TypeValue, attribute: TypeInfo)->Attribute)
 </code>
 </p>
 <p>
@@ -24314,7 +24314,7 @@ Returns the given associated attributes to <code class = "incode">value</code>.<
 <p>
 Returns the enum value name corresponding to the value pointed by <code class = "incode">valueAddr</code> Can have multiple names if the enum is tagged with #[Swag.EnumFlags].</p>
 <p class="code">
-<code style="white-space: break-spaces">func getEnumName(type: const *TypeInfo, valueAddr: const *void, fullname = true)->String
+<code style="white-space: break-spaces">func getEnumName(type: TypeInfo, valueAddr: const *void, fullname = true)->String
 </code>
 </p>
 <p>
@@ -24331,7 +24331,7 @@ Returns the enum value name corresponding to the value pointed by <code class = 
 <p>
 Get information about a specific value in a given enum Returns null if the value does not exist.</p>
 <p class="code">
-<code style="white-space: break-spaces">func getEnumValue(type: const *TypeInfo, name: string)->const *TypeValue
+<code style="white-space: break-spaces">func getEnumValue(type: TypeInfo, name: string)->TypeValue
 </code>
 </p>
 <p>
@@ -24348,7 +24348,7 @@ Get information about a specific value in a given enum Returns null if the value
 <p>
 Get information about a specific field in a given struct Returns null if the field does not exist.</p>
 <p class="code">
-<code style="white-space: break-spaces">func getField(type: const *TypeInfo, name: string)->const *TypeValue
+<code style="white-space: break-spaces">func getField(type: TypeInfo, name: string)->TypeValue
 </code>
 </p>
 <p>
@@ -24365,7 +24365,7 @@ Get information about a specific field in a given struct Returns null if the fie
 <p>
 Get a field value with a given runtime type.</p>
 <p class="code">
-<code style="white-space: break-spaces">func getFieldValue(dest: *void, type: const *TypeValue, src: *void, hardCast: bool = false)
+<code style="white-space: break-spaces">func getFieldValue(dest: *void, type: TypeValue, src: *void, hardCast: bool = false)
 </code>
 </p>
 <p>
@@ -24382,7 +24382,7 @@ Get a field value with a given runtime type.</p>
 <p>
 Get information about a specific mtd in a given struct Returns null if the mtd does not exist.</p>
 <p class="code">
-<code style="white-space: break-spaces">func getMethod(type: const *TypeInfo, name: string)->const *TypeValue
+<code style="white-space: break-spaces">func getMethod(type: TypeInfo, name: string)->TypeValue
 </code>
 </p>
 <p>
@@ -24399,13 +24399,13 @@ Get information about a specific mtd in a given struct Returns null if the mtd d
 <p>
 Returns true if the given <code class = "incode">type</code> has the associated <code class = "incode">attribute</code>.</p>
 <p class="code">
-<code style="white-space: break-spaces">func hasAttribute(type: const *TypeInfo, attribute: const *TypeInfo)->bool
+<code style="white-space: break-spaces">func hasAttribute(type: TypeInfo, attribute: TypeInfo)->bool
 </code>
 </p>
 <p>
 Returns true if the given <code class = "incode">value</code> has the associated <code class = "incode">attribute</code>.</p>
 <p class="code">
-<code style="white-space: break-spaces">func hasAttribute(value: const *TypeValue, attribute: const *TypeInfo)->bool
+<code style="white-space: break-spaces">func hasAttribute(value: TypeValue, attribute: TypeInfo)->bool
 </code>
 </p>
 <p>
@@ -24420,7 +24420,7 @@ Returns true if the given <code class = "incode">value</code> has the associated
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func hasDrop(type: const *TypeInfo)->bool
+<code style="white-space: break-spaces">func hasDrop(type: TypeInfo)->bool
 </code>
 </p>
 <p>
@@ -24437,7 +24437,7 @@ Returns true if the given <code class = "incode">value</code> has the associated
 <p>
 Returns true if the interface <code class = "incode">itf</code> is implemented in the given structure type.</p>
 <p class="code">
-<code style="white-space: break-spaces">func hasInterface(type: const *TypeInfo, itf: const *TypeInfo)->bool
+<code style="white-space: break-spaces">func hasInterface(type: TypeInfo, itf: TypeInfo)->bool
 </code>
 </p>
 <p>
@@ -24454,7 +24454,7 @@ Returns true if the interface <code class = "incode">itf</code> is implemented i
 <p>
 Helpers functions to know if a struct has a special function.</p>
 <p class="code">
-<code style="white-space: break-spaces">func hasMethod(type: const *TypeInfo, name: string)->bool
+<code style="white-space: break-spaces">func hasMethod(type: TypeInfo, name: string)->bool
 </code>
 </p>
 <p>
@@ -24469,7 +24469,7 @@ Helpers functions to know if a struct has a special function.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func hasPostCopy(type: const *TypeInfo)->bool
+<code style="white-space: break-spaces">func hasPostCopy(type: TypeInfo)->bool
 </code>
 </p>
 <p>
@@ -24484,7 +24484,7 @@ Helpers functions to know if a struct has a special function.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func hasPostMove(type: const *TypeInfo)->bool
+<code style="white-space: break-spaces">func hasPostMove(type: TypeInfo)->bool
 </code>
 </p>
 <p>
@@ -24499,7 +24499,7 @@ Helpers functions to know if a struct has a special function.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func isAny(t: const *TypeInfo)->bool
+<code style="white-space: break-spaces">func isAny(t: TypeInfo)->bool
 </code>
 </p>
 <p>
@@ -24514,7 +24514,7 @@ Helpers functions to know if a struct has a special function.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func isArray(t: const *TypeInfo)
+<code style="white-space: break-spaces">func isArray(t: TypeInfo)
 </code>
 </p>
 <p>
@@ -24529,7 +24529,7 @@ Helpers functions to know if a struct has a special function.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func isBool(t: const *TypeInfo)->bool
+<code style="white-space: break-spaces">func isBool(t: TypeInfo)->bool
 </code>
 </p>
 <p>
@@ -24544,7 +24544,7 @@ Helpers functions to know if a struct has a special function.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func isEnum(t: const *TypeInfo)
+<code style="white-space: break-spaces">func isEnum(t: TypeInfo)
 </code>
 </p>
 <p>
@@ -24559,7 +24559,7 @@ Helpers functions to know if a struct has a special function.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func isEnumFlags(t: const *TypeInfo)->bool
+<code style="white-space: break-spaces">func isEnumFlags(t: TypeInfo)->bool
 </code>
 </p>
 <p>
@@ -24574,7 +24574,7 @@ Helpers functions to know if a struct has a special function.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func isFloat(t: const *TypeInfo)
+<code style="white-space: break-spaces">func isFloat(t: TypeInfo)
 </code>
 </p>
 <p>
@@ -24589,7 +24589,7 @@ Helpers functions to know if a struct has a special function.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func isGeneric(t: const *TypeInfo)
+<code style="white-space: break-spaces">func isGeneric(t: TypeInfo)
 </code>
 </p>
 <p>
@@ -24604,7 +24604,7 @@ Helpers functions to know if a struct has a special function.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func isInteger(t: const *TypeInfo)
+<code style="white-space: break-spaces">func isInteger(t: TypeInfo)
 </code>
 </p>
 <p>
@@ -24619,7 +24619,7 @@ Helpers functions to know if a struct has a special function.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func isInterface(t: const *TypeInfo)
+<code style="white-space: break-spaces">func isInterface(t: TypeInfo)
 </code>
 </p>
 <p>
@@ -24634,7 +24634,7 @@ Helpers functions to know if a struct has a special function.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func isNative(t: const *TypeInfo)
+<code style="white-space: break-spaces">func isNative(t: TypeInfo)
 </code>
 </p>
 <p>
@@ -24649,7 +24649,7 @@ Helpers functions to know if a struct has a special function.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func isPointer(t: const *TypeInfo)
+<code style="white-space: break-spaces">func isPointer(t: TypeInfo)
 </code>
 </p>
 <p>
@@ -24664,7 +24664,7 @@ Helpers functions to know if a struct has a special function.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func isPointerArithmetic(t: const *TypeInfo)
+<code style="white-space: break-spaces">func isPointerArithmetic(t: TypeInfo)
 </code>
 </p>
 <p>
@@ -24679,7 +24679,7 @@ Helpers functions to know if a struct has a special function.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func isPointerRef(t: const *TypeInfo)
+<code style="white-space: break-spaces">func isPointerRef(t: TypeInfo)
 </code>
 </p>
 <p>
@@ -24694,7 +24694,7 @@ Helpers functions to know if a struct has a special function.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func isRune(t: const *TypeInfo)->bool
+<code style="white-space: break-spaces">func isRune(t: TypeInfo)->bool
 </code>
 </p>
 <p>
@@ -24709,7 +24709,7 @@ Helpers functions to know if a struct has a special function.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func isSimpleNative(t: const *TypeInfo)->bool
+<code style="white-space: break-spaces">func isSimpleNative(t: TypeInfo)->bool
 </code>
 </p>
 <p>
@@ -24724,7 +24724,7 @@ Helpers functions to know if a struct has a special function.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func isSlice(t: const *TypeInfo)
+<code style="white-space: break-spaces">func isSlice(t: TypeInfo)
 </code>
 </p>
 <p>
@@ -24739,7 +24739,7 @@ Helpers functions to know if a struct has a special function.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func isString(t: const *TypeInfo)->bool
+<code style="white-space: break-spaces">func isString(t: TypeInfo)->bool
 </code>
 </p>
 <p>
@@ -24754,7 +24754,7 @@ Helpers functions to know if a struct has a special function.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func isStruct(t: const *TypeInfo)
+<code style="white-space: break-spaces">func isStruct(t: TypeInfo)
 </code>
 </p>
 <p>
@@ -24771,7 +24771,7 @@ Helpers functions to know if a struct has a special function.</p>
 <p>
 Returns true if this is a struct of the given name.</p>
 <p class="code">
-<code style="white-space: break-spaces">func isStructOfName(type: const *TypeInfo, name: string)->bool
+<code style="white-space: break-spaces">func isStructOfName(type: TypeInfo, name: string)->bool
 </code>
 </p>
 <p>
@@ -24786,7 +24786,7 @@ Returns true if this is a struct of the given name.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func isTuple(t: const *TypeInfo)
+<code style="white-space: break-spaces">func isTuple(t: TypeInfo)
 </code>
 </p>
 <p>
@@ -24801,7 +24801,7 @@ Returns true if this is a struct of the given name.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func isType(t: const *TypeInfo)
+<code style="white-space: break-spaces">func isType(t: TypeInfo)
 </code>
 </p>
 <p>
@@ -24816,7 +24816,7 @@ Returns true if this is a struct of the given name.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func isTypeAlias(t: const *TypeInfo)
+<code style="white-space: break-spaces">func isTypeAlias(t: TypeInfo)
 </code>
 </p>
 <p>
@@ -24833,7 +24833,7 @@ Returns true if this is a struct of the given name.</p>
 <p>
 In case this is a type alias, need to go deep inside it to find the right type.</p>
 <p class="code">
-<code style="white-space: break-spaces">func makeConcreteAlias(type: const *TypeInfo)->const *TypeInfo
+<code style="white-space: break-spaces">func makeConcreteAlias(type: TypeInfo)->TypeInfo
 </code>
 </p>
 <p>
@@ -24850,7 +24850,7 @@ In case this is a type alias, need to go deep inside it to find the right type.<
 <p>
 Transform an enum type to its underling real native type.</p>
 <p class="code">
-<code style="white-space: break-spaces">func makeConcreteEnum(type: const *TypeInfo)->const *TypeInfo
+<code style="white-space: break-spaces">func makeConcreteEnum(type: TypeInfo)->TypeInfo
 </code>
 </p>
 <p>
@@ -24867,7 +24867,7 @@ Transform an enum type to its underling real native type.</p>
 <p>
 Returns the maximum sizeof a bunch of <code class = "incode">typeinfo</code>.</p>
 <p class="code">
-<code style="white-space: break-spaces">func maxSizeOf(v: const [..] const *TypeInfo)->u64
+<code style="white-space: break-spaces">func maxSizeOf(v: TypeInfo)->u64
 </code>
 </p>
 <p>
@@ -24884,7 +24884,7 @@ Returns the maximum sizeof a bunch of <code class = "incode">typeinfo</code>.</p
 <p>
 Convert a crc to a registered typeinfo.</p>
 <p class="code">
-<code style="white-space: break-spaces">func nameToType(name: string)->const *TypeInfo
+<code style="white-space: break-spaces">func nameToType(name: string)->TypeInfo
 </code>
 </p>
 <p>
@@ -24901,7 +24901,7 @@ Convert a crc to a registered typeinfo.</p>
 <p>
 Make an union of flags of all types.</p>
 <p class="code">
-<code style="white-space: break-spaces">func orFlags(v: const [..] const *TypeInfo)->TypeInfoFlags
+<code style="white-space: break-spaces">func orFlags(v: TypeInfo)->TypeInfoFlags
 </code>
 </p>
 <p>
@@ -24918,7 +24918,7 @@ Make an union of flags of all types.</p>
 <p>
 Used to add an element in a <code class = "incode">Core.Array</code> without knowing the type of the element at compile time but knowing it at runtime (valueType).</p>
 <p class="code">
-<code style="white-space: break-spaces">func roomInArray(addr: *void, valueType: const *TypeInfo)->*void
+<code style="white-space: break-spaces">func roomInArray(addr: *void, valueType: TypeInfo)->*void
 </code>
 </p>
 <p>
@@ -24935,7 +24935,7 @@ Used to add an element in a <code class = "incode">Core.Array</code> without kno
 <p>
 Set a field value with a given runtime type.</p>
 <p class="code">
-<code style="white-space: break-spaces">func setFieldValue(dest: *void, type: const *TypeValue, src: const *void, hardCast: bool = false)
+<code style="white-space: break-spaces">func setFieldValue(dest: *void, type: TypeValue, src: const *void, hardCast: bool = false)
 </code>
 </p>
 <p>
@@ -25083,7 +25083,7 @@ T</td>
 <td class="tdname">
 flags</td>
 <td class="tdtype">
-<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Serialization.DecoderFlags">DecoderFlags</a></td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Serialization.DecoderFlags">Core.Serialization.DecoderFlags</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -25229,7 +25229,7 @@ Start reading.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func read(using self, data: *void, dataType: const *TypeInfo) throw
+<code style="white-space: break-spaces">func read(using self, data: *void, dataType: TypeInfo) throw
 </code>
 </p>
 <p>
@@ -25424,7 +25424,7 @@ Start reading.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func start(using self, input: const [..] u8) throw
+<code style="white-space: break-spaces">func start(using self, input: ] u8) throw
 </code>
 </p>
 <p>
@@ -25458,7 +25458,7 @@ Finish reading.</p>
 <p>
 Read a full struct.</p>
 <p class="code">
-<code style="white-space: break-spaces">func(TR) readAll(using self, input: const [..] u8)->*TR throw
+<code style="white-space: break-spaces">func(TR) readAll(using self, input: ] u8)->*TR throw
 </code>
 </p>
 <p>
@@ -25488,7 +25488,7 @@ Read a full struct.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func readValue(using self, data: ^void, dataType: const *TypeInfo) throw
+<code style="white-space: break-spaces">func readValue(using self, data: ^void, dataType: TypeInfo) throw
 </code>
 </p>
 <p>
@@ -25505,7 +25505,7 @@ Read a full struct.</p>
 <p>
 Start reading.</p>
 <p class="code">
-<code style="white-space: break-spaces">func start(using self, input: const [..] u8) throw
+<code style="white-space: break-spaces">func start(using self, input: ] u8) throw
 </code>
 </p>
 <p>
@@ -25697,7 +25697,7 @@ End serialization.</p>
 <p>
 Start serialization.</p>
 <p class="code">
-<code style="white-space: break-spaces">func start(using self, result: *ConcatBuffer) throw
+<code style="white-space: break-spaces">func start(using self, result: ConcatBuffer) throw
 </code>
 </p>
 <p>
@@ -25712,7 +25712,7 @@ Start serialization.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func write(using self, data: const ^void, type: const *TypeInfo) throw
+<code style="white-space: break-spaces">func write(using self, data: const ^void, type: TypeInfo) throw
 </code>
 </p>
 <p>
@@ -25926,7 +25926,7 @@ End serialization.</p>
 <p>
 Start serialization.</p>
 <p class="code">
-<code style="white-space: break-spaces">func start(using self, result: *ConcatBuffer) throw
+<code style="white-space: break-spaces">func start(using self, result: ConcatBuffer) throw
 </code>
 </p>
 <p>
@@ -25943,7 +25943,7 @@ Start serialization.</p>
 <p>
 Write a full struct.</p>
 <p class="code">
-<code style="white-space: break-spaces">func writeAll(using self, result: *ConcatBuffer, value: any) throw
+<code style="white-space: break-spaces">func writeAll(using self, result: ConcatBuffer, value: any) throw
 </code>
 </p>
 <p>
@@ -25973,7 +25973,7 @@ Write a full struct.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func writeValue(using self, data: const ^void, dataType: const *TypeInfo) throw
+<code style="white-space: break-spaces">func writeValue(using self, data: const ^void, dataType: TypeInfo) throw
 </code>
 </p>
 <p>
@@ -26009,7 +26009,7 @@ The struct does not need versionning.</p>
 <td class="tdname">
 start</td>
 <td class="tdtype">
-func(*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Serialization.IDecoder">IDecoder</a>, const [..] u8) throw</td>
+func(*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Serialization.IDecoder">Core.Serialization.IDecoder</a>, const [..] u8) throw</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -26017,7 +26017,7 @@ func(*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.
 <td class="tdname">
 end</td>
 <td class="tdtype">
-func(*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Serialization.IDecoder">IDecoder</a>) throw</td>
+func(*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Serialization.IDecoder">Core.Serialization.IDecoder</a>) throw</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -26025,7 +26025,7 @@ func(*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.
 <td class="tdname">
 beginField</td>
 <td class="tdtype">
-func(*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Serialization.IDecoder">IDecoder</a>, const ref TypeValue)-&gt;bool throw</td>
+func(*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Serialization.IDecoder">Core.Serialization.IDecoder</a>, Swag.TypeValue)-&gt;bool throw</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -26033,7 +26033,7 @@ func(*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.
 <td class="tdname">
 endField</td>
 <td class="tdtype">
-func(*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Serialization.IDecoder">IDecoder</a>) throw</td>
+func(*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Serialization.IDecoder">Core.Serialization.IDecoder</a>) throw</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -26041,7 +26041,7 @@ func(*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.
 <td class="tdname">
 beginSection</td>
 <td class="tdtype">
-func(*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Serialization.IDecoder">IDecoder</a>, <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Serialization.SectionKind">SectionKind</a>) throw</td>
+func(*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Serialization.IDecoder">Core.Serialization.IDecoder</a>, <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Serialization.SectionKind">Core.Serialization.SectionKind</a>) throw</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -26049,7 +26049,7 @@ func(*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.
 <td class="tdname">
 endSection</td>
 <td class="tdtype">
-func(*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Serialization.IDecoder">IDecoder</a>) throw</td>
+func(*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Serialization.IDecoder">Core.Serialization.IDecoder</a>) throw</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -26057,7 +26057,7 @@ func(*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.
 <td class="tdname">
 getVersion</td>
 <td class="tdtype">
-func(*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Serialization.IDecoder">IDecoder</a>)-&gt;u32</td>
+func(*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Serialization.IDecoder">Core.Serialization.IDecoder</a>)-&gt;u32</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -26065,7 +26065,7 @@ func(*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.
 <td class="tdname">
 read</td>
 <td class="tdtype">
-func(*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Serialization.IDecoder">IDecoder</a>, *void, const *TypeInfo) throw</td>
+func(*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Serialization.IDecoder">Core.Serialization.IDecoder</a>, *void, const *Swag.TypeInfo) throw</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -26073,7 +26073,7 @@ func(*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.
 <td class="tdname">
 readBufferU8</td>
 <td class="tdtype">
-func(*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Serialization.IDecoder">IDecoder</a>, u64)-&gt;*u8 throw</td>
+func(*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Serialization.IDecoder">Core.Serialization.IDecoder</a>, u64)-&gt;*u8 throw</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -26081,7 +26081,7 @@ func(*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.
 <td class="tdname">
 readBool</td>
 <td class="tdtype">
-func(*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Serialization.IDecoder">IDecoder</a>)-&gt;bool throw</td>
+func(*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Serialization.IDecoder">Core.Serialization.IDecoder</a>)-&gt;bool throw</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -26089,7 +26089,7 @@ func(*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.
 <td class="tdname">
 readS8</td>
 <td class="tdtype">
-func(*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Serialization.IDecoder">IDecoder</a>)-&gt;s8 throw</td>
+func(*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Serialization.IDecoder">Core.Serialization.IDecoder</a>)-&gt;s8 throw</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -26097,7 +26097,7 @@ func(*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.
 <td class="tdname">
 readS16</td>
 <td class="tdtype">
-func(*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Serialization.IDecoder">IDecoder</a>)-&gt;s16 throw</td>
+func(*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Serialization.IDecoder">Core.Serialization.IDecoder</a>)-&gt;s16 throw</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -26105,7 +26105,7 @@ func(*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.
 <td class="tdname">
 readS32</td>
 <td class="tdtype">
-func(*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Serialization.IDecoder">IDecoder</a>)-&gt;s32 throw</td>
+func(*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Serialization.IDecoder">Core.Serialization.IDecoder</a>)-&gt;s32 throw</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -26113,7 +26113,7 @@ func(*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.
 <td class="tdname">
 readS64</td>
 <td class="tdtype">
-func(*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Serialization.IDecoder">IDecoder</a>)-&gt;s64 throw</td>
+func(*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Serialization.IDecoder">Core.Serialization.IDecoder</a>)-&gt;s64 throw</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -26121,7 +26121,7 @@ func(*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.
 <td class="tdname">
 readU8</td>
 <td class="tdtype">
-func(*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Serialization.IDecoder">IDecoder</a>)-&gt;u8 throw</td>
+func(*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Serialization.IDecoder">Core.Serialization.IDecoder</a>)-&gt;u8 throw</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -26129,7 +26129,7 @@ func(*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.
 <td class="tdname">
 readU16</td>
 <td class="tdtype">
-func(*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Serialization.IDecoder">IDecoder</a>)-&gt;u16 throw</td>
+func(*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Serialization.IDecoder">Core.Serialization.IDecoder</a>)-&gt;u16 throw</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -26137,7 +26137,7 @@ func(*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.
 <td class="tdname">
 readU32</td>
 <td class="tdtype">
-func(*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Serialization.IDecoder">IDecoder</a>)-&gt;u32 throw</td>
+func(*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Serialization.IDecoder">Core.Serialization.IDecoder</a>)-&gt;u32 throw</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -26145,7 +26145,7 @@ func(*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.
 <td class="tdname">
 readU64</td>
 <td class="tdtype">
-func(*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Serialization.IDecoder">IDecoder</a>)-&gt;u64 throw</td>
+func(*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Serialization.IDecoder">Core.Serialization.IDecoder</a>)-&gt;u64 throw</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -26153,7 +26153,7 @@ func(*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.
 <td class="tdname">
 readF32</td>
 <td class="tdtype">
-func(*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Serialization.IDecoder">IDecoder</a>)-&gt;f32 throw</td>
+func(*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Serialization.IDecoder">Core.Serialization.IDecoder</a>)-&gt;f32 throw</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -26161,7 +26161,7 @@ func(*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.
 <td class="tdname">
 readF64</td>
 <td class="tdtype">
-func(*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Serialization.IDecoder">IDecoder</a>)-&gt;f64 throw</td>
+func(*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Serialization.IDecoder">Core.Serialization.IDecoder</a>)-&gt;f64 throw</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -26182,7 +26182,7 @@ func(*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.
 <td class="tdname">
 start</td>
 <td class="tdtype">
-func(*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Serialization.IEncoder">IEncoder</a>, *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.ConcatBuffer">ConcatBuffer</a>) throw</td>
+func(*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Serialization.IEncoder">Core.Serialization.IEncoder</a>, *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.ConcatBuffer">Core.ConcatBuffer</a>) throw</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -26190,7 +26190,7 @@ func(*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.
 <td class="tdname">
 end</td>
 <td class="tdtype">
-func(*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Serialization.IEncoder">IEncoder</a>) throw</td>
+func(*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Serialization.IEncoder">Core.Serialization.IEncoder</a>) throw</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -26198,7 +26198,7 @@ func(*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.
 <td class="tdname">
 beginField</td>
 <td class="tdtype">
-func(*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Serialization.IEncoder">IEncoder</a>, const ref TypeValue) throw</td>
+func(*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Serialization.IEncoder">Core.Serialization.IEncoder</a>, Swag.TypeValue) throw</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -26206,7 +26206,7 @@ func(*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.
 <td class="tdname">
 endField</td>
 <td class="tdtype">
-func(*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Serialization.IEncoder">IEncoder</a>) throw</td>
+func(*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Serialization.IEncoder">Core.Serialization.IEncoder</a>) throw</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -26214,7 +26214,7 @@ func(*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.
 <td class="tdname">
 beginSection</td>
 <td class="tdtype">
-func(*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Serialization.IEncoder">IEncoder</a>, <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Serialization.SectionKind">SectionKind</a>) throw</td>
+func(*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Serialization.IEncoder">Core.Serialization.IEncoder</a>, <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Serialization.SectionKind">Core.Serialization.SectionKind</a>) throw</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -26222,7 +26222,7 @@ func(*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.
 <td class="tdname">
 endSection</td>
 <td class="tdtype">
-func(*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Serialization.IEncoder">IEncoder</a>) throw</td>
+func(*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Serialization.IEncoder">Core.Serialization.IEncoder</a>) throw</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -26230,7 +26230,7 @@ func(*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.
 <td class="tdname">
 write</td>
 <td class="tdtype">
-func(*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Serialization.IEncoder">IEncoder</a>, const ^void, const *TypeInfo) throw</td>
+func(*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Serialization.IEncoder">Core.Serialization.IEncoder</a>, const ^void, const *Swag.TypeInfo) throw</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -26238,7 +26238,7 @@ func(*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.
 <td class="tdname">
 writeBufferU8</td>
 <td class="tdtype">
-func(*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Serialization.IEncoder">IEncoder</a>, const ^u8, u64) throw</td>
+func(*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Serialization.IEncoder">Core.Serialization.IEncoder</a>, const ^u8, u64) throw</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -26246,7 +26246,7 @@ func(*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.
 <td class="tdname">
 writeBool</td>
 <td class="tdtype">
-func(*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Serialization.IEncoder">IEncoder</a>, bool)</td>
+func(*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Serialization.IEncoder">Core.Serialization.IEncoder</a>, bool)</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -26254,7 +26254,7 @@ func(*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.
 <td class="tdname">
 writeS8</td>
 <td class="tdtype">
-func(*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Serialization.IEncoder">IEncoder</a>, s8)</td>
+func(*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Serialization.IEncoder">Core.Serialization.IEncoder</a>, s8)</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -26262,7 +26262,7 @@ func(*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.
 <td class="tdname">
 writeS16</td>
 <td class="tdtype">
-func(*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Serialization.IEncoder">IEncoder</a>, s16)</td>
+func(*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Serialization.IEncoder">Core.Serialization.IEncoder</a>, s16)</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -26270,7 +26270,7 @@ func(*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.
 <td class="tdname">
 writeS32</td>
 <td class="tdtype">
-func(*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Serialization.IEncoder">IEncoder</a>, s32)</td>
+func(*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Serialization.IEncoder">Core.Serialization.IEncoder</a>, s32)</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -26278,7 +26278,7 @@ func(*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.
 <td class="tdname">
 writeS64</td>
 <td class="tdtype">
-func(*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Serialization.IEncoder">IEncoder</a>, s64)</td>
+func(*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Serialization.IEncoder">Core.Serialization.IEncoder</a>, s64)</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -26286,7 +26286,7 @@ func(*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.
 <td class="tdname">
 writeU8</td>
 <td class="tdtype">
-func(*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Serialization.IEncoder">IEncoder</a>, u8)</td>
+func(*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Serialization.IEncoder">Core.Serialization.IEncoder</a>, u8)</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -26294,7 +26294,7 @@ func(*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.
 <td class="tdname">
 writeU16</td>
 <td class="tdtype">
-func(*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Serialization.IEncoder">IEncoder</a>, u16)</td>
+func(*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Serialization.IEncoder">Core.Serialization.IEncoder</a>, u16)</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -26302,7 +26302,7 @@ func(*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.
 <td class="tdname">
 writeU32</td>
 <td class="tdtype">
-func(*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Serialization.IEncoder">IEncoder</a>, u32)</td>
+func(*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Serialization.IEncoder">Core.Serialization.IEncoder</a>, u32)</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -26310,7 +26310,7 @@ func(*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.
 <td class="tdname">
 writeU64</td>
 <td class="tdtype">
-func(*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Serialization.IEncoder">IEncoder</a>, u64)</td>
+func(*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Serialization.IEncoder">Core.Serialization.IEncoder</a>, u64)</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -26318,7 +26318,7 @@ func(*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.
 <td class="tdname">
 writeF32</td>
 <td class="tdtype">
-func(*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Serialization.IEncoder">IEncoder</a>, f32)</td>
+func(*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Serialization.IEncoder">Core.Serialization.IEncoder</a>, f32)</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -26326,7 +26326,7 @@ func(*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.
 <td class="tdname">
 writeF64</td>
 <td class="tdtype">
-func(*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Serialization.IEncoder">IEncoder</a>, f64)</td>
+func(*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Serialization.IEncoder">Core.Serialization.IEncoder</a>, f64)</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -26347,7 +26347,7 @@ func(*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.
 <td class="tdname">
 read</td>
 <td class="tdtype">
-func(*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Serialization.ISerialize">ISerialize</a>, <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Serialization.IDecoder">IDecoder</a>)-&gt;bool throw</td>
+func(*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Serialization.ISerialize">Core.Serialization.ISerialize</a>, <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Serialization.IDecoder">Core.Serialization.IDecoder</a>)-&gt;bool throw</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -26355,7 +26355,7 @@ func(*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.
 <td class="tdname">
 write</td>
 <td class="tdtype">
-func(*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Serialization.ISerialize">ISerialize</a>, <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Serialization.IEncoder">IEncoder</a>)-&gt;bool throw</td>
+func(*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Serialization.ISerialize">Core.Serialization.ISerialize</a>, <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Serialization.IEncoder">Core.Serialization.IEncoder</a>)-&gt;bool throw</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -26363,7 +26363,7 @@ func(*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.
 <td class="tdname">
 readElement</td>
 <td class="tdtype">
-func(*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Serialization.ISerialize">ISerialize</a>, const ref TypeValue, *void, <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Serialization.IDecoder">IDecoder</a>)-&gt;bool throw</td>
+func(*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Serialization.ISerialize">Core.Serialization.ISerialize</a>, Swag.TypeValue, *void, <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Serialization.IDecoder">Core.Serialization.IDecoder</a>)-&gt;bool throw</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -26371,7 +26371,7 @@ func(*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.
 <td class="tdname">
 writeElement</td>
 <td class="tdtype">
-func(*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Serialization.ISerialize">ISerialize</a>, const ref TypeValue, const *void, <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Serialization.IEncoder">IEncoder</a>)-&gt;bool throw</td>
+func(*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Serialization.ISerialize">Core.Serialization.ISerialize</a>, Swag.TypeValue, const *void, <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Serialization.IEncoder">Core.Serialization.IEncoder</a>)-&gt;bool throw</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -26379,7 +26379,7 @@ func(*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.
 <td class="tdname">
 postSerialize</td>
 <td class="tdtype">
-func(*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Serialization.ISerialize">ISerialize</a>, *void, <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Serialization.IDecoder">IDecoder</a>) throw</td>
+func(*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Serialization.ISerialize">Core.Serialization.ISerialize</a>, *void, <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Serialization.IDecoder">Core.Serialization.IDecoder</a>) throw</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -26472,7 +26472,7 @@ The struct does not need versionning an can be serialized in place.</p>
 <td class="tdname">
 stream</td>
 <td class="tdtype">
-<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.ByteStream">ByteStream</a></td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.ByteStream">Core.ByteStream</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -26496,7 +26496,7 @@ u64</td>
 <td class="tdname">
 propName</td>
 <td class="tdtype">
-<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.String">String</a></td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.String">Core.String</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -26663,7 +26663,7 @@ propName</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func beginSequence(using self, _typeElem: const *TypeInfo, _data: *u8, _countElem: *u64)->bool throw
+<code style="white-space: break-spaces">func beginSequence(using self, _typeElem: TypeInfo, _data: *u8, _countElem: *u64)->bool throw
 </code>
 </p>
 <p>
@@ -26678,7 +26678,7 @@ propName</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func beginStruct(using self, _structType: const *TypeInfo, _structData: const *u8)->bool throw
+<code style="white-space: break-spaces">func beginStruct(using self, _structType: TypeInfo, _structData: const *u8)->bool throw
 </code>
 </p>
 <p>
@@ -26828,7 +26828,7 @@ propName</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func startRead(using self, input: const [..] u8)
+<code style="white-space: break-spaces">func startRead(using self, input: ] u8)
 </code>
 </p>
 <p>
@@ -26877,7 +26877,7 @@ propName</td>
 <td class="tdname">
 stream</td>
 <td class="tdtype">
-<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.ByteStream">ByteStream</a></td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.ByteStream">Core.ByteStream</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -26885,7 +26885,7 @@ stream</td>
 <td class="tdname">
 options</td>
 <td class="tdtype">
-<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Serialization.Read.TagBinOptions">TagBinOptions</a></td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Serialization.Read.TagBinOptions">Core.Serialization.Read.TagBinOptions</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -26893,7 +26893,7 @@ options</td>
 <td class="tdname">
 freeSections</td>
 <td class="tdtype">
-<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.ArrayPtr">ArrayPtr</a>(<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Serialization.Write.TagBinSection">TagBinSection</a>)</td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.ArrayPtr">Core.ArrayPtr</a>(<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Serialization.Read.TagBinSection">Core.Serialization.Read.TagBinSection</a>)</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -26901,7 +26901,7 @@ freeSections</td>
 <td class="tdname">
 sections</td>
 <td class="tdtype">
-<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.ArrayPtr">ArrayPtr</a>(<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Serialization.Write.TagBinSection">TagBinSection</a>)</td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.ArrayPtr">Core.ArrayPtr</a>(<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Serialization.Read.TagBinSection">Core.Serialization.Read.TagBinSection</a>)</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -26909,7 +26909,7 @@ sections</td>
 <td class="tdname">
 convertNextNative</td>
 <td class="tdtype">
-const *TypeInfoNative</td>
+const *Swag.TypeInfoNative</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -27086,7 +27086,7 @@ bool</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func beginSequence(using self, typeElem: const *TypeInfo, data: *u8, countElem: *u64)->bool throw
+<code style="white-space: break-spaces">func beginSequence(using self, typeElem: TypeInfo, data: *u8, countElem: *u64)->bool throw
 </code>
 </p>
 <p>
@@ -27101,7 +27101,7 @@ bool</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func beginStruct(using self, structType: const *TypeInfo, _structData: const *u8)->bool throw
+<code style="white-space: break-spaces">func beginStruct(using self, structType: TypeInfo, _structData: const *u8)->bool throw
 </code>
 </p>
 <p>
@@ -27251,7 +27251,7 @@ bool</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func startRead(using self, input: const [..] u8) throw
+<code style="white-space: break-spaces">func startRead(using self, input: ] u8) throw
 </code>
 </p>
 <p>
@@ -27308,7 +27308,7 @@ Accept to try to read a newest version, otherwise error.</p>
 <td class="tdname">
 mapSeek</td>
 <td class="tdtype">
-<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.HashTable">HashTable</a>(u32, u64)</td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.HashTable">Core.HashTable</a>(u32, u64)</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -27332,7 +27332,7 @@ u32</td>
 <td class="tdname">
 kind</td>
 <td class="tdtype">
-<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Serialization.SectionKind">SectionKind</a></td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Serialization.SectionKind">Core.Serialization.SectionKind</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -27392,7 +27392,7 @@ Ordered</td>
 <td class="tdname">
 encode</td>
 <td class="tdtype">
-<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Serialization.IEncoder">IEncoder</a></td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Serialization.IEncoder">Core.Serialization.IEncoder</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -27400,7 +27400,7 @@ encode</td>
 <td class="tdname">
 decode</td>
 <td class="tdtype">
-<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Serialization.IDecoder">IDecoder</a></td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Serialization.IDecoder">Core.Serialization.IDecoder</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -27603,7 +27603,7 @@ Serialize one value.</p>
 <p>
 Start decoding.</p>
 <p class="code">
-<code style="white-space: break-spaces">func startRead(using self, decoder: IDecoder, input: const [..] u8) throw
+<code style="white-space: break-spaces">func startRead(using self, decoder: IDecoder, input: ] u8) throw
 </code>
 </p>
 <p>
@@ -27620,7 +27620,7 @@ Start decoding.</p>
 <p>
 Start encoding.</p>
 <p class="code">
-<code style="white-space: break-spaces">func startWrite(using self, encoder: IEncoder, output: *ConcatBuffer) throw
+<code style="white-space: break-spaces">func startWrite(using self, encoder: IEncoder, output: ConcatBuffer) throw
 </code>
 </p>
 <p>
@@ -27703,7 +27703,7 @@ Set the struct version number.</p>
 <td class="tdname">
 options</td>
 <td class="tdtype">
-<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Serialization.Write.JSonOptions">JSonOptions</a></td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Serialization.Write.JSonOptions">Core.Serialization.Write.JSonOptions</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -27711,7 +27711,7 @@ options</td>
 <td class="tdname">
 output</td>
 <td class="tdtype">
-*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.ConcatBuffer">ConcatBuffer</a></td>
+*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.ConcatBuffer">Core.ConcatBuffer</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -27727,7 +27727,7 @@ u32</td>
 <td class="tdname">
 fmtInt</td>
 <td class="tdtype">
-<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.StrConv.ConvertFormatInt">ConvertFormatInt</a></td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.StrConv.ConvertFormatInt">Core.StrConv.ConvertFormatInt</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -27735,7 +27735,7 @@ fmtInt</td>
 <td class="tdname">
 fmtFloat</td>
 <td class="tdtype">
-<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.StrConv.ConvertFormatFloat">ConvertFormatFloat</a></td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.StrConv.ConvertFormatFloat">Core.StrConv.ConvertFormatFloat</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -27743,7 +27743,7 @@ fmtFloat</td>
 <td class="tdname">
 lastSeekValue</td>
 <td class="tdtype">
-<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.ConcatBufferSeek">ConcatBufferSeek</a></td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.ConcatBufferSeek">Core.ConcatBufferSeek</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -27898,7 +27898,7 @@ lastSeekValue</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func beginSequence(using self, _typeElem: const *TypeInfo, _data: const *void, _countElem: u64)->bool
+<code style="white-space: break-spaces">func beginSequence(using self, _typeElem: TypeInfo, _data: const *void, _countElem: u64)->bool
 </code>
 </p>
 <p>
@@ -27913,7 +27913,7 @@ lastSeekValue</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func beginStruct(using self, _structType: const *TypeInfo, _structData: const *u8)->bool
+<code style="white-space: break-spaces">func beginStruct(using self, _structType: TypeInfo, _structData: const *u8)->bool
 </code>
 </p>
 <p>
@@ -28033,7 +28033,7 @@ lastSeekValue</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func startWrite(using self, buf: *ConcatBuffer)
+<code style="white-space: break-spaces">func startWrite(using self, buf: ConcatBuffer)
 </code>
 </p>
 <p>
@@ -28111,7 +28111,7 @@ bool</td>
 <td class="tdname">
 output</td>
 <td class="tdtype">
-*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.ConcatBuffer">ConcatBuffer</a></td>
+*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.ConcatBuffer">Core.ConcatBuffer</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -28119,7 +28119,7 @@ output</td>
 <td class="tdname">
 freeSections</td>
 <td class="tdtype">
-<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.ArrayPtr">ArrayPtr</a>(<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Serialization.Write.TagBinSection">TagBinSection</a>)</td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.ArrayPtr">Core.ArrayPtr</a>(<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Serialization.Write.TagBinSection">Core.Serialization.Write.TagBinSection</a>)</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -28127,7 +28127,7 @@ freeSections</td>
 <td class="tdname">
 sections</td>
 <td class="tdtype">
-<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.ArrayPtr">ArrayPtr</a>(<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Serialization.Write.TagBinSection">TagBinSection</a>)</td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.ArrayPtr">Core.ArrayPtr</a>(<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Serialization.Write.TagBinSection">Core.Serialization.Write.TagBinSection</a>)</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -28276,7 +28276,7 @@ sections</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func beginSequence(using self, typeElem: const *TypeInfo, data: const *void, countElem: u64)->bool
+<code style="white-space: break-spaces">func beginSequence(using self, typeElem: TypeInfo, data: const *void, countElem: u64)->bool
 </code>
 </p>
 <p>
@@ -28291,7 +28291,7 @@ sections</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func beginStruct(using self, structType: const *TypeInfo, _structData: const *u8)->bool
+<code style="white-space: break-spaces">func beginStruct(using self, structType: TypeInfo, _structData: const *u8)->bool
 </code>
 </p>
 <p>
@@ -28411,7 +28411,7 @@ sections</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func startWrite(using self, buf: *ConcatBuffer)
+<code style="white-space: break-spaces">func startWrite(using self, buf: ConcatBuffer)
 </code>
 </p>
 <p>
@@ -28445,7 +28445,7 @@ sections</td>
 <td class="tdname">
 startSeek</td>
 <td class="tdtype">
-<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.ConcatBufferSeek">ConcatBufferSeek</a></td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.ConcatBufferSeek">Core.ConcatBufferSeek</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -28453,7 +28453,7 @@ startSeek</td>
 <td class="tdname">
 mapSeek</td>
 <td class="tdtype">
-<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.HashTable">HashTable</a>(u32, <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.ConcatBufferSeek">ConcatBufferSeek</a>)</td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.HashTable">Core.HashTable</a>(u32, <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.ConcatBufferSeek">Core.ConcatBufferSeek</a>)</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -28461,7 +28461,7 @@ mapSeek</td>
 <td class="tdname">
 kind</td>
 <td class="tdtype">
-<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Serialization.SectionKind">SectionKind</a></td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Serialization.SectionKind">Core.Serialization.SectionKind</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -28517,7 +28517,7 @@ Version</td>
 <p>
 Determin if a type can be serialized by a simple copy.</p>
 <p class="code">
-<code style="white-space: break-spaces">func isPodFinal(type: const *TypeInfo)->{raw: bool, sizeof: u64}
+<code style="white-space: break-spaces">func isPodFinal(type: TypeInfo)->{raw: bool, sizeof: u64}
 </code>
 </p>
 <p>
@@ -28644,7 +28644,7 @@ Sort the slice, by picking the right algorithm depending on the type and the num
 <p>
 Returns true if the given slice contains the <code class = "incode">value</code>.</p>
 <p class="code">
-<code style="white-space: break-spaces">func(T, V) contains(values: const [..] T, value: V)->bool
+<code style="white-space: break-spaces">func(T, V) contains(values: ] T, value: V)->bool
 </code>
 </p>
 <p>
@@ -28661,7 +28661,7 @@ Returns true if the given slice contains the <code class = "incode">value</code>
 <p>
 Returns true if two slices are equal.</p>
 <p class="code">
-<code style="white-space: break-spaces">func(T) equals(dst: const [..] T, src: const [..] T)->bool
+<code style="white-space: break-spaces">func(T) equals(dst: ] T, src: ] T)->bool
 </code>
 </p>
 <p>
@@ -28678,7 +28678,7 @@ Returns true if two slices are equal.</p>
 <p>
 Find <code class = "incode">value</code> in a slice by performing a linear search. O^n, but slice does not have to be sorted.</p>
 <p class="code">
-<code style="white-space: break-spaces">func(T, V) findLinear(values: const [..] T, value: V)->{index: u64, success: bool}
+<code style="white-space: break-spaces">func(T, V) findLinear(values: ] T, value: V)->{index: u64, success: bool}
 </code>
 </p>
 <p>
@@ -28695,7 +28695,7 @@ Find <code class = "incode">value</code> in a slice by performing a linear searc
 <p>
 Find <code class = "incode">value</code> in a slice by performing a binary search. The slice must be sorted in ascending order.</p>
 <p class="code">
-<code style="white-space: break-spaces">func(T, V) findSorted(values: const [..] T, value: V)->{index: u64, success: bool}
+<code style="white-space: break-spaces">func(T, V) findSorted(values: ] T, value: V)->{index: u64, success: bool}
 </code>
 </p>
 <p>
@@ -28712,7 +28712,7 @@ Find <code class = "incode">value</code> in a slice by performing a binary searc
 <p>
 Insertion sort algorithm (slow).</p>
 <p class="code">
-<code style="white-space: break-spaces">func(T) insertionSort(values: [..] T, cb: closure(T, T)->s32)
+<code style="white-space: break-spaces">func(T) insertionSort(values: ] T, cb: closure(T, T)->s32)
 </code>
 </p>
 <p>
@@ -28729,13 +28729,13 @@ Insertion sort algorithm (slow).</p>
 <p>
 Returns true if the slice is sorted.</p>
 <p class="code">
-<code style="white-space: break-spaces">func(T) isSorted(values: const [..] T)->bool
+<code style="white-space: break-spaces">func(T) isSorted(values: ] T)->bool
 </code>
 </p>
 <p>
 Returns true if the slice is sorted.</p>
 <p class="code">
-<code style="white-space: break-spaces">func(T) isSorted(values: const [..] T, cb: closure(T, T)->s32)->bool
+<code style="white-space: break-spaces">func(T) isSorted(values: ] T, cb: closure(T, T)->s32)->bool
 </code>
 </p>
 <p>
@@ -28752,7 +28752,7 @@ Returns true if the slice is sorted.</p>
 <p>
 Transform the content of a slice with a given lambda.</p>
 <p class="code">
-<code style="white-space: break-spaces">func(T) modifyInPlace(values: [..] T, cb: func(*T))
+<code style="white-space: break-spaces">func(T) modifyInPlace(values: ] T, cb: func(*T))
 </code>
 </p>
 <p>
@@ -28769,7 +28769,7 @@ Transform the content of a slice with a given lambda.</p>
 <p>
 Quick sort algorithm.</p>
 <p class="code">
-<code style="white-space: break-spaces">func(T) quickSort(values: [..] T, cb: closure(T, T)->s32)
+<code style="white-space: break-spaces">func(T) quickSort(values: ] T, cb: closure(T, T)->s32)
 </code>
 </p>
 <p>
@@ -28786,7 +28786,7 @@ Quick sort algorithm.</p>
 <p>
 Reverse the content of a slice.</p>
 <p class="code">
-<code style="white-space: break-spaces">func(T) reverse(values: [..] T)
+<code style="white-space: break-spaces">func(T) reverse(values: ] T)
 </code>
 </p>
 <p>
@@ -28803,13 +28803,13 @@ Reverse the content of a slice.</p>
 <p>
 Sort the slice, by picking the right algorithm depending on the type and the number of elements.</p>
 <p class="code">
-<code style="white-space: break-spaces">func(T) sort(values: [..] T)
+<code style="white-space: break-spaces">func(T) sort(values: ] T)
 </code>
 </p>
 <p>
 Sort the slice, by picking the right algorithm depending on the type and the number of elements.</p>
 <p class="code">
-<code style="white-space: break-spaces">func(T) sort(values: [..] T, cb: closure(T, T)->s32)
+<code style="white-space: break-spaces">func(T) sort(values: ] T, cb: closure(T, T)->s32)
 </code>
 </p>
 <p>
@@ -29194,7 +29194,7 @@ Add a copy of one element at the end of the array.</p>
 <p>
 Append a slice to the end of this instance.</p>
 <p class="code">
-<code style="white-space: break-spaces">func add(using self, values: const [..] T)
+<code style="white-space: break-spaces">func add(using self, values: ] T)
 </code>
 </p>
 <p>
@@ -29319,7 +29319,7 @@ Reserve room at the end of the array for <code class = "incode">num</code> eleme
 <p>
 Move some values at the given index. If <code class = "incode">index</code> is equal to <code class = "incode">count</code>, then the values are moved at the end of the array. Order is preserved.</p>
 <p class="code">
-<code style="white-space: break-spaces">func emplaceAt(using self, index: u64, values: [..] T)
+<code style="white-space: break-spaces">func emplaceAt(using self, index: u64, values: ] T)
 </code>
 </p>
 <p>
@@ -29410,7 +29410,7 @@ Insert a value at the given index. If <code class = "incode">index</code> is equ
 <p>
 Insert some values at the given index. If <code class = "incode">index</code> is equal to <code class = "incode">count</code>, then the values are added at the end of the array. Order is preserved.</p>
 <p class="code">
-<code style="white-space: break-spaces">func insertAt(using self, index: u64, values: const [..] T)
+<code style="white-space: break-spaces">func insertAt(using self, index: u64, values: ] T)
 </code>
 </p>
 <p>
@@ -29450,7 +29450,7 @@ Returns true if the array is empty.</p>
 <p>
 Initializes an Array that contains values copied from the specified array.</p>
 <p class="code">
-<code style="white-space: break-spaces">func opAffect(using self, arr: const [..] T)
+<code style="white-space: break-spaces">func opAffect(using self, arr: ] T)
 </code>
 </p>
 <p>
@@ -29465,8 +29465,8 @@ Initializes an Array that contains values copied from the specified array.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func opCast(using self)->[..] T
-func opCast(using self)->const [..] T
+<code style="white-space: break-spaces">func opCast(using self)->] T
+func opCast(using self)->] T
 </code>
 </p>
 <p>
@@ -29572,7 +29572,7 @@ func opIndex(using const self, index: u64)->ref T
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func opSlice(using self, lower: u64, upper: u64)->[..] T
+<code style="white-space: break-spaces">func opSlice(using self, lower: u64, upper: u64)->] T
 </code>
 </p>
 <p>
@@ -29790,7 +29790,7 @@ Sort array in reverse order (from biggest to lowest value).</p>
 <p>
 Returns a slice.</p>
 <p class="code">
-<code style="white-space: break-spaces">func toSlice(using self)->[..] T
+<code style="white-space: break-spaces">func toSlice(using self)->] T
 </code>
 </p>
 <p>
@@ -30158,7 +30158,7 @@ Convert a size in a displayable format (with Kb, Mb and so on).</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func parse(s: const [..] u8)->{value: f64, eat: u32, ovf: bool} throw
+<code style="white-space: break-spaces">func parse(s: ] u8)->{value: f64, eat: u32, ovf: bool} throw
 </code>
 </p>
 <p>
@@ -30200,7 +30200,7 @@ Format structure to convert a float to a string.</p>
 <td class="tdname">
 val</td>
 <td class="tdtype">
-<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.StrConv.ConvertFormat">ConvertFormat</a></td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.StrConv.ConvertFormat">Core.StrConv.ConvertFormat</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -30291,7 +30291,7 @@ Format structure to convert an integer to a string.</p>
 <td class="tdname">
 val</td>
 <td class="tdtype">
-<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.StrConv.ConvertFormat">ConvertFormat</a></td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.StrConv.ConvertFormat">Core.StrConv.ConvertFormat</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -30536,7 +30536,7 @@ The format <code class = "incode">fmt</code> is one of <code class = "incode">e<
 <p>
 The format <code class = "incode">fmt</code> is one of <code class = "incode">e</code> (-d.dddde±dd, a decimal exponent) <code class = "incode">E</code> (-d.ddddE±dd, a decimal exponent) <code class = "incode">f</code> (-ddd.dddd, no exponent) <code class = "incode">g</code> (<code class = "incode">e</code> for large exponents, <code class = "incode">f</code> otherwise) <code class = "incode">G</code> (<code class = "incode">E</code> for large exponents, <code class = "incode">f</code> otherwise) Negative precision means "only as much as needed to be exact.".</p>
 <p class="code">
-<code style="white-space: break-spaces">func parse(buf: *ConcatBuffer, val: f64, fmt: u8, precision: s64, forceSign: bool)
+<code style="white-space: break-spaces">func parse(buf: ConcatBuffer, val: f64, fmt: u8, precision: s64, forceSign: bool)
 </code>
 </p>
 <p>
@@ -30594,7 +30594,7 @@ bool</td>
 <td class="tdname">
 convert</td>
 <td class="tdtype">
-func(*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.StrConv.IConvert">IConvert</a>, *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.ConcatBuffer">ConcatBuffer</a>, const *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.StrConv.ConvertFormat">ConvertFormat</a>, string)</td>
+func(*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.StrConv.IConvert">Core.StrConv.IConvert</a>, *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.ConcatBuffer">Core.ConcatBuffer</a>, const *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.StrConv.ConvertFormat">Core.StrConv.ConvertFormat</a>, string)</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -30615,7 +30615,7 @@ func(*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.
 <td class="tdname">
 poke</td>
 <td class="tdtype">
-func(*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.StrConv.IPokeValue">IPokeValue</a>, string)-&gt;string throw</td>
+func(*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.StrConv.IPokeValue">Core.StrConv.IPokeValue</a>, string)-&gt;string throw</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -30706,7 +30706,7 @@ string</td>
 <td class="tdname">
 buffer</td>
 <td class="tdtype">
-<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.ConcatBuffer">ConcatBuffer</a></td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.ConcatBuffer">Core.ConcatBuffer</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -31003,7 +31003,7 @@ Force a ending 0.</p>
 <p>
 Templated version. Convert a value of type <code class = "incode">T</code>.</p>
 <p class="code">
-<code style="white-space: break-spaces">func(T) convert(buf: *ConcatBuffer, value: T, strFormat: string)
+<code style="white-space: break-spaces">func(T) convert(buf: ConcatBuffer, value: T, strFormat: string)
 </code>
 </p>
 <p>
@@ -31020,7 +31020,7 @@ Templated version. Convert a value of type <code class = "incode">T</code>.</p>
 <p>
 Convert a value to an utf8 string, and append the result in a ConcatBuffer.</p>
 <p class="code">
-<code style="white-space: break-spaces">func convertAny(buf: *ConcatBuffer, value: any, strFormat: string)
+<code style="white-space: break-spaces">func convertAny(buf: ConcatBuffer, value: any, strFormat: string)
 </code>
 </p>
 <p>
@@ -31037,7 +31037,7 @@ Convert a value to an utf8 string, and append the result in a ConcatBuffer.</p>
 <p>
 Convert a <code class = "incode">bool</code> to a string, and put the result in a ConcatBuffer.</p>
 <p class="code">
-<code style="white-space: break-spaces">func convertBool(buf: *ConcatBuffer, value: bool)
+<code style="white-space: break-spaces">func convertBool(buf: ConcatBuffer, value: bool)
 </code>
 </p>
 <p>
@@ -31054,13 +31054,13 @@ Convert a <code class = "incode">bool</code> to a string, and put the result in 
 <p>
 Convert a float to an utf8 string, and put the result in a ConcatBuffer.</p>
 <p class="code">
-<code style="white-space: break-spaces">func convertFloat(buf: *ConcatBuffer, value: any, strFormat: string)
+<code style="white-space: break-spaces">func convertFloat(buf: ConcatBuffer, value: any, strFormat: string)
 </code>
 </p>
 <p>
 Convert a float to an utf8 string, and put the result in a ConcatBuffer.</p>
 <p class="code">
-<code style="white-space: break-spaces">func convertFloat(buf: *ConcatBuffer, fmt: ConvertFormatFloat)
+<code style="white-space: break-spaces">func convertFloat(buf: ConcatBuffer, fmt: ConvertFormatFloat)
 </code>
 </p>
 <p>
@@ -31077,13 +31077,13 @@ Convert a float to an utf8 string, and put the result in a ConcatBuffer.</p>
 <p>
 Convert an integer to an utf8 string, and put the result in a ConcatBuffer.</p>
 <p class="code">
-<code style="white-space: break-spaces">func convertInt(buf: *ConcatBuffer, value: any, strFormat: string)
+<code style="white-space: break-spaces">func convertInt(buf: ConcatBuffer, value: any, strFormat: string)
 </code>
 </p>
 <p>
 Convert an integer to an utf8 string, and put the result in a ConcatBuffer.</p>
 <p class="code">
-<code style="white-space: break-spaces">func convertInt(buf: *ConcatBuffer, fmt: ConvertFormatInt)
+<code style="white-space: break-spaces">func convertInt(buf: ConcatBuffer, fmt: ConvertFormatInt)
 </code>
 </p>
 <p>
@@ -31100,7 +31100,7 @@ Convert an integer to an utf8 string, and put the result in a ConcatBuffer.</p>
 <p>
 Convert a <code class = "incode">rune</code> to a string, and put the result in a ConcatBuffer.</p>
 <p class="code">
-<code style="white-space: break-spaces">func convertRune(buf: *ConcatBuffer, value: rune)
+<code style="white-space: break-spaces">func convertRune(buf: ConcatBuffer, value: rune)
 </code>
 </p>
 <p>
@@ -31117,7 +31117,7 @@ Convert a <code class = "incode">rune</code> to a string, and put the result in 
 <p>
 Convert a structure content to an utf8 string, and put the result in a ConcatBuffer.</p>
 <p class="code">
-<code style="white-space: break-spaces">func convertStruct(buf: *ConcatBuffer, value: any, strFormat: string)
+<code style="white-space: break-spaces">func convertStruct(buf: ConcatBuffer, value: any, strFormat: string)
 </code>
 </p>
 <p>
@@ -31413,7 +31413,7 @@ Convert an utf8 buffer in hexadecimal to an unsigned integer value Returns the v
 <p>
 This function will parse <code class = "incode">buf</code> and poke the corresponding value to <code class = "incode">addr</code> <code class = "incode">addr</code> must point to an initialized memory location that can hold type <code class = "incode">type</code>.</p>
 <p class="code">
-<code style="white-space: break-spaces">func pokeValue(addr: *void, type: const *TypeInfo, buf: string)->string throw
+<code style="white-space: break-spaces">func pokeValue(addr: *void, type: TypeInfo, buf: string)->string throw
 </code>
 </p>
 <p>
@@ -31648,7 +31648,7 @@ u64</td>
 <td class="tdname">
 allocator</td>
 <td class="tdtype">
-IAllocator</td>
+Swag.IAllocator</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -32251,7 +32251,7 @@ Returns true if the String is null or empty.</p>
 <p>
 Join a list of strings to make a unique one.</p>
 <p class="code">
-<code style="white-space: break-spaces">func join(values: string...)->String
+<code style="white-space: break-spaces">func join(values: string)->String
 </code>
 </p>
 <p>
@@ -32268,7 +32268,7 @@ Join a list of strings to make a unique one.</p>
 <p>
 Join an list of strings to make a unique one, by using a given <code class = "incode">separator</code> between them.</p>
 <p class="code">
-<code style="white-space: break-spaces">func joinWith(separator: string, values: string...)->String
+<code style="white-space: break-spaces">func joinWith(separator: string, values: string)->String
 </code>
 </p>
 <p>
@@ -32349,7 +32349,7 @@ func(op: string) opAssign(using self, value: u8)
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func opCast(using const self)->const [..] u8
+<code style="white-space: break-spaces">func opCast(using const self)->] u8
 func opCast(using const self)->cstring
 func opCast(using const self)->string
 </code>
@@ -32634,7 +32634,7 @@ Returns a new String in lower case.</p>
 <p>
 Returns a slice type.</p>
 <p class="code">
-<code style="white-space: break-spaces">func toSlice(using self)->[..] u8
+<code style="white-space: break-spaces">func toSlice(using self)->] u8
 </code>
 </p>
 <p>
@@ -32812,7 +32812,7 @@ u64</td>
 <td class="tdname">
 handle</td>
 <td class="tdtype">
-HANDLE</td>
+Win32.HANDLE</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -33011,7 +33011,7 @@ Wait for the event to be signaled.</p>
 <td class="tdname">
 v</td>
 <td class="tdtype">
-SRWLOCK</td>
+Win32.SRWLOCK</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -33110,7 +33110,7 @@ Unlock mutex.</p>
 <td class="tdname">
 v</td>
 <td class="tdtype">
-SRWLOCK</td>
+Win32.SRWLOCK</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -33438,7 +33438,7 @@ Wait multiple threads.</p>
 <td class="tdname">
 userLambda</td>
 <td class="tdtype">
-func(*void, const ref <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Threading.Thread">Thread</a>)</td>
+closure(<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Threading.Thread">Core.Threading.Thread</a>)</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -33446,7 +33446,7 @@ func(*void, const ref <a href="f:\swag-lang\swag\bin\std\output\fast-compile-win
 <td class="tdname">
 context</td>
 <td class="tdtype">
-Context</td>
+Swag.Context</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -33462,7 +33462,7 @@ userParam</td>
 <td class="tdname">
 priority</td>
 <td class="tdtype">
-<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Threading.ThreadPriority">ThreadPriority</a></td>
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Threading.ThreadPriority">Core.Threading.ThreadPriority</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -33470,7 +33470,7 @@ priority</td>
 <td class="tdname">
 handle</td>
 <td class="tdtype">
-ThreadHandle</td>
+Core.Threading.ThreadHandle</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -33776,7 +33776,7 @@ Highest</td>
 <p>
 Wait multiple threads.</p>
 <p class="code">
-<code style="white-space: break-spaces">func wait(threads: *Thread...)
+<code style="white-space: break-spaces">func wait(threads: Thread)
 </code>
 </p>
 <p>
@@ -34098,7 +34098,7 @@ Convert to string.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func convert(using self, buf: *ConcatBuffer, fmt: const *ConvertFormat, strFormat: string)
+<code style="white-space: break-spaces">func convert(using self, buf: ConcatBuffer, fmt: ConvertFormat, strFormat: string)
 </code>
 </p>
 <p>
@@ -35125,7 +35125,7 @@ Represents an interval of time, stored as a 64 bits integer.</p>
 <td class="tdname">
 ticks</td>
 <td class="tdtype">
-Ticks</td>
+Core.Time.Ticks</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -35553,7 +35553,7 @@ Converts a TimeSpan to a DateTime.</p>
 <td class="tdname">
 userLambda</td>
 <td class="tdtype">
-func(const ref <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Time.Timer">Timer</a>)</td>
+func(<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Time.Timer">Core.Time.Timer</a>)</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -35561,7 +35561,7 @@ func(const ref <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x8
 <td class="tdname">
 handle</td>
 <td class="tdtype">
-TimerHandle</td>
+Core.Time.TimerHandle</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -35569,7 +35569,7 @@ TimerHandle</td>
 <td class="tdname">
 context</td>
 <td class="tdtype">
-Context</td>
+Swag.Context</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -36024,7 +36024,7 @@ Returns the first substring of <code class = "incode">str</code> containing only
 <p>
 Split string into sub strings, given an array of rune separators Note that this returns an array of native strings, not copies. All strings will be invalid if <code class = "incode">src</code> String is destroyed.</p>
 <p class="code">
-<code style="white-space: break-spaces">func split(src: string, separators: const [..] rune, maxSplit: u32 = 0, removeEmpty = true)->Array'(string)
+<code style="white-space: break-spaces">func split(src: string, separators: ] rune, maxSplit: u32 = 0, removeEmpty = true)->Array'(string)
 </code>
 </p>
 <p>
@@ -36066,7 +36066,7 @@ Split the string into an array of lines Note that this returns an array of nativ
 <td class="tdname">
 uuid</td>
 <td class="tdtype">
-__uuid_tuple_24</td>
+{val8: [16] u8, val64: [2] u64}</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -36127,7 +36127,7 @@ Convert uuid to a string of the form xxxxxxxx-xxxx-Mxxx-Nxxx-xxxxxxxxxxxx.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func convert(using self, buf: *ConcatBuffer, fmt: const *ConvertFormat, strFormat: string)
+<code style="white-space: break-spaces">func convert(using self, buf: ConcatBuffer, fmt: ConvertFormat, strFormat: string)
 </code>
 </p>
 <p>
@@ -36214,7 +36214,7 @@ Convert uuid to a string.</p>
 <p>
 Convert uuid to a string of the form xxxxxxxx-xxxx-Mxxx-Nxxx-xxxxxxxxxxxx.</p>
 <p class="code">
-<code style="white-space: break-spaces">func toString(using self, result: [..] u8)
+<code style="white-space: break-spaces">func toString(using self, result: ] u8)
 </code>
 </p>
 <p>
@@ -36473,7 +36473,7 @@ u32</td>
 <td id="Core.Unicode.TableCaseRanges" class="tdname">
 TableCaseRanges</td>
 <td class="tdtype">
-const [317] struct <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Unicode.CaseRange">CaseRange</a></td>
+const [317] <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Unicode.CaseRange">Core.Unicode.CaseRange</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -36481,7 +36481,7 @@ const [317] struct <a href="f:\swag-lang\swag\bin\std\output\fast-compile-window
 <td id="Core.Unicode.TableDigit" class="tdname">
 TableDigit</td>
 <td class="tdtype">
-const [59] struct <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Unicode.Range">Range</a></td>
+const [59] <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Unicode.Range">Core.Unicode.Range</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -36489,7 +36489,7 @@ const [59] struct <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows
 <td id="Core.Unicode.TableLetter" class="tdname">
 TableLetter</td>
 <td class="tdtype">
-const [575] struct <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Unicode.Range">Range</a></td>
+const [575] <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Unicode.Range">Core.Unicode.Range</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -36497,7 +36497,7 @@ const [575] struct <a href="f:\swag-lang\swag\bin\std\output\fast-compile-window
 <td id="Core.Unicode.TableLower" class="tdname">
 TableLower</td>
 <td class="tdtype">
-const [154] struct <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Unicode.Range">Range</a></td>
+const [154] <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Unicode.Range">Core.Unicode.Range</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -36505,7 +36505,7 @@ const [154] struct <a href="f:\swag-lang\swag\bin\std\output\fast-compile-window
 <td id="Core.Unicode.TableNumber" class="tdname">
 TableNumber</td>
 <td class="tdtype">
-const [128] struct <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Unicode.Range">Range</a></td>
+const [128] <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Unicode.Range">Core.Unicode.Range</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -36513,7 +36513,7 @@ const [128] struct <a href="f:\swag-lang\swag\bin\std\output\fast-compile-window
 <td id="Core.Unicode.TableSpecialCaseRanges" class="tdname">
 TableSpecialCaseRanges</td>
 <td class="tdtype">
-const [4] struct <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Unicode.CaseRange">CaseRange</a></td>
+const [4] <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Unicode.CaseRange">Core.Unicode.CaseRange</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -36521,7 +36521,7 @@ const [4] struct <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-
 <td id="Core.Unicode.TableSymbol" class="tdname">
 TableSymbol</td>
 <td class="tdtype">
-const [196] struct <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Unicode.Range">Range</a></td>
+const [196] <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Unicode.Range">Core.Unicode.Range</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -36529,7 +36529,7 @@ const [196] struct <a href="f:\swag-lang\swag\bin\std\output\fast-compile-window
 <td id="Core.Unicode.TableSymbolMath" class="tdname">
 TableSymbolMath</td>
 <td class="tdtype">
-const [49] struct <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Unicode.Range">Range</a></td>
+const [49] <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Unicode.Range">Core.Unicode.Range</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -36537,7 +36537,7 @@ const [49] struct <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows
 <td id="Core.Unicode.TableTitle" class="tdname">
 TableTitle</td>
 <td class="tdtype">
-const [7] struct <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Unicode.Range">Range</a></td>
+const [7] <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Unicode.Range">Core.Unicode.Range</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -36545,7 +36545,7 @@ const [7] struct <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-
 <td id="Core.Unicode.TableUpper" class="tdname">
 TableUpper</td>
 <td class="tdtype">
-const [143] struct <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Unicode.Range">Range</a></td>
+const [143] <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Unicode.Range">Core.Unicode.Range</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -36553,7 +36553,7 @@ const [143] struct <a href="f:\swag-lang\swag\bin\std\output\fast-compile-window
 <td id="Core.Unicode.TableWhiteSpace" class="tdname">
 TableWhiteSpace</td>
 <td class="tdtype">
-const [7] struct <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Unicode.Range">Range</a></td>
+const [7] <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Unicode.Range">Core.Unicode.Range</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -36611,13 +36611,13 @@ TitleCase</td>
 <p>
 Convert an utf8 buffer to a character sequence, and returns the number of valid elements in the destination buffer.</p>
 <p class="code">
-<code style="white-space: break-spaces">func fromUtf8(dest: [..] rune, src: const [..] u8)->u32
+<code style="white-space: break-spaces">func fromUtf8(dest: ] rune, src: ] u8)->u32
 </code>
 </p>
 <p>
 Convert an utf8 buffer to a character sequence.</p>
 <p class="code">
-<code style="white-space: break-spaces">func fromUtf8(src: const [..] u8)->Array'(rune)
+<code style="white-space: break-spaces">func fromUtf8(src: ] u8)->Array'(rune)
 </code>
 </p>
 <p>
@@ -36829,7 +36829,7 @@ Convert an utf8 buffer to a character sequence.</p>
 <p>
 Make a rune buffer lower case.</p>
 <p class="code">
-<code style="white-space: break-spaces">func makeLower(buffer: [..] rune)
+<code style="white-space: break-spaces">func makeLower(buffer: ] rune)
 </code>
 </p>
 <p>
@@ -36846,7 +36846,7 @@ Make a rune buffer lower case.</p>
 <p>
 Make a rune buffer upper case.</p>
 <p class="code">
-<code style="white-space: break-spaces">func makeUpper(buffer: [..] rune)
+<code style="white-space: break-spaces">func makeUpper(buffer: ] rune)
 </code>
 </p>
 <p>
@@ -37039,7 +37039,7 @@ u32</td>
 <p>
 Get the unicode character pointed by <code class = "incode">buffer</code>, and the number of u16 to encode it Will return <code class = "incode">RuneError</code> for an invalid utf16 sequence.</p>
 <p class="code">
-<code style="white-space: break-spaces">func decodeRune(buffer: const [..] u16)->{c: rune, eat: u32}
+<code style="white-space: break-spaces">func decodeRune(buffer: ] u16)->{c: rune, eat: u32}
 </code>
 </p>
 <p>
@@ -37056,7 +37056,7 @@ Get the unicode character pointed by <code class = "incode">buffer</code>, and t
 <p>
 Convert unicode character <code class = "incode">src</code> to an utf16 sequence, and returns the number of u16 that were needed to make the conversion. <code class = "incode">dest</code> must be at least 2 u16 long.</p>
 <p class="code">
-<code style="white-space: break-spaces">func encodeRune(dest: [..] u16, src: rune)->u32
+<code style="white-space: break-spaces">func encodeRune(dest: ] u16, src: rune)->u32
 </code>
 </p>
 <p>
@@ -37073,13 +37073,13 @@ Convert unicode character <code class = "incode">src</code> to an utf16 sequence
 <p>
 Convert a character array (32 bits unicode) to an utf16 buffer Returns the number of bytes written in the destination buffer <code class = "incode">dest</code> must be at least 2 bytes long.</p>
 <p class="code">
-<code style="white-space: break-spaces">func fromUnicode(dest: [..] u16, src: const [..] rune)->u64
+<code style="white-space: break-spaces">func fromUnicode(dest: ] u16, src: ] rune)->u64
 </code>
 </p>
 <p>
 Convert a character array (32 bits unicode) to an utf16 sequence.</p>
 <p class="code">
-<code style="white-space: break-spaces">func fromUnicode(src: const [..] rune)->Array'(u16)
+<code style="white-space: break-spaces">func fromUnicode(src: ] rune)->Array'(u16)
 </code>
 </p>
 <p>
@@ -37096,13 +37096,13 @@ Convert a character array (32 bits unicode) to an utf16 sequence.</p>
 <p>
 Convert an utf8 buffer to a utf16 buffer, and returns the number of valid elements in the destination buffer.</p>
 <p class="code">
-<code style="white-space: break-spaces">func fromUtf8(dest: [..] u16, src: const [..] u8)->u64
+<code style="white-space: break-spaces">func fromUtf8(dest: ] u16, src: ] u8)->u64
 </code>
 </p>
 <p>
 Convert an utf8 buffer to an utf16 sequence.</p>
 <p class="code">
-<code style="white-space: break-spaces">func fromUtf8(src: const [..] u8)->Array'(u16)
+<code style="white-space: break-spaces">func fromUtf8(src: ] u8)->Array'(u16)
 </code>
 </p>
 <p>
@@ -37439,7 +37439,7 @@ u8</td>
 <td id="Core.Utf8.AcceptRanges" class="tdname">
 AcceptRanges</td>
 <td class="tdtype">
-const [5] struct <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Utf8.AcceptRange">AcceptRange</a></td>
+const [5] <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Utf8.AcceptRange">Core.Utf8.AcceptRange</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -37676,7 +37676,7 @@ Status for the special one-byte case. invalid: size 1.</p>
 <p>
 Returns the byte index of the given rune index.</p>
 <p class="code">
-<code style="white-space: break-spaces">func byteIndex(buffer: const [..] u8, charIndex: u64)->{index: u64, success: bool}
+<code style="white-space: break-spaces">func byteIndex(buffer: ] u8, charIndex: u64)->{index: u64, success: bool}
 </code>
 </p>
 <p>
@@ -37693,7 +37693,7 @@ Returns the byte index of the given rune index.</p>
 <p>
 Compare two utf8 buffers with the given algorithm.</p>
 <p class="code">
-<code style="white-space: break-spaces">func compare(src: const [..] u8, dst: const [..] u8, comparisonType = ComparisonType.Latin1)->s32
+<code style="white-space: break-spaces">func compare(src: ] u8, dst: ] u8, comparisonType = ComparisonType.Latin1)->s32
 </code>
 </p>
 <p>
@@ -37710,7 +37710,7 @@ Compare two utf8 buffers with the given algorithm.</p>
 <p>
 Returns true if <code class = "incode">src</code> contains the string <code class = "incode">what</code>.</p>
 <p class="code">
-<code style="white-space: break-spaces">func contains(src: const [..] u8, what: string)->bool
+<code style="white-space: break-spaces">func contains(src: ] u8, what: string)->bool
 </code>
 </p>
 <p>
@@ -37727,7 +37727,7 @@ Returns true if <code class = "incode">src</code> contains the string <code clas
 <p>
 Returns the number of bytes to encode the first rune of the utf8 buffer.</p>
 <p class="code">
-<code style="white-space: break-spaces">func countBytesAt(buffer: const [..] u8)->u32
+<code style="white-space: break-spaces">func countBytesAt(buffer: ] u8)->u32
 </code>
 </p>
 <p>
@@ -37746,7 +37746,7 @@ Returns the number of bytes to encode the first rune of the utf8 buffer.</p>
 <p>
 Returns the number of runes in an utf8 buffer.</p>
 <p class="code">
-<code style="white-space: break-spaces">func countRunes(buffer: const [..] u8)->u64
+<code style="white-space: break-spaces">func countRunes(buffer: ] u8)->u64
 </code>
 </p>
 <p>
@@ -37763,7 +37763,7 @@ Returns the number of runes in an utf8 buffer.</p>
 <p>
 Get the last unicode rune of the utf8 slice, and the number of bytes to encode it.</p>
 <p class="code">
-<code style="white-space: break-spaces">func decodeLastRune(buffer: const [..] u8)->{c: rune, eat: u32}
+<code style="white-space: break-spaces">func decodeLastRune(buffer: ] u8)->{c: rune, eat: u32}
 </code>
 </p>
 <p>
@@ -37780,7 +37780,7 @@ Get the last unicode rune of the utf8 slice, and the number of bytes to encode i
 <p>
 Get the unicode rune pointed by <code class = "incode">buffer</code>, and the number of bytes to encode it.</p>
 <p class="code">
-<code style="white-space: break-spaces">func decodeRune(buffer: const [..] u8)->{c: rune, eat: u32}
+<code style="white-space: break-spaces">func decodeRune(buffer: ] u8)->{c: rune, eat: u32}
 </code>
 </p>
 <p>
@@ -37799,7 +37799,7 @@ Get the unicode rune pointed by <code class = "incode">buffer</code>, and the nu
 <p>
 Convert rune <code class = "incode">src</code> to an utf8 sequence, and returns the number of bytes that were needed to make the conversion.</p>
 <p class="code">
-<code style="white-space: break-spaces">func encodeRune(dest: [..] u8, src: rune)->u32
+<code style="white-space: break-spaces">func encodeRune(dest: ] u8, src: rune)->u32
 </code>
 </p>
 <p>
@@ -37818,7 +37818,7 @@ Convert rune <code class = "incode">src</code> to an utf8 sequence, and returns 
 <p>
 Return true if the string ends with <code class = "incode">str</code>.</p>
 <p class="code">
-<code style="white-space: break-spaces">func endsWith(src: const [..] u8, str: string, comparisonType = ComparisonType.Latin1)->bool
+<code style="white-space: break-spaces">func endsWith(src: ] u8, str: string, comparisonType = ComparisonType.Latin1)->bool
 </code>
 </p>
 <p>
@@ -37835,7 +37835,7 @@ Return true if the string ends with <code class = "incode">str</code>.</p>
 <p>
 Returns the first rune of the slice.</p>
 <p class="code">
-<code style="white-space: break-spaces">func firstRune(src: const [..] u8)->rune
+<code style="white-space: break-spaces">func firstRune(src: ] u8)->rune
 </code>
 </p>
 <p>
@@ -37852,7 +37852,7 @@ Returns the first rune of the slice.</p>
 <p>
 Convert a rune array to an utf8 buffer.</p>
 <p class="code">
-<code style="white-space: break-spaces">func fromUnicode(dest: [..] u8, src: const [..] rune)->u64
+<code style="white-space: break-spaces">func fromUnicode(dest: ] u8, src: ] rune)->u64
 </code>
 </p>
 <p>
@@ -37860,7 +37860,7 @@ Convert a rune array to an utf8 buffer.</p>
 <p>
 Convert an unicode buffer to a String.</p>
 <p class="code">
-<code style="white-space: break-spaces">func fromUnicode(src: const [..] rune)->String
+<code style="white-space: break-spaces">func fromUnicode(src: ] rune)->String
 </code>
 </p>
 <p>
@@ -37877,7 +37877,7 @@ Convert an unicode buffer to a String.</p>
 <p>
 Convert an utf16 array to an utf8 buffer.</p>
 <p class="code">
-<code style="white-space: break-spaces">func fromUtf16(dest: [..] u8, src: const [..] u16)->u64
+<code style="white-space: break-spaces">func fromUtf16(dest: ] u8, src: ] u16)->u64
 </code>
 </p>
 <p>
@@ -37885,7 +37885,7 @@ Convert an utf16 array to an utf8 buffer.</p>
 <p>
 Convert an utf16 buffer to a String.</p>
 <p class="code">
-<code style="white-space: break-spaces">func fromUtf16(src: const [..] u16)->String
+<code style="white-space: break-spaces">func fromUtf16(src: ] u16)->String
 </code>
 </p>
 <p>
@@ -37902,7 +37902,7 @@ Convert an utf16 buffer to a String.</p>
 <p>
 Find one of the runes in <code class = "incode">what</code>, and returns the byte index of it.</p>
 <p class="code">
-<code style="white-space: break-spaces">func indexOf(src: const [..] u8, what: const [..] rune, startByteIndex = 0'u64)->u64
+<code style="white-space: break-spaces">func indexOf(src: ] u8, what: ] rune, startByteIndex = 0'u64)->u64
 </code>
 </p>
 <p>
@@ -37910,7 +37910,7 @@ Find one of the runes in <code class = "incode">what</code>, and returns the byt
 <p>
 Find the first occurence of rune <code class = "incode">what</code>, and returns the byte index of it.</p>
 <p class="code">
-<code style="white-space: break-spaces">func indexOf(src: const [..] u8, what: rune, startByteIndex = 0'u64)->u64
+<code style="white-space: break-spaces">func indexOf(src: ] u8, what: rune, startByteIndex = 0'u64)->u64
 </code>
 </p>
 <p>
@@ -37918,7 +37918,7 @@ Find the first occurence of rune <code class = "incode">what</code>, and returns
 <p>
 Find the given string, and returns the byte index of it.</p>
 <p class="code">
-<code style="white-space: break-spaces">func indexOf(src: const [..] u8, what: string, startByteIndex = 0'u64, comparisonType = ComparisonType.Latin1)->u64
+<code style="white-space: break-spaces">func indexOf(src: ] u8, what: string, startByteIndex = 0'u64, comparisonType = ComparisonType.Latin1)->u64
 </code>
 </p>
 <p>
@@ -37937,7 +37937,7 @@ Find the given string, and returns the byte index of it.</p>
 <p>
 Returns true if the utf8 sequence is valid.</p>
 <p class="code">
-<code style="white-space: break-spaces">func isValid(buffer: const [..] u8)->bool
+<code style="white-space: break-spaces">func isValid(buffer: ] u8)->bool
 </code>
 </p>
 <p>
@@ -37971,7 +37971,7 @@ Returns true if the given unicode rune can be encoded in utf8.</p>
 <p>
 Returns the last index (in bytes) of a rune.</p>
 <p class="code">
-<code style="white-space: break-spaces">func lastIndexOf(src: const [..] u8, what: const [..] rune)->u64
+<code style="white-space: break-spaces">func lastIndexOf(src: ] u8, what: ] rune)->u64
 </code>
 </p>
 <p>
@@ -37979,7 +37979,7 @@ Returns the last index (in bytes) of a rune.</p>
 <p>
 Find the last rune occurence of <code class = "incode">what</code>, and returns the byte index of it.</p>
 <p class="code">
-<code style="white-space: break-spaces">func lastIndexOf(src: const [..] u8, what: rune)->u64
+<code style="white-space: break-spaces">func lastIndexOf(src: ] u8, what: rune)->u64
 </code>
 </p>
 <p>
@@ -37987,7 +37987,7 @@ Find the last rune occurence of <code class = "incode">what</code>, and returns 
 <p>
 Returns the last index (in bytes) of a string.</p>
 <p class="code">
-<code style="white-space: break-spaces">func lastIndexOf(src: const [..] u8, what: string, comparisonType = ComparisonType.Latin1)->u64
+<code style="white-space: break-spaces">func lastIndexOf(src: ] u8, what: string, comparisonType = ComparisonType.Latin1)->u64
 </code>
 </p>
 <p>
@@ -38006,7 +38006,7 @@ Returns the last index (in bytes) of a string.</p>
 <p>
 Returns the last rune of the slice.</p>
 <p class="code">
-<code style="white-space: break-spaces">func lastRune(src: const [..] u8)->rune
+<code style="white-space: break-spaces">func lastRune(src: ] u8)->rune
 </code>
 </p>
 <p>
@@ -38023,7 +38023,7 @@ Returns the last rune of the slice.</p>
 <p>
 Return true if the string starts with <code class = "incode">str</code>.</p>
 <p class="code">
-<code style="white-space: break-spaces">func startsWith(src: const [..] u8, str: string, comparisonType = ComparisonType.Latin1)->bool
+<code style="white-space: break-spaces">func startsWith(src: ] u8, str: string, comparisonType = ComparisonType.Latin1)->bool
 </code>
 </p>
 <p>
@@ -38041,7 +38041,7 @@ Return true if the string starts with <code class = "incode">str</code>.</p>
 Macro to visit the unicode characters of the utf8 sequence.</p>
 <p class="code">
 <code style="white-space: break-spaces">#[Swag.Macro]
-func visitRunes(buffer: const [..] u8, stmt: code)
+func visitRunes(buffer: ] u8, stmt: code)
 </code>
 </p>
 <p style="white-space: break-spaces"> <code class = "incode">@alias0</code> will contain the character

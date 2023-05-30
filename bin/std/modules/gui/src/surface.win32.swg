@@ -3,6 +3,7 @@
 #foreignlib "dwmapi"
 using Core, Win32
 
+#[Swag.NoDoc]
 struct MARGINS
 {
     cxLeftWidth:    s32
