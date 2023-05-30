@@ -993,47 +993,50 @@ void ModuleGenDocJob::generateContent()
             }
 
             // Fields
-            bool first = true;
-            for (auto structVal : structNode->scope->symTable.allSymbols)
+            if (!(structNode->attributeFlags & ATTRIBUTE_OPAQUE))
             {
-                auto n1 = structVal->nodes[0];
-                if (n1->kind != AstNodeKind::VarDecl && n1->kind != AstNodeKind::ConstDecl)
-                    continue;
-                if (!(n1->flags & AST_STRUCT_MEMBER))
-                    continue;
-                if (structVal->name.find("item") == 0)
-                    continue;
-
-                if (first)
+                bool first = true;
+                for (auto structVal : structNode->scope->symTable.allSymbols)
                 {
-                    helpContent += "<table class=\"enumeration\">\n";
-                    first = false;
+                    auto n1 = structVal->nodes[0];
+                    if (n1->kind != AstNodeKind::VarDecl && n1->kind != AstNodeKind::ConstDecl)
+                        continue;
+                    if (!(n1->flags & AST_STRUCT_MEMBER))
+                        continue;
+                    if (structVal->name.find("item") == 0)
+                        continue;
+
+                    if (first)
+                    {
+                        helpContent += "<table class=\"enumeration\">\n";
+                        first = false;
+                    }
+
+                    auto varDecl = CastAst<AstVarDecl>(n1, AstNodeKind::VarDecl, AstNodeKind::ConstDecl);
+
+                    helpContent += "<tr>\n";
+
+                    helpContent += "<td class=\"tdname\">\n";
+                    helpContent += structVal->name;
+                    helpContent += "</td>\n";
+
+                    helpContent += "<td class=\"tdtype\">\n";
+                    outputType(varDecl);
+                    helpContent += "</td>\n";
+
+                    helpContent += "<td class=\"enumeration\">\n";
+                    UserComment subUserComment;
+                    auto        subDocComment = getDocComment(varDecl);
+                    computeUserComments(subUserComment, subDocComment);
+                    outputUserBlock(subUserComment.shortDesc);
+                    helpContent += "</td>\n";
+
+                    helpContent += "</tr>\n";
                 }
 
-                auto varDecl = CastAst<AstVarDecl>(n1, AstNodeKind::VarDecl, AstNodeKind::ConstDecl);
-
-                helpContent += "<tr>\n";
-
-                helpContent += "<td class=\"tdname\">\n";
-                helpContent += structVal->name;
-                helpContent += "</td>\n";
-
-                helpContent += "<td class=\"tdtype\">\n";
-                outputType(varDecl);
-                helpContent += "</td>\n";
-
-                helpContent += "<td class=\"enumeration\">\n";
-                UserComment subUserComment;
-                auto        subDocComment = getDocComment(varDecl);
-                computeUserComments(subUserComment, subDocComment);
-                outputUserBlock(subUserComment.shortDesc);
-                helpContent += "</td>\n";
-
-                helpContent += "</tr>\n";
+                if (!first)
+                    helpContent += "</table>\n";
             }
-
-            if (!first)
-                helpContent += "</table>\n";
 
             outputUserComment(userComment);
 
