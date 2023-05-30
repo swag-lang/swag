@@ -12518,7 +12518,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glAccum(op: GLenum, value: GLfloat)
+<code style="white-space: break-spaces">func glAccum(op: Ogl.GLenum, value: Ogl.GLfloat)
 </code>
 </p>
 <p>
@@ -12533,7 +12533,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glActiveTexture(texture: GLenum)
+<code style="white-space: break-spaces">func glActiveTexture(texture: Ogl.GLenum)
 </code>
 </p>
 <p>
@@ -12548,7 +12548,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glAlphaFunc(fc: GLenum, refr: GLclampf)
+<code style="white-space: break-spaces">func glAlphaFunc(fc: Ogl.GLenum, refr: Ogl.GLclampf)
 </code>
 </p>
 <p>
@@ -12563,7 +12563,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glAreTexturesResident(n: GLsizei, textures: GLuint, residences: GLboolean)->GLboolean
+<code style="white-space: break-spaces">func glAreTexturesResident(n: Ogl.GLsizei, textures: const *Ogl.GLuint, residences: *Ogl.GLboolean)->Ogl.GLboolean
 </code>
 </p>
 <p>
@@ -12578,7 +12578,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glArrayElement(i: GLint)
+<code style="white-space: break-spaces">func glArrayElement(i: Ogl.GLint)
 </code>
 </p>
 <p>
@@ -12593,7 +12593,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glAttachShader(program: GLuint, shader: GLuint)
+<code style="white-space: break-spaces">func glAttachShader(program: Ogl.GLuint, shader: Ogl.GLuint)
 </code>
 </p>
 <p>
@@ -12608,7 +12608,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glBegin(mode: GLenum)
+<code style="white-space: break-spaces">func glBegin(mode: Ogl.GLenum)
 </code>
 </p>
 <p>
@@ -12623,7 +12623,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glBeginConditionalRender(id: GLuint, mode: GLenum)
+<code style="white-space: break-spaces">func glBeginConditionalRender(id: Ogl.GLuint, mode: Ogl.GLenum)
 </code>
 </p>
 <p>
@@ -12638,7 +12638,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glBeginQuery(target: GLenum, id: GLuint)
+<code style="white-space: break-spaces">func glBeginQuery(target: Ogl.GLenum, id: Ogl.GLuint)
 </code>
 </p>
 <p>
@@ -12653,7 +12653,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glBeginTransformFeedback(primitiveMode: GLenum)
+<code style="white-space: break-spaces">func glBeginTransformFeedback(primitiveMode: Ogl.GLenum)
 </code>
 </p>
 <p>
@@ -12668,7 +12668,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glBindAttribLocation(program: GLuint, index: GLuint, name: GLchar)
+<code style="white-space: break-spaces">func glBindAttribLocation(program: Ogl.GLuint, index: Ogl.GLuint, name: const *Ogl.GLchar)
 </code>
 </p>
 <p>
@@ -12683,7 +12683,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glBindBuffer(target: GLenum, buffer: GLuint)
+<code style="white-space: break-spaces">func glBindBuffer(target: Ogl.GLenum, buffer: Ogl.GLuint)
 </code>
 </p>
 <p>
@@ -12698,7 +12698,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glBindFragDataLocation(program: GLuint, colorNumber: GLuint, name: GLchar)
+<code style="white-space: break-spaces">func glBindFragDataLocation(program: Ogl.GLuint, colorNumber: Ogl.GLuint, name: const *Ogl.GLchar)
 </code>
 </p>
 <p>
@@ -12713,7 +12713,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glBindFramebuffer(target: GLenum, framebuffer: GLuint)
+<code style="white-space: break-spaces">func glBindFramebuffer(target: Ogl.GLenum, framebuffer: Ogl.GLuint)
 </code>
 </p>
 <p>
@@ -12728,7 +12728,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glBindRenderbuffer(target: GLenum, renderbuffer: GLuint)
+<code style="white-space: break-spaces">func glBindRenderbuffer(target: Ogl.GLenum, renderbuffer: Ogl.GLuint)
 </code>
 </p>
 <p>
@@ -12743,7 +12743,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glBindTexture(target: GLenum, texture: GLuint)
+<code style="white-space: break-spaces">func glBindTexture(target: Ogl.GLenum, texture: Ogl.GLuint)
 </code>
 </p>
 <p>
@@ -12758,7 +12758,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glBitmap(width: GLsizei, height: GLsizei, xorig: GLfloat, yorig: GLfloat, xmove: GLfloat, ymove: GLfloat, bitmap: GLubyte)
+<code style="white-space: break-spaces">func glBitmap(width: Ogl.GLsizei, height: Ogl.GLsizei, xorig: Ogl.GLfloat, yorig: Ogl.GLfloat, xmove: Ogl.GLfloat, ymove: Ogl.GLfloat, bitmap: const *Ogl.GLubyte)
 </code>
 </p>
 <p>
@@ -12773,7 +12773,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glBlendColor(red: GLclampf, green: GLclampf, blue: GLclampf, alpha: GLclampf)
+<code style="white-space: break-spaces">func glBlendColor(red: Ogl.GLclampf, green: Ogl.GLclampf, blue: Ogl.GLclampf, alpha: Ogl.GLclampf)
 </code>
 </p>
 <p>
@@ -12788,7 +12788,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glBlendEquation(mode: GLenum)
+<code style="white-space: break-spaces">func glBlendEquation(mode: Ogl.GLenum)
 </code>
 </p>
 <p>
@@ -12803,7 +12803,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glBlendEquationSeparate(modeRGB: GLenum, modeAlpha: GLenum)
+<code style="white-space: break-spaces">func glBlendEquationSeparate(modeRGB: Ogl.GLenum, modeAlpha: Ogl.GLenum)
 </code>
 </p>
 <p>
@@ -12818,7 +12818,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glBlendEquationSeparatei(buf: GLuint, modeRGB: GLenum, modeAlpha: GLenum)
+<code style="white-space: break-spaces">func glBlendEquationSeparatei(buf: Ogl.GLuint, modeRGB: Ogl.GLenum, modeAlpha: Ogl.GLenum)
 </code>
 </p>
 <p>
@@ -12833,7 +12833,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glBlendEquationi(buf: GLuint, mode: GLenum)
+<code style="white-space: break-spaces">func glBlendEquationi(buf: Ogl.GLuint, mode: Ogl.GLenum)
 </code>
 </p>
 <p>
@@ -12848,7 +12848,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glBlendFunc(sfactor: GLenum, dfactor: GLenum)
+<code style="white-space: break-spaces">func glBlendFunc(sfactor: Ogl.GLenum, dfactor: Ogl.GLenum)
 </code>
 </p>
 <p>
@@ -12863,7 +12863,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glBlendFuncSeparate(sfactorRGB: GLenum, dfactorRGB: GLenum, sfactorAlpha: GLenum, dfactorAlpha: GLenum)
+<code style="white-space: break-spaces">func glBlendFuncSeparate(sfactorRGB: Ogl.GLenum, dfactorRGB: Ogl.GLenum, sfactorAlpha: Ogl.GLenum, dfactorAlpha: Ogl.GLenum)
 </code>
 </p>
 <p>
@@ -12878,7 +12878,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glBlendFuncSeparatei(buf: GLuint, srcRGB: GLenum, dstRGB: GLenum, srcAlpha: GLenum, dstAlpha: GLenum)
+<code style="white-space: break-spaces">func glBlendFuncSeparatei(buf: Ogl.GLuint, srcRGB: Ogl.GLenum, dstRGB: Ogl.GLenum, srcAlpha: Ogl.GLenum, dstAlpha: Ogl.GLenum)
 </code>
 </p>
 <p>
@@ -12893,7 +12893,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glBlendFunci(buf: GLuint, src: GLenum, dst: GLenum)
+<code style="white-space: break-spaces">func glBlendFunci(buf: Ogl.GLuint, src: Ogl.GLenum, dst: Ogl.GLenum)
 </code>
 </p>
 <p>
@@ -12908,7 +12908,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glBlitFramebuffer(srcX0: GLint, srcY0: GLint, srcX1: GLint, srcY1: GLint, dstX0: GLint, dstY0: GLint, dstX1: GLint, dstY1: GLint, mask: GLbitfield, filter: GLenum)
+<code style="white-space: break-spaces">func glBlitFramebuffer(srcX0: Ogl.GLint, srcY0: Ogl.GLint, srcX1: Ogl.GLint, srcY1: Ogl.GLint, dstX0: Ogl.GLint, dstY0: Ogl.GLint, dstX1: Ogl.GLint, dstY1: Ogl.GLint, mask: Ogl.GLbitfield, filter: Ogl.GLenum)
 </code>
 </p>
 <p>
@@ -12923,7 +12923,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glBufferData(target: GLenum, size: GLsizeiptr, data: const *void, usage: GLenum)
+<code style="white-space: break-spaces">func glBufferData(target: Ogl.GLenum, size: Ogl.GLsizeiptr, data: const *void, usage: Ogl.GLenum)
 </code>
 </p>
 <p>
@@ -12938,7 +12938,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glBufferSubData(target: GLenum, offset: GLintptr, size: GLsizeiptr, data: const *void)
+<code style="white-space: break-spaces">func glBufferSubData(target: Ogl.GLenum, offset: Ogl.GLintptr, size: Ogl.GLsizeiptr, data: const *void)
 </code>
 </p>
 <p>
@@ -12953,7 +12953,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glCallList(list: GLuint)
+<code style="white-space: break-spaces">func glCallList(list: Ogl.GLuint)
 </code>
 </p>
 <p>
@@ -12968,7 +12968,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glCallLists(n: GLsizei, type: GLenum, lists: GLvoid)
+<code style="white-space: break-spaces">func glCallLists(n: Ogl.GLsizei, type: Ogl.GLenum, lists: const *Ogl.GLvoid)
 </code>
 </p>
 <p>
@@ -12983,7 +12983,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glCheckFramebufferStatus(target: GLenum)->GLenum
+<code style="white-space: break-spaces">func glCheckFramebufferStatus(target: Ogl.GLenum)->Ogl.GLenum
 </code>
 </p>
 <p>
@@ -12998,7 +12998,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glClampColor(target: GLenum, clamp: GLenum)
+<code style="white-space: break-spaces">func glClampColor(target: Ogl.GLenum, clamp: Ogl.GLenum)
 </code>
 </p>
 <p>
@@ -13013,7 +13013,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glClear(mask: GLbitfield)
+<code style="white-space: break-spaces">func glClear(mask: Ogl.GLbitfield)
 </code>
 </p>
 <p>
@@ -13028,7 +13028,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glClearAccum(red: GLfloat, green: GLfloat, blue: GLfloat, alpha: GLfloat)
+<code style="white-space: break-spaces">func glClearAccum(red: Ogl.GLfloat, green: Ogl.GLfloat, blue: Ogl.GLfloat, alpha: Ogl.GLfloat)
 </code>
 </p>
 <p>
@@ -13043,7 +13043,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glClearBufferfi(buffer: GLenum, drawBuffer: GLint, depth: GLfloat, stencil: GLint)
+<code style="white-space: break-spaces">func glClearBufferfi(buffer: Ogl.GLenum, drawBuffer: Ogl.GLint, depth: Ogl.GLfloat, stencil: Ogl.GLint)
 </code>
 </p>
 <p>
@@ -13058,7 +13058,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glClearBufferfv(buffer: GLenum, drawBuffer: GLint, value: GLfloat)
+<code style="white-space: break-spaces">func glClearBufferfv(buffer: Ogl.GLenum, drawBuffer: Ogl.GLint, value: const *Ogl.GLfloat)
 </code>
 </p>
 <p>
@@ -13073,7 +13073,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glClearBufferiv(buffer: GLenum, drawBuffer: GLint, value: GLint)
+<code style="white-space: break-spaces">func glClearBufferiv(buffer: Ogl.GLenum, drawBuffer: Ogl.GLint, value: const *Ogl.GLint)
 </code>
 </p>
 <p>
@@ -13088,7 +13088,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glClearBufferuiv(buffer: GLenum, drawBuffer: GLint, value: GLuint)
+<code style="white-space: break-spaces">func glClearBufferuiv(buffer: Ogl.GLenum, drawBuffer: Ogl.GLint, value: const *Ogl.GLuint)
 </code>
 </p>
 <p>
@@ -13103,7 +13103,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glClearColor(red: GLclampf, green: GLclampf, blue: GLclampf, alpha: GLclampf)
+<code style="white-space: break-spaces">func glClearColor(red: Ogl.GLclampf, green: Ogl.GLclampf, blue: Ogl.GLclampf, alpha: Ogl.GLclampf)
 </code>
 </p>
 <p>
@@ -13118,7 +13118,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glClearDepth(depth: GLclampd)
+<code style="white-space: break-spaces">func glClearDepth(depth: Ogl.GLclampd)
 </code>
 </p>
 <p>
@@ -13133,7 +13133,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glClearIndex(c: GLfloat)
+<code style="white-space: break-spaces">func glClearIndex(c: Ogl.GLfloat)
 </code>
 </p>
 <p>
@@ -13148,7 +13148,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glClearStencil(s: GLint)
+<code style="white-space: break-spaces">func glClearStencil(s: Ogl.GLint)
 </code>
 </p>
 <p>
@@ -13163,7 +13163,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glClientActiveTexture(texture: GLenum)
+<code style="white-space: break-spaces">func glClientActiveTexture(texture: Ogl.GLenum)
 </code>
 </p>
 <p>
@@ -13178,7 +13178,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glClipPlane(plane: GLenum, equation: GLdouble)
+<code style="white-space: break-spaces">func glClipPlane(plane: Ogl.GLenum, equation: const *Ogl.GLdouble)
 </code>
 </p>
 <p>
@@ -13193,7 +13193,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glColor3b(red: GLbyte, green: GLbyte, blue: GLbyte)
+<code style="white-space: break-spaces">func glColor3b(red: Ogl.GLbyte, green: Ogl.GLbyte, blue: Ogl.GLbyte)
 </code>
 </p>
 <p>
@@ -13208,7 +13208,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glColor3bv(v: GLbyte)
+<code style="white-space: break-spaces">func glColor3bv(v: const *Ogl.GLbyte)
 </code>
 </p>
 <p>
@@ -13223,7 +13223,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glColor3d(red: GLdouble, green: GLdouble, blue: GLdouble)
+<code style="white-space: break-spaces">func glColor3d(red: Ogl.GLdouble, green: Ogl.GLdouble, blue: Ogl.GLdouble)
 </code>
 </p>
 <p>
@@ -13238,7 +13238,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glColor3dv(v: GLdouble)
+<code style="white-space: break-spaces">func glColor3dv(v: const *Ogl.GLdouble)
 </code>
 </p>
 <p>
@@ -13253,7 +13253,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glColor3f(red: GLfloat, green: GLfloat, blue: GLfloat)
+<code style="white-space: break-spaces">func glColor3f(red: Ogl.GLfloat, green: Ogl.GLfloat, blue: Ogl.GLfloat)
 </code>
 </p>
 <p>
@@ -13268,7 +13268,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glColor3fv(v: GLfloat)
+<code style="white-space: break-spaces">func glColor3fv(v: const *Ogl.GLfloat)
 </code>
 </p>
 <p>
@@ -13283,7 +13283,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glColor3i(red: GLint, green: GLint, blue: GLint)
+<code style="white-space: break-spaces">func glColor3i(red: Ogl.GLint, green: Ogl.GLint, blue: Ogl.GLint)
 </code>
 </p>
 <p>
@@ -13298,7 +13298,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glColor3iv(v: GLint)
+<code style="white-space: break-spaces">func glColor3iv(v: const *Ogl.GLint)
 </code>
 </p>
 <p>
@@ -13313,7 +13313,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glColor3s(red: GLshort, green: GLshort, blue: GLshort)
+<code style="white-space: break-spaces">func glColor3s(red: Ogl.GLshort, green: Ogl.GLshort, blue: Ogl.GLshort)
 </code>
 </p>
 <p>
@@ -13328,7 +13328,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glColor3sv(v: GLshort)
+<code style="white-space: break-spaces">func glColor3sv(v: const *Ogl.GLshort)
 </code>
 </p>
 <p>
@@ -13343,7 +13343,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glColor3ub(red: GLubyte, green: GLubyte, blue: GLubyte)
+<code style="white-space: break-spaces">func glColor3ub(red: Ogl.GLubyte, green: Ogl.GLubyte, blue: Ogl.GLubyte)
 </code>
 </p>
 <p>
@@ -13358,7 +13358,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glColor3ubv(v: GLubyte)
+<code style="white-space: break-spaces">func glColor3ubv(v: Ogl.GLubyte)
 </code>
 </p>
 <p>
@@ -13373,7 +13373,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glColor3ui(red: GLuint, green: GLuint, blue: GLuint)
+<code style="white-space: break-spaces">func glColor3ui(red: Ogl.GLuint, green: Ogl.GLuint, blue: Ogl.GLuint)
 </code>
 </p>
 <p>
@@ -13388,7 +13388,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glColor3uiv(v: GLuint)
+<code style="white-space: break-spaces">func glColor3uiv(v: const *Ogl.GLuint)
 </code>
 </p>
 <p>
@@ -13403,7 +13403,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glColor3us(red: GLushort, green: GLushort, blue: GLushort)
+<code style="white-space: break-spaces">func glColor3us(red: Ogl.GLushort, green: Ogl.GLushort, blue: Ogl.GLushort)
 </code>
 </p>
 <p>
@@ -13418,7 +13418,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glColor3usv(v: GLushort)
+<code style="white-space: break-spaces">func glColor3usv(v: const *Ogl.GLushort)
 </code>
 </p>
 <p>
@@ -13433,7 +13433,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glColor4b(red: GLbyte, green: GLbyte, blue: GLbyte, alpha: GLbyte)
+<code style="white-space: break-spaces">func glColor4b(red: Ogl.GLbyte, green: Ogl.GLbyte, blue: Ogl.GLbyte, alpha: Ogl.GLbyte)
 </code>
 </p>
 <p>
@@ -13448,7 +13448,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glColor4bv(v: GLbyte)
+<code style="white-space: break-spaces">func glColor4bv(v: const *Ogl.GLbyte)
 </code>
 </p>
 <p>
@@ -13463,7 +13463,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glColor4d(red: GLdouble, green: GLdouble, blue: GLdouble, alpha: GLdouble)
+<code style="white-space: break-spaces">func glColor4d(red: Ogl.GLdouble, green: Ogl.GLdouble, blue: Ogl.GLdouble, alpha: Ogl.GLdouble)
 </code>
 </p>
 <p>
@@ -13478,7 +13478,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glColor4dv(v: GLdouble)
+<code style="white-space: break-spaces">func glColor4dv(v: const *Ogl.GLdouble)
 </code>
 </p>
 <p>
@@ -13493,7 +13493,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glColor4f(red: GLfloat, green: GLfloat, blue: GLfloat, alpha: GLfloat)
+<code style="white-space: break-spaces">func glColor4f(red: Ogl.GLfloat, green: Ogl.GLfloat, blue: Ogl.GLfloat, alpha: Ogl.GLfloat)
 </code>
 </p>
 <p>
@@ -13508,7 +13508,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glColor4fv(v: GLfloat)
+<code style="white-space: break-spaces">func glColor4fv(v: const *Ogl.GLfloat)
 </code>
 </p>
 <p>
@@ -13523,7 +13523,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glColor4i(red: GLint, green: GLint, blue: GLint, alpha: GLint)
+<code style="white-space: break-spaces">func glColor4i(red: Ogl.GLint, green: Ogl.GLint, blue: Ogl.GLint, alpha: Ogl.GLint)
 </code>
 </p>
 <p>
@@ -13538,7 +13538,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glColor4iv(v: GLint)
+<code style="white-space: break-spaces">func glColor4iv(v: const *Ogl.GLint)
 </code>
 </p>
 <p>
@@ -13553,7 +13553,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glColor4s(red: GLshort, green: GLshort, blue: GLshort, alpha: GLshort)
+<code style="white-space: break-spaces">func glColor4s(red: Ogl.GLshort, green: Ogl.GLshort, blue: Ogl.GLshort, alpha: Ogl.GLshort)
 </code>
 </p>
 <p>
@@ -13568,7 +13568,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glColor4sv(v: GLshort)
+<code style="white-space: break-spaces">func glColor4sv(v: const *Ogl.GLshort)
 </code>
 </p>
 <p>
@@ -13583,7 +13583,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glColor4ub(red: GLubyte, green: GLubyte, blue: GLubyte, alpha: GLubyte)
+<code style="white-space: break-spaces">func glColor4ub(red: Ogl.GLubyte, green: Ogl.GLubyte, blue: Ogl.GLubyte, alpha: Ogl.GLubyte)
 </code>
 </p>
 <p>
@@ -13598,7 +13598,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glColor4ubv(v: GLubyte)
+<code style="white-space: break-spaces">func glColor4ubv(v: Ogl.GLubyte)
 </code>
 </p>
 <p>
@@ -13613,7 +13613,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glColor4ui(red: GLuint, green: GLuint, blue: GLuint, alpha: GLuint)
+<code style="white-space: break-spaces">func glColor4ui(red: Ogl.GLuint, green: Ogl.GLuint, blue: Ogl.GLuint, alpha: Ogl.GLuint)
 </code>
 </p>
 <p>
@@ -13628,7 +13628,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glColor4uiv(v: GLuint)
+<code style="white-space: break-spaces">func glColor4uiv(v: const *Ogl.GLuint)
 </code>
 </p>
 <p>
@@ -13643,7 +13643,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glColor4us(red: GLushort, green: GLushort, blue: GLushort, alpha: GLushort)
+<code style="white-space: break-spaces">func glColor4us(red: Ogl.GLushort, green: Ogl.GLushort, blue: Ogl.GLushort, alpha: Ogl.GLushort)
 </code>
 </p>
 <p>
@@ -13658,7 +13658,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glColor4usv(v: GLushort)
+<code style="white-space: break-spaces">func glColor4usv(v: Ogl.GLushort)
 </code>
 </p>
 <p>
@@ -13673,7 +13673,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glColorMask(red: GLboolean, green: GLboolean, blue: GLboolean, alpha: GLboolean)
+<code style="white-space: break-spaces">func glColorMask(red: Ogl.GLboolean, green: Ogl.GLboolean, blue: Ogl.GLboolean, alpha: Ogl.GLboolean)
 </code>
 </p>
 <p>
@@ -13688,7 +13688,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glColorMaski(buf: GLuint, red: GLboolean, green: GLboolean, blue: GLboolean, alpha: GLboolean)
+<code style="white-space: break-spaces">func glColorMaski(buf: Ogl.GLuint, red: Ogl.GLboolean, green: Ogl.GLboolean, blue: Ogl.GLboolean, alpha: Ogl.GLboolean)
 </code>
 </p>
 <p>
@@ -13703,7 +13703,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glColorMaterial(face: GLenum, mode: GLenum)
+<code style="white-space: break-spaces">func glColorMaterial(face: Ogl.GLenum, mode: Ogl.GLenum)
 </code>
 </p>
 <p>
@@ -13718,7 +13718,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glColorPointer(size: GLint, type: GLenum, stride: GLsizei, pointer: GLvoid)
+<code style="white-space: break-spaces">func glColorPointer(size: Ogl.GLint, type: Ogl.GLenum, stride: Ogl.GLsizei, pointer: const *Ogl.GLvoid)
 </code>
 </p>
 <p>
@@ -13733,7 +13733,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glCompileShader(shader: GLuint)
+<code style="white-space: break-spaces">func glCompileShader(shader: Ogl.GLuint)
 </code>
 </p>
 <p>
@@ -13748,7 +13748,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glCompileShaderIncludeARB(shader: GLuint, count: GLsizei, path: GLchar, length: GLint)
+<code style="white-space: break-spaces">func glCompileShaderIncludeARB(shader: Ogl.GLuint, count: Ogl.GLsizei, path: const **Ogl.GLchar, length: const *Ogl.GLint)
 </code>
 </p>
 <p>
@@ -13763,7 +13763,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glCompressedTexImage1D(target: GLenum, level: GLint, internalformat: GLenum, width: GLsizei, border: GLint, imageSize: GLsizei, data: const *void)
+<code style="white-space: break-spaces">func glCompressedTexImage1D(target: Ogl.GLenum, level: Ogl.GLint, internalformat: Ogl.GLenum, width: Ogl.GLsizei, border: Ogl.GLint, imageSize: Ogl.GLsizei, data: const *void)
 </code>
 </p>
 <p>
@@ -13778,7 +13778,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glCompressedTexImage2D(target: GLenum, level: GLint, internalformat: GLenum, width: GLsizei, height: GLsizei, border: GLint, imageSize: GLsizei, data: const *void)
+<code style="white-space: break-spaces">func glCompressedTexImage2D(target: Ogl.GLenum, level: Ogl.GLint, internalformat: Ogl.GLenum, width: Ogl.GLsizei, height: Ogl.GLsizei, border: Ogl.GLint, imageSize: Ogl.GLsizei, data: const *void)
 </code>
 </p>
 <p>
@@ -13793,7 +13793,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glCompressedTexImage3D(target: GLenum, level: GLint, internalformat: GLenum, width: GLsizei, height: GLsizei, depth: GLsizei, border: GLint, imageSize: GLsizei, data: const *void)
+<code style="white-space: break-spaces">func glCompressedTexImage3D(target: Ogl.GLenum, level: Ogl.GLint, internalformat: Ogl.GLenum, width: Ogl.GLsizei, height: Ogl.GLsizei, depth: Ogl.GLsizei, border: Ogl.GLint, imageSize: Ogl.GLsizei, data: const *void)
 </code>
 </p>
 <p>
@@ -13808,7 +13808,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glCompressedTexSubImage1D(target: GLenum, level: GLint, xoffset: GLint, width: GLsizei, format: GLenum, imageSize: GLsizei, data: const *void)
+<code style="white-space: break-spaces">func glCompressedTexSubImage1D(target: Ogl.GLenum, level: Ogl.GLint, xoffset: Ogl.GLint, width: Ogl.GLsizei, format: Ogl.GLenum, imageSize: Ogl.GLsizei, data: const *void)
 </code>
 </p>
 <p>
@@ -13823,7 +13823,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glCompressedTexSubImage2D(target: GLenum, level: GLint, xoffset: GLint, yoffset: GLint, width: GLsizei, height: GLsizei, format: GLenum, imageSize: GLsizei, data: const *void)
+<code style="white-space: break-spaces">func glCompressedTexSubImage2D(target: Ogl.GLenum, level: Ogl.GLint, xoffset: Ogl.GLint, yoffset: Ogl.GLint, width: Ogl.GLsizei, height: Ogl.GLsizei, format: Ogl.GLenum, imageSize: Ogl.GLsizei, data: const *void)
 </code>
 </p>
 <p>
@@ -13838,7 +13838,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glCompressedTexSubImage3D(target: GLenum, level: GLint, xoffset: GLint, yoffset: GLint, zoffset: GLint, width: GLsizei, height: GLsizei, depth: GLsizei, format: GLenum, imageSize: GLsizei, data: const *void)
+<code style="white-space: break-spaces">func glCompressedTexSubImage3D(target: Ogl.GLenum, level: Ogl.GLint, xoffset: Ogl.GLint, yoffset: Ogl.GLint, zoffset: Ogl.GLint, width: Ogl.GLsizei, height: Ogl.GLsizei, depth: Ogl.GLsizei, format: Ogl.GLenum, imageSize: Ogl.GLsizei, data: const *void)
 </code>
 </p>
 <p>
@@ -13853,7 +13853,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glCopyPixels(x: GLint, y: GLint, width: GLsizei, height: GLsizei, type: GLenum)
+<code style="white-space: break-spaces">func glCopyPixels(x: Ogl.GLint, y: Ogl.GLint, width: Ogl.GLsizei, height: Ogl.GLsizei, type: Ogl.GLenum)
 </code>
 </p>
 <p>
@@ -13868,7 +13868,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glCopyTexImage1D(target: GLenum, level: GLint, internalFormat: GLenum, x: GLint, y: GLint, width: GLsizei, border: GLint)
+<code style="white-space: break-spaces">func glCopyTexImage1D(target: Ogl.GLenum, level: Ogl.GLint, internalFormat: Ogl.GLenum, x: Ogl.GLint, y: Ogl.GLint, width: Ogl.GLsizei, border: Ogl.GLint)
 </code>
 </p>
 <p>
@@ -13883,7 +13883,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glCopyTexImage2D(target: GLenum, level: GLint, internalFormat: GLenum, x: GLint, y: GLint, width: GLsizei, height: GLsizei, border: GLint)
+<code style="white-space: break-spaces">func glCopyTexImage2D(target: Ogl.GLenum, level: Ogl.GLint, internalFormat: Ogl.GLenum, x: Ogl.GLint, y: Ogl.GLint, width: Ogl.GLsizei, height: Ogl.GLsizei, border: Ogl.GLint)
 </code>
 </p>
 <p>
@@ -13898,7 +13898,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glCopyTexSubImage1D(target: GLenum, level: GLint, xoffset: GLint, x: GLint, y: GLint, width: GLsizei)
+<code style="white-space: break-spaces">func glCopyTexSubImage1D(target: Ogl.GLenum, level: Ogl.GLint, xoffset: Ogl.GLint, x: Ogl.GLint, y: Ogl.GLint, width: Ogl.GLsizei)
 </code>
 </p>
 <p>
@@ -13913,7 +13913,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glCopyTexSubImage2D(target: GLenum, level: GLint, xoffset: GLint, yoffset: GLint, x: GLint, y: GLint, width: GLsizei, height: GLsizei)
+<code style="white-space: break-spaces">func glCopyTexSubImage2D(target: Ogl.GLenum, level: Ogl.GLint, xoffset: Ogl.GLint, yoffset: Ogl.GLint, x: Ogl.GLint, y: Ogl.GLint, width: Ogl.GLsizei, height: Ogl.GLsizei)
 </code>
 </p>
 <p>
@@ -13928,7 +13928,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glCreateProgram()->GLuint
+<code style="white-space: break-spaces">func glCreateProgram()->Ogl.GLuint
 </code>
 </p>
 <p>
@@ -13943,7 +13943,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glCreateShader(type: GLenum)->GLuint
+<code style="white-space: break-spaces">func glCreateShader(type: Ogl.GLenum)->Ogl.GLuint
 </code>
 </p>
 <p>
@@ -13958,7 +13958,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glCullFace(mode: GLenum)
+<code style="white-space: break-spaces">func glCullFace(mode: Ogl.GLenum)
 </code>
 </p>
 <p>
@@ -13973,7 +13973,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glDeleteBuffers(n: GLsizei, buffers: GLuint)
+<code style="white-space: break-spaces">func glDeleteBuffers(n: Ogl.GLsizei, buffers: const *Ogl.GLuint)
 </code>
 </p>
 <p>
@@ -13988,7 +13988,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glDeleteFramebuffers(n: GLsizei, framebuffers: GLuint)
+<code style="white-space: break-spaces">func glDeleteFramebuffers(n: Ogl.GLsizei, framebuffers: const *Ogl.GLuint)
 </code>
 </p>
 <p>
@@ -14003,7 +14003,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glDeleteLists(list: GLuint, range: GLsizei)
+<code style="white-space: break-spaces">func glDeleteLists(list: Ogl.GLuint, range: Ogl.GLsizei)
 </code>
 </p>
 <p>
@@ -14018,7 +14018,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glDeleteNamedStringARB(namelen: GLint, name: GLchar)
+<code style="white-space: break-spaces">func glDeleteNamedStringARB(namelen: Ogl.GLint, name: const *Ogl.GLchar)
 </code>
 </p>
 <p>
@@ -14033,7 +14033,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glDeleteProgram(program: GLuint)
+<code style="white-space: break-spaces">func glDeleteProgram(program: Ogl.GLuint)
 </code>
 </p>
 <p>
@@ -14048,7 +14048,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glDeleteQueries(n: GLsizei, ids: GLuint)
+<code style="white-space: break-spaces">func glDeleteQueries(n: Ogl.GLsizei, ids: const *Ogl.GLuint)
 </code>
 </p>
 <p>
@@ -14063,7 +14063,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glDeleteRenderbuffers(n: GLsizei, renderbuffers: GLuint)
+<code style="white-space: break-spaces">func glDeleteRenderbuffers(n: Ogl.GLsizei, renderbuffers: const *Ogl.GLuint)
 </code>
 </p>
 <p>
@@ -14078,7 +14078,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glDeleteShader(shader: GLuint)
+<code style="white-space: break-spaces">func glDeleteShader(shader: Ogl.GLuint)
 </code>
 </p>
 <p>
@@ -14093,7 +14093,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glDeleteTextures(n: GLsizei, textures: GLuint)
+<code style="white-space: break-spaces">func glDeleteTextures(n: Ogl.GLsizei, textures: const *Ogl.GLuint)
 </code>
 </p>
 <p>
@@ -14108,7 +14108,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glDepthFunc(fc: GLenum)
+<code style="white-space: break-spaces">func glDepthFunc(fc: Ogl.GLenum)
 </code>
 </p>
 <p>
@@ -14123,7 +14123,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glDepthMask(flag: GLboolean)
+<code style="white-space: break-spaces">func glDepthMask(flag: Ogl.GLboolean)
 </code>
 </p>
 <p>
@@ -14138,7 +14138,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glDepthRange(zNear: GLclampd, zFar: GLclampd)
+<code style="white-space: break-spaces">func glDepthRange(zNear: Ogl.GLclampd, zFar: Ogl.GLclampd)
 </code>
 </p>
 <p>
@@ -14153,7 +14153,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glDetachShader(program: GLuint, shader: GLuint)
+<code style="white-space: break-spaces">func glDetachShader(program: Ogl.GLuint, shader: Ogl.GLuint)
 </code>
 </p>
 <p>
@@ -14168,7 +14168,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glDisable(cap: GLenum)
+<code style="white-space: break-spaces">func glDisable(cap: Ogl.GLenum)
 </code>
 </p>
 <p>
@@ -14183,7 +14183,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glDisableClientState(array: GLenum)
+<code style="white-space: break-spaces">func glDisableClientState(array: Ogl.GLenum)
 </code>
 </p>
 <p>
@@ -14198,7 +14198,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glDisableVertexAttribArray(index: GLuint)
+<code style="white-space: break-spaces">func glDisableVertexAttribArray(index: Ogl.GLuint)
 </code>
 </p>
 <p>
@@ -14213,7 +14213,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glDisablei(cap: GLenum, index: GLuint)
+<code style="white-space: break-spaces">func glDisablei(cap: Ogl.GLenum, index: Ogl.GLuint)
 </code>
 </p>
 <p>
@@ -14228,7 +14228,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glDrawArrays(mode: GLenum, first: GLint, count: GLsizei)
+<code style="white-space: break-spaces">func glDrawArrays(mode: Ogl.GLenum, first: Ogl.GLint, count: Ogl.GLsizei)
 </code>
 </p>
 <p>
@@ -14243,7 +14243,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glDrawArraysInstanced(mode: GLenum, first: GLint, count: GLsizei, primcount: GLsizei)
+<code style="white-space: break-spaces">func glDrawArraysInstanced(mode: Ogl.GLenum, first: Ogl.GLint, count: Ogl.GLsizei, primcount: Ogl.GLsizei)
 </code>
 </p>
 <p>
@@ -14258,7 +14258,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glDrawBuffer(mode: GLenum)
+<code style="white-space: break-spaces">func glDrawBuffer(mode: Ogl.GLenum)
 </code>
 </p>
 <p>
@@ -14273,7 +14273,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glDrawBuffers(n: GLsizei, bufs: GLenum)
+<code style="white-space: break-spaces">func glDrawBuffers(n: Ogl.GLsizei, bufs: const *Ogl.GLenum)
 </code>
 </p>
 <p>
@@ -14288,7 +14288,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glDrawElements(mode: GLenum, count: GLsizei, type: GLenum, indices: GLvoid)
+<code style="white-space: break-spaces">func glDrawElements(mode: Ogl.GLenum, count: Ogl.GLsizei, type: Ogl.GLenum, indices: const *Ogl.GLvoid)
 </code>
 </p>
 <p>
@@ -14303,7 +14303,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glDrawElementsInstanced(mode: GLenum, count: GLsizei, type: GLenum, indices: const *void, primcount: GLsizei)
+<code style="white-space: break-spaces">func glDrawElementsInstanced(mode: Ogl.GLenum, count: Ogl.GLsizei, type: Ogl.GLenum, indices: const *void, primcount: Ogl.GLsizei)
 </code>
 </p>
 <p>
@@ -14318,7 +14318,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glDrawPixels(width: GLsizei, height: GLsizei, format: GLenum, type: GLenum, pixels: GLvoid)
+<code style="white-space: break-spaces">func glDrawPixels(width: Ogl.GLsizei, height: Ogl.GLsizei, format: Ogl.GLenum, type: Ogl.GLenum, pixels: const *Ogl.GLvoid)
 </code>
 </p>
 <p>
@@ -14333,7 +14333,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glEdgeFlag(flag: GLboolean)
+<code style="white-space: break-spaces">func glEdgeFlag(flag: Ogl.GLboolean)
 </code>
 </p>
 <p>
@@ -14348,7 +14348,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glEdgeFlagPointer(stride: GLsizei, pointer: GLvoid)
+<code style="white-space: break-spaces">func glEdgeFlagPointer(stride: Ogl.GLsizei, pointer: const *Ogl.GLvoid)
 </code>
 </p>
 <p>
@@ -14363,7 +14363,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glEdgeFlagv(flag: GLboolean)
+<code style="white-space: break-spaces">func glEdgeFlagv(flag: const *Ogl.GLboolean)
 </code>
 </p>
 <p>
@@ -14378,7 +14378,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glEnable(cap: GLenum)
+<code style="white-space: break-spaces">func glEnable(cap: Ogl.GLenum)
 </code>
 </p>
 <p>
@@ -14393,7 +14393,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glEnableClientState(array: GLenum)
+<code style="white-space: break-spaces">func glEnableClientState(array: Ogl.GLenum)
 </code>
 </p>
 <p>
@@ -14408,7 +14408,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glEnableVertexAttribArray(index: GLuint)
+<code style="white-space: break-spaces">func glEnableVertexAttribArray(index: Ogl.GLuint)
 </code>
 </p>
 <p>
@@ -14423,7 +14423,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glEnablei(cap: GLenum, index: GLuint)
+<code style="white-space: break-spaces">func glEnablei(cap: Ogl.GLenum, index: Ogl.GLuint)
 </code>
 </p>
 <p>
@@ -14483,7 +14483,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glEndQuery(target: GLenum)
+<code style="white-space: break-spaces">func glEndQuery(target: Ogl.GLenum)
 </code>
 </p>
 <p>
@@ -14513,7 +14513,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glEvalCoord1d(u: GLdouble)
+<code style="white-space: break-spaces">func glEvalCoord1d(u: Ogl.GLdouble)
 </code>
 </p>
 <p>
@@ -14528,7 +14528,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glEvalCoord1dv(u: GLdouble)
+<code style="white-space: break-spaces">func glEvalCoord1dv(u: const *Ogl.GLdouble)
 </code>
 </p>
 <p>
@@ -14543,7 +14543,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glEvalCoord1f(u: GLfloat)
+<code style="white-space: break-spaces">func glEvalCoord1f(u: Ogl.GLfloat)
 </code>
 </p>
 <p>
@@ -14558,7 +14558,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glEvalCoord1fv(u: GLfloat)
+<code style="white-space: break-spaces">func glEvalCoord1fv(u: const *Ogl.GLfloat)
 </code>
 </p>
 <p>
@@ -14573,7 +14573,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glEvalCoord2d(u: GLdouble, v: GLdouble)
+<code style="white-space: break-spaces">func glEvalCoord2d(u: Ogl.GLdouble, v: Ogl.GLdouble)
 </code>
 </p>
 <p>
@@ -14588,7 +14588,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glEvalCoord2dv(u: GLdouble)
+<code style="white-space: break-spaces">func glEvalCoord2dv(u: const *Ogl.GLdouble)
 </code>
 </p>
 <p>
@@ -14603,7 +14603,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glEvalCoord2f(u: GLfloat, v: GLfloat)
+<code style="white-space: break-spaces">func glEvalCoord2f(u: Ogl.GLfloat, v: Ogl.GLfloat)
 </code>
 </p>
 <p>
@@ -14618,7 +14618,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glEvalCoord2fv(u: GLfloat)
+<code style="white-space: break-spaces">func glEvalCoord2fv(u: const *Ogl.GLfloat)
 </code>
 </p>
 <p>
@@ -14633,7 +14633,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glEvalMesh1(mode: GLenum, i1: GLint, i2: GLint)
+<code style="white-space: break-spaces">func glEvalMesh1(mode: Ogl.GLenum, i1: Ogl.GLint, i2: Ogl.GLint)
 </code>
 </p>
 <p>
@@ -14648,7 +14648,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glEvalMesh2(mode: GLenum, i1: GLint, i2: GLint, j1: GLint, j2: GLint)
+<code style="white-space: break-spaces">func glEvalMesh2(mode: Ogl.GLenum, i1: Ogl.GLint, i2: Ogl.GLint, j1: Ogl.GLint, j2: Ogl.GLint)
 </code>
 </p>
 <p>
@@ -14663,7 +14663,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glEvalPoint1(i: GLint)
+<code style="white-space: break-spaces">func glEvalPoint1(i: Ogl.GLint)
 </code>
 </p>
 <p>
@@ -14678,7 +14678,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glEvalPoint2(i: GLint, j: GLint)
+<code style="white-space: break-spaces">func glEvalPoint2(i: Ogl.GLint, j: Ogl.GLint)
 </code>
 </p>
 <p>
@@ -14693,7 +14693,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glFeedbackBuffer(size: GLsizei, type: GLenum, buffer: GLfloat)
+<code style="white-space: break-spaces">func glFeedbackBuffer(size: Ogl.GLsizei, type: Ogl.GLenum, buffer: *Ogl.GLfloat)
 </code>
 </p>
 <p>
@@ -14738,7 +14738,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glFogCoordPointer(type: GLenum, stride: GLsizei, pointer: const *void)
+<code style="white-space: break-spaces">func glFogCoordPointer(type: Ogl.GLenum, stride: Ogl.GLsizei, pointer: const *void)
 </code>
 </p>
 <p>
@@ -14753,7 +14753,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glFogCoordd(coord: GLdouble)
+<code style="white-space: break-spaces">func glFogCoordd(coord: Ogl.GLdouble)
 </code>
 </p>
 <p>
@@ -14768,7 +14768,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glFogCoorddv(coord: GLdouble)
+<code style="white-space: break-spaces">func glFogCoorddv(coord: const *Ogl.GLdouble)
 </code>
 </p>
 <p>
@@ -14783,7 +14783,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glFogCoordf(coord: GLfloat)
+<code style="white-space: break-spaces">func glFogCoordf(coord: Ogl.GLfloat)
 </code>
 </p>
 <p>
@@ -14798,7 +14798,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glFogCoordfv(coord: GLfloat)
+<code style="white-space: break-spaces">func glFogCoordfv(coord: const *Ogl.GLfloat)
 </code>
 </p>
 <p>
@@ -14813,7 +14813,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glFogf(pname: GLenum, param: GLfloat)
+<code style="white-space: break-spaces">func glFogf(pname: Ogl.GLenum, param: Ogl.GLfloat)
 </code>
 </p>
 <p>
@@ -14828,7 +14828,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glFogfv(pname: GLenum, params: GLfloat)
+<code style="white-space: break-spaces">func glFogfv(pname: Ogl.GLenum, params: const *Ogl.GLfloat)
 </code>
 </p>
 <p>
@@ -14843,7 +14843,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glFogi(pname: GLenum, param: GLint)
+<code style="white-space: break-spaces">func glFogi(pname: Ogl.GLenum, param: Ogl.GLint)
 </code>
 </p>
 <p>
@@ -14858,7 +14858,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glFogiv(pname: GLenum, params: GLint)
+<code style="white-space: break-spaces">func glFogiv(pname: Ogl.GLenum, params: const *Ogl.GLint)
 </code>
 </p>
 <p>
@@ -14873,7 +14873,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glFramebufferParameteri(target: GLenum, pname: GLenum, param: GLint)
+<code style="white-space: break-spaces">func glFramebufferParameteri(target: Ogl.GLenum, pname: Ogl.GLenum, param: Ogl.GLint)
 </code>
 </p>
 <p>
@@ -14888,7 +14888,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glFramebufferRenderbuffer(target: GLenum, attachment: GLenum, renderbuffertarget: GLenum, renderbuffer: GLuint)
+<code style="white-space: break-spaces">func glFramebufferRenderbuffer(target: Ogl.GLenum, attachment: Ogl.GLenum, renderbuffertarget: Ogl.GLenum, renderbuffer: Ogl.GLuint)
 </code>
 </p>
 <p>
@@ -14903,7 +14903,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glFramebufferTexture(target: GLenum, attachment: GLenum, texture: GLuint, level: GLint)
+<code style="white-space: break-spaces">func glFramebufferTexture(target: Ogl.GLenum, attachment: Ogl.GLenum, texture: Ogl.GLuint, level: Ogl.GLint)
 </code>
 </p>
 <p>
@@ -14918,7 +14918,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glFramebufferTexture1D(target: GLenum, attachment: GLenum, textarget: GLenum, texture: GLuint, level: GLint)
+<code style="white-space: break-spaces">func glFramebufferTexture1D(target: Ogl.GLenum, attachment: Ogl.GLenum, textarget: Ogl.GLenum, texture: Ogl.GLuint, level: Ogl.GLint)
 </code>
 </p>
 <p>
@@ -14933,7 +14933,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glFramebufferTexture2D(target: GLenum, attachment: GLenum, textarget: GLenum, texture: GLuint, level: GLint)
+<code style="white-space: break-spaces">func glFramebufferTexture2D(target: Ogl.GLenum, attachment: Ogl.GLenum, textarget: Ogl.GLenum, texture: Ogl.GLuint, level: Ogl.GLint)
 </code>
 </p>
 <p>
@@ -14948,7 +14948,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glFramebufferTexture3D(target: GLenum, attachment: GLenum, textarget: GLenum, texture: GLuint, level: GLint, layer: GLint)
+<code style="white-space: break-spaces">func glFramebufferTexture3D(target: Ogl.GLenum, attachment: Ogl.GLenum, textarget: Ogl.GLenum, texture: Ogl.GLuint, level: Ogl.GLint, layer: Ogl.GLint)
 </code>
 </p>
 <p>
@@ -14963,7 +14963,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glFramebufferTextureLayer(target: GLenum, attachment: GLenum, texture: GLuint, level: GLint, layer: GLint)
+<code style="white-space: break-spaces">func glFramebufferTextureLayer(target: Ogl.GLenum, attachment: Ogl.GLenum, texture: Ogl.GLuint, level: Ogl.GLint, layer: Ogl.GLint)
 </code>
 </p>
 <p>
@@ -14978,7 +14978,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glFrontFace(mode: GLenum)
+<code style="white-space: break-spaces">func glFrontFace(mode: Ogl.GLenum)
 </code>
 </p>
 <p>
@@ -14993,7 +14993,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glFrustum(left: GLdouble, right: GLdouble, bottom: GLdouble, top: GLdouble, zNear: GLdouble, zFar: GLdouble)
+<code style="white-space: break-spaces">func glFrustum(left: Ogl.GLdouble, right: Ogl.GLdouble, bottom: Ogl.GLdouble, top: Ogl.GLdouble, zNear: Ogl.GLdouble, zFar: Ogl.GLdouble)
 </code>
 </p>
 <p>
@@ -15008,7 +15008,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glGenBuffers(n: GLsizei, buffers: GLuint)
+<code style="white-space: break-spaces">func glGenBuffers(n: Ogl.GLsizei, buffers: *Ogl.GLuint)
 </code>
 </p>
 <p>
@@ -15023,7 +15023,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glGenFramebuffers(n: GLsizei, framebuffers: GLuint)
+<code style="white-space: break-spaces">func glGenFramebuffers(n: Ogl.GLsizei, framebuffers: *Ogl.GLuint)
 </code>
 </p>
 <p>
@@ -15038,7 +15038,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glGenLists(range: GLsizei)->GLuint
+<code style="white-space: break-spaces">func glGenLists(range: Ogl.GLsizei)->Ogl.GLuint
 </code>
 </p>
 <p>
@@ -15053,7 +15053,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glGenQueries(n: GLsizei, ids: GLuint)
+<code style="white-space: break-spaces">func glGenQueries(n: Ogl.GLsizei, ids: *Ogl.GLuint)
 </code>
 </p>
 <p>
@@ -15068,7 +15068,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glGenRenderbuffers(n: GLsizei, renderbuffers: GLuint)
+<code style="white-space: break-spaces">func glGenRenderbuffers(n: Ogl.GLsizei, renderbuffers: *Ogl.GLuint)
 </code>
 </p>
 <p>
@@ -15083,7 +15083,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glGenTextures(n: GLsizei, textures: GLuint)
+<code style="white-space: break-spaces">func glGenTextures(n: Ogl.GLsizei, textures: *Ogl.GLuint)
 </code>
 </p>
 <p>
@@ -15098,7 +15098,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glGenerateMipmap(target: GLenum)
+<code style="white-space: break-spaces">func glGenerateMipmap(target: Ogl.GLenum)
 </code>
 </p>
 <p>
@@ -15113,7 +15113,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glGetActiveAttrib(program: GLuint, index: GLuint, maxLength: GLsizei, length: GLsizei, size: GLint, type: GLenum, name: GLchar)
+<code style="white-space: break-spaces">func glGetActiveAttrib(program: Ogl.GLuint, index: Ogl.GLuint, maxLength: Ogl.GLsizei, length: *Ogl.GLsizei, size: *Ogl.GLint, type: *Ogl.GLenum, name: *Ogl.GLchar)
 </code>
 </p>
 <p>
@@ -15128,7 +15128,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glGetActiveUniform(program: GLuint, index: GLuint, maxLength: GLsizei, length: GLsizei, size: GLint, type: GLenum, name: GLchar)
+<code style="white-space: break-spaces">func glGetActiveUniform(program: Ogl.GLuint, index: Ogl.GLuint, maxLength: Ogl.GLsizei, length: *Ogl.GLsizei, size: *Ogl.GLint, type: *Ogl.GLenum, name: *Ogl.GLchar)
 </code>
 </p>
 <p>
@@ -15143,7 +15143,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glGetAttachedShaders(program: GLuint, maxCount: GLsizei, count: GLsizei, shaders: GLuint)
+<code style="white-space: break-spaces">func glGetAttachedShaders(program: Ogl.GLuint, maxCount: Ogl.GLsizei, count: *Ogl.GLsizei, shaders: *Ogl.GLuint)
 </code>
 </p>
 <p>
@@ -15158,7 +15158,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glGetAttribLocation(program: GLuint, name: GLchar)->GLint
+<code style="white-space: break-spaces">func glGetAttribLocation(program: Ogl.GLuint, name: const *Ogl.GLchar)->Ogl.GLint
 </code>
 </p>
 <p>
@@ -15173,7 +15173,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glGetBooleani_v(pname: GLenum, index: GLuint, data: GLboolean)
+<code style="white-space: break-spaces">func glGetBooleani_v(pname: Ogl.GLenum, index: Ogl.GLuint, data: *Ogl.GLboolean)
 </code>
 </p>
 <p>
@@ -15188,7 +15188,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glGetBooleanv(pname: GLenum, params: GLboolean)
+<code style="white-space: break-spaces">func glGetBooleanv(pname: Ogl.GLenum, params: *Ogl.GLboolean)
 </code>
 </p>
 <p>
@@ -15203,7 +15203,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glGetBufferParameteri64v(target: GLenum, value: GLenum, data: GLint64)
+<code style="white-space: break-spaces">func glGetBufferParameteri64v(target: Ogl.GLenum, value: Ogl.GLenum, data: *Ogl.GLint64)
 </code>
 </p>
 <p>
@@ -15218,7 +15218,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glGetBufferParameteriv(target: GLenum, pname: GLenum, params: GLint)
+<code style="white-space: break-spaces">func glGetBufferParameteriv(target: Ogl.GLenum, pname: Ogl.GLenum, params: *Ogl.GLint)
 </code>
 </p>
 <p>
@@ -15233,7 +15233,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glGetBufferPointerv(target: GLenum, pname: GLenum, params: **void)
+<code style="white-space: break-spaces">func glGetBufferPointerv(target: Ogl.GLenum, pname: Ogl.GLenum, params: **void)
 </code>
 </p>
 <p>
@@ -15248,7 +15248,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glGetBufferSubData(target: GLenum, offset: GLintptr, size: GLsizeiptr, data: *void)
+<code style="white-space: break-spaces">func glGetBufferSubData(target: Ogl.GLenum, offset: Ogl.GLintptr, size: Ogl.GLsizeiptr, data: *void)
 </code>
 </p>
 <p>
@@ -15263,7 +15263,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glGetClipPlane(plane: GLenum, equation: GLdouble)
+<code style="white-space: break-spaces">func glGetClipPlane(plane: Ogl.GLenum, equation: *Ogl.GLdouble)
 </code>
 </p>
 <p>
@@ -15278,7 +15278,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glGetCompressedTexImage(target: GLenum, lod: GLint, img: *void)
+<code style="white-space: break-spaces">func glGetCompressedTexImage(target: Ogl.GLenum, lod: Ogl.GLint, img: *void)
 </code>
 </p>
 <p>
@@ -15293,7 +15293,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glGetDoublev(pname: GLenum, params: GLdouble)
+<code style="white-space: break-spaces">func glGetDoublev(pname: Ogl.GLenum, params: *Ogl.GLdouble)
 </code>
 </p>
 <p>
@@ -15308,7 +15308,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glGetError()->GLenum
+<code style="white-space: break-spaces">func glGetError()->Ogl.GLenum
 </code>
 </p>
 <p>
@@ -15323,7 +15323,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glGetFloatv(pname: GLenum, params: GLfloat)
+<code style="white-space: break-spaces">func glGetFloatv(pname: Ogl.GLenum, params: *Ogl.GLfloat)
 </code>
 </p>
 <p>
@@ -15338,7 +15338,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glGetFragDataLocation(program: GLuint, name: GLchar)->GLint
+<code style="white-space: break-spaces">func glGetFragDataLocation(program: Ogl.GLuint, name: const *Ogl.GLchar)->Ogl.GLint
 </code>
 </p>
 <p>
@@ -15353,7 +15353,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glGetFramebufferAttachmentParameteriv(target: GLenum, attachment: GLenum, pname: GLenum, params: GLint)
+<code style="white-space: break-spaces">func glGetFramebufferAttachmentParameteriv(target: Ogl.GLenum, attachment: Ogl.GLenum, pname: Ogl.GLenum, params: *Ogl.GLint)
 </code>
 </p>
 <p>
@@ -15368,7 +15368,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glGetFramebufferParameteriv(target: GLenum, pname: GLenum, params: GLint)
+<code style="white-space: break-spaces">func glGetFramebufferParameteriv(target: Ogl.GLenum, pname: Ogl.GLenum, params: *Ogl.GLint)
 </code>
 </p>
 <p>
@@ -15383,7 +15383,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glGetGraphicsResetStatus()->GLenum
+<code style="white-space: break-spaces">func glGetGraphicsResetStatus()->Ogl.GLenum
 </code>
 </p>
 <p>
@@ -15398,7 +15398,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glGetInteger64i_v(pname: GLenum, index: GLuint, data: GLint64)
+<code style="white-space: break-spaces">func glGetInteger64i_v(pname: Ogl.GLenum, index: Ogl.GLuint, data: *Ogl.GLint64)
 </code>
 </p>
 <p>
@@ -15413,7 +15413,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glGetIntegerv(pname: GLenum, params: GLint)
+<code style="white-space: break-spaces">func glGetIntegerv(pname: Ogl.GLenum, params: *Ogl.GLint)
 </code>
 </p>
 <p>
@@ -15428,7 +15428,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glGetLightfv(light: GLenum, pname: GLenum, params: GLfloat)
+<code style="white-space: break-spaces">func glGetLightfv(light: Ogl.GLenum, pname: Ogl.GLenum, params: *Ogl.GLfloat)
 </code>
 </p>
 <p>
@@ -15443,7 +15443,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glGetLightiv(light: GLenum, pname: GLenum, params: GLint)
+<code style="white-space: break-spaces">func glGetLightiv(light: Ogl.GLenum, pname: Ogl.GLenum, params: *Ogl.GLint)
 </code>
 </p>
 <p>
@@ -15458,7 +15458,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glGetMapdv(target: GLenum, query: GLenum, v: GLdouble)
+<code style="white-space: break-spaces">func glGetMapdv(target: Ogl.GLenum, query: Ogl.GLenum, v: *Ogl.GLdouble)
 </code>
 </p>
 <p>
@@ -15473,7 +15473,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glGetMapfv(target: GLenum, query: GLenum, v: GLfloat)
+<code style="white-space: break-spaces">func glGetMapfv(target: Ogl.GLenum, query: Ogl.GLenum, v: *Ogl.GLfloat)
 </code>
 </p>
 <p>
@@ -15488,7 +15488,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glGetMapiv(target: GLenum, query: GLenum, v: GLint)
+<code style="white-space: break-spaces">func glGetMapiv(target: Ogl.GLenum, query: Ogl.GLenum, v: *Ogl.GLint)
 </code>
 </p>
 <p>
@@ -15503,7 +15503,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glGetMaterialfv(face: GLenum, pname: GLenum, params: GLfloat)
+<code style="white-space: break-spaces">func glGetMaterialfv(face: Ogl.GLenum, pname: Ogl.GLenum, params: *Ogl.GLfloat)
 </code>
 </p>
 <p>
@@ -15518,7 +15518,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glGetMaterialiv(face: GLenum, pname: GLenum, params: GLint)
+<code style="white-space: break-spaces">func glGetMaterialiv(face: Ogl.GLenum, pname: Ogl.GLenum, params: *Ogl.GLint)
 </code>
 </p>
 <p>
@@ -15533,7 +15533,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glGetNamedFramebufferParameterivEXT(framebuffer: GLuint, pname: GLenum, params: GLint)
+<code style="white-space: break-spaces">func glGetNamedFramebufferParameterivEXT(framebuffer: Ogl.GLuint, pname: Ogl.GLenum, params: *Ogl.GLint)
 </code>
 </p>
 <p>
@@ -15548,7 +15548,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glGetNamedStringARB(namelen: GLint, name: GLchar, bufSize: GLsizei, stringlen: GLint, str: GLchar)
+<code style="white-space: break-spaces">func glGetNamedStringARB(namelen: Ogl.GLint, name: const *Ogl.GLchar, bufSize: Ogl.GLsizei, stringlen: *Ogl.GLint, str: *Ogl.GLchar)
 </code>
 </p>
 <p>
@@ -15563,7 +15563,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glGetNamedStringivARB(namelen: GLint, name: GLchar, pname: GLenum, params: GLint)
+<code style="white-space: break-spaces">func glGetNamedStringivARB(namelen: Ogl.GLint, name: const *Ogl.GLchar, pname: Ogl.GLenum, params: *Ogl.GLint)
 </code>
 </p>
 <p>
@@ -15578,7 +15578,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glGetPixelMapfv(map: GLenum, values: GLfloat)
+<code style="white-space: break-spaces">func glGetPixelMapfv(map: Ogl.GLenum, values: *Ogl.GLfloat)
 </code>
 </p>
 <p>
@@ -15593,7 +15593,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glGetPixelMapuiv(map: GLenum, values: GLuint)
+<code style="white-space: break-spaces">func glGetPixelMapuiv(map: Ogl.GLenum, values: *Ogl.GLuint)
 </code>
 </p>
 <p>
@@ -15608,7 +15608,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glGetPixelMapusv(map: GLenum, values: GLushort)
+<code style="white-space: break-spaces">func glGetPixelMapusv(map: Ogl.GLenum, values: *Ogl.GLushort)
 </code>
 </p>
 <p>
@@ -15623,7 +15623,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glGetPointerv(pname: GLenum, params: GLvoid)
+<code style="white-space: break-spaces">func glGetPointerv(pname: Ogl.GLenum, params: **Ogl.GLvoid)
 </code>
 </p>
 <p>
@@ -15638,7 +15638,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glGetPolygonStipple(mask: GLubyte)
+<code style="white-space: break-spaces">func glGetPolygonStipple(mask: *Ogl.GLubyte)
 </code>
 </p>
 <p>
@@ -15653,7 +15653,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glGetProgramInfoLog(program: GLuint, bufSize: GLsizei, length: GLsizei, infoLog: GLchar)
+<code style="white-space: break-spaces">func glGetProgramInfoLog(program: Ogl.GLuint, bufSize: Ogl.GLsizei, length: *Ogl.GLsizei, infoLog: *Ogl.GLchar)
 </code>
 </p>
 <p>
@@ -15668,7 +15668,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glGetProgramiv(program: GLuint, pname: GLenum, param: GLint)
+<code style="white-space: break-spaces">func glGetProgramiv(program: Ogl.GLuint, pname: Ogl.GLenum, param: *Ogl.GLint)
 </code>
 </p>
 <p>
@@ -15683,7 +15683,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glGetQueryObjectiv(id: GLuint, pname: GLenum, params: GLint)
+<code style="white-space: break-spaces">func glGetQueryObjectiv(id: Ogl.GLuint, pname: Ogl.GLenum, params: *Ogl.GLint)
 </code>
 </p>
 <p>
@@ -15698,7 +15698,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glGetQueryObjectuiv(id: GLuint, pname: GLenum, params: GLuint)
+<code style="white-space: break-spaces">func glGetQueryObjectuiv(id: Ogl.GLuint, pname: Ogl.GLenum, params: *Ogl.GLuint)
 </code>
 </p>
 <p>
@@ -15713,7 +15713,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glGetQueryiv(target: GLenum, pname: GLenum, params: GLint)
+<code style="white-space: break-spaces">func glGetQueryiv(target: Ogl.GLenum, pname: Ogl.GLenum, params: *Ogl.GLint)
 </code>
 </p>
 <p>
@@ -15728,7 +15728,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glGetRenderbufferParameteriv(target: GLenum, pname: GLenum, params: GLint)
+<code style="white-space: break-spaces">func glGetRenderbufferParameteriv(target: Ogl.GLenum, pname: Ogl.GLenum, params: *Ogl.GLint)
 </code>
 </p>
 <p>
@@ -15743,7 +15743,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glGetShaderInfoLog(shader: GLuint, bufSize: GLsizei, length: GLsizei, infoLog: GLchar)
+<code style="white-space: break-spaces">func glGetShaderInfoLog(shader: Ogl.GLuint, bufSize: Ogl.GLsizei, length: *Ogl.GLsizei, infoLog: *Ogl.GLchar)
 </code>
 </p>
 <p>
@@ -15758,7 +15758,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glGetShaderSource(obj: GLuint, maxLength: GLsizei, length: GLsizei, source: GLchar)
+<code style="white-space: break-spaces">func glGetShaderSource(obj: Ogl.GLuint, maxLength: Ogl.GLsizei, length: *Ogl.GLsizei, source: *Ogl.GLchar)
 </code>
 </p>
 <p>
@@ -15773,7 +15773,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glGetShaderiv(shader: GLuint, pname: GLenum, param: GLint)
+<code style="white-space: break-spaces">func glGetShaderiv(shader: Ogl.GLuint, pname: Ogl.GLenum, param: *Ogl.GLint)
 </code>
 </p>
 <p>
@@ -15788,7 +15788,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glGetString(name: GLenum)->GLubyte
+<code style="white-space: break-spaces">func glGetString(name: Ogl.GLenum)->const *Ogl.GLubyte
 </code>
 </p>
 <p>
@@ -15803,7 +15803,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glGetStringi(name: GLenum, index: GLuint)->GLubyte
+<code style="white-space: break-spaces">func glGetStringi(name: Ogl.GLenum, index: Ogl.GLuint)->const *Ogl.GLubyte
 </code>
 </p>
 <p>
@@ -15818,7 +15818,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glGetTexEnvfv(target: GLenum, pname: GLenum, params: GLfloat)
+<code style="white-space: break-spaces">func glGetTexEnvfv(target: Ogl.GLenum, pname: Ogl.GLenum, params: *Ogl.GLfloat)
 </code>
 </p>
 <p>
@@ -15833,7 +15833,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glGetTexEnviv(target: GLenum, pname: GLenum, params: GLint)
+<code style="white-space: break-spaces">func glGetTexEnviv(target: Ogl.GLenum, pname: Ogl.GLenum, params: *Ogl.GLint)
 </code>
 </p>
 <p>
@@ -15848,7 +15848,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glGetTexGendv(coord: GLenum, pname: GLenum, params: GLdouble)
+<code style="white-space: break-spaces">func glGetTexGendv(coord: Ogl.GLenum, pname: Ogl.GLenum, params: *Ogl.GLdouble)
 </code>
 </p>
 <p>
@@ -15863,7 +15863,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glGetTexGenfv(coord: GLenum, pname: GLenum, params: GLfloat)
+<code style="white-space: break-spaces">func glGetTexGenfv(coord: Ogl.GLenum, pname: Ogl.GLenum, params: *Ogl.GLfloat)
 </code>
 </p>
 <p>
@@ -15878,7 +15878,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glGetTexGeniv(coord: GLenum, pname: GLenum, params: GLint)
+<code style="white-space: break-spaces">func glGetTexGeniv(coord: Ogl.GLenum, pname: Ogl.GLenum, params: *Ogl.GLint)
 </code>
 </p>
 <p>
@@ -15893,7 +15893,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glGetTexImage(target: GLenum, level: GLint, format: GLenum, type: GLenum, pixels: GLvoid)
+<code style="white-space: break-spaces">func glGetTexImage(target: Ogl.GLenum, level: Ogl.GLint, format: Ogl.GLenum, type: Ogl.GLenum, pixels: *Ogl.GLvoid)
 </code>
 </p>
 <p>
@@ -15908,7 +15908,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glGetTexLevelParameterfv(target: GLenum, level: GLint, pname: GLenum, params: GLfloat)
+<code style="white-space: break-spaces">func glGetTexLevelParameterfv(target: Ogl.GLenum, level: Ogl.GLint, pname: Ogl.GLenum, params: *Ogl.GLfloat)
 </code>
 </p>
 <p>
@@ -15923,7 +15923,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glGetTexLevelParameteriv(target: GLenum, level: GLint, pname: GLenum, params: GLint)
+<code style="white-space: break-spaces">func glGetTexLevelParameteriv(target: Ogl.GLenum, level: Ogl.GLint, pname: Ogl.GLenum, params: *Ogl.GLint)
 </code>
 </p>
 <p>
@@ -15938,7 +15938,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glGetTexParameterIiv(target: GLenum, pname: GLenum, params: GLint)
+<code style="white-space: break-spaces">func glGetTexParameterIiv(target: Ogl.GLenum, pname: Ogl.GLenum, params: *Ogl.GLint)
 </code>
 </p>
 <p>
@@ -15953,7 +15953,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glGetTexParameterIuiv(target: GLenum, pname: GLenum, params: GLuint)
+<code style="white-space: break-spaces">func glGetTexParameterIuiv(target: Ogl.GLenum, pname: Ogl.GLenum, params: *Ogl.GLuint)
 </code>
 </p>
 <p>
@@ -15968,7 +15968,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glGetTexParameterfv(target: GLenum, pname: GLenum, params: GLfloat)
+<code style="white-space: break-spaces">func glGetTexParameterfv(target: Ogl.GLenum, pname: Ogl.GLenum, params: *Ogl.GLfloat)
 </code>
 </p>
 <p>
@@ -15983,7 +15983,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glGetTexParameteriv(target: GLenum, pname: GLenum, params: GLint)
+<code style="white-space: break-spaces">func glGetTexParameteriv(target: Ogl.GLenum, pname: Ogl.GLenum, params: *Ogl.GLint)
 </code>
 </p>
 <p>
@@ -15998,7 +15998,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glGetTransformFeedbackVarying(program: GLuint, index: GLuint, bufSize: GLsizei, length: GLsizei, size: GLsizei, type: GLenum, name: GLchar)
+<code style="white-space: break-spaces">func glGetTransformFeedbackVarying(program: Ogl.GLuint, index: Ogl.GLuint, bufSize: Ogl.GLsizei, length: *Ogl.GLsizei, size: *Ogl.GLsizei, type: *Ogl.GLenum, name: *Ogl.GLchar)
 </code>
 </p>
 <p>
@@ -16013,7 +16013,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glGetUniformLocation(program: GLuint, name: GLchar)->GLint
+<code style="white-space: break-spaces">func glGetUniformLocation(program: Ogl.GLuint, name: const *Ogl.GLchar)->Ogl.GLint
 </code>
 </p>
 <p>
@@ -16028,7 +16028,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glGetUniformfv(program: GLuint, location: GLint, params: GLfloat)
+<code style="white-space: break-spaces">func glGetUniformfv(program: Ogl.GLuint, location: Ogl.GLint, params: *Ogl.GLfloat)
 </code>
 </p>
 <p>
@@ -16043,7 +16043,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glGetUniformiv(program: GLuint, location: GLint, params: GLint)
+<code style="white-space: break-spaces">func glGetUniformiv(program: Ogl.GLuint, location: Ogl.GLint, params: *Ogl.GLint)
 </code>
 </p>
 <p>
@@ -16058,7 +16058,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glGetUniformuiv(program: GLuint, location: GLint, params: GLuint)
+<code style="white-space: break-spaces">func glGetUniformuiv(program: Ogl.GLuint, location: Ogl.GLint, params: *Ogl.GLuint)
 </code>
 </p>
 <p>
@@ -16073,7 +16073,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glGetVertexAttribIiv(index: GLuint, pname: GLenum, params: GLint)
+<code style="white-space: break-spaces">func glGetVertexAttribIiv(index: Ogl.GLuint, pname: Ogl.GLenum, params: *Ogl.GLint)
 </code>
 </p>
 <p>
@@ -16088,7 +16088,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glGetVertexAttribIuiv(index: GLuint, pname: GLenum, params: GLuint)
+<code style="white-space: break-spaces">func glGetVertexAttribIuiv(index: Ogl.GLuint, pname: Ogl.GLenum, params: *Ogl.GLuint)
 </code>
 </p>
 <p>
@@ -16103,7 +16103,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glGetVertexAttribPointerv(index: GLuint, pname: GLenum, pointer: **void)
+<code style="white-space: break-spaces">func glGetVertexAttribPointerv(index: Ogl.GLuint, pname: Ogl.GLenum, pointer: **void)
 </code>
 </p>
 <p>
@@ -16118,7 +16118,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glGetVertexAttribdv(index: GLuint, pname: GLenum, params: GLdouble)
+<code style="white-space: break-spaces">func glGetVertexAttribdv(index: Ogl.GLuint, pname: Ogl.GLenum, params: *Ogl.GLdouble)
 </code>
 </p>
 <p>
@@ -16133,7 +16133,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glGetVertexAttribfv(index: GLuint, pname: GLenum, params: GLfloat)
+<code style="white-space: break-spaces">func glGetVertexAttribfv(index: Ogl.GLuint, pname: Ogl.GLenum, params: *Ogl.GLfloat)
 </code>
 </p>
 <p>
@@ -16148,7 +16148,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glGetVertexAttribiv(index: GLuint, pname: GLenum, params: GLint)
+<code style="white-space: break-spaces">func glGetVertexAttribiv(index: Ogl.GLuint, pname: Ogl.GLenum, params: *Ogl.GLint)
 </code>
 </p>
 <p>
@@ -16163,7 +16163,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glGetnCompressedTexImage(target: GLenum, lod: GLint, bufSize: GLsizei, pixels: GLvoid)
+<code style="white-space: break-spaces">func glGetnCompressedTexImage(target: Ogl.GLenum, lod: Ogl.GLint, bufSize: Ogl.GLsizei, pixels: *Ogl.GLvoid)
 </code>
 </p>
 <p>
@@ -16178,7 +16178,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glGetnTexImage(tex: GLenum, level: GLint, format: GLenum, type: GLenum, bufSize: GLsizei, pixels: GLvoid)
+<code style="white-space: break-spaces">func glGetnTexImage(tex: Ogl.GLenum, level: Ogl.GLint, format: Ogl.GLenum, type: Ogl.GLenum, bufSize: Ogl.GLsizei, pixels: *Ogl.GLvoid)
 </code>
 </p>
 <p>
@@ -16193,7 +16193,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glGetnUniformdv(program: GLuint, location: GLint, bufSize: GLsizei, params: GLdouble)
+<code style="white-space: break-spaces">func glGetnUniformdv(program: Ogl.GLuint, location: Ogl.GLint, bufSize: Ogl.GLsizei, params: *Ogl.GLdouble)
 </code>
 </p>
 <p>
@@ -16208,7 +16208,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glHint(target: GLenum, mode: GLenum)
+<code style="white-space: break-spaces">func glHint(target: Ogl.GLenum, mode: Ogl.GLenum)
 </code>
 </p>
 <p>
@@ -16223,7 +16223,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glIndexMask(mask: GLuint)
+<code style="white-space: break-spaces">func glIndexMask(mask: Ogl.GLuint)
 </code>
 </p>
 <p>
@@ -16238,7 +16238,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glIndexPointer(type: GLenum, stride: GLsizei, pointer: GLvoid)
+<code style="white-space: break-spaces">func glIndexPointer(type: Ogl.GLenum, stride: Ogl.GLsizei, pointer: const *Ogl.GLvoid)
 </code>
 </p>
 <p>
@@ -16253,7 +16253,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glIndexd(c: GLdouble)
+<code style="white-space: break-spaces">func glIndexd(c: Ogl.GLdouble)
 </code>
 </p>
 <p>
@@ -16268,7 +16268,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glIndexdv(c: GLdouble)
+<code style="white-space: break-spaces">func glIndexdv(c: const *Ogl.GLdouble)
 </code>
 </p>
 <p>
@@ -16283,7 +16283,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glIndexf(c: GLfloat)
+<code style="white-space: break-spaces">func glIndexf(c: Ogl.GLfloat)
 </code>
 </p>
 <p>
@@ -16298,7 +16298,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glIndexfv(c: GLfloat)
+<code style="white-space: break-spaces">func glIndexfv(c: const *Ogl.GLfloat)
 </code>
 </p>
 <p>
@@ -16313,7 +16313,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glIndexi(c: GLint)
+<code style="white-space: break-spaces">func glIndexi(c: Ogl.GLint)
 </code>
 </p>
 <p>
@@ -16328,7 +16328,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glIndexiv(c: GLint)
+<code style="white-space: break-spaces">func glIndexiv(c: const *Ogl.GLint)
 </code>
 </p>
 <p>
@@ -16343,7 +16343,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glIndexs(c: GLshort)
+<code style="white-space: break-spaces">func glIndexs(c: Ogl.GLshort)
 </code>
 </p>
 <p>
@@ -16358,7 +16358,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glIndexsv(c: GLshort)
+<code style="white-space: break-spaces">func glIndexsv(c: const *Ogl.GLshort)
 </code>
 </p>
 <p>
@@ -16373,7 +16373,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glIndexub(c: GLubyte)
+<code style="white-space: break-spaces">func glIndexub(c: Ogl.GLubyte)
 </code>
 </p>
 <p>
@@ -16388,7 +16388,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glIndexubv(c: GLubyte)
+<code style="white-space: break-spaces">func glIndexubv(c: const *Ogl.GLubyte)
 </code>
 </p>
 <p>
@@ -16418,7 +16418,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glInterleavedArrays(format: GLenum, stride: GLsizei, pointer: GLvoid)
+<code style="white-space: break-spaces">func glInterleavedArrays(format: Ogl.GLenum, stride: Ogl.GLsizei, pointer: const *Ogl.GLvoid)
 </code>
 </p>
 <p>
@@ -16433,7 +16433,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glIsBuffer(buffer: GLuint)->GLboolean
+<code style="white-space: break-spaces">func glIsBuffer(buffer: Ogl.GLuint)->Ogl.GLboolean
 </code>
 </p>
 <p>
@@ -16448,7 +16448,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glIsEnabled(cap: GLenum)->GLboolean
+<code style="white-space: break-spaces">func glIsEnabled(cap: Ogl.GLenum)->Ogl.GLboolean
 </code>
 </p>
 <p>
@@ -16463,7 +16463,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glIsEnabledi(cap: GLenum, index: GLuint)->GLboolean
+<code style="white-space: break-spaces">func glIsEnabledi(cap: Ogl.GLenum, index: Ogl.GLuint)->Ogl.GLboolean
 </code>
 </p>
 <p>
@@ -16478,7 +16478,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glIsFramebuffer(framebuffer: GLuint)->GLboolean
+<code style="white-space: break-spaces">func glIsFramebuffer(framebuffer: Ogl.GLuint)->Ogl.GLboolean
 </code>
 </p>
 <p>
@@ -16493,7 +16493,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glIsList(list: GLuint)->GLboolean
+<code style="white-space: break-spaces">func glIsList(list: Ogl.GLuint)->Ogl.GLboolean
 </code>
 </p>
 <p>
@@ -16508,7 +16508,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glIsNamedStringARB(namelen: GLint, name: GLchar)->GLboolean
+<code style="white-space: break-spaces">func glIsNamedStringARB(namelen: Ogl.GLint, name: const *Ogl.GLchar)->Ogl.GLboolean
 </code>
 </p>
 <p>
@@ -16523,7 +16523,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glIsProgram(program: GLuint)->GLboolean
+<code style="white-space: break-spaces">func glIsProgram(program: Ogl.GLuint)->Ogl.GLboolean
 </code>
 </p>
 <p>
@@ -16538,7 +16538,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glIsQuery(id: GLuint)->GLboolean
+<code style="white-space: break-spaces">func glIsQuery(id: Ogl.GLuint)->Ogl.GLboolean
 </code>
 </p>
 <p>
@@ -16553,7 +16553,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glIsRenderbuffer(renderbuffer: GLuint)->GLboolean
+<code style="white-space: break-spaces">func glIsRenderbuffer(renderbuffer: Ogl.GLuint)->Ogl.GLboolean
 </code>
 </p>
 <p>
@@ -16568,7 +16568,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glIsShader(shader: GLuint)->GLboolean
+<code style="white-space: break-spaces">func glIsShader(shader: Ogl.GLuint)->Ogl.GLboolean
 </code>
 </p>
 <p>
@@ -16583,7 +16583,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glIsTexture(texture: GLuint)->GLboolean
+<code style="white-space: break-spaces">func glIsTexture(texture: Ogl.GLuint)->Ogl.GLboolean
 </code>
 </p>
 <p>
@@ -16598,7 +16598,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glLightModelf(pname: GLenum, param: GLfloat)
+<code style="white-space: break-spaces">func glLightModelf(pname: Ogl.GLenum, param: Ogl.GLfloat)
 </code>
 </p>
 <p>
@@ -16613,7 +16613,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glLightModelfv(pname: GLenum, params: GLfloat)
+<code style="white-space: break-spaces">func glLightModelfv(pname: Ogl.GLenum, params: const *Ogl.GLfloat)
 </code>
 </p>
 <p>
@@ -16628,7 +16628,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glLightModeli(pname: GLenum, param: GLint)
+<code style="white-space: break-spaces">func glLightModeli(pname: Ogl.GLenum, param: Ogl.GLint)
 </code>
 </p>
 <p>
@@ -16643,7 +16643,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glLightModeliv(pname: GLenum, params: GLint)
+<code style="white-space: break-spaces">func glLightModeliv(pname: Ogl.GLenum, params: const *Ogl.GLint)
 </code>
 </p>
 <p>
@@ -16658,7 +16658,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glLightf(light: GLenum, pname: GLenum, param: GLfloat)
+<code style="white-space: break-spaces">func glLightf(light: Ogl.GLenum, pname: Ogl.GLenum, param: Ogl.GLfloat)
 </code>
 </p>
 <p>
@@ -16673,7 +16673,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glLightfv(light: GLenum, pname: GLenum, params: GLfloat)
+<code style="white-space: break-spaces">func glLightfv(light: Ogl.GLenum, pname: Ogl.GLenum, params: const *Ogl.GLfloat)
 </code>
 </p>
 <p>
@@ -16688,7 +16688,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glLighti(light: GLenum, pname: GLenum, param: GLint)
+<code style="white-space: break-spaces">func glLighti(light: Ogl.GLenum, pname: Ogl.GLenum, param: Ogl.GLint)
 </code>
 </p>
 <p>
@@ -16703,7 +16703,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glLightiv(light: GLenum, pname: GLenum, params: GLint)
+<code style="white-space: break-spaces">func glLightiv(light: Ogl.GLenum, pname: Ogl.GLenum, params: const *Ogl.GLint)
 </code>
 </p>
 <p>
@@ -16718,7 +16718,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glLineStipple(factor: GLint, pattern: GLushort)
+<code style="white-space: break-spaces">func glLineStipple(factor: Ogl.GLint, pattern: Ogl.GLushort)
 </code>
 </p>
 <p>
@@ -16733,7 +16733,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glLineWidth(width: GLfloat)
+<code style="white-space: break-spaces">func glLineWidth(width: Ogl.GLfloat)
 </code>
 </p>
 <p>
@@ -16748,7 +16748,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glLinkProgram(program: GLuint)
+<code style="white-space: break-spaces">func glLinkProgram(program: Ogl.GLuint)
 </code>
 </p>
 <p>
@@ -16763,7 +16763,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glListBase(base: GLuint)
+<code style="white-space: break-spaces">func glListBase(base: Ogl.GLuint)
 </code>
 </p>
 <p>
@@ -16793,7 +16793,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glLoadMatrixd(m: GLdouble)
+<code style="white-space: break-spaces">func glLoadMatrixd(m: const *Ogl.GLdouble)
 </code>
 </p>
 <p>
@@ -16808,7 +16808,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glLoadMatrixf(m: GLfloat)
+<code style="white-space: break-spaces">func glLoadMatrixf(m: const *Ogl.GLfloat)
 </code>
 </p>
 <p>
@@ -16823,7 +16823,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glLoadName(name: GLuint)
+<code style="white-space: break-spaces">func glLoadName(name: Ogl.GLuint)
 </code>
 </p>
 <p>
@@ -16838,7 +16838,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glLoadTransposeMatrixd(m: GLdouble)
+<code style="white-space: break-spaces">func glLoadTransposeMatrixd(m: const [16] Ogl.GLdouble)
 </code>
 </p>
 <p>
@@ -16853,7 +16853,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glLoadTransposeMatrixf(m: GLfloat)
+<code style="white-space: break-spaces">func glLoadTransposeMatrixf(m: const [16] Ogl.GLfloat)
 </code>
 </p>
 <p>
@@ -16868,7 +16868,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glLogicOp(opcode: GLenum)
+<code style="white-space: break-spaces">func glLogicOp(opcode: Ogl.GLenum)
 </code>
 </p>
 <p>
@@ -16883,7 +16883,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glMap1d(target: GLenum, u1: GLdouble, u2: GLdouble, stride: GLint, order: GLint, points: GLdouble)
+<code style="white-space: break-spaces">func glMap1d(target: Ogl.GLenum, u1: Ogl.GLdouble, u2: Ogl.GLdouble, stride: Ogl.GLint, order: Ogl.GLint, points: const *Ogl.GLdouble)
 </code>
 </p>
 <p>
@@ -16898,7 +16898,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glMap1f(target: GLenum, u1: GLfloat, u2: GLfloat, stride: GLint, order: GLint, points: GLfloat)
+<code style="white-space: break-spaces">func glMap1f(target: Ogl.GLenum, u1: Ogl.GLfloat, u2: Ogl.GLfloat, stride: Ogl.GLint, order: Ogl.GLint, points: const *Ogl.GLfloat)
 </code>
 </p>
 <p>
@@ -16913,7 +16913,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glMap2d(target: GLenum, u1: GLdouble, u2: GLdouble, ustride: GLint, uorder: GLint, v1: GLdouble, v2: GLdouble, vstride: GLint, vorder: GLint, points: GLdouble)
+<code style="white-space: break-spaces">func glMap2d(target: Ogl.GLenum, u1: Ogl.GLdouble, u2: Ogl.GLdouble, ustride: Ogl.GLint, uorder: Ogl.GLint, v1: Ogl.GLdouble, v2: Ogl.GLdouble, vstride: Ogl.GLint, vorder: Ogl.GLint, points: const *Ogl.GLdouble)
 </code>
 </p>
 <p>
@@ -16928,7 +16928,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glMap2f(target: GLenum, u1: GLfloat, u2: GLfloat, ustride: GLint, uorder: GLint, v1: GLfloat, v2: GLfloat, vstride: GLint, vorder: GLint, points: GLfloat)
+<code style="white-space: break-spaces">func glMap2f(target: Ogl.GLenum, u1: Ogl.GLfloat, u2: Ogl.GLfloat, ustride: Ogl.GLint, uorder: Ogl.GLint, v1: Ogl.GLfloat, v2: Ogl.GLfloat, vstride: Ogl.GLint, vorder: Ogl.GLint, points: const *Ogl.GLfloat)
 </code>
 </p>
 <p>
@@ -16943,7 +16943,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glMapBuffer(target: GLenum, access: GLenum)->*void
+<code style="white-space: break-spaces">func glMapBuffer(target: Ogl.GLenum, access: Ogl.GLenum)->*void
 </code>
 </p>
 <p>
@@ -16958,7 +16958,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glMapGrid1d(un: GLint, u1: GLdouble, u2: GLdouble)
+<code style="white-space: break-spaces">func glMapGrid1d(un: Ogl.GLint, u1: Ogl.GLdouble, u2: Ogl.GLdouble)
 </code>
 </p>
 <p>
@@ -16973,7 +16973,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glMapGrid1f(un: GLint, u1: GLfloat, u2: GLfloat)
+<code style="white-space: break-spaces">func glMapGrid1f(un: Ogl.GLint, u1: Ogl.GLfloat, u2: Ogl.GLfloat)
 </code>
 </p>
 <p>
@@ -16988,7 +16988,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glMapGrid2d(un: GLint, u1: GLdouble, u2: GLdouble, vn: GLint, v1: GLdouble, v2: GLdouble)
+<code style="white-space: break-spaces">func glMapGrid2d(un: Ogl.GLint, u1: Ogl.GLdouble, u2: Ogl.GLdouble, vn: Ogl.GLint, v1: Ogl.GLdouble, v2: Ogl.GLdouble)
 </code>
 </p>
 <p>
@@ -17003,7 +17003,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glMapGrid2f(un: GLint, u1: GLfloat, u2: GLfloat, vn: GLint, v1: GLfloat, v2: GLfloat)
+<code style="white-space: break-spaces">func glMapGrid2f(un: Ogl.GLint, u1: Ogl.GLfloat, u2: Ogl.GLfloat, vn: Ogl.GLint, v1: Ogl.GLfloat, v2: Ogl.GLfloat)
 </code>
 </p>
 <p>
@@ -17018,7 +17018,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glMaterialf(face: GLenum, pname: GLenum, param: GLfloat)
+<code style="white-space: break-spaces">func glMaterialf(face: Ogl.GLenum, pname: Ogl.GLenum, param: Ogl.GLfloat)
 </code>
 </p>
 <p>
@@ -17033,7 +17033,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glMaterialfv(face: GLenum, pname: GLenum, params: GLfloat)
+<code style="white-space: break-spaces">func glMaterialfv(face: Ogl.GLenum, pname: Ogl.GLenum, params: const *Ogl.GLfloat)
 </code>
 </p>
 <p>
@@ -17048,7 +17048,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glMateriali(face: GLenum, pname: GLenum, param: GLint)
+<code style="white-space: break-spaces">func glMateriali(face: Ogl.GLenum, pname: Ogl.GLenum, param: Ogl.GLint)
 </code>
 </p>
 <p>
@@ -17063,7 +17063,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glMaterialiv(face: GLenum, pname: GLenum, params: GLint)
+<code style="white-space: break-spaces">func glMaterialiv(face: Ogl.GLenum, pname: Ogl.GLenum, params: const *Ogl.GLint)
 </code>
 </p>
 <p>
@@ -17078,7 +17078,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glMatrixMode(mode: GLenum)
+<code style="white-space: break-spaces">func glMatrixMode(mode: Ogl.GLenum)
 </code>
 </p>
 <p>
@@ -17093,7 +17093,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glMinSampleShading(value: GLclampf)
+<code style="white-space: break-spaces">func glMinSampleShading(value: Ogl.GLclampf)
 </code>
 </p>
 <p>
@@ -17108,7 +17108,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glMultMatrixd(m: GLdouble)
+<code style="white-space: break-spaces">func glMultMatrixd(m: const *Ogl.GLdouble)
 </code>
 </p>
 <p>
@@ -17123,7 +17123,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glMultMatrixf(m: GLfloat)
+<code style="white-space: break-spaces">func glMultMatrixf(m: const *Ogl.GLfloat)
 </code>
 </p>
 <p>
@@ -17138,7 +17138,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glMultTransposeMatrixd(m: GLdouble)
+<code style="white-space: break-spaces">func glMultTransposeMatrixd(m: const [16] Ogl.GLdouble)
 </code>
 </p>
 <p>
@@ -17153,7 +17153,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glMultTransposeMatrixf(m: GLfloat)
+<code style="white-space: break-spaces">func glMultTransposeMatrixf(m: const [16] Ogl.GLfloat)
 </code>
 </p>
 <p>
@@ -17168,7 +17168,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glMultiDrawArrays(mode: GLenum, first: GLint, count: GLsizei, drawcount: GLsizei)
+<code style="white-space: break-spaces">func glMultiDrawArrays(mode: Ogl.GLenum, first: const *Ogl.GLint, count: const *Ogl.GLsizei, drawcount: Ogl.GLsizei)
 </code>
 </p>
 <p>
@@ -17183,7 +17183,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glMultiDrawArraysIndirectCount(mode: GLenum, indirect: GLvoid, drawcount: GLintptr, maxdrawcount: GLsizei, stride: GLsizei)
+<code style="white-space: break-spaces">func glMultiDrawArraysIndirectCount(mode: Ogl.GLenum, indirect: const *Ogl.GLvoid, drawcount: Ogl.GLintptr, maxdrawcount: Ogl.GLsizei, stride: Ogl.GLsizei)
 </code>
 </p>
 <p>
@@ -17198,7 +17198,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glMultiDrawElements(mode: GLenum, count: GLsizei, type: GLenum, indices: const **void, drawcount: GLsizei)
+<code style="white-space: break-spaces">func glMultiDrawElements(mode: Ogl.GLenum, count: const *Ogl.GLsizei, type: Ogl.GLenum, indices: const **void, drawcount: Ogl.GLsizei)
 </code>
 </p>
 <p>
@@ -17213,7 +17213,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glMultiDrawElementsIndirectCount(mode: GLenum, type: GLenum, indirect: GLvoid, drawcount: GLintptr, maxdrawcount: GLsizei, stride: GLsizei)
+<code style="white-space: break-spaces">func glMultiDrawElementsIndirectCount(mode: Ogl.GLenum, type: Ogl.GLenum, indirect: const *Ogl.GLvoid, drawcount: Ogl.GLintptr, maxdrawcount: Ogl.GLsizei, stride: Ogl.GLsizei)
 </code>
 </p>
 <p>
@@ -17228,7 +17228,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glMultiTexCoord1d(target: GLenum, s: GLdouble)
+<code style="white-space: break-spaces">func glMultiTexCoord1d(target: Ogl.GLenum, s: Ogl.GLdouble)
 </code>
 </p>
 <p>
@@ -17243,7 +17243,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glMultiTexCoord1dv(target: GLenum, v: GLdouble)
+<code style="white-space: break-spaces">func glMultiTexCoord1dv(target: Ogl.GLenum, v: const *Ogl.GLdouble)
 </code>
 </p>
 <p>
@@ -17258,7 +17258,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glMultiTexCoord1f(target: GLenum, s: GLfloat)
+<code style="white-space: break-spaces">func glMultiTexCoord1f(target: Ogl.GLenum, s: Ogl.GLfloat)
 </code>
 </p>
 <p>
@@ -17273,7 +17273,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glMultiTexCoord1fv(target: GLenum, v: GLfloat)
+<code style="white-space: break-spaces">func glMultiTexCoord1fv(target: Ogl.GLenum, v: const *Ogl.GLfloat)
 </code>
 </p>
 <p>
@@ -17288,7 +17288,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glMultiTexCoord1i(target: GLenum, s: GLint)
+<code style="white-space: break-spaces">func glMultiTexCoord1i(target: Ogl.GLenum, s: Ogl.GLint)
 </code>
 </p>
 <p>
@@ -17303,7 +17303,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glMultiTexCoord1iv(target: GLenum, v: GLint)
+<code style="white-space: break-spaces">func glMultiTexCoord1iv(target: Ogl.GLenum, v: const *Ogl.GLint)
 </code>
 </p>
 <p>
@@ -17318,7 +17318,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glMultiTexCoord1s(target: GLenum, s: GLshort)
+<code style="white-space: break-spaces">func glMultiTexCoord1s(target: Ogl.GLenum, s: Ogl.GLshort)
 </code>
 </p>
 <p>
@@ -17333,7 +17333,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glMultiTexCoord1sv(target: GLenum, v: GLshort)
+<code style="white-space: break-spaces">func glMultiTexCoord1sv(target: Ogl.GLenum, v: const *Ogl.GLshort)
 </code>
 </p>
 <p>
@@ -17348,7 +17348,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glMultiTexCoord2d(target: GLenum, s: GLdouble, t: GLdouble)
+<code style="white-space: break-spaces">func glMultiTexCoord2d(target: Ogl.GLenum, s: Ogl.GLdouble, t: Ogl.GLdouble)
 </code>
 </p>
 <p>
@@ -17363,7 +17363,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glMultiTexCoord2dv(target: GLenum, v: GLdouble)
+<code style="white-space: break-spaces">func glMultiTexCoord2dv(target: Ogl.GLenum, v: const *Ogl.GLdouble)
 </code>
 </p>
 <p>
@@ -17378,7 +17378,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glMultiTexCoord2f(target: GLenum, s: GLfloat, t: GLfloat)
+<code style="white-space: break-spaces">func glMultiTexCoord2f(target: Ogl.GLenum, s: Ogl.GLfloat, t: Ogl.GLfloat)
 </code>
 </p>
 <p>
@@ -17393,7 +17393,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glMultiTexCoord2fv(target: GLenum, v: GLfloat)
+<code style="white-space: break-spaces">func glMultiTexCoord2fv(target: Ogl.GLenum, v: const *Ogl.GLfloat)
 </code>
 </p>
 <p>
@@ -17408,7 +17408,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glMultiTexCoord2i(target: GLenum, s: GLint, t: GLint)
+<code style="white-space: break-spaces">func glMultiTexCoord2i(target: Ogl.GLenum, s: Ogl.GLint, t: Ogl.GLint)
 </code>
 </p>
 <p>
@@ -17423,7 +17423,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glMultiTexCoord2iv(target: GLenum, v: GLint)
+<code style="white-space: break-spaces">func glMultiTexCoord2iv(target: Ogl.GLenum, v: const *Ogl.GLint)
 </code>
 </p>
 <p>
@@ -17438,7 +17438,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glMultiTexCoord2s(target: GLenum, s: GLshort, t: GLshort)
+<code style="white-space: break-spaces">func glMultiTexCoord2s(target: Ogl.GLenum, s: Ogl.GLshort, t: Ogl.GLshort)
 </code>
 </p>
 <p>
@@ -17453,7 +17453,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glMultiTexCoord2sv(target: GLenum, v: GLshort)
+<code style="white-space: break-spaces">func glMultiTexCoord2sv(target: Ogl.GLenum, v: const *Ogl.GLshort)
 </code>
 </p>
 <p>
@@ -17468,7 +17468,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glMultiTexCoord3d(target: GLenum, s: GLdouble, t: GLdouble, r: GLdouble)
+<code style="white-space: break-spaces">func glMultiTexCoord3d(target: Ogl.GLenum, s: Ogl.GLdouble, t: Ogl.GLdouble, r: Ogl.GLdouble)
 </code>
 </p>
 <p>
@@ -17483,7 +17483,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glMultiTexCoord3dv(target: GLenum, v: GLdouble)
+<code style="white-space: break-spaces">func glMultiTexCoord3dv(target: Ogl.GLenum, v: const *Ogl.GLdouble)
 </code>
 </p>
 <p>
@@ -17498,7 +17498,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glMultiTexCoord3f(target: GLenum, s: GLfloat, t: GLfloat, r: GLfloat)
+<code style="white-space: break-spaces">func glMultiTexCoord3f(target: Ogl.GLenum, s: Ogl.GLfloat, t: Ogl.GLfloat, r: Ogl.GLfloat)
 </code>
 </p>
 <p>
@@ -17513,7 +17513,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glMultiTexCoord3fv(target: GLenum, v: GLfloat)
+<code style="white-space: break-spaces">func glMultiTexCoord3fv(target: Ogl.GLenum, v: const *Ogl.GLfloat)
 </code>
 </p>
 <p>
@@ -17528,7 +17528,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glMultiTexCoord3i(target: GLenum, s: GLint, t: GLint, r: GLint)
+<code style="white-space: break-spaces">func glMultiTexCoord3i(target: Ogl.GLenum, s: Ogl.GLint, t: Ogl.GLint, r: Ogl.GLint)
 </code>
 </p>
 <p>
@@ -17543,7 +17543,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glMultiTexCoord3iv(target: GLenum, v: GLint)
+<code style="white-space: break-spaces">func glMultiTexCoord3iv(target: Ogl.GLenum, v: const *Ogl.GLint)
 </code>
 </p>
 <p>
@@ -17558,7 +17558,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glMultiTexCoord3s(target: GLenum, s: GLshort, t: GLshort, r: GLshort)
+<code style="white-space: break-spaces">func glMultiTexCoord3s(target: Ogl.GLenum, s: Ogl.GLshort, t: Ogl.GLshort, r: Ogl.GLshort)
 </code>
 </p>
 <p>
@@ -17573,7 +17573,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glMultiTexCoord3sv(target: GLenum, v: GLshort)
+<code style="white-space: break-spaces">func glMultiTexCoord3sv(target: Ogl.GLenum, v: const *Ogl.GLshort)
 </code>
 </p>
 <p>
@@ -17588,7 +17588,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glMultiTexCoord4d(target: GLenum, s: GLdouble, t: GLdouble, r: GLdouble, q: GLdouble)
+<code style="white-space: break-spaces">func glMultiTexCoord4d(target: Ogl.GLenum, s: Ogl.GLdouble, t: Ogl.GLdouble, r: Ogl.GLdouble, q: Ogl.GLdouble)
 </code>
 </p>
 <p>
@@ -17603,7 +17603,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glMultiTexCoord4dv(target: GLenum, v: GLdouble)
+<code style="white-space: break-spaces">func glMultiTexCoord4dv(target: Ogl.GLenum, v: const *Ogl.GLdouble)
 </code>
 </p>
 <p>
@@ -17618,7 +17618,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glMultiTexCoord4f(target: GLenum, s: GLfloat, t: GLfloat, r: GLfloat, q: GLfloat)
+<code style="white-space: break-spaces">func glMultiTexCoord4f(target: Ogl.GLenum, s: Ogl.GLfloat, t: Ogl.GLfloat, r: Ogl.GLfloat, q: Ogl.GLfloat)
 </code>
 </p>
 <p>
@@ -17633,7 +17633,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glMultiTexCoord4fv(target: GLenum, v: GLfloat)
+<code style="white-space: break-spaces">func glMultiTexCoord4fv(target: Ogl.GLenum, v: const *Ogl.GLfloat)
 </code>
 </p>
 <p>
@@ -17648,7 +17648,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glMultiTexCoord4i(target: GLenum, s: GLint, t: GLint, r: GLint, q: GLint)
+<code style="white-space: break-spaces">func glMultiTexCoord4i(target: Ogl.GLenum, s: Ogl.GLint, t: Ogl.GLint, r: Ogl.GLint, q: Ogl.GLint)
 </code>
 </p>
 <p>
@@ -17663,7 +17663,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glMultiTexCoord4iv(target: GLenum, v: GLint)
+<code style="white-space: break-spaces">func glMultiTexCoord4iv(target: Ogl.GLenum, v: const *Ogl.GLint)
 </code>
 </p>
 <p>
@@ -17678,7 +17678,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glMultiTexCoord4s(target: GLenum, s: GLshort, t: GLshort, r: GLshort, q: GLshort)
+<code style="white-space: break-spaces">func glMultiTexCoord4s(target: Ogl.GLenum, s: Ogl.GLshort, t: Ogl.GLshort, r: Ogl.GLshort, q: Ogl.GLshort)
 </code>
 </p>
 <p>
@@ -17693,7 +17693,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glMultiTexCoord4sv(target: GLenum, v: GLshort)
+<code style="white-space: break-spaces">func glMultiTexCoord4sv(target: Ogl.GLenum, v: const *Ogl.GLshort)
 </code>
 </p>
 <p>
@@ -17708,7 +17708,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glNamedFramebufferParameteriEXT(framebuffer: GLuint, pname: GLenum, param: GLint)
+<code style="white-space: break-spaces">func glNamedFramebufferParameteriEXT(framebuffer: Ogl.GLuint, pname: Ogl.GLenum, param: Ogl.GLint)
 </code>
 </p>
 <p>
@@ -17723,7 +17723,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glNamedStringARB(type: GLenum, namelen: GLint, name: GLchar, stringlen: GLint, str: GLchar)
+<code style="white-space: break-spaces">func glNamedStringARB(type: Ogl.GLenum, namelen: Ogl.GLint, name: const *Ogl.GLchar, stringlen: Ogl.GLint, str: const *Ogl.GLchar)
 </code>
 </p>
 <p>
@@ -17738,7 +17738,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glNewList(list: GLuint, mode: GLenum)
+<code style="white-space: break-spaces">func glNewList(list: Ogl.GLuint, mode: Ogl.GLenum)
 </code>
 </p>
 <p>
@@ -17753,7 +17753,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glNormal3b(nc: GLbyte, ny: GLbyte, nz: GLbyte)
+<code style="white-space: break-spaces">func glNormal3b(nc: Ogl.GLbyte, ny: Ogl.GLbyte, nz: Ogl.GLbyte)
 </code>
 </p>
 <p>
@@ -17768,7 +17768,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glNormal3bv(v: GLbyte)
+<code style="white-space: break-spaces">func glNormal3bv(v: const *Ogl.GLbyte)
 </code>
 </p>
 <p>
@@ -17783,7 +17783,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glNormal3d(nx: GLdouble, ny: GLdouble, nz: GLdouble)
+<code style="white-space: break-spaces">func glNormal3d(nx: Ogl.GLdouble, ny: Ogl.GLdouble, nz: Ogl.GLdouble)
 </code>
 </p>
 <p>
@@ -17798,7 +17798,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glNormal3dv(v: GLdouble)
+<code style="white-space: break-spaces">func glNormal3dv(v: const *Ogl.GLdouble)
 </code>
 </p>
 <p>
@@ -17813,7 +17813,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glNormal3f(nx: GLfloat, ny: GLfloat, nz: GLfloat)
+<code style="white-space: break-spaces">func glNormal3f(nx: Ogl.GLfloat, ny: Ogl.GLfloat, nz: Ogl.GLfloat)
 </code>
 </p>
 <p>
@@ -17828,7 +17828,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glNormal3fv(v: GLfloat)
+<code style="white-space: break-spaces">func glNormal3fv(v: const *Ogl.GLfloat)
 </code>
 </p>
 <p>
@@ -17843,7 +17843,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glNormal3i(nx: GLint, ny: GLint, nz: GLint)
+<code style="white-space: break-spaces">func glNormal3i(nx: Ogl.GLint, ny: Ogl.GLint, nz: Ogl.GLint)
 </code>
 </p>
 <p>
@@ -17858,7 +17858,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glNormal3iv(v: GLint)
+<code style="white-space: break-spaces">func glNormal3iv(v: const *Ogl.GLint)
 </code>
 </p>
 <p>
@@ -17873,7 +17873,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glNormal3s(nx: GLshort, ny: GLshort, nz: GLshort)
+<code style="white-space: break-spaces">func glNormal3s(nx: Ogl.GLshort, ny: Ogl.GLshort, nz: Ogl.GLshort)
 </code>
 </p>
 <p>
@@ -17888,7 +17888,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glNormal3sv(v: GLshort)
+<code style="white-space: break-spaces">func glNormal3sv(v: const *Ogl.GLshort)
 </code>
 </p>
 <p>
@@ -17903,7 +17903,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glNormalPointer(type: GLenum, stride: GLsizei, pointer: GLvoid)
+<code style="white-space: break-spaces">func glNormalPointer(type: Ogl.GLenum, stride: Ogl.GLsizei, pointer: const *Ogl.GLvoid)
 </code>
 </p>
 <p>
@@ -17918,7 +17918,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glOrtho(left: GLdouble, right: GLdouble, bottom: GLdouble, top: GLdouble, zNear: GLdouble, zFar: GLdouble)
+<code style="white-space: break-spaces">func glOrtho(left: Ogl.GLdouble, right: Ogl.GLdouble, bottom: Ogl.GLdouble, top: Ogl.GLdouble, zNear: Ogl.GLdouble, zFar: Ogl.GLdouble)
 </code>
 </p>
 <p>
@@ -17933,7 +17933,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glPassThrough(token: GLfloat)
+<code style="white-space: break-spaces">func glPassThrough(token: Ogl.GLfloat)
 </code>
 </p>
 <p>
@@ -17948,7 +17948,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glPixelMapfv(map: GLenum, mapsize: GLsizei, values: GLfloat)
+<code style="white-space: break-spaces">func glPixelMapfv(map: Ogl.GLenum, mapsize: Ogl.GLsizei, values: const *Ogl.GLfloat)
 </code>
 </p>
 <p>
@@ -17963,7 +17963,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glPixelMapuiv(map: GLenum, mapsize: GLsizei, values: GLuint)
+<code style="white-space: break-spaces">func glPixelMapuiv(map: Ogl.GLenum, mapsize: Ogl.GLsizei, values: const *Ogl.GLuint)
 </code>
 </p>
 <p>
@@ -17978,7 +17978,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glPixelMapusv(map: GLenum, mapsize: GLsizei, values: GLushort)
+<code style="white-space: break-spaces">func glPixelMapusv(map: Ogl.GLenum, mapsize: Ogl.GLsizei, values: const *Ogl.GLushort)
 </code>
 </p>
 <p>
@@ -17993,7 +17993,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glPixelStoref(pname: GLenum, param: GLfloat)
+<code style="white-space: break-spaces">func glPixelStoref(pname: Ogl.GLenum, param: Ogl.GLfloat)
 </code>
 </p>
 <p>
@@ -18008,7 +18008,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glPixelStorei(pname: GLenum, param: GLint)
+<code style="white-space: break-spaces">func glPixelStorei(pname: Ogl.GLenum, param: Ogl.GLint)
 </code>
 </p>
 <p>
@@ -18023,7 +18023,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glPixelTransferf(pname: GLenum, param: GLfloat)
+<code style="white-space: break-spaces">func glPixelTransferf(pname: Ogl.GLenum, param: Ogl.GLfloat)
 </code>
 </p>
 <p>
@@ -18038,7 +18038,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glPixelTransferi(pname: GLenum, param: GLint)
+<code style="white-space: break-spaces">func glPixelTransferi(pname: Ogl.GLenum, param: Ogl.GLint)
 </code>
 </p>
 <p>
@@ -18053,7 +18053,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glPixelZoom(xfactor: GLfloat, yfactor: GLfloat)
+<code style="white-space: break-spaces">func glPixelZoom(xfactor: Ogl.GLfloat, yfactor: Ogl.GLfloat)
 </code>
 </p>
 <p>
@@ -18068,7 +18068,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glPointParameterf(pname: GLenum, param: GLfloat)
+<code style="white-space: break-spaces">func glPointParameterf(pname: Ogl.GLenum, param: Ogl.GLfloat)
 </code>
 </p>
 <p>
@@ -18083,7 +18083,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glPointParameterfv(pname: GLenum, params: GLfloat)
+<code style="white-space: break-spaces">func glPointParameterfv(pname: Ogl.GLenum, params: const *Ogl.GLfloat)
 </code>
 </p>
 <p>
@@ -18098,7 +18098,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glPointParameteri(pname: GLenum, param: GLint)
+<code style="white-space: break-spaces">func glPointParameteri(pname: Ogl.GLenum, param: Ogl.GLint)
 </code>
 </p>
 <p>
@@ -18113,7 +18113,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glPointParameteriv(pname: GLenum, params: GLint)
+<code style="white-space: break-spaces">func glPointParameteriv(pname: Ogl.GLenum, params: const *Ogl.GLint)
 </code>
 </p>
 <p>
@@ -18128,7 +18128,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glPointSize(size: GLfloat)
+<code style="white-space: break-spaces">func glPointSize(size: Ogl.GLfloat)
 </code>
 </p>
 <p>
@@ -18143,7 +18143,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glPolygonMode(face: GLenum, mode: GLenum)
+<code style="white-space: break-spaces">func glPolygonMode(face: Ogl.GLenum, mode: Ogl.GLenum)
 </code>
 </p>
 <p>
@@ -18158,7 +18158,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glPolygonOffset(factor: GLfloat, units: GLfloat)
+<code style="white-space: break-spaces">func glPolygonOffset(factor: Ogl.GLfloat, units: Ogl.GLfloat)
 </code>
 </p>
 <p>
@@ -18173,7 +18173,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glPolygonStipple(mask: GLubyte)
+<code style="white-space: break-spaces">func glPolygonStipple(mask: const *Ogl.GLubyte)
 </code>
 </p>
 <p>
@@ -18248,7 +18248,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glPrimitiveRestartIndex(buffer: GLuint)
+<code style="white-space: break-spaces">func glPrimitiveRestartIndex(buffer: Ogl.GLuint)
 </code>
 </p>
 <p>
@@ -18263,7 +18263,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glPrioritizeTextures(n: GLsizei, textures: GLuint, priorities: GLclampf)
+<code style="white-space: break-spaces">func glPrioritizeTextures(n: Ogl.GLsizei, textures: const *Ogl.GLuint, priorities: const *Ogl.GLclampf)
 </code>
 </p>
 <p>
@@ -18278,7 +18278,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glPushAttrib(mask: GLbitfield)
+<code style="white-space: break-spaces">func glPushAttrib(mask: Ogl.GLbitfield)
 </code>
 </p>
 <p>
@@ -18293,7 +18293,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glPushClientAttrib(mask: GLbitfield)
+<code style="white-space: break-spaces">func glPushClientAttrib(mask: Ogl.GLbitfield)
 </code>
 </p>
 <p>
@@ -18323,7 +18323,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glPushName(name: GLuint)
+<code style="white-space: break-spaces">func glPushName(name: Ogl.GLuint)
 </code>
 </p>
 <p>
@@ -18338,7 +18338,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glRasterPos2d(x: GLdouble, y: GLdouble)
+<code style="white-space: break-spaces">func glRasterPos2d(x: Ogl.GLdouble, y: Ogl.GLdouble)
 </code>
 </p>
 <p>
@@ -18353,7 +18353,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glRasterPos2dv(v: GLdouble)
+<code style="white-space: break-spaces">func glRasterPos2dv(v: const *Ogl.GLdouble)
 </code>
 </p>
 <p>
@@ -18368,7 +18368,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glRasterPos2f(x: GLfloat, y: GLfloat)
+<code style="white-space: break-spaces">func glRasterPos2f(x: Ogl.GLfloat, y: Ogl.GLfloat)
 </code>
 </p>
 <p>
@@ -18383,7 +18383,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glRasterPos2fv(v: GLfloat)
+<code style="white-space: break-spaces">func glRasterPos2fv(v: const *Ogl.GLfloat)
 </code>
 </p>
 <p>
@@ -18398,7 +18398,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glRasterPos2i(x: GLint, y: GLint)
+<code style="white-space: break-spaces">func glRasterPos2i(x: Ogl.GLint, y: Ogl.GLint)
 </code>
 </p>
 <p>
@@ -18413,7 +18413,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glRasterPos2iv(v: GLint)
+<code style="white-space: break-spaces">func glRasterPos2iv(v: const *Ogl.GLint)
 </code>
 </p>
 <p>
@@ -18428,7 +18428,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glRasterPos2s(x: GLshort, y: GLshort)
+<code style="white-space: break-spaces">func glRasterPos2s(x: Ogl.GLshort, y: Ogl.GLshort)
 </code>
 </p>
 <p>
@@ -18443,7 +18443,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glRasterPos2sv(v: GLshort)
+<code style="white-space: break-spaces">func glRasterPos2sv(v: const *Ogl.GLshort)
 </code>
 </p>
 <p>
@@ -18458,7 +18458,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glRasterPos3d(x: GLdouble, y: GLdouble, z: GLdouble)
+<code style="white-space: break-spaces">func glRasterPos3d(x: Ogl.GLdouble, y: Ogl.GLdouble, z: Ogl.GLdouble)
 </code>
 </p>
 <p>
@@ -18473,7 +18473,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glRasterPos3dv(v: GLdouble)
+<code style="white-space: break-spaces">func glRasterPos3dv(v: const *Ogl.GLdouble)
 </code>
 </p>
 <p>
@@ -18488,7 +18488,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glRasterPos3f(x: GLfloat, y: GLfloat, z: GLfloat)
+<code style="white-space: break-spaces">func glRasterPos3f(x: Ogl.GLfloat, y: Ogl.GLfloat, z: Ogl.GLfloat)
 </code>
 </p>
 <p>
@@ -18503,7 +18503,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glRasterPos3fv(v: GLfloat)
+<code style="white-space: break-spaces">func glRasterPos3fv(v: const *Ogl.GLfloat)
 </code>
 </p>
 <p>
@@ -18518,7 +18518,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glRasterPos3i(x: GLint, y: GLint, z: GLint)
+<code style="white-space: break-spaces">func glRasterPos3i(x: Ogl.GLint, y: Ogl.GLint, z: Ogl.GLint)
 </code>
 </p>
 <p>
@@ -18533,7 +18533,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glRasterPos3iv(v: GLint)
+<code style="white-space: break-spaces">func glRasterPos3iv(v: const *Ogl.GLint)
 </code>
 </p>
 <p>
@@ -18548,7 +18548,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glRasterPos3s(x: GLshort, y: GLshort, z: GLshort)
+<code style="white-space: break-spaces">func glRasterPos3s(x: Ogl.GLshort, y: Ogl.GLshort, z: Ogl.GLshort)
 </code>
 </p>
 <p>
@@ -18563,7 +18563,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glRasterPos3sv(v: GLshort)
+<code style="white-space: break-spaces">func glRasterPos3sv(v: const *Ogl.GLshort)
 </code>
 </p>
 <p>
@@ -18578,7 +18578,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glRasterPos4d(x: GLdouble, y: GLdouble, z: GLdouble, w: GLdouble)
+<code style="white-space: break-spaces">func glRasterPos4d(x: Ogl.GLdouble, y: Ogl.GLdouble, z: Ogl.GLdouble, w: Ogl.GLdouble)
 </code>
 </p>
 <p>
@@ -18593,7 +18593,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glRasterPos4dv(v: GLdouble)
+<code style="white-space: break-spaces">func glRasterPos4dv(v: const *Ogl.GLdouble)
 </code>
 </p>
 <p>
@@ -18608,7 +18608,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glRasterPos4f(x: GLfloat, y: GLfloat, z: GLfloat, w: GLfloat)
+<code style="white-space: break-spaces">func glRasterPos4f(x: Ogl.GLfloat, y: Ogl.GLfloat, z: Ogl.GLfloat, w: Ogl.GLfloat)
 </code>
 </p>
 <p>
@@ -18623,7 +18623,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glRasterPos4fv(v: GLfloat)
+<code style="white-space: break-spaces">func glRasterPos4fv(v: const *Ogl.GLfloat)
 </code>
 </p>
 <p>
@@ -18638,7 +18638,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glRasterPos4i(x: GLint, y: GLint, z: GLint, w: GLint)
+<code style="white-space: break-spaces">func glRasterPos4i(x: Ogl.GLint, y: Ogl.GLint, z: Ogl.GLint, w: Ogl.GLint)
 </code>
 </p>
 <p>
@@ -18653,7 +18653,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glRasterPos4iv(v: GLint)
+<code style="white-space: break-spaces">func glRasterPos4iv(v: const *Ogl.GLint)
 </code>
 </p>
 <p>
@@ -18668,7 +18668,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glRasterPos4s(x: GLshort, y: GLshort, z: GLshort, w: GLshort)
+<code style="white-space: break-spaces">func glRasterPos4s(x: Ogl.GLshort, y: Ogl.GLshort, z: Ogl.GLshort, w: Ogl.GLshort)
 </code>
 </p>
 <p>
@@ -18683,7 +18683,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glRasterPos4sv(v: GLshort)
+<code style="white-space: break-spaces">func glRasterPos4sv(v: const *Ogl.GLshort)
 </code>
 </p>
 <p>
@@ -18698,7 +18698,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glReadBuffer(mode: GLenum)
+<code style="white-space: break-spaces">func glReadBuffer(mode: Ogl.GLenum)
 </code>
 </p>
 <p>
@@ -18713,7 +18713,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glReadPixels(x: GLint, y: GLint, width: GLsizei, height: GLsizei, format: GLenum, type: GLenum, pixels: GLvoid)
+<code style="white-space: break-spaces">func glReadPixels(x: Ogl.GLint, y: Ogl.GLint, width: Ogl.GLsizei, height: Ogl.GLsizei, format: Ogl.GLenum, type: Ogl.GLenum, pixels: *Ogl.GLvoid)
 </code>
 </p>
 <p>
@@ -18728,7 +18728,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glRectd(x1: GLdouble, y1: GLdouble, x2: GLdouble, y2: GLdouble)
+<code style="white-space: break-spaces">func glRectd(x1: Ogl.GLdouble, y1: Ogl.GLdouble, x2: Ogl.GLdouble, y2: Ogl.GLdouble)
 </code>
 </p>
 <p>
@@ -18743,7 +18743,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glRectdv(v1: GLdouble, v2: GLdouble)
+<code style="white-space: break-spaces">func glRectdv(v1: const *Ogl.GLdouble, v2: const *Ogl.GLdouble)
 </code>
 </p>
 <p>
@@ -18758,7 +18758,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glRectf(x1: GLfloat, y1: GLfloat, x2: GLfloat, y2: GLfloat)
+<code style="white-space: break-spaces">func glRectf(x1: Ogl.GLfloat, y1: Ogl.GLfloat, x2: Ogl.GLfloat, y2: Ogl.GLfloat)
 </code>
 </p>
 <p>
@@ -18773,7 +18773,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glRectfv(v1: GLfloat, v2: GLfloat)
+<code style="white-space: break-spaces">func glRectfv(v1: const *Ogl.GLfloat, v2: const *Ogl.GLfloat)
 </code>
 </p>
 <p>
@@ -18788,7 +18788,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glRecti(x1: GLint, y1: GLint, x2: GLint, y2: GLint)
+<code style="white-space: break-spaces">func glRecti(x1: Ogl.GLint, y1: Ogl.GLint, x2: Ogl.GLint, y2: Ogl.GLint)
 </code>
 </p>
 <p>
@@ -18803,7 +18803,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glRectiv(v1: GLint, v2: GLint)
+<code style="white-space: break-spaces">func glRectiv(v1: const *Ogl.GLint, v2: const *Ogl.GLint)
 </code>
 </p>
 <p>
@@ -18818,7 +18818,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glRects(x1: GLshort, y1: GLshort, x2: GLshort, y2: GLshort)
+<code style="white-space: break-spaces">func glRects(x1: Ogl.GLshort, y1: Ogl.GLshort, x2: Ogl.GLshort, y2: Ogl.GLshort)
 </code>
 </p>
 <p>
@@ -18833,7 +18833,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glRectsv(v1: GLshort, v2: GLshort)
+<code style="white-space: break-spaces">func glRectsv(v1: const *Ogl.GLshort, v2: const *Ogl.GLshort)
 </code>
 </p>
 <p>
@@ -18848,7 +18848,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glRenderMode(mode: GLenum)->GLint
+<code style="white-space: break-spaces">func glRenderMode(mode: Ogl.GLenum)->Ogl.GLint
 </code>
 </p>
 <p>
@@ -18863,7 +18863,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glRenderbufferStorage(target: GLenum, internalformat: GLenum, width: GLsizei, height: GLsizei)
+<code style="white-space: break-spaces">func glRenderbufferStorage(target: Ogl.GLenum, internalformat: Ogl.GLenum, width: Ogl.GLsizei, height: Ogl.GLsizei)
 </code>
 </p>
 <p>
@@ -18878,7 +18878,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glRenderbufferStorageMultisample(target: GLenum, samples: GLsizei, internalformat: GLenum, width: GLsizei, height: GLsizei)
+<code style="white-space: break-spaces">func glRenderbufferStorageMultisample(target: Ogl.GLenum, samples: Ogl.GLsizei, internalformat: Ogl.GLenum, width: Ogl.GLsizei, height: Ogl.GLsizei)
 </code>
 </p>
 <p>
@@ -18893,7 +18893,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glRotated(angle: GLdouble, x: GLdouble, y: GLdouble, z: GLdouble)
+<code style="white-space: break-spaces">func glRotated(angle: Ogl.GLdouble, x: Ogl.GLdouble, y: Ogl.GLdouble, z: Ogl.GLdouble)
 </code>
 </p>
 <p>
@@ -18908,7 +18908,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glRotatef(angle: GLfloat, x: GLfloat, y: GLfloat, z: GLfloat)
+<code style="white-space: break-spaces">func glRotatef(angle: Ogl.GLfloat, x: Ogl.GLfloat, y: Ogl.GLfloat, z: Ogl.GLfloat)
 </code>
 </p>
 <p>
@@ -18923,7 +18923,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glSampleCoverage(value: GLclampf, invert: GLboolean)
+<code style="white-space: break-spaces">func glSampleCoverage(value: Ogl.GLclampf, invert: Ogl.GLboolean)
 </code>
 </p>
 <p>
@@ -18938,7 +18938,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glScaled(x: GLdouble, y: GLdouble, z: GLdouble)
+<code style="white-space: break-spaces">func glScaled(x: Ogl.GLdouble, y: Ogl.GLdouble, z: Ogl.GLdouble)
 </code>
 </p>
 <p>
@@ -18953,7 +18953,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glScalef(x: GLfloat, y: GLfloat, z: GLfloat)
+<code style="white-space: break-spaces">func glScalef(x: Ogl.GLfloat, y: Ogl.GLfloat, z: Ogl.GLfloat)
 </code>
 </p>
 <p>
@@ -18968,7 +18968,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glScissor(x: GLint, y: GLint, width: GLsizei, height: GLsizei)
+<code style="white-space: break-spaces">func glScissor(x: Ogl.GLint, y: Ogl.GLint, width: Ogl.GLsizei, height: Ogl.GLsizei)
 </code>
 </p>
 <p>
@@ -18983,7 +18983,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glSecondaryColor3b(red: GLbyte, green: GLbyte, blue: GLbyte)
+<code style="white-space: break-spaces">func glSecondaryColor3b(red: Ogl.GLbyte, green: Ogl.GLbyte, blue: Ogl.GLbyte)
 </code>
 </p>
 <p>
@@ -18998,7 +18998,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glSecondaryColor3bv(v: GLbyte)
+<code style="white-space: break-spaces">func glSecondaryColor3bv(v: const *Ogl.GLbyte)
 </code>
 </p>
 <p>
@@ -19013,7 +19013,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glSecondaryColor3d(red: GLdouble, green: GLdouble, blue: GLdouble)
+<code style="white-space: break-spaces">func glSecondaryColor3d(red: Ogl.GLdouble, green: Ogl.GLdouble, blue: Ogl.GLdouble)
 </code>
 </p>
 <p>
@@ -19028,7 +19028,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glSecondaryColor3dv(v: GLdouble)
+<code style="white-space: break-spaces">func glSecondaryColor3dv(v: const *Ogl.GLdouble)
 </code>
 </p>
 <p>
@@ -19043,7 +19043,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glSecondaryColor3f(red: GLfloat, green: GLfloat, blue: GLfloat)
+<code style="white-space: break-spaces">func glSecondaryColor3f(red: Ogl.GLfloat, green: Ogl.GLfloat, blue: Ogl.GLfloat)
 </code>
 </p>
 <p>
@@ -19058,7 +19058,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glSecondaryColor3fv(v: GLfloat)
+<code style="white-space: break-spaces">func glSecondaryColor3fv(v: const *Ogl.GLfloat)
 </code>
 </p>
 <p>
@@ -19073,7 +19073,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glSecondaryColor3i(red: GLint, green: GLint, blue: GLint)
+<code style="white-space: break-spaces">func glSecondaryColor3i(red: Ogl.GLint, green: Ogl.GLint, blue: Ogl.GLint)
 </code>
 </p>
 <p>
@@ -19088,7 +19088,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glSecondaryColor3iv(v: GLint)
+<code style="white-space: break-spaces">func glSecondaryColor3iv(v: const *Ogl.GLint)
 </code>
 </p>
 <p>
@@ -19103,7 +19103,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glSecondaryColor3s(red: GLshort, green: GLshort, blue: GLshort)
+<code style="white-space: break-spaces">func glSecondaryColor3s(red: Ogl.GLshort, green: Ogl.GLshort, blue: Ogl.GLshort)
 </code>
 </p>
 <p>
@@ -19118,7 +19118,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glSecondaryColor3sv(v: GLshort)
+<code style="white-space: break-spaces">func glSecondaryColor3sv(v: const *Ogl.GLshort)
 </code>
 </p>
 <p>
@@ -19133,7 +19133,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glSecondaryColor3ub(red: GLubyte, green: GLubyte, blue: GLubyte)
+<code style="white-space: break-spaces">func glSecondaryColor3ub(red: Ogl.GLubyte, green: Ogl.GLubyte, blue: Ogl.GLubyte)
 </code>
 </p>
 <p>
@@ -19148,7 +19148,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glSecondaryColor3ubv(v: GLubyte)
+<code style="white-space: break-spaces">func glSecondaryColor3ubv(v: const *Ogl.GLubyte)
 </code>
 </p>
 <p>
@@ -19163,7 +19163,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glSecondaryColor3ui(red: GLuint, green: GLuint, blue: GLuint)
+<code style="white-space: break-spaces">func glSecondaryColor3ui(red: Ogl.GLuint, green: Ogl.GLuint, blue: Ogl.GLuint)
 </code>
 </p>
 <p>
@@ -19178,7 +19178,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glSecondaryColor3uiv(v: GLuint)
+<code style="white-space: break-spaces">func glSecondaryColor3uiv(v: const *Ogl.GLuint)
 </code>
 </p>
 <p>
@@ -19193,7 +19193,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glSecondaryColor3us(red: GLushort, green: GLushort, blue: GLushort)
+<code style="white-space: break-spaces">func glSecondaryColor3us(red: Ogl.GLushort, green: Ogl.GLushort, blue: Ogl.GLushort)
 </code>
 </p>
 <p>
@@ -19208,7 +19208,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glSecondaryColor3usv(v: GLushort)
+<code style="white-space: break-spaces">func glSecondaryColor3usv(v: const *Ogl.GLushort)
 </code>
 </p>
 <p>
@@ -19223,7 +19223,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glSecondaryColorPointer(size: GLint, type: GLenum, stride: GLsizei, pointer: const *void)
+<code style="white-space: break-spaces">func glSecondaryColorPointer(size: Ogl.GLint, type: Ogl.GLenum, stride: Ogl.GLsizei, pointer: const *void)
 </code>
 </p>
 <p>
@@ -19238,7 +19238,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glSelectBuffer(size: GLsizei, buffer: GLuint)
+<code style="white-space: break-spaces">func glSelectBuffer(size: Ogl.GLsizei, buffer: *Ogl.GLuint)
 </code>
 </p>
 <p>
@@ -19253,7 +19253,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glShadeModel(mode: GLenum)
+<code style="white-space: break-spaces">func glShadeModel(mode: Ogl.GLenum)
 </code>
 </p>
 <p>
@@ -19268,7 +19268,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glShaderSource(shader: GLuint, count: GLsizei, str: GLchar, length: GLint)
+<code style="white-space: break-spaces">func glShaderSource(shader: Ogl.GLuint, count: Ogl.GLsizei, str: *const *Ogl.GLchar, length: const *Ogl.GLint)
 </code>
 </p>
 <p>
@@ -19283,7 +19283,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glSpecializeShader(shader: GLuint, pEntryPoint: GLchar, numSpecializationConstants: GLuint, pConstantIndex: GLuint, pConstantValue: GLuint)
+<code style="white-space: break-spaces">func glSpecializeShader(shader: Ogl.GLuint, pEntryPoint: const *Ogl.GLchar, numSpecializationConstants: Ogl.GLuint, pConstantIndex: const *Ogl.GLuint, pConstantValue: const *Ogl.GLuint)
 </code>
 </p>
 <p>
@@ -19298,7 +19298,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glStencilFunc(fc: GLenum, refr: GLint, mask: GLuint)
+<code style="white-space: break-spaces">func glStencilFunc(fc: Ogl.GLenum, refr: Ogl.GLint, mask: Ogl.GLuint)
 </code>
 </p>
 <p>
@@ -19313,7 +19313,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glStencilFuncSeparate(frontfunc: GLenum, backfunc: GLenum, refr: GLint, mask: GLuint)
+<code style="white-space: break-spaces">func glStencilFuncSeparate(frontfunc: Ogl.GLenum, backfunc: Ogl.GLenum, refr: Ogl.GLint, mask: Ogl.GLuint)
 </code>
 </p>
 <p>
@@ -19328,7 +19328,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glStencilMask(mask: GLuint)
+<code style="white-space: break-spaces">func glStencilMask(mask: Ogl.GLuint)
 </code>
 </p>
 <p>
@@ -19343,7 +19343,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glStencilMaskSeparate(face: GLenum, mask: GLuint)
+<code style="white-space: break-spaces">func glStencilMaskSeparate(face: Ogl.GLenum, mask: Ogl.GLuint)
 </code>
 </p>
 <p>
@@ -19358,7 +19358,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glStencilOp(fail: GLenum, zfail: GLenum, zpass: GLenum)
+<code style="white-space: break-spaces">func glStencilOp(fail: Ogl.GLenum, zfail: Ogl.GLenum, zpass: Ogl.GLenum)
 </code>
 </p>
 <p>
@@ -19373,7 +19373,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glStencilOpSeparate(face: GLenum, sfail: GLenum, dpfail: GLenum, dppass: GLenum)
+<code style="white-space: break-spaces">func glStencilOpSeparate(face: Ogl.GLenum, sfail: Ogl.GLenum, dpfail: Ogl.GLenum, dppass: Ogl.GLenum)
 </code>
 </p>
 <p>
@@ -19388,7 +19388,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glTexBuffer(target: GLenum, internalFormat: GLenum, buffer: GLuint)
+<code style="white-space: break-spaces">func glTexBuffer(target: Ogl.GLenum, internalFormat: Ogl.GLenum, buffer: Ogl.GLuint)
 </code>
 </p>
 <p>
@@ -19403,7 +19403,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glTexCoord1d(s: GLdouble)
+<code style="white-space: break-spaces">func glTexCoord1d(s: Ogl.GLdouble)
 </code>
 </p>
 <p>
@@ -19418,7 +19418,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glTexCoord1dv(v: GLdouble)
+<code style="white-space: break-spaces">func glTexCoord1dv(v: const *Ogl.GLdouble)
 </code>
 </p>
 <p>
@@ -19433,7 +19433,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glTexCoord1f(s: GLfloat)
+<code style="white-space: break-spaces">func glTexCoord1f(s: Ogl.GLfloat)
 </code>
 </p>
 <p>
@@ -19448,7 +19448,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glTexCoord1fv(v: GLfloat)
+<code style="white-space: break-spaces">func glTexCoord1fv(v: const *Ogl.GLfloat)
 </code>
 </p>
 <p>
@@ -19463,7 +19463,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glTexCoord1i(s: GLint)
+<code style="white-space: break-spaces">func glTexCoord1i(s: Ogl.GLint)
 </code>
 </p>
 <p>
@@ -19478,7 +19478,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glTexCoord1iv(v: GLint)
+<code style="white-space: break-spaces">func glTexCoord1iv(v: const *Ogl.GLint)
 </code>
 </p>
 <p>
@@ -19493,7 +19493,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glTexCoord1s(s: GLshort)
+<code style="white-space: break-spaces">func glTexCoord1s(s: Ogl.GLshort)
 </code>
 </p>
 <p>
@@ -19508,7 +19508,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glTexCoord1sv(v: GLshort)
+<code style="white-space: break-spaces">func glTexCoord1sv(v: const *Ogl.GLshort)
 </code>
 </p>
 <p>
@@ -19523,7 +19523,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glTexCoord2d(s: GLdouble, t: GLdouble)
+<code style="white-space: break-spaces">func glTexCoord2d(s: Ogl.GLdouble, t: Ogl.GLdouble)
 </code>
 </p>
 <p>
@@ -19538,7 +19538,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glTexCoord2dv(v: GLdouble)
+<code style="white-space: break-spaces">func glTexCoord2dv(v: const *Ogl.GLdouble)
 </code>
 </p>
 <p>
@@ -19553,7 +19553,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glTexCoord2f(s: GLfloat, t: GLfloat)
+<code style="white-space: break-spaces">func glTexCoord2f(s: Ogl.GLfloat, t: Ogl.GLfloat)
 </code>
 </p>
 <p>
@@ -19568,7 +19568,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glTexCoord2fv(v: GLfloat)
+<code style="white-space: break-spaces">func glTexCoord2fv(v: const *Ogl.GLfloat)
 </code>
 </p>
 <p>
@@ -19583,7 +19583,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glTexCoord2i(s: GLint, t: GLint)
+<code style="white-space: break-spaces">func glTexCoord2i(s: Ogl.GLint, t: Ogl.GLint)
 </code>
 </p>
 <p>
@@ -19598,7 +19598,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glTexCoord2iv(v: GLint)
+<code style="white-space: break-spaces">func glTexCoord2iv(v: const *Ogl.GLint)
 </code>
 </p>
 <p>
@@ -19613,7 +19613,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glTexCoord2s(s: GLshort, t: GLshort)
+<code style="white-space: break-spaces">func glTexCoord2s(s: Ogl.GLshort, t: Ogl.GLshort)
 </code>
 </p>
 <p>
@@ -19628,7 +19628,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glTexCoord2sv(v: GLshort)
+<code style="white-space: break-spaces">func glTexCoord2sv(v: const *Ogl.GLshort)
 </code>
 </p>
 <p>
@@ -19643,7 +19643,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glTexCoord3d(s: GLdouble, t: GLdouble, r: GLdouble)
+<code style="white-space: break-spaces">func glTexCoord3d(s: Ogl.GLdouble, t: Ogl.GLdouble, r: Ogl.GLdouble)
 </code>
 </p>
 <p>
@@ -19658,7 +19658,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glTexCoord3dv(v: GLdouble)
+<code style="white-space: break-spaces">func glTexCoord3dv(v: const *Ogl.GLdouble)
 </code>
 </p>
 <p>
@@ -19673,7 +19673,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glTexCoord3f(s: GLfloat, t: GLfloat, r: GLfloat)
+<code style="white-space: break-spaces">func glTexCoord3f(s: Ogl.GLfloat, t: Ogl.GLfloat, r: Ogl.GLfloat)
 </code>
 </p>
 <p>
@@ -19688,7 +19688,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glTexCoord3fv(v: GLfloat)
+<code style="white-space: break-spaces">func glTexCoord3fv(v: const *Ogl.GLfloat)
 </code>
 </p>
 <p>
@@ -19703,7 +19703,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glTexCoord3i(s: GLint, t: GLint, r: GLint)
+<code style="white-space: break-spaces">func glTexCoord3i(s: Ogl.GLint, t: Ogl.GLint, r: Ogl.GLint)
 </code>
 </p>
 <p>
@@ -19718,7 +19718,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glTexCoord3iv(v: GLint)
+<code style="white-space: break-spaces">func glTexCoord3iv(v: const *Ogl.GLint)
 </code>
 </p>
 <p>
@@ -19733,7 +19733,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glTexCoord3s(s: GLshort, t: GLshort, r: GLshort)
+<code style="white-space: break-spaces">func glTexCoord3s(s: Ogl.GLshort, t: Ogl.GLshort, r: Ogl.GLshort)
 </code>
 </p>
 <p>
@@ -19748,7 +19748,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glTexCoord3sv(v: GLshort)
+<code style="white-space: break-spaces">func glTexCoord3sv(v: const *Ogl.GLshort)
 </code>
 </p>
 <p>
@@ -19763,7 +19763,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glTexCoord4d(s: GLdouble, t: GLdouble, r: GLdouble, q: GLdouble)
+<code style="white-space: break-spaces">func glTexCoord4d(s: Ogl.GLdouble, t: Ogl.GLdouble, r: Ogl.GLdouble, q: Ogl.GLdouble)
 </code>
 </p>
 <p>
@@ -19778,7 +19778,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glTexCoord4dv(v: GLdouble)
+<code style="white-space: break-spaces">func glTexCoord4dv(v: const *Ogl.GLdouble)
 </code>
 </p>
 <p>
@@ -19793,7 +19793,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glTexCoord4f(s: GLfloat, t: GLfloat, r: GLfloat, q: GLfloat)
+<code style="white-space: break-spaces">func glTexCoord4f(s: Ogl.GLfloat, t: Ogl.GLfloat, r: Ogl.GLfloat, q: Ogl.GLfloat)
 </code>
 </p>
 <p>
@@ -19808,7 +19808,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glTexCoord4fv(v: GLfloat)
+<code style="white-space: break-spaces">func glTexCoord4fv(v: const *Ogl.GLfloat)
 </code>
 </p>
 <p>
@@ -19823,7 +19823,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glTexCoord4i(s: GLint, t: GLint, r: GLint, q: GLint)
+<code style="white-space: break-spaces">func glTexCoord4i(s: Ogl.GLint, t: Ogl.GLint, r: Ogl.GLint, q: Ogl.GLint)
 </code>
 </p>
 <p>
@@ -19838,7 +19838,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glTexCoord4iv(v: GLint)
+<code style="white-space: break-spaces">func glTexCoord4iv(v: const *Ogl.GLint)
 </code>
 </p>
 <p>
@@ -19853,7 +19853,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glTexCoord4s(s: GLshort, t: GLshort, r: GLshort, q: GLshort)
+<code style="white-space: break-spaces">func glTexCoord4s(s: Ogl.GLshort, t: Ogl.GLshort, r: Ogl.GLshort, q: Ogl.GLshort)
 </code>
 </p>
 <p>
@@ -19868,7 +19868,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glTexCoord4sv(v: GLshort)
+<code style="white-space: break-spaces">func glTexCoord4sv(v: const *Ogl.GLshort)
 </code>
 </p>
 <p>
@@ -19883,7 +19883,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glTexCoordPointer(size: GLint, type: GLenum, stride: GLsizei, pointer: GLvoid)
+<code style="white-space: break-spaces">func glTexCoordPointer(size: Ogl.GLint, type: Ogl.GLenum, stride: Ogl.GLsizei, pointer: const *Ogl.GLvoid)
 </code>
 </p>
 <p>
@@ -19898,7 +19898,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glTexEnvf(target: GLenum, pname: GLenum, param: GLfloat)
+<code style="white-space: break-spaces">func glTexEnvf(target: Ogl.GLenum, pname: Ogl.GLenum, param: Ogl.GLfloat)
 </code>
 </p>
 <p>
@@ -19913,7 +19913,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glTexEnvfv(target: GLenum, pname: GLenum, params: GLfloat)
+<code style="white-space: break-spaces">func glTexEnvfv(target: Ogl.GLenum, pname: Ogl.GLenum, params: const *Ogl.GLfloat)
 </code>
 </p>
 <p>
@@ -19928,7 +19928,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glTexEnvi(target: GLenum, pname: GLenum, param: GLint)
+<code style="white-space: break-spaces">func glTexEnvi(target: Ogl.GLenum, pname: Ogl.GLenum, param: Ogl.GLint)
 </code>
 </p>
 <p>
@@ -19943,7 +19943,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glTexEnviv(target: GLenum, pname: GLenum, params: GLint)
+<code style="white-space: break-spaces">func glTexEnviv(target: Ogl.GLenum, pname: Ogl.GLenum, params: const *Ogl.GLint)
 </code>
 </p>
 <p>
@@ -19958,7 +19958,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glTexGend(coord: GLenum, pname: GLenum, param: GLdouble)
+<code style="white-space: break-spaces">func glTexGend(coord: Ogl.GLenum, pname: Ogl.GLenum, param: Ogl.GLdouble)
 </code>
 </p>
 <p>
@@ -19973,7 +19973,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glTexGendv(coord: GLenum, pname: GLenum, params: GLdouble)
+<code style="white-space: break-spaces">func glTexGendv(coord: Ogl.GLenum, pname: Ogl.GLenum, params: const *Ogl.GLdouble)
 </code>
 </p>
 <p>
@@ -19988,7 +19988,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glTexGenf(coord: GLenum, pname: GLenum, param: GLfloat)
+<code style="white-space: break-spaces">func glTexGenf(coord: Ogl.GLenum, pname: Ogl.GLenum, param: Ogl.GLfloat)
 </code>
 </p>
 <p>
@@ -20003,7 +20003,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glTexGenfv(coord: GLenum, pname: GLenum, params: GLfloat)
+<code style="white-space: break-spaces">func glTexGenfv(coord: Ogl.GLenum, pname: Ogl.GLenum, params: const *Ogl.GLfloat)
 </code>
 </p>
 <p>
@@ -20018,7 +20018,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glTexGeni(coord: GLenum, pname: GLenum, param: GLint)
+<code style="white-space: break-spaces">func glTexGeni(coord: Ogl.GLenum, pname: Ogl.GLenum, param: Ogl.GLint)
 </code>
 </p>
 <p>
@@ -20033,7 +20033,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glTexGeniv(coord: GLenum, pname: GLenum, params: GLint)
+<code style="white-space: break-spaces">func glTexGeniv(coord: Ogl.GLenum, pname: Ogl.GLenum, params: const *Ogl.GLint)
 </code>
 </p>
 <p>
@@ -20048,7 +20048,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glTexImage1D(target: GLenum, level: GLint, internalformat: GLint, width: GLsizei, border: GLint, format: GLenum, type: GLenum, pixels: GLvoid)
+<code style="white-space: break-spaces">func glTexImage1D(target: Ogl.GLenum, level: Ogl.GLint, internalformat: Ogl.GLint, width: Ogl.GLsizei, border: Ogl.GLint, format: Ogl.GLenum, type: Ogl.GLenum, pixels: const *Ogl.GLvoid)
 </code>
 </p>
 <p>
@@ -20063,7 +20063,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glTexImage2D(target: GLenum, level: GLint, internalformat: GLint, width: GLsizei, height: GLsizei, border: GLint, format: GLenum, type: GLenum, pixels: GLvoid)
+<code style="white-space: break-spaces">func glTexImage2D(target: Ogl.GLenum, level: Ogl.GLint, internalformat: Ogl.GLint, width: Ogl.GLsizei, height: Ogl.GLsizei, border: Ogl.GLint, format: Ogl.GLenum, type: Ogl.GLenum, pixels: const *Ogl.GLvoid)
 </code>
 </p>
 <p>
@@ -20078,7 +20078,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glTexParameterIiv(target: GLenum, pname: GLenum, params: GLint)
+<code style="white-space: break-spaces">func glTexParameterIiv(target: Ogl.GLenum, pname: Ogl.GLenum, params: const *Ogl.GLint)
 </code>
 </p>
 <p>
@@ -20093,7 +20093,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glTexParameterIuiv(target: GLenum, pname: GLenum, params: GLuint)
+<code style="white-space: break-spaces">func glTexParameterIuiv(target: Ogl.GLenum, pname: Ogl.GLenum, params: const *Ogl.GLuint)
 </code>
 </p>
 <p>
@@ -20108,7 +20108,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glTexParameterf(target: GLenum, pname: GLenum, param: GLfloat)
+<code style="white-space: break-spaces">func glTexParameterf(target: Ogl.GLenum, pname: Ogl.GLenum, param: Ogl.GLfloat)
 </code>
 </p>
 <p>
@@ -20123,7 +20123,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glTexParameterfv(target: GLenum, pname: GLenum, params: GLfloat)
+<code style="white-space: break-spaces">func glTexParameterfv(target: Ogl.GLenum, pname: Ogl.GLenum, params: const *Ogl.GLfloat)
 </code>
 </p>
 <p>
@@ -20138,7 +20138,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glTexParameteri(target: GLenum, pname: GLenum, param: GLint)
+<code style="white-space: break-spaces">func glTexParameteri(target: Ogl.GLenum, pname: Ogl.GLenum, param: Ogl.GLint)
 </code>
 </p>
 <p>
@@ -20153,7 +20153,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glTexParameteriv(target: GLenum, pname: GLenum, params: GLint)
+<code style="white-space: break-spaces">func glTexParameteriv(target: Ogl.GLenum, pname: Ogl.GLenum, params: const *Ogl.GLint)
 </code>
 </p>
 <p>
@@ -20168,7 +20168,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glTexSubImage1D(target: GLenum, level: GLint, xoffset: GLint, width: GLsizei, format: GLenum, type: GLenum, pixels: GLvoid)
+<code style="white-space: break-spaces">func glTexSubImage1D(target: Ogl.GLenum, level: Ogl.GLint, xoffset: Ogl.GLint, width: Ogl.GLsizei, format: Ogl.GLenum, type: Ogl.GLenum, pixels: const *Ogl.GLvoid)
 </code>
 </p>
 <p>
@@ -20183,7 +20183,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glTexSubImage2D(target: GLenum, level: GLint, xoffset: GLint, yoffset: GLint, width: GLsizei, height: GLsizei, format: GLenum, type: GLenum, pixels: GLvoid)
+<code style="white-space: break-spaces">func glTexSubImage2D(target: Ogl.GLenum, level: Ogl.GLint, xoffset: Ogl.GLint, yoffset: Ogl.GLint, width: Ogl.GLsizei, height: Ogl.GLsizei, format: Ogl.GLenum, type: Ogl.GLenum, pixels: const *Ogl.GLvoid)
 </code>
 </p>
 <p>
@@ -20198,7 +20198,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glTransformFeedbackVaryings(program: GLuint, count: GLsizei, varyings: GLchar, bufferMode: GLenum)
+<code style="white-space: break-spaces">func glTransformFeedbackVaryings(program: Ogl.GLuint, count: Ogl.GLsizei, varyings: *const *Ogl.GLchar, bufferMode: Ogl.GLenum)
 </code>
 </p>
 <p>
@@ -20213,7 +20213,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glTranslated(x: GLdouble, y: GLdouble, z: GLdouble)
+<code style="white-space: break-spaces">func glTranslated(x: Ogl.GLdouble, y: Ogl.GLdouble, z: Ogl.GLdouble)
 </code>
 </p>
 <p>
@@ -20228,7 +20228,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glTranslatef(x: GLfloat, y: GLfloat, z: GLfloat)
+<code style="white-space: break-spaces">func glTranslatef(x: Ogl.GLfloat, y: Ogl.GLfloat, z: Ogl.GLfloat)
 </code>
 </p>
 <p>
@@ -20243,7 +20243,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glUniform1f(location: GLint, v0: GLfloat)
+<code style="white-space: break-spaces">func glUniform1f(location: Ogl.GLint, v0: Ogl.GLfloat)
 </code>
 </p>
 <p>
@@ -20258,7 +20258,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glUniform1fv(location: GLint, count: GLsizei, value: GLfloat)
+<code style="white-space: break-spaces">func glUniform1fv(location: Ogl.GLint, count: Ogl.GLsizei, value: const *Ogl.GLfloat)
 </code>
 </p>
 <p>
@@ -20273,7 +20273,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glUniform1i(location: GLint, v0: GLint)
+<code style="white-space: break-spaces">func glUniform1i(location: Ogl.GLint, v0: Ogl.GLint)
 </code>
 </p>
 <p>
@@ -20288,7 +20288,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glUniform1iv(location: GLint, count: GLsizei, value: GLint)
+<code style="white-space: break-spaces">func glUniform1iv(location: Ogl.GLint, count: Ogl.GLsizei, value: const *Ogl.GLint)
 </code>
 </p>
 <p>
@@ -20303,7 +20303,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glUniform1ui(location: GLint, v0: GLuint)
+<code style="white-space: break-spaces">func glUniform1ui(location: Ogl.GLint, v0: Ogl.GLuint)
 </code>
 </p>
 <p>
@@ -20318,7 +20318,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glUniform1uiv(location: GLint, count: GLsizei, value: GLuint)
+<code style="white-space: break-spaces">func glUniform1uiv(location: Ogl.GLint, count: Ogl.GLsizei, value: const *Ogl.GLuint)
 </code>
 </p>
 <p>
@@ -20333,7 +20333,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glUniform2f(location: GLint, v0: GLfloat, v1: GLfloat)
+<code style="white-space: break-spaces">func glUniform2f(location: Ogl.GLint, v0: Ogl.GLfloat, v1: Ogl.GLfloat)
 </code>
 </p>
 <p>
@@ -20348,7 +20348,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glUniform2fv(location: GLint, count: GLsizei, value: GLfloat)
+<code style="white-space: break-spaces">func glUniform2fv(location: Ogl.GLint, count: Ogl.GLsizei, value: const *Ogl.GLfloat)
 </code>
 </p>
 <p>
@@ -20363,7 +20363,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glUniform2i(location: GLint, v0: GLint, v1: GLint)
+<code style="white-space: break-spaces">func glUniform2i(location: Ogl.GLint, v0: Ogl.GLint, v1: Ogl.GLint)
 </code>
 </p>
 <p>
@@ -20378,7 +20378,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glUniform2iv(location: GLint, count: GLsizei, value: GLint)
+<code style="white-space: break-spaces">func glUniform2iv(location: Ogl.GLint, count: Ogl.GLsizei, value: const *Ogl.GLint)
 </code>
 </p>
 <p>
@@ -20393,7 +20393,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glUniform2ui(location: GLint, v0: GLuint, v1: GLuint)
+<code style="white-space: break-spaces">func glUniform2ui(location: Ogl.GLint, v0: Ogl.GLuint, v1: Ogl.GLuint)
 </code>
 </p>
 <p>
@@ -20408,7 +20408,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glUniform2uiv(location: GLint, count: GLsizei, value: GLuint)
+<code style="white-space: break-spaces">func glUniform2uiv(location: Ogl.GLint, count: Ogl.GLsizei, value: const *Ogl.GLuint)
 </code>
 </p>
 <p>
@@ -20423,7 +20423,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glUniform3f(location: GLint, v0: GLfloat, v1: GLfloat, v2: GLfloat)
+<code style="white-space: break-spaces">func glUniform3f(location: Ogl.GLint, v0: Ogl.GLfloat, v1: Ogl.GLfloat, v2: Ogl.GLfloat)
 </code>
 </p>
 <p>
@@ -20438,7 +20438,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glUniform3fv(location: GLint, count: GLsizei, value: GLfloat)
+<code style="white-space: break-spaces">func glUniform3fv(location: Ogl.GLint, count: Ogl.GLsizei, value: const *Ogl.GLfloat)
 </code>
 </p>
 <p>
@@ -20453,7 +20453,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glUniform3i(location: GLint, v0: GLint, v1: GLint, v2: GLint)
+<code style="white-space: break-spaces">func glUniform3i(location: Ogl.GLint, v0: Ogl.GLint, v1: Ogl.GLint, v2: Ogl.GLint)
 </code>
 </p>
 <p>
@@ -20468,7 +20468,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glUniform3iv(location: GLint, count: GLsizei, value: GLint)
+<code style="white-space: break-spaces">func glUniform3iv(location: Ogl.GLint, count: Ogl.GLsizei, value: const *Ogl.GLint)
 </code>
 </p>
 <p>
@@ -20483,7 +20483,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glUniform3ui(location: GLint, v0: GLuint, v1: GLuint, v2: GLuint)
+<code style="white-space: break-spaces">func glUniform3ui(location: Ogl.GLint, v0: Ogl.GLuint, v1: Ogl.GLuint, v2: Ogl.GLuint)
 </code>
 </p>
 <p>
@@ -20498,7 +20498,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glUniform3uiv(location: GLint, count: GLsizei, value: GLuint)
+<code style="white-space: break-spaces">func glUniform3uiv(location: Ogl.GLint, count: Ogl.GLsizei, value: const *Ogl.GLuint)
 </code>
 </p>
 <p>
@@ -20513,7 +20513,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glUniform4f(location: GLint, v0: GLfloat, v1: GLfloat, v2: GLfloat, v3: GLfloat)
+<code style="white-space: break-spaces">func glUniform4f(location: Ogl.GLint, v0: Ogl.GLfloat, v1: Ogl.GLfloat, v2: Ogl.GLfloat, v3: Ogl.GLfloat)
 </code>
 </p>
 <p>
@@ -20528,7 +20528,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glUniform4fv(location: GLint, count: GLsizei, value: GLfloat)
+<code style="white-space: break-spaces">func glUniform4fv(location: Ogl.GLint, count: Ogl.GLsizei, value: const *Ogl.GLfloat)
 </code>
 </p>
 <p>
@@ -20543,7 +20543,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glUniform4i(location: GLint, v0: GLint, v1: GLint, v2: GLint, v3: GLint)
+<code style="white-space: break-spaces">func glUniform4i(location: Ogl.GLint, v0: Ogl.GLint, v1: Ogl.GLint, v2: Ogl.GLint, v3: Ogl.GLint)
 </code>
 </p>
 <p>
@@ -20558,7 +20558,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glUniform4iv(location: GLint, count: GLsizei, value: GLint)
+<code style="white-space: break-spaces">func glUniform4iv(location: Ogl.GLint, count: Ogl.GLsizei, value: const *Ogl.GLint)
 </code>
 </p>
 <p>
@@ -20573,7 +20573,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glUniform4ui(location: GLint, v0: GLuint, v1: GLuint, v2: GLuint, v3: GLuint)
+<code style="white-space: break-spaces">func glUniform4ui(location: Ogl.GLint, v0: Ogl.GLuint, v1: Ogl.GLuint, v2: Ogl.GLuint, v3: Ogl.GLuint)
 </code>
 </p>
 <p>
@@ -20588,7 +20588,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glUniform4uiv(location: GLint, count: GLsizei, value: GLuint)
+<code style="white-space: break-spaces">func glUniform4uiv(location: Ogl.GLint, count: Ogl.GLsizei, value: const *Ogl.GLuint)
 </code>
 </p>
 <p>
@@ -20603,7 +20603,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glUniformMatrix2fv(location: GLint, count: GLsizei, transpose: GLboolean, value: GLfloat)
+<code style="white-space: break-spaces">func glUniformMatrix2fv(location: Ogl.GLint, count: Ogl.GLsizei, transpose: Ogl.GLboolean, value: const *Ogl.GLfloat)
 </code>
 </p>
 <p>
@@ -20618,7 +20618,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glUniformMatrix2x3fv(location: GLint, count: GLsizei, transpose: GLboolean, value: GLfloat)
+<code style="white-space: break-spaces">func glUniformMatrix2x3fv(location: Ogl.GLint, count: Ogl.GLsizei, transpose: Ogl.GLboolean, value: const *Ogl.GLfloat)
 </code>
 </p>
 <p>
@@ -20633,7 +20633,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glUniformMatrix2x4fv(location: GLint, count: GLsizei, transpose: GLboolean, value: GLfloat)
+<code style="white-space: break-spaces">func glUniformMatrix2x4fv(location: Ogl.GLint, count: Ogl.GLsizei, transpose: Ogl.GLboolean, value: const *Ogl.GLfloat)
 </code>
 </p>
 <p>
@@ -20648,7 +20648,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glUniformMatrix3fv(location: GLint, count: GLsizei, transpose: GLboolean, value: GLfloat)
+<code style="white-space: break-spaces">func glUniformMatrix3fv(location: Ogl.GLint, count: Ogl.GLsizei, transpose: Ogl.GLboolean, value: const *Ogl.GLfloat)
 </code>
 </p>
 <p>
@@ -20663,7 +20663,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glUniformMatrix3x2fv(location: GLint, count: GLsizei, transpose: GLboolean, value: GLfloat)
+<code style="white-space: break-spaces">func glUniformMatrix3x2fv(location: Ogl.GLint, count: Ogl.GLsizei, transpose: Ogl.GLboolean, value: const *Ogl.GLfloat)
 </code>
 </p>
 <p>
@@ -20678,7 +20678,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glUniformMatrix3x4fv(location: GLint, count: GLsizei, transpose: GLboolean, value: GLfloat)
+<code style="white-space: break-spaces">func glUniformMatrix3x4fv(location: Ogl.GLint, count: Ogl.GLsizei, transpose: Ogl.GLboolean, value: const *Ogl.GLfloat)
 </code>
 </p>
 <p>
@@ -20693,7 +20693,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glUniformMatrix4fv(location: GLint, count: GLsizei, transpose: GLboolean, value: GLfloat)
+<code style="white-space: break-spaces">func glUniformMatrix4fv(location: Ogl.GLint, count: Ogl.GLsizei, transpose: Ogl.GLboolean, value: const *Ogl.GLfloat)
 </code>
 </p>
 <p>
@@ -20708,7 +20708,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glUniformMatrix4x2fv(location: GLint, count: GLsizei, transpose: GLboolean, value: GLfloat)
+<code style="white-space: break-spaces">func glUniformMatrix4x2fv(location: Ogl.GLint, count: Ogl.GLsizei, transpose: Ogl.GLboolean, value: const *Ogl.GLfloat)
 </code>
 </p>
 <p>
@@ -20723,7 +20723,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glUniformMatrix4x3fv(location: GLint, count: GLsizei, transpose: GLboolean, value: GLfloat)
+<code style="white-space: break-spaces">func glUniformMatrix4x3fv(location: Ogl.GLint, count: Ogl.GLsizei, transpose: Ogl.GLboolean, value: const *Ogl.GLfloat)
 </code>
 </p>
 <p>
@@ -20738,7 +20738,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glUnmapBuffer(target: GLenum)->GLboolean
+<code style="white-space: break-spaces">func glUnmapBuffer(target: Ogl.GLenum)->Ogl.GLboolean
 </code>
 </p>
 <p>
@@ -20753,7 +20753,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glUseProgram(program: GLuint)
+<code style="white-space: break-spaces">func glUseProgram(program: Ogl.GLuint)
 </code>
 </p>
 <p>
@@ -20768,7 +20768,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glValidateProgram(program: GLuint)
+<code style="white-space: break-spaces">func glValidateProgram(program: Ogl.GLuint)
 </code>
 </p>
 <p>
@@ -20783,7 +20783,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glVertex2d(x: GLdouble, y: GLdouble)
+<code style="white-space: break-spaces">func glVertex2d(x: Ogl.GLdouble, y: Ogl.GLdouble)
 </code>
 </p>
 <p>
@@ -20798,7 +20798,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glVertex2dv(v: GLdouble)
+<code style="white-space: break-spaces">func glVertex2dv(v: const *Ogl.GLdouble)
 </code>
 </p>
 <p>
@@ -20813,7 +20813,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glVertex2f(x: GLfloat, y: GLfloat)
+<code style="white-space: break-spaces">func glVertex2f(x: Ogl.GLfloat, y: Ogl.GLfloat)
 </code>
 </p>
 <p>
@@ -20828,7 +20828,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glVertex2fv(v: GLfloat)
+<code style="white-space: break-spaces">func glVertex2fv(v: const *Ogl.GLfloat)
 </code>
 </p>
 <p>
@@ -20843,7 +20843,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glVertex2i(x: GLint, y: GLint)
+<code style="white-space: break-spaces">func glVertex2i(x: Ogl.GLint, y: Ogl.GLint)
 </code>
 </p>
 <p>
@@ -20858,7 +20858,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glVertex2iv(v: GLint)
+<code style="white-space: break-spaces">func glVertex2iv(v: const *Ogl.GLint)
 </code>
 </p>
 <p>
@@ -20873,7 +20873,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glVertex2s(x: GLshort, y: GLshort)
+<code style="white-space: break-spaces">func glVertex2s(x: Ogl.GLshort, y: Ogl.GLshort)
 </code>
 </p>
 <p>
@@ -20888,7 +20888,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glVertex2sv(v: GLshort)
+<code style="white-space: break-spaces">func glVertex2sv(v: const *Ogl.GLshort)
 </code>
 </p>
 <p>
@@ -20903,7 +20903,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glVertex3d(x: GLdouble, y: GLdouble, z: GLdouble)
+<code style="white-space: break-spaces">func glVertex3d(x: Ogl.GLdouble, y: Ogl.GLdouble, z: Ogl.GLdouble)
 </code>
 </p>
 <p>
@@ -20918,7 +20918,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glVertex3dv(v: GLdouble)
+<code style="white-space: break-spaces">func glVertex3dv(v: const *Ogl.GLdouble)
 </code>
 </p>
 <p>
@@ -20933,7 +20933,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glVertex3f(x: GLfloat, y: GLfloat, z: GLfloat)
+<code style="white-space: break-spaces">func glVertex3f(x: Ogl.GLfloat, y: Ogl.GLfloat, z: Ogl.GLfloat)
 </code>
 </p>
 <p>
@@ -20948,7 +20948,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glVertex3fv(v: GLfloat)
+<code style="white-space: break-spaces">func glVertex3fv(v: const *Ogl.GLfloat)
 </code>
 </p>
 <p>
@@ -20963,7 +20963,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glVertex3i(x: GLint, y: GLint, z: GLint)
+<code style="white-space: break-spaces">func glVertex3i(x: Ogl.GLint, y: Ogl.GLint, z: Ogl.GLint)
 </code>
 </p>
 <p>
@@ -20978,7 +20978,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glVertex3iv(v: GLint)
+<code style="white-space: break-spaces">func glVertex3iv(v: const *Ogl.GLint)
 </code>
 </p>
 <p>
@@ -20993,7 +20993,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glVertex3s(x: GLshort, y: GLshort, z: GLshort)
+<code style="white-space: break-spaces">func glVertex3s(x: Ogl.GLshort, y: Ogl.GLshort, z: Ogl.GLshort)
 </code>
 </p>
 <p>
@@ -21008,7 +21008,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glVertex3sv(v: GLshort)
+<code style="white-space: break-spaces">func glVertex3sv(v: const *Ogl.GLshort)
 </code>
 </p>
 <p>
@@ -21023,7 +21023,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glVertex4d(x: GLdouble, y: GLdouble, z: GLdouble, w: GLdouble)
+<code style="white-space: break-spaces">func glVertex4d(x: Ogl.GLdouble, y: Ogl.GLdouble, z: Ogl.GLdouble, w: Ogl.GLdouble)
 </code>
 </p>
 <p>
@@ -21038,7 +21038,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glVertex4dv(v: GLdouble)
+<code style="white-space: break-spaces">func glVertex4dv(v: const *Ogl.GLdouble)
 </code>
 </p>
 <p>
@@ -21053,7 +21053,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glVertex4f(x: GLfloat, y: GLfloat, z: GLfloat, w: GLfloat)
+<code style="white-space: break-spaces">func glVertex4f(x: Ogl.GLfloat, y: Ogl.GLfloat, z: Ogl.GLfloat, w: Ogl.GLfloat)
 </code>
 </p>
 <p>
@@ -21068,7 +21068,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glVertex4fv(v: GLfloat)
+<code style="white-space: break-spaces">func glVertex4fv(v: const *Ogl.GLfloat)
 </code>
 </p>
 <p>
@@ -21083,7 +21083,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glVertex4i(x: GLint, y: GLint, z: GLint, w: GLint)
+<code style="white-space: break-spaces">func glVertex4i(x: Ogl.GLint, y: Ogl.GLint, z: Ogl.GLint, w: Ogl.GLint)
 </code>
 </p>
 <p>
@@ -21098,7 +21098,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glVertex4iv(v: GLint)
+<code style="white-space: break-spaces">func glVertex4iv(v: const *Ogl.GLint)
 </code>
 </p>
 <p>
@@ -21113,7 +21113,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glVertex4s(x: GLshort, y: GLshort, z: GLshort, w: GLshort)
+<code style="white-space: break-spaces">func glVertex4s(x: Ogl.GLshort, y: Ogl.GLshort, z: Ogl.GLshort, w: Ogl.GLshort)
 </code>
 </p>
 <p>
@@ -21128,7 +21128,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glVertex4sv(v: GLshort)
+<code style="white-space: break-spaces">func glVertex4sv(v: const *Ogl.GLshort)
 </code>
 </p>
 <p>
@@ -21143,7 +21143,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glVertexAttrib1d(index: GLuint, x: GLdouble)
+<code style="white-space: break-spaces">func glVertexAttrib1d(index: Ogl.GLuint, x: Ogl.GLdouble)
 </code>
 </p>
 <p>
@@ -21158,7 +21158,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glVertexAttrib1dv(index: GLuint, v: GLdouble)
+<code style="white-space: break-spaces">func glVertexAttrib1dv(index: Ogl.GLuint, v: const *Ogl.GLdouble)
 </code>
 </p>
 <p>
@@ -21173,7 +21173,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glVertexAttrib1f(index: GLuint, x: GLfloat)
+<code style="white-space: break-spaces">func glVertexAttrib1f(index: Ogl.GLuint, x: Ogl.GLfloat)
 </code>
 </p>
 <p>
@@ -21188,7 +21188,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glVertexAttrib1fv(index: GLuint, v: GLfloat)
+<code style="white-space: break-spaces">func glVertexAttrib1fv(index: Ogl.GLuint, v: const *Ogl.GLfloat)
 </code>
 </p>
 <p>
@@ -21203,7 +21203,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glVertexAttrib1s(index: GLuint, x: GLshort)
+<code style="white-space: break-spaces">func glVertexAttrib1s(index: Ogl.GLuint, x: Ogl.GLshort)
 </code>
 </p>
 <p>
@@ -21218,7 +21218,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glVertexAttrib1sv(index: GLuint, v: GLshort)
+<code style="white-space: break-spaces">func glVertexAttrib1sv(index: Ogl.GLuint, v: const *Ogl.GLshort)
 </code>
 </p>
 <p>
@@ -21233,7 +21233,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glVertexAttrib2d(index: GLuint, x: GLdouble, y: GLdouble)
+<code style="white-space: break-spaces">func glVertexAttrib2d(index: Ogl.GLuint, x: Ogl.GLdouble, y: Ogl.GLdouble)
 </code>
 </p>
 <p>
@@ -21248,7 +21248,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glVertexAttrib2dv(index: GLuint, v: GLdouble)
+<code style="white-space: break-spaces">func glVertexAttrib2dv(index: Ogl.GLuint, v: const *Ogl.GLdouble)
 </code>
 </p>
 <p>
@@ -21263,7 +21263,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glVertexAttrib2f(index: GLuint, x: GLfloat, y: GLfloat)
+<code style="white-space: break-spaces">func glVertexAttrib2f(index: Ogl.GLuint, x: Ogl.GLfloat, y: Ogl.GLfloat)
 </code>
 </p>
 <p>
@@ -21278,7 +21278,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glVertexAttrib2fv(index: GLuint, v: GLfloat)
+<code style="white-space: break-spaces">func glVertexAttrib2fv(index: Ogl.GLuint, v: const *Ogl.GLfloat)
 </code>
 </p>
 <p>
@@ -21293,7 +21293,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glVertexAttrib2s(index: GLuint, x: GLshort, y: GLshort)
+<code style="white-space: break-spaces">func glVertexAttrib2s(index: Ogl.GLuint, x: Ogl.GLshort, y: Ogl.GLshort)
 </code>
 </p>
 <p>
@@ -21308,7 +21308,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glVertexAttrib2sv(index: GLuint, v: GLshort)
+<code style="white-space: break-spaces">func glVertexAttrib2sv(index: Ogl.GLuint, v: const *Ogl.GLshort)
 </code>
 </p>
 <p>
@@ -21323,7 +21323,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glVertexAttrib3d(index: GLuint, x: GLdouble, y: GLdouble, z: GLdouble)
+<code style="white-space: break-spaces">func glVertexAttrib3d(index: Ogl.GLuint, x: Ogl.GLdouble, y: Ogl.GLdouble, z: Ogl.GLdouble)
 </code>
 </p>
 <p>
@@ -21338,7 +21338,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glVertexAttrib3dv(index: GLuint, v: GLdouble)
+<code style="white-space: break-spaces">func glVertexAttrib3dv(index: Ogl.GLuint, v: const *Ogl.GLdouble)
 </code>
 </p>
 <p>
@@ -21353,7 +21353,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glVertexAttrib3f(index: GLuint, x: GLfloat, y: GLfloat, z: GLfloat)
+<code style="white-space: break-spaces">func glVertexAttrib3f(index: Ogl.GLuint, x: Ogl.GLfloat, y: Ogl.GLfloat, z: Ogl.GLfloat)
 </code>
 </p>
 <p>
@@ -21368,7 +21368,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glVertexAttrib3fv(index: GLuint, v: GLfloat)
+<code style="white-space: break-spaces">func glVertexAttrib3fv(index: Ogl.GLuint, v: const *Ogl.GLfloat)
 </code>
 </p>
 <p>
@@ -21383,7 +21383,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glVertexAttrib3s(index: GLuint, x: GLshort, y: GLshort, z: GLshort)
+<code style="white-space: break-spaces">func glVertexAttrib3s(index: Ogl.GLuint, x: Ogl.GLshort, y: Ogl.GLshort, z: Ogl.GLshort)
 </code>
 </p>
 <p>
@@ -21398,7 +21398,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glVertexAttrib3sv(index: GLuint, v: GLshort)
+<code style="white-space: break-spaces">func glVertexAttrib3sv(index: Ogl.GLuint, v: const *Ogl.GLshort)
 </code>
 </p>
 <p>
@@ -21413,7 +21413,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glVertexAttrib4Nbv(index: GLuint, v: GLbyte)
+<code style="white-space: break-spaces">func glVertexAttrib4Nbv(index: Ogl.GLuint, v: const *Ogl.GLbyte)
 </code>
 </p>
 <p>
@@ -21428,7 +21428,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glVertexAttrib4Niv(index: GLuint, v: GLint)
+<code style="white-space: break-spaces">func glVertexAttrib4Niv(index: Ogl.GLuint, v: const *Ogl.GLint)
 </code>
 </p>
 <p>
@@ -21443,7 +21443,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glVertexAttrib4Nsv(index: GLuint, v: GLshort)
+<code style="white-space: break-spaces">func glVertexAttrib4Nsv(index: Ogl.GLuint, v: const *Ogl.GLshort)
 </code>
 </p>
 <p>
@@ -21458,7 +21458,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glVertexAttrib4Nub(index: GLuint, x: GLubyte, y: GLubyte, z: GLubyte, w: GLubyte)
+<code style="white-space: break-spaces">func glVertexAttrib4Nub(index: Ogl.GLuint, x: Ogl.GLubyte, y: Ogl.GLubyte, z: Ogl.GLubyte, w: Ogl.GLubyte)
 </code>
 </p>
 <p>
@@ -21473,7 +21473,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glVertexAttrib4Nubv(index: GLuint, v: GLubyte)
+<code style="white-space: break-spaces">func glVertexAttrib4Nubv(index: Ogl.GLuint, v: const *Ogl.GLubyte)
 </code>
 </p>
 <p>
@@ -21488,7 +21488,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glVertexAttrib4Nuiv(index: GLuint, v: GLuint)
+<code style="white-space: break-spaces">func glVertexAttrib4Nuiv(index: Ogl.GLuint, v: const *Ogl.GLuint)
 </code>
 </p>
 <p>
@@ -21503,7 +21503,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glVertexAttrib4Nusv(index: GLuint, v: GLushort)
+<code style="white-space: break-spaces">func glVertexAttrib4Nusv(index: Ogl.GLuint, v: const *Ogl.GLushort)
 </code>
 </p>
 <p>
@@ -21518,7 +21518,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glVertexAttrib4bv(index: GLuint, v: GLbyte)
+<code style="white-space: break-spaces">func glVertexAttrib4bv(index: Ogl.GLuint, v: const *Ogl.GLbyte)
 </code>
 </p>
 <p>
@@ -21533,7 +21533,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glVertexAttrib4d(index: GLuint, x: GLdouble, y: GLdouble, z: GLdouble, w: GLdouble)
+<code style="white-space: break-spaces">func glVertexAttrib4d(index: Ogl.GLuint, x: Ogl.GLdouble, y: Ogl.GLdouble, z: Ogl.GLdouble, w: Ogl.GLdouble)
 </code>
 </p>
 <p>
@@ -21548,7 +21548,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glVertexAttrib4dv(index: GLuint, v: GLdouble)
+<code style="white-space: break-spaces">func glVertexAttrib4dv(index: Ogl.GLuint, v: const *Ogl.GLdouble)
 </code>
 </p>
 <p>
@@ -21563,7 +21563,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glVertexAttrib4f(index: GLuint, x: GLfloat, y: GLfloat, z: GLfloat, w: GLfloat)
+<code style="white-space: break-spaces">func glVertexAttrib4f(index: Ogl.GLuint, x: Ogl.GLfloat, y: Ogl.GLfloat, z: Ogl.GLfloat, w: Ogl.GLfloat)
 </code>
 </p>
 <p>
@@ -21578,7 +21578,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glVertexAttrib4fv(index: GLuint, v: GLfloat)
+<code style="white-space: break-spaces">func glVertexAttrib4fv(index: Ogl.GLuint, v: const *Ogl.GLfloat)
 </code>
 </p>
 <p>
@@ -21593,7 +21593,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glVertexAttrib4iv(index: GLuint, v: GLint)
+<code style="white-space: break-spaces">func glVertexAttrib4iv(index: Ogl.GLuint, v: const *Ogl.GLint)
 </code>
 </p>
 <p>
@@ -21608,7 +21608,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glVertexAttrib4s(index: GLuint, x: GLshort, y: GLshort, z: GLshort, w: GLshort)
+<code style="white-space: break-spaces">func glVertexAttrib4s(index: Ogl.GLuint, x: Ogl.GLshort, y: Ogl.GLshort, z: Ogl.GLshort, w: Ogl.GLshort)
 </code>
 </p>
 <p>
@@ -21623,7 +21623,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glVertexAttrib4sv(index: GLuint, v: GLshort)
+<code style="white-space: break-spaces">func glVertexAttrib4sv(index: Ogl.GLuint, v: const *Ogl.GLshort)
 </code>
 </p>
 <p>
@@ -21638,7 +21638,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glVertexAttrib4ubv(index: GLuint, v: GLubyte)
+<code style="white-space: break-spaces">func glVertexAttrib4ubv(index: Ogl.GLuint, v: const *Ogl.GLubyte)
 </code>
 </p>
 <p>
@@ -21653,7 +21653,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glVertexAttrib4uiv(index: GLuint, v: GLuint)
+<code style="white-space: break-spaces">func glVertexAttrib4uiv(index: Ogl.GLuint, v: const *Ogl.GLuint)
 </code>
 </p>
 <p>
@@ -21668,7 +21668,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glVertexAttrib4usv(index: GLuint, v: GLushort)
+<code style="white-space: break-spaces">func glVertexAttrib4usv(index: Ogl.GLuint, v: const *Ogl.GLushort)
 </code>
 </p>
 <p>
@@ -21683,7 +21683,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glVertexAttribDivisor(index: GLuint, divisor: GLuint)
+<code style="white-space: break-spaces">func glVertexAttribDivisor(index: Ogl.GLuint, divisor: Ogl.GLuint)
 </code>
 </p>
 <p>
@@ -21698,7 +21698,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glVertexAttribI1i(index: GLuint, v0: GLint)
+<code style="white-space: break-spaces">func glVertexAttribI1i(index: Ogl.GLuint, v0: Ogl.GLint)
 </code>
 </p>
 <p>
@@ -21713,7 +21713,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glVertexAttribI1iv(index: GLuint, v0: GLint)
+<code style="white-space: break-spaces">func glVertexAttribI1iv(index: Ogl.GLuint, v0: const *Ogl.GLint)
 </code>
 </p>
 <p>
@@ -21728,7 +21728,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glVertexAttribI1ui(index: GLuint, v0: GLuint)
+<code style="white-space: break-spaces">func glVertexAttribI1ui(index: Ogl.GLuint, v0: Ogl.GLuint)
 </code>
 </p>
 <p>
@@ -21743,7 +21743,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glVertexAttribI1uiv(index: GLuint, v0: GLuint)
+<code style="white-space: break-spaces">func glVertexAttribI1uiv(index: Ogl.GLuint, v0: const *Ogl.GLuint)
 </code>
 </p>
 <p>
@@ -21758,7 +21758,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glVertexAttribI2i(index: GLuint, v0: GLint, v1: GLint)
+<code style="white-space: break-spaces">func glVertexAttribI2i(index: Ogl.GLuint, v0: Ogl.GLint, v1: Ogl.GLint)
 </code>
 </p>
 <p>
@@ -21773,7 +21773,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glVertexAttribI2iv(index: GLuint, v0: GLint)
+<code style="white-space: break-spaces">func glVertexAttribI2iv(index: Ogl.GLuint, v0: const *Ogl.GLint)
 </code>
 </p>
 <p>
@@ -21788,7 +21788,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glVertexAttribI2ui(index: GLuint, v0: GLuint, v1: GLuint)
+<code style="white-space: break-spaces">func glVertexAttribI2ui(index: Ogl.GLuint, v0: Ogl.GLuint, v1: Ogl.GLuint)
 </code>
 </p>
 <p>
@@ -21803,7 +21803,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glVertexAttribI2uiv(index: GLuint, v0: GLuint)
+<code style="white-space: break-spaces">func glVertexAttribI2uiv(index: Ogl.GLuint, v0: const *Ogl.GLuint)
 </code>
 </p>
 <p>
@@ -21818,7 +21818,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glVertexAttribI3i(index: GLuint, v0: GLint, v1: GLint, v2: GLint)
+<code style="white-space: break-spaces">func glVertexAttribI3i(index: Ogl.GLuint, v0: Ogl.GLint, v1: Ogl.GLint, v2: Ogl.GLint)
 </code>
 </p>
 <p>
@@ -21833,7 +21833,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glVertexAttribI3iv(index: GLuint, v0: GLint)
+<code style="white-space: break-spaces">func glVertexAttribI3iv(index: Ogl.GLuint, v0: const *Ogl.GLint)
 </code>
 </p>
 <p>
@@ -21848,7 +21848,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glVertexAttribI3ui(index: GLuint, v0: GLuint, v1: GLuint, v2: GLuint)
+<code style="white-space: break-spaces">func glVertexAttribI3ui(index: Ogl.GLuint, v0: Ogl.GLuint, v1: Ogl.GLuint, v2: Ogl.GLuint)
 </code>
 </p>
 <p>
@@ -21863,7 +21863,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glVertexAttribI3uiv(index: GLuint, v0: GLuint)
+<code style="white-space: break-spaces">func glVertexAttribI3uiv(index: Ogl.GLuint, v0: const *Ogl.GLuint)
 </code>
 </p>
 <p>
@@ -21878,7 +21878,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glVertexAttribI4bv(index: GLuint, v0: GLbyte)
+<code style="white-space: break-spaces">func glVertexAttribI4bv(index: Ogl.GLuint, v0: const *Ogl.GLbyte)
 </code>
 </p>
 <p>
@@ -21893,7 +21893,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glVertexAttribI4i(index: GLuint, v0: GLint, v1: GLint, v2: GLint, v3: GLint)
+<code style="white-space: break-spaces">func glVertexAttribI4i(index: Ogl.GLuint, v0: Ogl.GLint, v1: Ogl.GLint, v2: Ogl.GLint, v3: Ogl.GLint)
 </code>
 </p>
 <p>
@@ -21908,7 +21908,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glVertexAttribI4iv(index: GLuint, v0: GLint)
+<code style="white-space: break-spaces">func glVertexAttribI4iv(index: Ogl.GLuint, v0: const *Ogl.GLint)
 </code>
 </p>
 <p>
@@ -21923,7 +21923,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glVertexAttribI4sv(index: GLuint, v0: GLshort)
+<code style="white-space: break-spaces">func glVertexAttribI4sv(index: Ogl.GLuint, v0: const *Ogl.GLshort)
 </code>
 </p>
 <p>
@@ -21938,7 +21938,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glVertexAttribI4ubv(index: GLuint, v0: GLubyte)
+<code style="white-space: break-spaces">func glVertexAttribI4ubv(index: Ogl.GLuint, v0: const *Ogl.GLubyte)
 </code>
 </p>
 <p>
@@ -21953,7 +21953,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glVertexAttribI4ui(index: GLuint, v0: GLuint, v1: GLuint, v2: GLuint, v3: GLuint)
+<code style="white-space: break-spaces">func glVertexAttribI4ui(index: Ogl.GLuint, v0: Ogl.GLuint, v1: Ogl.GLuint, v2: Ogl.GLuint, v3: Ogl.GLuint)
 </code>
 </p>
 <p>
@@ -21968,7 +21968,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glVertexAttribI4uiv(index: GLuint, v0: GLuint)
+<code style="white-space: break-spaces">func glVertexAttribI4uiv(index: Ogl.GLuint, v0: const *Ogl.GLuint)
 </code>
 </p>
 <p>
@@ -21983,7 +21983,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glVertexAttribI4usv(index: GLuint, v0: GLushort)
+<code style="white-space: break-spaces">func glVertexAttribI4usv(index: Ogl.GLuint, v0: const *Ogl.GLushort)
 </code>
 </p>
 <p>
@@ -21998,7 +21998,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glVertexAttribIPointer(index: GLuint, size: GLint, type: GLenum, stride: GLsizei, pointer: const *void)
+<code style="white-space: break-spaces">func glVertexAttribIPointer(index: Ogl.GLuint, size: Ogl.GLint, type: Ogl.GLenum, stride: Ogl.GLsizei, pointer: const *void)
 </code>
 </p>
 <p>
@@ -22013,7 +22013,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glVertexAttribPointer(index: GLuint, size: GLint, type: GLenum, normalized: GLboolean, stride: GLsizei, pointer: const *void)
+<code style="white-space: break-spaces">func glVertexAttribPointer(index: Ogl.GLuint, size: Ogl.GLint, type: Ogl.GLenum, normalized: Ogl.GLboolean, stride: Ogl.GLsizei, pointer: const *void)
 </code>
 </p>
 <p>
@@ -22028,7 +22028,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glVertexPointer(size: GLint, type: GLenum, stride: GLsizei, pointer: GLvoid)
+<code style="white-space: break-spaces">func glVertexPointer(size: Ogl.GLint, type: Ogl.GLenum, stride: Ogl.GLsizei, pointer: const *Ogl.GLvoid)
 </code>
 </p>
 <p>
@@ -22043,7 +22043,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glViewport(x: GLint, y: GLint, width: GLsizei, height: GLsizei)
+<code style="white-space: break-spaces">func glViewport(x: Ogl.GLint, y: Ogl.GLint, width: Ogl.GLsizei, height: Ogl.GLsizei)
 </code>
 </p>
 <p>
@@ -22058,7 +22058,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glWindowPos2d(x: GLdouble, y: GLdouble)
+<code style="white-space: break-spaces">func glWindowPos2d(x: Ogl.GLdouble, y: Ogl.GLdouble)
 </code>
 </p>
 <p>
@@ -22073,7 +22073,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glWindowPos2dv(p: GLdouble)
+<code style="white-space: break-spaces">func glWindowPos2dv(p: const *Ogl.GLdouble)
 </code>
 </p>
 <p>
@@ -22088,7 +22088,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glWindowPos2f(x: GLfloat, y: GLfloat)
+<code style="white-space: break-spaces">func glWindowPos2f(x: Ogl.GLfloat, y: Ogl.GLfloat)
 </code>
 </p>
 <p>
@@ -22103,7 +22103,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glWindowPos2fv(p: GLfloat)
+<code style="white-space: break-spaces">func glWindowPos2fv(p: const *Ogl.GLfloat)
 </code>
 </p>
 <p>
@@ -22118,7 +22118,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glWindowPos2i(x: GLint, y: GLint)
+<code style="white-space: break-spaces">func glWindowPos2i(x: Ogl.GLint, y: Ogl.GLint)
 </code>
 </p>
 <p>
@@ -22133,7 +22133,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glWindowPos2iv(p: GLint)
+<code style="white-space: break-spaces">func glWindowPos2iv(p: const *Ogl.GLint)
 </code>
 </p>
 <p>
@@ -22148,7 +22148,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glWindowPos2s(x: GLshort, y: GLshort)
+<code style="white-space: break-spaces">func glWindowPos2s(x: Ogl.GLshort, y: Ogl.GLshort)
 </code>
 </p>
 <p>
@@ -22163,7 +22163,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glWindowPos2sv(p: GLshort)
+<code style="white-space: break-spaces">func glWindowPos2sv(p: const *Ogl.GLshort)
 </code>
 </p>
 <p>
@@ -22178,7 +22178,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glWindowPos3d(x: GLdouble, y: GLdouble, z: GLdouble)
+<code style="white-space: break-spaces">func glWindowPos3d(x: Ogl.GLdouble, y: Ogl.GLdouble, z: Ogl.GLdouble)
 </code>
 </p>
 <p>
@@ -22193,7 +22193,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glWindowPos3dv(p: GLdouble)
+<code style="white-space: break-spaces">func glWindowPos3dv(p: const *Ogl.GLdouble)
 </code>
 </p>
 <p>
@@ -22208,7 +22208,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glWindowPos3f(x: GLfloat, y: GLfloat, z: GLfloat)
+<code style="white-space: break-spaces">func glWindowPos3f(x: Ogl.GLfloat, y: Ogl.GLfloat, z: Ogl.GLfloat)
 </code>
 </p>
 <p>
@@ -22223,7 +22223,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glWindowPos3fv(p: GLfloat)
+<code style="white-space: break-spaces">func glWindowPos3fv(p: const *Ogl.GLfloat)
 </code>
 </p>
 <p>
@@ -22238,7 +22238,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glWindowPos3i(x: GLint, y: GLint, z: GLint)
+<code style="white-space: break-spaces">func glWindowPos3i(x: Ogl.GLint, y: Ogl.GLint, z: Ogl.GLint)
 </code>
 </p>
 <p>
@@ -22253,7 +22253,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glWindowPos3iv(p: GLint)
+<code style="white-space: break-spaces">func glWindowPos3iv(p: const *Ogl.GLint)
 </code>
 </p>
 <p>
@@ -22268,7 +22268,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glWindowPos3s(x: GLshort, y: GLshort, z: GLshort)
+<code style="white-space: break-spaces">func glWindowPos3s(x: Ogl.GLshort, y: Ogl.GLshort, z: Ogl.GLshort)
 </code>
 </p>
 <p>
@@ -22283,7 +22283,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func glWindowPos3sv(p: GLshort)
+<code style="white-space: break-spaces">func glWindowPos3sv(p: const *Ogl.GLshort)
 </code>
 </p>
 <p>
@@ -22298,7 +22298,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func wglCreateContext(hDc: HDC)->HGLRC throw
+<code style="white-space: break-spaces">func wglCreateContext(hDc: Win32.HDC)->Ogl.HGLRC throw
 </code>
 </p>
 <p>
@@ -22313,7 +22313,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func wglDeleteContext(hRc: HGLRC) throw
+<code style="white-space: break-spaces">func wglDeleteContext(hRc: Ogl.HGLRC) throw
 </code>
 </p>
 <p>
@@ -22328,7 +22328,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func wglGetProcAddress(arg1: LPCSTR)->const *void
+<code style="white-space: break-spaces">func wglGetProcAddress(arg1: Win32.LPCSTR)->const *void
 </code>
 </p>
 <p>
@@ -22343,7 +22343,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func wglMakeCurrent(hDc: HDC, hRc: HGLRC) throw
+<code style="white-space: break-spaces">func wglMakeCurrent(hDc: Win32.HDC, hRc: Ogl.HGLRC) throw
 </code>
 </p>
 <p>
@@ -22358,7 +22358,7 @@ string</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func wglShareLists(hRc0: HGLRC, hRc1: HGLRC) throw
+<code style="white-space: break-spaces">func wglShareLists(hRc0: Ogl.HGLRC, hRc1: Ogl.HGLRC) throw
 </code>
 </p>
 </div>

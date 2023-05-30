@@ -447,7 +447,7 @@ FreeType.FT_UShort</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func FT_Done_Face(face: FT_Face)
+<code style="white-space: break-spaces">func FT_Done_Face(face: FreeType.FT_Face)
 </code>
 </p>
 <p>
@@ -462,7 +462,7 @@ FreeType.FT_UShort</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func FT_Done_FreeType(alibrary: FT_Library) throw
+<code style="white-space: break-spaces">func FT_Done_FreeType(alibrary: FreeType.FT_Library) throw
 </code>
 </p>
 <p>
@@ -769,7 +769,7 @@ FT_Generic_Finalizer.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func FT_Get_Char_Index(face: FT_Face, charcode: FT_ULong)->FT_UInt
+<code style="white-space: break-spaces">func FT_Get_Char_Index(face: FreeType.FT_Face, charcode: FreeType.FT_ULong)->FreeType.FT_UInt
 </code>
 </p>
 <p>
@@ -973,7 +973,7 @@ FreeType.FT_Slot_Internal</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func FT_GlyphSlot_Oblique(slot: FT_GlyphSlot)
+<code style="white-space: break-spaces">func FT_GlyphSlot_Oblique(slot: FreeType.FT_GlyphSlot)
 </code>
 </p>
 <p>
@@ -1123,7 +1123,7 @@ FreeType.FT_Pos</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func FT_Init_FreeType(alibrary: FT_Library) throw
+<code style="white-space: break-spaces">func FT_Init_FreeType(alibrary: *FreeType.FT_Library) throw
 </code>
 </p>
 <p>
@@ -1303,7 +1303,7 @@ s32</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func FT_LOAD_TARGET(x: FT_Int32)
+<code style="white-space: break-spaces">func FT_LOAD_TARGET(x: FreeType.FT_Int32)
 </code>
 </p>
 <p>
@@ -1537,7 +1537,7 @@ FreeType.FT_Int</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func FT_Library_SetLcdFilter(library: FT_Library, filter: FT_LcdFilter) throw
+<code style="white-space: break-spaces">func FT_Library_SetLcdFilter(library: FreeType.FT_Library, filter: FreeType.FT_LcdFilter) throw
 </code>
 </p>
 <p>
@@ -1552,7 +1552,7 @@ FreeType.FT_Int</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func FT_Library_SetLcdFilterWeights(library: FT_Library, weights: const *u8) throw
+<code style="white-space: break-spaces">func FT_Library_SetLcdFilterWeights(library: FreeType.FT_Library, weights: const *u8) throw
 </code>
 </p>
 <p>
@@ -1596,7 +1596,7 @@ FreeType.FT_ListNode</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func FT_Load_Char(face: FT_Face, char_code: FT_ULong, load_flags: FT_Int32) throw
+<code style="white-space: break-spaces">func FT_Load_Char(face: FreeType.FT_Face, char_code: FreeType.FT_ULong, load_flags: FreeType.FT_Int32) throw
 </code>
 </p>
 <p>
@@ -1611,7 +1611,7 @@ FreeType.FT_ListNode</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func FT_Load_Glyph(face: FT_Face, glyph_index: FT_UInt, load_flags: FT_Int32) throw
+<code style="white-space: break-spaces">func FT_Load_Glyph(face: FreeType.FT_Face, glyph_index: FreeType.FT_UInt, load_flags: FreeType.FT_Int32) throw
 </code>
 </p>
 <p>
@@ -1692,7 +1692,7 @@ FreeType.FT_Fixed</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func FT_New_Memory_Face(library: FT_Library, file_base: FT_Byte, file_size: FT_Long, face_index: FT_Long, aface: FT_Face) throw
+<code style="white-space: break-spaces">func FT_New_Memory_Face(library: FreeType.FT_Library, file_base: const *FreeType.FT_Byte, file_size: FreeType.FT_Long, face_index: FreeType.FT_Long, aface: *FreeType.FT_Face) throw
 </code>
 </p>
 <p>
@@ -1768,7 +1768,7 @@ s32</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func FT_Outline_Decompose(outline: FT_Outline, func_interface: FT_Outline_Funcs, user: *void) throw
+<code style="white-space: break-spaces">func FT_Outline_Decompose(outline: *FreeType.FT_Outline, func_interface: const *FreeType.FT_Outline_Funcs, user: *void) throw
 </code>
 </p>
 <p>
@@ -1783,7 +1783,7 @@ s32</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func FT_Outline_Embolden(outline: FT_Outline, strength: FT_Pos) throw
+<code style="white-space: break-spaces">func FT_Outline_Embolden(outline: *FreeType.FT_Outline, strength: FreeType.FT_Pos) throw
 </code>
 </p>
 <p>
@@ -1867,7 +1867,7 @@ FreeType.FT_Pos</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func FT_Outline_Transform(outline: FT_Outline, matrix: FT_Matrix)
+<code style="white-space: break-spaces">func FT_Outline_Transform(outline: const *FreeType.FT_Outline, matrix: const *FreeType.FT_Matrix)
 </code>
 </p>
 <p>
@@ -1882,7 +1882,7 @@ FreeType.FT_Pos</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func FT_Outline_Translate(outline: FT_Outline, xOffset: FT_Pos, yOffset: FT_Pos)
+<code style="white-space: break-spaces">func FT_Outline_Translate(outline: const *FreeType.FT_Outline, xOffset: FreeType.FT_Pos, yOffset: FreeType.FT_Pos)
 </code>
 </p>
 <p>
@@ -1964,7 +1964,7 @@ FT_PIXEL_MODE_MAX</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func FT_Render_Glyph(slot: FT_GlyphSlot, render_mode: FT_Render_Mode) throw
+<code style="white-space: break-spaces">func FT_Render_Glyph(slot: FreeType.FT_GlyphSlot, render_mode: FreeType.FT_Render_Mode) throw
 </code>
 </p>
 <p>
@@ -2057,7 +2057,7 @@ s32</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func FT_Set_Pixel_Sizes(face: FT_Face, pixel_width: FT_UInt, pixel_height: FT_UInt) throw
+<code style="white-space: break-spaces">func FT_Set_Pixel_Sizes(face: FreeType.FT_Face, pixel_width: FreeType.FT_UInt, pixel_height: FreeType.FT_UInt) throw
 </code>
 </p>
 <p>

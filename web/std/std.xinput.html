@@ -428,7 +428,7 @@ Win32.WORD</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func XInputGetState(dwUserIndex: DWORD, pState: XINPUT_STATE)->DWORD
+<code style="white-space: break-spaces">func XInputGetState(dwUserIndex: Win32.DWORD, pState: *XInput.XINPUT_STATE)->Win32.DWORD
 </code>
 </p>
 <p>
@@ -443,7 +443,7 @@ Win32.WORD</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func XInputSetState(dwUserIndex: DWORD, pVibration: XINPUT_VIBRATION)->DWORD
+<code style="white-space: break-spaces">func XInputSetState(dwUserIndex: Win32.DWORD, pVibration: *XInput.XINPUT_VIBRATION)->Win32.DWORD
 </code>
 </p>
 </div>

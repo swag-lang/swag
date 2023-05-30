@@ -1181,11 +1181,8 @@ JobResult ModuleGenDocJob::execute()
     {
         if (typeInfo->isNative() || typeInfo->isVariadic())
             return typeInfo->name;
-
-        Vector<Utf8> tkn;
         typeInfo->computeScopedNameExport();
-        Utf8::tokenize(typeInfo->scopedNameExport, '.', tkn);
-        return tkn.back();
+        return typeInfo->scopedNameExport;
     };
 
     auto filePath = g_Workspace->targetPath;
