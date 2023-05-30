@@ -774,7 +774,7 @@ void ModuleGenDocJob::outputStyles()
         }\n\
         a.src {\n\
             font-size:          90%;\n\
-            color:              Grey;\n\
+            color:              LightGrey;\n\
         }\n\
         table.enumeration {\n\
             border:             1px solid LightGrey;\n\
@@ -824,10 +824,10 @@ void ModuleGenDocJob::outputStyles()
             margin-bottom:      50px;\n\
         }\n\
         table.h3 {\n\
-            border-bottom:      2px solid Orange;\n\
-            border-collapse:    collapse;\n\
+            background-color:   Black;\n\
+            color:              White;\n\
             width:              100%;\n\
-            margin-top:         50px;\n\
+            margin-top:         60px;\n\
         }\n\
         h3.content {\n\
             margin-bottom:      2px;\n\
