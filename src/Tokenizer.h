@@ -60,6 +60,11 @@ struct SourceLocation
     {
         return line == other.line && column == other.column;
     }
+
+    bool operator!=(const SourceLocation& other)
+    {
+        return line != other.line || column != other.column;
+    }
 };
 
 struct Token

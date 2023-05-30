@@ -309,26 +309,30 @@ void ModuleGenDocJob::outputTitle(OneRef& c)
     helpContent += "</td>\n";
 
     // Add a reference to the source code
-    helpContent += "<td class=\"srcref\">\n";
-    auto srcModule = module ? module : g_Workspace->runtimeModule;
-    if (srcModule->buildCfg.repoPath.buffer)
+    if (c.nodes[0]->kind != AstNodeKind::Namespace)
     {
-        Path str = Utf8((const char*) srcModule->buildCfg.repoPath.buffer, (uint32_t) srcModule->buildCfg.repoPath.count).c_str();
-        if (module)
+        helpContent += "<td class=\"srcref\">\n";
+        auto srcModule = module ? module : g_Workspace->runtimeModule;
+        if (srcModule->buildCfg.repoPath.buffer)
         {
-            Utf8 pathFile = c.nodes[0]->sourceFile->path.string();
-            pathFile.remove(0, (uint32_t) srcModule->path.string().size() + 1);
-            str.append(pathFile.c_str());
-        }
-        else
-        {
-            str.append(c.nodes[0]->sourceFile->name.c_str());
+            Path str = Utf8((const char*) srcModule->buildCfg.repoPath.buffer, (uint32_t) srcModule->buildCfg.repoPath.count).c_str();
+            if (module)
+            {
+                Utf8 pathFile = c.nodes[0]->sourceFile->path.string();
+                pathFile.remove(0, (uint32_t) srcModule->path.string().size() + 1);
+                str.append(pathFile.c_str());
+            }
+            else
+            {
+                str.append(c.nodes[0]->sourceFile->name.c_str());
+            }
+
+            helpContent += Fmt("<a href=\"%s#L%d\" class=\"src\">[src]</a>", str.string().c_str(), c.nodes[0]->token.startLocation.line + 1);
         }
 
-        helpContent += Fmt("<a href=\"%s#L%d\" class=\"src\">[src]</a>", str.string().c_str(), c.nodes[0]->token.startLocation.line + 1);
+        helpContent += "</td>\n";
     }
 
-    helpContent += "</td>\n";
     helpContent += "</tr>\n";
     helpContent += "</table>\n";
     helpContent += "</p>\n";
