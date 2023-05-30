@@ -153,7 +153,7 @@ Utf8 ModuleGenDocJob::getDocComment(AstNode* node)
 void ModuleGenDocJob::outputType(AstNode* node)
 {
     node->typeInfo->computeScopedNameExport();
-    outputUserLine(node->typeInfo->scopedNameExport, true);
+    helpContent += getFormattedText(node->typeInfo->scopedNameExport, true);
 }
 
 void ModuleGenDocJob::outputTable(Scope* scope, AstNodeKind kind, const char* title, uint32_t collectFlags)
@@ -338,27 +338,28 @@ void ModuleGenDocJob::outputTitle(OneRef& c)
     helpContent += "</p>\n";
 }
 
-void ModuleGenDocJob::outputUserLine(const Utf8& user, bool autoRef)
+Utf8 ModuleGenDocJob::getFormattedText(const Utf8& user, bool autoRef)
 {
     if (user.empty())
-        return;
+        return "";
 
     bool inCodeMode = false;
     bool inBoldMode = false;
+    Utf8 result;
 
     auto pz = user.c_str();
     while (*pz)
     {
         if (*pz == '<')
         {
-            helpContent += "&lt;";
+            result += "&lt;";
             pz++;
             continue;
         }
 
         if (*pz == '>')
         {
-            helpContent += "&gt;";
+            result += "&gt;";
             pz++;
             continue;
         }
@@ -382,8 +383,8 @@ void ModuleGenDocJob::outputUserLine(const Utf8& user, bool autoRef)
 
                 if (startBracket && *pz != ']')
                 {
-                    helpContent += "[";
-                    helpContent += name;
+                    result += "[";
+                    result += name;
                 }
                 else
                 {
@@ -391,20 +392,20 @@ void ModuleGenDocJob::outputUserLine(const Utf8& user, bool autoRef)
                         pz++;
                     auto it = collectInvert.find(name);
                     if (it != collectInvert.end())
-                        helpContent += Fmt("<a href=\"%s#%s\">%s</a>", fileName.c_str(), it->second.c_str(), name.c_str());
+                        result += Fmt("<a href=\"%s#%s\">%s</a>", fileName.c_str(), it->second.c_str(), name.c_str());
                     else
                     {
                         if (startBracket)
-                            helpContent += "[";
-                        helpContent += name;
+                            result += "[";
+                        result += name;
                         if (startBracket)
-                            helpContent += "]";
+                            result += "]";
                     }
                 }
                 continue;
             }
             else if (startBracket)
-                helpContent += "[";
+                result += "[";
         }
 
         // Bold
@@ -412,9 +413,9 @@ void ModuleGenDocJob::outputUserLine(const Utf8& user, bool autoRef)
         {
             inBoldMode = !inBoldMode;
             if (inBoldMode)
-                helpContent += "<b>";
+                result += "<b>";
             else
-                helpContent += "</b>";
+                result += "</b>";
             pz += 2;
             continue;
         }
@@ -427,11 +428,11 @@ void ModuleGenDocJob::outputUserLine(const Utf8& user, bool autoRef)
                 pz1++;
             if (*pz1 == '\'')
             {
-                helpContent += "<code class = \"incode\">";
+                result += "<code class = \"incode\">";
                 pz++;
                 while (pz != pz1)
-                    helpContent += *pz++;
-                helpContent += "</code>";
+                    result += *pz++;
+                result += "</code>";
             }
             pz++;
             continue;
@@ -442,15 +443,17 @@ void ModuleGenDocJob::outputUserLine(const Utf8& user, bool autoRef)
         {
             inCodeMode = !inCodeMode;
             if (inCodeMode)
-                helpContent += "<code class = \"incode\">";
+                result += "<code class = \"incode\">";
             else
-                helpContent += "</code>";
+                result += "</code>";
             pz++;
             continue;
         }
 
-        helpContent += *pz++;
+        result += *pz++;
     }
+
+    return result;
 }
 
 void ModuleGenDocJob::outputUserBlock(const UserBlock& user)
@@ -492,7 +495,7 @@ void ModuleGenDocJob::outputUserBlock(const UserBlock& user)
 
             helpContent += "<li>";
             line.remove(0, 1);
-            outputUserLine(line);
+            helpContent += getFormattedText(line);
             helpContent += "</li>\n";
         }
         else
@@ -503,7 +506,7 @@ void ModuleGenDocJob::outputUserBlock(const UserBlock& user)
                 helpContent += "</ul>\n";
             }
 
-            outputUserLine(user.lines[i]);
+            helpContent += getFormattedText(user.lines[i]);
         }
 
         // Add one line break after each line, except the last line from a raw block, because we do
@@ -1182,7 +1185,7 @@ JobResult ModuleGenDocJob::execute()
         if (typeInfo->isNative() || typeInfo->isVariadic())
             return typeInfo->name;
         typeInfo->computeScopedNameExport();
-        return typeInfo->scopedNameExport;
+        return getFormattedText(typeInfo->scopedNameExport, true);
     };
 
     auto filePath = g_Workspace->targetPath;

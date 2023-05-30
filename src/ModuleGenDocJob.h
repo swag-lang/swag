@@ -45,10 +45,10 @@ struct ModuleGenDocJob : public Job
     Utf8 getDocComment(AstNode* node);
     int  sortOrder(AstNodeKind kind);
 
+    Utf8 getFormattedText(const Utf8& user, bool autoRef = false);
     void outputType(AstNode* node);
     void outputTable(Scope* scope, AstNodeKind kind, const char* title, uint32_t collectFlags);
     Utf8 outputNode(AstNode* node);
-    void outputUserLine(const Utf8& user, bool autoRef = false);
     void outputUserBlock(const UserBlock& user);
     void outputUserComment(const UserComment& user);
     void outputCode(const Utf8& code);

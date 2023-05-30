@@ -1609,7 +1609,7 @@ Unregister a window to receive hook events.</p>
 <p>
 Register a new timer for the given <code class = "incode">target</code>.</p>
 <p class="code">
-<code style="white-space: break-spaces">func addTimer(using self, time: Core.Time.Duration, target: *Gui.Wnd)->*Gui.Timer
+<code style="white-space: break-spaces">func addTimer(using self, time: Core.Time.Duration, target: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.Wnd">Gui.Wnd</a>)->*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.Timer">Gui.Timer</a>
 </code>
 </p>
 <p>
@@ -1626,7 +1626,7 @@ Register a new timer for the given <code class = "incode">target</code>.</p>
 <p>
 Creates a new surface.</p>
 <p class="code">
-<code style="white-space: break-spaces">func createSurface(using self, x: s32, y: s32, width: s32, height: s32, flags = SurfaceFlags.OverlappedWindow, view: *Gui.Wnd = null, hook: Gui.HookEvent = null)->*Gui.Surface throw
+<code style="white-space: break-spaces">func createSurface(using self, x: s32, y: s32, width: s32, height: s32, flags = SurfaceFlags.OverlappedWindow, view: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.Wnd">Gui.Wnd</a> = null, hook: Gui.HookEvent = null)->*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.Surface">Gui.Surface</a> throw
 </code>
 </p>
 <p>
@@ -1643,7 +1643,7 @@ Creates a new surface.</p>
 <p>
 Delete and unregister timer.</p>
 <p class="code">
-<code style="white-space: break-spaces">func deleteTimer(using self, timer: *Gui.Timer)
+<code style="white-space: break-spaces">func deleteTimer(using self, timer: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.Timer">Gui.Timer</a>)
 </code>
 </p>
 <p>
@@ -1660,7 +1660,7 @@ Delete and unregister timer.</p>
 <p>
 Destroy a window To cleanly close a window, you should call wnd.destroy().</p>
 <p class="code">
-<code style="white-space: break-spaces">func destroyWnd(using self, wnd: *Gui.Wnd)
+<code style="white-space: break-spaces">func destroyWnd(using self, wnd: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.Wnd">Gui.Wnd</a>)
 </code>
 </p>
 <p>
@@ -1675,7 +1675,7 @@ Destroy a window To cleanly close a window, you should call wnd.destroy().</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func doModalLoop(using self, surface: *Gui.Surface, cb: closure(self) = null)->Gui.WndId
+<code style="white-space: break-spaces">func doModalLoop(using self, surface: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.Surface">Gui.Surface</a>, cb: closure(self) = null)->Gui.WndId
 </code>
 </p>
 <p>
@@ -1754,7 +1754,7 @@ End current modal loop.</p>
 <p>
 Get the id associated with a shortcut. null if none.</p>
 <p class="code">
-<code style="white-space: break-spaces">func getHotKeyShortcut(using self, mdf: Core.Input.KeyModifiers, key: Core.Input.Key)->{Gui.WndId, *Gui.Wnd}
+<code style="white-space: break-spaces">func getHotKeyShortcut(using self, mdf: Core.Input.KeyModifiers, key: Core.Input.Key)->{Gui.WndId, *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.Wnd">Gui.Wnd</a>}
 </code>
 </p>
 <p>
@@ -1818,7 +1818,7 @@ Get the name associated with a given id shortcut.</p>
 <p>
 Return the captured wnd for mouse.</p>
 <p class="code">
-<code style="white-space: break-spaces">func getMouseCapture(using self)->*Gui.Wnd
+<code style="white-space: break-spaces">func getMouseCapture(using self)->*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.Wnd">Gui.Wnd</a>
 </code>
 </p>
 <p>
@@ -1850,7 +1850,7 @@ Return the captured wnd for mouse.</p>
 <p>
 Returns the window under the given point.</p>
 <p class="code">
-<code style="white-space: break-spaces">func getWndAtMouse(using self)->*Gui.Wnd
+<code style="white-space: break-spaces">func getWndAtMouse(using self)->*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.Wnd">Gui.Wnd</a>
 </code>
 </p>
 <p>
@@ -1918,7 +1918,7 @@ Pop a new mouse cursor.</p>
 <p>
 Post a new event (thread safe).</p>
 <p class="code">
-<code style="white-space: break-spaces">func postEvent(using self, event: *Gui.Event)
+<code style="white-space: break-spaces">func postEvent(using self, event: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.Event">Gui.Event</a>)
 </code>
 </p>
 <p>
@@ -1952,7 +1952,7 @@ Ask to exit the application.</p>
 <p>
 Push a new mouse cursor.</p>
 <p class="code">
-<code style="white-space: break-spaces">func pushCursor(using self, cursor: Gui.Cursor)
+<code style="white-space: break-spaces">func pushCursor(using self, cursor: <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.Cursor">Gui.Cursor</a>)
 </code>
 </p>
 <p>
@@ -1969,7 +1969,7 @@ Push a new mouse cursor.</p>
 <p>
 Register a window to receive a FrameEvent each running loop.</p>
 <p class="code">
-<code style="white-space: break-spaces">func registerFrameEvent(using self, target: *Gui.Wnd)
+<code style="white-space: break-spaces">func registerFrameEvent(using self, target: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.Wnd">Gui.Wnd</a>)
 </code>
 </p>
 <p>
@@ -1986,7 +1986,7 @@ Register a window to receive a FrameEvent each running loop.</p>
 <p>
 Register a window to receive hook events.</p>
 <p class="code">
-<code style="white-space: break-spaces">func registerHookEvents(using self, target: *Gui.Wnd)
+<code style="white-space: break-spaces">func registerHookEvents(using self, target: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.Wnd">Gui.Wnd</a>)
 </code>
 </p>
 <p>
@@ -2003,7 +2003,7 @@ Register a window to receive hook events.</p>
 <p>
 Register a global os key action.</p>
 <p class="code">
-<code style="white-space: break-spaces">func registerHotKey(using self, mdf: Core.Input.KeyModifiers, key: Core.Input.Key, wndId: Gui.WndId, target: *Gui.Wnd) throw
+<code style="white-space: break-spaces">func registerHotKey(using self, mdf: Core.Input.KeyModifiers, key: Core.Input.Key, wndId: Gui.WndId, target: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.Wnd">Gui.Wnd</a>) throw
 </code>
 </p>
 <p>
@@ -2052,7 +2052,7 @@ Run until exit.</p>
 <p>
 Create a main surface, and run.</p>
 <p class="code">
-<code style="white-space: break-spaces">func runSurface(x: s32, y: s32, width: s32, height: s32, title: string = null, view: *Gui.Wnd = null, borders = true, canSize = true, hook: Gui.HookEvent = null, init: func(*Gui.Application) = null)
+<code style="white-space: break-spaces">func runSurface(x: s32, y: s32, width: s32, height: s32, title: string = null, view: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.Wnd">Gui.Wnd</a> = null, borders = true, canSize = true, hook: Gui.HookEvent = null, init: func(*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.Application">Gui.Application</a>) = null)
 </code>
 </p>
 <p>
@@ -2084,7 +2084,7 @@ Save the application state.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func sendEvent(using self, event: *Gui.Event)
+<code style="white-space: break-spaces">func sendEvent(using self, event: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.Event">Gui.Event</a>)
 </code>
 </p>
 <p>
@@ -2152,7 +2152,7 @@ Associate a configuration file.</p>
 <p>
 Unregister a window that receives a FrameEvent each running loop.</p>
 <p class="code">
-<code style="white-space: break-spaces">func unregisterFrameEvent(using self, target: *Gui.Wnd)
+<code style="white-space: break-spaces">func unregisterFrameEvent(using self, target: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.Wnd">Gui.Wnd</a>)
 </code>
 </p>
 <p>
@@ -2169,7 +2169,7 @@ Unregister a window that receives a FrameEvent each running loop.</p>
 <p>
 Unregister a window to receive hook events.</p>
 <p class="code">
-<code style="white-space: break-spaces">func unregisterHookEvents(using self, target: *Gui.Wnd)
+<code style="white-space: break-spaces">func unregisterHookEvents(using self, target: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.Wnd">Gui.Wnd</a>)
 </code>
 </p>
 <p>
@@ -2450,7 +2450,7 @@ sigChanged</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func onMouseEvent(using self, evt: *Gui.MouseEvent)
+<code style="white-space: break-spaces">func onMouseEvent(using self, evt: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.MouseEvent">Gui.MouseEvent</a>)
 </code>
 </p>
 <p>
@@ -2465,7 +2465,7 @@ sigChanged</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func onPaintEvent(using self, evt: *Gui.PaintEvent)
+<code style="white-space: break-spaces">func onPaintEvent(using self, evt: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.PaintEvent">Gui.PaintEvent</a>)
 </code>
 </p>
 <p>
@@ -2480,7 +2480,7 @@ sigChanged</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func create(parent: *Gui.Wnd, name: string, position: Core.Math.Rectangle = {}, id: Gui.WndId = null)->*Gui.CheckButton
+<code style="white-space: break-spaces">func create(parent: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.Wnd">Gui.Wnd</a>, name: string, position: Core.Math.Rectangle = {}, id: Gui.WndId = null)->*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.CheckButton">Gui.CheckButton</a>
 </code>
 </p>
 <p>
@@ -2671,7 +2671,7 @@ Add string to clipboard.</p>
 <p>
 Get data of the given format.</p>
 <p class="code">
-<code style="white-space: break-spaces">func getData(fmt: Gui.Clipboard.Format)->Core.Array'(u8)
+<code style="white-space: break-spaces">func getData(fmt: Gui.Clipboard.Format)->Core.Array(u8)
 </code>
 </p>
 <p>
@@ -2985,7 +2985,7 @@ Set the color picker box mode.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func onMouseEvent(using self, evt: *Gui.MouseEvent)
+<code style="white-space: break-spaces">func onMouseEvent(using self, evt: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.MouseEvent">Gui.MouseEvent</a>)
 </code>
 </p>
 <p>
@@ -3000,7 +3000,7 @@ Set the color picker box mode.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func onPaintEvent(using self, evt: *Gui.PaintEvent)
+<code style="white-space: break-spaces">func onPaintEvent(using self, evt: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.PaintEvent">Gui.PaintEvent</a>)
 </code>
 </p>
 <p>
@@ -3015,7 +3015,7 @@ Set the color picker box mode.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func onPostPaintEvent(using self, evt: *Gui.PaintEvent)
+<code style="white-space: break-spaces">func onPostPaintEvent(using self, evt: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.PaintEvent">Gui.PaintEvent</a>)
 </code>
 </p>
 <p>
@@ -3047,7 +3047,7 @@ Change one component, HSL or alpha.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func create(parent: *Gui.Wnd, position: Core.Math.Rectangle = {}, id: Gui.WndId = null)->*Gui.ColorPicker
+<code style="white-space: break-spaces">func create(parent: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.Wnd">Gui.Wnd</a>, position: Core.Math.Rectangle = {}, id: Gui.WndId = null)->*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.ColorPicker">Gui.ColorPicker</a>
 </code>
 </p>
 <p>
@@ -3098,7 +3098,7 @@ Set the base color, and repaint.</p>
 <p>
 Set the color picker box mode.</p>
 <p class="code">
-<code style="white-space: break-spaces">func setMode(using self, mode: Gui.ColorPickerMode)
+<code style="white-space: break-spaces">func setMode(using self, mode: <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.ColorPickerMode">Gui.ColorPickerMode</a>)
 </code>
 </p>
 <p>
@@ -3327,7 +3327,7 @@ Change the display mode.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func onPaintEvent(using self, evt: *Gui.PaintEvent)
+<code style="white-space: break-spaces">func onPaintEvent(using self, evt: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.PaintEvent">Gui.PaintEvent</a>)
 </code>
 </p>
 <p>
@@ -3342,7 +3342,7 @@ Change the display mode.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func create(parent: *Gui.Wnd, position: Core.Math.Rectangle, id: Gui.WndId = null)->*Gui.ColorPickerCtrl
+<code style="white-space: break-spaces">func create(parent: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.Wnd">Gui.Wnd</a>, position: Core.Math.Rectangle, id: Gui.WndId = null)->*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.ColorPickerCtrl">Gui.ColorPickerCtrl</a>
 </code>
 </p>
 <p>
@@ -3393,7 +3393,7 @@ Set the selected color.</p>
 <p>
 Change the display mode.</p>
 <p class="code">
-<code style="white-space: break-spaces">func setMode(using self, mode: Gui.ColorPickerViewMode)
+<code style="white-space: break-spaces">func setMode(using self, mode: <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.ColorPickerViewMode">Gui.ColorPickerViewMode</a>)
 </code>
 </p>
 <p>
@@ -3732,7 +3732,7 @@ Set the selected item index.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func onMouseEvent(using self, evt: *Gui.MouseEvent)
+<code style="white-space: break-spaces">func onMouseEvent(using self, evt: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.MouseEvent">Gui.MouseEvent</a>)
 </code>
 </p>
 <p>
@@ -3747,7 +3747,7 @@ Set the selected item index.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func onPaintEvent(using self, evt: *Gui.PaintEvent)
+<code style="white-space: break-spaces">func onPaintEvent(using self, evt: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.PaintEvent">Gui.PaintEvent</a>)
 </code>
 </p>
 <p>
@@ -3762,7 +3762,7 @@ Set the selected item index.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func onResizeEvent(using self, evt: *Gui.ResizeEvent)
+<code style="white-space: break-spaces">func onResizeEvent(using self, evt: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.ResizeEvent">Gui.ResizeEvent</a>)
 </code>
 </p>
 <p>
@@ -3779,7 +3779,7 @@ Set the selected item index.</p>
 <p>
 Add a new item.</p>
 <p class="code">
-<code style="white-space: break-spaces">func addItem(using self, name: string, id: Gui.WndId = null, icon: Gui.Icon = {}, userData0: *void = null, userData1: *void = null)->*Gui.ComboBoxItem
+<code style="white-space: break-spaces">func addItem(using self, name: string, id: Gui.WndId = null, icon: <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.Icon">Gui.Icon</a> = {}, userData0: *void = null, userData1: *void = null)->*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.ComboBoxItem">Gui.ComboBoxItem</a>
 </code>
 </p>
 <p>
@@ -3828,7 +3828,7 @@ Remove all items.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func create(parent: *Gui.Wnd, position: Core.Math.Rectangle = {}, id: Gui.WndId = null, kind = ComboBoxKind.Select)->*Gui.ComboBox
+<code style="white-space: break-spaces">func create(parent: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.Wnd">Gui.Wnd</a>, position: Core.Math.Rectangle = {}, id: Gui.WndId = null, kind = ComboBoxKind.Select)->*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.ComboBox">Gui.ComboBox</a>
 </code>
 </p>
 <p>
@@ -3845,7 +3845,7 @@ Remove all items.</p>
 <p>
 Returns the selected item.</p>
 <p class="code">
-<code style="white-space: break-spaces">func getSelectedItem(using self)->*Gui.ComboBoxItem
+<code style="white-space: break-spaces">func getSelectedItem(using self)->*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.ComboBoxItem">Gui.ComboBoxItem</a>
 </code>
 </p>
 <p>
@@ -3999,7 +3999,7 @@ combo</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func onResizeEvent(using self, evt: *Gui.ResizeEvent)
+<code style="white-space: break-spaces">func onResizeEvent(using self, evt: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.ResizeEvent">Gui.ResizeEvent</a>)
 </code>
 </p>
 <p>
@@ -4014,7 +4014,7 @@ combo</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func create(parent: *Gui.Wnd, name: string, position: Core.Math.Rectangle = {}, id: Gui.WndId = null)->*Gui.ComboCtrl
+<code style="white-space: break-spaces">func create(parent: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.Wnd">Gui.Wnd</a>, name: string, position: Core.Math.Rectangle = {}, id: Gui.WndId = null)->*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.ComboCtrl">Gui.ComboCtrl</a>
 </code>
 </p>
 <p>
@@ -4313,7 +4313,7 @@ Force the wait cursor.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func apply(cursor: Gui.Cursor)
+<code style="white-space: break-spaces">func apply(cursor: <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.Cursor">Gui.Cursor</a>)
 </code>
 </p>
 <p>
@@ -4343,7 +4343,7 @@ Force the wait cursor.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func from(shape: Gui.CursorShape)->Gui.Cursor
+<code style="white-space: break-spaces">func from(shape: <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.CursorShape">Gui.CursorShape</a>)-><a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.Cursor">Gui.Cursor</a>
 </code>
 </p>
 <p>
@@ -4772,7 +4772,7 @@ Display dialog as modal, and returns the user selected window id.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func onKeyEvent(using self, evt: *Gui.KeyEvent)
+<code style="white-space: break-spaces">func onKeyEvent(using self, evt: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.KeyEvent">Gui.KeyEvent</a>)
 </code>
 </p>
 <p>
@@ -4787,7 +4787,7 @@ Display dialog as modal, and returns the user selected window id.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func onSysCommandEvent(using self, evt: *Gui.SysCommandEvent)
+<code style="white-space: break-spaces">func onSysCommandEvent(using self, evt: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.SysCommandEvent">Gui.SysCommandEvent</a>)
 </code>
 </p>
 <p>
@@ -4804,7 +4804,7 @@ Display dialog as modal, and returns the user selected window id.</p>
 <p>
 Add a button.</p>
 <p class="code">
-<code style="white-space: break-spaces">func addButton(using self, str: string, id: Gui.WndId, isDefault: bool = false)->*Gui.PushButton
+<code style="white-space: break-spaces">func addButton(using self, str: string, id: Gui.WndId, isDefault: bool = false)->*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.PushButton">Gui.PushButton</a>
 </code>
 </p>
 <p>
@@ -4821,7 +4821,7 @@ Add a button.</p>
 <p>
 Creates a simple dialog box.</p>
 <p class="code">
-<code style="white-space: break-spaces">func createDialog(from: *Gui.Surface, width = 512, height = 300, title: string = null)->*Gui.Dialog
+<code style="white-space: break-spaces">func createDialog(from: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.Surface">Gui.Surface</a>, width = 512, height = 300, title: string = null)->*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.Dialog">Gui.Dialog</a>
 </code>
 </p>
 <p>
@@ -4838,7 +4838,7 @@ Creates a simple dialog box.</p>
 <p>
 Creates an associated surface.</p>
 <p class="code">
-<code style="white-space: break-spaces">func createSurface(using self, from: *Gui.Surface, x: s32, y: s32, width = 512, height = 300, flags = SurfaceFlags.Zero)->*Gui.Surface
+<code style="white-space: break-spaces">func createSurface(using self, from: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.Surface">Gui.Surface</a>, x: s32, y: s32, width = 512, height = 300, flags = SurfaceFlags.Zero)->*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.Surface">Gui.Surface</a>
 </code>
 </p>
 <p>
@@ -5251,7 +5251,7 @@ Set the editbox content, but do not notify change.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func onFocusEvent(using self, evt: *Gui.FocusEvent)
+<code style="white-space: break-spaces">func onFocusEvent(using self, evt: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.FocusEvent">Gui.FocusEvent</a>)
 </code>
 </p>
 <p>
@@ -5266,7 +5266,7 @@ Set the editbox content, but do not notify change.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func onKeyEvent(using self, evt: *Gui.KeyEvent)
+<code style="white-space: break-spaces">func onKeyEvent(using self, evt: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.KeyEvent">Gui.KeyEvent</a>)
 </code>
 </p>
 <p>
@@ -5281,7 +5281,7 @@ Set the editbox content, but do not notify change.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func onMouseEvent(using self, evt: *Gui.MouseEvent)
+<code style="white-space: break-spaces">func onMouseEvent(using self, evt: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.MouseEvent">Gui.MouseEvent</a>)
 </code>
 </p>
 <p>
@@ -5296,7 +5296,7 @@ Set the editbox content, but do not notify change.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func onPaintEvent(using self, evt: *Gui.PaintEvent)
+<code style="white-space: break-spaces">func onPaintEvent(using self, evt: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.PaintEvent">Gui.PaintEvent</a>)
 </code>
 </p>
 <p>
@@ -5311,7 +5311,7 @@ Set the editbox content, but do not notify change.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func onTimerEvent(using self, evt: *Gui.TimerEvent)
+<code style="white-space: break-spaces">func onTimerEvent(using self, evt: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.TimerEvent">Gui.TimerEvent</a>)
 </code>
 </p>
 <p>
@@ -5326,7 +5326,7 @@ Set the editbox content, but do not notify change.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func create(parent: *Gui.Wnd, content: string, position: Core.Math.Rectangle = {}, id: Gui.WndId = null)->*Gui.EditBox
+<code style="white-space: break-spaces">func create(parent: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.Wnd">Gui.Wnd</a>, content: string, position: Core.Math.Rectangle = {}, id: Gui.WndId = null)->*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.EditBox">Gui.EditBox</a>
 </code>
 </p>
 <p>
@@ -5377,7 +5377,7 @@ Select all text.</p>
 <p>
 Set the editbox form.</p>
 <p class="code">
-<code style="white-space: break-spaces">func setForm(using self, form: Gui.EditBoxForm)
+<code style="white-space: break-spaces">func setForm(using self, form: <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.EditBoxForm">Gui.EditBoxForm</a>)
 </code>
 </p>
 <p>
@@ -5723,7 +5723,7 @@ Create the popup list, but do not display it.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func onResizeEvent(using self, evt: *Gui.ResizeEvent)
+<code style="white-space: break-spaces">func onResizeEvent(using self, evt: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.ResizeEvent">Gui.ResizeEvent</a>)
 </code>
 </p>
 <p>
@@ -5740,7 +5740,7 @@ Create the popup list, but do not display it.</p>
 <p>
 Create the popup list, but do not display it.</p>
 <p class="code">
-<code style="white-space: break-spaces">func create(parent: *Gui.Wnd, name: string, text: string, position: Core.Math.Rectangle = {}, id: Gui.WndId = null, flags: Gui.EditBoxFlags = Zero)->*Gui.EditCtrl
+<code style="white-space: break-spaces">func create(parent: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.Wnd">Gui.Wnd</a>, name: string, text: string, position: Core.Math.Rectangle = {}, id: Gui.WndId = null, flags: <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.EditBoxFlags">Gui.EditBoxFlags</a> = Zero)->*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.EditCtrl">Gui.EditCtrl</a>
 </code>
 </p>
 <p>
@@ -5845,7 +5845,7 @@ Set the text.</p>
 <p>
 Creates the message box.</p>
 <p class="code">
-<code style="white-space: break-spaces">func createMultiLine(from: *Gui.Surface, heightEdit = 150)->*Gui.EditDlg
+<code style="white-space: break-spaces">func createMultiLine(from: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.Surface">Gui.Surface</a>, heightEdit = 150)->*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.EditDlg">Gui.EditDlg</a>
 </code>
 </p>
 <p>
@@ -5862,7 +5862,7 @@ Creates the message box.</p>
 <p>
 Creates the message box.</p>
 <p class="code">
-<code style="white-space: break-spaces">func createSingleLine(from: *Gui.Surface)->*Gui.EditDlg
+<code style="white-space: break-spaces">func createSingleLine(from: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.Surface">Gui.Surface</a>)->*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.EditDlg">Gui.EditDlg</a>
 </code>
 </p>
 <p>
@@ -5970,7 +5970,7 @@ Create the popup list, but do not display it.</p>
 <p>
 Create the popup list, but do not display it.</p>
 <p class="code">
-<code style="white-space: break-spaces">func create(parent: *Gui.Wnd, name: string, kind: Gui.EmbInfoCtrlKind, height = 40, top = true)->*Gui.EmbInfoCtrl
+<code style="white-space: break-spaces">func create(parent: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.Wnd">Gui.Wnd</a>, name: string, kind: <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.EmbInfoCtrlKind">Gui.EmbInfoCtrlKind</a>, height = 40, top = true)->*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.EmbInfoCtrl">Gui.EmbInfoCtrl</a>
 </code>
 </p>
 <p>
@@ -6071,7 +6071,7 @@ bool</td>
 </p>
 <p class="code">
 <code style="white-space: break-spaces">func(T) create()->*T
-func(T) create(kind: Gui.EventKind)->*T
+func(T) create(kind: <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.EventKind">Gui.EventKind</a>)->*T
 </code>
 </p>
 <p>
@@ -6431,7 +6431,7 @@ Get all selections.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func onDestroyEvent(using self, evt: *Gui.DestroyEvent)
+<code style="white-space: break-spaces">func onDestroyEvent(using self, evt: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.DestroyEvent">Gui.DestroyEvent</a>)
 </code>
 </p>
 <p>
@@ -6448,7 +6448,7 @@ Get all selections.</p>
 <p>
 Creates the message box.</p>
 <p class="code">
-<code style="white-space: break-spaces">func create(from: *Gui.Surface, opt: Gui.FileDlgOptions = {})->*Gui.FileDlg
+<code style="white-space: break-spaces">func create(from: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.Surface">Gui.Surface</a>, opt: <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.FileDlgOptions">Gui.FileDlgOptions</a> = {})->*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.FileDlg">Gui.FileDlg</a>
 </code>
 </p>
 <p>
@@ -6482,7 +6482,7 @@ Get the first selection.</p>
 <p>
 Get all selections.</p>
 <p class="code">
-<code style="white-space: break-spaces">func getSelectedNames(using self)->Core.Array'(Core.String)
+<code style="white-space: break-spaces">func getSelectedNames(using self)->Core.Array(Core.String)
 </code>
 </p>
 <p>
@@ -6831,7 +6831,7 @@ Set the frame wnd form.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func onPaintEvent(using self, evt: *Gui.PaintEvent)
+<code style="white-space: break-spaces">func onPaintEvent(using self, evt: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.PaintEvent">Gui.PaintEvent</a>)
 </code>
 </p>
 <p>
@@ -6846,7 +6846,7 @@ Set the frame wnd form.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func onPostPaintEvent(using self, evt: *Gui.PaintEvent)
+<code style="white-space: break-spaces">func onPostPaintEvent(using self, evt: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.PaintEvent">Gui.PaintEvent</a>)
 </code>
 </p>
 <p>
@@ -6861,7 +6861,7 @@ Set the frame wnd form.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func onPrePaintEvent(using self, evt: *Gui.PaintEvent)
+<code style="white-space: break-spaces">func onPrePaintEvent(using self, evt: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.PaintEvent">Gui.PaintEvent</a>)
 </code>
 </p>
 <p>
@@ -6876,7 +6876,7 @@ Set the frame wnd form.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func onResizeEvent(using self, evt: *Gui.ResizeEvent)
+<code style="white-space: break-spaces">func onResizeEvent(using self, evt: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.ResizeEvent">Gui.ResizeEvent</a>)
 </code>
 </p>
 <p>
@@ -6925,7 +6925,7 @@ Set the frame wnd flags.</p>
 <p>
 Set the frame wnd form.</p>
 <p class="code">
-<code style="white-space: break-spaces">func setFrameForm(using self, form: Gui.FrameWndForm)
+<code style="white-space: break-spaces">func setFrameForm(using self, form: <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.FrameWndForm">Gui.FrameWndForm</a>)
 </code>
 </p>
 <p>
@@ -6940,7 +6940,7 @@ Set the frame wnd form.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func setView(using self, what: *Gui.Wnd)
+<code style="white-space: break-spaces">func setView(using self, what: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.Wnd">Gui.Wnd</a>)
 </code>
 </p>
 <p>
@@ -7194,7 +7194,7 @@ Set size, in pixel, of a given row.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func onResizeEvent(using self, evt: *Gui.ResizeEvent)
+<code style="white-space: break-spaces">func onResizeEvent(using self, evt: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.ResizeEvent">Gui.ResizeEvent</a>)
 </code>
 </p>
 <p>
@@ -7228,7 +7228,7 @@ Recompute layout of all childs.</p>
 <p>
 Create a layout control.</p>
 <p class="code">
-<code style="white-space: break-spaces">func create(parent: *Gui.Wnd, numColumns: s32, numRows: s32, position: Core.Math.Rectangle = {})->*Gui.GridLayoutCtrl
+<code style="white-space: break-spaces">func create(parent: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.Wnd">Gui.Wnd</a>, numColumns: s32, numRows: s32, position: Core.Math.Rectangle = {})->*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.GridLayoutCtrl">Gui.GridLayoutCtrl</a>
 </code>
 </p>
 <p>
@@ -7245,7 +7245,7 @@ Create a layout control.</p>
 <p>
 Set the wnd associated with the given <code class = "incode">col</code> and <code class = "incode">row</code>. Window can cover multiple columns and rows.</p>
 <p class="code">
-<code style="white-space: break-spaces">func setColRowChild(using self, child: *Gui.Wnd, col: s32, row: s32, spanH: s32 = 1, spanV: s32 = 1)
+<code style="white-space: break-spaces">func setColRowChild(using self, child: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.Wnd">Gui.Wnd</a>, col: s32, row: s32, spanH: s32 = 1, spanV: s32 = 1)
 </code>
 </p>
 <p>
@@ -7537,7 +7537,7 @@ Set an item width by column.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func onMouseEvent(using self, evt: *Gui.MouseEvent)
+<code style="white-space: break-spaces">func onMouseEvent(using self, evt: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.MouseEvent">Gui.MouseEvent</a>)
 </code>
 </p>
 <p>
@@ -7552,7 +7552,7 @@ Set an item width by column.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func onPaintEvent(using self, evt: *Gui.PaintEvent)
+<code style="white-space: break-spaces">func onPaintEvent(using self, evt: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.PaintEvent">Gui.PaintEvent</a>)
 </code>
 </p>
 <p>
@@ -7567,7 +7567,7 @@ Set an item width by column.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func paintItem(using self, bc: Gui.PaintContext, item: *Gui.HeaderItem, idx: u32, x: f32)
+<code style="white-space: break-spaces">func paintItem(using self, bc: <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.PaintContext">Gui.PaintContext</a>, item: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.HeaderItem">Gui.HeaderItem</a>, idx: u32, x: f32)
 </code>
 </p>
 <p>
@@ -7584,7 +7584,7 @@ Set an item width by column.</p>
 <p>
 Add a new view.</p>
 <p class="code">
-<code style="white-space: break-spaces">func addItem(using self, tabName: string, width = 100'f32, icon: Gui.Icon = {})->*Gui.HeaderItem
+<code style="white-space: break-spaces">func addItem(using self, tabName: string, width = 100'f32, icon: <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.Icon">Gui.Icon</a> = {})->*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.HeaderItem">Gui.HeaderItem</a>
 </code>
 </p>
 <p>
@@ -7599,7 +7599,7 @@ Add a new view.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func create(parent: *Gui.Wnd, position: Core.Math.Rectangle = {}, id: Gui.WndId = null)->*Gui.Header
+<code style="white-space: break-spaces">func create(parent: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.Wnd">Gui.Wnd</a>, position: Core.Math.Rectangle = {}, id: Gui.WndId = null)->*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.Header">Gui.Header</a>
 </code>
 </p>
 <p>
@@ -7616,7 +7616,7 @@ Add a new view.</p>
 <p>
 Returns the given item, by index.</p>
 <p class="code">
-<code style="white-space: break-spaces">func getItem(using self, idx: u32)->*Gui.HeaderItem
+<code style="white-space: break-spaces">func getItem(using self, idx: u32)->*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.HeaderItem">Gui.HeaderItem</a>
 </code>
 </p>
 <p>
@@ -7633,7 +7633,7 @@ Returns the given item, by index.</p>
 <p>
 Returns the given item, by column.</p>
 <p class="code">
-<code style="white-space: break-spaces">func getItemByCol(using self, column: u32)->*Gui.HeaderItem
+<code style="white-space: break-spaces">func getItemByCol(using self, column: u32)->*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.HeaderItem">Gui.HeaderItem</a>
 </code>
 </p>
 <p>
@@ -8277,7 +8277,7 @@ Set icon to invalid.</p>
 <p>
 Initialize the icon from an image list.</p>
 <p class="code">
-<code style="white-space: break-spaces">func from(imageList: *Gui.ImageList, index: s32, sizeX: f32 = 0, sizeY: f32 = 0)->Gui.Icon
+<code style="white-space: break-spaces">func from(imageList: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.ImageList">Gui.ImageList</a>, index: s32, sizeX: f32 = 0, sizeY: f32 = 0)-><a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.Icon">Gui.Icon</a>
 </code>
 </p>
 <p>
@@ -8307,7 +8307,7 @@ Initialize the icon from an image list.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func opEquals(using self, other: Gui.Icon)->bool
+<code style="white-space: break-spaces">func opEquals(using self, other: <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.Icon">Gui.Icon</a>)->bool
 </code>
 </p>
 <p>
@@ -8341,7 +8341,7 @@ Paint icon at the given position.</p>
 <p>
 Initialize the icon from an image list.</p>
 <p class="code">
-<code style="white-space: break-spaces">func set(using self, imageList: *Gui.ImageList, index: s32, sizeX: f32 = 0, sizeY: f32 = 0)
+<code style="white-space: break-spaces">func set(using self, imageList: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.ImageList">Gui.ImageList</a>, index: s32, sizeX: f32 = 0, sizeY: f32 = 0)
 </code>
 </p>
 <p>
@@ -8458,7 +8458,7 @@ Change bar flags.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func onComputeStateEvent(using self, evt: *Gui.CommandStateEvent)
+<code style="white-space: break-spaces">func onComputeStateEvent(using self, evt: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.CommandStateEvent">Gui.CommandStateEvent</a>)
 </code>
 </p>
 <p>
@@ -8475,7 +8475,7 @@ Change bar flags.</p>
 <p>
 Add a new checkable button.</p>
 <p class="code">
-<code style="white-space: break-spaces">func addCheckableItem(using self, icon: Gui.Icon, btnId: Gui.WndId = null)->*Gui.IconButton
+<code style="white-space: break-spaces">func addCheckableItem(using self, icon: <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.Icon">Gui.Icon</a>, btnId: Gui.WndId = null)->*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.IconButton">Gui.IconButton</a>
 </code>
 </p>
 <p>
@@ -8492,7 +8492,7 @@ Add a new checkable button.</p>
 <p>
 Add a new checkable button.</p>
 <p class="code">
-<code style="white-space: break-spaces">func addCheckableToggleItem(using self, icon: Gui.Icon, btnId: Gui.WndId = null)->*Gui.IconButton
+<code style="white-space: break-spaces">func addCheckableToggleItem(using self, icon: <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.Icon">Gui.Icon</a>, btnId: Gui.WndId = null)->*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.IconButton">Gui.IconButton</a>
 </code>
 </p>
 <p>
@@ -8509,7 +8509,7 @@ Add a new checkable button.</p>
 <p>
 Add a new button.</p>
 <p class="code">
-<code style="white-space: break-spaces">func addItem(using self, icon: Gui.Icon, btnId: Gui.WndId = null, iconBtnFlags = IconButtonFlags.Zero)->*Gui.IconButton
+<code style="white-space: break-spaces">func addItem(using self, icon: <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.Icon">Gui.Icon</a>, btnId: Gui.WndId = null, iconBtnFlags = IconButtonFlags.Zero)->*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.IconButton">Gui.IconButton</a>
 </code>
 </p>
 <p>
@@ -8524,7 +8524,7 @@ Add a new button.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func create(parent: *Gui.Wnd, iconSize: f32, position: Core.Math.Rectangle = {}, id: Gui.WndId = null)->*Gui.IconBar
+<code style="white-space: break-spaces">func create(parent: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.Wnd">Gui.Wnd</a>, iconSize: f32, position: Core.Math.Rectangle = {}, id: Gui.WndId = null)->*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.IconBar">Gui.IconBar</a>
 </code>
 </p>
 <p>
@@ -8730,7 +8730,7 @@ Set the button form.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func onApplyStateEvent(using self, evt: *Gui.CommandStateEvent)
+<code style="white-space: break-spaces">func onApplyStateEvent(using self, evt: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.CommandStateEvent">Gui.CommandStateEvent</a>)
 </code>
 </p>
 <p>
@@ -8745,7 +8745,7 @@ Set the button form.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func onDestroyEvent(using self, evt: *Gui.DestroyEvent)
+<code style="white-space: break-spaces">func onDestroyEvent(using self, evt: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.DestroyEvent">Gui.DestroyEvent</a>)
 </code>
 </p>
 <p>
@@ -8760,7 +8760,7 @@ Set the button form.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func onHookEvent(using self, evt: *Gui.Event)
+<code style="white-space: break-spaces">func onHookEvent(using self, evt: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.Event">Gui.Event</a>)
 </code>
 </p>
 <p>
@@ -8775,7 +8775,7 @@ Set the button form.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func onMouseEvent(using self, evt: *Gui.MouseEvent)
+<code style="white-space: break-spaces">func onMouseEvent(using self, evt: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.MouseEvent">Gui.MouseEvent</a>)
 </code>
 </p>
 <p>
@@ -8790,7 +8790,7 @@ Set the button form.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func onPaintEvent(using self, evt: *Gui.PaintEvent)
+<code style="white-space: break-spaces">func onPaintEvent(using self, evt: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.PaintEvent">Gui.PaintEvent</a>)
 </code>
 </p>
 <p>
@@ -8805,7 +8805,7 @@ Set the button form.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func create(parent: *Gui.Wnd, icon: Gui.Icon, position: Core.Math.Rectangle = {}, id: Gui.WndId = null)->*Gui.IconButton
+<code style="white-space: break-spaces">func create(parent: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.Wnd">Gui.Wnd</a>, icon: <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.Icon">Gui.Icon</a>, position: Core.Math.Rectangle = {}, id: Gui.WndId = null)->*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.IconButton">Gui.IconButton</a>
 </code>
 </p>
 <p>
@@ -8839,7 +8839,7 @@ Set the check state of the button (if the button is checkable).</p>
 <p>
 Set the button form.</p>
 <p class="code">
-<code style="white-space: break-spaces">func setForm(using self, form: Gui.IconButtonForm)
+<code style="white-space: break-spaces">func setForm(using self, form: <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.IconButtonForm">Gui.IconButtonForm</a>)
 </code>
 </p>
 <p>
@@ -9276,7 +9276,7 @@ Set movie as an image list.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func onPaintEvent(using self, evt: *Gui.PaintEvent)
+<code style="white-space: break-spaces">func onPaintEvent(using self, evt: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.PaintEvent">Gui.PaintEvent</a>)
 </code>
 </p>
 <p>
@@ -9306,7 +9306,7 @@ Set movie as an image list.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func create(parent: *Gui.Wnd, position: Core.Math.Rectangle = {}, id: Gui.WndId = null)->*Gui.ImageRect
+<code style="white-space: break-spaces">func create(parent: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.Wnd">Gui.Wnd</a>, position: Core.Math.Rectangle = {}, id: Gui.WndId = null)->*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.ImageRect">Gui.ImageRect</a>
 </code>
 </p>
 <p>
@@ -9340,7 +9340,7 @@ Load and set movie.</p>
 <p>
 Associate image.</p>
 <p class="code">
-<code style="white-space: break-spaces">func setImage(using self, image: Gui.ImageList)
+<code style="white-space: break-spaces">func setImage(using self, image: <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.ImageList">Gui.ImageList</a>)
 </code>
 </p>
 <p>
@@ -9369,7 +9369,7 @@ Associate image.</p>
 <p>
 Set movie as an image list.</p>
 <p class="code">
-<code style="white-space: break-spaces">func setMovie(using self, image: Gui.ImageList)
+<code style="white-space: break-spaces">func setMovie(using self, image: <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.ImageList">Gui.ImageList</a>)
 </code>
 </p>
 <p>
@@ -9637,7 +9637,7 @@ Change the text.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func onPaintEvent(using self, evt: *Gui.PaintEvent)
+<code style="white-space: break-spaces">func onPaintEvent(using self, evt: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.PaintEvent">Gui.PaintEvent</a>)
 </code>
 </p>
 <p>
@@ -9652,7 +9652,7 @@ Change the text.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func onSetThemeEvent(using self, evt: *Gui.SetThemeEvent)
+<code style="white-space: break-spaces">func onSetThemeEvent(using self, evt: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.SetThemeEvent">Gui.SetThemeEvent</a>)
 </code>
 </p>
 <p>
@@ -9667,7 +9667,7 @@ Change the text.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func create(parent: *Gui.Wnd, name: string, position: Core.Math.Rectangle = {}, id: Gui.WndId = null)->*Gui.Label
+<code style="white-space: break-spaces">func create(parent: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.Wnd">Gui.Wnd</a>, name: string, position: Core.Math.Rectangle = {}, id: Gui.WndId = null)->*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.Label">Gui.Label</a>
 </code>
 </p>
 <p>
@@ -10238,7 +10238,7 @@ Unselect all lines.</p>
 <p>
 Add one column in a multi columns list.</p>
 <p class="code">
-<code style="white-space: break-spaces">func addColumn(using self, name: string, width: f32 = 100, icon: Gui.Icon = {})
+<code style="white-space: break-spaces">func addColumn(using self, name: string, width: f32 = 100, icon: <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.Icon">Gui.Icon</a> = {})
 </code>
 </p>
 <p>
@@ -10272,7 +10272,7 @@ Clear all lines.</p>
 <p>
 Collapse the given line.</p>
 <p class="code">
-<code style="white-space: break-spaces">func collapse(using self, line: *Gui.ListLine)
+<code style="white-space: break-spaces">func collapse(using self, line: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.ListLine">Gui.ListLine</a>)
 </code>
 </p>
 <p>
@@ -10323,13 +10323,13 @@ Compute global layout, once all lines have been added.</p>
 <p>
 Add one new line.</p>
 <p class="code">
-<code style="white-space: break-spaces">func createLine(using self, parentLine: *Gui.ListLine)->*Gui.ListLine
+<code style="white-space: break-spaces">func createLine(using self, parentLine: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.ListLine">Gui.ListLine</a>)->*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.ListLine">Gui.ListLine</a>
 </code>
 </p>
 <p>
 Add one line, and set first column.</p>
 <p class="code">
-<code style="white-space: break-spaces">func createLine(using self, name: string, icon: Gui.Icon = {}, parentLine: *Gui.ListLine = null)->*Gui.ListLine
+<code style="white-space: break-spaces">func createLine(using self, name: string, icon: <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.Icon">Gui.Icon</a> = {}, parentLine: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.ListLine">Gui.ListLine</a> = null)->*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.ListLine">Gui.ListLine</a>
 </code>
 </p>
 <p>
@@ -10344,7 +10344,7 @@ Add one line, and set first column.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func createMultiColumns(parent: *Gui.Wnd, position: Core.Math.Rectangle = {}, id: Gui.WndId = null)->*Gui.ListCtrl
+<code style="white-space: break-spaces">func createMultiColumns(parent: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.Wnd">Gui.Wnd</a>, position: Core.Math.Rectangle = {}, id: Gui.WndId = null)->*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.ListCtrl">Gui.ListCtrl</a>
 </code>
 </p>
 <p>
@@ -10359,7 +10359,7 @@ Add one line, and set first column.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func createSimple(parent: *Gui.Wnd, position: Core.Math.Rectangle = {}, id: Gui.WndId = null)->*Gui.ListCtrl
+<code style="white-space: break-spaces">func createSimple(parent: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.Wnd">Gui.Wnd</a>, position: Core.Math.Rectangle = {}, id: Gui.WndId = null)->*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.ListCtrl">Gui.ListCtrl</a>
 </code>
 </p>
 <p>
@@ -10393,7 +10393,7 @@ Set the corresponding line visible.</p>
 <p>
 Expand the given line.</p>
 <p class="code">
-<code style="white-space: break-spaces">func expand(using self, line: *Gui.ListLine)
+<code style="white-space: break-spaces">func expand(using self, line: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.ListLine">Gui.ListLine</a>)
 </code>
 </p>
 <p>
@@ -10410,7 +10410,7 @@ Expand the given line.</p>
 <p>
 Get all the checked lines.</p>
 <p class="code">
-<code style="white-space: break-spaces">func getCheckedLines(using const self)->Core.Array'(*Gui.ListLine)
+<code style="white-space: break-spaces">func getCheckedLines(using const self)->Core.Array(*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.ListLine">Gui.ListLine</a>)
 </code>
 </p>
 <p>
@@ -10444,7 +10444,7 @@ Returns the first visible line index.</p>
 <p>
 Get the line with the keyboard focus.</p>
 <p class="code">
-<code style="white-space: break-spaces">func getFocusLine(using const self)->*Gui.ListLine
+<code style="white-space: break-spaces">func getFocusLine(using const self)->*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.ListLine">Gui.ListLine</a>
 </code>
 </p>
 <p>
@@ -10478,7 +10478,7 @@ Returns the last visible line index.</p>
 <p>
 Get a line by index.</p>
 <p class="code">
-<code style="white-space: break-spaces">func getLine(using self, idx: u32)->*Gui.ListLine
+<code style="white-space: break-spaces">func getLine(using self, idx: u32)->*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.ListLine">Gui.ListLine</a>
 </code>
 </p>
 <p>
@@ -10529,7 +10529,7 @@ Get the height of one line.</p>
 <p>
 Returns a selected line Mostly for singlesel mode.</p>
 <p class="code">
-<code style="white-space: break-spaces">func getSelectedLine(using const self)->*Gui.ListLine
+<code style="white-space: break-spaces">func getSelectedLine(using const self)->*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.ListLine">Gui.ListLine</a>
 </code>
 </p>
 <p>
@@ -10546,7 +10546,7 @@ Returns a selected line Mostly for singlesel mode.</p>
 <p>
 Get all the selected lines.</p>
 <p class="code">
-<code style="white-space: break-spaces">func getSelectedLines(using const self)->Core.Array'(*Gui.ListLine)
+<code style="white-space: break-spaces">func getSelectedLines(using const self)->Core.Array(*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.ListLine">Gui.ListLine</a>)
 </code>
 </p>
 <p>
@@ -10705,7 +10705,7 @@ Sort the list by a given column If <code class = "incode">persistent</code> is t
 <p>
 Collapse the given line.</p>
 <p class="code">
-<code style="white-space: break-spaces">func toggleExpand(using self, line: *Gui.ListLine)
+<code style="white-space: break-spaces">func toggleExpand(using self, line: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.ListLine">Gui.ListLine</a>)
 </code>
 </p>
 <p>
@@ -11044,7 +11044,7 @@ Initialize a given column item.</p>
 <p>
 Get an item by index.</p>
 <p class="code">
-<code style="white-space: break-spaces">func getItem(using self, column: u32)->*Gui.ListItem
+<code style="white-space: break-spaces">func getItem(using self, column: u32)->*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.ListItem">Gui.ListItem</a>
 </code>
 </p>
 <p>
@@ -11059,7 +11059,7 @@ Get an item by index.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func isParentOf(using self, other: *Gui.ListLine)->bool
+<code style="white-space: break-spaces">func isParentOf(using self, other: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.ListLine">Gui.ListLine</a>)->bool
 </code>
 </p>
 <p>
@@ -11076,7 +11076,7 @@ Get an item by index.</p>
 <p>
 Initialize a given column item.</p>
 <p class="code">
-<code style="white-space: break-spaces">func setItem(using self, column: u32, name: string, icon: Gui.Icon = {})->*Gui.ListItem
+<code style="white-space: break-spaces">func setItem(using self, column: u32, name: string, icon: <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.Icon">Gui.Icon</a> = {})->*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.ListItem">Gui.ListItem</a>
 </code>
 </p>
 <p>
@@ -11159,7 +11159,7 @@ bool</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func onKeyEvent(using self, evt: *Gui.KeyEvent)
+<code style="white-space: break-spaces">func onKeyEvent(using self, evt: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.KeyEvent">Gui.KeyEvent</a>)
 </code>
 </p>
 <p>
@@ -11174,7 +11174,7 @@ bool</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func onMouseEvent(using self, evt: *Gui.MouseEvent)
+<code style="white-space: break-spaces">func onMouseEvent(using self, evt: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.MouseEvent">Gui.MouseEvent</a>)
 </code>
 </p>
 <p>
@@ -11189,7 +11189,7 @@ bool</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func onPaintEvent(using self, evt: *Gui.PaintEvent)
+<code style="white-space: break-spaces">func onPaintEvent(using self, evt: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.PaintEvent">Gui.PaintEvent</a>)
 </code>
 </p>
 <p>
@@ -11204,7 +11204,7 @@ bool</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func onResizeEvent(using self, evt: *Gui.ResizeEvent)
+<code style="white-space: break-spaces">func onResizeEvent(using self, evt: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.ResizeEvent">Gui.ResizeEvent</a>)
 </code>
 </p>
 <p>
@@ -11427,7 +11427,7 @@ Make the popup menu modal Will return the selected id.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func onMouseEvent(using self, evt: *Gui.MouseEvent)
+<code style="white-space: break-spaces">func onMouseEvent(using self, evt: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.MouseEvent">Gui.MouseEvent</a>)
 </code>
 </p>
 <p>
@@ -11442,7 +11442,7 @@ Make the popup menu modal Will return the selected id.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func onPaintEvent(using self, evt: *Gui.PaintEvent)
+<code style="white-space: break-spaces">func onPaintEvent(using self, evt: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.PaintEvent">Gui.PaintEvent</a>)
 </code>
 </p>
 <p>
@@ -11457,7 +11457,7 @@ Make the popup menu modal Will return the selected id.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func onTimerEvent(using self, evt: *Gui.TimerEvent)
+<code style="white-space: break-spaces">func onTimerEvent(using self, evt: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.TimerEvent">Gui.TimerEvent</a>)
 </code>
 </p>
 <p>
@@ -11480,7 +11480,7 @@ Add a new item.</p>
 <p>
 Add a new item.</p>
 <p class="code">
-<code style="white-space: break-spaces">func addItem(using self, name: string, id: Gui.WndId, icon: Gui.Icon = {}, rightName: string = null, disabled = false, checked = false)
+<code style="white-space: break-spaces">func addItem(using self, name: string, id: Gui.WndId, icon: <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.Icon">Gui.Icon</a> = {}, rightName: string = null, disabled = false, checked = false)
 </code>
 </p>
 <p>
@@ -11497,13 +11497,13 @@ Add a new item.</p>
 <p>
 Add a new popup item.</p>
 <p class="code">
-<code style="white-space: break-spaces">func addPopup(using self, popup: *Gui.MenuCtrl, id: Gui.WndId)
+<code style="white-space: break-spaces">func addPopup(using self, popup: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.MenuCtrl">Gui.MenuCtrl</a>, id: Gui.WndId)
 </code>
 </p>
 <p>
 Add a new popup item.</p>
 <p class="code">
-<code style="white-space: break-spaces">func addPopup(using self, name: string, popup: *Gui.MenuCtrl, icon: Gui.Icon = {}, id: Gui.WndId = null)
+<code style="white-space: break-spaces">func addPopup(using self, name: string, popup: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.MenuCtrl">Gui.MenuCtrl</a>, icon: <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.Icon">Gui.Icon</a> = {}, id: Gui.WndId = null)
 </code>
 </p>
 <p>
@@ -11550,7 +11550,7 @@ Add a separator.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func createBar(parent: *Gui.Wnd, pos: Core.Math.Rectangle = {}, id: Gui.WndId = null, owner: *Gui.Wnd = null)->*Gui.MenuCtrl
+<code style="white-space: break-spaces">func createBar(parent: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.Wnd">Gui.Wnd</a>, pos: Core.Math.Rectangle = {}, id: Gui.WndId = null, owner: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.Wnd">Gui.Wnd</a> = null)->*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.MenuCtrl">Gui.MenuCtrl</a>
 </code>
 </p>
 <p>
@@ -11565,7 +11565,7 @@ Add a separator.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func createPopup(parent: *Gui.Wnd, id: Gui.WndId = null, owner: *Gui.Wnd = null)->*Gui.MenuCtrl
+<code style="white-space: break-spaces">func createPopup(parent: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.Wnd">Gui.Wnd</a>, id: Gui.WndId = null, owner: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.Wnd">Gui.Wnd</a> = null)->*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.MenuCtrl">Gui.MenuCtrl</a>
 </code>
 </p>
 <p>
@@ -11759,7 +11759,7 @@ Message box with a <code class = "incode">yes</code> and <code class = "incode">
 <p>
 Message box to <code class = "incode">confirm</code> something.</p>
 <p class="code">
-<code style="white-space: break-spaces">func confirm(from: *Gui.Surface, message: string, question: string = null)->Gui.WndId
+<code style="white-space: break-spaces">func confirm(from: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.Surface">Gui.Surface</a>, message: string, question: string = null)->Gui.WndId
 </code>
 </p>
 <p>
@@ -11776,7 +11776,7 @@ Message box to <code class = "incode">confirm</code> something.</p>
 <p>
 Creates the message box.</p>
 <p class="code">
-<code style="white-space: break-spaces">func create(from: *Gui.Surface, message: string, icon: Gui.Icon = {})->*Gui.MessageDlg
+<code style="white-space: break-spaces">func create(from: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.Surface">Gui.Surface</a>, message: string, icon: <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.Icon">Gui.Icon</a> = {})->*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.MessageDlg">Gui.MessageDlg</a>
 </code>
 </p>
 <p>
@@ -11793,7 +11793,7 @@ Creates the message box.</p>
 <p>
 Display the box, centered, and returns the id of the pressed button.</p>
 <p class="code">
-<code style="white-space: break-spaces">func doModal(using self, from: *Gui.Surface)->string
+<code style="white-space: break-spaces">func doModal(using self, from: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.Surface">Gui.Surface</a>)->string
 </code>
 </p>
 <p>
@@ -11810,7 +11810,7 @@ Display the box, centered, and returns the id of the pressed button.</p>
 <p>
 Message box to show an error.</p>
 <p class="code">
-<code style="white-space: break-spaces">func error(from: *Gui.Surface, error: string, message: string = null)
+<code style="white-space: break-spaces">func error(from: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.Surface">Gui.Surface</a>, error: string, message: string = null)
 </code>
 </p>
 <p>
@@ -11827,7 +11827,7 @@ Message box to show an error.</p>
 <p>
 Message box with a <code class = "incode">ok</code>.</p>
 <p class="code">
-<code style="white-space: break-spaces">func ok(from: *Gui.Surface, message: string, icon: Gui.Icon = {})
+<code style="white-space: break-spaces">func ok(from: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.Surface">Gui.Surface</a>, message: string, icon: <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.Icon">Gui.Icon</a> = {})
 </code>
 </p>
 <p>
@@ -11844,7 +11844,7 @@ Message box with a <code class = "incode">ok</code>.</p>
 <p>
 Message box with a <code class = "incode">ok</code> and <code class = "incode">cancel</code> button.</p>
 <p class="code">
-<code style="white-space: break-spaces">func okCancel(from: *Gui.Surface, message: string, defaultId = Dialog.BtnCancel, icon: Gui.Icon = {})->Gui.WndId
+<code style="white-space: break-spaces">func okCancel(from: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.Surface">Gui.Surface</a>, message: string, defaultId = Dialog.BtnCancel, icon: <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.Icon">Gui.Icon</a> = {})->Gui.WndId
 </code>
 </p>
 <p>
@@ -11861,7 +11861,7 @@ Message box with a <code class = "incode">ok</code> and <code class = "incode">c
 <p>
 Set big icon.</p>
 <p class="code">
-<code style="white-space: break-spaces">func setIcon(using self, icon: Gui.Icon, color: Pixel.Color = Argb.Zero)
+<code style="white-space: break-spaces">func setIcon(using self, icon: <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.Icon">Gui.Icon</a>, color: Pixel.Color = Argb.Zero)
 </code>
 </p>
 <p>
@@ -11895,7 +11895,7 @@ Set big icon color (icon must has been set before).</p>
 <p>
 Message box with a <code class = "incode">yes</code> and <code class = "incode">no</code> button.</p>
 <p class="code">
-<code style="white-space: break-spaces">func yesNo(from: *Gui.Surface, message: string, title: string = null, defaultId = Dialog.BtnNo, icon: Gui.Icon = {})->Gui.WndId
+<code style="white-space: break-spaces">func yesNo(from: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.Surface">Gui.Surface</a>, message: string, title: string = null, defaultId = Dialog.BtnNo, icon: <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.Icon">Gui.Icon</a> = {})->Gui.WndId
 </code>
 </p>
 <p>
@@ -11912,7 +11912,7 @@ Message box with a <code class = "incode">yes</code> and <code class = "incode">
 <p>
 Message box with a <code class = "incode">yes</code> and <code class = "incode">no</code> button.</p>
 <p class="code">
-<code style="white-space: break-spaces">func yesNoCancel(from: *Gui.Surface, message: string, defaultId = Dialog.BtnCancel, icon: Gui.Icon = {})->Gui.WndId
+<code style="white-space: break-spaces">func yesNoCancel(from: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.Surface">Gui.Surface</a>, message: string, defaultId = Dialog.BtnCancel, icon: <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.Icon">Gui.Icon</a> = {})->Gui.WndId
 </code>
 </p>
 <p>
@@ -12250,7 +12250,7 @@ Set/Reset pause state.</p>
 <p>
 Associate an image list.</p>
 <p class="code">
-<code style="white-space: break-spaces">func set(using self, imageList: Gui.ImageList)
+<code style="white-space: break-spaces">func set(using self, imageList: <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.ImageList">Gui.ImageList</a>)
 </code>
 </p>
 <p>
@@ -12492,13 +12492,13 @@ First init the PaintImage instance.</p>
 <p>
 Draw to an image by calling the closure.</p>
 <p class="code">
-<code style="white-space: break-spaces">func draw(using self, call: closure(*Gui.Application, *Pixel.Painter))->Pixel.Image
+<code style="white-space: break-spaces">func draw(using self, call: closure(*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.Application">Gui.Application</a>, *Pixel.Painter))->Pixel.Image
 </code>
 </p>
 <p>
 One shot paint to image.</p>
 <p class="code">
-<code style="white-space: break-spaces">func draw(w: s32, h: s32, call: closure(*Gui.Application, *Pixel.Painter))->Pixel.Image
+<code style="white-space: break-spaces">func draw(w: s32, h: s32, call: closure(*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.Application">Gui.Application</a>, *Pixel.Painter))->Pixel.Image
 </code>
 </p>
 <p>
@@ -12648,7 +12648,7 @@ Add a range of changing <code class = "incode">saturation</code>.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func onMouseEvent(using self, evt: *Gui.MouseEvent)
+<code style="white-space: break-spaces">func onMouseEvent(using self, evt: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.MouseEvent">Gui.MouseEvent</a>)
 </code>
 </p>
 <p>
@@ -12663,7 +12663,7 @@ Add a range of changing <code class = "incode">saturation</code>.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func onPaintEvent(using self, evt: *Gui.PaintEvent)
+<code style="white-space: break-spaces">func onPaintEvent(using self, evt: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.PaintEvent">Gui.PaintEvent</a>)
 </code>
 </p>
 <p>
@@ -12746,7 +12746,7 @@ Add a range of changing <code class = "incode">saturation</code>.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func create(parent: *Gui.Wnd, position: Core.Math.Rectangle = {}, id: Gui.WndId = null)->*Gui.PalettePicker
+<code style="white-space: break-spaces">func create(parent: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.Wnd">Gui.Wnd</a>, position: Core.Math.Rectangle = {}, id: Gui.WndId = null)->*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.PalettePicker">Gui.PalettePicker</a>
 </code>
 </p>
 <p>
@@ -12899,7 +12899,7 @@ Show popup.</p>
 <p>
 Add a new item in the list.</p>
 <p class="code">
-<code style="white-space: break-spaces">func addItem(using self, name: string, id: Gui.WndId = null, icon: Gui.Icon = {}, userData0: *void = null, userData1: *void = null)
+<code style="white-space: break-spaces">func addItem(using self, name: string, id: Gui.WndId = null, icon: <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.Icon">Gui.Icon</a> = {}, userData0: *void = null, userData1: *void = null)
 </code>
 </p>
 <p>
@@ -12933,7 +12933,7 @@ Add a separator.</p>
 <p>
 Create the popup list, but do not display it.</p>
 <p class="code">
-<code style="white-space: break-spaces">func create(owner: *Gui.Wnd)->*Gui.PopupListCtrl
+<code style="white-space: break-spaces">func create(owner: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.Wnd">Gui.Wnd</a>)->*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.PopupListCtrl">Gui.PopupListCtrl</a>
 </code>
 </p>
 <p>
@@ -13031,7 +13031,7 @@ u32</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func onFocusEvent(using self, evt: *Gui.FocusEvent)
+<code style="white-space: break-spaces">func onFocusEvent(using self, evt: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.FocusEvent">Gui.FocusEvent</a>)
 </code>
 </p>
 <p>
@@ -13046,7 +13046,7 @@ u32</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func onMouseEvent(using self, evt: *Gui.MouseEvent)
+<code style="white-space: break-spaces">func onMouseEvent(using self, evt: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.MouseEvent">Gui.MouseEvent</a>)
 </code>
 </p>
 <p>
@@ -13061,7 +13061,7 @@ u32</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func onPaintEvent(using self, evt: *Gui.PaintEvent)
+<code style="white-space: break-spaces">func onPaintEvent(using self, evt: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.PaintEvent">Gui.PaintEvent</a>)
 </code>
 </p>
 <p>
@@ -13238,7 +13238,7 @@ Set the progression in [0..1] range.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func onPaintEvent(using self, evt: *Gui.PaintEvent)
+<code style="white-space: break-spaces">func onPaintEvent(using self, evt: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.PaintEvent">Gui.PaintEvent</a>)
 </code>
 </p>
 <p>
@@ -13253,7 +13253,7 @@ Set the progression in [0..1] range.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func create(parent: *Gui.Wnd, position: Core.Math.Rectangle = {}, id: Gui.WndId = null)->*Gui.ProgressBar
+<code style="white-space: break-spaces">func create(parent: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.Wnd">Gui.Wnd</a>, position: Core.Math.Rectangle = {}, id: Gui.WndId = null)->*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.ProgressBar">Gui.ProgressBar</a>
 </code>
 </p>
 <p>
@@ -13467,7 +13467,7 @@ Add a new struct to display.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func create(parent: *Gui.Wnd, position: Core.Math.Rectangle = {}, id: Gui.WndId = null)->*Gui.PropertyList
+<code style="white-space: break-spaces">func create(parent: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.Wnd">Gui.Wnd</a>, position: Core.Math.Rectangle = {}, id: Gui.WndId = null)->*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.PropertyList">Gui.PropertyList</a>
 </code>
 </p>
 <p>
@@ -13650,7 +13650,7 @@ form</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func onMouseEvent(using self, evt: *Gui.MouseEvent)
+<code style="white-space: break-spaces">func onMouseEvent(using self, evt: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.MouseEvent">Gui.MouseEvent</a>)
 </code>
 </p>
 <p>
@@ -13665,7 +13665,7 @@ form</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func onPaintEvent(using self, evt: *Gui.PaintEvent)
+<code style="white-space: break-spaces">func onPaintEvent(using self, evt: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.PaintEvent">Gui.PaintEvent</a>)
 </code>
 </p>
 <p>
@@ -13680,7 +13680,7 @@ form</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func create(parent: *Gui.Wnd, name: string, position: Core.Math.Rectangle = {}, id: Gui.WndId = null)->*Gui.PushButton
+<code style="white-space: break-spaces">func create(parent: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.Wnd">Gui.Wnd</a>, name: string, position: Core.Math.Rectangle = {}, id: Gui.WndId = null)->*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.PushButton">Gui.PushButton</a>
 </code>
 </p>
 <p>
@@ -13823,7 +13823,7 @@ Set the checked state.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func onMouseEvent(using self, evt: *Gui.MouseEvent)
+<code style="white-space: break-spaces">func onMouseEvent(using self, evt: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.MouseEvent">Gui.MouseEvent</a>)
 </code>
 </p>
 <p>
@@ -13838,7 +13838,7 @@ Set the checked state.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func onPaintEvent(using self, evt: *Gui.PaintEvent)
+<code style="white-space: break-spaces">func onPaintEvent(using self, evt: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.PaintEvent">Gui.PaintEvent</a>)
 </code>
 </p>
 <p>
@@ -13853,7 +13853,7 @@ Set the checked state.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func create(parent: *Gui.Wnd, name: string, position: Core.Math.Rectangle = {}, id: Gui.WndId = null)->*Gui.RadioButton
+<code style="white-space: break-spaces">func create(parent: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.Wnd">Gui.Wnd</a>, name: string, position: Core.Math.Rectangle = {}, id: Gui.WndId = null)->*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.RadioButton">Gui.RadioButton</a>
 </code>
 </p>
 <p>
@@ -15060,7 +15060,7 @@ Set the text content.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func addMapping(using self, key: Core.Input.Key, mdf: Core.Input.KeyModifiers, cmd: Gui.RichEditCommand)
+<code style="white-space: break-spaces">func addMapping(using self, key: Core.Input.Key, mdf: Core.Input.KeyModifiers, cmd: <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.RichEditCommand">Gui.RichEditCommand</a>)
 </code>
 </p>
 <p>
@@ -15231,7 +15231,7 @@ Clear content.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func create(parent: *Gui.Wnd, position: Core.Math.Rectangle = {}, id: Gui.WndId = null)->*Gui.RichEditCtrl
+<code style="white-space: break-spaces">func create(parent: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.Wnd">Gui.Wnd</a>, position: Core.Math.Rectangle = {}, id: Gui.WndId = null)->*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.RichEditCtrl">Gui.RichEditCtrl</a>
 </code>
 </p>
 <p>
@@ -15368,7 +15368,7 @@ Delete a given text at the start of each selected line.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func ensureCursorIsVisible(using self, cp: Gui.RichEditCursor, center: bool)
+<code style="white-space: break-spaces">func ensureCursorIsVisible(using self, cp: <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.RichEditCursor">Gui.RichEditCursor</a>, center: bool)
 </code>
 </p>
 <p>
@@ -15402,7 +15402,7 @@ Evaluate the rendering size.</p>
 <p>
 Execute a command.</p>
 <p class="code">
-<code style="white-space: break-spaces">func executeCommand(using self, cmd: Gui.RichEditCommand)
+<code style="white-space: break-spaces">func executeCommand(using self, cmd: <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.RichEditCommand">Gui.RichEditCommand</a>)
 </code>
 </p>
 <p>
@@ -15417,7 +15417,7 @@ Execute a command.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func getBegSelection(using self)->Gui.RichEditCursor
+<code style="white-space: break-spaces">func getBegSelection(using self)-><a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.RichEditCursor">Gui.RichEditCursor</a>
 </code>
 </p>
 <p>
@@ -15432,7 +15432,7 @@ Execute a command.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func getCaretPos(using self, cp: Gui.RichEditCursor)->Core.Math.Rectangle
+<code style="white-space: break-spaces">func getCaretPos(using self, cp: <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.RichEditCursor">Gui.RichEditCursor</a>)->Core.Math.Rectangle
 </code>
 </p>
 <p>
@@ -15447,7 +15447,7 @@ Execute a command.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func getCursorDisplayPos(using self, cp: Gui.RichEditCursor)->Core.Math.Point
+<code style="white-space: break-spaces">func getCursorDisplayPos(using self, cp: <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.RichEditCursor">Gui.RichEditCursor</a>)->Core.Math.Point
 </code>
 </p>
 <p>
@@ -15462,7 +15462,7 @@ Execute a command.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func getCursorPosFromPoint(using self, pt: Core.Math.Point)->Gui.RichEditCursor
+<code style="white-space: break-spaces">func getCursorPosFromPoint(using self, pt: Core.Math.Point)-><a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.RichEditCursor">Gui.RichEditCursor</a>
 </code>
 </p>
 <p>
@@ -15477,7 +15477,7 @@ Execute a command.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func getEndSelection(using self)->Gui.RichEditCursor
+<code style="white-space: break-spaces">func getEndSelection(using self)-><a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.RichEditCursor">Gui.RichEditCursor</a>
 </code>
 </p>
 <p>
@@ -15492,7 +15492,7 @@ Execute a command.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func getMappingCommand(using self, key: Core.Input.Key, mdf: Core.Input.KeyModifiers)->Gui.RichEditCommand
+<code style="white-space: break-spaces">func getMappingCommand(using self, key: Core.Input.Key, mdf: Core.Input.KeyModifiers)-><a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.RichEditCommand">Gui.RichEditCommand</a>
 </code>
 </p>
 <p>
@@ -15509,7 +15509,7 @@ Execute a command.</p>
 <p>
 Get the rune at the given cursor pos.</p>
 <p class="code">
-<code style="white-space: break-spaces">func getRune(using self, cp: Gui.RichEditCursor)->{char: rune, style: Gui.RichEditStyleRef}
+<code style="white-space: break-spaces">func getRune(using self, cp: <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.RichEditCursor">Gui.RichEditCursor</a>)->{char: rune, style: Gui.RichEditStyleRef}
 </code>
 </p>
 <p>
@@ -15524,7 +15524,7 @@ Get the rune at the given cursor pos.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func getRuneSize(using self, line: *Gui.RichEditLine, i: u64, x: f32)->Core.Math.Point
+<code style="white-space: break-spaces">func getRuneSize(using self, line: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.RichEditLine">Gui.RichEditLine</a>, i: u64, x: f32)->Core.Math.Point
 </code>
 </p>
 <p>
@@ -15590,7 +15590,7 @@ Get the full text.</p>
 <p>
 Get the full text with the associated styles per character.</p>
 <p class="code">
-<code style="white-space: break-spaces">func getTextAndStyles(using self)->{text: Core.Array'(rune), styles: Core.Array'(u8)}
+<code style="white-space: break-spaces">func getTextAndStyles(using self)->{text: Core.Array(rune), styles: Core.Array(u8)}
 </code>
 </p>
 <p>
@@ -15662,7 +15662,7 @@ Insert a text with a given style.</p>
 <p>
 Insert a text with a style per character.</p>
 <p class="code">
-<code style="white-space: break-spaces">func insertText(using self, text: string, txtStyles: Core.Array'(u8))
+<code style="white-space: break-spaces">func insertText(using self, text: string, txtStyles: Core.Array(u8))
 </code>
 </p>
 <p>
@@ -15743,7 +15743,7 @@ Lex the full text.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func moveCursorDown(using self, cp: *Gui.RichEditCursor)->bool
+<code style="white-space: break-spaces">func moveCursorDown(using self, cp: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.RichEditCursor">Gui.RichEditCursor</a>)->bool
 </code>
 </p>
 <p>
@@ -15758,7 +15758,7 @@ Lex the full text.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func moveCursorEndFile(using self, cp: *Gui.RichEditCursor)
+<code style="white-space: break-spaces">func moveCursorEndFile(using self, cp: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.RichEditCursor">Gui.RichEditCursor</a>)
 </code>
 </p>
 <p>
@@ -15773,7 +15773,7 @@ Lex the full text.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func moveCursorEndLine(using self, cp: *Gui.RichEditCursor)
+<code style="white-space: break-spaces">func moveCursorEndLine(using self, cp: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.RichEditCursor">Gui.RichEditCursor</a>)
 </code>
 </p>
 <p>
@@ -15788,7 +15788,7 @@ Lex the full text.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func moveCursorLeft(using self, cp: *Gui.RichEditCursor)->bool
+<code style="white-space: break-spaces">func moveCursorLeft(using self, cp: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.RichEditCursor">Gui.RichEditCursor</a>)->bool
 </code>
 </p>
 <p>
@@ -15803,7 +15803,7 @@ Lex the full text.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func moveCursorPageDown(using self, cp: *Gui.RichEditCursor)
+<code style="white-space: break-spaces">func moveCursorPageDown(using self, cp: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.RichEditCursor">Gui.RichEditCursor</a>)
 </code>
 </p>
 <p>
@@ -15818,7 +15818,7 @@ Lex the full text.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func moveCursorPageUp(using self, cp: *Gui.RichEditCursor)
+<code style="white-space: break-spaces">func moveCursorPageUp(using self, cp: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.RichEditCursor">Gui.RichEditCursor</a>)
 </code>
 </p>
 <p>
@@ -15833,7 +15833,7 @@ Lex the full text.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func moveCursorRight(using self, cp: *Gui.RichEditCursor)->bool
+<code style="white-space: break-spaces">func moveCursorRight(using self, cp: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.RichEditCursor">Gui.RichEditCursor</a>)->bool
 </code>
 </p>
 <p>
@@ -15848,7 +15848,7 @@ Lex the full text.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func moveCursorStartFile(using self, cp: *Gui.RichEditCursor)
+<code style="white-space: break-spaces">func moveCursorStartFile(using self, cp: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.RichEditCursor">Gui.RichEditCursor</a>)
 </code>
 </p>
 <p>
@@ -15863,7 +15863,7 @@ Lex the full text.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func moveCursorStartLine(using self, cp: *Gui.RichEditCursor)
+<code style="white-space: break-spaces">func moveCursorStartLine(using self, cp: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.RichEditCursor">Gui.RichEditCursor</a>)
 </code>
 </p>
 <p>
@@ -15878,7 +15878,7 @@ Lex the full text.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func moveCursorUp(using self, cp: *Gui.RichEditCursor)->bool
+<code style="white-space: break-spaces">func moveCursorUp(using self, cp: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.RichEditCursor">Gui.RichEditCursor</a>)->bool
 </code>
 </p>
 <p>
@@ -15893,7 +15893,7 @@ Lex the full text.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func moveCursorWordLeft(using self, cp: *Gui.RichEditCursor)
+<code style="white-space: break-spaces">func moveCursorWordLeft(using self, cp: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.RichEditCursor">Gui.RichEditCursor</a>)
 </code>
 </p>
 <p>
@@ -15908,7 +15908,7 @@ Lex the full text.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func moveCursorWordRight(using self, cp: *Gui.RichEditCursor, withSpace: bool)
+<code style="white-space: break-spaces">func moveCursorWordRight(using self, cp: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.RichEditCursor">Gui.RichEditCursor</a>, withSpace: bool)
 </code>
 </p>
 <p>
@@ -16043,7 +16043,7 @@ Lex the full text.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func setCursorPos(using self, cp: Gui.RichEditCursor)
+<code style="white-space: break-spaces">func setCursorPos(using self, cp: <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.RichEditCursor">Gui.RichEditCursor</a>)
 </code>
 </p>
 <p>
@@ -16090,7 +16090,7 @@ Lex the full text.</p>
 <p>
 Set form.</p>
 <p class="code">
-<code style="white-space: break-spaces">func setForm(using self, form: Gui.RichEditForm)
+<code style="white-space: break-spaces">func setForm(using self, form: <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.RichEditForm">Gui.RichEditForm</a>)
 </code>
 </p>
 <p>
@@ -16107,7 +16107,7 @@ Set form.</p>
 <p>
 Associate a lexer.</p>
 <p class="code">
-<code style="white-space: break-spaces">func setLexer(using self, lex: Gui.IRichEditLexer)
+<code style="white-space: break-spaces">func setLexer(using self, lex: <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.IRichEditLexer">Gui.IRichEditLexer</a>)
 </code>
 </p>
 <p>
@@ -16139,7 +16139,7 @@ Associate a lexer.</p>
 <p>
 Set richedit flags.</p>
 <p class="code">
-<code style="white-space: break-spaces">func setRichEdFlags(using self, flags: Gui.RichEditFlags)
+<code style="white-space: break-spaces">func setRichEdFlags(using self, flags: <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.RichEditFlags">Gui.RichEditFlags</a>)
 </code>
 </p>
 <p>
@@ -16154,7 +16154,7 @@ Set richedit flags.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func setSelection(using self, start: Gui.RichEditCursor, end: Gui.RichEditCursor)
+<code style="white-space: break-spaces">func setSelection(using self, start: <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.RichEditCursor">Gui.RichEditCursor</a>, end: <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.RichEditCursor">Gui.RichEditCursor</a>)
 </code>
 </p>
 <p>
@@ -16345,7 +16345,7 @@ Core.HashTable(string, s32)</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func compute(using self, linePrev: *Gui.RichEditLine, line: *Gui.RichEditLine, lineNext: *Gui.RichEditLine)
+<code style="white-space: break-spaces">func compute(using self, linePrev: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.RichEditLine">Gui.RichEditLine</a>, line: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.RichEditLine">Gui.RichEditLine</a>, lineNext: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.RichEditLine">Gui.RichEditLine</a>)
 </code>
 </p>
 <p>
@@ -16360,7 +16360,7 @@ Core.HashTable(string, s32)</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func insertRune(using self, ed: *Gui.RichEditCtrl, ch: rune)->bool
+<code style="white-space: break-spaces">func insertRune(using self, ed: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.RichEditCtrl">Gui.RichEditCtrl</a>, ch: rune)->bool
 </code>
 </p>
 <p>
@@ -16375,7 +16375,7 @@ Core.HashTable(string, s32)</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func setup(using self, ed: *Gui.RichEditCtrl)
+<code style="white-space: break-spaces">func setup(using self, ed: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.RichEditCtrl">Gui.RichEditCtrl</a>)
 </code>
 </p>
 <p>
@@ -16728,7 +16728,7 @@ Pixel.UnderlineStyle</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func opEquals(using self, other: Gui.RichEditRuneStyle)->bool
+<code style="white-space: break-spaces">func opEquals(using self, other: <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.RichEditRuneStyle">Gui.RichEditRuneStyle</a>)->bool
 </code>
 </p>
 <p>
@@ -17206,7 +17206,7 @@ Set the scroll size (window virtual size).</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func onMouseEvent(using self, evt: *Gui.MouseEvent)
+<code style="white-space: break-spaces">func onMouseEvent(using self, evt: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.MouseEvent">Gui.MouseEvent</a>)
 </code>
 </p>
 <p>
@@ -17221,7 +17221,7 @@ Set the scroll size (window virtual size).</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func onPaintEvent(using self, evt: *Gui.PaintEvent)
+<code style="white-space: break-spaces">func onPaintEvent(using self, evt: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.PaintEvent">Gui.PaintEvent</a>)
 </code>
 </p>
 <p>
@@ -17236,7 +17236,7 @@ Set the scroll size (window virtual size).</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func onResizeEvent(using self, evt: *Gui.ResizeEvent)
+<code style="white-space: break-spaces">func onResizeEvent(using self, evt: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.ResizeEvent">Gui.ResizeEvent</a>)
 </code>
 </p>
 <p>
@@ -17973,7 +17973,7 @@ Set left and right values, for a range.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func onMouseEvent(using self, evt: *Gui.MouseEvent)
+<code style="white-space: break-spaces">func onMouseEvent(using self, evt: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.MouseEvent">Gui.MouseEvent</a>)
 </code>
 </p>
 <p>
@@ -17988,7 +17988,7 @@ Set left and right values, for a range.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func onPaintEvent(using self, evt: *Gui.PaintEvent)
+<code style="white-space: break-spaces">func onPaintEvent(using self, evt: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.PaintEvent">Gui.PaintEvent</a>)
 </code>
 </p>
 <p>
@@ -18003,7 +18003,7 @@ Set left and right values, for a range.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func create(parent: *Gui.Wnd, position: Core.Math.Rectangle = {}, id: Gui.WndId = null, range = false, vertical = false)->*Gui.Slider
+<code style="white-space: break-spaces">func create(parent: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.Wnd">Gui.Wnd</a>, position: Core.Math.Rectangle = {}, id: Gui.WndId = null, range = false, vertical = false)->*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.Slider">Gui.Slider</a>
 </code>
 </p>
 <p>
@@ -18244,7 +18244,7 @@ Set the slider current value.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func onResizeEvent(using self, evt: *Gui.ResizeEvent)
+<code style="white-space: break-spaces">func onResizeEvent(using self, evt: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.ResizeEvent">Gui.ResizeEvent</a>)
 </code>
 </p>
 <p>
@@ -18261,7 +18261,7 @@ Set the slider current value.</p>
 <p>
 Create the popup list, but do not display it.</p>
 <p class="code">
-<code style="white-space: break-spaces">func create(parent: *Gui.Wnd, name: string, position: Core.Math.Rectangle = {}, id: Gui.WndId = null)->*Gui.SliderCtrl
+<code style="white-space: break-spaces">func create(parent: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.Wnd">Gui.Wnd</a>, name: string, position: Core.Math.Rectangle = {}, id: Gui.WndId = null)->*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.SliderCtrl">Gui.SliderCtrl</a>
 </code>
 </p>
 <p>
@@ -18479,7 +18479,7 @@ Set the pane size (size of the first view).</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func onMouseEvent(using self, evt: *Gui.MouseEvent)
+<code style="white-space: break-spaces">func onMouseEvent(using self, evt: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.MouseEvent">Gui.MouseEvent</a>)
 </code>
 </p>
 <p>
@@ -18494,7 +18494,7 @@ Set the pane size (size of the first view).</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func onPostPaintEvent(using self, evt: *Gui.PaintEvent)
+<code style="white-space: break-spaces">func onPostPaintEvent(using self, evt: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.PaintEvent">Gui.PaintEvent</a>)
 </code>
 </p>
 <p>
@@ -18509,7 +18509,7 @@ Set the pane size (size of the first view).</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func onResizeEvent(using self, evt: *Gui.ResizeEvent)
+<code style="white-space: break-spaces">func onResizeEvent(using self, evt: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.ResizeEvent">Gui.ResizeEvent</a>)
 </code>
 </p>
 <p>
@@ -18526,7 +18526,7 @@ Set the pane size (size of the first view).</p>
 <p>
 Add a new pane.</p>
 <p class="code">
-<code style="white-space: break-spaces">func addPane(using self, pane: *Gui.Wnd, paneSize: f32 = 100, title = false)->*Gui.SplitterItem
+<code style="white-space: break-spaces">func addPane(using self, pane: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.Wnd">Gui.Wnd</a>, paneSize: f32 = 100, title = false)->*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.SplitterItem">Gui.SplitterItem</a>
 </code>
 </p>
 <p>
@@ -18541,7 +18541,7 @@ Add a new pane.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func create(parent: *Gui.Wnd, position: Core.Math.Rectangle = {}, vertical = false, id: Gui.WndId = null)->*Gui.SplitterCtrl
+<code style="white-space: break-spaces">func create(parent: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.Wnd">Gui.Wnd</a>, position: Core.Math.Rectangle = {}, vertical = false, id: Gui.WndId = null)->*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.SplitterCtrl">Gui.SplitterCtrl</a>
 </code>
 </p>
 <p>
@@ -18736,7 +18736,7 @@ Create a layout control.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func onResizeEvent(using self, evt: *Gui.ResizeEvent)
+<code style="white-space: break-spaces">func onResizeEvent(using self, evt: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.ResizeEvent">Gui.ResizeEvent</a>)
 </code>
 </p>
 <p>
@@ -18770,7 +18770,7 @@ Recompute layout of all childs.</p>
 <p>
 Create a layout control.</p>
 <p class="code">
-<code style="white-space: break-spaces">func create(parent: *Gui.Wnd, kind: Gui.StackLayoutKind = .Top, position: Core.Math.Rectangle = {})->*Gui.StackLayoutCtrl
+<code style="white-space: break-spaces">func create(parent: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.Wnd">Gui.Wnd</a>, kind: <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.StackLayoutKind">Gui.StackLayoutKind</a> = .Top, position: Core.Math.Rectangle = {})->*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.StackLayoutCtrl">Gui.StackLayoutCtrl</a>
 </code>
 </p>
 <p>
@@ -19226,7 +19226,7 @@ Bring the surface at the top of the Z order.</p>
 <p>
 Center this surface relative to <code class = "incode">from</code>.</p>
 <p class="code">
-<code style="white-space: break-spaces">func center(using self, from: *Gui.Surface)
+<code style="white-space: break-spaces">func center(using self, from: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.Surface">Gui.Surface</a>)
 </code>
 </p>
 <p>
@@ -19260,7 +19260,7 @@ Constraint a window to be inside the closest monitor.</p>
 <p>
 Creates the surface.</p>
 <p class="code">
-<code style="white-space: break-spaces">func create(surface: *Gui.Surface, x: s32, y: s32, width: s32, height: s32, flags: Gui.SurfaceFlags, mainSurface: *Gui.Surface) throw
+<code style="white-space: break-spaces">func create(surface: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.Surface">Gui.Surface</a>, x: s32, y: s32, width: s32, height: s32, flags: <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.SurfaceFlags">Gui.SurfaceFlags</a>, mainSurface: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.Surface">Gui.Surface</a>) throw
 </code>
 </p>
 <p>
@@ -19430,7 +19430,7 @@ Transform a point in screen space relative to the surface.</p>
 <p>
 Set the surface icon.</p>
 <p class="code">
-<code style="white-space: break-spaces">func setIcon(using self, icon: Gui.Icon)
+<code style="white-space: break-spaces">func setIcon(using self, icon: <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.Icon">Gui.Icon</a>)
 </code>
 </p>
 <p>
@@ -19496,7 +19496,7 @@ Set the surface title.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func setView(using self, view: *Gui.Wnd)
+<code style="white-space: break-spaces">func setView(using self, view: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.Wnd">Gui.Wnd</a>)
 </code>
 </p>
 <p>
@@ -20056,7 +20056,7 @@ Set the tab form.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func onMouseEvent(using self, evt: *Gui.MouseEvent)
+<code style="white-space: break-spaces">func onMouseEvent(using self, evt: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.MouseEvent">Gui.MouseEvent</a>)
 </code>
 </p>
 <p>
@@ -20071,7 +20071,7 @@ Set the tab form.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func onPaintEvent(using self, evt: *Gui.PaintEvent)
+<code style="white-space: break-spaces">func onPaintEvent(using self, evt: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.PaintEvent">Gui.PaintEvent</a>)
 </code>
 </p>
 <p>
@@ -20086,7 +20086,7 @@ Set the tab form.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func onResizeEvent(using self, evt: *Gui.ResizeEvent)
+<code style="white-space: break-spaces">func onResizeEvent(using self, evt: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.ResizeEvent">Gui.ResizeEvent</a>)
 </code>
 </p>
 <p>
@@ -20101,7 +20101,7 @@ Set the tab form.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func paintItem(using self, painter: *Pixel.Painter, v: *Gui.TabItem, idx: u32)
+<code style="white-space: break-spaces">func paintItem(using self, painter: *Pixel.Painter, v: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.TabItem">Gui.TabItem</a>, idx: u32)
 </code>
 </p>
 <p>
@@ -20118,7 +20118,7 @@ Set the tab form.</p>
 <p>
 Add a new view.</p>
 <p class="code">
-<code style="white-space: break-spaces">func addItem(using self, tabName: string, icon: Gui.Icon, view: *Gui.Wnd = null)
+<code style="white-space: break-spaces">func addItem(using self, tabName: string, icon: <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.Icon">Gui.Icon</a>, view: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.Wnd">Gui.Wnd</a> = null)
 </code>
 </p>
 <p>
@@ -20133,7 +20133,7 @@ Add a new view.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func create(parent: *Gui.Wnd, position: Core.Math.Rectangle = {}, id: Gui.WndId = null)->*Gui.Tab
+<code style="white-space: break-spaces">func create(parent: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.Wnd">Gui.Wnd</a>, position: Core.Math.Rectangle = {}, id: Gui.WndId = null)->*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.Tab">Gui.Tab</a>
 </code>
 </p>
 <p>
@@ -20167,7 +20167,7 @@ Select one tab at the given index.</p>
 <p>
 Set the tab form.</p>
 <p class="code">
-<code style="white-space: break-spaces">func setForm(using self, tabForm: Gui.TabForm)
+<code style="white-space: break-spaces">func setForm(using self, tabForm: <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.TabForm">Gui.TabForm</a>)
 </code>
 </p>
 <p>
@@ -20528,7 +20528,7 @@ Create a default font (fixed size) with the given size.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func drawIconText(painter: *Pixel.Painter, position: Core.Math.Rectangle, icon: Gui.Icon, name: *Pixel.RichString, stringFormat: Pixel.RichStringFormat, iconMargin = 4'f32)
+<code style="white-space: break-spaces">func drawIconText(painter: *Pixel.Painter, position: Core.Math.Rectangle, icon: <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.Icon">Gui.Icon</a>, name: *Pixel.RichString, stringFormat: Pixel.RichStringFormat, iconMargin = 4'f32)
 </code>
 </p>
 <p>
@@ -20543,8 +20543,8 @@ Create a default font (fixed size) with the given size.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func drawSubRect(using self, painter: *Pixel.Painter, dstRect: Core.Math.Rectangle, subRect: *Gui.ThemeImageRect, color: Pixel.Color, center = true, interpol = InterpolationMode.Linear)
-func drawSubRect(painter: *Pixel.Painter, texture: Pixel.Texture, dstRect: Core.Math.Rectangle, subRect: *Gui.ThemeImageRect, color: Pixel.Color, center = true, interpol = InterpolationMode.Linear)
+<code style="white-space: break-spaces">func drawSubRect(using self, painter: *Pixel.Painter, dstRect: Core.Math.Rectangle, subRect: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.ThemeImageRect">Gui.ThemeImageRect</a>, color: Pixel.Color, center = true, interpol = InterpolationMode.Linear)
+func drawSubRect(painter: *Pixel.Painter, texture: Pixel.Texture, dstRect: Core.Math.Rectangle, subRect: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.ThemeImageRect">Gui.ThemeImageRect</a>, color: Pixel.Color, center = true, interpol = InterpolationMode.Linear)
 </code>
 </p>
 <p>
@@ -20559,7 +20559,7 @@ func drawSubRect(painter: *Pixel.Painter, texture: Pixel.Texture, dstRect: Core.
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func getIcon24(using self, idx: Gui.ThemeIcons24, size = 24'f32)->Gui.Icon
+<code style="white-space: break-spaces">func getIcon24(using self, idx: <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.ThemeIcons24">Gui.ThemeIcons24</a>, size = 24'f32)-><a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.Icon">Gui.Icon</a>
 </code>
 </p>
 <p>
@@ -20574,7 +20574,7 @@ func drawSubRect(painter: *Pixel.Painter, texture: Pixel.Texture, dstRect: Core.
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func getIcon64(using self, idx: Gui.ThemeIcons64, size = 64'f32)->Gui.Icon
+<code style="white-space: break-spaces">func getIcon64(using self, idx: <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.ThemeIcons64">Gui.ThemeIcons64</a>, size = 64'f32)-><a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.Icon">Gui.Icon</a>
 </code>
 </p>
 <p>
@@ -25001,7 +25001,7 @@ Create a specific style based on the parent.</p>
 <p>
 Create a specific style based on the parent.</p>
 <p class="code">
-<code style="white-space: break-spaces">func create(using self, parent: *Gui.ThemeStyle)
+<code style="white-space: break-spaces">func create(using self, parent: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.ThemeStyle">Gui.ThemeStyle</a>)
 </code>
 </p>
 <p>
@@ -25242,7 +25242,7 @@ func(*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func onMouseEvent(using self, evt: *Gui.MouseEvent)
+<code style="white-space: break-spaces">func onMouseEvent(using self, evt: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.MouseEvent">Gui.MouseEvent</a>)
 </code>
 </p>
 <p>
@@ -25257,7 +25257,7 @@ func(*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func onPaintEvent(using self, evt: *Gui.PaintEvent)
+<code style="white-space: break-spaces">func onPaintEvent(using self, evt: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.PaintEvent">Gui.PaintEvent</a>)
 </code>
 </p>
 <p>
@@ -25272,7 +25272,7 @@ func(*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func create(parent: *Gui.Wnd, position: Core.Math.Rectangle = {}, id: Gui.WndId = null)->*Gui.ToggleButton
+<code style="white-space: break-spaces">func create(parent: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.Wnd">Gui.Wnd</a>, position: Core.Math.Rectangle = {}, id: Gui.WndId = null)->*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.ToggleButton">Gui.ToggleButton</a>
 </code>
 </p>
 <p>
@@ -25334,7 +25334,7 @@ Hide the current tooltip, if visible.</p>
 <p>
 Show a tooltip.</p>
 <p class="code">
-<code style="white-space: break-spaces">func show(owner: *Gui.Wnd, surfacePos: Core.Math.Point, str: string, delay: Core.Time.Duration = 500'ms)
+<code style="white-space: break-spaces">func show(owner: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.Wnd">Gui.Wnd</a>, surfacePos: Core.Math.Point, str: string, delay: Core.Time.Duration = 500'ms)
 </code>
 </p>
 <p>
@@ -26145,7 +26145,7 @@ Main function to update command state of various windows/widgets. This will upda
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func onApplyStateEvent(using self, evt: *Gui.CommandStateEvent)
+<code style="white-space: break-spaces">func onApplyStateEvent(using self, evt: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.CommandStateEvent">Gui.CommandStateEvent</a>)
 </code>
 </p>
 <p>
@@ -26160,7 +26160,7 @@ Main function to update command state of various windows/widgets. This will upda
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func onCommandEvent(using self, evt: *Gui.CommandEvent)
+<code style="white-space: break-spaces">func onCommandEvent(using self, evt: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.CommandEvent">Gui.CommandEvent</a>)
 </code>
 </p>
 <p>
@@ -26175,7 +26175,7 @@ Main function to update command state of various windows/widgets. This will upda
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func onComputeStateEvent(using self, evt: *Gui.CommandStateEvent)
+<code style="white-space: break-spaces">func onComputeStateEvent(using self, evt: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.CommandStateEvent">Gui.CommandStateEvent</a>)
 </code>
 </p>
 <p>
@@ -26190,7 +26190,7 @@ Main function to update command state of various windows/widgets. This will upda
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func onCreateEvent(using self, evt: *Gui.CreateEvent)
+<code style="white-space: break-spaces">func onCreateEvent(using self, evt: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.CreateEvent">Gui.CreateEvent</a>)
 </code>
 </p>
 <p>
@@ -26205,7 +26205,7 @@ Main function to update command state of various windows/widgets. This will upda
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func onDestroyEvent(using self, evt: *Gui.DestroyEvent)
+<code style="white-space: break-spaces">func onDestroyEvent(using self, evt: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.DestroyEvent">Gui.DestroyEvent</a>)
 </code>
 </p>
 <p>
@@ -26220,7 +26220,7 @@ Main function to update command state of various windows/widgets. This will upda
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func onEvent(using self, evt: *Gui.Event)
+<code style="white-space: break-spaces">func onEvent(using self, evt: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.Event">Gui.Event</a>)
 </code>
 </p>
 <p>
@@ -26235,7 +26235,7 @@ Main function to update command state of various windows/widgets. This will upda
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func onFocusEvent(using self, evt: *Gui.FocusEvent)
+<code style="white-space: break-spaces">func onFocusEvent(using self, evt: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.FocusEvent">Gui.FocusEvent</a>)
 </code>
 </p>
 <p>
@@ -26250,7 +26250,7 @@ Main function to update command state of various windows/widgets. This will upda
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func onFrameEvent(using self, evt: *Gui.FrameEvent)
+<code style="white-space: break-spaces">func onFrameEvent(using self, evt: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.FrameEvent">Gui.FrameEvent</a>)
 </code>
 </p>
 <p>
@@ -26265,7 +26265,7 @@ Main function to update command state of various windows/widgets. This will upda
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func onHookEvent(using self, evt: *Gui.Event)
+<code style="white-space: break-spaces">func onHookEvent(using self, evt: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.Event">Gui.Event</a>)
 </code>
 </p>
 <p>
@@ -26280,7 +26280,7 @@ Main function to update command state of various windows/widgets. This will upda
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func onKeyEvent(using self, evt: *Gui.KeyEvent)
+<code style="white-space: break-spaces">func onKeyEvent(using self, evt: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.KeyEvent">Gui.KeyEvent</a>)
 </code>
 </p>
 <p>
@@ -26295,7 +26295,7 @@ Main function to update command state of various windows/widgets. This will upda
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func onMouseEvent(using self, evt: *Gui.MouseEvent)
+<code style="white-space: break-spaces">func onMouseEvent(using self, evt: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.MouseEvent">Gui.MouseEvent</a>)
 </code>
 </p>
 <p>
@@ -26310,7 +26310,7 @@ Main function to update command state of various windows/widgets. This will upda
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func onPaintEvent(using self, evt: *Gui.PaintEvent)
+<code style="white-space: break-spaces">func onPaintEvent(using self, evt: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.PaintEvent">Gui.PaintEvent</a>)
 </code>
 </p>
 <p>
@@ -26325,7 +26325,7 @@ Main function to update command state of various windows/widgets. This will upda
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func onPostPaintEvent(using self, evt: *Gui.PaintEvent)
+<code style="white-space: break-spaces">func onPostPaintEvent(using self, evt: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.PaintEvent">Gui.PaintEvent</a>)
 </code>
 </p>
 <p>
@@ -26340,7 +26340,7 @@ Main function to update command state of various windows/widgets. This will upda
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func onPrePaintEvent(using self, evt: *Gui.PaintEvent)
+<code style="white-space: break-spaces">func onPrePaintEvent(using self, evt: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.PaintEvent">Gui.PaintEvent</a>)
 </code>
 </p>
 <p>
@@ -26355,7 +26355,7 @@ Main function to update command state of various windows/widgets. This will upda
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func onResizeEvent(using self, evt: *Gui.ResizeEvent)
+<code style="white-space: break-spaces">func onResizeEvent(using self, evt: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.ResizeEvent">Gui.ResizeEvent</a>)
 </code>
 </p>
 <p>
@@ -26370,7 +26370,7 @@ Main function to update command state of various windows/widgets. This will upda
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func onSerializeStateEvent(using self, evt: *Gui.SerializeStateEvent)
+<code style="white-space: break-spaces">func onSerializeStateEvent(using self, evt: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.SerializeStateEvent">Gui.SerializeStateEvent</a>)
 </code>
 </p>
 <p>
@@ -26385,7 +26385,7 @@ Main function to update command state of various windows/widgets. This will upda
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func onSetThemeEvent(using self, evt: *Gui.SetThemeEvent)
+<code style="white-space: break-spaces">func onSetThemeEvent(using self, evt: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.SetThemeEvent">Gui.SetThemeEvent</a>)
 </code>
 </p>
 <p>
@@ -26400,7 +26400,7 @@ Main function to update command state of various windows/widgets. This will upda
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func onStateEvent(using self, evt: *Gui.StateEvent)
+<code style="white-space: break-spaces">func onStateEvent(using self, evt: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.StateEvent">Gui.StateEvent</a>)
 </code>
 </p>
 <p>
@@ -26415,7 +26415,7 @@ Main function to update command state of various windows/widgets. This will upda
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func onSysCommandEvent(using self, evt: *Gui.SysCommandEvent)
+<code style="white-space: break-spaces">func onSysCommandEvent(using self, evt: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.SysCommandEvent">Gui.SysCommandEvent</a>)
 </code>
 </p>
 <p>
@@ -26430,7 +26430,7 @@ Main function to update command state of various windows/widgets. This will upda
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func onSysUserEvent(using self, evt: *Gui.SysUserEvent)
+<code style="white-space: break-spaces">func onSysUserEvent(using self, evt: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.SysUserEvent">Gui.SysUserEvent</a>)
 </code>
 </p>
 <p>
@@ -26445,7 +26445,7 @@ Main function to update command state of various windows/widgets. This will upda
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func onTimerEvent(using self, evt: *Gui.TimerEvent)
+<code style="white-space: break-spaces">func onTimerEvent(using self, evt: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.TimerEvent">Gui.TimerEvent</a>)
 </code>
 </p>
 <p>
@@ -26545,9 +26545,9 @@ Force the window to be the last painted (on top of siblings).</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func(T) create(parent: *Gui.Wnd = null, id: Gui.WndId = null, hook: Gui.HookEvent = null)->*T
-func(T) create(parent: *Gui.Wnd, position: Core.Math.Rectangle, id: Gui.WndId = null, hook: Gui.HookEvent = null)->*T
-func(T) create(parent: *Gui.Wnd, name: string, position: Core.Math.Rectangle, id: Gui.WndId = null, hook: Gui.HookEvent = null)->*T
+<code style="white-space: break-spaces">func(T) create(parent: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.Wnd">Gui.Wnd</a> = null, id: Gui.WndId = null, hook: Gui.HookEvent = null)->*T
+func(T) create(parent: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.Wnd">Gui.Wnd</a>, position: Core.Math.Rectangle, id: Gui.WndId = null, hook: Gui.HookEvent = null)->*T
+func(T) create(parent: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.Wnd">Gui.Wnd</a>, name: string, position: Core.Math.Rectangle, id: Gui.WndId = null, hook: Gui.HookEvent = null)->*T
 </code>
 </p>
 <p>
@@ -26664,7 +26664,7 @@ Be sure rect is fully inside the parent rectangle (if possible).</p>
 <p>
 Retrieve the child with the given id.</p>
 <p class="code">
-<code style="white-space: break-spaces">func getChildById(using self, childId: string)->*Gui.Wnd
+<code style="white-space: break-spaces">func getChildById(using self, childId: string)->*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.Wnd">Gui.Wnd</a>
 </code>
 </p>
 <p>
@@ -26715,7 +26715,7 @@ Returns the client area, with <code class = "incode">padding</code> applied.</p>
 <p>
 Get the window with the keyboard focus.</p>
 <p class="code">
-<code style="white-space: break-spaces">func getFocus(using self)->*Gui.Wnd
+<code style="white-space: break-spaces">func getFocus(using self)->*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.Wnd">Gui.Wnd</a>
 </code>
 </p>
 <p>
@@ -26779,7 +26779,7 @@ Get the name associated with a given id shortcut.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func getMouseCapture(using self)->*Gui.Wnd
+<code style="white-space: break-spaces">func getMouseCapture(using self)->*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.Wnd">Gui.Wnd</a>
 </code>
 </p>
 <p>
@@ -26796,7 +26796,7 @@ Get the name associated with a given id shortcut.</p>
 <p>
 Retrieve the parent with the given id.</p>
 <p class="code">
-<code style="white-space: break-spaces">func getParentById(using self, parentId: string)->*Gui.Wnd
+<code style="white-space: break-spaces">func getParentById(using self, parentId: string)->*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.Wnd">Gui.Wnd</a>
 </code>
 </p>
 <p>
@@ -26935,7 +26935,7 @@ Get the wnd position in the surface.</p>
 <p>
 Get the child window at the given coordinate Coordinate is expressed in the parent system.</p>
 <p class="code">
-<code style="white-space: break-spaces">func getWndAt(using self, x: f32, y: f32, getDisabled = false, getHidden = false)->*Gui.Wnd
+<code style="white-space: break-spaces">func getWndAt(using self, x: f32, y: f32, getDisabled = false, getHidden = false)->*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.Wnd">Gui.Wnd</a>
 </code>
 </p>
 <p>
@@ -27037,7 +27037,7 @@ Returns true if window, and all its parents, are enabled.</p>
 <p>
 Returns true if <code class = "incode">child</code> is in the child hieararchy of <code class = "incode">self</code>.</p>
 <p class="code">
-<code style="white-space: break-spaces">func isParentOf(using self, child: *Gui.Wnd)->bool
+<code style="white-space: break-spaces">func isParentOf(using self, child: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.Wnd">Gui.Wnd</a>)->bool
 </code>
 </p>
 <p>
@@ -27124,7 +27124,7 @@ Move the wnd.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func paint(using self, bc: *Gui.PaintContext)
+<code style="white-space: break-spaces">func paint(using self, bc: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.PaintContext">Gui.PaintContext</a>)
 </code>
 </p>
 <p>
@@ -27154,7 +27154,7 @@ Move the wnd.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func postEvent(using self, evt: *Gui.Event)
+<code style="white-space: break-spaces">func postEvent(using self, evt: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.Event">Gui.Event</a>)
 </code>
 </p>
 <p>
@@ -27214,7 +27214,7 @@ Move the wnd.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func processEvent(using self, evt: *Gui.Event)
+<code style="white-space: break-spaces">func processEvent(using self, evt: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.Event">Gui.Event</a>)
 </code>
 </p>
 <p>
@@ -27331,7 +27331,7 @@ Send the command event with the given id to the window. The command will be upda
 <p>
 Send the command state event with the given id to the window. Returns the updated command state.</p>
 <p class="code">
-<code style="white-space: break-spaces">func sendComputeCommandStateEvent(using self, cmdId: Gui.WndId)->Gui.CommandStateEvent
+<code style="white-space: break-spaces">func sendComputeCommandStateEvent(using self, cmdId: Gui.WndId)-><a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.CommandStateEvent">Gui.CommandStateEvent</a>
 </code>
 </p>
 <p>
@@ -27361,7 +27361,7 @@ Send the command state event with the given id to the window. Returns the update
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func sendEvent(using self, evt: *Gui.Event)
+<code style="white-space: break-spaces">func sendEvent(using self, evt: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.Event">Gui.Event</a>)
 </code>
 </p>
 <p>
@@ -27391,7 +27391,7 @@ Send the command state event with the given id to the window. Returns the update
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func sendStateEvent(using self, kind: Gui.EventKind)
+<code style="white-space: break-spaces">func sendStateEvent(using self, kind: <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.EventKind">Gui.EventKind</a>)
 </code>
 </p>
 <p>
@@ -27506,7 +27506,7 @@ Set padding for childs If a value is Swag.F32.Inf, then it wont be changed.</p>
 <p>
 Set window parent.</p>
 <p class="code">
-<code style="white-space: break-spaces">func setParent(using self, who: *Gui.Wnd)
+<code style="white-space: break-spaces">func setParent(using self, who: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.Wnd">Gui.Wnd</a>)
 </code>
 </p>
 <p>
@@ -27728,7 +27728,7 @@ Create a layout control.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func onResizeEvent(using self, evt: *Gui.ResizeEvent)
+<code style="white-space: break-spaces">func onResizeEvent(using self, evt: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.ResizeEvent">Gui.ResizeEvent</a>)
 </code>
 </p>
 <p>
@@ -27762,7 +27762,7 @@ Recompute layout of all childs.</p>
 <p>
 Create a layout control.</p>
 <p class="code">
-<code style="white-space: break-spaces">func create(parent: *Gui.Wnd, position: Core.Math.Rectangle = {})->*Gui.WrapLayoutCtrl
+<code style="white-space: break-spaces">func create(parent: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.Wnd">Gui.Wnd</a>, position: Core.Math.Rectangle = {})->*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.WrapLayoutCtrl">Gui.WrapLayoutCtrl</a>
 </code>
 </p>
 </div>

@@ -1582,7 +1582,7 @@ Zero</td>
 <p>
 Get the Argb value that matches <code class = "incode">name</code>.</p>
 <p class="code">
-<code style="white-space: break-spaces">func fromName(name: string)->Pixel.Argb
+<code style="white-space: break-spaces">func fromName(name: string)-><a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Argb">Pixel.Argb</a>
 </code>
 </p>
 <p>
@@ -1847,7 +1847,7 @@ u16</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func decode(using self, buffer: const [..] u8, options: Pixel.DecodeOptions)->Pixel.Image throw
+<code style="white-space: break-spaces">func decode(using self, buffer: const [..] u8, options: <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.DecodeOptions">Pixel.DecodeOptions</a>)-><a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Image">Pixel.Image</a> throw
 </code>
 </p>
 <p>
@@ -1888,7 +1888,7 @@ u16</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func encode(using self, result: *Core.ConcatBuffer, image: Pixel.Image, options: any) throw
+<code style="white-space: break-spaces">func encode(using self, result: *Core.ConcatBuffer, image: <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Image">Pixel.Image</a>, options: any) throw
 </code>
 </p>
 <p>
@@ -2225,7 +2225,7 @@ Returns a tiled texture brush.</p>
 <p>
 Returns a hatch brush.</p>
 <p class="code">
-<code style="white-space: break-spaces">func createHatch(style: Pixel.HatchStyle, color: Pixel.Color)->Pixel.Brush
+<code style="white-space: break-spaces">func createHatch(style: <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.HatchStyle">Pixel.HatchStyle</a>, color: <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Color">Pixel.Color</a>)-><a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Brush">Pixel.Brush</a>
 </code>
 </p>
 <p>
@@ -2242,7 +2242,7 @@ Returns a hatch brush.</p>
 <p>
 Returns a solid color brush.</p>
 <p class="code">
-<code style="white-space: break-spaces">func createSolid(color: Pixel.Color)->Pixel.Brush
+<code style="white-space: break-spaces">func createSolid(color: <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Color">Pixel.Color</a>)-><a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Brush">Pixel.Brush</a>
 </code>
 </p>
 <p>
@@ -2259,7 +2259,7 @@ Returns a solid color brush.</p>
 <p>
 Returns a full texture brush.</p>
 <p class="code">
-<code style="white-space: break-spaces">func createTexture(texture: Pixel.Texture)->Pixel.Brush
+<code style="white-space: break-spaces">func createTexture(texture: <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Texture">Pixel.Texture</a>)-><a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Brush">Pixel.Brush</a>
 </code>
 </p>
 <p>
@@ -2276,7 +2276,7 @@ Returns a full texture brush.</p>
 <p>
 Returns a tiled texture brush.</p>
 <p class="code">
-<code style="white-space: break-spaces">func createTiled(texture: Pixel.Texture)->Pixel.Brush
+<code style="white-space: break-spaces">func createTiled(texture: <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Texture">Pixel.Texture</a>)-><a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Brush">Pixel.Brush</a>
 </code>
 </p>
 <p>
@@ -2835,7 +2835,7 @@ Pixel.Clipper.CInt</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func opEquals(using self, other: Pixel.Clipper.IntPoint)->bool
+<code style="white-space: break-spaces">func opEquals(using self, other: <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Clipper.IntPoint">Pixel.Clipper.IntPoint</a>)->bool
 </code>
 </p>
 <p>
@@ -3696,7 +3696,7 @@ Initialize color with hue, saturation, lightness.</p>
 <a href="#Pixel.Color.setRgb">setRgb(self, const ref Color)</a></td>
 <td class="enumeration">
 <p>
-Just set r, g and b components. Alpha will be Opaque.</p>
+Just set r, g and b components. Alpha will be opaque.</p>
 </td>
 </tr>
 <tr>
@@ -3704,7 +3704,7 @@ Just set r, g and b components. Alpha will be Opaque.</p>
 <a href="#Pixel.Color.setRgb">setRgb(self, u8, u8, u8)</a></td>
 <td class="enumeration">
 <p>
-Just set r, g and b components. Alpha will be Opaque.</p>
+Just set r, g and b components. Alpha will be opaque.</p>
 </td>
 </tr>
 <tr>
@@ -3712,7 +3712,7 @@ Just set r, g and b components. Alpha will be Opaque.</p>
 <a href="#Pixel.Color.setRgbf">setRgbf(self, f32, f32, f32)</a></td>
 <td class="enumeration">
 <p>
-Set r,g,b with floats in the range [0 1] Alpha will be Opaque.</p>
+Set r,g,b with floats in the range [0 1]. Alpha will be opaque.</p>
 </td>
 </tr>
 <tr>
@@ -3808,7 +3808,7 @@ Retrieve all components as floating point values between 0 and 1.</p>
 <p>
 Create a new Color with specified values.</p>
 <p class="code">
-<code style="white-space: break-spaces">func fromAbgr(abgr: u32)->Pixel.Color
+<code style="white-space: break-spaces">func fromAbgr(abgr: u32)-><a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Color">Pixel.Color</a>
 </code>
 </p>
 <p>
@@ -3825,25 +3825,25 @@ Create a new Color with specified values.</p>
 <p>
 Create a new Color with specified values.</p>
 <p class="code">
-<code style="white-space: break-spaces">func fromArgb(argb: Pixel.Argb)->Pixel.Color
+<code style="white-space: break-spaces">func fromArgb(argb: <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Argb">Pixel.Argb</a>)-><a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Color">Pixel.Color</a>
 </code>
 </p>
 <p>
 Create a new Color with specified values.</p>
 <p class="code">
-<code style="white-space: break-spaces">func fromArgb(argb: u32)->Pixel.Color
+<code style="white-space: break-spaces">func fromArgb(argb: u32)-><a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Color">Pixel.Color</a>
 </code>
 </p>
 <p>
 Create a new Color with specified values.</p>
 <p class="code">
-<code style="white-space: break-spaces">func fromArgb(alpha: u8, argb: Pixel.Argb)->Pixel.Color
+<code style="white-space: break-spaces">func fromArgb(alpha: u8, argb: <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Argb">Pixel.Argb</a>)-><a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Color">Pixel.Color</a>
 </code>
 </p>
 <p>
 Create a new Color with specified values.</p>
 <p class="code">
-<code style="white-space: break-spaces">func fromArgb(a: u8, r: u8, g: u8, b: u8)->Pixel.Color
+<code style="white-space: break-spaces">func fromArgb(a: u8, r: u8, g: u8, b: u8)-><a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Color">Pixel.Color</a>
 </code>
 </p>
 <p>
@@ -3860,7 +3860,7 @@ Create a new Color with specified values.</p>
 <p>
 Create a new Color with specified values.</p>
 <p class="code">
-<code style="white-space: break-spaces">func fromArgbf(a: f32, r: f32, g: f32, b: f32)->Pixel.Color
+<code style="white-space: break-spaces">func fromArgbf(a: f32, r: f32, g: f32, b: f32)-><a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Color">Pixel.Color</a>
 </code>
 </p>
 <p>
@@ -3877,7 +3877,7 @@ Create a new Color with specified values.</p>
 <p>
 Create a new Color with specified values.</p>
 <p class="code">
-<code style="white-space: break-spaces">func fromHsl(h: f32, s: f32, l: f32)->Pixel.Color
+<code style="white-space: break-spaces">func fromHsl(h: f32, s: f32, l: f32)-><a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Color">Pixel.Color</a>
 </code>
 </p>
 <p>
@@ -3894,7 +3894,7 @@ Create a new Color with specified values.</p>
 <p>
 Create a new Color with specified values.</p>
 <p class="code">
-<code style="white-space: break-spaces">func fromRgb(r: u8, g: u8, b: u8)->Pixel.Color
+<code style="white-space: break-spaces">func fromRgb(r: u8, g: u8, b: u8)-><a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Color">Pixel.Color</a>
 </code>
 </p>
 <p>
@@ -3911,7 +3911,7 @@ Create a new Color with specified values.</p>
 <p>
 Create a new Color with specified values.</p>
 <p class="code">
-<code style="white-space: break-spaces">func fromRgbf(r: f32, g: f32, b: f32)->Pixel.Color
+<code style="white-space: break-spaces">func fromRgbf(r: f32, g: f32, b: f32)-><a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Color">Pixel.Color</a>
 </code>
 </p>
 <p>
@@ -3928,7 +3928,7 @@ Create a new Color with specified values.</p>
 <p>
 Blend two colors.</p>
 <p class="code">
-<code style="white-space: break-spaces">func getBlend(col0: Pixel.Color, col1: Pixel.Color, factor: f32)->Pixel.Color
+<code style="white-space: break-spaces">func getBlend(col0: <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Color">Pixel.Color</a>, col1: <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Color">Pixel.Color</a>, factor: f32)-><a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Color">Pixel.Color</a>
 </code>
 </p>
 <p>
@@ -3945,7 +3945,7 @@ Blend two colors.</p>
 <p>
 Blend two colors, keeping the alpha channel of <code class = "incode">col0</code> untouched.</p>
 <p class="code">
-<code style="white-space: break-spaces">func getBlendKeepAlpha(col0: Pixel.Color, col1: Pixel.Color, factor: f32)->Pixel.Color
+<code style="white-space: break-spaces">func getBlendKeepAlpha(col0: <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Color">Pixel.Color</a>, col1: <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Color">Pixel.Color</a>, factor: f32)-><a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Color">Pixel.Color</a>
 </code>
 </p>
 <p>
@@ -3962,7 +3962,7 @@ Blend two colors, keeping the alpha channel of <code class = "incode">col0</code
 <p>
 Returns a darker color.</p>
 <p class="code">
-<code style="white-space: break-spaces">func getDarker(col: Pixel.Color, factor: f32)->Pixel.Color
+<code style="white-space: break-spaces">func getDarker(col: <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Color">Pixel.Color</a>, factor: f32)-><a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Color">Pixel.Color</a>
 </code>
 </p>
 <p>
@@ -3979,7 +3979,7 @@ Returns a darker color.</p>
 <p>
 Returns the distance between the other color.</p>
 <p class="code">
-<code style="white-space: break-spaces">func getDistanceRgb(using self, col: Pixel.Color)->f32
+<code style="white-space: break-spaces">func getDistanceRgb(using self, col: <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Color">Pixel.Color</a>)->f32
 </code>
 </p>
 <p>
@@ -3996,7 +3996,7 @@ Returns the distance between the other color.</p>
 <p>
 Returns a lighter color.</p>
 <p class="code">
-<code style="white-space: break-spaces">func getLighter(col: Pixel.Color, factor: f32)->Pixel.Color
+<code style="white-space: break-spaces">func getLighter(col: <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Color">Pixel.Color</a>, factor: f32)-><a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Color">Pixel.Color</a>
 </code>
 </p>
 <p>
@@ -4026,7 +4026,7 @@ Returns a lighter color.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func opAffect(self, argb: Pixel.Argb)
+<code style="white-space: break-spaces">func opAffect(self, argb: <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Argb">Pixel.Argb</a>)
 func opAffect(self, name: string)
 func opAffect(self, argb: u32)
 </code>
@@ -4043,8 +4043,8 @@ func opAffect(self, argb: u32)
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func opEquals(self, argb: Pixel.Argb)
-func opEquals(self, other: Pixel.Color)
+<code style="white-space: break-spaces">func opEquals(self, argb: <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Argb">Pixel.Argb</a>)
+func opEquals(self, other: <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Color">Pixel.Color</a>)
 func opEquals(self, argb: u32)
 </code>
 </p>
@@ -4111,13 +4111,13 @@ Initialize color with hue, saturation, lightness.</p>
 </table>
 </p>
 <p>
-Just set r, g and b components. Alpha will be Opaque.</p>
+Just set r, g and b components. Alpha will be opaque.</p>
 <p class="code">
-<code style="white-space: break-spaces">func setRgb(using self, rgb: Pixel.Color)
+<code style="white-space: break-spaces">func setRgb(using self, rgb: <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Color">Pixel.Color</a>)
 </code>
 </p>
 <p>
-Just set r, g and b components. Alpha will be Opaque.</p>
+Just set r, g and b components. Alpha will be opaque.</p>
 <p class="code">
 <code style="white-space: break-spaces">func setRgb(self, r: u8, g: u8, b: u8)
 </code>
@@ -4134,7 +4134,7 @@ Just set r, g and b components. Alpha will be Opaque.</p>
 </table>
 </p>
 <p>
-Set r,g,b with floats in the range [0 1] Alpha will be Opaque.</p>
+Set r,g,b with floats in the range [0 1]. Alpha will be opaque.</p>
 <p class="code">
 <code style="white-space: break-spaces">func setRgbf(self, r: f32, g: f32, b: f32)
 </code>
@@ -5017,13 +5017,13 @@ Release the given font.</p>
 <p>
 Creates a new Font of the given typeface and size.</p>
 <p class="code">
-<code style="white-space: break-spaces">func create(typeFace: *Pixel.TypeFace, size: u32, forceBold = false, forceItalic = false)->*Pixel.Font
+<code style="white-space: break-spaces">func create(typeFace: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.TypeFace">Pixel.TypeFace</a>, size: u32, forceBold = false, forceItalic = false)->*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Font">Pixel.Font</a>
 </code>
 </p>
 <p>
 Creates a new Font with the given filename and size.</p>
 <p class="code">
-<code style="white-space: break-spaces">func create(fullname: string, size: u32, forceBold = false, forceItalic = false)->*Pixel.Font throw
+<code style="white-space: break-spaces">func create(fullname: string, size: u32, forceBold = false, forceItalic = false)->*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Font">Pixel.Font</a> throw
 </code>
 </p>
 <p>
@@ -5040,7 +5040,7 @@ Creates a new Font with the given filename and size.</p>
 <p>
 Returns the glyph descriptor of a given rune.</p>
 <p class="code">
-<code style="white-space: break-spaces">func getGlyphDesc(using self, c: rune)->const *Pixel.GlyphDesc
+<code style="white-space: break-spaces">func getGlyphDesc(using self, c: rune)->const *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.GlyphDesc">Pixel.GlyphDesc</a>
 </code>
 </p>
 <p>
@@ -5057,7 +5057,7 @@ Returns the glyph descriptor of a given rune.</p>
 <p>
 Release the given font.</p>
 <p class="code">
-<code style="white-space: break-spaces">func release(font: *Pixel.Font)
+<code style="white-space: break-spaces">func release(font: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Font">Pixel.Font</a>)
 </code>
 </p>
 <p>
@@ -5162,7 +5162,7 @@ Set the font corresponding to a given style.</p>
 <p>
 Creates a typeface from a FontFamilyEnumerate and FontFamilyStyle.</p>
 <p class="code">
-<code style="white-space: break-spaces">func createTypeFace(enumerate: Pixel.FontFamilyEnumerate, style: Pixel.FontFamilyStyle)->*Pixel.TypeFace throw
+<code style="white-space: break-spaces">func createTypeFace(enumerate: <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.FontFamilyEnumerate">Pixel.FontFamilyEnumerate</a>, style: <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.FontFamilyStyle">Pixel.FontFamilyStyle</a>)->*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.TypeFace">Pixel.TypeFace</a> throw
 </code>
 </p>
 <p>
@@ -5179,7 +5179,7 @@ Creates a typeface from a FontFamilyEnumerate and FontFamilyStyle.</p>
 <p>
 Enumerate the font families available in the os.</p>
 <p class="code">
-<code style="white-space: break-spaces">func enumerateFromOs()->Core.Array'(Pixel.FontFamilyEnumerate)
+<code style="white-space: break-spaces">func enumerateFromOs()->Core.Array(<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.FontFamilyEnumerate">Pixel.FontFamilyEnumerate</a>)
 </code>
 </p>
 <p>
@@ -5196,7 +5196,7 @@ Enumerate the font families available in the os.</p>
 <p>
 Get the font corresponding to the style. If not evailable, get another one.</p>
 <p class="code">
-<code style="white-space: break-spaces">func getFont(using self, style: Pixel.FontFamilyStyle)->*Pixel.Font
+<code style="white-space: break-spaces">func getFont(using self, style: <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.FontFamilyStyle">Pixel.FontFamilyStyle</a>)->*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Font">Pixel.Font</a>
 </code>
 </p>
 <p>
@@ -5213,7 +5213,7 @@ Get the font corresponding to the style. If not evailable, get another one.</p>
 <p>
 Get a FontFamilyEnumerate from a font family name.</p>
 <p class="code">
-<code style="white-space: break-spaces">func getFromOs(fontFamily: string)->Pixel.FontFamilyEnumerate
+<code style="white-space: break-spaces">func getFromOs(fontFamily: string)-><a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.FontFamilyEnumerate">Pixel.FontFamilyEnumerate</a>
 </code>
 </p>
 <p>
@@ -5230,7 +5230,7 @@ Get a FontFamilyEnumerate from a font family name.</p>
 <p>
 Set the font corresponding to a given style.</p>
 <p class="code">
-<code style="white-space: break-spaces">func setFont(using self, fnt: *Pixel.Font, style: Pixel.FontFamilyStyle)
+<code style="white-space: break-spaces">func setFont(using self, fnt: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Font">Pixel.Font</a>, style: <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.FontFamilyStyle">Pixel.FontFamilyStyle</a>)
 </code>
 </p>
 <p>
@@ -5427,7 +5427,7 @@ Restart at frame 0.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func decode(using self, buffer: const [..] u8, options: Pixel.DecodeOptions)->Pixel.Image throw
+<code style="white-space: break-spaces">func decode(using self, buffer: const [..] u8, options: <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.DecodeOptions">Pixel.DecodeOptions</a>)-><a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Image">Pixel.Image</a> throw
 </code>
 </p>
 <p>
@@ -5444,7 +5444,7 @@ Restart at frame 0.</p>
 <p>
 Create an image for the current frame.</p>
 <p class="code">
-<code style="white-space: break-spaces">func getFrame(using self, image: *Pixel.Image, decodePixels = true)
+<code style="white-space: break-spaces">func getFrame(using self, image: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Image">Pixel.Image</a>, decodePixels = true)
 </code>
 </p>
 <p>
@@ -5495,7 +5495,7 @@ Initialize the decoder.</p>
 <p>
 Get the next frame. Returns false if we have reached the end.</p>
 <p class="code">
-<code style="white-space: break-spaces">func nextFrame(using self, img: *Pixel.Image)->bool throw
+<code style="white-space: break-spaces">func nextFrame(using self, img: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Image">Pixel.Image</a>)->bool throw
 </code>
 </p>
 <p>
@@ -7357,7 +7357,7 @@ Allocate a computing buffer with current image size.</p>
 <p>
 Allocate a computing buffer with new sizes.</p>
 <p class="code">
-<code style="white-space: break-spaces">func allocWorkingBuffer(using self, newWidth: s32, newHeight: s32, newPf: Pixel.PixelFormat)
+<code style="white-space: break-spaces">func allocWorkingBuffer(using self, newWidth: s32, newHeight: s32, newPf: <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.PixelFormat">Pixel.PixelFormat</a>)
 </code>
 </p>
 <p>
@@ -7374,7 +7374,7 @@ Allocate a computing buffer with new sizes.</p>
 <p>
 Apply a kernel to the image.</p>
 <p class="code">
-<code style="white-space: break-spaces">func applyKernel(using self, kernel: Pixel.Image.Kernel)
+<code style="white-space: break-spaces">func applyKernel(using self, kernel: <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Image.Kernel">Pixel.Image.Kernel</a>)
 </code>
 </p>
 <p>
@@ -7510,7 +7510,7 @@ Copy one pixel, depending on bpp.</p>
 <p>
 Creates a new image.</p>
 <p class="code">
-<code style="white-space: break-spaces">func create(width: s32, height: s32, pf: Pixel.PixelFormat, buffer: const [..] u8 = null)->Pixel.Image
+<code style="white-space: break-spaces">func create(width: s32, height: s32, pf: <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.PixelFormat">Pixel.PixelFormat</a>, buffer: const [..] u8 = null)-><a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Image">Pixel.Image</a>
 </code>
 </p>
 <p>
@@ -7545,7 +7545,7 @@ func crop(using self, x: s32, y: s32, w: s32, h: s32)
 <p>
 Decode the given image buffer.</p>
 <p class="code">
-<code style="white-space: break-spaces">func decode(fileName: string, bytes: const [..] u8, options: Pixel.DecodeOptions = {})->Pixel.Image throw
+<code style="white-space: break-spaces">func decode(fileName: string, bytes: const [..] u8, options: <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.DecodeOptions">Pixel.DecodeOptions</a> = {})-><a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Image">Pixel.Image</a> throw
 </code>
 </p>
 <p>
@@ -7562,7 +7562,7 @@ Decode the given image buffer.</p>
 <p>
 Fade to a given color. <code class = "incode">factor</code> is [0, 1].</p>
 <p class="code">
-<code style="white-space: break-spaces">func fade(using self, color: Pixel.Color, factor: f32 = 0.5)
+<code style="white-space: break-spaces">func fade(using self, color: <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Color">Pixel.Color</a>, factor: f32 = 0.5)
 </code>
 </p>
 <p>
@@ -7579,7 +7579,7 @@ Fade to a given color. <code class = "incode">factor</code> is [0, 1].</p>
 <p>
 Fill image with <code class = "incode">color</code>.</p>
 <p class="code">
-<code style="white-space: break-spaces">func fill(using self, color: Pixel.Color)
+<code style="white-space: break-spaces">func fill(using self, color: <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Color">Pixel.Color</a>)
 </code>
 </p>
 <p>
@@ -7596,7 +7596,7 @@ Fill image with <code class = "incode">color</code>.</p>
 <p>
 Fill with an horizontal gradient from <code class = "incode">color0</code> to <code class = "incode">color1</code>.</p>
 <p class="code">
-<code style="white-space: break-spaces">func fillGradient2(using self, color0: Pixel.Color, color1: Pixel.Color)
+<code style="white-space: break-spaces">func fillGradient2(using self, color0: <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Color">Pixel.Color</a>, color1: <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Color">Pixel.Color</a>)
 </code>
 </p>
 <p>
@@ -7613,7 +7613,7 @@ Fill with an horizontal gradient from <code class = "incode">color0</code> to <c
 <p>
 Fill with a gradient with a different color at each corner.</p>
 <p class="code">
-<code style="white-space: break-spaces">func fillGradient4(using self, topLeft: Pixel.Color, topRight: Pixel.Color, bottomLeft: Pixel.Color, bottomRight: Pixel.Color)
+<code style="white-space: break-spaces">func fillGradient4(using self, topLeft: <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Color">Pixel.Color</a>, topRight: <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Color">Pixel.Color</a>, bottomLeft: <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Color">Pixel.Color</a>, bottomRight: <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Color">Pixel.Color</a>)
 </code>
 </p>
 <p>
@@ -7628,7 +7628,7 @@ Fill with a gradient with a different color at each corner.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func fillHsl(using self, fillType: Pixel.Image.FillHslType, color: Pixel.Color = Argb.White)
+<code style="white-space: break-spaces">func fillHsl(using self, fillType: <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Image.FillHslType">Pixel.Image.FillHslType</a>, color: <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Color">Pixel.Color</a> = Argb.White)
 </code>
 </p>
 <p>
@@ -7679,13 +7679,13 @@ Free the working buffer if allocated.</p>
 <p>
 Creates an image from a windows HBITMAP.</p>
 <p class="code">
-<code style="white-space: break-spaces">func from(hbitmap: Win32.HBITMAP)->Pixel.Image throw
+<code style="white-space: break-spaces">func from(hbitmap: Win32.HBITMAP)-><a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Image">Pixel.Image</a> throw
 </code>
 </p>
 <p>
 Creates an image from a windows HICON.</p>
 <p class="code">
-<code style="white-space: break-spaces">func from(hicon: Win32.HICON)->Pixel.Image throw
+<code style="white-space: break-spaces">func from(hicon: Win32.HICON)-><a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Image">Pixel.Image</a> throw
 </code>
 </p>
 <p>
@@ -7719,7 +7719,7 @@ Change the gamma.</p>
 <p>
 Returns the color at the given coordinate.</p>
 <p class="code">
-<code style="white-space: break-spaces">func getPixelColor(using self, pixX: s32, pixY: s32)->Pixel.Color
+<code style="white-space: break-spaces">func getPixelColor(using self, pixX: s32, pixY: s32)-><a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Color">Pixel.Color</a>
 </code>
 </p>
 <p>
@@ -7770,7 +7770,7 @@ Divide image size by 2 with a bilinear 2x2 filter.</p>
 <p>
 Initialize image informations <code class = "incode">pixels</code> is set to null, and must be initialized after a call to that function This gives the opportunity to set the pixels with an external buffer.</p>
 <p class="code">
-<code style="white-space: break-spaces">func init(using self, width: s32, height: s32, pf: Pixel.PixelFormat)
+<code style="white-space: break-spaces">func init(using self, width: s32, height: s32, pf: <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.PixelFormat">Pixel.PixelFormat</a>)
 </code>
 </p>
 <p>
@@ -7838,7 +7838,7 @@ Change the lightness. <code class = "incode">factor</code> is [-1, 1].</p>
 <p>
 Load the given image file.</p>
 <p class="code">
-<code style="white-space: break-spaces">func load(fileName: string, options: Pixel.DecodeOptions = {})->Pixel.Image throw
+<code style="white-space: break-spaces">func load(fileName: string, options: <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.DecodeOptions">Pixel.DecodeOptions</a> = {})-><a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Image">Pixel.Image</a> throw
 </code>
 </p>
 <p>
@@ -7872,7 +7872,7 @@ Flip image horizontally.</p>
 <p>
 Mix with another image.</p>
 <p class="code">
-<code style="white-space: break-spaces">func mix(using self, srcImage: Pixel.Image, x: s32, y: s32, mode = MixMode.Copy)
+<code style="white-space: break-spaces">func mix(using self, srcImage: <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Image">Pixel.Image</a>, x: s32, y: s32, mode = MixMode.Copy)
 </code>
 </p>
 <p>
@@ -7973,7 +7973,7 @@ Change the alpha channel.</p>
 <p>
 Change specified color channels.</p>
 <p class="code">
-<code style="white-space: break-spaces">func setChannel(using self, mode: Pixel.Image.ChannelMode, value: Pixel.Image.ChannelValueMode, color: u8 = 0)
+<code style="white-space: break-spaces">func setChannel(using self, mode: <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Image.ChannelMode">Pixel.Image.ChannelMode</a>, value: <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Image.ChannelValueMode">Pixel.Image.ChannelValueMode</a>, color: u8 = 0)
 </code>
 </p>
 <p>
@@ -7990,7 +7990,7 @@ Change specified color channels.</p>
 <p>
 Change image pixel format.</p>
 <p class="code">
-<code style="white-space: break-spaces">func setPixelFormat(using self, newPf: Pixel.PixelFormat)
+<code style="white-space: break-spaces">func setPixelFormat(using self, newPf: <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.PixelFormat">Pixel.PixelFormat</a>)
 </code>
 </p>
 <p>
@@ -8007,7 +8007,7 @@ Change image pixel format.</p>
 <p>
 Set pixel values depending on pixel format.</p>
 <p class="code">
-<code style="white-space: break-spaces">func(PF: Pixel.PixelFormat) setPixelRGBA8(pixDst: ^u8, r: u8, g: u8, b: u8, _a: u8)
+<code style="white-space: break-spaces">func(PF: <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.PixelFormat">Pixel.PixelFormat</a>) setPixelRGBA8(pixDst: ^u8, r: u8, g: u8, b: u8, _a: u8)
 </code>
 </p>
 <p>
@@ -8024,7 +8024,7 @@ Set pixel values depending on pixel format.</p>
 <p>
 Apply a kernel to the image.</p>
 <p class="code">
-<code style="white-space: break-spaces">func toApplyKernel(using self, kernel: Pixel.Image.Kernel)->Pixel.Image
+<code style="white-space: break-spaces">func toApplyKernel(using self, kernel: <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Image.Kernel">Pixel.Image.Kernel</a>)-><a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Image">Pixel.Image</a>
 </code>
 </p>
 <p>
@@ -8041,8 +8041,8 @@ Apply a kernel to the image.</p>
 <p>
 Crop image.</p>
 <p class="code">
-<code style="white-space: break-spaces">func toCrop(using const self, cropRect: Core.Math.Rectangle)->Pixel.Image
-func toCrop(using const self, x: s32, y: s32, w: s32, h: s32)->Pixel.Image
+<code style="white-space: break-spaces">func toCrop(using const self, cropRect: Core.Math.Rectangle)-><a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Image">Pixel.Image</a>
+func toCrop(using const self, x: s32, y: s32, w: s32, h: s32)-><a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Image">Pixel.Image</a>
 </code>
 </p>
 <p>
@@ -8059,7 +8059,7 @@ func toCrop(using const self, x: s32, y: s32, w: s32, h: s32)->Pixel.Image
 <p>
 Flip image vertically.</p>
 <p class="code">
-<code style="white-space: break-spaces">func toFlip(using const self)->Pixel.Image
+<code style="white-space: break-spaces">func toFlip(using const self)-><a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Image">Pixel.Image</a>
 </code>
 </p>
 <p>
@@ -8093,7 +8093,7 @@ Transform an image to a windows icon.</p>
 <p>
 Divide image size by 2 with a bilinear 2x2 filter.</p>
 <p class="code">
-<code style="white-space: break-spaces">func toHalfSize(using const self)->Pixel.Image
+<code style="white-space: break-spaces">func toHalfSize(using const self)-><a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Image">Pixel.Image</a>
 </code>
 </p>
 <p>
@@ -8110,7 +8110,7 @@ Divide image size by 2 with a bilinear 2x2 filter.</p>
 <p>
 Flip image horizontally.</p>
 <p class="code">
-<code style="white-space: break-spaces">func toMirror(using const self)->Pixel.Image
+<code style="white-space: break-spaces">func toMirror(using const self)-><a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Image">Pixel.Image</a>
 </code>
 </p>
 <p>
@@ -8127,7 +8127,7 @@ Flip image horizontally.</p>
 <p>
 Mix with another image.</p>
 <p class="code">
-<code style="white-space: break-spaces">func toMix(using const self, srcImage: Pixel.Image, x: s32, y: s32, mode = MixMode.Copy)->Pixel.Image
+<code style="white-space: break-spaces">func toMix(using const self, srcImage: <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Image">Pixel.Image</a>, x: s32, y: s32, mode = MixMode.Copy)-><a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Image">Pixel.Image</a>
 </code>
 </p>
 <p>
@@ -8144,7 +8144,7 @@ Mix with another image.</p>
 <p>
 Resize image Put <code class = "incode">newWidth</code> or <code class = "incode">newHeight</code> to 0 to keep aspect ratio.</p>
 <p class="code">
-<code style="white-space: break-spaces">func toResize(using const self, newWidth: s32, newHeight: s32, mode = ResizeMode.Raw)->Pixel.Image
+<code style="white-space: break-spaces">func toResize(using const self, newWidth: s32, newHeight: s32, mode = ResizeMode.Raw)-><a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Image">Pixel.Image</a>
 </code>
 </p>
 <p>
@@ -8161,7 +8161,7 @@ Resize image Put <code class = "incode">newWidth</code> or <code class = "incode
 <p>
 Change image pixel format.</p>
 <p class="code">
-<code style="white-space: break-spaces">func toSetPixelFormat(using const self, newPf: Pixel.PixelFormat)->Pixel.Image
+<code style="white-space: break-spaces">func toSetPixelFormat(using const self, newPf: <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.PixelFormat">Pixel.PixelFormat</a>)-><a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Image">Pixel.Image</a>
 </code>
 </p>
 <p>
@@ -8178,7 +8178,7 @@ Change image pixel format.</p>
 <p>
 Turn image by a given predefined angle.</p>
 <p class="code">
-<code style="white-space: break-spaces">func toTurn(using const self, angle: Pixel.Image.TurnAngle)->Pixel.Image
+<code style="white-space: break-spaces">func toTurn(using const self, angle: <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Image.TurnAngle">Pixel.Image.TurnAngle</a>)-><a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Image">Pixel.Image</a>
 </code>
 </p>
 <p>
@@ -8195,7 +8195,7 @@ Turn image by a given predefined angle.</p>
 <p>
 Turn image by a given predefined angle.</p>
 <p class="code">
-<code style="white-space: break-spaces">func turn(using self, angle: Pixel.Image.TurnAngle)
+<code style="white-space: break-spaces">func turn(using self, angle: <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Image.TurnAngle">Pixel.Image.TurnAngle</a>)
 </code>
 </p>
 <p>
@@ -8470,7 +8470,7 @@ MiterBevel</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func decode(using self, buffer: const [..] u8, options: Pixel.DecodeOptions)->Pixel.Image throw
+<code style="white-space: break-spaces">func decode(using self, buffer: const [..] u8, options: <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.DecodeOptions">Pixel.DecodeOptions</a>)-><a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Image">Pixel.Image</a> throw
 </code>
 </p>
 <p>
@@ -8534,7 +8534,7 @@ Encoding quality between 1 and 100.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func encode(using self, result: *Core.ConcatBuffer, image: Pixel.Image, options: any) throw
+<code style="white-space: break-spaces">func encode(using self, result: *Core.ConcatBuffer, image: <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Image">Pixel.Image</a>, options: any) throw
 </code>
 </p>
 <p>
@@ -9226,7 +9226,7 @@ Remove all internal line paths.</p>
 <p>
 Flatten all paths.</p>
 <p class="code">
-<code style="white-space: break-spaces">func flatten(using self, quality: Pixel.PaintQuality)
+<code style="white-space: break-spaces">func flatten(using self, quality: <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.PaintQuality">Pixel.PaintQuality</a>)
 </code>
 </p>
 <p>
@@ -9243,7 +9243,7 @@ Flatten all paths.</p>
 <p>
 Returns a new path.</p>
 <p class="code">
-<code style="white-space: break-spaces">func newPath(using self)->*Pixel.LinePath
+<code style="white-space: break-spaces">func newPath(using self)->*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.LinePath">Pixel.LinePath</a>
 </code>
 </p>
 <p>
@@ -9266,7 +9266,7 @@ Call fast offset on all paths They must before be flattened.</p>
 <p>
 Call quality offset on all paths They must before be flattened.</p>
 <p class="code">
-<code style="white-space: break-spaces">func offset(using self, value: f32, joinStyle: Pixel.JoinStyle, toler: f32 = 0.5)
+<code style="white-space: break-spaces">func offset(using self, value: f32, joinStyle: <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.JoinStyle">Pixel.JoinStyle</a>, toler: f32 = 0.5)
 </code>
 </p>
 <p>
@@ -9346,8 +9346,8 @@ s32</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func createContext(using self, hdc: Win32.HDC, width: s32, height: s32, mainRC: Ogl.HGLRC = null)->Pixel.RenderingContext throw
-func createContext(using self, hWnd: Win32.HWND, width: s32, height: s32, mainRC: Ogl.HGLRC = null)->Pixel.RenderingContext throw
+<code style="white-space: break-spaces">func createContext(using self, hdc: Win32.HDC, width: s32, height: s32, mainRC: Ogl.HGLRC = null)-><a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.RenderingContext">Pixel.RenderingContext</a> throw
+func createContext(using self, hWnd: Win32.HWND, width: s32, height: s32, mainRC: Ogl.HGLRC = null)-><a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.RenderingContext">Pixel.RenderingContext</a> throw
 </code>
 </p>
 <p>
@@ -9362,7 +9362,7 @@ func createContext(using self, hWnd: Win32.HWND, width: s32, height: s32, mainRC
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func dropContext(using self, rc: Pixel.RenderingContext)
+<code style="white-space: break-spaces">func dropContext(using self, rc: <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.RenderingContext">Pixel.RenderingContext</a>)
 </code>
 </p>
 <p>
@@ -9377,7 +9377,7 @@ func createContext(using self, hWnd: Win32.HWND, width: s32, height: s32, mainRC
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func setCurrentContext(using self, rc: Pixel.RenderingContext)
+<code style="white-space: break-spaces">func setCurrentContext(using self, rc: <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.RenderingContext">Pixel.RenderingContext</a>)
 </code>
 </p>
 <p>
@@ -9392,7 +9392,7 @@ func createContext(using self, hWnd: Win32.HWND, width: s32, height: s32, mainRC
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func swapBuffers(using self, rc: Pixel.RenderingContext)
+<code style="white-space: break-spaces">func swapBuffers(using self, rc: <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.RenderingContext">Pixel.RenderingContext</a>)
 </code>
 </p>
 <p>
@@ -10464,7 +10464,7 @@ Bind a render target.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func addParams(using self, add: Pixel.PaintParams)
+<code style="white-space: break-spaces">func addParams(using self, add: <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.PaintParams">Pixel.PaintParams</a>)
 </code>
 </p>
 <p>
@@ -10498,7 +10498,7 @@ Call this before drawing.</p>
 <p>
 Bind a render target.</p>
 <p class="code">
-<code style="white-space: break-spaces">func bindRenderTarget(using self, tgt: *Pixel.RenderTarget, paintAlpha = false)
+<code style="white-space: break-spaces">func bindRenderTarget(using self, tgt: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.RenderTarget">Pixel.RenderTarget</a>, paintAlpha = false)
 </code>
 </p>
 <p>
@@ -10515,7 +10515,7 @@ Bind a render target.</p>
 <p>
 Clear the rendering surface.</p>
 <p class="code">
-<code style="white-space: break-spaces">func clear(using self, color: Pixel.Color)
+<code style="white-space: break-spaces">func clear(using self, color: <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Color">Pixel.Color</a>)
 </code>
 </p>
 <p>
@@ -10532,7 +10532,7 @@ Clear the rendering surface.</p>
 <p>
 Recompute the layout for a given rectangle.</p>
 <p class="code">
-<code style="white-space: break-spaces">func computeLayout(using self, pos: Core.Math.Rectangle, text: *Pixel.RichString, format: Pixel.RichStringFormat)
+<code style="white-space: break-spaces">func computeLayout(using self, pos: Core.Math.Rectangle, text: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.RichString">Pixel.RichString</a>, format: <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.RichStringFormat">Pixel.RichStringFormat</a>)
 </code>
 </p>
 <p>
@@ -10610,11 +10610,11 @@ bool</td>
 <p>
 Draw an arc between two angles.</p>
 <p class="code">
-<code style="white-space: break-spaces">func drawArc(using self, centerX: f32, centerY: f32, radius: f32, startAngle: Core.Math.Angle, endAngle: Core.Math.Angle, color: Pixel.Color, penSize: f32 = 1)
+<code style="white-space: break-spaces">func drawArc(using self, centerX: f32, centerY: f32, radius: f32, startAngle: Core.Math.Angle, endAngle: Core.Math.Angle, color: <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Color">Pixel.Color</a>, penSize: f32 = 1)
 </code>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func drawArc(using self, centerX: f32, centerY: f32, radius: f32, startAngle: Core.Math.Angle, endAngle: Core.Math.Angle, pen: Pixel.Pen)
+<code style="white-space: break-spaces">func drawArc(using self, centerX: f32, centerY: f32, radius: f32, startAngle: Core.Math.Angle, endAngle: Core.Math.Angle, pen: <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Pen">Pixel.Pen</a>)
 </code>
 </p>
 <p>
@@ -10631,11 +10631,11 @@ Draw an arc between two angles.</p>
 <p>
 Draw an empty circle.</p>
 <p class="code">
-<code style="white-space: break-spaces">func drawCircle(using self, centerX: f32, centerY: f32, radius: f32, color: Pixel.Color, penSize: f32 = 1)
+<code style="white-space: break-spaces">func drawCircle(using self, centerX: f32, centerY: f32, radius: f32, color: <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Color">Pixel.Color</a>, penSize: f32 = 1)
 </code>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func drawCircle(using self, centerX: f32, centerY: f32, radius: f32, pen: Pixel.Pen)
+<code style="white-space: break-spaces">func drawCircle(using self, centerX: f32, centerY: f32, radius: f32, pen: <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Pen">Pixel.Pen</a>)
 </code>
 </p>
 <p>
@@ -10652,11 +10652,11 @@ Draw an empty circle.</p>
 <p>
 Draw an empty ellipse.</p>
 <p class="code">
-<code style="white-space: break-spaces">func drawEllipse(using self, centerX: f32, centerY: f32, radiusX: f32, radiusY: f32, color: Pixel.Color, penSize: f32 = 1)
+<code style="white-space: break-spaces">func drawEllipse(using self, centerX: f32, centerY: f32, radiusX: f32, radiusY: f32, color: <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Color">Pixel.Color</a>, penSize: f32 = 1)
 </code>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func drawEllipse(using self, centerX: f32, centerY: f32, radiusX: f32, radiusY: f32, pen: Pixel.Pen)
+<code style="white-space: break-spaces">func drawEllipse(using self, centerX: f32, centerY: f32, radiusX: f32, radiusY: f32, pen: <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Pen">Pixel.Pen</a>)
 </code>
 </p>
 <p>
@@ -10673,12 +10673,12 @@ Draw an empty ellipse.</p>
 <p>
 Draw a line.</p>
 <p class="code">
-<code style="white-space: break-spaces">func drawLine(using self, start: Core.Math.Vector2, end: Core.Math.Vector2, pen: Pixel.Pen)
+<code style="white-space: break-spaces">func drawLine(using self, start: Core.Math.Vector2, end: Core.Math.Vector2, pen: <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Pen">Pixel.Pen</a>)
 </code>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func drawLine(using self, startX: f32, startY: f32, endX: f32, endY: f32, color: Pixel.Color, penSize: f32 = 1)
-func drawLine(using self, startX: f32, startY: f32, endX: f32, endY: f32, pen: Pixel.Pen)
+<code style="white-space: break-spaces">func drawLine(using self, startX: f32, startY: f32, endX: f32, endY: f32, color: <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Color">Pixel.Color</a>, penSize: f32 = 1)
+func drawLine(using self, startX: f32, startY: f32, endX: f32, endY: f32, pen: <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Pen">Pixel.Pen</a>)
 </code>
 </p>
 <p>
@@ -10695,25 +10695,25 @@ func drawLine(using self, startX: f32, startY: f32, endX: f32, endY: f32, pen: P
 <p>
 Draw the line path.</p>
 <p class="code">
-<code style="white-space: break-spaces">func drawPath(using self, path: *Pixel.LinePath, color: Pixel.Color, penSize: f32)
+<code style="white-space: break-spaces">func drawPath(using self, path: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.LinePath">Pixel.LinePath</a>, color: <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Color">Pixel.Color</a>, penSize: f32)
 </code>
 </p>
 <p>
 Draw the line path with the given <code class = "incode">pen</code>.</p>
 <p class="code">
-<code style="white-space: break-spaces">func drawPath(using self, path: *Pixel.LinePath, pen: Pixel.Pen)
+<code style="white-space: break-spaces">func drawPath(using self, path: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.LinePath">Pixel.LinePath</a>, pen: <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Pen">Pixel.Pen</a>)
 </code>
 </p>
 <p>
 Draw the line path.</p>
 <p class="code">
-<code style="white-space: break-spaces">func drawPath(using self, pathList: *Pixel.LinePathList, color: Pixel.Color, penSize: f32, mode: Pixel.DrawPathListMode = .Separate)
+<code style="white-space: break-spaces">func drawPath(using self, pathList: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.LinePathList">Pixel.LinePathList</a>, color: <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Color">Pixel.Color</a>, penSize: f32, mode: <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.DrawPathListMode">Pixel.DrawPathListMode</a> = .Separate)
 </code>
 </p>
 <p>
 Draw the line path.</p>
 <p class="code">
-<code style="white-space: break-spaces">func drawPath(using self, pathList: *Pixel.LinePathList, pen: Pixel.Pen, mode: Pixel.DrawPathListMode = .Separate)
+<code style="white-space: break-spaces">func drawPath(using self, pathList: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.LinePathList">Pixel.LinePathList</a>, pen: <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Pen">Pixel.Pen</a>, mode: <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.DrawPathListMode">Pixel.DrawPathListMode</a> = .Separate)
 </code>
 </p>
 <p>
@@ -10730,13 +10730,13 @@ Draw the line path.</p>
 <p>
 Draw an empty rectangle.</p>
 <p class="code">
-<code style="white-space: break-spaces">func drawRect(using self, rect: Core.Math.Rectangle, color: Pixel.Color, penSize: f32 = 1)
-func drawRect(using self, rect: Core.Math.Rectangle, pen: Pixel.Pen)
-func drawRect(using self, left: f32, top: f32, width: f32, height: f32, color: Pixel.Color, penSize: f32 = 1)
+<code style="white-space: break-spaces">func drawRect(using self, rect: Core.Math.Rectangle, color: <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Color">Pixel.Color</a>, penSize: f32 = 1)
+func drawRect(using self, rect: Core.Math.Rectangle, pen: <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Pen">Pixel.Pen</a>)
+func drawRect(using self, left: f32, top: f32, width: f32, height: f32, color: <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Color">Pixel.Color</a>, penSize: f32 = 1)
 </code>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func drawRect(using self, left: f32, top: f32, width: f32, height: f32, pen: Pixel.Pen)
+<code style="white-space: break-spaces">func drawRect(using self, left: f32, top: f32, width: f32, height: f32, pen: <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Pen">Pixel.Pen</a>)
 </code>
 </p>
 <p>
@@ -10753,7 +10753,7 @@ func drawRect(using self, left: f32, top: f32, width: f32, height: f32, color: P
 <p>
 Draw a rich string. A rich string can be multiline, and accepts The layout will be computed at the first call, and each time <code class = "incode">pos</code> has changed.</p>
 <p class="code">
-<code style="white-space: break-spaces">func drawRichString(using self, pos: Core.Math.Rectangle, text: *Pixel.RichString, format: Pixel.RichStringFormat, forceCompute = false)
+<code style="white-space: break-spaces">func drawRichString(using self, pos: Core.Math.Rectangle, text: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.RichString">Pixel.RichString</a>, format: <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.RichStringFormat">Pixel.RichStringFormat</a>, forceCompute = false)
 </code>
 </p>
 <p>
@@ -10770,13 +10770,13 @@ Draw a rich string. A rich string can be multiline, and accepts The layout will 
 <p>
 Draw an empty round rectangle.</p>
 <p class="code">
-<code style="white-space: break-spaces">func drawRoundRect(using self, rect: Core.Math.Rectangle, radiusX: f32, radiusY: f32, color: Pixel.Color, penSize: f32 = 1)
-func drawRoundRect(using self, rect: Core.Math.Rectangle, radiusX: f32, radiusY: f32, pen: Pixel.Pen)
-func drawRoundRect(using self, left: f32, top: f32, width: f32, height: f32, radiusX: f32, radiusY: f32, color: Pixel.Color, penSize: f32 = 1)
+<code style="white-space: break-spaces">func drawRoundRect(using self, rect: Core.Math.Rectangle, radiusX: f32, radiusY: f32, color: <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Color">Pixel.Color</a>, penSize: f32 = 1)
+func drawRoundRect(using self, rect: Core.Math.Rectangle, radiusX: f32, radiusY: f32, pen: <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Pen">Pixel.Pen</a>)
+func drawRoundRect(using self, left: f32, top: f32, width: f32, height: f32, radiusX: f32, radiusY: f32, color: <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Color">Pixel.Color</a>, penSize: f32 = 1)
 </code>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func drawRoundRect(using self, left: f32, top: f32, width: f32, height: f32, radiusX: f32, radiusY: f32, pen: Pixel.Pen)
+<code style="white-space: break-spaces">func drawRoundRect(using self, left: f32, top: f32, width: f32, height: f32, radiusX: f32, radiusY: f32, pen: <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Pen">Pixel.Pen</a>)
 </code>
 </p>
 <p>
@@ -10793,13 +10793,13 @@ func drawRoundRect(using self, left: f32, top: f32, width: f32, height: f32, rad
 <p>
 Draw a simple string.</p>
 <p class="code">
-<code style="white-space: break-spaces">func drawString(using self, left: f32, top: f32, text: string, font: *Pixel.Font, brush: Pixel.Brush, under = UnderlineStyle.None)
+<code style="white-space: break-spaces">func drawString(using self, left: f32, top: f32, text: string, font: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Font">Pixel.Font</a>, brush: <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Brush">Pixel.Brush</a>, under = UnderlineStyle.None)
 </code>
 </p>
 <p>
 Draw a simple string.</p>
 <p class="code">
-<code style="white-space: break-spaces">func drawString(using self, left: f32, top: f32, text: string, font: *Pixel.Font, color: Pixel.Color, under = UnderlineStyle.None)
+<code style="white-space: break-spaces">func drawString(using self, left: f32, top: f32, text: string, font: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Font">Pixel.Font</a>, color: <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Color">Pixel.Color</a>, under = UnderlineStyle.None)
 </code>
 </p>
 <p>
@@ -10816,7 +10816,7 @@ Draw a simple string.</p>
 <p>
 Draw a simple string (centered).</p>
 <p class="code">
-<code style="white-space: break-spaces">func drawStringCenter(using self, x: f32, y: f32, text: string, font: *Pixel.Font, color: Pixel.Color, under = UnderlineStyle.None)
+<code style="white-space: break-spaces">func drawStringCenter(using self, x: f32, y: f32, text: string, font: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Font">Pixel.Font</a>, color: <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Color">Pixel.Color</a>, under = UnderlineStyle.None)
 </code>
 </p>
 <p>
@@ -10833,17 +10833,17 @@ Draw a simple string (centered).</p>
 <p>
 Draw a portion of an image.</p>
 <p class="code">
-<code style="white-space: break-spaces">func drawTexture(using self, dstRect: Core.Math.Rectangle, srcRect: Core.Math.Rectangle, texture: Pixel.Texture, color: Pixel.Color = Argb.White)
-func drawTexture(using self, rect: Core.Math.Rectangle, texture: Pixel.Texture, color: Pixel.Color = Argb.White)
-func drawTexture(using self, x: f32, y: f32, srcRect: Core.Math.Rectangle, texture: Pixel.Texture, color: Pixel.Color = Argb.White)
-func drawTexture(using self, x: f32, y: f32, texture: Pixel.Texture, color: Pixel.Color = Argb.White)
-func drawTexture(using self, x: f32, y: f32, width: f32, height: f32, srcRect: Core.Math.Rectangle, texture: Pixel.Texture, color: Pixel.Color = Argb.White)
+<code style="white-space: break-spaces">func drawTexture(using self, dstRect: Core.Math.Rectangle, srcRect: Core.Math.Rectangle, texture: <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Texture">Pixel.Texture</a>, color: <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Color">Pixel.Color</a> = Argb.White)
+func drawTexture(using self, rect: Core.Math.Rectangle, texture: <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Texture">Pixel.Texture</a>, color: <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Color">Pixel.Color</a> = Argb.White)
+func drawTexture(using self, x: f32, y: f32, srcRect: Core.Math.Rectangle, texture: <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Texture">Pixel.Texture</a>, color: <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Color">Pixel.Color</a> = Argb.White)
+func drawTexture(using self, x: f32, y: f32, texture: <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Texture">Pixel.Texture</a>, color: <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Color">Pixel.Color</a> = Argb.White)
+func drawTexture(using self, x: f32, y: f32, width: f32, height: f32, srcRect: Core.Math.Rectangle, texture: <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Texture">Pixel.Texture</a>, color: <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Color">Pixel.Color</a> = Argb.White)
 </code>
 </p>
 <p>
 Draw a texture image.</p>
 <p class="code">
-<code style="white-space: break-spaces">func drawTexture(using self, x: f32, y: f32, width: f32, height: f32, texture: Pixel.Texture, color: Pixel.Color = Argb.White)
+<code style="white-space: break-spaces">func drawTexture(using self, x: f32, y: f32, width: f32, height: f32, texture: <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Texture">Pixel.Texture</a>, color: <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Color">Pixel.Color</a> = Argb.White)
 </code>
 </p>
 <p>
@@ -10894,11 +10894,11 @@ Stop painting in the clipping buffer. Back to normal.</p>
 <p>
 Draw a solid circle.</p>
 <p class="code">
-<code style="white-space: break-spaces">func fillCircle(using self, centerX: f32, centerY: f32, radius: f32, brush: Pixel.Brush)
+<code style="white-space: break-spaces">func fillCircle(using self, centerX: f32, centerY: f32, radius: f32, brush: <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Brush">Pixel.Brush</a>)
 </code>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func fillCircle(using self, centerX: f32, centerY: f32, radius: f32, color: Pixel.Color)
+<code style="white-space: break-spaces">func fillCircle(using self, centerX: f32, centerY: f32, radius: f32, color: <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Color">Pixel.Color</a>)
 </code>
 </p>
 <p>
@@ -10915,11 +10915,11 @@ Draw a solid circle.</p>
 <p>
 Draw a solid ellipse.</p>
 <p class="code">
-<code style="white-space: break-spaces">func fillEllipse(using self, centerX: f32, centerY: f32, radiusX: f32, radiusY: f32, brush: Pixel.Brush)
+<code style="white-space: break-spaces">func fillEllipse(using self, centerX: f32, centerY: f32, radiusX: f32, radiusY: f32, brush: <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Brush">Pixel.Brush</a>)
 </code>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func fillEllipse(using self, centerX: f32, centerY: f32, radiusX: f32, radiusY: f32, color: Pixel.Color)
+<code style="white-space: break-spaces">func fillEllipse(using self, centerX: f32, centerY: f32, radiusX: f32, radiusY: f32, color: <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Color">Pixel.Color</a>)
 </code>
 </p>
 <p>
@@ -10936,25 +10936,25 @@ Draw a solid ellipse.</p>
 <p>
 Fill the line path with the given <code class = "incode">brush</code>.</p>
 <p class="code">
-<code style="white-space: break-spaces">func fillPath(using self, path: *Pixel.LinePath, brush: Pixel.Brush)
+<code style="white-space: break-spaces">func fillPath(using self, path: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.LinePath">Pixel.LinePath</a>, brush: <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Brush">Pixel.Brush</a>)
 </code>
 </p>
 <p>
 Fill the line path.</p>
 <p class="code">
-<code style="white-space: break-spaces">func fillPath(using self, path: *Pixel.LinePath, color: Pixel.Color)
+<code style="white-space: break-spaces">func fillPath(using self, path: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.LinePath">Pixel.LinePath</a>, color: <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Color">Pixel.Color</a>)
 </code>
 </p>
 <p>
 Fill the list of paths clockwise = fill, anti-clockwise = hole.</p>
 <p class="code">
-<code style="white-space: break-spaces">func fillPath(using self, pathList: *Pixel.LinePathList, brush: Pixel.Brush)
+<code style="white-space: break-spaces">func fillPath(using self, pathList: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.LinePathList">Pixel.LinePathList</a>, brush: <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Brush">Pixel.Brush</a>)
 </code>
 </p>
 <p>
 Fill the line path.</p>
 <p class="code">
-<code style="white-space: break-spaces">func fillPath(using self, pathList: *Pixel.LinePathList, color: Pixel.Color)
+<code style="white-space: break-spaces">func fillPath(using self, pathList: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.LinePathList">Pixel.LinePathList</a>, color: <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Color">Pixel.Color</a>)
 </code>
 </p>
 <p>
@@ -10971,13 +10971,13 @@ Fill the line path.</p>
 <p>
 Fill the polygon with the given <code class = "incode">brush</code>.</p>
 <p class="code">
-<code style="white-space: break-spaces">func fillPolygon(using self, path: *Pixel.LinePath, brush: Pixel.Brush)
+<code style="white-space: break-spaces">func fillPolygon(using self, path: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.LinePath">Pixel.LinePath</a>, brush: <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Brush">Pixel.Brush</a>)
 </code>
 </p>
 <p>
 Fill the polygon with the given color.</p>
 <p class="code">
-<code style="white-space: break-spaces">func fillPolygon(using self, path: *Pixel.LinePath, color: Pixel.Color)
+<code style="white-space: break-spaces">func fillPolygon(using self, path: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.LinePath">Pixel.LinePath</a>, color: <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Color">Pixel.Color</a>)
 </code>
 </p>
 <p>
@@ -10994,13 +10994,13 @@ Fill the polygon with the given color.</p>
 <p>
 Draw a filled rectangle.</p>
 <p class="code">
-<code style="white-space: break-spaces">func fillRect(using self, rect: Core.Math.Rectangle, brush: Pixel.Brush)
-func fillRect(using self, rect: Core.Math.Rectangle, color: Pixel.Color)
-func fillRect(using self, left: f32, top: f32, width: f32, height: f32, brush: Pixel.Brush)
+<code style="white-space: break-spaces">func fillRect(using self, rect: Core.Math.Rectangle, brush: <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Brush">Pixel.Brush</a>)
+func fillRect(using self, rect: Core.Math.Rectangle, color: <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Color">Pixel.Color</a>)
+func fillRect(using self, left: f32, top: f32, width: f32, height: f32, brush: <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Brush">Pixel.Brush</a>)
 </code>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func fillRect(using self, left: f32, top: f32, width: f32, height: f32, color: Pixel.Color)
+<code style="white-space: break-spaces">func fillRect(using self, left: f32, top: f32, width: f32, height: f32, color: <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Color">Pixel.Color</a>)
 </code>
 </p>
 <p>
@@ -11017,13 +11017,13 @@ func fillRect(using self, left: f32, top: f32, width: f32, height: f32, brush: P
 <p>
 Draw a filled round rectangle.</p>
 <p class="code">
-<code style="white-space: break-spaces">func fillRoundRect(using self, rect: Core.Math.Rectangle, radiusX: f32, radiusY: f32, brush: Pixel.Brush)
-func fillRoundRect(using self, rect: Core.Math.Rectangle, radiusX: f32, radiusY: f32, color: Pixel.Color)
-func fillRoundRect(using self, left: f32, top: f32, width: f32, height: f32, radiusX: f32, radiusY: f32, brush: Pixel.Brush)
+<code style="white-space: break-spaces">func fillRoundRect(using self, rect: Core.Math.Rectangle, radiusX: f32, radiusY: f32, brush: <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Brush">Pixel.Brush</a>)
+func fillRoundRect(using self, rect: Core.Math.Rectangle, radiusX: f32, radiusY: f32, color: <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Color">Pixel.Color</a>)
+func fillRoundRect(using self, left: f32, top: f32, width: f32, height: f32, radiusX: f32, radiusY: f32, brush: <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Brush">Pixel.Brush</a>)
 </code>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func fillRoundRect(using self, left: f32, top: f32, width: f32, height: f32, radiusX: f32, radiusY: f32, color: Pixel.Color)
+<code style="white-space: break-spaces">func fillRoundRect(using self, left: f32, top: f32, width: f32, height: f32, radiusX: f32, radiusY: f32, color: <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Color">Pixel.Color</a>)
 </code>
 </p>
 <p>
@@ -11057,13 +11057,13 @@ Get the current clipping rectangle.</p>
 <p>
 Returns all the glyphs for a given string and font.</p>
 <p class="code">
-<code style="white-space: break-spaces">func getGlyphs(text: Core.Array'(rune), font: *Pixel.Font)->Core.Array'(const *Pixel.GlyphDesc)
+<code style="white-space: break-spaces">func getGlyphs(text: Core.Array(rune), font: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Font">Pixel.Font</a>)->Core.Array(const *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.GlyphDesc">Pixel.GlyphDesc</a>)
 </code>
 </p>
 <p>
 Returns all the glyphs for a given string and font.</p>
 <p class="code">
-<code style="white-space: break-spaces">func getGlyphs(text: string, font: *Pixel.Font)->Core.Array'(const *Pixel.GlyphDesc)
+<code style="white-space: break-spaces">func getGlyphs(text: string, font: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Font">Pixel.Font</a>)->Core.Array(const *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.GlyphDesc">Pixel.GlyphDesc</a>)
 </code>
 </p>
 <p>
@@ -11144,7 +11144,7 @@ Returns true if the current clipping rectangle is empty (no drawing !).</p>
 <p>
 Get a rune size for a given font.</p>
 <p class="code">
-<code style="white-space: break-spaces">func measureRune(c: rune, font: *Pixel.Font)->Core.Math.Point
+<code style="white-space: break-spaces">func measureRune(c: rune, font: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Font">Pixel.Font</a>)->Core.Math.Point
 </code>
 </p>
 <p>
@@ -11161,13 +11161,13 @@ Get a rune size for a given font.</p>
 <p>
 Returns the bounding rectangle if a given text, at a given position.</p>
 <p class="code">
-<code style="white-space: break-spaces">func measureString(text: Core.Array'(const *Pixel.GlyphDesc))->Pixel.StringMetrics
+<code style="white-space: break-spaces">func measureString(text: Core.Array(const *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.GlyphDesc">Pixel.GlyphDesc</a>))-><a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.StringMetrics">Pixel.StringMetrics</a>
 </code>
 </p>
 <p>
 Returns the metrics of a given text.</p>
 <p class="code">
-<code style="white-space: break-spaces">func measureString(text: string, font: *Pixel.Font)->Pixel.StringMetrics
+<code style="white-space: break-spaces">func measureString(text: string, font: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Font">Pixel.Font</a>)-><a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.StringMetrics">Pixel.StringMetrics</a>
 </code>
 </p>
 <p>
@@ -11269,7 +11269,7 @@ Save the current paint state.</p>
 <p>
 Release the render target.</p>
 <p class="code">
-<code style="white-space: break-spaces">func releaseRenderTarget(using self, tgt: *Pixel.RenderTarget)
+<code style="white-space: break-spaces">func releaseRenderTarget(using self, tgt: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.RenderTarget">Pixel.RenderTarget</a>)
 </code>
 </p>
 <p>
@@ -11284,7 +11284,7 @@ Release the render target.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func removeParams(using self, remove: Pixel.PaintParams)
+<code style="white-space: break-spaces">func removeParams(using self, remove: <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.PaintParams">Pixel.PaintParams</a>)
 </code>
 </p>
 <p>
@@ -11426,7 +11426,7 @@ Set antialiased mode on/off.</p>
 <p>
 Set the current blending mode.</p>
 <p class="code">
-<code style="white-space: break-spaces">func setBlendingMode(using self, mode: Pixel.BlendingMode)
+<code style="white-space: break-spaces">func setBlendingMode(using self, mode: <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.BlendingMode">Pixel.BlendingMode</a>)
 </code>
 </p>
 <p>
@@ -11466,7 +11466,7 @@ Set the current clipping rectangle.</p>
 <p>
 Set the clipping region mode.</p>
 <p class="code">
-<code style="white-space: break-spaces">func setClippingRegionMode(using self, mode: Pixel.ClippingMode)
+<code style="white-space: break-spaces">func setClippingRegionMode(using self, mode: <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.ClippingMode">Pixel.ClippingMode</a>)
 </code>
 </p>
 <p>
@@ -11489,7 +11489,7 @@ Set color mask.</p>
 <p>
 Set color mask.</p>
 <p class="code">
-<code style="white-space: break-spaces">func setColorMask(using self, cm: Pixel.ColorMask)
+<code style="white-space: break-spaces">func setColorMask(using self, cm: <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.ColorMask">Pixel.ColorMask</a>)
 </code>
 </p>
 <p>
@@ -11551,7 +11551,7 @@ Set color mask.</p>
 <p>
 Set the texture interpolation mode.</p>
 <p class="code">
-<code style="white-space: break-spaces">func setInterpolationMode(using self, mode: Pixel.InterpolationMode)
+<code style="white-space: break-spaces">func setInterpolationMode(using self, mode: <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.InterpolationMode">Pixel.InterpolationMode</a>)
 </code>
 </p>
 <p>
@@ -11568,7 +11568,7 @@ Set the texture interpolation mode.</p>
 <p>
 Set the paint parameters.</p>
 <p class="code">
-<code style="white-space: break-spaces">func setParams(using self, add: Pixel.PaintParams, remove: Pixel.PaintParams = .Zero)
+<code style="white-space: break-spaces">func setParams(using self, add: <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.PaintParams">Pixel.PaintParams</a>, remove: <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.PaintParams">Pixel.PaintParams</a> = .Zero)
 </code>
 </p>
 <p>
@@ -11585,7 +11585,7 @@ Set the paint parameters.</p>
 <p>
 Set the paint quality.</p>
 <p class="code">
-<code style="white-space: break-spaces">func setQuality(using self, quality: Pixel.PaintQuality)
+<code style="white-space: break-spaces">func setQuality(using self, quality: <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.PaintQuality">Pixel.PaintQuality</a>)
 </code>
 </p>
 <p>
@@ -11602,7 +11602,7 @@ Set the paint quality.</p>
 <p>
 Set the current shader.</p>
 <p class="code">
-<code style="white-space: break-spaces">func setShader(using self, shader: *Pixel.ShaderBase = null)
+<code style="white-space: break-spaces">func setShader(using self, shader: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.ShaderBase">Pixel.ShaderBase</a> = null)
 </code>
 </p>
 <p>
@@ -11642,7 +11642,7 @@ Set a shader parameter.</p>
 <p>
 Set the current painting state.</p>
 <p class="code">
-<code style="white-space: break-spaces">func setState(using self, state: Pixel.PaintState)
+<code style="white-space: break-spaces">func setState(using self, state: <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.PaintState">Pixel.PaintState</a>)
 </code>
 </p>
 <p>
@@ -11895,7 +11895,7 @@ Returns a solid color pen.</p>
 <p>
 Returns a dash pen.</p>
 <p class="code">
-<code style="white-space: break-spaces">func createDash(style: Pixel.DashStyle, color: Pixel.Color, size: f32 = 1)->Pixel.Pen
+<code style="white-space: break-spaces">func createDash(style: <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.DashStyle">Pixel.DashStyle</a>, color: <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Color">Pixel.Color</a>, size: f32 = 1)-><a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Pen">Pixel.Pen</a>
 </code>
 </p>
 <p>
@@ -11912,7 +11912,7 @@ Returns a dash pen.</p>
 <p>
 Return a predefined hatch pen.</p>
 <p class="code">
-<code style="white-space: break-spaces">func createHatch(type: Pixel.HatchStyle, color: Pixel.Color, size: f32 = 1)->Pixel.Pen
+<code style="white-space: break-spaces">func createHatch(type: <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.HatchStyle">Pixel.HatchStyle</a>, color: <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Color">Pixel.Color</a>, size: f32 = 1)-><a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Pen">Pixel.Pen</a>
 </code>
 </p>
 <p>
@@ -11929,7 +11929,7 @@ Return a predefined hatch pen.</p>
 <p>
 Returns a solid color pen.</p>
 <p class="code">
-<code style="white-space: break-spaces">func createSolid(color: Pixel.Color, size: f32 = 1)->Pixel.Pen
+<code style="white-space: break-spaces">func createSolid(color: <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Color">Pixel.Color</a>, size: f32 = 1)-><a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Pen">Pixel.Pen</a>
 </code>
 </p>
 <p>
@@ -12144,7 +12144,7 @@ const [188] u8</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func decode(using self, buffer: const [..] u8, options: Pixel.DecodeOptions)->Pixel.Image throw
+<code style="white-space: break-spaces">func decode(using self, buffer: const [..] u8, options: <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.DecodeOptions">Pixel.DecodeOptions</a>)-><a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Image">Pixel.Image</a> throw
 </code>
 </p>
 <p>
@@ -12214,7 +12214,7 @@ bool</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func encode(using self, result: *Core.ConcatBuffer, image: Pixel.Image, options: any) throw
+<code style="white-space: break-spaces">func encode(using self, result: *Core.ConcatBuffer, image: <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Image">Pixel.Image</a>, options: any) throw
 </code>
 </p>
 <p>
@@ -12682,7 +12682,7 @@ To call to register the polyline.</p>
 <p>
 Returns the list of triangles.</p>
 <p class="code">
-<code style="white-space: break-spaces">func getTriangles(using self)->[..] *Pixel.Poly2Tri.Triangle
+<code style="white-space: break-spaces">func getTriangles(using self)->[..] *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Poly2Tri.Triangle">Pixel.Poly2Tri.Triangle</a>
 </code>
 </p>
 <p>
@@ -13014,7 +13014,7 @@ Compute internal values, like convex/clockwise Call it once the polygon contains
 <p>
 Clean polygon by removing bad/unecessary points.</p>
 <p class="code">
-<code style="white-space: break-spaces">func getClean(using self)->Pixel.LinePathList
+<code style="white-space: break-spaces">func getClean(using self)-><a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.LinePathList">Pixel.LinePathList</a>
 </code>
 </p>
 <p>
@@ -13031,7 +13031,7 @@ Clean polygon by removing bad/unecessary points.</p>
 <p>
 Slow but quality offset with a joinStyle.</p>
 <p class="code">
-<code style="white-space: break-spaces">func getOffset(using self, value: f32, joinStyle: Pixel.JoinStyle, toler: f32 = 0.5)->Pixel.LinePathList
+<code style="white-space: break-spaces">func getOffset(using self, value: f32, joinStyle: <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.JoinStyle">Pixel.JoinStyle</a>, toler: f32 = 0.5)-><a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.LinePathList">Pixel.LinePathList</a>
 </code>
 </p>
 <p>
@@ -13094,7 +13094,7 @@ Fast expand polygon by a given amount.</p>
 <p>
 Slow but quality offset with a joinStyle.</p>
 <p class="code">
-<code style="white-space: break-spaces">func offset(using self, value: f32, joinStyle: Pixel.JoinStyle, toler: f32 = 0.5)
+<code style="white-space: break-spaces">func offset(using self, value: f32, joinStyle: <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.JoinStyle">Pixel.JoinStyle</a>, toler: f32 = 0.5)
 </code>
 </p>
 <p>
@@ -13491,7 +13491,7 @@ Update content of texture.</p>
 <p>
 Register an image for rendering.</p>
 <p class="code">
-<code style="white-space: break-spaces">func addImage(using self, image: Pixel.Image)->Pixel.Texture
+<code style="white-space: break-spaces">func addImage(using self, image: <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Image">Pixel.Image</a>)-><a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Texture">Pixel.Texture</a>
 </code>
 </p>
 <p>
@@ -13508,7 +13508,7 @@ Register an image for rendering.</p>
 <p>
 To be called before rendering.</p>
 <p class="code">
-<code style="white-space: break-spaces">func begin(using self, rc: Pixel.RenderingContext)
+<code style="white-space: break-spaces">func begin(using self, rc: <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.RenderingContext">Pixel.RenderingContext</a>)
 </code>
 </p>
 <p>
@@ -13525,7 +13525,7 @@ To be called before rendering.</p>
 <p>
 Set the current render target.</p>
 <p class="code">
-<code style="white-space: break-spaces">func bindRenderTarget(using self, rt: *Pixel.RenderTarget, vp: *Core.Math.Rectangle = null)
+<code style="white-space: break-spaces">func bindRenderTarget(using self, rt: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.RenderTarget">Pixel.RenderTarget</a>, vp: *Core.Math.Rectangle = null)
 </code>
 </p>
 <p>
@@ -13574,7 +13574,7 @@ Clear current render buffers.</p>
 <p>
 Create a render target.</p>
 <p class="code">
-<code style="white-space: break-spaces">func createRenderTarget(using self, w: s32, h: s32)->Pixel.RenderTarget
+<code style="white-space: break-spaces">func createRenderTarget(using self, w: s32, h: s32)-><a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.RenderTarget">Pixel.RenderTarget</a>
 </code>
 </p>
 <p>
@@ -13591,7 +13591,7 @@ Create a render target.</p>
 <p>
 Create the given shader.</p>
 <p class="code">
-<code style="white-space: break-spaces">func createShader(using self, base: *Pixel.ShaderBase, vertex: const [..] u8, pixel: const [..] u8) throw
+<code style="white-space: break-spaces">func createShader(using self, base: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.ShaderBase">Pixel.ShaderBase</a>, vertex: const [..] u8, pixel: const [..] u8) throw
 </code>
 </p>
 <p>
@@ -13608,7 +13608,7 @@ Create the given shader.</p>
 <p>
 Delete a render target.</p>
 <p class="code">
-<code style="white-space: break-spaces">func deleteRenderTarget(using self, rt: *Pixel.RenderTarget)
+<code style="white-space: break-spaces">func deleteRenderTarget(using self, rt: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.RenderTarget">Pixel.RenderTarget</a>)
 </code>
 </p>
 <p>
@@ -13625,7 +13625,7 @@ Delete a render target.</p>
 <p>
 Draw the given painter.</p>
 <p class="code">
-<code style="white-space: break-spaces">func draw(using self, dc: *Pixel.Painter)
+<code style="white-space: break-spaces">func draw(using self, dc: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Painter">Pixel.Painter</a>)
 </code>
 </p>
 <p>
@@ -13659,7 +13659,7 @@ To be called after rendering.</p>
 <p>
 Get a render target of the given size releaseRenderTarget must be called to release it.</p>
 <p class="code">
-<code style="white-space: break-spaces">func getRenderTarget(using self, w: s32, h: s32)->*Pixel.RenderTarget
+<code style="white-space: break-spaces">func getRenderTarget(using self, w: s32, h: s32)->*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.RenderTarget">Pixel.RenderTarget</a>
 </code>
 </p>
 <p>
@@ -13693,7 +13693,7 @@ Get the actual render target size.</p>
 <p>
 Returns the pixels associated to a texture.</p>
 <p class="code">
-<code style="white-space: break-spaces">func getTexturePixels(using self, texture: Pixel.Texture, pf: Pixel.PixelFormat)->Core.Array'(u8)
+<code style="white-space: break-spaces">func getTexturePixels(using self, texture: <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Texture">Pixel.Texture</a>, pf: <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.PixelFormat">Pixel.PixelFormat</a>)->Core.Array(u8)
 </code>
 </p>
 <p>
@@ -13725,7 +13725,7 @@ First init.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func pixelFormatToNative(pf: Pixel.PixelFormat)->Ogl.GLenum
+<code style="white-space: break-spaces">func pixelFormatToNative(pf: <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.PixelFormat">Pixel.PixelFormat</a>)->Ogl.GLenum
 </code>
 </p>
 <p>
@@ -13742,7 +13742,7 @@ First init.</p>
 <p>
 Release the given render target.</p>
 <p class="code">
-<code style="white-space: break-spaces">func releaseRenderTarget(using self, tgt: *Pixel.RenderTarget)
+<code style="white-space: break-spaces">func releaseRenderTarget(using self, tgt: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.RenderTarget">Pixel.RenderTarget</a>)
 </code>
 </p>
 <p>
@@ -13759,7 +13759,7 @@ Release the given render target.</p>
 <p>
 Unregister a texture created with <code class = "incode">addImage</code>.</p>
 <p class="code">
-<code style="white-space: break-spaces">func removeTexture(using self, texture: *Pixel.Texture)
+<code style="white-space: break-spaces">func removeTexture(using self, texture: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Texture">Pixel.Texture</a>)
 </code>
 </p>
 <p>
@@ -13850,7 +13850,7 @@ Scale the world transform.</p>
 <p>
 Set the current rendering context.</p>
 <p class="code">
-<code style="white-space: break-spaces">func setCurrentContext(using self, rc: Pixel.RenderingContext)
+<code style="white-space: break-spaces">func setCurrentContext(using self, rc: <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.RenderingContext">Pixel.RenderingContext</a>)
 </code>
 </p>
 <p>
@@ -13884,7 +13884,7 @@ Force the scissor.</p>
 <p>
 Set the current shader.</p>
 <p class="code">
-<code style="white-space: break-spaces">func setShader(using self, shader: *Pixel.ShaderBase = null)
+<code style="white-space: break-spaces">func setShader(using self, shader: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.ShaderBase">Pixel.ShaderBase</a> = null)
 </code>
 </p>
 <p>
@@ -13935,7 +13935,7 @@ Go back to the previous render target, or frame buffer.</p>
 <p>
 Get current render target pixels.</p>
 <p class="code">
-<code style="white-space: break-spaces">func unbindRenderTargetToImage(using self, x: s32, y: s32, w: s32, h: s32)->Pixel.Image
+<code style="white-space: break-spaces">func unbindRenderTargetToImage(using self, x: s32, y: s32, w: s32, h: s32)-><a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Image">Pixel.Image</a>
 </code>
 </p>
 <p>
@@ -13952,7 +13952,7 @@ Get current render target pixels.</p>
 <p>
 Update content of texture.</p>
 <p class="code">
-<code style="white-space: break-spaces">func updateTexture(using self, texture: Pixel.Texture, pixels: const *u8)
+<code style="white-space: break-spaces">func updateTexture(using self, texture: <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Texture">Pixel.Texture</a>, pixels: const *u8)
 </code>
 </p>
 <p>
@@ -14916,7 +14916,7 @@ Set vertical alignment.</p>
 <p>
 Set text color.</p>
 <p class="code">
-<code style="white-space: break-spaces">func color(using self, col: Pixel.Color)
+<code style="white-space: break-spaces">func color(using self, col: <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Color">Pixel.Color</a>)
 </code>
 </p>
 <p>
@@ -14933,7 +14933,7 @@ Set text color.</p>
 <p>
 Draw string.</p>
 <p class="code">
-<code style="white-space: break-spaces">func draw(using self, painter: *Pixel.Painter, rect: Core.Math.Rectangle, what: string)
+<code style="white-space: break-spaces">func draw(using self, painter: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Painter">Pixel.Painter</a>, rect: Core.Math.Rectangle, what: string)
 </code>
 </p>
 <p>
@@ -14950,7 +14950,7 @@ Draw string.</p>
 <p>
 Set drawing flags.</p>
 <p class="code">
-<code style="white-space: break-spaces">func flags(using self, f: Pixel.StringFormatFlags)
+<code style="white-space: break-spaces">func flags(using self, f: <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.StringFormatFlags">Pixel.StringFormatFlags</a>)
 </code>
 </p>
 <p>
@@ -14967,7 +14967,7 @@ Set drawing flags.</p>
 <p>
 Set font.</p>
 <p class="code">
-<code style="white-space: break-spaces">func font(using self, font: *Pixel.Font)
+<code style="white-space: break-spaces">func font(using self, font: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Font">Pixel.Font</a>)
 </code>
 </p>
 <p>
@@ -14984,7 +14984,7 @@ Set font.</p>
 <p>
 Set horizontal alignment.</p>
 <p class="code">
-<code style="white-space: break-spaces">func horzAlign(using self, align: Pixel.StringHorzAlignment)
+<code style="white-space: break-spaces">func horzAlign(using self, align: <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.StringHorzAlignment">Pixel.StringHorzAlignment</a>)
 </code>
 </p>
 <p>
@@ -15001,7 +15001,7 @@ Set horizontal alignment.</p>
 <p>
 Set vertical alignment.</p>
 <p class="code">
-<code style="white-space: break-spaces">func vertAlign(using self, align: Pixel.StringVertAlignment)
+<code style="white-space: break-spaces">func vertAlign(using self, align: <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.StringVertAlignment">Pixel.StringVertAlignment</a>)
 </code>
 </p>
 <p>
@@ -15201,7 +15201,7 @@ bool</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func decode(using self, buffer: const [..] u8, options: Pixel.DecodeOptions)->Pixel.Image throw
+<code style="white-space: break-spaces">func decode(using self, buffer: const [..] u8, options: <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.DecodeOptions">Pixel.DecodeOptions</a>)-><a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Image">Pixel.Image</a> throw
 </code>
 </p>
 <p>
@@ -15242,7 +15242,7 @@ bool</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func encode(using self, result: *Core.ConcatBuffer, image: Pixel.Image, options: any) throw
+<code style="white-space: break-spaces">func encode(using self, result: *Core.ConcatBuffer, image: <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Image">Pixel.Image</a>, options: any) throw
 </code>
 </p>
 <p>
@@ -15589,7 +15589,7 @@ Render one glyph.</p>
 <p>
 Get or create a new typeface from a memory buffer.</p>
 <p class="code">
-<code style="white-space: break-spaces">func create(fullname: string, bytes: const [..] u8)->*Pixel.TypeFace throw
+<code style="white-space: break-spaces">func create(fullname: string, bytes: const [..] u8)->*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.TypeFace">Pixel.TypeFace</a> throw
 </code>
 </p>
 <p>
@@ -15606,7 +15606,7 @@ Get or create a new typeface from a memory buffer.</p>
 <p>
 Create a new typeface from a HFONT.</p>
 <p class="code">
-<code style="white-space: break-spaces">func createFromHFONT(fullname: string, hf: Gdi32.HFONT)->*Pixel.TypeFace throw
+<code style="white-space: break-spaces">func createFromHFONT(fullname: string, hf: Gdi32.HFONT)->*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.TypeFace">Pixel.TypeFace</a> throw
 </code>
 </p>
 <p>
@@ -15640,7 +15640,7 @@ Returns the underlying font family name.</p>
 <p>
 Convert a rune to its outline, at a given size.</p>
 <p class="code">
-<code style="white-space: break-spaces">func getRuneOutline(using self, pathList: *Pixel.LinePathList, c: rune, size: u32, embolden: u32 = 0)->f32 throw
+<code style="white-space: break-spaces">func getRuneOutline(using self, pathList: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.LinePathList">Pixel.LinePathList</a>, c: rune, size: u32, embolden: u32 = 0)->f32 throw
 </code>
 </p>
 <p>
@@ -15657,7 +15657,7 @@ Convert a rune to its outline, at a given size.</p>
 <p>
 Convert a string to its outline, at a given size.</p>
 <p class="code">
-<code style="white-space: break-spaces">func getStringOutline(using self, pathList: *Pixel.LinePathList, text: string, size: u32, embolden: u32 = 0) throw
+<code style="white-space: break-spaces">func getStringOutline(using self, pathList: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.LinePathList">Pixel.LinePathList</a>, text: string, size: u32, embolden: u32 = 0) throw
 </code>
 </p>
 <p>
@@ -15708,7 +15708,7 @@ Returns true if the typeface is italic.</p>
 <p>
 Get or load a new typeface.</p>
 <p class="code">
-<code style="white-space: break-spaces">func load(fullname: string)->*Pixel.TypeFace throw
+<code style="white-space: break-spaces">func load(fullname: string)->*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.TypeFace">Pixel.TypeFace</a> throw
 </code>
 </p>
 <p>
@@ -15725,7 +15725,7 @@ Get or load a new typeface.</p>
 <p>
 Release the given typeface.</p>
 <p class="code">
-<code style="white-space: break-spaces">func release(typeface: *Pixel.TypeFace)
+<code style="white-space: break-spaces">func release(typeface: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.TypeFace">Pixel.TypeFace</a>)
 </code>
 </p>
 <p>

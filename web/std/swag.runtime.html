@@ -814,7 +814,7 @@ func @ceil(value: f64)->f64
 <p>
 Returns an <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\swag.runtime.html#Swag.ICompiler">ICompiler</a> interface to communicate with the compiler.</p>
 <p class="code">
-<code style="white-space: break-spaces">func @compiler()->Swag.ICompiler
+<code style="white-space: break-spaces">func @compiler()-><a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\swag.runtime.html#Swag.ICompiler">Swag.ICompiler</a>
 </code>
 </p>
 <p>
@@ -831,7 +831,7 @@ Returns an <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64
 <p>
 Raise a compiler error at the given source location.</p>
 <p class="code">
-<code style="white-space: break-spaces">func @compilererror(message: string, loc: Swag.SourceCodeLocation)
+<code style="white-space: break-spaces">func @compilererror(message: string, loc: <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\swag.runtime.html#Swag.SourceCodeLocation">Swag.SourceCodeLocation</a>)
 </code>
 </p>
 <p>
@@ -848,7 +848,7 @@ Raise a compiler error at the given source location.</p>
 <p>
 Raise a compiler warning at the given source location.</p>
 <p class="code">
-<code style="white-space: break-spaces">func @compilerwarning(message: string, loc: Swag.SourceCodeLocation)
+<code style="white-space: break-spaces">func @compilerwarning(message: string, loc: <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\swag.runtime.html#Swag.SourceCodeLocation">Swag.SourceCodeLocation</a>)
 </code>
 </p>
 <p>
@@ -977,7 +977,7 @@ Free a system memory block allocated with <a href="f:\swag-lang\swag\bin\std\out
 <p>
 Get the current thread context.</p>
 <p class="code">
-<code style="white-space: break-spaces">func @getcontext()->*Swag.Context
+<code style="white-space: break-spaces">func @getcontext()->*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\swag.runtime.html#Swag.Context">Swag.Context</a>
 </code>
 </p>
 <p>
@@ -994,7 +994,7 @@ Get the current thread context.</p>
 <p>
 Get informations about the current process.</p>
 <p class="code">
-<code style="white-space: break-spaces">func @getpinfos()->*Swag.ProcessInfos
+<code style="white-space: break-spaces">func @getpinfos()->*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\swag.runtime.html#Swag.ProcessInfos">Swag.ProcessInfos</a>
 </code>
 </p>
 <p>
@@ -1011,7 +1011,7 @@ Get informations about the current process.</p>
 <p>
 Returns the list of all global variables.</p>
 <p class="code">
-<code style="white-space: break-spaces">func @gvtd()->const [..] Swag.Gvtd
+<code style="white-space: break-spaces">func @gvtd()->const [..] <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\swag.runtime.html#Swag.Gvtd">Swag.Gvtd</a>
 </code>
 </p>
 <p>
@@ -1043,7 +1043,7 @@ Returns <code class = "incode">true</code> is the current execution is bytecode.
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func @itftableof(structType: const *Swag.TypeInfoStruct, itfType: const *Swag.TypeInfoStruct)->const *void
+<code style="white-space: break-spaces">func @itftableof(structType: const *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\swag.runtime.html#Swag.TypeInfoStruct">Swag.TypeInfoStruct</a>, itfType: const *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\swag.runtime.html#Swag.TypeInfoStruct">Swag.TypeInfoStruct</a>)->const *void
 </code>
 </p>
 <p>
@@ -1224,7 +1224,7 @@ func @min(value1: u8, value2: u8)->u8
 <p>
 Returns the list of all loaded modules.</p>
 <p class="code">
-<code style="white-space: break-spaces">func @modules()->const [..] Swag.Module
+<code style="white-space: break-spaces">func @modules()->const [..] <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\swag.runtime.html#Swag.Module">Swag.Module</a>
 </code>
 </p>
 <p>
@@ -1262,7 +1262,7 @@ Returns (val1 * val2) + val3.</p>
 <p>
 Stop the execution and panic.</p>
 <p class="code">
-<code style="white-space: break-spaces">func @panic(message: string, loc: Swag.SourceCodeLocation)
+<code style="white-space: break-spaces">func @panic(message: string, loc: <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\swag.runtime.html#Swag.SourceCodeLocation">Swag.SourceCodeLocation</a>)
 </code>
 </p>
 <p>
@@ -1360,7 +1360,7 @@ func @round(value: f64)->f64
 <p>
 Replace the current thread context.</p>
 <p class="code">
-<code style="white-space: break-spaces">func @setcontext(context: const *Swag.Context)
+<code style="white-space: break-spaces">func @setcontext(context: const *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\swag.runtime.html#Swag.Context">Swag.Context</a>)
 </code>
 </p>
 <p>
@@ -1537,7 +1537,7 @@ func @trunc(value: f64)->f64
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func @typecmp(typeA: const *Swag.TypeInfo, typeB: const *Swag.TypeInfo, cmpFlags: Swag.TypeCmpFlags)->bool
+<code style="white-space: break-spaces">func @typecmp(typeA: const *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\swag.runtime.html#Swag.TypeInfo">Swag.TypeInfo</a>, typeB: const *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\swag.runtime.html#Swag.TypeInfo">Swag.TypeInfo</a>, cmpFlags: <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\swag.runtime.html#Swag.TypeCmpFlags">Swag.TypeCmpFlags</a>)->bool
 </code>
 </p>
 <p>
@@ -2368,7 +2368,7 @@ Alignement constraint.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">attr AttrUsage(usage: Swag.AttributeUsage)
+<code style="white-space: break-spaces">attr AttrUsage(usage: <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\swag.runtime.html#Swag.AttributeUsage">Swag.AttributeUsage</a>)
 </code>
 </p>
 <p>
@@ -3786,7 +3786,7 @@ Setup the allocator.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func alloc(using self, request: *Swag.AllocatorRequest)
+<code style="white-space: break-spaces">func alloc(using self, request: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\swag.runtime.html#Swag.AllocatorRequest">Swag.AllocatorRequest</a>)
 </code>
 </p>
 <p>
@@ -3801,7 +3801,7 @@ Setup the allocator.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func free(using self, request: *Swag.AllocatorRequest)
+<code style="white-space: break-spaces">func free(using self, request: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\swag.runtime.html#Swag.AllocatorRequest">Swag.AllocatorRequest</a>)
 </code>
 </p>
 <p>
@@ -3831,7 +3831,7 @@ Setup the allocator.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func req(using self, request: *Swag.AllocatorRequest)
+<code style="white-space: break-spaces">func req(using self, request: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\swag.runtime.html#Swag.AllocatorRequest">Swag.AllocatorRequest</a>)
 </code>
 </p>
 <p>
@@ -3880,7 +3880,7 @@ Check all allocated blocks.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func checkIsAllocated(using self, ptrHeader: ^Swag.DebugAllocatorHeader, callerLoc = #callerlocation)
+<code style="white-space: break-spaces">func checkIsAllocated(using self, ptrHeader: ^<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\swag.runtime.html#Swag.DebugAllocatorHeader">Swag.DebugAllocatorHeader</a>, callerLoc = #callerlocation)
 </code>
 </p>
 <p>
@@ -3895,7 +3895,7 @@ Check all allocated blocks.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func checkIsFreed(using self, ptrHeader: ^Swag.DebugAllocatorHeader)
+<code style="white-space: break-spaces">func checkIsFreed(using self, ptrHeader: ^<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\swag.runtime.html#Swag.DebugAllocatorHeader">Swag.DebugAllocatorHeader</a>)
 </code>
 </p>
 <p>
@@ -3974,7 +3974,7 @@ Output to the console the list of all allocated blocks (leaks).</p>
 <p>
 Setup the allocator.</p>
 <p class="code">
-<code style="white-space: break-spaces">func setup(using self, allocator: Swag.IAllocator)
+<code style="white-space: break-spaces">func setup(using self, allocator: <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\swag.runtime.html#Swag.IAllocator">Swag.IAllocator</a>)
 </code>
 </p>
 <p>
@@ -5341,7 +5341,7 @@ This will call <code class = "incode">release</code> prior to changing the capac
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func alloc(using self, request: *Swag.AllocatorRequest)
+<code style="white-space: break-spaces">func alloc(using self, request: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\swag.runtime.html#Swag.AllocatorRequest">Swag.AllocatorRequest</a>)
 </code>
 </p>
 <p>
@@ -5356,7 +5356,7 @@ This will call <code class = "incode">release</code> prior to changing the capac
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func free(using self, request: *Swag.AllocatorRequest)
+<code style="white-space: break-spaces">func free(using self, request: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\swag.runtime.html#Swag.AllocatorRequest">Swag.AllocatorRequest</a>)
 </code>
 </p>
 <p>
@@ -5371,7 +5371,7 @@ This will call <code class = "incode">release</code> prior to changing the capac
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func req(using self, request: *Swag.AllocatorRequest)
+<code style="white-space: break-spaces">func req(using self, request: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\swag.runtime.html#Swag.AllocatorRequest">Swag.AllocatorRequest</a>)
 </code>
 </p>
 <p>
@@ -5504,7 +5504,7 @@ Release the allocated block.</p>
 <p>
 This will call <code class = "incode">release</code> prior to changing the capacity, so this must be called at an early stage.</p>
 <p class="code">
-<code style="white-space: break-spaces">func setCapacity(using self, newCapacity: u64, allocator: Swag.IAllocator)
+<code style="white-space: break-spaces">func setCapacity(using self, newCapacity: u64, allocator: <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\swag.runtime.html#Swag.IAllocator">Swag.IAllocator</a>)
 </code>
 </p>
 <p>
@@ -5612,7 +5612,7 @@ End column.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func free(request: *Swag.AllocatorRequest)
+<code style="white-space: break-spaces">func free(request: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\swag.runtime.html#Swag.AllocatorRequest">Swag.AllocatorRequest</a>)
 </code>
 </p>
 <p>
@@ -5627,7 +5627,7 @@ End column.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func req(using self, request: *Swag.AllocatorRequest)
+<code style="white-space: break-spaces">func req(using self, request: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\swag.runtime.html#Swag.AllocatorRequest">Swag.AllocatorRequest</a>)
 </code>
 </p>
 <p>
@@ -6981,7 +6981,7 @@ Min <code class = "incode">u8</code> value.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">attr Warn(what: string, level: Swag.WarnLevel)
+<code style="white-space: break-spaces">attr Warn(what: string, level: <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\swag.runtime.html#Swag.WarnLevel">Swag.WarnLevel</a>)
 </code>
 </p>
 <p>
