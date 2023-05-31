@@ -1140,16 +1140,24 @@ void ModuleGenDocJob::generateContent()
                     code += " throw";
                 code += "\n";
 
-                if (!subUserComment.shortDesc.lines.empty() || !subUserComment.blocks.empty())
+                if (!subUserComment.shortDesc.lines.empty())
                 {
                     outputUserBlock(subUserComment.shortDesc);
                     outputCode(code);
                     code.clear();
-                    outputUserComment(subUserComment);
                 }
             }
 
             outputCode(code);
+
+            for (auto n : c.nodes)
+            {
+                UserComment subUserComment;
+                auto        subDocComment = getDocComment(n);
+                computeUserComments(subUserComment, subDocComment);
+                outputUserComment(subUserComment);
+            }
+
             break;
         }
 
@@ -1164,24 +1172,32 @@ void ModuleGenDocJob::generateContent()
                 auto        subDocComment = getDocComment(n);
                 computeUserComments(subUserComment, subDocComment);
 
-                auto funcNode = CastAst<AstAttrDecl>(n, AstNodeKind::AttrDecl);
+                auto attrNode = CastAst<AstAttrDecl>(n, AstNodeKind::AttrDecl);
 
                 code += "attr ";
-                code += funcNode->token.text;
-                if (funcNode->parameters)
-                    code += outputNode(funcNode->parameters);
+                code += attrNode->token.text;
+                if (attrNode->parameters)
+                    code += outputNode(attrNode->parameters);
                 code += "\n";
 
-                if (!subUserComment.shortDesc.lines.empty() || !subUserComment.blocks.empty())
+                if (!subUserComment.shortDesc.lines.empty())
                 {
                     outputUserBlock(subUserComment.shortDesc);
                     outputCode(code);
                     code.clear();
-                    outputUserComment(subUserComment);
                 }
             }
 
             outputCode(code);
+
+            for (auto n : c.nodes)
+            {
+                UserComment subUserComment;
+                auto        subDocComment = getDocComment(n);
+                computeUserComments(subUserComment, subDocComment);
+                outputUserComment(subUserComment);
+            }
+
             break;
         }
         }

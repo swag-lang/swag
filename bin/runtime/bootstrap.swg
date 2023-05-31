@@ -155,6 +155,7 @@ namespace Swag
     // #[Swag.Warn("wrn0003|wrn0004", Swag.WarnLevel.Disable)
     // #global #[Swag.Warn("wrn0001", Swag.WarnLevel.Enable)]
     // ```
+    // You can also change the warning behaviors for the whole module in your [BuildCfg]
     #[AttrUsage(AttributeUsage.All|AttributeUsage.File)]
     #[AttrMulti]
     attr Warn(what: string, level: WarnLevel)
@@ -682,8 +683,8 @@ namespace Swag
         warnAsErrors:           string  // Force some warnings to be treated as errors. Format is "wrnXXXX|wrnXXXX..."
         warnAsWarning:          string  // Override 'warnAsErrors', restoring warnings as warnings
         warnAsDisabled:         string  // Disable some specific warnings
-        warnDefaultDisabled:    bool    // All warning are disabled, except those specified above
-        warnDefaultErrors:      bool    // All warning are treated as errors, except those specified above
+        warnDefaultDisabled:    bool    // All warnings are disabled, except those specified above
+        warnDefaultErrors:      bool    // All warnings are treated as errors, except those specified above
 
         byteCodeOptimizeLevel   = 1     // Optimization level of bytecode [0, 1 or 2]
         byteCodeDebugInline     = true  // Trace into inlined code when generating debug infos

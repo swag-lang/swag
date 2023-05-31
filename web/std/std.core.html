@@ -37661,13 +37661,13 @@ Convert a rune array to an utf8 buffer.</p>
 </code>
 </p>
 <p>
- Returns the number of bytes written in the destination buffer <code class = "incode">dest</code> must be at least 4 bytes long</p>
-<p>
 Convert an unicode buffer to a String.</p>
 <p class="code">
 <code style="white-space: break-spaces">func fromUnicode(src: const [..] rune)-><a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.String">Core.String</a>
 </code>
 </p>
+<p>
+ Returns the number of bytes written in the destination buffer <code class = "incode">dest</code> must be at least 4 bytes long</p>
 <p>
 <table class="h3">
 <tr>
@@ -37686,13 +37686,13 @@ Convert an utf16 array to an utf8 buffer.</p>
 </code>
 </p>
 <p>
- Returns the number of bytes written in the destination buffer. <code class = "incode">dest</code> must be at least 4 bytes long</p>
-<p>
 Convert an utf16 buffer to a String.</p>
 <p class="code">
 <code style="white-space: break-spaces">func fromUtf16(src: const [..] u16)-><a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.String">Core.String</a>
 </code>
 </p>
+<p>
+ Returns the number of bytes written in the destination buffer. <code class = "incode">dest</code> must be at least 4 bytes long</p>
 <p>
 <table class="h3">
 <tr>
@@ -37711,21 +37711,21 @@ Find one of the runes in <code class = "incode">what</code>, and returns the byt
 </code>
 </p>
 <p>
- Returns <code class = "incode">Swag.U64.Max</code> if not found</p>
-<p>
 Find the first occurence of rune <code class = "incode">what</code>, and returns the byte index of it.</p>
 <p class="code">
 <code style="white-space: break-spaces">func indexOf(src: const [..] u8, what: rune, startByteIndex = 0'u64)->u64
 </code>
 </p>
 <p>
- Returns <code class = "incode">Swag.U64.Max</code> if not found</p>
-<p>
 Find the given string, and returns the byte index of it.</p>
 <p class="code">
 <code style="white-space: break-spaces">func indexOf(src: const [..] u8, what: string, startByteIndex = 0'u64, comparisonType = ComparisonType.Latin1)->u64
 </code>
 </p>
+<p>
+ Returns <code class = "incode">Swag.U64.Max</code> if not found</p>
+<p>
+ Returns <code class = "incode">Swag.U64.Max</code> if not found</p>
 <p>
  Returns <code class = "incode">Swag.U64.Max</code> if not found</p>
 <p>
@@ -37780,21 +37780,21 @@ Returns the last index (in bytes) of a rune.</p>
 </code>
 </p>
 <p>
- Returns <code class = "incode">Swag.U64.Max</code> if not found</p>
-<p>
 Find the last rune occurence of <code class = "incode">what</code>, and returns the byte index of it.</p>
 <p class="code">
 <code style="white-space: break-spaces">func lastIndexOf(src: const [..] u8, what: rune)->u64
 </code>
 </p>
 <p>
- Returns <code class = "incode">Swag.U64.Max</code> if not found</p>
-<p>
 Returns the last index (in bytes) of a string.</p>
 <p class="code">
 <code style="white-space: break-spaces">func lastIndexOf(src: const [..] u8, what: string, comparisonType = ComparisonType.Latin1)->u64
 </code>
 </p>
+<p>
+ Returns <code class = "incode">Swag.U64.Max</code> if not found</p>
+<p>
+ Returns <code class = "incode">Swag.U64.Max</code> if not found</p>
 <p>
  Returns <code class = "incode">Swag.U64.Max</code> if not found</p>
 <p>
