@@ -186,8 +186,16 @@ Utf8 ModuleGenDocJob::getDocComment(AstNode* node)
 
 void ModuleGenDocJob::outputType(AstNode* node)
 {
-    node->typeInfo->computeScopedNameExport();
-    helpContent += getFormattedText(node->typeInfo->scopedNameExport, true);
+    if (node->typeInfo)
+    {
+        node->typeInfo->computeScopedNameExport();
+        helpContent += getFormattedText(node->typeInfo->scopedNameExport, true);
+    }
+    else if (node->kind == AstNodeKind::VarDecl || node->kind == AstNodeKind::ConstDecl)
+    {
+        auto varDecl = CastAst<AstVarDecl>(node, AstNodeKind::VarDecl, AstNodeKind::ConstDecl);
+        outputNode(varDecl->type);
+    }
 }
 
 void ModuleGenDocJob::outputTable(Scope* scope, AstNodeKind kind, const char* title, uint32_t collectFlags)
