@@ -123,7 +123,7 @@ namespace Swag
     #[AttrUsage(AttributeUsage.Struct)]
     attr ExportType(what: string)
 
-    // Do not generate documentation
+    // Do not generate documentation.
     #[AttrUsage(AttributeUsage.All|AttributeUsage.File)]
     attr NoDoc()
 

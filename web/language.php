@@ -6624,6 +6624,24 @@ are respected.</br>
 </span><span style="color:#3186CD">func</span><span style="color:#0"> </span><span style="color:#FF6A00">test</span><span style="color:#0">()
 {
 
+}</span></code></pre><p>You can create a list of bullet points with '*'.</br>
+</p>
+<pre><code><span style="color:#0"> </span><span style="color:#FF6A00">#test</span><span style="color:#0">
+ {
+    </span><span style="color:#6A9955">// * This is a bullet point</span><span style="color:#0">
+    </span><span style="color:#6A9955">// * This is a bullet point</span><span style="color:#0">
+    </span><span style="color:#6A9955">// * This is a bullet point</span><span style="color:#0">
+    </span><span style="color:#3186CD">struct</span><span style="color:#0"> </span><span style="color:#3BC3A7">RGB</span><span style="color:#0">
+    {
+        r, g, b: </span><span style="color:#ED9A11">s32</span><span style="color:#0">
+   }
+}</span></code></pre><p>You can create a quote with '>'</br>
+</p>
+<pre><code><span style="color:#6A9955">// > This is a block quote on multiple</span><span style="color:#0">
+</span><span style="color:#6A9955">// > lines.</span><span style="color:#0">
+</span><span style="color:#3186CD">struct</span><span style="color:#0"> </span><span style="color:#3BC3A7">RGB</span><span style="color:#0">
+{
+    r, g, b: </span><span style="color:#ED9A11">s32</span><span style="color:#0">
 }</span></code></pre><p>A paragraph that starts with '<code></code><code>' is a code paragraph.</br>
 </p>
 <pre><code><span style="color:#6A9955">// For example:</span><span style="color:#0">
@@ -6642,15 +6660,12 @@ are respected.</br>
     </span><span style="color:#3BC3A7">Red</span><span style="color:#0">         </span><span style="color:#6A9955">// This is a documentation comment</span><span style="color:#0">
 }</span></code></pre><p>Some other markdown markers are also supported inside paragraphs.</br>
 </p>
-<pre><code><span style="color:#0"> </span><span style="color:#FF6A00">#test</span><span style="color:#0">
- {
-    </span><span style="color:#6A9955">// `this is code` (backtick) for 'inline' code.</span><span style="color:#0">
-    </span><span style="color:#6A9955">// 'single_word'  (tick) for 'inline' code.</span><span style="color:#0">
-    </span><span style="color:#6A9955">// **bold**</span><span style="color:#0">
-    </span><span style="color:#3186CD">struct</span><span style="color:#0"> </span><span style="color:#3BC3A7">RGB</span><span style="color:#0">
-    {
-        r, g, b: </span><span style="color:#ED9A11">s32</span><span style="color:#0">
-    }
+<pre><code><span style="color:#6A9955">// `this is code` (backtick) for 'inline' code.</span><span style="color:#0">
+</span><span style="color:#6A9955">// 'single_word'  (tick) for 'inline' code.</span><span style="color:#0">
+</span><span style="color:#6A9955">// **bold**</span><span style="color:#0">
+</span><span style="color:#3186CD">struct</span><span style="color:#0"> </span><span style="color:#3BC3A7">RGB</span><span style="color:#0">
+{
+    r, g, b: </span><span style="color:#ED9A11">s32</span><span style="color:#0">
 }</span></code></pre><p>You can create a reference to something of the current package with [name] or [name1.name2 etc.]</br>
 </p>
 <pre><code><span style="color:#6A9955">// This is a function with a 'value' parameter.</span><span style="color:#0">

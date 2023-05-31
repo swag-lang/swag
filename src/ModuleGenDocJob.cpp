@@ -86,6 +86,10 @@ void ModuleGenDocJob::computeUserComments(UserComment& result, const Utf8& txt)
                     blk.kind = UserBlockKind::Code;
                     start++;
                 }
+                else if (line[0] == '>')
+                {
+                    blk.kind = UserBlockKind::Blockquote;
+                }
                 else
                 {
                     blk.lines.push_back(lines[start++]);
@@ -107,10 +111,21 @@ void ModuleGenDocJob::computeUserComments(UserComment& result, const Utf8& txt)
             auto line = lines[start];
             line.trim();
 
-            // End of the paragraph :
-            // Empty line
+            // End of the paragraph if empty line
             if (line.empty() && blk.kind != UserBlockKind::RawParagraph && blk.kind != UserBlockKind::Code)
                 break;
+
+            if (blk.kind == UserBlockKind::Blockquote && line[0] != '>')
+                break;
+
+            if (line[0] == '>')
+            {
+                line.remove(0, 1);
+                line.trim();
+                line += "\n";
+                blk.lines.push_back(line);
+                continue;
+            }
 
             if (line == "---")
             {
@@ -491,6 +506,9 @@ void ModuleGenDocJob::outputUserBlock(const UserBlock& user)
     case UserBlockKind::RawParagraph:
         helpContent += "<p style=\"white-space: break-spaces\">";
         break;
+    case UserBlockKind::Blockquote:
+        helpContent += "<blockquote><p>";
+        break;
     }
 
     bool startList = false;
@@ -544,6 +562,9 @@ void ModuleGenDocJob::outputUserBlock(const UserBlock& user)
         break;
     case UserBlockKind::RawParagraph:
         helpContent += "</p>\n";
+        break;
+    case UserBlockKind::Blockquote:
+        helpContent += "</p></blockquote>\n";
         break;
     }
 }

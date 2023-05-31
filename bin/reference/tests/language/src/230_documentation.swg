@@ -55,6 +55,33 @@ are respected.
 }
 
 /**
+ You can create a list of bullet points with '*'.
+ */
+ #test
+ {
+    // * This is a bullet point
+    // * This is a bullet point
+    // * This is a bullet point
+    struct RGB
+    {
+        r, g, b: s32
+   }
+}
+
+/**
+You can create a quote with '>'
+*/
+#test
+{
+    // > This is a block quote on multiple
+    // > lines.
+    struct RGB
+    {
+        r, g, b: s32
+    }
+}
+
+/**
 A paragraph that starts with '```' is a code paragraph.
 */
 #test
@@ -82,11 +109,11 @@ For constants or enum values, the document comment is the one declared at the en
     }
 }
 
- /**
- Some other markdown markers are also supported inside paragraphs.
- */
- #test
- {
+/**
+Some other markdown markers are also supported inside paragraphs.
+*/
+#test
+{
     // `this is code` (backtick) for 'inline' code.
     // 'single_word'  (tick) for 'inline' code.
     // **bold**
@@ -95,20 +122,6 @@ For constants or enum values, the document comment is the one declared at the en
         r, g, b: s32
     }
 }
-
-/**
- You can create bullet point lists like in markdown
- */
- #test
- {
-    // * This is a bullet point
-    // * This is a bullet point
-    // * This is a bullet point
-    struct RGB
-    {
-        r, g, b: s32
-    }
- }
 
 /**
 You can create a reference to something of the current package with [name] or [name1.name2 etc.]
