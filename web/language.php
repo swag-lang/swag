@@ -6642,6 +6642,15 @@ are respected.</br>
 </span><span style="color:#3186CD">struct</span><span style="color:#0"> </span><span style="color:#3BC3A7">RGB</span><span style="color:#0">
 {
     r, g, b: </span><span style="color:#ED9A11">s32</span><span style="color:#0">
+}</span></code></pre><p>You can create a table with '|'.</br>
+</p>
+<pre><code><span style="color:#6A9955">// A table with 4 lines of 2 columns:</span><span style="color:#0">
+</span><span style="color:#6A9955">// | 'boundcheck'   | Check out of bound access</span><span style="color:#0">
+</span><span style="color:#6A9955">// | 'overflow'     | Check type conversion lost of bits or precision</span><span style="color:#0">
+</span><span style="color:#6A9955">// | 'math'         | Various math checks (like a negative '@sqrt')</span><span style="color:#0">
+</span><span style="color:#6A9955">// | 'switch'       | Check an invalid case in a '#[Swag.Complete]' switch</span><span style="color:#0">
+</span><span style="color:#3186CD">func</span><span style="color:#0"> </span><span style="color:#FF6A00">myFunc</span><span style="color:#0">()
+{
 }</span></code></pre><p>A paragraph that starts with '<code></code><code>' is a code paragraph.</br>
 </p>
 <pre><code><span style="color:#6A9955">// For example:</span><span style="color:#0">
