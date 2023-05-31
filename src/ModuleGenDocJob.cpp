@@ -1369,11 +1369,11 @@ JobResult ModuleGenDocJob::execute()
             if (c.second[0]->kind != AstNodeKind::Namespace)
             {
                 oneRef.category = c.second[0]->sourceFile->path.parent_path().string();
-                oneRef.category.remove(0, (uint32_t) c.second[0]->sourceFile->module->path.string().size());
-                if (oneRef.category.length() <= 5)
+                auto len        = (uint32_t) c.second[0]->sourceFile->module->path.string().size();
+                if (oneRef.category.length() <= len + 5) // +5 because of /src/
                     oneRef.category.clear();
                 else
-                    oneRef.category.remove(0, 5); // remove /src/
+                    oneRef.category.remove(0, len + 5);
                 oneRef.category.replace("\\", "/");
             }
         }
