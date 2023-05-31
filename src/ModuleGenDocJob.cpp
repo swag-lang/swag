@@ -859,6 +859,11 @@ void ModuleGenDocJob::outputStyles()
             padding:            2px;\n\
             border: 1px dotted  #cccccc;\n\
         }\n\
+        .addinfos {\n\
+            font-size:          90%;\n\
+            white-space:        break-spaces;\n\
+            overflow-wrap:      break-word;\n\
+        }\n\
         .code {\n\
             background-color:   #eeeeee;\n\
             border:             1px solid LightGrey;\n\
@@ -1165,30 +1170,51 @@ void ModuleGenDocJob::generateContent()
         {
             outputTitle(c);
 
-            Utf8 code;
             for (auto n : c.nodes)
             {
                 UserComment subUserComment;
                 auto        subDocComment = getDocComment(n);
                 computeUserComments(subUserComment, subDocComment);
+                outputUserBlock(subUserComment.shortDesc);
 
                 auto attrNode = CastAst<AstAttrDecl>(n, AstNodeKind::AttrDecl);
+                auto typeInfo = CastTypeInfo<TypeInfoFuncAttr>(attrNode->typeInfo, TypeInfoKind::FuncAttr);
 
+                helpContent += "<div class=\"addinfos\">";
+                helpContent += "<b>Usage</b>: ";
+                if (typeInfo->attributeUsage & AttributeUsage::All)
+                    helpContent += "all ";
+                if (typeInfo->attributeUsage & AttributeUsage::Function)
+                    helpContent += "function ";
+                if (typeInfo->attributeUsage & AttributeUsage::FunctionParameter)
+                    helpContent += "func-param ";
+                if (typeInfo->attributeUsage & AttributeUsage::Enum)
+                    helpContent += "enum ";
+                if (typeInfo->attributeUsage & AttributeUsage::EnumValue)
+                    helpContent += "enum-value ";
+                if (typeInfo->attributeUsage & AttributeUsage::Struct)
+                    helpContent += "struct ";
+                if (typeInfo->attributeUsage & AttributeUsage::StructVariable)
+                    helpContent += "struct-var ";
+                if (typeInfo->attributeUsage & AttributeUsage::Variable)
+                    helpContent += "var ";
+                if (typeInfo->attributeUsage & AttributeUsage::GlobalVariable)
+                    helpContent += "global-var ";
+                if (typeInfo->attributeUsage & AttributeUsage::Constant)
+                    helpContent += "const ";
+                if (typeInfo->attributeUsage & AttributeUsage::Multi)
+                    helpContent += "multi ";
+                helpContent += "\n";
+                helpContent += "</div>\n";
+
+                Utf8 code;
                 code += "attr ";
                 code += attrNode->token.text;
                 if (attrNode->parameters)
                     code += outputNode(attrNode->parameters);
                 code += "\n";
-
-                if (!subUserComment.shortDesc.lines.empty())
-                {
-                    outputUserBlock(subUserComment.shortDesc);
-                    outputCode(code);
-                    code.clear();
-                }
+                outputCode(code);
             }
-
-            outputCode(code);
 
             for (auto n : c.nodes)
             {

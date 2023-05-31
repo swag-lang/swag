@@ -113,6 +113,11 @@
             padding:            2px;
             border: 1px dotted  #cccccc;
         }
+        .addinfos {
+            font-size:          90%;
+            white-space:        break-spaces;
+            overflow-wrap:      break-word;
+        }
         .code {
             background-color:   #eeeeee;
             border:             1px solid LightGrey;
@@ -4526,6 +4531,8 @@ Clean and split a list of arguments -option:value or -option=value =&gt; -option
 </tr>
 </table>
 </p>
+<div class="addinfos"><b>Usage</b>: all 
+</div>
 <p class="code">
 <code style="white-space: break-spaces">attr ArgParams(nameAlias: string = null)
 </code>
@@ -24875,6 +24882,8 @@ Set the struct version number.</p>
 </p>
 <p>
 Accept this other name for the field.</p>
+<div class="addinfos"><b>Usage</b>: struct-var multi 
+</div>
 <p class="code">
 <code style="white-space: break-spaces">attr Alias(name: string)
 </code>
@@ -25812,6 +25821,8 @@ Write a full struct.</p>
 </p>
 <p>
 The struct does not need versionning.</p>
+<div class="addinfos"><b>Usage</b>: struct 
+</div>
 <p class="code">
 <code style="white-space: break-spaces">attr Final
 </code>
@@ -26220,6 +26231,8 @@ func(*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.
 </p>
 <p>
 Do not serialize a struct or a field.</p>
+<div class="addinfos"><b>Usage</b>: struct struct-var 
+</div>
 <p class="code">
 <code style="white-space: break-spaces">attr NoSerialize
 </code>
@@ -26237,6 +26250,8 @@ Do not serialize a struct or a field.</p>
 </p>
 <p>
 The struct does not need versionning an can be serialized in place.</p>
+<div class="addinfos"><b>Usage</b>: struct 
+</div>
 <p class="code">
 <code style="white-space: break-spaces">attr PodFinal
 </code>
@@ -27457,6 +27472,8 @@ Start encoding.</p>
 </p>
 <p>
 Set the struct version number.</p>
+<div class="addinfos"><b>Usage</b>: struct 
+</div>
 <p class="code">
 <code style="white-space: break-spaces">attr Version(v: u32)
 </code>

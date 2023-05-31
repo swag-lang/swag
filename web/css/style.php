@@ -16,7 +16,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 p code {
-    background-color: #eeeeee;
+    background-color:   #eeeeee;
     border:             1px dotted #cccccc;
     padding:            2px;
     margin:             0px;
@@ -24,7 +24,7 @@ p code {
 }
 
 pre {
-    background-color: #eeeeee;
+    background-color:   #eeeeee;
     border:             1px solid LightGrey;
     margin:             20px;
     padding:            20px;

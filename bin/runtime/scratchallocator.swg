@@ -48,7 +48,7 @@ impl ScratchAllocator
         }
     }
 
-    // Restore all memory
+    // Release all memory
     mtd freeAll()
     {
         used = 0

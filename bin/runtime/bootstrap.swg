@@ -127,7 +127,17 @@ namespace Swag
     #[AttrUsage(AttributeUsage.All|AttributeUsage.File)]
     attr NoDoc()
 
-    // Enable/Disable a given safety check
+    // Enable/Disable a given safety check.
+    // Safety checks are:
+    // * boundcheck
+    // * overflow
+    // * math
+    // * switch
+    // * unreachable
+    // * any
+    // * bool
+    // * nan
+    // * sanity
     #[AttrUsage(AttributeUsage.All|AttributeUsage.File)]
     #[AttrMulti]
     attr Safety(what: string, value: bool)
