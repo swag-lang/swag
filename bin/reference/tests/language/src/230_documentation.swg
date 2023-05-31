@@ -97,6 +97,20 @@ For constants or enum values, the document comment is the one declared at the en
 }
 
 /**
+ You can create bullet point lists like in markdown
+ */
+ #test
+ {
+    // * This is a bullet point
+    // * This is a bullet point
+    // * This is a bullet point
+    struct RGB
+    {
+        r, g, b: s32
+    }
+ }
+
+/**
 You can create a reference to something of the current package with [name] or [name1.name2 etc.]
 */
 #test

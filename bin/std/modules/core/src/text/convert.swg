@@ -19,9 +19,7 @@ struct ConvertFormatFloat
 impl ConvertFormatFloat
 {
     // Set some format options with a given user string.
-    //
-    // Format is :
-    //
+    // Format is:
     // ---
     // `[+][fmt][precision]`
     //
@@ -89,10 +87,8 @@ struct ConvertFormatInt
 
 impl ConvertFormatInt
 {
-    // Set some format options with a given user string
-    //
-    // Format is :
-    //
+    // Set some format options with a given user string.
+    // Format is:
     // ---
     // `[+][B|D|X][padding][width]`
     //
