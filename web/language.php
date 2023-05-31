@@ -6595,29 +6595,52 @@ Here is a real life example from the <code>Std.Ogl</code> module (opengl wrapper
 <pre><code><span style="color:#0">swag doc -w:myWorkspaceFolder</span></code></pre><p></p>
 <p>The documentation comment needs to be placed just before a function, struct or enum.</br>
 </p>
-<pre><code><span style="color:#6A9955">// Everything between empty lines is considered to be a simple paragraph.</span><span style="color:#0">
-</span><span style="color:#6A9955">// Which means that if you put several comments on several lines like</span><span style="color:#0">
-</span><span style="color:#6A9955">// this, they all will be part of the same paragraph.</span><span style="color:#0">
+<pre><code><span style="color:#6A9955">// Everything between empty lines is considered to be a simple paragraph. Which</span><span style="color:#0">
+</span><span style="color:#6A9955">// means that if you put several comments on several lines like this, they all</span><span style="color:#0">
+</span><span style="color:#6A9955">// will be part of the same paragraph.</span><span style="color:#0">
 </span><span style="color:#6A9955">//</span><span style="color:#0">
 </span><span style="color:#6A9955">// This is another paragraph because there's an empty line before.</span><span style="color:#0">
 </span><span style="color:#6A9955">//</span><span style="color:#0">
-</span><span style="color:#6A9955">// ---</span><span style="color:#0">
-</span><span style="color:#6A9955">// A paragraph that starts with '---' is a paragraph where every blanks and end of lines</span><span style="color:#0">
-</span><span style="color:#6A9955">// are respected. Even...</span><span style="color:#0">
+</span><span style="color:#6A9955">// This is yet another paragraph.</span></code></pre><p>The first paragraph is considered to be the 'short description' which can appear on specific parts</br>
+of the documentation. So make it short. If the first line ends with '.', then this marks the end</br>
+of the paragraph, i.e. the end of the short description.</br>
+</p>
+<pre><code><span style="color:#6A9955">// This is the short description.</span><span style="color:#0">
+</span><span style="color:#6A9955">// As the previous first line ends with '.', this is another paragraph, so this should be</span><span style="color:#0">
+</span><span style="color:#6A9955">// the long description. No need for an empty line before.</span><span style="color:#0">
+</span><span style="color:#3186CD">func</span><span style="color:#0"> </span><span style="color:#FF6A00">test</span><span style="color:#0">()
+{
+
+}</span></code></pre><p>A paragraph that starts with '---' is a paragraph where every blanks and end of lines</br>
+are respected.</br>
+</p>
+<pre><code><span style="color:#6A9955">// ---</span><span style="color:#0">
+</span><span style="color:#6A9955">// Even...</span><span style="color:#0">
 </span><span style="color:#6A9955">//</span><span style="color:#0">
 </span><span style="color:#6A9955">// ...empty lines are preserved.</span><span style="color:#0">
+</span><span style="color:#6A9955">//</span><span style="color:#0">
 </span><span style="color:#6A9955">// You end that kind of paragraph with another '---' alone on its line.</span><span style="color:#0">
 </span><span style="color:#6A9955">// ---</span><span style="color:#0">
 </span><span style="color:#3186CD">func</span><span style="color:#0"> </span><span style="color:#FF6A00">test</span><span style="color:#0">()
 {
 
+}</span></code></pre><p>A paragraph that starts with '<code></code><code>' is a code paragraph.</br>
+</p>
+<pre><code><span style="color:#6A9955">// For example:</span><span style="color:#0">
+</span><span style="color:#6A9955">// ```</span><span style="color:#0">
+</span><span style="color:#6A9955">// if a == true</span><span style="color:#0">
+</span><span style="color:#6A9955">//   @print("true")</span><span style="color:#0">
+</span><span style="color:#6A9955">// ```</span><span style="color:#0">
+</span><span style="color:#3186CD">func</span><span style="color:#0"> </span><span style="color:#FF6A00">test</span><span style="color:#0">()
+{
+
 }</span></code></pre><p>For constants or enum values, the document comment is the one declared at the end of the line.</br>
 </p>
-<pre><code><span style="color:#3186CD">const</span><span style="color:#0"> </span><span style="color:#3BC3A7">A</span><span style="color:#0"> = </span><span style="color:#74A35B">0</span><span style="color:#0"> </span><span style="color:#6A9955">// This is a documentation comment</span><span style="color:#0">
+<pre><code><span style="color:#3186CD">const</span><span style="color:#0"> </span><span style="color:#3BC3A7">A</span><span style="color:#0"> = </span><span style="color:#74A35B">0</span><span style="color:#0">     </span><span style="color:#6A9955">// This is a documentation comment</span><span style="color:#0">
 </span><span style="color:#3186CD">enum</span><span style="color:#0"> </span><span style="color:#3BC3A7">Color</span><span style="color:#0">
 {
-    </span><span style="color:#3BC3A7">Red</span><span style="color:#0"> </span><span style="color:#6A9955">// This is a documentation comment</span><span style="color:#0">
-}</span></code></pre><p>Some other markdown markers are also supported.</br>
+    </span><span style="color:#3BC3A7">Red</span><span style="color:#0">         </span><span style="color:#6A9955">// This is a documentation comment</span><span style="color:#0">
+}</span></code></pre><p>Some other markdown markers are also supported inside paragraphs.</br>
 </p>
 <pre><code><span style="color:#0"> </span><span style="color:#FF6A00">#test</span><span style="color:#0">
  {
@@ -6637,6 +6660,12 @@ Here is a real life example from the <code>Std.Ogl</code> module (opengl wrapper
 
 </span><span style="color:#6A9955">// This is a reference to [one]</span><span style="color:#0">
 </span><span style="color:#3186CD">func</span><span style="color:#0"> </span><span style="color:#FF6A00">two</span><span style="color:#0">()
+{
+}</span></code></pre><p>The attribute #[Swag.NoDoc] can be used to avoid a given element to appear in the documentation.</br>
+</p>
+<pre><code><span style="color:#6A9955">// This function will be ignored when generating documentation.</span><span style="color:#0">
+</span><span style="color:#7F7F7F">#[Swag.NoDoc]</span><span style="color:#0">
+</span><span style="color:#3186CD">func</span><span style="color:#0"> </span><span style="color:#FF6A00">one</span><span style="color:#0">()
 {
 }</span></code></pre>
 </div>

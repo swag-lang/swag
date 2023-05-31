@@ -4,16 +4,17 @@ using Swag, Core, Serialization
 // An image buffer, in various pixel formats.
 struct Image
 {
-    pixels:             Array'u8
-    size:               u64
-    width, height:      s32
-    width8:             s32
-    pf:                 PixelFormat = undefined
-    bpp:                u8  // Bits per pixel
-    bpp8:               u8  // Bytes per pixel
+    pixels:             Array'u8        // All the pixels
+    size:               u64             // Size in bytes
+    width:              s32             // The width of the image
+    height:             s32             // The height of the image
+    width8:             s32             // The width, in bytes
+    pf:                 PixelFormat     // Format of one pixel
+    bpp:                u8              // Bits per pixel
+    bpp8:               u8              // Bytes per pixel
 
     #[Core.Serialization.NoSerialize]
-    workingBuffer:      *Image
+    workingBuffer:      *Image          // Temporary buffer for filters and transformations
 }
 
 impl Image

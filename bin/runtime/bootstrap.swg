@@ -132,7 +132,7 @@ namespace Swag
     #[AttrMulti]
     attr Safety(what: string, value: bool)
 
-    // Enable/Disable a given optimization
+    // Enable/Disable a given function optimization.
     #[AttrUsage(AttributeUsage.Function|AttributeUsage.File)]
     #[AttrMulti]
     attr Optim(what: string, value: bool)
@@ -140,13 +140,21 @@ namespace Swag
     #[AttrUsage(AttributeUsage.All|AttributeUsage.File)]
     attr Overflow(value: bool)
 
+    // Warning behavior for [Warn] attribute
     enum WarnLevel: u8
     {
-        Enable
-        Disable
-        Error
+        Enable      // Enable the given warning
+        Disable     // Disable the given warning
+        Error       // Force the given warning to be raised as an error
     }
 
+    // Change the behavior of a given warning or list of warnings.
+    // For example:
+    // ```
+    // #[Swag.Warn("wrn0004", Swag.WarnLevel.Error)
+    // #[Swag.Warn("wrn0003|wrn0004", Swag.WarnLevel.Disable)
+    // #global #[Swag.Warn("wrn0001", Swag.WarnLevel.Enable)]
+    // ```
     #[AttrUsage(AttributeUsage.All|AttributeUsage.File)]
     #[AttrMulti]
     attr Warn(what: string, level: WarnLevel)
@@ -154,7 +162,6 @@ namespace Swag
     #[AttrUsage(AttributeUsage.All)]
     attr Match(what: string, value: bool)
 
-    // Hardcoded
     attr Strict()
     attr Global()
     attr Align(value: u8)

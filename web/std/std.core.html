@@ -1644,7 +1644,9 @@
 <b>Work in progress</b>. Generated documentation (swag doc 0.18.0)</blockquote>
 <h2 class="content">Overview</h2>
 <p>
-The <code class = "incode">Std.core</code> module contains basic types and algorithms. It is the base of all other modules of the standard <code class = "incode">Std</code> workspace.</p>
+The <code class = "incode">Std.core</code> module contains basic types and algorithms.</p>
+<p>
+ It is the base of all other modules of the standard <code class = "incode">Std</code> workspace.</p>
 <p>
  You will find collections like <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Array">Array</a> or <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.HashTable">HashTable</a>, a dynamic <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.String">String</a> and so on.</p>
 <h2 class="content">Content</h2>
@@ -1830,7 +1832,7 @@ Move some values at the given index. If <code class = "incode">index</code> is e
 <a href="#Core.Array.emplaceInitAddress">emplaceInitAddress(self, u32)</a></td>
 <td class="enumeration">
 <p>
-Reserve room at the end of the array for <code class = "incode">num</code> elements. Returns the address of the first element.</p>
+Reserve room at the end of the array for <code class = "incode">num</code> elements.</p>
 </td>
 </tr>
 <tr>
@@ -1932,7 +1934,7 @@ Remove <code class = "incode">num</code> elements starting at <code class = "inc
 <a href="#Core.Array.removeAt">removeAt(self, u64)</a></td>
 <td class="enumeration">
 <p>
-Remove an element at <code class = "incode">index</code> by replacing it with the last element. Order is not preserved.</p>
+Remove an element at <code class = "incode">index</code> by replacing it with the last element.</p>
 </td>
 </tr>
 <tr>
@@ -1940,7 +1942,7 @@ Remove an element at <code class = "incode">index</code> by replacing it with th
 <a href="#Core.Array.removeAtOrdered">removeAtOrdered(self, u64, u64)</a></td>
 <td class="enumeration">
 <p>
-Remove <code class = "incode">numValues</code> elements at <code class = "incode">index</code> by shifting all others. Order is preserved.</p>
+Remove <code class = "incode">numValues</code> elements at <code class = "incode">index</code> by shifting all others.</p>
 </td>
 </tr>
 <tr>
@@ -2303,11 +2305,13 @@ Move some values at the given index. If <code class = "incode">index</code> is e
 </table>
 </p>
 <p>
-Reserve room at the end of the array for <code class = "incode">num</code> elements. Returns the address of the first element.</p>
+Reserve room at the end of the array for <code class = "incode">num</code> elements.</p>
 <p class="code">
 <code style="white-space: break-spaces">func emplaceInitAddress(using self, num: u32 = 1)->^T
 </code>
 </p>
+<p>
+ Returns the address of the first element</p>
 <p>
 <table class="h3">
 <tr>
@@ -2679,11 +2683,13 @@ Remove <code class = "incode">num</code> elements starting at <code class = "inc
 </table>
 </p>
 <p>
-Remove an element at <code class = "incode">index</code> by replacing it with the last element. Order is not preserved.</p>
+Remove an element at <code class = "incode">index</code> by replacing it with the last element.</p>
 <p class="code">
 <code style="white-space: break-spaces">func removeAt(using self, index: u64)
 </code>
 </p>
+<p>
+ Order is not preserved</p>
 <p>
 <table class="h3">
 <tr>
@@ -2696,11 +2702,13 @@ Remove an element at <code class = "incode">index</code> by replacing it with th
 </table>
 </p>
 <p>
-Remove <code class = "incode">numValues</code> elements at <code class = "incode">index</code> by shifting all others. Order is preserved.</p>
+Remove <code class = "incode">numValues</code> elements at <code class = "incode">index</code> by shifting all others.</p>
 <p class="code">
 <code style="white-space: break-spaces">func removeAtOrdered(using self, index: u64, numValues: u64 = 1)
 </code>
 </p>
+<p>
+ Order is preserved</p>
 <p>
 <table class="h3">
 <tr>
@@ -5531,7 +5539,7 @@ Release all allocated buffers.</p>
 <a href="#Core.ConcatBuffer.setAllocator">setAllocator(self, IAllocator)</a></td>
 <td class="enumeration">
 <p>
-Associate an allocator with the buffer. The allocator can only be changed if the buffer has no pending buckets.</p>
+Associate an allocator with the buffer.</p>
 </td>
 </tr>
 <tr>
@@ -5864,11 +5872,13 @@ Release all allocated buffers.</p>
 </table>
 </p>
 <p>
-Associate an allocator with the buffer. The allocator can only be changed if the buffer has no pending buckets.</p>
+Associate an allocator with the buffer.</p>
 <p class="code">
 <code style="white-space: break-spaces">func setAllocator(using self, alloc: Swag.IAllocator)
 </code>
 </p>
+<p>
+ The allocator can only be changed if the buffer has no pending buckets.</p>
 <p>
 <table class="h3">
 <tr>
@@ -6086,7 +6096,7 @@ Fatal error Exit the process with code -1.</p>
 <a href="#Core.Console.lock">lock()</a></td>
 <td class="enumeration">
 <p>
-Use to access console with multiple threads. No console function is thread safe, so it is the user responsability to lock the console when necessary.</p>
+Use to access console with multiple threads.</p>
 </td>
 </tr>
 <tr>
@@ -6292,11 +6302,13 @@ Fatal error Exit the process with code -1.</p>
 </table>
 </p>
 <p>
-Use to access console with multiple threads. No console function is thread safe, so it is the user responsability to lock the console when necessary.</p>
+Use to access console with multiple threads.</p>
 <p class="code">
 <code style="white-space: break-spaces">func lock()
 </code>
 </p>
+<p>
+ No console function is thread safe, so it is the user responsability to lock the console when necessary</p>
 <p>
 <table class="h3">
 <tr>
@@ -8350,7 +8362,7 @@ Open the reader.</p>
 <a href="#Core.File.TextReader.readLine">readLine(self, ref String)</a></td>
 <td class="enumeration">
 <p>
-Read one line of text. Returns false at the end.</p>
+Read one line of text.</p>
 </td>
 </tr>
 <tr>
@@ -8408,11 +8420,13 @@ Open the reader.</p>
 </table>
 </p>
 <p>
-Read one line of text. Returns false at the end.</p>
+Read one line of text.</p>
 <p class="code">
 <code style="white-space: break-spaces">func readLine(using self, result: ref <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.String">Core.String</a>)->bool
 </code>
 </p>
+<p>
+ Returns false at the end</p>
 <p>
 <table class="h3">
 <tr>
@@ -10394,7 +10408,7 @@ Use with care !.</p>
 <a href="#Core.HashTable.find">find(self, K)</a></td>
 <td class="enumeration">
 <p>
-Find the given key, and returns the corresponding entry. Returns null if the key is not there.</p>
+Find the given key, and returns the corresponding entry.</p>
 </td>
 </tr>
 <tr>
@@ -10549,11 +10563,13 @@ Use with care !.</p>
 </table>
 </p>
 <p>
-Find the given key, and returns the corresponding entry. Returns null if the key is not there.</p>
+Find the given key, and returns the corresponding entry.</p>
 <p class="code">
 <code style="white-space: break-spaces">func find(using self, key: K)->*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.HashTableEntry">Core.HashTableEntry</a>(K, V)
 </code>
 </p>
+<p>
+ Returns null if the key is not there.</p>
 <p>
 <table class="h3">
 <tr>
@@ -17330,7 +17346,7 @@ Intersect this rectangle with another one.</p>
 <a href="#Core.Math.Rectangle.intersect">intersect(const ref Rectangle, const ref Rectangle)</a></td>
 <td class="enumeration">
 <p>
-Creates a rectangle that represents the intersetion between <code class = "incode">a</code> and <code class = "incode">b</code>. If there is no intersection, Zero is returned.</p>
+Creates a rectangle that represents the intersetion between <code class = "incode">a</code> and <code class = "incode">b</code>.</p>
 </td>
 </tr>
 <tr>
@@ -17733,11 +17749,13 @@ Intersect this rectangle with another one.</p>
 </code>
 </p>
 <p>
-Creates a rectangle that represents the intersetion between <code class = "incode">a</code> and <code class = "incode">b</code>. If there is no intersection, Zero is returned.</p>
+Creates a rectangle that represents the intersetion between <code class = "incode">a</code> and <code class = "incode">b</code>.</p>
 <p class="code">
 <code style="white-space: break-spaces">func intersect(a: <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Math.Rectangle">Core.Math.Rectangle</a>, b: <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Math.Rectangle">Core.Math.Rectangle</a>)-><a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Math.Rectangle">Core.Math.Rectangle</a>
 </code>
 </p>
+<p>
+ If there is no intersection, Zero is returned.</p>
 <p>
 <table class="h3">
 <tr>
@@ -18689,7 +18707,7 @@ Returns the Z signed length of the perpendicular vector.</p>
 <a href="#Core.Math.Vector2.cross">cross(self, f32)</a></td>
 <td class="enumeration">
 <p>
-Returns the perpendicular vector in the 2D plane. <code class = "incode">axis</code> will give the sign of the result.</p>
+Returns the perpendicular vector in the 2D plane.</p>
 </td>
 </tr>
 <tr>
@@ -19056,11 +19074,13 @@ Returns the Z signed length of the perpendicular vector.</p>
 </code>
 </p>
 <p>
-Returns the perpendicular vector in the 2D plane. <code class = "incode">axis</code> will give the sign of the result.</p>
+Returns the perpendicular vector in the 2D plane.</p>
 <p class="code">
 <code style="white-space: break-spaces">func cross(using const self, axis: f32)-><a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.core.html#Core.Math.Vector2">Core.Math.Vector2</a>
 </code>
 </p>
+<p>
+ <code class = "incode">axis</code> will give the sign of the result</p>
 <p>
 <table class="h3">
 <tr>
@@ -28351,7 +28371,7 @@ Returns true if two slices are equal.</p>
 <a href="#Core.Slice.findLinear">findLinear(const [..] T, V)</a></td>
 <td class="enumeration">
 <p>
-Find <code class = "incode">value</code> in a slice by performing a linear search. O^n, but slice does not have to be sorted.</p>
+Find <code class = "incode">value</code> in a slice by performing a linear search.</p>
 </td>
 </tr>
 <tr>
@@ -28359,7 +28379,7 @@ Find <code class = "incode">value</code> in a slice by performing a linear searc
 <a href="#Core.Slice.findSorted">findSorted(const [..] T, V)</a></td>
 <td class="enumeration">
 <p>
-Find <code class = "incode">value</code> in a slice by performing a binary search. The slice must be sorted in ascending order.</p>
+Find <code class = "incode">value</code> in a slice by performing a binary search.</p>
 </td>
 </tr>
 <tr>
@@ -28473,11 +28493,13 @@ Returns true if two slices are equal.</p>
 </table>
 </p>
 <p>
-Find <code class = "incode">value</code> in a slice by performing a linear search. O^n, but slice does not have to be sorted.</p>
+Find <code class = "incode">value</code> in a slice by performing a linear search.</p>
 <p class="code">
 <code style="white-space: break-spaces">func(T, V) findLinear(values: const [..] T, value: V)->{index: u64, success: bool}
 </code>
 </p>
+<p>
+ O^n, but slice does not have to be sorted</p>
 <p>
 <table class="h3">
 <tr>
@@ -28490,11 +28512,13 @@ Find <code class = "incode">value</code> in a slice by performing a linear searc
 </table>
 </p>
 <p>
-Find <code class = "incode">value</code> in a slice by performing a binary search. The slice must be sorted in ascending order.</p>
+Find <code class = "incode">value</code> in a slice by performing a binary search.</p>
 <p class="code">
 <code style="white-space: break-spaces">func(T, V) findSorted(values: const [..] T, value: V)->{index: u64, success: bool}
 </code>
 </p>
+<p>
+ The slice must be sorted in ascending order</p>
 <p>
 <table class="h3">
 <tr>
@@ -28728,7 +28752,7 @@ Move some values at the given index. If <code class = "incode">index</code> is e
 <a href="#Core.StaticArray.emplaceInitAddress">emplaceInitAddress(self, u32)</a></td>
 <td class="enumeration">
 <p>
-Reserve room at the end of the array for <code class = "incode">num</code> elements. Returns the address of the first element.</p>
+Reserve room at the end of the array for <code class = "incode">num</code> elements.</p>
 </td>
 </tr>
 <tr>
@@ -28816,7 +28840,7 @@ Remove <code class = "incode">num</code> elements starting at <code class = "inc
 <a href="#Core.StaticArray.removeAt">removeAt(self, u64)</a></td>
 <td class="enumeration">
 <p>
-Remove an element at <code class = "incode">index</code> by replacing it with the last element. Order is not preserved.</p>
+Remove an element at <code class = "incode">index</code> by replacing it with the last element.</p>
 </td>
 </tr>
 <tr>
@@ -28824,7 +28848,7 @@ Remove an element at <code class = "incode">index</code> by replacing it with th
 <a href="#Core.StaticArray.removeAtOrdered">removeAtOrdered(self, u64, u64)</a></td>
 <td class="enumeration">
 <p>
-Remove <code class = "incode">numValues</code> elements at <code class = "incode">index</code> by shifting all others. Order is preserved.</p>
+Remove <code class = "incode">numValues</code> elements at <code class = "incode">index</code> by shifting all others.</p>
 </td>
 </tr>
 <tr>
@@ -29131,11 +29155,13 @@ Move some values at the given index. If <code class = "incode">index</code> is e
 </table>
 </p>
 <p>
-Reserve room at the end of the array for <code class = "incode">num</code> elements. Returns the address of the first element.</p>
+Reserve room at the end of the array for <code class = "incode">num</code> elements.</p>
 <p class="code">
 <code style="white-space: break-spaces">func emplaceInitAddress(using self, num: u32 = 1)->^T
 </code>
 </p>
+<p>
+ Returns the address of the first element</p>
 <p>
 <table class="h3">
 <tr>
@@ -29460,11 +29486,13 @@ Remove <code class = "incode">num</code> elements starting at <code class = "inc
 </table>
 </p>
 <p>
-Remove an element at <code class = "incode">index</code> by replacing it with the last element. Order is not preserved.</p>
+Remove an element at <code class = "incode">index</code> by replacing it with the last element.</p>
 <p class="code">
 <code style="white-space: break-spaces">func removeAt(using self, index: u64)
 </code>
 </p>
+<p>
+ Order is not preserved</p>
 <p>
 <table class="h3">
 <tr>
@@ -29477,11 +29505,13 @@ Remove an element at <code class = "incode">index</code> by replacing it with th
 </table>
 </p>
 <p>
-Remove <code class = "incode">numValues</code> elements at <code class = "incode">index</code> by shifting all others. Order is preserved.</p>
+Remove <code class = "incode">numValues</code> elements at <code class = "incode">index</code> by shifting all others.</p>
 <p class="code">
 <code style="white-space: break-spaces">func removeAtOrdered(using self, index: u64, numValues: u64 = 1)
 </code>
 </p>
+<p>
+ Order is preserved</p>
 <p>
 <table class="h3">
 <tr>
@@ -37433,7 +37463,7 @@ XX</td>
 u32</td>
 <td class="enumeration">
 <p>
-Status for the special one-byte case. invalid: size 1.</p>
+Status for the special one-byte case.</p>
 </td>
 </tr>
 </table>

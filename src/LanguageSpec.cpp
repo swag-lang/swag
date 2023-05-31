@@ -53,7 +53,6 @@ void LanguageSpec::setupNames()
     name_PrintBc    = "PrintBc";
     name_ExportType = "ExportType";
     name_Using      = "Using";
-    name_Warn       = "Warn";
 
     name_Swag_AttrUsage  = "Swag.AttrUsage";
     name_Swag_AttrMulti  = "Swag.AttrMulti";

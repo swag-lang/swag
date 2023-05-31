@@ -69,7 +69,6 @@ struct LanguageSpec
     Utf8 name_Pack;
     Utf8 name_ExportType;
     Utf8 name_Using;
-    Utf8 name_Warn;
 
     Utf8 name_Swag_AttrUsage;
     Utf8 name_Swag_AttrMulti;

@@ -7162,7 +7162,7 @@ Create a layout control.</p>
 <a href="#Gui.GridLayoutCtrl.setColRowChild">setColRowChild(self, *Wnd, s32, s32, s32, s32)</a></td>
 <td class="enumeration">
 <p>
-Set the wnd associated with the given <code class = "incode">col</code> and <code class = "incode">row</code>. Window can cover multiple columns and rows.</p>
+Set the wnd associated with the given <code class = "incode">col</code> and <code class = "incode">row</code>.</p>
 </td>
 </tr>
 <tr>
@@ -7243,11 +7243,13 @@ Create a layout control.</p>
 </table>
 </p>
 <p>
-Set the wnd associated with the given <code class = "incode">col</code> and <code class = "incode">row</code>. Window can cover multiple columns and rows.</p>
+Set the wnd associated with the given <code class = "incode">col</code> and <code class = "incode">row</code>.</p>
 <p class="code">
 <code style="white-space: break-spaces">func setColRowChild(using self, child: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.Wnd">Gui.Wnd</a>, col: s32, row: s32, spanH: s32 = 1, spanV: s32 = 1)
 </code>
 </p>
+<p>
+ Window can cover multiple columns and rows.</p>
 <p>
 <table class="h3">
 <tr>
@@ -25995,7 +25997,7 @@ Convert a screen coordinate to a surface coordinate (relative to my surface).</p
 <a href="#Gui.Wnd.sendCommandEvent">sendCommandEvent(self, WndId)</a></td>
 <td class="enumeration">
 <p>
-Send the command event with the given id to the window. The command will be updated first, and if it is not disabled, it will be sent.</p>
+Send the command event with the given id to the window.</p>
 </td>
 </tr>
 <tr>
@@ -26003,7 +26005,7 @@ Send the command event with the given id to the window. The command will be upda
 <a href="#Gui.Wnd.sendComputeCommandStateEvent">sendComputeCommandStateEvent(self, WndId)</a></td>
 <td class="enumeration">
 <p>
-Send the command state event with the given id to the window. Returns the updated command state.</p>
+Send the command state event with the given id to the window.</p>
 </td>
 </tr>
 <tr>
@@ -26129,7 +26131,7 @@ Convert a surface coordinate to a local coordinate (relative to me).</p>
 <a href="#Gui.Wnd.updateCommandState">updateCommandState(self)</a></td>
 <td class="enumeration">
 <p>
-Main function to update command state of various windows/widgets. This will update the state of this window, and all of its childs.</p>
+Main function to update command state of various windows/widgets.</p>
 </td>
 </tr>
 </table>
@@ -27312,11 +27314,13 @@ Convert a screen coordinate to a surface coordinate (relative to my surface).</p
 </table>
 </p>
 <p>
-Send the command event with the given id to the window. The command will be updated first, and if it is not disabled, it will be sent.</p>
+Send the command event with the given id to the window.</p>
 <p class="code">
 <code style="white-space: break-spaces">func sendCommandEvent(using self, cmdId: Gui.WndId)
 </code>
 </p>
+<p>
+ The command will be updated first, and if it is not disabled, it will be sent.</p>
 <p>
 <table class="h3">
 <tr>
@@ -27329,11 +27333,13 @@ Send the command event with the given id to the window. The command will be upda
 </table>
 </p>
 <p>
-Send the command state event with the given id to the window. Returns the updated command state.</p>
+Send the command state event with the given id to the window.</p>
 <p class="code">
 <code style="white-space: break-spaces">func sendComputeCommandStateEvent(using self, cmdId: Gui.WndId)-><a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gui.html#Gui.CommandStateEvent">Gui.CommandStateEvent</a>
 </code>
 </p>
+<p>
+ Returns the updated command state.</p>
 <p>
 <table class="h3">
 <tr>
@@ -27578,11 +27584,13 @@ Convert a surface coordinate to a local coordinate (relative to me).</p>
 </table>
 </p>
 <p>
-Main function to update command state of various windows/widgets. This will update the state of this window, and all of its childs.</p>
+Main function to update command state of various windows/widgets.</p>
 <p class="code">
 <code style="white-space: break-spaces">func updateCommandState(using self)
 </code>
 </p>
+<p>
+ This will update the state of this window, and all of its childs</p>
 <p>
 <table class="h3">
 <tr>

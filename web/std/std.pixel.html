@@ -3696,7 +3696,7 @@ Initialize color with hue, saturation, lightness.</p>
 <a href="#Pixel.Color.setRgb">setRgb(self, const ref Color)</a></td>
 <td class="enumeration">
 <p>
-Just set r, g and b components. Alpha will be opaque.</p>
+Just set r, g and b components.</p>
 </td>
 </tr>
 <tr>
@@ -3704,7 +3704,7 @@ Just set r, g and b components. Alpha will be opaque.</p>
 <a href="#Pixel.Color.setRgb">setRgb(self, u8, u8, u8)</a></td>
 <td class="enumeration">
 <p>
-Just set r, g and b components. Alpha will be opaque.</p>
+Just set r, g and b components.</p>
 </td>
 </tr>
 <tr>
@@ -3712,7 +3712,7 @@ Just set r, g and b components. Alpha will be opaque.</p>
 <a href="#Pixel.Color.setRgbf">setRgbf(self, f32, f32, f32)</a></td>
 <td class="enumeration">
 <p>
-Set r,g,b with floats in the range [0 1]. Alpha will be opaque.</p>
+Set r,g,b with floats in the range [0 1].</p>
 </td>
 </tr>
 <tr>
@@ -4111,17 +4111,21 @@ Initialize color with hue, saturation, lightness.</p>
 </table>
 </p>
 <p>
-Just set r, g and b components. Alpha will be opaque.</p>
+Just set r, g and b components.</p>
 <p class="code">
 <code style="white-space: break-spaces">func setRgb(using self, rgb: <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Color">Pixel.Color</a>)
 </code>
 </p>
 <p>
-Just set r, g and b components. Alpha will be opaque.</p>
+ Alpha will be opaque.</p>
+<p>
+Just set r, g and b components.</p>
 <p class="code">
 <code style="white-space: break-spaces">func setRgb(self, r: u8, g: u8, b: u8)
 </code>
 </p>
+<p>
+ Alpha will be opaque.</p>
 <p>
 <table class="h3">
 <tr>
@@ -4134,11 +4138,13 @@ Just set r, g and b components. Alpha will be opaque.</p>
 </table>
 </p>
 <p>
-Set r,g,b with floats in the range [0 1]. Alpha will be opaque.</p>
+Set r,g,b with floats in the range [0 1].</p>
 <p class="code">
 <code style="white-space: break-spaces">func setRgbf(self, r: f32, g: f32, b: f32)
 </code>
 </p>
+<p>
+ Alpha will be opaque.</p>
 <p>
 <table class="h3">
 <tr>
@@ -5128,7 +5134,7 @@ Enumerate the font families available in the os.</p>
 <a href="#Pixel.FontFamily.getFont">getFont(self, FontFamilyStyle)</a></td>
 <td class="enumeration">
 <p>
-Get the font corresponding to the style. If not evailable, get another one.</p>
+Get the font corresponding to the style.</p>
 </td>
 </tr>
 <tr>
@@ -5194,11 +5200,13 @@ Enumerate the font families available in the os.</p>
 </table>
 </p>
 <p>
-Get the font corresponding to the style. If not evailable, get another one.</p>
+Get the font corresponding to the style.</p>
 <p class="code">
 <code style="white-space: break-spaces">func getFont(using self, style: <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.FontFamilyStyle">Pixel.FontFamilyStyle</a>)->*<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Font">Pixel.Font</a>
 </code>
 </p>
+<p>
+ If not evailable, get another one.</p>
 <p>
 <table class="h3">
 <tr>
@@ -6298,6 +6306,8 @@ pixels</td>
 <td class="tdtype">
 Core.Array(u8)</td>
 <td class="enumeration">
+<p>
+All the pixels.</p>
 </td>
 </tr>
 <tr>
@@ -6306,6 +6316,8 @@ size</td>
 <td class="tdtype">
 u64</td>
 <td class="enumeration">
+<p>
+Size in bytes.</p>
 </td>
 </tr>
 <tr>
@@ -6314,6 +6326,8 @@ width</td>
 <td class="tdtype">
 s32</td>
 <td class="enumeration">
+<p>
+The width of the image.</p>
 </td>
 </tr>
 <tr>
@@ -6322,6 +6336,8 @@ height</td>
 <td class="tdtype">
 s32</td>
 <td class="enumeration">
+<p>
+The height of the image.</p>
 </td>
 </tr>
 <tr>
@@ -6330,6 +6346,8 @@ width8</td>
 <td class="tdtype">
 s32</td>
 <td class="enumeration">
+<p>
+The width, in bytes.</p>
 </td>
 </tr>
 <tr>
@@ -6338,6 +6356,8 @@ pf</td>
 <td class="tdtype">
 <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.PixelFormat">Pixel.PixelFormat</a></td>
 <td class="enumeration">
+<p>
+Format of one pixel.</p>
 </td>
 </tr>
 <tr>
@@ -6366,6 +6386,8 @@ workingBuffer</td>
 <td class="tdtype">
 *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.Image">Pixel.Image</a></td>
 <td class="enumeration">
+<p>
+Temporary buffer for filters and transformations.</p>
 </td>
 </tr>
 </table>
@@ -7327,7 +7349,7 @@ Register an image encoder.</p>
 <h3 class="content" id="Pixel.Image.allocPixels"><span class="titletype">func</span> <span class="titlelight">Image.</span><span class="titlestrong">allocPixels</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\image\image.swg#L82" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\image\image.swg#L83" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -7344,7 +7366,7 @@ Allocate pixels.</p>
 <h3 class="content" id="Pixel.Image.allocWorkingBuffer"><span class="titletype">func</span> <span class="titlelight">Image.</span><span class="titlestrong">allocWorkingBuffer</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\image\image.swg#L89" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\image\image.swg#L90" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -7384,7 +7406,7 @@ Apply a kernel to the image.</p>
 <h3 class="content" id="Pixel.Image.applyWorkingBuffer"><span class="titletype">func</span> <span class="titlelight">Image.</span><span class="titlestrong">applyWorkingBuffer</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\image\image.swg#L116" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\image\image.swg#L117" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -7435,7 +7457,7 @@ Returns <code class = "incode">true</code> if the given filename has a correspon
 <h3 class="content" id="Pixel.Image.clear"><span class="titletype">func</span> <span class="titlelight">Image.</span><span class="titlestrong">clear</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\image\image.swg#L172" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\image\image.swg#L173" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -7486,7 +7508,7 @@ Change the contrast. <code class = "incode">factor</code> is [-1, 1].</p>
 <h3 class="content" id="Pixel.Image.copyPixel"><span class="titletype">func</span> <span class="titlelight">Image.</span><span class="titlestrong">copyPixel</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\image\image.swg#L180" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\image\image.swg#L181" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -7503,7 +7525,7 @@ Copy one pixel, depending on bpp.</p>
 <h3 class="content" id="Pixel.Image.create"><span class="titletype">func</span> <span class="titlelight">Image.</span><span class="titlestrong">create</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\image\image.swg#L26" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\image\image.swg#L27" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -7655,7 +7677,7 @@ Flip image vertically.</p>
 <h3 class="content" id="Pixel.Image.freeWorkingBuffer"><span class="titletype">func</span> <span class="titlelight">Image.</span><span class="titlestrong">freeWorkingBuffer</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\image\image.swg#L109" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\image\image.swg#L110" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -7712,7 +7734,7 @@ Change the gamma.</p>
 <h3 class="content" id="Pixel.Image.getPixelColor"><span class="titletype">func</span> <span class="titlelight">Image.</span><span class="titlestrong">getPixelColor</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\image\image.swg#L207" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\image\image.swg#L208" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -7763,7 +7785,7 @@ Divide image size by 2 with a bilinear 2x2 filter.</p>
 <h3 class="content" id="Pixel.Image.init"><span class="titletype">func</span> <span class="titlelight">Image.</span><span class="titlestrong">init</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\image\image.swg#L68" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\image\image.swg#L69" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -7797,7 +7819,7 @@ Invert colors.</p>
 <h3 class="content" id="Pixel.Image.isValid"><span class="titletype">func</span> <span class="titlelight">Image.</span><span class="titlestrong">isValid</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\image\image.swg#L23" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\image\image.swg#L24" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -7882,7 +7904,7 @@ Mix with another image.</p>
 <h3 class="content" id="Pixel.Image.opVisit"><span class="titletype">func</span> <span class="titlelight">Image.</span><span class="titlestrong">opVisit</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\image\image.swg#L49" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\image\image.swg#L50" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -7898,7 +7920,7 @@ func(ptr: bool) opVisit(using self, stmt: code)
 <h3 class="content" id="Pixel.Image.release"><span class="titletype">func</span> <span class="titlelight">Image.</span><span class="titlestrong">release</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\image\image.swg#L165" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\image\image.swg#L166" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -8000,7 +8022,7 @@ Change image pixel format.</p>
 <h3 class="content" id="Pixel.Image.setPixelRGBA8"><span class="titletype">func</span> <span class="titlelight">Image.</span><span class="titlestrong">setPixelRGBA8</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\image\image.swg#L198" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\image\image.swg#L199" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -8205,7 +8227,7 @@ Turn image by a given predefined angle.</p>
 <h3 class="content" id="Pixel.Image.visitPixels"><span class="titletype">func</span> <span class="titlelight">Image.</span><span class="titlestrong">visitPixels</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\image\image.swg#L141" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\image\image.swg#L142" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -9866,7 +9888,7 @@ Draw an empty rectangle.</p>
 <a href="#Pixel.Painter.drawRichString">drawRichString(self, const ref Rectangle, *RichString, const ref RichStringFormat, bool)</a></td>
 <td class="enumeration">
 <p>
-Draw a rich string. A rich string can be multiline, and accepts The layout will be computed at the first call, and each time <code class = "incode">pos</code> has changed.</p>
+Draw a rich string.</p>
 </td>
 </tr>
 <tr>
@@ -10751,11 +10773,13 @@ func drawRect(using self, left: f32, top: f32, width: f32, height: f32, color: <
 </table>
 </p>
 <p>
-Draw a rich string. A rich string can be multiline, and accepts The layout will be computed at the first call, and each time <code class = "incode">pos</code> has changed.</p>
+Draw a rich string.</p>
 <p class="code">
 <code style="white-space: break-spaces">func drawRichString(using self, pos: Core.Math.Rectangle, text: *<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.RichString">Pixel.RichString</a>, format: <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.pixel.html#Pixel.RichStringFormat">Pixel.RichStringFormat</a>, forceCompute = false)
 </code>
 </p>
+<p>
+ A rich string can be multiline, and accepts The layout will be computed at the first call, and each time <code class = "incode">pos</code> has changed</p>
 <p>
 <table class="h3">
 <tr>

@@ -95,11 +95,20 @@ void ModuleGenDocJob::computeUserComments(UserComment& result, const Utf8& txt)
             }
         }
 
+        // The short description (first line) can end with '.'.
+        if (!blk.lines.empty() && result.blocks.empty() && !blk.lines[0].empty() && blk.lines[0].back() == '.')
+        {
+            result.blocks.emplace_back(std::move(blk));
+            continue;
+        }
+
         for (; start < lines.size(); start++)
         {
             auto line = lines[start];
             line.trim();
 
+            // End of the paragraph :
+            // Empty line
             if (line.empty() && blk.kind != UserBlockKind::RawParagraph && blk.kind != UserBlockKind::Code)
                 break;
 
@@ -465,7 +474,11 @@ void ModuleGenDocJob::outputUserBlock(const UserBlock& user)
     {
         Utf8 block;
         for (auto& l : user.lines)
+        {
             block += l;
+            block += "\n";
+        }
+
         outputCode(block);
         return;
     }
