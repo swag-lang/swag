@@ -1044,6 +1044,8 @@ void ModuleGenDocJob::generateContent()
                     helpContent += "<tr>\n";
 
                     helpContent += "<td class=\"tdname\">\n";
+                    if (varDecl->flags & AST_DECL_USING)
+                        helpContent += "<b>using</b> ";
                     helpContent += structVal->name;
                     helpContent += "</td>\n";
 
