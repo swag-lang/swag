@@ -82,6 +82,21 @@ You can create a quote with '>'
 }
 
 /**
+You can create a table with '|'.
+*/
+#test
+{
+    // A table with 4 lines of 2 columns:
+    // | 'boundcheck'   | Check out of bound access
+    // | 'overflow'     | Check type conversion lost of bits or precision
+    // | 'math'         | Various math checks (like a negative '@sqrt')
+    // | 'switch'       | Check an invalid case in a '#[Swag.Complete]' switch
+    func myFunc()
+    {
+    }
+}
+
+/**
 A paragraph that starts with '```' is a code paragraph.
 */
 #test

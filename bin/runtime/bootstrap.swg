@@ -127,17 +127,22 @@ namespace Swag
     #[AttrUsage(AttributeUsage.All|AttributeUsage.File)]
     attr NoDoc()
 
-    // Enable/Disable a given safety check.
+    // Enable/Disable one or more safety checks.
+    // For example:
+    // ```
+    // #[Swag.Safety("", false)]                    // Disable all
+    // #[Swag.Safety("boundcheck|nan", false)]      // Disable 'boundcheck' and 'nan' checks
+    // ```
     // Safety checks are:
-    // * boundcheck
-    // * overflow
-    // * math
-    // * switch
-    // * unreachable
-    // * any
-    // * bool
-    // * nan
-    // * sanity
+    // | 'boundcheck'   | Check out of bound access
+    // | 'overflow'     | Check type conversion lost of bits or precision
+    // | 'math'         | Various math checks (like a negative '@sqrt')
+    // | 'switch'       | Check an invalid case in a '#[Swag.Complete]' switch
+    // | 'unreachable'  | Panic if an '@unreachable' instruction is executed
+    // | 'any'          | Panic if a cast from a 'any' variable does not match the real underlying type
+    // | 'bool'         | Panic if a 'bool' does not have a valid value ('true' or 'false')
+    // | 'nan'          | Panic if a 'nan' is used in a float arithmetic operation
+    // | 'sanity'       | Do a 'sanity' check (per function)
     #[AttrUsage(AttributeUsage.All|AttributeUsage.File)]
     #[AttrMulti]
     attr Safety(what: string, value: bool)

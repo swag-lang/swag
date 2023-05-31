@@ -90,6 +90,10 @@ void ModuleGenDocJob::computeUserComments(UserComment& result, const Utf8& txt)
                 {
                     blk.kind = UserBlockKind::Blockquote;
                 }
+                else if (line[0] == '|')
+                {
+                    blk.kind = UserBlockKind::Table;
+                }
                 else
                 {
                     blk.lines.push_back(lines[start++]);
@@ -116,6 +120,12 @@ void ModuleGenDocJob::computeUserComments(UserComment& result, const Utf8& txt)
                 break;
 
             if (blk.kind == UserBlockKind::Blockquote && line[0] != '>')
+                break;
+            if (blk.kind != UserBlockKind::Blockquote && line[0] == '>')
+                break;
+            if (blk.kind == UserBlockKind::Table && line[0] != '|')
+                break;
+            if (blk.kind != UserBlockKind::Table && line[0] == '|')
                 break;
 
             if (line[0] == '>')
@@ -509,6 +519,9 @@ void ModuleGenDocJob::outputUserBlock(const UserBlock& user)
     case UserBlockKind::Blockquote:
         helpContent += "<blockquote><p>";
         break;
+    case UserBlockKind::Table:
+        helpContent += "<table class=\"enumeration\">\n";
+        break;
     }
 
     bool startList = false;
@@ -516,7 +529,27 @@ void ModuleGenDocJob::outputUserBlock(const UserBlock& user)
     {
         auto line = user.lines[i];
         line.trim();
-        if (line.length() && line[0] == '*')
+
+        if (user.kind == UserBlockKind::Table)
+        {
+            Vector<Utf8> tkn;
+            Utf8::tokenize(line, '|', tkn);
+            helpContent += "<tr>";
+            for (int it = 0; it < tkn.size(); it++)
+            {
+                auto& t = tkn[it];
+                if (it == 0)
+                    helpContent += "<td class=\"tdname\">";
+                else
+                    helpContent += "<td class=\"tdtype\">";
+                helpContent += getFormattedText(t);
+                helpContent += "</td>";
+            }
+            helpContent += "</tr>\n";
+        }
+
+        // <li>
+        else if (line.length() && line[0] == '*')
         {
             if (!startList)
             {
@@ -565,6 +598,9 @@ void ModuleGenDocJob::outputUserBlock(const UserBlock& user)
         break;
     case UserBlockKind::Blockquote:
         helpContent += "</p></blockquote>\n";
+        break;
+    case UserBlockKind::Table:
+        helpContent += "</table>\n";
         break;
     }
 }
