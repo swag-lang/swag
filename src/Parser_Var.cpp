@@ -359,7 +359,14 @@ bool Parser::doVarDecl(AstNode* parent, AstNode** result, AstNodeKind kind)
     if (!tokenizer.comment.empty() && *result && !(token.flags & TOKENPARSE_EOL_BEFORE_COMMENT))
     {
         (*result)->allocateExtension(ExtensionKind::Misc);
-        (*result)->extMisc()->docComment = std::move(tokenizer.comment);
+
+        Vector<Utf8> tkn;
+        Utf8::tokenize(tokenizer.comment, '\n', tkn);
+        (*result)->extMisc()->docComment = tkn[0];
+
+        tokenizer.comment.clear();
+        for (int i = 1; i < tkn.size(); i++)
+            tokenizer.comment += tkn[i];
     }
 
     return true;

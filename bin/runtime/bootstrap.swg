@@ -42,8 +42,7 @@ namespace Swag
     #[AttrUsage(AttributeUsage.Function)]
     attr Inline()
 
-    // Never inline the following function
-    //
+    // Never inline the following function.
     // This is a hint for the 'llvm' backend.
     #[AttrUsage(AttributeUsage.Function)]
     attr NoInline()
@@ -85,7 +84,6 @@ namespace Swag
     attr NotGeneric()
 
     // Put the following global variable in the 'tls' segment.
-    //
     // A copy of the variable will be available for each thread.
     #[AttrUsage(AttributeUsage.GlobalVariable)]
     attr Tls()
