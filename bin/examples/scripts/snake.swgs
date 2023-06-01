@@ -1,0 +1,175 @@
+#dependencies
+{
+    #import "gui" location="swag@std"
+}
+
+using Gui, Core, Pixel, Math
+
+const ElemSize   = 40
+const SnakeTime  = 250
+
+var g_Snake:        Array'Vector2
+var g_ApplePos:     Vector2
+var g_SnakeSpeed:   Vector2
+var g_Rect:         Rectangle
+var g_Time:         u64
+
+func paintSnake(painter: *Painter)
+{
+    visit p: g_Snake
+    {
+        x := p.x * ElemSize
+        y := p.y * ElemSize
+        painter.fillCircle(x, y, ElemSize*0.45, Argb.Black)
+    }
+}
+
+func paintApple(painter: *Painter)
+{
+    x := g_ApplePos.x * ElemSize
+    y := g_ApplePos.y * ElemSize
+    painter.fillCircle(x, y, ElemSize*0.45, Argb.Red)
+}
+
+func updateCollisionWithApple()->bool
+{
+    head := g_Snake.front()
+    head += g_SnakeSpeed
+
+    if head.x == g_ApplePos.x and head.y == g_ApplePos.y
+    {
+        g_Snake.insertAt(0, head)
+        generateApplePos()
+        return true
+    }
+
+    return false
+}
+
+func updateCollisionWithTail()->bool
+{
+    head := g_Snake.front()
+    head += g_SnakeSpeed
+
+    visit p: g_Snake
+    {
+        if head.x == p.x and p.y == head.y
+        {
+            startGame()
+            return true
+        }
+    }
+
+    return false
+}
+
+func updateSnakePosition()
+{
+    curTime := Time.nowMilliseconds()
+    if curTime - g_Time < SnakeTime
+        return
+
+    g_Time = curTime
+
+    if updateCollisionWithApple()
+        return
+    if updateCollisionWithTail()
+        return
+
+    newHeadPos := g_Snake[0]
+    newHeadPos += g_SnakeSpeed
+    g_Snake.insertAt(0, newHeadPos)
+    g_Snake.removeBack()
+}
+
+func updateSpeed(wnd: *Wnd)
+{
+    dt := wnd.getApp().getDt()
+    kb := wnd.getApp().getKeyboard()
+
+    if kb.isKeyJustPressed(.Up)
+    {
+        g_SnakeSpeed.x = 0
+        g_SnakeSpeed.y = -1
+    }
+
+    if kb.isKeyJustPressed(.Down)
+    {
+        g_SnakeSpeed.x = 0
+        g_SnakeSpeed.y = 1
+    }
+
+    if kb.isKeyJustPressed(.Left)
+    {
+        g_SnakeSpeed.x = -1
+        g_SnakeSpeed.y = 0
+    }
+
+    if kb.isKeyJustPressed(.Right)
+    {
+        g_SnakeSpeed.x = 1
+        g_SnakeSpeed.y = 0
+    }
+}
+
+func generateApplePos()
+{
+    // Generate an apple position that is not behind the snake tail
+    error := true
+    while error
+    {
+        error = false
+        g_ApplePos.x = Random.shared().nextS32(1, cast(s32) ((g_Rect.width-ElemSize)  / ElemSize))
+        g_ApplePos.y = Random.shared().nextS32(1, cast(s32) ((g_Rect.height-ElemSize) / ElemSize))
+        visit p: g_Snake
+        {
+            if p.x == g_ApplePos.x or p.y == g_ApplePos.y
+            {
+                error = true
+                break
+            }
+        }
+    }
+}
+
+func startGame()
+{
+    var initPos: Vector2{g_Rect.width / (2*ElemSize), g_Rect.height / (2*ElemSize)}
+    initPos.round()
+    g_Snake.clear()
+    g_Snake.add(initPos)
+
+    g_SnakeSpeed = {0, 1}
+    generateApplePos()
+}
+
+func onEvent(wnd: *Wnd, evt: *Event)->bool
+{
+    switch evt.kind
+    {
+    case Create:
+        g_Rect = wnd.getClientRect()
+        startGame()
+
+    case Paint:
+        paintEvt := cast(*PaintEvent) evt
+        painter  := paintEvt.bc.painter
+        g_Rect   = wnd.getClientRect()
+
+        updateSnakePosition()
+        updateSpeed(wnd)
+
+        painter.fillRect(g_Rect, Argb.White)
+        paintApple(painter)
+        paintSnake(painter)
+
+        wnd.invalidate()
+    }
+
+    return false
+}
+
+#run
+{
+    Application.runSurface(4100, 50, 800, 512, title: "Snake", hook: &onEvent)
+}

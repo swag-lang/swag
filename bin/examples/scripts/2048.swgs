@@ -1,0 +1,242 @@
+#dependencies
+{
+    #import "gui" location="swag@std"
+}
+
+using Gui, Core, Pixel
+
+const CellCount = 4
+const CellSize  = 128.0
+const Margin    = 8.0
+
+struct Cell
+{
+    x, y:       f32
+    xd, yd:     f32
+    nxd, nyd:   f32
+    val:        s32
+    moving:     bool
+}
+
+var g_EmptyCell:    Cell
+var g_Cells:        Array'Cell
+var g_Font:         *Font
+var g_MoveDirX:     s32
+var g_MoveDirY:     s32
+var g_SomethingIsMoving: bool
+
+func randValue()
+{
+    loop
+    {
+        x := Random.shared().nextS32(0, CellCount-1)
+        y := Random.shared().nextS32(0, CellCount-1)
+        if cellAt(x, y).val
+            continue
+
+        var cell: Cell
+        cell.x, cell.xd, cell.nxd = x
+        cell.y, cell.yd, cell.nyd = y
+        cell.val = Random.shared().nextBool() ? 2 : 4
+        g_Cells.add(cell)
+        break
+    }
+}
+
+func paintGrid(painter: *Painter, rect: Math.Rectangle, dt: f32)
+{
+    painter.fillRect(rect, Color.fromRgb(43,43,43))
+    w := CellSize * CellCount
+
+    var rectGrid: Math.Rectangle
+    rectGrid.x = rect.horzCenter() - w * 0.5
+    rectGrid.y = rect.vertCenter() - w * 0.5
+    rectGrid.width, rectGrid.height = w
+
+    painter.fillRect(rectGrid, Color.fromRgb(187,173,160))
+
+    const CellSizeW = CellSize - (2*Margin)
+    loop x: 4
+    {
+        loop y: 4
+        {
+            xi := rectGrid.x + (x * CellSize) + (Margin)
+            yi := rectGrid.y + (y * CellSize) + (Margin)
+            painter.fillRoundRect(xi, yi, CellSizeW, CellSizeW, 5, 5, Color.fromRgb(204, 192, 178))
+        }
+    }
+
+    wasMoving := g_SomethingIsMoving
+    g_SomethingIsMoving = false
+    visit &c: g_Cells
+    {
+        var color: Color
+
+        xi := rectGrid.x + (c.x * CellSize) + Margin
+        yi := rectGrid.y + (c.y * CellSize) + Margin
+
+        switch c.val
+        {
+        case 0:   color = Color.fromRgb(204, 192, 178)
+        case 2:   color = Color.fromRgb(238, 238, 218)
+        case 4:   color = Color.fromRgb(236, 224, 201)
+        case 8:   color = Color.fromRgb(242, 177, 122)
+        case 16:  color = Color.fromRgb(246, 149, 100)
+        case 32:  color = Color.fromRgb(248, 124, 96)
+        case 64:  color = Color.fromRgb(245, 94, 57)
+        default:  color = Color.fromRgb(238, 194, 46)
+        }
+
+        painter.fillRoundRect(xi, yi, CellSizeW, CellSizeW, 5, 5, color)
+        if c.val
+        {
+            str := Format.toString("%", c.val)
+            painter.drawStringCenter(xi+CellSizeW*0.5,yi+CellSizeW*0.5, str, g_Font, Argb.Black)
+        }
+
+        // End of move
+        if c.moving
+        {
+            c.x = Math.lerp(c.x, c.xd, 20*dt)
+            c.y = Math.lerp(c.y, c.yd, 20*dt)
+            if Math.isEqualEpsilon(c.x, c.xd, 0.01) and Math.isEqualEpsilon(c.y, c.yd, 0.01)
+            {
+                c.moving = false
+                c.x = c.xd
+                c.y = c.yd
+            }
+            else
+            {
+                g_SomethingIsMoving = true
+            }
+        }
+    }
+
+    if wasMoving and !g_SomethingIsMoving
+        randValue()
+}
+
+func cellAt(x, y: s32)->*Cell
+{
+    visit &c: g_Cells
+    {
+        if c.x == x and c.y == y
+            return c
+    }
+
+    return &g_EmptyCell
+}
+
+func canMoveTo(x, y: s32)->bool
+{
+    visit c: g_Cells
+    {
+        if c.val and c.moving and c.xd == x and c.yd == y
+            return false
+        if c.val and !c.moving and c.x == x and c.y == y
+            return false
+    }
+
+    return true
+}
+
+func moveNumbers(wnd: *Wnd)
+{
+    if g_SomethingIsMoving
+        return
+
+    kb := wnd.getApp().getKeyboard()
+
+    switch
+    {
+    case kb.isKeyJustPressed(.Left):
+        g_MoveDirX = -1
+    case kb.isKeyJustPressed(.Right):
+        g_MoveDirX = 1
+    case kb.isKeyJustPressed(.Up):
+        g_MoveDirY = -1
+    case kb.isKeyJustPressed(.Down):
+        g_MoveDirY = 1
+    default:
+        g_MoveDirX, g_MoveDirY = 0
+    }
+
+    recom := true
+    while recom
+    {
+        recom = false
+        visit c: g_Cells
+        {
+            if c.val == 0
+                continue
+
+            loop i: 1..CellCount
+            {
+                if g_MoveDirX != 0
+                {
+                    nx := cast(s32) (c.x + i*g_MoveDirX)
+                    if nx < 0 or nx >= CellCount
+                        break
+                    if c.xd == nx or canMoveTo(nx, cast(s32) c.y)
+                    {
+                        c.moving = true
+                        c.nxd = nx
+                    }
+                    else
+                        break
+                }
+                elif g_MoveDirY != 0
+                {
+                    ny := cast(s32) (c.y + i*g_MoveDirY)
+                    if ny < 0 or ny >= CellCount
+                        break
+                    if c.yd == ny or canMoveTo(cast(s32) c.x, ny)
+                    {
+                        c.moving = true
+                        c.nyd = ny
+                    }
+                    else
+                        break
+                }
+            }
+        }
+
+        visit c: g_Cells
+        {
+            if !c.val
+                continue
+            if Math.isEqualEpsilon(c.xd, c.nxd) and Math.isEqualEpsilon(c.yd, c.nyd)
+                continue
+            recom = true
+            c.xd = c.nxd
+            c.yd = c.nyd
+        }
+    }
+}
+
+func onEvent(wnd: *Wnd, evt: *Event)->bool
+{
+    switch evt.kind
+    {
+    case Create:
+        g_Font = wnd.getTheme().createDefaultFont(50)
+        randValue()
+        randValue()
+
+    case Paint:
+        paintEvt := cast(*PaintEvent) evt
+        painter  := paintEvt.bc.painter
+        rect     := wnd.getClientRect()
+
+        moveNumbers(wnd)
+        paintGrid(painter, rect, wnd.getApp().getDt())
+        wnd.invalidate()
+
+    }
+    return false
+}
+
+#run
+{
+    Application.runSurface(4100, 100, 800, 800, title: "2048", hook: &onEvent)
+}
