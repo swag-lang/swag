@@ -143,11 +143,16 @@ namespace Swag
     // | 'bool'         | Panic if a 'bool' does not have a valid value ('true' or 'false')
     // | 'nan'          | Panic if a 'nan' is used in a float arithmetic operation
     // | 'sanity'       | Do a 'sanity' check (per function)
+    // If 'what' is null or empty, every options are will be affected.
     #[AttrUsage(AttributeUsage.All|AttributeUsage.File)]
     #[AttrMulti]
     attr Safety(what: string, value: bool)
 
     // Enable/Disable a given function optimization.
+    // Options are:
+    // | 'bytecode'   | Enable/Disable bytecode optimization for the function
+    // | 'backend'    | Enable/Disable backend machine code optimization for the function (llvm only)
+    // If 'what' is null or empty, every options will be affected.
     #[AttrUsage(AttributeUsage.Function|AttributeUsage.File)]
     #[AttrMulti]
     attr Optim(what: string, value: bool)
@@ -362,23 +367,26 @@ namespace Swag
     const MaxLenErrorMsg = 128  // Maximum length of an error message
     const MaxTrace = 32         // Maximum stack trace
 
-    // Thread context as returned by [@context]
+    // Thread context as returned by [@context].
     struct Context
     {
         // Must stay first, in that order, for backend generation
-        allocator:      IAllocator
-        flags =         ContextFlags.None
+
+        allocator:      IAllocator              // The current allocator interface
+        flags =         ContextFlags.None       // Context flags
 
         // Other fields, can be in any order
-        tempAllocator:      ScratchAllocator
-        errorMsg:           [MaxLenErrorMsg] u8
-        errorMsgStart:      u32
-        errorMsgLen:        u32
-        traceIndex:         u32
-        trace:              [MaxTrace] const *SourceCodeLocation
-        exceptionLoc:       SourceCodeLocation
-        exceptionParams:    [4] const *void
-        panic:              func(string, SourceCodeLocation)
+
+        tempAllocator:      ScratchAllocator        // A temporary allocator
+
+        errorMsg:           [MaxLenErrorMsg] u8                     // All error messages
+        errorMsgStart:      u32                                     // Current start error message
+        errorMsgLen:        u32                                     // Length of the error messages in 'errorMsg'
+        traceIndex:         u32                                     // The current trace index
+        trace:              [MaxTrace] const *SourceCodeLocation    // Stack trace, in case of errors
+        exceptionLoc:       SourceCodeLocation                      // When an exception is raised, this is the code location
+        exceptionParams:    [4] const *void                         // When an exception is raised, this are the parameters
+        panic:              func(string, SourceCodeLocation)        // A function to call if there's a panic
     }
 
     // #########################################################
@@ -418,7 +426,6 @@ namespace Swag
     }
 
     // The native type if the type is... native.
-    //
     // If the 'kind' of the type is 'TypeInfoKind.Native', then this is the real native type.
     enum TypeInfoNativeKind : u8
     {
@@ -441,37 +448,38 @@ namespace Swag
         Undefined
     }
 
+    // Flags in each [TypeInfo]
     #[Swag.EnumFlags]
     enum TypeInfoFlags: u32
     {
         Zero              = 0x00000000
-        PointerTypeInfo   = 0x00000001
-        Integer           = 0x00000002
-        Float             = 0x00000004
-        Unsigned          = 0x00000008
-        HasPostCopy       = 0x00000010
-        HasPostMove       = 0x00000020
-        HasDrop           = 0x00000040
-        Strict            = 0x00000080
-        CanCopy           = 0x00000100
-        Tuple             = 0x00000200
-        CString           = 0x00000400
-        Generic           = 0x00000800
-        PointerRef        = 0x00001000
-        PointerMoveRef    = 0x00002000
-        PointerArithmetic = 0x00004000
+        PointerTypeInfo   = 0x00000001      // This is a pointer to a [TypeInfo] struct
+        Integer           = 0x00000002      // This is a native integer
+        Float             = 0x00000004      // This is a native float
+        Unsigned          = 0x00000008      // This is a native unsigned integer
+        HasPostCopy       = 0x00000010      // This is a struct with a 'opPostCopy'
+        HasPostMove       = 0x00000020      // This is a struct with a 'opPostMove'
+        HasDrop           = 0x00000040      // This is a struct with a 'opDrop'
+        Strict            = 0x00000080      // #[Swag.Strict has been defined]
+        CanCopy           = 0x00000100      // This is a struct that can be copied
+        Tuple             = 0x00000200      // This is a tuple
+        CString           = 0x00000400      // This is a 'cstring'
+        Generic           = 0x00000800      // This is a generic type
+        PointerRef        = 0x00001000      // This is a reference
+        PointerMoveRef    = 0x00002000      // This is a move reference
+        PointerArithmetic = 0x00004000      // This is a pointer to multiple values
     }
 
     struct Interface
     {
-        obj:    *void
-        itable: const ^^void
+        obj:    *void           // Pointer to the associated struct instance
+        itable: const ^^void    // Pointer to the virtual table
     }
 
     struct AttributeParam
     {
-        name:    string
-        value:   any
+        name:    string     // Name of the attribute parameter
+        value:   any        // Optional default value
     }
 
     struct Attribute
@@ -597,6 +605,7 @@ namespace Swag
         FromCompiler = 1
     }
 
+    // Target processor
     enum TargetArch
     {
         X86_64
@@ -641,6 +650,7 @@ namespace Swag
         fpMathApproxFunc:   bool = false
     }
 
+    // 'x86_64' backend specific options
     struct BuildCfgBackendX64
     {
     }
@@ -655,7 +665,6 @@ namespace Swag
     }
 
     // The native backend sub category.
-    //
     // Under windows, by default, the application will be compiled to make a 'windowed' application. But you can
     // change it and force the application to behave like a 'console' one.
     enum BuildCfgBackendSubKind
@@ -665,7 +674,6 @@ namespace Swag
     }
 
     // These are the optimization levels for the backend.
-    //
     // Only 'LLVM' backend uses this, as the 'X86_64' backend does not have an optimization pass.
     enum BuildCfgBackendOptim
     {
@@ -678,7 +686,6 @@ namespace Swag
     }
 
     // The current module build configuration.
-    //
     // See [ICompiler]
     struct BuildCfg
     {

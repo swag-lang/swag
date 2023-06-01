@@ -924,6 +924,11 @@ void ModuleGenDocJob::outputStyles()
             padding:            2px;\n\
             border: 1px dotted  #cccccc;\n\
         }\n\
+        .tdname .incode {\n\
+            background-color:   revert;\n\
+            padding:            2px;\n\
+            border:             revert;\n\
+        }\n\
         .addinfos {\n\
             font-size:          90%;\n\
             white-space:        break-spaces;\n\

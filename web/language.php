@@ -6602,16 +6602,16 @@ Here is a real life example from the <code>Std.Ogl</code> module (opengl wrapper
 </span><span style="color:#6A9955">// This is another paragraph because there's an empty line before.</span><span style="color:#0">
 </span><span style="color:#6A9955">//</span><span style="color:#0">
 </span><span style="color:#6A9955">// This is yet another paragraph.</span></code></pre><p>The first paragraph is considered to be the 'short description' which can appear on specific parts</br>
-of the documentation. So make it short. If the first line ends with '.', then this marks the end</br>
-of the paragraph, i.e. the end of the short description.</br>
+of the documentation. So make it short.</br>
+</br>
+If the first line ends with a dot <code>.</code>, then this marks the end of the paragraph, i.e. the end of the short description.</br>
 </p>
 <pre><code><span style="color:#6A9955">// This is the short description.</span><span style="color:#0">
 </span><span style="color:#6A9955">// As the previous first line ends with '.', this is another paragraph, so this should be</span><span style="color:#0">
 </span><span style="color:#6A9955">// the long description. No need for an empty line before.</span><span style="color:#0">
 </span><span style="color:#3186CD">func</span><span style="color:#0"> </span><span style="color:#FF6A00">test</span><span style="color:#0">()
 {
-
-}</span></code></pre><p>A paragraph that starts with '---' is a paragraph where every blanks and end of lines</br>
+}</span></code></pre><p>A paragraph that starts with <code>---</code> is a paragraph where every blanks and end of lines</br>
 are respected.</br>
 </p>
 <pre><code><span style="color:#6A9955">// ---</span><span style="color:#0">
@@ -6623,8 +6623,7 @@ are respected.</br>
 </span><span style="color:#6A9955">// ---</span><span style="color:#0">
 </span><span style="color:#3186CD">func</span><span style="color:#0"> </span><span style="color:#FF6A00">test</span><span style="color:#0">()
 {
-
-}</span></code></pre><p>You can create a list of bullet points with '*'.</br>
+}</span></code></pre><p>You can create a list of bullet points with <code>*</code>.</br>
 </p>
 <pre><code><span style="color:#0"> </span><span style="color:#FF6A00">#test</span><span style="color:#0">
  {
@@ -6634,15 +6633,18 @@ are respected.</br>
     </span><span style="color:#3186CD">struct</span><span style="color:#0"> </span><span style="color:#3BC3A7">RGB</span><span style="color:#0">
     {
         r, g, b: </span><span style="color:#ED9A11">s32</span><span style="color:#0">
-   }
-}</span></code></pre><p>You can create a quote with '>'</br>
+    }
+}</span></code></pre><p>You can create a quote with <code>></code></br>
 </p>
-<pre><code><span style="color:#6A9955">// > This is a block quote on multiple</span><span style="color:#0">
+<pre><code><span style="color:#6A9955">// This is the short description.</span><span style="color:#0">
+</span><span style="color:#6A9955">// > This is a block quote on multiple</span><span style="color:#0">
 </span><span style="color:#6A9955">// > lines.</span><span style="color:#0">
+</span><span style="color:#6A9955">// ></span><span style="color:#0">
+</span><span style="color:#6A9955">// > End of the quote.</span><span style="color:#0">
 </span><span style="color:#3186CD">struct</span><span style="color:#0"> </span><span style="color:#3BC3A7">RGB</span><span style="color:#0">
 {
     r, g, b: </span><span style="color:#ED9A11">s32</span><span style="color:#0">
-}</span></code></pre><p>You can create a table with '|'.</br>
+}</span></code></pre><p>You can create a table with <code>|</code>.</br>
 </p>
 <pre><code><span style="color:#6A9955">// A table with 4 lines of 2 columns:</span><span style="color:#0">
 </span><span style="color:#6A9955">// | 'boundcheck'   | Check out of bound access</span><span style="color:#0">
@@ -6651,7 +6653,7 @@ are respected.</br>
 </span><span style="color:#6A9955">// | 'switch'       | Check an invalid case in a '#[Swag.Complete]' switch</span><span style="color:#0">
 </span><span style="color:#3186CD">func</span><span style="color:#0"> </span><span style="color:#FF6A00">myFunc</span><span style="color:#0">()
 {
-}</span></code></pre><p>A paragraph that starts with '<code></code><code>' is a code paragraph.</br>
+}</span></code></pre><p>You can create a code paragraph with three backticks.</br>
 </p>
 <pre><code><span style="color:#6A9955">// For example:</span><span style="color:#0">
 </span><span style="color:#6A9955">// ```</span><span style="color:#0">
@@ -6660,7 +6662,6 @@ are respected.</br>
 </span><span style="color:#6A9955">// ```</span><span style="color:#0">
 </span><span style="color:#3186CD">func</span><span style="color:#0"> </span><span style="color:#FF6A00">test</span><span style="color:#0">()
 {
-
 }</span></code></pre><p>For constants or enum values, the document comment is the one declared at the end of the line.</br>
 </p>
 <pre><code><span style="color:#3186CD">const</span><span style="color:#0"> </span><span style="color:#3BC3A7">A</span><span style="color:#0"> = </span><span style="color:#74A35B">0</span><span style="color:#0">     </span><span style="color:#6A9955">// This is a documentation comment</span><span style="color:#0">
@@ -6675,7 +6676,7 @@ are respected.</br>
 </span><span style="color:#3186CD">struct</span><span style="color:#0"> </span><span style="color:#3BC3A7">RGB</span><span style="color:#0">
 {
     r, g, b: </span><span style="color:#ED9A11">s32</span><span style="color:#0">
-}</span></code></pre><p>You can create a reference to something of the current package with [name] or [name1.name2 etc.]</br>
+}</span></code></pre><p>You can create a reference to something in the current package with [name] or [name1.name2 etc.]</br>
 </p>
 <pre><code><span style="color:#6A9955">// This is a function with a 'value' parameter.</span><span style="color:#0">
 </span><span style="color:#3186CD">func</span><span style="color:#0"> </span><span style="color:#FF6A00">one</span><span style="color:#0">(value: </span><span style="color:#ED9A11">s32</span><span style="color:#0">)
@@ -6685,7 +6686,7 @@ are respected.</br>
 </span><span style="color:#6A9955">// This is a reference to [one]</span><span style="color:#0">
 </span><span style="color:#3186CD">func</span><span style="color:#0"> </span><span style="color:#FF6A00">two</span><span style="color:#0">()
 {
-}</span></code></pre><p>The attribute #[Swag.NoDoc] can be used to avoid a given element to appear in the documentation.</br>
+}</span></code></pre><p>The attribute <code>#[Swag.NoDoc]</code> can be used to avoid a given element to appear in the documentation.</br>
 </p>
 <pre><code><span style="color:#6A9955">// This function will be ignored when generating documentation.</span><span style="color:#0">
 </span><span style="color:#7F7F7F">#[Swag.NoDoc]</span><span style="color:#0">

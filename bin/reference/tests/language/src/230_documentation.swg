@@ -21,8 +21,9 @@ The documentation comment needs to be placed just before a function, struct or e
 
 /**
 The first paragraph is considered to be the 'short description' which can appear on specific parts
-of the documentation. So make it short. If the first line ends with '.', then this marks the end
-of the paragraph, i.e. the end of the short description.
+of the documentation. So make it short.
+
+If the first line ends with a dot `.`, then this marks the end of the paragraph, i.e. the end of the short description.
 */
 #test
 {
@@ -31,12 +32,11 @@ of the paragraph, i.e. the end of the short description.
     // the long description. No need for an empty line before.
     func test()
     {
-
     }
 }
 
 /**
-A paragraph that starts with '---' is a paragraph where every blanks and end of lines
+A paragraph that starts with `---` is a paragraph where every blanks and end of lines
 are respected.
 */
 #test
@@ -50,12 +50,11 @@ are respected.
     // ---
     func test()
     {
-
     }
 }
 
 /**
- You can create a list of bullet points with '*'.
+ You can create a list of bullet points with `*`.
  */
  #test
  {
@@ -65,16 +64,19 @@ are respected.
     struct RGB
     {
         r, g, b: s32
-   }
+    }
 }
 
 /**
-You can create a quote with '>'
+You can create a quote with `>`
 */
 #test
 {
+    // This is the short description.
     // > This is a block quote on multiple
     // > lines.
+    // >
+    // > End of the quote.
     struct RGB
     {
         r, g, b: s32
@@ -82,7 +84,7 @@ You can create a quote with '>'
 }
 
 /**
-You can create a table with '|'.
+You can create a table with `|`.
 */
 #test
 {
@@ -97,7 +99,7 @@ You can create a table with '|'.
 }
 
 /**
-A paragraph that starts with '```' is a code paragraph.
+You can create a code paragraph with three backticks.
 */
 #test
 {
@@ -108,7 +110,6 @@ A paragraph that starts with '```' is a code paragraph.
     // ```
     func test()
     {
-
     }
 }
 
@@ -139,7 +140,7 @@ Some other markdown markers are also supported inside paragraphs.
 }
 
 /**
-You can create a reference to something of the current package with [name] or [name1.name2 etc.]
+You can create a reference to something in the current package with [name] or [name1.name2 etc.]
 */
 #test
 {
@@ -155,7 +156,7 @@ You can create a reference to something of the current package with [name] or [n
 }
 
 /**
-The attribute #[Swag.NoDoc] can be used to avoid a given element to appear in the documentation.
+The attribute `#[Swag.NoDoc]` can be used to avoid a given element to appear in the documentation.
 */
 #test
 {
