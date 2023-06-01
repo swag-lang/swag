@@ -67,6 +67,7 @@ struct ModuleGenDocJob : public Job
     AstOutput                output;
     AstOutput::OutputContext outputCxt;
     Utf8                     helpContent;
+    Utf8                     fullFileName;
     Utf8                     fileName;
 
     MapUtf8<VectorNative<AstNode*>> collect;

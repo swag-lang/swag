@@ -1328,13 +1328,14 @@ JobResult ModuleGenDocJob::execute()
         filePath += ".html";
     }
 
-    fileName = filePath.string();
-    fileName.makeLower();
+    fullFileName = filePath.string();
+    fullFileName.makeLower();
+    fileName = filePath.filename().string();
 
     FILE* f = nullptr;
-    if (fopen_s(&f, fileName.c_str(), "wb"))
+    if (fopen_s(&f, fullFileName.c_str(), "wb"))
     {
-        Report::errorOS(Fmt(Err(Err0524), fileName.c_str()));
+        Report::errorOS(Fmt(Err(Err0524), fullFileName.c_str()));
         return JobResult::ReleaseJob;
     }
 
