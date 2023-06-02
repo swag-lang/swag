@@ -154,13 +154,13 @@ func animate(wnd: *Wnd)
     if wasMoving and !g_IsMoving
         randValue()
 
-    visit &c: g_Cells
+    for i := 0'u64; i < g_Cells.count; i += 1
     {
+        c := ref g_Cells[i]
         if c.remove
         {
-            dref c = g_Cells.back()
-            g_Cells.removeBack()
-            break
+            g_Cells.removeAt(i)
+            i -= 1
         }
     }
 }
