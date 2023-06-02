@@ -21,37 +21,18 @@ struct Cell
     remove:     bool
 }
 
-var g_EmptyCell:    Cell
 var g_Cells:        Array'Cell
 var g_Font:         *Font
 var g_MoveDirX:     s32
 var g_MoveDirY:     s32
 var g_IsMoving:     bool
 var g_GameOver:     bool
+var g_Score:        s32
 
-func randValue()
-{
-    loop
-    {
-        x := Random.shared().nextS32(0, CellCount-1)
-        y := Random.shared().nextS32(0, CellCount-1)
-        if cellAt(x, y).val
-            continue
-
-        var cell: Cell
-        cell.x, cell.xd, cell.nxd = x
-        cell.y, cell.yd, cell.nyd = y
-        cell.val = Random.shared().nextBool() ? 2 : 4
-        g_Cells.add(cell)
-        break
-    }
-}
-
+const RoundCorners = 8.0
 func paintGrid(wnd: *Wnd, painter: *Painter)
 {
     rect := wnd.getClientRect()
-
-    painter.fillRect(rect, Color.fromRgb(43,43,43))
 
     var rectGrid: Math.Rectangle
     w := CellSize * CellCount
@@ -60,6 +41,7 @@ func paintGrid(wnd: *Wnd, painter: *Painter)
     rectGrid.width, rectGrid.height = w
 
     painter.fillRect(rectGrid, Color.fromRgb(187,173,160))
+    painter.setAntialiased(true)
 
     const CellSizeW = CellSize - (2*Margin)
     loop x: 4
@@ -68,7 +50,7 @@ func paintGrid(wnd: *Wnd, painter: *Painter)
         {
             xi := rectGrid.x + (x * CellSize) + (Margin)
             yi := rectGrid.y + (y * CellSize) + (Margin)
-            painter.fillRoundRect(xi, yi, CellSizeW, CellSizeW, 5, 5, Color.fromRgb(204, 192, 178))
+            painter.fillRoundRect(xi, yi, CellSizeW, CellSizeW, RoundCorners, RoundCorners, Color.fromRgb(204, 192, 178))
         }
     }
 
@@ -93,7 +75,7 @@ func paintGrid(wnd: *Wnd, painter: *Painter)
         }
 
         off := (1 - c.z) * 40
-        painter.fillRoundRect(xi+off, yi+off, CellSizeW-2*off, CellSizeW-2*off, 5, 5, color)
+        painter.fillRoundRect(xi+off, yi+off, CellSizeW-2*off, CellSizeW-2*off, RoundCorners, RoundCorners, color)
         if !c.val
             continue
 
@@ -105,7 +87,25 @@ func paintGrid(wnd: *Wnd, painter: *Painter)
     }
 }
 
-func logic(wnd: *Wnd)
+func randValue()
+{
+    loop
+    {
+        x := Random.shared().nextS32(0, CellCount)
+        y := Random.shared().nextS32(0, CellCount)
+        if cellAt(x, y)
+            continue
+
+        var cell: Cell
+        cell.x, cell.xd, cell.nxd = x
+        cell.y, cell.yd, cell.nyd = y
+        cell.val = Random.shared().nextBool() ? 2 : 4
+        g_Cells.add(cell)
+        break
+    }
+}
+
+func animate(wnd: *Wnd)
 {
     dt := wnd.getApp().getDt()
 
@@ -135,6 +135,7 @@ func logic(wnd: *Wnd)
                     dest.remove = true
                     c.val *= 2
                     c.zd = 1.2
+                    g_Score += c.val
                 }
 
                 c.x = c.xd
@@ -171,7 +172,7 @@ func cellAt(x, y: s32, me: *Cell = null)->*Cell
             return c
     }
 
-    return &g_EmptyCell
+    return null
 }
 
 func canMoveTo(val, x, y: s32)->bool
@@ -277,13 +278,17 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
     case Paint:
         paintEvt := cast(*PaintEvent) evt
         painter  := paintEvt.bc.painter
+        rect     := wnd.getClientRect()
 
-        if g_Cells.count == CellCount * CellCount
-            g_GameOver = true
+        painter.fillRect(rect, Color.fromRgb(43,43,43))
+
+        painter.drawStringCenter(rect.horzCenter(), 20, "score", wnd.getTheme().createDefaultFont(25), Argb.White)
+        str := Format.toString("%", g_Score)
+        painter.drawStringCenter(rect.horzCenter(), 60, str, g_Font, Argb.White)
 
         keyboard(wnd)
         paintGrid(wnd, painter)
-        logic(wnd)
+        animate(wnd)
 
         wnd.invalidate()
 
@@ -294,5 +299,5 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
 
 #run
 {
-    Application.runSurface(4100, 100, 800, 800, title: "2048", hook: &onEvent)
+    Application.runSurface(4100, 100, 600, 800, title: "2048", hook: &onEvent)
 }

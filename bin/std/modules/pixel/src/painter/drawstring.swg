@@ -142,7 +142,8 @@ impl Painter
             return
 
         arr := getGlyphs(text, font)
-        if arr.isEmpty() return
+        if arr.isEmpty()
+            return
 
         x := Math.round(left)
         y := Math.round(top + font.ascent*zoom)
@@ -184,16 +185,15 @@ impl Painter
         {
             setTextureFont(font, refr.atlasIndex)
 
-            x1  := x + refr.shiftX*zoom
-            y1  := y - refr.shiftY*zoom
-
-            w := refr.width*zoom
-            h := refr.height*zoom
+            x1 := Math.round(x + refr.shiftX*zoom)
+            y1 := Math.round(y - refr.shiftY*zoom)
+            x2 := Math.round(x + (refr.shiftX*zoom) + (refr.width*zoom))
+            y2 := Math.round(y - (refr.shiftY*zoom) + (refr.height*zoom))
 
             p1  := Vector2{x1, y1}
-            p2  := Vector2{x1 + w, y1}
-            p3  := Vector2{x1, y1 + h}
-            p4  := Vector2{x1 + w, y1 + h}
+            p2  := Vector2{x2, y1}
+            p3  := Vector2{x1, y2}
+            p4  := Vector2{x2, y2}
 
             uv1 := Vector2{refr.uv.x, refr.uv.y}
             uv2 := Vector2{refr.uv.x + refr.uv.width, refr.uv.y}
@@ -203,7 +203,7 @@ impl Painter
             discard pushTriangle(p1, p2, p3, uv1, uv2, uv3, brush.color)
             discard pushTriangle(p3, p2, p4, uv3, uv2, uv4, brush.color)
 
-            x += refr.advanceX*zoom
+            x += Math.round(refr.advanceX*zoom)
         }
 
         resetTextureFont()
