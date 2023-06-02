@@ -46,12 +46,14 @@ func randValue()
     }
 }
 
-func paintGrid(painter: *Painter, rect: Math.Rectangle, dt: f32)
+func paintGrid(wnd: *Wnd, painter: *Painter)
 {
+    rect := wnd.getClientRect()
+
     painter.fillRect(rect, Color.fromRgb(43,43,43))
-    w := CellSize * CellCount
 
     var rectGrid: Math.Rectangle
+    w := CellSize * CellCount
     rectGrid.x = rect.horzCenter() - w * 0.5
     rectGrid.y = rect.vertCenter() - w * 0.5
     rectGrid.width, rectGrid.height = w
@@ -69,8 +71,6 @@ func paintGrid(painter: *Painter, rect: Math.Rectangle, dt: f32)
         }
     }
 
-    wasMoving := g_SomethingIsMoving
-    g_SomethingIsMoving = false
     visit &c: g_Cells
     {
         var color: Color
@@ -92,16 +92,25 @@ func paintGrid(painter: *Painter, rect: Math.Rectangle, dt: f32)
 
         off := (1 - c.z) * 40
         painter.fillRoundRect(xi+off, yi+off, CellSizeW-2*off, CellSizeW-2*off, 5, 5, color)
-        if c.val
-        {
-            str := Format.toString("%", c.val)
-            painter.pushState()
-            painter.scaleTransform(c.z, c.z)
-            painter.translateTransform(xi+CellSizeW*0.5,yi+CellSizeW*0.5)
-            painter.drawStringCenter(0,0, str, g_Font, Argb.Black)
-            painter.popState()
-        }
+        if !c.val
+            continue
 
+        // Paint cell value
+        str := Format.toString("%", c.val)
+        zoom := c.z
+        zoom -= (cast(f32) str.length * 0.08)
+        painter.drawStringCenter(xi + (CellSizeW*0.5), yi + (CellSizeW*0.5), str, g_Font, Argb.Black, zoom: zoom)
+    }
+}
+
+func logic(wnd: *Wnd)
+{
+    dt := wnd.getApp().getDt()
+
+    wasMoving := g_SomethingIsMoving
+    g_SomethingIsMoving = false
+    visit &c: g_Cells
+    {
         // End of scale
         if Math.isEqualEpsilon(c.z, c.zd, 0.01)
             c.zd = 1
@@ -175,7 +184,7 @@ func canMoveTo(val, x, y: s32)->bool
     return true
 }
 
-func moveNumbers(wnd: *Wnd)
+func keyboard(wnd: *Wnd)
 {
     if g_SomethingIsMoving
         return
@@ -259,13 +268,15 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
     case Paint:
         paintEvt := cast(*PaintEvent) evt
         painter  := paintEvt.bc.painter
-        rect     := wnd.getClientRect()
 
-        moveNumbers(wnd)
-        paintGrid(painter, rect, wnd.getApp().getDt())
+        keyboard(wnd)
+        paintGrid(wnd, painter)
+        logic(wnd)
+
         wnd.invalidate()
 
     }
+
     return false
 }
 

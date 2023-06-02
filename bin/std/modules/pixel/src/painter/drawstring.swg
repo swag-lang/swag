@@ -116,26 +116,26 @@ impl Painter
     }
 
     // Draw a simple string (centered)
-    mtd drawStringCenter(x, y: f32, text: string, font: *Font, color: Color, under = UnderlineStyle.None)
+    mtd drawStringCenter(x, y: f32, text: string, font: *Font, color: Color, under = UnderlineStyle.None, zoom = 1.0)
     {
         ms := measureString(text, font)
-        yr := y - ms.height * 0.5
-        yr -= (font.ascent - ms.ascent)
-        drawString(x - ms.width * 0.5, yr, text, font, color, under)
+        yr := y - (ms.height*0.5*zoom)
+        yr -= (font.ascent - ms.ascent) * zoom
+        drawString(x - (ms.width*0.5*zoom), yr, text, font, color, under, zoom)
     }
 
     // Draw a simple string
-    mtd drawString(left, top: f32, text: string, font: *Font, color: Color, under = UnderlineStyle.None)
+    mtd drawString(left, top: f32, text: string, font: *Font, color: Color, under = UnderlineStyle.None, zoom = 1.0)
     {
         if @countof(text) == 0 or color.a == 0
             return
         sharedSolidBrush.type = .SolidColor
         sharedSolidBrush.color = color
-        drawString(left, top, text, font, sharedSolidBrush, under)
+        drawString(left, top, text, font, sharedSolidBrush, under, zoom)
     }
 
     // Draw a simple string
-    mtd drawString(left, top: f32, text: string, font: *Font, brush: Brush, under = UnderlineStyle.None)
+    mtd drawString(left, top: f32, text: string, font: *Font, brush: Brush, under = UnderlineStyle.None, zoom = 1.0)
     {
         if @countof(text) == 0 or brush.color.a == 0
             return
@@ -144,7 +144,7 @@ impl Painter
         if arr.isEmpty() return
 
         x := Math.round(left)
-        y := Math.round(top + font.ascent)
+        y := Math.round(top + font.ascent*zoom)
 
         // Compute text extent only if necessary
         var ms: StringMetrics = undefined
@@ -153,7 +153,7 @@ impl Painter
 
         // Set brush main texture
         if brush.type != .SolidColor
-            setTexture0({x, y - ms.ascent}, {x + ms.width, y + ms.height}, brush)
+            setTexture0({x, y - ms.ascent*zoom}, {x + ms.width*zoom, y + ms.height*zoom}, brush)
         else
             resetTexture0()
 
@@ -168,11 +168,11 @@ impl Painter
             switch under
             {
             case Strikeout:
-                yUnder := y - (ms.ascent / 2)
-                drawLine(x, yUnder, x + ms.width, yUnder, pen)
+                yUnder := y - (ms.ascent*zoom / 2)
+                drawLine(x, yUnder, x + ms.width*zoom, yUnder, pen)
             case Underline:
                 yUnder := y - font.underlinePos
-                drawLine(x, yUnder, x + ms.width, yUnder, pen)
+                drawLine(x, yUnder, x + ms.width*zoom, yUnder, pen)
             }
 
             canSetTexture0 = true
@@ -183,13 +183,16 @@ impl Painter
         {
             setTextureFont(font, refr.atlasIndex)
 
-            x1  := x + refr.shiftX
-            y1  := y - refr.shiftY
+            x1  := x + refr.shiftX*zoom
+            y1  := y - refr.shiftY*zoom
+
+            w := refr.width*zoom
+            h := refr.height*zoom
 
             p1  := Vector2{x1, y1}
-            p2  := Vector2{x1 + refr.width, y1}
-            p3  := Vector2{x1, y1 + refr.height}
-            p4  := Vector2{x1 + refr.width, y1 + refr.height}
+            p2  := Vector2{x1 + w, y1}
+            p3  := Vector2{x1, y1 + h}
+            p4  := Vector2{x1 + w, y1 + h}
 
             uv1 := Vector2{refr.uv.x, refr.uv.y}
             uv2 := Vector2{refr.uv.x + refr.uv.width, refr.uv.y}
@@ -199,7 +202,7 @@ impl Painter
             discard pushTriangle(p1, p2, p3, uv1, uv2, uv3, brush.color)
             discard pushTriangle(p3, p2, p4, uv3, uv2, uv4, brush.color)
 
-            x += refr.advanceX
+            x += refr.advanceX*zoom
         }
 
         resetTextureFont()
