@@ -11,11 +11,13 @@ const Margin    = 8.0
 
 struct Cell
 {
+    z:          f32 = 0.1
     x, y:       f32
     xd, yd:     f32
     nxd, nyd:   f32
     val:        s32
     moving:     bool
+    remove:     bool
 }
 
 var g_EmptyCell:    Cell
@@ -87,11 +89,24 @@ func paintGrid(painter: *Painter, rect: Math.Rectangle, dt: f32)
         default:  color = Color.fromRgb(238, 194, 46)
         }
 
-        painter.fillRoundRect(xi, yi, CellSizeW, CellSizeW, 5, 5, color)
+        off := (1 - c.z) * 40
+        painter.fillRoundRect(xi+off, yi+off, CellSizeW-2*off, CellSizeW-2*off, 5, 5, color)
         if c.val
         {
             str := Format.toString("%", c.val)
-            painter.drawStringCenter(xi+CellSizeW*0.5,yi+CellSizeW*0.5, str, g_Font, Argb.Black)
+            painter.pushState()
+            painter.scaleTransform(c.z, c.z)
+            painter.translateTransform(xi+CellSizeW*0.5,yi+CellSizeW*0.5)
+            painter.drawStringCenter(0,0, str, g_Font, Argb.Black)
+            painter.popState()
+        }
+
+        // End of scale
+        if !Math.isEqualEpsilon(c.z, 1, 0.01)
+        {
+            c.z = Math.lerp(c.z, 1, 20*dt)
+            if Math.isEqualEpsilon(c.z, 1, 0.01)
+                c.z = 1
         }
 
         // End of move
@@ -102,6 +117,15 @@ func paintGrid(painter: *Painter, rect: Math.Rectangle, dt: f32)
             if Math.isEqualEpsilon(c.x, c.xd, 0.01) and Math.isEqualEpsilon(c.y, c.yd, 0.01)
             {
                 c.moving = false
+                dest := cellAt(cast(s32) c.xd, cast(s32) c.yd, c)
+                if dest and dest.val
+                {
+                    c.moving = true
+                    dest.remove = true
+                    c.val *= 2
+                    c.z = 1.3
+                }
+
                 c.x = c.xd
                 c.y = c.yd
             }
@@ -114,12 +138,23 @@ func paintGrid(painter: *Painter, rect: Math.Rectangle, dt: f32)
 
     if wasMoving and !g_SomethingIsMoving
         randValue()
+
+    visit &c: g_Cells
+    {
+        if c.remove
+        {
+            dref c = g_Cells.back()
+            g_Cells.removeBack()
+        }
+    }
 }
 
-func cellAt(x, y: s32)->*Cell
+func cellAt(x, y: s32, me: *Cell = null)->*Cell
 {
     visit &c: g_Cells
     {
+        if c == me
+            continue
         if c.x == x and c.y == y
             return c
     }
@@ -127,13 +162,13 @@ func cellAt(x, y: s32)->*Cell
     return &g_EmptyCell
 }
 
-func canMoveTo(x, y: s32)->bool
+func canMoveTo(val, x, y: s32)->bool
 {
     visit c: g_Cells
     {
-        if c.val and c.moving and c.xd == x and c.yd == y
+        if c.val and c.moving and c.xd == x and c.yd == y and c.val != val
             return false
-        if c.val and !c.moving and c.x == x and c.y == y
+        if c.val and !c.moving and c.x == x and c.y == y and c.val != val
             return false
     }
 
@@ -174,29 +209,27 @@ func moveNumbers(wnd: *Wnd)
             {
                 if g_MoveDirX != 0
                 {
-                    nx := cast(s32) (c.x + i*g_MoveDirX)
+                    nx := cast(s32) (c.xd + i*g_MoveDirX)
                     if nx < 0 or nx >= CellCount
                         break
-                    if c.xd == nx or canMoveTo(nx, cast(s32) c.y)
+                    if c.xd == nx or canMoveTo(c.val, nx, cast(s32) c.y)
                     {
                         c.moving = true
                         c.nxd = nx
                     }
-                    else
-                        break
+                    break
                 }
                 elif g_MoveDirY != 0
                 {
-                    ny := cast(s32) (c.y + i*g_MoveDirY)
+                    ny := cast(s32) (c.yd + i*g_MoveDirY)
                     if ny < 0 or ny >= CellCount
                         break
-                    if c.yd == ny or canMoveTo(cast(s32) c.x, ny)
+                    if c.yd == ny or canMoveTo(c.val, cast(s32) c.x, ny)
                     {
                         c.moving = true
                         c.nyd = ny
                     }
-                    else
-                        break
+                    break
                 }
             }
         }
