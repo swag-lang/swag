@@ -181,29 +181,60 @@ impl Painter
         }
 
         updateFont(font)
-        visit refr: arr
+
+        if zoom == 1
         {
-            setTextureFont(font, refr.atlasIndex)
+            visit refr: arr
+            {
+                setTextureFont(font, refr.atlasIndex)
 
-            x1 := Math.round(x + refr.shiftX*zoom)
-            y1 := Math.round(y - refr.shiftY*zoom)
-            x2 := Math.round(x + (refr.shiftX*zoom) + (refr.width*zoom))
-            y2 := Math.round(y - (refr.shiftY*zoom) + (refr.height*zoom))
+                x1 := x + refr.shiftX
+                y1 := y - refr.shiftY
+                x2 := x1 + refr.width
+                y2 := y1 + refr.height
 
-            p1  := Vector2{x1, y1}
-            p2  := Vector2{x2, y1}
-            p3  := Vector2{x1, y2}
-            p4  := Vector2{x2, y2}
+                p1  := Vector2{x1, y1}
+                p2  := Vector2{x2, y1}
+                p3  := Vector2{x1, y2}
+                p4  := Vector2{x2, y2}
 
-            uv1 := Vector2{refr.uv.x, refr.uv.y}
-            uv2 := Vector2{refr.uv.x + refr.uv.width, refr.uv.y}
-            uv3 := Vector2{refr.uv.x, refr.uv.y + refr.uv.height}
-            uv4 := Vector2{refr.uv.x + refr.uv.width, refr.uv.y + refr.uv.height}
+                uv1 := Vector2{refr.uv.x, refr.uv.y}
+                uv2 := Vector2{refr.uv.x + refr.uv.width, refr.uv.y}
+                uv3 := Vector2{refr.uv.x, refr.uv.y + refr.uv.height}
+                uv4 := Vector2{refr.uv.x + refr.uv.width, refr.uv.y + refr.uv.height}
 
-            discard pushTriangle(p1, p2, p3, uv1, uv2, uv3, brush.color)
-            discard pushTriangle(p3, p2, p4, uv3, uv2, uv4, brush.color)
+                discard pushTriangle(p1, p2, p3, uv1, uv2, uv3, brush.color)
+                discard pushTriangle(p3, p2, p4, uv3, uv2, uv4, brush.color)
 
-            x += Math.round(refr.advanceX*zoom)
+                x += refr.advanceX
+            }
+        }
+        else
+        {
+            visit refr: arr
+            {
+                setTextureFont(font, refr.atlasIndex)
+
+                x1 := Math.round(x + refr.shiftX*zoom)
+                y1 := Math.round(y - refr.shiftY*zoom)
+                x2 := Math.round(x + (refr.shiftX*zoom) + (refr.width*zoom))
+                y2 := Math.round(y - (refr.shiftY*zoom) + (refr.height*zoom))
+
+                p1  := Vector2{x1, y1}
+                p2  := Vector2{x2, y1}
+                p3  := Vector2{x1, y2}
+                p4  := Vector2{x2, y2}
+
+                uv1 := Vector2{refr.uv.x, refr.uv.y}
+                uv2 := Vector2{refr.uv.x + refr.uv.width, refr.uv.y}
+                uv3 := Vector2{refr.uv.x, refr.uv.y + refr.uv.height}
+                uv4 := Vector2{refr.uv.x + refr.uv.width, refr.uv.y + refr.uv.height}
+
+                discard pushTriangle(p1, p2, p3, uv1, uv2, uv3, brush.color)
+                discard pushTriangle(p3, p2, p4, uv3, uv2, uv4, brush.color)
+
+                x += Math.round(refr.advanceX*zoom)
+            }
         }
 
         resetTextureFont()
