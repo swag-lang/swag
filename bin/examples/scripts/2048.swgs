@@ -27,6 +27,7 @@ var g_Font:         *Font
 var g_MoveDirX:     s32
 var g_MoveDirY:     s32
 var g_IsMoving:     bool
+var g_GameOver:     bool
 
 func randValue()
 {
@@ -87,6 +88,7 @@ func paintGrid(wnd: *Wnd, painter: *Painter)
         case 16:  color = Color.fromRgb(246, 149, 100)
         case 32:  color = Color.fromRgb(248, 124, 96)
         case 64:  color = Color.fromRgb(245, 94, 57)
+        case 128: color = Color.fromRgb(237, 208, 115)
         default:  color = Color.fromRgb(238, 194, 46)
         }
 
@@ -154,6 +156,7 @@ func logic(wnd: *Wnd)
         {
             dref c = g_Cells.back()
             g_Cells.removeBack()
+            break
         }
     }
 }
@@ -192,7 +195,7 @@ func canMoveTo(val, x, y: s32)->bool
 
 func keyboard(wnd: *Wnd)
 {
-    if g_IsMoving
+    if g_IsMoving or g_GameOver
         return
 
     kb := wnd.getApp().getKeyboard()
@@ -274,6 +277,9 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
     case Paint:
         paintEvt := cast(*PaintEvent) evt
         painter  := paintEvt.bc.painter
+
+        if g_Cells.count == CellCount * CellCount
+            g_GameOver = true
 
         keyboard(wnd)
         paintGrid(wnd, painter)
