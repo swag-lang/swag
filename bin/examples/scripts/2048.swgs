@@ -12,6 +12,7 @@ const Margin    = 8.0
 struct Cell
 {
     z:          f32 = 0.1
+    zd:         f32 = 1.0
     x, y:       f32
     xd, yd:     f32
     nxd, nyd:   f32
@@ -102,19 +103,18 @@ func paintGrid(painter: *Painter, rect: Math.Rectangle, dt: f32)
         }
 
         // End of scale
-        if !Math.isEqualEpsilon(c.z, 1, 0.01)
-        {
-            c.z = Math.lerp(c.z, 1, 20*dt)
-            if Math.isEqualEpsilon(c.z, 1, 0.01)
-                c.z = 1
-        }
+        if Math.isEqualEpsilon(c.z, c.zd, 0.01)
+            c.zd = 1
+        c.z = Math.lerp(c.z, c.zd, 20*dt)
+        if Math.isEqualEpsilon(c.z, 1, 0.01)
+            c.z = 1
 
         // End of move
         if c.moving
         {
             c.x = Math.lerp(c.x, c.xd, 20*dt)
             c.y = Math.lerp(c.y, c.yd, 20*dt)
-            if Math.isEqualEpsilon(c.x, c.xd, 0.01) and Math.isEqualEpsilon(c.y, c.yd, 0.01)
+            if Math.isEqualEpsilon(c.x, c.xd, 0.1) and Math.isEqualEpsilon(c.y, c.yd, 0.1)
             {
                 c.moving = false
                 dest := cellAt(cast(s32) c.xd, cast(s32) c.yd, c)
@@ -123,7 +123,7 @@ func paintGrid(painter: *Painter, rect: Math.Rectangle, dt: f32)
                     c.moving = true
                     dest.remove = true
                     c.val *= 2
-                    c.z = 1.3
+                    c.zd = 1.2
                 }
 
                 c.x = c.xd
