@@ -35,13 +35,16 @@ func paintGrid(wnd: *Wnd, painter: *Painter)
     rect := wnd.getClientRect()
 
     var rectGrid: Math.Rectangle
-    w := CellSize * CellCount
-    rectGrid.x = rect.horzCenter() - w * 0.5
-    rectGrid.y = rect.vertCenter() - w * 0.5
-    rectGrid.width, rectGrid.height = w
 
-    painter.fillRect(rectGrid, Color.fromRgb(187,173,160))
+    size := CellSize * CellCount
+    rectGrid.x = rect.horzCenter() - size * 0.5
+    rectGrid.y = rect.bottom() - size - 3*Margin
+    rectGrid.width, rectGrid.height = size
+
     painter.setAntialiased(true)
+    rectBack := rectGrid
+    rectBack.inflate(Margin)
+    painter.fillRoundRect(rectBack, RoundCorners, RoundCorners, Color.fromRgb(187,173,160))
 
     const CellSizeW = CellSize - (2*Margin)
     loop x: 4
@@ -299,5 +302,5 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
 
 #run
 {
-    Application.runSurface(4100, 100, 600, 800, title: "2048", hook: &onEvent)
+    Application.runSurface(4100, 100, 600, 730, title: "2048", hook: &onEvent)
 }
