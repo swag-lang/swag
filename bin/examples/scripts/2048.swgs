@@ -26,7 +26,7 @@ var g_Cells:        Array'Cell
 var g_Font:         *Font
 var g_MoveDirX:     s32
 var g_MoveDirY:     s32
-var g_SomethingIsMoving: bool
+var g_IsMoving:     bool
 
 func randValue()
 {
@@ -107,8 +107,8 @@ func logic(wnd: *Wnd)
 {
     dt := wnd.getApp().getDt()
 
-    wasMoving := g_SomethingIsMoving
-    g_SomethingIsMoving = false
+    wasMoving := g_IsMoving
+    g_IsMoving = false
     visit &c: g_Cells
     {
         // End of scale
@@ -140,12 +140,12 @@ func logic(wnd: *Wnd)
             }
             else
             {
-                g_SomethingIsMoving = true
+                g_IsMoving = true
             }
         }
     }
 
-    if wasMoving and !g_SomethingIsMoving
+    if wasMoving and !g_IsMoving
         randValue()
 
     visit &c: g_Cells
@@ -173,12 +173,18 @@ func cellAt(x, y: s32, me: *Cell = null)->*Cell
 
 func canMoveTo(val, x, y: s32)->bool
 {
+    cpt := 0
     visit c: g_Cells
     {
-        if c.val and c.moving and c.xd == x and c.yd == y and c.val != val
-            return false
-        if c.val and !c.moving and c.x == x and c.y == y and c.val != val
-            return false
+        if (c.val and c.moving and c.xd == x and c.yd == y) or
+           (c.val and !c.moving and c.x == x and c.y == y)
+        {
+            if c.val != val
+                return false
+            cpt += 1
+            if cpt > 1
+                return false
+        }
     }
 
     return true
@@ -186,7 +192,7 @@ func canMoveTo(val, x, y: s32)->bool
 
 func keyboard(wnd: *Wnd)
 {
-    if g_SomethingIsMoving
+    if g_IsMoving
         return
 
     kb := wnd.getApp().getKeyboard()
