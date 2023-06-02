@@ -29,6 +29,7 @@ enum StringFormatFlags
     Default
     WordWrap
     Clip
+    DontAdaptSingleLineHeight
 }
 
 struct StringMetrics
@@ -338,7 +339,10 @@ impl Painter
         }
         else if singleLine
         {
-            totalHeight = lines[0].measure.height
+            if format.flags & .DontAdaptSingleLineHeight
+                totalHeight = format.font.regular.height
+            else
+                totalHeight = lines[0].measure.height
         }
 
         switch format.vertAlignment
@@ -352,8 +356,9 @@ impl Painter
         text.boundRect.width = 0
         text.boundRect.height = totalHeight
 
+
         // Y correction if single line
-        if singleLine
+        if singleLine and !(format.flags & .DontAdaptSingleLineHeight)
             y -= (format.font.regular.ascent - lines[0].measure.ascent)
 
         // Layout
