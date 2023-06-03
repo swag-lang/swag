@@ -6,7 +6,7 @@
 using Gui, Core, Pixel, Math
 
 const ElemSize   = 40
-const SnakeTime  = 250
+const SnakeTime  = 150
 
 var g_Snake:        Array'Vector2
 var g_ApplePos:     Vector2
@@ -16,11 +16,17 @@ var g_Time:         u64
 
 func paintSnake(painter: *Painter)
 {
+    scale := 0.52
     visit p: g_Snake
     {
         x := p.x * ElemSize
         y := p.y * ElemSize
-        painter.fillCircle(x, y, ElemSize*0.45, Argb.Black)
+
+        painter.fillCircle(x, y, ElemSize*scale, Argb.Black)
+        if @index == 0
+            painter.fillCircle(x, y, ElemSize*0.45, Argb.Green)
+        scale -= 0.025
+        scale = Math.max(scale, 0.4)
     }
 }
 
@@ -31,11 +37,22 @@ func paintApple(painter: *Painter)
     painter.fillCircle(x, y, ElemSize*0.45, Argb.Red)
 }
 
-func updateCollisionWithApple()->bool
+func updateCollisions()->bool
 {
     head := g_Snake.front()
     head += g_SnakeSpeed
 
+    // Outside
+    if head.x < 1 or
+       head.y < 1 or
+       head.x > cast(s32) (g_Rect.width / ElemSize) or
+       head.y > cast(s32) (g_Rect.height / ElemSize)
+    {
+        startGame()
+        return true
+    }
+
+    // Collision with head
     if head.x == g_ApplePos.x and head.y == g_ApplePos.y
     {
         g_Snake.insertAt(0, head)
@@ -43,14 +60,7 @@ func updateCollisionWithApple()->bool
         return true
     }
 
-    return false
-}
-
-func updateCollisionWithTail()->bool
-{
-    head := g_Snake.front()
-    head += g_SnakeSpeed
-
+    // Collision with tail
     visit p: g_Snake
     {
         if head.x == p.x and p.y == head.y
@@ -71,9 +81,7 @@ func updateSnakePosition()
 
     g_Time = curTime
 
-    if updateCollisionWithApple()
-        return
-    if updateCollisionWithTail()
+    if updateCollisions()
         return
 
     newHeadPos := g_Snake[0]
@@ -84,7 +92,6 @@ func updateSnakePosition()
 
 func updateSpeed(wnd: *Wnd)
 {
-    dt := wnd.getApp().getDt()
     kb := wnd.getApp().getKeyboard()
 
     if kb.isKeyJustPressed(.Up)
@@ -119,11 +126,11 @@ func generateApplePos()
     while error
     {
         error = false
-        g_ApplePos.x = Random.shared().nextS32(1, cast(s32) ((g_Rect.width-ElemSize)  / ElemSize))
-        g_ApplePos.y = Random.shared().nextS32(1, cast(s32) ((g_Rect.height-ElemSize) / ElemSize))
+        g_ApplePos.x = Random.shared().nextS32(1, cast(s32) (g_Rect.width  / ElemSize))
+        g_ApplePos.y = Random.shared().nextS32(1, cast(s32) (g_Rect.height / ElemSize))
         visit p: g_Snake
         {
-            if p.x == g_ApplePos.x or p.y == g_ApplePos.y
+            if p.x == g_ApplePos.x and p.y == g_ApplePos.y
             {
                 error = true
                 break
