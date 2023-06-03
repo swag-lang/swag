@@ -185,8 +185,9 @@ bool SemanticJob::resolveBinaryOpPlus(SemanticContext* context, AstNode* left, A
         }
     }
 
-    // Mul add
-    if (leftTypeInfo->isNativeFloat())
+    // Mul+add
+    // Must be float, without a dynamic cast
+    if (leftTypeInfo->isNativeFloat() && !left->castedTypeInfo && !node->castedTypeInfo)
     {
         if (left->kind == AstNodeKind::FactorOp && left->tokenId == TokenId::SymAsterisk)
         {
