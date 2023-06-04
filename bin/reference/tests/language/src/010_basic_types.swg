@@ -2,12 +2,13 @@
 {
     // These are all signed integers types `s8`, `s16`, `s32` and `s64`.
     {
-        var a: s8 = -1      // 8 bits signed integer
+        var a: s8  = -1     // 8 bits signed integer
         var b: s16 = -2     // 16 bits signed integer
         var c: s32 = -3     // 32 bits signed integer
         var d: s64 = -4     // 64 bits signed integer
 
-        // Remember that the instrinsic '@assert' will raise an error at runtime if the enclosed expression is false.
+        // Remember that the instrinsic '@assert' will raise an error at runtime if
+        // the enclosed expression is false.
         @assert(a == -1)
         @assert(b == -2)
         @assert(c == -3)
@@ -22,7 +23,7 @@
 
     // These are all unsigned integers types `u8`, `u16`, `u32` and `u64`.
     {
-        var a: u8 = 1       // 8 bits unsigned integer
+        var a: u8  = 1      // 8 bits unsigned integer
         var b: u16 = 2      // 16 bits unsigned integer
         var c: u32 = 3      // 32 bits unsigned integer
         var d: u64 = 4      // 64 bits unsigned integer
@@ -62,7 +63,7 @@
         @assert(@sizeof(b) == 1)
     }
 
-    // The `string` type. Strings are **UTF8**, and are stored as two 64 bits (the pointer to the value and the string length in bytes). Note that a string literal ends with a null character like in C.
+    // The `string` type. Strings are **UTF8**, and are stored as two 64 bits (the pointer to the value and the string length in bytes). Note that a string literal also ends with a null byte like in C.
     {
         var a: string = "string 是"
         @assert(a == "string 是")

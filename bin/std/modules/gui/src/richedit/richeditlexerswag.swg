@@ -44,6 +44,8 @@ struct RichEditLexerSwag
         Constant
         String
         Numeric
+        NumericHex
+        NumericBin
         NumericFrac
         Attribute
     }
@@ -77,6 +79,8 @@ impl IRichEditLexer for RichEditLexerSwag
         mapStyles[State.String]             = String
         mapStyles[State.Numeric]            = Numeric
         mapStyles[State.NumericFrac]        = Numeric
+        mapStyles[State.NumericHex]         = Numeric
+        mapStyles[State.NumericBin]         = Numeric
         mapStyles[State.Attribute]          = Preprocessor
 
         ed.styles[Comment].colFg      = 0xFF6A9955
@@ -436,7 +440,7 @@ impl IRichEditLexer for RichEditLexerSwag
             {
                 switch currentState
                 {
-                case State.NumericFrac, State.Numeric:
+                case State.NumericFrac, State.Numeric, State.NumericHex, State.NumericBin:
                     currentState = State.Default
                     break
                 }
@@ -447,7 +451,7 @@ impl IRichEditLexer for RichEditLexerSwag
             switch currentState
             {
             case State.NumericFrac:
-                if Unicode.isNumber(c)
+                if Unicode.isNumber(c) or c == "_"'u8
                 {
                     seekNext()
                     continue
@@ -464,7 +468,42 @@ impl IRichEditLexer for RichEditLexerSwag
 
                 currentState = State.Default
 
+            case State.NumericHex:
+                if Unicode.isNumber(c) or c == "_"'u8
+                {
+                    seekNext()
+                    continue
+                }
+
+                if !Unicode.isLatin1(c) or !Latin1.isHexDigit(cast(u8) c)
+                {
+                    currentState = State.Default
+                    seekNext()
+                    continue
+                }
+
+            case State.NumericBin:
+                if Unicode.isNumber(c) or c == "_"'u8
+                {
+                    seekNext()
+                    continue
+                }
+
+                if c != "0"'rune and c != "1"'rune
+                {
+                    currentState = State.Default
+                    seekNext()
+                    continue
+                }
+
             case State.Numeric:
+                if c == "."'rune and cn == "."'rune
+                {
+                    currentState = State.Default
+                    seekNext()
+                    continue
+                }
+
                 if c == "."'rune or c == "e"'rune or c == "E"'rune
                 {
                     currentState = State.NumericFrac
@@ -566,6 +605,22 @@ impl IRichEditLexer for RichEditLexerSwag
                 if c == "\""'rune
                 {
                     currentState = State.String
+                    seekNext()
+                    continue
+                }
+
+                if Unicode.isNumber(c) and Unicode.toLower(cn) == "b"'u8
+                {
+                    currentState = State.NumericBin
+                    seekNext()
+                    seekNext()
+                    continue
+                }
+
+                if Unicode.isNumber(c) and Unicode.toLower(cn) == "x"'u8
+                {
+                    currentState = State.NumericHex
+                    seekNext()
                     seekNext()
                     continue
                 }

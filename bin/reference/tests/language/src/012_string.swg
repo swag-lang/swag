@@ -9,8 +9,8 @@ In Swag, strings are encoded in UTF8.
         const a = "this is a chinese character: 是"
         #assert a == "this is a chinese character: 是"
 
-        const b = "this are some cyrillic characters: ӜИ"
-        #assert b == "this are some cyrillic characters: ӜИ"
+        const b = "these are some cyrillic characters: ӜИ"
+        #assert b == "these are some cyrillic characters: ӜИ"
     }
 
     // A rune is an unicode codepoint, and is 32 bits.
@@ -35,8 +35,8 @@ You cannot index a string to get a rune, except in ascii strings. This is becaus
         #assert b == "t"'u8
         #assert @typeof(b) == @typeof(u8)
 
-        // Here, the 'X' character in the middle does not have the index '1', because the chinese character before is
-        // encoded in UTF8 with more than 1 byte.
+        // Here, the 'X' character in the middle does not have the index '1', because the
+        // chinese character before is encoded in UTF8 with more than 1 byte.
         const c = "是X是"
         #assert c[1] != "X"'u8 // False because the byte number 1 is not the character 'X'
     }
@@ -132,8 +132,9 @@ A *raw string* does not transform the escape sequences inside it.
                     string
                     "@
 
-        // Every blanks before the ending mark `"@` will be removed from every other lines, so the string before is equivalent to :
-        //
+        // Every blanks before the ending mark `"@` will be removed from every other lines,
+        // so the string before is equivalent to :
+
         // this is
         // a
         // string
@@ -153,12 +154,14 @@ A multiline string starts and ends with `"""`. Unlike raw strings, they still ev
                      """
 
         // Equivalent to :
+
         // this is
         // a
         // string
     }
 
-    // In a multiline or a raw string, if you end a line with `\`, the following <eol> will **not** be part of the string.
+    // In a multiline or a raw string, if you end a line with `\`, the following "eol"
+    // will **not** be part of the string.
     {
         const a = """\
                      this is
@@ -181,23 +184,23 @@ A single *character* can be casted to every unsigned integer type.
     {
         var a = "0"'u8
         @assert(a == 48)
-        @assert(@typeof(a)== @typeof(u8))
+        @assert(@typeof(a) == @typeof(u8))
 
         var b = "1"'u16
         @assert(b == 49)
-        @assert(@typeof(b)== @typeof(u16))
+        @assert(@typeof(b) == @typeof(u16))
 
         var c = "2"'u32
         @assert(c == 50)
-        @assert(@typeof(c)== @typeof(u32))
+        @assert(@typeof(c) == @typeof(u32))
 
         var d = "3"'u64
         @assert(d == 51)
-        @assert(@typeof(d)== @typeof(u64))
+        @assert(@typeof(d) == @typeof(u64))
 
         var e = "4"'rune
         @assert(e == 52)
-        @assert(@typeof(e)== @typeof(rune))
+        @assert(@typeof(e) == @typeof(rune))
     }
 }
 
