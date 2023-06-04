@@ -21,10 +21,10 @@
 <div
 style="margin-top:40px;padding-bottom:40px;color:White;font-size:20px;">
 <p align="center">
-<a href="getting_started.php" style="color:Yellow;">Getting Started</a>
+<a href="getting_started.php" style="color:Orange;">Getting Started</a>
 </p>
 <p align="center">
-<a href="https://github.com/swag-lang/swag/releases" style="color:Yellow;">Download
+<a href="https://github.com/swag-lang/swag/releases" style="color:Orange;">Download
 the Compiler</a>
 </p>
 </div>
@@ -64,20 +64,17 @@ programmation, generics, a powerful macro system…
 </td>
 </tr>
 </table>
-<p align="center" style="padding-top:30px;">
+<p align="center" style="padding:30px;">
 <img src="imgs/syntax.png">
 </p>
-<div
-style="margin-top:50px;background-color:DarkGray;color:white;padding:40px;">
-<ul>
-<li>To take a look at the language, this is <a
-href="language.php">here</a>.</li>
-<li>To take a look at the standard list of modules, this is <a
-href="std.php">here</a>.</li>
-<li>To use Swag as a scripting language, this is <a
-href="swag_as_script.php">here</a></li>
-</ul>
-</div>
+<blockquote>
+<p>To take a look at the language, this is <a
+href="language.php">here</a>.</p>
+<p>To take a look at the standard list of modules, this is <a
+href="std.php">here</a>.</p>
+<p>To use Swag as a scripting language, this is <a
+href="swag_as_script.php">here</a></p>
+</blockquote>
 </div>
 </div>
 <?php include('html_end.php'); ?>

@@ -27,6 +27,14 @@ p code {
     font-size:          0.8em;
 }
 
+li code {
+    background-color:   #eeeeee;
+    border:             1px dotted #cccccc;
+    padding:            2px;
+    margin:             0px;
+    font-size:          0.8em;
+}
+
 pre {
     background-color:   #eeeeee;
     border:             1px solid LightGrey;
