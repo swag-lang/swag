@@ -16,7 +16,7 @@ Note that a simple `visual studio code` [extension](https://marketplace.visualst
     <img width="50%" height="50%" src="https://github.com/swag-lang/swag/blob/master/vscode/images/syntax.png">
 </p>
 
-Here is a **screen capture software** fully written in Swag with the help of the [Swag standard modules](https://www.swag-lang.org/libraries.php) (`core`, `pixel`, `gui`...). It could be compiled as a native executable (fast) or just interpreted as a script (less... fast). Code is [there](https://github.com/swag-lang/swag/blob/master/bin/examples/modules/captme/src).
+Here is a **screen capture software** fully written in Swag with the help of the [Swag standard modules](https://www.swag-lang.org/std.php) (`core`, `pixel`, `gui`...). It could be compiled as a native executable (fast) or just interpreted as a script (less... fast). Code is [there](https://github.com/swag-lang/swag/blob/master/bin/examples/modules/captme/src).
 
 <p align="center">
     <img width="70%" height="50%" src="https://github.com/swag-lang/swag/blob/master/web/imgs/captme.png">
