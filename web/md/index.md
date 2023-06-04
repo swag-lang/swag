@@ -2,7 +2,7 @@
 >
 > There's no "official" release yet. 
 >
-> Eveything (including this web site) is still under construction...
+> Everything (including this web site) is still under construction...
 
 <div style="background-color:Black">
 

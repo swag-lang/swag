@@ -9,7 +9,7 @@
 <blockquote>
 <p><strong>Work in progress</strong>.</p>
 <p>There’s no “official” release yet.</p>
-<p>Eveything (including this web site) is still under construction…</p>
+<p>Everything (including this web site) is still under construction…</p>
 </blockquote>
 <div style="background-color:Black">
 <p align="center" style="padding-top:30px;">
