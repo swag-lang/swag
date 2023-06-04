@@ -2,8 +2,11 @@
 {
     // `visit` is used to visit all the elements of a collection.
     {
+        // Here we visit every bytes of the string.
+        // At each iteration, the byte will be stored in the variable 'value'
         visit value: "ABC"
         {
+            // '@index' is also available. It stores the loop index.
             a := @index
             switch a
             {
@@ -14,7 +17,7 @@
         }
     }
 
-    // You can name both the value and the loop index, in that order.
+    // You can name both the **value** and the loop **index**, in that order.
     {
         visit value, index: "ABC"
         {
@@ -28,7 +31,7 @@
         }
     }
 
-    // Both names are optional. In that case, you can use `@alias0` and `@alias1`. `@alias0` for the value, and `@alias1` for the index
+    // Both names are optional. In that case, you can use `@alias0` and `@alias1`. `@alias0` for the value, and `@alias1` for the index.
     {
         visit "ABC"
         {

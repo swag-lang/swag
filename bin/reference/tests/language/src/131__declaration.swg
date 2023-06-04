@@ -1,7 +1,7 @@
 /**
 A function can be generic by specifying some parameters after `func`.
 At the call site, you specify the generic parameters with `funcCall'(type1, type2, ...)(parameters)`.
-Note that parenthesis can be ommited if there's only one generic parameter.
+Note that parenthesis can be omitted if there's only one generic parameter.
 */
 #test
 {
@@ -14,7 +14,8 @@ Note that parenthesis can be ommited if there's only one generic parameter.
     }
 
     {
-        // You can omit 'var' to declare the generic type, because a single identifier is considered to be a type.
+        // You can omit 'var' to declare the generic type, because a single identifier
+        // is considered to be a type.
         func(T) myFunc(val: T) => 2 * val
 
         @assert(myFunc's32(2) == 4)
@@ -88,7 +89,8 @@ You can mix types and constants.
 #test
 {
     {
-        // `T` is a type, `N` is a constant of type `s32`, because remember that an identifier alone is considered to be a generic type.
+        // `T` is a type, `N` is a constant of type `s32`, because remember that an identifier
+        // alone is considered to be a generic type.
         func(T, N: s32) myFunc(x: T) => x * N
 
         alias call = myFunc'(s32, 10)

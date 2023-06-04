@@ -23,7 +23,7 @@ impl MyStruct
 }
 
 /**
-You can have multiple `impl` blocks. The difference with a namespace is that `self` and `Self` are defined inside an impl block. They refere to the corresponding type.
+You can have multiple `impl` blocks. The difference with a namespace is that `self` and `Self` are defined inside an `impl` block. They refere to the corresponding type.
 */
 
 impl MyStruct
@@ -58,7 +58,7 @@ impl MyStruct
 }
 
 /**
-All functions in an impl block can be retrieved by reflection, as long as the struct is declared with `#[Swag.ExportType("methods")]` (by default, methods are not exported).
+All functions in an `impl` block can be retrieved by reflection, as long as the struct is declared with `#[Swag.ExportType("methods")]` (by default, methods are not exported).
 */
 #test
 {
@@ -83,7 +83,7 @@ All functions in an impl block can be retrieved by reflection, as long as the st
         }
     }
 
-    // This are now valid functions, which can be called
+    // These are now valid functions, which can be called
     var v: MyStruct
     @assert(fnX(v) == 5)
     @assert(fnY(v) == 10)

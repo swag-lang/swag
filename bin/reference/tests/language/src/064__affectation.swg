@@ -1,6 +1,6 @@
 /**
 `opAffect` is a way of assigning to a struct with `=`.
-You can have more the one opAffect with different types.
+You can have more the one `opAffect` with different types.
 */
 
 struct Struct
@@ -84,7 +84,7 @@ Here the variable `v` will not be initialized prior to the affectation. This is 
 }
 
 /**
-A structure can be converted to a constant by a call to opAffect if the function is marked with `Swag.ConstExpr`.
+A structure can be converted to a constant by a call to `opAffect` if the function is marked with `Swag.ConstExpr`.
 */
 struct Vector2
 {

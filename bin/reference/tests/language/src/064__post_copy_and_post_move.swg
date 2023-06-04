@@ -41,7 +41,7 @@ impl Vector3
     @assert(a.y == 201)
     @assert(a.z == 301)
 
-    // "move semantic"
+    // "move semantic" by adding the modifier `,move` just after `=`.
     // 1. This will call 'opDrop' on 'a' if it exists
     // 2. This will raw copy 'b' to 'a'
     // 3. This will call 'opPostMove' on 'a' if it exists
@@ -62,7 +62,7 @@ impl Vector3
     a =,nodrop b            // Copy b to a without dropping 'a' first
     a =,nodrop,move b       // Move b to a without dropping 'a' first
 
-    // For the 'move semantic', you can avoid the last reinitialization by using '=,moveraw'. Of source, do this at your own risk, if you know that 'b' will never by dropped by the compiler or if you reinitialize its state yourself.
+    // For the 'move semantic', you can avoid the last reinitialization by using '=,moveraw'. Of course, do this at your own risk, if you know that 'b' will never by dropped by the compiler or if you reinitialize its state yourself.
 
     // instead of '=,move'
     a =,moveraw b
