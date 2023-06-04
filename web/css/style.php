@@ -1,13 +1,17 @@
 .container {
     height:      100%;
-    font-family: Segoe UI;
-    line-height: 1.3em;
+    font-family: Arial;
 }
 
 h1, h2, h3, h4, h5, h6 {
     margin:      revert;
     font-size:   revert;
     font-weight: revert;
+}
+
+h2 {
+    margin-top:     40px;
+    margin-bottom:  20px;
 }
 
 .container p {
@@ -52,4 +56,11 @@ blockquote {
     border-left:        6px solid Orange;
     padding:            5px;
     margin-right:       0px;
+}
+
+@media only screen and (max-width: 600px) {
+    td {
+    display: block;
+    width: 100%;
+    }
 }
