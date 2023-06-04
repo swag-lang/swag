@@ -9929,7 +9929,7 @@ Draw an empty round rectangle.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Painter.drawString">drawString(self, f32, f32, string, *Font, const ref Brush, UnderlineStyle)</a></td>
+<a href="#Pixel.Painter.drawString">drawString(self, f32, f32, string, *Font, const ref Brush, UnderlineStyle, f32)</a></td>
 <td class="enumeration">
 <p>
 Draw a simple string.</p>
@@ -9937,7 +9937,7 @@ Draw a simple string.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Painter.drawString">drawString(self, f32, f32, string, *Font, const ref Color, UnderlineStyle)</a></td>
+<a href="#Pixel.Painter.drawString">drawString(self, f32, f32, string, *Font, const ref Color, UnderlineStyle, f32)</a></td>
 <td class="enumeration">
 <p>
 Draw a simple string.</p>
@@ -9945,7 +9945,7 @@ Draw a simple string.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Pixel.Painter.drawStringCenter">drawStringCenter(self, f32, f32, string, *Font, const ref Color, UnderlineStyle)</a></td>
+<a href="#Pixel.Painter.drawStringCenter">drawStringCenter(self, f32, f32, string, *Font, const ref Color, UnderlineStyle, f32)</a></td>
 <td class="enumeration">
 <p>
 Draw a simple string (centered).</p>
@@ -10557,7 +10557,7 @@ Clear the rendering surface.</p>
 <h3 class="content" id="Pixel.Painter.computeLayout"><span class="titletype">func</span> <span class="titlelight">Painter.</span><span class="titlestrong">computeLayout</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\painter\drawstring.swg#L209" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\painter\drawstring.swg#L244" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -10574,7 +10574,7 @@ Recompute the layout for a given rectangle.</p>
 <h3 class="content" id="Pixel.Painter.computeLayout.computeLayout.OneLine"><span class="titletype">struct</span> <span class="titlelight">computeLayout.</span><span class="titlestrong">OneLine</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\painter\drawstring.swg#L214" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\painter\drawstring.swg#L249" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -10778,7 +10778,7 @@ func drawRect(using self, left: f32, top: f32, width: f32, height: f32, color: <
 <h3 class="content" id="Pixel.Painter.drawRichString"><span class="titletype">func</span> <span class="titlelight">Painter.</span><span class="titlestrong">drawRichString</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\painter\drawstring.swg#L390" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\painter\drawstring.swg#L429" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -10820,20 +10820,20 @@ func drawRoundRect(using self, left: f32, top: f32, width: f32, height: f32, rad
 <h3 class="content" id="Pixel.Painter.drawString"><span class="titletype">func</span> <span class="titlelight">Painter.</span><span class="titlestrong">drawString</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\painter\drawstring.swg#L138" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\painter\drawstring.swg#L139" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p>
 Draw a simple string.</p>
 <p class="code">
-<code style="white-space: break-spaces">func drawString(using self, left: f32, top: f32, text: string, font: *<a href="std.pixel.html#Pixel.Font">Pixel.Font</a>, brush: <a href="std.pixel.html#Pixel.Brush">Pixel.Brush</a>, under = UnderlineStyle.None)
+<code style="white-space: break-spaces">func drawString(using self, left: f32, top: f32, text: string, font: *<a href="std.pixel.html#Pixel.Font">Pixel.Font</a>, brush: <a href="std.pixel.html#Pixel.Brush">Pixel.Brush</a>, under = UnderlineStyle.None, zoom = 1.0)
 </code>
 </p>
 <p>
 Draw a simple string.</p>
 <p class="code">
-<code style="white-space: break-spaces">func drawString(using self, left: f32, top: f32, text: string, font: *<a href="std.pixel.html#Pixel.Font">Pixel.Font</a>, color: <a href="std.pixel.html#Pixel.Color">Pixel.Color</a>, under = UnderlineStyle.None)
+<code style="white-space: break-spaces">func drawString(using self, left: f32, top: f32, text: string, font: *<a href="std.pixel.html#Pixel.Font">Pixel.Font</a>, color: <a href="std.pixel.html#Pixel.Color">Pixel.Color</a>, under = UnderlineStyle.None, zoom = 1.0)
 </code>
 </p>
 <p>
@@ -10843,14 +10843,14 @@ Draw a simple string.</p>
 <h3 class="content" id="Pixel.Painter.drawStringCenter"><span class="titletype">func</span> <span class="titlelight">Painter.</span><span class="titlestrong">drawStringCenter</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\painter\drawstring.swg#L119" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\painter\drawstring.swg#L120" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p>
 Draw a simple string (centered).</p>
 <p class="code">
-<code style="white-space: break-spaces">func drawStringCenter(using self, x: f32, y: f32, text: string, font: *<a href="std.pixel.html#Pixel.Font">Pixel.Font</a>, color: <a href="std.pixel.html#Pixel.Color">Pixel.Color</a>, under = UnderlineStyle.None)
+<code style="white-space: break-spaces">func drawStringCenter(using self, x: f32, y: f32, text: string, font: *<a href="std.pixel.html#Pixel.Font">Pixel.Font</a>, color: <a href="std.pixel.html#Pixel.Color">Pixel.Color</a>, under = UnderlineStyle.None, zoom = 1.0)
 </code>
 </p>
 <p>
@@ -11084,7 +11084,7 @@ Get the current clipping rectangle.</p>
 <h3 class="content" id="Pixel.Painter.getGlyphs"><span class="titletype">func</span> <span class="titlelight">Painter.</span><span class="titlestrong">getGlyphs</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\painter\drawstring.swg#L71" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\painter\drawstring.swg#L72" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -11171,7 +11171,7 @@ Returns true if the current clipping rectangle is empty (no drawing !).</p>
 <h3 class="content" id="Pixel.Painter.measureRune"><span class="titletype">func</span> <span class="titlelight">Painter.</span><span class="titlestrong">measureRune</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\painter\drawstring.swg#L85" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\painter\drawstring.swg#L86" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -11188,7 +11188,7 @@ Get a rune size for a given font.</p>
 <h3 class="content" id="Pixel.Painter.measureString"><span class="titletype">func</span> <span class="titlelight">Painter.</span><span class="titlestrong">measureString</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\painter\drawstring.swg#L102" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\painter\drawstring.swg#L103" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -14503,7 +14503,7 @@ Associate a string (can have multiple lines) Accepted markers are : &lt;u&gt;  .
 <h3 class="content" id="Pixel.RichStringFormat"><span class="titletype">struct</span> <span class="titlelight">Pixel.</span><span class="titlestrong">RichStringFormat</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\painter\drawstring.swg#L42" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\painter\drawstring.swg#L43" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -14767,6 +14767,12 @@ Clip</td>
 <td class="enumeration">
 </td>
 </tr>
+<tr>
+<td class="tdname">
+DontAdaptSingleLineHeight</td>
+<td class="enumeration">
+</td>
+</tr>
 </table>
 <p>
 <table class="h3">
@@ -14812,7 +14818,7 @@ Justify</td>
 <h3 class="content" id="Pixel.StringMetrics"><span class="titletype">struct</span> <span class="titlelight">Pixel.</span><span class="titlestrong">StringMetrics</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\painter\drawstring.swg#L34" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\painter\drawstring.swg#L35" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
