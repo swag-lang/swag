@@ -2656,13 +2656,16 @@ bool SemanticJob::findEnumTypeInContext(SemanticContext* context, AstNode* node,
     auto parent = node->parent;
     while (parent)
     {
-        for (auto c : parent->childs)
         {
-            auto typeEnum = findEnumTypeInContext(context, c->typeInfo);
-            if (typeEnum)
-                has.push_back_once({c, typeEnum});
-            if (typeEnum && typeEnum->contains(node->token.text))
-                result.push_back_once(typeEnum);
+            SharedLock lk(parent->mutex);
+            for (auto c : parent->childs)
+            {
+                auto typeEnum = findEnumTypeInContext(context, c->typeInfo);
+                if (typeEnum)
+                    has.push_back_once({c, typeEnum});
+                if (typeEnum && typeEnum->contains(node->token.text))
+                    result.push_back_once(typeEnum);
+            }
         }
 
         if (!result.empty())
