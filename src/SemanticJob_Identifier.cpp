@@ -4454,12 +4454,21 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context, AstIdentifier* ide
         if (riFlags & RI_FOR_ZERO_GHOSTING)
             mipFlags |= MIP_FOR_ZERO_GHOSTING;
         SWAG_CHECK(matchIdentifierParameters(context, listTryMatch, identifier, mipFlags));
+
         if (context->result == ContextResult::Pending)
+        {
+            identifierRef->resolvedSymbolOverload = orgResolvedSymbolOverload;
+            identifierRef->resolvedSymbolName     = orgResolvedSymbolName;
+            identifierRef->previousResolvedNode   = orgPreviousResolvedNode;
             return true;
+        }
 
         if (context->result == ContextResult::NewChilds1)
         {
-            context->result = ContextResult::NewChilds;
+            identifierRef->resolvedSymbolOverload = orgResolvedSymbolOverload;
+            identifierRef->resolvedSymbolName     = orgResolvedSymbolName;
+            identifierRef->previousResolvedNode   = orgPreviousResolvedNode;
+            context->result                       = ContextResult::NewChilds;
             return true;
         }
 
