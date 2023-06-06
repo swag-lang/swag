@@ -62,13 +62,8 @@ func createView7(_tabView: *Tab, view: *Wnd)
     }
 
     {
-        ed := EditBox.create(view, "", {700, 0})
-        ed.sigLoseFocus += closure|lt|(ed) {
-            aa.xf32 = 666
-            aa.value = .Second
-            aa.str = "toto"
-            lt.refresh()
-        }
+        ed := PropertyListCtrl.create(view, {500, 10, 500, 600})
+        ed.prop.addItem(aa)
     }
 
 }

@@ -104,9 +104,9 @@ impl RichString
     }
 
     // Compute layout
-    mtd compute()
+    mtd compute(force = false)
     {
-        if !dirty
+        if !dirty or force
             return
         dirty = false
         chunks.clear()

@@ -34,6 +34,8 @@ struct PropertyListItem
     editBox:    *EditBox
     checkBox:   *CheckButton
     comboBox:   *ComboBox
+
+    onResize:   SigArray'closure(*Self)
 }
 
 private impl PropertyList
@@ -57,6 +59,7 @@ private impl PropertyList
         label.labelFlags |= .WordWrap | .AutoHeight
         label.horzAlignmentText = .Justify
         label.margin.y = nameMarginBefore
+        label.dockStyle = .Center
         item.label = label
         item.filter = dispName
 
@@ -150,6 +153,7 @@ private impl PropertyList
 
                 dispDesc := Reflection.getAttributeValue(v, PropertyList.Description, "desc")
                 line1 := Wnd.create'Wnd(edView)
+                line1.margin.w = 10
 
                 ed := CheckButton.create(line1, "", {0, 0, 30, 0})
                 ed.dockStyle = .Left
@@ -159,7 +163,13 @@ private impl PropertyList
                 label1.labelFlags |= .WordWrap | .AutoHeight
                 label1.horzAlignmentText = .Justify
                 label1.setText(dispDesc)
-                line1.position.height = Math.max(ed.position.height, label1.position.height)
+
+                minHeight := ed.position.height
+                itemB.onResize += closure|ed, label1, line1, minHeight|(itemB) {
+                    label1.autoHeight()
+                    line1.position.height = Math.max(minHeight, label1.position.height)
+                    itemB.line.applyLayout()
+                }
 
                 itemB.filter = dispDesc
                 itemB.line = line1
@@ -183,6 +193,34 @@ private impl PropertyList
 
             refreshEnum(item)
         }
+    }
+
+    mtd addBool(f: Swag.TypeValue, ptrData: *u8)
+    {
+        item := addItem(f, ptrData, false)
+
+        dispDesc := Reflection.getAttributeValue(f, PropertyList.Description, "desc")
+        line1 := Wnd.create'Wnd(item.line)
+
+        ed := CheckButton.create(line1, "", {0, 0, 30, 0})
+        ed.dockStyle = .Left
+
+        label1 := Label.create(line1, "", {30, 0, position.width - 30})
+        label1.dockStyle = .Center
+        label1.labelFlags |= .WordWrap | .AutoHeight
+        label1.horzAlignmentText = .Justify
+        label1.setText(dispDesc)
+
+        minHeight := ed.position.height
+        item.onResize += closure|ed, label1, line1, minHeight|(item) {
+            label1.autoHeight()
+            line1.position.height = Math.max(minHeight, label1.position.height)
+            item.line.applyLayout()
+        }
+
+        item.checkBox = ed
+        if dref cast(*bool) ptrData
+            ed.checked = .Checked
     }
 
     func refreshNative(item: *PropertyListItem)
@@ -224,28 +262,6 @@ private impl PropertyList
             p := cast(^f64) ptrData
             ed.setText(Format.toString("%", dref p))
         }
-    }
-
-    mtd addBool(f: Swag.TypeValue, ptrData: *u8)
-    {
-        item := addItem(f, ptrData, false)
-
-        dispDesc := Reflection.getAttributeValue(f, PropertyList.Description, "desc")
-        line1 := Wnd.create'Wnd(item.line)
-
-        ed := CheckButton.create(line1, "", {0, 0, 30, 0})
-        ed.dockStyle = .Left
-
-        label1 := Label.create(line1, "", {30, 0, position.width - 30})
-        label1.dockStyle = .Center
-        label1.labelFlags |= .WordWrap | .AutoHeight
-        label1.horzAlignmentText = .Justify
-        label1.setText(dispDesc)
-        line1.position.height = Math.max(ed.position.height, label1.position.height)
-
-        item.checkBox = ed
-        if dref cast(*bool) ptrData
-            ed.checked = .Checked
     }
 
     mtd addNative(f: Swag.TypeValue, nativeType: const *Swag.TypeInfoNative, ptrData: *u8)
@@ -367,6 +383,7 @@ private impl PropertyList
 
 impl PropertyList
 {
+    // Creates a new PropertyList instance
     #[Swag.Discardable]
     func create(parent: *Wnd, position: Math.Rectangle = {}, id: WndId = null)->*PropertyList
     {
@@ -417,7 +434,7 @@ impl PropertyList
         }
     }
 
-    // Show hiden content depending on the input filter
+    // Show hidden content depending on the input filter
     mtd setStringFilter(filter: string)
     {
         visit it: items
