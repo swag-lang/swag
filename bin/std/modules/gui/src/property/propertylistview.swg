@@ -16,8 +16,17 @@ impl IWnd for PropertyListView
             return
 
         applyLayout()
+
         visit item: ed.items
+        {
+            if item.label
+                item.label.autoHeight()
+            if item.labelDesc
+                item.labelDesc.autoHeight()
             item.onResize.call(item)
+            item.line.sendResizeEvent()
+        }
+
         applyLayout()
 
         // Vertical size is the bottom position of the last line

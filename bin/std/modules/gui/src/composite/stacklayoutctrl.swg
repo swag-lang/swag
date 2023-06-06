@@ -78,22 +78,22 @@ impl IWnd for StackLayoutCtrl
                 case Top, TopAutoSize:
                     c.dockStyle = .Top
                     if i > 0
-                        c.margin.y = spacing
+                        c.margin.y = Math.max(c.margin.y, spacing)
 
                 case Bottom:
                     c.dockStyle = .Bottom
                     if i > 0
-                        c.margin.w = spacing
+                        c.margin.w = Math.max(c.margin.w, spacing)
 
                 case Left, LeftAutoSize:
                     c.dockStyle = .Left
                     if i > 0
-                        c.margin.x = spacing
+                        c.margin.x = Math.max(c.margin.x, spacing)
 
                 case Right:
                     c.dockStyle = .Right
                     if i > 0
-                        c.margin.z = spacing
+                        c.margin.z = Math.max(c.margin.z, spacing)
                 }
             }
 

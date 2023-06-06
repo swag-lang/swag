@@ -11,10 +11,13 @@ struct PropertyList
 {
     using frameWnd: FrameWnd
 
-    nameMarginBefore:   s32 = 25
-    nameHeight:         s32 = 25
-    maxSizeCombo:       s32 = 200
-    maxSizeEditValue:   s32 = 200
+    nameMarginBefore:       s32 = 25
+    nameHeight:             s32 = 25
+    nameMarginAfter:        s32 = 5
+    descMarginAfter:        s32 = 5
+    enumFlagsMarginBefore:  s32 = 10
+    maxSizeCombo:           s32 = 200
+    maxSizeEditValue:       s32 = 200
 
     fontBig:        FontFamily
     scrollWnd:      *ScrollWnd
@@ -31,6 +34,7 @@ struct PropertyListItem
     forceShow:  *Wnd
 
     label:      *Label
+    labelDesc:  *Label
     editBox:    *EditBox
     checkBox:   *CheckButton
     comboBox:   *ComboBox
@@ -59,7 +63,7 @@ private impl PropertyList
         label.labelFlags |= .WordWrap | .AutoHeight
         label.horzAlignmentText = .Justify
         label.margin.y = nameMarginBefore
-        label.dockStyle = .Center
+        label.margin.w = nameMarginAfter
         item.label = label
         item.filter = dispName
 
@@ -75,7 +79,8 @@ private impl PropertyList
                 labelDesc.labelFlags |= .WordWrap | .AutoHeight
                 labelDesc.horzAlignmentText = .Justify
                 labelDesc.setText(dispDesc)
-                labelDesc.margin.w = 5
+                labelDesc.margin.w = descMarginAfter
+                item.labelDesc = labelDesc
             }
         }
 
@@ -152,8 +157,9 @@ private impl PropertyList
                 itemB.ptrData = ptrData
 
                 dispDesc := Reflection.getAttributeValue(v, PropertyList.Description, "desc")
+
                 line1 := Wnd.create'Wnd(edView)
-                line1.margin.w = 10
+                line1.margin.y = enumFlagsMarginBefore
 
                 ed := CheckButton.create(line1, "", {0, 0, 30, 0})
                 ed.dockStyle = .Left
