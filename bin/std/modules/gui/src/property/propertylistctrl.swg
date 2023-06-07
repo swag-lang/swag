@@ -26,7 +26,9 @@ impl PropertyListCtrl
             .list = ListCtrl.createSimple(.splitter)
             .list.listFlags.add(.ForceMarginExpandMark)
 			.list.sigSelChanged += closure|ed|(list) {
-				sel  := list.getFocusLine()
+				sel := list.getFocusLine()
+                if !sel 
+                    return
                 list.toggleExpand(sel)
 				item := cast(*PropertyListItem) sel.userData0
 				pos  := item.label.getRectIn(ed.prop.edView)
@@ -39,12 +41,14 @@ impl PropertyListCtrl
             .splitter.addPane(.prop)
         }
 
-        filter := EditBox.create(ed, "", {0, 0, 0, 30})
-        filter.dockStyle = .Top
-        filter.setNote("Search")
-        filter.margin.w = 10
-        filter.sigChanged += closure|ed|(fil) {
-            ed.prop.setStringFilter(fil.text)
+        with filter := EditBox.create(ed, "", {0, 0, 0, 30})
+        {
+            .dockStyle = .Top
+            .setNote("Search")
+            .margin.w = 10
+            .sigChanged += closure|ed|(fil) {
+                ed.prop.setStringFilter(fil.text)
+            }
         }
 
         ed.applyLayout()

@@ -360,7 +360,7 @@ private impl PropertyList
         visit f: typeStruct.fields
         {
             ptrData := addr + f.offset
-			
+
 			// Category
 			categ := Reflection.getAttributeValue(f, PropertyList.Category, "name")
 			if categ != null
@@ -371,7 +371,7 @@ private impl PropertyList
 				item.label.style.setFont(&font0)
 				categs.add({item, 0})
 			}
-			
+
 			// Sub Category
 			subCateg := Reflection.getAttributeValue(f, PropertyList.SubCategory, "name")
 			if subCateg != null
@@ -381,7 +381,7 @@ private impl PropertyList
 				item := addItem(v, null)
 				item.label.style.setFont(&font1)
 				categs.add({item, 1})
-			}			
+			}
 
 			// Value
             if Reflection.isEnum(f.pointedType)
@@ -437,24 +437,24 @@ impl PropertyList
             .edView.spacing = 0
 
             theme := parent.getTheme()
-			
+
             const Font0Size = 30'u32
             .font0.regular = Font.create(theme.res.defaultTypeFaceR, Font0Size)
             .font0.bold = Font.create(theme.res.defaultTypeFaceB, Font0Size)
             .font0.italic = Font.create(theme.res.defaultTypeFaceI, Font0Size)
             .font0.boldItalic = Font.create(theme.res.defaultTypeFaceBI, Font0Size)
-			
+
 			const Font1Size = 25'u32
             .font1.regular = Font.create(theme.res.defaultTypeFaceR, Font1Size)
             .font1.bold = Font.create(theme.res.defaultTypeFaceB, Font1Size)
             .font1.italic = Font.create(theme.res.defaultTypeFaceI, Font1Size)
-            .font1.boldItalic = Font.create(theme.res.defaultTypeFaceBI, Font1Size)			
-			
+            .font1.boldItalic = Font.create(theme.res.defaultTypeFaceBI, Font1Size)
+
 			const Font2Size = 20'u32
             .font2.regular = Font.create(theme.res.defaultTypeFaceR, Font2Size)
             .font2.bold = Font.create(theme.res.defaultTypeFaceB, Font2Size)
             .font2.italic = Font.create(theme.res.defaultTypeFaceI, Font2Size)
-            .font2.boldItalic = Font.create(theme.res.defaultTypeFaceBI, Font2Size)				
+            .font2.boldItalic = Font.create(theme.res.defaultTypeFaceBI, Font2Size)
         }
 
         return ed
