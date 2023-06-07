@@ -89,7 +89,7 @@ struct ThemeMetrics
     frameWnd_AnchorSquareBorderMargin:   f32 = 8
 
     list_Padding:               f32 = 5
-    list_ExpandSize:            f32 = 18
+    list_ExpandSize:            f32 = 22
 
     header_Height:              f32 = 35
     header_Padding:             Math.Vector4 = {10, 5, 10, 5}

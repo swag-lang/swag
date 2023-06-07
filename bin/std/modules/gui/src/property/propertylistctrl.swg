@@ -24,6 +24,15 @@ impl PropertyListCtrl
             .splitter.dockStyle = .Center
 
             .list = ListCtrl.createSimple(.splitter)
+            .list.listFlags.add(.ForceMarginExpandMark)
+			.list.sigSelChanged += closure|ed|(list) {
+				sel  := list.getFocusLine()
+                list.toggleExpand(sel)
+				item := cast(*PropertyListItem) sel.userData0
+				pos  := item.label.getRectIn(ed.prop.edView)
+				ed.prop.scrollWnd.setScrollPos(0, pos.y)
+			}
+
             .prop = PropertyList.create(.splitter)
 
             .splitter.addPane(.list)
@@ -40,5 +49,28 @@ impl PropertyListCtrl
 
         ed.applyLayout()
         return ed
+    }
+
+	private mtd fillList()
+	{
+		var parentLine: *ListLine
+		visit &it: prop.categs
+		{
+			if it.item1 == 0
+				parentLine = null
+
+			line := list.createLine(it.item0.label.getText(), parentLine: parentLine)
+			line.userData0 = it.item0
+
+			if it.item1 == 0
+				parentLine = line
+		}
+	}
+
+    // Add a new struct to display
+    mtd addItem(val: any)
+    {
+        prop.addItem(val)
+		fillList()
     }
 }

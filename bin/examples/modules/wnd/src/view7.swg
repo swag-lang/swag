@@ -21,6 +21,8 @@ enum EnumFlags
 
 struct AA
 {
+    #[Category("Categ")]
+	#[SubCategory("SubCateg")]
     #[Name("<b>This is a name<b>: <i>italic<i>")]
     #[Description("This is something that needs to be done except if it not has do be done, and this is it.")]
     xu8:  u8 = 30
@@ -39,6 +41,7 @@ struct AA
     #[Description("This is something that needs to be done except if it not has do be done, and this is it.")]
     str: String
 
+	#[Category("Categ1")]
     value:  Enum = Third
 
     #[Name("<b>Another name<b>")]
@@ -63,7 +66,7 @@ func createView7(_tabView: *Tab, view: *Wnd)
 
     {
         ed := PropertyListCtrl.create(view, {500, 10, 500, 600})
-        ed.prop.addItem(aa)
+        ed.addItem(aa)
     }
 
 }

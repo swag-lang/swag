@@ -3,6 +3,8 @@ using Core, Pixel
 
 impl PropertyList
 {
+	attr Category(name: string)
+	attr SubCategory(name: string)
     attr Name(name: string)
     attr Description(desc: string)
 }
@@ -19,10 +21,13 @@ struct PropertyList
     maxSizeCombo:           s32 = 200
     maxSizeEditValue:       s32 = 200
 
-    fontBig:        FontFamily
+    font0:        	FontFamily
+	font1:        	FontFamily
+	font2:        	FontFamily
     scrollWnd:      *ScrollWnd
     edView:         *PropertyListView
     items:          ArrayPtr'PropertyListItem
+	categs:			Array'{*PropertyListItem, s32}
 }
 
 struct PropertyListItem
@@ -174,7 +179,7 @@ private impl PropertyList
                 itemB.onResize += closure|ed, label1, line1, minHeight|(itemB) {
                     label1.autoHeight()
                     line1.position.height = Math.max(minHeight, label1.position.height)
-                    itemB.line.applyLayout()
+                    line1.applyLayout()
                 }
 
                 itemB.filter = dispDesc
@@ -355,7 +360,30 @@ private impl PropertyList
         visit f: typeStruct.fields
         {
             ptrData := addr + f.offset
+			
+			// Category
+			categ := Reflection.getAttributeValue(f, PropertyList.Category, "name")
+			if categ != null
+			{
+				var v: Swag.TypeValue
+				v.name = cast(string) categ
+				item := addItem(v, null)
+				item.label.style.setFont(&font0)
+				categs.add({item, 0})
+			}
+			
+			// Sub Category
+			subCateg := Reflection.getAttributeValue(f, PropertyList.SubCategory, "name")
+			if subCateg != null
+			{
+				var v: Swag.TypeValue
+				v.name = cast(string) subCateg
+				item := addItem(v, null)
+				item.label.style.setFont(&font1)
+				categs.add({item, 1})
+			}			
 
+			// Value
             if Reflection.isEnum(f.pointedType)
             {
                 typeEnum := cast(const *Swag.TypeInfoEnum) f.pointedType
@@ -379,7 +407,7 @@ private impl PropertyList
             elif Reflection.isStruct(f.pointedType)
             {
                 item := addItem(f, ptrData)
-                item.label.style.setFont(&fontBig)
+                item.label.style.setFont(&font2)
                 typeSubStruct := cast(const *Swag.TypeInfoStruct) f.pointedType
                 addStruct(ptrData, typeSubStruct)
             }
@@ -408,12 +436,25 @@ impl PropertyList
             .edView.layoutKind = .Top
             .edView.spacing = 0
 
-            const BigFontSize = 30'u32
             theme := parent.getTheme()
-            .fontBig.regular = Font.create(theme.res.defaultTypeFaceR, BigFontSize)
-            .fontBig.bold = Font.create(theme.res.defaultTypeFaceB, BigFontSize)
-            .fontBig.italic = Font.create(theme.res.defaultTypeFaceI, BigFontSize)
-            .fontBig.boldItalic = Font.create(theme.res.defaultTypeFaceBI, BigFontSize)
+			
+            const Font0Size = 30'u32
+            .font0.regular = Font.create(theme.res.defaultTypeFaceR, Font0Size)
+            .font0.bold = Font.create(theme.res.defaultTypeFaceB, Font0Size)
+            .font0.italic = Font.create(theme.res.defaultTypeFaceI, Font0Size)
+            .font0.boldItalic = Font.create(theme.res.defaultTypeFaceBI, Font0Size)
+			
+			const Font1Size = 25'u32
+            .font1.regular = Font.create(theme.res.defaultTypeFaceR, Font1Size)
+            .font1.bold = Font.create(theme.res.defaultTypeFaceB, Font1Size)
+            .font1.italic = Font.create(theme.res.defaultTypeFaceI, Font1Size)
+            .font1.boldItalic = Font.create(theme.res.defaultTypeFaceBI, Font1Size)			
+			
+			const Font2Size = 20'u32
+            .font2.regular = Font.create(theme.res.defaultTypeFaceR, Font2Size)
+            .font2.bold = Font.create(theme.res.defaultTypeFaceB, Font2Size)
+            .font2.italic = Font.create(theme.res.defaultTypeFaceI, Font2Size)
+            .font2.boldItalic = Font.create(theme.res.defaultTypeFaceBI, Font2Size)				
         }
 
         return ed
