@@ -508,7 +508,10 @@ void ModuleGenDocJob::outputUserBlock(const UserBlock& user)
         Utf8 block;
         for (auto& l : user.lines)
         {
-            block += l;
+            auto l1 = l;
+            l1.replace("<", "&lt;");
+            l1.replace(">", "&gt;");
+            block += l1;
             block += "\n";
         }
 
