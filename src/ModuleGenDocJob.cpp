@@ -13,6 +13,12 @@
 const uint32_t COLLECT_TABLE_ZERO     = 0x00000000;
 const uint32_t COLLECT_TABLE_SPECFUNC = 0x00000001;
 
+static Utf8 toRef(Utf8 str)
+{
+    str.replace(".", "_");
+    return str;
+}
+
 static bool canCollectNode(AstNode* node)
 {
     if (node->token.text.length() > 2 && node->token.text[0] == '_' && node->token.text[1] == '_')
@@ -268,7 +274,7 @@ void ModuleGenDocJob::outputTable(Scope* scope, AstNodeKind kind, const char* ti
             name += ")";
         }
 
-        helpContent += Fmt("<a href=\"#%s\">%s</a>", n1->getScopedName().c_str(), name.c_str());
+        helpContent += Fmt("<a href=\"#%s\">%s</a>", toRef(n1->getScopedName()).c_str(), name.c_str());
         helpContent += "</td>\n";
 
         // Short desc
@@ -325,7 +331,7 @@ void ModuleGenDocJob::outputTitle(OneRef& c)
     helpContent += "<table class=\"h3\">\n";
     helpContent += "<tr>\n";
     helpContent += "<td class=\"h3\">\n";
-    helpContent += Fmt("<h3 class=\"content\" id=\"%s\">", c.fullName.c_str());
+    helpContent += Fmt("<h3 class=\"content\" id=\"%s\">", toRef(c.fullName).c_str());
 
     Vector<Utf8> tkn;
     Utf8::tokenize(c.displayName, '.', tkn);
@@ -434,7 +440,7 @@ Utf8 ModuleGenDocJob::getFormattedText(const Utf8& user, bool autoRef)
                         pz++;
                     auto it = collectInvert.find(name);
                     if (it != collectInvert.end())
-                        result += Fmt("<a href=\"%s#%s\">%s</a>", fileName.c_str(), it->second.c_str(), name.c_str());
+                        result += Fmt("<a href=\"#%s\">%s</a>", toRef(it->second).c_str(), name.c_str());
                     else
                     {
                         if (startBracket)
@@ -762,7 +768,7 @@ void ModuleGenDocJob::generateTocCateg(bool& first, AstNodeKind kind, const char
     helpContent += Fmt("<h3>%s</h3>\n", categName);
     helpContent += "<ul class=\"tocbullet\">\n";
     for (auto& t : pendingNodes)
-        helpContent += Fmt("<li><a href=\"#%s\">%s</a></li>\n", t->fullName.c_str(), t->tocName.c_str());
+        helpContent += Fmt("<li><a href=\"#%s\">%s</a></li>\n", toRef(t->fullName).c_str(), t->tocName.c_str());
     helpContent += "</ul>\n";
 
     pendingNodes.clear();
@@ -1047,7 +1053,7 @@ void ModuleGenDocJob::generateContent()
 
                 helpContent += "<tr>\n";
 
-                helpContent += Fmt("<td id=\"%s\" class=\"tdname\">\n", n->getScopedName().c_str());
+                helpContent += Fmt("<td id=\"%s\" class=\"tdname\">\n", toRef(n->getScopedName()).c_str());
                 helpContent += n->token.ctext();
                 helpContent += "</td>\n";
 
