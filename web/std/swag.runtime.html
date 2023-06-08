@@ -410,12 +410,12 @@
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func @abs(value: f32)->f32
-func @abs(value: f64)->f64
-func @abs(value: s16)->s16
-func @abs(value: s32)->s32
-func @abs(value: s64)->s64
-func @abs(value: s8)->s8
+<code style="white-space: break-spaces">func @abs(value: f32)-&gt;f32
+func @abs(value: f64)-&gt;f64
+func @abs(value: s16)-&gt;s16
+func @abs(value: s32)-&gt;s32
+func @abs(value: s64)-&gt;s64
+func @abs(value: s8)-&gt;s8
 </code>
 </p>
 <p>
@@ -430,8 +430,8 @@ func @abs(value: s8)->s8
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func @acos(value: f32)->f32
-func @acos(value: f64)->f64
+<code style="white-space: break-spaces">func @acos(value: f32)-&gt;f32
+func @acos(value: f64)-&gt;f64
 </code>
 </p>
 <p>
@@ -448,7 +448,7 @@ func @acos(value: f64)->f64
 <p>
 Returns a system allocated memory block of <code class = "incode">size</code> bytes.</p>
 <p class="code">
-<code style="white-space: break-spaces">func @alloc(size: u64)->^void
+<code style="white-space: break-spaces">func @alloc(size: u64)-&gt;^void
 </code>
 </p>
 <p>
@@ -465,7 +465,7 @@ Returns a system allocated memory block of <code class = "incode">size</code> by
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func @args()->const [..] string
+<code style="white-space: break-spaces">func @args()-&gt;const [..] string
 </code>
 </p>
 <p>
@@ -480,8 +480,8 @@ Returns a system allocated memory block of <code class = "incode">size</code> by
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func @asin(value: f32)->f32
-func @asin(value: f64)->f64
+<code style="white-space: break-spaces">func @asin(value: f32)-&gt;f32
+func @asin(value: f64)-&gt;f64
 </code>
 </p>
 <p>
@@ -513,8 +513,8 @@ Panic if the expression is false. Typically used in tests.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func @atan(value: f32)->f32
-func @atan(value: f64)->f64
+<code style="white-space: break-spaces">func @atan(value: f32)-&gt;f32
+func @atan(value: f64)-&gt;f64
 </code>
 </p>
 <p>
@@ -529,8 +529,8 @@ func @atan(value: f64)->f64
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func @atan2(value1: f32, value2: f32)->f32
-func @atan2(value1: f64, value2: f64)->f64
+<code style="white-space: break-spaces">func @atan2(value1: f32, value2: f32)-&gt;f32
+func @atan2(value1: f64, value2: f64)-&gt;f64
 </code>
 </p>
 <p>
@@ -547,17 +547,17 @@ func @atan2(value1: f64, value2: f64)->f64
 <p>
 Atomic <code class = "incode">add</code>.</p>
 <p class="code">
-<code style="white-space: break-spaces">func @atomadd(addr: *s16, value: s16)->s16
-func @atomadd(addr: *s32, value: s32)->s32
-func @atomadd(addr: *s64, value: s64)->s64
-func @atomadd(addr: *s8, value: s8)->s8
+<code style="white-space: break-spaces">func @atomadd(addr: *s16, value: s16)-&gt;s16
+func @atomadd(addr: *s32, value: s32)-&gt;s32
+func @atomadd(addr: *s64, value: s64)-&gt;s64
+func @atomadd(addr: *s8, value: s8)-&gt;s8
 </code>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func @atomadd(addr: *u16, value: u16)->u16
-func @atomadd(addr: *u32, value: u32)->u32
-func @atomadd(addr: *u64, value: u64)->u64
-func @atomadd(addr: *u8, value: u8)->u8
+<code style="white-space: break-spaces">func @atomadd(addr: *u16, value: u16)-&gt;u16
+func @atomadd(addr: *u32, value: u32)-&gt;u32
+func @atomadd(addr: *u64, value: u64)-&gt;u64
+func @atomadd(addr: *u8, value: u8)-&gt;u8
 </code>
 </p>
 <p>
@@ -574,17 +574,17 @@ func @atomadd(addr: *u8, value: u8)->u8
 <p>
 Atomic <code class = "incode">and</code>.</p>
 <p class="code">
-<code style="white-space: break-spaces">func @atomand(addr: *s16, value: s16)->s16
-func @atomand(addr: *s32, value: s32)->s32
-func @atomand(addr: *s64, value: s64)->s64
-func @atomand(addr: *s8, value: s8)->s8
+<code style="white-space: break-spaces">func @atomand(addr: *s16, value: s16)-&gt;s16
+func @atomand(addr: *s32, value: s32)-&gt;s32
+func @atomand(addr: *s64, value: s64)-&gt;s64
+func @atomand(addr: *s8, value: s8)-&gt;s8
 </code>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func @atomand(addr: *u16, value: u16)->u16
-func @atomand(addr: *u32, value: u32)->u32
-func @atomand(addr: *u64, value: u64)->u64
-func @atomand(addr: *u8, value: u8)->u8
+<code style="white-space: break-spaces">func @atomand(addr: *u16, value: u16)-&gt;u16
+func @atomand(addr: *u32, value: u32)-&gt;u32
+func @atomand(addr: *u64, value: u64)-&gt;u64
+func @atomand(addr: *u8, value: u8)-&gt;u8
 </code>
 </p>
 <p>
@@ -601,17 +601,17 @@ func @atomand(addr: *u8, value: u8)->u8
 <p>
 Atomic compare and exchange.</p>
 <p class="code">
-<code style="white-space: break-spaces">func @atomcmpxchg(addr: *s16, compareTo: s16, exchangeWith: s16)->s16
-func @atomcmpxchg(addr: *s32, compareTo: s32, exchangeWith: s32)->s32
-func @atomcmpxchg(addr: *s64, compareTo: s64, exchangeWith: s64)->s64
-func @atomcmpxchg(addr: *s8, compareTo: s8, exchangeWith: s8)->s8
+<code style="white-space: break-spaces">func @atomcmpxchg(addr: *s16, compareTo: s16, exchangeWith: s16)-&gt;s16
+func @atomcmpxchg(addr: *s32, compareTo: s32, exchangeWith: s32)-&gt;s32
+func @atomcmpxchg(addr: *s64, compareTo: s64, exchangeWith: s64)-&gt;s64
+func @atomcmpxchg(addr: *s8, compareTo: s8, exchangeWith: s8)-&gt;s8
 </code>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func @atomcmpxchg(addr: *u16, compareTo: u16, exchangeWith: u16)->u16
-func @atomcmpxchg(addr: *u32, compareTo: u32, exchangeWith: u32)->u32
-func @atomcmpxchg(addr: *u64, compareTo: u64, exchangeWith: u64)->u64
-func @atomcmpxchg(addr: *u8, compareTo: u8, exchangeWith: u8)->u8
+<code style="white-space: break-spaces">func @atomcmpxchg(addr: *u16, compareTo: u16, exchangeWith: u16)-&gt;u16
+func @atomcmpxchg(addr: *u32, compareTo: u32, exchangeWith: u32)-&gt;u32
+func @atomcmpxchg(addr: *u64, compareTo: u64, exchangeWith: u64)-&gt;u64
+func @atomcmpxchg(addr: *u8, compareTo: u8, exchangeWith: u8)-&gt;u8
 </code>
 </p>
 <p>
@@ -628,17 +628,17 @@ func @atomcmpxchg(addr: *u8, compareTo: u8, exchangeWith: u8)->u8
 <p>
 Atomic <code class = "incode">or</code>.</p>
 <p class="code">
-<code style="white-space: break-spaces">func @atomor(addr: *s16, value: s16)->s16
-func @atomor(addr: *s32, value: s32)->s32
-func @atomor(addr: *s64, value: s64)->s64
-func @atomor(addr: *s8, value: s8)->s8
+<code style="white-space: break-spaces">func @atomor(addr: *s16, value: s16)-&gt;s16
+func @atomor(addr: *s32, value: s32)-&gt;s32
+func @atomor(addr: *s64, value: s64)-&gt;s64
+func @atomor(addr: *s8, value: s8)-&gt;s8
 </code>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func @atomor(addr: *u16, value: u16)->u16
-func @atomor(addr: *u32, value: u32)->u32
-func @atomor(addr: *u64, value: u64)->u64
-func @atomor(addr: *u8, value: u8)->u8
+<code style="white-space: break-spaces">func @atomor(addr: *u16, value: u16)-&gt;u16
+func @atomor(addr: *u32, value: u32)-&gt;u32
+func @atomor(addr: *u64, value: u64)-&gt;u64
+func @atomor(addr: *u8, value: u8)-&gt;u8
 </code>
 </p>
 <p>
@@ -655,17 +655,17 @@ func @atomor(addr: *u8, value: u8)->u8
 <p>
 Atomic <code class = "incode">exchange</code>.</p>
 <p class="code">
-<code style="white-space: break-spaces">func @atomxchg(addr: *s16, exchangeWith: s16)->s16
-func @atomxchg(addr: *s32, exchangeWith: s32)->s32
-func @atomxchg(addr: *s64, exchangeWith: s64)->s64
-func @atomxchg(addr: *s8, exchangeWith: s8)->s8
+<code style="white-space: break-spaces">func @atomxchg(addr: *s16, exchangeWith: s16)-&gt;s16
+func @atomxchg(addr: *s32, exchangeWith: s32)-&gt;s32
+func @atomxchg(addr: *s64, exchangeWith: s64)-&gt;s64
+func @atomxchg(addr: *s8, exchangeWith: s8)-&gt;s8
 </code>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func @atomxchg(addr: *u16, exchangeWith: u16)->u16
-func @atomxchg(addr: *u32, exchangeWith: u32)->u32
-func @atomxchg(addr: *u64, exchangeWith: u64)->u64
-func @atomxchg(addr: *u8, exchangeWith: u8)->u8
+<code style="white-space: break-spaces">func @atomxchg(addr: *u16, exchangeWith: u16)-&gt;u16
+func @atomxchg(addr: *u32, exchangeWith: u32)-&gt;u32
+func @atomxchg(addr: *u64, exchangeWith: u64)-&gt;u64
+func @atomxchg(addr: *u8, exchangeWith: u8)-&gt;u8
 </code>
 </p>
 <p>
@@ -682,17 +682,17 @@ func @atomxchg(addr: *u8, exchangeWith: u8)->u8
 <p>
 Atomic <code class = "incode">xor</code>.</p>
 <p class="code">
-<code style="white-space: break-spaces">func @atomxor(addr: *s16, value: s16)->s16
-func @atomxor(addr: *s32, value: s32)->s32
-func @atomxor(addr: *s64, value: s64)->s64
-func @atomxor(addr: *s8, value: s8)->s8
+<code style="white-space: break-spaces">func @atomxor(addr: *s16, value: s16)-&gt;s16
+func @atomxor(addr: *s32, value: s32)-&gt;s32
+func @atomxor(addr: *s64, value: s64)-&gt;s64
+func @atomxor(addr: *s8, value: s8)-&gt;s8
 </code>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func @atomxor(addr: *u16, value: u16)->u16
-func @atomxor(addr: *u32, value: u32)->u32
-func @atomxor(addr: *u64, value: u64)->u64
-func @atomxor(addr: *u8, value: u8)->u8
+<code style="white-space: break-spaces">func @atomxor(addr: *u16, value: u16)-&gt;u16
+func @atomxor(addr: *u32, value: u32)-&gt;u32
+func @atomxor(addr: *u64, value: u64)-&gt;u64
+func @atomxor(addr: *u8, value: u8)-&gt;u8
 </code>
 </p>
 <p>
@@ -709,10 +709,10 @@ func @atomxor(addr: *u8, value: u8)->u8
 <p>
 Returns the index+1 of the first set bit, starting from the left (msb). 0 if all zero.</p>
 <p class="code">
-<code style="white-space: break-spaces">func @bitcountlz(value: u16)->u16
-func @bitcountlz(value: u32)->u32
-func @bitcountlz(value: u64)->u64
-func @bitcountlz(value: u8)->u8
+<code style="white-space: break-spaces">func @bitcountlz(value: u16)-&gt;u16
+func @bitcountlz(value: u32)-&gt;u32
+func @bitcountlz(value: u64)-&gt;u64
+func @bitcountlz(value: u8)-&gt;u8
 </code>
 </p>
 <p>
@@ -729,10 +729,10 @@ func @bitcountlz(value: u8)->u8
 <p>
 Count the number of bits set to 1.</p>
 <p class="code">
-<code style="white-space: break-spaces">func @bitcountnz(value: u16)->u16
-func @bitcountnz(value: u32)->u32
-func @bitcountnz(value: u64)->u64
-func @bitcountnz(value: u8)->u8
+<code style="white-space: break-spaces">func @bitcountnz(value: u16)-&gt;u16
+func @bitcountnz(value: u32)-&gt;u32
+func @bitcountnz(value: u64)-&gt;u64
+func @bitcountnz(value: u8)-&gt;u8
 </code>
 </p>
 <p>
@@ -749,10 +749,10 @@ func @bitcountnz(value: u8)->u8
 <p>
 Returns the index+1 of the first set bit, starting from right (lsb). 0 if all zero.</p>
 <p class="code">
-<code style="white-space: break-spaces">func @bitcounttz(value: u16)->u16
-func @bitcounttz(value: u32)->u32
-func @bitcounttz(value: u64)->u64
-func @bitcounttz(value: u8)->u8
+<code style="white-space: break-spaces">func @bitcounttz(value: u16)-&gt;u16
+func @bitcounttz(value: u32)-&gt;u32
+func @bitcounttz(value: u64)-&gt;u64
+func @bitcounttz(value: u8)-&gt;u8
 </code>
 </p>
 <p>
@@ -786,12 +786,12 @@ Stop a bytecode execution, and launch the bytecode debugger.</p>
 <p>
 Reverses the order of bytes in an integer.</p>
 <p class="code">
-<code style="white-space: break-spaces">func @byteswap(value: u16)->u16
+<code style="white-space: break-spaces">func @byteswap(value: u16)-&gt;u16
 </code>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func @byteswap(value: u32)->u32
-func @byteswap(value: u64)->u64
+<code style="white-space: break-spaces">func @byteswap(value: u32)-&gt;u32
+func @byteswap(value: u64)-&gt;u64
 </code>
 </p>
 <p>
@@ -806,8 +806,8 @@ func @byteswap(value: u64)->u64
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func @ceil(value: f32)->f32
-func @ceil(value: f64)->f64
+<code style="white-space: break-spaces">func @ceil(value: f32)-&gt;f32
+func @ceil(value: f64)-&gt;f64
 </code>
 </p>
 <p>
@@ -824,7 +824,7 @@ func @ceil(value: f64)->f64
 <p>
 Returns an <a href="swag.runtime.html#Swag.ICompiler">ICompiler</a> interface to communicate with the compiler.</p>
 <p class="code">
-<code style="white-space: break-spaces">func @compiler()-><a href="swag.runtime.html#Swag.ICompiler">Swag.ICompiler</a>
+<code style="white-space: break-spaces">func @compiler()-&gt;&lt;a href="swag.runtime.html#Swag.ICompiler"&gt;Swag.ICompiler&lt;/a&gt;
 </code>
 </p>
 <p>
@@ -841,7 +841,7 @@ Returns an <a href="swag.runtime.html#Swag.ICompiler">ICompiler</a> interface to
 <p>
 Raise a compiler error at the given source location.</p>
 <p class="code">
-<code style="white-space: break-spaces">func @compilererror(message: string, loc: <a href="swag.runtime.html#Swag.SourceCodeLocation">Swag.SourceCodeLocation</a>)
+<code style="white-space: break-spaces">func @compilererror(message: string, loc: &lt;a href="swag.runtime.html#Swag.SourceCodeLocation"&gt;Swag.SourceCodeLocation&lt;/a&gt;)
 </code>
 </p>
 <p>
@@ -858,7 +858,7 @@ Raise a compiler error at the given source location.</p>
 <p>
 Raise a compiler warning at the given source location.</p>
 <p class="code">
-<code style="white-space: break-spaces">func @compilerwarning(message: string, loc: <a href="swag.runtime.html#Swag.SourceCodeLocation">Swag.SourceCodeLocation</a>)
+<code style="white-space: break-spaces">func @compilerwarning(message: string, loc: &lt;a href="swag.runtime.html#Swag.SourceCodeLocation"&gt;Swag.SourceCodeLocation&lt;/a&gt;)
 </code>
 </p>
 <p>
@@ -873,8 +873,8 @@ Raise a compiler warning at the given source location.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func @cos(value: f32)->f32
-func @cos(value: f64)->f64
+<code style="white-space: break-spaces">func @cos(value: f32)-&gt;f32
+func @cos(value: f64)-&gt;f64
 </code>
 </p>
 <p>
@@ -889,8 +889,8 @@ func @cos(value: f64)->f64
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func @cosh(value: f32)->f32
-func @cosh(value: f64)->f64
+<code style="white-space: break-spaces">func @cosh(value: f32)-&gt;f32
+func @cosh(value: f64)-&gt;f64
 </code>
 </p>
 <p>
@@ -920,8 +920,8 @@ func @cosh(value: f64)->f64
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func @exp(value: f32)->f32
-func @exp(value: f64)->f64
+<code style="white-space: break-spaces">func @exp(value: f32)-&gt;f32
+func @exp(value: f64)-&gt;f64
 </code>
 </p>
 <p>
@@ -936,8 +936,8 @@ func @exp(value: f64)->f64
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func @exp2(value: f32)->f32
-func @exp2(value: f64)->f64
+<code style="white-space: break-spaces">func @exp2(value: f32)-&gt;f32
+func @exp2(value: f64)-&gt;f64
 </code>
 </p>
 <p>
@@ -952,8 +952,8 @@ func @exp2(value: f64)->f64
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func @floor(value: f32)->f32
-func @floor(value: f64)->f64
+<code style="white-space: break-spaces">func @floor(value: f32)-&gt;f32
+func @floor(value: f64)-&gt;f64
 </code>
 </p>
 <p>
@@ -987,7 +987,7 @@ Free a system memory block allocated with <a href="swag.runtime.html#@alloc">@al
 <p>
 Get the current thread context.</p>
 <p class="code">
-<code style="white-space: break-spaces">func @getcontext()->*<a href="swag.runtime.html#Swag.Context">Swag.Context</a>
+<code style="white-space: break-spaces">func @getcontext()-&gt;*&lt;a href="swag.runtime.html#Swag.Context"&gt;Swag.Context&lt;/a&gt;
 </code>
 </p>
 <p>
@@ -1004,7 +1004,7 @@ Get the current thread context.</p>
 <p>
 Get informations about the current process.</p>
 <p class="code">
-<code style="white-space: break-spaces">func @getpinfos()->*<a href="swag.runtime.html#Swag.ProcessInfos">Swag.ProcessInfos</a>
+<code style="white-space: break-spaces">func @getpinfos()-&gt;*&lt;a href="swag.runtime.html#Swag.ProcessInfos"&gt;Swag.ProcessInfos&lt;/a&gt;
 </code>
 </p>
 <p>
@@ -1021,7 +1021,7 @@ Get informations about the current process.</p>
 <p>
 Returns the list of all global variables.</p>
 <p class="code">
-<code style="white-space: break-spaces">func @gvtd()->const [..] <a href="swag.runtime.html#Swag.Gvtd">Swag.Gvtd</a>
+<code style="white-space: break-spaces">func @gvtd()-&gt;const [..] &lt;a href="swag.runtime.html#Swag.Gvtd"&gt;Swag.Gvtd&lt;/a&gt;
 </code>
 </p>
 <p>
@@ -1038,7 +1038,7 @@ Returns the list of all global variables.</p>
 <p>
 Returns <code class = "incode">true</code> is the current execution is bytecode.</p>
 <p class="code">
-<code style="white-space: break-spaces">func @isbytecode()->bool
+<code style="white-space: break-spaces">func @isbytecode()-&gt;bool
 </code>
 </p>
 <p>
@@ -1053,7 +1053,7 @@ Returns <code class = "incode">true</code> is the current execution is bytecode.
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func @itftableof(structType: const *<a href="swag.runtime.html#Swag.TypeInfoStruct">Swag.TypeInfoStruct</a>, itfType: const *<a href="swag.runtime.html#Swag.TypeInfoStruct">Swag.TypeInfoStruct</a>)->const *void
+<code style="white-space: break-spaces">func @itftableof(structType: const *&lt;a href="swag.runtime.html#Swag.TypeInfoStruct"&gt;Swag.TypeInfoStruct&lt;/a&gt;, itfType: const *&lt;a href="swag.runtime.html#Swag.TypeInfoStruct"&gt;Swag.TypeInfoStruct&lt;/a&gt;)-&gt;const *void
 </code>
 </p>
 <p>
@@ -1068,8 +1068,8 @@ Returns <code class = "incode">true</code> is the current execution is bytecode.
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func @log(value: f32)->f32
-func @log(value: f64)->f64
+<code style="white-space: break-spaces">func @log(value: f32)-&gt;f32
+func @log(value: f64)-&gt;f64
 </code>
 </p>
 <p>
@@ -1084,8 +1084,8 @@ func @log(value: f64)->f64
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func @log10(value: f32)->f32
-func @log10(value: f64)->f64
+<code style="white-space: break-spaces">func @log10(value: f32)-&gt;f32
+func @log10(value: f64)-&gt;f64
 </code>
 </p>
 <p>
@@ -1100,8 +1100,8 @@ func @log10(value: f64)->f64
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func @log2(value: f32)->f32
-func @log2(value: f64)->f64
+<code style="white-space: break-spaces">func @log2(value: f32)-&gt;f32
+func @log2(value: f64)-&gt;f64
 </code>
 </p>
 <p>
@@ -1116,16 +1116,16 @@ func @log2(value: f64)->f64
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func @max(value1: f32, value2: f32)->f32
-func @max(value1: f64, value2: f64)->f64
-func @max(value1: s16, value2: s16)->s16
-func @max(value1: s32, value2: s32)->s32
-func @max(value1: s64, value2: s64)->s64
-func @max(value1: s8, value2: s8)->s8
-func @max(value1: u16, value2: u16)->u16
-func @max(value1: u32, value2: u32)->u32
-func @max(value1: u64, value2: u64)->u64
-func @max(value1: u8, value2: u8)->u8
+<code style="white-space: break-spaces">func @max(value1: f32, value2: f32)-&gt;f32
+func @max(value1: f64, value2: f64)-&gt;f64
+func @max(value1: s16, value2: s16)-&gt;s16
+func @max(value1: s32, value2: s32)-&gt;s32
+func @max(value1: s64, value2: s64)-&gt;s64
+func @max(value1: s8, value2: s8)-&gt;s8
+func @max(value1: u16, value2: u16)-&gt;u16
+func @max(value1: u32, value2: u32)-&gt;u32
+func @max(value1: u64, value2: u64)-&gt;u64
+func @max(value1: u8, value2: u8)-&gt;u8
 </code>
 </p>
 <p>
@@ -1142,7 +1142,7 @@ func @max(value1: u8, value2: u8)->u8
 <p>
 Compare two memory blocks, and returns -1, 0 if equal, or 1.</p>
 <p class="code">
-<code style="white-space: break-spaces">func @memcmp(dst: const ^void, src: const ^void, size: u64)->s32
+<code style="white-space: break-spaces">func @memcmp(dst: const ^void, src: const ^void, size: u64)-&gt;s32
 </code>
 </p>
 <p>
@@ -1208,16 +1208,16 @@ Set all bytes of a given memory block to <code class = "incode">value</code>.</p
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func @min(value1: f32, value2: f32)->f32
-func @min(value1: f64, value2: f64)->f64
-func @min(value1: s16, value2: s16)->s16
-func @min(value1: s32, value2: s32)->s32
-func @min(value1: s64, value2: s64)->s64
-func @min(value1: s8, value2: s8)->s8
-func @min(value1: u16, value2: u16)->u16
-func @min(value1: u32, value2: u32)->u32
-func @min(value1: u64, value2: u64)->u64
-func @min(value1: u8, value2: u8)->u8
+<code style="white-space: break-spaces">func @min(value1: f32, value2: f32)-&gt;f32
+func @min(value1: f64, value2: f64)-&gt;f64
+func @min(value1: s16, value2: s16)-&gt;s16
+func @min(value1: s32, value2: s32)-&gt;s32
+func @min(value1: s64, value2: s64)-&gt;s64
+func @min(value1: s8, value2: s8)-&gt;s8
+func @min(value1: u16, value2: u16)-&gt;u16
+func @min(value1: u32, value2: u32)-&gt;u32
+func @min(value1: u64, value2: u64)-&gt;u64
+func @min(value1: u8, value2: u8)-&gt;u8
 </code>
 </p>
 <p>
@@ -1234,7 +1234,7 @@ func @min(value1: u8, value2: u8)->u8
 <p>
 Returns the list of all loaded modules.</p>
 <p class="code">
-<code style="white-space: break-spaces">func @modules()->const [..] <a href="swag.runtime.html#Swag.Module">Swag.Module</a>
+<code style="white-space: break-spaces">func @modules()-&gt;const [..] &lt;a href="swag.runtime.html#Swag.Module"&gt;Swag.Module&lt;/a&gt;
 </code>
 </p>
 <p>
@@ -1251,11 +1251,11 @@ Returns the list of all loaded modules.</p>
 <p>
 Returns (val1 * val2) + val3.</p>
 <p class="code">
-<code style="white-space: break-spaces">func @muladd(val1: f32, val2: f32, val3: f32)->f32
+<code style="white-space: break-spaces">func @muladd(val1: f32, val2: f32, val3: f32)-&gt;f32
 </code>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func @muladd(val1: f64, val2: f64, val3: f64)->f64
+<code style="white-space: break-spaces">func @muladd(val1: f64, val2: f64, val3: f64)-&gt;f64
 </code>
 </p>
 <p>
@@ -1272,7 +1272,7 @@ Returns (val1 * val2) + val3.</p>
 <p>
 Stop the execution and panic.</p>
 <p class="code">
-<code style="white-space: break-spaces">func @panic(message: string, loc: <a href="swag.runtime.html#Swag.SourceCodeLocation">Swag.SourceCodeLocation</a>)
+<code style="white-space: break-spaces">func @panic(message: string, loc: &lt;a href="swag.runtime.html#Swag.SourceCodeLocation"&gt;Swag.SourceCodeLocation&lt;/a&gt;)
 </code>
 </p>
 <p>
@@ -1287,8 +1287,8 @@ Stop the execution and panic.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func @pow(value1: f32, value2: f32)->f32
-func @pow(value1: f64, value2: f64)->f64
+<code style="white-space: break-spaces">func @pow(value1: f32, value2: f32)-&gt;f32
+func @pow(value1: f64, value2: f64)-&gt;f64
 </code>
 </p>
 <p>
@@ -1322,7 +1322,7 @@ Basic print to console function.</p>
 <p>
 Realloc a system memory block allocated with <a href="swag.runtime.html#@alloc">@alloc</a>.</p>
 <p class="code">
-<code style="white-space: break-spaces">func @realloc(ptr: ^void, size: u64)->^void
+<code style="white-space: break-spaces">func @realloc(ptr: ^void, size: u64)-&gt;^void
 </code>
 </p>
 <p>
@@ -1337,8 +1337,8 @@ Realloc a system memory block allocated with <a href="swag.runtime.html#@alloc">
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func @round(value: f32)->f32
-func @round(value: f64)->f64
+<code style="white-space: break-spaces">func @round(value: f32)-&gt;f32
+func @round(value: f64)-&gt;f64
 </code>
 </p>
 <p>
@@ -1370,7 +1370,7 @@ func @round(value: f64)->f64
 <p>
 Replace the current thread context.</p>
 <p class="code">
-<code style="white-space: break-spaces">func @setcontext(context: const *<a href="swag.runtime.html#Swag.Context">Swag.Context</a>)
+<code style="white-space: break-spaces">func @setcontext(context: const *&lt;a href="swag.runtime.html#Swag.Context"&gt;Swag.Context&lt;/a&gt;)
 </code>
 </p>
 <p>
@@ -1385,8 +1385,8 @@ Replace the current thread context.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func @sin(value: f32)->f32
-func @sin(value: f64)->f64
+<code style="white-space: break-spaces">func @sin(value: f32)-&gt;f32
+func @sin(value: f64)-&gt;f64
 </code>
 </p>
 <p>
@@ -1401,8 +1401,8 @@ func @sin(value: f64)->f64
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func @sinh(value: f32)->f32
-func @sinh(value: f64)->f64
+<code style="white-space: break-spaces">func @sinh(value: f32)-&gt;f32
+func @sinh(value: f64)-&gt;f64
 </code>
 </p>
 <p>
@@ -1417,8 +1417,8 @@ func @sinh(value: f64)->f64
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func @sqrt(value: f32)->f32
-func @sqrt(value: f64)->f64
+<code style="white-space: break-spaces">func @sqrt(value: f32)-&gt;f32
+func @sqrt(value: f64)-&gt;f64
 </code>
 </p>
 <p>
@@ -1435,7 +1435,7 @@ func @sqrt(value: f64)->f64
 <p>
 Compare two zero terminated strings, and returns -1, 0 if equal, or 1.</p>
 <p class="code">
-<code style="white-space: break-spaces">func @strcmp(str1: cstring, str2: cstring)->s32
+<code style="white-space: break-spaces">func @strcmp(str1: cstring, str2: cstring)-&gt;s32
 </code>
 </p>
 <p>
@@ -1452,7 +1452,7 @@ Compare two zero terminated strings, and returns -1, 0 if equal, or 1.</p>
 <p>
 Compares two strings, and returns <code class = "incode">true</code> if they are equal.</p>
 <p class="code">
-<code style="white-space: break-spaces">func @stringcmp(str1: string, str2: string)->bool
+<code style="white-space: break-spaces">func @stringcmp(str1: string, str2: string)-&gt;bool
 </code>
 </p>
 <p>
@@ -1469,7 +1469,7 @@ Compares two strings, and returns <code class = "incode">true</code> if they are
 <p>
 Returns the length of the given 0 terminated string.</p>
 <p class="code">
-<code style="white-space: break-spaces">func @strlen(str: cstring)->u64
+<code style="white-space: break-spaces">func @strlen(str: cstring)-&gt;u64
 </code>
 </p>
 <p>
@@ -1499,8 +1499,8 @@ Returns the length of the given 0 terminated string.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func @tan(value: f32)->f32
-func @tan(value: f64)->f64
+<code style="white-space: break-spaces">func @tan(value: f32)-&gt;f32
+func @tan(value: f64)-&gt;f64
 </code>
 </p>
 <p>
@@ -1515,8 +1515,8 @@ func @tan(value: f64)->f64
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func @tanh(value: f32)->f32
-func @tanh(value: f64)->f64
+<code style="white-space: break-spaces">func @tanh(value: f32)-&gt;f32
+func @tanh(value: f64)-&gt;f64
 </code>
 </p>
 <p>
@@ -1531,8 +1531,8 @@ func @tanh(value: f64)->f64
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func @trunc(value: f32)->f32
-func @trunc(value: f64)->f64
+<code style="white-space: break-spaces">func @trunc(value: f32)-&gt;f32
+func @trunc(value: f64)-&gt;f64
 </code>
 </p>
 <p>
@@ -1547,7 +1547,7 @@ func @trunc(value: f64)->f64
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func @typecmp(typeA: const *<a href="swag.runtime.html#Swag.TypeInfo">Swag.TypeInfo</a>, typeB: const *<a href="swag.runtime.html#Swag.TypeInfo">Swag.TypeInfo</a>, cmpFlags: <a href="swag.runtime.html#Swag.TypeCmpFlags">Swag.TypeCmpFlags</a>)->bool
+<code style="white-space: break-spaces">func @typecmp(typeA: const *&lt;a href="swag.runtime.html#Swag.TypeInfo"&gt;Swag.TypeInfo&lt;/a&gt;, typeB: const *&lt;a href="swag.runtime.html#Swag.TypeInfo"&gt;Swag.TypeInfo&lt;/a&gt;, cmpFlags: &lt;a href="swag.runtime.html#Swag.TypeCmpFlags"&gt;Swag.TypeCmpFlags&lt;/a&gt;)-&gt;bool
 </code>
 </p>
 <p>
@@ -2396,7 +2396,7 @@ Alignement constraint.</p>
 <div class="addinfos"><b>Usage</b>: all 
 </div>
 <p class="code">
-<code style="white-space: break-spaces">attr AttrUsage(usage: <a href="swag.runtime.html#Swag.AttributeUsage">Swag.AttributeUsage</a>)
+<code style="white-space: break-spaces">attr AttrUsage(usage: &lt;a href="swag.runtime.html#Swag.AttributeUsage"&gt;Swag.AttributeUsage&lt;/a&gt;)
 </code>
 </p>
 <p>
@@ -3852,7 +3852,7 @@ Setup the allocator.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func alloc(using self, request: *<a href="swag.runtime.html#Swag.AllocatorRequest">Swag.AllocatorRequest</a>)
+<code style="white-space: break-spaces">func alloc(using self, request: *&lt;a href="swag.runtime.html#Swag.AllocatorRequest"&gt;Swag.AllocatorRequest&lt;/a&gt;)
 </code>
 </p>
 <p>
@@ -3867,7 +3867,7 @@ Setup the allocator.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func free(using self, request: *<a href="swag.runtime.html#Swag.AllocatorRequest">Swag.AllocatorRequest</a>)
+<code style="white-space: break-spaces">func free(using self, request: *&lt;a href="swag.runtime.html#Swag.AllocatorRequest"&gt;Swag.AllocatorRequest&lt;/a&gt;)
 </code>
 </p>
 <p>
@@ -3897,7 +3897,7 @@ Setup the allocator.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func req(using self, request: *<a href="swag.runtime.html#Swag.AllocatorRequest">Swag.AllocatorRequest</a>)
+<code style="white-space: break-spaces">func req(using self, request: *&lt;a href="swag.runtime.html#Swag.AllocatorRequest"&gt;Swag.AllocatorRequest&lt;/a&gt;)
 </code>
 </p>
 <p>
@@ -3946,7 +3946,7 @@ Check all allocated blocks.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func checkIsAllocated(using self, ptrHeader: ^<a href="swag.runtime.html#Swag.DebugAllocatorHeader">Swag.DebugAllocatorHeader</a>, callerLoc = #callerlocation)
+<code style="white-space: break-spaces">func checkIsAllocated(using self, ptrHeader: ^&lt;a href="swag.runtime.html#Swag.DebugAllocatorHeader"&gt;Swag.DebugAllocatorHeader&lt;/a&gt;, callerLoc = #callerlocation)
 </code>
 </p>
 <p>
@@ -3961,7 +3961,7 @@ Check all allocated blocks.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func checkIsFreed(using self, ptrHeader: ^<a href="swag.runtime.html#Swag.DebugAllocatorHeader">Swag.DebugAllocatorHeader</a>)
+<code style="white-space: break-spaces">func checkIsFreed(using self, ptrHeader: ^&lt;a href="swag.runtime.html#Swag.DebugAllocatorHeader"&gt;Swag.DebugAllocatorHeader&lt;/a&gt;)
 </code>
 </p>
 <p>
@@ -3976,7 +3976,7 @@ Check all allocated blocks.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func memAlign(value: u64, alignement: u32)->u64
+<code style="white-space: break-spaces">func memAlign(value: u64, alignement: u32)-&gt;u64
 </code>
 </p>
 <p>
@@ -4040,7 +4040,7 @@ Output to the console the list of all allocated blocks (leaks).</p>
 <p>
 Setup the allocator.</p>
 <p class="code">
-<code style="white-space: break-spaces">func setup(using self, allocator: <a href="swag.runtime.html#Swag.IAllocator">Swag.IAllocator</a>)
+<code style="white-space: break-spaces">func setup(using self, allocator: &lt;a href="swag.runtime.html#Swag.IAllocator"&gt;Swag.IAllocator&lt;/a&gt;)
 </code>
 </p>
 <p>
@@ -5489,7 +5489,7 @@ This will call <code class = "incode">release</code> prior to changing the capac
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func alloc(using self, request: *<a href="swag.runtime.html#Swag.AllocatorRequest">Swag.AllocatorRequest</a>)
+<code style="white-space: break-spaces">func alloc(using self, request: *&lt;a href="swag.runtime.html#Swag.AllocatorRequest"&gt;Swag.AllocatorRequest&lt;/a&gt;)
 </code>
 </p>
 <p>
@@ -5504,7 +5504,7 @@ This will call <code class = "incode">release</code> prior to changing the capac
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func free(using self, request: *<a href="swag.runtime.html#Swag.AllocatorRequest">Swag.AllocatorRequest</a>)
+<code style="white-space: break-spaces">func free(using self, request: *&lt;a href="swag.runtime.html#Swag.AllocatorRequest"&gt;Swag.AllocatorRequest&lt;/a&gt;)
 </code>
 </p>
 <p>
@@ -5519,7 +5519,7 @@ This will call <code class = "incode">release</code> prior to changing the capac
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func req(using self, request: *<a href="swag.runtime.html#Swag.AllocatorRequest">Swag.AllocatorRequest</a>)
+<code style="white-space: break-spaces">func req(using self, request: *&lt;a href="swag.runtime.html#Swag.AllocatorRequest"&gt;Swag.AllocatorRequest&lt;/a&gt;)
 </code>
 </p>
 <p>
@@ -5571,7 +5571,7 @@ u64</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func align(value: u64, alignement: u32)->u64
+<code style="white-space: break-spaces">func align(value: u64, alignement: u32)-&gt;u64
 </code>
 </p>
 <p>
@@ -5586,7 +5586,7 @@ u64</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func alloc(using self, size: u64, alignement: u32 = 0)->*void
+<code style="white-space: break-spaces">func alloc(using self, size: u64, alignement: u32 = 0)-&gt;*void
 </code>
 </p>
 <p>
@@ -5652,7 +5652,7 @@ Release the allocated block.</p>
 <p>
 This will call <code class = "incode">release</code> prior to changing the capacity, so this must be called at an early stage.</p>
 <p class="code">
-<code style="white-space: break-spaces">func setCapacity(using self, newCapacity: u64, allocator: <a href="swag.runtime.html#Swag.IAllocator">Swag.IAllocator</a>)
+<code style="white-space: break-spaces">func setCapacity(using self, newCapacity: u64, allocator: &lt;a href="swag.runtime.html#Swag.IAllocator"&gt;Swag.IAllocator&lt;/a&gt;)
 </code>
 </p>
 <p>
@@ -5762,7 +5762,7 @@ End column.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func free(request: *<a href="swag.runtime.html#Swag.AllocatorRequest">Swag.AllocatorRequest</a>)
+<code style="white-space: break-spaces">func free(request: *&lt;a href="swag.runtime.html#Swag.AllocatorRequest"&gt;Swag.AllocatorRequest&lt;/a&gt;)
 </code>
 </p>
 <p>
@@ -5777,7 +5777,7 @@ End column.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func req(using self, request: *<a href="swag.runtime.html#Swag.AllocatorRequest">Swag.AllocatorRequest</a>)
+<code style="white-space: break-spaces">func req(using self, request: *&lt;a href="swag.runtime.html#Swag.AllocatorRequest"&gt;Swag.AllocatorRequest&lt;/a&gt;)
 </code>
 </p>
 <p>
@@ -7173,7 +7173,7 @@ Change the behavior of a given warning or list of warnings.</p>
 <div class="addinfos"><b>Usage</b>: all multi 
 </div>
 <p class="code">
-<code style="white-space: break-spaces">attr Warn(what: string, level: <a href="swag.runtime.html#Swag.WarnLevel">Swag.WarnLevel</a>)
+<code style="white-space: break-spaces">attr Warn(what: string, level: &lt;a href="swag.runtime.html#Swag.WarnLevel"&gt;Swag.WarnLevel&lt;/a&gt;)
 </code>
 </p>
 <p>

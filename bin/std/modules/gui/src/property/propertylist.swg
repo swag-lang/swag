@@ -176,7 +176,7 @@ private impl PropertyList
                 label1.setText(dispDesc)
 
                 minHeight := ed.position.height
-                itemB.onResize += closure|ed, label1, line1, minHeight|(itemB) {
+                itemB.onResize += closure|label1, line1, minHeight|(itemB) {
                     label1.autoHeight()
                     line1.position.height = Math.max(minHeight, label1.position.height)
                     line1.applyLayout()
@@ -223,7 +223,7 @@ private impl PropertyList
         label1.setText(dispDesc)
 
         minHeight := ed.position.height
-        item.onResize += closure|ed, label1, line1, minHeight|(item) {
+        item.onResize += closure|label1, line1, minHeight|(item) {
             label1.autoHeight()
             line1.position.height = Math.max(minHeight, label1.position.height)
             item.line.applyLayout()

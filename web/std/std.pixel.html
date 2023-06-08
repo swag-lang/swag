@@ -643,6 +643,7 @@
 <li><a href="#Pixel.FontFamily.getFromOs">FontFamily.getFromOs</a></li>
 <li><a href="#Pixel.FontFamily.setFont">FontFamily.setFont</a></li>
 <li><a href="#Pixel.RichString.compute">RichString.compute</a></li>
+<li><a href="#Pixel.RichString.getNaked">RichString.getNaked</a></li>
 <li><a href="#Pixel.RichString.invalidate">RichString.invalidate</a></li>
 <li><a href="#Pixel.RichString.isEmpty">RichString.isEmpty</a></li>
 <li><a href="#Pixel.RichString.opAffect">RichString.opAffect</a></li>
@@ -1592,7 +1593,7 @@ Zero</td>
 <p>
 Get the Argb value that matches <code class = "incode">name</code>.</p>
 <p class="code">
-<code style="white-space: break-spaces">func fromName(name: string)-><a href="std.pixel.html#Pixel.Argb">Pixel.Argb</a>
+<code style="white-space: break-spaces">func fromName(name: string)-&gt;&lt;a href="std.pixel.html#Pixel.Argb"&gt;Pixel.Argb&lt;/a&gt;
 </code>
 </p>
 <p>
@@ -1842,7 +1843,7 @@ u16</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func canDecode(using self, fileName: string)->bool
+<code style="white-space: break-spaces">func canDecode(using self, fileName: string)-&gt;bool
 </code>
 </p>
 <p>
@@ -1857,7 +1858,7 @@ u16</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func decode(using self, buffer: const [..] u8, options: <a href="std.pixel.html#Pixel.DecodeOptions">Pixel.DecodeOptions</a>)-><a href="std.pixel.html#Pixel.Image">Pixel.Image</a> throw
+<code style="white-space: break-spaces">func decode(using self, buffer: const [..] u8, options: &lt;a href="std.pixel.html#Pixel.DecodeOptions"&gt;Pixel.DecodeOptions&lt;/a&gt;)-&gt;&lt;a href="std.pixel.html#Pixel.Image"&gt;Pixel.Image&lt;/a&gt; throw
 </code>
 </p>
 <p>
@@ -1883,7 +1884,7 @@ u16</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func canEncode(using self, fileName: string)->bool
+<code style="white-space: break-spaces">func canEncode(using self, fileName: string)-&gt;bool
 </code>
 </p>
 <p>
@@ -1898,7 +1899,7 @@ u16</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func encode(using self, result: *Core.ConcatBuffer, image: <a href="std.pixel.html#Pixel.Image">Pixel.Image</a>, options: any) throw
+<code style="white-space: break-spaces">func encode(using self, result: *Core.ConcatBuffer, image: &lt;a href="std.pixel.html#Pixel.Image"&gt;Pixel.Image&lt;/a&gt;, options: any) throw
 </code>
 </p>
 <p>
@@ -2235,7 +2236,7 @@ Returns a tiled texture brush.</p>
 <p>
 Returns a hatch brush.</p>
 <p class="code">
-<code style="white-space: break-spaces">func createHatch(style: <a href="std.pixel.html#Pixel.HatchStyle">Pixel.HatchStyle</a>, color: <a href="std.pixel.html#Pixel.Color">Pixel.Color</a>)-><a href="std.pixel.html#Pixel.Brush">Pixel.Brush</a>
+<code style="white-space: break-spaces">func createHatch(style: &lt;a href="std.pixel.html#Pixel.HatchStyle"&gt;Pixel.HatchStyle&lt;/a&gt;, color: &lt;a href="std.pixel.html#Pixel.Color"&gt;Pixel.Color&lt;/a&gt;)-&gt;&lt;a href="std.pixel.html#Pixel.Brush"&gt;Pixel.Brush&lt;/a&gt;
 </code>
 </p>
 <p>
@@ -2252,7 +2253,7 @@ Returns a hatch brush.</p>
 <p>
 Returns a solid color brush.</p>
 <p class="code">
-<code style="white-space: break-spaces">func createSolid(color: <a href="std.pixel.html#Pixel.Color">Pixel.Color</a>)-><a href="std.pixel.html#Pixel.Brush">Pixel.Brush</a>
+<code style="white-space: break-spaces">func createSolid(color: &lt;a href="std.pixel.html#Pixel.Color"&gt;Pixel.Color&lt;/a&gt;)-&gt;&lt;a href="std.pixel.html#Pixel.Brush"&gt;Pixel.Brush&lt;/a&gt;
 </code>
 </p>
 <p>
@@ -2269,7 +2270,7 @@ Returns a solid color brush.</p>
 <p>
 Returns a full texture brush.</p>
 <p class="code">
-<code style="white-space: break-spaces">func createTexture(texture: <a href="std.pixel.html#Pixel.Texture">Pixel.Texture</a>)-><a href="std.pixel.html#Pixel.Brush">Pixel.Brush</a>
+<code style="white-space: break-spaces">func createTexture(texture: &lt;a href="std.pixel.html#Pixel.Texture"&gt;Pixel.Texture&lt;/a&gt;)-&gt;&lt;a href="std.pixel.html#Pixel.Brush"&gt;Pixel.Brush&lt;/a&gt;
 </code>
 </p>
 <p>
@@ -2286,7 +2287,7 @@ Returns a full texture brush.</p>
 <p>
 Returns a tiled texture brush.</p>
 <p class="code">
-<code style="white-space: break-spaces">func createTiled(texture: <a href="std.pixel.html#Pixel.Texture">Pixel.Texture</a>)-><a href="std.pixel.html#Pixel.Brush">Pixel.Brush</a>
+<code style="white-space: break-spaces">func createTiled(texture: &lt;a href="std.pixel.html#Pixel.Texture"&gt;Pixel.Texture&lt;/a&gt;)-&gt;&lt;a href="std.pixel.html#Pixel.Brush"&gt;Pixel.Brush&lt;/a&gt;
 </code>
 </p>
 <p>
@@ -2845,7 +2846,7 @@ Pixel.Clipper.CInt</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func opEquals(using self, other: <a href="std.pixel.html#Pixel.Clipper.IntPoint">Pixel.Clipper.IntPoint</a>)->bool
+<code style="white-space: break-spaces">func opEquals(using self, other: &lt;a href="std.pixel.html#Pixel.Clipper.IntPoint"&gt;Pixel.Clipper.IntPoint&lt;/a&gt;)-&gt;bool
 </code>
 </p>
 <p>
@@ -3801,7 +3802,7 @@ Retrieve all components as floating point values between 0 and 1.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func poke(using self, buf: string)->string throw
+<code style="white-space: break-spaces">func poke(using self, buf: string)-&gt;string throw
 </code>
 </p>
 <p>
@@ -3818,7 +3819,7 @@ Retrieve all components as floating point values between 0 and 1.</p>
 <p>
 Create a new Color with specified values.</p>
 <p class="code">
-<code style="white-space: break-spaces">func fromAbgr(abgr: u32)-><a href="std.pixel.html#Pixel.Color">Pixel.Color</a>
+<code style="white-space: break-spaces">func fromAbgr(abgr: u32)-&gt;&lt;a href="std.pixel.html#Pixel.Color"&gt;Pixel.Color&lt;/a&gt;
 </code>
 </p>
 <p>
@@ -3835,25 +3836,25 @@ Create a new Color with specified values.</p>
 <p>
 Create a new Color with specified values.</p>
 <p class="code">
-<code style="white-space: break-spaces">func fromArgb(argb: <a href="std.pixel.html#Pixel.Argb">Pixel.Argb</a>)-><a href="std.pixel.html#Pixel.Color">Pixel.Color</a>
+<code style="white-space: break-spaces">func fromArgb(argb: &lt;a href="std.pixel.html#Pixel.Argb"&gt;Pixel.Argb&lt;/a&gt;)-&gt;&lt;a href="std.pixel.html#Pixel.Color"&gt;Pixel.Color&lt;/a&gt;
 </code>
 </p>
 <p>
 Create a new Color with specified values.</p>
 <p class="code">
-<code style="white-space: break-spaces">func fromArgb(argb: u32)-><a href="std.pixel.html#Pixel.Color">Pixel.Color</a>
+<code style="white-space: break-spaces">func fromArgb(argb: u32)-&gt;&lt;a href="std.pixel.html#Pixel.Color"&gt;Pixel.Color&lt;/a&gt;
 </code>
 </p>
 <p>
 Create a new Color with specified values.</p>
 <p class="code">
-<code style="white-space: break-spaces">func fromArgb(alpha: u8, argb: <a href="std.pixel.html#Pixel.Argb">Pixel.Argb</a>)-><a href="std.pixel.html#Pixel.Color">Pixel.Color</a>
+<code style="white-space: break-spaces">func fromArgb(alpha: u8, argb: &lt;a href="std.pixel.html#Pixel.Argb"&gt;Pixel.Argb&lt;/a&gt;)-&gt;&lt;a href="std.pixel.html#Pixel.Color"&gt;Pixel.Color&lt;/a&gt;
 </code>
 </p>
 <p>
 Create a new Color with specified values.</p>
 <p class="code">
-<code style="white-space: break-spaces">func fromArgb(a: u8, r: u8, g: u8, b: u8)-><a href="std.pixel.html#Pixel.Color">Pixel.Color</a>
+<code style="white-space: break-spaces">func fromArgb(a: u8, r: u8, g: u8, b: u8)-&gt;&lt;a href="std.pixel.html#Pixel.Color"&gt;Pixel.Color&lt;/a&gt;
 </code>
 </p>
 <p>
@@ -3870,7 +3871,7 @@ Create a new Color with specified values.</p>
 <p>
 Create a new Color with specified values.</p>
 <p class="code">
-<code style="white-space: break-spaces">func fromArgbf(a: f32, r: f32, g: f32, b: f32)-><a href="std.pixel.html#Pixel.Color">Pixel.Color</a>
+<code style="white-space: break-spaces">func fromArgbf(a: f32, r: f32, g: f32, b: f32)-&gt;&lt;a href="std.pixel.html#Pixel.Color"&gt;Pixel.Color&lt;/a&gt;
 </code>
 </p>
 <p>
@@ -3887,7 +3888,7 @@ Create a new Color with specified values.</p>
 <p>
 Create a new Color with specified values.</p>
 <p class="code">
-<code style="white-space: break-spaces">func fromHsl(h: f32, s: f32, l: f32)-><a href="std.pixel.html#Pixel.Color">Pixel.Color</a>
+<code style="white-space: break-spaces">func fromHsl(h: f32, s: f32, l: f32)-&gt;&lt;a href="std.pixel.html#Pixel.Color"&gt;Pixel.Color&lt;/a&gt;
 </code>
 </p>
 <p>
@@ -3904,7 +3905,7 @@ Create a new Color with specified values.</p>
 <p>
 Create a new Color with specified values.</p>
 <p class="code">
-<code style="white-space: break-spaces">func fromRgb(r: u8, g: u8, b: u8)-><a href="std.pixel.html#Pixel.Color">Pixel.Color</a>
+<code style="white-space: break-spaces">func fromRgb(r: u8, g: u8, b: u8)-&gt;&lt;a href="std.pixel.html#Pixel.Color"&gt;Pixel.Color&lt;/a&gt;
 </code>
 </p>
 <p>
@@ -3921,7 +3922,7 @@ Create a new Color with specified values.</p>
 <p>
 Create a new Color with specified values.</p>
 <p class="code">
-<code style="white-space: break-spaces">func fromRgbf(r: f32, g: f32, b: f32)-><a href="std.pixel.html#Pixel.Color">Pixel.Color</a>
+<code style="white-space: break-spaces">func fromRgbf(r: f32, g: f32, b: f32)-&gt;&lt;a href="std.pixel.html#Pixel.Color"&gt;Pixel.Color&lt;/a&gt;
 </code>
 </p>
 <p>
@@ -3938,7 +3939,7 @@ Create a new Color with specified values.</p>
 <p>
 Blend two colors.</p>
 <p class="code">
-<code style="white-space: break-spaces">func getBlend(col0: <a href="std.pixel.html#Pixel.Color">Pixel.Color</a>, col1: <a href="std.pixel.html#Pixel.Color">Pixel.Color</a>, factor: f32)-><a href="std.pixel.html#Pixel.Color">Pixel.Color</a>
+<code style="white-space: break-spaces">func getBlend(col0: &lt;a href="std.pixel.html#Pixel.Color"&gt;Pixel.Color&lt;/a&gt;, col1: &lt;a href="std.pixel.html#Pixel.Color"&gt;Pixel.Color&lt;/a&gt;, factor: f32)-&gt;&lt;a href="std.pixel.html#Pixel.Color"&gt;Pixel.Color&lt;/a&gt;
 </code>
 </p>
 <p>
@@ -3955,7 +3956,7 @@ Blend two colors.</p>
 <p>
 Blend two colors, keeping the alpha channel of <code class = "incode">col0</code> untouched.</p>
 <p class="code">
-<code style="white-space: break-spaces">func getBlendKeepAlpha(col0: <a href="std.pixel.html#Pixel.Color">Pixel.Color</a>, col1: <a href="std.pixel.html#Pixel.Color">Pixel.Color</a>, factor: f32)-><a href="std.pixel.html#Pixel.Color">Pixel.Color</a>
+<code style="white-space: break-spaces">func getBlendKeepAlpha(col0: &lt;a href="std.pixel.html#Pixel.Color"&gt;Pixel.Color&lt;/a&gt;, col1: &lt;a href="std.pixel.html#Pixel.Color"&gt;Pixel.Color&lt;/a&gt;, factor: f32)-&gt;&lt;a href="std.pixel.html#Pixel.Color"&gt;Pixel.Color&lt;/a&gt;
 </code>
 </p>
 <p>
@@ -3972,7 +3973,7 @@ Blend two colors, keeping the alpha channel of <code class = "incode">col0</code
 <p>
 Returns a darker color.</p>
 <p class="code">
-<code style="white-space: break-spaces">func getDarker(col: <a href="std.pixel.html#Pixel.Color">Pixel.Color</a>, factor: f32)-><a href="std.pixel.html#Pixel.Color">Pixel.Color</a>
+<code style="white-space: break-spaces">func getDarker(col: &lt;a href="std.pixel.html#Pixel.Color"&gt;Pixel.Color&lt;/a&gt;, factor: f32)-&gt;&lt;a href="std.pixel.html#Pixel.Color"&gt;Pixel.Color&lt;/a&gt;
 </code>
 </p>
 <p>
@@ -3989,7 +3990,7 @@ Returns a darker color.</p>
 <p>
 Returns the distance between the other color.</p>
 <p class="code">
-<code style="white-space: break-spaces">func getDistanceRgb(using self, col: <a href="std.pixel.html#Pixel.Color">Pixel.Color</a>)->f32
+<code style="white-space: break-spaces">func getDistanceRgb(using self, col: &lt;a href="std.pixel.html#Pixel.Color"&gt;Pixel.Color&lt;/a&gt;)-&gt;f32
 </code>
 </p>
 <p>
@@ -4006,7 +4007,7 @@ Returns the distance between the other color.</p>
 <p>
 Returns a lighter color.</p>
 <p class="code">
-<code style="white-space: break-spaces">func getLighter(col: <a href="std.pixel.html#Pixel.Color">Pixel.Color</a>, factor: f32)-><a href="std.pixel.html#Pixel.Color">Pixel.Color</a>
+<code style="white-space: break-spaces">func getLighter(col: &lt;a href="std.pixel.html#Pixel.Color"&gt;Pixel.Color&lt;/a&gt;, factor: f32)-&gt;&lt;a href="std.pixel.html#Pixel.Color"&gt;Pixel.Color&lt;/a&gt;
 </code>
 </p>
 <p>
@@ -4036,7 +4037,7 @@ Returns a lighter color.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func opAffect(self, argb: <a href="std.pixel.html#Pixel.Argb">Pixel.Argb</a>)
+<code style="white-space: break-spaces">func opAffect(self, argb: &lt;a href="std.pixel.html#Pixel.Argb"&gt;Pixel.Argb&lt;/a&gt;)
 func opAffect(self, name: string)
 func opAffect(self, argb: u32)
 </code>
@@ -4053,8 +4054,8 @@ func opAffect(self, argb: u32)
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func opEquals(self, argb: <a href="std.pixel.html#Pixel.Argb">Pixel.Argb</a>)
-func opEquals(self, other: <a href="std.pixel.html#Pixel.Color">Pixel.Color</a>)
+<code style="white-space: break-spaces">func opEquals(self, argb: &lt;a href="std.pixel.html#Pixel.Argb"&gt;Pixel.Argb&lt;/a&gt;)
+func opEquals(self, other: &lt;a href="std.pixel.html#Pixel.Color"&gt;Pixel.Color&lt;/a&gt;)
 func opEquals(self, argb: u32)
 </code>
 </p>
@@ -4123,7 +4124,7 @@ Initialize color with hue, saturation, lightness.</p>
 <p>
 Just set r, g and b components.</p>
 <p class="code">
-<code style="white-space: break-spaces">func setRgb(using self, rgb: <a href="std.pixel.html#Pixel.Color">Pixel.Color</a>)
+<code style="white-space: break-spaces">func setRgb(using self, rgb: &lt;a href="std.pixel.html#Pixel.Color"&gt;Pixel.Color&lt;/a&gt;)
 </code>
 </p>
 <p>
@@ -4169,7 +4170,7 @@ Set r,g,b with floats in the range [0 1].</p>
 <p>
 Retrieve all components as floating point values between 0 and 1.</p>
 <p class="code">
-<code style="white-space: break-spaces">func toArgbf(const self)->{a: f32, r: f32, g: f32, b: f32}
+<code style="white-space: break-spaces">func toArgbf(const self)-&gt;{a: f32, r: f32, g: f32, b: f32}
 </code>
 </p>
 <p>
@@ -4186,7 +4187,7 @@ Retrieve all components as floating point values between 0 and 1.</p>
 <p>
 Returns hue, saturation, lightness.</p>
 <p class="code">
-<code style="white-space: break-spaces">func toHsl(using const self)->{h: f32, s: f32, l: f32}
+<code style="white-space: break-spaces">func toHsl(using const self)-&gt;{h: f32, s: f32, l: f32}
 </code>
 </p>
 <p>
@@ -4203,7 +4204,7 @@ Returns hue, saturation, lightness.</p>
 <p>
 Retrieve all components as floating point values between 0 and 1.</p>
 <p class="code">
-<code style="white-space: break-spaces">func toRgbf(const self)->{r: f32, g: f32, b: f32}
+<code style="white-space: break-spaces">func toRgbf(const self)-&gt;{r: f32, g: f32, b: f32}
 </code>
 </p>
 <p>
@@ -5033,13 +5034,13 @@ Release the given font.</p>
 <p>
 Creates a new Font of the given typeface and size.</p>
 <p class="code">
-<code style="white-space: break-spaces">func create(typeFace: *<a href="std.pixel.html#Pixel.TypeFace">Pixel.TypeFace</a>, size: u32, forceBold = false, forceItalic = false)->*<a href="std.pixel.html#Pixel.Font">Pixel.Font</a>
+<code style="white-space: break-spaces">func create(typeFace: *&lt;a href="std.pixel.html#Pixel.TypeFace"&gt;Pixel.TypeFace&lt;/a&gt;, size: u32, forceBold = false, forceItalic = false)-&gt;*&lt;a href="std.pixel.html#Pixel.Font"&gt;Pixel.Font&lt;/a&gt;
 </code>
 </p>
 <p>
 Creates a new Font with the given filename and size.</p>
 <p class="code">
-<code style="white-space: break-spaces">func create(fullname: string, size: u32, forceBold = false, forceItalic = false)->*<a href="std.pixel.html#Pixel.Font">Pixel.Font</a> throw
+<code style="white-space: break-spaces">func create(fullname: string, size: u32, forceBold = false, forceItalic = false)-&gt;*&lt;a href="std.pixel.html#Pixel.Font"&gt;Pixel.Font&lt;/a&gt; throw
 </code>
 </p>
 <p>
@@ -5056,7 +5057,7 @@ Creates a new Font with the given filename and size.</p>
 <p>
 Returns the glyph descriptor of a given rune.</p>
 <p class="code">
-<code style="white-space: break-spaces">func getGlyphDesc(using self, c: rune)->const *<a href="std.pixel.html#Pixel.GlyphDesc">Pixel.GlyphDesc</a>
+<code style="white-space: break-spaces">func getGlyphDesc(using self, c: rune)-&gt;const *&lt;a href="std.pixel.html#Pixel.GlyphDesc"&gt;Pixel.GlyphDesc&lt;/a&gt;
 </code>
 </p>
 <p>
@@ -5073,7 +5074,7 @@ Returns the glyph descriptor of a given rune.</p>
 <p>
 Release the given font.</p>
 <p class="code">
-<code style="white-space: break-spaces">func release(font: *<a href="std.pixel.html#Pixel.Font">Pixel.Font</a>)
+<code style="white-space: break-spaces">func release(font: *&lt;a href="std.pixel.html#Pixel.Font"&gt;Pixel.Font&lt;/a&gt;)
 </code>
 </p>
 <p>
@@ -5178,7 +5179,7 @@ Set the font corresponding to a given style.</p>
 <p>
 Creates a typeface from a FontFamilyEnumerate and FontFamilyStyle.</p>
 <p class="code">
-<code style="white-space: break-spaces">func createTypeFace(enumerate: <a href="std.pixel.html#Pixel.FontFamilyEnumerate">Pixel.FontFamilyEnumerate</a>, style: <a href="std.pixel.html#Pixel.FontFamilyStyle">Pixel.FontFamilyStyle</a>)->*<a href="std.pixel.html#Pixel.TypeFace">Pixel.TypeFace</a> throw
+<code style="white-space: break-spaces">func createTypeFace(enumerate: &lt;a href="std.pixel.html#Pixel.FontFamilyEnumerate"&gt;Pixel.FontFamilyEnumerate&lt;/a&gt;, style: &lt;a href="std.pixel.html#Pixel.FontFamilyStyle"&gt;Pixel.FontFamilyStyle&lt;/a&gt;)-&gt;*&lt;a href="std.pixel.html#Pixel.TypeFace"&gt;Pixel.TypeFace&lt;/a&gt; throw
 </code>
 </p>
 <p>
@@ -5195,7 +5196,7 @@ Creates a typeface from a FontFamilyEnumerate and FontFamilyStyle.</p>
 <p>
 Enumerate the font families available in the os.</p>
 <p class="code">
-<code style="white-space: break-spaces">func enumerateFromOs()->Core.Array(<a href="std.pixel.html#Pixel.FontFamilyEnumerate">Pixel.FontFamilyEnumerate</a>)
+<code style="white-space: break-spaces">func enumerateFromOs()-&gt;Core.Array(&lt;a href="std.pixel.html#Pixel.FontFamilyEnumerate"&gt;Pixel.FontFamilyEnumerate&lt;/a&gt;)
 </code>
 </p>
 <p>
@@ -5212,7 +5213,7 @@ Enumerate the font families available in the os.</p>
 <p>
 Get the font corresponding to the style.</p>
 <p class="code">
-<code style="white-space: break-spaces">func getFont(using self, style: <a href="std.pixel.html#Pixel.FontFamilyStyle">Pixel.FontFamilyStyle</a>)->*<a href="std.pixel.html#Pixel.Font">Pixel.Font</a>
+<code style="white-space: break-spaces">func getFont(using self, style: &lt;a href="std.pixel.html#Pixel.FontFamilyStyle"&gt;Pixel.FontFamilyStyle&lt;/a&gt;)-&gt;*&lt;a href="std.pixel.html#Pixel.Font"&gt;Pixel.Font&lt;/a&gt;
 </code>
 </p>
 <p>
@@ -5231,7 +5232,7 @@ Get the font corresponding to the style.</p>
 <p>
 Get a FontFamilyEnumerate from a font family name.</p>
 <p class="code">
-<code style="white-space: break-spaces">func getFromOs(fontFamily: string)-><a href="std.pixel.html#Pixel.FontFamilyEnumerate">Pixel.FontFamilyEnumerate</a>
+<code style="white-space: break-spaces">func getFromOs(fontFamily: string)-&gt;&lt;a href="std.pixel.html#Pixel.FontFamilyEnumerate"&gt;Pixel.FontFamilyEnumerate&lt;/a&gt;
 </code>
 </p>
 <p>
@@ -5248,7 +5249,7 @@ Get a FontFamilyEnumerate from a font family name.</p>
 <p>
 Set the font corresponding to a given style.</p>
 <p class="code">
-<code style="white-space: break-spaces">func setFont(using self, fnt: *<a href="std.pixel.html#Pixel.Font">Pixel.Font</a>, style: <a href="std.pixel.html#Pixel.FontFamilyStyle">Pixel.FontFamilyStyle</a>)
+<code style="white-space: break-spaces">func setFont(using self, fnt: *&lt;a href="std.pixel.html#Pixel.Font"&gt;Pixel.Font&lt;/a&gt;, style: &lt;a href="std.pixel.html#Pixel.FontFamilyStyle"&gt;Pixel.FontFamilyStyle&lt;/a&gt;)
 </code>
 </p>
 <p>
@@ -5430,7 +5431,7 @@ Restart at frame 0.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func canDecode(using self, fileName: string)->bool
+<code style="white-space: break-spaces">func canDecode(using self, fileName: string)-&gt;bool
 </code>
 </p>
 <p>
@@ -5445,7 +5446,7 @@ Restart at frame 0.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func decode(using self, buffer: const [..] u8, options: <a href="std.pixel.html#Pixel.DecodeOptions">Pixel.DecodeOptions</a>)-><a href="std.pixel.html#Pixel.Image">Pixel.Image</a> throw
+<code style="white-space: break-spaces">func decode(using self, buffer: const [..] u8, options: &lt;a href="std.pixel.html#Pixel.DecodeOptions"&gt;Pixel.DecodeOptions&lt;/a&gt;)-&gt;&lt;a href="std.pixel.html#Pixel.Image"&gt;Pixel.Image&lt;/a&gt; throw
 </code>
 </p>
 <p>
@@ -5462,7 +5463,7 @@ Restart at frame 0.</p>
 <p>
 Create an image for the current frame.</p>
 <p class="code">
-<code style="white-space: break-spaces">func getFrame(using self, image: *<a href="std.pixel.html#Pixel.Image">Pixel.Image</a>, decodePixels = true)
+<code style="white-space: break-spaces">func getFrame(using self, image: *&lt;a href="std.pixel.html#Pixel.Image"&gt;Pixel.Image&lt;/a&gt;, decodePixels = true)
 </code>
 </p>
 <p>
@@ -5479,7 +5480,7 @@ Create an image for the current frame.</p>
 <p>
 Returns the number of frames As Gif does not store it, we need to go threw all images (!).</p>
 <p class="code">
-<code style="white-space: break-spaces">func getNumFrames(using self)->s32 throw
+<code style="white-space: break-spaces">func getNumFrames(using self)-&gt;s32 throw
 </code>
 </p>
 <p>
@@ -5513,7 +5514,7 @@ Initialize the decoder.</p>
 <p>
 Get the next frame. Returns false if we have reached the end.</p>
 <p class="code">
-<code style="white-space: break-spaces">func nextFrame(using self, img: *<a href="std.pixel.html#Pixel.Image">Pixel.Image</a>)->bool throw
+<code style="white-space: break-spaces">func nextFrame(using self, img: *&lt;a href="std.pixel.html#Pixel.Image"&gt;Pixel.Image&lt;/a&gt;)-&gt;bool throw
 </code>
 </p>
 <p>
@@ -7389,7 +7390,7 @@ Allocate a computing buffer with current image size.</p>
 <p>
 Allocate a computing buffer with new sizes.</p>
 <p class="code">
-<code style="white-space: break-spaces">func allocWorkingBuffer(using self, newWidth: s32, newHeight: s32, newPf: <a href="std.pixel.html#Pixel.PixelFormat">Pixel.PixelFormat</a>)
+<code style="white-space: break-spaces">func allocWorkingBuffer(using self, newWidth: s32, newHeight: s32, newPf: &lt;a href="std.pixel.html#Pixel.PixelFormat"&gt;Pixel.PixelFormat&lt;/a&gt;)
 </code>
 </p>
 <p>
@@ -7406,7 +7407,7 @@ Allocate a computing buffer with new sizes.</p>
 <p>
 Apply a kernel to the image.</p>
 <p class="code">
-<code style="white-space: break-spaces">func applyKernel(using self, kernel: <a href="std.pixel.html#Pixel.Image.Kernel">Pixel.Image.Kernel</a>)
+<code style="white-space: break-spaces">func applyKernel(using self, kernel: &lt;a href="std.pixel.html#Pixel.Image.Kernel"&gt;Pixel.Image.Kernel&lt;/a&gt;)
 </code>
 </p>
 <p>
@@ -7440,7 +7441,7 @@ Replace the current image content with the working buffer.</p>
 <p>
 Returns <code class = "incode">true</code> if the given filename has a corresponding decoder.</p>
 <p class="code">
-<code style="white-space: break-spaces">func canLoad(fileName: string)->bool
+<code style="white-space: break-spaces">func canLoad(fileName: string)-&gt;bool
 </code>
 </p>
 <p>
@@ -7457,7 +7458,7 @@ Returns <code class = "incode">true</code> if the given filename has a correspon
 <p>
 Returns <code class = "incode">true</code> if the given filename has a corresponding encoder.</p>
 <p class="code">
-<code style="white-space: break-spaces">func canSave(fileName: string)->bool
+<code style="white-space: break-spaces">func canSave(fileName: string)-&gt;bool
 </code>
 </p>
 <p>
@@ -7542,7 +7543,7 @@ Copy one pixel, depending on bpp.</p>
 <p>
 Creates a new image.</p>
 <p class="code">
-<code style="white-space: break-spaces">func create(width: s32, height: s32, pf: <a href="std.pixel.html#Pixel.PixelFormat">Pixel.PixelFormat</a>, buffer: const [..] u8 = null)-><a href="std.pixel.html#Pixel.Image">Pixel.Image</a>
+<code style="white-space: break-spaces">func create(width: s32, height: s32, pf: &lt;a href="std.pixel.html#Pixel.PixelFormat"&gt;Pixel.PixelFormat&lt;/a&gt;, buffer: const [..] u8 = null)-&gt;&lt;a href="std.pixel.html#Pixel.Image"&gt;Pixel.Image&lt;/a&gt;
 </code>
 </p>
 <p>
@@ -7577,7 +7578,7 @@ func crop(using self, x: s32, y: s32, w: s32, h: s32)
 <p>
 Decode the given image buffer.</p>
 <p class="code">
-<code style="white-space: break-spaces">func decode(fileName: string, bytes: const [..] u8, options: <a href="std.pixel.html#Pixel.DecodeOptions">Pixel.DecodeOptions</a> = {})-><a href="std.pixel.html#Pixel.Image">Pixel.Image</a> throw
+<code style="white-space: break-spaces">func decode(fileName: string, bytes: const [..] u8, options: &lt;a href="std.pixel.html#Pixel.DecodeOptions"&gt;Pixel.DecodeOptions&lt;/a&gt; = {})-&gt;&lt;a href="std.pixel.html#Pixel.Image"&gt;Pixel.Image&lt;/a&gt; throw
 </code>
 </p>
 <p>
@@ -7594,7 +7595,7 @@ Decode the given image buffer.</p>
 <p>
 Fade to a given color. <code class = "incode">factor</code> is [0, 1].</p>
 <p class="code">
-<code style="white-space: break-spaces">func fade(using self, color: <a href="std.pixel.html#Pixel.Color">Pixel.Color</a>, factor: f32 = 0.5)
+<code style="white-space: break-spaces">func fade(using self, color: &lt;a href="std.pixel.html#Pixel.Color"&gt;Pixel.Color&lt;/a&gt;, factor: f32 = 0.5)
 </code>
 </p>
 <p>
@@ -7611,7 +7612,7 @@ Fade to a given color. <code class = "incode">factor</code> is [0, 1].</p>
 <p>
 Fill image with <code class = "incode">color</code>.</p>
 <p class="code">
-<code style="white-space: break-spaces">func fill(using self, color: <a href="std.pixel.html#Pixel.Color">Pixel.Color</a>)
+<code style="white-space: break-spaces">func fill(using self, color: &lt;a href="std.pixel.html#Pixel.Color"&gt;Pixel.Color&lt;/a&gt;)
 </code>
 </p>
 <p>
@@ -7628,7 +7629,7 @@ Fill image with <code class = "incode">color</code>.</p>
 <p>
 Fill with an horizontal gradient from <code class = "incode">color0</code> to <code class = "incode">color1</code>.</p>
 <p class="code">
-<code style="white-space: break-spaces">func fillGradient2(using self, color0: <a href="std.pixel.html#Pixel.Color">Pixel.Color</a>, color1: <a href="std.pixel.html#Pixel.Color">Pixel.Color</a>)
+<code style="white-space: break-spaces">func fillGradient2(using self, color0: &lt;a href="std.pixel.html#Pixel.Color"&gt;Pixel.Color&lt;/a&gt;, color1: &lt;a href="std.pixel.html#Pixel.Color"&gt;Pixel.Color&lt;/a&gt;)
 </code>
 </p>
 <p>
@@ -7645,7 +7646,7 @@ Fill with an horizontal gradient from <code class = "incode">color0</code> to <c
 <p>
 Fill with a gradient with a different color at each corner.</p>
 <p class="code">
-<code style="white-space: break-spaces">func fillGradient4(using self, topLeft: <a href="std.pixel.html#Pixel.Color">Pixel.Color</a>, topRight: <a href="std.pixel.html#Pixel.Color">Pixel.Color</a>, bottomLeft: <a href="std.pixel.html#Pixel.Color">Pixel.Color</a>, bottomRight: <a href="std.pixel.html#Pixel.Color">Pixel.Color</a>)
+<code style="white-space: break-spaces">func fillGradient4(using self, topLeft: &lt;a href="std.pixel.html#Pixel.Color"&gt;Pixel.Color&lt;/a&gt;, topRight: &lt;a href="std.pixel.html#Pixel.Color"&gt;Pixel.Color&lt;/a&gt;, bottomLeft: &lt;a href="std.pixel.html#Pixel.Color"&gt;Pixel.Color&lt;/a&gt;, bottomRight: &lt;a href="std.pixel.html#Pixel.Color"&gt;Pixel.Color&lt;/a&gt;)
 </code>
 </p>
 <p>
@@ -7660,7 +7661,7 @@ Fill with a gradient with a different color at each corner.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func fillHsl(using self, fillType: <a href="std.pixel.html#Pixel.Image.FillHslType">Pixel.Image.FillHslType</a>, color: <a href="std.pixel.html#Pixel.Color">Pixel.Color</a> = Argb.White)
+<code style="white-space: break-spaces">func fillHsl(using self, fillType: &lt;a href="std.pixel.html#Pixel.Image.FillHslType"&gt;Pixel.Image.FillHslType&lt;/a&gt;, color: &lt;a href="std.pixel.html#Pixel.Color"&gt;Pixel.Color&lt;/a&gt; = Argb.White)
 </code>
 </p>
 <p>
@@ -7711,13 +7712,13 @@ Free the working buffer if allocated.</p>
 <p>
 Creates an image from a windows HBITMAP.</p>
 <p class="code">
-<code style="white-space: break-spaces">func from(hbitmap: Win32.HBITMAP)-><a href="std.pixel.html#Pixel.Image">Pixel.Image</a> throw
+<code style="white-space: break-spaces">func from(hbitmap: Win32.HBITMAP)-&gt;&lt;a href="std.pixel.html#Pixel.Image"&gt;Pixel.Image&lt;/a&gt; throw
 </code>
 </p>
 <p>
 Creates an image from a windows HICON.</p>
 <p class="code">
-<code style="white-space: break-spaces">func from(hicon: Win32.HICON)-><a href="std.pixel.html#Pixel.Image">Pixel.Image</a> throw
+<code style="white-space: break-spaces">func from(hicon: Win32.HICON)-&gt;&lt;a href="std.pixel.html#Pixel.Image"&gt;Pixel.Image&lt;/a&gt; throw
 </code>
 </p>
 <p>
@@ -7751,7 +7752,7 @@ Change the gamma.</p>
 <p>
 Returns the color at the given coordinate.</p>
 <p class="code">
-<code style="white-space: break-spaces">func getPixelColor(using self, pixX: s32, pixY: s32)-><a href="std.pixel.html#Pixel.Color">Pixel.Color</a>
+<code style="white-space: break-spaces">func getPixelColor(using self, pixX: s32, pixY: s32)-&gt;&lt;a href="std.pixel.html#Pixel.Color"&gt;Pixel.Color&lt;/a&gt;
 </code>
 </p>
 <p>
@@ -7802,7 +7803,7 @@ Divide image size by 2 with a bilinear 2x2 filter.</p>
 <p>
 Initialize image informations <code class = "incode">pixels</code> is set to null, and must be initialized after a call to that function This gives the opportunity to set the pixels with an external buffer.</p>
 <p class="code">
-<code style="white-space: break-spaces">func init(using self, width: s32, height: s32, pf: <a href="std.pixel.html#Pixel.PixelFormat">Pixel.PixelFormat</a>)
+<code style="white-space: break-spaces">func init(using self, width: s32, height: s32, pf: &lt;a href="std.pixel.html#Pixel.PixelFormat"&gt;Pixel.PixelFormat&lt;/a&gt;)
 </code>
 </p>
 <p>
@@ -7870,7 +7871,7 @@ Change the lightness. <code class = "incode">factor</code> is [-1, 1].</p>
 <p>
 Load the given image file.</p>
 <p class="code">
-<code style="white-space: break-spaces">func load(fileName: string, options: <a href="std.pixel.html#Pixel.DecodeOptions">Pixel.DecodeOptions</a> = {})-><a href="std.pixel.html#Pixel.Image">Pixel.Image</a> throw
+<code style="white-space: break-spaces">func load(fileName: string, options: &lt;a href="std.pixel.html#Pixel.DecodeOptions"&gt;Pixel.DecodeOptions&lt;/a&gt; = {})-&gt;&lt;a href="std.pixel.html#Pixel.Image"&gt;Pixel.Image&lt;/a&gt; throw
 </code>
 </p>
 <p>
@@ -7904,7 +7905,7 @@ Flip image horizontally.</p>
 <p>
 Mix with another image.</p>
 <p class="code">
-<code style="white-space: break-spaces">func mix(using self, srcImage: <a href="std.pixel.html#Pixel.Image">Pixel.Image</a>, x: s32, y: s32, mode = MixMode.Copy)
+<code style="white-space: break-spaces">func mix(using self, srcImage: &lt;a href="std.pixel.html#Pixel.Image"&gt;Pixel.Image&lt;/a&gt;, x: s32, y: s32, mode = MixMode.Copy)
 </code>
 </p>
 <p>
@@ -8005,7 +8006,7 @@ Change the alpha channel.</p>
 <p>
 Change specified color channels.</p>
 <p class="code">
-<code style="white-space: break-spaces">func setChannel(using self, mode: <a href="std.pixel.html#Pixel.Image.ChannelMode">Pixel.Image.ChannelMode</a>, value: <a href="std.pixel.html#Pixel.Image.ChannelValueMode">Pixel.Image.ChannelValueMode</a>, color: u8 = 0)
+<code style="white-space: break-spaces">func setChannel(using self, mode: &lt;a href="std.pixel.html#Pixel.Image.ChannelMode"&gt;Pixel.Image.ChannelMode&lt;/a&gt;, value: &lt;a href="std.pixel.html#Pixel.Image.ChannelValueMode"&gt;Pixel.Image.ChannelValueMode&lt;/a&gt;, color: u8 = 0)
 </code>
 </p>
 <p>
@@ -8022,7 +8023,7 @@ Change specified color channels.</p>
 <p>
 Change image pixel format.</p>
 <p class="code">
-<code style="white-space: break-spaces">func setPixelFormat(using self, newPf: <a href="std.pixel.html#Pixel.PixelFormat">Pixel.PixelFormat</a>)
+<code style="white-space: break-spaces">func setPixelFormat(using self, newPf: &lt;a href="std.pixel.html#Pixel.PixelFormat"&gt;Pixel.PixelFormat&lt;/a&gt;)
 </code>
 </p>
 <p>
@@ -8039,7 +8040,7 @@ Change image pixel format.</p>
 <p>
 Set pixel values depending on pixel format.</p>
 <p class="code">
-<code style="white-space: break-spaces">func(PF: <a href="std.pixel.html#Pixel.PixelFormat">Pixel.PixelFormat</a>) setPixelRGBA8(pixDst: ^u8, r: u8, g: u8, b: u8, _a: u8)
+<code style="white-space: break-spaces">func(PF: &lt;a href="std.pixel.html#Pixel.PixelFormat"&gt;Pixel.PixelFormat&lt;/a&gt;) setPixelRGBA8(pixDst: ^u8, r: u8, g: u8, b: u8, _a: u8)
 </code>
 </p>
 <p>
@@ -8056,7 +8057,7 @@ Set pixel values depending on pixel format.</p>
 <p>
 Apply a kernel to the image.</p>
 <p class="code">
-<code style="white-space: break-spaces">func toApplyKernel(using self, kernel: <a href="std.pixel.html#Pixel.Image.Kernel">Pixel.Image.Kernel</a>)-><a href="std.pixel.html#Pixel.Image">Pixel.Image</a>
+<code style="white-space: break-spaces">func toApplyKernel(using self, kernel: &lt;a href="std.pixel.html#Pixel.Image.Kernel"&gt;Pixel.Image.Kernel&lt;/a&gt;)-&gt;&lt;a href="std.pixel.html#Pixel.Image"&gt;Pixel.Image&lt;/a&gt;
 </code>
 </p>
 <p>
@@ -8073,8 +8074,8 @@ Apply a kernel to the image.</p>
 <p>
 Crop image.</p>
 <p class="code">
-<code style="white-space: break-spaces">func toCrop(using const self, cropRect: Core.Math.Rectangle)-><a href="std.pixel.html#Pixel.Image">Pixel.Image</a>
-func toCrop(using const self, x: s32, y: s32, w: s32, h: s32)-><a href="std.pixel.html#Pixel.Image">Pixel.Image</a>
+<code style="white-space: break-spaces">func toCrop(using const self, cropRect: Core.Math.Rectangle)-&gt;&lt;a href="std.pixel.html#Pixel.Image"&gt;Pixel.Image&lt;/a&gt;
+func toCrop(using const self, x: s32, y: s32, w: s32, h: s32)-&gt;&lt;a href="std.pixel.html#Pixel.Image"&gt;Pixel.Image&lt;/a&gt;
 </code>
 </p>
 <p>
@@ -8091,7 +8092,7 @@ func toCrop(using const self, x: s32, y: s32, w: s32, h: s32)-><a href="std.pixe
 <p>
 Flip image vertically.</p>
 <p class="code">
-<code style="white-space: break-spaces">func toFlip(using const self)-><a href="std.pixel.html#Pixel.Image">Pixel.Image</a>
+<code style="white-space: break-spaces">func toFlip(using const self)-&gt;&lt;a href="std.pixel.html#Pixel.Image"&gt;Pixel.Image&lt;/a&gt;
 </code>
 </p>
 <p>
@@ -8108,7 +8109,7 @@ Flip image vertically.</p>
 <p>
 Transform an image to a windows icon.</p>
 <p class="code">
-<code style="white-space: break-spaces">func toHICON(using self)->Win32.HICON throw
+<code style="white-space: break-spaces">func toHICON(using self)-&gt;Win32.HICON throw
 </code>
 </p>
 <p>
@@ -8125,7 +8126,7 @@ Transform an image to a windows icon.</p>
 <p>
 Divide image size by 2 with a bilinear 2x2 filter.</p>
 <p class="code">
-<code style="white-space: break-spaces">func toHalfSize(using const self)-><a href="std.pixel.html#Pixel.Image">Pixel.Image</a>
+<code style="white-space: break-spaces">func toHalfSize(using const self)-&gt;&lt;a href="std.pixel.html#Pixel.Image"&gt;Pixel.Image&lt;/a&gt;
 </code>
 </p>
 <p>
@@ -8142,7 +8143,7 @@ Divide image size by 2 with a bilinear 2x2 filter.</p>
 <p>
 Flip image horizontally.</p>
 <p class="code">
-<code style="white-space: break-spaces">func toMirror(using const self)-><a href="std.pixel.html#Pixel.Image">Pixel.Image</a>
+<code style="white-space: break-spaces">func toMirror(using const self)-&gt;&lt;a href="std.pixel.html#Pixel.Image"&gt;Pixel.Image&lt;/a&gt;
 </code>
 </p>
 <p>
@@ -8159,7 +8160,7 @@ Flip image horizontally.</p>
 <p>
 Mix with another image.</p>
 <p class="code">
-<code style="white-space: break-spaces">func toMix(using const self, srcImage: <a href="std.pixel.html#Pixel.Image">Pixel.Image</a>, x: s32, y: s32, mode = MixMode.Copy)-><a href="std.pixel.html#Pixel.Image">Pixel.Image</a>
+<code style="white-space: break-spaces">func toMix(using const self, srcImage: &lt;a href="std.pixel.html#Pixel.Image"&gt;Pixel.Image&lt;/a&gt;, x: s32, y: s32, mode = MixMode.Copy)-&gt;&lt;a href="std.pixel.html#Pixel.Image"&gt;Pixel.Image&lt;/a&gt;
 </code>
 </p>
 <p>
@@ -8176,7 +8177,7 @@ Mix with another image.</p>
 <p>
 Resize image Put <code class = "incode">newWidth</code> or <code class = "incode">newHeight</code> to 0 to keep aspect ratio.</p>
 <p class="code">
-<code style="white-space: break-spaces">func toResize(using const self, newWidth: s32, newHeight: s32, mode = ResizeMode.Raw)-><a href="std.pixel.html#Pixel.Image">Pixel.Image</a>
+<code style="white-space: break-spaces">func toResize(using const self, newWidth: s32, newHeight: s32, mode = ResizeMode.Raw)-&gt;&lt;a href="std.pixel.html#Pixel.Image"&gt;Pixel.Image&lt;/a&gt;
 </code>
 </p>
 <p>
@@ -8193,7 +8194,7 @@ Resize image Put <code class = "incode">newWidth</code> or <code class = "incode
 <p>
 Change image pixel format.</p>
 <p class="code">
-<code style="white-space: break-spaces">func toSetPixelFormat(using const self, newPf: <a href="std.pixel.html#Pixel.PixelFormat">Pixel.PixelFormat</a>)-><a href="std.pixel.html#Pixel.Image">Pixel.Image</a>
+<code style="white-space: break-spaces">func toSetPixelFormat(using const self, newPf: &lt;a href="std.pixel.html#Pixel.PixelFormat"&gt;Pixel.PixelFormat&lt;/a&gt;)-&gt;&lt;a href="std.pixel.html#Pixel.Image"&gt;Pixel.Image&lt;/a&gt;
 </code>
 </p>
 <p>
@@ -8210,7 +8211,7 @@ Change image pixel format.</p>
 <p>
 Turn image by a given predefined angle.</p>
 <p class="code">
-<code style="white-space: break-spaces">func toTurn(using const self, angle: <a href="std.pixel.html#Pixel.Image.TurnAngle">Pixel.Image.TurnAngle</a>)-><a href="std.pixel.html#Pixel.Image">Pixel.Image</a>
+<code style="white-space: break-spaces">func toTurn(using const self, angle: &lt;a href="std.pixel.html#Pixel.Image.TurnAngle"&gt;Pixel.Image.TurnAngle&lt;/a&gt;)-&gt;&lt;a href="std.pixel.html#Pixel.Image"&gt;Pixel.Image&lt;/a&gt;
 </code>
 </p>
 <p>
@@ -8227,7 +8228,7 @@ Turn image by a given predefined angle.</p>
 <p>
 Turn image by a given predefined angle.</p>
 <p class="code">
-<code style="white-space: break-spaces">func turn(using self, angle: <a href="std.pixel.html#Pixel.Image.TurnAngle">Pixel.Image.TurnAngle</a>)
+<code style="white-space: break-spaces">func turn(using self, angle: &lt;a href="std.pixel.html#Pixel.Image.TurnAngle"&gt;Pixel.Image.TurnAngle&lt;/a&gt;)
 </code>
 </p>
 <p>
@@ -8487,7 +8488,7 @@ MiterBevel</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func canDecode(using self, fileName: string)->bool
+<code style="white-space: break-spaces">func canDecode(using self, fileName: string)-&gt;bool
 </code>
 </p>
 <p>
@@ -8502,7 +8503,7 @@ MiterBevel</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func decode(using self, buffer: const [..] u8, options: <a href="std.pixel.html#Pixel.DecodeOptions">Pixel.DecodeOptions</a>)-><a href="std.pixel.html#Pixel.Image">Pixel.Image</a> throw
+<code style="white-space: break-spaces">func decode(using self, buffer: const [..] u8, options: &lt;a href="std.pixel.html#Pixel.DecodeOptions"&gt;Pixel.DecodeOptions&lt;/a&gt;)-&gt;&lt;a href="std.pixel.html#Pixel.Image"&gt;Pixel.Image&lt;/a&gt; throw
 </code>
 </p>
 <p>
@@ -8551,7 +8552,7 @@ Encoding quality between 1 and 100.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func canEncode(using self, fileName: string)->bool
+<code style="white-space: break-spaces">func canEncode(using self, fileName: string)-&gt;bool
 </code>
 </p>
 <p>
@@ -8566,7 +8567,7 @@ Encoding quality between 1 and 100.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func encode(using self, result: *Core.ConcatBuffer, image: <a href="std.pixel.html#Pixel.Image">Pixel.Image</a>, options: any) throw
+<code style="white-space: break-spaces">func encode(using self, result: *Core.ConcatBuffer, image: &lt;a href="std.pixel.html#Pixel.Image"&gt;Pixel.Image&lt;/a&gt;, options: any) throw
 </code>
 </p>
 <p>
@@ -9258,7 +9259,7 @@ Remove all internal line paths.</p>
 <p>
 Flatten all paths.</p>
 <p class="code">
-<code style="white-space: break-spaces">func flatten(using self, quality: <a href="std.pixel.html#Pixel.PaintQuality">Pixel.PaintQuality</a>)
+<code style="white-space: break-spaces">func flatten(using self, quality: &lt;a href="std.pixel.html#Pixel.PaintQuality"&gt;Pixel.PaintQuality&lt;/a&gt;)
 </code>
 </p>
 <p>
@@ -9275,7 +9276,7 @@ Flatten all paths.</p>
 <p>
 Returns a new path.</p>
 <p class="code">
-<code style="white-space: break-spaces">func newPath(using self)->*<a href="std.pixel.html#Pixel.LinePath">Pixel.LinePath</a>
+<code style="white-space: break-spaces">func newPath(using self)-&gt;*&lt;a href="std.pixel.html#Pixel.LinePath"&gt;Pixel.LinePath&lt;/a&gt;
 </code>
 </p>
 <p>
@@ -9298,7 +9299,7 @@ Call fast offset on all paths They must before be flattened.</p>
 <p>
 Call quality offset on all paths They must before be flattened.</p>
 <p class="code">
-<code style="white-space: break-spaces">func offset(using self, value: f32, joinStyle: <a href="std.pixel.html#Pixel.JoinStyle">Pixel.JoinStyle</a>, toler: f32 = 0.5)
+<code style="white-space: break-spaces">func offset(using self, value: f32, joinStyle: &lt;a href="std.pixel.html#Pixel.JoinStyle"&gt;Pixel.JoinStyle&lt;/a&gt;, toler: f32 = 0.5)
 </code>
 </p>
 <p>
@@ -9378,8 +9379,8 @@ s32</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func createContext(using self, hdc: Win32.HDC, width: s32, height: s32, mainRC: Ogl.HGLRC = null)-><a href="std.pixel.html#Pixel.RenderingContext">Pixel.RenderingContext</a> throw
-func createContext(using self, hWnd: Win32.HWND, width: s32, height: s32, mainRC: Ogl.HGLRC = null)-><a href="std.pixel.html#Pixel.RenderingContext">Pixel.RenderingContext</a> throw
+<code style="white-space: break-spaces">func createContext(using self, hdc: Win32.HDC, width: s32, height: s32, mainRC: Ogl.HGLRC = null)-&gt;&lt;a href="std.pixel.html#Pixel.RenderingContext"&gt;Pixel.RenderingContext&lt;/a&gt; throw
+func createContext(using self, hWnd: Win32.HWND, width: s32, height: s32, mainRC: Ogl.HGLRC = null)-&gt;&lt;a href="std.pixel.html#Pixel.RenderingContext"&gt;Pixel.RenderingContext&lt;/a&gt; throw
 </code>
 </p>
 <p>
@@ -9394,7 +9395,7 @@ func createContext(using self, hWnd: Win32.HWND, width: s32, height: s32, mainRC
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func dropContext(using self, rc: <a href="std.pixel.html#Pixel.RenderingContext">Pixel.RenderingContext</a>)
+<code style="white-space: break-spaces">func dropContext(using self, rc: &lt;a href="std.pixel.html#Pixel.RenderingContext"&gt;Pixel.RenderingContext&lt;/a&gt;)
 </code>
 </p>
 <p>
@@ -9409,7 +9410,7 @@ func createContext(using self, hWnd: Win32.HWND, width: s32, height: s32, mainRC
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func setCurrentContext(using self, rc: <a href="std.pixel.html#Pixel.RenderingContext">Pixel.RenderingContext</a>)
+<code style="white-space: break-spaces">func setCurrentContext(using self, rc: &lt;a href="std.pixel.html#Pixel.RenderingContext"&gt;Pixel.RenderingContext&lt;/a&gt;)
 </code>
 </p>
 <p>
@@ -9424,7 +9425,7 @@ func createContext(using self, hWnd: Win32.HWND, width: s32, height: s32, mainRC
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func swapBuffers(using self, rc: <a href="std.pixel.html#Pixel.RenderingContext">Pixel.RenderingContext</a>)
+<code style="white-space: break-spaces">func swapBuffers(using self, rc: &lt;a href="std.pixel.html#Pixel.RenderingContext"&gt;Pixel.RenderingContext&lt;/a&gt;)
 </code>
 </p>
 <p>
@@ -10496,7 +10497,7 @@ Bind a render target.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func addParams(using self, add: <a href="std.pixel.html#Pixel.PaintParams">Pixel.PaintParams</a>)
+<code style="white-space: break-spaces">func addParams(using self, add: &lt;a href="std.pixel.html#Pixel.PaintParams"&gt;Pixel.PaintParams&lt;/a&gt;)
 </code>
 </p>
 <p>
@@ -10530,7 +10531,7 @@ Call this before drawing.</p>
 <p>
 Bind a render target.</p>
 <p class="code">
-<code style="white-space: break-spaces">func bindRenderTarget(using self, tgt: *<a href="std.pixel.html#Pixel.RenderTarget">Pixel.RenderTarget</a>, paintAlpha = false)
+<code style="white-space: break-spaces">func bindRenderTarget(using self, tgt: *&lt;a href="std.pixel.html#Pixel.RenderTarget"&gt;Pixel.RenderTarget&lt;/a&gt;, paintAlpha = false)
 </code>
 </p>
 <p>
@@ -10547,7 +10548,7 @@ Bind a render target.</p>
 <p>
 Clear the rendering surface.</p>
 <p class="code">
-<code style="white-space: break-spaces">func clear(using self, color: <a href="std.pixel.html#Pixel.Color">Pixel.Color</a>)
+<code style="white-space: break-spaces">func clear(using self, color: &lt;a href="std.pixel.html#Pixel.Color"&gt;Pixel.Color&lt;/a&gt;)
 </code>
 </p>
 <p>
@@ -10564,7 +10565,7 @@ Clear the rendering surface.</p>
 <p>
 Recompute the layout for a given rectangle.</p>
 <p class="code">
-<code style="white-space: break-spaces">func computeLayout(using self, pos: Core.Math.Rectangle, text: *<a href="std.pixel.html#Pixel.RichString">Pixel.RichString</a>, format: <a href="std.pixel.html#Pixel.RichStringFormat">Pixel.RichStringFormat</a>)
+<code style="white-space: break-spaces">func computeLayout(using self, pos: Core.Math.Rectangle, text: *&lt;a href="std.pixel.html#Pixel.RichString"&gt;Pixel.RichString&lt;/a&gt;, format: &lt;a href="std.pixel.html#Pixel.RichStringFormat"&gt;Pixel.RichStringFormat&lt;/a&gt;)
 </code>
 </p>
 <p>
@@ -10642,11 +10643,11 @@ bool</td>
 <p>
 Draw an arc between two angles.</p>
 <p class="code">
-<code style="white-space: break-spaces">func drawArc(using self, centerX: f32, centerY: f32, radius: f32, startAngle: Core.Math.Angle, endAngle: Core.Math.Angle, color: <a href="std.pixel.html#Pixel.Color">Pixel.Color</a>, penSize: f32 = 1)
+<code style="white-space: break-spaces">func drawArc(using self, centerX: f32, centerY: f32, radius: f32, startAngle: Core.Math.Angle, endAngle: Core.Math.Angle, color: &lt;a href="std.pixel.html#Pixel.Color"&gt;Pixel.Color&lt;/a&gt;, penSize: f32 = 1)
 </code>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func drawArc(using self, centerX: f32, centerY: f32, radius: f32, startAngle: Core.Math.Angle, endAngle: Core.Math.Angle, pen: <a href="std.pixel.html#Pixel.Pen">Pixel.Pen</a>)
+<code style="white-space: break-spaces">func drawArc(using self, centerX: f32, centerY: f32, radius: f32, startAngle: Core.Math.Angle, endAngle: Core.Math.Angle, pen: &lt;a href="std.pixel.html#Pixel.Pen"&gt;Pixel.Pen&lt;/a&gt;)
 </code>
 </p>
 <p>
@@ -10663,11 +10664,11 @@ Draw an arc between two angles.</p>
 <p>
 Draw an empty circle.</p>
 <p class="code">
-<code style="white-space: break-spaces">func drawCircle(using self, centerX: f32, centerY: f32, radius: f32, color: <a href="std.pixel.html#Pixel.Color">Pixel.Color</a>, penSize: f32 = 1)
+<code style="white-space: break-spaces">func drawCircle(using self, centerX: f32, centerY: f32, radius: f32, color: &lt;a href="std.pixel.html#Pixel.Color"&gt;Pixel.Color&lt;/a&gt;, penSize: f32 = 1)
 </code>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func drawCircle(using self, centerX: f32, centerY: f32, radius: f32, pen: <a href="std.pixel.html#Pixel.Pen">Pixel.Pen</a>)
+<code style="white-space: break-spaces">func drawCircle(using self, centerX: f32, centerY: f32, radius: f32, pen: &lt;a href="std.pixel.html#Pixel.Pen"&gt;Pixel.Pen&lt;/a&gt;)
 </code>
 </p>
 <p>
@@ -10684,11 +10685,11 @@ Draw an empty circle.</p>
 <p>
 Draw an empty ellipse.</p>
 <p class="code">
-<code style="white-space: break-spaces">func drawEllipse(using self, centerX: f32, centerY: f32, radiusX: f32, radiusY: f32, color: <a href="std.pixel.html#Pixel.Color">Pixel.Color</a>, penSize: f32 = 1)
+<code style="white-space: break-spaces">func drawEllipse(using self, centerX: f32, centerY: f32, radiusX: f32, radiusY: f32, color: &lt;a href="std.pixel.html#Pixel.Color"&gt;Pixel.Color&lt;/a&gt;, penSize: f32 = 1)
 </code>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func drawEllipse(using self, centerX: f32, centerY: f32, radiusX: f32, radiusY: f32, pen: <a href="std.pixel.html#Pixel.Pen">Pixel.Pen</a>)
+<code style="white-space: break-spaces">func drawEllipse(using self, centerX: f32, centerY: f32, radiusX: f32, radiusY: f32, pen: &lt;a href="std.pixel.html#Pixel.Pen"&gt;Pixel.Pen&lt;/a&gt;)
 </code>
 </p>
 <p>
@@ -10705,12 +10706,12 @@ Draw an empty ellipse.</p>
 <p>
 Draw a line.</p>
 <p class="code">
-<code style="white-space: break-spaces">func drawLine(using self, start: Core.Math.Vector2, end: Core.Math.Vector2, pen: <a href="std.pixel.html#Pixel.Pen">Pixel.Pen</a>)
+<code style="white-space: break-spaces">func drawLine(using self, start: Core.Math.Vector2, end: Core.Math.Vector2, pen: &lt;a href="std.pixel.html#Pixel.Pen"&gt;Pixel.Pen&lt;/a&gt;)
 </code>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func drawLine(using self, startX: f32, startY: f32, endX: f32, endY: f32, color: <a href="std.pixel.html#Pixel.Color">Pixel.Color</a>, penSize: f32 = 1)
-func drawLine(using self, startX: f32, startY: f32, endX: f32, endY: f32, pen: <a href="std.pixel.html#Pixel.Pen">Pixel.Pen</a>)
+<code style="white-space: break-spaces">func drawLine(using self, startX: f32, startY: f32, endX: f32, endY: f32, color: &lt;a href="std.pixel.html#Pixel.Color"&gt;Pixel.Color&lt;/a&gt;, penSize: f32 = 1)
+func drawLine(using self, startX: f32, startY: f32, endX: f32, endY: f32, pen: &lt;a href="std.pixel.html#Pixel.Pen"&gt;Pixel.Pen&lt;/a&gt;)
 </code>
 </p>
 <p>
@@ -10727,25 +10728,25 @@ func drawLine(using self, startX: f32, startY: f32, endX: f32, endY: f32, pen: <
 <p>
 Draw the line path.</p>
 <p class="code">
-<code style="white-space: break-spaces">func drawPath(using self, path: *<a href="std.pixel.html#Pixel.LinePath">Pixel.LinePath</a>, color: <a href="std.pixel.html#Pixel.Color">Pixel.Color</a>, penSize: f32)
+<code style="white-space: break-spaces">func drawPath(using self, path: *&lt;a href="std.pixel.html#Pixel.LinePath"&gt;Pixel.LinePath&lt;/a&gt;, color: &lt;a href="std.pixel.html#Pixel.Color"&gt;Pixel.Color&lt;/a&gt;, penSize: f32)
 </code>
 </p>
 <p>
 Draw the line path with the given <code class = "incode">pen</code>.</p>
 <p class="code">
-<code style="white-space: break-spaces">func drawPath(using self, path: *<a href="std.pixel.html#Pixel.LinePath">Pixel.LinePath</a>, pen: <a href="std.pixel.html#Pixel.Pen">Pixel.Pen</a>)
+<code style="white-space: break-spaces">func drawPath(using self, path: *&lt;a href="std.pixel.html#Pixel.LinePath"&gt;Pixel.LinePath&lt;/a&gt;, pen: &lt;a href="std.pixel.html#Pixel.Pen"&gt;Pixel.Pen&lt;/a&gt;)
 </code>
 </p>
 <p>
 Draw the line path.</p>
 <p class="code">
-<code style="white-space: break-spaces">func drawPath(using self, pathList: *<a href="std.pixel.html#Pixel.LinePathList">Pixel.LinePathList</a>, color: <a href="std.pixel.html#Pixel.Color">Pixel.Color</a>, penSize: f32, mode: <a href="std.pixel.html#Pixel.DrawPathListMode">Pixel.DrawPathListMode</a> = .Separate)
+<code style="white-space: break-spaces">func drawPath(using self, pathList: *&lt;a href="std.pixel.html#Pixel.LinePathList"&gt;Pixel.LinePathList&lt;/a&gt;, color: &lt;a href="std.pixel.html#Pixel.Color"&gt;Pixel.Color&lt;/a&gt;, penSize: f32, mode: &lt;a href="std.pixel.html#Pixel.DrawPathListMode"&gt;Pixel.DrawPathListMode&lt;/a&gt; = .Separate)
 </code>
 </p>
 <p>
 Draw the line path.</p>
 <p class="code">
-<code style="white-space: break-spaces">func drawPath(using self, pathList: *<a href="std.pixel.html#Pixel.LinePathList">Pixel.LinePathList</a>, pen: <a href="std.pixel.html#Pixel.Pen">Pixel.Pen</a>, mode: <a href="std.pixel.html#Pixel.DrawPathListMode">Pixel.DrawPathListMode</a> = .Separate)
+<code style="white-space: break-spaces">func drawPath(using self, pathList: *&lt;a href="std.pixel.html#Pixel.LinePathList"&gt;Pixel.LinePathList&lt;/a&gt;, pen: &lt;a href="std.pixel.html#Pixel.Pen"&gt;Pixel.Pen&lt;/a&gt;, mode: &lt;a href="std.pixel.html#Pixel.DrawPathListMode"&gt;Pixel.DrawPathListMode&lt;/a&gt; = .Separate)
 </code>
 </p>
 <p>
@@ -10762,13 +10763,13 @@ Draw the line path.</p>
 <p>
 Draw an empty rectangle.</p>
 <p class="code">
-<code style="white-space: break-spaces">func drawRect(using self, rect: Core.Math.Rectangle, color: <a href="std.pixel.html#Pixel.Color">Pixel.Color</a>, penSize: f32 = 1)
-func drawRect(using self, rect: Core.Math.Rectangle, pen: <a href="std.pixel.html#Pixel.Pen">Pixel.Pen</a>)
-func drawRect(using self, left: f32, top: f32, width: f32, height: f32, color: <a href="std.pixel.html#Pixel.Color">Pixel.Color</a>, penSize: f32 = 1)
+<code style="white-space: break-spaces">func drawRect(using self, rect: Core.Math.Rectangle, color: &lt;a href="std.pixel.html#Pixel.Color"&gt;Pixel.Color&lt;/a&gt;, penSize: f32 = 1)
+func drawRect(using self, rect: Core.Math.Rectangle, pen: &lt;a href="std.pixel.html#Pixel.Pen"&gt;Pixel.Pen&lt;/a&gt;)
+func drawRect(using self, left: f32, top: f32, width: f32, height: f32, color: &lt;a href="std.pixel.html#Pixel.Color"&gt;Pixel.Color&lt;/a&gt;, penSize: f32 = 1)
 </code>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func drawRect(using self, left: f32, top: f32, width: f32, height: f32, pen: <a href="std.pixel.html#Pixel.Pen">Pixel.Pen</a>)
+<code style="white-space: break-spaces">func drawRect(using self, left: f32, top: f32, width: f32, height: f32, pen: &lt;a href="std.pixel.html#Pixel.Pen"&gt;Pixel.Pen&lt;/a&gt;)
 </code>
 </p>
 <p>
@@ -10785,7 +10786,7 @@ func drawRect(using self, left: f32, top: f32, width: f32, height: f32, color: <
 <p>
 Draw a rich string.</p>
 <p class="code">
-<code style="white-space: break-spaces">func drawRichString(using self, pos: Core.Math.Rectangle, text: *<a href="std.pixel.html#Pixel.RichString">Pixel.RichString</a>, format: <a href="std.pixel.html#Pixel.RichStringFormat">Pixel.RichStringFormat</a>, forceCompute = false)
+<code style="white-space: break-spaces">func drawRichString(using self, pos: Core.Math.Rectangle, text: *&lt;a href="std.pixel.html#Pixel.RichString"&gt;Pixel.RichString&lt;/a&gt;, format: &lt;a href="std.pixel.html#Pixel.RichStringFormat"&gt;Pixel.RichStringFormat&lt;/a&gt;, forceCompute = false)
 </code>
 </p>
 <p>
@@ -10804,13 +10805,13 @@ Draw a rich string.</p>
 <p>
 Draw an empty round rectangle.</p>
 <p class="code">
-<code style="white-space: break-spaces">func drawRoundRect(using self, rect: Core.Math.Rectangle, radiusX: f32, radiusY: f32, color: <a href="std.pixel.html#Pixel.Color">Pixel.Color</a>, penSize: f32 = 1)
-func drawRoundRect(using self, rect: Core.Math.Rectangle, radiusX: f32, radiusY: f32, pen: <a href="std.pixel.html#Pixel.Pen">Pixel.Pen</a>)
-func drawRoundRect(using self, left: f32, top: f32, width: f32, height: f32, radiusX: f32, radiusY: f32, color: <a href="std.pixel.html#Pixel.Color">Pixel.Color</a>, penSize: f32 = 1)
+<code style="white-space: break-spaces">func drawRoundRect(using self, rect: Core.Math.Rectangle, radiusX: f32, radiusY: f32, color: &lt;a href="std.pixel.html#Pixel.Color"&gt;Pixel.Color&lt;/a&gt;, penSize: f32 = 1)
+func drawRoundRect(using self, rect: Core.Math.Rectangle, radiusX: f32, radiusY: f32, pen: &lt;a href="std.pixel.html#Pixel.Pen"&gt;Pixel.Pen&lt;/a&gt;)
+func drawRoundRect(using self, left: f32, top: f32, width: f32, height: f32, radiusX: f32, radiusY: f32, color: &lt;a href="std.pixel.html#Pixel.Color"&gt;Pixel.Color&lt;/a&gt;, penSize: f32 = 1)
 </code>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func drawRoundRect(using self, left: f32, top: f32, width: f32, height: f32, radiusX: f32, radiusY: f32, pen: <a href="std.pixel.html#Pixel.Pen">Pixel.Pen</a>)
+<code style="white-space: break-spaces">func drawRoundRect(using self, left: f32, top: f32, width: f32, height: f32, radiusX: f32, radiusY: f32, pen: &lt;a href="std.pixel.html#Pixel.Pen"&gt;Pixel.Pen&lt;/a&gt;)
 </code>
 </p>
 <p>
@@ -10827,13 +10828,13 @@ func drawRoundRect(using self, left: f32, top: f32, width: f32, height: f32, rad
 <p>
 Draw a simple string.</p>
 <p class="code">
-<code style="white-space: break-spaces">func drawString(using self, left: f32, top: f32, text: string, font: *<a href="std.pixel.html#Pixel.Font">Pixel.Font</a>, brush: <a href="std.pixel.html#Pixel.Brush">Pixel.Brush</a>, under = UnderlineStyle.None, zoom = 1.0)
+<code style="white-space: break-spaces">func drawString(using self, left: f32, top: f32, text: string, font: *&lt;a href="std.pixel.html#Pixel.Font"&gt;Pixel.Font&lt;/a&gt;, brush: &lt;a href="std.pixel.html#Pixel.Brush"&gt;Pixel.Brush&lt;/a&gt;, under = UnderlineStyle.None, zoom = 1.0)
 </code>
 </p>
 <p>
 Draw a simple string.</p>
 <p class="code">
-<code style="white-space: break-spaces">func drawString(using self, left: f32, top: f32, text: string, font: *<a href="std.pixel.html#Pixel.Font">Pixel.Font</a>, color: <a href="std.pixel.html#Pixel.Color">Pixel.Color</a>, under = UnderlineStyle.None, zoom = 1.0)
+<code style="white-space: break-spaces">func drawString(using self, left: f32, top: f32, text: string, font: *&lt;a href="std.pixel.html#Pixel.Font"&gt;Pixel.Font&lt;/a&gt;, color: &lt;a href="std.pixel.html#Pixel.Color"&gt;Pixel.Color&lt;/a&gt;, under = UnderlineStyle.None, zoom = 1.0)
 </code>
 </p>
 <p>
@@ -10850,7 +10851,7 @@ Draw a simple string.</p>
 <p>
 Draw a simple string (centered).</p>
 <p class="code">
-<code style="white-space: break-spaces">func drawStringCenter(using self, x: f32, y: f32, text: string, font: *<a href="std.pixel.html#Pixel.Font">Pixel.Font</a>, color: <a href="std.pixel.html#Pixel.Color">Pixel.Color</a>, under = UnderlineStyle.None, zoom = 1.0)
+<code style="white-space: break-spaces">func drawStringCenter(using self, x: f32, y: f32, text: string, font: *&lt;a href="std.pixel.html#Pixel.Font"&gt;Pixel.Font&lt;/a&gt;, color: &lt;a href="std.pixel.html#Pixel.Color"&gt;Pixel.Color&lt;/a&gt;, under = UnderlineStyle.None, zoom = 1.0)
 </code>
 </p>
 <p>
@@ -10867,17 +10868,17 @@ Draw a simple string (centered).</p>
 <p>
 Draw a portion of an image.</p>
 <p class="code">
-<code style="white-space: break-spaces">func drawTexture(using self, dstRect: Core.Math.Rectangle, srcRect: Core.Math.Rectangle, texture: <a href="std.pixel.html#Pixel.Texture">Pixel.Texture</a>, color: <a href="std.pixel.html#Pixel.Color">Pixel.Color</a> = Argb.White)
-func drawTexture(using self, rect: Core.Math.Rectangle, texture: <a href="std.pixel.html#Pixel.Texture">Pixel.Texture</a>, color: <a href="std.pixel.html#Pixel.Color">Pixel.Color</a> = Argb.White)
-func drawTexture(using self, x: f32, y: f32, srcRect: Core.Math.Rectangle, texture: <a href="std.pixel.html#Pixel.Texture">Pixel.Texture</a>, color: <a href="std.pixel.html#Pixel.Color">Pixel.Color</a> = Argb.White)
-func drawTexture(using self, x: f32, y: f32, texture: <a href="std.pixel.html#Pixel.Texture">Pixel.Texture</a>, color: <a href="std.pixel.html#Pixel.Color">Pixel.Color</a> = Argb.White)
-func drawTexture(using self, x: f32, y: f32, width: f32, height: f32, srcRect: Core.Math.Rectangle, texture: <a href="std.pixel.html#Pixel.Texture">Pixel.Texture</a>, color: <a href="std.pixel.html#Pixel.Color">Pixel.Color</a> = Argb.White)
+<code style="white-space: break-spaces">func drawTexture(using self, dstRect: Core.Math.Rectangle, srcRect: Core.Math.Rectangle, texture: &lt;a href="std.pixel.html#Pixel.Texture"&gt;Pixel.Texture&lt;/a&gt;, color: &lt;a href="std.pixel.html#Pixel.Color"&gt;Pixel.Color&lt;/a&gt; = Argb.White)
+func drawTexture(using self, rect: Core.Math.Rectangle, texture: &lt;a href="std.pixel.html#Pixel.Texture"&gt;Pixel.Texture&lt;/a&gt;, color: &lt;a href="std.pixel.html#Pixel.Color"&gt;Pixel.Color&lt;/a&gt; = Argb.White)
+func drawTexture(using self, x: f32, y: f32, srcRect: Core.Math.Rectangle, texture: &lt;a href="std.pixel.html#Pixel.Texture"&gt;Pixel.Texture&lt;/a&gt;, color: &lt;a href="std.pixel.html#Pixel.Color"&gt;Pixel.Color&lt;/a&gt; = Argb.White)
+func drawTexture(using self, x: f32, y: f32, texture: &lt;a href="std.pixel.html#Pixel.Texture"&gt;Pixel.Texture&lt;/a&gt;, color: &lt;a href="std.pixel.html#Pixel.Color"&gt;Pixel.Color&lt;/a&gt; = Argb.White)
+func drawTexture(using self, x: f32, y: f32, width: f32, height: f32, srcRect: Core.Math.Rectangle, texture: &lt;a href="std.pixel.html#Pixel.Texture"&gt;Pixel.Texture&lt;/a&gt;, color: &lt;a href="std.pixel.html#Pixel.Color"&gt;Pixel.Color&lt;/a&gt; = Argb.White)
 </code>
 </p>
 <p>
 Draw a texture image.</p>
 <p class="code">
-<code style="white-space: break-spaces">func drawTexture(using self, x: f32, y: f32, width: f32, height: f32, texture: <a href="std.pixel.html#Pixel.Texture">Pixel.Texture</a>, color: <a href="std.pixel.html#Pixel.Color">Pixel.Color</a> = Argb.White)
+<code style="white-space: break-spaces">func drawTexture(using self, x: f32, y: f32, width: f32, height: f32, texture: &lt;a href="std.pixel.html#Pixel.Texture"&gt;Pixel.Texture&lt;/a&gt;, color: &lt;a href="std.pixel.html#Pixel.Color"&gt;Pixel.Color&lt;/a&gt; = Argb.White)
 </code>
 </p>
 <p>
@@ -10928,11 +10929,11 @@ Stop painting in the clipping buffer. Back to normal.</p>
 <p>
 Draw a solid circle.</p>
 <p class="code">
-<code style="white-space: break-spaces">func fillCircle(using self, centerX: f32, centerY: f32, radius: f32, brush: <a href="std.pixel.html#Pixel.Brush">Pixel.Brush</a>)
+<code style="white-space: break-spaces">func fillCircle(using self, centerX: f32, centerY: f32, radius: f32, brush: &lt;a href="std.pixel.html#Pixel.Brush"&gt;Pixel.Brush&lt;/a&gt;)
 </code>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func fillCircle(using self, centerX: f32, centerY: f32, radius: f32, color: <a href="std.pixel.html#Pixel.Color">Pixel.Color</a>)
+<code style="white-space: break-spaces">func fillCircle(using self, centerX: f32, centerY: f32, radius: f32, color: &lt;a href="std.pixel.html#Pixel.Color"&gt;Pixel.Color&lt;/a&gt;)
 </code>
 </p>
 <p>
@@ -10949,11 +10950,11 @@ Draw a solid circle.</p>
 <p>
 Draw a solid ellipse.</p>
 <p class="code">
-<code style="white-space: break-spaces">func fillEllipse(using self, centerX: f32, centerY: f32, radiusX: f32, radiusY: f32, brush: <a href="std.pixel.html#Pixel.Brush">Pixel.Brush</a>)
+<code style="white-space: break-spaces">func fillEllipse(using self, centerX: f32, centerY: f32, radiusX: f32, radiusY: f32, brush: &lt;a href="std.pixel.html#Pixel.Brush"&gt;Pixel.Brush&lt;/a&gt;)
 </code>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func fillEllipse(using self, centerX: f32, centerY: f32, radiusX: f32, radiusY: f32, color: <a href="std.pixel.html#Pixel.Color">Pixel.Color</a>)
+<code style="white-space: break-spaces">func fillEllipse(using self, centerX: f32, centerY: f32, radiusX: f32, radiusY: f32, color: &lt;a href="std.pixel.html#Pixel.Color"&gt;Pixel.Color&lt;/a&gt;)
 </code>
 </p>
 <p>
@@ -10970,25 +10971,25 @@ Draw a solid ellipse.</p>
 <p>
 Fill the line path with the given <code class = "incode">brush</code>.</p>
 <p class="code">
-<code style="white-space: break-spaces">func fillPath(using self, path: *<a href="std.pixel.html#Pixel.LinePath">Pixel.LinePath</a>, brush: <a href="std.pixel.html#Pixel.Brush">Pixel.Brush</a>)
+<code style="white-space: break-spaces">func fillPath(using self, path: *&lt;a href="std.pixel.html#Pixel.LinePath"&gt;Pixel.LinePath&lt;/a&gt;, brush: &lt;a href="std.pixel.html#Pixel.Brush"&gt;Pixel.Brush&lt;/a&gt;)
 </code>
 </p>
 <p>
 Fill the line path.</p>
 <p class="code">
-<code style="white-space: break-spaces">func fillPath(using self, path: *<a href="std.pixel.html#Pixel.LinePath">Pixel.LinePath</a>, color: <a href="std.pixel.html#Pixel.Color">Pixel.Color</a>)
+<code style="white-space: break-spaces">func fillPath(using self, path: *&lt;a href="std.pixel.html#Pixel.LinePath"&gt;Pixel.LinePath&lt;/a&gt;, color: &lt;a href="std.pixel.html#Pixel.Color"&gt;Pixel.Color&lt;/a&gt;)
 </code>
 </p>
 <p>
 Fill the list of paths clockwise = fill, anti-clockwise = hole.</p>
 <p class="code">
-<code style="white-space: break-spaces">func fillPath(using self, pathList: *<a href="std.pixel.html#Pixel.LinePathList">Pixel.LinePathList</a>, brush: <a href="std.pixel.html#Pixel.Brush">Pixel.Brush</a>)
+<code style="white-space: break-spaces">func fillPath(using self, pathList: *&lt;a href="std.pixel.html#Pixel.LinePathList"&gt;Pixel.LinePathList&lt;/a&gt;, brush: &lt;a href="std.pixel.html#Pixel.Brush"&gt;Pixel.Brush&lt;/a&gt;)
 </code>
 </p>
 <p>
 Fill the line path.</p>
 <p class="code">
-<code style="white-space: break-spaces">func fillPath(using self, pathList: *<a href="std.pixel.html#Pixel.LinePathList">Pixel.LinePathList</a>, color: <a href="std.pixel.html#Pixel.Color">Pixel.Color</a>)
+<code style="white-space: break-spaces">func fillPath(using self, pathList: *&lt;a href="std.pixel.html#Pixel.LinePathList"&gt;Pixel.LinePathList&lt;/a&gt;, color: &lt;a href="std.pixel.html#Pixel.Color"&gt;Pixel.Color&lt;/a&gt;)
 </code>
 </p>
 <p>
@@ -11005,13 +11006,13 @@ Fill the line path.</p>
 <p>
 Fill the polygon with the given <code class = "incode">brush</code>.</p>
 <p class="code">
-<code style="white-space: break-spaces">func fillPolygon(using self, path: *<a href="std.pixel.html#Pixel.LinePath">Pixel.LinePath</a>, brush: <a href="std.pixel.html#Pixel.Brush">Pixel.Brush</a>)
+<code style="white-space: break-spaces">func fillPolygon(using self, path: *&lt;a href="std.pixel.html#Pixel.LinePath"&gt;Pixel.LinePath&lt;/a&gt;, brush: &lt;a href="std.pixel.html#Pixel.Brush"&gt;Pixel.Brush&lt;/a&gt;)
 </code>
 </p>
 <p>
 Fill the polygon with the given color.</p>
 <p class="code">
-<code style="white-space: break-spaces">func fillPolygon(using self, path: *<a href="std.pixel.html#Pixel.LinePath">Pixel.LinePath</a>, color: <a href="std.pixel.html#Pixel.Color">Pixel.Color</a>)
+<code style="white-space: break-spaces">func fillPolygon(using self, path: *&lt;a href="std.pixel.html#Pixel.LinePath"&gt;Pixel.LinePath&lt;/a&gt;, color: &lt;a href="std.pixel.html#Pixel.Color"&gt;Pixel.Color&lt;/a&gt;)
 </code>
 </p>
 <p>
@@ -11028,13 +11029,13 @@ Fill the polygon with the given color.</p>
 <p>
 Draw a filled rectangle.</p>
 <p class="code">
-<code style="white-space: break-spaces">func fillRect(using self, rect: Core.Math.Rectangle, brush: <a href="std.pixel.html#Pixel.Brush">Pixel.Brush</a>)
-func fillRect(using self, rect: Core.Math.Rectangle, color: <a href="std.pixel.html#Pixel.Color">Pixel.Color</a>)
-func fillRect(using self, left: f32, top: f32, width: f32, height: f32, brush: <a href="std.pixel.html#Pixel.Brush">Pixel.Brush</a>)
+<code style="white-space: break-spaces">func fillRect(using self, rect: Core.Math.Rectangle, brush: &lt;a href="std.pixel.html#Pixel.Brush"&gt;Pixel.Brush&lt;/a&gt;)
+func fillRect(using self, rect: Core.Math.Rectangle, color: &lt;a href="std.pixel.html#Pixel.Color"&gt;Pixel.Color&lt;/a&gt;)
+func fillRect(using self, left: f32, top: f32, width: f32, height: f32, brush: &lt;a href="std.pixel.html#Pixel.Brush"&gt;Pixel.Brush&lt;/a&gt;)
 </code>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func fillRect(using self, left: f32, top: f32, width: f32, height: f32, color: <a href="std.pixel.html#Pixel.Color">Pixel.Color</a>)
+<code style="white-space: break-spaces">func fillRect(using self, left: f32, top: f32, width: f32, height: f32, color: &lt;a href="std.pixel.html#Pixel.Color"&gt;Pixel.Color&lt;/a&gt;)
 </code>
 </p>
 <p>
@@ -11051,13 +11052,13 @@ func fillRect(using self, left: f32, top: f32, width: f32, height: f32, brush: <
 <p>
 Draw a filled round rectangle.</p>
 <p class="code">
-<code style="white-space: break-spaces">func fillRoundRect(using self, rect: Core.Math.Rectangle, radiusX: f32, radiusY: f32, brush: <a href="std.pixel.html#Pixel.Brush">Pixel.Brush</a>)
-func fillRoundRect(using self, rect: Core.Math.Rectangle, radiusX: f32, radiusY: f32, color: <a href="std.pixel.html#Pixel.Color">Pixel.Color</a>)
-func fillRoundRect(using self, left: f32, top: f32, width: f32, height: f32, radiusX: f32, radiusY: f32, brush: <a href="std.pixel.html#Pixel.Brush">Pixel.Brush</a>)
+<code style="white-space: break-spaces">func fillRoundRect(using self, rect: Core.Math.Rectangle, radiusX: f32, radiusY: f32, brush: &lt;a href="std.pixel.html#Pixel.Brush"&gt;Pixel.Brush&lt;/a&gt;)
+func fillRoundRect(using self, rect: Core.Math.Rectangle, radiusX: f32, radiusY: f32, color: &lt;a href="std.pixel.html#Pixel.Color"&gt;Pixel.Color&lt;/a&gt;)
+func fillRoundRect(using self, left: f32, top: f32, width: f32, height: f32, radiusX: f32, radiusY: f32, brush: &lt;a href="std.pixel.html#Pixel.Brush"&gt;Pixel.Brush&lt;/a&gt;)
 </code>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func fillRoundRect(using self, left: f32, top: f32, width: f32, height: f32, radiusX: f32, radiusY: f32, color: <a href="std.pixel.html#Pixel.Color">Pixel.Color</a>)
+<code style="white-space: break-spaces">func fillRoundRect(using self, left: f32, top: f32, width: f32, height: f32, radiusX: f32, radiusY: f32, color: &lt;a href="std.pixel.html#Pixel.Color"&gt;Pixel.Color&lt;/a&gt;)
 </code>
 </p>
 <p>
@@ -11074,7 +11075,7 @@ func fillRoundRect(using self, left: f32, top: f32, width: f32, height: f32, rad
 <p>
 Get the current clipping rectangle.</p>
 <p class="code">
-<code style="white-space: break-spaces">func getClippingRect(using self)->Core.Math.Rectangle
+<code style="white-space: break-spaces">func getClippingRect(using self)-&gt;Core.Math.Rectangle
 </code>
 </p>
 <p>
@@ -11091,13 +11092,13 @@ Get the current clipping rectangle.</p>
 <p>
 Returns all the glyphs for a given string and font.</p>
 <p class="code">
-<code style="white-space: break-spaces">func getGlyphs(text: Core.Array(rune), font: *<a href="std.pixel.html#Pixel.Font">Pixel.Font</a>)->Core.Array(const *<a href="std.pixel.html#Pixel.GlyphDesc">Pixel.GlyphDesc</a>)
+<code style="white-space: break-spaces">func getGlyphs(text: Core.Array(rune), font: *&lt;a href="std.pixel.html#Pixel.Font"&gt;Pixel.Font&lt;/a&gt;)-&gt;Core.Array(const *&lt;a href="std.pixel.html#Pixel.GlyphDesc"&gt;Pixel.GlyphDesc&lt;/a&gt;)
 </code>
 </p>
 <p>
 Returns all the glyphs for a given string and font.</p>
 <p class="code">
-<code style="white-space: break-spaces">func getGlyphs(text: string, font: *<a href="std.pixel.html#Pixel.Font">Pixel.Font</a>)->Core.Array(const *<a href="std.pixel.html#Pixel.GlyphDesc">Pixel.GlyphDesc</a>)
+<code style="white-space: break-spaces">func getGlyphs(text: string, font: *&lt;a href="std.pixel.html#Pixel.Font"&gt;Pixel.Font&lt;/a&gt;)-&gt;Core.Array(const *&lt;a href="std.pixel.html#Pixel.GlyphDesc"&gt;Pixel.GlyphDesc&lt;/a&gt;)
 </code>
 </p>
 <p>
@@ -11144,7 +11145,7 @@ Returns all the glyphs for a given string and font.</p>
 <p>
 Returns the current tranformation.</p>
 <p class="code">
-<code style="white-space: break-spaces">func getTransform(using self)->Core.Math.Transform2
+<code style="white-space: break-spaces">func getTransform(using self)-&gt;Core.Math.Transform2
 </code>
 </p>
 <p>
@@ -11161,7 +11162,7 @@ Returns the current tranformation.</p>
 <p>
 Returns true if the current clipping rectangle is empty (no drawing !).</p>
 <p class="code">
-<code style="white-space: break-spaces">func isEmptyClippingRect(using self)->bool
+<code style="white-space: break-spaces">func isEmptyClippingRect(using self)-&gt;bool
 </code>
 </p>
 <p>
@@ -11178,7 +11179,7 @@ Returns true if the current clipping rectangle is empty (no drawing !).</p>
 <p>
 Get a rune size for a given font.</p>
 <p class="code">
-<code style="white-space: break-spaces">func measureRune(c: rune, font: *<a href="std.pixel.html#Pixel.Font">Pixel.Font</a>)->Core.Math.Point
+<code style="white-space: break-spaces">func measureRune(c: rune, font: *&lt;a href="std.pixel.html#Pixel.Font"&gt;Pixel.Font&lt;/a&gt;)-&gt;Core.Math.Point
 </code>
 </p>
 <p>
@@ -11195,13 +11196,13 @@ Get a rune size for a given font.</p>
 <p>
 Returns the bounding rectangle if a given text, at a given position.</p>
 <p class="code">
-<code style="white-space: break-spaces">func measureString(text: Core.Array(const *<a href="std.pixel.html#Pixel.GlyphDesc">Pixel.GlyphDesc</a>))-><a href="std.pixel.html#Pixel.StringMetrics">Pixel.StringMetrics</a>
+<code style="white-space: break-spaces">func measureString(text: Core.Array(const *&lt;a href="std.pixel.html#Pixel.GlyphDesc"&gt;Pixel.GlyphDesc&lt;/a&gt;))-&gt;&lt;a href="std.pixel.html#Pixel.StringMetrics"&gt;Pixel.StringMetrics&lt;/a&gt;
 </code>
 </p>
 <p>
 Returns the metrics of a given text.</p>
 <p class="code">
-<code style="white-space: break-spaces">func measureString(text: string, font: *<a href="std.pixel.html#Pixel.Font">Pixel.Font</a>)-><a href="std.pixel.html#Pixel.StringMetrics">Pixel.StringMetrics</a>
+<code style="white-space: break-spaces">func measureString(text: string, font: *&lt;a href="std.pixel.html#Pixel.Font"&gt;Pixel.Font&lt;/a&gt;)-&gt;&lt;a href="std.pixel.html#Pixel.StringMetrics"&gt;Pixel.StringMetrics&lt;/a&gt;
 </code>
 </p>
 <p>
@@ -11303,7 +11304,7 @@ Save the current paint state.</p>
 <p>
 Release the render target.</p>
 <p class="code">
-<code style="white-space: break-spaces">func releaseRenderTarget(using self, tgt: *<a href="std.pixel.html#Pixel.RenderTarget">Pixel.RenderTarget</a>)
+<code style="white-space: break-spaces">func releaseRenderTarget(using self, tgt: *&lt;a href="std.pixel.html#Pixel.RenderTarget"&gt;Pixel.RenderTarget&lt;/a&gt;)
 </code>
 </p>
 <p>
@@ -11318,7 +11319,7 @@ Release the render target.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func removeParams(using self, remove: <a href="std.pixel.html#Pixel.PaintParams">Pixel.PaintParams</a>)
+<code style="white-space: break-spaces">func removeParams(using self, remove: &lt;a href="std.pixel.html#Pixel.PaintParams"&gt;Pixel.PaintParams&lt;/a&gt;)
 </code>
 </p>
 <p>
@@ -11460,7 +11461,7 @@ Set antialiased mode on/off.</p>
 <p>
 Set the current blending mode.</p>
 <p class="code">
-<code style="white-space: break-spaces">func setBlendingMode(using self, mode: <a href="std.pixel.html#Pixel.BlendingMode">Pixel.BlendingMode</a>)
+<code style="white-space: break-spaces">func setBlendingMode(using self, mode: &lt;a href="std.pixel.html#Pixel.BlendingMode"&gt;Pixel.BlendingMode&lt;/a&gt;)
 </code>
 </p>
 <p>
@@ -11500,7 +11501,7 @@ Set the current clipping rectangle.</p>
 <p>
 Set the clipping region mode.</p>
 <p class="code">
-<code style="white-space: break-spaces">func setClippingRegionMode(using self, mode: <a href="std.pixel.html#Pixel.ClippingMode">Pixel.ClippingMode</a>)
+<code style="white-space: break-spaces">func setClippingRegionMode(using self, mode: &lt;a href="std.pixel.html#Pixel.ClippingMode"&gt;Pixel.ClippingMode&lt;/a&gt;)
 </code>
 </p>
 <p>
@@ -11523,7 +11524,7 @@ Set color mask.</p>
 <p>
 Set color mask.</p>
 <p class="code">
-<code style="white-space: break-spaces">func setColorMask(using self, cm: <a href="std.pixel.html#Pixel.ColorMask">Pixel.ColorMask</a>)
+<code style="white-space: break-spaces">func setColorMask(using self, cm: &lt;a href="std.pixel.html#Pixel.ColorMask"&gt;Pixel.ColorMask&lt;/a&gt;)
 </code>
 </p>
 <p>
@@ -11585,7 +11586,7 @@ Set color mask.</p>
 <p>
 Set the texture interpolation mode.</p>
 <p class="code">
-<code style="white-space: break-spaces">func setInterpolationMode(using self, mode: <a href="std.pixel.html#Pixel.InterpolationMode">Pixel.InterpolationMode</a>)
+<code style="white-space: break-spaces">func setInterpolationMode(using self, mode: &lt;a href="std.pixel.html#Pixel.InterpolationMode"&gt;Pixel.InterpolationMode&lt;/a&gt;)
 </code>
 </p>
 <p>
@@ -11602,7 +11603,7 @@ Set the texture interpolation mode.</p>
 <p>
 Set the paint parameters.</p>
 <p class="code">
-<code style="white-space: break-spaces">func setParams(using self, add: <a href="std.pixel.html#Pixel.PaintParams">Pixel.PaintParams</a>, remove: <a href="std.pixel.html#Pixel.PaintParams">Pixel.PaintParams</a> = .Zero)
+<code style="white-space: break-spaces">func setParams(using self, add: &lt;a href="std.pixel.html#Pixel.PaintParams"&gt;Pixel.PaintParams&lt;/a&gt;, remove: &lt;a href="std.pixel.html#Pixel.PaintParams"&gt;Pixel.PaintParams&lt;/a&gt; = .Zero)
 </code>
 </p>
 <p>
@@ -11619,7 +11620,7 @@ Set the paint parameters.</p>
 <p>
 Set the paint quality.</p>
 <p class="code">
-<code style="white-space: break-spaces">func setQuality(using self, quality: <a href="std.pixel.html#Pixel.PaintQuality">Pixel.PaintQuality</a>)
+<code style="white-space: break-spaces">func setQuality(using self, quality: &lt;a href="std.pixel.html#Pixel.PaintQuality"&gt;Pixel.PaintQuality&lt;/a&gt;)
 </code>
 </p>
 <p>
@@ -11636,7 +11637,7 @@ Set the paint quality.</p>
 <p>
 Set the current shader.</p>
 <p class="code">
-<code style="white-space: break-spaces">func setShader(using self, shader: *<a href="std.pixel.html#Pixel.ShaderBase">Pixel.ShaderBase</a> = null)
+<code style="white-space: break-spaces">func setShader(using self, shader: *&lt;a href="std.pixel.html#Pixel.ShaderBase"&gt;Pixel.ShaderBase&lt;/a&gt; = null)
 </code>
 </p>
 <p>
@@ -11676,7 +11677,7 @@ Set a shader parameter.</p>
 <p>
 Set the current painting state.</p>
 <p class="code">
-<code style="white-space: break-spaces">func setState(using self, state: <a href="std.pixel.html#Pixel.PaintState">Pixel.PaintState</a>)
+<code style="white-space: break-spaces">func setState(using self, state: &lt;a href="std.pixel.html#Pixel.PaintState"&gt;Pixel.PaintState&lt;/a&gt;)
 </code>
 </p>
 <p>
@@ -11929,7 +11930,7 @@ Returns a solid color pen.</p>
 <p>
 Returns a dash pen.</p>
 <p class="code">
-<code style="white-space: break-spaces">func createDash(style: <a href="std.pixel.html#Pixel.DashStyle">Pixel.DashStyle</a>, color: <a href="std.pixel.html#Pixel.Color">Pixel.Color</a>, size: f32 = 1)-><a href="std.pixel.html#Pixel.Pen">Pixel.Pen</a>
+<code style="white-space: break-spaces">func createDash(style: &lt;a href="std.pixel.html#Pixel.DashStyle"&gt;Pixel.DashStyle&lt;/a&gt;, color: &lt;a href="std.pixel.html#Pixel.Color"&gt;Pixel.Color&lt;/a&gt;, size: f32 = 1)-&gt;&lt;a href="std.pixel.html#Pixel.Pen"&gt;Pixel.Pen&lt;/a&gt;
 </code>
 </p>
 <p>
@@ -11946,7 +11947,7 @@ Returns a dash pen.</p>
 <p>
 Return a predefined hatch pen.</p>
 <p class="code">
-<code style="white-space: break-spaces">func createHatch(type: <a href="std.pixel.html#Pixel.HatchStyle">Pixel.HatchStyle</a>, color: <a href="std.pixel.html#Pixel.Color">Pixel.Color</a>, size: f32 = 1)-><a href="std.pixel.html#Pixel.Pen">Pixel.Pen</a>
+<code style="white-space: break-spaces">func createHatch(type: &lt;a href="std.pixel.html#Pixel.HatchStyle"&gt;Pixel.HatchStyle&lt;/a&gt;, color: &lt;a href="std.pixel.html#Pixel.Color"&gt;Pixel.Color&lt;/a&gt;, size: f32 = 1)-&gt;&lt;a href="std.pixel.html#Pixel.Pen"&gt;Pixel.Pen&lt;/a&gt;
 </code>
 </p>
 <p>
@@ -11963,7 +11964,7 @@ Return a predefined hatch pen.</p>
 <p>
 Returns a solid color pen.</p>
 <p class="code">
-<code style="white-space: break-spaces">func createSolid(color: <a href="std.pixel.html#Pixel.Color">Pixel.Color</a>, size: f32 = 1)-><a href="std.pixel.html#Pixel.Pen">Pixel.Pen</a>
+<code style="white-space: break-spaces">func createSolid(color: &lt;a href="std.pixel.html#Pixel.Color"&gt;Pixel.Color&lt;/a&gt;, size: f32 = 1)-&gt;&lt;a href="std.pixel.html#Pixel.Pen"&gt;Pixel.Pen&lt;/a&gt;
 </code>
 </p>
 <p>
@@ -12019,7 +12020,7 @@ RGBA8</td>
 <p>
 Returns the bit depth of each channel.</p>
 <p class="code">
-<code style="white-space: break-spaces">func bitDepth(self)->u8
+<code style="white-space: break-spaces">func bitDepth(self)-&gt;u8
 </code>
 </p>
 <p>
@@ -12036,7 +12037,7 @@ Returns the bit depth of each channel.</p>
 <p>
 Returns the bpp (bits per pixel) of the given pixel format.</p>
 <p class="code">
-<code style="white-space: break-spaces">func bpp(self)->u8
+<code style="white-space: break-spaces">func bpp(self)-&gt;u8
 </code>
 </p>
 <p>
@@ -12053,7 +12054,7 @@ Returns the bpp (bits per pixel) of the given pixel format.</p>
 <p>
 Returns the number of image channels.</p>
 <p class="code">
-<code style="white-space: break-spaces">func channels(self)->u8
+<code style="white-space: break-spaces">func channels(self)-&gt;u8
 </code>
 </p>
 <p>
@@ -12070,7 +12071,7 @@ Returns the number of image channels.</p>
 <p>
 Returns true if the given pixel format has an alpha channel.</p>
 <p class="code">
-<code style="white-space: break-spaces">func hasAlpha(self)->bool
+<code style="white-space: break-spaces">func hasAlpha(self)-&gt;bool
 </code>
 </p>
 <p>
@@ -12163,7 +12164,7 @@ const [188] u8</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func canDecode(using self, fileName: string)->bool
+<code style="white-space: break-spaces">func canDecode(using self, fileName: string)-&gt;bool
 </code>
 </p>
 <p>
@@ -12178,7 +12179,7 @@ const [188] u8</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func decode(using self, buffer: const [..] u8, options: <a href="std.pixel.html#Pixel.DecodeOptions">Pixel.DecodeOptions</a>)-><a href="std.pixel.html#Pixel.Image">Pixel.Image</a> throw
+<code style="white-space: break-spaces">func decode(using self, buffer: const [..] u8, options: &lt;a href="std.pixel.html#Pixel.DecodeOptions"&gt;Pixel.DecodeOptions&lt;/a&gt;)-&gt;&lt;a href="std.pixel.html#Pixel.Image"&gt;Pixel.Image&lt;/a&gt; throw
 </code>
 </p>
 <p>
@@ -12233,7 +12234,7 @@ bool</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func canEncode(using self, fileName: string)->bool
+<code style="white-space: break-spaces">func canEncode(using self, fileName: string)-&gt;bool
 </code>
 </p>
 <p>
@@ -12248,7 +12249,7 @@ bool</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func encode(using self, result: *Core.ConcatBuffer, image: <a href="std.pixel.html#Pixel.Image">Pixel.Image</a>, options: any) throw
+<code style="white-space: break-spaces">func encode(using self, result: *Core.ConcatBuffer, image: &lt;a href="std.pixel.html#Pixel.Image"&gt;Pixel.Image&lt;/a&gt;, options: any) throw
 </code>
 </p>
 <p>
@@ -12716,7 +12717,7 @@ To call to register the polyline.</p>
 <p>
 Returns the list of triangles.</p>
 <p class="code">
-<code style="white-space: break-spaces">func getTriangles(using self)->[..] *<a href="std.pixel.html#Pixel.Poly2Tri.Triangle">Pixel.Poly2Tri.Triangle</a>
+<code style="white-space: break-spaces">func getTriangles(using self)-&gt;[..] *&lt;a href="std.pixel.html#Pixel.Poly2Tri.Triangle"&gt;Pixel.Poly2Tri.Triangle&lt;/a&gt;
 </code>
 </p>
 <p>
@@ -13048,7 +13049,7 @@ Compute internal values, like convex/clockwise Call it once the polygon contains
 <p>
 Clean polygon by removing bad/unecessary points.</p>
 <p class="code">
-<code style="white-space: break-spaces">func getClean(using self)-><a href="std.pixel.html#Pixel.LinePathList">Pixel.LinePathList</a>
+<code style="white-space: break-spaces">func getClean(using self)-&gt;&lt;a href="std.pixel.html#Pixel.LinePathList"&gt;Pixel.LinePathList&lt;/a&gt;
 </code>
 </p>
 <p>
@@ -13065,7 +13066,7 @@ Clean polygon by removing bad/unecessary points.</p>
 <p>
 Slow but quality offset with a joinStyle.</p>
 <p class="code">
-<code style="white-space: break-spaces">func getOffset(using self, value: f32, joinStyle: <a href="std.pixel.html#Pixel.JoinStyle">Pixel.JoinStyle</a>, toler: f32 = 0.5)-><a href="std.pixel.html#Pixel.LinePathList">Pixel.LinePathList</a>
+<code style="white-space: break-spaces">func getOffset(using self, value: f32, joinStyle: &lt;a href="std.pixel.html#Pixel.JoinStyle"&gt;Pixel.JoinStyle&lt;/a&gt;, toler: f32 = 0.5)-&gt;&lt;a href="std.pixel.html#Pixel.LinePathList"&gt;Pixel.LinePathList&lt;/a&gt;
 </code>
 </p>
 <p>
@@ -13082,13 +13083,13 @@ Slow but quality offset with a joinStyle.</p>
 <p>
 Get the given point.</p>
 <p class="code">
-<code style="white-space: break-spaces">func getPoint(using self, i: u64)->Core.Math.Vector2
+<code style="white-space: break-spaces">func getPoint(using self, i: u64)-&gt;Core.Math.Vector2
 </code>
 </p>
 <p>
 Get the given point, with an optional offset.</p>
 <p class="code">
-<code style="white-space: break-spaces">func getPoint(using self, i: u64, offset: f32)->Core.Math.Vector2
+<code style="white-space: break-spaces">func getPoint(using self, i: u64, offset: f32)-&gt;Core.Math.Vector2
 </code>
 </p>
 <p>
@@ -13128,7 +13129,7 @@ Fast expand polygon by a given amount.</p>
 <p>
 Slow but quality offset with a joinStyle.</p>
 <p class="code">
-<code style="white-space: break-spaces">func offset(using self, value: f32, joinStyle: <a href="std.pixel.html#Pixel.JoinStyle">Pixel.JoinStyle</a>, toler: f32 = 0.5)
+<code style="white-space: break-spaces">func offset(using self, value: f32, joinStyle: &lt;a href="std.pixel.html#Pixel.JoinStyle"&gt;Pixel.JoinStyle&lt;/a&gt;, toler: f32 = 0.5)
 </code>
 </p>
 <p>
@@ -13525,7 +13526,7 @@ Update content of texture.</p>
 <p>
 Register an image for rendering.</p>
 <p class="code">
-<code style="white-space: break-spaces">func addImage(using self, image: <a href="std.pixel.html#Pixel.Image">Pixel.Image</a>)-><a href="std.pixel.html#Pixel.Texture">Pixel.Texture</a>
+<code style="white-space: break-spaces">func addImage(using self, image: &lt;a href="std.pixel.html#Pixel.Image"&gt;Pixel.Image&lt;/a&gt;)-&gt;&lt;a href="std.pixel.html#Pixel.Texture"&gt;Pixel.Texture&lt;/a&gt;
 </code>
 </p>
 <p>
@@ -13542,7 +13543,7 @@ Register an image for rendering.</p>
 <p>
 To be called before rendering.</p>
 <p class="code">
-<code style="white-space: break-spaces">func begin(using self, rc: <a href="std.pixel.html#Pixel.RenderingContext">Pixel.RenderingContext</a>)
+<code style="white-space: break-spaces">func begin(using self, rc: &lt;a href="std.pixel.html#Pixel.RenderingContext"&gt;Pixel.RenderingContext&lt;/a&gt;)
 </code>
 </p>
 <p>
@@ -13559,7 +13560,7 @@ To be called before rendering.</p>
 <p>
 Set the current render target.</p>
 <p class="code">
-<code style="white-space: break-spaces">func bindRenderTarget(using self, rt: *<a href="std.pixel.html#Pixel.RenderTarget">Pixel.RenderTarget</a>, vp: *Core.Math.Rectangle = null)
+<code style="white-space: break-spaces">func bindRenderTarget(using self, rt: *&lt;a href="std.pixel.html#Pixel.RenderTarget"&gt;Pixel.RenderTarget&lt;/a&gt;, vp: *Core.Math.Rectangle = null)
 </code>
 </p>
 <p>
@@ -13608,7 +13609,7 @@ Clear current render buffers.</p>
 <p>
 Create a render target.</p>
 <p class="code">
-<code style="white-space: break-spaces">func createRenderTarget(using self, w: s32, h: s32)-><a href="std.pixel.html#Pixel.RenderTarget">Pixel.RenderTarget</a>
+<code style="white-space: break-spaces">func createRenderTarget(using self, w: s32, h: s32)-&gt;&lt;a href="std.pixel.html#Pixel.RenderTarget"&gt;Pixel.RenderTarget&lt;/a&gt;
 </code>
 </p>
 <p>
@@ -13625,7 +13626,7 @@ Create a render target.</p>
 <p>
 Create the given shader.</p>
 <p class="code">
-<code style="white-space: break-spaces">func createShader(using self, base: *<a href="std.pixel.html#Pixel.ShaderBase">Pixel.ShaderBase</a>, vertex: const [..] u8, pixel: const [..] u8) throw
+<code style="white-space: break-spaces">func createShader(using self, base: *&lt;a href="std.pixel.html#Pixel.ShaderBase"&gt;Pixel.ShaderBase&lt;/a&gt;, vertex: const [..] u8, pixel: const [..] u8) throw
 </code>
 </p>
 <p>
@@ -13642,7 +13643,7 @@ Create the given shader.</p>
 <p>
 Delete a render target.</p>
 <p class="code">
-<code style="white-space: break-spaces">func deleteRenderTarget(using self, rt: *<a href="std.pixel.html#Pixel.RenderTarget">Pixel.RenderTarget</a>)
+<code style="white-space: break-spaces">func deleteRenderTarget(using self, rt: *&lt;a href="std.pixel.html#Pixel.RenderTarget"&gt;Pixel.RenderTarget&lt;/a&gt;)
 </code>
 </p>
 <p>
@@ -13659,7 +13660,7 @@ Delete a render target.</p>
 <p>
 Draw the given painter.</p>
 <p class="code">
-<code style="white-space: break-spaces">func draw(using self, dc: *<a href="std.pixel.html#Pixel.Painter">Pixel.Painter</a>)
+<code style="white-space: break-spaces">func draw(using self, dc: *&lt;a href="std.pixel.html#Pixel.Painter"&gt;Pixel.Painter&lt;/a&gt;)
 </code>
 </p>
 <p>
@@ -13693,7 +13694,7 @@ To be called after rendering.</p>
 <p>
 Get a render target of the given size releaseRenderTarget must be called to release it.</p>
 <p class="code">
-<code style="white-space: break-spaces">func getRenderTarget(using self, w: s32, h: s32)->*<a href="std.pixel.html#Pixel.RenderTarget">Pixel.RenderTarget</a>
+<code style="white-space: break-spaces">func getRenderTarget(using self, w: s32, h: s32)-&gt;*&lt;a href="std.pixel.html#Pixel.RenderTarget"&gt;Pixel.RenderTarget&lt;/a&gt;
 </code>
 </p>
 <p>
@@ -13710,7 +13711,7 @@ Get a render target of the given size releaseRenderTarget must be called to rele
 <p>
 Get the actual render target size.</p>
 <p class="code">
-<code style="white-space: break-spaces">func getTargetSize(using self)->{s32, s32}
+<code style="white-space: break-spaces">func getTargetSize(using self)-&gt;{s32, s32}
 </code>
 </p>
 <p>
@@ -13727,7 +13728,7 @@ Get the actual render target size.</p>
 <p>
 Returns the pixels associated to a texture.</p>
 <p class="code">
-<code style="white-space: break-spaces">func getTexturePixels(using self, texture: <a href="std.pixel.html#Pixel.Texture">Pixel.Texture</a>, pf: <a href="std.pixel.html#Pixel.PixelFormat">Pixel.PixelFormat</a>)->Core.Array(u8)
+<code style="white-space: break-spaces">func getTexturePixels(using self, texture: &lt;a href="std.pixel.html#Pixel.Texture"&gt;Pixel.Texture&lt;/a&gt;, pf: &lt;a href="std.pixel.html#Pixel.PixelFormat"&gt;Pixel.PixelFormat&lt;/a&gt;)-&gt;Core.Array(u8)
 </code>
 </p>
 <p>
@@ -13759,7 +13760,7 @@ First init.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func pixelFormatToNative(pf: <a href="std.pixel.html#Pixel.PixelFormat">Pixel.PixelFormat</a>)->Ogl.GLenum
+<code style="white-space: break-spaces">func pixelFormatToNative(pf: &lt;a href="std.pixel.html#Pixel.PixelFormat"&gt;Pixel.PixelFormat&lt;/a&gt;)-&gt;Ogl.GLenum
 </code>
 </p>
 <p>
@@ -13776,7 +13777,7 @@ First init.</p>
 <p>
 Release the given render target.</p>
 <p class="code">
-<code style="white-space: break-spaces">func releaseRenderTarget(using self, tgt: *<a href="std.pixel.html#Pixel.RenderTarget">Pixel.RenderTarget</a>)
+<code style="white-space: break-spaces">func releaseRenderTarget(using self, tgt: *&lt;a href="std.pixel.html#Pixel.RenderTarget"&gt;Pixel.RenderTarget&lt;/a&gt;)
 </code>
 </p>
 <p>
@@ -13793,7 +13794,7 @@ Release the given render target.</p>
 <p>
 Unregister a texture created with <code class = "incode">addImage</code>.</p>
 <p class="code">
-<code style="white-space: break-spaces">func removeTexture(using self, texture: *<a href="std.pixel.html#Pixel.Texture">Pixel.Texture</a>)
+<code style="white-space: break-spaces">func removeTexture(using self, texture: *&lt;a href="std.pixel.html#Pixel.Texture"&gt;Pixel.Texture&lt;/a&gt;)
 </code>
 </p>
 <p>
@@ -13884,7 +13885,7 @@ Scale the world transform.</p>
 <p>
 Set the current rendering context.</p>
 <p class="code">
-<code style="white-space: break-spaces">func setCurrentContext(using self, rc: <a href="std.pixel.html#Pixel.RenderingContext">Pixel.RenderingContext</a>)
+<code style="white-space: break-spaces">func setCurrentContext(using self, rc: &lt;a href="std.pixel.html#Pixel.RenderingContext"&gt;Pixel.RenderingContext&lt;/a&gt;)
 </code>
 </p>
 <p>
@@ -13918,7 +13919,7 @@ Force the scissor.</p>
 <p>
 Set the current shader.</p>
 <p class="code">
-<code style="white-space: break-spaces">func setShader(using self, shader: *<a href="std.pixel.html#Pixel.ShaderBase">Pixel.ShaderBase</a> = null)
+<code style="white-space: break-spaces">func setShader(using self, shader: *&lt;a href="std.pixel.html#Pixel.ShaderBase"&gt;Pixel.ShaderBase&lt;/a&gt; = null)
 </code>
 </p>
 <p>
@@ -13969,7 +13970,7 @@ Go back to the previous render target, or frame buffer.</p>
 <p>
 Get current render target pixels.</p>
 <p class="code">
-<code style="white-space: break-spaces">func unbindRenderTargetToImage(using self, x: s32, y: s32, w: s32, h: s32)-><a href="std.pixel.html#Pixel.Image">Pixel.Image</a>
+<code style="white-space: break-spaces">func unbindRenderTargetToImage(using self, x: s32, y: s32, w: s32, h: s32)-&gt;&lt;a href="std.pixel.html#Pixel.Image"&gt;Pixel.Image&lt;/a&gt;
 </code>
 </p>
 <p>
@@ -13986,7 +13987,7 @@ Get current render target pixels.</p>
 <p>
 Update content of texture.</p>
 <p class="code">
-<code style="white-space: break-spaces">func updateTexture(using self, texture: <a href="std.pixel.html#Pixel.Texture">Pixel.Texture</a>, pixels: const *u8)
+<code style="white-space: break-spaces">func updateTexture(using self, texture: &lt;a href="std.pixel.html#Pixel.Texture"&gt;Pixel.Texture&lt;/a&gt;, pixels: const *u8)
 </code>
 </p>
 <p>
@@ -14285,10 +14286,12 @@ under</td>
 <h3 class="content" id="Pixel.RichString"><span class="titletype">struct</span> <span class="titlelight">Pixel.</span><span class="titlestrong">RichString</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\text\richstring.swg#L21" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\text\richstring.swg#L30" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
+<p>
+Represents a string with embedded formats.</p>
 <table class="enumeration">
 <tr>
 <td class="tdname">
@@ -14296,6 +14299,8 @@ raw</td>
 <td class="tdtype">
 Core.String</td>
 <td class="enumeration">
+<p>
+The string as passed by the user.</p>
 </td>
 </tr>
 <tr>
@@ -14304,6 +14309,8 @@ chunks</td>
 <td class="tdtype">
 Core.Array(<a href="std.pixel.html#Pixel.RichChunk">Pixel.RichChunk</a>)</td>
 <td class="enumeration">
+<p>
+The corresponding list of chunks.</p>
 </td>
 </tr>
 <tr>
@@ -14328,14 +14335,26 @@ dirty</td>
 <td class="tdtype">
 bool</td>
 <td class="enumeration">
+<p>
+If dirty, <code class = "incode">Compute</code>.</p>
 </td>
 </tr>
 </table>
+<p>
+ This kind of string is a specific version of [Core.String] but specific for painting. It can contains some special markers to change its appearence.</p>
+<p class="code">
+<code style="white-space: break-spaces"> &lt;b&gt; this is bold&lt;b&gt;
+ &lt;p1&gt; this will have special color 1&lt;p1&gt;
+ ...
+</code>
+</p>
+<p>
+ See <a href="std.pixel.html#Pixel.RichString.set">RichString.set</a> for a list of available markers.</p>
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
 <td class="enumeration">
-<a href="#Pixel.RichString.compute">compute(self)</a></td>
+<a href="#Pixel.RichString.compute">compute(self, bool)</a></td>
 <td class="enumeration">
 <p>
 Compute layout.</p>
@@ -14343,16 +14362,26 @@ Compute layout.</p>
 </tr>
 <tr>
 <td class="enumeration">
+<a href="#Pixel.RichString.getNaked">getNaked(string)</a></td>
+<td class="enumeration">
+<p>
+Transform the given string to a naked one.</p>
+</td>
+</tr>
+<tr>
+<td class="enumeration">
 <a href="#Pixel.RichString.invalidate">invalidate(self)</a></td>
 <td class="enumeration">
 <p>
-Force to be repainted.</p>
+Force the string to be repainted.</p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Pixel.RichString.isEmpty">isEmpty(self)</a></td>
 <td class="enumeration">
+<p>
+Returns <code class = "incode">true</code> if the string is empty.</p>
 </td>
 </tr>
 <tr>
@@ -14360,7 +14389,7 @@ Force to be repainted.</p>
 <a href="#Pixel.RichString.set">set(self, string)</a></td>
 <td class="enumeration">
 <p>
-Associate a string (can have multiple lines) Accepted markers are : &lt;u&gt;  ... &lt;u&gt;  =&gt; underline &lt;b&gt;  ... &lt;b&gt;  =&gt; bold &lt;i&gt;  ... &lt;i&gt;  =&gt; italic &lt;p1&gt; ... &lt;p1&gt; =&gt; color palette 1 &lt;p2&gt; ... &lt;p2&gt; =&gt; color palette 2 &lt;p3&gt; ... &lt;p3&gt; =&gt; color palette 3.</p>
+Associate a string.</p>
 </td>
 </tr>
 </table>
@@ -14392,16 +14421,37 @@ Associate a string (can have multiple lines) Accepted markers are : &lt;u&gt;  .
 <h3 class="content" id="Pixel.RichString.compute"><span class="titletype">func</span> <span class="titlelight">RichString.</span><span class="titlestrong">compute</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\text\richstring.swg#L107" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\text\richstring.swg#L160" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p>
 Compute layout.</p>
 <p class="code">
-<code style="white-space: break-spaces">func compute(using self)
+<code style="white-space: break-spaces">func compute(using self, force = false)
 </code>
 </p>
+<p>
+ This will transform the string in a serie of chunks, each chunk having its one style. The string will only be recomputed if its dirty (the text has changed) or if <code class = "incode">force</code> is true.</p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Pixel.RichString.getNaked"><span class="titletype">func</span> <span class="titlelight">RichString.</span><span class="titlestrong">getNaked</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\text\richstring.swg#L122" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>
+Transform the given string to a naked one.</p>
+<p class="code">
+<code style="white-space: break-spaces">func getNaked(str: string)-&gt;Core.String
+</code>
+</p>
+<p>
+ Will return the string without the format markers.</p>
 <p>
 <table class="h3">
 <tr>
@@ -14409,12 +14459,12 @@ Compute layout.</p>
 <h3 class="content" id="Pixel.RichString.invalidate"><span class="titletype">func</span> <span class="titlelight">RichString.</span><span class="titlestrong">invalidate</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\text\richstring.swg#L85" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\text\richstring.swg#L95" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p>
-Force to be repainted.</p>
+Force the string to be repainted.</p>
 <p class="code">
 <code style="white-space: break-spaces">func invalidate(using self)
 </code>
@@ -14426,10 +14476,12 @@ Force to be repainted.</p>
 <h3 class="content" id="Pixel.RichString.isEmpty"><span class="titletype">func</span> <span class="titlelight">RichString.</span><span class="titlestrong">isEmpty</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\text\richstring.swg#L82" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\text\richstring.swg#L92" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
+<p>
+Returns <code class = "incode">true</code> if the string is empty.</p>
 <p class="code">
 <code style="white-space: break-spaces">func isEmpty(using self)
 </code>
@@ -14441,7 +14493,7 @@ Force to be repainted.</p>
 <h3 class="content" id="Pixel.RichString.opAffect"><span class="titletype">func</span> <span class="titlelight">RichString.</span><span class="titlestrong">opAffect</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\text\richstring.swg#L79" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\text\richstring.swg#L88" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -14456,7 +14508,7 @@ Force to be repainted.</p>
 <h3 class="content" id="Pixel.RichString.opCount"><span class="titletype">func</span> <span class="titlelight">RichString.</span><span class="titlestrong">opCount</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\text\richstring.swg#L77" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\text\richstring.swg#L86" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -14471,12 +14523,12 @@ Force to be repainted.</p>
 <h3 class="content" id="Pixel.RichString.opEquals"><span class="titletype">func</span> <span class="titlelight">RichString.</span><span class="titlestrong">opEquals</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\text\richstring.swg#L32" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\text\richstring.swg#L41" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func opEquals(using self, other: string)->bool
+<code style="white-space: break-spaces">func opEquals(using self, other: string)-&gt;bool
 </code>
 </p>
 <p>
@@ -14486,14 +14538,28 @@ Force to be repainted.</p>
 <h3 class="content" id="Pixel.RichString.set"><span class="titletype">func</span> <span class="titlelight">RichString.</span><span class="titlestrong">set</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\text\richstring.swg#L98" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\text\richstring.swg#L112" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p>
-Associate a string (can have multiple lines) Accepted markers are : &lt;u&gt;  ... &lt;u&gt;  =&gt; underline &lt;b&gt;  ... &lt;b&gt;  =&gt; bold &lt;i&gt;  ... &lt;i&gt;  =&gt; italic &lt;p1&gt; ... &lt;p1&gt; =&gt; color palette 1 &lt;p2&gt; ... &lt;p2&gt; =&gt; color palette 2 &lt;p3&gt; ... &lt;p3&gt; =&gt; color palette 3.</p>
+Associate a string.</p>
 <p class="code">
 <code style="white-space: break-spaces">func set(using self, text: string)
+</code>
+</p>
+<p>
+ The string can have multiple lines. Accepted markers are:<ul>
+<li> <code class = "incode">&lt;u&gt;</code> =&gt; underline</li>
+<li> <code class = "incode">&lt;b&gt;</code> =&gt; bold</li>
+<li> <code class = "incode">&lt;i&gt;</code> =&gt; italic</li>
+<li> <code class = "incode">&lt;p1&gt;</code> =&gt; color palette 1</li>
+<li> <code class = "incode">&lt;p2&gt;</code> =&gt; color palette 2</li>
+<li> <code class = "incode">&lt;p3&gt;</code> =&gt; color palette 3</li>
+</ul>
+</p>
+<p class="code">
+<code style="white-space: break-spaces"> &lt;b&gt;this is bold&lt;b&gt; but this is normal &lt;i&gt;and this is italic&lt;/i&gt;
 </code>
 </p>
 <p>
@@ -14956,7 +15022,7 @@ Set vertical alignment.</p>
 <p>
 Set text color.</p>
 <p class="code">
-<code style="white-space: break-spaces">func color(using self, col: <a href="std.pixel.html#Pixel.Color">Pixel.Color</a>)
+<code style="white-space: break-spaces">func color(using self, col: &lt;a href="std.pixel.html#Pixel.Color"&gt;Pixel.Color&lt;/a&gt;)
 </code>
 </p>
 <p>
@@ -14973,7 +15039,7 @@ Set text color.</p>
 <p>
 Draw string.</p>
 <p class="code">
-<code style="white-space: break-spaces">func draw(using self, painter: *<a href="std.pixel.html#Pixel.Painter">Pixel.Painter</a>, rect: Core.Math.Rectangle, what: string)
+<code style="white-space: break-spaces">func draw(using self, painter: *&lt;a href="std.pixel.html#Pixel.Painter"&gt;Pixel.Painter&lt;/a&gt;, rect: Core.Math.Rectangle, what: string)
 </code>
 </p>
 <p>
@@ -14990,7 +15056,7 @@ Draw string.</p>
 <p>
 Set drawing flags.</p>
 <p class="code">
-<code style="white-space: break-spaces">func flags(using self, f: <a href="std.pixel.html#Pixel.StringFormatFlags">Pixel.StringFormatFlags</a>)
+<code style="white-space: break-spaces">func flags(using self, f: &lt;a href="std.pixel.html#Pixel.StringFormatFlags"&gt;Pixel.StringFormatFlags&lt;/a&gt;)
 </code>
 </p>
 <p>
@@ -15007,7 +15073,7 @@ Set drawing flags.</p>
 <p>
 Set font.</p>
 <p class="code">
-<code style="white-space: break-spaces">func font(using self, font: *<a href="std.pixel.html#Pixel.Font">Pixel.Font</a>)
+<code style="white-space: break-spaces">func font(using self, font: *&lt;a href="std.pixel.html#Pixel.Font"&gt;Pixel.Font&lt;/a&gt;)
 </code>
 </p>
 <p>
@@ -15024,7 +15090,7 @@ Set font.</p>
 <p>
 Set horizontal alignment.</p>
 <p class="code">
-<code style="white-space: break-spaces">func horzAlign(using self, align: <a href="std.pixel.html#Pixel.StringHorzAlignment">Pixel.StringHorzAlignment</a>)
+<code style="white-space: break-spaces">func horzAlign(using self, align: &lt;a href="std.pixel.html#Pixel.StringHorzAlignment"&gt;Pixel.StringHorzAlignment&lt;/a&gt;)
 </code>
 </p>
 <p>
@@ -15041,7 +15107,7 @@ Set horizontal alignment.</p>
 <p>
 Set vertical alignment.</p>
 <p class="code">
-<code style="white-space: break-spaces">func vertAlign(using self, align: <a href="std.pixel.html#Pixel.StringVertAlignment">Pixel.StringVertAlignment</a>)
+<code style="white-space: break-spaces">func vertAlign(using self, align: &lt;a href="std.pixel.html#Pixel.StringVertAlignment"&gt;Pixel.StringVertAlignment&lt;/a&gt;)
 </code>
 </p>
 <p>
@@ -15226,7 +15292,7 @@ bool</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func canDecode(using self, fileName: string)->bool
+<code style="white-space: break-spaces">func canDecode(using self, fileName: string)-&gt;bool
 </code>
 </p>
 <p>
@@ -15241,7 +15307,7 @@ bool</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func decode(using self, buffer: const [..] u8, options: <a href="std.pixel.html#Pixel.DecodeOptions">Pixel.DecodeOptions</a>)-><a href="std.pixel.html#Pixel.Image">Pixel.Image</a> throw
+<code style="white-space: break-spaces">func decode(using self, buffer: const [..] u8, options: &lt;a href="std.pixel.html#Pixel.DecodeOptions"&gt;Pixel.DecodeOptions&lt;/a&gt;)-&gt;&lt;a href="std.pixel.html#Pixel.Image"&gt;Pixel.Image&lt;/a&gt; throw
 </code>
 </p>
 <p>
@@ -15267,7 +15333,7 @@ bool</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func canEncode(using self, fileName: string)->bool
+<code style="white-space: break-spaces">func canEncode(using self, fileName: string)-&gt;bool
 </code>
 </p>
 <p>
@@ -15282,7 +15348,7 @@ bool</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func encode(using self, result: *Core.ConcatBuffer, image: <a href="std.pixel.html#Pixel.Image">Pixel.Image</a>, options: any) throw
+<code style="white-space: break-spaces">func encode(using self, result: *Core.ConcatBuffer, image: &lt;a href="std.pixel.html#Pixel.Image"&gt;Pixel.Image&lt;/a&gt;, options: any) throw
 </code>
 </p>
 <p>
@@ -15629,7 +15695,7 @@ Render one glyph.</p>
 <p>
 Get or create a new typeface from a memory buffer.</p>
 <p class="code">
-<code style="white-space: break-spaces">func create(fullname: string, bytes: const [..] u8)->*<a href="std.pixel.html#Pixel.TypeFace">Pixel.TypeFace</a> throw
+<code style="white-space: break-spaces">func create(fullname: string, bytes: const [..] u8)-&gt;*&lt;a href="std.pixel.html#Pixel.TypeFace"&gt;Pixel.TypeFace&lt;/a&gt; throw
 </code>
 </p>
 <p>
@@ -15646,7 +15712,7 @@ Get or create a new typeface from a memory buffer.</p>
 <p>
 Create a new typeface from a HFONT.</p>
 <p class="code">
-<code style="white-space: break-spaces">func createFromHFONT(fullname: string, hf: Gdi32.HFONT)->*<a href="std.pixel.html#Pixel.TypeFace">Pixel.TypeFace</a> throw
+<code style="white-space: break-spaces">func createFromHFONT(fullname: string, hf: Gdi32.HFONT)-&gt;*&lt;a href="std.pixel.html#Pixel.TypeFace"&gt;Pixel.TypeFace&lt;/a&gt; throw
 </code>
 </p>
 <p>
@@ -15663,7 +15729,7 @@ Create a new typeface from a HFONT.</p>
 <p>
 Returns the underlying font family name.</p>
 <p class="code">
-<code style="white-space: break-spaces">func getFamilyName(using const self)->string
+<code style="white-space: break-spaces">func getFamilyName(using const self)-&gt;string
 </code>
 </p>
 <p>
@@ -15680,7 +15746,7 @@ Returns the underlying font family name.</p>
 <p>
 Convert a rune to its outline, at a given size.</p>
 <p class="code">
-<code style="white-space: break-spaces">func getRuneOutline(using self, pathList: *<a href="std.pixel.html#Pixel.LinePathList">Pixel.LinePathList</a>, c: rune, size: u32, embolden: u32 = 0)->f32 throw
+<code style="white-space: break-spaces">func getRuneOutline(using self, pathList: *&lt;a href="std.pixel.html#Pixel.LinePathList"&gt;Pixel.LinePathList&lt;/a&gt;, c: rune, size: u32, embolden: u32 = 0)-&gt;f32 throw
 </code>
 </p>
 <p>
@@ -15697,7 +15763,7 @@ Convert a rune to its outline, at a given size.</p>
 <p>
 Convert a string to its outline, at a given size.</p>
 <p class="code">
-<code style="white-space: break-spaces">func getStringOutline(using self, pathList: *<a href="std.pixel.html#Pixel.LinePathList">Pixel.LinePathList</a>, text: string, size: u32, embolden: u32 = 0) throw
+<code style="white-space: break-spaces">func getStringOutline(using self, pathList: *&lt;a href="std.pixel.html#Pixel.LinePathList"&gt;Pixel.LinePathList&lt;/a&gt;, text: string, size: u32, embolden: u32 = 0) throw
 </code>
 </p>
 <p>
@@ -15714,7 +15780,7 @@ Convert a string to its outline, at a given size.</p>
 <p>
 Returns true if the typeface is bold.</p>
 <p class="code">
-<code style="white-space: break-spaces">func isBold(using const self)->bool
+<code style="white-space: break-spaces">func isBold(using const self)-&gt;bool
 </code>
 </p>
 <p>
@@ -15731,7 +15797,7 @@ Returns true if the typeface is bold.</p>
 <p>
 Returns true if the typeface is italic.</p>
 <p class="code">
-<code style="white-space: break-spaces">func isItalic(using const self)->bool
+<code style="white-space: break-spaces">func isItalic(using const self)-&gt;bool
 </code>
 </p>
 <p>
@@ -15748,7 +15814,7 @@ Returns true if the typeface is italic.</p>
 <p>
 Get or load a new typeface.</p>
 <p class="code">
-<code style="white-space: break-spaces">func load(fullname: string)->*<a href="std.pixel.html#Pixel.TypeFace">Pixel.TypeFace</a> throw
+<code style="white-space: break-spaces">func load(fullname: string)-&gt;*&lt;a href="std.pixel.html#Pixel.TypeFace"&gt;Pixel.TypeFace&lt;/a&gt; throw
 </code>
 </p>
 <p>
@@ -15765,7 +15831,7 @@ Get or load a new typeface.</p>
 <p>
 Release the given typeface.</p>
 <p class="code">
-<code style="white-space: break-spaces">func release(typeface: *<a href="std.pixel.html#Pixel.TypeFace">Pixel.TypeFace</a>)
+<code style="white-space: break-spaces">func release(typeface: *&lt;a href="std.pixel.html#Pixel.TypeFace"&gt;Pixel.TypeFace&lt;/a&gt;)
 </code>
 </p>
 <p>
@@ -15782,7 +15848,7 @@ Release the given typeface.</p>
 <p>
 Render one glyph.</p>
 <p class="code">
-<code style="white-space: break-spaces">func renderGlyph(using self, c: rune, size: u32, forceBold = false, forceItalic = false)->const *FreeType.FT_Bitmap throw
+<code style="white-space: break-spaces">func renderGlyph(using self, c: rune, size: u32, forceBold = false, forceItalic = false)-&gt;const *FreeType.FT_Bitmap throw
 </code>
 </p>
 <p>

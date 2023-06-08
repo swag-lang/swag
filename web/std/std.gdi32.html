@@ -725,7 +725,7 @@ s32</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func ChoosePixelFormat(hdc: Win32.HDC, ppfd: const *<a href="std.gdi32.html#Gdi32.PIXELFORMATDESCRIPTOR">Gdi32.PIXELFORMATDESCRIPTOR</a>)->s32 throw
+<code style="white-space: break-spaces">func ChoosePixelFormat(hdc: Win32.HDC, ppfd: const *&lt;a href="std.gdi32.html#Gdi32.PIXELFORMATDESCRIPTOR"&gt;Gdi32.PIXELFORMATDESCRIPTOR&lt;/a&gt;)-&gt;s32 throw
 </code>
 </p>
 <p>
@@ -740,7 +740,7 @@ s32</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func CreateCompatibleBitmap(hdc: Win32.HDC, cx: s32, cy: s32)->Win32.HBITMAP throw
+<code style="white-space: break-spaces">func CreateCompatibleBitmap(hdc: Win32.HDC, cx: s32, cy: s32)-&gt;Win32.HBITMAP throw
 </code>
 </p>
 <p>
@@ -755,7 +755,7 @@ s32</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func CreateCompatibleDC(hdc: Win32.HDC)->Win32.HDC throw
+<code style="white-space: break-spaces">func CreateCompatibleDC(hdc: Win32.HDC)-&gt;Win32.HDC throw
 </code>
 </p>
 <p>
@@ -770,7 +770,7 @@ s32</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func CreateDIBSection(hdc: Win32.HDC, pbmi: const *<a href="std.gdi32.html#Gdi32.BITMAPINFO">Gdi32.BITMAPINFO</a>, usage: Win32.UINT, ppvBits: <b>void, hSection: Win32.HANDLE, offset: Win32.DWORD)->Win32.HBITMAP throw
+<code style="white-space: break-spaces">func CreateDIBSection(hdc: Win32.HDC, pbmi: const *&lt;a href="std.gdi32.html#Gdi32.BITMAPINFO"&gt;Gdi32.BITMAPINFO&lt;/a&gt;, usage: Win32.UINT, ppvBits: &lt;b&gt;void, hSection: Win32.HANDLE, offset: Win32.DWORD)-&gt;Win32.HBITMAP throw
 </code>
 </p>
 <p>
@@ -785,7 +785,7 @@ s32</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func CreateFontIndirectA(lplf: const *<a href="std.gdi32.html#Gdi32.LOGFONTA">Gdi32.LOGFONTA</a>)->Gdi32.HFONT throw
+<code style="white-space: break-spaces">func CreateFontIndirectA(lplf: const *&lt;a href="std.gdi32.html#Gdi32.LOGFONTA"&gt;Gdi32.LOGFONTA&lt;/a&gt;)-&gt;Gdi32.HFONT throw
 </code>
 </p>
 <p>
@@ -800,7 +800,7 @@ s32</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func CreateFontIndirectW(lplf: const *<a href="std.gdi32.html#Gdi32.LOGFONTW">Gdi32.LOGFONTW</a>)->Gdi32.HFONT throw
+<code style="white-space: break-spaces">func CreateFontIndirectW(lplf: const *&lt;a href="std.gdi32.html#Gdi32.LOGFONTW"&gt;Gdi32.LOGFONTW&lt;/a&gt;)-&gt;Gdi32.HFONT throw
 </code>
 </p>
 <p>
@@ -815,7 +815,7 @@ s32</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func CreatePen(iStyle: s32, cWidth: s32, color: Win32.DWORD)->Gdi32.HPEN throw
+<code style="white-space: break-spaces">func CreatePen(iStyle: s32, cWidth: s32, color: Win32.DWORD)-&gt;Gdi32.HPEN throw
 </code>
 </p>
 <p>
@@ -830,7 +830,7 @@ s32</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func CreateSolidBrush(color: Win32.DWORD)->Win32.HBRUSH throw
+<code style="white-space: break-spaces">func CreateSolidBrush(color: Win32.DWORD)-&gt;Win32.HBRUSH throw
 </code>
 </p>
 <p>
@@ -952,7 +952,7 @@ Win32.DWORD</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func DescribePixelFormat(hdc: Win32.HDC, iPixelFormat: s32, nBytes: Win32.UINT, ppfd: *<a href="std.gdi32.html#Gdi32.PIXELFORMATDESCRIPTOR">Gdi32.PIXELFORMATDESCRIPTOR</a>)->s32 throw
+<code style="white-space: break-spaces">func DescribePixelFormat(hdc: Win32.HDC, iPixelFormat: s32, nBytes: Win32.UINT, ppfd: *&lt;a href="std.gdi32.html#Gdi32.PIXELFORMATDESCRIPTOR"&gt;Gdi32.PIXELFORMATDESCRIPTOR&lt;/a&gt;)-&gt;s32 throw
 </code>
 </p>
 <p>
@@ -1078,7 +1078,7 @@ elfScript</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func EnumFontFamiliesA(hdc: Win32.HDC, lpLogfont: Win32.LPCSTR, lpProc: Gdi32.FONTENUMPROCA, lParam: Win32.LPARAM)->s32
+<code style="white-space: break-spaces">func EnumFontFamiliesA(hdc: Win32.HDC, lpLogfont: Win32.LPCSTR, lpProc: Gdi32.FONTENUMPROCA, lParam: Win32.LPARAM)-&gt;s32
 </code>
 </p>
 <p>
@@ -1093,7 +1093,7 @@ elfScript</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func EnumFontFamiliesExA(hdc: Win32.HDC, lpLogfont: const *<a href="std.gdi32.html#Gdi32.LOGFONTA">Gdi32.LOGFONTA</a>, lpProc: Gdi32.FONTENUMPROCA, lParam: Win32.LPARAM, dwFlags: Win32.DWORD)->s32
+<code style="white-space: break-spaces">func EnumFontFamiliesExA(hdc: Win32.HDC, lpLogfont: const *&lt;a href="std.gdi32.html#Gdi32.LOGFONTA"&gt;Gdi32.LOGFONTA&lt;/a&gt;, lpProc: Gdi32.FONTENUMPROCA, lParam: Win32.LPARAM, dwFlags: Win32.DWORD)-&gt;s32
 </code>
 </p>
 <p>
@@ -1108,7 +1108,7 @@ elfScript</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func EnumFontFamiliesExW(hdc: Win32.HDC, lpLogfont: const *<a href="std.gdi32.html#Gdi32.LOGFONTW">Gdi32.LOGFONTW</a>, lpProc: Gdi32.FONTENUMPROCW, lParam: Win32.LPARAM, dwFlags: Win32.DWORD)->s32
+<code style="white-space: break-spaces">func EnumFontFamiliesExW(hdc: Win32.HDC, lpLogfont: const *&lt;a href="std.gdi32.html#Gdi32.LOGFONTW"&gt;Gdi32.LOGFONTW&lt;/a&gt;, lpProc: Gdi32.FONTENUMPROCW, lParam: Win32.LPARAM, dwFlags: Win32.DWORD)-&gt;s32
 </code>
 </p>
 <p>
@@ -1123,7 +1123,7 @@ elfScript</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func EnumFontFamiliesW(hdc: Win32.HDC, lpLogfont: Win32.LPCWSTR, lpProc: Gdi32.FONTENUMPROCW, lParam: Win32.LPARAM)->s32
+<code style="white-space: break-spaces">func EnumFontFamiliesW(hdc: Win32.HDC, lpLogfont: Win32.LPCWSTR, lpProc: Gdi32.FONTENUMPROCW, lParam: Win32.LPARAM)-&gt;s32
 </code>
 </p>
 <p>
@@ -1318,7 +1318,7 @@ s32</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func GetDIBits(hdc: Win32.HDC, hbm: Win32.HBITMAP, start: Win32.UINT, cLines: Win32.UINT, lpvBits: Win32.LPVOID, lpbmi: *<a href="std.gdi32.html#Gdi32.BITMAPINFO">Gdi32.BITMAPINFO</a>, usage: Win32.UINT)->s32 throw
+<code style="white-space: break-spaces">func GetDIBits(hdc: Win32.HDC, hbm: Win32.HBITMAP, start: Win32.UINT, cLines: Win32.UINT, lpvBits: Win32.LPVOID, lpbmi: *&lt;a href="std.gdi32.html#Gdi32.BITMAPINFO"&gt;Gdi32.BITMAPINFO&lt;/a&gt;, usage: Win32.UINT)-&gt;s32 throw
 </code>
 </p>
 <p>
@@ -1333,7 +1333,7 @@ s32</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func GetFontData(hdc: Win32.HDC, dwTable: Win32.DWORD, dwOffset: Win32.DWORD, pvBuffer: Win32.LPVOID, cjBuffer: Win32.DWORD)->Win32.DWORD throw
+<code style="white-space: break-spaces">func GetFontData(hdc: Win32.HDC, dwTable: Win32.DWORD, dwOffset: Win32.DWORD, pvBuffer: Win32.LPVOID, cjBuffer: Win32.DWORD)-&gt;Win32.DWORD throw
 </code>
 </p>
 <p>
@@ -1349,7 +1349,7 @@ s32</td>
 </p>
 <p class="code">
 <code style="white-space: break-spaces">func GetObjectA(h: Win32.HANDLE, c: s32, pv: Win32.LPVOID) throw
-func GetObjectA(h: Win32.HANDLE, c: s32, pv: Win32.LPVOID)->s32
+func GetObjectA(h: Win32.HANDLE, c: s32, pv: Win32.LPVOID)-&gt;s32
 </code>
 </p>
 <p>
@@ -1365,7 +1365,7 @@ func GetObjectA(h: Win32.HANDLE, c: s32, pv: Win32.LPVOID)->s32
 </p>
 <p class="code">
 <code style="white-space: break-spaces">func GetObjectW(h: Win32.HANDLE, c: s32, pv: Win32.LPVOID) throw
-func GetObjectW(h: Win32.HANDLE, c: s32, pv: Win32.LPVOID)->s32
+func GetObjectW(h: Win32.HANDLE, c: s32, pv: Win32.LPVOID)-&gt;s32
 </code>
 </p>
 <p>
@@ -1380,7 +1380,7 @@ func GetObjectW(h: Win32.HANDLE, c: s32, pv: Win32.LPVOID)->s32
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func GetPixel(hdc: Win32.HDC, x: s32, y: s32)->Win32.DWORD
+<code style="white-space: break-spaces">func GetPixel(hdc: Win32.HDC, x: s32, y: s32)-&gt;Win32.DWORD
 </code>
 </p>
 <p>
@@ -1395,7 +1395,7 @@ func GetObjectW(h: Win32.HANDLE, c: s32, pv: Win32.LPVOID)->s32
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func GetStockObject(i: s32)->Gdi32.HGDIOBJ
+<code style="white-space: break-spaces">func GetStockObject(i: s32)-&gt;Gdi32.HGDIOBJ
 </code>
 </p>
 <p>
@@ -1750,7 +1750,7 @@ s32</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func LineTo(hdc: Win32.HDC, x: s32, y: s32)->Win32.BOOL
+<code style="white-space: break-spaces">func LineTo(hdc: Win32.HDC, x: s32, y: s32)-&gt;Win32.BOOL
 </code>
 </p>
 <p>
@@ -1802,7 +1802,7 @@ Win32.DWORD</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func MoveTo(hdc: Win32.HDC, x: s32, y: s32)->Win32.BOOL
+<code style="white-space: break-spaces">func MoveTo(hdc: Win32.HDC, x: s32, y: s32)-&gt;Win32.BOOL
 </code>
 </p>
 <p>
@@ -2842,7 +2842,7 @@ u32</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func RGB(r: s32, g: s32, b: s32)->Win32.DWORD
+<code style="white-space: break-spaces">func RGB(r: s32, g: s32, b: s32)-&gt;Win32.DWORD
 </code>
 </p>
 <p>
@@ -2923,7 +2923,7 @@ s32</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func Rectangle(hdc: Win32.HDC, left: s32, top: s32, right: s32, bottom: s32)->Win32.BOOL
+<code style="white-space: break-spaces">func Rectangle(hdc: Win32.HDC, left: s32, top: s32, right: s32, bottom: s32)-&gt;Win32.BOOL
 </code>
 </p>
 <p>
@@ -3023,7 +3023,7 @@ s32</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func SelectObject(hdc: Win32.HDC, h: Gdi32.HGDIOBJ)->Gdi32.HGDIOBJ
+<code style="white-space: break-spaces">func SelectObject(hdc: Win32.HDC, h: Gdi32.HGDIOBJ)-&gt;Gdi32.HGDIOBJ
 </code>
 </p>
 <p>
@@ -3053,7 +3053,7 @@ s32</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func SetBkColor(hdc: Win32.HDC, color: Win32.DWORD)->Win32.DWORD
+<code style="white-space: break-spaces">func SetBkColor(hdc: Win32.HDC, color: Win32.DWORD)-&gt;Win32.DWORD
 </code>
 </p>
 <p>
@@ -3068,7 +3068,7 @@ s32</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func SetBkMode(hdc: Win32.HDC, mode: s32)->s32
+<code style="white-space: break-spaces">func SetBkMode(hdc: Win32.HDC, mode: s32)-&gt;s32
 </code>
 </p>
 <p>
@@ -3083,7 +3083,7 @@ s32</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func SetPixelFormat(hdc: Win32.HDC, fmt: s32, ppfd: const *<a href="std.gdi32.html#Gdi32.PIXELFORMATDESCRIPTOR">Gdi32.PIXELFORMATDESCRIPTOR</a>) throw
+<code style="white-space: break-spaces">func SetPixelFormat(hdc: Win32.HDC, fmt: s32, ppfd: const *&lt;a href="std.gdi32.html#Gdi32.PIXELFORMATDESCRIPTOR"&gt;Gdi32.PIXELFORMATDESCRIPTOR&lt;/a&gt;) throw
 </code>
 </p>
 <p>
@@ -3098,7 +3098,7 @@ s32</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func SetTextColor(hdc: Win32.HDC, color: Win32.DWORD)->Win32.DWORD
+<code style="white-space: break-spaces">func SetTextColor(hdc: Win32.HDC, color: Win32.DWORD)-&gt;Win32.DWORD
 </code>
 </p>
 <p>
@@ -3519,7 +3519,7 @@ s32</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func TextOutA(hdc: Win32.HDC, x: s32, y: s32, lpString: Win32.LPCSTR, c: s32)->Win32.BOOL
+<code style="white-space: break-spaces">func TextOutA(hdc: Win32.HDC, x: s32, y: s32, lpString: Win32.LPCSTR, c: s32)-&gt;Win32.BOOL
 </code>
 </p>
 <p>
@@ -3534,7 +3534,7 @@ s32</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func TextOutW(hdc: Win32.HDC, x: s32, y: s32, lpString: Win32.LPCWSTR, c: s32)->Win32.BOOL
+<code style="white-space: break-spaces">func TextOutW(hdc: Win32.HDC, x: s32, y: s32, lpString: Win32.LPCWSTR, c: s32)-&gt;Win32.BOOL
 </code>
 </p>
 <p>

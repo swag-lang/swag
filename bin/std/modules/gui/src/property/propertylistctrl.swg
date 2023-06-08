@@ -27,7 +27,7 @@ impl PropertyListCtrl
             .list.listFlags.add(.ForceMarginExpandMark)
 			.list.sigSelChanged += closure|ed|(list) {
 				sel := list.getFocusLine()
-                if !sel 
+                if !sel
                     return
                 list.toggleExpand(sel)
 				item := cast(*PropertyListItem) sel.userData0
@@ -63,7 +63,9 @@ impl PropertyListCtrl
 			if it.item1 == 0
 				parentLine = null
 
-			line := list.createLine(it.item0.label.getText(), parentLine: parentLine)
+            str := it.item0.label.getText()
+            naked := RichString.getNaked(str)
+			line := list.createLine(naked, parentLine: parentLine)
 			line.userData0 = it.item0
 
 			if it.item1 == 0

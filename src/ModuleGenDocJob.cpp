@@ -625,7 +625,10 @@ void ModuleGenDocJob::outputCode(const Utf8& code)
         return;
     helpContent += "<p class=\"code\">\n";
     helpContent += "<code style=\"white-space: break-spaces\">";
-    helpContent += code;
+    auto repl = code;
+    repl.replace("<", "&lt;");
+    repl.replace(">", "&gt;");
+    helpContent += repl;
     helpContent += "</code>\n";
     helpContent += "</p>\n";
 }
