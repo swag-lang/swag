@@ -1492,7 +1492,7 @@ u32</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func BeginPaint(hWnd: Win32.HWND, lpPaint: *&lt;a href="#Win32_PAINTSTRUCT"&gt;Win32.PAINTSTRUCT&lt;/a&gt;)-&gt;Win32.HDC
+<code style="white-space: break-spaces">func BeginPaint(hWnd: Win32.HWND, lpPaint: *<a href="#Win32_PAINTSTRUCT">Win32.PAINTSTRUCT</a>)->Win32.HDC
 </code>
 </p>
 <p>
@@ -2808,7 +2808,7 @@ s32</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func ChildWindowFromPoint(hWnd: Win32.HWND, pt: &lt;a href="#Win32_POINT"&gt;Win32.POINT&lt;/a&gt;)-&gt;Win32.HWND
+<code style="white-space: break-spaces">func ChildWindowFromPoint(hWnd: Win32.HWND, pt: <a href="#Win32_POINT">Win32.POINT</a>)->Win32.HWND
 </code>
 </p>
 <p>
@@ -2823,7 +2823,7 @@ s32</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func ChildWindowFromPointEx(hwnd: Win32.HWND, pt: &lt;a href="#Win32_POINT"&gt;Win32.POINT&lt;/a&gt;, flags: Win32.UINT)-&gt;Win32.HWND
+<code style="white-space: break-spaces">func ChildWindowFromPointEx(hwnd: Win32.HWND, pt: <a href="#Win32_POINT">Win32.POINT</a>, flags: Win32.UINT)->Win32.HWND
 </code>
 </p>
 <p>
@@ -2838,7 +2838,7 @@ s32</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func ClientToScreen(hWnd: Win32.HWND, lpPoint: *&lt;a href="#Win32_POINT"&gt;Win32.POINT&lt;/a&gt;)-&gt;Win32.BOOL
+<code style="white-space: break-spaces">func ClientToScreen(hWnd: Win32.HWND, lpPoint: *<a href="#Win32_POINT">Win32.POINT</a>)->Win32.BOOL
 </code>
 </p>
 <p>
@@ -2883,7 +2883,7 @@ s32</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func CreateConsoleScreenBuffer(dwDesiredAccess: Win32.DWORD, dwShareMode: Win32.DWORD, lpSecurityAttributes: const *&lt;a href="#Win32_SECURITY_ATTRIBUTES"&gt;Win32.SECURITY_ATTRIBUTES&lt;/a&gt;, dwFlags: Win32.DWORD, lpScreenBufferData: Win32.LPVOID)-&gt;Win32.HANDLE
+<code style="white-space: break-spaces">func CreateConsoleScreenBuffer(dwDesiredAccess: Win32.DWORD, dwShareMode: Win32.DWORD, lpSecurityAttributes: const *<a href="#Win32_SECURITY_ATTRIBUTES">Win32.SECURITY_ATTRIBUTES</a>, dwFlags: Win32.DWORD, lpScreenBufferData: Win32.LPVOID)->Win32.HANDLE
 </code>
 </p>
 <p>
@@ -2898,7 +2898,7 @@ s32</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func CreateDirectoryA(lpPathName: Win32.LPCSTR, lpSecurityAttributes: *&lt;a href="#Win32_SECURITY_ATTRIBUTES"&gt;Win32.SECURITY_ATTRIBUTES&lt;/a&gt;) throw
+<code style="white-space: break-spaces">func CreateDirectoryA(lpPathName: Win32.LPCSTR, lpSecurityAttributes: *<a href="#Win32_SECURITY_ATTRIBUTES">Win32.SECURITY_ATTRIBUTES</a>) throw
 </code>
 </p>
 <p>
@@ -2913,7 +2913,7 @@ s32</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func CreateDirectoryW(lpPathName: Win32.LPCWSTR, lpSecurityAttributes: *&lt;a href="#Win32_SECURITY_ATTRIBUTES"&gt;Win32.SECURITY_ATTRIBUTES&lt;/a&gt;) throw
+<code style="white-space: break-spaces">func CreateDirectoryW(lpPathName: Win32.LPCWSTR, lpSecurityAttributes: *<a href="#Win32_SECURITY_ATTRIBUTES">Win32.SECURITY_ATTRIBUTES</a>) throw
 </code>
 </p>
 <p>
@@ -2928,7 +2928,7 @@ s32</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func CreateEventA(lpEventAttributes: *&lt;a href="#Win32_SECURITY_ATTRIBUTES"&gt;Win32.SECURITY_ATTRIBUTES&lt;/a&gt;, bManualReset: Win32.BOOL, bInitialState: Win32.BOOL, lpName: Win32.LPCSTR)-&gt;Win32.HANDLE throw
+<code style="white-space: break-spaces">func CreateEventA(lpEventAttributes: *<a href="#Win32_SECURITY_ATTRIBUTES">Win32.SECURITY_ATTRIBUTES</a>, bManualReset: Win32.BOOL, bInitialState: Win32.BOOL, lpName: Win32.LPCSTR)->Win32.HANDLE throw
 </code>
 </p>
 <p>
@@ -2943,7 +2943,7 @@ s32</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func CreateEventW(lpEventAttributes: *&lt;a href="#Win32_SECURITY_ATTRIBUTES"&gt;Win32.SECURITY_ATTRIBUTES&lt;/a&gt;, bManualReset: Win32.BOOL, bInitialState: Win32.BOOL, lpName: Win32.LPCWSTR)-&gt;Win32.HANDLE throw
+<code style="white-space: break-spaces">func CreateEventW(lpEventAttributes: *<a href="#Win32_SECURITY_ATTRIBUTES">Win32.SECURITY_ATTRIBUTES</a>, bManualReset: Win32.BOOL, bInitialState: Win32.BOOL, lpName: Win32.LPCWSTR)->Win32.HANDLE throw
 </code>
 </p>
 <p>
@@ -2958,7 +2958,7 @@ s32</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func CreateFileA(lpFileName: Win32.LPCSTR, dwDesiredAccess: Win32.DWORD, dwShareMode: Win32.DWORD, lpSecurityAttributes: *&lt;a href="#Win32_SECURITY_ATTRIBUTES"&gt;Win32.SECURITY_ATTRIBUTES&lt;/a&gt;, dwCreationDisposition: Win32.DWORD, dwFlagsAndAttributes: Win32.DWORD, hTemplateFile: Win32.HANDLE)-&gt;Win32.HANDLE throw
+<code style="white-space: break-spaces">func CreateFileA(lpFileName: Win32.LPCSTR, dwDesiredAccess: Win32.DWORD, dwShareMode: Win32.DWORD, lpSecurityAttributes: *<a href="#Win32_SECURITY_ATTRIBUTES">Win32.SECURITY_ATTRIBUTES</a>, dwCreationDisposition: Win32.DWORD, dwFlagsAndAttributes: Win32.DWORD, hTemplateFile: Win32.HANDLE)->Win32.HANDLE throw
 </code>
 </p>
 <p>
@@ -2973,7 +2973,7 @@ s32</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func CreateFileW(lpFileName: Win32.LPCWSTR, dwDesiredAccess: Win32.DWORD, dwShareMode: Win32.DWORD, lpSecurityAttributes: *&lt;a href="#Win32_SECURITY_ATTRIBUTES"&gt;Win32.SECURITY_ATTRIBUTES&lt;/a&gt;, dwCreationDisposition: Win32.DWORD, dwFlagsAndAttributes: Win32.DWORD, hTemplateFile: Win32.HANDLE)-&gt;Win32.HANDLE throw
+<code style="white-space: break-spaces">func CreateFileW(lpFileName: Win32.LPCWSTR, dwDesiredAccess: Win32.DWORD, dwShareMode: Win32.DWORD, lpSecurityAttributes: *<a href="#Win32_SECURITY_ATTRIBUTES">Win32.SECURITY_ATTRIBUTES</a>, dwCreationDisposition: Win32.DWORD, dwFlagsAndAttributes: Win32.DWORD, hTemplateFile: Win32.HANDLE)->Win32.HANDLE throw
 </code>
 </p>
 <p>
@@ -2988,7 +2988,7 @@ s32</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func CreateIconIndirect(piconinfo: *&lt;a href="#Win32_ICONINFO"&gt;Win32.ICONINFO&lt;/a&gt;)-&gt;Win32.HICON throw
+<code style="white-space: break-spaces">func CreateIconIndirect(piconinfo: *<a href="#Win32_ICONINFO">Win32.ICONINFO</a>)->Win32.HICON throw
 </code>
 </p>
 <p>
@@ -3003,7 +3003,7 @@ s32</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func CreateMutexA(lpMutexAttributes: *&lt;a href="#Win32_SECURITY_ATTRIBUTES"&gt;Win32.SECURITY_ATTRIBUTES&lt;/a&gt;, bInitialOwner: Win32.BOOL, lpName: Win32.LPCSTR)-&gt;Win32.HANDLE throw
+<code style="white-space: break-spaces">func CreateMutexA(lpMutexAttributes: *<a href="#Win32_SECURITY_ATTRIBUTES">Win32.SECURITY_ATTRIBUTES</a>, bInitialOwner: Win32.BOOL, lpName: Win32.LPCSTR)->Win32.HANDLE throw
 </code>
 </p>
 <p>
@@ -3018,7 +3018,7 @@ s32</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func CreateMutexW(lpMutexAttributes: *&lt;a href="#Win32_SECURITY_ATTRIBUTES"&gt;Win32.SECURITY_ATTRIBUTES&lt;/a&gt;, bInitialOwner: Win32.BOOL, lpName: Win32.LPCWSTR)-&gt;Win32.HANDLE throw
+<code style="white-space: break-spaces">func CreateMutexW(lpMutexAttributes: *<a href="#Win32_SECURITY_ATTRIBUTES">Win32.SECURITY_ATTRIBUTES</a>, bInitialOwner: Win32.BOOL, lpName: Win32.LPCWSTR)->Win32.HANDLE throw
 </code>
 </p>
 <p>
@@ -3033,7 +3033,7 @@ s32</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func CreateProcessA(lpApplicationName: Win32.LPCSTR, lpCommandLine: Win32.LPCSTR, lpProcessAttributes: *&lt;a href="#Win32_SECURITY_ATTRIBUTES"&gt;Win32.SECURITY_ATTRIBUTES&lt;/a&gt;, lpThreadAttributes: *&lt;a href="#Win32_SECURITY_ATTRIBUTES"&gt;Win32.SECURITY_ATTRIBUTES&lt;/a&gt;, bInheritHandles: Win32.BOOL, dwCreationFlags: Win32.DWORD, lpEnvironment: Win32.LPVOID, lpCurrentDirectory: Win32.LPCSTR, lpStartupInfo: *&lt;a href="#Win32_STARTUPINFOA"&gt;Win32.STARTUPINFOA&lt;/a&gt;, lpProcessInformation: *&lt;a href="#Win32_PROCESS_INFORMATION"&gt;Win32.PROCESS_INFORMATION&lt;/a&gt;) throw
+<code style="white-space: break-spaces">func CreateProcessA(lpApplicationName: Win32.LPCSTR, lpCommandLine: Win32.LPCSTR, lpProcessAttributes: *<a href="#Win32_SECURITY_ATTRIBUTES">Win32.SECURITY_ATTRIBUTES</a>, lpThreadAttributes: *<a href="#Win32_SECURITY_ATTRIBUTES">Win32.SECURITY_ATTRIBUTES</a>, bInheritHandles: Win32.BOOL, dwCreationFlags: Win32.DWORD, lpEnvironment: Win32.LPVOID, lpCurrentDirectory: Win32.LPCSTR, lpStartupInfo: *<a href="#Win32_STARTUPINFOA">Win32.STARTUPINFOA</a>, lpProcessInformation: *<a href="#Win32_PROCESS_INFORMATION">Win32.PROCESS_INFORMATION</a>) throw
 </code>
 </p>
 <p>
@@ -3048,7 +3048,7 @@ s32</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func CreateProcessW(lpApplicationName: Win32.LPCWSTR, lpCommandLine: Win32.LPCWSTR, lpProcessAttributes: *&lt;a href="#Win32_SECURITY_ATTRIBUTES"&gt;Win32.SECURITY_ATTRIBUTES&lt;/a&gt;, lpThreadAttributes: *&lt;a href="#Win32_SECURITY_ATTRIBUTES"&gt;Win32.SECURITY_ATTRIBUTES&lt;/a&gt;, bInheritHandles: Win32.BOOL, dwCreationFlags: Win32.DWORD, lpEnvironment: Win32.LPVOID, lpCurrentDirectory: Win32.LPCWSTR, lpStartupInfo: *&lt;a href="#Win32_STARTUPINFOW"&gt;Win32.STARTUPINFOW&lt;/a&gt;, lpProcessInformation: *&lt;a href="#Win32_PROCESS_INFORMATION"&gt;Win32.PROCESS_INFORMATION&lt;/a&gt;) throw
+<code style="white-space: break-spaces">func CreateProcessW(lpApplicationName: Win32.LPCWSTR, lpCommandLine: Win32.LPCWSTR, lpProcessAttributes: *<a href="#Win32_SECURITY_ATTRIBUTES">Win32.SECURITY_ATTRIBUTES</a>, lpThreadAttributes: *<a href="#Win32_SECURITY_ATTRIBUTES">Win32.SECURITY_ATTRIBUTES</a>, bInheritHandles: Win32.BOOL, dwCreationFlags: Win32.DWORD, lpEnvironment: Win32.LPVOID, lpCurrentDirectory: Win32.LPCWSTR, lpStartupInfo: *<a href="#Win32_STARTUPINFOW">Win32.STARTUPINFOW</a>, lpProcessInformation: *<a href="#Win32_PROCESS_INFORMATION">Win32.PROCESS_INFORMATION</a>) throw
 </code>
 </p>
 <p>
@@ -3063,7 +3063,7 @@ s32</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func CreateThread(lpThreadAttributes: *&lt;a href="#Win32_SECURITY_ATTRIBUTES"&gt;Win32.SECURITY_ATTRIBUTES&lt;/a&gt;, dwStackSize: Win32.SIZE_T, lpStartAddress: Win32.LPTHREAD_START_ROUTINE, lpParameter: *void, dwCreationFlags: Win32.DWORD, lpThreadId: *Win32.DWORD)-&gt;Win32.HANDLE throw
+<code style="white-space: break-spaces">func CreateThread(lpThreadAttributes: *<a href="#Win32_SECURITY_ATTRIBUTES">Win32.SECURITY_ATTRIBUTES</a>, dwStackSize: Win32.SIZE_T, lpStartAddress: Win32.LPTHREAD_START_ROUTINE, lpParameter: *void, dwCreationFlags: Win32.DWORD, lpThreadId: *Win32.DWORD)->Win32.HANDLE throw
 </code>
 </p>
 <p>
@@ -3093,7 +3093,7 @@ s32</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func CreateWaitableTimerA(lpTimerAttributes: *&lt;a href="#Win32_SECURITY_ATTRIBUTES"&gt;Win32.SECURITY_ATTRIBUTES&lt;/a&gt;, bManualReset: Win32.BOOL, lpTimerName: Win32.LPCSTR)-&gt;Win32.HANDLE
+<code style="white-space: break-spaces">func CreateWaitableTimerA(lpTimerAttributes: *<a href="#Win32_SECURITY_ATTRIBUTES">Win32.SECURITY_ATTRIBUTES</a>, bManualReset: Win32.BOOL, lpTimerName: Win32.LPCSTR)->Win32.HANDLE
 </code>
 </p>
 <p>
@@ -3108,7 +3108,7 @@ s32</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func CreateWaitableTimerW(lpTimerAttributes: *&lt;a href="#Win32_SECURITY_ATTRIBUTES"&gt;Win32.SECURITY_ATTRIBUTES&lt;/a&gt;, bManualReset: Win32.BOOL, lpTimerName: Win32.LPCWSTR)-&gt;Win32.HANDLE
+<code style="white-space: break-spaces">func CreateWaitableTimerW(lpTimerAttributes: *<a href="#Win32_SECURITY_ATTRIBUTES">Win32.SECURITY_ATTRIBUTES</a>, bManualReset: Win32.BOOL, lpTimerName: Win32.LPCWSTR)->Win32.HANDLE
 </code>
 </p>
 <p>
@@ -3317,7 +3317,7 @@ u32</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func DispatchMessageA(lpMsg: const *&lt;a href="#Win32_MSG"&gt;Win32.MSG&lt;/a&gt;)-&gt;Win32.LRESULT
+<code style="white-space: break-spaces">func DispatchMessageA(lpMsg: const *<a href="#Win32_MSG">Win32.MSG</a>)->Win32.LRESULT
 </code>
 </p>
 <p>
@@ -3332,7 +3332,7 @@ u32</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func DispatchMessageW(lpMsg: const *&lt;a href="#Win32_MSG"&gt;Win32.MSG&lt;/a&gt;)-&gt;Win32.LRESULT
+<code style="white-space: break-spaces">func DispatchMessageW(lpMsg: const *<a href="#Win32_MSG">Win32.MSG</a>)->Win32.LRESULT
 </code>
 </p>
 <p>
@@ -3430,7 +3430,7 @@ s32</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func EndPaint(hWnd: Win32.HWND, lpPaint: const *&lt;a href="#Win32_PAINTSTRUCT"&gt;Win32.PAINTSTRUCT&lt;/a&gt;)-&gt;Win32.BOOL
+<code style="white-space: break-spaces">func EndPaint(hWnd: Win32.HWND, lpPaint: const *<a href="#Win32_PAINTSTRUCT">Win32.PAINTSTRUCT</a>)->Win32.BOOL
 </code>
 </p>
 <p>
@@ -3445,7 +3445,7 @@ s32</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func EnumDisplayMonitors(hdc: Win32.HDC, lprcClip: *&lt;a href="#Win32_RECT"&gt;Win32.RECT&lt;/a&gt;, lpfnEnum: const *void, dwData: Win32.LPARAM)-&gt;Win32.BOOL
+<code style="white-space: break-spaces">func EnumDisplayMonitors(hdc: Win32.HDC, lprcClip: *<a href="#Win32_RECT">Win32.RECT</a>, lpfnEnum: const *void, dwData: Win32.LPARAM)->Win32.BOOL
 </code>
 </p>
 <p>
@@ -3919,7 +3919,7 @@ u32</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func FileTimeToLocalFileTime(lpFileTime: const *&lt;a href="#Win32_FILETIME"&gt;Win32.FILETIME&lt;/a&gt;, lpLocalFileTime: *&lt;a href="#Win32_FILETIME"&gt;Win32.FILETIME&lt;/a&gt;)-&gt;Win32.BOOL
+<code style="white-space: break-spaces">func FileTimeToLocalFileTime(lpFileTime: const *<a href="#Win32_FILETIME">Win32.FILETIME</a>, lpLocalFileTime: *<a href="#Win32_FILETIME">Win32.FILETIME</a>)->Win32.BOOL
 </code>
 </p>
 <p>
@@ -3934,7 +3934,7 @@ u32</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func FileTimeToSystemTime(lpFileTime: const *&lt;a href="#Win32_FILETIME"&gt;Win32.FILETIME&lt;/a&gt;, lpSystemTime: *&lt;a href="#Win32_SYSTEMTIME"&gt;Win32.SYSTEMTIME&lt;/a&gt;) throw
+<code style="white-space: break-spaces">func FileTimeToSystemTime(lpFileTime: const *<a href="#Win32_FILETIME">Win32.FILETIME</a>, lpSystemTime: *<a href="#Win32_SYSTEMTIME">Win32.SYSTEMTIME</a>) throw
 </code>
 </p>
 <p>
@@ -3949,7 +3949,7 @@ u32</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func FillRect(hDC: Win32.HDC, lprc: const *&lt;a href="#Win32_RECT"&gt;Win32.RECT&lt;/a&gt;, hbr: Win32.HBRUSH)-&gt;s32
+<code style="white-space: break-spaces">func FillRect(hDC: Win32.HDC, lprc: const *<a href="#Win32_RECT">Win32.RECT</a>, hbr: Win32.HBRUSH)->s32
 </code>
 </p>
 <p>
@@ -3979,7 +3979,7 @@ u32</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func FindFirstFileA(lpFileName: Win32.LPCSTR, lpFindFileData: *&lt;a href="#Win32_WIN32_FIND_DATAA"&gt;Win32.WIN32_FIND_DATAA&lt;/a&gt;)-&gt;Win32.HANDLE throw
+<code style="white-space: break-spaces">func FindFirstFileA(lpFileName: Win32.LPCSTR, lpFindFileData: *<a href="#Win32_WIN32_FIND_DATAA">Win32.WIN32_FIND_DATAA</a>)->Win32.HANDLE throw
 </code>
 </p>
 <p>
@@ -3994,7 +3994,7 @@ u32</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func FindFirstFileW(lpFileName: Win32.LPCWSTR, lpFindFileData: *&lt;a href="#Win32_WIN32_FIND_DATAW"&gt;Win32.WIN32_FIND_DATAW&lt;/a&gt;)-&gt;Win32.HANDLE throw
+<code style="white-space: break-spaces">func FindFirstFileW(lpFileName: Win32.LPCWSTR, lpFindFileData: *<a href="#Win32_WIN32_FIND_DATAW">Win32.WIN32_FIND_DATAW</a>)->Win32.HANDLE throw
 </code>
 </p>
 <p>
@@ -4039,7 +4039,7 @@ u32</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func FindNextFileA(hFindFile: Win32.HANDLE, lpFindFileData: *&lt;a href="#Win32_WIN32_FIND_DATAA"&gt;Win32.WIN32_FIND_DATAA&lt;/a&gt;)-&gt;Win32.BOOL throw
+<code style="white-space: break-spaces">func FindNextFileA(hFindFile: Win32.HANDLE, lpFindFileData: *<a href="#Win32_WIN32_FIND_DATAA">Win32.WIN32_FIND_DATAA</a>)->Win32.BOOL throw
 </code>
 </p>
 <p>
@@ -4054,7 +4054,7 @@ u32</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func FindNextFileW(hFindFile: Win32.HANDLE, lpFindFileData: *&lt;a href="#Win32_WIN32_FIND_DATAW"&gt;Win32.WIN32_FIND_DATAW&lt;/a&gt;)-&gt;Win32.BOOL throw
+<code style="white-space: break-spaces">func FindNextFileW(hFindFile: Win32.HANDLE, lpFindFileData: *<a href="#Win32_WIN32_FIND_DATAW">Win32.WIN32_FIND_DATAW</a>)->Win32.BOOL throw
 </code>
 </p>
 <p>
@@ -4576,7 +4576,7 @@ u32</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func GetAdaptersInfo(adapterInfo: *&lt;a href="#Win32_IP_ADAPTER_INFO"&gt;Win32.IP_ADAPTER_INFO&lt;/a&gt;, sizePointer: *Win32.ULONG)-&gt;Win32.ULONG
+<code style="white-space: break-spaces">func GetAdaptersInfo(adapterInfo: *<a href="#Win32_IP_ADAPTER_INFO">Win32.IP_ADAPTER_INFO</a>, sizePointer: *Win32.ULONG)->Win32.ULONG
 </code>
 </p>
 <p>
@@ -4606,7 +4606,7 @@ u32</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func GetClientRect(hWnd: Win32.HWND, lpRect: *&lt;a href="#Win32_RECT"&gt;Win32.RECT&lt;/a&gt;)-&gt;Win32.BOOL
+<code style="white-space: break-spaces">func GetClientRect(hWnd: Win32.HWND, lpRect: *<a href="#Win32_RECT">Win32.RECT</a>)->Win32.BOOL
 </code>
 </p>
 <p>
@@ -4636,7 +4636,7 @@ u32</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func GetConsoleScreenBufferInfo(hConsoleOutput: Win32.HANDLE, lpConsoleScreenBufferInfo: *&lt;a href="#Win32_CONSOLE_SCREEN_BUFFER_INFO"&gt;Win32.CONSOLE_SCREEN_BUFFER_INFO&lt;/a&gt;) throw
+<code style="white-space: break-spaces">func GetConsoleScreenBufferInfo(hConsoleOutput: Win32.HANDLE, lpConsoleScreenBufferInfo: *<a href="#Win32_CONSOLE_SCREEN_BUFFER_INFO">Win32.CONSOLE_SCREEN_BUFFER_INFO</a>) throw
 </code>
 </p>
 <p>
@@ -4741,7 +4741,7 @@ u32</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func GetCursorPos(lpPoint: *&lt;a href="#Win32_POINT"&gt;Win32.POINT&lt;/a&gt;)-&gt;Win32.BOOL
+<code style="white-space: break-spaces">func GetCursorPos(lpPoint: *<a href="#Win32_POINT">Win32.POINT</a>)->Win32.BOOL
 </code>
 </p>
 <p>
@@ -4801,7 +4801,7 @@ u32</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func GetFileAttributesExA(lpFileName: Win32.LPCSTR, fInfoLevelId: &lt;a href="#Win32_GET_FILEEX_INFO_LEVELS"&gt;Win32.GET_FILEEX_INFO_LEVELS&lt;/a&gt;, lpFileInformation: Win32.LPVOID) throw
+<code style="white-space: break-spaces">func GetFileAttributesExA(lpFileName: Win32.LPCSTR, fInfoLevelId: <a href="#Win32_GET_FILEEX_INFO_LEVELS">Win32.GET_FILEEX_INFO_LEVELS</a>, lpFileInformation: Win32.LPVOID) throw
 </code>
 </p>
 <p>
@@ -4816,7 +4816,7 @@ u32</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func GetFileAttributesExW(lpFileName: Win32.LPCWSTR, fInfoLevelId: &lt;a href="#Win32_GET_FILEEX_INFO_LEVELS"&gt;Win32.GET_FILEEX_INFO_LEVELS&lt;/a&gt;, lpFileInformation: Win32.LPVOID) throw
+<code style="white-space: break-spaces">func GetFileAttributesExW(lpFileName: Win32.LPCWSTR, fInfoLevelId: <a href="#Win32_GET_FILEEX_INFO_LEVELS">Win32.GET_FILEEX_INFO_LEVELS</a>, lpFileInformation: Win32.LPVOID) throw
 </code>
 </p>
 <p>
@@ -4906,7 +4906,7 @@ u32</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func GetIconInfo(hIcon: Win32.HICON, piconinfo: *&lt;a href="#Win32_ICONINFO"&gt;Win32.ICONINFO&lt;/a&gt;) throw
+<code style="white-space: break-spaces">func GetIconInfo(hIcon: Win32.HICON, piconinfo: *<a href="#Win32_ICONINFO">Win32.ICONINFO</a>) throw
 </code>
 </p>
 <p>
@@ -4951,7 +4951,7 @@ u32</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func GetLocalTime(lpSystemTime: *&lt;a href="#Win32_SYSTEMTIME"&gt;Win32.SYSTEMTIME&lt;/a&gt;)
+<code style="white-space: break-spaces">func GetLocalTime(lpSystemTime: *<a href="#Win32_SYSTEMTIME">Win32.SYSTEMTIME</a>)
 </code>
 </p>
 <p>
@@ -4966,7 +4966,7 @@ u32</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func GetMessageA(lpMsg: *&lt;a href="#Win32_MSG"&gt;Win32.MSG&lt;/a&gt;, hWnd: Win32.HWND, wMsgFilterMin: Win32.UINT, wMsgFilterMax: Win32.UINT)-&gt;Win32.BOOL
+<code style="white-space: break-spaces">func GetMessageA(lpMsg: *<a href="#Win32_MSG">Win32.MSG</a>, hWnd: Win32.HWND, wMsgFilterMin: Win32.UINT, wMsgFilterMax: Win32.UINT)->Win32.BOOL
 </code>
 </p>
 <p>
@@ -4981,7 +4981,7 @@ u32</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func GetMessageW(lpMsg: *&lt;a href="#Win32_MSG"&gt;Win32.MSG&lt;/a&gt;, hWnd: Win32.HWND, wMsgFilterMin: Win32.UINT, wMsgFilterMax: Win32.UINT)-&gt;Win32.BOOL
+<code style="white-space: break-spaces">func GetMessageW(lpMsg: *<a href="#Win32_MSG">Win32.MSG</a>, hWnd: Win32.HWND, wMsgFilterMin: Win32.UINT, wMsgFilterMax: Win32.UINT)->Win32.BOOL
 </code>
 </p>
 <p>
@@ -5026,7 +5026,7 @@ u32</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func GetMonitorInfoA(hMonitor: Win32.HMONITOR, lpmi: *&lt;a href="#Win32_MONITORINFO"&gt;Win32.MONITORINFO&lt;/a&gt;) throw
+<code style="white-space: break-spaces">func GetMonitorInfoA(hMonitor: Win32.HMONITOR, lpmi: *<a href="#Win32_MONITORINFO">Win32.MONITORINFO</a>) throw
 </code>
 </p>
 <p>
@@ -5041,7 +5041,7 @@ u32</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func GetMonitorInfoW(hMonitor: Win32.HMONITOR, lpmi: *&lt;a href="#Win32_MONITORINFO"&gt;Win32.MONITORINFO&lt;/a&gt;) throw
+<code style="white-space: break-spaces">func GetMonitorInfoW(hMonitor: Win32.HMONITOR, lpmi: *<a href="#Win32_MONITORINFO">Win32.MONITORINFO</a>) throw
 </code>
 </p>
 <p>
@@ -5101,7 +5101,7 @@ u32</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func GetSystemInfo(lpSystemInfo: *&lt;a href="#Win32_SYSTEM_INFO"&gt;Win32.SYSTEM_INFO&lt;/a&gt;)
+<code style="white-space: break-spaces">func GetSystemInfo(lpSystemInfo: *<a href="#Win32_SYSTEM_INFO">Win32.SYSTEM_INFO</a>)
 </code>
 </p>
 <p>
@@ -5131,7 +5131,7 @@ u32</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func GetSystemTime(lpSystemTime: *&lt;a href="#Win32_SYSTEMTIME"&gt;Win32.SYSTEMTIME&lt;/a&gt;)
+<code style="white-space: break-spaces">func GetSystemTime(lpSystemTime: *<a href="#Win32_SYSTEMTIME">Win32.SYSTEMTIME</a>)
 </code>
 </p>
 <p>
@@ -5236,7 +5236,7 @@ u32</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func GetWindowRect(hWnd: Win32.HWND, lpRect: *&lt;a href="#Win32_RECT"&gt;Win32.RECT&lt;/a&gt;)-&gt;Win32.BOOL
+<code style="white-space: break-spaces">func GetWindowRect(hWnd: Win32.HWND, lpRect: *<a href="#Win32_RECT">Win32.RECT</a>)->Win32.BOOL
 </code>
 </p>
 <p>
@@ -5985,7 +5985,7 @@ Win32.DWORD</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func InvalidateRect(hWnd: Win32.HWND, lpRect: const *&lt;a href="#Win32_RECT"&gt;Win32.RECT&lt;/a&gt;, bErase: Win32.BOOL)-&gt;Win32.BOOL
+<code style="white-space: break-spaces">func InvalidateRect(hWnd: Win32.HWND, lpRect: const *<a href="#Win32_RECT">Win32.RECT</a>, bErase: Win32.BOOL)->Win32.BOOL
 </code>
 </p>
 <p>
@@ -6898,7 +6898,7 @@ Win32.DWORD</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func MonitorFromPoint(pt: &lt;a href="#Win32_POINT"&gt;Win32.POINT&lt;/a&gt;, dwFlags: Win32.DWORD)-&gt;Win32.HMONITOR
+<code style="white-space: break-spaces">func MonitorFromPoint(pt: <a href="#Win32_POINT">Win32.POINT</a>, dwFlags: Win32.DWORD)->Win32.HMONITOR
 </code>
 </p>
 <p>
@@ -7572,7 +7572,7 @@ Win32.DWORD</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func PeekMessageA(lpMsg: *&lt;a href="#Win32_MSG"&gt;Win32.MSG&lt;/a&gt;, hWnd: Win32.HWND, wMsgFilterMin: Win32.UINT, wMsgFilterMax: Win32.UINT, wRemoveMsg: Win32.UINT)-&gt;Win32.BOOL
+<code style="white-space: break-spaces">func PeekMessageA(lpMsg: *<a href="#Win32_MSG">Win32.MSG</a>, hWnd: Win32.HWND, wMsgFilterMin: Win32.UINT, wMsgFilterMax: Win32.UINT, wRemoveMsg: Win32.UINT)->Win32.BOOL
 </code>
 </p>
 <p>
@@ -7587,7 +7587,7 @@ Win32.DWORD</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func PeekMessageW(lpMsg: *&lt;a href="#Win32_MSG"&gt;Win32.MSG&lt;/a&gt;, hWnd: Win32.HWND, wMsgFilterMin: Win32.UINT, wMsgFilterMax: Win32.UINT, wRemoveMsg: Win32.UINT)-&gt;Win32.BOOL
+<code style="white-space: break-spaces">func PeekMessageW(lpMsg: *<a href="#Win32_MSG">Win32.MSG</a>, hWnd: Win32.HWND, wMsgFilterMin: Win32.UINT, wMsgFilterMax: Win32.UINT, wRemoveMsg: Win32.UINT)->Win32.BOOL
 </code>
 </p>
 <p>
@@ -7737,7 +7737,7 @@ Win32.LONG</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func RegisterClassA(lpWndClass: const *&lt;a href="#Win32_WNDCLASSA"&gt;Win32.WNDCLASSA&lt;/a&gt;)-&gt;Win32.ATOM throw
+<code style="white-space: break-spaces">func RegisterClassA(lpWndClass: const *<a href="#Win32_WNDCLASSA">Win32.WNDCLASSA</a>)->Win32.ATOM throw
 </code>
 </p>
 <p>
@@ -7752,7 +7752,7 @@ Win32.LONG</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func RegisterClassW(lpWndClass: const *&lt;a href="#Win32_WNDCLASSW"&gt;Win32.WNDCLASSW&lt;/a&gt;)-&gt;Win32.ATOM throw
+<code style="white-space: break-spaces">func RegisterClassW(lpWndClass: const *<a href="#Win32_WNDCLASSW">Win32.WNDCLASSW</a>)->Win32.ATOM throw
 </code>
 </p>
 <p>
@@ -8492,7 +8492,7 @@ u32</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func SHGetFileInfoA(pszPath: Win32.LPCSTR, dwFileAttributes: Win32.DWORD, psfi: *&lt;a href="#Win32_SHFILEINFOA"&gt;Win32.SHFILEINFOA&lt;/a&gt;, cbFileInfo: Win32.UINT, uFlags: Win32.UINT)-&gt;Win32.DWORD_PTR
+<code style="white-space: break-spaces">func SHGetFileInfoA(pszPath: Win32.LPCSTR, dwFileAttributes: Win32.DWORD, psfi: *<a href="#Win32_SHFILEINFOA">Win32.SHFILEINFOA</a>, cbFileInfo: Win32.UINT, uFlags: Win32.UINT)->Win32.DWORD_PTR
 </code>
 </p>
 <p>
@@ -8507,7 +8507,7 @@ u32</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func SHGetFileInfoW(pszPath: Win32.LPCWSTR, dwFileAttributes: Win32.DWORD, psfi: *&lt;a href="#Win32_SHFILEINFOW"&gt;Win32.SHFILEINFOW&lt;/a&gt;, cbFileInfo: Win32.UINT, uFlags: Win32.UINT)-&gt;Win32.DWORD_PTR
+<code style="white-space: break-spaces">func SHGetFileInfoW(pszPath: Win32.LPCWSTR, dwFileAttributes: Win32.DWORD, psfi: *<a href="#Win32_SHFILEINFOW">Win32.SHFILEINFOW</a>, cbFileInfo: Win32.UINT, uFlags: Win32.UINT)->Win32.DWORD_PTR
 </code>
 </p>
 <p>
@@ -8552,7 +8552,7 @@ u32</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func SHGetStockIconInfo(siid: &lt;a href="#Win32_SHSTOCKICONID"&gt;Win32.SHSTOCKICONID&lt;/a&gt;, uFlags: Win32.UINT, psii: &lt;a href="#Win32_SHSTOCKICONINFO"&gt;Win32.SHSTOCKICONINFO&lt;/a&gt;) throw
+<code style="white-space: break-spaces">func SHGetStockIconInfo(siid: <a href="#Win32_SHSTOCKICONID">Win32.SHSTOCKICONID</a>, uFlags: Win32.UINT, psii: <a href="#Win32_SHSTOCKICONINFO">Win32.SHSTOCKICONINFO</a>) throw
 </code>
 </p>
 <p>
@@ -11041,7 +11041,7 @@ Win32.HRESULT</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func ScreenToClient(hWnd: Win32.HWND, lpPoint: *&lt;a href="#Win32_POINT"&gt;Win32.POINT&lt;/a&gt;)-&gt;Win32.BOOL
+<code style="white-space: break-spaces">func ScreenToClient(hWnd: Win32.HWND, lpPoint: *<a href="#Win32_POINT">Win32.POINT</a>)->Win32.BOOL
 </code>
 </p>
 <p>
@@ -11236,7 +11236,7 @@ Win32.HRESULT</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func SetFileTime(hFile: Win32.HANDLE, lpCreationTime: const *&lt;a href="#Win32_FILETIME"&gt;Win32.FILETIME&lt;/a&gt;, lpLastAccessTime: const *&lt;a href="#Win32_FILETIME"&gt;Win32.FILETIME&lt;/a&gt;, lpLastWriteTime: const *&lt;a href="#Win32_FILETIME"&gt;Win32.FILETIME&lt;/a&gt;) throw
+<code style="white-space: break-spaces">func SetFileTime(hFile: Win32.HANDLE, lpCreationTime: const *<a href="#Win32_FILETIME">Win32.FILETIME</a>, lpLastAccessTime: const *<a href="#Win32_FILETIME">Win32.FILETIME</a>, lpLastWriteTime: const *<a href="#Win32_FILETIME">Win32.FILETIME</a>) throw
 </code>
 </p>
 <p>
@@ -11356,7 +11356,7 @@ Win32.HRESULT</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func Shell_NotifyIconA(dwMessage: Win32.DWORD, lpData: *&lt;a href="#Win32_NOTIFYICONDATAA"&gt;Win32.NOTIFYICONDATAA&lt;/a&gt;) throw
+<code style="white-space: break-spaces">func Shell_NotifyIconA(dwMessage: Win32.DWORD, lpData: *<a href="#Win32_NOTIFYICONDATAA">Win32.NOTIFYICONDATAA</a>) throw
 </code>
 </p>
 <p>
@@ -11371,7 +11371,7 @@ Win32.HRESULT</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func Shell_NotifyIconW(dwMessage: Win32.DWORD, lpData: *&lt;a href="#Win32_NOTIFYICONDATAW"&gt;Win32.NOTIFYICONDATAW&lt;/a&gt;) throw
+<code style="white-space: break-spaces">func Shell_NotifyIconW(dwMessage: Win32.DWORD, lpData: *<a href="#Win32_NOTIFYICONDATAW">Win32.NOTIFYICONDATAW</a>) throw
 </code>
 </p>
 <p>
@@ -11461,7 +11461,7 @@ Win32.HRESULT</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func SystemTimeToFileTime(lpSystemTime: const *&lt;a href="#Win32_SYSTEMTIME"&gt;Win32.SYSTEMTIME&lt;/a&gt;, lpFileTime: *&lt;a href="#Win32_FILETIME"&gt;Win32.FILETIME&lt;/a&gt;) throw
+<code style="white-space: break-spaces">func SystemTimeToFileTime(lpSystemTime: const *<a href="#Win32_SYSTEMTIME">Win32.SYSTEMTIME</a>, lpFileTime: *<a href="#Win32_FILETIME">Win32.FILETIME</a>) throw
 </code>
 </p>
 <p>
@@ -11560,7 +11560,7 @@ u32</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func TranslateMessage(lpMsg: const *&lt;a href="#Win32_MSG"&gt;Win32.MSG&lt;/a&gt;)-&gt;Win32.BOOL
+<code style="white-space: break-spaces">func TranslateMessage(lpMsg: const *<a href="#Win32_MSG">Win32.MSG</a>)->Win32.BOOL
 </code>
 </p>
 <p>
@@ -16262,7 +16262,7 @@ u32</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func WindowFromPoint(pt: &lt;a href="#Win32_POINT"&gt;Win32.POINT&lt;/a&gt;)-&gt;Win32.HWND
+<code style="white-space: break-spaces">func WindowFromPoint(pt: <a href="#Win32_POINT">Win32.POINT</a>)->Win32.HWND
 </code>
 </p>
 <p>

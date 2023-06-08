@@ -1625,7 +1625,7 @@ Unregister a window to receive hook events.</p>
 <p>
 Register a new timer for the given <code class = "incode">target</code>.</p>
 <p class="code">
-<code style="white-space: break-spaces">func addTimer(using self, time: Core.Time.Duration, target: *&lt;a href="#Gui_Wnd"&gt;Gui.Wnd&lt;/a&gt;)-&gt;*&lt;a href="#Gui_Timer"&gt;Gui.Timer&lt;/a&gt;
+<code style="white-space: break-spaces">func addTimer(using self, time: Core.Time.Duration, target: *<a href="#Gui_Wnd">Gui.Wnd</a>)->*<a href="#Gui_Timer">Gui.Timer</a>
 </code>
 </p>
 <p>
@@ -1642,7 +1642,7 @@ Register a new timer for the given <code class = "incode">target</code>.</p>
 <p>
 Creates a new surface.</p>
 <p class="code">
-<code style="white-space: break-spaces">func createSurface(using self, x: s32, y: s32, width: s32, height: s32, flags = SurfaceFlags.OverlappedWindow, view: *&lt;a href="#Gui_Wnd"&gt;Gui.Wnd&lt;/a&gt; = null, hook: Gui.HookEvent = null)-&gt;*&lt;a href="#Gui_Surface"&gt;Gui.Surface&lt;/a&gt; throw
+<code style="white-space: break-spaces">func createSurface(using self, x: s32, y: s32, width: s32, height: s32, flags = SurfaceFlags.OverlappedWindow, view: *<a href="#Gui_Wnd">Gui.Wnd</a> = null, hook: Gui.HookEvent = null)->*<a href="#Gui_Surface">Gui.Surface</a> throw
 </code>
 </p>
 <p>
@@ -1659,7 +1659,7 @@ Creates a new surface.</p>
 <p>
 Delete and unregister timer.</p>
 <p class="code">
-<code style="white-space: break-spaces">func deleteTimer(using self, timer: *&lt;a href="#Gui_Timer"&gt;Gui.Timer&lt;/a&gt;)
+<code style="white-space: break-spaces">func deleteTimer(using self, timer: *<a href="#Gui_Timer">Gui.Timer</a>)
 </code>
 </p>
 <p>
@@ -1676,7 +1676,7 @@ Delete and unregister timer.</p>
 <p>
 Destroy a window To cleanly close a window, you should call wnd.destroy().</p>
 <p class="code">
-<code style="white-space: break-spaces">func destroyWnd(using self, wnd: *&lt;a href="#Gui_Wnd"&gt;Gui.Wnd&lt;/a&gt;)
+<code style="white-space: break-spaces">func destroyWnd(using self, wnd: *<a href="#Gui_Wnd">Gui.Wnd</a>)
 </code>
 </p>
 <p>
@@ -1691,7 +1691,7 @@ Destroy a window To cleanly close a window, you should call wnd.destroy().</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func doModalLoop(using self, surface: *&lt;a href="#Gui_Surface"&gt;Gui.Surface&lt;/a&gt;, cb: closure(self) = null)-&gt;Gui.WndId
+<code style="white-space: break-spaces">func doModalLoop(using self, surface: *<a href="#Gui_Surface">Gui.Surface</a>, cb: closure(self) = null)->Gui.WndId
 </code>
 </p>
 <p>
@@ -1770,7 +1770,7 @@ End current modal loop.</p>
 <p>
 Get the id associated with a shortcut. null if none.</p>
 <p class="code">
-<code style="white-space: break-spaces">func getHotKeyShortcut(using self, mdf: Core.Input.KeyModifiers, key: Core.Input.Key)-&gt;{Gui.WndId, *&lt;a href="#Gui_Wnd"&gt;Gui.Wnd&lt;/a&gt;}
+<code style="white-space: break-spaces">func getHotKeyShortcut(using self, mdf: Core.Input.KeyModifiers, key: Core.Input.Key)->{Gui.WndId, *<a href="#Gui_Wnd">Gui.Wnd</a>}
 </code>
 </p>
 <p>
@@ -1834,7 +1834,7 @@ Get the name associated with a given id shortcut.</p>
 <p>
 Return the captured wnd for mouse.</p>
 <p class="code">
-<code style="white-space: break-spaces">func getMouseCapture(using self)-&gt;*&lt;a href="#Gui_Wnd"&gt;Gui.Wnd&lt;/a&gt;
+<code style="white-space: break-spaces">func getMouseCapture(using self)->*<a href="#Gui_Wnd">Gui.Wnd</a>
 </code>
 </p>
 <p>
@@ -1866,7 +1866,7 @@ Return the captured wnd for mouse.</p>
 <p>
 Returns the window under the given point.</p>
 <p class="code">
-<code style="white-space: break-spaces">func getWndAtMouse(using self)-&gt;*&lt;a href="#Gui_Wnd"&gt;Gui.Wnd&lt;/a&gt;
+<code style="white-space: break-spaces">func getWndAtMouse(using self)->*<a href="#Gui_Wnd">Gui.Wnd</a>
 </code>
 </p>
 <p>
@@ -1934,7 +1934,7 @@ Pop a new mouse cursor.</p>
 <p>
 Post a new event (thread safe).</p>
 <p class="code">
-<code style="white-space: break-spaces">func postEvent(using self, event: *&lt;a href="#Gui_Event"&gt;Gui.Event&lt;/a&gt;)
+<code style="white-space: break-spaces">func postEvent(using self, event: *<a href="#Gui_Event">Gui.Event</a>)
 </code>
 </p>
 <p>
@@ -1968,7 +1968,7 @@ Ask to exit the application.</p>
 <p>
 Push a new mouse cursor.</p>
 <p class="code">
-<code style="white-space: break-spaces">func pushCursor(using self, cursor: &lt;a href="#Gui_Cursor"&gt;Gui.Cursor&lt;/a&gt;)
+<code style="white-space: break-spaces">func pushCursor(using self, cursor: <a href="#Gui_Cursor">Gui.Cursor</a>)
 </code>
 </p>
 <p>
@@ -1985,7 +1985,7 @@ Push a new mouse cursor.</p>
 <p>
 Register a window to receive a FrameEvent each running loop.</p>
 <p class="code">
-<code style="white-space: break-spaces">func registerFrameEvent(using self, target: *&lt;a href="#Gui_Wnd"&gt;Gui.Wnd&lt;/a&gt;)
+<code style="white-space: break-spaces">func registerFrameEvent(using self, target: *<a href="#Gui_Wnd">Gui.Wnd</a>)
 </code>
 </p>
 <p>
@@ -2002,7 +2002,7 @@ Register a window to receive a FrameEvent each running loop.</p>
 <p>
 Register a window to receive hook events.</p>
 <p class="code">
-<code style="white-space: break-spaces">func registerHookEvents(using self, target: *&lt;a href="#Gui_Wnd"&gt;Gui.Wnd&lt;/a&gt;)
+<code style="white-space: break-spaces">func registerHookEvents(using self, target: *<a href="#Gui_Wnd">Gui.Wnd</a>)
 </code>
 </p>
 <p>
@@ -2019,7 +2019,7 @@ Register a window to receive hook events.</p>
 <p>
 Register a global os key action.</p>
 <p class="code">
-<code style="white-space: break-spaces">func registerHotKey(using self, mdf: Core.Input.KeyModifiers, key: Core.Input.Key, wndId: Gui.WndId, target: *&lt;a href="#Gui_Wnd"&gt;Gui.Wnd&lt;/a&gt;) throw
+<code style="white-space: break-spaces">func registerHotKey(using self, mdf: Core.Input.KeyModifiers, key: Core.Input.Key, wndId: Gui.WndId, target: *<a href="#Gui_Wnd">Gui.Wnd</a>) throw
 </code>
 </p>
 <p>
@@ -2068,7 +2068,7 @@ Run until exit.</p>
 <p>
 Create a main surface, and run.</p>
 <p class="code">
-<code style="white-space: break-spaces">func runSurface(x: s32, y: s32, width: s32, height: s32, title: string = null, view: *&lt;a href="#Gui_Wnd"&gt;Gui.Wnd&lt;/a&gt; = null, borders = true, canSize = true, hook: Gui.HookEvent = null, init: func(*&lt;a href="#Gui_Application"&gt;Gui.Application&lt;/a&gt;) = null)
+<code style="white-space: break-spaces">func runSurface(x: s32, y: s32, width: s32, height: s32, title: string = null, view: *<a href="#Gui_Wnd">Gui.Wnd</a> = null, borders = true, canSize = true, hook: Gui.HookEvent = null, init: func(*<a href="#Gui_Application">Gui.Application</a>) = null)
 </code>
 </p>
 <p>
@@ -2100,7 +2100,7 @@ Save the application state.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func sendEvent(using self, event: *&lt;a href="#Gui_Event"&gt;Gui.Event&lt;/a&gt;)
+<code style="white-space: break-spaces">func sendEvent(using self, event: *<a href="#Gui_Event">Gui.Event</a>)
 </code>
 </p>
 <p>
@@ -2168,7 +2168,7 @@ Associate a configuration file.</p>
 <p>
 Unregister a window that receives a FrameEvent each running loop.</p>
 <p class="code">
-<code style="white-space: break-spaces">func unregisterFrameEvent(using self, target: *&lt;a href="#Gui_Wnd"&gt;Gui.Wnd&lt;/a&gt;)
+<code style="white-space: break-spaces">func unregisterFrameEvent(using self, target: *<a href="#Gui_Wnd">Gui.Wnd</a>)
 </code>
 </p>
 <p>
@@ -2185,7 +2185,7 @@ Unregister a window that receives a FrameEvent each running loop.</p>
 <p>
 Unregister a window to receive hook events.</p>
 <p class="code">
-<code style="white-space: break-spaces">func unregisterHookEvents(using self, target: *&lt;a href="#Gui_Wnd"&gt;Gui.Wnd&lt;/a&gt;)
+<code style="white-space: break-spaces">func unregisterHookEvents(using self, target: *<a href="#Gui_Wnd">Gui.Wnd</a>)
 </code>
 </p>
 <p>
@@ -2466,7 +2466,7 @@ sigChanged</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func onMouseEvent(using self, evt: *&lt;a href="#Gui_MouseEvent"&gt;Gui.MouseEvent&lt;/a&gt;)
+<code style="white-space: break-spaces">func onMouseEvent(using self, evt: *<a href="#Gui_MouseEvent">Gui.MouseEvent</a>)
 </code>
 </p>
 <p>
@@ -2481,7 +2481,7 @@ sigChanged</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func onPaintEvent(using self, evt: *&lt;a href="#Gui_PaintEvent"&gt;Gui.PaintEvent&lt;/a&gt;)
+<code style="white-space: break-spaces">func onPaintEvent(using self, evt: *<a href="#Gui_PaintEvent">Gui.PaintEvent</a>)
 </code>
 </p>
 <p>
@@ -2496,7 +2496,7 @@ sigChanged</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func create(parent: *&lt;a href="#Gui_Wnd"&gt;Gui.Wnd&lt;/a&gt;, name: string, position: Core.Math.Rectangle = {}, id: Gui.WndId = null)-&gt;*&lt;a href="#Gui_CheckButton"&gt;Gui.CheckButton&lt;/a&gt;
+<code style="white-space: break-spaces">func create(parent: *<a href="#Gui_Wnd">Gui.Wnd</a>, name: string, position: Core.Math.Rectangle = {}, id: Gui.WndId = null)->*<a href="#Gui_CheckButton">Gui.CheckButton</a>
 </code>
 </p>
 <p>
@@ -3001,7 +3001,7 @@ Set the color picker box mode.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func onMouseEvent(using self, evt: *&lt;a href="#Gui_MouseEvent"&gt;Gui.MouseEvent&lt;/a&gt;)
+<code style="white-space: break-spaces">func onMouseEvent(using self, evt: *<a href="#Gui_MouseEvent">Gui.MouseEvent</a>)
 </code>
 </p>
 <p>
@@ -3016,7 +3016,7 @@ Set the color picker box mode.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func onPaintEvent(using self, evt: *&lt;a href="#Gui_PaintEvent"&gt;Gui.PaintEvent&lt;/a&gt;)
+<code style="white-space: break-spaces">func onPaintEvent(using self, evt: *<a href="#Gui_PaintEvent">Gui.PaintEvent</a>)
 </code>
 </p>
 <p>
@@ -3031,7 +3031,7 @@ Set the color picker box mode.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func onPostPaintEvent(using self, evt: *&lt;a href="#Gui_PaintEvent"&gt;Gui.PaintEvent&lt;/a&gt;)
+<code style="white-space: break-spaces">func onPostPaintEvent(using self, evt: *<a href="#Gui_PaintEvent">Gui.PaintEvent</a>)
 </code>
 </p>
 <p>
@@ -3063,7 +3063,7 @@ Change one component, HSL or alpha.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func create(parent: *&lt;a href="#Gui_Wnd"&gt;Gui.Wnd&lt;/a&gt;, position: Core.Math.Rectangle = {}, id: Gui.WndId = null)-&gt;*&lt;a href="#Gui_ColorPicker"&gt;Gui.ColorPicker&lt;/a&gt;
+<code style="white-space: break-spaces">func create(parent: *<a href="#Gui_Wnd">Gui.Wnd</a>, position: Core.Math.Rectangle = {}, id: Gui.WndId = null)->*<a href="#Gui_ColorPicker">Gui.ColorPicker</a>
 </code>
 </p>
 <p>
@@ -3114,7 +3114,7 @@ Set the base color, and repaint.</p>
 <p>
 Set the color picker box mode.</p>
 <p class="code">
-<code style="white-space: break-spaces">func setMode(using self, mode: &lt;a href="#Gui_ColorPickerMode"&gt;Gui.ColorPickerMode&lt;/a&gt;)
+<code style="white-space: break-spaces">func setMode(using self, mode: <a href="#Gui_ColorPickerMode">Gui.ColorPickerMode</a>)
 </code>
 </p>
 <p>
@@ -3343,7 +3343,7 @@ Change the display mode.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func onPaintEvent(using self, evt: *&lt;a href="#Gui_PaintEvent"&gt;Gui.PaintEvent&lt;/a&gt;)
+<code style="white-space: break-spaces">func onPaintEvent(using self, evt: *<a href="#Gui_PaintEvent">Gui.PaintEvent</a>)
 </code>
 </p>
 <p>
@@ -3358,7 +3358,7 @@ Change the display mode.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func create(parent: *&lt;a href="#Gui_Wnd"&gt;Gui.Wnd&lt;/a&gt;, position: Core.Math.Rectangle, id: Gui.WndId = null)-&gt;*&lt;a href="#Gui_ColorPickerCtrl"&gt;Gui.ColorPickerCtrl&lt;/a&gt;
+<code style="white-space: break-spaces">func create(parent: *<a href="#Gui_Wnd">Gui.Wnd</a>, position: Core.Math.Rectangle, id: Gui.WndId = null)->*<a href="#Gui_ColorPickerCtrl">Gui.ColorPickerCtrl</a>
 </code>
 </p>
 <p>
@@ -3409,7 +3409,7 @@ Set the selected color.</p>
 <p>
 Change the display mode.</p>
 <p class="code">
-<code style="white-space: break-spaces">func setMode(using self, mode: &lt;a href="#Gui_ColorPickerViewMode"&gt;Gui.ColorPickerViewMode&lt;/a&gt;)
+<code style="white-space: break-spaces">func setMode(using self, mode: <a href="#Gui_ColorPickerViewMode">Gui.ColorPickerViewMode</a>)
 </code>
 </p>
 <p>
@@ -3748,7 +3748,7 @@ Set the selected item index.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func onMouseEvent(using self, evt: *&lt;a href="#Gui_MouseEvent"&gt;Gui.MouseEvent&lt;/a&gt;)
+<code style="white-space: break-spaces">func onMouseEvent(using self, evt: *<a href="#Gui_MouseEvent">Gui.MouseEvent</a>)
 </code>
 </p>
 <p>
@@ -3763,7 +3763,7 @@ Set the selected item index.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func onPaintEvent(using self, evt: *&lt;a href="#Gui_PaintEvent"&gt;Gui.PaintEvent&lt;/a&gt;)
+<code style="white-space: break-spaces">func onPaintEvent(using self, evt: *<a href="#Gui_PaintEvent">Gui.PaintEvent</a>)
 </code>
 </p>
 <p>
@@ -3778,7 +3778,7 @@ Set the selected item index.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func onResizeEvent(using self, evt: *&lt;a href="#Gui_ResizeEvent"&gt;Gui.ResizeEvent&lt;/a&gt;)
+<code style="white-space: break-spaces">func onResizeEvent(using self, evt: *<a href="#Gui_ResizeEvent">Gui.ResizeEvent</a>)
 </code>
 </p>
 <p>
@@ -3795,7 +3795,7 @@ Set the selected item index.</p>
 <p>
 Add a new item.</p>
 <p class="code">
-<code style="white-space: break-spaces">func addItem(using self, name: string, id: Gui.WndId = null, icon: &lt;a href="#Gui_Icon"&gt;Gui.Icon&lt;/a&gt; = {}, userData0: *void = null, userData1: *void = null)-&gt;*&lt;a href="#Gui_ComboBoxItem"&gt;Gui.ComboBoxItem&lt;/a&gt;
+<code style="white-space: break-spaces">func addItem(using self, name: string, id: Gui.WndId = null, icon: <a href="#Gui_Icon">Gui.Icon</a> = {}, userData0: *void = null, userData1: *void = null)->*<a href="#Gui_ComboBoxItem">Gui.ComboBoxItem</a>
 </code>
 </p>
 <p>
@@ -3844,7 +3844,7 @@ Remove all items.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func create(parent: *&lt;a href="#Gui_Wnd"&gt;Gui.Wnd&lt;/a&gt;, position: Core.Math.Rectangle = {}, id: Gui.WndId = null, kind = ComboBoxKind.Select)-&gt;*&lt;a href="#Gui_ComboBox"&gt;Gui.ComboBox&lt;/a&gt;
+<code style="white-space: break-spaces">func create(parent: *<a href="#Gui_Wnd">Gui.Wnd</a>, position: Core.Math.Rectangle = {}, id: Gui.WndId = null, kind = ComboBoxKind.Select)->*<a href="#Gui_ComboBox">Gui.ComboBox</a>
 </code>
 </p>
 <p>
@@ -3861,7 +3861,7 @@ Remove all items.</p>
 <p>
 Returns the selected item.</p>
 <p class="code">
-<code style="white-space: break-spaces">func getSelectedItem(using self)-&gt;*&lt;a href="#Gui_ComboBoxItem"&gt;Gui.ComboBoxItem&lt;/a&gt;
+<code style="white-space: break-spaces">func getSelectedItem(using self)->*<a href="#Gui_ComboBoxItem">Gui.ComboBoxItem</a>
 </code>
 </p>
 <p>
@@ -4015,7 +4015,7 @@ combo</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func onResizeEvent(using self, evt: *&lt;a href="#Gui_ResizeEvent"&gt;Gui.ResizeEvent&lt;/a&gt;)
+<code style="white-space: break-spaces">func onResizeEvent(using self, evt: *<a href="#Gui_ResizeEvent">Gui.ResizeEvent</a>)
 </code>
 </p>
 <p>
@@ -4030,7 +4030,7 @@ combo</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func create(parent: *&lt;a href="#Gui_Wnd"&gt;Gui.Wnd&lt;/a&gt;, name: string, position: Core.Math.Rectangle = {}, id: Gui.WndId = null)-&gt;*&lt;a href="#Gui_ComboCtrl"&gt;Gui.ComboCtrl&lt;/a&gt;
+<code style="white-space: break-spaces">func create(parent: *<a href="#Gui_Wnd">Gui.Wnd</a>, name: string, position: Core.Math.Rectangle = {}, id: Gui.WndId = null)->*<a href="#Gui_ComboCtrl">Gui.ComboCtrl</a>
 </code>
 </p>
 <p>
@@ -4329,7 +4329,7 @@ Force the wait cursor.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func apply(cursor: &lt;a href="#Gui_Cursor"&gt;Gui.Cursor&lt;/a&gt;)
+<code style="white-space: break-spaces">func apply(cursor: <a href="#Gui_Cursor">Gui.Cursor</a>)
 </code>
 </p>
 <p>
@@ -4359,7 +4359,7 @@ Force the wait cursor.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func from(shape: &lt;a href="#Gui_CursorShape"&gt;Gui.CursorShape&lt;/a&gt;)-&gt;&lt;a href="#Gui_Cursor"&gt;Gui.Cursor&lt;/a&gt;
+<code style="white-space: break-spaces">func from(shape: <a href="#Gui_CursorShape">Gui.CursorShape</a>)-><a href="#Gui_Cursor">Gui.Cursor</a>
 </code>
 </p>
 <p>
@@ -4788,7 +4788,7 @@ Display dialog as modal, and returns the user selected window id.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func onKeyEvent(using self, evt: *&lt;a href="#Gui_KeyEvent"&gt;Gui.KeyEvent&lt;/a&gt;)
+<code style="white-space: break-spaces">func onKeyEvent(using self, evt: *<a href="#Gui_KeyEvent">Gui.KeyEvent</a>)
 </code>
 </p>
 <p>
@@ -4803,7 +4803,7 @@ Display dialog as modal, and returns the user selected window id.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func onSysCommandEvent(using self, evt: *&lt;a href="#Gui_SysCommandEvent"&gt;Gui.SysCommandEvent&lt;/a&gt;)
+<code style="white-space: break-spaces">func onSysCommandEvent(using self, evt: *<a href="#Gui_SysCommandEvent">Gui.SysCommandEvent</a>)
 </code>
 </p>
 <p>
@@ -4820,7 +4820,7 @@ Display dialog as modal, and returns the user selected window id.</p>
 <p>
 Add a button.</p>
 <p class="code">
-<code style="white-space: break-spaces">func addButton(using self, str: string, id: Gui.WndId, isDefault: bool = false)-&gt;*&lt;a href="#Gui_PushButton"&gt;Gui.PushButton&lt;/a&gt;
+<code style="white-space: break-spaces">func addButton(using self, str: string, id: Gui.WndId, isDefault: bool = false)->*<a href="#Gui_PushButton">Gui.PushButton</a>
 </code>
 </p>
 <p>
@@ -4837,7 +4837,7 @@ Add a button.</p>
 <p>
 Creates a simple dialog box.</p>
 <p class="code">
-<code style="white-space: break-spaces">func createDialog(from: *&lt;a href="#Gui_Surface"&gt;Gui.Surface&lt;/a&gt;, width = 512, height = 300, title: string = null)-&gt;*&lt;a href="#Gui_Dialog"&gt;Gui.Dialog&lt;/a&gt;
+<code style="white-space: break-spaces">func createDialog(from: *<a href="#Gui_Surface">Gui.Surface</a>, width = 512, height = 300, title: string = null)->*<a href="#Gui_Dialog">Gui.Dialog</a>
 </code>
 </p>
 <p>
@@ -4854,7 +4854,7 @@ Creates a simple dialog box.</p>
 <p>
 Creates an associated surface.</p>
 <p class="code">
-<code style="white-space: break-spaces">func createSurface(using self, from: *&lt;a href="#Gui_Surface"&gt;Gui.Surface&lt;/a&gt;, x: s32, y: s32, width = 512, height = 300, flags = SurfaceFlags.Zero)-&gt;*&lt;a href="#Gui_Surface"&gt;Gui.Surface&lt;/a&gt;
+<code style="white-space: break-spaces">func createSurface(using self, from: *<a href="#Gui_Surface">Gui.Surface</a>, x: s32, y: s32, width = 512, height = 300, flags = SurfaceFlags.Zero)->*<a href="#Gui_Surface">Gui.Surface</a>
 </code>
 </p>
 <p>
@@ -5267,7 +5267,7 @@ Set the editbox content, but do not notify change.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func onFocusEvent(using self, evt: *&lt;a href="#Gui_FocusEvent"&gt;Gui.FocusEvent&lt;/a&gt;)
+<code style="white-space: break-spaces">func onFocusEvent(using self, evt: *<a href="#Gui_FocusEvent">Gui.FocusEvent</a>)
 </code>
 </p>
 <p>
@@ -5282,7 +5282,7 @@ Set the editbox content, but do not notify change.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func onKeyEvent(using self, evt: *&lt;a href="#Gui_KeyEvent"&gt;Gui.KeyEvent&lt;/a&gt;)
+<code style="white-space: break-spaces">func onKeyEvent(using self, evt: *<a href="#Gui_KeyEvent">Gui.KeyEvent</a>)
 </code>
 </p>
 <p>
@@ -5297,7 +5297,7 @@ Set the editbox content, but do not notify change.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func onMouseEvent(using self, evt: *&lt;a href="#Gui_MouseEvent"&gt;Gui.MouseEvent&lt;/a&gt;)
+<code style="white-space: break-spaces">func onMouseEvent(using self, evt: *<a href="#Gui_MouseEvent">Gui.MouseEvent</a>)
 </code>
 </p>
 <p>
@@ -5312,7 +5312,7 @@ Set the editbox content, but do not notify change.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func onPaintEvent(using self, evt: *&lt;a href="#Gui_PaintEvent"&gt;Gui.PaintEvent&lt;/a&gt;)
+<code style="white-space: break-spaces">func onPaintEvent(using self, evt: *<a href="#Gui_PaintEvent">Gui.PaintEvent</a>)
 </code>
 </p>
 <p>
@@ -5327,7 +5327,7 @@ Set the editbox content, but do not notify change.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func onTimerEvent(using self, evt: *&lt;a href="#Gui_TimerEvent"&gt;Gui.TimerEvent&lt;/a&gt;)
+<code style="white-space: break-spaces">func onTimerEvent(using self, evt: *<a href="#Gui_TimerEvent">Gui.TimerEvent</a>)
 </code>
 </p>
 <p>
@@ -5342,7 +5342,7 @@ Set the editbox content, but do not notify change.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func create(parent: *&lt;a href="#Gui_Wnd"&gt;Gui.Wnd&lt;/a&gt;, content: string, position: Core.Math.Rectangle = {}, id: Gui.WndId = null)-&gt;*&lt;a href="#Gui_EditBox"&gt;Gui.EditBox&lt;/a&gt;
+<code style="white-space: break-spaces">func create(parent: *<a href="#Gui_Wnd">Gui.Wnd</a>, content: string, position: Core.Math.Rectangle = {}, id: Gui.WndId = null)->*<a href="#Gui_EditBox">Gui.EditBox</a>
 </code>
 </p>
 <p>
@@ -5393,7 +5393,7 @@ Select all text.</p>
 <p>
 Set the editbox form.</p>
 <p class="code">
-<code style="white-space: break-spaces">func setForm(using self, form: &lt;a href="#Gui_EditBoxForm"&gt;Gui.EditBoxForm&lt;/a&gt;)
+<code style="white-space: break-spaces">func setForm(using self, form: <a href="#Gui_EditBoxForm">Gui.EditBoxForm</a>)
 </code>
 </p>
 <p>
@@ -5739,7 +5739,7 @@ Create the popup list, but do not display it.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func onResizeEvent(using self, evt: *&lt;a href="#Gui_ResizeEvent"&gt;Gui.ResizeEvent&lt;/a&gt;)
+<code style="white-space: break-spaces">func onResizeEvent(using self, evt: *<a href="#Gui_ResizeEvent">Gui.ResizeEvent</a>)
 </code>
 </p>
 <p>
@@ -5756,7 +5756,7 @@ Create the popup list, but do not display it.</p>
 <p>
 Create the popup list, but do not display it.</p>
 <p class="code">
-<code style="white-space: break-spaces">func create(parent: *&lt;a href="#Gui_Wnd"&gt;Gui.Wnd&lt;/a&gt;, name: string, text: string, position: Core.Math.Rectangle = {}, id: Gui.WndId = null, flags: &lt;a href="#Gui_EditBoxFlags"&gt;Gui.EditBoxFlags&lt;/a&gt; = Zero)-&gt;*&lt;a href="#Gui_EditCtrl"&gt;Gui.EditCtrl&lt;/a&gt;
+<code style="white-space: break-spaces">func create(parent: *<a href="#Gui_Wnd">Gui.Wnd</a>, name: string, text: string, position: Core.Math.Rectangle = {}, id: Gui.WndId = null, flags: <a href="#Gui_EditBoxFlags">Gui.EditBoxFlags</a> = Zero)->*<a href="#Gui_EditCtrl">Gui.EditCtrl</a>
 </code>
 </p>
 <p>
@@ -5861,7 +5861,7 @@ Set the text.</p>
 <p>
 Creates the message box.</p>
 <p class="code">
-<code style="white-space: break-spaces">func createMultiLine(from: *&lt;a href="#Gui_Surface"&gt;Gui.Surface&lt;/a&gt;, heightEdit = 150)-&gt;*&lt;a href="#Gui_EditDlg"&gt;Gui.EditDlg&lt;/a&gt;
+<code style="white-space: break-spaces">func createMultiLine(from: *<a href="#Gui_Surface">Gui.Surface</a>, heightEdit = 150)->*<a href="#Gui_EditDlg">Gui.EditDlg</a>
 </code>
 </p>
 <p>
@@ -5878,7 +5878,7 @@ Creates the message box.</p>
 <p>
 Creates the message box.</p>
 <p class="code">
-<code style="white-space: break-spaces">func createSingleLine(from: *&lt;a href="#Gui_Surface"&gt;Gui.Surface&lt;/a&gt;)-&gt;*&lt;a href="#Gui_EditDlg"&gt;Gui.EditDlg&lt;/a&gt;
+<code style="white-space: break-spaces">func createSingleLine(from: *<a href="#Gui_Surface">Gui.Surface</a>)->*<a href="#Gui_EditDlg">Gui.EditDlg</a>
 </code>
 </p>
 <p>
@@ -5986,7 +5986,7 @@ Create the popup list, but do not display it.</p>
 <p>
 Create the popup list, but do not display it.</p>
 <p class="code">
-<code style="white-space: break-spaces">func create(parent: *&lt;a href="#Gui_Wnd"&gt;Gui.Wnd&lt;/a&gt;, name: string, kind: &lt;a href="#Gui_EmbInfoCtrlKind"&gt;Gui.EmbInfoCtrlKind&lt;/a&gt;, height = 40, top = true)-&gt;*&lt;a href="#Gui_EmbInfoCtrl"&gt;Gui.EmbInfoCtrl&lt;/a&gt;
+<code style="white-space: break-spaces">func create(parent: *<a href="#Gui_Wnd">Gui.Wnd</a>, name: string, kind: <a href="#Gui_EmbInfoCtrlKind">Gui.EmbInfoCtrlKind</a>, height = 40, top = true)->*<a href="#Gui_EmbInfoCtrl">Gui.EmbInfoCtrl</a>
 </code>
 </p>
 <p>
@@ -6086,8 +6086,8 @@ bool</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func(T) create()-&gt;*T
-func(T) create(kind: &lt;a href="#Gui_EventKind"&gt;Gui.EventKind&lt;/a&gt;)-&gt;*T
+<code style="white-space: break-spaces">func(T) create()->*T
+func(T) create(kind: <a href="#Gui_EventKind">Gui.EventKind</a>)->*T
 </code>
 </p>
 <p>
@@ -6447,7 +6447,7 @@ Get all selections.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func onDestroyEvent(using self, evt: *&lt;a href="#Gui_DestroyEvent"&gt;Gui.DestroyEvent&lt;/a&gt;)
+<code style="white-space: break-spaces">func onDestroyEvent(using self, evt: *<a href="#Gui_DestroyEvent">Gui.DestroyEvent</a>)
 </code>
 </p>
 <p>
@@ -6464,7 +6464,7 @@ Get all selections.</p>
 <p>
 Creates the message box.</p>
 <p class="code">
-<code style="white-space: break-spaces">func create(from: *&lt;a href="#Gui_Surface"&gt;Gui.Surface&lt;/a&gt;, opt: &lt;a href="#Gui_FileDlgOptions"&gt;Gui.FileDlgOptions&lt;/a&gt; = {})-&gt;*&lt;a href="#Gui_FileDlg"&gt;Gui.FileDlg&lt;/a&gt;
+<code style="white-space: break-spaces">func create(from: *<a href="#Gui_Surface">Gui.Surface</a>, opt: <a href="#Gui_FileDlgOptions">Gui.FileDlgOptions</a> = {})->*<a href="#Gui_FileDlg">Gui.FileDlg</a>
 </code>
 </p>
 <p>
@@ -6847,7 +6847,7 @@ Set the frame wnd form.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func onPaintEvent(using self, evt: *&lt;a href="#Gui_PaintEvent"&gt;Gui.PaintEvent&lt;/a&gt;)
+<code style="white-space: break-spaces">func onPaintEvent(using self, evt: *<a href="#Gui_PaintEvent">Gui.PaintEvent</a>)
 </code>
 </p>
 <p>
@@ -6862,7 +6862,7 @@ Set the frame wnd form.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func onPostPaintEvent(using self, evt: *&lt;a href="#Gui_PaintEvent"&gt;Gui.PaintEvent&lt;/a&gt;)
+<code style="white-space: break-spaces">func onPostPaintEvent(using self, evt: *<a href="#Gui_PaintEvent">Gui.PaintEvent</a>)
 </code>
 </p>
 <p>
@@ -6877,7 +6877,7 @@ Set the frame wnd form.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func onPrePaintEvent(using self, evt: *&lt;a href="#Gui_PaintEvent"&gt;Gui.PaintEvent&lt;/a&gt;)
+<code style="white-space: break-spaces">func onPrePaintEvent(using self, evt: *<a href="#Gui_PaintEvent">Gui.PaintEvent</a>)
 </code>
 </p>
 <p>
@@ -6892,7 +6892,7 @@ Set the frame wnd form.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func onResizeEvent(using self, evt: *&lt;a href="#Gui_ResizeEvent"&gt;Gui.ResizeEvent&lt;/a&gt;)
+<code style="white-space: break-spaces">func onResizeEvent(using self, evt: *<a href="#Gui_ResizeEvent">Gui.ResizeEvent</a>)
 </code>
 </p>
 <p>
@@ -6941,7 +6941,7 @@ Set the frame wnd flags.</p>
 <p>
 Set the frame wnd form.</p>
 <p class="code">
-<code style="white-space: break-spaces">func setFrameForm(using self, form: &lt;a href="#Gui_FrameWndForm"&gt;Gui.FrameWndForm&lt;/a&gt;)
+<code style="white-space: break-spaces">func setFrameForm(using self, form: <a href="#Gui_FrameWndForm">Gui.FrameWndForm</a>)
 </code>
 </p>
 <p>
@@ -6956,7 +6956,7 @@ Set the frame wnd form.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func setView(using self, what: *&lt;a href="#Gui_Wnd"&gt;Gui.Wnd&lt;/a&gt;)
+<code style="white-space: break-spaces">func setView(using self, what: *<a href="#Gui_Wnd">Gui.Wnd</a>)
 </code>
 </p>
 <p>
@@ -7210,7 +7210,7 @@ Set size, in pixel, of a given row.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func onResizeEvent(using self, evt: *&lt;a href="#Gui_ResizeEvent"&gt;Gui.ResizeEvent&lt;/a&gt;)
+<code style="white-space: break-spaces">func onResizeEvent(using self, evt: *<a href="#Gui_ResizeEvent">Gui.ResizeEvent</a>)
 </code>
 </p>
 <p>
@@ -7244,7 +7244,7 @@ Recompute layout of all childs.</p>
 <p>
 Create a layout control.</p>
 <p class="code">
-<code style="white-space: break-spaces">func create(parent: *&lt;a href="#Gui_Wnd"&gt;Gui.Wnd&lt;/a&gt;, numColumns: s32, numRows: s32, position: Core.Math.Rectangle = {})-&gt;*&lt;a href="#Gui_GridLayoutCtrl"&gt;Gui.GridLayoutCtrl&lt;/a&gt;
+<code style="white-space: break-spaces">func create(parent: *<a href="#Gui_Wnd">Gui.Wnd</a>, numColumns: s32, numRows: s32, position: Core.Math.Rectangle = {})->*<a href="#Gui_GridLayoutCtrl">Gui.GridLayoutCtrl</a>
 </code>
 </p>
 <p>
@@ -7261,7 +7261,7 @@ Create a layout control.</p>
 <p>
 Set the wnd associated with the given <code class = "incode">col</code> and <code class = "incode">row</code>.</p>
 <p class="code">
-<code style="white-space: break-spaces">func setColRowChild(using self, child: *&lt;a href="#Gui_Wnd"&gt;Gui.Wnd&lt;/a&gt;, col: s32, row: s32, spanH: s32 = 1, spanV: s32 = 1)
+<code style="white-space: break-spaces">func setColRowChild(using self, child: *<a href="#Gui_Wnd">Gui.Wnd</a>, col: s32, row: s32, spanH: s32 = 1, spanV: s32 = 1)
 </code>
 </p>
 <p>
@@ -7555,7 +7555,7 @@ Set an item width by column.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func onMouseEvent(using self, evt: *&lt;a href="#Gui_MouseEvent"&gt;Gui.MouseEvent&lt;/a&gt;)
+<code style="white-space: break-spaces">func onMouseEvent(using self, evt: *<a href="#Gui_MouseEvent">Gui.MouseEvent</a>)
 </code>
 </p>
 <p>
@@ -7570,7 +7570,7 @@ Set an item width by column.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func onPaintEvent(using self, evt: *&lt;a href="#Gui_PaintEvent"&gt;Gui.PaintEvent&lt;/a&gt;)
+<code style="white-space: break-spaces">func onPaintEvent(using self, evt: *<a href="#Gui_PaintEvent">Gui.PaintEvent</a>)
 </code>
 </p>
 <p>
@@ -7585,7 +7585,7 @@ Set an item width by column.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func paintItem(using self, bc: &lt;a href="#Gui_PaintContext"&gt;Gui.PaintContext&lt;/a&gt;, item: *&lt;a href="#Gui_HeaderItem"&gt;Gui.HeaderItem&lt;/a&gt;, idx: u32, x: f32)
+<code style="white-space: break-spaces">func paintItem(using self, bc: <a href="#Gui_PaintContext">Gui.PaintContext</a>, item: *<a href="#Gui_HeaderItem">Gui.HeaderItem</a>, idx: u32, x: f32)
 </code>
 </p>
 <p>
@@ -7602,7 +7602,7 @@ Set an item width by column.</p>
 <p>
 Add a new view.</p>
 <p class="code">
-<code style="white-space: break-spaces">func addItem(using self, tabName: string, width = 100'f32, icon: &lt;a href="#Gui_Icon"&gt;Gui.Icon&lt;/a&gt; = {})-&gt;*&lt;a href="#Gui_HeaderItem"&gt;Gui.HeaderItem&lt;/a&gt;
+<code style="white-space: break-spaces">func addItem(using self, tabName: string, width = 100'f32, icon: <a href="#Gui_Icon">Gui.Icon</a> = {})->*<a href="#Gui_HeaderItem">Gui.HeaderItem</a>
 </code>
 </p>
 <p>
@@ -7617,7 +7617,7 @@ Add a new view.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func create(parent: *&lt;a href="#Gui_Wnd"&gt;Gui.Wnd&lt;/a&gt;, position: Core.Math.Rectangle = {}, id: Gui.WndId = null)-&gt;*&lt;a href="#Gui_Header"&gt;Gui.Header&lt;/a&gt;
+<code style="white-space: break-spaces">func create(parent: *<a href="#Gui_Wnd">Gui.Wnd</a>, position: Core.Math.Rectangle = {}, id: Gui.WndId = null)->*<a href="#Gui_Header">Gui.Header</a>
 </code>
 </p>
 <p>
@@ -7634,7 +7634,7 @@ Add a new view.</p>
 <p>
 Returns the given item, by index.</p>
 <p class="code">
-<code style="white-space: break-spaces">func getItem(using self, idx: u32)-&gt;*&lt;a href="#Gui_HeaderItem"&gt;Gui.HeaderItem&lt;/a&gt;
+<code style="white-space: break-spaces">func getItem(using self, idx: u32)->*<a href="#Gui_HeaderItem">Gui.HeaderItem</a>
 </code>
 </p>
 <p>
@@ -7651,7 +7651,7 @@ Returns the given item, by index.</p>
 <p>
 Returns the given item, by column.</p>
 <p class="code">
-<code style="white-space: break-spaces">func getItemByCol(using self, column: u32)-&gt;*&lt;a href="#Gui_HeaderItem"&gt;Gui.HeaderItem&lt;/a&gt;
+<code style="white-space: break-spaces">func getItemByCol(using self, column: u32)->*<a href="#Gui_HeaderItem">Gui.HeaderItem</a>
 </code>
 </p>
 <p>
@@ -8295,7 +8295,7 @@ Set icon to invalid.</p>
 <p>
 Initialize the icon from an image list.</p>
 <p class="code">
-<code style="white-space: break-spaces">func from(imageList: *&lt;a href="#Gui_ImageList"&gt;Gui.ImageList&lt;/a&gt;, index: s32, sizeX: f32 = 0, sizeY: f32 = 0)-&gt;&lt;a href="#Gui_Icon"&gt;Gui.Icon&lt;/a&gt;
+<code style="white-space: break-spaces">func from(imageList: *<a href="#Gui_ImageList">Gui.ImageList</a>, index: s32, sizeX: f32 = 0, sizeY: f32 = 0)-><a href="#Gui_Icon">Gui.Icon</a>
 </code>
 </p>
 <p>
@@ -8325,7 +8325,7 @@ Initialize the icon from an image list.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func opEquals(using self, other: &lt;a href="#Gui_Icon"&gt;Gui.Icon&lt;/a&gt;)-&gt;bool
+<code style="white-space: break-spaces">func opEquals(using self, other: <a href="#Gui_Icon">Gui.Icon</a>)->bool
 </code>
 </p>
 <p>
@@ -8359,7 +8359,7 @@ Paint icon at the given position.</p>
 <p>
 Initialize the icon from an image list.</p>
 <p class="code">
-<code style="white-space: break-spaces">func set(using self, imageList: *&lt;a href="#Gui_ImageList"&gt;Gui.ImageList&lt;/a&gt;, index: s32, sizeX: f32 = 0, sizeY: f32 = 0)
+<code style="white-space: break-spaces">func set(using self, imageList: *<a href="#Gui_ImageList">Gui.ImageList</a>, index: s32, sizeX: f32 = 0, sizeY: f32 = 0)
 </code>
 </p>
 <p>
@@ -8476,7 +8476,7 @@ Change bar flags.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func onComputeStateEvent(using self, evt: *&lt;a href="#Gui_CommandStateEvent"&gt;Gui.CommandStateEvent&lt;/a&gt;)
+<code style="white-space: break-spaces">func onComputeStateEvent(using self, evt: *<a href="#Gui_CommandStateEvent">Gui.CommandStateEvent</a>)
 </code>
 </p>
 <p>
@@ -8493,7 +8493,7 @@ Change bar flags.</p>
 <p>
 Add a new checkable button.</p>
 <p class="code">
-<code style="white-space: break-spaces">func addCheckableItem(using self, icon: &lt;a href="#Gui_Icon"&gt;Gui.Icon&lt;/a&gt;, btnId: Gui.WndId = null)-&gt;*&lt;a href="#Gui_IconButton"&gt;Gui.IconButton&lt;/a&gt;
+<code style="white-space: break-spaces">func addCheckableItem(using self, icon: <a href="#Gui_Icon">Gui.Icon</a>, btnId: Gui.WndId = null)->*<a href="#Gui_IconButton">Gui.IconButton</a>
 </code>
 </p>
 <p>
@@ -8510,7 +8510,7 @@ Add a new checkable button.</p>
 <p>
 Add a new checkable button.</p>
 <p class="code">
-<code style="white-space: break-spaces">func addCheckableToggleItem(using self, icon: &lt;a href="#Gui_Icon"&gt;Gui.Icon&lt;/a&gt;, btnId: Gui.WndId = null)-&gt;*&lt;a href="#Gui_IconButton"&gt;Gui.IconButton&lt;/a&gt;
+<code style="white-space: break-spaces">func addCheckableToggleItem(using self, icon: <a href="#Gui_Icon">Gui.Icon</a>, btnId: Gui.WndId = null)->*<a href="#Gui_IconButton">Gui.IconButton</a>
 </code>
 </p>
 <p>
@@ -8527,7 +8527,7 @@ Add a new checkable button.</p>
 <p>
 Add a new button.</p>
 <p class="code">
-<code style="white-space: break-spaces">func addItem(using self, icon: &lt;a href="#Gui_Icon"&gt;Gui.Icon&lt;/a&gt;, btnId: Gui.WndId = null, iconBtnFlags = IconButtonFlags.Zero)-&gt;*&lt;a href="#Gui_IconButton"&gt;Gui.IconButton&lt;/a&gt;
+<code style="white-space: break-spaces">func addItem(using self, icon: <a href="#Gui_Icon">Gui.Icon</a>, btnId: Gui.WndId = null, iconBtnFlags = IconButtonFlags.Zero)->*<a href="#Gui_IconButton">Gui.IconButton</a>
 </code>
 </p>
 <p>
@@ -8542,7 +8542,7 @@ Add a new button.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func create(parent: *&lt;a href="#Gui_Wnd"&gt;Gui.Wnd&lt;/a&gt;, iconSize: f32, position: Core.Math.Rectangle = {}, id: Gui.WndId = null)-&gt;*&lt;a href="#Gui_IconBar"&gt;Gui.IconBar&lt;/a&gt;
+<code style="white-space: break-spaces">func create(parent: *<a href="#Gui_Wnd">Gui.Wnd</a>, iconSize: f32, position: Core.Math.Rectangle = {}, id: Gui.WndId = null)->*<a href="#Gui_IconBar">Gui.IconBar</a>
 </code>
 </p>
 <p>
@@ -8748,7 +8748,7 @@ Set the button form.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func onApplyStateEvent(using self, evt: *&lt;a href="#Gui_CommandStateEvent"&gt;Gui.CommandStateEvent&lt;/a&gt;)
+<code style="white-space: break-spaces">func onApplyStateEvent(using self, evt: *<a href="#Gui_CommandStateEvent">Gui.CommandStateEvent</a>)
 </code>
 </p>
 <p>
@@ -8763,7 +8763,7 @@ Set the button form.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func onDestroyEvent(using self, evt: *&lt;a href="#Gui_DestroyEvent"&gt;Gui.DestroyEvent&lt;/a&gt;)
+<code style="white-space: break-spaces">func onDestroyEvent(using self, evt: *<a href="#Gui_DestroyEvent">Gui.DestroyEvent</a>)
 </code>
 </p>
 <p>
@@ -8778,7 +8778,7 @@ Set the button form.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func onHookEvent(using self, evt: *&lt;a href="#Gui_Event"&gt;Gui.Event&lt;/a&gt;)
+<code style="white-space: break-spaces">func onHookEvent(using self, evt: *<a href="#Gui_Event">Gui.Event</a>)
 </code>
 </p>
 <p>
@@ -8793,7 +8793,7 @@ Set the button form.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func onMouseEvent(using self, evt: *&lt;a href="#Gui_MouseEvent"&gt;Gui.MouseEvent&lt;/a&gt;)
+<code style="white-space: break-spaces">func onMouseEvent(using self, evt: *<a href="#Gui_MouseEvent">Gui.MouseEvent</a>)
 </code>
 </p>
 <p>
@@ -8808,7 +8808,7 @@ Set the button form.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func onPaintEvent(using self, evt: *&lt;a href="#Gui_PaintEvent"&gt;Gui.PaintEvent&lt;/a&gt;)
+<code style="white-space: break-spaces">func onPaintEvent(using self, evt: *<a href="#Gui_PaintEvent">Gui.PaintEvent</a>)
 </code>
 </p>
 <p>
@@ -8823,7 +8823,7 @@ Set the button form.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func create(parent: *&lt;a href="#Gui_Wnd"&gt;Gui.Wnd&lt;/a&gt;, icon: &lt;a href="#Gui_Icon"&gt;Gui.Icon&lt;/a&gt;, position: Core.Math.Rectangle = {}, id: Gui.WndId = null)-&gt;*&lt;a href="#Gui_IconButton"&gt;Gui.IconButton&lt;/a&gt;
+<code style="white-space: break-spaces">func create(parent: *<a href="#Gui_Wnd">Gui.Wnd</a>, icon: <a href="#Gui_Icon">Gui.Icon</a>, position: Core.Math.Rectangle = {}, id: Gui.WndId = null)->*<a href="#Gui_IconButton">Gui.IconButton</a>
 </code>
 </p>
 <p>
@@ -8857,7 +8857,7 @@ Set the check state of the button (if the button is checkable).</p>
 <p>
 Set the button form.</p>
 <p class="code">
-<code style="white-space: break-spaces">func setForm(using self, form: &lt;a href="#Gui_IconButtonForm"&gt;Gui.IconButtonForm&lt;/a&gt;)
+<code style="white-space: break-spaces">func setForm(using self, form: <a href="#Gui_IconButtonForm">Gui.IconButtonForm</a>)
 </code>
 </p>
 <p>
@@ -9294,7 +9294,7 @@ Set movie as an image list.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func onPaintEvent(using self, evt: *&lt;a href="#Gui_PaintEvent"&gt;Gui.PaintEvent&lt;/a&gt;)
+<code style="white-space: break-spaces">func onPaintEvent(using self, evt: *<a href="#Gui_PaintEvent">Gui.PaintEvent</a>)
 </code>
 </p>
 <p>
@@ -9324,7 +9324,7 @@ Set movie as an image list.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func create(parent: *&lt;a href="#Gui_Wnd"&gt;Gui.Wnd&lt;/a&gt;, position: Core.Math.Rectangle = {}, id: Gui.WndId = null)-&gt;*&lt;a href="#Gui_ImageRect"&gt;Gui.ImageRect&lt;/a&gt;
+<code style="white-space: break-spaces">func create(parent: *<a href="#Gui_Wnd">Gui.Wnd</a>, position: Core.Math.Rectangle = {}, id: Gui.WndId = null)->*<a href="#Gui_ImageRect">Gui.ImageRect</a>
 </code>
 </p>
 <p>
@@ -9358,7 +9358,7 @@ Load and set movie.</p>
 <p>
 Associate image.</p>
 <p class="code">
-<code style="white-space: break-spaces">func setImage(using self, image: &lt;a href="#Gui_ImageList"&gt;Gui.ImageList&lt;/a&gt;)
+<code style="white-space: break-spaces">func setImage(using self, image: <a href="#Gui_ImageList">Gui.ImageList</a>)
 </code>
 </p>
 <p>
@@ -9387,7 +9387,7 @@ Associate image.</p>
 <p>
 Set movie as an image list.</p>
 <p class="code">
-<code style="white-space: break-spaces">func setMovie(using self, image: &lt;a href="#Gui_ImageList"&gt;Gui.ImageList&lt;/a&gt;)
+<code style="white-space: break-spaces">func setMovie(using self, image: <a href="#Gui_ImageList">Gui.ImageList</a>)
 </code>
 </p>
 <p>
@@ -9663,7 +9663,7 @@ Change the text.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func onPaintEvent(using self, evt: *&lt;a href="#Gui_PaintEvent"&gt;Gui.PaintEvent&lt;/a&gt;)
+<code style="white-space: break-spaces">func onPaintEvent(using self, evt: *<a href="#Gui_PaintEvent">Gui.PaintEvent</a>)
 </code>
 </p>
 <p>
@@ -9678,7 +9678,7 @@ Change the text.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func create(parent: *&lt;a href="#Gui_Wnd"&gt;Gui.Wnd&lt;/a&gt;, name: string, position: Core.Math.Rectangle = {}, id: Gui.WndId = null)-&gt;*&lt;a href="#Gui_Label"&gt;Gui.Label&lt;/a&gt;
+<code style="white-space: break-spaces">func create(parent: *<a href="#Gui_Wnd">Gui.Wnd</a>, name: string, position: Core.Math.Rectangle = {}, id: Gui.WndId = null)->*<a href="#Gui_Label">Gui.Label</a>
 </code>
 </p>
 <p>
@@ -10266,7 +10266,7 @@ Unselect all lines.</p>
 <p>
 Add one column in a multi columns list.</p>
 <p class="code">
-<code style="white-space: break-spaces">func addColumn(using self, name: string, width: f32 = 100, icon: &lt;a href="#Gui_Icon"&gt;Gui.Icon&lt;/a&gt; = {})
+<code style="white-space: break-spaces">func addColumn(using self, name: string, width: f32 = 100, icon: <a href="#Gui_Icon">Gui.Icon</a> = {})
 </code>
 </p>
 <p>
@@ -10300,7 +10300,7 @@ Clear all lines.</p>
 <p>
 Collapse the given line.</p>
 <p class="code">
-<code style="white-space: break-spaces">func collapse(using self, line: *&lt;a href="#Gui_ListLine"&gt;Gui.ListLine&lt;/a&gt;)
+<code style="white-space: break-spaces">func collapse(using self, line: *<a href="#Gui_ListLine">Gui.ListLine</a>)
 </code>
 </p>
 <p>
@@ -10351,13 +10351,13 @@ Compute global layout, once all lines have been added.</p>
 <p>
 Add one new line.</p>
 <p class="code">
-<code style="white-space: break-spaces">func createLine(using self, parentLine: *&lt;a href="#Gui_ListLine"&gt;Gui.ListLine&lt;/a&gt;)-&gt;*&lt;a href="#Gui_ListLine"&gt;Gui.ListLine&lt;/a&gt;
+<code style="white-space: break-spaces">func createLine(using self, parentLine: *<a href="#Gui_ListLine">Gui.ListLine</a>)->*<a href="#Gui_ListLine">Gui.ListLine</a>
 </code>
 </p>
 <p>
 Add one line, and set first column.</p>
 <p class="code">
-<code style="white-space: break-spaces">func createLine(using self, name: string, icon: &lt;a href="#Gui_Icon"&gt;Gui.Icon&lt;/a&gt; = {}, parentLine: *&lt;a href="#Gui_ListLine"&gt;Gui.ListLine&lt;/a&gt; = null)-&gt;*&lt;a href="#Gui_ListLine"&gt;Gui.ListLine&lt;/a&gt;
+<code style="white-space: break-spaces">func createLine(using self, name: string, icon: <a href="#Gui_Icon">Gui.Icon</a> = {}, parentLine: *<a href="#Gui_ListLine">Gui.ListLine</a> = null)->*<a href="#Gui_ListLine">Gui.ListLine</a>
 </code>
 </p>
 <p>
@@ -10372,7 +10372,7 @@ Add one line, and set first column.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func createMultiColumns(parent: *&lt;a href="#Gui_Wnd"&gt;Gui.Wnd&lt;/a&gt;, position: Core.Math.Rectangle = {}, id: Gui.WndId = null)-&gt;*&lt;a href="#Gui_ListCtrl"&gt;Gui.ListCtrl&lt;/a&gt;
+<code style="white-space: break-spaces">func createMultiColumns(parent: *<a href="#Gui_Wnd">Gui.Wnd</a>, position: Core.Math.Rectangle = {}, id: Gui.WndId = null)->*<a href="#Gui_ListCtrl">Gui.ListCtrl</a>
 </code>
 </p>
 <p>
@@ -10387,7 +10387,7 @@ Add one line, and set first column.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func createSimple(parent: *&lt;a href="#Gui_Wnd"&gt;Gui.Wnd&lt;/a&gt;, position: Core.Math.Rectangle = {}, id: Gui.WndId = null)-&gt;*&lt;a href="#Gui_ListCtrl"&gt;Gui.ListCtrl&lt;/a&gt;
+<code style="white-space: break-spaces">func createSimple(parent: *<a href="#Gui_Wnd">Gui.Wnd</a>, position: Core.Math.Rectangle = {}, id: Gui.WndId = null)->*<a href="#Gui_ListCtrl">Gui.ListCtrl</a>
 </code>
 </p>
 <p>
@@ -10421,7 +10421,7 @@ Set the corresponding line visible.</p>
 <p>
 Expand the given line.</p>
 <p class="code">
-<code style="white-space: break-spaces">func expand(using self, line: *&lt;a href="#Gui_ListLine"&gt;Gui.ListLine&lt;/a&gt;)
+<code style="white-space: break-spaces">func expand(using self, line: *<a href="#Gui_ListLine">Gui.ListLine</a>)
 </code>
 </p>
 <p>
@@ -10438,7 +10438,7 @@ Expand the given line.</p>
 <p>
 Get all the checked lines.</p>
 <p class="code">
-<code style="white-space: break-spaces">func getCheckedLines(using const self)-&gt;Core.Array(*&lt;a href="#Gui_ListLine"&gt;Gui.ListLine&lt;/a&gt;)
+<code style="white-space: break-spaces">func getCheckedLines(using const self)->Core.Array(*<a href="#Gui_ListLine">Gui.ListLine</a>)
 </code>
 </p>
 <p>
@@ -10472,7 +10472,7 @@ Returns the first visible line index.</p>
 <p>
 Get the line with the keyboard focus.</p>
 <p class="code">
-<code style="white-space: break-spaces">func getFocusLine(using const self)-&gt;*&lt;a href="#Gui_ListLine"&gt;Gui.ListLine&lt;/a&gt;
+<code style="white-space: break-spaces">func getFocusLine(using const self)->*<a href="#Gui_ListLine">Gui.ListLine</a>
 </code>
 </p>
 <p>
@@ -10506,7 +10506,7 @@ Returns the last visible line index.</p>
 <p>
 Get a line by index.</p>
 <p class="code">
-<code style="white-space: break-spaces">func getLine(using self, idx: u32)-&gt;*&lt;a href="#Gui_ListLine"&gt;Gui.ListLine&lt;/a&gt;
+<code style="white-space: break-spaces">func getLine(using self, idx: u32)->*<a href="#Gui_ListLine">Gui.ListLine</a>
 </code>
 </p>
 <p>
@@ -10557,7 +10557,7 @@ Get the height of one line.</p>
 <p>
 Returns a selected line Mostly for singlesel mode.</p>
 <p class="code">
-<code style="white-space: break-spaces">func getSelectedLine(using const self)-&gt;*&lt;a href="#Gui_ListLine"&gt;Gui.ListLine&lt;/a&gt;
+<code style="white-space: break-spaces">func getSelectedLine(using const self)->*<a href="#Gui_ListLine">Gui.ListLine</a>
 </code>
 </p>
 <p>
@@ -10574,7 +10574,7 @@ Returns a selected line Mostly for singlesel mode.</p>
 <p>
 Get all the selected lines.</p>
 <p class="code">
-<code style="white-space: break-spaces">func getSelectedLines(using const self)-&gt;Core.Array(*&lt;a href="#Gui_ListLine"&gt;Gui.ListLine&lt;/a&gt;)
+<code style="white-space: break-spaces">func getSelectedLines(using const self)->Core.Array(*<a href="#Gui_ListLine">Gui.ListLine</a>)
 </code>
 </p>
 <p>
@@ -10733,7 +10733,7 @@ Sort the list by a given column If <code class = "incode">persistent</code> is t
 <p>
 Collapse the given line.</p>
 <p class="code">
-<code style="white-space: break-spaces">func toggleExpand(using self, line: *&lt;a href="#Gui_ListLine"&gt;Gui.ListLine&lt;/a&gt;)
+<code style="white-space: break-spaces">func toggleExpand(using self, line: *<a href="#Gui_ListLine">Gui.ListLine</a>)
 </code>
 </p>
 <p>
@@ -11072,7 +11072,7 @@ Initialize a given column item.</p>
 <p>
 Get an item by index.</p>
 <p class="code">
-<code style="white-space: break-spaces">func getItem(using self, column: u32)-&gt;*&lt;a href="#Gui_ListItem"&gt;Gui.ListItem&lt;/a&gt;
+<code style="white-space: break-spaces">func getItem(using self, column: u32)->*<a href="#Gui_ListItem">Gui.ListItem</a>
 </code>
 </p>
 <p>
@@ -11087,7 +11087,7 @@ Get an item by index.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func isParentOf(using self, other: *&lt;a href="#Gui_ListLine"&gt;Gui.ListLine&lt;/a&gt;)-&gt;bool
+<code style="white-space: break-spaces">func isParentOf(using self, other: *<a href="#Gui_ListLine">Gui.ListLine</a>)->bool
 </code>
 </p>
 <p>
@@ -11104,7 +11104,7 @@ Get an item by index.</p>
 <p>
 Initialize a given column item.</p>
 <p class="code">
-<code style="white-space: break-spaces">func setItem(using self, column: u32, name: string, icon: &lt;a href="#Gui_Icon"&gt;Gui.Icon&lt;/a&gt; = {})-&gt;*&lt;a href="#Gui_ListItem"&gt;Gui.ListItem&lt;/a&gt;
+<code style="white-space: break-spaces">func setItem(using self, column: u32, name: string, icon: <a href="#Gui_Icon">Gui.Icon</a> = {})->*<a href="#Gui_ListItem">Gui.ListItem</a>
 </code>
 </p>
 <p>
@@ -11187,7 +11187,7 @@ bool</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func onKeyEvent(using self, evt: *&lt;a href="#Gui_KeyEvent"&gt;Gui.KeyEvent&lt;/a&gt;)
+<code style="white-space: break-spaces">func onKeyEvent(using self, evt: *<a href="#Gui_KeyEvent">Gui.KeyEvent</a>)
 </code>
 </p>
 <p>
@@ -11202,7 +11202,7 @@ bool</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func onMouseEvent(using self, evt: *&lt;a href="#Gui_MouseEvent"&gt;Gui.MouseEvent&lt;/a&gt;)
+<code style="white-space: break-spaces">func onMouseEvent(using self, evt: *<a href="#Gui_MouseEvent">Gui.MouseEvent</a>)
 </code>
 </p>
 <p>
@@ -11217,7 +11217,7 @@ bool</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func onPaintEvent(using self, evt: *&lt;a href="#Gui_PaintEvent"&gt;Gui.PaintEvent&lt;/a&gt;)
+<code style="white-space: break-spaces">func onPaintEvent(using self, evt: *<a href="#Gui_PaintEvent">Gui.PaintEvent</a>)
 </code>
 </p>
 <p>
@@ -11232,7 +11232,7 @@ bool</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func onResizeEvent(using self, evt: *&lt;a href="#Gui_ResizeEvent"&gt;Gui.ResizeEvent&lt;/a&gt;)
+<code style="white-space: break-spaces">func onResizeEvent(using self, evt: *<a href="#Gui_ResizeEvent">Gui.ResizeEvent</a>)
 </code>
 </p>
 <p>
@@ -11455,7 +11455,7 @@ Make the popup menu modal Will return the selected id.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func onMouseEvent(using self, evt: *&lt;a href="#Gui_MouseEvent"&gt;Gui.MouseEvent&lt;/a&gt;)
+<code style="white-space: break-spaces">func onMouseEvent(using self, evt: *<a href="#Gui_MouseEvent">Gui.MouseEvent</a>)
 </code>
 </p>
 <p>
@@ -11470,7 +11470,7 @@ Make the popup menu modal Will return the selected id.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func onPaintEvent(using self, evt: *&lt;a href="#Gui_PaintEvent"&gt;Gui.PaintEvent&lt;/a&gt;)
+<code style="white-space: break-spaces">func onPaintEvent(using self, evt: *<a href="#Gui_PaintEvent">Gui.PaintEvent</a>)
 </code>
 </p>
 <p>
@@ -11485,7 +11485,7 @@ Make the popup menu modal Will return the selected id.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func onTimerEvent(using self, evt: *&lt;a href="#Gui_TimerEvent"&gt;Gui.TimerEvent&lt;/a&gt;)
+<code style="white-space: break-spaces">func onTimerEvent(using self, evt: *<a href="#Gui_TimerEvent">Gui.TimerEvent</a>)
 </code>
 </p>
 <p>
@@ -11508,7 +11508,7 @@ Add a new item.</p>
 <p>
 Add a new item.</p>
 <p class="code">
-<code style="white-space: break-spaces">func addItem(using self, name: string, id: Gui.WndId, icon: &lt;a href="#Gui_Icon"&gt;Gui.Icon&lt;/a&gt; = {}, rightName: string = null, disabled = false, checked = false)
+<code style="white-space: break-spaces">func addItem(using self, name: string, id: Gui.WndId, icon: <a href="#Gui_Icon">Gui.Icon</a> = {}, rightName: string = null, disabled = false, checked = false)
 </code>
 </p>
 <p>
@@ -11525,13 +11525,13 @@ Add a new item.</p>
 <p>
 Add a new popup item.</p>
 <p class="code">
-<code style="white-space: break-spaces">func addPopup(using self, popup: *&lt;a href="#Gui_MenuCtrl"&gt;Gui.MenuCtrl&lt;/a&gt;, id: Gui.WndId)
+<code style="white-space: break-spaces">func addPopup(using self, popup: *<a href="#Gui_MenuCtrl">Gui.MenuCtrl</a>, id: Gui.WndId)
 </code>
 </p>
 <p>
 Add a new popup item.</p>
 <p class="code">
-<code style="white-space: break-spaces">func addPopup(using self, name: string, popup: *&lt;a href="#Gui_MenuCtrl"&gt;Gui.MenuCtrl&lt;/a&gt;, icon: &lt;a href="#Gui_Icon"&gt;Gui.Icon&lt;/a&gt; = {}, id: Gui.WndId = null)
+<code style="white-space: break-spaces">func addPopup(using self, name: string, popup: *<a href="#Gui_MenuCtrl">Gui.MenuCtrl</a>, icon: <a href="#Gui_Icon">Gui.Icon</a> = {}, id: Gui.WndId = null)
 </code>
 </p>
 <p>
@@ -11578,7 +11578,7 @@ Add a separator.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func createBar(parent: *&lt;a href="#Gui_Wnd"&gt;Gui.Wnd&lt;/a&gt;, pos: Core.Math.Rectangle = {}, id: Gui.WndId = null, owner: *&lt;a href="#Gui_Wnd"&gt;Gui.Wnd&lt;/a&gt; = null)-&gt;*&lt;a href="#Gui_MenuCtrl"&gt;Gui.MenuCtrl&lt;/a&gt;
+<code style="white-space: break-spaces">func createBar(parent: *<a href="#Gui_Wnd">Gui.Wnd</a>, pos: Core.Math.Rectangle = {}, id: Gui.WndId = null, owner: *<a href="#Gui_Wnd">Gui.Wnd</a> = null)->*<a href="#Gui_MenuCtrl">Gui.MenuCtrl</a>
 </code>
 </p>
 <p>
@@ -11593,7 +11593,7 @@ Add a separator.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func createPopup(parent: *&lt;a href="#Gui_Wnd"&gt;Gui.Wnd&lt;/a&gt;, id: Gui.WndId = null, owner: *&lt;a href="#Gui_Wnd"&gt;Gui.Wnd&lt;/a&gt; = null)-&gt;*&lt;a href="#Gui_MenuCtrl"&gt;Gui.MenuCtrl&lt;/a&gt;
+<code style="white-space: break-spaces">func createPopup(parent: *<a href="#Gui_Wnd">Gui.Wnd</a>, id: Gui.WndId = null, owner: *<a href="#Gui_Wnd">Gui.Wnd</a> = null)->*<a href="#Gui_MenuCtrl">Gui.MenuCtrl</a>
 </code>
 </p>
 <p>
@@ -11787,7 +11787,7 @@ Message box with a <code class = "incode">yes</code> and <code class = "incode">
 <p>
 Message box to <code class = "incode">confirm</code> something.</p>
 <p class="code">
-<code style="white-space: break-spaces">func confirm(from: *&lt;a href="#Gui_Surface"&gt;Gui.Surface&lt;/a&gt;, message: string, question: string = null)-&gt;Gui.WndId
+<code style="white-space: break-spaces">func confirm(from: *<a href="#Gui_Surface">Gui.Surface</a>, message: string, question: string = null)->Gui.WndId
 </code>
 </p>
 <p>
@@ -11804,7 +11804,7 @@ Message box to <code class = "incode">confirm</code> something.</p>
 <p>
 Creates the message box.</p>
 <p class="code">
-<code style="white-space: break-spaces">func create(from: *&lt;a href="#Gui_Surface"&gt;Gui.Surface&lt;/a&gt;, message: string, icon: &lt;a href="#Gui_Icon"&gt;Gui.Icon&lt;/a&gt; = {})-&gt;*&lt;a href="#Gui_MessageDlg"&gt;Gui.MessageDlg&lt;/a&gt;
+<code style="white-space: break-spaces">func create(from: *<a href="#Gui_Surface">Gui.Surface</a>, message: string, icon: <a href="#Gui_Icon">Gui.Icon</a> = {})->*<a href="#Gui_MessageDlg">Gui.MessageDlg</a>
 </code>
 </p>
 <p>
@@ -11821,7 +11821,7 @@ Creates the message box.</p>
 <p>
 Display the box, centered, and returns the id of the pressed button.</p>
 <p class="code">
-<code style="white-space: break-spaces">func doModal(using self, from: *&lt;a href="#Gui_Surface"&gt;Gui.Surface&lt;/a&gt;)-&gt;string
+<code style="white-space: break-spaces">func doModal(using self, from: *<a href="#Gui_Surface">Gui.Surface</a>)->string
 </code>
 </p>
 <p>
@@ -11838,7 +11838,7 @@ Display the box, centered, and returns the id of the pressed button.</p>
 <p>
 Message box to show an error.</p>
 <p class="code">
-<code style="white-space: break-spaces">func error(from: *&lt;a href="#Gui_Surface"&gt;Gui.Surface&lt;/a&gt;, error: string, message: string = null)
+<code style="white-space: break-spaces">func error(from: *<a href="#Gui_Surface">Gui.Surface</a>, error: string, message: string = null)
 </code>
 </p>
 <p>
@@ -11855,7 +11855,7 @@ Message box to show an error.</p>
 <p>
 Message box with a <code class = "incode">ok</code>.</p>
 <p class="code">
-<code style="white-space: break-spaces">func ok(from: *&lt;a href="#Gui_Surface"&gt;Gui.Surface&lt;/a&gt;, message: string, icon: &lt;a href="#Gui_Icon"&gt;Gui.Icon&lt;/a&gt; = {})
+<code style="white-space: break-spaces">func ok(from: *<a href="#Gui_Surface">Gui.Surface</a>, message: string, icon: <a href="#Gui_Icon">Gui.Icon</a> = {})
 </code>
 </p>
 <p>
@@ -11872,7 +11872,7 @@ Message box with a <code class = "incode">ok</code>.</p>
 <p>
 Message box with a <code class = "incode">ok</code> and <code class = "incode">cancel</code> button.</p>
 <p class="code">
-<code style="white-space: break-spaces">func okCancel(from: *&lt;a href="#Gui_Surface"&gt;Gui.Surface&lt;/a&gt;, message: string, defaultId = Dialog.BtnCancel, icon: &lt;a href="#Gui_Icon"&gt;Gui.Icon&lt;/a&gt; = {})-&gt;Gui.WndId
+<code style="white-space: break-spaces">func okCancel(from: *<a href="#Gui_Surface">Gui.Surface</a>, message: string, defaultId = Dialog.BtnCancel, icon: <a href="#Gui_Icon">Gui.Icon</a> = {})->Gui.WndId
 </code>
 </p>
 <p>
@@ -11889,7 +11889,7 @@ Message box with a <code class = "incode">ok</code> and <code class = "incode">c
 <p>
 Set big icon.</p>
 <p class="code">
-<code style="white-space: break-spaces">func setIcon(using self, icon: &lt;a href="#Gui_Icon"&gt;Gui.Icon&lt;/a&gt;, color: Pixel.Color = Argb.Zero)
+<code style="white-space: break-spaces">func setIcon(using self, icon: <a href="#Gui_Icon">Gui.Icon</a>, color: Pixel.Color = Argb.Zero)
 </code>
 </p>
 <p>
@@ -11923,7 +11923,7 @@ Set big icon color (icon must has been set before).</p>
 <p>
 Message box with a <code class = "incode">yes</code> and <code class = "incode">no</code> button.</p>
 <p class="code">
-<code style="white-space: break-spaces">func yesNo(from: *&lt;a href="#Gui_Surface"&gt;Gui.Surface&lt;/a&gt;, message: string, title: string = null, defaultId = Dialog.BtnNo, icon: &lt;a href="#Gui_Icon"&gt;Gui.Icon&lt;/a&gt; = {})-&gt;Gui.WndId
+<code style="white-space: break-spaces">func yesNo(from: *<a href="#Gui_Surface">Gui.Surface</a>, message: string, title: string = null, defaultId = Dialog.BtnNo, icon: <a href="#Gui_Icon">Gui.Icon</a> = {})->Gui.WndId
 </code>
 </p>
 <p>
@@ -11940,7 +11940,7 @@ Message box with a <code class = "incode">yes</code> and <code class = "incode">
 <p>
 Message box with a <code class = "incode">yes</code> and <code class = "incode">no</code> button.</p>
 <p class="code">
-<code style="white-space: break-spaces">func yesNoCancel(from: *&lt;a href="#Gui_Surface"&gt;Gui.Surface&lt;/a&gt;, message: string, defaultId = Dialog.BtnCancel, icon: &lt;a href="#Gui_Icon"&gt;Gui.Icon&lt;/a&gt; = {})-&gt;Gui.WndId
+<code style="white-space: break-spaces">func yesNoCancel(from: *<a href="#Gui_Surface">Gui.Surface</a>, message: string, defaultId = Dialog.BtnCancel, icon: <a href="#Gui_Icon">Gui.Icon</a> = {})->Gui.WndId
 </code>
 </p>
 <p>
@@ -12278,7 +12278,7 @@ Set/Reset pause state.</p>
 <p>
 Associate an image list.</p>
 <p class="code">
-<code style="white-space: break-spaces">func set(using self, imageList: &lt;a href="#Gui_ImageList"&gt;Gui.ImageList&lt;/a&gt;)
+<code style="white-space: break-spaces">func set(using self, imageList: <a href="#Gui_ImageList">Gui.ImageList</a>)
 </code>
 </p>
 <p>
@@ -12520,13 +12520,13 @@ First init the PaintImage instance.</p>
 <p>
 Draw to an image by calling the closure.</p>
 <p class="code">
-<code style="white-space: break-spaces">func draw(using self, call: closure(*&lt;a href="#Gui_Application"&gt;Gui.Application&lt;/a&gt;, *Pixel.Painter))-&gt;Pixel.Image
+<code style="white-space: break-spaces">func draw(using self, call: closure(*<a href="#Gui_Application">Gui.Application</a>, *Pixel.Painter))->Pixel.Image
 </code>
 </p>
 <p>
 One shot paint to image.</p>
 <p class="code">
-<code style="white-space: break-spaces">func draw(w: s32, h: s32, call: closure(*&lt;a href="#Gui_Application"&gt;Gui.Application&lt;/a&gt;, *Pixel.Painter))-&gt;Pixel.Image
+<code style="white-space: break-spaces">func draw(w: s32, h: s32, call: closure(*<a href="#Gui_Application">Gui.Application</a>, *Pixel.Painter))->Pixel.Image
 </code>
 </p>
 <p>
@@ -12676,7 +12676,7 @@ Add a range of changing <code class = "incode">saturation</code>.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func onMouseEvent(using self, evt: *&lt;a href="#Gui_MouseEvent"&gt;Gui.MouseEvent&lt;/a&gt;)
+<code style="white-space: break-spaces">func onMouseEvent(using self, evt: *<a href="#Gui_MouseEvent">Gui.MouseEvent</a>)
 </code>
 </p>
 <p>
@@ -12691,7 +12691,7 @@ Add a range of changing <code class = "incode">saturation</code>.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func onPaintEvent(using self, evt: *&lt;a href="#Gui_PaintEvent"&gt;Gui.PaintEvent&lt;/a&gt;)
+<code style="white-space: break-spaces">func onPaintEvent(using self, evt: *<a href="#Gui_PaintEvent">Gui.PaintEvent</a>)
 </code>
 </p>
 <p>
@@ -12774,7 +12774,7 @@ Add a range of changing <code class = "incode">saturation</code>.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func create(parent: *&lt;a href="#Gui_Wnd"&gt;Gui.Wnd&lt;/a&gt;, position: Core.Math.Rectangle = {}, id: Gui.WndId = null)-&gt;*&lt;a href="#Gui_PalettePicker"&gt;Gui.PalettePicker&lt;/a&gt;
+<code style="white-space: break-spaces">func create(parent: *<a href="#Gui_Wnd">Gui.Wnd</a>, position: Core.Math.Rectangle = {}, id: Gui.WndId = null)->*<a href="#Gui_PalettePicker">Gui.PalettePicker</a>
 </code>
 </p>
 <p>
@@ -12927,7 +12927,7 @@ Show popup.</p>
 <p>
 Add a new item in the list.</p>
 <p class="code">
-<code style="white-space: break-spaces">func addItem(using self, name: string, id: Gui.WndId = null, icon: &lt;a href="#Gui_Icon"&gt;Gui.Icon&lt;/a&gt; = {}, userData0: *void = null, userData1: *void = null)
+<code style="white-space: break-spaces">func addItem(using self, name: string, id: Gui.WndId = null, icon: <a href="#Gui_Icon">Gui.Icon</a> = {}, userData0: *void = null, userData1: *void = null)
 </code>
 </p>
 <p>
@@ -12961,7 +12961,7 @@ Add a separator.</p>
 <p>
 Create the popup list, but do not display it.</p>
 <p class="code">
-<code style="white-space: break-spaces">func create(owner: *&lt;a href="#Gui_Wnd"&gt;Gui.Wnd&lt;/a&gt;)-&gt;*&lt;a href="#Gui_PopupListCtrl"&gt;Gui.PopupListCtrl&lt;/a&gt;
+<code style="white-space: break-spaces">func create(owner: *<a href="#Gui_Wnd">Gui.Wnd</a>)->*<a href="#Gui_PopupListCtrl">Gui.PopupListCtrl</a>
 </code>
 </p>
 <p>
@@ -13059,7 +13059,7 @@ u32</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func onFocusEvent(using self, evt: *&lt;a href="#Gui_FocusEvent"&gt;Gui.FocusEvent&lt;/a&gt;)
+<code style="white-space: break-spaces">func onFocusEvent(using self, evt: *<a href="#Gui_FocusEvent">Gui.FocusEvent</a>)
 </code>
 </p>
 <p>
@@ -13074,7 +13074,7 @@ u32</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func onMouseEvent(using self, evt: *&lt;a href="#Gui_MouseEvent"&gt;Gui.MouseEvent&lt;/a&gt;)
+<code style="white-space: break-spaces">func onMouseEvent(using self, evt: *<a href="#Gui_MouseEvent">Gui.MouseEvent</a>)
 </code>
 </p>
 <p>
@@ -13089,7 +13089,7 @@ u32</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func onPaintEvent(using self, evt: *&lt;a href="#Gui_PaintEvent"&gt;Gui.PaintEvent&lt;/a&gt;)
+<code style="white-space: break-spaces">func onPaintEvent(using self, evt: *<a href="#Gui_PaintEvent">Gui.PaintEvent</a>)
 </code>
 </p>
 <p>
@@ -13266,7 +13266,7 @@ Set the progression in [0..1] range.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func onPaintEvent(using self, evt: *&lt;a href="#Gui_PaintEvent"&gt;Gui.PaintEvent&lt;/a&gt;)
+<code style="white-space: break-spaces">func onPaintEvent(using self, evt: *<a href="#Gui_PaintEvent">Gui.PaintEvent</a>)
 </code>
 </p>
 <p>
@@ -13281,7 +13281,7 @@ Set the progression in [0..1] range.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func create(parent: *&lt;a href="#Gui_Wnd"&gt;Gui.Wnd&lt;/a&gt;, position: Core.Math.Rectangle = {}, id: Gui.WndId = null)-&gt;*&lt;a href="#Gui_ProgressBar"&gt;Gui.ProgressBar&lt;/a&gt;
+<code style="white-space: break-spaces">func create(parent: *<a href="#Gui_Wnd">Gui.Wnd</a>, position: Core.Math.Rectangle = {}, id: Gui.WndId = null)->*<a href="#Gui_ProgressBar">Gui.ProgressBar</a>
 </code>
 </p>
 <p>
@@ -13585,7 +13585,7 @@ Add a new struct to display.</p>
 <p>
 Creates a new PropertyList instance.</p>
 <p class="code">
-<code style="white-space: break-spaces">func create(parent: *&lt;a href="#Gui_Wnd"&gt;Gui.Wnd&lt;/a&gt;, position: Core.Math.Rectangle = {}, id: Gui.WndId = null)-&gt;*&lt;a href="#Gui_PropertyList"&gt;Gui.PropertyList&lt;/a&gt;
+<code style="white-space: break-spaces">func create(parent: *<a href="#Gui_Wnd">Gui.Wnd</a>, position: Core.Math.Rectangle = {}, id: Gui.WndId = null)->*<a href="#Gui_PropertyList">Gui.PropertyList</a>
 </code>
 </p>
 <p>
@@ -13717,7 +13717,7 @@ Add a new struct to display.</p>
 <p>
 Creates a new PropertyList instance.</p>
 <p class="code">
-<code style="white-space: break-spaces">func create(parent: *&lt;a href="#Gui_Wnd"&gt;Gui.Wnd&lt;/a&gt;, position: Core.Math.Rectangle = {}, id: Gui.WndId = null)-&gt;*&lt;a href="#Gui_PropertyListCtrl"&gt;Gui.PropertyListCtrl&lt;/a&gt;
+<code style="white-space: break-spaces">func create(parent: *<a href="#Gui_Wnd">Gui.Wnd</a>, position: Core.Math.Rectangle = {}, id: Gui.WndId = null)->*<a href="#Gui_PropertyListCtrl">Gui.PropertyListCtrl</a>
 </code>
 </p>
 <p>
@@ -13882,7 +13882,7 @@ form</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func onMouseEvent(using self, evt: *&lt;a href="#Gui_MouseEvent"&gt;Gui.MouseEvent&lt;/a&gt;)
+<code style="white-space: break-spaces">func onMouseEvent(using self, evt: *<a href="#Gui_MouseEvent">Gui.MouseEvent</a>)
 </code>
 </p>
 <p>
@@ -13897,7 +13897,7 @@ form</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func onPaintEvent(using self, evt: *&lt;a href="#Gui_PaintEvent"&gt;Gui.PaintEvent&lt;/a&gt;)
+<code style="white-space: break-spaces">func onPaintEvent(using self, evt: *<a href="#Gui_PaintEvent">Gui.PaintEvent</a>)
 </code>
 </p>
 <p>
@@ -13912,7 +13912,7 @@ form</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func create(parent: *&lt;a href="#Gui_Wnd"&gt;Gui.Wnd&lt;/a&gt;, name: string, position: Core.Math.Rectangle = {}, id: Gui.WndId = null)-&gt;*&lt;a href="#Gui_PushButton"&gt;Gui.PushButton&lt;/a&gt;
+<code style="white-space: break-spaces">func create(parent: *<a href="#Gui_Wnd">Gui.Wnd</a>, name: string, position: Core.Math.Rectangle = {}, id: Gui.WndId = null)->*<a href="#Gui_PushButton">Gui.PushButton</a>
 </code>
 </p>
 <p>
@@ -14055,7 +14055,7 @@ Set the checked state.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func onMouseEvent(using self, evt: *&lt;a href="#Gui_MouseEvent"&gt;Gui.MouseEvent&lt;/a&gt;)
+<code style="white-space: break-spaces">func onMouseEvent(using self, evt: *<a href="#Gui_MouseEvent">Gui.MouseEvent</a>)
 </code>
 </p>
 <p>
@@ -14070,7 +14070,7 @@ Set the checked state.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func onPaintEvent(using self, evt: *&lt;a href="#Gui_PaintEvent"&gt;Gui.PaintEvent&lt;/a&gt;)
+<code style="white-space: break-spaces">func onPaintEvent(using self, evt: *<a href="#Gui_PaintEvent">Gui.PaintEvent</a>)
 </code>
 </p>
 <p>
@@ -14085,7 +14085,7 @@ Set the checked state.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func create(parent: *&lt;a href="#Gui_Wnd"&gt;Gui.Wnd&lt;/a&gt;, name: string, position: Core.Math.Rectangle = {}, id: Gui.WndId = null)-&gt;*&lt;a href="#Gui_RadioButton"&gt;Gui.RadioButton&lt;/a&gt;
+<code style="white-space: break-spaces">func create(parent: *<a href="#Gui_Wnd">Gui.Wnd</a>, name: string, position: Core.Math.Rectangle = {}, id: Gui.WndId = null)->*<a href="#Gui_RadioButton">Gui.RadioButton</a>
 </code>
 </p>
 <p>
@@ -15292,7 +15292,7 @@ Set the text content.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func addMapping(using self, key: Core.Input.Key, mdf: Core.Input.KeyModifiers, cmd: &lt;a href="#Gui_RichEditCommand"&gt;Gui.RichEditCommand&lt;/a&gt;)
+<code style="white-space: break-spaces">func addMapping(using self, key: Core.Input.Key, mdf: Core.Input.KeyModifiers, cmd: <a href="#Gui_RichEditCommand">Gui.RichEditCommand</a>)
 </code>
 </p>
 <p>
@@ -15463,7 +15463,7 @@ Clear content.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func create(parent: *&lt;a href="#Gui_Wnd"&gt;Gui.Wnd&lt;/a&gt;, position: Core.Math.Rectangle = {}, id: Gui.WndId = null)-&gt;*&lt;a href="#Gui_RichEditCtrl"&gt;Gui.RichEditCtrl&lt;/a&gt;
+<code style="white-space: break-spaces">func create(parent: *<a href="#Gui_Wnd">Gui.Wnd</a>, position: Core.Math.Rectangle = {}, id: Gui.WndId = null)->*<a href="#Gui_RichEditCtrl">Gui.RichEditCtrl</a>
 </code>
 </p>
 <p>
@@ -15600,7 +15600,7 @@ Delete a given text at the start of each selected line.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func ensureCursorIsVisible(using self, cp: &lt;a href="#Gui_RichEditCursor"&gt;Gui.RichEditCursor&lt;/a&gt;, center: bool)
+<code style="white-space: break-spaces">func ensureCursorIsVisible(using self, cp: <a href="#Gui_RichEditCursor">Gui.RichEditCursor</a>, center: bool)
 </code>
 </p>
 <p>
@@ -15634,7 +15634,7 @@ Evaluate the rendering size.</p>
 <p>
 Execute a command.</p>
 <p class="code">
-<code style="white-space: break-spaces">func executeCommand(using self, cmd: &lt;a href="#Gui_RichEditCommand"&gt;Gui.RichEditCommand&lt;/a&gt;)
+<code style="white-space: break-spaces">func executeCommand(using self, cmd: <a href="#Gui_RichEditCommand">Gui.RichEditCommand</a>)
 </code>
 </p>
 <p>
@@ -15649,7 +15649,7 @@ Execute a command.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func getBegSelection(using self)-&gt;&lt;a href="#Gui_RichEditCursor"&gt;Gui.RichEditCursor&lt;/a&gt;
+<code style="white-space: break-spaces">func getBegSelection(using self)-><a href="#Gui_RichEditCursor">Gui.RichEditCursor</a>
 </code>
 </p>
 <p>
@@ -15664,7 +15664,7 @@ Execute a command.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func getCaretPos(using self, cp: &lt;a href="#Gui_RichEditCursor"&gt;Gui.RichEditCursor&lt;/a&gt;)-&gt;Core.Math.Rectangle
+<code style="white-space: break-spaces">func getCaretPos(using self, cp: <a href="#Gui_RichEditCursor">Gui.RichEditCursor</a>)->Core.Math.Rectangle
 </code>
 </p>
 <p>
@@ -15679,7 +15679,7 @@ Execute a command.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func getCursorDisplayPos(using self, cp: &lt;a href="#Gui_RichEditCursor"&gt;Gui.RichEditCursor&lt;/a&gt;)-&gt;Core.Math.Point
+<code style="white-space: break-spaces">func getCursorDisplayPos(using self, cp: <a href="#Gui_RichEditCursor">Gui.RichEditCursor</a>)->Core.Math.Point
 </code>
 </p>
 <p>
@@ -15694,7 +15694,7 @@ Execute a command.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func getCursorPosFromPoint(using self, pt: Core.Math.Point)-&gt;&lt;a href="#Gui_RichEditCursor"&gt;Gui.RichEditCursor&lt;/a&gt;
+<code style="white-space: break-spaces">func getCursorPosFromPoint(using self, pt: Core.Math.Point)-><a href="#Gui_RichEditCursor">Gui.RichEditCursor</a>
 </code>
 </p>
 <p>
@@ -15709,7 +15709,7 @@ Execute a command.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func getEndSelection(using self)-&gt;&lt;a href="#Gui_RichEditCursor"&gt;Gui.RichEditCursor&lt;/a&gt;
+<code style="white-space: break-spaces">func getEndSelection(using self)-><a href="#Gui_RichEditCursor">Gui.RichEditCursor</a>
 </code>
 </p>
 <p>
@@ -15724,7 +15724,7 @@ Execute a command.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func getMappingCommand(using self, key: Core.Input.Key, mdf: Core.Input.KeyModifiers)-&gt;&lt;a href="#Gui_RichEditCommand"&gt;Gui.RichEditCommand&lt;/a&gt;
+<code style="white-space: break-spaces">func getMappingCommand(using self, key: Core.Input.Key, mdf: Core.Input.KeyModifiers)-><a href="#Gui_RichEditCommand">Gui.RichEditCommand</a>
 </code>
 </p>
 <p>
@@ -15741,7 +15741,7 @@ Execute a command.</p>
 <p>
 Get the rune at the given cursor pos.</p>
 <p class="code">
-<code style="white-space: break-spaces">func getRune(using self, cp: &lt;a href="#Gui_RichEditCursor"&gt;Gui.RichEditCursor&lt;/a&gt;)-&gt;{char: rune, style: Gui.RichEditStyleRef}
+<code style="white-space: break-spaces">func getRune(using self, cp: <a href="#Gui_RichEditCursor">Gui.RichEditCursor</a>)->{char: rune, style: Gui.RichEditStyleRef}
 </code>
 </p>
 <p>
@@ -15756,7 +15756,7 @@ Get the rune at the given cursor pos.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func getRuneSize(using self, line: *&lt;a href="#Gui_RichEditLine"&gt;Gui.RichEditLine&lt;/a&gt;, i: u64, x: f32)-&gt;Core.Math.Point
+<code style="white-space: break-spaces">func getRuneSize(using self, line: *<a href="#Gui_RichEditLine">Gui.RichEditLine</a>, i: u64, x: f32)->Core.Math.Point
 </code>
 </p>
 <p>
@@ -15975,7 +15975,7 @@ Lex the full text.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func moveCursorDown(using self, cp: *&lt;a href="#Gui_RichEditCursor"&gt;Gui.RichEditCursor&lt;/a&gt;)-&gt;bool
+<code style="white-space: break-spaces">func moveCursorDown(using self, cp: *<a href="#Gui_RichEditCursor">Gui.RichEditCursor</a>)->bool
 </code>
 </p>
 <p>
@@ -15990,7 +15990,7 @@ Lex the full text.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func moveCursorEndFile(using self, cp: *&lt;a href="#Gui_RichEditCursor"&gt;Gui.RichEditCursor&lt;/a&gt;)
+<code style="white-space: break-spaces">func moveCursorEndFile(using self, cp: *<a href="#Gui_RichEditCursor">Gui.RichEditCursor</a>)
 </code>
 </p>
 <p>
@@ -16005,7 +16005,7 @@ Lex the full text.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func moveCursorEndLine(using self, cp: *&lt;a href="#Gui_RichEditCursor"&gt;Gui.RichEditCursor&lt;/a&gt;)
+<code style="white-space: break-spaces">func moveCursorEndLine(using self, cp: *<a href="#Gui_RichEditCursor">Gui.RichEditCursor</a>)
 </code>
 </p>
 <p>
@@ -16020,7 +16020,7 @@ Lex the full text.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func moveCursorLeft(using self, cp: *&lt;a href="#Gui_RichEditCursor"&gt;Gui.RichEditCursor&lt;/a&gt;)-&gt;bool
+<code style="white-space: break-spaces">func moveCursorLeft(using self, cp: *<a href="#Gui_RichEditCursor">Gui.RichEditCursor</a>)->bool
 </code>
 </p>
 <p>
@@ -16035,7 +16035,7 @@ Lex the full text.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func moveCursorPageDown(using self, cp: *&lt;a href="#Gui_RichEditCursor"&gt;Gui.RichEditCursor&lt;/a&gt;)
+<code style="white-space: break-spaces">func moveCursorPageDown(using self, cp: *<a href="#Gui_RichEditCursor">Gui.RichEditCursor</a>)
 </code>
 </p>
 <p>
@@ -16050,7 +16050,7 @@ Lex the full text.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func moveCursorPageUp(using self, cp: *&lt;a href="#Gui_RichEditCursor"&gt;Gui.RichEditCursor&lt;/a&gt;)
+<code style="white-space: break-spaces">func moveCursorPageUp(using self, cp: *<a href="#Gui_RichEditCursor">Gui.RichEditCursor</a>)
 </code>
 </p>
 <p>
@@ -16065,7 +16065,7 @@ Lex the full text.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func moveCursorRight(using self, cp: *&lt;a href="#Gui_RichEditCursor"&gt;Gui.RichEditCursor&lt;/a&gt;)-&gt;bool
+<code style="white-space: break-spaces">func moveCursorRight(using self, cp: *<a href="#Gui_RichEditCursor">Gui.RichEditCursor</a>)->bool
 </code>
 </p>
 <p>
@@ -16080,7 +16080,7 @@ Lex the full text.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func moveCursorStartFile(using self, cp: *&lt;a href="#Gui_RichEditCursor"&gt;Gui.RichEditCursor&lt;/a&gt;)
+<code style="white-space: break-spaces">func moveCursorStartFile(using self, cp: *<a href="#Gui_RichEditCursor">Gui.RichEditCursor</a>)
 </code>
 </p>
 <p>
@@ -16095,7 +16095,7 @@ Lex the full text.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func moveCursorStartLine(using self, cp: *&lt;a href="#Gui_RichEditCursor"&gt;Gui.RichEditCursor&lt;/a&gt;)
+<code style="white-space: break-spaces">func moveCursorStartLine(using self, cp: *<a href="#Gui_RichEditCursor">Gui.RichEditCursor</a>)
 </code>
 </p>
 <p>
@@ -16110,7 +16110,7 @@ Lex the full text.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func moveCursorUp(using self, cp: *&lt;a href="#Gui_RichEditCursor"&gt;Gui.RichEditCursor&lt;/a&gt;)-&gt;bool
+<code style="white-space: break-spaces">func moveCursorUp(using self, cp: *<a href="#Gui_RichEditCursor">Gui.RichEditCursor</a>)->bool
 </code>
 </p>
 <p>
@@ -16125,7 +16125,7 @@ Lex the full text.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func moveCursorWordLeft(using self, cp: *&lt;a href="#Gui_RichEditCursor"&gt;Gui.RichEditCursor&lt;/a&gt;)
+<code style="white-space: break-spaces">func moveCursorWordLeft(using self, cp: *<a href="#Gui_RichEditCursor">Gui.RichEditCursor</a>)
 </code>
 </p>
 <p>
@@ -16140,7 +16140,7 @@ Lex the full text.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func moveCursorWordRight(using self, cp: *&lt;a href="#Gui_RichEditCursor"&gt;Gui.RichEditCursor&lt;/a&gt;, withSpace: bool)
+<code style="white-space: break-spaces">func moveCursorWordRight(using self, cp: *<a href="#Gui_RichEditCursor">Gui.RichEditCursor</a>, withSpace: bool)
 </code>
 </p>
 <p>
@@ -16275,7 +16275,7 @@ Lex the full text.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func setCursorPos(using self, cp: &lt;a href="#Gui_RichEditCursor"&gt;Gui.RichEditCursor&lt;/a&gt;)
+<code style="white-space: break-spaces">func setCursorPos(using self, cp: <a href="#Gui_RichEditCursor">Gui.RichEditCursor</a>)
 </code>
 </p>
 <p>
@@ -16322,7 +16322,7 @@ Lex the full text.</p>
 <p>
 Set form.</p>
 <p class="code">
-<code style="white-space: break-spaces">func setForm(using self, form: &lt;a href="#Gui_RichEditForm"&gt;Gui.RichEditForm&lt;/a&gt;)
+<code style="white-space: break-spaces">func setForm(using self, form: <a href="#Gui_RichEditForm">Gui.RichEditForm</a>)
 </code>
 </p>
 <p>
@@ -16339,7 +16339,7 @@ Set form.</p>
 <p>
 Associate a lexer.</p>
 <p class="code">
-<code style="white-space: break-spaces">func setLexer(using self, lex: &lt;a href="#Gui_IRichEditLexer"&gt;Gui.IRichEditLexer&lt;/a&gt;)
+<code style="white-space: break-spaces">func setLexer(using self, lex: <a href="#Gui_IRichEditLexer">Gui.IRichEditLexer</a>)
 </code>
 </p>
 <p>
@@ -16371,7 +16371,7 @@ Associate a lexer.</p>
 <p>
 Set richedit flags.</p>
 <p class="code">
-<code style="white-space: break-spaces">func setRichEdFlags(using self, flags: &lt;a href="#Gui_RichEditFlags"&gt;Gui.RichEditFlags&lt;/a&gt;)
+<code style="white-space: break-spaces">func setRichEdFlags(using self, flags: <a href="#Gui_RichEditFlags">Gui.RichEditFlags</a>)
 </code>
 </p>
 <p>
@@ -16386,7 +16386,7 @@ Set richedit flags.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func setSelection(using self, start: &lt;a href="#Gui_RichEditCursor"&gt;Gui.RichEditCursor&lt;/a&gt;, end: &lt;a href="#Gui_RichEditCursor"&gt;Gui.RichEditCursor&lt;/a&gt;)
+<code style="white-space: break-spaces">func setSelection(using self, start: <a href="#Gui_RichEditCursor">Gui.RichEditCursor</a>, end: <a href="#Gui_RichEditCursor">Gui.RichEditCursor</a>)
 </code>
 </p>
 <p>
@@ -16577,7 +16577,7 @@ Core.HashTable(string, s32)</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func compute(using self, linePrev: *&lt;a href="#Gui_RichEditLine"&gt;Gui.RichEditLine&lt;/a&gt;, line: *&lt;a href="#Gui_RichEditLine"&gt;Gui.RichEditLine&lt;/a&gt;, lineNext: *&lt;a href="#Gui_RichEditLine"&gt;Gui.RichEditLine&lt;/a&gt;)
+<code style="white-space: break-spaces">func compute(using self, linePrev: *<a href="#Gui_RichEditLine">Gui.RichEditLine</a>, line: *<a href="#Gui_RichEditLine">Gui.RichEditLine</a>, lineNext: *<a href="#Gui_RichEditLine">Gui.RichEditLine</a>)
 </code>
 </p>
 <p>
@@ -16592,7 +16592,7 @@ Core.HashTable(string, s32)</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func insertRune(using self, ed: *&lt;a href="#Gui_RichEditCtrl"&gt;Gui.RichEditCtrl&lt;/a&gt;, ch: rune)-&gt;bool
+<code style="white-space: break-spaces">func insertRune(using self, ed: *<a href="#Gui_RichEditCtrl">Gui.RichEditCtrl</a>, ch: rune)->bool
 </code>
 </p>
 <p>
@@ -16607,7 +16607,7 @@ Core.HashTable(string, s32)</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func setup(using self, ed: *&lt;a href="#Gui_RichEditCtrl"&gt;Gui.RichEditCtrl&lt;/a&gt;)
+<code style="white-space: break-spaces">func setup(using self, ed: *<a href="#Gui_RichEditCtrl">Gui.RichEditCtrl</a>)
 </code>
 </p>
 <p>
@@ -16972,7 +16972,7 @@ Pixel.UnderlineStyle</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func opEquals(using self, other: &lt;a href="#Gui_RichEditRuneStyle"&gt;Gui.RichEditRuneStyle&lt;/a&gt;)-&gt;bool
+<code style="white-space: break-spaces">func opEquals(using self, other: <a href="#Gui_RichEditRuneStyle">Gui.RichEditRuneStyle</a>)->bool
 </code>
 </p>
 <p>
@@ -17450,7 +17450,7 @@ Set the scroll size (window virtual size).</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func onMouseEvent(using self, evt: *&lt;a href="#Gui_MouseEvent"&gt;Gui.MouseEvent&lt;/a&gt;)
+<code style="white-space: break-spaces">func onMouseEvent(using self, evt: *<a href="#Gui_MouseEvent">Gui.MouseEvent</a>)
 </code>
 </p>
 <p>
@@ -17465,7 +17465,7 @@ Set the scroll size (window virtual size).</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func onPaintEvent(using self, evt: *&lt;a href="#Gui_PaintEvent"&gt;Gui.PaintEvent&lt;/a&gt;)
+<code style="white-space: break-spaces">func onPaintEvent(using self, evt: *<a href="#Gui_PaintEvent">Gui.PaintEvent</a>)
 </code>
 </p>
 <p>
@@ -17480,7 +17480,7 @@ Set the scroll size (window virtual size).</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func onResizeEvent(using self, evt: *&lt;a href="#Gui_ResizeEvent"&gt;Gui.ResizeEvent&lt;/a&gt;)
+<code style="white-space: break-spaces">func onResizeEvent(using self, evt: *<a href="#Gui_ResizeEvent">Gui.ResizeEvent</a>)
 </code>
 </p>
 <p>
@@ -18217,7 +18217,7 @@ Set left and right values, for a range.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func onMouseEvent(using self, evt: *&lt;a href="#Gui_MouseEvent"&gt;Gui.MouseEvent&lt;/a&gt;)
+<code style="white-space: break-spaces">func onMouseEvent(using self, evt: *<a href="#Gui_MouseEvent">Gui.MouseEvent</a>)
 </code>
 </p>
 <p>
@@ -18232,7 +18232,7 @@ Set left and right values, for a range.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func onPaintEvent(using self, evt: *&lt;a href="#Gui_PaintEvent"&gt;Gui.PaintEvent&lt;/a&gt;)
+<code style="white-space: break-spaces">func onPaintEvent(using self, evt: *<a href="#Gui_PaintEvent">Gui.PaintEvent</a>)
 </code>
 </p>
 <p>
@@ -18247,7 +18247,7 @@ Set left and right values, for a range.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func create(parent: *&lt;a href="#Gui_Wnd"&gt;Gui.Wnd&lt;/a&gt;, position: Core.Math.Rectangle = {}, id: Gui.WndId = null, range = false, vertical = false)-&gt;*&lt;a href="#Gui_Slider"&gt;Gui.Slider&lt;/a&gt;
+<code style="white-space: break-spaces">func create(parent: *<a href="#Gui_Wnd">Gui.Wnd</a>, position: Core.Math.Rectangle = {}, id: Gui.WndId = null, range = false, vertical = false)->*<a href="#Gui_Slider">Gui.Slider</a>
 </code>
 </p>
 <p>
@@ -18488,7 +18488,7 @@ Set the slider current value.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func onResizeEvent(using self, evt: *&lt;a href="#Gui_ResizeEvent"&gt;Gui.ResizeEvent&lt;/a&gt;)
+<code style="white-space: break-spaces">func onResizeEvent(using self, evt: *<a href="#Gui_ResizeEvent">Gui.ResizeEvent</a>)
 </code>
 </p>
 <p>
@@ -18505,7 +18505,7 @@ Set the slider current value.</p>
 <p>
 Create the popup list, but do not display it.</p>
 <p class="code">
-<code style="white-space: break-spaces">func create(parent: *&lt;a href="#Gui_Wnd"&gt;Gui.Wnd&lt;/a&gt;, name: string, position: Core.Math.Rectangle = {}, id: Gui.WndId = null)-&gt;*&lt;a href="#Gui_SliderCtrl"&gt;Gui.SliderCtrl&lt;/a&gt;
+<code style="white-space: break-spaces">func create(parent: *<a href="#Gui_Wnd">Gui.Wnd</a>, name: string, position: Core.Math.Rectangle = {}, id: Gui.WndId = null)->*<a href="#Gui_SliderCtrl">Gui.SliderCtrl</a>
 </code>
 </p>
 <p>
@@ -18725,7 +18725,7 @@ Set the pane size (size of the first view).</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func onMouseEvent(using self, evt: *&lt;a href="#Gui_MouseEvent"&gt;Gui.MouseEvent&lt;/a&gt;)
+<code style="white-space: break-spaces">func onMouseEvent(using self, evt: *<a href="#Gui_MouseEvent">Gui.MouseEvent</a>)
 </code>
 </p>
 <p>
@@ -18740,7 +18740,7 @@ Set the pane size (size of the first view).</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func onPostPaintEvent(using self, evt: *&lt;a href="#Gui_PaintEvent"&gt;Gui.PaintEvent&lt;/a&gt;)
+<code style="white-space: break-spaces">func onPostPaintEvent(using self, evt: *<a href="#Gui_PaintEvent">Gui.PaintEvent</a>)
 </code>
 </p>
 <p>
@@ -18755,7 +18755,7 @@ Set the pane size (size of the first view).</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func onResizeEvent(using self, evt: *&lt;a href="#Gui_ResizeEvent"&gt;Gui.ResizeEvent&lt;/a&gt;)
+<code style="white-space: break-spaces">func onResizeEvent(using self, evt: *<a href="#Gui_ResizeEvent">Gui.ResizeEvent</a>)
 </code>
 </p>
 <p>
@@ -18772,7 +18772,7 @@ Set the pane size (size of the first view).</p>
 <p>
 Add a new pane.</p>
 <p class="code">
-<code style="white-space: break-spaces">func addPane(using self, pane: *&lt;a href="#Gui_Wnd"&gt;Gui.Wnd&lt;/a&gt;, paneSize: f32 = 100, title = false)-&gt;*&lt;a href="#Gui_SplitterItem"&gt;Gui.SplitterItem&lt;/a&gt;
+<code style="white-space: break-spaces">func addPane(using self, pane: *<a href="#Gui_Wnd">Gui.Wnd</a>, paneSize: f32 = 100, title = false)->*<a href="#Gui_SplitterItem">Gui.SplitterItem</a>
 </code>
 </p>
 <p>
@@ -18789,7 +18789,7 @@ Add a new pane.</p>
 <p>
 Creates a new SplitterCtrl instance.</p>
 <p class="code">
-<code style="white-space: break-spaces">func create(parent: *&lt;a href="#Gui_Wnd"&gt;Gui.Wnd&lt;/a&gt;, position: Core.Math.Rectangle = {}, vertical = false, id: Gui.WndId = null)-&gt;*&lt;a href="#Gui_SplitterCtrl"&gt;Gui.SplitterCtrl&lt;/a&gt;
+<code style="white-space: break-spaces">func create(parent: *<a href="#Gui_Wnd">Gui.Wnd</a>, position: Core.Math.Rectangle = {}, vertical = false, id: Gui.WndId = null)->*<a href="#Gui_SplitterCtrl">Gui.SplitterCtrl</a>
 </code>
 </p>
 <p>
@@ -18984,7 +18984,7 @@ Create a layout control.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func onResizeEvent(using self, evt: *&lt;a href="#Gui_ResizeEvent"&gt;Gui.ResizeEvent&lt;/a&gt;)
+<code style="white-space: break-spaces">func onResizeEvent(using self, evt: *<a href="#Gui_ResizeEvent">Gui.ResizeEvent</a>)
 </code>
 </p>
 <p>
@@ -19018,7 +19018,7 @@ Recompute layout of all childs.</p>
 <p>
 Create a layout control.</p>
 <p class="code">
-<code style="white-space: break-spaces">func create(parent: *&lt;a href="#Gui_Wnd"&gt;Gui.Wnd&lt;/a&gt;, kind: &lt;a href="#Gui_StackLayoutKind"&gt;Gui.StackLayoutKind&lt;/a&gt; = .Top, position: Core.Math.Rectangle = {})-&gt;*&lt;a href="#Gui_StackLayoutCtrl"&gt;Gui.StackLayoutCtrl&lt;/a&gt;
+<code style="white-space: break-spaces">func create(parent: *<a href="#Gui_Wnd">Gui.Wnd</a>, kind: <a href="#Gui_StackLayoutKind">Gui.StackLayoutKind</a> = .Top, position: Core.Math.Rectangle = {})->*<a href="#Gui_StackLayoutCtrl">Gui.StackLayoutCtrl</a>
 </code>
 </p>
 <p>
@@ -19474,7 +19474,7 @@ Bring the surface at the top of the Z order.</p>
 <p>
 Center this surface relative to <code class = "incode">from</code>.</p>
 <p class="code">
-<code style="white-space: break-spaces">func center(using self, from: *&lt;a href="#Gui_Surface"&gt;Gui.Surface&lt;/a&gt;)
+<code style="white-space: break-spaces">func center(using self, from: *<a href="#Gui_Surface">Gui.Surface</a>)
 </code>
 </p>
 <p>
@@ -19508,7 +19508,7 @@ Constraint a window to be inside the closest monitor.</p>
 <p>
 Creates the surface.</p>
 <p class="code">
-<code style="white-space: break-spaces">func create(surface: *&lt;a href="#Gui_Surface"&gt;Gui.Surface&lt;/a&gt;, x: s32, y: s32, width: s32, height: s32, flags: &lt;a href="#Gui_SurfaceFlags"&gt;Gui.SurfaceFlags&lt;/a&gt;, mainSurface: *&lt;a href="#Gui_Surface"&gt;Gui.Surface&lt;/a&gt;) throw
+<code style="white-space: break-spaces">func create(surface: *<a href="#Gui_Surface">Gui.Surface</a>, x: s32, y: s32, width: s32, height: s32, flags: <a href="#Gui_SurfaceFlags">Gui.SurfaceFlags</a>, mainSurface: *<a href="#Gui_Surface">Gui.Surface</a>) throw
 </code>
 </p>
 <p>
@@ -19678,7 +19678,7 @@ Transform a point in screen space relative to the surface.</p>
 <p>
 Set the surface icon.</p>
 <p class="code">
-<code style="white-space: break-spaces">func setIcon(using self, icon: &lt;a href="#Gui_Icon"&gt;Gui.Icon&lt;/a&gt;)
+<code style="white-space: break-spaces">func setIcon(using self, icon: <a href="#Gui_Icon">Gui.Icon</a>)
 </code>
 </p>
 <p>
@@ -19744,7 +19744,7 @@ Set the surface title.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func setView(using self, view: *&lt;a href="#Gui_Wnd"&gt;Gui.Wnd&lt;/a&gt;)
+<code style="white-space: break-spaces">func setView(using self, view: *<a href="#Gui_Wnd">Gui.Wnd</a>)
 </code>
 </p>
 <p>
@@ -20304,7 +20304,7 @@ Set the tab form.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func onMouseEvent(using self, evt: *&lt;a href="#Gui_MouseEvent"&gt;Gui.MouseEvent&lt;/a&gt;)
+<code style="white-space: break-spaces">func onMouseEvent(using self, evt: *<a href="#Gui_MouseEvent">Gui.MouseEvent</a>)
 </code>
 </p>
 <p>
@@ -20319,7 +20319,7 @@ Set the tab form.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func onPaintEvent(using self, evt: *&lt;a href="#Gui_PaintEvent"&gt;Gui.PaintEvent&lt;/a&gt;)
+<code style="white-space: break-spaces">func onPaintEvent(using self, evt: *<a href="#Gui_PaintEvent">Gui.PaintEvent</a>)
 </code>
 </p>
 <p>
@@ -20334,7 +20334,7 @@ Set the tab form.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func onResizeEvent(using self, evt: *&lt;a href="#Gui_ResizeEvent"&gt;Gui.ResizeEvent&lt;/a&gt;)
+<code style="white-space: break-spaces">func onResizeEvent(using self, evt: *<a href="#Gui_ResizeEvent">Gui.ResizeEvent</a>)
 </code>
 </p>
 <p>
@@ -20349,7 +20349,7 @@ Set the tab form.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func paintItem(using self, painter: *Pixel.Painter, v: *&lt;a href="#Gui_TabItem"&gt;Gui.TabItem&lt;/a&gt;, idx: u32)
+<code style="white-space: break-spaces">func paintItem(using self, painter: *Pixel.Painter, v: *<a href="#Gui_TabItem">Gui.TabItem</a>, idx: u32)
 </code>
 </p>
 <p>
@@ -20366,7 +20366,7 @@ Set the tab form.</p>
 <p>
 Add a new view.</p>
 <p class="code">
-<code style="white-space: break-spaces">func addItem(using self, tabName: string, icon: &lt;a href="#Gui_Icon"&gt;Gui.Icon&lt;/a&gt;, view: *&lt;a href="#Gui_Wnd"&gt;Gui.Wnd&lt;/a&gt; = null)
+<code style="white-space: break-spaces">func addItem(using self, tabName: string, icon: <a href="#Gui_Icon">Gui.Icon</a>, view: *<a href="#Gui_Wnd">Gui.Wnd</a> = null)
 </code>
 </p>
 <p>
@@ -20381,7 +20381,7 @@ Add a new view.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func create(parent: *&lt;a href="#Gui_Wnd"&gt;Gui.Wnd&lt;/a&gt;, position: Core.Math.Rectangle = {}, id: Gui.WndId = null)-&gt;*&lt;a href="#Gui_Tab"&gt;Gui.Tab&lt;/a&gt;
+<code style="white-space: break-spaces">func create(parent: *<a href="#Gui_Wnd">Gui.Wnd</a>, position: Core.Math.Rectangle = {}, id: Gui.WndId = null)->*<a href="#Gui_Tab">Gui.Tab</a>
 </code>
 </p>
 <p>
@@ -20415,7 +20415,7 @@ Select one tab at the given index.</p>
 <p>
 Set the tab form.</p>
 <p class="code">
-<code style="white-space: break-spaces">func setForm(using self, tabForm: &lt;a href="#Gui_TabForm"&gt;Gui.TabForm&lt;/a&gt;)
+<code style="white-space: break-spaces">func setForm(using self, tabForm: <a href="#Gui_TabForm">Gui.TabForm</a>)
 </code>
 </p>
 <p>
@@ -20776,7 +20776,7 @@ Create a default font (fixed size) with the given size.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func drawIconText(painter: *Pixel.Painter, position: Core.Math.Rectangle, icon: &lt;a href="#Gui_Icon"&gt;Gui.Icon&lt;/a&gt;, name: *Pixel.RichString, stringFormat: Pixel.RichStringFormat, iconMargin = 4'f32)
+<code style="white-space: break-spaces">func drawIconText(painter: *Pixel.Painter, position: Core.Math.Rectangle, icon: <a href="#Gui_Icon">Gui.Icon</a>, name: *Pixel.RichString, stringFormat: Pixel.RichStringFormat, iconMargin = 4'f32)
 </code>
 </p>
 <p>
@@ -20791,8 +20791,8 @@ Create a default font (fixed size) with the given size.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func drawSubRect(using self, painter: *Pixel.Painter, dstRect: Core.Math.Rectangle, subRect: *&lt;a href="#Gui_ThemeImageRect"&gt;Gui.ThemeImageRect&lt;/a&gt;, color: Pixel.Color, center = true, interpol = InterpolationMode.Linear)
-func drawSubRect(painter: *Pixel.Painter, texture: Pixel.Texture, dstRect: Core.Math.Rectangle, subRect: *&lt;a href="#Gui_ThemeImageRect"&gt;Gui.ThemeImageRect&lt;/a&gt;, color: Pixel.Color, center = true, interpol = InterpolationMode.Linear)
+<code style="white-space: break-spaces">func drawSubRect(using self, painter: *Pixel.Painter, dstRect: Core.Math.Rectangle, subRect: *<a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a>, color: Pixel.Color, center = true, interpol = InterpolationMode.Linear)
+func drawSubRect(painter: *Pixel.Painter, texture: Pixel.Texture, dstRect: Core.Math.Rectangle, subRect: *<a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a>, color: Pixel.Color, center = true, interpol = InterpolationMode.Linear)
 </code>
 </p>
 <p>
@@ -20807,7 +20807,7 @@ func drawSubRect(painter: *Pixel.Painter, texture: Pixel.Texture, dstRect: Core.
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func getIcon24(using self, idx: &lt;a href="#Gui_ThemeIcons24"&gt;Gui.ThemeIcons24&lt;/a&gt;, size = 24'f32)-&gt;&lt;a href="#Gui_Icon"&gt;Gui.Icon&lt;/a&gt;
+<code style="white-space: break-spaces">func getIcon24(using self, idx: <a href="#Gui_ThemeIcons24">Gui.ThemeIcons24</a>, size = 24'f32)-><a href="#Gui_Icon">Gui.Icon</a>
 </code>
 </p>
 <p>
@@ -20822,7 +20822,7 @@ func drawSubRect(painter: *Pixel.Painter, texture: Pixel.Texture, dstRect: Core.
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func getIcon64(using self, idx: &lt;a href="#Gui_ThemeIcons64"&gt;Gui.ThemeIcons64&lt;/a&gt;, size = 64'f32)-&gt;&lt;a href="#Gui_Icon"&gt;Gui.Icon&lt;/a&gt;
+<code style="white-space: break-spaces">func getIcon64(using self, idx: <a href="#Gui_ThemeIcons64">Gui.ThemeIcons64</a>, size = 64'f32)-><a href="#Gui_Icon">Gui.Icon</a>
 </code>
 </p>
 <p>
@@ -25249,7 +25249,7 @@ Create a specific style based on the parent.</p>
 <p>
 Create a specific style based on the parent.</p>
 <p class="code">
-<code style="white-space: break-spaces">func create(using self, parent: *&lt;a href="#Gui_ThemeStyle"&gt;Gui.ThemeStyle&lt;/a&gt;)
+<code style="white-space: break-spaces">func create(using self, parent: *<a href="#Gui_ThemeStyle">Gui.ThemeStyle</a>)
 </code>
 </p>
 <p>
@@ -25490,7 +25490,7 @@ func(*<a href="#Gui_ToggleButton">Gui.ToggleButton</a>)</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func onMouseEvent(using self, evt: *&lt;a href="#Gui_MouseEvent"&gt;Gui.MouseEvent&lt;/a&gt;)
+<code style="white-space: break-spaces">func onMouseEvent(using self, evt: *<a href="#Gui_MouseEvent">Gui.MouseEvent</a>)
 </code>
 </p>
 <p>
@@ -25505,7 +25505,7 @@ func(*<a href="#Gui_ToggleButton">Gui.ToggleButton</a>)</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func onPaintEvent(using self, evt: *&lt;a href="#Gui_PaintEvent"&gt;Gui.PaintEvent&lt;/a&gt;)
+<code style="white-space: break-spaces">func onPaintEvent(using self, evt: *<a href="#Gui_PaintEvent">Gui.PaintEvent</a>)
 </code>
 </p>
 <p>
@@ -25520,7 +25520,7 @@ func(*<a href="#Gui_ToggleButton">Gui.ToggleButton</a>)</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func create(parent: *&lt;a href="#Gui_Wnd"&gt;Gui.Wnd&lt;/a&gt;, position: Core.Math.Rectangle = {}, id: Gui.WndId = null)-&gt;*&lt;a href="#Gui_ToggleButton"&gt;Gui.ToggleButton&lt;/a&gt;
+<code style="white-space: break-spaces">func create(parent: *<a href="#Gui_Wnd">Gui.Wnd</a>, position: Core.Math.Rectangle = {}, id: Gui.WndId = null)->*<a href="#Gui_ToggleButton">Gui.ToggleButton</a>
 </code>
 </p>
 <p>
@@ -25582,7 +25582,7 @@ Hide the current tooltip, if visible.</p>
 <p>
 Show a tooltip.</p>
 <p class="code">
-<code style="white-space: break-spaces">func show(owner: *&lt;a href="#Gui_Wnd"&gt;Gui.Wnd&lt;/a&gt;, surfacePos: Core.Math.Point, str: string, delay: Core.Time.Duration = 500'ms)
+<code style="white-space: break-spaces">func show(owner: *<a href="#Gui_Wnd">Gui.Wnd</a>, surfacePos: Core.Math.Point, str: string, delay: Core.Time.Duration = 500'ms)
 </code>
 </p>
 <p>
@@ -26401,7 +26401,7 @@ Main function to update command state of various windows/widgets.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func onApplyStateEvent(using self, evt: *&lt;a href="#Gui_CommandStateEvent"&gt;Gui.CommandStateEvent&lt;/a&gt;)
+<code style="white-space: break-spaces">func onApplyStateEvent(using self, evt: *<a href="#Gui_CommandStateEvent">Gui.CommandStateEvent</a>)
 </code>
 </p>
 <p>
@@ -26416,7 +26416,7 @@ Main function to update command state of various windows/widgets.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func onCommandEvent(using self, evt: *&lt;a href="#Gui_CommandEvent"&gt;Gui.CommandEvent&lt;/a&gt;)
+<code style="white-space: break-spaces">func onCommandEvent(using self, evt: *<a href="#Gui_CommandEvent">Gui.CommandEvent</a>)
 </code>
 </p>
 <p>
@@ -26431,7 +26431,7 @@ Main function to update command state of various windows/widgets.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func onComputeStateEvent(using self, evt: *&lt;a href="#Gui_CommandStateEvent"&gt;Gui.CommandStateEvent&lt;/a&gt;)
+<code style="white-space: break-spaces">func onComputeStateEvent(using self, evt: *<a href="#Gui_CommandStateEvent">Gui.CommandStateEvent</a>)
 </code>
 </p>
 <p>
@@ -26446,7 +26446,7 @@ Main function to update command state of various windows/widgets.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func onCreateEvent(using self, evt: *&lt;a href="#Gui_CreateEvent"&gt;Gui.CreateEvent&lt;/a&gt;)
+<code style="white-space: break-spaces">func onCreateEvent(using self, evt: *<a href="#Gui_CreateEvent">Gui.CreateEvent</a>)
 </code>
 </p>
 <p>
@@ -26461,7 +26461,7 @@ Main function to update command state of various windows/widgets.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func onDestroyEvent(using self, evt: *&lt;a href="#Gui_DestroyEvent"&gt;Gui.DestroyEvent&lt;/a&gt;)
+<code style="white-space: break-spaces">func onDestroyEvent(using self, evt: *<a href="#Gui_DestroyEvent">Gui.DestroyEvent</a>)
 </code>
 </p>
 <p>
@@ -26476,7 +26476,7 @@ Main function to update command state of various windows/widgets.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func onEvent(using self, evt: *&lt;a href="#Gui_Event"&gt;Gui.Event&lt;/a&gt;)
+<code style="white-space: break-spaces">func onEvent(using self, evt: *<a href="#Gui_Event">Gui.Event</a>)
 </code>
 </p>
 <p>
@@ -26491,7 +26491,7 @@ Main function to update command state of various windows/widgets.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func onFocusEvent(using self, evt: *&lt;a href="#Gui_FocusEvent"&gt;Gui.FocusEvent&lt;/a&gt;)
+<code style="white-space: break-spaces">func onFocusEvent(using self, evt: *<a href="#Gui_FocusEvent">Gui.FocusEvent</a>)
 </code>
 </p>
 <p>
@@ -26506,7 +26506,7 @@ Main function to update command state of various windows/widgets.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func onFrameEvent(using self, evt: *&lt;a href="#Gui_FrameEvent"&gt;Gui.FrameEvent&lt;/a&gt;)
+<code style="white-space: break-spaces">func onFrameEvent(using self, evt: *<a href="#Gui_FrameEvent">Gui.FrameEvent</a>)
 </code>
 </p>
 <p>
@@ -26521,7 +26521,7 @@ Main function to update command state of various windows/widgets.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func onHookEvent(using self, evt: *&lt;a href="#Gui_Event"&gt;Gui.Event&lt;/a&gt;)
+<code style="white-space: break-spaces">func onHookEvent(using self, evt: *<a href="#Gui_Event">Gui.Event</a>)
 </code>
 </p>
 <p>
@@ -26536,7 +26536,7 @@ Main function to update command state of various windows/widgets.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func onKeyEvent(using self, evt: *&lt;a href="#Gui_KeyEvent"&gt;Gui.KeyEvent&lt;/a&gt;)
+<code style="white-space: break-spaces">func onKeyEvent(using self, evt: *<a href="#Gui_KeyEvent">Gui.KeyEvent</a>)
 </code>
 </p>
 <p>
@@ -26551,7 +26551,7 @@ Main function to update command state of various windows/widgets.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func onMouseEvent(using self, evt: *&lt;a href="#Gui_MouseEvent"&gt;Gui.MouseEvent&lt;/a&gt;)
+<code style="white-space: break-spaces">func onMouseEvent(using self, evt: *<a href="#Gui_MouseEvent">Gui.MouseEvent</a>)
 </code>
 </p>
 <p>
@@ -26566,7 +26566,7 @@ Main function to update command state of various windows/widgets.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func onPaintEvent(using self, evt: *&lt;a href="#Gui_PaintEvent"&gt;Gui.PaintEvent&lt;/a&gt;)
+<code style="white-space: break-spaces">func onPaintEvent(using self, evt: *<a href="#Gui_PaintEvent">Gui.PaintEvent</a>)
 </code>
 </p>
 <p>
@@ -26581,7 +26581,7 @@ Main function to update command state of various windows/widgets.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func onPostPaintEvent(using self, evt: *&lt;a href="#Gui_PaintEvent"&gt;Gui.PaintEvent&lt;/a&gt;)
+<code style="white-space: break-spaces">func onPostPaintEvent(using self, evt: *<a href="#Gui_PaintEvent">Gui.PaintEvent</a>)
 </code>
 </p>
 <p>
@@ -26596,7 +26596,7 @@ Main function to update command state of various windows/widgets.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func onPrePaintEvent(using self, evt: *&lt;a href="#Gui_PaintEvent"&gt;Gui.PaintEvent&lt;/a&gt;)
+<code style="white-space: break-spaces">func onPrePaintEvent(using self, evt: *<a href="#Gui_PaintEvent">Gui.PaintEvent</a>)
 </code>
 </p>
 <p>
@@ -26611,7 +26611,7 @@ Main function to update command state of various windows/widgets.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func onResizeEvent(using self, evt: *&lt;a href="#Gui_ResizeEvent"&gt;Gui.ResizeEvent&lt;/a&gt;)
+<code style="white-space: break-spaces">func onResizeEvent(using self, evt: *<a href="#Gui_ResizeEvent">Gui.ResizeEvent</a>)
 </code>
 </p>
 <p>
@@ -26626,7 +26626,7 @@ Main function to update command state of various windows/widgets.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func onSerializeStateEvent(using self, evt: *&lt;a href="#Gui_SerializeStateEvent"&gt;Gui.SerializeStateEvent&lt;/a&gt;)
+<code style="white-space: break-spaces">func onSerializeStateEvent(using self, evt: *<a href="#Gui_SerializeStateEvent">Gui.SerializeStateEvent</a>)
 </code>
 </p>
 <p>
@@ -26641,7 +26641,7 @@ Main function to update command state of various windows/widgets.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func onSetThemeEvent(using self, evt: *&lt;a href="#Gui_SetThemeEvent"&gt;Gui.SetThemeEvent&lt;/a&gt;)
+<code style="white-space: break-spaces">func onSetThemeEvent(using self, evt: *<a href="#Gui_SetThemeEvent">Gui.SetThemeEvent</a>)
 </code>
 </p>
 <p>
@@ -26656,7 +26656,7 @@ Main function to update command state of various windows/widgets.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func onStateEvent(using self, evt: *&lt;a href="#Gui_StateEvent"&gt;Gui.StateEvent&lt;/a&gt;)
+<code style="white-space: break-spaces">func onStateEvent(using self, evt: *<a href="#Gui_StateEvent">Gui.StateEvent</a>)
 </code>
 </p>
 <p>
@@ -26671,7 +26671,7 @@ Main function to update command state of various windows/widgets.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func onSysCommandEvent(using self, evt: *&lt;a href="#Gui_SysCommandEvent"&gt;Gui.SysCommandEvent&lt;/a&gt;)
+<code style="white-space: break-spaces">func onSysCommandEvent(using self, evt: *<a href="#Gui_SysCommandEvent">Gui.SysCommandEvent</a>)
 </code>
 </p>
 <p>
@@ -26686,7 +26686,7 @@ Main function to update command state of various windows/widgets.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func onSysUserEvent(using self, evt: *&lt;a href="#Gui_SysUserEvent"&gt;Gui.SysUserEvent&lt;/a&gt;)
+<code style="white-space: break-spaces">func onSysUserEvent(using self, evt: *<a href="#Gui_SysUserEvent">Gui.SysUserEvent</a>)
 </code>
 </p>
 <p>
@@ -26701,7 +26701,7 @@ Main function to update command state of various windows/widgets.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func onTimerEvent(using self, evt: *&lt;a href="#Gui_TimerEvent"&gt;Gui.TimerEvent&lt;/a&gt;)
+<code style="white-space: break-spaces">func onTimerEvent(using self, evt: *<a href="#Gui_TimerEvent">Gui.TimerEvent</a>)
 </code>
 </p>
 <p>
@@ -26801,9 +26801,9 @@ Force the window to be the last painted (on top of siblings).</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func(T) create(parent: *&lt;a href="#Gui_Wnd"&gt;Gui.Wnd&lt;/a&gt; = null, id: Gui.WndId = null, hook: Gui.HookEvent = null)-&gt;*T
-func(T) create(parent: *&lt;a href="#Gui_Wnd"&gt;Gui.Wnd&lt;/a&gt;, position: Core.Math.Rectangle, id: Gui.WndId = null, hook: Gui.HookEvent = null)-&gt;*T
-func(T) create(parent: *&lt;a href="#Gui_Wnd"&gt;Gui.Wnd&lt;/a&gt;, name: string, position: Core.Math.Rectangle, id: Gui.WndId = null, hook: Gui.HookEvent = null)-&gt;*T
+<code style="white-space: break-spaces">func(T) create(parent: *<a href="#Gui_Wnd">Gui.Wnd</a> = null, id: Gui.WndId = null, hook: Gui.HookEvent = null)->*T
+func(T) create(parent: *<a href="#Gui_Wnd">Gui.Wnd</a>, position: Core.Math.Rectangle, id: Gui.WndId = null, hook: Gui.HookEvent = null)->*T
+func(T) create(parent: *<a href="#Gui_Wnd">Gui.Wnd</a>, name: string, position: Core.Math.Rectangle, id: Gui.WndId = null, hook: Gui.HookEvent = null)->*T
 </code>
 </p>
 <p>
@@ -26920,7 +26920,7 @@ Be sure rect is fully inside the parent rectangle (if possible).</p>
 <p>
 Retrieve the child with the given id.</p>
 <p class="code">
-<code style="white-space: break-spaces">func getChildById(using self, childId: string)-&gt;*&lt;a href="#Gui_Wnd"&gt;Gui.Wnd&lt;/a&gt;
+<code style="white-space: break-spaces">func getChildById(using self, childId: string)->*<a href="#Gui_Wnd">Gui.Wnd</a>
 </code>
 </p>
 <p>
@@ -26971,7 +26971,7 @@ Returns the client area, with <code class = "incode">padding</code> applied.</p>
 <p>
 Get the window with the keyboard focus.</p>
 <p class="code">
-<code style="white-space: break-spaces">func getFocus(using self)-&gt;*&lt;a href="#Gui_Wnd"&gt;Gui.Wnd&lt;/a&gt;
+<code style="white-space: break-spaces">func getFocus(using self)->*<a href="#Gui_Wnd">Gui.Wnd</a>
 </code>
 </p>
 <p>
@@ -27035,7 +27035,7 @@ Get the name associated with a given id shortcut.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func getMouseCapture(using self)-&gt;*&lt;a href="#Gui_Wnd"&gt;Gui.Wnd&lt;/a&gt;
+<code style="white-space: break-spaces">func getMouseCapture(using self)->*<a href="#Gui_Wnd">Gui.Wnd</a>
 </code>
 </p>
 <p>
@@ -27052,7 +27052,7 @@ Get the name associated with a given id shortcut.</p>
 <p>
 Retrieve the parent with the given id.</p>
 <p class="code">
-<code style="white-space: break-spaces">func getParentById(using self, parentId: string)-&gt;*&lt;a href="#Gui_Wnd"&gt;Gui.Wnd&lt;/a&gt;
+<code style="white-space: break-spaces">func getParentById(using self, parentId: string)->*<a href="#Gui_Wnd">Gui.Wnd</a>
 </code>
 </p>
 <p>
@@ -27069,7 +27069,7 @@ Retrieve the parent with the given id.</p>
 <p>
 Get the wnd position relative to a given parent.</p>
 <p class="code">
-<code style="white-space: break-spaces">func getRectIn(using self, in: *&lt;a href="#Gui_Wnd"&gt;Gui.Wnd&lt;/a&gt;)-&gt;Core.Math.Rectangle
+<code style="white-space: break-spaces">func getRectIn(using self, in: *<a href="#Gui_Wnd">Gui.Wnd</a>)->Core.Math.Rectangle
 </code>
 </p>
 <p>
@@ -27208,7 +27208,7 @@ Get the wnd position in the surface.</p>
 <p>
 Get the child window at the given coordinate Coordinate is expressed in the parent system.</p>
 <p class="code">
-<code style="white-space: break-spaces">func getWndAt(using self, x: f32, y: f32, getDisabled = false, getHidden = false)-&gt;*&lt;a href="#Gui_Wnd"&gt;Gui.Wnd&lt;/a&gt;
+<code style="white-space: break-spaces">func getWndAt(using self, x: f32, y: f32, getDisabled = false, getHidden = false)->*<a href="#Gui_Wnd">Gui.Wnd</a>
 </code>
 </p>
 <p>
@@ -27310,7 +27310,7 @@ Returns true if window, and all its parents, are enabled.</p>
 <p>
 Returns true if <code class = "incode">child</code> is in the child hieararchy of <code class = "incode">self</code>.</p>
 <p class="code">
-<code style="white-space: break-spaces">func isParentOf(using self, child: *&lt;a href="#Gui_Wnd"&gt;Gui.Wnd&lt;/a&gt;)-&gt;bool
+<code style="white-space: break-spaces">func isParentOf(using self, child: *<a href="#Gui_Wnd">Gui.Wnd</a>)->bool
 </code>
 </p>
 <p>
@@ -27397,7 +27397,7 @@ Move the wnd.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func paint(using self, bc: *&lt;a href="#Gui_PaintContext"&gt;Gui.PaintContext&lt;/a&gt;)
+<code style="white-space: break-spaces">func paint(using self, bc: *<a href="#Gui_PaintContext">Gui.PaintContext</a>)
 </code>
 </p>
 <p>
@@ -27427,7 +27427,7 @@ Move the wnd.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func postEvent(using self, evt: *&lt;a href="#Gui_Event"&gt;Gui.Event&lt;/a&gt;)
+<code style="white-space: break-spaces">func postEvent(using self, evt: *<a href="#Gui_Event">Gui.Event</a>)
 </code>
 </p>
 <p>
@@ -27487,7 +27487,7 @@ Move the wnd.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func processEvent(using self, evt: *&lt;a href="#Gui_Event"&gt;Gui.Event&lt;/a&gt;)
+<code style="white-space: break-spaces">func processEvent(using self, evt: *<a href="#Gui_Event">Gui.Event</a>)
 </code>
 </p>
 <p>
@@ -27606,7 +27606,7 @@ Send the command event with the given id to the window.</p>
 <p>
 Send the command state event with the given id to the window.</p>
 <p class="code">
-<code style="white-space: break-spaces">func sendComputeCommandStateEvent(using self, cmdId: Gui.WndId)-&gt;&lt;a href="#Gui_CommandStateEvent"&gt;Gui.CommandStateEvent&lt;/a&gt;
+<code style="white-space: break-spaces">func sendComputeCommandStateEvent(using self, cmdId: Gui.WndId)-><a href="#Gui_CommandStateEvent">Gui.CommandStateEvent</a>
 </code>
 </p>
 <p>
@@ -27638,7 +27638,7 @@ Send the command state event with the given id to the window.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func sendEvent(using self, evt: *&lt;a href="#Gui_Event"&gt;Gui.Event&lt;/a&gt;)
+<code style="white-space: break-spaces">func sendEvent(using self, evt: *<a href="#Gui_Event">Gui.Event</a>)
 </code>
 </p>
 <p>
@@ -27668,7 +27668,7 @@ Send the command state event with the given id to the window.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func sendStateEvent(using self, kind: &lt;a href="#Gui_EventKind"&gt;Gui.EventKind&lt;/a&gt;)
+<code style="white-space: break-spaces">func sendStateEvent(using self, kind: <a href="#Gui_EventKind">Gui.EventKind</a>)
 </code>
 </p>
 <p>
@@ -27783,7 +27783,7 @@ Set padding for childs If a value is Swag.F32.Inf, then it wont be changed.</p>
 <p>
 Set window parent.</p>
 <p class="code">
-<code style="white-space: break-spaces">func setParent(using self, who: *&lt;a href="#Gui_Wnd"&gt;Gui.Wnd&lt;/a&gt;)
+<code style="white-space: break-spaces">func setParent(using self, who: *<a href="#Gui_Wnd">Gui.Wnd</a>)
 </code>
 </p>
 <p>
@@ -28007,7 +28007,7 @@ Create a layout control.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func onResizeEvent(using self, evt: *&lt;a href="#Gui_ResizeEvent"&gt;Gui.ResizeEvent&lt;/a&gt;)
+<code style="white-space: break-spaces">func onResizeEvent(using self, evt: *<a href="#Gui_ResizeEvent">Gui.ResizeEvent</a>)
 </code>
 </p>
 <p>
@@ -28041,7 +28041,7 @@ Recompute layout of all childs.</p>
 <p>
 Create a layout control.</p>
 <p class="code">
-<code style="white-space: break-spaces">func create(parent: *&lt;a href="#Gui_Wnd"&gt;Gui.Wnd&lt;/a&gt;, position: Core.Math.Rectangle = {})-&gt;*&lt;a href="#Gui_WrapLayoutCtrl"&gt;Gui.WrapLayoutCtrl&lt;/a&gt;
+<code style="white-space: break-spaces">func create(parent: *<a href="#Gui_Wnd">Gui.Wnd</a>, position: Core.Math.Rectangle = {})->*<a href="#Gui_WrapLayoutCtrl">Gui.WrapLayoutCtrl</a>
 </code>
 </p>
 </div>

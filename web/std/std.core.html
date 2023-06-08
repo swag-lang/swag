@@ -2249,7 +2249,7 @@ Returns true if the given <code class = "incode">value</code> is in the array.</
 <p>
 Create a working buffer.</p>
 <p class="code">
-<code style="white-space: break-spaces">func createBuffer(size: u64)-&gt;&lt;a href="#Core_Array"&gt;Core.Array&lt;/a&gt;(u8)
+<code style="white-space: break-spaces">func createBuffer(size: u64)-><a href="#Core_Array">Core.Array</a>(u8)
 </code>
 </p>
 <p>
@@ -2266,7 +2266,7 @@ Create a working buffer.</p>
 <p>
 Create a temporary array.</p>
 <p class="code">
-<code style="white-space: break-spaces">func(TA) createTemp()-&gt;&lt;a href="#Core_Array"&gt;Core.Array&lt;/a&gt;(TA)
+<code style="white-space: break-spaces">func(TA) createTemp()-><a href="#Core_Array">Core.Array</a>(TA)
 </code>
 </p>
 <p>
@@ -3728,7 +3728,7 @@ Visit all the booleans.</p>
 <p>
 Performs the bitwise AND operation between the elements of the current <code class = "incode">BitArray</code> and the corresponding elements in the specified array.</p>
 <p class="code">
-<code style="white-space: break-spaces">func and(using self, other: &lt;a href="#Core_BitArray"&gt;Core.BitArray&lt;/a&gt;)
+<code style="white-space: break-spaces">func and(using self, other: <a href="#Core_BitArray">Core.BitArray</a>)
 </code>
 </p>
 <p>
@@ -3830,7 +3830,7 @@ Initializes a <code class = "incode">BitArray</code> that contains bit values co
 <p>
 Compares two arrays, and returns <code class = "incode">true</code> if they are equal.</p>
 <p class="code">
-<code style="white-space: break-spaces">func opEquals(using self, other: &lt;a href="#Core_BitArray"&gt;Core.BitArray&lt;/a&gt;)-&gt;bool
+<code style="white-space: break-spaces">func opEquals(using self, other: <a href="#Core_BitArray">Core.BitArray</a>)->bool
 </code>
 </p>
 <p>
@@ -3899,7 +3899,7 @@ func(ptr: bool) opVisit(using self, stmt: code)
 <p>
 Performs the bitwise OR operation between the elements of the current <code class = "incode">BitArray</code> and the corresponding elements in the specified array.</p>
 <p class="code">
-<code style="white-space: break-spaces">func or(using self, other: &lt;a href="#Core_BitArray"&gt;Core.BitArray&lt;/a&gt;)
+<code style="white-space: break-spaces">func or(using self, other: <a href="#Core_BitArray">Core.BitArray</a>)
 </code>
 </p>
 <p>
@@ -3975,7 +3975,7 @@ Sets all bits to the specified value.</p>
 <p>
 Performs the bitwise XOR operation between the elements of the current <code class = "incode">BitArray</code> and the corresponding elements in the specified array.</p>
 <p class="code">
-<code style="white-space: break-spaces">func xor(using self, other: &lt;a href="#Core_BitArray"&gt;Core.BitArray&lt;/a&gt;)
+<code style="white-space: break-spaces">func xor(using self, other: <a href="#Core_BitArray">Core.BitArray</a>)
 </code>
 </p>
 <p>
@@ -4238,7 +4238,7 @@ Seek to the next byte.</p>
 <p>
 Creates a byte stream to read from a slice.</p>
 <p class="code">
-<code style="white-space: break-spaces">func openRead(readBuffer: const [..] u8)-&gt;&lt;a href="#Core_ByteStream"&gt;Core.ByteStream&lt;/a&gt;
+<code style="white-space: break-spaces">func openRead(readBuffer: const [..] u8)-><a href="#Core_ByteStream">Core.ByteStream</a>
 </code>
 </p>
 <p>
@@ -4255,7 +4255,7 @@ Creates a byte stream to read from a slice.</p>
 <p>
 Creates a byte stream to write to an array.</p>
 <p class="code">
-<code style="white-space: break-spaces">func openWrite(writeBuffer: *&lt;a href="#Core_Array"&gt;Core.Array&lt;/a&gt;(u8))-&gt;&lt;a href="#Core_ByteStream"&gt;Core.ByteStream&lt;/a&gt;
+<code style="white-space: break-spaces">func openWrite(writeBuffer: *<a href="#Core_Array">Core.Array</a>(u8))-><a href="#Core_ByteStream">Core.ByteStream</a>
 </code>
 </p>
 <p>
@@ -4620,7 +4620,7 @@ isSet</td>
 <p>
 Returns true if <code class = "incode">oneArg</code> is a valid option (starting with a delimiter).</p>
 <p class="code">
-<code style="white-space: break-spaces">func isOption(oneArg: string, _options: &lt;a href="#Core_CommandLine_ParseOptions"&gt;Core.CommandLine.ParseOptions&lt;/a&gt;)-&gt;bool
+<code style="white-space: break-spaces">func isOption(oneArg: string, _options: <a href="#Core_CommandLine_ParseOptions">Core.CommandLine.ParseOptions</a>)->bool
 </code>
 </p>
 <p>
@@ -4637,7 +4637,7 @@ Returns true if <code class = "incode">oneArg</code> is a valid option (starting
 <p>
 Parse all the arguments and fill the result.</p>
 <p class="code">
-<code style="white-space: break-spaces">func(T) parse(st: *T, args: const [..] string, options = CommandLine.ParseOptions{})-&gt;&lt;a href="#Core_CommandLine_Result"&gt;Core.CommandLine.Result&lt;/a&gt;(T) throw
+<code style="white-space: break-spaces">func(T) parse(st: *T, args: const [..] string, options = CommandLine.ParseOptions{})-><a href="#Core_CommandLine_Result">Core.CommandLine.Result</a>(T) throw
 </code>
 </p>
 <p>
@@ -4669,7 +4669,7 @@ Parse all the arguments and fill the result.</p>
 <p>
 Clean and split a list of arguments -option:value or -option=value =&gt; -option value.</p>
 <p class="code">
-<code style="white-space: break-spaces">func splitArguments(args: const [..] string, options: &lt;a href="#Core_CommandLine_ParseOptions"&gt;Core.CommandLine.ParseOptions&lt;/a&gt;)-&gt;&lt;a href="#Core_Array"&gt;Core.Array&lt;/a&gt;(string)
+<code style="white-space: break-spaces">func splitArguments(args: const [..] string, options: <a href="#Core_CommandLine_ParseOptions">Core.CommandLine.ParseOptions</a>)-><a href="#Core_Array">Core.Array</a>(string)
 </code>
 </p>
 <p>
@@ -5240,7 +5240,7 @@ Fixed</td>
 <p>
 Compress the source buffer.</p>
 <p class="code">
-<code style="white-space: break-spaces">func compress(using self, result: *&lt;a href="#Core_Array"&gt;Core.Array&lt;/a&gt;(u8), src: const [..] u8) throw
+<code style="white-space: break-spaces">func compress(using self, result: *<a href="#Core_Array">Core.Array</a>(u8), src: const [..] u8) throw
 </code>
 </p>
 <p>
@@ -5296,7 +5296,7 @@ Decompress the associated stream.</p>
 <p>
 Decompress the associated stream.</p>
 <p class="code">
-<code style="white-space: break-spaces">func decompress(using self, buf: const [..] u8, winSize: u32 = InflateMaxDistance)-&gt;&lt;a href="#Core_Array"&gt;Core.Array&lt;/a&gt;(u8) throw
+<code style="white-space: break-spaces">func decompress(using self, buf: const [..] u8, winSize: u32 = InflateMaxDistance)-><a href="#Core_Array">Core.Array</a>(u8) throw
 </code>
 </p>
 <p>
@@ -5343,7 +5343,7 @@ Decompress stream.</p>
 <p>
 Decompress stream.</p>
 <p class="code">
-<code style="white-space: break-spaces">func compress(using self, buffer: const [..] u8, level = Deflate.CompressionLevel.Default)-&gt;&lt;a href="#Core_Array"&gt;Core.Array&lt;/a&gt;(u8) throw
+<code style="white-space: break-spaces">func compress(using self, buffer: const [..] u8, level = Deflate.CompressionLevel.Default)-><a href="#Core_Array">Core.Array</a>(u8) throw
 </code>
 </p>
 <p>
@@ -5360,7 +5360,7 @@ Decompress stream.</p>
 <p>
 Decompress stream.</p>
 <p class="code">
-<code style="white-space: break-spaces">func decompress(using self, buffer: const [..] u8)-&gt;&lt;a href="#Core_Array"&gt;Core.Array&lt;/a&gt;(u8) throw
+<code style="white-space: break-spaces">func decompress(using self, buffer: const [..] u8)-><a href="#Core_Array">Core.Array</a>(u8) throw
 </code>
 </p>
 <p>
@@ -5734,7 +5734,7 @@ Returns the number of bytes.</p>
 <p>
 Get the linearized seek offset.</p>
 <p class="code">
-<code style="white-space: break-spaces">func getOffset(seek: &lt;a href="#Core_ConcatBufferSeek"&gt;Core.ConcatBufferSeek&lt;/a&gt;)-&gt;u64
+<code style="white-space: break-spaces">func getOffset(seek: <a href="#Core_ConcatBufferSeek">Core.ConcatBufferSeek</a>)->u64
 </code>
 </p>
 <p>
@@ -5751,7 +5751,7 @@ Get the linearized seek offset.</p>
 <p>
 Returns the current <code class = "incode">seek</code> in the buffer.</p>
 <p class="code">
-<code style="white-space: break-spaces">func getSeek(using self)-&gt;&lt;a href="#Core_ConcatBufferSeek"&gt;Core.ConcatBufferSeek&lt;/a&gt;
+<code style="white-space: break-spaces">func getSeek(using self)-><a href="#Core_ConcatBufferSeek">Core.ConcatBufferSeek</a>
 </code>
 </p>
 <p>
@@ -5819,7 +5819,7 @@ Seek current write pointer.</p>
 <p>
 Move the content.</p>
 <p class="code">
-<code style="white-space: break-spaces">func moveToString(using self)-&gt;&lt;a href="#Core_String"&gt;Core.String&lt;/a&gt;
+<code style="white-space: break-spaces">func moveToString(using self)-><a href="#Core_String">Core.String</a>
 </code>
 </p>
 <p>
@@ -5922,7 +5922,7 @@ Set the granularity of datas when allocated new buckets. Minimum size is 4.</p>
 <p>
 Set the end <code class = "incode">seek</code>.</p>
 <p class="code">
-<code style="white-space: break-spaces">func setEndSeek(using self, seek: &lt;a href="#Core_ConcatBufferSeek"&gt;Core.ConcatBufferSeek&lt;/a&gt;)
+<code style="white-space: break-spaces">func setEndSeek(using self, seek: <a href="#Core_ConcatBufferSeek">Core.ConcatBufferSeek</a>)
 </code>
 </p>
 <p>
@@ -5956,7 +5956,7 @@ Share <code class = "incode">data</code> with the firstBucket.</p>
 <p>
 Set the current <code class = "incode">seek</code>.</p>
 <p class="code">
-<code style="white-space: break-spaces">func setSeek(using self, seek: &lt;a href="#Core_ConcatBufferSeek"&gt;Core.ConcatBufferSeek&lt;/a&gt;)
+<code style="white-space: break-spaces">func setSeek(using self, seek: <a href="#Core_ConcatBufferSeek">Core.ConcatBufferSeek</a>)
 </code>
 </p>
 <p>
@@ -5990,7 +5990,7 @@ Convert to a slice *only* if the buffer is linear (see <code class = "incode">ma
 <p>
 Convert buffer to a String.</p>
 <p class="code">
-<code style="white-space: break-spaces">func toString(using self)-&gt;&lt;a href="#Core_String"&gt;Core.String&lt;/a&gt;
+<code style="white-space: break-spaces">func toString(using self)-><a href="#Core_String">Core.String</a>
 </code>
 </p>
 <p>
@@ -6386,7 +6386,7 @@ Write a line to the console.</p>
 <p>
 Wait for using input, and returns the corresponding string.</p>
 <p class="code">
-<code style="white-space: break-spaces">func prompt()-&gt;&lt;a href="#Core_String"&gt;Core.String&lt;/a&gt;
+<code style="white-space: break-spaces">func prompt()-><a href="#Core_String">Core.String</a>
 </code>
 </p>
 <p>
@@ -6420,7 +6420,7 @@ Restore the console colors to their default values.</p>
 <p>
 Set the console background color.</p>
 <p class="code">
-<code style="white-space: break-spaces">func setBackColor(color: &lt;a href="#Core_Console_Color"&gt;Core.Console.Color&lt;/a&gt;)
+<code style="white-space: break-spaces">func setBackColor(color: <a href="#Core_Console_Color">Core.Console.Color</a>)
 </code>
 </p>
 <p>
@@ -6437,7 +6437,7 @@ Set the console background color.</p>
 <p>
 Set the console foreground color.</p>
 <p class="code">
-<code style="white-space: break-spaces">func setTextColor(color: &lt;a href="#Core_Console_Color"&gt;Core.Console.Color&lt;/a&gt;)
+<code style="white-space: break-spaces">func setTextColor(color: <a href="#Core_Console_Color">Core.Console.Color</a>)
 </code>
 </p>
 <p>
@@ -6861,7 +6861,7 @@ func(<a href="#Core_File_FileInfo">Core.File.FileInfo</a>)-&gt;bool</td>
 <p>
 Enumerate a directory.</p>
 <p class="code">
-<code style="white-space: break-spaces">func enumerate(dirName: string, options: &lt;a href="#Core_Directory_EnumerationOptions"&gt;Core.Directory.EnumerationOptions&lt;/a&gt;)-&gt;&lt;a href="#Core_Array"&gt;Core.Array&lt;/a&gt;(&lt;a href="#Core_File_FileInfo"&gt;Core.File.FileInfo&lt;/a&gt;) throw
+<code style="white-space: break-spaces">func enumerate(dirName: string, options: <a href="#Core_Directory_EnumerationOptions">Core.Directory.EnumerationOptions</a>)-><a href="#Core_Array">Core.Array</a>(<a href="#Core_File_FileInfo">Core.File.FileInfo</a>) throw
 </code>
 </p>
 <p>
@@ -6878,7 +6878,7 @@ Enumerate a directory.</p>
 <p>
 Get all the directories in the given directory.</p>
 <p class="code">
-<code style="white-space: break-spaces">func enumerateDirectories(dirName: string, matchExtension: string = null, recurse = false)-&gt;&lt;a href="#Core_Array"&gt;Core.Array&lt;/a&gt;(&lt;a href="#Core_File_FileInfo"&gt;Core.File.FileInfo&lt;/a&gt;) throw
+<code style="white-space: break-spaces">func enumerateDirectories(dirName: string, matchExtension: string = null, recurse = false)-><a href="#Core_Array">Core.Array</a>(<a href="#Core_File_FileInfo">Core.File.FileInfo</a>) throw
 </code>
 </p>
 <p>
@@ -6895,7 +6895,7 @@ Get all the directories in the given directory.</p>
 <p>
 Get all the files of the given directory.</p>
 <p class="code">
-<code style="white-space: break-spaces">func enumerateFiles(dirName: string, matchExtension: string = null, recurse = false)-&gt;&lt;a href="#Core_Array"&gt;Core.Array&lt;/a&gt;(&lt;a href="#Core_File_FileInfo"&gt;Core.File.FileInfo&lt;/a&gt;) throw
+<code style="white-space: break-spaces">func enumerateFiles(dirName: string, matchExtension: string = null, recurse = false)-><a href="#Core_Array">Core.Array</a>(<a href="#Core_File_FileInfo">Core.File.FileInfo</a>) throw
 </code>
 </p>
 <p>
@@ -6929,7 +6929,7 @@ Returns true if the given directory exists.</p>
 <p>
 Returns the current directory.</p>
 <p class="code">
-<code style="white-space: break-spaces">func getCurrent()-&gt;&lt;a href="#Core_String"&gt;Core.String&lt;/a&gt; throw
+<code style="white-space: break-spaces">func getCurrent()-><a href="#Core_String">Core.String</a> throw
 </code>
 </p>
 <p>
@@ -6946,7 +6946,7 @@ Returns the current directory.</p>
 <p>
 Get the list of logical drives.</p>
 <p class="code">
-<code style="white-space: break-spaces">func getDrives()-&gt;&lt;a href="#Core_Array"&gt;Core.Array&lt;/a&gt;(&lt;a href="#Core_String"&gt;Core.String&lt;/a&gt;) throw
+<code style="white-space: break-spaces">func getDrives()-><a href="#Core_Array">Core.Array</a>(<a href="#Core_String">Core.String</a>) throw
 </code>
 </p>
 <p>
@@ -7369,7 +7369,7 @@ Get the program command line arguments as a [..] string.</p>
 <p>
 Get the list of all monitors.</p>
 <p class="code">
-<code style="white-space: break-spaces">func getMonitors()-&gt;&lt;a href="#Core_Array"&gt;Core.Array&lt;/a&gt;(&lt;a href="#Core_Env_Monitor"&gt;Core.Env.Monitor&lt;/a&gt;)
+<code style="white-space: break-spaces">func getMonitors()-><a href="#Core_Array">Core.Array</a>(<a href="#Core_Env_Monitor">Core.Env.Monitor</a>)
 </code>
 </p>
 <p>
@@ -7386,7 +7386,7 @@ Get the list of all monitors.</p>
 <p>
 The system font directory.</p>
 <p class="code">
-<code style="white-space: break-spaces">func getSpecialDirectory(what: &lt;a href="#Core_Env_SpecialDirectory"&gt;Core.Env.SpecialDirectory&lt;/a&gt;)-&gt;&lt;a href="#Core_String"&gt;Core.String&lt;/a&gt;
+<code style="white-space: break-spaces">func getSpecialDirectory(what: <a href="#Core_Env_SpecialDirectory">Core.Env.SpecialDirectory</a>)-><a href="#Core_String">Core.String</a>
 </code>
 </p>
 <p>
@@ -7420,13 +7420,13 @@ Get a given argument, or null.</p>
 <p>
 Starts a new process with arguments.</p>
 <p class="code">
-<code style="white-space: break-spaces">func startProcess(info: &lt;a href="#Core_Env_StartInfo"&gt;Core.Env.StartInfo&lt;/a&gt;)-&gt;&lt;a href="#Core_Env_Process"&gt;Core.Env.Process&lt;/a&gt; throw
+<code style="white-space: break-spaces">func startProcess(info: <a href="#Core_Env_StartInfo">Core.Env.StartInfo</a>)-><a href="#Core_Env_Process">Core.Env.Process</a> throw
 </code>
 </p>
 <p>
 Starts a new process with arguments.</p>
 <p class="code">
-<code style="white-space: break-spaces">func startProcess(fileName: string, arguments: string = null)-&gt;&lt;a href="#Core_Env_Process"&gt;Core.Env.Process&lt;/a&gt; throw
+<code style="white-space: break-spaces">func startProcess(fileName: string, arguments: string = null)-><a href="#Core_Env_Process">Core.Env.Process</a> throw
 </code>
 </p>
 <p>
@@ -8185,7 +8185,7 @@ Read from the given file stream, and returns the number of bytes.</p>
 <p>
 Set the current seek position of the given file stream.</p>
 <p class="code">
-<code style="white-space: break-spaces">func setPosition(using self, origin: &lt;a href="#Core_File_SeekOrigin"&gt;Core.File.SeekOrigin&lt;/a&gt;, seek: u64) throw
+<code style="white-space: break-spaces">func setPosition(using self, origin: <a href="#Core_File_SeekOrigin">Core.File.SeekOrigin</a>, seek: u64) throw
 </code>
 </p>
 <p>
@@ -8434,7 +8434,7 @@ Open the reader.</p>
 <p>
 Read one line of text.</p>
 <p class="code">
-<code style="white-space: break-spaces">func readLine(using self, result: ref &lt;a href="#Core_String"&gt;Core.String&lt;/a&gt;)-&gt;bool
+<code style="white-space: break-spaces">func readLine(using self, result: ref <a href="#Core_String">Core.String</a>)->bool
 </code>
 </p>
 <p>
@@ -8453,7 +8453,7 @@ Read one line of text.</p>
 <p>
 Read from the current position to the end, and returns the corresponding utf8 string.</p>
 <p class="code">
-<code style="white-space: break-spaces">func readToEnd(using self)-&gt;&lt;a href="#Core_String"&gt;Core.String&lt;/a&gt;
+<code style="white-space: break-spaces">func readToEnd(using self)-><a href="#Core_String">Core.String</a>
 </code>
 </p>
 <p>
@@ -8526,7 +8526,7 @@ Register a new structure to be parsed.</p>
 <p>
 Parse a list of lines.</p>
 <p class="code">
-<code style="white-space: break-spaces">func parse(using self, lines: &lt;a href="#Core_Array"&gt;Core.Array&lt;/a&gt;(string)) throw
+<code style="white-space: break-spaces">func parse(using self, lines: <a href="#Core_Array">Core.Array</a>(string)) throw
 </code>
 </p>
 <p>
@@ -8671,7 +8671,7 @@ Returns true if the given file exists.</p>
 <p>
 Returns attributes associated to the given filename.</p>
 <p class="code">
-<code style="white-space: break-spaces">func getAttributes(fullname: string)-&gt;&lt;a href="#Core_File_FileAttributes"&gt;Core.File.FileAttributes&lt;/a&gt; throw
+<code style="white-space: break-spaces">func getAttributes(fullname: string)-><a href="#Core_File_FileAttributes">Core.File.FileAttributes</a> throw
 </code>
 </p>
 <p>
@@ -8688,7 +8688,7 @@ Returns attributes associated to the given filename.</p>
 <p>
 Get informations about a file.</p>
 <p class="code">
-<code style="white-space: break-spaces">func getFileInfo(fullName: string)-&gt;&lt;a href="#Core_File_FileInfo"&gt;Core.File.FileInfo&lt;/a&gt; throw
+<code style="white-space: break-spaces">func getFileInfo(fullName: string)-><a href="#Core_File_FileInfo">Core.File.FileInfo</a> throw
 </code>
 </p>
 <p>
@@ -8705,7 +8705,7 @@ Get informations about a file.</p>
 <p>
 Returns various file informations.</p>
 <p class="code">
-<code style="white-space: break-spaces">func getInfo(fullname: string)-&gt;&lt;a href="#Core_File_FileInfo"&gt;Core.File.FileInfo&lt;/a&gt; throw
+<code style="white-space: break-spaces">func getInfo(fullname: string)-><a href="#Core_File_FileInfo">Core.File.FileInfo</a> throw
 </code>
 </p>
 <p>
@@ -8739,7 +8739,7 @@ Locate file in the file explorer.</p>
 <p>
 Open a new file stream.</p>
 <p class="code">
-<code style="white-space: break-spaces">func open(fullname: string, mode: &lt;a href="#Core_File_FileMode"&gt;Core.File.FileMode&lt;/a&gt;, access: &lt;a href="#Core_File_FileAccess"&gt;Core.File.FileAccess&lt;/a&gt;, share: &lt;a href="#Core_File_FileShare"&gt;Core.File.FileShare&lt;/a&gt;)-&gt;&lt;a href="#Core_File_FileStream"&gt;Core.File.FileStream&lt;/a&gt; throw
+<code style="white-space: break-spaces">func open(fullname: string, mode: <a href="#Core_File_FileMode">Core.File.FileMode</a>, access: <a href="#Core_File_FileAccess">Core.File.FileAccess</a>, share: <a href="#Core_File_FileShare">Core.File.FileShare</a>)-><a href="#Core_File_FileStream">Core.File.FileStream</a> throw
 </code>
 </p>
 <p>
@@ -8756,7 +8756,7 @@ Open a new file stream.</p>
 <p>
 Creates a new file stream for reading.</p>
 <p class="code">
-<code style="white-space: break-spaces">func openRead(fullname: string)-&gt;&lt;a href="#Core_File_FileStream"&gt;Core.File.FileStream&lt;/a&gt; throw
+<code style="white-space: break-spaces">func openRead(fullname: string)-><a href="#Core_File_FileStream">Core.File.FileStream</a> throw
 </code>
 </p>
 <p>
@@ -8773,7 +8773,7 @@ Creates a new file stream for reading.</p>
 <p>
 Creates a new file stream for writing.</p>
 <p class="code">
-<code style="white-space: break-spaces">func openWrite(fullname: string)-&gt;&lt;a href="#Core_File_FileStream"&gt;Core.File.FileStream&lt;/a&gt; throw
+<code style="white-space: break-spaces">func openWrite(fullname: string)-><a href="#Core_File_FileStream">Core.File.FileStream</a> throw
 </code>
 </p>
 <p>
@@ -8790,7 +8790,7 @@ Creates a new file stream for writing.</p>
 <p>
 Read a file, and store the result in an array of bytes.</p>
 <p class="code">
-<code style="white-space: break-spaces">func readAllBytes(fullname: string)-&gt;&lt;a href="#Core_Array"&gt;Core.Array&lt;/a&gt;(u8) throw
+<code style="white-space: break-spaces">func readAllBytes(fullname: string)-><a href="#Core_Array">Core.Array</a>(u8) throw
 </code>
 </p>
 <p>
@@ -8807,7 +8807,7 @@ Read a file, and store the result in an array of bytes.</p>
 <p>
 Read all the lines of a file.</p>
 <p class="code">
-<code style="white-space: break-spaces">func readAllLines(fullname: string, encoding = TextEncoding.Utf8)-&gt;&lt;a href="#Core_Array"&gt;Core.Array&lt;/a&gt;(&lt;a href="#Core_String"&gt;Core.String&lt;/a&gt;) throw
+<code style="white-space: break-spaces">func readAllLines(fullname: string, encoding = TextEncoding.Utf8)-><a href="#Core_Array">Core.Array</a>(<a href="#Core_String">Core.String</a>) throw
 </code>
 </p>
 <p>
@@ -8824,7 +8824,7 @@ Read all the lines of a file.</p>
 <p>
 Read a file, and store the result in an utf8 string.</p>
 <p class="code">
-<code style="white-space: break-spaces">func readAllText(fullname: string, encoding = TextEncoding.Utf8)-&gt;&lt;a href="#Core_String"&gt;Core.String&lt;/a&gt; throw
+<code style="white-space: break-spaces">func readAllText(fullname: string, encoding = TextEncoding.Utf8)-><a href="#Core_String">Core.String</a> throw
 </code>
 </p>
 <p>
@@ -8882,7 +8882,7 @@ Write a file with the content of a slice of bytes.</p>
 <p>
 Write a file with the content of a <code class = "incode">ConcatBuffer</code>.</p>
 <p class="code">
-<code style="white-space: break-spaces">func writeAllBytes(fullname: string, buffer: &lt;a href="#Core_ConcatBuffer"&gt;Core.ConcatBuffer&lt;/a&gt;)-&gt;u64 throw
+<code style="white-space: break-spaces">func writeAllBytes(fullname: string, buffer: <a href="#Core_ConcatBuffer">Core.ConcatBuffer</a>)->u64 throw
 </code>
 </p>
 <p>
@@ -8899,7 +8899,7 @@ Write a file with the content of a <code class = "incode">ConcatBuffer</code>.</
 <p>
 Write a file with the content of an array of string, one per line.</p>
 <p class="code">
-<code style="white-space: break-spaces">func writeAllLines(fullname: string, lines: &lt;a href="#Core_Array"&gt;Core.Array&lt;/a&gt;(string))-&gt;u64 throw
+<code style="white-space: break-spaces">func writeAllLines(fullname: string, lines: <a href="#Core_Array">Core.Array</a>(string))->u64 throw
 </code>
 </p>
 <p>
@@ -8984,7 +8984,7 @@ Format a string and returns the result as a String.</p>
 <p>
 Format a string and put the result in a ConcatBuffer.</p>
 <p class="code">
-<code style="white-space: break-spaces">func append(buf: *&lt;a href="#Core_ConcatBuffer"&gt;Core.ConcatBuffer&lt;/a&gt;, fmt: string, values: ...)
+<code style="white-space: break-spaces">func append(buf: *<a href="#Core_ConcatBuffer">Core.ConcatBuffer</a>, fmt: string, values: ...)
 </code>
 </p>
 <p>
@@ -9035,7 +9035,7 @@ Count the number of valid <code class = "incode">%</code> placeholders in the st
 <p>
 Format a string in <code class = "incode">dest</code> Can be lot faster than the convenient version which returns a string.</p>
 <p class="code">
-<code style="white-space: break-spaces">func replaceString(dest: *&lt;a href="#Core_String"&gt;Core.String&lt;/a&gt;, fmt: string, values: ...)
+<code style="white-space: break-spaces">func replaceString(dest: *<a href="#Core_String">Core.String</a>, fmt: string, values: ...)
 </code>
 </p>
 <p>
@@ -9053,14 +9053,14 @@ Format a string in <code class = "incode">dest</code> Can be lot faster than the
 String interolation Format is "my {&lt;value to interpolate&gt;:format}.</p>
 <p class="code">
 <code style="white-space: break-spaces">#[Swag.Macro]
-func toInterp(buf: *&lt;a href="#Core_ConcatBuffer"&gt;Core.ConcatBuffer&lt;/a&gt;, exp: string)
+func toInterp(buf: *<a href="#Core_ConcatBuffer">Core.ConcatBuffer</a>, exp: string)
 </code>
 </p>
 <p>
 String interolation Format is "my {&lt;value to interpolate&gt;:format}.</p>
 <p class="code">
 <code style="white-space: break-spaces">#[Swag.Macro]
-func toInterp(exp: string)-&gt;&lt;a href="#Core_String"&gt;Core.String&lt;/a&gt;
+func toInterp(exp: string)-><a href="#Core_String">Core.String</a>
 </code>
 </p>
 <p>
@@ -9077,7 +9077,7 @@ func toInterp(exp: string)-&gt;&lt;a href="#Core_String"&gt;Core.String&lt;/a&gt
 <p>
 Format a string and returns the result as a String.</p>
 <p class="code">
-<code style="white-space: break-spaces">func toString(fmt: string, values: ...)-&gt;&lt;a href="#Core_String"&gt;Core.String&lt;/a&gt;
+<code style="white-space: break-spaces">func toString(fmt: string, values: ...)-><a href="#Core_String">Core.String</a>
 </code>
 </p>
 <p>
@@ -9191,7 +9191,7 @@ u8</td>
 <p>
 Returns the global culture info structure.</p>
 <p class="code">
-<code style="white-space: break-spaces">func getCultureInfo()-&gt;*&lt;a href="#Core_Globalization_CultureInfo"&gt;Core.Globalization.CultureInfo&lt;/a&gt;
+<code style="white-space: break-spaces">func getCultureInfo()->*<a href="#Core_Globalization_CultureInfo">Core.Globalization.CultureInfo</a>
 </code>
 </p>
 <p>
@@ -10047,13 +10047,13 @@ Reserve <code class = "incode">newCapacity</code> elements in the table.</p>
 <p>
 Add a new key.</p>
 <p class="code">
-<code style="white-space: break-spaces">func add(using self, key: K)-&gt;*&lt;a href="#Core_HashSetEntry"&gt;Core.HashSetEntry&lt;/a&gt;(K)
+<code style="white-space: break-spaces">func add(using self, key: K)->*<a href="#Core_HashSetEntry">Core.HashSetEntry</a>(K)
 </code>
 </p>
 <p>
 Add a new key.</p>
 <p class="code">
-<code style="white-space: break-spaces">func add(using self, key: moveref K)-&gt;*&lt;a href="#Core_HashSetEntry"&gt;Core.HashSetEntry&lt;/a&gt;(K)
+<code style="white-space: break-spaces">func add(using self, key: moveref K)->*<a href="#Core_HashSetEntry">Core.HashSetEntry</a>(K)
 </code>
 </p>
 <p>
@@ -10104,7 +10104,7 @@ Returns true if the table contains the given key.</p>
 <p>
 Add a new key.</p>
 <p class="code">
-<code style="white-space: break-spaces">func emplaceInternal(using self, hashVal: u32, key: ref K)-&gt;*&lt;a href="#Core_HashSetEntry"&gt;Core.HashSetEntry&lt;/a&gt;(K)
+<code style="white-space: break-spaces">func emplaceInternal(using self, hashVal: u32, key: ref K)->*<a href="#Core_HashSetEntry">Core.HashSetEntry</a>(K)
 </code>
 </p>
 <p>
@@ -10503,13 +10503,13 @@ alias0 is the key, and alias1 is the value.</p>
 <p>
 Add a new key value pair. If the key already exists, then the value will be replaced.</p>
 <p class="code">
-<code style="white-space: break-spaces">func add(using self, key: K, value: V)-&gt;*&lt;a href="#Core_HashTableEntry"&gt;Core.HashTableEntry&lt;/a&gt;(K, V)
+<code style="white-space: break-spaces">func add(using self, key: K, value: V)->*<a href="#Core_HashTableEntry">Core.HashTableEntry</a>(K, V)
 </code>
 </p>
 <p>
 Add a new key value pair. If the key already exists, then the value will be replaced.</p>
 <p class="code">
-<code style="white-space: break-spaces">func add(using self, key: K, value: moveref V)-&gt;*&lt;a href="#Core_HashTableEntry"&gt;Core.HashTableEntry&lt;/a&gt;(K, V)
+<code style="white-space: break-spaces">func add(using self, key: K, value: moveref V)->*<a href="#Core_HashTableEntry">Core.HashTableEntry</a>(K, V)
 </code>
 </p>
 <p>
@@ -10560,7 +10560,7 @@ Returns true if the table contains the given key.</p>
 <p>
 Use with care !.</p>
 <p class="code">
-<code style="white-space: break-spaces">func emplaceInternal(using self, hashVal: u32, key: ref K, value: ref V)-&gt;*&lt;a href="#Core_HashTableEntry"&gt;Core.HashTableEntry&lt;/a&gt;(K, V)
+<code style="white-space: break-spaces">func emplaceInternal(using self, hashVal: u32, key: ref K, value: ref V)->*<a href="#Core_HashTableEntry">Core.HashTableEntry</a>(K, V)
 </code>
 </p>
 <p>
@@ -10577,7 +10577,7 @@ Use with care !.</p>
 <p>
 Find the given key, and returns the corresponding entry.</p>
 <p class="code">
-<code style="white-space: break-spaces">func find(using self, key: K)-&gt;*&lt;a href="#Core_HashTableEntry"&gt;Core.HashTableEntry&lt;/a&gt;(K, V)
+<code style="white-space: break-spaces">func find(using self, key: K)->*<a href="#Core_HashTableEntry">Core.HashTableEntry</a>(K, V)
 </code>
 </p>
 <p>
@@ -11086,7 +11086,7 @@ Reset the previous and current state.</p>
 <p>
 Get the analog position of the given button.</p>
 <p class="code">
-<code style="white-space: break-spaces">func getPosition(using self, button: &lt;a href="#Core_Input_GamePadButton"&gt;Core.Input.GamePadButton&lt;/a&gt;)-&gt;&lt;a href="#Core_Math_Point"&gt;Core.Math.Point&lt;/a&gt;
+<code style="white-space: break-spaces">func getPosition(using self, button: <a href="#Core_Input_GamePadButton">Core.Input.GamePadButton</a>)-><a href="#Core_Math_Point">Core.Math.Point</a>
 </code>
 </p>
 <p>
@@ -11103,7 +11103,7 @@ Get the analog position of the given button.</p>
 <p>
 Determines whether specified input device button has just been pressed.</p>
 <p class="code">
-<code style="white-space: break-spaces">func isButtonJustPressed(using self, button: &lt;a href="#Core_Input_GamePadButton"&gt;Core.Input.GamePadButton&lt;/a&gt;)-&gt;bool
+<code style="white-space: break-spaces">func isButtonJustPressed(using self, button: <a href="#Core_Input_GamePadButton">Core.Input.GamePadButton</a>)->bool
 </code>
 </p>
 <p>
@@ -11120,7 +11120,7 @@ Determines whether specified input device button has just been pressed.</p>
 <p>
 Determines whether specified input device button has just been released.</p>
 <p class="code">
-<code style="white-space: break-spaces">func isButtonJustReleased(using self, button: &lt;a href="#Core_Input_GamePadButton"&gt;Core.Input.GamePadButton&lt;/a&gt;)-&gt;bool
+<code style="white-space: break-spaces">func isButtonJustReleased(using self, button: <a href="#Core_Input_GamePadButton">Core.Input.GamePadButton</a>)->bool
 </code>
 </p>
 <p>
@@ -11137,7 +11137,7 @@ Determines whether specified input device button has just been released.</p>
 <p>
 Determines whether specified input device button is pressed.</p>
 <p class="code">
-<code style="white-space: break-spaces">func isButtonPressed(using self, button: &lt;a href="#Core_Input_GamePadButton"&gt;Core.Input.GamePadButton&lt;/a&gt;)-&gt;bool
+<code style="white-space: break-spaces">func isButtonPressed(using self, button: <a href="#Core_Input_GamePadButton">Core.Input.GamePadButton</a>)->bool
 </code>
 </p>
 <p>
@@ -11154,7 +11154,7 @@ Determines whether specified input device button is pressed.</p>
 <p>
 Determines whether specified input device button is released (not pressed).</p>
 <p class="code">
-<code style="white-space: break-spaces">func isButtonReleased(using self, button: &lt;a href="#Core_Input_GamePadButton"&gt;Core.Input.GamePadButton&lt;/a&gt;)-&gt;bool
+<code style="white-space: break-spaces">func isButtonReleased(using self, button: <a href="#Core_Input_GamePadButton">Core.Input.GamePadButton</a>)->bool
 </code>
 </p>
 <p>
@@ -12857,7 +12857,7 @@ Reset the keyboard state.</p>
 <p>
 Returns the currently pressed key modifiers.</p>
 <p class="code">
-<code style="white-space: break-spaces">func getPressedModifiers(using self)-&gt;&lt;a href="#Core_Input_KeyModifiers"&gt;Core.Input.KeyModifiers&lt;/a&gt;
+<code style="white-space: break-spaces">func getPressedModifiers(using self)-><a href="#Core_Input_KeyModifiers">Core.Input.KeyModifiers</a>
 </code>
 </p>
 <p>
@@ -12874,7 +12874,7 @@ Returns the currently pressed key modifiers.</p>
 <p>
 Determines whether given key has just been pressed.</p>
 <p class="code">
-<code style="white-space: break-spaces">func isKeyJustPressed(using self, key: &lt;a href="#Core_Input_Key"&gt;Core.Input.Key&lt;/a&gt;)-&gt;bool
+<code style="white-space: break-spaces">func isKeyJustPressed(using self, key: <a href="#Core_Input_Key">Core.Input.Key</a>)->bool
 </code>
 </p>
 <p>
@@ -12891,7 +12891,7 @@ Determines whether given key has just been pressed.</p>
 <p>
 Determines whether given key has just been released.</p>
 <p class="code">
-<code style="white-space: break-spaces">func isKeyJustReleased(using self, key: &lt;a href="#Core_Input_Key"&gt;Core.Input.Key&lt;/a&gt;)-&gt;bool
+<code style="white-space: break-spaces">func isKeyJustReleased(using self, key: <a href="#Core_Input_Key">Core.Input.Key</a>)->bool
 </code>
 </p>
 <p>
@@ -12908,13 +12908,13 @@ Determines whether given key has just been released.</p>
 <p>
 Determines whether given key is currently being pressed.</p>
 <p class="code">
-<code style="white-space: break-spaces">func isKeyPressed(using self, key: &lt;a href="#Core_Input_Key"&gt;Core.Input.Key&lt;/a&gt;)-&gt;bool
+<code style="white-space: break-spaces">func isKeyPressed(using self, key: <a href="#Core_Input_Key">Core.Input.Key</a>)->bool
 </code>
 </p>
 <p>
 Returns true if the given key is pressed.</p>
 <p class="code">
-<code style="white-space: break-spaces">func isKeyPressed(key: &lt;a href="#Core_Input_Key"&gt;Core.Input.Key&lt;/a&gt;)-&gt;bool
+<code style="white-space: break-spaces">func isKeyPressed(key: <a href="#Core_Input_Key">Core.Input.Key</a>)->bool
 </code>
 </p>
 <p>
@@ -12931,7 +12931,7 @@ Returns true if the given key is pressed.</p>
 <p>
 Determines whether given key is currently being released.</p>
 <p class="code">
-<code style="white-space: break-spaces">func isKeyReleased(using self, key: &lt;a href="#Core_Input_Key"&gt;Core.Input.Key&lt;/a&gt;)-&gt;bool
+<code style="white-space: break-spaces">func isKeyReleased(using self, key: <a href="#Core_Input_Key">Core.Input.Key</a>)->bool
 </code>
 </p>
 <p>
@@ -12948,7 +12948,7 @@ Determines whether given key is currently being released.</p>
 <p>
 Try to transform the given key to the corresponding rune.</p>
 <p class="code">
-<code style="white-space: break-spaces">func keyToRune(using self, key: &lt;a href="#Core_Input_Key"&gt;Core.Input.Key&lt;/a&gt;)-&gt;rune
+<code style="white-space: break-spaces">func keyToRune(using self, key: <a href="#Core_Input_Key">Core.Input.Key</a>)->rune
 </code>
 </p>
 <p>
@@ -12963,7 +12963,7 @@ Try to transform the given key to the corresponding rune.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func keyToVirtualKey(key: &lt;a href="#Core_Input_Key"&gt;Core.Input.Key&lt;/a&gt;)-&gt;Core.Input.VirtualKey
+<code style="white-space: break-spaces">func keyToVirtualKey(key: <a href="#Core_Input_Key">Core.Input.Key</a>)->Core.Input.VirtualKey
 </code>
 </p>
 <p>
@@ -12995,7 +12995,7 @@ Compute current state of the keyboard (all keys).</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func virtualKeyToKey(vkey: Core.Input.VirtualKey)-&gt;&lt;a href="#Core_Input_Key"&gt;Core.Input.Key&lt;/a&gt;
+<code style="white-space: break-spaces">func virtualKeyToKey(vkey: Core.Input.VirtualKey)-><a href="#Core_Input_Key">Core.Input.Key</a>
 </code>
 </p>
 <p>
@@ -13270,7 +13270,7 @@ Reset the mouse state to its default value.</p>
 <p>
 Returns the move between the current position and the previous one.</p>
 <p class="code">
-<code style="white-space: break-spaces">func getMove(using self)-&gt;&lt;a href="#Core_Math_Point"&gt;Core.Math.Point&lt;/a&gt;
+<code style="white-space: break-spaces">func getMove(using self)-><a href="#Core_Math_Point">Core.Math.Point</a>
 </code>
 </p>
 <p>
@@ -13287,7 +13287,7 @@ Returns the move between the current position and the previous one.</p>
 <p>
 Returns the mouse position.</p>
 <p class="code">
-<code style="white-space: break-spaces">func getPosition(using self)-&gt;&lt;a href="#Core_Math_Point"&gt;Core.Math.Point&lt;/a&gt;
+<code style="white-space: break-spaces">func getPosition(using self)-><a href="#Core_Math_Point">Core.Math.Point</a>
 </code>
 </p>
 <p>
@@ -13304,7 +13304,7 @@ Returns the mouse position.</p>
 <p>
 Returns the previous mouse position, before the last update.</p>
 <p class="code">
-<code style="white-space: break-spaces">func getPreviousPos(using self)-&gt;&lt;a href="#Core_Math_Point"&gt;Core.Math.Point&lt;/a&gt;
+<code style="white-space: break-spaces">func getPreviousPos(using self)-><a href="#Core_Math_Point">Core.Math.Point</a>
 </code>
 </p>
 <p>
@@ -13319,7 +13319,7 @@ Returns the previous mouse position, before the last update.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func isButtonDoubleClick(using self, button: &lt;a href="#Core_Input_MouseButton"&gt;Core.Input.MouseButton&lt;/a&gt;)-&gt;bool
+<code style="white-space: break-spaces">func isButtonDoubleClick(using self, button: <a href="#Core_Input_MouseButton">Core.Input.MouseButton</a>)->bool
 </code>
 </p>
 <p>
@@ -13336,7 +13336,7 @@ Returns the previous mouse position, before the last update.</p>
 <p>
 Determines whether the specified mouse button has just been pressed.</p>
 <p class="code">
-<code style="white-space: break-spaces">func isButtonJustPressed(using self, button: &lt;a href="#Core_Input_MouseButton"&gt;Core.Input.MouseButton&lt;/a&gt;)-&gt;bool
+<code style="white-space: break-spaces">func isButtonJustPressed(using self, button: <a href="#Core_Input_MouseButton">Core.Input.MouseButton</a>)->bool
 </code>
 </p>
 <p>
@@ -13353,7 +13353,7 @@ Determines whether the specified mouse button has just been pressed.</p>
 <p>
 Determines whether the specified mouse button has just been released.</p>
 <p class="code">
-<code style="white-space: break-spaces">func isButtonJustReleased(using self, button: &lt;a href="#Core_Input_MouseButton"&gt;Core.Input.MouseButton&lt;/a&gt;)-&gt;bool
+<code style="white-space: break-spaces">func isButtonJustReleased(using self, button: <a href="#Core_Input_MouseButton">Core.Input.MouseButton</a>)->bool
 </code>
 </p>
 <p>
@@ -13370,13 +13370,13 @@ Determines whether the specified mouse button has just been released.</p>
 <p>
 Determines whether the specified mouse button is pressed.</p>
 <p class="code">
-<code style="white-space: break-spaces">func isButtonPressed(using self, button: &lt;a href="#Core_Input_MouseButton"&gt;Core.Input.MouseButton&lt;/a&gt;)-&gt;bool
+<code style="white-space: break-spaces">func isButtonPressed(using self, button: <a href="#Core_Input_MouseButton">Core.Input.MouseButton</a>)->bool
 </code>
 </p>
 <p>
 Determins if one given mouse button is pressed or not.</p>
 <p class="code">
-<code style="white-space: break-spaces">func isButtonPressed(button: &lt;a href="#Core_Input_MouseButton"&gt;Core.Input.MouseButton&lt;/a&gt;)-&gt;bool
+<code style="white-space: break-spaces">func isButtonPressed(button: <a href="#Core_Input_MouseButton">Core.Input.MouseButton</a>)->bool
 </code>
 </p>
 <p>
@@ -13393,7 +13393,7 @@ Determins if one given mouse button is pressed or not.</p>
 <p>
 Determines whether the specified mouse button is released.</p>
 <p class="code">
-<code style="white-space: break-spaces">func isButtonReleased(using self, button: &lt;a href="#Core_Input_MouseButton"&gt;Core.Input.MouseButton&lt;/a&gt;)-&gt;bool
+<code style="white-space: break-spaces">func isButtonReleased(using self, button: <a href="#Core_Input_MouseButton">Core.Input.MouseButton</a>)->bool
 </code>
 </p>
 <p>
@@ -13570,7 +13570,7 @@ Compute the actual state of the mouse.</p>
 <p>
 Returns a "shortcut" display name.</p>
 <p class="code">
-<code style="white-space: break-spaces">func getKeyName(mdf: &lt;a href="#Core_Input_KeyModifiers"&gt;Core.Input.KeyModifiers&lt;/a&gt;, key: &lt;a href="#Core_Input_Key"&gt;Core.Input.Key&lt;/a&gt;)-&gt;&lt;a href="#Core_String"&gt;Core.String&lt;/a&gt;
+<code style="white-space: break-spaces">func getKeyName(mdf: <a href="#Core_Input_KeyModifiers">Core.Input.KeyModifiers</a>, key: <a href="#Core_Input_Key">Core.Input.Key</a>)-><a href="#Core_String">Core.String</a>
 </code>
 </p>
 <p>
@@ -13587,7 +13587,7 @@ Returns a "shortcut" display name.</p>
 <p>
 Returns the current mouse position.</p>
 <p class="code">
-<code style="white-space: break-spaces">func getMousePos()-&gt;&lt;a href="#Core_Math_Point"&gt;Core.Math.Point&lt;/a&gt;
+<code style="white-space: break-spaces">func getMousePos()-><a href="#Core_Math_Point">Core.Math.Point</a>
 </code>
 </p>
 <p>
@@ -13983,7 +13983,7 @@ func(T) parallelVisit(range: [..] T, offset: u32 = 1, userData: *void = null, st
 <p>
 Schedule a job to execute.</p>
 <p class="code">
-<code style="white-space: break-spaces">func scheduleJob(job: *&lt;a href="#Core_Jobs_Job"&gt;Core.Jobs.Job&lt;/a&gt;)
+<code style="white-space: break-spaces">func scheduleJob(job: *<a href="#Core_Jobs_Job">Core.Jobs.Job</a>)
 </code>
 </p>
 <p>
@@ -14034,7 +14034,7 @@ Wait for all registered jobs to be finished.</p>
 <p>
 Wait for a given job to be finished.</p>
 <p class="code">
-<code style="white-space: break-spaces">func waitJob(job: *&lt;a href="#Core_Jobs_Job"&gt;Core.Jobs.Job&lt;/a&gt;)
+<code style="white-space: break-spaces">func waitJob(job: *<a href="#Core_Jobs_Job">Core.Jobs.Job</a>)
 </code>
 </p>
 <p>
@@ -14749,13 +14749,13 @@ Visit every elements of the list from tail to head @alias0 is the value @alias1 
 <p>
 Add a new element on front.</p>
 <p class="code">
-<code style="white-space: break-spaces">func addBack(using self, value: T)-&gt;*&lt;a href="#Core_Node"&gt;Core.Node&lt;/a&gt;(T)
+<code style="white-space: break-spaces">func addBack(using self, value: T)->*<a href="#Core_Node">Core.Node</a>(T)
 </code>
 </p>
 <p>
 Add a new element on front.</p>
 <p class="code">
-<code style="white-space: break-spaces">func addBack(using self, value: moveref T)-&gt;*&lt;a href="#Core_Node"&gt;Core.Node&lt;/a&gt;(T)
+<code style="white-space: break-spaces">func addBack(using self, value: moveref T)->*<a href="#Core_Node">Core.Node</a>(T)
 </code>
 </p>
 <p>
@@ -14772,13 +14772,13 @@ Add a new element on front.</p>
 <p>
 Add a new element on front.</p>
 <p class="code">
-<code style="white-space: break-spaces">func addFront(using self, value: T)-&gt;*&lt;a href="#Core_Node"&gt;Core.Node&lt;/a&gt;(T)
+<code style="white-space: break-spaces">func addFront(using self, value: T)->*<a href="#Core_Node">Core.Node</a>(T)
 </code>
 </p>
 <p>
 Add a new element on front.</p>
 <p class="code">
-<code style="white-space: break-spaces">func addFront(using self, value: moveref T)-&gt;*&lt;a href="#Core_Node"&gt;Core.Node&lt;/a&gt;(T)
+<code style="white-space: break-spaces">func addFront(using self, value: moveref T)->*<a href="#Core_Node">Core.Node</a>(T)
 </code>
 </p>
 <p>
@@ -14812,11 +14812,11 @@ Clear all elements.</p>
 <p>
 Insert a node before the reference.</p>
 <p class="code">
-<code style="white-space: break-spaces">func insertAfter(using self, node: *&lt;a href="#Core_Node"&gt;Core.Node&lt;/a&gt;(T), value: T)-&gt;*&lt;a href="#Core_Node"&gt;Core.Node&lt;/a&gt;(T)
+<code style="white-space: break-spaces">func insertAfter(using self, node: *<a href="#Core_Node">Core.Node</a>(T), value: T)->*<a href="#Core_Node">Core.Node</a>(T)
 </code>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func insertAfter(using self, node: *&lt;a href="#Core_Node"&gt;Core.Node&lt;/a&gt;(T), value: moveref T)-&gt;*&lt;a href="#Core_Node"&gt;Core.Node&lt;/a&gt;(T)
+<code style="white-space: break-spaces">func insertAfter(using self, node: *<a href="#Core_Node">Core.Node</a>(T), value: moveref T)->*<a href="#Core_Node">Core.Node</a>(T)
 </code>
 </p>
 <p>
@@ -14833,11 +14833,11 @@ Insert a node before the reference.</p>
 <p>
 Insert a node before the reference.</p>
 <p class="code">
-<code style="white-space: break-spaces">func insertBefore(using self, node: *&lt;a href="#Core_Node"&gt;Core.Node&lt;/a&gt;(T), value: T)-&gt;*&lt;a href="#Core_Node"&gt;Core.Node&lt;/a&gt;(T)
+<code style="white-space: break-spaces">func insertBefore(using self, node: *<a href="#Core_Node">Core.Node</a>(T), value: T)->*<a href="#Core_Node">Core.Node</a>(T)
 </code>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func insertBefore(using self, node: *&lt;a href="#Core_Node"&gt;Core.Node&lt;/a&gt;(T), value: moveref T)-&gt;*&lt;a href="#Core_Node"&gt;Core.Node&lt;/a&gt;(T)
+<code style="white-space: break-spaces">func insertBefore(using self, node: *<a href="#Core_Node">Core.Node</a>(T), value: moveref T)->*<a href="#Core_Node">Core.Node</a>(T)
 </code>
 </p>
 <p>
@@ -15033,7 +15033,7 @@ Set the logger prefix.</p>
 <p>
 Register a new writer interface.</p>
 <p class="code">
-<code style="white-space: break-spaces">func addWriter(using self, writer: &lt;a href="#Core_ILogWriter"&gt;Core.ILogWriter&lt;/a&gt;)
+<code style="white-space: break-spaces">func addWriter(using self, writer: <a href="#Core_ILogWriter">Core.ILogWriter</a>)
 </code>
 </p>
 <p>
@@ -15067,7 +15067,7 @@ Remove all writers.</p>
 <p>
 Create a new log.</p>
 <p class="code">
-<code style="white-space: break-spaces">func create()-&gt;&lt;a href="#Core_Log"&gt;Core.Log&lt;/a&gt;
+<code style="white-space: break-spaces">func create()-><a href="#Core_Log">Core.Log</a>
 </code>
 </p>
 <p>
@@ -15084,7 +15084,7 @@ Create a new log.</p>
 <p>
 Get the logger prefix.</p>
 <p class="code">
-<code style="white-space: break-spaces">func getFlags(using self)-&gt;&lt;a href="#Core_LogFlags"&gt;Core.LogFlags&lt;/a&gt;
+<code style="white-space: break-spaces">func getFlags(using self)-><a href="#Core_LogFlags">Core.LogFlags</a>
 </code>
 </p>
 <p>
@@ -15135,7 +15135,7 @@ Main print function.</p>
 <p>
 Set the logger flags.</p>
 <p class="code">
-<code style="white-space: break-spaces">func setFlags(using self, flags: &lt;a href="#Core_LogFlags"&gt;Core.LogFlags&lt;/a&gt;)
+<code style="white-space: break-spaces">func setFlags(using self, flags: <a href="#Core_LogFlags">Core.LogFlags</a>)
 </code>
 </p>
 <p>
@@ -16442,7 +16442,7 @@ s64</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func mul(x: s64, y: s64)-&gt;&lt;a href="#Core_Math_Int128"&gt;Core.Math.Int128&lt;/a&gt;
+<code style="white-space: break-spaces">func mul(x: s64, y: s64)-><a href="#Core_Math_Int128">Core.Math.Int128</a>
 </code>
 </p>
 <p>
@@ -16472,7 +16472,7 @@ s64</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func opCmp(using const self, other: &lt;a href="#Core_Math_Int128"&gt;Core.Math.Int128&lt;/a&gt;)-&gt;s32
+<code style="white-space: break-spaces">func opCmp(using const self, other: <a href="#Core_Math_Int128">Core.Math.Int128</a>)->s32
 </code>
 </p>
 <p>
@@ -16487,7 +16487,7 @@ s64</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func opEquals(using const self, other: &lt;a href="#Core_Math_Int128"&gt;Core.Math.Int128&lt;/a&gt;)-&gt;bool
+<code style="white-space: break-spaces">func opEquals(using const self, other: <a href="#Core_Math_Int128">Core.Math.Int128</a>)->bool
 </code>
 </p>
 <p>
@@ -16694,7 +16694,7 @@ Set all values.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func from(values: T...)-&gt;&lt;a href="#Core_Math_NumericArray"&gt;Core.Math.NumericArray&lt;/a&gt;(T, u32)
+<code style="white-space: break-spaces">func from(values: T...)-><a href="#Core_Math_NumericArray">Core.Math.NumericArray</a>(T, u32)
 </code>
 </p>
 <p>
@@ -16711,7 +16711,7 @@ Set all values.</p>
 <p>
 Multiply & Add.</p>
 <p class="code">
-<code style="white-space: break-spaces">func mulAdd(using self, value1: &lt;a href="#Core_Math_NumericArray"&gt;Core.Math.NumericArray&lt;/a&gt;(T, u32), value2: &lt;a href="#Core_Math_NumericArray"&gt;Core.Math.NumericArray&lt;/a&gt;(T, u32))
+<code style="white-space: break-spaces">func mulAdd(using self, value1: <a href="#Core_Math_NumericArray">Core.Math.NumericArray</a>(T, u32), value2: <a href="#Core_Math_NumericArray">Core.Math.NumericArray</a>(T, u32))
 </code>
 </p>
 <p>
@@ -16748,7 +16748,7 @@ func opAffect(using self, what: const [..] T)
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func(op: string) opAssign(using self, value: &lt;a href="#Core_Math_NumericArray"&gt;Core.Math.NumericArray&lt;/a&gt;(T, u32))
+<code style="white-space: break-spaces">func(op: string) opAssign(using self, value: <a href="#Core_Math_NumericArray">Core.Math.NumericArray</a>(T, u32))
 func(op: string) opAssign(using self, value: T)
 </code>
 </p>
@@ -16764,7 +16764,7 @@ func(op: string) opAssign(using self, value: T)
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func(op: string) opBinary(using const self, other: &lt;a href="#Core_Math_NumericArray"&gt;Core.Math.NumericArray&lt;/a&gt;(T, u32))-&gt;&lt;a href="#Core_Math_NumericArray"&gt;Core.Math.NumericArray&lt;/a&gt;(T, u32)
+<code style="white-space: break-spaces">func(op: string) opBinary(using const self, other: <a href="#Core_Math_NumericArray">Core.Math.NumericArray</a>(T, u32))-><a href="#Core_Math_NumericArray">Core.Math.NumericArray</a>(T, u32)
 </code>
 </p>
 <p>
@@ -16779,7 +16779,7 @@ func(op: string) opAssign(using self, value: T)
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func opEquals(using const self, other: &lt;a href="#Core_Math_NumericArray"&gt;Core.Math.NumericArray&lt;/a&gt;(T, u32))-&gt;bool
+<code style="white-space: break-spaces">func opEquals(using const self, other: <a href="#Core_Math_NumericArray">Core.Math.NumericArray</a>(T, u32))->bool
 </code>
 </p>
 <p>
@@ -17013,7 +17013,7 @@ Set Point to (0, 0).</p>
 <p>
 Check if two points are equal with an epsilon.</p>
 <p class="code">
-<code style="white-space: break-spaces">func isEqualEpsilon(using const self, other: &lt;a href="#Core_Math_Point"&gt;Core.Math.Point&lt;/a&gt;, eps = ConstF32.Epsilon)-&gt;bool
+<code style="white-space: break-spaces">func isEqualEpsilon(using const self, other: <a href="#Core_Math_Point">Core.Math.Point</a>, eps = ConstF32.Epsilon)->bool
 </code>
 </p>
 <p>
@@ -17100,7 +17100,7 @@ Offset this Point by a given value.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func(op: string) opAssign(using self, other: &lt;a href="#Core_Math_Point"&gt;Core.Math.Point&lt;/a&gt;)
+<code style="white-space: break-spaces">func(op: string) opAssign(using self, other: <a href="#Core_Math_Point">Core.Math.Point</a>)
 func(op: string) opAssign(using self, value: f32)
 </code>
 </p>
@@ -17116,8 +17116,8 @@ func(op: string) opAssign(using self, value: f32)
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func(op: string) opBinary(using const self, other: &lt;a href="#Core_Math_Point"&gt;Core.Math.Point&lt;/a&gt;)-&gt;&lt;a href="#Core_Math_Point"&gt;Core.Math.Point&lt;/a&gt;
-func(op: string) opBinary(using const self, value: f32)-&gt;&lt;a href="#Core_Math_Point"&gt;Core.Math.Point&lt;/a&gt;
+<code style="white-space: break-spaces">func(op: string) opBinary(using const self, other: <a href="#Core_Math_Point">Core.Math.Point</a>)-><a href="#Core_Math_Point">Core.Math.Point</a>
+func(op: string) opBinary(using const self, value: f32)-><a href="#Core_Math_Point">Core.Math.Point</a>
 </code>
 </p>
 <p>
@@ -17132,7 +17132,7 @@ func(op: string) opBinary(using const self, value: f32)-&gt;&lt;a href="#Core_Ma
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func opEquals(using const self, other: &lt;a href="#Core_Math_Point"&gt;Core.Math.Point&lt;/a&gt;)-&gt;bool
+<code style="white-space: break-spaces">func opEquals(using const self, other: <a href="#Core_Math_Point">Core.Math.Point</a>)->bool
 </code>
 </p>
 <p>
@@ -17147,7 +17147,7 @@ func(op: string) opBinary(using const self, value: f32)-&gt;&lt;a href="#Core_Ma
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func(op: string) opUnary(using const self)-&gt;&lt;a href="#Core_Math_Point"&gt;Core.Math.Point&lt;/a&gt;
+<code style="white-space: break-spaces">func(op: string) opUnary(using const self)-><a href="#Core_Math_Point">Core.Math.Point</a>
 </code>
 </p>
 <p>
@@ -17569,7 +17569,7 @@ Vertical center coordinate (y + height / 2).</p>
 <p>
 Add a padding (offset to each side).</p>
 <p class="code">
-<code style="white-space: break-spaces">func applyPadding(using self, padding: &lt;a href="#Core_Math_Vector4"&gt;Core.Math.Vector4&lt;/a&gt;)
+<code style="white-space: break-spaces">func applyPadding(using self, padding: <a href="#Core_Math_Vector4">Core.Math.Vector4</a>)
 </code>
 </p>
 <p>
@@ -17620,7 +17620,7 @@ Perform a Math.ceil operation on all the coordinates.</p>
 <p>
 Central point.</p>
 <p class="code">
-<code style="white-space: break-spaces">func center(using const self)-&gt;&lt;a href="#Core_Math_Point"&gt;Core.Math.Point&lt;/a&gt;
+<code style="white-space: break-spaces">func center(using const self)-><a href="#Core_Math_Point">Core.Math.Point</a>
 </code>
 </p>
 <p>
@@ -17654,7 +17654,7 @@ Set rectangle to (0, 0, 0, 0).</p>
 <p>
 Constrain the rectangle to be inside another one, without changing its size (so the other rectangle must be bigger).</p>
 <p class="code">
-<code style="white-space: break-spaces">func constrainIn(using self, other: &lt;a href="#Core_Math_Rectangle"&gt;Core.Math.Rectangle&lt;/a&gt;)
+<code style="white-space: break-spaces">func constrainIn(using self, other: <a href="#Core_Math_Rectangle">Core.Math.Rectangle</a>)
 </code>
 </p>
 <p>
@@ -17671,13 +17671,13 @@ Constrain the rectangle to be inside another one, without changing its size (so 
 <p>
 Determines if the specfied point is contained within the rectangular region.</p>
 <p class="code">
-<code style="white-space: break-spaces">func contains(using const self, pt: &lt;a href="#Core_Math_Point"&gt;Core.Math.Point&lt;/a&gt;)-&gt;bool
+<code style="white-space: break-spaces">func contains(using const self, pt: <a href="#Core_Math_Point">Core.Math.Point</a>)->bool
 </code>
 </p>
 <p>
 Determines if the specfied rectangle is contained within the rectangular region.</p>
 <p class="code">
-<code style="white-space: break-spaces">func contains(using const self, rect: &lt;a href="#Core_Math_Rectangle"&gt;Core.Math.Rectangle&lt;/a&gt;)-&gt;bool
+<code style="white-space: break-spaces">func contains(using const self, rect: <a href="#Core_Math_Rectangle">Core.Math.Rectangle</a>)->bool
 </code>
 </p>
 <p>
@@ -17700,7 +17700,7 @@ Determines if the specfied point is contained within the rectangular region.</p>
 <p>
 Creates a rectangle that represents the union between <code class = "incode">a</code> and <code class = "incode">b</code>.</p>
 <p class="code">
-<code style="white-space: break-spaces">func getUnion(a: &lt;a href="#Core_Math_Rectangle"&gt;Core.Math.Rectangle&lt;/a&gt;, b: &lt;a href="#Core_Math_Rectangle"&gt;Core.Math.Rectangle&lt;/a&gt;)-&gt;&lt;a href="#Core_Math_Rectangle"&gt;Core.Math.Rectangle&lt;/a&gt;
+<code style="white-space: break-spaces">func getUnion(a: <a href="#Core_Math_Rectangle">Core.Math.Rectangle</a>, b: <a href="#Core_Math_Rectangle">Core.Math.Rectangle</a>)-><a href="#Core_Math_Rectangle">Core.Math.Rectangle</a>
 </code>
 </p>
 <p>
@@ -17757,13 +17757,13 @@ Inflates the rectangle by the given amount in <code class = "incode">x</code> an
 <p>
 Intersect this rectangle with another one.</p>
 <p class="code">
-<code style="white-space: break-spaces">func intersect(using self, other: &lt;a href="#Core_Math_Rectangle"&gt;Core.Math.Rectangle&lt;/a&gt;)
+<code style="white-space: break-spaces">func intersect(using self, other: <a href="#Core_Math_Rectangle">Core.Math.Rectangle</a>)
 </code>
 </p>
 <p>
 Creates a rectangle that represents the intersetion between <code class = "incode">a</code> and <code class = "incode">b</code>.</p>
 <p class="code">
-<code style="white-space: break-spaces">func intersect(a: &lt;a href="#Core_Math_Rectangle"&gt;Core.Math.Rectangle&lt;/a&gt;, b: &lt;a href="#Core_Math_Rectangle"&gt;Core.Math.Rectangle&lt;/a&gt;)-&gt;&lt;a href="#Core_Math_Rectangle"&gt;Core.Math.Rectangle&lt;/a&gt;
+<code style="white-space: break-spaces">func intersect(a: <a href="#Core_Math_Rectangle">Core.Math.Rectangle</a>, b: <a href="#Core_Math_Rectangle">Core.Math.Rectangle</a>)-><a href="#Core_Math_Rectangle">Core.Math.Rectangle</a>
 </code>
 </p>
 <p>
@@ -17782,7 +17782,7 @@ Creates a rectangle that represents the intersetion between <code class = "incod
 <p>
 Determines if this rectangle intersets with <code class = "incode">rect</code>.</p>
 <p class="code">
-<code style="white-space: break-spaces">func intersectWith(using const self, rect: &lt;a href="#Core_Math_Rectangle"&gt;Core.Math.Rectangle&lt;/a&gt;)-&gt;bool
+<code style="white-space: break-spaces">func intersectWith(using const self, rect: <a href="#Core_Math_Rectangle">Core.Math.Rectangle</a>)->bool
 </code>
 </p>
 <p>
@@ -17952,7 +17952,7 @@ Move the left coordinate, reducing the width.</p>
 <p>
 Offset the rectangle position by a given value.</p>
 <p class="code">
-<code style="white-space: break-spaces">func offset(using self, offset: &lt;a href="#Core_Math_Point"&gt;Core.Math.Point&lt;/a&gt;)
+<code style="white-space: break-spaces">func offset(using self, offset: <a href="#Core_Math_Point">Core.Math.Point</a>)
 </code>
 </p>
 <p>
@@ -17979,7 +17979,7 @@ Offset the rectangle position by a x and y values.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func opEquals(using const self, other: &lt;a href="#Core_Math_Rectangle"&gt;Core.Math.Rectangle&lt;/a&gt;)-&gt;bool
+<code style="white-space: break-spaces">func opEquals(using const self, other: <a href="#Core_Math_Rectangle">Core.Math.Rectangle</a>)->bool
 </code>
 </p>
 <p>
@@ -18053,7 +18053,7 @@ Multiply the width by <code class = "incode">x</code> and the height by <code cl
 <p>
 Initialize the rectangle with two position.</p>
 <p class="code">
-<code style="white-space: break-spaces">func set(using self, topLeft: &lt;a href="#Core_Math_Point"&gt;Core.Math.Point&lt;/a&gt;, bottomRight: &lt;a href="#Core_Math_Point"&gt;Core.Math.Point&lt;/a&gt;)
+<code style="white-space: break-spaces">func set(using self, topLeft: <a href="#Core_Math_Point">Core.Math.Point</a>, bottomRight: <a href="#Core_Math_Point">Core.Math.Point</a>)
 </code>
 </p>
 <p>
@@ -18104,7 +18104,7 @@ Right coordinate (x + width).</p>
 <p>
 Creates a rectangle that represents the union.</p>
 <p class="code">
-<code style="white-space: break-spaces">func setUnion(using self, other: &lt;a href="#Core_Math_Rectangle"&gt;Core.Math.Rectangle&lt;/a&gt;)
+<code style="white-space: break-spaces">func setUnion(using self, other: <a href="#Core_Math_Rectangle">Core.Math.Rectangle</a>)
 </code>
 </p>
 <p>
@@ -18304,7 +18304,7 @@ Set transform to identity.</p>
 <p>
 Creates a rotation matix, with a given center of rotation.</p>
 <p class="code">
-<code style="white-space: break-spaces">func createRotation(angle: f32, centerX: f32, centerY: f32)-&gt;&lt;a href="#Core_Math_Transform2"&gt;Core.Math.Transform2&lt;/a&gt;
+<code style="white-space: break-spaces">func createRotation(angle: f32, centerX: f32, centerY: f32)-><a href="#Core_Math_Transform2">Core.Math.Transform2</a>
 </code>
 </p>
 <p>
@@ -18321,7 +18321,7 @@ Creates a rotation matix, with a given center of rotation.</p>
 <p>
 Creates a scale matix, with a given center.</p>
 <p class="code">
-<code style="white-space: break-spaces">func createScale(scaleX: f32, scaleY: f32, centerX: f32, centerY: f32)-&gt;&lt;a href="#Core_Math_Transform2"&gt;Core.Math.Transform2&lt;/a&gt;
+<code style="white-space: break-spaces">func createScale(scaleX: f32, scaleY: f32, centerX: f32, centerY: f32)-><a href="#Core_Math_Transform2">Core.Math.Transform2</a>
 </code>
 </p>
 <p>
@@ -18338,7 +18338,7 @@ Creates a scale matix, with a given center.</p>
 <p>
 Creates a translation matix.</p>
 <p class="code">
-<code style="white-space: break-spaces">func createTranslation(x: f32, y: f32)-&gt;&lt;a href="#Core_Math_Transform2"&gt;Core.Math.Transform2&lt;/a&gt;
+<code style="white-space: break-spaces">func createTranslation(x: f32, y: f32)-><a href="#Core_Math_Transform2">Core.Math.Transform2</a>
 </code>
 </p>
 <p>
@@ -18355,7 +18355,7 @@ Creates a translation matix.</p>
 <p>
 Multiply two matricies.</p>
 <p class="code">
-<code style="white-space: break-spaces">func multiply(using self, matrix2: &lt;a href="#Core_Math_Transform2"&gt;Core.Math.Transform2&lt;/a&gt;)
+<code style="white-space: break-spaces">func multiply(using self, matrix2: <a href="#Core_Math_Transform2">Core.Math.Transform2</a>)
 </code>
 </p>
 <p>
@@ -19014,7 +19014,7 @@ Returns this vector normalized even if its length is almost null.</p>
 <p>
 Returns the angle with another vector.</p>
 <p class="code">
-<code style="white-space: break-spaces">func angle(using const self, other: &lt;a href="#Core_Math_Vector2"&gt;Core.Math.Vector2&lt;/a&gt;)-&gt;f32
+<code style="white-space: break-spaces">func angle(using const self, other: <a href="#Core_Math_Vector2">Core.Math.Vector2</a>)->f32
 </code>
 </p>
 <p>
@@ -19065,7 +19065,7 @@ Set the vector to zero.</p>
 <p>
 Returns the cosine angle with another vector.</p>
 <p class="code">
-<code style="white-space: break-spaces">func cosAngle(using const self, other: &lt;a href="#Core_Math_Vector2"&gt;Core.Math.Vector2&lt;/a&gt;)-&gt;f32
+<code style="white-space: break-spaces">func cosAngle(using const self, other: <a href="#Core_Math_Vector2">Core.Math.Vector2</a>)->f32
 </code>
 </p>
 <p>
@@ -19082,13 +19082,13 @@ Returns the cosine angle with another vector.</p>
 <p>
 Returns the Z signed length of the perpendicular vector.</p>
 <p class="code">
-<code style="white-space: break-spaces">func cross(using const self, other: &lt;a href="#Core_Math_Vector2"&gt;Core.Math.Vector2&lt;/a&gt;)-&gt;f32
+<code style="white-space: break-spaces">func cross(using const self, other: <a href="#Core_Math_Vector2">Core.Math.Vector2</a>)->f32
 </code>
 </p>
 <p>
 Returns the perpendicular vector in the 2D plane.</p>
 <p class="code">
-<code style="white-space: break-spaces">func cross(using const self, axis: f32)-&gt;&lt;a href="#Core_Math_Vector2"&gt;Core.Math.Vector2&lt;/a&gt;
+<code style="white-space: break-spaces">func cross(using const self, axis: f32)-><a href="#Core_Math_Vector2">Core.Math.Vector2</a>
 </code>
 </p>
 <p>
@@ -19107,7 +19107,7 @@ Returns the perpendicular vector in the 2D plane.</p>
 <p>
 Returns the distance between two vectors.</p>
 <p class="code">
-<code style="white-space: break-spaces">func distance(using const self, to: &lt;a href="#Core_Math_Vector2"&gt;Core.Math.Vector2&lt;/a&gt;)-&gt;f32
+<code style="white-space: break-spaces">func distance(using const self, to: <a href="#Core_Math_Vector2">Core.Math.Vector2</a>)->f32
 </code>
 </p>
 <p>
@@ -19124,7 +19124,7 @@ Returns the distance between two vectors.</p>
 <p>
 Returns the square distance between two vectors.</p>
 <p class="code">
-<code style="white-space: break-spaces">func distanceSquared(using const self, to: &lt;a href="#Core_Math_Vector2"&gt;Core.Math.Vector2&lt;/a&gt;)-&gt;f32
+<code style="white-space: break-spaces">func distanceSquared(using const self, to: <a href="#Core_Math_Vector2">Core.Math.Vector2</a>)->f32
 </code>
 </p>
 <p>
@@ -19141,7 +19141,7 @@ Returns the square distance between two vectors.</p>
 <p>
 Returns the distance of the point to the given line.</p>
 <p class="code">
-<code style="white-space: break-spaces">func distanceToLine(using const self, a: &lt;a href="#Core_Math_Vector2"&gt;Core.Math.Vector2&lt;/a&gt;, b: &lt;a href="#Core_Math_Vector2"&gt;Core.Math.Vector2&lt;/a&gt;)-&gt;f32
+<code style="white-space: break-spaces">func distanceToLine(using const self, a: <a href="#Core_Math_Vector2">Core.Math.Vector2</a>, b: <a href="#Core_Math_Vector2">Core.Math.Vector2</a>)->f32
 </code>
 </p>
 <p>
@@ -19158,7 +19158,7 @@ Returns the distance of the point to the given line.</p>
 <p>
 Returns the distance of the point to the given segment.</p>
 <p class="code">
-<code style="white-space: break-spaces">func distanceToSegment(using const self, a: &lt;a href="#Core_Math_Vector2"&gt;Core.Math.Vector2&lt;/a&gt;, b: &lt;a href="#Core_Math_Vector2"&gt;Core.Math.Vector2&lt;/a&gt;)-&gt;f32
+<code style="white-space: break-spaces">func distanceToSegment(using const self, a: <a href="#Core_Math_Vector2">Core.Math.Vector2</a>, b: <a href="#Core_Math_Vector2">Core.Math.Vector2</a>)->f32
 </code>
 </p>
 <p>
@@ -19175,7 +19175,7 @@ Returns the distance of the point to the given segment.</p>
 <p>
 Returns the dot product between two vectors.</p>
 <p class="code">
-<code style="white-space: break-spaces">func dot(using const self, other: &lt;a href="#Core_Math_Vector2"&gt;Core.Math.Vector2&lt;/a&gt;)
+<code style="white-space: break-spaces">func dot(using const self, other: <a href="#Core_Math_Vector2">Core.Math.Vector2</a>)
 </code>
 </p>
 <p>
@@ -19209,7 +19209,7 @@ Math.floor.</p>
 <p>
 Returns true if this vector is equals to another with an epsilon.</p>
 <p class="code">
-<code style="white-space: break-spaces">func isEqualEpsilon(using const self, other: &lt;a href="#Core_Math_Vector2"&gt;Core.Math.Vector2&lt;/a&gt;, eps = cast(f32) ConstF64.Epsilon)-&gt;bool
+<code style="white-space: break-spaces">func isEqualEpsilon(using const self, other: <a href="#Core_Math_Vector2">Core.Math.Vector2</a>, eps = cast(f32) ConstF64.Epsilon)->bool
 </code>
 </p>
 <p>
@@ -19226,7 +19226,7 @@ Returns true if this vector is equals to another with an epsilon.</p>
 <p>
 Returns true if the point <code class = "incode">pt</code> is inside an ellipse.</p>
 <p class="code">
-<code style="white-space: break-spaces">func isInEllipse(using const self, center: &lt;a href="#Core_Math_Vector2"&gt;Core.Math.Vector2&lt;/a&gt;, radiusX: f32, radiusY: f32)-&gt;bool
+<code style="white-space: break-spaces">func isInEllipse(using const self, center: <a href="#Core_Math_Vector2">Core.Math.Vector2</a>, radiusX: f32, radiusY: f32)->bool
 </code>
 </p>
 <p>
@@ -19243,7 +19243,7 @@ Returns true if the point <code class = "incode">pt</code> is inside an ellipse.
 <p>
 Returns true if the point <code class = "incode">pt</code> is inside the triangle defined with a, b, c.</p>
 <p class="code">
-<code style="white-space: break-spaces">func isInTriangle(using const self, a: &lt;a href="#Core_Math_Vector2"&gt;Core.Math.Vector2&lt;/a&gt;, b: &lt;a href="#Core_Math_Vector2"&gt;Core.Math.Vector2&lt;/a&gt;, c: &lt;a href="#Core_Math_Vector2"&gt;Core.Math.Vector2&lt;/a&gt;)-&gt;bool
+<code style="white-space: break-spaces">func isInTriangle(using const self, a: <a href="#Core_Math_Vector2">Core.Math.Vector2</a>, b: <a href="#Core_Math_Vector2">Core.Math.Vector2</a>, c: <a href="#Core_Math_Vector2">Core.Math.Vector2</a>)->bool
 </code>
 </p>
 <p>
@@ -19328,7 +19328,7 @@ Returns the squared length of the vector.</p>
 <p>
 Compute the intersection point of two lines.</p>
 <p class="code">
-<code style="white-space: break-spaces">func lineLineIntersect(start0: &lt;a href="#Core_Math_Vector2"&gt;Core.Math.Vector2&lt;/a&gt;, end0: &lt;a href="#Core_Math_Vector2"&gt;Core.Math.Vector2&lt;/a&gt;, start1: &lt;a href="#Core_Math_Vector2"&gt;Core.Math.Vector2&lt;/a&gt;, end1: &lt;a href="#Core_Math_Vector2"&gt;Core.Math.Vector2&lt;/a&gt;, epsilon: f32 = ConstF32.Epsilon)-&gt;{yes: bool, pos: &lt;a href="#Core_Math_Vector2"&gt;Core.Math.Vector2&lt;/a&gt;}
+<code style="white-space: break-spaces">func lineLineIntersect(start0: <a href="#Core_Math_Vector2">Core.Math.Vector2</a>, end0: <a href="#Core_Math_Vector2">Core.Math.Vector2</a>, start1: <a href="#Core_Math_Vector2">Core.Math.Vector2</a>, end1: <a href="#Core_Math_Vector2">Core.Math.Vector2</a>, epsilon: f32 = ConstF32.Epsilon)->{yes: bool, pos: <a href="#Core_Math_Vector2">Core.Math.Vector2</a>}
 </code>
 </p>
 <p>
@@ -19345,7 +19345,7 @@ Compute the intersection point of two lines.</p>
 <p>
 Returns a vector which is the <code class = "incode">min</code> of two vectors.</p>
 <p class="code">
-<code style="white-space: break-spaces">func max(a: &lt;a href="#Core_Math_Vector2"&gt;Core.Math.Vector2&lt;/a&gt;, b: &lt;a href="#Core_Math_Vector2"&gt;Core.Math.Vector2&lt;/a&gt;)-&gt;&lt;a href="#Core_Math_Vector2"&gt;Core.Math.Vector2&lt;/a&gt;
+<code style="white-space: break-spaces">func max(a: <a href="#Core_Math_Vector2">Core.Math.Vector2</a>, b: <a href="#Core_Math_Vector2">Core.Math.Vector2</a>)-><a href="#Core_Math_Vector2">Core.Math.Vector2</a>
 </code>
 </p>
 <p>
@@ -19362,7 +19362,7 @@ Returns a vector which is the <code class = "incode">min</code> of two vectors.<
 <p>
 Returns a vector which is the <code class = "incode">min</code> of two vectors.</p>
 <p class="code">
-<code style="white-space: break-spaces">func min(a: &lt;a href="#Core_Math_Vector2"&gt;Core.Math.Vector2&lt;/a&gt;, b: &lt;a href="#Core_Math_Vector2"&gt;Core.Math.Vector2&lt;/a&gt;)-&gt;&lt;a href="#Core_Math_Vector2"&gt;Core.Math.Vector2&lt;/a&gt;
+<code style="white-space: break-spaces">func min(a: <a href="#Core_Math_Vector2">Core.Math.Vector2</a>, b: <a href="#Core_Math_Vector2">Core.Math.Vector2</a>)-><a href="#Core_Math_Vector2">Core.Math.Vector2</a>
 </code>
 </p>
 <p>
@@ -19379,7 +19379,7 @@ Returns a vector which is the <code class = "incode">min</code> of two vectors.<
 <p>
 Returns the minimal segment between two segments (and the minimal distance).</p>
 <p class="code">
-<code style="white-space: break-spaces">func nearestPointsSegSeg(p0: &lt;a href="#Core_Math_Vector2"&gt;Core.Math.Vector2&lt;/a&gt;, p1: &lt;a href="#Core_Math_Vector2"&gt;Core.Math.Vector2&lt;/a&gt;, q0: &lt;a href="#Core_Math_Vector2"&gt;Core.Math.Vector2&lt;/a&gt;, q1: &lt;a href="#Core_Math_Vector2"&gt;Core.Math.Vector2&lt;/a&gt;)-&gt;{a: &lt;a href="#Core_Math_Vector2"&gt;Core.Math.Vector2&lt;/a&gt;, b: &lt;a href="#Core_Math_Vector2"&gt;Core.Math.Vector2&lt;/a&gt;, dist: f32}
+<code style="white-space: break-spaces">func nearestPointsSegSeg(p0: <a href="#Core_Math_Vector2">Core.Math.Vector2</a>, p1: <a href="#Core_Math_Vector2">Core.Math.Vector2</a>, q0: <a href="#Core_Math_Vector2">Core.Math.Vector2</a>, q1: <a href="#Core_Math_Vector2">Core.Math.Vector2</a>)->{a: <a href="#Core_Math_Vector2">Core.Math.Vector2</a>, b: <a href="#Core_Math_Vector2">Core.Math.Vector2</a>, dist: f32}
 </code>
 </p>
 <p style="white-space: break-spaces"> David Eberly, Geometric Tools, Redmond WA 98052
@@ -19466,7 +19466,7 @@ Normalize this vector (set its length to 1) even if its length is almost null.</
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func(op: string) opAssign(using self, other: &lt;a href="#Core_Math_Vector2"&gt;Core.Math.Vector2&lt;/a&gt;)
+<code style="white-space: break-spaces">func(op: string) opAssign(using self, other: <a href="#Core_Math_Vector2">Core.Math.Vector2</a>)
 func(op: string) opAssign(using self, value: f32)
 </code>
 </p>
@@ -19482,8 +19482,8 @@ func(op: string) opAssign(using self, value: f32)
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func(op: string) opBinary(using const self, other: &lt;a href="#Core_Math_Vector2"&gt;Core.Math.Vector2&lt;/a&gt;)-&gt;&lt;a href="#Core_Math_Vector2"&gt;Core.Math.Vector2&lt;/a&gt;
-func(op: string) opBinary(using const self, value: f32)-&gt;&lt;a href="#Core_Math_Vector2"&gt;Core.Math.Vector2&lt;/a&gt;
+<code style="white-space: break-spaces">func(op: string) opBinary(using const self, other: <a href="#Core_Math_Vector2">Core.Math.Vector2</a>)-><a href="#Core_Math_Vector2">Core.Math.Vector2</a>
+func(op: string) opBinary(using const self, value: f32)-><a href="#Core_Math_Vector2">Core.Math.Vector2</a>
 </code>
 </p>
 <p>
@@ -19498,7 +19498,7 @@ func(op: string) opBinary(using const self, value: f32)-&gt;&lt;a href="#Core_Ma
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func opEquals(using self, other: &lt;a href="#Core_Math_Vector2"&gt;Core.Math.Vector2&lt;/a&gt;)-&gt;bool
+<code style="white-space: break-spaces">func opEquals(using self, other: <a href="#Core_Math_Vector2">Core.Math.Vector2</a>)->bool
 </code>
 </p>
 <p>
@@ -19513,7 +19513,7 @@ func(op: string) opBinary(using const self, value: f32)-&gt;&lt;a href="#Core_Ma
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func(op: string) opUnary(using const self)-&gt;&lt;a href="#Core_Math_Vector2"&gt;Core.Math.Vector2&lt;/a&gt;
+<code style="white-space: break-spaces">func(op: string) opUnary(using const self)-><a href="#Core_Math_Vector2">Core.Math.Vector2</a>
 </code>
 </p>
 <p>
@@ -19530,7 +19530,7 @@ func(op: string) opBinary(using const self, value: f32)-&gt;&lt;a href="#Core_Ma
 <p>
 Returns true if the given point is inside the polygon PNPoly by W. Randolph Franklin.</p>
 <p class="code">
-<code style="white-space: break-spaces">func polyContains(poly: &lt;a href="#Core_Array"&gt;Core.Array&lt;/a&gt;(&lt;a href="#Core_Math_Vector2"&gt;Core.Math.Vector2&lt;/a&gt;), pt: &lt;a href="#Core_Math_Vector2"&gt;Core.Math.Vector2&lt;/a&gt;)-&gt;bool
+<code style="white-space: break-spaces">func polyContains(poly: <a href="#Core_Array">Core.Array</a>(<a href="#Core_Math_Vector2">Core.Math.Vector2</a>), pt: <a href="#Core_Math_Vector2">Core.Math.Vector2</a>)->bool
 </code>
 </p>
 <p>
@@ -19547,7 +19547,7 @@ Returns true if the given point is inside the polygon PNPoly by W. Randolph Fran
 <p>
 Rotate the vector by a given angle.</p>
 <p class="code">
-<code style="white-space: break-spaces">func rotate(using self, angle: &lt;a href="#Core_Math_Angle"&gt;Core.Math.Angle&lt;/a&gt;)
+<code style="white-space: break-spaces">func rotate(using self, angle: <a href="#Core_Math_Angle">Core.Math.Angle</a>)
 </code>
 </p>
 <p>
@@ -19581,7 +19581,7 @@ Math.round.</p>
 <p>
 Compute the intersection point of two segments.</p>
 <p class="code">
-<code style="white-space: break-spaces">func segSegIntersect(start0: &lt;a href="#Core_Math_Vector2"&gt;Core.Math.Vector2&lt;/a&gt;, end0: &lt;a href="#Core_Math_Vector2"&gt;Core.Math.Vector2&lt;/a&gt;, start1: &lt;a href="#Core_Math_Vector2"&gt;Core.Math.Vector2&lt;/a&gt;, end1: &lt;a href="#Core_Math_Vector2"&gt;Core.Math.Vector2&lt;/a&gt;, epsilon: f32 = ConstF32.Epsilon)-&gt;{yes: bool, pos: &lt;a href="#Core_Math_Vector2"&gt;Core.Math.Vector2&lt;/a&gt;}
+<code style="white-space: break-spaces">func segSegIntersect(start0: <a href="#Core_Math_Vector2">Core.Math.Vector2</a>, end0: <a href="#Core_Math_Vector2">Core.Math.Vector2</a>, start1: <a href="#Core_Math_Vector2">Core.Math.Vector2</a>, end1: <a href="#Core_Math_Vector2">Core.Math.Vector2</a>, epsilon: f32 = ConstF32.Epsilon)->{yes: bool, pos: <a href="#Core_Math_Vector2">Core.Math.Vector2</a>}
 </code>
 </p>
 <p>
@@ -19649,7 +19649,7 @@ Set the vector length.</p>
 <p>
 Returns this vector normalized.</p>
 <p class="code">
-<code style="white-space: break-spaces">func toNormalize(using const self)-&gt;&lt;a href="#Core_Math_Vector2"&gt;Core.Math.Vector2&lt;/a&gt;
+<code style="white-space: break-spaces">func toNormalize(using const self)-><a href="#Core_Math_Vector2">Core.Math.Vector2</a>
 </code>
 </p>
 <p>
@@ -19666,7 +19666,7 @@ Returns this vector normalized.</p>
 <p>
 Returns this vector normalized even if its length is almost null.</p>
 <p class="code">
-<code style="white-space: break-spaces">func toNormalizeSafe(using const self)-&gt;&lt;a href="#Core_Math_Vector2"&gt;Core.Math.Vector2&lt;/a&gt;
+<code style="white-space: break-spaces">func toNormalizeSafe(using const self)-><a href="#Core_Math_Vector2">Core.Math.Vector2</a>
 </code>
 </p>
 <p>
@@ -19937,7 +19937,7 @@ Set the vector to zero.</p>
 <p>
 Returns the distance between two vectors.</p>
 <p class="code">
-<code style="white-space: break-spaces">func distance(using const self, to: &lt;a href="#Core_Math_Vector3"&gt;Core.Math.Vector3&lt;/a&gt;)-&gt;f32
+<code style="white-space: break-spaces">func distance(using const self, to: <a href="#Core_Math_Vector3">Core.Math.Vector3</a>)->f32
 </code>
 </p>
 <p>
@@ -19954,7 +19954,7 @@ Returns the distance between two vectors.</p>
 <p>
 Returns the square distance between two vectors.</p>
 <p class="code">
-<code style="white-space: break-spaces">func distanceSquared(using const self, to: &lt;a href="#Core_Math_Vector3"&gt;Core.Math.Vector3&lt;/a&gt;)-&gt;f32
+<code style="white-space: break-spaces">func distanceSquared(using const self, to: <a href="#Core_Math_Vector3">Core.Math.Vector3</a>)->f32
 </code>
 </p>
 <p>
@@ -19971,7 +19971,7 @@ Returns the square distance between two vectors.</p>
 <p>
 Returns the dot product between two vectors.</p>
 <p class="code">
-<code style="white-space: break-spaces">func dot(using const self, other: &lt;a href="#Core_Math_Vector3"&gt;Core.Math.Vector3&lt;/a&gt;)
+<code style="white-space: break-spaces">func dot(using const self, other: <a href="#Core_Math_Vector3">Core.Math.Vector3</a>)
 </code>
 </p>
 <p>
@@ -19988,7 +19988,7 @@ Returns the dot product between two vectors.</p>
 <p>
 Returns true if this vector is equals to another with an epsilon.</p>
 <p class="code">
-<code style="white-space: break-spaces">func isEqualEpsilon(using const self, other: &lt;a href="#Core_Math_Vector3"&gt;Core.Math.Vector3&lt;/a&gt;, eps = cast(f32) ConstF64.Epsilon)-&gt;bool
+<code style="white-space: break-spaces">func isEqualEpsilon(using const self, other: <a href="#Core_Math_Vector3">Core.Math.Vector3</a>, eps = cast(f32) ConstF64.Epsilon)->bool
 </code>
 </p>
 <p>
@@ -20073,7 +20073,7 @@ Returns the squared length of the vector.</p>
 <p>
 Returns a vector which is the <code class = "incode">min</code> of two vectors.</p>
 <p class="code">
-<code style="white-space: break-spaces">func max(a: &lt;a href="#Core_Math_Vector3"&gt;Core.Math.Vector3&lt;/a&gt;, b: &lt;a href="#Core_Math_Vector3"&gt;Core.Math.Vector3&lt;/a&gt;)-&gt;&lt;a href="#Core_Math_Vector3"&gt;Core.Math.Vector3&lt;/a&gt;
+<code style="white-space: break-spaces">func max(a: <a href="#Core_Math_Vector3">Core.Math.Vector3</a>, b: <a href="#Core_Math_Vector3">Core.Math.Vector3</a>)-><a href="#Core_Math_Vector3">Core.Math.Vector3</a>
 </code>
 </p>
 <p>
@@ -20090,7 +20090,7 @@ Returns a vector which is the <code class = "incode">min</code> of two vectors.<
 <p>
 Returns a vector which is the <code class = "incode">min</code> of two vectors.</p>
 <p class="code">
-<code style="white-space: break-spaces">func min(a: &lt;a href="#Core_Math_Vector3"&gt;Core.Math.Vector3&lt;/a&gt;, b: &lt;a href="#Core_Math_Vector3"&gt;Core.Math.Vector3&lt;/a&gt;)-&gt;&lt;a href="#Core_Math_Vector3"&gt;Core.Math.Vector3&lt;/a&gt;
+<code style="white-space: break-spaces">func min(a: <a href="#Core_Math_Vector3">Core.Math.Vector3</a>, b: <a href="#Core_Math_Vector3">Core.Math.Vector3</a>)-><a href="#Core_Math_Vector3">Core.Math.Vector3</a>
 </code>
 </p>
 <p>
@@ -20171,7 +20171,7 @@ Normalize this vector (set its length to 1) even if its length is almost null.</
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func(op: string) opAssign(using self, other: &lt;a href="#Core_Math_Vector3"&gt;Core.Math.Vector3&lt;/a&gt;)
+<code style="white-space: break-spaces">func(op: string) opAssign(using self, other: <a href="#Core_Math_Vector3">Core.Math.Vector3</a>)
 func(op: string) opAssign(using self, value: f32)
 </code>
 </p>
@@ -20187,8 +20187,8 @@ func(op: string) opAssign(using self, value: f32)
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func(op: string) opBinary(using self, other: &lt;a href="#Core_Math_Vector3"&gt;Core.Math.Vector3&lt;/a&gt;)-&gt;&lt;a href="#Core_Math_Vector3"&gt;Core.Math.Vector3&lt;/a&gt;
-func(op: string) opBinary(using self, value: f32)-&gt;&lt;a href="#Core_Math_Vector3"&gt;Core.Math.Vector3&lt;/a&gt;
+<code style="white-space: break-spaces">func(op: string) opBinary(using self, other: <a href="#Core_Math_Vector3">Core.Math.Vector3</a>)-><a href="#Core_Math_Vector3">Core.Math.Vector3</a>
+func(op: string) opBinary(using self, value: f32)-><a href="#Core_Math_Vector3">Core.Math.Vector3</a>
 </code>
 </p>
 <p>
@@ -20203,7 +20203,7 @@ func(op: string) opBinary(using self, value: f32)-&gt;&lt;a href="#Core_Math_Vec
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func opEquals(using self, other: &lt;a href="#Core_Math_Vector3"&gt;Core.Math.Vector3&lt;/a&gt;)-&gt;bool
+<code style="white-space: break-spaces">func opEquals(using self, other: <a href="#Core_Math_Vector3">Core.Math.Vector3</a>)->bool
 </code>
 </p>
 <p>
@@ -20218,7 +20218,7 @@ func(op: string) opBinary(using self, value: f32)-&gt;&lt;a href="#Core_Math_Vec
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func(op: string) opUnary(using self)-&gt;&lt;a href="#Core_Math_Vector3"&gt;Core.Math.Vector3&lt;/a&gt;
+<code style="white-space: break-spaces">func(op: string) opUnary(using self)-><a href="#Core_Math_Vector3">Core.Math.Vector3</a>
 </code>
 </p>
 <p>
@@ -20286,7 +20286,7 @@ Set the vector length.</p>
 <p>
 Returns this vector normalized.</p>
 <p class="code">
-<code style="white-space: break-spaces">func toNormalize(using const self)-&gt;&lt;a href="#Core_Math_Vector3"&gt;Core.Math.Vector3&lt;/a&gt;
+<code style="white-space: break-spaces">func toNormalize(using const self)-><a href="#Core_Math_Vector3">Core.Math.Vector3</a>
 </code>
 </p>
 <p>
@@ -20303,7 +20303,7 @@ Returns this vector normalized.</p>
 <p>
 Returns this vector normalized even if its length is almost null.</p>
 <p class="code">
-<code style="white-space: break-spaces">func toNormalizeSafe(using const self)-&gt;&lt;a href="#Core_Math_Vector3"&gt;Core.Math.Vector3&lt;/a&gt;
+<code style="white-space: break-spaces">func toNormalizeSafe(using const self)-><a href="#Core_Math_Vector3">Core.Math.Vector3</a>
 </code>
 </p>
 <p>
@@ -20427,7 +20427,7 @@ Set the vector to zero.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func opEquals(using self, other: &lt;a href="#Core_Math_Vector4"&gt;Core.Math.Vector4&lt;/a&gt;)-&gt;bool
+<code style="white-space: break-spaces">func opEquals(using self, other: <a href="#Core_Math_Vector4">Core.Math.Vector4</a>)->bool
 </code>
 </p>
 <p>
@@ -20442,7 +20442,7 @@ Set the vector to zero.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func(op: string) opUnary(using self)-&gt;&lt;a href="#Core_Math_Vector4"&gt;Core.Math.Vector4&lt;/a&gt;
+<code style="white-space: break-spaces">func(op: string) opUnary(using self)-><a href="#Core_Math_Vector4">Core.Math.Vector4</a>
 </code>
 </p>
 <p>
@@ -22253,7 +22253,7 @@ Find the first occurence in the string.</p>
 <p>
 Find all the occurences in the string.</p>
 <p class="code">
-<code style="white-space: break-spaces">func grepAll(using self, str: string)-&gt;&lt;a href="#Core_Array"&gt;Core.Array&lt;/a&gt;(string)
+<code style="white-space: break-spaces">func grepAll(using self, str: string)-><a href="#Core_Array">Core.Array</a>(string)
 </code>
 </p>
 <p>
@@ -22581,7 +22581,7 @@ u8</td>
 <p>
 Combine multiple paths into one, by adding a directory separator between them if necessary.</p>
 <p class="code">
-<code style="white-space: break-spaces">func combine(fullnames: string...)-&gt;&lt;a href="#Core_String"&gt;Core.String&lt;/a&gt;
+<code style="white-space: break-spaces">func combine(fullnames: string...)-><a href="#Core_String">Core.String</a>
 </code>
 </p>
 <p>
@@ -22615,7 +22615,7 @@ Returns true if the two paths are equal.</p>
 <p>
 Transform <code class = "incode">fullname</code> to an absolute path.</p>
 <p class="code">
-<code style="white-space: break-spaces">func getAbsolute(fullname: string)-&gt;&lt;a href="#Core_String"&gt;Core.String&lt;/a&gt; throw
+<code style="white-space: break-spaces">func getAbsolute(fullname: string)-><a href="#Core_String">Core.String</a> throw
 </code>
 </p>
 <p>
@@ -22666,7 +22666,7 @@ Returns the file name extension, including the <code class = "incode">.</code> c
 <p>
 Returns the file name extension, including the <code class = "incode">.</code> character, in lower case Returns null if no extension was found.</p>
 <p class="code">
-<code style="white-space: break-spaces">func getExtensionLowerCase(fullname: string)-&gt;&lt;a href="#Core_String"&gt;Core.String&lt;/a&gt;
+<code style="white-space: break-spaces">func getExtensionLowerCase(fullname: string)-><a href="#Core_String">Core.String</a>
 </code>
 </p>
 <p>
@@ -22853,7 +22853,7 @@ Returns true if the given path name is valid.</p>
 <p>
 Normalize path <code class = "incode">\</code> are replaced with <code class = "incode">/</code> as this is the std norm for paths.</p>
 <p class="code">
-<code style="white-space: break-spaces">func normalize(fullname: *&lt;a href="#Core_String"&gt;Core.String&lt;/a&gt;)
+<code style="white-space: break-spaces">func normalize(fullname: *<a href="#Core_String">Core.String</a>)
 </code>
 </p>
 <p>
@@ -23227,7 +23227,7 @@ s32</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">struct Rng(T = &lt;a href="#Core_Random_MWC"&gt;Core.Random.MWC&lt;/a&gt;)</code>
+<code style="white-space: break-spaces">struct Rng(T = <a href="#Core_Random_MWC">Core.Random.MWC</a>)</code>
 </p>
 <table class="enumeration">
 <tr>
@@ -24128,13 +24128,13 @@ Returns the given attribute value, or null.</p>
 <p>
 Returns the given associated attributes to <code class = "incode">type</code>.</p>
 <p class="code">
-<code style="white-space: break-spaces">func getAttributes(type: const *Swag.TypeInfo, attribute: const *Swag.TypeInfo)-&gt;&lt;a href="#Core_Array"&gt;Core.Array&lt;/a&gt;(const *Swag.Attribute)
+<code style="white-space: break-spaces">func getAttributes(type: const *Swag.TypeInfo, attribute: const *Swag.TypeInfo)-><a href="#Core_Array">Core.Array</a>(const *Swag.Attribute)
 </code>
 </p>
 <p>
 Returns the given associated attributes to <code class = "incode">value</code>.</p>
 <p class="code">
-<code style="white-space: break-spaces">func getAttributes(value: const *Swag.TypeValue, attribute: const *Swag.TypeInfo)-&gt;&lt;a href="#Core_Array"&gt;Core.Array&lt;/a&gt;(const *Swag.Attribute)
+<code style="white-space: break-spaces">func getAttributes(value: const *Swag.TypeValue, attribute: const *Swag.TypeInfo)-><a href="#Core_Array">Core.Array</a>(const *Swag.Attribute)
 </code>
 </p>
 <p>
@@ -24151,7 +24151,7 @@ Returns the given associated attributes to <code class = "incode">value</code>.<
 <p>
 Returns the enum value name corresponding to the value pointed by <code class = "incode">valueAddr</code> Can have multiple names if the enum is tagged with #[Swag.EnumFlags].</p>
 <p class="code">
-<code style="white-space: break-spaces">func getEnumName(type: const *Swag.TypeInfo, valueAddr: const *void, fullname = true)-&gt;&lt;a href="#Core_String"&gt;Core.String&lt;/a&gt;
+<code style="white-space: break-spaces">func getEnumName(type: const *Swag.TypeInfo, valueAddr: const *void, fullname = true)-><a href="#Core_String">Core.String</a>
 </code>
 </p>
 <p>
@@ -24991,7 +24991,7 @@ Start reading.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func beginSection(using self, kind: &lt;a href="#Core_Serialization_SectionKind"&gt;Core.Serialization.SectionKind&lt;/a&gt;) throw
+<code style="white-space: break-spaces">func beginSection(using self, kind: <a href="#Core_Serialization_SectionKind">Core.Serialization.SectionKind</a>) throw
 </code>
 </p>
 <p>
@@ -25470,7 +25470,7 @@ Write a full struct.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func beginSection(using self, kind: &lt;a href="#Core_Serialization_SectionKind"&gt;Core.Serialization.SectionKind&lt;/a&gt;) throw
+<code style="white-space: break-spaces">func beginSection(using self, kind: <a href="#Core_Serialization_SectionKind">Core.Serialization.SectionKind</a>) throw
 </code>
 </p>
 <p>
@@ -25534,7 +25534,7 @@ End serialization.</p>
 <p>
 Start serialization.</p>
 <p class="code">
-<code style="white-space: break-spaces">func start(using self, result: *&lt;a href="#Core_ConcatBuffer"&gt;Core.ConcatBuffer&lt;/a&gt;) throw
+<code style="white-space: break-spaces">func start(using self, result: *<a href="#Core_ConcatBuffer">Core.ConcatBuffer</a>) throw
 </code>
 </p>
 <p>
@@ -25763,7 +25763,7 @@ End serialization.</p>
 <p>
 Start serialization.</p>
 <p class="code">
-<code style="white-space: break-spaces">func start(using self, result: *&lt;a href="#Core_ConcatBuffer"&gt;Core.ConcatBuffer&lt;/a&gt;) throw
+<code style="white-space: break-spaces">func start(using self, result: *<a href="#Core_ConcatBuffer">Core.ConcatBuffer</a>) throw
 </code>
 </p>
 <p>
@@ -25780,7 +25780,7 @@ Start serialization.</p>
 <p>
 Write a full struct.</p>
 <p class="code">
-<code style="white-space: break-spaces">func writeAll(using self, result: *&lt;a href="#Core_ConcatBuffer"&gt;Core.ConcatBuffer&lt;/a&gt;, value: any) throw
+<code style="white-space: break-spaces">func writeAll(using self, result: *<a href="#Core_ConcatBuffer">Core.ConcatBuffer</a>, value: any) throw
 </code>
 </p>
 <p>
@@ -26489,7 +26489,7 @@ propName</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func beginSection(using self, _kind: &lt;a href="#Core_Serialization_SectionKind"&gt;Core.Serialization.SectionKind&lt;/a&gt;) throw
+<code style="white-space: break-spaces">func beginSection(using self, _kind: <a href="#Core_Serialization_SectionKind">Core.Serialization.SectionKind</a>) throw
 </code>
 </p>
 <p>
@@ -26912,7 +26912,7 @@ bool</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func beginSection(using self, kind: &lt;a href="#Core_Serialization_SectionKind"&gt;Core.Serialization.SectionKind&lt;/a&gt;, skipFat = false) throw
+<code style="white-space: break-spaces">func beginSection(using self, kind: <a href="#Core_Serialization_SectionKind">Core.Serialization.SectionKind</a>, skipFat = false) throw
 </code>
 </p>
 <p>
@@ -27444,7 +27444,7 @@ Serialize one value.</p>
 <p>
 Start decoding.</p>
 <p class="code">
-<code style="white-space: break-spaces">func startRead(using self, decoder: &lt;a href="#Core_Serialization_IDecoder"&gt;Core.Serialization.IDecoder&lt;/a&gt;, input: const [..] u8) throw
+<code style="white-space: break-spaces">func startRead(using self, decoder: <a href="#Core_Serialization_IDecoder">Core.Serialization.IDecoder</a>, input: const [..] u8) throw
 </code>
 </p>
 <p>
@@ -27461,7 +27461,7 @@ Start decoding.</p>
 <p>
 Start encoding.</p>
 <p class="code">
-<code style="white-space: break-spaces">func startWrite(using self, encoder: &lt;a href="#Core_Serialization_IEncoder"&gt;Core.Serialization.IEncoder&lt;/a&gt;, output: *&lt;a href="#Core_ConcatBuffer"&gt;Core.ConcatBuffer&lt;/a&gt;) throw
+<code style="white-space: break-spaces">func startWrite(using self, encoder: <a href="#Core_Serialization_IEncoder">Core.Serialization.IEncoder</a>, output: *<a href="#Core_ConcatBuffer">Core.ConcatBuffer</a>) throw
 </code>
 </p>
 <p>
@@ -27724,7 +27724,7 @@ lastSeekValue</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func beginSection(using self, _kind: &lt;a href="#Core_Serialization_SectionKind"&gt;Core.Serialization.SectionKind&lt;/a&gt;)
+<code style="white-space: break-spaces">func beginSection(using self, _kind: <a href="#Core_Serialization_SectionKind">Core.Serialization.SectionKind</a>)
 </code>
 </p>
 <p>
@@ -27874,7 +27874,7 @@ lastSeekValue</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func startWrite(using self, buf: *&lt;a href="#Core_ConcatBuffer"&gt;Core.ConcatBuffer&lt;/a&gt;)
+<code style="white-space: break-spaces">func startWrite(using self, buf: *<a href="#Core_ConcatBuffer">Core.ConcatBuffer</a>)
 </code>
 </p>
 <p>
@@ -28102,7 +28102,7 @@ sections</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func beginSection(using self, kind: &lt;a href="#Core_Serialization_SectionKind"&gt;Core.Serialization.SectionKind&lt;/a&gt;)
+<code style="white-space: break-spaces">func beginSection(using self, kind: <a href="#Core_Serialization_SectionKind">Core.Serialization.SectionKind</a>)
 </code>
 </p>
 <p>
@@ -28252,7 +28252,7 @@ sections</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func startWrite(using self, buf: *&lt;a href="#Core_ConcatBuffer"&gt;Core.ConcatBuffer&lt;/a&gt;)
+<code style="white-space: break-spaces">func startWrite(using self, buf: *<a href="#Core_ConcatBuffer">Core.ConcatBuffer</a>)
 </code>
 </p>
 <p>
@@ -30379,7 +30379,7 @@ The format <code class = "incode">fmt</code> is one of <code class = "incode">e<
 <p>
 The format <code class = "incode">fmt</code> is one of <code class = "incode">e</code> (-d.dddde±dd, a decimal exponent) <code class = "incode">E</code> (-d.ddddE±dd, a decimal exponent) <code class = "incode">f</code> (-ddd.dddd, no exponent) <code class = "incode">g</code> (<code class = "incode">e</code> for large exponents, <code class = "incode">f</code> otherwise) <code class = "incode">G</code> (<code class = "incode">E</code> for large exponents, <code class = "incode">f</code> otherwise) Negative precision means "only as much as needed to be exact.".</p>
 <p class="code">
-<code style="white-space: break-spaces">func parse(buf: *&lt;a href="#Core_ConcatBuffer"&gt;Core.ConcatBuffer&lt;/a&gt;, val: f64, fmt: u8, precision: s64, forceSign: bool)
+<code style="white-space: break-spaces">func parse(buf: *<a href="#Core_ConcatBuffer">Core.ConcatBuffer</a>, val: f64, fmt: u8, precision: s64, forceSign: bool)
 </code>
 </p>
 <p>
@@ -30778,7 +30778,7 @@ Returns the number of characters.</p>
 <p>
 Return the content as a string by eating the content of the string builder (if possible).</p>
 <p class="code">
-<code style="white-space: break-spaces">func moveToString(using const self)-&gt;&lt;a href="#Core_String"&gt;Core.String&lt;/a&gt;
+<code style="white-space: break-spaces">func moveToString(using const self)-><a href="#Core_String">Core.String</a>
 </code>
 </p>
 <p>
@@ -30812,7 +30812,7 @@ Set sizes of buckets of the string builder.</p>
 <p>
 Return the content as a string.</p>
 <p class="code">
-<code style="white-space: break-spaces">func toString(using const self)-&gt;&lt;a href="#Core_String"&gt;Core.String&lt;/a&gt;
+<code style="white-space: break-spaces">func toString(using const self)-><a href="#Core_String">Core.String</a>
 </code>
 </p>
 <p>
@@ -30846,7 +30846,7 @@ Force a ending 0.</p>
 <p>
 Templated version. Convert a value of type <code class = "incode">T</code>.</p>
 <p class="code">
-<code style="white-space: break-spaces">func(T) convert(buf: *&lt;a href="#Core_ConcatBuffer"&gt;Core.ConcatBuffer&lt;/a&gt;, value: T, strFormat: string)
+<code style="white-space: break-spaces">func(T) convert(buf: *<a href="#Core_ConcatBuffer">Core.ConcatBuffer</a>, value: T, strFormat: string)
 </code>
 </p>
 <p>
@@ -30863,7 +30863,7 @@ Templated version. Convert a value of type <code class = "incode">T</code>.</p>
 <p>
 Convert a value to an utf8 string, and append the result in a ConcatBuffer.</p>
 <p class="code">
-<code style="white-space: break-spaces">func convertAny(buf: *&lt;a href="#Core_ConcatBuffer"&gt;Core.ConcatBuffer&lt;/a&gt;, value: any, strFormat: string)
+<code style="white-space: break-spaces">func convertAny(buf: *<a href="#Core_ConcatBuffer">Core.ConcatBuffer</a>, value: any, strFormat: string)
 </code>
 </p>
 <p>
@@ -30880,7 +30880,7 @@ Convert a value to an utf8 string, and append the result in a ConcatBuffer.</p>
 <p>
 Convert a <code class = "incode">bool</code> to a string, and put the result in a ConcatBuffer.</p>
 <p class="code">
-<code style="white-space: break-spaces">func convertBool(buf: *&lt;a href="#Core_ConcatBuffer"&gt;Core.ConcatBuffer&lt;/a&gt;, value: bool)
+<code style="white-space: break-spaces">func convertBool(buf: *<a href="#Core_ConcatBuffer">Core.ConcatBuffer</a>, value: bool)
 </code>
 </p>
 <p>
@@ -30897,13 +30897,13 @@ Convert a <code class = "incode">bool</code> to a string, and put the result in 
 <p>
 Convert a float to an utf8 string, and put the result in a ConcatBuffer.</p>
 <p class="code">
-<code style="white-space: break-spaces">func convertFloat(buf: *&lt;a href="#Core_ConcatBuffer"&gt;Core.ConcatBuffer&lt;/a&gt;, value: any, strFormat: string)
+<code style="white-space: break-spaces">func convertFloat(buf: *<a href="#Core_ConcatBuffer">Core.ConcatBuffer</a>, value: any, strFormat: string)
 </code>
 </p>
 <p>
 Convert a float to an utf8 string, and put the result in a ConcatBuffer.</p>
 <p class="code">
-<code style="white-space: break-spaces">func convertFloat(buf: *&lt;a href="#Core_ConcatBuffer"&gt;Core.ConcatBuffer&lt;/a&gt;, fmt: &lt;a href="#Core_StrConv_ConvertFormatFloat"&gt;Core.StrConv.ConvertFormatFloat&lt;/a&gt;)
+<code style="white-space: break-spaces">func convertFloat(buf: *<a href="#Core_ConcatBuffer">Core.ConcatBuffer</a>, fmt: <a href="#Core_StrConv_ConvertFormatFloat">Core.StrConv.ConvertFormatFloat</a>)
 </code>
 </p>
 <p>
@@ -30920,13 +30920,13 @@ Convert a float to an utf8 string, and put the result in a ConcatBuffer.</p>
 <p>
 Convert an integer to an utf8 string, and put the result in a ConcatBuffer.</p>
 <p class="code">
-<code style="white-space: break-spaces">func convertInt(buf: *&lt;a href="#Core_ConcatBuffer"&gt;Core.ConcatBuffer&lt;/a&gt;, value: any, strFormat: string)
+<code style="white-space: break-spaces">func convertInt(buf: *<a href="#Core_ConcatBuffer">Core.ConcatBuffer</a>, value: any, strFormat: string)
 </code>
 </p>
 <p>
 Convert an integer to an utf8 string, and put the result in a ConcatBuffer.</p>
 <p class="code">
-<code style="white-space: break-spaces">func convertInt(buf: *&lt;a href="#Core_ConcatBuffer"&gt;Core.ConcatBuffer&lt;/a&gt;, fmt: &lt;a href="#Core_StrConv_ConvertFormatInt"&gt;Core.StrConv.ConvertFormatInt&lt;/a&gt;)
+<code style="white-space: break-spaces">func convertInt(buf: *<a href="#Core_ConcatBuffer">Core.ConcatBuffer</a>, fmt: <a href="#Core_StrConv_ConvertFormatInt">Core.StrConv.ConvertFormatInt</a>)
 </code>
 </p>
 <p>
@@ -30943,7 +30943,7 @@ Convert an integer to an utf8 string, and put the result in a ConcatBuffer.</p>
 <p>
 Convert a <code class = "incode">rune</code> to a string, and put the result in a ConcatBuffer.</p>
 <p class="code">
-<code style="white-space: break-spaces">func convertRune(buf: *&lt;a href="#Core_ConcatBuffer"&gt;Core.ConcatBuffer&lt;/a&gt;, value: rune)
+<code style="white-space: break-spaces">func convertRune(buf: *<a href="#Core_ConcatBuffer">Core.ConcatBuffer</a>, value: rune)
 </code>
 </p>
 <p>
@@ -30960,7 +30960,7 @@ Convert a <code class = "incode">rune</code> to a string, and put the result in 
 <p>
 Convert a structure content to an utf8 string, and put the result in a ConcatBuffer.</p>
 <p class="code">
-<code style="white-space: break-spaces">func convertStruct(buf: *&lt;a href="#Core_ConcatBuffer"&gt;Core.ConcatBuffer&lt;/a&gt;, value: any, strFormat: string)
+<code style="white-space: break-spaces">func convertStruct(buf: *<a href="#Core_ConcatBuffer">Core.ConcatBuffer</a>, value: any, strFormat: string)
 </code>
 </p>
 <p>
@@ -31160,7 +31160,7 @@ Convert an utf8 buffer to an signed integer value Returns the value and the numb
 <p>
 Convert an utf8 buffer to a Core.String String in the buffer can be quoted (but the result will not be in that case).</p>
 <p class="code">
-<code style="white-space: break-spaces">func parseString(str: string)-&gt;{value: &lt;a href="#Core_String"&gt;Core.String&lt;/a&gt;, eat: u32} throw
+<code style="white-space: break-spaces">func parseString(str: string)->{value: <a href="#Core_String">Core.String</a>, eat: u32} throw
 </code>
 </p>
 <p>
@@ -31298,7 +31298,7 @@ s32</td>
 <p>
 Convert a size in a displayable format (with Kb, Mb and so on).</p>
 <p class="code">
-<code style="white-space: break-spaces">func toDisplaySize(value: u64)-&gt;&lt;a href="#Core_String"&gt;Core.String&lt;/a&gt;
+<code style="white-space: break-spaces">func toDisplaySize(value: u64)-><a href="#Core_String">Core.String</a>
 </code>
 </p>
 <p>
@@ -31992,7 +31992,7 @@ Transform a null string in an empty one.</p>
 <p>
 Convert a literal string to a String.</p>
 <p class="code">
-<code style="white-space: break-spaces">func from(value: string)-&gt;&lt;a href="#Core_String"&gt;Core.String&lt;/a&gt;
+<code style="white-space: break-spaces">func from(value: string)-><a href="#Core_String">Core.String</a>
 </code>
 </p>
 <p>
@@ -32094,7 +32094,7 @@ Returns true if the String is null or empty.</p>
 <p>
 Join a list of strings to make a unique one.</p>
 <p class="code">
-<code style="white-space: break-spaces">func join(values: string...)-&gt;&lt;a href="#Core_String"&gt;Core.String&lt;/a&gt;
+<code style="white-space: break-spaces">func join(values: string...)-><a href="#Core_String">Core.String</a>
 </code>
 </p>
 <p>
@@ -32111,7 +32111,7 @@ Join a list of strings to make a unique one.</p>
 <p>
 Join an list of strings to make a unique one, by using a given <code class = "incode">separator</code> between them.</p>
 <p class="code">
-<code style="white-space: break-spaces">func joinWith(separator: string, values: string...)-&gt;&lt;a href="#Core_String"&gt;Core.String&lt;/a&gt;
+<code style="white-space: break-spaces">func joinWith(separator: string, values: string...)-><a href="#Core_String">Core.String</a>
 </code>
 </p>
 <p>
@@ -32437,7 +32437,7 @@ Reserve room for at least <code class = "incode">newCapacity</code> bytes.</p>
 <p>
 Convert string to a 32 bits character array.</p>
 <p class="code">
-<code style="white-space: break-spaces">func toCharArray(using const self)-&gt;&lt;a href="#Core_Array"&gt;Core.Array&lt;/a&gt;(rune)
+<code style="white-space: break-spaces">func toCharArray(using const self)-><a href="#Core_Array">Core.Array</a>(rune)
 </code>
 </p>
 <p>
@@ -32454,13 +32454,13 @@ Convert string to a 32 bits character array.</p>
 <p>
 Returns a new String in lower case.</p>
 <p class="code">
-<code style="white-space: break-spaces">func toLower(using self, set = CharacterSet.Latin1)-&gt;&lt;a href="#Core_String"&gt;Core.String&lt;/a&gt;
+<code style="white-space: break-spaces">func toLower(using self, set = CharacterSet.Latin1)-><a href="#Core_String">Core.String</a>
 </code>
 </p>
 <p>
 Returns a new String in lower case.</p>
 <p class="code">
-<code style="white-space: break-spaces">func toLower(str: string, set = CharacterSet.Latin1)-&gt;&lt;a href="#Core_String"&gt;Core.String&lt;/a&gt;
+<code style="white-space: break-spaces">func toLower(str: string, set = CharacterSet.Latin1)-><a href="#Core_String">Core.String</a>
 </code>
 </p>
 <p>
@@ -32511,13 +32511,13 @@ Returns a string type.</p>
 <p>
 Returns a new String in upper case.</p>
 <p class="code">
-<code style="white-space: break-spaces">func toUpper(using self, set = CharacterSet.Latin1)-&gt;&lt;a href="#Core_String"&gt;Core.String&lt;/a&gt;
+<code style="white-space: break-spaces">func toUpper(using self, set = CharacterSet.Latin1)-><a href="#Core_String">Core.String</a>
 </code>
 </p>
 <p>
 Returns a new String in lower case.</p>
 <p class="code">
-<code style="white-space: break-spaces">func toUpper(str: string, set = CharacterSet.Latin1)-&gt;&lt;a href="#Core_String"&gt;Core.String&lt;/a&gt;
+<code style="white-space: break-spaces">func toUpper(str: string, set = CharacterSet.Latin1)-><a href="#Core_String">Core.String</a>
 </code>
 </p>
 <p>
@@ -32731,7 +32731,7 @@ Wait for the event to be signaled.</p>
 <p>
 Creates a new event.</p>
 <p class="code">
-<code style="white-space: break-spaces">func create()-&gt;&lt;a href="#Core_Sync_Event"&gt;Core.Sync.Event&lt;/a&gt;
+<code style="white-space: break-spaces">func create()-><a href="#Core_Sync_Event">Core.Sync.Event</a>
 </code>
 </p>
 <p>
@@ -33417,7 +33417,7 @@ Sleep the current thread for a given amount of milliseconds.</p>
 <p>
 Initialize a thread in pause state.</p>
 <p class="code">
-<code style="white-space: break-spaces">func init(using self, lambda: closure(&lt;a href="#Core_Threading_Thread"&gt;Core.Threading.Thread&lt;/a&gt;), userParam: *void = null, priority = ThreadPriority.Normal, tempAllocSize: s32 = -1) throw
+<code style="white-space: break-spaces">func init(using self, lambda: closure(<a href="#Core_Threading_Thread">Core.Threading.Thread</a>), userParam: *void = null, priority = ThreadPriority.Normal, tempAllocSize: s32 = -1) throw
 </code>
 </p>
 <p>
@@ -33485,7 +33485,7 @@ Force the thread to safely exist User code needs to check for <code class = "inc
 <p>
 Set the thread priority.</p>
 <p class="code">
-<code style="white-space: break-spaces">func setPriority(using self, priority: &lt;a href="#Core_Threading_ThreadPriority"&gt;Core.Threading.ThreadPriority&lt;/a&gt;) throw
+<code style="white-space: break-spaces">func setPriority(using self, priority: <a href="#Core_Threading_ThreadPriority">Core.Threading.ThreadPriority</a>) throw
 </code>
 </p>
 <p>
@@ -33502,7 +33502,7 @@ Set the thread priority.</p>
 <p>
 Sleep the current thread for a given amount of milliseconds.</p>
 <p class="code">
-<code style="white-space: break-spaces">func sleep(ms: &lt;a href="#Core_Time_Duration"&gt;Core.Time.Duration&lt;/a&gt;)
+<code style="white-space: break-spaces">func sleep(ms: <a href="#Core_Time_Duration">Core.Time.Duration</a>)
 </code>
 </p>
 <p>
@@ -33933,7 +33933,7 @@ Convert to string.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func convert(using self, buf: *&lt;a href="#Core_ConcatBuffer"&gt;Core.ConcatBuffer&lt;/a&gt;, fmt: const *&lt;a href="#Core_StrConv_ConvertFormat"&gt;Core.StrConv.ConvertFormat&lt;/a&gt;, strFormat: string)
+<code style="white-space: break-spaces">func convert(using self, buf: *<a href="#Core_ConcatBuffer">Core.ConcatBuffer</a>, fmt: const *<a href="#Core_StrConv_ConvertFormat">Core.StrConv.ConvertFormat</a>, strFormat: string)
 </code>
 </p>
 <p>
@@ -33950,7 +33950,7 @@ Convert to string.</p>
 <p>
 Returns the day of week of the current date.</p>
 <p class="code">
-<code style="white-space: break-spaces">func dayOfWeek(using const self)-&gt;&lt;a href="#Core_Time_DayOfWeek"&gt;Core.Time.DayOfWeek&lt;/a&gt;
+<code style="white-space: break-spaces">func dayOfWeek(using const self)-><a href="#Core_Time_DayOfWeek">Core.Time.DayOfWeek</a>
 </code>
 </p>
 <p>
@@ -33967,7 +33967,7 @@ Returns the day of week of the current date.</p>
 <p>
 Returns the day of week name.</p>
 <p class="code">
-<code style="white-space: break-spaces">func dayOfWeekName(day: &lt;a href="#Core_Time_DayOfWeek"&gt;Core.Time.DayOfWeek&lt;/a&gt;)-&gt;string
+<code style="white-space: break-spaces">func dayOfWeekName(day: <a href="#Core_Time_DayOfWeek">Core.Time.DayOfWeek</a>)->string
 </code>
 </p>
 <p>
@@ -34018,7 +34018,7 @@ Returns the month name.</p>
 <p>
 Returns a DateTime containing the current date and time.</p>
 <p class="code">
-<code style="white-space: break-spaces">func now()-&gt;&lt;a href="#Core_Time_DateTime"&gt;Core.Time.DateTime&lt;/a&gt;
+<code style="white-space: break-spaces">func now()-><a href="#Core_Time_DateTime">Core.Time.DateTime</a>
 </code>
 </p>
 <p>
@@ -34033,7 +34033,7 @@ Returns a DateTime containing the current date and time.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func opCmp(using const self, other: &lt;a href="#Core_Time_DateTime"&gt;Core.Time.DateTime&lt;/a&gt;)-&gt;s32
+<code style="white-space: break-spaces">func opCmp(using const self, other: <a href="#Core_Time_DateTime">Core.Time.DateTime</a>)->s32
 </code>
 </p>
 <p>
@@ -34048,7 +34048,7 @@ Returns a DateTime containing the current date and time.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func opEquals(using const self, other: &lt;a href="#Core_Time_DateTime"&gt;Core.Time.DateTime&lt;/a&gt;)-&gt;bool
+<code style="white-space: break-spaces">func opEquals(using const self, other: <a href="#Core_Time_DateTime">Core.Time.DateTime</a>)->bool
 </code>
 </p>
 <p>
@@ -34065,7 +34065,7 @@ Returns a DateTime containing the current date and time.</p>
 <p>
 Convert a string to a DateTime with the given format.</p>
 <p class="code">
-<code style="white-space: break-spaces">func parse(str: string, fmt = DateTimeFormat.DateTime, checkDate = true)-&gt;{value: &lt;a href="#Core_Time_DateTime"&gt;Core.Time.DateTime&lt;/a&gt;, eat: u32} throw
+<code style="white-space: break-spaces">func parse(str: string, fmt = DateTimeFormat.DateTime, checkDate = true)->{value: <a href="#Core_Time_DateTime">Core.Time.DateTime</a>, eat: u32} throw
 </code>
 </p>
 <p>
@@ -34099,7 +34099,7 @@ Initialize the structure with the current local date and time.</p>
 <p>
 Convert to string.</p>
 <p class="code">
-<code style="white-space: break-spaces">func toString(using self, fmt = DateTimeFormat.DateTime)-&gt;&lt;a href="#Core_String"&gt;Core.String&lt;/a&gt;
+<code style="white-space: break-spaces">func toString(using self, fmt = DateTimeFormat.DateTime)-><a href="#Core_String">Core.String</a>
 </code>
 </p>
 <p>
@@ -35228,7 +35228,7 @@ Add or remove the given amount of years to the TimeSpan.</p>
 <p>
 Creates a TimeSpan with the given DateTime.</p>
 <p class="code">
-<code style="white-space: break-spaces">func from(dateTime: &lt;a href="#Core_Time_DateTime"&gt;Core.Time.DateTime&lt;/a&gt;)-&gt;&lt;a href="#Core_Time_TimeSpan"&gt;Core.Time.TimeSpan&lt;/a&gt;
+<code style="white-space: break-spaces">func from(dateTime: <a href="#Core_Time_DateTime">Core.Time.DateTime</a>)-><a href="#Core_Time_TimeSpan">Core.Time.TimeSpan</a>
 </code>
 </p>
 <p>
@@ -35245,7 +35245,7 @@ Creates a TimeSpan with the given DateTime.</p>
 <p>
 Returns the current date and time.</p>
 <p class="code">
-<code style="white-space: break-spaces">func now()-&gt;&lt;a href="#Core_Time_TimeSpan"&gt;Core.Time.TimeSpan&lt;/a&gt;
+<code style="white-space: break-spaces">func now()-><a href="#Core_Time_TimeSpan">Core.Time.TimeSpan</a>
 </code>
 </p>
 <p>
@@ -35260,7 +35260,7 @@ Returns the current date and time.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func opCmp(using self, other: &lt;a href="#Core_Time_TimeSpan"&gt;Core.Time.TimeSpan&lt;/a&gt;)-&gt;s32
+<code style="white-space: break-spaces">func opCmp(using self, other: <a href="#Core_Time_TimeSpan">Core.Time.TimeSpan</a>)->s32
 </code>
 </p>
 <p>
@@ -35294,7 +35294,7 @@ Initialize the TimeSpan with the current date and time.</p>
 <p>
 Converts a TimeSpan to a DateTime.</p>
 <p class="code">
-<code style="white-space: break-spaces">func toDateTime(using self)-&gt;&lt;a href="#Core_Time_DateTime"&gt;Core.Time.DateTime&lt;/a&gt;
+<code style="white-space: break-spaces">func toDateTime(using self)-><a href="#Core_Time_DateTime">Core.Time.DateTime</a>
 </code>
 </p>
 <p>
@@ -35450,7 +35450,7 @@ Release the timer.</p>
 <p>
 Creates a new timer.</p>
 <p class="code">
-<code style="white-space: break-spaces">func create(elapsedTimeMs: u32, lambda: func(&lt;a href="#Core_Time_Timer"&gt;Core.Time.Timer&lt;/a&gt;), periodic = false)-&gt;&lt;a href="#Core_Time_Timer"&gt;Core.Time.Timer&lt;/a&gt; throw
+<code style="white-space: break-spaces">func create(elapsedTimeMs: u32, lambda: func(<a href="#Core_Time_Timer">Core.Time.Timer</a>), periodic = false)-><a href="#Core_Time_Timer">Core.Time.Timer</a> throw
 </code>
 </p>
 <p>
@@ -35467,7 +35467,7 @@ Creates a new timer.</p>
 <p>
 Initialize timer.</p>
 <p class="code">
-<code style="white-space: break-spaces">func init(using self, elapsedTimeMs: u32, lambda: func(&lt;a href="#Core_Time_Timer"&gt;Core.Time.Timer&lt;/a&gt;), periodic = false) throw
+<code style="white-space: break-spaces">func init(using self, elapsedTimeMs: u32, lambda: func(<a href="#Core_Time_Timer">Core.Time.Timer</a>), periodic = false) throw
 </code>
 </p>
 <p>
@@ -35857,13 +35857,13 @@ Returns the first substring of <code class = "incode">str</code> containing only
 <p>
 Split string into sub strings, given an array of rune separators Note that this returns an array of native strings, not copies. All strings will be invalid if <code class = "incode">src</code> String is destroyed.</p>
 <p class="code">
-<code style="white-space: break-spaces">func split(src: string, separators: const [..] rune, maxSplit: u32 = 0, removeEmpty = true)-&gt;&lt;a href="#Core_Array"&gt;Core.Array&lt;/a&gt;(string)
+<code style="white-space: break-spaces">func split(src: string, separators: const [..] rune, maxSplit: u32 = 0, removeEmpty = true)-><a href="#Core_Array">Core.Array</a>(string)
 </code>
 </p>
 <p>
 Split string into sub strings, given a rune separator Note that this returns an array of native strings, not copies. All strings will be invalid if <code class = "incode">src</code> is destroyed.</p>
 <p class="code">
-<code style="white-space: break-spaces">func split(src: string, separator: rune, maxSplit: u32 = 0, removeEmpty = true)-&gt;&lt;a href="#Core_Array"&gt;Core.Array&lt;/a&gt;(string)
+<code style="white-space: break-spaces">func split(src: string, separator: rune, maxSplit: u32 = 0, removeEmpty = true)-><a href="#Core_Array">Core.Array</a>(string)
 </code>
 </p>
 <p>
@@ -35880,7 +35880,7 @@ Split string into sub strings, given a rune separator Note that this returns an 
 <p>
 Split the string into an array of lines Note that this returns an array of native strings, not copies. All strings will be invalid if <code class = "incode">src</code> is destroyed.</p>
 <p class="code">
-<code style="white-space: break-spaces">func splitLines(src: string)-&gt;&lt;a href="#Core_Array"&gt;Core.Array&lt;/a&gt;(string)
+<code style="white-space: break-spaces">func splitLines(src: string)-><a href="#Core_Array">Core.Array</a>(string)
 </code>
 </p>
 <p>
@@ -35960,7 +35960,7 @@ Convert uuid to a string of the form xxxxxxxx-xxxx-Mxxx-Nxxx-xxxxxxxxxxxx.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func convert(using self, buf: *&lt;a href="#Core_ConcatBuffer"&gt;Core.ConcatBuffer&lt;/a&gt;, fmt: const *&lt;a href="#Core_StrConv_ConvertFormat"&gt;Core.StrConv.ConvertFormat&lt;/a&gt;, strFormat: string)
+<code style="white-space: break-spaces">func convert(using self, buf: *<a href="#Core_ConcatBuffer">Core.ConcatBuffer</a>, fmt: const *<a href="#Core_StrConv_ConvertFormat">Core.StrConv.ConvertFormat</a>, strFormat: string)
 </code>
 </p>
 <p>
@@ -36009,7 +36009,7 @@ Clear id.</p>
 <p>
 Get a version 4 UUID (random).</p>
 <p class="code">
-<code style="white-space: break-spaces">func getRandom()-&gt;&lt;a href="#Core_UUID"&gt;Core.UUID&lt;/a&gt;
+<code style="white-space: break-spaces">func getRandom()-><a href="#Core_UUID">Core.UUID</a>
 </code>
 </p>
 <p>
@@ -36024,7 +36024,7 @@ Get a version 4 UUID (random).</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func opEquals(using self, other: &lt;a href="#Core_UUID"&gt;Core.UUID&lt;/a&gt;)-&gt;bool
+<code style="white-space: break-spaces">func opEquals(using self, other: <a href="#Core_UUID">Core.UUID</a>)->bool
 </code>
 </p>
 <p>
@@ -36041,7 +36041,7 @@ Get a version 4 UUID (random).</p>
 <p>
 Convert uuid to a string.</p>
 <p class="code">
-<code style="white-space: break-spaces">func toString(using self)-&gt;&lt;a href="#Core_String"&gt;Core.String&lt;/a&gt;
+<code style="white-space: break-spaces">func toString(using self)-><a href="#Core_String">Core.String</a>
 </code>
 </p>
 <p>
@@ -36448,7 +36448,7 @@ Convert an utf8 buffer to a character sequence, and returns the number of valid 
 <p>
 Convert an utf8 buffer to a character sequence.</p>
 <p class="code">
-<code style="white-space: break-spaces">func fromUtf8(src: const [..] u8)-&gt;&lt;a href="#Core_Array"&gt;Core.Array&lt;/a&gt;(rune)
+<code style="white-space: break-spaces">func fromUtf8(src: const [..] u8)-><a href="#Core_Array">Core.Array</a>(rune)
 </code>
 </p>
 <p>
@@ -36908,7 +36908,7 @@ Convert a character array (32 bits unicode) to an utf16 buffer Returns the numbe
 <p>
 Convert a character array (32 bits unicode) to an utf16 sequence.</p>
 <p class="code">
-<code style="white-space: break-spaces">func fromUnicode(src: const [..] rune)-&gt;&lt;a href="#Core_Array"&gt;Core.Array&lt;/a&gt;(u16)
+<code style="white-space: break-spaces">func fromUnicode(src: const [..] rune)-><a href="#Core_Array">Core.Array</a>(u16)
 </code>
 </p>
 <p>
@@ -36931,7 +36931,7 @@ Convert an utf8 buffer to a utf16 buffer, and returns the number of valid elemen
 <p>
 Convert an utf8 buffer to an utf16 sequence.</p>
 <p class="code">
-<code style="white-space: break-spaces">func fromUtf8(src: const [..] u8)-&gt;&lt;a href="#Core_Array"&gt;Core.Array&lt;/a&gt;(u16)
+<code style="white-space: break-spaces">func fromUtf8(src: const [..] u8)-><a href="#Core_Array">Core.Array</a>(u16)
 </code>
 </p>
 <p>
@@ -36965,7 +36965,7 @@ Compute the string length of a zero terminated utf16 buffer.</p>
 <p>
 Convert string to an utf16 array, zero terminated.</p>
 <p class="code">
-<code style="white-space: break-spaces">func toZeroTerminated(src: string)-&gt;&lt;a href="#Core_Array"&gt;Core.Array&lt;/a&gt;(u16)
+<code style="white-space: break-spaces">func toZeroTerminated(src: string)-><a href="#Core_Array">Core.Array</a>(u16)
 </code>
 </p>
 <p>
@@ -37685,7 +37685,7 @@ Convert a rune array to an utf8 buffer.</p>
 <p>
 Convert an unicode buffer to a String.</p>
 <p class="code">
-<code style="white-space: break-spaces">func fromUnicode(src: const [..] rune)-&gt;&lt;a href="#Core_String"&gt;Core.String&lt;/a&gt;
+<code style="white-space: break-spaces">func fromUnicode(src: const [..] rune)-><a href="#Core_String">Core.String</a>
 </code>
 </p>
 <p>
@@ -37710,7 +37710,7 @@ Convert an utf16 array to an utf8 buffer.</p>
 <p>
 Convert an utf16 buffer to a String.</p>
 <p class="code">
-<code style="white-space: break-spaces">func fromUtf16(src: const [..] u16)-&gt;&lt;a href="#Core_String"&gt;Core.String&lt;/a&gt;
+<code style="white-space: break-spaces">func fromUtf16(src: const [..] u16)-><a href="#Core_String">Core.String</a>
 </code>
 </p>
 <p>

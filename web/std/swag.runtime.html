@@ -824,7 +824,7 @@ func @ceil(value: f64)-&gt;f64
 <p>
 Returns an <a href="#Swag_ICompiler">ICompiler</a> interface to communicate with the compiler.</p>
 <p class="code">
-<code style="white-space: break-spaces">func @compiler()-&gt;&lt;a href="#Swag_ICompiler"&gt;Swag.ICompiler&lt;/a&gt;
+<code style="white-space: break-spaces">func @compiler()-><a href="#Swag_ICompiler">Swag.ICompiler</a>
 </code>
 </p>
 <p>
@@ -841,7 +841,7 @@ Returns an <a href="#Swag_ICompiler">ICompiler</a> interface to communicate with
 <p>
 Raise a compiler error at the given source location.</p>
 <p class="code">
-<code style="white-space: break-spaces">func @compilererror(message: string, loc: &lt;a href="#Swag_SourceCodeLocation"&gt;Swag.SourceCodeLocation&lt;/a&gt;)
+<code style="white-space: break-spaces">func @compilererror(message: string, loc: <a href="#Swag_SourceCodeLocation">Swag.SourceCodeLocation</a>)
 </code>
 </p>
 <p>
@@ -858,7 +858,7 @@ Raise a compiler error at the given source location.</p>
 <p>
 Raise a compiler warning at the given source location.</p>
 <p class="code">
-<code style="white-space: break-spaces">func @compilerwarning(message: string, loc: &lt;a href="#Swag_SourceCodeLocation"&gt;Swag.SourceCodeLocation&lt;/a&gt;)
+<code style="white-space: break-spaces">func @compilerwarning(message: string, loc: <a href="#Swag_SourceCodeLocation">Swag.SourceCodeLocation</a>)
 </code>
 </p>
 <p>
@@ -987,7 +987,7 @@ Free a system memory block allocated with <a href="#@alloc">@alloc</a>.</p>
 <p>
 Get the current thread context.</p>
 <p class="code">
-<code style="white-space: break-spaces">func @getcontext()-&gt;*&lt;a href="#Swag_Context"&gt;Swag.Context&lt;/a&gt;
+<code style="white-space: break-spaces">func @getcontext()->*<a href="#Swag_Context">Swag.Context</a>
 </code>
 </p>
 <p>
@@ -1004,7 +1004,7 @@ Get the current thread context.</p>
 <p>
 Get informations about the current process.</p>
 <p class="code">
-<code style="white-space: break-spaces">func @getpinfos()-&gt;*&lt;a href="#Swag_ProcessInfos"&gt;Swag.ProcessInfos&lt;/a&gt;
+<code style="white-space: break-spaces">func @getpinfos()->*<a href="#Swag_ProcessInfos">Swag.ProcessInfos</a>
 </code>
 </p>
 <p>
@@ -1021,7 +1021,7 @@ Get informations about the current process.</p>
 <p>
 Returns the list of all global variables.</p>
 <p class="code">
-<code style="white-space: break-spaces">func @gvtd()-&gt;const [..] &lt;a href="#Swag_Gvtd"&gt;Swag.Gvtd&lt;/a&gt;
+<code style="white-space: break-spaces">func @gvtd()->const [..] <a href="#Swag_Gvtd">Swag.Gvtd</a>
 </code>
 </p>
 <p>
@@ -1053,7 +1053,7 @@ Returns <code class = "incode">true</code> is the current execution is bytecode.
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func @itftableof(structType: const *&lt;a href="#Swag_TypeInfoStruct"&gt;Swag.TypeInfoStruct&lt;/a&gt;, itfType: const *&lt;a href="#Swag_TypeInfoStruct"&gt;Swag.TypeInfoStruct&lt;/a&gt;)-&gt;const *void
+<code style="white-space: break-spaces">func @itftableof(structType: const *<a href="#Swag_TypeInfoStruct">Swag.TypeInfoStruct</a>, itfType: const *<a href="#Swag_TypeInfoStruct">Swag.TypeInfoStruct</a>)->const *void
 </code>
 </p>
 <p>
@@ -1234,7 +1234,7 @@ func @min(value1: u8, value2: u8)-&gt;u8
 <p>
 Returns the list of all loaded modules.</p>
 <p class="code">
-<code style="white-space: break-spaces">func @modules()-&gt;const [..] &lt;a href="#Swag_Module"&gt;Swag.Module&lt;/a&gt;
+<code style="white-space: break-spaces">func @modules()->const [..] <a href="#Swag_Module">Swag.Module</a>
 </code>
 </p>
 <p>
@@ -1272,7 +1272,7 @@ Returns (val1 * val2) + val3.</p>
 <p>
 Stop the execution and panic.</p>
 <p class="code">
-<code style="white-space: break-spaces">func @panic(message: string, loc: &lt;a href="#Swag_SourceCodeLocation"&gt;Swag.SourceCodeLocation&lt;/a&gt;)
+<code style="white-space: break-spaces">func @panic(message: string, loc: <a href="#Swag_SourceCodeLocation">Swag.SourceCodeLocation</a>)
 </code>
 </p>
 <p>
@@ -1370,7 +1370,7 @@ func @round(value: f64)-&gt;f64
 <p>
 Replace the current thread context.</p>
 <p class="code">
-<code style="white-space: break-spaces">func @setcontext(context: const *&lt;a href="#Swag_Context"&gt;Swag.Context&lt;/a&gt;)
+<code style="white-space: break-spaces">func @setcontext(context: const *<a href="#Swag_Context">Swag.Context</a>)
 </code>
 </p>
 <p>
@@ -1547,7 +1547,7 @@ func @trunc(value: f64)-&gt;f64
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func @typecmp(typeA: const *&lt;a href="#Swag_TypeInfo"&gt;Swag.TypeInfo&lt;/a&gt;, typeB: const *&lt;a href="#Swag_TypeInfo"&gt;Swag.TypeInfo&lt;/a&gt;, cmpFlags: &lt;a href="#Swag_TypeCmpFlags"&gt;Swag.TypeCmpFlags&lt;/a&gt;)-&gt;bool
+<code style="white-space: break-spaces">func @typecmp(typeA: const *<a href="#Swag_TypeInfo">Swag.TypeInfo</a>, typeB: const *<a href="#Swag_TypeInfo">Swag.TypeInfo</a>, cmpFlags: <a href="#Swag_TypeCmpFlags">Swag.TypeCmpFlags</a>)->bool
 </code>
 </p>
 <p>
@@ -2396,7 +2396,7 @@ Alignement constraint.</p>
 <div class="addinfos"><b>Usage</b>: all 
 </div>
 <p class="code">
-<code style="white-space: break-spaces">attr AttrUsage(usage: &lt;a href="#Swag_AttributeUsage"&gt;Swag.AttributeUsage&lt;/a&gt;)
+<code style="white-space: break-spaces">attr AttrUsage(usage: <a href="#Swag_AttributeUsage">Swag.AttributeUsage</a>)
 </code>
 </p>
 <p>
@@ -3852,7 +3852,7 @@ Setup the allocator.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func alloc(using self, request: *&lt;a href="#Swag_AllocatorRequest"&gt;Swag.AllocatorRequest&lt;/a&gt;)
+<code style="white-space: break-spaces">func alloc(using self, request: *<a href="#Swag_AllocatorRequest">Swag.AllocatorRequest</a>)
 </code>
 </p>
 <p>
@@ -3867,7 +3867,7 @@ Setup the allocator.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func free(using self, request: *&lt;a href="#Swag_AllocatorRequest"&gt;Swag.AllocatorRequest&lt;/a&gt;)
+<code style="white-space: break-spaces">func free(using self, request: *<a href="#Swag_AllocatorRequest">Swag.AllocatorRequest</a>)
 </code>
 </p>
 <p>
@@ -3897,7 +3897,7 @@ Setup the allocator.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func req(using self, request: *&lt;a href="#Swag_AllocatorRequest"&gt;Swag.AllocatorRequest&lt;/a&gt;)
+<code style="white-space: break-spaces">func req(using self, request: *<a href="#Swag_AllocatorRequest">Swag.AllocatorRequest</a>)
 </code>
 </p>
 <p>
@@ -3946,7 +3946,7 @@ Check all allocated blocks.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func checkIsAllocated(using self, ptrHeader: ^&lt;a href="#Swag_DebugAllocatorHeader"&gt;Swag.DebugAllocatorHeader&lt;/a&gt;, callerLoc = #callerlocation)
+<code style="white-space: break-spaces">func checkIsAllocated(using self, ptrHeader: ^<a href="#Swag_DebugAllocatorHeader">Swag.DebugAllocatorHeader</a>, callerLoc = #callerlocation)
 </code>
 </p>
 <p>
@@ -3961,7 +3961,7 @@ Check all allocated blocks.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func checkIsFreed(using self, ptrHeader: ^&lt;a href="#Swag_DebugAllocatorHeader"&gt;Swag.DebugAllocatorHeader&lt;/a&gt;)
+<code style="white-space: break-spaces">func checkIsFreed(using self, ptrHeader: ^<a href="#Swag_DebugAllocatorHeader">Swag.DebugAllocatorHeader</a>)
 </code>
 </p>
 <p>
@@ -4040,7 +4040,7 @@ Output to the console the list of all allocated blocks (leaks).</p>
 <p>
 Setup the allocator.</p>
 <p class="code">
-<code style="white-space: break-spaces">func setup(using self, allocator: &lt;a href="#Swag_IAllocator"&gt;Swag.IAllocator&lt;/a&gt;)
+<code style="white-space: break-spaces">func setup(using self, allocator: <a href="#Swag_IAllocator">Swag.IAllocator</a>)
 </code>
 </p>
 <p>
@@ -5489,7 +5489,7 @@ This will call <code class = "incode">release</code> prior to changing the capac
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func alloc(using self, request: *&lt;a href="#Swag_AllocatorRequest"&gt;Swag.AllocatorRequest&lt;/a&gt;)
+<code style="white-space: break-spaces">func alloc(using self, request: *<a href="#Swag_AllocatorRequest">Swag.AllocatorRequest</a>)
 </code>
 </p>
 <p>
@@ -5504,7 +5504,7 @@ This will call <code class = "incode">release</code> prior to changing the capac
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func free(using self, request: *&lt;a href="#Swag_AllocatorRequest"&gt;Swag.AllocatorRequest&lt;/a&gt;)
+<code style="white-space: break-spaces">func free(using self, request: *<a href="#Swag_AllocatorRequest">Swag.AllocatorRequest</a>)
 </code>
 </p>
 <p>
@@ -5519,7 +5519,7 @@ This will call <code class = "incode">release</code> prior to changing the capac
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func req(using self, request: *&lt;a href="#Swag_AllocatorRequest"&gt;Swag.AllocatorRequest&lt;/a&gt;)
+<code style="white-space: break-spaces">func req(using self, request: *<a href="#Swag_AllocatorRequest">Swag.AllocatorRequest</a>)
 </code>
 </p>
 <p>
@@ -5652,7 +5652,7 @@ Release the allocated block.</p>
 <p>
 This will call <code class = "incode">release</code> prior to changing the capacity, so this must be called at an early stage.</p>
 <p class="code">
-<code style="white-space: break-spaces">func setCapacity(using self, newCapacity: u64, allocator: &lt;a href="#Swag_IAllocator"&gt;Swag.IAllocator&lt;/a&gt;)
+<code style="white-space: break-spaces">func setCapacity(using self, newCapacity: u64, allocator: <a href="#Swag_IAllocator">Swag.IAllocator</a>)
 </code>
 </p>
 <p>
@@ -5762,7 +5762,7 @@ End column.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func free(request: *&lt;a href="#Swag_AllocatorRequest"&gt;Swag.AllocatorRequest&lt;/a&gt;)
+<code style="white-space: break-spaces">func free(request: *<a href="#Swag_AllocatorRequest">Swag.AllocatorRequest</a>)
 </code>
 </p>
 <p>
@@ -5777,7 +5777,7 @@ End column.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func req(using self, request: *&lt;a href="#Swag_AllocatorRequest"&gt;Swag.AllocatorRequest&lt;/a&gt;)
+<code style="white-space: break-spaces">func req(using self, request: *<a href="#Swag_AllocatorRequest">Swag.AllocatorRequest</a>)
 </code>
 </p>
 <p>
@@ -7173,7 +7173,7 @@ Change the behavior of a given warning or list of warnings.</p>
 <div class="addinfos"><b>Usage</b>: all multi 
 </div>
 <p class="code">
-<code style="white-space: break-spaces">attr Warn(what: string, level: &lt;a href="#Swag_WarnLevel"&gt;Swag.WarnLevel&lt;/a&gt;)
+<code style="white-space: break-spaces">attr Warn(what: string, level: <a href="#Swag_WarnLevel">Swag.WarnLevel</a>)
 </code>
 </p>
 <p>

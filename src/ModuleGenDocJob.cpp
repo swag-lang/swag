@@ -514,10 +514,7 @@ void ModuleGenDocJob::outputUserBlock(const UserBlock& user)
         Utf8 block;
         for (auto& l : user.lines)
         {
-            auto l1 = l;
-            l1.replace("<", "&lt;");
-            l1.replace(">", "&gt;");
-            block += l1;
+            block += l;
             block += "\n";
         }
 
@@ -635,8 +632,11 @@ void ModuleGenDocJob::outputCode(const Utf8& code)
     helpContent += "<p class=\"code\">\n";
     helpContent += "<code style=\"white-space: break-spaces\">";
     auto repl = code;
-    repl.replace("<", "&lt;");
-    repl.replace(">", "&gt;");
+    if (code.find("<a href") == -1)
+    {
+        repl.replace("<", "&lt;");
+        repl.replace(">", "&gt;");
+    }
     helpContent += repl;
     helpContent += "</code>\n";
     helpContent += "</p>\n";
