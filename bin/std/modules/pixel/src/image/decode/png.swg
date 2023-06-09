@@ -65,13 +65,13 @@ enum InterlaceMethod : u8
 	Adam7 = 1
 }
 
-#[EnumFlags]
+#[Swag.EnumFlags]
 enum ColorType: u8
 {
+    Grayscale   = 0
     Paletted    = 1
     Color       = 2
     Alpha       = 4
-    AlphaColor  = Alpha | Color
 }
 
 struct Header
@@ -79,10 +79,12 @@ struct Header
 	width:              u32
 	height:             u32
 	bitDepth:           u8
-	colorType:          ColorType = undefined
+	colorType:          ColorType
 	compressionMethod:  u8
 	filterMethod:       u8
 	interlaceMethod:    InterlaceMethod = undefined
+    palette:            [256] u32
+    paletteCount:       s32
 }
 
 struct Chunk
@@ -107,6 +109,7 @@ public struct Decoder
     chunkTRNS:      Chunk
     seenTRSN:       bool
     seenBKGD:       bool
+    seenPLTE:       bool
     orderDefilter:  bool
 }
 
@@ -152,17 +155,15 @@ impl Decoder
             if .interlaceMethod != .None and .interlaceMethod != .Adam7
                 throw "invalid interlace mtd"
 
-            if .colorType & .Paletted
-                throw "unsupported paletted image"
             if .colorType > 7
                 throw "invalid color type"
             if .bitDepth > 8
                 throw "unsupported bit depth"
-            if .bitDepth != 1 and .bitDepth != 2 and .bitDepth != 4 and .bitDepth != 8
-                throw "invalid bit depth"
 
             outChannels = 3
-            if header.colorType & .Color
+            if header.colorType & .Paletted
+                inChannels = 1
+            elif header.colorType & .Color
                 inChannels = 3
             else
                 inChannels = 1
@@ -170,6 +171,17 @@ impl Decoder
             {
                 inChannels += 1
                 outChannels += 1
+            }
+
+            if .colorType & .Alpha
+            {
+                if .bitDepth != 1 and .bitDepth != 2 and .bitDepth != 4 and .bitDepth != 8
+                    throw "invalid bit depth"
+            }
+            else
+            {
+                if .bitDepth != 4 and .bitDepth != 8
+                    throw "invalid bit depth"
             }
         }
     }
@@ -202,6 +214,7 @@ impl Decoder
         // 1 bit => 8 bits
         if header.bitDepth == 1
         {
+            mul := header.paletteCount ? 1 : 255
             loop height
             {
                 dest := orgDest
@@ -211,14 +224,14 @@ impl Decoder
                 while k >= 8
                 {
                     c := src[0]
-                    dest[0] = cast,bit(u8) ((c >> 7) * 255)
-                    dest[1] = cast,bit(u8) (((c >> 6) & 1) * 255)
-                    dest[2] = cast,bit(u8) (((c >> 5) & 1) * 255)
-                    dest[3] = cast,bit(u8) (((c >> 4) & 1) * 255)
-                    dest[4] = cast,bit(u8) (((c >> 3) & 1) * 255)
-                    dest[5] = cast,bit(u8) (((c >> 2) & 1) * 255)
-                    dest[6] = cast,bit(u8) (((c >> 1) & 1) * 255)
-                    dest[7] = cast,bit(u8) ((c & 1) * 255)
+                    dest[0] = cast,bit(u8) ((c >> 7) * mul)
+                    dest[1] = cast,bit(u8) (((c >> 6) & 1) * mul)
+                    dest[2] = cast,bit(u8) (((c >> 5) & 1) * mul)
+                    dest[3] = cast,bit(u8) (((c >> 4) & 1) * mul)
+                    dest[4] = cast,bit(u8) (((c >> 3) & 1) * mul)
+                    dest[5] = cast,bit(u8) (((c >> 2) & 1) * mul)
+                    dest[6] = cast,bit(u8) (((c >> 1) & 1) * mul)
+                    dest[7] = cast,bit(u8) ((c & 1) * mul)
                     dest += 8
                     src += 1
                     k -= 8
@@ -226,13 +239,13 @@ impl Decoder
                 if k > 0
                 {
                     c := src[0]
-                    dest[0] = cast,bit(u8) ((c >> 7) * 255)
-                    if k > 1 dest[1] = cast,bit(u8) (((c >> 6) & 1) * 255)
-                    if k > 2 dest[2] = cast,bit(u8) (((c >> 5) & 1) * 255)
-                    if k > 3 dest[3] = cast,bit(u8) (((c >> 4) & 1) * 255)
-                    if k > 4 dest[4] = cast,bit(u8) (((c >> 3) & 1) * 255)
-                    if k > 5 dest[5] = cast,bit(u8) (((c >> 2) & 1) * 255)
-                    if k > 6 dest[6] = cast,bit(u8) (((c >> 1) & 1) * 255)
+                    dest[0] = cast,bit(u8) ((c >> 7) * mul)
+                    if k > 1 dest[1] = cast,bit(u8) (((c >> 6) & 1) * mul)
+                    if k > 2 dest[2] = cast,bit(u8) (((c >> 5) & 1) * mul)
+                    if k > 3 dest[3] = cast,bit(u8) (((c >> 4) & 1) * mul)
+                    if k > 4 dest[4] = cast,bit(u8) (((c >> 3) & 1) * mul)
+                    if k > 5 dest[5] = cast,bit(u8) (((c >> 2) & 1) * mul)
+                    if k > 6 dest[6] = cast,bit(u8) (((c >> 1) & 1) * mul)
                 }
             }
         }
@@ -240,6 +253,7 @@ impl Decoder
         // 2 bits => 8 bits
         elif header.bitDepth == 2
         {
+            mul := header.paletteCount ? 1 : 85
             loop height
             {
                 dest := orgDest
@@ -249,10 +263,10 @@ impl Decoder
                 while k >= 2
                 {
                     c := src[0]
-                    dest[0] = cast,bit(u8) ((c >> 6) * 85)
-                    dest[1] = cast,bit(u8) (((c >> 4) & 3) * 85)
-                    dest[2] = cast,bit(u8) (((c >> 2) & 3) * 85)
-                    dest[3] = cast,bit(u8) ((c & 3) * 85)
+                    dest[0] = cast,bit(u8) ((c >> 6) * mul)
+                    dest[1] = cast,bit(u8) (((c >> 4) & 3) * mul)
+                    dest[2] = cast,bit(u8) (((c >> 2) & 3) * mul)
+                    dest[3] = cast,bit(u8) ((c & 3) * mul)
                     dest += 4
                     src += 1
                     k -= 4
@@ -260,9 +274,9 @@ impl Decoder
                 if k > 0
                 {
                     c := src[0]
-                    dest[0] = cast,bit(u8) ((c >> 6) * 85)
-                    if k > 1 dest[1] = cast,bit(u8) (((c >> 4) & 3) * 85)
-                    if k > 2 dest[2] = cast,bit(u8) (((c >> 2) & 3) * 85)
+                    dest[0] = cast,bit(u8) ((c >> 6) * mul)
+                    if k > 1 dest[1] = cast,bit(u8) (((c >> 4) & 3) * mul)
+                    if k > 2 dest[2] = cast,bit(u8) (((c >> 2) & 3) * mul)
                 }
             }
         }
@@ -270,6 +284,7 @@ impl Decoder
         // 4 bits => 8 bits
         elif header.bitDepth == 4
         {
+            mul := header.paletteCount ? 1 : 17
             loop height
             {
                 dest := orgDest
@@ -279,15 +294,15 @@ impl Decoder
                 while k >= 2
                 {
                     c := src[0]
-                    dest[0] = cast,bit(u8) ((c >> 4) * 17)
-                    dest[1] = cast,bit(u8) ((c & 15) * 17)
+                    dest[0] = cast,bit(u8) ((c >> 4) * mul)
+                    dest[1] = cast,bit(u8) ((c & 15) * mul)
                     dest += 2
                     src += 1
                     k -= 2
                 }
                 if k > 0
                 {
-                    dest[0] = cast,bit(u8) ((src[0] >> 4) * 17)
+                    dest[0] = cast,bit(u8) ((src[0] >> 4) * mul)
                 }
             }
         }
@@ -509,6 +524,22 @@ impl Decoder
                 chIsHere = true
                 seenIDAT = true
 
+            case PLTE:
+                if seenIDAT
+                    throw "invalid PLTE chunk"
+                chunk := readChunk(ch)
+                len   := @countof(chunk.datas)
+                if len % 3 != 0 or len > 768
+                    throw "invalid PLTE chunk"
+                seenPLTE = true
+                for i := 0; i < len; i += 3
+                {
+                    col := (cast(u32) chunk.datas[i] << 16) | (cast(u32) chunk.datas[i+1] << 8) | (chunk.datas[i+2])
+                    header.palette[i/3] = col
+                }
+
+                header.paletteCount = cast(u32) (len / 3)
+
             default:
                 discard readChunk(ch)
             }
@@ -518,6 +549,8 @@ impl Decoder
 
         if !seenIDAT
             throw "missing IDAT chunk"
+        if header.colorType & .Paletted and !seenPLTE
+            throw "missing PLTE chunk"
 
         // Initialize image depending on number of wanted channels
         if outChannels == 4
@@ -553,8 +586,44 @@ impl Decoder
     {
         defer Memory.free(dstPixels, dstPixelsSize)
 
+        // Paletted, no transparency
+        if inChannels == 1 and seenPLTE and !seenTRSN
+        {
+            pm := {dstPixels, header: &header}
+            result.visitPixels(&pm)
+            {
+                params := cast(*@decltype(pm)) userData
+                src := params.dstPixels
+                src += x + y * image.width
+                color := params.header.palette[src[0]]
+                pix[0] = acast ((color >> 16) & 0xFF)
+                pix[1] = acast ((color >> 8) & 0xFF)
+                pix[2] = acast (color & 0xFF)
+                if image.bpp == 32
+                    pix[3] = 255
+            }
+        }
+
+        // Paletted, transparency
+        elif inChannels == 1 and seenPLTE and seenTRSN
+        {
+            key := chunkTRNS.datas[0]
+            pm := {dstPixels, key, header: &header}
+            result.visitPixels(&pm)
+            {
+                params := cast(*@decltype(pm)) userData
+                src := params.dstPixels
+                src += x + y * image.width
+                color := params.header.palette[src[0]]
+                pix[0] = acast ((color >> 16) & 0xFF)
+                pix[1] = acast ((color >> 8) & 0xFF)
+                pix[2] = acast (color & 0xFF)
+                pix[3] = src[0] == params.key ? 0 : 255
+            }
+        }
+
         // Grayscale without alpha channel, no transparency
-        if inChannels == 1 and !seenTRSN
+        elif inChannels == 1 and !seenTRSN
         {
             result.visitPixels(&dstPixels)
             {
