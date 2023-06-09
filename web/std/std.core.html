@@ -1702,7 +1702,7 @@ This is a generic dynamic array.</p>
 <td class="tdname">
 allocator</td>
 <td class="tdtype">
-Swag.IAllocator</td>
+<a href="Swag.html#Swag_IAllocator">Swag.IAllocator</a></td>
 <td class="enumeration">
 <p>
 Associated allocator.</p>
@@ -3561,7 +3561,7 @@ buffer</td>
 <td class="tdname">
 allocator</td>
 <td class="tdtype">
-Swag.IAllocator</td>
+<a href="Swag.html#Swag_IAllocator">Swag.IAllocator</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -4603,7 +4603,7 @@ isSet</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func getField(typeStruct: const *Swag.TypeInfoStruct, name: string)-&gt;const *Swag.TypeValue
+<code style="white-space: break-spaces">func getField(typeStruct: const *<a href="Swag.html#Swag_TypeInfoStruct">Swag.TypeInfoStruct</a>, name: string)->const *<a href="Swag.html#Swag_TypeValue">Swag.TypeValue</a>
 </code>
 </p>
 <p>
@@ -5381,7 +5381,7 @@ Represents a growable buffer, which is divided in buckets to avoid a copy/reallo
 <td class="tdname">
 allocator</td>
 <td class="tdtype">
-Swag.IAllocator</td>
+<a href="Swag.html#Swag_IAllocator">Swag.IAllocator</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -5886,7 +5886,7 @@ Release all allocated buffers.</p>
 <p>
 Associate an allocator with the buffer.</p>
 <p class="code">
-<code style="white-space: break-spaces">func setAllocator(using self, alloc: Swag.IAllocator)
+<code style="white-space: break-spaces">func setAllocator(using self, alloc: <a href="Swag.html#Swag_IAllocator">Swag.IAllocator</a>)
 </code>
 </p>
 <p>
@@ -7146,7 +7146,7 @@ work</td>
 <td class="tdname">
 handle</td>
 <td class="tdtype">
-Core.Env.ProcessHandle</td>
+<a href="Core.html#Core_Env_ProcessHandle">Core.Env.ProcessHandle</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -7998,7 +7998,7 @@ name</td>
 <td class="tdname">
 handle</td>
 <td class="tdtype">
-Core.File.FileHandle</td>
+<a href="Core.html#Core_File_FileHandle">Core.File.FileHandle</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -8221,7 +8221,7 @@ Write to the given file stream, and returns the number of written bytes.</p>
 <td class="tdname">
 type</td>
 <td class="tdtype">
-const *Swag.TypeInfo</td>
+const *<a href="Swag.html#Swag_TypeInfo">Swag.TypeInfo</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -8559,7 +8559,7 @@ folder</td>
 <td class="tdname">
 src</td>
 <td class="tdtype">
-*Swag.TypeValue</td>
+*<a href="Swag.html#Swag_TypeValue">Swag.TypeValue</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -8567,7 +8567,7 @@ src</td>
 <td class="tdname">
 dst</td>
 <td class="tdtype">
-*Swag.TypeValue</td>
+*<a href="Swag.html#Swag_TypeValue">Swag.TypeValue</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -9616,7 +9616,7 @@ Update the hash value with <code class = "incode">buffer</code> content.</p>
 <p>
 Returns the md5 value for the given buffer.</p>
 <p class="code">
-<code style="white-space: break-spaces">func compute(buffer: const [..] u8)-&gt;Core.Hash.Md5.Digest
+<code style="white-space: break-spaces">func compute(buffer: const [..] u8)-><a href="Core.html#Core_Hash_Md5_Digest">Core.Hash.Md5.Digest</a>
 </code>
 </p>
 <p>
@@ -9633,7 +9633,7 @@ Returns the md5 value for the given buffer.</p>
 <p>
 Finalize the computation.</p>
 <p class="code">
-<code style="white-space: break-spaces">func final(using self, digest: Core.Hash.Md5.Digest)
+<code style="white-space: break-spaces">func final(using self, digest: <a href="Core.html#Core_Hash_Md5_Digest">Core.Hash.Md5.Digest</a>)
 </code>
 </p>
 <p>
@@ -9764,7 +9764,7 @@ Update the hash value with <code class = "incode">buffer</code> content.</p>
 <p>
 Returns the sha256 value for the given buffer.</p>
 <p class="code">
-<code style="white-space: break-spaces">func compute(buffer: const [..] u8)-&gt;Core.Hash.Sha256.Digest
+<code style="white-space: break-spaces">func compute(buffer: const [..] u8)-><a href="Core.html#Core_Hash_Sha256_Digest">Core.Hash.Sha256.Digest</a>
 </code>
 </p>
 <p>
@@ -9781,7 +9781,7 @@ Returns the sha256 value for the given buffer.</p>
 <p>
 Finalize the computation.</p>
 <p class="code">
-<code style="white-space: break-spaces">func final(using self, result: Core.Hash.Sha256.Digest)
+<code style="white-space: break-spaces">func final(using self, result: <a href="Core.html#Core_Hash_Sha256_Digest">Core.Hash.Sha256.Digest</a>)
 </code>
 </p>
 <p>
@@ -9886,7 +9886,7 @@ s32</td>
 <td class="tdname">
 allocator</td>
 <td class="tdtype">
-Swag.IAllocator</td>
+<a href="Swag.html#Swag_IAllocator">Swag.IAllocator</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -10330,7 +10330,7 @@ s32</td>
 <td class="tdname">
 allocator</td>
 <td class="tdtype">
-Swag.IAllocator</td>
+<a href="Swag.html#Swag_IAllocator">Swag.IAllocator</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -12963,7 +12963,7 @@ Try to transform the given key to the corresponding rune.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func keyToVirtualKey(key: <a href="#Core_Input_Key">Core.Input.Key</a>)->Core.Input.VirtualKey
+<code style="white-space: break-spaces">func keyToVirtualKey(key: <a href="#Core_Input_Key">Core.Input.Key</a>)-><a href="Core.html#Core_Input_VirtualKey">Core.Input.VirtualKey</a>
 </code>
 </p>
 <p>
@@ -12995,7 +12995,7 @@ Compute current state of the keyboard (all keys).</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func virtualKeyToKey(vkey: Core.Input.VirtualKey)-><a href="#Core_Input_Key">Core.Input.Key</a>
+<code style="white-space: break-spaces">func virtualKeyToKey(vkey: <a href="Core.html#Core_Input_VirtualKey">Core.Input.VirtualKey</a>)-><a href="#Core_Input_Key">Core.Input.Key</a>
 </code>
 </p>
 <p>
@@ -13098,7 +13098,7 @@ Compute current keyboard state.</p>
 <td class="tdname">
 nativeState</td>
 <td class="tdtype">
-[256] Win32.BYTE</td>
+[256] <a href="Win32.html#Win32_BYTE">Win32.BYTE</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -18387,14 +18387,14 @@ Set transform to identity.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">struct Variant(T: const [..] const *Swag.TypeInfo)</code>
+<code style="white-space: break-spaces">struct Variant(T: const [..] const *<a href="Swag.html#Swag_TypeInfo">Swag.TypeInfo</a>)</code>
 </p>
 <table class="enumeration">
 <tr>
 <td class="tdname">
 type</td>
 <td class="tdtype">
-const *Swag.TypeInfo</td>
+const *<a href="Swag.html#Swag_TypeInfo">Swag.TypeInfo</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -18499,7 +18499,7 @@ Set the variant value.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func checkValidType(t: const [..] const *Swag.TypeInfo, tn: const *Swag.TypeInfo)-&gt;bool
+<code style="white-space: break-spaces">func checkValidType(t: const [..] const *<a href="Swag.html#Swag_TypeInfo">Swag.TypeInfo</a>, tn: const *<a href="Swag.html#Swag_TypeInfo">Swag.TypeInfo</a>)->bool
 </code>
 </p>
 <p>
@@ -21565,7 +21565,7 @@ Align a value to the given amount.</p>
 <p>
 Allocate a given amount of bytes.</p>
 <p class="code">
-<code style="white-space: break-spaces">func alloc(size: u64, allocator: Swag.IAllocator = null, alignement: u32 = 0, hint: string = null, loc = #callerlocation)-&gt;^void
+<code style="white-space: break-spaces">func alloc(size: u64, allocator: <a href="Swag.html#Swag_IAllocator">Swag.IAllocator</a> = null, alignement: u32 = 0, hint: string = null, loc = #callerlocation)->^void
 </code>
 </p>
 <p>
@@ -21582,7 +21582,7 @@ Allocate a given amount of bytes.</p>
 <p>
 Check if a given pointer is allocated.</p>
 <p class="code">
-<code style="white-space: break-spaces">func assertIsAllocated(buffer: ^void, size: u64, allocator: Swag.IAllocator = null, hint: string = null, loc = #callerlocation)
+<code style="white-space: break-spaces">func assertIsAllocated(buffer: ^void, size: u64, allocator: <a href="Swag.html#Swag_IAllocator">Swag.IAllocator</a> = null, hint: string = null, loc = #callerlocation)
 </code>
 </p>
 <p>
@@ -21667,19 +21667,19 @@ Move one block of memory to a given address.</p>
 <p>
 Drop and release memory of the given type.</p>
 <p class="code">
-<code style="white-space: break-spaces">func(T) delete(ptr: *T, allocator: Swag.IAllocator = null, hint: string = null, loc = #callerlocation)
+<code style="white-space: break-spaces">func(T) delete(ptr: *T, allocator: <a href="Swag.html#Swag_IAllocator">Swag.IAllocator</a> = null, hint: string = null, loc = #callerlocation)
 </code>
 </p>
 <p>
 Drop and release memory of an array of the given type.</p>
 <p class="code">
-<code style="white-space: break-spaces">func(T) delete(ptr: ^T, num: u64, allocator: Swag.IAllocator = null, hint: string = null, loc = #callerlocation)
+<code style="white-space: break-spaces">func(T) delete(ptr: ^T, num: u64, allocator: <a href="Swag.html#Swag_IAllocator">Swag.IAllocator</a> = null, hint: string = null, loc = #callerlocation)
 </code>
 </p>
 <p>
 Drop and release memory of the given type.</p>
 <p class="code">
-<code style="white-space: break-spaces">func delete(ptr: *void, type: const *Swag.TypeInfo, allocator: Swag.IAllocator = null, hint: string = null, loc = #callerlocation)
+<code style="white-space: break-spaces">func delete(ptr: *void, type: const *<a href="Swag.html#Swag_TypeInfo">Swag.TypeInfo</a>, allocator: <a href="Swag.html#Swag_IAllocator">Swag.IAllocator</a> = null, hint: string = null, loc = #callerlocation)
 </code>
 </p>
 <p>
@@ -21713,7 +21713,7 @@ Compare two blocks of memory.</p>
 <p>
 Free the specified memory block.</p>
 <p class="code">
-<code style="white-space: break-spaces">func free(buffer: ^void, size: u64, allocator: Swag.IAllocator = null, hint: string = null, loc = #callerlocation)
+<code style="white-space: break-spaces">func free(buffer: ^void, size: u64, allocator: <a href="Swag.html#Swag_IAllocator">Swag.IAllocator</a> = null, hint: string = null, loc = #callerlocation)
 </code>
 </p>
 <p>
@@ -21730,7 +21730,7 @@ Free the specified memory block.</p>
 <p>
 Free all allocated memory of the given allocator if possible.</p>
 <p class="code">
-<code style="white-space: break-spaces">func freeAll(allocator: Swag.IAllocator, hint: string = null, loc = #callerlocation)
+<code style="white-space: break-spaces">func freeAll(allocator: <a href="Swag.html#Swag_IAllocator">Swag.IAllocator</a>, hint: string = null, loc = #callerlocation)
 </code>
 </p>
 <p>
@@ -21764,19 +21764,19 @@ Clear the temporary allocator.</p>
 <p>
 Allocate and initialize the given type.</p>
 <p class="code">
-<code style="white-space: break-spaces">func(T) new(allocator: Swag.IAllocator = null, alignement: u32 = 0, hint: string = null, loc = #callerlocation)-&gt;*T
+<code style="white-space: break-spaces">func(T) new(allocator: <a href="Swag.html#Swag_IAllocator">Swag.IAllocator</a> = null, alignement: u32 = 0, hint: string = null, loc = #callerlocation)->*T
 </code>
 </p>
 <p>
 Allocate and initialize an array of the given type.</p>
 <p class="code">
-<code style="white-space: break-spaces">func(T) new(num: u64, allocator: Swag.IAllocator = null, alignement: u32 = 0, hint: string = null, loc = #callerlocation)-&gt;^T
+<code style="white-space: break-spaces">func(T) new(num: u64, allocator: <a href="Swag.html#Swag_IAllocator">Swag.IAllocator</a> = null, alignement: u32 = 0, hint: string = null, loc = #callerlocation)->^T
 </code>
 </p>
 <p>
 Allocate and initialize the given type.</p>
 <p class="code">
-<code style="white-space: break-spaces">func new(type: const *Swag.TypeInfo, allocator: Swag.IAllocator = null, alignement: u32 = 0, hint: string = null, loc = #callerlocation)-&gt;*u8
+<code style="white-space: break-spaces">func new(type: const *<a href="Swag.html#Swag_TypeInfo">Swag.TypeInfo</a>, allocator: <a href="Swag.html#Swag_IAllocator">Swag.IAllocator</a> = null, alignement: u32 = 0, hint: string = null, loc = #callerlocation)->*u8
 </code>
 </p>
 <p>
@@ -21794,7 +21794,7 @@ Allocate and initialize the given type.</p>
 Push a new allocator for the given block of code.</p>
 <p class="code">
 <code style="white-space: break-spaces">#[Swag.Macro]
-func pushAllocator(allocator: Swag.IAllocator, stmt: code)
+func pushAllocator(allocator: <a href="Swag.html#Swag_IAllocator">Swag.IAllocator</a>, stmt: code)
 </code>
 </p>
 <p>
@@ -21829,7 +21829,7 @@ func pushTempAllocator(stmt: code)
 <p>
 Reallocate/allocate a given amount of bytes.</p>
 <p class="code">
-<code style="white-space: break-spaces">func realloc(buffer: ^void, newSize: u64, oldSize: u64, allocator: Swag.IAllocator = null, alignement: u16 = 0, hint: string = null, loc = #callerlocation)-&gt;^void
+<code style="white-space: break-spaces">func realloc(buffer: ^void, newSize: u64, oldSize: u64, allocator: <a href="Swag.html#Swag_IAllocator">Swag.IAllocator</a> = null, alignement: u16 = 0, hint: string = null, loc = #callerlocation)->^void
 </code>
 </p>
 <p>
@@ -23739,7 +23739,7 @@ Returns the given associated attributes to <code class = "incode">value</code>.<
 <a href="#Core_Reflection_getEnumName">getEnumName(const *TypeInfo, const *void, bool)</a></td>
 <td class="enumeration">
 <p>
-Returns the enum value name corresponding to the value pointed by <code class = "incode">valueAddr</code> Can have multiple names if the enum is tagged with #[Swag.EnumFlags].</p>
+Returns the enum value name corresponding to the value pointed by <code class = "incode">valueAddr</code> Can have multiple names if the enum is tagged with #<a href="Swag.html#Swag_EnumFlags">Swag.EnumFlags</a>.</p>
 </td>
 </tr>
 <tr>
@@ -24027,7 +24027,7 @@ Set a field value with a given runtime type.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func canCopy(type: const *Swag.TypeInfo)-&gt;bool
+<code style="white-space: break-spaces">func canCopy(type: const *<a href="Swag.html#Swag_TypeInfo">Swag.TypeInfo</a>)->bool
 </code>
 </p>
 <p>
@@ -24042,7 +24042,7 @@ Set a field value with a given runtime type.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func copy(dst: *void, src: *void, type: const *Swag.TypeInfo)
+<code style="white-space: break-spaces">func copy(dst: *void, src: *void, type: const *<a href="Swag.html#Swag_TypeInfo">Swag.TypeInfo</a>)
 </code>
 </p>
 <p>
@@ -24059,7 +24059,7 @@ Set a field value with a given runtime type.</p>
 <p>
 Convert a crc to a registered typeinfo.</p>
 <p class="code">
-<code style="white-space: break-spaces">func crcToType(crc: u32)-&gt;const *Swag.TypeInfo
+<code style="white-space: break-spaces">func crcToType(crc: u32)->const *<a href="Swag.html#Swag_TypeInfo">Swag.TypeInfo</a>
 </code>
 </p>
 <p>
@@ -24076,13 +24076,13 @@ Convert a crc to a registered typeinfo.</p>
 <p>
 Returns the given associated <code class = "incode">attribute</code> to <code class = "incode">type</code> or null.</p>
 <p class="code">
-<code style="white-space: break-spaces">func getAttribute(type: const *Swag.TypeInfo, attribute: const *Swag.TypeInfo)-&gt;const *Swag.Attribute
+<code style="white-space: break-spaces">func getAttribute(type: const *<a href="Swag.html#Swag_TypeInfo">Swag.TypeInfo</a>, attribute: const *<a href="Swag.html#Swag_TypeInfo">Swag.TypeInfo</a>)->const *<a href="Swag.html#Swag_Attribute">Swag.Attribute</a>
 </code>
 </p>
 <p>
 Returns the given associated <code class = "incode">attribute</code> to <code class = "incode">value</code> or null.</p>
 <p class="code">
-<code style="white-space: break-spaces">func getAttribute(value: const *Swag.TypeValue, attribute: const *Swag.TypeInfo)-&gt;const *Swag.Attribute
+<code style="white-space: break-spaces">func getAttribute(value: const *<a href="Swag.html#Swag_TypeValue">Swag.TypeValue</a>, attribute: const *<a href="Swag.html#Swag_TypeInfo">Swag.TypeInfo</a>)->const *<a href="Swag.html#Swag_Attribute">Swag.Attribute</a>
 </code>
 </p>
 <p>
@@ -24099,19 +24099,19 @@ Returns the given associated <code class = "incode">attribute</code> to <code cl
 <p>
 Returns the given attribute value, or null.</p>
 <p class="code">
-<code style="white-space: break-spaces">func getAttributeValue(attribute: const *Swag.Attribute, value: string)-&gt;any
+<code style="white-space: break-spaces">func getAttributeValue(attribute: const *<a href="Swag.html#Swag_Attribute">Swag.Attribute</a>, value: string)->any
 </code>
 </p>
 <p>
 Returns the given attribute value, or null.</p>
 <p class="code">
-<code style="white-space: break-spaces">func getAttributeValue(type: const *Swag.TypeInfo, attribute: const *Swag.TypeInfo, value: string)-&gt;any
+<code style="white-space: break-spaces">func getAttributeValue(type: const *<a href="Swag.html#Swag_TypeInfo">Swag.TypeInfo</a>, attribute: const *<a href="Swag.html#Swag_TypeInfo">Swag.TypeInfo</a>, value: string)->any
 </code>
 </p>
 <p>
 Returns the given attribute value, or null.</p>
 <p class="code">
-<code style="white-space: break-spaces">func getAttributeValue(type: const *Swag.TypeValue, attribute: const *Swag.TypeInfo, value: string)-&gt;any
+<code style="white-space: break-spaces">func getAttributeValue(type: const *<a href="Swag.html#Swag_TypeValue">Swag.TypeValue</a>, attribute: const *<a href="Swag.html#Swag_TypeInfo">Swag.TypeInfo</a>, value: string)->any
 </code>
 </p>
 <p>
@@ -24128,13 +24128,13 @@ Returns the given attribute value, or null.</p>
 <p>
 Returns the given associated attributes to <code class = "incode">type</code>.</p>
 <p class="code">
-<code style="white-space: break-spaces">func getAttributes(type: const *Swag.TypeInfo, attribute: const *Swag.TypeInfo)-><a href="#Core_Array">Core.Array</a>(const *Swag.Attribute)
+<code style="white-space: break-spaces">func getAttributes(type: const *<a href="Swag.html#Swag_TypeInfo">Swag.TypeInfo</a>, attribute: const *<a href="Swag.html#Swag_TypeInfo">Swag.TypeInfo</a>)-><a href="#Core_Array">Core.Array</a>(const *<a href="Swag.html#Swag_Attribute">Swag.Attribute</a>)
 </code>
 </p>
 <p>
 Returns the given associated attributes to <code class = "incode">value</code>.</p>
 <p class="code">
-<code style="white-space: break-spaces">func getAttributes(value: const *Swag.TypeValue, attribute: const *Swag.TypeInfo)-><a href="#Core_Array">Core.Array</a>(const *Swag.Attribute)
+<code style="white-space: break-spaces">func getAttributes(value: const *<a href="Swag.html#Swag_TypeValue">Swag.TypeValue</a>, attribute: const *<a href="Swag.html#Swag_TypeInfo">Swag.TypeInfo</a>)-><a href="#Core_Array">Core.Array</a>(const *<a href="Swag.html#Swag_Attribute">Swag.Attribute</a>)
 </code>
 </p>
 <p>
@@ -24149,9 +24149,9 @@ Returns the given associated attributes to <code class = "incode">value</code>.<
 </table>
 </p>
 <p>
-Returns the enum value name corresponding to the value pointed by <code class = "incode">valueAddr</code> Can have multiple names if the enum is tagged with #[Swag.EnumFlags].</p>
+Returns the enum value name corresponding to the value pointed by <code class = "incode">valueAddr</code> Can have multiple names if the enum is tagged with #<a href="Swag.html#Swag_EnumFlags">Swag.EnumFlags</a>.</p>
 <p class="code">
-<code style="white-space: break-spaces">func getEnumName(type: const *Swag.TypeInfo, valueAddr: const *void, fullname = true)-><a href="#Core_String">Core.String</a>
+<code style="white-space: break-spaces">func getEnumName(type: const *<a href="Swag.html#Swag_TypeInfo">Swag.TypeInfo</a>, valueAddr: const *void, fullname = true)-><a href="#Core_String">Core.String</a>
 </code>
 </p>
 <p>
@@ -24168,7 +24168,7 @@ Returns the enum value name corresponding to the value pointed by <code class = 
 <p>
 Get information about a specific value in a given enum Returns null if the value does not exist.</p>
 <p class="code">
-<code style="white-space: break-spaces">func getEnumValue(type: const *Swag.TypeInfo, name: string)-&gt;const *Swag.TypeValue
+<code style="white-space: break-spaces">func getEnumValue(type: const *<a href="Swag.html#Swag_TypeInfo">Swag.TypeInfo</a>, name: string)->const *<a href="Swag.html#Swag_TypeValue">Swag.TypeValue</a>
 </code>
 </p>
 <p>
@@ -24185,7 +24185,7 @@ Get information about a specific value in a given enum Returns null if the value
 <p>
 Get information about a specific field in a given struct Returns null if the field does not exist.</p>
 <p class="code">
-<code style="white-space: break-spaces">func getField(type: const *Swag.TypeInfo, name: string)-&gt;const *Swag.TypeValue
+<code style="white-space: break-spaces">func getField(type: const *<a href="Swag.html#Swag_TypeInfo">Swag.TypeInfo</a>, name: string)->const *<a href="Swag.html#Swag_TypeValue">Swag.TypeValue</a>
 </code>
 </p>
 <p>
@@ -24202,7 +24202,7 @@ Get information about a specific field in a given struct Returns null if the fie
 <p>
 Get a field value with a given runtime type.</p>
 <p class="code">
-<code style="white-space: break-spaces">func getFieldValue(dest: *void, type: const *Swag.TypeValue, src: *void, hardCast: bool = false)
+<code style="white-space: break-spaces">func getFieldValue(dest: *void, type: const *<a href="Swag.html#Swag_TypeValue">Swag.TypeValue</a>, src: *void, hardCast: bool = false)
 </code>
 </p>
 <p>
@@ -24219,7 +24219,7 @@ Get a field value with a given runtime type.</p>
 <p>
 Get information about a specific mtd in a given struct Returns null if the mtd does not exist.</p>
 <p class="code">
-<code style="white-space: break-spaces">func getMethod(type: const *Swag.TypeInfo, name: string)-&gt;const *Swag.TypeValue
+<code style="white-space: break-spaces">func getMethod(type: const *<a href="Swag.html#Swag_TypeInfo">Swag.TypeInfo</a>, name: string)->const *<a href="Swag.html#Swag_TypeValue">Swag.TypeValue</a>
 </code>
 </p>
 <p>
@@ -24236,13 +24236,13 @@ Get information about a specific mtd in a given struct Returns null if the mtd d
 <p>
 Returns true if the given <code class = "incode">type</code> has the associated <code class = "incode">attribute</code>.</p>
 <p class="code">
-<code style="white-space: break-spaces">func hasAttribute(type: const *Swag.TypeInfo, attribute: const *Swag.TypeInfo)-&gt;bool
+<code style="white-space: break-spaces">func hasAttribute(type: const *<a href="Swag.html#Swag_TypeInfo">Swag.TypeInfo</a>, attribute: const *<a href="Swag.html#Swag_TypeInfo">Swag.TypeInfo</a>)->bool
 </code>
 </p>
 <p>
 Returns true if the given <code class = "incode">value</code> has the associated <code class = "incode">attribute</code>.</p>
 <p class="code">
-<code style="white-space: break-spaces">func hasAttribute(value: const *Swag.TypeValue, attribute: const *Swag.TypeInfo)-&gt;bool
+<code style="white-space: break-spaces">func hasAttribute(value: const *<a href="Swag.html#Swag_TypeValue">Swag.TypeValue</a>, attribute: const *<a href="Swag.html#Swag_TypeInfo">Swag.TypeInfo</a>)->bool
 </code>
 </p>
 <p>
@@ -24257,7 +24257,7 @@ Returns true if the given <code class = "incode">value</code> has the associated
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func hasDrop(type: const *Swag.TypeInfo)-&gt;bool
+<code style="white-space: break-spaces">func hasDrop(type: const *<a href="Swag.html#Swag_TypeInfo">Swag.TypeInfo</a>)->bool
 </code>
 </p>
 <p>
@@ -24274,7 +24274,7 @@ Returns true if the given <code class = "incode">value</code> has the associated
 <p>
 Returns true if the interface <code class = "incode">itf</code> is implemented in the given structure type.</p>
 <p class="code">
-<code style="white-space: break-spaces">func hasInterface(type: const *Swag.TypeInfo, itf: const *Swag.TypeInfo)-&gt;bool
+<code style="white-space: break-spaces">func hasInterface(type: const *<a href="Swag.html#Swag_TypeInfo">Swag.TypeInfo</a>, itf: const *<a href="Swag.html#Swag_TypeInfo">Swag.TypeInfo</a>)->bool
 </code>
 </p>
 <p>
@@ -24291,7 +24291,7 @@ Returns true if the interface <code class = "incode">itf</code> is implemented i
 <p>
 Helpers functions to know if a struct has a special function.</p>
 <p class="code">
-<code style="white-space: break-spaces">func hasMethod(type: const *Swag.TypeInfo, name: string)-&gt;bool
+<code style="white-space: break-spaces">func hasMethod(type: const *<a href="Swag.html#Swag_TypeInfo">Swag.TypeInfo</a>, name: string)->bool
 </code>
 </p>
 <p>
@@ -24306,7 +24306,7 @@ Helpers functions to know if a struct has a special function.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func hasPostCopy(type: const *Swag.TypeInfo)-&gt;bool
+<code style="white-space: break-spaces">func hasPostCopy(type: const *<a href="Swag.html#Swag_TypeInfo">Swag.TypeInfo</a>)->bool
 </code>
 </p>
 <p>
@@ -24321,7 +24321,7 @@ Helpers functions to know if a struct has a special function.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func hasPostMove(type: const *Swag.TypeInfo)-&gt;bool
+<code style="white-space: break-spaces">func hasPostMove(type: const *<a href="Swag.html#Swag_TypeInfo">Swag.TypeInfo</a>)->bool
 </code>
 </p>
 <p>
@@ -24336,7 +24336,7 @@ Helpers functions to know if a struct has a special function.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func isAny(t: const *Swag.TypeInfo)-&gt;bool
+<code style="white-space: break-spaces">func isAny(t: const *<a href="Swag.html#Swag_TypeInfo">Swag.TypeInfo</a>)->bool
 </code>
 </p>
 <p>
@@ -24351,7 +24351,7 @@ Helpers functions to know if a struct has a special function.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func isArray(t: const *Swag.TypeInfo)
+<code style="white-space: break-spaces">func isArray(t: const *<a href="Swag.html#Swag_TypeInfo">Swag.TypeInfo</a>)
 </code>
 </p>
 <p>
@@ -24366,7 +24366,7 @@ Helpers functions to know if a struct has a special function.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func isBool(t: const *Swag.TypeInfo)-&gt;bool
+<code style="white-space: break-spaces">func isBool(t: const *<a href="Swag.html#Swag_TypeInfo">Swag.TypeInfo</a>)->bool
 </code>
 </p>
 <p>
@@ -24381,7 +24381,7 @@ Helpers functions to know if a struct has a special function.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func isEnum(t: const *Swag.TypeInfo)
+<code style="white-space: break-spaces">func isEnum(t: const *<a href="Swag.html#Swag_TypeInfo">Swag.TypeInfo</a>)
 </code>
 </p>
 <p>
@@ -24396,7 +24396,7 @@ Helpers functions to know if a struct has a special function.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func isEnumFlags(t: const *Swag.TypeInfo)-&gt;bool
+<code style="white-space: break-spaces">func isEnumFlags(t: const *<a href="Swag.html#Swag_TypeInfo">Swag.TypeInfo</a>)->bool
 </code>
 </p>
 <p>
@@ -24411,7 +24411,7 @@ Helpers functions to know if a struct has a special function.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func isFloat(t: const *Swag.TypeInfo)
+<code style="white-space: break-spaces">func isFloat(t: const *<a href="Swag.html#Swag_TypeInfo">Swag.TypeInfo</a>)
 </code>
 </p>
 <p>
@@ -24426,7 +24426,7 @@ Helpers functions to know if a struct has a special function.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func isGeneric(t: const *Swag.TypeInfo)
+<code style="white-space: break-spaces">func isGeneric(t: const *<a href="Swag.html#Swag_TypeInfo">Swag.TypeInfo</a>)
 </code>
 </p>
 <p>
@@ -24441,7 +24441,7 @@ Helpers functions to know if a struct has a special function.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func isInteger(t: const *Swag.TypeInfo)
+<code style="white-space: break-spaces">func isInteger(t: const *<a href="Swag.html#Swag_TypeInfo">Swag.TypeInfo</a>)
 </code>
 </p>
 <p>
@@ -24456,7 +24456,7 @@ Helpers functions to know if a struct has a special function.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func isInterface(t: const *Swag.TypeInfo)
+<code style="white-space: break-spaces">func isInterface(t: const *<a href="Swag.html#Swag_TypeInfo">Swag.TypeInfo</a>)
 </code>
 </p>
 <p>
@@ -24471,7 +24471,7 @@ Helpers functions to know if a struct has a special function.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func isNative(t: const *Swag.TypeInfo)
+<code style="white-space: break-spaces">func isNative(t: const *<a href="Swag.html#Swag_TypeInfo">Swag.TypeInfo</a>)
 </code>
 </p>
 <p>
@@ -24486,7 +24486,7 @@ Helpers functions to know if a struct has a special function.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func isPointer(t: const *Swag.TypeInfo)
+<code style="white-space: break-spaces">func isPointer(t: const *<a href="Swag.html#Swag_TypeInfo">Swag.TypeInfo</a>)
 </code>
 </p>
 <p>
@@ -24501,7 +24501,7 @@ Helpers functions to know if a struct has a special function.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func isPointerArithmetic(t: const *Swag.TypeInfo)
+<code style="white-space: break-spaces">func isPointerArithmetic(t: const *<a href="Swag.html#Swag_TypeInfo">Swag.TypeInfo</a>)
 </code>
 </p>
 <p>
@@ -24516,7 +24516,7 @@ Helpers functions to know if a struct has a special function.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func isPointerRef(t: const *Swag.TypeInfo)
+<code style="white-space: break-spaces">func isPointerRef(t: const *<a href="Swag.html#Swag_TypeInfo">Swag.TypeInfo</a>)
 </code>
 </p>
 <p>
@@ -24531,7 +24531,7 @@ Helpers functions to know if a struct has a special function.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func isRune(t: const *Swag.TypeInfo)-&gt;bool
+<code style="white-space: break-spaces">func isRune(t: const *<a href="Swag.html#Swag_TypeInfo">Swag.TypeInfo</a>)->bool
 </code>
 </p>
 <p>
@@ -24546,7 +24546,7 @@ Helpers functions to know if a struct has a special function.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func isSimpleNative(t: const *Swag.TypeInfo)-&gt;bool
+<code style="white-space: break-spaces">func isSimpleNative(t: const *<a href="Swag.html#Swag_TypeInfo">Swag.TypeInfo</a>)->bool
 </code>
 </p>
 <p>
@@ -24561,7 +24561,7 @@ Helpers functions to know if a struct has a special function.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func isSlice(t: const *Swag.TypeInfo)
+<code style="white-space: break-spaces">func isSlice(t: const *<a href="Swag.html#Swag_TypeInfo">Swag.TypeInfo</a>)
 </code>
 </p>
 <p>
@@ -24576,7 +24576,7 @@ Helpers functions to know if a struct has a special function.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func isString(t: const *Swag.TypeInfo)-&gt;bool
+<code style="white-space: break-spaces">func isString(t: const *<a href="Swag.html#Swag_TypeInfo">Swag.TypeInfo</a>)->bool
 </code>
 </p>
 <p>
@@ -24591,7 +24591,7 @@ Helpers functions to know if a struct has a special function.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func isStruct(t: const *Swag.TypeInfo)
+<code style="white-space: break-spaces">func isStruct(t: const *<a href="Swag.html#Swag_TypeInfo">Swag.TypeInfo</a>)
 </code>
 </p>
 <p>
@@ -24608,7 +24608,7 @@ Helpers functions to know if a struct has a special function.</p>
 <p>
 Returns true if this is a struct of the given name.</p>
 <p class="code">
-<code style="white-space: break-spaces">func isStructOfName(type: const *Swag.TypeInfo, name: string)-&gt;bool
+<code style="white-space: break-spaces">func isStructOfName(type: const *<a href="Swag.html#Swag_TypeInfo">Swag.TypeInfo</a>, name: string)->bool
 </code>
 </p>
 <p>
@@ -24623,7 +24623,7 @@ Returns true if this is a struct of the given name.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func isTuple(t: const *Swag.TypeInfo)
+<code style="white-space: break-spaces">func isTuple(t: const *<a href="Swag.html#Swag_TypeInfo">Swag.TypeInfo</a>)
 </code>
 </p>
 <p>
@@ -24638,7 +24638,7 @@ Returns true if this is a struct of the given name.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func isType(t: const *Swag.TypeInfo)
+<code style="white-space: break-spaces">func isType(t: const *<a href="Swag.html#Swag_TypeInfo">Swag.TypeInfo</a>)
 </code>
 </p>
 <p>
@@ -24653,7 +24653,7 @@ Returns true if this is a struct of the given name.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func isTypeAlias(t: const *Swag.TypeInfo)
+<code style="white-space: break-spaces">func isTypeAlias(t: const *<a href="Swag.html#Swag_TypeInfo">Swag.TypeInfo</a>)
 </code>
 </p>
 <p>
@@ -24670,7 +24670,7 @@ Returns true if this is a struct of the given name.</p>
 <p>
 In case this is a type alias, need to go deep inside it to find the right type.</p>
 <p class="code">
-<code style="white-space: break-spaces">func makeConcreteAlias(type: const *Swag.TypeInfo)-&gt;const *Swag.TypeInfo
+<code style="white-space: break-spaces">func makeConcreteAlias(type: const *<a href="Swag.html#Swag_TypeInfo">Swag.TypeInfo</a>)->const *<a href="Swag.html#Swag_TypeInfo">Swag.TypeInfo</a>
 </code>
 </p>
 <p>
@@ -24687,7 +24687,7 @@ In case this is a type alias, need to go deep inside it to find the right type.<
 <p>
 Transform an enum type to its underling real native type.</p>
 <p class="code">
-<code style="white-space: break-spaces">func makeConcreteEnum(type: const *Swag.TypeInfo)-&gt;const *Swag.TypeInfo
+<code style="white-space: break-spaces">func makeConcreteEnum(type: const *<a href="Swag.html#Swag_TypeInfo">Swag.TypeInfo</a>)->const *<a href="Swag.html#Swag_TypeInfo">Swag.TypeInfo</a>
 </code>
 </p>
 <p>
@@ -24704,7 +24704,7 @@ Transform an enum type to its underling real native type.</p>
 <p>
 Returns the maximum sizeof a bunch of <code class = "incode">typeinfo</code>.</p>
 <p class="code">
-<code style="white-space: break-spaces">func maxSizeOf(v: const [..] const *Swag.TypeInfo)-&gt;u64
+<code style="white-space: break-spaces">func maxSizeOf(v: const [..] const *<a href="Swag.html#Swag_TypeInfo">Swag.TypeInfo</a>)->u64
 </code>
 </p>
 <p>
@@ -24721,7 +24721,7 @@ Returns the maximum sizeof a bunch of <code class = "incode">typeinfo</code>.</p
 <p>
 Convert a crc to a registered typeinfo.</p>
 <p class="code">
-<code style="white-space: break-spaces">func nameToType(name: string)-&gt;const *Swag.TypeInfo
+<code style="white-space: break-spaces">func nameToType(name: string)->const *<a href="Swag.html#Swag_TypeInfo">Swag.TypeInfo</a>
 </code>
 </p>
 <p>
@@ -24738,7 +24738,7 @@ Convert a crc to a registered typeinfo.</p>
 <p>
 Make an union of flags of all types.</p>
 <p class="code">
-<code style="white-space: break-spaces">func orFlags(v: const [..] const *Swag.TypeInfo)-&gt;Swag.TypeInfoFlags
+<code style="white-space: break-spaces">func orFlags(v: const [..] const *<a href="Swag.html#Swag_TypeInfo">Swag.TypeInfo</a>)-><a href="Swag.html#Swag_TypeInfoFlags">Swag.TypeInfoFlags</a>
 </code>
 </p>
 <p>
@@ -24755,7 +24755,7 @@ Make an union of flags of all types.</p>
 <p>
 Used to add an element in a <code class = "incode">Core.Array</code> without knowing the type of the element at compile time but knowing it at runtime (valueType).</p>
 <p class="code">
-<code style="white-space: break-spaces">func roomInArray(addr: *void, valueType: const *Swag.TypeInfo)-&gt;*void
+<code style="white-space: break-spaces">func roomInArray(addr: *void, valueType: const *<a href="Swag.html#Swag_TypeInfo">Swag.TypeInfo</a>)->*void
 </code>
 </p>
 <p>
@@ -24772,7 +24772,7 @@ Used to add an element in a <code class = "incode">Core.Array</code> without kno
 <p>
 Set a field value with a given runtime type.</p>
 <p class="code">
-<code style="white-space: break-spaces">func setFieldValue(dest: *void, type: const *Swag.TypeValue, src: const *void, hardCast: bool = false)
+<code style="white-space: break-spaces">func setFieldValue(dest: *void, type: const *<a href="Swag.html#Swag_TypeValue">Swag.TypeValue</a>, src: const *void, hardCast: bool = false)
 </code>
 </p>
 <p>
@@ -24976,7 +24976,7 @@ Start reading.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func beginField(using self, val: Swag.TypeValue)-&gt;bool throw
+<code style="white-space: break-spaces">func beginField(using self, val: <a href="Swag.html#Swag_TypeValue">Swag.TypeValue</a>)->bool throw
 </code>
 </p>
 <p>
@@ -25066,7 +25066,7 @@ Start reading.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func read(using self, data: *void, dataType: const *Swag.TypeInfo) throw
+<code style="white-space: break-spaces">func read(using self, data: *void, dataType: const *<a href="Swag.html#Swag_TypeInfo">Swag.TypeInfo</a>) throw
 </code>
 </p>
 <p>
@@ -25310,7 +25310,7 @@ Read a full struct.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func readTypeValue(using self, typeVal: Swag.TypeValue, data: ^void) throw
+<code style="white-space: break-spaces">func readTypeValue(using self, typeVal: <a href="Swag.html#Swag_TypeValue">Swag.TypeValue</a>, data: ^void) throw
 </code>
 </p>
 <p>
@@ -25325,7 +25325,7 @@ Read a full struct.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func readValue(using self, data: ^void, dataType: const *Swag.TypeInfo) throw
+<code style="white-space: break-spaces">func readValue(using self, data: ^void, dataType: const *<a href="Swag.html#Swag_TypeInfo">Swag.TypeInfo</a>) throw
 </code>
 </p>
 <p>
@@ -25455,7 +25455,7 @@ Write a full struct.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func beginField(using self, val: Swag.TypeValue) throw
+<code style="white-space: break-spaces">func beginField(using self, val: <a href="Swag.html#Swag_TypeValue">Swag.TypeValue</a>) throw
 </code>
 </p>
 <p>
@@ -25549,7 +25549,7 @@ Start serialization.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func write(using self, data: const ^void, type: const *Swag.TypeInfo) throw
+<code style="white-space: break-spaces">func write(using self, data: const ^void, type: const *<a href="Swag.html#Swag_TypeInfo">Swag.TypeInfo</a>) throw
 </code>
 </p>
 <p>
@@ -25795,7 +25795,7 @@ Write a full struct.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func writeTypeValue(using self, typeVal: Swag.TypeValue, data: const ^void) throw
+<code style="white-space: break-spaces">func writeTypeValue(using self, typeVal: <a href="Swag.html#Swag_TypeValue">Swag.TypeValue</a>, data: const ^void) throw
 </code>
 </p>
 <p>
@@ -25810,7 +25810,7 @@ Write a full struct.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func writeValue(using self, data: const ^void, dataType: const *Swag.TypeInfo) throw
+<code style="white-space: break-spaces">func writeValue(using self, data: const ^void, dataType: const *<a href="Swag.html#Swag_TypeInfo">Swag.TypeInfo</a>) throw
 </code>
 </p>
 <p>
@@ -25864,7 +25864,7 @@ func(*<a href="#Core_Serialization_IDecoder">Core.Serialization.IDecoder</a>) th
 <td class="tdname">
 beginField</td>
 <td class="tdtype">
-func(*<a href="#Core_Serialization_IDecoder">Core.Serialization.IDecoder</a>, Swag.TypeValue)-&gt;bool throw</td>
+func(*<a href="#Core_Serialization_IDecoder">Core.Serialization.IDecoder</a>, <a href="Swag.html#Swag_TypeValue">Swag.TypeValue</a>)-&gt;bool throw</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -25904,7 +25904,7 @@ func(*<a href="#Core_Serialization_IDecoder">Core.Serialization.IDecoder</a>)-&g
 <td class="tdname">
 read</td>
 <td class="tdtype">
-func(*<a href="#Core_Serialization_IDecoder">Core.Serialization.IDecoder</a>, *void, const *Swag.TypeInfo) throw</td>
+func(*<a href="#Core_Serialization_IDecoder">Core.Serialization.IDecoder</a>, *void, const *<a href="Swag.html#Swag_TypeInfo">Swag.TypeInfo</a>) throw</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -26037,7 +26037,7 @@ func(*<a href="#Core_Serialization_IEncoder">Core.Serialization.IEncoder</a>) th
 <td class="tdname">
 beginField</td>
 <td class="tdtype">
-func(*<a href="#Core_Serialization_IEncoder">Core.Serialization.IEncoder</a>, Swag.TypeValue) throw</td>
+func(*<a href="#Core_Serialization_IEncoder">Core.Serialization.IEncoder</a>, <a href="Swag.html#Swag_TypeValue">Swag.TypeValue</a>) throw</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -26069,7 +26069,7 @@ func(*<a href="#Core_Serialization_IEncoder">Core.Serialization.IEncoder</a>) th
 <td class="tdname">
 write</td>
 <td class="tdtype">
-func(*<a href="#Core_Serialization_IEncoder">Core.Serialization.IEncoder</a>, const ^void, const *Swag.TypeInfo) throw</td>
+func(*<a href="#Core_Serialization_IEncoder">Core.Serialization.IEncoder</a>, const ^void, const *<a href="Swag.html#Swag_TypeInfo">Swag.TypeInfo</a>) throw</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -26202,7 +26202,7 @@ func(*<a href="#Core_Serialization_ISerialize">Core.Serialization.ISerialize</a>
 <td class="tdname">
 readElement</td>
 <td class="tdtype">
-func(*<a href="#Core_Serialization_ISerialize">Core.Serialization.ISerialize</a>, Swag.TypeValue, *void, <a href="#Core_Serialization_IDecoder">Core.Serialization.IDecoder</a>)-&gt;bool throw</td>
+func(*<a href="#Core_Serialization_ISerialize">Core.Serialization.ISerialize</a>, <a href="Swag.html#Swag_TypeValue">Swag.TypeValue</a>, *void, <a href="#Core_Serialization_IDecoder">Core.Serialization.IDecoder</a>)-&gt;bool throw</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -26210,7 +26210,7 @@ func(*<a href="#Core_Serialization_ISerialize">Core.Serialization.ISerialize</a>
 <td class="tdname">
 writeElement</td>
 <td class="tdtype">
-func(*<a href="#Core_Serialization_ISerialize">Core.Serialization.ISerialize</a>, Swag.TypeValue, const *void, <a href="#Core_Serialization_IEncoder">Core.Serialization.IEncoder</a>)-&gt;bool throw</td>
+func(*<a href="#Core_Serialization_ISerialize">Core.Serialization.ISerialize</a>, <a href="Swag.html#Swag_TypeValue">Swag.TypeValue</a>, const *void, <a href="#Core_Serialization_IEncoder">Core.Serialization.IEncoder</a>)-&gt;bool throw</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -26459,7 +26459,7 @@ propName</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func beginElement(using self, val: Swag.TypeValue)-&gt;bool throw
+<code style="white-space: break-spaces">func beginElement(using self, val: <a href="Swag.html#Swag_TypeValue">Swag.TypeValue</a>)->bool throw
 </code>
 </p>
 <p>
@@ -26504,7 +26504,7 @@ propName</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func beginSequence(using self, _typeElem: const *Swag.TypeInfo, _data: *u8, _countElem: *u64)-&gt;bool throw
+<code style="white-space: break-spaces">func beginSequence(using self, _typeElem: const *<a href="Swag.html#Swag_TypeInfo">Swag.TypeInfo</a>, _data: *u8, _countElem: *u64)->bool throw
 </code>
 </p>
 <p>
@@ -26519,7 +26519,7 @@ propName</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func beginStruct(using self, _structType: const *Swag.TypeInfo, _structData: const *u8)-&gt;bool throw
+<code style="white-space: break-spaces">func beginStruct(using self, _structType: const *<a href="Swag.html#Swag_TypeInfo">Swag.TypeInfo</a>, _structData: const *u8)->bool throw
 </code>
 </p>
 <p>
@@ -26750,7 +26750,7 @@ sections</td>
 <td class="tdname">
 convertNextNative</td>
 <td class="tdtype">
-const *Swag.TypeInfoNative</td>
+const *<a href="Swag.html#Swag_TypeInfoNative">Swag.TypeInfoNative</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -26882,7 +26882,7 @@ bool</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func beginElement(using self, val: Swag.TypeValue)-&gt;bool throw
+<code style="white-space: break-spaces">func beginElement(using self, val: <a href="Swag.html#Swag_TypeValue">Swag.TypeValue</a>)->bool throw
 </code>
 </p>
 <p>
@@ -26927,7 +26927,7 @@ bool</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func beginSequence(using self, typeElem: const *Swag.TypeInfo, data: *u8, countElem: *u64)-&gt;bool throw
+<code style="white-space: break-spaces">func beginSequence(using self, typeElem: const *<a href="Swag.html#Swag_TypeInfo">Swag.TypeInfo</a>, data: *u8, countElem: *u64)->bool throw
 </code>
 </p>
 <p>
@@ -26942,7 +26942,7 @@ bool</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func beginStruct(using self, structType: const *Swag.TypeInfo, _structData: const *u8)-&gt;bool throw
+<code style="white-space: break-spaces">func beginStruct(using self, structType: const *<a href="Swag.html#Swag_TypeInfo">Swag.TypeInfo</a>, _structData: const *u8)->bool throw
 </code>
 </p>
 <p>
@@ -27694,7 +27694,7 @@ lastSeekValue</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func beginElement(using self, val: Swag.TypeValue)
+<code style="white-space: break-spaces">func beginElement(using self, val: <a href="Swag.html#Swag_TypeValue">Swag.TypeValue</a>)
 </code>
 </p>
 <p>
@@ -27739,7 +27739,7 @@ lastSeekValue</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func beginSequence(using self, _typeElem: const *Swag.TypeInfo, _data: const *void, _countElem: u64)-&gt;bool
+<code style="white-space: break-spaces">func beginSequence(using self, _typeElem: const *<a href="Swag.html#Swag_TypeInfo">Swag.TypeInfo</a>, _data: const *void, _countElem: u64)->bool
 </code>
 </p>
 <p>
@@ -27754,7 +27754,7 @@ lastSeekValue</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func beginStruct(using self, _structType: const *Swag.TypeInfo, _structData: const *u8)-&gt;bool
+<code style="white-space: break-spaces">func beginStruct(using self, _structType: const *<a href="Swag.html#Swag_TypeInfo">Swag.TypeInfo</a>, _structData: const *u8)->bool
 </code>
 </p>
 <p>
@@ -28072,7 +28072,7 @@ sections</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func beginElement(using self, val: Swag.TypeValue)
+<code style="white-space: break-spaces">func beginElement(using self, val: <a href="Swag.html#Swag_TypeValue">Swag.TypeValue</a>)
 </code>
 </p>
 <p>
@@ -28117,7 +28117,7 @@ sections</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func beginSequence(using self, typeElem: const *Swag.TypeInfo, data: const *void, countElem: u64)-&gt;bool
+<code style="white-space: break-spaces">func beginSequence(using self, typeElem: const *<a href="Swag.html#Swag_TypeInfo">Swag.TypeInfo</a>, data: const *void, countElem: u64)->bool
 </code>
 </p>
 <p>
@@ -28132,7 +28132,7 @@ sections</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func beginStruct(using self, structType: const *Swag.TypeInfo, _structData: const *u8)-&gt;bool
+<code style="white-space: break-spaces">func beginStruct(using self, structType: const *<a href="Swag.html#Swag_TypeInfo">Swag.TypeInfo</a>, _structData: const *u8)->bool
 </code>
 </p>
 <p>
@@ -28358,7 +28358,7 @@ Version</td>
 <p>
 Determin if a type can be serialized by a simple copy.</p>
 <p class="code">
-<code style="white-space: break-spaces">func isPodFinal(type: const *Swag.TypeInfo)-&gt;{raw: bool, sizeof: u64}
+<code style="white-space: break-spaces">func isPodFinal(type: const *<a href="Swag.html#Swag_TypeInfo">Swag.TypeInfo</a>)->{raw: bool, sizeof: u64}
 </code>
 </p>
 <p>
@@ -31256,7 +31256,7 @@ Convert an utf8 buffer in hexadecimal to an unsigned integer value Returns the v
 <p>
 This function will parse <code class = "incode">buf</code> and poke the corresponding value to <code class = "incode">addr</code> <code class = "incode">addr</code> must point to an initialized memory location that can hold type <code class = "incode">type</code>.</p>
 <p class="code">
-<code style="white-space: break-spaces">func pokeValue(addr: *void, type: const *Swag.TypeInfo, buf: string)-&gt;string throw
+<code style="white-space: break-spaces">func pokeValue(addr: *void, type: const *<a href="Swag.html#Swag_TypeInfo">Swag.TypeInfo</a>, buf: string)->string throw
 </code>
 </p>
 <p>
@@ -31491,7 +31491,7 @@ u64</td>
 <td class="tdname">
 allocator</td>
 <td class="tdtype">
-Swag.IAllocator</td>
+<a href="Swag.html#Swag_IAllocator">Swag.IAllocator</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -32653,7 +32653,7 @@ u64</td>
 <td class="tdname">
 handle</td>
 <td class="tdtype">
-Win32.HANDLE</td>
+<a href="Win32.html#Win32_HANDLE">Win32.HANDLE</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -32852,7 +32852,7 @@ Wait for the event to be signaled.</p>
 <td class="tdname">
 v</td>
 <td class="tdtype">
-Win32.SRWLOCK</td>
+<a href="Win32.html#Win32_SRWLOCK">Win32.SRWLOCK</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -32951,7 +32951,7 @@ Unlock mutex.</p>
 <td class="tdname">
 v</td>
 <td class="tdtype">
-Win32.SRWLOCK</td>
+<a href="Win32.html#Win32_SRWLOCK">Win32.SRWLOCK</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -33218,7 +33218,7 @@ Push a new execution context for the given block of code.</p>
 Push a new execution context for the given block of code.</p>
 <p class="code">
 <code style="white-space: break-spaces">#[Swag.Macro]
-func pushContext(cxt: Swag.Context, stmt: code)
+func pushContext(cxt: <a href="Swag.html#Swag_Context">Swag.Context</a>, stmt: code)
 </code>
 </p>
 <p>
@@ -33283,7 +33283,7 @@ closure(<a href="#Core_Threading_Thread">Core.Threading.Thread</a>)</td>
 <td class="tdname">
 context</td>
 <td class="tdtype">
-Swag.Context</td>
+<a href="Swag.html#Swag_Context">Swag.Context</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -33307,7 +33307,7 @@ priority</td>
 <td class="tdname">
 handle</td>
 <td class="tdtype">
-Core.Threading.ThreadHandle</td>
+<a href="Core.html#Core_Threading_ThreadHandle">Core.Threading.ThreadHandle</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -33613,7 +33613,7 @@ Highest</td>
 <p>
 Wait multiple threads.</p>
 <p class="code">
-<code style="white-space: break-spaces">func wait(threads: *Core.Threading.Thread...)
+<code style="white-space: break-spaces">func wait(threads: *<a href="Core.html#Core_Threading_Thread___">Core.Threading.Thread...</a>)
 </code>
 </p>
 <p>
@@ -34960,7 +34960,7 @@ Represents an interval of time, stored as a 64 bits integer.</p>
 <td class="tdname">
 ticks</td>
 <td class="tdtype">
-Core.Time.Ticks</td>
+<a href="Core.html#Core_Time_Ticks">Core.Time.Ticks</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -35396,7 +35396,7 @@ func(<a href="#Core_Time_Timer">Core.Time.Timer</a>)</td>
 <td class="tdname">
 handle</td>
 <td class="tdtype">
-Core.Time.TimerHandle</td>
+<a href="Core.html#Core_Time_TimerHandle">Core.Time.TimerHandle</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -35404,7 +35404,7 @@ Core.Time.TimerHandle</td>
 <td class="tdname">
 context</td>
 <td class="tdtype">
-Swag.Context</td>
+<a href="Swag.html#Swag_Context">Swag.Context</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -35501,7 +35501,7 @@ Release the timer.</p>
 <p>
 Convert a date to a 64 bits value.</p>
 <p class="code">
-<code style="white-space: break-spaces">func dateToTicks(year: u16, month: u16, day: u16)-&gt;Core.Time.Ticks
+<code style="white-space: break-spaces">func dateToTicks(year: u16, month: u16, day: u16)-><a href="Core.html#Core_Time_Ticks">Core.Time.Ticks</a>
 </code>
 </p>
 <p>
@@ -35620,7 +35620,7 @@ The frequency of the precise counter, in ticks per second.</p>
 <p>
 Convert a 64 bits value to a date.</p>
 <p class="code">
-<code style="white-space: break-spaces">func ticksToDate(ticks: Core.Time.Ticks)-&gt;{year: u16, month: u16, day: u16}
+<code style="white-space: break-spaces">func ticksToDate(ticks: <a href="Core.html#Core_Time_Ticks">Core.Time.Ticks</a>)->{year: u16, month: u16, day: u16}
 </code>
 </p>
 <p>
@@ -35637,7 +35637,7 @@ Convert a 64 bits value to a date.</p>
 <p>
 Convert a 64 bits tick value to a time.</p>
 <p class="code">
-<code style="white-space: break-spaces">func ticksToTime(ticks: Core.Time.Ticks)-&gt;{hour: u16, minute: u16, second: u16, millisecond: u16}
+<code style="white-space: break-spaces">func ticksToTime(ticks: <a href="Core.html#Core_Time_Ticks">Core.Time.Ticks</a>)->{hour: u16, minute: u16, second: u16, millisecond: u16}
 </code>
 </p>
 <p>
@@ -35654,7 +35654,7 @@ Convert a 64 bits tick value to a time.</p>
 <p>
 Convert a time to a 64 bits value.</p>
 <p class="code">
-<code style="white-space: break-spaces">func timeToTicks(hour: u16, minute: u16, second: u16, millisecond: u16)-&gt;Core.Time.Ticks
+<code style="white-space: break-spaces">func timeToTicks(hour: u16, minute: u16, second: u16, millisecond: u16)-><a href="Core.html#Core_Time_Ticks">Core.Time.Ticks</a>
 </code>
 </p>
 <p>

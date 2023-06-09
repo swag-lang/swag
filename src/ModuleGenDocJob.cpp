@@ -190,20 +190,6 @@ Utf8 ModuleGenDocJob::getDocComment(AstNode* node)
     return "";
 }
 
-void ModuleGenDocJob::outputType(AstNode* node)
-{
-    if (node->typeInfo)
-    {
-        node->typeInfo->computeScopedNameExport();
-        helpContent += getFormattedText(node->typeInfo->scopedNameExport, true);
-    }
-    else if (node->kind == AstNodeKind::VarDecl || node->kind == AstNodeKind::ConstDecl)
-    {
-        auto varDecl = CastAst<AstVarDecl>(node, AstNodeKind::VarDecl, AstNodeKind::ConstDecl);
-        outputNode(varDecl->type);
-    }
-}
-
 void ModuleGenDocJob::outputTable(Scope* scope, AstNodeKind kind, const char* title, uint32_t collectFlags)
 {
     VectorNative<AstNode*> symbols;
@@ -267,7 +253,7 @@ void ModuleGenDocJob::outputTable(Scope* scope, AstNodeKind kind, const char* ti
                     else if (varNode->typeInfo)
                         name += varNode->typeInfo->name;
                     else
-                        name += outputNode(varNode->type);
+                        name += getOutputNode(varNode->type);
                     firstParam = false;
                 }
             }
@@ -438,16 +424,29 @@ Utf8 ModuleGenDocJob::getFormattedText(const Utf8& user, bool autoRef)
                 {
                     if (*pz == ']')
                         pz++;
+
                     auto it = collectInvert.find(name);
                     if (it != collectInvert.end())
+                    {
                         result += Fmt("<a href=\"#%s\">%s</a>", toRef(it->second).c_str(), name.c_str());
+                    }
                     else
                     {
-                        if (startBracket)
-                            result += "[";
-                        result += name;
-                        if (startBracket)
-                            result += "]";
+                        Vector<Utf8> tkns;
+                        Utf8::tokenize(name, '.', tkns);
+                        if (tkns.size() > 1)
+                        {
+                            tkns[0].makeLower();
+                            result += Fmt("<a href=\"%s.html#%s\">%s</a>", tkns[0].c_str(), toRef(name).c_str(), name.c_str());
+                        }
+                        else
+                        {
+                            if (startBracket)
+                                result += "[";
+                            result += name;
+                            if (startBracket)
+                                result += "]";
+                        }
                     }
                 }
                 continue;
@@ -631,24 +630,46 @@ void ModuleGenDocJob::outputCode(const Utf8& code)
         return;
     helpContent += "<p class=\"code\">\n";
     helpContent += "<code style=\"white-space: break-spaces\">";
+
+    // Kind of a hack for now... Try to keep references, but try to keep <> also...
     auto repl = code;
     if (code.find("<a href") == -1)
     {
         repl.replace("<", "&lt;");
         repl.replace(">", "&gt;");
     }
+
     helpContent += repl;
     helpContent += "</code>\n";
     helpContent += "</p>\n";
 }
 
-Utf8 ModuleGenDocJob::outputNode(AstNode* node)
+Utf8 ModuleGenDocJob::getOutputNode(AstNode* node)
 {
     if (!node)
         return "";
     concat.clear();
     output.outputNode(outputCxt, concat, node);
     return Utf8{(const char*) concat.firstBucket->datas, (uint32_t) concat.bucketCount(concat.firstBucket)};
+}
+
+Utf8 ModuleGenDocJob::getOutputType(TypeInfo* typeInfo)
+{
+    typeInfo->computeScopedNameExport();
+    return getFormattedText(typeInfo->scopedNameExport, true);
+}
+
+void ModuleGenDocJob::outputType(AstNode* node)
+{
+    if (node->typeInfo)
+    {
+        helpContent += getOutputType(node->typeInfo);
+    }
+    else if (node->kind == AstNodeKind::VarDecl || node->kind == AstNodeKind::ConstDecl)
+    {
+        auto varDecl = CastAst<AstVarDecl>(node, AstNodeKind::VarDecl, AstNodeKind::ConstDecl);
+        helpContent += getOutputNode(varDecl->type);
+    }
 }
 
 void ModuleGenDocJob::collectNode(AstNode* node)
@@ -1097,7 +1118,7 @@ void ModuleGenDocJob::generateContent()
                 Utf8 code;
                 code += "struct ";
                 code += structNode->token.text;
-                code += outputNode(structNode->genericParameters);
+                code += getOutputNode(structNode->genericParameters);
                 outputCode(code);
             }
 
@@ -1217,14 +1238,14 @@ void ModuleGenDocJob::generateContent()
                     code += "#[Swag.Mixin]\n";
 
                 code += "func";
-                code += outputNode(funcNode->genericParameters);
+                code += getOutputNode(funcNode->genericParameters);
                 code += " ";
                 code += funcNode->token.text;
                 if (!funcNode->parameters)
                     code += "()";
                 else
-                    code += outputNode(funcNode->parameters);
-                code += outputNode(funcNode->returnType);
+                    code += getOutputNode(funcNode->parameters);
+                code += getOutputNode(funcNode->returnType);
                 if (funcNode->specFlags & AstFuncDecl::SPECFLAG_THROW)
                     code += " throw";
                 code += "\n";
@@ -1295,7 +1316,7 @@ void ModuleGenDocJob::generateContent()
                 code += "attr ";
                 code += attrNode->token.text;
                 if (attrNode->parameters)
-                    code += outputNode(attrNode->parameters);
+                    code += getOutputNode(attrNode->parameters);
                 code += "\n";
                 outputCode(code);
             }
@@ -1323,8 +1344,7 @@ JobResult ModuleGenDocJob::execute()
     {
         if (typeInfo->isNative() || typeInfo->isVariadic())
             return typeInfo->name;
-        typeInfo->computeScopedNameExport();
-        return getFormattedText(typeInfo->scopedNameExport, true);
+        return getOutputType(typeInfo);
     };
 
     auto filePath = g_Workspace->targetPath;

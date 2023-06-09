@@ -1013,7 +1013,7 @@ u32</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func aligned_alloc(aligment: Libc.size_t, size: Libc.size_t)-&gt;*void
+<code style="white-space: break-spaces">func aligned_alloc(aligment: <a href="Libc.html#Libc_size_t">Libc.size_t</a>, size: <a href="Libc.html#Libc_size_t">Libc.size_t</a>)->*void
 </code>
 </p>
 <p>
@@ -1253,7 +1253,7 @@ u32</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func bsearch(key: *void, base: *void, nmemb: Libc.size_t, size: Libc.size_t, compar: *void)-&gt;*void
+<code style="white-space: break-spaces">func bsearch(key: *void, base: *void, nmemb: <a href="Libc.html#Libc_size_t">Libc.size_t</a>, size: <a href="Libc.html#Libc_size_t">Libc.size_t</a>, compar: *void)->*void
 </code>
 </p>
 <p>
@@ -1268,7 +1268,7 @@ u32</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func calloc(nmemb: Libc.size_t, size: Libc.size_t)-&gt;*void
+<code style="white-space: break-spaces">func calloc(nmemb: <a href="Libc.html#Libc_size_t">Libc.size_t</a>, size: <a href="Libc.html#Libc_size_t">Libc.size_t</a>)->*void
 </code>
 </p>
 <p>
@@ -1358,7 +1358,7 @@ u32</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func clock()-&gt;Libc.clock_t
+<code style="white-space: break-spaces">func clock()-><a href="Libc.html#Libc_clock_t">Libc.clock_t</a>
 </code>
 </p>
 <p>
@@ -1463,7 +1463,7 @@ u32</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func ctime(timer: const *Libc.time_t)-&gt;*u8
+<code style="white-space: break-spaces">func ctime(timer: const *<a href="Libc.html#Libc_time_t">Libc.time_t</a>)->*u8
 </code>
 </p>
 <p>
@@ -1478,7 +1478,7 @@ u32</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func difftime(time1: Libc.time_t, time2: Libc.time_t)-&gt;f64
+<code style="white-space: break-spaces">func difftime(time1: <a href="Libc.html#Libc_time_t">Libc.time_t</a>, time2: <a href="Libc.html#Libc_time_t">Libc.time_t</a>)->f64
 </code>
 </p>
 <p>
@@ -1839,7 +1839,7 @@ func atexit(fn: *void)-&gt;s32;func at_quick_exit(fn: *void)-&gt;s32;.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func fgetpos(stream: *<a href="#Libc_FILE">Libc.FILE</a>, pos: *Libc.fpos_t)->s64
+<code style="white-space: break-spaces">func fgetpos(stream: *<a href="#Libc_FILE">Libc.FILE</a>, pos: *<a href="Libc.html#Libc_fpos_t">Libc.fpos_t</a>)->s64
 </code>
 </p>
 <p>
@@ -2094,7 +2094,7 @@ func atexit(fn: *void)-&gt;s32;func at_quick_exit(fn: *void)-&gt;s32;.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func fread(ptr: *void, size: Libc.size_t, stream: *<a href="#Libc_FILE">Libc.FILE</a>)->Libc.size_t
+<code style="white-space: break-spaces">func fread(ptr: *void, size: <a href="Libc.html#Libc_size_t">Libc.size_t</a>, stream: *<a href="#Libc_FILE">Libc.FILE</a>)-><a href="Libc.html#Libc_size_t">Libc.size_t</a>
 </code>
 </p>
 <p>
@@ -2199,7 +2199,7 @@ func atexit(fn: *void)-&gt;s32;func at_quick_exit(fn: *void)-&gt;s32;.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func fsetpos(stream: *<a href="#Libc_FILE">Libc.FILE</a>, pos: *Libc.fpos_t)->s64
+<code style="white-space: break-spaces">func fsetpos(stream: *<a href="#Libc_FILE">Libc.FILE</a>, pos: *<a href="Libc.html#Libc_fpos_t">Libc.fpos_t</a>)->s64
 </code>
 </p>
 <p>
@@ -2229,7 +2229,7 @@ func atexit(fn: *void)-&gt;s32;func at_quick_exit(fn: *void)-&gt;s32;.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func fwrite(ptr: *void, size: Libc.size_t, nmemb: Libc.size_t, stream: *<a href="#Libc_FILE">Libc.FILE</a>)->Libc.size_t
+<code style="white-space: break-spaces">func fwrite(ptr: *void, size: <a href="Libc.html#Libc_size_t">Libc.size_t</a>, nmemb: <a href="Libc.html#Libc_size_t">Libc.size_t</a>, stream: *<a href="#Libc_FILE">Libc.FILE</a>)-><a href="Libc.html#Libc_size_t">Libc.size_t</a>
 </code>
 </p>
 <p>
@@ -2289,7 +2289,7 @@ func atexit(fn: *void)-&gt;s32;func at_quick_exit(fn: *void)-&gt;s32;.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func gmtime(timer: *Libc.time_t)->*<a href="#Libc_tm">Libc.tm</a>
+<code style="white-space: break-spaces">func gmtime(timer: *<a href="Libc.html#Libc_time_t">Libc.time_t</a>)->*<a href="#Libc_tm">Libc.tm</a>
 </code>
 </p>
 <p>
@@ -2942,7 +2942,7 @@ s64</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func localtime(timer: *Libc.time_t)->*<a href="#Libc_tm">Libc.tm</a>
+<code style="white-space: break-spaces">func localtime(timer: *<a href="Libc.html#Libc_time_t">Libc.time_t</a>)->*<a href="#Libc_tm">Libc.tm</a>
 </code>
 </p>
 <p>
@@ -3167,7 +3167,7 @@ s64</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func malloc(size: Libc.size_t)-&gt;*void
+<code style="white-space: break-spaces">func malloc(size: <a href="Libc.html#Libc_size_t">Libc.size_t</a>)->*void
 </code>
 </p>
 <p>
@@ -3182,7 +3182,7 @@ s64</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func mblen(s: cstring, n: Libc.size_t)-&gt;s32
+<code style="white-space: break-spaces">func mblen(s: cstring, n: <a href="Libc.html#Libc_size_t">Libc.size_t</a>)->s32
 </code>
 </p>
 <p>
@@ -3197,7 +3197,7 @@ s64</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func mbstowcs(pwcs: *Libc.wchar_t, s: cstring, n: Libc.size_t)-&gt;Libc.size_t
+<code style="white-space: break-spaces">func mbstowcs(pwcs: *<a href="Libc.html#Libc_wchar_t">Libc.wchar_t</a>, s: cstring, n: <a href="Libc.html#Libc_size_t">Libc.size_t</a>)-><a href="Libc.html#Libc_size_t">Libc.size_t</a>
 </code>
 </p>
 <p>
@@ -3212,7 +3212,7 @@ s64</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func mbtowc(pwc: *Libc.wchar_t, s: cstring, n: Libc.size_t)-&gt;s32
+<code style="white-space: break-spaces">func mbtowc(pwc: *<a href="Libc.html#Libc_wchar_t">Libc.wchar_t</a>, s: cstring, n: <a href="Libc.html#Libc_size_t">Libc.size_t</a>)->s32
 </code>
 </p>
 <p>
@@ -3227,7 +3227,7 @@ s64</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func memchr(ptr: const *void, value: s32, num: Libc.size_t)-&gt;*void
+<code style="white-space: break-spaces">func memchr(ptr: const *void, value: s32, num: <a href="Libc.html#Libc_size_t">Libc.size_t</a>)->*void
 </code>
 </p>
 <p>
@@ -3242,7 +3242,7 @@ s64</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func memcmp(ptr1: const *void, ptr2: const *void, num: Libc.size_t)-&gt;s32
+<code style="white-space: break-spaces">func memcmp(ptr1: const *void, ptr2: const *void, num: <a href="Libc.html#Libc_size_t">Libc.size_t</a>)->s32
 </code>
 </p>
 <p>
@@ -3257,7 +3257,7 @@ s64</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func memcpy(dst: *void, src: const *void, num: Libc.size_t)-&gt;*void
+<code style="white-space: break-spaces">func memcpy(dst: *void, src: const *void, num: <a href="Libc.html#Libc_size_t">Libc.size_t</a>)->*void
 </code>
 </p>
 <p>
@@ -3272,7 +3272,7 @@ s64</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func memmove(dst: *void, src: const *void, num: Libc.size_t)-&gt;*void
+<code style="white-space: break-spaces">func memmove(dst: *void, src: const *void, num: <a href="Libc.html#Libc_size_t">Libc.size_t</a>)->*void
 </code>
 </p>
 <p>
@@ -3287,7 +3287,7 @@ s64</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func memset(ptr: *void, value: s32, num: Libc.size_t)-&gt;*void
+<code style="white-space: break-spaces">func memset(ptr: *void, value: s32, num: <a href="Libc.html#Libc_size_t">Libc.size_t</a>)->*void
 </code>
 </p>
 <p>
@@ -3302,7 +3302,7 @@ s64</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func mktime(timeptr: *<a href="#Libc_tm">Libc.tm</a>)->Libc.time_t
+<code style="white-space: break-spaces">func mktime(timeptr: *<a href="#Libc_tm">Libc.tm</a>)-><a href="Libc.html#Libc_time_t">Libc.time_t</a>
 </code>
 </p>
 <p>
@@ -3542,7 +3542,7 @@ s64</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func qsort(base: *void, num: Libc.size_t, size: Libc.size_t, compar: *void)
+<code style="white-space: break-spaces">func qsort(base: *void, num: <a href="Libc.html#Libc_size_t">Libc.size_t</a>, size: <a href="Libc.html#Libc_size_t">Libc.size_t</a>, compar: *void)
 </code>
 </p>
 <p>
@@ -3587,7 +3587,7 @@ s64</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func realloc(ptr: *void, size: Libc.size_t)-&gt;*void
+<code style="white-space: break-spaces">func realloc(ptr: *void, size: <a href="Libc.html#Libc_size_t">Libc.size_t</a>)->*void
 </code>
 </p>
 <p>
@@ -3857,7 +3857,7 @@ s64</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func setvbuf(stream: *<a href="#Libc_FILE">Libc.FILE</a>, buf: *u8, mode: s64, size: Libc.size_t)->s64
+<code style="white-space: break-spaces">func setvbuf(stream: *<a href="#Libc_FILE">Libc.FILE</a>, buf: *u8, mode: s64, size: <a href="Libc.html#Libc_size_t">Libc.size_t</a>)->s64
 </code>
 </p>
 <p>
@@ -3948,7 +3948,7 @@ func signbit(x: f64)
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func snprintf(s: *u8, count: Libc.size_t, format: cstring, args: cvarargs)-&gt;s64
+<code style="white-space: break-spaces">func snprintf(s: *u8, count: <a href="Libc.html#Libc_size_t">Libc.size_t</a>, format: cstring, args: cvarargs)->s64
 </code>
 </p>
 <p>
@@ -4068,7 +4068,7 @@ func signbit(x: f64)
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func stdio_common_vsprintf(_Options: u64, _Buffer: *u8, _BufferCount: Libc.size_t, _Format: cstring, _Locale: *void, _ArgList: *void)-&gt;s32
+<code style="white-space: break-spaces">func stdio_common_vsprintf(_Options: u64, _Buffer: *u8, _BufferCount: <a href="Libc.html#Libc_size_t">Libc.size_t</a>, _Format: cstring, _Locale: *void, _ArgList: *void)->s32
 </code>
 </p>
 <p>
@@ -4083,7 +4083,7 @@ func signbit(x: f64)
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func stdio_common_vsscanf(_Options: u64, _Buffer: cstring, _BufferCount: Libc.size_t, _Format: cstring, _Locale: *void, _ArgList: *void)-&gt;s32
+<code style="white-space: break-spaces">func stdio_common_vsscanf(_Options: u64, _Buffer: cstring, _BufferCount: <a href="Libc.html#Libc_size_t">Libc.size_t</a>, _Format: cstring, _Locale: *void, _ArgList: *void)->s32
 </code>
 </p>
 <p>
@@ -4173,7 +4173,7 @@ func signbit(x: f64)
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func strcspn(str1: cstring, str2: cstring)-&gt;Libc.size_t
+<code style="white-space: break-spaces">func strcspn(str1: cstring, str2: cstring)-><a href="Libc.html#Libc_size_t">Libc.size_t</a>
 </code>
 </p>
 <p>
@@ -4203,7 +4203,7 @@ func signbit(x: f64)
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func strftime(s: *u8, maxsize: Libc.size_t, format: const *u8, timeptr: *<a href="#Libc_tm">Libc.tm</a>)->Libc.size_t
+<code style="white-space: break-spaces">func strftime(s: *u8, maxsize: <a href="Libc.html#Libc_size_t">Libc.size_t</a>, format: const *u8, timeptr: *<a href="#Libc_tm">Libc.tm</a>)-><a href="Libc.html#Libc_size_t">Libc.size_t</a>
 </code>
 </p>
 <p>
@@ -4218,7 +4218,7 @@ func signbit(x: f64)
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func strlen(s: cstring)-&gt;Libc.size_t
+<code style="white-space: break-spaces">func strlen(s: cstring)-><a href="Libc.html#Libc_size_t">Libc.size_t</a>
 </code>
 </p>
 <p>
@@ -4233,7 +4233,7 @@ func signbit(x: f64)
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func strncat(dst: *u8, src: cstring, num: Libc.size_t)-&gt;*u8
+<code style="white-space: break-spaces">func strncat(dst: *u8, src: cstring, num: <a href="Libc.html#Libc_size_t">Libc.size_t</a>)->*u8
 </code>
 </p>
 <p>
@@ -4263,7 +4263,7 @@ func signbit(x: f64)
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func strncpy(dst: *u8, src: cstring, num: Libc.size_t)-&gt;*u8
+<code style="white-space: break-spaces">func strncpy(dst: *u8, src: cstring, num: <a href="Libc.html#Libc_size_t">Libc.size_t</a>)->*u8
 </code>
 </p>
 <p>
@@ -4308,7 +4308,7 @@ func signbit(x: f64)
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func strspn(str1: cstring, str2: cstring)-&gt;Libc.size_t
+<code style="white-space: break-spaces">func strspn(str1: cstring, str2: cstring)-><a href="Libc.html#Libc_size_t">Libc.size_t</a>
 </code>
 </p>
 <p>
@@ -4443,7 +4443,7 @@ func signbit(x: f64)
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func strxfrm(dst: *u8, src: cstring, num: Libc.size_t)-&gt;Libc.size_t
+<code style="white-space: break-spaces">func strxfrm(dst: *u8, src: cstring, num: <a href="Libc.html#Libc_size_t">Libc.size_t</a>)-><a href="Libc.html#Libc_size_t">Libc.size_t</a>
 </code>
 </p>
 <p>
@@ -4563,7 +4563,7 @@ func signbit(x: f64)
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func time(timer: *Libc.time_t)-&gt;Libc.time_t
+<code style="white-space: break-spaces">func time(timer: *<a href="Libc.html#Libc_time_t">Libc.time_t</a>)-><a href="Libc.html#Libc_time_t">Libc.time_t</a>
 </code>
 </p>
 <p>
@@ -4769,7 +4769,7 @@ s32</td>
 </p>
 <p class="code">
 <code style="white-space: break-spaces">#[Swag.Macro]
-func va_end(vl: *Swag.CVaList)
+func va_end(vl: *<a href="Swag.html#Swag_CVaList">Swag.CVaList</a>)
 </code>
 </p>
 <p>
@@ -4785,7 +4785,7 @@ func va_end(vl: *Swag.CVaList)
 </p>
 <p class="code">
 <code style="white-space: break-spaces">#[Swag.Macro]
-func va_start(vl: *Swag.CVaList, dummy: any)
+func va_start(vl: *<a href="Swag.html#Swag_CVaList">Swag.CVaList</a>, dummy: any)
 </code>
 </p>
 <p>
@@ -4800,7 +4800,7 @@ func va_start(vl: *Swag.CVaList, dummy: any)
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func vfprintf(file: *<a href="#Libc_FILE">Libc.FILE</a>, format: cstring, args: *Swag.CVaList)->s64
+<code style="white-space: break-spaces">func vfprintf(file: *<a href="#Libc_FILE">Libc.FILE</a>, format: cstring, args: *<a href="Swag.html#Swag_CVaList">Swag.CVaList</a>)->s64
 </code>
 </p>
 <p>
@@ -4815,7 +4815,7 @@ func va_start(vl: *Swag.CVaList, dummy: any)
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func vfscanf(file: *<a href="#Libc_FILE">Libc.FILE</a>, format: cstring, args: *Swag.CVaList)->s64
+<code style="white-space: break-spaces">func vfscanf(file: *<a href="#Libc_FILE">Libc.FILE</a>, format: cstring, args: *<a href="Swag.html#Swag_CVaList">Swag.CVaList</a>)->s64
 </code>
 </p>
 <p>
@@ -4830,7 +4830,7 @@ func va_start(vl: *Swag.CVaList, dummy: any)
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func vprintf(format: cstring, args: *Swag.CVaList)-&gt;s64
+<code style="white-space: break-spaces">func vprintf(format: cstring, args: *<a href="Swag.html#Swag_CVaList">Swag.CVaList</a>)->s64
 </code>
 </p>
 <p>
@@ -4845,7 +4845,7 @@ func va_start(vl: *Swag.CVaList, dummy: any)
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func vscanf(format: cstring, args: *Swag.CVaList)-&gt;s64
+<code style="white-space: break-spaces">func vscanf(format: cstring, args: *<a href="Swag.html#Swag_CVaList">Swag.CVaList</a>)->s64
 </code>
 </p>
 <p>
@@ -4860,7 +4860,7 @@ func va_start(vl: *Swag.CVaList, dummy: any)
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func vsnprintf(s: *u8, count: Libc.size_t, format: cstring, args: *Swag.CVaList)-&gt;s64
+<code style="white-space: break-spaces">func vsnprintf(s: *u8, count: <a href="Libc.html#Libc_size_t">Libc.size_t</a>, format: cstring, args: *<a href="Swag.html#Swag_CVaList">Swag.CVaList</a>)->s64
 </code>
 </p>
 <p>
@@ -4875,7 +4875,7 @@ func va_start(vl: *Swag.CVaList, dummy: any)
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func vsprintf(s: *u8, format: cstring, args: *Swag.CVaList)-&gt;s64
+<code style="white-space: break-spaces">func vsprintf(s: *u8, format: cstring, args: *<a href="Swag.html#Swag_CVaList">Swag.CVaList</a>)->s64
 </code>
 </p>
 <p>
@@ -4890,7 +4890,7 @@ func va_start(vl: *Swag.CVaList, dummy: any)
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func vsscanf(s: cstring, format: cstring, args: *Swag.CVaList)-&gt;s64
+<code style="white-space: break-spaces">func vsscanf(s: cstring, format: cstring, args: *<a href="Swag.html#Swag_CVaList">Swag.CVaList</a>)->s64
 </code>
 </p>
 <p>
@@ -4905,7 +4905,7 @@ func va_start(vl: *Swag.CVaList, dummy: any)
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func wcstombs(s: *u8, pwcs: *Libc.wchar_t, n: Libc.size_t)-&gt;Libc.size_t
+<code style="white-space: break-spaces">func wcstombs(s: *u8, pwcs: *<a href="Libc.html#Libc_wchar_t">Libc.wchar_t</a>, n: <a href="Libc.html#Libc_size_t">Libc.size_t</a>)-><a href="Libc.html#Libc_size_t">Libc.size_t</a>
 </code>
 </p>
 <p>
@@ -4920,7 +4920,7 @@ func va_start(vl: *Swag.CVaList, dummy: any)
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func wctomb(s: *u8, wc: Libc.wchar_t)-&gt;s32
+<code style="white-space: break-spaces">func wctomb(s: *u8, wc: <a href="Libc.html#Libc_wchar_t">Libc.wchar_t</a>)->s32
 </code>
 </p>
 </div>
