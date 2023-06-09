@@ -83,8 +83,6 @@ struct Header
 	compressionMethod:  u8
 	filterMethod:       u8
 	interlaceMethod:    InterlaceMethod = undefined
-    palette:            [256] u32
-    paletteCount:       s32
 }
 
 struct Chunk
@@ -107,6 +105,8 @@ public struct Decoder
     dstPixels:      ^u8
     dstPixelsSize:  u64
     chunkTRNS:      Chunk
+    palette:        [256] u32
+    paletteCount:   s32
     seenTRSN:       bool
     seenBKGD:       bool
     seenPLTE:       bool
@@ -207,7 +207,7 @@ impl Decoder
         // 1 bit => 8 bits
         if header.bitDepth == 1
         {
-            mul := header.paletteCount ? 1 : 255
+            mul := paletteCount ? 1 : 255
             loop height
             {
                 dest := orgDest
@@ -246,7 +246,7 @@ impl Decoder
         // 2 bits => 8 bits
         elif header.bitDepth == 2
         {
-            mul := header.paletteCount ? 1 : 85
+            mul := paletteCount ? 1 : 85
             loop height
             {
                 dest := orgDest
@@ -277,7 +277,7 @@ impl Decoder
         // 4 bits => 8 bits
         elif header.bitDepth == 4
         {
-            mul := header.paletteCount ? 1 : 17
+            mul := paletteCount ? 1 : 17
             loop height
             {
                 dest := orgDest
@@ -528,10 +528,10 @@ impl Decoder
                 for i := 0; i < len; i += 3
                 {
                     col := (cast(u32) chunk.datas[i] << 16) | (cast(u32) chunk.datas[i+1] << 8) | (chunk.datas[i+2])
-                    header.palette[i/3] = col
+                    palette[i/3] = col
                 }
 
-                header.paletteCount = cast(u32) (len / 3)
+                paletteCount = cast(u32) (len / 3)
 
             default:
                 discard readChunk(ch)
@@ -582,13 +582,13 @@ impl Decoder
         // Paletted, no transparency
         if inChannels == 1 and seenPLTE and !seenTRSN
         {
-            pm := {dstPixels, header: &header}
+            pm := {dstPixels, dec: self}
             result.visitPixels(&pm)
             {
                 params := cast(*@decltype(pm)) userData
                 src := params.dstPixels
                 src += x + y * image.width
-                color := params.header.palette[src[0]]
+                color := params.dec.palette[src[0]]
                 pix[0] = acast ((color >> 16) & 0xFF)
                 pix[1] = acast ((color >> 8) & 0xFF)
                 pix[2] = acast (color & 0xFF)
@@ -601,13 +601,13 @@ impl Decoder
         elif inChannels == 1 and seenPLTE and seenTRSN
         {
             key := chunkTRNS.datas[0]
-            pm := {dstPixels, key, header: &header}
+            pm := {dstPixels, key, dec: self}
             result.visitPixels(&pm)
             {
                 params := cast(*@decltype(pm)) userData
                 src := params.dstPixels
                 src += x + y * image.width
-                color := params.header.palette[src[0]]
+                color := params.dec.palette[src[0]]
                 pix[0] = acast ((color >> 16) & 0xFF)
                 pix[1] = acast ((color >> 8) & 0xFF)
                 pix[2] = acast (color & 0xFF)
