@@ -492,6 +492,8 @@ impl Decoder
                 seenTRSN = true
                 outChannels += 1 // transparency mask, add an alpha channel
                 chunkTRNS = readChunk(ch)
+                if @countof(chunkTRNS.datas) > paletteCount
+                    throw "invalid TRNS chunk"
 
             case BKGD:
                 seenBKGD = true
@@ -588,7 +590,8 @@ impl Decoder
                 params := cast(*@decltype(pm)) userData
                 src := params.dstPixels
                 src += x + y * image.width
-                color := params.dec.palette[src[0]]
+                pal := src[0]
+                color := params.dec.palette[pal]
                 pix[0] = acast ((color >> 16) & 0xFF)
                 pix[1] = acast ((color >> 8) & 0xFF)
                 pix[2] = acast (color & 0xFF)
@@ -600,18 +603,18 @@ impl Decoder
         // Paletted, transparency
         elif inChannels == 1 and seenPLTE and seenTRSN
         {
-            key := chunkTRNS.datas[0]
-            pm := {dstPixels, key, dec: self}
+            pm := {dstPixels, dec: self}
             result.visitPixels(&pm)
             {
                 params := cast(*@decltype(pm)) userData
                 src := params.dstPixels
                 src += x + y * image.width
-                color := params.dec.palette[src[0]]
+                pal := src[0]
+                color := params.dec.palette[pal]
                 pix[0] = acast ((color >> 16) & 0xFF)
                 pix[1] = acast ((color >> 8) & 0xFF)
                 pix[2] = acast (color & 0xFF)
-                pix[3] = src[0] == params.key ? 0 : 255
+                pix[3] = pal < @countof(params.dec.chunkTRNS.datas) ? params.dec.chunkTRNS.datas[pal] : 255
             }
         }
 
