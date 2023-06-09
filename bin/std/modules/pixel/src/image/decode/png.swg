@@ -167,22 +167,15 @@ impl Decoder
                 inChannels = 3
             else
                 inChannels = 1
+
             if header.colorType & .Alpha
             {
                 inChannels += 1
                 outChannels += 1
             }
 
-            if .colorType & .Alpha
-            {
-                if .bitDepth != 1 and .bitDepth != 2 and .bitDepth != 4 and .bitDepth != 8
-                    throw "invalid bit depth"
-            }
-            else
-            {
-                if .bitDepth != 4 and .bitDepth != 8
-                    throw "invalid bit depth"
-            }
+            if .bitDepth != 1 and .bitDepth != 2 and .bitDepth != 4 and .bitDepth != 8
+                throw "invalid bit depth"
         }
     }
 
