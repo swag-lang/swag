@@ -3095,7 +3095,7 @@ bool TypeManager::castToSlice(SemanticContext* context, TypeInfo* toType, TypeIn
         {
             int s = toTypeSlice->pointedType->sizeOf;
             int d = fromTypeSlice->pointedType->sizeOf;
-            if ((d / s) * s == d || (s / d) * d == s)
+            if (d % s == 0 || s % d == 0)
             {
                 if (castFlags & CASTFLAG_EXPLICIT)
                     return true;
