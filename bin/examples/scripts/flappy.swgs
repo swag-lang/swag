@@ -20,15 +20,16 @@ struct Pipe
     scored:     bool
 }
 
-var g_Bird:     Bird
-var g_Dt:       f32
-var g_Time:     f32
-var g_GameOver: bool
-var g_Rect:     Math.Rectangle
-var g_Start:    bool
-var g_BasePos:  f32
-var g_Pipes:    Array'Pipe
-var g_Score:    s32
+var g_Bird:      Bird
+var g_Dt:        f32
+var g_Time:      f32
+var g_GameOver:  bool
+var g_Rect:      Math.Rectangle
+var g_Start:     bool
+var g_BasePos:   f32
+var g_Pipes:     Array'Pipe
+var g_Score:     s32
+var g_FirstStart = true
 
 var g_BirdTexture:  [3] Texture
 var g_BackTexture:  Texture
@@ -36,6 +37,7 @@ var g_OverTexture:  Texture
 var g_BaseTexture:  Texture
 var g_PipeTextureU: Texture
 var g_PipeTextureD: Texture
+var g_MsgTexture:   Texture
 var g_DigitTexture: [10] Texture
 
 var g_Font: *Font
@@ -54,18 +56,21 @@ func paint(painter: *Painter)
     painter.drawTexture(pt.x, pt.y, g_BackTexture)
 
     // Bird
-    frame := (cast(s32) g_Bird.frame) % 3
-    pt.x = g_Bird.pos.x - g_BirdTexture[frame].width * 0.5
-    pt.y = g_Bird.pos.y - g_BirdTexture[frame].height * 0.5
-
-    // Add a little sin
-    if !g_Start
+    if !g_FirstStart
     {
-        pt.y += 5 * Math.sin(g_Time)
-        g_Time += 5 * g_Dt
-    }
+        frame := (cast(s32) g_Bird.frame) % 3
+        pt.x = g_Bird.pos.x - g_BirdTexture[frame].width * 0.5
+        pt.y = g_Bird.pos.y - g_BirdTexture[frame].height * 0.5
 
-    painter.drawTexture(pt.x, pt.y, g_BirdTexture[frame])
+        // Add a little sin
+        if !g_Start
+        {
+            pt.y += 5 * Math.sin(g_Time)
+            g_Time += 5 * g_Dt
+        }
+
+        painter.drawTexture(pt.x, pt.y, g_BirdTexture[frame])
+    }
 
     // Pipes
     visit pipe: g_Pipes
@@ -90,20 +95,32 @@ func paint(painter: *Painter)
     }
 
     // Score
-    painter.drawStringCenter(g_Rect.horzCenter(), 50, Format.toString("%", g_Score), g_Font, Argb.White)
+    if !g_FirstStart
+        painter.drawStringCenter(g_Rect.horzCenter(), 50, Format.toString("%", g_Score), g_Font, Argb.White)
+
+    // Message
+    if g_FirstStart
+    {
+        pt.x = g_Rect.horzCenter() - g_MsgTexture.width/2
+        pt.y = g_Rect.vertCenter() - g_MsgTexture.height/2
+        painter.drawTexture(pt.x, pt.y, g_MsgTexture)
+    }
 }
 
 func input(wnd: *Wnd)
 {
     kb := wnd.getApp().getKeyboard()
 
-    if g_GameOver
+    if g_GameOver or g_FirstStart
     {
         if kb.isKeyJustPressed(.Space)
+        {
             start()
+            g_FirstStart = false
+        }
+        return
     }
-
-    if kb.isKeyJustPressed(.Up)
+    elif kb.isKeyJustPressed(.Up)
     {
         g_Start = true
         g_Bird.speed.y = -BirdImpulseY
@@ -215,6 +232,7 @@ func loadAssets(wnd: *Wnd) throw
     g_OverTexture      = render.addImage(Path.combine(dataPath, "gameover.png"))
     g_BaseTexture      = render.addImage(Path.combine(dataPath, "base.png"))
     g_BackTexture      = render.addImage(Path.combine(dataPath, "background-day.png"))
+    g_MsgTexture       = render.addImage(Path.combine(dataPath, "message.png"))
 
     img := Image.load(Path.combine(dataPath, "pipe-green.png"))
     g_PipeTextureD = render.addImage(img)
