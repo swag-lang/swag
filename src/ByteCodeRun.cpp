@@ -3964,19 +3964,10 @@ static int exceptionHandler(ByteCodeRunContext* runContext, LPEXCEPTION_POINTERS
         runContext->fromException666  = true;
         runContext->fromExceptionKind = exceptionKind;
 
-        // If there's an error trace index, show the original 'throw'
-        SwagContext* context = (SwagContext*) OS::tlsGetValue(g_TlsContextId);
-        if (context->traceIndex)
+        if (!g_CommandLine.dbgCallStack)
         {
-            auto sourceFile1 = g_Workspace->findFile((const char*) context->trace[0]->fileName.buffer);
-            if (sourceFile1)
-            {
-                SourceLocation loc;
-                loc.line   = context->trace[0]->lineStart;
-                loc.column = context->trace[0]->colStart;
-                auto note  = new Diagnostic{sourceFile1, loc, loc, Hnt(Hnt0122), DiagnosticLevel::Note};
-                notes.push_back(note);
-            }
+            auto help = Diagnostic::help(Hlp(Hlp0054));
+            notes.push_back(help);
         }
 
         Report::report(diag, notes, runContext);

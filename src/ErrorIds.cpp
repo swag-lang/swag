@@ -1016,7 +1016,7 @@ void initErrors()
     SWAG_ERROR(Hlp0051, "if this is the start of a struct initialization block, considerer removing the blank(s) between '%s' and '{'");
     SWAG_ERROR(Hlp0052, "if this is the start of a new block, consider putting '{' on another line");
     SWAG_ERROR(Hlp0053, "use '{}' if ou really want an empty statement");
-    SWAG_ERROR(Hlp0054, nullptr);
+    SWAG_ERROR(Hlp0054, "you can run swag with '--callstack' to get contextual informations");
 
     /////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////
