@@ -58,9 +58,20 @@ func paint(painter: *Painter)
     // Bird
     if !g_FirstStart
     {
+        painter.pushState()
         frame := (cast(s32) g_Bird.frame) % 3
-        pt.x = g_Bird.pos.x - g_BirdTexture[frame].width * 0.5
-        pt.y = g_Bird.pos.y - g_BirdTexture[frame].height * 0.5
+
+        trf := painter.getTransform()
+
+        painter.resetTransform()
+        speed := Math.clamp(g_Bird.speed.y, -200, 200)
+        angle := Math.map(speed, -200, 200, -Math.ConstF32.PiBy6, Math.ConstF32.PiBy6)
+        painter.rotateTransform(angle)
+
+        painter.translateTransform(g_Bird.pos.x + trf.tx, g_Bird.pos.y + trf.ty)
+
+        pt.x = -g_BirdTexture[frame].width * 0.5
+        pt.y = -g_BirdTexture[frame].height * 0.5
 
         // Add a little sin
         if !g_Start
@@ -70,6 +81,7 @@ func paint(painter: *Painter)
         }
 
         painter.drawTexture(pt.x, pt.y, g_BirdTexture[frame])
+        painter.popState()
     }
 
     // Pipes
@@ -82,7 +94,8 @@ func paint(painter: *Painter)
     // Base
     painter.drawTexture(-g_BasePos, g_Rect.bottom() - GroundHeight, cast(f32) g_BaseTexture.width, GroundHeight, g_BaseTexture)
     painter.drawTexture(-g_BasePos + g_BaseTexture.width, g_Rect.bottom() - GroundHeight, cast(f32) g_BaseTexture.width, GroundHeight, g_BaseTexture)
-    g_BasePos += SpeedHorz*g_Dt
+    if !g_GameOver
+        g_BasePos += SpeedHorz*g_Dt
     if g_BasePos >= g_BaseTexture.width
         g_BasePos = 0
 
@@ -96,7 +109,9 @@ func paint(painter: *Painter)
 
     // Score
     if !g_FirstStart
+    {
         painter.drawStringCenter(g_Rect.horzCenter(), 50, Format.toString("%", g_Score), g_Font, Argb.White)
+    }
 
     // Message
     if g_FirstStart
