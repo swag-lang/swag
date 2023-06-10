@@ -24,22 +24,29 @@ uint32_t ByteCodeStack::maxLevel(ByteCodeRunContext* runContext)
     return (uint32_t) steps.size();
 }
 
-void ByteCodeStack::logStep(int level, bool current, ByteCodeStackStep& step)
+Utf8 ByteCodeStack::logStep(int level, bool current, ByteCodeStackStep& step)
 {
     auto bc = step.bc;
     auto ip = step.ip;
 
+    Utf8 header;
+    header += Log::colorToVTS(LogColor::DarkYellow);
+    if (current)
+        header += Fmt("[%03u]", level);
+    else
+        header += Fmt("%03u", level);
+
     if (!ip)
     {
-        Diagnostic diag{"<foreign code>", DiagnosticLevel::CallStack};
-        diag.stackLevel        = level;
-        diag.currentStackLevel = current;
-        diag.report();
-        return;
+        auto str = header;
+        str += Log::colorToVTS(LogColor::Gray);
+        str += " --> <foreign code>";
+        str += "\n";
+        return str;
     }
 
     if (!ip->node)
-        return;
+        return "";
 
     // Current ip
     auto sourceFile = ip->node->sourceFile;
@@ -47,11 +54,14 @@ void ByteCodeStack::logStep(int level, bool current, ByteCodeStackStep& step)
     auto fct        = ip->node->ownerInline && ip->node->ownerInline->ownerFct == ip->node->ownerFct ? ip->node->ownerInline->func : ip->node->ownerFct;
     auto name       = fct ? fct->getDisplayNameC() : bc->name.c_str();
 
-    Diagnostic diag{sourceFile, *location, name, DiagnosticLevel::CallStack};
-    diag.raisedOnNode      = ip->node;
-    diag.stackLevel        = level;
-    diag.currentStackLevel = current;
-    diag.report();
+    Utf8 str = ip->node->ownerInline ? "inline:" : header.c_str();
+    str += " ";
+    str += name;
+    str += Log::colorToVTS(LogColor::Gray);
+    if (sourceFile)
+        str += Fmt(" --> %s:%d\n", sourceFile->path.string().c_str(), location->line + 1);
+    else
+        str += "\n";
 
     // #mixin
     if (ip->node->flags & AST_IN_MIXIN)
@@ -62,9 +72,13 @@ void ByteCodeStack::logStep(int level, bool current, ByteCodeStackStep& step)
         if (owner)
         {
             fct = owner->ownerInline && owner->ownerInline->ownerFct == ip->node->ownerFct ? owner->ownerInline->func : owner->ownerFct;
-            Diagnostic diagMixin{owner->sourceFile, owner->token.startLocation, fct->getDisplayNameC(), DiagnosticLevel::CallStack};
-            diagMixin.raisedOnNode = owner;
-            diagMixin.report();
+            str = owner->ownerInline ? "inline: " : header.c_str();
+            str += fct->getDisplayNameC();
+            str += Log::colorToVTS(LogColor::Gray);
+            if (owner->sourceFile)
+                str += Fmt(" --> %s:%d\n", owner->sourceFile->path.string().c_str(), owner->token.startLocation.line + 1);
+            else
+                str += "\n";
         }
     }
 
@@ -73,11 +87,17 @@ void ByteCodeStack::logStep(int level, bool current, ByteCodeStackStep& step)
     while (parent && parent->ownerFct == ip->node->ownerFct && parent->ownerInline)
     {
         fct = parent->ownerInline && parent->ownerInline->ownerFct == ip->node->ownerFct ? parent->ownerInline->func : parent->ownerFct;
-        Diagnostic diagInline{parent->sourceFile, parent->token.startLocation, fct->getDisplayNameC(), DiagnosticLevel::CallStack};
-        diagInline.raisedOnNode = parent;
-        diagInline.report();
+        str = parent->ownerInline ? "inline: " : header.c_str();
+        str += fct->getDisplayNameC();
+        str += Log::colorToVTS(LogColor::Gray);
+        if (parent->sourceFile)
+            str += Fmt(" --> %s:%d\n", parent->sourceFile->path.string().c_str(), parent->token.startLocation.line + 1);
+        else
+            str += "\n";
         parent = parent->ownerInline;
     }
+
+    return str;
 }
 
 void ByteCodeStack::getSteps(VectorNative<ByteCodeStackStep>& copySteps, ByteCodeRunContext* runContext)
@@ -117,25 +137,28 @@ void ByteCodeStack::getSteps(VectorNative<ByteCodeStackStep>& copySteps, ByteCod
     }
 }
 
-void ByteCodeStack::log(ByteCodeRunContext* runContext)
+Utf8 ByteCodeStack::log(ByteCodeRunContext* runContext)
 {
     // Add one step for the current context if necessary
     VectorNative<ByteCodeStackStep> copySteps;
     getSteps(copySteps, runContext);
     if (copySteps.empty())
-        return;
+        return "";
 
-    int maxSteps = 20;
-    int nb       = (int) copySteps.size() - 1;
+    Utf8 str;
+    int  maxSteps = 20;
+    int  nb       = (int) copySteps.size() - 1;
     for (int i = nb; i >= 0; i--)
     {
         bool current = false;
         if (runContext && runContext->debugOn)
             current = (size_t) i == (copySteps.size() - 1) - runContext->debugStackFrameOffset;
-        logStep(i, current, copySteps[(size_t) i]);
+        str += logStep(i, current, copySteps[(size_t) i]);
 
         maxSteps--;
         if (maxSteps == 0)
             break;
     }
+
+    return str;
 }

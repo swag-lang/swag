@@ -13,7 +13,6 @@ enum class DiagnosticLevel
     Warning,
     Verbose,
     Note,
-    CallStack,
     Help,
 };
 
@@ -204,8 +203,6 @@ struct Diagnostic
     AstNode*    sourceNode   = nullptr;
     AstNode*    raisedOnNode = nullptr;
 
-    uint32_t stackLevel = 0;
-
     bool showSourceCode        = false;
     bool showRange             = true;
     bool showMultipleCodeLines = true;
@@ -217,7 +214,6 @@ struct Diagnostic
 
     bool hasLocation       = false;
     bool lowPrio           = false;
-    bool currentStackLevel = false;
     bool forceSourceFile   = false;
     bool criticalError     = false;
     bool isNote            = false;

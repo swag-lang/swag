@@ -501,7 +501,7 @@ static bool reportInternal(const Diagnostic& inDiag, const Vector<const Diagnost
                     {
                         g_Log.eol();
                         g_Log.print("[bytecode callstack]\n", LogColor::Cyan);
-                        g_ByteCodeStackTrace->log(runContext);
+                        g_Log.print(g_ByteCodeStackTrace->log(runContext));
                     }
 
                     // Error callstack
