@@ -203,7 +203,7 @@ func createPipe()
     var pipe: Pipe
 
     pos         := g_Rect.width
-    sizePassage := Random.shared().nextF32(100, 200)
+    sizePassage := Random.shared().nextF32(70, 150)
     heightUp    := Random.shared().nextF32(50, g_Rect.height - sizePassage - 50)
     heightDown  := g_Rect.height - heightUp - GroundHeight - sizePassage
 
