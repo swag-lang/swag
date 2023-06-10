@@ -1,0 +1,3655 @@
+<html>
+<body>
+<head>
+<meta charset="UTF-8">
+</head>
+<style>
+.container {
+            display:        flex;
+            flex-wrap:      nowrap;
+            flex-direction: row;
+            height:         100%;
+            line-height:    1.3em;
+            font-family:    Segoe UI;
+        }
+        .left {
+            display:    block;
+            overflow-y: scroll;
+            width:      650;
+            height:     100%;
+        }
+        .right {
+            display:     block;
+            overflow-y:  scroll;
+            width:       100%;
+            line-height: 1.3em;
+            height:      100%;
+        }
+        .page {
+            width:  1000;
+            margin: 0 auto;
+        }
+        a {
+            text-decoration: none;
+            color:           DoggerBlue;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        a.src {
+            font-size:          90%;
+            color:              Grey;
+        }
+        table.enumeration {
+            border:             1px solid LightGrey;
+            border-collapse:    collapse;
+            width:              100%;
+            font-size:          90%;
+        }
+        td.enumeration {
+            padding:            6px;
+            border:             1px solid LightGrey;
+            border-collapse:    collapse;
+            width:              30%;
+        }
+        td.tdname {
+            padding:            6px;
+            border:             1px solid LightGrey;
+            border-collapse:    collapse;
+            width:              20%;
+            background-color:   #f8f8f8;
+        }
+        td.tdtype {
+            padding:            6px;
+            border:             1px solid LightGrey;
+            border-collapse:    collapse;
+            width:              20%;
+            width:              auto;
+        }
+        td:last-child {
+            width:              auto;
+        }
+        .tocbullet {
+            list-style-type:    none;
+            margin-left:        -20px;
+        }
+        .titletype {
+            font-weight:        normal;
+            font-size:          80%;
+        }
+        .titlelight {
+            font-weight:        normal;
+        }
+        .titlestrong {
+            font-weight:        bold;
+            font-size:          100%;
+        }
+        h2.content {
+            margin-top:         50px;
+            margin-bottom:      50px;
+        }
+        table.h3 {
+            border-bottom:      2px solid Orange;
+            border-collapse:    collapse;
+            width:              100%;
+            margin-top:         50px;
+        }
+        h3.content {
+            margin-bottom:      2px;
+        }
+        .srcref {
+            text-align:         right;
+        }
+        .incode {
+            background-color:   #eeeeee;
+            padding:            2px;
+            border: 1px dotted  #cccccc;
+        }
+        .code {
+            background-color:   #eeeeee;
+            border:             1px solid LightGrey;
+            padding:            10px;
+            width:              90%;
+            margin-left:        20px;
+        }
+</style>
+<div class="container">
+<div class="left">
+<h1>Module gdi32</h1>
+<h2>Structs</h2>
+<h3></h3>
+<ul class="tocbullet">
+<li><a href="#Gdi32.BITMAP">BITMAP</a></li>
+<li><a href="#Gdi32.BITMAPINFO">BITMAPINFO</a></li>
+<li><a href="#Gdi32.BITMAPINFOHEADER">BITMAPINFOHEADER</a></li>
+<li><a href="#Gdi32.ENUMLOGFONTEXA">ENUMLOGFONTEXA</a></li>
+<li><a href="#Gdi32.ENUMLOGFONTEXW">ENUMLOGFONTEXW</a></li>
+<li><a href="#Gdi32.LOGFONTA">LOGFONTA</a></li>
+<li><a href="#Gdi32.LOGFONTW">LOGFONTW</a></li>
+<li><a href="#Gdi32.NEWTEXTMETRICA">NEWTEXTMETRICA</a></li>
+<li><a href="#Gdi32.NEWTEXTMETRICW">NEWTEXTMETRICW</a></li>
+<li><a href="#Gdi32.PIXELFORMATDESCRIPTOR">PIXELFORMATDESCRIPTOR</a></li>
+<li><a href="#Gdi32.RGBQUAD">RGBQUAD</a></li>
+<li><a href="#Gdi32.TEXTMETRICA">TEXTMETRICA</a></li>
+<li><a href="#Gdi32.TEXTMETRICW">TEXTMETRICW</a></li>
+</ul>
+<h2>Constants</h2>
+<h3></h3>
+<ul class="tocbullet">
+<li><a href="#Gdi32.ANSI_CHARSET">ANSI_CHARSET</a></li>
+<li><a href="#Gdi32.ANSI_FIXED_FONT">ANSI_FIXED_FONT</a></li>
+<li><a href="#Gdi32.ANSI_VAR_FONT">ANSI_VAR_FONT</a></li>
+<li><a href="#Gdi32.ARABIC_CHARSET">ARABIC_CHARSET</a></li>
+<li><a href="#Gdi32.BALTIC_CHARSET">BALTIC_CHARSET</a></li>
+<li><a href="#Gdi32.BI_BITFIELDS">BI_BITFIELDS</a></li>
+<li><a href="#Gdi32.BI_JPEG">BI_JPEG</a></li>
+<li><a href="#Gdi32.BI_PNG">BI_PNG</a></li>
+<li><a href="#Gdi32.BI_RGB">BI_RGB</a></li>
+<li><a href="#Gdi32.BI_RLE4">BI_RLE4</a></li>
+<li><a href="#Gdi32.BI_RLE8">BI_RLE8</a></li>
+<li><a href="#Gdi32.BKMODE_LAST">BKMODE_LAST</a></li>
+<li><a href="#Gdi32.BLACKNESS">BLACKNESS</a></li>
+<li><a href="#Gdi32.BLACK_BRUSH">BLACK_BRUSH</a></li>
+<li><a href="#Gdi32.BLACK_PEN">BLACK_PEN</a></li>
+<li><a href="#Gdi32.CAPTUREBLT">CAPTUREBLT</a></li>
+<li><a href="#Gdi32.CHINESEBIG5_CHARSET">CHINESEBIG5_CHARSET</a></li>
+<li><a href="#Gdi32.DEFAULT_CHARSET">DEFAULT_CHARSET</a></li>
+<li><a href="#Gdi32.DEFAULT_PALETTE">DEFAULT_PALETTE</a></li>
+<li><a href="#Gdi32.DEVICE_DEFAULT_FONT">DEVICE_DEFAULT_FONT</a></li>
+<li><a href="#Gdi32.DEVICE_FONTTYPE">DEVICE_FONTTYPE</a></li>
+<li><a href="#Gdi32.DIB_PAL_COLORS">DIB_PAL_COLORS</a></li>
+<li><a href="#Gdi32.DIB_RGB_COLORS">DIB_RGB_COLORS</a></li>
+<li><a href="#Gdi32.DKGRAY_BRUSH">DKGRAY_BRUSH</a></li>
+<li><a href="#Gdi32.DSTINVERT">DSTINVERT</a></li>
+<li><a href="#Gdi32.EASTEUROPE_CHARSET">EASTEUROPE_CHARSET</a></li>
+<li><a href="#Gdi32.FW_BLACK">FW_BLACK</a></li>
+<li><a href="#Gdi32.FW_BOLD">FW_BOLD</a></li>
+<li><a href="#Gdi32.FW_DEMIBOLD">FW_DEMIBOLD</a></li>
+<li><a href="#Gdi32.FW_DONTCARE">FW_DONTCARE</a></li>
+<li><a href="#Gdi32.FW_EXTRABOLD">FW_EXTRABOLD</a></li>
+<li><a href="#Gdi32.FW_EXTRALIGHT">FW_EXTRALIGHT</a></li>
+<li><a href="#Gdi32.FW_HEAVY">FW_HEAVY</a></li>
+<li><a href="#Gdi32.FW_LIGHT">FW_LIGHT</a></li>
+<li><a href="#Gdi32.FW_MEDIUM">FW_MEDIUM</a></li>
+<li><a href="#Gdi32.FW_NORMAL">FW_NORMAL</a></li>
+<li><a href="#Gdi32.FW_REGULAR">FW_REGULAR</a></li>
+<li><a href="#Gdi32.FW_SEMIBOLD">FW_SEMIBOLD</a></li>
+<li><a href="#Gdi32.FW_THIN">FW_THIN</a></li>
+<li><a href="#Gdi32.FW_ULTRABOLD">FW_ULTRABOLD</a></li>
+<li><a href="#Gdi32.FW_ULTRALIGHT">FW_ULTRALIGHT</a></li>
+<li><a href="#Gdi32.GB2312_CHARSET">GB2312_CHARSET</a></li>
+<li><a href="#Gdi32.GDI_ERROR">GDI_ERROR</a></li>
+<li><a href="#Gdi32.GRAY_BRUSH">GRAY_BRUSH</a></li>
+<li><a href="#Gdi32.GREEK_CHARSET">GREEK_CHARSET</a></li>
+<li><a href="#Gdi32.HANGEUL_CHARSET">HANGEUL_CHARSET</a></li>
+<li><a href="#Gdi32.HANGUL_CHARSET">HANGUL_CHARSET</a></li>
+<li><a href="#Gdi32.HEBREW_CHARSET">HEBREW_CHARSET</a></li>
+<li><a href="#Gdi32.HOLLOW_BRUSH">HOLLOW_BRUSH</a></li>
+<li><a href="#Gdi32.JOHAB_CHARSET">JOHAB_CHARSET</a></li>
+<li><a href="#Gdi32.LF_FACESIZE">LF_FACESIZE</a></li>
+<li><a href="#Gdi32.LF_FULLFACESIZE">LF_FULLFACESIZE</a></li>
+<li><a href="#Gdi32.LTGRAY_BRUSH">LTGRAY_BRUSH</a></li>
+<li><a href="#Gdi32.MAC_CHARSET">MAC_CHARSET</a></li>
+<li><a href="#Gdi32.MERGECOPY">MERGECOPY</a></li>
+<li><a href="#Gdi32.MERGEPAINT">MERGEPAINT</a></li>
+<li><a href="#Gdi32.NOMIRRORBITMAP">NOMIRRORBITMAP</a></li>
+<li><a href="#Gdi32.NOTSRCCOPY">NOTSRCCOPY</a></li>
+<li><a href="#Gdi32.NOTSRCERASE">NOTSRCERASE</a></li>
+<li><a href="#Gdi32.NULL_BRUSH">NULL_BRUSH</a></li>
+<li><a href="#Gdi32.NULL_PEN">NULL_PEN</a></li>
+<li><a href="#Gdi32.OEM_CHARSET">OEM_CHARSET</a></li>
+<li><a href="#Gdi32.OEM_FIXED_FONT">OEM_FIXED_FONT</a></li>
+<li><a href="#Gdi32.OPAQUE">OPAQUE</a></li>
+<li><a href="#Gdi32.PATCOPY">PATCOPY</a></li>
+<li><a href="#Gdi32.PATINVERT">PATINVERT</a></li>
+<li><a href="#Gdi32.PATPAINT">PATPAINT</a></li>
+<li><a href="#Gdi32.PFD_DEPTH_DONTCARE">PFD_DEPTH_DONTCARE</a></li>
+<li><a href="#Gdi32.PFD_DIRECT3D_ACCELERATED">PFD_DIRECT3D_ACCELERATED</a></li>
+<li><a href="#Gdi32.PFD_DOUBLEBUFFER">PFD_DOUBLEBUFFER</a></li>
+<li><a href="#Gdi32.PFD_DOUBLEBUFFER_DONTCARE">PFD_DOUBLEBUFFER_DONTCARE</a></li>
+<li><a href="#Gdi32.PFD_DRAW_TO_BITMAP">PFD_DRAW_TO_BITMAP</a></li>
+<li><a href="#Gdi32.PFD_DRAW_TO_WINDOW">PFD_DRAW_TO_WINDOW</a></li>
+<li><a href="#Gdi32.PFD_GENERIC_ACCELERATED">PFD_GENERIC_ACCELERATED</a></li>
+<li><a href="#Gdi32.PFD_GENERIC_FORMAT">PFD_GENERIC_FORMAT</a></li>
+<li><a href="#Gdi32.PFD_MAIN_PLANE">PFD_MAIN_PLANE</a></li>
+<li><a href="#Gdi32.PFD_NEED_PALETTE">PFD_NEED_PALETTE</a></li>
+<li><a href="#Gdi32.PFD_NEED_SYSTEM_PALETTE">PFD_NEED_SYSTEM_PALETTE</a></li>
+<li><a href="#Gdi32.PFD_OVERLAY_PLANE">PFD_OVERLAY_PLANE</a></li>
+<li><a href="#Gdi32.PFD_STEREO">PFD_STEREO</a></li>
+<li><a href="#Gdi32.PFD_STEREO_DONTCARE">PFD_STEREO_DONTCARE</a></li>
+<li><a href="#Gdi32.PFD_SUPPORT_COMPOSITION">PFD_SUPPORT_COMPOSITION</a></li>
+<li><a href="#Gdi32.PFD_SUPPORT_DIRECTDRAW">PFD_SUPPORT_DIRECTDRAW</a></li>
+<li><a href="#Gdi32.PFD_SUPPORT_GDI">PFD_SUPPORT_GDI</a></li>
+<li><a href="#Gdi32.PFD_SUPPORT_OPENGL">PFD_SUPPORT_OPENGL</a></li>
+<li><a href="#Gdi32.PFD_SWAP_COPY">PFD_SWAP_COPY</a></li>
+<li><a href="#Gdi32.PFD_SWAP_EXCHANGE">PFD_SWAP_EXCHANGE</a></li>
+<li><a href="#Gdi32.PFD_SWAP_LAYER_BUFFERS">PFD_SWAP_LAYER_BUFFERS</a></li>
+<li><a href="#Gdi32.PFD_TYPE_COLORINDEX">PFD_TYPE_COLORINDEX</a></li>
+<li><a href="#Gdi32.PFD_TYPE_RGBA">PFD_TYPE_RGBA</a></li>
+<li><a href="#Gdi32.PFD_UNDERLAY_PLANE">PFD_UNDERLAY_PLANE</a></li>
+<li><a href="#Gdi32.PS_ALTERNATE">PS_ALTERNATE</a></li>
+<li><a href="#Gdi32.PS_DASH">PS_DASH</a></li>
+<li><a href="#Gdi32.PS_DASHDOT">PS_DASHDOT</a></li>
+<li><a href="#Gdi32.PS_DASHDOTDOT">PS_DASHDOTDOT</a></li>
+<li><a href="#Gdi32.PS_DOT">PS_DOT</a></li>
+<li><a href="#Gdi32.PS_INSIDEFRAME">PS_INSIDEFRAME</a></li>
+<li><a href="#Gdi32.PS_NULL">PS_NULL</a></li>
+<li><a href="#Gdi32.PS_SOLID">PS_SOLID</a></li>
+<li><a href="#Gdi32.PS_STYLE_MASK">PS_STYLE_MASK</a></li>
+<li><a href="#Gdi32.PS_USERSTYLE">PS_USERSTYLE</a></li>
+<li><a href="#Gdi32.RASTER_FONTTYPE">RASTER_FONTTYPE</a></li>
+<li><a href="#Gdi32.RUSSIAN_CHARSET">RUSSIAN_CHARSET</a></li>
+<li><a href="#Gdi32.SHIFTJIS_CHARSET">SHIFTJIS_CHARSET</a></li>
+<li><a href="#Gdi32.SRCAND">SRCAND</a></li>
+<li><a href="#Gdi32.SRCCOPY">SRCCOPY</a></li>
+<li><a href="#Gdi32.SRCERASE">SRCERASE</a></li>
+<li><a href="#Gdi32.SRCINVERT">SRCINVERT</a></li>
+<li><a href="#Gdi32.SRCPAINT">SRCPAINT</a></li>
+<li><a href="#Gdi32.SYMBOL_CHARSET">SYMBOL_CHARSET</a></li>
+<li><a href="#Gdi32.SYSTEM_FIXED_FONT">SYSTEM_FIXED_FONT</a></li>
+<li><a href="#Gdi32.SYSTEM_FONT">SYSTEM_FONT</a></li>
+<li><a href="#Gdi32.THAI_CHARSET">THAI_CHARSET</a></li>
+<li><a href="#Gdi32.TRANSPARENT">TRANSPARENT</a></li>
+<li><a href="#Gdi32.TRUETYPE_FONTTYPE">TRUETYPE_FONTTYPE</a></li>
+<li><a href="#Gdi32.TURKISH_CHARSET">TURKISH_CHARSET</a></li>
+<li><a href="#Gdi32.VIETNAMESE_CHARSET">VIETNAMESE_CHARSET</a></li>
+<li><a href="#Gdi32.WHITENESS">WHITENESS</a></li>
+<li><a href="#Gdi32.WHITE_BRUSH">WHITE_BRUSH</a></li>
+<li><a href="#Gdi32.WHITE_PEN">WHITE_PEN</a></li>
+</ul>
+<h2>Functions</h2>
+<h3></h3>
+<ul class="tocbullet">
+<li><a href="#Gdi32.BitBlt">Gdi32.BitBlt</a></li>
+<li><a href="#Gdi32.ChoosePixelFormat">Gdi32.ChoosePixelFormat</a></li>
+<li><a href="#Gdi32.CreateCompatibleBitmap">Gdi32.CreateCompatibleBitmap</a></li>
+<li><a href="#Gdi32.CreateCompatibleDC">Gdi32.CreateCompatibleDC</a></li>
+<li><a href="#Gdi32.CreateDIBSection">Gdi32.CreateDIBSection</a></li>
+<li><a href="#Gdi32.CreateFontIndirectA">Gdi32.CreateFontIndirectA</a></li>
+<li><a href="#Gdi32.CreateFontIndirectW">Gdi32.CreateFontIndirectW</a></li>
+<li><a href="#Gdi32.CreatePen">Gdi32.CreatePen</a></li>
+<li><a href="#Gdi32.CreateSolidBrush">Gdi32.CreateSolidBrush</a></li>
+<li><a href="#Gdi32.DeleteDC">Gdi32.DeleteDC</a></li>
+<li><a href="#Gdi32.DeleteObject">Gdi32.DeleteObject</a></li>
+<li><a href="#Gdi32.DescribePixelFormat">Gdi32.DescribePixelFormat</a></li>
+<li><a href="#Gdi32.EnumFontFamiliesA">Gdi32.EnumFontFamiliesA</a></li>
+<li><a href="#Gdi32.EnumFontFamiliesExA">Gdi32.EnumFontFamiliesExA</a></li>
+<li><a href="#Gdi32.EnumFontFamiliesExW">Gdi32.EnumFontFamiliesExW</a></li>
+<li><a href="#Gdi32.EnumFontFamiliesW">Gdi32.EnumFontFamiliesW</a></li>
+<li><a href="#Gdi32.GetBitmapBits">Gdi32.GetBitmapBits</a></li>
+<li><a href="#Gdi32.GetDIBits">Gdi32.GetDIBits</a></li>
+<li><a href="#Gdi32.GetFontData">Gdi32.GetFontData</a></li>
+<li><a href="#Gdi32.GetObjectA">Gdi32.GetObjectA</a></li>
+<li><a href="#Gdi32.GetObjectW">Gdi32.GetObjectW</a></li>
+<li><a href="#Gdi32.GetPixel">Gdi32.GetPixel</a></li>
+<li><a href="#Gdi32.GetStockObject">Gdi32.GetStockObject</a></li>
+<li><a href="#Gdi32.LineTo">Gdi32.LineTo</a></li>
+<li><a href="#Gdi32.MoveTo">Gdi32.MoveTo</a></li>
+<li><a href="#Gdi32.RGB">Gdi32.RGB</a></li>
+<li><a href="#Gdi32.Rectangle">Gdi32.Rectangle</a></li>
+<li><a href="#Gdi32.SelectObject">Gdi32.SelectObject</a></li>
+<li><a href="#Gdi32.SetBitmapBits">Gdi32.SetBitmapBits</a></li>
+<li><a href="#Gdi32.SetBkColor">Gdi32.SetBkColor</a></li>
+<li><a href="#Gdi32.SetBkMode">Gdi32.SetBkMode</a></li>
+<li><a href="#Gdi32.SetPixelFormat">Gdi32.SetPixelFormat</a></li>
+<li><a href="#Gdi32.SetTextColor">Gdi32.SetTextColor</a></li>
+<li><a href="#Gdi32.SwapBuffers">Gdi32.SwapBuffers</a></li>
+<li><a href="#Gdi32.TextOutA">Gdi32.TextOutA</a></li>
+<li><a href="#Gdi32.TextOutW">Gdi32.TextOutW</a></li>
+</ul>
+</div>
+<div class="right">
+<div class="page">
+<h3>Overview</h3>
+<p>
+Wrapper for Microsoft Gdi32 library.</p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Gdi32.ANSI_CHARSET"><span class="titletype">const</span> <span class="titlelight">Gdi32.</span><span class="titlestrong">Constants</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gdi32\src\gdi32.swg#L178" class="src">src</a></td>
+</tr>
+</table>
+</p>
+<table class="enumeration">
+<tr>
+<td id="Gdi32.ANSI_CHARSET" class="tdname">
+ANSI_CHARSET</td>
+<td class="tdtype">
+</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td id="Gdi32.ANSI_FIXED_FONT" class="tdname">
+ANSI_FIXED_FONT</td>
+<td class="tdtype">
+</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td id="Gdi32.ANSI_VAR_FONT" class="tdname">
+ANSI_VAR_FONT</td>
+<td class="tdtype">
+</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td id="Gdi32.ARABIC_CHARSET" class="tdname">
+ARABIC_CHARSET</td>
+<td class="tdtype">
+</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td id="Gdi32.BALTIC_CHARSET" class="tdname">
+BALTIC_CHARSET</td>
+<td class="tdtype">
+</td>
+<td class="enumeration">
+</td>
+</tr>
+</table>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Gdi32.BITMAP"><span class="titletype">struct</span> <span class="titlelight">Gdi32.</span><span class="titlestrong">BITMAP</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gdi32\src\gdi32.swg#L89" class="src">src</a></td>
+</tr>
+</table>
+</p>
+<table class="enumeration">
+<tr>
+<td class="tdname">
+bmType</td>
+<td class="tdtype">
+LONG</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+bmWidth</td>
+<td class="tdtype">
+LONG</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+bmHeight</td>
+<td class="tdtype">
+LONG</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+bmWidthBytes</td>
+<td class="tdtype">
+LONG</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+bmPlanes</td>
+<td class="tdtype">
+WORD</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+bmBitsPixel</td>
+<td class="tdtype">
+WORD</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+bmBits</td>
+<td class="tdtype">
+LPVOID</td>
+<td class="enumeration">
+</td>
+</tr>
+</table>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Gdi32.BITMAPINFO"><span class="titletype">struct</span> <span class="titlelight">Gdi32.</span><span class="titlestrong">BITMAPINFO</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gdi32\src\gdi32.swg#L133" class="src">src</a></td>
+</tr>
+</table>
+</p>
+<table class="enumeration">
+<tr>
+<td class="tdname">
+bmiHeader</td>
+<td class="tdtype">
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gdi32.html#Gdi32.BITMAPINFOHEADER">BITMAPINFOHEADER</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+bmiColors</td>
+<td class="tdtype">
+[1] <a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gdi32.html#Gdi32.RGBQUAD">RGBQUAD</a></td>
+<td class="enumeration">
+</td>
+</tr>
+</table>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Gdi32.BITMAPINFOHEADER"><span class="titletype">struct</span> <span class="titlelight">Gdi32.</span><span class="titlestrong">BITMAPINFOHEADER</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gdi32\src\gdi32.swg#L118" class="src">src</a></td>
+</tr>
+</table>
+</p>
+<table class="enumeration">
+<tr>
+<td class="tdname">
+biSize</td>
+<td class="tdtype">
+DWORD</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+biWidth</td>
+<td class="tdtype">
+LONG</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+biHeight</td>
+<td class="tdtype">
+LONG</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+biPlanes</td>
+<td class="tdtype">
+WORD</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+biBitCount</td>
+<td class="tdtype">
+WORD</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+biCompression</td>
+<td class="tdtype">
+DWORD</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+biSizeImage</td>
+<td class="tdtype">
+DWORD</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+biXPelsPerMeter</td>
+<td class="tdtype">
+LONG</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+biYPelsPerMeter</td>
+<td class="tdtype">
+LONG</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+biClrUsed</td>
+<td class="tdtype">
+DWORD</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+biClrImportant</td>
+<td class="tdtype">
+DWORD</td>
+<td class="enumeration">
+</td>
+</tr>
+</table>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Gdi32.BI_BITFIELDS"><span class="titletype">const</span> <span class="titlelight">Gdi32.</span><span class="titlestrong">Constants</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gdi32\src\gdi32.swg#L111" class="src">src</a></td>
+</tr>
+</table>
+</p>
+<table class="enumeration">
+<tr>
+<td id="Gdi32.BI_BITFIELDS" class="tdname">
+BI_BITFIELDS</td>
+<td class="tdtype">
+</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td id="Gdi32.BI_JPEG" class="tdname">
+BI_JPEG</td>
+<td class="tdtype">
+</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td id="Gdi32.BI_PNG" class="tdname">
+BI_PNG</td>
+<td class="tdtype">
+</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td id="Gdi32.BI_RGB" class="tdname">
+BI_RGB</td>
+<td class="tdtype">
+</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td id="Gdi32.BI_RLE4" class="tdname">
+BI_RLE4</td>
+<td class="tdtype">
+</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td id="Gdi32.BI_RLE8" class="tdname">
+BI_RLE8</td>
+<td class="tdtype">
+</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td id="Gdi32.BKMODE_LAST" class="tdname">
+BKMODE_LAST</td>
+<td class="tdtype">
+</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td id="Gdi32.BLACKNESS" class="tdname">
+BLACKNESS</td>
+<td class="tdtype">
+</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td id="Gdi32.BLACK_BRUSH" class="tdname">
+BLACK_BRUSH</td>
+<td class="tdtype">
+</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td id="Gdi32.BLACK_PEN" class="tdname">
+BLACK_PEN</td>
+<td class="tdtype">
+</td>
+<td class="enumeration">
+</td>
+</tr>
+</table>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Gdi32.BitBlt"><span class="titletype">func</span> <span class="titlelight">Gdi32.</span><span class="titlestrong">BitBlt</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gdi32\src\gdi32.swg#L496" class="src">src</a></td>
+</tr>
+</table>
+</p>
+<p class="code">
+<code style="white-space: break-spaces">func BitBlt(hdc: HDC, x: s32, y: s32, cx: s32, cy: s32, hdcSrc: HDC, x1: s32, y1: s32, rop: DWORD) throw
+</code>
+</p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Gdi32.CAPTUREBLT"><span class="titletype">const</span> <span class="titlelight">Gdi32.</span><span class="titlestrong">Constants</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gdi32\src\gdi32.swg#L87" class="src">src</a></td>
+</tr>
+</table>
+</p>
+<table class="enumeration">
+<tr>
+<td id="Gdi32.CAPTUREBLT" class="tdname">
+CAPTUREBLT</td>
+<td class="tdtype">
+</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td id="Gdi32.CHINESEBIG5_CHARSET" class="tdname">
+CHINESEBIG5_CHARSET</td>
+<td class="tdtype">
+</td>
+<td class="enumeration">
+</td>
+</tr>
+</table>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Gdi32.ChoosePixelFormat"><span class="titletype">func</span> <span class="titlelight">Gdi32.</span><span class="titlestrong">ChoosePixelFormat</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gdi32\src\gdi32.swg#L437" class="src">src</a></td>
+</tr>
+</table>
+</p>
+<p class="code">
+<code style="white-space: break-spaces">func ChoosePixelFormat(hdc: HDC, ppfd: const *PIXELFORMATDESCRIPTOR)->s32 throw
+</code>
+</p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Gdi32.CreateCompatibleBitmap"><span class="titletype">func</span> <span class="titlelight">Gdi32.</span><span class="titlestrong">CreateCompatibleBitmap</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gdi32\src\gdi32.swg#L474" class="src">src</a></td>
+</tr>
+</table>
+</p>
+<p class="code">
+<code style="white-space: break-spaces">func CreateCompatibleBitmap(hdc: HDC, cx: s32, cy: s32)->HBITMAP throw
+</code>
+</p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Gdi32.CreateCompatibleDC"><span class="titletype">func</span> <span class="titlelight">Gdi32.</span><span class="titlestrong">CreateCompatibleDC</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gdi32\src\gdi32.swg#L466" class="src">src</a></td>
+</tr>
+</table>
+</p>
+<p class="code">
+<code style="white-space: break-spaces">func CreateCompatibleDC(hdc: HDC)->HDC throw
+</code>
+</p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Gdi32.CreateDIBSection"><span class="titletype">func</span> <span class="titlelight">Gdi32.</span><span class="titlestrong">CreateDIBSection</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gdi32\src\gdi32.swg#L580" class="src">src</a></td>
+</tr>
+</table>
+</p>
+<p class="code">
+<code style="white-space: break-spaces">func CreateDIBSection(hdc: HDC, pbmi: const *BITMAPINFO, usage: UINT, ppvBits: **void, hSection: HANDLE, offset: DWORD)->HBITMAP throw
+</code>
+</p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Gdi32.CreateFontIndirectA"><span class="titletype">func</span> <span class="titlelight">Gdi32.</span><span class="titlestrong">CreateFontIndirectA</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gdi32\src\gdi32.swg#L539" class="src">src</a></td>
+</tr>
+</table>
+</p>
+<p class="code">
+<code style="white-space: break-spaces">func CreateFontIndirectA(lplf: const *LOGFONTA)->HFONT throw
+</code>
+</p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Gdi32.CreateFontIndirectW"><span class="titletype">func</span> <span class="titlelight">Gdi32.</span><span class="titlestrong">CreateFontIndirectW</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gdi32\src\gdi32.swg#L547" class="src">src</a></td>
+</tr>
+</table>
+</p>
+<p class="code">
+<code style="white-space: break-spaces">func CreateFontIndirectW(lplf: const *LOGFONTW)->HFONT throw
+</code>
+</p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Gdi32.CreatePen"><span class="titletype">func</span> <span class="titlelight">Gdi32.</span><span class="titlestrong">CreatePen</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gdi32\src\gdi32.swg#L563" class="src">src</a></td>
+</tr>
+</table>
+</p>
+<p class="code">
+<code style="white-space: break-spaces">func CreatePen(iStyle: s32, cWidth: s32, color: COLORREF)->HPEN throw
+</code>
+</p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Gdi32.CreateSolidBrush"><span class="titletype">func</span> <span class="titlelight">Gdi32.</span><span class="titlestrong">CreateSolidBrush</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gdi32\src\gdi32.swg#L555" class="src">src</a></td>
+</tr>
+</table>
+</p>
+<p class="code">
+<code style="white-space: break-spaces">func CreateSolidBrush(color: COLORREF)->HBRUSH throw
+</code>
+</p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Gdi32.DEFAULT_CHARSET"><span class="titletype">const</span> <span class="titlelight">Gdi32.</span><span class="titlestrong">Constants</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gdi32\src\gdi32.swg#L179" class="src">src</a></td>
+</tr>
+</table>
+</p>
+<table class="enumeration">
+<tr>
+<td id="Gdi32.DEFAULT_CHARSET" class="tdname">
+DEFAULT_CHARSET</td>
+<td class="tdtype">
+</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td id="Gdi32.DEFAULT_PALETTE" class="tdname">
+DEFAULT_PALETTE</td>
+<td class="tdtype">
+</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td id="Gdi32.DEVICE_DEFAULT_FONT" class="tdname">
+DEVICE_DEFAULT_FONT</td>
+<td class="tdtype">
+</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td id="Gdi32.DEVICE_FONTTYPE" class="tdname">
+DEVICE_FONTTYPE</td>
+<td class="tdtype">
+</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td id="Gdi32.DIB_PAL_COLORS" class="tdname">
+DIB_PAL_COLORS</td>
+<td class="tdtype">
+</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td id="Gdi32.DIB_RGB_COLORS" class="tdname">
+DIB_RGB_COLORS</td>
+<td class="tdtype">
+</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td id="Gdi32.DKGRAY_BRUSH" class="tdname">
+DKGRAY_BRUSH</td>
+<td class="tdtype">
+</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td id="Gdi32.DSTINVERT" class="tdname">
+DSTINVERT</td>
+<td class="tdtype">
+</td>
+<td class="enumeration">
+</td>
+</tr>
+</table>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Gdi32.DeleteDC"><span class="titletype">func</span> <span class="titlelight">Gdi32.</span><span class="titlestrong">DeleteDC</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gdi32\src\gdi32.swg#L482" class="src">src</a></td>
+</tr>
+</table>
+</p>
+<p class="code">
+<code style="white-space: break-spaces">func DeleteDC(hdc: HDC) throw
+</code>
+</p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Gdi32.DeleteObject"><span class="titletype">func</span> <span class="titlelight">Gdi32.</span><span class="titlestrong">DeleteObject</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gdi32\src\gdi32.swg#L489" class="src">src</a></td>
+</tr>
+</table>
+</p>
+<p class="code">
+<code style="white-space: break-spaces">func DeleteObject(ho: HGDIOBJ) throw
+</code>
+</p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Gdi32.DescribePixelFormat"><span class="titletype">func</span> <span class="titlelight">Gdi32.</span><span class="titlestrong">DescribePixelFormat</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gdi32\src\gdi32.swg#L458" class="src">src</a></td>
+</tr>
+</table>
+</p>
+<p class="code">
+<code style="white-space: break-spaces">func DescribePixelFormat(hdc: HDC, iPixelFormat: s32, nBytes: UINT, ppfd: *PIXELFORMATDESCRIPTOR)->s32 throw
+</code>
+</p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Gdi32.EASTEUROPE_CHARSET"><span class="titletype">const</span> <span class="titlelight">Gdi32.</span><span class="titlestrong">Constants</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gdi32\src\gdi32.swg#L194" class="src">src</a></td>
+</tr>
+</table>
+</p>
+<table class="enumeration">
+<tr>
+<td id="Gdi32.EASTEUROPE_CHARSET" class="tdname">
+EASTEUROPE_CHARSET</td>
+<td class="tdtype">
+</td>
+<td class="enumeration">
+</td>
+</tr>
+</table>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Gdi32.ENUMLOGFONTEXA"><span class="titletype">struct</span> <span class="titlelight">Gdi32.</span><span class="titlestrong">ENUMLOGFONTEXA</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gdi32\src\gdi32.swg#L251" class="src">src</a></td>
+</tr>
+</table>
+</p>
+<table class="enumeration">
+<tr>
+<td class="tdname">
+elfLogFont</td>
+<td class="tdtype">
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gdi32.html#Gdi32.LOGFONTA">LOGFONTA</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+elfFullName</td>
+<td class="tdtype">
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gdi32.html#Gdi32.LF_FULLFACESIZE">LF_FULLFACESIZE</a> BYTE</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+elfStyle</td>
+<td class="tdtype">
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gdi32.html#Gdi32.LF_FACESIZE">LF_FACESIZE</a> BYTE</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+elfScript</td>
+<td class="tdtype">
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gdi32.html#Gdi32.LF_FACESIZE">LF_FACESIZE</a> BYTE</td>
+<td class="enumeration">
+</td>
+</tr>
+</table>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Gdi32.ENUMLOGFONTEXW"><span class="titletype">struct</span> <span class="titlelight">Gdi32.</span><span class="titlestrong">ENUMLOGFONTEXW</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gdi32\src\gdi32.swg#L259" class="src">src</a></td>
+</tr>
+</table>
+</p>
+<table class="enumeration">
+<tr>
+<td class="tdname">
+elfLogFont</td>
+<td class="tdtype">
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gdi32.html#Gdi32.LOGFONTW">LOGFONTW</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+elfFullName</td>
+<td class="tdtype">
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gdi32.html#Gdi32.LF_FULLFACESIZE">LF_FULLFACESIZE</a> WCHAR</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+elfStyle</td>
+<td class="tdtype">
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gdi32.html#Gdi32.LF_FACESIZE">LF_FACESIZE</a> WCHAR</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+elfScript</td>
+<td class="tdtype">
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gdi32.html#Gdi32.LF_FACESIZE">LF_FACESIZE</a> WCHAR</td>
+<td class="enumeration">
+</td>
+</tr>
+</table>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Gdi32.EnumFontFamiliesA"><span class="titletype">func</span> <span class="titlelight">Gdi32.</span><span class="titlestrong">EnumFontFamiliesA</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gdi32\src\gdi32.swg#L392" class="src">src</a></td>
+</tr>
+</table>
+</p>
+<p class="code">
+<code style="white-space: break-spaces">func EnumFontFamiliesA(hdc: HDC, lpLogfont: LPCSTR, lpProc: FONTENUMPROCA, lParam: LPARAM)->s32
+</code>
+</p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Gdi32.EnumFontFamiliesExA"><span class="titletype">func</span> <span class="titlelight">Gdi32.</span><span class="titlestrong">EnumFontFamiliesExA</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gdi32\src\gdi32.swg#L394" class="src">src</a></td>
+</tr>
+</table>
+</p>
+<p class="code">
+<code style="white-space: break-spaces">func EnumFontFamiliesExA(hdc: HDC, lpLogfont: const *LOGFONTA, lpProc: FONTENUMPROCA, lParam: LPARAM, dwFlags: DWORD)->s32
+</code>
+</p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Gdi32.EnumFontFamiliesExW"><span class="titletype">func</span> <span class="titlelight">Gdi32.</span><span class="titlestrong">EnumFontFamiliesExW</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gdi32\src\gdi32.swg#L395" class="src">src</a></td>
+</tr>
+</table>
+</p>
+<p class="code">
+<code style="white-space: break-spaces">func EnumFontFamiliesExW(hdc: HDC, lpLogfont: const *LOGFONTW, lpProc: FONTENUMPROCW, lParam: LPARAM, dwFlags: DWORD)->s32
+</code>
+</p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Gdi32.EnumFontFamiliesW"><span class="titletype">func</span> <span class="titlelight">Gdi32.</span><span class="titlestrong">EnumFontFamiliesW</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gdi32\src\gdi32.swg#L393" class="src">src</a></td>
+</tr>
+</table>
+</p>
+<p class="code">
+<code style="white-space: break-spaces">func EnumFontFamiliesW(hdc: HDC, lpLogfont: LPCWSTR, lpProc: FONTENUMPROCW, lParam: LPARAM)->s32
+</code>
+</p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Gdi32.FW_BLACK"><span class="titletype">const</span> <span class="titlelight">Gdi32.</span><span class="titlestrong">Constants</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gdi32\src\gdi32.swg#L158" class="src">src</a></td>
+</tr>
+</table>
+</p>
+<table class="enumeration">
+<tr>
+<td id="Gdi32.FW_BLACK" class="tdname">
+FW_BLACK</td>
+<td class="tdtype">
+</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td id="Gdi32.FW_BOLD" class="tdname">
+FW_BOLD</td>
+<td class="tdtype">
+</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td id="Gdi32.FW_DEMIBOLD" class="tdname">
+FW_DEMIBOLD</td>
+<td class="tdtype">
+</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td id="Gdi32.FW_DONTCARE" class="tdname">
+FW_DONTCARE</td>
+<td class="tdtype">
+</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td id="Gdi32.FW_EXTRABOLD" class="tdname">
+FW_EXTRABOLD</td>
+<td class="tdtype">
+</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td id="Gdi32.FW_EXTRALIGHT" class="tdname">
+FW_EXTRALIGHT</td>
+<td class="tdtype">
+</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td id="Gdi32.FW_HEAVY" class="tdname">
+FW_HEAVY</td>
+<td class="tdtype">
+</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td id="Gdi32.FW_LIGHT" class="tdname">
+FW_LIGHT</td>
+<td class="tdtype">
+</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td id="Gdi32.FW_MEDIUM" class="tdname">
+FW_MEDIUM</td>
+<td class="tdtype">
+</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td id="Gdi32.FW_NORMAL" class="tdname">
+FW_NORMAL</td>
+<td class="tdtype">
+</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td id="Gdi32.FW_REGULAR" class="tdname">
+FW_REGULAR</td>
+<td class="tdtype">
+</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td id="Gdi32.FW_SEMIBOLD" class="tdname">
+FW_SEMIBOLD</td>
+<td class="tdtype">
+</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td id="Gdi32.FW_THIN" class="tdname">
+FW_THIN</td>
+<td class="tdtype">
+</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td id="Gdi32.FW_ULTRABOLD" class="tdname">
+FW_ULTRABOLD</td>
+<td class="tdtype">
+</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td id="Gdi32.FW_ULTRALIGHT" class="tdname">
+FW_ULTRALIGHT</td>
+<td class="tdtype">
+</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td id="Gdi32.GB2312_CHARSET" class="tdname">
+GB2312_CHARSET</td>
+<td class="tdtype">
+</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td id="Gdi32.GDI_ERROR" class="tdname">
+GDI_ERROR</td>
+<td class="tdtype">
+</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td id="Gdi32.GRAY_BRUSH" class="tdname">
+GRAY_BRUSH</td>
+<td class="tdtype">
+</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td id="Gdi32.GREEK_CHARSET" class="tdname">
+GREEK_CHARSET</td>
+<td class="tdtype">
+</td>
+<td class="enumeration">
+</td>
+</tr>
+</table>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Gdi32.GetBitmapBits"><span class="titletype">func</span> <span class="titlelight">Gdi32.</span><span class="titlestrong">GetBitmapBits</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gdi32\src\gdi32.swg#L517" class="src">src</a></td>
+</tr>
+</table>
+</p>
+<p class="code">
+<code style="white-space: break-spaces">func GetBitmapBits(hbit: HBITMAP, cb: LONG, lpvBits: LPVOID) throw
+</code>
+</p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Gdi32.GetDIBits"><span class="titletype">func</span> <span class="titlelight">Gdi32.</span><span class="titlestrong">GetDIBits</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gdi32\src\gdi32.swg#L572" class="src">src</a></td>
+</tr>
+</table>
+</p>
+<p class="code">
+<code style="white-space: break-spaces">func GetDIBits(hdc: HDC, hbm: HBITMAP, start: UINT, cLines: UINT, lpvBits: LPVOID, lpbmi: *BITMAPINFO, usage: UINT)->s32 throw
+</code>
+</p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Gdi32.GetFontData"><span class="titletype">func</span> <span class="titlelight">Gdi32.</span><span class="titlestrong">GetFontData</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gdi32\src\gdi32.swg#L531" class="src">src</a></td>
+</tr>
+</table>
+</p>
+<p class="code">
+<code style="white-space: break-spaces">func GetFontData(hdc: HDC, dwTable: DWORD, dwOffset: DWORD, pvBuffer: LPVOID, cjBuffer: DWORD)->DWORD throw
+</code>
+</p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Gdi32.GetObjectA"><span class="titletype">func</span> <span class="titlelight">Gdi32.</span><span class="titlestrong">GetObjectA</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gdi32\src\gdi32.swg#L388" class="src">src</a></td>
+</tr>
+</table>
+</p>
+<p class="code">
+<code style="white-space: break-spaces">func GetObjectA(h: HANDLE, c: s32, pv: LPVOID)->s32
+func GetObjectA(h: HANDLE, c: s32, pv: LPVOID) throw
+</code>
+</p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Gdi32.GetObjectW"><span class="titletype">func</span> <span class="titlelight">Gdi32.</span><span class="titlestrong">GetObjectW</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gdi32\src\gdi32.swg#L389" class="src">src</a></td>
+</tr>
+</table>
+</p>
+<p class="code">
+<code style="white-space: break-spaces">func GetObjectW(h: HANDLE, c: s32, pv: LPVOID)->s32
+func GetObjectW(h: HANDLE, c: s32, pv: LPVOID) throw
+</code>
+</p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Gdi32.GetPixel"><span class="titletype">func</span> <span class="titlelight">Gdi32.</span><span class="titlestrong">GetPixel</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gdi32\src\gdi32.swg#L382" class="src">src</a></td>
+</tr>
+</table>
+</p>
+<p class="code">
+<code style="white-space: break-spaces">func GetPixel(hdc: HDC, x: s32, y: s32)->COLORREF
+</code>
+</p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Gdi32.GetStockObject"><span class="titletype">func</span> <span class="titlelight">Gdi32.</span><span class="titlestrong">GetStockObject</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gdi32\src\gdi32.swg#L383" class="src">src</a></td>
+</tr>
+</table>
+</p>
+<p class="code">
+<code style="white-space: break-spaces">func GetStockObject(i: s32)->HGDIOBJ
+</code>
+</p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Gdi32.HANGEUL_CHARSET"><span class="titletype">const</span> <span class="titlelight">Gdi32.</span><span class="titlestrong">Constants</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gdi32\src\gdi32.swg#L182" class="src">src</a></td>
+</tr>
+</table>
+</p>
+<table class="enumeration">
+<tr>
+<td id="Gdi32.HANGEUL_CHARSET" class="tdname">
+HANGEUL_CHARSET</td>
+<td class="tdtype">
+</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td id="Gdi32.HANGUL_CHARSET" class="tdname">
+HANGUL_CHARSET</td>
+<td class="tdtype">
+</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td id="Gdi32.HEBREW_CHARSET" class="tdname">
+HEBREW_CHARSET</td>
+<td class="tdtype">
+</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td id="Gdi32.HOLLOW_BRUSH" class="tdname">
+HOLLOW_BRUSH</td>
+<td class="tdtype">
+</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td id="Gdi32.JOHAB_CHARSET" class="tdname">
+JOHAB_CHARSET</td>
+<td class="tdtype">
+</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td id="Gdi32.LF_FACESIZE" class="tdname">
+LF_FACESIZE</td>
+<td class="tdtype">
+</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td id="Gdi32.LF_FULLFACESIZE" class="tdname">
+LF_FULLFACESIZE</td>
+<td class="tdtype">
+</td>
+<td class="enumeration">
+</td>
+</tr>
+</table>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Gdi32.LOGFONTA"><span class="titletype">struct</span> <span class="titlelight">Gdi32.</span><span class="titlestrong">LOGFONTA</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gdi32\src\gdi32.swg#L214" class="src">src</a></td>
+</tr>
+</table>
+</p>
+<table class="enumeration">
+<tr>
+<td class="tdname">
+lfHeight</td>
+<td class="tdtype">
+LONG</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+lfWidth</td>
+<td class="tdtype">
+LONG</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+lfEscapement</td>
+<td class="tdtype">
+LONG</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+lfOrientation</td>
+<td class="tdtype">
+LONG</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+lfWeight</td>
+<td class="tdtype">
+LONG</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+lfItalic</td>
+<td class="tdtype">
+BYTE</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+lfUnderline</td>
+<td class="tdtype">
+BYTE</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+lfStrikeOut</td>
+<td class="tdtype">
+BYTE</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+lfCharSet</td>
+<td class="tdtype">
+BYTE</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+lfOutPrecision</td>
+<td class="tdtype">
+BYTE</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+lfClipPrecision</td>
+<td class="tdtype">
+BYTE</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+lfQuality</td>
+<td class="tdtype">
+BYTE</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+lfPitchAndFamily</td>
+<td class="tdtype">
+BYTE</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+lfFaceName</td>
+<td class="tdtype">
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gdi32.html#Gdi32.LF_FACESIZE">LF_FACESIZE</a> CHAR</td>
+<td class="enumeration">
+</td>
+</tr>
+</table>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Gdi32.LOGFONTW"><span class="titletype">struct</span> <span class="titlelight">Gdi32.</span><span class="titlestrong">LOGFONTW</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gdi32\src\gdi32.swg#L232" class="src">src</a></td>
+</tr>
+</table>
+</p>
+<table class="enumeration">
+<tr>
+<td class="tdname">
+lfHeight</td>
+<td class="tdtype">
+LONG</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+lfWidth</td>
+<td class="tdtype">
+LONG</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+lfEscapement</td>
+<td class="tdtype">
+LONG</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+lfOrientation</td>
+<td class="tdtype">
+LONG</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+lfWeight</td>
+<td class="tdtype">
+LONG</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+lfItalic</td>
+<td class="tdtype">
+BYTE</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+lfUnderline</td>
+<td class="tdtype">
+BYTE</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+lfStrikeOut</td>
+<td class="tdtype">
+BYTE</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+lfCharSet</td>
+<td class="tdtype">
+BYTE</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+lfOutPrecision</td>
+<td class="tdtype">
+BYTE</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+lfClipPrecision</td>
+<td class="tdtype">
+BYTE</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+lfQuality</td>
+<td class="tdtype">
+BYTE</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+lfPitchAndFamily</td>
+<td class="tdtype">
+BYTE</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+lfFaceName</td>
+<td class="tdtype">
+<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.gdi32.html#Gdi32.LF_FACESIZE">LF_FACESIZE</a> WCHAR</td>
+<td class="enumeration">
+</td>
+</tr>
+</table>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Gdi32.LTGRAY_BRUSH"><span class="titletype">const</span> <span class="titlelight">Gdi32.</span><span class="titlestrong">Constants</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gdi32\src\gdi32.swg#L161" class="src">src</a></td>
+</tr>
+</table>
+</p>
+<table class="enumeration">
+<tr>
+<td id="Gdi32.LTGRAY_BRUSH" class="tdname">
+LTGRAY_BRUSH</td>
+<td class="tdtype">
+</td>
+<td class="enumeration">
+</td>
+</tr>
+</table>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Gdi32.LineTo"><span class="titletype">func</span> <span class="titlelight">Gdi32.</span><span class="titlestrong">LineTo</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gdi32\src\gdi32.swg#L404" class="src">src</a></td>
+</tr>
+</table>
+</p>
+<p class="code">
+<code style="white-space: break-spaces">func LineTo(hdc: HDC, x: s32, y: s32)->BOOL
+</code>
+</p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Gdi32.MAC_CHARSET"><span class="titletype">const</span> <span class="titlelight">Gdi32.</span><span class="titlestrong">Constants</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gdi32\src\gdi32.swg#L196" class="src">src</a></td>
+</tr>
+</table>
+</p>
+<table class="enumeration">
+<tr>
+<td id="Gdi32.MAC_CHARSET" class="tdname">
+MAC_CHARSET</td>
+<td class="tdtype">
+</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td id="Gdi32.MERGECOPY" class="tdname">
+MERGECOPY</td>
+<td class="tdtype">
+</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td id="Gdi32.MERGEPAINT" class="tdname">
+MERGEPAINT</td>
+<td class="tdtype">
+</td>
+<td class="enumeration">
+</td>
+</tr>
+</table>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Gdi32.MoveTo"><span class="titletype">func</span> <span class="titlelight">Gdi32.</span><span class="titlestrong">MoveTo</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gdi32\src\gdi32.swg#L403" class="src">src</a></td>
+</tr>
+</table>
+</p>
+<p class="code">
+<code style="white-space: break-spaces">func MoveTo(hdc: HDC, x: s32, y: s32)->BOOL
+</code>
+</p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Gdi32.NEWTEXTMETRICA"><span class="titletype">struct</span> <span class="titlelight">Gdi32.</span><span class="titlestrong">NEWTEXTMETRICA</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gdi32\src\gdi32.swg#L315" class="src">src</a></td>
+</tr>
+</table>
+</p>
+<table class="enumeration">
+<tr>
+<td class="tdname">
+tmHeight</td>
+<td class="tdtype">
+LONG</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+tmAscent</td>
+<td class="tdtype">
+LONG</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+tmDescent</td>
+<td class="tdtype">
+LONG</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+tmInternalLeading</td>
+<td class="tdtype">
+LONG</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+tmExternalLeading</td>
+<td class="tdtype">
+LONG</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+tmAveCharWidth</td>
+<td class="tdtype">
+LONG</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+tmMaxCharWidth</td>
+<td class="tdtype">
+LONG</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+tmWeight</td>
+<td class="tdtype">
+LONG</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+tmOverhang</td>
+<td class="tdtype">
+LONG</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+tmDigitizedAspectX</td>
+<td class="tdtype">
+LONG</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+tmDigitizedAspectY</td>
+<td class="tdtype">
+LONG</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+tmFirstChar</td>
+<td class="tdtype">
+BYTE</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+tmLastChar</td>
+<td class="tdtype">
+BYTE</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+tmDefaultChar</td>
+<td class="tdtype">
+BYTE</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+tmBreakChar</td>
+<td class="tdtype">
+BYTE</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+tmItalic</td>
+<td class="tdtype">
+BYTE</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+tmUnderlined</td>
+<td class="tdtype">
+BYTE</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+tmStruckOut</td>
+<td class="tdtype">
+BYTE</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+tmPitchAndFamily</td>
+<td class="tdtype">
+BYTE</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+tmCharSet</td>
+<td class="tdtype">
+BYTE</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+ntmFlags</td>
+<td class="tdtype">
+DWORD</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+ntmSizeEM</td>
+<td class="tdtype">
+UINT</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+ntmCellHeight</td>
+<td class="tdtype">
+UINT</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+ntmAvgWidth</td>
+<td class="tdtype">
+UINT</td>
+<td class="enumeration">
+</td>
+</tr>
+</table>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Gdi32.NEWTEXTMETRICW"><span class="titletype">struct</span> <span class="titlelight">Gdi32.</span><span class="titlestrong">NEWTEXTMETRICW</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gdi32\src\gdi32.swg#L343" class="src">src</a></td>
+</tr>
+</table>
+</p>
+<table class="enumeration">
+<tr>
+<td class="tdname">
+tmHeight</td>
+<td class="tdtype">
+LONG</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+tmAscent</td>
+<td class="tdtype">
+LONG</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+tmDescent</td>
+<td class="tdtype">
+LONG</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+tmInternalLeading</td>
+<td class="tdtype">
+LONG</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+tmExternalLeading</td>
+<td class="tdtype">
+LONG</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+tmAveCharWidth</td>
+<td class="tdtype">
+LONG</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+tmMaxCharWidth</td>
+<td class="tdtype">
+LONG</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+tmWeight</td>
+<td class="tdtype">
+LONG</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+tmOverhang</td>
+<td class="tdtype">
+LONG</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+tmDigitizedAspectX</td>
+<td class="tdtype">
+LONG</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+tmDigitizedAspectY</td>
+<td class="tdtype">
+LONG</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+tmFirstChar</td>
+<td class="tdtype">
+WCHAR</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+tmLastChar</td>
+<td class="tdtype">
+WCHAR</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+tmDefaultChar</td>
+<td class="tdtype">
+WCHAR</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+tmBreakChar</td>
+<td class="tdtype">
+WCHAR</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+tmItalic</td>
+<td class="tdtype">
+BYTE</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+tmUnderlined</td>
+<td class="tdtype">
+BYTE</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+tmStruckOut</td>
+<td class="tdtype">
+BYTE</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+tmPitchAndFamily</td>
+<td class="tdtype">
+BYTE</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+tmCharSet</td>
+<td class="tdtype">
+BYTE</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+ntmFlags</td>
+<td class="tdtype">
+DWORD</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+ntmSizeEM</td>
+<td class="tdtype">
+UINT</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+ntmCellHeight</td>
+<td class="tdtype">
+UINT</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+ntmAvgWidth</td>
+<td class="tdtype">
+UINT</td>
+<td class="enumeration">
+</td>
+</tr>
+</table>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Gdi32.NOMIRRORBITMAP"><span class="titletype">const</span> <span class="titlelight">Gdi32.</span><span class="titlestrong">Constants</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gdi32\src\gdi32.swg#L86" class="src">src</a></td>
+</tr>
+</table>
+</p>
+<table class="enumeration">
+<tr>
+<td id="Gdi32.NOMIRRORBITMAP" class="tdname">
+NOMIRRORBITMAP</td>
+<td class="tdtype">
+</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td id="Gdi32.NOTSRCCOPY" class="tdname">
+NOTSRCCOPY</td>
+<td class="tdtype">
+</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td id="Gdi32.NOTSRCERASE" class="tdname">
+NOTSRCERASE</td>
+<td class="tdtype">
+</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td id="Gdi32.NULL_BRUSH" class="tdname">
+NULL_BRUSH</td>
+<td class="tdtype">
+</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td id="Gdi32.NULL_PEN" class="tdname">
+NULL_PEN</td>
+<td class="tdtype">
+</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td id="Gdi32.OEM_CHARSET" class="tdname">
+OEM_CHARSET</td>
+<td class="tdtype">
+</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td id="Gdi32.OEM_FIXED_FONT" class="tdname">
+OEM_FIXED_FONT</td>
+<td class="tdtype">
+</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td id="Gdi32.OPAQUE" class="tdname">
+OPAQUE</td>
+<td class="tdtype">
+</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td id="Gdi32.PATCOPY" class="tdname">
+PATCOPY</td>
+<td class="tdtype">
+</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td id="Gdi32.PATINVERT" class="tdname">
+PATINVERT</td>
+<td class="tdtype">
+</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td id="Gdi32.PATPAINT" class="tdname">
+PATPAINT</td>
+<td class="tdtype">
+</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td id="Gdi32.PFD_DEPTH_DONTCARE" class="tdname">
+PFD_DEPTH_DONTCARE</td>
+<td class="tdtype">
+</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td id="Gdi32.PFD_DIRECT3D_ACCELERATED" class="tdname">
+PFD_DIRECT3D_ACCELERATED</td>
+<td class="tdtype">
+</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td id="Gdi32.PFD_DOUBLEBUFFER" class="tdname">
+PFD_DOUBLEBUFFER</td>
+<td class="tdtype">
+</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td id="Gdi32.PFD_DOUBLEBUFFER_DONTCARE" class="tdname">
+PFD_DOUBLEBUFFER_DONTCARE</td>
+<td class="tdtype">
+</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td id="Gdi32.PFD_DRAW_TO_BITMAP" class="tdname">
+PFD_DRAW_TO_BITMAP</td>
+<td class="tdtype">
+</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td id="Gdi32.PFD_DRAW_TO_WINDOW" class="tdname">
+PFD_DRAW_TO_WINDOW</td>
+<td class="tdtype">
+</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td id="Gdi32.PFD_GENERIC_ACCELERATED" class="tdname">
+PFD_GENERIC_ACCELERATED</td>
+<td class="tdtype">
+</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td id="Gdi32.PFD_GENERIC_FORMAT" class="tdname">
+PFD_GENERIC_FORMAT</td>
+<td class="tdtype">
+</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td id="Gdi32.PFD_MAIN_PLANE" class="tdname">
+PFD_MAIN_PLANE</td>
+<td class="tdtype">
+</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td id="Gdi32.PFD_NEED_PALETTE" class="tdname">
+PFD_NEED_PALETTE</td>
+<td class="tdtype">
+</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td id="Gdi32.PFD_NEED_SYSTEM_PALETTE" class="tdname">
+PFD_NEED_SYSTEM_PALETTE</td>
+<td class="tdtype">
+</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td id="Gdi32.PFD_OVERLAY_PLANE" class="tdname">
+PFD_OVERLAY_PLANE</td>
+<td class="tdtype">
+</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td id="Gdi32.PFD_STEREO" class="tdname">
+PFD_STEREO</td>
+<td class="tdtype">
+</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td id="Gdi32.PFD_STEREO_DONTCARE" class="tdname">
+PFD_STEREO_DONTCARE</td>
+<td class="tdtype">
+</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td id="Gdi32.PFD_SUPPORT_COMPOSITION" class="tdname">
+PFD_SUPPORT_COMPOSITION</td>
+<td class="tdtype">
+</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td id="Gdi32.PFD_SUPPORT_DIRECTDRAW" class="tdname">
+PFD_SUPPORT_DIRECTDRAW</td>
+<td class="tdtype">
+</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td id="Gdi32.PFD_SUPPORT_GDI" class="tdname">
+PFD_SUPPORT_GDI</td>
+<td class="tdtype">
+</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td id="Gdi32.PFD_SUPPORT_OPENGL" class="tdname">
+PFD_SUPPORT_OPENGL</td>
+<td class="tdtype">
+</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td id="Gdi32.PFD_SWAP_COPY" class="tdname">
+PFD_SWAP_COPY</td>
+<td class="tdtype">
+</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td id="Gdi32.PFD_SWAP_EXCHANGE" class="tdname">
+PFD_SWAP_EXCHANGE</td>
+<td class="tdtype">
+</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td id="Gdi32.PFD_SWAP_LAYER_BUFFERS" class="tdname">
+PFD_SWAP_LAYER_BUFFERS</td>
+<td class="tdtype">
+</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td id="Gdi32.PFD_TYPE_COLORINDEX" class="tdname">
+PFD_TYPE_COLORINDEX</td>
+<td class="tdtype">
+</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td id="Gdi32.PFD_TYPE_RGBA" class="tdname">
+PFD_TYPE_RGBA</td>
+<td class="tdtype">
+</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td id="Gdi32.PFD_UNDERLAY_PLANE" class="tdname">
+PFD_UNDERLAY_PLANE</td>
+<td class="tdtype">
+</td>
+<td class="enumeration">
+</td>
+</tr>
+</table>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Gdi32.PIXELFORMATDESCRIPTOR"><span class="titletype">struct</span> <span class="titlelight">Gdi32.</span><span class="titlestrong">PIXELFORMATDESCRIPTOR</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gdi32\src\gdi32.swg#L15" class="src">src</a></td>
+</tr>
+</table>
+</p>
+<table class="enumeration">
+<tr>
+<td class="tdname">
+nSize</td>
+<td class="tdtype">
+WORD</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+nVersion</td>
+<td class="tdtype">
+WORD</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+dwFlags</td>
+<td class="tdtype">
+DWORD</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+iPixelType</td>
+<td class="tdtype">
+BYTE</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+cColorBits</td>
+<td class="tdtype">
+BYTE</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+cRedBits</td>
+<td class="tdtype">
+BYTE</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+cRedShift</td>
+<td class="tdtype">
+BYTE</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+cGreenBits</td>
+<td class="tdtype">
+BYTE</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+cGreenShift</td>
+<td class="tdtype">
+BYTE</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+cBlueBits</td>
+<td class="tdtype">
+BYTE</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+cBlueShift</td>
+<td class="tdtype">
+BYTE</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+cAlphaBits</td>
+<td class="tdtype">
+BYTE</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+cAlphaShift</td>
+<td class="tdtype">
+BYTE</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+cAccumBits</td>
+<td class="tdtype">
+BYTE</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+cAccumRedBits</td>
+<td class="tdtype">
+BYTE</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+cAccumGreenBits</td>
+<td class="tdtype">
+BYTE</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+cAccumBlueBits</td>
+<td class="tdtype">
+BYTE</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+cAccumAlphaBits</td>
+<td class="tdtype">
+BYTE</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+cDepthBits</td>
+<td class="tdtype">
+BYTE</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+cStencilBits</td>
+<td class="tdtype">
+BYTE</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+cAuxBuffers</td>
+<td class="tdtype">
+BYTE</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+iLayerType</td>
+<td class="tdtype">
+BYTE</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+bReserved</td>
+<td class="tdtype">
+BYTE</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+dwLayerMask</td>
+<td class="tdtype">
+DWORD</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+dwVisibleMask</td>
+<td class="tdtype">
+DWORD</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+dwDamageMask</td>
+<td class="tdtype">
+DWORD</td>
+<td class="enumeration">
+</td>
+</tr>
+</table>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Gdi32.PS_ALTERNATE"><span class="titletype">const</span> <span class="titlelight">Gdi32.</span><span class="titlestrong">Constants</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gdi32\src\gdi32.swg#L207" class="src">src</a></td>
+</tr>
+</table>
+</p>
+<table class="enumeration">
+<tr>
+<td id="Gdi32.PS_ALTERNATE" class="tdname">
+PS_ALTERNATE</td>
+<td class="tdtype">
+</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td id="Gdi32.PS_DASH" class="tdname">
+PS_DASH</td>
+<td class="tdtype">
+</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td id="Gdi32.PS_DASHDOT" class="tdname">
+PS_DASHDOT</td>
+<td class="tdtype">
+</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td id="Gdi32.PS_DASHDOTDOT" class="tdname">
+PS_DASHDOTDOT</td>
+<td class="tdtype">
+</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td id="Gdi32.PS_DOT" class="tdname">
+PS_DOT</td>
+<td class="tdtype">
+</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td id="Gdi32.PS_INSIDEFRAME" class="tdname">
+PS_INSIDEFRAME</td>
+<td class="tdtype">
+</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td id="Gdi32.PS_NULL" class="tdname">
+PS_NULL</td>
+<td class="tdtype">
+</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td id="Gdi32.PS_SOLID" class="tdname">
+PS_SOLID</td>
+<td class="tdtype">
+</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td id="Gdi32.PS_STYLE_MASK" class="tdname">
+PS_STYLE_MASK</td>
+<td class="tdtype">
+</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td id="Gdi32.PS_USERSTYLE" class="tdname">
+PS_USERSTYLE</td>
+<td class="tdtype">
+</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td id="Gdi32.RASTER_FONTTYPE" class="tdname">
+RASTER_FONTTYPE</td>
+<td class="tdtype">
+</td>
+<td class="enumeration">
+</td>
+</tr>
+</table>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Gdi32.RGB"><span class="titletype">func</span> <span class="titlelight">Gdi32.</span><span class="titlestrong">RGB</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gdi32\src\gdi32.swg#L375" class="src">src</a></td>
+</tr>
+</table>
+</p>
+<p class="code">
+<code style="white-space: break-spaces">func RGB(r: s32, g: s32, b: s32)->COLORREF
+</code>
+</p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Gdi32.RGBQUAD"><span class="titletype">struct</span> <span class="titlelight">Gdi32.</span><span class="titlestrong">RGBQUAD</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gdi32\src\gdi32.swg#L100" class="src">src</a></td>
+</tr>
+</table>
+</p>
+<table class="enumeration">
+<tr>
+<td class="tdname">
+rgbBlue</td>
+<td class="tdtype">
+BYTE</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+rgbGreen</td>
+<td class="tdtype">
+BYTE</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+rgbRed</td>
+<td class="tdtype">
+BYTE</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+rgbReserved</td>
+<td class="tdtype">
+BYTE</td>
+<td class="enumeration">
+</td>
+</tr>
+</table>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Gdi32.RUSSIAN_CHARSET"><span class="titletype">const</span> <span class="titlelight">Gdi32.</span><span class="titlestrong">Constants</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gdi32\src\gdi32.swg#L195" class="src">src</a></td>
+</tr>
+</table>
+</p>
+<table class="enumeration">
+<tr>
+<td id="Gdi32.RUSSIAN_CHARSET" class="tdname">
+RUSSIAN_CHARSET</td>
+<td class="tdtype">
+</td>
+<td class="enumeration">
+</td>
+</tr>
+</table>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Gdi32.Rectangle"><span class="titletype">func</span> <span class="titlelight">Gdi32.</span><span class="titlestrong">Rectangle</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gdi32\src\gdi32.swg#L405" class="src">src</a></td>
+</tr>
+</table>
+</p>
+<p class="code">
+<code style="white-space: break-spaces">func Rectangle(hdc: HDC, left: s32, top: s32, right: s32, bottom: s32)->BOOL
+</code>
+</p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Gdi32.SHIFTJIS_CHARSET"><span class="titletype">const</span> <span class="titlelight">Gdi32.</span><span class="titlestrong">Constants</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gdi32\src\gdi32.swg#L181" class="src">src</a></td>
+</tr>
+</table>
+</p>
+<table class="enumeration">
+<tr>
+<td id="Gdi32.SHIFTJIS_CHARSET" class="tdname">
+SHIFTJIS_CHARSET</td>
+<td class="tdtype">
+</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td id="Gdi32.SRCAND" class="tdname">
+SRCAND</td>
+<td class="tdtype">
+</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td id="Gdi32.SRCCOPY" class="tdname">
+SRCCOPY</td>
+<td class="tdtype">
+</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td id="Gdi32.SRCERASE" class="tdname">
+SRCERASE</td>
+<td class="tdtype">
+</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td id="Gdi32.SRCINVERT" class="tdname">
+SRCINVERT</td>
+<td class="tdtype">
+</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td id="Gdi32.SRCPAINT" class="tdname">
+SRCPAINT</td>
+<td class="tdtype">
+</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td id="Gdi32.SYMBOL_CHARSET" class="tdname">
+SYMBOL_CHARSET</td>
+<td class="tdtype">
+</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td id="Gdi32.SYSTEM_FIXED_FONT" class="tdname">
+SYSTEM_FIXED_FONT</td>
+<td class="tdtype">
+</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td id="Gdi32.SYSTEM_FONT" class="tdname">
+SYSTEM_FONT</td>
+<td class="tdtype">
+</td>
+<td class="enumeration">
+</td>
+</tr>
+</table>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Gdi32.SelectObject"><span class="titletype">func</span> <span class="titlelight">Gdi32.</span><span class="titlestrong">SelectObject</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gdi32\src\gdi32.swg#L390" class="src">src</a></td>
+</tr>
+</table>
+</p>
+<p class="code">
+<code style="white-space: break-spaces">func SelectObject(hdc: HDC, h: HGDIOBJ)->HGDIOBJ
+</code>
+</p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Gdi32.SetBitmapBits"><span class="titletype">func</span> <span class="titlelight">Gdi32.</span><span class="titlestrong">SetBitmapBits</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gdi32\src\gdi32.swg#L524" class="src">src</a></td>
+</tr>
+</table>
+</p>
+<p class="code">
+<code style="white-space: break-spaces">func SetBitmapBits(hbit: HBITMAP, cb: DWORD, lpvBits: LPVOID) throw
+</code>
+</p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Gdi32.SetBkColor"><span class="titletype">func</span> <span class="titlelight">Gdi32.</span><span class="titlestrong">SetBkColor</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gdi32\src\gdi32.swg#L398" class="src">src</a></td>
+</tr>
+</table>
+</p>
+<p class="code">
+<code style="white-space: break-spaces">func SetBkColor(hdc: HDC, color: COLORREF)->COLORREF
+</code>
+</p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Gdi32.SetBkMode"><span class="titletype">func</span> <span class="titlelight">Gdi32.</span><span class="titlestrong">SetBkMode</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gdi32\src\gdi32.swg#L397" class="src">src</a></td>
+</tr>
+</table>
+</p>
+<p class="code">
+<code style="white-space: break-spaces">func SetBkMode(hdc: HDC, mode: s32)->s32
+</code>
+</p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Gdi32.SetPixelFormat"><span class="titletype">func</span> <span class="titlelight">Gdi32.</span><span class="titlestrong">SetPixelFormat</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gdi32\src\gdi32.swg#L445" class="src">src</a></td>
+</tr>
+</table>
+</p>
+<p class="code">
+<code style="white-space: break-spaces">func SetPixelFormat(hdc: HDC, fmt: s32, ppfd: const *PIXELFORMATDESCRIPTOR) throw
+</code>
+</p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Gdi32.SetTextColor"><span class="titletype">func</span> <span class="titlelight">Gdi32.</span><span class="titlestrong">SetTextColor</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gdi32\src\gdi32.swg#L399" class="src">src</a></td>
+</tr>
+</table>
+</p>
+<p class="code">
+<code style="white-space: break-spaces">func SetTextColor(hdc: HDC, color: COLORREF)->COLORREF
+</code>
+</p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Gdi32.SwapBuffers"><span class="titletype">func</span> <span class="titlelight">Gdi32.</span><span class="titlestrong">SwapBuffers</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gdi32\src\gdi32.swg#L451" class="src">src</a></td>
+</tr>
+</table>
+</p>
+<p class="code">
+<code style="white-space: break-spaces">func SwapBuffers(arg1: HDC) throw
+</code>
+</p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Gdi32.TEXTMETRICA"><span class="titletype">struct</span> <span class="titlelight">Gdi32.</span><span class="titlestrong">TEXTMETRICA</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gdi32\src\gdi32.swg#L267" class="src">src</a></td>
+</tr>
+</table>
+</p>
+<table class="enumeration">
+<tr>
+<td class="tdname">
+tmHeight</td>
+<td class="tdtype">
+LONG</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+tmAscent</td>
+<td class="tdtype">
+LONG</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+tmDescent</td>
+<td class="tdtype">
+LONG</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+tmInternalLeading</td>
+<td class="tdtype">
+LONG</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+tmExternalLeading</td>
+<td class="tdtype">
+LONG</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+tmAveCharWidth</td>
+<td class="tdtype">
+LONG</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+tmMaxCharWidth</td>
+<td class="tdtype">
+LONG</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+tmWeight</td>
+<td class="tdtype">
+LONG</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+tmOverhang</td>
+<td class="tdtype">
+LONG</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+tmDigitizedAspectX</td>
+<td class="tdtype">
+LONG</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+tmDigitizedAspectY</td>
+<td class="tdtype">
+LONG</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+tmFirstChar</td>
+<td class="tdtype">
+BYTE</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+tmLastChar</td>
+<td class="tdtype">
+BYTE</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+tmDefaultChar</td>
+<td class="tdtype">
+BYTE</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+tmBreakChar</td>
+<td class="tdtype">
+BYTE</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+tmItalic</td>
+<td class="tdtype">
+BYTE</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+tmUnderlined</td>
+<td class="tdtype">
+BYTE</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+tmStruckOut</td>
+<td class="tdtype">
+BYTE</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+tmPitchAndFamily</td>
+<td class="tdtype">
+BYTE</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+tmCharSet</td>
+<td class="tdtype">
+BYTE</td>
+<td class="enumeration">
+</td>
+</tr>
+</table>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Gdi32.TEXTMETRICW"><span class="titletype">struct</span> <span class="titlelight">Gdi32.</span><span class="titlestrong">TEXTMETRICW</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gdi32\src\gdi32.swg#L291" class="src">src</a></td>
+</tr>
+</table>
+</p>
+<table class="enumeration">
+<tr>
+<td class="tdname">
+tmHeight</td>
+<td class="tdtype">
+LONG</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+tmAscent</td>
+<td class="tdtype">
+LONG</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+tmDescent</td>
+<td class="tdtype">
+LONG</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+tmInternalLeading</td>
+<td class="tdtype">
+LONG</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+tmExternalLeading</td>
+<td class="tdtype">
+LONG</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+tmAveCharWidth</td>
+<td class="tdtype">
+LONG</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+tmMaxCharWidth</td>
+<td class="tdtype">
+LONG</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+tmWeight</td>
+<td class="tdtype">
+LONG</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+tmOverhang</td>
+<td class="tdtype">
+LONG</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+tmDigitizedAspectX</td>
+<td class="tdtype">
+LONG</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+tmDigitizedAspectY</td>
+<td class="tdtype">
+LONG</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+tmFirstChar</td>
+<td class="tdtype">
+WCHAR</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+tmLastChar</td>
+<td class="tdtype">
+WCHAR</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+tmDefaultChar</td>
+<td class="tdtype">
+WCHAR</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+tmBreakChar</td>
+<td class="tdtype">
+WCHAR</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+tmItalic</td>
+<td class="tdtype">
+BYTE</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+tmUnderlined</td>
+<td class="tdtype">
+BYTE</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+tmStruckOut</td>
+<td class="tdtype">
+BYTE</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+tmPitchAndFamily</td>
+<td class="tdtype">
+BYTE</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+tmCharSet</td>
+<td class="tdtype">
+BYTE</td>
+<td class="enumeration">
+</td>
+</tr>
+</table>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Gdi32.THAI_CHARSET"><span class="titletype">const</span> <span class="titlelight">Gdi32.</span><span class="titlestrong">Constants</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gdi32\src\gdi32.swg#L193" class="src">src</a></td>
+</tr>
+</table>
+</p>
+<table class="enumeration">
+<tr>
+<td id="Gdi32.THAI_CHARSET" class="tdname">
+THAI_CHARSET</td>
+<td class="tdtype">
+</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td id="Gdi32.TRANSPARENT" class="tdname">
+TRANSPARENT</td>
+<td class="tdtype">
+</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td id="Gdi32.TRUETYPE_FONTTYPE" class="tdname">
+TRUETYPE_FONTTYPE</td>
+<td class="tdtype">
+</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td id="Gdi32.TURKISH_CHARSET" class="tdname">
+TURKISH_CHARSET</td>
+<td class="tdtype">
+</td>
+<td class="enumeration">
+</td>
+</tr>
+</table>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Gdi32.TextOutA"><span class="titletype">func</span> <span class="titlelight">Gdi32.</span><span class="titlestrong">TextOutA</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gdi32\src\gdi32.swg#L401" class="src">src</a></td>
+</tr>
+</table>
+</p>
+<p class="code">
+<code style="white-space: break-spaces">func TextOutA(hdc: HDC, x: s32, y: s32, lpString: LPCSTR, c: s32)->BOOL
+</code>
+</p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Gdi32.TextOutW"><span class="titletype">func</span> <span class="titlelight">Gdi32.</span><span class="titlestrong">TextOutW</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gdi32\src\gdi32.swg#L402" class="src">src</a></td>
+</tr>
+</table>
+</p>
+<p class="code">
+<code style="white-space: break-spaces">func TextOutW(hdc: HDC, x: s32, y: s32, lpString: LPCWSTR, c: s32)->BOOL
+</code>
+</p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Gdi32.VIETNAMESE_CHARSET"><span class="titletype">const</span> <span class="titlelight">Gdi32.</span><span class="titlestrong">Constants</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gdi32\src\gdi32.swg#L192" class="src">src</a></td>
+</tr>
+</table>
+</p>
+<table class="enumeration">
+<tr>
+<td id="Gdi32.VIETNAMESE_CHARSET" class="tdname">
+VIETNAMESE_CHARSET</td>
+<td class="tdtype">
+</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td id="Gdi32.WHITENESS" class="tdname">
+WHITENESS</td>
+<td class="tdtype">
+</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td id="Gdi32.WHITE_BRUSH" class="tdname">
+WHITE_BRUSH</td>
+<td class="tdtype">
+</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td id="Gdi32.WHITE_PEN" class="tdname">
+WHITE_PEN</td>
+<td class="tdtype">
+</td>
+<td class="enumeration">
+</td>
+</tr>
+</table>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Gdi32.WHITENESS"><span class="titletype">const</span> <span class="titlelight">Gdi32.</span><span class="titlestrong">Constants</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gdi32\src\gdi32.swg#L85" class="src">src</a></td>
+</tr>
+</table>
+</p>
+<table class="enumeration">
+<tr>
+<td id="Gdi32.WHITENESS" class="tdname">
+WHITENESS</td>
+<td class="tdtype">
+</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td id="Gdi32.WHITE_BRUSH" class="tdname">
+WHITE_BRUSH</td>
+<td class="tdtype">
+</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td id="Gdi32.WHITE_PEN" class="tdname">
+WHITE_PEN</td>
+<td class="tdtype">
+</td>
+<td class="enumeration">
+</td>
+</tr>
+</table>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Gdi32.WHITE_BRUSH"><span class="titletype">const</span> <span class="titlelight">Gdi32.</span><span class="titlestrong">Constants</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gdi32\src\gdi32.swg#L160" class="src">src</a></td>
+</tr>
+</table>
+</p>
+<table class="enumeration">
+<tr>
+<td id="Gdi32.WHITE_BRUSH" class="tdname">
+WHITE_BRUSH</td>
+<td class="tdtype">
+</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td id="Gdi32.WHITE_PEN" class="tdname">
+WHITE_PEN</td>
+<td class="tdtype">
+</td>
+<td class="enumeration">
+</td>
+</tr>
+</table>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Gdi32.WHITE_PEN"><span class="titletype">const</span> <span class="titlelight">Gdi32.</span><span class="titlestrong">Constants</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gdi32\src\gdi32.swg#L167" class="src">src</a></td>
+</tr>
+</table>
+</p>
+<table class="enumeration">
+<tr>
+<td id="Gdi32.WHITE_PEN" class="tdname">
+WHITE_PEN</td>
+<td class="tdtype">
+</td>
+<td class="enumeration">
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+</body>
+</html>
