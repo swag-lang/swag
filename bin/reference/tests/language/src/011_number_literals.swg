@@ -26,7 +26,8 @@
         const a = 0xFF
         #assert @typeof(a) == u32
 
-        // The compiler will deduce that the type of 'b' is 'u64' because the constant is too big for 32 bits.
+        // The compiler will deduce that the type of 'b' is 'u64' because the constant
+        // is too big for 32 bits.
         const b = 0xF_FFFFF_FFFFFF
         #assert @typeof(b) == u64
 

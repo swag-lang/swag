@@ -25,7 +25,8 @@ The `#validif` expression is evaluated **only once**, whatever the call, so it i
     res2 := sum's64(10, 20)
     @assert(res2 == 30)
 
-    // But the following would generate an error because the type is `f32`. So there's no match possible for that type.
+    // But the following would generate an error because the type is `f32`.
+    // So there's no match possible for that type.
 
     // res1 := sum'f32(1, 2)
 }

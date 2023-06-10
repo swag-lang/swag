@@ -448,6 +448,12 @@ impl RenderOgl
         rt.colorBuffer.valid = false
     }
 
+    // Load and register an image for rendering
+    mtd addImage(fullName: string)->Texture throw
+    {
+        return addImage(Image.load(fullName))
+    }
+
     // Register an image for rendering
     #[Warn("wrn0005", WarnLevel.Disable)]
     mtd addImage(image: Image)->Texture

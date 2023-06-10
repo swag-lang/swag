@@ -77,9 +77,9 @@ When called on a struct, the struct will be restored to the values defined in it
 
 /**
 # @drop
-Note that for a struct, this will **not** call `opDrop`, so this is mostly useful to initialize a plain old data.
+For a struct, `@init` will **not** call `opDrop`, so this is mostly useful to initialize a plain old data.
 
-But there is also `@drop`, which works the same, except that it will `drop` all the content by calling `opDrop` if it is defined.
+But there is also `@drop` intrinsic, which works the same, except that it will `drop` all the content by calling `opDrop` if it is defined.
 */
 #test
 {

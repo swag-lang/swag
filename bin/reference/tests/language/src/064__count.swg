@@ -7,6 +7,9 @@ impl MyStruct
     mtd opCount() => 4'u64
 }
 
+/**
+You can loop on a struct value if `opCount` has been defined.
+*/
 #test
 {
     v := MyStruct{}

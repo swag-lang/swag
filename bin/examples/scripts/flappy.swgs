@@ -1,0 +1,290 @@
+#dependencies
+{
+    #import "gui" location="swag@std"
+}
+
+using Core, Pixel, Gui
+
+struct Bird
+{
+    pos:        Math.Vector2
+    speed:      Math.Vector2
+    frame:      f32
+}
+
+struct Pipe
+{
+    rectUp:     Math.Rectangle
+    rectDown:   Math.Rectangle
+    distToNext: f32
+    scored:     bool
+}
+
+var g_Bird:      Bird
+var g_Dt:        f32
+var g_Time:      f32
+var g_GameOver:  bool
+var g_Rect:      Math.Rectangle
+var g_Start:     bool
+var g_BasePos:   f32
+var g_Pipes:     Array'Pipe
+var g_Score:     s32
+var g_FirstStart = true
+
+var g_BirdTexture:  [3] Texture
+var g_BackTexture:  Texture
+var g_OverTexture:  Texture
+var g_BaseTexture:  Texture
+var g_PipeTextureU: Texture
+var g_PipeTextureD: Texture
+var g_MsgTexture:   Texture
+var g_DigitTexture: [10] Texture
+
+var g_Font: *Font
+
+const Gravity      = 2.5
+const BirdImpulseY = 350
+
+const GroundHeight = 40.0
+const SpeedHorz    = 100.0
+
+func paint(painter: *Painter)
+{
+    var pt: Math.Point
+
+    // Background
+    painter.drawTexture(pt.x, pt.y, g_BackTexture)
+
+    // Bird
+    if !g_FirstStart
+    {
+        painter.pushState()
+        frame := (cast(s32) g_Bird.frame) % 3
+
+        trf := painter.getTransform()
+
+        painter.resetTransform()
+        speed := Math.clamp(g_Bird.speed.y, -200, 200)
+        angle := Math.map(speed, -200, 200, -Math.ConstF32.PiBy6, Math.ConstF32.PiBy6)
+        painter.rotateTransform(angle)
+
+        painter.translateTransform(g_Bird.pos.x + trf.tx, g_Bird.pos.y + trf.ty)
+
+        pt.x = -g_BirdTexture[frame].width * 0.5
+        pt.y = -g_BirdTexture[frame].height * 0.5
+
+        // Add a little sin
+        if !g_Start
+        {
+            pt.y += 5 * Math.sin(g_Time)
+            g_Time += 5 * g_Dt
+        }
+
+        painter.drawTexture(pt.x, pt.y, g_BirdTexture[frame])
+        painter.popState()
+    }
+
+    // Pipes
+    visit pipe: g_Pipes
+    {
+        painter.drawTexture(pipe.rectUp, g_PipeTextureU)
+        painter.drawTexture(pipe.rectDown, g_PipeTextureD)
+    }
+
+    // Base
+    painter.drawTexture(-g_BasePos, g_Rect.bottom() - GroundHeight, cast(f32) g_BaseTexture.width, GroundHeight, g_BaseTexture)
+    painter.drawTexture(-g_BasePos + g_BaseTexture.width, g_Rect.bottom() - GroundHeight, cast(f32) g_BaseTexture.width, GroundHeight, g_BaseTexture)
+    if !g_GameOver
+        g_BasePos += SpeedHorz*g_Dt
+    if g_BasePos >= g_BaseTexture.width
+        g_BasePos = 0
+
+    // Gameover
+    if g_GameOver
+    {
+        pt.x = g_Rect.horzCenter() - g_OverTexture.width/2
+        pt.y = g_Rect.vertCenter() - g_OverTexture.height/2
+        painter.drawTexture(pt.x, pt.y, g_OverTexture)
+    }
+
+    // Score
+    if !g_FirstStart
+    {
+        painter.drawStringCenter(g_Rect.horzCenter(), 50, Format.toString("%", g_Score), g_Font, Argb.White)
+    }
+
+    // Message
+    if g_FirstStart
+    {
+        pt.x = g_Rect.horzCenter() - g_MsgTexture.width/2
+        pt.y = g_Rect.vertCenter() - g_MsgTexture.height/2
+        painter.drawTexture(pt.x, pt.y, g_MsgTexture)
+    }
+}
+
+func input(wnd: *Wnd)
+{
+    kb := wnd.getApp().getKeyboard()
+
+    if g_GameOver or g_FirstStart
+    {
+        if kb.isKeyJustPressed(.Space)
+        {
+            start()
+            g_FirstStart = false
+        }
+        return
+    }
+    elif kb.isKeyJustPressed(.Up)
+    {
+        g_Start = true
+        g_Bird.speed.y = -BirdImpulseY
+    }
+}
+
+func birdInRect(rect: Math.Rectangle)->bool
+{
+    var rectBird: Math.Rectangle
+    rectBird.x = g_Bird.pos.x - g_BirdTexture[0].width/2
+    rectBird.y = g_Bird.pos.y - g_BirdTexture[0].height/2
+    rectBird.width = g_BirdTexture[0].width
+    rectBird.height = g_BirdTexture[0].height
+    return rect.intersectWith(rectBird)
+}
+
+func move()
+{
+    if g_GameOver
+        return
+
+    g_Bird.pos += g_Bird.speed * g_Dt
+    g_Bird.pos.y = Math.max(g_Bird.pos.y, 0)
+    if g_Start
+        g_Bird.speed += {0, Gravity}
+
+    g_Bird.frame += 10 * g_Dt
+
+    // Be sure to have at least one pipe
+    if g_Pipes.count == 0
+        createPipe()
+
+    // Move each pipe, and test collisions against the bird
+    if g_Start
+    {
+        visit &pipe: g_Pipes
+        {
+            pipe.rectUp.x -= SpeedHorz * g_Dt
+            pipe.rectDown.x -= SpeedHorz * g_Dt
+            if birdInRect(pipe.rectUp) or birdInRect(pipe.rectDown)
+                g_GameOver = true
+
+            if g_Bird.pos.x > pipe.rectUp.right() and !pipe.scored
+            {
+                pipe.scored = true
+                g_Score += 1
+            }
+        }
+    }
+
+    // If the first pipe is out of screen, remove it
+    if g_Pipes[0].rectUp.right() < 0
+        g_Pipes.removeAt(0)
+
+    // If the last pipe is enough inside, create a new one
+    if g_Rect.width - g_Pipes.back().rectUp.right() > g_Pipes.back().distToNext
+        createPipe()
+
+    if g_Bird.pos.y + g_BirdTexture[0].height > g_Rect.bottom() - GroundHeight
+        g_GameOver = true
+}
+
+func createPipe()
+{
+    var pipe: Pipe
+
+    pos         := g_Rect.width
+    sizePassage := Random.shared().nextF32(100, 200)
+    heightUp    := Random.shared().nextF32(50, g_Rect.height - sizePassage - 50)
+    heightDown  := g_Rect.height - heightUp - GroundHeight - sizePassage
+
+    pipe.rectUp.x = pos
+    pipe.rectUp.y = heightUp - g_PipeTextureU.height
+    pipe.rectUp.width = g_PipeTextureU.width
+    pipe.rectUp.height = g_PipeTextureU.height
+
+    pipe.rectDown.x = pos
+    pipe.rectDown.y = g_Rect.bottom() - heightDown - GroundHeight
+    pipe.rectDown.width = g_PipeTextureU.width
+    pipe.rectDown.height = g_PipeTextureU.height
+
+    pipe.distToNext = Random.shared().nextF32(100, 200)
+
+    g_Pipes.add(pipe)
+}
+
+func start()
+{
+    @init(&g_Bird)
+    g_Bird.pos.x = g_Rect.horzCenter()
+    g_Bird.pos.y = g_Rect.vertCenter()
+    g_Score = 0
+    g_Pipes.clear()
+    g_GameOver = false
+    g_Start = false
+}
+
+func loadAssets(wnd: *Wnd) throw
+{
+    render := &wnd.getApp().renderer
+
+    var dataPath: String = Path.getDirectoryName(#location.fileName)
+    dataPath = Path.combine(dataPath, "datas")
+    dataPath = Path.combine(dataPath, "flappy")
+
+    g_BirdTexture[0]   = render.addImage(Path.combine(dataPath, "yellowbird-upflap.png"))
+    g_BirdTexture[1]   = render.addImage(Path.combine(dataPath, "yellowbird-midflap.png"))
+    g_BirdTexture[2]   = render.addImage(Path.combine(dataPath, "yellowbird-downflap.png"))
+    g_OverTexture      = render.addImage(Path.combine(dataPath, "gameover.png"))
+    g_BaseTexture      = render.addImage(Path.combine(dataPath, "base.png"))
+    g_BackTexture      = render.addImage(Path.combine(dataPath, "background-day.png"))
+    g_MsgTexture       = render.addImage(Path.combine(dataPath, "message.png"))
+
+    img := Image.load(Path.combine(dataPath, "pipe-green.png"))
+    g_PipeTextureD = render.addImage(img)
+    img.flip()
+    g_PipeTextureU = render.addImage(img)
+
+    g_Font = Font.create(Path.combine(dataPath, "FlappyBirdy.ttf"), 50)
+}
+
+func onEvent(wnd: *Wnd, evt: *Event)->bool
+{
+    switch evt.kind
+    {
+    case Create:
+        g_Rect = wnd.getClientRect()
+        assume loadAssets(wnd)
+        start()
+
+    case Resize:
+        g_Rect = wnd.getClientRect()
+
+    case Paint:
+        paintEvt := cast(*PaintEvent) evt
+        painter  := paintEvt.bc.painter
+        g_Dt     = wnd.getApp().getDt()
+
+        input(wnd)
+        paint(painter)
+        move()
+
+        wnd.invalidate()
+    }
+
+    return false
+}
+
+#run
+{
+    Application.runSurface(4100, 100, 300, 512, title: "Angry Bird", hook: &onEvent)
+}

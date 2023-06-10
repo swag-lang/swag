@@ -46,7 +46,8 @@ using Core
     #[Swag.ConstExpr]
     func nestedFunc() => "Hello mad world !\n"   // Function short syntax
 
-    // nestedFunc() can be called at compile time because it is marked with the 'Swag.ConstExpr' attribute.
+    // nestedFunc() can be called at compile time because it is marked with
+    // the 'Swag.ConstExpr' attribute.
     const Msg = nestedFunc()
     Console.print(Msg)
 }
@@ -81,7 +82,8 @@ using Core
 
 #main
 {
-    // #run will force the call of mySillyFunction() at compile time even if it's not marked with #[Swag.ConstExpr]
+    // #run will force the call of mySillyFunction() at compile time even if it's not marked
+    // with #[Swag.ConstExpr]
     const Msg = #run mySillyFunction()
     Console.print(Msg)
 }

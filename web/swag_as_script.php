@@ -46,10 +46,13 @@ as native code.</p>
     #import &quot;core&quot; location=&quot;swag@std&quot;
 }</code></pre>
 <p>A special hidden workspace (in the Swag cache folder) will be created
-to contain all the corresponding native code. * To locate the Swag cache
-folder, add <code>--verbose-path</code> to the command line. * To force
-the build of dependencies, add <code>--rebuildall</code> to the command
-line.</p>
+to contain all the corresponding native code.</p>
+<ul>
+<li>To locate the Swag cache folder, add <code>--verbose-path</code> to
+the command line.</li>
+<li>To force the build of dependencies, add <code>--rebuildall</code> to
+the command line.</li>
+</ul>
 <h2 id="more-than-one-script-file">More than one script file</h2>
 <p>If your script is divided in more than one single file, you can add
 <code>#load &lt;filename&gt;</code> in the <code>#dependencies</code>
@@ -60,9 +63,10 @@ block.</p>
     #load &quot;folder/myOtherOtherFile.swgs&quot;
 }</code></pre>
 <h2 id="debug">Debug</h2>
-<p>The compiler comes with a bytecode debugger that can be used to trace
-and debug compile time execution. Add <code>@breakpoint()</code> in your
-code when you want the debugger to trigger.</p>
+<p>The compiler comes with a <strong>bytecode debugger</strong> that can
+be used to trace and debug compile time execution. Add
+<code>@breakpoint()</code> in your code when you want the debugger to
+trigger.</p>
 <p>The debugger command set is inspired by <a
 href="https://docs.python.org/3/library/pdb.html">Pdb</a>, the python
 debugger.</p>

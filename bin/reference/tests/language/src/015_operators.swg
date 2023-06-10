@@ -12,12 +12,24 @@ These are the basic operators that can be used to manipulate values.
         x = x - 1
         x = x * 2
         x = x / 2
-        x = x % 2 // Modulo
-        x = x ^ 2 // Xor
-        x = x & 0b0000_0001's32 // Bitmask and
-        x = x | cast(s32) 0b0000_0001 // Bitmask or
-        x = x << 1 // Shift bits left
-        x = x >> 1 // Shift bits right
+
+        // Modulo
+        x = x % 2
+
+        // Xor
+        x = x ^ 2
+
+        // Bitmask and
+        x = x & 0b0000_0001's32
+
+        // Bitmask or
+        x = x | cast(s32) 0b0000_0001
+
+        // Shift bits left
+        x = x << 1
+
+        // Shift bits right
+        x = x >> 1
     }
 
     // # Affect operators
@@ -39,16 +51,21 @@ These are the basic operators that can be used to manipulate values.
     // # Unary operators
     {
         x := true
-        x = !x      // Invert boolean
-        @assert(x == false)
-
         y := 0b0000_0001'u8
-        y = ~y      // Invert bits
-        @assert(y == 0b1111_1110)
-
         z := 1
-        z = -z      // Negative
+
+        // Invert boolean
+        x = !x
+
+        // Invert bits
+        y = ~y
+
+        // Negative
+        z = -z
+
         @assert(z == -1)
+        @assert(x == false)
+        @assert(y == 0b1111_1110)
     }
 
     // # Comparison operators
@@ -181,8 +198,11 @@ Unlike C, types are not promoted to 32 bits when dealing with 8 or 16 bits types
 
     #assert @typeof(0's8 + 1'u16) == u16   // Priority to bigger type also
 
-    // This means that a 8/16 bits operation (like an addition) can more easily overflow if you do not take care.
-    // In that case, you can use the ',up' modifier on the operation, which will promote the type to at least 32 bits. The operation will be done accordingly.
+    // This means that a 8/16 bits operation (like an addition) can more easily overflow
+    // if you do not take care.
+    // In that case, you can use the ',up' modifier on the operation, which will promote
+    // the type to at least 32 bits. The operation will be done accordingly.
+
     #assert @typeof(255'u8 +,up 1'u8) == u32
     #assert 255'u8 +,up 1'u8 == 256 // No overflow, because the operation is done in 32 bits.
 }

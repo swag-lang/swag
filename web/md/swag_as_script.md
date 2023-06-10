@@ -53,6 +53,7 @@ You can add external dependencies, and they will be compiled and used as native 
 ```
 
 A special hidden workspace (in the Swag cache folder) will be created to contain all the corresponding native code.
+
 * To locate the Swag cache folder, add `--verbose-path` to the command line.
 * To force the build of dependencies, add `--rebuildall` to the command line.
 
@@ -70,7 +71,7 @@ If your script is divided in more than one single file, you can add `#load <file
 
 ## Debug
 
-The compiler comes with a bytecode debugger that can be used to trace and debug compile time execution.
+The compiler comes with a **bytecode debugger** that can be used to trace and debug compile time execution.
 Add `@breakpoint()` in your code when you want the debugger to trigger.
 
 The debugger command set is inspired by [Pdb](https://docs.python.org/3/library/pdb.html), the python debugger.

@@ -18,8 +18,8 @@ Initialize `G` with `[1,2,4,8,16]` at compile time.
 }
 
 /**
-`#test` are executed after #run, even at compile time (during testing).
-So we can test the values of G here.
+`#test` are executed after `#run`, even at compile time (during testing).
+So we can test the values of `G` here.
 */
 #test
 {

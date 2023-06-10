@@ -34,7 +34,7 @@
         @assert(cpt == 10)
     }
 
-    // Like `loop` and `while`, you have access to `@index`, the **current loop index**.
+    // Like `loop`, `visit` and `while`, you have access to `@index`, the **current loop index**.
     {
         cpt := 0'u64
         for var i: u32 = 10; i < 15; i += 1

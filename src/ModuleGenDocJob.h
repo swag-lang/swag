@@ -49,9 +49,10 @@ struct ModuleGenDocJob : public Job
     int  sortOrder(AstNodeKind kind);
 
     Utf8 getFormattedText(const Utf8& user, bool autoRef = false);
+    Utf8 getOutputNode(AstNode* node);
+    Utf8 getOutputType(TypeInfo* typeInfo);
     void outputType(AstNode* node);
     void outputTable(Scope* scope, AstNodeKind kind, const char* title, uint32_t collectFlags);
-    Utf8 outputNode(AstNode* node);
     void outputUserBlock(const UserBlock& user);
     void outputUserComment(const UserComment& user);
     void outputCode(const Utf8& code);

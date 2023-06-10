@@ -33,7 +33,10 @@ Semicolons can be usefull if you want to do multiple things on the same line.
 */
 #test
 {
+    // Two instructions on the same line separated with ';'
     var x = 0; var y = 0
+
+    // Two instructions on the same line separated with ';'
     x += 1; y += 1
 
     // Two instructions on the same line separated with ';'

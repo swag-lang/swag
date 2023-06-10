@@ -13,6 +13,12 @@
 const uint32_t COLLECT_TABLE_ZERO     = 0x00000000;
 const uint32_t COLLECT_TABLE_SPECFUNC = 0x00000001;
 
+static Utf8 toRef(Utf8 str)
+{
+    str.replace(".", "_");
+    return str;
+}
+
 static bool canCollectNode(AstNode* node)
 {
     if (node->token.text.length() > 2 && node->token.text[0] == '_' && node->token.text[1] == '_')
@@ -184,20 +190,6 @@ Utf8 ModuleGenDocJob::getDocComment(AstNode* node)
     return "";
 }
 
-void ModuleGenDocJob::outputType(AstNode* node)
-{
-    if (node->typeInfo)
-    {
-        node->typeInfo->computeScopedNameExport();
-        helpContent += getFormattedText(node->typeInfo->scopedNameExport, true);
-    }
-    else if (node->kind == AstNodeKind::VarDecl || node->kind == AstNodeKind::ConstDecl)
-    {
-        auto varDecl = CastAst<AstVarDecl>(node, AstNodeKind::VarDecl, AstNodeKind::ConstDecl);
-        outputNode(varDecl->type);
-    }
-}
-
 void ModuleGenDocJob::outputTable(Scope* scope, AstNodeKind kind, const char* title, uint32_t collectFlags)
 {
     VectorNative<AstNode*> symbols;
@@ -261,14 +253,14 @@ void ModuleGenDocJob::outputTable(Scope* scope, AstNodeKind kind, const char* ti
                     else if (varNode->typeInfo)
                         name += varNode->typeInfo->name;
                     else
-                        name += outputNode(varNode->type);
+                        name += getOutputNode(varNode->type);
                     firstParam = false;
                 }
             }
             name += ")";
         }
 
-        helpContent += Fmt("<a href=\"#%s\">%s</a>", n1->getScopedName().c_str(), name.c_str());
+        helpContent += Fmt("<a href=\"#%s\">%s</a>", toRef(n1->getScopedName()).c_str(), name.c_str());
         helpContent += "</td>\n";
 
         // Short desc
@@ -325,7 +317,7 @@ void ModuleGenDocJob::outputTitle(OneRef& c)
     helpContent += "<table class=\"h3\">\n";
     helpContent += "<tr>\n";
     helpContent += "<td class=\"h3\">\n";
-    helpContent += Fmt("<h3 class=\"content\" id=\"%s\">", c.fullName.c_str());
+    helpContent += Fmt("<h3 class=\"content\" id=\"%s\">", toRef(c.fullName).c_str());
 
     Vector<Utf8> tkn;
     Utf8::tokenize(c.displayName, '.', tkn);
@@ -432,16 +424,29 @@ Utf8 ModuleGenDocJob::getFormattedText(const Utf8& user, bool autoRef)
                 {
                     if (*pz == ']')
                         pz++;
+
                     auto it = collectInvert.find(name);
                     if (it != collectInvert.end())
-                        result += Fmt("<a href=\"%s#%s\">%s</a>", fileName.c_str(), it->second.c_str(), name.c_str());
+                    {
+                        result += Fmt("<a href=\"#%s\">%s</a>", toRef(it->second).c_str(), name.c_str());
+                    }
                     else
                     {
-                        if (startBracket)
-                            result += "[";
-                        result += name;
-                        if (startBracket)
-                            result += "]";
+                        Vector<Utf8> tkns;
+                        Utf8::tokenize(name, '.', tkns);
+                        if (tkns.size() > 1)
+                        {
+                            tkns[0].makeLower();
+                            result += Fmt("<a href=\"%s.html#%s\">%s</a>", tkns[0].c_str(), toRef(name).c_str(), name.c_str());
+                        }
+                        else
+                        {
+                            if (startBracket)
+                                result += "[";
+                            result += name;
+                            if (startBracket)
+                                result += "]";
+                        }
                     }
                 }
                 continue;
@@ -625,18 +630,46 @@ void ModuleGenDocJob::outputCode(const Utf8& code)
         return;
     helpContent += "<p class=\"code\">\n";
     helpContent += "<code style=\"white-space: break-spaces\">";
-    helpContent += code;
+
+    // Kind of a hack for now... Try to keep references, but try to keep <> also...
+    auto repl = code;
+    if (code.find("<a href") == -1)
+    {
+        repl.replace("<", "&lt;");
+        repl.replace(">", "&gt;");
+    }
+
+    helpContent += repl;
     helpContent += "</code>\n";
     helpContent += "</p>\n";
 }
 
-Utf8 ModuleGenDocJob::outputNode(AstNode* node)
+Utf8 ModuleGenDocJob::getOutputNode(AstNode* node)
 {
     if (!node)
         return "";
     concat.clear();
     output.outputNode(outputCxt, concat, node);
     return Utf8{(const char*) concat.firstBucket->datas, (uint32_t) concat.bucketCount(concat.firstBucket)};
+}
+
+Utf8 ModuleGenDocJob::getOutputType(TypeInfo* typeInfo)
+{
+    typeInfo->computeScopedNameExport();
+    return getFormattedText(typeInfo->scopedNameExport, true);
+}
+
+void ModuleGenDocJob::outputType(AstNode* node)
+{
+    if (node->typeInfo)
+    {
+        helpContent += getOutputType(node->typeInfo);
+    }
+    else if (node->kind == AstNodeKind::VarDecl || node->kind == AstNodeKind::ConstDecl)
+    {
+        auto varDecl = CastAst<AstVarDecl>(node, AstNodeKind::VarDecl, AstNodeKind::ConstDecl);
+        helpContent += getOutputNode(varDecl->type);
+    }
 }
 
 void ModuleGenDocJob::collectNode(AstNode* node)
@@ -756,7 +789,7 @@ void ModuleGenDocJob::generateTocCateg(bool& first, AstNodeKind kind, const char
     helpContent += Fmt("<h3>%s</h3>\n", categName);
     helpContent += "<ul class=\"tocbullet\">\n";
     for (auto& t : pendingNodes)
-        helpContent += Fmt("<li><a href=\"#%s\">%s</a></li>\n", t->fullName.c_str(), t->tocName.c_str());
+        helpContent += Fmt("<li><a href=\"#%s\">%s</a></li>\n", toRef(t->fullName).c_str(), t->tocName.c_str());
     helpContent += "</ul>\n";
 
     pendingNodes.clear();
@@ -1041,7 +1074,7 @@ void ModuleGenDocJob::generateContent()
 
                 helpContent += "<tr>\n";
 
-                helpContent += Fmt("<td id=\"%s\" class=\"tdname\">\n", n->getScopedName().c_str());
+                helpContent += Fmt("<td id=\"%s\" class=\"tdname\">\n", toRef(n->getScopedName()).c_str());
                 helpContent += n->token.ctext();
                 helpContent += "</td>\n";
 
@@ -1085,7 +1118,7 @@ void ModuleGenDocJob::generateContent()
                 Utf8 code;
                 code += "struct ";
                 code += structNode->token.text;
-                code += outputNode(structNode->genericParameters);
+                code += getOutputNode(structNode->genericParameters);
                 outputCode(code);
             }
 
@@ -1205,14 +1238,14 @@ void ModuleGenDocJob::generateContent()
                     code += "#[Swag.Mixin]\n";
 
                 code += "func";
-                code += outputNode(funcNode->genericParameters);
+                code += getOutputNode(funcNode->genericParameters);
                 code += " ";
                 code += funcNode->token.text;
                 if (!funcNode->parameters)
                     code += "()";
                 else
-                    code += outputNode(funcNode->parameters);
-                code += outputNode(funcNode->returnType);
+                    code += getOutputNode(funcNode->parameters);
+                code += getOutputNode(funcNode->returnType);
                 if (funcNode->specFlags & AstFuncDecl::SPECFLAG_THROW)
                     code += " throw";
                 code += "\n";
@@ -1283,7 +1316,7 @@ void ModuleGenDocJob::generateContent()
                 code += "attr ";
                 code += attrNode->token.text;
                 if (attrNode->parameters)
-                    code += outputNode(attrNode->parameters);
+                    code += getOutputNode(attrNode->parameters);
                 code += "\n";
                 outputCode(code);
             }
@@ -1311,8 +1344,7 @@ JobResult ModuleGenDocJob::execute()
     {
         if (typeInfo->isNative() || typeInfo->isVariadic())
             return typeInfo->name;
-        typeInfo->computeScopedNameExport();
-        return getFormattedText(typeInfo->scopedNameExport, true);
+        return getOutputType(typeInfo);
     };
 
     auto filePath = g_Workspace->targetPath;

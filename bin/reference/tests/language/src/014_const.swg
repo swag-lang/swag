@@ -4,7 +4,7 @@ If you use `const` instead of `var`, the value must be known by the compiler. Th
 
 #test
 {
-    // This are constants and not variables. So they cannot be changed after the declaration.
+    // These are constants and not variables. So they cannot be changed after the declaration.
     const a = 666
     #assert a == 666
 

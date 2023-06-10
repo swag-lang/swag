@@ -617,6 +617,21 @@ impl Wnd
         return result
     }
 
+    // Get the wnd position relative to a given parent
+    mtd getRectIn(in: *Wnd)->Math.Rectangle
+    {
+        var result: retval = position
+        p := parent
+        while p and p != in
+        {
+            result.x += p.position.x
+            result.y += p.position.y
+            p = p.parent
+        }
+
+        return result
+    }
+
     // Set margin for childs
     // If a value is Swag.F32.Inf, then it won't be changed
     mtd setMargin(left, top, right, bottom: f32 = Swag.F32.Inf)

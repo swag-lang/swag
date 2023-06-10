@@ -2656,13 +2656,16 @@ bool SemanticJob::findEnumTypeInContext(SemanticContext* context, AstNode* node,
     auto parent = node->parent;
     while (parent)
     {
-        for (auto c : parent->childs)
         {
-            auto typeEnum = findEnumTypeInContext(context, c->typeInfo);
-            if (typeEnum)
-                has.push_back_once({c, typeEnum});
-            if (typeEnum && typeEnum->contains(node->token.text))
-                result.push_back_once(typeEnum);
+            SharedLock lk(parent->mutex);
+            for (auto c : parent->childs)
+            {
+                auto typeEnum = findEnumTypeInContext(context, c->typeInfo);
+                if (typeEnum)
+                    has.push_back_once({c, typeEnum});
+                if (typeEnum && typeEnum->contains(node->token.text))
+                    result.push_back_once(typeEnum);
+            }
         }
 
         if (!result.empty())
@@ -4451,12 +4454,21 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context, AstIdentifier* ide
         if (riFlags & RI_FOR_ZERO_GHOSTING)
             mipFlags |= MIP_FOR_ZERO_GHOSTING;
         SWAG_CHECK(matchIdentifierParameters(context, listTryMatch, identifier, mipFlags));
+
         if (context->result == ContextResult::Pending)
+        {
+            identifierRef->resolvedSymbolOverload = orgResolvedSymbolOverload;
+            identifierRef->resolvedSymbolName     = orgResolvedSymbolName;
+            identifierRef->previousResolvedNode   = orgPreviousResolvedNode;
             return true;
+        }
 
         if (context->result == ContextResult::NewChilds1)
         {
-            context->result = ContextResult::NewChilds;
+            identifierRef->resolvedSymbolOverload = orgResolvedSymbolOverload;
+            identifierRef->resolvedSymbolName     = orgResolvedSymbolName;
+            identifierRef->previousResolvedNode   = orgPreviousResolvedNode;
+            context->result                       = ContextResult::NewChilds;
             return true;
         }
 

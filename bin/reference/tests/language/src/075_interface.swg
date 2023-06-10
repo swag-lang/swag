@@ -1,7 +1,7 @@
 /**
 Interfaces are **virtual tables** (a list of function pointers) that can be associated to a struct.
 
-Unlike c++, the virtual table is not embedded with the struct. It is a separate object.
+Unlike C++, the virtual table is not embedded with the struct. It is a separate object.
 You can then *implement* an interface for a given struct without changing the struct definition.
 */
 

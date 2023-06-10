@@ -39,8 +39,7 @@
         }
     }
 
-    // `switch` works with every types that accept the `==` operator.
-    // So you can switch on strings for example.
+    // `switch` works with every types that accept the `==` operator. So you can switch on strings for example.
     {
         value := "myString"
         switch value
@@ -90,8 +89,7 @@
         }
     }
 
-    // `switch` can be marked with `Swag.Complete` to force all the cases to be covered.
-    // If one or more values are missing, an error will be raised by the compiler.
+    // `switch` can be marked with `Swag.Complete` to force all the cases to be covered. If one or more values are missing, an error will be raised by the compiler.
     {
         enum Color { Red; Green; Blue; }
         color := Color.Red

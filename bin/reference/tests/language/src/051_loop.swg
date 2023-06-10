@@ -68,6 +68,7 @@ On a string, it will loop for each byte, **not** runes (if a rune is encoded in 
 }
 
 /**
+# break, continue
 `break` and `continue` can be used inside a loop.
 */
 #test
@@ -100,6 +101,7 @@ On a string, it will loop for each byte, **not** runes (if a rune is encoded in 
 }
 
 /**
+# Ranges
 Loop can also be used to iterate on a range of signed values.
 */
 #test
@@ -145,6 +147,7 @@ Loop can also be used to iterate on a range of signed values.
 }
 
 /**
+# Infinite loop
 A loop without an expression but with a block is infinite. This is equivalent to `while true {}`.
 */
 #test

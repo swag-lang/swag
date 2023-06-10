@@ -253,7 +253,8 @@ void Ast::removeFromParent(AstNode* child)
         return;
 
     ScopedLock lk(parent->mutex);
-    auto       idx = child->childParentIdx();
+    SWAG_RACE_CONDITION_WRITE(parent->raceC);
+    auto idx = child->childParentIdx();
     parent->childs.erase(idx);
     child->parent = nullptr;
 }
@@ -266,6 +267,7 @@ void Ast::insertChild(AstNode* parent, AstNode* child, uint32_t index)
     if (parent)
     {
         ScopedLock lk(parent->mutex);
+        SWAG_RACE_CONDITION_WRITE(parent->raceC);
         parent->childs.insertAtIndex(child, index);
     }
     else
@@ -284,6 +286,7 @@ void Ast::addChildFront(AstNode* parent, AstNode* child)
     if (parent)
     {
         ScopedLock lk(parent->mutex);
+        SWAG_RACE_CONDITION_WRITE(parent->raceC);
         parent->childs.push_front(child);
         if (!child->ownerScope)
             child->inheritOwners(parent);
@@ -300,6 +303,7 @@ void Ast::addChildBack(AstNode* parent, AstNode* child)
     if (parent)
     {
         ScopedLock lk(parent->mutex);
+        SWAG_RACE_CONDITION_WRITE(parent->raceC);
         parent->childs.push_back(child);
         if (!child->ownerScope)
             child->inheritOwners(parent);

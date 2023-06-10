@@ -13,8 +13,14 @@ Sometimes it's necessary to change the type of a value.
         #assert @typeof(y) == s32
         @assert(y == 1)
     }
+}
 
-    // Use `acast` to automatically cast to the expression on the left.
+/**
+# acast
+Use `acast` to automatically cast to the expression on the left.
+*/
+#test
+{
     {
         var x: f32 = 1.0
         var y: s32 = acast x    // cast 'x' to 's32'
@@ -24,6 +30,7 @@ Sometimes it's necessary to change the type of a value.
 }
 
 /**
+# bitcast
 Use `cast,bit` to convert a native type to another without converting the value. Works only if the two types are of the same size.
 */
 #test
@@ -36,6 +43,7 @@ Use `cast,bit` to convert a native type to another without converting the value.
 }
 
 /**
+# Implicit casts
 Swag can sometimes cast from one type to another for you. This is an *implicit* cast.
 */
 #test
@@ -45,7 +53,8 @@ Swag can sometimes cast from one type to another for you. This is an *implicit* 
         var x: s16 = 1's8   // 8 bits to 16 bits, fine
         var y: s32 = 1's16  // 16 bits to 32 bits, fine
 
-        // But the following would generate an error as you cannot affect 's16' to 's8' without an explicit cast(s16).
+        // But the following would generate an error as you cannot affect 's16' to 's8'
+        // without an explicit cast(s16).
 
         /*
         var z0: s16 = 1

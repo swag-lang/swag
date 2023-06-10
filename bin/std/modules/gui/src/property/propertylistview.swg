@@ -12,12 +12,25 @@ impl IWnd for PropertyListView
     mtd onResizeEvent(evt: *ResizeEvent)
     {
         stackWnd.IWnd.onResizeEvent(evt)
+        if !ed or !ed.items.count
+            return
 
-        if ed and ed.items.count
+        applyLayout()
+
+        visit item: ed.items
         {
-            applyLayout()
-            bk := ed.items.back()
-            ed.scrollWnd.setScrollSize(0, bk.line.position.bottom())
+            if item.label
+                item.label.autoHeight()
+            if item.labelDesc
+                item.labelDesc.autoHeight()
+            item.onResize.call(item)
+            item.line.sendResizeEvent()
         }
+
+        applyLayout()
+
+        // Vertical size is the bottom position of the last line
+        bk := ed.items.back()
+        ed.scrollWnd.setScrollSize(0, bk.line.position.bottom())
     }
 }

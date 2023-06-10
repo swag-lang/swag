@@ -17,7 +17,8 @@ With the `Swag.CompilerMsgMask.SemFunctions` flag, for example, `#message` will 
     // So we can safely cast.
     typeFunc := cast(const *Swag.TypeInfoFunc) msg.type
 
-    // The message name, for `Swag.CompilerMsgMask.SemFunctions`, is the name of the function being compiled.
+    // The message name, for `Swag.CompilerMsgMask.SemFunctions`, is the name of the
+    // function being compiled.
     nameFunc := msg.name
 
     // As an example, we count that name if it starts with "XX".

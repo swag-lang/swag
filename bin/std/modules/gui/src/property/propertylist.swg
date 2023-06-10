@@ -3,6 +3,8 @@ using Core, Pixel
 
 impl PropertyList
 {
+	attr Category(name: string)
+	attr SubCategory(name: string)
     attr Name(name: string)
     attr Description(desc: string)
 }
@@ -11,15 +13,21 @@ struct PropertyList
 {
     using frameWnd: FrameWnd
 
-    nameMarginBefore:   s32 = 25
-    nameHeight:         s32 = 25
-    maxSizeCombo:       s32 = 200
-    maxSizeEditValue:   s32 = 200
+    nameMarginBefore:       s32 = 25
+    nameHeight:             s32 = 25
+    nameMarginAfter:        s32 = 5
+    descMarginAfter:        s32 = 5
+    enumFlagsMarginBefore:  s32 = 10
+    maxSizeCombo:           s32 = 200
+    maxSizeEditValue:       s32 = 200
 
-    fontBig:        FontFamily
+    font0:        	FontFamily
+	font1:        	FontFamily
+	font2:        	FontFamily
     scrollWnd:      *ScrollWnd
     edView:         *PropertyListView
     items:          ArrayPtr'PropertyListItem
+	categs:			Array'{*PropertyListItem, s32}
 }
 
 struct PropertyListItem
@@ -31,9 +39,12 @@ struct PropertyListItem
     forceShow:  *Wnd
 
     label:      *Label
+    labelDesc:  *Label
     editBox:    *EditBox
     checkBox:   *CheckButton
     comboBox:   *ComboBox
+
+    onResize:   SigArray'closure(*Self)
 }
 
 private impl PropertyList
@@ -57,6 +68,7 @@ private impl PropertyList
         label.labelFlags |= .WordWrap | .AutoHeight
         label.horzAlignmentText = .Justify
         label.margin.y = nameMarginBefore
+        label.margin.w = nameMarginAfter
         item.label = label
         item.filter = dispName
 
@@ -72,7 +84,8 @@ private impl PropertyList
                 labelDesc.labelFlags |= .WordWrap | .AutoHeight
                 labelDesc.horzAlignmentText = .Justify
                 labelDesc.setText(dispDesc)
-                labelDesc.margin.w = 5
+                labelDesc.margin.w = descMarginAfter
+                item.labelDesc = labelDesc
             }
         }
 
@@ -149,7 +162,9 @@ private impl PropertyList
                 itemB.ptrData = ptrData
 
                 dispDesc := Reflection.getAttributeValue(v, PropertyList.Description, "desc")
+
                 line1 := Wnd.create'Wnd(edView)
+                line1.margin.y = enumFlagsMarginBefore
 
                 ed := CheckButton.create(line1, "", {0, 0, 30, 0})
                 ed.dockStyle = .Left
@@ -159,7 +174,13 @@ private impl PropertyList
                 label1.labelFlags |= .WordWrap | .AutoHeight
                 label1.horzAlignmentText = .Justify
                 label1.setText(dispDesc)
-                line1.position.height = Math.max(ed.position.height, label1.position.height)
+
+                minHeight := ed.position.height
+                itemB.onResize += closure|label1, line1, minHeight|(itemB) {
+                    label1.autoHeight()
+                    line1.position.height = Math.max(minHeight, label1.position.height)
+                    line1.applyLayout()
+                }
 
                 itemB.filter = dispDesc
                 itemB.line = line1
@@ -183,6 +204,34 @@ private impl PropertyList
 
             refreshEnum(item)
         }
+    }
+
+    mtd addBool(f: Swag.TypeValue, ptrData: *u8)
+    {
+        item := addItem(f, ptrData, false)
+
+        dispDesc := Reflection.getAttributeValue(f, PropertyList.Description, "desc")
+        line1 := Wnd.create'Wnd(item.line)
+
+        ed := CheckButton.create(line1, "", {0, 0, 30, 0})
+        ed.dockStyle = .Left
+
+        label1 := Label.create(line1, "", {30, 0, position.width - 30})
+        label1.dockStyle = .Center
+        label1.labelFlags |= .WordWrap | .AutoHeight
+        label1.horzAlignmentText = .Justify
+        label1.setText(dispDesc)
+
+        minHeight := ed.position.height
+        item.onResize += closure|label1, line1, minHeight|(item) {
+            label1.autoHeight()
+            line1.position.height = Math.max(minHeight, label1.position.height)
+            item.line.applyLayout()
+        }
+
+        item.checkBox = ed
+        if dref cast(*bool) ptrData
+            ed.checked = .Checked
     }
 
     func refreshNative(item: *PropertyListItem)
@@ -224,28 +273,6 @@ private impl PropertyList
             p := cast(^f64) ptrData
             ed.setText(Format.toString("%", dref p))
         }
-    }
-
-    mtd addBool(f: Swag.TypeValue, ptrData: *u8)
-    {
-        item := addItem(f, ptrData, false)
-
-        dispDesc := Reflection.getAttributeValue(f, PropertyList.Description, "desc")
-        line1 := Wnd.create'Wnd(item.line)
-
-        ed := CheckButton.create(line1, "", {0, 0, 30, 0})
-        ed.dockStyle = .Left
-
-        label1 := Label.create(line1, "", {30, 0, position.width - 30})
-        label1.dockStyle = .Center
-        label1.labelFlags |= .WordWrap | .AutoHeight
-        label1.horzAlignmentText = .Justify
-        label1.setText(dispDesc)
-        line1.position.height = Math.max(ed.position.height, label1.position.height)
-
-        item.checkBox = ed
-        if dref cast(*bool) ptrData
-            ed.checked = .Checked
     }
 
     mtd addNative(f: Swag.TypeValue, nativeType: const *Swag.TypeInfoNative, ptrData: *u8)
@@ -334,6 +361,29 @@ private impl PropertyList
         {
             ptrData := addr + f.offset
 
+			// Category
+			categ := Reflection.getAttributeValue(f, PropertyList.Category, "name")
+			if categ != null
+			{
+				var v: Swag.TypeValue
+				v.name = cast(string) categ
+				item := addItem(v, null)
+				item.label.style.setFont(&font0)
+				categs.add({item, 0})
+			}
+
+			// Sub Category
+			subCateg := Reflection.getAttributeValue(f, PropertyList.SubCategory, "name")
+			if subCateg != null
+			{
+				var v: Swag.TypeValue
+				v.name = cast(string) subCateg
+				item := addItem(v, null)
+				item.label.style.setFont(&font1)
+				categs.add({item, 1})
+			}
+
+			// Value
             if Reflection.isEnum(f.pointedType)
             {
                 typeEnum := cast(const *Swag.TypeInfoEnum) f.pointedType
@@ -357,7 +407,7 @@ private impl PropertyList
             elif Reflection.isStruct(f.pointedType)
             {
                 item := addItem(f, ptrData)
-                item.label.style.setFont(&fontBig)
+                item.label.style.setFont(&font2)
                 typeSubStruct := cast(const *Swag.TypeInfoStruct) f.pointedType
                 addStruct(ptrData, typeSubStruct)
             }
@@ -367,6 +417,7 @@ private impl PropertyList
 
 impl PropertyList
 {
+    // Creates a new PropertyList instance
     #[Swag.Discardable]
     func create(parent: *Wnd, position: Math.Rectangle = {}, id: WndId = null)->*PropertyList
     {
@@ -385,12 +436,25 @@ impl PropertyList
             .edView.layoutKind = .Top
             .edView.spacing = 0
 
-            const BigFontSize = 30'u32
             theme := parent.getTheme()
-            .fontBig.regular = Font.create(theme.res.defaultTypeFaceR, BigFontSize)
-            .fontBig.bold = Font.create(theme.res.defaultTypeFaceB, BigFontSize)
-            .fontBig.italic = Font.create(theme.res.defaultTypeFaceI, BigFontSize)
-            .fontBig.boldItalic = Font.create(theme.res.defaultTypeFaceBI, BigFontSize)
+
+            const Font0Size = 30'u32
+            .font0.regular = Font.create(theme.res.defaultTypeFaceR, Font0Size)
+            .font0.bold = Font.create(theme.res.defaultTypeFaceB, Font0Size)
+            .font0.italic = Font.create(theme.res.defaultTypeFaceI, Font0Size)
+            .font0.boldItalic = Font.create(theme.res.defaultTypeFaceBI, Font0Size)
+
+			const Font1Size = 25'u32
+            .font1.regular = Font.create(theme.res.defaultTypeFaceR, Font1Size)
+            .font1.bold = Font.create(theme.res.defaultTypeFaceB, Font1Size)
+            .font1.italic = Font.create(theme.res.defaultTypeFaceI, Font1Size)
+            .font1.boldItalic = Font.create(theme.res.defaultTypeFaceBI, Font1Size)
+
+			const Font2Size = 20'u32
+            .font2.regular = Font.create(theme.res.defaultTypeFaceR, Font2Size)
+            .font2.bold = Font.create(theme.res.defaultTypeFaceB, Font2Size)
+            .font2.italic = Font.create(theme.res.defaultTypeFaceI, Font2Size)
+            .font2.boldItalic = Font.create(theme.res.defaultTypeFaceBI, Font2Size)
         }
 
         return ed
@@ -417,7 +481,7 @@ impl PropertyList
         }
     }
 
-    // Show hiden content depending on the input filter
+    // Show hidden content depending on the input filter
     mtd setStringFilter(filter: string)
     {
         visit it: items

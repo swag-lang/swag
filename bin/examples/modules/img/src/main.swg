@@ -8,12 +8,12 @@
 using Core, Win32, Ogl, Gdi32, Pixel
 
 var g_HDC:       HDC
-var g_ImageIdx:  u32 = 28
+var g_ImageIdx:  u32 = 30
 var g_EffectIdx: u32 = 49
 var g_MyImage:   Pixel.Image
 var g_TextureID: GLuint
 
-const MAX_IMAGES  = 29
+const MAX_IMAGES  = 31
 const MAX_EFFECTS = 50
 
 const W = 1024
@@ -93,6 +93,8 @@ func loadImg()
     case 26:    imgName = "basi6a08.png"  // color interlaced alpha
     case 27:    imgName = "testa.gif"
     case 28:    imgName = "test.gif"
+    case 29:    imgName = "paletted.png"
+    case 30:    imgName = "gameover.png"
     default:    g_ImageIdx = 0
     }
 

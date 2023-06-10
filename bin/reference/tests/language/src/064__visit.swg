@@ -1,7 +1,3 @@
-/**
-You can visit a struct value if a macro `opVisit` has been defined. This is the equivalent of an **iterator**.
-*/
-
 struct MyStruct
 {
     x: s32 = 10
@@ -9,26 +5,34 @@ struct MyStruct
     z: s32 = 30
 }
 
+/**
+You can visit a struct variable if a macro `opVisit` has been defined. This is the equivalent of an **iterator**.
+*/
+
+/**
+`opVisit` is a macro, so it should be marked with the `#[Swag.Macro]` attribute. `opVisit` is also a generic function which takes a constant generic parameter of type `bool`.
+*/
 impl MyStruct
 {
     #[Swag.Macro]
     func(ptr: bool) opVisit(self, stmt: code)
     {
-        // 'ptr' is a generic parameter that tells if we want to visit by pointer.
-        // We do not use it in this example.
+        // 'ptr' is a generic parameter that tells if we want to visit by pointer or by value.
+        // We do not use it in this example, so we check at compile time that it's not true.
         #if ptr #error "visiting myStruct by pointer is not supported"
 
         // Loop on the 3 fields
         loop idx: 3
         {
-            // The '#macro' force its body to be in the scope of the caller
+            // The '#macro' keyboard forces its body to be in the scope of the caller
             #macro
             {
                 // @alias0 will be the value
                 var @alias0: s32 = undefined
 
-                // As this code is in the caller scope, with need to add a #up before 'idx' to reference the
-                // variable of this function (and not a potential variable in the caller scope)
+                // As this code is in the caller scope, with need to add a '#up' before 'idx' to
+                // reference the variable of this function (and not a potential variable in
+                // the caller scope)
                 switch #up idx
                 {
                 case 0: @alias0 = #up self.x   // Same for function parameter 'self'
@@ -46,6 +50,9 @@ impl MyStruct
     }
 }
 
+/**
+So now that the `opVisit` has been defined, we can `visit` it.
+*/
 #test
 {
     myStruct := MyStruct{}

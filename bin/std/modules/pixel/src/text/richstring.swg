@@ -18,13 +18,22 @@ struct RichChunk
     under:      UnderlineStyle = None
 }
 
+// Represents a string with embedded formats.
+// This kind of string is a specific version of [Core.String] but specific for painting. It can contains
+// some special markers to change it's appearence.
+// ```
+// <b> this is bold<b>
+// <p1> this will have special color 1<p1>
+// ...
+// ```
+// See [RichString.set] for a list of available markers.
 struct RichString
 {
-    raw:        String
-    chunks:     Array'RichChunk
+    raw:        String              // The string as passed by the user
+    chunks:     Array'RichChunk     // The corresponding list of chunks
     layoutRect: Math.Rectangle
     boundRect:  Math.Rectangle
-    dirty:      bool
+    dirty:      bool                // If dirty, 'Compute'
 }
 
 impl RichString
@@ -78,23 +87,28 @@ impl RichString
     #[Swag.Inline]
     mtd opAffect(str: string) = set(str)
 
+    // Returns 'true' if the string is empty.
     #[Swag.Inline]
     mtd isEmpty() => raw.length == 0
 
-    // Force to be repainted
+    // Force the string to be repainted.
     mtd invalidate()
     {
         layoutRect.clear()
     }
 
-    // Associate a string (can have multiple lines)
-    // Accepted markers are :
-    // <u>  ... <u>  => underline
-    // <b>  ... <b>  => bold
-    // <i>  ... <i>  => italic
-    // <p1> ... <p1> => color palette 1
-    // <p2> ... <p2> => color palette 2
-    // <p3> ... <p3> => color palette 3
+    // Associate a string.
+    // The string can have multiple lines.
+    // Accepted markers are:
+    // * `<u>` => underline
+    // * `<b>` => bold
+    // * `<i>` => italic
+    // * `<p1>` => color palette 1
+    // * `<p2>` => color palette 2
+    // * `<p3>` => color palette 3
+    // ```
+    // <b>this is bold<b> but this is normal <i>and this is italic</i>
+    // ```
     mtd set(text: string)
     {
         if raw == text and chunks.count
@@ -103,10 +117,49 @@ impl RichString
         dirty = true
     }
 
-    // Compute layout
-    mtd compute()
+    // Transform the given string to a naked one.
+    // Will return the string without the format markers.
+    func getNaked(str: string)->String
     {
-        if !dirty
+        var result: retval
+
+        scan := @dataof(str)
+        count := @countof(str)
+        result.reserve(count)
+
+        while count
+        {
+            sl := @mkslice(scan, count)
+            switch
+            {
+            case Utf8.startsWith(sl, "<u>"),
+                 Utf8.startsWith(sl, "<b>"),
+                 Utf8.startsWith(sl, "<i>"):
+                scan += 3
+                count -= 3
+                continue
+            case Utf8.startsWith(sl, "<p1>"),
+                 Utf8.startsWith(sl, "<p2>"),
+                 Utf8.startsWith(sl, "<p3>"):
+                scan += 4
+                count -= 4
+                continue
+            }
+
+            result += dref scan
+            scan += 1
+            count -= 1
+        }
+
+        return result
+    }
+
+    // Compute layout.
+    // This will transform the string in a serie of chunks, each chunk having its one style. The string
+    // will only be recomputed if it's dirty (the text has changed) or if 'force' is true.
+    mtd compute(force = false)
+    {
+        if !dirty or force
             return
         dirty = false
         chunks.clear()

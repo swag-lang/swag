@@ -436,6 +436,8 @@ struct AstNode
 #ifdef SWAG_DEV_MODE
     uint32_t rankId;
 #endif
+
+    SWAG_RACE_CONDITION_INSTANCE(raceC);
 };
 
 struct AstVarDecl : public AstNode

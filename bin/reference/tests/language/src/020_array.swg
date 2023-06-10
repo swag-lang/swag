@@ -96,7 +96,7 @@ Of course an array can have multiple dimensions.
         #assert array[3] == 4
     }
 
-    // If the type of the array is not specified, the type of the first literal value will be used for all other members.
+    // If the type of the array is not specified, the type of the **first** literal value will be used for all other members.
     {
         arr := [1'f64, 2, 3, 4]    // Every values are forced to be 'f64'
 

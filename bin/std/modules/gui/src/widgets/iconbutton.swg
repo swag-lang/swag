@@ -311,6 +311,7 @@ impl IWnd for IconButton
             sf.font = getFont()
             sf.horzAlignment = .Center
             sf.vertAlignment = .Center
+            sf.flags = .DontAdaptSingleLineHeight
             switch textPos
             {
             case Left:

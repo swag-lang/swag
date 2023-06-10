@@ -140,7 +140,7 @@ Some other markdown markers are also supported inside paragraphs.
 }
 
 /**
-You can create a reference to something in the current package with [name] or [name1.name2 etc.]
+You can create a reference to something in the current module with [name] or [name1.name2 etc.]
 */
 #test
 {
