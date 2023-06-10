@@ -494,34 +494,48 @@ static bool reportInternal(const Diagnostic& inDiag, const Vector<const Diagnost
 
             if (!runContext->fromException666 || runContext->fromExceptionKind == SwagExceptionKind::Panic)
             {
-                // Callstack
-                if (context && (context->flags & (uint64_t) ContextFlags::ByteCode))
-                    g_ByteCodeStackTrace->log(runContext);
-
-                // Error stack trace
-                for (int i = context->traceIndex - 1; i >= 0; i--)
+                if (g_CommandLine.dbgCallStack)
                 {
-                    auto sourceFile1 = g_Workspace->findFile((const char*) context->trace[i]->fileName.buffer);
-                    if (sourceFile1)
+                    // Bytecode callstack
+                    if (context && (context->flags & (uint64_t) ContextFlags::ByteCode))
                     {
-                        SourceLocation startLoc, endLoc;
-                        startLoc.line   = context->trace[i]->lineStart;
-                        startLoc.column = context->trace[i]->colStart;
-                        endLoc.line     = context->trace[i]->lineEnd;
-                        endLoc.column   = context->trace[i]->colEnd;
-                        Diagnostic diag1({sourceFile1, startLoc, endLoc, "", DiagnosticLevel::TraceError});
-                        diag1.report();
+                        g_Log.eol();
+                        g_Log.print("[bytecode callstack]\n", LogColor::Cyan);
+                        g_ByteCodeStackTrace->log(runContext);
                     }
-                }
 
-                // Runtime callstack
-                if (runContext->hasForeignCall)
-                {
-                    auto nativeStack = OS::captureStack();
-                    if (!nativeStack.empty())
+                    // Error callstack
+                    if (context->traceIndex)
                     {
-                        Diagnostic note{nativeStack, DiagnosticLevel::RuntimeCallStack};
-                        note.report();
+                        g_Log.eol();
+                        g_Log.print("[error callstack]\n", LogColor::Cyan);
+
+                        Utf8 str;
+                        for (int i = context->traceIndex - 1; i >= 0; i--)
+                        {
+                            auto sourceFile1 = g_Workspace->findFile((const char*) context->trace[i]->fileName.buffer);
+                            if (sourceFile1)
+                            {
+                                str += Log::colorToVTS(LogColor::DarkYellow);
+                                str += "error";
+                                str += Log::colorToVTS(LogColor::Gray);
+                                str += Fmt(" --> %s:%d", sourceFile1->path.string().c_str(), context->trace[i]->lineStart + 1);
+                                str += "\n";
+                            }
+                        }
+                        g_Log.print(str);
+                    }
+
+                    // Runtime callstack
+                    if (runContext->hasForeignCall)
+                    {
+                        auto nativeStack = OS::captureStack();
+                        if (!nativeStack.empty())
+                        {
+                            g_Log.eol();
+                            g_Log.print("[runtime callstack]\n", LogColor::Cyan);
+                            g_Log.print(nativeStack);
+                        }
                     }
                 }
             }

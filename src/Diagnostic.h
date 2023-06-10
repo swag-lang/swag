@@ -14,8 +14,6 @@ enum class DiagnosticLevel
     Verbose,
     Note,
     CallStack,
-    RuntimeCallStack,
-    TraceError,
     Help,
 };
 
@@ -189,7 +187,6 @@ struct Diagnostic
     LogColor          stackColor;
     LogColor          autoRemarkColor;
     LogColor          remarkColor;
-    LogColor          nativeCallStackColor;
     LogColor          sourceFileColor;
 
     SourceLocation startLocation;

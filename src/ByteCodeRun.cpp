@@ -3963,7 +3963,24 @@ static int exceptionHandler(ByteCodeRunContext* runContext, LPEXCEPTION_POINTERS
             runContext->ip--;
         runContext->fromException666  = true;
         runContext->fromExceptionKind = exceptionKind;
+
+        // If there's an error trace index, show the original 'throw'
+        SwagContext* context = (SwagContext*) OS::tlsGetValue(g_TlsContextId);
+        if (context->traceIndex)
+        {
+            auto sourceFile1 = g_Workspace->findFile((const char*) context->trace[0]->fileName.buffer);
+            if (sourceFile1)
+            {
+                SourceLocation loc;
+                loc.line   = context->trace[0]->lineStart;
+                loc.column = context->trace[0]->colStart;
+                auto note  = new Diagnostic{sourceFile1, loc, loc, Hnt(Hnt0122), DiagnosticLevel::Note};
+                notes.push_back(note);
+            }
+        }
+
         Report::report(diag, notes, runContext);
+
         runContext->fromException666 = false;
         if (runContext->ip != runContext->bc->out)
             runContext->ip++;

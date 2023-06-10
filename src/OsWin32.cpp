@@ -517,9 +517,14 @@ namespace OS
 
                 if (hasSymbol)
                 {
+                    str += Log::colorToVTS(LogColor::DarkYellow);
                     str += psym->Name;
                     if (hasLine)
-                        str += Fmt(":%s:%d", line.FileName, line.LineNumber);
+                    {
+                        str += Log::colorToVTS(LogColor::Gray);
+                        str += Fmt(" --> %s:%d", line.FileName, line.LineNumber);
+                    }
+
                     str += "\n";
                 }
             }
