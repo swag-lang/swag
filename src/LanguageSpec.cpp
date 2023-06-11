@@ -195,6 +195,7 @@ void LanguageSpec::setupNames()
     name_atdbgalloc        = "@dbgalloc";
     name_atsysalloc        = "@sysalloc";
     name_atrtflags         = "@rtflags";
+    name_aterr             = "@err";
 
     name_sharpself = "#self";
 
@@ -368,6 +369,7 @@ void LanguageSpec::setupKeywords()
     keywords.add("@setcontext", TokenId::IntrinsicSetContext);
     keywords.add("@args", TokenId::IntrinsicArguments);
     keywords.add("@compiler", TokenId::IntrinsicCompiler);
+    keywords.add("@err", TokenId::IntrinsicGetErr);
     keywords.add("@isbytecode", TokenId::IntrinsicIsByteCode);
     keywords.add("@print", TokenId::IntrinsicPrint);
     keywords.add("@compilererror", TokenId::IntrinsicCompilerError);

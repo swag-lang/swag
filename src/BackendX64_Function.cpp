@@ -3320,6 +3320,9 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             }
             break;
 
+        case ByteCodeOp::IntrinsicGetErr:
+            emitInternalCall(pp, moduleToGen, g_LangSpec->name_aterr, {}, regOffset(ip->a.u32));
+            break;
         case ByteCodeOp::IntrinsicCompiler:
             pp.emit_LoadAddress_Indirect(regOffset(ip->a.u32), RAX, RDI);
             pp.emit_Store64_Immediate(0, 0, RAX);

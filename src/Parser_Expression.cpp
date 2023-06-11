@@ -298,6 +298,7 @@ bool Parser::doSinglePrimaryExpression(AstNode* parent, uint32_t exprFlags, AstN
     case TokenId::IntrinsicGvtd:
     case TokenId::IntrinsicCompiler:
     case TokenId::IntrinsicIsByteCode:
+    case TokenId::IntrinsicGetErr:
     case TokenId::IntrinsicMemCmp:
     case TokenId::IntrinsicStrLen:
     case TokenId::IntrinsicStrCmp:

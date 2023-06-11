@@ -23,6 +23,15 @@ func __geterrmsg()->string
     return cxt.errors[cxt.errorIndex].msg
 }
 
+// Returns the current raised [Error] or null if none
+func @err()->const *Error
+{
+    cxt := @getcontext()
+    if !cxt.hasError
+        return null
+    return &cxt.errors[cxt.errorIndex]
+}
+
 func __pusherr()
 {
     cxt := @getcontext()

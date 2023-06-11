@@ -215,6 +215,7 @@ struct LanguageSpec
     Utf8 name_atdbgalloc;
     Utf8 name_atsysalloc;
     Utf8 name_atrtflags;
+    Utf8 name_aterr;
 
     Utf8 name_sharpself;
 
