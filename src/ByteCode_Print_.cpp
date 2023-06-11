@@ -267,7 +267,10 @@ void ByteCode::getPrintInstruction(ByteCodeInstruction* ip, ByteCodeInstruction*
     {
     case ByteCodeOp::InternalPanic:
         if (ip->d.pointer)
+        {
             line.pretty += Utf8::truncateDisplay((const char*) ip->d.pointer, 30);
+            line.pretty += " ";
+        }
         break;
 
     case ByteCodeOp::MakeLambda:
@@ -277,6 +280,7 @@ void ByteCode::getPrintInstruction(ByteCodeInstruction* ip, ByteCodeInstruction*
         line.pretty += Utf8::truncateDisplay(funcNode->sourceFile->name, 30);
         line.pretty += "/";
         line.pretty += funcNode->token.text;
+        line.pretty += " ";
         break;
     }
 
@@ -285,6 +289,7 @@ void ByteCode::getPrintInstruction(ByteCodeInstruction* ip, ByteCodeInstruction*
     {
         auto funcNode = CastAst<AstFuncDecl>((AstNode*) ip->a.pointer, AstNodeKind::FuncDecl);
         line.pretty += Utf8::truncateDisplay(funcNode->token.text, 30);
+        line.pretty += " ";
         break;
     }
 
@@ -299,6 +304,7 @@ void ByteCode::getPrintInstruction(ByteCodeInstruction* ip, ByteCodeInstruction*
         {
             line.pretty += " ";
             line.pretty += bc->node->typeInfo->name;
+            line.pretty += " ";
         }
         break;
     }
@@ -455,7 +461,6 @@ void ByteCode::alignPrintInstructions(Vector<PrintInstructionLine>& lines, bool 
     align(lines, RankStr::Name, true, defaultLen ? 25 : 0);
     align(lines, RankStr::InstRef, false, defaultLen ? 40 : 0);
     align(lines, RankStr::Flags, false, defaultLen ? 12 : 0);
-    align(lines, RankStr::Pretty, false, defaultLen);
 #ifdef SWAG_DEV_MODE
     align(lines, RankStr::DevMode, false);
 #endif
