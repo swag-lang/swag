@@ -9,5 +9,5 @@ func toto() throw
     var x: func() throw
     x = &toto
     catch x()
-    @assert(@err == "toto")
+    @assert(@errmsg == "toto")
 }

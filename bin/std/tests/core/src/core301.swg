@@ -9,11 +9,11 @@ using Core
 
     var x: TT
     a0 := catch CommandLine.parse(&x, ["-count", "-count"])
-    @assert(@err != null)
+    @assert(@errmsg != null)
 
     a1 := catch CommandLine.parse(&x, ["-count:3000"])
-    @assert(@err != null)
+    @assert(@errmsg != null)
 
     a2 := catch CommandLine.parse(&x, ["-toto"])
-    @assert(@err != null)
+    @assert(@errmsg != null)
 }

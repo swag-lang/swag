@@ -9,16 +9,16 @@ using Core
 
     {
         full := catch Path.getAbsolute(p)
-        @assert(!@err)
+        @assert(!@errmsg)
         //Console.print("%\n", full)
     }
 
     {
         cur := catch Directory.getCurrent()
-        @assert(!@err)
+        @assert(!@errmsg)
 
         full := catch Path.getAbsolute("..")
-        @assert(!@err)
+        @assert(!@errmsg)
 
         //Console.print("%\n%\n", Path.getDirectoryName(cur), @countof(full))
         @assert(Path.getDirectoryName(cur) == full)

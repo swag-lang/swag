@@ -455,29 +455,29 @@ private impl EditBox
             case S64:
                 val := catch StrConv.parseS64(text)
                 eat = val.eat
-                if !@err and eat == text.length and (val.value < minMaxS64.min or val.value > minMaxS64.max)
+                if !@errmsg and eat == text.length and (val.value < minMaxS64.min or val.value > minMaxS64.max)
                     res = .InvalidShow
 
             case U64:
                 val := catch StrConv.parseU64(text)
                 eat = val.eat
-                if !@err and eat == text.length and (val.value < minMaxU64.min or val.value > minMaxU64.max)
+                if !@errmsg and eat == text.length and (val.value < minMaxU64.min or val.value > minMaxU64.max)
                     res = .InvalidShow
 
             case F64:
                 val := catch StrConv.parseF64(text)
                 eat = val.eat
-                if !@err and eat == text.length and (val.value < minMaxF64.min or val.value > minMaxF64.max)
+                if !@errmsg and eat == text.length and (val.value < minMaxF64.min or val.value > minMaxF64.max)
                     res = .InvalidShow
             }
 
             if res == .Valid
             {
-                if @err == StrConv.ParseErrorIncomplete
+                if @errmsg == StrConv.ParseErrorIncomplete
                     res = .Incomplete
-                elif @err == StrConv.ParseErrorOverflow
+                elif @errmsg == StrConv.ParseErrorOverflow
                     res = .InvalidShow
-                elif @err or eat != @countof(text)
+                elif @errmsg or eat != @countof(text)
                     res = .InvalidDismiss
             }
         }

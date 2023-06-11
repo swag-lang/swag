@@ -10,7 +10,7 @@ bool ByteCodeGenJob::emitGetErr(ByteCodeGenContext* context)
 {
     auto node = context->node;
     reserveRegisterRC(context, node->resultRegisterRC, 2);
-    EMIT_INST2(context, ByteCodeOp::IntrinsicGetErr, node->resultRegisterRC[0], node->resultRegisterRC[1]);
+    EMIT_INST2(context, ByteCodeOp::IntrinsicGetErrMsg, node->resultRegisterRC[0], node->resultRegisterRC[1]);
     return true;
 }
 
@@ -300,7 +300,7 @@ bool ByteCodeGenJob::emitAssume(ByteCodeGenContext* context)
 
     RegisterList r0;
     reserveRegisterRC(context, r0, 2);
-    EMIT_INST2(context, ByteCodeOp::IntrinsicGetErr, r0[0], r0[1]);
+    EMIT_INST2(context, ByteCodeOp::IntrinsicGetErrMsg, r0[0], r0[1]);
     assumeNode->seekInsideJump = context->bc->numInstructions;
     EMIT_INST1(context, ByteCodeOp::JumpIfZero64, r0[1]);
 

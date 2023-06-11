@@ -48,7 +48,7 @@ impl Library
     mtd addFile(name: string)
     {
         file := catch File.getFileInfo(name)
-        if @err
+        if @errmsg
             return
         files.add(file)
     }

@@ -21,18 +21,18 @@ func count(name: string)->u64 throw
 }
 
 /**
-The caller will then have to deal with the error in some way. It can `catch` it, and test (or not) its value with the `@err` intrinsic. The execution will continue at the call site.
+The caller will then have to deal with the error in some way. It can `catch` it, and test (or not) its value with the `@errmsg` intrinsic. The execution will continue at the call site.
 */
 func myFunc()
 {
     // Dismiss the eventual error with 'catch' and continue execution
     cpt := catch count("fileName")
 
-    // And test it with @err, which returns the 'throw' corresponding string
-    if @err
+    // And test it with @errmsg, which returns the 'throw' corresponding string
+    if @errmsg
     {
         @assert(cpt == 0)
-        @print(@err)
+        @print(@errmsg)
         return
     }
 
@@ -84,7 +84,7 @@ func myFunc3() throw
     }
 
     // Works also for 'catch' if you do not want to deal with the error message.
-    // '@err' in that case is not really relevant.
+    // '@errmsg' in that case is not really relevant.
     catch
     {
         cpt4 := count("filename")
@@ -120,7 +120,7 @@ When a function is marked with `throw`, the `try` for a function call is automat
     }
 
     catch mySubFunc1()
-    @assert(@err == "error")
+    @assert(@errmsg == "error")
 }
 
 /**

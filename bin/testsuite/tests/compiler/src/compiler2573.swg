@@ -8,11 +8,11 @@ func toto() throw
 func titi() throw
 {
     catch toto()
-    if @err throw "super titi"
+    if @errmsg throw "super titi"
 }
 
 #test
 {
     catch titi()
-    @assert(@err != null)
+    @assert(@errmsg != null)
 }

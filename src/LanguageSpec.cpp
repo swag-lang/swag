@@ -19,7 +19,7 @@ void LanguageSpec::setupNames()
     name__pusherr             = "__pusherr";
     name__poperr              = "__poperr";
     name__seterr              = "__seterr";
-    name__geterr              = "__geterr";
+    name__geterrmsg           = "__geterrmsg";
     name__tlsAlloc            = "__tlsAlloc";
     name__tlsGetValue         = "__tlsGetValue";
     name__tlsSetValue         = "__tlsSetValue";
@@ -401,7 +401,7 @@ void LanguageSpec::setupKeywords()
     keywords.add("@mkcallback", TokenId::IntrinsicMakeCallback);
     keywords.add("@index", TokenId::IntrinsicIndex);
     keywords.add("@isconstexpr", TokenId::IntrinsicIsConstExpr);
-    keywords.add("@err", TokenId::IntrinsicGetErr);
+    keywords.add("@errmsg", TokenId::IntrinsicGetErrMsg);
     keywords.add("@itftableof", TokenId::IntrinsicItfTableOf);
     keywords.add("@dbgalloc", TokenId::IntrinsicDbgAlloc);
     keywords.add("@sysalloc", TokenId::IntrinsicSysAlloc);

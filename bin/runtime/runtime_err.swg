@@ -15,7 +15,7 @@ func __seterr(value: string)
     cxt.hasError = 1
 }
 
-func __geterr()->string
+func __geterrmsg()->string
 {
     cxt := @getcontext()
     if !cxt.hasError

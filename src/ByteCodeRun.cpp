@@ -2226,7 +2226,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
         localCall(context, bc, 2);
         break;
     }
-    case ByteCodeOp::IntrinsicGetErr:
+    case ByteCodeOp::IntrinsicGetErrMsg:
     {
         auto cxt = (SwagContext*) OS::tlsGetValue(g_TlsContextId);
         if (!cxt->hasError)

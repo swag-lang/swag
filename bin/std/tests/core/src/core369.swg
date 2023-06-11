@@ -25,5 +25,5 @@ struct Toto2
 
     var dec: Decoder'Read.TagBin
     x1 := catch dec.readAll'Toto1(buf.toSlice())
-    @assert(@err == Read.TagBin.ErrorNewestVersion)
+    @assert(@errmsg == Read.TagBin.ErrorNewestVersion)
 }

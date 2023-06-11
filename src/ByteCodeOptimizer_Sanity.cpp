@@ -744,7 +744,7 @@ static bool optimizePassSanityStack(ByteCodeOptContext* context, Context& cxt)
 
             // Fake 2 values
         case ByteCodeOp::IntrinsicGvtd:
-        case ByteCodeOp::IntrinsicGetErr:
+        case ByteCodeOp::IntrinsicGetErrMsg:
         case ByteCodeOp::IntrinsicModules:
         case ByteCodeOp::DeRefStringSlice:
         case ByteCodeOp::CopyRTtoRC2:

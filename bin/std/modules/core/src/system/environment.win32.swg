@@ -28,7 +28,7 @@ public func getSpecialDirectory(what: SpecialDirectory)->String
 
     var result: retval
     catch Win32.SHGetSpecialFolderPathA(null, &a[0], v, FALSE)
-    if !@err
+    if !@errmsg
     {
         result = cast(string) @mkslice(&a[0], @strlen(&a[0]))
         Path.normalize(&result)
@@ -46,7 +46,7 @@ public func getMonitors()->Array'Monitor
     {
         var mi: MONITORINFO
         catch GetMonitorInfoA(hMonitor, &mi)
-        if @err return TRUE
+        if @errmsg return TRUE
 
         var m: Monitor
         ptr := cast(*Array'Monitor) cast(u64) lParam

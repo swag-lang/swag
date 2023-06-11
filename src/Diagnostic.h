@@ -212,9 +212,9 @@ struct Diagnostic
     bool display           = true;
     bool emptyMarginBefore = true;
 
-    bool hasLocation       = false;
-    bool lowPrio           = false;
-    bool forceSourceFile   = false;
-    bool criticalError     = false;
-    bool isNote            = false;
+    bool hasLocation     = false;
+    bool lowPrio         = false;
+    bool forceSourceFile = false;
+    bool criticalError   = false;
+    bool isNote          = false;
 };

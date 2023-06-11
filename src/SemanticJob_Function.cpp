@@ -1224,7 +1224,7 @@ void SemanticJob::propagateReturn(AstNode* node)
 
 AstFuncDecl* SemanticJob::getFunctionForReturn(AstNode* node)
 {
-    // For a return inside an inline block, take the inlined function, except for a mixin or 
+    // For a return inside an inline block, take the inlined function, except for a mixin or
     // if the inlined function is flagged with 'Swag.CalleeReturn' (in that case we take the owner function)
     auto funcNode = node->ownerFct;
     if (node->ownerInline && node->ownerInline->isParentOf(node))

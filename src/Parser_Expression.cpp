@@ -264,7 +264,7 @@ bool Parser::doSinglePrimaryExpression(AstNode* parent, uint32_t exprFlags, AstN
         SWAG_CHECK(doIndex(parent, result));
         break;
 
-    case TokenId::IntrinsicGetErr:
+    case TokenId::IntrinsicGetErrMsg:
         SWAG_CHECK(doGetErr(parent, result));
         break;
 

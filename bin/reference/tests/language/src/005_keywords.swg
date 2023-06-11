@@ -175,7 +175,7 @@ dref
 # Other intrinsics
 ```
 @index
-@err
+@errmsg
 @alias0
 @alias1
 @alias2 // and more generally @aliasN
