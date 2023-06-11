@@ -4552,6 +4552,10 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             break;
         }
 
+        case ByteCodeOp::InternalCheckAny:
+            emitInternalCall(pp, moduleToGen, g_LangSpec->name__checkAny, {ip->a.u32, ip->b.u32, ip->c.u32});
+            break;
+
         case ByteCodeOp::IntrinsicGetErr:
             SWAG_ASSERT(ip->b.u32 == ip->a.u32 + 1);
             emitInternalCall(pp, moduleToGen, g_LangSpec->name__geterr, {}, regOffset(ip->a.u32));
@@ -4559,17 +4563,14 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
         case ByteCodeOp::InternalSetErr:
             emitInternalCall(pp, moduleToGen, g_LangSpec->name__seterr, {ip->a.u32, ip->b.u32});
             break;
-        case ByteCodeOp::InternalCheckAny:
-            emitInternalCall(pp, moduleToGen, g_LangSpec->name__checkAny, {ip->a.u32, ip->b.u32, ip->c.u32});
-            break;
         case ByteCodeOp::InternalHasErr:
             pp.emit_Load64_Indirect(regOffset(ip->b.u32), RAX);
-            pp.emit_Load32_Indirect(offsetof(SwagContext, errorMsgLen), RCX, RAX);
+            pp.emit_Load32_Indirect(offsetof(SwagContext, hasError), RCX, RAX);
             pp.emit_Store32_Indirect(regOffset(ip->a.u32), RCX);
             break;
         case ByteCodeOp::InternalClearErr:
             pp.emit_Load64_Indirect(regOffset(ip->a.u32), RAX);
-            pp.emit_Store32_Immediate(offsetof(SwagContext, errorMsgLen), 0, RAX);
+            pp.emit_Store32_Immediate(offsetof(SwagContext, hasError), 0, RAX);
             break;
         case ByteCodeOp::InternalPushErr:
             emitCall(pp, g_LangSpec->name__pusherr);

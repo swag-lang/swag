@@ -2137,9 +2137,9 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
     case ByteCodeOp::InternalStackTrace:
     {
         auto cxt = (SwagContext*) OS::tlsGetValue(g_TlsContextId);
-        if (cxt->traceIndex == MAX_TRACE)
+        if (cxt->traceIndex == SWAG_MAX_TRACES)
             break;
-        cxt->trace[cxt->traceIndex] = (SwagSourceCodeLocation*) registersRC[ip->a.u32].pointer;
+        cxt->traces[cxt->traceIndex] = (SwagSourceCodeLocation*) registersRC[ip->a.u32].pointer;
         cxt->traceIndex++;
         break;
     }
@@ -2229,15 +2229,15 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
     case ByteCodeOp::IntrinsicGetErr:
     {
         auto cxt = (SwagContext*) OS::tlsGetValue(g_TlsContextId);
-        if (!cxt->errorMsgLen)
+        if (!cxt->hasError)
         {
             registersRC[ip->a.u32].pointer = nullptr;
             registersRC[ip->b.u32].u64     = 0;
         }
         else
         {
-            registersRC[ip->a.u32].pointer = cxt->errorMsg + cxt->errorMsgStart;
-            registersRC[ip->b.u32].u64     = cxt->errorMsgLen;
+            registersRC[ip->a.u32].pointer = cxt->errors[cxt->errorIndex].msgBuf;
+            registersRC[ip->b.u32].u64     = cxt->errors[cxt->errorIndex].msgLen;
         }
 
         break;
@@ -2246,7 +2246,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
     {
         SWAG_ASSERT(context->bc->registerGetContext != UINT32_MAX);
         auto cxt                   = (SwagContext*) registersRC[ip->b.u32].pointer;
-        registersRC[ip->a.u32].u64 = cxt->errorMsgLen != 0;
+        registersRC[ip->a.u32].u64 = cxt->hasError != 0;
         break;
     }
     case ByteCodeOp::InternalClearErr:
@@ -2254,7 +2254,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
         SWAG_ASSERT(context->bc->registerGetContext != UINT32_MAX);
         auto cxt = (SwagContext*) registersRC[ip->a.u32].pointer;
         SWAG_ASSERT(cxt != nullptr);
-        cxt->errorMsgLen = 0;
+        cxt->hasError = 0;
         break;
     }
     case ByteCodeOp::InternalPushErr:

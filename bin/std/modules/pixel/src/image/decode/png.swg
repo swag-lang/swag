@@ -492,8 +492,6 @@ impl Decoder
                 seenTRSN = true
                 outChannels += 1 // transparency mask, add an alpha channel
                 chunkTRNS = readChunk(ch)
-                if @countof(chunkTRNS.datas) > paletteCount
-                    throw "invalid TRNS chunk"
 
             case BKGD:
                 seenBKGD = true

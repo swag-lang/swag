@@ -362,8 +362,18 @@ namespace Swag
         Warning
     }
 
-    const MaxLenErrorMsg = 128  // Maximum length of an error message
-    const MaxTrace = 32         // Maximum stack trace
+    const MaxLenErrorMsg = 128   // Maximum length of an error message
+    const MaxErrors = 32         // Maximum nested errors
+    const MaxTraces = 32         // Maximum error traces
+
+    struct Error
+    {
+        msgBuf:         [MaxLenErrorMsg] u8     // All error messages
+        msgLen:         u32                     // Length of the error messages in 'errorMsg'
+        pushHasError:   u32
+        pushTraceIndex: u32
+        padding:        u32
+    }
 
     // Thread context as returned by [@context].
     struct Context
@@ -377,14 +387,14 @@ namespace Swag
 
         tempAllocator:      ScratchAllocator        // A temporary allocator
 
-        errorMsg:           [MaxLenErrorMsg] u8                     // All error messages
-        errorMsgStart:      u32                                     // Current start error message
-        errorMsgLen:        u32                                     // Length of the error messages in 'errorMsg'
-        traceIndex:         u32                                     // The current trace index
-        trace:              [MaxTrace] const *SourceCodeLocation    // Stack trace, in case of errors
+        traces:             [MaxTraces] const *SourceCodeLocation   // Stack trace, in case of errors
+        errors:             [MaxErrors] Error                       // All errors
         exceptionLoc:       SourceCodeLocation                      // When an exception is raised, this is the code location
         exceptionParams:    [4] const *void                         // When an exception is raised, this are the parameters
         panic:              func(string, SourceCodeLocation)        // A function to call if there's a panic
+        errorIndex:         u32                                     // Number of errors in the array
+        traceIndex:         u32                                     // The current trace index
+        hasError:           u32                                     // != 0 if an error is raised
     }
 
     // #########################################################

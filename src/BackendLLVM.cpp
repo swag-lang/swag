@@ -35,30 +35,41 @@ bool BackendLLVM::createRuntime(const BuildParameters& buildParameters)
         pp.interfaceTy = llvm::StructType::create(context, members, "swag_interface_t");
     }
 
+    // swag_error_t
+    {
+        llvm::Type* members[] = {
+            llvm::ArrayType::get(I8_TY(), SWAG_MAX_LEN_ERROR_MSG), // msgBuf
+            I32_TY(),                                              // msgLen
+            I32_TY(),                                              // pushHasError
+            I32_TY(),                                              // pushTraceIndex
+            I32_TY()};                                             // padding
+        pp.errorTy = llvm::StructType::create(context, members, "swag_error_t");
+    }
+
     // swag_context_t
     {
         llvm::Type* members[] = {
-            pp.interfaceTy,                                                // allocator
-            I64_TY(),                                                      // flags
-            pp.interfaceTy,                                                // ScratchAllocator allocator
-            PTR_I8_TY(),                                                   // ScratchAllocator block
-            I64_TY(),                                                      // ScratchAllocator capacity
-            I64_TY(),                                                      // ScratchAllocator used
-            I64_TY(),                                                      // ScratchAllocator maxUsed
-            PTR_I8_TY(),                                                   // ScratchAllocator firstLeak
-            I64_TY(),                                                      // ScratchAllocator totalLeak
-            I64_TY(),                                                      // ScratchAllocator maxLeak
-            llvm::ArrayType::get(I8_TY(), MAX_LEN_ERROR_MSG),              // errorMsg
-            I32_TY(),                                                      // errorMsgStart
-            I32_TY(),                                                      // errorMsgLen
-            I32_TY(),                                                      // traceIndex
-            llvm::ArrayType::get(I8_TY(), MAX_TRACE * sizeof(void*)),      // trace
-            llvm::ArrayType::get(I8_TY(), sizeof(SwagSourceCodeLocation)), // exceptionLoc
-            llvm::ArrayType::get(I8_TY(), 4 * sizeof(void*)),              // exceptionParams
-            PTR_I8_TY(),                                                   // panic
+            pp.interfaceTy,                                                 // allocator
+            I64_TY(),                                                       // flags
+            pp.interfaceTy,                                                 // ScratchAllocator allocator
+            PTR_I8_TY(),                                                    // ScratchAllocator block
+            I64_TY(),                                                       // ScratchAllocator capacity
+            I64_TY(),                                                       // ScratchAllocator used
+            I64_TY(),                                                       // ScratchAllocator maxUsed
+            PTR_I8_TY(),                                                    // ScratchAllocator firstLeak
+            I64_TY(),                                                       // ScratchAllocator totalLeak
+            I64_TY(),                                                       // ScratchAllocator maxLeak
+            llvm::ArrayType::get(I8_TY(), SWAG_MAX_TRACES * sizeof(void*)), // traces
+            llvm::ArrayType::get(pp.errorTy, SWAG_MAX_ERRORS),              // errors
+            llvm::ArrayType::get(I8_TY(), sizeof(SwagSourceCodeLocation)),  // exceptionLoc
+            llvm::ArrayType::get(I8_TY(), 4 * sizeof(void*)),               // exceptionParams
+            PTR_I8_TY(),                                                    // panic
+            I32_TY(),                                                       // errorIndex
+            I32_TY(),                                                       // traceIndex
+            I32_TY(),                                                       // hasError
         };
 
-        static_assert(sizeof(SwagContext) == 568);
+        static_assert(sizeof(SwagContext) == 5048);
         pp.contextTy = llvm::StructType::create(context, members, "swag_context_t");
         SWAG_ASSERT(pp.contextTy->isSized());
     }

@@ -107,22 +107,32 @@ enum class SwagExceptionKind
     Warning,
 };
 
-const auto MAX_LEN_ERROR_MSG = 128;
-const auto MAX_TRACE         = 32;
+const auto SWAG_MAX_LEN_ERROR_MSG = 128;
+const auto SWAG_MAX_ERRORS        = 32;
+const auto SWAG_MAX_TRACES        = 32;
+
+typedef struct SwagError
+{
+    uint8_t  msgBuf[SWAG_MAX_LEN_ERROR_MSG];
+    uint32_t msgLen;
+    uint32_t pushHasError;
+    uint32_t pushTraceIndex;
+    uint32_t padding;
+} SwagError;
 
 typedef struct SwagContext
 {
     SwagInterface           allocator;
     uint64_t                flags;
     SwagScratchAllocator    tempAllocator;
-    uint8_t                 errorMsg[MAX_LEN_ERROR_MSG];
-    uint32_t                errorMsgStart;
-    uint32_t                errorMsgLen;
-    uint32_t                traceIndex;
-    SwagSourceCodeLocation* trace[MAX_TRACE];
+    SwagSourceCodeLocation* traces[SWAG_MAX_TRACES];
+    SwagError               errors[SWAG_MAX_ERRORS];
     SwagSourceCodeLocation  exceptionLoc;
     void*                   exceptionParams[4];
     void*                   panic;
+    uint32_t                errorIndex;
+    uint32_t                traceIndex;
+    uint32_t                hasError;
 } SwagContext;
 
 using FuncCB = void* (*) (void*, void*, void*, void*, void*, void*);

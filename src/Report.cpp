@@ -513,13 +513,13 @@ static bool reportInternal(const Diagnostic& inDiag, const Vector<const Diagnost
                         Utf8 str;
                         for (int i = context->traceIndex - 1; i >= 0; i--)
                         {
-                            auto sourceFile1 = g_Workspace->findFile((const char*) context->trace[i]->fileName.buffer);
+                            auto sourceFile1 = g_Workspace->findFile((const char*) context->traces[i]->fileName.buffer);
                             if (sourceFile1)
                             {
                                 str += Log::colorToVTS(LogColor::DarkYellow);
                                 str += "error";
                                 str += Log::colorToVTS(LogColor::Gray);
-                                str += Fmt(" --> %s:%d", sourceFile1->path.string().c_str(), context->trace[i]->lineStart + 1);
+                                str += Fmt(" --> %s:%d", sourceFile1->path.string().c_str(), context->traces[i]->lineStart + 1);
                                 str += "\n";
                             }
                         }

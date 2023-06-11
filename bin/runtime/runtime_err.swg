@@ -6,46 +6,40 @@ func __seterr(value: string)
 {
     cxt := @getcontext()
     len := @countof(value)
-    if len > MaxLenErrorMsg - cxt.errorMsgStart
-    {
-        len = cast(u64) (MaxLenErrorMsg - cxt.errorMsgStart)
-        @assert(len > 0)
-    }
-    @memcpy(&cxt.errorMsg[cxt.errorMsgStart], @dataof(value), len)
-    cxt.errorMsgLen = cast(u32) len
+    if len > MaxLenErrorMsg
+        len = MaxLenErrorMsg
+
+    @assert(cxt.errorIndex < MaxErrors)
+    @memcpy(&cxt.errors[cxt.errorIndex].msgBuf, @dataof(value), len)
+    cxt.errors[cxt.errorIndex].msgLen = cast(u32) len
+    cxt.hasError = 1
 }
 
 func __geterr()->string
 {
     cxt := @getcontext()
-    if cxt.errorMsgLen == 0 return null
-    return @mkstring(&cxt.errorMsg[cxt.errorMsgStart], cxt.errorMsgLen)
+    if !cxt.hasError
+        return null
+    return @mkstring(&cxt.errors[cxt.errorIndex].msgBuf[0], cxt.errors[cxt.errorIndex].msgLen)
 }
 
-// Store the current error length after the string, and set
-// the new cxt.errorMsgStart after that
 func __pusherr()
 {
     cxt := @getcontext()
-    @assert(MaxLenErrorMsg - cxt.errorMsgStart >= 8)
-    ptr := cast(^u32) (&cxt.errorMsg[cxt.errorMsgStart] + cxt.errorMsgLen)
-    ptr[0] = cxt.errorMsgLen
-    ptr[1] = cxt.traceIndex
-    cxt.errorMsgStart += cxt.errorMsgLen + 8
-    cxt.errorMsgLen = 0
+    @assert(cxt.errorIndex < MaxErrors)
+    cxt.errors[cxt.errorIndex].pushHasError = cxt.hasError
+    cxt.errors[cxt.errorIndex].pushTraceIndex = cxt.traceIndex
+    cxt.errorIndex += 1
 }
 
-// Get the previous error length from the buffer (the u32 just before
-// cxt.errorMsgStart), and restore the previous error length and start
 func __poperr()
 {
     cxt := @getcontext()
-    @assert(cxt.errorMsgStart >= 8)
-    ptr := cast(^u32) (&cxt.errorMsg[cxt.errorMsgStart] - 8)
-    cxt.errorMsgLen = ptr[0]
-    cxt.traceIndex = ptr[1]
-    @assert(cxt.errorMsgStart >= cxt.errorMsgLen + 8)
-    cxt.errorMsgStart -= (cxt.errorMsgLen + 8)
+    @assert(cxt.errorIndex != 0)
+    cxt.errorIndex -= 1
+    @assert(cxt.errorIndex < MaxErrors)
+    cxt.hasError = cxt.errors[cxt.errorIndex].pushHasError
+    cxt.traceIndex = cxt.errors[cxt.errorIndex].pushTraceIndex
 }
 
 func __checkAny(typeA, typeB: typeinfo, loc: SourceCodeLocation)
@@ -53,8 +47,8 @@ func __checkAny(typeA, typeB: typeinfo, loc: SourceCodeLocation)
     if !@typecmp(typeA, typeB, TypeCmpFlags.CastAny)
     {
         cxt := @getcontext()
-        str := &cxt.errorMsg[0]
-        cxt.errorMsg[0] = 0
+        str := &cxt.errors[0].msgBuf[0]
+        cxt.errors[0].msgBuf[0] = 0
 
         if !typeB
         {
@@ -79,7 +73,6 @@ func __checkAny(typeA, typeB: typeinfo, loc: SourceCodeLocation)
             }
         }
 
-        cxt.errorMsgLen = 0
         @panic(@mkstring(str, @strlen(str)), loc)
     }
 }
@@ -95,10 +88,10 @@ func __initStackTrace()
 func __stackTrace(loc: SourceCodeLocation)
 {
     cxt := @getcontext()
-    if cxt.traceIndex >= MaxTrace
+    if cxt.traceIndex >= MaxTraces
         return
-    cxt.trace[cxt.traceIndex] = loc
-    cxt.traceIndex = cxt.traceIndex + 1
+    cxt.traces[cxt.traceIndex] = loc
+    cxt.traceIndex += 1
 }
 
 ////////////////////////////////////////////////////////////
@@ -165,14 +158,14 @@ func @panic(message: string, loc: SourceCodeLocation)
     for i := cast(s32) cxt.traceIndex - 1; i >= 0; i -= 1
     {
         @print("\x1b[93m")
-        @print("trace error:\n");
+        @print("error: ");
         @print("\x1b[97m")
-        @print("--> ")
-        @print(cxt.trace[i].fileName)
+        @print(" --> ")
+        @print(cxt.traces[i].fileName)
         @print(":");
-        @print(cast(s64) cxt.trace[i].lineStart + 1);
+        @print(cast(s64) cxt.traces[i].lineStart + 1);
         @print(":");
-        @print(cast(s64) cxt.trace[i].colStart + 1);
+        @print(cast(s64) cxt.traces[i].colStart + 1);
         @print(":\n");
     }
 

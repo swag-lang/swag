@@ -29,6 +29,7 @@ struct LLVMPerThread
     llvm::GlobalVariable* processInfos         = nullptr;
     llvm::GlobalVariable* symTls_threadLocalId = nullptr;
 
+    llvm::Type*         errorTy        = nullptr;
     llvm::Type*         interfaceTy    = nullptr;
     llvm::Type*         contextTy      = nullptr;
     llvm::Type*         sliceTy        = nullptr;
