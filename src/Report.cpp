@@ -520,7 +520,7 @@ static bool reportInternal(const Diagnostic& inDiag, const Vector<const Diagnost
                                 str += Log::colorToVTS(LogColor::DarkYellow);
                                 str += "error";
                                 str += Log::colorToVTS(LogColor::Gray);
-                                str += Fmt(" --> %s:%d", sourceFile1->path.string().c_str(), context->traces[i]->lineStart + 1);
+                                str += Fmt(" --> %s:%d:%d", sourceFile1->path.string().c_str(), context->traces[i]->lineStart + 1, context->traces[i]->colStart + 1);
                                 str += "\n";
                             }
                         }
