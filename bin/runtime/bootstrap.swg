@@ -718,7 +718,7 @@ namespace Swag
 
         byteCodeOptimizeLevel   = 1     // Optimization level of bytecode [0, 1 or 2]
         byteCodeDebugInline     = true  // Trace into inlined code when generating debug infos
-        byteCodeEmitAssume      = true  // 'assume' will assert if 'true'
+        byteCodeEmitAssume      = true  // 'assume' will panic if an error is raised
         byteCodeInline          = true  // Enable bytecode inlining with #[Swag.Inline]
         byteCodeAutoInline      = true  // Automatic inlining of some other functions
 
