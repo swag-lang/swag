@@ -3920,20 +3920,19 @@ static int exceptionHandler(ByteCodeRunContext* runContext, LPEXCEPTION_POINTERS
 
         // User messsage
         Utf8 userMsg{(const char*) args->ExceptionRecord->ExceptionInformation[1], (uint32_t) args->ExceptionRecord->ExceptionInformation[2]};
-        if (userMsg.empty())
+
+        DiagnosticLevel level = DiagnosticLevel::Error;
+        switch (exceptionKind)
         {
-            switch (exceptionKind)
-            {
-            case SwagExceptionKind::Error:
-                userMsg = "compiler error";
-                break;
-            case SwagExceptionKind::Warning:
-                userMsg = "compiler warning";
-                break;
-            case SwagExceptionKind::Panic:
-                userMsg = "panic";
-                break;
-            }
+        case SwagExceptionKind::Error:
+            level = DiagnosticLevel::Error;
+            break;
+        case SwagExceptionKind::Warning:
+            level = DiagnosticLevel::Warning;
+            break;
+        case SwagExceptionKind::Panic:
+            level = DiagnosticLevel::Panic;
+            break;
         }
 
         SourceFile dummyFile;
@@ -3945,7 +3944,7 @@ static int exceptionHandler(ByteCodeRunContext* runContext, LPEXCEPTION_POINTERS
         endLocation.line     = location->lineEnd;
         endLocation.column   = location->colEnd;
 
-        Diagnostic diag{&dummyFile, startLocation, endLocation, userMsg};
+        Diagnostic diag{&dummyFile, startLocation, endLocation, userMsg, level};
 
         // Get the correct source file to raise the error in the correct context
         //

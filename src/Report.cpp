@@ -121,7 +121,7 @@ static void cleanNotes(Vector<Diagnostic*>& notes)
             {
                 for (auto& r : note->ranges)
                 {
-                    if (r.errorLevel == DiagnosticLevel::Error)
+                    if (r.errorLevel == DiagnosticLevel::Error || r.errorLevel == DiagnosticLevel::Panic)
                     {
                         if (r.hint.empty())
                         {
@@ -450,6 +450,7 @@ static bool reportInternal(const Diagnostic& inDiag, const Vector<const Diagnost
     switch (errorLevel)
     {
     case DiagnosticLevel::Error:
+    case DiagnosticLevel::Panic:
         sourceFile->numErrors++;
         sourceFile->module->numErrors++;
 
@@ -485,7 +486,7 @@ static bool reportInternal(const Diagnostic& inDiag, const Vector<const Diagnost
     // Print error/warning
     reportInternal(diag, notes, false);
 
-    if (errorLevel == DiagnosticLevel::Error)
+    if (errorLevel == DiagnosticLevel::Error || errorLevel == DiagnosticLevel::Panic)
     {
         if (runContext)
         {
@@ -550,7 +551,7 @@ static bool reportInternal(const Diagnostic& inDiag, const Vector<const Diagnost
 #endif
     }
 
-    return errorLevel == DiagnosticLevel::Error ? false : true;
+    return errorLevel == DiagnosticLevel::Error || errorLevel == DiagnosticLevel::Panic ? false : true;
 }
 
 SourceFile* Report::getDiagFile(const Diagnostic& diag)

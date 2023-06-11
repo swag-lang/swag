@@ -132,6 +132,10 @@ void Diagnostic::printErrorLevel()
         g_Log.setColor(errorColor);
         g_Log.print("error: ");
         break;
+    case DiagnosticLevel::Panic:
+        g_Log.setColor(errorColor);
+        g_Log.print("panic: ");
+        break;
     case DiagnosticLevel::Warning:
         g_Log.setColor(warningColor);
         g_Log.print("warning: ");
@@ -640,6 +644,7 @@ void Diagnostic::setColorRanges(DiagnosticLevel level)
     switch (level)
     {
     case DiagnosticLevel::Error:
+    case DiagnosticLevel::Panic:
         g_Log.setColor(errorColor);
         break;
     case DiagnosticLevel::Warning:
@@ -680,7 +685,7 @@ void Diagnostic::printRanges()
         for (uint32_t i = 0; i < (uint32_t) r.width && i < (uint32_t) backLine.length(); i++)
         {
             startIndex++;
-            if (r.errorLevel == DiagnosticLevel::Error)
+            if (r.errorLevel == DiagnosticLevel::Error || r.errorLevel == DiagnosticLevel::Panic)
                 g_Log.print("^");
             else if (r.errorLevel == DiagnosticLevel::Warning)
                 g_Log.print("^");

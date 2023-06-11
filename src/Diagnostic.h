@@ -14,6 +14,7 @@ enum class DiagnosticLevel
     Verbose,
     Note,
     Help,
+    Panic,
 };
 
 struct Diagnostic

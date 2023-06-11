@@ -123,7 +123,7 @@ namespace OS
 
                 // Process result
                 Vector<Utf8> lines;
-                Utf8::tokenize(strout, '\n', lines);
+                Utf8::tokenize(strout, '\n', lines, true);
                 strout.clear();
                 if (notLast)
                 {
@@ -133,24 +133,24 @@ namespace OS
 
                 for (auto oneLine : lines)
                 {
+                    if (oneLine.empty())
+                    {
+                        g_Log.lock();
+                        g_Log.eol();
+                        g_Log.unlock();
+                        continue;
+                    }
+
                     if (oneLine.back() == '\r')
                         oneLine.removeBack();
 
-                    const char* pz = nullptr;
-
                     // Error
-                    pz = strstr(oneLine.c_str(), "error:");
-                    if (pz)
+                    auto pz0 = strstr(oneLine.c_str(), "error:");
+                    auto pz1 = strstr(oneLine.c_str(), "panic:");
+                    if (pz0 || pz1)
                     {
                         numErrors++;
                         ok = false;
-
-                        g_Log.lock();
-                        g_Log.setColor(LogColor::Red);
-                        g_Log.print(oneLine + "\n");
-                        g_Log.setDefaultColor();
-                        g_Log.unlock();
-                        continue;
                     }
 
                     // Messages
@@ -158,37 +158,6 @@ namespace OS
                     g_Log.setDefaultColor();
                     g_Log.print(oneLine + "\n");
                     g_Log.unlock();
-
-                    // Source code
-                    pz = strstr(oneLine.c_str(), "--> ");
-                    if (pz && module)
-                    {
-                        auto oneLine1 = pz + 4;
-
-                        // Extract file and location
-                        Vector<Utf8> tokens;
-                        Utf8::tokenize(oneLine1, ':', tokens);
-                        for (auto& t : tokens)
-                            t.trim();
-                        if (tokens.size() > 2)
-                        {
-                            auto fileName = tokens[0] + ":";
-                            fileName += tokens[1];
-                            auto sourceFile = g_Workspace->findFile(fileName);
-                            if (sourceFile)
-                            {
-                                auto codeLine = sourceFile->getLine(atoi(tokens[2]) - 1);
-                                if (!codeLine.empty())
-                                {
-                                    g_Log.setColor(LogColor::DarkCyan);
-                                    g_Log.print(" |  ");
-                                    codeLine.trim();
-                                    g_Log.setColor(LogColor::Gray);
-                                    g_Log.print(codeLine + "\n");
-                                }
-                            }
-                        }
-                    }
                 }
 
                 continue;

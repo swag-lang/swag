@@ -152,30 +152,39 @@ func @panic(message: string, loc: SourceCodeLocation)
     }
 
     // Print the message first
-    @print("\x1b[91m")
-    @print("error: ", message, "\n")
-    @print("\x1b[97m")
+    @print("\n");
+    @print("########################", "\n")
+    @print("! RUNTIME PANIC ATTACK !", "\n")
+    @print("########################", "\n")
+    @print("\n");
+
+    @print("panic: ", message, "\n")
     @print("--> ")
-    @print(loc.fileName, ":", loc.lineStart + 1, "\n")
+    @print(loc.fileName, ":", loc.lineStart + 1, ":", loc.colStart + 1, "\n")
 
     // Print the calling stack trace
+    @print("\n")
     var arr: [64] *void
     nb := __captureStack(1, arr)
     __logStackTrace(@mkslice(&arr[0], nb))
+    @print("\n")
 
     // Print the error stack trace if available
-    for i := cast(s32) cxt.traceIndex - 1; i >= 0; i -= 1
+    if cxt.traceIndex
     {
-        @print("\x1b[93m")
-        @print("error: ");
-        @print("\x1b[97m")
-        @print(" --> ")
-        @print(cxt.traces[i].fileName)
-        @print(":");
-        @print(cast(s64) cxt.traces[i].lineStart + 1);
-        @print(":");
-        @print(cast(s64) cxt.traces[i].colStart + 1);
-        @print(":\n");
+        for i := cast(s32) cxt.traceIndex - 1; i >= 0; i -= 1
+        {
+            @print("errorstack");
+            @print(" --> ")
+            @print(cxt.traces[i].fileName)
+            @print(":");
+            @print(cast(s64) cxt.traces[i].lineStart + 1);
+            @print(":");
+            @print(cast(s64) cxt.traces[i].colStart + 1);
+            @print(":\n");
+        }
+
+        @print("\n")
     }
 
     // During tests just raise an error without a dialog box
