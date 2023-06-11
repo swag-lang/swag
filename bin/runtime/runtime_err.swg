@@ -161,20 +161,15 @@ func @panic(message: string, loc: SourceCodeLocation)
     @print("panic: ", message, "\n")
     @print("--> ")
     @print(loc.fileName, ":", loc.lineStart + 1, ":", loc.colStart + 1, "\n")
-
-    // Print the calling stack trace
-    @print("\n")
-    var arr: [64] *void
-    nb := __captureStack(1, arr)
-    __logStackTrace(@mkslice(&arr[0], nb))
     @print("\n")
 
     // Print the error stack trace if available
     if cxt.traceIndex
     {
+        @print("[error callstack]", "\n");
         for i := cast(s32) cxt.traceIndex - 1; i >= 0; i -= 1
         {
-            @print("errorstack");
+            @print("error");
             @print(" --> ")
             @print(cxt.traces[i].fileName)
             @print(":");
@@ -186,6 +181,13 @@ func @panic(message: string, loc: SourceCodeLocation)
 
         @print("\n")
     }
+
+    // Print the calling stack trace
+    @print("[runtime callstack]", "\n");
+    var arr: [64] *void
+    nb := __captureStack(1, arr)
+    __logStackTrace(@mkslice(&arr[0], nb))
+    @print("\n")
 
     // During tests just raise an error without a dialog box
     if contextFlags & ContextFlags.Test

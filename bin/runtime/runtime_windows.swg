@@ -359,11 +359,9 @@ func __logStackTrace(where: [..] *void, startAfter: *Swag.SourceCodeLocation = n
         }
 
         hasStarted = true
-        @print("callstack")
 
         if hasSymbol
         {
-            @print(" --> ")
             symName := @mkstring(cast(const ^u8) psym.Name, @strlen(psym.Name))
             @print(symName)
         }
