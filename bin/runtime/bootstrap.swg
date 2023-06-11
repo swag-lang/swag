@@ -368,11 +368,10 @@ namespace Swag
 
     struct Error
     {
-        msgBuf:         [MaxLenErrorMsg] u8     // All error messages
-        msgLen:         u32                     // Length of the error messages in 'errorMsg'
+        msgBuf:         [MaxLenErrorMsg] u8     // Buffer to store the error message
+        msg:            string                  // Error message
         pushHasError:   u32
         pushTraceIndex: u32
-        padding:        u32
     }
 
     // Thread context as returned by [@context].

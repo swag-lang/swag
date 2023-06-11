@@ -2236,8 +2236,8 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
         }
         else
         {
-            registersRC[ip->a.u32].pointer = cxt->errors[cxt->errorIndex].msgBuf;
-            registersRC[ip->b.u32].u64     = cxt->errors[cxt->errorIndex].msgLen;
+            registersRC[ip->a.u32].pointer = (uint8_t*) cxt->errors[cxt->errorIndex].msg.buffer;
+            registersRC[ip->b.u32].u64     = cxt->errors[cxt->errorIndex].msg.count;
         }
 
         break;

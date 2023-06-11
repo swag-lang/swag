@@ -113,11 +113,10 @@ const auto SWAG_MAX_TRACES        = 32;
 
 typedef struct SwagError
 {
-    uint8_t  msgBuf[SWAG_MAX_LEN_ERROR_MSG];
-    uint32_t msgLen;
-    uint32_t pushHasError;
-    uint32_t pushTraceIndex;
-    uint32_t padding;
+    uint8_t   msgBuf[SWAG_MAX_LEN_ERROR_MSG];
+    SwagSlice msg;
+    uint32_t  pushHasError;
+    uint32_t  pushTraceIndex;
 } SwagError;
 
 typedef struct SwagContext

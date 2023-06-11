@@ -11,7 +11,7 @@ func __seterr(value: string)
 
     @assert(cxt.errorIndex < MaxErrors)
     @memcpy(&cxt.errors[cxt.errorIndex].msgBuf, @dataof(value), len)
-    cxt.errors[cxt.errorIndex].msgLen = cast(u32) len
+    cxt.errors[cxt.errorIndex].msg = @mkstring(&cxt.errors[cxt.errorIndex].msgBuf, len)
     cxt.hasError = 1
 }
 
@@ -20,7 +20,7 @@ func __geterr()->string
     cxt := @getcontext()
     if !cxt.hasError
         return null
-    return @mkstring(&cxt.errors[cxt.errorIndex].msgBuf[0], cxt.errors[cxt.errorIndex].msgLen)
+    return cxt.errors[cxt.errorIndex].msg
 }
 
 func __pusherr()
