@@ -232,7 +232,7 @@ struct BuildCfg
     bool     debugAllocator             = true;
     bool     debugAllocatorCaptureStack = true;
     bool     debugAllocatorLeaks        = true;
-    bool     stackTrace                 = true;
+    bool     errorStackTrace            = true;
 
     // Warnings
     SwagSlice warnAsErrors;

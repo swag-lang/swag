@@ -78,7 +78,7 @@ func open(fullname: string, mode: FileMode, access: FileAccess, share: FileShare
         wShare |= FILE_SHARE_DELETE
 
     winPath := Utf16.toZeroTerminated(fullname)
-    hFile := try CreateFileW(@dataof(winPath), wAccess, wShare, null, wMode, FILE_ATTRIBUTE_NORMAL, null);
+    hFile := CreateFileW(@dataof(winPath), wAccess, wShare, null, wMode, FILE_ATTRIBUTE_NORMAL, null);
 
     result.name    = fullname
     result.handle  = cast(FileHandle) hFile
@@ -90,13 +90,13 @@ func open(fullname: string, mode: FileMode, access: FileAccess, share: FileShare
 // Creates a new file stream for reading
 func openRead(fullname: string)->FileStream throw
 {
-    return try open(fullname, FileMode.Open, FileAccess.Read, FileShare.Read)
+    return open(fullname, FileMode.Open, FileAccess.Read, FileShare.Read)
 }
 
 // Creates a new file stream for writing
 func openWrite(fullname: string)->FileStream throw
 {
-    return try open(fullname, FileMode.Create, FileAccess.Write, FileShare.Zero)
+    return open(fullname, FileMode.Create, FileAccess.Write, FileShare.Zero)
 }
 
 // Locate file in the file explorer

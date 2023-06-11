@@ -16,7 +16,7 @@ bool ByteCodeGenJob::emitGetErr(ByteCodeGenContext* context)
 
 bool ByteCodeGenJob::emitInitStackTrace(ByteCodeGenContext* context)
 {
-    if (context->sourceFile->module->buildCfg.stackTrace)
+    if (context->sourceFile->module->buildCfg.errorStackTrace)
     {
         PushICFlags ic(context, BCI_TRYCATCH);
         EMIT_INST0(context, ByteCodeOp::InternalInitStackTrace);
@@ -49,7 +49,7 @@ bool ByteCodeGenJob::emitTryThrowExit(ByteCodeGenContext* context, AstNode* from
         context->tryCatchScope--;
         EMIT_INST0(context, ByteCodeOp::InternalPopErr);
 
-        if (context->sourceFile->module->buildCfg.stackTrace)
+        if (context->sourceFile->module->buildCfg.errorStackTrace)
         {
             auto         r0 = reserveRegisterRC(context);
             uint32_t     storageOffset;
@@ -210,7 +210,7 @@ bool ByteCodeGenJob::emitThrow(ByteCodeGenContext* context)
         computeSourceLocation(context, node, &storageOffset, &storageSegment);
 
         auto r1 = reserveRegisterRC(context);
-        if (context->sourceFile->module->buildCfg.stackTrace)
+        if (context->sourceFile->module->buildCfg.errorStackTrace)
             EMIT_INST0(context, ByteCodeOp::InternalInitStackTrace);
         emitMakeSegPointer(context, storageSegment, storageOffset, r1);
         EMIT_INST3(context, ByteCodeOp::IntrinsicPanic, expr->resultRegisterRC[0], expr->resultRegisterRC[1], r1);

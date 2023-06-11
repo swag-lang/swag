@@ -2188,7 +2188,7 @@ bool ByteCodeGenJob::emitBeforeFuncDeclContent(ByteCodeGenContext* context)
     // Clear stack trace when entering a #<function>
     if (funcNode->attributeFlags & ATTRIBUTE_SHARP_FUNC)
     {
-        if (context->sourceFile->module->buildCfg.stackTrace)
+        if (context->sourceFile->module->buildCfg.errorStackTrace)
             EMIT_INST0(context, ByteCodeOp::InternalInitStackTrace);
     }
 

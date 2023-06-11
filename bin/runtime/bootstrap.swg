@@ -366,6 +366,7 @@ namespace Swag
     const MaxErrors = 32         // Maximum nested errors
     const MaxTraces = 32         // Maximum error traces
 
+    // Store a 'throw' error informations
     struct Error
     {
         msgBuf:         [MaxLenErrorMsg] u8     // Buffer to store the error message
@@ -707,7 +708,7 @@ namespace Swag
         debugAllocator              = true                // Use Swag.DebugAllocator by default
         debugAllocatorCaptureStack  = true                // Capture the call stack for each allocation
         debugAllocatorLeaks         = true                // Detect memory leaks
-        stackTrace                  = true                // Add stack trace in case an error is raised
+        errorStackTrace             = true                // Add stack trace in case a 'throw' is raised
 
         warnAsErrors:           string  // Force some warnings to be treated as errors. Format is "wrnXXXX|wrnXXXX..."
         warnAsWarning:          string  // Override 'warnAsErrors', restoring warnings as warnings

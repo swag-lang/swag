@@ -163,7 +163,7 @@ void BackendX64::emitCall(X64Gen& pp, TypeInfoFuncAttr* typeFunc, const Utf8& fu
     {
         if (typeFunc->declNode && typeFunc->declNode->sourceFile && typeFunc->declNode->sourceFile->module)
         {
-            if (typeFunc->declNode->sourceFile->module->buildCfg.stackTrace)
+            if (typeFunc->declNode->sourceFile->module->buildCfg.errorStackTrace)
             {
                 concat.addU8(0x90); // nop
             }
