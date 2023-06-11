@@ -711,7 +711,7 @@ Some identifiers can also start with <code>@</code>. This indicates an <b>intrin
 </h3></p>
 <p></p>
 <pre><code><span style="color:#B4B44A">@index</span><span style="color:#0">
-</span><span style="color:#B4B44A">@err</span><span style="color:#0">
+</span><span style="color:#B4B44A">@errmsg</span><span style="color:#0">
 </span><span style="color:#B4B44A">@alias0</span><span style="color:#0">
 </span><span style="color:#B4B44A">@alias1</span><span style="color:#0">
 </span><span style="color:#B4B44A">@alias2</span><span style="color:#0"> </span><span style="color:#6A9955">// and more generally @aliasN</span><span style="color:#0">
@@ -4932,7 +4932,7 @@ All intrinsics start with <code>@</code>, which is reserved for them.</br>
 </span><span style="color:#B4B44A">@itftableof</span><span style="color:#0">()
 
 </span><span style="color:#B4B44A">@index</span><span style="color:#0">
-</span><span style="color:#B4B44A">@err</span></code></pre><p><h3 id="Memory related">Memory related</br>
+</span><span style="color:#B4B44A">@errmsg</span></code></pre><p><h3 id="Memory related">Memory related</br>
 </h3></p>
 <p></p>
 <pre><code><span style="color:#3186CD">func</span><span style="color:#0"> </span><span style="color:#F2470C">@alloc</span><span style="color:#0">(size: </span><span style="color:#ED9A11">u64</span><span style="color:#0">)->*</span><span style="color:#ED9A11">void</span><span style="color:#0">;
@@ -5833,18 +5833,18 @@ A function that can return an error must be marked with <code>throw</code>. It c
     }
 
     </span><span style="color:#B040BE">return</span><span style="color:#0"> </span><span style="color:#B4B44A">@countof</span><span style="color:#0">(name)
-}</span></code></pre><p>The caller will then have to deal with the error in some way. It can <code>catch</code> it, and test (or not) its value with the <code>@err</code> intrinsic. The execution will continue at the call site.</br>
+}</span></code></pre><p>The caller will then have to deal with the error in some way. It can <code>catch</code> it, and test (or not) its value with the <code>@errmsg</code> intrinsic. The execution will continue at the call site.</br>
 </p>
 <pre><code><span style="color:#3186CD">func</span><span style="color:#0"> </span><span style="color:#FF6A00">myFunc</span><span style="color:#0">()
 {
     </span><span style="color:#6A9955">// Dismiss the eventual error with 'catch' and continue execution</span><span style="color:#0">
     cpt := </span><span style="color:#3186CD">catch</span><span style="color:#0"> </span><span style="color:#FF6A00">count</span><span style="color:#0">(</span><span style="color:#BB6643">"fileName"</span><span style="color:#0">)
 
-    </span><span style="color:#6A9955">// And test it with @err, which returns the 'throw' corresponding string</span><span style="color:#0">
-    </span><span style="color:#B040BE">if</span><span style="color:#0"> </span><span style="color:#B4B44A">@err</span><span style="color:#0">
+    </span><span style="color:#6A9955">// And test it with @errmsg, which returns the 'throw' corresponding string</span><span style="color:#0">
+    </span><span style="color:#B040BE">if</span><span style="color:#0"> </span><span style="color:#B4B44A">@errmsg</span><span style="color:#0">
     {
         </span><span style="color:#B4B44A">@assert</span><span style="color:#0">(cpt == </span><span style="color:#74A35B">0</span><span style="color:#0">)
-        </span><span style="color:#B4B44A">@print</span><span style="color:#0">(</span><span style="color:#B4B44A">@err</span><span style="color:#0">)
+        </span><span style="color:#B4B44A">@print</span><span style="color:#0">(</span><span style="color:#B4B44A">@errmsg</span><span style="color:#0">)
         </span><span style="color:#B040BE">return</span><span style="color:#0">
     }
 
@@ -5889,7 +5889,7 @@ Here, the caller of <code>myFunc1</code> will have to deal with the error at its
     }
 
     </span><span style="color:#6A9955">// Works also for 'catch' if you do not want to deal with the error message.</span><span style="color:#0">
-    </span><span style="color:#6A9955">// '@err' in that case is not really relevant.</span><span style="color:#0">
+    </span><span style="color:#6A9955">// '@errmsg' in that case is not really relevant.</span><span style="color:#0">
     </span><span style="color:#3186CD">catch</span><span style="color:#0">
     {
         cpt4 := </span><span style="color:#FF6A00">count</span><span style="color:#0">(</span><span style="color:#BB6643">"filename"</span><span style="color:#0">)
@@ -5920,7 +5920,7 @@ Here, the caller of <code>myFunc1</code> will have to deal with the error at its
 }
 
 </span><span style="color:#3186CD">catch</span><span style="color:#0"> </span><span style="color:#FF6A00">mySubFunc1</span><span style="color:#0">()
-</span><span style="color:#B4B44A">@assert</span><span style="color:#0">(</span><span style="color:#B4B44A">@err</span><span style="color:#0"> == </span><span style="color:#BB6643">"error"</span><span style="color:#0">)</span></code></pre><p><h3 id="defer">defer</br>
+</span><span style="color:#B4B44A">@assert</span><span style="color:#0">(</span><span style="color:#B4B44A">@errmsg</span><span style="color:#0"> == </span><span style="color:#BB6643">"error"</span><span style="color:#0">)</span></code></pre><p><h3 id="defer">defer</br>
 </h3></p>
 <p><code>defer</code> can have parameters like <code>defer(err)</code> or <code>defer(noerr)</code> to control if it should be executed depending on the error status.</br>
 </p>
