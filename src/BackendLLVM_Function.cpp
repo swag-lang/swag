@@ -4256,7 +4256,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         {
             auto r0 = GEP64(allocR, ip->a.u32);
             auto ra = builder.CreateLoad(PTR_I8_TY(), r0);
-            auto v0 = GEP8_PTR_I32(ra, offsetof(SwagContext, errorMsgLen));
+            auto v0 = GEP8_PTR_I32(ra, offsetof(SwagContext, errorIndex));
             builder.CreateStore(pp.cst0_i32, v0);
             break;
         }
