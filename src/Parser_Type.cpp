@@ -472,54 +472,14 @@ bool Parser::doTupleOrAnonymousType(AstNode* parent, AstNode** result, bool isCo
     return true;
 }
 
-bool Parser::doTypeExpression(AstNode* parent, uint32_t exprFlags, AstNode** result)
+bool Parser::doSubTypeExpression(AstNode* parent, uint32_t exprFlags, AstNode** result)
 {
-    // Code
-    if (token.id == TokenId::KwdCode)
-    {
-        auto node = Ast::newTypeExpression(sourceFile, parent, this);
-        *result   = node;
-        node->flags |= AST_NO_BYTECODE_CHILDS;
-        node->typeInfo = g_TypeMgr->typeInfoCode;
-        node->typeFlags |= TYPEFLAG_IS_CODE;
-        SWAG_CHECK(eatToken());
-        return true;
-    }
-
     bool inTypeVarDecl = exprFlags & EXPR_FLAG_IN_VAR_DECL;
 
     // This is a lambda
     if (token.id == TokenId::KwdFunc || token.id == TokenId::KwdClosure || token.id == TokenId::KwdMethod || token.id == TokenId::KwdConstMethod)
     {
         return doLambdaClosureType(parent, result, inTypeVarDecl);
-    }
-
-    // retval
-    if (token.id == TokenId::KwdRetVal)
-    {
-        auto node         = Ast::newTypeExpression(sourceFile, parent, this);
-        *result           = node;
-        node->semanticFct = SemanticJob::resolveRetVal;
-        node->flags |= AST_NO_BYTECODE_CHILDS;
-        node->typeFlags |= TYPEFLAG_RETVAL;
-
-        // retval type can be followed by structure initializer, like a normal struct
-        // In that case, we want the identifier pipeline to be called on it (to check
-        // parameters like a normal struct).
-        // So we create an identifier, that will be matched with the type alias automatically
-        // created in the function.
-        SWAG_CHECK(eatToken());
-        if (!(token.flags & TOKENPARSE_LAST_EOL) && token.id == TokenId::SymLeftCurly)
-        {
-            node->identifier = Ast::newIdentifierRef(sourceFile, g_LangSpec->name_retval, node, this);
-            auto id          = CastAst<AstIdentifier>(node->identifier->childs.back(), AstNodeKind::Identifier);
-            SWAG_CHECK(eatToken());
-            SWAG_CHECK(doFuncCallParameters(id, &id->callParameters, TokenId::SymRightCurly));
-            id->flags |= AST_IN_TYPE_VAR_DECLARATION;
-            id->callParameters->specFlags |= AstFuncCallParams::SPECFLAG_CALL_FOR_STRUCT;
-        }
-
-        return true;
     }
 
     // Const keyword
@@ -802,6 +762,52 @@ bool Parser::doTypeExpression(AstNode* parent, uint32_t exprFlags, AstNode** res
 
     // Generic error
     return error(token, Fmt(Err(Syn0066), token.ctext()));
+}
+
+bool Parser::doTypeExpression(AstNode* parent, uint32_t exprFlags, AstNode** result)
+{
+    // Code
+    if (token.id == TokenId::KwdCode)
+    {
+        auto node = Ast::newTypeExpression(sourceFile, parent, this);
+        *result   = node;
+        node->flags |= AST_NO_BYTECODE_CHILDS;
+        node->typeInfo = g_TypeMgr->typeInfoCode;
+        node->typeFlags |= TYPEFLAG_IS_CODE;
+        SWAG_CHECK(eatToken());
+        return true;
+    }
+
+    // retval
+    if (token.id == TokenId::KwdRetVal)
+    {
+        auto node         = Ast::newTypeExpression(sourceFile, parent, this);
+        *result           = node;
+        node->semanticFct = SemanticJob::resolveRetVal;
+        node->flags |= AST_NO_BYTECODE_CHILDS;
+        node->typeFlags |= TYPEFLAG_RETVAL;
+
+        // retval type can be followed by structure initializer, like a normal struct
+        // In that case, we want the identifier pipeline to be called on it (to check
+        // parameters like a normal struct).
+        // So we create an identifier, that will be matched with the type alias automatically
+        // created in the function.
+        SWAG_CHECK(eatToken());
+        if (!(token.flags & TOKENPARSE_LAST_EOL) && token.id == TokenId::SymLeftCurly)
+        {
+            node->identifier = Ast::newIdentifierRef(sourceFile, g_LangSpec->name_retval, node, this);
+            auto id          = CastAst<AstIdentifier>(node->identifier->childs.back(), AstNodeKind::Identifier);
+            SWAG_CHECK(eatToken());
+            SWAG_CHECK(doFuncCallParameters(id, &id->callParameters, TokenId::SymRightCurly));
+            id->flags |= AST_IN_TYPE_VAR_DECLARATION;
+            id->callParameters->specFlags |= AstFuncCallParams::SPECFLAG_CALL_FOR_STRUCT;
+        }
+
+        return true;
+    }
+
+    SWAG_CHECK(doSubTypeExpression(parent, exprFlags, result));
+    return true;
 }
 
 bool Parser::doCast(AstNode* parent, AstNode** result)
