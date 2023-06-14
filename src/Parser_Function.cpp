@@ -231,11 +231,9 @@ bool Parser::doFuncDeclParameter(AstNode* parent, bool acceptMissingType, bool* 
         else
         {
             SWAG_VERIFY(paramNode->ownerStructScope->kind == ScopeKind::Struct, error(token, Err(Syn0027)));
-            auto typeNode         = Ast::newTypeExpression(sourceFile, paramNode);
-            typeNode->ptrCount    = 1;
-            typeNode->ptrFlags[0] = isConst ? AstTypeExpression::PTR_CONST : 0;
+            auto typeNode = Ast::newTypeExpression(sourceFile, paramNode);
             typeNode->typeFlags |= isConst ? TYPEFLAG_IS_CONST : 0;
-            typeNode->typeFlags |= TYPEFLAG_IS_SELF;
+            typeNode->typeFlags |= TYPEFLAG_IS_SELF | TYPEFLAG_IS_PTR | TYPEFLAG_IS_SUB_TYPE;
             if (paramNode->flags & AST_DECL_USING)
                 typeNode->typeFlags |= TYPEFLAG_USING;
             typeNode->identifier = Ast::newIdentifierRef(sourceFile, paramNode->ownerStructScope->name, typeNode, this);
@@ -435,8 +433,7 @@ bool Parser::doFuncDeclParameters(AstNode* parent, AstNode** result, bool accept
             paramNode->specFlags |= AstVarDecl::SPECFLAG_GENERATED_SELF;
             paramNode->token.text = g_LangSpec->name_self;
             auto typeNode         = Ast::newTypeExpression(sourceFile, paramNode);
-            typeNode->ptrCount    = 1;
-            typeNode->typeFlags   = TYPEFLAG_IS_SELF;
+            typeNode->typeFlags |= TYPEFLAG_IS_SELF | TYPEFLAG_IS_PTR | TYPEFLAG_IS_SUB_TYPE;
             if (!isItfMethod)
                 typeNode->typeFlags |= TYPEFLAG_USING;
             if (isConstMethod)

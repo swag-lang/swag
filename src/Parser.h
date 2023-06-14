@@ -23,6 +23,7 @@ struct AstWith;
 struct AstTypeLambda;
 struct Module;
 struct JobContext;
+struct AstTypeExpression;
 
 enum class AstNodeKind : uint8_t;
 
@@ -128,6 +129,7 @@ struct Parser
     bool doVarDecl(AstNode* parent, AstNode** result);
     bool doVarDecl(AstNode* parent, AstNode** result, AstNodeKind kind);
     bool doAlias(AstNode* parent, AstNode** result);
+    bool doSingleTypeExpression(AstTypeExpression* node, AstNode* parent, uint32_t exprFlags, AstNode** result);
     bool doSubTypeExpression(AstNode* parent, uint32_t exprFlags, AstNode** result);
     bool doTypeExpression(AstNode* parent, uint32_t exprFlags, AstNode** result);
     bool doLambdaClosureType(AstNode* parent, AstNode** result, bool inTypeVarDecl = false);

@@ -973,8 +973,13 @@ bool AstOutput::outputType(OutputContext& context, Concat& concat, AstTypeExpres
         CONCAT_FIXED_STR(concat, "const ");
 
     if (node->arrayDim == UINT8_MAX)
+    {
         CONCAT_FIXED_STR(concat, "[] ");
-    else if (node->arrayDim)
+        SWAG_CHECK(outputNode(context, concat, node->childs.front()));
+        return true;
+    }
+
+    if (node->arrayDim)
     {
         CONCAT_FIXED_STR(concat, "[");
         for (int i = 0; i < node->arrayDim; i++)
@@ -985,21 +990,29 @@ bool AstOutput::outputType(OutputContext& context, Concat& concat, AstTypeExpres
         }
 
         CONCAT_FIXED_STR(concat, "] ");
-
-        if (node->typeFlags & TYPEFLAG_IS_CONST_SLICE)
-            CONCAT_FIXED_STR(concat, "const [..] ");
-        else if (node->typeFlags & TYPEFLAG_IS_SLICE)
-            CONCAT_FIXED_STR(concat, "[..] ");
+        SWAG_CHECK(outputNode(context, concat, node->childs.front()));
+        return true;
     }
-    else if (node->typeFlags & TYPEFLAG_IS_SLICE)
-        CONCAT_FIXED_STR(concat, "[..] ");
 
-    for (int i = 0; i < node->ptrCount; i++)
+    if (node->typeFlags & TYPEFLAG_IS_SLICE)
     {
-        if (node->ptrFlags[i] & AstTypeExpression::PTR_ARITHMETIC)
-            concat.addChar('^');
-        else
-            concat.addChar('*');
+        CONCAT_FIXED_STR(concat, "[..] ");
+        SWAG_CHECK(outputNode(context, concat, node->childs.front()));
+        return true;
+    }
+
+    if (node->typeFlags & TYPEFLAG_IS_PTR && node->typeFlags & TYPEFLAG_IS_PTR_ARITHMETIC)
+    {
+        concat.addChar('^');
+        SWAG_CHECK(outputNode(context, concat, node->childs.front()));
+        return true;
+    }
+
+    if (node->typeFlags & TYPEFLAG_IS_PTR)
+    {
+        concat.addChar('*');
+        SWAG_CHECK(outputNode(context, concat, node->childs.front()));
+        return true;
     }
 
     if (node->identifier)

@@ -73,6 +73,13 @@ pt := cast(const [..] RGBPix) chunk.datas
 -------------------------------------
 Swag.TypeInfo, padding plus bon (passer le sizeof en u32)
 -------------------------------------
+variables de type void
+-------------------------------------
+variables de type const void
+-------------------------------------
+detection des pendingjobs deconne avec test si y'en a des vrais, car y'a des
+cycles cachés, du coup il n'affiche pas ce qui reste
+-------------------------------------
 @compilererror/warning with an optional hint for the error
 -------------------------------------
 fast math ? (faire les tests de float en u32/U64 comme avant la prise en charge de nan)

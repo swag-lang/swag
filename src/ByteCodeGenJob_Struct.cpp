@@ -1278,7 +1278,10 @@ void ByteCodeGenJob::emitStructParameters(ByteCodeGenContext* context, uint32_t 
         RegisterList r0 = reserveRegisterRC(context);
 
         auto typeExpression = CastAst<AstTypeExpression>(node->type, AstNodeKind::TypeExpression);
-        auto identifier     = CastAst<AstIdentifier>(typeExpression->identifier->childs.back(), AstNodeKind::Identifier);
+        auto typeId         = typeExpression;
+        while (typeId->typeFlags & TYPEFLAG_IS_SUB_TYPE)
+            typeId = CastAst<AstTypeExpression>(typeId->childs.back(), AstNodeKind::TypeExpression);
+        auto identifier = CastAst<AstIdentifier>(typeId->identifier->childs.back(), AstNodeKind::Identifier);
 
         if (identifier->callParameters)
         {
@@ -1330,7 +1333,9 @@ void ByteCodeGenJob::freeStructParametersRegisters(ByteCodeGenContext* context)
     if (node->type && (node->type->specFlags & AstType::SPECFLAG_HAS_STRUCT_PARAMETERS))
     {
         auto typeExpression = CastAst<AstTypeExpression>(node->type, AstNodeKind::TypeExpression);
-        auto identifier     = CastAst<AstIdentifier>(typeExpression->identifier->childs.back(), AstNodeKind::Identifier);
+        while (typeExpression->typeFlags & TYPEFLAG_IS_SUB_TYPE)
+            typeExpression = CastAst<AstTypeExpression>(typeExpression->childs.back(), AstNodeKind::TypeExpression);
+        auto identifier = CastAst<AstIdentifier>(typeExpression->identifier->childs.back(), AstNodeKind::Identifier);
         if (identifier->callParameters)
         {
             for (auto child : identifier->callParameters->childs)

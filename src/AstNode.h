@@ -775,35 +775,32 @@ struct AstType : public AstNode
     static const uint16_t SPECFLAG_HAS_STRUCT_PARAMETERS = 0x2000;
 };
 
-const uint16_t TYPEFLAG_ISREF          = 0x0001;
-const uint16_t TYPEFLAG_IS_SLICE       = 0x0002;
-const uint16_t TYPEFLAG_IS_CONST       = 0x0004;
-const uint16_t TYPEFLAG_IS_CODE        = 0x0008;
-const uint16_t TYPEFLAG_FORCE_CONST    = 0x0010;
-const uint16_t TYPEFLAG_IS_SELF        = 0x0020;
-const uint16_t TYPEFLAG_RETVAL         = 0x0040;
-const uint16_t TYPEFLAG_USING          = 0x0080;
-const uint16_t TYPEFLAG_IS_CONST_SLICE = 0x0100;
-const uint16_t TYPEFLAG_IS_REF         = 0x0200;
-const uint16_t TYPEFLAG_IS_MOVE_REF    = 0x0400;
+const uint16_t TYPEFLAG_IS_ARRAY          = 0x0001;
+const uint16_t TYPEFLAG_IS_SLICE          = 0x0002;
+const uint16_t TYPEFLAG_IS_CONST          = 0x0004;
+const uint16_t TYPEFLAG_IS_CODE           = 0x0008;
+const uint16_t TYPEFLAG_FORCE_CONST       = 0x0010;
+const uint16_t TYPEFLAG_IS_SELF           = 0x0020;
+const uint16_t TYPEFLAG_RETVAL            = 0x0040;
+const uint16_t TYPEFLAG_USING             = 0x0080;
+const uint16_t TYPEFLAG_IS_REF            = 0x0100;
+const uint16_t TYPEFLAG_IS_MOVE_REF       = 0x0200;
+const uint16_t TYPEFLAG_IS_PTR            = 0x0400;
+const uint16_t TYPEFLAG_IS_PTR_ARITHMETIC = 0x0800;
+const uint16_t TYPEFLAG_IS_SUB_TYPE       = 0x1000;
 
 struct AstTypeExpression : public AstType
 {
     static const uint16_t SPECFLAG_DONE_GEN = 0x0001;
-
-    static const int     MAX_PTR_COUNT  = 3;
-    static const uint8_t PTR_CONST      = 0x01;
-    static const uint8_t PTR_ARITHMETIC = 0x02;
+    static const uint8_t  PTR_ARITHMETIC    = 0x01;
 
     AstNode* clone(CloneContext& context);
 
     AstNode*  identifier;
     TypeInfo* typeFromLiteral;
 
-    uint8_t     ptrFlags[MAX_PTR_COUNT];
     LiteralType literalType;
     uint16_t    typeFlags;
-    uint8_t     ptrCount;
     uint8_t     arrayDim;
 };
 

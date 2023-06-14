@@ -996,7 +996,9 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
     if (node->type && (node->type->specFlags & AstType::SPECFLAG_HAS_STRUCT_PARAMETERS))
     {
         auto typeExpression = CastAst<AstTypeExpression>(node->type, AstNodeKind::TypeExpression);
-        auto identifier     = CastAst<AstIdentifier>(typeExpression->identifier->childs.back(), AstNodeKind::Identifier);
+        while (typeExpression->typeFlags & TYPEFLAG_IS_SUB_TYPE)
+            typeExpression = CastAst<AstTypeExpression>(typeExpression->childs.back(), AstNodeKind::TypeExpression);
+        auto identifier = CastAst<AstIdentifier>(typeExpression->identifier->childs.back(), AstNodeKind::Identifier);
 
         TypeInfoStruct* typeStruct = nullptr;
         if (node->typeInfo->isStruct())

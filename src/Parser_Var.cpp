@@ -334,6 +334,9 @@ bool Parser::doVarDecl(AstNode* parent, AstNode** result, AstNodeKind kind)
         if (type && type->kind == AstNodeKind::TypeExpression)
         {
             auto typeExpression = CastAst<AstTypeExpression>(type, AstNodeKind::TypeExpression);
+            while (typeExpression->typeFlags & TYPEFLAG_IS_SUB_TYPE)
+                typeExpression = CastAst<AstTypeExpression>(typeExpression->childs.back(), AstNodeKind::TypeExpression);
+
             if (typeExpression->identifier && typeExpression->identifier->kind == AstNodeKind::IdentifierRef)
             {
                 auto back = typeExpression->identifier->childs.back();
@@ -343,7 +346,9 @@ bool Parser::doVarDecl(AstNode* parent, AstNode** result, AstNodeKind kind)
                     if (identifier->callParameters)
                     {
                         typeExpression->flags &= ~AST_NO_BYTECODE_CHILDS;
+                        type->flags &= ~AST_NO_BYTECODE_CHILDS;
                         typeExpression->specFlags |= AstType::SPECFLAG_HAS_STRUCT_PARAMETERS;
+                        type->specFlags |= AstType::SPECFLAG_HAS_STRUCT_PARAMETERS;
                     }
                 }
             }

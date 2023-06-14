@@ -167,7 +167,7 @@ void initErrors()
     SWAG_ERROR(Syn0058, "expected a generic name or a type");
     SWAG_ERROR(Syn0059, "expected a left expression");
     SWAG_ERROR(Syn0060, "expected a literal type qualifier after '''");
-    SWAG_ERROR(Syn0061, "expected a pointer declaration '*' or '^' after 'const'");
+    SWAG_ERROR(Syn0061, nullptr);
     SWAG_ERROR(Syn0062, "expected a single identifier %s");
     SWAG_ERROR(Syn0063, "expected a struct name, found '%s'");
     SWAG_ERROR(Syn0064, "expected a top level instruction");
@@ -406,7 +406,7 @@ void initErrors()
     SWAG_ERROR(Err0299, "a non mutable variable should be explicitly initialized");
     SWAG_ERROR(Err0446, "a parameter of type 'cvarargs' cannot be passed from function to function");
     SWAG_ERROR(Err0040, "a partial type alias ('%s') for a generic struct instantiation is not supported");
-    SWAG_ERROR(Err0024, "a pointer to 'Swag.TypeInfo' should be 'const'");
+    SWAG_ERROR(Err0024, nullptr);
     SWAG_ERROR(Err0628, "a pointer type ('%s') cannot be visited with 'visit'");
     SWAG_ERROR(Err0300, "a reference should be explicitly initialized");
     SWAG_ERROR(Err0173, "a shift operand should be of type 'u32' and not '%s'");
@@ -916,7 +916,7 @@ void initErrors()
     SWAG_ERROR(Err0080, "ambiguous resolution of enum value '%s'");
     SWAG_ERROR(Err0144, "the enum value '%s' cannot be found in the enum '%s'");
     SWAG_ERROR(Err0147, "unexpected 'Swag.Compiler' attribute as 'Swag.Tls' has already been defined (and they are exclusive)");
-    SWAG_ERROR(Err0148, nullptr);
+    SWAG_ERROR(Err0148, "cannot declare an array of 'void' type");
     SWAG_ERROR(Err0149, nullptr);
     SWAG_ERROR(Err0250, nullptr);
     SWAG_ERROR(Err0251, nullptr);

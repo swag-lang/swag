@@ -297,6 +297,11 @@ bool SemanticJob::resolveType(SemanticContext* context)
         typeNode->typeInfo = typeNode->identifier->typeInfo;
         typeNode->inheritOrFlag(typeNode->identifier, AST_IS_GENERIC);
     }
+    else if (typeNode->typeFlags & TYPEFLAG_IS_SUB_TYPE)
+    {
+        SWAG_ASSERT(!typeNode->identifier || typeNode->identifier == typeNode->childs.back());
+        typeNode->typeInfo = typeNode->childs.back()->typeInfo;
+    }
     else
     {
         if (!typeNode->typeFromLiteral)
@@ -330,7 +335,7 @@ bool SemanticJob::resolveType(SemanticContext* context)
     SWAG_VERIFY(typeNode->typeInfo, Report::internalError(context->node, "resolveType, null type !"));
 
     // If type comes from an identifier, be sure it's a type
-    if (typeNode->identifier)
+    if (typeNode->identifier && !typeNode->identifier->childs.empty())
     {
         auto child = typeNode->identifier->childs.back();
         if (!child->typeInfo || !child->typeInfo->isNative(NativeTypeKind::Undefined))
@@ -347,7 +352,7 @@ bool SemanticJob::resolveType(SemanticContext* context)
                 {
                     Diagnostic  diag{child->sourceFile, child->token, Fmt(Err(Err0017), child->token.ctext(), Naming::aKindName(symName->kind).c_str())};
                     Diagnostic* note = Diagnostic::hereIs(symOver);
-                    if (typeNode->ptrCount && symName->kind == SymbolKind::Variable)
+                    if ((typeNode->typeFlags & TYPEFLAG_IS_PTR) && symName->kind == SymbolKind::Variable)
                     {
                         if (symOver->typeInfo->isPointer())
                         {
@@ -369,141 +374,28 @@ bool SemanticJob::resolveType(SemanticContext* context)
     }
 
     // In fact, this is a pointer
-    if (typeNode->ptrCount)
+    if (typeNode->typeFlags & TYPEFLAG_IS_PTR)
     {
-        auto             firstType  = typeNode->typeInfo;
-        TypeInfoPointer* ptrPointer = nullptr;
-
-        for (int i = 0; i < typeNode->ptrCount; i++)
-        {
-            bool isConst      = false;
-            bool isArithmetic = false;
-
-            if (typeNode->ptrFlags[i] & AstTypeExpression::PTR_CONST)
-                isConst = true;
-            else if (typeNode->typeFlags & TYPEFLAG_IS_CONST && i == 0)
-                isConst = true;
-            if (typeNode->ptrFlags[i] & AstTypeExpression::PTR_ARITHMETIC)
-                isArithmetic = true;
-
-            auto ptrFlags = (firstType->flags & TYPEINFO_GENERIC);
-            if (typeNode->typeFlags & TYPEFLAG_IS_SELF)
-                ptrFlags |= TYPEINFO_SELF;
-            if (typeNode->typeFlags & TYPEFLAG_USING)
-                ptrFlags |= TYPEINFO_HAS_USING;
-            if (isConst)
-                ptrFlags |= TYPEINFO_CONST;
-            if (isArithmetic)
-                ptrFlags |= TYPEINFO_POINTER_ARITHMETIC;
-            if (ptrFlags & TYPEINFO_GENERIC)
-                typeNode->flags |= AST_IS_GENERIC;
-
-            auto ptrPointer1 = g_TypeMgr->makePointerTo(firstType, ptrFlags);
-
-            if (ptrPointer)
-            {
-                auto newPtr = g_TypeMgr->makePointerTo(ptrPointer1, ptrPointer->flags);
-                if (typeNode->typeInfo == ptrPointer)
-                    typeNode->typeInfo = newPtr;
-            }
-
-            ptrPointer = ptrPointer1;
-
-            if (i == 0)
-                typeNode->typeInfo = ptrPointer;
-        }
+        auto ptrFlags = (typeNode->typeInfo->flags & TYPEINFO_GENERIC);
+        if (typeNode->typeFlags & TYPEFLAG_IS_SELF)
+            ptrFlags |= TYPEINFO_SELF;
+        if (typeNode->typeFlags & TYPEFLAG_USING)
+            ptrFlags |= TYPEINFO_HAS_USING;
+        if (typeNode->typeFlags & TYPEFLAG_IS_CONST)
+            ptrFlags |= TYPEINFO_CONST;
+        if (typeNode->typeFlags & TYPEFLAG_IS_PTR_ARITHMETIC)
+            ptrFlags |= TYPEINFO_POINTER_ARITHMETIC;
+        if (ptrFlags & TYPEINFO_GENERIC)
+            typeNode->flags |= AST_IS_GENERIC;
+        typeNode->typeInfo = g_TypeMgr->makePointerTo(typeNode->typeInfo, ptrFlags);
+        return true;
     }
 
-    // A struct function parameter is const
-    else if (!(typeNode->typeFlags & TYPEFLAG_IS_REF))
-    {
+    if (!(typeNode->typeFlags & TYPEFLAG_IS_REF))
         forceConstType(context, typeNode);
-    }
-
-    // In fact, this is an array
-    if (typeNode->arrayDim)
-    {
-        // Array of slice
-        if (typeNode->typeFlags & TYPEFLAG_IS_SLICE)
-        {
-            auto ptrSlice         = makeType<TypeInfoSlice>();
-            ptrSlice->pointedType = typeNode->typeInfo;
-            if (typeNode->typeFlags & TYPEFLAG_IS_CONST)
-                ptrSlice->flags |= TYPEINFO_CONST;
-            ptrSlice->flags |= (ptrSlice->pointedType->flags & TYPEINFO_GENERIC);
-            typeNode->typeInfo = ptrSlice;
-            ptrSlice->computeName();
-            if (typeNode->typeFlags & TYPEFLAG_IS_CONST_SLICE)
-                ptrSlice->setConst();
-        }
-
-        // Array without a specified size
-        if (typeNode->arrayDim == UINT8_MAX)
-        {
-            auto ptrArray         = makeType<TypeInfoArray>();
-            ptrArray->count       = UINT32_MAX;
-            ptrArray->totalCount  = UINT32_MAX;
-            ptrArray->pointedType = typeNode->typeInfo;
-            ptrArray->finalType   = typeNode->typeInfo;
-            if (typeNode->typeFlags & TYPEFLAG_IS_CONST)
-                ptrArray->flags |= TYPEINFO_CONST;
-            ptrArray->flags |= (ptrArray->finalType->flags & TYPEINFO_GENERIC);
-            ptrArray->sizeOf = 0;
-            ptrArray->computeName();
-            typeNode->typeInfo = ptrArray;
-        }
-        else
-        {
-            auto rawType    = typeNode->typeInfo;
-            auto totalCount = 1;
-            for (int i = typeNode->arrayDim - 1; i >= 0; i--)
-            {
-                auto child = typeNode->childs[i];
-
-                uint32_t count        = 0;
-                bool     genericCount = false;
-
-                if (!(child->flags & AST_VALUE_COMPUTED) && child->resolvedSymbolOverload && (child->resolvedSymbolOverload->flags & OVERLOAD_GENERIC))
-                {
-                    genericCount = true;
-                }
-                else
-                {
-                    SWAG_CHECK(checkIsConstExpr(context, child->flags & AST_VALUE_COMPUTED, child, Err(Err0021)));
-                    count = (uint32_t) child->computedValue->reg.u32;
-                }
-
-                auto childType = TypeManager::concreteType(child->typeInfo);
-                SWAG_VERIFY(childType->isNativeInteger(), context->report({child, Fmt(Err(Err0022), child->typeInfo->getDisplayNameC())}));
-                SWAG_CHECK(context->checkSizeOverflow("array", count * rawType->sizeOf, SWAG_LIMIT_ARRAY_SIZE));
-                SWAG_VERIFY(!child->isConstant0(), context->report({child, Err(Err0023)}));
-
-                auto ptrArray   = makeType<TypeInfoArray>();
-                ptrArray->count = count;
-                totalCount *= ptrArray->count;
-                SWAG_CHECK(context->checkSizeOverflow("array", totalCount * rawType->sizeOf, SWAG_LIMIT_ARRAY_SIZE));
-                ptrArray->totalCount  = totalCount;
-                ptrArray->pointedType = typeNode->typeInfo;
-                ptrArray->finalType   = rawType;
-                ptrArray->sizeOf      = ptrArray->count * ptrArray->pointedType->sizeOf;
-                if (typeNode->typeFlags & TYPEFLAG_IS_CONST)
-                    ptrArray->flags |= TYPEINFO_CONST;
-                ptrArray->flags |= (ptrArray->finalType->flags & TYPEINFO_GENERIC);
-
-                if (genericCount)
-                {
-                    ptrArray->flags |= TYPEINFO_GENERIC | TYPEINFO_GENERIC_COUNT;
-                    ptrArray->sizeNode = child;
-                }
-
-                ptrArray->computeName();
-                typeNode->typeInfo = ptrArray;
-            }
-        }
-    }
 
     // In fact, this is a slice
-    else if (typeNode->typeFlags & TYPEFLAG_IS_SLICE)
+    if (typeNode->typeFlags & TYPEFLAG_IS_SLICE)
     {
         auto ptrSlice         = makeType<TypeInfoSlice>();
         ptrSlice->pointedType = typeNode->typeInfo;
@@ -512,6 +404,7 @@ bool SemanticJob::resolveType(SemanticContext* context)
         ptrSlice->flags |= (ptrSlice->pointedType->flags & TYPEINFO_GENERIC);
         typeNode->typeInfo = ptrSlice;
         ptrSlice->computeName();
+        return true;
     }
 
     // In fact this is a reference
@@ -531,19 +424,86 @@ bool SemanticJob::resolveType(SemanticContext* context)
 
         auto typeRef       = g_TypeMgr->makePointerTo(typeNode->typeInfo, ptrFlags);
         typeNode->typeInfo = typeRef;
+        return true;
+    }
+
+    // In fact, this is an array
+    if (typeNode->typeFlags & TYPEFLAG_IS_ARRAY)
+    {
+        SWAG_ASSERT(typeNode->arrayDim);
+
+        // Array without a specified size
+        if (typeNode->arrayDim == UINT8_MAX)
+        {
+            auto ptrArray         = makeType<TypeInfoArray>();
+            ptrArray->count       = UINT32_MAX;
+            ptrArray->totalCount  = UINT32_MAX;
+            ptrArray->pointedType = typeNode->typeInfo;
+            ptrArray->finalType   = typeNode->typeInfo;
+            if (typeNode->typeFlags & TYPEFLAG_IS_CONST)
+                ptrArray->flags |= TYPEINFO_CONST;
+            ptrArray->flags |= (ptrArray->finalType->flags & TYPEINFO_GENERIC);
+            ptrArray->sizeOf = 0;
+            ptrArray->computeName();
+            typeNode->typeInfo = ptrArray;
+            return true;
+        }
+
+        auto rawType = typeNode->typeInfo;
+        SWAG_VERIFY(!rawType->isVoid(), context->report({typeNode->childs.back(), Err(Err0148)}));
+
+        auto totalCount = 1;
+        for (int i = typeNode->arrayDim - 1; i >= 0; i--)
+        {
+            auto child = typeNode->childs[i];
+
+            uint32_t count        = 0;
+            bool     genericCount = false;
+
+            if (!(child->flags & AST_VALUE_COMPUTED) && child->resolvedSymbolOverload && (child->resolvedSymbolOverload->flags & OVERLOAD_GENERIC))
+            {
+                genericCount = true;
+            }
+            else
+            {
+                SWAG_CHECK(checkIsConstExpr(context, child->flags & AST_VALUE_COMPUTED, child, Err(Err0021)));
+                count = (uint32_t) child->computedValue->reg.u32;
+            }
+
+            auto childType = TypeManager::concreteType(child->typeInfo);
+            SWAG_VERIFY(childType->isNativeInteger(), context->report({child, Fmt(Err(Err0022), child->typeInfo->getDisplayNameC())}));
+            SWAG_CHECK(context->checkSizeOverflow("array", count * rawType->sizeOf, SWAG_LIMIT_ARRAY_SIZE));
+            SWAG_VERIFY(!child->isConstant0(), context->report({child, Err(Err0023)}));
+
+            auto ptrArray   = makeType<TypeInfoArray>();
+            ptrArray->count = count;
+            totalCount *= ptrArray->count;
+            SWAG_CHECK(context->checkSizeOverflow("array", totalCount * rawType->sizeOf, SWAG_LIMIT_ARRAY_SIZE));
+            ptrArray->totalCount  = totalCount;
+            ptrArray->pointedType = typeNode->typeInfo;
+            ptrArray->finalType   = rawType;
+            ptrArray->sizeOf      = ptrArray->count * ptrArray->pointedType->sizeOf;
+            if (typeNode->typeFlags & TYPEFLAG_IS_CONST)
+                ptrArray->flags |= TYPEINFO_CONST;
+            ptrArray->flags |= (ptrArray->finalType->flags & TYPEINFO_GENERIC);
+
+            if (genericCount)
+            {
+                ptrArray->flags |= TYPEINFO_GENERIC | TYPEINFO_GENERIC_COUNT;
+                ptrArray->sizeNode = child;
+            }
+
+            ptrArray->computeName();
+            typeNode->typeInfo = ptrArray;
+        }
+
+        return true;
     }
 
     typeNode->allocateComputedValue();
     typeNode->computedValue->reg.pointer = (uint8_t*) typeNode->typeInfo;
     if (!(typeNode->specFlags & AstType::SPECFLAG_HAS_STRUCT_PARAMETERS))
         typeNode->flags |= AST_VALUE_COMPUTED | AST_CONST_EXPR | AST_NO_BYTECODE | AST_VALUE_IS_TYPEINFO;
-
-    // Is this a const pointer to a typeinfo ?
-    if (typeNode->typeInfo->isPointerToTypeInfo())
-    {
-        SWAG_VERIFY(typeNode->typeInfo->isConst(), context->report({typeNode, Err(Err0024), Hnt(Hnt0053)}));
-    }
-
     return true;
 }
 
