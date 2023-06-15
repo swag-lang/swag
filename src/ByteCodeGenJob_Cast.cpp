@@ -704,7 +704,7 @@ bool ByteCodeGenJob::emitCastToSlice(ByteCodeGenContext* context, AstNode* exprN
         transformResultToLinear2(context, exprNode);
         node->resultRegisterRC = exprNode->resultRegisterRC;
         auto inst              = EMIT_INST1(context, ByteCodeOp::SetImmediate64, node->resultRegisterRC[1]);
-        inst->b.u64            = fromTypeArray->count;
+        inst->b.u64            = fromTypeArray->sizeOf / toTypeSlice->pointedType->sizeOf;
     }
     else if (fromTypeInfo->isPointer())
     {
