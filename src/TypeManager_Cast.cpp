@@ -3043,13 +3043,21 @@ bool TypeManager::castToSlice(SemanticContext* context, TypeInfo* toType, TypeIn
         if ((!(castFlags & CASTFLAG_NO_IMPLICIT) && toTypeSlice->pointedType->isSame(fromTypeArray->pointedType, CASTFLAG_CAST)) ||
             (castFlags & CASTFLAG_EXPLICIT))
         {
-            if (fromNode && !(castFlags & CASTFLAG_JUST_CHECK))
-            {
-                fromNode->castedTypeInfo = fromNode->typeInfo;
-                fromNode->typeInfo       = toTypeSlice;
-            }
+            int s = toTypeSlice->pointedType->sizeOf;
+            int d = fromTypeArray->sizeOf;
+            SWAG_ASSERT(s != 0 || toTypeSlice->pointedType->isGeneric());
 
-            return true;
+            bool match = s == 0 || (d / s) * s == d;
+            if (match)
+            {
+                if (fromNode && !(castFlags & CASTFLAG_JUST_CHECK))
+                {
+                    fromNode->castedTypeInfo = fromNode->typeInfo;
+                    fromNode->typeInfo       = toTypeSlice;
+                }
+
+                return true;
+            }
         }
     }
     else if (fromType->isString())
