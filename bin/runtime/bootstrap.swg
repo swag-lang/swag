@@ -512,7 +512,7 @@ namespace Swag
     {
         fullname:   string                      // The full scoped name of the type
         name:       string                      // The unscoped name
-        sizeof:     u64                         // Size in bytes
+        sizeof:     u32                         // Size in bytes
         crc32:      u32                         // A unique CRC to identify the type
         flags       = TypeInfoFlags.Zero        // Some additional flags
         kind        = TypeInfoKind.Invalid      // The kind of the type

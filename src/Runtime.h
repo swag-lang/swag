@@ -337,7 +337,7 @@ struct ExportedTypeInfo
 {
     SwagSlice    fullName;
     SwagSlice    name;
-    uint64_t     sizeOf;
+    uint32_t     sizeOf;
     uint32_t     crc32;
     uint32_t     flags;
     TypeInfoKind kind;

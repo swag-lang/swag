@@ -71,8 +71,6 @@ TODO
 alias RGBPix = [3] u8
 pt := cast(const [..] RGBPix) chunk.datas
 -------------------------------------
-Swag.TypeInfo, padding plus bon (passer le sizeof en u32)
--------------------------------------
 variables de type void
 -------------------------------------
 variables de type const void
