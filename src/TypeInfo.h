@@ -114,7 +114,6 @@ enum class CastErrorType
     Zero = 0,
     Const,
     SliceArray,
-    SliceSlice,
 };
 
 struct BadSignatureInfos

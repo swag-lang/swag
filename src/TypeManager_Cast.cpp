@@ -3109,18 +3109,8 @@ bool TypeManager::castToSlice(SemanticContext* context, TypeInfo* toType, TypeIn
     else if (fromType->isSlice())
     {
         auto fromTypeSlice = CastTypeInfo<TypeInfoSlice>(fromType, TypeInfoKind::Slice);
-        if (fromTypeSlice->pointedType->isNative())
-        {
-            int s = toTypeSlice->pointedType->sizeOf;
-            int d = fromTypeSlice->pointedType->sizeOf;
-            if (d % s == 0 || s % d == 0)
-            {
-                if (castFlags & CASTFLAG_EXPLICIT)
-                    return true;
-            }
-            else
-                castErrorType = CastErrorType::SliceSlice;
-        }
+        if (castFlags & CASTFLAG_EXPLICIT || toTypeSlice->pointedType->isSame(fromTypeSlice->pointedType, CASTFLAG_CAST))
+            return true;
     }
 
     return castError(context, toType, fromType, fromNode, castFlags, castErrorType);
