@@ -229,6 +229,7 @@ bool SemanticJob::resolveType(SemanticContext* context)
     auto typeNode = CastAst<AstTypeExpression>(context->node, AstNodeKind::TypeExpression);
 
     // Array with predefined dimensions, we evaluate all dimensions as const
+    // Do it first because of potential pending
     if (typeNode->arrayDim && typeNode->arrayDim != UINT8_MAX)
     {
         for (int i = typeNode->arrayDim - 1; i >= 0; i--)
@@ -379,7 +380,7 @@ bool SemanticJob::resolveType(SemanticContext* context)
         auto ptrFlags = (typeNode->typeInfo->flags & TYPEINFO_GENERIC);
         if (typeNode->typeFlags & TYPEFLAG_IS_SELF)
             ptrFlags |= TYPEINFO_SELF;
-        if (typeNode->typeFlags & TYPEFLAG_USING)
+        if (typeNode->typeFlags & TYPEFLAG_HAS_USING)
             ptrFlags |= TYPEINFO_HAS_USING;
         if (typeNode->typeFlags & TYPEFLAG_IS_CONST)
             ptrFlags |= TYPEINFO_CONST;
@@ -504,6 +505,18 @@ bool SemanticJob::resolveType(SemanticContext* context)
     typeNode->computedValue->reg.pointer = (uint8_t*) typeNode->typeInfo;
     if (!(typeNode->specFlags & AstType::SPECFLAG_HAS_STRUCT_PARAMETERS))
         typeNode->flags |= AST_VALUE_COMPUTED | AST_CONST_EXPR | AST_NO_BYTECODE | AST_VALUE_IS_TYPEINFO;
+
+    // Be sure we do not have a useless user 'const'
+    auto typeC = TypeManager::concreteType(typeNode->typeInfo);
+    if (typeNode->typeFlags & TYPEFLAG_HAS_LOC_CONST &&
+        !typeC->isPointer() &&
+        !typeC->isArray() &&
+        !typeC->isStruct())
+    {
+        Diagnostic diag{typeNode->sourceFile, typeNode->locConst, Fmt(Err(Err0250), typeNode->typeInfo->getDisplayNameC())};
+        return context->report(diag);
+    }
+
     return true;
 }
 

@@ -1130,7 +1130,7 @@ bool SemanticJob::resolveRetVal(SemanticContext* context)
         if (parentNode->kind == AstNodeKind::Identifier)
             parentNode = parentNode->findParent(AstNodeKind::TypeExpression);
         auto typeExpr = CastAst<AstTypeExpression>(parentNode, AstNodeKind::TypeExpression);
-        typeExpr->typeFlags &= ~TYPEFLAG_RETVAL;
+        typeExpr->typeFlags &= ~TYPEFLAG_IS_RETVAL;
     }
 
     node->typeInfo = typeFct->returnType;

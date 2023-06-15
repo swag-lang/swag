@@ -552,7 +552,8 @@ bool Parser::doSubTypeExpression(AstNode* parent, uint32_t exprFlags, AstNode** 
     // Const keyword
     if (token.id == TokenId::KwdConst)
     {
-        node->typeFlags |= TYPEFLAG_IS_CONST;
+        node->locConst = token.startLocation;
+        node->typeFlags |= TYPEFLAG_IS_CONST | TYPEFLAG_HAS_LOC_CONST;
         SWAG_CHECK(eatToken());
     }
 
@@ -712,7 +713,7 @@ bool Parser::doTypeExpression(AstNode* parent, uint32_t exprFlags, AstNode** res
         *result           = node;
         node->semanticFct = SemanticJob::resolveRetVal;
         node->flags |= AST_NO_BYTECODE_CHILDS;
-        node->typeFlags |= TYPEFLAG_RETVAL;
+        node->typeFlags |= TYPEFLAG_IS_RETVAL;
 
         // retval type can be followed by structure initializer, like a normal struct
         // In that case, we want the identifier pipeline to be called on it (to check

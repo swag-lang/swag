@@ -781,13 +781,14 @@ const uint16_t TYPEFLAG_IS_CONST          = 0x0004;
 const uint16_t TYPEFLAG_IS_CODE           = 0x0008;
 const uint16_t TYPEFLAG_FORCE_CONST       = 0x0010;
 const uint16_t TYPEFLAG_IS_SELF           = 0x0020;
-const uint16_t TYPEFLAG_RETVAL            = 0x0040;
-const uint16_t TYPEFLAG_USING             = 0x0080;
+const uint16_t TYPEFLAG_IS_RETVAL         = 0x0040;
+const uint16_t TYPEFLAG_HAS_USING         = 0x0080;
 const uint16_t TYPEFLAG_IS_REF            = 0x0100;
 const uint16_t TYPEFLAG_IS_MOVE_REF       = 0x0200;
 const uint16_t TYPEFLAG_IS_PTR            = 0x0400;
 const uint16_t TYPEFLAG_IS_PTR_ARITHMETIC = 0x0800;
 const uint16_t TYPEFLAG_IS_SUB_TYPE       = 0x1000;
+const uint16_t TYPEFLAG_HAS_LOC_CONST     = 0x2000;
 
 struct AstTypeExpression : public AstType
 {
@@ -795,6 +796,8 @@ struct AstTypeExpression : public AstType
     static const uint8_t  PTR_ARITHMETIC    = 0x01;
 
     AstNode* clone(CloneContext& context);
+
+    SourceLocation locConst;
 
     AstNode*  identifier;
     TypeInfo* typeFromLiteral;

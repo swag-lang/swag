@@ -929,7 +929,7 @@ bool AstOutput::outputTypeTuple(OutputContext& context, Concat& concat, TypeInfo
 
 bool AstOutput::outputType(OutputContext& context, Concat& concat, AstTypeExpression* node)
 {
-    if (node->typeFlags & TYPEFLAG_RETVAL)
+    if (node->typeFlags & TYPEFLAG_IS_RETVAL)
     {
         CONCAT_FIXED_STR(concat, "retval");
         return true;

@@ -748,7 +748,7 @@ const GL_TEXTURE_COMPONENTS = GL_TEXTURE_INTERNAL_FORMAT
     func glColor3s(red: GLshort, green: GLshort, blue: GLshort);
     func glColor3sv(v: const *GLshort);
     func glColor3ub(red: GLubyte, green: GLubyte, blue: GLubyte);
-    func glColor3ubv(v: const GLubyte);
+    func glColor3ubv(v: GLubyte);
     func glColor3ui(red: GLuint, green: GLuint, blue: GLuint);
     func glColor3uiv(v: const *GLuint);
     func glColor3us(red: GLushort, green: GLushort, blue: GLushort);
@@ -764,11 +764,11 @@ const GL_TEXTURE_COMPONENTS = GL_TEXTURE_INTERNAL_FORMAT
     func glColor4s(red: GLshort, green: GLshort, blue: GLshort, alpha: GLshort);
     func glColor4sv(v: const *GLshort);
     func glColor4ub(red: GLubyte, green: GLubyte, blue: GLubyte, alpha: GLubyte);
-    func glColor4ubv(v: const GLubyte);
+    func glColor4ubv(v: GLubyte);
     func glColor4ui(red: GLuint, green: GLuint, blue: GLuint, alpha: GLuint);
     func glColor4uiv(v: const *GLuint);
     func glColor4us(red: GLushort, green: GLushort, blue: GLushort, alpha: GLushort);
-    func glColor4usv(v: const GLushort);
+    func glColor4usv(v: GLushort);
     func glColorMask(red: GLboolean, green: GLboolean, blue: GLboolean, alpha: GLboolean);
     func glColorMaterial(face: GLenum, mode: GLenum);
     func glColorPointer(size: GLint, type: GLenum, stride: GLsizei, pointer: const *GLvoid);

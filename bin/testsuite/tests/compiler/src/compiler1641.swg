@@ -3,7 +3,7 @@ interface ITOTO
     ptr: func(self)
 }
 
-var val: const ITOTO
+var val: ITOTO
 
 func fc(x: ITOTO)
 {

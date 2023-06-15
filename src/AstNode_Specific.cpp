@@ -761,6 +761,7 @@ AstNode* AstTypeExpression::clone(CloneContext& context)
     newNode->literalType     = literalType;
     newNode->arrayDim        = arrayDim;
     newNode->typeFlags       = typeFlags;
+    newNode->locConst        = locConst;
 
     return newNode;
 }

@@ -917,8 +917,8 @@ void initErrors()
     SWAG_ERROR(Err0144, "the enum value '%s' cannot be found in the enum '%s'");
     SWAG_ERROR(Err0147, "unexpected 'Swag.Compiler' attribute as 'Swag.Tls' has already been defined (and they are exclusive)");
     SWAG_ERROR(Err0148, "cannot declare an array of 'void' type");
-    SWAG_ERROR(Err0149, nullptr);
-    SWAG_ERROR(Err0250, nullptr);
+    SWAG_ERROR(Err0149, "cannot declare a variable or a constant of 'void' type");
+    SWAG_ERROR(Err0250, "unexpected 'const' for type '%s'");
     SWAG_ERROR(Err0251, nullptr);
     SWAG_ERROR(Err0280, nullptr);
     SWAG_ERROR(Err0289, nullptr);

@@ -224,7 +224,7 @@ bool Parser::doFuncDeclParameter(AstNode* parent, bool acceptMissingType, bool* 
             auto typeNode = Ast::newTypeExpression(sourceFile, paramNode);
             typeNode->typeFlags |= TYPEFLAG_IS_SELF;
             if (paramNode->flags & AST_DECL_USING)
-                typeNode->typeFlags |= TYPEFLAG_USING;
+                typeNode->typeFlags |= TYPEFLAG_HAS_USING;
             typeNode->identifier = Ast::newIdentifierRef(sourceFile, paramNode->ownerStructScope->name, typeNode, this);
             paramNode->type      = typeNode;
         }
@@ -235,7 +235,7 @@ bool Parser::doFuncDeclParameter(AstNode* parent, bool acceptMissingType, bool* 
             typeNode->typeFlags |= isConst ? TYPEFLAG_IS_CONST : 0;
             typeNode->typeFlags |= TYPEFLAG_IS_SELF | TYPEFLAG_IS_PTR | TYPEFLAG_IS_SUB_TYPE;
             if (paramNode->flags & AST_DECL_USING)
-                typeNode->typeFlags |= TYPEFLAG_USING;
+                typeNode->typeFlags |= TYPEFLAG_HAS_USING;
             typeNode->identifier = Ast::newIdentifierRef(sourceFile, paramNode->ownerStructScope->name, typeNode, this);
             paramNode->type      = typeNode;
         }
@@ -435,7 +435,7 @@ bool Parser::doFuncDeclParameters(AstNode* parent, AstNode** result, bool accept
             auto typeNode         = Ast::newTypeExpression(sourceFile, paramNode);
             typeNode->typeFlags |= TYPEFLAG_IS_SELF | TYPEFLAG_IS_PTR | TYPEFLAG_IS_SUB_TYPE;
             if (!isItfMethod)
-                typeNode->typeFlags |= TYPEFLAG_USING;
+                typeNode->typeFlags |= TYPEFLAG_HAS_USING;
             if (isConstMethod)
                 typeNode->typeFlags |= TYPEFLAG_IS_CONST;
             typeNode->identifier = Ast::newIdentifierRef(sourceFile, paramNode->ownerStructScope->name, typeNode, this);

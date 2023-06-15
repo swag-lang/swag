@@ -985,11 +985,12 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
         }
     }
 
-    // Type should be a correct one
-    SWAG_VERIFY(!node->typeInfo->isPointerNull(), context->report({node, Err(Err0308)}));
-
     // We should have a type here !
     SWAG_VERIFY(node->typeInfo, context->report({node, Fmt(Err(Err0309), Naming::kindName(node).c_str(), node->token.ctext())}));
+
+    // Type should be a correct one
+    SWAG_VERIFY(!node->typeInfo->isPointerNull(), context->report({node, Err(Err0308)}));
+    SWAG_VERIFY(!node->typeInfo->isVoid(), context->report({node, Err(Err0149)}));
 
     // Determine if the call parameters cover everything (to avoid calling default initialization)
     // i.e. set AST_HAS_FULL_STRUCT_PARAMETERS
@@ -1226,7 +1227,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
         if (node->type && node->type->kind == AstNodeKind::TypeExpression)
         {
             auto typeExpr = CastAst<AstTypeExpression>(node->type, AstNodeKind::TypeExpression);
-            if (typeExpr->typeFlags & TYPEFLAG_RETVAL)
+            if (typeExpr->typeFlags & TYPEFLAG_IS_RETVAL)
             {
                 auto ownerFct   = getFunctionForReturn(node);
                 auto typeFunc   = CastTypeInfo<TypeInfoFuncAttr>(ownerFct->typeInfo, TypeInfoKind::FuncAttr);

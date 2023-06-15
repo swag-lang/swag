@@ -1,6 +1,6 @@
-//#global testerror
+#global testerror
 
 #test
 {
-    var x: const void
+    var x: void
 }

@@ -71,10 +71,6 @@ TODO
 alias RGBPix = [3] u8
 pt := cast(const [..] RGBPix) chunk.datas
 -------------------------------------
-variables de type void
--------------------------------------
-variables de type const void
--------------------------------------
 detection des pendingjobs deconne avec test si y'en a des vrais, car y'a des
 cycles cachés, du coup il n'affiche pas ce qui reste
 -------------------------------------
