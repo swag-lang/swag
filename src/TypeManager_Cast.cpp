@@ -341,17 +341,23 @@ bool TypeManager::tryOpCast(SemanticContext* context, TypeInfo* toType, TypeInfo
     return true;
 }
 
-void TypeManager::getCastErrorMsg(Utf8& msg, Utf8& hint, TypeInfo* toType, TypeInfo* fromType, uint64_t castFlags, bool forNote)
+void TypeManager::getCastErrorMsg(Utf8& msg, Utf8& hint, TypeInfo* toType, TypeInfo* fromType, uint64_t castFlags, CastErrorType castError, bool forNote)
 {
     msg.clear();
     hint.clear();
     if (!toType || !fromType)
         return;
 
-    if (castFlags & CASTFLAG_CONST_ERR)
+    if (castError == CastErrorType::Const)
     {
         hint = Hnt(Hnt0022);
         msg  = Fmt(ErrNte(Err0418, forNote), fromType->getDisplayNameC(), toType->getDisplayNameC());
+    }
+    else if (castError == CastErrorType::SliceArray)
+    {
+        auto to   = CastTypeInfo<TypeInfoSlice>(toType, TypeInfoKind::Slice);
+        auto from = CastTypeInfo<TypeInfoArray>(fromType, TypeInfoKind::Array);
+        hint      = Fmt(Hnt(Hnt0123), from->totalCount, from->finalType->getDisplayNameC(), to->pointedType->getDisplayNameC());
     }
     else if (toType->isPointerArithmetic() && !fromType->isPointerArithmetic())
     {
@@ -397,7 +403,7 @@ void TypeManager::getCastErrorMsg(Utf8& msg, Utf8& hint, TypeInfo* toType, TypeI
     }
 }
 
-bool TypeManager::castError(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* fromNode, uint64_t castFlags)
+bool TypeManager::castError(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* fromNode, uint64_t castFlags, CastErrorType castErrorType)
 {
     // Last minute change : convert 'fromType' (struct) to 'toType' with an opCast
     if (!(castFlags & CASTFLAG_NO_LAST_MINUTE))
@@ -412,12 +418,13 @@ bool TypeManager::castError(SemanticContext* context, TypeInfo* toType, TypeInfo
     context->castErrorToType   = toType;
     context->castErrorFromType = fromType;
     context->castErrorFlags    = castFlags;
+    context->castErrorType     = castErrorType;
 
     if (!(castFlags & CASTFLAG_JUST_CHECK))
     {
         // More specific message
         Utf8 hint, msg;
-        getCastErrorMsg(msg, hint, toType, fromType, castFlags);
+        getCastErrorMsg(msg, hint, toType, fromType, castFlags, castErrorType);
 
         SWAG_ASSERT(fromNode);
 
@@ -3029,7 +3036,8 @@ bool TypeManager::castToClosure(SemanticContext* context, TypeInfo* toType, Type
 
 bool TypeManager::castToSlice(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* fromNode, uint64_t castFlags)
 {
-    TypeInfoSlice* toTypeSlice = CastTypeInfo<TypeInfoSlice>(toType, TypeInfoKind::Slice);
+    CastErrorType  castErrorType = CastErrorType::Zero;
+    TypeInfoSlice* toTypeSlice   = CastTypeInfo<TypeInfoSlice>(toType, TypeInfoKind::Slice);
 
     if (fromType->isListArray())
     {
@@ -3058,6 +3066,8 @@ bool TypeManager::castToSlice(SemanticContext* context, TypeInfo* toType, TypeIn
 
                 return true;
             }
+            else
+                castErrorType = CastErrorType::SliceArray;
         }
     }
     else if (fromType->isString())
@@ -3108,10 +3118,12 @@ bool TypeManager::castToSlice(SemanticContext* context, TypeInfo* toType, TypeIn
                 if (castFlags & CASTFLAG_EXPLICIT)
                     return true;
             }
+            else
+                castErrorType = CastErrorType::SliceSlice;
         }
     }
 
-    return castError(context, toType, fromType, fromNode, castFlags);
+    return castError(context, toType, fromType, fromNode, castFlags, castErrorType);
 }
 
 TypeInfo* TypeManager::promoteUntyped(TypeInfo* typeInfo)
@@ -3619,7 +3631,7 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, Ty
                 if (diff)
                 {
                     if (!(castFlags & CASTFLAG_UNCONST))
-                        return castError(context, toType, fromType, fromNode, castFlags | CASTFLAG_CONST_ERR);
+                        return castError(context, toType, fromType, fromNode, castFlags, CastErrorType::Const);
 
                     // We can affect a const to an unconst if type is by copy, and we are in an affectation
                     if (!fromType->isStruct() &&
@@ -3627,7 +3639,7 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, Ty
                         !fromType->isArray() &&
                         !toType->isArray())
                     {
-                        return castError(context, toType, fromType, fromNode, castFlags | CASTFLAG_CONST_ERR);
+                        return castError(context, toType, fromType, fromNode, castFlags, CastErrorType::Const);
                     }
                 }
             }

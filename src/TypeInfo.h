@@ -109,6 +109,14 @@ enum class MatchResult
     MismatchReturnType,
 };
 
+enum class CastErrorType
+{
+    Zero = 0,
+    Const,
+    SliceArray,
+    SliceSlice,
+};
+
 struct BadSignatureInfos
 {
     Utf8           badGenMatch;
@@ -122,10 +130,11 @@ struct BadSignatureInfos
     ComputedValue* badGenValue2              = nullptr;
     MatchResult    matchResult               = MatchResult::Ok;
 
-    uint64_t castErrorFlags           = 0;
-    int      badSignatureParameterIdx = 0;
-    int      badSignatureNum1         = 0;
-    int      badSignatureNum2         = 0;
+    uint64_t      castErrorFlags           = 0;
+    CastErrorType castErrorType            = CastErrorType::Zero;
+    int           badSignatureParameterIdx = 0;
+    int           badSignatureNum1         = 0;
+    int           badSignatureNum2         = 0;
 
     void clear()
     {
@@ -140,6 +149,7 @@ struct BadSignatureInfos
         badGenValue2              = nullptr;
         matchResult               = MatchResult::Ok;
         castErrorFlags            = 0;
+        castErrorType             = CastErrorType::Zero;
         badSignatureParameterIdx  = -1;
         badSignatureNum1          = 0;
         badSignatureNum2          = 0;
