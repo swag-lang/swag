@@ -618,58 +618,10 @@ bool Parser::doSubTypeExpression(AstNode* parent, uint32_t exprFlags, AstNode** 
             }
         }
 
-        if (token.id == TokenId::SymLeftSquare)
-        {
-            if (node->typeFlags & TYPEFLAG_IS_SLICE)
-            {
-                Diagnostic diag{sourceFile, token, Fmt(Err(Syn0095), token.ctext())};
-                auto       note = Diagnostic::help(sourceFile, leftSquareToken, Hlp(Hlp0025));
-                return context->report(diag, note);
-            }
-            else
-            {
-                SWAG_CHECK(eatToken());
-                if (token.id == TokenId::SymDotDot)
-                {
-                    node->typeFlags |= TYPEFLAG_IS_SLICE;
-                    SWAG_CHECK(eatToken());
-                    SWAG_CHECK(eatToken(TokenId::SymRightSquare));
-                }
-                else
-                {
-                    Diagnostic diag{sourceFile, token, Fmt(Err(Syn0088), token.ctext())};
-                    auto       note = Diagnostic::help(Hlp(Hlp0024));
-                    return context->report(diag, note);
-                }
-            }
-        }
-
-        if (g_TokenFlags[(int) token.id] & TOKEN_SYM &&
-            token.id != TokenId::SymComma &&
-            token.id != TokenId::SymLeftCurly &&
-            token.id != TokenId::SymAsterisk &&
-            token.id != TokenId::SymCircumflex)
-        {
-            if (inTypeVarDecl)
-                return context->report({sourceFile, token, Fmt(Err(Syn0066), token.ctext())});
-
-            Diagnostic diag{sourceFile, token, Fmt(Err(Syn0066), token.ctext())};
-            return context->report(diag);
-        }
-
         if (token.id == TokenId::SymComma)
         {
-            // Special error if inside a function call parameter
-            auto callParam = node->findParent(AstNodeKind::FuncCallParam);
-            if (callParam)
-            {
-                Diagnostic diag{sourceFile, token, Fmt(Err(Syn0096), token.ctext())};
-                return context->report(diag);
-            }
-            else
-            {
-                return error(token, Fmt(Err(Syn0096), token.ctext()));
-            }
+            Diagnostic diag{sourceFile, token, Fmt(Err(Syn0096), token.ctext())};
+            return context->report(diag);
         }
 
         node->typeFlags |= TYPEFLAG_IS_SUB_TYPE;
