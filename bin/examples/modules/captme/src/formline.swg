@@ -108,6 +108,57 @@ impl IForm for FormLine
         result.y = Math.min(ya, yb) - bSize
         result.width = Math.abs(xb - xa) + bSize * 2
         result.height = Math.abs(yb - ya) + bSize * 2
+
+        va := Math.Vector2{xa, ya}
+        vb := Math.Vector2{xb, yb}
+
+        /////
+        d := va - vb
+        d.normalizeSafe()
+        d = d.cross(1)
+
+        da := d * (borderSize * startSize * 0.5)
+        db := d * (borderSize * endSize * 0.5)
+
+        va1 := va + da
+        va2 := va - da
+        vb1 := vb + db
+        vb2 := vb - db
+
+        xx0 := Math.min(va1.x, va2.x)
+        xx0 = Math.min(xx0, vb1.x, vb2.x)
+
+        yy0 := Math.min(va1.y, va2.y)
+        yy0 = Math.min(yy0, vb1.y, vb2.y)
+
+        xx1 := Math.max(va1.x, va2.x)
+        xx1 = Math.max(xx1, vb1.x, vb2.x)
+
+        yy1 := Math.max(va1.y, va2.y)
+        yy1 = Math.max(yy1, vb1.y, vb2.y)
+
+        /////
+        d = va - vb
+        d.normalizeSafe()
+        d *= borderSize * 1.5
+
+        da = d * (borderSize * startSize * 0.5)
+        db = d * (borderSize * endSize * 0.5)
+
+        va1 = va + da
+        vb2 = vb - db
+
+        xx0 = Math.min(xx0, va1.x, vb1.x)
+        yy0 = Math.min(yy0, va1.y, vb1.y)
+        xx1 = Math.max(xx1, va1.x, vb1.x)
+        yy1 = Math.max(yy1, va1.y, vb1.y)
+
+        /////
+        result.x = xx0
+        result.y = yy0
+        result.width = Math.abs(xx1 - xx0)
+        result.height = Math.abs(yy1 - yy0)
+
         return result
     }
 
