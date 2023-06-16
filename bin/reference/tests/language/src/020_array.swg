@@ -1,7 +1,6 @@
 /**
 Remember that dynamic arrays are part of the `Std.Core` module. Here we are only talking about native static arrays.
 */
-
 #test
 {
     // A static array is declared with `[N]` followed by the type, where `N` is the dimension.
@@ -64,30 +63,6 @@ Remember that dynamic arrays are part of the `Std.Core` module. Here we are only
     {
         var array: [100] s32 = undefined
     }
-}
-
-/**
-Of course an array can have multiple dimensions.
-*/
-#test
-{
-    // Syntax is **not** `[X][Y]` like in C/C++, but is `[X, Y]`.
-    {
-        var array: [2, 2] s32
-        array[0, 0] = 1
-        array[0, 1] = 2
-        array[1, 0] = 3
-        array[1, 1] = 4
-    }
-
-    // The sizes can be deduced from the initialization expression too.
-    {
-        array  := [1, 2, 3, 4]
-        array1 := [[1, 2], [3, 4]]
-
-        #assert @countof(array) == 4
-        #assert @countof(array) == 4
-    }
 
     // A static array (with compile time values) can be stored as a constant.
     {
@@ -104,6 +79,55 @@ Of course an array can have multiple dimensions.
         #assert @typeof(arr) == #type [4] f64
         @assert(arr[3] == 4.0)
     }
+}
+
+/**
+Of course an array can have multiple dimensions.
+*/
+#test
+{
+    // Syntax is `[X, Y, Z...]` where `X`, `Y` and `Z` are dimensions.
+    {
+        var array: [2, 2] s32   // Declare a 2x2 array
+        array[0, 0] = 1         // To access it, the same syntax is used
+        array[0, 1] = 2
+        array[1, 0] = 3
+        array[1, 1] = 4
+    }
+
+    // But the C/C++ syntax is also accepted. You will then declare an array of array instead of an array with multiple dimensions, which in fact is the same...
+    {
+        var array: [2][2] s32
+        array[0, 0] = 1
+        array[0, 1] = 2
+        array[1, 0] = 3
+        array[1, 1] = 4
+    }
+
+    // The sizes can be deduced from the initialization expression too.
+    {
+        array  := [1, 2, 3, 4]
+        array1 := [[1, 2], [3, 4]]
+
+        #assert @countof(array) == 4
+        #assert @countof(array) == 4
+    }
+}
+
+/**
+You can initialize a whole array variable (but not a constant) with one single value. Only basic types are accepted (integers, float, string, bool, rune).
+*/
+#test
+{
+    // The whole array is initialized with 'true'
+    var arr: [2, 2] bool = true
+    @assert(arr[0, 0] == true)
+    @assert(arr[1, 1] == true)
+
+    // The whole array is initialized with 'string'
+    var arr1: [5, 10] string = "string"
+    @assert(arr1[0, 0] == "string")
+    @assert(arr1[4, 9] == "string")
 }
 
 /**

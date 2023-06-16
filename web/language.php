@@ -711,6 +711,7 @@ Some identifiers can also start with <code>@</code>. This indicates an <b>intrin
 </h3></p>
 <p></p>
 <pre><code><span style="color:#B4B44A">@index</span><span style="color:#0">
+</span><span style="color:#B4B44A">@err</span><span style="color:#0">
 </span><span style="color:#B4B44A">@errmsg</span><span style="color:#0">
 </span><span style="color:#B4B44A">@alias0</span><span style="color:#0">
 </span><span style="color:#B4B44A">@alias1</span><span style="color:#0">
@@ -1659,28 +1660,6 @@ a = (</span><span style="color:#74A35B">1</span><span style="color:#0"> > </span
 </p>
 <pre><code><span style="color:#0">{
     </span><span style="color:#3186CD">var</span><span style="color:#0"> array: [</span><span style="color:#74A35B">100</span><span style="color:#0">] </span><span style="color:#ED9A11">s32</span><span style="color:#0"> = </span><span style="color:#3186CD">undefined</span><span style="color:#0">
-}</span></code></pre><p>Of course an array can have multiple dimensions.</br>
-</p>
-<p>
-</br>
- Syntax is <b>not</b> <code>[X][Y]</code> like in C/C++, but is <code>[X, Y]</code>.</br>
-</p>
-<pre><code><span style="color:#0">{
-    </span><span style="color:#3186CD">var</span><span style="color:#0"> array: [</span><span style="color:#74A35B">2</span><span style="color:#0">, </span><span style="color:#74A35B">2</span><span style="color:#0">] </span><span style="color:#ED9A11">s32</span><span style="color:#0">
-    array[</span><span style="color:#74A35B">0</span><span style="color:#0">, </span><span style="color:#74A35B">0</span><span style="color:#0">] = </span><span style="color:#74A35B">1</span><span style="color:#0">
-    array[</span><span style="color:#74A35B">0</span><span style="color:#0">, </span><span style="color:#74A35B">1</span><span style="color:#0">] = </span><span style="color:#74A35B">2</span><span style="color:#0">
-    array[</span><span style="color:#74A35B">1</span><span style="color:#0">, </span><span style="color:#74A35B">0</span><span style="color:#0">] = </span><span style="color:#74A35B">3</span><span style="color:#0">
-    array[</span><span style="color:#74A35B">1</span><span style="color:#0">, </span><span style="color:#74A35B">1</span><span style="color:#0">] = </span><span style="color:#74A35B">4</span><span style="color:#0">
-}</span></code></pre><p>
-</br>
- The sizes can be deduced from the initialization expression too.</br>
-</p>
-<pre><code><span style="color:#0">{
-    array  := [</span><span style="color:#74A35B">1</span><span style="color:#0">, </span><span style="color:#74A35B">2</span><span style="color:#0">, </span><span style="color:#74A35B">3</span><span style="color:#0">, </span><span style="color:#74A35B">4</span><span style="color:#0">]
-    array1 := [[</span><span style="color:#74A35B">1</span><span style="color:#0">, </span><span style="color:#74A35B">2</span><span style="color:#0">], [</span><span style="color:#74A35B">3</span><span style="color:#0">, </span><span style="color:#74A35B">4</span><span style="color:#0">]]
-
-    </span><span style="color:#7F7F7F">#assert</span><span style="color:#0"> </span><span style="color:#B4B44A">@countof</span><span style="color:#0">(array) == </span><span style="color:#74A35B">4</span><span style="color:#0">
-    </span><span style="color:#7F7F7F">#assert</span><span style="color:#0"> </span><span style="color:#B4B44A">@countof</span><span style="color:#0">(array) == </span><span style="color:#74A35B">4</span><span style="color:#0">
 }</span></code></pre><p>
 </br>
  A static array (with compile time values) can be stored as a constant.</br>
@@ -1699,7 +1678,49 @@ a = (</span><span style="color:#74A35B">1</span><span style="color:#0"> > </span
     </span><span style="color:#7F7F7F">#assert</span><span style="color:#0"> </span><span style="color:#B4B44A">@countof</span><span style="color:#0">(arr) == </span><span style="color:#74A35B">4</span><span style="color:#0">
     </span><span style="color:#7F7F7F">#assert</span><span style="color:#0"> </span><span style="color:#B4B44A">@typeof</span><span style="color:#0">(arr) == </span><span style="color:#C3973B">#type</span><span style="color:#0"> [</span><span style="color:#74A35B">4</span><span style="color:#0">] </span><span style="color:#ED9A11">f64</span><span style="color:#0">
     </span><span style="color:#B4B44A">@assert</span><span style="color:#0">(arr[</span><span style="color:#74A35B">3</span><span style="color:#0">] == </span><span style="color:#74A35B">4.0</span><span style="color:#0">)
+}</span></code></pre><p>Of course an array can have multiple dimensions.</br>
+</p>
+<p>
+</br>
+ Syntax is <code>[X, Y, Z...]</code> where <code>X</code>, <code>Y</code> and <code>Z</code> are dimensions.</br>
+</p>
+<pre><code><span style="color:#0">{
+    </span><span style="color:#3186CD">var</span><span style="color:#0"> array: [</span><span style="color:#74A35B">2</span><span style="color:#0">, </span><span style="color:#74A35B">2</span><span style="color:#0">] </span><span style="color:#ED9A11">s32</span><span style="color:#0">   </span><span style="color:#6A9955">// Declare a 2x2 array</span><span style="color:#0">
+    array[</span><span style="color:#74A35B">0</span><span style="color:#0">, </span><span style="color:#74A35B">0</span><span style="color:#0">] = </span><span style="color:#74A35B">1</span><span style="color:#0">         </span><span style="color:#6A9955">// To access it, the same syntax is used</span><span style="color:#0">
+    array[</span><span style="color:#74A35B">0</span><span style="color:#0">, </span><span style="color:#74A35B">1</span><span style="color:#0">] = </span><span style="color:#74A35B">2</span><span style="color:#0">
+    array[</span><span style="color:#74A35B">1</span><span style="color:#0">, </span><span style="color:#74A35B">0</span><span style="color:#0">] = </span><span style="color:#74A35B">3</span><span style="color:#0">
+    array[</span><span style="color:#74A35B">1</span><span style="color:#0">, </span><span style="color:#74A35B">1</span><span style="color:#0">] = </span><span style="color:#74A35B">4</span><span style="color:#0">
+}</span></code></pre><p>
+</br>
+ But the C/C++ syntax is also accepted. You will then declare an array of array instead of an array with multiple dimensions, which in fact is the same...</br>
+</p>
+<pre><code><span style="color:#0">{
+    </span><span style="color:#3186CD">var</span><span style="color:#0"> array: [</span><span style="color:#74A35B">2</span><span style="color:#0">][</span><span style="color:#74A35B">2</span><span style="color:#0">] </span><span style="color:#ED9A11">s32</span><span style="color:#0">
+    array[</span><span style="color:#74A35B">0</span><span style="color:#0">, </span><span style="color:#74A35B">0</span><span style="color:#0">] = </span><span style="color:#74A35B">1</span><span style="color:#0">
+    array[</span><span style="color:#74A35B">0</span><span style="color:#0">, </span><span style="color:#74A35B">1</span><span style="color:#0">] = </span><span style="color:#74A35B">2</span><span style="color:#0">
+    array[</span><span style="color:#74A35B">1</span><span style="color:#0">, </span><span style="color:#74A35B">0</span><span style="color:#0">] = </span><span style="color:#74A35B">3</span><span style="color:#0">
+    array[</span><span style="color:#74A35B">1</span><span style="color:#0">, </span><span style="color:#74A35B">1</span><span style="color:#0">] = </span><span style="color:#74A35B">4</span><span style="color:#0">
+}</span></code></pre><p>
+</br>
+ The sizes can be deduced from the initialization expression too.</br>
+</p>
+<pre><code><span style="color:#0">{
+    array  := [</span><span style="color:#74A35B">1</span><span style="color:#0">, </span><span style="color:#74A35B">2</span><span style="color:#0">, </span><span style="color:#74A35B">3</span><span style="color:#0">, </span><span style="color:#74A35B">4</span><span style="color:#0">]
+    array1 := [[</span><span style="color:#74A35B">1</span><span style="color:#0">, </span><span style="color:#74A35B">2</span><span style="color:#0">], [</span><span style="color:#74A35B">3</span><span style="color:#0">, </span><span style="color:#74A35B">4</span><span style="color:#0">]]
+
+    </span><span style="color:#7F7F7F">#assert</span><span style="color:#0"> </span><span style="color:#B4B44A">@countof</span><span style="color:#0">(array) == </span><span style="color:#74A35B">4</span><span style="color:#0">
+    </span><span style="color:#7F7F7F">#assert</span><span style="color:#0"> </span><span style="color:#B4B44A">@countof</span><span style="color:#0">(array) == </span><span style="color:#74A35B">4</span><span style="color:#0">
 }</span></code></pre><p>You can initialize a whole array variable (but not a constant) with one single value. Only basic types are accepted (integers, float, string, bool, rune).</br>
+</p>
+<pre><code><span style="color:#6A9955">// The whole array is initialized with 'true'</span><span style="color:#0">
+</span><span style="color:#3186CD">var</span><span style="color:#0"> arr: [</span><span style="color:#74A35B">2</span><span style="color:#0">, </span><span style="color:#74A35B">2</span><span style="color:#0">] </span><span style="color:#ED9A11">bool</span><span style="color:#0"> = </span><span style="color:#3186CD">true</span><span style="color:#0">
+</span><span style="color:#B4B44A">@assert</span><span style="color:#0">(arr[</span><span style="color:#74A35B">0</span><span style="color:#0">, </span><span style="color:#74A35B">0</span><span style="color:#0">] == </span><span style="color:#3186CD">true</span><span style="color:#0">)
+</span><span style="color:#B4B44A">@assert</span><span style="color:#0">(arr[</span><span style="color:#74A35B">1</span><span style="color:#0">, </span><span style="color:#74A35B">1</span><span style="color:#0">] == </span><span style="color:#3186CD">true</span><span style="color:#0">)
+
+</span><span style="color:#6A9955">// The whole array is initialized with 'string'</span><span style="color:#0">
+</span><span style="color:#3186CD">var</span><span style="color:#0"> arr1: [</span><span style="color:#74A35B">5</span><span style="color:#0">, </span><span style="color:#74A35B">10</span><span style="color:#0">] </span><span style="color:#ED9A11">string</span><span style="color:#0"> = </span><span style="color:#BB6643">"string"</span><span style="color:#0">
+</span><span style="color:#B4B44A">@assert</span><span style="color:#0">(arr1[</span><span style="color:#74A35B">0</span><span style="color:#0">, </span><span style="color:#74A35B">0</span><span style="color:#0">] == </span><span style="color:#BB6643">"string"</span><span style="color:#0">)
+</span><span style="color:#B4B44A">@assert</span><span style="color:#0">(arr1[</span><span style="color:#74A35B">4</span><span style="color:#0">, </span><span style="color:#74A35B">9</span><span style="color:#0">] == </span><span style="color:#BB6643">"string"</span><span style="color:#0">)</span></code></pre><p>You can initialize a whole array variable (but not a constant) with one single value. Only basic types are accepted (integers, float, string, bool, rune).</br>
 </p>
 <pre><code><span style="color:#6A9955">// The whole array is initialized with 'true'</span><span style="color:#0">
 </span><span style="color:#3186CD">var</span><span style="color:#0"> arr: [</span><span style="color:#74A35B">2</span><span style="color:#0">, </span><span style="color:#74A35B">2</span><span style="color:#0">] </span><span style="color:#ED9A11">bool</span><span style="color:#0"> = </span><span style="color:#3186CD">true</span><span style="color:#0">

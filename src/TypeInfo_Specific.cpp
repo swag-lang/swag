@@ -241,7 +241,7 @@ void TypeInfoArray::computeWhateverName(Utf8& resName, uint32_t nameType)
         else
             resName += Fmt("[%d", count);
         auto pType = pointedType;
-        while (pType->isArray())
+        while (pType->isArray() && pType != finalType)
         {
             auto subType = CastTypeInfo<TypeInfoArray>(pType, TypeInfoKind::Array);
             if (subType->count == 0)
@@ -251,7 +251,9 @@ void TypeInfoArray::computeWhateverName(Utf8& resName, uint32_t nameType)
             pType = subType->pointedType;
         }
 
-        resName += "] ";
+        resName += "]";
+        if (!finalType->isArray())
+            resName += " ";
     }
 
     resName += finalType->computeWhateverName(nameType);

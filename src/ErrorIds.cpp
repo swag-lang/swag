@@ -235,7 +235,7 @@ void initErrors()
     SWAG_ERROR(Syn0128, "the struct '%s' should be initialized in place with '{}' and not parenthesis");
     SWAG_ERROR(Syn0131, "the variable should have a type or should be initialized");
     SWAG_ERROR(Syn0132, "too many array dimensions (maximum is '254')");
-    SWAG_ERROR(Syn0133, "too many pointer dimensions (maximum is '%u')");
+    SWAG_ERROR(Syn0133, nullptr);
     SWAG_ERROR(Syn0134, "tuple types in generic parameters are not (yet?) supported");
     SWAG_ERROR(Syn0135, "type 'Self' should not be used outside an 'impl', 'struct' or 'interface' block");
     SWAG_ERROR(Syn0136, "unexpected '#global' instruction '%s'");
