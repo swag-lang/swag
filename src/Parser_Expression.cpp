@@ -1242,15 +1242,7 @@ bool Parser::doDefer(AstNode* parent, AstNode** result)
     }
 
     ScopedFlags scopedFlags(this, AST_IN_DEFER);
-    if (token.id == TokenId::SymLeftCurly)
-        SWAG_CHECK(doScopedCurlyStatement(node, &dummyResult));
-    else
-    {
-        auto   newScope = Ast::newScope(parent, "", ScopeKind::Statement, currentScope);
-        Scoped scoped(this, newScope);
-        SWAG_CHECK(doLeftInstruction(node, &dummyResult));
-    }
-
+    SWAG_CHECK(doEmbeddedStatement(node, &dummyResult));
     return true;
 }
 
