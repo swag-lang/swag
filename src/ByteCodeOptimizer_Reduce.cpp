@@ -453,6 +453,14 @@ void ByteCodeOptimizer::reduceErr(ByteCodeOptContext* context, ByteCodeInstructi
         }
         break;
 
+    case ByteCodeOp::InternalInitStackTrace:
+        if (ip[1].op == ByteCodeOp::InternalInitStackTrace &&
+            !(ip[1].flags & BCI_START_STMT))
+        {
+            setNop(context, ip + 1);
+        }
+        break;
+
     default:
         break;
     }
