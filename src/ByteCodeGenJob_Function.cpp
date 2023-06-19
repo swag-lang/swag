@@ -712,6 +712,14 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
         EMIT_INST1(context, ByteCodeOp::IntrinsicIsByteCode, node->resultRegisterRC);
         break;
     }
+    case TokenId::IntrinsicGetErr:
+    {
+        node->resultRegisterRC                  = reserveRegisterRC(context);
+        node->identifierRef()->resultRegisterRC = node->resultRegisterRC;
+        node->parent->resultRegisterRC          = node->resultRegisterRC;
+        EMIT_INST1(context, ByteCodeOp::IntrinsicGetErr, node->resultRegisterRC);
+        break;
+    }
     case TokenId::IntrinsicAtomicAdd:
     {
         node->resultRegisterRC = reserveRegisterRC(context);
@@ -2180,7 +2188,7 @@ bool ByteCodeGenJob::emitBeforeFuncDeclContent(ByteCodeGenContext* context)
     // Clear stack trace when entering a #<function>
     if (funcNode->attributeFlags & ATTRIBUTE_SHARP_FUNC)
     {
-        if (context->sourceFile->module->buildCfg.stackTrace)
+        if (context->sourceFile->module->buildCfg.errorStackTrace)
             EMIT_INST0(context, ByteCodeOp::InternalInitStackTrace);
     }
 

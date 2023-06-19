@@ -466,6 +466,7 @@ static void matchParameters(SymbolMatchContext& context, VectorNative<TypeInfoPa
         context.semContext->castErrorToType   = nullptr;
         context.semContext->castErrorFromType = nullptr;
         context.semContext->castErrorFlags    = 0;
+        context.semContext->castErrorType     = CastErrorType::Zero;
 
         // If we are in a generic context, we need to be sure that this will create a valid type
         if (context.genericReplaceTypes.size())
@@ -534,6 +535,7 @@ static void matchParameters(SymbolMatchContext& context, VectorNative<TypeInfoPa
                 context.badSignatureInfos.castErrorToType           = context.semContext->castErrorToType;
                 context.badSignatureInfos.castErrorFromType         = context.semContext->castErrorFromType;
                 context.badSignatureInfos.castErrorFlags            = context.semContext->castErrorFlags;
+                context.badSignatureInfos.castErrorType             = context.semContext->castErrorType;
                 SWAG_ASSERT(context.badSignatureInfos.badSignatureRequestedType);
             }
 

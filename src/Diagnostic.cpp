@@ -9,19 +9,18 @@
 
 void Diagnostic::setupColors(bool verboseMode)
 {
-    verboseColor         = LogColor::DarkCyan;
-    errorColor           = verboseMode ? verboseColor : LogColor::Red;
-    codeColor            = verboseMode ? verboseColor : LogColor::White;
-    marginCodeColor      = verboseMode ? verboseColor : LogColor::Gray;
-    hintColor            = verboseMode ? verboseColor : LogColor::White;
-    rangeNoteColor       = verboseMode ? verboseColor : LogColor::White;
-    warningColor         = verboseMode ? verboseColor : LogColor::Magenta;
-    noteColor            = verboseMode ? verboseColor : LogColor::Cyan;
-    stackColor           = verboseMode ? verboseColor : LogColor::DarkYellow;
-    remarkColor          = verboseMode ? verboseColor : LogColor::White;
-    autoRemarkColor      = verboseMode ? verboseColor : LogColor::Gray;
-    nativeCallStackColor = verboseMode ? verboseColor : LogColor::Gray;
-    sourceFileColor      = verboseMode ? verboseColor : LogColor::Gray;
+    verboseColor    = LogColor::DarkCyan;
+    errorColor      = verboseMode ? verboseColor : LogColor::Red;
+    codeColor       = verboseMode ? verboseColor : LogColor::White;
+    marginCodeColor = verboseMode ? verboseColor : LogColor::Gray;
+    hintColor       = verboseMode ? verboseColor : LogColor::White;
+    rangeNoteColor  = verboseMode ? verboseColor : LogColor::White;
+    warningColor    = verboseMode ? verboseColor : LogColor::Magenta;
+    noteColor       = verboseMode ? verboseColor : LogColor::Cyan;
+    stackColor      = verboseMode ? verboseColor : LogColor::DarkYellow;
+    remarkColor     = verboseMode ? verboseColor : LogColor::White;
+    autoRemarkColor = verboseMode ? verboseColor : LogColor::Gray;
+    sourceFileColor = verboseMode ? verboseColor : LogColor::Gray;
 }
 
 void Diagnostic::setup()
@@ -33,13 +32,6 @@ void Diagnostic::setup()
 
     switch (errorLevel)
     {
-    case DiagnosticLevel::CallStack:
-    case DiagnosticLevel::RuntimeCallStack:
-    case DiagnosticLevel::TraceError:
-        showRange             = false;
-        showMultipleCodeLines = false;
-        break;
-
     case DiagnosticLevel::Note:
     case DiagnosticLevel::Help:
         showMultipleCodeLines = false;
@@ -140,6 +132,10 @@ void Diagnostic::printErrorLevel()
         g_Log.setColor(errorColor);
         g_Log.print("error: ");
         break;
+    case DiagnosticLevel::Panic:
+        g_Log.setColor(errorColor);
+        g_Log.print("panic: ");
+        break;
     case DiagnosticLevel::Warning:
         g_Log.setColor(warningColor);
         g_Log.print("warning: ");
@@ -164,36 +160,6 @@ void Diagnostic::printErrorLevel()
         g_Log.setColor(noteColor);
         g_Log.print("help: ");
         break;
-    case DiagnosticLevel::RuntimeCallStack:
-        g_Log.eol();
-        g_Log.setColor(noteColor);
-        g_Log.print("[runtime callstack]");
-        g_Log.eol();
-        g_Log.setColor(stackColor);
-        break;
-    case DiagnosticLevel::CallStack:
-    {
-        if (raisedOnNode && raisedOnNode->ownerInline)
-        {
-            g_Log.setColor(stackColor);
-            g_Log.print("inlined: ");
-        }
-        else
-        {
-            g_Log.setColor(stackColor);
-            if (currentStackLevel)
-                g_Log.print(Fmt("[callstack:%03u]: ", stackLevel));
-            else
-                g_Log.print(Fmt("callstack:%03u: ", stackLevel));
-        }
-
-        break;
-    }
-    case DiagnosticLevel::TraceError:
-        g_Log.setColor(stackColor);
-        g_Log.print("trace error: ");
-        break;
-
     default:
         break;
     }
@@ -222,18 +188,10 @@ void Diagnostic::printRemarks()
         {
             if (r.empty())
                 continue;
-            if (errorLevel == DiagnosticLevel::RuntimeCallStack)
-            {
-                g_Log.setColor(nativeCallStackColor);
-                g_Log.print(r);
-            }
-            else
-            {
-                printMargin(false, true, 0);
-                g_Log.setColor(remarkColor);
-                g_Log.print(r);
-                g_Log.eol();
-            }
+            printMargin(false, true, 0);
+            g_Log.setColor(remarkColor);
+            g_Log.print(r);
+            g_Log.eol();
         }
     }
 }
@@ -686,6 +644,7 @@ void Diagnostic::setColorRanges(DiagnosticLevel level)
     switch (level)
     {
     case DiagnosticLevel::Error:
+    case DiagnosticLevel::Panic:
         g_Log.setColor(errorColor);
         break;
     case DiagnosticLevel::Warning:
@@ -726,7 +685,7 @@ void Diagnostic::printRanges()
         for (uint32_t i = 0; i < (uint32_t) r.width && i < (uint32_t) backLine.length(); i++)
         {
             startIndex++;
-            if (r.errorLevel == DiagnosticLevel::Error)
+            if (r.errorLevel == DiagnosticLevel::Error || r.errorLevel == DiagnosticLevel::Panic)
                 g_Log.print("^");
             else if (r.errorLevel == DiagnosticLevel::Warning)
                 g_Log.print("^");
@@ -866,7 +825,8 @@ Utf8 Diagnostic::isType(TypeInfo* typeInfo)
     if (typeInfo->isAlias())
     {
         auto typeAlias = CastTypeInfo<TypeInfoAlias>(typeInfo, TypeInfoKind::Alias);
-        str += Fmt(" (aka '%s')", typeAlias->rawType->getCA()->getDisplayNameC());
+        if (typeAlias->rawType)
+            str += Fmt(" (aka '%s')", typeAlias->rawType->getCA()->getDisplayNameC());
     }
 
     return str;

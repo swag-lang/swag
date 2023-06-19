@@ -4,5 +4,5 @@ using Core
 {
     data := imagePath("rgb.bmp")
     bytes := catch File.readAllBytes(data)
-    @assert(!@err)
+    @assert(!@errmsg)
 }

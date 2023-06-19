@@ -10,13 +10,13 @@ bool ByteCodeGenJob::emitGetErr(ByteCodeGenContext* context)
 {
     auto node = context->node;
     reserveRegisterRC(context, node->resultRegisterRC, 2);
-    EMIT_INST2(context, ByteCodeOp::IntrinsicGetErr, node->resultRegisterRC[0], node->resultRegisterRC[1]);
+    EMIT_INST2(context, ByteCodeOp::IntrinsicGetErrMsg, node->resultRegisterRC[0], node->resultRegisterRC[1]);
     return true;
 }
 
 bool ByteCodeGenJob::emitInitStackTrace(ByteCodeGenContext* context)
 {
-    if (context->sourceFile->module->buildCfg.stackTrace)
+    if (context->sourceFile->module->buildCfg.errorStackTrace)
     {
         PushICFlags ic(context, BCI_TRYCATCH);
         EMIT_INST0(context, ByteCodeOp::InternalInitStackTrace);
@@ -49,7 +49,7 @@ bool ByteCodeGenJob::emitTryThrowExit(ByteCodeGenContext* context, AstNode* from
         context->tryCatchScope--;
         EMIT_INST0(context, ByteCodeOp::InternalPopErr);
 
-        if (context->sourceFile->module->buildCfg.stackTrace)
+        if (context->sourceFile->module->buildCfg.errorStackTrace)
         {
             auto         r0 = reserveRegisterRC(context);
             uint32_t     storageOffset;
@@ -210,7 +210,7 @@ bool ByteCodeGenJob::emitThrow(ByteCodeGenContext* context)
         computeSourceLocation(context, node, &storageOffset, &storageSegment);
 
         auto r1 = reserveRegisterRC(context);
-        if (context->sourceFile->module->buildCfg.stackTrace)
+        if (context->sourceFile->module->buildCfg.errorStackTrace)
             EMIT_INST0(context, ByteCodeOp::InternalInitStackTrace);
         emitMakeSegPointer(context, storageSegment, storageOffset, r1);
         EMIT_INST3(context, ByteCodeOp::IntrinsicPanic, expr->resultRegisterRC[0], expr->resultRegisterRC[1], r1);
@@ -300,7 +300,7 @@ bool ByteCodeGenJob::emitAssume(ByteCodeGenContext* context)
 
     RegisterList r0;
     reserveRegisterRC(context, r0, 2);
-    EMIT_INST2(context, ByteCodeOp::IntrinsicGetErr, r0[0], r0[1]);
+    EMIT_INST2(context, ByteCodeOp::IntrinsicGetErrMsg, r0[0], r0[1]);
     assumeNode->seekInsideJump = context->bc->numInstructions;
     EMIT_INST1(context, ByteCodeOp::JumpIfZero64, r0[1]);
 

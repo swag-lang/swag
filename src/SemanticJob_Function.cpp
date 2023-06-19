@@ -1130,7 +1130,7 @@ bool SemanticJob::resolveRetVal(SemanticContext* context)
         if (parentNode->kind == AstNodeKind::Identifier)
             parentNode = parentNode->findParent(AstNodeKind::TypeExpression);
         auto typeExpr = CastAst<AstTypeExpression>(parentNode, AstNodeKind::TypeExpression);
-        typeExpr->typeFlags &= ~TYPEFLAG_RETVAL;
+        typeExpr->typeFlags &= ~TYPEFLAG_IS_RETVAL;
     }
 
     node->typeInfo = typeFct->returnType;
@@ -1224,7 +1224,7 @@ void SemanticJob::propagateReturn(AstNode* node)
 
 AstFuncDecl* SemanticJob::getFunctionForReturn(AstNode* node)
 {
-    // For a return inside an inline block, take the inlined function, except for a mixin or 
+    // For a return inside an inline block, take the inlined function, except for a mixin or
     // if the inlined function is flagged with 'Swag.CalleeReturn' (in that case we take the owner function)
     auto funcNode = node->ownerFct;
     if (node->ownerInline && node->ownerInline->isParentOf(node))

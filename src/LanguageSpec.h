@@ -29,7 +29,7 @@ struct LanguageSpec
     Utf8 name__panic;
     Utf8 name__pusherr;
     Utf8 name__poperr;
-    Utf8 name__geterr;
+    Utf8 name__geterrmsg;
     Utf8 name__seterr;
     Utf8 name__tlsAlloc;
     Utf8 name__tlsGetValue;
@@ -215,6 +215,7 @@ struct LanguageSpec
     Utf8 name_atdbgalloc;
     Utf8 name_atsysalloc;
     Utf8 name_atrtflags;
+    Utf8 name_aterr;
 
     Utf8 name_sharpself;
 

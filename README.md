@@ -6,7 +6,7 @@
 
 > To get the compiler latest version for Windows, go to the [release](https://github.com/swag-lang/swag/releases) page.
 
-Swag is a native and/or interpreted system programming language made for fun because, let's be honest, **C++** is now an **horrible and ugly beast** ! This is my third compiler (the other ones were developed for AAA game engines), but that one is by far the most advanced.
+Swag is a native and/or interpreted system programming language made for fun because, let's be honest, C++ is now an horrible beast ! This is my fourth compiler (two others were written for two game engines and one other for... something else). But this one is by far the most advanced.
 
 You can visit the official [Website](https://swag-lang.org/) or the [YouTube](https://www.youtube.com/channel/UC9dkBu1nNfJDxUML7r7QH1Q) channel. If you want to take a first look at the language, this is [here](https://www.swag-lang.org/language.php).
 
@@ -26,7 +26,7 @@ Here is a **screen capture software** fully written in Swag with the help of the
 * **Currently in development** (since 2019), and very very far to be mature. Bugs, unexpected changes, silly decisions, do not use it to send a rocket on the moon ! It's a **toy**.
 * **Low level** (i'm a C++ guy for 20+ years so i had no choice). No garbage collection like in `C#`, `Go` or `D`, no automatic pointer management like in `Swift`, no ownership like in `Rust`.
 * **Statically typed** (what else), but lots of automatic type detection if you want.
-* **Inspired** by a lot of things around there, like `Swift` for the syntax, `Jai` (Jonathan Blow) for the great ideas, `Go` for it's simplicity, `C#` for `.NET`, `Zig` (Andrew Kelley) for the error system, `Rust` for the `impl` thing, and so on.
+* **Inspired** by a lot of things around there, like `Swift` for the syntax, `Jai` (Jonathan Blow) for the great ideas, `Go` for its simplicity, `C#` for `.NET`, `Zig` (Andrew Kelley) for the error system, `Rust` for the `impl` thing, and so on.
 * Only for **Windows 10/11** and **x86_64** so far, because this is already a crazy amount of work.
 
 ### Swag is not...

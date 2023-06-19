@@ -442,7 +442,7 @@ using Swag
     // Returns the maximum sizeof a bunch of 'typeinfo'
     func maxSizeOf(v: const [..] typeinfo)->u64
     {
-        res := 0'u64
+        res := 0'u32
         visit p: v
             res = @max(res, p.sizeof)
         return res
@@ -459,7 +459,7 @@ using Swag
 
     func copy(dst, src: *void, type: typeinfo)
     {
-        Memory.copy(dst, src, type.sizeof)
+        Memory.copy(dst, src, cast(u64) type.sizeof)
         if hasPostCopy(type)
         {
             ptrStruct := cast(const *Swag.TypeInfoStruct) type

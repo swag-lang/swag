@@ -564,9 +564,9 @@ impl FileDlg
 
         path := Path.combine(curFolder, dlg.edit.text.toString())
         catch Directory.create(path)
-        if @err
+        if @errmsg
         {
-            MessageDlg.error(surface, @err, "Cannot create folder")
+            MessageDlg.error(surface, @errmsg, "Cannot create folder")
             return
         }
 

@@ -19,7 +19,7 @@ void LanguageSpec::setupNames()
     name__pusherr             = "__pusherr";
     name__poperr              = "__poperr";
     name__seterr              = "__seterr";
-    name__geterr              = "__geterr";
+    name__geterrmsg           = "__geterrmsg";
     name__tlsAlloc            = "__tlsAlloc";
     name__tlsGetValue         = "__tlsGetValue";
     name__tlsSetValue         = "__tlsSetValue";
@@ -195,6 +195,7 @@ void LanguageSpec::setupNames()
     name_atdbgalloc        = "@dbgalloc";
     name_atsysalloc        = "@sysalloc";
     name_atrtflags         = "@rtflags";
+    name_aterr             = "@err";
 
     name_sharpself = "#self";
 
@@ -368,6 +369,7 @@ void LanguageSpec::setupKeywords()
     keywords.add("@setcontext", TokenId::IntrinsicSetContext);
     keywords.add("@args", TokenId::IntrinsicArguments);
     keywords.add("@compiler", TokenId::IntrinsicCompiler);
+    keywords.add("@err", TokenId::IntrinsicGetErr);
     keywords.add("@isbytecode", TokenId::IntrinsicIsByteCode);
     keywords.add("@print", TokenId::IntrinsicPrint);
     keywords.add("@compilererror", TokenId::IntrinsicCompilerError);
@@ -401,7 +403,7 @@ void LanguageSpec::setupKeywords()
     keywords.add("@mkcallback", TokenId::IntrinsicMakeCallback);
     keywords.add("@index", TokenId::IntrinsicIndex);
     keywords.add("@isconstexpr", TokenId::IntrinsicIsConstExpr);
-    keywords.add("@err", TokenId::IntrinsicGetErr);
+    keywords.add("@errmsg", TokenId::IntrinsicGetErrMsg);
     keywords.add("@itftableof", TokenId::IntrinsicItfTableOf);
     keywords.add("@dbgalloc", TokenId::IntrinsicDbgAlloc);
     keywords.add("@sysalloc", TokenId::IntrinsicSysAlloc);

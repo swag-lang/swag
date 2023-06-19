@@ -8,7 +8,7 @@ struct AA
 {
     t := @typeof(AA)
 
-    ptr := @alloc(t.sizeof)
+    ptr := @alloc(cast(u64) t.sizeof)
     defer @free(ptr)
 
     ptr1 := cast(*AA) ptr

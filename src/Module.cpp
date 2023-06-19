@@ -58,7 +58,7 @@ void Module::setup(const Utf8& moduleName, const Path& modulePath)
         buildCfg.byteCodeAutoInline       = false;
         buildCfg.byteCodeEmitAssume       = true;
         buildCfg.safetyGuards             = 0;
-        buildCfg.stackTrace               = false;
+        buildCfg.errorStackTrace          = false;
         buildCfg.debugAllocator           = true;
         buildCfg.backendOptimize          = BuildCfgBackendOptim::O0;
         buildCfg.backendDebugInformations = false;
@@ -71,7 +71,7 @@ void Module::setup(const Utf8& moduleName, const Path& modulePath)
         buildCfg.byteCodeAutoInline       = true;
         buildCfg.byteCodeEmitAssume       = true;
         buildCfg.safetyGuards             = SAFETY_ALL;
-        buildCfg.stackTrace               = true;
+        buildCfg.errorStackTrace          = true;
         buildCfg.debugAllocator           = true;
         buildCfg.backendOptimize          = BuildCfgBackendOptim::O0;
         buildCfg.backendDebugInformations = true;
@@ -84,7 +84,7 @@ void Module::setup(const Utf8& moduleName, const Path& modulePath)
         buildCfg.byteCodeAutoInline       = true;
         buildCfg.byteCodeEmitAssume       = true;
         buildCfg.safetyGuards             = SAFETY_ALL & ~SAFETY_NAN & ~SAFETY_BOOL;
-        buildCfg.stackTrace               = true;
+        buildCfg.errorStackTrace          = true;
         buildCfg.debugAllocator           = true;
         buildCfg.backendOptimize          = BuildCfgBackendOptim::O2;
         buildCfg.backendDebugInformations = true;
@@ -97,7 +97,7 @@ void Module::setup(const Utf8& moduleName, const Path& modulePath)
         buildCfg.byteCodeAutoInline             = true;
         buildCfg.byteCodeEmitAssume             = false;
         buildCfg.safetyGuards                   = 0;
-        buildCfg.stackTrace                     = false;
+        buildCfg.errorStackTrace                = false;
         buildCfg.debugAllocator                 = false;
         buildCfg.backendOptimize                = BuildCfgBackendOptim::O3;
         buildCfg.backendDebugInformations       = true;
@@ -119,7 +119,7 @@ void Module::setup(const Utf8& moduleName, const Path& modulePath)
     if (g_CommandLine.buildCfgSafety != "default")
         buildCfg.safetyGuards = g_CommandLine.buildCfgSafety == "true" ? SAFETY_ALL : 0;
     if (g_CommandLine.buildCfgStackTrace != "default")
-        buildCfg.stackTrace = g_CommandLine.buildCfgStackTrace == "true" ? true : false;
+        buildCfg.errorStackTrace = g_CommandLine.buildCfgStackTrace == "true" ? true : false;
     if (g_CommandLine.buildCfgDebugAlloc != "default")
         buildCfg.debugAllocator = g_CommandLine.buildCfgDebugAlloc == "true" ? true : false;
     if (g_CommandLine.buildCfgLlvmIR != "default")

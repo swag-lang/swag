@@ -4199,8 +4199,15 @@ bool SemanticJob::needToWaitForSymbol(SemanticContext* context, AstIdentifier* i
         if (identifier->parent->parent && identifier->parent->parent->kind == AstNodeKind::TypeExpression)
         {
             auto typeExprNode = CastAst<AstTypeExpression>(identifier->parent->parent, AstNodeKind::TypeExpression);
-            if (typeExprNode->ptrCount)
+            if (typeExprNode->typeFlags & TYPEFLAG_IS_PTR)
                 canIncomplete = true;
+
+            if (typeExprNode->parent && typeExprNode->parent->kind == AstNodeKind::TypeExpression)
+            {
+                typeExprNode = CastAst<AstTypeExpression>(typeExprNode->parent, AstNodeKind::TypeExpression);
+                if (typeExprNode->typeFlags & TYPEFLAG_IS_PTR)
+                    canIncomplete = true;
+            }
         }
 
         if (canIncomplete)

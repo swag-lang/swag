@@ -186,14 +186,14 @@ impl Decoder
                     doIt := catch serializer.beginElement(field)
                     defer serializer.endElement()
 
-                    if @err and !(flags & .IgnoreStructFieldError)
-                        throw @err
+                    if @errmsg and !(flags & .IgnoreStructFieldError)
+                        throw @errmsg
                     if !doIt
                         continue
 
                     catch readValue(cast(^u8) data + field.offset, field.pointedType)
-                    if @err and !(flags & .IgnoreStructFieldError)
-                        throw @err
+                    if @errmsg and !(flags & .IgnoreStructFieldError)
+                        throw @errmsg
                 }
             }
 

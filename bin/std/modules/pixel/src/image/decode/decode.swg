@@ -49,7 +49,7 @@ impl Image
         {
             if decoder.type.opDrop
                 decoder.type.opDrop(ptrDecoder)
-            Memory.free(ptrDecoder, decoder.type.sizeof)
+            Memory.free(ptrDecoder, cast(u64) decoder.type.sizeof)
         }
 
         // Decode

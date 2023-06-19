@@ -13,10 +13,8 @@ enum class DiagnosticLevel
     Warning,
     Verbose,
     Note,
-    CallStack,
-    RuntimeCallStack,
-    TraceError,
     Help,
+    Panic,
 };
 
 struct Diagnostic
@@ -189,7 +187,6 @@ struct Diagnostic
     LogColor          stackColor;
     LogColor          autoRemarkColor;
     LogColor          remarkColor;
-    LogColor          nativeCallStackColor;
     LogColor          sourceFileColor;
 
     SourceLocation startLocation;
@@ -207,8 +204,6 @@ struct Diagnostic
     AstNode*    sourceNode   = nullptr;
     AstNode*    raisedOnNode = nullptr;
 
-    uint32_t stackLevel = 0;
-
     bool showSourceCode        = false;
     bool showRange             = true;
     bool showMultipleCodeLines = true;
@@ -218,10 +213,9 @@ struct Diagnostic
     bool display           = true;
     bool emptyMarginBefore = true;
 
-    bool hasLocation       = false;
-    bool lowPrio           = false;
-    bool currentStackLevel = false;
-    bool forceSourceFile   = false;
-    bool criticalError     = false;
-    bool isNote            = false;
+    bool hasLocation     = false;
+    bool lowPrio         = false;
+    bool forceSourceFile = false;
+    bool criticalError   = false;
+    bool isNote          = false;
 };

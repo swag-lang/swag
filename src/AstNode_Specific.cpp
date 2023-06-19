@@ -758,14 +758,10 @@ AstNode* AstTypeExpression::clone(CloneContext& context)
 
     newNode->identifier      = findChildRef(identifier, newNode);
     newNode->typeFromLiteral = typeFromLiteral;
-    newNode->ptrCount        = ptrCount;
     newNode->literalType     = literalType;
-
-    for (int i = 0; i < ptrCount; i++)
-        newNode->ptrFlags[i] = ptrFlags[i];
-
-    newNode->arrayDim  = arrayDim;
-    newNode->typeFlags = typeFlags;
+    newNode->arrayDim        = arrayDim;
+    newNode->typeFlags       = typeFlags;
+    newNode->locConst        = locConst;
 
     return newNode;
 }

@@ -48,7 +48,7 @@ func @args()->const [..] string;
 @itftableof()
 
 @index
-@err
+@errmsg
 
 /**
 # Memory related

@@ -127,8 +127,8 @@ var atoftests: [] atofTest = [
     visit t: atoftests
     {
         v := catch Atod.parse(t.in)
-        @assert(!@err or t.error)
-        @assert(!t.error or @err != null or v.ovf)
+        @assert(!@errmsg or t.error)
+        @assert(!t.error or @errmsg != null or v.ovf)
         if v.ovf continue
 
         cb.clear()

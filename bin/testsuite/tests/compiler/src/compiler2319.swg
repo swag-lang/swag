@@ -5,7 +5,7 @@ func pushContext(cxt: Swag.Context, stmt: code)
     defer @setcontext(prev)
 
     @setcontext(cxt)
-    @getcontext().errorMsgLen = 666
+    @getcontext().hasError = 666
 
     #macro
     {
@@ -18,8 +18,8 @@ func pushContext(cxt: Swag.Context, stmt: code)
     cxt := dref @getcontext()
     pushContext(cxt)
     {
-        @assert(@getcontext().errorMsgLen == 666)
+        @assert(@getcontext().hasError == 666)
     }
 
-    @assert(@getcontext().errorMsgLen == 0)
+    @assert(@getcontext().hasError == 0)
 }

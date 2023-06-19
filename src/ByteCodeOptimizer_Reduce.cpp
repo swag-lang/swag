@@ -284,7 +284,7 @@ void ByteCodeOptimizer::reduceErr(ByteCodeOptContext* context, ByteCodeInstructi
         while (!ByteCode::isRet(ipScan))
         {
             if (ipScan->op == ByteCodeOp::InternalHasErr ||
-                ipScan->op == ByteCodeOp::IntrinsicGetErr ||
+                ipScan->op == ByteCodeOp::IntrinsicGetErrMsg ||
                 ByteCode::isJump(ipScan) ||
                 (ipScan->flags & BCI_START_STMT))
                 break;
@@ -450,6 +450,14 @@ void ByteCodeOptimizer::reduceErr(ByteCodeOptContext* context, ByteCodeInstructi
         {
             setNop(context, ip + 2);
             setNop(context, ip + 3);
+        }
+        break;
+
+    case ByteCodeOp::InternalInitStackTrace:
+        if (ip[1].op == ByteCodeOp::InternalInitStackTrace &&
+            !(ip[1].flags & BCI_START_STMT))
+        {
+            setNop(context, ip + 1);
         }
         break;
 

@@ -114,6 +114,7 @@ struct SemanticContext : public JobContext
     TypeInfo*                         castErrorToType   = nullptr;
     TypeInfo*                         castErrorFromType = nullptr;
     uint64_t                          castErrorFlags    = 0;
+    CastErrorType                     castErrorType     = CastErrorType::Zero;
     bool                              forDebugger       = false;
 };
 

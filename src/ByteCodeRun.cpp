@@ -2137,9 +2137,9 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
     case ByteCodeOp::InternalStackTrace:
     {
         auto cxt = (SwagContext*) OS::tlsGetValue(g_TlsContextId);
-        if (cxt->traceIndex == MAX_TRACE)
+        if (cxt->traceIndex == SWAG_MAX_TRACES)
             break;
-        cxt->trace[cxt->traceIndex] = (SwagSourceCodeLocation*) registersRC[ip->a.u32].pointer;
+        cxt->traces[cxt->traceIndex] = (SwagSourceCodeLocation*) registersRC[ip->a.u32].pointer;
         cxt->traceIndex++;
         break;
     }
@@ -2229,15 +2229,24 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
     case ByteCodeOp::IntrinsicGetErr:
     {
         auto cxt = (SwagContext*) OS::tlsGetValue(g_TlsContextId);
-        if (!cxt->errorMsgLen)
+        if (!cxt->hasError)
+            registersRC[ip->a.u32].pointer = nullptr;
+        else
+            registersRC[ip->a.u32].pointer = (uint8_t*) &cxt->errors[cxt->errorIndex];
+        break;
+    }
+    case ByteCodeOp::IntrinsicGetErrMsg:
+    {
+        auto cxt = (SwagContext*) OS::tlsGetValue(g_TlsContextId);
+        if (!cxt->hasError)
         {
             registersRC[ip->a.u32].pointer = nullptr;
             registersRC[ip->b.u32].u64     = 0;
         }
         else
         {
-            registersRC[ip->a.u32].pointer = cxt->errorMsg + cxt->errorMsgStart;
-            registersRC[ip->b.u32].u64     = cxt->errorMsgLen;
+            registersRC[ip->a.u32].pointer = (uint8_t*) cxt->errors[cxt->errorIndex].msg.buffer;
+            registersRC[ip->b.u32].u64     = cxt->errors[cxt->errorIndex].msg.count;
         }
 
         break;
@@ -2246,7 +2255,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
     {
         SWAG_ASSERT(context->bc->registerGetContext != UINT32_MAX);
         auto cxt                   = (SwagContext*) registersRC[ip->b.u32].pointer;
-        registersRC[ip->a.u32].u64 = cxt->errorMsgLen != 0;
+        registersRC[ip->a.u32].u64 = cxt->hasError != 0;
         break;
     }
     case ByteCodeOp::InternalClearErr:
@@ -2254,7 +2263,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
         SWAG_ASSERT(context->bc->registerGetContext != UINT32_MAX);
         auto cxt = (SwagContext*) registersRC[ip->a.u32].pointer;
         SWAG_ASSERT(cxt != nullptr);
-        cxt->errorMsgLen = 0;
+        cxt->hasError = 0;
         break;
     }
     case ByteCodeOp::InternalPushErr:
@@ -3911,20 +3920,19 @@ static int exceptionHandler(ByteCodeRunContext* runContext, LPEXCEPTION_POINTERS
 
         // User messsage
         Utf8 userMsg{(const char*) args->ExceptionRecord->ExceptionInformation[1], (uint32_t) args->ExceptionRecord->ExceptionInformation[2]};
-        if (userMsg.empty())
+
+        DiagnosticLevel level = DiagnosticLevel::Error;
+        switch (exceptionKind)
         {
-            switch (exceptionKind)
-            {
-            case SwagExceptionKind::Error:
-                userMsg = "compiler error";
-                break;
-            case SwagExceptionKind::Warning:
-                userMsg = "compiler warning";
-                break;
-            case SwagExceptionKind::Panic:
-                userMsg = "panic";
-                break;
-            }
+        case SwagExceptionKind::Error:
+            level = DiagnosticLevel::Error;
+            break;
+        case SwagExceptionKind::Warning:
+            level = DiagnosticLevel::Warning;
+            break;
+        case SwagExceptionKind::Panic:
+            level = DiagnosticLevel::Panic;
+            break;
         }
 
         SourceFile dummyFile;
@@ -3936,7 +3944,7 @@ static int exceptionHandler(ByteCodeRunContext* runContext, LPEXCEPTION_POINTERS
         endLocation.line     = location->lineEnd;
         endLocation.column   = location->colEnd;
 
-        Diagnostic diag{&dummyFile, startLocation, endLocation, userMsg};
+        Diagnostic diag{&dummyFile, startLocation, endLocation, userMsg, level};
 
         // Get the correct source file to raise the error in the correct context
         //
@@ -3963,7 +3971,15 @@ static int exceptionHandler(ByteCodeRunContext* runContext, LPEXCEPTION_POINTERS
             runContext->ip--;
         runContext->fromException666  = true;
         runContext->fromExceptionKind = exceptionKind;
+
+        if (!g_CommandLine.dbgCallStack)
+        {
+            auto help = Diagnostic::help(Hlp(Hlp0054));
+            notes.push_back(help);
+        }
+
         Report::report(diag, notes, runContext);
+
         runContext->fromException666 = false;
         if (runContext->ip != runContext->bc->out)
             runContext->ip++;

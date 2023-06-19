@@ -3,6 +3,6 @@
 //#[Swag.PrintBc]
 #test
 {
-	var a: const s32 = 666;
+	var a: s32 = 666;
 	var b: const [..] s32 = [666];
 }

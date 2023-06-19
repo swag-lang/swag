@@ -1,7 +1,6 @@
-
 #global testerror
 
 #test
 {
-    var x: [2] const void
+    var x: [2] void
 }

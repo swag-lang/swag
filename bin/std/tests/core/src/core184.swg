@@ -6,11 +6,11 @@ using Core
 {
     {
         stream := catch File.openRead("tolklkjlkjk:jto")
-        @assert(@err != null)
+        @assert(@errmsg != null)
     }
 
     {
         catch Directory.setCurrent("fkdfjfkjfkdj")
-        @assert(@err != null)
+        @assert(@errmsg != null)
     }
 }

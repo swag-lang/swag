@@ -301,7 +301,7 @@ impl Surface
         if wnd.view != null and wnd.view.id != null
         {
             catch ser.serialize(wnd.view.id, &state)
-            if !@err and ser.isReading()
+            if !@errmsg and ser.isReading()
             {
                 if isMaximized
                 {

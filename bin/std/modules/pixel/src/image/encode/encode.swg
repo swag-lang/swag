@@ -65,7 +65,7 @@ public impl Image
         {
             if found.type.opDrop
                 found.type.opDrop(ptrEncoder)
-            Memory.free(ptrEncoder, found.type.sizeof)
+            Memory.free(ptrEncoder, cast(u64) found.type.sizeof)
         }
 
         // Encode

@@ -28,7 +28,7 @@ const uint64_t CASTFLAG_COERCE             = 0x0000000000001000;
 const uint64_t CASTFLAG_TRY_COERCE         = 0x0000000000002000;
 const uint64_t CASTFLAG_AUTO_OPCAST        = 0x0000000000004000;
 const uint64_t CASTFLAG_STRICT             = 0x0000000000008000;
-const uint64_t CASTFLAG_CONST_ERR          = 0x0000000000010000;
+const uint64_t CASTFLAG_CAST               = 0x0000000000010000;
 const uint64_t CASTFLAG_FOR_AFFECT         = 0x0000000000020000;
 const uint64_t CASTFLAG_ACCEPT_PENDING     = 0x0000000000040000;
 const uint64_t CASTFLAG_LITERAL_SUFFIX     = 0x0000000000080000;
@@ -41,7 +41,6 @@ const uint64_t CASTFLAG_PTR_REF            = 0x0000000002000000;
 const uint64_t CASTFLAG_NO_TUPLE_TO_STRUCT = 0x0000000004000000;
 const uint64_t CASTFLAG_ACCEPT_MOVE_REF    = 0x0000000008000000;
 const uint64_t CASTFLAG_EXACT              = 0x0000000010000000;
-const uint64_t CASTFLAG_CAST               = 0x0000000020000000;
 
 // Stored in SymbolMatchContext.flags
 const uint32_t CASTFLAG_RESULT_STRUCT_CONVERT     = 0x01000000;
@@ -71,8 +70,8 @@ struct TypeManager
 
     static bool errorOutOfRange(SemanticContext* context, AstNode* fromNode, TypeInfo* fromType, TypeInfo* toType, bool isNeg = false);
     static bool safetyComputedValue(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* fromNode, uint64_t castFlags);
-    static void getCastErrorMsg(Utf8& msg, Utf8& hint, TypeInfo* toType, TypeInfo* fromType, uint64_t castFlags, bool forNote = false);
-    static bool castError(SemanticContext* context, TypeInfo* requestedType, TypeInfo* fromType, AstNode* fromNode, uint64_t castFlags);
+    static void getCastErrorMsg(Utf8& msg, Utf8& hint, TypeInfo* toType, TypeInfo* fromType, uint64_t castFlags, CastErrorType castError = CastErrorType::Zero, bool forNote = false);
+    static bool castError(SemanticContext* context, TypeInfo* requestedType, TypeInfo* fromType, AstNode* fromNode, uint64_t castFlags, CastErrorType castErrorType = CastErrorType::Zero);
     static bool tryOpCast(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* fromNode, uint64_t castFlags);
     static bool tryOpAffect(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* fromNode, uint64_t castFlags);
 

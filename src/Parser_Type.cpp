@@ -76,11 +76,10 @@ bool Parser::doLambdaClosureTypePriv(AstTypeLambda* node, AstNode** result, bool
         node->kind = AstNodeKind::TypeLambda;
         SWAG_CHECK(eatToken());
 
-        params                     = Ast::newNode<AstNode>(this, AstNodeKind::FuncDeclParams, sourceFile, node);
-        node->parameters           = params;
-        firstAddedType             = Ast::newTypeExpression(sourceFile, params);
-        firstAddedType->ptrCount   = 1;
-        firstAddedType->typeFlags  = TYPEFLAG_IS_SELF;
+        params           = Ast::newNode<AstNode>(this, AstNodeKind::FuncDeclParams, sourceFile, node);
+        node->parameters = params;
+        firstAddedType   = Ast::newTypeExpression(sourceFile, params);
+        firstAddedType->typeFlags |= TYPEFLAG_IS_SELF | TYPEFLAG_IS_PTR | TYPEFLAG_IS_SUB_TYPE;
         firstAddedType->identifier = Ast::newIdentifierRef(sourceFile, currentStructScope->name, firstAddedType, this);
         break;
 
@@ -89,13 +88,10 @@ bool Parser::doLambdaClosureTypePriv(AstTypeLambda* node, AstNode** result, bool
         node->kind = AstNodeKind::TypeLambda;
         SWAG_CHECK(eatToken());
 
-        params                      = Ast::newNode<AstNode>(this, AstNodeKind::FuncDeclParams, sourceFile, node);
-        node->parameters            = params;
-        firstAddedType              = Ast::newTypeExpression(sourceFile, params);
-        firstAddedType->ptrCount    = 1;
-        firstAddedType->ptrFlags[0] = AstTypeExpression::PTR_CONST;
-        firstAddedType->typeFlags |= TYPEFLAG_IS_CONST;
-        firstAddedType->typeFlags |= TYPEFLAG_IS_SELF;
+        params           = Ast::newNode<AstNode>(this, AstNodeKind::FuncDeclParams, sourceFile, node);
+        node->parameters = params;
+        firstAddedType   = Ast::newTypeExpression(sourceFile, params);
+        firstAddedType->typeFlags |= TYPEFLAG_IS_CONST | TYPEFLAG_IS_SELF | TYPEFLAG_IS_PTR | TYPEFLAG_IS_SUB_TYPE;
         firstAddedType->identifier = Ast::newIdentifierRef(sourceFile, currentStructScope->name, firstAddedType, this);
         break;
 
@@ -231,11 +227,9 @@ bool Parser::doLambdaClosureTypePriv(AstTypeLambda* node, AstNode** result, bool
                 curIsAlone = false;
                 SWAG_VERIFY(currentStructScope, error(token, Err(Syn0026)));
                 SWAG_CHECK(eatToken());
-                typeExpr              = Ast::newTypeExpression(sourceFile, params);
-                typeExpr->ptrCount    = 1;
-                typeExpr->ptrFlags[0] = isConst ? AstTypeExpression::PTR_CONST : 0;
+                typeExpr = Ast::newTypeExpression(sourceFile, params);
                 typeExpr->typeFlags |= isConst ? TYPEFLAG_IS_CONST : 0;
-                typeExpr->typeFlags |= TYPEFLAG_IS_SELF;
+                typeExpr->typeFlags |= TYPEFLAG_IS_SELF | TYPEFLAG_IS_PTR | TYPEFLAG_IS_SUB_TYPE;
                 typeExpr->identifier = Ast::newIdentifierRef(sourceFile, currentStructScope->name, typeExpr, this);
                 if (token.id == TokenId::SymEqual)
                     return error(token, Err(Syn0193));
@@ -472,127 +466,129 @@ bool Parser::doTupleOrAnonymousType(AstNode* parent, AstNode** result, bool isCo
     return true;
 }
 
-bool Parser::doTypeExpression(AstNode* parent, uint32_t exprFlags, AstNode** result)
+bool Parser::doSingleTypeExpression(AstTypeExpression* node, AstNode* parent, uint32_t exprFlags, AstNode** result)
 {
-    // Code
-    if (token.id == TokenId::KwdCode)
-    {
-        auto node = Ast::newTypeExpression(sourceFile, parent, this);
-        *result   = node;
-        node->flags |= AST_NO_BYTECODE_CHILDS;
-        node->typeInfo = g_TypeMgr->typeInfoCode;
-        node->typeFlags |= TYPEFLAG_IS_CODE;
-        SWAG_CHECK(eatToken());
-        return true;
-    }
-
     bool inTypeVarDecl = exprFlags & EXPR_FLAG_IN_VAR_DECL;
 
-    // This is a lambda
-    if (token.id == TokenId::KwdFunc || token.id == TokenId::KwdClosure || token.id == TokenId::KwdMethod || token.id == TokenId::KwdConstMethod)
+    // This is a @typeof
+    if (token.id == TokenId::IntrinsicDeclType)
     {
-        return doLambdaClosureType(parent, result, inTypeVarDecl);
-    }
-
-    // retval
-    if (token.id == TokenId::KwdRetVal)
-    {
-        auto node         = Ast::newTypeExpression(sourceFile, parent, this);
-        *result           = node;
-        node->semanticFct = SemanticJob::resolveRetVal;
-        node->flags |= AST_NO_BYTECODE_CHILDS;
-        node->typeFlags |= TYPEFLAG_RETVAL;
-
-        // retval type can be followed by structure initializer, like a normal struct
-        // In that case, we want the identifier pipeline to be called on it (to check
-        // parameters like a normal struct).
-        // So we create an identifier, that will be matched with the type alias automatically
-        // created in the function.
-        SWAG_CHECK(eatToken());
-        if (!(token.flags & TOKENPARSE_LAST_EOL) && token.id == TokenId::SymLeftCurly)
-        {
-            node->identifier = Ast::newIdentifierRef(sourceFile, g_LangSpec->name_retval, node, this);
-            auto id          = CastAst<AstIdentifier>(node->identifier->childs.back(), AstNodeKind::Identifier);
-            SWAG_CHECK(eatToken());
-            SWAG_CHECK(doFuncCallParameters(id, &id->callParameters, TokenId::SymRightCurly));
-            id->flags |= AST_IN_TYPE_VAR_DECLARATION;
-            id->callParameters->specFlags |= AstFuncCallParams::SPECFLAG_CALL_FOR_STRUCT;
-        }
-
+        SWAG_CHECK(doIdentifierRef(node, &node->identifier));
         return true;
     }
 
-    // Const keyword
-    bool  isConst    = false;
-    bool  isPtrConst = false;
-    Token tokenConst;
-    if (token.id == TokenId::KwdConst)
+    if (token.id == TokenId::NativeType)
     {
-        tokenConst = token;
-        isConst    = true;
-        isPtrConst = true;
+        node->literalType       = token.literalType;
+        node->token.endLocation = token.endLocation;
         SWAG_CHECK(eatToken());
+        return true;
     }
 
-    // Else this is a type expression
+    if (token.id == TokenId::Identifier)
+    {
+        SWAG_CHECK(doIdentifierRef(node, &node->identifier, IDENTIFIER_TYPE_DECL | IDENTIFIER_NO_ARRAY));
+        if (inTypeVarDecl)
+            node->identifier->childs.back()->flags |= AST_IN_TYPE_VAR_DECLARATION;
+        node->token.endLocation = node->identifier->token.endLocation;
+        return true;
+    }
+
+    if (token.id == TokenId::KwdStruct)
+    {
+        SWAG_CHECK(eatToken());
+        SWAG_CHECK(doTupleOrAnonymousType(node, &node->identifier, node->typeFlags & TYPEFLAG_IS_CONST, true, false));
+        return true;
+    }
+
+    if (token.id == TokenId::KwdUnion)
+    {
+        SWAG_CHECK(eatToken());
+        SWAG_CHECK(doTupleOrAnonymousType(node, &node->identifier, node->typeFlags & TYPEFLAG_IS_CONST, true, true));
+        return true;
+    }
+
+    if (token.id == TokenId::SymLeftCurly)
+    {
+        SWAG_CHECK(doTupleOrAnonymousType(node, &node->identifier, node->typeFlags & TYPEFLAG_IS_CONST, false, false));
+        return true;
+    }
+
+    if (token.id == TokenId::KwdFunc || token.id == TokenId::KwdClosure || token.id == TokenId::KwdMethod || token.id == TokenId::KwdConstMethod)
+    {
+        SWAG_CHECK(doLambdaClosureType(node, &node->identifier, inTypeVarDecl));
+        return true;
+    }
+
+    // Specific error messages
+    if (node->parent && node->parent->kind == AstNodeKind::TupleContent)
+    {
+        Diagnostic diag{sourceFile, token, Fmt(Err(Syn0067), token.ctext())};
+        return context->report(diag);
+    }
+
+    if (token.id == TokenId::SymLeftParen)
+    {
+        Diagnostic diag{sourceFile, token, Fmt(Err(Syn0066), token.ctext())};
+        auto       note = Diagnostic::help(sourceFile, token, Hlp(Hlp0004));
+        return context->report(diag, note);
+    }
+
+    if (Tokenizer::isSymbol(token.id))
+        return error(token, Fmt(Err(Syn0172), token.ctext()));
+
+    // Generic error
+    return error(token, Fmt(Err(Syn0066), token.ctext()));
+}
+
+bool Parser::doSubTypeExpression(AstNode* parent, uint32_t exprFlags, AstNode** result)
+{
+    bool inTypeVarDecl = exprFlags & EXPR_FLAG_IN_VAR_DECL;
+
     auto node = Ast::newTypeExpression(sourceFile, parent, this);
     *result   = node;
     node->flags |= AST_NO_BYTECODE_CHILDS;
-    node->typeFlags |= isConst ? TYPEFLAG_IS_CONST : 0;
-    node->arrayDim = 0;
-    node->ptrCount = 0;
 
-    // Move reference
-    if (token.id == TokenId::KwdMoveRef)
+    // Const keyword
+    if (token.id == TokenId::KwdConst)
     {
-        if (isConst)
-        {
-            Diagnostic diag{sourceFile, token, Err(Err0619)};
-            diag.addRange(tokenConst, Hnt(Hnt0061));
-            return context->report(diag);
-        }
-
-        auto prevToken = token;
+        node->locConst = token.startLocation;
+        node->typeFlags |= TYPEFLAG_IS_CONST | TYPEFLAG_HAS_LOC_CONST;
         SWAG_CHECK(eatToken());
-        node->typeFlags |= TYPEFLAG_IS_REF | TYPEFLAG_IS_MOVE_REF;
-
-        if (token.id == TokenId::KwdRef)
-        {
-            Diagnostic diag(sourceFile, token, Err(Err0530));
-            diag.hint = Hnt(Hnt0111);
-            diag.addRange(prevToken, "");
-            return context->report(diag);
-        }
     }
 
     // Reference
-    else if (token.id == TokenId::KwdRef)
+    if (token.id == TokenId::KwdRef)
     {
+        node->typeFlags |= TYPEFLAG_IS_SUB_TYPE;
         node->typeFlags |= TYPEFLAG_IS_REF;
         SWAG_CHECK(eatToken());
+        SWAG_CHECK(doSubTypeExpression(node, exprFlags, &dummyResult));
+        return true;
     }
 
-    // Array
+    // Array or slice of something
     if (token.id == TokenId::SymLeftSquare)
     {
-        isPtrConst           = false;
         auto leftSquareToken = token;
 
         SWAG_CHECK(eatToken());
         while (true)
         {
-            // Size of array can be nothing
-            if (token.id == TokenId::SymRightSquare)
-            {
-                node->arrayDim = UINT8_MAX;
-                break;
-            }
-
             // Slice
             if (token.id == TokenId::SymDotDot)
             {
                 node->typeFlags |= TYPEFLAG_IS_SLICE;
                 SWAG_CHECK(eatToken());
+                break;
+            }
+
+            node->typeFlags |= TYPEFLAG_IS_ARRAY;
+
+            // Size of array can be nothing
+            if (token.id == TokenId::SymRightSquare)
+            {
+                node->arrayDim = UINT8_MAX;
                 break;
             }
 
@@ -622,186 +618,99 @@ bool Parser::doTypeExpression(AstNode* parent, uint32_t exprFlags, AstNode** res
             }
         }
 
-        if (token.id == TokenId::SymLeftSquare)
+        if (token.id == TokenId::SymComma)
         {
-            if (node->typeFlags & TYPEFLAG_IS_SLICE)
-            {
-                Diagnostic diag{sourceFile, token, Fmt(Err(Syn0095), token.ctext())};
-                auto       note = Diagnostic::help(sourceFile, leftSquareToken, Hlp(Hlp0025));
-                return context->report(diag, note);
-            }
-            else
-            {
-                SWAG_CHECK(eatToken());
-                if (token.id == TokenId::SymDotDot)
-                {
-                    node->typeFlags |= TYPEFLAG_IS_SLICE;
-                    SWAG_CHECK(eatToken());
-                    SWAG_CHECK(eatToken(TokenId::SymRightSquare));
-                }
-                else
-                {
-                    Diagnostic diag{sourceFile, token, Fmt(Err(Syn0088), token.ctext())};
-                    auto       note = Diagnostic::help(Hlp(Hlp0024));
-                    return context->report(diag, note);
-                }
-            }
-        }
-
-        if (g_TokenFlags[(int) token.id] & TOKEN_SYM &&
-            token.id != TokenId::SymComma &&
-            token.id != TokenId::SymLeftCurly &&
-            token.id != TokenId::SymAsterisk &&
-            token.id != TokenId::SymCircumflex)
-        {
-            if (inTypeVarDecl)
-                return context->report({sourceFile, token, Fmt(Err(Syn0066), token.ctext())});
-
-            Diagnostic diag{sourceFile, token, Fmt(Err(Syn0066), token.ctext())};
+            Diagnostic diag{sourceFile, token, Fmt(Err(Syn0096), token.ctext())};
             return context->report(diag);
         }
 
-        if (token.id == TokenId::SymComma)
-        {
-            // Special error if inside a function call parameter
-            auto callParam = node->findParent(AstNodeKind::FuncCallParam);
-            if (callParam)
-            {
-                Diagnostic diag{sourceFile, token, Fmt(Err(Syn0096), token.ctext())};
-                return context->report(diag);
-            }
-            else
-            {
-                return error(token, Fmt(Err(Syn0096), token.ctext()));
-            }
-        }
-    }
-
-    // Const after array
-    if (token.id == TokenId::KwdConst)
-    {
-        isPtrConst = true;
-        tokenConst = token;
-
-        SWAG_CHECK(eatToken());
-
-        if (token.id == TokenId::SymLeftSquare)
-        {
-            SWAG_CHECK(eatToken(TokenId::SymLeftSquare));
-            SWAG_CHECK(eatToken(TokenId::SymDotDot));
-            SWAG_CHECK(eatToken(TokenId::SymRightSquare));
-            node->typeFlags |= TYPEFLAG_IS_CONST_SLICE | TYPEFLAG_IS_SLICE;
-        }
-        else
-        {
-            SWAG_VERIFY(token.id == TokenId::SymAsterisk, error(token, Err(Syn0061)));
-        }
+        node->typeFlags |= TYPEFLAG_IS_SUB_TYPE;
+        SWAG_CHECK(doSubTypeExpression(node, exprFlags, &dummyResult));
+        return true;
     }
 
     // Pointers
     if (token.id == TokenId::SymAsterisk || token.id == TokenId::SymCircumflex)
     {
-        while (token.id == TokenId::SymAsterisk || token.id == TokenId::SymCircumflex)
+        node->typeFlags |= TYPEFLAG_IS_PTR | TYPEFLAG_IS_SUB_TYPE;
+        if (token.id == TokenId::SymCircumflex)
+            node->typeFlags |= TYPEFLAG_IS_PTR_ARITHMETIC;
+        SWAG_CHECK(eatToken());
+        SWAG_CHECK(doSubTypeExpression(node, exprFlags, &dummyResult));
+        return true;
+    }
+
+    SWAG_CHECK(doSingleTypeExpression(node, parent, exprFlags, &dummyResult));
+    return true;
+}
+
+bool Parser::doTypeExpression(AstNode* parent, uint32_t exprFlags, AstNode** result)
+{
+    // Code
+    if (token.id == TokenId::KwdCode)
+    {
+        auto node = Ast::newTypeExpression(sourceFile, parent, this);
+        *result   = node;
+        node->flags |= AST_NO_BYTECODE_CHILDS;
+        node->typeInfo = g_TypeMgr->typeInfoCode;
+        node->typeFlags |= TYPEFLAG_IS_CODE;
+        SWAG_CHECK(eatToken());
+        return true;
+    }
+
+    // retval
+    if (token.id == TokenId::KwdRetVal)
+    {
+        auto node         = Ast::newTypeExpression(sourceFile, parent, this);
+        *result           = node;
+        node->semanticFct = SemanticJob::resolveRetVal;
+        node->flags |= AST_NO_BYTECODE_CHILDS;
+        node->typeFlags |= TYPEFLAG_IS_RETVAL;
+
+        // retval type can be followed by structure initializer, like a normal struct
+        // In that case, we want the identifier pipeline to be called on it (to check
+        // parameters like a normal struct).
+        // So we create an identifier, that will be matched with the type alias automatically
+        // created in the function.
+        SWAG_CHECK(eatToken());
+        if (!(token.flags & TOKENPARSE_LAST_EOL) && token.id == TokenId::SymLeftCurly)
         {
-            if (node->ptrCount == AstTypeExpression::MAX_PTR_COUNT)
-                return error(token, Fmt(Err(Syn0133), AstTypeExpression::MAX_PTR_COUNT));
-            node->ptrFlags[node->ptrCount] = isPtrConst ? AstTypeExpression::PTR_CONST : 0;
-            if (token.id == TokenId::SymCircumflex)
-                node->ptrFlags[node->ptrCount] |= AstTypeExpression::PTR_ARITHMETIC;
+            node->identifier = Ast::newIdentifierRef(sourceFile, g_LangSpec->name_retval, node, this);
+            auto id          = CastAst<AstIdentifier>(node->identifier->childs.back(), AstNodeKind::Identifier);
             SWAG_CHECK(eatToken());
-            isPtrConst = false;
-
-            if (token.id == TokenId::KwdConst)
-            {
-                SWAG_CHECK(eatToken());
-                SWAG_VERIFY(token.id == TokenId::SymAsterisk || token.id == TokenId::SymCircumflex || token.id == TokenId::SymAmpersand, error(token, Err(Syn0061)));
-                isPtrConst = true;
-            }
-
-            node->ptrCount++;
+            SWAG_CHECK(doFuncCallParameters(id, &id->callParameters, TokenId::SymRightCurly));
+            id->flags |= AST_IN_TYPE_VAR_DECLARATION;
+            id->callParameters->specFlags |= AstFuncCallParams::SPECFLAG_CALL_FOR_STRUCT;
         }
-    }
 
-    // This is a @typeof
-    if (token.id == TokenId::IntrinsicDeclType)
-    {
-        SWAG_CHECK(doIdentifierRef(node, &node->identifier));
         return true;
     }
 
-    if (token.id == TokenId::NativeType)
+    // This is a lambda
+    if (token.id == TokenId::KwdFunc || token.id == TokenId::KwdClosure || token.id == TokenId::KwdMethod || token.id == TokenId::KwdConstMethod)
     {
-        node->literalType       = token.literalType;
-        node->token.endLocation = token.endLocation;
-        SWAG_CHECK(eatToken());
+        SWAG_CHECK(doLambdaClosureType(parent, result, exprFlags & EXPR_FLAG_IN_VAR_DECL));
         return true;
     }
 
-    if (token.id == TokenId::Identifier)
-    {
-        SWAG_CHECK(doIdentifierRef(node, &node->identifier, IDENTIFIER_TYPE_DECL | IDENTIFIER_NO_ARRAY));
-        if (inTypeVarDecl)
-            node->identifier->childs.back()->flags |= AST_IN_TYPE_VAR_DECLARATION;
-        node->token.endLocation = node->identifier->token.endLocation;
-        return true;
-    }
-    else if (token.id == TokenId::KwdStruct)
+    // Move reference
+    bool isMoveRef = false;
+    if (token.id == TokenId::KwdMoveRef)
     {
         SWAG_CHECK(eatToken());
-        SWAG_CHECK(doTupleOrAnonymousType(node, &node->identifier, isConst, true, false));
-        return true;
-    }
-    else if (token.id == TokenId::KwdUnion)
-    {
-        SWAG_CHECK(eatToken());
-        SWAG_CHECK(doTupleOrAnonymousType(node, &node->identifier, isConst, true, true));
-        return true;
-    }
-    else if (token.id == TokenId::SymLeftCurly)
-    {
-        SWAG_CHECK(doTupleOrAnonymousType(node, &node->identifier, isConst, false, false));
-        return true;
-    }
-    else if (token.id == TokenId::KwdFunc || token.id == TokenId::KwdClosure || token.id == TokenId::KwdMethod || token.id == TokenId::KwdConstMethod)
-    {
-        // We generate a type alias, and make a reference to that type
-        auto alias = Ast::newNode<AstAlias>(this, AstNodeKind::Alias, sourceFile, parent);
-        alias->flags |= AST_PRIVATE | AST_GENERATED;
-        alias->semanticFct = SemanticJob::resolveUsing;
-        Utf8 name          = sourceFile->scopeFile->name + "_alias_";
-        name += Fmt("%d", g_UniqueID.fetch_add(1));
-        alias->token.text = std::move(name);
-        alias->allocateExtension(ExtensionKind::Semantic);
-        alias->extSemantic()->semanticBeforeFct = SemanticJob::resolveTypeAliasBefore;
-        alias->semanticFct                      = SemanticJob::resolveTypeAlias;
-        alias->resolvedSymbolName               = currentScope->symTable.registerSymbolName(context, alias, SymbolKind::TypeAlias);
-        node->identifier                        = Ast::newIdentifierRef(sourceFile, alias->token.text, node, this);
-        SWAG_CHECK(doLambdaClosureType(alias, &dummyResult));
-
-        node->identifier->allocateExtension(ExtensionKind::Misc);
-        node->identifier->extMisc()->exportNode = alias->childs.front();
-        return true;
+        isMoveRef = true;
     }
 
-    // Specific error messages
-    if (parent && parent->kind == AstNodeKind::TupleContent)
+    SWAG_CHECK(doSubTypeExpression(parent, exprFlags, result));
+
+    if (isMoveRef)
     {
-        Diagnostic diag{sourceFile, token, Fmt(Err(Syn0067), token.ctext())};
-        return context->report(diag);
+        // TODO: moveref on ref
+        auto typeNode = CastAst<AstTypeExpression>(*result, AstNodeKind::TypeExpression);
+        typeNode->typeFlags |= TYPEFLAG_IS_REF | TYPEFLAG_IS_MOVE_REF;
     }
 
-    if (token.id == TokenId::SymLeftParen)
-    {
-        Diagnostic diag{sourceFile, token, Fmt(Err(Syn0066), token.ctext())};
-        auto       note = Diagnostic::help(sourceFile, token, Hlp(Hlp0004));
-        return context->report(diag, note);
-    }
-
-    if (Tokenizer::isSymbol(token.id))
-        return error(token, Fmt(Err(Syn0172), token.ctext()));
-
-    // Generic error
-    return error(token, Fmt(Err(Syn0066), token.ctext()));
+    return true;
 }
 
 bool Parser::doCast(AstNode* parent, AstNode** result)

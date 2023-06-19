@@ -79,6 +79,17 @@ impl Undo
         }
     }
 
+    mtd acceptsType(type: typeinfo)->bool
+    {
+        if mdlType == null
+            return true
+        if mdlType == type
+            return true
+        if mdlType == FormLine and type == FormArrow
+            return true
+        return false
+    }
+
     mtd init()
     {
         switch kind
@@ -157,7 +168,7 @@ impl Undo
             visit s: selection
             {
                 f := capture.forms[s]
-                if @kindof(f) != mdlType
+                if !acceptsType(@kindof(f))
                     continue
                 save := cast(*BaseForm) Memory.new(mdlType)
                 f.copy(save, cast(*BaseForm) @dataof(f))
@@ -199,8 +210,11 @@ impl Undo
             selection = capture.selection
             visit s: selection
             {
+                f := capture.forms[s]
+                if !acceptsType(@kindof(f))
+                    continue
                 var val: u32
-                Reflection.getFieldValue(&val, valRef, @dataof(capture.forms[s]), true)
+                Reflection.getFieldValue(&val, valRef, @dataof(f), true)
                 oldU32.add(val)
             }
 
@@ -326,7 +340,7 @@ impl Undo
             visit s: selection
             {
                 f := capture.forms[s]
-                if @kindof(f) != mdlType
+                if !acceptsType(@kindof(f))
                     continue
                 bf := cast(*BaseForm) @dataof(f)
                 if bf.subKind != mdlValue.subKind
@@ -336,7 +350,13 @@ impl Undo
 
         case SetTypedValue:
             visit s: selection
-                Reflection.setFieldValue(@dataof(capture.forms[s]), valRef, &valU32, true)
+            {
+                f := capture.forms[s]
+                if !acceptsType(@kindof(f))
+                    continue
+                Reflection.setFieldValue(@dataof(f), valRef, &valU32, true)
+            }
+
             capture.updateModelFromSelection()
 
         case AlignLeft:
@@ -573,7 +593,7 @@ impl Undo
             visit s, i: selection
             {
                 f := capture.forms[s]
-                if @kindof(f) != mdlType
+                if !acceptsType(@kindof(f))
                     continue
                 bf := cast(*BaseForm) @dataof(f)
                 if bf.subKind != mdlValue.subKind
@@ -584,8 +604,11 @@ impl Undo
         case SetTypedValue:
             visit s, i: selection
             {
+                f := capture.forms[s]
+                if !acceptsType(@kindof(f))
+                    continue
                 val := oldU32[i]
-                Reflection.setFieldValue(@dataof(capture.forms[s]), valRef, &val, true)
+                Reflection.setFieldValue(@dataof(f), valRef, &val, true)
             }
             capture.updateModelFromSelection()
 

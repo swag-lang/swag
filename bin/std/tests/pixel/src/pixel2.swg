@@ -4,9 +4,9 @@ using Core, Pixel.Image
 {
     data := imagePath("rgb.bmp")
     bytes := catch File.readAllBytes(data)
-    @assert(!@err)
+    @assert(!@errmsg)
 
     var dec: Bmp.Decoder
     img := catch dec.IImageDecoder.decode(bytes.toSlice(), {})
-    @assert(!@err)
+    @assert(!@errmsg)
 }

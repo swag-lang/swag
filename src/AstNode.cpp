@@ -60,7 +60,10 @@ void AstNode::copyFrom(CloneContext& context, AstNode* from, bool cloneHie)
     // This can cause some problems with inline functions and autocast, as inline functions are evaluated
     // as functions, and also each time they are inlined.
     if (context.cloneFlags & CLONE_RAW)
+    {
+        semFlags |= from->semFlags & SEMFLAG_USER_CAST;
         castedTypeInfo = from->castedTypeInfo;
+    }
 
     resolvedSymbolName     = from->resolvedSymbolName;
     resolvedSymbolOverload = from->resolvedSymbolOverload;

@@ -203,7 +203,7 @@ func createPipe()
     var pipe: Pipe
 
     pos         := g_Rect.width
-    sizePassage := Random.shared().nextF32(100, 200)
+    sizePassage := Random.shared().nextF32(70, 150)
     heightUp    := Random.shared().nextF32(50, g_Rect.height - sizePassage - 50)
     heightDown  := g_Rect.height - heightUp - GroundHeight - sizePassage
 
@@ -241,13 +241,13 @@ func loadAssets(wnd: *Wnd) throw
     dataPath = Path.combine(dataPath, "datas")
     dataPath = Path.combine(dataPath, "flappy")
 
-    g_BirdTexture[0]   = render.addImage(Path.combine(dataPath, "yellowbird-upflap.png"))
-    g_BirdTexture[1]   = render.addImage(Path.combine(dataPath, "yellowbird-midflap.png"))
-    g_BirdTexture[2]   = render.addImage(Path.combine(dataPath, "yellowbird-downflap.png"))
-    g_OverTexture      = render.addImage(Path.combine(dataPath, "gameover.png"))
-    g_BaseTexture      = render.addImage(Path.combine(dataPath, "base.png"))
-    g_BackTexture      = render.addImage(Path.combine(dataPath, "background-day.png"))
-    g_MsgTexture       = render.addImage(Path.combine(dataPath, "message.png"))
+    g_BirdTexture[0] = render.addImage(Path.combine(dataPath, "yellowbird-upflap.png"))
+    g_BirdTexture[1] = render.addImage(Path.combine(dataPath, "yellowbird-midflap.png"))
+    g_BirdTexture[2] = render.addImage(Path.combine(dataPath, "yellowbird-downflap.png"))
+    g_OverTexture    = render.addImage(Path.combine(dataPath, "gameover.png"))
+    g_BaseTexture    = render.addImage(Path.combine(dataPath, "base.png"))
+    g_BackTexture    = render.addImage(Path.combine(dataPath, "background-day.png"))
+    g_MsgTexture     = render.addImage(Path.combine(dataPath, "message.png"))
 
     img := Image.load(Path.combine(dataPath, "pipe-green.png"))
     g_PipeTextureD = render.addImage(img)
@@ -286,5 +286,6 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
 
 #run
 {
-    Application.runSurface(4100, 100, 300, 512, title: "Angry Bird", hook: &onEvent)
+    func test(app: *Application) = if Env.hasArg("swag.test") app.maxRunFrame = 100
+    Application.runSurface(100, 100, 300, 512, title: "Flappy Bird", hook: &onEvent, init: &test)
 }

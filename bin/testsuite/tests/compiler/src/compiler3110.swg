@@ -26,5 +26,5 @@ func tata()
 #test
 {
     catch tata()
-    @assert(@err != null)
+    @assert(@errmsg != null)
 }

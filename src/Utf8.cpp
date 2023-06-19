@@ -745,7 +745,7 @@ Utf8 Utf8::format(const char* format, ...)
     return vec;
 }
 
-void Utf8::tokenize(const Utf8& str, char c, Vector<Utf8>& tokens)
+void Utf8::tokenize(const Utf8& str, char c, Vector<Utf8>& tokens, bool keepEmpty)
 {
     tokens.clear();
 
@@ -763,13 +763,21 @@ void Utf8::tokenize(const Utf8& str, char c, Vector<Utf8>& tokens)
             i--;
         }
 
-        while (i && *pz == c)
+        if (keepEmpty)
         {
-            pz++;
-            i--;
+            if (*pz == c)
+                pz++;
+        }
+        else
+        {
+            while (i && *pz == c)
+            {
+                pz++;
+                i--;
+            }
         }
 
-        if (!one.empty())
+        if (!one.empty() || keepEmpty)
             tokens.push_back(one);
     }
 }

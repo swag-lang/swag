@@ -264,7 +264,7 @@ bool Parser::doSinglePrimaryExpression(AstNode* parent, uint32_t exprFlags, AstN
         SWAG_CHECK(doIndex(parent, result));
         break;
 
-    case TokenId::IntrinsicGetErr:
+    case TokenId::IntrinsicGetErrMsg:
         SWAG_CHECK(doGetErr(parent, result));
         break;
 
@@ -298,6 +298,7 @@ bool Parser::doSinglePrimaryExpression(AstNode* parent, uint32_t exprFlags, AstN
     case TokenId::IntrinsicGvtd:
     case TokenId::IntrinsicCompiler:
     case TokenId::IntrinsicIsByteCode:
+    case TokenId::IntrinsicGetErr:
     case TokenId::IntrinsicMemCmp:
     case TokenId::IntrinsicStrLen:
     case TokenId::IntrinsicStrCmp:
@@ -1241,11 +1242,7 @@ bool Parser::doDefer(AstNode* parent, AstNode** result)
     }
 
     ScopedFlags scopedFlags(this, AST_IN_DEFER);
-    if (token.id == TokenId::SymLeftCurly)
-        SWAG_CHECK(doScopedCurlyStatement(node, &dummyResult));
-    else
-        SWAG_CHECK(doLeftInstruction(node, &dummyResult));
-
+    SWAG_CHECK(doEmbeddedStatement(node, &dummyResult));
     return true;
 }
 

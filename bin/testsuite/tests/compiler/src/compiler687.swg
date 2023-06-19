@@ -1,13 +1,9 @@
-
-
-
 struct Point
 {
 	x: s32 = 5
 	y: s32 = 10
 }
 
-//#[Swag.PrintBc]
 #test
 {
 	var pt : [2, 2] Point{100, 500}

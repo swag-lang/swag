@@ -6,46 +6,49 @@ func __seterr(value: string)
 {
     cxt := @getcontext()
     len := @countof(value)
-    if len > MaxLenErrorMsg - cxt.errorMsgStart
-    {
-        len = cast(u64) (MaxLenErrorMsg - cxt.errorMsgStart)
-        @assert(len > 0)
-    }
-    @memcpy(&cxt.errorMsg[cxt.errorMsgStart], @dataof(value), len)
-    cxt.errorMsgLen = cast(u32) len
+    if len > MaxLenErrorMsg
+        len = MaxLenErrorMsg
+
+    @assert(cxt.errorIndex < MaxErrors)
+    @memcpy(&cxt.errors[cxt.errorIndex].msgBuf, @dataof(value), len)
+    cxt.errors[cxt.errorIndex].msg = @mkstring(&cxt.errors[cxt.errorIndex].msgBuf, len)
+    cxt.hasError = 1
 }
 
-func __geterr()->string
+func __geterrmsg()->string
 {
     cxt := @getcontext()
-    if cxt.errorMsgLen == 0 return null
-    return @mkstring(&cxt.errorMsg[cxt.errorMsgStart], cxt.errorMsgLen)
+    if !cxt.hasError
+        return null
+    return cxt.errors[cxt.errorIndex].msg
 }
 
-// Store the current error length after the string, and set
-// the new cxt.errorMsgStart after that
+// Returns the current raised [Error] or null if none
+func @err()->const *Error
+{
+    cxt := @getcontext()
+    if !cxt.hasError
+        return null
+    return &cxt.errors[cxt.errorIndex]
+}
+
 func __pusherr()
 {
     cxt := @getcontext()
-    @assert(MaxLenErrorMsg - cxt.errorMsgStart >= 8)
-    ptr := cast(^u32) (&cxt.errorMsg[cxt.errorMsgStart] + cxt.errorMsgLen)
-    ptr[0] = cxt.errorMsgLen
-    ptr[1] = cxt.traceIndex
-    cxt.errorMsgStart += cxt.errorMsgLen + 8
-    cxt.errorMsgLen = 0
+    @assert(cxt.errorIndex < MaxErrors)
+    cxt.errors[cxt.errorIndex].pushHasError = cxt.hasError
+    cxt.errors[cxt.errorIndex].pushTraceIndex = cxt.traceIndex
+    cxt.errorIndex += 1
 }
 
-// Get the previous error length from the buffer (the u32 just before
-// cxt.errorMsgStart), and restore the previous error length and start
 func __poperr()
 {
     cxt := @getcontext()
-    @assert(cxt.errorMsgStart >= 8)
-    ptr := cast(^u32) (&cxt.errorMsg[cxt.errorMsgStart] - 8)
-    cxt.errorMsgLen = ptr[0]
-    cxt.traceIndex = ptr[1]
-    @assert(cxt.errorMsgStart >= cxt.errorMsgLen + 8)
-    cxt.errorMsgStart -= (cxt.errorMsgLen + 8)
+    @assert(cxt.errorIndex != 0)
+    cxt.errorIndex -= 1
+    @assert(cxt.errorIndex < MaxErrors)
+    cxt.hasError = cxt.errors[cxt.errorIndex].pushHasError
+    cxt.traceIndex = cxt.errors[cxt.errorIndex].pushTraceIndex
 }
 
 func __checkAny(typeA, typeB: typeinfo, loc: SourceCodeLocation)
@@ -53,8 +56,8 @@ func __checkAny(typeA, typeB: typeinfo, loc: SourceCodeLocation)
     if !@typecmp(typeA, typeB, TypeCmpFlags.CastAny)
     {
         cxt := @getcontext()
-        str := &cxt.errorMsg[0]
-        cxt.errorMsg[0] = 0
+        str := &cxt.errors[0].msgBuf[0]
+        cxt.errors[0].msgBuf[0] = 0
 
         if !typeB
         {
@@ -79,7 +82,6 @@ func __checkAny(typeA, typeB: typeinfo, loc: SourceCodeLocation)
             }
         }
 
-        cxt.errorMsgLen = 0
         @panic(@mkstring(str, @strlen(str)), loc)
     }
 }
@@ -95,10 +97,10 @@ func __initStackTrace()
 func __stackTrace(loc: SourceCodeLocation)
 {
     cxt := @getcontext()
-    if cxt.traceIndex >= MaxTrace
+    if cxt.traceIndex >= MaxTraces
         return
-    cxt.trace[cxt.traceIndex] = loc
-    cxt.traceIndex = cxt.traceIndex + 1
+    cxt.traces[cxt.traceIndex] = loc
+    cxt.traceIndex += 1
 }
 
 ////////////////////////////////////////////////////////////
@@ -150,31 +152,42 @@ func @panic(message: string, loc: SourceCodeLocation)
     }
 
     // Print the message first
-    @print("\x1b[91m")
-    @print("error: ", message, "\n")
-    @print("\x1b[97m")
+    @print("\n");
+    @print("########################", "\n")
+    @print("! RUNTIME PANIC ATTACK !", "\n")
+    @print("########################", "\n")
+    @print("\n");
+
+    @print("panic: ", message, "\n")
     @print("--> ")
-    @print(loc.fileName, ":", loc.lineStart + 1, "\n")
+    @print(loc.fileName, ":", loc.lineStart + 1, ":", loc.colStart + 1, "\n")
+    @print("\n")
+
+    // Print the error stack trace if available
+    if cxt.traceIndex
+    {
+        @print("[error callstack]", "\n");
+        for i := cast(s32) cxt.traceIndex - 1; i >= 0; i -= 1
+        {
+            @print("error");
+            @print(" --> ")
+            @print(cxt.traces[i].fileName)
+            @print(":");
+            @print(cast(s64) cxt.traces[i].lineStart + 1);
+            @print(":");
+            @print(cast(s64) cxt.traces[i].colStart + 1);
+            @print(":\n");
+        }
+
+        @print("\n")
+    }
 
     // Print the calling stack trace
+    @print("[runtime callstack]", "\n");
     var arr: [64] *void
     nb := __captureStack(1, arr)
     __logStackTrace(@mkslice(&arr[0], nb))
-
-    // Print the error stack trace if available
-    for i := cast(s32) cxt.traceIndex - 1; i >= 0; i -= 1
-    {
-        @print("\x1b[93m")
-        @print("trace error:\n");
-        @print("\x1b[97m")
-        @print("--> ")
-        @print(cxt.trace[i].fileName)
-        @print(":");
-        @print(cast(s64) cxt.trace[i].lineStart + 1);
-        @print(":");
-        @print(cast(s64) cxt.trace[i].colStart + 1);
-        @print(":\n");
-    }
+    @print("\n")
 
     // During tests just raise an error without a dialog box
     if contextFlags & ContextFlags.Test

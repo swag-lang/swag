@@ -362,8 +362,18 @@ namespace Swag
         Warning
     }
 
-    const MaxLenErrorMsg = 128  // Maximum length of an error message
-    const MaxTrace = 32         // Maximum stack trace
+    const MaxLenErrorMsg = 128   // Maximum length of an error message
+    const MaxErrors = 32         // Maximum nested errors
+    const MaxTraces = 32         // Maximum error traces
+
+    // Store a 'throw' error informations
+    struct Error
+    {
+        msgBuf:         [MaxLenErrorMsg] u8     // Buffer to store the error message
+        msg:            string                  // Error message
+        pushHasError:   u32
+        pushTraceIndex: u32
+    }
 
     // Thread context as returned by [@context].
     struct Context
@@ -377,14 +387,14 @@ namespace Swag
 
         tempAllocator:      ScratchAllocator        // A temporary allocator
 
-        errorMsg:           [MaxLenErrorMsg] u8                     // All error messages
-        errorMsgStart:      u32                                     // Current start error message
-        errorMsgLen:        u32                                     // Length of the error messages in 'errorMsg'
-        traceIndex:         u32                                     // The current trace index
-        trace:              [MaxTrace] const *SourceCodeLocation    // Stack trace, in case of errors
+        traces:             [MaxTraces] const *SourceCodeLocation   // Stack trace, in case of errors
+        errors:             [MaxErrors] Error                       // All errors
         exceptionLoc:       SourceCodeLocation                      // When an exception is raised, this is the code location
         exceptionParams:    [4] const *void                         // When an exception is raised, this are the parameters
         panic:              func(string, SourceCodeLocation)        // A function to call if there's a panic
+        errorIndex:         u32                                     // Number of errors in the array
+        traceIndex:         u32                                     // The current trace index
+        hasError:           u32                                     // != 0 if an error is raised
     }
 
     // #########################################################
@@ -502,7 +512,7 @@ namespace Swag
     {
         fullname:   string                      // The full scoped name of the type
         name:       string                      // The unscoped name
-        sizeof:     u64                         // Size in bytes
+        sizeof:     u32                         // Size in bytes
         crc32:      u32                         // A unique CRC to identify the type
         flags       = TypeInfoFlags.Zero        // Some additional flags
         kind        = TypeInfoKind.Invalid      // The kind of the type
@@ -698,7 +708,7 @@ namespace Swag
         debugAllocator              = true                // Use Swag.DebugAllocator by default
         debugAllocatorCaptureStack  = true                // Capture the call stack for each allocation
         debugAllocatorLeaks         = true                // Detect memory leaks
-        stackTrace                  = true                // Add stack trace in case an error is raised
+        errorStackTrace             = true                // Add stack trace in case a 'throw' is raised
 
         warnAsErrors:           string  // Force some warnings to be treated as errors. Format is "wrnXXXX|wrnXXXX..."
         warnAsWarning:          string  // Override 'warnAsErrors', restoring warnings as warnings
@@ -708,7 +718,7 @@ namespace Swag
 
         byteCodeOptimizeLevel   = 1     // Optimization level of bytecode [0, 1 or 2]
         byteCodeDebugInline     = true  // Trace into inlined code when generating debug infos
-        byteCodeEmitAssume      = true  // 'assume' will assert if 'true'
+        byteCodeEmitAssume      = true  // 'assume' will panic if an error is raised
         byteCodeInline          = true  // Enable bytecode inlining with #[Swag.Inline]
         byteCodeAutoInline      = true  // Automatic inlining of some other functions
 

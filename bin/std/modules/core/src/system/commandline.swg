@@ -138,8 +138,8 @@ func(T) parse(st: *T, args: const [..] string, options = CommandLine.ParseOption
             rest := catch StrConv.pokeValue(addr, typeField, allArgs[itp + 1])
             itp += 1
 
-            if @err
-                throw Format.toString("invalid value for option '%' (%)", oneArg, @err)
+            if @errmsg
+                throw Format.toString("invalid value for option '%' (%)", oneArg, @errmsg)
             if @countof(rest)
                 throw Format.toString("invalid value for option '%'", oneArg)
         }
@@ -179,8 +179,8 @@ func(T) parse(st: *T, args: const [..] string, options = CommandLine.ParseOption
                 }
 
                 discard catch StrConv.pokeValue(addr, typeField, collect.toString())
-                if @err
-                    throw Format.toString("invalid value for option '%' (%)", oneArg, @err)
+                if @errmsg
+                    throw Format.toString("invalid value for option '%' (%)", oneArg, @errmsg)
             }
             else
             {

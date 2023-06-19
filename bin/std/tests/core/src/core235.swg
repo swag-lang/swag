@@ -5,7 +5,7 @@ using Core
 {
     t := @typeof(String)
 
-    ptr := @alloc(t.sizeof)
+    ptr := @alloc(cast(u64) t.sizeof)
     defer @free(ptr)
 
     ptr1 := cast(*String) ptr

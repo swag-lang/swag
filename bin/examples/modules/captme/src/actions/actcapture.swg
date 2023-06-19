@@ -191,7 +191,7 @@ impl MainWnd
             Threading.Thread.sleep(captureDelay * 1000)
 
         img := catch screenShot(mode)
-        isValid := !@err and img.width > 0 and img.height > 0
+        isValid := !@errmsg and img.width > 0 and img.height > 0
 
         if (isValid and captureShowEditor) or !wasHidden
         {

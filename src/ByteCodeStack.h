@@ -65,8 +65,8 @@ struct ByteCodeStack
 
     uint32_t maxLevel(ByteCodeRunContext* runContext);
     void     getSteps(VectorNative<ByteCodeStackStep>& copySteps, ByteCodeRunContext* runContext);
-    void     logStep(int level, bool current, ByteCodeStackStep& step);
-    void     log(ByteCodeRunContext* runContext);
+    Utf8     logStep(int level, bool current, ByteCodeStackStep& step);
+    Utf8     log(ByteCodeRunContext* runContext);
 
     VectorNative<ByteCodeStackStep> steps;
 };

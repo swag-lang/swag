@@ -97,14 +97,14 @@ func tempAlloc(size: u64, alignement: u32 = 0, hint: string = null, loc = #calle
 func new(type: typeinfo, allocator: IAllocator = null, alignement: u32 = 0, hint: string = null, loc = #callerlocation)->*u8
 {
     userHint := hint orelse type.fullname
-    ptr := alloc(type.sizeof, allocator, alignement, userHint, loc)
+    ptr := alloc(cast(u64) type.sizeof, allocator, alignement, userHint, loc)
     if type.kind == Swag.TypeInfoKind.Struct
     {
         typeStruct := cast(const *Swag.TypeInfoStruct) type
         typeStruct.opInit(ptr)
     }
     else
-        clear(ptr, type.sizeof)
+        clear(ptr, cast(u64) type.sizeof)
     return ptr
 }
 
@@ -136,7 +136,7 @@ func delete(ptr: *void, type: typeinfo, allocator: IAllocator = null, hint: stri
 
     Debug.assert(type != null)
     userHint := hint orelse type.name
-    assertIsAllocated(ptr, type.sizeof, allocator, userHint, loc)
+    assertIsAllocated(ptr, cast(u64) type.sizeof, allocator, userHint, loc)
 
     if type.kind == TypeInfoKind.Struct
     {
@@ -145,7 +145,7 @@ func delete(ptr: *void, type: typeinfo, allocator: IAllocator = null, hint: stri
             typest.opDrop(ptr)
     }
 
-    free(ptr, type.sizeof, allocator, userHint, loc)
+    free(ptr, cast(u64) type.sizeof, allocator, userHint, loc)
 }
 
 // Allocate and initialize an array of the given type

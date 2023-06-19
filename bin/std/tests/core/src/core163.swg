@@ -6,7 +6,7 @@ using Core.File
 {
     loc := #location
     res := catch readAllLines(loc.fileName)
-    @assert(@err == null)
+    @assert(@errmsg == null)
     @assert(res.count > 5)
     @assert(res[0] == @""@)
 

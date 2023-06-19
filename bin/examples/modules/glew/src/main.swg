@@ -128,7 +128,7 @@ func swapParams(what: string)->String
     curPath := Path.getDirectoryName(#location.fileName)
     glewPath := Path.combine(curPath, "glew.h")
     lines = catch File.readAllLines(glewPath)
-    if @err Console.fatal("error: cannot read '%' (%)\n", glewPath, @err)
+    if @errmsg Console.fatal("error: cannot read '%' (%)\n", glewPath, @errmsg)
 
     findFirstLine(fctExtension)
     visit line11: toProcess

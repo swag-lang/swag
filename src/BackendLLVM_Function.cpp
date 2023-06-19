@@ -2957,7 +2957,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         {
             MK_BINOP8_CAB8();
             auto v0 = builder.CreateICmpSLE(r1, r2);
-            v0 = builder.CreateIntCast(v0, I8_TY(), false);
+            v0      = builder.CreateIntCast(v0, I8_TY(), false);
             builder.CreateStore(v0, r0);
             break;
         }
@@ -2965,7 +2965,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         {
             MK_BINOP16_CAB8();
             auto v0 = builder.CreateICmpSLE(r1, r2);
-            v0 = builder.CreateIntCast(v0, I8_TY(), false);
+            v0      = builder.CreateIntCast(v0, I8_TY(), false);
             builder.CreateStore(v0, r0);
             break;
         }
@@ -2989,7 +2989,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         {
             MK_BINOP8_CAB8();
             auto v0 = builder.CreateICmpULE(r1, r2);
-            v0 = builder.CreateIntCast(v0, I8_TY(), false);
+            v0      = builder.CreateIntCast(v0, I8_TY(), false);
             builder.CreateStore(v0, r0);
             break;
         }
@@ -2997,7 +2997,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         {
             MK_BINOP16_CAB8();
             auto v0 = builder.CreateICmpULE(r1, r2);
-            v0 = builder.CreateIntCast(v0, I8_TY(), false);
+            v0      = builder.CreateIntCast(v0, I8_TY(), false);
             builder.CreateStore(v0, r0);
             break;
         }
@@ -4179,6 +4179,10 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             emitCall(buildParameters, moduleToGen, g_LangSpec->name__checkAny, allocR, allocT, {ip->a.u32, ip->b.u32, ip->c.u32}, {});
             break;
 
+        case ByteCodeOp::IntrinsicGetErr:
+            emitCall(buildParameters, moduleToGen, g_LangSpec->name_aterr, allocR, allocT, {ip->a.u32}, {});
+            break;
+
         case ByteCodeOp::IntrinsicIsByteCode:
         {
             auto r0 = GEP64_PTR_I8(allocR, ip->a.u32);
@@ -4234,8 +4238,8 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
 
             /////////////////////////////////////
 
-        case ByteCodeOp::IntrinsicGetErr:
-            emitCall(buildParameters, moduleToGen, g_LangSpec->name__geterr, allocR, allocT, {}, {});
+        case ByteCodeOp::IntrinsicGetErrMsg:
+            emitCall(buildParameters, moduleToGen, g_LangSpec->name__geterrmsg, allocR, allocT, {}, {});
             storeRT2ToRegisters(context, buildParameters, ip->a.u32, ip->b.u32, allocR, allocT);
             break;
 
@@ -4247,7 +4251,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         {
             auto r0 = GEP64(allocR, ip->b.u32);
             auto ra = builder.CreateLoad(PTR_I8_TY(), r0);
-            auto v0 = GEP8(ra, offsetof(SwagContext, errorMsgLen));
+            auto v0 = GEP8(ra, offsetof(SwagContext, hasError));
             auto r1 = GEP64_PTR_I32(allocR, ip->a.u32);
             builder.CreateStore(builder.CreateLoad(I32_TY(), v0), r1);
             break;
@@ -4256,7 +4260,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         {
             auto r0 = GEP64(allocR, ip->a.u32);
             auto ra = builder.CreateLoad(PTR_I8_TY(), r0);
-            auto v0 = GEP8_PTR_I32(ra, offsetof(SwagContext, errorMsgLen));
+            auto v0 = GEP8_PTR_I32(ra, offsetof(SwagContext, hasError));
             builder.CreateStore(pp.cst0_i32, v0);
             break;
         }

@@ -730,10 +730,15 @@ bool SemanticJob::getConstantArrayPtr(SemanticContext* context, uint32_t* storag
             isConstAccess = isConstAccess && (subArray->access->flags & AST_VALUE_COMPUTED);
             if (isConstAccess)
             {
-                auto subTypePtr = CastTypeInfo<TypeInfoArray>(subArray->array->typeInfo, TypeInfoKind::Array);
-                SWAG_CHECK(boundCheck(context, subArray->access, subTypePtr->count));
-                offsetAccess += subArray->access->computedValue->reg.u64 * subTypePtr->pointedType->sizeOf;
-                typePtr = subTypePtr;
+                if (subArray->array->typeInfo->kind != TypeInfoKind::Array)
+                    isConstAccess = false;
+                else
+                {
+                    auto subTypePtr = CastTypeInfo<TypeInfoArray>(subArray->array->typeInfo, TypeInfoKind::Array);
+                    SWAG_CHECK(boundCheck(context, subArray->access, subTypePtr->count));
+                    offsetAccess += subArray->access->computedValue->reg.u64 * subTypePtr->pointedType->sizeOf;
+                    typePtr = subTypePtr;
+                }
             }
         }
 

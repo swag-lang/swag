@@ -503,10 +503,13 @@ void Workspace::errorPendingJobs(Vector<PendingJob>& pendingJobs)
             auto       prevNodeLocal = pendingJob->originalNode ? pendingJob->originalNode : pendingJob->nodes.front();
             Diagnostic diag{prevNodeLocal, prevNodeLocal->token, Fmt(Err(Err0419), Naming::kindName(prevNodeLocal).c_str(), prevNodeLocal->token.ctext())};
             Report::report(diag, notes);
-            doneOne                           = true;
-            hasCycle                          = true;
             auto sourceFile                   = Report::getDiagFile(diag);
             sourceFile->module->hasCycleError = true;
+            if (!sourceFile->shouldHaveError)
+            {
+                doneOne  = true;
+                hasCycle = true;
+            }
             continue;
         }
 

@@ -167,7 +167,7 @@ void initErrors()
     SWAG_ERROR(Syn0058, "expected a generic name or a type");
     SWAG_ERROR(Syn0059, "expected a left expression");
     SWAG_ERROR(Syn0060, "expected a literal type qualifier after '''");
-    SWAG_ERROR(Syn0061, "expected a pointer declaration '*' or '^' after 'const'");
+    SWAG_ERROR(Syn0061, nullptr);
     SWAG_ERROR(Syn0062, "expected a single identifier %s");
     SWAG_ERROR(Syn0063, "expected a struct name, found '%s'");
     SWAG_ERROR(Syn0064, "expected a top level instruction");
@@ -192,14 +192,14 @@ void initErrors()
     SWAG_ERROR(Syn0085, "expected the 'loop' expression to evaluate before '{'");
     SWAG_ERROR(Syn0086, "expected the 'visit' expression to evaluate before '{'");
     SWAG_ERROR(Syn0087, "expected the 'while' boolean expression before '{'");
-    SWAG_ERROR(Syn0088, "expected the array type declaration, found '%s'");
+    SWAG_ERROR(Syn0088, nullptr);
     SWAG_ERROR(Syn0089, "expected the function name instead of '%s'");
     SWAG_ERROR(Syn0090, "expected the function parameter type or assignment (':' or '=')");
     SWAG_ERROR(Syn0091, "expected the function parameters before '{'");
     SWAG_ERROR(Syn0092, "expected the generic parameters");
     SWAG_ERROR(Syn0093, "expected the namespace name before ';'");
     SWAG_ERROR(Syn0094, "expected the namespace name before '{'");
-    SWAG_ERROR(Syn0095, "expected the slice type declaration, found '%s'");
+    SWAG_ERROR(Syn0095, nullptr);
     SWAG_ERROR(Syn0096, "expected the type of the array after the dimensions, but found '%s'");
     SWAG_ERROR(Syn0097, "found '#elif' without a corresponding '#if'");
     SWAG_ERROR(Syn0098, "found '#else' without a corresponding '#if'");
@@ -235,7 +235,7 @@ void initErrors()
     SWAG_ERROR(Syn0128, "the struct '%s' should be initialized in place with '{}' and not parenthesis");
     SWAG_ERROR(Syn0131, "the variable should have a type or should be initialized");
     SWAG_ERROR(Syn0132, "too many array dimensions (maximum is '254')");
-    SWAG_ERROR(Syn0133, "too many pointer dimensions (maximum is '%u')");
+    SWAG_ERROR(Syn0133, nullptr);
     SWAG_ERROR(Syn0134, "tuple types in generic parameters are not (yet?) supported");
     SWAG_ERROR(Syn0135, "type 'Self' should not be used outside an 'impl', 'struct' or 'interface' block");
     SWAG_ERROR(Syn0136, "unexpected '#global' instruction '%s'");
@@ -406,7 +406,7 @@ void initErrors()
     SWAG_ERROR(Err0299, "a non mutable variable should be explicitly initialized");
     SWAG_ERROR(Err0446, "a parameter of type 'cvarargs' cannot be passed from function to function");
     SWAG_ERROR(Err0040, "a partial type alias ('%s') for a generic struct instantiation is not supported");
-    SWAG_ERROR(Err0024, "a pointer to 'Swag.TypeInfo' should be 'const'");
+    SWAG_ERROR(Err0024, nullptr);
     SWAG_ERROR(Err0628, "a pointer type ('%s') cannot be visited with 'visit'");
     SWAG_ERROR(Err0300, "a reference should be explicitly initialized");
     SWAG_ERROR(Err0173, "a shift operand should be of type 'u32' and not '%s'");
@@ -916,9 +916,9 @@ void initErrors()
     SWAG_ERROR(Err0080, "ambiguous resolution of enum value '%s'");
     SWAG_ERROR(Err0144, "the enum value '%s' cannot be found in the enum '%s'");
     SWAG_ERROR(Err0147, "unexpected 'Swag.Compiler' attribute as 'Swag.Tls' has already been defined (and they are exclusive)");
-    SWAG_ERROR(Err0148, nullptr);
-    SWAG_ERROR(Err0149, nullptr);
-    SWAG_ERROR(Err0250, nullptr);
+    SWAG_ERROR(Err0148, "cannot declare an array of 'void' type");
+    SWAG_ERROR(Err0149, "cannot declare a variable or a constant of 'void' type");
+    SWAG_ERROR(Err0250, "unexpected 'const' for type '%s'");
     SWAG_ERROR(Err0251, nullptr);
     SWAG_ERROR(Err0280, nullptr);
     SWAG_ERROR(Err0289, nullptr);
@@ -993,14 +993,14 @@ void initErrors()
     SWAG_ERROR(Hlp0022, "this kind of constant does not have an associated memory storage");
     SWAG_ERROR(Hlp0041, "this type of parameter does not have an associated memory storage");
     SWAG_ERROR(Hlp0006, "to access an array with multiple dimensions, the syntax is [x, y], not [x][y]");
-    SWAG_ERROR(Hlp0024, "to declare a multi dimensional array, syntax is [N1, N2, ...] and not [N1][N2][...]");
+    SWAG_ERROR(Hlp0024, nullptr);
     SWAG_ERROR(Hlp0023, "valid modes are 'defer(err)' and 'defer(noerr)'");
     SWAG_ERROR(Hlp0011, "valid safety values are 'boundcheck|overflow|math|switch|unreachable|any|bool|nan|sanity'");
     SWAG_ERROR(Hlp0018, "when the parameter types of a lambda are inferred, the return type will be inferred too");
     SWAG_ERROR(Hlp0003, "you can affect a lambda to a closure type, but not the other way around");
     SWAG_ERROR(Hlp0033, "you can unpack a variable with '?' if you want to ignore it");
     SWAG_ERROR(Hlp0029, "you can use 'mtd' or 'mtdc' instead of 'func' to declare an implicit 'using self' as a first parameter");
-    SWAG_ERROR(Hlp0025, "you cannot declare a slice or a static array of another slice or array");
+    SWAG_ERROR(Hlp0025, nullptr);
     SWAG_ERROR(Hlp0019, "you cannot mix inferred and specified types in lambda parameters");
     SWAG_ERROR(Hlp0031, "you could also declare the interface member with 'mtd' or 'mtdc' instead of 'func'");
     SWAG_ERROR(Hlp0036, "you could force the evaluation with a '#run'");
@@ -1016,7 +1016,7 @@ void initErrors()
     SWAG_ERROR(Hlp0051, "if this is the start of a struct initialization block, considerer removing the blank(s) between '%s' and '{'");
     SWAG_ERROR(Hlp0052, "if this is the start of a new block, consider putting '{' on another line");
     SWAG_ERROR(Hlp0053, "use '{}' if ou really want an empty statement");
-    SWAG_ERROR(Hlp0054, nullptr);
+    SWAG_ERROR(Hlp0054, "you can run swag with '--callstack' to get contextual informations");
 
     /////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////
@@ -1144,8 +1144,8 @@ void initErrors()
     SWAG_ERROR(Hnt0119, "this is an enum value");
     SWAG_ERROR(Hnt0120, "wanted a 'bool' type because of this");
     SWAG_ERROR(Hnt0121, "there is an implicit '@countof' because of this");
-    SWAG_ERROR(Hnt0122, nullptr);
-    SWAG_ERROR(Hnt0123, nullptr);
+    SWAG_ERROR(Hnt0122, "this is the thrown error");
+    SWAG_ERROR(Hnt0123, "the array contains %d elements of type '%s', which does not fit in a slice of type '%s'");
     SWAG_ERROR(Hnt0124, nullptr);
 
     /////////////////////////////////////////////////////////////////////
