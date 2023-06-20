@@ -1,10 +1,3 @@
-/*
-    This script is used to generate the documentation you can see at swag-lang.org.
-
-    It takes the content of the swag-lang/swag/bin/reference/tests folders, and generates the
-    corresponding documentations.
-*/
-
 #dependencies
 {
     #import "gui" location="swag@std"
@@ -35,11 +28,11 @@ func stateEnter(st: State)
     switch st
     {
     case Paragraph:
-        g_Buf += "<p>"
+        g_Buf += "<p>\n"
     case List:
-        g_Buf += "<ul>"
+        g_Buf += "<ul>\n"
     case Blockquote:
-        g_Buf += "<blockquote><p>"
+        g_Buf += "<blockquote><p>\n"
     }
 }
 
@@ -503,13 +496,9 @@ func generateOverview(in, out: string)
     g_Toc += "</ul>\n"
 
     // Close html page
-    g_Buf +=
-        """
-        </div>
-        </div>
-        </div>
-        """
-
+    g_Buf += "</div>\n"
+    g_Buf += "</div>\n"
+    g_Buf += "</div>\n"
     g_Buf += "<?php include('html_end.php'); ?>\n"
 
     g_Buf.insert(seekToc, g_Toc)
