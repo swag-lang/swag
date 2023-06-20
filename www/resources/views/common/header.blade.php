@@ -11,6 +11,7 @@
             <li class="lg:mr-5 mb-1 lg:mb-0 ml-2 lg:ml-0"><a href="{{ route('overview') }}" class="<?=$_SERVER['REQUEST_URI'] == '/overview' ? 'border-b' : ''?> hover:border-b">Overview</a></li>
             <li class="lg:mr-5 mb-1 lg:mb-0 ml-2 lg:ml-0"><a href="/std/swag.runtime.html" target="_blank" class="hover:border-b">Runtime</a></li>
             <li class="lg:mr-5 mb-1 lg:mb-0 ml-2 lg:ml-0"><a href="{{ route('std') }}" class="<?=$_SERVER['REQUEST_URI'] == '/std' ? 'border-b' : ''?> hover:border-b">Std</a></li>
+            <li class="lg:mr-5 mb-1 lg:mb-0 ml-2 lg:ml-0"><a href="https://www.youtube.com/channel/UC9dkBu1nNfJDxUML7r7QH1Q" target="_blank" class="hover:border-b">Youtube</a></li>
             <li class="mb-1 lg:mb-0 ml-2 lg:ml-0"><a href="https://github.com/swag-lang/swag" target="_blank" class="hover:border-b">Github</a></li>
         </ul>
     </div>
