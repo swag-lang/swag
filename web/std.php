@@ -3,8 +3,10 @@
 <style><?php include('css/style.php'); ?></style>
 <div class="lg:m-auto lg:w-[76rem] pt-2 lg:pt-10 overflow-hidden p-5">
 <div class="container">
-<p></p>
-<ul><li><a href="std/std.core.html">std.core</a></li>
+<p>
+</p>
+<ul>
+<li><a href="std/std.core.html">std.core</a></li>
 <li><a href="std/std.pixel.html">std.pixel</a></li>
 <li><a href="std/std.gui.html">std.gui</a></li>
 <li><a href="std/std.ogl.html">std.ogl</a></li>
