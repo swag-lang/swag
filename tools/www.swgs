@@ -28,7 +28,6 @@ var g_Code: String
 var g_State:            Array'State
 var g_CptBrace:         s32
 var g_SubTitle:         bool
-var g_FromMd:           bool
 var g_BaseTitle:        s32
 
 func stateEnter(st: State)
@@ -203,9 +202,6 @@ func addLine(line: string)
 
         g_Buf += line[i]
     }
-
-    if !g_FromMd or !@countof(line)
-        g_Buf += "</br>\n"
 }
 
 func flushCode()
@@ -301,11 +297,18 @@ func processFile(fileName: string)
         case Blockquote:
             lineTrim.remove(0, 1)
             lineTrim.trim()
+            if lineTrim.isEmpty()
+                g_Buf += "</br>\n"
             addLine(lineTrim)
 
         //////////////////////////////////
         case Paragraph:
-            if Utf8.startsWith(lineTrim, "```")
+            if lineTrim.isEmpty()
+            {
+                popState()
+                pushState(.Paragraph)
+            }
+            elif Utf8.startsWith(lineTrim, "```")
                 pushState(.Code)
             elif Utf8.startsWith(lineTrim, "* ")
             {
@@ -389,7 +392,7 @@ func processFile(fileName: string)
         stateLeave(g_State.popBack())
 }
 
-func generateLanguage(in, out: string)
+func generateOverview(in, out: string)
 {
     g_Buf.clear()
     g_Toc.clear()
@@ -397,7 +400,6 @@ func generateLanguage(in, out: string)
     g_State.clear()
     g_CptBrace = 0
     g_SubTitle = false
-    g_FromMd = false
     g_BaseTitle = 3
 
     files := assume Directory.enumerateFiles(in, ".swg", recurse: true)
@@ -527,7 +529,6 @@ func convertMd(in, out: string)
         g_CptBrace = 0
         g_SubTitle = false
         g_BaseTitle = 1
-        g_FromMd = true
 
         g_Buf += "<?php include('html_start.php'); ?>\n"
         g_Buf += "<?php include('header.php'); ?>\n"
@@ -555,6 +556,6 @@ func convertMd(in, out: string)
 
 #run
 {
-    generateLanguage("../bin/reference/tests/language/src", "../web/language.php")
+    generateOverview("../bin/reference/tests/language/src", "../web/language.php")
     convertMd("../web/md", "../web")
 }
