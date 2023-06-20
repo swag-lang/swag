@@ -1,6 +1,6 @@
 #test
 {
-    // `break` is used to exit a `loop`, `visit`, `while`, `for`, `switch`.
+    // We have already seen than `break` is used to exit a `loop`, `visit`, `while`, `for`, `switch`.
     {
         loop 10
             break
@@ -30,6 +30,8 @@
     // But you can **name a scope** with the `#scope` compiler keyword, and exit to the end of it with a `break`.
     {
         cpt := 0
+
+        // Creates a scope named 'BigScope'
         #scope BigScope
         {
             loop 10

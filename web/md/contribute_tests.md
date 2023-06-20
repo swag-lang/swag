@@ -23,7 +23,7 @@ To force the build, add `--rebuild`.
 ### Write tests
 
 * Tests should be small, located in different **small files**.
-Just write files like `test1.swg`, `test2.swg` and so on, in the `\src` sub folder of your module.
+* Just write files like `test1.swg`, `test2.swg` and so on, in the `\src` sub folder of your module.
 * Here you are only testing the compiler, and not the standard libraries. So do not add dependencies to external modules.
 * You can use `@print` temporary to see a result, but in the end tests should be silent. `@assert` is the way to go.
 * `swag\bin\testsuite` is the official test suite for Swag. If your test module is cool, then it could ultimately find a place there.

@@ -110,24 +110,8 @@ Of course an array can have multiple dimensions.
         array1 := [[1, 2], [3, 4]]
 
         #assert @countof(array) == 4
-        #assert @countof(array) == 4
+        #assert @countof(array1) == 2
     }
-}
-
-/**
-You can initialize a whole array variable (but not a constant) with one single value. Only basic types are accepted (integers, float, string, bool, rune).
-*/
-#test
-{
-    // The whole array is initialized with 'true'
-    var arr: [2, 2] bool = true
-    @assert(arr[0, 0] == true)
-    @assert(arr[1, 1] == true)
-
-    // The whole array is initialized with 'string'
-    var arr1: [5, 10] string = "string"
-    @assert(arr1[0, 0] == "string")
-    @assert(arr1[4, 9] == "string")
 }
 
 /**

@@ -24,7 +24,7 @@ impl MyStruct
         // Loop on the 3 fields
         loop idx: 3
         {
-            // The '#macro' keyboard forces its body to be in the scope of the caller
+            // The '#macro' keyword forces its body to be in the scope of the caller
             #macro
             {
                 // @alias0 will be the value

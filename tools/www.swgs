@@ -18,6 +18,7 @@ enum State
     Code
     Test
     Blockquote
+    List
 }
 
 var g_Buf:  String  // Will contain the html page
@@ -27,6 +28,8 @@ var g_Code: String
 var g_State:            Array'State
 var g_CptBrace:         s32
 var g_SubTitle:         bool
+var g_FromMd:           bool
+var g_BaseTitle:        s32
 
 func stateEnter(st: State)
 {
@@ -34,7 +37,8 @@ func stateEnter(st: State)
     {
     case Paragraph:
         g_Buf += "<p>"
-
+    case List:
+        g_Buf += "<ul>"
     case Blockquote:
         g_Buf += "<blockquote><p>"
     }
@@ -46,9 +50,10 @@ func stateLeave(st: State)
     {
     case Paragraph:
         g_Buf += "</p>\n"
+    case List:
+        g_Buf += "</ul>\n"
     case Blockquote:
         g_Buf += "</p></blockquote>\n"
-
     case Code, Test:
         flushCode()
     }
@@ -56,7 +61,8 @@ func stateLeave(st: State)
 
 func pushState(st: State)
 {
-    stateLeave(g_State.back())
+    if g_State.count
+        stateLeave(g_State.back())
     stateEnter(st)
     g_State.add(st)
 }
@@ -65,7 +71,19 @@ func popState()
 {
     stateLeave(g_State.back())
     g_State.removeBack()
-    stateEnter(g_State.back())
+    if g_State.count
+        stateEnter(g_State.back())
+}
+
+func addTitle(lineTrim: String, level: s32)
+{
+    g_Buf += Format.toString("<h% id=\"%\">", level, lineTrim)
+    addLine(lineTrim)
+    g_Buf += Format.toString("</h%>", level)
+
+    g_Toc += Format.toString("<li><a href=\"#%\">%</a></li>\n", lineTrim, lineTrim);
+    popState()
+    pushState(.Paragraph)
 }
 
 // Add one line of 'text'
@@ -78,13 +96,21 @@ func addLine(line: string)
     if Utf8.startsWith(lineTrim, "# ")
     {
         lineTrim.remove(0, 2)
-        g_Buf += Format.toString("<h% id=\"%\">", g_SubTitle ? 4 : 3, lineTrim)
-        addLine(lineTrim)
-        g_Buf += g_SubTitle ? "</h4>" : "</h3>"
+        addTitle(lineTrim, g_BaseTitle + (g_SubTitle ? 1 : 0))
+        return
+    }
 
-        g_Toc += Format.toString("<li><a href=\"#%\">%</a></li>\n", lineTrim, lineTrim);
-        popState()
-        pushState(.Paragraph)
+    if Utf8.startsWith(lineTrim, "## ")
+    {
+        lineTrim.remove(0, 3)
+        addTitle(lineTrim, g_BaseTitle + (g_SubTitle ? 2 : 1))
+        return
+    }
+
+    if Utf8.startsWith(lineTrim, "### ")
+    {
+        lineTrim.remove(0, 4)
+        addTitle(lineTrim, g_BaseTitle + (g_SubTitle ? 3 : 2))
         return
     }
 
@@ -178,7 +204,8 @@ func addLine(line: string)
         g_Buf += line[i]
     }
 
-    g_Buf += "</br>\n"
+    if !g_FromMd or !@countof(line)
+        g_Buf += "</br>\n"
 }
 
 func flushCode()
@@ -241,13 +268,10 @@ func addLineCode(l: string)
 func processFile(fileName: string)
 {
     lines := assume File.readAllLines(fileName)
-
-    stateEnter(.Code)
-    g_State.add(State.Code)
-
-    visit l: lines
+    for i := 0; i < @countof(lines); i += 1
     {
-        lineTrim := l
+        l := lines[i]
+        lineTrim := lines[i]
         lineTrim.trim()
 
         curState := g_State.back()
@@ -283,10 +307,29 @@ func processFile(fileName: string)
         case Paragraph:
             if Utf8.startsWith(lineTrim, "```")
                 pushState(.Code)
+            elif Utf8.startsWith(lineTrim, "* ")
+            {
+                pushState(.List)
+                i -= 1
+            }
             elif Utf8.startsWith(lineTrim, "*/")
                 popState()
             else
                 addLine(lineTrim)
+
+        //////////////////////////////////
+        case List:
+            if !Utf8.startsWith(lineTrim, "* ")
+            {
+                popState()
+                i -= 1
+                continue
+            }
+
+            lineTrim.remove(0, 2)
+            g_Buf += "<li>"
+            addLine(lineTrim)
+            g_Buf += "</li>\n"
 
         //////////////////////////////////
         case Test:
@@ -346,7 +389,7 @@ func processFile(fileName: string)
         stateLeave(g_State.popBack())
 }
 
-func generate(in, out: string)
+func generateLanguage(in, out: string)
 {
     g_Buf.clear()
     g_Toc.clear()
@@ -354,17 +397,14 @@ func generate(in, out: string)
     g_State.clear()
     g_CptBrace = 0
     g_SubTitle = false
+    g_FromMd = false
+    g_BaseTitle = 3
 
     files := assume Directory.enumerateFiles(in, ".swg", recurse: true)
     files.sort(func(a, b) => a.fullname <=> b.fullname)
 
-    g_Buf += "<?php include('html_start.php'); include('header.php'); ?>\n"
-    //g_Buf += "<html lang=\"en\">\n"
-    //g_Buf += "<head>\n"
-    //g_Buf += "<meta charset=\"UTF-8\">\n";
-    //g_Buf += "</head>\n"
-
     // Create styles
+    g_Buf += "<?php include('html_start.php'); include('header.php'); ?>\n"
     g_Buf += """
         <style>
         <?php include('css/style.php'); ?>
@@ -423,9 +463,6 @@ func generate(in, out: string)
 
     visit v: files
     {
-        if Path.getExtensionLowerCase(v.fullname) != ".swg"
-            continue
-
         var title: String = Path.getFileNameWithoutExtension(v.fullname)
         fileName := title
         title = title[4..]
@@ -454,6 +491,8 @@ func generate(in, out: string)
         g_Toc += Format.toString("<li><a href=\"#%\">%</a></li>\n", fileName, title);
         g_Toc += "<ul>\n"
 
+        stateEnter(.Code)
+        g_State.add(State.Code)
         processFile(v.fullname)
 
         g_Toc += "</ul>\n"
@@ -469,7 +508,6 @@ func generate(in, out: string)
         </div>
         """
 
-    //g_Buf += "</html>\n"
     g_Buf += "<?php include('html_end.php'); ?>\n"
 
     g_Buf.insert(seekToc, g_Toc)
@@ -477,7 +515,46 @@ func generate(in, out: string)
     assume File.writeAllBytes(out, g_Buf)
 }
 
+func convertMd(in, out: string)
+{
+    files := assume Directory.enumerateFiles(in, ".md", recurse: true)
+    visit v: files
+    {
+        g_Buf.clear()
+        g_Toc.clear()
+        g_Code.clear()
+        g_State.clear()
+        g_CptBrace = 0
+        g_SubTitle = false
+        g_BaseTitle = 1
+        g_FromMd = true
+
+        g_Buf += "<?php include('html_start.php'); ?>\n"
+        g_Buf += "<?php include('header.php'); ?>\n"
+        g_Buf += "<style><?php include('css/style.php'); ?></style>\n"
+        g_Buf += "<div class=\"lg:m-auto lg:w-[76rem] pt-2 lg:pt-10 overflow-hidden p-5\">\n"
+        g_Buf += "<div class=\"container\">\n"
+
+        Console.println("reading ", v.fullname)
+        stateEnter(.Paragraph)
+        g_State.add(State.Paragraph)
+        processFile(v.fullname)
+
+        title := Path.getFileNameWithoutExtension(v.fullname)
+        outName := Path.combine(out, title)
+        outName += ".php"
+
+        g_Buf += "</div>\n"
+        g_Buf += "</div>\n"
+        g_Buf += "<?php include('html_end.php'); ?>\n"
+
+        Console.println("writing ", outName)
+        assume File.writeAllBytes(outName, g_Buf)
+    }
+}
+
 #run
 {
-    generate("../bin/reference/tests/language/src", "../web/language.php")
+    generateLanguage("../bin/reference/tests/language/src", "../web/language.php")
+    convertMd("../web/md", "../web")
 }

@@ -59,7 +59,8 @@ func toto(x: s32, y = Values.A)
 
 #test
 {
-    // Functions can be nested inside other functions. This are not closure but just functions in a sub scope.
+    // Functions can be nested inside other functions. 
+    // This are not closure but just functions in a sub scope.
     func sub(x, y: s32) => x - y
 
     // Simple call.

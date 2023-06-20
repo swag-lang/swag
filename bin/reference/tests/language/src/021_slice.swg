@@ -40,7 +40,7 @@ A slice is a pointer on a buffer of datas, and a `u64` to count the number of el
 
     // You can create a slice with your own `pointer` and `count` using `@mkslice`.
     {
-        var array: [4]  u32 = [10, 20, 30, 40]
+        var array: [4] u32 = [10, 20, 30, 40]
 
         // Creates a slice of 'array' (a view, or subpart) starting at index 2, with 2 elements.
         var slice: [..] u32 = @mkslice(&array[0] + 2, 2)
@@ -71,7 +71,10 @@ A slice is a pointer on a buffer of datas, and a `u64` to count the number of el
     // Instead of `@mkslice`, you can slice something with the `..` operator. For example you can slice a string.
     {
         var str = "string"
+
+        // Creates a slice starting at byte 0 and ending at byte 3.
         var slice = str[1..3]
+
         @assert(slice == "tri")
     }
 
@@ -106,6 +109,7 @@ A slice is a pointer on a buffer of datas, and a `u64` to count the number of el
         @assert(slice[1] == 40)
         @assert(@countof(slice) == 2)
 
+        // Creates a slice for the whole array
         slice1 := arr[..]
         @assert(@countof(slice1) == @countof(arr))
     }

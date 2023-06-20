@@ -160,8 +160,7 @@ A multiline string starts and ends with `"""`. Unlike raw strings, they still ev
         // string
     }
 
-    // In a multiline or a raw string, if you end a line with `\`, the following "eol"
-    // will **not** be part of the string.
+    // In a multiline or a raw string, if you end a line with `\`, the following "eol" will **not** be part of the string.
     {
         const a = """\
                      this is
