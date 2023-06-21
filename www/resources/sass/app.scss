@@ -10,6 +10,10 @@
         &:hover {
             @apply underline;
         }
+
+        &.home-link {
+            @apply text-orange-400;
+        }
     }
 
     h1,
@@ -23,10 +27,8 @@
         font-weight: revert;
     }
 
-    .blockquote {
-        border-left:  2px solid Orange;
-        margin-left:  10px;
-        padding-left: 10px;
+    blockquote {
+        @apply mb-5 pl-3 py-2 border-l-[6px] border-orange-400 bg-yellow-50;
     }
 
     .left {

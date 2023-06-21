@@ -16,7 +16,7 @@ use App\Http\Controllers\AppController;
 */
 
 Route::controller(AppController::class)->group(function() {
-    Route::get('/', 'home')->name('home');
+    Route::get('/', 'index')->name('index');
     Route::get('/std', 'std')->name('std');
     Route::get('/overview', 'overview')->name('overview');
     Route::get('/getting-started', 'getting_started')->name('getting-started');

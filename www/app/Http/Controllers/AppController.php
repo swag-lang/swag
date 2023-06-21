@@ -7,9 +7,9 @@ use Illuminate\Http\Request;
 class AppController extends Controller
 {
 
-    public function home()
+    public function index()
     {
-        return view('pages.home');
+        return view('pages.index');
     }
 
     public function std()

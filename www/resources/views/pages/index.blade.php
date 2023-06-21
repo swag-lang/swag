@@ -2,6 +2,6 @@
 
 @section('app')
 
-@include('pages.g.home')
+@include('pages.g.index')
 
 @endsection
