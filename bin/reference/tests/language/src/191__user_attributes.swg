@@ -51,5 +51,5 @@ Finaly, attributes can be retrieved at runtime thanks to **type reflection**.
 #test
 {
     type := @typeof(function2)                  // Get the type of the function
-    @assert(@countof(type.attributes) == 1)     // Check the function has exactly one attribute associated with it
+    @assert(@countof(type.attributes) == 1)     // Check that the function has one attribute associated with it
 }

@@ -1,5 +1,5 @@
 /**
-Swag comes with a bunch of safety checks which can be activated by module/function/instruction with the `#[Swag.Safety]` attribute.
+Swag comes with a bunch of safety checks which can be activated by module, function or even instruction with the `#[Swag.Safety]` attribute.
 
 Safety checks can also be changed for a specific build configuration (`--cfg:<config>`) with `buildCfg.safetyGuards`.
 
@@ -151,7 +151,7 @@ Safety when slicing a sized value.
 }
 
 /**
-# match
+# math
 ```
 #[Swag.Safety("math", true)]
 ```
