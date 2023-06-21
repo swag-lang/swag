@@ -502,6 +502,7 @@ static bool reportInternal(const Diagnostic& inDiag, const Vector<const Diagnost
                     {
                         g_Log.eol();
                         g_Log.print("[bytecode callstack]\n", LogColor::Cyan);
+                        g_Log.setDefaultColor();
                         g_Log.print(g_ByteCodeStackTrace->log(runContext));
                     }
 
@@ -510,6 +511,7 @@ static bool reportInternal(const Diagnostic& inDiag, const Vector<const Diagnost
                     {
                         g_Log.eol();
                         g_Log.print("[error callstack]\n", LogColor::Cyan);
+                        g_Log.setDefaultColor();
 
                         Utf8 str;
                         for (int i = context->traceIndex - 1; i >= 0; i--)
@@ -535,6 +537,7 @@ static bool reportInternal(const Diagnostic& inDiag, const Vector<const Diagnost
                         {
                             g_Log.eol();
                             g_Log.print("[runtime callstack]\n", LogColor::Cyan);
+                            g_Log.setDefaultColor();
                             g_Log.print(nativeStack);
                         }
                     }

@@ -32,15 +32,19 @@ Utf8 ByteCodeStack::logStep(int level, bool current, ByteCodeStackStep& step)
     Utf8 header;
     header += Log::colorToVTS(LogColor::DarkYellow);
     if (current)
-        header += Fmt("[%03u]", level);
+        header += Fmt("[%03u] ", level);
     else
-        header += Fmt("%03u", level);
+        header += Fmt("-%03u- ", level);
+
+    Utf8 inl;
+    inl += Log::colorToVTS(LogColor::DarkYellow);
+    inl += "----- inline ";
 
     if (!ip)
     {
         auto str = header;
         str += Log::colorToVTS(LogColor::Gray);
-        str += " --> <foreign code>";
+        str += "--> <foreign code>";
         str += "\n";
         return str;
     }
@@ -54,8 +58,7 @@ Utf8 ByteCodeStack::logStep(int level, bool current, ByteCodeStackStep& step)
     auto fct        = ip->node->ownerInline && ip->node->ownerInline->ownerFct == ip->node->ownerFct ? ip->node->ownerInline->func : ip->node->ownerFct;
     auto name       = fct ? fct->getDisplayNameC() : bc->name.c_str();
 
-    Utf8 str = ip->node->ownerInline ? "inline:" : header.c_str();
-    str += " ";
+    Utf8 str = ip->node->ownerInline ? inl.c_str() : header.c_str();
     str += name;
     str += Log::colorToVTS(LogColor::Gray);
     if (sourceFile)
@@ -72,7 +75,7 @@ Utf8 ByteCodeStack::logStep(int level, bool current, ByteCodeStackStep& step)
         if (owner)
         {
             fct = owner->ownerInline && owner->ownerInline->ownerFct == ip->node->ownerFct ? owner->ownerInline->func : owner->ownerFct;
-            str = owner->ownerInline ? "inline: " : header.c_str();
+            str = owner->ownerInline ? inl.c_str() : header.c_str();
             str += fct->getDisplayNameC();
             str += Log::colorToVTS(LogColor::Gray);
             if (owner->sourceFile)
@@ -84,10 +87,10 @@ Utf8 ByteCodeStack::logStep(int level, bool current, ByteCodeStackStep& step)
 
     // Inline chain
     auto parent = ip->node->ownerInline;
-    while (parent && parent->ownerFct == ip->node->ownerFct && parent->ownerInline)
+    while (parent && parent->ownerFct == ip->node->ownerFct)
     {
         fct = parent->ownerInline && parent->ownerInline->ownerFct == ip->node->ownerFct ? parent->ownerInline->func : parent->ownerFct;
-        str = parent->ownerInline ? "inline: " : header.c_str();
+        str += parent->ownerInline ? inl.c_str() : header.c_str();
         str += fct->getDisplayNameC();
         str += Log::colorToVTS(LogColor::Gray);
         if (parent->sourceFile)
@@ -106,7 +109,7 @@ void ByteCodeStack::getSteps(VectorNative<ByteCodeStackStep>& copySteps, ByteCod
     auto copy = steps;
     if (runContext)
     {
-        if (copySteps.empty() || copySteps.back().bc != runContext->bc || copySteps.back().ip != runContext->ip)
+        if (copy.empty() || copy.back().bc != runContext->bc || copy.back().ip != runContext->ip)
         {
             ByteCodeStackStep step;
             step.bc    = runContext->bc;
