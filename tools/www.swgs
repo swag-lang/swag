@@ -401,8 +401,8 @@ func generateOverview(in, out: string)
     files.sort(func(a, b) => a.fullname <=> b.fullname)
 
     // Create styles
-    g_Buf += "<?php include('html_start.php'); include('header.php'); ?>\n"
-    g_Buf += """
+    //g_Buf += "<?php include('html_start.php'); include('header.php'); ?>\n"
+    /*g_Buf += """
         <style>
         <?php include('css/style.php'); ?>
 
@@ -437,12 +437,11 @@ func generateOverview(in, out: string)
             }
         }
         </style>
-    """
+    """*/
 
     // Main page (left and right parts, left is for table of content, right is for content)
-    g_Buf += "<div class=\"lg:m-auto lg:w-[76rem] pt-5 lg:pt-10 overflow-hidden p-5\" style=\"height: 93%;\">\n"
-    g_Buf += "<div class=\"container lg:flex\">\n"
-    g_Buf += "<div class=\"left lg:w-[450px] lg:h-full\" x-data=\"{ open_content: false }\">\n"
+    g_Buf += "<div class=\"lg:flex flex-1\">\n"
+    g_Buf += "<div class=\"left h-full lg:w-[350px]\" x-data=\"{ open_content: false }\">\n"
     seekToc := g_Buf.length // This will be the place where we will insert the 'g_Toc' table of content
     g_Buf += "</div>\n"
 
@@ -500,8 +499,8 @@ func generateOverview(in, out: string)
     // Close html page
     g_Buf += "</div>\n"
     g_Buf += "</div>\n"
-    g_Buf += "</div>\n"
-    g_Buf += "<?php include('html_end.php'); ?>\n"
+    //g_Buf += "</div>\n"
+    //g_Buf += "<?php include('html_end.php'); ?>\n"
 
     g_Buf.insert(seekToc, g_Toc)
 
@@ -521,11 +520,11 @@ func convertMd(in, out: string)
         g_SubTitle = false
         g_BaseTitle = 1
 
-        g_Buf += "<?php include('html_start.php'); ?>\n"
-        g_Buf += "<?php include('header.php'); ?>\n"
-        g_Buf += "<style><?php include('css/style.php'); ?></style>\n"
-        g_Buf += "<div class=\"lg:m-auto lg:w-[76rem] pt-2 lg:pt-10 overflow-hidden p-5\">\n"
-        g_Buf += "<div class=\"container\">\n"
+        //g_Buf += "<?php include('html_start.php'); ?>\n"
+        //g_Buf += "<?php include('header.php'); ?>\n"
+        //g_Buf += "<style><?php include('css/style.php'); ?></style>\n"
+        //g_Buf += "<div class=\"lg:m-auto lg:w-[76rem] pt-2 lg:pt-10 overflow-hidden p-5\">\n"
+        //g_Buf += "<div class=\"container\">\n"
 
         Console.println("reading ", v.fullname)
         stateEnter(.Paragraph)
@@ -534,11 +533,11 @@ func convertMd(in, out: string)
 
         title := Path.getFileNameWithoutExtension(v.fullname)
         outName := Path.combine(out, title)
-        outName += ".php"
+        outName += ".blade.php"
 
-        g_Buf += "</div>\n"
-        g_Buf += "</div>\n"
-        g_Buf += "<?php include('html_end.php'); ?>\n"
+        //g_Buf += "</div>\n"
+        //g_Buf += "</div>\n"
+        //g_Buf += "<?php include('html_end.php'); ?>\n"
 
         Console.println("writing ", outName)
         assume File.writeAllBytes(outName, g_Buf)
@@ -547,6 +546,6 @@ func convertMd(in, out: string)
 
 #run
 {
-    generateOverview("../bin/reference/tests/language/src", "../web/language.php")
-    convertMd("../web/md", "../web")
+    generateOverview("../bin/reference/tests/language/src", "../www/resources/views/pages/g/overview.blade.php")
+    convertMd("../www/resources/md", "../www/resources/views/pages/g")
 }

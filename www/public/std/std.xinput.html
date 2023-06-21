@@ -12,6 +12,12 @@
             line-height:    1.3em;
             font-family:    Segoe UI;
         }
+        blockquote {
+            background-color:   LightYellow;
+            border-left:        6px solid Orange;
+            padding:            10px;
+            width:              90%;
+        }
         .left {
             display:    block;
             overflow-y: scroll;
@@ -38,7 +44,7 @@
         }
         a.src {
             font-size:          90%;
-            color:              Grey;
+            color:              LightGrey;
         }
         table.enumeration {
             border:             1px solid LightGrey;
@@ -63,7 +69,6 @@
             padding:            6px;
             border:             1px solid LightGrey;
             border-collapse:    collapse;
-            width:              20%;
             width:              auto;
         }
         td:last-child {
@@ -89,13 +94,16 @@
             margin-bottom:      50px;
         }
         table.h3 {
-            border-bottom:      2px solid Orange;
-            border-collapse:    collapse;
+            background-color:   Black;
+            color:              White;
             width:              100%;
-            margin-top:         50px;
+            margin-top:         70px;
+            margin-right:       0px;
         }
         h3.content {
             margin-bottom:      2px;
+            margin-right:       0px;
+            width:              100%;
         }
         .srcref {
             text-align:         right;
@@ -105,11 +113,21 @@
             padding:            2px;
             border: 1px dotted  #cccccc;
         }
+        .tdname .incode {
+            background-color:   revert;
+            padding:            2px;
+            border:             revert;
+        }
+        .addinfos {
+            font-size:          90%;
+            white-space:        break-spaces;
+            overflow-wrap:      break-word;
+        }
         .code {
             background-color:   #eeeeee;
             border:             1px solid LightGrey;
             padding:            10px;
-            width:              90%;
+            width:              94%;
             margin-left:        20px;
         }
 </style>
@@ -119,48 +137,51 @@
 <h2>Structs</h2>
 <h3></h3>
 <ul class="tocbullet">
-<li><a href="#XInput.XINPUT_GAMEPAD">XINPUT_GAMEPAD</a></li>
-<li><a href="#XInput.XINPUT_STATE">XINPUT_STATE</a></li>
-<li><a href="#XInput.XINPUT_VIBRATION">XINPUT_VIBRATION</a></li>
+<li><a href="#XInput_XINPUT_GAMEPAD">XINPUT_GAMEPAD</a></li>
+<li><a href="#XInput_XINPUT_STATE">XINPUT_STATE</a></li>
+<li><a href="#XInput_XINPUT_VIBRATION">XINPUT_VIBRATION</a></li>
 </ul>
 <h2>Constants</h2>
 <h3></h3>
 <ul class="tocbullet">
-<li><a href="#XInput.XINPUT_GAMEPAD_A">XINPUT_GAMEPAD_A</a></li>
-<li><a href="#XInput.XINPUT_GAMEPAD_B">XINPUT_GAMEPAD_B</a></li>
-<li><a href="#XInput.XINPUT_GAMEPAD_BACK">XINPUT_GAMEPAD_BACK</a></li>
-<li><a href="#XInput.XINPUT_GAMEPAD_DPAD_DOWN">XINPUT_GAMEPAD_DPAD_DOWN</a></li>
-<li><a href="#XInput.XINPUT_GAMEPAD_DPAD_LEFT">XINPUT_GAMEPAD_DPAD_LEFT</a></li>
-<li><a href="#XInput.XINPUT_GAMEPAD_DPAD_RIGHT">XINPUT_GAMEPAD_DPAD_RIGHT</a></li>
-<li><a href="#XInput.XINPUT_GAMEPAD_DPAD_UP">XINPUT_GAMEPAD_DPAD_UP</a></li>
-<li><a href="#XInput.XINPUT_GAMEPAD_LEFT_SHOULDER">XINPUT_GAMEPAD_LEFT_SHOULDER</a></li>
-<li><a href="#XInput.XINPUT_GAMEPAD_LEFT_THUMB">XINPUT_GAMEPAD_LEFT_THUMB</a></li>
-<li><a href="#XInput.XINPUT_GAMEPAD_RIGHT_SHOULDER">XINPUT_GAMEPAD_RIGHT_SHOULDER</a></li>
-<li><a href="#XInput.XINPUT_GAMEPAD_RIGHT_THUMB">XINPUT_GAMEPAD_RIGHT_THUMB</a></li>
-<li><a href="#XInput.XINPUT_GAMEPAD_START">XINPUT_GAMEPAD_START</a></li>
-<li><a href="#XInput.XINPUT_GAMEPAD_X">XINPUT_GAMEPAD_X</a></li>
-<li><a href="#XInput.XINPUT_GAMEPAD_Y">XINPUT_GAMEPAD_Y</a></li>
+<li><a href="#XInput_XINPUT_GAMEPAD_A">XINPUT_GAMEPAD_A</a></li>
+<li><a href="#XInput_XINPUT_GAMEPAD_B">XINPUT_GAMEPAD_B</a></li>
+<li><a href="#XInput_XINPUT_GAMEPAD_BACK">XINPUT_GAMEPAD_BACK</a></li>
+<li><a href="#XInput_XINPUT_GAMEPAD_DPAD_DOWN">XINPUT_GAMEPAD_DPAD_DOWN</a></li>
+<li><a href="#XInput_XINPUT_GAMEPAD_DPAD_LEFT">XINPUT_GAMEPAD_DPAD_LEFT</a></li>
+<li><a href="#XInput_XINPUT_GAMEPAD_DPAD_RIGHT">XINPUT_GAMEPAD_DPAD_RIGHT</a></li>
+<li><a href="#XInput_XINPUT_GAMEPAD_DPAD_UP">XINPUT_GAMEPAD_DPAD_UP</a></li>
+<li><a href="#XInput_XINPUT_GAMEPAD_LEFT_SHOULDER">XINPUT_GAMEPAD_LEFT_SHOULDER</a></li>
+<li><a href="#XInput_XINPUT_GAMEPAD_LEFT_THUMB">XINPUT_GAMEPAD_LEFT_THUMB</a></li>
+<li><a href="#XInput_XINPUT_GAMEPAD_RIGHT_SHOULDER">XINPUT_GAMEPAD_RIGHT_SHOULDER</a></li>
+<li><a href="#XInput_XINPUT_GAMEPAD_RIGHT_THUMB">XINPUT_GAMEPAD_RIGHT_THUMB</a></li>
+<li><a href="#XInput_XINPUT_GAMEPAD_START">XINPUT_GAMEPAD_START</a></li>
+<li><a href="#XInput_XINPUT_GAMEPAD_X">XINPUT_GAMEPAD_X</a></li>
+<li><a href="#XInput_XINPUT_GAMEPAD_Y">XINPUT_GAMEPAD_Y</a></li>
 </ul>
 <h2>Functions</h2>
 <h3></h3>
 <ul class="tocbullet">
-<li><a href="#XInput.XInputGetState">XInput.XInputGetState</a></li>
-<li><a href="#XInput.XInputSetState">XInput.XInputSetState</a></li>
+<li><a href="#XInput_XInputGetState">XInput.XInputGetState</a></li>
+<li><a href="#XInput_XInputSetState">XInput.XInputSetState</a></li>
 </ul>
 </div>
 <div class="right">
 <div class="page">
-<h3>Overview</h3>
+<blockquote>
+<b>Work in progress</b>. Generated documentation (swag doc 0.19.0)</blockquote>
+<h2 class="content">Overview</h2>
 <p>
 Wrapper for Microsoft DirectX Input.</p>
+<h2 class="content">Content</h2>
 <p>
 <table class="h3">
 <tr>
 <td class="h3">
-<h3 class="content" id="XInput.XINPUT_GAMEPAD"><span class="titletype">struct</span> <span class="titlelight">XInput.</span><span class="titlestrong">XINPUT_GAMEPAD</span></h3>
+<h3 class="content" id="XInput_XINPUT_GAMEPAD"><span class="titletype">struct</span> <span class="titlelight">XInput.</span><span class="titlestrong">XINPUT_GAMEPAD</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/xinput\src\xinput.swg#L21" class="src">src</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/xinput\src\xinput.swg#L21" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -169,7 +190,7 @@ Wrapper for Microsoft DirectX Input.</p>
 <td class="tdname">
 wButtons</td>
 <td class="tdtype">
-WORD</td>
+<a href="win32.html#Win32_WORD">Win32.WORD</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -177,7 +198,7 @@ WORD</td>
 <td class="tdname">
 bLeftTrigger</td>
 <td class="tdtype">
-BYTE</td>
+<a href="win32.html#Win32_BYTE">Win32.BYTE</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -185,7 +206,7 @@ BYTE</td>
 <td class="tdname">
 bRightTrigger</td>
 <td class="tdtype">
-BYTE</td>
+<a href="win32.html#Win32_BYTE">Win32.BYTE</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -193,7 +214,7 @@ BYTE</td>
 <td class="tdname">
 sThumbLX</td>
 <td class="tdtype">
-SHORT</td>
+<a href="win32.html#Win32_SHORT">Win32.SHORT</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -201,7 +222,7 @@ SHORT</td>
 <td class="tdname">
 sThumbLY</td>
 <td class="tdtype">
-SHORT</td>
+<a href="win32.html#Win32_SHORT">Win32.SHORT</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -209,7 +230,7 @@ SHORT</td>
 <td class="tdname">
 sThumbRX</td>
 <td class="tdtype">
-SHORT</td>
+<a href="win32.html#Win32_SHORT">Win32.SHORT</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -217,7 +238,7 @@ SHORT</td>
 <td class="tdname">
 sThumbRY</td>
 <td class="tdtype">
-SHORT</td>
+<a href="win32.html#Win32_SHORT">Win32.SHORT</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -226,123 +247,123 @@ SHORT</td>
 <table class="h3">
 <tr>
 <td class="h3">
-<h3 class="content" id="XInput.XINPUT_GAMEPAD_A"><span class="titletype">const</span> <span class="titlelight">XInput.</span><span class="titlestrong">Constants</span></h3>
+<h3 class="content" id="XInput_XINPUT_GAMEPAD_A"><span class="titletype">const</span> <span class="titlelight">XInput.</span><span class="titlestrong">Constants</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/xinput\src\xinput.swg#L16" class="src">src</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/xinput\src\xinput.swg#L16" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <table class="enumeration">
 <tr>
-<td id="XInput.XINPUT_GAMEPAD_A" class="tdname">
+<td id="XInput_XINPUT_GAMEPAD_A" class="tdname">
 XINPUT_GAMEPAD_A</td>
 <td class="tdtype">
-</td>
+u16</td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
-<td id="XInput.XINPUT_GAMEPAD_B" class="tdname">
+<td id="XInput_XINPUT_GAMEPAD_B" class="tdname">
 XINPUT_GAMEPAD_B</td>
 <td class="tdtype">
-</td>
+u16</td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
-<td id="XInput.XINPUT_GAMEPAD_BACK" class="tdname">
+<td id="XInput_XINPUT_GAMEPAD_BACK" class="tdname">
 XINPUT_GAMEPAD_BACK</td>
 <td class="tdtype">
-</td>
+u16</td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
-<td id="XInput.XINPUT_GAMEPAD_DPAD_DOWN" class="tdname">
+<td id="XInput_XINPUT_GAMEPAD_DPAD_DOWN" class="tdname">
 XINPUT_GAMEPAD_DPAD_DOWN</td>
 <td class="tdtype">
-</td>
+u16</td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
-<td id="XInput.XINPUT_GAMEPAD_DPAD_LEFT" class="tdname">
+<td id="XInput_XINPUT_GAMEPAD_DPAD_LEFT" class="tdname">
 XINPUT_GAMEPAD_DPAD_LEFT</td>
 <td class="tdtype">
-</td>
+u16</td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
-<td id="XInput.XINPUT_GAMEPAD_DPAD_RIGHT" class="tdname">
+<td id="XInput_XINPUT_GAMEPAD_DPAD_RIGHT" class="tdname">
 XINPUT_GAMEPAD_DPAD_RIGHT</td>
 <td class="tdtype">
-</td>
+u16</td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
-<td id="XInput.XINPUT_GAMEPAD_DPAD_UP" class="tdname">
+<td id="XInput_XINPUT_GAMEPAD_DPAD_UP" class="tdname">
 XINPUT_GAMEPAD_DPAD_UP</td>
 <td class="tdtype">
-</td>
+u16</td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
-<td id="XInput.XINPUT_GAMEPAD_LEFT_SHOULDER" class="tdname">
+<td id="XInput_XINPUT_GAMEPAD_LEFT_SHOULDER" class="tdname">
 XINPUT_GAMEPAD_LEFT_SHOULDER</td>
 <td class="tdtype">
-</td>
+u16</td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
-<td id="XInput.XINPUT_GAMEPAD_LEFT_THUMB" class="tdname">
+<td id="XInput_XINPUT_GAMEPAD_LEFT_THUMB" class="tdname">
 XINPUT_GAMEPAD_LEFT_THUMB</td>
 <td class="tdtype">
-</td>
+u16</td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
-<td id="XInput.XINPUT_GAMEPAD_RIGHT_SHOULDER" class="tdname">
+<td id="XInput_XINPUT_GAMEPAD_RIGHT_SHOULDER" class="tdname">
 XINPUT_GAMEPAD_RIGHT_SHOULDER</td>
 <td class="tdtype">
-</td>
+u16</td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
-<td id="XInput.XINPUT_GAMEPAD_RIGHT_THUMB" class="tdname">
+<td id="XInput_XINPUT_GAMEPAD_RIGHT_THUMB" class="tdname">
 XINPUT_GAMEPAD_RIGHT_THUMB</td>
 <td class="tdtype">
-</td>
+u16</td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
-<td id="XInput.XINPUT_GAMEPAD_START" class="tdname">
+<td id="XInput_XINPUT_GAMEPAD_START" class="tdname">
 XINPUT_GAMEPAD_START</td>
 <td class="tdtype">
-</td>
+u16</td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
-<td id="XInput.XINPUT_GAMEPAD_X" class="tdname">
+<td id="XInput_XINPUT_GAMEPAD_X" class="tdname">
 XINPUT_GAMEPAD_X</td>
 <td class="tdtype">
-</td>
+u16</td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
-<td id="XInput.XINPUT_GAMEPAD_Y" class="tdname">
+<td id="XInput_XINPUT_GAMEPAD_Y" class="tdname">
 XINPUT_GAMEPAD_Y</td>
 <td class="tdtype">
-</td>
+u16</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -351,10 +372,10 @@ XINPUT_GAMEPAD_Y</td>
 <table class="h3">
 <tr>
 <td class="h3">
-<h3 class="content" id="XInput.XINPUT_STATE"><span class="titletype">struct</span> <span class="titlelight">XInput.</span><span class="titlestrong">XINPUT_STATE</span></h3>
+<h3 class="content" id="XInput_XINPUT_STATE"><span class="titletype">struct</span> <span class="titlelight">XInput.</span><span class="titlestrong">XINPUT_STATE</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/xinput\src\xinput.swg#L32" class="src">src</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/xinput\src\xinput.swg#L32" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -363,7 +384,7 @@ XINPUT_GAMEPAD_Y</td>
 <td class="tdname">
 dwPacketNumber</td>
 <td class="tdtype">
-DWORD</td>
+<a href="win32.html#Win32_DWORD">Win32.DWORD</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -371,7 +392,7 @@ DWORD</td>
 <td class="tdname">
 Gamepad</td>
 <td class="tdtype">
-<a href="f:\swag-lang\swag\bin\std\output\fast-compile-windows-x86_64\std.xinput.html#XInput.XINPUT_GAMEPAD">XINPUT_GAMEPAD</a></td>
+<a href="#XInput_XINPUT_GAMEPAD">XInput.XINPUT_GAMEPAD</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -380,10 +401,10 @@ Gamepad</td>
 <table class="h3">
 <tr>
 <td class="h3">
-<h3 class="content" id="XInput.XINPUT_VIBRATION"><span class="titletype">struct</span> <span class="titlelight">XInput.</span><span class="titlestrong">XINPUT_VIBRATION</span></h3>
+<h3 class="content" id="XInput_XINPUT_VIBRATION"><span class="titletype">struct</span> <span class="titlelight">XInput.</span><span class="titlestrong">XINPUT_VIBRATION</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/xinput\src\xinput.swg#L38" class="src">src</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/xinput\src\xinput.swg#L38" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -392,7 +413,7 @@ Gamepad</td>
 <td class="tdname">
 wLeftMotorSpeed</td>
 <td class="tdtype">
-WORD</td>
+<a href="win32.html#Win32_WORD">Win32.WORD</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -400,7 +421,7 @@ WORD</td>
 <td class="tdname">
 wRightMotorSpeed</td>
 <td class="tdtype">
-WORD</td>
+<a href="win32.html#Win32_WORD">Win32.WORD</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -409,30 +430,30 @@ WORD</td>
 <table class="h3">
 <tr>
 <td class="h3">
-<h3 class="content" id="XInput.XInputGetState"><span class="titletype">func</span> <span class="titlelight">XInput.</span><span class="titlestrong">XInputGetState</span></h3>
+<h3 class="content" id="XInput_XInputGetState"><span class="titletype">func</span> <span class="titlelight">XInput.</span><span class="titlestrong">XInputGetState</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/xinput\src\xinput.swg#L46" class="src">src</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/xinput\src\xinput.swg#L46" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func XInputGetState(dwUserIndex: DWORD, pState: *XINPUT_STATE)->DWORD
+<code style="white-space: break-spaces">func XInputGetState(dwUserIndex: <a href="win32.html#Win32_DWORD">Win32.DWORD</a>, pState: *<a href="#XInput_XINPUT_STATE">XInput.XINPUT_STATE</a>)-><a href="win32.html#Win32_DWORD">Win32.DWORD</a>
 </code>
 </p>
 <p>
 <table class="h3">
 <tr>
 <td class="h3">
-<h3 class="content" id="XInput.XInputSetState"><span class="titletype">func</span> <span class="titlelight">XInput.</span><span class="titlestrong">XInputSetState</span></h3>
+<h3 class="content" id="XInput_XInputSetState"><span class="titletype">func</span> <span class="titlelight">XInput.</span><span class="titlestrong">XInputSetState</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/xinput\src\xinput.swg#L47" class="src">src</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/xinput\src\xinput.swg#L47" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func XInputSetState(dwUserIndex: DWORD, pVibration: *XINPUT_VIBRATION)->DWORD
+<code style="white-space: break-spaces">func XInputSetState(dwUserIndex: <a href="win32.html#Win32_DWORD">Win32.DWORD</a>, pVibration: *<a href="#XInput_XINPUT_VIBRATION">XInput.XINPUT_VIBRATION</a>)-><a href="win32.html#Win32_DWORD">Win32.DWORD</a>
 </code>
 </p>
 </div>
