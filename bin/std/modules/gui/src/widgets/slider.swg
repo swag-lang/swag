@@ -33,6 +33,11 @@ struct Slider
     hasValue1:      bool
     hasValue2:      bool
     correcMoving:   f32
+
+    aniMark1:   BlendColor
+    aniMark2:   BlendColor
+    aniStep1:   BlendColor
+    aniStep2:   BlendColor
 }
 
 impl IWnd for Slider
@@ -155,28 +160,42 @@ impl IWnd for Slider
         // Display steps
         if steps > 0
         {
+            if isHot1 or isHot2 or isMoving
+            {
+                aniStep1.apply(self, colors.slider_HotStepBk)
+                aniStep2.apply(self, colors.slider_HotStepBk)
+            }
+            else
+            {
+                aniStep1.apply(self, colors.slider_StepBk)
+                aniStep2.apply(self, colors.slider_HilightStepBk)
+            }
+
             for x := 0'f32; x < 1 + steps; x += steps
             {
                 posStep := getPosBoxAt(x, metrics.slider_StepSize)
 
                 var colorStep: Color = undefined
-                if isHot1 or isHot2 or isMoving
-                    colorStep = colors.slider_HotStepBk
-                elif x <= value1 and sliderFlags.has(.HilightBar)
-                    colorStep = colors.slider_HilightStepBk
+                if x <= value1 and sliderFlags.has(.HilightBar)
+                    colorStep = aniStep2.cur()
                 elif x >= value1 and x <= value2 and sliderFlags.has(.HilightBar) and sliderFlags.has(.Range)
-                    colorStep = colors.slider_HilightStepBk
+                    colorStep = aniStep2.cur()
                 else
-                    colorStep = colors.slider_StepBk
-
+                    colorStep = aniStep1.cur()
                 theme.drawSubRect(bc.painter, posStep, &rects.slider_Step, colorStep)
             }
         }
 
         // Box value1
-        theme.drawSubRect(bc.painter, posBox1, &rects.slider_Mark, colorMark1)
+        aniMark1.apply(self, colorMark1)
+        theme.drawSubRect(bc.painter, posBox1, &rects.slider_Mark, aniMark1.cur())
+
+        // Box value2
         if sliderFlags.has(.Range)
-            theme.drawSubRect(bc.painter, posBox2, &rects.slider_Mark, colorMark2)
+        {
+            aniMark2.apply(self, colorMark2)
+            theme.drawSubRect(bc.painter, posBox2, &rects.slider_Mark, aniMark2.cur())
+        }
     }
 
     mtd onMouseEvent(evt: *MouseEvent)
