@@ -91,9 +91,7 @@ static void byteCodeRun(bool forCallback, void* byteCodePtr, va_list valist)
     g_RunContext->bc->enterByteCode(g_RunContext);
 
     g_ByteCodeStackTrace->push({nullptr, nullptr});
-    g_RunContext->hasForeignCall++;
     auto result = module->runner.run(g_RunContext);
-    g_RunContext->hasForeignCall--;
 
     g_RunContext->sp            = saveSp;
     g_RunContext->spAlt         = saveSpAlt;

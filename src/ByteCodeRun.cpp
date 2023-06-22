@@ -3897,34 +3897,43 @@ static int exceptionHandler(ByteCodeRunContext* runContext, LPEXCEPTION_POINTERS
     if (args->ExceptionRecord->ExceptionCode == SWAG_EXCEPTION_TO_PREV_HANDLER)
         return SWAG_EXCEPTION_EXECUTE_HANDLER;
 
+    Diagnostic*               diag = nullptr;
+    Vector<const Diagnostic*> notes;
+    SwagSourceCodeLocation*   location = nullptr;
+    SwagSourceCodeLocation    tmpLoc;
+    DiagnosticLevel           level = DiagnosticLevel::Error;
+    Utf8                      userMsg;
+    int                       returnValue = SWAG_EXCEPTION_EXECUTE_HANDLER;
+
+    if (runContext->ip != runContext->bc->out)
+        runContext->ip--;
+    auto loc = ByteCode::getLocation(runContext->bc, runContext->ip);
+    if (runContext->ip != runContext->bc->out)
+        runContext->ip++;
+
+    tmpLoc.fileName.buffer = (void*) _strdup(loc.file->path.string().c_str());
+    tmpLoc.fileName.count  = loc.file->path.string().length();
+    tmpLoc.lineStart = tmpLoc.lineEnd = loc.location->line;
+    tmpLoc.colStart = tmpLoc.colEnd = loc.location->column;
+    location                        = &tmpLoc;
+
     // Exception 666 raised during bytecode execution
+    /////////////////////////////////////////////////
     if (args->ExceptionRecord->ExceptionCode == SWAG_EXCEPTION_TO_COMPILER_HANDLER)
     {
-        // Kind of exception
-        auto exceptionKind = (SwagExceptionKind) args->ExceptionRecord->ExceptionInformation[3];
-
         // Source code location
-        SwagSourceCodeLocation tmpLoc;
-        auto                   location = (SwagSourceCodeLocation*) args->ExceptionRecord->ExceptionInformation[0];
-        if (!location)
-        {
-            auto loc               = ByteCode::getLocation(runContext->bc, runContext->ip);
-            tmpLoc.fileName.buffer = (void*) _strdup(loc.file->path.string().c_str());
-            tmpLoc.fileName.count  = loc.file->path.string().length();
-            tmpLoc.lineStart = tmpLoc.lineEnd = loc.location->line;
-            tmpLoc.colStart = tmpLoc.colEnd = loc.location->column;
-            location                        = &tmpLoc;
-        }
-
-        Utf8 fileName{(const char*) location->fileName.buffer, (uint32_t) location->fileName.count};
+        if (args->ExceptionRecord->ExceptionInformation[0])
+            location = (SwagSourceCodeLocation*) args->ExceptionRecord->ExceptionInformation[0];
 
         // User messsage
-        Utf8 userMsg{(const char*) args->ExceptionRecord->ExceptionInformation[1], (uint32_t) args->ExceptionRecord->ExceptionInformation[2]};
+        userMsg = Utf8{(const char*) args->ExceptionRecord->ExceptionInformation[1], (uint32_t) args->ExceptionRecord->ExceptionInformation[2]};
 
-        DiagnosticLevel level = DiagnosticLevel::Error;
+        // Kind of exception
+        auto exceptionKind = (SwagExceptionKind) args->ExceptionRecord->ExceptionInformation[3];
         switch (exceptionKind)
         {
         case SwagExceptionKind::Error:
+        default:
             level = DiagnosticLevel::Error;
             break;
         case SwagExceptionKind::Warning:
@@ -3934,80 +3943,69 @@ static int exceptionHandler(ByteCodeRunContext* runContext, LPEXCEPTION_POINTERS
             level = DiagnosticLevel::Panic;
             break;
         }
-
-        SourceFile dummyFile;
-        dummyFile.path = fileName;
-
-        SourceLocation startLocation, endLocation;
-        startLocation.line   = location->lineStart;
-        startLocation.column = location->colStart;
-        endLocation.line     = location->lineEnd;
-        endLocation.column   = location->colEnd;
-
-        Diagnostic diag{&dummyFile, startLocation, endLocation, userMsg, level};
-
-        // Get the correct source file to raise the error in the correct context
-        //
-        // If we have an expansion, and the first expansion requests test error, then raise
-        // in its context to dismiss the error (like an error during a #validif for example)
-        if (runContext->callerContext && runContext->callerContext->errCxtSteps.size() && runContext->callerContext->errCxtSteps[0].node->sourceFile->shouldHaveError)
-            diag.contextFile = runContext->callerContext->errCxtSteps[0].node->sourceFile;
-        else if (runContext->callerContext && runContext->callerContext->errCxtSteps.size() && runContext->callerContext->errCxtSteps[0].node->sourceFile->shouldHaveWarning)
-            diag.contextFile = runContext->callerContext->errCxtSteps[0].node->sourceFile;
-        // Otherwise get the source file from the top of the bytecode stack of possible
-        else if (g_ByteCodeStackTrace->steps.size() && g_ByteCodeStackTrace->steps[0].bc)
-            diag.contextFile = g_ByteCodeStackTrace->steps[0].bc->sourceFile;
-        else if (g_ByteCodeStackTrace->steps.size() > 1 && g_ByteCodeStackTrace->steps[1].bc)
-            diag.contextFile = g_ByteCodeStackTrace->steps[1].bc->sourceFile;
-        // Otherwise take the current bytecode source file
-        else
-            diag.contextFile = runContext->bc->sourceFile;
-
-        // Get error context
-        Vector<const Diagnostic*> notes;
-        runContext->callerContext->extract(diag, notes);
-
-        if (runContext->ip != runContext->bc->out)
-            runContext->ip--;
-        runContext->fromException666  = true;
-        runContext->fromExceptionKind = exceptionKind;
-
-        if (!g_CommandLine.dbgCallStack)
-        {
-            auto help = Diagnostic::help(Hlp(Hlp0054));
-            notes.push_back(help);
-        }
-
-        Report::report(diag, notes, runContext);
-
-        runContext->fromException666 = false;
-        if (runContext->ip != runContext->bc->out)
-            runContext->ip++;
-
-        return SWAG_EXCEPTION_EXECUTE_HANDLER;
     }
 
-// Hardware exception
+    // Hardware exception
+    /////////////////////
+    else
+    {
 #ifdef SWAG_DEV_MODE
-    OS::errorBox("[Developer Mode]", "Exception raised !");
+        returnValue = SWAG_EXCEPTION_CONTINUE_EXECUTION;
 #endif
 
-    runContext->ip--;
-    Diagnostic diag{runContext->ip->node, Err(Err0435)};
-    diag.criticalError = true;
+        level   = DiagnosticLevel::Exception;
+        userMsg = Err(Err0435);
+        notes.push_back(Diagnostic::note(Nte(Nte0022)));
+        notes.push_back(Diagnostic::note(Nte(Nte0009)));
+    }
 
-    Vector<const Diagnostic*> notes;
-    notes.push_back(Diagnostic::note(Nte(Nte0022)));
-    notes.push_back(Diagnostic::note(Nte(Nte0009)));
-    Report::report(diag, notes, runContext);
+    // Message
+    /////////////////////
 
-    runContext->ip++;
+    if (!g_CommandLine.dbgCallStack)
+    {
+        auto help = Diagnostic::note(Nte(Nte0087));
+        notes.push_back(help);
+    }
 
-#ifdef SWAG_DEV_MODE
-    return SWAG_EXCEPTION_CONTINUE_EXECUTION;
-#else
-    return SWAG_EXCEPTION_EXECUTE_HANDLER;
-#endif
+    SourceFile dummyFile;
+    dummyFile.path = Utf8{(const char*) location->fileName.buffer, (uint32_t) location->fileName.count};
+
+    SourceLocation startLocation, endLocation;
+    startLocation.line   = location->lineStart;
+    startLocation.column = location->colStart;
+    endLocation.line     = location->lineEnd;
+    endLocation.column   = location->colEnd;
+
+    diag = new Diagnostic{&dummyFile, startLocation, endLocation, userMsg, level};
+
+    // Get the correct source file to raise the error in the correct context
+    //
+    // If we have an expansion, and the first expansion requests test error, then raise
+    // in its context to dismiss the error (like an error during a #validif for example)
+    if (runContext->callerContext && runContext->callerContext->errCxtSteps.size() && runContext->callerContext->errCxtSteps[0].node->sourceFile->shouldHaveError)
+        diag->contextFile = runContext->callerContext->errCxtSteps[0].node->sourceFile;
+    else if (runContext->callerContext && runContext->callerContext->errCxtSteps.size() && runContext->callerContext->errCxtSteps[0].node->sourceFile->shouldHaveWarning)
+        diag->contextFile = runContext->callerContext->errCxtSteps[0].node->sourceFile;
+    // Otherwise get the source file from the top of the bytecode stack if possible
+    else if (g_ByteCodeStackTrace->steps.size() && g_ByteCodeStackTrace->steps[0].bc)
+        diag->contextFile = g_ByteCodeStackTrace->steps[0].bc->sourceFile;
+    else if (g_ByteCodeStackTrace->steps.size() > 1 && g_ByteCodeStackTrace->steps[1].bc)
+        diag->contextFile = g_ByteCodeStackTrace->steps[1].bc->sourceFile;
+    // Otherwise take the current bytecode source file
+    else
+        diag->contextFile = runContext->bc->sourceFile;
+
+    // Get error context
+    runContext->callerContext->extract(*diag, notes);
+
+    if (runContext->ip != runContext->bc->out)
+        runContext->ip--;
+    Report::report(*diag, notes, runContext);
+    if (runContext->ip != runContext->bc->out)
+        runContext->ip++;
+
+    return returnValue;
 }
 
 bool ByteCodeRun::run(ByteCodeRunContext* runContext)

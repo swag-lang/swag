@@ -76,8 +76,6 @@ void ByteCodeRunContext::setup(SourceFile* sf, AstNode* nd, ByteCode* nodebc)
 
     curRC   = -1;
     firstRC = -1;
-
-    hasForeignCall = 0;
 }
 
 void ByteCodeRunContext::stackOverflow()

@@ -419,7 +419,7 @@ static bool dealWithWarning(Diagnostic& diag, Vector<const Diagnostic*>& notes)
 
 static bool reportInternal(const Diagnostic& inDiag, const Vector<const Diagnostic*>& inNotes, ByteCodeRunContext* runContext)
 {
-    if (g_SilentError > 0 && !inDiag.criticalError)
+    if (g_SilentError > 0 && inDiag.errorLevel != DiagnosticLevel::Exception)
     {
         g_SilentErrorMsg = inDiag.textMsg.c_str();
         return false;
@@ -433,29 +433,26 @@ static bool reportInternal(const Diagnostic& inDiag, const Vector<const Diagnost
     if (!dealWithWarning(*copyDiag, copyNotes))
         return true;
 
-    const auto& diag  = *copyDiag;
-    const auto& notes = copyNotes;
+    auto& diag  = *copyDiag;
+    auto& notes = copyNotes;
 
     auto sourceFile = Report::getDiagFile(diag);
     SaveGenJob::flush(sourceFile->module);
 
-    auto errorLevel = diag.errorLevel;
-
-    if (diag.criticalError)
+    switch (diag.errorLevel)
     {
-        errorLevel = DiagnosticLevel::Error;
+    case DiagnosticLevel::Exception:
         sourceFile->module->criticalErrors++;
-    }
+        diag.errorLevel = DiagnosticLevel::Panic;
+        break;
 
-    switch (errorLevel)
-    {
     case DiagnosticLevel::Error:
     case DiagnosticLevel::Panic:
         sourceFile->numErrors++;
         sourceFile->module->numErrors++;
 
         // Do not raise an error if we are waiting for one, during tests
-        if (sourceFile->shouldHaveError && !diag.criticalError)
+        if (sourceFile->shouldHaveError)
         {
             if (g_CommandLine.verboseTestErrors)
                 reportInternal(diag, notes, true);
@@ -487,7 +484,7 @@ static bool reportInternal(const Diagnostic& inDiag, const Vector<const Diagnost
     reportInternal(diag, notes, false);
 
 #if SWAG_DEV_MODE
-    if (errorLevel == DiagnosticLevel::Error || errorLevel == DiagnosticLevel::Panic)
+    if (diag.errorLevel == DiagnosticLevel::Error || diag.errorLevel == DiagnosticLevel::Panic)
     {
         if (!OS::isDebuggerAttached())
         {
@@ -499,7 +496,7 @@ static bool reportInternal(const Diagnostic& inDiag, const Vector<const Diagnost
 
     if (runContext)
     {
-        if (errorLevel == DiagnosticLevel::Error || errorLevel == DiagnosticLevel::Panic)
+        if (diag.errorLevel == DiagnosticLevel::Error || diag.errorLevel == DiagnosticLevel::Panic)
             runContext->debugOnFirstError = true;
 
         if (g_CommandLine.dbgCallStack)
@@ -509,19 +506,19 @@ static bool reportInternal(const Diagnostic& inDiag, const Vector<const Diagnost
             // Bytecode callstack
             if (context && (context->flags & (uint64_t) ContextFlags::ByteCode))
             {
-                g_Log.eol();
-                g_Log.print("[bytecode callstack]\n", LogColor::Cyan);
-                g_Log.setDefaultColor();
-                g_Log.print(g_ByteCodeStackTrace->log(runContext));
+                auto callStack = g_ByteCodeStackTrace->log(runContext);
+                if (!callStack.empty())
+                {
+                    g_Log.print("[bytecode callstack]\n", LogColor::Cyan);
+                    g_Log.setDefaultColor();
+                    g_Log.print(callStack);
+                    g_Log.eol();
+                }
             }
 
             // Error callstack
             if (context && context->traceIndex)
             {
-                g_Log.eol();
-                g_Log.print("[error callstack]\n", LogColor::Cyan);
-                g_Log.setDefaultColor();
-
                 Utf8 str;
                 for (int i = context->traceIndex - 1; i >= 0; i--)
                 {
@@ -535,25 +532,32 @@ static bool reportInternal(const Diagnostic& inDiag, const Vector<const Diagnost
                         str += "\n";
                     }
                 }
-                g_Log.print(str);
+
+                if (!str.empty())
+                {
+                    g_Log.print("[error callstack]\n", LogColor::Cyan);
+                    g_Log.setDefaultColor();
+                    g_Log.print(str);
+                    g_Log.eol();
+                }
             }
 
             // Runtime callstack
-            if (runContext && runContext->hasForeignCall)
+            if (runContext)
             {
                 auto nativeStack = OS::captureStack();
                 if (!nativeStack.empty())
                 {
-                    g_Log.eol();
                     g_Log.print("[runtime callstack]\n", LogColor::Cyan);
                     g_Log.setDefaultColor();
                     g_Log.print(nativeStack);
+                    g_Log.eol();
                 }
             }
         }
     }
 
-    return errorLevel == DiagnosticLevel::Error || errorLevel == DiagnosticLevel::Panic ? false : true;
+    return diag.errorLevel == DiagnosticLevel::Error || diag.errorLevel == DiagnosticLevel::Panic ? false : true;
 }
 
 SourceFile* Report::getDiagFile(const Diagnostic& diag)

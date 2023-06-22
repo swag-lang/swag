@@ -104,7 +104,6 @@ struct ByteCodeRunContext
     int                  firstRC                   = -1;
     int                  maxRecurse                = 0;
     ByteCode*            bc                        = nullptr;
-    int                  hasForeignCall            = 0;
 
     JobContext jc;
 
@@ -118,10 +117,8 @@ struct ByteCodeRunContext
     AstNode*  node  = nullptr;
     ByteCode* oldBc = nullptr;
 
-    bool              debugOnFirstError = false;
-    bool              sharedStack       = false;
-    bool              fromException666  = false;
-    SwagExceptionKind fromExceptionKind = SwagExceptionKind::Panic;
+    bool debugOnFirstError = false;
+    bool sharedStack       = false;
 
     const ExportedCompilerMessage* currentCompilerMessage = nullptr;
     Job*                           currentCompilerJob     = nullptr;

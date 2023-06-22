@@ -1016,7 +1016,7 @@ void initErrors()
     SWAG_ERROR(Hlp0051, "if this is the start of a struct initialization block, considerer removing the blank(s) between '%s' and '{'");
     SWAG_ERROR(Hlp0052, "if this is the start of a new block, consider putting '{' on another line");
     SWAG_ERROR(Hlp0053, "use '{}' if ou really want an empty statement");
-    SWAG_ERROR(Hlp0054, "you can run swag with '--callstack' to get contextual informations");
+    SWAG_ERROR(Hlp0054, nullptr);
 
     /////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////
@@ -1233,7 +1233,7 @@ void initErrors()
     SWAG_ERROR(Nte0051, "there is an hidden call to '%s' for type '%s'");
     SWAG_ERROR(Nte0006, "this 'using' field can be converted");
     SWAG_ERROR(Nte0003, "this variable can escape the current frame");
-    SWAG_ERROR(Nte0009, "you can run swag with --dbg-catch to attach the bytecode debugger when the error occurs");
+    SWAG_ERROR(Nte0009, "you can run swag with '--dbg-catch' to attach the bytecode debugger when the exception occurs");
     SWAG_ERROR(Nte0005, "expected 'string' because the return type of an #ast block is 'string'");
     SWAG_ERROR(Nte0069, "here is the runtime argument that corresponds to '%s'");
     SWAG_ERROR(Nte0070, "this fails to evaluate at compile time");
@@ -1253,7 +1253,7 @@ void initErrors()
     SWAG_ERROR(Nte0084, "the ufcs argument comes from an implicit 'using const self' parameter");
     SWAG_ERROR(Nte0085, "the version should be of the form 'version.revision.buildnum', with each number >= 0 or the '?' character");
     SWAG_ERROR(Nte0086, "could come from enum '%s'");
-    SWAG_ERROR(Nte0087, nullptr);
+    SWAG_ERROR(Nte0087, "you can run swag with '--callstack' to get contextual informations");
     SWAG_ERROR(Nte0088, nullptr);
     SWAG_ERROR(Nte0089, nullptr);
 

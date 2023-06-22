@@ -15,6 +15,7 @@ enum class DiagnosticLevel
     Note,
     Help,
     Panic,
+    Exception,
 };
 
 struct Diagnostic
@@ -216,6 +217,5 @@ struct Diagnostic
     bool hasLocation     = false;
     bool lowPrio         = false;
     bool forceSourceFile = false;
-    bool criticalError   = false;
     bool isNote          = false;
 };

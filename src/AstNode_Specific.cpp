@@ -223,11 +223,11 @@ Utf8 AstFuncDecl::getDisplayName()
         return Fmt("'%s' block", token.ctext());
 
     if (attributeFlags & ATTRIBUTE_MIXIN)
-        return Fmt("mixin '%s'", token.ctext());
+        return Fmt("'%s' mixin", token.ctext());
     if (attributeFlags & ATTRIBUTE_MACRO)
-        return Fmt("macro '%s'", token.ctext());
+        return Fmt("'%s' macro", token.ctext());
 
-    return Fmt("function '%s'", token.ctext());
+    return Fmt("'%s' function", token.ctext());
 }
 
 void AstFuncDecl::computeFullNameForeign(bool forExport)
