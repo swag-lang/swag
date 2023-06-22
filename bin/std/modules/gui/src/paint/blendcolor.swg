@@ -8,7 +8,7 @@ struct BlendColor
     destVec4:   Math.Vector4
     factor:     f32
     start:      bool = true
-    speed:      f32 = 6
+    speed:      f32 = 8
 }
 
 impl BlendColor

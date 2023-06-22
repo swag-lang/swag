@@ -14,6 +14,10 @@ struct PushButton
     using button: Button
 
     form = PushButtonForm.Normal
+
+    aniBk:      BlendColor
+    aniBorder:  BlendColor
+    aniText:    BlendColor
 }
 
 impl IWnd for PushButton
@@ -138,14 +142,17 @@ impl IWnd for PushButton
 
         // Background
         clientRect := getClientRect()
-        theme.drawSubRect(bc.painter, clientRect, subRectBk, colorBk)
+        aniBk.apply(self, colorBk)
+        theme.drawSubRect(bc.painter, clientRect, subRectBk, aniBk.cur())
 
         // Border
-        theme.drawSubRect(bc.painter, clientRect, subRectBorder, colorBorder)
+        aniBorder.apply(self, colorBorder)
+        theme.drawSubRect(bc.painter, clientRect, subRectBorder, aniBorder.cur())
 
         // Content
         var format: RichStringFormat
-        theme.setTextColors(&format, colorText)
+        aniText.apply(self, colorText)
+        theme.setTextColors(&format, aniText.cur())
         format.horzAlignment = .Center
         format.vertAlignment = .Center
         format.flags = .Clip
