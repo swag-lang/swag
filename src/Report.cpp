@@ -486,72 +486,71 @@ static bool reportInternal(const Diagnostic& inDiag, const Vector<const Diagnost
     // Print error/warning
     reportInternal(diag, notes, false);
 
+#if SWAG_DEV_MODE
     if (errorLevel == DiagnosticLevel::Error || errorLevel == DiagnosticLevel::Panic)
     {
-        if (runContext)
-        {
-            runContext->debugOnFirstError = true;
-            SwagContext* context          = (SwagContext*) OS::tlsGetValue(g_TlsContextId);
-
-            if (!runContext->fromException666 || runContext->fromExceptionKind == SwagExceptionKind::Panic)
-            {
-                if (g_CommandLine.dbgCallStack)
-                {
-                    // Bytecode callstack
-                    if (context && (context->flags & (uint64_t) ContextFlags::ByteCode))
-                    {
-                        g_Log.eol();
-                        g_Log.print("[bytecode callstack]\n", LogColor::Cyan);
-                        g_Log.setDefaultColor();
-                        g_Log.print(g_ByteCodeStackTrace->log(runContext));
-                    }
-
-                    // Error callstack
-                    if (context->traceIndex)
-                    {
-                        g_Log.eol();
-                        g_Log.print("[error callstack]\n", LogColor::Cyan);
-                        g_Log.setDefaultColor();
-
-                        Utf8 str;
-                        for (int i = context->traceIndex - 1; i >= 0; i--)
-                        {
-                            auto sourceFile1 = g_Workspace->findFile((const char*) context->traces[i]->fileName.buffer);
-                            if (sourceFile1)
-                            {
-                                str += Log::colorToVTS(LogColor::DarkYellow);
-                                str += "error";
-                                str += Log::colorToVTS(LogColor::Gray);
-                                str += Fmt(" --> %s:%d:%d", sourceFile1->path.string().c_str(), context->traces[i]->lineStart + 1, context->traces[i]->colStart + 1);
-                                str += "\n";
-                            }
-                        }
-                        g_Log.print(str);
-                    }
-
-                    // Runtime callstack
-                    if (runContext->hasForeignCall)
-                    {
-                        auto nativeStack = OS::captureStack();
-                        if (!nativeStack.empty())
-                        {
-                            g_Log.eol();
-                            g_Log.print("[runtime callstack]\n", LogColor::Cyan);
-                            g_Log.setDefaultColor();
-                            g_Log.print(nativeStack);
-                        }
-                    }
-                }
-            }
-        }
-
-#if SWAG_DEV_MODE
         if (!OS::isDebuggerAttached())
         {
             OS::errorBox("[Developer Mode]", "Error raised !");
             return false;
         }
+    }
 #endif
+
+    if (runContext)
+    {
+        if (errorLevel == DiagnosticLevel::Error || errorLevel == DiagnosticLevel::Panic)
+            runContext->debugOnFirstError = true;
+
+        if (g_CommandLine.dbgCallStack)
+        {
+            SwagContext* context = (SwagContext*) OS::tlsGetValue(g_TlsContextId);
+
+            // Bytecode callstack
+            if (context && (context->flags & (uint64_t) ContextFlags::ByteCode))
+            {
+                g_Log.eol();
+                g_Log.print("[bytecode callstack]\n", LogColor::Cyan);
+                g_Log.setDefaultColor();
+                g_Log.print(g_ByteCodeStackTrace->log(runContext));
+            }
+
+            // Error callstack
+            if (context && context->traceIndex)
+            {
+                g_Log.eol();
+                g_Log.print("[error callstack]\n", LogColor::Cyan);
+                g_Log.setDefaultColor();
+
+                Utf8 str;
+                for (int i = context->traceIndex - 1; i >= 0; i--)
+                {
+                    auto sourceFile1 = g_Workspace->findFile((const char*) context->traces[i]->fileName.buffer);
+                    if (sourceFile1)
+                    {
+                        str += Log::colorToVTS(LogColor::DarkYellow);
+                        str += "error";
+                        str += Log::colorToVTS(LogColor::Gray);
+                        str += Fmt(" --> %s:%d:%d", sourceFile1->path.string().c_str(), context->traces[i]->lineStart + 1, context->traces[i]->colStart + 1);
+                        str += "\n";
+                    }
+                }
+                g_Log.print(str);
+            }
+
+            // Runtime callstack
+            if (runContext && runContext->hasForeignCall)
+            {
+                auto nativeStack = OS::captureStack();
+                if (!nativeStack.empty())
+                {
+                    g_Log.eol();
+                    g_Log.print("[runtime callstack]\n", LogColor::Cyan);
+                    g_Log.setDefaultColor();
+                    g_Log.print(nativeStack);
+                }
+            }
+        }
     }
 
     return errorLevel == DiagnosticLevel::Error || errorLevel == DiagnosticLevel::Panic ? false : true;
