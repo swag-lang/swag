@@ -34,6 +34,7 @@ public struct ScrollWnd
     posBoxV:        f32
     sizeBoxV:       f32
     isHotV:         bool
+    isHotBarV:      bool
     isPressedV:     bool
 
     showBarH:       bool
@@ -41,6 +42,7 @@ public struct ScrollWnd
     posBoxH:        f32
     sizeBoxH:       f32
     isHotH:         bool
+    isHotBarH:      bool
     isPressedH:     bool
 
     isMoving:       bool
@@ -82,7 +84,7 @@ public impl IWnd for ScrollWnd
                 setScrollPos(view.scrollPos.x, view.scrollPos.y - (evt.move.y * scrollIncrementV))
 
         case MouseLeave:
-            isHotV, isHotH = false
+            isHotV, isHotH, isHotBarV, isHotBarH = false
             invalidate()
 
         case MouseMove:
@@ -143,7 +145,7 @@ public impl IWnd for ScrollWnd
                     isPressedH = true
                     correcMoving = pos.x - posBoxH
                 }
-                elif pos.x > clientRect.right() - paddingZ
+                elif isHotBarV
                 {
                     correcMoving = 0
                     isPressedV = true
@@ -151,7 +153,7 @@ public impl IWnd for ScrollWnd
                     f *= scrollSize.y
                     setScrollPos(view.scrollPos.x, f)
                 }
-                elif pos.y > clientRect.bottom() - paddingW
+                elif isHotBarH
                 {
                     correcMoving = 0
                     isPressedH = true
@@ -229,7 +231,8 @@ public impl IWnd for ScrollWnd
             clientRect.width = paddingZ
             if showBarH
                 clientRect.height -= paddingW
-            theme.drawSubRect(bc.painter, clientRect, &rects.scrollBar_BkV, colorBk)
+            colBk := isHotBarV ? colors.scrollBar_HotBk : colorBk
+            theme.drawSubRect(bc.painter, clientRect, &rects.scrollBar_BkV, colBk)
 
             if needV
             {
@@ -256,7 +259,8 @@ public impl IWnd for ScrollWnd
             clientRect.height = paddingW
             if showBarV
                 clientRect.width -= paddingW
-            theme.drawSubRect(bc.painter, clientRect, &rects.scrollBar_BkH, colorBk)
+            colBk := isHotBarH ? colors.scrollBar_HotBk : colorBk
+            theme.drawSubRect(bc.painter, clientRect, &rects.scrollBar_BkH, colBk)
 
             if needH
             {
@@ -293,16 +297,16 @@ impl ScrollWnd
     mtd hitTest(surfacePos: Math.Point)
     {
         pos := surfaceToLocal(surfacePos)
-        if isHotV or isHotH
+        if isHotV or isHotH or isHotBarV or isHotBarH
         {
             invalidate()
-            isHotV, isHotH = false
+            isHotV, isHotH, isHotBarV, isHotBarH = false
         }
 
         rect := getPosBoxV()
         if rect.contains(pos)
         {
-            isHotV = true
+            isHotV, isHotBarV = true
             invalidate()
             return
         }
@@ -310,28 +314,53 @@ impl ScrollWnd
         rect = getPosBoxH()
         if rect.contains(pos)
         {
-            isHotH = true
+            isHotH, isHotBarH = true
             invalidate()
+            return
+        }
+
+        rect = getPosBoxV(true)
+        if rect.contains(pos)
+        {
+            isHotBarV = true
+            invalidate()
+            return
+        }
+
+        rect = getPosBoxH(true)
+        if rect.contains(pos)
+        {
+            isHotBarH = true
+            invalidate()
+            return
         }
     }
 
-    mtd getPosBoxV()->Math.Rectangle
+    mtd getPosBoxV(full = false)->Math.Rectangle
     {
         var result: retval = getClientRect()
         result.x = result.right() - paddingZ
         result.width = paddingZ
-        result.y = posBoxV
-        result.height = sizeBoxV
+        if !full
+        {
+            result.y = posBoxV
+            result.height = sizeBoxV
+        }
+
         return result
     }
 
-    mtd getPosBoxH()->Math.Rectangle
+    mtd getPosBoxH(full = false)->Math.Rectangle
     {
         var result: retval = getClientRect()
         result.y = result.bottom() - paddingW
         result.height = paddingW
-        result.x = posBoxH
-        result.width = sizeBoxH
+        if !full
+        {
+            result.x = posBoxH
+            result.width = sizeBoxH
+        }
+
         return result
     }
 

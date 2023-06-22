@@ -921,6 +921,8 @@ impl Wnd
     // Returns true if 'child' is in the child hieararchy of 'self'
     mtd isParentOf(child: *Wnd)->bool
     {
+        if !child
+            return false
         p := child.parent
         while p
         {
@@ -992,17 +994,18 @@ impl Wnd
         if !isEnabled()
             return
 
-        if surface.app.keybFocusWnd
+        last := surface.app.keybFocusWnd
+        if last
         {
             evt := FocusEvent{kind: EventKind.KillFocus}
             evt.other = self
-            surface.app.keybFocusWnd.sendEvent(&evt)
-            surface.app.keybFocusWnd.invalidate()
+            last.sendEvent(&evt)
+            last.invalidate()
         }
 
         surface.setFocus()
         evt := FocusEvent{kind: EventKind.SetFocus}
-        evt.other = surface.app.keybFocusWnd
+        evt.other = last
         surface.app.keybFocusWnd = self
         sendEvent(&evt)
         invalidate()
