@@ -39,7 +39,7 @@ func countPercent(fmt: string)->u32
 func replaceString(dest: *String, fmt: string, values: ...)
     #validifx
     {
-        if !@isconstexpr(fmt) return true
+        if !@isconstexpr(fmt) or !@isconstexpr(values) return true
         checkFormat(@nameof(#self), fmt, values)
         return true
     }
@@ -63,7 +63,7 @@ func replaceString(dest: *String, fmt: string, values: ...)
 func toString(fmt: string, values: ...)->String
     #validifx
     {
-        if !@isconstexpr(fmt) return true
+        if !@isconstexpr(fmt) or !@isconstexpr(values) return true
         checkFormat(@nameof(#self), fmt, values)
         return true
     }
