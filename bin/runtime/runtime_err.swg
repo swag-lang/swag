@@ -53,7 +53,7 @@ func __poperr()
 
 func __checkAny(typeA, typeB: typeinfo, loc: SourceCodeLocation)
 {
-    if !@typecmp(typeA, typeB, TypeCmpFlags.CastAny)
+    if !@typecmp(typeA, typeB, .CastAny)
     {
         cxt := @getcontext()
         str := &cxt.errors[0].msgBuf[0]
@@ -61,12 +61,12 @@ func __checkAny(typeA, typeB: typeinfo, loc: SourceCodeLocation)
 
         if !typeB
         {
-            __strcat(str, Swag.MaxLenErrorMsg, "[safety] 'any' value is null and cannot be casted")
+            __strcat(str, MaxLenErrorMsg, "[safety] 'any' value is null and cannot be casted")
             if typeA
             {
-                __strcat(str, Swag.MaxLenErrorMsg, " ('")
-                __strcat(str, Swag.MaxLenErrorMsg, typeA.name)
-                __strcat(str, Swag.MaxLenErrorMsg, "' expected)")
+                __strcat(str, MaxLenErrorMsg, " ('")
+                __strcat(str, MaxLenErrorMsg, typeA.name)
+                __strcat(str, MaxLenErrorMsg, "' expected)")
             }
         }
         else
@@ -74,11 +74,11 @@ func __checkAny(typeA, typeB: typeinfo, loc: SourceCodeLocation)
             __strcat(str, Swag.MaxLenErrorMsg, "[safety] invalid dynamic cast from type 'any'")
             if typeA and typeB
             {
-                __strcat(str, Swag.MaxLenErrorMsg, " ('")
-                __strcat(str, Swag.MaxLenErrorMsg, typeA.name)
-                __strcat(str, Swag.MaxLenErrorMsg, "' expected, '")
-                __strcat(str, Swag.MaxLenErrorMsg, typeB.name)
-                __strcat(str, Swag.MaxLenErrorMsg, "' provided)")
+                __strcat(str, MaxLenErrorMsg, " ('")
+                __strcat(str, MaxLenErrorMsg, typeA.name)
+                __strcat(str, MaxLenErrorMsg, "' expected, '")
+                __strcat(str, MaxLenErrorMsg, typeB.name)
+                __strcat(str, MaxLenErrorMsg, "' provided)")
             }
         }
 
@@ -106,25 +106,25 @@ func __stackTrace(loc: SourceCodeLocation)
 ////////////////////////////////////////////////////////////
 
 // Raise a compiler error at the given source location
-func @compilererror(message: string, loc: Swag.SourceCodeLocation)
+func @compilererror(message: string, loc: SourceCodeLocation)
 {
     // If the compiler is around, just let it deal with the message
     cxt := @getcontext()
-    if cxt.flags & Swag.ContextFlags.ByteCode
+    if cxt.flags & .ByteCode
     {
-        __raiseException666(message, loc, Swag.ExceptionKind.Error)
+        __raiseException666(message, loc, .Error)
         return
     }
 }
 
 // Raise a compiler warning at the given source location
-func @compilerwarning(message: string, loc: Swag.SourceCodeLocation)
+func @compilerwarning(message: string, loc: SourceCodeLocation)
 {
     // If the compiler is around, just let it deal with the message
     cxt := @getcontext()
-    if cxt.flags & Swag.ContextFlags.ByteCode
+    if cxt.flags & .ByteCode
     {
-        __raiseException666(message, loc, Swag.ExceptionKind.Warning)
+        __raiseException666(message, loc, .Warning)
         return
     }
 }
@@ -145,9 +145,9 @@ func @panic(message: string, loc: SourceCodeLocation)
     // If we are running bytecode, then just let the runner deal with the message,
     // we will have more usefull information
     contextFlags := cxt.flags
-    if contextFlags & Swag.ContextFlags.ByteCode
+    if contextFlags & .ByteCode
     {
-        __raiseException666(message, loc, Swag.ExceptionKind.Panic)
+        __raiseException666(message, loc, .Panic)
         return
     }
 
@@ -190,7 +190,7 @@ func @panic(message: string, loc: SourceCodeLocation)
     @print("\n")
 
     // During tests just raise an error without a dialog box
-    if contextFlags & ContextFlags.Test
+    if contextFlags & .Test
         __exitError()
 
     // Build message
