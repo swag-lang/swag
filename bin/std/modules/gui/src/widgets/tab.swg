@@ -45,6 +45,8 @@ struct TabItem
     pos:        f32
     width:      f32
     view:       *Wnd
+    aniImg:     BlendColor
+    aniText:    BlendColor
 }
 
 struct Tab
@@ -146,11 +148,13 @@ impl IWnd for Tab
             }
         }
 
+        v.aniImg.apply(self, colorImg)
         if subRect
-            theme.drawSubRect(painter, labelPos, subRect, colorImg)
+            theme.drawSubRect(painter, labelPos, subRect, v.aniImg.cur())
 
         var format: RichStringFormat
-        theme.setTextColors(&format, colorText)
+        v.aniText.apply(self, colorText)
+        theme.setTextColors(&format, v.aniText.cur())
         format.horzAlignment = .Center
         format.vertAlignment = .Center
         format.flags = .Clip
