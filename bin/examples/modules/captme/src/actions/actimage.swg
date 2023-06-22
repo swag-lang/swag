@@ -284,7 +284,7 @@ impl MainWnd
 
         visit f, idx: capture.forms
         {
-            r := f.boundRect(false)
+            r := f.boundRect()
             if r.x > 0
                 minX = Math.min(minX, r.x)
             if r.y > 0

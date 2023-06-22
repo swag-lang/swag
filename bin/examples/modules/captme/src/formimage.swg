@@ -183,7 +183,7 @@ impl IForm for FormImage
     {
     }
 
-    mtd boundRect(raw: bool)->Math.Rectangle
+    mtd boundRect()->Math.Rectangle
     {
         return Math.Rectangle{x, y, w, h}
     }
@@ -234,7 +234,7 @@ impl IForm for FormImage
 
     mtd isInside(pt: Math.Point)->bool
     {
-        br := boundRect(false)
+        br := boundRect()
         return br.contains(pt)
     }
 

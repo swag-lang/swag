@@ -117,7 +117,7 @@ impl MainWnd
 
         var boundRects: Array'Math.Rectangle
         visit f: forms
-            boundRects.add(f.boundRect(false))
+            boundRects.add(f.boundRect())
 
         params := {capture, boundRects: boundRects.buffer, forms: &forms}
         undo.newImg.visitPixels(&params)
@@ -155,7 +155,7 @@ impl MainWnd
 
         var boundRects: Array'Math.Rectangle
         visit f: forms
-            boundRects.add(f.boundRect(false))
+            boundRects.add(f.boundRect())
 
         params := {capture, boundRects: boundRects.buffer, forms: &forms}
         undo.newImg.visitPixels(&params)
@@ -203,7 +203,7 @@ impl MainWnd
         {
             var i: Info
 
-            br := f.boundRect(false)
+            br := f.boundRect()
             i.boundRect = br
 
             if masks
@@ -319,7 +319,7 @@ impl MainWnd
         startCount := capture.forms.count - forms.count
         visit f: forms
         {
-            br := f.boundRect(false)
+            br := f.boundRect()
 
             with nf := Memory.new'FormImage()
             {

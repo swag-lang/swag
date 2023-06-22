@@ -100,71 +100,55 @@ impl IForm for FormLine
         }
     }
 
-    mtd boundRect(raw: bool)->Math.Rectangle
+    mtd boundRect()->Math.Rectangle
     {
         var result: retval
-        bSize := raw ? 0 : borderSize * 6
-        result.x = Math.min(xa, xb) - bSize
-        result.y = Math.min(ya, yb) - bSize
-        result.width = Math.abs(xb - xa) + bSize * 2
-        result.height = Math.abs(yb - ya) + bSize * 2
 
         va := Math.Vector2{xa, ya}
         vb := Math.Vector2{xb, yb}
 
-        /////
-        d := va - vb
+        func bound(va, vb, da, db: Math.Vector2)->Math.Vector4
+        {
+            va1 := va + da
+            va2 := va - da
+            vb1 := vb + db
+            vb2 := vb - db
+
+            var result: retval
+            result.x = Math.min(va1.x, va2.x, vb1.x, vb2.x)
+            result.y = Math.min(va1.y, va2.y, vb1.y, vb2.y)
+            result.z = Math.max(va1.x, va2.x, vb1.x, vb2.x)
+            result.w = Math.max(va1.y, va2.y, vb1.y, vb2.y)
+            return result
+        }
+
+        (w0, l0) := Painter.capStyleExtent(beginCap, borderSize, startSize)
+        (w1, l1) := Painter.capStyleExtent(endCap, borderSize, endSize)
+
+        d := vb - va
         d.normalizeSafe()
+        v1 := bound(va, vb, d * l0, d * l1)
+
         d = d.cross(1)
+        v2 := bound(va, vb, d * w0, d * w1)
 
-        da := d * (borderSize * startSize * 0.5)
-        db := d * (borderSize * endSize * 0.5)
-
-        va1 := va + da
-        va2 := va - da
-        vb1 := vb + db
-        vb2 := vb - db
-
-        xx0 := Math.min(va1.x, va2.x)
-        xx0 = Math.min(xx0, vb1.x, vb2.x)
-
-        yy0 := Math.min(va1.y, va2.y)
-        yy0 = Math.min(yy0, vb1.y, vb2.y)
-
-        xx1 := Math.max(va1.x, va2.x)
-        xx1 = Math.max(xx1, vb1.x, vb2.x)
-
-        yy1 := Math.max(va1.y, va2.y)
-        yy1 = Math.max(yy1, vb1.y, vb2.y)
+        v1.x = Math.min(v1.x, v2.x)
+        v1.y = Math.min(v1.y, v2.y)
+        v1.z = Math.max(v1.z, v2.z)
+        v1.w = Math.max(v1.w, v2.w)
 
         /////
-        d = va - vb
-        d.normalizeSafe()
-        d *= borderSize * 1.5
-
-        da = d * (borderSize * startSize * 0.5)
-        db = d * (borderSize * endSize * 0.5)
-
-        va1 = va + da
-        vb2 = vb - db
-
-        xx0 = Math.min(xx0, va1.x, vb1.x)
-        yy0 = Math.min(yy0, va1.y, vb1.y)
-        xx1 = Math.max(xx1, va1.x, vb1.x)
-        yy1 = Math.max(yy1, va1.y, vb1.y)
-
-        /////
-        result.x = xx0
-        result.y = yy0
-        result.width = Math.abs(xx1 - xx0)
-        result.height = Math.abs(yy1 - yy0)
+        result.x = v1.x
+        result.y = v1.y
+        result.width = v1.z - v1.x
+        result.height = v1.w - v1.y
 
         return result
     }
 
     mtd computePaintCoords(z: f32)
     {
-        rect := boundRect(false)
+        rect := boundRect()
         x0 = (xa * z) - (rect.x * z) + paintPos.x
         y0 = (ya * z) - (rect.y * z) + paintPos.y
         x1 = (xb * z) - (rect.x * z) + paintPos.x

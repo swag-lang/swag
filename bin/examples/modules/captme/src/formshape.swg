@@ -123,7 +123,7 @@ impl IForm for FormShape
     {
     }
 
-    mtd boundRect(raw: bool)->Math.Rectangle
+    mtd boundRect()->Math.Rectangle
     {
         return Math.Rectangle{x, y, w, h}
     }
@@ -148,7 +148,7 @@ impl IForm for FormShape
         switch kind
         {
         case Ellipse:
-            br := boundRect(false)
+            br := boundRect()
             pos := Math.Vector2{pt.x, pt.y}
             cen := Math.Vector2{br.horzCenter(), br.vertCenter()}
             return pos.isInEllipse(cen, br.width * 0.5, br.height * 0.5)

@@ -303,7 +303,7 @@ impl Capture
         visit &itf, idx: res
         {
             itf.setup(self)
-            bound := itf.boundRect(false)
+            bound := itf.boundRect()
             if idx == 0
                 boundRect = bound
             else
@@ -349,7 +349,7 @@ impl Capture
     {
         render := &app.renderer
 
-        boundRect := f.boundRect(false)
+        boundRect := f.boundRect()
         if boundRect.width <= 0 or boundRect.height <= 0
             return
 
@@ -632,13 +632,13 @@ impl Capture
     mtd getSelectionBoundRect(editForm: IForm = null)->Math.Rectangle
     {
         if editForm
-            return editForm.boundRect(true)
+            return editForm.boundRect()
 
         bound := Math.Rectangle{Swag.F32.Max, Swag.F32.Max, 0, 0}
         visit s: selection
         {
             f := forms[s]
-            r := f.boundRect(true)
+            r := f.boundRect()
             bound.x = Math.min(bound.x, r.x)
             bound.y = Math.min(bound.y, r.y)
             bound.setRight(Math.max(bound.right(), r.right()))
@@ -710,7 +710,7 @@ impl Capture
             case FormDraw:
                 if autoSel
                     continue
-                boundR := f.boundRect(false)
+                boundR := f.boundRect()
                 arrX.add(cast(s32) boundR.x)
                 arrX.add(cast(s32) boundR.right())
                 arrY.add(cast(s32) boundR.y)

@@ -83,7 +83,7 @@ impl IForm for FormDraw
 
     mtd setBaseForm(newPosX, newPosY, newSizeX, newSizeY: s32)
     {
-        rect := boundRect(false)
+        rect := boundRect()
         bSize := borderSize * 0.5
         rect.inflate(-bSize)
         fx := newSizeX / rect.width
@@ -115,14 +115,14 @@ impl IForm for FormDraw
         points[pt].y += newPosY
     }
 
-    mtd boundRect(raw: bool)->Math.Rectangle
+    mtd boundRect()->Math.Rectangle
     {
         if !points.count
             setDefaultShape()
 
         var result: retval
 
-        bSize := raw ? 0 : borderSize * 0.5
+        bSize := borderSize * 0.5
         x0 := Swag.F32.Max
         y0 := Swag.F32.Max
         x1 := 0'f32
@@ -144,7 +144,7 @@ impl IForm for FormDraw
 
     mtd computePaintCoords(z: f32)
     {
-        rect := boundRect(false)
+        rect := boundRect()
 
         paintPoints.clear()
         visit pt: points

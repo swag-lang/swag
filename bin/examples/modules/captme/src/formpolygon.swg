@@ -88,9 +88,7 @@ impl IForm for FormPolygon
 
     mtd setBaseForm(newPosX, newPosY, newSizeX, newSizeY: s32)
     {
-        rect := boundRect(false)
-        bSize := borderSize * 0.5
-        rect.inflate(-bSize)
+        rect := boundRect()
         fx := newSizeX / rect.width
         fy := newSizeY / rect.height
 
@@ -120,7 +118,7 @@ impl IForm for FormPolygon
         points[pt].y += newPosY
     }
 
-    mtd boundRect(raw: bool)->Math.Rectangle
+    mtd boundRect()->Math.Rectangle
     {
         if !points.count
         {
@@ -131,7 +129,7 @@ impl IForm for FormPolygon
 
         var result: retval
 
-        bSize := raw ? 0 : borderSize * 0.5
+        bSize := borderSize * 0.5
         x0 := Swag.F32.Max
         y0 := Swag.F32.Max
         x1 := 0'f32
@@ -157,7 +155,7 @@ impl IForm for FormPolygon
 
     mtd computePaintCoords(z: f32)
     {
-        rect := boundRect(false)
+        rect := boundRect()
 
         paintPoints.clear()
         visit pt: points

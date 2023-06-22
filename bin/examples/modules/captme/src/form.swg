@@ -5,7 +5,7 @@ interface IForm
     mtd mouse(view: *EditView, pos: Math.Point, evt: *MouseEvent)->bool
     mtd isInside(pt: Math.Point)->bool
     mtd hitTest(pt: Math.Point, z: f32)->bool
-    mtd boundRect(raw: bool)->Math.Rectangle
+    mtd boundRect()->Math.Rectangle
     mtd moveForm(newPosX, newPosY: s32)
     mtd moveBaseForm(newPosX, newPosY, newSizeX, newSizeY: s32)
     mtd setBaseForm(newPosX, newPosY, newSizeX, newSizeY: s32)

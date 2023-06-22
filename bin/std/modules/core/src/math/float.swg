@@ -76,10 +76,21 @@ alias ConstF64 = Const'f64
 
 #[Swag.ConstExpr, Swag.Inline]
 {
-    func min(x, y: f32)   => @min(x, y)
-    func min(x, y: f64)   => @min(x, y)
-    func max(x, y: f32)   => @max(x, y)
-    func max(x, y: f64)   => @max(x, y)
+    func min(x, y: f32) => @min(x, y)
+    func min(x, y: f64) => @min(x, y)
+    func max(x, y: f32) => @max(x, y)
+    func max(x, y: f64) => @max(x, y)
+
+    func min(x, y, z: f32) => @min(@min(x, y), z)
+    func min(x, y, z: f64) => @min(@min(x, y), z)
+    func max(x, y, z: f32) => @max(@max(x, y), z)
+    func max(x, y, z: f64) => @max(@max(x, y), z)
+
+    func min(x, y, z, w: f32) => @min(@min(@min(x, y), z), w)
+    func min(x, y, z, w: f64) => @min(@min(@min(x, y), z), w)
+    func max(x, y, z, w: f32) => @max(@max(@max(x, y), z), w)
+    func max(x, y, z, w: f64) => @max(@max(@max(x, y), z), w)
+
     func atan2(x, y: f32) => @atan2(x, y)
     func atan2(x, y: f64) => @atan2(x, y)
 

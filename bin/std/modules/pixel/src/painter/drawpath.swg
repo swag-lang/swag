@@ -731,4 +731,24 @@ public impl Painter
         sharedSolidPen.size = penSize
         drawPath(pathList, sharedSolidPen, mode)
     }
+
+    // Returns the extent in both directions of a given LineCapStyle.
+    // * 'lineSize' is the supposed line drawing size
+    // * 'capScale' is the supposed LineCapStyle scale
+    // Returns the width and the length.
+    func capStyleExtent(capStyle: LineCapStyle, lineSize, capScale: f32)->{w: f32, l: f32}
+    {
+        #[Swag.Complete]
+        switch capStyle
+        {
+        case None:          return {0, 0}
+        case Triangle:      return {0, lineSize*0.5}
+        case Round:         return {0, lineSize*0.5}
+        case Square:        return {0, lineSize*0.5}
+        case ArrowAnchor:   return {lineSize*0.5 * capScale, 0}
+        case SquareAnchor:  return {lineSize*0.5 * capScale, lineSize*0.5 * capScale}
+        }
+
+        return {0, 0}
+    }
 }

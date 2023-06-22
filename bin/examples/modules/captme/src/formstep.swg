@@ -122,7 +122,7 @@ impl IForm for FormStep
     {
     }
 
-    mtd boundRect(raw: bool)->Math.Rectangle
+    mtd boundRect()->Math.Rectangle
     {
         return Math.Rectangle{x, y, w, h}
     }
