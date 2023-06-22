@@ -180,7 +180,8 @@ enum class IdentifierSearchFor
 {
     Whatever,
     Type,
-    Function
+    Function,
+    Attribute
 };
 
 struct FindUserOp

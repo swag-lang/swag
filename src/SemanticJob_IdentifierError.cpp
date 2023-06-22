@@ -1123,8 +1123,14 @@ void SemanticJob::findClosestMatches(SemanticContext* context, AstNode* node, co
             if (searchFor == IdentifierSearchFor::Function &&
                 one.symbolName->kind != SymbolKind::Function)
                 continue;
+            if (searchFor == IdentifierSearchFor::Attribute &&
+                one.symbolName->kind != SymbolKind::Attribute)
+                continue;
             if (searchFor != IdentifierSearchFor::Function &&
                 one.symbolName->kind == SymbolKind::Function)
+                continue;
+            if (searchFor != IdentifierSearchFor::Function &&
+                one.symbolName->kind == SymbolKind::Attribute)
                 continue;
             if (searchFor == IdentifierSearchFor::Type &&
                 one.symbolName->kind != SymbolKind::TypeAlias &&
@@ -1189,6 +1195,8 @@ void SemanticJob::unknownIdentifier(SemanticContext* context, AstIdentifierRef* 
     auto searchFor = IdentifierSearchFor::Whatever;
     if (node->parent->parent && node->parent->parent->kind == AstNodeKind::TypeExpression && node->parent->childs.back() == node)
         searchFor = IdentifierSearchFor::Type;
+    else if (node->parent->parent && node->parent->parent->kind == AstNodeKind::AttrUse && node->parent->childs.back() == node)
+        searchFor = IdentifierSearchFor::Attribute;
     else if (node->callParameters)
         searchFor = IdentifierSearchFor::Function;
 
@@ -1218,6 +1226,9 @@ void SemanticJob::unknownIdentifier(SemanticContext* context, AstIdentifierRef* 
             diag = new Diagnostic{node->sourceFile, node->token, Fmt(Err(Err0129), node->token.ctext())};
         else
             diag = new Diagnostic{node->sourceFile, node->token, Fmt(Err(Err0228), node->token.ctext())};
+        break;
+    case IdentifierSearchFor::Attribute:
+        diag = new Diagnostic{node->sourceFile, node->token, Fmt(Err(Err0251), node->token.ctext())};
         break;
     case IdentifierSearchFor::Type:
         diag = new Diagnostic{node->sourceFile, node->token, Fmt(Err(Err0165), node->token.ctext())};
