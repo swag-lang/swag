@@ -1,3 +1,4 @@
+#global testerror
 using Core
 
 func toto()
