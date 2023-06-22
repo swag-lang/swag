@@ -243,34 +243,34 @@ private impl PropertyList
         switch nativeType.nativeKind
         {
         case U8:
-            p := cast(^u8) ptrData
+            p := cast(*u8) ptrData
             ed.setText(Format.toString("%", dref p))
         case U16:
-            p := cast(^u16) ptrData
+            p := cast(*u16) ptrData
             ed.setText(Format.toString("%", dref p))
         case U32:
-            p := cast(^u32) ptrData
+            p := cast(*u32) ptrData
             ed.setText(Format.toString("%", dref p))
         case U64:
-            p := cast(^u64) ptrData
+            p := cast(*u64) ptrData
             ed.setText(Format.toString("%", dref p))
         case S8:
-            p := cast(^s8) ptrData
+            p := cast(*s8) ptrData
             ed.setText(Format.toString("%", dref p))
         case S16:
-            p := cast(^s16) ptrData
+            p := cast(*s16) ptrData
             ed.setText(Format.toString("%", dref p))
         case S32:
-            p := cast(^s32) ptrData
+            p := cast(*s32) ptrData
             ed.setText(Format.toString("%", dref p))
         case S64:
-            p := cast(^s64) ptrData
+            p := cast(*s64) ptrData
             ed.setText(Format.toString("%", dref p))
         case F32:
-            p := cast(^f32) ptrData
+            p := cast(*f32) ptrData
             ed.setText(Format.toString("%", dref p))
         case F64:
-            p := cast(^f64) ptrData
+            p := cast(*f64) ptrData
             ed.setText(Format.toString("%", dref p))
         }
     }

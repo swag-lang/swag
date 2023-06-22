@@ -42,6 +42,7 @@ struct AA
     str: String
 
 	#[Category("Categ1")]
+    #[Description("This is something that needs to be done except if it not has do be done, and this is it.")]
     value:  Enum = Third
 
     #[Name("<b>Another name<b>")]
