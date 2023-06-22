@@ -8,7 +8,7 @@ struct BlendColor
     destVec4:   Math.Vector4
     factor:     f32
     start:      bool = true
-    speed:      f32 = 5
+    speed:      f32 = 6
 }
 
 impl BlendColor
@@ -36,7 +36,23 @@ impl BlendColor
             return
         }
 
-        curVec4 = Math.Vector4.lerp(startVec4, destVec4, factor)
+        startV := startVec4
+        destV  := destVec4
+        if startV.w == 0
+        {
+            startV.x = destVec4.x
+            startV.y = destVec4.y
+            startV.z = destVec4.z
+        }
+
+        if destV.w == 0
+        {
+            destV.x = startVec4.x
+            destV.y = startVec4.y
+            destV.z = startVec4.z
+        }
+
+        curVec4 = Math.Vector4.lerp(startV, destV, factor)
         factor += wnd.getApp().getDt() * speed
         wnd.invalidate()
     }

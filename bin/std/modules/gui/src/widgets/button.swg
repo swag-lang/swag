@@ -64,8 +64,7 @@ impl Button
             rect := getClientRect()
             if !rect.contains(pos)
             {
-                isPressed = false
-                isIn = false
+                isPressed, isIn = false
                 invalidate()
             }
             else
@@ -92,13 +91,22 @@ impl Button
             }
 
         case MouseReleased:
-            if evt.button == .Left and isPressed
+            if evt.button == .Left
             {
-                releaseMouse()
-                isPressed, isPressing = false
-                if isIn
-                    sigPressed.call(self)
-                invalidate()
+                if isPressing or isPressed
+                {
+                    isPressing = false
+                    releaseMouse()
+                }
+
+                if isPressed
+                {
+                    isPressed, isPressing = false
+                    if isIn
+                        sigPressed.call(self)
+                    invalidate()
+                }
+
                 return isIn
             }
         }

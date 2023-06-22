@@ -62,8 +62,9 @@ struct IconButton
     sigCheckChanged:    SigArray'closure(*Self)
     sigPaintIcon:       closure(*Self, *PaintContext, Math.Rectangle)
 
-    isChecked: bool
-    popup:     *Wnd
+    aniBk:      BlendColor
+    isChecked:  bool
+    popup:      *Wnd
 }
 
 impl IWnd for IconButton
@@ -171,7 +172,8 @@ impl IWnd for IconButton
 
         // Background
         clientRect := getClientRect()
-        theme.drawSubRect(bc.painter, clientRect, subRectBk, colorBk)
+        aniBk.apply(self, colorBk)
+        theme.drawSubRect(bc.painter, clientRect, subRectBk, aniBk.cur())
 
         if isChecked and checkedForm != .None
         {
