@@ -58,6 +58,9 @@ struct EditBox
         minMaxF64: {min: f64, max: f64} = {-Swag.F64.Max, Swag.F64.Max}
     }
 
+    aniBk:      BlendColor
+    aniBorder:  BlendColor
+
     isInvalid:          bool
     isHot:              bool
     isDragging:         bool
@@ -142,11 +145,16 @@ impl IWnd for EditBox
             colorBk = colors.edit_Bk
         }
 
+        aniBk.speed = 4
+        aniBorder.speed = 4
+        aniBk.apply(self, colorBk)
+        aniBorder.apply(self, colorBorder)
+
         clientRect := getClientRect()
         if form != .Transparent
-            theme.drawSubRect(painter, clientRect, subRectBk, colorBk)
+            theme.drawSubRect(painter, clientRect, subRectBk, aniBk.cur())
         if form != .Transparent or isInvalid
-            theme.drawSubRect(painter, clientRect, subRectBorder, colorBorder)
+            theme.drawSubRect(painter, clientRect, subRectBorder, aniBorder.cur())
 
         clientRect = getEditRect()
 

@@ -29,6 +29,10 @@ struct ComboBox
     items:          ArrayPtr'ComboBoxItem
     selectedIdx     = Swag.U32.Max
     maxIconSize:    s32
+
+    aniBk:      BlendColor
+    aniBorder:  BlendColor
+    aniText:    BlendColor
 }
 
 impl IWnd for ComboBox
@@ -84,9 +88,13 @@ impl IWnd for ComboBox
             colorText = colors.comboBox_Text
         }
 
+        aniBk.apply(self, colorBk)
+        aniBorder.apply(self, colorBorder)
+        aniText.apply(self, colorText)
+
         clientRect := getClientRect()
-        theme.drawSubRect(painter, clientRect, subRectBk, colorBk)
-        theme.drawSubRect(painter, clientRect, subRectBorder, colorBorder)
+        theme.drawSubRect(painter, clientRect, subRectBk, aniBk.cur())
+        theme.drawSubRect(painter, clientRect, subRectBorder, aniBorder.cur())
 
         // Item
         if !editBox and selectedIdx < items.count
@@ -98,11 +106,11 @@ impl IWnd for ComboBox
             itemRect.moveLeft(metrics.comboBox_Padding)
 
             if item.icon.isValid()
-                item.icon.paint(painter, itemRect.x, itemRect.vertCenter() - item.icon.sizeY * 0.5, colorText)
+                item.icon.paint(painter, itemRect.x, itemRect.vertCenter() - item.icon.sizeY * 0.5, aniText.cur())
             if maxIconSize
                 itemRect.moveLeft(maxIconSize + metrics.comboBox_IconTextMargin)
 
-            theme.setTextColors(&format, colorText)
+            theme.setTextColors(&format, aniText.cur())
             format.horzAlignment = .Left
             format.vertAlignment = .Center
             format.flags = .Clip
