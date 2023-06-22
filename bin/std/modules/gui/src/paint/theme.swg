@@ -64,7 +64,7 @@ impl Theme
     {
         Memory.delete(res.icons24)
         Memory.delete(res.icons64)
-        Memory.delete(res.spin)        
+        Memory.delete(res.spin)
     }
 
     private mtd setupDefault(renderer: *RenderOgl)

@@ -53,6 +53,11 @@ public struct ScrollWnd
     paddingZ:       f32
     paddingW:       f32
 
+    aniBkBarV:      BlendColor
+    aniBkBarH:      BlendColor
+    aniBoxV:        BlendColor
+    aniBoxH:        BlendColor
+
     grabbingPos:    Math.Point
 }
 
@@ -231,8 +236,12 @@ public impl IWnd for ScrollWnd
             clientRect.width = paddingZ
             if showBarH
                 clientRect.height -= paddingW
-            colBk := isHotBarV ? colors.scrollBar_HotBk : colorBk
-            theme.drawSubRect(bc.painter, clientRect, &rects.scrollBar_BkV, colBk)
+            theme.drawSubRect(bc.painter, clientRect, &rects.scrollBar_BkV, colorBk)
+
+            colBk := colors.scrollBar_HotBk
+            if !isHotBarV colBk.a = 0
+            aniBkBarV.apply(self, colBk)
+            theme.drawSubRect(bc.painter, clientRect, &rects.scrollBar_BkV, aniBkBarV.cur())
 
             if needV
             {
@@ -247,7 +256,8 @@ public impl IWnd for ScrollWnd
                 else
                     colorBox = colors.scrollBar_Box
                 clientRect.inflate(-metrics.scrollBar_BoxPadding)
-                theme.drawSubRect(bc.painter, clientRect, &rects.scrollBar_BoxV, colorBox)
+                aniBoxV.apply(self, colorBox)
+                theme.drawSubRect(bc.painter, clientRect, &rects.scrollBar_BoxV, aniBoxV.cur())
             }
         }
 
@@ -259,8 +269,12 @@ public impl IWnd for ScrollWnd
             clientRect.height = paddingW
             if showBarV
                 clientRect.width -= paddingW
-            colBk := isHotBarH ? colors.scrollBar_HotBk : colorBk
-            theme.drawSubRect(bc.painter, clientRect, &rects.scrollBar_BkH, colBk)
+            theme.drawSubRect(bc.painter, clientRect, &rects.scrollBar_BkH, colorBk)
+
+            colBk := colors.scrollBar_HotBk
+            if !isHotBarH colBk.a = 0
+            aniBkBarH.apply(self, colBk)
+            theme.drawSubRect(bc.painter, clientRect, &rects.scrollBar_BkV, aniBkBarH.cur())
 
             if needH
             {
@@ -275,7 +289,8 @@ public impl IWnd for ScrollWnd
                 else
                     colorBox = colors.scrollBar_Box
                 clientRect.inflate(-metrics.scrollBar_BoxPadding)
-                theme.drawSubRect(bc.painter, clientRect, &rects.scrollBar_BoxH, colorBox)
+                aniBoxH.apply(self, colorBox)
+                theme.drawSubRect(bc.painter, clientRect, &rects.scrollBar_BoxH, aniBoxH.cur())
             }
         }
 

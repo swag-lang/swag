@@ -101,6 +101,18 @@ impl Color
         return result
     }
 
+    // Get the color as a [Math.Vector4]
+    #[Inline]
+    func toVector4(const self) -> Math.Vector4
+    {
+        var result: retval = undefined
+        result.w = self.a / 255.0
+        result.x = self.r / 255.0
+        result.y = self.g / 255.0
+        result.z = self.b / 255.0
+        return result
+    }
+
     // Retrieve all components as floating point values between 0 and 1
     #[Inline]
     func toRgbf(const self) -> {r: f32, g: f32, b: f32}
@@ -182,6 +194,15 @@ impl Color
     {
         var result: retval = undefined
         result.setArgbf(a, r, g, b)
+        return result
+    }
+
+    // Create a new Color with specified values
+    #[Inline]
+    func fromVector4(vec: Math.Vector4)->Color
+    {
+        var result: retval = undefined
+        result.setArgbf(vec.w, vec.x, vec.y, vec.z)
         return result
     }
 

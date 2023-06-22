@@ -275,4 +275,13 @@ impl Vector2
         //if sign < 0 angle = -angle;
         return angle
     }
+
+    // Lerp one vector with another
+    func lerp(src, dst: Vector2, factor: f32)->Vector2
+    {
+        var result: retval = undefined
+        result.x = Math.lerp(src.x, dst.x, factor)
+        result.y = Math.lerp(src.y, dst.y, factor)
+        return result
+    }
 }

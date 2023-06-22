@@ -187,7 +187,7 @@ impl Painter
         {
             lastTexture0Handle = cast(TextureHandle) 0
             lastTexture0Type = .SolidColor
-            discard newCommand(CommandId.ResetTexture0, true)
+            discard newCommand(.ResetTexture0, true)
         }
     }
 
@@ -201,7 +201,7 @@ impl Painter
             return
         }
 
-        cmd := newCommand(CommandId.BindTexture0, true)
+        cmd := newCommand(.BindTexture0, true)
         params := &cmd.texture0
 
         params.boundRect.x = bvMin.x
@@ -247,12 +247,12 @@ impl Painter
         if !hasTextureFont
             return
         hasTextureFont = false
-        discard newCommand(CommandId.ResetTextureFont, true)
+        discard newCommand(.ResetTextureFont, true)
     }
 
     private mtd setTextureFont(font: *Font, atlasIndex: s32)
     {
-        cmd := newCommand(CommandId.BindTextureFont, true)
+        cmd := newCommand(.BindTextureFont, true)
         params := &cmd.textureFont
         params.font = font
         params.atlasIndex = atlasIndex
@@ -271,7 +271,7 @@ impl Painter
 
         if !cmd
         {
-            cmd = newCommand(CommandId.DrawTriangles)
+            cmd = newCommand(.DrawTriangles)
             cmd.drawTriangles.start = cast(u32) vertexBuffer.count
             cmd.drawTriangles.count = 0
         }
@@ -365,7 +365,7 @@ impl Painter
     private mtd updateFont(fontRef: *Font)
     {
         if !fontRef.dirty return
-        cmd := newCommand(CommandId.UpdateFont, false)
+        cmd := newCommand(.UpdateFont, false)
         cmd.font.fontRef = fontRef
     }
 
@@ -381,7 +381,7 @@ impl Painter
         if alpha and curState.blendingMode == .Alpha
         {
             overlapMode = true
-            discard newCommand(CommandId.StartNoOverlap, true)
+            discard newCommand(.StartNoOverlap, true)
         }
     }
 
@@ -390,7 +390,7 @@ impl Painter
         if overlapMode
         {
             overlapMode = false
-            discard newCommand(CommandId.StopNoOverlap, true)
+            discard newCommand(.StopNoOverlap, true)
         }
     }
 
@@ -421,7 +421,7 @@ impl Painter
     // Clear the rendering surface
     mtd clear(color: Color)
     {
-        cmd := newCommand(CommandId.Clear)
+        cmd := newCommand(.Clear)
         cmd.clear.color = color
     }
 
@@ -557,7 +557,7 @@ impl Painter
     mtd setTransform(tr: Transform2)
     {
         curState.transform = tr
-        cmd := newCommand(CommandId.Transform, true)
+        cmd := newCommand(.Transform, true)
         cmd.transform.tr = tr
     }
 
@@ -587,7 +587,7 @@ impl Painter
             return
         curState.clippingRect = rect
         curState.clippingRectOn = true
-        cmd := newCommand(CommandId.SetClippingRect, true)
+        cmd := newCommand(.SetClippingRect, true)
         cmd.clippingRect.rect = curState.clippingRect
     }
 
@@ -598,7 +598,7 @@ impl Painter
         {
             curState.clippingRectOn = false
             curState.stackClipRect.clear()
-            discard newCommand(CommandId.ResetClippingRect, true)
+            discard newCommand(.ResetClippingRect, true)
         }
     }
 
@@ -660,33 +660,33 @@ impl Painter
     // Start painting in the clipping buffer
     mtd startClippingRegion(mode = ClippingMode.Set)
     {
-        cmd := newCommand(CommandId.StartClippingRegion, true)
+        cmd := newCommand(.StartClippingRegion, true)
         cmd.clippingRegion.mode = mode
     }
 
     // Set the clipping region mode
     mtd setClippingRegionMode(mode: ClippingMode)
     {
-        cmd := newCommand(CommandId.SetClippingRegionMode, true)
+        cmd := newCommand(.SetClippingRegionMode, true)
         cmd.clippingRegion.mode = mode
     }
 
     // Stop painting in the clipping buffer. Back to normal.
     mtd endClippingRegion()
     {
-        discard newCommand(CommandId.EndClippingRegion, true)
+        discard newCommand(.EndClippingRegion, true)
     }
 
     // Reset clipping buffer to its default value (no more clipping)
     mtd resetClippingRegion()
     {
-        discard newCommand(CommandId.ResetClippingRegion, true)
+        discard newCommand(.ResetClippingRegion, true)
     }
 
     // Set the current blending mode
     mtd setBlendingMode(mode: BlendingMode)
     {
-        cmd := newCommand(CommandId.SetBlendingMode, true)
+        cmd := newCommand(.SetBlendingMode, true)
         cmd.blendingMode.mode = mode
         curState.blendingMode = mode
     }
@@ -694,7 +694,7 @@ impl Painter
     // Set color mask
     mtd setColorMask(cm: ColorMask)
     {
-        cmd := newCommand(CommandId.ColorMask, true)
+        cmd := newCommand(.ColorMask, true)
         cmd.colorMask = cm
         curState.colorMask = cm
     }
@@ -702,7 +702,7 @@ impl Painter
     // Set color mask
     mtd setColorMask(r, g, b, a: bool)
     {
-        cmd := newCommand(CommandId.ColorMask, true)
+        cmd := newCommand(.ColorMask, true)
         cmd.colorMask.r = r
         cmd.colorMask.g = g
         cmd.colorMask.b = b
@@ -718,7 +718,7 @@ impl Painter
     mtd bindRenderTarget(tgt: *RenderTarget, paintAlpha = false)
     {
         pushState()
-        cmd := newCommand(CommandId.BindRenderTarget, true)
+        cmd := newCommand(.BindRenderTarget, true)
         cmd.renderTgt.tgt = tgt
         cmd.renderTgt.paintAlpha = paintAlpha
         resetState()
@@ -731,7 +731,7 @@ impl Painter
     // Bind a render target
     mtd unbindRenderTarget()
     {
-        discard newCommand(CommandId.UnbindRenderTarget, true)
+        discard newCommand(.UnbindRenderTarget, true)
         popState()
 
         if stackRT.count
@@ -748,21 +748,21 @@ impl Painter
     {
         if !tgt
             return
-        cmd := newCommand(CommandId.ReleaseRenderTarget)
+        cmd := newCommand(.ReleaseRenderTarget)
         cmd.renderTgt.tgt = tgt
     }
 
     // Set the current shader
     mtd setShader(shader: *ShaderBase = null)
     {
-        cmd := newCommand(CommandId.SetShader, true)
+        cmd := newCommand(.SetShader, true)
         cmd.shader.shader = shader;
     }
 
     // Set a shader parameter
     mtd setShaderParam(param: ShaderParamHandle, val: s32)
     {
-        cmd := newCommand(CommandId.SetShaderParam)
+        cmd := newCommand(.SetShaderParam)
         cmd.shaderParam.param = param;
         cmd.shaderParam.type = s32;
         cmd.shaderParam._s32 = val;
@@ -771,7 +771,7 @@ impl Painter
     // Set a shader parameter
     mtd setShaderParam(param: ShaderParamHandle, val: f32)
     {
-        cmd := newCommand(CommandId.SetShaderParam)
+        cmd := newCommand(.SetShaderParam)
         cmd.shaderParam.param = param;
         cmd.shaderParam.type = f32;
         cmd.shaderParam._f32 = val;

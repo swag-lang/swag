@@ -17,6 +17,7 @@ struct SplitterItem
     maxSize:            f32 = 0
     label:              *Label
     tryPreserveSize:    bool
+    aniBar:             BlendColor
 }
 
 struct SplitterCtrl
@@ -165,15 +166,16 @@ impl IWnd for SplitterCtrl
             if isHot or !splitterFlags.has(.HideBars)
             {
                 colorBar := isHot ? colors.splitView_BarHot : colors.splitView_Bar
+                items[idx].aniBar.apply(self, colorBar)
                 if isVertical()
                 {
                     rectBar := isHot ? &rects.splitView_HorzBarHotBk : &rects.splitView_HorzBarBk
-                    theme.drawSubRect(painter, rect, rectBar, colorBar)
+                    theme.drawSubRect(painter, rect, rectBar, items[idx].aniBar.cur())
                 }
                 else
                 {
                     rectBar := isHot ? &rects.splitView_VertBarHotBk : &rects.splitView_VertBarBk
-                    theme.drawSubRect(painter, rect, rectBar, colorBar)
+                    theme.drawSubRect(painter, rect, rectBar, items[idx].aniBar.cur())
                 }
             }
         }
