@@ -5,6 +5,10 @@ struct PopupListCtrlItem
 {
     using base: Item
     isSeparator: bool
+
+    aniSel:     BlendColor{speed: 10}
+    aniText:    BlendColor{speed: 10}
+    aniCheck:   BlendColor{speed: 10}
 }
 
 struct PopupListCtrl
@@ -151,17 +155,25 @@ impl IWnd for PopupListView
             }
 
             // Back selection
+            var colorSel: Color
+            var colorCheck = colors.popupList_CheckMark
             if hotIdx == idx
             {
-                theme.drawSubRect(painter, labelPos, &rects.selectionBox_Bk, colors.popupList_HotBk)
-                colorText = colors.popupList_HotText
+                colorSel   = colors.popupList_HotBk
+                colorText  = colors.popupList_HotText
+                colorCheck = colors.popupList_HotCheckMark
             }
 
+            i.aniSel.apply(self, colorSel)
+            i.aniText.apply(self, colorText)
+            i.aniCheck.apply(self, colorCheck)
+
+            theme.drawSubRect(painter, labelPos, &rects.selectionBox_Bk, i.aniSel.cur())
             labelPos.moveLeft(metrics.popupList_Padding)
 
             // Icon
             if i.icon.isValid()
-                i.icon.paint(painter, labelPos.x, labelPos.vertCenter() - i.icon.sizeY * 0.5, colorText)
+                i.icon.paint(painter, labelPos.x, labelPos.vertCenter() - i.icon.sizeY * 0.5, i.aniText.cur())
             if list.maxIconSize
                 labelPos.moveLeft(list.maxIconSize + metrics.popupList_IconTextMargin)
 
@@ -170,7 +182,7 @@ impl IWnd for PopupListView
                 labelPos.setRight(labelPos.right() - fntHeight - metrics.popupList_IconTextMargin)
 
             // Text
-            theme.setTextColors(&format, colorText)
+            theme.setTextColors(&format, i.aniText.cur())
             format.horzAlignment = .Left
             format.vertAlignment = .Center
             format.flags = .Clip
@@ -184,11 +196,7 @@ impl IWnd for PopupListView
                 labelPos.y = labelPos.vertCenter() - (fntHeight * 0.5)
                 labelPos.width = fntHeight
                 labelPos.height = fntHeight
-                if hotIdx == idx
-                    colorText = colors.popupList_HotCheckMark
-                else
-                    colorText = colors.popupList_CheckMark
-                theme.drawSubRect(painter, labelPos, &rects.btnCheck_CheckedMark, colorText)
+                theme.drawSubRect(painter, labelPos, &rects.btnCheck_CheckedMark, i.aniCheck.cur())
             }
 
             y += list.heightItem

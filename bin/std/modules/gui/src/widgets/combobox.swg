@@ -157,6 +157,7 @@ private impl ComboBox
         popup.minWidthPopup = minWidthPopup
         popup.maxHeightPopup = maxHeightPopup
         popup.simFitY = true
+        popup.selectedIdx = selectedIdx
 
         visit item: items
         {
