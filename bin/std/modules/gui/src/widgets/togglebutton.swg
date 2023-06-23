@@ -5,8 +5,12 @@ struct ToggleButton
 {
     using button: Button
 
-    isToggled:      bool
-    sigChanged:     func(*Self)
+    isToggled:  bool
+    sigChanged: func(*Self)
+
+    aniBk:      BlendColor
+    aniBorder:  BlendColor
+    aniMark:    BlendColor
 }
 
 impl IWnd for ToggleButton
@@ -49,10 +53,14 @@ impl IWnd for ToggleButton
         subRectBorder = &rects.btnToggle_Border
         subRectMark   = &rects.btnToggle_Mark
 
+        aniBk.apply(self, colorBk)
+        aniBorder.apply(self, colorBorder)
+        aniMark.apply(self, colorMark)
+
         // Box
         clientRect := getClientRect()
-        theme.drawSubRect(bc.painter, clientRect, subRectBk, colorBk)
-        theme.drawSubRect(bc.painter, clientRect, subRectBorder, colorBorder)
+        theme.drawSubRect(bc.painter, clientRect, subRectBk, aniBk.cur())
+        theme.drawSubRect(bc.painter, clientRect, subRectBorder, aniBorder.cur())
 
         // Content
         posBox := clientRect
@@ -60,7 +68,7 @@ impl IWnd for ToggleButton
         posBox.width = posBox.height
         if isToggled
             posBox.x = clientRect.right() - posBox.width
-        theme.drawSubRect(bc.painter, posBox, subRectMark, colorMark)
+        theme.drawSubRect(bc.painter, posBox, subRectMark, aniMark.cur())
     }
 
     mtd onMouseEvent(evt: *MouseEvent)
