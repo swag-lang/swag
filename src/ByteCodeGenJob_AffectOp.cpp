@@ -159,6 +159,12 @@ bool ByteCodeGenJob::emitAffectEqual(ByteCodeGenContext* context, RegisterList& 
         return true;
     }
 
+    if (typeInfo->isClosure() && aliasFrom->isPointerNull())
+    {
+        EMIT_INST1(context, ByteCodeOp::SetZeroAtPointer64, r0);
+        return true;
+    }
+
     if (typeInfo->isClosure() && aliasFrom->isClosure())
     {
         // Because we copy the full capture block, but only capture fields are initialized
