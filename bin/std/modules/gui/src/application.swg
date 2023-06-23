@@ -346,12 +346,12 @@ private impl Application
             keybFocusWnd = null
 
         // Be sure there's no timer for that window
-        for i := 0; i < timers.count; i += 1
+        visit t: timers
         {
-            if timers[i].target == wnd
+            if t.target == wnd and !t.toDelete
             {
-                deleteTimer(timers[i])
-                i -= 1
+                timersToDelete.add(t)
+                t.toDelete = true
             }
         }
 
@@ -372,6 +372,9 @@ private impl Application
         duringTimerEvents = true
         visit t: timers
         {
+            if t.toDelete
+                continue
+
             if !t.stopwatch.isStarted
                 t.stopwatch.start()
 
@@ -393,7 +396,11 @@ private impl Application
 
         // Remove some timers
         visit t: timersToDelete
+        {
+            t.toDelete = false
             deleteTimer(t)
+        }
+
         timersToDelete.clear()
     }
 
@@ -717,9 +724,14 @@ impl Application
     mtd deleteTimer(timer: *Timer)
     {
         if duringTimerEvents
+        {
+            Debug.assert(!timer.toDelete)
+            timer.toDelete = true
             timersToDelete.add(timer)
+        }
         else
         {
+            Debug.assert(!timer.toDelete)
             Memory.delete(timer)
             timers.remove(timer)
         }
