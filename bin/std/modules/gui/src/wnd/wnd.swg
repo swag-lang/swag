@@ -70,6 +70,7 @@ interface IWnd
     mtd onApplyStateEvent(evt: *CommandStateEvent)
     mtd onFrameEvent(evt: *FrameEvent)
     mtd onSerializeStateEvent(evt: *SerializeStateEvent)
+    mtd onNotifyEvent(evt: *NotifyEvent)
 }
 
 #[Swag.EnumFlags]
@@ -176,6 +177,8 @@ impl IWnd for Wnd
             itf.onFrameEvent(cast(*FrameEvent) evt)
         case SerializeState:
             itf.onSerializeStateEvent(cast(*SerializeStateEvent) evt)
+        case Notify:
+            itf.onNotifyEvent(cast(*NotifyEvent) evt)
         }
     }
 
@@ -200,6 +203,7 @@ impl IWnd for Wnd
     mtd onCommandEvent(evt: *CommandEvent)              { evt.accepted = false; }
     mtd onComputeStateEvent(evt: *CommandStateEvent)    { evt.accepted = false; }
     mtd onApplyStateEvent(evt: *CommandStateEvent)      { evt.accepted = false; }
+    mtd onNotifyEvent(evt: *NotifyEvent)                { evt.accepted = false; }
 }
 
 impl Wnd
@@ -323,6 +327,12 @@ impl Wnd
 
         computeStyle()
         sendCreateEvent()
+    }
+
+    // Get the owner of the window
+    mtd getOwner()->*Wnd
+    {
+        return owner orelse parent
     }
 
     //////////////////////////////////////////////
@@ -1001,6 +1011,8 @@ impl Wnd
             evt.other = self
             last.sendEvent(&evt)
             last.invalidate()
+
+            last.ownerNotifyEvent(.ChildFocusChanged)
         }
 
         surface.setFocus()
@@ -1009,6 +1021,8 @@ impl Wnd
         surface.app.keybFocusWnd = self
         sendEvent(&evt)
         invalidate()
+
+        ownerNotifyEvent(.ChildFocusChanged)
     }
 
     // Get the window with the keyboard focus
@@ -1044,10 +1058,8 @@ impl Wnd
                 return c.id
         }
 
-        if owner
-            return owner.getKeyShortcut(mdf, key)
-        if parent
-            return parent.getKeyShortcut(mdf, key)
+        p := getOwner()
+        if p return p.getKeyShortcut(mdf, key)
         return null
     }
 
@@ -1064,10 +1076,8 @@ impl Wnd
             }
         }
 
-        if owner
-            return owner.getKeyShortcutNameFor(wndId)
-        if parent
-            return parent.getKeyShortcutNameFor(wndId)
+        p := getOwner()
+        if p return p.getKeyShortcutNameFor(wndId)
         return result
     }
 
@@ -1147,6 +1157,22 @@ impl Wnd
             eat = hookOnEvent(self, evt)
         if !eat
             itf.onEvent(evt)
+    }
+
+    // Send a notification event
+    mtd notifyEvent(kind: NotifyEvent.Kind)
+    {
+        ntfy := NotifyEvent{}
+        ntfy.ntfyKind = kind
+        sendEvent(&ntfy)
+    }
+
+    // Send a notification event
+    mtd ownerNotifyEvent(kind: NotifyEvent.Kind)
+    {
+        p := getOwner()
+        if !p return
+        p.notifyEvent(kind)
     }
 
     //////////////////////////////////////////////

@@ -37,6 +37,7 @@ enum EventKind
     Hide
     Invalidate
     SysUser
+    Notify
 }
 
 struct Event
@@ -212,4 +213,17 @@ struct SerializeStateEvent
 {
     using base: Event{kind: EventKind.SerializeState}
     ser: *Serialization.Serializer
+}
+
+struct NotifyEvent
+{
+    using base: Event{kind: EventKind.Notify}
+
+    enum Kind
+    {
+        ChildFocusChanged
+    }
+
+    ntfyKind:   Kind = undefined
+    from:       *Wnd
 }

@@ -39,12 +39,16 @@ impl IWnd for PopupListView
 {
     mtd onFocusEvent(evt: *FocusEvent)
     {
-        if evt.kind == .KillFocus and evt.other != parent
+        switch evt.kind
         {
-            if list.sigSelected
-                list.sigSelected(list, Swag.U32.Max)
-            else
-                list.destroy()
+        case KillFocus:
+            if evt.other != parent
+            {
+                if list.sigSelected
+                    list.sigSelected(list, Swag.U32.Max)
+                else
+                    list.destroy()
+            }
         }
     }
 

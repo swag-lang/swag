@@ -49,9 +49,39 @@ struct PropertyListItem
 
 private impl PropertyList
 {
+    func onEvent(wnd: *Wnd, evt: *Event)->bool
+    {
+        switch evt.kind
+        {
+        case Notify:
+            ntfyEvt := cast(*NotifyEvent) evt
+            if ntfyEvt.ntfyKind == .ChildFocusChanged
+            {
+                wnd.invalidate()
+                return true
+            }
+
+        case PrePaint:
+            paintEvt := cast(*PaintEvent) evt
+            painter  := paintEvt.bc.painter
+            if wnd.isParentOf(wnd.getApp().keybFocusWnd)
+            {
+                r := wnd.getClientRect()
+                r.moveTop(25)
+                r.inflate(10)
+                painter.fillRoundRect(r, 4, 4, Color.fromArgb(0x10888888))
+            }
+        }
+
+        return false
+    }
+
     mtd addItem(f: Swag.TypeValue, ptrData: *u8, canDesc = true)->*PropertyListItem
     {
         line := StackLayoutCtrl.create(edView, .TopAutoSize)
+        line.hookOnEvent = &onEvent
+        line.margin.x, line.margin.z = 15
+        line.wndFlags.set(.PreChildsPaint)
         item := items.addNewPtr()
         item.line = line
         item.typeValue = f
@@ -428,7 +458,7 @@ impl PropertyList
             .scrollWnd = .createView'ScrollWnd()
             .scrollWnd.dockStyle = .Center
             .scrollWnd.focusStrategy = .None
-            .scrollWnd.padding = 10
+            .scrollWnd.padding = 0
             .scrollWnd.scrollWndFlags |= .TransparentBar
             .edView = .scrollWnd.createView'PropertyListView()
             .edView.ed = ed

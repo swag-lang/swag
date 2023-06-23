@@ -111,19 +111,19 @@ impl IWnd for RichEditView
 
     mtd onFocusEvent(evt: *FocusEvent)
     {
-        if evt.kind == .SetFocus
+        switch evt.kind
         {
+        case SetFocus:
             timerCaret = surface.app.addTimer(500'ms, self)
             visibleCaret = true
-        }
-        else
-        {
+            invalidate()
+
+        case KillFocus:
             surface.app.deleteTimer(timerCaret)
             timerCaret = null
             visibleCaret = false
+            invalidate()
         }
-
-        invalidate()
     }
 
     mtd onTimerEvent(evt: *TimerEvent)

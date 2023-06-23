@@ -77,21 +77,21 @@ impl IWnd for EditBox
 {
     mtd onFocusEvent(evt: *FocusEvent)
     {
-        if evt.kind == .SetFocus
+        switch evt.kind
         {
+        case SetFocus:
             timerCaret = surface.app.addTimer(500'ms, self)
             visibleCaret = true
             computeCaretPos()
-        }
-        else
-        {
+            invalidate()
+
+        case KillFocus:
             sigLoseFocus.call(self)
             surface.app.deleteTimer(timerCaret)
             timerCaret = null
             visibleCaret = false
+            invalidate()
         }
-
-        invalidate()
     }
 
     mtd onPaintEvent(evt: *PaintEvent)
