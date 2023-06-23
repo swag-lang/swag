@@ -601,7 +601,7 @@ bool SemanticJob::setSymbolMatchCallParams(SemanticContext* context, AstIdentifi
                 break;
             }
 
-            auto typeParam = TypeManager::concretePtrRef(funcParam->typeInfo);
+            auto typeParam = TypeManager::concretePtrRefType(funcParam->typeInfo);
             if (!typeParam->isStruct() &&
                 !typeParam->isListTuple() &&
                 !typeParam->isListArray() &&
