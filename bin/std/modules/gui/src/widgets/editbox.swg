@@ -58,8 +58,8 @@ struct EditBox
         minMaxF64: {min: f64, max: f64} = {-Swag.F64.Max, Swag.F64.Max}
     }
 
-    aniBk:      BlendColor
-    aniBorder:  BlendColor
+    aniBk:      BlendColor{speed: 4}
+    aniBorder:  BlendColor{speed: 4}
 
     isInvalid:          bool
     isHot:              bool
@@ -145,8 +145,6 @@ impl IWnd for EditBox
             colorBk = colors.edit_Bk
         }
 
-        aniBk.speed = 4
-        aniBorder.speed = 4
         aniBk.apply(self, colorBk)
         aniBorder.apply(self, colorBorder)
 

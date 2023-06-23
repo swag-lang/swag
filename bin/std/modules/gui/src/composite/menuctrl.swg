@@ -25,6 +25,10 @@ public struct PopupMenuItem
     disabled:   bool
     checked:    bool
     hidden:     bool
+
+    aniSel:         BlendColor{speed: 10}
+    aniText:        BlendColor{speed: 10}
+    aniRightText:   BlendColor{speed: 10}
 }
 
 public struct MenuCtrl
@@ -92,29 +96,32 @@ public impl IWnd for MenuCtrl
             colorRightText = i.disabled ? colors.popupItem_DisabledText : colors.popupItem_RightText
 
             // Back selection
-            if !i.disabled
+            var colorSel: Color
+            if !i.disabled and (hotIdx == idx or selectedIdx == idx)
             {
-                if hotIdx == idx or selectedIdx == idx
-                {
-                    backPos := labelPos
-                    backPos.x -= metrics.menuBar_SpaceBetween * 0.5
-                    backPos.width += metrics.menuBar_SpaceBetween
-                    theme.drawSubRect(painter, backPos, &rects.menuBar_SelectedBk, colors.menuBar_SelectedBk)
-                    colorText = colors.popupItem_HotText
-                    colorRightText = colors.popupItem_HotRightText
-                }
+                colorSel = colors.menuBar_SelectedBk
+                colorText = colors.popupItem_HotText
+                colorRightText = colors.popupItem_HotRightText
             }
+
+            i.aniSel.apply(self, colorSel)
+            i.aniText.apply(self, colorText)
+
+            backPos := labelPos
+            backPos.x -= metrics.menuBar_SpaceBetween * 0.5
+            backPos.width += metrics.menuBar_SpaceBetween
+            theme.drawSubRect(painter, backPos, &rects.menuBar_SelectedBk, i.aniSel.cur())
 
             // Icon
             if i.icon.isValid()
             {
                 i.icon.sizeX = i.size
                 i.icon.sizeY = i.size
-                i.icon.paint(painter, labelPos.x, labelPos.vertCenter() - i.icon.sizeY * 0.5, colorText)
+                i.icon.paint(painter, labelPos.x, labelPos.vertCenter() - i.icon.sizeY * 0.5, i.aniText.cur())
             }
 
             // Text
-            theme.setTextColors(&format, colorText)
+            theme.setTextColors(&format, i.aniText.cur())
             format.horzAlignment = .Left
             format.vertAlignment = .Center
             format.flags = .Clip
@@ -176,16 +183,23 @@ public impl IWnd for MenuCtrl
             colorRightText = i.disabled ? colors.popupItem_DisabledText : colors.popupItem_RightText
 
             // Back selection
+            var colorSel: Color
             if hotIdx == idx and !i.disabled
             {
-                backPos := labelPos
-                backPos.y -= metrics.menuPopup_SpaceLines * 0.5
-                backPos.height += metrics.menuPopup_SpaceLines
-                backPos.inflate(paddingSel, 0)
-                theme.drawSubRect(painter, backPos, &rects.menuPopup_HotBk, colors.popupItem_HotBk)
+                colorSel = colors.popupItem_HotBk
                 colorText = colors.popupItem_HotText
                 colorRightText = colors.popupItem_HotRightText
             }
+
+            i.aniSel.apply(self, colorSel)
+            i.aniText.apply(self, colorText)
+            i.aniRightText.apply(self, colorRightText)
+
+            backPos := labelPos
+            backPos.y -= metrics.menuPopup_SpaceLines * 0.5
+            backPos.height += metrics.menuPopup_SpaceLines
+            backPos.inflate(paddingSel, 0)
+            theme.drawSubRect(painter, backPos, &rects.menuPopup_HotBk, i.aniSel.cur())
 
             // Icon
             if i.checked
@@ -193,13 +207,13 @@ public impl IWnd for MenuCtrl
                 checkPos := labelPos
                 checkPos.y = labelPos.vertCenter() - i.size * 0.5
                 checkPos.width, checkPos.height = i.size
-                theme.drawSubRect(painter, checkPos, &rects.btnCheck_CheckedMark, colorText)
+                theme.drawSubRect(painter, checkPos, &rects.btnCheck_CheckedMark, i.aniText.cur())
             }
             elif i.icon.isValid()
             {
                 i.icon.sizeX = i.size
                 i.icon.sizeY = i.size
-                i.icon.paint(painter, labelPos.x, labelPos.vertCenter() - i.icon.sizeY * 0.5, colorText)
+                i.icon.paint(painter, labelPos.x, labelPos.vertCenter() - i.icon.sizeY * 0.5, i.aniText.cur())
             }
 
             labelPos.moveLeft(metrics.menuPopup_IconTextMargin + i.size)
@@ -207,7 +221,7 @@ public impl IWnd for MenuCtrl
 
             // Text
             var format: RichStringFormat
-            theme.setTextColors(&format, colorText)
+            theme.setTextColors(&format, i.aniText.cur())
             format.horzAlignment = .Left
             format.vertAlignment = .Center
             format.flags = .Clip
@@ -217,7 +231,7 @@ public impl IWnd for MenuCtrl
             // Text right
             if !menuCtrlFlags.has(.NoKeyShortcuts) and !i.rightName.isEmpty()
             {
-                format.palette[0] = colorRightText
+                format.palette[0] = i.aniRightText.cur()
                 format.horzAlignment = .Right
                 format.vertAlignment = .Center
                 format.flags = .Clip
