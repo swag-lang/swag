@@ -2,7 +2,7 @@
 using Core, Pixel
 
 alias WndId = string
-alias HookEvent = func(*Wnd, *Event)->bool
+alias HookEvent = closure(*Wnd, *Event)->bool
 
 enum DockStyle
 {

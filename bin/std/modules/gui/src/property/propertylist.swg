@@ -45,11 +45,14 @@ struct PropertyListItem
     comboBox:   *ComboBox
 
     onResize:   SigArray'closure(*Self)
+
+    aniFocusBk:     BlendColor
+    aniFocusBorder: BlendColor
 }
 
 private impl PropertyList
 {
-    func onEvent(wnd: *Wnd, evt: *Event)->bool
+    func onEvent(list: *PropertyList, item: *PropertyListItem, wnd: *Wnd, evt: *Event)->bool
     {
         switch evt.kind
         {
@@ -64,13 +67,23 @@ private impl PropertyList
         case PrePaint:
             paintEvt := cast(*PaintEvent) evt
             painter  := paintEvt.bc.painter
+            colors   := wnd.getThemeColors()
+
+            var colBk, colBorder: Color
             if wnd.isParentOf(wnd.getApp().keybFocusWnd)
             {
-                r := wnd.getClientRect()
-                r.moveTop(25)
-                r.inflate(10)
-                painter.fillRoundRect(r, 4, 4, Color.fromArgb(0x10888888))
+                colBk = colors.propList_focusBk
+                colBorder = colors.propList_focusBorder
             }
+
+            item.aniFocusBk.apply(wnd, colBk)
+            item.aniFocusBorder.apply(wnd, colBorder)
+
+            r := wnd.getClientRect()
+            r.moveTop(acast list.nameMarginBefore)
+            r.inflate(10)
+            painter.fillRoundRect(r, 4, 4, item.aniFocusBk.cur())
+            painter.drawRoundRect(r, 4, 4, item.aniFocusBorder.cur())
         }
 
         return false
@@ -79,11 +92,11 @@ private impl PropertyList
     mtd addItem(f: Swag.TypeValue, ptrData: *u8, canDesc = true)->*PropertyListItem
     {
         line := StackLayoutCtrl.create(edView, .TopAutoSize)
-        line.hookOnEvent = &onEvent
         line.margin.x, line.margin.z = 15
         line.wndFlags.set(.PreChildsPaint)
         item := items.addNewPtr()
         item.line = line
+        line.hookOnEvent = closure|self, item|(wnd, evt) { return onEvent(self, item, wnd, evt); }
         item.typeValue = f
         item.ptrData = ptrData
 
