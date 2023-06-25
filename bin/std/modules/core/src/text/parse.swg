@@ -449,6 +449,7 @@ func parseString(str: string) -> {value: String, eat: u32} throw
     return result
 }
 
+// Transform a string to an 's8'
 func toS8(str: string)->s8 throw
 {
     (v, eat, ovf) := parseS8(str)
@@ -457,6 +458,7 @@ func toS8(str: string)->s8 throw
     return v
 }
 
+// Transform a string to an 's16'
 func toS16(str: string)->s16 throw
 {
     (v, eat, ovf) := parseS16(str)
@@ -465,6 +467,7 @@ func toS16(str: string)->s16 throw
     return v
 }
 
+// Transform a string to an 's32'
 func toS32(str: string)->s32 throw
 {
     (v, eat, ovf) := parseS32(str)
@@ -473,6 +476,7 @@ func toS32(str: string)->s32 throw
     return v
 }
 
+// Transform a string to an 's64'
 func toS64(str: string)->s64 throw
 {
     (v, eat, ovf) := parseS64(str)
@@ -481,6 +485,7 @@ func toS64(str: string)->s64 throw
     return v
 }
 
+// Transform a string to an 'u8'
 func toU8(str: string)->u8 throw
 {
     (v, eat, ovf) := parseU8(str)
@@ -489,6 +494,7 @@ func toU8(str: string)->u8 throw
     return v
 }
 
+// Transform a string to an 'u16'
 func toU16(str: string)->u16 throw
 {
     (v, eat, ovf) := parseU16(str)
@@ -497,6 +503,7 @@ func toU16(str: string)->u16 throw
     return v
 }
 
+// Transform a string to an 'u32'
 func toU32(str: string)->u32 throw
 {
     (v, eat, ovf) := parseU32(str)
@@ -505,6 +512,7 @@ func toU32(str: string)->u32 throw
     return v
 }
 
+// Transform a string to an 'u64'
 func toU64(str: string)->u64 throw
 {
     (v, eat, ovf) := parseU64(str)
@@ -513,6 +521,7 @@ func toU64(str: string)->u64 throw
     return v
 }
 
+// Transform a string to an 'f32'
 func toF32(str: string)->f32 throw
 {
     (v, eat, ovf) := parseF32(str)
@@ -521,10 +530,28 @@ func toF32(str: string)->f32 throw
     return v
 }
 
+// Transform a string to an 'f64'
 func toF64(str: string)->f64 throw
 {
     (v, eat, ovf) := parseF64(str)
     if ovf throw ParseErrorOverflow
     if eat != @countof(str) throw ParseErrorInvalid
     return v
+}
+
+// Transform a string to an integer or float
+func(T) toNum(str: string)->T throw
+{
+    #if   T == u8  return toU8(str)
+    #elif T == u16 return toU16(str)
+    #elif T == u32 return toU32(str)
+    #elif T == u64 return toU64(str)
+    #elif T == s8  return toS8(str)
+    #elif T == s16 return toS16(str)
+    #elif T == s32 return toS32(str)
+    #elif T == s64 return toS64(str)
+    #elif T == f32 return toF32(str)
+    #elif T == f64 return toF64(str)
+    #else #error "invalid type"
+    return 0
 }

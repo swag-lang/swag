@@ -31,6 +31,8 @@ struct PropertyList
     maxSizeCombo:           s32 = 200
     maxSizeEditValue:       s32 = 200
 
+    sigChanged: SigArray'closure(*Self)
+
     font0:        	FontFamily
 	font1:        	FontFamily
 	font2:        	FontFamily
@@ -101,55 +103,9 @@ private impl PropertyList
         return false
     }
 
-    mtd addItem(f: Swag.TypeValue, ptrData: *u8, canDesc = true)->*PropertyListItem
-    {
-        line := StackLayoutCtrl.create(edView, .TopAutoSize)
-        line.margin.x, line.margin.z = 15
-        line.wndFlags.set(.PreChildsPaint)
-        item := items.addNewPtr()
-        item.line = line
-        line.hookOnEvent = closure|self, item|(wnd, evt) { return onEvent(self, item, wnd, evt); }
-        item.typeValue = f
-        item.ptrData = ptrData
-
-        // Name
-        var dispName: String
-        attrName := Reflection.getAttributeValue(f, PropertyList.Name, "name")
-        if attrName != null
-            dispName = cast(string) attrName
-        else
-            dispName = Format.toString("<b>%<b>", f.name)
-
-        with label := Label.create(line, dispName, {0, 0, position.width, nameHeight})
-        {
-            .labelFlags |= .WordWrap | .AutoHeight
-            .horzAlignmentText = .Justify
-            .margin.y = nameMarginBefore
-            .margin.w = nameMarginAfter
-        }
-
-        item.label = label
-        item.filter = dispName
-
-        // Description
-        dispDesc := Reflection.getAttributeValue(f, PropertyList.Description, "desc")
-        if dispDesc != null
-        {
-            item.filter += " "
-            item.filter += cast(string) dispDesc
-            if canDesc
-            {
-                labelDesc := Label.create(line, "", {0, 0, position.width, 0})
-                labelDesc.labelFlags |= .WordWrap | .AutoHeight
-                labelDesc.horzAlignmentText = .Justify
-                labelDesc.setText(dispDesc)
-                labelDesc.margin.w = descMarginAfter
-                item.labelDesc = labelDesc
-            }
-        }
-
-        return item
-    }
+    ////////////////////////////
+    // Refresh
+    ////////////////////////////
 
     func refreshEnumFlags(using item: *PropertyListItem)
     {
@@ -205,6 +161,203 @@ private impl PropertyList
         }
 
         comboBox.selectItem(acast idxSel)
+    }
+
+    func refreshNative(item: *PropertyListItem)
+    {
+        nativeType := cast(const *Swag.TypeInfoNative) item.typeValue.pointedType
+        ptrData    := item.ptrData
+
+        if item.sliderBox
+        {
+            #[Swag.Mixin]
+            func(T) setEd()
+            {
+                p := cast(*T) ptrData
+                item.sliderBox.slider.setValue(acast (dref p))
+            }
+
+            switch nativeType.nativeKind
+            {
+            case U8:    setEd'u8()
+            case U16:   setEd'u16()
+            case U32:   setEd'u32()
+            case U64:   setEd'u64()
+            case S8:    setEd's8()
+            case S16:   setEd's16()
+            case S32:   setEd's32()
+            case S64:   setEd's64()
+            case F32:   setEd'f32()
+            case F64:   setEd'f64()
+            }
+        }
+        elif item.editBox
+        {
+            #[Swag.Mixin]
+            func(T) setEd()
+            {
+                p := cast(*T) ptrData
+                item.editBox.setText(Format.toString("%", dref p))
+            }
+
+            switch nativeType.nativeKind
+            {
+            case U8:    setEd'u8()
+            case U16:   setEd'u16()
+            case U32:   setEd'u32()
+            case U64:   setEd'u64()
+            case S8:    setEd's8()
+            case S16:   setEd's16()
+            case S32:   setEd's32()
+            case S64:   setEd's64()
+            case F32:   setEd'f32()
+            case F64:   setEd'f64()
+            }
+        }
+    }
+
+    func refreshItem(item: *PropertyListItem)
+    {
+        if item.typeValue.pointedType == null
+            return
+        if Reflection.isEnum(item.typeValue.pointedType)
+        {
+            if Reflection.hasAttribute(item.typeValue, Swag.EnumFlags)
+            {
+                if item.checkBox
+                {
+                    refreshEnumFlags(item)
+                    item.checkBox.invalidate()
+                }
+            }
+            else
+            {
+                if item.comboBox
+                {
+                    refreshEnum(item)
+                    item.comboBox.invalidate()
+                }
+            }
+        }
+        elif item.typeValue.pointedType == Core.String
+        {
+            if item.editBox
+            {
+                item.editBox.setText(dref cast(*String) item.ptrData)
+            }
+        }
+        elif Reflection.isBool(item.typeValue.pointedType)
+        {
+            if item.checkBox
+            {
+                item.checkBox.checked = dref cast(*bool) item.ptrData ? .Checked : .UnChecked
+                item.checkBox.invalidate()
+            }
+        }
+        elif Reflection.isInteger(item.typeValue.pointedType) or Reflection.isFloat(item.typeValue.pointedType)
+        {
+            if item.editBox
+            {
+                refreshNative(item)
+                item.editBox.invalidate()
+            }
+            elif item.sliderBox
+            {
+                refreshNative(item)
+                item.sliderBox.invalidate()
+            }
+        }
+    }
+
+    ////////////////////////////
+    // Validate
+    ////////////////////////////
+
+    mtd validateNative(item: *PropertyListItem)
+    {
+        nativeType := cast(const *Swag.TypeInfoNative) item.typeValue.pointedType
+        ptrData    := item.ptrData
+
+        if item.editBox
+        {
+            #[Swag.Mixin]
+            func(T) setEd()
+            {
+                p := cast(*T) ptrData
+                dref p = catch StrConv.toNum'T(txt)
+            }
+
+            txt := item.editBox.getText()
+            switch nativeType.nativeKind
+            {
+            case U8:    setEd'u8()
+            case U16:   setEd'u16()
+            case U32:   setEd'u32()
+            case U64:   setEd'u64()
+            case S8:    setEd's8()
+            case S16:   setEd's16()
+            case S32:   setEd's32()
+            case S64:   setEd's64()
+            case F32:   setEd'f32()
+            case F64:   setEd'f64()
+            }
+        }
+
+        sigChanged.call(self)
+    }
+
+    ////////////////////////////
+    // Add
+    ////////////////////////////
+
+    mtd addItem(f: Swag.TypeValue, ptrData: *u8, canDesc = true)->*PropertyListItem
+    {
+        line := StackLayoutCtrl.create(edView, .TopAutoSize)
+        line.margin.x, line.margin.z = 15
+        line.wndFlags.set(.PreChildsPaint)
+        item := items.addNewPtr()
+        item.line = line
+        line.hookOnEvent = closure|self, item|(wnd, evt) { return onEvent(self, item, wnd, evt); }
+        item.typeValue = f
+        item.ptrData = ptrData
+
+        // Name
+        var dispName: String
+        attrName := Reflection.getAttributeValue(f, PropertyList.Name, "name")
+        if attrName != null
+            dispName = cast(string) attrName
+        else
+            dispName = Format.toString("<b>%<b>", f.name)
+
+        with label := Label.create(line, dispName, {0, 0, position.width, nameHeight})
+        {
+            .labelFlags |= .WordWrap | .AutoHeight
+            .horzAlignmentText = .Justify
+            .margin.y = nameMarginBefore
+            .margin.w = nameMarginAfter
+        }
+
+        item.label = label
+        item.filter = dispName
+
+        // Description
+        dispDesc := Reflection.getAttributeValue(f, PropertyList.Description, "desc")
+        if dispDesc != null
+        {
+            item.filter += " "
+            item.filter += cast(string) dispDesc
+            if canDesc
+            {
+                labelDesc := Label.create(line, "", {0, 0, position.width, 0})
+                labelDesc.labelFlags |= .WordWrap | .AutoHeight
+                labelDesc.horzAlignmentText = .Justify
+                labelDesc.setText(dispDesc)
+                labelDesc.margin.w = descMarginAfter
+                item.labelDesc = labelDesc
+            }
+        }
+
+        return item
     }
 
     mtd addEnum(f: Swag.TypeValue, typeEnum: const *Swag.TypeInfoEnum, ptrData: *u8)
@@ -297,59 +450,6 @@ private impl PropertyList
             ed.checked = .Checked
     }
 
-    func refreshNative(item: *PropertyListItem)
-    {
-        nativeType := cast(const *Swag.TypeInfoNative) item.typeValue.pointedType
-        ptrData    := item.ptrData
-
-        if item.sliderBox
-        {
-            #[Swag.Mixin]
-            func(T) setEd()
-            {
-                p := cast(*T) ptrData
-                item.sliderBox.slider.setValue(acast (dref p))
-            }
-
-            switch nativeType.nativeKind
-            {
-            case U8:    setEd'u8()
-            case U16:   setEd'u16()
-            case U32:   setEd'u32()
-            case U64:   setEd'u64()
-            case S8:    setEd's8()
-            case S16:   setEd's16()
-            case S32:   setEd's32()
-            case S64:   setEd's64()
-            case F32:   setEd'f32()
-            case F64:   setEd'f64()
-            }
-        }
-        elif item.editBox
-        {
-            #[Swag.Mixin]
-            func(T) setEd()
-            {
-                p := cast(*T) ptrData
-                item.editBox.setText(Format.toString("%", dref p))
-            }
-
-            switch nativeType.nativeKind
-            {
-            case U8:    setEd'u8()
-            case U16:   setEd'u16()
-            case U32:   setEd'u32()
-            case U64:   setEd'u64()
-            case S8:    setEd's8()
-            case S16:   setEd's16()
-            case S32:   setEd's32()
-            case S64:   setEd's64()
-            case F32:   setEd'f32()
-            case F64:   setEd'f64()
-            }
-        }
-    }
-
     mtd addNative(f: Swag.TypeValue, nativeType: const *Swag.TypeInfoNative, ptrData: *u8)
     {
         item := addItem(f, ptrData)
@@ -366,12 +466,9 @@ private impl PropertyList
 
             switch nativeType.nativeKind
             {
-            case U8, U16, U32, U64:
-                slider.setMinMaxU64(acast minV, acast maxV)
-            case S8, S16, S32, S64:
-                slider.setMinMaxS64(acast minV, acast maxV)
-            case F32, F64:
-                slider.setMinMaxF32(minV, maxV)
+            case U8, U16, U32, U64: slider.setMinMaxU64(acast minV, acast maxV)
+            case S8, S16, S32, S64: slider.setMinMaxS64(acast minV, acast maxV)
+            case F32, F64:          slider.setMinMaxF32(minV, maxV)
             }
         }
         else
@@ -383,77 +480,24 @@ private impl PropertyList
 
             switch nativeType.nativeKind
             {
-            case U8:
-                ed.setInputU64(acast Swag.U8.Min, acast Swag.U8.Max)
-            case U16:
-                ed.setInputU64(acast Swag.U16.Min, acast Swag.U16.Max)
-            case U32:
-                ed.setInputU64(acast Swag.U32.Min, acast Swag.U32.Max)
-            case U64:
-                ed.setInputU64(acast Swag.U64.Min, acast Swag.U64.Max)
-            case S8:
-                ed.setInputS64(acast Swag.S8.Min, acast Swag.S8.Max)
-            case S16:
-                ed.setInputS64(acast Swag.S16.Min, acast Swag.S16.Max)
-            case S32:
-                ed.setInputS64(acast Swag.S32.Min, acast Swag.S32.Max)
-            case S64:
-                ed.setInputS64(acast Swag.S64.Min, acast Swag.S64.Max)
-            case F32, F64:
-                ed.setInputF64()
+            case U8:        ed.setInputU64(acast Swag.U8.Min, acast Swag.U8.Max)
+            case U16:       ed.setInputU64(acast Swag.U16.Min, acast Swag.U16.Max)
+            case U32:       ed.setInputU64(acast Swag.U32.Min, acast Swag.U32.Max)
+            case U64:       ed.setInputU64(acast Swag.U64.Min, acast Swag.U64.Max)
+            case S8:        ed.setInputS64(acast Swag.S8.Min, acast Swag.S8.Max)
+            case S16:       ed.setInputS64(acast Swag.S16.Min, acast Swag.S16.Max)
+            case S32:       ed.setInputS64(acast Swag.S32.Min, acast Swag.S32.Max)
+            case S64:       ed.setInputS64(acast Swag.S64.Min, acast Swag.S64.Max)
+            case F32, F64:  ed.setInputF64()
             }
         }
 
         refreshNative(item)
-    }
 
-    func refreshItem(using item: *PropertyListItem)
-    {
-        if Reflection.isEnum(typeValue.pointedType)
+        if item.editBox
         {
-            if Reflection.hasAttribute(typeValue, Swag.EnumFlags)
-            {
-                if checkBox
-                {
-                    refreshEnumFlags(item)
-                    checkBox.invalidate()
-                }
-            }
-            else
-            {
-                if comboBox
-                {
-                    refreshEnum(item)
-                    comboBox.invalidate()
-                }
-            }
-        }
-        elif typeValue.pointedType == Core.String
-        {
-            if editBox
-            {
-                editBox.setText(dref cast(*String) ptrData)
-            }
-        }
-        elif Reflection.isBool(typeValue.pointedType)
-        {
-            if checkBox
-            {
-                checkBox.checked = dref cast(*bool) ptrData ? .Checked : .UnChecked
-                checkBox.invalidate()
-            }
-        }
-        elif Reflection.isInteger(typeValue.pointedType) or Reflection.isFloat(typeValue.pointedType)
-        {
-            if editBox
-            {
-                refreshNative(item)
-                editBox.invalidate()
-            }
-            elif sliderBox
-            {
-                refreshNative(item)
-                sliderBox.invalidate()
+            item.editBox.sigLoseFocus += closure|self, item|(ed) {
+                self.validateNative(item)
             }
         }
     }

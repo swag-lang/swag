@@ -58,17 +58,14 @@ func createView7(_tabView: *Tab, view: *Wnd)
     aa.str = "String content"
     lt.addItem(aa)
 
-    {
-        ed := EditBox.create(view, "", {0, 0, 200})
-        ed.setNote("Search")
-        ed.sigChanged += closure|lt|(ed) {
-            lt.setStringFilter(ed.text)
-        }
+    lt1 := PropertyListCtrl.create(view, {500, 10, 500, 600})
+    lt1.addItem(aa)
+
+    lt.sigChanged += closure|lt1|(lt) {
+        lt1.prop.refresh()
     }
 
-    {
-        ed := PropertyListCtrl.create(view, {500, 10, 500, 600})
-        ed.addItem(aa)
+    lt1.prop.sigChanged += closure|lt|(lt1) {
+        lt.refresh()
     }
-
 }

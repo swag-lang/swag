@@ -859,6 +859,12 @@ impl EditBox
         notifyChanged()
     }
 
+    // Get the associated text
+    mtd getText()->string
+    {
+        return text.toString()
+    }
+
     // Editbox will edit signed integers
     mtd setInputS64(min = Swag.S64.Min, max = Swag.S64.Max)
     {
