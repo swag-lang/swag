@@ -90,8 +90,11 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
 
     // Get parameters of destination symbol
     AstFuncDecl* destFuncDecl = nullptr;
+    AstAttrDecl* destAttrDecl = nullptr;
     if (overload->node->kind == AstNodeKind::FuncDecl)
         destFuncDecl = CastAst<AstFuncDecl>(overload->node, AstNodeKind::FuncDecl);
+    else if (overload->node->kind == AstNodeKind::AttrDecl)
+        destAttrDecl = CastAst<AstAttrDecl>(overload->node, AstNodeKind::AttrDecl);
 
     // In case it's generic, and we have real types
     bi.badSignatureRequestedType = Generic::doTypeSubstitution(oneTry.symMatchContext.genericReplaceTypes, bi.badSignatureRequestedType);
@@ -208,6 +211,12 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
             auto miss  = destFuncDecl->parameters->childs[match.cptResolved];
             diag->hint = Fmt(Hnt(Hnt0083), miss->token.ctext(), miss->typeInfo->getDisplayNameC());
         }
+        else if (destAttrDecl)
+        {
+            diag       = new Diagnostic{callParameters, Fmt(Err(Err0016), refNiceName.c_str())};
+            auto miss  = destAttrDecl->parameters->childs[match.cptResolved];
+            diag->hint = Fmt(Hnt(Hnt0083), miss->token.ctext(), miss->typeInfo->getDisplayNameC());
+        }
         else
         {
             diag = new Diagnostic{callParameters, Fmt(Err(Err0016), refNiceName.c_str())};
@@ -218,6 +227,12 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
         if (destFuncDecl && callParameters)
         {
             auto note  = Diagnostic::note(destFuncDecl->parameters->childs[match.cptResolved], Fmt(Nte(Nte0008), refNiceName.c_str()));
+            note->hint = Hnt(Hnt0071);
+            result1.push_back(note);
+        }
+        else if (destAttrDecl && callParameters)
+        {
+            auto note  = Diagnostic::note(destAttrDecl->parameters->childs[match.cptResolved], Fmt(Nte(Nte0008), refNiceName.c_str()));
             note->hint = Hnt(Hnt0071);
             result1.push_back(note);
         }
@@ -335,7 +350,12 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
 
     case MatchResult::BadSignature:
     {
-        auto paramNode = destFuncDecl ? destFuncDecl->parameters->childs[bi.badSignatureParameterIdx] : nullptr;
+        AstNode* paramNode = nullptr;
+
+        if (destFuncDecl)
+            paramNode = destFuncDecl->parameters->childs[bi.badSignatureParameterIdx];
+        else if (destAttrDecl)
+            paramNode = destAttrDecl->parameters->childs[bi.badSignatureParameterIdx];
 
         // In case of lambda, replace undefined with the corresponding match, if possible
         if (bi.badSignatureRequestedType->isLambdaClosure() && bi.badSignatureGivenType->isLambdaClosure())
@@ -459,17 +479,16 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
 
         // Here is
         Diagnostic* note = nullptr;
-        if (paramNode && paramNode->isGeneratedSelf())
+        if (destFuncDecl && paramNode && paramNode->isGeneratedSelf())
         {
             note                        = Diagnostic::note(destFuncDecl, destFuncDecl->token, Fmt(Nte(Nte0008), refNiceName.c_str()));
             note->showRange             = false;
             note->showMultipleCodeLines = false;
             result1.push_back(note);
         }
-        else if (destFuncDecl && bi.badSignatureParameterIdx < (int) destFuncDecl->parameters->childs.size())
+        else if (paramNode)
         {
-            auto reqParam = destFuncDecl->parameters->childs[bi.badSignatureParameterIdx];
-            note          = Diagnostic::note(reqParam, reqParam->token, Fmt(Nte(Nte0066), reqParam->token.ctext(), refNiceName.c_str()));
+            note = Diagnostic::note(paramNode, paramNode->token, Fmt(Nte(Nte0066), paramNode->token.ctext(), refNiceName.c_str()));
             result1.push_back(note);
         }
         else
