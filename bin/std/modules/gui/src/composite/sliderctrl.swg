@@ -7,6 +7,8 @@ struct SliderCtrl
     labelSize:      f32 = 60
     editSize:       f32 = 60
 
+    sigChanged: SigArray'closure(*Self)
+
     label:  *Label
     slider: *Slider
     edit:   *EditBox
@@ -62,6 +64,7 @@ impl SliderCtrl
                 }
 
                 ctrl.edit.setText(val)
+                ctrl.sigChanged.call(ctrl)
             }
 
             .edit = EditBox.create(ctrl, "", {})
@@ -74,11 +77,9 @@ impl SliderCtrl
                 case .U64:
                     (val, ?, ?) := catch StrConv.parseU64(edit.text)
                     ctrl.slider.setValue(cast(f32) val)
-
                 case .S64:
                     (val, ?, ?) := catch StrConv.parseS64(edit.text)
                     ctrl.slider.setValue(cast(f32) val)
-
                 case .F64:
                     (val, ?, ?) := catch StrConv.parseF64(edit.text)
                     ctrl.slider.setValue(cast(f32) val)

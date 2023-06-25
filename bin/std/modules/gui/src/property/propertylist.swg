@@ -278,7 +278,30 @@ private impl PropertyList
         nativeType := cast(const *Swag.TypeInfoNative) item.typeValue.pointedType
         ptrData    := item.ptrData
 
-        if item.editBox
+        if item.sliderBox
+        {
+            #[Swag.Mixin]
+            func(T) setEd()
+            {
+                p := cast(*T) ptrData
+                dref p = cast(T) item.sliderBox.slider.getValue()
+            }
+
+            switch nativeType.nativeKind
+            {
+            case U8:    setEd'u8()
+            case U16:   setEd'u16()
+            case U32:   setEd'u32()
+            case U64:   setEd'u64()
+            case S8:    setEd's8()
+            case S16:   setEd's16()
+            case S32:   setEd's32()
+            case S64:   setEd's64()
+            case F32:   setEd'f32()
+            case F64:   setEd'f64()
+            }
+        }
+        elif item.editBox
         {
             #[Swag.Mixin]
             func(T) setEd()
@@ -494,7 +517,13 @@ private impl PropertyList
 
         refreshNative(item)
 
-        if item.editBox
+        if item.sliderBox
+        {
+            item.sliderBox.sigChanged += closure|self, item|(ed) {
+                self.validateNative(item)
+            }
+        }
+        elif item.editBox
         {
             item.editBox.sigLoseFocus += closure|self, item|(ed) {
                 self.validateNative(item)
