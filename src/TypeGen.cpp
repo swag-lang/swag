@@ -404,13 +404,13 @@ void* TypeGen::genExportedSlice(JobContext* context, uint32_t sizeOf, DataSegmen
 bool TypeGen::genExportedAny(JobContext* context, ExportedAny* ptrAny, DataSegment* storageSegment, uint32_t storageOffset, ComputedValue& computedValue, TypeInfo* typeInfo, uint32_t cflags)
 {
     auto sourceFile = context->sourceFile;
+    ptrAny->value   = nullptr;
+
     if (typeInfo->isNative())
     {
         auto storageOffsetValue = storageSegment->addComputedValue(sourceFile, typeInfo, computedValue, (uint8_t**) &ptrAny->value);
         storageSegment->addInitPtr(storageOffset, storageOffsetValue);
     }
-    else
-        ptrAny->value = nullptr;
 
     // Type of the value
     SWAG_CHECK(genExportedSubTypeInfo(context, &ptrAny->type, ptrAny, storageSegment, storageOffset, typeInfo, cflags));

@@ -7,6 +7,7 @@
 #include "Math.h"
 #include "LanguageSpec.h"
 #include "Naming.h"
+#include "TypeManager.h"
 
 #define INHERIT_ATTR(__c, __f)          \
     if (!(__c->attributeFlags & (__f))) \
@@ -708,6 +709,7 @@ bool SemanticJob::resolveAttrUse(SemanticContext* context, AstAttrUse* node)
             {
                 auto param = CastAst<AstFuncCallParam>(one, AstNodeKind::FuncCallParam);
                 SWAG_CHECK(checkIsConstExpr(context, param->flags & AST_VALUE_COMPUTED, param, Err(Err0602)));
+                SWAG_CHECK(TypeManager::makeCompatibles(context, param->resolvedParameter->typeInfo, param->typeInfo, nullptr, param, CASTFLAG_EXPLICIT));
 
                 AttributeParameter attrParam;
                 attrParam.token      = one->token;
