@@ -277,11 +277,13 @@ private impl PropertyList
         ed := CheckButton.create(line1, "", {0, 0, 30, 0})
         ed.dockStyle = .Left
 
-        label1 := Label.create(line1, "", {30, 0, position.width - 30})
-        label1.dockStyle = .Center
-        label1.labelFlags |= .WordWrap | .AutoHeight
-        label1.horzAlignmentText = .Justify
-        label1.setText(dispDesc)
+        with label1 := Label.create(line1, "", {30, 0, position.width - 30})
+        {
+            .dockStyle = .Center
+            .labelFlags |= .WordWrap | .AutoHeight
+            .horzAlignmentText = .Justify
+            .setText(dispDesc)
+        }
 
         minHeight := ed.position.height
         item.onResize += closure|label1, line1, minHeight|(item) {
@@ -302,43 +304,48 @@ private impl PropertyList
 
         if item.sliderBox
         {
-            item.sliderBox.slider.setValue(10)
-        }
-        else
-        {
-            ed := item.editBox
+            #[Swag.Mixin]
+            func(T) setEd()
+            {
+                p := cast(*T) ptrData
+                item.sliderBox.slider.setValue(acast (dref p))
+            }
+
             switch nativeType.nativeKind
             {
-            case U8:
-                p := cast(*u8) ptrData
-                ed.setText(Format.toString("%", dref p))
-            case U16:
-                p := cast(*u16) ptrData
-                ed.setText(Format.toString("%", dref p))
-            case U32:
-                p := cast(*u32) ptrData
-                ed.setText(Format.toString("%", dref p))
-            case U64:
-                p := cast(*u64) ptrData
-                ed.setText(Format.toString("%", dref p))
-            case S8:
-                p := cast(*s8) ptrData
-                ed.setText(Format.toString("%", dref p))
-            case S16:
-                p := cast(*s16) ptrData
-                ed.setText(Format.toString("%", dref p))
-            case S32:
-                p := cast(*s32) ptrData
-                ed.setText(Format.toString("%", dref p))
-            case S64:
-                p := cast(*s64) ptrData
-                ed.setText(Format.toString("%", dref p))
-            case F32:
-                p := cast(*f32) ptrData
-                ed.setText(Format.toString("%", dref p))
-            case F64:
-                p := cast(*f64) ptrData
-                ed.setText(Format.toString("%", dref p))
+            case U8:    setEd'u8()
+            case U16:   setEd'u16()
+            case U32:   setEd'u32()
+            case U64:   setEd'u64()
+            case S8:    setEd's8()
+            case S16:   setEd's16()
+            case S32:   setEd's32()
+            case S64:   setEd's64()
+            case F32:   setEd'f32()
+            case F64:   setEd'f64()
+            }
+        }
+        elif item.editBox
+        {
+            #[Swag.Mixin]
+            func(T) setEd()
+            {
+                p := cast(*T) ptrData
+                item.editBox.setText(Format.toString("%", dref p))
+            }
+
+            switch nativeType.nativeKind
+            {
+            case U8:    setEd'u8()
+            case U16:   setEd'u16()
+            case U32:   setEd'u32()
+            case U64:   setEd'u64()
+            case S8:    setEd's8()
+            case S16:   setEd's16()
+            case S32:   setEd's32()
+            case S64:   setEd's64()
+            case F32:   setEd'f32()
+            case F64:   setEd'f64()
             }
         }
     }
@@ -442,6 +449,11 @@ private impl PropertyList
             {
                 refreshNative(item)
                 editBox.invalidate()
+            }
+            elif sliderBox
+            {
+                refreshNative(item)
+                sliderBox.invalidate()
             }
         }
     }

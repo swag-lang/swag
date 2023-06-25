@@ -28,8 +28,8 @@ struct AA
     xu8: u8 = 30
 
     #[Name("<b>Another name<b>")]
-    #[EditSlider(0.0, 1.0)]
-    xf32: f32 = 10
+    #[EditSlider(0, 1)]
+    xf32: f32 = 0.5
 
     #[Name("<b>Another name<b>")]
     x1: Math.Vector3{11.5, 22, 33}
