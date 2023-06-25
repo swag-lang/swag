@@ -71,7 +71,8 @@ const uint8_t CV_PTR_MODE_LVREF = 0x01; // l-value reference
 
 // https://github.com/microsoft/checkedc-llvm/blob/master/include/llvm/DebugInfo/CodeView/CodeViewRegisters.def
 const uint16_t R_RDI = 333;
-const uint16_t R_R11 = 339;
+// const uint16_t R_R11 = 339;
+const uint16_t R_R12 = 340;
 // const uint16_t R_RCX = 330;
 // const uint16_t R_RDX = 331;
 // const uint16_t R_RBP = 334;
@@ -682,7 +683,7 @@ DbgTypeIndex BackendX64::dbgGetOrCreateType(X64Gen& pp, TypeInfo* typeInfo, bool
     if (typeInfo->isPointer())
     {
         auto typePtr = CastTypeInfo<TypeInfoPointer>(typeInfo, TypeInfoKind::Pointer);
-        return dbgGetOrCreatePointerToType(pp, typePtr->pointedType, !typePtr->isPointerArithmetic() && !forceUnRef);
+        return dbgGetOrCreatePointerToType(pp, typePtr->pointedType, typePtr->isPointerRef() && !forceUnRef);
     }
 
     // In the cache
@@ -1187,7 +1188,7 @@ bool BackendX64::dbgEmitFctDebugS(const BuildParameters& buildParameters)
 
                     //////////
                     dbgStartRecord(pp, concat, S_DEFRANGE_REGISTER_REL);
-                    concat.addU16(R_R11); // Register
+                    concat.addU16(R_R12); // Register
                     concat.addU16(0);     // Flags
                     concat.addU32(overload->computedValue.storageOffset);
                     dbgEmitSecRel(pp, concat, f.symbolIndex, pp.symCOIndex);

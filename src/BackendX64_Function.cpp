@@ -105,8 +105,9 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
     // Push on scratch register per parameter
     while (coffFct->numScratchRegs < min(cc.numScratchRegisters, min(cc.paramByRegisterCount, numTotalRegs)))
     {
-        pp.emit_Push((CPURegister) (cc.firstScratchRegister + coffFct->numScratchRegs));
-        unwindRegs.push_back((CPURegister) (cc.firstScratchRegister + coffFct->numScratchRegs));
+        auto cpuReg = (CPURegister) (cc.firstScratchRegister + coffFct->numScratchRegs);
+        pp.emit_Push(cpuReg);
+        unwindRegs.push_back(cpuReg);
         unwindOffsetRegs.push_back(concat.totalCount() - beforeProlog);
         coffFct->numScratchRegs++;
     }
@@ -179,7 +180,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
     // This is used to debug and have access to capture parameters, even if we "lose" rcx
     // which is the register that will have a pointer to the capture buffer (but rcx is volatile)
     if (typeFunc->isClosure() && debug)
-        pp.emit_CopyN(R11, RCX, X64Bits::B64);
+        pp.emit_CopyN(R12, RCX, X64Bits::B64);
 
     auto                                   ip = bc->out;
     VectorNative<uint32_t>                 pushRAParams;
