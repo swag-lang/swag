@@ -3,10 +3,20 @@ using Core, Pixel
 
 impl PropertyList
 {
+    // Start a new category
 	attr Category(name: string)
+
+    // Start a new sub category
 	attr SubCategory(name: string)
+
+    // Change the field display name
     attr Name(name: string)
+
+    // Add a description
     attr Description(desc: string)
+
+    // Native float edit width a slider
+    attr EditSlider(min, max: f32)
 }
 
 struct PropertyList
@@ -40,9 +50,11 @@ struct PropertyListItem
 
     label:      *Label
     labelDesc:  *Label
+
     editBox:    *EditBox
     checkBox:   *CheckButton
     comboBox:   *ComboBox
+    sliderBox:  *SliderCtrl
 
     onResize:   SigArray'closure(*Self)
 
@@ -107,11 +119,15 @@ private impl PropertyList
             dispName = cast(string) attrName
         else
             dispName = Format.toString("<b>%<b>", f.name)
-        label := Label.create(line, dispName, {0, 0, position.width, nameHeight})
-        label.labelFlags |= .WordWrap | .AutoHeight
-        label.horzAlignmentText = .Justify
-        label.margin.y = nameMarginBefore
-        label.margin.w = nameMarginAfter
+
+        with label := Label.create(line, dispName, {0, 0, position.width, nameHeight})
+        {
+            .labelFlags |= .WordWrap | .AutoHeight
+            .horzAlignmentText = .Justify
+            .margin.y = nameMarginBefore
+            .margin.w = nameMarginAfter
+        }
+
         item.label = label
         item.filter = dispName
 
@@ -212,11 +228,13 @@ private impl PropertyList
                 ed := CheckButton.create(line1, "", {0, 0, 30, 0})
                 ed.dockStyle = .Left
 
-                label1 := Label.create(line1, "", {30, 0, position.width - 30})
-                label1.dockStyle = .Center
-                label1.labelFlags |= .WordWrap | .AutoHeight
-                label1.horzAlignmentText = .Justify
-                label1.setText(dispDesc)
+                with label1 := Label.create(line1, "", {30, 0, position.width - 30})
+                {
+                    .dockStyle = .Center
+                    .labelFlags |= .WordWrap | .AutoHeight
+                    .horzAlignmentText = .Justify
+                    .setText(dispDesc)
+                }
 
                 minHeight := ed.position.height
                 itemB.onResize += closure|label1, line1, minHeight|(itemB) {
@@ -281,40 +299,47 @@ private impl PropertyList
     {
         nativeType := cast(const *Swag.TypeInfoNative) item.typeValue.pointedType
         ptrData    := item.ptrData
-        ed         := item.editBox
 
-        switch nativeType.nativeKind
+        if item.sliderBox
         {
-        case U8:
-            p := cast(*u8) ptrData
-            ed.setText(Format.toString("%", dref p))
-        case U16:
-            p := cast(*u16) ptrData
-            ed.setText(Format.toString("%", dref p))
-        case U32:
-            p := cast(*u32) ptrData
-            ed.setText(Format.toString("%", dref p))
-        case U64:
-            p := cast(*u64) ptrData
-            ed.setText(Format.toString("%", dref p))
-        case S8:
-            p := cast(*s8) ptrData
-            ed.setText(Format.toString("%", dref p))
-        case S16:
-            p := cast(*s16) ptrData
-            ed.setText(Format.toString("%", dref p))
-        case S32:
-            p := cast(*s32) ptrData
-            ed.setText(Format.toString("%", dref p))
-        case S64:
-            p := cast(*s64) ptrData
-            ed.setText(Format.toString("%", dref p))
-        case F32:
-            p := cast(*f32) ptrData
-            ed.setText(Format.toString("%", dref p))
-        case F64:
-            p := cast(*f64) ptrData
-            ed.setText(Format.toString("%", dref p))
+            item.sliderBox.slider.setValue(10)
+        }
+        else
+        {
+            ed := item.editBox
+            switch nativeType.nativeKind
+            {
+            case U8:
+                p := cast(*u8) ptrData
+                ed.setText(Format.toString("%", dref p))
+            case U16:
+                p := cast(*u16) ptrData
+                ed.setText(Format.toString("%", dref p))
+            case U32:
+                p := cast(*u32) ptrData
+                ed.setText(Format.toString("%", dref p))
+            case U64:
+                p := cast(*u64) ptrData
+                ed.setText(Format.toString("%", dref p))
+            case S8:
+                p := cast(*s8) ptrData
+                ed.setText(Format.toString("%", dref p))
+            case S16:
+                p := cast(*s16) ptrData
+                ed.setText(Format.toString("%", dref p))
+            case S32:
+                p := cast(*s32) ptrData
+                ed.setText(Format.toString("%", dref p))
+            case S64:
+                p := cast(*s64) ptrData
+                ed.setText(Format.toString("%", dref p))
+            case F32:
+                p := cast(*f32) ptrData
+                ed.setText(Format.toString("%", dref p))
+            case F64:
+                p := cast(*f64) ptrData
+                ed.setText(Format.toString("%", dref p))
+            }
         }
     }
 
@@ -322,31 +347,54 @@ private impl PropertyList
     {
         item := addItem(f, ptrData)
         line := item.line
-        ed := EditBox.create(line, f.name)
-        ed.maxSize.x = maxSizeEditValue
-        ed.anchorStyle = .X
-        item.editBox = ed
 
-        switch nativeType.nativeKind
+        if Reflection.hasAttribute(f, EditSlider)
         {
-        case U8:
-            ed.setInputU64(acast Swag.U8.Min, acast Swag.U8.Max)
-        case U16:
-            ed.setInputU64(acast Swag.U16.Min, acast Swag.U16.Max)
-        case U32:
-            ed.setInputU64(acast Swag.U32.Min, acast Swag.U32.Max)
-        case U64:
-            ed.setInputU64(acast Swag.U64.Min, acast Swag.U64.Max)
-        case S8:
-            ed.setInputS64(acast Swag.S8.Min, acast Swag.S8.Max)
-        case S16:
-            ed.setInputS64(acast Swag.S16.Min, acast Swag.S16.Max)
-        case S32:
-            ed.setInputS64(acast Swag.S32.Min, acast Swag.S32.Max)
-        case S64:
-            ed.setInputS64(acast Swag.S64.Min, acast Swag.S64.Max)
-        case F32, F64:
-            ed.setInputF64()
+            slider := SliderCtrl.create(line, null)
+            slider.labelSize = 0
+            item.sliderBox = slider
+
+            minV := cast(f32) Reflection.getAttributeValue(f, EditSlider, "min")
+            maxV := cast(f32) Reflection.getAttributeValue(f, EditSlider, "max")
+
+            switch nativeType.nativeKind
+            {
+            case U8, U16, U32, U64:
+                slider.setMinMaxU64(acast minV, acast maxV)
+            case S8, S16, S32, S64:
+                slider.setMinMaxS64(acast minV, acast maxV)
+            case F32, F64:
+                slider.setMinMaxF32(minV, maxV)
+            }
+        }
+        else
+        {
+            ed := EditBox.create(line, f.name)
+            ed.maxSize.x = maxSizeEditValue
+            ed.anchorStyle = .X
+            item.editBox = ed
+
+            switch nativeType.nativeKind
+            {
+            case U8:
+                ed.setInputU64(acast Swag.U8.Min, acast Swag.U8.Max)
+            case U16:
+                ed.setInputU64(acast Swag.U16.Min, acast Swag.U16.Max)
+            case U32:
+                ed.setInputU64(acast Swag.U32.Min, acast Swag.U32.Max)
+            case U64:
+                ed.setInputU64(acast Swag.U64.Min, acast Swag.U64.Max)
+            case S8:
+                ed.setInputS64(acast Swag.S8.Min, acast Swag.S8.Max)
+            case S16:
+                ed.setInputS64(acast Swag.S16.Min, acast Swag.S16.Max)
+            case S32:
+                ed.setInputS64(acast Swag.S32.Min, acast Swag.S32.Max)
+            case S64:
+                ed.setInputS64(acast Swag.S64.Min, acast Swag.S64.Max)
+            case F32, F64:
+                ed.setInputF64()
+            }
         }
 
         refreshNative(item)

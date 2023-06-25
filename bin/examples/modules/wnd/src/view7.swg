@@ -25,10 +25,11 @@ struct AA
 	#[SubCategory("SubCateg")]
     #[Name("<b>This is a name<b>: <i>italic<i>")]
     #[Description("This is something that needs to be done except if it not has do be done, and this is it.")]
-    xu8:  u8 = 30
+    xu8: u8 = 30
 
     #[Name("<b>Another name<b>")]
-    xf32: f32 = 10//Math.Vector3{11.5, 22, 33}
+    #[EditSlider(0.0, 1.0)]
+    xf32: f32 = 10
 
     #[Name("<b>Another name<b>")]
     x1: Math.Vector3{11.5, 22, 33}

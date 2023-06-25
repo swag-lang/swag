@@ -457,8 +457,10 @@ impl Slider
     mtdc getValue()->f32        => getValueLeft()
     mtdc getValueLeft()->f32    => min + (max - min) * value1
     mtdc getValueRight()->f32   => min + (max - min) * value2
+
     mtd  setValue(f: f32)       { setValueLeft(f); }
 
+    // Set the left value (in case of a range).
     mtd setValueLeft(f: f32)
     {
         startChange()
@@ -466,6 +468,7 @@ impl Slider
         endChange()
     }
 
+    // Set the right value (in case of a range)
     mtd setValueRight(f: f32)
     {
         startChange()
@@ -473,6 +476,7 @@ impl Slider
         endChange()
     }
 
+    // Set the 'min', 'max' and 'steps' values
     func setMinMax(self, min, max: f32, steps: f32 = 0)
     {
         Debug.assert(min < max)
