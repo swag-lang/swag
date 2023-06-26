@@ -109,58 +109,65 @@ private impl PropertyList
 
     func refreshEnumFlags(using item: *PropertyListItem)
     {
-        var val1, val2: u64
-        switch typeValue.pointedType.sizeof
+        if checkBox
         {
-        case 1:
-            val1 = cast(u64) dref cast(*u8) ptrData
-            val2 = cast(u64) dref cast(const *u8) typeValue.value
-        case 2:
-            val1 = cast(u64) dref cast(*u16) ptrData
-            val2 = cast(u64) dref cast(const *u16) typeValue.value
-        case 4:
-            val1 = cast(u64) dref cast(*u32) ptrData
-            val2 = cast(u64) dref cast(const *u32) typeValue.value
-        case 8:
-            val1 = cast(u64) dref cast(*u64) ptrData
-            val2 = cast(u64) dref cast(const *u64) typeValue.value
-        }
+            var val1, val2: u64
+            switch typeValue.pointedType.sizeof
+            {
+            case 1:
+                val1 = cast(u64) dref cast(*u8) ptrData
+                val2 = cast(u64) dref cast(const *u8) typeValue.value
+            case 2:
+                val1 = cast(u64) dref cast(*u16) ptrData
+                val2 = cast(u64) dref cast(const *u16) typeValue.value
+            case 4:
+                val1 = cast(u64) dref cast(*u32) ptrData
+                val2 = cast(u64) dref cast(const *u32) typeValue.value
+            case 8:
+                val1 = cast(u64) dref cast(*u64) ptrData
+                val2 = cast(u64) dref cast(const *u64) typeValue.value
+            }
 
-        checkBox.checked = val1 & val2 ? .Checked : .UnChecked
+            checkBox.checked = val1 & val2 ? .Checked : .UnChecked
+            checkBox.invalidate()
+        }
     }
 
     func refreshEnum(using item: *PropertyListItem)
     {
-        typeEnum := cast(const *Swag.TypeInfoEnum) typeValue.pointedType
-
-        var val1, val2: u64
-        var val1s, val2s: string
-        switch typeEnum.rawType.sizeof
+        if comboBox
         {
-        case 1:  val1 = cast(u64) dref cast(*u8) ptrData
-        case 2:  val1 = cast(u64) dref cast(*u16) ptrData
-        case 4:  val1 = cast(u64) dref cast(*u32) ptrData
-        case 8:  val1 = cast(u64) dref cast(*u64) ptrData
-        case 16: val1s = dref cast(*string) ptrData
-        }
+            typeEnum := cast(const *Swag.TypeInfoEnum) typeValue.pointedType
 
-        idxSel := 0'u64
-        visit v, idx: typeEnum.values
-        {
+            var val1, val2: u64
+            var val1s, val2s: string
             switch typeEnum.rawType.sizeof
             {
-            case 1:  val2 = cast(u64) dref cast(const *u8) v.value
-            case 2:  val2 = cast(u64) dref cast(const *u16) v.value
-            case 4:  val2 = cast(u64) dref cast(const *u32) v.value
-            case 8:  val2 = cast(u64) dref cast(const *u64) v.value
-            case 16: val2s = dref cast(const *string) v.value
+            case 1:  val1 = cast(u64) dref cast(*u8) ptrData
+            case 2:  val1 = cast(u64) dref cast(*u16) ptrData
+            case 4:  val1 = cast(u64) dref cast(*u32) ptrData
+            case 8:  val1 = cast(u64) dref cast(*u64) ptrData
+            case 16: val1s = dref cast(*string) ptrData
             }
 
-            if val1 == val2 and val1s == val2s
-                idxSel = idx
-        }
+            idxSel := 0'u64
+            visit v, idx: typeEnum.values
+            {
+                switch typeEnum.rawType.sizeof
+                {
+                case 1:  val2 = cast(u64) dref cast(const *u8) v.value
+                case 2:  val2 = cast(u64) dref cast(const *u16) v.value
+                case 4:  val2 = cast(u64) dref cast(const *u32) v.value
+                case 8:  val2 = cast(u64) dref cast(const *u64) v.value
+                case 16: val2s = dref cast(const *string) v.value
+                }
 
-        comboBox.selectItem(acast idxSel)
+                if val1 == val2 and val1s == val2s
+                    idxSel = idx
+            }
+
+            comboBox.selectItem(acast idxSel)
+        }
     }
 
     func refreshNative(item: *PropertyListItem)
@@ -177,6 +184,7 @@ private impl PropertyList
                 item.sliderBox.slider.setValue(acast (dref p))
             }
 
+            item.sliderBox.invalidate()
             switch nativeType.nativeKind
             {
             case U8:    setEd'u8()
@@ -200,6 +208,7 @@ private impl PropertyList
                 item.editBox.setText(Format.toString("%", dref p))
             }
 
+            item.editBox.invalidate()
             switch nativeType.nativeKind
             {
             case U8:    setEd'u8()
@@ -216,62 +225,50 @@ private impl PropertyList
         }
     }
 
+    func refreshBool(item: *PropertyListItem)
+    {
+        if item.checkBox
+        {
+            item.checkBox.checked = dref cast(*bool) item.ptrData ? .Checked : .UnChecked
+            item.checkBox.invalidate()
+        }
+    }
+
     func refreshItem(item: *PropertyListItem)
     {
-        if item.typeValue.pointedType == null
+        pointed := item.typeValue.pointedType
+        if pointed == null
             return
-        if Reflection.isEnum(item.typeValue.pointedType)
-        {
-            if Reflection.hasAttribute(item.typeValue, Swag.EnumFlags)
-            {
-                if item.checkBox
-                {
-                    refreshEnumFlags(item)
-                    item.checkBox.invalidate()
-                }
-            }
-            else
-            {
-                if item.comboBox
-                {
-                    refreshEnum(item)
-                    item.comboBox.invalidate()
-                }
-            }
-        }
-        elif item.typeValue.pointedType == Core.String
+
+        if Reflection.isEnum(pointed) and Reflection.hasAttribute(item.typeValue, Swag.EnumFlags)
+            refreshEnumFlags(item)
+        elif Reflection.isEnum(pointed)
+            refreshEnum(item)
+        elif Reflection.isBool(pointed)
+            refreshBool(item)
+        elif Reflection.isInteger(pointed) or Reflection.isFloat(pointed)
+            refreshNative(item)
+        elif pointed == Core.String
         {
             if item.editBox
-            {
                 item.editBox.setText(dref cast(*String) item.ptrData)
-            }
-        }
-        elif Reflection.isBool(item.typeValue.pointedType)
-        {
-            if item.checkBox
-            {
-                item.checkBox.checked = dref cast(*bool) item.ptrData ? .Checked : .UnChecked
-                item.checkBox.invalidate()
-            }
-        }
-        elif Reflection.isInteger(item.typeValue.pointedType) or Reflection.isFloat(item.typeValue.pointedType)
-        {
-            if item.editBox
-            {
-                refreshNative(item)
-                item.editBox.invalidate()
-            }
-            elif item.sliderBox
-            {
-                refreshNative(item)
-                item.sliderBox.invalidate()
-            }
         }
     }
 
     ////////////////////////////
     // Validate
     ////////////////////////////
+
+    mtd validateBool(item: *PropertyListItem)
+    {
+        ptrData := cast(*bool) item.ptrData
+        if item.checkBox
+        {
+            dref ptrData = item.checkBox.checked == .Checked ? true : false
+        }
+
+        sigChanged.call(self)
+    }
 
     mtd validateNative(item: *PropertyListItem)
     {
@@ -469,8 +466,11 @@ private impl PropertyList
         }
 
         item.checkBox = ed
-        if dref cast(*bool) ptrData
-            ed.checked = .Checked
+        ed.sigChanged += closure|self, item|(ed) {
+            self.validateBool(item)
+        }
+
+        refreshBool(item)
     }
 
     mtd addNative(f: Swag.TypeValue, nativeType: const *Swag.TypeInfoNative, ptrData: *u8)
