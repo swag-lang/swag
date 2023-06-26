@@ -47,6 +47,7 @@ struct PropertyListItem
     filter:     String
     line:       *Wnd
     ptrData:    *u8
+    type:       typeinfo
     typeValue:  Swag.TypeValue
     forceShow:  *Wnd
 
@@ -94,7 +95,7 @@ private impl PropertyList
             item.aniFocusBorder.apply(wnd, colBorder)
 
             r := wnd.getClientRect()
-            r.moveTop(acast list.nameMarginBefore)
+            r.moveTop(wnd.childs.front().position.y)
             r.inflate(10)
             painter.fillRoundRect(r, 4, 4, item.aniFocusBk.cur())
             painter.drawRoundRect(r, 4, 4, item.aniFocusBorder.cur())
@@ -107,47 +108,47 @@ private impl PropertyList
     // Refresh
     ////////////////////////////
 
-    func refreshEnumFlags(using item: *PropertyListItem)
+    func refreshEnumFlags(item: *PropertyListItem)
     {
-        if checkBox
+        if item.checkBox
         {
             var val1, val2: u64
-            switch typeValue.pointedType.sizeof
+            switch item.typeValue.pointedType.sizeof
             {
             case 1:
-                val1 = cast(u64) dref cast(*u8) ptrData
-                val2 = cast(u64) dref cast(const *u8) typeValue.value
+                val1 = cast(u64) dref cast(*u8) item.ptrData
+                val2 = cast(u64) dref cast(const *u8) item.typeValue.value
             case 2:
-                val1 = cast(u64) dref cast(*u16) ptrData
-                val2 = cast(u64) dref cast(const *u16) typeValue.value
+                val1 = cast(u64) dref cast(*u16) item.ptrData
+                val2 = cast(u64) dref cast(const *u16) item.typeValue.value
             case 4:
-                val1 = cast(u64) dref cast(*u32) ptrData
-                val2 = cast(u64) dref cast(const *u32) typeValue.value
+                val1 = cast(u64) dref cast(*u32) item.ptrData
+                val2 = cast(u64) dref cast(const *u32) item.typeValue.value
             case 8:
-                val1 = cast(u64) dref cast(*u64) ptrData
-                val2 = cast(u64) dref cast(const *u64) typeValue.value
+                val1 = cast(u64) dref cast(*u64) item.ptrData
+                val2 = cast(u64) dref cast(const *u64) item.typeValue.value
             }
 
-            checkBox.checked = val1 & val2 ? .Checked : .UnChecked
-            checkBox.invalidate()
+            item.checkBox.checked = val1 & val2 ? .Checked : .UnChecked
+            item.checkBox.invalidate()
         }
     }
 
-    func refreshEnum(using item: *PropertyListItem)
+    func refreshEnum(item: *PropertyListItem)
     {
-        if comboBox
+        if item.comboBox
         {
-            typeEnum := cast(const *Swag.TypeInfoEnum) typeValue.pointedType
+            typeEnum := cast(const *Swag.TypeInfoEnum) item.typeValue.pointedType
 
             var val1, val2: u64
             var val1s, val2s: string
             switch typeEnum.rawType.sizeof
             {
-            case 1:  val1 = cast(u64) dref cast(*u8) ptrData
-            case 2:  val1 = cast(u64) dref cast(*u16) ptrData
-            case 4:  val1 = cast(u64) dref cast(*u32) ptrData
-            case 8:  val1 = cast(u64) dref cast(*u64) ptrData
-            case 16: val1s = dref cast(*string) ptrData
+            case 1:  val1 = cast(u64) dref cast(*u8) item.ptrData
+            case 2:  val1 = cast(u64) dref cast(*u16) item.ptrData
+            case 4:  val1 = cast(u64) dref cast(*u32) item.ptrData
+            case 8:  val1 = cast(u64) dref cast(*u64) item.ptrData
+            case 16: val1s = dref cast(*string) item.ptrData
             }
 
             idxSel := 0'u64
@@ -166,7 +167,7 @@ private impl PropertyList
                     idxSel = idx
             }
 
-            comboBox.selectItem(acast idxSel)
+            item.comboBox.selectItem(acast idxSel)
         }
     }
 
@@ -236,11 +237,11 @@ private impl PropertyList
 
     func refreshItem(item: *PropertyListItem)
     {
-        pointed := item.typeValue.pointedType
+        pointed := item.type orelse item.typeValue.pointedType
         if pointed == null
             return
 
-        if Reflection.isEnum(pointed) and Reflection.hasAttribute(item.typeValue, Swag.EnumFlags)
+        if Reflection.isEnum(pointed) and Reflection.hasAttribute(pointed, Swag.EnumFlags)
             refreshEnumFlags(item)
         elif Reflection.isEnum(pointed)
             refreshEnum(item)
@@ -248,6 +249,11 @@ private impl PropertyList
             refreshBool(item)
         elif Reflection.isInteger(pointed) or Reflection.isFloat(pointed)
             refreshNative(item)
+        elif Reflection.isString(pointed)
+        {
+            if item.editBox
+                item.editBox.setText(dref cast(*string) item.ptrData)
+        }
         elif pointed == Core.String
         {
             if item.editBox
@@ -258,6 +264,60 @@ private impl PropertyList
     ////////////////////////////
     // Validate
     ////////////////////////////
+
+    mtd validateEnumFlags(item: *PropertyListItem)
+    {
+        if item.checkBox
+        {
+            #[Swag.Mixin]
+            func(T) setEd()
+            {
+                p  := cast(*T) item.ptrData
+                p1 := cast(*T) item.checkBox.userData
+                if item.checkBox.checked == .Checked
+                    dref p |= dref p1
+                else
+                    dref p &= ~dref p1
+            }
+
+            switch item.typeValue.pointedType.sizeof
+            {
+            case 1:  setEd'u8()
+            case 2:  setEd'u16()
+            case 4:  setEd'u32()
+            case 8:  setEd'u64()
+            }
+        }
+
+        sigChanged.call(self)
+    }
+
+    mtd validateEnum(item: *PropertyListItem)
+    {
+        if item.comboBox
+        {
+            #[Swag.Mixin]
+            func(T) setEd()
+            {
+                p  := cast(*T) item.ptrData
+                p1 := cast(const *T) typeEnum.values[sel].value
+                dref p = dref p1
+            }
+
+            typeEnum := cast(const *Swag.TypeInfoEnum) item.typeValue.pointedType
+            sel := item.comboBox.selectedIdx
+            switch typeEnum.rawType.sizeof
+            {
+            case 1:  setEd'u8()
+            case 2:  setEd'u16()
+            case 4:  setEd'u32()
+            case 8:  setEd'u64()
+            case 16: setEd'string()
+            }
+        }
+
+        sigChanged.call(self)
+    }
 
     mtd validateBool(item: *PropertyListItem)
     {
@@ -349,6 +409,7 @@ private impl PropertyList
         item := items.addNewPtr()
         item.line = line
         line.hookOnEvent = closure|self, item|(wnd, evt) { return onEvent(self, item, wnd, evt); }
+        item.type = f.pointedType
         item.typeValue = f
         item.ptrData = ptrData
 
@@ -401,13 +462,17 @@ private impl PropertyList
             visit v: typeEnum.values
             {
                 itemB := items.addNewPtr()
+                itemB.type = typeEnum
                 itemB.typeValue = v
                 itemB.ptrData = ptrData
 
                 dispDesc := Reflection.getAttributeValue(v, PropertyList.Description, "desc")
 
                 line1 := Wnd.create'Wnd(edView)
+                line1.margin.x, line1.margin.z = 15
                 line1.margin.y = enumFlagsMarginBefore
+                line1.wndFlags.set(.PreChildsPaint)
+                line1.hookOnEvent = closure|self, itemB|(wnd, evt) { return onEvent(self, itemB, wnd, evt); }
 
                 ed := CheckButton.create(line1, "", {0, 0, 30, 0})
                 ed.dockStyle = .Left
@@ -431,8 +496,13 @@ private impl PropertyList
                 itemB.line = line1
                 itemB.forceShow = item.line
                 itemB.checkBox = ed
+                ed.userData = cast(u64) v.value
 
                 refreshEnumFlags(itemB)
+
+                itemB.checkBox.sigChanged += closure|self, itemB|(ed) {
+                    self.validateEnumFlags(itemB)
+                }
             }
         }
         else
@@ -448,6 +518,10 @@ private impl PropertyList
             }
 
             refreshEnum(item)
+
+            item.comboBox.sigChanged += closure|self, item|(ed, n) {
+                self.validateEnum(item)
+            }
         }
     }
 
@@ -465,12 +539,11 @@ private impl PropertyList
     {
         item := addItem(f, ptrData, false)
 
-        dispDesc := Reflection.getAttributeValue(f, PropertyList.Description, "desc")
         line1 := Wnd.create'Wnd(item.line)
-
         ed := CheckButton.create(line1, "", {0, 0, 30, 0})
         ed.dockStyle = .Left
 
+        dispDesc := Reflection.getAttributeValue(f, PropertyList.Description, "desc")
         with label1 := Label.create(line1, "", {30, 0, position.width - 30})
         {
             .dockStyle = .Center
@@ -595,7 +668,6 @@ private impl PropertyList
                 item := addItem(f, ptrData)
                 ed := EditBox.create(item.line, dref cast(*string) ptrData)
                 ed.editBoxFlags = .ReadOnly
-                //ed.enable(false)
                 item.editBox = ed
             }
             elif Reflection.isBool(f.pointedType)

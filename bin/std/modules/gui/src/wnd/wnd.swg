@@ -93,7 +93,7 @@ struct Wnd
     surface:    *Surface
     style:      ThemeStyle
     wndFlags    = WndFlags.ClipChildren
-    userData:   *void
+    userData:   u64
 
     position:       Math.Rectangle
     minSize:        Math.Point
