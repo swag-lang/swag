@@ -205,6 +205,10 @@ impl IWnd for Slider
 
         switch evt.kind
         {
+        case MouseWheel:
+            evt.accepted = false
+            return
+
         case MouseLeave:
             isHot1, isHot2 = false
             invalidate()
