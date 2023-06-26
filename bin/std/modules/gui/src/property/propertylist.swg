@@ -270,6 +270,17 @@ private impl PropertyList
         sigChanged.call(self)
     }
 
+    mtd validateString(item: *PropertyListItem)
+    {
+        ptrData := cast(*String) item.ptrData
+        if item.editBox
+        {
+            dref ptrData = item.editBox.getText()
+        }
+
+        sigChanged.call(self)
+    }
+
     mtd validateNative(item: *PropertyListItem)
     {
         nativeType := cast(const *Swag.TypeInfoNative) item.typeValue.pointedType
@@ -440,6 +451,16 @@ private impl PropertyList
         }
     }
 
+    mtd addString(f: Swag.TypeValue, ptrData: *u8)
+    {
+        item := addItem(f, ptrData)
+        ed := EditBox.create(item.line, dref cast(*String) ptrData)
+        item.editBox = ed
+        ed.sigLoseFocus += closure|self, item|(ed) {
+            self.validateString(item)
+        }
+    }
+
     mtd addBool(f: Swag.TypeValue, ptrData: *u8)
     {
         item := addItem(f, ptrData, false)
@@ -567,9 +588,7 @@ private impl PropertyList
             }
             elif f.pointedType == Core.String
             {
-                item := addItem(f, ptrData)
-                ed := EditBox.create(item.line, dref cast(*String) ptrData)
-                item.editBox = ed
+                addString(f, ptrData)
             }
             elif Reflection.isBool(f.pointedType)
             {
