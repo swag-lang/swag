@@ -31,6 +31,6 @@ impl IWnd for PropertyListView
 
         // Vertical size is the bottom position of the last line
         bk := ed.items.back()
-        ed.scrollWnd.setScrollSize(0, bk.line.position.bottom())
+        ed.scrollWnd.setScrollSize(0, bk.line.position.bottom() + 10)
     }
 }

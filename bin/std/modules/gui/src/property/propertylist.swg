@@ -63,6 +63,7 @@ struct PropertyListItem
 
     aniFocusBk:     BlendColor
     aniFocusBorder: BlendColor
+    extendFocus:    f32 = 10
 }
 
 private impl PropertyList
@@ -96,7 +97,7 @@ private impl PropertyList
 
             r := wnd.getClientRect()
             r.moveTop(wnd.childs.front().position.y)
-            r.inflate(10)
+            r.inflate(item.extendFocus)
             painter.fillRoundRect(r, 4, 4, item.aniFocusBk.cur())
             painter.drawRoundRect(r, 4, 4, item.aniFocusBorder.cur())
         }
@@ -465,6 +466,7 @@ private impl PropertyList
                 itemB.type = typeEnum
                 itemB.typeValue = v
                 itemB.ptrData = ptrData
+                itemB.extendFocus = 5
 
                 dispDesc := Reflection.getAttributeValue(v, PropertyList.Description, "desc")
 
