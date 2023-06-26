@@ -41,8 +41,6 @@ v.add(#code @print(a))
 if a == 1 do toto() else do titi()
 #if a == 1 do...
 -------------------------------------
-cast,unconst ?
--------------------------------------
 a = if b then c else d
 a = if b then c elif d then f else h
 -------------------------------------

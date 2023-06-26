@@ -496,7 +496,7 @@ private impl PropertyList
                 itemB.line = line1
                 itemB.forceShow = item.line
                 itemB.checkBox = ed
-                ed.userData = cast(u64) v.value
+                ed.userData = cast,unconst(*void) v.value
 
                 refreshEnumFlags(itemB)
 

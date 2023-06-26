@@ -752,7 +752,10 @@ bool SemanticJob::resolveExplicitCast(SemanticContext* context)
             return true;
     }
 
-    SWAG_CHECK(TypeManager::makeCompatibles(context, typeNode->typeInfo, nullptr, exprNode, CASTFLAG_EXPLICIT | CASTFLAG_ACCEPT_PENDING));
+    uint32_t castFlags = CASTFLAG_EXPLICIT | CASTFLAG_ACCEPT_PENDING;
+    if (node->specFlags & AstCast::SPECFLAG_UNCONST)
+        castFlags |= CASTFLAG_FORCE_UNCONST;
+    SWAG_CHECK(TypeManager::makeCompatibles(context, typeNode->typeInfo, nullptr, exprNode, castFlags));
     if (context->result == ContextResult::Pending)
         return true;
 

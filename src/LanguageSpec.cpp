@@ -153,6 +153,7 @@ void LanguageSpec::setupNames()
     name_err     = "err";
     name_noerr   = "noerr";
     name_bit     = "bit";
+    name_unconst = "unconst";
 
     name_boundcheck  = "boundcheck";
     name_overflow    = "overflow";

@@ -740,6 +740,11 @@ bool Parser::doCast(AstNode* parent, AstNode** result)
         return error(node, Err(Syn0186));
     }
 
+    if (mdfFlags & MODIFIER_UNCONST)
+    {
+        node->specFlags |= AstCast::SPECFLAG_UNCONST;
+    }
+
     SWAG_CHECK(eatToken(TokenId::SymLeftParen, "after 'cast'"));
     SWAG_CHECK(doTypeExpression(node, EXPR_FLAG_NONE, &dummyResult));
     SWAG_CHECK(eatToken(TokenId::SymRightParen, "after the type expression"));

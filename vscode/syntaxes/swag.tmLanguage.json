@@ -436,7 +436,7 @@
       "patterns": [
         {
           "name": "constant.character.escape",
-          "match": "\\,(over|nodrop|bit|move|moveraw|up)\\b"
+          "match": "\\,(over|nodrop|bit|move|moveraw|up|unconst)\\b"
         }
       ]
     }

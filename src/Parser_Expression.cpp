@@ -777,6 +777,22 @@ bool Parser::doModifiers(Token& forNode, TokenId tokenId, uint32_t& mdfFlags)
             continue;
         }
 
+        if (token.text == g_LangSpec->name_unconst)
+        {
+            switch (opId)
+            {
+            case TokenId::KwdCast:
+                break;
+            default:
+                return error(token, Fmt(Err(Syn0126), token.ctext(), forNode.ctext()));
+            }
+
+            SWAG_VERIFY(!(mdfFlags & MODIFIER_UNCONST), error(token, Fmt(Err(Syn0125), token.ctext())));
+            mdfFlags |= MODIFIER_UNCONST;
+            SWAG_CHECK(eatToken());
+            continue;
+        }
+
         if (token.text == g_LangSpec->name_move)
         {
             switch (opId)
