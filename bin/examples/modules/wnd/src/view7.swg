@@ -21,6 +21,8 @@ enum EnumFlags
 
 struct AA
 {
+    tt: string = "static string"
+
     #[Category("Categ")]
 	#[SubCategory("SubCateg")]
     #[Name("<b>This is a name<b>: <i>italic<i>")]

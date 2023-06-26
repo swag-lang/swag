@@ -590,6 +590,14 @@ private impl PropertyList
             {
                 addString(f, ptrData)
             }
+            elif Reflection.isString(f.pointedType)
+            {
+                item := addItem(f, ptrData)
+                ed := EditBox.create(item.line, dref cast(*string) ptrData)
+                ed.editBoxFlags = .ReadOnly
+                //ed.enable(false)
+                item.editBox = ed
+            }
             elif Reflection.isBool(f.pointedType)
             {
                 addBool(f, ptrData)
