@@ -11,11 +11,11 @@ enum Enum
 #[Swag.EnumFlags]
 enum EnumFlags
 {
-    #[Description("This is something that needs to be done 1.")]
+    #[Description("This is the first value of enum flags")]
     Val1
     #[Description("This is something that needs to be done except if it not has do be done, and this is it.")]
     Val2
-    #[Description("This is something that needs to be done 3.")]
+    #[Description("This is the value 3 of enum flags")]
     Val3
 }
 

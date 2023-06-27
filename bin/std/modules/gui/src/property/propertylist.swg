@@ -467,8 +467,7 @@ private impl PropertyList
                 itemB.typeValue = v
                 itemB.ptrData = ptrData
                 itemB.extendFocus = 5
-
-                dispDesc := Reflection.getAttributeValue(v, PropertyList.Description, "desc")
+                itemB.filter = item.filter
 
                 line1 := Wnd.create'Wnd(edView)
                 line1.margin.x, line1.margin.z = 15
@@ -478,6 +477,9 @@ private impl PropertyList
 
                 ed := CheckButton.create(line1, "", {0, 0, 30, 0})
                 ed.dockStyle = .Left
+
+                dispDesc := Reflection.getAttributeValue(v, PropertyList.Description, "desc")
+                itemB.filter += cast(string) dispDesc
 
                 with label1 := Label.create(line1, "", {30, 0, position.width - 30})
                 {
@@ -494,7 +496,6 @@ private impl PropertyList
                     line1.applyLayout()
                 }
 
-                itemB.filter = dispDesc
                 itemB.line = line1
                 itemB.forceShow = item.line
                 itemB.checkBox = ed
@@ -776,5 +777,6 @@ impl PropertyList
         }
 
         applyLayout()
+        scrollWnd.view.sendResizeEvent()
     }
 }

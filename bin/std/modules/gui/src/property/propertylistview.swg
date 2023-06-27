@@ -17,6 +17,7 @@ impl IWnd for PropertyListView
 
         applyLayout()
 
+        var lastItem: *PropertyListItem
         visit item: ed.items
         {
             if item.label
@@ -25,12 +26,16 @@ impl IWnd for PropertyListView
                 item.labelDesc.autoHeight()
             item.onResize.call(item)
             item.line.sendResizeEvent()
+            if item.line.isVisible()
+                lastItem = item
         }
 
         applyLayout()
 
         // Vertical size is the bottom position of the last line
-        bk := ed.items.back()
-        ed.scrollWnd.setScrollSize(0, bk.line.position.bottom() + 10)
+        if lastItem
+            ed.scrollWnd.setScrollSize(0, lastItem.line.position.bottom() + 10)
+        else
+            ed.scrollWnd.setScrollSize(0, 0)
     }
 }
