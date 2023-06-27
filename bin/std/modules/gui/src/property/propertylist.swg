@@ -68,7 +68,7 @@ struct PropertyListItem
 
 private impl PropertyList
 {
-    func onEvent(list: *PropertyList, item: *PropertyListItem, wnd: *Wnd, evt: *Event)->bool
+    func onEvent(item: *PropertyListItem, wnd: *Wnd, evt: *Event)->bool
     {
         switch evt.kind
         {
@@ -409,7 +409,7 @@ private impl PropertyList
         line.wndFlags.set(.PreChildsPaint)
         item := items.addNewPtr()
         item.line = line
-        line.hookOnEvent = closure|self, item|(wnd, evt) { return onEvent(self, item, wnd, evt); }
+        line.hookOnEvent = closure|item|(wnd, evt) { return onEvent(item, wnd, evt); }
         item.type = f.pointedType
         item.typeValue = f
         item.ptrData = ptrData
@@ -473,7 +473,7 @@ private impl PropertyList
                 line1.margin.x, line1.margin.z = 15
                 line1.margin.y = enumFlagsMarginBefore
                 line1.wndFlags.set(.PreChildsPaint)
-                line1.hookOnEvent = closure|self, itemB|(wnd, evt) { return onEvent(self, itemB, wnd, evt); }
+                line1.hookOnEvent = closure|itemB|(wnd, evt) { return onEvent(itemB, wnd, evt); }
 
                 ed := CheckButton.create(line1, "", {0, 0, 30, 0})
                 ed.dockStyle = .Left
