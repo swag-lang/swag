@@ -251,6 +251,7 @@ bool SemanticJob::collectAttributes(SemanticContext* context, AstNode* forNode, 
 {
     if (!attrUse)
         attrUse = forNode->sourceFile->astAttrUse;
+
     if (!attrUse)
         return true;
 

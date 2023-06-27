@@ -593,6 +593,7 @@ bool ByteCodeGenJob::generateStruct_opInit(ByteCodeGenContext* context, TypeInfo
         {
             ScopedLock lk1(cxt.bc->sourceFile->module->mutexByteCode);
             cxt.bc->sourceFile->module->byteCodePrintBC.push_back(cxt.bc);
+            cxt.bc->print();
         }
         return true;
     }
@@ -608,6 +609,7 @@ bool ByteCodeGenJob::generateStruct_opInit(ByteCodeGenContext* context, TypeInfo
         {
             ScopedLock lk1(cxt.bc->sourceFile->module->mutexByteCode);
             cxt.bc->sourceFile->module->byteCodePrintBC.push_back(cxt.bc);
+            cxt.bc->print();
         }
         return true;
     }
@@ -757,6 +759,7 @@ bool ByteCodeGenJob::generateStruct_opInit(ByteCodeGenContext* context, TypeInfo
     {
         ScopedLock lk1(cxt.bc->sourceFile->module->mutexByteCode);
         cxt.bc->sourceFile->module->byteCodePrintBC.push_back(cxt.bc);
+        cxt.bc->print();
     }
 
     return true;
@@ -864,6 +867,7 @@ bool ByteCodeGenJob::generateStruct_opDrop(ByteCodeGenContext* context, TypeInfo
     {
         ScopedLock lk1(cxt.bc->sourceFile->module->mutexByteCode);
         cxt.bc->sourceFile->module->byteCodePrintBC.push_back(cxt.bc);
+        cxt.bc->print();
     }
 
     sourceFile->module->addByteCodeFunc(opDrop);
@@ -973,6 +977,7 @@ bool ByteCodeGenJob::generateStruct_opPostCopy(ByteCodeGenContext* context, Type
     {
         ScopedLock lk1(cxt.bc->sourceFile->module->mutexByteCode);
         cxt.bc->sourceFile->module->byteCodePrintBC.push_back(cxt.bc);
+        cxt.bc->print();
     }
 
     sourceFile->module->addByteCodeFunc(opPostCopy);
@@ -1080,6 +1085,7 @@ bool ByteCodeGenJob::generateStruct_opPostMove(ByteCodeGenContext* context, Type
     {
         ScopedLock lk1(cxt.bc->sourceFile->module->mutexByteCode);
         cxt.bc->sourceFile->module->byteCodePrintBC.push_back(cxt.bc);
+        cxt.bc->print();
     }
 
     sourceFile->module->addByteCodeFunc(opPostMove);

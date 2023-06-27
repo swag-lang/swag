@@ -37,7 +37,8 @@ struct SourceFile
     Module*     imported              = nullptr;
     char*       buffer                = nullptr;
 
-    uint64_t writeTime = 0;
+    uint64_t writeTime  = 0;
+    uint64_t globalAttr = 0;
 
     uint32_t  offsetStartBuffer = 0;
     uint32_t  bufferSize        = 0;
@@ -47,7 +48,6 @@ struct SourceFile
     uint32_t  numWarnings       = 0;
     uint32_t  indexInModule     = UINT32_MAX;
     BuildPass buildPass         = BuildPass::Full;
-    uint32_t  globalAttr        = 0;
 
     bool isExternal        = false;
     bool isCfgFile         = false;

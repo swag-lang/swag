@@ -1511,10 +1511,11 @@ bool ByteCodeGenJob::emitReturnByCopyAddress(ByteCodeGenContext* context, AstNod
 
     if (testReturn->parent->kind == AstNodeKind::FuncCallParam &&
         testReturn->parent->parent->parent->kind == AstNodeKind::Identifier &&
-        testReturn->parent->parent->parent->typeInfo->isStruct() &&
         testReturn->parent->parent->parent->parent->parent->kind == AstNodeKind::TypeExpression &&
         testReturn->parent->parent->parent->parent->parent->specFlags & AstType::SPECFLAG_HAS_STRUCT_PARAMETERS &&
-        testReturn->parent->parent->parent->parent->parent->parent->kind == AstNodeKind::VarDecl)
+        testReturn->parent->parent->parent->parent->parent->parent->kind == AstNodeKind::VarDecl &&
+        testReturn->parent->parent->parent->typeInfo &&
+        testReturn->parent->parent->parent->typeInfo->isStruct())
     {
         auto varNode  = CastAst<AstVarDecl>(testReturn->parent->parent->parent->parent->parent->parent, AstNodeKind::VarDecl, AstNodeKind::ConstDecl);
         auto resolved = varNode->resolvedSymbolOverload;

@@ -733,6 +733,7 @@ JobResult ByteCodeGenJob::execute()
                 {
                     ScopedLock lk(module->mutexByteCode);
                     module->byteCodePrintBC.push_back(context.bc);
+                    context.bc->print();
                 }
             }
         }

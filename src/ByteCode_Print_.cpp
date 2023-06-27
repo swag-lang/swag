@@ -493,8 +493,9 @@ void ByteCode::print(ByteCodeInstruction* curIp)
     {
         g_Log.print(", ");
         g_Log.print(callt->name.c_str());
-        g_Log.eol();
     }
+
+    g_Log.eol();
 
     uint32_t                     lastLine = UINT32_MAX;
     SourceFile*                  lastFile = nullptr;

@@ -145,11 +145,13 @@ bool SemanticJob::executeCompilerNode(SemanticContext* context, AstNode* node)
             else
             {
                 SWAG_ASSERT(!context->node->hasExtMisc() || !context->node->extMisc()->resolvedUserOpSymbolOverload);
+                auto saveTypeStruct = node->typeInfo;
 
                 // opCount
                 VectorNative<AstNode*> params;
                 params.push_back(node);
                 SWAG_CHECK(resolveUserOp(context, g_LangSpec->name_opCount, nullptr, nullptr, node, params));
+                node->typeInfo = saveTypeStruct;
                 if (context->result != ContextResult::Done)
                     return true;
 
@@ -173,6 +175,7 @@ bool SemanticJob::executeCompilerNode(SemanticContext* context, AstNode* node)
                 params.push_back(&tmpNode);
                 params.push_back(&tmpNode);
                 SWAG_CHECK(resolveUserOp(context, g_LangSpec->name_opSlice, nullptr, nullptr, node, params));
+                node->typeInfo = saveTypeStruct;
                 if (context->result != ContextResult::Done)
                     return true;
 
@@ -222,6 +225,7 @@ bool SemanticJob::executeCompilerNode(SemanticContext* context, AstNode* node)
                     params.clear();
                     params.push_back(node);
                     SWAG_CHECK(resolveUserOp(context, g_LangSpec->name_opDrop, nullptr, nullptr, node, params));
+                    node->typeInfo = saveTypeStruct;
                     if (context->result != ContextResult::Done)
                         return true;
 
@@ -259,6 +263,10 @@ bool SemanticJob::executeCompilerNode(SemanticContext* context, AstNode* node)
             return true;
         }
     }
+
+    SWAG_CHECK(collectAttributes(context, node, nullptr));
+    if (node->attributeFlags & ATTRIBUTE_PRINT_BC)
+        node->extByteCode()->bc->print();
 
     SWAG_CHECK(module->executeNode(sourceFile, node, context, &execParams));
     return true;
