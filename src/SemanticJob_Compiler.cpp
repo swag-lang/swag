@@ -217,6 +217,29 @@ bool SemanticJob::executeCompilerNode(SemanticContext* context, AstNode* node)
                     return context->report(diag);
                 }
 
+                // opPostMove
+                SymbolName* symPostMove = nullptr;
+                SWAG_CHECK(hasUserOp(context, g_LangSpec->name_opPostMove, (TypeInfoStruct*) realType, &symPostMove));
+                if (symPostMove)
+                {
+                    params.clear();
+                    params.push_back(node);
+                    SWAG_CHECK(resolveUserOp(context, g_LangSpec->name_opPostMove, nullptr, nullptr, node, params));
+                    node->typeInfo = saveTypeStruct;
+                    if (context->result != ContextResult::Done)
+                        return true;
+
+                    execParams.specReturnOpPostMove         = extension->resolvedUserOpSymbolOverload;
+                    extension->resolvedUserOpSymbolOverload = nullptr;
+                    SWAG_ASSERT(execParams.specReturnOpPostMove);
+
+                    {
+                        ByteCodeGenJob::askForByteCode(context->job, execParams.specReturnOpPostMove->node, ASKBC_WAIT_DONE | ASKBC_WAIT_RESOLVED | ASKBC_WAIT_SEMANTIC_RESOLVED);
+                        if (context->result != ContextResult::Done)
+                            return true;
+                    }
+                }
+
                 // opDrop
                 SymbolName* symDrop = nullptr;
                 SWAG_CHECK(hasUserOp(context, g_LangSpec->name_opDrop, (TypeInfoStruct*) realType, &symDrop));

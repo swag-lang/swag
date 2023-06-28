@@ -98,6 +98,14 @@ bool Module::computeExecuteResult(ByteCodeRunContext* runContext, SourceFile* so
         auto self     = Allocator::alloc(selfSize);
         memcpy(self, (void*) runContext->registersRR[0].pointer, realType->sizeOf);
 
+        // Call opPostMove if defined
+        if (params->specReturnOpPostMove)
+        {
+            opParams.callParams.clear();
+            opParams.callParams.push_back((uint64_t) self);
+            SWAG_CHECK(executeNode(sourceFile, params->specReturnOpPostMove->node, callerContext, &opParams));
+        }
+
         // Get number of elements by calling 'opCount'
         SWAG_ASSERT(params->specReturnOpCount);
         opParams.callParams.push_back((uint64_t) self);
@@ -133,26 +141,34 @@ bool Module::computeExecuteResult(ByteCodeRunContext* runContext, SourceFile* so
         }
 
         SWAG_CHECK(callerContext->checkSizeOverflow("array", sizeSlice, SWAG_LIMIT_ARRAY_SIZE));
+        auto addrSrc = runContext->registersRR[0].pointer;
 
-        // Copy the content of the slice to the storage segment
-        auto     storageSegment             = SemanticJob::getConstantSegFromContext(node);
-        uint8_t* addrDst                    = nullptr;
-        auto     offsetStorage              = storageSegment->reserve(sizeSlice, &addrDst);
-        node->computedValue->storageOffset  = offsetStorage;
-        node->computedValue->storageSegment = storageSegment;
-        auto addrSrc                        = runContext->registersRR[0].pointer;
-        memcpy(addrDst, (const void*) addrSrc, sizeSlice);
+        if (concreteType->isString())
+        {
+            node->typeInfo            = g_TypeMgr->typeInfoString;
+            node->computedValue->text = Utf8{(const char*) addrSrc, sizeSlice};
+        }
+        else
+        {
+            // Copy the content of the slice to the storage segment
+            auto     storageSegment             = SemanticJob::getConstantSegFromContext(node);
+            uint8_t* addrDst                    = nullptr;
+            auto     offsetStorage              = storageSegment->reserve(sizeSlice, &addrDst);
+            node->computedValue->storageOffset  = offsetStorage;
+            node->computedValue->storageSegment = storageSegment;
+            memcpy(addrDst, (const void*) addrSrc, sizeSlice);
 
-        // Then transform the returned type to a static array
-        auto typeArray         = makeType<TypeInfoArray>();
-        node->typeInfo         = typeArray;
-        typeArray->pointedType = sliceType;
-        typeArray->finalType   = sliceType;
-        typeArray->count       = runContext->registersRR[1].u32;
-        typeArray->totalCount  = runContext->registersRR[1].u32;
-        typeArray->sizeOf      = sizeSlice;
-        typeArray->computeName();
-        typeArray->setConst();
+            // Then transform the returned type to a static array
+            auto typeArray         = makeType<TypeInfoArray>();
+            typeArray->pointedType = sliceType;
+            typeArray->finalType   = sliceType;
+            typeArray->count       = runContext->registersRR[1].u32;
+            typeArray->totalCount  = runContext->registersRR[1].u32;
+            typeArray->sizeOf      = sizeSlice;
+            typeArray->computeName();
+            typeArray->setConst();
+            node->typeInfo = typeArray;
+        }
 
         // Call opDrop on the original struct if defined
         if (params->specReturnOpDrop)

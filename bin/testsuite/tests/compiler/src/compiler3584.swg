@@ -35,7 +35,7 @@ func toto()->A
     //{
         r := toto()
         @assert(cast(string) r == "abcdef")
-        //@print(@typeof(r).name)
+        //@print(cast(string) r)
      //   return cast(string) r //.toString()
     //}
 
