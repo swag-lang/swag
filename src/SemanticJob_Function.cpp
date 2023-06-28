@@ -1443,6 +1443,48 @@ bool SemanticJob::resolveReturn(SemanticContext* context)
             return true;
     }
 
+    // :opAffectParam
+    if (child->hasExtMisc() && child->extMisc()->resolvedUserOpSymbolOverload)
+    {
+        auto overload = child->extMisc()->resolvedUserOpSymbolOverload;
+        if (overload->symbol->name == g_LangSpec->name_opAffect || overload->symbol->name == g_LangSpec->name_opAffectSuffix)
+        {
+            SWAG_ASSERT(child->castedTypeInfo);
+            child->extMisc()->resolvedUserOpSymbolOverload = nullptr;
+            child->castedTypeInfo                          = nullptr;
+
+            auto varNode = Ast::newVarDecl(context->sourceFile, Fmt("__2tmp_%d", g_UniqueID.fetch_add(1)), node);
+            varNode->inheritTokenLocation(child);
+
+            auto typeExpr      = Ast::newTypeExpression(context->sourceFile, varNode);
+            typeExpr->typeInfo = child->typeInfo;
+            typeExpr->flags |= AST_NO_SEMANTIC;
+            varNode->type = typeExpr;
+
+            CloneContext cloneContext;
+            cloneContext.parent      = varNode;
+            cloneContext.parentScope = child->ownerScope;
+            varNode->assignment      = child->clone(cloneContext);
+
+            Ast::removeFromParent(child);
+
+            Ast::removeFromParent(varNode);
+            auto idRef = Ast::newIdentifierRef(context->sourceFile, varNode->token.text, node);
+            Ast::addChildBack(node, varNode);
+
+            idRef->allocateExtension(ExtensionKind::Misc);
+            idRef->extMisc()->exportNode = child;
+            idRef->allocateExtension(ExtensionKind::Owner);
+            idRef->extOwner()->nodesToFree.push_back(child);
+
+            context->job->nodes.push_back(node->childs.front());
+            context->job->nodes.push_back(varNode);
+            varNode->semFlags |= SEMFLAG_ONCE;
+            context->result = ContextResult::NewChilds;
+            return true;
+        }
+    }
+
     // If we are returning a local variable, we can do a move
     if (child->resolvedSymbolOverload && (child->resolvedSymbolOverload->flags & OVERLOAD_VAR_LOCAL))
     {

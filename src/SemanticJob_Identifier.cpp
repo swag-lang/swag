@@ -487,13 +487,11 @@ bool SemanticJob::setSymbolMatchCallParams(SemanticContext* context, AstIdentifi
     for (size_t i = 0; i < maxParams; i++)
     {
         auto nodeCall = CastAst<AstFuncCallParam>(identifier->callParameters->childs[i], AstNodeKind::FuncCallParam);
-
         if (nodeCall->hasExtMisc() && nodeCall->extMisc()->resolvedUserOpSymbolOverload)
         {
             auto overload = nodeCall->extMisc()->resolvedUserOpSymbolOverload;
             if (overload->symbol->name == g_LangSpec->name_opAffect || overload->symbol->name == g_LangSpec->name_opAffectSuffix)
             {
-                SWAG_ASSERT(nodeCall->extMisc()->resolvedUserOpSymbolOverload);
                 SWAG_ASSERT(nodeCall->castedTypeInfo);
                 nodeCall->extMisc()->resolvedUserOpSymbolOverload = nullptr;
                 nodeCall->castedTypeInfo                          = nullptr;
@@ -505,10 +503,6 @@ bool SemanticJob::setSymbolMatchCallParams(SemanticContext* context, AstIdentifi
                 Ast::removeFromParent(varNode);
                 Ast::addChildFront(identifier, varNode);
 
-                CloneContext cloneContext;
-                cloneContext.parent      = varNode;
-                cloneContext.parentScope = identifier->ownerScope;
-
                 auto typeExpr      = Ast::newTypeExpression(sourceFile, varNode);
                 typeExpr->typeInfo = nodeCall->typeInfo;
                 typeExpr->flags |= AST_NO_SEMANTIC;
@@ -517,7 +511,11 @@ bool SemanticJob::setSymbolMatchCallParams(SemanticContext* context, AstIdentifi
                 auto assign = nodeCall->childs.front();
                 if (assign->kind == AstNodeKind::Cast)
                     assign = assign->childs.back();
-                varNode->assignment = assign->clone(cloneContext);
+
+                CloneContext cloneContext;
+                cloneContext.parent      = varNode;
+                cloneContext.parentScope = identifier->ownerScope;
+                varNode->assignment      = assign->clone(cloneContext);
 
                 Ast::removeFromParent(nodeCall);
 
