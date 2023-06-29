@@ -2140,6 +2140,11 @@ static bool optimizePassSanityStack(ByteCodeOptContext* context, Context& cxt)
             break;
 
         case ByteCodeOp::LambdaCall:
+            SWAG_CHECK(getRegister(ra, cxt, ip->a.u32));
+            SWAG_CHECK(checkNotNull(cxt, ra));
+            invalidateCurStateStack(cxt);
+            break;
+
         case ByteCodeOp::LocalCall:
         case ByteCodeOp::ForeignCall:
             invalidateCurStateStack(cxt);
