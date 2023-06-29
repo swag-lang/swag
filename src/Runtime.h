@@ -14,6 +14,7 @@ const uint64_t SAFETY_BOOL        = 0x0020;
 const uint64_t SAFETY_NAN         = 0x0040;
 const uint64_t SAFETY_SANITY      = 0x0080;
 const uint64_t SAFETY_UNREACHABLE = 0x0100;
+const uint64_t SAFETY_NULL        = 0x0200;
 const uint64_t SAFETY_ALL         = 0xFFFF;
 
 const int SWAG_EXCEPTION_TO_PREV_HANDLER     = 665;

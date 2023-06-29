@@ -141,6 +141,7 @@ namespace Swag
     // | 'bool'         | Panic if a 'bool' does not have a valid value ('true' or 'false')
     // | 'nan'          | Panic if a 'nan' is used in a float arithmetic operation
     // | 'sanity'       | Do a 'sanity' check (per function)
+    // | 'null'         | Panic on derefencing some null pointers
     // If 'what' is null or empty, every options are will be affected.
     #[AttrUsage(AttributeUsage.All|AttributeUsage.File)]
     #[AttrMulti]
@@ -643,6 +644,8 @@ namespace Swag
     const SafetyBool        = 0x0020
     const SafetyNaN         = 0x0040
     const SafetySanity      = 0x0080
+    const SafetyUnreachable = 0x0100
+    const SafetyNullCheck   = 0x0200
     const SafetyAll         = 0xFFFF
 
     // 'LLVM' backend specific options

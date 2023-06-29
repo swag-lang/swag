@@ -1190,6 +1190,8 @@ bool ByteCodeGenJob::emitLambdaCall(ByteCodeGenContext* context)
         EMIT_INST2(context, ByteCodeOp::DeRef64, node->extMisc()->additionalRegisterRC[0], node->extMisc()->additionalRegisterRC[0]);
     }
 
+    emitSafetyNullCheck(context, node->extMisc()->additionalRegisterRC[0]);
+
     SWAG_CHECK(emitCall(context, allParams, nullptr, (AstVarDecl*) overload->node, node->extMisc()->additionalRegisterRC, false, true, true));
     SWAG_ASSERT(context->result == ContextResult::Done);
     freeRegisterRC(context, node->extMisc()->additionalRegisterRC);

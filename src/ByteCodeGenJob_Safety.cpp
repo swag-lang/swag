@@ -18,6 +18,9 @@ const char* ByteCodeGenJob::safetyMsg(SafetyMsg msg, TypeInfo* toType, TypeInfo*
     {
         switch (msg)
         {
+        case SafetyMsg::NullCheck:
+            typedMsg[m][0][0] = Err(Saf0001);
+            break;
         case SafetyMsg::InvalidBool:
             typedMsg[m][0][0] = Err(Saf0020);
             break;
@@ -141,6 +144,13 @@ void ByteCodeGenJob::emitSafetyNotZero(ByteCodeGenContext* context, uint32_t r, 
     else
         SWAG_ASSERT(false);
     EMIT_INST0(context, ByteCodeOp::InternalPanic)->d.pointer = (uint8_t*) message;
+}
+
+void ByteCodeGenJob::emitSafetyNullCheck(ByteCodeGenContext* context, uint32_t r)
+{
+    if (!mustEmitSafety(context, SAFETY_NULL))
+        return;
+    emitSafetyNotZero(context, r, 64, safetyMsg(SafetyMsg::NullCheck));
 }
 
 bool ByteCodeGenJob::emitSafetyUnreachable(ByteCodeGenContext* context)

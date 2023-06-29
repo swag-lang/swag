@@ -64,6 +64,7 @@ enum class SafetyMsg
     IntrinsicLog10,
     IntrinsicASin,
     IntrinsicACos,
+    NullCheck,
     Count,
 };
 
@@ -410,6 +411,7 @@ struct ByteCodeGenJob : public Job
     static const char* safetyMsg(SafetyMsg msg, TypeInfo* toType = nullptr, TypeInfo* fromType = nullptr);
     static void        emitAssert(ByteCodeGenContext* context, uint32_t reg, const char* msg = nullptr);
     static bool        mustEmitSafety(ByteCodeGenContext* context, uint16_t what);
+    static void        emitSafetyNullCheck(ByteCodeGenContext* context, uint32_t r);
     static void        emitSafetyNotZero(ByteCodeGenContext* context, uint32_t r, uint32_t bits, const char* message);
     static void        emitSafetyDivZero(ByteCodeGenContext* context, uint32_t r, uint32_t bits);
     static void        emitSafetyBoundCheckLowerU32(ByteCodeGenContext* context, uint32_t r0, uint32_t r1);
