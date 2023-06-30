@@ -1814,14 +1814,20 @@ void X64Gen::emit_Call_Parameters(TypeInfoFuncAttr* typeFunc, const VectorNative
         }
     }
 
-    // If the closure is assigned to a lambda, then we must not use the first parameter (the first
-    // parameter is the capture context, which does not exist in a normal function)
+    // If a lambda is assigned to a closure, then we must not use the first parameter (the first
+    // parameter is the capture context, which does not exist in a normal lambda function).
     // But as this is dynamic, we need to have two call path : one for the closure (normal call), and
     // one for the lambda (omit first parameter)
     if (typeFunc->isClosure())
     {
         SWAG_ASSERT(pushParams3[0].type == X64PushParamType::Reg);
-        auto reg = (uint32_t) pushParams3[0].reg;
+        uint32_t reg;
+
+        // First register is closure context, except if variadic, where we have 2 registers for the slice first
+        // :VariadicAndClosure
+        reg = (uint32_t) pushParams3[0].reg;
+        if (typeFunc->isVariadic())
+            reg = (uint32_t) pushParams3[2].reg;
 
         emit_Load64_Indirect(regOffset(reg), RAX);
         emit_TestN(RAX, RAX, X64Bits::B64);
@@ -1843,8 +1849,18 @@ void X64Gen::emit_Call_Parameters(TypeInfoFuncAttr* typeFunc, const VectorNative
         // Update jump to closure call
         *seekPtrClosure = (uint8_t) (concat.totalCount() - seekJmpClosure);
 
-        pushParams3.erase(0);
-        pushParamsTypes.erase(0);
+        // First register is closure context, except if variadic, where we have 2 registers for the slice first
+        // :VariadicAndClosure
+        if (typeFunc->isVariadic())
+        {
+            pushParams3.erase(2);
+            pushParamsTypes.erase(2);
+        }
+        else
+        {
+            pushParams3.erase(0);
+            pushParamsTypes.erase(0);
+        }
         emit_Call_Parameters(typeFunc, pushParams3, pushParamsTypes, retCopyAddr);
 
         *seekPtrAfterClosure = (uint8_t) (concat.totalCount() - seekJmpAfterClosure);

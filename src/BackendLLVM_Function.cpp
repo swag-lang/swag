@@ -4997,7 +4997,12 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
                     llvm::BasicBlock* blockClosure = llvm::BasicBlock::Create(context, "", func);
 
                     // Test closure context pointer. If null, this is a lambda.
-                    auto v0 = builder.CreateLoad(I64_TY(), GEP64(allocR, pushRAParams.back()));
+                    // :VariadicAndClosure
+                    auto rc = pushRAParams[pushRAParams.size() - 1];
+                    if (typeFuncCall->isVariadic())
+                        rc = pushRAParams[pushRAParams.size() - 3];
+
+                    auto v0 = builder.CreateLoad(I64_TY(), GEP64(allocR, rc));
                     auto v2 = builder.CreateIsNotNull(v0);
                     builder.CreateCondBr(v2, blockClosure, blockLambda);
 

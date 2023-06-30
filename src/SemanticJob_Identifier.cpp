@@ -2385,6 +2385,11 @@ bool SemanticJob::ufcsSetFirstParam(SemanticContext* context, AstIdentifierRef* 
     fctCallParam->flags |= AST_TO_UFCS | AST_GENERATED;
     fctCallParam->inheritOrFlag(node, AST_IN_MIXIN);
 
+    // If this is a closure, then parameter index 0 is for the embedded struct.
+    // So ufcs will have index 1.
+    if (match.symbolOverload->typeInfo->isClosure())
+        fctCallParam->indexParam = 1;
+
     SWAG_ASSERT(match.solvedParameters.size() > 0);
     SWAG_ASSERT(match.solvedParameters[0]->index == 0);
     fctCallParam->resolvedParameter = match.solvedParameters[0];
