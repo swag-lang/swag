@@ -164,6 +164,7 @@ void LanguageSpec::setupNames()
     name_bool        = "bool";
     name_nan         = "nan";
     name_sanity      = "sanity";
+    name_null        = "null";
 
     name_name     = "name";
     name_msg      = "msg";
