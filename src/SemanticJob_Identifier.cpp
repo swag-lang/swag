@@ -3350,7 +3350,6 @@ bool SemanticJob::fillMatchContextCallParameters(SemanticContext* context, Symbo
     {
         if (!(identifier->specFlags & AstIdentifier::SPECFLAG_CLOSURE_FIRST_PARAM))
         {
-            SWAG_VERIFY(!ufcsFirstParam, context->report({ufcsFirstParam, Err(Err0873)}));
             Ast::constructNode(&context->job->closureFirstParam);
             context->job->closureFirstParam.kind     = AstNodeKind::FuncCallParam;
             context->job->closureFirstParam.typeInfo = g_TypeMgr->makePointerTo(g_TypeMgr->typeInfoVoid);

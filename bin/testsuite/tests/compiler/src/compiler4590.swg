@@ -7,10 +7,12 @@ struct V
 {
     var v: V
     var fn: closure(V)
+    var t: s32 = 40
 
-    fn = func(v)
+    fn = closure|t|(v)
     {
         @assert(v.x == 666)
+        @assert(t == 40)
     }
 
     v.fn()

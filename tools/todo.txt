@@ -78,8 +78,6 @@ safety, exit stackframe (return local value)
 -------------------------------------
 on doit exporter les implementation d'interface pour un truc public ?
 -------------------------------------
-closure & ufcs (exemple 3477)
--------------------------------------
 context & tempallocator, y'a vraiment aucun usage dans std, c'est pas normal, faut se pencher sur l'utilisation de ce truc
 -------------------------------------
 cast interface vers struct (avec safety) au lieu de struct := cast(*Toto) @dataof(Interface)
