@@ -71,6 +71,12 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
         inst->b.u64 = node->ownerFct->parameters->childs.front()->resolvedSymbolOverload->computedValue.storageOffset;
         inst->c.u64 = 0;
 
+        // :VariadicAndClosure
+        // If function is variable, then parameter of the capture context is 2 (after the slice), and not 0.
+        auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(node->ownerFct->typeInfo, TypeInfoKind::FuncAttr);
+        if (typeFunc->isVariadic())
+            inst->c.u64 = 2;
+
         if (typeInfo->isArray() ||
             typeInfo->isListTuple() ||
             typeInfo->isListArray() ||
