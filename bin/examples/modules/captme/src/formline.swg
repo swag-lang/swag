@@ -127,10 +127,11 @@ impl IForm for FormLine
 
         d := vb - va
         d.normalizeSafe()
-        v1 := bound(va, vb, d * l0, d * l1)
+        d1 := d.cross(1)
+        d1.normalizeSafe()
 
-        d = d.cross(1)
-        v2 := bound(va, vb, d * w0, d * w1)
+        v1 := bound(va, vb, d*l0 + d1*w0, d*l1 + d1*w1)
+        v2 := bound(va, vb, d*l0 - d1*w0, d*l1 - d1*w1)
 
         v1.x = Math.min(v1.x, v2.x)
         v1.y = Math.min(v1.y, v2.y)
@@ -204,8 +205,9 @@ impl IForm for FormLine
 
     mtd paint(app: *Application, painter: *Painter, z: f32, quickMode: bool)
     {
-        bSize := adaptSize(borderSize, MinBorderSize, MaxBorderSize, z, quickMode)
         computePaintCoords(z)
+
+        bSize := adaptSize(borderSize, MinBorderSize, MaxBorderSize, z, quickMode)
         pen := Pen.createDash(dashStyle, borderColor, bSize)
         pen.beginCapStyle  = beginCap
         pen.endCapStyle    = endCap
