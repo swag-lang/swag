@@ -17,7 +17,7 @@ impl AA
 
 impl BB for AA
 {
-    func toto(using self, ptr: *u8)
+    func impl toto(using self, ptr: *u8)
     {
         toto(0)
     }

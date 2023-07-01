@@ -22,7 +22,7 @@ struct IconBar
 
 impl IWnd for IconBar
 {
-    mtd onComputeStateEvent(evt: *CommandStateEvent)
+    mtd impl onComputeStateEvent(evt: *CommandStateEvent)
     {
         evt.accepted = false
         sigUpdateState.call(evt)

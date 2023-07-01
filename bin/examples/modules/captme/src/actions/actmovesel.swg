@@ -12,7 +12,7 @@ const CmdIdMoveSelBottom1   = "CmdIdMoveSelBottom1"
 struct ActionAlign {}
 impl IActionUI for ActionAlign
 {
-    mtd accept(cxt: ActionContext)->bool
+    mtd impl accept(cxt: ActionContext)->bool
     {
         switch cxt.id
         {
@@ -30,7 +30,7 @@ impl IActionUI for ActionAlign
         return false
     }
 
-    mtd update(cxt: ActionContext, evt: *CommandStateEvent)->bool
+    mtd impl update(cxt: ActionContext, evt: *CommandStateEvent)->bool
     {
         main := cast(*MainWnd) cxt.wnd
 
@@ -50,7 +50,7 @@ impl IActionUI for ActionAlign
         return true
     }
 
-    mtd execute(cxt: ActionContext)->bool
+    mtd impl execute(cxt: ActionContext)->bool
     {
         main := cast(*MainWnd) cxt.wnd
         capture := main.getCapture()

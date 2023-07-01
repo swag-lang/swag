@@ -157,7 +157,7 @@ impl IAllocator for ScratchAllocator
         maxLeak = @max(maxLeak, totalLeak)
     }
 
-    mtd req(request: *AllocatorRequest)
+    mtd impl req(request: *AllocatorRequest)
     {
         @assert(block != null)
         switch request.mode

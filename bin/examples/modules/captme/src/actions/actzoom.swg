@@ -8,7 +8,7 @@ const CmdIdZoomOut  = "CmdIdZoomOut"
 struct ActionZoom {}
 impl IActionUI for ActionZoom
 {
-    mtd accept(cxt: ActionContext)->bool
+    mtd impl accept(cxt: ActionContext)->bool
     {
         switch cxt.id
         {
@@ -22,7 +22,7 @@ impl IActionUI for ActionZoom
         return false
     }
 
-    mtd update(cxt: ActionContext, evt: *CommandStateEvent)->bool
+    mtd impl update(cxt: ActionContext, evt: *CommandStateEvent)->bool
     {
         main := cast(*MainWnd) cxt.wnd
         capture := main.getCapture()
@@ -53,7 +53,7 @@ impl IActionUI for ActionZoom
         return true
     }
 
-    mtd execute(cxt: ActionContext)->bool
+    mtd impl execute(cxt: ActionContext)->bool
     {
         main := cast(*MainWnd) cxt.wnd
         view := main.editWnd.editView

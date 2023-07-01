@@ -587,12 +587,12 @@ public struct EncodeOptions
 
 public impl IImageEncoder for Encoder
 {
-    mtd canEncode(fileName: string)->bool
+    mtd impl canEncode(fileName: string)->bool
     {
         return Path.getExtensionLowerCase(fileName) == ".png"
     }
 
-    mtd encode(result: *ConcatBuffer, image: Image, options: any) throw
+    mtd impl encode(result: *ConcatBuffer, image: Image, options: any) throw
     {
         if @dataof(options) != null
         {

@@ -16,7 +16,7 @@ interface I
 
 impl I for AA
 {
-    mtd toto()
+    mtd impl toto()
     {
         @assert(x == 555)
     }

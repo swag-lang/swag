@@ -8,7 +8,7 @@ struct A {}
 var G = 0
 impl I for A
 {
-    mtd toto(x: s32 = 20)
+    mtd impl toto(x: s32 = 20)
     {
         G += x
     }

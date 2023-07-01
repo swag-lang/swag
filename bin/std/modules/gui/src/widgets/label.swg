@@ -27,7 +27,7 @@ struct Label
 
 impl IWnd for Label
 {
-    mtd onPaintEvent(evt: *PaintEvent)
+    mtd impl onPaintEvent(evt: *PaintEvent)
     {
         bc      := evt.bc
         theme   := getTheme()
@@ -144,7 +144,7 @@ impl Label
         invalidate()
         autoHeight()
     }
-	
+
 	// Get the text
 	mtd getText()->string
 	{

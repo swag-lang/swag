@@ -213,10 +213,27 @@ bool SemanticJob::resolveImplFor(SemanticContext* context)
         auto childFct = CastAst<AstFuncDecl>(child, AstNodeKind::FuncDecl);
 
         // We need to search the function (as a variable) in the interface
-        // If not found, then this is a normal function...
         auto itfSymbol = typeInterface->findChildByNameNoLock(child->token.text); // O(n) !
-        if (!itfSymbol)
+
+        // Must be an 'impl' function
+        if (!(childFct->specFlags & AstFuncDecl::SPECFLAG_IMPL))
+        {
+            // Cannot have the same name as a function of the interface
+            if (itfSymbol)
+            {
+                Diagnostic diag{childFct, childFct->tokenName, Fmt(Err(Err0280), childFct->token.text.c_str(), typeInterface->name.c_str())};
+                auto       hlp = Diagnostic::help(Hlp(Hlp0024));
+                return context->report(diag, hlp);
+            }
+
             continue;
+        }
+
+        if (!itfSymbol)
+        {
+            Diagnostic diag{childFct, childFct->tokenName, Fmt(Err(Err0024), childFct->token.text.c_str(), typeInterface->name.c_str())};
+            return context->report(diag);
+        }
 
         // We need to be sure function semantic is done
         {
@@ -354,7 +371,7 @@ bool SemanticJob::resolveImplFor(SemanticContext* context)
             return context->report(diag, note);
         }
 
-        content += "func ";
+        content += "func impl ";
         content += missingNode->name;
 
         content += "(using self";

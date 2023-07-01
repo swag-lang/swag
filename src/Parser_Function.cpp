@@ -654,6 +654,13 @@ bool Parser::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId)
         if (token.id == TokenId::SymLeftParen)
             SWAG_CHECK(doGenericDeclParameters(funcNode, &funcNode->genericParameters));
 
+        // Interface implementation function
+        if (token.id == TokenId::KwdImpl)
+        {
+            funcNode->specFlags |= AstFuncDecl::SPECFLAG_IMPL;
+            SWAG_CHECK(eatToken());
+        }
+
         isIntrinsic = token.text[0] == '@';
         if (isIntrinsic)
         {

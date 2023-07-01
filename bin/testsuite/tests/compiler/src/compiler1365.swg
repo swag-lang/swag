@@ -12,7 +12,7 @@ struct TITI
 
 impl IIncrementable for TITI
 {
-    func incr(using self)
+    func impl incr(using self)
     {
         val += 1
     }

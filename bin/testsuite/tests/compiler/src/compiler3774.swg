@@ -10,7 +10,7 @@ struct A
 
 impl I for A
 {
-    mtd toto() {}
+    mtd impl toto() {}
 }
 
 #[Swag.Optim("", false)]

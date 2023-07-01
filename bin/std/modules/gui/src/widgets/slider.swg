@@ -42,7 +42,7 @@ struct Slider
 
 impl IWnd for Slider
 {
-    mtd onPaintEvent(evt: *PaintEvent)
+    mtd impl onPaintEvent(evt: *PaintEvent)
     {
         bc     := evt.bc
         theme   := getTheme()
@@ -198,7 +198,7 @@ impl IWnd for Slider
         }
     }
 
-    mtd onMouseEvent(evt: *MouseEvent)
+    mtd impl onMouseEvent(evt: *MouseEvent)
     {
         pos := surfaceToLocal(evt.surfacePos)
         isVertical := sliderFlags.has(.Vertical)

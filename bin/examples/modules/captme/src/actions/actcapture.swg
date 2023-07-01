@@ -17,7 +17,7 @@ const CmdIdCaptureToClipboard   = "CmdIdCaptureToClipboard"
 struct ActionCapture {}
 impl IActionUI for ActionCapture
 {
-    mtd accept(cxt: ActionContext)->bool
+    mtd impl accept(cxt: ActionContext)->bool
     {
         switch cxt.id
         {
@@ -40,7 +40,7 @@ impl IActionUI for ActionCapture
         return false
     }
 
-    mtd update(cxt: ActionContext, evt: *CommandStateEvent)->bool
+    mtd impl update(cxt: ActionContext, evt: *CommandStateEvent)->bool
     {
         main := cast(*MainWnd) cxt.wnd
 
@@ -108,7 +108,7 @@ impl IActionUI for ActionCapture
         return true
     }
 
-    mtd execute(cxt: ActionContext)->bool
+    mtd impl execute(cxt: ActionContext)->bool
     {
         main := cast(*MainWnd) cxt.wnd
 

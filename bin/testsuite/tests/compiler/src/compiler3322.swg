@@ -12,7 +12,7 @@ var G = 0
 
 impl BB for AA
 {
-    mtd x()->s32
+    mtd impl x()->s32
     {
         G = 1
         return 555

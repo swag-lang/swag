@@ -111,7 +111,7 @@ impl IWnd for Header
         Theme.drawIconText(painter, labelPos, item.icon, &item.name, format, metrics.iconText_Margin)
     }
 
-    mtd onPaintEvent(evt: *PaintEvent)
+    mtd impl onPaintEvent(evt: *PaintEvent)
     {
         painter := evt.bc.painter
         theme   := getTheme()
@@ -155,7 +155,7 @@ impl IWnd for Header
         }
     }
 
-   mtd onMouseEvent(evt: *MouseEvent)
+   mtd impl onMouseEvent(evt: *MouseEvent)
     {
         if evt.kind == .MouseReleased and evt.button == .Left
         {

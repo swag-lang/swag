@@ -22,7 +22,7 @@ struct FormShape
 
 impl IForm for FormShape
 {
-    mtd isSame(ptr: *BaseForm)->bool
+    mtd impl isSame(ptr: *BaseForm)->bool
     {
         other := cast(*FormShape) ptr
         return  borderColor == other.borderColor and
@@ -34,7 +34,7 @@ impl IForm for FormShape
                 paintShadow == other.paintShadow
     }
 
-    mtd copy(dst, src: *BaseForm)
+    mtd impl copy(dst, src: *BaseForm)
     {
         dstf := cast(*FormShape) dst
         srcf := cast(*FormShape) src
@@ -47,7 +47,7 @@ impl IForm for FormShape
         dstf.paintShadow = srcf.paintShadow
     }
 
-    mtd edit(evt: *MouseEvent, paintRect: Math.Rectangle, movingStart: Math.Point, localPos: Math.Point, zoom: f32)->bool
+    mtd impl edit(evt: *MouseEvent, paintRect: Math.Rectangle, movingStart: Math.Point, localPos: Math.Point, zoom: f32)->bool
     {
         xa := cast(s32) ((movingStart.x - paintRect.x) / zoom)
         ya := cast(s32) ((movingStart.y - paintRect.y) / zoom)
@@ -80,7 +80,7 @@ impl IForm for FormShape
         return true
     }
 
-    mtd moveBaseForm(newPosX, newPosY, newSizeX, newSizeY: s32)
+    mtd impl moveBaseForm(newPosX, newPosY, newSizeX, newSizeY: s32)
     {
         x += newPosX
         y += newPosY
@@ -88,7 +88,7 @@ impl IForm for FormShape
         h += newSizeY
     }
 
-    mtd setBaseForm(newPosX, newPosY, newSizeX, newSizeY: s32)
+    mtd impl setBaseForm(newPosX, newPosY, newSizeX, newSizeY: s32)
     {
         if newSizeX < 0
         {
@@ -113,27 +113,27 @@ impl IForm for FormShape
         }
     }
 
-    mtd moveForm(newPosX, newPosY: s32)
+    mtd impl moveForm(newPosX, newPosY: s32)
     {
         x += newPosX
         y += newPosY
     }
 
-    mtd movePoint(pt: u32, newPosX, newPosY: s32)
+    mtd impl movePoint(pt: u32, newPosX, newPosY: s32)
     {
     }
 
-    mtd boundRect()->Math.Rectangle
+    mtd impl boundRect()->Math.Rectangle
     {
         return Math.Rectangle{x, y, w, h}
     }
 
-    mtd mouse(view: *EditView, pos: Math.Point, evt: *MouseEvent)->bool
+    mtd impl mouse(view: *EditView, pos: Math.Point, evt: *MouseEvent)->bool
     {
         return gizmo.mouse(view, pos, evt)
     }
 
-    mtd paintGizmo(painter: *Painter, z: f32, flags: FormFlags)
+    mtd impl paintGizmo(painter: *Painter, z: f32, flags: FormFlags)
     {
         if flags & (.Hot | .Selected)
         {
@@ -143,7 +143,7 @@ impl IForm for FormShape
         }
     }
 
-    mtd isInside(pt: Math.Point)->bool
+    mtd impl isInside(pt: Math.Point)->bool
     {
         switch kind
         {
@@ -157,7 +157,7 @@ impl IForm for FormShape
         }
     }
 
-    mtd hitTest(pt: Math.Point, z: f32)->bool
+    mtd impl hitTest(pt: Math.Point, z: f32)->bool
     {
         switch kind
         {
@@ -179,7 +179,7 @@ impl IForm for FormShape
         return true
     }
 
-    mtd paint(app: *Application, painter: *Painter, z: f32, quickMode: bool)
+    mtd impl paint(app: *Application, painter: *Painter, z: f32, quickMode: bool)
     {
         bSize := adaptSize(borderSize, MinBorderSize, MaxBorderSize, z, quickMode)
         rSize := adaptSize(roundSize, MinRoundSize, MaxRoundSize, z, quickMode)
@@ -253,7 +253,7 @@ impl IForm for FormShape
         }
     }
 
-    mtd setup(capt: *Capture)
+    mtd impl setup(capt: *Capture)
     {
         capture = capt
 

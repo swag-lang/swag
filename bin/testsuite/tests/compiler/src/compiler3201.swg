@@ -22,7 +22,7 @@ interface I
 
 impl I for XX
 {
-    mtd toto()
+    mtd impl toto()
     {
         @assert(x == 666)
     }

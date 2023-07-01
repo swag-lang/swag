@@ -15,7 +15,7 @@ func toto()->Error
 
 impl Error for MyError
 {
-    func toString(using self) => "XX"
+    func impl toString(using self) => "XX"
 }
 
 var err: MyError

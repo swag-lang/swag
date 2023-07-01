@@ -59,7 +59,7 @@ struct QuickWnd
 
 impl IWnd for QuickWnd
 {
-    mtd onMouseEvent(evt: *MouseEvent)
+    mtd impl onMouseEvent(evt: *MouseEvent)
     {
         if evt.kind == .MousePressed and evt.button == .Right
         {
@@ -71,7 +71,7 @@ impl IWnd for QuickWnd
         scrollWnd.IWnd.onMouseEvent(evt)
     }
 
-    mtd onSerializeStateEvent(evt: *SerializeStateEvent)
+    mtd impl onSerializeStateEvent(evt: *SerializeStateEvent)
     {
         catch
         {

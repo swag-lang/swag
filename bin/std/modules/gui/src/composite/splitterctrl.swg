@@ -34,7 +34,7 @@ struct SplitterCtrl
 
 impl IWnd for SplitterCtrl
 {
-    mtd onMouseEvent(evt: *MouseEvent)
+    mtd impl onMouseEvent(evt: *MouseEvent)
     {
         evt.accepted = true
         local := surfaceToLocal(evt.surfacePos)
@@ -99,7 +99,7 @@ impl IWnd for SplitterCtrl
             cursor.clear()
     }
 
-    mtd onResizeEvent(evt: *ResizeEvent)
+    mtd impl onResizeEvent(evt: *ResizeEvent)
     {
         computeLayout()
 
@@ -149,7 +149,7 @@ impl IWnd for SplitterCtrl
         }
     }
 
-    mtd onPostPaintEvent(evt: *PaintEvent)
+    mtd impl onPostPaintEvent(evt: *PaintEvent)
     {
         if !items.count
             return

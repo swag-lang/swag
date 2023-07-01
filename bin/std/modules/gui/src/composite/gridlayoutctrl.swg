@@ -27,7 +27,7 @@ struct GridLayoutCtrl
 
 impl IWnd for GridLayoutCtrl
 {
-    mtd onResizeEvent(evt: *ResizeEvent)
+    mtd impl onResizeEvent(evt: *ResizeEvent)
     {
         if !childs.count
         {

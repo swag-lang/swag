@@ -21,7 +21,7 @@ struct MessageDlg
 
 impl IWnd for Wnd
 {
-    mtd titi(vv: s32)
+    mtd impl titi(vv: s32)
     {
         G += 2
     }
@@ -29,7 +29,7 @@ impl IWnd for Wnd
 
 impl IWnd for MessageDlg
 {
-    mtd titi(vv: s32)
+    mtd impl titi(vv: s32)
     {
         G += 1
         dlg.IWnd.titi(vv)

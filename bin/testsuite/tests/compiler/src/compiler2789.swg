@@ -11,7 +11,7 @@ struct BB
 
 impl AA for BB
 {
-    func fb(self)->s32
+    func impl fb(self)->s32
     {
         return 666
     }

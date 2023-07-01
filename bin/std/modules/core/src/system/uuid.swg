@@ -117,7 +117,7 @@ impl UUID
 
 impl StrConv.IConvert for UUID
 {
-    mtd convert(buf: *ConcatBuffer, fmt: const *StrConv.ConvertFormat, strFormat: string)
+    mtd impl convert(buf: *ConcatBuffer, fmt: const *StrConv.ConvertFormat, strFormat: string)
     {
         buf.addBytes(toString())
     }
@@ -125,7 +125,7 @@ impl StrConv.IConvert for UUID
 
 impl Hash.IHash32 for UUID
 {
-    mtdc compute()->u32
+    mtdc impl compute()->u32
     {
         return Hash.Crc32.compute(@mkslice(&val8[0], 16))
     }

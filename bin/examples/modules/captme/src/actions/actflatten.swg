@@ -6,7 +6,7 @@ const CmdIdFlattenAll   = "CmdIdFlattenAll"
 struct ActionFlatten {}
 impl IActionUI for ActionFlatten
 {
-    mtd accept(cxt: ActionContext)->bool
+    mtd impl accept(cxt: ActionContext)->bool
     {
         switch cxt.id
         {
@@ -18,7 +18,7 @@ impl IActionUI for ActionFlatten
         return false
     }
 
-    mtd update(cxt: ActionContext, evt: *CommandStateEvent)->bool
+    mtd impl update(cxt: ActionContext, evt: *CommandStateEvent)->bool
     {
         main := cast(*MainWnd) cxt.wnd
         capture := main.getCapture()
@@ -40,7 +40,7 @@ impl IActionUI for ActionFlatten
         return true
     }
 
-    mtd execute(cxt: ActionContext)->bool
+    mtd impl execute(cxt: ActionContext)->bool
     {
         main := cast(*MainWnd) cxt.wnd
         capture := main.getCapture()

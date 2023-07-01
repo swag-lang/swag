@@ -15,13 +15,13 @@ public struct RichEditView
 
 impl IWnd for RichEditView
 {
-    mtd onResizeEvent(evt: *ResizeEvent)
+    mtd impl onResizeEvent(evt: *ResizeEvent)
     {
         if ed and ed.richEdFlags & .WordWrap
             ed.recomputeScroll = true
     }
 
-    mtd onMouseEvent(evt: *MouseEvent)
+    mtd impl onMouseEvent(evt: *MouseEvent)
     {
         evt.accepted = false
         switch evt.kind
@@ -82,7 +82,7 @@ impl IWnd for RichEditView
         }
     }
 
-    mtd onKeyEvent(evt: *KeyEvent)
+    mtd impl onKeyEvent(evt: *KeyEvent)
     {
         if evt.kind == .KeyPressed
         {
@@ -109,7 +109,7 @@ impl IWnd for RichEditView
         }
     }
 
-    mtd onFocusEvent(evt: *FocusEvent)
+    mtd impl onFocusEvent(evt: *FocusEvent)
     {
         switch evt.kind
         {
@@ -126,13 +126,13 @@ impl IWnd for RichEditView
         }
     }
 
-    mtd onTimerEvent(evt: *TimerEvent)
+    mtd impl onTimerEvent(evt: *TimerEvent)
     {
         visibleCaret = !visibleCaret
         invalidate()
     }
 
-    mtd onPaintEvent(evt: *PaintEvent)
+    mtd impl onPaintEvent(evt: *PaintEvent)
     {
         painter := evt.bc.painter
         colors  := getThemeColors()

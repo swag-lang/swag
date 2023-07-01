@@ -162,7 +162,7 @@ impl IWnd for Tab
         Theme.drawIconText(painter, labelPos, v.icon, &v.name, format, metrics.iconText_Margin)
     }
 
-    mtd onPaintEvent(evt: *PaintEvent)
+    mtd impl onPaintEvent(evt: *PaintEvent)
     {
         painter := evt.bc.painter
         theme   := getTheme()
@@ -222,7 +222,7 @@ impl IWnd for Tab
         }
     }
 
-    mtd onResizeEvent(evt: *ResizeEvent)
+    mtd impl onResizeEvent(evt: *ResizeEvent)
     {
         if views.isEmpty()
             return
@@ -240,7 +240,7 @@ impl IWnd for Tab
         }
     }
 
-    mtd onMouseEvent(evt: *MouseEvent)
+    mtd impl onMouseEvent(evt: *MouseEvent)
     {
         hit := hitTest(evt.surfacePos)
         if hit != hotIdx

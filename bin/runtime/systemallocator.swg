@@ -15,7 +15,7 @@ impl IAllocator for SystemAllocator
         request.address = null
     }
 
-    mtd req(request: *AllocatorRequest)
+    mtd impl req(request: *AllocatorRequest)
     {
         // We are considering that the default system heap alloc does not align
         // So we need to trick it to respect the user wanted alignement.

@@ -9,7 +9,7 @@ public struct PropertyListView
 
 impl IWnd for PropertyListView
 {
-    mtd onResizeEvent(evt: *ResizeEvent)
+    mtd impl onResizeEvent(evt: *ResizeEvent)
     {
         stackWnd.IWnd.onResizeEvent(evt)
         if !ed or !ed.items.count

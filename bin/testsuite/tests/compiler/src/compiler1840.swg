@@ -12,7 +12,7 @@ interface IPrintable
 
 impl IPrintable for Point
 {
-    func print(using self)
+    func impl print(using self)
     {
         G = 666
     }

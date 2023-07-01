@@ -18,7 +18,7 @@ impl AA
 
 impl Itf for AA
 {
-    mtd toto()
+    mtd impl toto()
     {
         @print(YYY(self))
     }

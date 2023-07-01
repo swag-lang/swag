@@ -17,7 +17,7 @@ struct FormLine
 
 impl IForm for FormLine
 {
-    mtd isSame(ptr: *BaseForm)->bool
+    mtd impl isSame(ptr: *BaseForm)->bool
     {
         other := cast(*FormLine) ptr
         return  borderColor == other.borderColor and
@@ -32,7 +32,7 @@ impl IForm for FormLine
                 paintShadow == other.paintShadow
     }
 
-    mtd copy(dst, src: *BaseForm)
+    mtd impl copy(dst, src: *BaseForm)
     {
         dstf := cast(*FormLine) dst
         srcf := cast(*FormLine) src
@@ -48,7 +48,7 @@ impl IForm for FormLine
         dstf.paintShadow = srcf.paintShadow
     }
 
-    mtd edit(evt: *MouseEvent, paintRect: Math.Rectangle, movingStart: Math.Point, localPos: Math.Point, zoom: f32)->bool
+    mtd impl edit(evt: *MouseEvent, paintRect: Math.Rectangle, movingStart: Math.Point, localPos: Math.Point, zoom: f32)->bool
     {
         xa = cast(s32) ((movingStart.x - paintRect.x) / zoom)
         ya = cast(s32) ((movingStart.y - paintRect.y) / zoom)
@@ -66,13 +66,13 @@ impl IForm for FormLine
         return true
     }
 
-    mtd moveBaseForm(newPosX, newPosY, newSizeX, newSizeY: s32)
+    mtd impl moveBaseForm(newPosX, newPosY, newSizeX, newSizeY: s32)
     {
         xa, xb += newPosX
         ya, yb += newPosY
     }
 
-    mtd setBaseForm(newPosX, newPosY, newSizeX, newSizeY: s32)
+    mtd impl setBaseForm(newPosX, newPosY, newSizeX, newSizeY: s32)
     {
         xa = newPosX
         ya = newPosY
@@ -80,13 +80,13 @@ impl IForm for FormLine
         yb = ya + newSizeY
     }
 
-    mtd moveForm(newPosX, newPosY: s32)
+    mtd impl moveForm(newPosX, newPosY: s32)
     {
         xa, xb += newPosX
         ya, yb += newPosY
     }
 
-    mtd movePoint(pt: u32, newPosX, newPosY: s32)
+    mtd impl movePoint(pt: u32, newPosX, newPosY: s32)
     {
         if pt == 0
         {
@@ -100,7 +100,7 @@ impl IForm for FormLine
         }
     }
 
-    mtd boundRect()->Math.Rectangle
+    mtd impl boundRect()->Math.Rectangle
     {
         var result: retval
 
@@ -161,12 +161,12 @@ impl IForm for FormLine
         y1 = (yb * z) - (rect.y * z) + paintPos.y
     }
 
-    mtd mouse(view: *EditView, pos: Math.Point, evt: *MouseEvent)->bool
+    mtd impl mouse(view: *EditView, pos: Math.Point, evt: *MouseEvent)->bool
     {
         return gizmo.mouse(view, pos, evt)
     }
 
-    mtd paintGizmo(painter: *Painter, z: f32, flags: FormFlags)
+    mtd impl paintGizmo(painter: *Painter, z: f32, flags: FormFlags)
     {
         if flags & (.Hot | .Selected)
         {
@@ -177,12 +177,12 @@ impl IForm for FormLine
         }
     }
 
-    mtd isInside(pt: Math.Point)->bool
+    mtd impl isInside(pt: Math.Point)->bool
     {
         return false
     }
 
-    mtd hitTest(pt: Math.Point, z: f32)->bool
+    mtd impl hitTest(pt: Math.Point, z: f32)->bool
     {
         var painter: Painter{fake: true}
         painter.begin()
@@ -208,7 +208,7 @@ impl IForm for FormLine
         return false
     }
 
-    mtd paint(app: *Application, painter: *Painter, z: f32, quickMode: bool)
+    mtd impl paint(app: *Application, painter: *Painter, z: f32, quickMode: bool)
     {
         computePaintCoords(z)
 
@@ -230,7 +230,7 @@ impl IForm for FormLine
         painter.drawLine(x0 - paintPos.x, y0 - paintPos.y, x1 - paintPos.x, y1 - paintPos.y, pen)
     }
 
-    mtd setup(capt: *Capture)
+    mtd impl setup(capt: *Capture)
     {
         capture = capt
         gizmo.anchors.resize(2)

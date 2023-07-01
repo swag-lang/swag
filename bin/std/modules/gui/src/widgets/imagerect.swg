@@ -10,7 +10,7 @@ struct ImageRect
 
 impl IWnd for ImageRect
 {
-    mtd onPaintEvent(evt: *PaintEvent)
+    mtd impl onPaintEvent(evt: *PaintEvent)
     {
         if !movie.isValid()
             return

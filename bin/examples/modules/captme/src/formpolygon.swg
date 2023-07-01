@@ -24,7 +24,7 @@ impl FormPolygon
 
 impl IForm for FormPolygon
 {
-    mtd isSame(ptr: *BaseForm)->bool
+    mtd impl isSame(ptr: *BaseForm)->bool
     {
         other := cast(*FormPolygon) ptr
         return  borderColor == other.borderColor and
@@ -34,7 +34,7 @@ impl IForm for FormPolygon
                 paintShadow == other.paintShadow
     }
 
-    mtd copy(dst, src: *BaseForm)
+    mtd impl copy(dst, src: *BaseForm)
     {
         dstf := cast(*FormPolygon) dst
         srcf := cast(*FormPolygon) src
@@ -45,7 +45,7 @@ impl IForm for FormPolygon
         dstf.paintShadow = srcf.paintShadow
     }
 
-    mtd edit(evt: *MouseEvent, paintRect: Math.Rectangle, movingStart: Math.Point, localPos: Math.Point, zoom: f32)->bool
+    mtd impl edit(evt: *MouseEvent, paintRect: Math.Rectangle, movingStart: Math.Point, localPos: Math.Point, zoom: f32)->bool
     {
         if evt.kind == .MouseDoubleClick and evt.button == .Left
         {
@@ -77,7 +77,7 @@ impl IForm for FormPolygon
         return true
     }
 
-    mtd moveBaseForm(newPosX, newPosY, newSizeX, newSizeY: s32)
+    mtd impl moveBaseForm(newPosX, newPosY, newSizeX, newSizeY: s32)
     {
         visit &pt: points
         {
@@ -86,7 +86,7 @@ impl IForm for FormPolygon
         }
     }
 
-    mtd setBaseForm(newPosX, newPosY, newSizeX, newSizeY: s32)
+    mtd impl setBaseForm(newPosX, newPosY, newSizeX, newSizeY: s32)
     {
         rect := boundRect()
         fx := newSizeX / rect.width
@@ -103,7 +103,7 @@ impl IForm for FormPolygon
         }
     }
 
-    mtd moveForm(newPosX, newPosY: s32)
+    mtd impl moveForm(newPosX, newPosY: s32)
     {
         visit &pt: points
         {
@@ -112,13 +112,13 @@ impl IForm for FormPolygon
         }
     }
 
-    mtd movePoint(pt: u32, newPosX, newPosY: s32)
+    mtd impl movePoint(pt: u32, newPosX, newPosY: s32)
     {
         points[pt].x += newPosX
         points[pt].y += newPosY
     }
 
-    mtd boundRect()->Math.Rectangle
+    mtd impl boundRect()->Math.Rectangle
     {
         if !points.count
         {
@@ -166,12 +166,12 @@ impl IForm for FormPolygon
         }
     }
 
-    mtd mouse(view: *EditView, pos: Math.Point, evt: *MouseEvent)->bool
+    mtd impl mouse(view: *EditView, pos: Math.Point, evt: *MouseEvent)->bool
     {
         return gizmo.mouse(view, pos, evt)
     }
 
-    mtd paintGizmo(painter: *Painter, z: f32, flags: FormFlags)
+    mtd impl paintGizmo(painter: *Painter, z: f32, flags: FormFlags)
     {
         if flags & (.Hot | .Selected)
         {
@@ -184,12 +184,12 @@ impl IForm for FormPolygon
         }
     }
 
-    mtd isInside(pt: Math.Point)->bool
+    mtd impl isInside(pt: Math.Point)->bool
     {
         return Math.Vector2.polyContains(points, {pt.x, pt.y})
     }
 
-    mtd hitTest(pt: Math.Point, z: f32)->bool
+    mtd impl hitTest(pt: Math.Point, z: f32)->bool
     {
         bSize := borderSize * z * 0.5
         computePaintCoords(z)
@@ -214,7 +214,7 @@ impl IForm for FormPolygon
         return Math.Vector2.polyContains(paintPoints, {pt.x, pt.y})
     }
 
-    mtd paint(app: *Application, painter: *Painter, z: f32, quickMode: bool)
+    mtd impl paint(app: *Application, painter: *Painter, z: f32, quickMode: bool)
     {
         bSize := adaptSize(borderSize, MinBorderSize, MaxBorderSize, z, quickMode)
         computePaintCoords(z)
@@ -252,7 +252,7 @@ impl IForm for FormPolygon
         painter.drawPath(&linePath, pen)
     }
 
-    mtd setup(capt: *Capture)
+    mtd impl setup(capt: *Capture)
     {
         capture = capt
         gizmo.sigChanged = closure|self|(diff, pt, first) {

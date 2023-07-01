@@ -13,7 +13,7 @@ struct ComboCtrl
 
 impl IWnd for ComboCtrl
 {
-    mtd onResizeEvent(evt: *ResizeEvent)
+    mtd impl onResizeEvent(evt: *ResizeEvent)
     {
         if !label
             return

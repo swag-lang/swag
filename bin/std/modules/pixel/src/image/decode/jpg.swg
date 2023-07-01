@@ -2050,13 +2050,13 @@ impl Decoder
 
 public impl IImageDecoder for Decoder
 {
-    mtd canDecode(fileName: string)->bool
+    mtd impl canDecode(fileName: string)->bool
     {
         ext := Path.getExtensionLowerCase(fileName)
         return ext == ".jpg" or ext == ".jpeg"
     }
 
-    mtd decode(buffer: const [..] u8, options: DecodeOptions)->Image throw
+    mtd impl decode(buffer: const [..] u8, options: DecodeOptions)->Image throw
     {
         init(buffer)
         start()

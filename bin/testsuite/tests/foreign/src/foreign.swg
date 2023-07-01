@@ -190,7 +190,7 @@ public namespace tcf
 
     public impl ITcf for AA
     {
-        func call(self)->u32
+        func impl call(self)->u32
         {
             return 666
         }

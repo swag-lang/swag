@@ -16,7 +16,7 @@ struct SliderCtrl
 
 impl IWnd for SliderCtrl
 {
-    mtd onResizeEvent(evt: *ResizeEvent)
+    mtd impl onResizeEvent(evt: *ResizeEvent)
     {
         if !label return
         rect    := getClientRect()

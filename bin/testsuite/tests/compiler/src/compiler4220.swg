@@ -9,10 +9,10 @@ interface I
 struct A {}
 impl I for A
 {
-    mtd call1() = @assert(false)
-    mtd call2() = @assert(false)
+    mtd impl call1() = @assert(false)
+    mtd impl call2() = @assert(false)
 
-    mtd call()
+    mtd impl call()
     {
         G += 1
         @assert(self == &x)

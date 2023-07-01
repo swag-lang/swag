@@ -37,7 +37,7 @@ struct ComboBox
 
 impl IWnd for ComboBox
 {
-    mtd onResizeEvent(evt: *ResizeEvent)
+    mtd impl onResizeEvent(evt: *ResizeEvent)
     {
         if editBox
         {
@@ -49,7 +49,7 @@ impl IWnd for ComboBox
         }
     }
 
-    mtd onPaintEvent(evt: *PaintEvent)
+    mtd impl onPaintEvent(evt: *PaintEvent)
     {
         bc      := evt.bc
         painter := evt.bc.painter
@@ -122,7 +122,7 @@ impl IWnd for ComboBox
         icon.paint(painter, clientRect.right() - metrics.comboBox_RightMargin, clientRect.vertCenter() - icon.sizeY * 0.5, colorText)
     }
 
-    mtd onMouseEvent(evt: *MouseEvent)
+    mtd impl onMouseEvent(evt: *MouseEvent)
     {
         switch evt.kind
         {

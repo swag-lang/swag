@@ -406,7 +406,7 @@ void initErrors()
     SWAG_ERROR(Err0299, "a non mutable variable should be explicitly initialized");
     SWAG_ERROR(Err0446, "a parameter of type 'cvarargs' cannot be passed from function to function");
     SWAG_ERROR(Err0040, "a partial type alias ('%s') for a generic struct instantiation is not supported");
-    SWAG_ERROR(Err0024, nullptr);
+    SWAG_ERROR(Err0024, "cannot find function '%s' in interface '%s'");
     SWAG_ERROR(Err0628, "a pointer type ('%s') cannot be visited with 'visit'");
     SWAG_ERROR(Err0300, "a reference should be explicitly initialized");
     SWAG_ERROR(Err0173, "a shift operand should be of type 'u32' and not '%s'");
@@ -920,7 +920,7 @@ void initErrors()
     SWAG_ERROR(Err0149, "cannot declare a variable or a constant of 'void' type");
     SWAG_ERROR(Err0250, "unexpected 'const' for type '%s'");
     SWAG_ERROR(Err0251, "use of unknown attribute '%s'");
-    SWAG_ERROR(Err0280, nullptr);
+    SWAG_ERROR(Err0280, "function '%s' is part of the interface '%s' but is not marked with 'impl'");
     SWAG_ERROR(Err0289, nullptr);
     SWAG_ERROR(Err0436, nullptr);
     SWAG_ERROR(Err0501, nullptr);
@@ -993,7 +993,7 @@ void initErrors()
     SWAG_ERROR(Hlp0022, "this kind of constant does not have an associated memory storage");
     SWAG_ERROR(Hlp0041, "this type of parameter does not have an associated memory storage");
     SWAG_ERROR(Hlp0006, "to access an array with multiple dimensions, the syntax is [x, y], not [x][y]");
-    SWAG_ERROR(Hlp0024, nullptr);
+    SWAG_ERROR(Hlp0024, "a normal function defined in an 'impl' block cannot shadow a function of the corresponding interface");
     SWAG_ERROR(Hlp0023, "valid modes are 'defer(err)' and 'defer(noerr)'");
     SWAG_ERROR(Hlp0011, "valid safety values are 'boundcheck|overflow|math|switch|unreachable|any|bool|nan|sanity|null'");
     SWAG_ERROR(Hlp0018, "when the parameter types of a lambda are inferred, the return type will be inferred too");

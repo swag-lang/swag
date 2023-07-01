@@ -10,7 +10,7 @@ interface I
 
 impl I for A
 {
-    mtd x(){}
+    mtd impl x(){}
 }
 
 //#[Swag.PrintBc, Swag.Optim("", false)]

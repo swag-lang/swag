@@ -11,7 +11,7 @@ struct A
 var G: s32
 impl I for A
 {
-    mtd toto()
+    mtd impl toto()
     {
         G = xx
     }

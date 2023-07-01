@@ -15,14 +15,14 @@ interface ITF1
 
 impl ITF for AA
 {
-    func cb(using self)
+    func impl cb(using self)
     {
     }
 }
 
 impl ITF1 for AA
 {
-    func cb(using self)
+    func impl cb(using self)
     {
     }
 }

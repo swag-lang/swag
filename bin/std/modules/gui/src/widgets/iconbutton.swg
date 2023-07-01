@@ -82,7 +82,7 @@ impl IWnd for IconButton
         invalidate()
     }
 
-    mtd onHookEvent(evt: *Event)
+    mtd impl onHookEvent(evt: *Event)
     {
         if !popup
             return
@@ -97,12 +97,12 @@ impl IWnd for IconButton
         }
     }
 
-    mtd onDestroyEvent(evt: *DestroyEvent)
+    mtd impl onDestroyEvent(evt: *DestroyEvent)
     {
         hidePopup()
     }
 
-    mtd onApplyStateEvent(evt: *CommandStateEvent)
+    mtd impl onApplyStateEvent(evt: *CommandStateEvent)
     {
         if evt.id != id
             return
@@ -122,7 +122,7 @@ impl IWnd for IconButton
         button.IWnd.onApplyStateEvent(evt)
     }
 
-    mtd onPaintEvent(evt: *PaintEvent)
+    mtd impl onPaintEvent(evt: *PaintEvent)
     {
         bc      := evt.bc
         theme   := getTheme()
@@ -427,7 +427,7 @@ impl IWnd for IconButton
         }
     }
 
-    mtd onMouseEvent(evt: *MouseEvent)
+    mtd impl onMouseEvent(evt: *MouseEvent)
     {
         if processMouseEvent(evt)
         {

@@ -10,14 +10,14 @@ struct Dialog
 
 impl IWnd for Dialog
 {
-    mtd onSysCommandEvent(evt: *SysCommandEvent)
+    mtd impl onSysCommandEvent(evt: *SysCommandEvent)
     {
         if evt.sysKind == .Close
             validateId(BtnCancel)
         evt.accepted = true
     }
 
-    mtd onKeyEvent(evt: *KeyEvent)
+    mtd impl onKeyEvent(evt: *KeyEvent)
     {
         if evt.kind == .KeyPressed
         {

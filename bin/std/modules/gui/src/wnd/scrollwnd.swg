@@ -63,7 +63,7 @@ public struct ScrollWnd
 
 public impl IWnd for ScrollWnd
 {
-    mtd onResizeEvent(evt: *ResizeEvent)
+    mtd impl onResizeEvent(evt: *ResizeEvent)
     {
         computeLayout()
         if !view
@@ -75,7 +75,7 @@ public impl IWnd for ScrollWnd
         view.setPosition(rect)
     }
 
-    mtd onMouseEvent(evt: *MouseEvent)
+    mtd impl onMouseEvent(evt: *MouseEvent)
     {
         clientRect := getClientRect()
         pos := surfaceToLocal(evt.surfacePos)
@@ -194,7 +194,7 @@ public impl IWnd for ScrollWnd
         }
     }
 
-    mtd onPaintEvent(evt: *PaintEvent)
+    mtd impl onPaintEvent(evt: *PaintEvent)
     {
         if smoothScroll
         {

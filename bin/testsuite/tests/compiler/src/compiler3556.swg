@@ -31,7 +31,7 @@ var G = 0
     if typeS.attributes[0].type != @typeof(GenStuff)
         return
 
-    itf.compileString("impl I for A {\n mtd toto() {\nG += 1\n}\n}")
+    itf.compileString("impl I for A {\n mtd impl toto() {\nG += 1\n}\n}")
 }
 
 //#[PrintBc]

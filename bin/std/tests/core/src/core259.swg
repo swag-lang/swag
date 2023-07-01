@@ -7,7 +7,7 @@ interface IGen
 
 impl IGen for Core.String
 {
-    func fn(self)
+    func impl fn(self)
     {
 
     }

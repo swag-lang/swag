@@ -9,7 +9,7 @@ interface BB
 
 impl BB for AA
 {
-    func fct(using self)
+    func impl fct(using self)
     {
 
     }

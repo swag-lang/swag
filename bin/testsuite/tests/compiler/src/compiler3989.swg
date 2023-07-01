@@ -10,7 +10,7 @@ interface IHash
 
 impl IHash for AA
 {
-    func hash(using self)->u32
+    func impl hash(using self)->u32
     {
         return val
     }

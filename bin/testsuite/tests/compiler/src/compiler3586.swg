@@ -15,7 +15,7 @@ func(T) titi()
 
 impl I for A
 {
-    mtd toto()
+    mtd impl toto()
     {
         titi's32()
     }

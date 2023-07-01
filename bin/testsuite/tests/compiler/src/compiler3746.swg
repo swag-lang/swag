@@ -13,7 +13,7 @@ impl I for A
         @assert(v.name == "s32")
     }
 
-    mtd toto3746()
+    mtd impl toto3746()
     {
         titi3746's32()
     }

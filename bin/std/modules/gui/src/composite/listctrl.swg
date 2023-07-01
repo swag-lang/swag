@@ -150,13 +150,13 @@ impl ListLine
 
 impl IWnd for ListView
 {
-    mtd onResizeEvent(evt: *ResizeEvent)
+    mtd impl onResizeEvent(evt: *ResizeEvent)
     {
         if list
             list.computeLayout()
     }
 
-    mtd onKeyEvent(evt: *KeyEvent)
+    mtd impl onKeyEvent(evt: *KeyEvent)
     {
         evt.accepted = true
         if evt.kind != .KeyPressed
@@ -301,7 +301,7 @@ impl IWnd for ListView
         }
     }
 
-    mtd onMouseEvent(evt: *MouseEvent)
+    mtd impl onMouseEvent(evt: *MouseEvent)
     {
         if evt.kind == .MouseLeave
         {
@@ -487,7 +487,7 @@ impl IWnd for ListView
             list.sigSelChanged.call(list)
     }
 
-    mtd onPaintEvent(evt: *PaintEvent)
+    mtd impl onPaintEvent(evt: *PaintEvent)
     {
         if list.getLineCount() == 0
             return

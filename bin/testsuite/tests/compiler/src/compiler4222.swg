@@ -8,7 +8,7 @@ interface IShape
 
 impl IShape for Circle
 {
-    mtd area() => 123
+    mtd impl area() => 123
 }
 
 #[Swag.Inline]

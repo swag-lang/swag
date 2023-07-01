@@ -11,14 +11,14 @@ interface I
 
 impl I for A
 {
-    func toto(self)
+    func impl toto(self)
     {
         /*@print("toto ")
         @print(cast(s64) self.x)
         @print("\n")*/
     }
 
-    func toto1(self)
+    func impl toto1(self)
     {
         /*@print("toto1 ")
         @print(cast(s64) self.x)

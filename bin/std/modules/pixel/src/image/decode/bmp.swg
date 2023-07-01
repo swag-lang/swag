@@ -53,12 +53,12 @@ public struct Decoder
 
 public impl IImageDecoder for Decoder
 {
-    mtd canDecode(fileName: string)->bool
+    mtd impl canDecode(fileName: string)->bool
     {
         return Path.getExtensionLowerCase(fileName) == ".bmp"
     }
 
-    mtd decode(buffer: const [..] u8, options: DecodeOptions)->Image throw
+    mtd impl decode(buffer: const [..] u8, options: DecodeOptions)->Image throw
     {
         dataof := @dataof(buffer)
         countof := @countof(buffer)

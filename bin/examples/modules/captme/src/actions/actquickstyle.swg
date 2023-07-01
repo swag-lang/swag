@@ -5,7 +5,7 @@ const CmdIdResetQuickStyle = "CmdIdResetQuickStyle"
 struct ActionQuickStyle {}
 impl IActionUI for ActionQuickStyle
 {
-    mtd accept(cxt: ActionContext)->bool
+    mtd impl accept(cxt: ActionContext)->bool
     {
         switch cxt.id
         {
@@ -16,7 +16,7 @@ impl IActionUI for ActionQuickStyle
         return false
     }
 
-    mtd update(cxt: ActionContext, evt: *CommandStateEvent)->bool
+    mtd impl update(cxt: ActionContext, evt: *CommandStateEvent)->bool
     {
         switch cxt.id
         {
@@ -28,7 +28,7 @@ impl IActionUI for ActionQuickStyle
         return true
     }
 
-    mtd execute(cxt: ActionContext)->bool
+    mtd impl execute(cxt: ActionContext)->bool
     {
         main := cast(*MainWnd) cxt.wnd
 

@@ -22,7 +22,7 @@ namespace Parse
 
     impl IParse for Drawing.Color
     {
-        func xoxo(using self)
+        func impl xoxo(using self)
         {
             #assert @sizeof(Color) == 8
         }

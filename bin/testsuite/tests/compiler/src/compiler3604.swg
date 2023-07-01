@@ -21,7 +21,7 @@ impl I for A
 
     alias XX2 = s32
 
-    mtd toto()
+    mtd impl toto()
     {
         var x: XX = undefined
         var x1: XX1 = undefined

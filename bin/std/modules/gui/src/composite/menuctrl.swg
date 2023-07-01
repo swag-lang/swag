@@ -248,7 +248,7 @@ public impl IWnd for MenuCtrl
         }
     }
 
-    mtd onPaintEvent(evt: *PaintEvent)
+    mtd impl onPaintEvent(evt: *PaintEvent)
     {
         frameWnd.IWnd.onPaintEvent(evt)
         if bar
@@ -257,14 +257,14 @@ public impl IWnd for MenuCtrl
             paintPopup(evt.bc.painter)
     }
 
-    mtd onTimerEvent(evt: *TimerEvent)
+    mtd impl onTimerEvent(evt: *TimerEvent)
     {
         hideSubVisible()
         deleteTimer()
         showHotPopup()
     }
 
-    mtd onMouseEvent(evt: *MouseEvent)
+    mtd impl onMouseEvent(evt: *MouseEvent)
     {
         hit := hitTest(evt.surfacePos)
         if hit != hotIdx

@@ -60,7 +60,7 @@ impl RecentView
 
 impl IWnd for RecentView
 {
-    mtd onMouseEvent(evt: *MouseEvent)
+    mtd impl onMouseEvent(evt: *MouseEvent)
     {
         if evt.kind == .MouseWheel
             evt.accepted = false
@@ -139,7 +139,7 @@ impl IWnd for RecentView
         painter.drawTexture(txtRect, texture)
     }
 
-    mtd onPaintEvent(evt: *PaintEvent)
+    mtd impl onPaintEvent(evt: *PaintEvent)
     {
         painter    := evt.bc.painter
         clientRect := getClientRectPadding()
@@ -171,7 +171,7 @@ struct RecentWnd
 
 impl IWnd for RecentWnd
 {
-    mtd onTimerEvent(evt: *TimerEvent)
+    mtd impl onTimerEvent(evt: *TimerEvent)
     {
         capture := main.getCapture()
         if !capture

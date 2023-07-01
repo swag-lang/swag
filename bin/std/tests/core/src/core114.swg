@@ -8,7 +8,7 @@ struct Pt
 
 impl Hash.IHash32 for Pt
 {
-    func compute(const self)->u32 => 555
+    func impl compute(const self)->u32 => 555
 }
 
 #test

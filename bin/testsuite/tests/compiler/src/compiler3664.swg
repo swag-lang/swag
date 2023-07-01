@@ -6,7 +6,7 @@ interface I
 struct X {}
 impl I for X
 {
-    mtd toto() {}
+    mtd impl toto() {}
 }
 
 //#[Swag.PrintBc]

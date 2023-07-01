@@ -17,7 +17,7 @@ impl I for A
     }
 
     #[Swag.Warn("wrn0004", Swag.WarnLevel.Enable)]
-    mtd toto()
+    mtd impl toto()
     {
     }
 }

@@ -15,7 +15,7 @@ struct PalettePicker
 
 impl IWnd for PalettePicker
 {
-    mtd onPaintEvent(evt: *PaintEvent)
+    mtd impl onPaintEvent(evt: *PaintEvent)
     {
         bc      := evt.bc
         painter := bc.painter
@@ -56,7 +56,7 @@ impl IWnd for PalettePicker
 
     }
 
-    mtd onMouseEvent(evt: *MouseEvent)
+    mtd impl onMouseEvent(evt: *MouseEvent)
     {
         pos := surfaceToLocal(evt.surfacePos)
         evt.accepted = false

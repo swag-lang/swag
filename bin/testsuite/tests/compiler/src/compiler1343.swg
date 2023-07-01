@@ -9,7 +9,7 @@ struct TITI
 
 impl TOTO for TITI
 {
-    func print(me: *TITI, x: string)
+    func impl print(me: *TITI, x: string)
     {
     }
 }

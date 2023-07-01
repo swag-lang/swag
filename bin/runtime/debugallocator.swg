@@ -442,7 +442,7 @@ impl IAllocator for DebugAllocator
         self.firstAlloc = header
     }
 
-    mtd req(request: *AllocatorRequest)
+    mtd impl req(request: *AllocatorRequest)
     {
         @assert(allocator != null)
         mutex.lock()

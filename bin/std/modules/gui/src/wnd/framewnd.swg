@@ -40,7 +40,7 @@ struct FrameWnd
 
 impl IWnd for FrameWnd
 {
-    mtd onPrePaintEvent(evt: *PaintEvent)
+    mtd impl onPrePaintEvent(evt: *PaintEvent)
     {
         if frameFlags.has(.SmallShadow)
         {
@@ -57,7 +57,7 @@ impl IWnd for FrameWnd
         }
     }
 
-    mtd onPaintEvent(evt: *PaintEvent)
+    mtd impl onPaintEvent(evt: *PaintEvent)
     {
         if frameForm == .Transparent
             return
@@ -103,7 +103,7 @@ impl IWnd for FrameWnd
         usedColorBk = colorBk
     }
 
-    mtd onPostPaintEvent(evt: *PaintEvent)
+    mtd impl onPostPaintEvent(evt: *PaintEvent)
     {
         if frameForm == .Transparent
             return
@@ -204,7 +204,7 @@ impl IWnd for FrameWnd
         }
     }
 
-    mtd onResizeEvent(evt: *ResizeEvent)
+    mtd impl onResizeEvent(evt: *ResizeEvent)
     {
         if !view
             return

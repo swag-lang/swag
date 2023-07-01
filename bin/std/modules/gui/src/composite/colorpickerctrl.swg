@@ -38,7 +38,7 @@ struct ColorPickerCtrl
 
 impl IWnd for ColorPickerCtrl
 {
-    mtd onPaintEvent(evt: *PaintEvent)
+    mtd impl onPaintEvent(evt: *PaintEvent)
     {
         frameWnd.IWnd.onPaintEvent(evt)
 

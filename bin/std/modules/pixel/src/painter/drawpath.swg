@@ -130,10 +130,9 @@ impl Painter
         return n - n.toNormalizeSafe()
     }
 
-    mtd drawCapRoundAnchor(p, d: Vector2, sens: f32, pen: Pen, start: bool)->Vector2
+    mtd drawCapRoundAnchor(p, d: Vector2, pen: Pen, start: bool)->Vector2
     {
         sx := start ? pen.capStartScaleX : pen.capEndScaleX
-        sy := start ? pen.capStartScaleY : pen.capEndScaleY
 
         angle0 := Math.atan2(-d.y, -d.x)
         angle1 := angle0 + Math.ConstF32.TwoPi
@@ -184,7 +183,7 @@ impl Painter
             return drawCapArrowAnchor(p, d, sens, pen, start)
 
         case RoundAnchor:
-            return drawCapRoundAnchor(p, d, sens, pen, start)
+            return drawCapRoundAnchor(p, d, pen, start)
         }
 
         return Vector2.Zero

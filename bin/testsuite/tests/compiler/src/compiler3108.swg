@@ -15,7 +15,7 @@ impl Itf for AA
         return 666
     }
 
-    mtd toto()
+    mtd impl toto()
     {
         @print(YYY(self))
     }

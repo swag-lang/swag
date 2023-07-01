@@ -37,7 +37,7 @@ struct PopupListView
 
 impl IWnd for PopupListView
 {
-    mtd onFocusEvent(evt: *FocusEvent)
+    mtd impl onFocusEvent(evt: *FocusEvent)
     {
         switch evt.kind
         {
@@ -52,7 +52,7 @@ impl IWnd for PopupListView
         }
     }
 
-    mtd onMouseEvent(evt: *MouseEvent)
+    mtd impl onMouseEvent(evt: *MouseEvent)
     {
         var hit: u32
 
@@ -123,7 +123,7 @@ impl IWnd for PopupListView
             evt.accepted = false
     }
 
-    mtd onPaintEvent(evt: *PaintEvent)
+    mtd impl onPaintEvent(evt: *PaintEvent)
     {
         painter := evt.bc.painter
 

@@ -9,7 +9,7 @@ struct A
 
 impl I for A
 {
-    mtd toto() {}
+    mtd impl toto() {}
 }
 
 struct B
@@ -19,7 +19,7 @@ struct B
 
 impl I for B
 {
-    mtd toto() {}
+    mtd impl toto() {}
 }
 
 func(T) alloc()

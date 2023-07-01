@@ -32,7 +32,7 @@ struct FormStep
 
 impl IForm for FormStep
 {
-    mtd isSame(ptr: *BaseForm)->bool
+    mtd impl isSame(ptr: *BaseForm)->bool
     {
         other := cast(*FormStep) ptr
         return  borderColor == other.borderColor and
@@ -43,7 +43,7 @@ impl IForm for FormStep
                 typeIndex   == other.typeIndex
     }
 
-    mtd copy(dst, src: *BaseForm)
+    mtd impl copy(dst, src: *BaseForm)
     {
         dstf := cast(*FormStep) dst
         srcf := cast(*FormStep) src
@@ -57,7 +57,7 @@ impl IForm for FormStep
         dstf.hs          = srcf.hs
     }
 
-    mtd edit(evt: *MouseEvent, paintRect: Math.Rectangle, movingStart: Math.Point, localPos: Math.Point, zoom: f32)->bool
+    mtd impl edit(evt: *MouseEvent, paintRect: Math.Rectangle, movingStart: Math.Point, localPos: Math.Point, zoom: f32)->bool
     {
         xa := cast(s32) ((movingStart.x - paintRect.x) / zoom)
         ya := cast(s32) ((movingStart.y - paintRect.y) / zoom)
@@ -79,7 +79,7 @@ impl IForm for FormStep
         return false
     }
 
-    mtd moveBaseForm(newPosX, newPosY, newSizeX, newSizeY: s32)
+    mtd impl moveBaseForm(newPosX, newPosY, newSizeX, newSizeY: s32)
     {
         x += newPosX
         y += newPosY
@@ -87,7 +87,7 @@ impl IForm for FormStep
         h += newSizeY
     }
 
-    mtd setBaseForm(newPosX, newPosY, newSizeX, newSizeY: s32)
+    mtd impl setBaseForm(newPosX, newPosY, newSizeX, newSizeY: s32)
     {
         if newSizeX < 0
         {
@@ -112,27 +112,27 @@ impl IForm for FormStep
         }
     }
 
-    mtd moveForm(newPosX, newPosY: s32)
+    mtd impl moveForm(newPosX, newPosY: s32)
     {
         x += newPosX
         y += newPosY
     }
 
-    mtd movePoint(pt: u32, newPosX, newPosY: s32)
+    mtd impl movePoint(pt: u32, newPosX, newPosY: s32)
     {
     }
 
-    mtd boundRect()->Math.Rectangle
+    mtd impl boundRect()->Math.Rectangle
     {
         return Math.Rectangle{x, y, w, h}
     }
 
-    mtd mouse(view: *EditView, pos: Math.Point, evt: *MouseEvent)->bool
+    mtd impl mouse(view: *EditView, pos: Math.Point, evt: *MouseEvent)->bool
     {
         return gizmo.mouse(view, pos, evt)
     }
 
-    mtd paintGizmo(painter: *Painter, z: f32, flags: FormFlags)
+    mtd impl paintGizmo(painter: *Painter, z: f32, flags: FormFlags)
     {
         if flags & (.Hot | .Selected)
         {
@@ -141,12 +141,12 @@ impl IForm for FormStep
         }
     }
 
-    mtd isInside(pt: Math.Point)->bool
+    mtd impl isInside(pt: Math.Point)->bool
     {
         return false
     }
 
-    mtd hitTest(pt: Math.Point, z: f32)->bool
+    mtd impl hitTest(pt: Math.Point, z: f32)->bool
     {
         switch kind
         {
@@ -168,7 +168,7 @@ impl IForm for FormStep
         return true
     }
 
-    mtd paint(app: *Application, painter: *Painter, z: f32, quickMode: bool)
+    mtd impl paint(app: *Application, painter: *Painter, z: f32, quickMode: bool)
     {
         pp        := Math.Rectangle{0, 0, paintPos.width, paintPos.height}
         fSize     := Math.min(w, h) * 0.6
@@ -242,7 +242,7 @@ impl IForm for FormStep
         painter.popState()
     }
 
-    mtd setup(capt: *Capture)
+    mtd impl setup(capt: *Capture)
     {
         capture = capt
 

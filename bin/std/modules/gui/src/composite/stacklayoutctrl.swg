@@ -24,7 +24,7 @@ struct StackLayoutCtrl
 
 impl IWnd for StackLayoutCtrl
 {
-    mtd onResizeEvent(evt: *ResizeEvent)
+    mtd impl onResizeEvent(evt: *ResizeEvent)
     {
         if !childs.count
         {

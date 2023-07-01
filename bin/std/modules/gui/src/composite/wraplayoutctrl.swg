@@ -13,7 +13,7 @@ struct WrapLayoutCtrl
 
 impl IWnd for WrapLayoutCtrl
 {
-    mtd onResizeEvent(evt: *ResizeEvent)
+    mtd impl onResizeEvent(evt: *ResizeEvent)
     {
         if !childs.count
         {

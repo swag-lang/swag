@@ -10,7 +10,7 @@ var GG = 0
 
 impl I for A
 {
-    mtd fct()
+    mtd impl fct()
     {
         GG = 1
     }

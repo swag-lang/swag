@@ -16,7 +16,7 @@ impl AA for BB
         G = x
     }
 
-    func toto(using self)
+    func impl toto(using self)
     {
         titi()
     }

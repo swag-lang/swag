@@ -728,13 +728,13 @@ impl Encoder
 
 public impl IImageEncoder for Encoder
 {
-    mtd canEncode(fileName: string)->bool
+    mtd impl canEncode(fileName: string)->bool
     {
         ext := Path.getExtensionLowerCase(fileName)
         return ext == ".jpg" or ext == ".jpeg"
     }
 
-    mtd encode(result: *ConcatBuffer, image: Image, options: any) throw
+    mtd impl encode(result: *ConcatBuffer, image: Image, options: any) throw
     {
         var opt: EncodeOptions
         if @dataof(options) != null

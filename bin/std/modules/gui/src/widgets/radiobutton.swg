@@ -18,7 +18,7 @@ enum RadioButtonFlags
 
 impl IWnd for RadioButton
 {
-    mtd onPaintEvent(evt: *PaintEvent)
+    mtd impl onPaintEvent(evt: *PaintEvent)
     {
         bc     := evt.bc
         theme   := getTheme()
@@ -104,7 +104,7 @@ impl IWnd for RadioButton
         Theme.drawIconText(bc.painter, labelPos, icon, &name, format, metrics.iconText_Margin)
     }
 
-    mtd onMouseEvent(evt: *MouseEvent)
+    mtd impl onMouseEvent(evt: *MouseEvent)
     {
         if processMouseEvent(evt) and !checked
         {

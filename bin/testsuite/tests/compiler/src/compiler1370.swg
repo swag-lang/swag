@@ -11,7 +11,7 @@ interface Itf
 
 impl Itf for TOTO
 {
-    func print(self)
+    func impl print(self)
     {
     }
 }

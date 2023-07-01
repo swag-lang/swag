@@ -338,7 +338,7 @@ impl DateTime
 
 impl StrConv.IConvert for DateTime
 {
-    mtd convert(buf: *ConcatBuffer, fmt: const *StrConv.ConvertFormat, strFormat: string)
+    mtd impl convert(buf: *ConcatBuffer, fmt: const *StrConv.ConvertFormat, strFormat: string)
     {
         var str: String
         if @countof(strFormat) == 0 or @countof(strFormat) > 1

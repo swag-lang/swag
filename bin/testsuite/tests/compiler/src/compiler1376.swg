@@ -8,7 +8,7 @@ struct MyAlloc
 
 impl IAllocator for MyAlloc
 {
-    func req(self, req: *AllocatorRequest)
+    func impl req(self, req: *AllocatorRequest)
     {
         GG = true
         @assert(req.size == 10)

@@ -179,6 +179,10 @@ bool AstOutput::outputFuncSignature(OutputContext& context, Concat& concat, AstN
     }
 
     concat.addChar(' ');
+
+    if (node->kind == AstNodeKind::FuncDecl && node->specFlags & AstFuncDecl::SPECFLAG_IMPL)
+        CONCAT_FIXED_STR(concat, "impl ");
+
     concat.addString(node->token.text);
 
     // Parameters
@@ -263,6 +267,10 @@ bool AstOutput::outputFunc(OutputContext& context, Concat& concat, AstFuncDecl* 
         if (!(funcDecl->flags & AST_FROM_GENERIC) || (funcDecl->flags & AST_IS_GENERIC))
             SWAG_CHECK(outputGenericParameters(context, concat, funcDecl->genericParameters));
     }
+
+    // Implementation
+    if (funcDecl->specFlags & AstFuncDecl::SPECFLAG_IMPL)
+        CONCAT_FIXED_STR(concat, " impl ");
 
     // Name
     CONCAT_FIXED_STR(concat, " ");

@@ -10,7 +10,7 @@ public struct C1961AA
 
 public impl C1961ITF for C1961AA
 {
-    func toto(self)
+    func impl toto(self)
     {
     }
 }

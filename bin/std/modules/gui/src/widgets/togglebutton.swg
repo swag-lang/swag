@@ -15,7 +15,7 @@ struct ToggleButton
 
 impl IWnd for ToggleButton
 {
-    mtd onPaintEvent(evt: *PaintEvent)
+    mtd impl onPaintEvent(evt: *PaintEvent)
     {
         bc     := evt.bc
         theme   := getTheme()
@@ -71,7 +71,7 @@ impl IWnd for ToggleButton
         theme.drawSubRect(bc.painter, posBox, subRectMark, aniMark.cur())
     }
 
-    mtd onMouseEvent(evt: *MouseEvent)
+    mtd impl onMouseEvent(evt: *MouseEvent)
     {
         if processMouseEvent(evt)
         {

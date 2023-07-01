@@ -621,7 +621,7 @@ struct MyView
 
 impl IWnd for MyView
 {
-    mtd onPaintEvent(event: *PaintEvent)
+    mtd impl onPaintEvent(event: *PaintEvent)
     {
         painter := event.bc.painter
         painter.setParams(g_ModeAA ? .Antialiased : .Default)
@@ -655,7 +655,7 @@ impl IWnd for MyView
         }
     }
 
-    mtd onKeyEvent(evt: *KeyEvent)
+    mtd impl onKeyEvent(evt: *KeyEvent)
     {
         if evt.kind != .KeyPressed
             return

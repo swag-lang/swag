@@ -115,7 +115,7 @@ impl IWnd for ColorPicker
         }
     }
 
-    mtd onPaintEvent(evt: *PaintEvent)
+    mtd impl onPaintEvent(evt: *PaintEvent)
     {
         bc := evt.bc
         painter    := bc.painter
@@ -244,7 +244,7 @@ impl IWnd for ColorPicker
         (hue, sat, lum) = c.toHsl()
     }
 
-    mtd onPostPaintEvent(evt: *PaintEvent)
+    mtd impl onPostPaintEvent(evt: *PaintEvent)
     {
         bc := evt.bc
         painter     := bc.painter
@@ -274,7 +274,7 @@ impl IWnd for ColorPicker
         }
     }
 
-    mtd onMouseEvent(evt: *MouseEvent)
+    mtd impl onMouseEvent(evt: *MouseEvent)
     {
         pos := surfaceToLocal(evt.surfacePos)
         clientRect := getClientRect()

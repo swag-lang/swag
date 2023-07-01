@@ -131,7 +131,7 @@ struct Wnd
 
 impl IWnd for Wnd
 {
-    mtd onEvent(evt: *Event)
+    mtd impl onEvent(evt: *Event)
     {
         switch evt.kind
         {
@@ -182,28 +182,28 @@ impl IWnd for Wnd
         }
     }
 
-    mtd onCreateEvent(evt: *CreateEvent)                    {}
-    mtd onDestroyEvent(evt: *DestroyEvent)                  {}
-    mtd onStateEvent(evt: *StateEvent)                      {}
-    mtd onResizeEvent(evt: *ResizeEvent)                    {}
-    mtd onPrePaintEvent(evt: *PaintEvent)                   {}
-    mtd onPaintEvent(evt: *PaintEvent)                      {}
-    mtd onPostPaintEvent(evt: *PaintEvent)                  {}
-    mtd onSetThemeEvent(evt: *SetThemeEvent)                { invalidate(); sendResizeEvent(); }
-    mtd onTimerEvent(evt: *TimerEvent)                      {}
-    mtd onHookEvent(evt: *Event)                            {}
-    mtd onSerializeStateEvent(evt: *SerializeStateEvent)    {}
-    mtd onFrameEvent(evt: *FrameEvent)                      {}
+    mtd impl onCreateEvent(evt: *CreateEvent)                    {}
+    mtd impl onDestroyEvent(evt: *DestroyEvent)                  {}
+    mtd impl onStateEvent(evt: *StateEvent)                      {}
+    mtd impl onResizeEvent(evt: *ResizeEvent)                    {}
+    mtd impl onPrePaintEvent(evt: *PaintEvent)                   {}
+    mtd impl onPaintEvent(evt: *PaintEvent)                      {}
+    mtd impl onPostPaintEvent(evt: *PaintEvent)                  {}
+    mtd impl onSetThemeEvent(evt: *SetThemeEvent)                { invalidate(); sendResizeEvent(); }
+    mtd impl onTimerEvent(evt: *TimerEvent)                      {}
+    mtd impl onHookEvent(evt: *Event)                            {}
+    mtd impl onSerializeStateEvent(evt: *SerializeStateEvent)    {}
+    mtd impl onFrameEvent(evt: *FrameEvent)                      {}
 
-    mtd onSysCommandEvent(evt: *SysCommandEvent)        { evt.accepted = false; }
-    mtd onSysUserEvent(evt: *SysUserEvent)              { evt.accepted = false; }
-    mtd onFocusEvent(evt: *FocusEvent)                  { evt.accepted = false; }
-    mtd onKeyEvent(evt: *KeyEvent)                      { evt.accepted = false; }
-    mtd onMouseEvent(evt: *MouseEvent)                  { evt.accepted = false; }
-    mtd onCommandEvent(evt: *CommandEvent)              { evt.accepted = false; }
-    mtd onComputeStateEvent(evt: *CommandStateEvent)    { evt.accepted = false; }
-    mtd onApplyStateEvent(evt: *CommandStateEvent)      { evt.accepted = false; }
-    mtd onNotifyEvent(evt: *NotifyEvent)                { evt.accepted = false; }
+    mtd impl onSysCommandEvent(evt: *SysCommandEvent)        { evt.accepted = false; }
+    mtd impl onSysUserEvent(evt: *SysUserEvent)              { evt.accepted = false; }
+    mtd impl onFocusEvent(evt: *FocusEvent)                  { evt.accepted = false; }
+    mtd impl onKeyEvent(evt: *KeyEvent)                      { evt.accepted = false; }
+    mtd impl onMouseEvent(evt: *MouseEvent)                  { evt.accepted = false; }
+    mtd impl onCommandEvent(evt: *CommandEvent)              { evt.accepted = false; }
+    mtd impl onComputeStateEvent(evt: *CommandStateEvent)    { evt.accepted = false; }
+    mtd impl onApplyStateEvent(evt: *CommandStateEvent)      { evt.accepted = false; }
+    mtd impl onNotifyEvent(evt: *NotifyEvent)                { evt.accepted = false; }
 }
 
 impl Wnd

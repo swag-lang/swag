@@ -18,14 +18,14 @@ interface I
 
 impl I for Base
 {
-    mtd init(param: s32) => param
-    mtd close()->s32 => 2
-    mtd data() {}
+    mtd impl init(param: s32) => param
+    mtd impl close()->s32 => 2
+    mtd impl data() {}
 }
 
 impl I for BB
 {
-    mtd close()->s32 => 20
+    mtd impl close()->s32 => 20
 }
 
 #test

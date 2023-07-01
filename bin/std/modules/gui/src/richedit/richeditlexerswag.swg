@@ -56,7 +56,7 @@ struct RichEditLexerSwag
 
 impl IRichEditLexer for RichEditLexerSwag
 {
-    mtd setup(ed: *RichEditCtrl)
+    mtd impl setup(ed: *RichEditCtrl)
     {
         using RichEditLexerSwag.Style
         mapStyles[State.LineComment]        = Comment
@@ -372,7 +372,7 @@ impl IRichEditLexer for RichEditLexerSwag
         mapWords.add("#up", State.Compiler)
     }
 
-    mtd insertRune(ed: *RichEditCtrl, ch: rune)->bool
+    mtd impl insertRune(ed: *RichEditCtrl, ch: rune)->bool
     {
         // Smart return
         if ch == "\n"'rune
@@ -404,7 +404,7 @@ impl IRichEditLexer for RichEditLexerSwag
         return false
     }
 
-    mtd compute(linePrev, line, lineNext: *RichEditLine)
+    mtd impl compute(linePrev, line, lineNext: *RichEditLine)
     {
         seek := 0'u64
         currentState  := linePrev ? linePrev.lexerEndingState : State.Default

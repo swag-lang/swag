@@ -37,13 +37,14 @@ For example here, we implement interface `IReset` for struct `Point2`.
 
 impl IReset for Point2
 {
-    mtd set(val: f32)
+    // You must add 'impl' to indicate that you want to implement a function of the interface.
+    mtd impl set(val: f32)
     {
         x = val
         y = val+1
     }
 
-    mtd reset()
+    mtd impl reset()
     {
         x, y = 0
     }
@@ -54,14 +55,14 @@ And we implement interface `IReset` also for struct `Point3`.
 */
 impl IReset for Point3
 {
-    mtd set(val: f32)
+    mtd impl set(val: f32)
     {
         x = val
         y = val+1
         z = val+2
     }
 
-    mtd reset()
+    mtd impl reset()
     {
         x, y, z = 0
     }

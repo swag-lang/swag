@@ -14,13 +14,13 @@ var G: s32 = 0
 impl IT for Arr
 {
     //#[Swag.PrintBc]
-    func toto(self)
+    func impl toto(self)
     {
         G += 1
         @assert(@typeof(T) == s32)
     }
 
-    func toto1(self)
+    func impl toto1(self)
     {
         G += 10
         @assert(@typeof(T) == f64)

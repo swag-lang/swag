@@ -16,14 +16,14 @@ interface I
 
 impl I for Base
 {
-    mtd init()->s32 => 1
-    mtd close()->s32 => 2
+    mtd impl init()->s32 => 1
+    mtd impl close()->s32 => 2
 }
 
 impl I for BB
 {
-    mtd init()->s32 => 10
-    mtd close()->s32 => 20
+    mtd impl init()->s32 => 10
+    mtd impl close()->s32 => 20
 }
 
 //#[Swag.PrintBc, Swag.Optim("", false)]

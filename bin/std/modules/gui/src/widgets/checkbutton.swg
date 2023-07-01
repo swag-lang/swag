@@ -27,7 +27,7 @@ struct CheckButton
 
 impl IWnd for CheckButton
 {
-    mtd onPaintEvent(evt: *PaintEvent)
+    mtd impl onPaintEvent(evt: *PaintEvent)
     {
         bc      := evt.bc
         painter := bc.painter
@@ -117,7 +117,7 @@ impl IWnd for CheckButton
         Theme.drawIconText(painter, labelPos, icon, &name, format, metrics.iconText_Margin)
     }
 
-    mtd onMouseEvent(evt: *MouseEvent)
+    mtd impl onMouseEvent(evt: *MouseEvent)
     {
         if processMouseEvent(evt)
         {

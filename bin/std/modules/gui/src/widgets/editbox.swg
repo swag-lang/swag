@@ -75,7 +75,7 @@ struct EditBox
 
 impl IWnd for EditBox
 {
-    mtd onFocusEvent(evt: *FocusEvent)
+    mtd impl onFocusEvent(evt: *FocusEvent)
     {
         switch evt.kind
         {
@@ -94,7 +94,7 @@ impl IWnd for EditBox
         }
     }
 
-    mtd onPaintEvent(evt: *PaintEvent)
+    mtd impl onPaintEvent(evt: *PaintEvent)
     {
         bc      := evt.bc
         painter := evt.bc.painter
@@ -225,7 +225,7 @@ impl IWnd for EditBox
         painter.translateTransform(scrollPosX, 0)
     }
 
-    mtd onMouseEvent(evt: *MouseEvent)
+    mtd impl onMouseEvent(evt: *MouseEvent)
     {
         pos := surfaceToLocal(evt.surfacePos)
         switch evt.kind
@@ -276,7 +276,7 @@ impl IWnd for EditBox
         }
     }
 
-    mtd onTimerEvent(evt: *TimerEvent)
+    mtd impl onTimerEvent(evt: *TimerEvent)
     {
         visibleCaret = !visibleCaret
         pos := getCaretPos()
@@ -284,7 +284,7 @@ impl IWnd for EditBox
         invalidateRect(pos)
     }
 
-    mtd onKeyEvent(evt: *KeyEvent)
+    mtd impl onKeyEvent(evt: *KeyEvent)
     {
         if evt.kind == .KeyPressed
         {

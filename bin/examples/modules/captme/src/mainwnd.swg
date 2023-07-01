@@ -121,7 +121,7 @@ impl IWnd for MainWnd
         sf.destroy()
     }
 
-    mtd onSysUserEvent(evt: *SysUserEvent)
+    mtd impl onSysUserEvent(evt: *SysUserEvent)
     {
         #if #os == Swag.TargetOs.Windows
         {
@@ -137,7 +137,7 @@ impl IWnd for MainWnd
         }
     }
 
-    mtd onSysCommandEvent(evt: *SysCommandEvent)
+    mtd impl onSysCommandEvent(evt: *SysCommandEvent)
     {
         evt.accepted = false
         switch evt.sysKind
@@ -148,7 +148,7 @@ impl IWnd for MainWnd
         }
     }
 
-    mtd onSerializeStateEvent(evt: *SerializeStateEvent)
+    mtd impl onSerializeStateEvent(evt: *SerializeStateEvent)
     {
         catch
         {
@@ -176,7 +176,7 @@ impl IWnd for MainWnd
         }
     }
 
-    mtd onFrameEvent(evt: *FrameEvent)
+    mtd impl onFrameEvent(evt: *FrameEvent)
     {
         if evt.firstFrame
         {

@@ -47,7 +47,7 @@ struct FileDlg
 
 impl IWnd for FileDlg
 {
-    mtd onDestroyEvent(evt: *DestroyEvent)
+    mtd impl onDestroyEvent(evt: *DestroyEvent)
     {
         if evt.kind == .Destroy and dlgOptions.state
         {

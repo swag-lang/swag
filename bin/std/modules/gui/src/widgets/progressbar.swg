@@ -18,7 +18,7 @@ struct ProgressBar
 
 impl IWnd for ProgressBar
 {
-    mtd onPaintEvent(evt: *PaintEvent)
+    mtd impl onPaintEvent(evt: *PaintEvent)
     {
         bc     := evt.bc
         painter := bc.painter

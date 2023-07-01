@@ -49,7 +49,7 @@ impl FormImage
 
 impl IForm for FormImage
 {
-    mtd isSame(ptr: *BaseForm)->bool
+    mtd impl isSame(ptr: *BaseForm)->bool
     {
         other := cast(*FormImage) ptr
         if kind == .Image and backColor != other.backColor
@@ -62,7 +62,7 @@ impl IForm for FormImage
                 strength    == other.strength
     }
 
-    mtd copy(dst, src: *BaseForm)
+    mtd impl copy(dst, src: *BaseForm)
     {
         dstf := cast(*FormImage) dst
         srcf := cast(*FormImage) src
@@ -77,7 +77,7 @@ impl IForm for FormImage
             dstf.image = srcf.image
     }
 
-    mtd edit(evt: *MouseEvent, paintRect: Math.Rectangle, movingStart: Math.Point, localPos: Math.Point, zoom: f32)->bool
+    mtd impl edit(evt: *MouseEvent, paintRect: Math.Rectangle, movingStart: Math.Point, localPos: Math.Point, zoom: f32)->bool
     {
         xa := cast(s32) ((movingStart.x - paintRect.x) / zoom)
         ya := cast(s32) ((movingStart.y - paintRect.y) / zoom)
@@ -95,7 +95,7 @@ impl IForm for FormImage
 
     mtd mustEditInside() => kind == .Image and place == .Free and editInside
 
-    mtd moveBaseForm(newPosX, newPosY, newSizeX, newSizeY: s32)
+    mtd impl moveBaseForm(newPosX, newPosY, newSizeX, newSizeY: s32)
     {
         if mustEditInside()
         {
@@ -113,7 +113,7 @@ impl IForm for FormImage
         }
     }
 
-    mtd setBaseForm(newPosX, newPosY, newSizeX, newSizeY: s32)
+    mtd impl setBaseForm(newPosX, newPosY, newSizeX, newSizeY: s32)
     {
         if mustEditInside()
         {
@@ -165,7 +165,7 @@ impl IForm for FormImage
         }
     }
 
-    mtd moveForm(newPosX, newPosY: s32)
+    mtd impl moveForm(newPosX, newPosY: s32)
     {
         if mustEditInside()
         {
@@ -179,16 +179,16 @@ impl IForm for FormImage
         }
     }
 
-    mtd movePoint(pt: u32, newPosX, newPosY: s32)
+    mtd impl movePoint(pt: u32, newPosX, newPosY: s32)
     {
     }
 
-    mtd boundRect()->Math.Rectangle
+    mtd impl boundRect()->Math.Rectangle
     {
         return Math.Rectangle{x, y, w, h}
     }
 
-    mtd mouse(view: *EditView, pos: Math.Point, evt: *MouseEvent)->bool
+    mtd impl mouse(view: *EditView, pos: Math.Point, evt: *MouseEvent)->bool
     {
         if kind == .Image and
            place == .Free and
@@ -208,7 +208,7 @@ impl IForm for FormImage
         return gizmo.mouse(view, pos, evt)
     }
 
-    mtd paintGizmo(painter: *Painter, z: f32, flags: FormFlags)
+    mtd impl paintGizmo(painter: *Painter, z: f32, flags: FormFlags)
     {
         if flags & (.Hot | .Selected)
         {
@@ -232,13 +232,13 @@ impl IForm for FormImage
         }
     }
 
-    mtd isInside(pt: Math.Point)->bool
+    mtd impl isInside(pt: Math.Point)->bool
     {
         br := boundRect()
         return br.contains(pt)
     }
 
-    mtd hitTest(pt: Math.Point, z: f32)->bool
+    mtd impl hitTest(pt: Math.Point, z: f32)->bool
     {
         if mustEditInside()
         {
@@ -290,7 +290,7 @@ impl IForm for FormImage
         }
     }
 
-    mtd paint(app: *Application, painter: *Painter, z: f32, quickMode: bool)
+    mtd impl paint(app: *Application, painter: *Painter, z: f32, quickMode: bool)
     {
         bSize := adaptSize(borderSize, MinBorderSize, MaxBorderSize, z, quickMode)
         pp    := Math.Rectangle{0, 0, paintPos.width, paintPos.height}
@@ -452,7 +452,7 @@ impl IForm for FormImage
         }
     }
 
-    mtd setup(capt: *Capture)
+    mtd impl setup(capt: *Capture)
     {
         capture = capt
 

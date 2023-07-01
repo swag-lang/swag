@@ -247,46 +247,46 @@ impl Encoder
 impl IEncoder for Encoder
 {
     // Start serialization
-    mtd start(result: *ConcatBuffer) throw
+    mtd impl start(result: *ConcatBuffer) throw
     {
         serializer.startWrite(result)
         serializer.beginRoot()
     }
 
     // End serialization
-    mtd end() throw
+    mtd impl end() throw
     {
         serializer.endRoot()
     }
 
-    mtd beginField(val: Swag.TypeValue) throw
+    mtd impl beginField(val: Swag.TypeValue) throw
     {
         serializer.beginElement(val)
         serializer.beginValue()
     }
 
-    mtd endField() throw
+    mtd impl endField() throw
     {
         serializer.endValue()
         serializer.endElement()
     }
 
-    mtd beginSection(kind: SectionKind) throw
+    mtd impl beginSection(kind: SectionKind) throw
     {
         serializer.beginSection(kind)
     }
 
-    mtd endSection() throw
+    mtd impl endSection() throw
     {
         serializer.endSection()
     }
 
-    mtd write(data: const ^void, type: typeinfo) throw
+    mtd impl write(data: const ^void, type: typeinfo) throw
     {
         writeValue(data, type)
     }
 
-    mtd writeBufferU8(data: const ^u8, count: u64) throw
+    mtd impl writeBufferU8(data: const ^u8, count: u64) throw
     {
         treated := serializer.beginSequence(u8, data, count)
         defer(noerr) serializer.endSequence()
@@ -304,15 +304,15 @@ impl IEncoder for Encoder
         }
     }
 
-    mtd writeBool(value: bool)        = serializer.writeNative(value)
-    mtd writeS8(value: s8)            = serializer.writeNative(value)
-    mtd writeS16(value: s16)          = serializer.writeNative(value)
-    mtd writeS32(value: s32)          = serializer.writeNative(value)
-    mtd writeS64(value: s64)          = serializer.writeNative(value)
-    mtd writeU8(value: u8)            = serializer.writeNative(value)
-    mtd writeU16(value: u16)          = serializer.writeNative(value)
-    mtd writeU32(value: u32)          = serializer.writeNative(value)
-    mtd writeU64(value: u64)          = serializer.writeNative(value)
-    mtd writeF32(value: f32)          = serializer.writeNative(value)
-    mtd writeF64(value: f64)          = serializer.writeNative(value)
+    mtd impl writeBool(value: bool)        = serializer.writeNative(value)
+    mtd impl writeS8(value: s8)            = serializer.writeNative(value)
+    mtd impl writeS16(value: s16)          = serializer.writeNative(value)
+    mtd impl writeS32(value: s32)          = serializer.writeNative(value)
+    mtd impl writeS64(value: s64)          = serializer.writeNative(value)
+    mtd impl writeU8(value: u8)            = serializer.writeNative(value)
+    mtd impl writeU16(value: u16)          = serializer.writeNative(value)
+    mtd impl writeU32(value: u32)          = serializer.writeNative(value)
+    mtd impl writeU64(value: u64)          = serializer.writeNative(value)
+    mtd impl writeF32(value: f32)          = serializer.writeNative(value)
+    mtd impl writeF64(value: f64)          = serializer.writeNative(value)
 }

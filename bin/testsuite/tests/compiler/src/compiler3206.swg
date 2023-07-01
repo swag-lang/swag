@@ -18,15 +18,15 @@ interface I
 
 impl I for Base
 {
-    mtd init()->s32 => 1
-    mtd close()->s32 => 2
-    mtd data()->s32 => 3
+    mtd impl init()->s32 => 1
+    mtd impl close()->s32 => 2
+    mtd impl data()->s32 => 3
 }
 
 impl I for BB
 {
-    mtd close()->s32 => 20
-    mtd data()->s32 => 30
+    mtd impl close()->s32 => 20
+    mtd impl data()->s32 => 30
 }
 
 #test

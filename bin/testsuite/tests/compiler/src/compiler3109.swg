@@ -10,7 +10,7 @@ struct AA
 
 impl Itf for AA
 {
-    mtd toto()
+    mtd impl toto()
     {
         mtd YYY() => 666
         @print(YYY(self))

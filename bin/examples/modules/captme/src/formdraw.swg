@@ -23,7 +23,7 @@ impl FormDraw
 
 impl IForm for FormDraw
 {
-    mtd isSame(ptr: *BaseForm)->bool
+    mtd impl isSame(ptr: *BaseForm)->bool
     {
         other := cast(*FormDraw) ptr
         return  borderColor == other.borderColor and
@@ -32,7 +32,7 @@ impl IForm for FormDraw
                 paintShadow == paintShadow
     }
 
-    mtd copy(dst, src: *BaseForm)
+    mtd impl copy(dst, src: *BaseForm)
     {
         dstf := cast(*FormDraw) dst
         srcf := cast(*FormDraw) src
@@ -42,7 +42,7 @@ impl IForm for FormDraw
         dstf.paintShadow = srcf.paintShadow
     }
 
-    mtd edit(evt: *MouseEvent, paintRect: Math.Rectangle, movingStart: Math.Point, localPos: Math.Point, zoom: f32)->bool
+    mtd impl edit(evt: *MouseEvent, paintRect: Math.Rectangle, movingStart: Math.Point, localPos: Math.Point, zoom: f32)->bool
     {
         if evt.kind == .MouseReleased and evt.button == .Left
             return false
@@ -72,7 +72,7 @@ impl IForm for FormDraw
         return true
     }
 
-    mtd moveBaseForm(newPosX, newPosY, newSizeX, newSizeY: s32)
+    mtd impl moveBaseForm(newPosX, newPosY, newSizeX, newSizeY: s32)
     {
         visit &pt: points
         {
@@ -81,7 +81,7 @@ impl IForm for FormDraw
         }
     }
 
-    mtd setBaseForm(newPosX, newPosY, newSizeX, newSizeY: s32)
+    mtd impl setBaseForm(newPosX, newPosY, newSizeX, newSizeY: s32)
     {
         rect := boundRect()
         bSize := borderSize * 0.5
@@ -100,7 +100,7 @@ impl IForm for FormDraw
         }
     }
 
-    mtd moveForm(newPosX, newPosY: s32)
+    mtd impl moveForm(newPosX, newPosY: s32)
     {
         visit &pt: points
         {
@@ -109,13 +109,13 @@ impl IForm for FormDraw
         }
     }
 
-    mtd movePoint(pt: u32, newPosX, newPosY: s32)
+    mtd impl movePoint(pt: u32, newPosX, newPosY: s32)
     {
         points[pt].x += newPosX
         points[pt].y += newPosY
     }
 
-    mtd boundRect()->Math.Rectangle
+    mtd impl boundRect()->Math.Rectangle
     {
         if !points.count
             setDefaultShape()
@@ -155,12 +155,12 @@ impl IForm for FormDraw
         }
     }
 
-    mtd mouse(view: *EditView, pos: Math.Point, evt: *MouseEvent)->bool
+    mtd impl mouse(view: *EditView, pos: Math.Point, evt: *MouseEvent)->bool
     {
         return false
     }
 
-    mtd paintGizmo(painter: *Painter, z: f32, flags: FormFlags)
+    mtd impl paintGizmo(painter: *Painter, z: f32, flags: FormFlags)
     {
         if flags & (.Hot | .Selected)
         {
@@ -178,12 +178,12 @@ impl IForm for FormDraw
         }
     }
 
-    mtd isInside(pt: Math.Point)->bool
+    mtd impl isInside(pt: Math.Point)->bool
     {
         return Math.Vector2.polyContains(points, {pt.x, pt.y})
     }
 
-    mtd hitTest(pt: Math.Point, z: f32)->bool
+    mtd impl hitTest(pt: Math.Point, z: f32)->bool
     {
         bSize := borderSize * z * 0.5
         bSize = Math.max(bSize, 2)
@@ -203,7 +203,7 @@ impl IForm for FormDraw
         return false
     }
 
-    mtd paint(app: *Application, painter: *Painter, z: f32, quickMode: bool)
+    mtd impl paint(app: *Application, painter: *Painter, z: f32, quickMode: bool)
     {
         bSize := adaptSize(borderSize, MinBorderSize, MaxBorderSize, z, quickMode)
         bSize = Math.max(bSize, 2)
@@ -236,7 +236,7 @@ impl IForm for FormDraw
         painter.drawPath(&pl, pen)
     }
 
-    mtd setup(capt: *Capture)
+    mtd impl setup(capt: *Capture)
     {
         capture = capt
     }

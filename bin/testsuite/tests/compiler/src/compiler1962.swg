@@ -14,14 +14,14 @@ struct AA
 
 impl ITF0 for AA
 {
-    func toto(self)
+    func impl toto(self)
     {
     }
 }
 
 impl ITF1 for AA
 {
-    func toto(self)
+    func impl toto(self)
     {
     }
 }

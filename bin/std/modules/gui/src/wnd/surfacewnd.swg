@@ -45,7 +45,7 @@ impl IWnd for SurfaceWnd
         return newSizingBorder
     }
 
-    mtd onMouseEvent(evt: *MouseEvent)
+    mtd impl onMouseEvent(evt: *MouseEvent)
     {
         switch evt.kind
         {
@@ -158,12 +158,12 @@ impl IWnd for SurfaceWnd
         }
     }
 
-    mtd onDestroyEvent(evt: *DestroyEvent)
+    mtd impl onDestroyEvent(evt: *DestroyEvent)
     {
         surface.app.destroySurface(surface)
     }
 
-    mtd onSysCommandEvent(evt: *SysCommandEvent)
+    mtd impl onSysCommandEvent(evt: *SysCommandEvent)
     {
         switch evt.sysKind
         {
@@ -178,7 +178,7 @@ impl IWnd for SurfaceWnd
         }
     }
 
-    mtd onResizeEvent(evt: *ResizeEvent)
+    mtd impl onResizeEvent(evt: *ResizeEvent)
     {
         clientRect := getClientRect()
 
@@ -209,7 +209,7 @@ impl IWnd for SurfaceWnd
         base.IWnd.onResizeEvent(evt)
     }
 
-    mtd onPaintEvent(evt: *PaintEvent)
+    mtd impl onPaintEvent(evt: *PaintEvent)
     {
         if isPendingDestroy
             return

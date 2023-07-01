@@ -10,7 +10,7 @@ interface IBase
 
 impl IBase for Base
 {
-    mtd check()->s32
+    mtd impl check()->s32
     {
         return 1
     }
@@ -32,7 +32,7 @@ struct Child
 
 impl IBase for Child
 {
-    mtd check()->s32
+    mtd impl check()->s32
     {
         return 2
     }

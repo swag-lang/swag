@@ -6,7 +6,7 @@ const CmdIdClearImageInside = "CmdIdClearImageInside"
 struct ActionEdit {}
 impl IActionUI for ActionEdit
 {
-    mtd accept(cxt: ActionContext)->bool
+    mtd impl accept(cxt: ActionContext)->bool
     {
         switch cxt.id
         {
@@ -18,7 +18,7 @@ impl IActionUI for ActionEdit
         return false
     }
 
-    mtd update(cxt: ActionContext, evt: *CommandStateEvent)->bool
+    mtd impl update(cxt: ActionContext, evt: *CommandStateEvent)->bool
     {
         main := cast(*MainWnd) cxt.wnd
         capture := main.getCapture()
@@ -69,7 +69,7 @@ impl IActionUI for ActionEdit
         return true
     }
 
-    mtd execute(cxt: ActionContext)->bool
+    mtd impl execute(cxt: ActionContext)->bool
     {
         main := cast(*MainWnd) cxt.wnd
         capture := main.getCapture()
