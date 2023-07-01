@@ -130,6 +130,11 @@ impl IForm for FormLine
         d1 := d.cross(1)
         d1.normalizeSafe()
 
+        if beginCap == .ArrowAnchor
+            l0 = 2*2*borderSize
+        if endCap == .ArrowAnchor
+            l1 = 2*2*borderSize
+
         v1 := bound(va, vb, d*l0 + d1*w0, d*l1 + d1*w1)
         v2 := bound(va, vb, d*l0 - d1*w0, d*l1 - d1*w1)
 
@@ -208,8 +213,8 @@ impl IForm for FormLine
         computePaintCoords(z)
 
         bSize := adaptSize(borderSize, MinBorderSize, MaxBorderSize, z, quickMode)
-        sSize := adaptSize(startSize, MinCapSize, MaxCapSize, 1, quickMode, 1, 4)
-        eSize := adaptSize(endSize, MinCapSize, MaxCapSize, 1, quickMode, 1, 4)
+        sSize := quickMode ? Math.min(startSize, 4) : startSize
+        eSize := quickMode ? Math.min(endSize, 4) : endSize
 
         pen := Pen.createDash(dashStyle, borderColor, bSize)
         pen.beginCapStyle  = beginCap

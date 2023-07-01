@@ -130,6 +130,18 @@ impl Painter
         return n - n.toNormalizeSafe()
     }
 
+    mtd drawCapRoundAnchor(p, d: Vector2, sens: f32, pen: Pen, start: bool)->Vector2
+    {
+        sx := start ? pen.capStartScaleX : pen.capEndScaleX
+        sy := start ? pen.capStartScaleY : pen.capEndScaleY
+
+        angle0 := Math.atan2(-d.y, -d.x)
+        angle1 := angle0 + Math.ConstF32.TwoPi
+        radius := sx * d.length()
+        drawRound(p, radius, angle0, angle1, pen)
+        return Vector2.Zero
+    }
+
     mtd drawCapRound(p, d: Vector2, sens: f32, pen: Pen)
     {
         radius := d.length()
@@ -170,6 +182,9 @@ impl Painter
 
         case ArrowAnchor:
             return drawCapArrowAnchor(p, d, sens, pen, start)
+
+        case RoundAnchor:
+            return drawCapRoundAnchor(p, d, sens, pen, start)
         }
 
         return Vector2.Zero
@@ -747,6 +762,7 @@ public impl Painter
         case Square:        return {lineSize*0.5, lineSize*0.5}
         case ArrowAnchor:   return {lineSize*0.5 * capScale, 0}
         case SquareAnchor:  return {lineSize*0.5 * capScale, lineSize*0.5 * capScale}
+        case RoundAnchor:   return {lineSize*0.5 * capScale, lineSize*0.5 * capScale}
         }
 
         return {0, 0}

@@ -326,7 +326,7 @@ impl PropWnd
 
     mtd createPopupStartCapStyle(btn: *IconButton)
     {
-        frame := createPopup(btn, 100, 280)
+        frame := createPopup(btn, 100, @countof(LineCapStyle)*46.0)
         layout := StackLayoutCtrl.create(frame, .Top)
         frame.setView(layout)
 
@@ -378,7 +378,7 @@ impl PropWnd
 
     mtd createPopupEndCapStyle(btn: *IconButton)
     {
-        frame := createPopup(btn, 100, 280)
+        frame := createPopup(btn, 100, @countof(LineCapStyle)*46.0)
         layout := StackLayoutCtrl.create(frame, .Top)
         frame.setView(layout)
 
