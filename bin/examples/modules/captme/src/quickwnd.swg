@@ -161,7 +161,7 @@ impl QuickWnd
             #up qsArrow.forms.add(it)
         }
 
-        const BorderSize = 10.0
+        const BorderSize = 25.0
         const ArrowSize  = 5.0
 
         add(0, BorderSize, ArrowSize, Argb.Red)
@@ -173,6 +173,30 @@ impl QuickWnd
         add(ArrowSize, BorderSize, ArrowSize, Argb.Green)
         add(ArrowSize, BorderSize, ArrowSize, Argb.Blue)
         add(ArrowSize, BorderSize, ArrowSize, Argb.Yellow)
+    }
+
+    mtd defaultQuickStyleLine()
+    {
+        #[Swag.Macro]
+        func add(borderSize: f32, color: Color)
+        {
+            form := Memory.new'FormLine()
+            form.borderSize = borderSize
+            form.borderColor = color
+            it := cast(IForm) form
+            it.setup(null)
+            #up qsLine.forms.add(it)
+        }
+
+        const BorderSize = 25.0
+        add(BorderSize, Argb.White)
+        add(BorderSize, Argb.Gray)
+        add(BorderSize, Argb.Black)
+        add(BorderSize, Argb.Red)
+        add(BorderSize, Argb.Green)
+        add(BorderSize, Argb.Blue)
+        add(BorderSize, Argb.Yellow)
+        add(BorderSize, Argb.Purple)
     }
 
     mtd defaultQuickStyleShape()
@@ -250,30 +274,6 @@ impl QuickWnd
         add(.RoundRectangle, Argb.White, Argb.Purple)
         add(.RoundRectangle, Argb.White, Argb.Green)
         add(.RoundRectangle, Argb.White, Argb.Orange)
-    }
-
-    mtd defaultQuickStyleLine()
-    {
-        #[Swag.Macro]
-        func add(borderSize: f32, color: Color)
-        {
-            form := Memory.new'FormLine()
-            form.borderSize = borderSize
-            form.borderColor = color
-            it := cast(IForm) form
-            it.setup(null)
-            #up qsLine.forms.add(it)
-        }
-
-        const BorderSize = 10.0
-        add(BorderSize, Argb.White)
-        add(BorderSize, Argb.Gray)
-        add(BorderSize, Argb.Black)
-        add(BorderSize, Argb.Red)
-        add(BorderSize, Argb.Green)
-        add(BorderSize, Argb.Blue)
-        add(BorderSize, Argb.Yellow)
-        add(BorderSize, Argb.Purple)
     }
 
     mtd defaultQuickStylePolygon()
@@ -564,14 +564,6 @@ impl QuickWnd
             case FormText:
                 txt := cast(*FormText) @dataof(btnp.formItf)
                 txt.text = "A"
-            case FormLine, FormArrow:
-                line := cast(*FormLine) @dataof(btnp.formItf)
-                xo   := FormLine.drawCapOffset(line.beginCap, line.borderSize, line.startSize * 0.5)
-                yo   := FormLine.drawCapOffset(line.endCap, line.borderSize, line.endSize * 0.5)
-                rect.moveLeft(xo)
-                rect.moveTop(xo)
-                rect.moveRight(-yo)
-                rect.moveBottom(-yo)
             case FormImage:
                 img := cast(*FormImage) @dataof(btnp.formItf)
                 switch img.kind

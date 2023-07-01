@@ -216,15 +216,6 @@ impl IForm for FormLine
         pen.capStartScaleY = 2
         pen.capEndScaleY   = 2
 
-        if quickMode
-        {
-            while pen.capStartScaleX > 4 or pen.capEndScaleX > 4
-            {
-                pen.capStartScaleX *= 0.9
-                pen.capEndScaleX *= 0.9
-            }
-        }
-
         pen.dashBeginCapStyle = dashCap
         pen.dashEndCapStyle   = dashCap
 
@@ -239,19 +230,5 @@ impl IForm for FormLine
         gizmo.sigChanged = closure|self|(diff, pt, first) {
             GizmoPoints.apply(self, diff, pt, first)
         }
-    }
-}
-
-impl FormLine
-{
-    func drawCapOffset(cap: LineCapStyle, size, scale: f32)->f32
-    {
-        switch cap
-        {
-        case ArrowAnchor:   return -size * 0.5
-        case SquareAnchor:  return size * 0.5 * scale
-        }
-
-        return 0
     }
 }

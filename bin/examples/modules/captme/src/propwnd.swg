@@ -361,7 +361,8 @@ impl PropWnd
                 pen := Pen.createSolid(btn.getThemeColors().btnIcon_Icon, CapSize)
                 pen.beginCapStyle = cap
                 pen.endCapStyle = .None
-                rect.moveLeft(FormLine.drawCapOffset(cap, CapSize, pen.capStartScaleX))
+                (w0, l0) := Painter.capStyleExtent(cap, CapSize, pen.capStartScaleX)
+                rect.moveLeft(l0)
                 bc.painter.drawLine(rect.x, rect.vertCenter(), rect.right(), rect.vertCenter(), pen)
             }
 
@@ -412,7 +413,8 @@ impl PropWnd
                 pen := Pen.createSolid(btn.getThemeColors().btnIcon_Icon, CapSize)
                 pen.beginCapStyle = .None
                 pen.endCapStyle = cap
-                rect.moveRight(-FormLine.drawCapOffset(cap, CapSize, pen.capStartScaleX))
+                (w0, l0) := Painter.capStyleExtent(cap, CapSize, pen.capEndScaleX)
+                rect.moveRight(-l0)
                 bc.painter.drawLine(rect.x, rect.vertCenter(), rect.right(), rect.vertCenter(), pen)
             }
 
@@ -675,7 +677,8 @@ impl PropWnd
             pen := Pen.createSolid(btn.getThemeColors().btnIcon_Icon, CapSize)
             pen.beginCapStyle = curSel.beginCap
             pen.endCapStyle = .None
-            rect.moveLeft(FormLine.drawCapOffset(curSel.beginCap, CapSize, pen.capStartScaleX))
+            (w0, l0) := Painter.capStyleExtent(curSel.beginCap, CapSize, pen.capStartScaleX)
+            rect.moveLeft(l0)
             bc.painter.drawLine(rect.x, rect.vertCenter(), rect.right(), rect.vertCenter(), pen)
         }
 
@@ -703,7 +706,8 @@ impl PropWnd
             pen := Pen.createSolid(btn.getThemeColors().btnIcon_Icon, CapSize)
             pen.beginCapStyle = .None
             pen.endCapStyle = curSel.endCap
-            rect.moveRight(-FormLine.drawCapOffset(curSel.endCap, CapSize, pen.capStartScaleX))
+            (w0, l0) := Painter.capStyleExtent(curSel.endCap, CapSize, pen.capEndScaleX)
+            rect.moveRight(-l0)
             bc.painter.drawLine(rect.x, rect.vertCenter(), rect.right(), rect.vertCenter(), pen)
         }
 
