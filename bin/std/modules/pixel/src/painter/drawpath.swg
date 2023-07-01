@@ -741,10 +741,10 @@ public impl Painter
         #[Swag.Complete]
         switch capStyle
         {
-        case None:          return {0, 0}
-        case Triangle:      return {0, lineSize*0.5}
-        case Round:         return {0, lineSize*0.5}
-        case Square:        return {0, lineSize*0.5}
+        case None:          return {lineSize*0.5, 0}
+        case Triangle:      return {lineSize*0.5, lineSize*0.5}
+        case Round:         return {lineSize*0.5, lineSize*0.5}
+        case Square:        return {lineSize*0.5, lineSize*0.5}
         case ArrowAnchor:   return {lineSize*0.5 * capScale, 0}
         case SquareAnchor:  return {lineSize*0.5 * capScale, lineSize*0.5 * capScale}
         }

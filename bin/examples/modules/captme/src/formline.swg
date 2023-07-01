@@ -208,11 +208,14 @@ impl IForm for FormLine
         computePaintCoords(z)
 
         bSize := adaptSize(borderSize, MinBorderSize, MaxBorderSize, z, quickMode)
+        sSize := adaptSize(startSize, MinCapSize, MaxCapSize, 1, quickMode, 1, 4)
+        eSize := adaptSize(endSize, MinCapSize, MaxCapSize, 1, quickMode, 1, 4)
+
         pen := Pen.createDash(dashStyle, borderColor, bSize)
         pen.beginCapStyle  = beginCap
         pen.endCapStyle    = endCap
-        pen.capStartScaleX = startSize
-        pen.capEndScaleX   = endSize
+        pen.capStartScaleX = sSize
+        pen.capEndScaleX   = eSize
         pen.capStartScaleY = 2
         pen.capEndScaleY   = 2
 
