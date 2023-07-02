@@ -146,8 +146,8 @@ void Module::release()
     for (auto& b : byteCodeFunc)
         b->release();
 
-    // Too tricky for now to release ASTs, because of possible shared values (like scopes) in case of errors
-    if (!isErrorModule)
+    // In case of errors, it's too tricky for now to release ASTs, because of possible shared values (like scopes).
+    if (!isErrorModule && !numErrors)
     {
         for (auto f : files)
             f->release();
