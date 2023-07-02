@@ -1,6 +1,6 @@
 interface A
 {
-    x: func(self)->void
+    func x(self)->void
 }
 
 struct X

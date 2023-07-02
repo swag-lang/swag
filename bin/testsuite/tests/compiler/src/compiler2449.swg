@@ -1,6 +1,6 @@
 interface Error
 {
-    toString: func(self)->string;
+    func toString(self)->string;
 }
 
 struct MyError

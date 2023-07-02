@@ -3,5 +3,5 @@
 interface toto
 {
     #[Swag.Offset("print1")]
-    print: func(self)
+    func print(self)
 }

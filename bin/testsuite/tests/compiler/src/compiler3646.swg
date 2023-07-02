@@ -1,6 +1,6 @@
 interface I
 {
-    fct: func(self)
+    func fct(self)
 }
 
 #[Swag.Safety("sanity", false)]

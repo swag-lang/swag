@@ -5,7 +5,7 @@ struct AA
 
 interface BB
 {
-    x: func(self)->s32
+    func x(self)->s32
 }
 
 var G = 0

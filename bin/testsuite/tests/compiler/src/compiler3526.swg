@@ -3,7 +3,7 @@ struct Circle {}
 
 interface IShape
 {
-    area: func(self)->s32
+    func area(self)->s32
 }
 
 impl IShape for Circle

@@ -1,6 +1,6 @@
 interface Itf
 {
-    toto: func(self)
+    func toto(self)
 }
 
 struct AA

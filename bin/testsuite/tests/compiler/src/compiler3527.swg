@@ -1,7 +1,7 @@
 struct A {}
 interface I
 {
-    fct: func(self)
+    func fct(self)
 }
 
 var GG = 0

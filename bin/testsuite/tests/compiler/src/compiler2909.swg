@@ -17,7 +17,7 @@ namespace Parse
 {
     interface IParse
     {
-        xoxo: func(self)
+        func xoxo(self)
     }
 
     impl IParse for Drawing.Color

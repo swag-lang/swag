@@ -524,7 +524,7 @@ bool Parser::doStructBody(AstNode* parent, SyntaxStructType structType, AstNode*
         parent->ownerStructScope->owner->flags |= AST_STRUCT_COMPOUND;
         break;
     case TokenId::CompilerIf:
-        SWAG_CHECK(doCompilerIfFor(parent, result, AstNodeKind::StructDecl));
+        SWAG_CHECK(doCompilerIfFor(parent, result, structType == SyntaxStructType::Interface ? AstNodeKind::InterfaceDecl : AstNodeKind::StructDecl));
         parent->ownerStructScope->owner->flags |= AST_STRUCT_COMPOUND;
         break;
 
@@ -607,6 +607,8 @@ bool Parser::doStructBody(AstNode* parent, SyntaxStructType structType, AstNode*
         }
 
         auto funcNode = Ast::newNode<AstFuncDecl>(this, AstNodeKind::FuncDecl, sourceFile, nullptr);
+        funcNode->specFlags |= AstFuncDecl::SPECFLAG_EMPTY_FCT;
+
         SWAG_CHECK(checkIsValidUserName(funcNode));
         SWAG_VERIFY(token.id == TokenId::Identifier, error(token, Fmt(Err(Syn0089), token.ctext())));
         SWAG_CHECK(eatToken());
@@ -639,16 +641,24 @@ bool Parser::doStructBody(AstNode* parent, SyntaxStructType structType, AstNode*
         {
             SWAG_CHECK(eatToken());
             SWAG_CHECK(doTypeExpression(typeNode, EXPR_FLAG_NONE, &typeNode->returnType));
+
+            auto retNode = Ast::newNode<AstNode>(this, AstNodeKind::FuncDeclType, sourceFile, funcNode);
+            retNode->specFlags |= AstFuncDecl::SPECFLAG_RETURN_DEFINED;
+            CloneContext cloneContext;
+            cloneContext.parent = retNode;
+            typeNode->returnType->clone(cloneContext);
+            funcNode->returnType = retNode;
         }
 
         if (token.id == TokenId::KwdThrow)
         {
             SWAG_CHECK(eatToken(TokenId::KwdThrow));
             typeNode->specFlags |= AstTypeLambda::SPECFLAG_CAN_THROW;
+            funcNode->specFlags |= AstFuncDecl::SPECFLAG_THROW;
         }
 
-        scope->owner = nullptr;
-        funcNode->release();
+        varNode->allocateExtension(ExtensionKind::Misc);
+        varNode->extMisc()->exportNode = funcNode;
 
         if (!tokenizer.comment.empty())
         {
@@ -657,12 +667,14 @@ bool Parser::doStructBody(AstNode* parent, SyntaxStructType structType, AstNode*
         }
 
         SWAG_CHECK(eatSemiCol("interface function definition"));
+        *result = varNode;
         break;
     }
 
     // A normal declaration
     default:
     {
+        SWAG_VERIFY(structType != SyntaxStructType::Interface, error(token, Fmt(Err(Syn0133), token.ctext())));
         ScopedFlags scopedFlags(this, AST_STRUCT_MEMBER);
         SWAG_CHECK(doVarDecl(parent, result, AstNodeKind::VarDecl));
         break;

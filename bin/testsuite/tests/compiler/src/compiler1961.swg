@@ -1,6 +1,6 @@
 public interface C1961ITF
 {
-    toto: func(self)
+    func toto(self)
 }
 
 public struct C1961AA

@@ -185,7 +185,7 @@ public namespace tcf
 
     public interface ITcf
     {
-        call: func(self)->u32
+        func call(self)->u32
     }
 
     public impl ITcf for AA

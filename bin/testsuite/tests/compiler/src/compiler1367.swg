@@ -1,8 +1,8 @@
 interface IIncrementable
 {
-	incr: func(self)
-    decr: func(self)
-    done: func(const self)->bool
+	func incr(self)
+    func decr(self)
+    func done(const self)->bool
 }
 
 struct TITI

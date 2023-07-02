@@ -4,7 +4,7 @@ struct AA
 
 interface BB
 {
-    fct: func(self)
+    func fct(self)
 }
 
 impl BB for AA

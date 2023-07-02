@@ -3,5 +3,5 @@ const CONST = true
 interface TOTO
 {
     #if CONST
-        print: func(*TOTO, bool)    
+        func print(v: *TOTO, x: bool)
 }

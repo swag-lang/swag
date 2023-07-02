@@ -20,11 +20,10 @@ Here we declare an interface, with two functions `set` and `reset`.
 */
 interface IReset
 {
-    // You must declare a lambda variable for each "virtual" function.
-    set: func(self, f32)
+    // The first parameter must be 'self'
+    func set(self, val: f32)
 
-    // You can also use the normal "func/mtd" declaration.
-    // The compiler will then create the table entry for you.
+    // You can also use the 'mtd' declaration to avoid specifying the 'self' yourself
     mtd reset()
 }
 
@@ -42,9 +41,10 @@ impl IReset for Point2
         y = val+1
     }
 
-    mtd impl reset()
+    // Don't forget that 'mtd' is just syntaxic sugar. 'func' still works.
+    func impl reset(self)
     {
-        x, y = 0
+        self.x, self.y = 0
     }
 
     // Not that you can also declare 'normal' functions or methods in an 'impl block'.

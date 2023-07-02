@@ -1,6 +1,6 @@
 public interface IRichEditLexer
 {
-    setup:      func(self, *RichEditCtrl)
-    insertRune: func(self, *RichEditCtrl, rune)->bool
-    compute:    func(self, *RichEditLine, *RichEditLine, *RichEditLine)
+    func setup(self, ed: *RichEditCtrl)
+    func insertRune(self, ed: *RichEditCtrl, ch: rune)->bool
+    func compute(self, linePrev, line, lineNext: *RichEditLine)
 }

@@ -2,7 +2,7 @@ using Core
 
 interface IGen
 {
-    fn: func(self)
+    func fn(self)
 }
 
 impl IGen for Core.String

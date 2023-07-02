@@ -17,7 +17,7 @@ struct BB
 
 interface I
 {
-    toto: func(self)
+    func toto(self)
 }
 
 impl I for XX

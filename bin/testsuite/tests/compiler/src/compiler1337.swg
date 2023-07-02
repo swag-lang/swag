@@ -2,7 +2,7 @@
 
 interface TOTO
 {
-	print: func(self)
+	func print(self)
     print1: func(self,s32)
 }
 

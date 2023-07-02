@@ -1,7 +1,7 @@
 interface AA
 {
     #[Swag.Discardable]
-    fb: func(self)->s32
+    func fb(self)->s32
 }
 
 struct BB

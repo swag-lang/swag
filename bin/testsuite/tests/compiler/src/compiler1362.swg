@@ -1,6 +1,6 @@
 interface IPrintable
 {
-	print: func(self)
+	func print(self)
 }
 
 struct TITI

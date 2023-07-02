@@ -1,6 +1,6 @@
 interface I
 {
-    toto3746: func(self)
+    func toto3746(self)
 }
 
 struct(T) A {}

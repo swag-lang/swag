@@ -5,7 +5,7 @@ struct AA
 
 interface BB
 {
-    toto: func(self, *u8)
+    func toto(self, x: *u8)
 }
 
 impl AA

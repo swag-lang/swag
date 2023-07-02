@@ -287,8 +287,8 @@ bool AstOutput::outputFunc(OutputContext& context, Concat& concat, AstFuncDecl* 
     if (returnNode && !returnNode->childs.empty())
         returnNode = returnNode->childs.front();
 
-    auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(funcDecl->typeInfo, TypeInfoKind::FuncAttr);
-    if (typeFunc->returnType && !typeFunc->returnType->isVoid())
+    auto typeFunc = funcDecl->typeInfo ? CastTypeInfo<TypeInfoFuncAttr>(funcDecl->typeInfo, TypeInfoKind::FuncAttr) : nullptr;
+    if (typeFunc && typeFunc->returnType && !typeFunc->returnType->isVoid())
     {
         CONCAT_FIXED_STR(concat, "->");
         SWAG_CHECK(outputType(context, concat, returnNode, typeFunc->returnType));
@@ -325,6 +325,9 @@ bool AstOutput::outputFunc(OutputContext& context, Concat& concat, AstFuncDecl* 
     {
         concat.addEolIndent(context.indent);
     }
+
+    if (!funcDecl->content)
+        return true;
 
     // Content, normal function
     concat.addChar('{');

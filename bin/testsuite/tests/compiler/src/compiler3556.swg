@@ -15,7 +15,7 @@ impl A
 
 interface I
 {
-    toto: func(self)
+    func toto(self)
 }
 
 var G = 0

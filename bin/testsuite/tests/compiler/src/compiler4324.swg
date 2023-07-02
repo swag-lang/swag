@@ -1,6 +1,6 @@
 interface I
 {
-    toto: func(self, x: s32 = 10)
+    func toto(self, x: s32 = 10)
 }
 
 struct A {}

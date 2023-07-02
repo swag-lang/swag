@@ -10,8 +10,8 @@ struct BB
 
 interface I
 {
-    init:  func(self)->s32
-    close: func(self)->s32
+    func init(self)->s32
+    func close(self)->s32
 }
 
 impl I for Base

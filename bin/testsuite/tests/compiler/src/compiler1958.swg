@@ -5,8 +5,8 @@ struct A
 
 interface I
 {
-    toto: func(self)
-    toto1: func(self)
+    func toto(self)
+    func toto1(self)
 }
 
 impl I for A

@@ -5,7 +5,7 @@ struct AA
 
 interface ITF
 {
-    cb: func(self)
+    func cb(self)
 }
 
 impl ITF for AA

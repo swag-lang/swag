@@ -11,9 +11,9 @@ struct BB
 
 interface I
 {
-    init:  func(self, s32)->s32
-    close: func(self)->s32
-    data:  func(self)
+    func init(self, x: s32)->s32
+    func close(self)->s32
+    func data(self)
 }
 
 impl I for Base

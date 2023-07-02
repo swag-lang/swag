@@ -5,12 +5,12 @@ struct AA
 
 interface ITF
 {
-    cb: func(self)
+    func cb(self)
 }
 
 interface ITF1
 {
-    cb: func(self)
+    func cb(self)
 }
 
 impl ITF for AA

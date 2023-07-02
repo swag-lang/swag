@@ -403,6 +403,8 @@ bool Parser::doStatementFor(AstNode* parent, AstNode** result, AstNodeKind kind)
         return doEnumContent(parent, &dummyResult);
     case AstNodeKind::StructDecl:
         return doStructBody(parent, SyntaxStructType::Struct, &dummyResult);
+    case AstNodeKind::InterfaceDecl:
+        return doStructBody(parent, SyntaxStructType::Interface, &dummyResult);
 
     default:
         SWAG_ASSERT(false);
