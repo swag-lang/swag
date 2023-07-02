@@ -258,7 +258,7 @@ impl Color
     }
 
     // Returns hue, saturation, lightness
-    mtdc toHsl() -> {h: f32, s: f32, l: f32}
+    mtd const toHsl() -> {h: f32, s: f32, l: f32}
     {
         var result: retval = undefined
 

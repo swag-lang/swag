@@ -31,5 +31,5 @@ impl Duration
     }
 
     #[Inline]
-    mtdc toMs()->u32 => cast(u32) (timeInSeconds * 1000)
+    mtd const toMs()->u32 => cast(u32) (timeInSeconds * 1000)
 }

@@ -2,7 +2,7 @@ using Core
 
 impl Image
 {
-    mtdc doCrop(dstImage: *Image, x, y, w, h: s32)
+    mtd const doCrop(dstImage: *Image, x, y, w, h: s32)
     {
         f := {x, y: height - y - h, self}
         dstImage.visitPixels(&f, stride: w)
@@ -34,7 +34,7 @@ impl Image
     }
 
     // Crop image
-    public mtdc toCrop(x, y, w, h: s32)->Image
+    public mtd const toCrop(x, y, w, h: s32)->Image
     {
         cx := Math.clamp(x, 0, width - 1)
         cy := Math.clamp(y, 0, height - 1)
@@ -47,7 +47,7 @@ impl Image
         return result
     }
 
-    public mtdc toCrop(cropRect: Math.Rectangle)->Image
+    public mtd const toCrop(cropRect: Math.Rectangle)->Image
     {
         return toCrop(acast cropRect.x, acast cropRect.y, acast cropRect.width, acast cropRect.height)
     }

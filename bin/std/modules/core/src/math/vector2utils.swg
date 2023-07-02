@@ -4,13 +4,13 @@
 impl Vector2
 {
     // Returns true if the point 'pt' is inside an ellipse
-    mtdc isInEllipse(center: Vector2, radiusX, radiusY: f32)->bool
+    mtd const isInEllipse(center: Vector2, radiusX, radiusY: f32)->bool
     {
         return (pow((x - center.x), 2) / pow(radiusX, 2)) + (pow((y - center.y), 2) / pow(radiusY, 2)) <= 1;
     }
 
     // Returns true if the point 'pt' is inside the triangle defined with 'a, b, c'
-    mtdc isInTriangle(a, b, c: Vector2)->bool
+    mtd const isInTriangle(a, b, c: Vector2)->bool
     {
         ax  := c.x - b.x
         ay  := c.y - b.y
@@ -33,7 +33,7 @@ impl Vector2
     }
 
     // Returns the distance of the point to the given line
-    mtdc distanceToLine(a, b: Vector2)->f32
+    mtd const distanceToLine(a, b: Vector2)->f32
     {
         toPt := dref self - a
         seg  := b - a
@@ -45,7 +45,7 @@ impl Vector2
     }
 
     // Returns the distance of the point to the given segment
-    mtdc distanceToSegment(a, b: Vector2)->f32
+    mtd const distanceToSegment(a, b: Vector2)->f32
     {
         ab := b - a
         be := dref self - b

@@ -37,18 +37,18 @@ struct Int128
 
 impl Int128
 {
-    mtdc opEquals(other: Int128)->bool
+    mtd const opEquals(other: Int128)->bool
     {
         return hi == other.hi and lo == other.lo
     }
 
-    mtdc opCmp(other: Int128)->s32
+    mtd const opCmp(other: Int128)->s32
     {
         if hi != other.hi return hi <=> other.hi
         return lo <=> other.lo
     }
 
-    mtdc opCast()->f64
+    mtd const opCast()->f64
     {
         const Shift64: f64 = cast,bit(f64) 0x43f0000000000000 // 18446744073709551616.0'f64 //2^64
         if hi < 0

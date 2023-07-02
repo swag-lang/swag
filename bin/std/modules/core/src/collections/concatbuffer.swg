@@ -44,7 +44,7 @@ impl ConcatBuffer
 
     // Visit all valid buckets
     #[Swag.Macro]
-    mtdc(ptr: bool) opVisit(stmt: code)
+    mtd(ptr: bool) const opVisit(stmt: code)
     {
         if !firstBucket
             return

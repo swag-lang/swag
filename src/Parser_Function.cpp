@@ -562,7 +562,7 @@ bool Parser::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId)
     }
 
     bool isMethod      = token.id == TokenId::KwdMethod;
-    bool isConstMethod = token.id == TokenId::KwdConstMethod;
+    bool isConstMethod = false;
     if (isMethod || isConstMethod)
     {
         if (!funcNode->ownerStructScope)
@@ -653,6 +653,14 @@ bool Parser::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId)
         // Generic parameters
         if (token.id == TokenId::SymLeftParen)
             SWAG_CHECK(doGenericDeclParameters(funcNode, &funcNode->genericParameters));
+
+        // const
+        if (token.id == TokenId::KwdConst)
+        {
+            SWAG_VERIFY(isMethod, error(token, Err(Syn0061)));
+            isConstMethod = true;
+            SWAG_CHECK(eatToken());
+        }
 
         // Interface implementation function
         if (token.id == TokenId::KwdImpl)

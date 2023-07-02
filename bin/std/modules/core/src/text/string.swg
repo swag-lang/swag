@@ -22,31 +22,31 @@ struct String
 impl String
 {
     #[Inline]
-    mtdc opCount()->u64
+    mtd const opCount()->u64
     {
         return length
     }
 
     #[Inline]
-    mtdc opData()->const ^u8
+    mtd const opData()->const ^u8
     {
         return buffer
     }
 
     #[Implicit, Inline]
-    mtdc opCast()->cstring
+    mtd const opCast()->cstring
     {
         return buffer
     }
 
     #[Implicit, Inline]
-    mtdc opCast()->string
+    mtd const opCast()->string
     {
         return @mkstring(buffer, length)
     }
 
     #[Implicit, Inline]
-    mtdc opCast()->const [..] u8
+    mtd const opCast()->const [..] u8
     {
         return @mkslice(buffer, length)
     }
@@ -67,13 +67,13 @@ impl String
         buffer[length] = 0
     }
 
-    mtdc opSlice(lower, upper: u64)->string
+    mtd const opSlice(lower, upper: u64)->string
     {
         Debug.assert(lower <= upper and lower < length and upper < length)
         return @mkstring(buffer + lower, (upper + 1) - lower)
     }
 
-    mtdc opEquals(other: string)->bool
+    mtd const opEquals(other: string)->bool
     {
         if buffer == @dataof(other) // true if null
             return true
@@ -82,7 +82,7 @@ impl String
         return Memory.compare(buffer, @dataof(other), length) == 0
     }
 
-    mtdc opCmp(other: string)->s32
+    mtd const opCmp(other: string)->s32
     {
         return Utf8.compare(toString(), other, Utf8.ComparisonType.Latin1)
     }
@@ -158,7 +158,7 @@ impl String
     }
 
     // Returns the byte at the given index
-    mtdc opIndex(index: u64)->u8
+    mtd const opIndex(index: u64)->u8
     {
         Debug.safetyBoundCheck(index < length, "index out of range")
         return buffer[index]
@@ -208,19 +208,19 @@ impl String
     }
 
     // Returns true if the String has zero length
-    mtdc isEmpty()->bool
+    mtd const isEmpty()->bool
     {
         return length == 0
     }
 
     // Returns true if the String is null (undefined)
-    mtdc isNull()->bool
+    mtd const isNull()->bool
     {
         return buffer == null
     }
 
     // Returns true if the String is null or empty
-    mtdc isNullOrEmpty()->bool
+    mtd const isNullOrEmpty()->bool
     {
         return buffer == null or length == 0
     }
@@ -467,7 +467,7 @@ impl String
     }
 
     // Convert string to a 32 bits character array
-    mtdc toCharArray()->Array'rune
+    mtd const toCharArray()->Array'rune
     {
         return Unicode.fromUtf8(@mkslice(buffer, length))
     }
@@ -481,7 +481,7 @@ impl String
 
     // Returns a string type
     #[Swag.Inline]
-    mtdc toString()->string
+    mtd const toString()->string
     {
         return @mkstring(buffer, length)
     }

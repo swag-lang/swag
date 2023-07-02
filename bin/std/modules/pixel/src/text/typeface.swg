@@ -61,19 +61,19 @@ impl TypeFace
 public impl TypeFace
 {
     // Returns true if the typeface is bold
-    mtdc isBold()->bool
+    mtd const isBold()->bool
     {
         return cast(bool) (face.style_flags & FT_STYLE_FLAG_BOLD)
     }
 
     // Returns true if the typeface is italic
-    mtdc isItalic()->bool
+    mtd const isItalic()->bool
     {
         return cast(bool) (face.style_flags & FT_STYLE_FLAG_ITALIC)
     }
 
     // Returns the underlying font family name
-    mtdc getFamilyName()->string
+    mtd const getFamilyName()->string
     {
         defname := @mkstring(face.family_name, @strlen(face.family_name))
         return defname

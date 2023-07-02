@@ -589,7 +589,6 @@ bool Parser::doStructBody(AstNode* parent, SyntaxStructType structType, AstNode*
     }
 
     case TokenId::KwdMethod:
-    case TokenId::KwdConstMethod:
     case TokenId::KwdFunc:
     {
         SWAG_VERIFY(structType == SyntaxStructType::Interface, error(token, Err(Syn0163)));
@@ -597,9 +596,18 @@ bool Parser::doStructBody(AstNode* parent, SyntaxStructType structType, AstNode*
         auto kind = token.id;
         SWAG_CHECK(eatToken());
 
+        bool isMethod      = kind == TokenId::KwdMethod;
+        bool isConstMethod = false;
+
+        if (token.id == TokenId::KwdConst)
+        {
+            SWAG_VERIFY(isMethod, error(token, Err(Syn0061)));
+            isConstMethod = true;
+            SWAG_CHECK(eatToken());
+        }
+
         auto funcNode = Ast::newNode<AstFuncDecl>(this, AstNodeKind::FuncDecl, sourceFile, nullptr);
         SWAG_CHECK(checkIsValidUserName(funcNode));
-
         SWAG_VERIFY(token.id == TokenId::Identifier, error(token, Fmt(Err(Syn0089), token.ctext())));
         SWAG_CHECK(eatToken());
 
@@ -607,13 +615,7 @@ bool Parser::doStructBody(AstNode* parent, SyntaxStructType structType, AstNode*
 
         {
             Scoped scoped(this, scope);
-            SWAG_CHECK(doFuncDeclParameters(funcNode,
-                                            &funcNode->parameters,
-                                            false,
-                                            nullptr,
-                                            kind == TokenId::KwdMethod || kind == TokenId::KwdConstMethod,
-                                            kind == TokenId::KwdConstMethod,
-                                            true));
+            SWAG_CHECK(doFuncDeclParameters(funcNode, &funcNode->parameters, false, nullptr, isMethod, isConstMethod, true));
         }
 
         ScopedFlags scopedFlags(this, AST_STRUCT_MEMBER);

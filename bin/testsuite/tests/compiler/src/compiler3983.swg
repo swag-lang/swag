@@ -5,7 +5,7 @@ struct Vec2
 
 impl Vec2
 {
-    mtdc opIndex(idx: u64)->f32
+    mtd const opIndex(idx: u64)->f32
     {
         return buffer[idx]
     }

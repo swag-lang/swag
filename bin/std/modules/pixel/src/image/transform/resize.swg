@@ -30,7 +30,7 @@ public impl Image
 
     // Resize image
     // Put 'newWidth' or 'newHeight' to 0 to keep aspect ratio
-    mtdc toResize(newWidth, newHeight: s32, mode = ResizeMode.Raw)->Image
+    mtd const toResize(newWidth, newHeight: s32, mode = ResizeMode.Raw)->Image
     {
         Debug.assert(newWidth > 0 or newHeight > 0)
         nw := newWidth orelse cast(s32) (newHeight * (width / cast(f32) height))

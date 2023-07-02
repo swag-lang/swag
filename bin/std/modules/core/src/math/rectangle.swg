@@ -16,7 +16,7 @@ impl Rectangle
     // Represents a rectangle with all coordinates to zero
     const Zero: Rectangle{0, 0, 0, 0}
 
-    mtdc opEquals(other: Rectangle)->bool
+    mtd const opEquals(other: Rectangle)->bool
     {
         return x == other.x and y == other.y and width == other.width and height == other.height
     }
@@ -32,27 +32,27 @@ impl Rectangle
 
     // Horizontal center coordinate (x + width / 2)
     #[Swag.Inline]
-    mtdc horzCenter()->f32
+    mtd const horzCenter()->f32
     {
         return x + (width * 0.5)
     }
 
     // Vertical center coordinate (y + height / 2)
     #[Swag.Inline]
-    mtdc vertCenter()->f32
+    mtd const vertCenter()->f32
     {
         return y + (height * 0.5)
     }
 
     // Central point
-    mtdc center()->Point
+    mtd const center()->Point
     {
         return Point{horzCenter(), vertCenter()}
     }
 
     // Right coordinate (x + width)
     #[Swag.Inline]
-    mtdc right()->f32
+    mtd const right()->f32
     {
         return x + width
     }
@@ -66,7 +66,7 @@ impl Rectangle
 
     // Bottom coordinate (y + height)
     #[Swag.Inline]
-    mtdc bottom()->f32
+    mtd const bottom()->f32
     {
         return y + height
     }
@@ -111,13 +111,13 @@ impl Rectangle
     }
 
     // Returns true if this instance is null
-    mtdc isZero()->bool
+    mtd const isZero()->bool
     {
         return x == 0 and y == 0 and width == 0 and height == 0
     }
 
     // Returns true if this instance has a surface of zero (width or height are null)
-    mtdc isEmpty()->bool
+    mtd const isEmpty()->bool
     {
         return width == 0 or height == 0
     }
@@ -189,13 +189,13 @@ impl Rectangle
     }
 
     // Returns true if this instance is null with an epsilon
-    mtdc isZeroEpsilon(eps = ConstF32.Epsilon)->bool
+    mtd const isZeroEpsilon(eps = ConstF32.Epsilon)->bool
     {
         return isZeroEpsilon(x, eps) and isZeroEpsilon(y, eps) and isZeroEpsilon(width, eps) and isZeroEpsilon(height, eps)
     }
 
     // Returns true if this instance has a surface of zero (width and height are null)
-    mtdc isEmptyEpsilon(eps = ConstF32.Epsilon)->bool
+    mtd const isEmptyEpsilon(eps = ConstF32.Epsilon)->bool
     {
         return isZeroEpsilon(width, eps) and isZeroEpsilon(height, eps)
     }
@@ -234,13 +234,13 @@ impl Rectangle
     }
 
     // Determines if the specfied point is contained within the rectangular region
-    mtdc contains(pt: Point)->bool
+    mtd const contains(pt: Point)->bool
     {
         return contains(pt.x, pt.y)
     }
 
     // Determines if the specfied rectangle is contained within the rectangular region
-    mtdc contains(rect: Rectangle)->bool
+    mtd const contains(rect: Rectangle)->bool
     {
         return (rect.x >= x and rect.right() <= right()) and (rect.y >= y and rect.bottom() <= bottom())
     }
@@ -265,7 +265,7 @@ impl Rectangle
     }
 
     // Determines if this rectangle intersets with 'rect'
-    mtdc intersectWith(rect: Rectangle)->bool
+    mtd const intersectWith(rect: Rectangle)->bool
     {
         return (rect.x < right()) and (x < rect.right()) and (rect.y < bottom()) and (y < rect.bottom())
     }

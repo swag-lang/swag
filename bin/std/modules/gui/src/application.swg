@@ -520,7 +520,7 @@ impl Application
         mtd getRenderer() => &renderer
         mtd getKeyboard() => &keyb
         mtd getMouse()    => &mouse
-        mtdc getDt()      => timing.dt
+        mtd const getDt()      => timing.dt
     }
 
     // Create a main surface, and run

@@ -5,7 +5,7 @@ struct A
 impl A
 {
     #[Swag.Inline]
-    mtdc isValid() => true
+    mtd const isValid() => true
 }
 
 func toto(x: A)

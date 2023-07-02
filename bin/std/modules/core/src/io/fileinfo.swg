@@ -15,5 +15,5 @@ struct FileInfo
 impl FileInfo
 {
     #[Swag.Inline]
-    mtdc isDirectory() => attributes.has(.Directory)
+    mtd const isDirectory() => attributes.has(.Directory)
 }

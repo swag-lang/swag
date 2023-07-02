@@ -22,7 +22,7 @@ impl Point
         x, y = value
     }
 
-    mtdc opEquals(other: Point)->bool
+    mtd const opEquals(other: Point)->bool
     {
         return x == other.x and y == other.y
     }
@@ -45,7 +45,7 @@ impl Point
         #else               #error "unsupported assign operation '" ++ op ++ "'"
     }
 
-    mtdc(op: string) opBinary(other: Point)->Self
+    mtd(op: string) const opBinary(other: Point)->Self
     {
         #if   op == "+" return Point{x + other.x, y + other.y}
         #elif op == "-" return Point{x - other.x, y - other.y}
@@ -54,7 +54,7 @@ impl Point
         #else           #error "unsupported binary operation '" ++ op ++ "'"
     }
 
-    mtdc(op: string) opBinary(value: f32)->Self
+    mtd(op: string) const opBinary(value: f32)->Self
     {
         #if   op == "+" return Point{x + value, y + value}
         #elif op == "-" return Point{x - value, y - value}
@@ -63,7 +63,7 @@ impl Point
         #else           #error "unsupported binary operation '" ++ op ++ "'"
     }
 
-    mtdc(op: string) opUnary()->Self
+    mtd(op: string) const opUnary()->Self
     {
         var result: retval
 		#if op == "-"
@@ -85,19 +85,19 @@ impl Point
     }
 
     // Returns 'true' if the Point is null
-    mtdc isZero()->bool
+    mtd const isZero()->bool
     {
         return x == 0 and y == 0
     }
 
     // Check for zero with an epsilon
-    mtdc isZeroEpsilon(eps = ConstF32.Epsilon)->bool
+    mtd const isZeroEpsilon(eps = ConstF32.Epsilon)->bool
     {
         return isZeroEpsilon(x, eps) and isZeroEpsilon(y, eps)
     }
 
     // Check if two points are equal with an epsilon
-    mtdc isEqualEpsilon(other: Point, eps = ConstF32.Epsilon)->bool
+    mtd const isEqualEpsilon(other: Point, eps = ConstF32.Epsilon)->bool
     {
         return Math.isEqualEpsilon(x, other.x, eps) and Math.isEqualEpsilon(y, other.y, eps)
     }

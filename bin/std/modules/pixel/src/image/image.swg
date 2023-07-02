@@ -21,7 +21,7 @@ impl Image
 {
     // Returns true if the image is valid
     #[Swag.Inline]
-    mtdc isValid() => pixels.buffer != null
+    mtd const isValid() => pixels.buffer != null
 
     // Creates a new image
     func create(width, height: s32, pf: PixelFormat, buffer: const [..] u8 = null)->Image
@@ -139,7 +139,7 @@ impl Image
     // 'userData'
     // ---
     #[Swag.Macro]
-    mtdc visitPixels(userData: *void = null, stride: s32 = 1, stmt: code)
+    mtd const visitPixels(userData: *void = null, stride: s32 = 1, stmt: code)
     {
         Debug.assert(stride > 0)
 

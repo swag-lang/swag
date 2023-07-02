@@ -61,6 +61,7 @@ catch
 throw
 closure
 func
+mtd
 attr
 enum
 struct

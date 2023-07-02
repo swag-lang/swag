@@ -20,7 +20,7 @@ impl Icon
     }
 
     #[Swag.Inline]
-    mtdc isValid() => imageList != null
+    mtd const isValid() => imageList != null
 
     // Set icon to invalid
     mtd clear()
@@ -50,7 +50,7 @@ impl Icon
     }
 
     // Paint icon at the given position
-    mtdc paint(painter: *Painter, x, y: f32, color: Color = Argb.White)
+    mtd const paint(painter: *Painter, x, y: f32, color: Color = Argb.White)
     {
         if !imageList or !imageList.totalFrames
             return

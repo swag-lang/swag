@@ -37,7 +37,7 @@ impl MyStruct
 
 /**
 If you declare your function with `mtd` (method) instead of `func`, then the first parameter is forced to be `using self`.
-If you declare your function with `mtdc` (method const) instead of `func`, then the first parameter is forced to be `const using self`.
+If you declare your function with `mtd const` (method const) instead of `func`, then the first parameter is forced to be `const using self`.
 Other than that, it's exactly the same. So this is just **syntaxic sugar** to avoid repeating the `using self`.
 */
 

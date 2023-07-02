@@ -7,7 +7,7 @@ impl A
     {
     }
 
-    mtdc titi()
+    mtd const titi()
     {
         toto()
     }

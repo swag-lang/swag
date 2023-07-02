@@ -48,7 +48,7 @@ impl StaticArray
     }
 
     #[Inline]
-    mtdc opIndex(index: u64)->ref T
+    mtd const opIndex(index: u64)->ref T
         #validif Reflection.isStruct(T)
     {
         Debug.safetyBoundCheck(index < count, "index out of range")
@@ -56,7 +56,7 @@ impl StaticArray
     }
 
     #[Inline]
-    mtdc opIndex(index: u64)->T
+    mtd const opIndex(index: u64)->T
         #validif !Reflection.isStruct(T)
     {
         Debug.safetyBoundCheck(index < count, "index out of range")
@@ -175,7 +175,7 @@ impl StaticArray
 
     // Returns true if the array is empty
     #[Inline]
-    mtdc isEmpty() => count == 0
+    mtd const isEmpty() => count == 0
 
     // Returns a slice
     #[Inline]

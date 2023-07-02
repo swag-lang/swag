@@ -84,13 +84,13 @@ impl Vector3
     }
 
     // Return sthe length of the vector
-    mtdc length() => sqrt((x * x) + (y * y) + (z * z))
+    mtd const length() => sqrt((x * x) + (y * y) + (z * z))
 
     // Returns the squared length of the vector
-    mtdc lengthSquared() => (x * x) + (y * y) + (z * z)
+    mtd const lengthSquared() => (x * x) + (y * y) + (z * z)
 
     // Returns the dot product between two vectors
-    mtdc dot(other: Self) => (x * other.x) + (y * other.y) + (z * other.z)
+    mtd const dot(other: Self) => (x * other.x) + (y * other.y) + (z * other.z)
 
     // Set the vector to zero
     mtd clear()
@@ -107,25 +107,25 @@ impl Vector3
     }
 
     // Returns true if this vector is null
-    mtdc isZero()->bool
+    mtd const isZero()->bool
     {
         return x == 0 and y == 0 and z == 0
     }
 
     // Returns true if this vector is null with an epsilon
-    mtdc isZeroEpsilon(eps = cast(f32) ConstF64.Epsilon)->bool
+    mtd const isZeroEpsilon(eps = cast(f32) ConstF64.Epsilon)->bool
     {
         return isZeroEpsilon(x, eps) and isZeroEpsilon(y, eps) and isZeroEpsilon(z, eps)
     }
 
     // Returns true if this vector is equals to another with an epsilon
-    mtdc isEqualEpsilon(other: Self, eps = cast(f32) ConstF64.Epsilon)->bool
+    mtd const isEqualEpsilon(other: Self, eps = cast(f32) ConstF64.Epsilon)->bool
     {
         return Math.isEqualEpsilon(x, other.x, eps) and Math.isEqualEpsilon(y, other.y, eps) and Math.isEqualEpsilon(z, other.z, eps)
     }
 
     // Returns the distance between two vectors
-    mtdc distance(to: Self)->f32
+    mtd const distance(to: Self)->f32
     {
         xn := (x - to.x)
         yn := (y - to.y)
@@ -134,7 +134,7 @@ impl Vector3
     }
 
     // Returns the square distance between two vectors
-    mtdc distanceSquared(to: Self)->f32
+    mtd const distanceSquared(to: Self)->f32
     {
         xn := (x - to.x)
         yn := (y - to.y)
@@ -154,7 +154,7 @@ impl Vector3
     }
 
     // Returns this vector normalized
-    mtdc toNormalize()->Self
+    mtd const toNormalize()->Self
     {
         norm := sqrt((x * x) + (y * y) + (z * z))
         Debug.assert(!Math.isZeroEpsilon(norm))
@@ -197,7 +197,7 @@ impl Vector3
     }
 
     // Returns this vector normalized even if its length is almost null
-    mtdc toNormalizeSafe()->Self
+    mtd const toNormalizeSafe()->Self
     {
         norm := sqrt((x * x) + (y * y) + (z * z))
         if Math.isZeroEpsilon(norm)

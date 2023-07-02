@@ -15,7 +15,7 @@ impl StringBuilder
     }
 
     // Returns the number of characters
-    mtdc count()->u64
+    mtd const count()->u64
     {
         return buffer.count()
     }
@@ -63,13 +63,13 @@ impl StringBuilder
     }
 
     // Return the content as a string
-    mtdc toString()->String
+    mtd const toString()->String
     {
         return buffer.toString()
     }
 
     // Return the content as a string by eating the content of the string builder (if possible)
-    mtdc moveToString()->String
+    mtd const moveToString()->String
     {
         return buffer.moveToString()
     }

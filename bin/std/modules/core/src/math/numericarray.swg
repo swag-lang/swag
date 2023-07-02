@@ -10,12 +10,12 @@ struct(T, N: u32) NumericArray
 impl NumericArray
 {
     #[Inline]
-    mtdc opIndex(idx: u64)->T
+    mtd const opIndex(idx: u64)->T
     {
         return buf[idx]
     }
 
-    mtdc opEquals(other: Self)->bool
+    mtd const opEquals(other: Self)->bool
     {
         loop i: N
         {
@@ -26,7 +26,7 @@ impl NumericArray
         return true
     }
 
-    mtdc(op: string) opBinary(other: Self)->Self
+    mtd(op: string) const opBinary(other: Self)->Self
     {
         var result: retval
         loop i: N

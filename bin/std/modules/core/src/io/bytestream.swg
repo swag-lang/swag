@@ -37,7 +37,7 @@ public impl ByteStream
     }
 
     // Returns length of associated slice
-    mtdc length()->u64
+    mtd const length()->u64
     {
         return writeBuffer ? writeBuffer.count : @countof(readBuffer)
     }
@@ -49,7 +49,7 @@ public impl ByteStream
     }
 
     // Returns true if end has been reached
-    mtdc isEof()->bool
+    mtd const isEof()->bool
     {
         return eof
     }
@@ -141,5 +141,5 @@ public impl ByteStream
     }
 
     // Returns the seek value
-    mtdc getSeek() => seek
+    mtd const getSeek() => seek
 }

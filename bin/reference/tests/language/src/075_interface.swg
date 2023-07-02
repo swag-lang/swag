@@ -22,10 +22,10 @@ interface IReset
 {
     // You must declare a lambda variable for each "virtual" function.
     // As the first parameter is always 'self', you can either declare it
-    // yourself or use 'mtd/mtdc'
+    // yourself or use 'mtd/mtd const'
     set: mtd(f32)
 
-    // You can also use the normal "func/mtd/mtdc" declaration.
+    // You can also use the normal "func/mtd/mtd const" declaration.
     // The compiler will then create the table entry for you.
     mtd reset()
 }
@@ -47,6 +47,11 @@ impl IReset for Point2
     mtd impl reset()
     {
         x, y = 0
+    }
+
+    // Not that you can also declare 'normal' functions or methods in an 'impl block'.
+    mtd myOtherMethod()
+    {
     }
 }
 

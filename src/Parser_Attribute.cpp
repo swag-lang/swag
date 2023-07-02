@@ -102,7 +102,6 @@ bool Parser::doGlobalAttributeExpose(AstNode* parent, AstNode** result, bool for
         case TokenId::SymLeftCurly:
         case TokenId::KwdFunc:
         case TokenId::KwdMethod:
-        case TokenId::KwdConstMethod:
         case TokenId::KwdAttr:
         case TokenId::KwdVar:
         case TokenId::KwdConst:

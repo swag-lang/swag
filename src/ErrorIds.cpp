@@ -130,7 +130,7 @@ void initErrors()
     SWAG_ERROR(Syn0023, "'@alias' special variable name should be followed by a number");
     SWAG_ERROR(Syn0024, "']' should not be followed by a line break when declaring an array type");
     SWAG_ERROR(Syn0181, "'default' already defined");
-    SWAG_ERROR(Syn0025, "'mtd' or 'mtdc' can only be used in a struct or in an interface context");
+    SWAG_ERROR(Syn0025, "'mtd' can only be used in a struct or in an interface context");
     SWAG_ERROR(Syn0026, "'self' should only be used inside a struct or 'impl' block");
     SWAG_ERROR(Syn0027, "'self' should only be used inside an 'impl' block");
     SWAG_ERROR(Syn0028, "'throw' should only be used inside a function");
@@ -167,7 +167,7 @@ void initErrors()
     SWAG_ERROR(Syn0058, "expected a generic name or a type");
     SWAG_ERROR(Syn0059, "expected a left expression");
     SWAG_ERROR(Syn0060, "expected a literal type qualifier after '''");
-    SWAG_ERROR(Syn0061, nullptr);
+    SWAG_ERROR(Syn0061, "unexpected 'const' for 'func'");
     SWAG_ERROR(Syn0062, "expected a single identifier %s");
     SWAG_ERROR(Syn0063, "expected a struct name, found '%s'");
     SWAG_ERROR(Syn0064, "expected a top level instruction");
@@ -987,7 +987,7 @@ void initErrors()
     SWAG_ERROR(Hlp0002, "is there a missing 'self' ?");
     SWAG_ERROR(Hlp0028, "is there a missing 'using' before 'self' ?");
     SWAG_ERROR(Hlp0044, "it looks like it could be an invalid ufcs call");
-    SWAG_ERROR(Hlp0007, "methods ('mtd' and 'mtdc') are reserved for structs and interfaces");
+    SWAG_ERROR(Hlp0007, "methods are reserved for structs and interfaces");
     SWAG_ERROR(Hlp0043, "this is ambiguous, so you should remove one 'using'");
     SWAG_ERROR(Hlp0035, "this is reserved for function calls");
     SWAG_ERROR(Hlp0022, "this kind of constant does not have an associated memory storage");
@@ -999,13 +999,13 @@ void initErrors()
     SWAG_ERROR(Hlp0018, "when the parameter types of a lambda are inferred, the return type will be inferred too");
     SWAG_ERROR(Hlp0003, "you can affect a lambda to a closure type, but not the other way around");
     SWAG_ERROR(Hlp0033, "you can unpack a variable with '?' if you want to ignore it");
-    SWAG_ERROR(Hlp0029, "you can use 'mtd' or 'mtdc' instead of 'func' to declare an implicit 'using self' as a first parameter");
+    SWAG_ERROR(Hlp0029, "you can use 'mtd' instead of 'func' to declare an implicit 'using self' as a first parameter");
     SWAG_ERROR(Hlp0025, nullptr);
     SWAG_ERROR(Hlp0019, "you cannot mix inferred and specified types in lambda parameters");
-    SWAG_ERROR(Hlp0031, "you could also declare the interface member with 'mtd' or 'mtdc' instead of 'func'");
+    SWAG_ERROR(Hlp0031, "you could also declare the interface member with 'mtd' instead of 'func'");
     SWAG_ERROR(Hlp0036, "you could force the evaluation with a '#run'");
     SWAG_ERROR(Hlp0040, "you could use '++' if you want to append strings at compile time");
-    SWAG_ERROR(Hlp0042, "you could use 'func' instead of 'mtd' or 'mtdc'");
+    SWAG_ERROR(Hlp0042, "you could use 'func' instead of 'mtd'");
     SWAG_ERROR(Hlp0037, "you should add a 'break' or a 'fallthrough'");
     SWAG_ERROR(Hlp0038, "you should add a 'break'");
     SWAG_ERROR(Hlp0046, "pointer arimthetic is only possible for pointers declared with '^' and not '*'");
@@ -1057,7 +1057,7 @@ void initErrors()
     SWAG_ERROR(Hnt0017, "this function is marked with the 'Swag.Inline' attribute");
     SWAG_ERROR(Hnt0015, "this function is marked with the 'Swag.Macro' attribute");
     SWAG_ERROR(Hnt0016, "this function is marked with the 'Swag.Mixin' attribute");
-    SWAG_ERROR(Hnt0050, "this implies a first parameter 'const self'");
+    SWAG_ERROR(Hnt0050, nullptr);
     SWAG_ERROR(Hnt0049, "this implies a first parameter 'self'");
     SWAG_ERROR(Hnt0001, "this intrinsic is called with invalid arguments");
     SWAG_ERROR(Hnt0008, "this intrinsic is not discardable, so the return value should always be used");

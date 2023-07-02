@@ -38,12 +38,12 @@ struct DateTime
 impl DateTime
 {
     #[Swag.Inline]
-    mtdc opEquals(other: Self)->bool
+    mtd const opEquals(other: Self)->bool
     {
         return Memory.compare(self, other, cast(u64) @sizeof(Self)) == 0
     }
 
-    mtdc opCmp(other: DateTime)->s32
+    mtd const opCmp(other: DateTime)->s32
     {
         if year < other.year return -1
         if year > other.year return 1
@@ -63,7 +63,7 @@ impl DateTime
     }
 
     // Returns true if this is a valid datatime
-    mtdc isValid()->bool
+    mtd const isValid()->bool
     {
         if year == 0 or year > 9999 return false
         if month == 0 or month > 12 return false
@@ -76,7 +76,7 @@ impl DateTime
     }
 
     // Returns the day of week of the current date
-    mtdc dayOfWeek()->DayOfWeek
+    mtd const dayOfWeek()->DayOfWeek
     {
         var m: u32 = (month + 9) % 12
         var y: u32 = year - m/10

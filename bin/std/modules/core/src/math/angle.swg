@@ -27,5 +27,5 @@ impl Angle
     }
 
     #[Inline]
-    mtdc toDegrees()->f32 => toDegrees(rad)
+    mtd const toDegrees()->f32 => toDegrees(rad)
 }

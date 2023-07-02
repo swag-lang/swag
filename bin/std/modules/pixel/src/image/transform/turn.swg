@@ -10,7 +10,7 @@ impl Image
     }
 
     #[Swag.Safety("", false)]
-    mtdc doTurn(dstImage: *Image, angle: TurnAngle)
+    mtd const doTurn(dstImage: *Image, angle: TurnAngle)
     {
         #[Swag.Mixin]
         func(BPP: u8) doIt()
@@ -77,7 +77,7 @@ impl Image
     }
 
     // Turn image by a given predefined angle
-    public mtdc toTurn(angle: TurnAngle)->Image
+    public mtd const toTurn(angle: TurnAngle)->Image
     {
         Debug.assert(pixels.buffer != null)
 

@@ -34,7 +34,7 @@ impl Thread
     }
 
     // Returns true if the thread is valid
-    mtdc isValid()->bool
+    mtd const isValid()->bool
     {
         return handle != null
     }

@@ -2,7 +2,7 @@ using Core
 
 impl Image
 {
-    mtdc doRGB8(dstImage: *Image)
+    mtd const doRGB8(dstImage: *Image)
     {
         #[Swag.Complete]
         switch pf
@@ -30,7 +30,7 @@ impl Image
         }
     }
 
-    mtdc doRGBA8(dstImage: *Image)
+    mtd const doRGBA8(dstImage: *Image)
     {
         #[Swag.Complete]
         switch pf
@@ -70,7 +70,7 @@ impl Image
         }
     }
 
-    mtdc doBGR8(dstImage: *Image)
+    mtd const doBGR8(dstImage: *Image)
     {
         #[Swag.Complete]
         switch pf
@@ -98,7 +98,7 @@ impl Image
         }
     }
 
-    mtdc doBGRA8(dstImage: *Image)
+    mtd const doBGRA8(dstImage: *Image)
     {
         #[Swag.Complete]
         switch pf
@@ -138,7 +138,7 @@ impl Image
         }
     }
 
-    mtdc doChangePf(dstImage: *Image)
+    mtd const doChangePf(dstImage: *Image)
     {
         #[Swag.Complete]
         switch dstImage.pf
@@ -164,7 +164,7 @@ impl Image
     }
 
     // Change image pixel format
-    public mtdc toSetPixelFormat(newPf: PixelFormat)->Image
+    public mtd const toSetPixelFormat(newPf: PixelFormat)->Image
     {
         Debug.assert(pixels.buffer != null)
 

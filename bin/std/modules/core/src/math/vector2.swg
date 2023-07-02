@@ -48,7 +48,7 @@ impl Vector2
         #else               #error "unsupported assign operation '" ++ op ++ "'"
     }
 
-    mtdc(op: string) opBinary(other: Self)->Self
+    mtd(op: string) const opBinary(other: Self)->Self
     {
         #if   op == "+" return Self{x + other.x, y + other.y}
         #elif op == "-" return Self{x - other.x, y - other.y}
@@ -57,7 +57,7 @@ impl Vector2
         #else           #error "unsupported binary operation '" ++ op ++ "'"
     }
 
-    mtdc(op: string) opBinary(value: f32)->Self
+    mtd(op: string) const opBinary(value: f32)->Self
     {
         #if   op == "+" return Self{x + value, y + value}
         #elif op == "-" return Self{x - value, y - value}
@@ -66,7 +66,7 @@ impl Vector2
         #else           #error "unsupported binary operation '" ++ op ++ "'"
     }
 
-    mtdc(op: string) opUnary()->Self
+    mtd(op: string) const opUnary()->Self
     {
         #if   op == "-" return Self{-x, -y}
         #else #error "unsupported unary operation '" ++ op ++ "'"
@@ -81,23 +81,23 @@ impl Vector2
     }
 
     // Return sthe length of the vector
-    mtdc length() => sqrt((x * x) + (y * y))
+    mtd const length() => sqrt((x * x) + (y * y))
 
     // Returns the squared length of the vector
-    mtdc lengthSquared() => (x * x) + (y * y)
+    mtd const lengthSquared() => (x * x) + (y * y)
 
     // Returns the dot product between two vectors
-    mtdc dot(other: Self) => (x * other.x) + (y * other.y)
+    mtd const dot(other: Self) => (x * other.x) + (y * other.y)
 
     // Returns the perpendicular vector in the 2D plane.
     // 'axis' will give the sign of the result
-    mtdc cross(axis: f32)->Self
+    mtd const cross(axis: f32)->Self
     {
         return {y * axis, -x * axis}
     }
 
     // Returns the Z signed length of the perpendicular vector
-    mtdc cross(other: Self)->f32
+    mtd const cross(other: Self)->f32
     {
         return x * other.y - y * other.x
     }
@@ -116,25 +116,25 @@ impl Vector2
     }
 
     // Returns true if this vector is null
-    mtdc isZero()->bool
+    mtd const isZero()->bool
     {
         return x == 0 and y == 0
     }
 
     // Returns true if this vector is null with an epsilon
-    mtdc isZeroEpsilon(eps = cast(f32) ConstF64.Epsilon)->bool
+    mtd const isZeroEpsilon(eps = cast(f32) ConstF64.Epsilon)->bool
     {
         return isZeroEpsilon(x, eps) and isZeroEpsilon(y, eps)
     }
 
     // Returns true if this vector is equals to another with an epsilon
-    mtdc isEqualEpsilon(other: Self, eps = cast(f32) ConstF64.Epsilon)->bool
+    mtd const isEqualEpsilon(other: Self, eps = cast(f32) ConstF64.Epsilon)->bool
     {
         return Math.isEqualEpsilon(x, other.x, eps) and Math.isEqualEpsilon(y, other.y, eps)
     }
 
     // Returns the distance between two vectors
-    mtdc distance(to: Self)->f32
+    mtd const distance(to: Self)->f32
     {
         xn := (x - to.x)
         yn := (y - to.y)
@@ -142,7 +142,7 @@ impl Vector2
     }
 
     // Returns the square distance between two vectors
-    mtdc distanceSquared(to: Self)->f32
+    mtd const distanceSquared(to: Self)->f32
     {
         xn := (x - to.x)
         yn := (y - to.y)
@@ -160,7 +160,7 @@ impl Vector2
     }
 
     // Returns this vector normalized
-    mtdc toNormalize()->Self
+    mtd const toNormalize()->Self
     {
         norm := sqrt((x * x) + (y * y))
         Debug.assert(!Math.isZeroEpsilon(norm))
@@ -200,7 +200,7 @@ impl Vector2
     }
 
     // Returns this vector normalized even if its length is almost null
-    mtdc toNormalizeSafe()->Self
+    mtd const toNormalizeSafe()->Self
     {
         norm := sqrt((x * x) + (y * y))
         if Math.isZeroEpsilon(norm)
@@ -260,7 +260,7 @@ impl Vector2
     }
 
     // Returns the cosine angle with another vector
-    mtdc cosAngle(other: Self)->f32
+    mtd const cosAngle(other: Self)->f32
     {
         vec1 := toNormalize()
         vec2 := other.toNormalize()
@@ -268,7 +268,7 @@ impl Vector2
     }
 
     // Returns the angle with another vector
-    mtdc angle(other: Self)->f32
+    mtd const angle(other: Self)->f32
     {
         angle := Math.acos(cosAngle(other))
         //sign  := (x * other.y) - (y * other.x)

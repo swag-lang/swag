@@ -2,7 +2,7 @@ using Core
 
 impl Image
 {
-    mtdc doFlip(dstImage: *Image)
+    mtd const doFlip(dstImage: *Image)
     {
         f := dstImage
         visitPixels(f, stride: width)
@@ -23,7 +23,7 @@ impl Image
     }
 
     // Flip image vertically
-    public mtdc toFlip()->Image
+    public mtd const toFlip()->Image
     {
         Debug.assert(pixels.buffer != null)
         var result: retval = create(width, height, pf)

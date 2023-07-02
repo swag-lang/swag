@@ -125,7 +125,7 @@ impl StrConv.IConvert for UUID
 
 impl Hash.IHash32 for UUID
 {
-    mtdc impl compute()->u32
+    mtd const impl compute()->u32
     {
         return Hash.Crc32.compute(@mkslice(&val8[0], 16))
     }

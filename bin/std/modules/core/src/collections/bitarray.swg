@@ -29,7 +29,7 @@ impl BitArray
 
 public impl BitArray
 {
-    mtdc opCount()->u64
+    mtd const opCount()->u64
     {
         return count
     }
@@ -164,7 +164,7 @@ public impl BitArray
     }
 
     // Gets the value of the bit at a specific position
-    mtdc get(index: u64)->bool
+    mtd const get(index: u64)->bool
     {
         Debug.assert(index < count)
         val := index >> 5

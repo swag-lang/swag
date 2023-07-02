@@ -1058,14 +1058,14 @@ impl ListCtrl
     }
 
     // Returns true if the line at the given index is selected
-    mtdc isSelectedLine(idx: u32)->bool
+    mtd const isSelectedLine(idx: u32)->bool
     {
         idxLine := isVirtual ? idx : lines[idx].index
         return selModel.isSelected(idxLine)
     }
 
     // Get the line with the keyboard focus
-    mtdc getFocusLine()->*ListLine
+    mtd const getFocusLine()->*ListLine
     {
         if focusIndex >= lines.count
             return null
@@ -1073,7 +1073,7 @@ impl ListCtrl
     }
 
     // Get all the selected lines
-    mtdc getSelectedLines()->Array'(*ListLine)
+    mtd const getSelectedLines()->Array'(*ListLine)
     {
         var result: retval
         if isVirtual or selModel.isEmpty()
@@ -1089,7 +1089,7 @@ impl ListCtrl
     }
 
     // Get all the checked lines
-    mtdc getCheckedLines()->Array'(*ListLine)
+    mtd const getCheckedLines()->Array'(*ListLine)
     {
         var result: retval
         if isVirtual or checkModel.isEmpty()
@@ -1106,7 +1106,7 @@ impl ListCtrl
 
     // Returns a selected line
     // Mostly for singlesel mode
-    mtdc getSelectedLine()->*ListLine
+    mtd const getSelectedLine()->*ListLine
     {
         if isVirtual or selModel.isEmpty()
             return null

@@ -458,9 +458,9 @@ private impl Slider
 
 impl Slider
 {
-    mtdc getValue()->f32        => getValueLeft()
-    mtdc getValueLeft()->f32    => min + (max - min) * value1
-    mtdc getValueRight()->f32   => min + (max - min) * value2
+    mtd const getValue()->f32        => getValueLeft()
+    mtd const getValueLeft()->f32    => min + (max - min) * value1
+    mtd const getValueRight()->f32   => min + (max - min) * value2
 
     mtd  setValue(f: f32)       { setValueLeft(f); }
 
