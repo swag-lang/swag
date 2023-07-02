@@ -266,7 +266,11 @@ bool SemanticJob::resolveVarDeclBefore(SemanticContext* context)
     {
         bool isGeneric = false;
         if (node->flags & AST_STRUCT_MEMBER)
-            isGeneric = node->findParent(AstNodeKind::StructDecl)->flags & AST_IS_GENERIC;
+        {
+            auto parent = node->findParent(AstNodeKind::StructDecl);
+            if (parent)
+                isGeneric = parent->flags & AST_IS_GENERIC;
+        }
 
         if (isGeneric)
         {
