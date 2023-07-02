@@ -207,13 +207,13 @@ bool SemanticJob::sendCompilerMsgFuncDecl(SemanticContext* context)
     if (context->node->flags & (AST_IS_GENERIC | AST_FROM_GENERIC))
         return true;
 
-    auto node     = CastAst<AstFuncDecl>(context->node, AstNodeKind::FuncDecl);
-    auto typeInfo = CastTypeInfo<TypeInfoFuncAttr>(node->typeInfo, TypeInfoKind::FuncAttr);
+    auto funcNode = CastAst<AstFuncDecl>(context->node, AstNodeKind::FuncDecl);
+    auto typeInfo = CastTypeInfo<TypeInfoFuncAttr>(funcNode->typeInfo, TypeInfoKind::FuncAttr);
 
     CompilerMessage msg;
     msg.concrete.kind        = CompilerMsgKind::SemFunctions;
-    msg.concrete.name.buffer = node->token.text.buffer;
-    msg.concrete.name.count  = node->token.text.length();
+    msg.concrete.name.buffer = funcNode->token.text.buffer;
+    msg.concrete.name.count  = funcNode->token.text.length();
     msg.typeInfo             = typeInfo;
     SWAG_CHECK(module->postCompilerMessage(context, msg));
 
@@ -245,177 +245,177 @@ bool SemanticJob::resolveFuncDecl(SemanticContext* context)
 {
     auto sourceFile = context->sourceFile;
     auto module     = sourceFile->module;
-    auto node       = CastAst<AstFuncDecl>(context->node, AstNodeKind::FuncDecl);
-    auto typeInfo   = CastTypeInfo<TypeInfoFuncAttr>(node->typeInfo, TypeInfoKind::FuncAttr);
+    auto funcNode   = CastAst<AstFuncDecl>(context->node, AstNodeKind::FuncDecl);
+    auto typeInfo   = CastTypeInfo<TypeInfoFuncAttr>(funcNode->typeInfo, TypeInfoKind::FuncAttr);
 
     // Only one main per module !
-    if (node->attributeFlags & ATTRIBUTE_MAIN_FUNC)
+    if (funcNode->attributeFlags & ATTRIBUTE_MAIN_FUNC)
     {
         ScopedLock lk(sourceFile->module->mutexFile);
         if (sourceFile->module->mainIsDefined)
         {
-            Diagnostic diag{node, Err(Err0739)};
+            Diagnostic diag{funcNode, Err(Err0739)};
             auto       note = Diagnostic::note(module->mainIsDefined, Nte(Nte0036));
             return context->report(diag, note);
         }
 
-        sourceFile->module->mainIsDefined = node;
+        sourceFile->module->mainIsDefined = funcNode;
     }
 
     // No semantic on a generic function, or a macro
-    if (node->flags & AST_IS_GENERIC)
+    if (funcNode->flags & AST_IS_GENERIC)
     {
-        if ((node->attributeFlags & ATTRIBUTE_PUBLIC) && !(node->flags & AST_GENERATED))
-            node->ownerScope->addPublicNode(node);
+        if ((funcNode->attributeFlags & ATTRIBUTE_PUBLIC) && !(funcNode->flags & AST_GENERATED))
+            funcNode->ownerScope->addPublicNode(funcNode);
         return true;
     }
 
     // Check that there is no 'hole' in alias names
-    if (node->aliasMask && (node->attributeFlags & (ATTRIBUTE_MACRO | ATTRIBUTE_MIXIN)))
+    if (funcNode->aliasMask && (funcNode->attributeFlags & (ATTRIBUTE_MACRO | ATTRIBUTE_MIXIN)))
     {
-        auto mask = node->aliasMask;
-        auto maxN = OS::bitcountlz(node->aliasMask);
+        auto mask = funcNode->aliasMask;
+        auto maxN = OS::bitcountlz(funcNode->aliasMask);
         for (uint32_t n = 0; n < 32 - maxN; n++)
         {
             if ((mask & 1) == 0)
-                return context->report({node, Fmt(Err(Err0741), node->token.ctext(), n)});
+                return context->report({funcNode, Fmt(Err(Err0741), funcNode->token.ctext(), n)});
             mask >>= 1;
         }
     }
 
-    if (node->attributeFlags & ATTRIBUTE_MACRO)
+    if (funcNode->attributeFlags & ATTRIBUTE_MACRO)
     {
-        if ((node->attributeFlags & ATTRIBUTE_PUBLIC) && !(node->flags & AST_GENERATED) && !(node->flags & AST_FROM_GENERIC))
-            node->ownerScope->addPublicNode(node);
-        SWAG_CHECK(setFullResolve(context, node));
+        if ((funcNode->attributeFlags & ATTRIBUTE_PUBLIC) && !(funcNode->flags & AST_GENERATED) && !(funcNode->flags & AST_FROM_GENERIC))
+            funcNode->ownerScope->addPublicNode(funcNode);
+        SWAG_CHECK(setFullResolve(context, funcNode));
         return true;
     }
 
     // An inline function will not have bytecode, so need to register public by hand now
-    if ((node->attributeFlags & ATTRIBUTE_PUBLIC) && (node->attributeFlags & ATTRIBUTE_INLINE) && !(node->flags & AST_FROM_GENERIC))
-        node->ownerScope->addPublicNode(node);
+    if ((funcNode->attributeFlags & ATTRIBUTE_PUBLIC) && (funcNode->attributeFlags & ATTRIBUTE_INLINE) && !(funcNode->flags & AST_FROM_GENERIC))
+        funcNode->ownerScope->addPublicNode(funcNode);
 
-    node->byteCodeFct   = ByteCodeGenJob::emitLocalFuncDecl;
-    typeInfo->stackSize = node->stackSize;
+    funcNode->byteCodeFct = ByteCodeGenJob::emitLocalFuncDecl;
+    typeInfo->stackSize   = funcNode->stackSize;
 
     // Check attributes
-    if ((node->isForeign()) && node->content)
-        return context->report({node, Err(Err0742)});
+    if ((funcNode->isForeign()) && funcNode->content)
+        return context->report({funcNode, Err(Err0742)});
 
-    if (!(node->attributeFlags & ATTRIBUTE_GENERATED_FUNC))
+    if (!(funcNode->attributeFlags & ATTRIBUTE_GENERATED_FUNC))
     {
-        if (node->attributeFlags & ATTRIBUTE_SHARP_FUNC)
+        if (funcNode->attributeFlags & ATTRIBUTE_SHARP_FUNC)
         {
-            SWAG_VERIFY(!(node->attributeFlags & ATTRIBUTE_INLINE), context->report({node, Err(Err0743)}));
+            SWAG_VERIFY(!(funcNode->attributeFlags & ATTRIBUTE_INLINE), context->report({funcNode, Err(Err0743)}));
         }
 
-        if (node->attributeFlags & ATTRIBUTE_TEST_FUNC)
+        if (funcNode->attributeFlags & ATTRIBUTE_TEST_FUNC)
         {
-            SWAG_VERIFY(module->kind == ModuleKind::Test, context->report({node, Err(Err0744)}));
-            SWAG_VERIFY(node->returnType->typeInfo->isVoid(), context->report({node->returnType, Err(Err0745), Hnt(Hnt0026)}));
-            SWAG_VERIFY(!node->parameters || node->parameters->childs.size() == 0, context->report({node->parameters, Err(Err0746), Hnt(Hnt0026)}));
+            SWAG_VERIFY(module->kind == ModuleKind::Test, context->report({funcNode, Err(Err0744)}));
+            SWAG_VERIFY(funcNode->returnType->typeInfo->isVoid(), context->report({funcNode->returnType, Err(Err0745), Hnt(Hnt0026)}));
+            SWAG_VERIFY(!funcNode->parameters || funcNode->parameters->childs.size() == 0, context->report({funcNode->parameters, Err(Err0746), Hnt(Hnt0026)}));
         }
 
-        if (node->attributeFlags & ATTRIBUTE_PUBLIC)
+        if (funcNode->attributeFlags & ATTRIBUTE_PUBLIC)
         {
-            SWAG_VERIFY(node->ownerScope->isGlobalOrImpl(), context->report({node, Fmt(Err(Err0747), node->getDisplayNameC())}));
+            SWAG_VERIFY(funcNode->ownerScope->isGlobalOrImpl(), context->report({funcNode, Fmt(Err(Err0747), funcNode->getDisplayNameC())}));
         }
     }
 
     // Can be null for intrinsics etc...
-    if (node->content)
-        node->content->setBcNotifBefore(ByteCodeGenJob::emitBeforeFuncDeclContent);
+    if (funcNode->content)
+        funcNode->content->setBcNotifBefore(ByteCodeGenJob::emitBeforeFuncDeclContent);
 
     // Do we have a return value
-    if (node->content && node->returnType && !node->returnType->typeInfo->isVoid())
+    if (funcNode->content && funcNode->returnType && !funcNode->returnType->typeInfo->isVoid())
     {
-        if (!(node->content->flags & AST_NO_SEMANTIC))
+        if (!(funcNode->content->flags & AST_NO_SEMANTIC))
         {
-            if (!(node->semFlags & SEMFLAG_SCOPE_HAS_RETURN))
+            if (!(funcNode->semFlags & SEMFLAG_SCOPE_HAS_RETURN))
             {
-                if (node->semFlags & SEMFLAG_FCT_HAS_RETURN)
-                    return context->report({node, node->token, Fmt(Err(Err0748), node->getDisplayNameC())});
-                if (!node->returnType->childs.empty())
-                    return context->report({node->returnType->childs.front(), Fmt(Err(Err0749), node->getDisplayNameC(), node->returnType->typeInfo->getDisplayNameC())});
-                return context->report({node, node->token, Fmt(Err(Err0749), node->getDisplayNameC(), node->returnType->typeInfo->getDisplayNameC())});
+                if (funcNode->semFlags & SEMFLAG_FCT_HAS_RETURN)
+                    return context->report({funcNode, funcNode->token, Fmt(Err(Err0748), funcNode->getDisplayNameC())});
+                if (!funcNode->returnType->childs.empty())
+                    return context->report({funcNode->returnType->childs.front(), Fmt(Err(Err0749), funcNode->getDisplayNameC(), funcNode->returnType->typeInfo->getDisplayNameC())});
+                return context->report({funcNode, funcNode->token, Fmt(Err(Err0749), funcNode->getDisplayNameC(), funcNode->returnType->typeInfo->getDisplayNameC())});
             }
         }
     }
 
     // Content semantic can have been disabled (#validif). In that case, we're not done yet, so
     // do not set the FULL_RESOLVE flag and do not generate bytecode
-    if (node->content && (node->content->flags & AST_NO_SEMANTIC))
+    if (funcNode->content && (funcNode->content->flags & AST_NO_SEMANTIC))
     {
-        ScopedLock lk(node->funcMutex);
-        node->specFlags |= AstFuncDecl::SPECFLAG_PARTIAL_RESOLVE;
-        node->dependentJobs.setRunning();
+        ScopedLock lk(funcNode->funcMutex);
+        funcNode->specFlags |= AstFuncDecl::SPECFLAG_PARTIAL_RESOLVE;
+        funcNode->dependentJobs.setRunning();
         return true;
     }
 
-    bool implFor = false;
-    if (node->ownerScope && node->ownerScope->kind == ScopeKind::Impl)
+    if (funcNode->specFlags & AstFuncDecl::SPECFLAG_IMPL)
     {
-        auto implNode = CastAst<AstImpl>(node->ownerScope->owner, AstNodeKind::Impl);
-        if (implNode->identifierFor)
+        bool implFor = false;
+        if (funcNode->ownerScope && funcNode->ownerScope->kind == ScopeKind::Impl)
         {
-            auto forId = implNode->identifier->childs.back();
-            implFor    = true;
-
-            // Be sure interface has been fully solved
+            auto implNode = CastAst<AstImpl>(funcNode->ownerScope->owner, AstNodeKind::Impl);
+            if (implNode->identifierFor)
             {
-                ScopedLock lk(forId->mutex);
-                ScopedLock lk1(forId->resolvedSymbolName->mutex);
-                if (forId->resolvedSymbolName->cptOverloads)
+                auto forId = implNode->identifier->childs.back();
+                implFor    = true;
+
+                // Be sure interface has been fully solved
                 {
-                    context->job->waitSymbolNoLock(forId->resolvedSymbolName);
-                    return true;
+                    ScopedLock lk(forId->mutex);
+                    ScopedLock lk1(forId->resolvedSymbolName->mutex);
+                    if (forId->resolvedSymbolName->cptOverloads)
+                    {
+                        context->job->waitSymbolNoLock(forId->resolvedSymbolName);
+                        return true;
+                    }
                 }
-            }
 
-            {
-                auto       typeBaseInterface = CastTypeInfo<TypeInfoStruct>(forId->resolvedSymbolOverload->typeInfo, TypeInfoKind::Interface);
-                auto       typeInterface     = CastTypeInfo<TypeInfoStruct>(typeBaseInterface->itable, TypeInfoKind::Struct);
-                ScopedLock lk(typeInterface->mutex);
-
-                // We need to search the function (as a variable) in the interface
-                // If not found, then this is a normal function...
-                auto symbolName = typeInterface->findChildByNameNoLock(node->token.text); // O(n) !
-                if (symbolName)
                 {
-                    node->fromItfSymbol = symbolName;
+                    auto       typeBaseInterface = CastTypeInfo<TypeInfoStruct>(forId->resolvedSymbolOverload->typeInfo, TypeInfoKind::Interface);
+                    auto       typeInterface     = CastTypeInfo<TypeInfoStruct>(typeBaseInterface->itable, TypeInfoKind::Struct);
+                    ScopedLock lk(typeInterface->mutex);
+
+                    // We need to search the function (as a variable) in the interface
+                    // If not found, then this is a normal function...
+                    auto symbolName = typeInterface->findChildByNameNoLock(funcNode->token.text); // O(n) !
+                    if (symbolName)
+                    {
+                        funcNode->fromItfSymbol = symbolName;
+                    }
                 }
             }
         }
-    }
 
-    // Be sure 'impl' is justified
-    if (node->specFlags & AstFuncDecl::SPECFLAG_IMPL && !implFor)
-    {
-        return context->report({node->sourceFile, node->implLoc, node->implLoc, Err(Err0289)});
+        // Be sure 'impl' is justified
+        SWAG_VERIFY(implFor, context->report({funcNode->sourceFile, funcNode->implLoc, funcNode->implLoc, Err(Err0289)}));
     }
 
     // Warnings
-    SWAG_CHECK(warnUnusedVariables(context, node->scope));
+    SWAG_CHECK(warnUnusedVariables(context, funcNode->scope));
 
     // Now the full function has been solved, so we wakeup jobs depending on that
-    SWAG_CHECK(setFullResolve(context, node));
+    SWAG_CHECK(setFullResolve(context, funcNode));
 
     // Ask for bytecode
     bool genByteCode = true;
-    if ((node->attributeFlags & ATTRIBUTE_TEST_FUNC) && !g_CommandLine.test)
+    if ((funcNode->attributeFlags & ATTRIBUTE_TEST_FUNC) && !g_CommandLine.test)
         genByteCode = false;
-    if (node->token.text[0] == '@' && !(node->flags & AST_DEFINED_INTRINSIC))
+    if (funcNode->token.text[0] == '@' && !(funcNode->flags & AST_DEFINED_INTRINSIC))
         genByteCode = false;
-    if (node->isForeign())
+    if (funcNode->isForeign())
         genByteCode = false;
-    if (node->flags & AST_IS_GENERIC)
+    if (funcNode->flags & AST_IS_GENERIC)
         genByteCode = false;
-    if (node->attributeFlags & ATTRIBUTE_INLINE)
+    if (funcNode->attributeFlags & ATTRIBUTE_INLINE)
         genByteCode = false;
-    if (!node->content)
+    if (!funcNode->content)
         genByteCode = false;
     if (genByteCode)
-        ByteCodeGenJob::askForByteCode(context->job, node, 0);
+        ByteCodeGenJob::askForByteCode(context->job, funcNode, 0);
 
     return true;
 }
