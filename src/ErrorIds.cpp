@@ -1146,7 +1146,7 @@ void initErrors()
     SWAG_ERROR(Hnt0121, "there is an implicit '@countof' because of this");
     SWAG_ERROR(Hnt0122, "this is the thrown error");
     SWAG_ERROR(Hnt0123, "the array contains %d elements of type '%s', which does not fit in a slice of type '%s'");
-    SWAG_ERROR(Hnt0124, nullptr);
+    SWAG_ERROR(Hnt0124, "add 'impl' before if this is intended");
 
     /////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////

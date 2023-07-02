@@ -566,7 +566,7 @@ impl String
 
 impl Hash.IHash32 for String
 {
-    mtdc impl compute()->u32
+    func impl compute(using const self)->u32
     {
         return Hash.Crc32.compute(@mkslice(buffer, length))
     }

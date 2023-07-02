@@ -222,7 +222,8 @@ bool SemanticJob::resolveImplFor(SemanticContext* context)
             if (itfSymbol)
             {
                 Diagnostic diag{childFct, childFct->tokenName, Fmt(Err(Err0280), childFct->token.text.c_str(), typeInterface->name.c_str())};
-                auto       hlp = Diagnostic::help(Hlp(Hlp0024));
+                diag.hint = Hnt(Hnt0124);
+                auto hlp  = Diagnostic::help(Hlp(Hlp0024));
                 return context->report(diag, hlp);
             }
 
