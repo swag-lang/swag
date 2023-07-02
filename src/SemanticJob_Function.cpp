@@ -352,7 +352,6 @@ bool SemanticJob::resolveFuncDecl(SemanticContext* context)
         return true;
     }
 
-    // Flag the function with AstFuncDecl::SPECFLAG_IS_IMPL_MTD if this is an interface implementation method
     if (node->ownerScope && node->ownerScope->kind == ScopeKind::Impl)
     {
         auto implNode = CastAst<AstImpl>(node->ownerScope->owner, AstNodeKind::Impl);
@@ -385,6 +384,12 @@ bool SemanticJob::resolveFuncDecl(SemanticContext* context)
                 }
             }
         }
+    }
+
+    // Be sure 'impl' is justified
+    if (node->specFlags & AstFuncDecl::SPECFLAG_IMPL && !node->fromItfSymbol)
+    {
+        return context->report({node->sourceFile, node->implLoc, node->implLoc, Err(Err0289)});
     }
 
     // Warnings

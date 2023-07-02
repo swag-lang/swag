@@ -539,6 +539,7 @@ struct AstFuncDecl : public AstNode
     VectorNative<AstNode*> localConstants;
     Mutex                  funcMutex;
     Token                  tokenName;
+    SourceLocation         implLoc;
 
     AstNode*        captureParameters;
     AstNode*        parameters;

@@ -921,7 +921,7 @@ void initErrors()
     SWAG_ERROR(Err0250, "unexpected 'const' for type '%s'");
     SWAG_ERROR(Err0251, "use of unknown attribute '%s'");
     SWAG_ERROR(Err0280, "function '%s' is part of the interface '%s' but is not marked with 'impl'");
-    SWAG_ERROR(Err0289, nullptr);
+    SWAG_ERROR(Err0289, "unexpected 'impl' outside of an 'impl for' block");
     SWAG_ERROR(Err0436, nullptr);
     SWAG_ERROR(Err0501, nullptr);
     SWAG_ERROR(Err0520, nullptr);

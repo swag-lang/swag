@@ -657,6 +657,7 @@ bool Parser::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId)
         // Interface implementation function
         if (token.id == TokenId::KwdImpl)
         {
+            funcNode->implLoc = token.startLocation;
             funcNode->specFlags |= AstFuncDecl::SPECFLAG_IMPL;
             SWAG_CHECK(eatToken());
         }
