@@ -773,7 +773,7 @@ bool Module::addDependency(AstNode* importNode, const Token& tokenLocation, cons
             if (!isdigit(splits[i][j]))
             {
                 Diagnostic diag{importNode, tokenVersion, Err(Err0288)};
-                auto       note = Diagnostic::note(dep->node, Err(Err0289));
+                auto       note = Diagnostic::note(dep->node, Err(Nte0085));
                 return Report::report(diag, note);
             }
         }
@@ -782,7 +782,7 @@ bool Module::addDependency(AstNode* importNode, const Token& tokenLocation, cons
         if (*setVer < 0)
         {
             Diagnostic diag{importNode, tokenVersion, Err(Err0288)};
-            auto       note = Diagnostic::note(dep->node, Err(Err0289));
+            auto       note = Diagnostic::note(dep->node, Err(Nte0085));
             return Report::report(diag, note);
         }
 

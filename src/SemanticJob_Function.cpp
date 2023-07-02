@@ -352,12 +352,14 @@ bool SemanticJob::resolveFuncDecl(SemanticContext* context)
         return true;
     }
 
+    bool implFor = false;
     if (node->ownerScope && node->ownerScope->kind == ScopeKind::Impl)
     {
         auto implNode = CastAst<AstImpl>(node->ownerScope->owner, AstNodeKind::Impl);
         if (implNode->identifierFor)
         {
             auto forId = implNode->identifier->childs.back();
+            implFor    = true;
 
             // Be sure interface has been fully solved
             {
@@ -387,7 +389,7 @@ bool SemanticJob::resolveFuncDecl(SemanticContext* context)
     }
 
     // Be sure 'impl' is justified
-    if (node->specFlags & AstFuncDecl::SPECFLAG_IMPL && !node->fromItfSymbol)
+    if (node->specFlags & AstFuncDecl::SPECFLAG_IMPL && !implFor)
     {
         return context->report({node->sourceFile, node->implLoc, node->implLoc, Err(Err0289)});
     }
