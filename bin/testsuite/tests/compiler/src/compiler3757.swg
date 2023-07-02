@@ -1,4 +1,4 @@
 interface I
 {
-    x: mtd()
+    x: func(self)
 }

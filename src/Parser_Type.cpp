@@ -71,29 +71,6 @@ bool Parser::doLambdaClosureTypePriv(AstTypeLambda* node, AstNode** result, bool
 
     switch (token.id)
     {
-    case TokenId::KwdMethod:
-    {
-        SWAG_VERIFY(currentStructScope, error(token, Err(Syn0025), nullptr, Hnt(Hnt0049)));
-        node->kind = AstNodeKind::TypeLambda;
-        SWAG_CHECK(eatToken());
-
-        bool isConstMethod = false;
-        if (token.id == TokenId::KwdConst)
-        {
-            isConstMethod = true;
-            SWAG_CHECK(eatToken());
-        }
-
-        params           = Ast::newNode<AstNode>(this, AstNodeKind::FuncDeclParams, sourceFile, node);
-        node->parameters = params;
-        firstAddedType   = Ast::newTypeExpression(sourceFile, params);
-        firstAddedType->typeFlags |= TYPEFLAG_IS_SELF | TYPEFLAG_IS_PTR | TYPEFLAG_IS_SUB_TYPE;
-        if (isConstMethod)
-            firstAddedType->typeFlags |= TYPEFLAG_IS_CONST;
-        firstAddedType->identifier = Ast::newIdentifierRef(sourceFile, currentStructScope->name, firstAddedType, this);
-        break;
-    }
-
     case TokenId::KwdClosure:
         node->kind = AstNodeKind::TypeClosure;
         SWAG_CHECK(eatToken());
@@ -515,6 +492,7 @@ bool Parser::doSingleTypeExpression(AstTypeExpression* node, AstNode* parent, ui
 
     if (token.id == TokenId::KwdFunc || token.id == TokenId::KwdClosure || token.id == TokenId::KwdMethod)
     {
+        SWAG_VERIFY(token.id != TokenId::KwdMethod, context->report({sourceFile, token, Err(Syn0095)}));
         SWAG_CHECK(doLambdaClosureType(node, &node->identifier, inTypeVarDecl));
         return true;
     }
@@ -688,6 +666,7 @@ bool Parser::doTypeExpression(AstNode* parent, uint32_t exprFlags, AstNode** res
     // This is a lambda
     if (token.id == TokenId::KwdFunc || token.id == TokenId::KwdClosure || token.id == TokenId::KwdMethod)
     {
+        SWAG_VERIFY(token.id != TokenId::KwdMethod, context->report({sourceFile, token, Err(Syn0095)}));
         SWAG_CHECK(doLambdaClosureType(parent, result, exprFlags & EXPR_FLAG_IN_VAR_DECL));
         return true;
     }

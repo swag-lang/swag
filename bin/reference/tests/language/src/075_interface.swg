@@ -21,11 +21,9 @@ Here we declare an interface, with two functions `set` and `reset`.
 interface IReset
 {
     // You must declare a lambda variable for each "virtual" function.
-    // As the first parameter is always 'self', you can either declare it
-    // yourself or use 'mtd/mtd const'
-    set: mtd(f32)
+    set: func(self, f32)
 
-    // You can also use the normal "func/mtd/mtd const" declaration.
+    // You can also use the normal "func/mtd" declaration.
     // The compiler will then create the table entry for you.
     mtd reset()
 }

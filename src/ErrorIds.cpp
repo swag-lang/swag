@@ -199,7 +199,7 @@ void initErrors()
     SWAG_ERROR(Syn0092, "expected the generic parameters");
     SWAG_ERROR(Syn0093, "expected the namespace name before ';'");
     SWAG_ERROR(Syn0094, "expected the namespace name before '{'");
-    SWAG_ERROR(Syn0095, nullptr);
+    SWAG_ERROR(Syn0095, "unexpected 'mtd', expected 'func' or 'closure' to declare a lambda or a closure type");
     SWAG_ERROR(Syn0096, "expected the type of the array after the dimensions, but found '%s'");
     SWAG_ERROR(Syn0097, "found '#elif' without a corresponding '#if'");
     SWAG_ERROR(Syn0098, "found '#else' without a corresponding '#if'");

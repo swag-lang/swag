@@ -656,6 +656,7 @@ bool Parser::doStructBody(AstNode* parent, SyntaxStructType structType, AstNode*
             varNode->extMisc()->docComment = std::move(tokenizer.comment);
         }
 
+        SWAG_CHECK(eatSemiCol("interface function definition"));
         break;
     }
 

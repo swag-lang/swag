@@ -1,6 +1,6 @@
 interface I
 {
-    toto: mtd()
+    toto: func(self)
 }
 
 struct A
