@@ -20,5 +20,5 @@ func toto()
 #test
 {
     var vv: const *Swag.TypeInfoEnum = OT
-	pt := {x: OT}
+	pt := {x = OT}
 }

@@ -5,7 +5,7 @@ struct A
 }
 
 const countries: [] A = [
-    { name: "titi" },
+    { name = "titi" },
 ]
 
 #test

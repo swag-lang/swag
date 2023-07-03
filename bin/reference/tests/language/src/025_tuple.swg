@@ -16,7 +16,7 @@
 
     // But you can specify your own names.
     {
-        tuple := {x: 1.0, y: 2.0}
+        tuple := {x = 1.0, y = 2.0}
         @assert(tuple.x == 1.0)
         @assert(tuple.item0 == 1.0)
         @assert(tuple.y == 2.0)
@@ -25,7 +25,8 @@
 
     // A tuple is an expression, where names of fields can be omitted. But the automatic name `itemX` is always valid.
     {
-        var tuple: {x: f32, f32}
+        var tuple: {x: f32 = 2.0, f32}
+        @assert(tuple.x == 2.0)
         tuple.x = 1.0
         @assert(tuple.x == 1.0)
         @assert(tuple.item0 == 1.0)
@@ -65,7 +66,7 @@
 {
     // You can unpack a tuple field by field.
     {
-        tuple1 := {x: 1.0, y: 2.0}
+        tuple1 := {x = 1.0, y = 2.0}
 
         // 'value0' will be assigned with 'x', and 'value1' will be assigned with 'y'.
         var (value0, value1) = tuple1
@@ -80,7 +81,7 @@
 
     // You can ignore a tuple field by naming the variable `?`.
     {
-        tuple1 := {x: 1.0, y: 2.0}
+        tuple1 := {x = 1.0, y = 2.0}
         (x, ?) := tuple1
         @assert(x == 1.0)
         (?, y) := tuple1

@@ -15,7 +15,7 @@ impl Image
         #[Swag.Mixin]
         func(BPP: u8) doIt()
         {
-            f := {img: self}
+            f := {img = self}
             switch angle
             {
             case T90:

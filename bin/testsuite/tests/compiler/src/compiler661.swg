@@ -8,5 +8,5 @@ enum OT
 //#global testerror
 #test
 {
-	pt := {x: OT.A}
+	pt := {x = OT.A}
 }

@@ -924,7 +924,7 @@ bool Parser::doCompareExpression(AstNode* parent, uint32_t exprFlags, AstNode** 
         return true;
     }
 
-    if (!(exprFlags & EXPR_FLAG_IN_CALL) || leftNode->kind != AstNodeKind::IdentifierRef)
+    if (!(exprFlags & EXPR_FLAG_NAMED_PARAM) || leftNode->kind != AstNodeKind::IdentifierRef)
         SWAG_VERIFY(token.id != TokenId::SymEqual, error(token, Err(Err0432), Hnt(Hnt0082)));
 
     Ast::addChildBack(parent, leftNode);
@@ -1136,10 +1136,10 @@ bool Parser::doExpressionListTuple(AstNode* parent, AstNode** result)
         else
         {
             AstNode* paramExpression;
-            SWAG_CHECK(doExpression(nullptr, EXPR_FLAG_NONE, &paramExpression));
+            SWAG_CHECK(doExpression(nullptr, EXPR_FLAG_NAMED_PARAM, &paramExpression));
 
             // Name
-            if (token.id == TokenId::SymColon)
+            if (token.id == TokenId::SymEqual)
             {
                 SWAG_VERIFY(paramExpression->kind == AstNodeKind::IdentifierRef, error(paramExpression, Err(Syn0077)));
                 SWAG_CHECK(checkIsSingleIdentifier(paramExpression, "as a tuple field name"));

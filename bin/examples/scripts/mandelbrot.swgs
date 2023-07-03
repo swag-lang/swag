@@ -15,7 +15,7 @@ func compute()
 {
     using Math
 
-    data := {minS: g_Slider.getValueLeft(), maxS: g_Slider.getValueRight()}
+    data := {minS = g_Slider.getValueLeft(), maxS = g_Slider.getValueRight()}
     g_Image.visitPixels(&data)
     {
         params := cast(*@decltype(data)) userData

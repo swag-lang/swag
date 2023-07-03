@@ -1,7 +1,7 @@
 #test
 {
     f := 666
-    g := {factor: f}
+    g := {factor = f}
     @assert(g.factor == 666)
 
     v := cast(*void) &g

@@ -114,6 +114,7 @@ func toto(v: Struct3)
 
 func titi(v: Struct3)
 {
+    @assert(v.x == 5)
     @assert(v.y == 666)
 }
 
@@ -130,5 +131,5 @@ func titi(v: Struct3)
     titi({5, 666}) // Initialize x and y
 
     // You can also name the fields, and omit some of them
-    titi({x: 5, z: 5}) // Here y will stay to the default value, which is 666
+    titi({x = 5, z = 5}) // Here y will stay to the default value, which is 666
 }

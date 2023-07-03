@@ -69,6 +69,7 @@ const uint32_t EXPR_FLAG_IN_CALL               = 0x00000020;
 const uint32_t EXPR_FLAG_IN_VAR_DECL           = 0x00000040;
 const uint32_t EXPR_FLAG_TYPE_EXPR             = 0x00000080;
 const uint32_t EXPR_FLAG_IN_VAR_DECL_WITH_TYPE = 0x00000100;
+const uint32_t EXPR_FLAG_NAMED_PARAM           = 0x00000200;
 
 const uint32_t CONTEXT_FLAG_EXPRESSION = 0x00000001;
 

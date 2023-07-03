@@ -582,7 +582,7 @@ impl Decoder
         // Paletted, no transparency
         if inChannels == 1 and seenPLTE and !seenTRSN
         {
-            pm := {dstPixels, dec: self}
+            pm := {dstPixels, dec = self}
             result.visitPixels(&pm)
             {
                 params := cast(*@decltype(pm)) userData
@@ -601,7 +601,7 @@ impl Decoder
         // Paletted, transparency
         elif inChannels == 1 and seenPLTE and seenTRSN
         {
-            pm := {dstPixels, dec: self}
+            pm := {dstPixels, dec = self}
             result.visitPixels(&pm)
             {
                 params := cast(*@decltype(pm)) userData

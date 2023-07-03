@@ -319,7 +319,7 @@ namespace ResizeTools
         dh := cast(s64) imgDst.height
         contrib := calcContributions(dh, sh, cast(f64) dh / sh, rmode)
 
-        f := {imgDst, imgSrc, contrib: &contrib}
+        f := {imgDst, imgSrc, contrib = &contrib}
         Jobs.parallelFor(|index, data| cast(u32) imgDst.width, &f)
         {
             params := cast(*@decltype(f)) data
@@ -333,7 +333,7 @@ namespace ResizeTools
         dw := cast(s64) imgDst.width
         contrib := calcContributions(dw, sw, cast(f64) dw / sw, rmode)
 
-        f := {imgDst, imgSrc, contrib: &contrib}
+        f := {imgDst, imgSrc, contrib = &contrib}
         Jobs.parallelFor(|index, data| cast(u32) imgDst.height, &f)
         {
             params := cast(*@decltype(f)) data
