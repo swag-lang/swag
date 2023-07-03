@@ -129,7 +129,7 @@ struct Parser
     bool doCompilerPlaceHolder(AstNode* parent);
     bool doTopLevelInstruction(AstNode* parent, AstNode** result);
     bool doVarDecl(AstNode* parent, AstNode** result);
-    bool doVarDecl(AstNode* parent, AstNode** result, AstNodeKind kind);
+    bool doVarDecl(AstNode* parent, AstNode** result, AstNodeKind kind, bool forStruct = false);
     bool doAlias(AstNode* parent, AstNode** result);
     bool doSingleTypeExpression(AstTypeExpression* node, AstNode* parent, uint32_t exprFlags, AstNode** result);
     bool doSubTypeExpression(AstNode* parent, uint32_t exprFlags, AstNode** result);

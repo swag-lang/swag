@@ -8,5 +8,5 @@ using AA2944
 
 struct ST2944
 {
-    x: struct{v: T;}
+    x: struct{v: T}
 }

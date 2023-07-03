@@ -8,11 +8,11 @@ struct AstTryCatchAssume;
 
 struct Scoped
 {
-    Scoped(Parser* job, Scope* newScope)
+    Scoped(Parser* parser, Scope* newScope)
     {
-        savedJob          = job;
-        savedScope        = job->currentScope;
-        job->currentScope = newScope;
+        savedJob             = parser;
+        savedScope           = parser->currentScope;
+        parser->currentScope = newScope;
     }
 
     ~Scoped()
@@ -26,11 +26,11 @@ struct Scoped
 
 struct ScopedBreakable
 {
-    ScopedBreakable(Parser* job, AstBreakable* newNode)
+    ScopedBreakable(Parser* parser, AstBreakable* newNode)
     {
-        savedJob              = job;
-        savedNode             = job->currentBreakable;
-        job->currentBreakable = newNode;
+        savedJob                 = parser;
+        savedNode                = parser->currentBreakable;
+        parser->currentBreakable = newNode;
     }
 
     ~ScopedBreakable()
@@ -44,11 +44,11 @@ struct ScopedBreakable
 
 struct ScopedTryCatchAssume
 {
-    ScopedTryCatchAssume(Parser* job, AstTryCatchAssume* newNode)
+    ScopedTryCatchAssume(Parser* parser, AstTryCatchAssume* newNode)
     {
-        savedJob                   = job;
-        savedNode                  = job->currentTryCatchAssume;
-        job->currentTryCatchAssume = newNode;
+        savedJob                      = parser;
+        savedNode                     = parser->currentTryCatchAssume;
+        parser->currentTryCatchAssume = newNode;
     }
 
     ~ScopedTryCatchAssume()
@@ -62,11 +62,11 @@ struct ScopedTryCatchAssume
 
 struct ScopedFct
 {
-    ScopedFct(Parser* job, AstFuncDecl* newFct)
+    ScopedFct(Parser* parser, AstFuncDecl* newFct)
     {
-        savedJob        = job;
-        savedFct        = job->currentFct;
-        job->currentFct = newFct;
+        savedJob           = parser;
+        savedFct           = parser->currentFct;
+        parser->currentFct = newFct;
     }
 
     ~ScopedFct()
@@ -80,11 +80,11 @@ struct ScopedFct
 
 struct ScopedCompilerIfBlock
 {
-    ScopedCompilerIfBlock(Parser* job, AstCompilerIfBlock* newIf)
+    ScopedCompilerIfBlock(Parser* parser, AstCompilerIfBlock* newIf)
     {
-        savedJob                    = job;
-        savedIf                     = job->currentCompilerIfBlock;
-        job->currentCompilerIfBlock = newIf;
+        savedJob                       = parser;
+        savedIf                        = parser->currentCompilerIfBlock;
+        parser->currentCompilerIfBlock = newIf;
     }
 
     ~ScopedCompilerIfBlock()
@@ -98,11 +98,11 @@ struct ScopedCompilerIfBlock
 
 struct ScopedFlags
 {
-    ScopedFlags(Parser* job, uint64_t newFlags)
+    ScopedFlags(Parser* parser, uint64_t newFlags)
     {
-        savedJob   = job;
-        savedFlags = job->currentFlags;
-        job->currentFlags |= newFlags;
+        savedJob   = parser;
+        savedFlags = parser->currentFlags;
+        parser->currentFlags |= newFlags;
     }
 
     ~ScopedFlags()
@@ -116,11 +116,11 @@ struct ScopedFlags
 
 struct ScopedStruct
 {
-    ScopedStruct(Parser* job, Scope* structScope)
+    ScopedStruct(Parser* parser, Scope* structScope)
     {
-        savedJob                = job;
-        savedStruct             = job->currentStructScope;
-        job->currentStructScope = structScope;
+        savedJob                   = parser;
+        savedStruct                = parser->currentStructScope;
+        parser->currentStructScope = structScope;
     }
 
     ~ScopedStruct()
@@ -134,11 +134,11 @@ struct ScopedStruct
 
 struct ScopedSelfStruct
 {
-    ScopedSelfStruct(Parser* job, Scope* structScope)
+    ScopedSelfStruct(Parser* parser, Scope* structScope)
     {
-        savedJob                    = job;
-        savedStruct                 = job->currentSelfStructScope;
-        job->currentSelfStructScope = structScope;
+        savedJob                       = parser;
+        savedStruct                    = parser->currentSelfStructScope;
+        parser->currentSelfStructScope = structScope;
     }
 
     ~ScopedSelfStruct()

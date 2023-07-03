@@ -275,7 +275,7 @@ bool Parser::doVarDecl(AstNode* parent, AstNode** result)
     return true;
 }
 
-bool Parser::doVarDecl(AstNode* parent, AstNode** result, AstNodeKind kind)
+bool Parser::doVarDecl(AstNode* parent, AstNode** result, AstNodeKind kind, bool forStruct)
 {
     AstNode* leftNode;
     while (true)
@@ -359,7 +359,8 @@ bool Parser::doVarDecl(AstNode* parent, AstNode** result, AstNodeKind kind)
         SWAG_CHECK(eatToken());
     }
 
-    SWAG_CHECK(eatSemiCol("end of the variable declaration"));
+    if (!forStruct || token.id != TokenId::SymRightCurly)
+        SWAG_CHECK(eatSemiCol("end of the variable declaration"));
 
     if (!tokenizer.comment.empty() && *result && !(token.flags & TOKENPARSE_EOL_BEFORE_COMMENT))
     {

@@ -16,6 +16,12 @@
         }
     }
 
+    // Variables can also be separated with ';' or ','.
+    {
+        struct MyStruct{name: string, val1: bool}
+        struct MyStruct1{x: s32; y, z: s32; val: bool; myS: MyStruct}
+    }
+
     // A struct can be anonymous when declared as a variable type. Unlike tuples, syntax should be the same as for named structs.
     {
         var tuple: struct
@@ -23,7 +29,7 @@
             x: f32
             y: f32
         }
-        var tuple1: struct{x, y: f32; }
+        var tuple1: struct{x, y: f32}
 
         tuple.x = 1.0
         tuple.y = 2.0
@@ -34,8 +40,8 @@
     {
         struct MyStruct
         {
-            rgb: struct{x, y, z: f32; }
-            hsl: struct{h, s, l: f32; }
+            rgb: struct{x, y, z: f32}
+            hsl: struct{h, s, l: f32}
         }
     }
 

@@ -567,7 +567,7 @@ bool Parser::doStructBody(AstNode* parent, SyntaxStructType structType, AstNode*
         auto structNode = CastAst<AstStruct>(parent->ownerStructScope->owner, AstNodeKind::StructDecl);
         structNode->specFlags |= AstStruct::SPECFLAG_HAS_USING;
         AstNode* varDecl;
-        SWAG_CHECK(doVarDecl(parent, &varDecl, AstNodeKind::VarDecl));
+        SWAG_CHECK(doVarDecl(parent, &varDecl, AstNodeKind::VarDecl, true));
         varDecl->flags |= AST_DECL_USING;
         *result = varDecl;
         break;
@@ -577,7 +577,7 @@ bool Parser::doStructBody(AstNode* parent, SyntaxStructType structType, AstNode*
     {
         ScopedFlags scopedFlags(this, AST_STRUCT_MEMBER);
         SWAG_CHECK(eatToken());
-        SWAG_CHECK(doVarDecl(parent, result, AstNodeKind::ConstDecl));
+        SWAG_CHECK(doVarDecl(parent, result, AstNodeKind::ConstDecl, true));
         break;
     }
 
@@ -676,7 +676,7 @@ bool Parser::doStructBody(AstNode* parent, SyntaxStructType structType, AstNode*
     {
         SWAG_VERIFY(structType != SyntaxStructType::Interface, error(token, Fmt(Err(Syn0133), token.ctext())));
         ScopedFlags scopedFlags(this, AST_STRUCT_MEMBER);
-        SWAG_CHECK(doVarDecl(parent, result, AstNodeKind::VarDecl));
+        SWAG_CHECK(doVarDecl(parent, result, AstNodeKind::VarDecl, true));
         break;
     }
     }
