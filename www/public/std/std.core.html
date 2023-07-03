@@ -12,12 +12,6 @@
             line-height:    1.3em;
             font-family:    Segoe UI;
         }
-        blockquote {
-            background-color:   LightYellow;
-            border-left:        6px solid Orange;
-            padding:            10px;
-            width:              90%;
-        }
         .left {
             display:    block;
             overflow-y: scroll;
@@ -34,6 +28,12 @@
         .page {
             width:  1000;
             margin: 0 auto;
+        }
+        blockquote {
+            background-color:   LightYellow;
+            border-left:        6px solid Orange;
+            padding:            10px;
+            width:              90%;
         }
         a {
             text-decoration: none;
@@ -1052,6 +1052,7 @@
 <li><a href="#Core_Math_Vector2_isZeroEpsilon">Vector2.isZeroEpsilon</a></li>
 <li><a href="#Core_Math_Vector2_length">Vector2.length</a></li>
 <li><a href="#Core_Math_Vector2_lengthSquared">Vector2.lengthSquared</a></li>
+<li><a href="#Core_Math_Vector2_lerp">Vector2.lerp</a></li>
 <li><a href="#Core_Math_Vector2_lineLineIntersect">Vector2.lineLineIntersect</a></li>
 <li><a href="#Core_Math_Vector2_max">Vector2.max</a></li>
 <li><a href="#Core_Math_Vector2_min">Vector2.min</a></li>
@@ -1082,6 +1083,7 @@
 <li><a href="#Core_Math_Vector3_isZeroEpsilon">Vector3.isZeroEpsilon</a></li>
 <li><a href="#Core_Math_Vector3_length">Vector3.length</a></li>
 <li><a href="#Core_Math_Vector3_lengthSquared">Vector3.lengthSquared</a></li>
+<li><a href="#Core_Math_Vector3_lerp">Vector3.lerp</a></li>
 <li><a href="#Core_Math_Vector3_max">Vector3.max</a></li>
 <li><a href="#Core_Math_Vector3_min">Vector3.min</a></li>
 <li><a href="#Core_Math_Vector3_negate">Vector3.negate</a></li>
@@ -1098,6 +1100,7 @@
 <li><a href="#Core_Math_Vector3_toNormalize">Vector3.toNormalize</a></li>
 <li><a href="#Core_Math_Vector3_toNormalizeSafe">Vector3.toNormalizeSafe</a></li>
 <li><a href="#Core_Math_Vector4_clear">Vector4.clear</a></li>
+<li><a href="#Core_Math_Vector4_lerp">Vector4.lerp</a></li>
 <li><a href="#Core_Math_Vector4_opAffect">Vector4.opAffect</a></li>
 <li><a href="#Core_Math_Vector4_opEquals">Vector4.opEquals</a></li>
 <li><a href="#Core_Math_Vector4_opUnary">Vector4.opUnary</a></li>
@@ -1147,6 +1150,11 @@
 </ul>
 <h3>serialization</h3>
 <ul class="tocbullet">
+<li><a href="#Core_Serialization_ISerialize_postSerialize">ISerialize.postSerialize</a></li>
+<li><a href="#Core_Serialization_ISerialize_read">ISerialize.read</a></li>
+<li><a href="#Core_Serialization_ISerialize_readElement">ISerialize.readElement</a></li>
+<li><a href="#Core_Serialization_ISerialize_write">ISerialize.write</a></li>
+<li><a href="#Core_Serialization_ISerialize_writeElement">ISerialize.writeElement</a></li>
 <li><a href="#Core_Serialization_isPodFinal">Serialization.isPodFinal</a></li>
 <li><a href="#Core_Serialization_Serializer_beginSection">Serializer.beginSection</a></li>
 <li><a href="#Core_Serialization_Serializer_end">Serializer.end</a></li>
@@ -1159,31 +1167,31 @@
 </ul>
 <h3>serialization/read</h3>
 <ul class="tocbullet">
+<li><a href="#Core_Serialization_Decoder_IDecoder_beginField">Decoder.IDecoder.beginField</a></li>
+<li><a href="#Core_Serialization_Decoder_IDecoder_beginSection">Decoder.IDecoder.beginSection</a></li>
+<li><a href="#Core_Serialization_Decoder_IDecoder_end">Decoder.IDecoder.end</a></li>
+<li><a href="#Core_Serialization_Decoder_IDecoder_endField">Decoder.IDecoder.endField</a></li>
+<li><a href="#Core_Serialization_Decoder_IDecoder_endSection">Decoder.IDecoder.endSection</a></li>
+<li><a href="#Core_Serialization_Decoder_IDecoder_getVersion">Decoder.IDecoder.getVersion</a></li>
+<li><a href="#Core_Serialization_Decoder_IDecoder_read">Decoder.IDecoder.read</a></li>
+<li><a href="#Core_Serialization_Decoder_IDecoder_readBool">Decoder.IDecoder.readBool</a></li>
+<li><a href="#Core_Serialization_Decoder_IDecoder_readBufferU8">Decoder.IDecoder.readBufferU8</a></li>
+<li><a href="#Core_Serialization_Decoder_IDecoder_readF32">Decoder.IDecoder.readF32</a></li>
+<li><a href="#Core_Serialization_Decoder_IDecoder_readF64">Decoder.IDecoder.readF64</a></li>
+<li><a href="#Core_Serialization_Decoder_IDecoder_readS16">Decoder.IDecoder.readS16</a></li>
+<li><a href="#Core_Serialization_Decoder_IDecoder_readS32">Decoder.IDecoder.readS32</a></li>
+<li><a href="#Core_Serialization_Decoder_IDecoder_readS64">Decoder.IDecoder.readS64</a></li>
+<li><a href="#Core_Serialization_Decoder_IDecoder_readS8">Decoder.IDecoder.readS8</a></li>
+<li><a href="#Core_Serialization_Decoder_IDecoder_readU16">Decoder.IDecoder.readU16</a></li>
+<li><a href="#Core_Serialization_Decoder_IDecoder_readU32">Decoder.IDecoder.readU32</a></li>
+<li><a href="#Core_Serialization_Decoder_IDecoder_readU64">Decoder.IDecoder.readU64</a></li>
+<li><a href="#Core_Serialization_Decoder_IDecoder_readU8">Decoder.IDecoder.readU8</a></li>
+<li><a href="#Core_Serialization_Decoder_IDecoder_start">Decoder.IDecoder.start</a></li>
 <li><a href="#Core_Serialization_Decoder_end">Decoder.end</a></li>
 <li><a href="#Core_Serialization_Decoder_readAll">Decoder.readAll</a></li>
 <li><a href="#Core_Serialization_Decoder_readTypeValue">Decoder.readTypeValue</a></li>
 <li><a href="#Core_Serialization_Decoder_readValue">Decoder.readValue</a></li>
 <li><a href="#Core_Serialization_Decoder_start">Decoder.start</a></li>
-<li><a href="#Core_Serialization_Decoder_IDecoder_beginField">IDecoder.beginField</a></li>
-<li><a href="#Core_Serialization_Decoder_IDecoder_beginSection">IDecoder.beginSection</a></li>
-<li><a href="#Core_Serialization_Decoder_IDecoder_end">IDecoder.end</a></li>
-<li><a href="#Core_Serialization_Decoder_IDecoder_endField">IDecoder.endField</a></li>
-<li><a href="#Core_Serialization_Decoder_IDecoder_endSection">IDecoder.endSection</a></li>
-<li><a href="#Core_Serialization_Decoder_IDecoder_getVersion">IDecoder.getVersion</a></li>
-<li><a href="#Core_Serialization_Decoder_IDecoder_read">IDecoder.read</a></li>
-<li><a href="#Core_Serialization_Decoder_IDecoder_readBool">IDecoder.readBool</a></li>
-<li><a href="#Core_Serialization_Decoder_IDecoder_readBufferU8">IDecoder.readBufferU8</a></li>
-<li><a href="#Core_Serialization_Decoder_IDecoder_readF32">IDecoder.readF32</a></li>
-<li><a href="#Core_Serialization_Decoder_IDecoder_readF64">IDecoder.readF64</a></li>
-<li><a href="#Core_Serialization_Decoder_IDecoder_readS16">IDecoder.readS16</a></li>
-<li><a href="#Core_Serialization_Decoder_IDecoder_readS32">IDecoder.readS32</a></li>
-<li><a href="#Core_Serialization_Decoder_IDecoder_readS64">IDecoder.readS64</a></li>
-<li><a href="#Core_Serialization_Decoder_IDecoder_readS8">IDecoder.readS8</a></li>
-<li><a href="#Core_Serialization_Decoder_IDecoder_readU16">IDecoder.readU16</a></li>
-<li><a href="#Core_Serialization_Decoder_IDecoder_readU32">IDecoder.readU32</a></li>
-<li><a href="#Core_Serialization_Decoder_IDecoder_readU64">IDecoder.readU64</a></li>
-<li><a href="#Core_Serialization_Decoder_IDecoder_readU8">IDecoder.readU8</a></li>
-<li><a href="#Core_Serialization_Decoder_IDecoder_start">IDecoder.start</a></li>
 <li><a href="#Core_Serialization_Read_JSon_beginElement">JSon.beginElement</a></li>
 <li><a href="#Core_Serialization_Read_JSon_beginRoot">JSon.beginRoot</a></li>
 <li><a href="#Core_Serialization_Read_JSon_beginSection">JSon.beginSection</a></li>
@@ -1201,6 +1209,26 @@
 <li><a href="#Core_Serialization_Read_JSon_startRead">JSon.startRead</a></li>
 <li><a href="#Core_Serialization_Read_JSon_toNextSequenceElement">JSon.toNextSequenceElement</a></li>
 <li><a href="#Core_Serialization_Read_JSon_zapBlanks">JSon.zapBlanks</a></li>
+<li><a href="#Core_Serialization_IDecoder_beginField">Serialization.IDecoder.beginField</a></li>
+<li><a href="#Core_Serialization_IDecoder_beginSection">Serialization.IDecoder.beginSection</a></li>
+<li><a href="#Core_Serialization_IDecoder_end">Serialization.IDecoder.end</a></li>
+<li><a href="#Core_Serialization_IDecoder_endField">Serialization.IDecoder.endField</a></li>
+<li><a href="#Core_Serialization_IDecoder_endSection">Serialization.IDecoder.endSection</a></li>
+<li><a href="#Core_Serialization_IDecoder_getVersion">Serialization.IDecoder.getVersion</a></li>
+<li><a href="#Core_Serialization_IDecoder_read">Serialization.IDecoder.read</a></li>
+<li><a href="#Core_Serialization_IDecoder_readBool">Serialization.IDecoder.readBool</a></li>
+<li><a href="#Core_Serialization_IDecoder_readBufferU8">Serialization.IDecoder.readBufferU8</a></li>
+<li><a href="#Core_Serialization_IDecoder_readF32">Serialization.IDecoder.readF32</a></li>
+<li><a href="#Core_Serialization_IDecoder_readF64">Serialization.IDecoder.readF64</a></li>
+<li><a href="#Core_Serialization_IDecoder_readS16">Serialization.IDecoder.readS16</a></li>
+<li><a href="#Core_Serialization_IDecoder_readS32">Serialization.IDecoder.readS32</a></li>
+<li><a href="#Core_Serialization_IDecoder_readS64">Serialization.IDecoder.readS64</a></li>
+<li><a href="#Core_Serialization_IDecoder_readS8">Serialization.IDecoder.readS8</a></li>
+<li><a href="#Core_Serialization_IDecoder_readU16">Serialization.IDecoder.readU16</a></li>
+<li><a href="#Core_Serialization_IDecoder_readU32">Serialization.IDecoder.readU32</a></li>
+<li><a href="#Core_Serialization_IDecoder_readU64">Serialization.IDecoder.readU64</a></li>
+<li><a href="#Core_Serialization_IDecoder_readU8">Serialization.IDecoder.readU8</a></li>
+<li><a href="#Core_Serialization_IDecoder_start">Serialization.IDecoder.start</a></li>
 <li><a href="#Core_Serialization_Read_TagBin_beginElement">TagBin.beginElement</a></li>
 <li><a href="#Core_Serialization_Read_TagBin_beginRoot">TagBin.beginRoot</a></li>
 <li><a href="#Core_Serialization_Read_TagBin_beginSection">TagBin.beginSection</a></li>
@@ -1220,30 +1248,30 @@
 </ul>
 <h3>serialization/write</h3>
 <ul class="tocbullet">
+<li><a href="#Core_Serialization_Encoder_IEncoder_beginField">Encoder.IEncoder.beginField</a></li>
+<li><a href="#Core_Serialization_Encoder_IEncoder_beginSection">Encoder.IEncoder.beginSection</a></li>
+<li><a href="#Core_Serialization_Encoder_IEncoder_end">Encoder.IEncoder.end</a></li>
+<li><a href="#Core_Serialization_Encoder_IEncoder_endField">Encoder.IEncoder.endField</a></li>
+<li><a href="#Core_Serialization_Encoder_IEncoder_endSection">Encoder.IEncoder.endSection</a></li>
+<li><a href="#Core_Serialization_Encoder_IEncoder_start">Encoder.IEncoder.start</a></li>
+<li><a href="#Core_Serialization_Encoder_IEncoder_write">Encoder.IEncoder.write</a></li>
+<li><a href="#Core_Serialization_Encoder_IEncoder_writeBool">Encoder.IEncoder.writeBool</a></li>
+<li><a href="#Core_Serialization_Encoder_IEncoder_writeBufferU8">Encoder.IEncoder.writeBufferU8</a></li>
+<li><a href="#Core_Serialization_Encoder_IEncoder_writeF32">Encoder.IEncoder.writeF32</a></li>
+<li><a href="#Core_Serialization_Encoder_IEncoder_writeF64">Encoder.IEncoder.writeF64</a></li>
+<li><a href="#Core_Serialization_Encoder_IEncoder_writeS16">Encoder.IEncoder.writeS16</a></li>
+<li><a href="#Core_Serialization_Encoder_IEncoder_writeS32">Encoder.IEncoder.writeS32</a></li>
+<li><a href="#Core_Serialization_Encoder_IEncoder_writeS64">Encoder.IEncoder.writeS64</a></li>
+<li><a href="#Core_Serialization_Encoder_IEncoder_writeS8">Encoder.IEncoder.writeS8</a></li>
+<li><a href="#Core_Serialization_Encoder_IEncoder_writeU16">Encoder.IEncoder.writeU16</a></li>
+<li><a href="#Core_Serialization_Encoder_IEncoder_writeU32">Encoder.IEncoder.writeU32</a></li>
+<li><a href="#Core_Serialization_Encoder_IEncoder_writeU64">Encoder.IEncoder.writeU64</a></li>
+<li><a href="#Core_Serialization_Encoder_IEncoder_writeU8">Encoder.IEncoder.writeU8</a></li>
 <li><a href="#Core_Serialization_Encoder_end">Encoder.end</a></li>
 <li><a href="#Core_Serialization_Encoder_start">Encoder.start</a></li>
 <li><a href="#Core_Serialization_Encoder_writeAll">Encoder.writeAll</a></li>
 <li><a href="#Core_Serialization_Encoder_writeTypeValue">Encoder.writeTypeValue</a></li>
 <li><a href="#Core_Serialization_Encoder_writeValue">Encoder.writeValue</a></li>
-<li><a href="#Core_Serialization_Encoder_IEncoder_beginField">IEncoder.beginField</a></li>
-<li><a href="#Core_Serialization_Encoder_IEncoder_beginSection">IEncoder.beginSection</a></li>
-<li><a href="#Core_Serialization_Encoder_IEncoder_end">IEncoder.end</a></li>
-<li><a href="#Core_Serialization_Encoder_IEncoder_endField">IEncoder.endField</a></li>
-<li><a href="#Core_Serialization_Encoder_IEncoder_endSection">IEncoder.endSection</a></li>
-<li><a href="#Core_Serialization_Encoder_IEncoder_start">IEncoder.start</a></li>
-<li><a href="#Core_Serialization_Encoder_IEncoder_write">IEncoder.write</a></li>
-<li><a href="#Core_Serialization_Encoder_IEncoder_writeBool">IEncoder.writeBool</a></li>
-<li><a href="#Core_Serialization_Encoder_IEncoder_writeBufferU8">IEncoder.writeBufferU8</a></li>
-<li><a href="#Core_Serialization_Encoder_IEncoder_writeF32">IEncoder.writeF32</a></li>
-<li><a href="#Core_Serialization_Encoder_IEncoder_writeF64">IEncoder.writeF64</a></li>
-<li><a href="#Core_Serialization_Encoder_IEncoder_writeS16">IEncoder.writeS16</a></li>
-<li><a href="#Core_Serialization_Encoder_IEncoder_writeS32">IEncoder.writeS32</a></li>
-<li><a href="#Core_Serialization_Encoder_IEncoder_writeS64">IEncoder.writeS64</a></li>
-<li><a href="#Core_Serialization_Encoder_IEncoder_writeS8">IEncoder.writeS8</a></li>
-<li><a href="#Core_Serialization_Encoder_IEncoder_writeU16">IEncoder.writeU16</a></li>
-<li><a href="#Core_Serialization_Encoder_IEncoder_writeU32">IEncoder.writeU32</a></li>
-<li><a href="#Core_Serialization_Encoder_IEncoder_writeU64">IEncoder.writeU64</a></li>
-<li><a href="#Core_Serialization_Encoder_IEncoder_writeU8">IEncoder.writeU8</a></li>
 <li><a href="#Core_Serialization_Write_JSon_beginElement">JSon.beginElement</a></li>
 <li><a href="#Core_Serialization_Write_JSon_beginRoot">JSon.beginRoot</a></li>
 <li><a href="#Core_Serialization_Write_JSon_beginSection">JSon.beginSection</a></li>
@@ -1259,6 +1287,25 @@
 <li><a href="#Core_Serialization_Write_JSon_startWrite">JSon.startWrite</a></li>
 <li><a href="#Core_Serialization_Write_JSon_writeIndent">JSon.writeIndent</a></li>
 <li><a href="#Core_Serialization_Write_JSon_writeNative">JSon.writeNative</a></li>
+<li><a href="#Core_Serialization_IEncoder_beginField">Serialization.IEncoder.beginField</a></li>
+<li><a href="#Core_Serialization_IEncoder_beginSection">Serialization.IEncoder.beginSection</a></li>
+<li><a href="#Core_Serialization_IEncoder_end">Serialization.IEncoder.end</a></li>
+<li><a href="#Core_Serialization_IEncoder_endField">Serialization.IEncoder.endField</a></li>
+<li><a href="#Core_Serialization_IEncoder_endSection">Serialization.IEncoder.endSection</a></li>
+<li><a href="#Core_Serialization_IEncoder_start">Serialization.IEncoder.start</a></li>
+<li><a href="#Core_Serialization_IEncoder_write">Serialization.IEncoder.write</a></li>
+<li><a href="#Core_Serialization_IEncoder_writeBool">Serialization.IEncoder.writeBool</a></li>
+<li><a href="#Core_Serialization_IEncoder_writeBufferU8">Serialization.IEncoder.writeBufferU8</a></li>
+<li><a href="#Core_Serialization_IEncoder_writeF32">Serialization.IEncoder.writeF32</a></li>
+<li><a href="#Core_Serialization_IEncoder_writeF64">Serialization.IEncoder.writeF64</a></li>
+<li><a href="#Core_Serialization_IEncoder_writeS16">Serialization.IEncoder.writeS16</a></li>
+<li><a href="#Core_Serialization_IEncoder_writeS32">Serialization.IEncoder.writeS32</a></li>
+<li><a href="#Core_Serialization_IEncoder_writeS64">Serialization.IEncoder.writeS64</a></li>
+<li><a href="#Core_Serialization_IEncoder_writeS8">Serialization.IEncoder.writeS8</a></li>
+<li><a href="#Core_Serialization_IEncoder_writeU16">Serialization.IEncoder.writeU16</a></li>
+<li><a href="#Core_Serialization_IEncoder_writeU32">Serialization.IEncoder.writeU32</a></li>
+<li><a href="#Core_Serialization_IEncoder_writeU64">Serialization.IEncoder.writeU64</a></li>
+<li><a href="#Core_Serialization_IEncoder_writeU8">Serialization.IEncoder.writeU8</a></li>
 <li><a href="#Core_Serialization_Write_TagBin_beginElement">TagBin.beginElement</a></li>
 <li><a href="#Core_Serialization_Write_TagBin_beginRoot">TagBin.beginRoot</a></li>
 <li><a href="#Core_Serialization_Write_TagBin_beginSection">TagBin.beginSection</a></li>
@@ -1428,6 +1475,7 @@
 <li><a href="#Core_StrConv_toDisplaySize">StrConv.toDisplaySize</a></li>
 <li><a href="#Core_StrConv_toF32">StrConv.toF32</a></li>
 <li><a href="#Core_StrConv_toF64">StrConv.toF64</a></li>
+<li><a href="#Core_StrConv_toNum">StrConv.toNum</a></li>
 <li><a href="#Core_StrConv_toS16">StrConv.toS16</a></li>
 <li><a href="#Core_StrConv_toS32">StrConv.toS32</a></li>
 <li><a href="#Core_StrConv_toS64">StrConv.toS64</a></li>
@@ -1651,7 +1699,7 @@
 <div class="right">
 <div class="page">
 <blockquote>
-<b>Work in progress</b>. Generated documentation (swag doc 0.19.0)</blockquote>
+<b>Work in progress</b>. Generated documentation (swag doc 0.20.0)</blockquote>
 <h2 class="content">Overview</h2>
 <p>
 The <code class = "incode">Std.core</code> module contains basic types and algorithms.</p>
@@ -15732,7 +15780,31 @@ Make a 64 bits by repeating a given byte 0x20 =&gt; 0x20202020_20202020.</p>
 </tr>
 <tr>
 <td class="enumeration">
+<a href="#Core_Math_max">max(f32, f32, f32)</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Core_Math_max">max(f32, f32, f32, f32)</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="enumeration">
 <a href="#Core_Math_max">max(f64, f64)</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Core_Math_max">max(f64, f64, f64)</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Core_Math_max">max(f64, f64, f64, f64)</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -15798,7 +15870,31 @@ Make a 64 bits by repeating a given byte 0x20 =&gt; 0x20202020_20202020.</p>
 </tr>
 <tr>
 <td class="enumeration">
+<a href="#Core_Math_min">min(f32, f32, f32)</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Core_Math_min">min(f32, f32, f32, f32)</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="enumeration">
 <a href="#Core_Math_min">min(f64, f64)</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Core_Math_min">min(f64, f64, f64)</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Core_Math_min">min(f64, f64, f64, f64)</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -18828,6 +18924,14 @@ Returns the squared length of the vector.</p>
 </tr>
 <tr>
 <td class="enumeration">
+<a href="#Core_Math_Vector2_lerp">lerp(const ref Vector2, const ref Vector2, f32)</a></td>
+<td class="enumeration">
+<p>
+Lerp one vector with another.</p>
+</td>
+</tr>
+<tr>
+<td class="enumeration">
 <a href="#Core_Math_Vector2_lineLineIntersect">lineLineIntersect(const ref Vector2, const ref Vector2, const ref Vector2, const ref Vector2, f32)</a></td>
 <td class="enumeration">
 <p>
@@ -19318,6 +19422,23 @@ Returns the squared length of the vector.</p>
 <table class="h3">
 <tr>
 <td class="h3">
+<h3 class="content" id="Core_Math_Vector2_lerp"><span class="titletype">func</span> <span class="titlelight">Vector2.</span><span class="titlestrong">lerp</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L280" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>
+Lerp one vector with another.</p>
+<p class="code">
+<code style="white-space: break-spaces">func lerp(src: <a href="#Core_Math_Vector2">Core.Math.Vector2</a>, dst: <a href="#Core_Math_Vector2">Core.Math.Vector2</a>, factor: f32)-><a href="#Core_Math_Vector2">Core.Math.Vector2</a>
+</code>
+</p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Core_Math_Vector2_lineLineIntersect"><span class="titletype">func</span> <span class="titlelight">Vector2.</span><span class="titlestrong">lineLineIntersect</span></h3>
 </td>
 <td class="srcref">
@@ -19782,6 +19903,14 @@ Returns the squared length of the vector.</p>
 </tr>
 <tr>
 <td class="enumeration">
+<a href="#Core_Math_Vector3_lerp">lerp(const ref Vector3, const ref Vector3, f32)</a></td>
+<td class="enumeration">
+<p>
+Lerp one vector with another.</p>
+</td>
+</tr>
+<tr>
+<td class="enumeration">
 <a href="#Core_Math_Vector3_max">max(const ref Vector3, const ref Vector3)</a></td>
 <td class="enumeration">
 <p>
@@ -20057,6 +20186,23 @@ Return sthe length of the vector.</p>
 Returns the squared length of the vector.</p>
 <p class="code">
 <code style="white-space: break-spaces">func lengthSquared(using const self)
+</code>
+</p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Core_Math_Vector3_lerp"><span class="titletype">func</span> <span class="titlelight">Vector3.</span><span class="titlestrong">lerp</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector3.swg#L230" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>
+Lerp one vector with another.</p>
+<p class="code">
+<code style="white-space: break-spaces">func lerp(src: <a href="#Core_Math_Vector3">Core.Math.Vector3</a>, dst: <a href="#Core_Math_Vector3">Core.Math.Vector3</a>, factor: f32)-><a href="#Core_Math_Vector3">Core.Math.Vector3</a>
 </code>
 </p>
 <p>
@@ -20361,6 +20507,14 @@ f32</td>
 Set the vector to zero.</p>
 </td>
 </tr>
+<tr>
+<td class="enumeration">
+<a href="#Core_Math_Vector4_lerp">lerp(const ref Vector4, const ref Vector4, f32)</a></td>
+<td class="enumeration">
+<p>
+Lerp one vector with another.</p>
+</td>
+</tr>
 </table>
 <h3>Special Functions</h3>
 <table class="enumeration">
@@ -20398,6 +20552,23 @@ Set the vector to zero.</p>
 Set the vector to zero.</p>
 <p class="code">
 <code style="white-space: break-spaces">func clear(using self)
+</code>
+</p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Core_Math_Vector4_lerp"><span class="titletype">func</span> <span class="titlelight">Vector4.</span><span class="titlestrong">lerp</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector4.swg#L39" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>
+Lerp one vector with another.</p>
+<p class="code">
+<code style="white-space: break-spaces">func lerp(src: <a href="#Core_Math_Vector4">Core.Math.Vector4</a>, dst: <a href="#Core_Math_Vector4">Core.Math.Vector4</a>, factor: f32)-><a href="#Core_Math_Vector4">Core.Math.Vector4</a>
 </code>
 </p>
 <p>
@@ -20452,7 +20623,7 @@ Set the vector to zero.</p>
 <h3 class="content" id="Core_Math_abs"><span class="titletype">func</span> <span class="titlelight">Math.</span><span class="titlestrong">abs</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L126" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L137" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -20472,7 +20643,7 @@ func abs(x: s8)
 <h3 class="content" id="Core_Math_acos"><span class="titletype">func</span> <span class="titlelight">Math.</span><span class="titlestrong">acos</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L105" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L116" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -20488,7 +20659,7 @@ func acos(x: f64)
 <h3 class="content" id="Core_Math_asin"><span class="titletype">func</span> <span class="titlelight">Math.</span><span class="titlestrong">asin</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L103" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L114" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -20504,7 +20675,7 @@ func asin(x: f64)
 <h3 class="content" id="Core_Math_atan"><span class="titletype">func</span> <span class="titlelight">Math.</span><span class="titlestrong">atan</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L107" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L118" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -20520,7 +20691,7 @@ func atan(x: f64)
 <h3 class="content" id="Core_Math_atan2"><span class="titletype">func</span> <span class="titlelight">Math.</span><span class="titlestrong">atan2</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L83" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L94" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -20553,7 +20724,7 @@ Convert a big endian integer to current arch native format.</p>
 <h3 class="content" id="Core_Math_ceil"><span class="titletype">func</span> <span class="titlelight">Math.</span><span class="titlestrong">ceil</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L119" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L130" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -20584,7 +20755,7 @@ func ceil(x: f64)
 <h3 class="content" id="Core_Math_cos"><span class="titletype">func</span> <span class="titlelight">Math.</span><span class="titlestrong">cos</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L91" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L102" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -20600,7 +20771,7 @@ func cos(x: f64)
 <h3 class="content" id="Core_Math_cosh"><span class="titletype">func</span> <span class="titlelight">Math.</span><span class="titlestrong">cosh</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L98" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L109" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -20636,7 +20807,7 @@ func countOnes(x: u8)-&gt;u8
 <h3 class="content" id="Core_Math_exp"><span class="titletype">func</span> <span class="titlelight">Math.</span><span class="titlestrong">exp</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L129" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L140" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -20652,7 +20823,7 @@ func exp(x: f64)
 <h3 class="content" id="Core_Math_exp2"><span class="titletype">func</span> <span class="titlelight">Math.</span><span class="titlestrong">exp2</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L131" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L142" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -20668,7 +20839,7 @@ func exp2(x: f64)
 <h3 class="content" id="Core_Math_floor"><span class="titletype">func</span> <span class="titlelight">Math.</span><span class="titlestrong">floor</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L117" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L128" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -20844,7 +21015,7 @@ Convert a little endian integer to current arch native format.</p>
 <h3 class="content" id="Core_Math_log"><span class="titletype">func</span> <span class="titlelight">Math.</span><span class="titlestrong">log</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L110" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L121" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -20860,7 +21031,7 @@ func log(x: f64)
 <h3 class="content" id="Core_Math_log10"><span class="titletype">func</span> <span class="titlelight">Math.</span><span class="titlestrong">log10</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L114" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L125" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -20876,7 +21047,7 @@ func log10(x: f64)
 <h3 class="content" id="Core_Math_log2"><span class="titletype">func</span> <span class="titlelight">Math.</span><span class="titlestrong">log2</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L112" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L123" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -20966,7 +21137,11 @@ func map(val: f64, minSrc: f64, maxSrc: f64, minDst: f64, maxDst: f64)-&gt;f64
 <p class="code">
 <code style="white-space: break-spaces">func(T) max(x: T, y: T, z: T)-&gt;T
 func max(x: f32, y: f32)
+func max(x: f32, y: f32, z: f32)
+func max(x: f32, y: f32, z: f32, w: f32)
 func max(x: f64, y: f64)
+func max(x: f64, y: f64, z: f64)
+func max(x: f64, y: f64, z: f64, w: f64)
 func max(x: s16, y: s16)
 func max(x: s32, y: s32)
 func max(x: s64, y: s64)
@@ -20991,7 +21166,11 @@ func max(x: u8, y: u8)
 <p class="code">
 <code style="white-space: break-spaces">func(T) min(x: T, y: T, z: T)-&gt;T
 func min(x: f32, y: f32)
+func min(x: f32, y: f32, z: f32)
+func min(x: f32, y: f32, z: f32, w: f32)
 func min(x: f64, y: f64)
+func min(x: f64, y: f64, z: f64)
+func min(x: f64, y: f64, z: f64, w: f64)
 func min(x: s16, y: s16)
 func min(x: s32, y: s32)
 func min(x: s64, y: s64)
@@ -21009,7 +21188,7 @@ func min(x: u8, y: u8)
 <h3 class="content" id="Core_Math_mulAdd"><span class="titletype">func</span> <span class="titlelight">Math.</span><span class="titlestrong">mulAdd</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L136" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L147" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -21057,7 +21236,7 @@ Convert a native arch integer to a big endian.</p>
 <h3 class="content" id="Core_Math_pow"><span class="titletype">func</span> <span class="titlelight">Math.</span><span class="titlestrong">pow</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L133" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L144" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -21093,7 +21272,7 @@ func reverse(x: u8)-&gt;u8
 <h3 class="content" id="Core_Math_round"><span class="titletype">func</span> <span class="titlelight">Math.</span><span class="titlestrong">round</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L123" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L134" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -21175,7 +21354,7 @@ func sign(x: s8)
 <h3 class="content" id="Core_Math_sin"><span class="titletype">func</span> <span class="titlelight">Math.</span><span class="titlestrong">sin</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L89" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L100" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -21191,7 +21370,7 @@ func sin(x: f64)
 <h3 class="content" id="Core_Math_sinh"><span class="titletype">func</span> <span class="titlelight">Math.</span><span class="titlestrong">sinh</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L96" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L107" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -21223,7 +21402,7 @@ func smoothstep(edge0: f64, edge1: f64, x: f64)-&gt;f64
 <h3 class="content" id="Core_Math_sqrt"><span class="titletype">func</span> <span class="titlelight">Math.</span><span class="titlestrong">sqrt</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L86" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L97" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -21239,7 +21418,7 @@ func sqrt(x: f64)
 <h3 class="content" id="Core_Math_tan"><span class="titletype">func</span> <span class="titlelight">Math.</span><span class="titlestrong">tan</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L93" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L104" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -21255,7 +21434,7 @@ func tan(x: f64)
 <h3 class="content" id="Core_Math_tanh"><span class="titletype">func</span> <span class="titlelight">Math.</span><span class="titlestrong">tanh</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L100" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L111" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -21323,7 +21502,7 @@ func trailingZeros(x: u8)-&gt;u8
 <h3 class="content" id="Core_Math_trunc"><span class="titletype">func</span> <span class="titlelight">Math.</span><span class="titlestrong">trunc</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L121" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L132" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -26009,6 +26188,306 @@ func(*<a href="#Core_Serialization_IDecoder">Core.Serialization.IDecoder</a>)-&g
 <table class="h3">
 <tr>
 <td class="h3">
+<h3 class="content" id="Core_Serialization_IDecoder_beginField"><span class="titletype">func</span> <span class="titlelight">IDecoder.</span><span class="titlestrong">beginField</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\decoder.swg#L10" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p class="code">
+<code style="white-space: break-spaces">func beginField(self, val: <a href="swag.html#Swag_TypeValue">Swag.TypeValue</a>)->bool throw
+</code>
+</p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Core_Serialization_IDecoder_beginSection"><span class="titletype">func</span> <span class="titlelight">IDecoder.</span><span class="titlestrong">beginSection</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\decoder.swg#L12" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p class="code">
+<code style="white-space: break-spaces">func beginSection(self, kind: <a href="#Core_Serialization_SectionKind">Core.Serialization.SectionKind</a>) throw
+</code>
+</p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Core_Serialization_IDecoder_end"><span class="titletype">func</span> <span class="titlelight">IDecoder.</span><span class="titlestrong">end</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\decoder.swg#L8" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p class="code">
+<code style="white-space: break-spaces">func end(self) throw
+</code>
+</p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Core_Serialization_IDecoder_endField"><span class="titletype">func</span> <span class="titlelight">IDecoder.</span><span class="titlestrong">endField</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\decoder.swg#L11" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p class="code">
+<code style="white-space: break-spaces">func endField(self) throw
+</code>
+</p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Core_Serialization_IDecoder_endSection"><span class="titletype">func</span> <span class="titlelight">IDecoder.</span><span class="titlestrong">endSection</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\decoder.swg#L13" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p class="code">
+<code style="white-space: break-spaces">func endSection(self) throw
+</code>
+</p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Core_Serialization_IDecoder_getVersion"><span class="titletype">func</span> <span class="titlelight">IDecoder.</span><span class="titlestrong">getVersion</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\decoder.swg#L14" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p class="code">
+<code style="white-space: break-spaces">func getVersion(self)-&gt;u32
+</code>
+</p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Core_Serialization_IDecoder_read"><span class="titletype">func</span> <span class="titlelight">IDecoder.</span><span class="titlestrong">read</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\decoder.swg#L16" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p class="code">
+<code style="white-space: break-spaces">func read(self, data: *void, dataType: const *<a href="swag.html#Swag_TypeInfo">Swag.TypeInfo</a>) throw
+</code>
+</p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Core_Serialization_IDecoder_readBool"><span class="titletype">func</span> <span class="titlelight">IDecoder.</span><span class="titlestrong">readBool</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\decoder.swg#L19" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p class="code">
+<code style="white-space: break-spaces">func readBool(self)-&gt;bool throw
+</code>
+</p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Core_Serialization_IDecoder_readBufferU8"><span class="titletype">func</span> <span class="titlelight">IDecoder.</span><span class="titlestrong">readBufferU8</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\decoder.swg#L17" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p class="code">
+<code style="white-space: break-spaces">func readBufferU8(self, count: u64)-&gt;*u8 throw
+</code>
+</p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Core_Serialization_IDecoder_readF32"><span class="titletype">func</span> <span class="titlelight">IDecoder.</span><span class="titlestrong">readF32</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\decoder.swg#L28" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p class="code">
+<code style="white-space: break-spaces">func readF32(self)-&gt;f32 throw
+</code>
+</p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Core_Serialization_IDecoder_readF64"><span class="titletype">func</span> <span class="titlelight">IDecoder.</span><span class="titlestrong">readF64</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\decoder.swg#L29" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p class="code">
+<code style="white-space: break-spaces">func readF64(self)-&gt;f64 throw
+</code>
+</p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Core_Serialization_IDecoder_readS16"><span class="titletype">func</span> <span class="titlelight">IDecoder.</span><span class="titlestrong">readS16</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\decoder.swg#L21" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p class="code">
+<code style="white-space: break-spaces">func readS16(self)-&gt;s16 throw
+</code>
+</p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Core_Serialization_IDecoder_readS32"><span class="titletype">func</span> <span class="titlelight">IDecoder.</span><span class="titlestrong">readS32</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\decoder.swg#L22" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p class="code">
+<code style="white-space: break-spaces">func readS32(self)-&gt;s32 throw
+</code>
+</p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Core_Serialization_IDecoder_readS64"><span class="titletype">func</span> <span class="titlelight">IDecoder.</span><span class="titlestrong">readS64</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\decoder.swg#L23" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p class="code">
+<code style="white-space: break-spaces">func readS64(self)-&gt;s64 throw
+</code>
+</p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Core_Serialization_IDecoder_readS8"><span class="titletype">func</span> <span class="titlelight">IDecoder.</span><span class="titlestrong">readS8</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\decoder.swg#L20" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p class="code">
+<code style="white-space: break-spaces">func readS8(self)-&gt;s8 throw
+</code>
+</p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Core_Serialization_IDecoder_readU16"><span class="titletype">func</span> <span class="titlelight">IDecoder.</span><span class="titlestrong">readU16</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\decoder.swg#L25" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p class="code">
+<code style="white-space: break-spaces">func readU16(self)-&gt;u16 throw
+</code>
+</p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Core_Serialization_IDecoder_readU32"><span class="titletype">func</span> <span class="titlelight">IDecoder.</span><span class="titlestrong">readU32</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\decoder.swg#L26" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p class="code">
+<code style="white-space: break-spaces">func readU32(self)-&gt;u32 throw
+</code>
+</p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Core_Serialization_IDecoder_readU64"><span class="titletype">func</span> <span class="titlelight">IDecoder.</span><span class="titlestrong">readU64</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\decoder.swg#L27" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p class="code">
+<code style="white-space: break-spaces">func readU64(self)-&gt;u64 throw
+</code>
+</p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Core_Serialization_IDecoder_readU8"><span class="titletype">func</span> <span class="titlelight">IDecoder.</span><span class="titlestrong">readU8</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\decoder.swg#L24" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p class="code">
+<code style="white-space: break-spaces">func readU8(self)-&gt;u8 throw
+</code>
+</p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Core_Serialization_IDecoder_start"><span class="titletype">func</span> <span class="titlelight">IDecoder.</span><span class="titlestrong">start</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\decoder.swg#L7" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p class="code">
+<code style="white-space: break-spaces">func start(self, input: const [..] u8) throw
+</code>
+</p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Core_Serialization_IEncoder"><span class="titletype">interface</span> <span class="titlelight">Serialization.</span><span class="titlestrong">IEncoder</span></h3>
 </td>
 <td class="srcref">
@@ -26174,6 +26653,291 @@ func(*<a href="#Core_Serialization_IEncoder">Core.Serialization.IEncoder</a>, f6
 <table class="h3">
 <tr>
 <td class="h3">
+<h3 class="content" id="Core_Serialization_IEncoder_beginField"><span class="titletype">func</span> <span class="titlelight">IEncoder.</span><span class="titlestrong">beginField</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\encoder.swg#L17" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p class="code">
+<code style="white-space: break-spaces">func beginField(self, val: <a href="swag.html#Swag_TypeValue">Swag.TypeValue</a>) throw
+</code>
+</p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Core_Serialization_IEncoder_beginSection"><span class="titletype">func</span> <span class="titlelight">IEncoder.</span><span class="titlestrong">beginSection</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\encoder.swg#L19" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p class="code">
+<code style="white-space: break-spaces">func beginSection(self, kind: <a href="#Core_Serialization_SectionKind">Core.Serialization.SectionKind</a>) throw
+</code>
+</p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Core_Serialization_IEncoder_end"><span class="titletype">func</span> <span class="titlelight">IEncoder.</span><span class="titlestrong">end</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\encoder.swg#L15" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p class="code">
+<code style="white-space: break-spaces">func end(self) throw
+</code>
+</p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Core_Serialization_IEncoder_endField"><span class="titletype">func</span> <span class="titlelight">IEncoder.</span><span class="titlestrong">endField</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\encoder.swg#L18" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p class="code">
+<code style="white-space: break-spaces">func endField(self) throw
+</code>
+</p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Core_Serialization_IEncoder_endSection"><span class="titletype">func</span> <span class="titlelight">IEncoder.</span><span class="titlestrong">endSection</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\encoder.swg#L20" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p class="code">
+<code style="white-space: break-spaces">func endSection(self) throw
+</code>
+</p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Core_Serialization_IEncoder_start"><span class="titletype">func</span> <span class="titlelight">IEncoder.</span><span class="titlestrong">start</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\encoder.swg#L14" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p class="code">
+<code style="white-space: break-spaces">func start(self, result: *<a href="#Core_ConcatBuffer">Core.ConcatBuffer</a>) throw
+</code>
+</p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Core_Serialization_IEncoder_write"><span class="titletype">func</span> <span class="titlelight">IEncoder.</span><span class="titlestrong">write</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\encoder.swg#L22" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p class="code">
+<code style="white-space: break-spaces">func write(self, data: const ^void, type: const *<a href="swag.html#Swag_TypeInfo">Swag.TypeInfo</a>) throw
+</code>
+</p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Core_Serialization_IEncoder_writeBool"><span class="titletype">func</span> <span class="titlelight">IEncoder.</span><span class="titlestrong">writeBool</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\encoder.swg#L25" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p class="code">
+<code style="white-space: break-spaces">func writeBool(self, value: bool)
+</code>
+</p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Core_Serialization_IEncoder_writeBufferU8"><span class="titletype">func</span> <span class="titlelight">IEncoder.</span><span class="titlestrong">writeBufferU8</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\encoder.swg#L23" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p class="code">
+<code style="white-space: break-spaces">func writeBufferU8(self, data: const ^u8, count: u64) throw
+</code>
+</p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Core_Serialization_IEncoder_writeF32"><span class="titletype">func</span> <span class="titlelight">IEncoder.</span><span class="titlestrong">writeF32</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\encoder.swg#L34" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p class="code">
+<code style="white-space: break-spaces">func writeF32(self, value: f32)
+</code>
+</p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Core_Serialization_IEncoder_writeF64"><span class="titletype">func</span> <span class="titlelight">IEncoder.</span><span class="titlestrong">writeF64</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\encoder.swg#L35" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p class="code">
+<code style="white-space: break-spaces">func writeF64(self, value: f64)
+</code>
+</p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Core_Serialization_IEncoder_writeS16"><span class="titletype">func</span> <span class="titlelight">IEncoder.</span><span class="titlestrong">writeS16</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\encoder.swg#L27" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p class="code">
+<code style="white-space: break-spaces">func writeS16(self, value: s16)
+</code>
+</p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Core_Serialization_IEncoder_writeS32"><span class="titletype">func</span> <span class="titlelight">IEncoder.</span><span class="titlestrong">writeS32</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\encoder.swg#L28" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p class="code">
+<code style="white-space: break-spaces">func writeS32(self, value: s32)
+</code>
+</p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Core_Serialization_IEncoder_writeS64"><span class="titletype">func</span> <span class="titlelight">IEncoder.</span><span class="titlestrong">writeS64</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\encoder.swg#L29" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p class="code">
+<code style="white-space: break-spaces">func writeS64(self, value: s64)
+</code>
+</p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Core_Serialization_IEncoder_writeS8"><span class="titletype">func</span> <span class="titlelight">IEncoder.</span><span class="titlestrong">writeS8</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\encoder.swg#L26" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p class="code">
+<code style="white-space: break-spaces">func writeS8(self, value: s8)
+</code>
+</p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Core_Serialization_IEncoder_writeU16"><span class="titletype">func</span> <span class="titlelight">IEncoder.</span><span class="titlestrong">writeU16</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\encoder.swg#L31" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p class="code">
+<code style="white-space: break-spaces">func writeU16(self, value: u16)
+</code>
+</p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Core_Serialization_IEncoder_writeU32"><span class="titletype">func</span> <span class="titlelight">IEncoder.</span><span class="titlestrong">writeU32</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\encoder.swg#L32" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p class="code">
+<code style="white-space: break-spaces">func writeU32(self, value: u32)
+</code>
+</p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Core_Serialization_IEncoder_writeU64"><span class="titletype">func</span> <span class="titlelight">IEncoder.</span><span class="titlestrong">writeU64</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\encoder.swg#L33" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p class="code">
+<code style="white-space: break-spaces">func writeU64(self, value: u64)
+</code>
+</p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Core_Serialization_IEncoder_writeU8"><span class="titletype">func</span> <span class="titlelight">IEncoder.</span><span class="titlestrong">writeU8</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\encoder.swg#L30" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p class="code">
+<code style="white-space: break-spaces">func writeU8(self, value: u8)
+</code>
+</p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Core_Serialization_ISerialize"><span class="titletype">interface</span> <span class="titlelight">Serialization.</span><span class="titlestrong">ISerialize</span></h3>
 </td>
 <td class="srcref">
@@ -26223,6 +26987,81 @@ func(*<a href="#Core_Serialization_ISerialize">Core.Serialization.ISerialize</a>
 </td>
 </tr>
 </table>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Core_Serialization_ISerialize_postSerialize"><span class="titletype">func</span> <span class="titlelight">ISerialize.</span><span class="titlestrong">postSerialize</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\serialize.swg#L31" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p class="code">
+<code style="white-space: break-spaces">func postSerialize(self, data: *void, decoder: <a href="#Core_Serialization_IDecoder">Core.Serialization.IDecoder</a>) throw
+</code>
+</p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Core_Serialization_ISerialize_read"><span class="titletype">func</span> <span class="titlelight">ISerialize.</span><span class="titlestrong">read</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\serialize.swg#L27" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p class="code">
+<code style="white-space: break-spaces">func read(self, decoder: <a href="#Core_Serialization_IDecoder">Core.Serialization.IDecoder</a>)->bool throw
+</code>
+</p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Core_Serialization_ISerialize_readElement"><span class="titletype">func</span> <span class="titlelight">ISerialize.</span><span class="titlestrong">readElement</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\serialize.swg#L29" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p class="code">
+<code style="white-space: break-spaces">func readElement(self, type: <a href="swag.html#Swag_TypeValue">Swag.TypeValue</a>, data: *void, decoder: <a href="#Core_Serialization_IDecoder">Core.Serialization.IDecoder</a>)->bool throw
+</code>
+</p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Core_Serialization_ISerialize_write"><span class="titletype">func</span> <span class="titlelight">ISerialize.</span><span class="titlestrong">write</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\serialize.swg#L28" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p class="code">
+<code style="white-space: break-spaces">func write(self, decoder: <a href="#Core_Serialization_IEncoder">Core.Serialization.IEncoder</a>)->bool throw
+</code>
+</p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Core_Serialization_ISerialize_writeElement"><span class="titletype">func</span> <span class="titlelight">ISerialize.</span><span class="titlestrong">writeElement</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\serialize.swg#L30" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p class="code">
+<code style="white-space: break-spaces">func writeElement(self, type: <a href="swag.html#Swag_TypeValue">Swag.TypeValue</a>, data: const *void, decoder: <a href="#Core_Serialization_IEncoder">Core.Serialization.IEncoder</a>)->bool throw
+</code>
+</p>
 <p>
 <table class="h3">
 <tr>
@@ -29916,60 +30755,88 @@ Convert a size in a displayable format (with Kb, Mb and so on).</p>
 <td class="enumeration">
 <a href="#Core_StrConv_toF32">toF32(string)</a></td>
 <td class="enumeration">
+<p>
+Transform a string to an <code class = "incode">f32</code>.</p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_StrConv_toF64">toF64(string)</a></td>
 <td class="enumeration">
+<p>
+Transform a string to an <code class = "incode">f64</code>.</p>
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Core_StrConv_toNum">toNum(string)</a></td>
+<td class="enumeration">
+<p>
+Transform a string to an integer or float.</p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_StrConv_toS16">toS16(string)</a></td>
 <td class="enumeration">
+<p>
+Transform a string to an <code class = "incode">s16</code>.</p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_StrConv_toS32">toS32(string)</a></td>
 <td class="enumeration">
+<p>
+Transform a string to an <code class = "incode">s32</code>.</p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_StrConv_toS64">toS64(string)</a></td>
 <td class="enumeration">
+<p>
+Transform a string to an <code class = "incode">s64</code>.</p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_StrConv_toS8">toS8(string)</a></td>
 <td class="enumeration">
+<p>
+Transform a string to an <code class = "incode">s8</code>.</p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_StrConv_toU16">toU16(string)</a></td>
 <td class="enumeration">
+<p>
+Transform a string to an <code class = "incode">u16</code>.</p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_StrConv_toU32">toU32(string)</a></td>
 <td class="enumeration">
+<p>
+Transform a string to an <code class = "incode">u32</code>.</p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_StrConv_toU64">toU64(string)</a></td>
 <td class="enumeration">
+<p>
+Transform a string to an <code class = "incode">u64</code>.</p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_StrConv_toU8">toU8(string)</a></td>
 <td class="enumeration">
+<p>
+Transform a string to an <code class = "incode">u8</code>.</p>
 </td>
 </tr>
 </table>
@@ -31308,10 +32175,12 @@ Convert a size in a displayable format (with Kb, Mb and so on).</p>
 <h3 class="content" id="Core_StrConv_toF32"><span class="titletype">func</span> <span class="titlelight">StrConv.</span><span class="titlestrong">toF32</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\parse.swg#L516" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\parse.swg#L525" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
+<p>
+Transform a string to an <code class = "incode">f32</code>.</p>
 <p class="code">
 <code style="white-space: break-spaces">func toF32(str: string)-&gt;f32 throw
 </code>
@@ -31323,12 +32192,31 @@ Convert a size in a displayable format (with Kb, Mb and so on).</p>
 <h3 class="content" id="Core_StrConv_toF64"><span class="titletype">func</span> <span class="titlelight">StrConv.</span><span class="titlestrong">toF64</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\parse.swg#L524" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\parse.swg#L534" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
+<p>
+Transform a string to an <code class = "incode">f64</code>.</p>
 <p class="code">
 <code style="white-space: break-spaces">func toF64(str: string)-&gt;f64 throw
+</code>
+</p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Core_StrConv_toNum"><span class="titletype">func</span> <span class="titlelight">StrConv.</span><span class="titlestrong">toNum</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\parse.swg#L543" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>
+Transform a string to an integer or float.</p>
+<p class="code">
+<code style="white-space: break-spaces">func(T) toNum(str: string)-&gt;T throw
 </code>
 </p>
 <p>
@@ -31338,10 +32226,12 @@ Convert a size in a displayable format (with Kb, Mb and so on).</p>
 <h3 class="content" id="Core_StrConv_toS16"><span class="titletype">func</span> <span class="titlelight">StrConv.</span><span class="titlestrong">toS16</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\parse.swg#L460" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\parse.swg#L462" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
+<p>
+Transform a string to an <code class = "incode">s16</code>.</p>
 <p class="code">
 <code style="white-space: break-spaces">func toS16(str: string)-&gt;s16 throw
 </code>
@@ -31353,10 +32243,12 @@ Convert a size in a displayable format (with Kb, Mb and so on).</p>
 <h3 class="content" id="Core_StrConv_toS32"><span class="titletype">func</span> <span class="titlelight">StrConv.</span><span class="titlestrong">toS32</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\parse.swg#L468" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\parse.swg#L471" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
+<p>
+Transform a string to an <code class = "incode">s32</code>.</p>
 <p class="code">
 <code style="white-space: break-spaces">func toS32(str: string)-&gt;s32 throw
 </code>
@@ -31368,10 +32260,12 @@ Convert a size in a displayable format (with Kb, Mb and so on).</p>
 <h3 class="content" id="Core_StrConv_toS64"><span class="titletype">func</span> <span class="titlelight">StrConv.</span><span class="titlestrong">toS64</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\parse.swg#L476" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\parse.swg#L480" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
+<p>
+Transform a string to an <code class = "incode">s64</code>.</p>
 <p class="code">
 <code style="white-space: break-spaces">func toS64(str: string)-&gt;s64 throw
 </code>
@@ -31383,10 +32277,12 @@ Convert a size in a displayable format (with Kb, Mb and so on).</p>
 <h3 class="content" id="Core_StrConv_toS8"><span class="titletype">func</span> <span class="titlelight">StrConv.</span><span class="titlestrong">toS8</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\parse.swg#L452" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\parse.swg#L453" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
+<p>
+Transform a string to an <code class = "incode">s8</code>.</p>
 <p class="code">
 <code style="white-space: break-spaces">func toS8(str: string)-&gt;s8 throw
 </code>
@@ -31398,10 +32294,12 @@ Convert a size in a displayable format (with Kb, Mb and so on).</p>
 <h3 class="content" id="Core_StrConv_toU16"><span class="titletype">func</span> <span class="titlelight">StrConv.</span><span class="titlestrong">toU16</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\parse.swg#L492" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\parse.swg#L498" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
+<p>
+Transform a string to an <code class = "incode">u16</code>.</p>
 <p class="code">
 <code style="white-space: break-spaces">func toU16(str: string)-&gt;u16 throw
 </code>
@@ -31413,10 +32311,12 @@ Convert a size in a displayable format (with Kb, Mb and so on).</p>
 <h3 class="content" id="Core_StrConv_toU32"><span class="titletype">func</span> <span class="titlelight">StrConv.</span><span class="titlestrong">toU32</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\parse.swg#L500" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\parse.swg#L507" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
+<p>
+Transform a string to an <code class = "incode">u32</code>.</p>
 <p class="code">
 <code style="white-space: break-spaces">func toU32(str: string)-&gt;u32 throw
 </code>
@@ -31428,10 +32328,12 @@ Convert a size in a displayable format (with Kb, Mb and so on).</p>
 <h3 class="content" id="Core_StrConv_toU64"><span class="titletype">func</span> <span class="titlelight">StrConv.</span><span class="titlestrong">toU64</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\parse.swg#L508" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\parse.swg#L516" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
+<p>
+Transform a string to an <code class = "incode">u64</code>.</p>
 <p class="code">
 <code style="white-space: break-spaces">func toU64(str: string)-&gt;u64 throw
 </code>
@@ -31443,10 +32345,12 @@ Convert a size in a displayable format (with Kb, Mb and so on).</p>
 <h3 class="content" id="Core_StrConv_toU8"><span class="titletype">func</span> <span class="titlelight">StrConv.</span><span class="titlestrong">toU8</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\parse.swg#L484" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\parse.swg#L489" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
+<p>
+Transform a string to an <code class = "incode">u8</code>.</p>
 <p class="code">
 <code style="white-space: break-spaces">func toU8(str: string)-&gt;u8 throw
 </code>

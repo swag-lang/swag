@@ -1,12 +1,9 @@
 #include "pch.h"
 #include "ModuleGenDocJob.h"
 #include "Module.h"
-#include "Scope.h"
-#include "Utf8.h"
 #include "Ast.h"
 #include "ErrorIds.h"
 #include "Report.h"
-#include "AstNode.h"
 #include "Workspace.h"
 #include "Version.h"
 
@@ -856,12 +853,6 @@ void ModuleGenDocJob::outputStyles()
             line-height:    1.3em;\n\
             font-family:    Segoe UI;\n\
         }\n\
-        blockquote {\n\
-            background-color:   LightYellow;\n\
-            border-left:        6px solid Orange;\n\
-            padding:            10px;\n\
-            width:              90%;\n\
-        }\n\
         .left {\n\
             display:    block;\n\
             overflow-y: scroll;\n\
@@ -878,6 +869,12 @@ void ModuleGenDocJob::outputStyles()
         .page {\n\
             width:  1000;\n\
             margin: 0 auto;\n\
+        }\n\
+        blockquote {\n\
+            background-color:   LightYellow;\n\
+            border-left:        6px solid Orange;\n\
+            padding:            10px;\n\
+            width:              90%;\n\
         }\n\
         a {\n\
             text-decoration: none;\n\
@@ -1376,10 +1373,21 @@ JobResult ModuleGenDocJob::execute()
 
     helpContent += "<head>\n";
     helpContent += "<meta charset=\"UTF-8\">\n";
-    // helpContent += "<link rel=\"stylesheet\" type=\"text/css\" href=\"/style.css\">\n";
+
+    // Css
+    bool userCss = false;
+    if (module && module->buildCfg.docCss.buffer && module->buildCfg.docCss.count)
+    {
+        Utf8 css{(const char*) module->buildCfg.docCss.buffer, (uint32_t) module->buildCfg.docCss.count};
+        helpContent += Fmt("<link rel=\"stylesheet\" type=\"text/css\" href=\"/%s\">\n", css.c_str());
+        userCss = true;
+    }
+
     helpContent += "</head>\n";
 
-    outputStyles();
+    // Embbed styles
+    if (!userCss)
+        outputStyles();
 
     // Collect content
     if (module)

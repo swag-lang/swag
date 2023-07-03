@@ -12,12 +12,6 @@
             line-height:    1.3em;
             font-family:    Segoe UI;
         }
-        blockquote {
-            background-color:   LightYellow;
-            border-left:        6px solid Orange;
-            padding:            10px;
-            width:              90%;
-        }
         .left {
             display:    block;
             overflow-y: scroll;
@@ -34,6 +28,12 @@
         .page {
             width:  1000;
             margin: 0 auto;
+        }
+        blockquote {
+            background-color:   LightYellow;
+            border-left:        6px solid Orange;
+            padding:            10px;
+            width:              90%;
         }
         a {
             text-decoration: none;
@@ -159,6 +159,7 @@
 <li><a href="#Gui_MoveEvent">MoveEvent</a></li>
 <li><a href="#Gui_Movie">Movie</a></li>
 <li><a href="#Gui_NativeSurface">NativeSurface</a></li>
+<li><a href="#Gui_NotifyEvent">NotifyEvent</a></li>
 <li><a href="#Gui_PaintEvent">PaintEvent</a></li>
 <li><a href="#Gui_QuitEvent">QuitEvent</a></li>
 <li><a href="#Gui_ResizeEvent">ResizeEvent</a></li>
@@ -207,6 +208,7 @@
 </ul>
 <h3>paint</h3>
 <ul class="tocbullet">
+<li><a href="#Gui_BlendColor">BlendColor</a></li>
 <li><a href="#Gui_Cursor">Cursor</a></li>
 <li><a href="#Gui_Icon">Icon</a></li>
 <li><a href="#Gui_ImageList">ImageList</a></li>
@@ -288,10 +290,11 @@
 <h3></h3>
 <ul class="tocbullet">
 <li><a href="#Gui_EventKind">EventKind</a></li>
-<li><a href="#Gui_SysCommandEvent_Kind">Kind</a></li>
 <li><a href="#Gui_MovieSource">MovieSource</a></li>
+<li><a href="#Gui_NotifyEvent_Kind">NotifyEvent.Kind</a></li>
 <li><a href="#Gui_CommandStateEvent_SetFlags">SetFlags</a></li>
 <li><a href="#Gui_SurfaceFlags">SurfaceFlags</a></li>
+<li><a href="#Gui_SysCommandEvent_Kind">SysCommandEvent.Kind</a></li>
 </ul>
 <h3>composite</h3>
 <ul class="tocbullet">
@@ -399,6 +402,7 @@
 <ul class="tocbullet">
 <li><a href="#Gui_PropertyList_Category">Category</a></li>
 <li><a href="#Gui_PropertyList_Description">Description</a></li>
+<li><a href="#Gui_PropertyList_EditSlider">EditSlider</a></li>
 <li><a href="#Gui_PropertyList_Name">Name</a></li>
 <li><a href="#Gui_PropertyList_SubCategory">SubCategory</a></li>
 </ul>
@@ -619,6 +623,8 @@
 </ul>
 <h3>paint</h3>
 <ul class="tocbullet">
+<li><a href="#Gui_BlendColor_apply">BlendColor.apply</a></li>
+<li><a href="#Gui_BlendColor_cur">BlendColor.cur</a></li>
 <li><a href="#Gui_Cursor_apply">Cursor.apply</a></li>
 <li><a href="#Gui_Cursor_clear">Cursor.clear</a></li>
 <li><a href="#Gui_Cursor_from">Cursor.from</a></li>
@@ -765,6 +771,7 @@
 <li><a href="#Gui_EditBox_IWnd_onPaintEvent">EditBox.IWnd.onPaintEvent</a></li>
 <li><a href="#Gui_EditBox_create">EditBox.create</a></li>
 <li><a href="#Gui_EditBox_deleteSelection">EditBox.deleteSelection</a></li>
+<li><a href="#Gui_EditBox_getText">EditBox.getText</a></li>
 <li><a href="#Gui_EditBox_selectAll">EditBox.selectAll</a></li>
 <li><a href="#Gui_EditBox_setForm">EditBox.setForm</a></li>
 <li><a href="#Gui_EditBox_setInputF64">EditBox.setInputF64</a></li>
@@ -878,6 +885,7 @@
 <li><a href="#Gui_Wnd_IWnd_onFrameEvent">IWnd.onFrameEvent</a></li>
 <li><a href="#Gui_Wnd_IWnd_onHookEvent">IWnd.onHookEvent</a></li>
 <li><a href="#Gui_Wnd_IWnd_onKeyEvent">IWnd.onKeyEvent</a></li>
+<li><a href="#Gui_Wnd_IWnd_onNotifyEvent">IWnd.onNotifyEvent</a></li>
 <li><a href="#Gui_Wnd_IWnd_onSerializeStateEvent">IWnd.onSerializeStateEvent</a></li>
 <li><a href="#Gui_Wnd_IWnd_onSetThemeEvent">IWnd.onSetThemeEvent</a></li>
 <li><a href="#Gui_Wnd_IWnd_onStateEvent">IWnd.onStateEvent</a></li>
@@ -916,6 +924,7 @@
 <li><a href="#Gui_Wnd_getKeyShortcut">Wnd.getKeyShortcut</a></li>
 <li><a href="#Gui_Wnd_getKeyShortcutNameFor">Wnd.getKeyShortcutNameFor</a></li>
 <li><a href="#Gui_Wnd_getMouseCapture">Wnd.getMouseCapture</a></li>
+<li><a href="#Gui_Wnd_getOwner">Wnd.getOwner</a></li>
 <li><a href="#Gui_Wnd_getParentById">Wnd.getParentById</a></li>
 <li><a href="#Gui_Wnd_getRectIn">Wnd.getRectIn</a></li>
 <li><a href="#Gui_Wnd_getSurfaceRect">Wnd.getSurfaceRect</a></li>
@@ -937,6 +946,8 @@
 <li><a href="#Gui_Wnd_isVisibleState">Wnd.isVisibleState</a></li>
 <li><a href="#Gui_Wnd_localToSurface">Wnd.localToSurface</a></li>
 <li><a href="#Gui_Wnd_move">Wnd.move</a></li>
+<li><a href="#Gui_Wnd_notifyEvent">Wnd.notifyEvent</a></li>
+<li><a href="#Gui_Wnd_ownerNotifyEvent">Wnd.ownerNotifyEvent</a></li>
 <li><a href="#Gui_Wnd_paint">Wnd.paint</a></li>
 <li><a href="#Gui_Wnd_postCommandEvent">Wnd.postCommandEvent</a></li>
 <li><a href="#Gui_Wnd_postEvent">Wnd.postEvent</a></li>
@@ -971,7 +982,7 @@
 <div class="right">
 <div class="page">
 <blockquote>
-<b>Work in progress</b>. Generated documentation (swag doc 0.19.0)</blockquote>
+<b>Work in progress</b>. Generated documentation (swag doc 0.20.0)</blockquote>
 <h2 class="content">Content</h2>
 <p>
 <table class="h3">
@@ -1618,7 +1629,7 @@ Unregister a window to receive hook events.</p>
 <h3 class="content" id="Gui_Application_addTimer"><span class="titletype">func</span> <span class="titlelight">Application.</span><span class="titlestrong">addTimer</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\application.swg#L704" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\application.swg#L711" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -1635,7 +1646,7 @@ Register a new timer for the given <code class = "incode">target</code>.</p>
 <h3 class="content" id="Gui_Application_createSurface"><span class="titletype">func</span> <span class="titlelight">Application.</span><span class="titlestrong">createSurface</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\application.swg#L535" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\application.swg#L542" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -1652,7 +1663,7 @@ Creates a new surface.</p>
 <h3 class="content" id="Gui_Application_deleteTimer"><span class="titletype">func</span> <span class="titlelight">Application.</span><span class="titlestrong">deleteTimer</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\application.swg#L717" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\application.swg#L724" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -1669,7 +1680,7 @@ Delete and unregister timer.</p>
 <h3 class="content" id="Gui_Application_destroyWnd"><span class="titletype">func</span> <span class="titlelight">Application.</span><span class="titlestrong">destroyWnd</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\application.swg#L631" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\application.swg#L638" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -1686,7 +1697,7 @@ Destroy a window To cleanly close a window, you should call wnd.destroy().</p>
 <h3 class="content" id="Gui_Application_doModalLoop"><span class="titletype">func</span> <span class="titlelight">Application.</span><span class="titlestrong">doModalLoop</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\application.swg#L444" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\application.swg#L451" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -1701,7 +1712,7 @@ Destroy a window To cleanly close a window, you should call wnd.destroy().</p>
 <h3 class="content" id="Gui_Application_exitModal"><span class="titletype">func</span> <span class="titlelight">Application.</span><span class="titlestrong">exitModal</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\application.swg#L794" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\application.swg#L806" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -1718,7 +1729,7 @@ End current modal loop.</p>
 <h3 class="content" id="Gui_Application_getDirectoryIcon"><span class="titletype">func</span> <span class="titlelight">Application.</span><span class="titlestrong">getDirectoryIcon</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\application.swg#L801" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\application.swg#L813" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -1733,7 +1744,7 @@ End current modal loop.</p>
 <h3 class="content" id="Gui_Application_getDt"><span class="titletype">func</span> <span class="titlelight">Application.</span><span class="titlestrong">getDt</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\application.swg#L516" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\application.swg#L523" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -1748,7 +1759,7 @@ End current modal loop.</p>
 <h3 class="content" id="Gui_Application_getFileIcon"><span class="titletype">func</span> <span class="titlelight">Application.</span><span class="titlestrong">getFileIcon</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\application.swg#L800" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\application.swg#L812" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -1763,7 +1774,7 @@ End current modal loop.</p>
 <h3 class="content" id="Gui_Application_getHotKeyShortcut"><span class="titletype">func</span> <span class="titlelight">Application.</span><span class="titlestrong">getHotKeyShortcut</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\application.swg#L821" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\application.swg#L833" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -1780,7 +1791,7 @@ Get the id associated with a shortcut. null if none.</p>
 <h3 class="content" id="Gui_Application_getHotKeyShortcutNameFor"><span class="titletype">func</span> <span class="titlelight">Application.</span><span class="titlestrong">getHotKeyShortcutNameFor</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\application.swg#L833" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\application.swg#L845" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -1797,7 +1808,7 @@ Get the name associated with a given id shortcut.</p>
 <h3 class="content" id="Gui_Application_getKeyboard"><span class="titletype">func</span> <span class="titlelight">Application.</span><span class="titlestrong">getKeyboard</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\application.swg#L514" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\application.swg#L521" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -1812,7 +1823,7 @@ Get the name associated with a given id shortcut.</p>
 <h3 class="content" id="Gui_Application_getMouse"><span class="titletype">func</span> <span class="titlelight">Application.</span><span class="titlestrong">getMouse</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\application.swg#L515" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\application.swg#L522" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -1827,7 +1838,7 @@ Get the name associated with a given id shortcut.</p>
 <h3 class="content" id="Gui_Application_getMouseCapture"><span class="titletype">func</span> <span class="titlelight">Application.</span><span class="titlestrong">getMouseCapture</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\application.swg#L624" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\application.swg#L631" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -1844,7 +1855,7 @@ Return the captured wnd for mouse.</p>
 <h3 class="content" id="Gui_Application_getRenderer"><span class="titletype">func</span> <span class="titlelight">Application.</span><span class="titlestrong">getRenderer</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\application.swg#L513" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\application.swg#L520" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -1859,7 +1870,7 @@ Return the captured wnd for mouse.</p>
 <h3 class="content" id="Gui_Application_getWndAtMouse"><span class="titletype">func</span> <span class="titlelight">Application.</span><span class="titlestrong">getWndAtMouse</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\application.swg#L654" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\application.swg#L661" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -1876,7 +1887,7 @@ Returns the window under the given point.</p>
 <h3 class="content" id="Gui_Application_invalidate"><span class="titletype">func</span> <span class="titlelight">Application.</span><span class="titlestrong">invalidate</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\application.swg#L677" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\application.swg#L684" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -1893,7 +1904,7 @@ Force all surfaces to be painted.</p>
 <h3 class="content" id="Gui_Application_loadState"><span class="titletype">func</span> <span class="titlelight">Application.</span><span class="titlestrong">loadState</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\application.swg#L609" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\application.swg#L616" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -1910,7 +1921,7 @@ Load the application state.</p>
 <h3 class="content" id="Gui_Application_popCursor"><span class="titletype">func</span> <span class="titlelight">Application.</span><span class="titlestrong">popCursor</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\application.swg#L761" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\application.swg#L773" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -1927,7 +1938,7 @@ Pop a new mouse cursor.</p>
 <h3 class="content" id="Gui_Application_postEvent"><span class="titletype">func</span> <span class="titlelight">Application.</span><span class="titlestrong">postEvent</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\application.swg#L692" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\application.swg#L699" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -1944,7 +1955,7 @@ Post a new event (thread safe).</p>
 <h3 class="content" id="Gui_Application_postQuitEvent"><span class="titletype">func</span> <span class="titlelight">Application.</span><span class="titlestrong">postQuitEvent</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\application.swg#L684" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\application.swg#L691" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -1961,7 +1972,7 @@ Ask to exit the application.</p>
 <h3 class="content" id="Gui_Application_pushCursor"><span class="titletype">func</span> <span class="titlelight">Application.</span><span class="titlestrong">pushCursor</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\application.swg#L755" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\application.swg#L767" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -1978,7 +1989,7 @@ Push a new mouse cursor.</p>
 <h3 class="content" id="Gui_Application_registerFrameEvent"><span class="titletype">func</span> <span class="titlelight">Application.</span><span class="titlestrong">registerFrameEvent</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\application.swg#L729" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\application.swg#L741" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -1995,7 +2006,7 @@ Register a window to receive a FrameEvent each running loop.</p>
 <h3 class="content" id="Gui_Application_registerHookEvents"><span class="titletype">func</span> <span class="titlelight">Application.</span><span class="titlestrong">registerHookEvents</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\application.swg#L742" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\application.swg#L754" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -2012,7 +2023,7 @@ Register a window to receive hook events.</p>
 <h3 class="content" id="Gui_Application_registerHotKey"><span class="titletype">func</span> <span class="titlelight">Application.</span><span class="titlestrong">registerHotKey</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\application.swg#L804" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\application.swg#L816" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -2029,7 +2040,7 @@ Register a global os key action.</p>
 <h3 class="content" id="Gui_Application_run"><span class="titletype">func</span> <span class="titlelight">Application.</span><span class="titlestrong">run</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\application.swg#L778" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\application.swg#L790" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -2046,7 +2057,7 @@ Run until exit.</p>
 <h3 class="content" id="Gui_Application_runFrame"><span class="titletype">func</span> <span class="titlelight">Application.</span><span class="titlestrong">runFrame</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\application.swg#L418" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\application.swg#L425" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -2061,7 +2072,7 @@ Run until exit.</p>
 <h3 class="content" id="Gui_Application_runSurface"><span class="titletype">func</span> <span class="titlelight">Application.</span><span class="titlestrong">runSurface</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\application.swg#L520" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\application.swg#L527" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -2078,7 +2089,7 @@ Create a main surface, and run.</p>
 <h3 class="content" id="Gui_Application_saveState"><span class="titletype">func</span> <span class="titlelight">Application.</span><span class="titlestrong">saveState</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\application.swg#L593" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\application.swg#L600" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -2095,7 +2106,7 @@ Save the application state.</p>
 <h3 class="content" id="Gui_Application_sendEvent"><span class="titletype">func</span> <span class="titlelight">Application.</span><span class="titlestrong">sendEvent</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\application.swg#L698" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\application.swg#L705" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -2110,7 +2121,7 @@ Save the application state.</p>
 <h3 class="content" id="Gui_Application_setActivated"><span class="titletype">func</span> <span class="titlelight">Application.</span><span class="titlestrong">setActivated</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\application.swg#L666" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\application.swg#L673" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -2127,7 +2138,7 @@ Set activated state.</p>
 <h3 class="content" id="Gui_Application_setAppIcon"><span class="titletype">func</span> <span class="titlelight">Application.</span><span class="titlestrong">setAppIcon</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\application.swg#L579" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\application.swg#L586" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -2144,7 +2155,7 @@ Associate a configuration file.</p>
 <h3 class="content" id="Gui_Application_setConfigPath"><span class="titletype">func</span> <span class="titlelight">Application.</span><span class="titlestrong">setConfigPath</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\application.swg#L573" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\application.swg#L580" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -2161,7 +2172,7 @@ Associate a configuration file.</p>
 <h3 class="content" id="Gui_Application_unregisterFrameEvent"><span class="titletype">func</span> <span class="titlelight">Application.</span><span class="titlestrong">unregisterFrameEvent</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\application.swg#L736" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\application.swg#L748" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -2178,7 +2189,7 @@ Unregister a window that receives a FrameEvent each running loop.</p>
 <h3 class="content" id="Gui_Application_unregisterHookEvents"><span class="titletype">func</span> <span class="titlelight">Application.</span><span class="titlestrong">unregisterHookEvents</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\application.swg#L749" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\application.swg#L761" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -2292,6 +2303,116 @@ View</td>
 </td>
 </tr>
 </table>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Gui_BlendColor"><span class="titletype">struct</span> <span class="titlelight">Gui.</span><span class="titlestrong">BlendColor</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\paint\blendcolor.swg#L4" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<table class="enumeration">
+<tr>
+<td class="tdname">
+curVec4</td>
+<td class="tdtype">
+<a href="core.html#Core_Math_Vector4">Core.Math.Vector4</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+startVec4</td>
+<td class="tdtype">
+<a href="core.html#Core_Math_Vector4">Core.Math.Vector4</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+destVec4</td>
+<td class="tdtype">
+<a href="core.html#Core_Math_Vector4">Core.Math.Vector4</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+factor</td>
+<td class="tdtype">
+f32</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+start</td>
+<td class="tdtype">
+bool</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+speed</td>
+<td class="tdtype">
+f32</td>
+<td class="enumeration">
+</td>
+</tr>
+</table>
+<h3>Functions</h3>
+<table class="enumeration">
+<tr>
+<td class="enumeration">
+<a href="#Gui_BlendColor_apply">apply(self, *Wnd, const ref Color)</a></td>
+<td class="enumeration">
+<p>
+Apply the color lerp to reach <code class = "incode">target</code>.</p>
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Gui_BlendColor_cur">cur(self)</a></td>
+<td class="enumeration">
+</td>
+</tr>
+</table>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Gui_BlendColor_apply"><span class="titletype">func</span> <span class="titlelight">BlendColor.</span><span class="titlestrong">apply</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\paint\blendcolor.swg#L17" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>
+Apply the color lerp to reach <code class = "incode">target</code>.</p>
+<p class="code">
+<code style="white-space: break-spaces">func apply(using self, wnd: *<a href="#Gui_Wnd">Gui.Wnd</a>, target: <a href="pixel.html#Pixel_Color">Pixel.Color</a>)
+</code>
+</p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Gui_BlendColor_cur"><span class="titletype">func</span> <span class="titlelight">BlendColor.</span><span class="titlestrong">cur</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\paint\blendcolor.swg#L60" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p class="code">
+<code style="white-space: break-spaces">func cur(using self)-><a href="pixel.html#Pixel_Color">Pixel.Color</a>
+</code>
+</p>
 <p>
 <table class="h3">
 <tr>
@@ -3686,6 +3807,30 @@ s32</td>
 <td class="enumeration">
 </td>
 </tr>
+<tr>
+<td class="tdname">
+aniBk</td>
+<td class="tdtype">
+<a href="#Gui_BlendColor">Gui.BlendColor</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+aniBorder</td>
+<td class="tdtype">
+<a href="#Gui_BlendColor">Gui.BlendColor</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+aniText</td>
+<td class="tdtype">
+<a href="#Gui_BlendColor">Gui.BlendColor</a></td>
+<td class="enumeration">
+</td>
+</tr>
 </table>
 <h3>Functions</h3>
 <table class="enumeration">
@@ -3743,7 +3888,7 @@ Set the selected item index.</p>
 <h3 class="content" id="Gui_ComboBox_IWnd_onMouseEvent"><span class="titletype">func</span> <span class="titlelight">IWnd.</span><span class="titlestrong">onMouseEvent</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\combobox.swg#L117" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\combobox.swg#L125" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -3758,7 +3903,7 @@ Set the selected item index.</p>
 <h3 class="content" id="Gui_ComboBox_IWnd_onPaintEvent"><span class="titletype">func</span> <span class="titlelight">IWnd.</span><span class="titlestrong">onPaintEvent</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\combobox.swg#L48" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\combobox.swg#L52" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -3773,7 +3918,7 @@ Set the selected item index.</p>
 <h3 class="content" id="Gui_ComboBox_IWnd_onResizeEvent"><span class="titletype">func</span> <span class="titlelight">IWnd.</span><span class="titlestrong">onResizeEvent</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\combobox.swg#L36" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\combobox.swg#L40" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -3788,7 +3933,7 @@ Set the selected item index.</p>
 <h3 class="content" id="Gui_ComboBox_addItem"><span class="titletype">func</span> <span class="titlelight">ComboBox.</span><span class="titlestrong">addItem</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\combobox.swg#L214" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\combobox.swg#L223" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -3805,7 +3950,7 @@ Add a new item.</p>
 <h3 class="content" id="Gui_ComboBox_addSeparator"><span class="titletype">func</span> <span class="titlelight">ComboBox.</span><span class="titlestrong">addSeparator</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\combobox.swg#L233" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\combobox.swg#L242" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -3822,7 +3967,7 @@ Add a separator.</p>
 <h3 class="content" id="Gui_ComboBox_clear"><span class="titletype">func</span> <span class="titlelight">ComboBox.</span><span class="titlestrong">clear</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\combobox.swg#L205" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\combobox.swg#L214" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -3839,7 +3984,7 @@ Remove all items.</p>
 <h3 class="content" id="Gui_ComboBox_create"><span class="titletype">func</span> <span class="titlelight">ComboBox.</span><span class="titlestrong">create</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\combobox.swg#L183" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\combobox.swg#L192" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -3854,7 +3999,7 @@ Remove all items.</p>
 <h3 class="content" id="Gui_ComboBox_getSelectedItem"><span class="titletype">func</span> <span class="titlelight">ComboBox.</span><span class="titlestrong">getSelectedItem</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\combobox.swg#L241" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\combobox.swg#L250" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -3871,7 +4016,7 @@ Returns the selected item.</p>
 <h3 class="content" id="Gui_ComboBox_selectItem"><span class="titletype">func</span> <span class="titlelight">ComboBox.</span><span class="titlestrong">selectItem</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\combobox.swg#L249" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\combobox.swg#L258" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -4040,7 +4185,7 @@ combo</td>
 <h3 class="content" id="Gui_CommandEvent"><span class="titletype">struct</span> <span class="titlelight">Gui.</span><span class="titlestrong">CommandEvent</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\events.swg#L68" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\events.swg#L69" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -4077,7 +4222,7 @@ source</td>
 <h3 class="content" id="Gui_CommandStateEvent"><span class="titletype">struct</span> <span class="titlelight">Gui.</span><span class="titlestrong">CommandStateEvent</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\events.swg#L75" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\events.swg#L76" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -4186,7 +4331,7 @@ bool</td>
 <h3 class="content" id="Gui_CommandStateEvent_SetFlags"><span class="titletype">enum</span> <span class="titlelight">CommandStateEvent.</span><span class="titlestrong">SetFlags</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\events.swg#L78" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\events.swg#L79" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -4253,7 +4398,7 @@ Hidden</td>
 <h3 class="content" id="Gui_CreateEvent"><span class="titletype">struct</span> <span class="titlelight">Gui.</span><span class="titlestrong">CreateEvent</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\events.swg#L118" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\events.swg#L119" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -4676,7 +4821,7 @@ string</td>
 <h3 class="content" id="Gui_DestroyEvent"><span class="titletype">struct</span> <span class="titlelight">Gui.</span><span class="titlestrong">DestroyEvent</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\events.swg#L128" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\events.swg#L129" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -5079,6 +5224,22 @@ closure(*<a href="#Gui_EditBox">Gui.EditBox</a>)-&gt;<a href="#Gui_EditBoxCheckR
 </tr>
 <tr>
 <td class="tdname">
+aniBk</td>
+<td class="tdtype">
+<a href="#Gui_BlendColor">Gui.BlendColor</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+aniBorder</td>
+<td class="tdtype">
+<a href="#Gui_BlendColor">Gui.BlendColor</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
 isInvalid</td>
 <td class="tdtype">
 bool</td>
@@ -5184,6 +5345,14 @@ Delete selected text.</p>
 </tr>
 <tr>
 <td class="enumeration">
+<a href="#Gui_EditBox_getText">getText(self)</a></td>
+<td class="enumeration">
+<p>
+Get the associated text.</p>
+</td>
+</tr>
+<tr>
+<td class="enumeration">
 <a href="#Gui_EditBox_selectAll">selectAll(self)</a></td>
 <td class="enumeration">
 <p>
@@ -5262,7 +5431,7 @@ Set the editbox content, but do not notify change.</p>
 <h3 class="content" id="Gui_EditBox_IWnd_onFocusEvent"><span class="titletype">func</span> <span class="titlelight">IWnd.</span><span class="titlestrong">onFocusEvent</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\editbox.swg#L75" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\editbox.swg#L78" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -5277,7 +5446,7 @@ Set the editbox content, but do not notify change.</p>
 <h3 class="content" id="Gui_EditBox_IWnd_onKeyEvent"><span class="titletype">func</span> <span class="titlelight">IWnd.</span><span class="titlestrong">onKeyEvent</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\editbox.swg#L281" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\editbox.swg#L287" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -5292,7 +5461,7 @@ Set the editbox content, but do not notify change.</p>
 <h3 class="content" id="Gui_EditBox_IWnd_onMouseEvent"><span class="titletype">func</span> <span class="titlelight">IWnd.</span><span class="titlestrong">onMouseEvent</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\editbox.swg#L222" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\editbox.swg#L228" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -5307,7 +5476,7 @@ Set the editbox content, but do not notify change.</p>
 <h3 class="content" id="Gui_EditBox_IWnd_onPaintEvent"><span class="titletype">func</span> <span class="titlelight">IWnd.</span><span class="titlestrong">onPaintEvent</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\editbox.swg#L94" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\editbox.swg#L97" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -5322,7 +5491,7 @@ Set the editbox content, but do not notify change.</p>
 <h3 class="content" id="Gui_EditBox_IWnd_onTimerEvent"><span class="titletype">func</span> <span class="titlelight">IWnd.</span><span class="titlestrong">onTimerEvent</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\editbox.swg#L273" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\editbox.swg#L279" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -5337,7 +5506,7 @@ Set the editbox content, but do not notify change.</p>
 <h3 class="content" id="Gui_EditBox_create"><span class="titletype">func</span> <span class="titlelight">EditBox.</span><span class="titlestrong">create</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\editbox.swg#L789" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\editbox.swg#L795" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -5352,7 +5521,7 @@ Set the editbox content, but do not notify change.</p>
 <h3 class="content" id="Gui_EditBox_deleteSelection"><span class="titletype">func</span> <span class="titlelight">EditBox.</span><span class="titlestrong">deleteSelection</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\editbox.swg#L806" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\editbox.swg#L812" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -5366,10 +5535,27 @@ Delete selected text.</p>
 <table class="h3">
 <tr>
 <td class="h3">
+<h3 class="content" id="Gui_EditBox_getText"><span class="titletype">func</span> <span class="titlelight">EditBox.</span><span class="titlestrong">getText</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\editbox.swg#L863" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>
+Get the associated text.</p>
+<p class="code">
+<code style="white-space: break-spaces">func getText(using self)-&gt;string
+</code>
+</p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Gui_EditBox_selectAll"><span class="titletype">func</span> <span class="titlelight">EditBox.</span><span class="titlestrong">selectAll</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\editbox.swg#L824" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\editbox.swg#L830" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -5386,7 +5572,7 @@ Select all text.</p>
 <h3 class="content" id="Gui_EditBox_setForm"><span class="titletype">func</span> <span class="titlelight">EditBox.</span><span class="titlestrong">setForm</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\editbox.swg#L881" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\editbox.swg#L893" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -5403,7 +5589,7 @@ Set the editbox form.</p>
 <h3 class="content" id="Gui_EditBox_setInputF64"><span class="titletype">func</span> <span class="titlelight">EditBox.</span><span class="titlestrong">setInputF64</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\editbox.swg#L873" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\editbox.swg#L885" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -5420,7 +5606,7 @@ Editbox will edit floating points.</p>
 <h3 class="content" id="Gui_EditBox_setInputS64"><span class="titletype">func</span> <span class="titlelight">EditBox.</span><span class="titlestrong">setInputS64</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\editbox.swg#L857" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\editbox.swg#L869" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -5437,7 +5623,7 @@ Editbox will edit signed integers.</p>
 <h3 class="content" id="Gui_EditBox_setInputU64"><span class="titletype">func</span> <span class="titlelight">EditBox.</span><span class="titlestrong">setInputU64</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\editbox.swg#L865" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\editbox.swg#L877" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -5454,7 +5640,7 @@ Editbox will edit unsigned integers.</p>
 <h3 class="content" id="Gui_EditBox_setNote"><span class="titletype">func</span> <span class="titlelight">EditBox.</span><span class="titlestrong">setNote</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\editbox.swg#L830" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\editbox.swg#L836" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -5471,7 +5657,7 @@ Set the editbox note.</p>
 <h3 class="content" id="Gui_EditBox_setSelection"><span class="titletype">func</span> <span class="titlelight">EditBox.</span><span class="titlestrong">setSelection</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\editbox.swg#L815" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\editbox.swg#L821" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -5488,7 +5674,7 @@ Set current selection.</p>
 <h3 class="content" id="Gui_EditBox_setText"><span class="titletype">func</span> <span class="titlelight">EditBox.</span><span class="titlestrong">setText</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\editbox.swg#L845" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\editbox.swg#L851" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -5505,7 +5691,7 @@ Set the editbox content.</p>
 <h3 class="content" id="Gui_EditBox_setTextSilent"><span class="titletype">func</span> <span class="titlelight">EditBox.</span><span class="titlestrong">setTextSilent</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\editbox.swg#L837" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\editbox.swg#L843" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -6021,7 +6207,7 @@ Information</td>
 <h3 class="content" id="Gui_Event"><span class="titletype">struct</span> <span class="titlelight">Gui.</span><span class="titlestrong">Event</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\events.swg#L42" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\events.swg#L43" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -6081,7 +6267,7 @@ bool</td>
 <h3 class="content" id="Gui_Event_create"><span class="titletype">func</span> <span class="titlelight">Event.</span><span class="titlestrong">create</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\events.swg#L52" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\events.swg#L53" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -6303,6 +6489,12 @@ Invalidate</td>
 <tr>
 <td class="tdname">
 SysUser</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+Notify</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -6659,7 +6851,7 @@ curFolder</td>
 <h3 class="content" id="Gui_FocusEvent"><span class="titletype">struct</span> <span class="titlelight">Gui.</span><span class="titlestrong">FocusEvent</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\events.swg#L174" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\events.swg#L175" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -6713,7 +6905,7 @@ MousePressed</td>
 <h3 class="content" id="Gui_FrameEvent"><span class="titletype">struct</span> <span class="titlelight">Gui.</span><span class="titlestrong">FrameEvent</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\events.swg#L112" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\events.swg#L113" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -8168,6 +8360,14 @@ func(*<a href="#Gui_IWnd">Gui.IWnd</a>, *<a href="#Gui_SerializeStateEvent">Gui.
 <td class="enumeration">
 </td>
 </tr>
+<tr>
+<td class="tdname">
+onNotifyEvent</td>
+<td class="tdtype">
+func(*<a href="#Gui_IWnd">Gui.IWnd</a>, *<a href="#Gui_NotifyEvent">Gui.NotifyEvent</a>)</td>
+<td class="enumeration">
+</td>
+</tr>
 </table>
 <p>
 <table class="h3">
@@ -8681,6 +8881,14 @@ closure(*<a href="#Gui_IconButton">Gui.IconButton</a>, *<a href="#Gui_PaintConte
 </tr>
 <tr>
 <td class="tdname">
+aniBk</td>
+<td class="tdtype">
+<a href="#Gui_BlendColor">Gui.BlendColor</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
 isChecked</td>
 <td class="tdtype">
 bool</td>
@@ -8728,7 +8936,7 @@ Set the button form.</p>
 <h3 class="content" id="Gui_IconButton_IWnd_hidePopup"><span class="titletype">func</span> <span class="titlelight">IWnd.</span><span class="titlestrong">hidePopup</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\iconbutton.swg#L71" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\iconbutton.swg#L72" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -8743,7 +8951,7 @@ Set the button form.</p>
 <h3 class="content" id="Gui_IconButton_IWnd_onApplyStateEvent"><span class="titletype">func</span> <span class="titlelight">IWnd.</span><span class="titlestrong">onApplyStateEvent</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\iconbutton.swg#L104" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\iconbutton.swg#L105" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -8758,7 +8966,7 @@ Set the button form.</p>
 <h3 class="content" id="Gui_IconButton_IWnd_onDestroyEvent"><span class="titletype">func</span> <span class="titlelight">IWnd.</span><span class="titlestrong">onDestroyEvent</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\iconbutton.swg#L99" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\iconbutton.swg#L100" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -8773,7 +8981,7 @@ Set the button form.</p>
 <h3 class="content" id="Gui_IconButton_IWnd_onHookEvent"><span class="titletype">func</span> <span class="titlelight">IWnd.</span><span class="titlestrong">onHookEvent</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\iconbutton.swg#L84" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\iconbutton.swg#L85" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -8788,7 +8996,7 @@ Set the button form.</p>
 <h3 class="content" id="Gui_IconButton_IWnd_onMouseEvent"><span class="titletype">func</span> <span class="titlelight">IWnd.</span><span class="titlestrong">onMouseEvent</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\iconbutton.swg#L428" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\iconbutton.swg#L430" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -8803,7 +9011,7 @@ Set the button form.</p>
 <h3 class="content" id="Gui_IconButton_IWnd_onPaintEvent"><span class="titletype">func</span> <span class="titlelight">IWnd.</span><span class="titlestrong">onPaintEvent</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\iconbutton.swg#L124" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\iconbutton.swg#L125" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -8818,7 +9026,7 @@ Set the button form.</p>
 <h3 class="content" id="Gui_IconButton_create"><span class="titletype">func</span> <span class="titlelight">IconButton.</span><span class="titlestrong">create</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\iconbutton.swg#L473" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\iconbutton.swg#L475" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -8833,7 +9041,7 @@ Set the button form.</p>
 <h3 class="content" id="Gui_IconButton_setCheck"><span class="titletype">func</span> <span class="titlelight">IconButton.</span><span class="titlestrong">setCheck</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\iconbutton.swg#L490" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\iconbutton.swg#L492" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -8850,7 +9058,7 @@ Set the check state of the button (if the button is checkable).</p>
 <h3 class="content" id="Gui_IconButton_setForm"><span class="titletype">func</span> <span class="titlelight">IconButton.</span><span class="titlestrong">setForm</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\iconbutton.swg#L502" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\iconbutton.swg#L504" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -9450,7 +9658,7 @@ userData1</td>
 <h3 class="content" id="Gui_KeyEvent"><span class="titletype">struct</span> <span class="titlelight">Gui.</span><span class="titlestrong">KeyEvent</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\events.swg#L151" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\events.swg#L152" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -11242,7 +11450,7 @@ bool</td>
 <h3 class="content" id="Gui_MenuCtrl"><span class="titletype">struct</span> <span class="titlelight">Gui.</span><span class="titlestrong">MenuCtrl</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\composite\menuctrl.swg#L30" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\composite\menuctrl.swg#L34" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -11450,7 +11658,7 @@ Make the popup menu modal Will return the selected id.</p>
 <h3 class="content" id="Gui_MenuCtrl_IWnd_onMouseEvent"><span class="titletype">func</span> <span class="titlelight">IWnd.</span><span class="titlestrong">onMouseEvent</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\composite\menuctrl.swg#L253" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\composite\menuctrl.swg#L267" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -11465,7 +11673,7 @@ Make the popup menu modal Will return the selected id.</p>
 <h3 class="content" id="Gui_MenuCtrl_IWnd_onPaintEvent"><span class="titletype">func</span> <span class="titlelight">IWnd.</span><span class="titlestrong">onPaintEvent</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\composite\menuctrl.swg#L237" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\composite\menuctrl.swg#L251" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -11480,7 +11688,7 @@ Make the popup menu modal Will return the selected id.</p>
 <h3 class="content" id="Gui_MenuCtrl_IWnd_onTimerEvent"><span class="titletype">func</span> <span class="titlelight">IWnd.</span><span class="titlestrong">onTimerEvent</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\composite\menuctrl.swg#L246" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\composite\menuctrl.swg#L260" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -11495,7 +11703,7 @@ Make the popup menu modal Will return the selected id.</p>
 <h3 class="content" id="Gui_MenuCtrl_addItem"><span class="titletype">func</span> <span class="titlelight">MenuCtrl.</span><span class="titlestrong">addItem</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\composite\menuctrl.swg#L652" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\composite\menuctrl.swg#L666" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -11518,7 +11726,7 @@ Add a new item.</p>
 <h3 class="content" id="Gui_MenuCtrl_addPopup"><span class="titletype">func</span> <span class="titlelight">MenuCtrl.</span><span class="titlestrong">addPopup</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\composite\menuctrl.swg#L675" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\composite\menuctrl.swg#L689" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -11541,7 +11749,7 @@ Add a new popup item.</p>
 <h3 class="content" id="Gui_MenuCtrl_addSeparator"><span class="titletype">func</span> <span class="titlelight">MenuCtrl.</span><span class="titlestrong">addSeparator</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\composite\menuctrl.swg#L697" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\composite\menuctrl.swg#L711" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -11558,7 +11766,7 @@ Add a separator.</p>
 <h3 class="content" id="Gui_MenuCtrl_computeLayoutPopup"><span class="titletype">func</span> <span class="titlelight">MenuCtrl.</span><span class="titlestrong">computeLayoutPopup</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\composite\menuctrl.swg#L552" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\composite\menuctrl.swg#L566" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -11573,7 +11781,7 @@ Add a separator.</p>
 <h3 class="content" id="Gui_MenuCtrl_createBar"><span class="titletype">func</span> <span class="titlelight">MenuCtrl.</span><span class="titlestrong">createBar</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\composite\menuctrl.swg#L636" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\composite\menuctrl.swg#L650" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -11588,7 +11796,7 @@ Add a separator.</p>
 <h3 class="content" id="Gui_MenuCtrl_createPopup"><span class="titletype">func</span> <span class="titlelight">MenuCtrl.</span><span class="titlestrong">createPopup</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\composite\menuctrl.swg#L623" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\composite\menuctrl.swg#L637" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -11603,7 +11811,7 @@ Add a separator.</p>
 <h3 class="content" id="Gui_MenuCtrl_doModal"><span class="titletype">func</span> <span class="titlelight">MenuCtrl.</span><span class="titlestrong">doModal</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\composite\menuctrl.swg#L707" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\composite\menuctrl.swg#L721" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -11620,7 +11828,7 @@ Make the popup menu modal Will return the selected id.</p>
 <h3 class="content" id="Gui_MenuCtrl_updateState"><span class="titletype">func</span> <span class="titlelight">MenuCtrl.</span><span class="titlestrong">updateState</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\composite\menuctrl.swg#L381" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\composite\menuctrl.swg#L395" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -11950,7 +12158,7 @@ Message box with a <code class = "incode">yes</code> and <code class = "incode">
 <h3 class="content" id="Gui_MouseEvent"><span class="titletype">struct</span> <span class="titlelight">Gui.</span><span class="titlestrong">MouseEvent</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\events.swg#L159" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\events.swg#L160" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -12003,7 +12211,7 @@ modifiers</td>
 <h3 class="content" id="Gui_MoveEvent"><span class="titletype">struct</span> <span class="titlelight">Gui.</span><span class="titlestrong">MoveEvent</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\events.swg#L145" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\events.swg#L146" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -12406,6 +12614,62 @@ lastDeadChar</td>
 <table class="h3">
 <tr>
 <td class="h3">
+<h3 class="content" id="Gui_NotifyEvent"><span class="titletype">struct</span> <span class="titlelight">Gui.</span><span class="titlestrong">NotifyEvent</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\events.swg#L218" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<table class="enumeration">
+<tr>
+<td class="tdname">
+<b>using</b> base</td>
+<td class="tdtype">
+<a href="#Gui_Event">Gui.Event</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+ntfyKind</td>
+<td class="tdtype">
+<a href="#Gui_NotifyEvent_Kind">Gui.NotifyEvent.Kind</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+from</td>
+<td class="tdtype">
+*<a href="#Gui_Wnd">Gui.Wnd</a></td>
+<td class="enumeration">
+</td>
+</tr>
+</table>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Gui_NotifyEvent_Kind"><span class="titletype">enum</span> <span class="titlelight">NotifyEvent.</span><span class="titlestrong">Kind</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\events.swg#L222" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<table class="enumeration">
+<tr>
+<td class="tdname">
+ChildFocusChanged</td>
+<td class="enumeration">
+</td>
+</tr>
+</table>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Gui_PaintContext"><span class="titletype">struct</span> <span class="titlelight">Gui.</span><span class="titlestrong">PaintContext</span></h3>
 </td>
 <td class="srcref">
@@ -12446,7 +12710,7 @@ bool</td>
 <h3 class="content" id="Gui_PaintEvent"><span class="titletype">struct</span> <span class="titlelight">Gui.</span><span class="titlestrong">PaintEvent</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\events.swg#L133" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\events.swg#L134" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -12784,7 +13048,7 @@ Add a range of changing <code class = "incode">saturation</code>.</p>
 <h3 class="content" id="Gui_PopupListCtrl"><span class="titletype">struct</span> <span class="titlelight">Gui.</span><span class="titlestrong">PopupListCtrl</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\composite\popuplistctrl.swg#L10" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\composite\popuplistctrl.swg#L14" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -12920,7 +13184,7 @@ Show popup.</p>
 <h3 class="content" id="Gui_PopupListCtrl_addItem"><span class="titletype">func</span> <span class="titlelight">PopupListCtrl.</span><span class="titlestrong">addItem</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\composite\popuplistctrl.swg#L238" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\composite\popuplistctrl.swg#L250" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -12937,7 +13201,7 @@ Add a new item in the list.</p>
 <h3 class="content" id="Gui_PopupListCtrl_addSeparator"><span class="titletype">func</span> <span class="titlelight">PopupListCtrl.</span><span class="titlestrong">addSeparator</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\composite\popuplistctrl.swg#L256" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\composite\popuplistctrl.swg#L268" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -12954,7 +13218,7 @@ Add a separator.</p>
 <h3 class="content" id="Gui_PopupListCtrl_create"><span class="titletype">func</span> <span class="titlelight">PopupListCtrl.</span><span class="titlestrong">create</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\composite\popuplistctrl.swg#L202" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\composite\popuplistctrl.swg#L214" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -12971,7 +13235,7 @@ Create the popup list, but do not display it.</p>
 <h3 class="content" id="Gui_PopupListCtrl_show"><span class="titletype">func</span> <span class="titlelight">PopupListCtrl.</span><span class="titlestrong">show</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\composite\popuplistctrl.swg#L222" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\composite\popuplistctrl.swg#L234" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -13009,6 +13273,30 @@ bool</td>
 <td class="enumeration">
 </td>
 </tr>
+<tr>
+<td class="tdname">
+aniSel</td>
+<td class="tdtype">
+<a href="#Gui_BlendColor">Gui.BlendColor</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+aniText</td>
+<td class="tdtype">
+<a href="#Gui_BlendColor">Gui.BlendColor</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+aniCheck</td>
+<td class="tdtype">
+<a href="#Gui_BlendColor">Gui.BlendColor</a></td>
+<td class="enumeration">
+</td>
+</tr>
 </table>
 <p>
 <table class="h3">
@@ -13017,7 +13305,7 @@ bool</td>
 <h3 class="content" id="Gui_PopupListView"><span class="titletype">struct</span> <span class="titlelight">Gui.</span><span class="titlestrong">PopupListView</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\composite\popuplistctrl.swg#L27" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\composite\popuplistctrl.swg#L31" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -13054,7 +13342,7 @@ u32</td>
 <h3 class="content" id="Gui_PopupListView_IWnd_onFocusEvent"><span class="titletype">func</span> <span class="titlelight">IWnd.</span><span class="titlestrong">onFocusEvent</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\composite\popuplistctrl.swg#L36" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\composite\popuplistctrl.swg#L40" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -13069,7 +13357,7 @@ u32</td>
 <h3 class="content" id="Gui_PopupListView_IWnd_onMouseEvent"><span class="titletype">func</span> <span class="titlelight">IWnd.</span><span class="titlestrong">onMouseEvent</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\composite\popuplistctrl.swg#L47" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\composite\popuplistctrl.swg#L55" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -13084,7 +13372,7 @@ u32</td>
 <h3 class="content" id="Gui_PopupListView_IWnd_onPaintEvent"><span class="titletype">func</span> <span class="titlelight">IWnd.</span><span class="titlestrong">onPaintEvent</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\composite\popuplistctrl.swg#L118" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\composite\popuplistctrl.swg#L126" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -13165,6 +13453,30 @@ bool</td>
 hidden</td>
 <td class="tdtype">
 bool</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+aniSel</td>
+<td class="tdtype">
+<a href="#Gui_BlendColor">Gui.BlendColor</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+aniText</td>
+<td class="tdtype">
+<a href="#Gui_BlendColor">Gui.BlendColor</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+aniRightText</td>
+<td class="tdtype">
+<a href="#Gui_BlendColor">Gui.BlendColor</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -13333,7 +13645,7 @@ Infinite</td>
 <h3 class="content" id="Gui_PropertyList"><span class="titletype">struct</span> <span class="titlelight">Gui.</span><span class="titlestrong">PropertyList</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\property\propertylist.swg#L12" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\property\propertylist.swg#L22" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -13399,6 +13711,14 @@ s32</td>
 maxSizeEditValue</td>
 <td class="tdtype">
 s32</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+sigChanged</td>
+<td class="tdtype">
+<a href="#Gui_SigArray">Gui.SigArray</a>(closure(*<a href="#Gui_PropertyList">Gui.PropertyList</a>))</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -13493,7 +13813,7 @@ Show hidden content depending on the input filter.</p>
 <h3 class="content" id="Gui_PropertyList_Category"><span class="titletype">attr</span> <span class="titlelight">PropertyList.</span><span class="titlestrong">Category</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\property\propertylist.swg#L6" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\property\propertylist.swg#L7" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -13510,7 +13830,7 @@ Show hidden content depending on the input filter.</p>
 <h3 class="content" id="Gui_PropertyList_Description"><span class="titletype">attr</span> <span class="titlelight">PropertyList.</span><span class="titlestrong">Description</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\property\propertylist.swg#L9" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\property\propertylist.swg#L16" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -13524,10 +13844,27 @@ Show hidden content depending on the input filter.</p>
 <table class="h3">
 <tr>
 <td class="h3">
+<h3 class="content" id="Gui_PropertyList_EditSlider"><span class="titletype">attr</span> <span class="titlelight">PropertyList.</span><span class="titlestrong">EditSlider</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\property\propertylist.swg#L19" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<div class="addinfos"><b>Usage</b>: all 
+</div>
+<p class="code">
+<code style="white-space: break-spaces">attr EditSlider(min: f32, max: f32)
+</code>
+</p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Gui_PropertyList_Name"><span class="titletype">attr</span> <span class="titlelight">PropertyList.</span><span class="titlestrong">Name</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\property\propertylist.swg#L8" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\property\propertylist.swg#L13" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -13544,7 +13881,7 @@ Show hidden content depending on the input filter.</p>
 <h3 class="content" id="Gui_PropertyList_SubCategory"><span class="titletype">attr</span> <span class="titlelight">PropertyList.</span><span class="titlestrong">SubCategory</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\property\propertylist.swg#L7" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\property\propertylist.swg#L10" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -13561,7 +13898,7 @@ Show hidden content depending on the input filter.</p>
 <h3 class="content" id="Gui_PropertyList_addItem"><span class="titletype">func</span> <span class="titlelight">PropertyList.</span><span class="titlestrong">addItem</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\property\propertylist.swg#L464" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\property\propertylist.swg#L742" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -13578,7 +13915,7 @@ Add a new struct to display.</p>
 <h3 class="content" id="Gui_PropertyList_create"><span class="titletype">func</span> <span class="titlelight">PropertyList.</span><span class="titlestrong">create</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\property\propertylist.swg#L422" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\property\propertylist.swg#L700" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -13595,7 +13932,7 @@ Creates a new PropertyList instance.</p>
 <h3 class="content" id="Gui_PropertyList_refresh"><span class="titletype">func</span> <span class="titlelight">PropertyList.</span><span class="titlestrong">refresh</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\property\propertylist.swg#L476" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\property\propertylist.swg#L754" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -13612,7 +13949,7 @@ Refresh displayed values.</p>
 <h3 class="content" id="Gui_PropertyList_setStringFilter"><span class="titletype">func</span> <span class="titlelight">PropertyList.</span><span class="titlestrong">setStringFilter</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\property\propertylist.swg#L485" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\property\propertylist.swg#L763" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -13727,7 +14064,7 @@ Creates a new PropertyList instance.</p>
 <h3 class="content" id="Gui_PropertyListItem"><span class="titletype">struct</span> <span class="titlelight">Gui.</span><span class="titlestrong">PropertyListItem</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\property\propertylist.swg#L33" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\property\propertylist.swg#L45" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -13753,6 +14090,14 @@ line</td>
 ptrData</td>
 <td class="tdtype">
 *u8</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+type</td>
+<td class="tdtype">
+const *<a href="swag.html#Swag_TypeInfo">Swag.TypeInfo</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -13814,9 +14159,41 @@ comboBox</td>
 </tr>
 <tr>
 <td class="tdname">
+sliderBox</td>
+<td class="tdtype">
+*<a href="#Gui_SliderCtrl">Gui.SliderCtrl</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
 onResize</td>
 <td class="tdtype">
 <a href="#Gui_SigArray">Gui.SigArray</a>(closure(*<a href="#Gui_PropertyListItem">Gui.PropertyListItem</a>))</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+aniFocusBk</td>
+<td class="tdtype">
+<a href="#Gui_BlendColor">Gui.BlendColor</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+aniFocusBorder</td>
+<td class="tdtype">
+<a href="#Gui_BlendColor">Gui.BlendColor</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+extendFocus</td>
+<td class="tdtype">
+f32</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -13860,6 +14237,30 @@ form</td>
 <td class="enumeration">
 </td>
 </tr>
+<tr>
+<td class="tdname">
+aniBk</td>
+<td class="tdtype">
+<a href="#Gui_BlendColor">Gui.BlendColor</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+aniBorder</td>
+<td class="tdtype">
+<a href="#Gui_BlendColor">Gui.BlendColor</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+aniText</td>
+<td class="tdtype">
+<a href="#Gui_BlendColor">Gui.BlendColor</a></td>
+<td class="enumeration">
+</td>
+</tr>
 </table>
 <h3>Functions</h3>
 <table class="enumeration">
@@ -13877,7 +14278,7 @@ form</td>
 <h3 class="content" id="Gui_PushButton_IWnd_onMouseEvent"><span class="titletype">func</span> <span class="titlelight">IWnd.</span><span class="titlestrong">onMouseEvent</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\pushbutton.swg#L160" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\pushbutton.swg#L167" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -13892,7 +14293,7 @@ form</td>
 <h3 class="content" id="Gui_PushButton_IWnd_onPaintEvent"><span class="titletype">func</span> <span class="titlelight">IWnd.</span><span class="titlestrong">onPaintEvent</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\pushbutton.swg#L21" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\pushbutton.swg#L25" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -13907,7 +14308,7 @@ form</td>
 <h3 class="content" id="Gui_PushButton_create"><span class="titletype">func</span> <span class="titlelight">PushButton.</span><span class="titlestrong">create</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\pushbutton.swg#L170" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\pushbutton.swg#L177" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -13959,7 +14360,7 @@ Strong</td>
 <h3 class="content" id="Gui_QuitEvent"><span class="titletype">struct</span> <span class="titlelight">Gui.</span><span class="titlestrong">QuitEvent</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\events.swg#L168" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\events.swg#L169" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -14137,7 +14538,7 @@ RightAlign</td>
 <h3 class="content" id="Gui_ResizeEvent"><span class="titletype">struct</span> <span class="titlelight">Gui.</span><span class="titlestrong">ResizeEvent</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\events.swg#L139" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\events.swg#L140" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -16572,7 +16973,7 @@ mapWords</td>
 <h3 class="content" id="Gui_RichEditLexerSwag_IRichEditLexer_compute"><span class="titletype">func</span> <span class="titlelight">IRichEditLexer.</span><span class="titlestrong">compute</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\richedit\richeditlexerswag.swg#L407" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\richedit\richeditlexerswag.swg#L406" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -16587,7 +16988,7 @@ mapWords</td>
 <h3 class="content" id="Gui_RichEditLexerSwag_IRichEditLexer_insertRune"><span class="titletype">func</span> <span class="titlelight">IRichEditLexer.</span><span class="titlestrong">insertRune</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\richedit\richeditlexerswag.swg#L375" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\richedit\richeditlexerswag.swg#L374" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -17280,6 +17681,14 @@ bool</td>
 </tr>
 <tr>
 <td class="tdname">
+isHotBarV</td>
+<td class="tdtype">
+bool</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
 isPressedV</td>
 <td class="tdtype">
 bool</td>
@@ -17321,6 +17730,14 @@ f32</td>
 <tr>
 <td class="tdname">
 isHotH</td>
+<td class="tdtype">
+bool</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+isHotBarH</td>
 <td class="tdtype">
 bool</td>
 <td class="enumeration">
@@ -17392,6 +17809,38 @@ f32</td>
 </tr>
 <tr>
 <td class="tdname">
+aniBkBarV</td>
+<td class="tdtype">
+<a href="#Gui_BlendColor">Gui.BlendColor</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+aniBkBarH</td>
+<td class="tdtype">
+<a href="#Gui_BlendColor">Gui.BlendColor</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+aniBoxV</td>
+<td class="tdtype">
+<a href="#Gui_BlendColor">Gui.BlendColor</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+aniBoxH</td>
+<td class="tdtype">
+<a href="#Gui_BlendColor">Gui.BlendColor</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
 grabbingPos</td>
 <td class="tdtype">
 <a href="core.html#Core_Math_Point">Core.Math.Point</a></td>
@@ -17445,7 +17894,7 @@ Set the scroll size (window virtual size).</p>
 <h3 class="content" id="Gui_ScrollWnd_IWnd_onMouseEvent"><span class="titletype">func</span> <span class="titlelight">IWnd.</span><span class="titlestrong">onMouseEvent</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\scrollwnd.swg#L71" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\scrollwnd.swg#L78" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -17460,7 +17909,7 @@ Set the scroll size (window virtual size).</p>
 <h3 class="content" id="Gui_ScrollWnd_IWnd_onPaintEvent"><span class="titletype">func</span> <span class="titlelight">IWnd.</span><span class="titlestrong">onPaintEvent</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\scrollwnd.swg#L190" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\scrollwnd.swg#L197" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -17475,7 +17924,7 @@ Set the scroll size (window virtual size).</p>
 <h3 class="content" id="Gui_ScrollWnd_IWnd_onResizeEvent"><span class="titletype">func</span> <span class="titlelight">IWnd.</span><span class="titlestrong">onResizeEvent</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\scrollwnd.swg#L59" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\scrollwnd.swg#L66" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -17490,7 +17939,7 @@ Set the scroll size (window virtual size).</p>
 <h3 class="content" id="Gui_ScrollWnd_getClientScrollRect"><span class="titletype">func</span> <span class="titlelight">ScrollWnd.</span><span class="titlestrong">getClientScrollRect</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\scrollwnd.swg#L470" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\scrollwnd.swg#L514" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -17505,7 +17954,7 @@ Set the scroll size (window virtual size).</p>
 <h3 class="content" id="Gui_ScrollWnd_getScrollPos"><span class="titletype">func</span> <span class="titlelight">ScrollWnd.</span><span class="titlestrong">getScrollPos</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\scrollwnd.swg#L410" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\scrollwnd.swg#L454" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -17522,7 +17971,7 @@ Get the current scroll position.</p>
 <h3 class="content" id="Gui_ScrollWnd_setScrollPos"><span class="titletype">func</span> <span class="titlelight">ScrollWnd.</span><span class="titlestrong">setScrollPos</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\scrollwnd.swg#L445" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\scrollwnd.swg#L489" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -17543,7 +17992,7 @@ Set the current scroll position.</p>
 <h3 class="content" id="Gui_ScrollWnd_setScrollSize"><span class="titletype">func</span> <span class="titlelight">ScrollWnd.</span><span class="titlestrong">setScrollSize</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\scrollwnd.swg#L458" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\scrollwnd.swg#L502" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -17765,7 +18214,7 @@ Unselect all.</p>
 <h3 class="content" id="Gui_SerializeStateEvent"><span class="titletype">struct</span> <span class="titlelight">Gui.</span><span class="titlestrong">SerializeStateEvent</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\events.swg#L211" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\events.swg#L212" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -17794,7 +18243,7 @@ ser</td>
 <h3 class="content" id="Gui_SetThemeEvent"><span class="titletype">struct</span> <span class="titlelight">Gui.</span><span class="titlestrong">SetThemeEvent</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\events.swg#L204" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\events.swg#L205" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -18145,6 +18594,38 @@ f32</td>
 <td class="enumeration">
 </td>
 </tr>
+<tr>
+<td class="tdname">
+aniMark1</td>
+<td class="tdtype">
+<a href="#Gui_BlendColor">Gui.BlendColor</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+aniMark2</td>
+<td class="tdtype">
+<a href="#Gui_BlendColor">Gui.BlendColor</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+aniStep1</td>
+<td class="tdtype">
+<a href="#Gui_BlendColor">Gui.BlendColor</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+aniStep2</td>
+<td class="tdtype">
+<a href="#Gui_BlendColor">Gui.BlendColor</a></td>
+<td class="enumeration">
+</td>
+</tr>
 </table>
 <h3>Functions</h3>
 <table class="enumeration">
@@ -18176,6 +18657,8 @@ f32</td>
 <td class="enumeration">
 <a href="#Gui_Slider_setMinMax">setMinMax(self, f32, f32, f32)</a></td>
 <td class="enumeration">
+<p>
+Set the <code class = "incode">min</code>, <code class = "incode">max</code> and <code class = "incode">steps</code> values.</p>
 </td>
 </tr>
 <tr>
@@ -18196,12 +18679,16 @@ Set left and right values, for a range.</p>
 <td class="enumeration">
 <a href="#Gui_Slider_setValueLeft">setValueLeft(self, f32)</a></td>
 <td class="enumeration">
+<p>
+Set the left value (in case of a range).</p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Gui_Slider_setValueRight">setValueRight(self, f32)</a></td>
 <td class="enumeration">
+<p>
+Set the right value (in case of a range).</p>
 </td>
 </tr>
 </table>
@@ -18212,7 +18699,7 @@ Set left and right values, for a range.</p>
 <h3 class="content" id="Gui_Slider_IWnd_onMouseEvent"><span class="titletype">func</span> <span class="titlelight">IWnd.</span><span class="titlestrong">onMouseEvent</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\slider.swg#L182" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\slider.swg#L201" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -18227,7 +18714,7 @@ Set left and right values, for a range.</p>
 <h3 class="content" id="Gui_Slider_IWnd_onPaintEvent"><span class="titletype">func</span> <span class="titlelight">IWnd.</span><span class="titlestrong">onPaintEvent</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\slider.swg#L40" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\slider.swg#L45" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -18242,7 +18729,7 @@ Set left and right values, for a range.</p>
 <h3 class="content" id="Gui_Slider_create"><span class="titletype">func</span> <span class="titlelight">Slider.</span><span class="titlestrong">create</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\slider.swg#L479" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\slider.swg#L506" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -18257,7 +18744,7 @@ Set left and right values, for a range.</p>
 <h3 class="content" id="Gui_Slider_getValue"><span class="titletype">func</span> <span class="titlelight">Slider.</span><span class="titlestrong">getValue</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\slider.swg#L438" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\slider.swg#L461" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -18272,7 +18759,7 @@ Set left and right values, for a range.</p>
 <h3 class="content" id="Gui_Slider_getValueLeft"><span class="titletype">func</span> <span class="titlelight">Slider.</span><span class="titlestrong">getValueLeft</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\slider.swg#L439" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\slider.swg#L462" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -18287,7 +18774,7 @@ Set left and right values, for a range.</p>
 <h3 class="content" id="Gui_Slider_getValueRight"><span class="titletype">func</span> <span class="titlelight">Slider.</span><span class="titlestrong">getValueRight</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\slider.swg#L440" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\slider.swg#L463" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -18302,10 +18789,12 @@ Set left and right values, for a range.</p>
 <h3 class="content" id="Gui_Slider_setMinMax"><span class="titletype">func</span> <span class="titlelight">Slider.</span><span class="titlestrong">setMinMax</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\slider.swg#L457" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\slider.swg#L484" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
+<p>
+Set the <code class = "incode">min</code>, <code class = "incode">max</code> and <code class = "incode">steps</code> values.</p>
 <p class="code">
 <code style="white-space: break-spaces">func setMinMax(self, min: f32, max: f32, steps: f32 = 0)
 </code>
@@ -18317,7 +18806,7 @@ Set left and right values, for a range.</p>
 <h3 class="content" id="Gui_Slider_setRangeValues"><span class="titletype">func</span> <span class="titlelight">Slider.</span><span class="titlestrong">setRangeValues</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\slider.swg#L467" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\slider.swg#L494" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -18334,7 +18823,7 @@ Set left and right values, for a range.</p>
 <h3 class="content" id="Gui_Slider_setValue"><span class="titletype">func</span> <span class="titlelight">Slider.</span><span class="titlestrong">setValue</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\slider.swg#L441" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\slider.swg#L465" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -18349,10 +18838,12 @@ Set left and right values, for a range.</p>
 <h3 class="content" id="Gui_Slider_setValueLeft"><span class="titletype">func</span> <span class="titlelight">Slider.</span><span class="titlestrong">setValueLeft</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\slider.swg#L443" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\slider.swg#L468" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
+<p>
+Set the left value (in case of a range).</p>
 <p class="code">
 <code style="white-space: break-spaces">func setValueLeft(using self, f: f32)
 </code>
@@ -18364,10 +18855,12 @@ Set left and right values, for a range.</p>
 <h3 class="content" id="Gui_Slider_setValueRight"><span class="titletype">func</span> <span class="titlelight">Slider.</span><span class="titlestrong">setValueRight</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\slider.swg#L450" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\slider.swg#L476" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
+<p>
+Set the right value (in case of a range).</p>
 <p class="code">
 <code style="white-space: break-spaces">func setValueRight(using self, f: f32)
 </code>
@@ -18405,6 +18898,14 @@ f32</td>
 editSize</td>
 <td class="tdtype">
 f32</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+sigChanged</td>
+<td class="tdtype">
+<a href="#Gui_SigArray">Gui.SigArray</a>(closure(*<a href="#Gui_SliderCtrl">Gui.SliderCtrl</a>))</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -18483,7 +18984,7 @@ Set the slider current value.</p>
 <h3 class="content" id="Gui_SliderCtrl_IWnd_onResizeEvent"><span class="titletype">func</span> <span class="titlelight">IWnd.</span><span class="titlestrong">onResizeEvent</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\composite\sliderctrl.swg#L17" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\composite\sliderctrl.swg#L19" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -18498,7 +18999,7 @@ Set the slider current value.</p>
 <h3 class="content" id="Gui_SliderCtrl_create"><span class="titletype">func</span> <span class="titlelight">SliderCtrl.</span><span class="titlestrong">create</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\composite\sliderctrl.swg#L35" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\composite\sliderctrl.swg#L37" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -18515,7 +19016,7 @@ Create the popup list, but do not display it.</p>
 <h3 class="content" id="Gui_SliderCtrl_setMinMaxF32"><span class="titletype">func</span> <span class="titlelight">SliderCtrl.</span><span class="titlestrong">setMinMaxF32</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\composite\sliderctrl.swg#L95" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\composite\sliderctrl.swg#L96" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -18532,7 +19033,7 @@ Set a f32 range.</p>
 <h3 class="content" id="Gui_SliderCtrl_setMinMaxS64"><span class="titletype">func</span> <span class="titlelight">SliderCtrl.</span><span class="titlestrong">setMinMaxS64</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\composite\sliderctrl.swg#L110" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\composite\sliderctrl.swg#L111" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -18549,7 +19050,7 @@ Set a f64 range.</p>
 <h3 class="content" id="Gui_SliderCtrl_setMinMaxU64"><span class="titletype">func</span> <span class="titlelight">SliderCtrl.</span><span class="titlestrong">setMinMaxU64</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\composite\sliderctrl.swg#L102" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\composite\sliderctrl.swg#L103" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -18566,7 +19067,7 @@ Set a u64 range.</p>
 <h3 class="content" id="Gui_SliderCtrl_setValue"><span class="titletype">func</span> <span class="titlelight">SliderCtrl.</span><span class="titlestrong">setValue</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\composite\sliderctrl.swg#L118" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\composite\sliderctrl.swg#L119" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -18626,7 +19127,7 @@ Integer</td>
 <h3 class="content" id="Gui_SplitterCtrl"><span class="titletype">struct</span> <span class="titlelight">Gui.</span><span class="titlestrong">SplitterCtrl</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\composite\splitterctrl.swg#L22" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\composite\splitterctrl.swg#L23" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -18720,7 +19221,7 @@ Set the pane size (size of the first view).</p>
 <h3 class="content" id="Gui_SplitterCtrl_IWnd_onMouseEvent"><span class="titletype">func</span> <span class="titlelight">IWnd.</span><span class="titlestrong">onMouseEvent</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\composite\splitterctrl.swg#L36" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\composite\splitterctrl.swg#L37" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -18735,7 +19236,7 @@ Set the pane size (size of the first view).</p>
 <h3 class="content" id="Gui_SplitterCtrl_IWnd_onPostPaintEvent"><span class="titletype">func</span> <span class="titlelight">IWnd.</span><span class="titlestrong">onPostPaintEvent</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\composite\splitterctrl.swg#L151" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\composite\splitterctrl.swg#L152" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -18750,7 +19251,7 @@ Set the pane size (size of the first view).</p>
 <h3 class="content" id="Gui_SplitterCtrl_IWnd_onResizeEvent"><span class="titletype">func</span> <span class="titlelight">IWnd.</span><span class="titlestrong">onResizeEvent</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\composite\splitterctrl.swg#L101" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\composite\splitterctrl.swg#L102" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -18765,7 +19266,7 @@ Set the pane size (size of the first view).</p>
 <h3 class="content" id="Gui_SplitterCtrl_addPane"><span class="titletype">func</span> <span class="titlelight">SplitterCtrl.</span><span class="titlestrong">addPane</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\composite\splitterctrl.swg#L401" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\composite\splitterctrl.swg#L403" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -18782,7 +19283,7 @@ Add a new pane.</p>
 <h3 class="content" id="Gui_SplitterCtrl_create"><span class="titletype">func</span> <span class="titlelight">SplitterCtrl.</span><span class="titlestrong">create</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\composite\splitterctrl.swg#L382" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\composite\splitterctrl.swg#L384" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -18799,7 +19300,7 @@ Creates a new SplitterCtrl instance.</p>
 <h3 class="content" id="Gui_SplitterCtrl_isVertical"><span class="titletype">func</span> <span class="titlelight">SplitterCtrl.</span><span class="titlestrong">isVertical</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\composite\splitterctrl.swg#L397" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\composite\splitterctrl.swg#L399" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -18814,7 +19315,7 @@ Creates a new SplitterCtrl instance.</p>
 <h3 class="content" id="Gui_SplitterCtrl_setPaneSize"><span class="titletype">func</span> <span class="titlelight">SplitterCtrl.</span><span class="titlestrong">setPaneSize</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\composite\splitterctrl.swg#L437" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\composite\splitterctrl.swg#L439" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -18912,6 +19413,14 @@ label</td>
 tryPreserveSize</td>
 <td class="tdtype">
 bool</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+aniBar</td>
+<td class="tdtype">
+<a href="#Gui_BlendColor">Gui.BlendColor</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -19095,7 +19604,7 @@ VertCenter</td>
 <h3 class="content" id="Gui_StateEvent"><span class="titletype">struct</span> <span class="titlelight">Gui.</span><span class="titlestrong">StateEvent</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\events.swg#L123" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\events.swg#L124" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -20032,7 +20541,7 @@ bool</td>
 <h3 class="content" id="Gui_SysCommandEvent"><span class="titletype">struct</span> <span class="titlelight">Gui.</span><span class="titlestrong">SysCommandEvent</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\events.swg#L188" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\events.swg#L189" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -20061,7 +20570,7 @@ sysKind</td>
 <h3 class="content" id="Gui_SysCommandEvent_Kind"><span class="titletype">enum</span> <span class="titlelight">SysCommandEvent.</span><span class="titlestrong">Kind</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\events.swg#L192" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\events.swg#L193" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -20104,7 +20613,7 @@ User</td>
 <h3 class="content" id="Gui_SysUserEvent"><span class="titletype">struct</span> <span class="titlelight">Gui.</span><span class="titlestrong">SysUserEvent</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\events.swg#L180" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\events.swg#L181" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -20149,7 +20658,7 @@ u64</td>
 <h3 class="content" id="Gui_Tab"><span class="titletype">struct</span> <span class="titlelight">Gui.</span><span class="titlestrong">Tab</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\tab.swg#L50" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\tab.swg#L52" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -20299,7 +20808,7 @@ Set the tab form.</p>
 <h3 class="content" id="Gui_Tab_IWnd_onMouseEvent"><span class="titletype">func</span> <span class="titlelight">IWnd.</span><span class="titlestrong">onMouseEvent</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\tab.swg#L239" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\tab.swg#L243" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -20314,7 +20823,7 @@ Set the tab form.</p>
 <h3 class="content" id="Gui_Tab_IWnd_onPaintEvent"><span class="titletype">func</span> <span class="titlelight">IWnd.</span><span class="titlestrong">onPaintEvent</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\tab.swg#L161" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\tab.swg#L165" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -20329,7 +20838,7 @@ Set the tab form.</p>
 <h3 class="content" id="Gui_Tab_IWnd_onResizeEvent"><span class="titletype">func</span> <span class="titlelight">IWnd.</span><span class="titlestrong">onResizeEvent</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\tab.swg#L221" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\tab.swg#L225" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -20344,7 +20853,7 @@ Set the tab form.</p>
 <h3 class="content" id="Gui_Tab_IWnd_paintItem"><span class="titletype">func</span> <span class="titlelight">IWnd.</span><span class="titlestrong">paintItem</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\tab.swg#L76" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\tab.swg#L78" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -20359,7 +20868,7 @@ Set the tab form.</p>
 <h3 class="content" id="Gui_Tab_addItem"><span class="titletype">func</span> <span class="titlelight">Tab.</span><span class="titlestrong">addItem</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\tab.swg#L469" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\tab.swg#L473" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -20376,7 +20885,7 @@ Add a new view.</p>
 <h3 class="content" id="Gui_Tab_create"><span class="titletype">func</span> <span class="titlelight">Tab.</span><span class="titlestrong">create</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\tab.swg#L431" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\tab.swg#L435" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -20391,7 +20900,7 @@ Add a new view.</p>
 <h3 class="content" id="Gui_Tab_select"><span class="titletype">func</span> <span class="titlelight">Tab.</span><span class="titlestrong">select</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\tab.swg#L490" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\tab.swg#L494" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -20408,7 +20917,7 @@ Select one tab at the given index.</p>
 <h3 class="content" id="Gui_Tab_setForm"><span class="titletype">func</span> <span class="titlelight">Tab.</span><span class="titlestrong">setForm</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\tab.swg#L441" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\tab.swg#L445" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -20550,6 +21059,22 @@ f32</td>
 view</td>
 <td class="tdtype">
 *<a href="#Gui_Wnd">Gui.Wnd</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+aniImg</td>
+<td class="tdtype">
+<a href="#Gui_BlendColor">Gui.BlendColor</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+aniText</td>
+<td class="tdtype">
+<a href="#Gui_BlendColor">Gui.BlendColor</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -22638,6 +23163,14 @@ scrollBar_Bk</td>
 </tr>
 <tr>
 <td class="tdname">
+scrollBar_HotBk</td>
+<td class="tdtype">
+<a href="pixel.html#Pixel_Color">Pixel.Color</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
 scrollBar_DisabledBk</td>
 <td class="tdtype">
 <a href="pixel.html#Pixel_Color">Pixel.Color</a></td>
@@ -23175,6 +23708,22 @@ embInfo_CriticalBk</td>
 <tr>
 <td class="tdname">
 embInfo_InformationBk</td>
+<td class="tdtype">
+<a href="pixel.html#Pixel_Color">Pixel.Color</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+propList_focusBk</td>
+<td class="tdtype">
+<a href="pixel.html#Pixel_Color">Pixel.Color</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+propList_focusBorder</td>
 <td class="tdtype">
 <a href="pixel.html#Pixel_Color">Pixel.Color</a></td>
 <td class="enumeration">
@@ -25378,6 +25927,14 @@ stopwatch</td>
 <td class="enumeration">
 </td>
 </tr>
+<tr>
+<td class="tdname">
+toDelete</td>
+<td class="tdtype">
+bool</td>
+<td class="enumeration">
+</td>
+</tr>
 </table>
 <h3>Functions</h3>
 <table class="enumeration">
@@ -25395,7 +25952,7 @@ stopwatch</td>
 <h3 class="content" id="Gui_Timer_restart"><span class="titletype">func</span> <span class="titlelight">Timer.</span><span class="titlestrong">restart</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\timer.swg#L14" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\timer.swg#L15" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -25410,7 +25967,7 @@ stopwatch</td>
 <h3 class="content" id="Gui_TimerEvent"><span class="titletype">struct</span> <span class="titlelight">Gui.</span><span class="titlestrong">TimerEvent</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\events.swg#L106" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\events.swg#L107" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -25468,6 +26025,30 @@ func(*<a href="#Gui_ToggleButton">Gui.ToggleButton</a>)</td>
 <td class="enumeration">
 </td>
 </tr>
+<tr>
+<td class="tdname">
+aniBk</td>
+<td class="tdtype">
+<a href="#Gui_BlendColor">Gui.BlendColor</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+aniBorder</td>
+<td class="tdtype">
+<a href="#Gui_BlendColor">Gui.BlendColor</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+aniMark</td>
+<td class="tdtype">
+<a href="#Gui_BlendColor">Gui.BlendColor</a></td>
+<td class="enumeration">
+</td>
+</tr>
 </table>
 <h3>Functions</h3>
 <table class="enumeration">
@@ -25485,7 +26066,7 @@ func(*<a href="#Gui_ToggleButton">Gui.ToggleButton</a>)</td>
 <h3 class="content" id="Gui_ToggleButton_IWnd_onMouseEvent"><span class="titletype">func</span> <span class="titlelight">IWnd.</span><span class="titlestrong">onMouseEvent</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\togglebutton.swg#L66" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\togglebutton.swg#L74" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -25500,7 +26081,7 @@ func(*<a href="#Gui_ToggleButton">Gui.ToggleButton</a>)</td>
 <h3 class="content" id="Gui_ToggleButton_IWnd_onPaintEvent"><span class="titletype">func</span> <span class="titlelight">IWnd.</span><span class="titlestrong">onPaintEvent</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\togglebutton.swg#L14" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\togglebutton.swg#L18" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -25515,7 +26096,7 @@ func(*<a href="#Gui_ToggleButton">Gui.ToggleButton</a>)</td>
 <h3 class="content" id="Gui_ToggleButton_create"><span class="titletype">func</span> <span class="titlelight">ToggleButton.</span><span class="titlestrong">create</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\togglebutton.swg#L81" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\togglebutton.swg#L89" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -25592,7 +26173,7 @@ Show a tooltip.</p>
 <h3 class="content" id="Gui_Wnd"><span class="titletype">struct</span> <span class="titlelight">Gui.</span><span class="titlestrong">Wnd</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L88" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L89" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -26008,6 +26589,14 @@ Get the name associated with a given id shortcut.</p>
 </tr>
 <tr>
 <td class="enumeration">
+<a href="#Gui_Wnd_getOwner">getOwner(self)</a></td>
+<td class="enumeration">
+<p>
+Get the owner of the window.</p>
+</td>
+</tr>
+<tr>
+<td class="enumeration">
 <a href="#Gui_Wnd_getParentById">getParentById(self, string)</a></td>
 <td class="enumeration">
 <p>
@@ -26164,6 +26753,22 @@ Convert a local coordinate to a surface coordinate.</p>
 <td class="enumeration">
 <p>
 Move the wnd.</p>
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Gui_Wnd_notifyEvent">notifyEvent(self, Kind)</a></td>
+<td class="enumeration">
+<p>
+Send a notification event.</p>
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Gui_Wnd_ownerNotifyEvent">ownerNotifyEvent(self, Kind)</a></td>
+<td class="enumeration">
+<p>
+Send a notification event.</p>
 </td>
 </tr>
 <tr>
@@ -26396,7 +27001,7 @@ Main function to update command state of various windows/widgets.</p>
 <h3 class="content" id="Gui_Wnd_IWnd_onApplyStateEvent"><span class="titletype">func</span> <span class="titlelight">IWnd.</span><span class="titlestrong">onApplyStateEvent</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L202" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L205" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -26411,7 +27016,7 @@ Main function to update command state of various windows/widgets.</p>
 <h3 class="content" id="Gui_Wnd_IWnd_onCommandEvent"><span class="titletype">func</span> <span class="titlelight">IWnd.</span><span class="titlestrong">onCommandEvent</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L200" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L203" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -26426,7 +27031,7 @@ Main function to update command state of various windows/widgets.</p>
 <h3 class="content" id="Gui_Wnd_IWnd_onComputeStateEvent"><span class="titletype">func</span> <span class="titlelight">IWnd.</span><span class="titlestrong">onComputeStateEvent</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L201" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L204" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -26441,7 +27046,7 @@ Main function to update command state of various windows/widgets.</p>
 <h3 class="content" id="Gui_Wnd_IWnd_onCreateEvent"><span class="titletype">func</span> <span class="titlelight">IWnd.</span><span class="titlestrong">onCreateEvent</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L182" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L185" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -26456,7 +27061,7 @@ Main function to update command state of various windows/widgets.</p>
 <h3 class="content" id="Gui_Wnd_IWnd_onDestroyEvent"><span class="titletype">func</span> <span class="titlelight">IWnd.</span><span class="titlestrong">onDestroyEvent</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L183" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L186" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -26471,7 +27076,7 @@ Main function to update command state of various windows/widgets.</p>
 <h3 class="content" id="Gui_Wnd_IWnd_onEvent"><span class="titletype">func</span> <span class="titlelight">IWnd.</span><span class="titlestrong">onEvent</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L133" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L134" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -26486,7 +27091,7 @@ Main function to update command state of various windows/widgets.</p>
 <h3 class="content" id="Gui_Wnd_IWnd_onFocusEvent"><span class="titletype">func</span> <span class="titlelight">IWnd.</span><span class="titlestrong">onFocusEvent</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L197" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L200" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -26501,7 +27106,7 @@ Main function to update command state of various windows/widgets.</p>
 <h3 class="content" id="Gui_Wnd_IWnd_onFrameEvent"><span class="titletype">func</span> <span class="titlelight">IWnd.</span><span class="titlestrong">onFrameEvent</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L193" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L196" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -26516,7 +27121,7 @@ Main function to update command state of various windows/widgets.</p>
 <h3 class="content" id="Gui_Wnd_IWnd_onHookEvent"><span class="titletype">func</span> <span class="titlelight">IWnd.</span><span class="titlestrong">onHookEvent</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L191" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L194" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -26531,7 +27136,7 @@ Main function to update command state of various windows/widgets.</p>
 <h3 class="content" id="Gui_Wnd_IWnd_onKeyEvent"><span class="titletype">func</span> <span class="titlelight">IWnd.</span><span class="titlestrong">onKeyEvent</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L198" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L201" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -26546,7 +27151,7 @@ Main function to update command state of various windows/widgets.</p>
 <h3 class="content" id="Gui_Wnd_IWnd_onMouseEvent"><span class="titletype">func</span> <span class="titlelight">IWnd.</span><span class="titlestrong">onMouseEvent</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L199" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L202" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -26558,10 +27163,25 @@ Main function to update command state of various windows/widgets.</p>
 <table class="h3">
 <tr>
 <td class="h3">
+<h3 class="content" id="Gui_Wnd_IWnd_onNotifyEvent"><span class="titletype">func</span> <span class="titlelight">IWnd.</span><span class="titlestrong">onNotifyEvent</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L206" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p class="code">
+<code style="white-space: break-spaces">func onNotifyEvent(using self, evt: *<a href="#Gui_NotifyEvent">Gui.NotifyEvent</a>)
+</code>
+</p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Gui_Wnd_IWnd_onPaintEvent"><span class="titletype">func</span> <span class="titlelight">IWnd.</span><span class="titlestrong">onPaintEvent</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L187" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L190" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -26576,7 +27196,7 @@ Main function to update command state of various windows/widgets.</p>
 <h3 class="content" id="Gui_Wnd_IWnd_onPostPaintEvent"><span class="titletype">func</span> <span class="titlelight">IWnd.</span><span class="titlestrong">onPostPaintEvent</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L188" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L191" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -26591,7 +27211,7 @@ Main function to update command state of various windows/widgets.</p>
 <h3 class="content" id="Gui_Wnd_IWnd_onPrePaintEvent"><span class="titletype">func</span> <span class="titlelight">IWnd.</span><span class="titlestrong">onPrePaintEvent</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L186" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L189" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -26606,7 +27226,7 @@ Main function to update command state of various windows/widgets.</p>
 <h3 class="content" id="Gui_Wnd_IWnd_onResizeEvent"><span class="titletype">func</span> <span class="titlelight">IWnd.</span><span class="titlestrong">onResizeEvent</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L185" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L188" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -26621,7 +27241,7 @@ Main function to update command state of various windows/widgets.</p>
 <h3 class="content" id="Gui_Wnd_IWnd_onSerializeStateEvent"><span class="titletype">func</span> <span class="titlelight">IWnd.</span><span class="titlestrong">onSerializeStateEvent</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L192" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L195" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -26636,7 +27256,7 @@ Main function to update command state of various windows/widgets.</p>
 <h3 class="content" id="Gui_Wnd_IWnd_onSetThemeEvent"><span class="titletype">func</span> <span class="titlelight">IWnd.</span><span class="titlestrong">onSetThemeEvent</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L189" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L192" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -26651,7 +27271,7 @@ Main function to update command state of various windows/widgets.</p>
 <h3 class="content" id="Gui_Wnd_IWnd_onStateEvent"><span class="titletype">func</span> <span class="titlelight">IWnd.</span><span class="titlestrong">onStateEvent</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L184" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L187" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -26666,7 +27286,7 @@ Main function to update command state of various windows/widgets.</p>
 <h3 class="content" id="Gui_Wnd_IWnd_onSysCommandEvent"><span class="titletype">func</span> <span class="titlelight">IWnd.</span><span class="titlestrong">onSysCommandEvent</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L195" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L198" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -26681,7 +27301,7 @@ Main function to update command state of various windows/widgets.</p>
 <h3 class="content" id="Gui_Wnd_IWnd_onSysUserEvent"><span class="titletype">func</span> <span class="titlelight">IWnd.</span><span class="titlestrong">onSysUserEvent</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L196" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L199" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -26696,7 +27316,7 @@ Main function to update command state of various windows/widgets.</p>
 <h3 class="content" id="Gui_Wnd_IWnd_onTimerEvent"><span class="titletype">func</span> <span class="titlelight">IWnd.</span><span class="titlestrong">onTimerEvent</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L190" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L193" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -26711,7 +27331,7 @@ Main function to update command state of various windows/widgets.</p>
 <h3 class="content" id="Gui_Wnd_applyLayout"><span class="titletype">func</span> <span class="titlelight">Wnd.</span><span class="titlestrong">applyLayout</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L774" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L784" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -26732,7 +27352,7 @@ Apply the current layout (childs constraints).</p>
 <h3 class="content" id="Gui_Wnd_bringToFront"><span class="titletype">func</span> <span class="titlelight">Wnd.</span><span class="titlestrong">bringToFront</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L681" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L691" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -26749,7 +27369,7 @@ Force the window to be the first painted (before all siblings).</p>
 <h3 class="content" id="Gui_Wnd_bringToTop"><span class="titletype">func</span> <span class="titlelight">Wnd.</span><span class="titlestrong">bringToTop</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L695" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L705" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -26766,7 +27386,7 @@ Force the window to be the last painted (on top of siblings).</p>
 <h3 class="content" id="Gui_Wnd_captureMouse"><span class="titletype">func</span> <span class="titlelight">Wnd.</span><span class="titlestrong">captureMouse</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L968" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L980" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -26781,7 +27401,7 @@ Force the window to be the last painted (on top of siblings).</p>
 <h3 class="content" id="Gui_Wnd_computeStyle"><span class="titletype">func</span> <span class="titlelight">Wnd.</span><span class="titlestrong">computeStyle</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L422" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L432" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -26796,7 +27416,7 @@ Force the window to be the last painted (on top of siblings).</p>
 <h3 class="content" id="Gui_Wnd_create"><span class="titletype">func</span> <span class="titlelight">Wnd.</span><span class="titlestrong">create</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L225" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L229" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -26813,7 +27433,7 @@ func(T) create(parent: *<a href="#Gui_Wnd">Gui.Wnd</a>, name: string, position: 
 <h3 class="content" id="Gui_Wnd_destroy"><span class="titletype">func</span> <span class="titlelight">Wnd.</span><span class="titlestrong">destroy</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L266" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L270" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -26830,7 +27450,7 @@ Destroy the window.</p>
 <h3 class="content" id="Gui_Wnd_destroyNow"><span class="titletype">func</span> <span class="titlelight">Wnd.</span><span class="titlestrong">destroyNow</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L259" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L263" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -26847,7 +27467,7 @@ Destroy the window.</p>
 <h3 class="content" id="Gui_Wnd_disable"><span class="titletype">func</span> <span class="titlelight">Wnd.</span><span class="titlestrong">disable</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L381" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L391" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -26864,7 +27484,7 @@ Disable the window.</p>
 <h3 class="content" id="Gui_Wnd_enable"><span class="titletype">func</span> <span class="titlelight">Wnd.</span><span class="titlestrong">enable</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L358" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L368" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -26881,7 +27501,7 @@ Enable/Disable the window.</p>
 <h3 class="content" id="Gui_Wnd_fitPosInParent"><span class="titletype">func</span> <span class="titlelight">Wnd.</span><span class="titlestrong">fitPosInParent</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L538" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L548" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -26898,7 +27518,7 @@ Be sure rect is fully inside the parent rectangle (if possible).</p>
 <h3 class="content" id="Gui_Wnd_getApp"><span class="titletype">func</span> <span class="titlelight">Wnd.</span><span class="titlestrong">getApp</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L213" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L217" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -26913,7 +27533,7 @@ Be sure rect is fully inside the parent rectangle (if possible).</p>
 <h3 class="content" id="Gui_Wnd_getChildById"><span class="titletype">func</span> <span class="titlelight">Wnd.</span><span class="titlestrong">getChildById</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L936" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L948" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -26930,7 +27550,7 @@ Retrieve the child with the given id.</p>
 <h3 class="content" id="Gui_Wnd_getClientRect"><span class="titletype">func</span> <span class="titlelight">Wnd.</span><span class="titlestrong">getClientRect</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L589" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L599" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -26947,7 +27567,7 @@ Returns the client area.</p>
 <h3 class="content" id="Gui_Wnd_getClientRectPadding"><span class="titletype">func</span> <span class="titlelight">Wnd.</span><span class="titlestrong">getClientRectPadding</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L595" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L605" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -26964,7 +27584,7 @@ Returns the client area, with <code class = "incode">padding</code> applied.</p>
 <h3 class="content" id="Gui_Wnd_getFocus"><span class="titletype">func</span> <span class="titlelight">Wnd.</span><span class="titlestrong">getFocus</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L1012" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L1029" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -26981,7 +27601,7 @@ Get the window with the keyboard focus.</p>
 <h3 class="content" id="Gui_Wnd_getFont"><span class="titletype">func</span> <span class="titlelight">Wnd.</span><span class="titlestrong">getFont</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L221" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L225" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -26996,7 +27616,7 @@ Get the window with the keyboard focus.</p>
 <h3 class="content" id="Gui_Wnd_getKeyShortcut"><span class="titletype">func</span> <span class="titlelight">Wnd.</span><span class="titlestrong">getKeyShortcut</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L1036" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L1053" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -27013,7 +27633,7 @@ Get the id associated with a shortcut. null if none.</p>
 <h3 class="content" id="Gui_Wnd_getKeyShortcutNameFor"><span class="titletype">func</span> <span class="titlelight">Wnd.</span><span class="titlestrong">getKeyShortcutNameFor</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L1052" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L1067" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -27030,7 +27650,7 @@ Get the name associated with a given id shortcut.</p>
 <h3 class="content" id="Gui_Wnd_getMouseCapture"><span class="titletype">func</span> <span class="titlelight">Wnd.</span><span class="titlestrong">getMouseCapture</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L978" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L990" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -27042,10 +27662,27 @@ Get the name associated with a given id shortcut.</p>
 <table class="h3">
 <tr>
 <td class="h3">
+<h3 class="content" id="Gui_Wnd_getOwner"><span class="titletype">func</span> <span class="titlelight">Wnd.</span><span class="titlestrong">getOwner</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L333" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>
+Get the owner of the window.</p>
+<p class="code">
+<code style="white-space: break-spaces">func getOwner(using self)->*<a href="#Gui_Wnd">Gui.Wnd</a>
+</code>
+</p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Gui_Wnd_getParentById"><span class="titletype">func</span> <span class="titlelight">Wnd.</span><span class="titlestrong">getParentById</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L951" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L963" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -27062,7 +27699,7 @@ Retrieve the parent with the given id.</p>
 <h3 class="content" id="Gui_Wnd_getRectIn"><span class="titletype">func</span> <span class="titlelight">Wnd.</span><span class="titlestrong">getRectIn</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L621" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L631" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -27079,7 +27716,7 @@ Get the wnd position relative to a given parent.</p>
 <h3 class="content" id="Gui_Wnd_getSurfaceRect"><span class="titletype">func</span> <span class="titlelight">Wnd.</span><span class="titlestrong">getSurfaceRect</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L604" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L614" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -27096,7 +27733,7 @@ Get the wnd position in the surface.</p>
 <h3 class="content" id="Gui_Wnd_getTheme"><span class="titletype">func</span> <span class="titlelight">Wnd.</span><span class="titlestrong">getTheme</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L216" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L220" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -27111,7 +27748,7 @@ Get the wnd position in the surface.</p>
 <h3 class="content" id="Gui_Wnd_getThemeColors"><span class="titletype">func</span> <span class="titlelight">Wnd.</span><span class="titlestrong">getThemeColors</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L218" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L222" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -27126,7 +27763,7 @@ Get the wnd position in the surface.</p>
 <h3 class="content" id="Gui_Wnd_getThemeMetrics"><span class="titletype">func</span> <span class="titlelight">Wnd.</span><span class="titlestrong">getThemeMetrics</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L217" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L221" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -27141,7 +27778,7 @@ Get the wnd position in the surface.</p>
 <h3 class="content" id="Gui_Wnd_getThemeRects"><span class="titletype">func</span> <span class="titlelight">Wnd.</span><span class="titlestrong">getThemeRects</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L219" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L223" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -27156,7 +27793,7 @@ Get the wnd position in the surface.</p>
 <h3 class="content" id="Gui_Wnd_getTiming"><span class="titletype">func</span> <span class="titlelight">Wnd.</span><span class="titlestrong">getTiming</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L220" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L224" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -27171,7 +27808,7 @@ Get the wnd position in the surface.</p>
 <h3 class="content" id="Gui_Wnd_getTopView"><span class="titletype">func</span> <span class="titlelight">Wnd.</span><span class="titlestrong">getTopView</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L214" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L218" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -27186,7 +27823,7 @@ Get the wnd position in the surface.</p>
 <h3 class="content" id="Gui_Wnd_getTopWnd"><span class="titletype">func</span> <span class="titlelight">Wnd.</span><span class="titlestrong">getTopWnd</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L215" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L219" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -27201,7 +27838,7 @@ Get the wnd position in the surface.</p>
 <h3 class="content" id="Gui_Wnd_getWndAt"><span class="titletype">func</span> <span class="titlelight">Wnd.</span><span class="titlestrong">getWndAt</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L893" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L903" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -27218,7 +27855,7 @@ Get the child window at the given coordinate Coordinate is expressed in the pare
 <h3 class="content" id="Gui_Wnd_hasFocus"><span class="titletype">func</span> <span class="titlelight">Wnd.</span><span class="titlestrong">hasFocus</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L1018" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L1035" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -27235,7 +27872,7 @@ Returns true if the window has the keyboard focus.</p>
 <h3 class="content" id="Gui_Wnd_hide"><span class="titletype">func</span> <span class="titlelight">Wnd.</span><span class="titlestrong">hide</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L348" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L358" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -27252,7 +27889,7 @@ Hide the window.</p>
 <h3 class="content" id="Gui_Wnd_invalidate"><span class="titletype">func</span> <span class="titlelight">Wnd.</span><span class="titlestrong">invalidate</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L518" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L528" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -27269,7 +27906,7 @@ Force the window to be repainted.</p>
 <h3 class="content" id="Gui_Wnd_invalidateRect"><span class="titletype">func</span> <span class="titlelight">Wnd.</span><span class="titlestrong">invalidateRect</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L528" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L538" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -27286,7 +27923,7 @@ Force o local position to be repainted.</p>
 <h3 class="content" id="Gui_Wnd_isEnabled"><span class="titletype">func</span> <span class="titlelight">Wnd.</span><span class="titlestrong">isEnabled</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L405" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L415" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -27303,7 +27940,7 @@ Returns true if window, and all its parents, are enabled.</p>
 <h3 class="content" id="Gui_Wnd_isParentOf"><span class="titletype">func</span> <span class="titlelight">Wnd.</span><span class="titlestrong">isParentOf</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L922" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L932" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -27320,7 +27957,7 @@ Returns true if <code class = "incode">child</code> is in the child hieararchy o
 <h3 class="content" id="Gui_Wnd_isVisible"><span class="titletype">func</span> <span class="titlelight">Wnd.</span><span class="titlestrong">isVisible</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L387" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L397" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -27337,7 +27974,7 @@ Returns true if window, and all its parents, are visible.</p>
 <h3 class="content" id="Gui_Wnd_isVisibleState"><span class="titletype">func</span> <span class="titlelight">Wnd.</span><span class="titlestrong">isVisibleState</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L402" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L412" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -27352,7 +27989,7 @@ Returns true if window, and all its parents, are visible.</p>
 <h3 class="content" id="Gui_Wnd_localToSurface"><span class="titletype">func</span> <span class="titlelight">Wnd.</span><span class="titlestrong">localToSurface</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L575" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L585" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -27375,7 +28012,7 @@ Convert a local coordinate to a surface coordinate.</p>
 <h3 class="content" id="Gui_Wnd_move"><span class="titletype">func</span> <span class="titlelight">Wnd.</span><span class="titlestrong">move</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L732" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L742" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -27389,10 +28026,44 @@ Move the wnd.</p>
 <table class="h3">
 <tr>
 <td class="h3">
+<h3 class="content" id="Gui_Wnd_notifyEvent"><span class="titletype">func</span> <span class="titlelight">Wnd.</span><span class="titlestrong">notifyEvent</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L1163" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>
+Send a notification event.</p>
+<p class="code">
+<code style="white-space: break-spaces">func notifyEvent(using self, kind: <a href="#Gui_NotifyEvent_Kind">Gui.NotifyEvent.Kind</a>)
+</code>
+</p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Gui_Wnd_ownerNotifyEvent"><span class="titletype">func</span> <span class="titlelight">Wnd.</span><span class="titlestrong">ownerNotifyEvent</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L1171" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>
+Send a notification event.</p>
+<p class="code">
+<code style="white-space: break-spaces">func ownerNotifyEvent(using self, kind: <a href="#Gui_NotifyEvent_Kind">Gui.NotifyEvent.Kind</a>)
+</code>
+</p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Gui_Wnd_paint"><span class="titletype">func</span> <span class="titlelight">Wnd.</span><span class="titlestrong">paint</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L428" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L438" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -27407,7 +28078,7 @@ Move the wnd.</p>
 <h3 class="content" id="Gui_Wnd_postCommandEvent"><span class="titletype">func</span> <span class="titlelight">Wnd.</span><span class="titlestrong">postCommandEvent</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L1130" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L1143" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -27422,7 +28093,7 @@ Move the wnd.</p>
 <h3 class="content" id="Gui_Wnd_postEvent"><span class="titletype">func</span> <span class="titlelight">Wnd.</span><span class="titlestrong">postEvent</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L1080" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L1093" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -27437,7 +28108,7 @@ Move the wnd.</p>
 <h3 class="content" id="Gui_Wnd_postInvalidateEvent"><span class="titletype">func</span> <span class="titlelight">Wnd.</span><span class="titlestrong">postInvalidateEvent</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L1086" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L1099" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -27452,7 +28123,7 @@ Move the wnd.</p>
 <h3 class="content" id="Gui_Wnd_postQuitEvent"><span class="titletype">func</span> <span class="titlelight">Wnd.</span><span class="titlestrong">postQuitEvent</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L1075" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L1088" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -27467,7 +28138,7 @@ Move the wnd.</p>
 <h3 class="content" id="Gui_Wnd_postResizeEvent"><span class="titletype">func</span> <span class="titlelight">Wnd.</span><span class="titlestrong">postResizeEvent</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L1113" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L1126" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -27482,7 +28153,7 @@ Move the wnd.</p>
 <h3 class="content" id="Gui_Wnd_processEvent"><span class="titletype">func</span> <span class="titlelight">Wnd.</span><span class="titlestrong">processEvent</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L1140" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L1153" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -27497,7 +28168,7 @@ Move the wnd.</p>
 <h3 class="content" id="Gui_Wnd_registerAction"><span class="titletype">func</span> <span class="titlelight">Wnd.</span><span class="titlestrong">registerAction</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L1224" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L1253" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -27514,7 +28185,7 @@ Register one new action.</p>
 <h3 class="content" id="Gui_Wnd_registerKeyShortcut"><span class="titletype">func</span> <span class="titlelight">Wnd.</span><span class="titlestrong">registerKeyShortcut</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L1021" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L1038" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -27531,7 +28202,7 @@ Register a keyboard shortcut.</p>
 <h3 class="content" id="Gui_Wnd_releaseMouse"><span class="titletype">func</span> <span class="titlelight">Wnd.</span><span class="titlestrong">releaseMouse</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L973" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L985" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -27546,7 +28217,7 @@ Register a keyboard shortcut.</p>
 <h3 class="content" id="Gui_Wnd_resize"><span class="titletype">func</span> <span class="titlelight">Wnd.</span><span class="titlestrong">resize</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L756" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L766" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -27563,7 +28234,7 @@ Resize the wnd.</p>
 <h3 class="content" id="Gui_Wnd_screenToSurface"><span class="titletype">func</span> <span class="titlelight">Wnd.</span><span class="titlestrong">screenToSurface</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L562" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L572" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -27580,7 +28251,7 @@ Convert a screen coordinate to a surface coordinate (relative to my surface).</p
 <h3 class="content" id="Gui_Wnd_sendCommandEvent"><span class="titletype">func</span> <span class="titlelight">Wnd.</span><span class="titlestrong">sendCommandEvent</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L1199" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L1228" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -27599,7 +28270,7 @@ Send the command event with the given id to the window.</p>
 <h3 class="content" id="Gui_Wnd_sendComputeCommandStateEvent"><span class="titletype">func</span> <span class="titlelight">Wnd.</span><span class="titlestrong">sendComputeCommandStateEvent</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L1171" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L1200" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -27618,7 +28289,7 @@ Send the command state event with the given id to the window.</p>
 <h3 class="content" id="Gui_Wnd_sendCreateEvent"><span class="titletype">func</span> <span class="titlelight">Wnd.</span><span class="titlestrong">sendCreateEvent</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L1121" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L1134" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -27633,7 +28304,7 @@ Send the command state event with the given id to the window.</p>
 <h3 class="content" id="Gui_Wnd_sendEvent"><span class="titletype">func</span> <span class="titlelight">Wnd.</span><span class="titlestrong">sendEvent</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L1093" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L1106" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -27648,7 +28319,7 @@ Send the command state event with the given id to the window.</p>
 <h3 class="content" id="Gui_Wnd_sendResizeEvent"><span class="titletype">func</span> <span class="titlelight">Wnd.</span><span class="titlestrong">sendResizeEvent</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L1105" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L1118" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -27663,7 +28334,7 @@ Send the command state event with the given id to the window.</p>
 <h3 class="content" id="Gui_Wnd_sendStateEvent"><span class="titletype">func</span> <span class="titlelight">Wnd.</span><span class="titlestrong">sendStateEvent</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L1099" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L1112" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -27678,7 +28349,7 @@ Send the command state event with the given id to the window.</p>
 <h3 class="content" id="Gui_Wnd_serializeState"><span class="titletype">func</span> <span class="titlelight">Wnd.</span><span class="titlestrong">serializeState</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L1272" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L1301" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -27693,7 +28364,7 @@ Send the command state event with the given id to the window.</p>
 <h3 class="content" id="Gui_Wnd_setAllMargins"><span class="titletype">func</span> <span class="titlelight">Wnd.</span><span class="titlestrong">setAllMargins</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L656" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L666" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -27709,7 +28380,7 @@ func setAllMargins(using self, value: f32)
 <h3 class="content" id="Gui_Wnd_setAllPaddings"><span class="titletype">func</span> <span class="titlelight">Wnd.</span><span class="titlestrong">setAllPaddings</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L678" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L688" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -27725,7 +28396,7 @@ func setAllPaddings(using self, value: f32)
 <h3 class="content" id="Gui_Wnd_setFocus"><span class="titletype">func</span> <span class="titlelight">Wnd.</span><span class="titlestrong">setFocus</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L988" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L1000" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -27742,7 +28413,7 @@ Set the keyboard focus.</p>
 <h3 class="content" id="Gui_Wnd_setMargin"><span class="titletype">func</span> <span class="titlelight">Wnd.</span><span class="titlestrong">setMargin</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L637" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L647" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -27759,7 +28430,7 @@ Set margin for childs If a value is Swag.F32.Inf, then it wont be changed.</p>
 <h3 class="content" id="Gui_Wnd_setPadding"><span class="titletype">func</span> <span class="titlelight">Wnd.</span><span class="titlestrong">setPadding</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L660" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L670" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -27776,7 +28447,7 @@ Set padding for childs If a value is Swag.F32.Inf, then it wont be changed.</p>
 <h3 class="content" id="Gui_Wnd_setParent"><span class="titletype">func</span> <span class="titlelight">Wnd.</span><span class="titlestrong">setParent</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L293" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L297" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -27793,7 +28464,7 @@ Set window parent.</p>
 <h3 class="content" id="Gui_Wnd_setPosition"><span class="titletype">func</span> <span class="titlelight">Wnd.</span><span class="titlestrong">setPosition</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L718" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L728" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -27816,7 +28487,7 @@ Move and size the wnd.</p>
 <h3 class="content" id="Gui_Wnd_show"><span class="titletype">func</span> <span class="titlelight">Wnd.</span><span class="titlestrong">show</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L333" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L343" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -27833,7 +28504,7 @@ Show the window.</p>
 <h3 class="content" id="Gui_Wnd_surfaceToLocal"><span class="titletype">func</span> <span class="titlelight">Wnd.</span><span class="titlestrong">surfaceToLocal</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L568" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L578" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -27850,7 +28521,7 @@ Convert a surface coordinate to a local coordinate (relative to me).</p>
 <h3 class="content" id="Gui_Wnd_updateCommandState"><span class="titletype">func</span> <span class="titlelight">Wnd.</span><span class="titlestrong">updateCommandState</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L1155" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L1184" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -27869,7 +28540,7 @@ Main function to update command state of various windows/widgets.</p>
 <h3 class="content" id="Gui_WndFlags"><span class="titletype">enum</span> <span class="titlelight">Gui.</span><span class="titlestrong">WndFlags</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L76" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L77" class="src">[src]</a></td>
 </tr>
 </table>
 </p>

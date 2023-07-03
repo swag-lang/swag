@@ -12,12 +12,6 @@
             line-height:    1.3em;
             font-family:    Segoe UI;
         }
-        blockquote {
-            background-color:   LightYellow;
-            border-left:        6px solid Orange;
-            padding:            10px;
-            width:              90%;
-        }
         .left {
             display:    block;
             overflow-y: scroll;
@@ -34,6 +28,12 @@
         .page {
             width:  1000;
             margin: 0 auto;
+        }
+        blockquote {
+            background-color:   LightYellow;
+            border-left:        6px solid Orange;
+            padding:            10px;
+            width:              90%;
         }
         a {
             text-decoration: none;
@@ -511,6 +511,7 @@
 <li><a href="#Pixel_Painter_addParams">Painter.addParams</a></li>
 <li><a href="#Pixel_Painter_begin">Painter.begin</a></li>
 <li><a href="#Pixel_Painter_bindRenderTarget">Painter.bindRenderTarget</a></li>
+<li><a href="#Pixel_Painter_capStyleExtent">Painter.capStyleExtent</a></li>
 <li><a href="#Pixel_Painter_clear">Painter.clear</a></li>
 <li><a href="#Pixel_Painter_computeLayout">Painter.computeLayout</a></li>
 <li><a href="#Pixel_Painter_drawArc">Painter.drawArc</a></li>
@@ -674,6 +675,7 @@
 <li><a href="#Pixel_Color_fromHsl">Color.fromHsl</a></li>
 <li><a href="#Pixel_Color_fromRgb">Color.fromRgb</a></li>
 <li><a href="#Pixel_Color_fromRgbf">Color.fromRgbf</a></li>
+<li><a href="#Pixel_Color_fromVector4">Color.fromVector4</a></li>
 <li><a href="#Pixel_Color_getBlend">Color.getBlend</a></li>
 <li><a href="#Pixel_Color_getBlendKeepAlpha">Color.getBlendKeepAlpha</a></li>
 <li><a href="#Pixel_Color_getDarker">Color.getDarker</a></li>
@@ -690,6 +692,7 @@
 <li><a href="#Pixel_Color_toArgbf">Color.toArgbf</a></li>
 <li><a href="#Pixel_Color_toHsl">Color.toHsl</a></li>
 <li><a href="#Pixel_Color_toRgbf">Color.toRgbf</a></li>
+<li><a href="#Pixel_Color_toVector4">Color.toVector4</a></li>
 <li><a href="#Pixel_Color_IPokeValue_poke">IPokeValue.poke</a></li>
 <li><a href="#Pixel_LinePath_arcTo">LinePath.arcTo</a></li>
 <li><a href="#Pixel_LinePath_bezierTo">LinePath.bezierTo</a></li>
@@ -718,7 +721,7 @@
 <div class="right">
 <div class="page">
 <blockquote>
-<b>Work in progress</b>. Generated documentation (swag doc 0.19.0)</blockquote>
+<b>Work in progress</b>. Generated documentation (swag doc 0.20.0)</blockquote>
 <h2 class="content">Content</h2>
 <p>
 <table class="h3">
@@ -2108,7 +2111,7 @@ u32</td>
 <h3 class="content" id="Pixel_BorderPos"><span class="titletype">enum</span> <span class="titlelight">Pixel.</span><span class="titlestrong">BorderPos</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\types\pen.swg#L40" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\types\pen.swg#L41" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -3634,6 +3637,14 @@ Create a new Color with specified values.</p>
 </tr>
 <tr>
 <td class="enumeration">
+<a href="#Pixel_Color_fromVector4">fromVector4(const ref Vector4)</a></td>
+<td class="enumeration">
+<p>
+Create a new Color with specified values.</p>
+</td>
+</tr>
+<tr>
+<td class="enumeration">
 <a href="#Pixel_Color_getBlend">getBlend(const ref Color, const ref Color, f32)</a></td>
 <td class="enumeration">
 <p>
@@ -3750,6 +3761,14 @@ Returns hue, saturation, lightness.</p>
 Retrieve all components as floating point values between 0 and 1.</p>
 </td>
 </tr>
+<tr>
+<td class="enumeration">
+<a href="#Pixel_Color_toVector4">toVector4(self)</a></td>
+<td class="enumeration">
+<p>
+Get the color as a <a href="math.html#Math_Vector4">Math.Vector4</a>.</p>
+</td>
+</tr>
 </table>
 <h3>Special Functions</h3>
 <table class="enumeration">
@@ -3797,7 +3816,7 @@ Retrieve all components as floating point values between 0 and 1.</p>
 <h3 class="content" id="Pixel_Color_IPokeValue_poke"><span class="titletype">func</span> <span class="titlelight">IPokeValue.</span><span class="titlestrong">poke</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\types\color.swg#L332" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\types\color.swg#L353" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -3812,7 +3831,7 @@ Retrieve all components as floating point values between 0 and 1.</p>
 <h3 class="content" id="Pixel_Color_fromAbgr"><span class="titletype">func</span> <span class="titlelight">Color.</span><span class="titlestrong">fromAbgr</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\types\color.swg#L169" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\types\color.swg#L181" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -3829,7 +3848,7 @@ Create a new Color with specified values.</p>
 <h3 class="content" id="Pixel_Color_fromArgb"><span class="titletype">func</span> <span class="titlelight">Color.</span><span class="titlestrong">fromArgb</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\types\color.swg#L144" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\types\color.swg#L156" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -3864,7 +3883,7 @@ Create a new Color with specified values.</p>
 <h3 class="content" id="Pixel_Color_fromArgbf"><span class="titletype">func</span> <span class="titlelight">Color.</span><span class="titlestrong">fromArgbf</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\types\color.swg#L181" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\types\color.swg#L193" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -3881,7 +3900,7 @@ Create a new Color with specified values.</p>
 <h3 class="content" id="Pixel_Color_fromHsl"><span class="titletype">func</span> <span class="titlelight">Color.</span><span class="titlestrong">fromHsl</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\types\color.swg#L190" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\types\color.swg#L211" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -3898,7 +3917,7 @@ Create a new Color with specified values.</p>
 <h3 class="content" id="Pixel_Color_fromRgb"><span class="titletype">func</span> <span class="titlelight">Color.</span><span class="titlestrong">fromRgb</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\types\color.swg#L117" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\types\color.swg#L129" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -3915,7 +3934,7 @@ Create a new Color with specified values.</p>
 <h3 class="content" id="Pixel_Color_fromRgbf"><span class="titletype">func</span> <span class="titlelight">Color.</span><span class="titlestrong">fromRgbf</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\types\color.swg#L126" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\types\color.swg#L138" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -3929,10 +3948,27 @@ Create a new Color with specified values.</p>
 <table class="h3">
 <tr>
 <td class="h3">
+<h3 class="content" id="Pixel_Color_fromVector4"><span class="titletype">func</span> <span class="titlelight">Color.</span><span class="titlestrong">fromVector4</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\types\color.swg#L202" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>
+Create a new Color with specified values.</p>
+<p class="code">
+<code style="white-space: break-spaces">func fromVector4(vec: <a href="core.html#Core_Math_Vector4">Core.Math.Vector4</a>)-><a href="#Pixel_Color">Pixel.Color</a>
+</code>
+</p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Pixel_Color_getBlend"><span class="titletype">func</span> <span class="titlelight">Color.</span><span class="titlestrong">getBlend</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\types\color.swg#L294" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\types\color.swg#L315" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -3949,7 +3985,7 @@ Blend two colors.</p>
 <h3 class="content" id="Pixel_Color_getBlendKeepAlpha"><span class="titletype">func</span> <span class="titlelight">Color.</span><span class="titlestrong">getBlendKeepAlpha</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\types\color.swg#L282" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\types\color.swg#L303" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -3966,7 +4002,7 @@ Blend two colors, keeping the alpha channel of <code class = "incode">col0</code
 <h3 class="content" id="Pixel_Color_getDarker"><span class="titletype">func</span> <span class="titlelight">Color.</span><span class="titlestrong">getDarker</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\types\color.swg#L306" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\types\color.swg#L327" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -3983,7 +4019,7 @@ Returns a darker color.</p>
 <h3 class="content" id="Pixel_Color_getDistanceRgb"><span class="titletype">func</span> <span class="titlelight">Color.</span><span class="titlestrong">getDistanceRgb</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\types\color.swg#L319" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\types\color.swg#L340" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -4000,7 +4036,7 @@ Returns the distance between the other color.</p>
 <h3 class="content" id="Pixel_Color_getLighter"><span class="titletype">func</span> <span class="titlelight">Color.</span><span class="titlestrong">getLighter</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\types\color.swg#L313" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\types\color.swg#L334" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -4100,7 +4136,7 @@ Set all components with floats in the range [0 1].</p>
 <h3 class="content" id="Pixel_Color_setHsl"><span class="titletype">func</span> <span class="titlelight">Color.</span><span class="titlestrong">setHsl</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\types\color.swg#L198" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\types\color.swg#L219" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -4180,7 +4216,7 @@ Retrieve all components as floating point values between 0 and 1.</p>
 <h3 class="content" id="Pixel_Color_toHsl"><span class="titletype">func</span> <span class="titlelight">Color.</span><span class="titlestrong">toHsl</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\types\color.swg#L240" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\types\color.swg#L261" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -4197,7 +4233,7 @@ Returns hue, saturation, lightness.</p>
 <h3 class="content" id="Pixel_Color_toRgbf"><span class="titletype">func</span> <span class="titlelight">Color.</span><span class="titlestrong">toRgbf</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\types\color.swg#L106" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\types\color.swg#L118" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -4205,6 +4241,23 @@ Returns hue, saturation, lightness.</p>
 Retrieve all components as floating point values between 0 and 1.</p>
 <p class="code">
 <code style="white-space: break-spaces">func toRgbf(const self)-&gt;{r: f32, g: f32, b: f32}
+</code>
+</p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Pixel_Color_toVector4"><span class="titletype">func</span> <span class="titlelight">Color.</span><span class="titlestrong">toVector4</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\types\color.swg#L106" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>
+Get the color as a <a href="math.html#Math_Vector4">Math.Vector4</a>.</p>
+<p class="code">
+<code style="white-space: break-spaces">func toVector4(const self)-><a href="core.html#Core_Math_Vector4">Core.Math.Vector4</a>
 </code>
 </p>
 <p>
@@ -4628,7 +4681,7 @@ s32</td>
 <h3 class="content" id="Pixel_DashCapStyle"><span class="titletype">enum</span> <span class="titlelight">Pixel.</span><span class="titlestrong">DashCapStyle</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\types\pen.swg#L14" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\types\pen.swg#L15" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -4665,7 +4718,7 @@ Square</td>
 <h3 class="content" id="Pixel_DashStyle"><span class="titletype">enum</span> <span class="titlelight">Pixel.</span><span class="titlestrong">DashStyle</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\types\pen.swg#L31" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\types\pen.swg#L32" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -8399,7 +8452,7 @@ InvalidTextureHandle</td>
 <h3 class="content" id="Pixel_JoinStyle"><span class="titletype">enum</span> <span class="titlelight">Pixel.</span><span class="titlestrong">JoinStyle</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\types\pen.swg#L22" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\types\pen.swg#L23" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -8615,6 +8668,12 @@ ArrowAnchor</td>
 <tr>
 <td class="tdname">
 SquareAnchor</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+RoundAnchor</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -9760,6 +9819,14 @@ Bind a render target.</p>
 </tr>
 <tr>
 <td class="enumeration">
+<a href="#Pixel_Painter_capStyleExtent">capStyleExtent(LineCapStyle, f32, f32)</a></td>
+<td class="enumeration">
+<p>
+Returns the extent in both directions of a given LineCapStyle.</p>
+</td>
+</tr>
+<tr>
+<td class="enumeration">
 <a href="#Pixel_Painter_clear">clear(self, const ref Color)</a></td>
 <td class="enumeration">
 <p>
@@ -10538,6 +10605,29 @@ Bind a render target.</p>
 <table class="h3">
 <tr>
 <td class="h3">
+<h3 class="content" id="Pixel_Painter_capStyleExtent"><span class="titletype">func</span> <span class="titlelight">Painter.</span><span class="titlestrong">capStyleExtent</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\painter\drawpath.swg#L753" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>
+Returns the extent in both directions of a given LineCapStyle.</p>
+<p class="code">
+<code style="white-space: break-spaces">func capStyleExtent(capStyle: <a href="#Pixel_LineCapStyle">Pixel.LineCapStyle</a>, lineSize: f32, capScale: f32)->{w: f32, l: f32}
+</code>
+</p>
+<p>
+<ul>
+<li> <code class = "incode">lineSize</code> is the supposed line drawing size</li>
+<li> <code class = "incode">capScale</code> is the supposed LineCapStyle scale</li>
+</ul>
+ Returns the width and the length.</p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Pixel_Painter_clear"><span class="titletype">func</span> <span class="titlelight">Painter.</span><span class="titlestrong">clear</span></h3>
 </td>
 <td class="srcref">
@@ -10721,7 +10811,7 @@ func drawLine(using self, startX: f32, startY: f32, endX: f32, endY: f32, pen: <
 <h3 class="content" id="Pixel_Painter_drawPath"><span class="titletype">func</span> <span class="titlelight">Painter.</span><span class="titlestrong">drawPath</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\painter\drawpath.swg#L655" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\painter\drawpath.swg#L669" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -11755,7 +11845,7 @@ Bind a render target.</p>
 <h3 class="content" id="Pixel_Pen"><span class="titletype">struct</span> <span class="titlelight">Pixel.</span><span class="titlestrong">Pen</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\types\pen.swg#L46" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\types\pen.swg#L47" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -11923,7 +12013,7 @@ Returns a solid color pen.</p>
 <h3 class="content" id="Pixel_Pen_createDash"><span class="titletype">func</span> <span class="titlelight">Pen.</span><span class="titlestrong">createDash</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\types\pen.swg#L83" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\types\pen.swg#L84" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -11940,7 +12030,7 @@ Returns a dash pen.</p>
 <h3 class="content" id="Pixel_Pen_createHatch"><span class="titletype">func</span> <span class="titlelight">Pen.</span><span class="titlestrong">createHatch</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\types\pen.swg#L94" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\types\pen.swg#L95" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -11957,7 +12047,7 @@ Return a predefined hatch pen.</p>
 <h3 class="content" id="Pixel_Pen_createSolid"><span class="titletype">func</span> <span class="titlelight">Pen.</span><span class="titlestrong">createSolid</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\types\pen.swg#L73" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\types\pen.swg#L74" class="src">[src]</a></td>
 </tr>
 </table>
 </p>

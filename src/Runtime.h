@@ -265,6 +265,9 @@ struct BuildCfg
 
     // Paths
     SwagSlice repoPath;
+
+    // Documentation
+    SwagSlice docCss;
 };
 
 enum class TypeInfoKind : uint8_t

@@ -119,6 +119,9 @@ struct CommandLine
     Path exePath;
     Utf8 exePathStr;
 
+    // Doc
+    Utf8 docCss;
+
     bool check();
 };
 

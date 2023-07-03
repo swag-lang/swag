@@ -570,6 +570,7 @@ This is the list of all keywords in the language. </p>
 </span><span style="color:#3186CD">throw</span><span style="color:#0">
 </span><span style="color:#3186CD">closure</span><span style="color:#0">
 </span><span style="color:#3186CD">func</span><span style="color:#0">
+</span><span style="color:#3186CD">mtd</span><span style="color:#0">
 </span><span style="color:#3186CD">attr</span><span style="color:#0">
 </span><span style="color:#3186CD">enum</span><span style="color:#0">
 </span><span style="color:#3186CD">struct</span><span style="color:#0">
@@ -745,7 +746,8 @@ This is the list of all keywords in the language. </p>
 ,bit
 ,move
 ,moveraw
-,up</span></code></pre><p>
+,up
+,unconst</span></code></pre><p>
 </p>
 
 <h2 id="006_semicolon">Semicolon</h2>
@@ -3190,7 +3192,7 @@ You can have multiple <code>impl</code> blocks. The difference with a namespace 
     </span><span style="color:#6A9955">// 'Self' is the corresponding type, in that case 'MyStruct'</span><span style="color:#0">
     </span><span style="color:#3186CD">func</span><span style="color:#0"> </span><span style="color:#FF6A00">returnZ</span><span style="color:#0">(me: </span><span style="color:#ED9A11">Self</span><span style="color:#0">)   => me.z
 }</span></code></pre><p>
-If you declare your function with <code>mtd</code> (method) instead of <code>func</code>, then the first parameter is forced to be <code>using self</code>. If you declare your function with <code>mtdc</code> (method const) instead of <code>func</code>, then the first parameter is forced to be <code>const using self</code>. Other than that, it's exactly the same. So this is just <b>syntaxic sugar</b> to avoid repeating the <code>using self</code>. </p>
+If you declare your function with <code>mtd</code> (method) instead of <code>func</code>, then the first parameter is forced to be <code>using self</code>. If you declare your function with <code>mtd const</code> (method const) instead of <code>func</code>, then the first parameter is forced to be <code>const using self</code>. Other than that, it's exactly the same. So this is just <b>syntaxic sugar</b> to avoid repeating the <code>using self</code>. </p>
 <pre><code><span style="color:#3186CD">impl</span><span style="color:#0"> </span><span style="color:#3BC3A7">MyStruct</span><span style="color:#0">
 {
     </span><span style="color:#3186CD">mtd</span><span style="color:#0">  </span><span style="color:#FF6A00">methodReturnX</span><span style="color:#0">()          => x
@@ -3822,40 +3824,44 @@ Unlike C++, the virtual table is not embedded with the struct. It is a separate 
 Here we declare an interface, with two functions <code>set</code> and <code>reset</code>. </p>
 <pre><code><span style="color:#3186CD">interface</span><span style="color:#0"> </span><span style="color:#3BC3A7">IReset</span><span style="color:#0">
 {
-    </span><span style="color:#6A9955">// You must declare a lambda variable for each "virtual" function.</span><span style="color:#0">
-    </span><span style="color:#6A9955">// As the first parameter is always 'self', you can either declare it</span><span style="color:#0">
-    </span><span style="color:#6A9955">// yourself or use 'mtd/mtdc'</span><span style="color:#0">
-    set: </span><span style="color:#3186CD">mtd</span><span style="color:#0">(</span><span style="color:#ED9A11">f32</span><span style="color:#0">)
+    </span><span style="color:#6A9955">// The first parameter must be 'self'</span><span style="color:#0">
+    </span><span style="color:#3186CD">func</span><span style="color:#0"> </span><span style="color:#FF6A00">set</span><span style="color:#0">(</span><span style="color:#ED9A11">self</span><span style="color:#0">, val: </span><span style="color:#ED9A11">f32</span><span style="color:#0">)
 
-    </span><span style="color:#6A9955">// You can also use the normal "func/mtd/mtdc" declaration.</span><span style="color:#0">
-    </span><span style="color:#6A9955">// The compiler will then create the table entry for you.</span><span style="color:#0">
+    </span><span style="color:#6A9955">// You can also use the 'mtd' declaration to avoid specifying the 'self' yourself</span><span style="color:#0">
     </span><span style="color:#3186CD">mtd</span><span style="color:#0"> </span><span style="color:#FF6A00">reset</span><span style="color:#0">()
 }</span></code></pre><p>
 You can implement an interface for any given struct with <code>impl</code> and <code>for</code>. For example here, we implement interface <code>IReset</code> for struct <code>Point2</code>. </p>
 <pre><code><span style="color:#3186CD">impl</span><span style="color:#0"> </span><span style="color:#3BC3A7">IReset</span><span style="color:#0"> </span><span style="color:#B040BE">for</span><span style="color:#0"> </span><span style="color:#3BC3A7">Point2</span><span style="color:#0">
 {
-    </span><span style="color:#3186CD">mtd</span><span style="color:#0"> </span><span style="color:#FF6A00">set</span><span style="color:#0">(val: </span><span style="color:#ED9A11">f32</span><span style="color:#0">)
+    </span><span style="color:#6A9955">// You must add 'impl' to indicate that you want to implement a function of the interface.</span><span style="color:#0">
+    </span><span style="color:#3186CD">mtd</span><span style="color:#0"> </span><span style="color:#3186CD">impl</span><span style="color:#0"> </span><span style="color:#FF6A00">set</span><span style="color:#0">(val: </span><span style="color:#ED9A11">f32</span><span style="color:#0">)
     {
         x = val
         y = val+</span><span style="color:#74A35B">1</span><span style="color:#0">
     }
 
-    </span><span style="color:#3186CD">mtd</span><span style="color:#0"> </span><span style="color:#FF6A00">reset</span><span style="color:#0">()
+    </span><span style="color:#6A9955">// Don't forget that 'mtd' is just syntaxic sugar. 'func' still works.</span><span style="color:#0">
+    </span><span style="color:#3186CD">func</span><span style="color:#0"> </span><span style="color:#3186CD">impl</span><span style="color:#0"> </span><span style="color:#FF6A00">reset</span><span style="color:#0">(</span><span style="color:#ED9A11">self</span><span style="color:#0">)
     {
-        x, y = </span><span style="color:#74A35B">0</span><span style="color:#0">
+        </span><span style="color:#ED9A11">self</span><span style="color:#0">.x, </span><span style="color:#ED9A11">self</span><span style="color:#0">.y = </span><span style="color:#74A35B">0</span><span style="color:#0">
+    }
+
+    </span><span style="color:#6A9955">// Not that you can also declare 'normal' functions or methods in an 'impl block'.</span><span style="color:#0">
+    </span><span style="color:#3186CD">mtd</span><span style="color:#0"> </span><span style="color:#FF6A00">myOtherMethod</span><span style="color:#0">()
+    {
     }
 }</span></code></pre><p>
 And we implement interface <code>IReset</code> also for struct <code>Point3</code>. </p>
 <pre><code><span style="color:#3186CD">impl</span><span style="color:#0"> </span><span style="color:#3BC3A7">IReset</span><span style="color:#0"> </span><span style="color:#B040BE">for</span><span style="color:#0"> </span><span style="color:#3BC3A7">Point3</span><span style="color:#0">
 {
-    </span><span style="color:#3186CD">mtd</span><span style="color:#0"> </span><span style="color:#FF6A00">set</span><span style="color:#0">(val: </span><span style="color:#ED9A11">f32</span><span style="color:#0">)
+    </span><span style="color:#3186CD">mtd</span><span style="color:#0"> </span><span style="color:#3186CD">impl</span><span style="color:#0"> </span><span style="color:#FF6A00">set</span><span style="color:#0">(val: </span><span style="color:#ED9A11">f32</span><span style="color:#0">)
     {
         x = val
         y = val+</span><span style="color:#74A35B">1</span><span style="color:#0">
         z = val+</span><span style="color:#74A35B">2</span><span style="color:#0">
     }
 
-    </span><span style="color:#3186CD">mtd</span><span style="color:#0"> </span><span style="color:#FF6A00">reset</span><span style="color:#0">()
+    </span><span style="color:#3186CD">mtd</span><span style="color:#0"> </span><span style="color:#3186CD">impl</span><span style="color:#0"> </span><span style="color:#FF6A00">reset</span><span style="color:#0">()
     {
         x, y, z = </span><span style="color:#74A35B">0</span><span style="color:#0">
     }

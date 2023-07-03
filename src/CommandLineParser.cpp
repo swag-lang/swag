@@ -90,6 +90,8 @@ void CommandLineParser::setup(CommandLine* cmdLine)
                                   
     addArg("cl sc",               "--clean-dep",            nullptr,    CommandLineType::Bool,          &cmdLine->cleanDep, nullptr, "removes the content of the dependency folder");
     addArg("cl",                  "--clean-log",            nullptr,    CommandLineType::Bool,          &cmdLine->cleanLog, nullptr, "display what will be removed, without actually cleaning");
+
+    addArg("doc",                 "--css",                  nullptr,    CommandLineType::String,        &cmdLine->docCss, nullptr, "set the css file path to include in documentations");
     // clang-format on
 }
 

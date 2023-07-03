@@ -125,6 +125,12 @@ void Module::setup(const Utf8& moduleName, const Path& modulePath)
     if (g_CommandLine.buildCfgLlvmIR != "default")
         buildCfg.backendLLVM.outputIR = g_CommandLine.buildCfgLlvmIR == "true" ? true : false;
 
+    if (!g_CommandLine.docCss.empty())
+    {
+        buildCfg.docCss.buffer = g_CommandLine.docCss.buffer;
+        buildCfg.docCss.count  = g_CommandLine.docCss.count;
+    }
+
     computePublicPath();
 }
 

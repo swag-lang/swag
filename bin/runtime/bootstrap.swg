@@ -729,14 +729,16 @@ namespace Swag
         backendSubKind            = BuildCfgBackendSubKind.Console  // Backend sub kind
         backendDebugInformations  = false                           // Output debug informations if 'true'
         backendOptimize           = BuildCfgBackendOptim.O0         // Backend optimization level
-        backendNumCU: u32         = 0
+        backendNumCU              = 0'u32
 
         linkerArgs:     string                  // Additional linker arguments
 
         backendLLVM:    BuildCfgBackendLLVM     // Specific LLVM options
         backendX64:     BuildCfgBackendX64      // Specific X86_64 options
 
-        repoPath:  string  // Repository access path to the module
+        repoPath:       string                  // Repository access path to the module
+
+        docCss:         string                  // The 'css' file to include in generated documentations
     }
 
     // #########################################################
