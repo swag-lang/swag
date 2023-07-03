@@ -12,7 +12,7 @@ const MAX_PAGES = 8
     surface0.setTitle("Example 0")
     surface0.setIcon(app.theme.getIcon24(ThemeIcons24.WndMinimize, 20))
 
-    tab := Tab.create(surface0.wnd.view, {}, id: "bigtab")
+    tab := Tab.create(surface0.wnd.view, {}, id = "bigtab")
     g_Tab = tab
     tab.dockStyle = .Center
     tab.barLayout = .Fixed

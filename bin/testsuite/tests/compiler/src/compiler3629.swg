@@ -9,7 +9,7 @@ impl A
     #[Swag.Inline]
     func(T) create(parent: *void, position: f32, id: Alias0 = null, hook: Alias1 = null)
     {
-        create(parent, "", position, hook: hook)
+        create(parent, "", position, hook = hook)
     }
 
     #[Swag.Inline]

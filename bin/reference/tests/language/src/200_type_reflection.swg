@@ -62,11 +62,11 @@ In Swag, types are also values that can be inspected at compile time or at runti
                 return s32
         }
 
-        var x: @decltype(getType(needAString: false))
+        var x: @decltype(getType(needAString = false))
         #assert @typeof(x) == s32
         x = 0
 
-        var x1: @decltype(getType(needAString: true))
+        var x1: @decltype(getType(needAString = true))
         #assert @typeof(x1) == string
         x1 = "0"
     }

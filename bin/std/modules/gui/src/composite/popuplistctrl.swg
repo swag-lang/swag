@@ -6,9 +6,9 @@ struct PopupListCtrlItem
     using base: Item
     isSeparator: bool
 
-    aniSel:     BlendColor{speed: 10}
-    aniText:    BlendColor{speed: 10}
-    aniCheck:   BlendColor{speed: 10}
+    aniSel:     BlendColor{speed = 10}
+    aniText:    BlendColor{speed = 10}
+    aniCheck:   BlendColor{speed = 10}
 }
 
 struct PopupListCtrl

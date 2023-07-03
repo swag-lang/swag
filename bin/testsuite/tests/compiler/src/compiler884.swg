@@ -8,7 +8,7 @@ func chooseStepFunction(backward: bool) => backward ? &stepBackward : &stepForwa
 #test
 {
 	currentValue := 3
-	moveNearerToZero := chooseStepFunction(backward: currentValue > 0)
+	moveNearerToZero := chooseStepFunction(backward = currentValue > 0)
 
 	cpt := 0
 	while currentValue != 0 {

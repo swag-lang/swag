@@ -45,7 +45,7 @@ public impl MessageDlg
         metrics := getThemeMetrics()
 
         // Evaluate size of text
-        var fake: Painter{fake: true}
+        var fake: Painter{fake = true}
         var rsf:  RichStringFormat
         rsf.font = getFont()
         rsf.flags |= .WordWrap

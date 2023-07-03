@@ -86,7 +86,7 @@ func paintGrid(wnd: *Wnd, painter: *Painter)
         str := Format.toString("%", c.val)
         zoom := c.z
         zoom -= (cast(f32) str.length * 0.08)
-        painter.drawStringCenter(xi + (CellSizeW*0.5), yi + (CellSizeW*0.5), str, g_Font, Argb.Black, zoom: zoom)
+        painter.drawStringCenter(xi + (CellSizeW*0.5), yi + (CellSizeW*0.5), str, g_Font, Argb.Black, zoom = zoom)
     }
 }
 
@@ -303,5 +303,5 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
 #run
 {
     func test(app: *Application) = if Env.hasArg("swag.test") app.maxRunFrame = 100
-    Application.runSurface(100, 100, 600, 730, title: "2048", hook: &onEvent, init: &test)
+    Application.runSurface(100, 100, 600, 730, title = "2048", hook = &onEvent, init = &test)
 }

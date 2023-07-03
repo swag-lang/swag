@@ -10,14 +10,14 @@ impl Point
 {
     mtd(X2, Y2) mixup(other: Point'(X2, Y2)) -> Point'(X2, Y1)
     {
-        return Point'(X2, Y1){x: other.x, y: self.y}
+        return Point'(X2, Y1){x = other.x, y = self.y}
     }
 }
 
 #test
 {
-    p1 := Point{x: 5's32, y: 10.4'f32}
-    p2 := Point{x: "Hello", y: "c"'rune}
+    p1 := Point{x = 5's32, y = 10.4'f32}
+    p2 := Point{x = "Hello", y = "c"'rune}
     p3 := p1.mixup(p2)
 
     @assert(@typeof(p3.x) == string)

@@ -20,12 +20,12 @@ func createTreeSimple(view: *Wnd, maxItems = 50)->*ListCtrl
         {
             Format.replaceString(&str, "sub item %", j)
             icon1 := app.theme.getIcon24(cast(ThemeIcons24) rng.nextU32(0, cast(u32) @countof(ThemeIcons24)))
-            line1 := tree.createLine(str, icon1, parentLine: line)
+            line1 := tree.createLine(str, icon1, parentLine = line)
 
             loop k: maxItems / 3
             {
                 Format.replaceString(&str, "sub sub item %", k)
-                discard tree.createLine(str, parentLine: line1)
+                discard tree.createLine(str, parentLine = line1)
             }
         }
     }
@@ -60,7 +60,7 @@ func createTreeMulti(view: *Wnd)->*ListCtrl
         loop j: 25
         {
             Format.replaceString(&str, "sub line %", j)
-            line1 := tree.createLine(str, parentLine: line)
+            line1 := tree.createLine(str, parentLine = line)
             Format.replaceString(&str, "sub item %", j)
             line1.setItem(1, str)
             line1.setItem(2, str, icon)
@@ -68,7 +68,7 @@ func createTreeMulti(view: *Wnd)->*ListCtrl
             loop k: 10
             {
                 Format.replaceString(&str, "XX %", k)
-                line2 := tree.createLine(str, parentLine: line1)
+                line2 := tree.createLine(str, parentLine = line1)
                 Format.replaceString(&str, "sub item %", k)
                 line2.canCheck = true
                 line2.setItem(1, str)

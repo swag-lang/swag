@@ -510,7 +510,7 @@ private impl PropertyList
         }
         else
         {
-            ed := ComboBox.create(line, kind: .CheckBox)
+            ed := ComboBox.create(line, kind = .CheckBox)
             ed.maxSize.x = maxSizeCombo
             ed.anchorStyle = .X
             item.comboBox = ed
@@ -766,7 +766,7 @@ impl PropertyList
         {
             if filter == null or @countof(filter) == 0
                 it.line.show()
-            elif Utf8.indexOf(it.filter.toSlice(), filter, comparisonType: Utf8.ComparisonType.Latin1NoCase) != Swag.U64.Max
+            elif Utf8.indexOf(it.filter.toSlice(), filter, comparisonType = Utf8.ComparisonType.Latin1NoCase) != Swag.U64.Max
             {
                 it.line.show()
                 if it.forceShow

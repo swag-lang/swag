@@ -12,9 +12,9 @@ struct ConvertFormatInt
 #test
 {
     var format: ConvertFormatInt{
-                    signedValue: 5,
-                    bits: 8,
-                    signed: true
+                    signedValue = 5,
+                    bits = 8,
+                    signed = true
                 }
     @assert(format.signedValue == 5)
     @assert(format.bits == 8)

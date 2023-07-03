@@ -241,7 +241,7 @@ impl Surface
         painter.end()
 
         // Paint to surface render target
-        cxt.renderer.bindRenderTarget(&rt, vp: &myRect)
+        cxt.renderer.bindRenderTarget(&rt, vp = &myRect)
         cxt.renderer.setScissorRect(clipRect)
         cxt.renderer.clear()
         cxt.renderer.draw(&painter)

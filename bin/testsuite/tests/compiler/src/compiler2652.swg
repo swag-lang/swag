@@ -8,7 +8,7 @@ func toto(x, y: s64 = 666, stmt: code)
 
 #test
 {
-    toto(x: 444)
+    toto(x = 444)
     {
         @assert(x == 444)
         @assert(y == 666)

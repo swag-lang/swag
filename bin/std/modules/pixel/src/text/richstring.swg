@@ -231,7 +231,7 @@ impl RichString
             {
                 addChunk(byteIdx)
                 byteIdx, scan += eat
-                addChunk(byteIdx, eol: true)
+                addChunk(byteIdx, eol = true)
                 count -= 1
                 continue
             }
@@ -247,7 +247,7 @@ impl RichString
                     (c, eat) = Utf8.decodeRune(sl)
                 }
 
-                addChunk(byteIdx, space: true)
+                addChunk(byteIdx, space = true)
                 continue
             }
 

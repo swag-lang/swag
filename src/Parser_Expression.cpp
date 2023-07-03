@@ -924,7 +924,9 @@ bool Parser::doCompareExpression(AstNode* parent, uint32_t exprFlags, AstNode** 
         return true;
     }
 
-    SWAG_VERIFY(token.id != TokenId::SymEqual, error(token, Err(Err0432), Hnt(Hnt0082)));
+    if (!(exprFlags & EXPR_FLAG_IN_CALL) || leftNode->kind != AstNodeKind::IdentifierRef)
+        SWAG_VERIFY(token.id != TokenId::SymEqual, error(token, Err(Err0432), Hnt(Hnt0082)));
+
     Ast::addChildBack(parent, leftNode);
     *result = leftNode;
     return true;

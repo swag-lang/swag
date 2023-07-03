@@ -26,9 +26,9 @@ public struct PopupMenuItem
     checked:    bool
     hidden:     bool
 
-    aniSel:         BlendColor{speed: 10}
-    aniText:        BlendColor{speed: 10}
-    aniRightText:   BlendColor{speed: 10}
+    aniSel:         BlendColor{speed = 10}
+    aniText:        BlendColor{speed = 10}
+    aniRightText:   BlendColor{speed = 10}
 }
 
 public struct MenuCtrl
@@ -150,7 +150,7 @@ public impl IWnd for MenuCtrl
         {
             clientRect.inflate(-metrics.menuPopup_ShadowSize)
             theme.drawSubRect(painter, clientRect, &rects.menuPopup_Bk, colors.menuPopup_Bk)
-            theme.drawSubRect(painter, clientRect, &rects.menuPopup_Border, colors.menuPopup_Border, interpol: .Pixel)
+            theme.drawSubRect(painter, clientRect, &rects.menuPopup_Border, colors.menuPopup_Border, interpol = .Pixel)
         }
 
         clientRect.applyPadding(padding)
@@ -546,7 +546,7 @@ impl MenuCtrl
 
         x := clientRect.x
 
-        var fake: Pixel.Painter{fake: true}
+        var fake: Pixel.Painter{fake = true}
         var rsf:  Pixel.RichStringFormat
         rsf.font = getFont()
 
@@ -575,7 +575,7 @@ impl MenuCtrl
         position.width = 0
         position.height = clientRect.y
 
-        var fake: Pixel.Painter{fake: true}
+        var fake: Pixel.Painter{fake = true}
         var rsf:  Pixel.RichStringFormat
         rsf.font = getFont()
 
@@ -688,7 +688,7 @@ public impl MenuCtrl
     // Add a new popup item
     mtd addPopup(popup: *MenuCtrl, id: WndId)
     {
-        self.addPopup(null, popup, id: #self.id)
+        self.addPopup(null, popup, id = #self.id)
     }
 
     // Add a new popup item
@@ -767,7 +767,7 @@ public impl MenuCtrl
             paddingSel = 0
         }
 
-        fitPosInParent(simX: true, simY: true)
+        fitPosInParent(simX = true, simY = true)
 
         bringToTop()
         show()

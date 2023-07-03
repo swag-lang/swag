@@ -29,7 +29,7 @@ impl Image
         default:    Debug.assert(false)
         }
 
-        visitPixels(stride: width)
+        visitPixels(stride = width)
         {
             Memory.copy(pix, image.pixels.buffer, cast(u64) image.width * image.bpp8)
         }

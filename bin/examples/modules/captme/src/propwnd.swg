@@ -818,7 +818,7 @@ impl PropWnd
         sysFonts = FontFamily.enumerateFromOs()
         visit &fnt: sysFonts
         {
-            combo.addItem(fnt.name, userData0: fnt)
+            combo.addItem(fnt.name, userData0 = fnt)
             if curSel.fontName == fnt.name
                 combo.selectedIdx = cast(u32) combo.items.count - 1
         }
@@ -1202,10 +1202,10 @@ impl PropWnd
         if curSel.subKind != .PixSel
             return
 
-        discard PushButton.create(mainLayout, "", id: CmdIdPixSelFill)
-        discard PushButton.create(mainLayout, "", id: CmdIdPixSelSmartFill)
-        discard PushButton.create(mainLayout, "", id: CmdIdPixSelClear)
-        discard PushButton.create(mainLayout, "", id: CmdIdPixSelSmartMove)
+        discard PushButton.create(mainLayout, "", id = CmdIdPixSelFill)
+        discard PushButton.create(mainLayout, "", id = CmdIdPixSelSmartFill)
+        discard PushButton.create(mainLayout, "", id = CmdIdPixSelClear)
+        discard PushButton.create(mainLayout, "", id = CmdIdPixSelSmartMove)
     }
 
     mtd selectionHasChanged()

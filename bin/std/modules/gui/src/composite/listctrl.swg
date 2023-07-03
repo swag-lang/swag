@@ -814,7 +814,7 @@ impl ListCtrl
                 header.margin = -wnd.getThemeMetrics().frameWnd_FlatPadding
             }
 
-            header.setMargin(bottom: 0)
+            header.setMargin(bottom = 0)
             return false
         }
 

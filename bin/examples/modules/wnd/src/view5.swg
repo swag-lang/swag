@@ -23,7 +23,7 @@ func createView5(_tabView: *Tab, view: *Wnd)
     }
 
     {
-        split := SplitterCtrl.create(view, {10, 10, 300, 300}, vertical: true)
+        split := SplitterCtrl.create(view, {10, 10, 300, 300}, vertical = true)
         split.setFrameForm(.Round)
 
         list0 := createListSimple(split)
@@ -36,7 +36,7 @@ func createView5(_tabView: *Tab, view: *Wnd)
     }
 
     {
-        split := SplitterCtrl.create(view, {320, 10, 400, 300}, vertical: false)
+        split := SplitterCtrl.create(view, {320, 10, 400, 300}, vertical = false)
         split.frameFlags |= .FocusBorder
         split.setFrameForm(.Square)
 
@@ -53,7 +53,7 @@ func createView5(_tabView: *Tab, view: *Wnd)
     }
 
     {
-        split := SplitterCtrl.create(view, {10, 320, 600, 300}, vertical: false)
+        split := SplitterCtrl.create(view, {10, 320, 600, 300}, vertical = false)
         split.dockStyle = .Bottom
         split.setFrameForm(.Square)
 
@@ -74,10 +74,10 @@ func createView5(_tabView: *Tab, view: *Wnd)
     }
 
     {
-        split := SplitterCtrl.create(view, {0, 0, 300, 0}, vertical: true)
+        split := SplitterCtrl.create(view, {0, 0, 300, 0}, vertical = true)
         split.dockStyle = .Right
         split.setFrameForm(.Square)
-        split.setMargin(bottom: 10)
+        split.setMargin(bottom = 10)
 
         list0 := createListSimple(split)
         list1 := createListMulti(split)

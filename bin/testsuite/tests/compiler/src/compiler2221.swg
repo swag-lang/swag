@@ -7,7 +7,7 @@ struct A
 //#[Swag.PrintBc, Swag.Optim(false)]
 func toto1()->A
 {
-    var z: retval{y: 555, x: 444}
+    var z: retval{y = 555, x = 444}
     return z
 }
 

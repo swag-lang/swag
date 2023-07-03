@@ -213,7 +213,7 @@ private impl Application
         if !targetWnd
             return
 
-        evt := MouseEvent{kind: EventKind.MouseWheel}
+        evt := MouseEvent{kind = EventKind.MouseWheel}
         mousePos := mouse.getPosition()
         evt.surfacePos = targetWnd.screenToSurface(mousePos)
         evt.move.y     = z
@@ -240,7 +240,7 @@ private impl Application
             curP  := keyb.currentState.pressed[i]
             if !lastP and curP
             {
-                evt := KeyEvent{kind: EventKind.KeyPressed}
+                evt := KeyEvent{kind = EventKind.KeyPressed}
                 evt.key = cast(Input.Key) i
                 evt.modifiers = modifiers
                 targetWnd.sendEvent(&evt)
@@ -255,7 +255,7 @@ private impl Application
             }
             elif lastP and !curP
             {
-                evt := KeyEvent{kind: EventKind.KeyReleased}
+                evt := KeyEvent{kind = EventKind.KeyReleased}
                 evt.key = cast(Input.Key) i
                 evt.modifiers = modifiers
                 targetWnd.sendEvent(&evt)
@@ -270,7 +270,7 @@ private impl Application
         if !targetWnd
             return
 
-        evt := KeyEvent{kind: EventKind.Rune}
+        evt := KeyEvent{kind = EventKind.Rune}
         evt.char = r
         evt.key = key
         evt.modifiers = keyb.getPressedModifiers()

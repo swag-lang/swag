@@ -8,5 +8,5 @@ func toto(x, y: s64 = 666)
 //#[Swag.PrintBc]//, Swag.Optim("", false)]
 #test
 {
-    toto(y: 444)
+    toto(y = 444)
 }

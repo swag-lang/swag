@@ -12,5 +12,5 @@ func(T) create(parent: *void, name: string, position: Rectangle, id: string = nu
 
 #test
 {
-    create's32(id: "titi")
+    create's32(id = "titi")
 }

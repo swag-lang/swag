@@ -244,7 +244,7 @@ public func getKeyName(mdf: KeyModifiers, key: Key)->String
     case NumPad9:   result += "9"
     case Add:       result += "+"
     case Subtract:  result += "-"
-    default:        result += Reflection.getEnumName(Input.Key, &k, fullname: false)
+    default:        result += Reflection.getEnumName(Input.Key, &k, fullname = false)
     }
 
     return result

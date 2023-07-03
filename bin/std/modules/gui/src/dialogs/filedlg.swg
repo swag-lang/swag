@@ -102,7 +102,7 @@ private impl FileDlg
 
             one := all[i]
             ic := getApp().getDirectoryIcon(one)
-            comboPath.addItem(one, icon: ic)
+            comboPath.addItem(one, icon = ic)
         }
 
         comboPath.selectItem(0)
@@ -117,7 +117,7 @@ private impl FileDlg
         {
             c := Env.getSpecialDirectory(v.item0)
             ic := getApp().getSpecialDirectoryIcon(v.item0, true)
-            l = treeCtrl.createLine(v.item1, icon: ic)
+            l = treeCtrl.createLine(v.item1, icon = ic)
             l.userData0 = cast(*void) treePathStr.count
             l.leftTextMargin = 10
             treePathStr.add(c)
@@ -131,7 +131,7 @@ private impl FileDlg
         {
             v.removeBack()
             ic := getApp().getDirectoryIcon(v, true)
-            l = treeCtrl.createLine(v.toString(), icon: ic)
+            l = treeCtrl.createLine(v.toString(), icon = ic)
             l.userData0 = cast(*void) treePathStr.count
             l.leftTextMargin = 10
             treePathStr.add(v)
@@ -206,7 +206,7 @@ impl FileDlg
         dlg := Wnd.create'FileDlg()
         with srf := dlg.createSurface(from, 100, 100, 700, 500)
         {
-            .setSurfaceFlags(add: .Sizeable)
+            .setSurfaceFlags(add = .Sizeable)
             .minSize = {400, 400}
 
             if opt.title
@@ -228,7 +228,7 @@ impl FileDlg
         dlg.addButton(opt.btnOkName orelse "Ok", Dialog.BtnOk, true)
         dlg.addButton("Cancel", Dialog.BtnCancel)
         dlg.backgroundStyle = .Window
-        srf.setSurfaceFlags(remove: .CloseBtn)
+        srf.setSurfaceFlags(remove = .CloseBtn)
 
         dlg.sigPressedButton = closure|dlg|(bdlg, id) {
             if id == Dialog.BtnOk
@@ -411,7 +411,7 @@ impl FileDlg
             if opt.mode == .SelectFolder
                 .addItem("Folders")
             else visit f, idx: opt.filters
-                .addItem(f.item0, userData0: cast(*void) idx)
+                .addItem(f.item0, userData0 = cast(*void) idx)
 
             .selectItem(0)
             .sigChanged += closure|dlg|(c, idx) {

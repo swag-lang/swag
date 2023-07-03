@@ -5,7 +5,7 @@ impl Image
     mtd const doCrop(dstImage: *Image, x, y, w, h: s32)
     {
         f := {x, y: height - y - h, self}
-        dstImage.visitPixels(&f, stride: w)
+        dstImage.visitPixels(&f, stride = w)
         {
             params := cast(*@decltype(f)) userData
             srcPix := params.self.pixels.buffer + (y + params.y) * params.self.width8

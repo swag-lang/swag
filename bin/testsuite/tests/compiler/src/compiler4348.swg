@@ -9,7 +9,7 @@ impl Point
 {
     mtd(X2) mixup(other: Point'X2) -> Point'X2
     {
-        return Point{x: other.x}
+        return Point{x = other.x}
     }
 }
 

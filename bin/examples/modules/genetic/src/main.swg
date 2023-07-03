@@ -45,7 +45,7 @@ impl IWnd for MyView
     assume
     {
         view := Wnd.create'MyView()
-        surface := app.createSurface(100, 100, W, H, view: view)
+        surface := app.createSurface(100, 100, W, H, view = view)
 
         rdr := surface.app.getRenderer()
         dataPath := Path.getDirectoryName(#location.fileName)

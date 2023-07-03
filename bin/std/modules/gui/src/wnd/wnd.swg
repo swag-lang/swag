@@ -228,13 +228,13 @@ impl Wnd
     #[Swag.Inline]
     func(T) create(parent: *Wnd = null, id: WndId = null, hook: HookEvent = null)->*T
     {
-        return create(parent, "", {}, id: id, hook: hook)
+        return create(parent, "", {}, id = id, hook = hook)
     }
 
     #[Swag.Inline]
     func(T) create(parent: *Wnd, position: Math.Rectangle, id: WndId = null, hook: HookEvent = null)->*T
     {
-        return create(parent, "", position, id: id, hook: hook)
+        return create(parent, "", position, id = id, hook = hook)
     }
 
     func(T) create(parent: *Wnd, name: string, position: Math.Rectangle, id: WndId = null, hook: HookEvent = null)->*T
@@ -1007,7 +1007,7 @@ impl Wnd
         last := surface.app.keybFocusWnd
         if last
         {
-            evt := FocusEvent{kind: EventKind.KillFocus}
+            evt := FocusEvent{kind = EventKind.KillFocus}
             evt.other = self
             last.sendEvent(&evt)
             last.invalidate()
@@ -1016,7 +1016,7 @@ impl Wnd
         }
 
         surface.setFocus()
-        evt := FocusEvent{kind: EventKind.SetFocus}
+        evt := FocusEvent{kind = EventKind.SetFocus}
         evt.other = last
         surface.app.keybFocusWnd = self
         sendEvent(&evt)
@@ -1111,7 +1111,7 @@ impl Wnd
 
     mtd sendStateEvent(kind: EventKind)
     {
-        evt := StateEvent{kind: kind}
+        evt := StateEvent{kind = kind}
         sendEvent(&evt)
     }
 

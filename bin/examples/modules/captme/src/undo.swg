@@ -267,7 +267,7 @@ impl Undo
         case Flatten:
             with capture
             {
-                .backImg = .toImage(onlySel: true)
+                .backImg = .toImage(onlySel = true)
                 .backImagePos.clear()
                 .dirtyBackImg = true
             }

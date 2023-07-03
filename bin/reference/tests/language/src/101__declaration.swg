@@ -59,7 +59,7 @@ func toto(x: s32, y = Values.A)
 
 #test
 {
-    // Functions can be nested inside other functions. 
+    // Functions can be nested inside other functions.
     // This are not closure but just functions in a sub scope.
     func sub(x, y: s32) => x - y
 
@@ -78,16 +78,16 @@ You can name parameters, and don't have to respect parameters order in that case
     func sub(x, y: s32) => x - y
 
     {
-        x1 := sub(x: 5, y: 2)
+        x1 := sub(x = 5, y = 2)
         @assert(x1 == 3)
-        x2 := sub(y: 5, x: 2)
+        x2 := sub(y = 5, x = 2)
         @assert(x2 == -3)
     }
 
     {
         func returnMe(x, y: s32 = 0) => x + y * 2
-        @assert(returnMe(x: 10) == 10)
-        @assert(returnMe(y: 10) == 20)
+        @assert(returnMe(x = 10) == 10)
+        @assert(returnMe(y = 10) == 20)
     }
 }
 

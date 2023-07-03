@@ -10,5 +10,5 @@ func F(a: s32 = 10, b: s32 = 20)
 //#[Swag.PrintBc]
 #test
 {
-	F(b: 666)
+	F(b = 666)
 }

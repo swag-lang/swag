@@ -20,7 +20,7 @@ using Core
 
     {
         var r: Parser.RegExp
-        assume r.compile("A+", ignoreCase: true)
+        assume r.compile("A+", ignoreCase = true)
         res := r.grepAll("abcggggaaaa")
         @assert(res.count == 2)
         @assert(res[0] == "a")

@@ -11,7 +11,7 @@ impl Thing
     func initxxx(number: s32)->Thing
     {
         //@print("Thing", number, "\n")
-        return Thing{number: number}
+        return Thing{number = number}
     }
 
     mtd opDrop()
@@ -34,9 +34,9 @@ struct Team
 {
     {
         team := Team{
-            a: Thing.initxxx(1),
-            b: Thing.initxxx(2),
-            c: Thing.initxxx(3),
+            a = Thing.initxxx(1),
+            b = Thing.initxxx(2),
+            c = Thing.initxxx(3),
         }
     }
 

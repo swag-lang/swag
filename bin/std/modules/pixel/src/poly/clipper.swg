@@ -499,7 +499,7 @@ impl Transform
                 else
                     e = result.prev
 
-                locMin := LocalMinimum{y: e.bot.y, rightBound: e}
+                locMin := LocalMinimum{y = e.bot.y, rightBound = e}
                 e.windDelta = 0
                 result = processBound(e, nextIsForward)
                 minimaList.add(locMin)

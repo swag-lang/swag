@@ -435,14 +435,14 @@ func paintBoard(evt: *Event)
     if g_Game.selectedCell != -1
     {
         cellInfo := g_BoardInfo[g_Game.selectedCell]
-        painter.drawRect(cellInfo.rect, ColorSelection, penSize: 3)
+        painter.drawRect(cellInfo.rect, ColorSelection, penSize = 3)
 
         visit move: g_Game.possibleMoves
         {
             if move.from == g_Game.selectedCell
             {
                 cellInfo = g_BoardInfo[move.to]
-                painter.drawRect(cellInfo.rect, ColorTargets, penSize: 3)
+                painter.drawRect(cellInfo.rect, ColorTargets, penSize = 3)
             }
         }
     }
@@ -577,7 +577,7 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
     if Env.hasArg("swag.test")
         app.maxRunFrame = 100
 
-    surface := try app.createSurface(100, 100, 1024, 1024, flags: (.OverlappedWindow & ~.Sizeable), hook: &onEvent)
+    surface := try app.createSurface(100, 100, 1024, 1024, flags = (.OverlappedWindow & ~.Sizeable), hook = &onEvent)
     surface.setTitle("Chess")
 
     var dataPath: String = Path.getDirectoryName(#location.fileName)

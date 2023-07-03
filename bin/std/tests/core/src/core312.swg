@@ -4,7 +4,7 @@ using Core, CommandLine
 {
     struct TT
     {
-        #[ArgParams(nameAlias: "f")]
+        #[ArgParams(nameAlias = "f")]
         val0: s32
     }
 

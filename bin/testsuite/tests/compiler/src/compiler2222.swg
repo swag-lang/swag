@@ -8,7 +8,7 @@ struct A
 #[Swag.Inline]
 func toto1()->A
 {
-    var z: retval{y: 555, x: 444}
+    var z: retval{y = 555, x = 444}
     return z
 }
 

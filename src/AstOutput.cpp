@@ -1117,7 +1117,7 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
     if (node->hasExtMisc() && node->extMisc()->isNamed)
     {
         concat.addString(node->extMisc()->isNamed->token.text);
-        concat.addChar(':');
+        CONCAT_FIXED_STR(concat, " = ");
     }
 
     switch (node->kind)
