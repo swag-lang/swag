@@ -1,6 +1,6 @@
 struct(T) AA
 {
-    v: {T, T}
+    v: {a: T, b: T}
 }
 
 //#[Swag.PrintBc]

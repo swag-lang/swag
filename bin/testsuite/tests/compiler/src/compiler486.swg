@@ -11,7 +11,7 @@
 }
 
 //#[Swag.PrintBc]
-func T()-> {bool,s32,bool}
+func T()-> {a:bool,b:s32,c:bool}
 {
 	return {true,2,false}
 }

@@ -23,16 +23,6 @@
         @assert(tuple.item1 == 2.0)
     }
 
-    // A tuple is an expression, where names of fields can be omitted. But the automatic name `itemX` is always valid.
-    {
-        var tuple: {x: f32 = 2.0, f32}
-        @assert(tuple.x == 2.0)
-        tuple.x = 1.0
-        @assert(tuple.x == 1.0)
-        @assert(tuple.item0 == 1.0)
-        @assert(tuple.item1 == 0.0)
-    }
-
     // When creating a tuple literal with variables, the tuple fields will take the name of the variables (except if specified).
     {
         x := 555

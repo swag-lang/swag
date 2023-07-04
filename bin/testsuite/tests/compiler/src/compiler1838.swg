@@ -1,4 +1,4 @@
-func toto() -> {s32, s32}
+func toto() -> {a,b: s32}
 {
     return {1, 2}
 }
@@ -6,7 +6,7 @@ func toto() -> {s32, s32}
 //#[Swag.PrintBc]
 #test
 {
-    var x: {bool, bool} = {true, false}
+    var x: {a,b:bool} = {true, false}
     @assert(x.item0 == true)
     @assert(x.item1 == false)
 }

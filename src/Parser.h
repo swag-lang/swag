@@ -40,7 +40,6 @@ enum class SyntaxStructType
 {
     Struct,
     Interface,
-    Tuple
 };
 
 const uint32_t MODIFIER_OVERFLOW      = 0x00000001;
@@ -100,7 +99,7 @@ struct Parser
     static void relaxIdentifier(TokenParse& token);
     static void forceTakeAddress(AstNode* node);
 
-    bool doTupleOrAnonymousType(AstNode* parent, AstNode** result, bool isConst, bool anonymousStruct, bool anonymousUnion);
+    bool doAnonymousStruct(AstNode* parent, AstNode** result, bool isConst, bool isUnion);
     bool doCompilerScopeBreakable(AstNode* parent, AstNode** result);
     bool doGenericFuncCallParameters(AstNode* parent, AstFuncCallParams** result);
     bool doFuncCallParameters(AstNode* parent, AstFuncCallParams** result, TokenId closeToken);

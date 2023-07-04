@@ -1,7 +1,7 @@
 #global testerror
 
 //#[Swag.PrintBc]
-func toto(x: {s32})
+func toto(x: {a:s32})
 {
     v := x.item0
 }

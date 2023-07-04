@@ -1,6 +1,6 @@
 func toto()
 {
-	func titi(f: const ref {s32} = {})
+	func titi(f: const ref {a:s32} = {})
 	{
 	}
 

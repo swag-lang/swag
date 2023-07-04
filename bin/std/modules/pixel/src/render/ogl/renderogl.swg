@@ -239,7 +239,7 @@ impl RenderOgl
     }
 
     // Get the actual render target size
-    mtd getTargetSize()->{s32, s32}
+    mtd getTargetSize()->{width, height: s32}
     {
         if curRT
             return {curRT.colorBuffer.width, curRT.colorBuffer.height}

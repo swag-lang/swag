@@ -4,7 +4,7 @@
 //#[Swag.PrintBc]
 #test
 {
-	/*var a : {s32, s32}
+	/*var a : {a,b: s32}
 	a.0 = 1
 	a.1 = 2*/
 

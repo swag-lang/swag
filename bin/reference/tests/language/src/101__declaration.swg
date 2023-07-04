@@ -98,7 +98,7 @@ You can name parameters, and don't have to respect parameters order in that case
 {
     // A **tuple** can be used to return multiple values in a function.
     {
-        func myFunction() -> {f32, f32}
+        func myFunction() -> {x, y: f32}
         {
             return {1.0, 2.0}
         }

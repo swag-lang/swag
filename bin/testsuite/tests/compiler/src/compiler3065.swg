@@ -5,7 +5,7 @@ struct AA
 }
 
 #[Swag.ConstExpr]
-func toto()->{AA, s32}
+func toto()->{a:AA, b:s32}
 {
     return {{2}, 4}
 }

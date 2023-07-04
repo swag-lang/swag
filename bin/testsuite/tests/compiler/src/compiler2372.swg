@@ -1,4 +1,4 @@
-func titi()->{u32, u32} => {0, 0}
+func titi()->{a,b: u32} => {0, 0}
 
 #test
 {

@@ -1,11 +1,11 @@
-/*func T()-> {s32, s32}
+/*func T()-> {a,b: s32}
 {
 }*/
 
 //#[Swag.PrintBc]
 #test
 {
-	var x, y: {s32, s32}
+	var x, y: {a,b: s32}
 	x = {1, 2}
 	y = x
 	@assert(y.item0 == 1)

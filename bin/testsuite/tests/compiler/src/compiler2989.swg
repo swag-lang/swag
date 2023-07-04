@@ -16,14 +16,14 @@ impl AA
 
 func A()
 {
-    var x: AA'{s32}
+    var x: AA'{a:s32}
     v := x.index(0)
     v1 := x[0]
 }
 
 func B()
 {
-    var x: AA'{s32}
+    var x: AA'{a:s32}
     v := x.index(0)
     v1 := x[0]
 }

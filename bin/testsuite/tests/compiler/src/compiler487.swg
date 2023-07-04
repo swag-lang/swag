@@ -9,7 +9,7 @@
 }
 
 //#[Swag.PrintBc]
-func T()-> {bool,s64,bool}
+func T()-> {a:bool,b:s64,c:bool}
 {
 	return {true,2,false}
 }

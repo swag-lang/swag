@@ -2,5 +2,5 @@
 #test
 {
     alias T = s32
-    alias y = {T, T}
+    alias y = {a: T, b: T}
 }

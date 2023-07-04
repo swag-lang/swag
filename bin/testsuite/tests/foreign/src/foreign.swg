@@ -1,6 +1,6 @@
 using Swag
 
-public func tcf_tuple()->{s32, s32}
+public func tcf_tuple()->{a,b:s32}
 {
     return {0, 0}
 }
@@ -459,7 +459,7 @@ func tcf_toto28A(a, b, c, d: Vector2)
     @assert(d.x == 4.0)
 }
 
-public func tcf_toto28(a, b, c, d: Vector2, e: f32 = 0)->{s32}
+public func tcf_toto28(a, b, c, d: Vector2, e: f32 = 0)->{a:s32}
 {
     //@print(a.x, " ", b.x, " ", c.x, " ", d.x, "\n")
     tcf_toto28A(a, b, c, d)
@@ -487,7 +487,7 @@ public func lineLineIntersect1(start0, end0, start1, end1: Vector2f)->f32
 
 public struct AZE
 {
-    x: {s32} = {0}
+    x: {a:s32} = {0}
 }
 
 #premain

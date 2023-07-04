@@ -11,7 +11,7 @@
 }
 
 //#[Swag.PrintBc]
-func T(a: s32)-> {s32,s32,s32}
+func T(a: s32)-> {a,b,c: s32}
 {
 	return {1,2,3}
 }

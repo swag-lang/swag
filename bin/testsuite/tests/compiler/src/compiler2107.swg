@@ -1,7 +1,7 @@
 #global skip // remove typeset from language the 21 july 2021
 typeset AA
 {
-    B{s32}
+    B{a:s32}
 }
 
 func log(v: *AA)

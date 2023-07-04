@@ -349,17 +349,15 @@ bool Parser::doLambdaClosureTypePriv(AstTypeLambda* node, AstNode** result, bool
     return true;
 }
 
-bool Parser::doTupleOrAnonymousType(AstNode* parent, AstNode** result, bool isConst, bool anonymousStruct, bool anonymousUnion)
+bool Parser::doAnonymousStruct(AstNode* parent, AstNode** result, bool isConst, bool isUnion)
 {
     auto structNode = Ast::newStructDecl(sourceFile, parent, this);
     structNode->flags |= AST_PRIVATE;
     structNode->originalParent = parent;
     structNode->allocateExtension(ExtensionKind::Semantic);
     structNode->extSemantic()->semanticBeforeFct = SemanticJob::preResolveGeneratedStruct;
-
-    if (anonymousStruct)
-        structNode->specFlags |= AstStruct::SPECFLAG_ANONYMOUS;
-    if (anonymousUnion)
+    structNode->specFlags |= AstStruct::SPECFLAG_ANONYMOUS;
+    if (isUnion)
         structNode->specFlags |= AstStruct::SPECFLAG_UNION;
 
     auto contentNode    = Ast::newNode<AstNode>(this, AstNodeKind::TupleContent, sourceFile, structNode);
@@ -399,19 +397,11 @@ bool Parser::doTupleOrAnonymousType(AstNode* parent, AstNode** result, bool isCo
         Scoped           sc(this, structNode->scope);
         ScopedStruct     ss(this, structNode->scope);
 
-        // Content
-        if (anonymousStruct)
-        {
-            auto startLoc = token.startLocation;
-            SWAG_CHECK(eatToken(TokenId::SymLeftCurly));
-            while (token.id != TokenId::SymRightCurly && (token.id != TokenId::EndOfFile))
-                SWAG_CHECK(doStructBody(contentNode, SyntaxStructType::Struct, &dummyResult));
-            SWAG_CHECK(eatCloseToken(TokenId::SymRightCurly, startLoc));
-        }
-        else
-        {
-            SWAG_CHECK(doTupleBody(contentNode, false));
-        }
+        auto startLoc = token.startLocation;
+        SWAG_CHECK(eatToken(TokenId::SymLeftCurly));
+        while (token.id != TokenId::SymRightCurly && (token.id != TokenId::EndOfFile))
+            SWAG_CHECK(doStructBody(contentNode, SyntaxStructType::Struct, &dummyResult));
+        SWAG_CHECK(eatCloseToken(TokenId::SymRightCurly, startLoc));
     }
 
     // Reference to that struct
@@ -473,20 +463,20 @@ bool Parser::doSingleTypeExpression(AstTypeExpression* node, AstNode* parent, ui
     if (token.id == TokenId::KwdStruct)
     {
         SWAG_CHECK(eatToken());
-        SWAG_CHECK(doTupleOrAnonymousType(node, &node->identifier, node->typeFlags & TYPEFLAG_IS_CONST, true, false));
+        SWAG_CHECK(doAnonymousStruct(node, &node->identifier, node->typeFlags & TYPEFLAG_IS_CONST, false));
         return true;
     }
 
     if (token.id == TokenId::KwdUnion)
     {
         SWAG_CHECK(eatToken());
-        SWAG_CHECK(doTupleOrAnonymousType(node, &node->identifier, node->typeFlags & TYPEFLAG_IS_CONST, true, true));
+        SWAG_CHECK(doAnonymousStruct(node, &node->identifier, node->typeFlags & TYPEFLAG_IS_CONST, true));
         return true;
     }
 
     if (token.id == TokenId::SymLeftCurly)
     {
-        SWAG_CHECK(doTupleOrAnonymousType(node, &node->identifier, node->typeFlags & TYPEFLAG_IS_CONST, false, false));
+        SWAG_CHECK(doAnonymousStruct(node, &node->identifier, node->typeFlags & TYPEFLAG_IS_CONST, false));
         return true;
     }
 

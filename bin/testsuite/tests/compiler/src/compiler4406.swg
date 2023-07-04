@@ -1,8 +1,8 @@
 //#global testerror
-struct A {x: s32;}
+struct A {x: s32}
 
 //#[Swag.PrintBc]
-func toto(x: {s32})
+func toto(x: {a:s32})
 {
 }
 

@@ -1,4 +1,4 @@
-func test()->{s32, s32}
+func test()->{a,b: s32}
 {
     with var v: retval
     {

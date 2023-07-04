@@ -38,7 +38,7 @@ struct Application
     timersToDelete:     Array'(*Timer)
     frameEvents:        Array'(*Wnd)
     modalSurfaces:      Array'(*Surface)
-    toDelete:           Array'{*void, const *Swag.TypeInfo}
+    toDelete:           Array'{ptr: *void, type: const *Swag.TypeInfo}
     mouseEnterWnd:      *Wnd
     mouseCaptureWnd:    *Wnd
     keybFocusWnd:       *Wnd
@@ -830,7 +830,7 @@ impl Application
     }
 
     // Get the id associated with a shortcut. null if none
-    mtd getHotKeyShortcut(mdf: Input.KeyModifiers, key: Input.Key)->{WndId, *Wnd}
+    mtd getHotKeyShortcut(mdf: Input.KeyModifiers, key: Input.Key)->{id: WndId, wnd: *Wnd}
     {
         visit c: hotKeys
         {

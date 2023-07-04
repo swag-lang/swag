@@ -1,4 +1,4 @@
-func toto()->{u32, u32}
+func toto()->{a,b: u32}
 {
     return {5, 10}
 }

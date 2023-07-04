@@ -6,7 +6,7 @@ struct Vector2
 //#[Swag.PrintBc, Swag.Optim("", false)]
 func toto(y: const ref Vector2)
 {
-    var tmp: {Vector2} = {y}
+    var tmp: {v:Vector2} = {y}
     @assert(tmp.item0.x == 1.0)
 }
 

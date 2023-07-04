@@ -84,7 +84,7 @@ struct MyStruct {x: s32; y: s32; }  // Our first little struct !
     titi2({5, 6})
 }
 
-func titi0(param: const ref {s32, s32})
+func titi0(param: const ref {x: s32, y: s32})
 {
     // We'll see later about tuples and naming of fields.
     @assert(param.item0 == 1)

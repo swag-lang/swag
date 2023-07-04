@@ -39,7 +39,7 @@ struct PropertyList
     scrollWnd:      *ScrollWnd
     edView:         *PropertyListView
     items:          ArrayPtr'PropertyListItem
-	categs:			Array'{*PropertyListItem, s32}
+	categs:			Array'{item: *PropertyListItem, lvl: s32}
 }
 
 struct PropertyListItem

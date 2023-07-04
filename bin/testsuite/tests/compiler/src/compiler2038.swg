@@ -6,7 +6,7 @@ struct Argb
 impl Argb
 {
     #[Swag.Inline]
-    func extract(self) -> {s64,s64}
+    func extract(self) -> {a,b:s64}
     {
         return {666,555}
     }

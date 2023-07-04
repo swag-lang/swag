@@ -1,5 +1,5 @@
 //#[Swag.PrintBc]
-func toto()->{s32, s32}
+func toto()->{a,b: s32}
 {
     return {1, 2}
 }

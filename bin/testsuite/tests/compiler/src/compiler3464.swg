@@ -1,7 +1,7 @@
 #[Swag.Inline]
 public func toto3464()
 {
-	func titi(f: {s32} = {})
+	func titi(f: {a:s32} = {})
 	{
 	}
 

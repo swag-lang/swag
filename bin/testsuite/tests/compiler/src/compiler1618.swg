@@ -1,10 +1,10 @@
-func toto1()->{s32, s32}
+func toto1()->{a,b: s32}
 {
     return {0, 1}
 }
 
 //#[Swag.PrintBc]
-func toto()->{s32, s32}
+func toto()->{a,b: s32}
 {
     result := toto1()
     return {result.item0, result.item1}

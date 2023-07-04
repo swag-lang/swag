@@ -1,5 +1,5 @@
 #[Swag.Safety("sanity", false)]
-func toto()->{rune, u32}
+func toto()->{a:rune, b:u32}
 {
 	const maskx = 0b00111111
 	const mask2 = 0b00011111

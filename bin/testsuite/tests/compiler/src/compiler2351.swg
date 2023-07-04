@@ -5,7 +5,7 @@ struct AA
 
 impl AA
 {
-    func create()->{Self}
+    func create()->{me:Self}
     {
         var result: retval
         return result

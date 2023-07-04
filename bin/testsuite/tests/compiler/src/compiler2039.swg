@@ -5,7 +5,7 @@ public struct Argb2039
 
 public impl Argb2039
 {
-    func extract() -> {s64,s64}
+    func extract() -> {a,b:s64}
     {
         return {666,555}
     }

@@ -5,7 +5,7 @@ struct Vector2
 
 func toto(y: Vector2)
 {
-    var tmp: {Vector2} = {y}
+    var tmp: {a:Vector2} = {y}
     @assert(tmp.item0.x == 1.0)
 }
 

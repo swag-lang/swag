@@ -25,7 +25,7 @@ impl A
 }
 
 //#[Swag.PrintBc]
-func toto() -> {A, bool}
+func toto() -> {a:A, b:bool}
 {
     var x: A
     x.x = 555

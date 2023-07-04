@@ -1,5 +1,5 @@
 #global testerror
-func toto(x: {s32, s32})
+func toto(x: {a,b: s32})
 {
 }
 

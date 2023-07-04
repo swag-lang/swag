@@ -1,12 +1,12 @@
 struct A
 {
-    x: [3] {s32}
+    x: [3] {a:s32}
 }
 
 impl A
 {
     #[Swag.Inline]
-    mtd opIndexAffect(index: u64, value: {s32})
+    mtd opIndexAffect(index: u64, value: {a:s32})
     {
         x[index] = value
     }
