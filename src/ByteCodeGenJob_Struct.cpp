@@ -593,6 +593,10 @@ bool ByteCodeGenJob::generateStruct_opInit(ByteCodeGenContext* context, TypeInfo
         {
             ScopedLock lk1(cxt.bc->sourceFile->module->mutexByteCode);
             cxt.bc->sourceFile->module->byteCodePrintBC.push_back(cxt.bc);
+        }
+
+        if (structNode->attributeFlags & ATTRIBUTE_PRINT_GEN_BC)
+        {
             cxt.bc->print();
         }
         return true;
@@ -609,6 +613,10 @@ bool ByteCodeGenJob::generateStruct_opInit(ByteCodeGenContext* context, TypeInfo
         {
             ScopedLock lk1(cxt.bc->sourceFile->module->mutexByteCode);
             cxt.bc->sourceFile->module->byteCodePrintBC.push_back(cxt.bc);
+        }
+
+        if (structNode->attributeFlags & ATTRIBUTE_PRINT_GEN_BC)
+        {
             cxt.bc->print();
         }
         return true;
@@ -759,6 +767,10 @@ bool ByteCodeGenJob::generateStruct_opInit(ByteCodeGenContext* context, TypeInfo
     {
         ScopedLock lk1(cxt.bc->sourceFile->module->mutexByteCode);
         cxt.bc->sourceFile->module->byteCodePrintBC.push_back(cxt.bc);
+    }
+
+    if (structNode->attributeFlags & ATTRIBUTE_PRINT_GEN_BC)
+    {
         cxt.bc->print();
     }
 
@@ -867,6 +879,10 @@ bool ByteCodeGenJob::generateStruct_opDrop(ByteCodeGenContext* context, TypeInfo
     {
         ScopedLock lk1(cxt.bc->sourceFile->module->mutexByteCode);
         cxt.bc->sourceFile->module->byteCodePrintBC.push_back(cxt.bc);
+    }
+
+    if (structNode->attributeFlags & ATTRIBUTE_PRINT_GEN_BC)
+    {
         cxt.bc->print();
     }
 
@@ -977,6 +993,10 @@ bool ByteCodeGenJob::generateStruct_opPostCopy(ByteCodeGenContext* context, Type
     {
         ScopedLock lk1(cxt.bc->sourceFile->module->mutexByteCode);
         cxt.bc->sourceFile->module->byteCodePrintBC.push_back(cxt.bc);
+    }
+
+    if (structNode->attributeFlags & ATTRIBUTE_PRINT_GEN_BC)
+    {
         cxt.bc->print();
     }
 
@@ -1085,6 +1105,10 @@ bool ByteCodeGenJob::generateStruct_opPostMove(ByteCodeGenContext* context, Type
     {
         ScopedLock lk1(cxt.bc->sourceFile->module->mutexByteCode);
         cxt.bc->sourceFile->module->byteCodePrintBC.push_back(cxt.bc);
+    }
+
+    if (structNode->attributeFlags & ATTRIBUTE_PRINT_GEN_BC)
+    {
         cxt.bc->print();
     }
 

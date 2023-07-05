@@ -52,6 +52,7 @@ void CommandLineParser::setup(CommandLine* cmdLine)
     addArg("bu sc doc",           "--devmode",              nullptr,    CommandLineType::Bool,          &cmdLine->dbgDevMode, nullptr, "message box in case of exception");
 #endif                            
 #ifdef SWAG_DEV_MODE                                                                                    
+    addArg("bu sc doc",           "--print-bc-ext",         nullptr,    CommandLineType::Bool,          &cmdLine->dbgPrintBcExt, nullptr, "print more bytecode informations");
     addArg("bu sc doc",           "--randomize",            nullptr,    CommandLineType::Bool,          &cmdLine->randomize, nullptr, "[devmode] randomize behavior");
     addArg("bu sc doc",           "--seed",                 nullptr,    CommandLineType::Int,           &cmdLine->randSeed, nullptr, "[devmode] set seed for randomize behavior");
 #endif                                                                                                  

@@ -314,7 +314,7 @@ void ByteCode::getPrintInstruction(ByteCodeInstruction* ip, ByteCodeInstruction*
 
     // DevMode
 #ifdef SWAG_DEV_MODE
-    if (!forDbg)
+    if (!forDbg && g_CommandLine.dbgPrintBcExt)
     {
         line.devMode = Fmt("%08d %08X %08d", ip->treeNode, ip->crc, ip->serial);
         if (ip->sourceFile)

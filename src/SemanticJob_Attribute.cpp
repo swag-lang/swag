@@ -237,6 +237,7 @@ void SemanticJob::inheritAttributesFromOwnerFunc(AstNode* child)
     auto safetyOff      = child->ownerFct->safetyOff;
 
     child->attributeFlags |= attributeFlags & ATTRIBUTE_PRINT_BC;
+    child->attributeFlags |= attributeFlags & ATTRIBUTE_PRINT_GEN_BC;
     inheritAttributesFrom(child, attributeFlags, safetyOn, safetyOff);
 }
 
