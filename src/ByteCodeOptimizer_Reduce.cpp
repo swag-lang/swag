@@ -3373,7 +3373,6 @@ void ByteCodeOptimizer::reduceX2(ByteCodeOptContext* context, ByteCodeInstructio
     {
     case ByteCodeOp::MakeStackPointer:
         if (ip[1].op == ByteCodeOp::MakeStackPointer &&
-            !(ip[0].flags & BCI_START_STMT) &&
             !(ip[1].flags & BCI_START_STMT))
         {
             ip[0].c.u32 = ip[1].a.u32;
@@ -3388,7 +3387,6 @@ void ByteCodeOptimizer::reduceX2(ByteCodeOptContext* context, ByteCodeInstructio
         if (ip[1].op == ByteCodeOp::ClearRA &&
             ip[2].op == ByteCodeOp::ClearRA &&
             ip[3].op == ByteCodeOp::ClearRA &&
-            !(ip[0].flags & BCI_START_STMT) &&
             !(ip[1].flags & BCI_START_STMT) &&
             !(ip[2].flags & BCI_START_STMT) &&
             !(ip[3].flags & BCI_START_STMT))
@@ -3405,7 +3403,6 @@ void ByteCodeOptimizer::reduceX2(ByteCodeOptContext* context, ByteCodeInstructio
 
         if (ip[1].op == ByteCodeOp::ClearRA &&
             ip[2].op == ByteCodeOp::ClearRA &&
-            !(ip[0].flags & BCI_START_STMT) &&
             !(ip[1].flags & BCI_START_STMT) &&
             !(ip[2].flags & BCI_START_STMT))
         {
@@ -3418,7 +3415,6 @@ void ByteCodeOptimizer::reduceX2(ByteCodeOptContext* context, ByteCodeInstructio
         }
 
         if (ip[1].op == ByteCodeOp::ClearRA &&
-            !(ip[0].flags & BCI_START_STMT) &&
             !(ip[1].flags & BCI_START_STMT))
         {
             ip[0].b.u32 = ip[1].a.u32;
@@ -3432,7 +3428,6 @@ void ByteCodeOptimizer::reduceX2(ByteCodeOptContext* context, ByteCodeInstructio
         // SetAtStackPointer x2
     case ByteCodeOp::SetAtStackPointer8:
         if (ip[1].op == ByteCodeOp::SetAtStackPointer8 &&
-            !(ip[0].flags & BCI_START_STMT) &&
             !(ip[1].flags & BCI_START_STMT))
         {
             SET_OP(ip, ByteCodeOp::SetAtStackPointer8x2);
@@ -3447,7 +3442,6 @@ void ByteCodeOptimizer::reduceX2(ByteCodeOptContext* context, ByteCodeInstructio
 
     case ByteCodeOp::SetAtStackPointer16:
         if (ip[1].op == ByteCodeOp::SetAtStackPointer16 &&
-            !(ip[0].flags & BCI_START_STMT) &&
             !(ip[1].flags & BCI_START_STMT))
         {
             SET_OP(ip, ByteCodeOp::SetAtStackPointer16x2);
@@ -3460,7 +3454,6 @@ void ByteCodeOptimizer::reduceX2(ByteCodeOptContext* context, ByteCodeInstructio
 
     case ByteCodeOp::SetAtStackPointer32:
         if (ip[1].op == ByteCodeOp::SetAtStackPointer32 &&
-            !(ip[0].flags & BCI_START_STMT) &&
             !(ip[1].flags & BCI_START_STMT))
         {
             SET_OP(ip, ByteCodeOp::SetAtStackPointer32x2);
@@ -3475,7 +3468,6 @@ void ByteCodeOptimizer::reduceX2(ByteCodeOptContext* context, ByteCodeInstructio
 
     case ByteCodeOp::SetAtStackPointer64:
         if (ip[1].op == ByteCodeOp::SetAtStackPointer64 &&
-            !(ip[0].flags & BCI_START_STMT) &&
             !(ip[1].flags & BCI_START_STMT))
         {
             SET_OP(ip, ByteCodeOp::SetAtStackPointer64x2);
