@@ -575,6 +575,7 @@ impl Decoder
         return result
     }
 
+    #[Swag.PrintBc]
     mtd convert(result: *Image)
     {
         defer Memory.free(dstPixels, dstPixelsSize)

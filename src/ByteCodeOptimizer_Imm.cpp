@@ -35,7 +35,7 @@ bool ByteCodeOptimizer::optimizePassImmediate(ByteCodeOptContext* context)
             ip->flags &= ~BCI_IMM_D;
             break;
 
-        case ByteCodeOp::ClearRA2:
+        case ByteCodeOp::ClearRA_x2:
             regsRW.set(ip->a.u32, 0);
             regsRW.set(ip->b.u32, 0);
             regs.set(ip->a.u32, ip);
@@ -44,7 +44,7 @@ bool ByteCodeOptimizer::optimizePassImmediate(ByteCodeOptContext* context)
             ip->flags &= ~BCI_IMM_D;
             break;
 
-        case ByteCodeOp::ClearRA3:
+        case ByteCodeOp::ClearRA_x3:
             regsRW.set(ip->a.u32, 0);
             regsRW.set(ip->b.u32, 0);
             regsRW.set(ip->c.u32, 0);
@@ -55,7 +55,7 @@ bool ByteCodeOptimizer::optimizePassImmediate(ByteCodeOptContext* context)
             ip->flags &= ~BCI_IMM_D;
             break;
 
-        case ByteCodeOp::ClearRA4:
+        case ByteCodeOp::ClearRA_x4:
             regsRW.set(ip->a.u32, 0);
             regsRW.set(ip->b.u32, 0);
             regsRW.set(ip->c.u32, 0);

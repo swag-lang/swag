@@ -605,6 +605,9 @@
     <ClCompile Include="..\src\ModuleGenDocJob.cpp">
       <Filter>Jobs</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\ByteCodeOptimizer_ReduceX2.cpp">
+      <Filter>Backend\ByteCode\Optimize</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="../src/ThreadManager.h">

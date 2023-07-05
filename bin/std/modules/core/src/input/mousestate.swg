@@ -15,7 +15,6 @@ struct MouseState
 impl MouseState
 {
     // Compute the actual state of the mouse
-    #[Swag.PrintBc]
     mtd update()
     {
         position = getMousePos()

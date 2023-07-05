@@ -551,7 +551,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             builder.CreateStore(r1, GEP64_PTR_PTR_I8(allocR, ip->a.u32));
             break;
         }
-        case ByteCodeOp::MakeStackPointer2:
+        case ByteCodeOp::MakeStackPointer_x2:
         {
             auto r1 = GEP8(allocStack, ip->b.u32);
             builder.CreateStore(r1, GEP64_PTR_PTR_I8(allocR, ip->a.u32));
@@ -677,7 +677,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             break;
         }
 
-        case ByteCodeOp::GetFromStack64x2:
+        case ByteCodeOp::GetFromStack64_x2:
         {
             auto r0 = GEP64(allocR, ip->a.u32);
             auto r1 = GEP8(allocStack, ip->b.u32);
@@ -891,7 +891,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             builder.CreateStore(pp.cst0_i64, r0);
             break;
         }
-        case ByteCodeOp::ClearRA2:
+        case ByteCodeOp::ClearRA_x2:
         {
             auto r0 = GEP64(allocR, ip->a.u32);
             builder.CreateStore(pp.cst0_i64, r0);
@@ -899,7 +899,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             builder.CreateStore(pp.cst0_i64, r1);
             break;
         }
-        case ByteCodeOp::ClearRA3:
+        case ByteCodeOp::ClearRA_x3:
         {
             auto r0 = GEP64(allocR, ip->a.u32);
             builder.CreateStore(pp.cst0_i64, r0);
@@ -909,7 +909,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             builder.CreateStore(pp.cst0_i64, r2);
             break;
         }
-        case ByteCodeOp::ClearRA4:
+        case ByteCodeOp::ClearRA_x4:
         {
             auto r0 = GEP64(allocR, ip->a.u32);
             builder.CreateStore(pp.cst0_i64, r0);
@@ -1064,7 +1064,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             break;
         }
 
-        case ByteCodeOp::SetAtStackPointer8x2:
+        case ByteCodeOp::SetAtStackPointer8_x2:
         {
             {
                 auto         r0 = GEP8(allocStack, ip->a.u32);
@@ -1086,7 +1086,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             }
             break;
         }
-        case ByteCodeOp::SetAtStackPointer16x2:
+        case ByteCodeOp::SetAtStackPointer16_x2:
         {
             {
                 auto         r0 = GEP8_PTR_I16(allocStack, ip->a.u32);
@@ -1108,7 +1108,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             }
             break;
         }
-        case ByteCodeOp::SetAtStackPointer32x2:
+        case ByteCodeOp::SetAtStackPointer32_x2:
         {
             {
                 auto         r0 = GEP8_PTR_I32(allocStack, ip->a.u32);
@@ -1130,7 +1130,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             }
             break;
         }
-        case ByteCodeOp::SetAtStackPointer64x2:
+        case ByteCodeOp::SetAtStackPointer64_x2:
         {
             {
                 auto         r0 = GEP8_PTR_I64(allocStack, ip->a.u32);
