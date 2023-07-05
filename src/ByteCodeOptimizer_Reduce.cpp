@@ -2475,10 +2475,10 @@ void ByteCodeOptimizer::reduceStack(ByteCodeOptContext* context, ByteCodeInstruc
         case ByteCodeOp::SetAtStackPointer16:
         case ByteCodeOp::SetAtStackPointer32:
         case ByteCodeOp::SetAtStackPointer64:
-        case ByteCodeOp::SetAtStackPointer8_x2:
-        case ByteCodeOp::SetAtStackPointer16_x2:
-        case ByteCodeOp::SetAtStackPointer32_x2:
-        case ByteCodeOp::SetAtStackPointer64_x2:
+        case ByteCodeOp::SetAtStackPointer8x2:
+        case ByteCodeOp::SetAtStackPointer16x2:
+        case ByteCodeOp::SetAtStackPointer32x2:
+        case ByteCodeOp::SetAtStackPointer64x2:
         case ByteCodeOp::SetZeroStack8:
         case ByteCodeOp::SetZeroStack16:
         case ByteCodeOp::SetZeroStack32:
@@ -5453,10 +5453,10 @@ void ByteCodeOptimizer::reduceLateStack(ByteCodeOptContext* context, ByteCodeIns
     case ByteCodeOp::SetAtStackPointer16:
     case ByteCodeOp::SetAtStackPointer32:
     case ByteCodeOp::SetAtStackPointer64:
-    case ByteCodeOp::SetAtStackPointer8_x2:
-    case ByteCodeOp::SetAtStackPointer16_x2:
-    case ByteCodeOp::SetAtStackPointer32_x2:
-    case ByteCodeOp::SetAtStackPointer64_x2:
+    case ByteCodeOp::SetAtStackPointer8x2:
+    case ByteCodeOp::SetAtStackPointer16x2:
+    case ByteCodeOp::SetAtStackPointer32x2:
+    case ByteCodeOp::SetAtStackPointer64x2:
     case ByteCodeOp::SetZeroStack8:
     case ByteCodeOp::SetZeroStack16:
     case ByteCodeOp::SetZeroStack32:

@@ -800,16 +800,16 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
     case ByteCodeOp::ClearRA:
         registersRC[ip->a.u32].u64 = 0;
         break;
-    case ByteCodeOp::ClearRA_x2:
+    case ByteCodeOp::ClearRAx2:
         registersRC[ip->a.u32].u64 = 0;
         registersRC[ip->b.u32].u64 = 0;
         break;
-    case ByteCodeOp::ClearRA_x3:
+    case ByteCodeOp::ClearRAx3:
         registersRC[ip->a.u32].u64 = 0;
         registersRC[ip->b.u32].u64 = 0;
         registersRC[ip->c.u32].u64 = 0;
         break;
-    case ByteCodeOp::ClearRA_x4:
+    case ByteCodeOp::ClearRAx4:
         registersRC[ip->a.u32].u64 = 0;
         registersRC[ip->b.u32].u64 = 0;
         registersRC[ip->c.u32].u64 = 0;
@@ -1033,7 +1033,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
         SWAG_ASSERT(context->bp + ip->b.u32 < context->stack + g_CommandLine.stackSizeBC);
         registersRC[ip->a.u32].pointer = context->bp + ip->b.u32;
         break;
-    case ByteCodeOp::MakeStackPointer_x2:
+    case ByteCodeOp::MakeStackPointerx2:
         SWAG_ASSERT(context->bp + ip->b.u32 < context->stack + g_CommandLine.stackSizeBC);
         registersRC[ip->a.u32].pointer = context->bp + ip->b.u32;
         SWAG_ASSERT(context->bp + ip->d.u32 < context->stack + g_CommandLine.stackSizeBC);
@@ -2347,7 +2347,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
         break;
     }
 
-    case ByteCodeOp::SetAtStackPointer8_x2:
+    case ByteCodeOp::SetAtStackPointer8x2:
     {
         {
             auto ptr        = context->bp + ip->a.u32;
@@ -2359,7 +2359,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
         }
         break;
     }
-    case ByteCodeOp::SetAtStackPointer16_x2:
+    case ByteCodeOp::SetAtStackPointer16x2:
     {
         {
             auto ptr         = context->bp + ip->a.u32;
@@ -2371,7 +2371,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
         }
         break;
     }
-    case ByteCodeOp::SetAtStackPointer32_x2:
+    case ByteCodeOp::SetAtStackPointer32x2:
     {
         {
             auto ptr         = context->bp + ip->a.u32;
@@ -2383,7 +2383,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
         }
         break;
     }
-    case ByteCodeOp::SetAtStackPointer64_x2:
+    case ByteCodeOp::SetAtStackPointer64x2:
     {
         {
             auto ptr         = context->bp + ip->a.u32;
