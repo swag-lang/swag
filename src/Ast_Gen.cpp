@@ -219,7 +219,7 @@ bool Ast::convertLiteralTupleToStructType(SemanticContext* context, TypeInfoStru
             }
 
             if (nameVar.empty())
-                nameVar = Fmt("item%d", i);
+                nameVar = Fmt("item%u", i);
             i++;
 
             if (typeField->isListArray())

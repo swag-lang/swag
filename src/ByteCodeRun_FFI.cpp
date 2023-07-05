@@ -156,21 +156,26 @@ void ByteCodeRun::ffiCall(ByteCodeRunContext* context, ByteCodeInstruction* ip, 
         auto now = OS::timerNow();
         context->bc->profileCumTime += now - context->bc->profileStart;
         context->bc->profileStart = now;
-    }
-#endif
 
-    OS::ffi(context, foreignPtr, typeInfoFunc, context->ffiPushRAParam, retCopyAddr);
+        OS::ffi(context, foreignPtr, typeInfoFunc, context->ffiPushRAParam, retCopyAddr);
 
-#ifdef SWAG_STATS
-    if (g_CommandLine.profile)
-    {
-        auto now      = OS::timerNow();
-        auto funcDecl = CastAst<AstFuncDecl>((AstNode*) ip->a.pointer, AstNodeKind::FuncDecl);
+        now = OS::timerNow();
         context->bc->profileCumTime += now - context->bc->profileStart;
         context->bc->profileFFI += now - context->bc->profileStart;
-        context->bc->ffiProfile[funcDecl].count += 1;
-        context->bc->ffiProfile[funcDecl].cum += now - context->bc->profileStart;
         context->bc->profileStart = now;
+
+        if (ip->op == ByteCodeOp::ForeignCall || ip->op == ByteCodeOp::ForeignCallPop)
+        {
+            auto funcDecl = CastAst<AstFuncDecl>((AstNode*) ip->a.pointer, AstNodeKind::FuncDecl);
+            context->bc->ffiProfile[funcDecl].count += 1;
+            context->bc->ffiProfile[funcDecl].cum += now - context->bc->profileStart;
+        }
     }
+    else
+    {
+        OS::ffi(context, foreignPtr, typeInfoFunc, context->ffiPushRAParam, retCopyAddr);
+    }
+#else
+    OS::ffi(context, foreignPtr, typeInfoFunc, context->ffiPushRAParam, retCopyAddr);
 #endif
 }

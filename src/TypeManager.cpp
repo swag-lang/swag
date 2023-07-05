@@ -233,7 +233,7 @@ TypeInfoStruct* TypeManager::convertTypeListToStruct(JobContext* context, TypeIn
     {
         auto one = typeList->subTypes[idx];
         if (one->name.empty())
-            one->name = Fmt("item%d", idx);
+            one->name = Fmt("item%u", idx);
         typeStruct->fields.push_back((TypeInfoParam*) one->clone());
     }
 

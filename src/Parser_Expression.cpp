@@ -1546,7 +1546,7 @@ bool Parser::doAffectExpression(AstNode* parent, AstNode** result, AstWith* with
                 Ast::removeFromParent(child);
                 Ast::addChildBack(affectNode, child);
                 forceTakeAddress(child);
-                auto idRef = Ast::newMultiIdentifierRef(sourceFile, Fmt("%s.item%d", tmpVarName.c_str(), idx++), affectNode, this);
+                auto idRef = Ast::newMultiIdentifierRef(sourceFile, Fmt("%s.item%u", tmpVarName.c_str(), idx++), affectNode, this);
 
                 // Force a move between the generated temporary variable and the real var
                 idRef->flags |= AST_FORCE_MOVE;

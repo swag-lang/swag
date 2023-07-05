@@ -96,7 +96,7 @@ You can name parameters, and don't have to respect parameters order in that case
 */
 #test
 {
-    // A **tuple** can be used to return multiple values in a function.
+    // An **anonymous struct** can be used to return multiple values in a function.
     {
         func myFunction() -> {x, y: f32}
         {
