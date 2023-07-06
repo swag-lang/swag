@@ -568,6 +568,8 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             break;
         }
 
+            /////////////////////////////////////
+
         case ByteCodeOp::GetFromStack8:
         {
             auto r0 = GEP64(allocR, ip->a.u32);
@@ -599,6 +601,62 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             builder.CreateStore(builder.CreateLoad(I64_TY(), r1), r0);
             break;
         }
+
+            /////////////////////////////////////
+
+        case ByteCodeOp::GetFromStack8x2:
+        {
+            auto r0 = GEP64(allocR, ip->a.u32);
+            auto r1 = GEP8(allocStack, ip->b.u32);
+            auto v0 = builder.CreateIntCast(builder.CreateLoad(I8_TY(), r1), I64_TY(), false);
+            builder.CreateStore(v0, r0);
+
+            auto r2 = GEP64(allocR, ip->c.u32);
+            auto r3 = GEP8(allocStack, ip->d.u32);
+            auto v1 = builder.CreateIntCast(builder.CreateLoad(I8_TY(), r3), I64_TY(), false);
+            builder.CreateStore(v1, r2);
+            break;
+        }
+        case ByteCodeOp::GetFromStack16x2:
+        {
+            auto r0 = GEP64(allocR, ip->a.u32);
+            auto r1 = GEP8(allocStack, ip->b.u32);
+            auto v0 = builder.CreateIntCast(builder.CreateLoad(I16_TY(), r1), I64_TY(), false);
+            builder.CreateStore(v0, r0);
+
+            auto r2 = GEP64(allocR, ip->c.u32);
+            auto r3 = GEP8(allocStack, ip->d.u32);
+            auto v1 = builder.CreateIntCast(builder.CreateLoad(I16_TY(), r3), I64_TY(), false);
+            builder.CreateStore(v1, r2);
+            break;
+        }
+        case ByteCodeOp::GetFromStack32x2:
+        {
+            auto r0 = GEP64(allocR, ip->a.u32);
+            auto r1 = GEP8(allocStack, ip->b.u32);
+            auto v0 = builder.CreateIntCast(builder.CreateLoad(I32_TY(), r1), I64_TY(), false);
+            builder.CreateStore(v0, r0);
+
+            auto r2 = GEP64(allocR, ip->c.u32);
+            auto r3 = GEP8(allocStack, ip->d.u32);
+            auto v1 = builder.CreateIntCast(builder.CreateLoad(I32_TY(), r3), I64_TY(), false);
+            builder.CreateStore(v1, r2);
+            break;
+        }
+        case ByteCodeOp::GetFromStack64x2:
+        {
+            auto r0 = GEP64(allocR, ip->a.u32);
+            auto r1 = GEP8(allocStack, ip->b.u32);
+            builder.CreateStore(builder.CreateLoad(I64_TY(), r1), r0);
+
+            auto r2 = GEP64(allocR, ip->c.u32);
+            auto r3 = GEP8(allocStack, ip->d.u32);
+            builder.CreateStore(builder.CreateLoad(I64_TY(), r3), r2);
+            break;
+        }
+
+            /////////////////////////////////////
+
         case ByteCodeOp::GetIncFromStack64:
         {
             auto r0 = GEP64(allocR, ip->a.u32);
@@ -648,6 +706,8 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             break;
         }
 
+            /////////////////////////////////////
+
         case ByteCodeOp::CopyStack8:
         {
             auto r0 = GEP8(allocStack, ip->a.u32);
@@ -677,17 +737,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             break;
         }
 
-        case ByteCodeOp::GetFromStack64_x2:
-        {
-            auto r0 = GEP64(allocR, ip->a.u32);
-            auto r1 = GEP8(allocStack, ip->b.u32);
-            builder.CreateStore(builder.CreateLoad(I64_TY(), r1), r0);
-
-            auto r2 = GEP64(allocR, ip->c.u32);
-            auto r3 = GEP8(allocStack, ip->d.u32);
-            builder.CreateStore(builder.CreateLoad(I64_TY(), r3), r2);
-            break;
-        }
+            /////////////////////////////////////
 
         case ByteCodeOp::IntrinsicDbgAlloc:
         {

@@ -2670,6 +2670,33 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
 
             /////////////////////////////////////
 
+        case ByteCodeOp::GetFromStack8x2:
+            pp.emit_LoadU8U64_Indirect(offsetStack + ip->b.u32, RAX, RDI);
+            pp.emit_Store64_Indirect(regOffset(ip->a.u32), RAX);
+            pp.emit_LoadU8U64_Indirect(offsetStack + ip->d.u32, RAX, RDI);
+            pp.emit_Store64_Indirect(regOffset(ip->c.u32), RAX);
+            break;
+        case ByteCodeOp::GetFromStack16x2:
+            pp.emit_LoadU16U64_Indirect(offsetStack + ip->b.u32, RAX, RDI);
+            pp.emit_Store64_Indirect(regOffset(ip->a.u32), RAX);
+            pp.emit_LoadU16U64_Indirect(offsetStack + ip->d.u32, RAX, RDI);
+            pp.emit_Store64_Indirect(regOffset(ip->c.u32), RAX);
+            break;
+        case ByteCodeOp::GetFromStack32x2:
+            pp.emit_Load32_Indirect(offsetStack + ip->b.u32, RAX, RDI);
+            pp.emit_Store64_Indirect(regOffset(ip->a.u32), RAX);
+            pp.emit_Load32_Indirect(offsetStack + ip->d.u32, RAX, RDI);
+            pp.emit_Store64_Indirect(regOffset(ip->c.u32), RAX);
+            break;
+        case ByteCodeOp::GetFromStack64x2:
+            pp.emit_Load64_Indirect(offsetStack + ip->b.u32, RAX, RDI);
+            pp.emit_Store64_Indirect(regOffset(ip->a.u32), RAX);
+            pp.emit_Load64_Indirect(offsetStack + ip->d.u32, RAX, RDI);
+            pp.emit_Store64_Indirect(regOffset(ip->c.u32), RAX);
+            break;
+
+            /////////////////////////////////////
+
         case ByteCodeOp::GetIncFromStack64DeRef8:
             if (ip->c.u64 <= 0x7FFFFFFF)
             {
@@ -2744,15 +2771,6 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
         case ByteCodeOp::CopyStack64:
             pp.emit_Load64_Indirect(offsetStack + ip->b.u32, RAX, RDI);
             pp.emit_Store64_Indirect(offsetStack + ip->a.u32, RAX, RDI);
-            break;
-
-            /////////////////////////////////////
-
-        case ByteCodeOp::GetFromStack64_x2:
-            pp.emit_Load64_Indirect(offsetStack + ip->b.u32, RAX, RDI);
-            pp.emit_Store64_Indirect(regOffset(ip->a.u32), RAX);
-            pp.emit_Load64_Indirect(offsetStack + ip->d.u32, RAX, RDI);
-            pp.emit_Store64_Indirect(regOffset(ip->c.u32), RAX);
             break;
 
             /////////////////////////////////////
