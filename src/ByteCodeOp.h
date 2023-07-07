@@ -24,10 +24,9 @@ const uint32_t OPFLAG_IMM_D        = 0x00080000;
 const uint32_t OPFLAG_UNPURE       = 0x00100000;
 const uint32_t OPFLAG_IS_JUMP      = 0x00200000;
 const uint32_t OPFLAG_IS_MEMCPY    = 0x00400000;
-const uint32_t OPFLAG_IS_COPY_RBRA = 0x00800000;
-const uint32_t OPFLAG_IS_FACTOR    = 0x01000000;
-const uint32_t OPFLAG_IS_JUMPDYN   = 0x02000000;
-const uint32_t OPFLAG_IS_REGONLY   = 0x04000000;
+const uint32_t OPFLAG_IS_FACTOR    = 0x00800000;
+const uint32_t OPFLAG_IS_JUMPDYN   = 0x01000000;
+const uint32_t OPFLAG_IS_REGONLY   = 0x02000000;
 
 enum class ByteCodeOp : uint16_t
 {

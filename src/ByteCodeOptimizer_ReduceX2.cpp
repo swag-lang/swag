@@ -6,6 +6,18 @@ void ByteCodeOptimizer::reduceX2(ByteCodeOptContext* context, ByteCodeInstructio
 {
     switch (ip->op)
     {
+    case ByteCodeOp::CopyRBtoRA64:
+        if (ip[1].op == ByteCodeOp::CopyRBtoRA64 &&
+            !(ip[1].flags & BCI_START_STMT))
+        {
+            SET_OP(ip, ByteCodeOp::CopyRBtoRA64x2);
+            ip[0].c.u64 = ip[1].a.u64;
+            ip[0].d.u64 = ip[1].b.u64;
+            setNop(context, ip + 1);
+            break;
+        }
+        break;
+
     case ByteCodeOp::ClearRA:
         if (ip[1].op == ByteCodeOp::ClearRA &&
             ip[2].op == ByteCodeOp::ClearRA &&
