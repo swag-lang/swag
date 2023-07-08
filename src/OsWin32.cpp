@@ -821,10 +821,10 @@ namespace OS
         if (typeInfoFunc->declNode && typeInfoFunc->declNode->sourceFile->isRuntimeFile && typeInfoFunc->declNode->token.text == "RaiseException")
         {
             SWAG_ASSERT(pushRAParam.size() == 4);
-            RaiseException(context->curRegistersRC[pushRAParam[3]].u32,
-                           context->curRegistersRC[pushRAParam[2]].u32,
-                           context->curRegistersRC[pushRAParam[1]].u32,
-                           (ULONG_PTR*) context->curRegistersRC[pushRAParam[0]].pointer);
+            RaiseException((DWORD) ((uint64_t*) context->sp)[0],
+                           (DWORD) ((uint64_t*) context->sp)[1],
+                           (DWORD) ((uint64_t*) context->sp)[2],
+                           (ULONG_PTR*) ((uint64_t*) context->sp)[3]);
         }
 
         auto& gen = g_FfiX64Gen;

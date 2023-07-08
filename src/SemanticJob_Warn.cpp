@@ -135,22 +135,22 @@ bool SemanticJob::warnUnusedVariables(SemanticContext* context, Scope* scope)
         if (sym->name[0] == '_')
             continue;
 
-        auto front    = sym->nodes.front();
+        auto front = sym->nodes.front();
+        if (front->flags & AST_GENERATED)
+            continue;
+
         auto overload = sym->overloads.front();
 
-        /*if (!overload->typeInfo->isStruct() &&
-            !(overload->flags & OVERLOAD_CONST_ASSIGN) &&
+        // Check that variable has been changed
+        if (!(overload->flags & OVERLOAD_IS_LET) &&
             !(overload->flags & OVERLOAD_HAS_AFFECT) &&
             (overload->flags & OVERLOAD_VAR_LOCAL))
         {
-            Diagnostic diag{ front, front->token, Fmt(Err(Wrn0002), Naming::kindName(overload).c_str(), sym->name.c_str()), DiagnosticLevel::Warning };
-            diag.hint = Fmt(Hnt(Hnt0092), sym->name.c_str());
-            isOk = isOk && context->report(diag);
-        }*/
+            //Diagnostic diag{front, front->token, Fmt(Err(Wrn0009), sym->name.c_str()), DiagnosticLevel::Warning};
+            //isOk = isOk && context->report(diag);
+        }
 
         if (sym->flags & SYMBOL_USED)
-            continue;
-        if (front->flags & AST_GENERATED)
             continue;
         if (overload->typeInfo->isCVariadic())
             continue;
