@@ -245,7 +245,7 @@ func __printString(message: string)
 #[Swag.PrintBc]
 func __raiseException666(message: string, loc: Swag.SourceCodeLocation, kind: Swag.ExceptionKind)
 {
-    let cxt = @getcontext()
+    cxt := @getcontext()
     cxt.exceptionLoc = loc
     cxt.exceptionParams[0] = cast(const *void) &cxt.exceptionLoc
     cxt.exceptionParams[1] = cast(const *void) @dataof(message)
