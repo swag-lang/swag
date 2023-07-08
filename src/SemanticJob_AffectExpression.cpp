@@ -83,7 +83,11 @@ bool SemanticJob::checkIsConstAffect(SemanticContext* context, AstNode* left, As
     }
 
     if (!isConst)
+    {
+        if (left->resolvedSymbolOverload)
+            left->resolvedSymbolOverload->flags |= OVERLOAD_HAS_AFFECT;
         return true;
+    }
 
     Utf8        hint;
     auto        node    = context->node;
@@ -176,6 +180,13 @@ bool SemanticJob::checkIsConstAffect(SemanticContext* context, AstNode* left, As
             diag.addRange(left, hint);
             return context->report(diag, note);
         }
+    }
+
+    if (left->resolvedSymbolOverload && left->resolvedSymbolOverload->flags & OVERLOAD_IS_LET)
+    {
+        Diagnostic diag{node, node->token, Err(Err0564), Hnt(Hnt0061)};
+        diag.addRange(left, Hnt(Hnt0050));
+        return context->report(diag, note);
     }
 
     if (left->flags & AST_L_VALUE)

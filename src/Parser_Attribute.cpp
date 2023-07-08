@@ -104,6 +104,7 @@ bool Parser::doGlobalAttributeExpose(AstNode* parent, AstNode** result, bool for
         case TokenId::KwdMethod:
         case TokenId::KwdAttr:
         case TokenId::KwdVar:
+        case TokenId::KwdLet:
         case TokenId::KwdConst:
         case TokenId::KwdEnum:
         case TokenId::KwdStruct:

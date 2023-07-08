@@ -127,8 +127,7 @@ bool SemanticJob::warnUnusedVariables(SemanticContext* context, Scope* scope)
 
         if (!sym->nodes.count || !sym->overloads.count)
             continue;
-        if (sym->flags & SYMBOL_USED)
-            continue;
+
         if (sym->kind == SymbolKind::GenericType)
             continue;
         if (sym->name[0] == '@')
@@ -139,6 +138,18 @@ bool SemanticJob::warnUnusedVariables(SemanticContext* context, Scope* scope)
         auto front    = sym->nodes.front();
         auto overload = sym->overloads.front();
 
+        /*if (!overload->typeInfo->isStruct() &&
+            !(overload->flags & OVERLOAD_CONST_ASSIGN) &&
+            !(overload->flags & OVERLOAD_HAS_AFFECT) &&
+            (overload->flags & OVERLOAD_VAR_LOCAL))
+        {
+            Diagnostic diag{ front, front->token, Fmt(Err(Wrn0002), Naming::kindName(overload).c_str(), sym->name.c_str()), DiagnosticLevel::Warning };
+            diag.hint = Fmt(Hnt(Hnt0092), sym->name.c_str());
+            isOk = isOk && context->report(diag);
+        }*/
+
+        if (sym->flags & SYMBOL_USED)
+            continue;
         if (front->flags & AST_GENERATED)
             continue;
         if (overload->typeInfo->isCVariadic())

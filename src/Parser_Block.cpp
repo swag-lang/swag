@@ -15,7 +15,7 @@ bool Parser::doIf(AstNode* parent, AstNode** result)
     SWAG_VERIFY(token.id != TokenId::SymLeftCurly, error(node->token, Err(Syn0084)));
 
     // If with an assignment
-    if (token.id == TokenId::KwdVar || token.id == TokenId::KwdConst)
+    if (token.id == TokenId::KwdVar || token.id == TokenId::KwdConst || token.id == TokenId::KwdLet)
     {
         node->specFlags |= AstIf::SPECFLAG_ASSIGN;
 

@@ -500,6 +500,7 @@ Utf8 Diagnostic::syntax(const Utf8& line)
                 case TokenId::KwdDiscard:
 
                 case TokenId::KwdVar:
+                case TokenId::KwdLet:
                 case TokenId::KwdConst:
 
                 case TokenId::KwdEnum:

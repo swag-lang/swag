@@ -403,7 +403,7 @@ void initErrors()
     SWAG_ERROR(Err0532, "a literal with a suffix (in that case '%s') should only be used in a struct conversion");
     SWAG_ERROR(Err0619, "a move semantic reference ('moveref') cannot be declared as 'const'");
     SWAG_ERROR(Err0393, "a namespace cannot have the same name as the module ('%s')");
-    SWAG_ERROR(Err0299, "a non mutable variable should be explicitly initialized");
+    SWAG_ERROR(Err0299, "an immutable variable should be explicitly initialized");
     SWAG_ERROR(Err0446, "a parameter of type 'cvarargs' cannot be passed from function to function");
     SWAG_ERROR(Err0040, "a partial type alias ('%s') for a generic struct instantiation is not supported");
     SWAG_ERROR(Err0024, "cannot find function '%s' in interface '%s'");
@@ -922,7 +922,7 @@ void initErrors()
     SWAG_ERROR(Err0251, "use of unknown attribute '%s'");
     SWAG_ERROR(Err0280, "function '%s' is part of the interface '%s' but is not marked with 'impl'");
     SWAG_ERROR(Err0289, "unexpected 'impl' outside of an 'impl for' block");
-    SWAG_ERROR(Err0436, nullptr);
+    SWAG_ERROR(Err0436, "an immutable variable declared with 'let' should be explicitly initialized");
     SWAG_ERROR(Err0501, nullptr);
     SWAG_ERROR(Err0520, nullptr);
     SWAG_ERROR(Err0521, nullptr);
@@ -1057,7 +1057,7 @@ void initErrors()
     SWAG_ERROR(Hnt0017, "this function is marked with the 'Swag.Inline' attribute");
     SWAG_ERROR(Hnt0015, "this function is marked with the 'Swag.Macro' attribute");
     SWAG_ERROR(Hnt0016, "this function is marked with the 'Swag.Mixin' attribute");
-    SWAG_ERROR(Hnt0050, nullptr);
+    SWAG_ERROR(Hnt0050, "this local variable has been declared with 'let' and cannot be changed");
     SWAG_ERROR(Hnt0049, "this implies a first parameter 'self'");
     SWAG_ERROR(Hnt0001, "this intrinsic is called with invalid arguments");
     SWAG_ERROR(Hnt0008, "this intrinsic is not discardable, so the return value should always be used");
@@ -1138,7 +1138,7 @@ void initErrors()
     SWAG_ERROR(Hnt0113, "this parameter does not match");
     SWAG_ERROR(Hnt0114, "missing return type");
     SWAG_ERROR(Hnt0115, "one function is declared with 'throw' and the other one is not");
-    SWAG_ERROR(Hnt0116, "':=' should be replaced with '=' when used after an explicit 'const' or 'var'");
+    SWAG_ERROR(Hnt0116, "':=' should be replaced with '=' when used after an explicit 'const', 'var' or 'let'");
     SWAG_ERROR(Hnt0117, "this could be the start of the initialization of '%s' or the start of a new block");
     SWAG_ERROR(Hnt0118, "no corresponding start of multi-line comment '/*' has been found");
     SWAG_ERROR(Hnt0119, "this is an enum value");

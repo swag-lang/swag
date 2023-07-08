@@ -29,12 +29,9 @@ struct RegisterList
     static const int MAX_STATIC    = 2;
     static const int MAX_REGISTERS = 256;
 
-    // To optimize memory, register cannot have a value > 255. This should be fine as we are recycling
-    // registers. But perhaps one day an assert will trigger (if we do not correctly free a register for example).
-    // For now, stick to 8 bits max.
-    uint8_t oneResult[MAX_STATIC] = {0};
-    uint8_t countResults          = 0;
-    bool    cannotFree            = false;
+    uint32_t oneResult[MAX_STATIC] = {0};
+    uint8_t  countResults          = 0;
+    bool     cannotFree            = false;
 
     RegisterList()
     {

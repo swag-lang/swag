@@ -693,6 +693,7 @@ bool Parser::doEmbeddedInstruction(AstNode* parent, AstNode** result)
         SWAG_CHECK(doWith(parent, result));
         break;
     case TokenId::KwdVar:
+    case TokenId::KwdLet:
     case TokenId::KwdConst:
         SWAG_CHECK(doVarDecl(parent, result));
         break;

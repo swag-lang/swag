@@ -128,7 +128,7 @@ struct Parser
     bool doCompilerPlaceHolder(AstNode* parent);
     bool doTopLevelInstruction(AstNode* parent, AstNode** result);
     bool doVarDecl(AstNode* parent, AstNode** result);
-    bool doVarDecl(AstNode* parent, AstNode** result, AstNodeKind kind, bool forStruct = false);
+    bool doVarDecl(AstNode* parent, AstNode** result, AstNodeKind kind, bool forStruct = false, bool forLet = false);
     bool doAlias(AstNode* parent, AstNode** result);
     bool doSingleTypeExpression(AstTypeExpression* node, AstNode* parent, uint32_t exprFlags, AstNode** result);
     bool doSubTypeExpression(AstNode* parent, uint32_t exprFlags, AstNode** result);
@@ -136,7 +136,7 @@ struct Parser
     bool doLambdaClosureType(AstNode* parent, AstNode** result, bool inTypeVarDecl = false);
     bool doLambdaClosureTypePriv(AstTypeLambda* node, AstNode** result, bool inTypeVarDecl);
     bool doDefer(AstNode* parent, AstNode** result);
-    bool doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode* type, AstNode* assign, const TokenParse& assignToken, AstNodeKind kind, AstNode** result);
+    bool doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode* type, AstNode* assign, const TokenParse& assignToken, AstNodeKind kind, AstNode** result, bool forLet = false);
     bool doAffectExpression(AstNode* parent, AstNode** result, AstWith* withNode = nullptr);
     bool doIdentifier(AstNode* parent, uint32_t identifierFlags = 0);
     bool doIdentifierRef(AstNode* parent, AstNode** result, uint32_t identifierFlags = 0);

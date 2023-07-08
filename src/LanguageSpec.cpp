@@ -338,6 +338,7 @@ void LanguageSpec::setupKeywords()
     keywords.add("alias", TokenId::KwdAlias);
     keywords.add("attr", TokenId::KwdAttr);
     keywords.add("var", TokenId::KwdVar);
+    keywords.add("let", TokenId::KwdLet);
     keywords.add("const", TokenId::KwdConst);
     keywords.add("ref", TokenId::KwdRef);
     keywords.add("moveref", TokenId::KwdMoveRef);

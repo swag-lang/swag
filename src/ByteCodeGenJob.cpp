@@ -64,19 +64,19 @@ void ByteCodeGenJob::freeRegisterRC(ByteCodeGenContext* context, uint32_t rc)
     context->bc->isDirtyRegistersRC = true;
 }
 
-uint32_t ByteCodeGenJob::reserveRegisterRC(ByteCodeGenContext* context, uint32_t hintRegister)
+uint32_t ByteCodeGenJob::reserveRegisterRC(ByteCodeGenContext* context, const RegisterList* hintRegister)
 {
     if (!context->bc->availableRegistersRC.empty())
     {
         // Try to reuse register if provided
-        if (hintRegister != UINT32_MAX)
+        if (hintRegister && hintRegister->size() == 1)
         {
             for (size_t i = 0; i < context->bc->availableRegistersRC.size(); i++)
             {
-                if (context->bc->availableRegistersRC[i] == hintRegister)
+                if (context->bc->availableRegistersRC[i] == hintRegister->oneResult[0])
                 {
                     context->bc->availableRegistersRC.erase(i);
-                    return hintRegister;
+                    return hintRegister->oneResult[0];
                 }
             }
         }
@@ -813,7 +813,7 @@ JobResult ByteCodeGenJob::execute()
         if (!funcNode->sourceFile->shouldHaveError)
         {
             // Be sure that every used registers have been released
-            if (context.bc->maxReservedRegisterRC > context.bc->availableRegistersRC.size())
+            if (context.bc->maxReservedRegisterRC > context.bc->availableRegistersRC.size() + context.bc->staticRegs)
             {
                 Report::internalError(funcNode, Fmt("function '%s' does not release all registers !", funcNode->token.ctext()));
                 if (originalNode->attributeFlags & ATTRIBUTE_PRINT_BC)

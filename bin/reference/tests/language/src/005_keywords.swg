@@ -52,6 +52,7 @@ retval
 
 const
 var
+let
 ref
 acast
 cast

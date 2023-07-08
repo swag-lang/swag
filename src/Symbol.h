@@ -31,6 +31,9 @@ const uint32_t OVERLOAD_RETVAL         = 0x00010000;
 const uint32_t OVERLOAD_STRUCT_AFFECT  = 0x00020000;
 const uint32_t OVERLOAD_TUPLE_UNPACK   = 0x00040000;
 const uint32_t OVERLOAD_USED           = 0x00080000;
+const uint32_t OVERLOAD_HINT_AS_REG    = 0x00100000;
+const uint32_t OVERLOAD_HAS_AFFECT     = 0x00200000;
+const uint32_t OVERLOAD_IS_LET         = 0x00400000;
 
 struct SymbolOverload
 {
@@ -42,9 +45,9 @@ struct SymbolOverload
     SymbolName* symbol          = nullptr;
     AstNode*    fromInlineParam = nullptr;
 
-    uint32_t storageIndex     = 0;
-    uint32_t flags : 24       = 0;
-    uint32_t hintRegister : 8 = 0;
+    uint32_t     storageIndex = 0;
+    uint32_t     flags        = 0;
+    RegisterList hintRegister;
 
     void from(SymbolOverload* other)
     {

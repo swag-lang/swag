@@ -134,10 +134,35 @@ bool ByteCodeGenJob::emitLocalVarDecl(ByteCodeGenContext* context)
 
             if (!mustDropLeft)
                 node->assignment->flags |= AST_NO_LEFT_DROP;
-            node->allocateExtension(ExtensionKind::Misc);
-            emitAffectEqual(context, node->extMisc()->additionalRegisterRC, node->resultRegisterRC, node->typeInfo, node->assignment);
-            if (context->result != ContextResult::Done)
-                return true;
+
+            bool isLet = node->specFlags & AstVarDecl::SPECFLAG_IS_LET;
+            if (!node->typeInfo->isNativeIntegerOrRune() &&
+                !node->typeInfo->isNativeFloat() &&
+                !node->typeInfo->isPointer() &&
+                !node->typeInfo->isInterface() &&
+                !node->typeInfo->isBool() &&
+                !node->typeInfo->isAny() &&
+                !node->typeInfo->isString() &&
+                !node->typeInfo->isSlice())
+            {
+                isLet = false;
+            }
+
+            if (isLet)
+            {
+                context->bc->staticRegs += node->resultRegisterRC.size();
+                resolved->flags |= OVERLOAD_HINT_AS_REG;
+                resolved->hintRegister            = node->resultRegisterRC;
+                node->resultRegisterRC.cannotFree = true;
+            }
+            else
+            {
+                node->allocateExtension(ExtensionKind::Misc);
+                emitAffectEqual(context, node->extMisc()->additionalRegisterRC, node->resultRegisterRC, node->typeInfo, node->assignment);
+                if (context->result != ContextResult::Done)
+                    return true;
+            }
+
             freeRegisterRC(context, node);
         }
 

@@ -129,6 +129,7 @@ impl IRichEditLexer for RichEditLexerSwag
         mapWords.add("alias", State.Declaration)
         mapWords.add("attr", State.Declaration)
         mapWords.add("var", State.Declaration)
+        mapWords.add("let", State.Declaration)
         mapWords.add("const", State.Declaration)
         mapWords.add("ref", State.Declaration)
         mapWords.add("moveref", State.Declaration)

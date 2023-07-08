@@ -81,7 +81,7 @@ bool Parser::checkIsValidVarName(AstNode* node)
     return error(node->token, Fmt(Err(Syn0111), node->token.ctext()));
 }
 
-bool Parser::doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode* type, AstNode* assign, const TokenParse& assignToken, AstNodeKind kind, AstNode** result)
+bool Parser::doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode* type, AstNode* assign, const TokenParse& assignToken, AstNodeKind kind, AstNode** result, bool forLet)
 {
     bool acceptDeref = true;
     if (currentScope->kind == ScopeKind::Struct || currentScope->kind == ScopeKind::File)
@@ -115,6 +115,7 @@ bool Parser::doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode* ty
             varNode->tokenId     = identifier->tokenId;
             varNode->assignToken = assignToken;
             varNode->flags |= AST_R_VALUE;
+            varNode->specFlags |= forLet ? (AstVarDecl::SPECFLAG_IS_LET | AstVarDecl::SPECFLAG_CONST_ASSIGN) : 0;
 
             if (!firstDone)
             {
@@ -162,6 +163,7 @@ bool Parser::doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode* ty
         AstVarDecl* orgVarNode  = Ast::newVarDecl(sourceFile, tmpVarName, parentNode, this);
         orgVarNode->kind        = kind;
         orgVarNode->assignToken = assignToken;
+        orgVarNode->specFlags |= forLet ? (AstVarDecl::SPECFLAG_IS_LET | AstVarDecl::SPECFLAG_CONST_ASSIGN) : 0;
 
         // This will avoid to initialize the tuple before the affectation
         orgVarNode->flags |= AST_HAS_FULL_STRUCT_PARAMETERS;
@@ -217,6 +219,7 @@ bool Parser::doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode* ty
             varNode->token       = identifier->token;
             varNode->assignToken = assignToken;
             varNode->flags |= AST_R_VALUE | AST_GENERATED | AST_HAS_FULL_STRUCT_PARAMETERS;
+            varNode->specFlags |= forLet ? (AstVarDecl::SPECFLAG_IS_LET | AstVarDecl::SPECFLAG_CONST_ASSIGN) : 0;
             if (currentScope->isGlobalOrImpl())
                 SWAG_CHECK(currentScope->symTable.registerSymbolName(context, varNode, SymbolKind::Variable));
             identifier          = Ast::newMultiIdentifierRef(sourceFile, Fmt("%s.item%u", tmpVarName.c_str(), idx++), varNode, this);
@@ -239,6 +242,7 @@ bool Parser::doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode* ty
         varNode->kind       = kind;
         varNode->inheritTokenLocation(leftNode);
         varNode->assignToken = assignToken;
+        varNode->specFlags |= forLet ? (AstVarDecl::SPECFLAG_IS_LET | AstVarDecl::SPECFLAG_CONST_ASSIGN) : 0;
 
         Ast::addChildBack(varNode, type);
         varNode->type = type;
@@ -258,6 +262,7 @@ bool Parser::doVarDecl(AstNode* parent, AstNode** result)
 {
     // First variable
     AstNodeKind kind;
+    bool        isLet = false;
     if (token.id == TokenId::KwdConst)
     {
         kind = AstNodeKind::ConstDecl;
@@ -266,16 +271,17 @@ bool Parser::doVarDecl(AstNode* parent, AstNode** result)
     }
     else
     {
-        kind = AstNodeKind::VarDecl;
+        isLet = token.id == TokenId::KwdLet;
+        kind  = AstNodeKind::VarDecl;
         SWAG_CHECK(eatToken());
         SWAG_VERIFY(token.id == TokenId::Identifier || token.id == TokenId::SymLeftParen, error(token, Fmt(Err(Syn0069), token.ctext())));
     }
 
-    SWAG_CHECK(doVarDecl(parent, result, kind));
+    SWAG_CHECK(doVarDecl(parent, result, kind, false, isLet));
     return true;
 }
 
-bool Parser::doVarDecl(AstNode* parent, AstNode** result, AstNodeKind kind, bool forStruct)
+bool Parser::doVarDecl(AstNode* parent, AstNode** result, AstNodeKind kind, bool forStruct, bool forLet)
 {
     AstNode* leftNode;
     while (true)
@@ -327,7 +333,7 @@ bool Parser::doVarDecl(AstNode* parent, AstNode** result, AstNodeKind kind, bool
         if (!type && !assign)
             return error(leftNode->token, Err(Syn0131));
 
-        SWAG_CHECK(doVarDeclExpression(parent, leftNode, type, assign, assignToken, kind, result));
+        SWAG_CHECK(doVarDeclExpression(parent, leftNode, type, assign, assignToken, kind, result, forLet));
         leftNode->release();
 
         // If we have a type, and that type has parameters (struct construction), then we need to evaluate and push the parameters

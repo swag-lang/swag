@@ -602,6 +602,8 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
         isLocalConstant = true;
     if (node->specFlags & AstVarDecl::SPECFLAG_CONST_ASSIGN)
         symbolFlags |= OVERLOAD_CONST_ASSIGN;
+    if (node->specFlags & AstVarDecl::SPECFLAG_IS_LET)
+        symbolFlags |= OVERLOAD_IS_LET;
     if (node->attributeFlags & ATTRIBUTE_TLS)
         symbolFlags |= OVERLOAD_VAR_TLS;
 
@@ -624,9 +626,13 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
         // A constant must be initialized
         if (isCompilerConstant && !(node->flags & AST_VALUE_COMPUTED))
             return context->report({node, Err(Err0298)});
-        // A constant variable must be initiliazed
+        // A constant variable must be initialized
         if ((symbolFlags & OVERLOAD_CONST_ASSIGN) && node->kind != AstNodeKind::FuncDeclParam)
+        {
+            if (symbolFlags & OVERLOAD_IS_LET)
+                return context->report({node, Err(Err0436)});
             return context->report({node, Err(Err0299)});
+        }
 
         // A reference must be initialized
         if (concreteNodeType &&
