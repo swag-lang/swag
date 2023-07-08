@@ -75,8 +75,8 @@ void Workspace::newModule(const Utf8& moduleName)
     // Setup the build configuration
     #run
     {
-        let itf = @compiler()
-        let cfg = itf.getBuildCfg()
+        itf := @compiler()
+        cfg := itf.getBuildCfg()
         cfg.moduleVersion  = 0
         cfg.moduleRevision = 0
         cfg.moduleBuildNum = 0

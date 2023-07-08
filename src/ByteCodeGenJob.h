@@ -436,7 +436,7 @@ struct ByteCodeGenJob : public Job
 
     static void     transformResultToLinear2(ByteCodeGenContext* context, AstNode* node);
     static void     transformResultToLinear2(ByteCodeGenContext* context, RegisterList& resultRegisterRC);
-    static uint32_t reserveRegisterRC(ByteCodeGenContext* context, const RegisterList* hintRegister = nullptr);
+    static uint32_t reserveRegisterRC(ByteCodeGenContext* context);
     static void     reserveRegisterRC(ByteCodeGenContext* context, RegisterList& rc, int num);
     static void     reserveLinearRegisterRC2(ByteCodeGenContext* context, RegisterList& rc);
     static void     freeRegisterRC(ByteCodeGenContext* context, RegisterList& rc);

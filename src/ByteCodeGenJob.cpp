@@ -64,23 +64,10 @@ void ByteCodeGenJob::freeRegisterRC(ByteCodeGenContext* context, uint32_t rc)
     context->bc->isDirtyRegistersRC = true;
 }
 
-uint32_t ByteCodeGenJob::reserveRegisterRC(ByteCodeGenContext* context, const RegisterList* hintRegister)
+uint32_t ByteCodeGenJob::reserveRegisterRC(ByteCodeGenContext* context)
 {
     if (!context->bc->availableRegistersRC.empty())
     {
-        // Try to reuse register if provided
-        if (hintRegister && hintRegister->size() == 1)
-        {
-            for (size_t i = 0; i < context->bc->availableRegistersRC.size(); i++)
-            {
-                if (context->bc->availableRegistersRC[i] == hintRegister->oneResult[0])
-                {
-                    context->bc->availableRegistersRC.erase(i);
-                    return hintRegister->oneResult[0];
-                }
-            }
-        }
-
         sortRegistersRC(context);
         auto result = context->bc->availableRegistersRC.back();
         context->bc->availableRegistersRC.pop_back();

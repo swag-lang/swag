@@ -45,9 +45,8 @@ struct SymbolOverload
     SymbolName* symbol          = nullptr;
     AstNode*    fromInlineParam = nullptr;
 
-    uint32_t     storageIndex = 0;
-    uint32_t     flags        = 0;
-    RegisterList hintRegister;
+    uint32_t storageIndex = 0;
+    uint32_t flags        = 0;
 
     void from(SymbolOverload* other)
     {
@@ -59,7 +58,6 @@ struct SymbolOverload
         fromInlineParam = other->fromInlineParam;
         storageIndex    = other->storageIndex;
         flags           = other->flags;
-        hintRegister    = other->hintRegister;
     }
 };
 

@@ -150,9 +150,12 @@ bool ByteCodeGenJob::emitLocalVarDecl(ByteCodeGenContext* context)
 
             if (isLet)
             {
+                SWAG_ASSERT(!(resolved->flags & OVERLOAD_HINT_AS_REG));
+                SWAG_ASSERT(resolved->registers.size() == 0);
+
                 context->bc->staticRegs += node->resultRegisterRC.size();
                 resolved->flags |= OVERLOAD_HINT_AS_REG;
-                resolved->hintRegister            = node->resultRegisterRC;
+                resolved->registers               = node->resultRegisterRC;
                 node->resultRegisterRC.cannotFree = true;
             }
             else
