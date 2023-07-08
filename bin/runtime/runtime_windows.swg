@@ -242,7 +242,6 @@ func __printString(message: string)
 }
 
 ////////////////////////////////////////////////////////////
-#[Swag.PrintBc]
 func __raiseException666(message: string, loc: Swag.SourceCodeLocation, kind: Swag.ExceptionKind)
 {
     cxt := @getcontext()
