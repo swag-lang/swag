@@ -90,7 +90,7 @@ func ticksToDate(ticks: Ticks) -> {year: u16, month: u16, day: u16}
     // n = number of days since 1/1/0001
     var n = ticks / TicksPerDay
     // y400 = number of whole 400-year periods since 1/1/0001
-    var y400 = n / DaysPer400Years
+    let y400 = n / DaysPer400Years
     // n = day number within 400-year period
     n -= y400 * DaysPer400Years
     // y100 = number of whole 100-year periods within 400-year period
@@ -100,7 +100,7 @@ func ticksToDate(ticks: Ticks) -> {year: u16, month: u16, day: u16}
     // n = day number within 100-year period
     n -= y100 * DaysPer100Years
     // y4 = number of whole 4-year periods within 100-year period
-    var y4 = n / DaysPer4Years
+    let y4 = n / DaysPer4Years
     // n = day number within 4-year period
     n -= y4 * DaysPer4Years
     // y1 = number of whole years within 4-year period
@@ -112,8 +112,8 @@ func ticksToDate(ticks: Ticks) -> {year: u16, month: u16, day: u16}
     // dayOfYear = n + 1;
     // Leap year calculation looks different from IsLeapYear since y1, y4,
     // and y100 are relative to year 1, not year 0
-    var leapYear = y1 == 3 and (y4 != 24 or y100 == 3)
-    var days = leapYear ? @dataof(DaysToMonth366) : @dataof(DaysToMonth365)
+    let leapYear = y1 == 3 and (y4 != 24 or y100 == 3)
+    let days = leapYear ? @dataof(DaysToMonth366) : @dataof(DaysToMonth365)
     // All months have less than 32 days, so n >> 5 is a good conservative
     // estimate for the month
     var m = (n >> 5) + 1

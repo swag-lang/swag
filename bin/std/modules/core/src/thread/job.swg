@@ -88,7 +88,7 @@ func runJob(job: *Job)
 
 func peekExecJob()->bool
 {
-    var job = getJobToExec()
+    let job = getJobToExec()
     if !job return false
     runJob(job)
     return true

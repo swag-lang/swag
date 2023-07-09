@@ -65,7 +65,7 @@ public impl BitArray
     // Initializes a `BitArray` that contains bit values copied from the specified array of booleans
     mtd opAffect(what: const [..] bool)
     {
-        var len = @countof(what)
+        let len = @countof(what)
         reserve(len)
         buffer[len >> 5] = 0
         visit value, index: what

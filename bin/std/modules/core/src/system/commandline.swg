@@ -76,7 +76,7 @@ func getField(typeStruct: const *Swag.TypeInfoStruct, name: string)->const *Swag
             return it
 
         // Test name alias
-        var value = Reflection.getAttributeValue(it, ArgParams, "nameAlias")
+        let value = Reflection.getAttributeValue(it, ArgParams, "nameAlias")
         if @dataof(value) and Reflection.isString(@kindof(value)) and cast(string) value == name
             return it
     }

@@ -157,17 +157,17 @@ func convertAny(buf: *ConcatBuffer, value: any, strFormat: string)
     // A reference
     if Reflection.isPointerRef(type)
     {
-        var ptrType = cast(const *TypeInfoPointer) type
+        let ptrType = cast(const *TypeInfoPointer) type
         valueData = dref cast(**void) valueData
         type = ptrType.pointedType
     }
 
-    var concreteValue = @mkany(valueData, type)
+    let concreteValue = @mkany(valueData, type)
 
     // This is a type
     if Reflection.isType(type)
     {
-        var ptrType = dref cast(*typeinfo) valueData
+        let ptrType = dref cast(*typeinfo) valueData
         if ptrType
             buf.addBytes(ptrType.fullname)
         else
@@ -180,8 +180,8 @@ func convertAny(buf: *ConcatBuffer, value: any, strFormat: string)
     {
         if type.flags & TypeInfoFlags.CString
         {
-            var ptr = dref cast(const ^^u8) valueData
-            var len = @strlen(ptr)
+            let ptr = dref cast(const ^^u8) valueData
+            let len = @strlen(ptr)
             buf.addBytes(@mkslice(ptr, len))
             return
         }
@@ -222,15 +222,15 @@ func convertAny(buf: *ConcatBuffer, value: any, strFormat: string)
     // A slice
     if Reflection.isSlice(type)
     {
-        var ptrSlice = cast(const *TypeInfoSlice) type
+        let ptrSlice = cast(const *TypeInfoSlice) type
         buf.addBytes("[")
 
-        var sl = cast(const [..] u8) valueData
+        let sl = cast(const [..] u8) valueData
         var bufSlice = @dataof(sl)
         loop @countof(sl)
         {
             if @index buf.addBytes(",")
-            var v = @mkany(bufSlice, ptrSlice.pointedType)
+            let v = @mkany(bufSlice, ptrSlice.pointedType)
             convertAny(buf, v, strFormat)
             bufSlice += ptrSlice.pointedType.sizeof
         }
@@ -242,14 +242,14 @@ func convertAny(buf: *ConcatBuffer, value: any, strFormat: string)
     // A static array
     if Reflection.isArray(type)
     {
-        var ptrArr = cast(const *TypeInfoArray) type
+        let ptrArr = cast(const *TypeInfoArray) type
         buf.addBytes("[")
 
         var bufArr = cast(const ^u8) valueData
         loop ptrArr.count
         {
             if @index buf.addBytes(",")
-            var v = @mkany(bufArr, ptrArr.pointedType)
+            let v = @mkany(bufArr, ptrArr.pointedType)
             convertAny(buf, v, strFormat)
             bufArr += ptrArr.pointedType.sizeof
         }
@@ -273,10 +273,10 @@ func convertAny(buf: *ConcatBuffer, value: any, strFormat: string)
     // Any
     if Reflection.isAny(type)
     {
-        var ptrAny = cast(const *any) valueData
+        let ptrAny = cast(const *any) valueData
         buf.addBytes("{")
         buf.addBytes("type: ")
-        var typeAny = @kindof(dref ptrAny)
+        let typeAny = @kindof(dref ptrAny)
         convertAny(buf, typeAny, strFormat)
         buf.addBytes(", value: ")
         convertAny(buf, dref ptrAny, strFormat)
@@ -511,7 +511,7 @@ func convertBool(buf: *ConcatBuffer, value: bool)
 func convertRune(buf: *ConcatBuffer, value: rune)
 {
     var arr: [4] u8
-    var count = Utf8.encodeRune(arr, value)
+    let count = Utf8.encodeRune(arr, value)
     buf.addBytes(@mkslice(&arr[0], cast(u64) count))
 }
 

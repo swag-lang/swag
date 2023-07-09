@@ -25,10 +25,10 @@ public impl Adler32
         var s1 = adler & 0xffff
         var s2 = (adler >> 16) & 0xffff
 
-        var countof = @countof(buffer)
+        let countof = @countof(buffer)
         if !countof return
 
-        var input = @dataof(buffer)
+        let input = @dataof(buffer)
         if countof == 1
         {
             s1 += input[0]

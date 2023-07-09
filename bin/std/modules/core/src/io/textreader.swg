@@ -92,7 +92,7 @@ public impl TextReader
             // u64 by u64
             while ptr + 8'u64 <= ptrE
             {
-                var c64 = dref cast(*u64) ptr
+                let c64 = dref cast(*u64) ptr
                 if Math.hasByte(c64, "\r"'u8) or Math.hasByte(c64, "\n"'u8)
                     break
                 ptr += 8

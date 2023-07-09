@@ -33,7 +33,7 @@ using Swag
             if !isNative(t)
                 return false
 
-            var tt = cast(const *TypeInfoNative) t
+            let tt = cast(const *TypeInfoNative) t
             return tt.nativeKind != .Any and tt.nativeKind != .String
         }
 
@@ -42,7 +42,7 @@ using Swag
             if !isNative(t)
                 return false
 
-            var tt = cast(const *TypeInfoNative) t
+            let tt = cast(const *TypeInfoNative) t
             return tt.nativeKind == .Rune
         }
 
@@ -51,7 +51,7 @@ using Swag
             if !isNative(t)
                 return false
 
-            var tt = cast(const *TypeInfoNative) t
+            let tt = cast(const *TypeInfoNative) t
             return tt.nativeKind == .Any
         }
 
@@ -60,7 +60,7 @@ using Swag
             if !isNative(t)
                 return false
 
-            var tt = cast(const *TypeInfoNative) t
+            let tt = cast(const *TypeInfoNative) t
             return tt.nativeKind == .Bool
         }
 
@@ -69,7 +69,7 @@ using Swag
             if !isNative(t)
                 return false
 
-            var tt = cast(const *TypeInfoNative) t
+            let tt = cast(const *TypeInfoNative) t
             return tt.nativeKind == .String
         }
     }
@@ -80,7 +80,7 @@ using Swag
         if !isStruct(type)
             return false
 
-        var typeStruct = cast(const* TypeInfoStruct) type
+        let typeStruct = cast(const* TypeInfoStruct) type
         return typeStruct.structName == name
     }
 
@@ -90,7 +90,7 @@ using Swag
         var result = type
         while isTypeAlias(result)
         {
-            var typeAlias = cast(const *TypeInfoAlias) result
+            let typeAlias = cast(const *TypeInfoAlias) result
             result = typeAlias.rawType
         }
 
@@ -103,7 +103,7 @@ using Swag
         if !isEnum(type)
             return type
 
-        var enumType = cast(const *TypeInfoEnum) type
+        let enumType = cast(const *TypeInfoEnum) type
         return enumType.rawType
     }
 
@@ -114,7 +114,7 @@ using Swag
         if !isStruct(type)
             return null
 
-        var typeStruct = cast(const* TypeInfoStruct) type
+        let typeStruct = cast(const* TypeInfoStruct) type
         visit it: typeStruct.methods
         {
             if it.name == name
@@ -131,7 +131,7 @@ using Swag
         if !isStruct(type)
             return null
 
-        var typeStruct = cast(const* TypeInfoStruct) type
+        let typeStruct = cast(const* TypeInfoStruct) type
         visit it: typeStruct.fields
         {
             if it.name == name
@@ -208,7 +208,7 @@ using Swag
         if !isStruct(type)
             return false
 
-        var typeStruct = cast(const* TypeInfoStruct) type
+        let typeStruct = cast(const* TypeInfoStruct) type
         visit it: typeStruct.interfaces
         {
             if it.name == itf.fullname
@@ -221,7 +221,7 @@ using Swag
     // Returns the given attribute value, or null
     func getAttributeValue(type: const *Swag.TypeValue, attribute: typeinfo, value: string)->any
     {
-        var attrib = getAttribute(type, attribute)
+        let attrib = getAttribute(type, attribute)
         if !attrib
             return null
         return getAttributeValue(attrib, value)
@@ -230,7 +230,7 @@ using Swag
     // Returns the given attribute value, or null
     func getAttributeValue(type: typeinfo, attribute: typeinfo, value: string)->any
     {
-        var attrib = getAttribute(type, attribute)
+        let attrib = getAttribute(type, attribute)
         if !attrib
             return null
         return getAttributeValue(attrib, value)
@@ -319,7 +319,7 @@ using Swag
         switch type.kind
         {
         case Func:
-            var typeFunc = cast(const *TypeInfoFunc) type
+            let typeFunc = cast(const *TypeInfoFunc) type
             visit it: typeFunc.attributes
             {
                 if attribute == it.type
@@ -327,7 +327,7 @@ using Swag
             }
 
         case Struct:
-            var typeStruct = cast(const *TypeInfoStruct) type
+            let typeStruct = cast(const *TypeInfoStruct) type
             visit it: typeStruct.attributes
             {
                 if attribute == it.type
@@ -335,7 +335,7 @@ using Swag
             }
 
         case Enum:
-            var typeEnum = cast(const *TypeInfoEnum) type
+            let typeEnum = cast(const *TypeInfoEnum) type
             visit it: typeEnum.attributes
             {
                 if attribute == it.type
@@ -359,7 +359,7 @@ using Swag
         if !isEnum(type)
             return null
 
-        var typeEnum = cast(const* TypeInfoEnum) type
+        let typeEnum = cast(const* TypeInfoEnum) type
         visit it: typeEnum.values
         {
             if it.name == name
@@ -376,8 +376,8 @@ using Swag
         var result: String
         if !isEnum(type)
             return result
-        var typeEnum = cast(const *TypeInfoEnum) type
-        var isFlags = hasAttribute(type, EnumFlags)
+        let typeEnum = cast(const *TypeInfoEnum) type
+        let isFlags = hasAttribute(type, EnumFlags)
 
         // Get the user value, as an 'u64' or a string
         var val1: u64
@@ -392,7 +392,7 @@ using Swag
         default: return result
         }
 
-        var simpleName = type.name
+        let simpleName = type.name
 
         visit it: typeEnum.values
         {

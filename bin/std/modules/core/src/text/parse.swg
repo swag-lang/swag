@@ -16,7 +16,7 @@ func parseX64(str: string) -> {value: u64, eat: u32, ovf: bool} throw
 {
     var result: retval
 
-    var countof = @countof(str)
+    let countof = @countof(str)
     if !countof throw ParseErrorInvalid
 
     var buffer = @dataof(str)
@@ -34,7 +34,7 @@ func parseX64(str: string) -> {value: u64, eat: u32, ovf: bool} throw
         else
         {
             value <<= 4
-            var c = dref buffer
+            let c = dref buffer
             if Latin1.isDigit(c)
                 value += cast(u64) (c - "0"'u8)
             elif c <= "F"'u8
@@ -58,7 +58,7 @@ func parseB64(str: string) -> {value: u64, eat: u32, ovf: bool} throw
 {
     var result: retval
 
-    var countof = @countof(str)
+    let countof = @countof(str)
     if !countof
         throw ParseErrorInvalid
 
@@ -131,17 +131,17 @@ func parseU64(str: string) -> {value: u64, eat: u32, ovf: bool} throw
 {
     var result: retval
 
-    var countof = @countof(str)
+    let countof = @countof(str)
     if !countof
         throw ParseErrorInvalid
 
     // Detect 0x for hexa, 0b for binary
     if countof > 2 and str[0] == "0"'u8
     {
-        var c = str[1]|32
+        let c = str[1]|32
         if c == "x"'u8
         {
-            var one = Tokenize.eatCount(str, 2)
+            let one = Tokenize.eatCount(str, 2)
             (result.value, result.eat, result.ovf) = try parseX64(one)
             result.eat += 2
             return result
@@ -149,7 +149,7 @@ func parseU64(str: string) -> {value: u64, eat: u32, ovf: bool} throw
 
         if c == "b"'u8
         {
-            var one = Tokenize.eatCount(str, 2)
+            let one = Tokenize.eatCount(str, 2)
             (result.value, result.eat, result.ovf) = try parseB64(one)
             result.eat += 2
             return result
@@ -164,7 +164,7 @@ func parseU64(str: string) -> {value: u64, eat: u32, ovf: bool} throw
         throw ParseErrorInvalid
     while cpt < countof and Latin1.isDigit(dref buffer)
     {
-        var value1 = value *,over 10
+        let value1 = value *,over 10
         if value1 < value
         {
             result.ovf = true
@@ -175,7 +175,7 @@ func parseU64(str: string) -> {value: u64, eat: u32, ovf: bool} throw
 
         if !result.ovf
         {
-            var add = cast(u64) (dref buffer - "0"'u8)
+            let add = cast(u64) (dref buffer - "0"'u8)
             if value +,over add < value
             {
                 result.ovf = true
@@ -251,7 +251,7 @@ func parseS64(str: string) -> {value: s64, eat: u32, ovf: bool} throw
 {
     var result: retval
 
-    var countof = @countof(str)
+    let countof = @countof(str)
     if !countof
         throw ParseErrorInvalid
 
@@ -261,7 +261,7 @@ func parseS64(str: string) -> {value: s64, eat: u32, ovf: bool} throw
 
     // Does the number starts with the negative/positive sign ?
     var signed = false
-    var c = dref str
+    let c = dref str
     var maxValue = cast(u64) Swag.S64.Max
     if c == g_CultureInfo.numberFormat.negativeSign
     {
@@ -283,7 +283,7 @@ func parseS64(str: string) -> {value: s64, eat: u32, ovf: bool} throw
         throw ParseErrorInvalid
     while cpt < countof and Latin1.isDigit(dref buffer)
     {
-        var value1 = value *,over 10
+        let value1 = value *,over 10
         if value1 < value
         {
             result.ovf = true
@@ -294,7 +294,7 @@ func parseS64(str: string) -> {value: s64, eat: u32, ovf: bool} throw
 
         if !result.ovf
         {
-            var toAdd = cast(u64) (dref buffer - "0"'u8)
+            let toAdd = cast(u64) (dref buffer - "0"'u8)
             if value + toAdd > maxValue
             {
                 result.ovf = true
@@ -355,7 +355,7 @@ func parseBool(str: string) -> {value: bool, eat: u32} throw
 {
     var result: retval
 
-    var sub = Tokenize.getWhileAlnum(str)
+    let sub = Tokenize.getWhileAlnum(str)
     switch sub
     {
     case "1", "true", "TRUE", "True":
@@ -373,7 +373,7 @@ func parseBool(str: string) -> {value: bool, eat: u32} throw
 // Convert an utf8 buffer to a simple rune
 func parseRune(str: string) -> {value: rune, eat: u32} throw
 {
-    var countof = @countof(str)
+    let countof = @countof(str)
     if !countof
         throw ParseErrorInvalid
     return Utf8.decodeRune(str)
@@ -382,7 +382,7 @@ func parseRune(str: string) -> {value: rune, eat: u32} throw
 // Parse an identifier name in the sens of swag (ascii)
 func parseIdentifier(str: string)->string throw
 {
-    var countof = @countof(str)
+    let countof = @countof(str)
     if !countof
         throw ParseErrorInvalid
 

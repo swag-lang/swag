@@ -5,7 +5,7 @@ using Swag
 // Check if this is a valid 'fmt' 'values' pair, coherent with 'format' specification
 func checkFormat(fct: string, fmt: string, values: ...)
 {
-    var cptPercent = countPercent(fmt)
+    let cptPercent = countPercent(fmt)
     if cptPercent != @countof(values)
     {
         #[Match("validif", false)]
@@ -116,7 +116,7 @@ func append(buf: *ConcatBuffer, fmt: string, values: ...)
             if ptr[nextIdx] == "{"'u8
             {
                 nextIdx += 1
-                var ptrFormat = ptr + nextIdx
+                let ptrFormat = ptr + nextIdx
                 var countFormat = 0'u32
                 while ptr[nextIdx] and ptr[nextIdx] != "}"'u8
                 {

@@ -64,8 +64,8 @@ impl Sha256
         i = 0
         while i < 64
         {
-            var t1 = h + ep1(e) + ch(e, f, g) + K[i] + m[i]
-            var t2 = ep0(a) + maj(a, b, c)
+            let t1 = h + ep1(e) + ch(e, f, g) + K[i] + m[i]
+            let t2 = ep0(a) + maj(a, b, c)
             h = g
             g = f
             f = e

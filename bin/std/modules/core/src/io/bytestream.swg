@@ -106,7 +106,7 @@ public impl ByteStream
     // Read one byte and seek
     mtd readU8()->u8
     {
-        var c = peekU8()
+        let c = peekU8()
         moveSeek()
         return c
     }
@@ -123,7 +123,7 @@ public impl ByteStream
     mtd moveSeek(offset: u64 = 1)
     {
         seek += offset
-        var len = length()
+        let len = length()
         if seek >= len
         {
             seek = len

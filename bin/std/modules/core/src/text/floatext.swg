@@ -148,7 +148,7 @@ impl FloatExt
             return result
         }
 
-        var expBiased = exp - Swag.F64.Bias
+        let expBiased = exp - Swag.F64.Bias
 
         result.upper = FloatExt{2*mant + 1, exp - 1, neg}
         if mant != 1'u64 << Swag.F64.MantBits or expBiased == 1
@@ -163,7 +163,7 @@ impl FloatExt
     func normalize(using self)
     {
         if mant == 0 return
-        var shift = @bitcountlz(mant)
+        let shift = @bitcountlz(mant)
         mant <<= cast(u32) shift
         exp -= cast(s64) shift
     }
@@ -172,7 +172,7 @@ impl FloatExt
     // but not normalized.
     func multiply(using self, g: FloatExt)
     {
-        var (hi, lo) = Math.mulU64(mant, g.mant)
+        let (hi, lo) = Math.mulU64(mant, g.mant)
         mant = hi + (lo >> 63)
         exp = exp + g.exp + 64
     }
@@ -216,11 +216,11 @@ impl FloatExt
 
         // Find power of ten such that x * 10^n has a binary exponent
         // between expMin and expMax.
-        var approxExp10 = ((expMin+expMax)/2 - exp) * 28 / 93 // log(10)/log(2) is close to 93/28.
+        let approxExp10 = ((expMin+expMax)/2 - exp) * 28 / 93 // log(10)/log(2) is close to 93/28.
         var i = (approxExp10 - firstPowerOfTen) / stepPowerOfTen
         #scope Loop loop
         {
-            var exp1 = exp + powersOfTen[i].exp + 64
+            let exp1 = exp + powersOfTen[i].exp + 64
             switch
             {
             case exp1 < expMin:
@@ -269,7 +269,7 @@ impl FloatExt
         normalize()
         var (exp10, ?) = frexp10()
 
-        var shift = cast(u32) -exp
+        let shift = cast(u32) -exp
         var integer = cast(u32) (mant >> shift)
         var fraction = mant - (cast(u64) integer << shift)
         var e = 1'u64 // e is the uncertainty we have on the mantissa of f.
@@ -309,7 +309,7 @@ impl FloatExt
         var v = integer
         while v > 0
         {
-            var v1 = v / 10
+            let v1 = v / 10
             v -= 10 * v1
             pos -= 1
             buf[pos] = cast(u8) (v + "0"'u8)
@@ -338,7 +338,7 @@ impl FloatExt
                     return false
                 }
 
-                var digit = fraction >> shift
+                let digit = fraction >> shift
                 d.d[nd] = cast(u8) (digit + "0"'u8)
                 fraction -= digit << shift
                 nd += 1
@@ -362,7 +362,7 @@ impl FloatExt
         //
         // We pass this information to the rounding routine for adjustment.
 
-        var ok = adjustLastDigitFixed(d, (cast(u64)(rest) << shift) | fraction, pow10, shift, e)
+        let ok = adjustLastDigitFixed(d, (cast(u64)(rest) << shift) | fraction, pow10, shift, e)
         if !ok
             return false
 
@@ -446,14 +446,14 @@ impl FloatExt
             var v = mant
             while v > 0
             {
-                var v1 = v / 10
+                let v1 = v / 10
                 v -= 10 * v1
                 buf[n] = cast(u8) (v + "0"'u8)
                 n -= 1
                 v = v1
             }
 
-            var nd = cast(s64) (@countof(buf) - n - 1)
+            let nd = cast(s64) (@countof(buf) - n - 1)
             for var i = 0; i < nd; i += 1
                 d.d[i] = buf[n+1+i]
 
@@ -482,7 +482,7 @@ impl FloatExt
             lower.exp = upper.exp
         }
 
-        var exp10 = frexp10Many(lower, self, upper)
+        let exp10 = frexp10Many(lower, self, upper)
 
         // Take a Safety margin due to rounding in frexp10Many, but we lose precision.
         upper.mant += 1
@@ -490,15 +490,15 @@ impl FloatExt
 
         // The shortest representation of f is either rounded up or down, but
         // in any case, it is a truncation of upper.
-        var shift = cast(u32) -upper.exp
+        let shift = cast(u32) -upper.exp
         var integer = cast(u32) (upper.mant >> shift)
         var fraction = upper.mant - ((cast(u64) integer) << shift)
 
         // How far we can go down from upper until the result is wrong.
-        var allowance = upper.mant - lower.mant
+        let allowance = upper.mant - lower.mant
 
         // How far we should go to get a very precise result.
-        var targetDiff = upper.mant - mant
+        let targetDiff = upper.mant - mant
 
         // Count integral digits: there are at most 10.
         var integerDigits: s64
@@ -517,12 +517,12 @@ impl FloatExt
         loop i: integerDigits
         {
             pow = uint64pow10[integerDigits-i-1]
-            var digit = integer / cast(u32) pow
+            let digit = integer / cast(u32) pow
             d.d[i] = cast(u8) (digit + "0"'u8)
             integer -= digit * cast(u32) pow
 
             // evaluate whether we should stop.
-            var currentDiff = (cast(u64) integer << shift) + fraction
+            let currentDiff = (cast(u64) integer << shift) + fraction
             if currentDiff < allowance
             {
                 d.nd = i + 1

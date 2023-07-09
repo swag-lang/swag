@@ -333,7 +333,7 @@ struct NOTIFYICONDATAW
     #[Swag.Discardable]
     func ExtractIconExA(lpszFile: LPCSTR, nIconIndex: s32, phiconLarge: *HICON, phiconSmall: *HICON, nIcons: UINT)->UINT throw
     {
-        var res = Shell32Priv.ExtractIconExA(lpszFile, nIconIndex, phiconLarge, phiconSmall, nIcons)
+        let res = Shell32Priv.ExtractIconExA(lpszFile, nIconIndex, phiconLarge, phiconSmall, nIcons)
         if res == Swag.U32.Max
             try setError(GetLastError())
         return res
@@ -342,7 +342,7 @@ struct NOTIFYICONDATAW
     #[Swag.Discardable]
     func ExtractIconExW(lpszFile: LPCWSTR, nIconIndex: s32, phiconLarge: *HICON, phiconSmall: *HICON, nIcons: UINT)->UINT throw
     {
-        var res = Shell32Priv.ExtractIconExW(lpszFile, nIconIndex, phiconLarge, phiconSmall, nIcons)
+        let res = Shell32Priv.ExtractIconExW(lpszFile, nIconIndex, phiconLarge, phiconSmall, nIcons)
         if res == Swag.U32.Max
             try setError(GetLastError())
         return res

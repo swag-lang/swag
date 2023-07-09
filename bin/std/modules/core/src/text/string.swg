@@ -380,7 +380,7 @@ impl String
     {
         if wantedCapacity <= capacity
             return
-        var newCapacity = Math.max(capacity * 2, wantedCapacity)
+        let newCapacity = Math.max(capacity * 2, wantedCapacity)
         reserve(newCapacity)
     }
 
@@ -429,7 +429,7 @@ impl String
         var ptr = buffer
         loop
         {
-            var sl = @mkslice(ptr, length)
+            let sl = @mkslice(ptr, length)
             var (c, eat) = Utf8.decodeRune(sl)
             if !Unicode.isSpace(c)
                 break
@@ -449,7 +449,7 @@ impl String
 
         loop
         {
-            var sl = @mkslice(buffer, length)
+            let sl = @mkslice(buffer, length)
             var (c, eat) = Utf8.decodeLastRune(sl)
             if !Unicode.isSpace(c)
                 break
@@ -496,7 +496,7 @@ impl String
     // Convert the string inplace to upper case.
     mtd makeUpper(set = CharacterSet.Latin1)
     {
-        var sl = @mkslice(buffer, length)
+        let sl = @mkslice(buffer, length)
 
         using CharacterSet
         switch set
@@ -515,7 +515,7 @@ impl String
     // Convert the string inplace to lower case.
     mtd makeLower(set = CharacterSet.Latin1)
     {
-        var sl = @mkslice(buffer, length)
+        let sl = @mkslice(buffer, length)
 
         using CharacterSet
         switch set

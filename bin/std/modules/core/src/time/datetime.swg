@@ -78,8 +78,8 @@ impl DateTime
     // Returns the day of week of the current date
     mtd const dayOfWeek()->DayOfWeek
     {
-        var m: u32 = (month + 9) % 12
-        var y: u32 = year - m/10
+        let m: u32 = (month + 9) % 12
+        let y: u32 = year - m/10
         var dn = 365*y +,over y/4 +,over y/400 +,over (m*306 + 5)/10 +,over day-1 -,over y/100
         dn += 3
         return cast(DayOfWeek) (dn % 7)
@@ -114,7 +114,7 @@ impl DateTime
             var dayOfWeek: DayOfWeek
             visit dow, idx: DayOfWeekNames
             {
-                var len = @countof(dow)
+                let len = @countof(dow)
                 if @mkstring(@dataof(buf), Math.min(@countof(buf), len)) == dow
                 {
                     dayOfWeek = acast idx
@@ -138,7 +138,7 @@ impl DateTime
             // Month name
             visit dow, idx: MonthNames
             {
-                var len = @countof(dow)
+                let len = @countof(dow)
                 if @mkstring(@dataof(buf), Math.min(@countof(buf), len)) == dow
                 {
                     result.value.month = cast(u16) idx + 1

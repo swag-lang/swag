@@ -4,7 +4,7 @@
 // Remove ""
 func eatQuotes(str: string)->string
 {
-    var countof = @countof(str)
+    let countof = @countof(str)
     if countof < 2 return str
     if str[0] == "\""'u8 and str[countof - 1] == "\""'u8
         return @mkstring(@dataof(str) + 1, countof - 2)
@@ -14,15 +14,15 @@ func eatQuotes(str: string)->string
 // Eat 'count' bytes, and returns the remaining string
 func eatCount(str: string, count: u64)->string
 {
-    var countof = @countof(str)
-    var cpt = Math.min(count, countof)
+    let countof = @countof(str)
+    let cpt = Math.min(count, countof)
     return @mkstring(@dataof(str) + cpt, countof - cpt)
 }
 
 // Eat all spaces, and returns the remaining string (trim left)
 func eatSpaces(str: string)->string
 {
-    var countof = @countof(str)
+    let countof = @countof(str)
     if !countof return str
 
     var cpt = 0'u64
@@ -144,7 +144,7 @@ func split(src: string, separators: const [..] rune, maxSplit: u32 = 0, removeEm
 // Returns the first substring of 'str', stopping at the first blank character
 func getToSpace(str: string)->string
 {
-    var countof = @countof(str)
+    let countof = @countof(str)
     var cpt = 0'u64
     while cpt < countof and !Latin1.isSpace(str[cpt])
         cpt += 1
@@ -154,7 +154,7 @@ func getToSpace(str: string)->string
 // Returns the first substring of 'str' containing only digits and letters
 func getWhileAlnum(str: string)->string
 {
-    var countof = @countof(str)
+    let countof = @countof(str)
     var cpt = 0'u64
     while cpt < countof and (Latin1.isDigit(str[cpt]) or Latin1.isLetter(str[cpt]))
         cpt += 1

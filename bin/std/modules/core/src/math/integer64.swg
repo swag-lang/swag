@@ -13,14 +13,14 @@ using Swag
 func mulU64(x, y: u64) -> {hi: u64, lo: u64}
 {
 	const mask32 = (1'u64 << 32) - 1
-	var x0 = x & mask32
-	var x1 = x >> 32
-	var y0 = y & mask32
-	var y1 = y >> 32
-	var w0 = x0 * y0
-	var t = (x1 * y0) + (w0 >> 32)
+	let x0 = x & mask32
+	let x1 = x >> 32
+	let y0 = y & mask32
+	let y1 = y >> 32
+	let w0 = x0 * y0
+	let t = (x1 * y0) + (w0 >> 32)
 	var w1 = t & mask32
-	var w2 = t >> 32
+	let w2 = t >> 32
 	w1 += x0 * y1
 
     var result: retval
@@ -69,19 +69,19 @@ impl Int128
 
         var result: retval
 
-        var negate = (lhs < 0) != (rhs < 0)
+        let negate = (lhs < 0) != (rhs < 0)
 
         if lhs < 0 lhs = -lhs
-        var int1Hi = cast(u64) lhs >> 32
-        var int1Lo = cast(u64) (lhs & 0xFFFFFFFF)
+        let int1Hi = cast(u64) lhs >> 32
+        let int1Lo = cast(u64) (lhs & 0xFFFFFFFF)
 
         if (rhs < 0) rhs = -rhs
-        var int2Hi = cast(u64) rhs >> 32
-        var int2Lo = cast(u64) (rhs & 0xFFFFFFFF)
+        let int2Hi = cast(u64) rhs >> 32
+        let int2Lo = cast(u64) (rhs & 0xFFFFFFFF)
 
-        var a = int1Hi * int2Hi
-        var b = int1Lo * int2Lo
-        var c = int1Hi * int2Lo + int1Lo * int2Hi
+        let a = int1Hi * int2Hi
+        let b = int1Lo * int2Lo
+        let c = int1Hi * int2Lo + int1Lo * int2Hi
 
         result.hi = cast(s64) (a + (c >> 32))
         result.lo = cast(s64) (c << 32)

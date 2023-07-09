@@ -145,7 +145,7 @@ impl RegExp
 
         var cpt = 0
         var srcPtr = @dataof(str)
-        var srcLength = @countof(str)
+        let srcLength = @countof(str)
 
         while cpt < srcLength and !pstack1.isEmpty()
         {
@@ -156,7 +156,7 @@ impl RegExp
             var ok = false
             while !pstack1.isEmpty()
             {
-                var curState = pstack1.popBack()
+                let curState = pstack1.popBack()
                 if dfaMatch(pstack2, c, curState)
                     ok = true
             }
@@ -172,7 +172,7 @@ impl RegExp
 
         while !pstack1.isEmpty()
         {
-            var curState = pstack1.popBack()
+            let curState = pstack1.popBack()
             if curState.terminal
                 return true
         }
@@ -204,7 +204,7 @@ impl RegExp
     {
         var beg = @dataof(str)
         var copy = @dataof(str)
-        var pzEnd = beg + @countof(str)
+        let pzEnd = beg + @countof(str)
 
         var end: const *u8
         while !end and (copy != pzEnd)
@@ -234,7 +234,7 @@ impl RegExp
 
         var cpt = 0
         var srcPtr = @dataof(str)
-        var srcLength = @countof(str)
+        let srcLength = @countof(str)
 
         var endState = false
         while cpt < srcLength and !pstack1.isEmpty()
@@ -247,7 +247,7 @@ impl RegExp
             endState = false
             while !pstack1.isEmpty()
             {
-                var curState = pstack1.popBack()
+                let curState = pstack1.popBack()
                 if dfaMatch(pstack2, c, curState)
                     ok = true
                 if curState.terminal
@@ -262,7 +262,7 @@ impl RegExp
 
         while !endState and !pstack1.isEmpty()
         {
-            var curState = pstack1.popBack()
+            let curState = pstack1.popBack()
             if curState.terminal
                 return srcPtr
         }
@@ -389,8 +389,8 @@ impl RegExp
             return
 
         // Check if the two tables have the same nested level
-        var table2 = try nfaPop()
-        var table1 = try nfaPop()
+        let table2 = try nfaPop()
+        let table1 = try nfaPop()
         nfaStack.add(table1)
         nfaStack.add(table2)
         if table1.level != table2.level
@@ -408,9 +408,9 @@ impl RegExp
 
     mtd operatorStar() throw
     {
-        var table = try nfaPop()
-        var s1 = table.nodes.front()
-        var s2 = table.nodes.back()
+        let table = try nfaPop()
+        let s1 = table.nodes.front()
+        let s2 = table.nodes.back()
         s1.addTransition(0'rune, s2)
         s2.addTransition(0'rune, s1)
         nfaStack.add(table)
@@ -418,18 +418,18 @@ impl RegExp
 
     mtd operatorPlus() throw
     {
-        var table = try nfaPop()
-        var s1 = table.nodes.front()
-        var s2 = table.nodes.back()
+        let table = try nfaPop()
+        let s1 = table.nodes.front()
+        let s2 = table.nodes.back()
         s2.addTransition(0'rune, s1)
         nfaStack.add(table)
     }
 
     mtd operatorQuestion() throw
     {
-        var table = try nfaPop()
-        var s1 = table.nodes.front()
-        var s2 = table.nodes.back()
+        let table = try nfaPop()
+        let s1 = table.nodes.front()
+        let s2 = table.nodes.back()
         s1.addTransition(0'rune, s2)
         nfaStack.add(table)
     }
@@ -464,7 +464,7 @@ impl RegExp
                 try unionValidate()
                 if openParen.isEmpty()
                     throw "syntax, unexpected right parenthesis"
-                var op = openParen.popBack()
+                let op = openParen.popBack()
                 try operatorConcat(nfaStack.count - op)
 
             case "*"'rune:
@@ -519,15 +519,15 @@ impl RegExp
         var count = cpt
         while count >= 2
         {
-            var table2 = try nfaPop()
-            var table1 = try nfaPop()
+            let table2 = try nfaPop()
+            let table1 = try nfaPop()
 
             // Update nested level
             table1.level = cast(u32) openParen.count
             table2.level = cast(u32) openParen.count
 
-            var s1 = table1.nodes.back()
-            var s2 = table2.nodes.front()
+            let s1 = table1.nodes.back()
+            let s2 = table2.nodes.front()
             s1.addTransition(0'rune, s2)
 
             table1.nodes.add(table2.nodes.toSlice())
@@ -539,7 +539,7 @@ impl RegExp
         // Update nested level
         if count == 1
         {
-            var table1 = try nfaPop()
+            let table1 = try nfaPop()
             table1.level = cast(u32) openParen.count
             nfaStack.add(table1)
         }
@@ -555,11 +555,12 @@ impl RegExp
 
         while stack.count
         {
-            var state = stack.popBack()
+            let state = stack.popBack()
             out.add(state)
 
-            var find = state.transitions.find(0'rune)
-            if !find continue
+            let find = state.transitions.find(0'rune)
+            if !find
+                continue
 
             visit to: find.value
             {
@@ -591,7 +592,7 @@ impl RegExp
         visit state: in
         {
             // The real terminal character
-            var pfind = state.transitions.find(c)
+            let pfind = state.transitions.find(c)
             if pfind
             {
                 visit t: pfind.value
@@ -673,8 +674,8 @@ impl RegExp
     mtd preprocessInter(sl: const [..] rune)->const ^rune throw
     {
         var pz = @dataof(sl)
-        var pzStart = pz
-        var pzEnd = pz + @countof(sl)
+        let pzStart = pz
+        let pzEnd = pz + @countof(sl)
 
         preprocessed.add("("'rune)
         pz += 1
@@ -686,7 +687,7 @@ impl RegExp
                 preprocessed.add("|"'rune)
             firstExp = false
 
-            var subSlice = @mkslice(pz, pzEnd - pz)
+            let subSlice = @mkslice(pz, pzEnd - pz)
 
             // Predefined sets
             if pz[0] == "["'rune
@@ -836,7 +837,7 @@ impl RegExp
     mtd preprocessEnum(sl: const [..] rune)->const ^rune throw
     {
         var pz = @dataof(sl)
-        var pzEnd = pz + @countof(sl)
+        let pzEnd = pz + @countof(sl)
 
         if preprocessed.count == 0
             throw "syntax, { without a previous expression"
@@ -879,7 +880,7 @@ impl RegExp
         elif n != 1 or m != 1 // {1,1}
         {
             // Isolate expression to duplicate
-            var pze = preprocessed.buffer + preprocessed.count - 1
+            let pze = preprocessed.buffer + preprocessed.count - 1
             var pz1 = pze
             var cptParen = 0
             if pz[1] == ")"'rune
@@ -938,7 +939,7 @@ impl RegExp
 
     mtd preprocessUnicode(sl: const [..] rune)->const ^rune throw
     {
-        var pz = @dataof(sl) + 2
+        let pz = @dataof(sl) + 2
         if pz[0] == "{"'rune
         {
             if pz[1] == "L"'rune and pz[3] == "}"'rune
@@ -983,7 +984,7 @@ impl RegExp
     mtd preprocessEscape(sl: const [..] rune)->const ^rune throw
     {
         var pz = @dataof(sl)
-        var c = dref pz
+        let c = dref pz
         if c == "\\"'rune
         {
             switch pz[1]
@@ -1037,7 +1038,7 @@ impl RegExp
         in32.add(0'rune)
 
         var pz = cast(const ^rune) in32.buffer
-        var pzEnd = pz + in32.count
+        let pzEnd = pz + in32.count
 
         var c = pz[0]
         if ignoreCase

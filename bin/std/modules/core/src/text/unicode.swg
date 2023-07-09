@@ -219,8 +219,8 @@ func compare(src, dst: const [..] rune, ignoreCase = false, len: u64 = 0)->s32
         #[Swag.Safety("boundcheck", false)]
         loop i: minLen
         {
-            var c1 = toLower(src[i])
-            var c2 = toLower(dst[i])
+            let c1 = toLower(src[i])
+            let c2 = toLower(dst[i])
             result = cast(s32) c1 - cast(s32) c2
             if result != 0
                 return Math.sign(result)
@@ -283,8 +283,8 @@ func isInTable(ranges: const [..] Range, r: rune)->bool
     var hi = @countof(ranges)
     while lo < hi
     {
-        var m = lo + (hi-lo)/2
-        var range = &ranges[m]
+        let m = lo + (hi-lo)/2
+        let range = &ranges[m]
         if range.lo <= r and r <= range.hi
         {
             return range.stride == 1 or (r-range.lo) % range.stride == 0
@@ -308,11 +308,11 @@ func caseChangeTo(wCase: WantedCase, r: rune, caseRange: const [..] CaseRange) -
 	var hi = @countof(caseRange)
 	while lo < hi
     {
-		var m = lo + (hi-lo) / 2
+		let m = lo + (hi-lo) / 2
 		var cr = caseRange[m]
 		if cr.lo <= r and r <= cr.hi
         {
-			var delta = cr.delta[wCase]
+			let delta = cr.delta[wCase]
 			if delta == Swag.S32.Max
             {
 				// In an Upper-Lower sequence, which always starts with

@@ -148,7 +148,7 @@ impl Decimal
         // round up
         for var i = nd1 - 1; i >= 0; i -= 1
         {
-            var c = d[i]
+            let c = d[i]
             if c < "9"'u8 // can stop after this digit
             {
                 d[i] += 1
@@ -173,7 +173,7 @@ impl Decimal
         var n = 0
         while v > 0
         {
-            var v1 = v / 10
+            let v1 = v / 10
             v -= 10 * v1
             buf[n] = cast(u8) (v + "0"'u8)
             n += 1
@@ -228,20 +228,20 @@ impl Decimal
                 break
             }
 
-            var c = cast(u64) d[r]
+            let c = cast(u64) d[r]
             n = (n * 10) + c - "0"'u8
             r += 1
         }
 
         dp -= r - 1
 
-        var mask: u64 = (1'u64 << k) - 1
+        let mask: u64 = (1'u64 << k) - 1
 
         // Pick up a digit, put down a digit.
         while r < nd
         {
-            var c = cast(u64) d[r]
-            var dig = n >> k
+            let c = cast(u64) d[r]
+            let dig = n >> k
             n &= mask
             d[w] = cast(u8) (dig + "0"'u8)
             w += 1
@@ -252,7 +252,7 @@ impl Decimal
         // Put down extra digits.
         while n > 0
         {
-            var dig = n >> k
+            let dig = n >> k
             n &= mask
             if w < @countof(d)
             {
@@ -299,8 +299,8 @@ impl Decimal
         while r >= 0
         {
             n += (cast(u64) (d[r]) - "0"'u8) << k
-            var quo = n / 10
-            var rem = n - (10 * quo)
+            let quo = n / 10
+            let rem = n - (10 * quo)
             w -= 1
             if w < @countof(d)
                 d[w] = cast(u8) (rem + "0"'u8)
@@ -313,8 +313,8 @@ impl Decimal
         // Put down extra digits.
         while n > 0
         {
-            var quo = n / 10
-            var rem = n - (10 * quo)
+            let quo = n / 10
+            let rem = n - (10 * quo)
             w -= 1
             if w < @countof(d)
                 d[w] = cast(u8) (rem + "0"'u8)
@@ -361,12 +361,12 @@ impl Decimal
     func readF64(using self, str: const [..] u8)->u32 throw
     {
         var cpt = 0'u32
-        var countof = @countof(str)
+        let countof = @countof(str)
         var buffer = @dataof(str)
 
-        var negSign = g_CultureInfo.numberFormat.negativeSign
-        var plusSign = g_CultureInfo.numberFormat.positiveSign
-        var dotSign = g_CultureInfo.numberFormat.decimalSeparator
+        let negSign = g_CultureInfo.numberFormat.negativeSign
+        let plusSign = g_CultureInfo.numberFormat.positiveSign
+        let dotSign = g_CultureInfo.numberFormat.decimalSeparator
 
         var c = dref buffer
         if c == negSign
@@ -384,7 +384,7 @@ impl Decimal
         }
 
         // digits
-        var maxMantDigits = 19 // 10^19 fits in u64
+        let maxMantDigits = 19 // 10^19 fits in u64
         var sawdot = false
         var sawDigits = false
         var ndMant = 0
@@ -551,7 +551,7 @@ impl Decimal
             // adjust d accordingly.
             if exp < Swag.F64.Bias + 1
             {
-                var n = Swag.F64.Bias + 1 - exp
+                let n = Swag.F64.Bias + 1 - exp
                 shift(-cast(s32) n)
                 exp += n
             }

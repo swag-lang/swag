@@ -292,7 +292,7 @@ impl HashSet
         if !table
             return false
 
-        var hashVal = hashKey(key)
+        let hashVal = hashKey(key)
         var index = hashVal % capacity
 
         while table[index].hash

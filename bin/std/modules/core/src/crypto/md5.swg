@@ -19,8 +19,8 @@ public impl Md5
         var bits: [8] u8
         encode(&bits[0], count, 8)
 
-        var index = (count[0] >> 3) & 0x3f
-        var padLen = (index < 56) ? (56 - index) : (120 - index)
+        let index = (count[0] >> 3) & 0x3f
+        let padLen = (index < 56) ? (56 - index) : (120 - index)
 
         update(@mkslice(&padding[0], padLen))
         update(@mkslice(&bits[0], 8))

@@ -41,7 +41,7 @@ impl BitStream
                 return
             }
 
-            var c = stream[curByte]
+            let c = stream[curByte]
             curByte += 1
 
             codeBuffer |= cast(u32) c << numBits
@@ -65,14 +65,14 @@ impl BitStream
     #[Swag.Inline]
     mtd readBits(width: u8)->u32
     {
-        var k = peekBits(width)
+        let k = peekBits(width)
         consumeBits(width)
         return k
     }
 
     mtd readBitsNoRefill(width: u8)->u32
     {
-        var k = peekBitsNoRefill(width)
+        let k = peekBitsNoRefill(width)
         consumeBits(width)
         return k
     }

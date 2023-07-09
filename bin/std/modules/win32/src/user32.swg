@@ -1110,7 +1110,7 @@ func GET_Y_LPARAM(lp: LPARAM) => cast(s32) HIWORD(lp)
     #[Discardable]
     func RegisterClassA(lpWndClass: const *WNDCLASSA)->ATOM throw
     {
-        var res = User32Priv.RegisterClassA(lpWndClass)
+        let res = User32Priv.RegisterClassA(lpWndClass)
         if !res
             try setError(GetLastError())
         return res
@@ -1119,7 +1119,7 @@ func GET_Y_LPARAM(lp: LPARAM) => cast(s32) HIWORD(lp)
     #[Discardable]
     func RegisterClassW(lpWndClass: const *WNDCLASSW)->ATOM throw
     {
-        var res = User32Priv.RegisterClassW(lpWndClass)
+        let res = User32Priv.RegisterClassW(lpWndClass)
         if !res
             try setError(GetLastError())
         return res
@@ -1171,7 +1171,7 @@ func GET_Y_LPARAM(lp: LPARAM) => cast(s32) HIWORD(lp)
 
     func RegisterClipboardFormatA(name: LPCSTR)->UINT throw
     {
-        var res = User32Priv.RegisterClipboardFormatA(name)
+        let res = User32Priv.RegisterClipboardFormatA(name)
         if !res
             try setError(GetLastError())
         return res
@@ -1179,7 +1179,7 @@ func GET_Y_LPARAM(lp: LPARAM) => cast(s32) HIWORD(lp)
 
     func RegisterClipboardFormatW(name: LPCWSTR)->UINT throw
     {
-        var res = User32Priv.RegisterClipboardFormatW(name)
+        let res = User32Priv.RegisterClipboardFormatW(name)
         if !res
             try setError(GetLastError())
         return res
@@ -1199,7 +1199,7 @@ func GET_Y_LPARAM(lp: LPARAM) => cast(s32) HIWORD(lp)
 
     func CreateIconIndirect(piconinfo: *ICONINFO)->HICON throw
     {
-        var h = User32Priv.CreateIconIndirect(piconinfo)
+        let h = User32Priv.CreateIconIndirect(piconinfo)
         if !h
             try setError(GetLastError())
         return h

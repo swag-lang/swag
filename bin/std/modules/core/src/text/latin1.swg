@@ -108,11 +108,11 @@ func compareNatural(src, dst: const [..] u8, ignoreCase = false)->s32
         var ai, bi = 0
         loop
         {
-            var ca = !csrc ? 0 : src[ai]
-            var cb = !cdst ? 0 : dst[bi]
+            let ca = !csrc ? 0 : src[ai]
+            let cb = !cdst ? 0 : dst[bi]
 
-            var dga = isDigit(ca)
-            var dgb = isDigit(cb)
+            let dga = isDigit(ca)
+            let dgb = isDigit(cb)
 
             if !dga and !dgb
                 return 0
@@ -140,11 +140,11 @@ func compareNatural(src, dst: const [..] u8, ignoreCase = false)->s32
         var ai, bi = 0
         loop
         {
-            var ca = !csrc ? 0 : src[ai]
-            var cb = !cdst ? 0 : dst[bi]
+            let ca = !csrc ? 0 : src[ai]
+            let cb = !cdst ? 0 : dst[bi]
 
-            var dga = isDigit(ca)
-            var dgb = isDigit(cb)
+            let dga = isDigit(ca)
+            let dgb = isDigit(cb)
 
             if !dga and !dgb
                 return bias
@@ -173,8 +173,8 @@ func compareNatural(src, dst: const [..] u8, ignoreCase = false)->s32
         return 0;
     }
 
-    var dsrc = @dataof(src)
-    var ddst = @dataof(dst)
+    let dsrc = @dataof(src)
+    let ddst = @dataof(dst)
     var csrc = @countof(src)
     var cdst = @countof(dst)
 
@@ -203,8 +203,8 @@ func compareNatural(src, dst: const [..] u8, ignoreCase = false)->s32
         if isDigit(ca) and isDigit(cb)
         {
             var result = 0
-            var sl0 = @mkslice(dsrc + ai, csrc)
-            var sl1 = @mkslice(ddst + bi, cdst)
+            let sl0 = @mkslice(dsrc + ai, csrc)
+            let sl1 = @mkslice(ddst + bi, cdst)
             if ca == "0"'u8 or cb == "0"'u8
                 result = compareLeft(sl0, sl1)
             else

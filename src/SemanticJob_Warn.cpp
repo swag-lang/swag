@@ -140,6 +140,8 @@ bool SemanticJob::warnUnusedVariables(SemanticContext* context, Scope* scope)
             continue;
 
         auto overload = sym->overloads.front();
+        if (overload->flags & OVERLOAD_RETVAL)
+            continue;
 
         // Check that variable has been changed
         if ((sym->flags & SYMBOL_USED) &&
@@ -158,8 +160,6 @@ bool SemanticJob::warnUnusedVariables(SemanticContext* context, Scope* scope)
         if (sym->flags & SYMBOL_USED)
             continue;
         if (overload->typeInfo->isCVariadic())
-            continue;
-        if (overload->flags & OVERLOAD_RETVAL)
             continue;
 
         if (overload->flags & OVERLOAD_VAR_LOCAL)

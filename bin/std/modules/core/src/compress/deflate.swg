@@ -187,7 +187,7 @@ impl Deflate
 
     mtd setup(flags: u32)
     {
-        var d = state
+        let d = state
         d.compressFlags = flags
         d.maxProbes[0] = 1 + ((flags & 0xFFF) + 2) / 3
         d.greedyParsing = (flags & GreedyParsing) != 0
@@ -201,7 +201,7 @@ impl Deflate
 
     mtd recordLiteral(lit: u8)
     {
-        var d = state
+        let d = state
 
         d.totalLzBytes += 1
         dref d.lzCodeBufAddr = lit
@@ -222,7 +222,7 @@ impl Deflate
     mtd recordMatch(matchLen: u32, md: u32)
     {
         var matchDist = md
-        var d = state
+        let d = state
 
         d.totalLzBytes += matchLen
 
@@ -242,8 +242,8 @@ impl Deflate
             d.lzCodeBufAddr += 1
         }
 
-        var s0 = SmallDistSym[matchDist & 511]
-        var s1 = LargeDistSym[(matchDist >> 8) & 127]
+        let s0 = SmallDistSym[matchDist & 511]
+        let s1 = LargeDistSym[(matchDist >> 8) & 127]
         d.huffCount[1, (matchDist < 512) ? s0 : s1] += 1
         d.huffCount[0, LenSym[matchLen - MinMatchLen]] += 1
     }
@@ -251,9 +251,9 @@ impl Deflate
     #[Swag.Safety("", false)]
     mtd findMatch(laPos, maxDist, maxMatchLen: u32, matchDistAddr, matchLenAddr: *u32)
     {
-        var d = state
+        let d = state
 
-        var pos = laPos & LzDictSizeMask
+        let pos = laPos & LzDictSizeMask
         var matchLen = dref matchLenAddr
         var probePos = pos
 
@@ -303,8 +303,8 @@ impl Deflate
             var probeLen: u32
             while probeLen < maxMatchLen
             {
-                var pp = dref p
-                var qq = dref q
+                let pp = dref p
+                let qq = dref q
                 p, q += 1
                 if pp != qq
                     break
@@ -327,9 +327,9 @@ impl Deflate
     //#[Swag.Macro]
     mtd putBits(b, l: u32)
     {
-        var d = state
-        var bits = b
-        var len = l
+        let d = state
+        let bits = b
+        let len = l
 
         d.bitBuffer |= (bits << d.bitsIn)
         d.bitsIn += len
@@ -351,7 +351,7 @@ impl Deflate
         var hist: [256 * 2] u32
         loop i: numSyms
         {
-            var freq = sym0[i].key
+            let freq = sym0[i].key
             hist[freq & 0xFF] += 1
             hist[256 + ((freq >> 8) & 0xFF)] += 1
         }
@@ -365,7 +365,7 @@ impl Deflate
         var passShift = 0
         loop pass: totalPasses
         {
-            var pHist = &hist[pass << 8]
+            let pHist = &hist[pass << 8]
             var curOfs = 0
 
             var offsets: [256] u32 = undefined
@@ -809,8 +809,8 @@ impl Deflate
 
             if flags & 1
             {
-                var matchLen = cast(u32) lzCodes[0]
-                var matchDist = cast(u32) lzCodes[1] | (cast(u32) lzCodes[2] << 8)
+                let matchLen = cast(u32) lzCodes[0]
+                let matchDist = cast(u32) lzCodes[1] | (cast(u32) lzCodes[2] << 8)
                 lzCodes += 3
 
                 putBits(cast(u32) d.huffCodes[0, LenSym[matchLen]], cast(u32) d.huffCodeSizes[0, LenSym[matchLen]])
@@ -958,15 +958,15 @@ impl Deflate
                 var hash:   u32 = (cast(u32) d.dict[insPos & LzDictSizeMask] << LzHashShift)
                 hash ^= d.dict[(insPos + 1) & LzDictSizeMask]
 
-                var numBytesToProcess = cast(u32) Math.min(cast(u32) srcBufLeft, cast(u32) (MaxMatchLen - d.lookaheadSize))
+                let numBytesToProcess = cast(u32) Math.min(cast(u32) srcBufLeft, cast(u32) (MaxMatchLen - d.lookaheadSize))
 
-                var pSrc_end = pSrc ? pSrc + numBytesToProcess : null
+                let pSrc_end = pSrc ? pSrc + numBytesToProcess : null
                 srcBufLeft -= numBytesToProcess
                 d.lookaheadSize += numBytesToProcess
 
                 while pSrc != pSrc_end
                 {
-                    var c = dref pSrc
+                    let c = dref pSrc
                     pSrc += 1
                     d.dict[dstPos] = c;
                     if dstPos < (MaxMatchLen - 1)

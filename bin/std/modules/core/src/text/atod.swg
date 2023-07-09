@@ -785,7 +785,7 @@ func eiselLemire64(neg: bool, mantissa: u64, exp10: s64)->{f: f64, ok: bool}
 		return result
 
 	// Normalization.
-	var clz = @bitcountlz(man)
+	let clz = @bitcountlz(man)
 	man <<= cast(u32) clz
 
 	const ExponentBias = 1023
@@ -802,7 +802,7 @@ func eiselLemire64(neg: bool, mantissa: u64, exp10: s64)->{f: f64, ok: bool}
 		var (yHi, yLo) = Math.mulU64(man, v)
 
 		var mergedHi = xHi
-        var mergedLo = xLo + yHi
+        let mergedLo = xLo + yHi
 
 		if mergedLo < xLo
 			mergedHi += 1
@@ -815,7 +815,7 @@ func eiselLemire64(neg: bool, mantissa: u64, exp10: s64)->{f: f64, ok: bool}
 	}
 
 	// Shifting to 54 Bits.
-	var msb = (xHi >> 63)
+	let msb = (xHi >> 63)
 	var retMantissa = xHi >> cast(u32) (msb + 9)
 	retExp2 -= 1'u64 ^ msb
 
@@ -874,7 +874,7 @@ func special(s: const [..] u8)->{ value: f64, eat: u32 }
 public func parse(s: const [..] u8) -> {value: f64, eat: u32, ovf: bool} throw
 {
     var result: retval
-    var countof = @countof(s)
+    let countof = @countof(s)
     if !countof
         return result
 

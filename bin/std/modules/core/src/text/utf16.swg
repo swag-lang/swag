@@ -13,7 +13,7 @@ func decodeRune(buffer: const [..] u16) -> {c: rune, eat: u32}
 {
     var result: retval
 
-    var r = cast(u32) buffer[0]
+    let r = cast(u32) buffer[0]
     switch
     {
     case r < Surr1, r >= Surr3:

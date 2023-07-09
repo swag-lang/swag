@@ -20,13 +20,13 @@ public func pokeValue(addr: *void, type: typeinfo, buf: string)->string throw
     // Dynamic Core.Array
     if Reflection.isStruct(type)
     {
-        var structType = cast(const *TypeInfoStruct) type
+        let structType = cast(const *TypeInfoStruct) type
         if structType.fromGeneric == @typeof(Array)
         {
-            var valueType = structType.generics[0].pointedType
+            let valueType = structType.generics[0].pointedType
             while @countof(one) and one[0] != "#"'u8
             {
-                var addrVal = Reflection.roomInArray(addr, valueType)
+                let addrVal = Reflection.roomInArray(addr, valueType)
                 one = try pokeValue(addrVal, valueType, one)
                 one = Tokenize.eatSpaces(one)
             }
@@ -38,7 +38,7 @@ public func pokeValue(addr: *void, type: typeinfo, buf: string)->string throw
     // Static array
     if Reflection.isArray(type)
     {
-        var arrayType = cast(const *TypeInfoArray) type
+        let arrayType = cast(const *TypeInfoArray) type
         var addrVal = cast(^u8) addr
         var cpt = 0
         while @countof(one) and one[0] != "#"'u8

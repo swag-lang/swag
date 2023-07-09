@@ -118,8 +118,8 @@ impl HuffmanTable
         {
             if !v continue
 
-            var c = nextCode[v] - firstCode[v] + firstSymbol[v]
-            var fastv = (cast(u16) v << 9) | cast(u16) ci
+            let c = nextCode[v] - firstCode[v] + firstSymbol[v]
+            let fastv = (cast(u16) v << 9) | cast(u16) ci
             size[c] = v
             value[c] = cast(u16) ci
             if v <= FastBits
@@ -162,7 +162,7 @@ impl Inflate
         let b = ht.fast[stream.codeBuffer & FastMask]
         if b
         {
-            var s = cast(u8) (b >> FastBits)
+            let s = cast(u8) (b >> FastBits)
             stream.consumeBits(s)
             return b & 511
         }
