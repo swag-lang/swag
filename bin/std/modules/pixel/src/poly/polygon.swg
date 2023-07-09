@@ -31,22 +31,22 @@ impl Polygon
         if Math.isZeroEpsilon(offset)
             return points.buffer[i]
 
-        var count = points.count - 1
+        let count = points.count - 1
 
-        var v0 = points.buffer[(i + count - 1) % count]
-        var v1 = points.buffer[i]
-        var v2 = points.buffer[(i + 1) % count]
+        let v0 = points.buffer[(i + count - 1) % count]
+        let v1 = points.buffer[i]
+        let v2 = points.buffer[(i + 1) % count]
 
-        var tmp0 = Vector2.toNormalizeSafe(v1 - v0)
-        var n0 = tmp0.cross(1)
-        var tmp1 = Vector2.toNormalizeSafe(v2 - v1)
-        var n1 = tmp1.cross(1)
+        let tmp0 = Vector2.toNormalizeSafe(v1 - v0)
+        let n0 = tmp0.cross(1)
+        let tmp1 = Vector2.toNormalizeSafe(v2 - v1)
+        let n1 = tmp1.cross(1)
 
-        var vva1 = v1 + n0
-        var vva0 = v0 + n0
-        var vvb1 = v2 + n1
-        var vvb0 = v1 + n1
-        var (yes, intPos) = Vector2.lineLineIntersect(vva0, vva1, vvb0, vvb1)
+        let vva1 = v1 + n0
+        let vva0 = v0 + n0
+        let vvb1 = v2 + n1
+        let vvb0 = v1 + n1
+        let (yes, intPos) = Vector2.lineLineIntersect(vva0, vva1, vvb0, vvb1)
 
         var result: retval = v1
         if yes
@@ -55,7 +55,7 @@ impl Polygon
         }
         else
         {
-            var n = Vector2.toNormalizeSafe(n0 + n1)
+            let n = Vector2.toNormalizeSafe(n0 + n1)
             result += (n * offset)
         }
 
@@ -70,7 +70,7 @@ impl Polygon
         {
             defer i += 1
             var v = points[(i + 1) % points.count] - points[i]
-            var d = v.length()
+            let d = v.length()
             var divide = cast(s32) (d / dist)
             if divide > 0
             {
@@ -189,7 +189,7 @@ impl Polygon
 
         visit p: res
         {
-            var np = result.newPath()
+            let np = result.newPath()
             np.isPolyOnly = true
             np.polygon.storeClipperResult(p)
             np.bvMin = np.polygon.bvMin
@@ -240,7 +240,7 @@ impl Polygon
 
         visit p: res
         {
-            var np = result.newPath()
+            let np = result.newPath()
             np.isPolyOnly = true
             np.polygon.storeClipperResult(p)
             np.bvMin = np.polygon.bvMin
@@ -263,8 +263,8 @@ impl Polygon
         if !points.count
             return
 
-        var n = points.count - 1
-        var isClosed = points[0].distanceSquared(points.back()) < 0.5*0.5
+        let n = points.count - 1
+        let isClosed = points[0].distanceSquared(points.back()) < 0.5*0.5
         if isClosed
             points.count -= 1
 
@@ -279,9 +279,9 @@ impl Polygon
         while q < n
         {
             // Convex
-            var v = points.buffer[(q + 2) % points.count] - points.buffer[(q + 1) % points.count]
-            var v1 = points.buffer[(q + 1) % points.count] - points.buffer[(q + 0) % points.count]
-            var c = v.cross(v1)
+            let v = points.buffer[(q + 2) % points.count] - points.buffer[(q + 1) % points.count]
+            let v1 = points.buffer[(q + 1) % points.count] - points.buffer[(q + 0) % points.count]
+            let c = v.cross(v1)
             if first
             {
                 lastC = c

@@ -45,8 +45,8 @@ impl Image
         var f = {rmode, value, color}
         visitPixels(&f)
         {
-            var params = cast(*@decltype(f)) userData
-            var mode = params.rmode
+            let params = cast(*@decltype(f)) userData
+            let mode = params.rmode
 
             var color: u8 = undefined
             #[Swag.Complete]

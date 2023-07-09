@@ -35,13 +35,13 @@ impl Painter
         switch pen.borderPos
         {
         case None:
-            var o = 0.5
+            let o = 0.5
             l += o
             t += o
             w -= 2*o
             h -= 2*o
         case Inside:
-            var o = 0.5 + pen.size * 0.5
+            let o = 0.5 + pen.size * 0.5
             l += o
             t += o
             w -= 2*o
@@ -76,7 +76,7 @@ impl Painter
         var w = Math.round(width)
         var h = Math.round(height)
 
-        var aa = curState.paintParams & .Antialiased
+        let aa = curState.paintParams & .Antialiased
         if aa
         {
             l -= 0.5
@@ -135,13 +135,13 @@ impl Painter
         switch pen.borderPos
         {
         case None:
-            var o = 0.5
+            let o = 0.5
             l += o
             t += o
             w -= 2*o
             h -= 2*o
         case Inside:
-            var o = 0.5 + pen.size * 0.5
+            let o = 0.5 + pen.size * 0.5
             l += o
             t += o
             w -= 2*o

@@ -4,8 +4,8 @@
 // Insertion sort algorithm (slow)
 func(T) insertionSort(values: [..] T, cb: closure(T, T)->s32)
 {
-    var buffer = @dataof(values)
-    var count = @countof(values)
+    let buffer = @dataof(values)
+    let count = @countof(values)
 
     for var i = 1'u32; i < count; i += 1
     {
@@ -19,13 +19,13 @@ func(T) insertionSort(values: [..] T, cb: closure(T, T)->s32)
 // Quick sort algorithm
 func(T) quickSort(values: [..] T, cb: closure(T, T)->s32)
 {
-    var count = cast(s64) @countof(values)
+    let count = cast(s64) @countof(values)
     if count == 0
         return
 
     var begin = 0's64
     var end = count - 1
-    var buffer = @dataof(values)
+    let buffer = @dataof(values)
 
     loop
     {
@@ -36,7 +36,7 @@ func(T) quickSort(values: [..] T, cb: closure(T, T)->s32)
             return
         }
 
-        var pivot = begin
+        let pivot = begin
         var low = begin
         var high = end
         loop
@@ -54,8 +54,8 @@ func(T) quickSort(values: [..] T, cb: closure(T, T)->s32)
         swap(&buffer[pivot], &buffer[high])
 
         // To avoid too much recursions, we recurse only for the smaller partition
-        var set1 = (high - 1) - begin
-        var set2 = end - (high + 1)
+        let set1 = (high - 1) - begin
+        let set2 = end - (high + 1)
         if set1 > 0 and set2 > 0
         {
             var first, last: s64 = undefined

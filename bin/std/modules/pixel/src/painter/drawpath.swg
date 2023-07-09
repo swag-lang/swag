@@ -237,7 +237,7 @@ impl Painter
         endPos.x = center.x + (Math.cos(angle1) * radius)
         endPos.y = center.y + (Math.sin(angle1) * radius)
 
-        var minDist = LinePath.getFlattenDistance(curState.paintQuality)
+        let minDist = LinePath.getFlattenDistance(curState.paintQuality)
 
         // We divide a segment by half until the computed point on the curve is
         // close to the corresponding segment
@@ -248,10 +248,10 @@ impl Painter
         var point: Math.Vector2 = undefined
         for var i = 0; i < sharedRoundTmp.count - 1; i += 1
         {
-            var angle = (sharedRoundTmp[i].factor + sharedRoundTmp[i + 1].factor) * 0.5
+            let angle = (sharedRoundTmp[i].factor + sharedRoundTmp[i + 1].factor) * 0.5
             point.x = center.x + (Math.cos(angle) * radius)
             point.y = center.y + (Math.sin(angle) * radius)
-            var dist = point.distanceToLine(sharedRoundTmp[i].pos, sharedRoundTmp[i + 1].pos)
+            let dist = point.distanceToLine(sharedRoundTmp[i].pos, sharedRoundTmp[i + 1].pos)
             if dist < minDist
                 continue
 
@@ -373,8 +373,8 @@ impl Painter
         // AA end edge if no cap
         elif curState.paintParams & .Antialiased
         {
-            var prim2p = vertexBuffer.buffer + prim2
-            var prim2t = prim2p + 2
+            let prim2p = vertexBuffer.buffer + prim2
+            let prim2t = prim2p + 2
             addEdgeAA(prim1, prim2p.pos, prim2t.pos)
             addEdgeAA(prim2, prim2p.pos, prim2t.pos)
         }
@@ -491,12 +491,12 @@ impl Painter
             patternTotalLen += Math.max(pattern[i], 0.01)
         patternTotalLen *= pen.size
 
-        var repeatCount = cast(s32) (path.polygon.totalLen / patternTotalLen)
+        let repeatCount = cast(s32) (path.polygon.totalLen / patternTotalLen)
         error = path.polygon.totalLen - (repeatCount * patternTotalLen)
 
         // We must dispatch error at each blank in the pattern. So "divError" is the
         // number of blanks to add at each 'move', between solid patterns
-        var numBlanks = repeatCount * patternCount / 2
+        let numBlanks = repeatCount * patternCount / 2
         divError = numBlanks ? error / numBlanks : 0
 
         // First pattern. We start at half the size of the first pattern, in order to not

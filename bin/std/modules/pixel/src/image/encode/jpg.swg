@@ -414,7 +414,7 @@ impl Encoder
 
     mtd writeBits(bs: BitString)
     {
-        var value = bs.value
+        let value = bs.value
         var posval = cast(s32) bs.length - 1
         while posval >= 0
         {

@@ -701,7 +701,7 @@ impl RenderOgl
                 atlas.texture.pf = atlas.bpp == 1 ? .RGBA8 : .RGB8
                 glBindTexture(GL_TEXTURE_2D, cast(GLuint) atlas.texture.handle)
                 glPixelStorei(GL_UNPACK_ALIGNMENT, 1)
-                var fmt = atlas.bpp == 1 ? GL_RED : GL_RGB
+                let fmt = atlas.bpp == 1 ? GL_RED : GL_RGB
                 glTexImage2D(GL_TEXTURE_2D, 0, fmt, cast(GLsizei) atlas.texture.width, cast(GLsizei) atlas.texture.height, 0, fmt, GL_UNSIGNED_BYTE, atlas.datas.buffer)
             }
 

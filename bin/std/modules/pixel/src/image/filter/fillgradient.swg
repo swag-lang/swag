@@ -15,10 +15,10 @@ impl Image
             var pix = pixels.buffer
             loop x: width
             {
-                var factor0 = x / cast(f32) width
-                var b = cast(u8) Math.lerp(cast(f32) color0.b, cast(f32) color1.b, factor0)
-                var g = cast(u8) Math.lerp(cast(f32) color0.g, cast(f32) color1.g, factor0)
-                var r = cast(u8) Math.lerp(cast(f32) color0.r, cast(f32) color1.r, factor0)
+                let factor0 = x / cast(f32) width
+                let b = cast(u8) Math.lerp(cast(f32) color0.b, cast(f32) color1.b, factor0)
+                let g = cast(u8) Math.lerp(cast(f32) color0.g, cast(f32) color1.g, factor0)
+                let r = cast(u8) Math.lerp(cast(f32) color0.r, cast(f32) color1.r, factor0)
                 var a = 255'u8
                 if PF.bpp() == 32
                     a = cast(u8) Math.lerp(cast(f32) color0.a, cast(f32) color1.a, factor0)
@@ -54,12 +54,12 @@ impl Image
         {
             visitPixels(&f)
             {
-                var params = cast(*@decltype(f)) userData
-                var factor0 = x / cast(f32) image.width
-                var factor1 = y / cast(f32) image.height
-                var colH1 = Color.getBlend(params.topLeft, params.topRight, factor0)
-                var colH0 = Color.getBlend(params.bottomLeft, params.bottomRight, factor0)
-                var col = Color.getBlend(colH0, colH1, factor1)
+                let params = cast(*@decltype(f)) userData
+                let factor0 = x / cast(f32) image.width
+                let factor1 = y / cast(f32) image.height
+                let colH1 = Color.getBlend(params.topLeft, params.topRight, factor0)
+                let colH0 = Color.getBlend(params.bottomLeft, params.bottomRight, factor0)
+                let col = Color.getBlend(colH0, colH1, factor1)
                 setPixelRGBA8'PF(pix, col.r, col.g, col.b, col.a)
             }
         }

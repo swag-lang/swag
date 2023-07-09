@@ -531,7 +531,7 @@ impl Tesselate
     // Register a new point
     public mtd addPoint(x, y: f32)
     {
-        var p = Memory.new'Point()
+        let p = Memory.new'Point()
         p.x = x
         p.y = y
         points.add(p)
@@ -544,8 +544,8 @@ impl Tesselate
         {
             visit pt, i: polyline
             {
-                var nexti = (i + 1) % @countof(polyline)
-                var edge = Memory.new'Edge()
+                let nexti = (i + 1) % @countof(polyline)
+                let edge = Memory.new'Edge()
                 edge.set(polyline[i], polyline[nexti])
                 edgeList.add(edge)
             }
@@ -570,8 +570,8 @@ impl Tesselate
     {
         loop i: 1..points.count-1
         {
-            var point = points[i]
-            var node = pointEvent(point)
+            let point = points[i]
+            let node = pointEvent(point)
             visit e: point.edgeList
                 addEdgeEvent2(e, node)
         }
@@ -585,8 +585,8 @@ impl Tesselate
         if isEdgeSideOfTriangle(triangle, ep, eq)
             return
 
-        var p1 = triangle.pointCCW(point)
-        var o1 = orient2d(eq, p1, ep)
+        let p1 = triangle.pointCCW(point)
+        let o1 = orient2d(eq, p1, ep)
         if o1 == .Collinear
         {
             if triangle.contains(eq, p1)
@@ -604,8 +604,8 @@ impl Tesselate
             return
         }
 
-        var p2 = triangle.pointCW(point)
-        var o2 = orient2d(eq, p2, ep)
+        let p2 = triangle.pointCW(point)
+        let o2 = orient2d(eq, p2, ep)
         if o2 == .Collinear
         {
             if triangle.contains(eq, p2)
@@ -642,10 +642,10 @@ impl Tesselate
         var t = tri
         Debug.assert(t != null)
 
-        var ot = t.neighborAcross(p)
+        let ot = t.neighborAcross(p)
         Debug.assert(ot != null, "FlipEdgeEvent - null neighbor across")
 
-        var op = ot.oppositePoint(t, p)
+        let op = ot.oppositePoint(t, p)
 
         if inScanArea(p, t.pointCCW(p), t.pointCW(p), op)
         {
@@ -665,14 +665,14 @@ impl Tesselate
             }
             else
             {
-                var o = orient2d(eq, op, ep)
+                let o = orient2d(eq, op, ep)
                 t = nextFlipTriangle(o, t, ot, p, op)
                 flipEdgeEvent(ep, eq, t, p)
             }
         }
         else
         {
-            var newP = nextFlipPoint(ep, eq, ot, op)
+            let newP = nextFlipPoint(ep, eq, ot, op)
             flipScanEdgeEvent(ep, eq, t, ot, newP)
             addEdgeEvent(ep, eq, t, p)
         }
@@ -682,15 +682,15 @@ impl Tesselate
     {
         if o == .CCW
         {
-            var edge_index = ot.edgeIndex(p, op)
-            ot.delaunayEdge[edge_index] = true
+            let edgeIndex = ot.edgeIndex(p, op)
+            ot.delaunayEdge[edgeIndex] = true
             discard legalize(ot)
             ot.clearDelaunayEdges()
             return t
         }
 
-        var edge_index = t.edgeIndex(p, op)
-        t.delaunayEdge[edge_index] = true
+        let edgeIndex = t.edgeIndex(p, op)
+        t.delaunayEdge[edgeIndex] = true
         discard legalize(t)
         t.clearDelaunayEdges()
         return ot
@@ -698,7 +698,7 @@ impl Tesselate
 
     func nextFlipPoint(ep, eq: *Point, ot: *Triangle, op: *Point)->*Point
     {
-        var o2d = orient2d(eq, op, ep)
+        let o2d = orient2d(eq, op, ep)
         if o2d == .CW  return ot.pointCCW(op)
         if o2d == .CCW return ot.pointCW(op)
         Debug.assert(false, "[Unsupported] Opposing point on constrained edge")
@@ -707,21 +707,21 @@ impl Tesselate
 
     mtd flipScanEdgeEvent(ep, eq: *Point, flip_triangle: *Triangle, t: *Triangle, p: *Point)
     {
-        var ot = t.neighborAcross(p)
+        let ot = t.neighborAcross(p)
         Debug.assert(ot != null, "FlipScanEdgeEvent - null neighbor across")
 
-        var op = ot.oppositePoint(t, p)
+        let op = ot.oppositePoint(t, p)
         Debug.assert(op != null, "FlipScanEdgeEvent - null opposing point")
 
-        var p1 = flip_triangle.pointCCW(eq)
-        var p2 = flip_triangle.pointCW(eq)
+        let p1 = flip_triangle.pointCCW(eq)
+        let p2 = flip_triangle.pointCW(eq)
         Debug.assert(p1 != null and p2 != null, "FlipScanEdgeEvent - null on either of points")
 
         if inScanArea(eq, p1, p2, op)
             flipEdgeEvent(eq, op, ot, op)
         else
         {
-            var newP = nextFlipPoint(ep, eq, ot, op)
+            let newP = nextFlipPoint(ep, eq, ot, op)
             flipScanEdgeEvent(ep, eq, flip_triangle, ot, newP)
         }
     }
@@ -864,9 +864,9 @@ impl Tesselate
 
     mtd pointEvent(point: *Point)->*Node
     {
-        var node = locateNode(point)
+        let node = locateNode(point)
         Debug.assert(node and node.point and node.next and node.next.point, "null node")
-        var new_node = newFrontTriangle(point, node)
+        let new_node = newFrontTriangle(point, node)
         if point.x <= node.point.x + Math.ConstF64.Epsilon
             fill(node)
         fillAdvancingFront(new_node)
@@ -893,7 +893,7 @@ impl Tesselate
 
         if n.next and n.next.next
         {
-            var angle = basinAngle(n)
+            let angle = basinAngle(n)
             if angle < Math.ConstF64.ThreePiBy4
                 fillBasin(n)
         }
@@ -937,14 +937,14 @@ impl Tesselate
 
         if node.prev == basin.leftNode
         {
-            var o = orient2d(node.point, node.next.point, node.next.next.point)
+            let o = orient2d(node.point, node.next.point, node.next.next.point)
             if o == .CW
                 return
             node = node.next
         }
         elif node.next == basin.rightNode
         {
-            var o = orient2d(node.point, node.prev.point, node.prev.prev.point)
+            let o = orient2d(node.point, node.prev.point, node.prev.prev.point)
             if o == .CCW
                 return
             node = node.prev
@@ -979,18 +979,18 @@ impl Tesselate
 
     func largeHoleDontFill(node: *Node)->bool
     {
-        var nextNode = node.next
-        var prevNode = node.prev
+        let nextNode = node.next
+        let prevNode = node.prev
         if !angleExceeds90Degrees(node.point, nextNode.point, prevNode.point)
             return false
         if angleIsNegative(node.point, nextNode.point, prevNode.point)
             return true;
 
-        var next2Node = nextNode.next
+        let next2Node = nextNode.next
         if next2Node and !angleExceedsPlus90DegreesOrIsNegative(node.point, next2Node.point, prevNode.point)
             return false
 
-        var prev2Node = prevNode.prev
+        let prev2Node = prevNode.prev
         if prev2Node and !angleExceedsPlus90DegreesOrIsNegative(node.point, nextNode.point, prev2Node.point)
             return false
 
@@ -999,32 +999,32 @@ impl Tesselate
 
     func angleIsNegative(origin, pa, pb: *Point)->bool
     {
-        var angle = angle(origin, pa, pb)
+        let angle = angle(origin, pa, pb)
         return angle < 0
     }
 
     func angleExceeds90Degrees(origin, pa, pb: *Point)->bool
     {
-        var angle = angle(origin, pa, pb)
+        let angle = angle(origin, pa, pb)
         return (angle > Math.ConstF64.PiBy2) or (angle < -Math.ConstF64.PiBy2)
     }
 
     func angleExceedsPlus90DegreesOrIsNegative(origin, pa, pb: *Point)->bool
     {
-        var angle = angle(origin, pa, pb)
+        let angle = angle(origin, pa, pb)
         return (angle > Math.ConstF64.PiBy2) or (angle < 0)
     }
 
     func angle(origin, pa, pb: *Point)->f64
     {
-        var px = origin.x
-        var py = origin.y
-        var ax = pa.x - px
-        var ay = pa.y - py
-        var bx = pb.x - px
-        var by = pb.y - py
-        var x = ax * by - ay * bx
-        var y = ax * bx + ay * by
+        let px = origin.x
+        let py = origin.y
+        let ax = pa.x - px
+        let ay = pa.y - py
+        let bx = pb.x - px
+        let by = pb.y - py
+        let x = ax * by - ay * bx
+        let y = ax * bx + ay * by
         return Math.atan2(x, y)
     }
 
@@ -1048,7 +1048,7 @@ impl Tesselate
 
     mtd newFrontTriangle(point: *Point, node: *Node)->*Node
     {
-        var triangle = Memory.new'Triangle()
+        let triangle = Memory.new'Triangle()
         triangle.points[0] = point
         triangle.points[1] = node.point
         triangle.points[2] = node.next.point
@@ -1056,7 +1056,7 @@ impl Tesselate
         triangle.markNeighbor(node.triangle)
         map.add(triangle)
 
-        var new_node = Memory.new'Node()
+        let new_node = Memory.new'Node()
         new_node.point = point
         new_node.value = point.x
         nodes.add(new_node)
@@ -1074,9 +1074,9 @@ impl Tesselate
 
     func orient2d(pa, pb, pc: *Point)->Orientation
     {
-        var detleft = (pa.x - pc.x) * (pb.y - pc.y)
-        var detright = (pa.y - pc.y) * (pb.x - pc.x)
-        var val = detleft - detright
+        let detleft = (pa.x - pc.x) * (pb.y - pc.y)
+        let detright = (pa.y - pc.y) * (pb.x - pc.x)
+        let val = detleft - detright
         if Math.isZeroEpsilon(val)
             return Orientation.Collinear
         if val > 0
@@ -1086,11 +1086,11 @@ impl Tesselate
 
     func inScanArea(pa, pb, pc, pd: *Point)->bool
     {
-        var oadb = (pa.x - pb.x) * (pd.y - pb.y) - (pd.x - pb.x) * (pa.y - pb.y)
+        let oadb = (pa.x - pb.x) * (pd.y - pb.y) - (pd.x - pb.x) * (pa.y - pb.y)
         if oadb >= -Math.ConstF64.Epsilon
             return false
 
-        var oadc = (pa.x - pc.x) * (pd.y - pc.y) - (pd.x - pc.x) * (pa.y - pc.y)
+        let oadc = (pa.x - pc.x) * (pd.y - pc.y) - (pd.x - pc.x) * (pa.y - pc.y)
         if oadc <= Math.ConstF64.Epsilon
             return false
 
@@ -1099,36 +1099,36 @@ impl Tesselate
 
     func incircle(pa, pb, pc, pd: *Point)->bool
     {
-        var adx = pa.x - pd.x
-        var ady = pa.y - pd.y
-        var bdx = pb.x - pd.x
-        var bdy = pb.y - pd.y
+        let adx = pa.x - pd.x
+        let ady = pa.y - pd.y
+        let bdx = pb.x - pd.x
+        let bdy = pb.y - pd.y
 
-        var adxbdy = adx * bdy
-        var bdxady = bdx * ady
-        var oabd = adxbdy - bdxady
+        let adxbdy = adx * bdy
+        let bdxady = bdx * ady
+        let oabd = adxbdy - bdxady
 
         if oabd <= 0
             return false
 
-        var cdx = pc.x - pd.x
-        var cdy = pc.y - pd.y
+        let cdx = pc.x - pd.x
+        let cdy = pc.y - pd.y
 
-        var cdxady = cdx * ady
-        var adxcdy = adx * cdy
-        var ocad = cdxady - adxcdy
+        let cdxady = cdx * ady
+        let adxcdy = adx * cdy
+        let ocad = cdxady - adxcdy
 
         if ocad <= 0
             return false
 
-        var bdxcdy = bdx * cdy
-        var cdxbdy = cdx * bdy
+        let bdxcdy = bdx * cdy
+        let cdxbdy = cdx * bdy
 
-        var alift = adx * adx + ady * ady
-        var blift = bdx * bdx + bdy * bdy
-        var clift = cdx * cdx + cdy * cdy
+        let alift = adx * adx + ady * ady
+        let blift = bdx * bdx + bdy * bdy
+        let clift = cdx * cdx + cdy * cdy
 
-        var det = alift * (bdxcdy - cdxbdy) + blift * ocad + clift * oabd
+        let det = alift * (bdxcdy - cdxbdy) + blift * ocad + clift * oabd
         return det > 0
     }
 
@@ -1139,12 +1139,12 @@ impl Tesselate
             if t.delaunayEdge[i]
                 continue
 
-            var ot = t.neighbors[i]
+            let ot = t.neighbors[i]
             if ot
             {
-                var p = t.points[i]
-                var op = ot.oppositePoint(t, p)
-                var oi = ot.index(op)
+                let p = t.points[i]
+                let op = ot.oppositePoint(t, p)
+                let oi = ot.index(op)
 
                 if (ot.constrainedEdge[oi] or ot.delaunayEdge[oi])
                 {
@@ -1152,7 +1152,7 @@ impl Tesselate
                     continue
                 }
 
-                var inside = incircle(p, t.pointCCW(p), t.pointCW(p), op)
+                let inside = incircle(p, t.pointCCW(p), t.pointCW(p), op)
                 if (inside)
                 {
                     t.delaunayEdge[i] = true
@@ -1180,20 +1180,20 @@ impl Tesselate
 
     func rotateTrianglePair(t: *Triangle, p: *Point, ot: *Triangle, op: *Point)
     {
-        var n1 = t.neighborCCW(p)
-        var n2 = t.neighborCW(p)
-        var n3 = ot.neighborCCW(op)
-        var n4 = ot.neighborCW(op)
+        let n1 = t.neighborCCW(p)
+        let n2 = t.neighborCW(p)
+        let n3 = ot.neighborCCW(op)
+        let n4 = ot.neighborCW(op)
 
-        var ce1 = t.getConstrainedEdgeCCW(p)
-        var ce2 = t.getConstrainedEdgeCW(p)
-        var ce3 = ot.getConstrainedEdgeCCW(op)
-        var ce4 = ot.getConstrainedEdgeCW(op)
+        let ce1 = t.getConstrainedEdgeCCW(p)
+        let ce2 = t.getConstrainedEdgeCW(p)
+        let ce3 = ot.getConstrainedEdgeCCW(op)
+        let ce4 = ot.getConstrainedEdgeCW(op)
 
-        var de1 = t.getDelaunayEdgeCCW(p)
-        var de2 = t.getDelaunayEdgeCW(p)
-        var de3 = ot.getDelaunayEdgeCCW(op)
-        var de4 = ot.getDelaunayEdgeCW(op)
+        let de1 = t.getDelaunayEdgeCCW(p)
+        let de2 = t.getDelaunayEdgeCW(p)
+        let de3 = ot.getDelaunayEdgeCCW(op)
+        let de4 = ot.getDelaunayEdgeCW(op)
 
         t.legalize(p, op)
         ot.legalize(op, p)
@@ -1293,8 +1293,8 @@ impl Tesselate
         }
 
         const KAlpha = 0.3'f32
-        var dx = KAlpha * (xmax - xmin)
-        var dy = KAlpha * (ymax - ymin)
+        let dx = KAlpha * (xmax - xmin)
+        let dy = KAlpha * (ymax - ymin)
         head = Memory.new'Point()
         head.x = xmin - dx
         head.y = ymin - dy

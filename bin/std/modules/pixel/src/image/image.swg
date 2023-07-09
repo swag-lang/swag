@@ -216,25 +216,25 @@ impl Image
         switch pf
         {
         case RGBA8:
-            var pix = pixels.buffer + (x * 4) + (y * width * 4)
+            let pix = pixels.buffer + (x * 4) + (y * width * 4)
             result.r = pix[0]
             result.g = pix[1]
             result.b = pix[2]
             result.a = pix[3]
         case RGB8:
-            var pix = pixels.buffer + (x * 3) + (y * width * 3)
+            let pix = pixels.buffer + (x * 3) + (y * width * 3)
             result.r = pix[0]
             result.g = pix[1]
             result.b = pix[2]
             result.a = 255
         case BGRA8:
-            var pix = pixels.buffer + (x * 4) + (y * width * 4)
+            let pix = pixels.buffer + (x * 4) + (y * width * 4)
             result.b = pix[0]
             result.g = pix[1]
             result.r = pix[2]
             result.a = pix[3]
         case BGR8:
-            var pix = pixels.buffer + (x * 3) + (y * width * 3)
+            let pix = pixels.buffer + (x * 3) + (y * width * 3)
             result.b = pix[0]
             result.g = pix[1]
             result.r = pix[2]

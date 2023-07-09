@@ -249,8 +249,8 @@ impl Color
         }
         else
         {
-            var m2 = _l < 0.5 ? _l * (1 + _s) : (_l + _s) - (_l * _s)
-            var m1 = 2 * _l - m2
+            let m2 = _l < 0.5 ? _l * (1 + _s) : (_l + _s) - (_l * _s)
+            let m1 = 2 * _l - m2
             r = hueToCol(m1, m2, _h + (1.0 / 3.0))
             g = hueToCol(m1, m2, _h)
             b = hueToCol(m1, m2, _h - (1.0 / 3.0))
@@ -262,11 +262,11 @@ impl Color
     {
         var result: retval = undefined
 
-        var (rf, gf, bf) = toRgbf()
-        var max = Math.max(rf, gf, bf)
-        var min = Math.min(rf, gf, bf)
+        let (rf, gf, bf) = toRgbf()
+        let max = Math.max(rf, gf, bf)
+        let min = Math.min(rf, gf, bf)
         result.l = (max + min) * 0.5
-        var delta = max - min
+        let delta = max - min
         if delta == 0
         {
             result.s = 0
@@ -279,9 +279,9 @@ impl Color
         else
             result.s = delta / (2 - max - min)
 
-        var delr = (((max - rf) / 6) + (delta * 0.5)) / delta
-        var delg = (((max - gf) / 6) + (delta * 0.5)) / delta
-        var delb = (((max - bf) / 6) + (delta * 0.5)) / delta
+        let delr = (((max - rf) / 6) + (delta * 0.5)) / delta
+        let delg = (((max - gf) / 6) + (delta * 0.5)) / delta
+        let delb = (((max - bf) / 6) + (delta * 0.5)) / delta
 
         if rf == max
             result.h = delb - delg
@@ -339,9 +339,9 @@ impl Color
     // Returns the distance between the other color
     mtd getDistanceRgb(col: Color)->f32
     {
-        var x1 = cast(f32) r - col.r
-        var x2 = cast(f32) g - col.g
-        var x3 = cast(f32) b - col.b
+        let x1 = cast(f32) r - col.r
+        let x2 = cast(f32) g - col.g
+        let x3 = cast(f32) b - col.b
         var dist = Math.sqrt((x1*x1) + (x2*x2) + (x3*x3))
         dist /= 255*3
         return dist
@@ -388,7 +388,7 @@ impl Core.StrConv.IPokeValue for Color
         }
         else
         {
-            var id = try parseIdentifier(one)
+            let id = try parseIdentifier(one)
             one = Tokenize.eatCount(one, @countof(id))
             argb = cast(u32) Argb.fromName(id)
         }

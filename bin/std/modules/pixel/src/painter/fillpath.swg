@@ -34,7 +34,7 @@ public impl Painter
         // Paint
         visit tri, ii: p.triangles
         {
-            var prim = pushTriangle(tri.points[0].v, tri.points[1].v, tri.points[2].v, brush.color)
+            let prim = pushTriangle(tri.points[0].v, tri.points[1].v, tri.points[2].v, brush.color)
             if curState.paintParams & .Antialiased
             {
                 var e = tri.points[0].border[0]
@@ -85,10 +85,10 @@ public impl Painter
             // Convex shape : 1 triangle
             if count == 3
             {
-                var v0 = polygon.getPoint(0)
-                var v1 = polygon.getPoint(1)
-                var v2 = polygon.getPoint(2)
-                var prim = pushTriangle(v0, v1, v2, brush.color)
+                let v0 = polygon.getPoint(0)
+                let v1 = polygon.getPoint(1)
+                let v2 = polygon.getPoint(2)
+                let prim = pushTriangle(v0, v1, v2, brush.color)
                 if curState.paintParams & .Antialiased
                 {
                     addEdgeAA(prim, v0, v1)
@@ -100,12 +100,12 @@ public impl Painter
             // Convex shape : 2 triangles
             else if count == 4
             {
-                var v0 = polygon.getPoint(0)
-                var v1 = polygon.getPoint(1)
-                var v2 = polygon.getPoint(2)
-                var v3 = polygon.getPoint(3)
-                var prim0 = pushTriangle(v0, v1, v2, brush.color)
-                var prim1 = pushTriangle(v0, v2, v3, brush.color)
+                let v0 = polygon.getPoint(0)
+                let v1 = polygon.getPoint(1)
+                let v2 = polygon.getPoint(2)
+                let v3 = polygon.getPoint(3)
+                let prim0 = pushTriangle(v0, v1, v2, brush.color)
+                let prim1 = pushTriangle(v0, v2, v3, brush.color)
                 if curState.paintParams & .Antialiased
                 {
                     addEdgeAA(prim0, v0, v1)
@@ -126,14 +126,14 @@ public impl Painter
                 var center = Vector2{path.bvMin.x + (path.bvMax.x - path.bvMin.x) * 0.5, path.bvMin.y + (path.bvMax.y - path.bvMin.y) * 0.5}
                 loop i: count
                 {
-                    var v0 = polygon.getPoint(i)
-                    var v1 = polygon.getPoint((i + 1) % count)
-                    var prim = pushTriangle(center, v0, v1, brush.color)
+                    let v0 = polygon.getPoint(i)
+                    let v1 = polygon.getPoint((i + 1) % count)
+                    let prim = pushTriangle(center, v0, v1, brush.color)
 
                     if curState.paintParams & .Antialiased
                     {
-                        var v2 = polygon.getPoint((i + 2) % count)
-                        var vp = polygon.getPoint((i + count - 1) % count)
+                        let v2 = polygon.getPoint((i + 2) % count)
+                        let vp = polygon.getPoint((i + count - 1) % count)
                         addEdgeAA(prim, v0, v1)
                         addEdgeAA(prim, v1, v2)
                         addEdgeAA(prim, vp, v0)

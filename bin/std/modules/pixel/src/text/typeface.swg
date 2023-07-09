@@ -31,28 +31,28 @@ impl TypeFace
 
     func moveTo(to: const *FT_Vector, pathList: *LinePathList)->s32
     {
-        var path = pathList.newPath()
+        let path = pathList.newPath()
         path.start(to.x / 64.0, -to.y / 64.0)
         return 0
     }
 
     func lineTo(to: const *FT_Vector, pathList: *LinePathList)->s32
     {
-        var path = pathList.paths[pathList.paths.count - 1]
+        let path = pathList.paths[pathList.paths.count - 1]
         path.lineTo(to.x / 64.0, -to.y / 64.0)
         return 0
     }
 
     func conicTo(ctrl, to: const *FT_Vector, pathList: *LinePathList)->s32
     {
-        var path = pathList.paths[pathList.paths.count - 1]
+        let path = pathList.paths[pathList.paths.count - 1]
         path.bezierTo(to.x / 64.0, -to.y / 64.0, ctrl.x / 64.0, -ctrl.y / 64.0)
         return 0
     }
 
     func bezierTo(ctrl1, ctrl2, to: const *FT_Vector, pathList: *LinePathList)->s32
     {
-        var path = pathList.paths[pathList.paths.count - 1]
+        let path = pathList.paths[pathList.paths.count - 1]
         path.bezierTo(to.x / 64.0, -to.y / 64.0, ctrl1.x / 64.0, -ctrl1.y / 64.0, ctrl2.x / 64.0, -ctrl2.y / 64.0)
         return 0
     }
@@ -172,7 +172,7 @@ public impl TypeFace
         FT_Load_Char(face, cast(FT_ULong) c, FT_LOAD_NO_BITMAP)
         transform(size, embolden)
 
-        var prevIdx = pathList.paths.count
+        let prevIdx = pathList.paths.count
         FT_Outline_Decompose(&face.glyph.outline, &itf, pathList)
 
         if prevIdx != pathList.paths.count
@@ -207,7 +207,7 @@ public impl TypeFace
 
             FT_Outline_Translate(face.glyph.outline, x, 0)
 
-            var prevIdx = pathList.paths.count
+            let prevIdx = pathList.paths.count
             FT_Outline_Decompose(&face.glyph.outline, &itf, pathList)
 
             if prevIdx != pathList.paths.count

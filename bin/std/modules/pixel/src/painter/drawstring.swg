@@ -265,7 +265,7 @@ impl Painter
         visit &c, idx: text.chunks
         {
             // Attributes
-            var fs = c.hasFontStyle ? c.fontStyle : format.fontStyle
+            let fs = c.hasFontStyle ? c.fontStyle : format.fontStyle
             c.font = format.font.getFont(fs)
 
             // Measure
@@ -356,13 +356,13 @@ impl Painter
             lines.add(line)
         }
 
-        var x = text.layoutRect.x
+        let x = text.layoutRect.x
         var y = text.layoutRect.y
 
         // Vertical
         var totalHeight: f32
 
-        var singleLine = lines.count == 1
+        let singleLine = lines.count == 1
         if lines.count > 1
         {
             totalHeight = cast(f32) (lines.count * format.font.regular.height)
@@ -396,7 +396,7 @@ impl Painter
         visit &l, idxLine: lines
         {
             var x1 = x
-            var y1 = y
+            let y1 = y
 
             switch format.horzAlignment
             {
@@ -410,7 +410,7 @@ impl Painter
 
             loop idx: l.start..<l.end
             {
-                var c = &text.chunks[idx]
+                let c = &text.chunks[idx]
                 c.pos.x = x1
                 if c.isSpace and format.horzAlignment == .Justify and idxLine != lines.count - 1 and !l.hasEol
                     x1 += (pos.width - l.measure.width) / l.countSpaces

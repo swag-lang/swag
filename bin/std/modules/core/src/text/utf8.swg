@@ -720,8 +720,8 @@ func visitRunes(buffer: const [..] u8, stmt: code)
     var scan = @dataof(buffer)
     while count
     {
-        var sl = @mkslice(scan, count)
-        var (c, eat) = decodeRune(sl)
+        let sl = @mkslice(scan, count)
+        let (c, eat) = decodeRune(sl)
         if eat == 0
             break
 
@@ -729,9 +729,9 @@ func visitRunes(buffer: const [..] u8, stmt: code)
         {
             #scope Inside
             {
-                var @alias0 = #up c
-                var @alias1 = #up charIdx
-                var @alias2 = #up byteIdx
+                let @alias0 = #up c
+                let @alias1 = #up charIdx
+                let @alias2 = #up byteIdx
                 #mixin #up stmt { continue=break Inside; }
             }
         }

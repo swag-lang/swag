@@ -721,7 +721,7 @@ impl Transform
         var dir: Direction = undefined
         var horzLeft, horzRight: CInt
 
-        var isOpen = (horzEdge.windDelta == 0)
+        let isOpen = (horzEdge.windDelta == 0)
         getHorzDirection(horzEdge, &dir, &horzLeft, &horzRight)
 
         var eLastHorz = horzEdge

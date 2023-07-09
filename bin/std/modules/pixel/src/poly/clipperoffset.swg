@@ -218,7 +218,7 @@ impl Offset
         {
             srcPoly = node.contour
 
-            var len = cast(s32) srcPoly.count
+            let len = cast(s32) srcPoly.count
             if len == 0 or (delta <= 0 and len < 3)
                 continue
 
@@ -231,10 +231,10 @@ impl Offset
                     var y = 0.0'f64
                     for var j = 1; j <= steps; j += 1
                     {
-                        var r1 = cround(srcPoly[0].x + x * delta)
-                        var r2 = cround(srcPoly[0].y + y * delta)
+                        let r1 = cround(srcPoly[0].x + x * delta)
+                        let r2 = cround(srcPoly[0].y + y * delta)
                         destPoly.add(IntPoint{r1, r2})
-                        var x2 = x
+                        let x2 = x
                         x = x * cosVal - sinVal * y
                         y = x2 * sinVal + y * cosVal
                     }
@@ -245,8 +245,8 @@ impl Offset
                     var y = -1.0'f64
                     loop j: 4
                     {
-                        var r1 = cround(srcPoly[0].x + x * delta)
-                        var r2 = cround(srcPoly[0].y + y * delta)
+                        let r1 = cround(srcPoly[0].x + x * delta)
+                        let r2 = cround(srcPoly[0].y + y * delta)
                         destPoly.add(IntPoint{r1, r2})
                         if x < 0 x = 1
                         elif y < 0 y = 1
@@ -329,11 +329,11 @@ impl Offset
 
     mtd doSquare(j, k: s32)
     {
-        var kN = normals[k]
-        var jN = normals[j]
-        var jP = srcPoly[j]
+        let kN = normals[k]
+        let jN = normals[j]
+        let jP = srcPoly[j]
 
-        var dx = Math.tan(Math.atan2(sinaVal, kN.x * jN.x + kN.y * jN.y) / 4)
+        let dx = Math.tan(Math.atan2(sinaVal, kN.x * jN.x + kN.y * jN.y) / 4)
         var r1 = cround(jP.x + deltaVal * (kN.x - kN.y * dx))
         var r2 = cround(jP.y + deltaVal * (kN.y + kN.x * dx))
         destPoly.add(IntPoint{r1, r2})
@@ -345,13 +345,13 @@ impl Offset
 
     mtd doMiter(j, k: s32, r: f64)
     {
-        var kN = normals[k]
-        var jN = normals[j]
-        var jP = srcPoly[j]
+        let kN = normals[k]
+        let jN = normals[j]
+        let jP = srcPoly[j]
 
-        var q = deltaVal / r
-        var r1 = cround(jP.x + (kN.x + jN.x) * q)
-        var r2 = cround(jP.y + (kN.y + jN.y) * q)
+        let q = deltaVal / r
+        let r1 = cround(jP.x + (kN.x + jN.x) * q)
+        let r2 = cround(jP.y + (kN.y + jN.y) * q)
         destPoly.add(IntPoint{r1, r2})
     }
 
@@ -361,23 +361,23 @@ impl Offset
         var jN = normals[j]
         var jP = srcPoly[j]
 
-        var a = Math.atan2(sinaVal, kN.x * jN.x + kN.y * jN.y)
-        var steps = Math.max(cast(s32) cround(stepsPerRad * Math.abs(a)), 1)
+        let a = Math.atan2(sinaVal, kN.x * jN.x + kN.y * jN.y)
+        let steps = Math.max(cast(s32) cround(stepsPerRad * Math.abs(a)), 1)
 
         var x = kN.x
         var y = kN.y
         loop i: steps
         {
-            var r1 = cround(jP.x + x * deltaVal)
-            var r2 = cround(jP.y + y * deltaVal)
+            let r1 = cround(jP.x + x * deltaVal)
+            let r2 = cround(jP.y + y * deltaVal)
             destPoly.add(IntPoint{r1, r2})
             var x2 = x
             x = x * cosVal - sinVal * y
             y = x2 * sinVal + y * cosVal
         }
 
-        var r1 = cround(jP.x + jN.x * deltaVal)
-        var r2 = cround(jP.y + jN.y * deltaVal)
+        let r1 = cround(jP.x + jN.x * deltaVal)
+        let r2 = cround(jP.y + jN.y * deltaVal)
         destPoly.add(IntPoint{r1, r2})
     }
 }

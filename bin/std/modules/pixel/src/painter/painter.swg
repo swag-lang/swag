@@ -252,8 +252,8 @@ impl Painter
 
     private mtd setTextureFont(font: *Font, atlasIndex: s32)
     {
-        var cmd = newCommand(.BindTextureFont, true)
-        var params = &cmd.textureFont
+        let cmd = newCommand(.BindTextureFont, true)
+        let params = &cmd.textureFont
         params.font = font
         params.atlasIndex = atlasIndex
         hasTextureFont = true
@@ -264,7 +264,7 @@ impl Painter
         var cmd: *Command
         if commandBuffer.count
         {
-            var last = commandBuffer.buffer + commandBuffer.count - 1
+            let last = commandBuffer.buffer + commandBuffer.count - 1
             if last.id == CommandId.DrawTriangles
                 cmd = last
         }
@@ -281,7 +281,7 @@ impl Painter
 
     private mtd pushTriangle(p1, p2, p3: Vector2, uv1, uv2, uv3: Vector2, color: Color)->u64
     {
-        var cmd = pushTriangleCmd()
+        let cmd = pushTriangleCmd()
         cmd.drawTriangles.count += 3
 
         var ptr = vertexBuffer.emplaceAddress(3)
@@ -296,7 +296,7 @@ impl Painter
 
     private mtd pushTriangle(p1, p2, p3: Vector2, color: Color)->u64
     {
-        var cmd = pushTriangleCmd()
+        let cmd = pushTriangleCmd()
         cmd.drawTriangles.count += 3
 
         var ptr = vertexBuffer.emplaceAddress(3)
@@ -316,7 +316,7 @@ impl Painter
         if ptr.aanum == MaxAAEdge
             return
 
-        var idx = cast(u32) ptr.aanum
+        let idx = cast(u32) ptr.aanum
 
         var ptr1 = &ptr.aa[0] + idx
         ptr1.x = startx
@@ -357,7 +357,7 @@ impl Painter
         if replaceLast and commandBuffer.count and commandBuffer.buffer[commandBuffer.count - 1].id == cmd
             return commandBuffer.buffer + commandBuffer.count - 1;
 
-        var ptr = commandBuffer.emplaceAddress(1)
+        let ptr = commandBuffer.emplaceAddress(1)
         ptr.id = cmd
         return ptr
     }
@@ -365,7 +365,7 @@ impl Painter
     private mtd updateFont(fontRef: *Font)
     {
         if !fontRef.dirty return
-        var cmd = newCommand(.UpdateFont, false)
+        let cmd = newCommand(.UpdateFont, false)
         cmd.font.fontRef = fontRef
     }
 
@@ -421,7 +421,7 @@ impl Painter
     // Clear the rendering surface
     mtd clear(color: Color)
     {
-        var cmd = newCommand(.Clear)
+        let cmd = newCommand(.Clear)
         cmd.clear.color = color
     }
 
@@ -557,7 +557,7 @@ impl Painter
     mtd setTransform(tr: Transform2)
     {
         curState.transform = tr
-        var cmd = newCommand(.Transform, true)
+        let cmd = newCommand(.Transform, true)
         cmd.transform.tr = tr
     }
 

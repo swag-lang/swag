@@ -190,8 +190,8 @@ public impl LinePath
 
     private mtd setRectRaw(l, t, w, h: f32)
     {
-        var r = l + w
-        var b = t + h
+        let r = l + w
+        let b = t + h
 
         start(l, t)
         lineTo(r, t)
@@ -204,10 +204,10 @@ public impl LinePath
     // Initialize the path with a rectangle
     mtd setRect(left, top, width, height: f32)
     {
-        var l = Math.round(left)
-        var t = Math.round(top)
-        var w = Math.round(width)
-        var h = Math.round(height)
+        let l = Math.round(left)
+        let t = Math.round(top)
+        let w = Math.round(width)
+        let h = Math.round(height)
 
         setRectRaw(l, t, w, h)
     }
@@ -215,13 +215,13 @@ public impl LinePath
     // Initialize the path with a round rectangle
     mtd setRoundRect(left, top, width, height: f32, radiusX, radiusY: f32)
     {
-        var l = Math.round(left)
-        var t = Math.round(top)
-        var w = Math.round(width)
-        var h = Math.round(height)
+        let l = Math.round(left)
+        let t = Math.round(top)
+        let w = Math.round(width)
+        let h = Math.round(height)
 
-        var r = l + w
-        var b = t + h
+        let r = l + w
+        let b = t + h
 
         var rX = Math.min(radiusX, (w * 0.5) - 2)
         var rY = Math.min(radiusY, (h * 0.5) - 2)
@@ -252,10 +252,10 @@ public impl LinePath
     // Initialize the path with an ellipse
     mtd setEllipse(centerX, centerY: f32, radiusX, radiusY: f32)
     {
-        var cX = Math.round(centerX)
-        var cY = Math.round(centerY)
-        var rX = 0.5*Math.round(radiusX*2)
-        var rY = 0.5*Math.round(radiusY*2)
+        let cX = Math.round(centerX)
+        let cY = Math.round(centerY)
+        let rX = 0.5*Math.round(radiusX*2)
+        let rY = 0.5*Math.round(radiusY*2)
 
         setEllipseRaw(cX, cY, rX, rY)
     }
@@ -263,9 +263,9 @@ public impl LinePath
     // Initialize the path with a circle
     mtd setCircle(centerX, centerY: f32, radius: f32)
     {
-        var cX = Math.round(centerX)
-        var cY = Math.round(centerY)
-        var r = 0.5*Math.round(radius*2)
+        let cX = Math.round(centerX)
+        let cY = Math.round(centerY)
+        let r = 0.5*Math.round(radius*2)
 
         start(cX, cY - r)
         arcTo(cX, cY, r, r, 0'deg, 90'deg)
@@ -281,9 +281,9 @@ public impl LinePath
         if isZeroEpsilon(endAngle.rad - startAngle.rad)
             return
 
-        var cX = Math.round(centerX)
-        var cY = Math.round(centerY)
-        var r = Math.round(radius)
+        let cX = Math.round(centerX)
+        let cY = Math.round(centerY)
+        let r = Math.round(radius)
 
         Debug.assert(endAngle.rad > startAngle.rad)
         var startPos = Math.Vector2{0, -r}
@@ -342,7 +342,7 @@ public impl LinePath
         endPosBuffer = startPoint
         polygon.points.add(endPosBuffer)
 
-        var lastElem = elements.count - 1
+        let lastElem = elements.count - 1
         visit elem, i: elements
         {
             var pos = elem.position
@@ -392,17 +392,17 @@ public impl LinePath
                 const Alpha = 0.5
                 const Tension = 0.0
 
-                var t01 = Math.pow(Vector2.distance(p0, p1), Alpha)
-                var t12 = Math.pow(Vector2.distance(p1, p2), Alpha)
-                var t23 = Math.pow(Vector2.distance(p2, p3), Alpha)
+                let t01 = Math.pow(Vector2.distance(p0, p1), Alpha)
+                let t12 = Math.pow(Vector2.distance(p1, p2), Alpha)
+                let t23 = Math.pow(Vector2.distance(p2, p3), Alpha)
 
-                var m1 = (1.0 - Tension) * (p2 - p1 + t12 * ((p1 - p0) / t01 - (p2 - p0) / (t01 + t12)))
-                var m2 = (1.0 - Tension) * (p2 - p1 + t12 * ((p3 - p2) / t23 - (p3 - p1) / (t12 + t23)))
+                let m1 = (1.0 - Tension) * (p2 - p1 + t12 * ((p1 - p0) / t01 - (p2 - p0) / (t01 + t12)))
+                let m2 = (1.0 - Tension) * (p2 - p1 + t12 * ((p3 - p2) / t23 - (p3 - p1) / (t12 + t23)))
 
-                var sa = 2.0 * (p1 - p2) + m1 + m2
-                var sb = -3.0 * (p1 - p2) - m1 - m1 - m2
-                var sc = m1
-                var sd = p1
+                let sa = 2.0 * (p1 - p2) + m1 + m2
+                let sb = -3.0 * (p1 - p2) - m1 - m1 - m2
+                let sc = m1
+                let sd = p1
                 flattenCurve(sa, sb, sc, sd, quality)
 
             case Arc:
@@ -430,7 +430,7 @@ impl LinePath
 
     mtd flattenBezier(pos, p1: Vector2, quality: PaintQuality)
     {
-        var minDist = getFlattenDistance(quality)
+        let minDist = getFlattenDistance(quality)
         var startPt = endPosBuffer
 
         // We divide a segment by half until the computed point on the curve is close to the corresponding segment
@@ -440,17 +440,17 @@ impl LinePath
 
         for var i = 0; i < tmp.count - 1; i += 1
         {
-            var t = (tmp[i].factor + tmp[i + 1].factor) * 0.5
-            var it = 1.0 - t
-            var a1 = it * it
-            var a2 = 2.0 * t * it
-            var a3 = t * t
+            let t = (tmp[i].factor + tmp[i + 1].factor) * 0.5
+            let it = 1.0 - t
+            let a1 = it * it
+            let a2 = 2.0 * t * it
+            let a3 = t * t
 
             var point: Vector2 = undefined
             point.x = a1 * startPt.x + a2 * p1.x + a3 * pos.x
             point.y = a1 * startPt.y + a2 * p1.y + a3 * pos.y
 
-            var dist = point.distanceToLine(tmp[i].pos, tmp[i + 1].pos)
+            let dist = point.distanceToLine(tmp[i].pos, tmp[i + 1].pos)
             if dist < minDist continue
 
             tmp.insertAt(cast(u64) i + 1, {t, point})
@@ -463,7 +463,7 @@ impl LinePath
 
     mtd flattenBezier(pos, p1, p2: Vector2, quality: PaintQuality)
     {
-        var minDist = getFlattenDistance(quality)
+        let minDist = getFlattenDistance(quality)
         var startPt = endPosBuffer
 
         // We divide a segment by half until the computed point on the curve is close to the corresponding segment
@@ -473,18 +473,18 @@ impl LinePath
 
         for var i = 0; i < tmp.count - 1; i += 1
         {
-            var t = (tmp[i].factor + tmp[i + 1].factor) * 0.5
-            var it = 1.0 - t
-            var a1 = it * it * it
-            var a2 = 3.0 * t * it * it
-            var a3 = 3.0 * t * t * it
-            var a4 = t * t * t
+            let t = (tmp[i].factor + tmp[i + 1].factor) * 0.5
+            let it = 1.0 - t
+            let a1 = it * it * it
+            let a2 = 3.0 * t * it * it
+            let a3 = 3.0 * t * t * it
+            let a4 = t * t * t
 
             var point: Vector2 = undefined
             point.x = a1 * startPt.x + a2 * p1.x + a3 * p2.x + a4 * pos.x
             point.y = a1 * startPt.y + a2 * p1.y + a3 * p2.y + a4 * pos.y
 
-            var dist = point.distanceToLine(tmp[i].pos, tmp[i + 1].pos)
+            let dist = point.distanceToLine(tmp[i].pos, tmp[i + 1].pos)
             if dist < minDist continue
 
             tmp.insertAt(cast(u64) i + 1, {t, point})
@@ -497,7 +497,7 @@ impl LinePath
 
     mtd flattenCurve(p0, p1, p2, p3: Vector2, quality: PaintQuality)
     {
-        var minDist = getFlattenDistance(quality)
+        let minDist = getFlattenDistance(quality)
 
         // We divide a segment by half until the computed point on the curve is close to the corresponding segment
         var tmp: Array'{factor: f32, pos: Vector2}
@@ -506,7 +506,7 @@ impl LinePath
 
         for var i = 0; i < tmp.count - 1; i += 1
         {
-            var t = (tmp[i].factor + tmp[i + 1].factor) * 0.5
+            let t = (tmp[i].factor + tmp[i + 1].factor) * 0.5
 
             var point: Vector2 = undefined
             point  = p0 * t * t * t
@@ -514,7 +514,7 @@ impl LinePath
             point += p2 * t
             point += p3
 
-            var dist = point.distanceToLine(tmp[i].pos, tmp[i + 1].pos)
+            let dist = point.distanceToLine(tmp[i].pos, tmp[i + 1].pos)
             if dist < minDist continue
 
             tmp.insertAt(cast(u64) i + 1, {t, point})
@@ -531,7 +531,7 @@ impl LinePath
         endPos.x = pos.x + (Math.sin(p1.y) * p2.x)
         endPos.y = pos.y + (-Math.cos(p1.y) * p2.y)
 
-        var minDist = getFlattenDistance(quality)
+        let minDist = getFlattenDistance(quality)
 
         // We divide a segment by half until the computed point on the curve is close to the corresponding segment
         var tmp: Array'{angle: f32, pos: Vector2}
@@ -540,12 +540,12 @@ impl LinePath
 
         for var i = 0; i < tmp.count - 1; i += 1
         {
-            var angle = (tmp[i].angle + tmp[i + 1].angle) * 0.5
+            let angle = (tmp[i].angle + tmp[i + 1].angle) * 0.5
             var point = pos
             point.x += (Math.sin(angle) * p2.x)
             point.y += -(Math.cos(angle) * p2.y)
 
-            var dist = point.distanceToLine(tmp[i].pos, tmp[i + 1].pos)
+            let dist = point.distanceToLine(tmp[i].pos, tmp[i + 1].pos)
             if dist < minDist continue
 
             tmp.insertAt(cast(u64) i + 1, {angle, point})

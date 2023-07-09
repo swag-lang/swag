@@ -167,7 +167,7 @@ impl Encoder
 
     mtd writeHeader(chunkType: const [4] u8, chunkLength: u64)->^u8
     {
-        var total = chunkLength + 8 + 4
+        let total = chunkLength + 8 + 4
         stream.grow(total)
 
         currentChunk.length = cast(u32) chunkLength
@@ -181,7 +181,7 @@ impl Encoder
         crc.update(chunkType)
         currentChunk.crc = crc.crc
 
-        var dataPtr = stream.currentSP
+        let dataPtr = stream.currentSP
         stream.moveSeek(chunkLength)
 
         return dataPtr
@@ -304,25 +304,25 @@ impl Encoder
 
     mtd encodeRow(row: ^u8)->bool throw
     {
-        var pass = rowInfo.pass
+        let pass = rowInfo.pass
 
         if !ihdr.interlaceMethod or pass == 6
             return encodeScanLine(row)
 
-        var bitDepth = ihdr.bitDepth
+        let bitDepth = ihdr.bitDepth
         if bitDepth < 8
         {
-            var samplesPerByte = 8 / bitDepth
-            var mask = cast(u8) ((1 << bitDepth) - 1)
-            var initialShift = 8 - bitDepth
+            let samplesPerByte = 8 / bitDepth
+            let mask = cast(u8) ((1 << bitDepth) - 1)
+            let initialShift = 8 - bitDepth
             var shiftAmount = initialShift
 
-            var row_uc = row
+            let row_uc = row
             Memory.clear(scanline, cast(u64) subimage[pass].scanlineWidth)
 
             loop k: subimage[pass].width
             {
-                var ioffset = Adam7StartX[pass] + k * Adam7DeltaX[pass]
+                let ioffset = Adam7StartX[pass] + k * Adam7DeltaX[pass]
 
                 var sample = row_uc[ioffset / samplesPerByte]
                 sample = sample >> (initialShift - ioffset * bitDepth % 8)
@@ -345,7 +345,7 @@ impl Encoder
 
         loop k: subimage[pass].width
         {
-            var ioffset = (Adam7StartX[pass] + k * Adam7DeltaX[pass]) * pixelSize
+            let ioffset = (Adam7StartX[pass] + k * Adam7DeltaX[pass]) * pixelSize
             Memory.copy(scanline + k * pixelSize, row + ioffset, acast pixelSize)
         }
 
@@ -357,7 +357,7 @@ impl Encoder
         if encodeFlags.filterChoice == .Disabled
             return .None
 
-        var chl = cast(s32) encodeFlags.filterChoice
+        let chl = cast(s32) encodeFlags.filterChoice
         if !(chl & (chl - 1))
         {
             loop i: 5
@@ -374,7 +374,7 @@ impl Encoder
         var sum: s32
         loop i: 5
         {
-            var flag = 1 << (i + 3)
+            let flag = 1 << (i + 3)
             if !(chl & flag)
                 continue
 
@@ -440,7 +440,7 @@ impl Encoder
             case Up:
                 x = x - b
             case Average:
-                var avg = (a + b) / 2
+                let avg = (a + b) / 2
                 x = x - avg
             case Paeth:
                 x = x - paeth(a, b, c)
@@ -480,7 +480,7 @@ impl Encoder
             case Up:
                 x = x - b
             case Average:
-                var avg = (a + b) / 2
+                let avg = (a + b) / 2
                 x = x - avg
             case Paeth:
                 x = x - paeth(a, b, c)
@@ -492,9 +492,9 @@ impl Encoder
 
     mtd encodeScanLine(sl: ^u8)->bool throw
     {
-        var pass = rowInfo.pass
+        let pass = rowInfo.pass
 
-        var scanlineWidth = subimage[pass].scanlineWidth
+        let scanlineWidth = subimage[pass].scanlineWidth
         if sl != scanline
         {
             if swapRB and bytesPerPixel == 3
@@ -522,12 +522,12 @@ impl Encoder
             }
         }
 
-        var requiresPrevious = encodeFlags.filterChoice & (.Up | .Average | .Paeth)
+        let requiresPrevious = encodeFlags.filterChoice & (.Up | .Average | .Paeth)
         if !rowInfo.scanlineIdx and requiresPrevious
             Memory.clear(prevScanline, cast(u64) scanlineWidth)
 
         var filtered_sl = filteredScanline
-        var filter = getBestFilter(scanlineWidth - 1)
+        let filter = getBestFilter(scanlineWidth - 1)
         if filter == .None
             filtered_sl = scanline
         filtered_sl -= 1
@@ -551,8 +551,8 @@ impl Encoder
 
     mtd updateRowInfo()->bool
     {
-        var interlacing = ihdr.interlaceMethod
-        var ri = &rowInfo
+        let interlacing = ihdr.interlaceMethod
+        let ri = &rowInfo
         var sub = subimage
 
         if ri.scanlineIdx == sub[ri.pass].height - 1
@@ -642,7 +642,7 @@ public impl IImageEncoder for Encoder
 
         loop
         {
-            var ioffset = (image.height - rowInfo.rowNum - 1) * image.width * image.bpp8
+            let ioffset = (image.height - rowInfo.rowNum - 1) * image.width * image.bpp8
             if encodeRow(image.pixels.buffer + ioffset)
                 break
         }

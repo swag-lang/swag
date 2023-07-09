@@ -39,7 +39,7 @@ impl LinePathList
     // Returns a new path
     mtd newPath()->*LinePath
     {
-        var ptr = Memory.new'LinePath()
+        let ptr = Memory.new'LinePath()
         paths.add(ptr)
         return ptr
     }
@@ -67,7 +67,7 @@ impl LinePathList
 
         visit p: paths
         {
-            var v = p.polygon.isClockwise ? value : -value
+            let v = p.polygon.isClockwise ? value : -value
             p.polygon.offset(v)
         }
     }
@@ -83,9 +83,9 @@ impl LinePathList
 
         visit p: paths
         {
-            var v = p.polygon.isClockwise ? value : -value
+            let v = p.polygon.isClockwise ? value : -value
 
-            var res = p.polygon.getOffset(v, joinStyle, toler)
+            let res = p.polygon.getOffset(v, joinStyle, toler)
             newList.paths.add(res.paths.toSlice())
             res.paths.count = 0
         }
