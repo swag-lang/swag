@@ -224,10 +224,11 @@ func memmove(dst: *void, src: const *void, size: u64)
 #[Swag.NoDoc]
 func memcmp(dst, src: const ^void, size: u64)->s32
 {
-    var len = __Win32RT.RtlCompareMemory(dst, src, size)
-    if len == size return 0
-    var p1 = cast(const ^s8) dst
-    var p2 = cast(const ^s8) src
+    let len = __Win32RT.RtlCompareMemory(dst, src, size)
+    if len == size
+        return 0
+    let p1 = cast(const ^s8) dst
+    let p2 = cast(const ^s8) src
     return p1[len] - p2[len]
 }
 
@@ -237,14 +238,14 @@ func __printString(message: string)
     if !@dataof(message) or !@countof(message)
         return
     using __Win32RT
-    var len = cast(u32) @countof(message)
+    let len = cast(u32) @countof(message)
     discard WriteFile(GetStdHandle(STD_OUTPUT_HANDLE), @dataof(message), len, null, null)
 }
 
 ////////////////////////////////////////////////////////////
 func __raiseException666(message: string, loc: Swag.SourceCodeLocation, kind: Swag.ExceptionKind)
 {
-    var cxt = @getcontext()
+    let cxt = @getcontext()
     cxt.exceptionLoc = loc
     cxt.exceptionParams[0] = cast(const *void) &cxt.exceptionLoc
     cxt.exceptionParams[1] = cast(const *void) @dataof(message)
@@ -282,7 +283,7 @@ func __exitError()
 func __panicBox(msg, title: string)
 {
     using __Win32RT
-    var result = MessageBoxA(null, @dataof(msg), @dataof(title), MB_ICONERROR | MB_CANCELTRYCONTINUE)
+    let result = MessageBoxA(null, @dataof(msg), @dataof(title), MB_ICONERROR | MB_CANCELTRYCONTINUE)
     switch result
     {
     case IDCANCEL:
@@ -297,7 +298,7 @@ func __panicBox(msg, title: string)
 func __captureStack(skip: u32, where: [..] *void)->u32
 {
     using __Win32RT
-    var nb = RtlCaptureStackBackTrace(skip+1, acast @countof(where), acast @dataof(where), null)
+    let nb = RtlCaptureStackBackTrace(skip+1, acast @countof(where), acast @dataof(where), null)
     return nb
 }
 
@@ -305,7 +306,7 @@ var __logStackTraceInitDone = false
 func __logStackTrace(where: [..] *void, startAfter: *Swag.SourceCodeLocation = null, printNoLine = true)
 {
     using __Win32RT
-    var nb = @countof(where)
+    let nb = @countof(where)
 
     if !__logStackTraceInitDone
     {
@@ -318,7 +319,7 @@ func __logStackTrace(where: [..] *void, startAfter: *Swag.SourceCodeLocation = n
     var sym: [@sizeof(SYMBOL_INFO) + SYM_LEN_NAME * @sizeof(CHAR)] u8
     var displacement: ULONG64
 
-    var psym = cast(*SYMBOL_INFO) sym
+    let psym = cast(*SYMBOL_INFO) sym
     psym.SizeOfStruct = @sizeof(SYMBOL_INFO)
     psym.MaxNameLen = SYM_LEN_NAME
 
@@ -329,9 +330,9 @@ func __logStackTrace(where: [..] *void, startAfter: *Swag.SourceCodeLocation = n
 
     loop i: 0..nb-1
     {
-        var hasSymbol = SymFromAddr(GetCurrentProcess(), cast(ULONG64) cast(u64) where[i], &displacement, psym)
-        var hasLine = SymGetLineFromAddr64(GetCurrentProcess(), cast(ULONG64) cast(u64) where[i], acast &displacement, &line)
-        var fileName = hasLine ? @mkstring(line.FileName, @strlen(line.FileName)) : null
+        let hasSymbol = SymFromAddr(GetCurrentProcess(), cast(ULONG64) cast(u64) where[i], &displacement, psym)
+        let hasLine = SymGetLineFromAddr64(GetCurrentProcess(), cast(ULONG64) cast(u64) where[i], acast &displacement, &line)
+        let fileName = hasLine ? @mkstring(line.FileName, @strlen(line.FileName)) : null
         if !hasLine and !printNoLine
             continue
 
@@ -362,7 +363,7 @@ func __logStackTrace(where: [..] *void, startAfter: *Swag.SourceCodeLocation = n
 
         if hasSymbol
         {
-            var symName = @mkstring(cast(const ^u8) psym.Name, @strlen(psym.Name))
+            let symName = @mkstring(cast(const ^u8) psym.Name, @strlen(psym.Name))
             @print(symName)
         }
 

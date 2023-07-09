@@ -8,7 +8,7 @@ With the `Swag.CompilerMsgMask.SemFunctions` flag, for example, `#message` will 
 #message(Swag.CompilerMsgMask.SemFunctions)
 {
     // Get the interface to communicate with the compiler
-    var itf = @compiler()
+    let itf = @compiler()
 
     // Get the current message
     var msg = itf.getMessage()
@@ -47,7 +47,7 @@ This will be called for every global variables of the module.
 */
 #message(Swag.CompilerMsgMask.SemGlobals)
 {
-    var itf = @compiler()
+    let itf = @compiler()
     var msg = itf.getMessage()
 }
 
@@ -56,6 +56,6 @@ This will be called for every global types of the module (structs, enums, interf
 */
 #message(Swag.CompilerMsgMask.SemTypes)
 {
-    var itf = @compiler()
+    let itf = @compiler()
     var msg = itf.getMessage()
 }

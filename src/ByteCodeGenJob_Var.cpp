@@ -148,6 +148,7 @@ bool ByteCodeGenJob::emitLocalVarDecl(ByteCodeGenContext* context)
                 isLet = false;
             }
 
+            isLet = false; // TEMP, no optim for now
             if (isLet)
             {
                 SWAG_ASSERT(!(resolved->flags & OVERLOAD_HINT_AS_REG));

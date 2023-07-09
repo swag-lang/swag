@@ -142,12 +142,17 @@ bool SemanticJob::warnUnusedVariables(SemanticContext* context, Scope* scope)
         auto overload = sym->overloads.front();
 
         // Check that variable has been changed
-        if (!(overload->flags & OVERLOAD_IS_LET) &&
+        if ((sym->flags & SYMBOL_USED) &&
+            !(overload->flags & OVERLOAD_IS_LET) &&
             !(overload->flags & OVERLOAD_HAS_AFFECT) &&
+            !(overload->flags & OVERLOAD_HAS_MAKE_POINTER) &&
             (overload->flags & OVERLOAD_VAR_LOCAL))
         {
-            //Diagnostic diag{front, front->token, Fmt(Err(Wrn0009), sym->name.c_str()), DiagnosticLevel::Warning};
-            //isOk = isOk && context->report(diag);
+            if (!overload->typeInfo->isStruct() && !overload->typeInfo->isArray())
+            {
+                //Diagnostic diag{front, front->token, Fmt(Err(Wrn0009), sym->name.c_str()), DiagnosticLevel::Warning};
+                //isOk = isOk && context->report(diag);
+            }
         }
 
         if (sym->flags & SYMBOL_USED)

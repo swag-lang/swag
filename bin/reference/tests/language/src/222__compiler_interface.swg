@@ -36,7 +36,7 @@ This `#message` will be called for each function of the `Ogl` module.
 ```
 #message(CompilerMsgMask.SemFunctions)
 {
-    var itf = @compiler()
+    let itf = @compiler()
     var msg = itf.getMessage()
 
     // If the function does not have our attribute, forget it
@@ -95,7 +95,7 @@ This is called once all functions of the module have been typed, and this is the
     }
 
     // Compile !!
-    var itf = @compiler()
+    let itf = @compiler()
     var str = builderVars.toString()
     itf.compileString(str.toString())
 

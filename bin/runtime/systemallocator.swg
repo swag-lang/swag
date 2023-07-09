@@ -10,7 +10,7 @@ impl IAllocator for SystemAllocator
     {
         if !request.address
             return
-        var ptr = cast(^^void) request.address
+        let ptr = cast(^^void) request.address
         @free(ptr[cast,bit(u64) -1's64])
         request.address = null
     }
@@ -43,11 +43,11 @@ impl IAllocator for SystemAllocator
 
             var size = request.size
             size += @sizeof(*void)
-            var alignement = request.alignement orelse @sizeof(*void)
+            let alignement = request.alignement orelse @sizeof(*void)
             size += alignement - 1
 
             var storePtr = cast(^^void) request.address
-            var realPtr = cast(^u8) @realloc(storePtr ? storePtr[cast,bit(u64) -1's64] : null, size)
+            let realPtr = cast(^u8) @realloc(storePtr ? storePtr[cast,bit(u64) -1's64] : null, size)
 
             var userPtr = realPtr + @sizeof(*void)
             userPtr = cast(^u8) (cast(u64) userPtr & ~(cast(u64) alignement - 1))

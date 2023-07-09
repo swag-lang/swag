@@ -125,6 +125,12 @@ bool SemanticJob::resolveMakePointer(SemanticContext* context)
         return context->report(diag);
     }
 
+    if (child->resolvedSymbolOverload)
+    {
+        ScopedLock lk(child->resolvedSymbolName->mutex);
+        child->resolvedSymbolOverload->flags |= OVERLOAD_HAS_MAKE_POINTER;
+    }
+
     if (child->resolvedSymbolName->kind == SymbolKind::Function)
     {
         // For a function, if no parameters, then this is for a lambda

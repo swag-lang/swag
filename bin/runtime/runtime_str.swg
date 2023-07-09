@@ -4,7 +4,7 @@ using Swag
 
 func __strcat(start: ^u8, max: s32, src: string)
 {
-    var dstLen = @strlen(start)
+    let dstLen = @strlen(start)
     var srcLen = @countof(src)
     if dstLen + srcLen + 1 > max
         srcLen = max - (dstLen + 1)
@@ -24,7 +24,7 @@ func __itoa(result: ^u8, value: s64)->^u8
     var orgValue = value
     loop
     {
-        var tmpValue = orgValue
+        let tmpValue = orgValue
         orgValue /= 10
         dref ptr = conv[35 + (tmpValue - (orgValue * 10))]
         ptr += 1
@@ -38,13 +38,13 @@ func __itoa(result: ^u8, value: s64)->^u8
         ptr += 1
     }
 
-    var retVal = ptr
+    let retVal = ptr
     dref ptr = 0; ptr -= 1
 
     var ptr1 = result
     while ptr1 < ptr
     {
-        var tmpChar = dref ptr
+        let tmpChar = dref ptr
         dref ptr  = dref ptr1; ptr -= 1
         dref ptr1 = tmpChar; ptr1 += 1
     }
@@ -62,7 +62,7 @@ func __utoa(result: ^u8, value: u64)->^u8
     var orgValue = value
     loop
     {
-        var tmpValue = orgValue
+        let tmpValue = orgValue
         orgValue /= 10
         dref ptr = conv[35 + (tmpValue - (orgValue * 10))]
         ptr += 1
@@ -70,13 +70,13 @@ func __utoa(result: ^u8, value: u64)->^u8
             break
     }
 
-    var retVal = ptr
+    let retVal = ptr
     dref ptr = 0; ptr -= 1
 
     var ptr1 = result
     while ptr1 < ptr
     {
-        var tmpChar = dref ptr
+        let tmpChar = dref ptr
         dref ptr  = dref ptr1; ptr -= 1
         dref ptr1 = tmpChar; ptr1 += 1
     }
@@ -141,7 +141,7 @@ func __printU64(value: u64)
 {
     var buf: [100] u8
     __utoa(&buf[0], value)
-    var str = cast(string) @mkslice(&buf[0], @strlen(&buf[0]))
+    let str = cast(string) @mkslice(&buf[0], @strlen(&buf[0]))
     __printString(str)
 }
 
@@ -149,7 +149,7 @@ func __printS64(value: s64)
 {
     var buf: [100] u8
     __itoa(&buf[0], value)
-    var str = cast(string) @mkslice(&buf[0], @strlen(&buf[0]))
+    let str = cast(string) @mkslice(&buf[0], @strlen(&buf[0]))
     __printString(str)
 }
 
@@ -157,7 +157,7 @@ func __printF64(value: f64)
 {
     var buf: [100] u8
     __ftoa(&buf[0], value)
-    var str = cast(string) @mkslice(&buf[0], @strlen(&buf[0]))
+    let str = cast(string) @mkslice(&buf[0], @strlen(&buf[0]))
     __printString(str)
 }
 
@@ -170,16 +170,16 @@ func @print(params: ...)
 
         if ko.flags & TypeInfoFlags.PointerRef
         {
-            var ptr = cast(const *TypeInfoPointer) ko
+            let ptr = cast(const *TypeInfoPointer) ko
             ko = acast ptr.pointedType
-            var val = cast(**u64) @dataof(v)
+            let val = cast(**u64) @dataof(v)
             v = @mkany(dref val, ko)
         }
 
         if ko.flags & TypeInfoFlags.PointerTypeInfo
         {
             #[Safety("any", false)]
-            var ptr = cast(const *TypeInfo) v
+            let ptr = cast(const *TypeInfo) v
             __printString(ptr.name)
             continue
         }
@@ -187,8 +187,8 @@ func @print(params: ...)
         if ko.flags & TypeInfoFlags.CString
         {
             #[Safety("any", false)]
-            var ptr = cast(const ^u8) v
-            var len = @strlen(ptr)
+            let ptr = cast(const ^u8) v
+            let len = @strlen(ptr)
             __printString(@mkstring(ptr, len))
             continue
         }
@@ -227,14 +227,14 @@ func @print(params: ...)
 // Compares two strings, and returns 'true' if they are equal.
 func @stringcmp(str1: string, str2: string)->bool
 {
-    var num1 = @countof(str1)
-    var num2 = @countof(str2)
+    let num1 = @countof(str1)
+    let num2 = @countof(str2)
     if num1 != num2
         return false
     if num1 == 0 and num2 == 0
         return true
-    var data1 = @dataof(str1)
-    var data2 = @dataof(str2)
+    let data1 = @dataof(str1)
+    let data2 = @dataof(str2)
     if data1 == null or data2 == null
         return data1 == data2
     return !@memcmp(data1, data2, num1)

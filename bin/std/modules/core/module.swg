@@ -12,8 +12,8 @@
 
     #run
     {
-        var itf = @compiler()
-        var cfg = itf.getBuildCfg()
+        let itf = @compiler()
+        let cfg = itf.getBuildCfg()
         cfg.moduleVersion = #swagversion
         cfg.moduleRevision = #swagrevision
         cfg.moduleBuildNum = #swagbuildnum

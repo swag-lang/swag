@@ -14,7 +14,7 @@ var g_Functions: Array'OneFunc
 
 #message(CompilerMsgMask.SemFunctions)
 {
-    var itf = @compiler()
+    let itf = @compiler()
     var msg = itf.getMessage()
     if !Reflection.hasAttribute(msg.type, Extension)
         return
@@ -61,7 +61,7 @@ var g_Functions: Array'OneFunc
         builderInit.appendFormat("\text_% = cast(%) getExtensionAddress(@dataof(\"%\"))\n", e.name, typeFunc.name, e.name);
     }
 
-    var itf = @compiler()
+    let itf = @compiler()
     var str = builderVars.toString()
     itf.compileString(str.toString())
 
