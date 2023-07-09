@@ -26,7 +26,7 @@ impl IWnd for SurfaceWnd
 {
     mtd hitTestBorders(surfacePos: Math.Point)->SizingBorder
     {
-        var sdw = getThemeMetrics().surfaceWnd_ShadowSize
+        let sdw = getThemeMetrics().surfaceWnd_ShadowSize
 
         var newSizingBorder = SizingBorder.Zero
         if surface.flags.has(.Sizeable)
@@ -79,7 +79,7 @@ impl IWnd for SurfaceWnd
 
             if !movingSurface and surface.flags.has(.Sizeable)
             {
-                var newSizingBorder = hitTestBorders(evt.surfacePos)
+                let newSizingBorder = hitTestBorders(evt.surfacePos)
                 if newSizingBorder != sizingBorder
                 {
                     sizingBorder = newSizingBorder
@@ -222,7 +222,7 @@ impl IWnd for SurfaceWnd
 
         if surface.flags.has(.Border)
         {
-            var subRect = &rects.wnd_Border
+            let subRect = &rects.wnd_Border
             theme.drawSubRect(bc.painter, clientRect, subRect, colors.wnd_Caption, center = false)
         }
 
@@ -230,16 +230,16 @@ impl IWnd for SurfaceWnd
         if surface.flags.has(.BigCaption)
         {
             posCaption.height = surface.wnd.padding.y
-            var subRect = &rects.wnd_Caption
-            var colorBk = surface.app.isActivated ? colors.wnd_Caption : colors.wnd_CaptionNotActived
+            let subRect = &rects.wnd_Caption
+            let colorBk = surface.app.isActivated ? colors.wnd_Caption : colors.wnd_CaptionNotActived
             theme.drawSubRect(bc.painter, posCaption, subRect, colorBk)
         }
 
         if surface.flags.has(.SmallCaption)
         {
             posCaption.height = surface.wnd.padding.y
-            var subRect = &rects.wnd_CaptionSmall
-            var colorBk = surface.app.isActivated ? colors.wnd_Caption : colors.wnd_CaptionNotActived
+            let subRect = &rects.wnd_CaptionSmall
+            let colorBk = surface.app.isActivated ? colors.wnd_Caption : colors.wnd_CaptionNotActived
             theme.drawSubRect(bc.painter, posCaption, subRect, colorBk)
         }
 
@@ -276,28 +276,28 @@ impl SurfaceWnd
 {
     func onMinimize(btn: *Button)
     {
-        var evt = Event.create'SysCommandEvent()
+        let evt = Event.create'SysCommandEvent()
         evt.sysKind = .Minimize
         btn.surface.wnd.postEvent(evt)
     }
 
     func onMaximize(btn: *Button)
     {
-        var evt = Event.create'SysCommandEvent()
+        let evt = Event.create'SysCommandEvent()
         evt.sysKind = btn.surface.isMaximized ? .Restore : .Maximize
         btn.surface.wnd.postEvent(evt)
     }
 
     func onClose(btn: *Button)
     {
-        var evt = Event.create'SysCommandEvent()
+        let evt = Event.create'SysCommandEvent()
         evt.sysKind = .Close
         btn.surface.wnd.view.postEvent(evt)
     }
 
     private mtd applySurfaceFlags()
     {
-        var theme = surface.app.theme
+        let theme = surface.app.theme
         if !theme.intialized
             return
 

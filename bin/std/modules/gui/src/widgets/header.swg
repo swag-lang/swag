@@ -282,11 +282,11 @@ impl Header
     {
         Debug.assert(parent != null)
 
-        var metrics = parent.getThemeMetrics()
+        let metrics = parent.getThemeMetrics()
         var pos = position
         if pos.height == 0
             pos.height = metrics.header_Height
-        var res = Wnd.create'Header(parent, null, pos, id)
+        let res = Wnd.create'Header(parent, null, pos, id)
         res.padding = metrics.header_Padding
         res.focusStrategy = .None
         return res
@@ -392,7 +392,7 @@ impl Header
     {
         Debug.assert(column < items.count)
 
-        var item = getItemByCol(column)
+        let item = getItemByCol(column)
         var move = Math.max(width, item.minWidth)
         if item.maxWidth > 0
             move = Math.min(move, item.maxWidth)

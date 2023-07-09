@@ -157,7 +157,7 @@ private impl RichEditCtrl
 
         if lines.count
         {
-            var insLine = index == lines.count ? lines.back() : lines[index]
+            let insLine = index == lines.count ? lines.back() : lines[index]
             p.drawingRect = insLine.drawingRect
             p.drawingRect.y += p.drawingRect.height
         }
@@ -218,7 +218,7 @@ private impl RichEditCtrl
 
     mtd getNextVisibleLine(lineIndex: u64)->u64
     {
-        var count = lines.count
+        let count = lines.count
         if lineIndex == count - 1
             return lineIndex
 
@@ -247,7 +247,7 @@ impl RichEditCtrl
         if pos.width == 0
             pos.width = parent.getThemeMetrics().editBox_Width
 
-        var ed = Wnd.create'RichEditCtrl(parent, "", pos, id)
+        let ed = Wnd.create'RichEditCtrl(parent, "", pos, id)
 
         with ed
         {
@@ -377,7 +377,7 @@ impl RichEditCtrl
     // Simulate a keyboard pressed
     mtd keyPressed(key: Input.Key, mdf: Input.KeyModifiers)
     {
-        var cmd = getMappingCommand(key, mdf)
+        let cmd = getMappingCommand(key, mdf)
         if cmd == .None
             return
         executeCommand(cmd)

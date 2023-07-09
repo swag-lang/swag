@@ -120,7 +120,7 @@ impl Label
         var pos = position
         if pos.height == 0
             pos.height = parent.getThemeMetrics().label_Height
-        var lbl = Wnd.create'Label(parent, name, pos, id)
+        let lbl = Wnd.create'Label(parent, name, pos, id)
         return lbl
     }
 

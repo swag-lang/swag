@@ -201,7 +201,7 @@ impl IWnd for Slider
     mtd impl onMouseEvent(evt: *MouseEvent)
     {
         var pos = surfaceToLocal(evt.surfacePos)
-        var isVertical = sliderFlags.has(.Vertical)
+        let isVertical = sliderFlags.has(.Vertical)
 
         switch evt.kind
         {

@@ -120,7 +120,7 @@ impl ColorPickerCtrl
             pos.width = 340
         if pos.height == 0
             pos.height = 330
-        var v = Wnd.create'ColorPickerCtrl(parent, "", pos, id)
+        let v = Wnd.create'ColorPickerCtrl(parent, "", pos, id)
 
         with v
         {
@@ -129,7 +129,7 @@ impl ColorPickerCtrl
             .pickAlpha = ColorPicker.create(v, {10, 240, 220, 16})
 
             .staticRes = Wnd.create'Wnd(v, "", {245, 215, 40, 40})
-            var picker = IconButton.create(v, v.getTheme().getIcon24(.Picker), {245, 215, 40, 40})
+            let picker = IconButton.create(v, v.getTheme().getIcon24(.Picker), {245, 215, 40, 40})
 
             .editR = EditBox.create(v, "", {10, 265, 50})
             .editG = EditBox.create(v, "", {65, 265, 50})

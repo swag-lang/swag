@@ -12,10 +12,10 @@ public impl MessageDlg
     // Creates the message box
     func create(from: *Surface, message: string, icon: Icon = {})->*MessageDlg
     {
-        var dlg = Wnd.create'MessageDlg()
-        var srf = dlg.createSurface(from, 0, 0, 500, 300)
+        let dlg = Wnd.create'MessageDlg()
+        let srf = dlg.createSurface(from, 0, 0, 500, 300)
 
-        var metrics = from.wnd.getThemeMetrics()
+        let metrics = from.wnd.getThemeMetrics()
 
         dlg.label = Label.create(srf.getView(), message, {})
         with dlg.label

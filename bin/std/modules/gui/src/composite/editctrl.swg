@@ -36,7 +36,7 @@ impl EditCtrl
                 id:       WndId = null,
                 flags:    EditBoxFlags = Zero)->*EditCtrl
     {
-        var metrics = parent.getThemeMetrics()
+        let metrics = parent.getThemeMetrics()
         var pos = position
         if pos.width == 0
             pos.width = metrics.editBox_Width * 2

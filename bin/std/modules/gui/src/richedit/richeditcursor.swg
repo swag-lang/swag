@@ -32,8 +32,8 @@ impl RichEditCtrl
     {
         var result: retval
 
-        var lineIndex = Math.min(cp.lineIndex, lines.count - 1)
-        var line = lines[lineIndex]
+        let lineIndex = Math.min(cp.lineIndex, lines.count - 1)
+        let line = lines[lineIndex]
         result.y  = line.drawingRect.bottom()
 
         result.x = getMarginLeft()
@@ -98,7 +98,7 @@ impl RichEditCtrl
     mtd ensureCursorIsVisible(cp: RichEditCursor, center: bool)
     {
         var size = getXExtent()
-        var decalx = size.x * 10
+        let decalx = size.x * 10
 
         var clientRect = edView.getClientRect()
 
@@ -151,8 +151,8 @@ impl RichEditCtrl
             var pi = Swag.U64.Max
             while i != pi and i != lines.count
             {
-                var line = lines[i]
-                var count = line.length()
+                let line = lines[i]
+                let count = line.length()
                 var rect = line.drawingRect
 
                 // Before the first character
@@ -227,7 +227,7 @@ impl RichEditCtrl
     {
         if cp.charPosInLine == 0
         {
-            var prev = getPreviousVisibleLine(cp.lineIndex)
+            let prev = getPreviousVisibleLine(cp.lineIndex)
             if prev == cp.lineIndex
                 return false
             cp.lineIndex     = prev
@@ -246,7 +246,7 @@ impl RichEditCtrl
     {
         if cp.charPosInLine == lines[cp.lineIndex].length()
         {
-            var next = getNextVisibleLine(cp.lineIndex)
+            let next = getNextVisibleLine(cp.lineIndex)
             if next == cp.lineIndex
                 return false
             cp.lineIndex     = next
@@ -270,7 +270,7 @@ impl RichEditCtrl
     #[Swag.Discardable]
     private mtd moveCursorUp(cp: *RichEditCursor, posPrev: Math.Point)->bool
     {
-        var prev = getPreviousVisibleLine(cp.lineIndex)
+        let prev = getPreviousVisibleLine(cp.lineIndex)
         if prev == cp.lineIndex
             return false
 
@@ -312,7 +312,7 @@ impl RichEditCtrl
     #[Swag.Discardable]
     private mtd moveCursorDown(cp: *RichEditCursor, posPrev: Math.Point)->bool
     {
-        var next = getNextVisibleLine(cp.lineIndex)
+        let next = getNextVisibleLine(cp.lineIndex)
         if next == cp.lineIndex
             return false
 
@@ -346,7 +346,7 @@ impl RichEditCtrl
 
     mtd moveCursorStartLine(cp: *RichEditCursor)
     {
-        var line = lines[cp.lineIndex]
+        let line = lines[cp.lineIndex]
         var i = cast(s32) cp.charPosInLine
 
         var firstBlank: bool

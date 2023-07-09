@@ -76,7 +76,7 @@ impl Surface
 
         if flags.has(.Border)
         {
-            var size = app.theme.metrics.wnd_BorderSize
+            let size = app.theme.metrics.wnd_BorderSize
             wnd.padding.x = size
             wnd.padding.y = Math.max(wnd.padding.y, size)
             wnd.padding.z = size
@@ -108,12 +108,12 @@ impl Surface
             .applySurfaceFlags()
         }
 
-        var app = surface.app
+        let app = surface.app
         try createNative(app, surface, x, y, width, height, flags, mainSurface)
 
         surface.minSize = {128, 128}
-        var w = cast(f32) Math.max(surface.minSize.x, cast(f32) width)
-        var h = cast(f32) Math.max(surface.minSize.y, cast(f32) height)
+        let w = cast(f32) Math.max(surface.minSize.x, cast(f32) width)
+        let h = cast(f32) Math.max(surface.minSize.y, cast(f32) height)
         surface.sendResizeEvent(w, h)
     }
 
@@ -226,7 +226,7 @@ impl Surface
         cxt.painter.begin()
 
         // Draw shadow around surface
-        var subRect = &app.theme.rects.surfaceWnd_Shadow
+        let subRect = &app.theme.rects.surfaceWnd_Shadow
         painter.pushClippingRect(clipRect)
         painter.setColorMaskFull()
         var myRect = Math.Rectangle{0, 0, position.width, position.height}
@@ -283,7 +283,7 @@ impl Surface
         position.width = width
         position.height = height
 
-        var sdw = app.theme.metrics.surfaceWnd_ShadowSize
+        let sdw = app.theme.metrics.surfaceWnd_ShadowSize
         wnd.setPosition({sdw, sdw, width - 2 * sdw, height - 2 * sdw})
     }
 

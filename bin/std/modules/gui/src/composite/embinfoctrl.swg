@@ -18,8 +18,8 @@ impl EmbInfoCtrl
     // Create the popup list, but do not display it
     func create(parent: *Wnd, name: string, kind: EmbInfoCtrlKind, height = 40, top = true)->*EmbInfoCtrl
     {
-        var theme = parent.getTheme()
-        var colors = parent.getThemeColors()
+        let theme = parent.getTheme()
+        let colors = parent.getThemeColors()
 
         with var ctrl = Wnd.create'EmbInfoCtrl(parent, {0, 0, 0, height})
         {

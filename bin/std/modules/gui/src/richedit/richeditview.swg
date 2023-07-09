@@ -186,7 +186,7 @@ impl IWnd for RichEditView
                 ed.countVisibleLines += 1
             ed.lastVisibleLineView = i
 
-            var l = ed.lines[i]
+            let l = ed.lines[i]
 
             l.drawingRect.x = marginLeft
             l.drawingRect.y = y
@@ -210,8 +210,8 @@ impl IWnd for RichEditView
 
                 if ed.lexer
                 {
-                    var prevLine = i ? ed.lines[i - 1] : null
-                    var nextLine = i != ed.lines.count - 1 ? ed.lines[i + 1] : null
+                    let prevLine = i ? ed.lines[i - 1] : null
+                    let nextLine = i != ed.lines.count - 1 ? ed.lines[i + 1] : null
                     ed.lexer.compute(prevLine, l, nextLine)
                 }
 
@@ -354,7 +354,7 @@ impl RichEditView
             newStyle = ed.styles[dref pStyle]
 
             var cr = dref pChar
-            var isTabulation = cr == "\t"'rune
+            let isTabulation = cr == "\t"'rune
 
             var selected = false
             if ed.hasSelRect
@@ -403,7 +403,7 @@ impl RichEditView
             }
 
             // Paint accumulated string if we have a change of style
-            var styleChange = newStyle != oldStyle
+            let styleChange = newStyle != oldStyle
             if styleChange or isTabulation
             {
                 x = paintString(bc, x, y, str, oldStyle, visible)
@@ -413,7 +413,7 @@ impl RichEditView
 
             if isTabulation
             {
-                var x1 = x
+                let x1 = x
                 x += ed.getTabOffset(cast(s32) x)
 
                 // Background color for tabulations

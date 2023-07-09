@@ -140,7 +140,7 @@ public impl IWnd for MenuCtrl
         // Shadow
         if !paintByFrame
         {
-            var subRect = &theme.rects.menuPopup_Shadow
+            let subRect = &theme.rects.menuPopup_Shadow
             theme.drawSubRect(painter, {0, 0, position.width, position.height}, subRect, colors.menuPopup_Shadow)
         }
 

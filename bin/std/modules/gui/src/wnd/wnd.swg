@@ -239,7 +239,7 @@ impl Wnd
 
     func(T) create(parent: *Wnd, name: string, position: Math.Rectangle, id: WndId = null, hook: HookEvent = null)->*T
     {
-        var res = Memory.new'T()
+        let res = Memory.new'T()
         res.isAllocated = true
         res.itf = cast(IWnd) dref res
         res.type = T
@@ -1004,7 +1004,7 @@ impl Wnd
         if !isEnabled()
             return
 
-        var last = surface.app.keybFocusWnd
+        let last = surface.app.keybFocusWnd
         if last
         {
             var evt = FocusEvent{kind = EventKind.KillFocus}

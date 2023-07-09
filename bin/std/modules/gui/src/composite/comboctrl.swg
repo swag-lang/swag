@@ -33,7 +33,7 @@ impl ComboCtrl
                 position: Math.Rectangle = {},
                 id:       WndId = null)->*ComboCtrl
     {
-        var metrics = parent.getThemeMetrics()
+        let metrics = parent.getThemeMetrics()
         var pos = position
         if pos.width == 0
             pos.width = metrics.comboBox_Width * 2

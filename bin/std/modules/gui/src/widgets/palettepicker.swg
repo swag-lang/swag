@@ -104,7 +104,7 @@ impl PalettePicker
     func create(parent: *Wnd, position: Math.Rectangle = {}, id: WndId = null)->*PalettePicker
     {
         Debug.assert(parent != null)
-        var ret = Wnd.create'PalettePicker(parent, null, position, id)
+        let ret = Wnd.create'PalettePicker(parent, null, position, id)
         return ret
     }
 

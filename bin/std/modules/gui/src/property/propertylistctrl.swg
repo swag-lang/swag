@@ -16,7 +16,7 @@ impl PropertyListCtrl
     #[Swag.Discardable]
     func create(parent: *Wnd, position: Math.Rectangle = {}, id: WndId = null)->*PropertyListCtrl
     {
-        var ed = Wnd.create'PropertyListCtrl(parent, "", position, id)
+        let ed = Wnd.create'PropertyListCtrl(parent, "", position, id)
 
         with ed
         {
@@ -26,12 +26,12 @@ impl PropertyListCtrl
             .list = ListCtrl.createSimple(.splitter)
             .list.listFlags.add(.ForceMarginExpandMark)
 			.list.sigSelChanged += closure|ed|(list) {
-				var sel = list.getFocusLine()
+				let sel = list.getFocusLine()
                 if !sel
                     return
                 list.toggleExpand(sel)
-				var item = cast(*PropertyListItem) sel.userData0
-				var pos = item.label.getRectIn(ed.prop.edView)
+				let item = cast(*PropertyListItem) sel.userData0
+				let pos = item.label.getRectIn(ed.prop.edView)
 				ed.prop.scrollWnd.setScrollPos(0, pos.y)
 			}
 

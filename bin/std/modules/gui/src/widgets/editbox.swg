@@ -237,14 +237,14 @@ impl IWnd for EditBox
         case MouseDoubleClick:
             if evt.button != .Left
                 break
-            var x = moveCaretLeftStartWord(selBeg)
-            var y = moveCaretRightEndWord(selEnd)
+            let x = moveCaretLeftStartWord(selBeg)
+            let y = moveCaretRightEndWord(selEnd)
             setSelection(x, y)
 
         case MousePressed:
             if evt.button != .Left
                 break
-            var x = getByteIndexAtPos(pos.x)
+            let x = getByteIndexAtPos(pos.x)
             setSelection(x, x)
             forceVisibleCaret()
             evt.accepted = true
@@ -263,7 +263,7 @@ impl IWnd for EditBox
             if !isDragging
                 break
             evt.accepted = true
-            var x = getByteIndexAtPos(pos.x)
+            let x = getByteIndexAtPos(pos.x)
             setSelection(selBeg, x)
 
         case MouseEnter:
@@ -310,8 +310,8 @@ private impl EditBox
 {
     mtd keyPressed(key: Input.Key, mdf: Input.KeyModifiers)->bool
     {
-        var ctrl = mdf & .Control
-        var shift = mdf & .Shift
+        let ctrl = mdf & .Control
+        let shift = mdf & .Shift
 
         switch key
         {
@@ -503,7 +503,7 @@ private impl EditBox
 
         // Convert rune to utf8
         var utf8: [5] u8
-        var cpt = Utf8.fromUnicode(utf8, [r])
+        let cpt = Utf8.fromUnicode(utf8, [r])
         if !cpt return
         utf8[cpt] = 0
 
@@ -517,11 +517,11 @@ private impl EditBox
         }
 
         var saveText = text
-        var saveSelBeg = selBeg
-        var saveSelEnd = selEnd
+        let saveSelBeg = selBeg
+        let saveSelEnd = selEnd
         insertUtf8(@mkstring(&utf8[0], cpt))
 
-        var res = checkContent()
+        let res = checkContent()
         if res == .InvalidDismiss
         {
             text = saveText

@@ -349,7 +349,7 @@ impl ColorPicker
     func create(parent: *Wnd, position: Math.Rectangle = {}, id: WndId = null)->*ColorPicker
     {
         Debug.assert(parent != null)
-        var ret = Wnd.create'ColorPicker(parent, null, position, id)
+        let ret = Wnd.create'ColorPicker(parent, null, position, id)
         ret.wndFlags |= .PostChildsPaint
         ret.setColor(Argb.Red)
         ret.invalidatePadding = {-32, -32, -32, -32}

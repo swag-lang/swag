@@ -197,7 +197,7 @@ impl ComboBox
             pos.height = parent.getThemeMetrics().comboBox_Height
         if pos.width == 0
             pos.width = parent.getThemeMetrics().comboBox_Width
-        var res = Wnd.create'ComboBox(parent, null, pos, id)
+        let res = Wnd.create'ComboBox(parent, null, pos, id)
 
         res.kind = kind
         if res.kind == .Edit

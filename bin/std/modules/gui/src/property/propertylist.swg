@@ -174,15 +174,15 @@ private impl PropertyList
 
     func refreshNative(item: *PropertyListItem)
     {
-        var nativeType = cast(const *Swag.TypeInfoNative) item.typeValue.pointedType
-        var ptrData = item.ptrData
+        let nativeType = cast(const *Swag.TypeInfoNative) item.typeValue.pointedType
+        let ptrData = item.ptrData
 
         if item.sliderBox
         {
             #[Swag.Mixin]
             func(T) setEd()
             {
-                var p = cast(*T) ptrData
+                let p = cast(*T) ptrData
                 item.sliderBox.slider.setValue(acast (dref p))
             }
 
@@ -206,7 +206,7 @@ private impl PropertyList
             #[Swag.Mixin]
             func(T) setEd()
             {
-                var p = cast(*T) ptrData
+                let p = cast(*T) ptrData
                 item.editBox.setText(Format.toString("%", dref p))
             }
 
@@ -300,13 +300,13 @@ private impl PropertyList
             #[Swag.Mixin]
             func(T) setEd()
             {
-                var p = cast(*T) item.ptrData
-                var p1 = cast(const *T) typeEnum.values[sel].value
+                let p = cast(*T) item.ptrData
+                let p1 = cast(const *T) typeEnum.values[sel].value
                 dref p = dref p1
             }
 
-            var typeEnum = cast(const *Swag.TypeInfoEnum) item.typeValue.pointedType
-            var sel = item.comboBox.selectedIdx
+            let typeEnum = cast(const *Swag.TypeInfoEnum) item.typeValue.pointedType
+            let sel = item.comboBox.selectedIdx
             switch typeEnum.rawType.sizeof
             {
             case 1:  setEd'u8()
@@ -344,8 +344,8 @@ private impl PropertyList
 
     mtd validateNative(item: *PropertyListItem)
     {
-        var nativeType = cast(const *Swag.TypeInfoNative) item.typeValue.pointedType
-        var ptrData = item.ptrData
+        let nativeType = cast(const *Swag.TypeInfoNative) item.typeValue.pointedType
+        let ptrData = item.ptrData
 
         if item.sliderBox
         {
@@ -404,10 +404,10 @@ private impl PropertyList
 
     mtd addItem(f: Swag.TypeValue, ptrData: *u8, canDesc = true)->*PropertyListItem
     {
-        var line = StackLayoutCtrl.create(edView, .TopAutoSize)
+        let line = StackLayoutCtrl.create(edView, .TopAutoSize)
         line.margin.x, line.margin.z = 15
         line.wndFlags.set(.PreChildsPaint)
-        var item = items.addNewPtr()
+        let item = items.addNewPtr()
         item.line = line
         line.hookOnEvent = closure|item|(wnd, evt) { return onEvent(item, wnd, evt); }
         item.type = f.pointedType
@@ -416,7 +416,7 @@ private impl PropertyList
 
         // Name
         var dispName: String
-        var attrName = Reflection.getAttributeValue(f, PropertyList.Name, "name")
+        let attrName = Reflection.getAttributeValue(f, PropertyList.Name, "name")
         if attrName != null
             dispName = cast(string) attrName
         else
@@ -434,14 +434,14 @@ private impl PropertyList
         item.filter = dispName
 
         // Description
-        var dispDesc = Reflection.getAttributeValue(f, PropertyList.Description, "desc")
+        let dispDesc = Reflection.getAttributeValue(f, PropertyList.Description, "desc")
         if dispDesc != null
         {
             item.filter += " "
             item.filter += cast(string) dispDesc
             if canDesc
             {
-                var labelDesc = Label.create(line, "", {0, 0, position.width, 0})
+                let labelDesc = Label.create(line, "", {0, 0, position.width, 0})
                 labelDesc.labelFlags |= .WordWrap | .AutoHeight
                 labelDesc.horzAlignmentText = .Justify
                 labelDesc.setText(dispDesc)
@@ -455,30 +455,30 @@ private impl PropertyList
 
     mtd addEnum(f: Swag.TypeValue, typeEnum: const *Swag.TypeInfoEnum, ptrData: *u8)
     {
-        var item = addItem(f, ptrData)
-        var line = item.line
+        let item = addItem(f, ptrData)
+        let line = item.line
 
         if Reflection.hasAttribute(typeEnum, Swag.EnumFlags)
         {
             visit v: typeEnum.values
             {
-                var itemB = items.addNewPtr()
+                let itemB = items.addNewPtr()
                 itemB.type = typeEnum
                 itemB.typeValue = v
                 itemB.ptrData = ptrData
                 itemB.extendFocus = 5
                 itemB.filter = item.filter
 
-                var line1 = Wnd.create'Wnd(edView)
+                let line1 = Wnd.create'Wnd(edView)
                 line1.margin.x, line1.margin.z = 15
                 line1.margin.y = enumFlagsMarginBefore
                 line1.wndFlags.set(.PreChildsPaint)
                 line1.hookOnEvent = closure|itemB|(wnd, evt) { return onEvent(itemB, wnd, evt); }
 
-                var ed = CheckButton.create(line1, "", {0, 0, 30, 0})
+                let ed = CheckButton.create(line1, "", {0, 0, 30, 0})
                 ed.dockStyle = .Left
 
-                var dispDesc = Reflection.getAttributeValue(v, PropertyList.Description, "desc")
+                let dispDesc = Reflection.getAttributeValue(v, PropertyList.Description, "desc")
                 itemB.filter += cast(string) dispDesc
 
                 with var label1 = Label.create(line1, "", {30, 0, position.width - 30})
@@ -489,7 +489,7 @@ private impl PropertyList
                     .setText(dispDesc)
                 }
 
-                var minHeight = ed.position.height
+                let minHeight = ed.position.height
                 itemB.onResize += closure|label1, line1, minHeight|(itemB) {
                     label1.autoHeight()
                     line1.position.height = Math.max(minHeight, label1.position.height)
@@ -510,7 +510,7 @@ private impl PropertyList
         }
         else
         {
-            var ed = ComboBox.create(line, kind = .CheckBox)
+            let ed = ComboBox.create(line, kind = .CheckBox)
             ed.maxSize.x = maxSizeCombo
             ed.anchorStyle = .X
             item.comboBox = ed
@@ -530,8 +530,8 @@ private impl PropertyList
 
     mtd addString(f: Swag.TypeValue, ptrData: *u8)
     {
-        var item = addItem(f, ptrData)
-        var ed = EditBox.create(item.line, dref cast(*String) ptrData)
+        let item = addItem(f, ptrData)
+        let ed = EditBox.create(item.line, dref cast(*String) ptrData)
         item.editBox = ed
         ed.sigLoseFocus += closure|self, item|(ed) {
             self.validateString(item)
@@ -540,13 +540,13 @@ private impl PropertyList
 
     mtd addBool(f: Swag.TypeValue, ptrData: *u8)
     {
-        var item = addItem(f, ptrData, false)
+        let item = addItem(f, ptrData, false)
 
-        var line1 = Wnd.create'Wnd(item.line)
-        var ed = CheckButton.create(line1, "", {0, 0, 30, 0})
+        let line1 = Wnd.create'Wnd(item.line)
+        let ed = CheckButton.create(line1, "", {0, 0, 30, 0})
         ed.dockStyle = .Left
 
-        var dispDesc = Reflection.getAttributeValue(f, PropertyList.Description, "desc")
+        let dispDesc = Reflection.getAttributeValue(f, PropertyList.Description, "desc")
         with var label1 = Label.create(line1, "", {30, 0, position.width - 30})
         {
             .dockStyle = .Center
@@ -555,7 +555,7 @@ private impl PropertyList
             .setText(dispDesc)
         }
 
-        var minHeight = ed.position.height
+        let minHeight = ed.position.height
         item.onResize += closure|label1, line1, minHeight|(item) {
             label1.autoHeight()
             line1.position.height = Math.max(minHeight, label1.position.height)
@@ -572,8 +572,8 @@ private impl PropertyList
 
     mtd addNative(f: Swag.TypeValue, nativeType: const *Swag.TypeInfoNative, ptrData: *u8)
     {
-        var item = addItem(f, ptrData)
-        var line = item.line
+        let item = addItem(f, ptrData)
+        let line = item.line
 
         if Reflection.hasAttribute(f, EditSlider)
         {
@@ -593,7 +593,7 @@ private impl PropertyList
         }
         else
         {
-            var ed = EditBox.create(line, f.name)
+            let ed = EditBox.create(line, f.name)
             ed.maxSize.x = maxSizeEditValue
             ed.anchorStyle = .X
             item.editBox = ed

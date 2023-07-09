@@ -13,9 +13,9 @@ public impl EditDlg
     // Creates the message box
     func createSingleLine(from: *Surface)->*EditDlg
     {
-        var dlg = Wnd.create'EditDlg()
-        var metrics = from.wnd.getThemeMetrics()
-        var srf = dlg.createSurface(from, 0, 0, 450, 210)
+        let dlg = Wnd.create'EditDlg()
+        let metrics = from.wnd.getThemeMetrics()
+        let srf = dlg.createSurface(from, 0, 0, 450, 210)
 
         dlg.edit = EditBox.create(srf.getView(), "")
         with dlg.edit
@@ -37,9 +37,9 @@ public impl EditDlg
     // Creates the message box
     func createMultiLine(from: *Surface, heightEdit = 150)->*EditDlg
     {
-        var dlg = Wnd.create'EditDlg()
-        var metrics = from.wnd.getThemeMetrics()
-        var srf = dlg.createSurface(from, 0, 0, 500, 180 + heightEdit, .Sizeable)
+        let dlg = Wnd.create'EditDlg()
+        let metrics = from.wnd.getThemeMetrics()
+        let srf = dlg.createSurface(from, 0, 0, 500, 180 + heightEdit, .Sizeable)
         srf.minSize.x = 500
         srf.minSize.y = 180 + heightEdit
 

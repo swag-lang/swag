@@ -378,7 +378,7 @@ impl IRichEditLexer for RichEditLexerSwag
         if ch == "\n"'rune
         {
             var cp = ed.getBegSelection()
-            var line = ed.lines[cp.lineIndex]
+            let line = ed.lines[cp.lineIndex]
             var str: String = "\n"
 
             if cp.charPosInLine

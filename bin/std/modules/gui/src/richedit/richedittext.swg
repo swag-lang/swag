@@ -12,8 +12,8 @@ impl RichEditCtrl
             var count = line.length()
             if count
             {
-                var pchar = line.chars.buffer
-                var pstyle = line.styles.buffer
+                let pchar = line.chars.buffer
+                let pstyle = line.styles.buffer
                 if start.lineIndex == end.lineIndex
                     count = end.charPosInLine
                 for var i = start.charPosInLine; i < count; i += 1
@@ -55,8 +55,8 @@ impl RichEditCtrl
                 count = line.length()
                 if count
                 {
-                    var pchar = line.chars.buffer
-                    var pstyle = line.styles.buffer
+                    let pchar = line.chars.buffer
+                    let pstyle = line.styles.buffer
                     for var i = 0; i < end.charPosInLine; i += 1
                     {
                         result.text.add(pchar[i])
@@ -201,9 +201,9 @@ impl RichEditCtrl
 
         if c == "\n"'rune
         {
-            var linep = lines[cp.lineIndex]
+            let linep = lines[cp.lineIndex]
             discard newLine(cp.lineIndex + 1)
-            var line = lines[cp.lineIndex + 1]
+            let line = lines[cp.lineIndex + 1]
             if cp.charPosInLine < linep.length()
                 line.insertRunes(0, linep, cp.charPosInLine, linep.length() - cp.charPosInLine)
             linep.setLength(cp.charPosInLine)
@@ -330,8 +330,8 @@ impl RichEditCtrl
                 pe.lineIndex -= 1
             }
 
-            var lineSrc = lines[ps.lineIndex]
-            var lineEnd = lines[pe.lineIndex]
+            let lineSrc = lines[ps.lineIndex]
+            let lineEnd = lines[pe.lineIndex]
 
             if ps.lineIndex == pe.lineIndex
             {
@@ -462,7 +462,7 @@ public impl RichEditCtrl
     // Insert a text with a given style
     mtd insertText(text: string)
     {
-        var undo = Memory.new'RichEditUndo()
+        let undo = Memory.new'RichEditUndo()
         undo.type       = .Insert
         undo.runes      = Unicode.fromUtf8(text)
         undo.styles.resize(undo.runes.count)
@@ -480,7 +480,7 @@ public impl RichEditCtrl
     // Insert a text with a style per character
     mtd insertText(text: string, txtStyles: Array'u8)
     {
-        var undo = Memory.new'RichEditUndo()
+        let undo = Memory.new'RichEditUndo()
         undo.type       = .Insert
         undo.runes      = Unicode.fromUtf8(text)
         undo.styles     = txtStyles
@@ -501,7 +501,7 @@ public impl RichEditCtrl
         var result: retval
         if cp.lineIndex >= lines.count
             return result
-        var len = lines[cp.lineIndex].chars.count
+        let len = lines[cp.lineIndex].chars.count
         if cp.charPosInLine > len
             return result
         if cp.charPosInLine == len
@@ -514,7 +514,7 @@ public impl RichEditCtrl
     // Insert a rune
     mtd insertRune(ch: rune)
     {
-        var c = ch
+        let c = ch
 
         // A new undo action needs to be regenerate ?
         var forceUndo = false
@@ -574,7 +574,7 @@ public impl RichEditCtrl
         }
 
         var az: [4] u8
-        var cpt = Utf8.encodeRune(az, c)
+        let cpt = Utf8.encodeRune(az, c)
 
         // Add a deletion
         if currentUndo > 1
@@ -599,7 +599,7 @@ public impl RichEditCtrl
         pundo.runes.add(c)
 
         // Get the style from the previous character
-        var line = lines[cursorPos.lineIndex]
+        let line = lines[cursorPos.lineIndex]
         var st: u8
         if !cursorPos.charPosInLine and line.length()
             st = line.styles[0]
@@ -647,7 +647,7 @@ public impl RichEditCtrl
         var savepos1 = cursorPos
         beg.charPosInLine = 0
 
-        var multiline = end.lineIndex > beg.lineIndex
+        let multiline = end.lineIndex > beg.lineIndex
 
         while beg.lineIndex <= end.lineIndex
         {
@@ -693,7 +693,7 @@ public impl RichEditCtrl
     {
         var arrR = Unicode.fromUtf8(txt)
         var first = true
-        var lenTxt = arrR.count
+        let lenTxt = arrR.count
         var beg = getBegSelection()
         var end = getEndSelection()
 
@@ -707,7 +707,7 @@ public impl RichEditCtrl
             beg.charPosInLine = 0
         }
 
-        var multiline = beg.lineIndex == end.lineIndex ? false : true
+        let multiline = beg.lineIndex == end.lineIndex ? false : true
         var size = getXExtent()
         var savepos0 = selBeg
         var savepos1 = cursorPos
@@ -715,7 +715,7 @@ public impl RichEditCtrl
         while beg.lineIndex <= end.lineIndex
         {
             // Go to the first non white character
-            var line = lines[beg.lineIndex]
+            let line = lines[beg.lineIndex]
             if multiline
             {
                 while beg.charPosInLine < line.length() and Unicode.isSpace(line.chars[beg.charPosInLine])
@@ -804,11 +804,11 @@ public impl RichEditCtrl
         result.h = cast(f32) (lines.count * x.y)
         result.h += cast(f32) ((lines.count - 1) * lineSpacing)
 
-        var fontR = getFont().getFont(styles[0].fontMode)
+        let fontR = getFont().getFont(styles[0].fontMode)
         visit l: lines
         {
-            var arr = Painter.getGlyphs(l.chars, fontR)
-            var measure = Painter.measureString(arr)
+            let arr = Painter.getGlyphs(l.chars, fontR)
+            let measure = Painter.measureString(arr)
             result.w = Math.max(result.h, measure.width)
         }
 

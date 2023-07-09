@@ -5,8 +5,8 @@ private impl RichEditCtrl
 {
     mtd getSelectionRectRange(lineIndex: u64, rankBeg, rankEnd: *u64)->bool
     {
-        var line = lines[lineIndex]
-        var len = line.length()
+        let line = lines[lineIndex]
+        let len = line.length()
 
         var x = getMarginLeft()
         var rb = 0'u64
@@ -34,7 +34,7 @@ private impl RichEditCtrl
 
     mtd deleteSelectionPrivate(posStart, posEnd: RichEditCursor, selRect: bool)
     {
-        var undo = Memory.new'RichEditUndo()
+        let undo = Memory.new'RichEditUndo()
         undo.type       = .Delete
         (undo.runes, undo.styles) = getTextPrivate(posStart, posEnd)
         undo.selBeg     = selBeg
@@ -48,7 +48,7 @@ private impl RichEditCtrl
 
     mtd undoRestoreSelection()
     {
-        var undo = Memory.new'RichEditUndo()
+        let undo = Memory.new'RichEditUndo()
         undo.type      = .Selection
         undo.selBeg    = selBeg
         undo.cursorPos = cursorPos
@@ -166,7 +166,7 @@ impl RichEditCtrl
             invalidate()
         }
 
-        var back = lines.back()
+        let back = lines.back()
         if selBeg.lineIndex == lines.count - 1 and selBeg.charPosInLine > back.length()
             selBeg.charPosInLine = back.length()
 
@@ -315,16 +315,16 @@ impl RichEditCtrl
 
     mtd selectWord()
     {
-        var line = lines[cursorPos.lineIndex]
+        let line = lines[cursorPos.lineIndex]
         let len = line.length()
         if !len
             return
 
         if cursorPos.charPosInLine == len
             cursorPos.charPosInLine -= 1
-        var cp = cursorPos.charPosInLine ? line.chars[selBeg.charPosInLine - 1] : 0'rune
+        let cp = cursorPos.charPosInLine ? line.chars[selBeg.charPosInLine - 1] : 0'rune
         let c = selBeg.charPosInLine == len ? 0'rune : line.chars[selBeg.charPosInLine]
-        var cn = cursorPos.charPosInLine != len - 1 ? line.chars[selBeg.charPosInLine + 1] : 0'rune
+        let cn = cursorPos.charPosInLine != len - 1 ? line.chars[selBeg.charPosInLine + 1] : 0'rune
 
         if Unicode.isSpace(c) and !Unicode.isSpace(cp) and !Unicode.isSpace(cn) and cursorPos.charPosInLine
             cursorPos.charPosInLine -= 1

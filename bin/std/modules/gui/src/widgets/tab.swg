@@ -242,7 +242,7 @@ impl IWnd for Tab
 
     mtd impl onMouseEvent(evt: *MouseEvent)
     {
-        var hit = hitTest(evt.surfacePos)
+        let hit = hitTest(evt.surfacePos)
         if hit != hotIdx
         {
             hotIdx = hit
@@ -397,7 +397,7 @@ private impl Tab
                 }
             }
 
-            var x = barRect.right() - 32
+            let x = barRect.right() - 32
             buttonPopup.setPosition({x, (barHeight * 0.5) - 12, 24, 24})
         }
         else if buttonPopup
@@ -435,7 +435,7 @@ impl Tab
     func create(parent: *Wnd, position: Math.Rectangle = {}, id: WndId = null)->*Tab
     {
         Debug.assert(parent != null)
-        var res = Wnd.create'Tab(parent, null, position, id)
+        let res = Wnd.create'Tab(parent, null, position, id)
         res.focusStrategy = .None
         res.setForm(TabForm.Flat)
         return res

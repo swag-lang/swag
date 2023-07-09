@@ -213,7 +213,7 @@ impl PopupListCtrl
     // Create the popup list, but do not display it
     func create(owner: *Wnd)->*PopupListCtrl
     {
-        var popup = Wnd.create'PopupListCtrl(owner.getTopView(), owner.position, owner.id)
+        let popup = Wnd.create'PopupListCtrl(owner.getTopView(), owner.position, owner.id)
 
         with popup
         {
@@ -223,7 +223,7 @@ impl PopupListCtrl
             .scrollWnd.dockStyle = .Center
             .scrollWnd.focusStrategy = .None
             .scrollWnd.scrollWndFlags |= .SmallBar
-            var popupView = .scrollWnd.createView'PopupListView()
+            let popupView = .scrollWnd.createView'PopupListView()
             popupView.list = popup
         }
 

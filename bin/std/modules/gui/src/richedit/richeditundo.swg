@@ -51,7 +51,7 @@ private impl RichEditCtrl
 
         while undoMgr.count > currentUndo
         {
-            var back = undoMgr.popBack()
+            let back = undoMgr.popBack()
             Memory.delete(back)
         }
     }
@@ -88,7 +88,7 @@ impl RichEditCtrl
 
         loop i: toUndo.count
         {
-            var undo = toUndo[i]
+            let undo = toUndo[i]
             undo.serial             = serialUndo
             undo.begSelectionBefore = selBegUndo
             undo.endSelectionBefore = cursorPosUndo
@@ -117,7 +117,7 @@ impl RichEditCtrl
 
         currentUndo -= 1
         var undo = undoMgr[currentUndo]
-        var serial = undo.serial
+        let serial = undo.serial
 
         loop
         {
@@ -170,7 +170,7 @@ impl RichEditCtrl
             return
 
         var undo = undoMgr[currentUndo]
-        var serial = undo.serial
+        let serial = undo.serial
         currentUndo += 1
 
         loop

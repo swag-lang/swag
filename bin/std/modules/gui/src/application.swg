@@ -180,8 +180,8 @@ private impl Application
         // Detect changes
         loop i: mouse.previousState.pressed
         {
-            var lastP = mouse.previousState.pressed[i]
-            var curP = mouse.currentState.pressed[i]
+            let lastP = mouse.previousState.pressed[i]
+            let curP = mouse.currentState.pressed[i]
             if !lastP and curP
             {
                 if mouse.isButtonDoubleClick(cast(Input.MouseButton) i)
@@ -231,13 +231,13 @@ private impl Application
             return
 
         // Modifiers
-        var modifiers = keyb.getPressedModifiers()
+        let modifiers = keyb.getPressedModifiers()
 
         // Detect changes
         loop i: keyb.previousState.pressed
         {
-            var lastP = keyb.previousState.pressed[i]
-            var curP = keyb.currentState.pressed[i]
+            let lastP = keyb.previousState.pressed[i]
+            let curP = keyb.currentState.pressed[i]
             if !lastP and curP
             {
                 var evt = KeyEvent{kind = EventKind.KeyPressed}
@@ -248,7 +248,7 @@ private impl Application
                 // Convert key to command (shortcuts)
                 if !evt.accepted
                 {
-                    var id = targetWnd.getKeyShortcut(modifiers, cast(Input.Key) i)
+                    let id = targetWnd.getKeyShortcut(modifiers, cast(Input.Key) i)
                     if id != null
                         targetWnd.sendCommandEvent(id)
                 }
@@ -661,11 +661,11 @@ impl Application
     mtd getWndAtMouse()->*Wnd
     {
         var mousePos = mouse.getPosition()
-        var targetSurface = getSurfaceAt(mousePos.x, mousePos.y)
+        let targetSurface = getSurfaceAt(mousePos.x, mousePos.y)
         if !targetSurface
             return null
         targetSurface.screenToSurface(&mousePos)
-        var targetWnd = targetSurface.wnd.getWndAt(mousePos.x, mousePos.y)
+        let targetWnd = targetSurface.wnd.getWndAt(mousePos.x, mousePos.y)
         return targetWnd
     }
 

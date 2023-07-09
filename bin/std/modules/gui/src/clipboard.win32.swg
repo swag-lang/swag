@@ -31,9 +31,9 @@ func addData(fmt: Format, data: const [..] u8)
     defer discard CloseClipboard()
 
     // Store the size in the first u64
-    var hglob = GlobalAlloc(GMEM_MOVEABLE | GMEM_ZEROINIT, @countof(data) + @sizeof(u64))
-    var pz = cast(^u8) GlobalLock(hglob)
-    var pzu = cast(^u64) pz
+    let hglob = GlobalAlloc(GMEM_MOVEABLE | GMEM_ZEROINIT, @countof(data) + @sizeof(u64))
+    let pz = cast(^u8) GlobalLock(hglob)
+    let pzu = cast(^u64) pz
     dref pzu = @countof(data)
     Memory.copy(pz + @sizeof(u64), @dataof(data), @countof(data))
     discard GlobalUnlock(pz)
@@ -54,9 +54,9 @@ func getData(fmt: Format)->Array'u8
         let hglob = GetClipboardData(cast(UINT) fmt)
         if hglob
         {
-            var pz = cast(^u8) GlobalLock(hglob)
+            let pz = cast(^u8) GlobalLock(hglob)
             let pzu = cast(^u64) pz
-            var count = dref pzu
+            let count = dref pzu
             result.add(@mkslice(pz + @sizeof(u64), count))
             discard GlobalUnlock(pz)
             return result
@@ -92,11 +92,11 @@ func addImage(image: Image)
     // BITMAP
     #scope
     {
-        var size = @sizeof(Bmp.Header) + image.size
-        var hglob = GlobalAlloc(GMEM_MOVEABLE | GMEM_ZEROINIT, size)
-        var buf = cast(^u8) GlobalLock(hglob)
+        let size = @sizeof(Bmp.Header) + image.size
+        let hglob = GlobalAlloc(GMEM_MOVEABLE | GMEM_ZEROINIT, size)
+        let buf = cast(^u8) GlobalLock(hglob)
 
-        var header = cast(*Bmp.Header) buf
+        let header = cast(*Bmp.Header) buf
         header.biSize        = @sizeof(Bmp.Header)
         header.biWidth       = image.width
         header.biHeight      = image.height
@@ -104,7 +104,7 @@ func addImage(image: Image)
         header.biCompression = Bmp.BI_RGB
         header.biBitCount = image.bpp
 
-        var datas = buf + @sizeof(Bmp.Header)
+        let datas = buf + @sizeof(Bmp.Header)
         Memory.copy(datas, image.pixels.buffer, image.size)
 
         discard GlobalUnlock(buf)
@@ -123,8 +123,8 @@ func addImage(image: Image)
         if @errmsg
             break
 
-        var hglob = GlobalAlloc(GMEM_MOVEABLE | GMEM_ZEROINIT, buffer.count())
-        var buf = cast(^u8) GlobalLock(hglob)
+        let hglob = GlobalAlloc(GMEM_MOVEABLE | GMEM_ZEROINIT, buffer.count())
+        let buf = cast(^u8) GlobalLock(hglob)
 
         var bufCur = buf
         visit b: buffer
@@ -150,11 +150,11 @@ func getImage()->Image
     // PNG
     if IsClipboardFormatAvailable(g_PngFormat)
     {
-        var hglob = GetClipboardData(g_PngFormat)
+        let hglob = GetClipboardData(g_PngFormat)
         if hglob
         {
-            var size = GlobalSize(hglob)
-            var pz = cast(^u8) GlobalLock(hglob)
+            let size = GlobalSize(hglob)
+            let pz = cast(^u8) GlobalLock(hglob)
             defer discard GlobalUnlock(pz)
             var png: Png.Decoder
             return catch png.IImageDecoder.decode(@mkslice(pz, size), {})
@@ -164,14 +164,14 @@ func getImage()->Image
     // DIB
     if IsClipboardFormatAvailable(CF_DIB)
     {
-        var hglob = GetClipboardData(CF_DIB)
+        let hglob = GetClipboardData(CF_DIB)
         if hglob
         {
-            var pz = cast(^u8) GlobalLock(hglob)
+            let pz = cast(^u8) GlobalLock(hglob)
             defer discard GlobalUnlock(pz)
 
-            var header = cast(*Bmp.Header) pz
-            var size = @sizeof(Bmp.Header) + (header.biWidth * header.biHeight * header.biBitCount)
+            let header = cast(*Bmp.Header) pz
+            let size = @sizeof(Bmp.Header) + (header.biWidth * header.biHeight * header.biBitCount)
 
             var bmp: Bmp.Decoder
             return catch bmp.IImageDecoder.decode(@mkslice(pz, size), {})
@@ -205,8 +205,8 @@ func addString(str: string)
 
     // Ansi/utf8
     {
-        var hglob = GlobalAlloc(GMEM_MOVEABLE | GMEM_ZEROINIT, @countof(str) + 1)
-        var pz = cast(^u8) GlobalLock(hglob)
+        let hglob = GlobalAlloc(GMEM_MOVEABLE | GMEM_ZEROINIT, @countof(str) + 1)
+        let pz = cast(^u8) GlobalLock(hglob)
         Memory.copy(pz, @dataof(str), @countof(str))
         pz[@countof(str)] = 0
         discard GlobalUnlock(pz)
@@ -215,9 +215,9 @@ func addString(str: string)
 
     // Utf16
     {
-        var hglob = GlobalAlloc(GMEM_MOVEABLE | GMEM_ZEROINIT, @countof(str) * 2 + 2)
-        var pz = cast(^u16) GlobalLock(hglob)
-        var u = Utf16.fromUtf8(str)
+        let hglob = GlobalAlloc(GMEM_MOVEABLE | GMEM_ZEROINIT, @countof(str) * 2 + 2)
+        let pz = cast(^u16) GlobalLock(hglob)
+        let u = Utf16.fromUtf8(str)
         Memory.copy(pz, u.buffer, u.count * 2)
         pz[u.count] = 0
         discard GlobalUnlock(pz)
@@ -237,10 +237,10 @@ func getString()->String
     // Unicode (Utf-16) text
     if IsClipboardFormatAvailable(CF_UNICODETEXT)
     {
-        var hglob = GetClipboardData(CF_UNICODETEXT)
+        let hglob = GetClipboardData(CF_UNICODETEXT)
         if hglob
         {
-            var pz = cast(^u16) GlobalLock(hglob)
+            let pz = cast(^u16) GlobalLock(hglob)
             result = Utf8.fromUtf16(@mkslice(pz, Utf16.lengthZeroTerminated(pz)))
             discard GlobalUnlock(pz)
             return result
@@ -250,10 +250,10 @@ func getString()->String
     // Normal text
     if IsClipboardFormatAvailable(CF_TEXT)
     {
-        var hglob = GetClipboardData(CF_TEXT)
+        let hglob = GetClipboardData(CF_TEXT)
         if hglob
         {
-            var pz = cast(^u8) GlobalLock(hglob)
+            let pz = cast(^u8) GlobalLock(hglob)
             result = @mkstring(pz, @strlen(pz))
             discard GlobalUnlock(pz)
             return result

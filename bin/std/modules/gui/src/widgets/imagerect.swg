@@ -52,7 +52,7 @@ impl ImageRect
     func create(parent: *Wnd, position: Math.Rectangle = {}, id: WndId = null)->*ImageRect
     {
         Debug.assert(parent != null)
-        var res = Wnd.create'ImageRect(parent, null, position, id)
+        let res = Wnd.create'ImageRect(parent, null, position, id)
         return res
     }
 

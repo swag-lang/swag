@@ -99,7 +99,7 @@ impl Dialog
     // Creates an associated surface
     mtd createSurface(from: *Surface, x, y: s32, width = 512, height = 300, flags = SurfaceFlags.Zero)->*Surface
     {
-        var surfaceFlags = SurfaceFlags.BigCaption | SurfaceFlags.Secondary | flags
+        let surfaceFlags = SurfaceFlags.BigCaption | SurfaceFlags.Secondary | flags
         var srf = assume from.app.createSurface(x, y, width, height, surfaceFlags, self)
         srf.wnd.view.backgroundStyle = .Dialog
 

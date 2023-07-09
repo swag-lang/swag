@@ -43,9 +43,9 @@ impl IWnd for ProgressBar
             colorMark     = colors.progressBar_Mark
         }
 
-        var subRectBk = &rects.progressBar_Bk
-        var subRectBorder = &rects.progressBar_Border
-        var subRectMark = &rects.progressBar_Mark
+        let subRectBk = &rects.progressBar_Bk
+        let subRectBorder = &rects.progressBar_Border
+        let subRectMark = &rects.progressBar_Mark
 
         // Bk
         var clientRect = getClientRect()
@@ -65,7 +65,7 @@ impl IWnd for ProgressBar
             var w = Math.max(clientRect.width / 5, 1)
             posBox.width = w
 
-            var wt = clientRect.width + 2 * w
+            let wt = clientRect.width + 2 * w
             posBox.x = -w + (progression * wt)
 
             // Automatic update of progresssion
@@ -101,7 +101,7 @@ impl ProgressBar
     // Set the progression in [0..1] range
     mtd setProgression(prg: f32)
     {
-        var newPrg = Math.saturate(prg)
+        let newPrg = Math.saturate(prg)
         if newPrg == progression
             return
         progression = newPrg

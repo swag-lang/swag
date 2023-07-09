@@ -86,7 +86,7 @@ public func show(owner: *Wnd, surfacePos: Math.Point, str: string, delay: Time.D
     var copy: String = str
     hide()
 
-    var top = owner.surface.wnd
+    let top = owner.surface.wnd
     var pos = top.surfaceToLocal(surfacePos)
     pos.offset(12)
 
@@ -100,15 +100,15 @@ public func show(owner: *Wnd, surfacePos: Math.Point, str: string, delay: Time.D
     g_CurrentOwner = owner
 
     // View
-    var view = g_Current.createView'Wnd()
+    let view = g_Current.createView'Wnd()
     view.backgroundStyle = .Transparent
     view.margin = 0
 
-    var colors = top.getThemeColors()
-    var metrics = top.getThemeMetrics()
+    let colors = top.getThemeColors()
+    let metrics = top.getThemeMetrics()
 
     // Rich edit
-    var edit = RichEditCtrl.create(view)
+    let edit = RichEditCtrl.create(view)
     edit.setRichEdFlags(.WordWrap)
     edit.setForm(.Edit)
     edit.styles[0].colFg = colors.toolTip_Text

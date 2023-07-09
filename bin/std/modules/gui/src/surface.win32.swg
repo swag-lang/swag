@@ -34,7 +34,7 @@ private func winProc(hWnd: HWND, msg: UINT, wParam: WPARAM, lParam: LPARAM)->LRE
     }
 
     // Get 'Surface' pointer
-    var surface = cast(*Surface) GetWindowLongPtrW(hWnd, GWLP_USERDATA)
+    let surface = cast(*Surface) GetWindowLongPtrW(hWnd, GWLP_USERDATA)
     if surface
     {
         if msg >= WM_USER
@@ -71,15 +71,15 @@ private func winProc(hWnd: HWND, msg: UINT, wParam: WPARAM, lParam: LPARAM)->LRE
 
             surface.lastDeadChar = 0
 
-            var scanCode = cast(UINT) (lParam & 0xFF0000) >> 16
-            var x = MapVirtualKeyW(scanCode, MAPVK_VSC_TO_VK_EX)
-            var y = Input.Keyboard.virtualKeyToKey(x)
+            let scanCode = cast(UINT) (lParam & 0xFF0000) >> 16
+            let x = MapVirtualKeyW(scanCode, MAPVK_VSC_TO_VK_EX)
+            let y = Input.Keyboard.virtualKeyToKey(x)
 
             surface.app.sendRuneEvent(y, cast(rune) wParam)
             return 0
 
         case WM_MOUSEWHEEL:
-            var z = GET_WHEEL_DELTA_WPARAM(wParam) / WHEEL_DELTA
+            let z = GET_WHEEL_DELTA_WPARAM(wParam) / WHEEL_DELTA
             surface.app.sendMouseWheelEvent(z)
             return 0
         case WM_SETCURSOR:
@@ -108,14 +108,14 @@ private func winProc(hWnd: HWND, msg: UINT, wParam: WPARAM, lParam: LPARAM)->LRE
             var pt: POINT
             pt.x = cast(s32) surface.position.x
             pt.y = cast(s32) surface.position.y
-            var hm = MonitorFromPoint(pt, MONITOR_DEFAULTTONEAREST)
+            let hm = MonitorFromPoint(pt, MONITOR_DEFAULTTONEAREST)
             if hm != null
             {
                 var info: MONITORINFO
                 catch GetMonitorInfoA(hm, &info)
-                var sdw = cast(s32) surface.app.theme.metrics.surfaceWnd_ShadowSize
+                let sdw = cast(s32) surface.app.theme.metrics.surfaceWnd_ShadowSize
 
-                var mm = cast(*MINMAXINFO) cast(u64) lParam
+                let mm = cast(*MINMAXINFO) cast(u64) lParam
                 mm.ptMaxPosition.x = (info.rcWork.left - info.rcMonitor.left) - sdw
                 mm.ptMaxPosition.y = (info.rcWork.top - info.rcMonitor.top) - sdw
                 mm.ptMaxSize.x     = (info.rcWork.right - info.rcWork.left) + 2 * sdw
@@ -272,7 +272,7 @@ impl Surface
         wnd.applyLayout({position.width, position.height})
         ShowWindow(hWnd, SW_SHOW)
 
-        var curFocus = wnd.view.getFocus()
+        let curFocus = wnd.view.getFocus()
         if !curFocus or !wnd.isParentOf(curFocus)
             wnd.view.setFocus()
         SetActiveWindow(hWnd)

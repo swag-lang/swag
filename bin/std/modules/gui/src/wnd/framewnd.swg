@@ -52,7 +52,7 @@ impl IWnd for FrameWnd
 
             var clientRect = getClientRect()
             clientRect.applyPadding(-metrics.frameWnd_SmallShadowSize)
-            var subRect = &theme.rects.frameWnd_SmallShadow
+            let subRect = &theme.rects.frameWnd_SmallShadow
             theme.drawSubRect(painter, clientRect, subRect, colors.frameWnd_SmallShadow)
         }
     }
@@ -83,7 +83,7 @@ impl IWnd for FrameWnd
         var showFocus = frameFlags.has(.FocusBorder)
         if showFocus
         {
-            var focus = getFocus()
+            let focus = getFocus()
             if !focus or !isParentOf(focus)
                 showFocus = false
         }
@@ -132,7 +132,7 @@ impl IWnd for FrameWnd
         var showFocus = frameFlags.has(.FocusBorder)
         if showFocus
         {
-            var focus = getFocus()
+            let focus = getFocus()
             if !focus or !isParentOf(focus)
                 showFocus = false
         }

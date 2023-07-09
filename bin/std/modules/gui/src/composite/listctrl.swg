@@ -338,7 +338,7 @@ impl IWnd for ListView
             {
                 if evt.kind == .MousePressed
                 {
-                    var idxLine = list.isVirtual ? idx : list.lines[idx].index
+                    let idxLine = list.isVirtual ? idx : list.lines[idx].index
                     if !list.selModel.isSelected(idxLine)
                     {
                         list.selModel.unselectAll()
@@ -406,7 +406,7 @@ impl IWnd for ListView
                         if evt.kind == .MouseReleased
                             return
 
-                        var checked = !list.checkModel.isSelected(idxLine)
+                        let checked = !list.checkModel.isSelected(idxLine)
                         if list.selModel.isSelected(idxLine)
                         {
                             visit l: list.selModel
@@ -786,9 +786,9 @@ impl ListCtrl
     #[Swag.Discardable]
     func createMultiColumns(parent: *Wnd, position: Math.Rectangle = {}, id: WndId = null)->*ListCtrl
     {
-        var list = Wnd.create'ListCtrl(parent, "", position, id)
+        let list = Wnd.create'ListCtrl(parent, "", position, id)
 
-        var fwnd = list.createView'Wnd()
+        let fwnd = list.createView'Wnd()
         fwnd.dockStyle = .Center
         fwnd.wndFlags ^= .ClipChildren
 
@@ -928,7 +928,7 @@ impl ListCtrl
             scrollWidth = header.getTotalItemsWidth()
         else
             scrollWidth = clientRect.width
-        var scrollHeight = getLineCount() * getLineHeight()
+        let scrollHeight = getLineCount() * getLineHeight()
         scrollWnd.setScrollSize(scrollWidth, scrollHeight)
         invalidate()
     }
@@ -1021,8 +1021,8 @@ impl ListCtrl
     // Returns the first visible line index
     mtd getFirstVisibleLineIndex()->u32
     {
-        var lc = getLineCount()
-        var idx = cast(u32) (listView.scrollPos.y / getLineHeight())
+        let lc = getLineCount()
+        let idx = cast(u32) (listView.scrollPos.y / getLineHeight())
         if idx >= lc
             return Swag.U32.Max
         return idx
@@ -1031,7 +1031,7 @@ impl ListCtrl
     // Returns the last visible line index
     mtd getLastVisibleLineIndex()->u32
     {
-        var lc = getLineCount()
+        let lc = getLineCount()
         if lc == 0
             return Swag.U32.Max
 
@@ -1040,7 +1040,7 @@ impl ListCtrl
         y -= scrollWnd.view.padding.w
         if y < 0
             return cast(u32) (listView.scrollPos.y / getLineHeight())
-        var idx = cast(u32) (y / getLineHeight())
+        let idx = cast(u32) (y / getLineHeight())
         if idx >= lc
             return cast(u32) lc - 1
         return idx
@@ -1049,11 +1049,11 @@ impl ListCtrl
     // Set the corresponding line visible
     mtd ensureVisibleLine(idx: u32)
     {
-        var first = getFirstVisibleLineIndex()
-        var last = getLastVisibleLineIndex()
+        let first = getFirstVisibleLineIndex()
+        let last = getLastVisibleLineIndex()
         if idx > first and idx < last
             return
-        var sc = scrollWnd.getScrollPos()
+        let sc = scrollWnd.getScrollPos()
         scrollWnd.setScrollPos(sc.x, idx * getLineHeight())
     }
 

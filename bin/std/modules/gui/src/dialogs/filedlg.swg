@@ -291,9 +291,9 @@ impl FileDlg
                     dlg.folderUp()
 
                 case Enter:
-                    var l = list.getFocusLine()
+                    let l = list.getFocusLine()
                     if !l break
-                    var fi = cast(const *FileInfo) l.userData0
+                    let fi = cast(const *FileInfo) l.userData0
                     if fi.isDirectory()
                     {
                         dlg.setCurFolder(fi.fullname)
@@ -376,7 +376,7 @@ impl FileDlg
 
         if opt.mode == .CreateFile or opt.mode == .SelectFolder
         {
-            var btn = PushButton.create(viewTop, "New Folder", {0, 0, 90})
+            let btn = PushButton.create(viewTop, "New Folder", {0, 0, 90})
             with btn
             {
                 .dockStyle = .Right
@@ -419,7 +419,7 @@ impl FileDlg
             }
         }
 
-        var nameLbl0 = opt.mode == .SelectFolder ? "Folder Name" : "File Name"
+        let nameLbl0 = opt.mode == .SelectFolder ? "Folder Name" : "File Name"
         let label0 = Label.create(viewBottom, nameLbl0, {5, 10, 80, dlg.editFile.position.height})
         label0.horzAlignmentText = .Right
         label0.vertAlignmentText = .Center
