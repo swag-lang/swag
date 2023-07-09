@@ -51,11 +51,11 @@ func getData(fmt: Format)->Array'u8
 
     if IsClipboardFormatAvailable(cast(UINT) fmt)
     {
-        var hglob = GetClipboardData(cast(UINT) fmt)
+        let hglob = GetClipboardData(cast(UINT) fmt)
         if hglob
         {
             var pz = cast(^u8) GlobalLock(hglob)
-            var pzu = cast(^u64) pz
+            let pzu = cast(^u64) pz
             var count = dref pzu
             result.add(@mkslice(pz + @sizeof(u64), count))
             discard GlobalUnlock(pz)

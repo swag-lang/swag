@@ -41,7 +41,7 @@ impl IWnd for ComboBox
     {
         if editBox
         {
-            var metrics = getThemeMetrics()
+            let metrics = getThemeMetrics()
             var clientRect = getClientRect()
             clientRect.width -= metrics.comboBox_RightMargin
             clientRect.moveLeft(metrics.comboBox_Padding)
@@ -51,13 +51,13 @@ impl IWnd for ComboBox
 
     mtd impl onPaintEvent(evt: *PaintEvent)
     {
-        var bc = evt.bc
-        var painter = evt.bc.painter
+        let bc = evt.bc
+        let painter = evt.bc.painter
 
-        var theme = getTheme()
-        var colors = getThemeColors()
-        var metrics = getThemeMetrics()
-        var rects = getThemeRects()
+        let theme = getTheme()
+        let colors = getThemeColors()
+        let metrics = getThemeMetrics()
+        let rects = getThemeRects()
 
         var subRectBk:      *ThemeImageRect
         var subRectBorder:  *ThemeImageRect
@@ -100,7 +100,7 @@ impl IWnd for ComboBox
         if !editBox and selectedIdx < items.count
         {
             var format: RichStringFormat
-            var item = items[selectedIdx]
+            let item = items[selectedIdx]
             var itemRect = clientRect
             itemRect.width -= metrics.comboBox_RightMargin
             itemRect.moveLeft(metrics.comboBox_Padding)
@@ -222,7 +222,7 @@ impl ComboBox
     #[Swag.Discardable]
     mtd addItem(name: string, id: WndId = null, icon: Icon = {}, userData0: *void = null, userData1: *void = null)->*ComboBoxItem
     {
-        var item = items.newPtr()
+        let item = items.newPtr()
         with item
         {
             .name      = #self.name
@@ -241,7 +241,7 @@ impl ComboBox
     // Add a separator
     mtd addSeparator()
     {
-        var item = items.newPtr()
+        let item = items.newPtr()
         item.isSeparator = true
         items.add(item)
     }

@@ -31,7 +31,7 @@ impl IWnd for Dialog
                     {
                         btn.form = .Normal
                         btn.invalidate()
-                        var nextBtn = buttons[(idx + 1) % buttons.count]
+                        let nextBtn = buttons[(idx + 1) % buttons.count]
                         nextBtn.form = .Default
                         nextBtn.invalidate()
                         break
@@ -45,7 +45,7 @@ impl IWnd for Dialog
                     {
                         btn.form = .Normal
                         btn.invalidate()
-                        var prevBtn = idx ? buttons[idx - 1] : buttons.back()
+                        let prevBtn = idx ? buttons[idx - 1] : buttons.back()
                         prevBtn.form = .Default
                         prevBtn.invalidate()
                         break
@@ -103,7 +103,7 @@ impl Dialog
         var srf = assume from.app.createSurface(x, y, width, height, surfaceFlags, self)
         srf.wnd.view.backgroundStyle = .Dialog
 
-        var metrics = getThemeMetrics()
+        let metrics = getThemeMetrics()
         var h = metrics.btnPush_Height
         h += 2 * metrics.dialog_Padding
         with wndBottom = Wnd.create'StackLayoutCtrl(srf.wnd.view, "", {0, 0, 0, h})

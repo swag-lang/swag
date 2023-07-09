@@ -117,12 +117,12 @@ impl IWnd for ColorPicker
 
     mtd impl onPaintEvent(evt: *PaintEvent)
     {
-        var bc = evt.bc
-        var painter = bc.painter
+        let bc = evt.bc
+        let painter = bc.painter
         var clientRect = getClientRect()
-        var theme = getTheme()
-        var rects = getThemeRects()
-        var colors = getThemeColors()
+        let theme = getTheme()
+        let rects = getThemeRects()
+        let colors = getThemeColors()
 
         // Reconstruct image
         if dirty
@@ -246,13 +246,13 @@ impl IWnd for ColorPicker
 
     mtd impl onPostPaintEvent(evt: *PaintEvent)
     {
-        var bc = evt.bc
-        var painter = bc.painter
-        var theme = getTheme()
-        var rects = getThemeRects()
+        let bc = evt.bc
+        let painter = bc.painter
+        let theme = getTheme()
+        let rects = getThemeRects()
         var clientRect = getClientRect()
-        var metrics = getThemeMetrics()
-        var colors = getThemeColors()
+        let metrics = getThemeMetrics()
+        let colors = getThemeColors()
 
         #[Swag.Complete]
         switch mode

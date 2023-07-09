@@ -83,10 +83,10 @@ impl IWnd for Tab
         labelPos.width = v.width
         labelPos.x = v.pos
 
-        var theme = getTheme()
-        var metrics = getThemeMetrics()
-        var colors = getThemeColors()
-        var rects = getThemeRects()
+        let theme = getTheme()
+        let metrics = getThemeMetrics()
+        let colors = getThemeColors()
+        let rects = getThemeRects()
 
         // Item image
         var subRect:    *ThemeImageRect
@@ -164,10 +164,10 @@ impl IWnd for Tab
 
     mtd impl onPaintEvent(evt: *PaintEvent)
     {
-        var painter = evt.bc.painter
-        var theme = getTheme()
-        var colors = getThemeColors()
-        var rects = getThemeRects()
+        let painter = evt.bc.painter
+        let theme = getTheme()
+        let colors = getThemeColors()
+        let rects = getThemeRects()
 
         // Background bar
         if barForm != .Transparent
@@ -211,7 +211,7 @@ impl IWnd for Tab
             {
                 if idx == selectedIdx
                     continue
-                var v = views[idx]
+                let v = views[idx]
                 if v.pos + v.width > clientRect.right()
                     break
                 paintItem(painter, v, cast(u32) idx)
@@ -230,7 +230,7 @@ impl IWnd for Tab
         computeTabLayout()
         ensureVisible(selectedIdx)
 
-        var curView = views[selectedIdx].view
+        let curView = views[selectedIdx].view
         if curView
         {
             var clientRect = getClientRect()
@@ -316,7 +316,7 @@ private impl Tab
         var rect = getBarRectItems()
         loop idx: firstVisibleIdx..cast(u32) views.count - 1
         {
-            var v = views[idx]
+            let v = views[idx]
             if v.pos + v.width > rect.right()
                 break
             if pos.x >= v.pos and pos.x < v.pos + v.width
@@ -343,7 +343,7 @@ private impl Tab
             }
 
         case Fixed:
-            var w = Math.max(itemFixedLayoutWidth, itemMinWidth)
+            let w = Math.max(itemFixedLayoutWidth, itemMinWidth)
             visit v: views
             {
                 v.width = w
@@ -372,7 +372,7 @@ private impl Tab
         var x = rect.x
         loop idx: firstVisibleIdx..cast(u32) views.count - 1
         {
-            var v = views[idx]
+            let v = views[idx]
             v.pos = x
             x += v.width
         }
@@ -481,7 +481,7 @@ impl Tab
             view.setParent(self)
         }
 
-        var item = views.newPtr()
+        let item = views.newPtr()
         item.view = view
         item.name = tabName
         item.icon = icon

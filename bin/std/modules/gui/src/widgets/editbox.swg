@@ -96,13 +96,13 @@ impl IWnd for EditBox
 
     mtd impl onPaintEvent(evt: *PaintEvent)
     {
-        var bc = evt.bc
-        var painter = evt.bc.painter
+        let bc = evt.bc
+        let painter = evt.bc.painter
 
-        var theme = getTheme()
-        var colors = getThemeColors()
-        var metrics = getThemeMetrics()
-        var rects = getThemeRects()
+        let theme = getTheme()
+        let colors = getThemeColors()
+        let metrics = getThemeMetrics()
+        let rects = getThemeRects()
 
         var subRectBk:      *ThemeImageRect
         var subRectBorder:  *ThemeImageRect
@@ -176,11 +176,11 @@ impl IWnd for EditBox
         }
 
         // Compute scroll position
-        var fontR = getFont().regular
+        let fontR = getFont().regular
         var caretPos = getCaretPos()
-        var decalX = Math.min(Painter.measureString("X", fontR).width * 10, clientRect.width * 0.5)
-        var sizeX = Painter.measureString(text, fontR).width
-        var maxDecalX = sizeX - decalX
+        let decalX = Math.min(Painter.measureString("X", fontR).width * 10, clientRect.width * 0.5)
+        let sizeX = Painter.measureString(text, fontR).width
+        let maxDecalX = sizeX - decalX
 
         if caretPos.x - clientRect.x < scrollPosX
             scrollPosX = caretPos.x - clientRect.x - decalX
@@ -210,7 +210,7 @@ impl IWnd for EditBox
         }
 
         // Content
-        var y = clientRect.vertCenter() - fontR.height * 0.5
+        let y = clientRect.vertCenter() - fontR.height * 0.5
         if editBoxFlags.has(.RightAlign)
             clientRect.x = clientRect.right() - sizeX
         bc.painter.drawString(clientRect.x, y, text, fontR, colorText)
@@ -610,12 +610,12 @@ private impl EditBox
             clientRect.x += icon.sizeX + 4
 
         result = clientRect
-        var fontR = getFont().regular
+        let fontR = getFont().regular
         if !text.isEmpty()
         {
             if editBoxFlags.has(.RightAlign)
             {
-                var sizeX = Painter.measureString(text, fontR).width
+                let sizeX = Painter.measureString(text, fontR).width
                 result.x = clientRect.right() - sizeX + posSelEnd - 2
             }
             else
@@ -641,19 +641,19 @@ private impl EditBox
         var x = xmouse
         x += scrollPosX
 
-        var fontR = getFont().regular
+        let fontR = getFont().regular
 
         // Could be better, of course...
         if editBoxFlags.has(.RightAlign)
         {
             var clientRect = getEditRect()
-            var sizeX = Painter.measureString(text, fontR).width
+            let sizeX = Painter.measureString(text, fontR).width
             var lastWidth = 0'f32
             var diff = 0'f32
             loop idx: 1..text.length-1
             {
-                var str = @mkstring(text.buffer, idx)
-                var met = Painter.measureString(str, fontR).width
+                let str = @mkstring(text.buffer, idx)
+                let met = Painter.measureString(str, fontR).width
                 diff = (met - lastWidth) * 0.5
                 if x <= clientRect.right() - sizeX + met
                 {
@@ -676,8 +676,8 @@ private impl EditBox
             var diff = 0'f32
             loop idx: 1..text.length-1
             {
-                var str = @mkstring(text.buffer, idx)
-                var met = Painter.measureString(str, fontR).width
+                let str = @mkstring(text.buffer, idx)
+                let met = Painter.measureString(str, fontR).width
                 diff = (met - lastWidth) * 0.5
                 if x <= met
                 {
@@ -701,7 +701,7 @@ private impl EditBox
         if getFocus() != self
             return
 
-        var fontR = getFont().regular
+        let fontR = getFont().regular
 
         var str = @mkstring(text.buffer, selEnd)
         var met = Painter.measureString(str, fontR)

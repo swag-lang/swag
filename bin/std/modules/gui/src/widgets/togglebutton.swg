@@ -17,10 +17,10 @@ impl IWnd for ToggleButton
 {
     mtd impl onPaintEvent(evt: *PaintEvent)
     {
-        var bc = evt.bc
-        var theme = getTheme()
-        var colors = getThemeColors()
-        var rects = getThemeRects()
+        let bc = evt.bc
+        let theme = getTheme()
+        let colors = getThemeColors()
+        let rects = getThemeRects()
 
         var subRectBk:      *ThemeImageRect
         var subRectBorder:  *ThemeImageRect

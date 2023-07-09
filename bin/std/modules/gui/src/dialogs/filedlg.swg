@@ -100,7 +100,7 @@ private impl FileDlg
 
             comboPathStr.add(str)
 
-            var one = all[i]
+            let one = all[i]
             var ic = getApp().getDirectoryIcon(one)
             comboPath.addItem(one, icon = ic)
         }
@@ -160,13 +160,13 @@ private impl FileDlg
 
         curList = catch Directory.enumerate(curFolder, options)
 
-        var item = comboType.getSelectedItem()
+        let item = comboType.getSelectedItem()
         var filter = dlgOptions.filters[cast(u64) item.userData0]
         var tokens = Tokenize.split(filter.item1, ";"'rune)
 
         visit &fi: curList
         {
-            var fname = Path.getFileName(fi.fullname)
+            let fname = Path.getFileName(fi.fullname)
 
             // Filter
             var show = true
@@ -188,7 +188,7 @@ private impl FileDlg
 
             // Content
             var icon = getApp().getFileDirectoryIcon(fname, fi.isDirectory())
-            var line = listCtrl.createLine(fname, icon)
+            let line = listCtrl.createLine(fname, icon)
             line.userData0 = fi
             line.setItem(1, fi.lastWriteTime.toString(.Iso))
         }
@@ -203,7 +203,7 @@ impl FileDlg
     // Creates the message box
     func create(from: *Surface, opt: FileDlgOptions = {})->*FileDlg
     {
-        var dlg = Wnd.create'FileDlg()
+        let dlg = Wnd.create'FileDlg()
         with var srf = dlg.createSurface(from, 100, 100, 700, 500)
         {
             .setSurfaceFlags(add = .Sizeable)
@@ -254,7 +254,7 @@ impl FileDlg
         // Panes
         ////////////////////////
 
-        var view = Wnd.create'Wnd(dlg)
+        let view = Wnd.create'Wnd(dlg)
         view.dockStyle = .Center
 
         if opt.drivePane
@@ -326,7 +326,7 @@ impl FileDlg
                 var txt: String
                 visit l: sel
                 {
-                    var fi = cast(const *FileInfo) l.userData0
+                    let fi = cast(const *FileInfo) l.userData0
                     if fi.isDirectory()
                     {
                         if dlg.dlgOptions.mode != .SelectFolder
@@ -365,7 +365,7 @@ impl FileDlg
 
         // Top
         ////////////////////////
-        var viewTop = Wnd.create'Wnd(view, {0, 0, 0, 50})
+        let viewTop = Wnd.create'Wnd(view, {0, 0, 0, 50})
         viewTop.dockStyle = .Top
         viewTop.backgroundStyle = .Window
         viewTop.padding.x = 10
@@ -395,7 +395,7 @@ impl FileDlg
 
         // Bottom
         ////////////////////////
-        var viewBottom = Wnd.create'Wnd(view, {0, 0, 0, 90})
+        let viewBottom = Wnd.create'Wnd(view, {0, 0, 0, 90})
         viewBottom.dockStyle = .Bottom
         viewBottom.backgroundStyle = .Window
         dlg.applyLayout()
@@ -420,10 +420,10 @@ impl FileDlg
         }
 
         var nameLbl0 = opt.mode == .SelectFolder ? "Folder Name" : "File Name"
-        var label0 = Label.create(viewBottom, nameLbl0, {5, 10, 80, dlg.editFile.position.height})
+        let label0 = Label.create(viewBottom, nameLbl0, {5, 10, 80, dlg.editFile.position.height})
         label0.horzAlignmentText = .Right
         label0.vertAlignmentText = .Center
-        var label1 = Label.create(viewBottom, "Type", {5, 45, 80, dlg.comboType.position.height})
+        let label1 = Label.create(viewBottom, "Type", {5, 45, 80, dlg.comboType.position.height})
         label1.horzAlignmentText = .Right
         label1.vertAlignmentText = .Center
 
@@ -481,7 +481,7 @@ impl FileDlg
     {
         var result: retval
 
-        var item = comboType.getSelectedItem()
+        let item = comboType.getSelectedItem()
         var fi = dlgOptions.filters[cast(u64) item.userData0]
 
         var tokens = Tokenize.split(editFile.text, ";"'rune)

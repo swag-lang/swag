@@ -29,12 +29,12 @@ impl IWnd for CheckButton
 {
     mtd impl onPaintEvent(evt: *PaintEvent)
     {
-        var bc = evt.bc
-        var painter = bc.painter
-        var theme = getTheme()
-        var metrics = getThemeMetrics()
-        var colors = getThemeColors()
-        var rects = getThemeRects()
+        let bc = evt.bc
+        let painter = bc.painter
+        let theme = getTheme()
+        let metrics = getThemeMetrics()
+        let colors = getThemeColors()
+        let rects = getThemeRects()
 
         var subRectBk:      *ThemeImageRect
         var subRectBorder:  *ThemeImageRect

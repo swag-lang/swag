@@ -89,7 +89,7 @@ private impl RichEditCtrl
 
     mtd setDefaultStyles()
     {
-        var colors = getThemeColors()
+        let colors = getThemeColors()
         loop i: @countof(styles)
             styles[i].colFg = colors.richEdit_Text
         setForm(.RichEditCtrl)
@@ -288,7 +288,7 @@ impl RichEditCtrl
     mtd setForm(form: RichEditForm)
     {
         self.form = #self.form
-        var colors = getThemeColors()
+        let colors = getThemeColors()
 
         switch self.form
         {

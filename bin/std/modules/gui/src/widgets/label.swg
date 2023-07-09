@@ -29,9 +29,9 @@ impl IWnd for Label
 {
     mtd impl onPaintEvent(evt: *PaintEvent)
     {
-        var bc = evt.bc
-        var theme = getTheme()
-        var painter = evt.bc.painter
+        let bc = evt.bc
+        let theme = getTheme()
+        let painter = evt.bc.painter
 
         var clientRect = getClientRect()
         var pos = clientRect
@@ -82,7 +82,7 @@ impl Label
 {
     private mtd getStringFormat(isDisabled: bool)->RichStringFormat
     {
-        var theme = getTheme()
+        let theme = getTheme()
 
         var sf: retval
         sf.flags |= .Clip

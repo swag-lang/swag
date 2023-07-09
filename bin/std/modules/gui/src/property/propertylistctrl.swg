@@ -63,9 +63,9 @@ impl PropertyListCtrl
 			if it.item1 == 0
 				parentLine = null
 
-            var str = it.item0.label.getText()
-            var naked = RichString.getNaked(str)
-			var line = list.createLine(naked, parentLine = parentLine)
+            let str = it.item0.label.getText()
+            let naked = RichString.getNaked(str)
+			let line = list.createLine(naked, parentLine = parentLine)
 			line.userData0 = it.item0
 
 			if it.item1 == 0

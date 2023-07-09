@@ -43,7 +43,7 @@ impl IWnd for ColorPickerCtrl
         frameWnd.IWnd.onPaintEvent(evt)
 
         var rect = staticRes.position
-        var painter = evt.bc.painter
+        let painter = evt.bc.painter
 
         var brush = Brush.createHatch(.CheckBoardLarge, getThemeColors().colorPicker_BackAlpha)
 

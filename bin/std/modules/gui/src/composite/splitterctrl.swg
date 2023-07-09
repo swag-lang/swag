@@ -54,12 +54,12 @@ impl IWnd for SplitterCtrl
                 var rect = getBarRect(hotIdx)
                 if isVertical()
                 {
-                    var diff = local.y - (rect.y + correctMoving)
+                    let diff = local.y - (rect.y + correctMoving)
                     setPaneSize(hotIdx, items[hotIdx].size + diff)
                 }
                 else
                 {
-                    var diff = local.x - (rect.x + correctMoving)
+                    let diff = local.x - (rect.x + correctMoving)
                     setPaneSize(hotIdx, items[hotIdx].size + diff)
                 }
 
@@ -67,7 +67,7 @@ impl IWnd for SplitterCtrl
             }
             else
             {
-                var newHot = hitTest(evt.surfacePos)
+                let newHot = hitTest(evt.surfacePos)
                 if newHot != hotIdx
                     invalidate()
                 hotIdx = newHot
@@ -106,7 +106,7 @@ impl IWnd for SplitterCtrl
         var client = getClientRectPadding()
         var x = client.x
         var y = client.y
-        var barSize = getThemeMetrics().splitView_BarSize
+        let barSize = getThemeMetrics().splitView_BarSize
 
         visit item: items
         {
@@ -154,27 +154,27 @@ impl IWnd for SplitterCtrl
         if !items.count
             return
 
-        var painter = evt.bc.painter
-        var theme = getTheme()
-        var rects = getThemeRects()
-        var colors = getThemeColors()
+        let painter = evt.bc.painter
+        let theme = getTheme()
+        let rects = getThemeRects()
+        let colors = getThemeColors()
 
         loop idx: items.count - 1
         {
             var rect = getBarRect(cast(u32) idx)
-            var isHot = hotIdx == idx
+            let isHot = hotIdx == idx
             if isHot or !splitterFlags.has(.HideBars)
             {
                 var colorBar = isHot ? colors.splitView_BarHot : colors.splitView_Bar
                 items[idx].aniBar.apply(self, colorBar)
                 if isVertical()
                 {
-                    var rectBar = isHot ? &rects.splitView_HorzBarHotBk : &rects.splitView_HorzBarBk
+                    let rectBar = isHot ? &rects.splitView_HorzBarHotBk : &rects.splitView_HorzBarBk
                     theme.drawSubRect(painter, rect, rectBar, items[idx].aniBar.cur())
                 }
                 else
                 {
-                    var rectBar = isHot ? &rects.splitView_VertBarHotBk : &rects.splitView_VertBarBk
+                    let rectBar = isHot ? &rects.splitView_VertBarHotBk : &rects.splitView_VertBarBk
                     theme.drawSubRect(painter, rect, rectBar, items[idx].aniBar.cur())
                 }
             }
@@ -192,7 +192,7 @@ private impl SplitterCtrl
         if rect.width <= items.count or rect.height <= items.count
             return
 
-        var barSize = getThemeMetrics().splitView_BarSize
+        let barSize = getThemeMetrics().splitView_BarSize
 
         var dispatch: f32
         if items.count > 0
@@ -218,7 +218,7 @@ private impl SplitterCtrl
             // Dispatch the size change first to all panoes not marked as 'tryPreserveSize'
             if countNotPreserve
             {
-                var diff = cast(f32) Math.round(dispatch / countNotPreserve)
+                let diff = cast(f32) Math.round(dispatch / countNotPreserve)
                 visit item, idx: items
                 {
                     if item.tryPreserveSize
@@ -240,7 +240,7 @@ private impl SplitterCtrl
             // Dispatch the rest between panes that try to preserved their size
             if countPreserve
             {
-                var diff = cast(f32) Math.round(dispatch / countPreserve)
+                let diff = cast(f32) Math.round(dispatch / countPreserve)
                 visit item, idx: items
                 {
                     if !item.tryPreserveSize
@@ -273,7 +273,7 @@ private impl SplitterCtrl
 
         var x = client.x
         var y = client.y
-        var barSize = getThemeMetrics().splitView_BarSize
+        let barSize = getThemeMetrics().splitView_BarSize
 
         visit v, idx: items
         {
@@ -303,7 +303,7 @@ private impl SplitterCtrl
     {
         var result: retval = getClientRectPadding()
 
-        var barSize = getThemeMetrics().splitView_BarSize
+        let barSize = getThemeMetrics().splitView_BarSize
         loop i: 0..idx
         {
             if isVertical()
@@ -327,7 +327,7 @@ private impl SplitterCtrl
 
     mtd setPaneSizePrivate(idx: u32, newSize: f32)
     {
-        var curPane = items[idx]
+        let curPane = items[idx]
 
         var reqSize = Math.max(curPane.minSize, newSize)
         if curPane.maxSize > 0
@@ -340,7 +340,7 @@ private impl SplitterCtrl
             return
         }
 
-        var scanLeft = idx == items.count - 1
+        let scanLeft = idx == items.count - 1
         var i = cast(s32) idx
 
         loop
@@ -350,7 +350,7 @@ private impl SplitterCtrl
             if !scanLeft and i == items.count - 1
                 break
 
-            var otherPane = scanLeft ? items[i - 1] : items[i + 1]
+            let otherPane = scanLeft ? items[i - 1] : items[i + 1]
             i += scanLeft ? -1 : 1
 
             var realDiff = diff
@@ -404,7 +404,7 @@ impl SplitterCtrl
     {
         pane.setParent(self)
 
-        var item = items.newPtr()
+        let item = items.newPtr()
         item.view = pane
         if title
         {

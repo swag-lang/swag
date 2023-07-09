@@ -134,10 +134,10 @@ impl IWnd for RichEditView
 
     mtd impl onPaintEvent(evt: *PaintEvent)
     {
-        var painter = evt.bc.painter
-        var colors = getThemeColors()
+        let painter = evt.bc.painter
+        let colors = getThemeColors()
 
-        var marginLeft = ed.getMarginLeft()
+        let marginLeft = ed.getMarginLeft()
         var x = 0'f32
         var y = 0'f32
         var size = ed.getXExtent()
@@ -164,10 +164,10 @@ impl IWnd for RichEditView
         ed.dirtyFirstLineView = false
 
         var clientRect = getClientRect()
-        var firstHidden = true
+        let firstHidden = true
         var maxx = 0'f32
 
-        var sizeChanged = lastClientRect != clientRect
+        let sizeChanged = lastClientRect != clientRect
         lastClientRect = clientRect
 
         // All lines
@@ -298,10 +298,10 @@ impl RichEditView
 
     mtd paintString(bc: *PaintContext, x, y: f32, str: String, strStyle: RichEditRuneStyle, visible: bool)->f32
     {
-        var painter = bc.painter
+        let painter = bc.painter
 
-        var fontR = ed.getFont().getFont(strStyle.fontMode)
-        var me = Painter.measureString(str, fontR)
+        let fontR = ed.getFont().getFont(strStyle.fontMode)
+        let me = Painter.measureString(str, fontR)
 
         // Background rectangle
         if visible and strStyle.colBk.a
@@ -320,8 +320,8 @@ impl RichEditView
 
     mtd paintLine(bc: *PaintContext, lineIndex: u64, py: f32, visible: bool)->f32
     {
-        var line = ed.lines[lineIndex]
-        var y = py
+        let line = ed.lines[lineIndex]
+        let y = py
 
         // Dummy character for empty lines, so that a selected line display something
         var dummyChar = " "'rune
@@ -429,7 +429,7 @@ impl RichEditView
         // Remaining string
         if !str.isEmpty()
         {
-            var x1 = paintString(bc, x, y, str, oldStyle, visible)
+            let x1 = paintString(bc, x, y, str, oldStyle, visible)
             x = x1
         }
 

@@ -436,7 +436,7 @@ impl IRichEditLexer for RichEditLexerSwag
         loop
         {
             var c = getCur()
-            var cn = getNext()
+            let cn = getNext()
             if !c
             {
                 switch currentState
@@ -574,7 +574,7 @@ impl IRichEditLexer for RichEditLexerSwag
                 if Unicode.isLetter(c) or c == "_"'rune or c == "@"'rune or c == "#"'rune
                 {
                     var word: String
-                    var saveSeek = seek
+                    let saveSeek = seek
                     while Unicode.isLetterOrDigit(c) or c == "_"'rune or c == "@"'rune or c == "#"'rune
                     {
                         word += c
@@ -582,10 +582,10 @@ impl IRichEditLexer for RichEditLexerSwag
                         c = getCur()
                     }
 
-                    var seekEnd = seek
+                    let seekEnd = seek
                     seek = saveSeek
 
-                    var res = mapWords.find(word.toString())
+                    let res = mapWords.find(word.toString())
                     if res
                         currentState = res.value
                     elif word == "@"

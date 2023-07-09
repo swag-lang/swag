@@ -63,7 +63,7 @@ impl IWnd for EditView
             firstPaint = false
         }
 
-        var painter = evt.bc.painter
+        let painter = evt.bc.painter
 
         // Background
         var rect = getClientRect()

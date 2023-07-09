@@ -87,7 +87,7 @@ impl IWnd for LibraryView
 
     mtd impl onPaintEvent(evt: *PaintEvent)
     {
-        var painter = evt.bc.painter
+        let painter = evt.bc.painter
         var clientRect = getClientRectPadding()
 
         var x = clientRect.x

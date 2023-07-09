@@ -34,8 +34,8 @@ impl SelModel
     // Select the given index
     mtd select(idx: u32, select: bool)
     {
-        var isSelectedRange = getSelectedRangeIndex(idx)
-        var isSelected = isSelectedRange != Swag.U32.Max
+        let isSelectedRange = getSelectedRangeIndex(idx)
+        let isSelected = isSelectedRange != Swag.U32.Max
         if select == isSelected
             return
 
@@ -71,7 +71,7 @@ impl SelModel
                 range.end -= 1
             else
             {
-                var end = range.end
+                let end = range.end
                 range.end = idx - 1
                 selection.add({idx + 1, end})
             }
@@ -87,8 +87,8 @@ impl SelModel
             {
                 #macro
                 {
-                    var @alias0 = #up i
-                    var @alias1 = @index
+                    let @alias0 = #up i
+                    let @alias1 = @index
                     #mixin #up stmt { break = break Up; }
                 }
             }

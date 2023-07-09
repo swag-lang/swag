@@ -44,11 +44,11 @@ impl IWnd for Slider
 {
     mtd impl onPaintEvent(evt: *PaintEvent)
     {
-        var bc = evt.bc
-        var theme = getTheme()
-        var metrics = getThemeMetrics()
-        var colors = getThemeColors()
-        var rects = getThemeRects()
+        let bc = evt.bc
+        let theme = getTheme()
+        let metrics = getThemeMetrics()
+        let colors = getThemeColors()
+        let rects = getThemeRects()
 
         var colorBkLeft:   Color = undefined
         var colorBkMiddle: Color = undefined

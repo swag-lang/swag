@@ -125,12 +125,12 @@ impl IWnd for PopupListView
 
     mtd impl onPaintEvent(evt: *PaintEvent)
     {
-        var painter = evt.bc.painter
+        let painter = evt.bc.painter
 
-        var theme = getTheme()
-        var colors = getThemeColors()
-        var metrics = getThemeMetrics()
-        var rects = getThemeRects()
+        let theme = getTheme()
+        let colors = getThemeColors()
+        let metrics = getThemeMetrics()
+        let rects = getThemeRects()
 
         var clientRect = getClientRect()
         clientRect.offset(scrollPos)
@@ -181,7 +181,7 @@ impl IWnd for PopupListView
             if list.maxIconSize
                 labelPos.moveLeft(list.maxIconSize + metrics.popupList_IconTextMargin)
 
-            var fntHeight = getFont().regular.height
+            let fntHeight = getFont().regular.height
             if idx == list.selectedIdx
                 labelPos.setRight(labelPos.right() - fntHeight - metrics.popupList_IconTextMargin)
 
@@ -249,7 +249,7 @@ impl PopupListCtrl
     // Add a new item in the list
     mtd addItem(name: string, id: WndId = null, icon: Icon = {}, userData0: *void = null, userData1: *void = null)
     {
-        var item = items.newPtr()
+        let item = items.newPtr()
         with item
         {
             .name      = #self.name
@@ -267,7 +267,7 @@ impl PopupListCtrl
     // Add a separator
     mtd addSeparator()
     {
-        var item = items.newPtr()
+        let item = items.newPtr()
         item.isSeparator = true
         items.add(item)
     }

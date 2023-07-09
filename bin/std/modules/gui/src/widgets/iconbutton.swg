@@ -124,11 +124,11 @@ impl IWnd for IconButton
 
     mtd impl onPaintEvent(evt: *PaintEvent)
     {
-        var bc = evt.bc
-        var theme = getTheme()
-        var colors = getThemeColors()
-        var rects = getThemeRects()
-        var metrics = getThemeMetrics()
+        let bc = evt.bc
+        let theme = getTheme()
+        let colors = getThemeColors()
+        let rects = getThemeRects()
+        let metrics = getThemeMetrics()
 
         var subRectBk:      *ThemeImageRect
         var colorBk:        Color = undefined
@@ -195,7 +195,7 @@ impl IWnd for IconButton
         }
 
         var pos = getClientRectPadding()
-        var hasIcon = icon.isValid() or sigPaintIcon != null
+        let hasIcon = icon.isValid() or sigPaintIcon != null
 
         // Center everything
         var marginArrow = metrics.btnIcon_MarginArrow
@@ -215,7 +215,7 @@ impl IWnd for IconButton
                 break
             }
 
-            var fontR = getFont().regular
+            let fontR = getFont().regular
             var sm = Painter.measureString(name.raw.toString(), fontR)
             nw += sm.width
             nh += fontR.height
@@ -244,8 +244,8 @@ impl IWnd for IconButton
         if arrowPos != .None
         {
             var posArrow = pos
-            var w = metrics.btnIcon_WidthArrow
-            var h = metrics.btnIcon_HeightArrow
+            let w = metrics.btnIcon_WidthArrow
+            let h = metrics.btnIcon_HeightArrow
 
             switch arrowPos
             {
@@ -327,7 +327,7 @@ impl IWnd for IconButton
                     icon.sizeX = pos.width
                 if pos.width < icon.sizeX
                 {
-                    var ratio = icon.sizeX / icon.sizeY
+                    let ratio = icon.sizeX / icon.sizeY
                     icon.sizeX = pos.width * ratio
                     icon.sizeY = pos.width
                 }
@@ -348,7 +348,7 @@ impl IWnd for IconButton
                     icon.sizeX = pos.width
                 if pos.width < icon.sizeX
                 {
-                    var ratio = icon.sizeX / icon.sizeY
+                    let ratio = icon.sizeX / icon.sizeY
                     icon.sizeX = pos.width * ratio
                     icon.sizeY = pos.width
                 }
@@ -366,7 +366,7 @@ impl IWnd for IconButton
                     icon.sizeY = pos.height
                 if pos.height < icon.sizeY
                 {
-                    var ratio = icon.sizeX / icon.sizeY
+                    let ratio = icon.sizeX / icon.sizeY
                     icon.sizeX = pos.height * ratio
                     icon.sizeY = pos.height
                 }
@@ -385,7 +385,7 @@ impl IWnd for IconButton
                     icon.sizeY = pos.height
                 if pos.height < icon.sizeY
                 {
-                    var ratio = icon.sizeX / icon.sizeY
+                    let ratio = icon.sizeX / icon.sizeY
                     icon.sizeX = pos.height * ratio
                     icon.sizeY = pos.height
                 }

@@ -41,8 +41,8 @@ impl IconBar
                 c.dockStyle = .Left
         }
 
-        var pad = 2*iconPadding
-        var size = cast(f32) (childs.count * (iconSize + pad))
+        let pad = 2*iconPadding
+        let size = cast(f32) (childs.count * (iconSize + pad))
         if iconBarFlags.has(.Vertical)
             resize(iconSize + pad, size)
         else

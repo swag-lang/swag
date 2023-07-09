@@ -131,7 +131,7 @@ impl RichEditCtrl
         if !(richEdFlags & .WordWrap)
             return
 
-        var fontR = getFont().getFont(styles[0].fontMode)
+        let fontR = getFont().getFont(styles[0].fontMode)
 
         // Do the wrap
         var curLine = lineIndex
@@ -144,8 +144,8 @@ impl RichEditCtrl
         var cutAti = i
         while i < lines[curLine].length()
         {
-            var l = lines[curLine]
-            var ch = l.chars[i]
+            let l = lines[curLine]
+            let ch = l.chars[i]
             str += ch
 
             if !Unicode.isLetterOrDigit(ch)
@@ -153,7 +153,7 @@ impl RichEditCtrl
 
             if cutAti > 1
             {
-                var x = getMarginLeft() + Painter.measureString(str, fontR).width
+                let x = getMarginLeft() + Painter.measureString(str, fontR).width
                 if x > clientRect.right()
                 {
                     if cutAti and cutAti == i + 1
@@ -172,7 +172,7 @@ impl RichEditCtrl
                     }
 
                     i = cutAti
-                    var nl = newLine(curLine + 1)
+                    let nl = newLine(curLine + 1)
                     nl.wordWrap = true
 
                     nl.chars.add(@mkslice(l.chars.buffer + i, l.chars.count - i))
@@ -214,18 +214,18 @@ impl RichEditCtrl
         {
             var numBlanks: s32
 
-            var line = lines[cp.lineIndex]
+            let line = lines[cp.lineIndex]
             loop tabSize - numBlanks
             {
-                var posIns = Math.min(cp.charPosInLine, line.length())
+                let posIns = Math.min(cp.charPosInLine, line.length())
                 line.insertRune(posIns, " "'rune, txtStyle)
                 cp.charPosInLine += 1
             }
         }
         else
         {
-            var line = lines[cp.lineIndex]
-            var posIns = Math.min(cp.charPosInLine, line.length())
+            let line = lines[cp.lineIndex]
+            let posIns = Math.min(cp.charPosInLine, line.length())
             line.insertRune(posIns, c, txtStyle)
             cp.charPosInLine += 1
         }
@@ -243,8 +243,8 @@ impl RichEditCtrl
         {
             loop i: #self.runes
             {
-                var c = #self.runes[i]
-                var s = #self.styles[i]
+                let c = #self.runes[i]
+                let s = #self.styles[i]
                 insertRunePrivate(cp, c, s)
             }
         }
@@ -256,7 +256,7 @@ impl RichEditCtrl
             var rankBeg, rankEnd: u64
             loop
             {
-                var line = lines[lineIndex];
+                let line = lines[lineIndex];
                 if rankEnd == runes.count or runes[rankEnd] == "\n"'rune
                 {
                     var posIns = posInLine

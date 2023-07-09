@@ -63,11 +63,11 @@ impl IWnd for GridLayoutCtrl
             var x = padding.x
             loop i: numColumns
             {
-                var colW = forcedW orelse colSizes[i]
+                let colW = forcedW orelse colSizes[i]
                 defer x += colW + spacingHorz
 
-                var idx = i + (j * numColumns)
-                var curWnd = layout[idx]
+                let idx = i + (j * numColumns)
+                let curWnd = layout[idx]
                 if !curWnd or done.contains(curWnd)
                     continue
 
@@ -121,7 +121,7 @@ impl GridLayoutCtrl
     {
         Debug.assert(numColumns > 0 and numRows > 0)
 
-        var res = Wnd.create'GridLayoutCtrl(parent, position)
+        let res = Wnd.create'GridLayoutCtrl(parent, position)
         res.numColumns = numColumns
         res.numRows = numRows
 
@@ -166,7 +166,7 @@ impl GridLayoutCtrl
             x += i
             loop j: spanV
             {
-                var x1 = x + (j * numColumns)
+                let x1 = x + (j * numColumns)
                 layout[x1] = child
             }
         }

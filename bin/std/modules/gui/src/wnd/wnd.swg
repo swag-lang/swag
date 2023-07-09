@@ -437,7 +437,7 @@ impl Wnd
 
     mtd paint(bc: *PaintContext)
     {
-        var painter = bc.painter
+        let painter = bc.painter
         if painter.isEmptyClippingRect()
             return
 
@@ -445,12 +445,12 @@ impl Wnd
         computeStyle()
 
         // Transmit disabled state to childs
-        var lastDisabled = bc.isDisabled
+        let lastDisabled = bc.isDisabled
         if wndFlags.has(.Disabled)
             bc.isDisabled = true
 
         // Background
-        var theme = getTheme()
+        let theme = getTheme()
         switch backgroundStyle
         {
         case Window:
@@ -801,13 +801,13 @@ impl Wnd
             var pos = c.position
             if c.anchorStyle & .X and oldSize.x > 0
             {
-                var oldM = oldSize.x - c.position.x
+                let oldM = oldSize.x - c.position.x
                 pos.x = position.width - oldM
             }
 
             if c.anchorStyle & .Y and oldSize.y > 0
             {
-                var oldM = oldSize.y - c.position.y
+                let oldM = oldSize.y - c.position.y
                 pos.y = position.height - oldM
             }
 
@@ -840,7 +840,7 @@ impl Wnd
                 if c.maxSize.y > 0 and c.maxSize.y < pos.height and !(c.anchorStyle & .Y)
                     pos.y = clientRect.vertCenter() - c.maxSize.y * 0.5
                 c.setPosition(pos, false)
-                var diff = c.margin.x + pos.width + c.margin.z
+                let diff = c.margin.x + pos.width + c.margin.z
                 clientRect.width -= diff
                 clientRect.x += diff
 
@@ -852,7 +852,7 @@ impl Wnd
                 if c.maxSize.y > 0 and c.maxSize.y < pos.height and !(c.anchorStyle & .Y)
                     pos.y = clientRect.vertCenter() - c.maxSize.y * 0.5
                 c.setPosition(pos, false)
-                var diff = c.margin.x + pos.width + c.margin.z
+                let diff = c.margin.x + pos.width + c.margin.z
                 clientRect.width -= diff
 
             case Top:
@@ -863,7 +863,7 @@ impl Wnd
                 if c.maxSize.x > 0 and c.maxSize.x < pos.width and !(c.anchorStyle & .X)
                     pos.x = clientRect.horzCenter() - c.maxSize.x * 0.5
                 c.setPosition(pos, false)
-                var diff = c.margin.y + pos.height + c.margin.w
+                let diff = c.margin.y + pos.height + c.margin.w
                 clientRect.y += diff
                 clientRect.height -= diff
 
@@ -875,7 +875,7 @@ impl Wnd
                 if c.maxSize.x > 0 and c.maxSize.x < pos.width and !(c.anchorStyle & .X)
                     pos.x = clientRect.horzCenter() - c.maxSize.x * 0.5
                 c.setPosition(pos, false)
-                var diff = c.margin.w + pos.height + c.margin.y
+                let diff = c.margin.w + pos.height + c.margin.y
                 clientRect.height -= diff
 
             case Center:
@@ -910,7 +910,7 @@ impl Wnd
         // So we must visit in revert order
         for var i = cast(s32) childs.count - 1; i >= 0; i -= 1
         {
-            var c = childs[i]
+            let c = childs[i]
             if c.wndFlags.has(.Hidden) and !getHidden
                 continue
             if c.wndFlags.has(.Disabled) and !getDisabled
@@ -920,7 +920,7 @@ impl Wnd
             var pt = Math.Point{x - position.x, y - position.y}
             if !c.wndFlags.has(.NoScroll)
                 pt += scrollPos
-            var res = c.getWndAt(pt.x, pt.y)
+            let res = c.getWndAt(pt.x, pt.y)
             if res
                 return res
         }
@@ -951,7 +951,7 @@ impl Wnd
         {
             if c.id == childId
                 return c
-            var res = c.getChildById(childId)
+            let res = c.getChildById(childId)
             if res
                 return res
         }
@@ -1058,7 +1058,7 @@ impl Wnd
                 return c.id
         }
 
-        var p = getOwner()
+        let p = getOwner()
         if p return p.getKeyShortcut(mdf, key)
         return null
     }
@@ -1076,7 +1076,7 @@ impl Wnd
             }
         }
 
-        var p = getOwner()
+        let p = getOwner()
         if p return p.getKeyShortcutNameFor(wndId)
         return result
     }

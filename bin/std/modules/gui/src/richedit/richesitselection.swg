@@ -316,14 +316,14 @@ impl RichEditCtrl
     mtd selectWord()
     {
         var line = lines[cursorPos.lineIndex]
-        var len = line.length()
+        let len = line.length()
         if !len
             return
 
         if cursorPos.charPosInLine == len
             cursorPos.charPosInLine -= 1
         var cp = cursorPos.charPosInLine ? line.chars[selBeg.charPosInLine - 1] : 0'rune
-        var c = selBeg.charPosInLine == len ? 0'rune : line.chars[selBeg.charPosInLine]
+        let c = selBeg.charPosInLine == len ? 0'rune : line.chars[selBeg.charPosInLine]
         var cn = cursorPos.charPosInLine != len - 1 ? line.chars[selBeg.charPosInLine + 1] : 0'rune
 
         if Unicode.isSpace(c) and !Unicode.isSpace(cp) and !Unicode.isSpace(cn) and cursorPos.charPosInLine

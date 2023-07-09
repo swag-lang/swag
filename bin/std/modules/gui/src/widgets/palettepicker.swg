@@ -17,9 +17,9 @@ impl IWnd for PalettePicker
 {
     mtd impl onPaintEvent(evt: *PaintEvent)
     {
-        var bc = evt.bc
-        var painter = bc.painter
-        var colors = getThemeColors()
+        let bc = evt.bc
+        let painter = bc.painter
+        let colors = getThemeColors()
 
         var colorBorder: Color = undefined
 

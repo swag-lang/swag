@@ -56,10 +56,10 @@ public impl IWnd for MenuCtrl
 {
     private mtd paintBar(painter: *Painter)
     {
-        var theme = getTheme()
-        var colors = getThemeColors()
-        var rects = getThemeRects()
-        var metrics = getThemeMetrics()
+        let theme = getTheme()
+        let colors = getThemeColors()
+        let rects = getThemeRects()
+        let metrics = getThemeMetrics()
 
         if dirtyLayout
         {
@@ -132,10 +132,10 @@ public impl IWnd for MenuCtrl
 
     private mtd paintPopup(painter: *Painter)
     {
-        var theme = getTheme()
-        var colors = getThemeColors()
-        var rects = getThemeRects()
-        var metrics = getThemeMetrics()
+        let theme = getTheme()
+        let colors = getThemeColors()
+        let rects = getThemeRects()
+        let metrics = getThemeMetrics()
 
         // Shadow
         if !paintByFrame
@@ -266,7 +266,7 @@ public impl IWnd for MenuCtrl
 
     mtd impl onMouseEvent(evt: *MouseEvent)
     {
-        var hit = hitTest(evt.surfacePos)
+        let hit = hitTest(evt.surfacePos)
         if hit != hotIdx
         {
             // Timer to auto open/hide sub menus
@@ -317,7 +317,7 @@ public impl IWnd for MenuCtrl
         {
             if hotIdx != Swag.U32.Max
             {
-                var hotItem = items[hotIdx]
+                let hotItem = items[hotIdx]
                 if hotItem.popup
                 {
                     hideSubVisible()
@@ -433,8 +433,8 @@ impl MenuCtrl
     mtd showHotPopupBar()
     {
         selectedIdx = hotIdx
-        var hotItem = items[hotIdx]
-        var metrics = getThemeMetrics()
+        let hotItem = items[hotIdx]
+        let metrics = getThemeMetrics()
 
         var pos = getSurfaceRect()
         pos.x += hotItem.pos
@@ -447,7 +447,7 @@ impl MenuCtrl
         // Be sure popup menu is in the client area of the top view
         subVisible.updateState()
         subVisible.computeLayoutPopup()
-        var topView = getTopView()
+        let topView = getTopView()
         var pt = topView.surfaceToLocal({pos.x, pos.y})
         var subPos = subVisible.position
         if pt.x + subPos.width > topView.position.width
@@ -462,10 +462,10 @@ impl MenuCtrl
     mtd showHotPopupPopup()
     {
         selectedIdx = hotIdx
-        var hotItem = items[hotIdx]
+        let hotItem = items[hotIdx]
 
         var pos = getSurfaceRect()
-        var sdw = getThemeMetrics().menuPopup_ShadowSize
+        let sdw = getThemeMetrics().menuPopup_ShadowSize
         var surfaceRect = pos
         pos.x = pos.right() - sdw
         pos.y += hotItem.pos
@@ -475,7 +475,7 @@ impl MenuCtrl
         // Be sure popup menu is in the client area of the top view
         subVisible.updateState()
         subVisible.computeLayoutPopup()
-        var topView = getTopView()
+        let topView = getTopView()
         var pt = topView.surfaceToLocal({pos.x, pos.y})
         pt -= sdw
         var subPos = subVisible.position
@@ -505,9 +505,9 @@ impl MenuCtrl
     mtd hitTestBar(surfacePos: Math.Point)->u32
     {
         var pos = surfaceToLocal(surfacePos)
-        var metrics = getThemeMetrics()
+        let metrics = getThemeMetrics()
         var clientRect = getClientRect()
-        var sl = metrics.menuBar_SpaceBetween
+        let sl = metrics.menuBar_SpaceBetween
         visit i, idx: items
         {
             var rect = Math.Rectangle{i.pos - sl * 0.5, clientRect.y, i.size + sl, clientRect.height}
@@ -521,9 +521,9 @@ impl MenuCtrl
     mtd hitTestPopup(surfacePos: Math.Point)->u32
     {
         var pos = surfaceToLocal(surfacePos)
-        var metrics = getThemeMetrics()
+        let metrics = getThemeMetrics()
         var clientRect = getClientRect()
-        var sl = metrics.menuPopup_SpaceLines
+        let sl = metrics.menuPopup_SpaceLines
         visit i, idx: items
         {
             var rect = Math.Rectangle{clientRect.x, i.pos - sl * 0.5, clientRect.width, i.size + sl}
@@ -541,7 +541,7 @@ impl MenuCtrl
 
     mtd computeLayoutBar()
     {
-        var metrics = getThemeMetrics()
+        let metrics = getThemeMetrics()
         var clientRect = getClientRectPadding()
 
         var x = clientRect.x
@@ -565,7 +565,7 @@ impl MenuCtrl
 
     public mtd computeLayoutPopup()
     {
-        var metrics = getThemeMetrics()
+        let metrics = getThemeMetrics()
 
         var clientRect = getClientRect()
         if !paintByFrame
@@ -710,7 +710,7 @@ public impl MenuCtrl
     // Add a separator
     mtd addSeparator()
     {
-        var item = items.newPtr()
+        let item = items.newPtr()
         item.separator = true
         items.add(item)
         dirtyLayout = true

@@ -141,7 +141,7 @@ impl IWnd for RecentView
 
     mtd impl onPaintEvent(evt: *PaintEvent)
     {
-        var painter = evt.bc.painter
+        let painter = evt.bc.painter
         var clientRect = getClientRectPadding()
 
         painter.setParams(.Antialiased)

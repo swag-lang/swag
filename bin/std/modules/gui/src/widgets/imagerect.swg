@@ -24,7 +24,7 @@ impl IWnd for ImageRect
             }
         }
 
-        var painter = evt.bc.painter
+        let painter = evt.bc.painter
         var rect = getClientRectPadding()
 
         var color = getThemeColors().imageRect_Fg

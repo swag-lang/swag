@@ -39,7 +39,7 @@ impl SigArray
             #ast
             {
                 var sb: StrConv.StringBuilder
-                var ts = @typeof(T)
+                let ts = @typeof(T)
 
                 sb.appendString("fn(")
                 loop i: ts.parameters

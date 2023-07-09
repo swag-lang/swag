@@ -139,7 +139,7 @@ impl ListLine
             }
         }
 
-        var item = items.newPtr()
+        let item = items.newPtr()
         item.column = column
         item.name = name
         item.icon = icon
@@ -164,7 +164,7 @@ impl IWnd for ListView
 
         list.sigKeyPressed.call(list, evt)
 
-        var lineCount = list.getLineCount()
+        let lineCount = list.getLineCount()
         if !lineCount
             return
 
@@ -173,7 +173,7 @@ impl IWnd for ListView
             focusLine = list.lines[list.focusIndex]
 
         var shift = cast(bool) (evt.modifiers & .Shift)
-        var ctrl = cast(bool) (evt.modifiers & .Control)
+        let ctrl = cast(bool) (evt.modifiers & .Control)
 
         if list.focusIndex == Swag.U32.Max
         {
@@ -191,10 +191,10 @@ impl IWnd for ListView
             {
                 visit l: list.selModel
                 {
-                    var idx = list.idxLineToIdxList.find(l).value
+                    let idx = list.idxLineToIdxList.find(l).value
                     if !list.lines[idx].canCheck
                         continue
-                    var checked = !list.checkModel.isSelected(l)
+                    let checked = !list.checkModel.isSelected(l)
                     list.checkModel.select(l, checked)
                 }
 
@@ -211,7 +211,7 @@ impl IWnd for ListView
             {
                 visit l: list.selModel
                 {
-                    var idx = list.idxLineToIdxList.find(l).value
+                    let idx = list.idxLineToIdxList.find(l).value
                     if !list.lines[idx].canCheck
                         continue
                     list.checkModel.select(l, true)
@@ -266,8 +266,8 @@ impl IWnd for ListView
             list.expand(focusLine)
 
         case PageDown:
-            var first = list.getFirstVisibleLineIndex()
-            var last = list.getLastVisibleLineIndex()
+            let first = list.getFirstVisibleLineIndex()
+            let last = list.getLastVisibleLineIndex()
             startSelIdx, endSelIdx = list.focusIndex + (last - first)
             startSelIdx = Math.min(startSelIdx, lineCount - 1)
             endSelIdx = Math.min(endSelIdx, lineCount - 1)
@@ -275,9 +275,9 @@ impl IWnd for ListView
             break
 
         case PageUp:
-            var first = list.getFirstVisibleLineIndex()
-            var last = list.getLastVisibleLineIndex()
-            var offset = last - first
+            let first = list.getFirstVisibleLineIndex()
+            let last = list.getLastVisibleLineIndex()
+            let offset = last - first
             if offset > list.focusIndex
                 startSelIdx, endSelIdx = 0
             else
@@ -311,7 +311,7 @@ impl IWnd for ListView
             return
         }
 
-        var idx = hitTest(evt.surfacePos)
+        let idx = hitTest(evt.surfacePos)
         if idx != list.hotIndex and list.listFlags.has(.HotTrack)
         {
             list.hotIndex = idx
@@ -324,10 +324,10 @@ impl IWnd for ListView
             return
         }
 
-        var metrics = getThemeMetrics()
+        let metrics = getThemeMetrics()
 
-        var ctrl = cast(bool) (evt.modifiers & .Control)
-        var shift = cast(bool) (evt.modifiers & .Shift)
+        let ctrl = cast(bool) (evt.modifiers & .Control)
+        let shift = cast(bool) (evt.modifiers & .Shift)
 
         // Right mouse button
         // ============================
@@ -362,8 +362,8 @@ impl IWnd for ListView
 
         if idx != Swag.U32.Max and !list.isVirtual
         {
-            var hitLine = list.lines[idx]
-            var idxLine = hitLine.index
+            let hitLine = list.lines[idx]
+            let idxLine = hitLine.index
             var localPos = surfaceToLocal(evt.surfacePos)
             localPos.x += scrollPos.x
             var widthLeft = hitLine.level * list.indentWidth
@@ -454,7 +454,7 @@ impl IWnd for ListView
 
         discardMouseRelease = evt.kind == .MousePressed
 
-        var canUnsel = idx != Swag.U32.Max or !list.listFlags.has(.NoMouseEmptySel)
+        let canUnsel = idx != Swag.U32.Max or !list.listFlags.has(.NoMouseEmptySel)
         if canUnsel and (list.selectionMode == .Single or (!ctrl and !shift))
             list.selModel.unselectAll()
 
@@ -463,10 +463,10 @@ impl IWnd for ListView
             // Range selection
             if shift and list.selectionMode == .Multi
             {
-                var startIdx = list.focusIndex == Swag.U32.Max ? 0 : list.focusIndex
+                let startIdx = list.focusIndex == Swag.U32.Max ? 0 : list.focusIndex
                 loop i: startIdx..idx
                 {
-                    var idxLine = list.isVirtual ? i : list.lines[i].index
+                    let idxLine = list.isVirtual ? i : list.lines[i].index
                     list.selModel.select(idxLine, true)
                 }
             }
@@ -474,8 +474,8 @@ impl IWnd for ListView
             // Invert selection
             else
             {
-                var idxLine = list.isVirtual ? idx : list.lines[idx].index
-                var toSel = !list.selModel.isSelected(idxLine)
+                let idxLine = list.isVirtual ? idx : list.lines[idx].index
+                let toSel = !list.selModel.isSelected(idxLine)
                 list.selModel.select(idxLine, toSel)
             }
         }
@@ -492,10 +492,10 @@ impl IWnd for ListView
         if list.getLineCount() == 0
             return
 
-        var bc = evt.bc
-        var painter = bc.painter
-        var colors = getThemeColors()
-        var metrics = getThemeMetrics()
+        let bc = evt.bc
+        let painter = bc.painter
+        let colors = getThemeColors()
+        let metrics = getThemeMetrics()
 
         var rect: Math.Rectangle
         rect.width = getDisplayWidth()
@@ -505,8 +505,8 @@ impl IWnd for ListView
         var clipRect = getSurfaceRect()
         clipRect.applyPadding(padding)
 
-        var firstIdx = list.getFirstVisibleLineIndex()
-        var lastIdx = list.getLastVisibleLineIndex()
+        let firstIdx = list.getFirstVisibleLineIndex()
+        let lastIdx = list.getLastVisibleLineIndex()
 
         // Do not display with bigs coordinates to avoid precision issues
         // So we do the scroll by hand, and draw will small coordinates
@@ -532,7 +532,7 @@ impl IWnd for ListView
         {
             loop i: firstIdx..lastIdx
             {
-                var line = list.lines[i]
+                let line = list.lines[i]
                 paintLine(bc, i, line, rect)
                 rect.y = rect.bottom()
 
@@ -552,7 +552,7 @@ impl IWnd for ListView
                 painter.drawLine(x, rect.y, x, rect.bottom(), colors.listItem_Line, 1)
             }
 
-            var last = list.header.items.back()
+            let last = list.header.items.back()
             var x = getXPos(last.column)
             x -= scrollPos.x
             x += last.width
@@ -574,19 +574,19 @@ private impl ListView
 
     mtd paintLine(bc: PaintContext, idx: u32, line: *ListLine, rect: Math.Rectangle)
     {
-        var painter = bc.painter
-        var theme = getTheme()
-        var colors = getThemeColors()
-        var metrics = getThemeMetrics()
-        var rects = getThemeRects()
+        let painter = bc.painter
+        let theme = getTheme()
+        let colors = getThemeColors()
+        let metrics = getThemeMetrics()
+        let rects = getThemeRects()
 
         // Selection box
-        var isSelected = list.isLineSelected(idx)
-        var canHotTrack = list.isVirtual or !line.separator
-        var hideSel = list.listFlags.has(.HideSelection)
+        let isSelected = list.isLineSelected(idx)
+        let canHotTrack = list.isVirtual or !line.separator
+        let hideSel = list.listFlags.has(.HideSelection)
         if isSelected and (!hideSel or hasFocus()) and !bc.isDisabled
         {
-            var colorSel = hasFocus() ? colors.listItem_FocusSelectedBk : colors.listItem_SelectedBk
+            let colorSel = hasFocus() ? colors.listItem_FocusSelectedBk : colors.listItem_SelectedBk
             painter.fillRect(rect, colorSel)
         }
 
@@ -657,7 +657,7 @@ private impl ListView
                 labelPos.moveLeft(line.level * list.indentWidth)
 
                 // Expand/collapse mark
-                var canExpand = line.canExpand()
+                let canExpand = line.canExpand()
                 if canExpand or list.listFlags.has(.ForceMarginExpandMark)
                 {
                     if canExpand
@@ -687,8 +687,8 @@ private impl ListView
                 var subRectBorder:  *ThemeImageRect
                 var subRectMark:    *ThemeImageRect
 
-                var idxLine = list.isVirtual ? idx : line.index
-                var checked = list.checkModel.isSelected(idxLine)
+                let idxLine = list.isVirtual ? idx : line.index
+                let checked = list.checkModel.isSelected(idxLine)
 
                 var colorBorder = colorFg
                 var colorMark = colorFg
@@ -703,7 +703,7 @@ private impl ListView
                     subRectBorder = &rects.btnCheck_NormalBorder
                 }
 
-                var widthCheck = Math.min(metrics.btnCheck_Size, list.getLineHeight())
+                let widthCheck = Math.min(metrics.btnCheck_Size, list.getLineHeight())
                 var posBox = labelPos
                 posBox.height = widthCheck
                 posBox.y = labelPos.vertCenter() - (posBox.height * 0.5)
@@ -742,12 +742,12 @@ private impl ListView
 
     mtd hitTest(surfacePos: Math.Point)->u32
     {
-        var lc = list.getLineCount()
+        let lc = list.getLineCount()
         var res = surfaceToLocal(surfacePos)
         if res.x < 0 or res.y < 0
             return Swag.U32.Max
         res.y += scrollPos.y
-        var idx = cast(u32) (res.y / list.getLineHeight())
+        let idx = cast(u32) (res.y / list.getLineHeight())
         if idx >= lc
             return Swag.U32.Max
         if !list.isVirtual and list.lines[idx].separator
@@ -877,7 +877,7 @@ impl ListCtrl
     // Select of unselect the given line
     mtd selectLine(idx: u32, select: bool = true)
     {
-        var lineCount = getLineCount()
+        let lineCount = getLineCount()
         Debug.assert(idx < lineCount)
 
         if selectionMode == .None or lineCount == 0
@@ -888,7 +888,7 @@ impl ListCtrl
         if selectionMode == .Single
             selModel.unselectAll()
 
-        var idxLine = isVirtual ? idx : lines[idx].index
+        let idxLine = isVirtual ? idx : lines[idx].index
         selModel.select(idxLine, select)
         invalidate()
 
@@ -898,7 +898,7 @@ impl ListCtrl
     // Select a range of lines
     mtd selectLines(start, end: u32, select: bool = true)
     {
-        var lineCount = getLineCount()
+        let lineCount = getLineCount()
         Debug.assert(start < lineCount)
         Debug.assert(end < lineCount)
 
@@ -907,7 +907,7 @@ impl ListCtrl
 
         loop i: start..end
         {
-            var idxLine = isVirtual ? i : lines[i].index
+            let idxLine = isVirtual ? i : lines[i].index
             selModel.select(idxLine, select)
         }
 
@@ -960,14 +960,14 @@ impl ListCtrl
 
         if parentLine
         {
-            var line = parentLine.lines.newPtr()
+            let line = parentLine.lines.newPtr()
             line.parent = parentLine
             line.level = parentLine.level + 1
             parentLine.lines.add(line)
             return line
         }
 
-        var line = toFreeLines.newPtr()
+        let line = toFreeLines.newPtr()
         line.index  = cast(u32) lines.count
         idxLineToIdxList.add(line.index, line.index)
         lines.add(line)
@@ -1060,7 +1060,7 @@ impl ListCtrl
     // Returns true if the line at the given index is selected
     mtd const isSelectedLine(idx: u32)->bool
     {
-        var idxLine = isVirtual ? idx : lines[idx].index
+        let idxLine = isVirtual ? idx : lines[idx].index
         return selModel.isSelected(idxLine)
     }
 
@@ -1081,7 +1081,7 @@ impl ListCtrl
 
         visit i: selModel
         {
-            var idx = idxLineToIdxList.find(i).value
+            let idx = idxLineToIdxList.find(i).value
             result.add(lines[idx])
         }
 
@@ -1097,7 +1097,7 @@ impl ListCtrl
 
         visit i: checkModel
         {
-            var idx = idxLineToIdxList.find(i).value
+            let idx = idxLineToIdxList.find(i).value
             result.add(lines[idx])
         }
 
@@ -1110,8 +1110,8 @@ impl ListCtrl
     {
         if isVirtual or selModel.isEmpty()
             return null
-        var range = selModel.selection.front()
-        var idx = idxLineToIdxList.find(range.start).value
+        let range = selModel.selection.front()
+        let idx = idxLineToIdxList.find(range.start).value
         return lines[idx]
     }
 
@@ -1126,10 +1126,10 @@ impl ListCtrl
     {
         func sortFunc(column: u32, descentOrder: bool, a, b: *ListLine)->s32
         {
-            var it0 = a.getItem(column)
-            var it1 = b.getItem(column)
-            var sort0 = it0.sortKey.isEmpty() ? &it0.name.raw : &it0.sortKey
-            var sort1 = it1.sortKey.isEmpty() ? &it1.name.raw : &it1.sortKey
+            let it0 = a.getItem(column)
+            let it1 = b.getItem(column)
+            let sort0 = it0.sortKey.isEmpty() ? &it0.name.raw : &it0.sortKey
+            let sort1 = it1.sortKey.isEmpty() ? &it1.name.raw : &it1.sortKey
             var res = Latin1.compareNatural(dref sort0, dref sort1)
             if descentOrder res *= -1
             return res
@@ -1213,8 +1213,8 @@ impl ListCtrl
         var cptIdx = 0'u32
         while tmp.count
         {
-            var to = tmp.popBack()
-            var idxInsert = idxLineToIdxList.find(to.index).value
+            let to = tmp.popBack()
+            let idxInsert = idxLineToIdxList.find(to.index).value
             visit l, i: to.lines
             {
                 l.index = cptIdxLine
@@ -1250,7 +1250,7 @@ impl ListCtrl
         var removeCount = 0'u32
         while tmp.count
         {
-            var to = tmp.popBack()
+            let to = tmp.popBack()
             visit l: to.lines
             {
                 removeCount += 1
@@ -1260,7 +1260,7 @@ impl ListCtrl
         }
 
         // Insert at the right position
-        var idxInsert = idxLineToIdxList.find(line.index).value
+        let idxInsert = idxLineToIdxList.find(line.index).value
         lines.removeAtOrdered(cast(u64) (idxInsert + 1), cast(u64) removeCount)
 
         // Update indexes after the insertion

@@ -157,7 +157,7 @@ private impl Surface
         // Create class
         #[Swag.Global]
         var doneClass: bool
-        var className = @dataof(Utf16.toZeroTerminated("Swag.Gui.Surface"))
+        let className = @dataof(Utf16.toZeroTerminated("Swag.Gui.Surface"))
         if !doneClass
         {
             doneClass = true
@@ -203,7 +203,7 @@ private impl Surface
         )
 
         // Extend frame inside client area. This will also activate composition.
-        var vm: s32 = cast(s32) app.theme.metrics.surfaceWnd_ShadowSize
+        let vm: s32 = cast(s32) app.theme.metrics.surfaceWnd_ShadowSize
         var m:  MARGINS = {vm,vm,vm,vm}
         DwmExtendFrameIntoClientArea(result.hWnd, &m)
 

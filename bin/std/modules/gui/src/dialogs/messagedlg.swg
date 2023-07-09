@@ -42,7 +42,7 @@ public impl MessageDlg
 
     private mtd adaptSizeToMessage()
     {
-        var metrics = getThemeMetrics()
+        let metrics = getThemeMetrics()
 
         // Evaluate size of text
         var fake: Painter{fake = true}
@@ -79,7 +79,7 @@ public impl MessageDlg
         var pos = surface.position
         pos.width = w
         pos.height = h
-        var sdw = surface.app.theme.metrics.surfaceWnd_ShadowSize
+        let sdw = surface.app.theme.metrics.surfaceWnd_ShadowSize
         pos.width += sdw * 2
         pos.height += sdw * 2
         surface.setPosition(pos)

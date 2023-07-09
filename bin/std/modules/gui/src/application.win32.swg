@@ -96,7 +96,7 @@ impl Application
         var pt: POINT
         pt.x = cast(s32) x
         pt.y = cast(s32) y
-        var hWnd = WindowFromPoint(pt)
+        let hWnd = WindowFromPoint(pt)
         if hWnd == null
             return null
 

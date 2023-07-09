@@ -211,11 +211,11 @@ public impl IWnd for ScrollWnd
                 smoothScroll = false
         }
 
-        var bc = evt.bc
-        var theme = getTheme()
-        var metrics = getThemeMetrics()
-        var colors = getThemeColors()
-        var rects = getThemeRects()
+        let bc = evt.bc
+        let theme = getTheme()
+        let metrics = getThemeMetrics()
+        let colors = getThemeColors()
+        let rects = getThemeRects()
 
         var colorBk: Color
         switch
@@ -389,7 +389,7 @@ impl ScrollWnd
         sx = Math.max(sx, 1)
         sy = Math.max(sy, 1)
 
-        var metrics = getThemeMetrics()
+        let metrics = getThemeMetrics()
 
         showBarV, showBarH = false
         needH, needV = false

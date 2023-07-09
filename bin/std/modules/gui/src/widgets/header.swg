@@ -52,16 +52,16 @@ impl IWnd for Header
 {
     mtd paintItem(bc: PaintContext, item: *HeaderItem, idx: u32, x: f32)
     {
-        var painter = bc.painter
+        let painter = bc.painter
 
         var clientRect = getClientRect()
         var labelPos = clientRect
         labelPos.x = x
         labelPos.width = item.width
 
-        var theme = getTheme()
-        var metrics = getThemeMetrics()
-        var colors = getThemeColors()
+        let theme = getTheme()
+        let metrics = getThemeMetrics()
+        let colors = getThemeColors()
 
         if hotIdx == idx and !hotSeparator
         {
@@ -113,11 +113,11 @@ impl IWnd for Header
 
     mtd impl onPaintEvent(evt: *PaintEvent)
     {
-        var painter = evt.bc.painter
-        var theme = getTheme()
-        var metrics = getThemeMetrics()
-        var colors = getThemeColors()
-        var rects = getThemeRects()
+        let painter = evt.bc.painter
+        let theme = getTheme()
+        let metrics = getThemeMetrics()
+        let colors = getThemeColors()
+        let rects = getThemeRects()
 
         // Background bar
         var clientRect = getClientRect()
@@ -257,7 +257,7 @@ private impl Header
 {
     mtd hitTest(surfacePos: Math.Point)->{idx: u32, sep: bool}
     {
-        var metrics = getThemeMetrics()
+        let metrics = getThemeMetrics()
         var pos = surfaceToLocal(surfacePos)
         pos += scrollPos.x
         var x = padding.x
@@ -296,7 +296,7 @@ impl Header
     #[Swag.Discardable]
     mtd addItem(tabName: string, width = 100'f32, icon: Icon = {})->*HeaderItem
     {
-        var item = items.newPtr()
+        let item = items.newPtr()
         item.name = tabName
         item.icon = icon
         item.width = width
@@ -360,7 +360,7 @@ impl Header
         Debug.assert(column < items.count)
 
         var x = padding.x
-        var m = getThemeMetrics().header_Separator
+        let m = getThemeMetrics().header_Separator
         visit item, i: items
         {
             if item.column == column

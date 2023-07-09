@@ -57,7 +57,7 @@ private impl Application
 
         if event.kind == .Quit
         {
-            var evt = cast(*QuitEvent) event
+            let evt = cast(*QuitEvent) event
             mustQuit = true
             quitCode = evt.quitCode
             return
@@ -288,7 +288,7 @@ private impl Application
         var needUpdateState = false
         for var i = 0; i < copy.count; i += 1
         {
-            var evt = copy[i]
+            let evt = copy[i]
             if evt.kind == .Invalidate
                 evt.target.invalidate()
             else
@@ -477,7 +477,7 @@ private impl Application
 
         if modalSurfaces.count
         {
-            var back = modalSurfaces.back()
+            let back = modalSurfaces.back()
             back.enable()
             back.wnd.view.setFocus()
         }
@@ -541,7 +541,7 @@ impl Application
     // Creates a new surface
     mtd createSurface(x, y, width, height: s32, flags = SurfaceFlags.OverlappedWindow, view: *Wnd = null, hook: HookEvent = null)->*Surface throw
     {
-        var surface = Memory.new'Surface()
+        let surface = Memory.new'Surface()
         surface.app = self
         surface.position = {x, y, width, height}
 
@@ -710,7 +710,7 @@ impl Application
     // Register a new timer for the given 'target'
     mtd addTimer(time: Time.Duration, target: *Wnd)->*Timer
     {
-        var timer = Memory.new'Timer()
+        let timer = Memory.new'Timer()
         timer.timeMs = time.toMs()
         timer.target = target
         if duringTimerEvents

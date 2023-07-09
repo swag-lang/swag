@@ -213,10 +213,10 @@ impl IWnd for SurfaceWnd
     {
         if isPendingDestroy
             return
-        var bc = evt.bc
-        var theme = getTheme()
-        var colors = getThemeColors()
-        var rects = getThemeRects()
+        let bc = evt.bc
+        let theme = getTheme()
+        let colors = getThemeColors()
+        let rects = getThemeRects()
 
         var clientRect = getClientRect()
 

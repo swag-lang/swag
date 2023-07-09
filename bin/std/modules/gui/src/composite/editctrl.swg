@@ -19,7 +19,7 @@ impl IWnd for EditCtrl
             return
 
         var rect = getClientRect()
-        var metrics = getThemeMetrics()
+        let metrics = getThemeMetrics()
 
         label.setPosition(0, 0, labelSize, metrics.editBox_Height)
         edit.setPosition(label.position.right() + 5, rect.vertCenter() - metrics.editBox_Height / 2, editSize, metrics.editBox_Height)

@@ -73,7 +73,7 @@ private impl PropertyList
         switch evt.kind
         {
         case Notify:
-            var ntfyEvt = cast(*NotifyEvent) evt
+            let ntfyEvt = cast(*NotifyEvent) evt
             if ntfyEvt.ntfyKind == .ChildFocusChanged
             {
                 wnd.invalidate()
@@ -81,9 +81,9 @@ private impl PropertyList
             }
 
         case PrePaint:
-            var paintEvt = cast(*PaintEvent) evt
-            var painter = paintEvt.bc.painter
-            var colors = wnd.getThemeColors()
+            let paintEvt = cast(*PaintEvent) evt
+            let painter = paintEvt.bc.painter
+            let colors = wnd.getThemeColors()
 
             var colBk, colBorder: Color
             if wnd.isParentOf(wnd.getApp().keybFocusWnd)
@@ -632,26 +632,26 @@ private impl PropertyList
     {
         visit f: typeStruct.fields
         {
-            var ptrData = addr + f.offset
+            let ptrData = addr + f.offset
 
 			// Category
-			var categ = Reflection.getAttributeValue(f, PropertyList.Category, "name")
+			let categ = Reflection.getAttributeValue(f, PropertyList.Category, "name")
 			if categ != null
 			{
 				var v: Swag.TypeValue
 				v.name = cast(string) categ
-				var item = addItem(v, null)
+				let item = addItem(v, null)
 				item.label.style.setFont(&font0)
 				categs.add({item, 0})
 			}
 
 			// Sub Category
-			var subCateg = Reflection.getAttributeValue(f, PropertyList.SubCategory, "name")
+			let subCateg = Reflection.getAttributeValue(f, PropertyList.SubCategory, "name")
 			if subCateg != null
 			{
 				var v: Swag.TypeValue
 				v.name = cast(string) subCateg
-				var item = addItem(v, null)
+				let item = addItem(v, null)
 				item.label.style.setFont(&font1)
 				categs.add({item, 1})
 			}
@@ -659,7 +659,7 @@ private impl PropertyList
 			// Value
             if Reflection.isEnum(f.pointedType)
             {
-                var typeEnum = cast(const *Swag.TypeInfoEnum) f.pointedType
+                let typeEnum = cast(const *Swag.TypeInfoEnum) f.pointedType
                 addEnum(f, typeEnum, ptrData)
             }
             elif f.pointedType == Core.String
@@ -668,8 +668,8 @@ private impl PropertyList
             }
             elif Reflection.isString(f.pointedType)
             {
-                var item = addItem(f, ptrData)
-                var ed = EditBox.create(item.line, dref cast(*string) ptrData)
+                let item = addItem(f, ptrData)
+                let ed = EditBox.create(item.line, dref cast(*string) ptrData)
                 ed.editBoxFlags = .ReadOnly
                 item.editBox = ed
             }
@@ -679,14 +679,14 @@ private impl PropertyList
             }
             elif Reflection.isInteger(f.pointedType) or Reflection.isFloat(f.pointedType)
             {
-                var nativeType = cast(const *Swag.TypeInfoNative) f.pointedType
+                let nativeType = cast(const *Swag.TypeInfoNative) f.pointedType
                 addNative(f, nativeType, ptrData)
             }
             elif Reflection.isStruct(f.pointedType)
             {
-                var item = addItem(f, ptrData)
+                let item = addItem(f, ptrData)
                 item.label.style.setFont(&font2)
-                var typeSubStruct = cast(const *Swag.TypeInfoStruct) f.pointedType
+                let typeSubStruct = cast(const *Swag.TypeInfoStruct) f.pointedType
                 addStruct(ptrData, typeSubStruct)
             }
         }

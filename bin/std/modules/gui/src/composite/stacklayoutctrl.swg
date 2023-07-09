@@ -41,7 +41,7 @@ impl IWnd for StackLayoutCtrl
 
             var x = position.width * 0.5 - totalW * 0.5
             x = Math.max(x, padding.x)
-            var y = getClientRectPadding().vertCenter()
+            let y = getClientRectPadding().vertCenter()
             visit c: childs
             {
                 var pos = c.position
@@ -105,13 +105,13 @@ impl IWnd for StackLayoutCtrl
         switch layoutKind
         {
         case TopAutoSize:
-            var b = childs.back()
-            var y = b.position.bottom() + padding.w
+            let b = childs.back()
+            let y = b.position.bottom() + padding.w
             position.height = y
 
         case LeftAutoSize:
-            var b = childs.back()
-            var x = b.position.right() + padding.z
+            let b = childs.back()
+            let x = b.position.right() + padding.z
             position.width = x
         }
     }

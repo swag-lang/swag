@@ -44,11 +44,11 @@ impl IWnd for FrameWnd
     {
         if frameFlags.has(.SmallShadow)
         {
-            var bc = evt.bc
-            var painter = bc.painter
-            var theme = getTheme()
-            var colors = getThemeColors()
-            var metrics = getThemeMetrics()
+            let bc = evt.bc
+            let painter = bc.painter
+            let theme = getTheme()
+            let colors = getThemeColors()
+            let metrics = getThemeMetrics()
 
             var clientRect = getClientRect()
             clientRect.applyPadding(-metrics.frameWnd_SmallShadowSize)
@@ -62,11 +62,11 @@ impl IWnd for FrameWnd
         if frameForm == .Transparent
             return
 
-        var bc = evt.bc
-        var painter = bc.painter
-        var theme = getTheme()
-        var colors = getThemeColors()
-        var rects = getThemeRects()
+        let bc = evt.bc
+        let painter = bc.painter
+        let theme = getTheme()
+        let colors = getThemeColors()
+        let rects = getThemeRects()
 
         var subRectBk:  *ThemeImageRect
         var colorBk:    Color
@@ -110,12 +110,12 @@ impl IWnd for FrameWnd
         if !(frameFlags & .Borders)
             return
 
-        var bc = evt.bc
-        var painter = bc.painter
-        var theme = getTheme()
-        var colors = getThemeColors()
-        var rects = getThemeRects()
-        var metrics = getThemeMetrics()
+        let bc = evt.bc
+        let painter = bc.painter
+        let theme = getTheme()
+        let colors = getThemeColors()
+        let rects = getThemeRects()
+        let metrics = getThemeMetrics()
 
         var subRectBorder:  *ThemeImageRect
         var colorBorder:    Color = undefined
