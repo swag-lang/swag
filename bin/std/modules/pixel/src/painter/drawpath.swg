@@ -36,14 +36,14 @@ impl Painter
 {
     mtd drawCapSquare(p, d: Vector2, sens: f32, pen: Pen)
     {
-        var n = Vector2{d.y * sens, -d.x * sens}
-        var v0 = Vector2{p.x + d.x, p.y + d.y}
-        var v1 = Vector2{p.x - d.x, p.y - d.y}
-        var v2 = Vector2{v1.x + n.x, v1.y + n.y}
-        var v3 = Vector2{v0.x + n.x, v0.y + n.y}
+        let n = Vector2{d.y * sens, -d.x * sens}
+        let v0 = Vector2{p.x + d.x, p.y + d.y}
+        let v1 = Vector2{p.x - d.x, p.y - d.y}
+        let v2 = Vector2{v1.x + n.x, v1.y + n.y}
+        let v3 = Vector2{v0.x + n.x, v0.y + n.y}
 
-        var prim1 = pushTriangle(v0, v1, v3, pen.brush.color)
-        var prim2 = pushTriangle(v1, v3, v2, pen.brush.color)
+        let prim1 = pushTriangle(v0, v1, v3, pen.brush.color)
+        let prim2 = pushTriangle(v1, v3, v2, pen.brush.color)
 
         if curState.paintParams & .Antialiased
         {
@@ -57,11 +57,11 @@ impl Painter
 
     mtd drawCapTriangle(p, d: Vector2, sens: f32, pen: Pen)
     {
-        var n = Vector2{d.y * sens, -d.x * sens}
-        var v0 = Vector2{p.x + d.x, p.y + d.y}
-        var v1 = Vector2{p.x - d.x, p.y - d.y}
-        var v2 = Vector2{p.x + n.x, p.y + n.y}
-        var prim1 = pushTriangle(v0, v1, v2, pen.brush.color)
+        let n = Vector2{d.y * sens, -d.x * sens}
+        let v0 = Vector2{p.x + d.x, p.y + d.y}
+        let v1 = Vector2{p.x - d.x, p.y - d.y}
+        let v2 = Vector2{p.x + n.x, p.y + n.y}
+        let prim1 = pushTriangle(v0, v1, v2, pen.brush.color)
 
         if curState.paintParams & .Antialiased
         {
@@ -72,22 +72,22 @@ impl Painter
 
     mtd drawCapSquareAnchor(p1, d1: Vector2, sens: f32, pen: Pen, start: bool)->Vector2
     {
-        var sx = start ? pen.capStartScaleX : pen.capEndScaleX
-        var sy = start ? pen.capStartScaleY : pen.capEndScaleY
+        let sx = start ? pen.capStartScaleX : pen.capEndScaleX
+        let sy = start ? pen.capStartScaleY : pen.capEndScaleY
 
         var p = p1
-        var d = d1 * sx
-        var n = Vector2{d.y * sens, -d.x * sens}
+        let d = d1 * sx
+        let n = Vector2{d.y * sens, -d.x * sens}
         n.setLengthSafe(d.length() * sy)
         p -= n * 0.5
 
-        var v0 = Vector2{p.x + d.x, p.y + d.y}
-        var v1 = Vector2{p.x - d.x, p.y - d.y}
-        var v2 = Vector2{v1.x + n.x, v1.y + n.y}
-        var v3 = Vector2{v0.x + n.x, v0.y + n.y}
+        let v0 = Vector2{p.x + d.x, p.y + d.y}
+        let v1 = Vector2{p.x - d.x, p.y - d.y}
+        let v2 = Vector2{v1.x + n.x, v1.y + n.y}
+        let v3 = Vector2{v0.x + n.x, v0.y + n.y}
 
-        var prim1 = pushTriangle(v0, v1, v3, pen.brush.color)
-        var prim2 = pushTriangle(v1, v3, v2, pen.brush.color)
+        let prim1 = pushTriangle(v0, v1, v3, pen.brush.color)
+        let prim2 = pushTriangle(v1, v3, v2, pen.brush.color)
 
         if curState.paintParams & .Antialiased
         {
@@ -107,18 +107,18 @@ impl Painter
 
     mtd drawCapArrowAnchor(p1, d1: Vector2, sens: f32, pen: Pen, start: bool)->Vector2
     {
-        var sx = start ? pen.capStartScaleX : pen.capEndScaleX
-        var sy = start ? pen.capStartScaleY : pen.capEndScaleY
+        let sx = start ? pen.capStartScaleX : pen.capEndScaleX
+        let sy = start ? pen.capStartScaleY : pen.capEndScaleY
 
         var p = p1
-        var d = d1 * sx
-        var n = Vector2{d.y * sens * sy, -d.x * sens * sy}
+        let d = d1 * sx
+        let n = Vector2{d.y * sens * sy, -d.x * sens * sy}
         p -= n
 
-        var v0 = Vector2{p.x + d.x, p.y + d.y}
-        var v1 = Vector2{p.x - d.x, p.y - d.y}
-        var v2 = Vector2{p.x + n.x, p.y + n.y}
-        var prim1 = pushTriangle(v0, v1, v2, pen.brush.color)
+        let v0 = Vector2{p.x + d.x, p.y + d.y}
+        let v1 = Vector2{p.x - d.x, p.y - d.y}
+        let v2 = Vector2{p.x + n.x, p.y + n.y}
+        let prim1 = pushTriangle(v0, v1, v2, pen.brush.color)
 
         if curState.paintParams & .Antialiased
         {
@@ -132,11 +132,11 @@ impl Painter
 
     mtd drawCapRoundAnchor(p, d: Vector2, pen: Pen, start: bool)->Vector2
     {
-        var sx = start ? pen.capStartScaleX : pen.capEndScaleX
+        let sx = start ? pen.capStartScaleX : pen.capEndScaleX
 
-        var angle0 = Math.atan2(-d.y, -d.x)
-        var angle1 = angle0 + Math.ConstF32.TwoPi
-        var radius = sx * d.length()
+        let angle0 = Math.atan2(-d.y, -d.x)
+        let angle1 = angle0 + Math.ConstF32.TwoPi
+        let radius = sx * d.length()
         drawRound(p, radius, angle0, angle1, pen)
         return Vector2.Zero
     }
@@ -150,8 +150,8 @@ impl Painter
             return
         }
 
-        var angle0 = Math.atan2(-d.y, -d.x)
-        var angle1 = angle0 + Math.ConstF32.Pi
+        let angle0 = Math.atan2(-d.y, -d.x)
+        let angle1 = angle0 + Math.ConstF32.Pi
         radius *= sens
         drawRound(p, radius, angle0, angle1, pen)
     }
@@ -224,7 +224,7 @@ impl Painter
             v2 = Vector2{p.x + d2.x, p.y + d2.y}
         }
 
-        var prim1 = pushTriangle(v0, v1, v2, pen.brush.color)
+        let prim1 = pushTriangle(v0, v1, v2, pen.brush.color)
         if curState.paintParams & .Antialiased
             addEdgeAA(prim1, v1, v2)
     }
@@ -262,8 +262,8 @@ impl Painter
         var v1 = startPos
         loop i: 1..sharedRoundTmp.count-1
         {
-            var v2 = sharedRoundTmp[i].pos
-            var prim1 = pushTriangle(center, v1, v2, pen.brush.color)
+            let v2 = sharedRoundTmp[i].pos
+            let prim1 = pushTriangle(center, v1, v2, pen.brush.color)
             if curState.paintParams & .Antialiased
                 addEdgeAA(prim1, v1, v2)
             v1 = v2
@@ -287,7 +287,7 @@ impl Painter
         if Math.isEqualEpsilon(angle0, angle1)
             return
 
-        var radius = d1.length()
+        let radius = d1.length()
 
         if angle1 > angle0 + Math.ConstF32.Pi
             angle1 -= Math.ConstF32.TwoPi
@@ -299,9 +299,9 @@ impl Painter
 
     mtd drawJoinMiter(p, d1, d2: Vector2, justMiter: bool, pen: Pen)
     {
-        var a = Vector2{d1.x + d2.x, d1.y + d2.y}
-        var w = d1.length()
-        var l = a.length()
+        let a = Vector2{d1.x + d2.x, d1.y + d2.y}
+        let w = d1.length()
+        let l = a.length()
         if Math.isZeroEpsilon(l)
             return
 
@@ -337,8 +337,8 @@ impl Painter
             v3 = Vector2{p.x + d2.x, p.y + d2.y}
         }
 
-        var prim1 = pushTriangle(v0, v1, v3, pen.brush.color)
-        var prim2 = pushTriangle(v1, v3, v2, pen.brush.color)
+        let prim1 = pushTriangle(v0, v1, v3, pen.brush.color)
+        let prim2 = pushTriangle(v1, v3, v2, pen.brush.color)
         if curState.paintParams & .Antialiased
         {
             addEdgeAA(prim1, v3, v2)
@@ -649,8 +649,8 @@ impl Painter
         // AA end edge if no end cap
         if !lastLineInvalid and !path.isClosed and (curState.paintParams & .Antialiased) and (pen.endCapStyle == .None)
         {
-            var prim2p = vertexBuffer.buffer + prim2
-            var prim2t = prim2p + 2
+            let prim2p = vertexBuffer.buffer + prim2
+            let prim2t = prim2p + 2
             addEdgeAA(prim1, prim2p.pos, prim2t.pos)
             addEdgeAA(prim2, prim2p.pos, prim2t.pos)
         }

@@ -72,7 +72,7 @@ public impl Painter
         if Math.isZeroEpsilon(path.polygon.totalLen)
             return
 
-        var polygon = &path.polygon
+        let polygon = &path.polygon
 
         // Convex shape : faster
         if polygon.isConvex
@@ -80,7 +80,7 @@ public impl Painter
             setTexture0(path.bvMin, path.bvMax, brush)
             resetTextureFont()
 
-            var count = path.polygon.points.count - 1
+            let count = path.polygon.points.count - 1
 
             // Convex shape : 1 triangle
             if count == 3

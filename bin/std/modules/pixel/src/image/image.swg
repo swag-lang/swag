@@ -146,16 +146,16 @@ impl Image
         var p = {self, userData}
         Jobs.parallelVisit(|buffer, data| pixels.toSlice(), cast(u32) (bpp8 * stride), &p)
         {
-            var p = cast(*@decltype(p)) data
+            let p = cast(*@decltype(p)) data
             #macro
             {
-                var image = #up p.self
-                var userData = #up p.userData
-                var pix = #up buffer
+                let image = #up p.self
+                let userData = #up p.userData
+                let pix = #up buffer
 
-                var index = (cast(u64) (pix - image.pixels.buffer)) / image.bpp8
-                var x = cast(s32) index % image.width
-                var y = cast(s32) index / image.width
+                let index = (cast(u64) (pix - image.pixels.buffer)) / image.bpp8
+                let x = cast(s32) index % image.width
+                let y = cast(s32) index / image.width
 
                 #mixin #up stmt
             }
@@ -208,7 +208,7 @@ impl Image
     mtd getPixelColor(pixX, pixY: s32)->Color
     {
         var result: retval
-        var x = Math.clamp(pixX, 0, width - 1)
+        let x = Math.clamp(pixX, 0, width - 1)
         var y = Math.clamp(pixY, 0, height - 1)
         y = height - y - 1
 

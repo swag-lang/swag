@@ -33,9 +33,9 @@ impl Image
         case HueVert:
             visitPixels(&swapRB)
             {
-                var swapRB = dref cast(*bool) userData
-                var factor0 = y / cast(f32) image.height
-                var col = Color.fromHsl(factor0, 1, 0.5)
+                let swapRB = dref cast(*bool) userData
+                let factor0 = y / cast(f32) image.height
+                let col = Color.fromHsl(factor0, 1, 0.5)
                 if swapRB { pix[0] = col.r; pix[1] = col.g; pix[2] = col.b; }
                 else      { pix[0] = col.b; pix[1] = col.g; pix[2] = col.r; }
                 if image.pf.hasAlpha() pix[3] = 255
@@ -45,8 +45,8 @@ impl Image
             var pix = pixels.buffer
             loop x: width
             {
-                var factor0 = x / cast(f32) width
-                var col = Color.fromHsl(factor0, 1, 0.5)
+                let factor0 = x / cast(f32) width
+                let col = Color.fromHsl(factor0, 1, 0.5)
                 if swapRB { pix[0] = col.r; pix[1] = col.g; pix[2] = col.b; }
                 else      { pix[0] = col.b; pix[1] = col.g; pix[2] = col.r; }
                 if pf.hasAlpha() pix[3] = 255
@@ -62,10 +62,10 @@ impl Image
             var pms = {hsl, swapRB}
             visitPixels(&pms)
             {
-                var params = dref cast(*@decltype(pms)) userData
-                var swapRB = params.swapRB
-                var factor0 = y / cast(f32) image.height
-                var col = Color.fromHsl(params.hsl.h, factor0, 0.5)
+                let params = dref cast(*@decltype(pms)) userData
+                let swapRB = params.swapRB
+                let factor0 = y / cast(f32) image.height
+                let col = Color.fromHsl(params.hsl.h, factor0, 0.5)
                 if swapRB { pix[0] = col.r; pix[1] = col.g; pix[2] = col.b; }
                 else      { pix[0] = col.b; pix[1] = col.g; pix[2] = col.r; }
                 if image.pf.hasAlpha() pix[3] = 255
@@ -75,8 +75,8 @@ impl Image
             var pix = pixels.buffer
             loop x: width
             {
-                var factor0 = x / cast(f32) width
-                var col = Color.fromHsl(hsl.h, factor0, 0.5)
+                let factor0 = x / cast(f32) width
+                let col = Color.fromHsl(hsl.h, factor0, 0.5)
                 if swapRB { pix[0] = col.r; pix[1] = col.g; pix[2] = col.b; }
                 else      { pix[0] = col.b; pix[1] = col.g; pix[2] = col.r; }
                 if pf.hasAlpha() pix[3] = 255
@@ -92,10 +92,10 @@ impl Image
             var pms = {hsl, swapRB}
             visitPixels(&pms)
             {
-                var params = dref cast(*@decltype(pms)) userData
-                var swapRB = params.swapRB
-                var factor0 = y / cast(f32) image.height
-                var col = Color.fromHsl(params.hsl.h, 1, factor0)
+                let params = dref cast(*@decltype(pms)) userData
+                let swapRB = params.swapRB
+                let factor0 = y / cast(f32) image.height
+                let col = Color.fromHsl(params.hsl.h, 1, factor0)
                 if swapRB { pix[0] = col.r; pix[1] = col.g; pix[2] = col.b; }
                 else      { pix[0] = col.b; pix[1] = col.g; pix[2] = col.r; }
                 if image.pf.hasAlpha() pix[3] = 255
@@ -105,8 +105,8 @@ impl Image
             var pix = pixels.buffer
             loop x: width
             {
-                var factor0 = x / cast(f32) width
-                var col = Color.fromHsl(hsl.h, hsl.s, factor0)
+                let factor0 = x / cast(f32) width
+                let col = Color.fromHsl(hsl.h, hsl.s, factor0)
                 if swapRB { pix[0] = col.r; pix[1] = col.g; pix[2] = col.b; }
                 else      { pix[0] = col.b; pix[1] = col.g; pix[2] = col.r; }
                 if pf.hasAlpha() pix[3] = 255
@@ -122,10 +122,10 @@ impl Image
             var pms = {hsl, swapRB}
             visitPixels(&pms)
             {
-                var params = dref cast(*@decltype(pms)) userData
-                var factor0 = x / cast(f32) image.width
-                var factor1 = y / cast(f32) image.height
-                var col = Color.fromHsl(factor0, factor1, 0.5)
+                let params = dref cast(*@decltype(pms)) userData
+                let factor0 = x / cast(f32) image.width
+                let factor1 = y / cast(f32) image.height
+                let col = Color.fromHsl(factor0, factor1, 0.5)
                 if params.swapRB { pix[0] = col.r; pix[1] = col.g; pix[2] = col.b; }
                 else             { pix[0] = col.b; pix[1] = col.g; pix[2] = col.r; }
                 if image.pf.hasAlpha() pix[3] = 255
@@ -135,10 +135,10 @@ impl Image
             var pms = {hsl, swapRB}
             visitPixels(&pms)
             {
-                var params = dref cast(*@decltype(pms)) userData
-                var factor0 = x / cast(f32) image.width
-                var factor1 = y / cast(f32) image.height
-                var col = Color.fromHsl(factor0, 1, factor1)
+                let params = dref cast(*@decltype(pms)) userData
+                let factor0 = x / cast(f32) image.width
+                let factor1 = y / cast(f32) image.height
+                let col = Color.fromHsl(factor0, 1, factor1)
                 if params.swapRB { pix[0] = col.r; pix[1] = col.g; pix[2] = col.b; }
                 else             { pix[0] = col.b; pix[1] = col.g; pix[2] = col.r; }
                 if image.pf.hasAlpha() pix[3] = 255
@@ -148,12 +148,12 @@ impl Image
             var pms = {hsl, swapRB}
             visitPixels(&pms)
             {
-                var params = dref cast(*@decltype(pms)) userData
-                var factor0 = x / cast(f32) image.width
-                var factor1 = y / cast(f32) image.height
+                let params = dref cast(*@decltype(pms)) userData
+                let factor0 = x / cast(f32) image.width
+                let factor1 = y / cast(f32) image.height
                 var l = 0.5 + ((1 - factor0) * 0.5)
                 l = Math.lerp(0, l, factor1)
-                var col = Color.fromHsl(params.hsl.h, factor0, l)
+                let col = Color.fromHsl(params.hsl.h, factor0, l)
                 if params.swapRB { pix[0] = col.r; pix[1] = col.g; pix[2] = col.b; }
                 else             { pix[0] = col.b; pix[1] = col.g; pix[2] = col.r; }
                 if image.pf.hasAlpha() pix[3] = 255
@@ -163,10 +163,10 @@ impl Image
             var pms = {color.r / 255.0, swapRB}
             visitPixels(&pms)
             {
-                var params = dref cast(*@decltype(pms)) userData
-                var factor0 = x / cast(f32) image.width
-                var factor1 = 1 - (y / cast(f32) image.height)
-                var col = Color.fromRgbf(params.item0, factor0, factor1)
+                let params = dref cast(*@decltype(pms)) userData
+                let factor0 = x / cast(f32) image.width
+                let factor1 = 1 - (y / cast(f32) image.height)
+                let col = Color.fromRgbf(params.item0, factor0, factor1)
                 if params.swapRB { pix[0] = col.r; pix[1] = col.g; pix[2] = col.b; }
                 else             { pix[0] = col.b; pix[1] = col.g; pix[2] = col.r; }
                 if image.pf.hasAlpha() pix[3] = 255
@@ -176,10 +176,10 @@ impl Image
             var pms = {color.g / 255.0, swapRB}
             visitPixels(&pms)
             {
-                var params = dref cast(*@decltype(pms)) userData
-                var factor0 = x / cast(f32) image.width
-                var factor1 = 1 - (y / cast(f32) image.height)
-                var col = Color.fromRgbf(factor0, params.item0, factor1)
+                let params = dref cast(*@decltype(pms)) userData
+                let factor0 = x / cast(f32) image.width
+                let factor1 = 1 - (y / cast(f32) image.height)
+                let col = Color.fromRgbf(factor0, params.item0, factor1)
                 if params.swapRB { pix[0] = col.r; pix[1] = col.g; pix[2] = col.b; }
                 else             { pix[0] = col.b; pix[1] = col.g; pix[2] = col.r; }
                 if image.pf.hasAlpha() pix[3] = 255
@@ -189,10 +189,10 @@ impl Image
             var pms = {color.b / 255.0, swapRB}
             visitPixels(&pms)
             {
-                var params = dref cast(*@decltype(pms)) userData
-                var factor0 = x / cast(f32) image.width
-                var factor1 = 1 - (y / cast(f32) image.height)
-                var col = Color.fromRgbf(factor0, factor1, params.item0)
+                let params = dref cast(*@decltype(pms)) userData
+                let factor0 = x / cast(f32) image.width
+                let factor1 = 1 - (y / cast(f32) image.height)
+                let col = Color.fromRgbf(factor0, factor1, params.item0)
                 if params.swapRB { pix[0] = col.r; pix[1] = col.g; pix[2] = col.b; }
                 else             { pix[0] = col.b; pix[1] = col.g; pix[2] = col.r; }
                 if image.pf.hasAlpha() pix[3] = 255

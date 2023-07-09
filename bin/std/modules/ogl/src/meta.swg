@@ -15,7 +15,7 @@ var g_Functions: Array'OneFunc
 #message(CompilerMsgMask.SemFunctions)
 {
     let itf = @compiler()
-    var msg = itf.getMessage()
+    let msg = itf.getMessage()
     if !Reflection.hasAttribute(msg.type, Extension)
         return
     g_Functions.add({msg.type, msg.name})
@@ -31,7 +31,7 @@ var g_Functions: Array'OneFunc
 
     visit e: g_Functions
     {
-        var typeFunc = cast(const *TypeInfoFunc) e.type
+        let typeFunc = cast(const *TypeInfoFunc) e.type
 
         // Declare a lambda variable for that extension
         builderVars.appendFormat("var ext_%: %\n", e.name, typeFunc.name)

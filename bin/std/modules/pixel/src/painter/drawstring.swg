@@ -146,7 +146,7 @@ impl Painter
             return
 
         var x = Math.round(left)
-        var y = Math.round(top + font.ascent*zoom)
+        let y = Math.round(top + font.ascent*zoom)
 
         // Compute text extent only if necessary
         var ms: StringMetrics = undefined
@@ -170,10 +170,10 @@ impl Painter
             switch under
             {
             case Strikeout:
-                var yUnder = y - (ms.ascent*zoom / 2)
+                let yUnder = y - (ms.ascent*zoom / 2)
                 drawLine(x, yUnder, x + ms.width*zoom, yUnder, pen)
             case Underline:
-                var yUnder = y - font.underlinePos
+                let yUnder = y - font.underlinePos
                 drawLine(x, yUnder, x + ms.width*zoom, yUnder, pen)
             }
 
@@ -188,20 +188,20 @@ impl Painter
             {
                 setTextureFont(font, refr.atlasIndex)
 
-                var x1 = x + refr.shiftX
-                var y1 = y - refr.shiftY
-                var x2 = x1 + refr.width
-                var y2 = y1 + refr.height
+                let x1 = x + refr.shiftX
+                let y1 = y - refr.shiftY
+                let x2 = x1 + refr.width
+                let y2 = y1 + refr.height
 
-                var p1 = Vector2{x1, y1}
-                var p2 = Vector2{x2, y1}
-                var p3 = Vector2{x1, y2}
-                var p4 = Vector2{x2, y2}
+                let p1 = Vector2{x1, y1}
+                let p2 = Vector2{x2, y1}
+                let p3 = Vector2{x1, y2}
+                let p4 = Vector2{x2, y2}
 
-                var uv1 = Vector2{refr.uv.x, refr.uv.y}
-                var uv2 = Vector2{refr.uv.x + refr.uv.width, refr.uv.y}
-                var uv3 = Vector2{refr.uv.x, refr.uv.y + refr.uv.height}
-                var uv4 = Vector2{refr.uv.x + refr.uv.width, refr.uv.y + refr.uv.height}
+                let uv1 = Vector2{refr.uv.x, refr.uv.y}
+                let uv2 = Vector2{refr.uv.x + refr.uv.width, refr.uv.y}
+                let uv3 = Vector2{refr.uv.x, refr.uv.y + refr.uv.height}
+                let uv4 = Vector2{refr.uv.x + refr.uv.width, refr.uv.y + refr.uv.height}
 
                 discard pushTriangle(p1, p2, p3, uv1, uv2, uv3, brush.color)
                 discard pushTriangle(p3, p2, p4, uv3, uv2, uv4, brush.color)
@@ -215,20 +215,20 @@ impl Painter
             {
                 setTextureFont(font, refr.atlasIndex)
 
-                var x1 = Math.round(x + refr.shiftX*zoom)
-                var y1 = Math.round(y - refr.shiftY*zoom)
-                var x2 = Math.round(x + (refr.shiftX*zoom) + (refr.width*zoom))
-                var y2 = Math.round(y - (refr.shiftY*zoom) + (refr.height*zoom))
+                let x1 = Math.round(x + refr.shiftX*zoom)
+                let y1 = Math.round(y - refr.shiftY*zoom)
+                let x2 = Math.round(x + (refr.shiftX*zoom) + (refr.width*zoom))
+                let y2 = Math.round(y - (refr.shiftY*zoom) + (refr.height*zoom))
 
-                var p1 = Vector2{x1, y1}
-                var p2 = Vector2{x2, y1}
-                var p3 = Vector2{x1, y2}
-                var p4 = Vector2{x2, y2}
+                let p1 = Vector2{x1, y1}
+                let p2 = Vector2{x2, y1}
+                let p3 = Vector2{x1, y2}
+                let p4 = Vector2{x2, y2}
 
-                var uv1 = Vector2{refr.uv.x, refr.uv.y}
-                var uv2 = Vector2{refr.uv.x + refr.uv.width, refr.uv.y}
-                var uv3 = Vector2{refr.uv.x, refr.uv.y + refr.uv.height}
-                var uv4 = Vector2{refr.uv.x + refr.uv.width, refr.uv.y + refr.uv.height}
+                let uv1 = Vector2{refr.uv.x, refr.uv.y}
+                let uv2 = Vector2{refr.uv.x + refr.uv.width, refr.uv.y}
+                let uv3 = Vector2{refr.uv.x, refr.uv.y + refr.uv.height}
+                let uv4 = Vector2{refr.uv.x + refr.uv.width, refr.uv.y + refr.uv.height}
 
                 discard pushTriangle(p1, p2, p3, uv1, uv2, uv3, brush.color)
                 discard pushTriangle(p3, p2, p4, uv3, uv2, uv4, brush.color)

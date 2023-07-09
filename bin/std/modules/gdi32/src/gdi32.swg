@@ -436,7 +436,7 @@ func RGB(r,g,b: s32)->COLORREF
 {
     func ChoosePixelFormat(hdc: HDC, ppfd: const *PIXELFORMATDESCRIPTOR)->s32 throw
     {
-        var res = Gdi32Priv.ChoosePixelFormat(hdc, ppfd)
+        let res = Gdi32Priv.ChoosePixelFormat(hdc, ppfd)
         if !res
             throw "GDI_ERROR"
         return res
@@ -457,7 +457,7 @@ func RGB(r,g,b: s32)->COLORREF
     #[Discardable]
     func DescribePixelFormat(hdc: HDC, iPixelFormat: s32, nBytes: UINT, ppfd: *PIXELFORMATDESCRIPTOR)->s32 throw
     {
-        var res = Gdi32Priv.DescribePixelFormat(hdc, iPixelFormat, nBytes, ppfd)
+        let res = Gdi32Priv.DescribePixelFormat(hdc, iPixelFormat, nBytes, ppfd)
         if !res
             throw "GDI_ERROR"
         return res
@@ -465,7 +465,7 @@ func RGB(r,g,b: s32)->COLORREF
 
     func CreateCompatibleDC(hdc: HDC)->HDC throw
     {
-        var res = Gdi32Priv.CreateCompatibleDC(hdc)
+        let res = Gdi32Priv.CreateCompatibleDC(hdc)
         if res == null
             throw "GDI_ERROR"
         return res
@@ -473,7 +473,7 @@ func RGB(r,g,b: s32)->COLORREF
 
     func CreateCompatibleBitmap(hdc: HDC, cx, cy: s32)->HBITMAP throw
     {
-        var res = Gdi32Priv.CreateCompatibleBitmap(hdc, cx, cy)
+        let res = Gdi32Priv.CreateCompatibleBitmap(hdc, cx, cy)
         if res == null
             throw "GDI_ERROR"
         return res
@@ -481,56 +481,56 @@ func RGB(r,g,b: s32)->COLORREF
 
     func DeleteDC(hdc: HDC) throw
     {
-        var res = Gdi32Priv.DeleteDC(hdc)
+        let res = Gdi32Priv.DeleteDC(hdc)
         if !res
             throw "GDI_ERROR"
     }
 
     func DeleteObject(ho: HGDIOBJ) throw
     {
-        var res = Gdi32Priv.DeleteObject(ho)
+        let res = Gdi32Priv.DeleteObject(ho)
         if !res
             throw "GDI_ERROR"
     }
 
     func BitBlt(hdc: HDC, x, y, cx, cy: s32, hdcSrc: HDC, x1, y1: s32, rop: DWORD) throw
     {
-        var res = Gdi32Priv.BitBlt(hdc, x, y, cx, cy, hdcSrc, x1, y1, rop)
+        let res = Gdi32Priv.BitBlt(hdc, x, y, cx, cy, hdcSrc, x1, y1, rop)
         if !res
             throw "GDI_ERROR"
     }
 
     func GetObjectA(h: HANDLE, c: s32, pv: LPVOID) throw
     {
-        var res = Gdi32Priv.GetObjectA(h, c, pv)
+        let res = Gdi32Priv.GetObjectA(h, c, pv)
         if !res
             throw "GDI_ERROR"
     }
 
     func GetObjectW(h: HANDLE, c: s32, pv: LPVOID) throw
     {
-        var res = Gdi32Priv.GetObjectW(h, c, pv)
+        let res = Gdi32Priv.GetObjectW(h, c, pv)
         if !res
             throw "GDI_ERROR"
     }
 
     func GetBitmapBits(hbit: HBITMAP, cb: LONG, lpvBits: LPVOID) throw
     {
-        var res = Gdi32Priv.GetBitmapBits(hbit, cb, lpvBits)
+        let res = Gdi32Priv.GetBitmapBits(hbit, cb, lpvBits)
         if !res
             throw "GDI_ERROR"
     }
 
     func SetBitmapBits(hbit: HBITMAP, cb: DWORD, lpvBits: LPVOID) throw
     {
-        var res = Gdi32Priv.SetBitmapBits(hbit, cb, lpvBits)
+        let res = Gdi32Priv.SetBitmapBits(hbit, cb, lpvBits)
         if !res
             throw "GDI_ERROR"
     }
 
     func GetFontData(hdc: HDC, dwTable: DWORD, dwOffset: DWORD, pvBuffer: LPVOID, cjBuffer: DWORD)->DWORD throw
     {
-        var res = Gdi32Priv.GetFontData(hdc, dwTable, dwOffset, pvBuffer, cjBuffer)
+        let res = Gdi32Priv.GetFontData(hdc, dwTable, dwOffset, pvBuffer, cjBuffer)
         if res == GDI_ERROR
             throw "GDI_ERROR"
         return res
@@ -538,7 +538,7 @@ func RGB(r,g,b: s32)->COLORREF
 
     func CreateFontIndirectA(lplf: const *LOGFONTA)->HFONT throw
     {
-        var res = Gdi32Priv.CreateFontIndirectA(lplf)
+        let res = Gdi32Priv.CreateFontIndirectA(lplf)
         if res == null
             throw "GDI_ERROR"
         return res
@@ -546,7 +546,7 @@ func RGB(r,g,b: s32)->COLORREF
 
     func CreateFontIndirectW(lplf: const *LOGFONTW)->HFONT throw
     {
-        var res = Gdi32Priv.CreateFontIndirectW(lplf)
+        let res = Gdi32Priv.CreateFontIndirectW(lplf)
         if res == null
             throw "GDI_ERROR"
         return res
@@ -554,7 +554,7 @@ func RGB(r,g,b: s32)->COLORREF
 
     func CreateSolidBrush(color: COLORREF)->HBRUSH throw
     {
-        var res = Gdi32Priv.CreateSolidBrush(color)
+        let res = Gdi32Priv.CreateSolidBrush(color)
         if res == null
             throw "GDI_ERROR"
         return res
@@ -562,7 +562,7 @@ func RGB(r,g,b: s32)->COLORREF
 
     func CreatePen(iStyle: s32, cWidth: s32, color: COLORREF)->HPEN throw
     {
-        var res = Gdi32Priv.CreatePen(iStyle, cWidth, color)
+        let res = Gdi32Priv.CreatePen(iStyle, cWidth, color)
         if res == null
             throw "GDI_ERROR"
         return res
@@ -571,7 +571,7 @@ func RGB(r,g,b: s32)->COLORREF
     #[Discardable]
     func GetDIBits(hdc: HDC, hbm: HBITMAP, start: UINT, cLines: UINT, lpvBits: LPVOID, lpbmi: *BITMAPINFO, usage: UINT)->s32 throw
     {
-        var res = Gdi32Priv.GetDIBits(hdc, hbm, start, cLines, lpvBits, lpbmi, usage)
+        let res = Gdi32Priv.GetDIBits(hdc, hbm, start, cLines, lpvBits, lpbmi, usage)
         if res == 0
             throw "GDI_ERROR"
         return res
@@ -579,7 +579,7 @@ func RGB(r,g,b: s32)->COLORREF
 
     func CreateDIBSection(hdc: HDC, pbmi: const *BITMAPINFO, usage: UINT, ppvBits: **void, hSection: HANDLE, offset: DWORD)->HBITMAP throw
     {
-        var res = Gdi32Priv.CreateDIBSection(hdc, pbmi, usage, ppvBits, hSection, offset)
+        let res = Gdi32Priv.CreateDIBSection(hdc, pbmi, usage, ppvBits, hSection, offset)
         if res == null
             throw "GDI_ERROR"
         return res

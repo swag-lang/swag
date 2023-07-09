@@ -586,24 +586,24 @@ impl RenderOgl
         switch cmd.id
         {
         case SetBlendingMode:
-            var params = &cmd.blendingMode
+            let params = &cmd.blendingMode
             setBlendingMode(params.mode)
 
         case Clear:
-            var params = &cmd.clear
-            var (a, r, g, b) = params.color.toArgbf()
+            let params = &cmd.clear
+            let (a, r, g, b) = params.color.toArgbf()
             glClearColor(r, g, b, a)
             glClear(GL_COLOR_BUFFER_BIT | GL_STENCIL_BUFFER_BIT)
 
         case ColorMask:
-            var params = &cmd.colorMask
+            let params = &cmd.colorMask
             glColorMask(params.r ? GL_TRUE : GL_FALSE,
                         params.g ? GL_TRUE : GL_FALSE,
                         params.b ? GL_TRUE : GL_FALSE,
                         params.a ? GL_TRUE : GL_FALSE)
 
         case Transform:
-            var params = &cmd.transform
+            let params = &cmd.transform
             buidModelMatrix(params.tr)
             glUniformMatrix4fv(cast(GLint) curShader.mdl, 1, GL_FALSE, &modelMatrix.m[0, 0])
 
@@ -614,8 +614,8 @@ impl RenderOgl
             fallthrough
 
         case SetClippingRegionMode:
-            var params = &cmd.clippingRegion
-            var mode = params.mode == .Set ? GL_REPLACE : cast(GLenum) GL_ZERO
+            let params = &cmd.clippingRegion
+            let mode = params.mode == .Set ? GL_REPLACE : cast(GLenum) GL_ZERO
             glStencilOp(mode, mode, mode)
 
         case EndClippingRegion:
@@ -627,7 +627,7 @@ impl RenderOgl
             glDisable(GL_STENCIL_TEST)
 
         case SetClippingRect:
-            var params = &cmd.clippingRect
+            let params = &cmd.clippingRect
             glEnable(GL_SCISSOR_TEST)
             glScissor(cast(GLint) params.rect.x, cast(GLint) (height - params.rect.y - params.rect.height), cast(GLint) params.rect.width, cast(GLint) params.rect.height)
 
@@ -642,7 +642,7 @@ impl RenderOgl
             setBlendingMode(blendingMode)
 
         case DrawTriangles:
-            var params = &cmd.drawTriangles
+            let params = &cmd.drawTriangles
             if !overlapMode
             {
                 glDrawArrays(GL_TRIANGLES, cast(GLint) params.start, cast(GLsizei) params.count)
@@ -673,9 +673,9 @@ impl RenderOgl
             }
 
         case BindTextureFont:
-            var params = &cmd.textureFont
+            let params = &cmd.textureFont
             glActiveTexture(GL_TEXTURE1)
-            var texture = params.font.atlases[params.atlasIndex].texture.handle
+            let texture = params.font.atlases[params.atlasIndex].texture.handle
             glBindTexture(GL_TEXTURE_2D, cast(GLuint) texture)
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE)
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE)
@@ -687,7 +687,7 @@ impl RenderOgl
             glBindTexture(GL_TEXTURE_2D, whiteTexture)
 
         case UpdateFont:
-            var font = cmd.font.fontRef
+            let font = cmd.font.fontRef
             font.dirty = false
             glActiveTexture(GL_TEXTURE1)
             visit &atlas: font.atlases
@@ -710,7 +710,7 @@ impl RenderOgl
             glBindTexture(GL_TEXTURE_2D, whiteTexture)
 
         case BindTexture0:
-            var params = &cmd.texture0
+            let params = &cmd.texture0
             glUniform4fv(cast(GLint) curShader.boundRect, 1, &params.boundRect.x)
             glUniform4fv(cast(GLint) curShader.textureRect, 1, &params.textureRect.x)
             glUniform1f(cast(GLint) curShader.uvMode, cast(GLfloat) params.uvMode)
@@ -772,7 +772,7 @@ impl RenderOgl
 
                 for var i = curRT.paintAlphaIdx; i < cmdIdx; i += 1
                 {
-                    var cmd1 = dc.commandBuffer[i]
+                    let cmd1 = dc.commandBuffer[i]
                     switch cmd1.id
                     {
                     case Transform,
@@ -793,11 +793,11 @@ impl RenderOgl
             releaseRenderTarget(cmd.renderTgt.tgt)
 
         case SetShader:
-            var params = &cmd.shader
+            let params = &cmd.shader
             setShader(params.shader)
 
         case SetShaderParam:
-            var params = &cmd.shaderParam
+            let params = &cmd.shaderParam
             switch params.type
             {
             case s32:

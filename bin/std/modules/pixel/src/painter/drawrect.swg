@@ -29,7 +29,7 @@ impl Painter
         var w = Math.round(width)
         var h = Math.round(height)
 
-        var aa = curState.paintParams & .Antialiased
+        let aa = curState.paintParams & .Antialiased
 
         #[Swag.Complete]
         switch pen.borderPos
@@ -129,7 +129,7 @@ impl Painter
         var w = Math.round(width)
         var h = Math.round(height)
 
-        var aa = curState.paintParams & .Antialiased
+        let aa = curState.paintParams & .Antialiased
 
         #[Swag.Complete]
         switch pen.borderPos

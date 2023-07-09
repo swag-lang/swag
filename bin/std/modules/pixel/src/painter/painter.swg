@@ -201,15 +201,15 @@ impl Painter
             return
         }
 
-        var cmd = newCommand(.BindTexture0, true)
-        var params = &cmd.texture0
+        let cmd = newCommand(.BindTexture0, true)
+        let params = &cmd.texture0
 
         params.boundRect.x = bvMin.x
         params.boundRect.y = bvMin.y
         params.boundRect.z = bvMax.x
         params.boundRect.w = bvMax.y
 
-        var (wt, ht) = getTextureSize(brush)
+        let (wt, ht) = getTextureSize(brush)
         if brush.uvMode == .FillSubRect
         {
             params.textureRect.x = brush.uvRect.x / wt
@@ -587,7 +587,7 @@ impl Painter
             return
         curState.clippingRect = rect
         curState.clippingRectOn = true
-        var cmd = newCommand(.SetClippingRect, true)
+        let cmd = newCommand(.SetClippingRect, true)
         cmd.clippingRect.rect = curState.clippingRect
     }
 
@@ -660,14 +660,14 @@ impl Painter
     // Start painting in the clipping buffer
     mtd startClippingRegion(mode = ClippingMode.Set)
     {
-        var cmd = newCommand(.StartClippingRegion, true)
+        let cmd = newCommand(.StartClippingRegion, true)
         cmd.clippingRegion.mode = mode
     }
 
     // Set the clipping region mode
     mtd setClippingRegionMode(mode: ClippingMode)
     {
-        var cmd = newCommand(.SetClippingRegionMode, true)
+        let cmd = newCommand(.SetClippingRegionMode, true)
         cmd.clippingRegion.mode = mode
     }
 
@@ -686,7 +686,7 @@ impl Painter
     // Set the current blending mode
     mtd setBlendingMode(mode: BlendingMode)
     {
-        var cmd = newCommand(.SetBlendingMode, true)
+        let cmd = newCommand(.SetBlendingMode, true)
         cmd.blendingMode.mode = mode
         curState.blendingMode = mode
     }
@@ -694,7 +694,7 @@ impl Painter
     // Set color mask
     mtd setColorMask(cm: ColorMask)
     {
-        var cmd = newCommand(.ColorMask, true)
+        let cmd = newCommand(.ColorMask, true)
         cmd.colorMask = cm
         curState.colorMask = cm
     }
@@ -702,7 +702,7 @@ impl Painter
     // Set color mask
     mtd setColorMask(r, g, b, a: bool)
     {
-        var cmd = newCommand(.ColorMask, true)
+        let cmd = newCommand(.ColorMask, true)
         cmd.colorMask.r = r
         cmd.colorMask.g = g
         cmd.colorMask.b = b
@@ -718,7 +718,7 @@ impl Painter
     mtd bindRenderTarget(tgt: *RenderTarget, paintAlpha = false)
     {
         pushState()
-        var cmd = newCommand(.BindRenderTarget, true)
+        let cmd = newCommand(.BindRenderTarget, true)
         cmd.renderTgt.tgt = tgt
         cmd.renderTgt.paintAlpha = paintAlpha
         resetState()
@@ -748,21 +748,21 @@ impl Painter
     {
         if !tgt
             return
-        var cmd = newCommand(.ReleaseRenderTarget)
+        let cmd = newCommand(.ReleaseRenderTarget)
         cmd.renderTgt.tgt = tgt
     }
 
     // Set the current shader
     mtd setShader(shader: *ShaderBase = null)
     {
-        var cmd = newCommand(.SetShader, true)
+        let cmd = newCommand(.SetShader, true)
         cmd.shader.shader = shader;
     }
 
     // Set a shader parameter
     mtd setShaderParam(param: ShaderParamHandle, val: s32)
     {
-        var cmd = newCommand(.SetShaderParam)
+        let cmd = newCommand(.SetShaderParam)
         cmd.shaderParam.param = param;
         cmd.shaderParam.type = s32;
         cmd.shaderParam._s32 = val;
@@ -771,7 +771,7 @@ impl Painter
     // Set a shader parameter
     mtd setShaderParam(param: ShaderParamHandle, val: f32)
     {
-        var cmd = newCommand(.SetShaderParam)
+        let cmd = newCommand(.SetShaderParam)
         cmd.shaderParam.param = param;
         cmd.shaderParam.type = f32;
         cmd.shaderParam._f32 = val;

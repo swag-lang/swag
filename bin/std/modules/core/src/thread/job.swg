@@ -211,14 +211,14 @@ public func(T) parallelVisit(range: [..] T, offset: u32 = 1, userData: *void = n
 
     func jobEntry(jobData: *void)
     {
-        var oneJob = cast(*SliceJob'T) jobData
+        let oneJob = cast(*SliceJob'T) jobData
         visitSlice(oneJob.buffer, oneJob.offset, oneJob.userData)
     }
 
     func visitSlice(buffer: [..] T, offset: u32, userData: *void)
     {
         var scan = @dataof(buffer)
-        var countof = @countof(buffer)
+        let countof = @countof(buffer)
         loop countof / offset
         {
             #macro
@@ -254,7 +254,7 @@ public func(T) parallelVisit(range: [..] T, offset: u32 = 1, userData: *void = n
     var ptr = @dataof(range)
     visit &j: sliceJobs
     {
-        var sizeSlice = @index == sliceJobs.count - 1 ? lastSplitSize : splitSize
+        let sizeSlice = @index == sliceJobs.count - 1 ? lastSplitSize : splitSize
 
         j.base.lambda = &jobEntry
         j.base.data = j

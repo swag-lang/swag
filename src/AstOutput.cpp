@@ -787,7 +787,10 @@ bool AstOutput::outputVar(OutputContext& context, Concat& concat, AstVarDecl* va
     }
     else if (varNode->kind != AstNodeKind::FuncDeclParam && !(varNode->flags & AST_STRUCT_MEMBER))
     {
-        CONCAT_FIXED_STR(concat, "var ");
+        if (varNode->specFlags & AstVarDecl::SPECFLAG_IS_LET)
+            CONCAT_FIXED_STR(concat, "let ");
+        else
+            CONCAT_FIXED_STR(concat, "var ");
     }
 
     bool isSelf = varNode->token.text == g_LangSpec->name_self;
