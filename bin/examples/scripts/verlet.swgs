@@ -20,7 +20,7 @@ impl Verlet
 {
     mtd updatePosition(dt: f32)
     {
-        velocity := positionCurrent - positionOld
+        var velocity = positionCurrent - positionOld
         positionOld = positionCurrent
         positionCurrent = positionCurrent + velocity + (acceleration * dt * dt)
         acceleration.clear()
@@ -33,11 +33,11 @@ impl Verlet
 
     mtd applyConstraint()
     {
-        toObj := positionCurrent - PositionC
-        dist  := toObj.length()
+        var toObj = positionCurrent - PositionC
+        var dist = toObj.length()
         if dist > RadC - radius
         {
-            n := toObj / dist
+            var n = toObj / dist
             positionCurrent = PositionC + (n * (RadC - radius))
         }
     }
@@ -45,18 +45,18 @@ impl Verlet
 
 func solveCollisions()
 {
-    for i := 0; i < g_Objs.count; i += 1
+    for var i = 0; i < g_Objs.count; i += 1
     {
-        v1 := g_Objs[i]
-        for j := i + 1; j < g_Objs.count; j += 1
+        var v1 = g_Objs[i]
+        for var j = i + 1; j < g_Objs.count; j += 1
         {
-            v2 := g_Objs[j]
-            n  := v1.positionCurrent - v2.positionCurrent
-            d  := n.length()
+            var v2 = g_Objs[j]
+            var n = v1.positionCurrent - v2.positionCurrent
+            var d = n.length()
             if d < v1.radius + v2.radius
             {
                 n /= d
-                delta := (v1.radius + v2.radius) - d
+                var delta = (v1.radius + v2.radius) - d
                 v1.positionCurrent += 0.5 * delta * n
                 v2.positionCurrent -= 0.5 * delta * n
             }
@@ -95,19 +95,19 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
     switch evt.kind
     {
     case Paint:
-        paintEvt := cast(*PaintEvent) evt
-        painter  := paintEvt.bc.painter
+        var paintEvt = cast(*PaintEvent) evt
+        var painter = paintEvt.bc.painter
         painter.clear(Argb.Gray)
         painter.setParams(.Antialiased)
         painter.fillCircle(PositionC.x, PositionC.y, RadC, Argb.Black)
 
-        dt := wnd.getApp().getDt()
+        var dt = wnd.getApp().getDt()
         g_Time += dt
 
         if g_Time > 0.2 and g_Objs.count < 50
         {
             g_Time = 0
-            v := Verlet{}
+            var v = Verlet{}
             v.radius = g_Rng.nextF32(10, 20)
             v.positionCurrent.x = wnd.position.horzCenter()
             v.positionCurrent.y = PositionC.y - RadC + (v.radius * 2)

@@ -24,7 +24,7 @@ impl IPrintable for Point
     var pt: Point
     var an: any = pt
 
-    itf := @mkinterface(@dataof(an), @kindof(an), IPrintable)
+    var itf = @mkinterface(@dataof(an), @kindof(an), IPrintable)
     @assert(itf != null)
     itf.print()
     @assert(G == 666)

@@ -1,19 +1,19 @@
 #[Swag.Inline]
 func toto()
 {
-    x := "true"
+    var x = "true"
     //@print("toto")
 }
 
 //#[Swag.PrintBc]
 #test
 {
-    zz := 666
+    var zz = 666
 
     toto()
 
     {
-        z := "ZZZZ"
+        var z = "ZZZZ"
         //@print("toto")
     }
 
@@ -28,13 +28,13 @@ func toto()
     @print("toto")
 
     {
-        x := 1
+        var x = 1
         x = 10
         {
-            z := 2
+            var z = 2
             z = 20
             {
-                a := "toto"
+                var a = "toto"
                 a = "titi"
             }
         }

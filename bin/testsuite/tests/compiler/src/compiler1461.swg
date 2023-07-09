@@ -12,7 +12,7 @@ impl S
     #[Swag.Macro]
     func opVisit(using self, stmt: code)
     {
-        for x := down; x <= up; x += 1
+        for var x = down; x <= up; x += 1
         {
             #mixin stmt
         }

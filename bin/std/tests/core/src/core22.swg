@@ -5,13 +5,13 @@ using Core
 {
 	const str = "⺁⺆⻇"
 
-	ptr := @dataof(str)
-    count := @countof(str)
-	cpt := 0
+	var ptr = @dataof(str)
+    var count = @countof(str)
+	var cpt = 0
 	loop
 	{
-        sl := @mkslice(ptr, cast(u64) count)
-		(c, eat) := Core.Utf8.decodeRune(sl)
+        var sl = @mkslice(ptr, cast(u64) count)
+		var (c, eat) = Core.Utf8.decodeRune(sl)
 		if !eat
 			break
         ptr += eat

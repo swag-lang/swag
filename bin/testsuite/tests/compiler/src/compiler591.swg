@@ -6,7 +6,7 @@ var c: s32 = 0
 //#[Swag.PrintBc]
 #test
 {
-	op := "toto1"
+	var op = "toto1"
 	if(op == "toto")
 		c = 1
 	elif(op == "toto1")

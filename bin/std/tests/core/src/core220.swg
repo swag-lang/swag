@@ -3,7 +3,7 @@ using Core
 
 #test
 {
-    v := String.from("this is a string")
+    var v = String.from("this is a string")
     v.replace("string", "big string")
     @assert(v == "this is a big string")
     v.replace("big string", "string")

@@ -4,7 +4,7 @@
 //#[Swag.PrintBc]
 #test
 {
-    v := [10, 20]
+    var v = [10, 20]
 
     var x: [..]~32 s32 = v
     @assert(x[0] == 10)

@@ -6,6 +6,6 @@ func toto(x: s32)
 {
     var v: [2] u8
     var a: const [..] u8 = v
-    ptr := &a[0]
+    var ptr = &a[0]
     @assert(@stringof(@typeof(ptr)) == "const ^u8")
 }

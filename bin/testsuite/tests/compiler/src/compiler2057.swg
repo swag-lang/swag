@@ -3,11 +3,11 @@ func itoa(result: ^u8, value: s64)->^u8
 {
     const conv = "zyxwvutsrqponmlkjihgfedcba9876543210123456789abcdefghijklmnopqrstuvwxyz"
 
-    ptr := result
-    orgValue := value
+    var ptr = result
+    var orgValue = value
     loop
     {
-        tmpValue := orgValue
+        var tmpValue = orgValue
         orgValue /= 10
         dref ptr = conv[35 + (tmpValue - (orgValue * 10))]
         ptr += 1
@@ -23,16 +23,16 @@ func itoa(result: ^u8, value: s64)->^u8
     }
 
     // Returns the end address
-    retVal := ptr
+    var retVal = ptr
 
     // Zero terminated
     dref ptr = 0; ptr -= 1
 
     // Invert result
-    ptr1 := result
+    var ptr1 = result
     while ptr1 < ptr
     {
-        tmpChar := dref ptr
+        var tmpChar = dref ptr
         dref ptr  = dref ptr1; ptr -= 1
         dref ptr1 = tmpChar; ptr1 += 1
     }
@@ -42,10 +42,10 @@ func itoa(result: ^u8, value: s64)->^u8
 
 func ftoa(result: ^u8, value: f64)
 {
-    ipart := cast(s64) value
-    fpart := value - cast(f64) ipart
+    var ipart = cast(s64) value
+    var fpart = value - cast(f64) ipart
 
-    n := result
+    var n = result
     if ipart == 0
     {
         if value < 0
@@ -62,7 +62,7 @@ func ftoa(result: ^u8, value: f64)
 
     dref n = "."'u8; n += 1
 
-    afterPoint := 5
+    var afterPoint = 5
     if fpart < 0
         fpart = -fpart
     while afterPoint

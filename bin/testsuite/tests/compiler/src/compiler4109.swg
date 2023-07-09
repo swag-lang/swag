@@ -1,6 +1,6 @@
 #global testerror
 #test
 {
-    x := 0
-    y := @mkslice(&x, 1)
+    var x = 0
+    var y = @mkslice(&x, 1)
 }

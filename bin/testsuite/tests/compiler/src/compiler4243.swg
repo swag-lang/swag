@@ -1,6 +1,6 @@
 func titi(ptr: ...)
 {
-    ptr1 := cast(*Swag.SourceCodeLocation) @dataof(ptr[0])
+    var ptr1 = cast(*Swag.SourceCodeLocation) @dataof(ptr[0])
     @assert(ptr1.lineStart == 9)
 }
 
@@ -8,5 +8,5 @@ func titi(ptr: ...)
 #test
 {
     titi(#location)
-    //x := toto("y")
+    //var x = toto("y")
 }

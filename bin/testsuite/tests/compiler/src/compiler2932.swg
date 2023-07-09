@@ -1,6 +1,6 @@
 #test
 {
-    x := 3.14
+    var x = 3.14
     switch x
     {
     case 3..3.2:    break
@@ -10,7 +10,7 @@
 
 #test
 {
-    x := 3.14'f64
+    var x = 3.14'f64
     switch x
     {
     case 3..3.2:    break
@@ -26,7 +26,7 @@
 
 #test
 {
-    x := 3.14'f64
+    var x = 3.14'f64
     switch x
     {
     case 1..2:    @assert(false)

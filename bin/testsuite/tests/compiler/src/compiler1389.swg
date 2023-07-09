@@ -1,7 +1,7 @@
 //#[Swag.PrintBc]
 #test
 {
-    b := true
+    var b = true
     var x0: f32 = acast b
     @assert(x0 == 1)
 

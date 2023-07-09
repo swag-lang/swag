@@ -61,7 +61,7 @@ public impl ByteStream
 
         if seek + @sizeof(T) > writeBuffer.count
             writeBuffer.reserve(seek + @sizeof(T))
-        ptr := cast(*T) (writeBuffer.buffer + seek)
+        var ptr = cast(*T) (writeBuffer.buffer + seek)
         dref ptr = val
         seek += @sizeof(T)
         writeBuffer.count = Math.max(writeBuffer.count, seek)
@@ -72,12 +72,12 @@ public impl ByteStream
     {
         Debug.assert(writeBuffer != null)
 
-        count := @countof(slice)
+        var count = @countof(slice)
         if !count return
 
         if seek + count > writeBuffer.count
             writeBuffer.reserve(seek + count)
-        ptr := writeBuffer.buffer + seek
+        var ptr = writeBuffer.buffer + seek
         Memory.copy(ptr, @dataof(slice), count)
         seek += count
         writeBuffer.count = Math.max(writeBuffer.count, seek)
@@ -88,7 +88,7 @@ public impl ByteStream
     {
         if seek + @sizeof(T) > length()
             throw "byte stream overflow"
-        val := dref cast(const *T) (readData() + seek)
+        var val = dref cast(const *T) (readData() + seek)
         seek += @sizeof(T)
         return val
     }
@@ -105,7 +105,7 @@ public impl ByteStream
     // Read one byte and seek
     mtd readU8()->u8
     {
-        c := peekU8()
+        var c = peekU8()
         moveSeek()
         return c
     }
@@ -122,7 +122,7 @@ public impl ByteStream
     mtd moveSeek(offset: u64 = 1)
     {
         seek += offset
-        len := length()
+        var len = length()
         if seek >= len
         {
             seek = len
@@ -134,7 +134,7 @@ public impl ByteStream
     // Seek to the given position
     mtd setSeek(offset: u64)
     {
-        len := length()
+        var len = length()
         Debug.assert(seek <= len)
         seek = offset
         eof = seek >= len

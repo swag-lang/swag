@@ -1,6 +1,6 @@
 func(T) largest(list: [..] T)->ref T
 {
-    largest := ref &list[0]
+    var largest = ref &list[0]
     visit item: list
     {
         if item > largest
@@ -12,13 +12,13 @@ func(T) largest(list: [..] T)->ref T
 
 #test
 {
-    number_list := [34, 50, 25, 100, 65]
+    var number_list = [34, 50, 25, 100, 65]
 
-    result := largest(number_list[..])
+    var result = largest(number_list[..])
     @assert(result == 100)
 
-    char_list := ["大"'rune, "m", "a", "q"]
+    var char_list = ["大"'rune, "m", "a", "q"]
 
-    result1 := largest(char_list[..])
+    var result1 = largest(char_list[..])
     @assert(result1 == "大"'rune)
 }

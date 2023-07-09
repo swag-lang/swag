@@ -2,8 +2,8 @@
 //#global testerror
 #test
 {
-    a := #run {
-        ret := 0's32
+    var a = #run {
+        var ret = 0's32
         loop 10 ret += 66
         return ret
     }

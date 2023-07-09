@@ -1,7 +1,7 @@
 //#[Swag.PrintBc]
 #test
 {
-    b := true
+    var b = true
     var x0: s8 = acast b
     var x1: s16 = acast b
     var x2: s32 = cast(s32) b

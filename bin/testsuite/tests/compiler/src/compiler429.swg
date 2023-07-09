@@ -3,7 +3,7 @@
 
 func T(color: COLOR)->s32
 {
-	res := 0;
+	var res = 0;
 	switch(color)
 	{
 	case COLOR.RED: 	res = 1;

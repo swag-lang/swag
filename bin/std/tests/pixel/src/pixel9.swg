@@ -6,13 +6,13 @@ using Core, Pixel
     var options: DecodeOptions
     options.decodePixels = false
 
-    pathName := dataPath()
-    files := try Directory.enumerateFiles(pathName)
+    var pathName = dataPath()
+    var files = try Directory.enumerateFiles(pathName)
     visit f: files
     {
         if Image.canLoad(f.fullname)
         {
-            img := try Image.load(f.fullname, options)
+            var img = try Image.load(f.fullname, options)
             @assert(img.pixels.buffer == null)
         }
     }

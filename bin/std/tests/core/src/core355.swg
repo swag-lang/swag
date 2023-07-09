@@ -2,9 +2,9 @@ using Core
 
 #test
 {
-    x := @modules()
+    var x = @modules()
     @assert(@countof(x) >= 4)
-    cpt := 0
+    var cpt = 0
     visit m: x
     {
         switch m.name

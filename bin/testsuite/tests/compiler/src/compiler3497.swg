@@ -30,7 +30,7 @@ struct(T) B
 #test
 {
     var v:  B's32
-    cpt := 0
+    var cpt = 0
     visit v
     {
         cpt += 1

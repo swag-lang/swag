@@ -14,7 +14,7 @@ impl A {
 
 #test
 {
-    x := 0
+    var x = 0
 
     var a: A
     visit x: a

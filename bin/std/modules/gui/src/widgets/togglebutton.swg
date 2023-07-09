@@ -17,10 +17,10 @@ impl IWnd for ToggleButton
 {
     mtd impl onPaintEvent(evt: *PaintEvent)
     {
-        bc     := evt.bc
-        theme   := getTheme()
-        colors  := getThemeColors()
-        rects   := getThemeRects()
+        var bc = evt.bc
+        var theme = getTheme()
+        var colors = getThemeColors()
+        var rects = getThemeRects()
 
         var subRectBk:      *ThemeImageRect
         var subRectBorder:  *ThemeImageRect
@@ -58,12 +58,12 @@ impl IWnd for ToggleButton
         aniMark.apply(self, colorMark)
 
         // Box
-        clientRect := getClientRect()
+        var clientRect = getClientRect()
         theme.drawSubRect(bc.painter, clientRect, subRectBk, aniBk.cur())
         theme.drawSubRect(bc.painter, clientRect, subRectBorder, aniBorder.cur())
 
         // Content
-        posBox := clientRect
+        var posBox = clientRect
         posBox.y = clientRect.vertCenter() - (posBox.height * 0.5)
         posBox.width = posBox.height
         if isToggled
@@ -89,7 +89,7 @@ impl ToggleButton
     func create(parent: *Wnd, position: Math.Rectangle = {}, id: WndId = null)->*ToggleButton
     {
         Debug.assert(parent != null)
-        pos := position
+        var pos = position
         if pos.height == 0
             pos.height = parent.getThemeMetrics().btnToggle_Height
         if pos.width == 0

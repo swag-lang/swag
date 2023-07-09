@@ -13,7 +13,7 @@ struct TT
 func C(x: any)
 {
     #[Swag.Safety("", true)]
-    ptr := cast(s32) x
+    var ptr = cast(s32) x
 }
 
 #test

@@ -14,7 +14,7 @@ func toto(x: cvarargs)
 
     discard stdio_common_vsprintf(0x26, buf, 4096, "%d %d", null, dref cast(**void) &valist)
 
-    str := cast(cstring) buf
+    var str = cast(cstring) buf
     @assert(buf[0] == "1"'u8)
     @assert(buf[1] == " "'u8)
     @assert(buf[2] == "2"'u8)

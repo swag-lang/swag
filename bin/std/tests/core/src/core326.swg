@@ -31,7 +31,7 @@ impl Employee
     {
         #ast
         {
-            res := gen(Employee)
+            var res = gen(Employee)
             return cast(string) res
         }
     }
@@ -41,9 +41,9 @@ func years_employed(employee: Employee)->u32 => DateTime.now().year - employee.d
 
 #run
 {
-    alice  := Employee{String.from("Alice"), Time.DateTime{2000, 1, 1}}
-    alice2 := alice; alice2.date = Time.DateTime{2010, 1, 1}
-    alice3 := alice2
+    var alice = Employee{String.from("Alice"), Time.DateTime{2000, 1, 1}}
+    var alice2 = alice; alice2.date = Time.DateTime{2010, 1, 1}
+    var alice3 = alice2
 
     @assert(alice.years_employed() >= 22)
     @assert(alice != alice2)

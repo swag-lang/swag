@@ -77,16 +77,16 @@ impl IWnd for Tab
 {
     mtd paintItem(painter: *Painter, v: *TabItem, idx: u32)
     {
-        clientRect := getClientRect()
+        var clientRect = getClientRect()
         clientRect.height = barHeight
-        labelPos := clientRect
+        var labelPos = clientRect
         labelPos.width = v.width
         labelPos.x = v.pos
 
-        theme   := getTheme()
-        metrics := getThemeMetrics()
-        colors  := getThemeColors()
-        rects   := getThemeRects()
+        var theme = getTheme()
+        var metrics = getThemeMetrics()
+        var colors = getThemeColors()
+        var rects = getThemeRects()
 
         // Item image
         var subRect:    *ThemeImageRect
@@ -164,15 +164,15 @@ impl IWnd for Tab
 
     mtd impl onPaintEvent(evt: *PaintEvent)
     {
-        painter := evt.bc.painter
-        theme   := getTheme()
-        colors  := getThemeColors()
-        rects   := getThemeRects()
+        var painter = evt.bc.painter
+        var theme = getTheme()
+        var colors = getThemeColors()
+        var rects = getThemeRects()
 
         // Background bar
         if barForm != .Transparent
         {
-            clientRect := getClientRect()
+            var clientRect = getClientRect()
             clientRect.height = barHeight
             switch barForm
             {
@@ -189,7 +189,7 @@ impl IWnd for Tab
         var subRect:    *ThemeImageRect
         var colorBk:    Color
 
-        clientRect := getClientRect()
+        var clientRect = getClientRect()
         clientRect.moveTop(barHeight)
         switch viewForm
         {
@@ -211,7 +211,7 @@ impl IWnd for Tab
             {
                 if idx == selectedIdx
                     continue
-                v := views[idx]
+                var v = views[idx]
                 if v.pos + v.width > clientRect.right()
                     break
                 paintItem(painter, v, cast(u32) idx)
@@ -230,10 +230,10 @@ impl IWnd for Tab
         computeTabLayout()
         ensureVisible(selectedIdx)
 
-        curView := views[selectedIdx].view
+        var curView = views[selectedIdx].view
         if curView
         {
-            clientRect := getClientRect()
+            var clientRect = getClientRect()
             clientRect.moveTop(barHeight)
             clientRect.applyPadding(padding)
             curView.setPosition(clientRect)
@@ -242,7 +242,7 @@ impl IWnd for Tab
 
     mtd impl onMouseEvent(evt: *MouseEvent)
     {
-        hit := hitTest(evt.surfacePos)
+        var hit = hitTest(evt.surfacePos)
         if hit != hotIdx
         {
             hotIdx = hit
@@ -301,7 +301,7 @@ private impl Tab
 
     mtd getBarRectItems()->Math.Rectangle
     {
-        rect := getClientRectPadding()
+        var rect = getClientRectPadding()
         if buttonPopup
             rect.setRight(buttonPopup.position.x - 4)
         return rect
@@ -309,14 +309,14 @@ private impl Tab
 
     mtd hitTest(surfacePos: Math.Point)->u32
     {
-        pos := surfaceToLocal(surfacePos)
+        var pos = surfaceToLocal(surfacePos)
         if pos.y >= barHeight
             return Swag.U32.Max
 
-        rect := getBarRectItems()
+        var rect = getBarRectItems()
         loop idx: firstVisibleIdx..cast(u32) views.count - 1
         {
-            v := views[idx]
+            var v = views[idx]
             if v.pos + v.width > rect.right()
                 break
             if pos.x >= v.pos and pos.x < v.pos + v.width
@@ -328,13 +328,13 @@ private impl Tab
 
     mtd computeTabLayout()
     {
-        rect := getBarRectItems()
+        var rect = getBarRectItems()
 
         mostRightPos = rect.x
         switch barLayout
         {
         case Divide:
-            w := cast(f32) (rect.width / views.count)
+            var w = cast(f32) (rect.width / views.count)
             w = Math.max(w, itemMinWidth)
             visit v: views
             {
@@ -343,7 +343,7 @@ private impl Tab
             }
 
         case Fixed:
-            w := Math.max(itemFixedLayoutWidth, itemMinWidth)
+            var w = Math.max(itemFixedLayoutWidth, itemMinWidth)
             visit v: views
             {
                 v.width = w
@@ -353,7 +353,7 @@ private impl Tab
         case Auto:
             visit v: views
             {
-                mes := Painter.measureString(v.item.name.raw, getFont().regular)
+                var mes = Painter.measureString(v.item.name.raw, getFont().regular)
 
                 // Text
                 v.width = mes.width
@@ -369,10 +369,10 @@ private impl Tab
             }
         }
 
-        x := rect.x
+        var x = rect.x
         loop idx: firstVisibleIdx..cast(u32) views.count - 1
         {
-            v := views[idx]
+            var v = views[idx]
             v.pos = x
             x += v.width
         }
@@ -382,7 +382,7 @@ private impl Tab
 
     mtd createDestroyButtonPopup()
     {
-        barRect := getClientRectPadding()
+        var barRect = getClientRectPadding()
         if mostRightPos > barRect.right()
         {
             // Create a button if there are too many items for the given size
@@ -392,12 +392,12 @@ private impl Tab
                 buttonPopup.form = .Round
                 buttonPopup.sigPressed += closure|self|(btn)
                 {
-                    rect := btn.getSurfaceRect()
+                    var rect = btn.getSurfaceRect()
                     self.showPopup(rect.x, rect.y + btn.position.height)
                 }
             }
 
-            x := barRect.right() - 32
+            var x = barRect.right() - 32
             buttonPopup.setPosition({x, (barHeight * 0.5) - 12, 24, 24})
         }
         else if buttonPopup
@@ -411,11 +411,11 @@ private impl Tab
 
     mtd ensureVisible(idx: u32)
     {
-        rect := getBarRectItems()
+        var rect = getBarRectItems()
         if idx < firstVisibleIdx or views[idx].pos + views[idx].width >= rect.right()
         {
             firstVisibleIdx = idx
-            x := rect.right() - views[firstVisibleIdx].width
+            var x = rect.right() - views[firstVisibleIdx].width
             while firstVisibleIdx
             {
                 x -= views[firstVisibleIdx - 1].width
@@ -435,7 +435,7 @@ impl Tab
     func create(parent: *Wnd, position: Math.Rectangle = {}, id: WndId = null)->*Tab
     {
         Debug.assert(parent != null)
-        res := Wnd.create'Tab(parent, null, position, id)
+        var res = Wnd.create'Tab(parent, null, position, id)
         res.focusStrategy = .None
         res.setForm(TabForm.Flat)
         return res
@@ -481,7 +481,7 @@ impl Tab
             view.setParent(self)
         }
 
-        item := views.newPtr()
+        var item = views.newPtr()
         item.view = view
         item.name = tabName
         item.icon = icon

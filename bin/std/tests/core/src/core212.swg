@@ -17,7 +17,7 @@ func winProc(hwnd: HWND, msg: UINT, wParam: WPARAM, lParam: LPARAM)->LRESULT
     wc.lpszClassName = @dataof("CLASS_NAME")
     assume RegisterClassA(wc)
 
-    hwnd := CreateWindowExA(
+    var hwnd = CreateWindowExA(
         0,
         @dataof("CLASS_NAME"),  // name of window class
         @dataof("Sample"),      // title-bar string
@@ -36,8 +36,8 @@ func winProc(hwnd: HWND, msg: UINT, wParam: WPARAM, lParam: LPARAM)->LRESULT
     while GetMessageA(&msg, null, 0, 0) != 0
     {
         if msg.message == WM_QUIT break
-        tm := TranslateMessage(&msg)
-        dm := DispatchMessageA(&msg)
+        var tm = TranslateMessage(&msg)
+        var dm = DispatchMessageA(&msg)
         break
     }
 }

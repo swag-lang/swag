@@ -25,7 +25,7 @@ func titi(stmt: code)
 
 #test
 {
-    cpt := 0
+    var cpt = 0
     toto()
     {
         titi()

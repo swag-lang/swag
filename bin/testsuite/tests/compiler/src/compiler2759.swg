@@ -5,8 +5,8 @@ func titi() {}
 
 #test
 {
-    x := &toto
-    r := 0
+    var x = &toto
+    var r = 0
     switch x
     {
     case &titi: break

@@ -22,7 +22,7 @@ var cc: CC
 #[Swag.Deprecated("use this instead")]
 func titi()
 {
-    a := 0
+    var a = 0
     a += 1
     a += 1
 }
@@ -31,7 +31,7 @@ func titi()
 #test
 {
     var x: AA = undefined
-    y := BB.A
+    var y = BB.A
 
     titi()
 }

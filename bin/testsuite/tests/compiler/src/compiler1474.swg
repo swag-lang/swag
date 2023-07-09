@@ -1,6 +1,6 @@
 #test
 {
-    cpt := 0
+    var cpt = 0
     visit xxx: "toto"
     {
         cpt += cast(s32) xxx

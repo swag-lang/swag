@@ -1,8 +1,8 @@
 //#[Swag.PrintBc]
 #test
 {
-    x := 1
-    y := 1000
+    var x = 1
+    var y = 1000
 
     var myRef: const ref s32 = &x
     @assert(myRef == 1)

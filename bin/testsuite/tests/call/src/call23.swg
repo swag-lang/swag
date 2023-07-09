@@ -7,5 +7,5 @@ using test_foreign
     var b: Vector2 = {2, 2}
     var c: Vector2 = {3, 3}
     var d: Vector2 = {4, 4}
-    res := tcf_toto28(a, b, c, d)
+    var res = tcf_toto28(a, b, c, d)
 }

@@ -11,5 +11,5 @@ func toto()->A
 
 func aa()
 {
-    x := .y
+    var x = .y
 }

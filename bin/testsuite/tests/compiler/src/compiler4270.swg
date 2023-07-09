@@ -6,7 +6,7 @@ struct V {}
 func toto(x: V)
     #validif
     {
-        y := x
+        var y = x
         @print(y)
         return false
     }

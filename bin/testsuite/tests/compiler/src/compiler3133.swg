@@ -2,5 +2,5 @@
 
 #test
 {
-    x := @runes(0)
+    var x = @runes(0)
 }

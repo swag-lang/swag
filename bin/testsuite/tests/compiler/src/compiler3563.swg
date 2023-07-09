@@ -15,7 +15,7 @@ impl Arr
 var G = 0
 func ref1()->CB
 {
-    v := 2
+    var v = 2
     return closure|v|()
     {
         G = v

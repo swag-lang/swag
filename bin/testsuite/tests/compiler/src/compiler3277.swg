@@ -3,7 +3,7 @@ func toto()
     #assert @nameof(#self) == "toto"
     #assert @stringof(#self) == "__compiler3277.toto"
 
-    fct := func()
+    var fct = func()
     {
         #assert @nameof(#self) != ""
     }

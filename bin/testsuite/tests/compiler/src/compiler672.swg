@@ -10,6 +10,6 @@
 
 	var a: s32 = 5
 	var b: f32 = 10
-	c := a + b
+	var c = a + b
 	@assert(c == 15.0)
 }

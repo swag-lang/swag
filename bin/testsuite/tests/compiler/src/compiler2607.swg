@@ -18,7 +18,7 @@ func titi(x: s32, stmt: code)
 
 #test
 {
-    v := 6
+    var v = 6
     titi(v)
     {
         @assert(x == 6)

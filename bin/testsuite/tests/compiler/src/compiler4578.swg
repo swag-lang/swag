@@ -6,7 +6,7 @@ func titi()->s32
 #[Swag.Inline]
 func toto()->s32
 {
-    res := titi()
+    var res = titi()
     return res
 }
 

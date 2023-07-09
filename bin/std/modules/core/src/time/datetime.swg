@@ -80,7 +80,7 @@ impl DateTime
     {
         var m: u32 = (month + 9) % 12
         var y: u32 = year - m/10
-        dn := 365*y +,over y/4 +,over y/400 +,over (m*306 + 5)/10 +,over day-1 -,over y/100
+        var dn = 365*y +,over y/4 +,over y/400 +,over (m*306 + 5)/10 +,over day-1 -,over y/100
         dn += 3
         return cast(DayOfWeek) (dn % 7)
     }
@@ -103,18 +103,18 @@ impl DateTime
     {
         var result: retval
 
-        buf := str
+        var buf = str
         if !@countof(buf)
             throw StrConv.ParseErrorInvalid
 
         if fmt == .DateTime or fmt == .DateTimeMs
         {
             // Day of week name
-            done := false
+            var done = false
             var dayOfWeek: DayOfWeek
             visit dow, idx: DayOfWeekNames
             {
-                len := @countof(dow)
+                var len = @countof(dow)
                 if @mkstring(@dataof(buf), Math.min(@countof(buf), len)) == dow
                 {
                     dayOfWeek = acast idx
@@ -138,7 +138,7 @@ impl DateTime
             // Month name
             visit dow, idx: MonthNames
             {
-                len := @countof(dow)
+                var len = @countof(dow)
                 if @mkstring(@dataof(buf), Math.min(@countof(buf), len)) == dow
                 {
                     result.value.month = cast(u16) idx + 1
@@ -159,7 +159,7 @@ impl DateTime
             result.eat += 1
 
             // Day
-            (day, eat2, ovf2) := StrConv.parseU8(buf)
+            var (day, eat2, ovf2) = StrConv.parseU8(buf)
             if ovf2
                 throw StrConv.ParseErrorInvalid
             result.eat += eat2
@@ -173,7 +173,7 @@ impl DateTime
             result.eat += 1
 
             // Year
-            (year, eat3, ovf3) := StrConv.parseU16(buf)
+            var (year, eat3, ovf3) = StrConv.parseU16(buf)
             if ovf3
                 throw StrConv.ParseErrorInvalid
             result.value.year = year
@@ -187,7 +187,7 @@ impl DateTime
         elif fmt == .Iso or fmt == .IsoMs
         {
             // Year
-            (year, eat0, ovf0) := StrConv.parseU16(buf)
+            var (year, eat0, ovf0) = StrConv.parseU16(buf)
             if ovf0
                 throw StrConv.ParseErrorInvalid
             result.value.year = year
@@ -199,7 +199,7 @@ impl DateTime
             result.eat += 1
 
             // Month
-            (month, eat1, ovf1) := StrConv.parseU8(buf)
+            var (month, eat1, ovf1) = StrConv.parseU8(buf)
             if ovf1
                 throw StrConv.ParseErrorInvalid
             result.eat += eat1
@@ -211,7 +211,7 @@ impl DateTime
             result.eat += 1
 
             // Day
-            (day, eat2, ovf2) := StrConv.parseU8(buf)
+            var (day, eat2, ovf2) = StrConv.parseU8(buf)
             if ovf2
                 throw StrConv.ParseErrorInvalid
             result.eat += eat2
@@ -226,7 +226,7 @@ impl DateTime
         result.eat += 1
 
         // Hour
-        (hour, eat3, ovf3) := StrConv.parseU8(buf)
+        var (hour, eat3, ovf3) = StrConv.parseU8(buf)
         if ovf3
             throw StrConv.ParseErrorInvalid
         result.eat += eat3
@@ -238,7 +238,7 @@ impl DateTime
         result.eat += 1
 
         // Minute
-        (minute, eat4, ovf4) := StrConv.parseU8(buf)
+        var (minute, eat4, ovf4) = StrConv.parseU8(buf)
         if ovf4
             throw StrConv.ParseErrorInvalid
         result.eat += eat4
@@ -250,7 +250,7 @@ impl DateTime
         result.eat += 1
 
         // Seconds
-        (second, eat5, ovf5) := StrConv.parseU8(buf)
+        var (second, eat5, ovf5) = StrConv.parseU8(buf)
         if ovf5
             throw StrConv.ParseErrorInvalid
         result.eat += eat5
@@ -265,7 +265,7 @@ impl DateTime
             buf = Tokenize.eatCount(buf, 1)
             result.eat += 1
 
-            (millisecond, eat6, ovf6) := StrConv.parseU16(buf)
+            var (millisecond, eat6, ovf6) = StrConv.parseU16(buf)
             if ovf6
                 throw StrConv.ParseErrorInvalid
             result.eat += eat6

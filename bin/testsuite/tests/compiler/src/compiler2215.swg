@@ -19,24 +19,24 @@ impl A
 #test
 {
     var st: A
-    ew := st.toto(66)
+    var ew = st.toto(66)
 
     {
-        xxx := 0
+        var xxx = 0
         while xxx < 2
         {
-            //a := 666
+            //var a = 666
             //a = a
             xxx += 1
         }
     }
 
     {
-        aaa := 0
-        xxx := 0
+        var aaa = 0
+        var xxx = 0
         while xxx < 2
         {
-            //a := 666
+            //var a = 666
             //a = a
             xxx += 1
         }

@@ -8,7 +8,7 @@ func toto()->const ref s32
 //#[Swag.PrintBc]
 #test
 {
-    x := toto()
+    var x = toto()
     @assert(@typeof(x) == s32)
     @assert(x == 555)
 }

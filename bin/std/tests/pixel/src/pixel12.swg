@@ -18,6 +18,6 @@ using Core, Pixel
     t.endPolyLine()
     t.triangulate()
 
-    res := t.getTriangles()
+    var res = t.getTriangles()
     @assert(@countof(res) == 8)
 }

@@ -78,7 +78,7 @@ func createWindow()->HWND
     wc.lpszClassName = @dataof("CLASS_NAME")
     assume RegisterClassA(wc)
 
-    hWnd := CreateWindowExA(
+    var hWnd = CreateWindowExA(
         0,
         @dataof("CLASS_NAME"),
         @dataof("Example"),
@@ -101,7 +101,7 @@ func createWindow()->HWND
     pfd.iPixelType   = PFD_TYPE_RGBA
     pfd.cColorBits   = 32
 
-    pf := assume ChoosePixelFormat(g_HDC, &pfd)
+    var pf = assume ChoosePixelFormat(g_HDC, &pfd)
     assume SetPixelFormat(g_HDC, pf, &pfd)
     assume DescribePixelFormat(g_HDC, pf, cast(UINT) @sizeof(PIXELFORMATDESCRIPTOR), &pfd)
 
@@ -132,8 +132,8 @@ func createShader()
 	var infoLogLength: s32
     var infoLog: String
 
-    vertexShaderID := glCreateShader(GL_VERTEX_SHADER)
-    vertexSourcePointer := @dataof(VertexShader)
+    var vertexShaderID = glCreateShader(GL_VERTEX_SHADER)
+    var vertexSourcePointer = @dataof(VertexShader)
     glShaderSource(vertexShaderID, 1, &vertexSourcePointer, null)
 	glCompileShader(vertexShaderID)
     glGetShaderiv(vertexShaderID, GL_COMPILE_STATUS, &result)
@@ -141,8 +141,8 @@ func createShader()
     infoLog.reserve(cast(u64) infoLogLength + 1)
     glGetShaderInfoLog(vertexShaderID, infoLogLength, null, @dataof(infoLog))
 
-	fragmentShaderID := glCreateShader(GL_FRAGMENT_SHADER)
-    pixelSourcePointer := @dataof(PixelShader)
+	var fragmentShaderID = glCreateShader(GL_FRAGMENT_SHADER)
+    var pixelSourcePointer = @dataof(PixelShader)
     glShaderSource(fragmentShaderID, 1, &pixelSourcePointer, null)
 	glCompileShader(fragmentShaderID)
     glGetShaderiv(fragmentShaderID, GL_COMPILE_STATUS, &result)
@@ -166,10 +166,10 @@ func createShader()
 
 #main
 {
-    hWnd := createWindow()
+    var hWnd = createWindow()
 
     g_HDC = GetDC(hWnd)
-    hRC := try wglCreateContext(g_HDC)
+    var hRC = try wglCreateContext(g_HDC)
     try wglMakeCurrent(g_HDC, hRC)
     glInitExtensions()
 

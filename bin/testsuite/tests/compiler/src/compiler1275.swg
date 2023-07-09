@@ -1,14 +1,14 @@
 #[Swag.Macro]
 func toto()
 {
-    b := 0
+    var b = 0
     @assert(b == 0)
 }
 
 //#[Swag.PrintBc]
 #test
 {
-    b := 666
+    var b = 666
     toto()
     @assert(b == 666)
 }

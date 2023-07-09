@@ -102,7 +102,7 @@ Swag has **type reflection** at **compile time** and at **runtime**. We will see
 
     // Short notice that types are also values, at compile time and at runtime.
     {
-        x := @typeof(s32)   // 'x' is now a variable that contains a type
+        var x = @typeof(s32)   // 'x' is now a variable that contains a type
         @assert(x == s32)   // So it can be compared to a type
 
         // A type is a predefined struct, which contains some fields to inspect it.
@@ -110,7 +110,7 @@ Swag has **type reflection** at **compile time** and at **runtime**. We will see
         @assert(x.name == "s32")
 
         // @typeof is not really necessary when there's no ambiguity about the expression.
-        y := bool
+        var y = bool
         @assert(y == bool)
     }
 }

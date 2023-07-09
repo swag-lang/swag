@@ -6,6 +6,6 @@ struct AA
 
 #test
 {
-    a := AA{}
-    b := a[0..1]
+    var a = AA{}
+    var b = a[0..1]
 }

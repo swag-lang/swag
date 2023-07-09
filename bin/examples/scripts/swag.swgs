@@ -22,23 +22,23 @@ impl C
 {
     mtd update(wnd: *Wnd)
     {
-        app := wnd.getApp()
+        var app = wnd.getApp()
 
         speed += acc
         pos += speed * app.getDt()
         acc.clear()
 
-        v := target - pos
-        d := v.length()
+        var v = target - pos
+        var d = v.length()
         if d < 100
             d = map(d, 0, 100, 0, 120)
         v.setLength(d)
-        steer := v - speed
+        var steer = v - speed
         d = min(steer.length(), 80)
         steer.setLengthSafe(d)
         acc += steer
 
-        pm := app.getMouse().getPosition()
+        var pm = app.getMouse().getPosition()
         pm = wnd.screenToSurface(pm)
         pm = wnd.surfaceToLocal(pm)
         v = pos - Vector2{pm.x, pm.y}
@@ -75,18 +75,18 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
         }
 
     case Paint:
-        paintEvt := cast(*PaintEvent) evt
-        painter  := paintEvt.bc.painter
-        rect     := wnd.getClientRect()
+        var paintEvt = cast(*PaintEvent) evt
+        var painter = paintEvt.bc.painter
+        var rect = wnd.getClientRect()
 
         painter.fillRect(rect, Argb.Black)
 
         visit &p: g_Points
         {
             p.update(wnd)
-            v := p.target - p.pos
-            d := map(Math.min(v.length(), 100), 0, 100, 0, 1)
-            c := Color.getBlend(Argb.White, Argb.Black, d)
+            var v = p.target - p.pos
+            var d = map(Math.min(v.length(), 100), 0, 100, 0, 1)
+            var c = Color.getBlend(Argb.White, Argb.Black, d)
             painter.fillCircle(p.pos.x, p.pos.y, 4, c)
         }
 

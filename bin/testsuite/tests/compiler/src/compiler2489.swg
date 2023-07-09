@@ -20,6 +20,6 @@ impl BB for AA
     var a: AA
     var itf: BB = a
 
-    ptr := cast(*AA) itf
+    var ptr = cast(*AA) itf
     @assert(ptr == &a)
 }

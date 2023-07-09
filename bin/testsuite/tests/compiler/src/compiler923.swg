@@ -3,9 +3,9 @@
 //#[Swag.PrintBc]
 func average(x, y: any)
 {
-	tx:= cast(*s32) @dataof(x)
+	var tx = cast(*s32) @dataof(x)
 	@assert(dref tx == 5)
-	ty:= cast(*s32) @dataof(y)
+	var ty = cast(*s32) @dataof(y)
 	@assert(dref ty == 10)
 }
 

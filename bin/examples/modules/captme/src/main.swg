@@ -5,17 +5,17 @@ var g_App: Application
     try Jobs.setNumWorkers()
     try Library.init()
 
-    path := Library.getFolder()
+    var path = Library.getFolder()
     path = Path.combine(path, "captme.cfg")
     g_App.setConfigPath(path)
 
-    img := assume Image.decode(".png", Icons48)
+    var img = assume Image.decode(".png", Icons48)
     img.crop(48, 48, 48, 48)
     img.setPixelFormat(.BGRA8)
     g_App.setAppIcon(img)
 
-    surface := try g_App.createSurface(200, 100, 1200, 1000, SurfaceFlags.OverlappedWindow)
-    mainWnd := MainWnd.create(surface.wnd)
+    var surface = try g_App.createSurface(200, 100, 1200, 1000, SurfaceFlags.OverlappedWindow)
+    var mainWnd = MainWnd.create(surface.wnd)
     surface.setView(mainWnd)
     mainWnd.createTopMenu()
     if Env.hasArg("swag.test")

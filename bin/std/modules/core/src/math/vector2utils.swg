@@ -12,22 +12,22 @@ impl Vector2
     // Returns true if the point 'pt' is inside the triangle defined with 'a, b, c'
     mtd const isInTriangle(a, b, c: Vector2)->bool
     {
-        ax  := c.x - b.x
-        ay  := c.y - b.y
-        bx  := a.x - c.x
-        by  := a.y - c.y
-        cx  := b.x - a.x
-        cy  := b.y - a.y
-        apx := x - a.x
-        apy := y - a.y
-        bpx := x - b.x
-        bpy := y - b.y
-        cpx := x - c.x
-        cpy := y - c.y
+        var ax = c.x - b.x
+        var ay = c.y - b.y
+        var bx = a.x - c.x
+        var by = a.y - c.y
+        var cx = b.x - a.x
+        var cy = b.y - a.y
+        var apx = x - a.x
+        var apy = y - a.y
+        var bpx = x - b.x
+        var bpy = y - b.y
+        var cpx = x - c.x
+        var cpy = y - c.y
 
-        aCROSSbp := ax * bpy - ay * bpx
-        cCROSSap := cx * apy - cy * apx
-        bCROSScp := bx * cpy - by * cpx
+        var aCROSSbp = ax * bpy - ay * bpx
+        var cCROSSap = cx * apy - cy * apx
+        var bCROSScp = bx * cpy - by * cpx
 
         return ((aCROSSbp >= 0) and (bCROSScp >= 0) and (cCROSSap >= 0)) or ((aCROSSbp <= 0) and (bCROSScp <= 0) and (cCROSSap <= 0))
     }
@@ -35,35 +35,35 @@ impl Vector2
     // Returns the distance of the point to the given line
     mtd const distanceToLine(a, b: Vector2)->f32
     {
-        toPt := dref self - a
-        seg  := b - a
+        var toPt = dref self - a
+        var seg = b - a
         seg.normalizeSafe()
-        dot  := toPt.dot(seg)
+        var dot = toPt.dot(seg)
         seg  *= dot
-        cross := toPt - seg
+        var cross = toPt - seg
         return cross.length()
     }
 
     // Returns the distance of the point to the given segment
     mtd const distanceToSegment(a, b: Vector2)->f32
     {
-        ab := b - a
-        be := dref self - b
-        ae := dref self - a
+        var ab = b - a
+        var be = dref self - b
+        var ae = dref self - a
 
-        abbe := ab.dot(be)
+        var abbe = ab.dot(be)
         if abbe > 0
             return be.length()
 
-        abae := ab.dot(ae)
+        var abae = ab.dot(ae)
         if abae < 0
             return ae.length()
 
-        x1 := ab.x
-        y1 := ab.y
-        x2 := ae.x
-        y2 := ae.y
-        mod := Math.sqrt(x1 * x1 + y1 * y1)
+        var x1 = ab.x
+        var y1 = ab.y
+        var x2 = ae.x
+        var y2 = ae.y
+        var mod = Math.sqrt(x1 * x1 + y1 * y1)
         return Math.abs(x1 * y2 - y1 * x2) / mod
     }
 
@@ -79,28 +79,28 @@ impl Vector2
     // ---
     func nearestPointsSegSeg(p0, p1, q0, q1: Math.Vector2)->{a: Math.Vector2, b: Math.Vector2, dist: f32}
     {
-        p1p0 := p1 - p0
-        q1q0 := q1 - q0
-        p0q0 := p0 - q0
-        a := p1p0.dot(p1p0)
-        b := p1p0.dot(q1q0)
-        c := q1q0.dot(q1q0)
-        d := p1p0.dot(p0q0)
-        e := q1q0.dot(p0q0)
-        det := a * c - b * b
+        var p1p0 = p1 - p0
+        var q1q0 = q1 - q0
+        var p0q0 = p0 - q0
+        var a = p1p0.dot(p1p0)
+        var b = p1p0.dot(q1q0)
+        var c = q1q0.dot(q1q0)
+        var d = p1p0.dot(p0q0)
+        var e = q1q0.dot(p0q0)
+        var det = a * c - b * b
 
         var s, t: f32 = undefined
         if det > 0
         {
-            bte := b * e
-            ctd := c * d
+            var bte = b * e
+            var ctd = c * d
             if bte <= ctd
             {
                 s = 0
                 if e <= 0
                 {
                     t = 0
-                    nd := -d
+                    var nd = -d
                     if nd >= a
                         s = 1
                     elif nd > 0
@@ -113,7 +113,7 @@ impl Vector2
                 else
                 {
                     t = 1
-                    bmd := b - d
+                    var bmd = b - d
                     if bmd >= a
                         s = 1
                     elif bmd > 0
@@ -126,11 +126,11 @@ impl Vector2
                 if s >= det
                 {
                     s = 1
-                    bpe := b + e
+                    var bpe = b + e
                     if bpe <= 0
                     {
                         t = 0
-                        nd := -d
+                        var nd = -d
                         if nd <= 0
                             s = 0
                         elif nd < a
@@ -143,7 +143,7 @@ impl Vector2
                     else
                     {
                         t = 1
-                        bmd := b - d
+                        var bmd = b - d
                         if bmd <= 0
                             s = 0
                         elif bmd < a
@@ -152,12 +152,12 @@ impl Vector2
                 }
                 else
                 {
-                    ate := a * e
-                    btd := b * d
+                    var ate = a * e
+                    var btd = b * d
                     if ate <= btd
                     {
                         t = 0
-                        nd := -d
+                        var nd = -d
                         if nd <= 0
                             s =0
                         elif nd >= a
@@ -171,7 +171,7 @@ impl Vector2
                         if t >= det
                         {
                             t = 1
-                            bmd := b - d
+                            var bmd = b - d
                             if bmd <= 0
                                 s = 0
                             elif bmd >= a
@@ -193,7 +193,7 @@ impl Vector2
             if e <= 0
             {
                 t = 0
-                nd := -d
+                var nd = -d
                 if nd <= 0
                     s = 0
                 elif nd >= a
@@ -204,7 +204,7 @@ impl Vector2
             elif e >= c
             {
                 t = 1
-                bmd := b - d
+                var bmd = b - d
                 if bmd <= 0
                     s = 0
                 elif bmd >= a
@@ -222,7 +222,7 @@ impl Vector2
         var result: retval
         result.a = p0 + s * p1p0
         result.b = q0 + t * q1q0
-        diff := result.a - result.b
+        var diff = result.a - result.b
         result.dist = diff.length()
         return result
     }
@@ -231,9 +231,9 @@ impl Vector2
     {
         var result: retval
 
-        ua := (end1.x - start1.x) * (start0.y - start1.y) - (end1.y - start1.y) * (start0.x - start1.x)
-        ub := (end0.x - start0.x) * (start0.y - start1.y) - (end0.y - start0.y) * (start0.x - start1.x)
-        d  := (end1.y - start1.y) * (end0.x - start0.x) - (end1.x - start1.x) * (end0.y - start0.y)
+        var ua = (end1.x - start1.x) * (start0.y - start1.y) - (end1.y - start1.y) * (start0.x - start1.x)
+        var ub = (end0.x - start0.x) * (start0.y - start1.y) - (end0.y - start0.y) * (start0.x - start1.x)
+        var d = (end1.y - start1.y) * (end0.x - start0.x) - (end1.x - start1.x) * (end0.y - start0.y)
 
         // Parallel lines
         if Math.abs(d) < epsilon
@@ -253,7 +253,7 @@ impl Vector2
     {
         var result: retval
 
-        (yes, d0, d1) := getLineLineIntersectCoefs(start0, end0, start1, end1, epsilon)
+        var (yes, d0, d1) = getLineLineIntersectCoefs(start0, end0, start1, end1, epsilon)
         if !yes
             return result
 
@@ -268,7 +268,7 @@ impl Vector2
     {
         var result: retval
 
-        (yes, d0, d1) := getLineLineIntersectCoefs(start0, end0, start1, end1, epsilon)
+        var (yes, d0, d1) = getLineLineIntersectCoefs(start0, end0, start1, end1, epsilon)
         if !yes
             return result
 
@@ -285,11 +285,11 @@ impl Vector2
     // PNPoly by W. Randolph Franklin
     func polyContains(poly: Array'Math.Vector2, pt: Math.Vector2)->bool
     {
-        i := 0
-        j := cast(s32) poly.count - 1
-        c := false
-        verti := poly.buffer + i
-        vertj := poly.buffer + j
+        var i = 0
+        var j = cast(s32) poly.count - 1
+        var c = false
+        var verti = poly.buffer + i
+        var vertj = poly.buffer + j
         loop poly.count
         {
             if ((verti.y > pt.y) != (vertj.y > pt.y)) and

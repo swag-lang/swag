@@ -8,6 +8,6 @@ func(T, N: u32) delete(addr: *T)
 //#[Swag.PrintBc]
 #test
 {
-	x := 666
+	var x = 666
 	delete'(s32, 4)(&x)
 }

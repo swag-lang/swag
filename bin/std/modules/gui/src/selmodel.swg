@@ -34,8 +34,8 @@ impl SelModel
     // Select the given index
     mtd select(idx: u32, select: bool)
     {
-        isSelectedRange := getSelectedRangeIndex(idx)
-        isSelected := isSelectedRange != Swag.U32.Max
+        var isSelectedRange = getSelectedRangeIndex(idx)
+        var isSelected = isSelectedRange != Swag.U32.Max
         if select == isSelected
             return
 
@@ -62,7 +62,7 @@ impl SelModel
         }
         else
         {
-            range := selection[isSelectedRange]
+            var range = selection[isSelectedRange]
             if range.start == range.end
                 selection.removeAt(cast(u64) isSelectedRange)
             elif range.start == idx
@@ -71,7 +71,7 @@ impl SelModel
                 range.end -= 1
             else
             {
-                end := range.end
+                var end = range.end
                 range.end = idx - 1
                 selection.add({idx + 1, end})
             }

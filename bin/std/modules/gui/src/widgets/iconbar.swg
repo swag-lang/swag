@@ -41,8 +41,8 @@ impl IconBar
                 c.dockStyle = .Left
         }
 
-        pad := 2*iconPadding
-        size := cast(f32) (childs.count * (iconSize + pad))
+        var pad = 2*iconPadding
+        var size = cast(f32) (childs.count * (iconSize + pad))
         if iconBarFlags.has(.Vertical)
             resize(iconSize + pad, size)
         else
@@ -53,9 +53,9 @@ impl IconBar
     func create(parent: *Wnd, iconSize: f32, position: Math.Rectangle = {}, id: WndId = null)->*IconBar
     {
         Debug.assert(parent != null)
-        pos := position
+        var pos = position
         pos.height = #self.iconSize
-        res := Wnd.create'IconBar(parent, null, pos, id)
+        var res = Wnd.create'IconBar(parent, null, pos, id)
         res.iconSize = #self.iconSize
         return res
     }
@@ -64,10 +64,10 @@ impl IconBar
     #[Swag.Discardable]
     mtd addItem(icon: Icon, btnId: WndId = null, iconBtnFlags = IconButtonFlags.Zero)->*IconButton
     {
-        iconT := icon
+        var iconT = icon
         iconT.sizeX, iconT.sizeY = iconSize
-        size := iconSize + 2*iconPadding
-        b := IconButton.create(self, iconT, {0, 0, size, size})
+        var size = iconSize + 2*iconPadding
+        var b = IconButton.create(self, iconT, {0, 0, size, size})
         b.iconBtnFlags.set(iconBtnFlags)
         b.id = btnId
         b.dockStyle = .Left

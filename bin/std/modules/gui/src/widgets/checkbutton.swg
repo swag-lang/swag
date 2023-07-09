@@ -29,12 +29,12 @@ impl IWnd for CheckButton
 {
     mtd impl onPaintEvent(evt: *PaintEvent)
     {
-        bc      := evt.bc
-        painter := bc.painter
-        theme   := getTheme()
-        metrics := getThemeMetrics()
-        colors  := getThemeColors()
-        rects   := getThemeRects()
+        var bc = evt.bc
+        var painter = bc.painter
+        var theme = getTheme()
+        var metrics = getThemeMetrics()
+        var colors = getThemeColors()
+        var rects = getThemeRects()
 
         var subRectBk:      *ThemeImageRect
         var subRectBorder:  *ThemeImageRect
@@ -89,8 +89,8 @@ impl IWnd for CheckButton
         }
 
         // Box
-        clientRect := getClientRect()
-        posBox := clientRect
+        var clientRect = getClientRect()
+        var posBox = clientRect
         posBox.height = metrics.btnCheck_Size
         posBox.y = clientRect.vertCenter() - (posBox.height * 0.5)
         posBox.width = posBox.height
@@ -110,7 +110,7 @@ impl IWnd for CheckButton
         format.vertAlignment = .Center
         format.flags = .Clip
         format.font = getFont()
-        labelPos := clientRect
+        var labelPos = clientRect
         if !checkButtonFlags.has(.RightAlign)
             labelPos.x += posBox.width + metrics.btnCheck_Padding
         labelPos.width -= posBox.width + metrics.btnCheck_Padding
@@ -139,7 +139,7 @@ impl CheckButton
     func create(parent: *Wnd, name: string, position: Math.Rectangle = {}, id: WndId = null)->*CheckButton
     {
         Debug.assert(parent != null)
-        pos := position
+        var pos = position
         if pos.height == 0
             pos.height = parent.getThemeMetrics().btnPush_Height
         if pos.width == 0

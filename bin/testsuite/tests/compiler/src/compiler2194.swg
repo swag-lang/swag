@@ -24,7 +24,7 @@ func cstr(x: string)->CStr
 #[Swag.Optim("bytecode", true)]
 func toto()
 {
-    v := cstr("toto")
+    var v = cstr("toto")
 }
 
 #[Swag.Optim("bytecode", true)]

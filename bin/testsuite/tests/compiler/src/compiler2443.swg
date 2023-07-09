@@ -1,7 +1,7 @@
 //#[Swag.PrintBc]
 #test
 {
-    s := 0
+    var s = 0
     alias v = s
     v = 1
     @assert(s == 1)

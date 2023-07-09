@@ -12,15 +12,15 @@ struct A
 
 #message(Swag.CompilerMsgMask.AttributeGen)
 {
-    itf := @compiler()
-    msg := itf.getMessage()
+    var itf = @compiler()
+    var msg = itf.getMessage()
 
     if msg.type.kind != .Struct
         return
     if !Reflection.hasAttribute(msg.type, GenOpEquals)
         return
 
-    types := cast(const *TypeInfoStruct) msg.type
+    var types = cast(const *TypeInfoStruct) msg.type
 
     var sb: StringBuilder
     sb.appendFormat("impl % {\n", msg.type.name)

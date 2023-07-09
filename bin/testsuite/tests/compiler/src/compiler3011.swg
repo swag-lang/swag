@@ -9,7 +9,7 @@ impl Vector
     func max(x, y: Vector)->Vector
     {
         var result: retval// = undefined
-        zz := @max(x.x, y.x)
+        var zz = @max(x.x, y.x)
         //@print(zz)
         return result
     }
@@ -19,8 +19,8 @@ impl Vector
 //#[Swag.PrintBc]
 #test
 {
-    x := Vector{200}
-    y := Vector{100}
+    var x = Vector{200}
+    var y = Vector{100}
     discard Vector.max(x, y)
     //discard Vector.min(x, y)
 }

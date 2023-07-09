@@ -11,5 +11,5 @@ func toto() -> {x, y: s32}
 
 #test
 {
-    x := toto()
+    var x = toto()
 }*/

@@ -4,7 +4,7 @@
 //#[Swag.PrintBc]
 #test
 {
-	a := &F;
+	var a = &F;
 }
 
 func F(x: s32, b: bool)->s32

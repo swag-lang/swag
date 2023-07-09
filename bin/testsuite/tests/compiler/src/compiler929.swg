@@ -3,7 +3,7 @@
 //#[Swag.PrintBc]
 func average(x: any)
 {
-	tt := @kindof(x)
+	var tt = @kindof(x)
 	@assert(tt.fullname == "s32")
 
 	using Swag.TypeInfoKind

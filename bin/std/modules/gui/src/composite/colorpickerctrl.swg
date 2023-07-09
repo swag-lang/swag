@@ -42,10 +42,10 @@ impl IWnd for ColorPickerCtrl
     {
         frameWnd.IWnd.onPaintEvent(evt)
 
-        rect := staticRes.position
-        painter := evt.bc.painter
+        var rect = staticRes.position
+        var painter = evt.bc.painter
 
-        brush := Brush.createHatch(.CheckBoardLarge, getThemeColors().colorPicker_BackAlpha)
+        var brush = Brush.createHatch(.CheckBoardLarge, getThemeColors().colorPicker_BackAlpha)
 
         if oldColor.a != 255
             painter.fillRect(rect, brush)
@@ -87,7 +87,7 @@ private impl ColorPickerCtrl
 
     mtd updateEdits()
     {
-        t := Format.toString("%", color.r)
+        var t = Format.toString("%", color.r)
         editR.setText(t)
         t = Format.toString("%", color.g)
         editG.setText(t)
@@ -115,12 +115,12 @@ impl ColorPickerCtrl
     #[Swag.Discardable]
     func create(parent: *Wnd, position: Math.Rectangle, id: WndId = null)->*ColorPickerCtrl
     {
-        pos := position
+        var pos = position
         if pos.width == 0
             pos.width = 340
         if pos.height == 0
             pos.height = 330
-        v := Wnd.create'ColorPickerCtrl(parent, "", pos, id)
+        var v = Wnd.create'ColorPickerCtrl(parent, "", pos, id)
 
         with v
         {
@@ -129,7 +129,7 @@ impl ColorPickerCtrl
             .pickAlpha = ColorPicker.create(v, {10, 240, 220, 16})
 
             .staticRes = Wnd.create'Wnd(v, "", {245, 215, 40, 40})
-            picker := IconButton.create(v, v.getTheme().getIcon24(.Picker), {245, 215, 40, 40})
+            var picker = IconButton.create(v, v.getTheme().getIcon24(.Picker), {245, 215, 40, 40})
 
             .editR = EditBox.create(v, "", {10, 265, 50})
             .editG = EditBox.create(v, "", {65, 265, 50})
@@ -137,7 +137,7 @@ impl ColorPickerCtrl
             .editA = EditBox.create(v, "", {185, 265, 50})
             .editH = EditBox.create(v, "", {240, 265, 90})
 
-            l := Label.create(v, "R", {.editR.position.x, .editR.position.bottom() + 0, .editR.position.width})
+            var l = Label.create(v, "R", {.editR.position.x, .editR.position.bottom() + 0, .editR.position.width})
             l.labelFlags |= .LightText
             l = Label.create(v, "G", {.editG.position.x, .editG.position.bottom() + 0, .editG.position.width})
             l.labelFlags |= .LightText
@@ -156,11 +156,11 @@ impl ColorPickerCtrl
             .radioB = RadioButton.create(v, "B", {280, 160, 40})
 
             picker.sigPressed += closure|v|(cb) {
-                app := cb.getApp()
+                var app = cb.getApp()
                 app.pushCursor(Cursor.from(.Cross))
 
-                save := v.getColor()
-                sfade := app.fadeDisabledSurface
+                var save = v.getColor()
+                var sfade = app.fadeDisabledSurface
                 app.fadeDisabledSurface = false
                 discard app.doModalLoop(null, closure|v,save|(app) {
                     if app.mouse.isButtonPressed(.Right)
@@ -170,7 +170,7 @@ impl ColorPickerCtrl
                         return
                     }
 
-                    col := Application.pickColorAtMouse()
+                    var col = Application.pickColorAtMouse()
                     v.setColor(col)
 
                     if app.mouse.isButtonPressed(.Left)
@@ -185,16 +185,16 @@ impl ColorPickerCtrl
                 switch v.mode
                 {
                 case SaturationLightness:
-                    c := Color.fromHsl(v.pickBar.hue, cb.sat, cb.lum)
+                    var c = Color.fromHsl(v.pickBar.hue, cb.sat, cb.lum)
                     v.color.setArgb(v.color.a, c.r, c.g, c.b)
                     v.pickAlpha.change(s = cb.sat, l = cb.lum)
                 case HueSaturation:
-                    c := Color.fromHsl(cb.hue, cb.sat, v.pickBar.lum)
+                    var c = Color.fromHsl(cb.hue, cb.sat, v.pickBar.lum)
                     v.color.setArgb(v.color.a, c.r, c.g, c.b)
                     v.pickBar.change(h = cb.hue, s = cb.sat)
                     v.pickAlpha.change(h = cb.hue, s = cb.sat)
                 case HueLightness:
-                    c := Color.fromHsl(cb.hue, v.pickBar.sat, cb.lum)
+                    var c = Color.fromHsl(cb.hue, v.pickBar.sat, cb.lum)
                     v.color.setArgb(v.color.a, c.r, c.g, c.b)
                     v.pickBar.change(h = cb.hue, l = cb.lum)
                     v.pickAlpha.change(h = cb.hue, l = cb.lum)
@@ -218,17 +218,17 @@ impl ColorPickerCtrl
                 switch v.mode
                 {
                 case SaturationLightness:
-                    c := Color.fromHsl(v.pickBar.hue, v.pickBox.sat, v.pickBox.lum)
+                    var c = Color.fromHsl(v.pickBar.hue, v.pickBox.sat, v.pickBox.lum)
                     v.color.setArgb(v.color.a, c.r, c.g, c.b)
                     v.pickBox.change(h = cb.hue)
                     v.pickAlpha.change(h = cb.hue)
                 case HueSaturation:
-                    c := Color.fromHsl(v.pickBox.hue, v.pickBox.sat, v.pickBar.lum)
+                    var c = Color.fromHsl(v.pickBox.hue, v.pickBox.sat, v.pickBar.lum)
                     v.color.setArgb(v.color.a, c.r, c.g, c.b)
                     v.pickBox.change(l = cb.lum)
                     v.pickAlpha.change(l = cb.lum)
                 case HueLightness:
-                    c := Color.fromHsl(v.pickBox.hue, v.pickBar.sat, v.pickBox.lum)
+                    var c = Color.fromHsl(v.pickBox.hue, v.pickBar.sat, v.pickBox.lum)
                     v.color.setArgb(v.color.a, c.r, c.g, c.b)
                     v.pickBox.change(s = cb.sat)
                     v.pickAlpha.change(s = cb.sat)
@@ -254,7 +254,7 @@ impl ColorPickerCtrl
             .editR.setInputU64(0, 255)
             .editR.maxLength = 3
             .editR.sigLoseFocus += closure|v|(ed) {
-                res := catch StrConv.parseU32(ed.text)
+                var res = catch StrConv.parseU32(ed.text)
                 v.color.r = acast Math.clamp(res.value, 0, 255)
                 v.updateAll()
             }
@@ -262,7 +262,7 @@ impl ColorPickerCtrl
             .editG.setInputU64(0, 255)
             .editG.maxLength = 3
             .editG.sigLoseFocus += closure|v|(ed) {
-                res := catch StrConv.parseU32(ed.text)
+                var res = catch StrConv.parseU32(ed.text)
                 v.color.g = acast Math.clamp(res.value, 0, 255)
                 v.updateAll()
             }
@@ -270,7 +270,7 @@ impl ColorPickerCtrl
             .editB.setInputU64(0, 255)
             .editB.maxLength = 3
             .editB.sigLoseFocus += closure|v|(ed) {
-                res := catch StrConv.parseU32(ed.text)
+                var res = catch StrConv.parseU32(ed.text)
                 v.color.b = acast Math.clamp(res.value, 0, 255)
                 v.updateAll()
             }
@@ -278,14 +278,14 @@ impl ColorPickerCtrl
             .editA.setInputU64(0, 255)
             .editA.maxLength = 3
             .editA.sigLoseFocus += closure|v|(ed) {
-                res := catch StrConv.parseU32(ed.text)
+                var res = catch StrConv.parseU32(ed.text)
                 v.color.a = acast Math.clamp(res.value, 0, 255)
                 v.pickAlpha.setColor(v.color)
                 v.updateEdits()
             }
 
             .editH.sigLoseFocus += closure|v|(ed) {
-                res := catch StrConv.parseX64(ed.text)
+                var res = catch StrConv.parseX64(ed.text)
                 v.color.argb = cast(u32) res.value
                 v.pickAlpha.setColor(v.color)
                 v.updateAll()

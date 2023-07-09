@@ -5,7 +5,7 @@ func toto(x: string)
 {
     #run
     {
-        loc := @location(x)
+        var loc = @location(x)
         loc.colStart += 1
         loc.colEnd -= 1
         @compilererror("error", loc)

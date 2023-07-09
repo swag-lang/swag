@@ -1,8 +1,8 @@
 //#global skip
 #test
 {
-    toto := false
-    r := ref &toto
+    var toto = false
+    var r = ref &toto
     if r and r
     {
         @assert(false)

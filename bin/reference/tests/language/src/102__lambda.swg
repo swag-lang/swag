@@ -11,7 +11,7 @@ A lambda is just a **pointer to a function**.
     ptr0()
 
     // Here type of 'ptr1' is deduced from 'myFunction1'
-    ptr1 := &myFunction1
+    var ptr1 = &myFunction1
     @assert(myFunction1(2) == 4)
     @assert(ptr1(2) == 4)
 }
@@ -43,7 +43,7 @@ You can also create *anonymous functions* (aka functions as literals).
 */
 #test
 {
-    cb := func(x: s32)->s32 => x * x
+    var cb = func(x: s32)->s32 => x * x
     @assert(cb(4) == 16)
     cb = func(x: s32)->s32 => x * x * x
     @assert(cb(4) == 64)
@@ -95,7 +95,7 @@ Lambdas can have default parameters values.
 #test
 {
     {
-        x := func(val = true) {
+        var x = func(val = true) {
             @assert(val == true)
         }
 

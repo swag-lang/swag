@@ -15,5 +15,5 @@ func titi(v: u8)->u8
 
 #test
 {
-    x := titi(1)
+    var x = titi(1)
 }

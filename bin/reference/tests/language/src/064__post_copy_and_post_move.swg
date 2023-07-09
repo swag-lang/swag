@@ -29,8 +29,8 @@ impl Vector3
 
 #test
 {
-    a := Vector3{}
-    b := Vector3{100, 200, 300}
+    var a = Vector3{}
+    var b = Vector3{100, 200, 300}
 
     // "copy semantic". The default behaviour.
     // 1. This will call 'opDrop' on 'a' if the function exists because 'a' could be already assigned.
@@ -87,7 +87,7 @@ impl Vector3
         to = from
     }
 
-    a := Vector3{1, 2, 3}
+    var a = Vector3{1, 2, 3}
     var b: Vector3
 
     // Call the 'copy' version of 'assign'.

@@ -5,6 +5,6 @@ func titi() => 555
 //#[Swag.PrintBc]
 #test
 {
-    x := toto() orelse titi()
+    var x = toto() orelse titi()
     @assert(x == 555)
 }

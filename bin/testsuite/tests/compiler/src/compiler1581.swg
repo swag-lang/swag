@@ -10,7 +10,7 @@
         Blue
     }
 
-    a := 0//Color.Red
+    var a = 0//Color.Red
 
     #[Swag.Complete]
     switch a

@@ -27,12 +27,12 @@ impl Array
 		if self.size < 8
 			self.size = 8
 
-		context := @getcontext()
+		var context = @getcontext()
 
 		var request: AllocatorRequest
 		request.size = cast(u64) self.size * @sizeof(T)
 		context.allocator.req(&request)
-		newBuffer := request.address
+		var newBuffer = request.address
 		if self.buffer
 			@memcpy(newBuffer, self.buffer, cast(u64) self.count * @sizeof(T))
 

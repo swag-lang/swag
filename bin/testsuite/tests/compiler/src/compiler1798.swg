@@ -1,4 +1,4 @@
 #test
 {
-    ptr := @typeof(func(s32))
+    var ptr = @typeof(func(s32))
 }

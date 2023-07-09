@@ -16,7 +16,7 @@ var G: s32
     toto()
     {
         {
-            fn := func(a: s32){
+            var fn = func(a: s32){
                 G += a
             }
             fn(10)

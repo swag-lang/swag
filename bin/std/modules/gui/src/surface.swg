@@ -76,7 +76,7 @@ impl Surface
 
         if flags.has(.Border)
         {
-            size := app.theme.metrics.wnd_BorderSize
+            var size = app.theme.metrics.wnd_BorderSize
             wnd.padding.x = size
             wnd.padding.y = Math.max(wnd.padding.y, size)
             wnd.padding.z = size
@@ -108,12 +108,12 @@ impl Surface
             .applySurfaceFlags()
         }
 
-        app := surface.app
+        var app = surface.app
         try createNative(app, surface, x, y, width, height, flags, mainSurface)
 
         surface.minSize = {128, 128}
-        w := cast(f32) Math.max(surface.minSize.x, cast(f32) width)
-        h := cast(f32) Math.max(surface.minSize.y, cast(f32) height)
+        var w = cast(f32) Math.max(surface.minSize.x, cast(f32) width)
+        var h = cast(f32) Math.max(surface.minSize.y, cast(f32) height)
         surface.sendResizeEvent(w, h)
     }
 
@@ -157,8 +157,8 @@ impl Surface
             return
         }
 
-        r := dirtyRect.right()
-        b := dirtyRect.bottom()
+        var r = dirtyRect.right()
+        var b = dirtyRect.bottom()
         dirtyRect.x = Math.min(dirtyRect.x, rect.x)
         dirtyRect.y = Math.min(dirtyRect.y, rect.y)
         dirtyRect.setRight(Math.max(r, rect.right()))
@@ -168,7 +168,7 @@ impl Surface
     // Center this surface relative to 'from'
     mtd center(from: *Surface)
     {
-        pos := position
+        var pos = position
         pos.x = from.position.horzCenter()
         pos.y = from.position.vertCenter()
         pos.x -= position.width * 0.5
@@ -182,10 +182,10 @@ impl Surface
         if isMaximized or isMinimized
             return
 
-        monitors := Env.getMonitors()
+        var monitors = Env.getMonitors()
         visit m: monitors
         {
-            r1 := position
+            var r1 = position
             r1.intersect(m.rect)
             if !r1.isEmpty()
             {
@@ -215,7 +215,7 @@ impl Surface
 
         if !isDirty
             return
-        clipRect := dirtyRect
+        var clipRect = dirtyRect
         dirtyRect = {Swag.F32.Max, Swag.F32.Max, 0, 0}
         isDirty   = false
 
@@ -226,10 +226,10 @@ impl Surface
         cxt.painter.begin()
 
         // Draw shadow around surface
-        subRect := &app.theme.rects.surfaceWnd_Shadow
+        var subRect = &app.theme.rects.surfaceWnd_Shadow
         painter.pushClippingRect(clipRect)
         painter.setColorMaskFull()
-        myRect := Math.Rectangle{0, 0, position.width, position.height}
+        var myRect = Math.Rectangle{0, 0, position.width, position.height}
         app.theme.drawSubRect(&painter, myRect, subRect, app.theme.colors.wnd_Shadow, false)
 
         // Hierarchy paint
@@ -268,7 +268,7 @@ impl Surface
             colorDisabled = Argb.White
         }
 
-        dstRect := Math.Rectangle{0, 0, cast(f32) rc.width, cast(f32) rc.height}
+        var dstRect = Math.Rectangle{0, 0, cast(f32) rc.width, cast(f32) rc.height}
         painter.drawTexture(dstRect, dstRect, rt.colorBuffer, color)
         painter.end()
 
@@ -283,7 +283,7 @@ impl Surface
         position.width = width
         position.height = height
 
-        sdw := app.theme.metrics.surfaceWnd_ShadowSize
+        var sdw = app.theme.metrics.surfaceWnd_ShadowSize
         wnd.setPosition({sdw, sdw, width - 2 * sdw, height - 2 * sdw})
     }
 

@@ -3,8 +3,8 @@
 //#[Swag.PrintBc]
 #test
 {
-	a := [1, 2, 3, 0]
-	b := F1(&a[0]);
+	var a = [1, 2, 3, 0]
+	var b = F1(&a[0]);
 	@assert(b == 3)
 	b = F1(@dataof(a))
 	@assert(b == 3)
@@ -16,7 +16,7 @@
 
 func F1(b: ^s32)->s32
 {
-	i := 0
+	var i = 0
 	while(b[i] != 0)
 		i += 1
 	return i;

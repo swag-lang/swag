@@ -66,7 +66,7 @@ func loadRes(app: *Application)
     var dataPath: String = Path.getDirectoryName(#location.fileName)
     dataPath = Path.combine(dataPath, "datas", "cards", "res")
 
-    img := assume Image.load(Path.combine(dataPath, "m.png"))
+    var img = assume Image.load(Path.combine(dataPath, "m.png"))
     img.resize(acast BADGE_SIZE, acast BADGE_SIZE, .Bicubic)
     g_IconM = app.renderer.addImage(img)
 
@@ -139,10 +139,10 @@ func paintBadge(dc: *Painter, x, y: f32, m: bool)
         color = Argb.Pink
     }
 
-    rectSolo := Math.Rectangle{x, y, BADGE_SIZE, BADGE_SIZE}
+    var rectSolo = Math.Rectangle{x, y, BADGE_SIZE, BADGE_SIZE}
 
     dc.fillCircle(rectSolo.horzCenter(), rectSolo.vertCenter(), BADGE_SIZE*0.5, color)
-    rectIcon := rectSolo
+    var rectIcon = rectSolo
     rectIcon.inflate(-10)
     dc.drawTexture(rectIcon, texture)
     dc.drawCircle(rectSolo.horzCenter(), rectSolo.vertCenter(), BADGE_SIZE*0.5, Argb.Black, BADGE_BORDER)
@@ -156,15 +156,15 @@ func paintOne(app: *Application, dc: *Painter, x, y: u32, fi: ImageInfo)
         g_InitDone = true
     }
 
-    rect := Math.Rectangle{x, y, CARD_WIDTH, CARD_HEIGHT}
+    var rect = Math.Rectangle{x, y, CARD_WIDTH, CARD_HEIGHT}
 
     {
-        rectBorder := rect
+        var rectBorder = rect
         dc.fillRoundRect(rectBorder, CARD_ROUND*2.0, CARD_ROUND*2.0, Argb.Black)
     }
 
     {
-        rectOutside := rect
+        var rectOutside = rect
         dc.drawRoundRect(rectOutside, CARD_ROUND*2.5, CARD_ROUND*2.5, Argb.White, 3)
     }
 
@@ -172,22 +172,22 @@ func paintOne(app: *Application, dc: *Painter, x, y: u32, fi: ImageInfo)
     /////////////////////////////////
 
     {
-        img := assume Image.load(fi.image)
+        var img = assume Image.load(fi.image)
 
-        rectImage := rect
+        var rectImage = rect
         rectImage.inflate(-BORDER_SIZE)
         rectImage.setBottom(rect.bottom() - TEXT_HEIGHT - MARGIN_BOTTOM)
 
         if img.width > img.height
         {
-            ratio := img.width / cast(f32) img.height
-            newHeight := rectImage.height
+            var ratio = img.width / cast(f32) img.height
+            var newHeight = rectImage.height
             img.resize(cast(s32) (newHeight * ratio), cast(s32) newHeight)
         }
         else
         {
-            ratio := img.height / cast(f32) img.width
-            newWidth := rectImage.width
+            var ratio = img.height / cast(f32) img.width
+            var newWidth = rectImage.width
             img.resize(cast(s32) newWidth, cast(s32) (newWidth * ratio))
         }
 
@@ -198,7 +198,7 @@ func paintOne(app: *Application, dc: *Painter, x, y: u32, fi: ImageInfo)
         cropRect.height = rectImage.height
         img.crop(cropRect)
 
-        texture := app.renderer.addImage(img)
+        var texture = app.renderer.addImage(img)
         dc.drawTexture(rectImage, texture)
     }
 
@@ -216,7 +216,7 @@ func paintOne(app: *Application, dc: *Painter, x, y: u32, fi: ImageInfo)
     /////////////////////////////////
 
     {
-        rectText := rect
+        var rectText = rect
         rectText.inflate(-BORDER_SIZE)
         rectText.y = rectText.bottom() - TEXT_HEIGHT
         rectText.height = TEXT_HEIGHT - MARGIN_BOTTOM
@@ -245,7 +245,7 @@ func paintOne(app: *Application, dc: *Painter, x, y: u32, fi: ImageInfo)
             rs.set(fi.text2)
             dc.drawRichString(rectText, &rs, rsf)
 
-            rectSep := rectText
+            var rectSep = rectText
             rectSep.y -= (TEXT_FONT_SIZE*0.5)
             rectSep.height = TEXT_FONT_SIZE
             dc.drawTexture(rectSep, g_TextSep)
@@ -256,13 +256,13 @@ func paintOne(app: *Application, dc: *Painter, x, y: u32, fi: ImageInfo)
     /////////////////////////////////
 
     {
-        rect1 := rect
+        var rect1 = rect
         rect1.inflate(-BORDER_SIZE)
         rect1.y = rect1.bottom() - TEXT_HEIGHT - (TITLE_HEIGHT/2)
         rect1.height = TITLE_HEIGHT
         dc.drawTexture(rect1, g_BackTitle[fi.rank])
 
-        rectSub := rect1
+        var rectSub = rect1
         rectSub.y = rectSub.bottom() - SUBTITLE_HEIGHT
         rectSub.height = SUBTITLE_HEIGHT
         dc.fillRect(rectSub, Color.fromArgb(100, 0, 0, 0))
@@ -298,7 +298,7 @@ func paintOne(app: *Application, dc: *Painter, x, y: u32, fi: ImageInfo)
     }
 
     {
-        rectPepper := rect
+        var rectPepper = rect
         rectPepper.x = rect.right() - PEPPER_SIZE - (BORDER_SIZE*1.5)
         rectPepper.y = rect.bottom() - TEXT_HEIGHT - (TITLE_HEIGHT/2)
         rectPepper.width, rectPepper.height = PEPPER_SIZE
@@ -314,13 +314,13 @@ func paintOne(app: *Application, dc: *Painter, x, y: u32, fi: ImageInfo)
     /////////////////////////////////
 
     {
-        rect1 := rect
+        var rect1 = rect
         rect1.y = rect1.bottom() - MARGIN_BOTTOM - BORDER_SIZE
         rect1.height = MARGIN_BOTTOM + BORDER_SIZE
         rect1.width -= BORDER_SIZE
 
         var rs: RichString
-        num := Format.toString("%", g_Id)
+        var num = Format.toString("%", g_Id)
         rs.set(num)
 
         var rsf: RichStringFormat
@@ -332,7 +332,7 @@ func paintOne(app: *Application, dc: *Painter, x, y: u32, fi: ImageInfo)
     }
 
     {
-        rect1 := rect
+        var rect1 = rect
         rect1.y = rect1.bottom() - MARGIN_BOTTOM - BORDER_SIZE
         rect1.height = MARGIN_BOTTOM + BORDER_SIZE
         rect1.y = rect1.vertCenter() - (LOGO_HEIGHT/2)
@@ -350,14 +350,14 @@ func paintOne(app: *Application, dc: *Painter, x, y: u32, fi: ImageInfo)
     var dataPath: String = Path.getDirectoryName(#location.fileName)
     dataPath = Path.combine(dataPath, "datas", "cards")
 
-    pathImg := Path.combine(dataPath, "img")
-    lines := assume File.readAllLines(Path.combine(dataPath, "cards.txt"))
+    var pathImg = Path.combine(dataPath, "img")
+    var lines = assume File.readAllLines(Path.combine(dataPath, "cards.txt"))
     visit l: lines
     {
-        tokens := Tokenize.split(l, ";"'rune, removeEmpty = false)
+        var tokens = Tokenize.split(l, ";"'rune, removeEmpty = false)
 
         var fi: ImageInfo
-        folders := Tokenize.split(tokens[0], "/"'rune)
+        var folders = Tokenize.split(tokens[0], "/"'rune)
 
         fi.title   = folders.back()
         fi.image   = Path.combine(pathImg, tokens[1])
@@ -370,15 +370,15 @@ func paintOne(app: *Application, dc: *Painter, x, y: u32, fi: ImageInfo)
         g_Files.add(fi)
     }
 
-    page := Image.create(CARD_WIDTH*3, CARD_HEIGHT*3, .BGRA8)
+    var page = Image.create(CARD_WIDTH*3, CARD_HEIGHT*3, .BGRA8)
     page.fill(Argb.White)
-    x, y := 0
-    pageNum := 1
+    var x, y = 0
+    var pageNum = 1
 
     #[Swag.Mixin]
     func flushPage()
     {
-        fileN := Format.toString("%.jpg", pageNum)
+        var fileN = Format.toString("%.jpg", pageNum)
         assume page.save(Path.combine(dataPath, "out", cast(string) fileN))
     }
 
@@ -389,7 +389,7 @@ func paintOne(app: *Application, dc: *Painter, x, y: u32, fi: ImageInfo)
     {
         g_File = f
 
-        img := pt.draw(func(app, dc) {
+        var img = pt.draw(func(app, dc) {
             dc.setColorMaskFull()
             dc.clear(Argb.White)
             paintOne(app, dc, 0, 0, g_File)

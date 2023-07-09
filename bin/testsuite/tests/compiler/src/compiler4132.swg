@@ -5,7 +5,7 @@
 //#[Swag.PrintBc]
 #test
 {
-    y := -2.0'f32
-    x := @acos(y)
+    var y = -2.0'f32
+    var x = @acos(y)
     @print(x)
 }

@@ -31,14 +31,14 @@ private
 // Returns the current time expressed in milliseconds
 func nowMilliseconds()->u32
 {
-    ticks := nowPrecise() / (preciseFrequency() / 1000)
+    var ticks = nowPrecise() / (preciseFrequency() / 1000)
     return cast,bit(u32) ticks
 }
 
 // Returns the current time expressed in microseconds
 func nowMicroseconds()->u32
 {
-    ticks := nowPrecise() / (preciseFrequency() / 1000000)
+    var ticks = nowPrecise() / (preciseFrequency() / 1000000)
     return cast,bit(u32) ticks
 }
 
@@ -54,7 +54,7 @@ func timeToTicks(hour, minute, second, millisecond: u16)->Ticks
 
     // totalSeconds is bounded by 2^31 * 2^12 + 2^31 * 2^8 + 2^31,
     // which is less than 2^44, meaning we won't overflow totalSeconds.
-    totalMilli := (hour*3600'u32 + minute*60'u32 + second) * 1000'u64
+    var totalMilli = (hour*3600'u32 + minute*60'u32 + second) * 1000'u64
     totalMilli += millisecond
     Debug.assert(totalMilli <= MaxMilliSeconds)
     return totalMilli * TicksPerMilliSecond
@@ -78,9 +78,9 @@ func dateToTicks(year, month, day: u16)->Ticks
     Debug.assert(1 <= month and month <= 12)
     Debug.assert(1 <= day and day <= daysInMonth(year, month))
 
-    days := isLeapYear(year) ? @dataof(DaysToMonth366) : @dataof(DaysToMonth365)
-    y := cast(u64) (year - 1)
-    n := y*365 +,over y/4 +,over y/400 +,over days[month-1] +,over day-1 -,over y/100
+    var days = isLeapYear(year) ? @dataof(DaysToMonth366) : @dataof(DaysToMonth365)
+    var y = cast(u64) (year - 1)
+    var n = y*365 +,over y/4 +,over y/400 +,over days[month-1] +,over day-1 -,over y/100
     return n * TicksPerDay
 }
 
@@ -88,23 +88,23 @@ func dateToTicks(year, month, day: u16)->Ticks
 func ticksToDate(ticks: Ticks) -> {year: u16, month: u16, day: u16}
 {
     // n = number of days since 1/1/0001
-    n := ticks / TicksPerDay
+    var n = ticks / TicksPerDay
     // y400 = number of whole 400-year periods since 1/1/0001
-    y400 := n / DaysPer400Years
+    var y400 = n / DaysPer400Years
     // n = day number within 400-year period
     n -= y400 * DaysPer400Years
     // y100 = number of whole 100-year periods within 400-year period
-    y100 := n / DaysPer100Years
+    var y100 = n / DaysPer100Years
     // Last 100-year period has an extra day, so decrement result if 4
     if y100 == 4 y100 = 3
     // n = day number within 100-year period
     n -= y100 * DaysPer100Years
     // y4 = number of whole 4-year periods within 100-year period
-    y4 := n / DaysPer4Years
+    var y4 = n / DaysPer4Years
     // n = day number within 4-year period
     n -= y4 * DaysPer4Years
     // y1 = number of whole years within 4-year period
-    y1 := n / DaysPerYear
+    var y1 = n / DaysPerYear
     // Last year has an extra day, so decrement result if 4
     if y1 == 4 y1 = 3
     // n = day number within year
@@ -112,11 +112,11 @@ func ticksToDate(ticks: Ticks) -> {year: u16, month: u16, day: u16}
     // dayOfYear = n + 1;
     // Leap year calculation looks different from IsLeapYear since y1, y4,
     // and y100 are relative to year 1, not year 0
-    leapYear := y1 == 3 and (y4 != 24 or y100 == 3)
-    days := leapYear ? @dataof(DaysToMonth366) : @dataof(DaysToMonth365)
+    var leapYear = y1 == 3 and (y4 != 24 or y100 == 3)
+    var days = leapYear ? @dataof(DaysToMonth366) : @dataof(DaysToMonth365)
     // All months have less than 32 days, so n >> 5 is a good conservative
     // estimate for the month
-    m := (n >> 5) + 1
+    var m = (n >> 5) + 1
     // m = 1-based month number
     while n >= days[m] m += 1
 

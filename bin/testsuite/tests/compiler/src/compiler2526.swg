@@ -2,6 +2,6 @@
 
 #test
 {
-    y := 0
-    x := y try
+    var y = 0
+    var x = y try
 }

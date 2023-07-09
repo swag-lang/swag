@@ -18,6 +18,6 @@ func titi()->AA throw
 
 #test
 {
-    x := catch titi()
+    var x = catch titi()
     @assert(@errmsg == "toto")
 }

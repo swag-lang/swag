@@ -6,7 +6,7 @@ func toto(y: s32)
 
 #test
 {
-    x := 0
+    var x = 0
     toto(6)
     @assert(x == 6)
 }

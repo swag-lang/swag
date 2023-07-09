@@ -10,9 +10,9 @@ func toto(x: s32)
 {
 	using Swag
 
-	t := @typeof(toto)
+	var t = @typeof(toto)
 
-	ptr := cast(const *TypeInfoFunc) t
+	var ptr = cast(const *TypeInfoFunc) t
 	@assert(@countof(ptr.parameters) == 1)
 	@assert(ptr.parameters[0].name == "x")
 

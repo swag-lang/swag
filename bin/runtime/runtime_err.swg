@@ -4,8 +4,8 @@ using Swag
 
 func __seterr(value: string)
 {
-    cxt := @getcontext()
-    len := @countof(value)
+    var cxt = @getcontext()
+    var len = @countof(value)
     if len > MaxLenErrorMsg
         len = MaxLenErrorMsg
 
@@ -17,7 +17,7 @@ func __seterr(value: string)
 
 func __geterrmsg()->string
 {
-    cxt := @getcontext()
+    var cxt = @getcontext()
     if !cxt.hasError
         return null
     return cxt.errors[cxt.errorIndex].msg
@@ -26,7 +26,7 @@ func __geterrmsg()->string
 // Returns the current raised [Error] or null if none
 func @err()->const *Error
 {
-    cxt := @getcontext()
+    var cxt = @getcontext()
     if !cxt.hasError
         return null
     return &cxt.errors[cxt.errorIndex]
@@ -34,7 +34,7 @@ func @err()->const *Error
 
 func __pusherr()
 {
-    cxt := @getcontext()
+    var cxt = @getcontext()
     @assert(cxt.errorIndex < MaxErrors)
     cxt.errors[cxt.errorIndex].pushHasError = cxt.hasError
     cxt.errors[cxt.errorIndex].pushTraceIndex = cxt.traceIndex
@@ -43,7 +43,7 @@ func __pusherr()
 
 func __poperr()
 {
-    cxt := @getcontext()
+    var cxt = @getcontext()
     @assert(cxt.errorIndex != 0)
     cxt.errorIndex -= 1
     @assert(cxt.errorIndex < MaxErrors)
@@ -55,8 +55,8 @@ func __checkAny(typeA, typeB: typeinfo, loc: SourceCodeLocation)
 {
     if !@typecmp(typeA, typeB, .CastAny)
     {
-        cxt := @getcontext()
-        str := &cxt.errors[0].msgBuf[0]
+        var cxt = @getcontext()
+        var str = &cxt.errors[0].msgBuf[0]
         cxt.errors[0].msgBuf[0] = 0
 
         if !typeB
@@ -90,13 +90,13 @@ func __checkAny(typeA, typeB: typeinfo, loc: SourceCodeLocation)
 
 func __initStackTrace()
 {
-    cxt := @getcontext()
+    var cxt = @getcontext()
     cxt.traceIndex = 0
 }
 
 func __stackTrace(loc: SourceCodeLocation)
 {
-    cxt := @getcontext()
+    var cxt = @getcontext()
     if cxt.traceIndex >= MaxTraces
         return
     cxt.traces[cxt.traceIndex] = loc
@@ -109,7 +109,7 @@ func __stackTrace(loc: SourceCodeLocation)
 func @compilererror(message: string, loc: SourceCodeLocation)
 {
     // If the compiler is around, just let it deal with the message
-    cxt := @getcontext()
+    var cxt = @getcontext()
     if cxt.flags & .ByteCode
     {
         __raiseException666(message, loc, .Error)
@@ -121,7 +121,7 @@ func @compilererror(message: string, loc: SourceCodeLocation)
 func @compilerwarning(message: string, loc: SourceCodeLocation)
 {
     // If the compiler is around, just let it deal with the message
-    cxt := @getcontext()
+    var cxt = @getcontext()
     if cxt.flags & .ByteCode
     {
         __raiseException666(message, loc, .Warning)
@@ -133,7 +133,7 @@ func @compilerwarning(message: string, loc: SourceCodeLocation)
 #[Swag.Safety("", false)]
 func @panic(message: string, loc: SourceCodeLocation)
 {
-    cxt := @getcontext()
+    var cxt = @getcontext()
 
     // User function
     if cxt.panic
@@ -144,7 +144,7 @@ func @panic(message: string, loc: SourceCodeLocation)
 
     // If we are running bytecode, then just let the runner deal with the message,
     // we will have more usefull information
-    contextFlags := cxt.flags
+    var contextFlags = cxt.flags
     if contextFlags & .ByteCode
     {
         __raiseException666(message, loc, .Panic)
@@ -167,7 +167,7 @@ func @panic(message: string, loc: SourceCodeLocation)
     if cxt.traceIndex
     {
         @print("[error callstack]", "\n");
-        for i := cast(s32) cxt.traceIndex - 1; i >= 0; i -= 1
+        for var i = cast(s32) cxt.traceIndex - 1; i >= 0; i -= 1
         {
             @print("error");
             @print(" --> ")
@@ -185,7 +185,7 @@ func @panic(message: string, loc: SourceCodeLocation)
     // Print the calling stack trace
     @print("[runtime callstack]", "\n");
     var arr: [64] *void
-    nb := __captureStack(1, arr)
+    var nb = __captureStack(1, arr)
     __logStackTrace(@mkslice(&arr[0], nb))
     @print("\n")
 
@@ -212,8 +212,8 @@ func @panic(message: string, loc: SourceCodeLocation)
     len += @countof(loc.fileName)
     @memcpy(&str[len], @dataof(", line "), 7);
     len += 7;
-    dstLine := &str[len]
-    cptLine := cast(u32) (__itoa(dstLine, cast(s64) loc.lineStart + 1) - dstLine)
+    var dstLine = &str[len]
+    var cptLine = cast(u32) (__itoa(dstLine, cast(s64) loc.lineStart + 1) - dstLine)
     len += cptLine
     @memcpy(&str[len], @dataof("\n\n"), 2)
     len += 2

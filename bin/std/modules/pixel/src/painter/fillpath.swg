@@ -34,10 +34,10 @@ public impl Painter
         // Paint
         visit tri, ii: p.triangles
         {
-            prim := pushTriangle(tri.points[0].v, tri.points[1].v, tri.points[2].v, brush.color)
+            var prim = pushTriangle(tri.points[0].v, tri.points[1].v, tri.points[2].v, brush.color)
             if curState.paintParams & .Antialiased
             {
-                e := tri.points[0].border[0]
+                var e = tri.points[0].border[0]
                 if e addEdgeAA(prim, e.p.x, e.p.y, e.q.x, e.q.y)
                 e = tri.points[0].border[1]
                 if e addEdgeAA(prim, e.p.x, e.p.y, e.q.x, e.q.y)
@@ -72,7 +72,7 @@ public impl Painter
         if Math.isZeroEpsilon(path.polygon.totalLen)
             return
 
-        polygon := &path.polygon
+        var polygon = &path.polygon
 
         // Convex shape : faster
         if polygon.isConvex
@@ -80,15 +80,15 @@ public impl Painter
             setTexture0(path.bvMin, path.bvMax, brush)
             resetTextureFont()
 
-            count := path.polygon.points.count - 1
+            var count = path.polygon.points.count - 1
 
             // Convex shape : 1 triangle
             if count == 3
             {
-                v0 := polygon.getPoint(0)
-                v1 := polygon.getPoint(1)
-                v2 := polygon.getPoint(2)
-                prim := pushTriangle(v0, v1, v2, brush.color)
+                var v0 = polygon.getPoint(0)
+                var v1 = polygon.getPoint(1)
+                var v2 = polygon.getPoint(2)
+                var prim = pushTriangle(v0, v1, v2, brush.color)
                 if curState.paintParams & .Antialiased
                 {
                     addEdgeAA(prim, v0, v1)
@@ -100,12 +100,12 @@ public impl Painter
             // Convex shape : 2 triangles
             else if count == 4
             {
-                v0 := polygon.getPoint(0)
-                v1 := polygon.getPoint(1)
-                v2 := polygon.getPoint(2)
-                v3 := polygon.getPoint(3)
-                prim0 := pushTriangle(v0, v1, v2, brush.color)
-                prim1 := pushTriangle(v0, v2, v3, brush.color)
+                var v0 = polygon.getPoint(0)
+                var v1 = polygon.getPoint(1)
+                var v2 = polygon.getPoint(2)
+                var v3 = polygon.getPoint(3)
+                var prim0 = pushTriangle(v0, v1, v2, brush.color)
+                var prim1 = pushTriangle(v0, v2, v3, brush.color)
                 if curState.paintParams & .Antialiased
                 {
                     addEdgeAA(prim0, v0, v1)
@@ -123,17 +123,17 @@ public impl Painter
             // vertices
             else
             {
-                center := Vector2{path.bvMin.x + (path.bvMax.x - path.bvMin.x) * 0.5, path.bvMin.y + (path.bvMax.y - path.bvMin.y) * 0.5}
+                var center = Vector2{path.bvMin.x + (path.bvMax.x - path.bvMin.x) * 0.5, path.bvMin.y + (path.bvMax.y - path.bvMin.y) * 0.5}
                 loop i: count
                 {
-                    v0 := polygon.getPoint(i)
-                    v1 := polygon.getPoint((i + 1) % count)
-                    prim := pushTriangle(center, v0, v1, brush.color)
+                    var v0 = polygon.getPoint(i)
+                    var v1 = polygon.getPoint((i + 1) % count)
+                    var prim = pushTriangle(center, v0, v1, brush.color)
 
                     if curState.paintParams & .Antialiased
                     {
-                        v2 := polygon.getPoint((i + 2) % count)
-                        vp := polygon.getPoint((i + count - 1) % count)
+                        var v2 = polygon.getPoint((i + 2) % count)
+                        var vp = polygon.getPoint((i + count - 1) % count)
                         addEdgeAA(prim, v0, v1)
                         addEdgeAA(prim, v1, v2)
                         addEdgeAA(prim, vp, v0)
@@ -169,8 +169,8 @@ public impl Painter
         var flush: *LinePath
 
         // Everything in the cache ?
-        serial := 0
-        dirty := false
+        var serial = 0
+        var dirty = false
         visit p: pathList.paths
         {
             if (p.polygon.isClockwise or serial != p.serial) and flush
@@ -238,7 +238,7 @@ public impl Painter
                     t.startPolyLine()
                     loop i: 0..p.polygon.points.count-2
                     {
-                        pt := p.polygon.getPoint(i)
+                        var pt = p.polygon.getPoint(i)
                         t.addPoint(pt.x, pt.y)
                     }
 
@@ -270,7 +270,7 @@ public impl Painter
         else
         {
             path.polygon.isClockwise = true
-            res := path.polygon.getClean()
+            var res = path.polygon.getClean()
             visit p: res.paths
                 fillPath(p, brush)
         }

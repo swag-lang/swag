@@ -15,7 +15,7 @@ var G: u64
 
 func entry(param: ^void)->u32
 {
-    ptr := cast(^u64) param
+    var ptr = cast(^u64) param
     G = ptr[1]
     return 0
 }
@@ -26,9 +26,9 @@ func create(lambda: ThreadProc, userParam: u64)
     paramBC[0] = acast lambda
     paramBC[1] = acast userParam
 
-    id := 0'u32
-    h := CreateThread(null, 0, @mkcallback(lambda), cast(*void) &paramBC[0], 0, &id)
-    ew := WaitForSingleObject(h, INFINITE);
+    var id = 0'u32
+    var h = CreateThread(null, 0, @mkcallback(lambda), cast(*void) &paramBC[0], 0, &id)
+    var ew = WaitForSingleObject(h, INFINITE);
 }
 
 #test

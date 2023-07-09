@@ -13,7 +13,7 @@ public func(T) toto2648(v: [..] T, stmt: code)
 {
     /*func titi(val: *void)
     {
-        ptr := cast(*ST'T) val
+        var ptr = cast(*ST'T) val
         #mixin stmt
     }*/
 

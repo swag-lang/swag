@@ -16,6 +16,6 @@ impl B
 #test
 {
     var c: B
-    y := c.titi() orelse c.titi()
+    var y = c.titi() orelse c.titi()
     @assert(y == null)
 }

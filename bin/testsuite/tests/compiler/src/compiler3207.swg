@@ -31,7 +31,7 @@ impl I for BB
 #test
 {
     var x: BB
-    ptr := cast(I) x
+    var ptr = cast(I) x
     @assert(ptr.init(1) == 1)
     @assert(ptr.init(10) == 10)
     @assert(ptr.close() == 20)

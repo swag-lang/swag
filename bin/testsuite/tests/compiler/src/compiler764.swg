@@ -8,7 +8,7 @@ struct Point
 
 #test
 {
-	cpt := Point{}
+	var cpt = Point{}
 	@assert(cpt.x == 666)
 	@assert(cpt.y == 0)
 }

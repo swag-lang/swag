@@ -20,9 +20,9 @@ impl IActionUI for ActionFlatten
 
     mtd impl update(cxt: ActionContext, evt: *CommandStateEvent)->bool
     {
-        main := cast(*MainWnd) cxt.wnd
-        capture := main.getCapture()
-        hasSel  := capture and capture.selection.count
+        var main = cast(*MainWnd) cxt.wnd
+        var capture = main.getCapture()
+        var hasSel = capture and capture.selection.count
 
         switch cxt.id
         {
@@ -42,8 +42,8 @@ impl IActionUI for ActionFlatten
 
     mtd impl execute(cxt: ActionContext)->bool
     {
-        main := cast(*MainWnd) cxt.wnd
-        capture := main.getCapture()
+        var main = cast(*MainWnd) cxt.wnd
+        var capture = main.getCapture()
 
         var undo: *Undo
         switch cxt.id

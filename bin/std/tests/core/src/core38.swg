@@ -16,7 +16,7 @@ using Core.Input
             //@print("X\n")
         }
 
-        m := k.getPosition(GamePadButton.LeftTrigger)
+        var m = k.getPosition(GamePadButton.LeftTrigger)
         //@print(cast(f64) m.y)
         //@print("\n")
     }

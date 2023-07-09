@@ -8,7 +8,7 @@ impl NumericArray
     //#[Swag.PrintBc]
     func set(using self, value: T)
     {
-        #ast "a := value"
+        #ast "var a = value"
         @assert(a == 3.14)
     }
 }

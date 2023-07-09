@@ -53,7 +53,7 @@ impl Decoder
 
     mtd readValue(data: ^void, dataType: typeinfo) throw
     {
-        type := Reflection.makeConcreteAlias(dataType)
+        var type = Reflection.makeConcreteAlias(dataType)
         type = Reflection.makeConcreteEnum(type)
 
         serializer.beginValue()
@@ -62,7 +62,7 @@ impl Decoder
         // Native
         if type.kind == .Native
         {
-            typeNative := cast(const *TypeInfoNative) type
+            var typeNative = cast(const *TypeInfoNative) type
             switch typeNative.nativeKind
             {
             case Bool:
@@ -94,15 +94,15 @@ impl Decoder
 
         if Reflection.isType(type)
         {
-            crc := serializer.readNative'u32()
-            typeType := Reflection.crcToType(crc)
+            var crc = serializer.readNative'u32()
+            var typeType = Reflection.crcToType(crc)
             dref cast(*typeinfo) data = typeType
             return
         }
 
         if Reflection.isInterface(type)
         {
-            itf := cast(*Swag.Interface) data
+            var itf = cast(*Swag.Interface) data
 
             serializer.beginSection(.Raw)
             defer serializer.endSection()
@@ -132,26 +132,26 @@ impl Decoder
             // Core.String
             if type == String
             {
-                strBuf := cast(*String) data
+                var strBuf = cast(*String) data
                 dref strBuf =,nodrop serializer.readNative'String()
                 return
             }
 
             // Core.Array
-            structType := cast(const *TypeInfoStruct) type
+            var structType = cast(const *TypeInfoStruct) type
             if structType.fromGeneric == @typeof(Array)
             {
-                valueType := structType.generics[0].pointedType
+                var valueType = structType.generics[0].pointedType
 
-                count := 0'u64
-                treated := serializer.beginSequence(type, data, &count)
+                var count = 0'u64
+                var treated = serializer.beginSequence(type, data, &count)
                 defer(noerr) serializer.endSequence()
 
                 if !treated
                 {
                     while serializer.toNextSequenceElement(&count)
                     {
-                        bufArr := Reflection.roomInArray(data, valueType)
+                        var bufArr = Reflection.roomInArray(data, valueType)
                         readValue(bufArr, valueType)
                     }
                 }
@@ -160,8 +160,8 @@ impl Decoder
             }
 
             // A structure with an implementation of ISerialize
-            idecoder := cast(IDecoder) self
-            itf := @mkinterface(data, type, ISerialize)
+            var idecoder = cast(IDecoder) self
+            var itf = @mkinterface(data, type, ISerialize)
             if itf != null
             {
                 if itf.read(idecoder)
@@ -169,7 +169,7 @@ impl Decoder
             }
 
             // Generic struct load
-            treated := serializer.beginStruct(structType, data)
+            var treated = serializer.beginStruct(structType, data)
             defer serializer.endStruct()
             if treated
                 return
@@ -183,7 +183,7 @@ impl Decoder
 
                 if !itf or !itf.readElement(field, cast(^u8) data + field.offset, idecoder)
                 {
-                    doIt := catch serializer.beginElement(field)
+                    var doIt = catch serializer.beginElement(field)
                     defer serializer.endElement()
 
                     if @errmsg and !(flags & .IgnoreStructFieldError)
@@ -207,14 +207,14 @@ impl Decoder
         // Static array
         if Reflection.isArray(type)
         {
-            typeArr := cast(const *TypeInfoArray) type
-            count   := typeArr.count
-            treated := serializer.beginSequence(typeArr.pointedType, data, &count)
+            var typeArr = cast(const *TypeInfoArray) type
+            var count = typeArr.count
+            var treated = serializer.beginSequence(typeArr.pointedType, data, &count)
             defer(noerr) serializer.endSequence()
             if treated
                 return
 
-            bufArr := cast(^u8) data
+            var bufArr = cast(^u8) data
             loop count
             {
                 readValue(bufArr, typeArr.pointedType)
@@ -245,7 +245,7 @@ impl Decoder
 
         start(input)
 
-        val := Memory.new'TR()
+        var val = Memory.new'TR()
         defer(err) Memory.delete(val)
 
         readValue(val, TR)
@@ -304,15 +304,15 @@ impl IDecoder for Decoder
 
     mtd impl readBufferU8(count: u64)->*u8 throw
     {
-        data := cast(^u8) Memory.alloc(count)
+        var data = cast(^u8) Memory.alloc(count)
 
-        cpt := count
-        treated := serializer.beginSequence(u8, data, &cpt)
+        var cpt = count
+        var treated = serializer.beginSequence(u8, data, &cpt)
         defer(noerr) serializer.endSequence()
 
         if !treated
         {
-            ptr := data
+            var ptr = data
             loop Math.min(cpt, count)
             {
                 serializer.beginValue()

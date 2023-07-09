@@ -1,0 +1,92 @@
+#dependencies
+{
+    #import "gui" location="swag@std"
+}
+
+using Gui, Core, Pixel
+
+var g_Img:      Image
+var g_Texture:  Texture
+var g_Font:     *Font
+
+func openImage(surface: *Surface)
+{
+    var opt: FileDlgOptions
+    with opt
+    {
+        .mode = .SelectOneFile
+        .title = "Load Image"
+        .btnOkName = "Load"
+        .shortcuts.add({Env.SpecialDirectory.Desktop, "Desktop"})
+        .shortcuts.add({Env.SpecialDirectory.UserPictures, "My Images"})
+        .shortcuts.add({Env.SpecialDirectory.CommonPictures, "Images"})
+        .filters.add({"PNG - Portable Network Graphics (*.png)", ".png"})
+        .filters.add({"JPG - JPEG Image (*.jpg)", ".jpg"})
+        .filters.add({"BMP - Windows Bitmap (*.bmp)", ".bmp"})
+        .filters.add({"TGA - Truevision Targa (*.tga)", ".tga"})
+    }
+
+    var dlg = FileDlg.create(surface, opt)
+    if dlg.doModal() != Dialog.BtnOk
+        return
+
+    g_Img = catch Image.load(dlg.getSelectedName())
+    if @errmsg
+        MessageDlg.error(surface, @errmsg, "Failed to load image !")
+}
+
+func compute(render: *RenderOgl)
+{
+    if !g_Img.isValid()
+        return
+
+    g_Img.resize(128, 128)
+    g_Img.grayScale()
+
+    g_Texture = render.addImage(g_Img)
+}
+
+func onEvent(wnd: *Wnd, evt: *Event)->bool
+{
+    switch evt.kind
+    {
+    case Create:
+        var btn = PushButton.create(wnd, "Load Image", {10, 10, 100})
+        btn.sigPressed += closure|wnd|(btn) {
+            openImage(btn.surface)
+            compute(&btn.getApp().renderer)
+            wnd.invalidate()
+        }
+
+        g_Font = wnd.getTheme().createDefaultFont(10)
+
+    case Paint:
+        if !g_Img.isValid()
+            break
+
+        var paintEvt = cast(*PaintEvent) evt
+        var painter = paintEvt.bc.painter
+
+        const GrayRamp = "$@B%8&WM#*oahkbdpqwmZO0QLCJUYXzcvunxrjft/|()1{}[]?-_+~<>i!lI;:,\"^`\'. ";
+
+        var size = cast(f32) g_Font.size * 0.8
+
+        loop x: g_Img.width
+        {
+            loop y: g_Img.height
+            {
+                var col = g_Img.getPixelColor(x, y)
+                var idx = Math.map(cast(f32) col.r, 0, 255, 0, cast(f32) @countof(GrayRamp))
+                var v = @mkstring(@dataof(GrayRamp) + cast(s32) idx, 1)
+                painter.drawString(x * size, y * size, v, g_Font, Argb.White)
+            }
+        }
+    }
+
+    return false
+}
+
+#run
+{
+    Application.runSurface(4100, 100, 1024, 1024, title = "Ascii art", hook = &onEvent)
+}

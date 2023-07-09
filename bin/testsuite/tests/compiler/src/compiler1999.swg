@@ -3,21 +3,21 @@ func(T) sortQuick(values: [..] T, cb: func(T, T)->s32)
     if(@countof(values) == 0)
         return
 
-    begin := 0'u64
-    end := @countof(values) - 1
-    buffer := @dataof(values)
+    var begin = 0'u64
+    var end = @countof(values) - 1
+    var buffer = @dataof(values)
 
     loop
     {
         // Pick a pivot and,move it out of the way
-        pivot := (begin + end) / 2
+        var pivot = (begin + end) / 2
 
-        med := buffer[pivot]
+        var med = buffer[pivot]
         buffer[pivot] = buffer[end]
         buffer[end] = med
 
-        low := begin
-        high := end
+        var low = begin
+        var high = end
         loop
         {
             while low < high and cb(buffer[low], med) <= 0
@@ -26,7 +26,7 @@ func(T) sortQuick(values: [..] T, cb: func(T, T)->s32)
                 high -= 1
             if low >= high
                 break
-            tmp := low
+            var tmp = low
             low = high
             high = tmp
         }
@@ -37,9 +37,9 @@ func(T) sortQuick(values: [..] T, cb: func(T, T)->s32)
 
         // To avoid too much recursions, we recurse only for the smaller partition
         #[Swag.Overflow(true)]
-        set1 := cast(s64) ((low - 1) - begin)
+        var set1 = cast(s64) ((low - 1) - begin)
         #[Swag.Overflow(true)]
-        set2 := cast(s64) (end - (high + 1))
+        var set2 = cast(s64) (end - (high + 1))
 
         if set1 > 0 and set2 > 0
         {
@@ -65,7 +65,7 @@ func(T) sortQuick(values: [..] T, cb: func(T, T)->s32)
 
 #test
 {
-    x := [10, 9, 8, 7, 6, 5, 4, 3, 2, 1]
+    var x = [10, 9, 8, 7, 6, 5, 4, 3, 2, 1]
     sortQuick(cast([..] s32) x, func(x, y) => x <=> y)
     loop i: x
     {

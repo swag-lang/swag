@@ -224,7 +224,7 @@ public impl Keyboard
     // Returns true if the given key is pressed
     func isKeyPressed(key: Key)->bool
     {
-        vkey := Keyboard.mapKeyToVKey[key]
+        var vkey = Keyboard.mapKeyToVKey[key]
         if vkey == 0
             return false
         return GetAsyncKeyState(cast(s32) vkey) < 0
@@ -233,9 +233,9 @@ public impl Keyboard
     // Try to transform the given key to the corresponding rune
     mtd keyToRune(key: Key)->rune
     {
-        virt := keyToVirtualKey(key)
+        var virt = keyToVirtualKey(key)
         var uc: [5] WCHAR
-        res := ToUnicode(virt, MapVirtualKeyW(virt, MAPVK_VK_TO_VSC), currentState.nativeState, uc, 4, 0)
+        var res = ToUnicode(virt, MapVirtualKeyW(virt, MAPVK_VK_TO_VSC), currentState.nativeState, uc, 4, 0)
         if res == 1
             return cast(rune) uc[0]
         return 0'rune

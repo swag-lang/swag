@@ -4,6 +4,6 @@
 //#[Swag.PrintBc]
 #test
 {
-    x := cast(rune) "A"
+    var x = cast(rune) "A"
     @assert(x == "AA")
 }

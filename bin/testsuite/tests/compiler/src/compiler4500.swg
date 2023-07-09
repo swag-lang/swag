@@ -12,7 +12,7 @@ impl BitArray
 {
     mtd opAffect(what: const [..] bool)
     {
-        len := @countof(what)
+        var len = @countof(what)
         reserve(len)
     }
 

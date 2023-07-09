@@ -4,7 +4,7 @@ Swag has also **references**, which are pointers that behave like values.
 
 #test
 {
-    x := 42
+    var x = 42
 
     // Use 'ref' to declare a reference.
     // Here we declare a reference to the variable 'x'.
@@ -22,7 +22,7 @@ When an affectation is done outside of an initialization, you will change the po
 
 #test
 {
-    x := 42
+    var x = 42
     var myRef: ref s32 = &x // Note here that the reference is no more 'const'
     @assert(myRef == 42)
 
@@ -40,8 +40,8 @@ If you want to change the reference and not the pointed value, you can use `ref`
 
 #test
 {
-    x := 1
-    y := 1000
+    var x = 1
+    var y = 1000
 
     var myRef: const ref s32 = &x
     @assert(myRef == 1)
@@ -67,7 +67,7 @@ func toto(x: const ref s32)
     @assert(x == 4)
 
     // Under the hood, you will get a const address to an 's32'
-    ptr := &x
+    var ptr = &x
     @assert(dref ptr == 4)
 }
 

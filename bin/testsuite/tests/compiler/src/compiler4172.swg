@@ -1,10 +1,10 @@
 #[Swag.Safety("", false)]
 func toto()->s32
 {
-    x := 1
-    y := 2
+    var x = 1
+    var y = 2
     y *= x
-    z := 4
+    var z = 4
     z /= y
     return z
 }

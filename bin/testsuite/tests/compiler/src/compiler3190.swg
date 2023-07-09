@@ -8,5 +8,5 @@ public func(T) titi3190(x: T) => toto3190(x)
 
 #test
 {
-    v := titi3190(1's64)
+    var v = titi3190(1's64)
 }

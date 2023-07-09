@@ -31,6 +31,6 @@ struct C
 #test
 {
     var v: C
-    x := v[0]
+    var x = v[0]
     @assert(x == 10)
 }

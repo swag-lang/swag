@@ -3,12 +3,12 @@ struct(N: s32) Vector
 {
     #ast
     {
-        sb := StrConv.StringBuilder{}
+        var sb = StrConv.StringBuilder{}
         return sb.toString()
     }
 }
 
 #test
 {
-    x := Vector'4{}
+    var x = Vector'4{}
 }

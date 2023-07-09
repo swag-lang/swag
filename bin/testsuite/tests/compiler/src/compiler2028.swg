@@ -12,7 +12,7 @@ func inc(x: AA)->AA
 #test
 {
     var v: AA
-    v1 := inc(v)
+    var v1 = inc(v)
     @assert(v1.x == 666)
     v1.x = 555
     @assert(v.x == 666)

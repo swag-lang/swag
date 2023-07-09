@@ -18,7 +18,7 @@ Operators that can overflow are : `+ - * << >>` and their equivalent `+= -= *= <
 
 #test
 {
-    x := 255'u8
+    var x = 255'u8
     // x += 1      // This would overflow, and panic, because we lose informations
 }
 
@@ -27,7 +27,7 @@ But if you know what your are doing, you can use a special version of those oper
 */
 #test
 {
-    x := 255'u8
+    var x = 255'u8
     x +=,over 1     // Overflow is expected, so this will wrap around
     @assert(x == 0)
 }
@@ -38,7 +38,7 @@ You can also use `#[Swag.Overflow(true)]` to authorize overflow on a more global
 #[Swag.Overflow(true)]
 #test
 {
-    x := 255'u8
+    var x = 255'u8
     x += 1     // No need for operator modifier ',over'
     @assert(x == 0)
 }
@@ -48,7 +48,7 @@ For 8 or 16 bits, you can promote an operation to 32 bits by using ',up'.
 */
 #test
 {
-    x := 255'u8 +,up 1
+    var x = 255'u8 +,up 1
     @assert(x == 256)
     @assert(@typeof(x) == u32)
 }
@@ -58,18 +58,18 @@ Swag will also check that a cast does not lose information.
 */
 #test
 {
-    x1 := 255'u8
+    var x1 = 255'u8
 
-    //y0 := cast(s8) x1     // This would lose information and panic, as 255 cannot be encoded in 's8'
+    //var y0 = cast(s8) x1     // This would lose information and panic, as 255 cannot be encoded in 's8'
     //@print(y0)
 
-    y1 := cast,over(s8) x1  // But ',over' can be used on the cast operation too
+    var y1 = cast,over(s8) x1  // But ',over' can be used on the cast operation too
     @assert(y1 == -1)
 
-    x2 := -1's8
-    //y2 := cast(u8) x2     // This cast also is not possible, because 'x2' is negative and 'y' is 'u8'
+    var x2 = -1's8
+    //var y2 = cast(u8) x2     // This cast also is not possible, because 'x2' is negative and 'y' is 'u8'
     //@print(y)
-    y2 := cast,over(u8) x2
+    var y2 = cast,over(u8) x2
     @assert(y2 == 255)
 }
 
@@ -79,7 +79,7 @@ Rember that you can disable these safety checks with the corresponding attribute
 #[Swag.Overflow(true)]
 #test
 {
-    x := 255'u8
+    var x = 255'u8
     x += 255    // 254
     x += 1      // 255
     x >>= 1     // 127
@@ -97,8 +97,8 @@ Swag will panic if a bad cast from `any` is performed.
 #test
 {
     var x: any = "1"
-    y := cast(string) x     // This is valid, because this is the correct underlying type
-    //z := cast(s32) x      // This is not valid, and will panic
+    var y = cast(string) x     // This is valid, because this is the correct underlying type
+    //var z = cast(s32) x      // This is not valid, and will panic
     //@assert(z == 0)
 }
 
@@ -115,8 +115,8 @@ Safety for fixed size arrays.
 */
 #test
 {
-    x := [0, 1, 2]
-    idx := 10
+    var x = [0, 1, 2]
+    var idx = 10
     //@assert(x[idx] == 1)     // '10' is out of range, will panic
 }
 
@@ -126,7 +126,7 @@ Safety when indexing a slice.
 #test
 {
     var x: const [..] s32 = [0, 1, 2]
-    idx := 1
+    var idx = 1
     @assert(x[idx] == 1)        // '1' is in range, ok
     idx += 9
     //@assert(x[idx] == 1)      // '10' is out of range, will panic
@@ -138,15 +138,15 @@ Safety when slicing a sized value.
 #test
 {
     var x: const [..] s32 = [0, 1, 2]
-    //slice := x[1..4]              // '4' is out of range, will panic
+    //var slice = x[1..4]              // '4' is out of range, will panic
     //@assert(slice[0] == 1)
 }
 
 #test
 {
-    x := "string"
-    idx := 10
-    //slice := x[0..idx]            // '10' is out of range, will panic
+    var x = "string"
+    var idx = 10
+    //var slice = x[0..idx]            // '10' is out of range, will panic
     //@assert(slice[0] == "s"'u8)
 }
 
@@ -163,9 +163,9 @@ Division by zero.
 */
 #test
 {
-    x := 1'f32
-    y := 0'f32
-    //z := x / y        // Division by zero, panic
+    var x = 1'f32
+    var y = 0'f32
+    //var z = x / y        // Division by zero, panic
     //@print(z)
 }
 

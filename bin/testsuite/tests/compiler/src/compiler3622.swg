@@ -10,7 +10,7 @@ alias T = func(s32, s32)->s32
 //#[Swag.PrintBc]
 func call(t: [2] T)
 {
-    x := t[0](1, 2)
+    var x = t[0](1, 2)
     @assert(x == 3)
 }
 

@@ -16,7 +16,7 @@ struct Array
 #test
 {
 	var arr: Array
-	ptr := &arr.pt
+	var ptr = &arr.pt
 	@assert(ptr.x == 5)
 	@assert(ptr.y == 10)
 }

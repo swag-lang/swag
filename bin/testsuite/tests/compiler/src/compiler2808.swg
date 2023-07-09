@@ -1,7 +1,7 @@
 // Swap two values
 func swap(x, y: *s32)
 {
-    tmp :=,moveraw dref x
+    var tmp =,moveraw dref x
     dref x =,nodrop,moveraw dref y
     dref y =,nodrop,moveraw tmp
 }
@@ -9,13 +9,13 @@ func swap(x, y: *s32)
 // Quick sort algorithm
 func quick(values: [..] s32, cb: func(s32, s32)->s32)
 {
-    count := @countof(values)
+    var count = @countof(values)
     if(count == 0)
         return
 
-    begin := 0'u64
-    end := count - 1
-    buffer := @dataof(values)
+    var begin = 0'u64
+    var end = count - 1
+    var buffer = @dataof(values)
 
     loop
     {
@@ -26,11 +26,11 @@ func quick(values: [..] s32, cb: func(s32, s32)->s32)
         }
 
         // Pick a pivot and,move it out of the way
-        pivot := (begin + end) / 2
+        var pivot = (begin + end) / 2
         swap(&buffer[pivot], &buffer[end])
 
-        low := begin
-        high := end
+        var low = begin
+        var high = end
         loop
         {
             while low < high and cb(buffer[low], buffer[end]) <= 0
@@ -55,21 +55,21 @@ func quick(values: [..] s32, cb: func(s32, s32)->s32)
         @print(cast(s64) high)
         @print("\n")*/
 
-        //set1 := cast(s64) ((low -,over 1) - begin)
-        //set2 := cast(s64) (end -,over (high +,over 1))
+        //var set1 = cast(s64) ((low -,over 1) - begin)
+        //var set2 = cast(s64) (end -,over (high +,over 1))
         //if set1 > 0 and set2 > 0
         {
             /*if set1 <= set2
             {
-                first := begin
-                last := low - 1
+                var first = begin
+                var last = low - 1
                 quick(@mkslice(buffer + first, 1 + (last - first)), cb);
                 begin = high + 1
             }
             else*/
             {
-                first := high + 1
-                last := end
+                var first = high + 1
+                var last = end
                 quick(@mkslice(buffer + first, 1 + (last - first)), cb);
                 end = low - 1
             }

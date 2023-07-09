@@ -12,10 +12,10 @@ public impl MessageDlg
     // Creates the message box
     func create(from: *Surface, message: string, icon: Icon = {})->*MessageDlg
     {
-        dlg := Wnd.create'MessageDlg()
-        srf := dlg.createSurface(from, 0, 0, 500, 300)
+        var dlg = Wnd.create'MessageDlg()
+        var srf = dlg.createSurface(from, 0, 0, 500, 300)
 
-        metrics := from.wnd.getThemeMetrics()
+        var metrics = from.wnd.getThemeMetrics()
 
         dlg.label = Label.create(srf.getView(), message, {})
         with dlg.label
@@ -42,7 +42,7 @@ public impl MessageDlg
 
     private mtd adaptSizeToMessage()
     {
-        metrics := getThemeMetrics()
+        var metrics = getThemeMetrics()
 
         // Evaluate size of text
         var fake: Painter{fake = true}
@@ -53,18 +53,18 @@ public impl MessageDlg
         label.name.invalidate()
 
         // Width
-        w := 0'f32
+        var w = 0'f32
         visit btn: buttons
             w += btn.position.width
         w += cast(f32) ((buttons.count - 1) * metrics.dialog_BtnPadding)
         w += 2 * metrics.dialog_Padding
         w += metrics.btnPush_Width
-        wl := label.name.boundRect.width + 2 * metrics.dialog_Padding
+        var wl = label.name.boundRect.width + 2 * metrics.dialog_Padding
         wl += 2 * metrics.wnd_BorderSize
         w = Math.max(w, wl)
 
         // Height
-        h := Math.min(512, label.name.boundRect.height + metrics.dialog_Padding)
+        var h = Math.min(512, label.name.boundRect.height + metrics.dialog_Padding)
         if labelIcon
             h += labelIcon.position.height
         else
@@ -76,10 +76,10 @@ public impl MessageDlg
         elif surface.flags & .BigCaption
             h += metrics.wnd_BigCaptionCY
 
-        pos := surface.position
+        var pos = surface.position
         pos.width = w
         pos.height = h
-        sdw := surface.app.theme.metrics.surfaceWnd_ShadowSize
+        var sdw = surface.app.theme.metrics.surfaceWnd_ShadowSize
         pos.width += sdw * 2
         pos.height += sdw * 2
         surface.setPosition(pos)
@@ -115,7 +115,7 @@ public impl MessageDlg
     // Message box with a 'ok'
     func ok(from: *Surface, message: string, icon: Icon = {})
     {
-        with dlg := create(from, message, icon)
+        with var dlg = create(from, message, icon)
         {
             .addButton("OK", Dialog.BtnOk, true)
         }
@@ -126,7 +126,7 @@ public impl MessageDlg
     // Message box with a 'ok' and 'cancel' button
     func okCancel(from: *Surface, message: string, defaultId = Dialog.BtnCancel, icon: Icon = {})->WndId
     {
-        with dlg := create(from, message, icon)
+        with var dlg = create(from, message, icon)
         {
             .addButton("OK", Dialog.BtnOk, defaultId == Dialog.BtnOk)
             .addButton("Cancel", Dialog.BtnCancel, defaultId == Dialog.BtnCancel)
@@ -138,8 +138,8 @@ public impl MessageDlg
     // Message box with a 'yes' and 'no' button
     func yesNo(from: *Surface, message: string, title: string = null, defaultId = Dialog.BtnNo, icon: Icon = {})->WndId
     {
-        ic := icon.isValid() ? icon : from.app.theme.getIcon64(ThemeIcons64.Question)
-        with dlg := create(from, message, ic)
+        var ic = icon.isValid() ? icon : from.app.theme.getIcon64(ThemeIcons64.Question)
+        with var dlg = create(from, message, ic)
         {
             .surface.setTitle(title)
             .addButton("Yes", Dialog.BtnYes, defaultId == Dialog.BtnYes)
@@ -152,7 +152,7 @@ public impl MessageDlg
     // Message box with a 'yes' and 'no' button
     func yesNoCancel(from: *Surface, message: string, defaultId = Dialog.BtnCancel, icon: Icon = {})->WndId
     {
-        with dlg := create(from, message, icon.isValid() ? icon : from.app.theme.getIcon64(ThemeIcons64.Question))
+        with var dlg = create(from, message, icon.isValid() ? icon : from.app.theme.getIcon64(ThemeIcons64.Question))
         {
             .addButton("Yes", Dialog.BtnYes, defaultId == Dialog.BtnYes)
             .addButton("No", Dialog.BtnNo, defaultId == Dialog.BtnNo)
@@ -165,7 +165,7 @@ public impl MessageDlg
     // Message box to 'confirm' something
     func confirm(from: *Surface, message: string, question: string = null)->WndId
     {
-        txt := String.from(message)
+        var txt = String.from(message)
         txt += "\n"
         txt += question orelse "Do you want to continue ?"
 
@@ -187,8 +187,8 @@ public impl MessageDlg
             txt = error
         }
 
-        icon := from.app.theme.getIcon64(.Critical)
-        with dlg := create(from, txt.toString(), icon)
+        var icon = from.app.theme.getIcon64(.Critical)
+        with var dlg = create(from, txt.toString(), icon)
         {
             .surface.setTitle("Error")
             .addButton("OK", Dialog.BtnOk, true)

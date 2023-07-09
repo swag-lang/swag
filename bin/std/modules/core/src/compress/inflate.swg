@@ -66,7 +66,7 @@ const FixedDist: [32]u8 = [
 #[Swag.Inline]
 func reverse16(n: u16, bits: u8)->u16
 {
-    r := Math.reverse(n)
+    var r = Math.reverse(n)
     r >>= 16 - bits
     return r
 }
@@ -99,7 +99,7 @@ impl HuffmanTable
                 throw "bad huffman sizes"
         }
 
-	    k, cde := 0'u16
+	    var k, cde = 0'u16
         loop i: 1..15
         {
             nextCode[i]    = cde
@@ -118,13 +118,13 @@ impl HuffmanTable
         {
             if !v continue
 
-            c := nextCode[v] - firstCode[v] + firstSymbol[v]
-            fastv := (cast(u16) v << 9) | cast(u16) ci
+            var c = nextCode[v] - firstCode[v] + firstSymbol[v]
+            var fastv = (cast(u16) v << 9) | cast(u16) ci
             size[c] = v
             value[c] = cast(u16) ci
             if v <= FastBits
             {
-                j := reverse16(nextCode[v], v)
+                var j = reverse16(nextCode[v], v)
                 while j < (1 << FastBits)
                 {
                     fast[j] = fastv
@@ -159,23 +159,23 @@ impl Inflate
                 throw "malformed"
         }
 
-        b := ht.fast[stream.codeBuffer & FastMask]
+        var b = ht.fast[stream.codeBuffer & FastMask]
         if b
         {
-            s := cast(u8) (b >> FastBits)
+            var s = cast(u8) (b >> FastBits)
             stream.consumeBits(s)
             return b & 511
         }
 
-        cde := cast(u16) stream.peekBits(16)
-	    k   := reverse16(cde, 16)
+        var cde = cast(u16) stream.peekBits(16)
+	    var k = reverse16(cde, 16)
 
-        s := HuffmanFastBits + 1
+        var s = HuffmanFastBits + 1
         while k >= ht.maxCode[s] s += 1
 
         if s >= 16
             throw "bad huffman code"
-        b1 := (k >> (16 - s)) - ht.firstCode[s] + ht.firstSymbol[s]
+        var b1 = (k >> (16 - s)) - ht.firstCode[s] + ht.firstSymbol[s]
         if b1 >= @countof(ht.size)
             throw "bad huffman code"
         if ht.size[b1] != s
@@ -187,10 +187,10 @@ impl Inflate
 
     mtd parseBlock(repeatHt, repeatZ: *HuffmanTable, dest: *Array'u8) throw
     {
-        startBufCount := dest.count
+        var startBufCount = dest.count
         loop
         {
-            value := try decode(repeatHt)
+            var value = try decode(repeatHt)
             if value < 256
             {
                 dest.add(cast(u8) value)
@@ -200,18 +200,18 @@ impl Inflate
             // End of block. Update checksum
             if value == 256
             {
-                newSlice := @mkslice(dest.buffer + startBufCount, dest.count - startBufCount)
+                var newSlice = @mkslice(dest.buffer + startBufCount, dest.count - startBufCount)
                 adler.update(newSlice)
                 return
             }
 
             value -= 257
-            length := LengthBase[value]
+            var length = LengthBase[value]
             if LengthExtra[value] > 0
                 length += cast(u16) stream.readBits(LengthExtra[value])
 
             value = try decode(repeatZ)
-            distance := DistBase[value]
+            var distance = DistBase[value]
             if DistExtra[value] > 0
                 distance += cast(u16) stream.readBits(DistExtra[value])
 
@@ -224,7 +224,7 @@ impl Inflate
             if distance == 1
             {
                 // Repeat the last byte 'length' times
-                b := dest.buffer[dest.count - 1]
+                var b = dest.buffer[dest.count - 1]
                 Memory.set(dest.buffer + dest.count, b, cast(u64) length)
                 dest.count += length
             }
@@ -239,7 +239,7 @@ impl Inflate
                 // Copy an already decoded sequence of bytes, and repeat the last one
                 loop length
                 {
-                    b := dest.buffer[dest.count - distance]
+                    var b = dest.buffer[dest.count - distance]
                     dest.add(b)
                 }
             }
@@ -262,21 +262,21 @@ impl Inflate
 
         loop
         {
-            final := stream.readBits(1)
-            type  := stream.readBits(2)
+            var final = stream.readBits(1)
+            var type = stream.readBits(2)
 
             switch type
             {
             // Uncompressed block
             case 0:
                 stream.discardToNextByte()
-                uncompressedLen := cast(u16) stream.readBits(16)
-                lengthCheck     := cast(u16) stream.readBits(16)
+                var uncompressedLen = cast(u16) stream.readBits(16)
+                var lengthCheck = cast(u16) stream.readBits(16)
                 if ~uncompressedLen != lengthCheck
                     throw "invalid buffer, length mismatch"
 
                 stream.revert()
-                newSlice := @mkslice(stream.curPtr(), uncompressedLen)
+                var newSlice = @mkslice(stream.curPtr(), uncompressedLen)
                 adler.update(newSlice)
                 result.add(newSlice)
                 stream.curByte += uncompressedLen
@@ -295,21 +295,21 @@ impl Inflate
                 var lenCodes:        [286+32+137] u8
                 var codeLengthSizes: [19] u8
                 stream.refill(14)
-                hlit  := stream.readBitsNoRefill(5) + 257
-                hdist := stream.readBitsNoRefill(5) + 1
-                hclen := stream.readBitsNoRefill(4) + 4
+                var hlit = stream.readBitsNoRefill(5) + 257
+                var hdist = stream.readBitsNoRefill(5) + 1
+                var hclen = stream.readBitsNoRefill(4) + 4
                 loop i: hclen
                 {
-                    s := cast(u8) stream.readBits(3)
+                    var s = cast(u8) stream.readBits(3)
                     codeLengthSizes[LengthDezigzag[i]] = s
                 }
 
                 codeLengthHt.init(codeLengthSizes)
-                ntot := hlit + hdist
-                n := 0
+                var ntot = hlit + hdist
+                var n = 0
                 while n < ntot
                 {
-                    c := decode(&codeLengthHt)
+                    var c = decode(&codeLengthHt)
                     if c < 0 or c >= 19
                         throw "bad code lengths"
 
@@ -320,7 +320,7 @@ impl Inflate
                     }
                     else
                     {
-                        fill := 0'u8
+                        var fill = 0'u8
                         stream.refill(7)
                         switch c
                         {
@@ -340,7 +340,7 @@ impl Inflate
 
                         if ntot - n < c
                             throw "bad code lengths"
-                        nc := n + c
+                        var nc = n + c
                         while n < nc
                         {
                             lenCodes[n] = fill

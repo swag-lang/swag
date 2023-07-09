@@ -49,11 +49,11 @@ impl IWnd for LibraryView
         if evt.kind == .MouseWheel
             evt.accepted = false
 
-        pos := surfaceToLocal(evt.surfacePos)
+        var pos = surfaceToLocal(evt.surfacePos)
         pos += scrollWnd.getScrollPos()
 
         // Hit test
-        ht := Swag.U64.Max
+        var ht = Swag.U64.Max
         visit it, idx: items
         {
             if it.rect.contains(pos)
@@ -77,7 +77,7 @@ impl IWnd for LibraryView
 
         if evt.kind == .MouseDoubleClick and selectedItem != Swag.U64.Max and evt.button == .Left
         {
-            item := &items[selectedItem]
+            var item = &items[selectedItem]
             catch File.touch(item.fi.fullname)
             mainWnd.recentWnd.addRecent(item.fi.fullname, item.capture.preview, front = true, sel = true)
             mainWnd.swapLibraryMode()
@@ -87,15 +87,15 @@ impl IWnd for LibraryView
 
     mtd impl onPaintEvent(evt: *PaintEvent)
     {
-        painter    := evt.bc.painter
-        clientRect := getClientRectPadding()
+        var painter = evt.bc.painter
+        var clientRect = getClientRectPadding()
 
-        x := clientRect.x
-        y := clientRect.y
+        var x = clientRect.x
+        var y = clientRect.y
 
         // Get loaded captures from thread
         mutexLoaded.lock()
-        copyLoaded := loaded
+        var copyLoaded = loaded
         loaded.clear()
         mutexLoaded.unlock()
 
@@ -128,8 +128,8 @@ impl IWnd for LibraryView
             // Waiting for texture
             if !it.texture.isValid()
             {
-                icon := getTheme().getIcon64(.HourGlass, 48)
-                color := Color.fromArgb(50, Argb.White)
+                var icon = getTheme().getIcon64(.HourGlass, 48)
+                var color = Color.fromArgb(50, Argb.White)
                 icon.paint(painter, it.rect.horzCenter() - icon.sizeX*0.5, it.rect.vertCenter() - icon.sizeY*0.5, color)
             }
 
@@ -178,7 +178,7 @@ impl LibraryView
             return b.lastWriteTime <=> a.lastWriteTime
         })
 
-        renderer := getApp().getRenderer()
+        var renderer = getApp().getRenderer()
         visit &it: items
             renderer.removeTexture(&it.texture)
 
@@ -201,7 +201,7 @@ impl LibraryView
             thread.init(closure|self|(th: Thread) {
                 visit &it: self.items
                 {
-                    capture := catch Capture.load(it.fi.fullname)
+                    var capture = catch Capture.load(it.fi.fullname)
                     if capture
                     {
                         capture.backImg.release()
@@ -238,8 +238,8 @@ impl LibraryWnd
         if listCtrl.getLineCount()
             return
 
-        line := listCtrl.createLine("All Captures", Icon.from(&main.icons24, 4))
-        item := line.setItem(1, Format.toString("% ", g_Library.files.count))
+        var line = listCtrl.createLine("All Captures", Icon.from(&main.icons24, 4))
+        var item = line.setItem(1, Format.toString("% ", g_Library.files.count))
         item.horzAlign = .Right
 
         g_Library.files.sort(func(a, b) {
@@ -252,9 +252,9 @@ impl LibraryWnd
         var lastLineMonth:  *ListLine
         var lastLineDay:    *ListLine
 
-        icon1 := Icon.from(&main.icons24, 3)
+        var icon1 = Icon.from(&main.icons24, 3)
 
-        cptYear, cptMonth, cptDay := 0
+        var cptYear, cptMonth, cptDay = 0
 
         #[Swag.Mixin]
         func fillLastYear()
@@ -332,24 +332,24 @@ impl LibraryWnd
 
     func create(parent: *MainWnd)->*LibraryWnd
     {
-        with res := Wnd.create'LibraryWnd(parent, "captme.librarywnd")
+        with var res = Wnd.create'LibraryWnd(parent, "captme.librarywnd")
         {
             .main = parent
             .dockStyle = .Center
             .backgroundStyle = .View
         }
 
-        with rightBar := Wnd.create'Wnd(res, {0, 0, 300, 0})
+        with var rightBar = Wnd.create'Wnd(res, {0, 0, 300, 0})
         {
             .dockStyle = .Right
         }
 
-        with scrollWnd := Wnd.create'ScrollWnd(res)
+        with var scrollWnd = Wnd.create'ScrollWnd(res)
         {
             .dockStyle = .Center
         }
 
-        with view := Wnd.create'LibraryView(scrollWnd)
+        with var view = Wnd.create'LibraryView(scrollWnd)
         {
             .libWnd = res
             .padding = 8
@@ -360,7 +360,7 @@ impl LibraryWnd
         scrollWnd.setView(view)
         res.view = view
 
-        with list := ListCtrl.createMultiColumns(rightBar)
+        with var list = ListCtrl.createMultiColumns(rightBar)
         {
             .addColumn("name", 200)
             .addColumn("count", 70)
@@ -373,7 +373,7 @@ impl LibraryWnd
             .listFlags |= .ForceMarginExpandMark
             .dockStyle = .Center
             .sigSelChanged += closure|view|(list) {
-                sel := list.getSelectedLine()
+                var sel = list.getSelectedLine()
                 if !sel return
                 view.filterYear = cast(u64) sel.userData0
                 view.filterMonth = cast(u64) sel.userData1

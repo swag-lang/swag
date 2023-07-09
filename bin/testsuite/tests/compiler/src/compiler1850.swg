@@ -13,5 +13,5 @@ struct A
 {
     var x : A
     #[Swag.Safety("", true)]
-    ptr := x.x[1]
+    var ptr = x.x[1]
 }

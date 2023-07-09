@@ -8,7 +8,7 @@ func toto()->s32
         loop i: 10'u64
             az[i + 7] = "1"'u8
 
-        str1 := @mkstring(&az[0], 16)
+        var str1 = @mkstring(&az[0], 16)
         return str1
     }
 }

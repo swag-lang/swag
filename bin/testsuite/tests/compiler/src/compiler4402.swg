@@ -8,7 +8,7 @@ func(T) titi(x: T)
 //#[Swag.PrintBc]
 #test
 {
-    x := func() {}
+    var x = func() {}
 
     titi(x)
 }

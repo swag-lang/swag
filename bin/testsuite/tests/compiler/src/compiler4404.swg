@@ -4,7 +4,7 @@ struct A { z: s32; }
 //#[Swag.PrintBc]
 func toto(x: {a:s32})
 {
-    v := x.x
+    var v = x.x
 }
 
 //#[Swag.PrintBc]

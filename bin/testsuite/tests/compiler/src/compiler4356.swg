@@ -26,6 +26,6 @@ func(T) add(x, y: T)->T
 
 #test
 {
-    v := add(1.0'f32, 2)
+    var v = add(1.0'f32, 2)
 }
 */

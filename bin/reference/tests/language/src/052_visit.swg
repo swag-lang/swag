@@ -7,7 +7,7 @@
         visit value: "ABC"
         {
             // '@index' is also available. It stores the loop index.
-            a := @index
+            var a = @index
             switch a
             {
             case 0: @assert(value == "A"'u8)
@@ -21,7 +21,7 @@
     {
         visit value, index: "ABC"
         {
-            a := index
+            var a = index
             switch a
             {
             case 0: @assert(value == "A"'u8)
@@ -35,7 +35,7 @@
     {
         visit "ABC"
         {
-            a := @alias1    // This is the index
+            var a = @alias1    // This is the index
             @assert(a == @index)
             switch a
             {
@@ -48,9 +48,9 @@
 
     // You can visit arrays or slices.
     {
-        array := [10, 20, 30]
+        var array = [10, 20, 30]
 
-        result := 0
+        var result = 0
         visit it: array
             result += it
 
@@ -61,7 +61,7 @@
     {
         var array: [2, 2] s32 = [[10, 20], [30, 40]]
 
-        result := 0
+        var result = 0
         visit it: array
             result += it
 
@@ -72,7 +72,7 @@
     {
         var array: [2, 2] s32 = [[1, 2], [3, 4]]
 
-        result := 0
+        var result = 0
         visit &it: array
         {
             result += dref it

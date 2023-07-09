@@ -43,7 +43,7 @@ public impl BitArray
     {
         if buffer
         {
-            otherBuffer := buffer
+            var otherBuffer = buffer
             buffer = null
             reserve(count)
             Memory.copy(buffer, otherBuffer, capacity)
@@ -65,7 +65,7 @@ public impl BitArray
     // Initializes a `BitArray` that contains bit values copied from the specified array of booleans
     mtd opAffect(what: const [..] bool)
     {
-        len := @countof(what)
+        var len = @countof(what)
         reserve(len)
         buffer[len >> 5] = 0
         visit value, index: what
@@ -94,8 +94,8 @@ public impl BitArray
         #if ptr #error "pointer visit not supported for BitArray"
         if !count
             return
-        remainingBits := count
-        countBits := 0'u64
+        var remainingBits = count
+        var countBits = 0'u64
 
         #scope Up
         loop idx: Math.max(count >> 5, 1)
@@ -154,8 +154,8 @@ public impl BitArray
     mtd set(index: u64, value: bool)
     {
         Debug.assert(index < count)
-        val := index >> 5
-        bit := index - (val << 5)
+        var val = index >> 5
+        var bit = index - (val << 5)
         var shift = 1'u32 << cast(u32) bit
         if value
             buffer[val] |= shift
@@ -167,8 +167,8 @@ public impl BitArray
     mtd const get(index: u64)->bool
     {
         Debug.assert(index < count)
-        val := index >> 5
-        bit := index - (val << 5)
+        var val = index >> 5
+        var bit = index - (val << 5)
         var shift = 1'u32 << cast(u32) bit
         return cast(bool) (buffer[val] & shift)
     }
@@ -177,8 +177,8 @@ public impl BitArray
     mtd invert(index: u64)
     {
         Debug.assert(index < count)
-        val := index >> 5
-        bit := index - (val << 5)
+        var val = index >> 5
+        var bit = index - (val << 5)
         var shift = 1'u32 << cast(u32) bit
         if buffer[val] & shift
             buffer[val] ^= shift

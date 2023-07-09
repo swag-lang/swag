@@ -4,6 +4,6 @@ func toto()
 {
     #macro
     {
-        cpt := 0
+        var cpt = 0
     }
 }

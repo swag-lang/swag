@@ -34,7 +34,7 @@ impl RecentView
             return
         }
 
-        view := main.editWnd.editView
+        var view = main.editWnd.editView
 
         // Save current zoom
         if selected < items.count
@@ -42,8 +42,8 @@ impl RecentView
 
         // Select new recent item
         selected = idx
-        item := items[idx]
-        capture := catch Capture.load(item.file)
+        var item = items[idx]
+        var capture = catch Capture.load(item.file)
         if capture
         {
             if main.getCapture()
@@ -65,11 +65,11 @@ impl IWnd for RecentView
         if evt.kind == .MouseWheel
             evt.accepted = false
 
-        pos := surfaceToLocal(evt.surfacePos)
+        var pos = surfaceToLocal(evt.surfacePos)
         pos += recentWnd.getScrollPos()
 
         // Hit test
-        ht := Swag.U64.Max
+        var ht = Swag.U64.Max
         visit i, idx: items
         {
             if i.rect.contains(pos)
@@ -92,7 +92,7 @@ impl IWnd for RecentView
                 select(hotItem)
                 if evt.button == .Right
                 {
-                    with menu := MenuCtrl.createPopup(self)
+                    with var menu = MenuCtrl.createPopup(self)
                     {
                         .addItem(CmdIdDupCapture)
                         .addItem(CmdIdDeleteCapture)
@@ -110,7 +110,7 @@ impl IWnd for RecentView
 
     func paintRecent(parent: *Wnd, painter: *Painter, texture: Texture, rect: Math.Rectangle, hot, selected: bool)
     {
-        colors := parent.getThemeColors()
+        var colors = parent.getThemeColors()
 
         painter.fillRoundRect(rect, 8, 8, colors.wnd_Bk)
 
@@ -122,10 +122,10 @@ impl IWnd for RecentView
         if !texture.isValid()
             return
 
-        txtRect := rect
+        var txtRect = rect
         txtRect.inflate(-RecentPadding*0.5)
 
-        ratio := Math.min(txtRect.width / texture.width, txtRect.height / texture.height)
+        var ratio = Math.min(txtRect.width / texture.width, txtRect.height / texture.height)
 
         txtRect.x = rect.horzCenter() - (texture.width * 0.5 * ratio)
         txtRect.y = rect.vertCenter() - (texture.height * 0.5 * ratio)
@@ -141,16 +141,16 @@ impl IWnd for RecentView
 
     mtd impl onPaintEvent(evt: *PaintEvent)
     {
-        painter    := evt.bc.painter
-        clientRect := getClientRectPadding()
+        var painter = evt.bc.painter
+        var clientRect = getClientRectPadding()
 
         painter.setParams(.Antialiased)
-        x := clientRect.x
+        var x = clientRect.x
         visit i, idx: items
         {
-            w := clientRect.height * 4.0/3
+            var w = clientRect.height * 4.0/3
 
-            rect := Math.Rectangle{x, clientRect.y, w, clientRect.height}
+            var rect = Math.Rectangle{x, clientRect.y, w, clientRect.height}
             i.rect = rect
 
             paintRecent(self, painter, i.preview, rect, idx == hotItem, idx == selected)
@@ -173,12 +173,12 @@ impl IWnd for RecentWnd
 {
     mtd impl onTimerEvent(evt: *TimerEvent)
     {
-        capture := main.getCapture()
+        var capture = main.getCapture()
         if !capture
             return
 
         capture.computePreview()
-        item := recentView.items[recentView.selected]
+        var item = recentView.items[recentView.selected]
         getApp().getRenderer().removeTexture(&item.preview)
         item.preview = getApp().getRenderer().addImage(capture.preview)
         invalidate()
@@ -193,7 +193,7 @@ impl RecentWnd
 {
     func create(parent: *Wnd, main: *MainWnd)->*RecentWnd
     {
-        with recent := Wnd.create'RecentWnd(parent, {0, 0, 0, PreviewHeight + RecentPadding*2})
+        with var recent = Wnd.create'RecentWnd(parent, {0, 0, 0, PreviewHeight + RecentPadding*2})
         {
             .scrollWndFlags |= .SmallBar | .ForceHorizontal
             .backgroundStyle = .Window
@@ -209,15 +209,15 @@ impl RecentWnd
 
         g_Library.fill()
 
-        res := g_Library.files
+        var res = g_Library.files
         res.sort(func(a, b) {
             return b.lastWriteTime <=> a.lastWriteTime
         })
 
-        cptRecent := 0
+        var cptRecent = 0
         visit r, idx: res
         {
-            capture := catch recent.addRecent(r.fullname, front = false)
+            var capture = catch recent.addRecent(r.fullname, front = false)
             defer(err) Memory.delete(capture)
             if @errmsg continue
 
@@ -252,7 +252,7 @@ impl RecentWnd
         if recentView.selected >= recentView.items.count
             return
 
-        item := recentView.items[recentView.selected]
+        var item = recentView.items[recentView.selected]
 
         catch File.delete(item.file)
         if @errmsg
@@ -273,20 +273,20 @@ impl RecentWnd
         recentView.items.removeAtOrdered(recentView.selected)
 
         // Select new one
-        sel := recentView.selected
+        var sel = recentView.selected
         recentView.selected = Swag.U64.Max
         recentView.select(sel)
     }
 
     mtd addRecent(file: string, front = true, sel = false)->*Capture throw
     {
-        capture := Capture.load(file)
+        var capture = Capture.load(file)
         addRecent(capture.file, capture.preview, front, sel)
 
         // Too much recent. Remove the oldest
         if front and recentView.items.count > MaxRecent
         {
-            back := recentView.items.back()
+            var back = recentView.items.back()
             if back.preview.isValid()
                 getApp().getRenderer().removeTexture(&back.preview)
             recentView.items.deletePtr(back)
@@ -303,7 +303,7 @@ impl RecentWnd
         {
             if it.file == file
             {
-                idxSel := i
+                var idxSel = i
 
                 // Move the item to the first position
                 if front and i
@@ -318,7 +318,7 @@ impl RecentWnd
             }
         }
 
-        item := recentView.items.newPtr()
+        var item = recentView.items.newPtr()
         item.preview = getApp().getRenderer().addImage(preview)
         item.file = file
         if front

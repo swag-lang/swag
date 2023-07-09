@@ -10,7 +10,7 @@ struct Vector3
         to = from
     }
 
-    a := Vector3{1, 2, 3}
+    var a = Vector3{1, 2, 3}
     var b: Vector3
 
     // The 'copy' version

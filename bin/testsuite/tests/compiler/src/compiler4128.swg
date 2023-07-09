@@ -4,15 +4,15 @@
 #[Swag.Safety("math", false)]
 func toto(y: f32)
 {
-    z := @sqrt(y)
+    var z = @sqrt(y)
     @print(z)
 }
 
 #[Swag.Safety("math", false)]
 #test
 {
-    y := -1.0'f64
-    x := @sqrt(y)
+    var y = -1.0'f64
+    var x = @sqrt(y)
     @print(x)
     //toto(-1.0)
 }

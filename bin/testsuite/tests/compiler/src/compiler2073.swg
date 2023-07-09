@@ -23,5 +23,5 @@ func toto()->AA
 //#[Swag.nooptim]
 #test
 {
-    x, y := toto()
+    var x, y = toto()
 }

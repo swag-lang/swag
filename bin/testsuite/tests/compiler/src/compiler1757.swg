@@ -1,10 +1,10 @@
 //#[Swag.PrintBc]
 #test
 {
-    a := "string1"
-    b := "string2"
+    var a = "string1"
+    var b = "string2"
 
-    c := a orelse b
+    var c = a orelse b
     @assert(c == "string1")
 
     a = null

@@ -1,14 +1,14 @@
 #[Swag.Inline]
 func toto()
 {
-	//a := 0
+	//var a = 0
 	return
 }
 
 //#[Swag.PrintBc]
 #test
 {
-	//a := 1
+	//var a = 1
 	toto()
 	//@assert(a == 1)
 }

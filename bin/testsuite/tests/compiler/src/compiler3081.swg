@@ -6,6 +6,6 @@ func titi()
 //#[Swag.PrintBc]
 #test
 {
-    fn := &titi
+    var fn = &titi
     fn()
 }

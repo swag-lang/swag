@@ -21,6 +21,6 @@ func toto()->s32
 
 #test
 {
-    x := toto()
+    var x = toto()
     @assert(x == 666)
 }

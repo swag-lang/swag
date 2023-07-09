@@ -3,7 +3,7 @@
 {
 	//var array = {1,2,3}
 	//F(cast([..]s32) array, &T)
-	c := [666,667]
+	var c = [666,667]
 	F(cast([..]s32) c, &T)
 	@assert(c[0] == 667)
 	@assert(c[1] == 668)

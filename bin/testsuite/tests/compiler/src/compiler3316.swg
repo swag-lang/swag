@@ -14,5 +14,5 @@ impl Duration
 #test
 {
     var x: Duration
-    y := cast(s32) x
+    var y = cast(s32) x
 }

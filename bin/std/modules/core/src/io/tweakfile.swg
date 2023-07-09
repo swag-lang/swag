@@ -25,15 +25,15 @@ impl TweakFile
     // Read and parse a file
     mtd parseFile(fileName: string) throw
     {
-        buf := try File.readAllBytes(fileName)
-        lines := Tokenize.splitLines(cast(string) buf.toSlice())
+        var buf = try File.readAllBytes(fileName)
+        var lines = Tokenize.splitLines(cast(string) buf.toSlice())
         try parse(lines)
     }
 
     // Parse a list of lines
     mtd parse(content: string) throw
     {
-        lines := Tokenize.splitLines(content)
+        var lines = Tokenize.splitLines(content)
         try parse(lines)
     }
 
@@ -61,7 +61,7 @@ impl TweakFile
             if one[0] == "/"'u8
             {
                 one = Tokenize.eatCount(one, 1)
-                folderName := catch StrConv.parseIdentifier(one)
+                var folderName = catch StrConv.parseIdentifier(one)
                 if @errmsg
                     throw Format.toString("line %: invalid folder name", idx + 1)
 
@@ -84,12 +84,12 @@ impl TweakFile
 
             // Value
             one = Tokenize.eatSpaces(one)
-            id := catch StrConv.parseIdentifier(one)
+            var id = catch StrConv.parseIdentifier(one)
             if @errmsg
                 throw Format.toString("line %: invalid value name", idx + 1)
 
             // Search value into folder
-            field := Reflection.getField(currentFolder.type, id)
+            var field = Reflection.getField(currentFolder.type, id)
             if !field
                 throw Format.toString("line %: value '%' not found in folder '%'", idx + 1, id, currentFolder.type.name)
             one = Tokenize.eatCount(one, @countof(id))
@@ -100,7 +100,7 @@ impl TweakFile
             if one[0] == "$"'u8
             {
                 one = Tokenize.eatCount(one, 1)
-                otherField := Reflection.getField(currentFolder.type, one)
+                var otherField = Reflection.getField(currentFolder.type, one)
                 if !otherField
                     throw Format.toString("line %: reference '%' not found in folder '%'", idx + 1, one, currentFolder.type.name)
                 if field.pointedType != otherField.pointedType
@@ -126,17 +126,17 @@ impl TweakFile
         // Do references in a second pass
         while refs.count
         {
-            toDo := 0'u64
-            refr := refs[toDo]
+            var toDo = 0'u64
+            var refr = refs[toDo]
 
             loop
             {
-                restart := false
-                for j := 0; j < refs.count; j += 1
+                var restart = false
+                for var j = 0; j < refs.count; j += 1
                 {
                     if j == toDo
                         continue
-                    ref1 := refs[j]
+                    var ref1 = refs[j]
                     if refr.src.name == ref1.dst.name
                     {
                         if j == 0
@@ -152,8 +152,8 @@ impl TweakFile
                     break
             }
 
-            ptrDst := cast(^u8) refr.folder.data + refr.dst.offset
-            ptrSrc := cast(^u8) refr.folder.data + refr.src.offset
+            var ptrDst = cast(^u8) refr.folder.data + refr.dst.offset
+            var ptrSrc = cast(^u8) refr.folder.data + refr.src.offset
             Reflection.copy(ptrDst, ptrSrc, refr.dst.pointedType)
 
             refs.removeAt(toDo)

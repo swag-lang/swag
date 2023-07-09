@@ -148,8 +148,8 @@ const FP_SUBNORMAL  = 4
 #[Inline]
 func fpclassify(x: f64)->s32
 {
-	u := cast,bit(u64) x
-    e := (u >> 52) & 0x7ff
+	var u = cast,bit(u64) x
+    var e = (u >> 52) & 0x7ff
 	switch e
     {
 	case 0:
@@ -164,8 +164,8 @@ func fpclassify(x: f64)->s32
 #[Inline]
 func fpclassifyf(x: f32)->s32
 {
-	u := cast,bit(u32) x
-    e := (u >> 23) & 0xff
+	var u = cast,bit(u32) x
+    var e = (u >> 23) & 0xff
 	switch e
     {
 	case 0:

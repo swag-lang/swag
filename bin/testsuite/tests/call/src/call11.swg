@@ -5,7 +5,7 @@ var G: u64
 
 func entry(param: ^void)->u32
 {
-    ptr := cast(^u64) param
+    var ptr = cast(^u64) param
     G = ptr[1]
     return 0
 }

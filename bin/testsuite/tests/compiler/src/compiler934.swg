@@ -2,7 +2,7 @@
 
 func(T) valueof(x: any)->T
 {
-	ptr := cast(*T) @dataof(x)
+	var ptr = cast(*T) @dataof(x)
 	return dref ptr
 }
 

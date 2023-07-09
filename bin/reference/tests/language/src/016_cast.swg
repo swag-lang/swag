@@ -6,10 +6,10 @@ Sometimes it's necessary to change the type of a value.
 {
     // Use `cast(type)` to cast from one type to another.
     {
-        x := 1.0
+        var x = 1.0
         #assert @typeof(x) == f32
 
-        y := cast(s32) x
+        var y = cast(s32) x
         #assert @typeof(y) == s32
         @assert(y == 1)
     }

@@ -52,14 +52,14 @@ impl Event
 {
     func(T) create()->*T
     {
-        res := Memory.new'T()
+        var res = Memory.new'T()
         res.type = @typeof(T)
         return res
     }
 
     func(T) create(kind: EventKind)->*T
     {
-        res := Memory.new'T()
+        var res = Memory.new'T()
         res.type = @typeof(T)
         res.kind = kind
         return res

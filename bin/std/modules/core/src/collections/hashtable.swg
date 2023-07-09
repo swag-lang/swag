@@ -40,7 +40,7 @@ impl HashTable
         if !table
             return
 
-        newTable := cast(^HashTableEntry) Memory.alloc(capacity * @sizeof(HashTableEntry), allocator)
+        var newTable = cast(^HashTableEntry) Memory.alloc(capacity * @sizeof(HashTableEntry), allocator)
         #if Reflection.hasPostCopy(K) or Reflection.hasPostCopy(V)
         {
             loop i: capacity
@@ -65,7 +65,7 @@ impl HashTable
         if !count
             return
 
-        remain := count
+        var remain = count
         #scope Up loop capacity
         {
             if table[@index].hash < HASH_FIRST
@@ -112,7 +112,7 @@ impl HashTable
         if capacity != 0 and capacity - (count + deleted) > capacity / 4
             return
 
-        newCapacity := capacity * 2
+        var newCapacity = capacity * 2
         reserve(newCapacity)
     }
 
@@ -143,14 +143,14 @@ impl HashTable
     // Reserve 'newCapacity' elements in the table.
     mtd reserve(newCapacity: u64)
     {
-        reqCapacity := Math.max(newCapacity, 32)
+        var reqCapacity = Math.max(newCapacity, 32)
         if reqCapacity <= capacity
             return
 
-        oldTable := table
+        var oldTable = table
         count = 0
         deleted = 0
-        newCapacityBytes := reqCapacity * @sizeof(HashTableEntry)
+        var newCapacityBytes = reqCapacity * @sizeof(HashTableEntry)
 
         if allocator == null
             allocator = @getcontext().allocator
@@ -160,11 +160,11 @@ impl HashTable
         Memory.clear(table, newCapacityBytes)
 
         // Copy the last table to the new table, removing deleted entries
-        oldCapacity := capacity
+        var oldCapacity = capacity
         capacity = reqCapacity
         loop i: oldCapacity
         {
-            h := oldTable[i].hash
+            var h = oldTable[i].hash
             if h >= HASH_FIRST
             {
                 emplaceInternal(h, &oldTable[i].key, &oldTable[i].value)
@@ -186,8 +186,8 @@ impl HashTable
     {
         grow()
 
-        hashVal := hashKey(key)
-        index := hashVal % capacity
+        var hashVal = hashKey(key)
+        var index = hashVal % capacity
 
         while table[index].hash >= HASH_FIRST
         {
@@ -225,8 +225,8 @@ impl HashTable
     {
         grow()
 
-        hashVal := hashKey(key)
-        index := hashVal % capacity
+        var hashVal = hashKey(key)
+        var index = hashVal % capacity
 
         while table[index].hash >= HASH_FIRST
         {
@@ -264,7 +264,7 @@ impl HashTable
     {
         grow()
 
-        index := hashVal % capacity
+        var index = hashVal % capacity
 
         while table[index].hash >= HASH_FIRST
         {
@@ -301,8 +301,8 @@ impl HashTable
         if !table
             return
 
-        hashVal := hashKey(key)
-        index := hashVal % capacity
+        var hashVal = hashKey(key)
+        var index = hashVal % capacity
 
         while table[index].hash
         {
@@ -324,8 +324,8 @@ impl HashTable
         if !table
             return false
 
-        hashVal := hashKey(key)
-        index := hashVal % capacity
+        var hashVal = hashKey(key)
+        var index = hashVal % capacity
 
         while table[index].hash
         {
@@ -344,8 +344,8 @@ impl HashTable
         if !table
             return null
 
-        hashVal := hashKey(key)
-        index := hashVal % capacity
+        var hashVal = hashKey(key)
+        var index = hashVal % capacity
 
         while table[index].hash
         {
@@ -366,7 +366,7 @@ impl HashTable
         {
             loop i: capacity
             {
-                hashval := table[i].hash
+                var hashval = table[i].hash
 
                 if hashval >= HASH_DELETED
                 {

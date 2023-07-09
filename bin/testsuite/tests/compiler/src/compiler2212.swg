@@ -16,7 +16,7 @@ impl A
 #[Swag.Inline]
 func swap(x, y: *A)
 {
-    tmp :=,moveraw dref x
+    var tmp =,moveraw dref x
     dref x =,nodrop,moveraw dref y
     dref y =,nodrop,moveraw tmp
 }

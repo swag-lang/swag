@@ -9,7 +9,7 @@ using Core
 
     loop 10
     {
-        result := Slice.findSorted(@mkslice(arr.buffer, arr.count), cast(u32) @index)
+        var result = Slice.findSorted(@mkslice(arr.buffer, arr.count), cast(u32) @index)
         @assert(result.success)
         @assert(result.index == @index)
     }

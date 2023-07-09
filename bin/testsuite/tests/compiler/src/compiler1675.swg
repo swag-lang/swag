@@ -1,8 +1,8 @@
 //#[Swag.PrintBc]
 #run
 {
-    s := 1
-    res := false
+    var s = 1
+    var res = false
     switch s
     {
         case 1:

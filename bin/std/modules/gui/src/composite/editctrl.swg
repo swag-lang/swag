@@ -18,8 +18,8 @@ impl IWnd for EditCtrl
         if !label
             return
 
-        rect    := getClientRect()
-        metrics := getThemeMetrics()
+        var rect = getClientRect()
+        var metrics = getThemeMetrics()
 
         label.setPosition(0, 0, labelSize, metrics.editBox_Height)
         edit.setPosition(label.position.right() + 5, rect.vertCenter() - metrics.editBox_Height / 2, editSize, metrics.editBox_Height)
@@ -36,14 +36,14 @@ impl EditCtrl
                 id:       WndId = null,
                 flags:    EditBoxFlags = Zero)->*EditCtrl
     {
-        metrics := parent.getThemeMetrics()
-        pos := position
+        var metrics = parent.getThemeMetrics()
+        var pos = position
         if pos.width == 0
             pos.width = metrics.editBox_Width * 2
         if pos.height == 0
             pos.height = metrics.editBox_Height
 
-        with ctrl := Wnd.create'EditCtrl(parent, pos, id)
+        with var ctrl = Wnd.create'EditCtrl(parent, pos, id)
         {
             .label = Label.create(ctrl, #self.name, {})
             .label.horzAlignmentText = .Right

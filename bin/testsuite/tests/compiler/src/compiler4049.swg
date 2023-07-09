@@ -1,6 +1,6 @@
 #global testerror
 #test
 {
-    x := [2]
-    b := x orelse x
+    var x = [2]
+    var b = x orelse x
 }

@@ -2,7 +2,7 @@
 #test
 {
     {
-        x := 66's64
+        var x = 66's64
         x = -x
         @assert(x == -66)
     }

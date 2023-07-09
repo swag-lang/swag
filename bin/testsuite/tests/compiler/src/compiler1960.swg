@@ -11,5 +11,5 @@ public func Compiler1960()
 
     }
 
-    x := #location
+    var x = #location
 }

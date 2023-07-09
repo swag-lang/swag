@@ -27,9 +27,9 @@ func thisFunc2(v: s8, w: s16, x: s32, y: string, z: s64)
 {
     tcf_toto23("666", &thisFunc0)
 
-    ptr3 := &tcf_toto19
+    var ptr3 = &tcf_toto19
     ptr3(333, 444, 555, 666, 777, &thisFunc1)
 
-    ptr4 := &tcf_toto22
+    var ptr4 = &tcf_toto22
     ptr4(33, 44, 55, "666", 777, &thisFunc2)
 }

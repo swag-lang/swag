@@ -9,7 +9,7 @@ func toto()->{x: s32, y: s32}
 //#[Swag.PrintBc]
 #test
 {
-    v := toto()
+    var v = toto()
     @assert(v.x == 20)
     @assert(v.y == 0)
 }

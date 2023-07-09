@@ -4,6 +4,6 @@
 #global testerror
 #test
 {
-	a := 0
+	var a = 0
 	a = s32
 }

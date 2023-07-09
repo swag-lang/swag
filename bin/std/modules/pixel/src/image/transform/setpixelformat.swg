@@ -12,8 +12,8 @@ impl Image
         case RGBA8:
             visitPixels(dstImage)
             {
-                dstImage := cast(*Image) userData
-                pixDst := dstImage.pixels.buffer + x * dstImage.bpp8 + y * dstImage.width8
+                var dstImage = cast(*Image) userData
+                var pixDst = dstImage.pixels.buffer + x * dstImage.bpp8 + y * dstImage.width8
                 pixDst[0] = pix[0]
                 pixDst[1] = pix[1]
                 pixDst[2] = pix[2]
@@ -21,8 +21,8 @@ impl Image
         case BGR8, BGRA8:
             visitPixels(dstImage)
             {
-                dstImage := cast(*Image) userData
-                pixDst := dstImage.pixels.buffer + x * dstImage.bpp8 + y * dstImage.width8
+                var dstImage = cast(*Image) userData
+                var pixDst = dstImage.pixels.buffer + x * dstImage.bpp8 + y * dstImage.width8
                 pixDst[0] = pix[2]
                 pixDst[1] = pix[1]
                 pixDst[2] = pix[0]
@@ -40,8 +40,8 @@ impl Image
         case BGRA8:
             visitPixels(dstImage)
             {
-                dstImage := cast(*Image) userData
-                pixDst := dstImage.pixels.buffer + x * dstImage.bpp8 + y * dstImage.width8
+                var dstImage = cast(*Image) userData
+                var pixDst = dstImage.pixels.buffer + x * dstImage.bpp8 + y * dstImage.width8
                 pixDst[0] = pix[2]
                 pixDst[1] = pix[1]
                 pixDst[2] = pix[0]
@@ -50,8 +50,8 @@ impl Image
         case RGB8:
             visitPixels(dstImage)
             {
-                dstImage := cast(*Image) userData
-                pixDst := dstImage.pixels.buffer + x * dstImage.bpp8 + y * dstImage.width8
+                var dstImage = cast(*Image) userData
+                var pixDst = dstImage.pixels.buffer + x * dstImage.bpp8 + y * dstImage.width8
                 pixDst[0] = pix[0]
                 pixDst[1] = pix[1]
                 pixDst[2] = pix[2]
@@ -60,8 +60,8 @@ impl Image
         case BGR8:
             visitPixels(dstImage)
             {
-                dstImage := cast(*Image) userData
-                pixDst := dstImage.pixels.buffer + x * dstImage.bpp8 + y * dstImage.width8
+                var dstImage = cast(*Image) userData
+                var pixDst = dstImage.pixels.buffer + x * dstImage.bpp8 + y * dstImage.width8
                 pixDst[0] = pix[2]
                 pixDst[1] = pix[1]
                 pixDst[2] = pix[0]
@@ -80,8 +80,8 @@ impl Image
         case BGRA8:
             visitPixels(dstImage)
             {
-                dstImage := cast(*Image) userData
-                pixDst := dstImage.pixels.buffer + x * dstImage.bpp8 + y * dstImage.width8
+                var dstImage = cast(*Image) userData
+                var pixDst = dstImage.pixels.buffer + x * dstImage.bpp8 + y * dstImage.width8
                 pixDst[0] = pix[0]
                 pixDst[1] = pix[1]
                 pixDst[2] = pix[2]
@@ -89,8 +89,8 @@ impl Image
         case RGB8, RGBA8:
             visitPixels(dstImage)
             {
-                dstImage := cast(*Image) userData
-                pixDst := dstImage.pixels.buffer + x * dstImage.bpp8 + y * dstImage.width8
+                var dstImage = cast(*Image) userData
+                var pixDst = dstImage.pixels.buffer + x * dstImage.bpp8 + y * dstImage.width8
                 pixDst[0] = pix[2]
                 pixDst[1] = pix[1]
                 pixDst[2] = pix[0]
@@ -108,8 +108,8 @@ impl Image
         case BGR8:
             visitPixels(dstImage)
             {
-                dstImage := cast(*Image) userData
-                pixDst := dstImage.pixels.buffer + x * dstImage.bpp8 + y * dstImage.width8
+                var dstImage = cast(*Image) userData
+                var pixDst = dstImage.pixels.buffer + x * dstImage.bpp8 + y * dstImage.width8
                 pixDst[0] = pix[0]
                 pixDst[1] = pix[1]
                 pixDst[2] = pix[2]
@@ -118,8 +118,8 @@ impl Image
         case RGB8:
             visitPixels(dstImage)
             {
-                dstImage := cast(*Image) userData
-                pixDst := dstImage.pixels.buffer + x * dstImage.bpp8 + y * dstImage.width8
+                var dstImage = cast(*Image) userData
+                var pixDst = dstImage.pixels.buffer + x * dstImage.bpp8 + y * dstImage.width8
                 pixDst[0] = pix[2]
                 pixDst[1] = pix[1]
                 pixDst[2] = pix[0]
@@ -128,8 +128,8 @@ impl Image
         case RGBA8:
             visitPixels(dstImage)
             {
-                dstImage := cast(*Image) userData
-                pixDst := dstImage.pixels.buffer + x * dstImage.bpp8 + y * dstImage.width8
+                var dstImage = cast(*Image) userData
+                var pixDst = dstImage.pixels.buffer + x * dstImage.bpp8 + y * dstImage.width8
                 pixDst[0] = pix[2]
                 pixDst[1] = pix[1]
                 pixDst[2] = pix[0]

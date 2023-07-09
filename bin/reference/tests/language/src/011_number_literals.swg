@@ -87,12 +87,11 @@ You can also **postfix** a literal number by a type.
     @assert(a == 1.5'f64)
     #assert @typeof(a) == f64
 
-    // Here we have the first usage of the 'short declaration form' with ':='.
     // 'b' is a new variable of type 'u8' initialized with '10'.
-    b := 10'u8
+    var b = 10'u8
     @assert(b == 10)
     #assert @typeof(b) == u8
 
-    c := 1'u32
+    var c = 1'u32
     #assert @typeof(c) == u32
 }

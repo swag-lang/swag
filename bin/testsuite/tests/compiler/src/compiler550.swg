@@ -18,10 +18,10 @@ struct point
 #test
 {
 	var pt: [10] point
-	ptr := &pt[0]
+	var ptr = &pt[0]
 	@assert(ptr.x == "10")
 	@assert(ptr.y == "20")
-	ptr1 := &pt[9]
+	var ptr1 = &pt[9]
 	@assert(ptr1.x == "10")
 	@assert(ptr1.y == "20")
 

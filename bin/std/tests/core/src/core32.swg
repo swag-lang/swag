@@ -3,5 +3,5 @@
 #test
 {
     using Core.Time
-    ticks := nowPrecise() / preciseFrequency()
+    var ticks = nowPrecise() / preciseFrequency()
 }

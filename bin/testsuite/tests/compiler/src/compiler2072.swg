@@ -13,7 +13,7 @@ public impl AA2072
     func toto(using self)
     {
         using self.ENUM
-        y := X
+        var y = X
     }
 }
 

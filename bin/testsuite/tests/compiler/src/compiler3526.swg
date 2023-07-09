@@ -15,9 +15,9 @@ func area_per_perimeter(shape: IShape) => shape.area()
 
 #test
 {
-    a := Circle{}
-    v := cast(IShape) a
-    lambda := &area_per_perimeter
+    var a = Circle{}
+    var v = cast(IShape) a
+    var lambda = &area_per_perimeter
 
     @assert(v.lambda() == 123)
 }

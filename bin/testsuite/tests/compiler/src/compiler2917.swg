@@ -7,6 +7,6 @@ enum B { R; G; B; }
 
 #test
 {
-    x, y := B.R
+    var x, y = B.R
     swap(&x, &y)
 }

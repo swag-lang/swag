@@ -8,7 +8,7 @@ enum AA: const [2] s32
 
 #test
 {
-    x := AA.A
+    var x = AA.A
     switch x
     {
     case [1, 2]: break

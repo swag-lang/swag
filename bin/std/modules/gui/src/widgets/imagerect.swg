@@ -24,10 +24,10 @@ impl IWnd for ImageRect
             }
         }
 
-        painter := evt.bc.painter
-        rect    := getClientRectPadding()
+        var painter = evt.bc.painter
+        var rect = getClientRectPadding()
 
-        color := getThemeColors().imageRect_Fg
+        var color = getThemeColors().imageRect_Fg
 
         #[Swag.Complete]
         switch movie.source
@@ -35,7 +35,7 @@ impl IWnd for ImageRect
         case None:
             break
         case SpriteSheet:
-            icon := Icon.from(&movie.imgList, movie.frameIndex, rect.width, rect.height)
+            var icon = Icon.from(&movie.imgList, movie.frameIndex, rect.width, rect.height)
             icon.paint(painter, rect.x, rect.y, color)
         case Gif:
             painter.drawTexture(rect, textureFrame, color)
@@ -52,7 +52,7 @@ impl ImageRect
     func create(parent: *Wnd, position: Math.Rectangle = {}, id: WndId = null)->*ImageRect
     {
         Debug.assert(parent != null)
-        res := Wnd.create'ImageRect(parent, null, position, id)
+        var res = Wnd.create'ImageRect(parent, null, position, id)
         return res
     }
 
@@ -73,7 +73,7 @@ impl ImageRect
     mtd setImage(image: ImageList)
     {
         clear()
-        tmp := image
+        var tmp = image
         tmp.totalFrames = 1
         tmp.frameSizeX = tmp.texture.width
         tmp.frameSizeY = tmp.texture.height

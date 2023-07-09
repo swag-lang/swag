@@ -19,12 +19,12 @@ impl IWnd for SliderCtrl
     mtd impl onResizeEvent(evt: *ResizeEvent)
     {
         if !label return
-        rect    := getClientRect()
-        metrics := getThemeMetrics()
+        var rect = getClientRect()
+        var metrics = getThemeMetrics()
 
         label.setPosition(0, 0, labelSize, rect.height)
 
-        w := rect.width - labelSize - editSize
+        var w = rect.width - labelSize - editSize
         slider.setPosition(label.position.right(), rect.vertCenter() - metrics.slider_Height / 2, w, metrics.slider_Height)
 
         edit.setPosition(slider.position.right(), rect.vertCenter() - metrics.editBox_Height / 2, editSize, metrics.editBox_Height)
@@ -36,14 +36,14 @@ impl SliderCtrl
     // Create the popup list, but do not display it
     func create(parent: *Wnd, name: string, position: Math.Rectangle = {}, id: WndId = null)->*SliderCtrl
     {
-        metrics := parent.getThemeMetrics()
-        pos := position
+        var metrics = parent.getThemeMetrics()
+        var pos = position
         if pos.width == 0
             pos.width = metrics.slider_Width + metrics.editBox_Width * 2
         if pos.height == 0
             pos.height = Math.max(metrics.slider_Height, metrics.editBox_Height)
 
-        with ctrl := Wnd.create'SliderCtrl(parent, pos, id)
+        with var ctrl = Wnd.create'SliderCtrl(parent, pos, id)
         {
             .label = Label.create(ctrl, #self.name, {})
             .label.vertAlignmentText = .Center
@@ -75,13 +75,13 @@ impl SliderCtrl
                 switch edit.inputMode
                 {
                 case .U64:
-                    (val, ?, ?) := catch StrConv.parseU64(edit.text)
+                    var (val, ?, ?) = catch StrConv.parseU64(edit.text)
                     ctrl.slider.setValue(cast(f32) val)
                 case .S64:
-                    (val, ?, ?) := catch StrConv.parseS64(edit.text)
+                    var (val, ?, ?) = catch StrConv.parseS64(edit.text)
                     ctrl.slider.setValue(cast(f32) val)
                 case .F64:
-                    (val, ?, ?) := catch StrConv.parseF64(edit.text)
+                    var (val, ?, ?) = catch StrConv.parseF64(edit.text)
                     ctrl.slider.setValue(cast(f32) val)
                 }
             }

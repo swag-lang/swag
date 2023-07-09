@@ -94,9 +94,9 @@ func getWndAtPos(hWnd: HWND, pt: POINT)->HWND
 
     loop
     {
-        pt1 := pt
+        var pt1 = pt
         ScreenToClient(g_Hit, &pt1)
-        child := ChildWindowFromPointEx(g_Hit, pt1, CWP_SKIPINVISIBLE | CWP_SKIPDISABLED | CWP_SKIPTRANSPARENT)
+        var child = ChildWindowFromPointEx(g_Hit, pt1, CWP_SKIPINVISIBLE | CWP_SKIPDISABLED | CWP_SKIPTRANSPARENT)
         if !child or child == g_Hit
             break
         g_Hit = child
@@ -158,7 +158,7 @@ func winProc(hWnd: HWND, msg: UINT, wParam: WPARAM, lParam: LPARAM)->LRESULT
             pp.y = g_EndGrabY
             ClientToScreen(hWnd, &pp)
 
-            under := getWndAtPos(hWnd, pp)
+            var under = getWndAtPos(hWnd, pp)
             if under
             {
                 var r: RECT
@@ -178,7 +178,7 @@ func winProc(hWnd: HWND, msg: UINT, wParam: WPARAM, lParam: LPARAM)->LRESULT
 
     case WM_PAINT:
         var ps: PAINTSTRUCT
-        hDC := BeginPaint(hWnd, &ps)
+        var hDC = BeginPaint(hWnd, &ps)
 
         var rc1: RECT
         GetClientRect(hWnd, &rc1)
@@ -186,20 +186,20 @@ func winProc(hWnd: HWND, msg: UINT, wParam: WPARAM, lParam: LPARAM)->LRESULT
         // Blit the "disabled" desktop
         catch BitBlt(g_MemDC, 0, 0, g_ScreenWidth, g_ScreenHeight, g_MemDesktop1DC, 0, 0, SRCCOPY | CAPTUREBLT)
 
-        (x1, y1, x2, y2) := getGrabRect()
+        var (x1, y1, x2, y2) = getGrabRect()
 
         // Lerp
         if g_AutoGrab
         {
-            dt := 0.1'f32
+            var dt = 0.1'f32
             g_RStartGrabX = Math.lerp(g_RStartGrabX, cast(f32) x1, dt)
             g_RStartGrabY = Math.lerp(g_RStartGrabY, cast(f32) y1, dt)
             g_REndGrabX   = Math.lerp(g_REndGrabX, cast(f32) x2, dt)
             g_REndGrabY   = Math.lerp(g_REndGrabY, cast(f32) y2, dt)
-            xx1 := cast(s32) g_RStartGrabX
-            yy1 := cast(s32) g_RStartGrabY
-            xx2 := cast(s32) g_REndGrabX
-            yy2 := cast(s32) g_REndGrabY
+            var xx1 = cast(s32) g_RStartGrabX
+            var yy1 = cast(s32) g_RStartGrabY
+            var xx2 = cast(s32) g_REndGrabX
+            var yy2 = cast(s32) g_REndGrabY
             if x1 != xx1 or y1 != yy1 or x2 != xx2 or y2 != yy2
                 InvalidateRect(hWnd, null, FALSE)
             x1 = xx1; x2 = xx2; y1 = yy1; y2 = yy2
@@ -221,12 +221,12 @@ func winProc(hWnd: HWND, msg: UINT, wParam: WPARAM, lParam: LPARAM)->LRESULT
             Rectangle(g_MemDC, 0, g_MouseY, g_ScreenWidth, g_MouseY+1)
 
             // Capture size
-            str := Format.toString("% x %", x2 - x1, y2 - y1)
+            var str = Format.toString("% x %", x2 - x1, y2 - y1)
             SetBkMode(g_MemDC, OPAQUE)
             SetBkColor(g_MemDC, RGB(0, 0, 0))
             SetTextColor(g_MemDC, RGB(255, 255, 255))
-            xx := x1
-            yy := y1 - 20
+            var xx = x1
+            var yy = y1 - 20
             if xx < 0 or yy < 0
             {
                 xx = x1 + 5
@@ -247,7 +247,7 @@ func winProc(hWnd: HWND, msg: UINT, wParam: WPARAM, lParam: LPARAM)->LRESULT
 
 func createNative(w, h: s32)->HWND throw
 {
-    className := @dataof(Utf16.toZeroTerminated("CaptMe.CaptureSurface"))
+    var className = @dataof(Utf16.toZeroTerminated("CaptMe.CaptureSurface"))
 
     var wc: WNDCLASSW
     wc.hInstance     = GetModuleHandleW(null)
@@ -258,7 +258,7 @@ func createNative(w, h: s32)->HWND throw
     wc.lpszClassName = className
     catch RegisterClassW(wc)
 
-    hWnd := cast(const *void) CreateWindowExW(
+    var hWnd = cast(const *void) CreateWindowExW(
         WS_EX_TOPMOST | WS_EX_TOOLWINDOW,
         className,
         null,
@@ -296,8 +296,8 @@ func screenShot(main: *MainWnd, captureMode: CaptureMode)->Image throw
     g_ScreenWidth  = GetSystemMetrics(SM_CXMAXTRACK)
     g_ScreenHeight = GetSystemMetrics(SM_CYMAXTRACK)
 
-    hDesktopWnd := GetDesktopWindow()
-    hDesktopDC  := GetDC(hDesktopWnd)
+    var hDesktopWnd = GetDesktopWindow()
+    var hDesktopDC = GetDC(hDesktopWnd)
 
     // Make a copy of the desktop
     g_MemDesktopDC = CreateCompatibleDC(hDesktopDC)
@@ -325,7 +325,7 @@ func screenShot(main: *MainWnd, captureMode: CaptureMode)->Image throw
     }
     elif captureMode >= .Screen0 and captureMode <= .Screen3
     {
-        idx := cast(s32) captureMode - cast(s32) CaptureMode.Screen0
+        var idx = cast(s32) captureMode - cast(s32) CaptureMode.Screen0
         g_StartGrabX = cast(s32) main.monitors[idx].rect.x
         g_StartGrabY = cast(s32) main.monitors[idx].rect.y
         g_EndGrabX = g_StartGrabX + cast(s32) main.monitors[idx].rect.width
@@ -341,7 +341,7 @@ func screenShot(main: *MainWnd, captureMode: CaptureMode)->Image throw
         g_MemDesktop1Bitmap = CreateCompatibleBitmap(hDesktopDC, g_ScreenWidth, g_ScreenHeight)
         SelectObject(g_MemDesktop1DC, acast g_MemDesktop1Bitmap)
         BitBlt(g_MemDesktop1DC, 0, 0, g_ScreenWidth, g_ScreenHeight, g_MemDesktopDC, 0, 0, SRCCOPY | CAPTUREBLT)
-        img := Image.from(g_MemDesktop1Bitmap)
+        var img = Image.from(g_MemDesktop1Bitmap)
         img.grayScale()
         img.fade(Argb.Black, 0.6)
         img.flip()
@@ -358,7 +358,7 @@ func screenShot(main: *MainWnd, captureMode: CaptureMode)->Image throw
         g_REndGrabY = 0
 
         main.getApp().runFrame()
-        hWnd := createNative(g_ScreenWidth, g_ScreenHeight)
+        var hWnd = createNative(g_ScreenWidth, g_ScreenHeight)
         SetCapture(hWnd)
 
         var msg: MSG
@@ -376,13 +376,13 @@ func screenShot(main: *MainWnd, captureMode: CaptureMode)->Image throw
             return result
     }
 
-    (x1, y1, x2, y2) := getGrabRect()
-    wGrab := Math.max(x2 - x1, 8)
-    hGrab := Math.max(y2 - y1, 8)
+    var (x1, y1, x2, y2) = getGrabRect()
+    var wGrab = Math.max(x2 - x1, 8)
+    var hGrab = Math.max(y2 - y1, 8)
 
     // Copy the portion of the screen we want
-    hCaptureDC     := CreateCompatibleDC(hDesktopDC)
-    hCaptureBitmap := CreateCompatibleBitmap(hDesktopDC, wGrab, hGrab)
+    var hCaptureDC = CreateCompatibleDC(hDesktopDC)
+    var hCaptureBitmap = CreateCompatibleBitmap(hDesktopDC, wGrab, hGrab)
     SelectObject(hCaptureDC, acast hCaptureBitmap)
     BitBlt(hCaptureDC, 0, 0, wGrab, hGrab, g_MemDesktopDC, x1, y1, SRCCOPY | CAPTUREBLT)
 

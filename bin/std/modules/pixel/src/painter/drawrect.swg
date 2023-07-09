@@ -24,24 +24,24 @@ impl Painter
         if width == 0 or height == 0 or pen.brush.color.a == 0 or pen.size == 0
             return
 
-        l := Math.round(left)
-        t := Math.round(top)
-        w := Math.round(width)
-        h := Math.round(height)
+        var l = Math.round(left)
+        var t = Math.round(top)
+        var w = Math.round(width)
+        var h = Math.round(height)
 
-        aa := curState.paintParams & .Antialiased
+        var aa = curState.paintParams & .Antialiased
 
         #[Swag.Complete]
         switch pen.borderPos
         {
         case None:
-            o := 0.5
+            var o = 0.5
             l += o
             t += o
             w -= 2*o
             h -= 2*o
         case Inside:
-            o := 0.5 + pen.size * 0.5
+            var o = 0.5 + pen.size * 0.5
             l += o
             t += o
             w -= 2*o
@@ -71,12 +71,12 @@ impl Painter
         if width == 0 or height == 0 or brush.color.a == 0
             return
 
-        l := Math.round(left)
-        t := Math.round(top)
-        w := Math.round(width)
-        h := Math.round(height)
+        var l = Math.round(left)
+        var t = Math.round(top)
+        var w = Math.round(width)
+        var h = Math.round(height)
 
-        aa := curState.paintParams & .Antialiased
+        var aa = curState.paintParams & .Antialiased
         if aa
         {
             l -= 0.5
@@ -124,24 +124,24 @@ impl Painter
         if width == 0 or height == 0 or pen.brush.color.a == 0 or pen.size == 0
             return
 
-        l := Math.round(left)
-        t := Math.round(top)
-        w := Math.round(width)
-        h := Math.round(height)
+        var l = Math.round(left)
+        var t = Math.round(top)
+        var w = Math.round(width)
+        var h = Math.round(height)
 
-        aa := curState.paintParams & .Antialiased
+        var aa = curState.paintParams & .Antialiased
 
         #[Swag.Complete]
         switch pen.borderPos
         {
         case None:
-            o := 0.5
+            var o = 0.5
             l += o
             t += o
             w -= 2*o
             h -= 2*o
         case Inside:
-            o := 0.5 + pen.size * 0.5
+            var o = 0.5 + pen.size * 0.5
             l += o
             t += o
             w -= 2*o

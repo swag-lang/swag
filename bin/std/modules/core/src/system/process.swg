@@ -26,6 +26,6 @@ func startProcess(fileName: string, arguments: string = null)->Process throw
 // Starts a new process with arguments, and wait for it to be done
 func doSyncProcess(fileName: string, arguments: string = null) throw
 {
-    h := try startProcess(fileName, arguments)
+    var h = try startProcess(fileName, arguments)
     h.waitForExit()
 }

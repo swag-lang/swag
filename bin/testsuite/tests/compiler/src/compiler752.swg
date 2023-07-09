@@ -17,14 +17,14 @@ func toto()->Point
 #test
 {
     {
-        x := &toto
-        c := x()
+        var x = &toto
+        var c = x()
         @assert(c.x == 10)
         @assert(c.y == 20)
     }
 
     {
-        c := toto()
+        var c = toto()
         @assert(c.x == 10)
         @assert(c.y == 20)
     }

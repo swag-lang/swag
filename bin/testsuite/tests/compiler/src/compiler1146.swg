@@ -9,5 +9,5 @@ func toto()
 
 func toto1()
 {
-	x:= &toto
+	var x = &toto
 }

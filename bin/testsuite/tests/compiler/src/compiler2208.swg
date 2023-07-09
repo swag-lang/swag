@@ -1,7 +1,7 @@
 //#[Swag.PrintBc]
 #test
 {
-    x := 2'u32
-    y := 2's32
+    var x = 2'u32
+    var y = 2's32
     @assert(x == y)
 }

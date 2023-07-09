@@ -19,8 +19,8 @@ func testInline(type: const* TypeInfoFunc)
 //#[Swag.PrintBc]
 #message(CompilerMsgMask.SemFunctions)
 {
-    itf := @compiler()
-    msg := itf.getMessage()
+    var itf = @compiler()
+    var msg = itf.getMessage()
     @assert(msg != null)
     if(msg.type.kind != TypeInfoKind.Func) return
 

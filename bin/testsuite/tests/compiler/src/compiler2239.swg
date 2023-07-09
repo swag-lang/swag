@@ -21,6 +21,6 @@ func toto(v: s64)->Pt
 //#[Swag.PrintBc]
 #test
 {
-    res := toto(6)
+    var res = toto(6)
     @assert(res.x == 6)
 }

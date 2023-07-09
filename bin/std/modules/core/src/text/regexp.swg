@@ -140,23 +140,23 @@ impl RegExp
 
         var stack1, stack2: Array'(*DfaNode)
         stack1.add(dfaNodes[0])
-        pstack1 := &stack1
-        pstack2 := &stack2
+        var pstack1 = &stack1
+        var pstack2 = &stack2
 
-        cpt       := 0
-        srcPtr    := @dataof(str)
-        srcLength := @countof(str)
+        var cpt = 0
+        var srcPtr = @dataof(str)
+        var srcLength = @countof(str)
 
         while cpt < srcLength and !pstack1.isEmpty()
         {
-            (c, eat) := Utf8.decodeRune(@mkslice(srcPtr, srcLength - cpt))
+            var (c, eat) = Utf8.decodeRune(@mkslice(srcPtr, srcLength - cpt))
             if ignoreCase
                 c = Unicode.toUpper(c)
 
-            ok := false
+            var ok = false
             while !pstack1.isEmpty()
             {
-                curState := pstack1.popBack()
+                var curState = pstack1.popBack()
                 if dfaMatch(pstack2, c, curState)
                     ok = true
             }
@@ -172,7 +172,7 @@ impl RegExp
 
         while !pstack1.isEmpty()
         {
-            curState := pstack1.popBack()
+            var curState = pstack1.popBack()
             if curState.terminal
                 return true
         }
@@ -184,15 +184,15 @@ impl RegExp
     public mtd grepAll(str: string)->Array'string
     {
         var result: retval
-        res := str
-        end := @dataof(str) + @countof(str)
+        var res = str
+        var end = @dataof(str) + @countof(str)
         loop
         {
             res = grep(res)
             if !res
                 break
             result.add(res)
-            newStart := @dataof(res) + @countof(res)
+            var newStart = @dataof(res) + @countof(res)
             res = @mkstring(newStart, end - newStart)
         }
 
@@ -202,9 +202,9 @@ impl RegExp
     // Find the first occurence in the string
     public mtd grep(str: string)->string
     {
-        beg   := @dataof(str)
-        copy  := @dataof(str)
-        pzEnd := beg + @countof(str)
+        var beg = @dataof(str)
+        var copy = @dataof(str)
+        var pzEnd = beg + @countof(str)
 
         var end: const *u8
         while !end and (copy != pzEnd)
@@ -229,25 +229,25 @@ impl RegExp
 
         var stack1, stack2: Array'(*DfaNode)
         stack1.add(dfaNodes[0])
-        pstack1 := &stack1
-        pstack2 := &stack2
+        var pstack1 = &stack1
+        var pstack2 = &stack2
 
-        cpt       := 0
-        srcPtr    := @dataof(str)
-        srcLength := @countof(str)
+        var cpt = 0
+        var srcPtr = @dataof(str)
+        var srcLength = @countof(str)
 
-        endState := false
+        var endState = false
         while cpt < srcLength and !pstack1.isEmpty()
         {
-            (c, eat) := Utf8.decodeRune(@mkslice(srcPtr, srcLength - cpt))
+            var (c, eat) = Utf8.decodeRune(@mkslice(srcPtr, srcLength - cpt))
             if ignoreCase
                 c = Unicode.toUpper(c)
 
-            ok := false
+            var ok = false
             endState = false
             while !pstack1.isEmpty()
             {
-                curState := pstack1.popBack()
+                var curState = pstack1.popBack()
                 if dfaMatch(pstack2, c, curState)
                     ok = true
                 if curState.terminal
@@ -262,7 +262,7 @@ impl RegExp
 
         while !endState and !pstack1.isEmpty()
         {
-            curState := pstack1.popBack()
+            var curState = pstack1.popBack()
             if curState.terminal
                 return srcPtr
         }
@@ -274,13 +274,13 @@ impl RegExp
 
     func dfaMatch(out: *Array'(*DfaNode), c: rune, curState: *DfaNode)->bool
     {
-        ok := false
+        var ok = false
 
         #[Swag.Mixin]
         func checkTr(c: rune)
         {
             {
-                find := curState.transitions.find(c)
+                var find = curState.transitions.find(c)
                 if find
                 {
                     out.add(find.value)
@@ -293,7 +293,7 @@ impl RegExp
 
         if Unicode.isLatin1(c)
         {
-            c8 := cast(u8) c
+            var c8 = cast(u8) c
             if Latin1.isDigit(c8)   checkTr(RuneAsciiDigit)
             if Latin1.isLetter(c8)  checkTr(RuneAsciiLetter)
             if Latin1.isLower(c8)   checkTr(RuneAsciiLower)
@@ -317,7 +317,7 @@ impl RegExp
 
     func addTransition(node: *NfaNode, c: rune, toNode: *NfaNode)
     {
-        here := node.transitions.find(c)
+        var here = node.transitions.find(c)
         if !here
         {
             var to: Array'(*NfaNode)
@@ -337,9 +337,9 @@ impl RegExp
     mtd nfaPush(c: rune)
     {
         // Creates 2 new states, and one transition (by c) between them
-        table := Memory.new'NfaTable()
-        s1    := Memory.new'NfaNode()
-        s2    := Memory.new'NfaNode()
+        var table = Memory.new'NfaTable()
+        var s1 = Memory.new'NfaNode()
+        var s2 = Memory.new'NfaNode()
 
         table.level = cast(u32) openParen.count
         nfaTables.add(table)
@@ -357,18 +357,18 @@ impl RegExp
 
     mtd operatorUnion() throw
     {
-        table2 := try nfaPop()
-        table1 := try nfaPop()
+        var table2 = try nfaPop()
+        var table1 = try nfaPop()
 
-        ns1 := Memory.new'NfaNode()
-        ns2 := Memory.new'NfaNode()
+        var ns1 = Memory.new'NfaNode()
+        var ns2 = Memory.new'NfaNode()
         nfaNodes.add(ns1)
         nfaNodes.add(ns2)
 
-        s1 := table1.nodes.front()
-        s2 := table1.nodes.back()
-        s3 := table2.nodes.front()
-        s4 := table2.nodes.back()
+        var s1 = table1.nodes.front()
+        var s2 = table1.nodes.back()
+        var s3 = table2.nodes.front()
+        var s4 = table2.nodes.back()
 
         ns1.addTransition(0'rune, s1)
         s2.addTransition(0'rune, ns2)
@@ -389,8 +389,8 @@ impl RegExp
             return
 
         // Check if the two tables have the same nested level
-        table2 := try nfaPop()
-        table1 := try nfaPop()
+        var table2 = try nfaPop()
+        var table1 = try nfaPop()
         nfaStack.add(table1)
         nfaStack.add(table2)
         if table1.level != table2.level
@@ -408,9 +408,9 @@ impl RegExp
 
     mtd operatorStar() throw
     {
-        table := try nfaPop()
-        s1 := table.nodes.front()
-        s2 := table.nodes.back()
+        var table = try nfaPop()
+        var s1 = table.nodes.front()
+        var s2 = table.nodes.back()
         s1.addTransition(0'rune, s2)
         s2.addTransition(0'rune, s1)
         nfaStack.add(table)
@@ -418,18 +418,18 @@ impl RegExp
 
     mtd operatorPlus() throw
     {
-        table := try nfaPop()
-        s1 := table.nodes.front()
-        s2 := table.nodes.back()
+        var table = try nfaPop()
+        var s1 = table.nodes.front()
+        var s2 = table.nodes.back()
         s2.addTransition(0'rune, s1)
         nfaStack.add(table)
     }
 
     mtd operatorQuestion() throw
     {
-        table := try nfaPop()
-        s1 := table.nodes.front()
-        s2 := table.nodes.back()
+        var table = try nfaPop()
+        var s1 = table.nodes.front()
+        var s2 = table.nodes.back()
         s1.addTransition(0'rune, s2)
         nfaStack.add(table)
     }
@@ -449,12 +449,12 @@ impl RegExp
 
     mtd nfaBuild() throw
     {
-        pz  := preprocessed.buffer
-        cpt := 0
+        var pz = preprocessed.buffer
+        var cpt = 0
 
         while cpt < preprocessed.count
         {
-            c := dref pz
+            var c = dref pz
             switch c
             {
             case "("'rune:
@@ -464,7 +464,7 @@ impl RegExp
                 try unionValidate()
                 if openParen.isEmpty()
                     throw "syntax, unexpected right parenthesis"
-                op := openParen.popBack()
+                var op = openParen.popBack()
                 try operatorConcat(nfaStack.count - op)
 
             case "*"'rune:
@@ -516,18 +516,18 @@ impl RegExp
 
     mtd operatorConcat(cpt: u64) throw
     {
-        count := cpt
+        var count = cpt
         while count >= 2
         {
-            table2 := try nfaPop()
-            table1 := try nfaPop()
+            var table2 = try nfaPop()
+            var table1 = try nfaPop()
 
             // Update nested level
             table1.level = cast(u32) openParen.count
             table2.level = cast(u32) openParen.count
 
-            s1 := table1.nodes.back()
-            s2 := table2.nodes.front()
+            var s1 = table1.nodes.back()
+            var s2 = table2.nodes.front()
             s1.addTransition(0'rune, s2)
 
             table1.nodes.add(table2.nodes.toSlice())
@@ -539,7 +539,7 @@ impl RegExp
         // Update nested level
         if count == 1
         {
-            table1 := try nfaPop()
+            var table1 = try nfaPop()
             table1.level = cast(u32) openParen.count
             nfaStack.add(table1)
         }
@@ -555,10 +555,10 @@ impl RegExp
 
         while stack.count
         {
-            state := stack.popBack()
+            var state = stack.popBack()
             out.add(state)
 
-            find := state.transitions.find(0'rune)
+            var find = state.transitions.find(0'rune)
             if !find continue
 
             visit to: find.value
@@ -591,7 +591,7 @@ impl RegExp
         visit state: in
         {
             // The real terminal character
-            pfind := state.transitions.find(c)
+            var pfind = state.transitions.find(c)
             if pfind
             {
                 visit t: pfind.value
@@ -616,7 +616,7 @@ impl RegExp
     mtd dfaBuild() throw
     {
         // One table must remain
-        table := try nfaPop()
+        var table = try nfaPop()
 
         // Last state of NFA table is a terminal
         table.nodes.back().terminal = true
@@ -626,7 +626,7 @@ impl RegExp
         nfaStart.add(table.nodes.front())
         dfaEClosure(&nfaStart, &dfaStart)
 
-        state := Memory.new'DfaNode()
+        var state = Memory.new'DfaNode()
         state.setTable(&dfaStart)
         dfaNodes.add(state)
 
@@ -672,21 +672,21 @@ impl RegExp
     #[Swag.Discardable]
     mtd preprocessInter(sl: const [..] rune)->const ^rune throw
     {
-        pz      := @dataof(sl)
-        pzStart := pz
-        pzEnd   := pz + @countof(sl)
+        var pz = @dataof(sl)
+        var pzStart = pz
+        var pzEnd = pz + @countof(sl)
 
         preprocessed.add("("'rune)
         pz += 1
 
-        firstExp := true
+        var firstExp = true
         while pz != pzEnd and pz[0] != "]"'rune
         {
             if !firstExp
                 preprocessed.add("|"'rune)
             firstExp = false
 
-            subSlice := @mkslice(pz, pzEnd - pz)
+            var subSlice = @mkslice(pz, pzEnd - pz)
 
             // Predefined sets
             if pz[0] == "["'rune
@@ -779,8 +779,8 @@ impl RegExp
             // Specified interval
             if @countof(subSlice) >= 3 and pz[1] == "-"'rune and pz[2] != "]"'rune
             {
-                first := pz[0]
-                end   := pz[2]
+                var first = pz[0]
+                var end = pz[2]
                 if first > end
                     swap(&first, &end)
                 while first < end
@@ -820,8 +820,8 @@ impl RegExp
         if !Unicode.isLatin1(pz[0]) or !Latin1.isDigit(cast(u8) pz[0])
             throw "syntax"
 
-        pzStart := pz
-        n := 0
+        var pzStart = pz
+        var n = 0
         while pzStart != pzEnd and Unicode.isLatin1(pzStart[0]) and Latin1.isDigit(cast(u8) pzStart[0])
         {
             n *= 10
@@ -835,13 +835,13 @@ impl RegExp
 
     mtd preprocessEnum(sl: const [..] rune)->const ^rune throw
     {
-        pz    := @dataof(sl)
-        pzEnd := pz + @countof(sl)
+        var pz = @dataof(sl)
+        var pzEnd = pz + @countof(sl)
 
         if preprocessed.count == 0
             throw "syntax, { without a previous expression"
 
-        m := -1
+        var m = -1
         pz += 1
 
         // n value
@@ -879,9 +879,9 @@ impl RegExp
         elif n != 1 or m != 1 // {1,1}
         {
             // Isolate expression to duplicate
-            pze := preprocessed.buffer + preprocessed.count - 1
-            pz1 := pze
-            cptParen := 0
+            var pze = preprocessed.buffer + preprocessed.count - 1
+            var pz1 = pze
+            var cptParen = 0
             if pz[1] == ")"'rune
                 cptParen += 1
             while cptParen and pz1 != preprocessed.buffer
@@ -907,7 +907,7 @@ impl RegExp
                 preprocessed.add(expr.toSlice())
             else
             {
-                i := n - 1
+                var i = n - 1
                 while i
                 {
                     preprocessed.add(expr.toSlice())
@@ -938,7 +938,7 @@ impl RegExp
 
     mtd preprocessUnicode(sl: const [..] rune)->const ^rune throw
     {
-        pz := @dataof(sl) + 2
+        var pz = @dataof(sl) + 2
         if pz[0] == "{"'rune
         {
             if pz[1] == "L"'rune and pz[3] == "}"'rune
@@ -982,8 +982,8 @@ impl RegExp
 
     mtd preprocessEscape(sl: const [..] rune)->const ^rune throw
     {
-        pz := @dataof(sl)
-        c := dref pz
+        var pz = @dataof(sl)
+        var c = dref pz
         if c == "\\"'rune
         {
             switch pz[1]
@@ -1033,13 +1033,13 @@ impl RegExp
 
     mtd preprocess(in: string) throw
     {
-        in32 := Unicode.fromUtf8(in)
+        var in32 = Unicode.fromUtf8(in)
         in32.add(0'rune)
 
-        pz    := cast(const ^rune) in32.buffer
-        pzEnd := pz + in32.count
+        var pz = cast(const ^rune) in32.buffer
+        var pzEnd = pz + in32.count
 
-        c := pz[0]
+        var c = pz[0]
         if ignoreCase
             c = Unicode.toUpper(c)
 

@@ -12,7 +12,7 @@ func convertFloat(buf: *ConcatBuffer, fmt: ConvertFormatFloat)
 {
     var neg: bool = fmt.value < 0
 
-    value := fmt.value
+    var value = fmt.value
     if(neg)
         value = -value
 }

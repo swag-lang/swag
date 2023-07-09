@@ -4,16 +4,16 @@ using Swag
 {
     var alloc: Swag.ScratchAllocator
     alloc.setCapacity(10, @sysalloc())
-    itf := cast(IAllocator) alloc
+    var itf = cast(IAllocator) alloc
 
     var req: AllocatorRequest
     req.mode = .Alloc
     req.size = 100
     itf.req(&req)
-    ptr1 := req.address
+    var ptr1 = req.address
     @assert(alloc.maxLeak == 100)
     itf.req(&req)
-    ptr2 := req.address
+    var ptr2 = req.address
     @assert(alloc.maxLeak == 200)
 
     req.mode = .Free

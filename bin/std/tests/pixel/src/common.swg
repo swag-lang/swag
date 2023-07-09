@@ -2,14 +2,14 @@ using Core
 
 private func dataPath()->String
 {
-    dataPath := Path.getDirectoryName(#location.fileName)
+    var dataPath = Path.getDirectoryName(#location.fileName)
     dataPath = Path.getDirectoryName(dataPath)
     return Path.combine(dataPath, "datas")
 }
 
 private func tmpPath()->String
 {
-    dataPath := Path.getDirectoryName(#location.fileName)
+    var dataPath = Path.getDirectoryName(#location.fileName)
     dataPath = Path.getDirectoryName(dataPath)
     return Path.combine(dataPath, "tmp")
 }

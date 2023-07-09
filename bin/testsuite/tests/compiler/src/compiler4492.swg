@@ -1,11 +1,11 @@
 #test
 {
-    x := @muladd(2'f32, 3, 4)
+    var x = @muladd(2'f32, 3, 4)
     @assert(x == 10)
 }
 
 #test
 {
-    x := @muladd(2'f64, 3, 4)
+    var x = @muladd(2'f64, 3, 4)
     @assert(x == 10)
 }

@@ -7,8 +7,8 @@ enum TOTO : s64
 
 #test
 {
-    x := TOTO.A
-    y := TOTO.B
-    ptr := &x
+    var x = TOTO.A
+    var y = TOTO.B
+    var ptr = &x
     y = acast dref ptr
 }

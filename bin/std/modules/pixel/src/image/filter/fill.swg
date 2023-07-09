@@ -12,7 +12,7 @@ impl Image
         #[Swag.Mixin]
         func(PF: PixelFormat) fillFirstLine()
         {
-            pix := pixels.buffer
+            var pix = pixels.buffer
             loop x: width
             {
                 setPixelRGBA8'PF(pix, color.r, color.g, color.b, color.a)

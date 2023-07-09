@@ -1,9 +1,9 @@
 #global testerror
 #test
 {
-    toto := [10, 20]
-    r := &toto
-    x := 0
+    var toto = [10, 20]
+    var r = &toto
+    var x = 0
     loop r
     {
         x += 1

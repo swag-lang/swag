@@ -5,7 +5,7 @@ func cpt()
 {
     #ast
     {
-        itf := @compiler()
+        var itf = @compiler()
         itf.compileString("var G: s32 = 555")
         return ";"
     }

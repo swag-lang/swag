@@ -1,7 +1,7 @@
 #global testerror
 #test
 {
-    x := 0
-    y := true
-    b := x orelse y
+    var x = 0
+    var y = true
+    var b = x orelse y
 }

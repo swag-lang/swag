@@ -1,7 +1,7 @@
 //#[Swag.PrintBc]
 #test
 {
-    xx := 1
+    var xx = 1
     if xx and true
     {
         xx += 1

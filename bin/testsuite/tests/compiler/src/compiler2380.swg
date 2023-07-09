@@ -2,7 +2,7 @@
 func(T) toto()
 {
     var x: T
-    v := T == s32 ? cast(const &T) x : x
+    var v = T == s32 ? cast(const &T) x : x
     @assert(@typeof(v).name == "const &s32")
 }
 

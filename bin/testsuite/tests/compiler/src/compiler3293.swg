@@ -1,6 +1,6 @@
 #test
 {
-    a := 0
+    var a = 0
     if a == 1
         @assert(false)
     elif a == 0

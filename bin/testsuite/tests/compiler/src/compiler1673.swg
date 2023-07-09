@@ -9,7 +9,7 @@ struct TT
 func C(x: ...)
 {
     //@print(@typeof(x[0]).name)
-    ptr1 := cast(const TT) x[0]
+    var ptr1 = cast(const TT) x[0]
     ptr1.value = 456
 }
 

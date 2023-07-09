@@ -5,7 +5,7 @@ using Core
 {
     var str: String = "toto"
 
-    cpt := 0
+    var cpt = 0
     visit(Runes) str
     {
         break

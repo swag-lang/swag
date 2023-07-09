@@ -6,5 +6,5 @@ func toto()->s32 => 666
 #[Swag.PrintBc]
 #test
 {
-	ptr := toto
+	var ptr = toto
 }

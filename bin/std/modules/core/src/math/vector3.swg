@@ -127,25 +127,25 @@ impl Vector3
     // Returns the distance between two vectors
     mtd const distance(to: Self)->f32
     {
-        xn := (x - to.x)
-        yn := (y - to.y)
-        zn := (z - to.z)
+        var xn = (x - to.x)
+        var yn = (y - to.y)
+        var zn = (z - to.z)
         return sqrt((xn * xn) + (yn * yn) + (zn * zn))
     }
 
     // Returns the square distance between two vectors
     mtd const distanceSquared(to: Self)->f32
     {
-        xn := (x - to.x)
-        yn := (y - to.y)
-        zn := (z - to.z)
+        var xn = (x - to.x)
+        var yn = (y - to.y)
+        var zn = (z - to.z)
         return (xn * xn) + (yn * yn) + (zn * zn)
     }
 
     // Normalize this vector (set its length to 1)
     mtd normalize()
     {
-        norm := sqrt((x * x) + (y * y) + (z * z))
+        var norm = sqrt((x * x) + (y * y) + (z * z))
         Debug.assert(!Math.isZeroEpsilon(norm))
         norm = 1 / norm
         x *= norm
@@ -156,7 +156,7 @@ impl Vector3
     // Returns this vector normalized
     mtd const toNormalize()->Self
     {
-        norm := sqrt((x * x) + (y * y) + (z * z))
+        var norm = sqrt((x * x) + (y * y) + (z * z))
         Debug.assert(!Math.isZeroEpsilon(norm))
         norm = 1 / norm
         return Self{x * norm, y * norm, z * norm}
@@ -183,7 +183,7 @@ impl Vector3
     // Normalize this vector (set its length to 1) even if its length is almost null
     mtd normalizeSafe()
     {
-        norm := sqrt((x * x) + (y * y) + (z * z))
+        var norm = sqrt((x * x) + (y * y) + (z * z))
         if Math.isZeroEpsilon(norm)
         {
             x, y, z = 0
@@ -199,7 +199,7 @@ impl Vector3
     // Returns this vector normalized even if its length is almost null
     mtd const toNormalizeSafe()->Self
     {
-        norm := sqrt((x * x) + (y * y) + (z * z))
+        var norm = sqrt((x * x) + (y * y) + (z * z))
         if Math.isZeroEpsilon(norm)
             return Zero
         norm = 1 / norm

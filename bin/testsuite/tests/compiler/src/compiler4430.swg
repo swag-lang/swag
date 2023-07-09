@@ -5,10 +5,10 @@ var G = 0
 
 #test
 {
-	x := [1, 2]
+	var x = [1, 2]
 	//@print(@typeof(x).name)
-	ptr := &x
-	y := ref &ptr
+	var ptr = &x
+	var y = ref &ptr
 	//@print(@typeof(y).name)
-	z := y[0]
+	var z = y[0]
 }

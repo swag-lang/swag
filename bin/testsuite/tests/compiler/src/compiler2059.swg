@@ -6,6 +6,6 @@ func toto(x: any)
 
 #test
 {
-    x := "toto"
+    var x = "toto"
     toto(x)
 }

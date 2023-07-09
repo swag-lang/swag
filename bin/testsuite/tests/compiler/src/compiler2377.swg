@@ -6,6 +6,6 @@ func toto(x: const [..] u8...)
 
 #test
 {
-    x := ["a", "b"]
+    var x = ["a", "b"]
     toto(@spread(x))
 }

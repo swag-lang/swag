@@ -11,14 +11,14 @@ using Globalization
 
 func dtoa(dst: *ConcatBuffer, precision: s64, fmt: u8, neg, forceSign: bool, mant: u64, exp: s64)
 {
-    prec := precision
+    var prec = precision
 
 	var d: Decimal
 	d.assign(mant)
 	d.shift(cast(s32) exp - Swag.F64.MantBits)
 
 	var digs: DecimalSlice
-	shortest := prec < 0
+	var shortest = prec < 0
 	if shortest
     {
 		roundShortest(&d, mant, exp)
@@ -59,7 +59,7 @@ func dtoa(dst: *ConcatBuffer, precision: s64, fmt: u8, neg, forceSign: bool, man
 
 func formatDigits(dst: *ConcatBuffer, shortest: bool, neg, forceSign: bool, digs: DecimalSlice, precision: s64, fmt: u8)
 {
-    prec := precision
+    var prec = precision
 	switch fmt
     {
 	case "e"'u8, "E"'u8:
@@ -70,14 +70,14 @@ func formatDigits(dst: *ConcatBuffer, shortest: bool, neg, forceSign: bool, digs
 
 	case "g"'u8, "G"'u8:
 		// trailing fractional zeros in 'e' form will be trimmed.
-		eprec := prec
+		var eprec = prec
 		if eprec > digs.nd and digs.nd >= digs.dp
 			eprec = digs.nd
 		// %e is used if the exponent from the conversion
 		// is less than -4 or greater than or equal to the precision.
 		// if precision was the shortest possible, use precision 6 for this decision.
 		if shortest eprec = 6
-		exp := digs.dp - 1
+		var exp = digs.dp - 1
 		if exp < -4 or exp >= eprec
         {
 			if prec > digs.nd
@@ -100,7 +100,7 @@ func fmtE(dst: *ConcatBuffer, neg, forceSign: bool, d: DecimalSlice, prec: s64, 
         dst.addNative(g_CultureInfo.numberFormat.positiveSign)
 
 	// first digit
-	ch := "0"'u8
+	var ch = "0"'u8
 	if d.nd != 0
 		ch = d.d[0]
 	dst.addNative(ch)
@@ -109,8 +109,8 @@ func fmtE(dst: *ConcatBuffer, neg, forceSign: bool, d: DecimalSlice, prec: s64, 
 	if prec > 0
     {
 		dst.addNative(g_CultureInfo.numberFormat.decimalSeparator)
-		i := 1's64
-		m := Math.min(d.nd, prec + 1)
+		var i = 1's64
+		var m = Math.min(d.nd, prec + 1)
 		if i < m
         {
 			dst.addBytes(@mkslice(&d.d[i], m - i))
@@ -126,7 +126,7 @@ func fmtE(dst: *ConcatBuffer, neg, forceSign: bool, d: DecimalSlice, prec: s64, 
 
 	// e±
 	dst.addNative(fmt)
-	exp := d.dp - 1
+	var exp = d.dp - 1
 	if d.nd == 0 // special case: 0 has exponent 0
 		exp = 0
 	if exp < 0
@@ -168,7 +168,7 @@ func fmtF(dst: *ConcatBuffer, neg, forceSign: bool, d: DecimalSlice, prec: s64)
 	// integer, padded with zeros as needed.
 	if d.dp > 0
     {
-		m := Math.min(d.nd, d.dp)
+		var m = Math.min(d.nd, d.dp)
 		dst.addBytes(@mkslice(&d.d[0], m))
 		while m < d.dp
         {
@@ -183,10 +183,10 @@ func fmtF(dst: *ConcatBuffer, neg, forceSign: bool, d: DecimalSlice, prec: s64)
 	if prec > 0
     {
 		dst.addNative(g_CultureInfo.numberFormat.decimalSeparator)
-		for i := 0; i < prec; i += 1
+		for var i = 0; i < prec; i += 1
         {
-			ch := "0"'u8
-            j := d.dp + i
+			var ch = "0"'u8
+            var j = d.dp + i
 			if 0 <= j and j < d.nd
 				ch = d.d[j]
 			dst.addNative(ch)
@@ -219,7 +219,7 @@ func roundShortest(d: *Decimal, mant: u64, exp: s64)
 	// So the number is already shortest if 10^(dp-nd) > 2^(exp-mantbits),
 	// or equivalently log2(10)*(dp-nd) > exp-mantbits.
 	// It is true if 332/100*(dp-nd) >= exp-mantbits (log2(10) > 3.32).
-	minexp := Swag.F64.Bias + 1 // minimum possible exponent
+	var minexp = Swag.F64.Bias + 1 // minimum possible exponent
 	if exp > minexp and 332*(d.dp-d.nd) >= 100*(exp-cast(s64)(Swag.F64.MantBits))
     {
 		// The number is already shortest.
@@ -258,7 +258,7 @@ func roundShortest(d: *Decimal, mant: u64, exp: s64)
 	// The upper and lower bounds are possible outputs only if
 	// the original mantissa is even, so that IEEE round-to-even
 	// would round to the original mantissa and not the neighbors.
-	inclusive := mant % 2 == 0
+	var inclusive = mant % 2 == 0
 
 	// As we walk the digits we want to know whether rounding up would fall
 	// within the upper bound. This is tracked by upperdelta:
@@ -275,30 +275,30 @@ func roundShortest(d: *Decimal, mant: u64, exp: s64)
 
 	// Now we can figure out the minimum number of digits required.
 	// Walk along until d has distinguished itself from upper and lower.
-    ui := 0
+    var ui = 0
     loop
 	{
 		// lower, d, and upper may have the decimal points at different
 		// places. In this case upper is the longest, so we iterate from
 		// ui==0 and start li and mi at (possibly) -1.
-		mi := ui - upper.dp + d.dp
+		var mi = ui - upper.dp + d.dp
 		if mi >= d.nd
 			break
-		li := ui - upper.dp + lower.dp
-		l := "0"'u8 // lower digit
+		var li = ui - upper.dp + lower.dp
+		var l = "0"'u8 // lower digit
 		if li >= 0 and li < lower.nd
 			l = lower.d[li]
-		m := "0"'u8 // middle digit
+		var m = "0"'u8 // middle digit
 		if mi >= 0
 			m = d.d[mi]
-		u := "0"'u8 // upper digit
+		var u = "0"'u8 // upper digit
 		if ui < upper.nd
 			u = upper.d[ui]
 
 		// Okay to round down (truncate) if lower has a different digit
 		// or if lower is inclusive and is exactly the result of rounding
 		// down (i.e., and we have reached the final digit of lower).
-		okdown := l != m or inclusive and li+1 == lower.nd
+		var okdown = l != m or inclusive and li+1 == lower.nd
 
 		switch
         {
@@ -321,7 +321,7 @@ func roundShortest(d: *Decimal, mant: u64, exp: s64)
 
 		// Okay to round up if upper has a different digit and either upper
 		// is inclusive or upper is bigger than the result of rounding up.
-		okup := upperdelta > 0 and (inclusive or upperdelta > 1 or ui+1 < upper.nd)
+		var okup = upperdelta > 0 and (inclusive or upperdelta > 1 or ui+1 < upper.nd)
 
 		// If it's okay to do either, then round to the nearest one.
 		// If it's okay to do only one, do it.
@@ -353,10 +353,10 @@ public func parse(buf: *ConcatBuffer, val: f64, fmt: u8, precision: s64, forceSi
 {
 	var bits: u64 = cast,bit(u64) val
 
-    prec := precision
-	neg  := bits >> (Swag.F64.ExpBits + Swag.F64.MantBits) != 0
-	exp  := cast(s64) (bits >> Swag.F64.MantBits) & ((1 << Swag.F64.ExpBits) - 1)
-	mant := bits & ((1'u64 << Swag.F64.MantBits) - 1)
+    var prec = precision
+	var neg = bits >> (Swag.F64.ExpBits + Swag.F64.MantBits) != 0
+	var exp = cast(s64) (bits >> Swag.F64.MantBits) & ((1 << Swag.F64.ExpBits) - 1)
+	var mant = bits & ((1'u64 << Swag.F64.MantBits) - 1)
 
 	switch exp
     {
@@ -384,13 +384,13 @@ public func parse(buf: *ConcatBuffer, val: f64, fmt: u8, precision: s64, forceSi
 
 	var digs: DecimalSlice
 
-	ok := false
-	shortest := prec < 0
+	var ok = false
+	var shortest = prec < 0
 	if shortest
     {
 		// Try Grisu3 algorithm.
 		var f: FloatExt
-		(lower, upper) := f.assignComputeBounds(mant, exp, neg)
+		var (lower, upper) = f.assignComputeBounds(mant, exp, neg)
 		var tmp: [32] u8
 		digs.d = tmp
 
@@ -414,7 +414,7 @@ public func parse(buf: *ConcatBuffer, val: f64, fmt: u8, precision: s64, forceSi
     elif fmt != "f"'u8
     {
 		// Fixed number of digits.
-		digits := prec
+		var digits = prec
 		switch fmt
         {
 		case "e"'u8, "E"'u8:
@@ -429,7 +429,7 @@ public func parse(buf: *ConcatBuffer, val: f64, fmt: u8, precision: s64, forceSi
         {
 			var tmp: [24] u8
 			digs.d = tmp
-			f := FloatExt{mant, exp - cast(s64) Swag.F64.MantBits, neg}
+			var f = FloatExt{mant, exp - cast(s64) Swag.F64.MantBits, neg}
 			ok = f.fixedDecimal(&digs, digits)
             if ok
             {

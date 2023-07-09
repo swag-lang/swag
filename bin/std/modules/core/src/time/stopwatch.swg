@@ -25,8 +25,8 @@ public impl Stopwatch
     {
         if isStarted
         {
-            endTimeStamp := nowPrecise()
-            elapsedTicksPeriod := endTimeStamp - startTimeStamp
+            var endTimeStamp = nowPrecise()
+            var elapsedTicksPeriod = endTimeStamp - startTimeStamp
             elapsedTicks += elapsedTicksPeriod
             isStarted = false
         }
@@ -51,16 +51,16 @@ public impl Stopwatch
     // Gets the current elapsed time in milliseconds since the start
     mtd elapsedMillisecondsNow()->u32
     {
-        endTimeStamp := nowPrecise()
-        elapsedTicksPeriod := endTimeStamp - startTimeStamp
+        var endTimeStamp = nowPrecise()
+        var elapsedTicksPeriod = endTimeStamp - startTimeStamp
         return acast ((elapsedTicksPeriod * 1000) / preciseFrequency())
     }
 
     // Gets the current elapsed time in milliseconds since the start
     mtd elapsedMicrosecondsNow()->u32
     {
-        endTimeStamp := nowPrecise()
-        elapsedTicksPeriod := endTimeStamp - startTimeStamp
+        var endTimeStamp = nowPrecise()
+        var elapsedTicksPeriod = endTimeStamp - startTimeStamp
         return acast ((elapsedTicksPeriod * 1000000) / preciseFrequency())
     }
 

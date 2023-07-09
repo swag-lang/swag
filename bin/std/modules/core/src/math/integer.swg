@@ -7,7 +7,7 @@ using Swag
 #[ConstExpr, Safety("overflow", false)]
 func roundUpToPowerOf2(x: u32)->u32
 {
-    v := x - 1
+    var v = x - 1
     v |= v >> 1
     v |= v >> 2
     v |= v >> 4
@@ -19,7 +19,7 @@ func roundUpToPowerOf2(x: u32)->u32
 #[ConstExpr, Safety("overflow", false)]
 func roundDownToPowerOf2(x: u32)->u32
 {
-    i := 1'u32
+    var i = 1'u32
     while (i << 1) <= x
         i <<= 1
     return i

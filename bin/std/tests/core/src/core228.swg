@@ -17,7 +17,7 @@ var t: [] struct {
 {
     visit &p: t
     {
-        res := decodeRune(p.r)
+        var res = decodeRune(p.r)
         @assert(res.c == p.w)
     }
 }

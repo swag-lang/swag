@@ -12,11 +12,11 @@ using Swag
 //#[Swag.PrintBc, Swag.Optim(false)]
 #test
 {
-    h := GetModuleHandleA(@dataof("test_foreign"))
+    var h = GetModuleHandleA(@dataof("test_foreign"))
     @assert(h != null)
-    ptr := GetProcAddress(h, @dataof("test_foreign.tcf_manualcall"))
+    var ptr = GetProcAddress(h, @dataof("test_foreign.tcf_manualcall"))
     @assert(ptr != null)
 
-    tcf_manualcall := cast(func(s64)->s64) ptr
+    var tcf_manualcall = cast(func(s64)->s64) ptr
     @assert(tcf_manualcall(10) == 10)
 }

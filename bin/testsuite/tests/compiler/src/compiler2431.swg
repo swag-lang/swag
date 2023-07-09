@@ -5,8 +5,8 @@ func append(buf: *void, fmt: string, values: ...)
     {
         if !@isconstexpr(fmt) return true
 
-        cptPercent := 0
-        for i := 0; i < @countof(fmt); i += 1
+        var cptPercent = 0
+        for var i = 0; i < @countof(fmt); i += 1
         {
             if fmt[i] != "%"'u8
                 continue

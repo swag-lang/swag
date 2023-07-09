@@ -3,13 +3,13 @@ using Core
 #test
 {
     var list: List's32
-    n := list.addFront(1)
+    var n = list.addFront(1)
     list.addBack(3)
     list.insertBefore(n, 0)
     list.insertAfter(n, 2)
 
-    cpt := 0
-    val := 0
+    var cpt = 0
+    var val = 0
     visit v: list
     {
         cpt += 1

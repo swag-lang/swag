@@ -3,7 +3,7 @@
 {
     #ast
     {
-        return "x := 1"
+        return "var x = 1"
     }
 
     @assert(x == 1)

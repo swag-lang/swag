@@ -14,7 +14,7 @@ func assertIsAllocated(buffer: ^void, size: u64, allocator: IAllocator = null, h
     req.address     = buffer
     req.hint        = hint
 
-    talloc := allocator orelse @getcontext().allocator
+    var talloc = allocator orelse @getcontext().allocator
     talloc.req(&req)
 }
 
@@ -30,7 +30,7 @@ func free(buffer: ^void, size: u64, allocator: IAllocator = null, hint: string =
     req.address     = buffer
     req.hint        = hint
 
-    talloc := allocator orelse @getcontext().allocator
+    var talloc = allocator orelse @getcontext().allocator
     talloc.req(&req)
 }
 
@@ -42,7 +42,7 @@ func freeAll(allocator: IAllocator, hint: string = null, loc = #callerlocation)
     req.mode        = AllocatorMode.FreeAll
     req.hint        = hint
 
-    talloc := allocator orelse @getcontext().allocator
+    var talloc = allocator orelse @getcontext().allocator
     talloc.req(&req)
 }
 
@@ -58,7 +58,7 @@ func realloc(buffer: ^void, newSize: u64, oldSize: u64, allocator: IAllocator = 
     req.oldSize     = oldSize
     req.alignement  = alignement
 
-    talloc := allocator orelse @getcontext().allocator
+    var talloc = allocator orelse @getcontext().allocator
     talloc.req(&req)
 
     return req.address
@@ -74,7 +74,7 @@ func alloc(size: u64, allocator: IAllocator = null, alignement: u32 = 0, hint: s
     req.size        = size
     req.alignement  = alignement
 
-    talloc := allocator orelse @getcontext().allocator
+    var talloc = allocator orelse @getcontext().allocator
     talloc.req(&req)
 
     return req.address
@@ -96,11 +96,11 @@ func tempAlloc(size: u64, alignement: u32 = 0, hint: string = null, loc = #calle
 // Allocate and initialize the given type
 func new(type: typeinfo, allocator: IAllocator = null, alignement: u32 = 0, hint: string = null, loc = #callerlocation)->*u8
 {
-    userHint := hint orelse type.fullname
-    ptr := alloc(cast(u64) type.sizeof, allocator, alignement, userHint, loc)
+    var userHint = hint orelse type.fullname
+    var ptr = alloc(cast(u64) type.sizeof, allocator, alignement, userHint, loc)
     if type.kind == Swag.TypeInfoKind.Struct
     {
-        typeStruct := cast(const *Swag.TypeInfoStruct) type
+        var typeStruct = cast(const *Swag.TypeInfoStruct) type
         typeStruct.opInit(ptr)
     }
     else
@@ -111,8 +111,8 @@ func new(type: typeinfo, allocator: IAllocator = null, alignement: u32 = 0, hint
 // Allocate and initialize the given type
 func(T) new(allocator: IAllocator = null, alignement: u32 = 0, hint: string = null, loc = #callerlocation)->*T
 {
-    userHint := hint orelse @stringof(T)
-    ptr := cast(*T) alloc(@sizeof(T), allocator, alignement, userHint, loc)
+    var userHint = hint orelse @stringof(T)
+    var ptr = cast(*T) alloc(@sizeof(T), allocator, alignement, userHint, loc)
     @init(ptr)
     return ptr
 }
@@ -122,7 +122,7 @@ func(T) delete(ptr: *T, allocator: IAllocator = null, hint: string = null, loc =
 {
     if !ptr
         return
-    userHint := hint orelse @stringof(T)
+    var userHint = hint orelse @stringof(T)
     assertIsAllocated(ptr, @sizeof(T), allocator, hint, loc)
     @drop(ptr)
     free(ptr, @sizeof(T), allocator, userHint, loc)
@@ -135,12 +135,12 @@ func delete(ptr: *void, type: typeinfo, allocator: IAllocator = null, hint: stri
         return
 
     Debug.assert(type != null)
-    userHint := hint orelse type.name
+    var userHint = hint orelse type.name
     assertIsAllocated(ptr, cast(u64) type.sizeof, allocator, userHint, loc)
 
     if type.kind == TypeInfoKind.Struct
     {
-        typest := cast(const *Swag.TypeInfoStruct) type
+        var typest = cast(const *Swag.TypeInfoStruct) type
         if typest.opDrop
             typest.opDrop(ptr)
     }
@@ -153,8 +153,8 @@ func(T) new(num: u64, allocator: IAllocator = null, alignement: u32 = 0, hint: s
 {
     Debug.assert(num > 0)
 
-    userHint := hint orelse @stringof(T)
-    ptr := cast(*T) alloc(@sizeof(T) * num, allocator, alignement, userHint, loc)
+    var userHint = hint orelse @stringof(T)
+    var ptr = cast(*T) alloc(@sizeof(T) * num, allocator, alignement, userHint, loc)
     @init(ptr, num)
     return ptr
 }
@@ -166,7 +166,7 @@ func(T) delete(ptr: ^T, num: u64, allocator: IAllocator = null, hint: string = n
         return
     Debug.assert(num > 0)
 
-    userHint := hint orelse @stringof(T)
+    var userHint = hint orelse @stringof(T)
     assertIsAllocated(ptr, @sizeof(T) * num, allocator, userHint, loc)
     @drop(ptr, num)
     free(ptr, @sizeof(T) * num, allocator, userHint, loc)

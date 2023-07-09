@@ -4,7 +4,7 @@ func transform(buf: const ^u8)
 {
     var m: [64] u32
 
-    i := 0'u32
+    var i = 0'u32
     while i < 16
         i += 1
 

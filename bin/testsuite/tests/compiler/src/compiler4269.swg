@@ -4,7 +4,7 @@
 func toto(x: string)
     #validif
     {
-        y := x
+        var y = x
         @print(y)
         return false
     }
@@ -13,6 +13,6 @@ func toto(x: string)
 
 #test
 {
-    x := "val"
+    var x = "val"
     toto(x)
 }

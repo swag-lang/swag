@@ -11,7 +11,7 @@ using Core, Core.StrConv
 {
     var buf: ConcatBuffer
     convertInt(&buf, 123456's32, null)
-    str := buf.toString()
+    var str = buf.toString()
     @assert(str == "123456")
 }
 
@@ -23,7 +23,7 @@ using Core, Core.StrConv
     fmt.value = 0xFFFFFFFF
     fmt.base = 16
     convertInt(&buf, fmt)
-    str := buf.toString()
+    var str = buf.toString()
     @assert(str == "FFFFFFFF")
     //Console.write(cast(string) str)
 }

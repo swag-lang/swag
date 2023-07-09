@@ -1,6 +1,6 @@
 #test
 {
     var x: s32 = 666
-    y := dref &x
+    var y = dref &x
     @assert(x == 666)
 }

@@ -19,5 +19,5 @@ impl IHash for AA
 //#[Swag.PrintBc]
 func hash(value: const ref AA)
 {
-    itf := cast(IHash) value
+    var itf = cast(IHash) value
 }

@@ -6,7 +6,7 @@ func toto1()->{a,b: s32}
 //#[Swag.PrintBc]
 func toto()->{a,b: s32}
 {
-    result := toto1()
+    var result = toto1()
     return {result.item0, result.item1}
 }
 

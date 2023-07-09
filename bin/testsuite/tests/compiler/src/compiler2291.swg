@@ -24,6 +24,6 @@ func toto()-> {x: AA}
 //#[Swag.PrintBc]
 #test
 {
-    (v) := toto()
-    //v1 := v.item0
+    var (v) = toto()
+    //var v1 = v.item0
 }

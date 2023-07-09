@@ -10,7 +10,7 @@ func toto()->s32 throw
 //#[PrintBc, optim("", false)]
 func titi() throw
 {
-    x := try toto()
+    var x = try toto()
     G = 1
 }
 

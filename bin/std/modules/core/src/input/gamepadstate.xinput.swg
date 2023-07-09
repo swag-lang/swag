@@ -30,7 +30,7 @@ impl GamePadState
     func update(using self, padIndex: u32) throw
     {
         var state: XINPUT_STATE = undefined
-        res := XInputGetState(padIndex, &state)
+        var res = XInputGetState(padIndex, &state)
         switch res
         {
         case ERROR_SUCCESS:                 break

@@ -1,7 +1,7 @@
 #global testerror
 #test
 {
-    myVar := 0
+    var myVar = 0
     #macro
     {
         alias myVar = #up myVar

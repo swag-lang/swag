@@ -29,7 +29,7 @@ impl X
         @assert(false)
     }
 
-    x := false
+    var x = false
     #if hasMember(@typeof(X), "titi")
     {
         x = true

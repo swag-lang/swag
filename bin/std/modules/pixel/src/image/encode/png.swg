@@ -150,7 +150,7 @@ impl Encoder
 {
     func writeU32(dst: *u8, val: u32)
     {
-        v := Math.nativeToBigEndian(val)
+        var v = Math.nativeToBigEndian(val)
         dref cast(*u32) dst = v
     }
 
@@ -161,13 +161,13 @@ impl Encoder
 
     mtd writeU32(val: u32)
     {
-        v := Math.nativeToBigEndian(val)
+        var v = Math.nativeToBigEndian(val)
         stream.addBytes(@mkslice(cast(const ^u8) &v, 4))
     }
 
     mtd writeHeader(chunkType: const [4] u8, chunkLength: u64)->^u8
     {
-        total := chunkLength + 8 + 4
+        var total = chunkLength + 8 + 4
         stream.grow(total)
 
         currentChunk.length = cast(u32) chunkLength
@@ -181,7 +181,7 @@ impl Encoder
         crc.update(chunkType)
         currentChunk.crc = crc.crc
 
-        dataPtr := stream.currentSP
+        var dataPtr = stream.currentSP
         stream.moveSeek(chunkLength)
 
         return dataPtr
@@ -206,7 +206,7 @@ impl Encoder
     {
         writeData(PngSignature, 8)
 
-        dst := &tmpBuf[0]
+        var dst = &tmpBuf[0]
         writeU32(dst, ihdr.width)
         writeU32(dst + 4, ihdr.height)
         dst[8]  = ihdr.bitDepth
@@ -222,7 +222,7 @@ impl Encoder
         if !width
             throw "SPNG_EINTERNAL"
 
-        res := cast(u64) numChannels() * ihdr.bitDepth
+        var res = cast(u64) numChannels() * ihdr.bitDepth
         if res > Swag.U64.Max / width
             throw "SPNG_EOVERFLOW"
         res = res * width
@@ -288,7 +288,7 @@ impl Encoder
     mtd finishIDat() throw
     {
         var zlib: Compress.ZLib
-        cmp := zlib.compress(bufferToCompress.toSlice(), userOptions.compressionLevel)
+        var cmp = zlib.compress(bufferToCompress.toSlice(), userOptions.compressionLevel)
 
         writePtr = writeHeader(TypeIDat, cmp.count)
         Memory.copy(writePtr, cmp.buffer, cmp.count)
@@ -304,27 +304,27 @@ impl Encoder
 
     mtd encodeRow(row: ^u8)->bool throw
     {
-        pass := rowInfo.pass
+        var pass = rowInfo.pass
 
         if !ihdr.interlaceMethod or pass == 6
             return encodeScanLine(row)
 
-        bitDepth := ihdr.bitDepth
+        var bitDepth = ihdr.bitDepth
         if bitDepth < 8
         {
-            samplesPerByte := 8 / bitDepth
-            mask           := cast(u8) ((1 << bitDepth) - 1)
-            initialShift   := 8 - bitDepth
-            shiftAmount    := initialShift
+            var samplesPerByte = 8 / bitDepth
+            var mask = cast(u8) ((1 << bitDepth) - 1)
+            var initialShift = 8 - bitDepth
+            var shiftAmount = initialShift
 
-            row_uc := row
+            var row_uc = row
             Memory.clear(scanline, cast(u64) subimage[pass].scanlineWidth)
 
             loop k: subimage[pass].width
             {
-                ioffset := Adam7StartX[pass] + k * Adam7DeltaX[pass]
+                var ioffset = Adam7StartX[pass] + k * Adam7DeltaX[pass]
 
-                sample := row_uc[ioffset / samplesPerByte]
+                var sample = row_uc[ioffset / samplesPerByte]
                 sample = sample >> (initialShift - ioffset * bitDepth % 8)
                 sample = sample & mask
                 sample = sample << shiftAmount
@@ -345,7 +345,7 @@ impl Encoder
 
         loop k: subimage[pass].width
         {
-            ioffset := (Adam7StartX[pass] + k * Adam7DeltaX[pass]) * pixelSize
+            var ioffset = (Adam7StartX[pass] + k * Adam7DeltaX[pass]) * pixelSize
             Memory.copy(scanline + k * pixelSize, row + ioffset, acast pixelSize)
         }
 
@@ -357,7 +357,7 @@ impl Encoder
         if encodeFlags.filterChoice == .Disabled
             return .None
 
-        chl := cast(s32) encodeFlags.filterChoice
+        var chl = cast(s32) encodeFlags.filterChoice
         if !(chl & (chl - 1))
         {
             loop i: 5
@@ -367,14 +367,14 @@ impl Encoder
             }
         }
 
-        bestFilter   := 0
-        bestScore    := Swag.S32.Max
-        filterScores := [ Swag.S32.Max, Swag.S32.Max, Swag.S32.Max, Swag.S32.Max, Swag.S32.Max ]
+        var bestFilter = 0
+        var bestScore = Swag.S32.Max
+        var filterScores = [ Swag.S32.Max, Swag.S32.Max, Swag.S32.Max, Swag.S32.Max, Swag.S32.Max ]
 
         var sum: s32
         loop i: 5
         {
-            flag := 1 << (i + 3)
+            var flag = 1 << (i + 3)
             if !(chl & flag)
                 continue
 
@@ -393,10 +393,10 @@ impl Encoder
     #[Swag.Safety("", false)]
     func paeth(a, b, c: u8)->u32
     {
-        p  := cast(s16) (a + b - c)
-        pa := Math.abs(cast(s16) (p - a))
-        pb := Math.abs(cast(s16) (p - b))
-        pc := Math.abs(cast(s16) (p - c))
+        var p = cast(s16) (a + b - c)
+        var pa = Math.abs(cast(s16) (p - a))
+        var pb = Math.abs(cast(s16) (p - b))
+        var pc = Math.abs(cast(s16) (p - c))
 
         if pa <= pb and pa <= pc
             return a
@@ -429,7 +429,7 @@ impl Encoder
                 c = 0
             }
 
-            x := cast(s32) scanline[i]
+            var x = cast(s32) scanline[i]
 
             switch filter
             {
@@ -440,7 +440,7 @@ impl Encoder
             case Up:
                 x = x - b
             case Average:
-                avg := (a + b) / 2
+                var avg = (a + b) / 2
                 x = x - avg
             case Paeth:
                 x = x - paeth(a, b, c)
@@ -471,7 +471,7 @@ impl Encoder
                 c = 0
             }
 
-            x := cast(s32) scanline[i]
+            var x = cast(s32) scanline[i]
 
             switch filter
             {
@@ -480,7 +480,7 @@ impl Encoder
             case Up:
                 x = x - b
             case Average:
-                avg := (a + b) / 2
+                var avg = (a + b) / 2
                 x = x - avg
             case Paeth:
                 x = x - paeth(a, b, c)
@@ -492,14 +492,14 @@ impl Encoder
 
     mtd encodeScanLine(sl: ^u8)->bool throw
     {
-        pass := rowInfo.pass
+        var pass = rowInfo.pass
 
-        scanlineWidth := subimage[pass].scanlineWidth
+        var scanlineWidth = subimage[pass].scanlineWidth
         if sl != scanline
         {
             if swapRB and bytesPerPixel == 3
             {
-                for i := 0; i < scanlineWidth - 1; i += 3
+                for var i = 0; i < scanlineWidth - 1; i += 3
                 {
                     scanline[i]     = sl[i + 2]
                     scanline[i + 1] = sl[i + 1]
@@ -508,7 +508,7 @@ impl Encoder
             }
             elif swapRB and bytesPerPixel == 4
             {
-                for i := 0; i < scanlineWidth - 1; i += 4
+                for var i = 0; i < scanlineWidth - 1; i += 4
                 {
                     scanline[i]     = sl[i + 2]
                     scanline[i + 1] = sl[i + 1]
@@ -522,12 +522,12 @@ impl Encoder
             }
         }
 
-        requiresPrevious := encodeFlags.filterChoice & (.Up | .Average | .Paeth)
+        var requiresPrevious = encodeFlags.filterChoice & (.Up | .Average | .Paeth)
         if !rowInfo.scanlineIdx and requiresPrevious
             Memory.clear(prevScanline, cast(u64) scanlineWidth)
 
-        filtered_sl := filteredScanline
-        filter := getBestFilter(scanlineWidth - 1)
+        var filtered_sl = filteredScanline
+        var filter = getBestFilter(scanlineWidth - 1)
         if filter == .None
             filtered_sl = scanline
         filtered_sl -= 1
@@ -551,9 +551,9 @@ impl Encoder
 
     mtd updateRowInfo()->bool
     {
-        interlacing := ihdr.interlaceMethod
-        ri  := &rowInfo
-        sub := subimage
+        var interlacing = ihdr.interlaceMethod
+        var ri = &rowInfo
+        var sub = subimage
 
         if ri.scanlineIdx == sub[ri.pass].height - 1
         {
@@ -622,7 +622,7 @@ public impl IImageEncoder for Encoder
         calculateSubImages()
 
         bytesPerPixel   = numChannels() * (ihdr.bitDepth / 8)
-        scanlineBufSize := subimage[widestPass].scanlineWidth
+        var scanlineBufSize = subimage[widestPass].scanlineWidth
         scanlineBufSize += 32
 
         scanlineBuf         = Memory.alloc(cast(u64) scanlineBufSize)
@@ -642,7 +642,7 @@ public impl IImageEncoder for Encoder
 
         loop
         {
-            ioffset := (image.height - rowInfo.rowNum - 1) * image.width * image.bpp8
+            var ioffset = (image.height - rowInfo.rowNum - 1) * image.width * image.bpp8
             if encodeRow(image.pixels.buffer + ioffset)
                 break
         }

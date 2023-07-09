@@ -9,7 +9,7 @@ func toto(x: const [..] s32)
 //#[Swag.PrintBc]
 #test
 {
-	array := [1 , 2]
+	var array = [1 , 2]
 	toto(array)
 	toto([4, 5])
 }

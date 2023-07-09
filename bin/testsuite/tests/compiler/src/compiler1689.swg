@@ -1,7 +1,7 @@
 #global skip
 func C(value1: const& s32)
 {
-    v := -value1
+    var v = -value1
     @assert(v == -1)
 }
 

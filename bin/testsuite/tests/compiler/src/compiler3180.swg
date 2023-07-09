@@ -7,6 +7,6 @@ func toto()
 
 #test
 {
-    to := @typeof(toto)
+    var to = @typeof(toto)
     @assert(@kindof(to.attributes[0].params[0].value) == s32)
 }

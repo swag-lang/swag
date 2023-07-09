@@ -7,7 +7,7 @@ using Core
     loop 5
         x.add(cast(s32) @index)
 
-    total := 0
+    var total = 0
     visit v: x
         total += v
     @assert(total == 10)

@@ -1,5 +1,5 @@
 #global testerror
 #test
 {
-	x := 5 % (1 - 1)
+	var x = 5 % (1 - 1)
 }

@@ -15,11 +15,11 @@ func parse(st: *TT, args: const [..] string)->Defined
 {
     var x: Defined
 
-    typeof := @typeof(TT)
+    var typeof = @typeof(TT)
 
-    for itp := 0; itp < @countof(args); itp += 2
+    for var itp = 0; itp < @countof(args); itp += 2
     {
-        typeField := typeof.fields[0]
+        var typeField = typeof.fields[0]
         switch typeField.pointedType
         {
         case s32:
@@ -36,6 +36,6 @@ func parse(st: *TT, args: const [..] string)->Defined
 #run
 {
     var x: TT
-    params := ["_f32", "3.14"]
-    a := parse(&x, params)
+    var params = ["_f32", "3.14"]
+    var a = parse(&x, params)
 }

@@ -2,5 +2,5 @@
 
 #test
 {
-    x := cast,bit,over(s32) 5
+    var x = cast,bit,over(s32) 5
 }

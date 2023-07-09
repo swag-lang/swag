@@ -8,7 +8,7 @@ var g_LexerSwag: RichEditLexerSwag
 func createView4(_tabView: *Tab, view: *Wnd)
 {
     {
-        ed := RichEditCtrl.create(view, {10, 10, 600, 500})
+        var ed = RichEditCtrl.create(view, {10, 10, 600, 500})
         with ed
         {
             .setFrameForm(.Round)
@@ -21,7 +21,7 @@ func createView4(_tabView: *Tab, view: *Wnd)
     }
 
     {
-        ed := RichEditCtrl.create(view, {10, 520, 600, 300})
+        var ed = RichEditCtrl.create(view, {10, 520, 600, 300})
         with ed
         {
             .setFrameForm(.Round)
@@ -32,7 +32,7 @@ func createView4(_tabView: *Tab, view: *Wnd)
     }
 
     {
-        ed := RichEditCtrl.create(view, {620, 10, 400, 300})
+        var ed = RichEditCtrl.create(view, {620, 10, 400, 300})
         with ed
         {
             .setFrameForm(.Round)
@@ -56,7 +56,7 @@ func createView4(_tabView: *Tab, view: *Wnd)
     }
 
     {
-        ed := RichEditCtrl.create(view, {620, 320, 400, 150})
+        var ed = RichEditCtrl.create(view, {620, 320, 400, 150})
         with ed
         {
             .setForm(.Edit)

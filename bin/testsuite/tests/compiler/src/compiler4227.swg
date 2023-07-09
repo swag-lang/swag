@@ -22,7 +22,7 @@ func toto()->A
 //#[Swag.Optim("", false)]
 #test
 {
-    x := toto()
+    var x = toto()
     //@print(x.x)
     @assert(x.x == 55)
 }

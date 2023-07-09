@@ -10,6 +10,6 @@ func toto()->[2] s32 throw
 //#[PrintBc]
 #test
 {
-    x := catch toto()
+    var x = catch toto()
     @assert(x[0] == 0)
 }

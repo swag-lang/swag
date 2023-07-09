@@ -4,5 +4,5 @@
 //#global testerror
 #test
 {
-	pair := #type {a:s32}
+	var pair = #type {a:s32}
 }

@@ -21,7 +21,7 @@ func GetFontData()->s32 throw
 func getDataFromHFONT()->Array throw
 {
     var result: retval
-    outFontBufferLen := GetFontData()
+    var outFontBufferLen = GetFontData()
     return result
 }
 
@@ -29,7 +29,7 @@ func getDataFromHFONT()->Array throw
 //#[Swag.PrintBc]
 func createFromHFONT() throw
 {
-    buf := getDataFromHFONT()
+    var buf = getDataFromHFONT()
 }
 
 #test

@@ -10,7 +10,7 @@ func toto()->A
 
 func aa()
 {
-    with a := toto()
+    with var a = toto()
     {
         .x, .y = 1
     }

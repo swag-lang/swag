@@ -5,7 +5,7 @@
 #[Swag.Optim("", false)]
 #test
 {
-    x := "64"
+    var x = "64"
     #[Swag.Safety("", true)]
-    y := &x[3]
+    var y = &x[3]
 }

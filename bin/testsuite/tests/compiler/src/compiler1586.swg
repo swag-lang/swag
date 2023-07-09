@@ -3,7 +3,7 @@
 
 #test
 {
-    a := "Color.Red"
+    var a = "Color.Red"
 
     switch a
     {

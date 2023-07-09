@@ -2,7 +2,7 @@
 enum A { R; B; }
 #test
 {
-    a := A.R
+    var a = A.R
     #[Swag.Complete]
     switch a
     {

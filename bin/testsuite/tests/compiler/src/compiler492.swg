@@ -1,9 +1,9 @@
 //#[Swag.PrintBc]
 #test
 {
-	a := 10
-	c := 20
-	res := {&a, &c}
+	var a = 10
+	var c = 20
+	var res = {&a, &c}
 	@assert(dref res.item0 == 10)
 	@assert(dref res.item1 == 20)
 }

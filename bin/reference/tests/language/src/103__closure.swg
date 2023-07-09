@@ -9,8 +9,8 @@ Another limitation is that you can only capture 'simple' variables (no struct wi
 {
     // A closure is declared like a lambda, with the captured variables between `|...|` before the function parameters.
     {
-        a := 125
-        b := 521
+        var a = 125
+        var b = 521
 
         // Capture 'a' and 'b'
         var fct: closure() = closure|a, b|()
@@ -24,7 +24,7 @@ Another limitation is that you can only capture 'simple' variables (no struct wi
 
     // You can also capture by pointer with `&` (otherwise it's a copy).
     {
-        a := 125
+        var a = 125
 
         // Capture 'a' by pointer
         var fct: closure() = closure|&a|()
@@ -41,10 +41,10 @@ Another limitation is that you can only capture 'simple' variables (no struct wi
 
     // You can also capture by reference with `ref`.
     {
-        a := 125
+        var a = 125
 
         // Capture 'a' by reference
-        fct := closure|ref a|()
+        var fct = closure|ref a|()
         {
             // We can change the value of the local variable 'a'
             a += 1
@@ -66,21 +66,21 @@ Another limitation is that you can only capture 'simple' variables (no struct wi
 
     // You can capture arrays, structs, slices etc... as long as it fits in the maximum storage of 'n' bytes (and as long as the struct is a pod).
     {
-        x := [1, 2, 3]
+        var x = [1, 2, 3]
 
         var fct: closure(s32)->s32
 
         // Capture the array 'x' by making a copy
         fct = closure|x|(toAdd)
         {
-            res := 0
+            var res = 0
             visit v: x
                 res += v
             res += toAdd
             return res
         }
 
-        result := fct(4)
+        var result = fct(4)
         @assert(result == 1 + 2 + 3 + 4)
     }
 
@@ -88,7 +88,7 @@ Another limitation is that you can only capture 'simple' variables (no struct wi
     {
         func getInc()->closure()->s32
         {
-            x := 10
+            var x = 10
 
             return closure|x|()->s32 {
                 x += 1
@@ -96,7 +96,7 @@ Another limitation is that you can only capture 'simple' variables (no struct wi
             }
         }
 
-        fct := getInc()
+        var fct = getInc()
         @assert(fct() == 11)
         @assert(fct() == 12)
         @assert(fct() == 13)

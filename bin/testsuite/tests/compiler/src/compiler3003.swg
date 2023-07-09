@@ -23,5 +23,5 @@ func toto()->R
 
 #test
 {
-    x := toto()
+    var x = toto()
 }

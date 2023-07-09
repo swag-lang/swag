@@ -8,12 +8,12 @@ func setError(errorMessageID: u32) throw
     var errorMsg: [Swag.MaxLenErrorMsg] u8
     var len: u32
 
-    lang := cast(DWORD) MAKELANGID(LANG_ENGLISH, SUBLANG_DEFAULT)
+    var lang = cast(DWORD) MAKELANGID(LANG_ENGLISH, SUBLANG_DEFAULT)
     len = FormatMessageA(FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS, null, errorMessageID, lang, cast(LPCSTR) &errorMsg[0], cast(DWORD) Swag.MaxLenErrorMsg, null);
     if !len return
 
     // Trim right, remove trailing dots, remove trailing non printable characters
-    for idx := len - 1; idx >= 0; idx -= 1
+    for var idx = len - 1; idx >= 0; idx -= 1
     {
         if errorMsg[idx] > 32 and errorMsg[idx] != "."'u8
             break

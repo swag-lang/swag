@@ -8,7 +8,7 @@ func interpol(str: string)->String
 
     #ast
     {
-        d := @dataof(str)
+        var d = @dataof(str)
         while dref d != "{"'u8
             d += 1
         d += 1
@@ -23,10 +23,10 @@ func interpol(str: string)->String
 
 #test
 {
-    a := 666
-    b := 52
-    x := interpol("{a}")
+    var a = 666
+    var b = 52
+    var x = interpol("{a}")
     Debug.assert(x == "666")
-    y := interpol("{b}")
+    var y = interpol("{b}")
     Debug.assert(y == "52")
 }

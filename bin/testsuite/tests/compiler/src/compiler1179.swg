@@ -7,6 +7,6 @@ func toto(x: s32)->s32
 //#[Swag.PrintBc]
 #test
 {
-    r := toto(1)
+    var r = toto(1)
     r = toto(1)
 }

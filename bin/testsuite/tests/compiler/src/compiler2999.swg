@@ -2,5 +2,5 @@
 
 #test
 {
-    x := true'f32
+    var x = true'f32
 }

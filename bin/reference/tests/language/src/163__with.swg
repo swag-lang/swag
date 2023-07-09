@@ -52,7 +52,7 @@ impl Point
 
     // Instead of an identifier name, `with` also accepts a variable declaration.
     {
-        with pt := Point{1, 2}
+        with var pt = Point{1, 2}
         {
             .x = 10
             .y = 20

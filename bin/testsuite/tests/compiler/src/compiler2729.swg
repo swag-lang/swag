@@ -8,5 +8,5 @@ func toto()->s32 throw
 
 #test
 {
-    x := toto()
+    var x = toto()
 }

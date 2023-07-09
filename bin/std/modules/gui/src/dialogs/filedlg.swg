@@ -88,7 +88,7 @@ private impl FileDlg
         comboPath.clear()
         comboPathStr.clear()
 
-        all := Tokenize.split(curFolder.toString(), "/"'rune)
+        var all = Tokenize.split(curFolder.toString(), "/"'rune)
         loop i: all.count-1..0
         {
             var str: String
@@ -100,8 +100,8 @@ private impl FileDlg
 
             comboPathStr.add(str)
 
-            one := all[i]
-            ic := getApp().getDirectoryIcon(one)
+            var one = all[i]
+            var ic = getApp().getDirectoryIcon(one)
             comboPath.addItem(one, icon = ic)
         }
 
@@ -110,13 +110,13 @@ private impl FileDlg
 
     mtd fillListFolders()
     {
-        l := treeCtrl.createLine("Shortcuts")
+        var l = treeCtrl.createLine("Shortcuts")
         l.separator = true
 
         visit v: dlgOptions.shortcuts
         {
-            c := Env.getSpecialDirectory(v.item0)
-            ic := getApp().getSpecialDirectoryIcon(v.item0, true)
+            var c = Env.getSpecialDirectory(v.item0)
+            var ic = getApp().getSpecialDirectoryIcon(v.item0, true)
             l = treeCtrl.createLine(v.item1, icon = ic)
             l.userData0 = cast(*void) treePathStr.count
             l.leftTextMargin = 10
@@ -126,11 +126,11 @@ private impl FileDlg
         l = treeCtrl.createLine("Drives")
         l.separator = true
 
-        volumes := catch Directory.getDrives()
+        var volumes = catch Directory.getDrives()
         visit v: volumes
         {
             v.removeBack()
-            ic := getApp().getDirectoryIcon(v, true)
+            var ic = getApp().getDirectoryIcon(v, true)
             l = treeCtrl.createLine(v.toString(), icon = ic)
             l.userData0 = cast(*void) treePathStr.count
             l.leftTextMargin = 10
@@ -138,10 +138,10 @@ private impl FileDlg
         }
 
         treeCtrl.sigSelChanged += closure|self|(list) {
-            line := list.getSelectedLine()
+            var line = list.getSelectedLine()
             if !line
                 return
-            idx := cast(u64) line.userData0
+            var idx = cast(u64) line.userData0
             self.setCurFolder(self.treePathStr[idx].toString())
         }
     }
@@ -160,16 +160,16 @@ private impl FileDlg
 
         curList = catch Directory.enumerate(curFolder, options)
 
-        item := comboType.getSelectedItem()
-        filter := dlgOptions.filters[cast(u64) item.userData0]
-        tokens := Tokenize.split(filter.item1, ";"'rune)
+        var item = comboType.getSelectedItem()
+        var filter = dlgOptions.filters[cast(u64) item.userData0]
+        var tokens = Tokenize.split(filter.item1, ";"'rune)
 
         visit &fi: curList
         {
-            fname := Path.getFileName(fi.fullname)
+            var fname = Path.getFileName(fi.fullname)
 
             // Filter
-            show := true
+            var show = true
             if !fi.isDirectory() and @countof(filter.item1)
             {
                 show = false
@@ -187,8 +187,8 @@ private impl FileDlg
                 continue
 
             // Content
-            icon := getApp().getFileDirectoryIcon(fname, fi.isDirectory())
-            line := listCtrl.createLine(fname, icon)
+            var icon = getApp().getFileDirectoryIcon(fname, fi.isDirectory())
+            var line = listCtrl.createLine(fname, icon)
             line.userData0 = fi
             line.setItem(1, fi.lastWriteTime.toString(.Iso))
         }
@@ -203,8 +203,8 @@ impl FileDlg
     // Creates the message box
     func create(from: *Surface, opt: FileDlgOptions = {})->*FileDlg
     {
-        dlg := Wnd.create'FileDlg()
-        with srf := dlg.createSurface(from, 100, 100, 700, 500)
+        var dlg = Wnd.create'FileDlg()
+        with var srf = dlg.createSurface(from, 100, 100, 700, 500)
         {
             .setSurfaceFlags(add = .Sizeable)
             .minSize = {400, 400}
@@ -233,7 +233,7 @@ impl FileDlg
         dlg.sigPressedButton = closure|dlg|(bdlg, id) {
             if id == Dialog.BtnOk
             {
-                selName := dlg.getSelectedName()
+                var selName = dlg.getSelectedName()
                 if selName == null
                 {
                     dlg.editFile.selectAll()
@@ -243,7 +243,7 @@ impl FileDlg
 
                 if dlg.dlgOptions.mode == .CreateFile and File.exists(selName)
                 {
-                    res := MessageDlg.confirm(dlg.surface, "This file already exists.", "Do you want to replace it ?")
+                    var res = MessageDlg.confirm(dlg.surface, "This file already exists.", "Do you want to replace it ?")
                     return res == Dialog.BtnYes
                 }
             }
@@ -254,7 +254,7 @@ impl FileDlg
         // Panes
         ////////////////////////
 
-        view := Wnd.create'Wnd(dlg)
+        var view = Wnd.create'Wnd(dlg)
         view.dockStyle = .Center
 
         if opt.drivePane
@@ -291,9 +291,9 @@ impl FileDlg
                     dlg.folderUp()
 
                 case Enter:
-                    l := list.getFocusLine()
+                    var l = list.getFocusLine()
                     if !l break
-                    fi := cast(const *FileInfo) l.userData0
+                    var fi = cast(const *FileInfo) l.userData0
                     if fi.isDirectory()
                     {
                         dlg.setCurFolder(fi.fullname)
@@ -307,9 +307,9 @@ impl FileDlg
             }
 
             .sigLeftDoubleClick += closure|dlg|(list, pt) {
-                l := list.getSelectedLine()
+                var l = list.getSelectedLine()
                 if !l return
-                fi := cast(const *FileInfo) l.userData0
+                var fi = cast(const *FileInfo) l.userData0
                 if fi.isDirectory()
                 {
                     dlg.setCurFolder(fi.fullname)
@@ -322,11 +322,11 @@ impl FileDlg
             }
 
             .sigSelChanged += closure|dlg|(list) {
-                sel := list.getSelectedLines()
+                var sel = list.getSelectedLines()
                 var txt: String
                 visit l: sel
                 {
-                    fi := cast(const *FileInfo) l.userData0
+                    var fi = cast(const *FileInfo) l.userData0
                     if fi.isDirectory()
                     {
                         if dlg.dlgOptions.mode != .SelectFolder
@@ -347,8 +347,8 @@ impl FileDlg
             }
 
             .sigSort = func(l1, l2, col, down) {
-                fi1 := cast(*FileInfo) l1.userData0
-                fi2 := cast(*FileInfo) l2.userData0
+                var fi1 = cast(*FileInfo) l1.userData0
+                var fi2 = cast(*FileInfo) l2.userData0
                 if fi1.isDirectory() and !fi2.isDirectory() return -1
                 if !fi1.isDirectory() and fi2.isDirectory()   return 1
                 switch col
@@ -365,7 +365,7 @@ impl FileDlg
 
         // Top
         ////////////////////////
-        viewTop := Wnd.create'Wnd(view, {0, 0, 0, 50})
+        var viewTop = Wnd.create'Wnd(view, {0, 0, 0, 50})
         viewTop.dockStyle = .Top
         viewTop.backgroundStyle = .Window
         viewTop.padding.x = 10
@@ -376,7 +376,7 @@ impl FileDlg
 
         if opt.mode == .CreateFile or opt.mode == .SelectFolder
         {
-            btn := PushButton.create(viewTop, "New Folder", {0, 0, 90})
+            var btn = PushButton.create(viewTop, "New Folder", {0, 0, 90})
             with btn
             {
                 .dockStyle = .Right
@@ -395,7 +395,7 @@ impl FileDlg
 
         // Bottom
         ////////////////////////
-        viewBottom := Wnd.create'Wnd(view, {0, 0, 0, 90})
+        var viewBottom = Wnd.create'Wnd(view, {0, 0, 0, 90})
         viewBottom.dockStyle = .Bottom
         viewBottom.backgroundStyle = .Window
         dlg.applyLayout()
@@ -419,11 +419,11 @@ impl FileDlg
             }
         }
 
-        nameLbl0 := opt.mode == .SelectFolder ? "Folder Name" : "File Name"
-        label0 := Label.create(viewBottom, nameLbl0, {5, 10, 80, dlg.editFile.position.height})
+        var nameLbl0 = opt.mode == .SelectFolder ? "Folder Name" : "File Name"
+        var label0 = Label.create(viewBottom, nameLbl0, {5, 10, 80, dlg.editFile.position.height})
         label0.horzAlignmentText = .Right
         label0.vertAlignmentText = .Center
-        label1 := Label.create(viewBottom, "Type", {5, 45, 80, dlg.comboType.position.height})
+        var label1 = Label.create(viewBottom, "Type", {5, 45, 80, dlg.comboType.position.height})
         label1.horzAlignmentText = .Right
         label1.vertAlignmentText = .Center
 
@@ -470,7 +470,7 @@ impl FileDlg
     // Get the first selection
     mtd getSelectedName()->String
     {
-        sel := getSelectedNames()
+        var sel = getSelectedNames()
         if sel.count == 0
             return String.from("")
         return sel.front()
@@ -481,14 +481,14 @@ impl FileDlg
     {
         var result: retval
 
-        item := comboType.getSelectedItem()
-        fi := dlgOptions.filters[cast(u64) item.userData0]
+        var item = comboType.getSelectedItem()
+        var fi = dlgOptions.filters[cast(u64) item.userData0]
 
-        tokens := Tokenize.split(editFile.text, ";"'rune)
+        var tokens = Tokenize.split(editFile.text, ";"'rune)
         visit t: tokens
         {
             // Be sure this is a valid file/folder name
-            t1 := String.from(t)
+            var t1 = String.from(t)
             t1.trim()
             if t1.isEmpty()
                 continue
@@ -498,12 +498,12 @@ impl FileDlg
                 continue
 
             // Get the full name
-            val := Path.combine(curFolder, t1.toString())
+            var val = Path.combine(curFolder, t1.toString())
 
             // Append extension if not done by the user
             if dlgOptions.mode != .SelectFolder and !Path.isExtension(val, fi.item1)
             {
-                exts := Tokenize.split(fi.item1, ";"'rune)
+                var exts = Tokenize.split(fi.item1, ";"'rune)
                 val += exts[0]
             }
 
@@ -517,7 +517,7 @@ impl FileDlg
     {
         var folderName: String = "New Folder"
 
-        with dlg := EditDlg.createSingleLine(surface)
+        with var dlg = EditDlg.createSingleLine(surface)
         {
             .edit.setText(folderName)
             .edit.selectAll()
@@ -530,7 +530,7 @@ impl FileDlg
             if id != Dialog.BtnOk
                 return true
 
-            folderName := dlg.edit.text
+            var folderName = dlg.edit.text
             folderName.trim()
             if folderName.isEmpty()
             {
@@ -547,7 +547,7 @@ impl FileDlg
                 return false
             }
 
-            path := Path.combine(self.curFolder, folderName.toString())
+            var path = Path.combine(self.curFolder, folderName.toString())
             if Directory.exists(path)
             {
                 MessageDlg.error(dlg.surface, "Folder already exists")
@@ -562,7 +562,7 @@ impl FileDlg
         if dlg.doModal() != Dialog.BtnOk
             return
 
-        path := Path.combine(curFolder, dlg.edit.text.toString())
+        var path = Path.combine(curFolder, dlg.edit.text.toString())
         catch Directory.create(path)
         if @errmsg
         {

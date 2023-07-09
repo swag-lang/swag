@@ -22,8 +22,8 @@ impl Theme
             return
         }
 
-        cx, cy   := subRect.corner
-        cxd, cyd := subRect.corner
+        var cx, cy = subRect.corner
+        var cxd, cyd = subRect.corner
         if cxd * 2 > dstRect.width
             cxd = dstRect.width / 2
         if cyd * 2 > dstRect.height
@@ -35,8 +35,8 @@ impl Theme
             cyd = cxd
         }
 
-        d := dstRect
-        s := subRect.rect
+        var d = dstRect
+        var s = subRect.rect
         loop i: 9
         {
             switch i
@@ -92,11 +92,11 @@ impl Theme
 
     func drawIconText(painter: *Painter, position: Math.Rectangle, icon: Icon, name: *RichString, stringFormat: RichStringFormat, iconMargin = 4'f32)
     {
-        count := @countof(dref name)
+        var count = @countof(dref name)
         if count == 0 and !icon.isValid()
             return
 
-        pos := position
+        var pos = position
 
         // Icon alone
         if count == 0

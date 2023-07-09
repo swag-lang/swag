@@ -24,7 +24,7 @@ struct Team
 
 #run
 {
-    team := Team{
+    var team = Team{
         a = Thing.init(1),
         b = Thing.init(2),
     }

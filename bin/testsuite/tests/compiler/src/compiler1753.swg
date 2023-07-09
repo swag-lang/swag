@@ -4,7 +4,7 @@
 //#[Swag.PrintBc]
 #test
 {
-    x := "64"
-    y := &x[0]
+    var x = "64"
+    var y = &x[0]
     y[0] = 0
 }

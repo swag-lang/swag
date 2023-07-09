@@ -7,16 +7,16 @@ func(T, V) findSorted(values: const [..] T, value: V) -> {index: u64, success: b
 {
     var result: retval
 
-    min := 0'u64
-    countof := @countof(values)
-    max := @countof(values)
+    var min = 0'u64
+    var countof = @countof(values)
+    var max = @countof(values)
 
     while max >= min
     {
-        mid := (max + min) / 2
+        var mid = (max + min) / 2
         if mid >= countof
             break
-        res := values[mid] <=> value
+        var res = values[mid] <=> value
         if res == 0
         {
             result.index = mid

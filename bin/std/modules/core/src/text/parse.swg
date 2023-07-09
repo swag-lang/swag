@@ -16,12 +16,12 @@ func parseX64(str: string) -> {value: u64, eat: u32, ovf: bool} throw
 {
     var result: retval
 
-    countof := @countof(str)
+    var countof = @countof(str)
     if !countof throw ParseErrorInvalid
 
-    buffer := @dataof(str)
-    cpt := 0'u32
-    value := 0'u64
+    var buffer = @dataof(str)
+    var cpt = 0'u32
+    var value = 0'u64
 
     if !Latin1.isHexDigit(dref buffer)
         throw ParseErrorInvalid
@@ -34,7 +34,7 @@ func parseX64(str: string) -> {value: u64, eat: u32, ovf: bool} throw
         else
         {
             value <<= 4
-            c := dref buffer
+            var c = dref buffer
             if Latin1.isDigit(c)
                 value += cast(u64) (c - "0"'u8)
             elif c <= "F"'u8
@@ -58,13 +58,13 @@ func parseB64(str: string) -> {value: u64, eat: u32, ovf: bool} throw
 {
     var result: retval
 
-    countof := @countof(str)
+    var countof = @countof(str)
     if !countof
         throw ParseErrorInvalid
 
-    buffer := @dataof(str)
-    cpt := 0'u32
-    value := 0'u64
+    var buffer = @dataof(str)
+    var cpt = 0'u32
+    var value = 0'u64
 
     if !Latin1.isBinDigit(dref buffer)
         throw ParseErrorInvalid
@@ -93,7 +93,7 @@ func parseB64(str: string) -> {value: u64, eat: u32, ovf: bool} throw
 // 'ovf' will be true in case of overflow
 func parseU8(str: string) -> {value: u8, eat: u32, ovf: bool} throw
 {
-    (res, eat, ovf) := try parseU64(str)
+    var (res, eat, ovf) = try parseU64(str)
     if res > Swag.U8.Max
     {
         res = Swag.U8.Max
@@ -105,7 +105,7 @@ func parseU8(str: string) -> {value: u8, eat: u32, ovf: bool} throw
 
 func parseU16(str: string) -> {value: u16, eat: u32, ovf: bool} throw
 {
-    (res, eat, ovf) := try parseU64(str)
+    var (res, eat, ovf) = try parseU64(str)
     if res > Swag.U16.Max
     {
         res = Swag.U16.Max
@@ -117,7 +117,7 @@ func parseU16(str: string) -> {value: u16, eat: u32, ovf: bool} throw
 
 func parseU32(str: string) -> {value: u32, eat: u32, ovf: bool} throw
 {
-    (res, eat, ovf) := try parseU64(str)
+    var (res, eat, ovf) = try parseU64(str)
     if res > Swag.U32.Max
     {
         res = Swag.U32.Max
@@ -131,17 +131,17 @@ func parseU64(str: string) -> {value: u64, eat: u32, ovf: bool} throw
 {
     var result: retval
 
-    countof := @countof(str)
+    var countof = @countof(str)
     if !countof
         throw ParseErrorInvalid
 
     // Detect 0x for hexa, 0b for binary
     if countof > 2 and str[0] == "0"'u8
     {
-        c := str[1]|32
+        var c = str[1]|32
         if c == "x"'u8
         {
-            one := Tokenize.eatCount(str, 2)
+            var one = Tokenize.eatCount(str, 2)
             (result.value, result.eat, result.ovf) = try parseX64(one)
             result.eat += 2
             return result
@@ -149,22 +149,22 @@ func parseU64(str: string) -> {value: u64, eat: u32, ovf: bool} throw
 
         if c == "b"'u8
         {
-            one := Tokenize.eatCount(str, 2)
+            var one = Tokenize.eatCount(str, 2)
             (result.value, result.eat, result.ovf) = try parseB64(one)
             result.eat += 2
             return result
         }
     }
 
-    buffer := @dataof(str)
-    cpt := 0'u32
-    value := 0'u64
+    var buffer = @dataof(str)
+    var cpt = 0'u32
+    var value = 0'u64
 
     if !Latin1.isDigit(dref buffer)
         throw ParseErrorInvalid
     while cpt < countof and Latin1.isDigit(dref buffer)
     {
-        value1 := value *,over 10
+        var value1 = value *,over 10
         if value1 < value
         {
             result.ovf = true
@@ -175,7 +175,7 @@ func parseU64(str: string) -> {value: u64, eat: u32, ovf: bool} throw
 
         if !result.ovf
         {
-            add := cast(u64) (dref buffer - "0"'u8)
+            var add = cast(u64) (dref buffer - "0"'u8)
             if value +,over add < value
             {
                 result.ovf = true
@@ -198,7 +198,7 @@ func parseU64(str: string) -> {value: u64, eat: u32, ovf: bool} throw
 // 'ovf' will be true in case of overflow
 func parseS8(str: string) -> {value: s8, eat: u32, ovf: bool} throw
 {
-    (res, eat, ovf) := try parseS64(str)
+    var (res, eat, ovf) = try parseS64(str)
     if res < Swag.S8.Min
     {
         res = Swag.S8.Min
@@ -215,7 +215,7 @@ func parseS8(str: string) -> {value: s8, eat: u32, ovf: bool} throw
 
 func parseS16(str: string) -> {value: s16, eat: u32, ovf: bool} throw
 {
-    (res, eat, ovf) := try parseS64(str)
+    var (res, eat, ovf) = try parseS64(str)
     if res < Swag.S16.Min
     {
         res = Swag.S16.Min
@@ -232,7 +232,7 @@ func parseS16(str: string) -> {value: s16, eat: u32, ovf: bool} throw
 
 func parseS32(str: string) -> {value: s32, eat: u32, ovf: bool} throw
 {
-    (res, eat, ovf) := try parseS64(str)
+    var (res, eat, ovf) = try parseS64(str)
     if res < Swag.S32.Min
     {
         res = Swag.S32.Min
@@ -251,18 +251,18 @@ func parseS64(str: string) -> {value: s64, eat: u32, ovf: bool} throw
 {
     var result: retval
 
-    countof := @countof(str)
+    var countof = @countof(str)
     if !countof
         throw ParseErrorInvalid
 
-    buffer := @dataof(str)
-    value := 0'u64
-    cpt := 0'u32
+    var buffer = @dataof(str)
+    var value = 0'u64
+    var cpt = 0'u32
 
     // Does the number starts with the negative/positive sign ?
-    signed := false
-    c := dref str
-    maxValue := cast(u64) Swag.S64.Max
+    var signed = false
+    var c = dref str
+    var maxValue = cast(u64) Swag.S64.Max
     if c == g_CultureInfo.numberFormat.negativeSign
     {
         buffer, cpt += 1
@@ -283,7 +283,7 @@ func parseS64(str: string) -> {value: s64, eat: u32, ovf: bool} throw
         throw ParseErrorInvalid
     while cpt < countof and Latin1.isDigit(dref buffer)
     {
-        value1 := value *,over 10
+        var value1 = value *,over 10
         if value1 < value
         {
             result.ovf = true
@@ -294,7 +294,7 @@ func parseS64(str: string) -> {value: s64, eat: u32, ovf: bool} throw
 
         if !result.ovf
         {
-            toAdd := cast(u64) (dref buffer - "0"'u8)
+            var toAdd = cast(u64) (dref buffer - "0"'u8)
             if value + toAdd > maxValue
             {
                 result.ovf = true
@@ -329,7 +329,7 @@ func parseS64(str: string) -> {value: s64, eat: u32, ovf: bool} throw
 // 'ovf' will be true in case of overflow
 func parseF32(str: string) -> {value: f32, eat: u32, ovf: bool} throw
 {
-    (res, eat, ovf) := try parseF64(str)
+    var (res, eat, ovf) = try parseF64(str)
     if res != 0 and res < Swag.F32.Min
     {
         res = Swag.F32.Min
@@ -355,7 +355,7 @@ func parseBool(str: string) -> {value: bool, eat: u32} throw
 {
     var result: retval
 
-    sub := Tokenize.getWhileAlnum(str)
+    var sub = Tokenize.getWhileAlnum(str)
     switch sub
     {
     case "1", "true", "TRUE", "True":
@@ -373,7 +373,7 @@ func parseBool(str: string) -> {value: bool, eat: u32} throw
 // Convert an utf8 buffer to a simple rune
 func parseRune(str: string) -> {value: rune, eat: u32} throw
 {
-    countof := @countof(str)
+    var countof = @countof(str)
     if !countof
         throw ParseErrorInvalid
     return Utf8.decodeRune(str)
@@ -382,14 +382,14 @@ func parseRune(str: string) -> {value: rune, eat: u32} throw
 // Parse an identifier name in the sens of swag (ascii)
 func parseIdentifier(str: string)->string throw
 {
-    countof := @countof(str)
+    var countof = @countof(str)
     if !countof
         throw ParseErrorInvalid
 
     if str[0] != "_"'u8 and !Latin1.isLetter(str[0])
         throw ParseErrorInvalid
 
-    cpt := 1'u64
+    var cpt = 1'u64
     while cpt < countof and (str[cpt] == "_"'u8 or Latin1.isLetterOrDigit(str[cpt]))
         cpt += 1
     return @mkstring(@dataof(str), cpt)
@@ -401,12 +401,12 @@ func parseString(str: string) -> {value: String, eat: u32} throw
 {
     var result: retval
 
-    countof := @countof(str)
+    var countof = @countof(str)
     if !countof
         throw ParseErrorInvalid
 
-    isQuoted := false
-    cpt := 0
+    var isQuoted = false
+    var cpt = 0
     if str[0] == "\""'u8
     {
         isQuoted = true
@@ -452,7 +452,7 @@ func parseString(str: string) -> {value: String, eat: u32} throw
 // Transform a string to an 's8'
 func toS8(str: string)->s8 throw
 {
-    (v, eat, ovf) := parseS8(str)
+    var (v, eat, ovf) = parseS8(str)
     if ovf throw ParseErrorOverflow
     if eat != @countof(str) throw ParseErrorInvalid
     return v
@@ -461,7 +461,7 @@ func toS8(str: string)->s8 throw
 // Transform a string to an 's16'
 func toS16(str: string)->s16 throw
 {
-    (v, eat, ovf) := parseS16(str)
+    var (v, eat, ovf) = parseS16(str)
     if ovf throw ParseErrorOverflow
     if eat != @countof(str) throw ParseErrorInvalid
     return v
@@ -470,7 +470,7 @@ func toS16(str: string)->s16 throw
 // Transform a string to an 's32'
 func toS32(str: string)->s32 throw
 {
-    (v, eat, ovf) := parseS32(str)
+    var (v, eat, ovf) = parseS32(str)
     if ovf throw ParseErrorOverflow
     if eat != @countof(str) throw ParseErrorInvalid
     return v
@@ -479,7 +479,7 @@ func toS32(str: string)->s32 throw
 // Transform a string to an 's64'
 func toS64(str: string)->s64 throw
 {
-    (v, eat, ovf) := parseS64(str)
+    var (v, eat, ovf) = parseS64(str)
     if ovf throw ParseErrorOverflow
     if eat != @countof(str) throw ParseErrorInvalid
     return v
@@ -488,7 +488,7 @@ func toS64(str: string)->s64 throw
 // Transform a string to an 'u8'
 func toU8(str: string)->u8 throw
 {
-    (v, eat, ovf) := parseU8(str)
+    var (v, eat, ovf) = parseU8(str)
     if ovf throw ParseErrorOverflow
     if eat != @countof(str) throw ParseErrorInvalid
     return v
@@ -497,7 +497,7 @@ func toU8(str: string)->u8 throw
 // Transform a string to an 'u16'
 func toU16(str: string)->u16 throw
 {
-    (v, eat, ovf) := parseU16(str)
+    var (v, eat, ovf) = parseU16(str)
     if ovf throw ParseErrorOverflow
     if eat != @countof(str) throw ParseErrorInvalid
     return v
@@ -506,7 +506,7 @@ func toU16(str: string)->u16 throw
 // Transform a string to an 'u32'
 func toU32(str: string)->u32 throw
 {
-    (v, eat, ovf) := parseU32(str)
+    var (v, eat, ovf) = parseU32(str)
     if ovf throw ParseErrorOverflow
     if eat != @countof(str) throw ParseErrorInvalid
     return v
@@ -515,7 +515,7 @@ func toU32(str: string)->u32 throw
 // Transform a string to an 'u64'
 func toU64(str: string)->u64 throw
 {
-    (v, eat, ovf) := parseU64(str)
+    var (v, eat, ovf) = parseU64(str)
     if ovf throw ParseErrorOverflow
     if eat != @countof(str) throw ParseErrorInvalid
     return v
@@ -524,7 +524,7 @@ func toU64(str: string)->u64 throw
 // Transform a string to an 'f32'
 func toF32(str: string)->f32 throw
 {
-    (v, eat, ovf) := parseF32(str)
+    var (v, eat, ovf) = parseF32(str)
     if ovf throw ParseErrorOverflow
     if eat != @countof(str) throw ParseErrorInvalid
     return v
@@ -533,7 +533,7 @@ func toF32(str: string)->f32 throw
 // Transform a string to an 'f64'
 func toF64(str: string)->f64 throw
 {
-    (v, eat, ovf) := parseF64(str)
+    var (v, eat, ovf) = parseF64(str)
     if ovf throw ParseErrorOverflow
     if eat != @countof(str) throw ParseErrorInvalid
     return v

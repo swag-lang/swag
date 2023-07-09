@@ -22,16 +22,16 @@ impl IActionUI for ActionPixSel
 
     mtd impl update(cxt: ActionContext, evt: *CommandStateEvent)->bool
     {
-        main := cast(*MainWnd) cxt.wnd
-        capture := main.getCapture()
+        var main = cast(*MainWnd) cxt.wnd
+        var capture = main.getCapture()
 
-        hasPixSel := false
+        var hasPixSel = false
         if capture
         {
             visit s: capture.selection
             {
-                f := capture.forms[s]
-                b := cast(*BaseForm) @dataof(f)
+                var f = capture.forms[s]
+                var b = cast(*BaseForm) @dataof(f)
                 hasPixSel = b.subKind == .PixSel
                 if hasPixSel break
             }
@@ -69,7 +69,7 @@ impl IActionUI for ActionPixSel
 
     mtd impl execute(cxt: ActionContext)->bool
     {
-        main := cast(*MainWnd) cxt.wnd
+        var main = cast(*MainWnd) cxt.wnd
 
         switch cxt.id
         {
@@ -92,11 +92,11 @@ impl MainWnd
     mtd getPixSels()->Array'IForm
     {
         var result: retval
-        capture := getCapture()
+        var capture = getCapture()
         visit s: capture.selection
         {
-            f := capture.forms[s]
-            b := cast(*BaseForm) @dataof(f)
+            var f = capture.forms[s]
+            var b = cast(*BaseForm) @dataof(f)
             if b.subKind == .PixSel
                 result.add(f)
         }
@@ -106,12 +106,12 @@ impl MainWnd
 
     mtd pixSelClear()
     {
-        forms := getPixSels()
+        var forms = getPixSels()
         if forms.count == 0
             return
 
-        capture := getCapture()
-        undo := capture.newUndo(.SetImage)
+        var capture = getCapture()
+        var undo = capture.newUndo(.SetImage)
         undo.newImagePos = capture.backImagePos
         undo.newImg = capture.backImg
 
@@ -119,13 +119,13 @@ impl MainWnd
         visit f: forms
             boundRects.add(f.boundRect())
 
-        params := {capture, boundRects = boundRects.buffer, forms = &forms}
+        var params = {capture, boundRects = boundRects.buffer, forms = &forms}
         undo.newImg.visitPixels(&params)
         {
-            p := cast(*@decltype(params)) userData
+            var p = cast(*@decltype(params)) userData
             visit f, idx: dref p.forms
             {
-                pt := Math.Point{cast(f32) x, cast(f32) p.capture.backImg.height - y}
+                var pt = Math.Point{cast(f32) x, cast(f32) p.capture.backImg.height - y}
                 pt.x += p.capture.backImagePos.x
                 pt.y += p.capture.backImagePos.y
                 if !p.boundRects[idx].contains(pt)
@@ -144,12 +144,12 @@ impl MainWnd
 
     mtd pixSelFill()
     {
-        forms := getPixSels()
+        var forms = getPixSels()
         if forms.count == 0
             return
 
-        capture := getCapture()
-        undo := capture.newUndo(.SetImage)
+        var capture = getCapture()
+        var undo = capture.newUndo(.SetImage)
         undo.newImagePos = capture.backImagePos
         undo.newImg = capture.backImg
 
@@ -157,13 +157,13 @@ impl MainWnd
         visit f: forms
             boundRects.add(f.boundRect())
 
-        params := {capture, boundRects = boundRects.buffer, forms = &forms}
+        var params = {capture, boundRects = boundRects.buffer, forms = &forms}
         undo.newImg.visitPixels(&params)
         {
-            p := cast(*@decltype(params)) userData
+            var p = cast(*@decltype(params)) userData
             visit f, idx: dref p.forms
             {
-                pt := Math.Point{cast(f32) x, cast(f32) p.capture.backImg.height - y}
+                var pt = Math.Point{cast(f32) x, cast(f32) p.capture.backImg.height - y}
                 pt.x += p.capture.backImagePos.x
                 pt.y += p.capture.backImagePos.y
                 if !p.boundRects[idx].contains(pt)
@@ -182,12 +182,12 @@ impl MainWnd
 
     mtd pixSelSmartFill(serial: u32 = 0, masks: *Array'Image = null)
     {
-        forms := getPixSels()
+        var forms = getPixSels()
         if forms.count == 0
             return
 
-        capture := getCapture()
-        undo := capture.newUndo(.SetImage, serial)
+        var capture = getCapture()
+        var undo = capture.newUndo(.SetImage, serial)
         undo.newImagePos = capture.backImagePos
         undo.newImg = capture.backImg
 
@@ -203,12 +203,12 @@ impl MainWnd
         {
             var i: Info
 
-            br := f.boundRect()
+            var br = f.boundRect()
             i.boundRect = br
 
             if masks
             {
-                img := Image.create(1 + cast(s32) br.width, 1 + cast(s32) br.height, .RGBA8)
+                var img = Image.create(1 + cast(s32) br.width, 1 + cast(s32) br.height, .RGBA8)
                 masks.add(moveref &img)
             }
 
@@ -216,15 +216,15 @@ impl MainWnd
             loop x: undo.newImg.width
             {
                 var col1, col2: Color
-                pt := Math.Point{cast(f32) x, 0}
-                y1 := cast(s32) (br.bottom() - capture.backImagePos.y)
+                var pt = Math.Point{cast(f32) x, 0}
+                var y1 = cast(s32) (br.bottom() - capture.backImagePos.y)
                 y1 = undo.newImg.height - y1
                 loop i: undo.newImg.height
                 {
                     pt.y = cast(f32) (capture.backImg.height - y1) + capture.backImagePos.y
                     if br.contains(pt) and f.isInside(pt)
                     {
-                        pix32 := undo.newImg.pixels.buffer + x * undo.newImg.bpp8
+                        var pix32 = undo.newImg.pixels.buffer + x * undo.newImg.bpp8
                         pix32 += y1 * undo.newImg.width * undo.newImg.bpp8
                         col1.argb = dref cast(*u32) pix32
                         break
@@ -232,14 +232,14 @@ impl MainWnd
                     y1 += 1
                 }
 
-                y2 := cast(s32) (br.y - capture.backImagePos.y)
+                var y2 = cast(s32) (br.y - capture.backImagePos.y)
                 y2 = undo.newImg.height - y2
                 loop i: undo.newImg.height
                 {
                     pt.y = cast(f32) (capture.backImg.height - y2) + capture.backImagePos.y
                     if br.contains(pt) and f.isInside(pt)
                     {
-                        pix32 := undo.newImg.pixels.buffer + x * undo.newImg.bpp8
+                        var pix32 = undo.newImg.pixels.buffer + x * undo.newImg.bpp8
                         pix32 += y2 * undo.newImg.width * undo.newImg.bpp8
                         col2.argb = dref cast(*u32) pix32
                         break
@@ -253,13 +253,13 @@ impl MainWnd
             infos.add(moveref &i)
         }
 
-        params := {capture, infos = infos.buffer, forms = &forms, masks}
+        var params = {capture, infos = infos.buffer, forms = &forms, masks}
         undo.newImg.visitPixels(&params)
         {
-            p := cast(*@decltype(params)) userData
+            var p = cast(*@decltype(params)) userData
             visit f, idx: dref p.forms
             {
-                pt := Math.Point{cast(f32) x, cast(f32) p.capture.backImg.height - y}
+                var pt = Math.Point{cast(f32) x, cast(f32) p.capture.backImg.height - y}
                 pt.x += p.capture.backImagePos.x
                 pt.y += p.capture.backImagePos.y
                 if !p.infos[idx].boundRect.contains(pt)
@@ -267,31 +267,31 @@ impl MainWnd
 
                 if f.isInside(pt)
                 {
-                    p1   := p.infos[idx].boundCols[x]
-                    col1 := p1.col1
-                    col2 := p1.col2
-                    y1   := p1.y1
-                    y2   := p1.y2
+                    var p1 = p.infos[idx].boundCols[x]
+                    var col1 = p1.col1
+                    var col2 = p1.col2
+                    var y1 = p1.y1
+                    var y2 = p1.y2
                     if y2 != y1
                     {
                         // Store pixel mask
                         if p.masks
                         {
-                            xx := cast(s32) (pt.x - p.infos[idx].boundRect.x)
-                            yy := cast(s32) (pt.y - p.infos[idx].boundRect.y)
-                            pmask := p.masks.buffer + idx
+                            var xx = cast(s32) (pt.x - p.infos[idx].boundRect.x)
+                            var yy = cast(s32) (pt.y - p.infos[idx].boundRect.y)
+                            var pmask = p.masks.buffer + idx
                             yy = pmask.height - yy
                             if xx < pmask.width and yy < pmask.height
                             {
-                                pix1 := pmask.pixels.buffer + xx * pmask.bpp8
+                                var pix1 = pmask.pixels.buffer + xx * pmask.bpp8
                                 pix1 += yy * pmask.width * pmask.bpp8
                                 dref cast(*u32) pix1 = 0xFFFFFFFF
                             }
                         }
 
-                        fVert := (y - y1) / cast(f32) (y2 - y1)
+                        var fVert = (y - y1) / cast(f32) (y2 - y1)
                         fVert = Math.clamp(fVert, 0, 1)
-                        col := Color.getBlend(col1, col2, fVert)
+                        var col = Color.getBlend(col1, col2, fVert)
                         dref cast(*u32) pix = col.argb
                     }
 
@@ -305,23 +305,23 @@ impl MainWnd
 
     mtd pixSelSmartMove()
     {
-        forms := getPixSels()
+        var forms = getPixSels()
         if forms.count == 0
             return
 
-        capture := getCapture()
+        var capture = getCapture()
 
         capture.serialUndo += 1
-        serial := capture.serialUndo
+        var serial = capture.serialUndo
 
-        undo := capture.newUndo(.CreateForm, serial)
+        var undo = capture.newUndo(.CreateForm, serial)
 
-        startCount := capture.forms.count - forms.count
+        var startCount = capture.forms.count - forms.count
         visit f: forms
         {
-            br := f.boundRect()
+            var br = f.boundRect()
 
-            with nf := Memory.new'FormImage()
+            with var nf = Memory.new'FormImage()
             {
                 .kind = .Capture
                 .x = cast(s32) br.x
@@ -346,7 +346,7 @@ impl MainWnd
 
         visit f, idx: undo.oldForms
         {
-            nf := cast(*FormImage) f
+            var nf = cast(*FormImage) f
             nf.IForm.backCaptureMask(getApp(), masks.buffer + idx)
         }
 
@@ -354,7 +354,7 @@ impl MainWnd
         capture.pushUndo(undo)
 
         capture.selection.clear()
-        for i := startCount; i < capture.forms.count; i += 1
+        for var i = startCount; i < capture.forms.count; i += 1
             capture.selection.add(i)
     }
 }

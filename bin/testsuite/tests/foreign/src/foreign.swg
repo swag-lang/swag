@@ -62,7 +62,7 @@ public func tcf_toto8(a, b, c, d, e, f: s32)->s32
 {
     @assert(a == 1)
     @assert(f == 6)
-    x := a+b+c+d+e+f
+    var x = a+b+c+d+e+f
     @assert(x == 21)
     return x
 }
@@ -276,10 +276,10 @@ public func tcf_toto20(a: u16)
 {
 //    @assert(a == 2020)
 //    @assert(b == 2)
-    res := DaysToMonth365[a]
+    var res = DaysToMonth365[a]
 
     //var slice: const [..] u16 = DaysToMonth365
-    //res1 := slice[a]
+    //var res1 = slice[a]
 }
 
 struct TT
@@ -320,7 +320,7 @@ public alias ThreadProc = func(*void)->u32;
 
 public func tcf_entry(param: ^void)->u32
 {
-    ptr := cast(^u64) param
+    var ptr = cast(^u64) param
     @assert(ptr[1] == 666)
     return 0
 }
@@ -331,10 +331,10 @@ public func tcf_createThread(lambda: ThreadProc, userParam: u64)
     paramBC[0] = acast lambda
     paramBC[1] = acast userParam
 
-    id := 0'u32
-    h := CreateThread(null, 0, @mkcallback(lambda), cast(*void) &paramBC[0], 0, &id)
+    var id = 0'u32
+    var h = CreateThread(null, 0, @mkcallback(lambda), cast(*void) &paramBC[0], 0, &id)
     const INFINITE = 0xFFFFFFFF
-    ew := WaitForSingleObject(h, INFINITE)
+    var ew = WaitForSingleObject(h, INFINITE)
 }
 
 public func tcf_callret(fct: func()->s64)->s64
@@ -472,16 +472,16 @@ public func tcf_toto28(a, b, c, d: Vector2, e: f32 = 0)->{a:s32}
 
 func getLineLineIntersectCoefs1(start0, end0, start1, end1: Vector2f)->{d0: f32, d1: f32}
 {
-    ua := (end1.x - start1.x) * (start0.y - start1.y)
-    ub := (end0.x - start0.x) * (start0.y - start1.y)
-    d  := (end1.y - start1.y) * (end0.x - start0.x) + (end1.x - start1.x) * (end0.y - start0.y)
+    var ua = (end1.x - start1.x) * (start0.y - start1.y)
+    var ub = (end0.x - start0.x) * (start0.y - start1.y)
+    var d = (end1.y - start1.y) * (end0.x - start0.x) + (end1.x - start1.x) * (end0.y - start0.y)
     return {ua / d, ub / d}
 }
 
 //#[Swag.PrintBc]
 public func lineLineIntersect1(start0, end0, start1, end1: Vector2f)->f32
 {
-    aa := getLineLineIntersectCoefs1(start0, end0, start1, end1)
+    var aa = getLineLineIntersectCoefs1(start0, end0, start1, end1)
     return start0.y
 }
 

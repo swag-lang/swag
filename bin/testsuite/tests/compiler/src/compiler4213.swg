@@ -1,7 +1,7 @@
 #[Swag.Optim("", false)]
 func(T) toto(y: T)->T
 {
-    x := y
+    var x = y
     x %= 3
     return x
 }

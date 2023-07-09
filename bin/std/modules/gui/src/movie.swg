@@ -171,13 +171,13 @@ impl Movie
     // Update timing and change frames
     mtd update(dt: f32)->bool
     {
-        wasDirty := dirtyFrame
+        var wasDirty = dirtyFrame
         dirtyFrame = false
 
         if inPause
             return wasDirty
 
-        hasChanged := false
+        var hasChanged = false
         currentTime += dt
         while currentTime > playFreq
         {

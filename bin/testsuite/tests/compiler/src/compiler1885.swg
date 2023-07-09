@@ -7,9 +7,9 @@ struct(T) AA
         #assert(@typeof(T).kind == TypeInfoKind.Struct)
 
         var buf: [100] u8
-        idx := 0'u64
+        var idx = 0'u64
 
-        ptr := @typeof(T)
+        var ptr = @typeof(T)
         visit it: ptr.fields
         {
             @memcpy(&buf[idx], @dataof(it.name), @countof(it.name))

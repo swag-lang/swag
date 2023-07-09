@@ -2,9 +2,9 @@
 //#[Swag.Optim("", false)]
 #test
 {
-    toto := 0
+    var toto = 0
     //@breakpoint()
-    x := closure|ref toto|()
+    var x = closure|ref toto|()
     {
         toto += 1
     }

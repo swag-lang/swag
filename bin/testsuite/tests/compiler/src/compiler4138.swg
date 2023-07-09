@@ -5,7 +5,7 @@
 #[Swag.Safety("nan", false)]
 func toto(y: f64)
 {
-    x := @acos(y)
+    var x = @acos(y)
     x = x
 }
 

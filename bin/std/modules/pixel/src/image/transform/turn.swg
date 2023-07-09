@@ -15,17 +15,17 @@ impl Image
         #[Swag.Mixin]
         func(BPP: u8) doIt()
         {
-            f := {img = self}
+            var f = {img = self}
             switch angle
             {
             case T90:
                 dstImage.visitPixels(&f)
                 {
-                    data     := cast(*@decltype(f)) userData
-                    srcImage := cast(const *Image) data.img
-                    nx := srcImage.width - y - 1
-                    ny := x
-                    pixSrc := srcImage.pixels.buffer + (nx * srcImage.bpp8) + (ny * srcImage.width8)
+                    var data = cast(*@decltype(f)) userData
+                    var srcImage = cast(const *Image) data.img
+                    var nx = srcImage.width - y - 1
+                    var ny = x
+                    var pixSrc = srcImage.pixels.buffer + (nx * srcImage.bpp8) + (ny * srcImage.width8)
                     copyPixel'BPP(pix, pixSrc)
                 }
                 break
@@ -33,11 +33,11 @@ impl Image
             case T180:
                 dstImage.visitPixels(&f)
                 {
-                    data     := cast(*@decltype(f)) userData
-                    srcImage := cast(const *Image) data.img
-                    nx := srcImage.width - x - 1
-                    ny := srcImage.height - y - 1
-                    pixSrc := srcImage.pixels.buffer + (nx * srcImage.bpp8) + (ny * srcImage.width8)
+                    var data = cast(*@decltype(f)) userData
+                    var srcImage = cast(const *Image) data.img
+                    var nx = srcImage.width - x - 1
+                    var ny = srcImage.height - y - 1
+                    var pixSrc = srcImage.pixels.buffer + (nx * srcImage.bpp8) + (ny * srcImage.width8)
                     copyPixel'BPP(pix, pixSrc)
                 }
                 break
@@ -45,11 +45,11 @@ impl Image
             case T270:
                 dstImage.visitPixels(&f)
                 {
-                    data     := cast(*@decltype(f)) userData
-                    srcImage := cast(const *Image) data.img
-                    nx := y
-                    ny := srcImage.height - x - 1
-                    pixSrc := srcImage.pixels.buffer + (nx * srcImage.bpp8) + (ny * srcImage.width8)
+                    var data = cast(*@decltype(f)) userData
+                    var srcImage = cast(const *Image) data.img
+                    var nx = y
+                    var ny = srcImage.height - x - 1
+                    var pixSrc = srcImage.pixels.buffer + (nx * srcImage.bpp8) + (ny * srcImage.width8)
                     copyPixel'BPP(pix, pixSrc)
                 }
                 break

@@ -732,7 +732,7 @@ bool AstOutput::outputLambdaExpression(OutputContext& context, Concat& concat, A
     return true;
 }
 
-bool AstOutput::outputVarDecl(OutputContext& context, Concat& concat, AstVarDecl* varNode, bool isSelf, bool kindSpecified)
+bool AstOutput::outputVarDecl(OutputContext& context, Concat& concat, AstVarDecl* varNode, bool isSelf)
 {
     if (!(varNode->specFlags & AstVarDecl::SPECFLAG_AUTO_NAME))
     {
@@ -769,10 +769,7 @@ bool AstOutput::outputVarDecl(OutputContext& context, Concat& concat, AstVarDecl
 
     if (varNode->assignment)
     {
-        if (varNode->type || kindSpecified || varNode->kind == AstNodeKind::FuncDeclParam || (varNode->flags & AST_STRUCT_MEMBER))
-            CONCAT_FIXED_STR(concat, " = ");
-        else
-            CONCAT_FIXED_STR(concat, " := ");
+        CONCAT_FIXED_STR(concat, " = ");
         SWAG_CHECK(outputNode(context, concat, varNode->assignment));
     }
 
@@ -784,15 +781,12 @@ bool AstOutput::outputVar(OutputContext& context, Concat& concat, AstVarDecl* va
     if (varNode->flags & AST_DECL_USING)
         CONCAT_FIXED_STR(concat, "using ");
 
-    bool kindSpecified = false;
     if (varNode->kind == AstNodeKind::ConstDecl)
     {
-        kindSpecified = true;
         CONCAT_FIXED_STR(concat, "const ");
     }
-    else if (varNode->type && varNode->ownerFct && varNode->kind != AstNodeKind::FuncDeclParam && !(varNode->flags & AST_STRUCT_MEMBER))
+    else if (varNode->kind != AstNodeKind::FuncDeclParam && !(varNode->flags & AST_STRUCT_MEMBER))
     {
-        kindSpecified = true;
         CONCAT_FIXED_STR(concat, "var ");
     }
 
@@ -802,7 +796,7 @@ bool AstOutput::outputVar(OutputContext& context, Concat& concat, AstVarDecl* va
         CONCAT_FIXED_STR(concat, "const ");
     }
 
-    SWAG_CHECK(outputVarDecl(context, concat, varNode, isSelf, kindSpecified));
+    SWAG_CHECK(outputVarDecl(context, concat, varNode, isSelf));
     return true;
 }
 
@@ -1578,7 +1572,7 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
                 CONCAT_FIXED_STR(concat, "const ");
             else
                 CONCAT_FIXED_STR(concat, "var ");
-            SWAG_CHECK(outputVarDecl(context, concat, varNode, false, true));
+            SWAG_CHECK(outputVarDecl(context, concat, varNode, false));
         }
         else
             SWAG_CHECK(outputNode(context, concat, compilerIf->boolExpression));

@@ -7,6 +7,6 @@ func toto(x: s32)->s32
 
 #test
 {
-    x := toto(4)
+    var x = toto(4)
     @assert(x == 10)
 }

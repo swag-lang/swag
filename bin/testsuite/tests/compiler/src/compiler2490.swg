@@ -14,5 +14,5 @@ interface BB
     var a: AA
     var itf: BB
 
-    ptr := cast(*AA) itf
+    var ptr = cast(*AA) itf
 }

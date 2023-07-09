@@ -377,13 +377,13 @@ impl IRichEditLexer for RichEditLexerSwag
         // Smart return
         if ch == "\n"'rune
         {
-            cp   := ed.getBegSelection()
-            line := ed.lines[cp.lineIndex]
+            var cp = ed.getBegSelection()
+            var line = ed.lines[cp.lineIndex]
             var str: String = "\n"
 
             if cp.charPosInLine
             {
-                cpt := 0
+                var cpt = 0
                 while cpt < line.chars.count and Unicode.isSpace(line.chars[cpt])
                 {
                     str += line.chars[cpt]
@@ -406,9 +406,9 @@ impl IRichEditLexer for RichEditLexerSwag
 
     mtd impl compute(linePrev, line, lineNext: *RichEditLine)
     {
-        seek := 0'u64
-        currentState  := linePrev ? linePrev.lexerEndingState : State.Default
-        currentCptCmt := linePrev ? linePrev.lexerCptCmt : 0
+        var seek = 0'u64
+        var currentState = linePrev ? linePrev.lexerEndingState : State.Default
+        var currentCptCmt = linePrev ? linePrev.lexerCptCmt : 0
 
         #[Swag.Mixin]
         func getCur()->rune
@@ -435,8 +435,8 @@ impl IRichEditLexer for RichEditLexerSwag
 
         loop
         {
-            c  := getCur()
-            cn := getNext()
+            var c = getCur()
+            var cn = getNext()
             if !c
             {
                 switch currentState
@@ -574,7 +574,7 @@ impl IRichEditLexer for RichEditLexerSwag
                 if Unicode.isLetter(c) or c == "_"'rune or c == "@"'rune or c == "#"'rune
                 {
                     var word: String
-                    saveSeek := seek
+                    var saveSeek = seek
                     while Unicode.isLetterOrDigit(c) or c == "_"'rune or c == "@"'rune or c == "#"'rune
                     {
                         word += c
@@ -582,10 +582,10 @@ impl IRichEditLexer for RichEditLexerSwag
                         c = getCur()
                     }
 
-                    seekEnd := seek
+                    var seekEnd = seek
                     seek = saveSeek
 
-                    res := mapWords.find(word.toString())
+                    var res = mapWords.find(word.toString())
                     if res
                         currentState = res.value
                     elif word == "@"

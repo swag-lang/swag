@@ -23,7 +23,7 @@ func toto()->AA
 #test
 {
     {
-        ex := toto()
+        var ex = toto()
     }
     @assert(G == 1)
 }

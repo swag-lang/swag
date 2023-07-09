@@ -1,7 +1,7 @@
 //#[Swag.PrintBc, Swag.Optim("", false), Swag.Safety("", false)]
 #test
 {
-    x := @runes("abcd")
+    var x = @runes("abcd")
     @assert(@countof(x) == 4)
     @assert(x[0] == "a"'rune)
     @assert(x[1] == "b"'rune)

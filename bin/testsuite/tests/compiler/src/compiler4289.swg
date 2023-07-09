@@ -15,7 +15,7 @@ func parse(stmt: code)->s32
 
 func toto()
 {
-    countTot := 0
+    var countTot = 0
     loop parse()
     {
         countTot += 1

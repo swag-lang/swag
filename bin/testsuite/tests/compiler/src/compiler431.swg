@@ -1,7 +1,7 @@
 //#[Swag.PrintBc]
 #test
 {
-	cst :=  0x01_02_03_04
+	var cst =  0x01_02_03_04
 	var slice : [..] u8 = @mkslice(cast(^u8)&cst, 4)
 	len(slice)
 }
@@ -9,8 +9,8 @@
 //#[Swag.PrintBc]
 func len(buffer: const [..] u8)
 {
-	result := 0
-	total := 0
+	var result = 0
+	var total = 0
 	loop buffer
 	{
 		result += 1

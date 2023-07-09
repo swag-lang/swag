@@ -21,16 +21,16 @@ impl IWnd for WrapLayoutCtrl
             return
         }
 
-        client := getClientRectPadding()
+        var client = getClientRectPadding()
 
-        x := padding.x
-        y := padding.y
+        var x = padding.x
+        var y = padding.y
         visit c: childs
         {
             if c.wndFlags & .Hidden
                 continue
             resultHeight = y + wrapHeight
-            rect := Math.Rectangle{x, y, wrapWidth, wrapHeight}
+            var rect = Math.Rectangle{x, y, wrapWidth, wrapHeight}
             c.setPosition(rect)
             x += wrapWidth + spacing
             if x + wrapWidth > client.right()
@@ -49,7 +49,7 @@ impl WrapLayoutCtrl
     // Create a layout control
     func create(parent: *Wnd, position: Math.Rectangle = {})->*WrapLayoutCtrl
     {
-        res := Wnd.create'WrapLayoutCtrl(parent, position)
+        var res = Wnd.create'WrapLayoutCtrl(parent, position)
         return res
     }
 

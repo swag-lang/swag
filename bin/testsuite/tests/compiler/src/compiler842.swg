@@ -5,13 +5,13 @@ var G: s32 = 0
 {
 	G = 0
 
-	j := 1
+	var j = 1
 	if(j == 0)
 	{
 	}
 	else
 	{
-		i := 0
+		var i = 0
 		defer @assert(i == 1)
 		defer G = 1
 		i = 1

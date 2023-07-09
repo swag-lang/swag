@@ -16,11 +16,11 @@ var g_Time:         u64
 
 func paintSnake(painter: *Painter)
 {
-    scale := 0.52
+    var scale = 0.52
     visit p: g_Snake
     {
-        x := p.x * ElemSize
-        y := p.y * ElemSize
+        var x = p.x * ElemSize
+        var y = p.y * ElemSize
 
         painter.fillCircle(x, y, ElemSize*scale, Argb.Black)
         if @index == 0
@@ -32,14 +32,14 @@ func paintSnake(painter: *Painter)
 
 func paintApple(painter: *Painter)
 {
-    x := g_ApplePos.x * ElemSize
-    y := g_ApplePos.y * ElemSize
+    var x = g_ApplePos.x * ElemSize
+    var y = g_ApplePos.y * ElemSize
     painter.fillCircle(x, y, ElemSize*0.45, Argb.Red)
 }
 
 func updateCollisions()->bool
 {
-    head := g_Snake.front()
+    var head = g_Snake.front()
     head += g_SnakeSpeed
 
     // Outside
@@ -75,7 +75,7 @@ func updateCollisions()->bool
 
 func updateSnakePosition()
 {
-    curTime := Time.nowMilliseconds()
+    var curTime = Time.nowMilliseconds()
     if curTime - g_Time < SnakeTime
         return
 
@@ -84,7 +84,7 @@ func updateSnakePosition()
     if updateCollisions()
         return
 
-    newHeadPos := g_Snake[0]
+    var newHeadPos = g_Snake[0]
     newHeadPos += g_SnakeSpeed
     g_Snake.insertAt(0, newHeadPos)
     g_Snake.removeBack()
@@ -92,7 +92,7 @@ func updateSnakePosition()
 
 func updateSpeed(wnd: *Wnd)
 {
-    kb := wnd.getApp().getKeyboard()
+    var kb = wnd.getApp().getKeyboard()
 
     if kb.isKeyJustPressed(.Up)
     {
@@ -122,7 +122,7 @@ func updateSpeed(wnd: *Wnd)
 func generateApplePos()
 {
     // Generate an apple position that is not behind the snake tail
-    error := true
+    var error = true
     while error
     {
         error = false
@@ -159,8 +159,8 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
         startGame()
 
     case Paint:
-        paintEvt := cast(*PaintEvent) evt
-        painter  := paintEvt.bc.painter
+        var paintEvt = cast(*PaintEvent) evt
+        var painter = paintEvt.bc.painter
         g_Rect   = wnd.getClientRect()
 
         updateSnakePosition()

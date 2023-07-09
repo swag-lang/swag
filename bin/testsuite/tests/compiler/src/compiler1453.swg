@@ -14,7 +14,7 @@ impl S
         {
             #macro
             {
-                value := 1
+                var value = 1
                 #mixin #up stmt
             }
         }

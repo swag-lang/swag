@@ -2,6 +2,6 @@
 //#[Swag.PrintBc]
 #test
 {
-    b := 0
-	a := b = 1
+    var b = 0
+	var a = b = 1
 }

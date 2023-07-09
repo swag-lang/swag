@@ -17,7 +17,7 @@ struct(T) Array
 {
 	var arr: Array's32
 	@assert(@sizeof(arr) == 8)
-	//ptr := &arr.pt
+	//var ptr = &arr.pt
 	//@print(ptr.x)
 	//@assert(ptr.y == 100)
 }

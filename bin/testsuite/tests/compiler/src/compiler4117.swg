@@ -1,5 +1,5 @@
 #global testerror
 #test
 {
-    x := "a" - "b"
+    var x = "a" - "b"
 }

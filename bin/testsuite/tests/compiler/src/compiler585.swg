@@ -5,6 +5,6 @@ func(op: string) toto()
 
 #test
 {
-	c := 0
+	var c = 0
 	toto'(c)()
 }

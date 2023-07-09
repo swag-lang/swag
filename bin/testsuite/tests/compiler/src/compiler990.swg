@@ -15,12 +15,12 @@ struct Point
 //#[Swag.PrintBc]
 #test
 {
-	t := cast(const *TypeInfoStruct) @typeof(Point)
+	var t = cast(const *TypeInfoStruct) @typeof(Point)
 	@assert(@countof(t.fields) == 2)
 
 	loop t.fields
 	{
-		p := cast(const *TypeValue) t.fields[@index]
+		var p = cast(const *TypeValue) t.fields[@index]
 		@assert(p.name == (@index == 0 ? "x" : "y"))
 		@assert(@countof(p.attributes) == 1)
 		@assert(p.attributes[0].type == @typeof(NC1))

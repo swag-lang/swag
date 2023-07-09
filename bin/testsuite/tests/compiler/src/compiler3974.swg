@@ -2,7 +2,7 @@ var G: s32
 
 func toto(v: ref s32)
 {
-    ptr := &v
+    var ptr = &v
     @assert(@typeof(ptr) == *s32)
     @assert(ptr == &G)
     v = 55

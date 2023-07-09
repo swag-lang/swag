@@ -10,7 +10,7 @@ func getField(type: typeinfo, name: string)->const* TypeValue
 {
     if type.kind == TypeInfoKind.Struct
     {
-        typeStruct := cast(const* TypeInfoStruct) type
+        var typeStruct = cast(const* TypeInfoStruct) type
         visit it: typeStruct.fields
         {
             if it.name == name
@@ -23,6 +23,6 @@ func getField(type: typeinfo, name: string)->const* TypeValue
 
 #test
 {
-    type := getField(@typeof(BaseForm), @nameof(BaseForm.borderSize))
+    var type = getField(@typeof(BaseForm), @nameof(BaseForm.borderSize))
     @assert(type != null)
 }

@@ -8,7 +8,7 @@ func toto()->const &string
 //#[Swag.PrintBc]
 #test
 {
-    x := toto()
+    var x = toto()
     @assert(@typeof(x) == string)
     @assert(x == "666")
 }

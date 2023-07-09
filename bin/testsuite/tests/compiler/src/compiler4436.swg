@@ -9,8 +9,8 @@ func toto(x, y: ref string)
 
 #test
 {
-	x := "0"
-	y := "1"
+	var x = "0"
+	var y = "1"
 	toto(&x, &y)
 	@assert(x == "1")
 }

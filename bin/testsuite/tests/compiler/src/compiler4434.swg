@@ -7,8 +7,8 @@ func toto(a: ref s32, b: moveref s32)
 
 #test
 {
-    a := 1's32
-    b := 2's32
+    var a = 1's32
+    var b = 2's32
     toto(&a, moveref &b)
     @assert(a == 2)
 }

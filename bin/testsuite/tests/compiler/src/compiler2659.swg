@@ -11,9 +11,9 @@ func titi(stmt: code)
 
 #test
 {
-    v := 0
+    var v = 0
     titi()
     {
-        ptr := @typeof(v)
+        var ptr = @typeof(v)
     }
 }

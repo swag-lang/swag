@@ -21,15 +21,15 @@ func thisFunc1(x, y: s64)
 //#[Swag.PrintBc]
 #test
 {
-    ptr3 := &tcf_toto18
+    var ptr3 = &tcf_toto18
     ptr3(555, 666, &thisFunc1)
 
-    ptr := &tcf_toto16
+    var ptr = &tcf_toto16
     ptr(456,3.14)
 
-    ptr1 := &tcf_toto5
+    var ptr1 = &tcf_toto5
     @assert(ptr1(10) == 10)
 
-    ptr2 := &tcf_toto17
+    var ptr2 = &tcf_toto17
     ptr2(555, &thisFunc)
 }

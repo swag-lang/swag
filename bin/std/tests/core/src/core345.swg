@@ -11,10 +11,10 @@ const C = #include(#file)
     @assert(@countof(C) == arr.count)
 
     var comp: Compress.Deflate
-    res := try comp.compress(arr.toSlice())
+    var res = try comp.compress(arr.toSlice())
 
     var decomp: Compress.Inflate
-    res1 := try decomp.decompress(res.toSlice())
+    var res1 = try decomp.decompress(res.toSlice())
 
     @assert(arr.count == res1.count)
     @print(@mkstring(res1.buffer, res1.count))
@@ -35,7 +35,7 @@ const C = #include(#file)
     try comp.compress(&res, arr.toSlice())
 
     var decomp: Compress.Inflate
-    res1 := try decomp.decompress(res.toSlice())
+    var res1 = try decomp.decompress(res.toSlice())
 
     @assert(arr.count == res1.count)
     visit v, i: arr

@@ -4,7 +4,7 @@
     #[Swag.Compiler]
     func init()->u64
     {
-        sum := 0'u64
+        var sum = 0'u64
         loop i: 3
         {
             var T: typeinfo = undefined

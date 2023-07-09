@@ -17,7 +17,7 @@ impl I for A
 #test
 {
     var v: *A
-    x := cast(I) cast(*A) v
-    t := @kindof(x)
+    var x = cast(I) cast(*A) v
+    var t = @kindof(x)
     @assert(t and @countof(t.fullname))
 }

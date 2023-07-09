@@ -38,7 +38,7 @@ impl Sha256
     {
         var m: [64] u32
 
-        i, j := 0'u32
+        var i, j = 0'u32
         while i < 16
         {
             m[i] = (cast(u32) buf[j] << 24) | (cast(u32) buf[j + 1] << 16) | (cast(u32) buf[j + 2] << 8) | (buf[j + 3])
@@ -52,20 +52,20 @@ impl Sha256
             i += 1
         }
 
-        a := state[0]
-        b := state[1]
-        c := state[2]
-        d := state[3]
-        e := state[4]
-        f := state[5]
-        g := state[6]
-        h := state[7]
+        var a = state[0]
+        var b = state[1]
+        var c = state[2]
+        var d = state[3]
+        var e = state[4]
+        var f = state[5]
+        var g = state[6]
+        var h = state[7]
 
         i = 0
         while i < 64
         {
-            t1 := h + ep1(e) + ch(e, f, g) + K[i] + m[i]
-            t2 := ep0(a) + maj(a, b, c)
+            var t1 = h + ep1(e) + ch(e, f, g) + K[i] + m[i]
+            var t2 = ep0(a) + maj(a, b, c)
             h = g
             g = f
             f = e
@@ -95,7 +95,7 @@ public impl Sha256
     // Finalize the computation
     mtd final(result: Digest)
     {
-        i := datalen
+        var i = datalen
         if datalen < 56
         {
             data[i] = 0x80
@@ -151,8 +151,8 @@ public impl Sha256
     mtd update(buffer: const [..] u8)
     {
         Debug.assert(@countof(buffer) <= Swag.U32.Max)
-        buf := @dataof(buffer)
-        len := cast(u32) @countof(buffer)
+        var buf = @dataof(buffer)
+        var len = cast(u32) @countof(buffer)
 
         loop i: len
         {

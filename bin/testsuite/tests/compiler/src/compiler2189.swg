@@ -25,6 +25,6 @@ impl P
 #test
 {
     var x: P = 255'u8
-    v := x.toFloat()
+    var v = x.toFloat()
     @assert(v.a == 1)
 }

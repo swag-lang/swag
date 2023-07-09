@@ -1,7 +1,7 @@
 #test
 {
-    cpt1 := 0'u64
-    cpt2 := 0'u64
+    var cpt1 = 0'u64
+    var cpt2 = 0'u64
     visit i: "toto"
     {
         cpt1 += @alias1

@@ -1,10 +1,10 @@
 //#[Swag.PrintBc]
 #test
 {
-    x := 666
-    val := @mkany(&x, s32)
+    var x = 666
+    var val = @mkany(&x, s32)
 
-    value := cast(s32) val
+    var value = cast(s32) val
     @assert(value == 666)
     @assert(@kindof(value) == s32)
 }

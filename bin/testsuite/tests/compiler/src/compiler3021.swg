@@ -4,28 +4,28 @@ var F = false
 #test
 {
     {
-        x, y := T
-        z := x ^ y
+        var x, y = T
+        var z = x ^ y
         @assert(z == false)
     }
 
     {
-        x := T
-        y := F
-        z := x ^ y
+        var x = T
+        var y = F
+        var z = x ^ y
         @assert(z == true)
     }
 
     {
-        y := T
-        x := F
-        z := x ^ y
+        var y = T
+        var x = F
+        var z = x ^ y
         @assert(z == true)
     }
 
     {
-        x, y := F
-        z := x ^ y
+        var x, y = F
+        var z = x ^ y
         @assert(z == false)
     }
 }

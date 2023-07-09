@@ -57,7 +57,7 @@ private impl Application
 
         if event.kind == .Quit
         {
-            evt := cast(*QuitEvent) event
+            var evt = cast(*QuitEvent) event
             mustQuit = true
             quitCode = evt.quitCode
             return
@@ -87,7 +87,7 @@ private impl Application
             return null
         if wnd.surface.isDisabled
             return null
-        scan := wnd
+        var scan = wnd
         while scan and !scan.isEnabled()
             scan = scan.parent
         return scan
@@ -97,7 +97,7 @@ private impl Application
     {
         mouse.update()
 
-        mousePos := mouse.getPosition()
+        var mousePos = mouse.getPosition()
 
         // Wnd that will receive the message
         var targetWnd: *Wnd
@@ -111,7 +111,7 @@ private impl Application
         // to the surfaceWnd (we probably are in the shadow area)
         if !targetWnd
         {
-            targetSurface := getSurfaceAt(mousePos.x, mousePos.y)
+            var targetSurface = getSurfaceAt(mousePos.x, mousePos.y)
             if targetSurface
             {
                 targetWnd = targetSurface.wnd
@@ -119,7 +119,7 @@ private impl Application
             }
         }
 
-        evt := MouseEvent{}
+        var evt = MouseEvent{}
 
         // Accept
         if targetWnd
@@ -168,7 +168,7 @@ private impl Application
         evt.modifiers  = keyb.getPressedModifiers()
 
         // Move
-        move := mouse.getMove()
+        var move = mouse.getMove()
         if Math.abs(move.x) >= 0.5 or Math.abs(move.y) >= 0.5
         {
             evt.kind = EventKind.MouseMove
@@ -180,8 +180,8 @@ private impl Application
         // Detect changes
         loop i: mouse.previousState.pressed
         {
-            lastP := mouse.previousState.pressed[i]
-            curP  := mouse.currentState.pressed[i]
+            var lastP = mouse.previousState.pressed[i]
+            var curP = mouse.currentState.pressed[i]
             if !lastP and curP
             {
                 if mouse.isButtonDoubleClick(cast(Input.MouseButton) i)
@@ -208,13 +208,13 @@ private impl Application
 
     mtd sendMouseWheelEvent(z: s32)
     {
-        targetWnd := mouseEnterWnd
+        var targetWnd = mouseEnterWnd
         targetWnd = skipDisabled(targetWnd)
         if !targetWnd
             return
 
-        evt := MouseEvent{kind = EventKind.MouseWheel}
-        mousePos := mouse.getPosition()
+        var evt = MouseEvent{kind = EventKind.MouseWheel}
+        var mousePos = mouse.getPosition()
         evt.surfacePos = targetWnd.screenToSurface(mousePos)
         evt.move.y     = z
         evt.modifiers  = keyb.getPressedModifiers()
@@ -225,22 +225,22 @@ private impl Application
     {
         keyb.update()
 
-        targetWnd := keybFocusWnd
+        var targetWnd = keybFocusWnd
         targetWnd = skipDisabled(targetWnd)
         if !targetWnd
             return
 
         // Modifiers
-        modifiers := keyb.getPressedModifiers()
+        var modifiers = keyb.getPressedModifiers()
 
         // Detect changes
         loop i: keyb.previousState.pressed
         {
-            lastP := keyb.previousState.pressed[i]
-            curP  := keyb.currentState.pressed[i]
+            var lastP = keyb.previousState.pressed[i]
+            var curP = keyb.currentState.pressed[i]
             if !lastP and curP
             {
-                evt := KeyEvent{kind = EventKind.KeyPressed}
+                var evt = KeyEvent{kind = EventKind.KeyPressed}
                 evt.key = cast(Input.Key) i
                 evt.modifiers = modifiers
                 targetWnd.sendEvent(&evt)
@@ -248,14 +248,14 @@ private impl Application
                 // Convert key to command (shortcuts)
                 if !evt.accepted
                 {
-                    id := targetWnd.getKeyShortcut(modifiers, cast(Input.Key) i)
+                    var id = targetWnd.getKeyShortcut(modifiers, cast(Input.Key) i)
                     if id != null
                         targetWnd.sendCommandEvent(id)
                 }
             }
             elif lastP and !curP
             {
-                evt := KeyEvent{kind = EventKind.KeyReleased}
+                var evt = KeyEvent{kind = EventKind.KeyReleased}
                 evt.key = cast(Input.Key) i
                 evt.modifiers = modifiers
                 targetWnd.sendEvent(&evt)
@@ -265,12 +265,12 @@ private impl Application
 
     mtd sendRuneEvent(key: Input.Key, r: rune)
     {
-        targetWnd := keybFocusWnd
+        var targetWnd = keybFocusWnd
         targetWnd = skipDisabled(targetWnd)
         if !targetWnd
             return
 
-        evt := KeyEvent{kind = EventKind.Rune}
+        var evt = KeyEvent{kind = EventKind.Rune}
         evt.char = r
         evt.key = key
         evt.modifiers = keyb.getPressedModifiers()
@@ -281,14 +281,14 @@ private impl Application
     {
         // Need to make a copy, in case the posted event triggers a modal loop
         mutexPostedEvents.lock()
-        copy := postedEvents
+        var copy = postedEvents
         postedEvents.clear()
         mutexPostedEvents.unlock()
 
-        needUpdateState := false
-        for i := 0; i < copy.count; i += 1
+        var needUpdateState = false
+        for var i = 0; i < copy.count; i += 1
         {
-            evt := copy[i]
+            var evt = copy[i]
             if evt.kind == .Invalidate
                 evt.target.invalidate()
             else
@@ -380,7 +380,7 @@ private impl Application
 
             if t.stopwatch.elapsedMillisecondsNow() >= t.timeMs
             {
-                evt := TimerEvent{}
+                var evt = TimerEvent{}
                 evt.timer = t
                 t.target.sendEvent(&evt)
                 t.stopwatch.restart()
@@ -408,7 +408,7 @@ private impl Application
     {
         visit t: frameEvents
         {
-            evt := FrameEvent{}
+            var evt = FrameEvent{}
             t.sendEvent(&evt)
         }
     }
@@ -477,7 +477,7 @@ private impl Application
 
         if modalSurfaces.count
         {
-            back := modalSurfaces.back()
+            var back = modalSurfaces.back()
             back.enable()
             back.wnd.view.setFocus()
         }
@@ -528,10 +528,10 @@ impl Application
     {
         var app: Application
 
-        flags := SurfaceFlags.OverlappedWindow
+        var flags = SurfaceFlags.OverlappedWindow
         if !canSize flags &= ~.Sizeable
         if !borders flags &= ~.Border
-        surface := assume app.createSurface(x, y, width, height, flags, view, hook)
+        var surface = assume app.createSurface(x, y, width, height, flags, view, hook)
         surface.setTitle(title)
         if init init(&app)
         surface.show()
@@ -541,7 +541,7 @@ impl Application
     // Creates a new surface
     mtd createSurface(x, y, width, height: s32, flags = SurfaceFlags.OverlappedWindow, view: *Wnd = null, hook: HookEvent = null)->*Surface throw
     {
-        surface := Memory.new'Surface()
+        var surface = Memory.new'Surface()
         surface.app = self
         surface.position = {x, y, width, height}
 
@@ -618,7 +618,7 @@ impl Application
         if configPath.isEmpty()
             return
 
-        buf := File.readAllBytes(configPath)
+        var buf = File.readAllBytes(configPath)
 
         var load: Decoder'Read.TagBin
         var ser:  Serializer
@@ -637,7 +637,7 @@ impl Application
     // To cleanly close a window, you should call wnd.destroy()
     mtd destroyWnd(wnd: *Wnd)
     {
-        evt := DestroyEvent{}
+        var evt = DestroyEvent{}
         wnd.sendEvent(&evt)
 
         unregisterWnd(wnd)
@@ -645,7 +645,7 @@ impl Application
         // Remove from parent
         if wnd.parent and !wnd.parent.isPendingDestroy
         {
-            (idx, ok) := Slice.findLinear(wnd.parent.childs.toSlice(), wnd)
+            var (idx, ok) = Slice.findLinear(wnd.parent.childs.toSlice(), wnd)
             Debug.assert(ok)
             wnd.parent.childs.removeAtOrdered(idx)
             wnd.parent.invalidate()
@@ -660,12 +660,12 @@ impl Application
     // Returns the window under the given point
     mtd getWndAtMouse()->*Wnd
     {
-        mousePos := mouse.getPosition()
-        targetSurface := getSurfaceAt(mousePos.x, mousePos.y)
+        var mousePos = mouse.getPosition()
+        var targetSurface = getSurfaceAt(mousePos.x, mousePos.y)
         if !targetSurface
             return null
         targetSurface.screenToSurface(&mousePos)
-        targetWnd := targetSurface.wnd.getWndAt(mousePos.x, mousePos.y)
+        var targetWnd = targetSurface.wnd.getWndAt(mousePos.x, mousePos.y)
         return targetWnd
     }
 
@@ -690,7 +690,7 @@ impl Application
     // Ask to exit the application
     mtd postQuitEvent(quitCode: s32 = 0)
     {
-        evt := Event.create'QuitEvent()
+        var evt = Event.create'QuitEvent()
         evt.quitCode = #self.quitCode
         postEvent(evt)
     }
@@ -710,7 +710,7 @@ impl Application
     // Register a new timer for the given 'target'
     mtd addTimer(time: Time.Duration, target: *Wnd)->*Timer
     {
-        timer := Memory.new'Timer()
+        var timer = Memory.new'Timer()
         timer.timeMs = time.toMs()
         timer.target = target
         if duringTimerEvents
@@ -791,7 +791,7 @@ impl Application
     {
         visit s: surfaces
         {
-            evt := FrameEvent{}
+            var evt = FrameEvent{}
             evt.firstFrame = true
             s.wnd.view.sendEvent(&evt)
         }

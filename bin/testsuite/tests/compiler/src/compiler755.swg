@@ -16,19 +16,19 @@ func concrete1()->*f32
 //#[Swag.PrintBc]
 func(T) toto(x: func()->*T)->T
 {
-	ptr := x()
+	var ptr = x()
 	return dref ptr
 }
 
 #test
 {
-	lambda := &concrete
-	result := toto(lambda)
+	var lambda = &concrete
+	var result = toto(lambda)
 	@assert(result == 666)
 	//@print(result)
 
-	lambda1 := &concrete1
-	result1 := toto(lambda1)
+	var lambda1 = &concrete1
+	var result1 = toto(lambda1)
 	@assert(result1 == 666)
 	//@print(result1)
 }

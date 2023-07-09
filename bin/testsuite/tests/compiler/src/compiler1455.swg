@@ -21,7 +21,7 @@ impl S
 {
     var x: S
 
-    cpt := 0
+    var cpt = 0
     visit(Bytes) x
     {
         cpt += 1

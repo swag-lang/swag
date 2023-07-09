@@ -17,9 +17,9 @@ impl Argb
 {
     var color: Argb
     {
-        x := 0
+        var x = 0
     }
-    (a,b) := color.extract()
+    var (a,b) = color.extract()
 //    @assert(a == 666)
 //    @assert(b == 555)
 }

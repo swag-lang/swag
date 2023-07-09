@@ -1,8 +1,8 @@
 #global testerror
 #test
 {
-    a := 0
-    b := 0
+    var a = 0
+    var b = 0
 
     #[Swag.Complete]
     switch a

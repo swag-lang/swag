@@ -10,6 +10,6 @@ func toto()->s32
 
 #test
 {
-    y := toto()
+    var y = toto()
     @assert(y == 666)
 }

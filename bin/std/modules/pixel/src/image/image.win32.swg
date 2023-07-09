@@ -16,7 +16,7 @@ impl Image
         bi.bmiHeader.biCompression = BI_RGB
 
         var ppvBits: *u8
-        hbmp := CreateDIBSection(null, &bi, acast DIB_RGB_COLORS, &ppvBits, null, 0)
+        var hbmp = CreateDIBSection(null, &bi, acast DIB_RGB_COLORS, &ppvBits, null, 0)
         defer(noerr) DeleteObject(acast hbmp)
 
         Memory.copy(ppvBits, pixels.buffer, cast(u64) width*height*bpp8)
@@ -63,7 +63,7 @@ impl Image
             throw "invalid bitmap pixelformat"
         }
 
-        dc := GetDC(null)
+        var dc = GetDC(null)
         defer ReleaseDC(null, dc)
 
         var infos: BITMAPINFO

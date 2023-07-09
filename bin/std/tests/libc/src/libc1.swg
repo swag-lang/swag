@@ -11,7 +11,7 @@ func titi(x, y: *s32)->s32
     //discard at_quick_exit(&titi)
     //exit(666)
 
-    x := [1, 6, 3, 20, 4, 5]
+    var x = [1, 6, 3, 20, 4, 5]
     qsort(&x, @countof(x), 4, cast(*void) @mkcallback(&titi))
     //visit v: x
     //    @print(v, " ")

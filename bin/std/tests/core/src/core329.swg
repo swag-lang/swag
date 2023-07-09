@@ -20,7 +20,7 @@ impl AA
             #ast
             {
                 var sb: StringBuilder
-                ts := @typeof(T)
+                var ts = @typeof(T)
 
                 sb.appendString("fn(")
                 loop i: @countof(ts.parameters)

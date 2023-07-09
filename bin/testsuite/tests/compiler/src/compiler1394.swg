@@ -5,5 +5,5 @@ func nextF32()->f32 => titi() / cast(f32) Swag.U32.Max
 
 #test
 {
-    n := nextF32()
+    var n = nextF32()
 }

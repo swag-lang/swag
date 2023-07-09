@@ -12,7 +12,7 @@
         }
 
         #assert @sizeof(MyStruct) == 4
-        v := MyStruct{}
+        var v = MyStruct{}
         v.x = 666
 
         // As 'y' and 'x' are sharing the same space, affecting to 'x' also affects to 'y'.

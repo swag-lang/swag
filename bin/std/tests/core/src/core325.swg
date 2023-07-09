@@ -7,13 +7,13 @@ func sendMessage(text: string)
 
 func sendWords(text: string)
 {
-    start := 0'u64
+    var start = 0'u64
     while start < @countof(text)
     {
-        stop := Utf8.indexOf(text, " "'rune, start)
+        var stop = Utf8.indexOf(text, " "'rune, start)
         if stop == Swag.U64.Max
             stop = @countof(text) - 1
-        word := text[start..stop]
+        var word = text[start..stop]
         sendMessage(word)
         start = stop + 1
     }
@@ -21,6 +21,6 @@ func sendWords(text: string)
 
 #test
 {
-    text := "aa bbbb c ddddd "
+    var text = "aa bbbb c ddddd "
     sendWords(text)
 }

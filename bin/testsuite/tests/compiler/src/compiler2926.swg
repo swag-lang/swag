@@ -1,7 +1,7 @@
 //#[Swag.PrintBc]
 #test
 {
-    cpt := 0
+    var cpt = 0
     loop
     {
         if @index == 4

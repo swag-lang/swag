@@ -71,7 +71,7 @@ impl Theme
     {
         intialized = true
 
-        img := assume Image.decode(DefaultImageName, DefaultImage)
+        var img = assume Image.decode(DefaultImageName, DefaultImage)
         res.imgWidgets = renderer.addImage(img)
 
         img = assume Image.decode(DefaultIcons24Name, DefaultIcons24)

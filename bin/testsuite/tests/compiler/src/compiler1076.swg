@@ -7,8 +7,8 @@ func toto() -> const [..] string
 
 #test
 {
-	x := toto()[0]
+	var x = toto()[0]
 	@assert(x == "str0")
-	y := toto()[1]
+	var y = toto()[1]
 	@assert(y == "str1")
 }

@@ -2,6 +2,6 @@
 
 #test
 {
-    x := true's32
+    var x = true's32
     @assert(x == 1)
 }

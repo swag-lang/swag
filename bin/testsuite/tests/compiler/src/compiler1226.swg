@@ -19,6 +19,6 @@ impl Vector2
 //#[Swag.PrintBc]
 #test
 {
-	pt1 := normalize()
+	var pt1 = normalize()
 	//Vector2.toto(pt1)
 }

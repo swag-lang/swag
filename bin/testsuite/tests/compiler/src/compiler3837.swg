@@ -7,7 +7,7 @@ func toto(a: f32)
 {
     //struct A {}
 //    var a: A
-    x := 0'u64
+    var x = 0'u64
     x += 1
     toto(acast x)
 }

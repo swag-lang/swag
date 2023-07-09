@@ -11,5 +11,5 @@ func main() -> s32
 
 #run
 {
-	r := main();
+	var r = main();
 }

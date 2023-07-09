@@ -20,16 +20,16 @@ impl IActionUI for ActionEdit
 
     mtd impl update(cxt: ActionContext, evt: *CommandStateEvent)->bool
     {
-        main := cast(*MainWnd) cxt.wnd
-        capture := main.getCapture()
-        hasSel  := capture and capture.selection.count
+        var main = cast(*MainWnd) cxt.wnd
+        var capture = main.getCapture()
+        var hasSel = capture and capture.selection.count
 
         var lastSelType: typeinfo
         if capture
         {
             if capture.selection.count
             {
-                f := capture.forms[capture.selection.back()]
+                var f = capture.forms[capture.selection.back()]
                 lastSelType = @kindof(f)
             }
         }
@@ -50,10 +50,10 @@ impl IActionUI for ActionEdit
             {
                 visit it: capture.selection
                 {
-                    itfForm := capture.forms[it]
+                    var itfForm = capture.forms[it]
                     if @kindof(itfForm) != FormImage
                         continue
-                    b := cast(*FormImage) @dataof(itfForm)
+                    var b = cast(*FormImage) @dataof(itfForm)
                     if b.kind != .Image
                         continue
                     evt.hidden = false
@@ -71,13 +71,13 @@ impl IActionUI for ActionEdit
 
     mtd impl execute(cxt: ActionContext)->bool
     {
-        main := cast(*MainWnd) cxt.wnd
-        capture := main.getCapture()
+        var main = cast(*MainWnd) cxt.wnd
+        var capture = main.getCapture()
 
         switch cxt.id
         {
         case CmdEditText:
-            lastSel := cast(*FormText) @dataof(capture.forms[capture.selection.back()])
+            var lastSel = cast(*FormText) @dataof(capture.forms[capture.selection.back()])
             discard main.propWnd.editText(lastSel.text)
             capture.selectionHasChanged()
 

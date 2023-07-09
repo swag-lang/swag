@@ -12,8 +12,8 @@ func toto(param: AA)
 {
     switch @kindof(param)
     {
-    case AA.T:  v := cast(AA.T) param; G += v.x
-    case AA.T1: v := cast(AA.T1) param; G += v.item0; G += v.y
+    case AA.T:  var v = cast(AA.T) param; G += v.x
+    case AA.T1: var v = cast(AA.T1) param; G += v.item0; G += v.y
     case AA.T2: G += 10
     }
 }

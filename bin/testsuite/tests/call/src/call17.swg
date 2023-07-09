@@ -5,16 +5,16 @@ using test_foreign
 {
     var x: tcf_Point
 
-    t := @typeof(tcf_Point)
+    var t = @typeof(tcf_Point)
     visit p: t.methods
     {
         if p.name != "set"
             continue
 
-        f := p.value
+        var f = p.value
         @assert(f != null)
 
-        fn := cast(func(*tcf_Point)) f
+        var fn = cast(func(*tcf_Point)) f
         fn(&x)
         break
     }
@@ -29,10 +29,10 @@ using test_foreign
         if p.name != "opInit"
             continue
 
-        f := p.value
+        var f = p.value
         @assert(f != null)
 
-        fn := cast(func(*tcf_Point)) f
+        var fn = cast(func(*tcf_Point)) f
         fn(&x)
         break
     }*/

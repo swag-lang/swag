@@ -51,7 +51,7 @@ impl IForm for FormImage
 {
     mtd impl isSame(ptr: *BaseForm)->bool
     {
-        other := cast(*FormImage) ptr
+        var other = cast(*FormImage) ptr
         if kind == .Image and backColor != other.backColor
             return false
         return  borderColor == other.borderColor and
@@ -64,8 +64,8 @@ impl IForm for FormImage
 
     mtd impl copy(dst, src: *BaseForm)
     {
-        dstf := cast(*FormImage) dst
-        srcf := cast(*FormImage) src
+        var dstf = cast(*FormImage) dst
+        var srcf = cast(*FormImage) src
         dstf.borderColor = srcf.borderColor
         dstf.borderSize  = srcf.borderSize
         dstf.backColor   = srcf.backColor
@@ -79,10 +79,10 @@ impl IForm for FormImage
 
     mtd impl edit(evt: *MouseEvent, paintRect: Math.Rectangle, movingStart: Math.Point, localPos: Math.Point, zoom: f32)->bool
     {
-        xa := cast(s32) ((movingStart.x - paintRect.x) / zoom)
-        ya := cast(s32) ((movingStart.y - paintRect.y) / zoom)
-        xb := cast(s32) ((localPos.x - paintRect.x) / zoom)
-        yb := cast(s32) ((localPos.y - paintRect.y) / zoom)
+        var xa = cast(s32) ((movingStart.x - paintRect.x) / zoom)
+        var ya = cast(s32) ((movingStart.y - paintRect.y) / zoom)
+        var xb = cast(s32) ((localPos.x - paintRect.x) / zoom)
+        var yb = cast(s32) ((localPos.y - paintRect.y) / zoom)
         setBaseForm(xa, ya, xb - xa, yb - ya)
         if evt.kind == .MouseReleased and evt.button == .Left
         {
@@ -234,7 +234,7 @@ impl IForm for FormImage
 
     mtd impl isInside(pt: Math.Point)->bool
     {
-        br := boundRect()
+        var br = boundRect()
         return br.contains(pt)
     }
 
@@ -242,7 +242,7 @@ impl IForm for FormImage
     {
         if mustEditInside()
         {
-            pp := Math.Rectangle{paintPos.x, paintPos.y, paintPos.width, paintPos.height}
+            var pp = Math.Rectangle{paintPos.x, paintPos.y, paintPos.width, paintPos.height}
             pp.offset(freePos.x*z, freePos.y*z)
             pp.width = freePos.width*z
             pp.height = freePos.height*z
@@ -254,12 +254,12 @@ impl IForm for FormImage
 
     mtd backCaptureMask(app: *Application, mask: *Image)
     {
-        renderer := app.getRenderer()
+        var renderer = app.getRenderer()
 
         image.visitPixels(mask)
         {
-            maskImg := cast(*Image) userData
-            pix1 := maskImg.pixels.buffer + x * 4
+            var maskImg = cast(*Image) userData
+            var pix1 = maskImg.pixels.buffer + x * 4
             pix1 += maskImg.width * y * 4
             if !pix1[0]
                 dref cast(*u32) pix = 0
@@ -271,9 +271,9 @@ impl IForm for FormImage
 
     mtd backCapture(app: *Application)
     {
-        renderer := app.getRenderer()
-        x1 := cast(s32) (x - capture.backImagePos.x)
-        y1 := cast(s32) (y - capture.backImagePos.y)
+        var renderer = app.getRenderer()
+        var x1 = cast(s32) (x - capture.backImagePos.x)
+        var y1 = cast(s32) (y - capture.backImagePos.y)
 
         if w > 1 and h > 1 and isReadyToCapture
         {
@@ -292,15 +292,15 @@ impl IForm for FormImage
 
     mtd impl paint(app: *Application, painter: *Painter, z: f32, quickMode: bool)
     {
-        bSize := adaptSize(borderSize, MinBorderSize, MaxBorderSize, z, quickMode)
-        pp    := Math.Rectangle{0, 0, paintPos.width, paintPos.height}
-        pen   := Pen.createSolid(borderColor, bSize)
+        var bSize = adaptSize(borderSize, MinBorderSize, MaxBorderSize, z, quickMode)
+        var pp = Math.Rectangle{0, 0, paintPos.width, paintPos.height}
+        var pen = Pen.createSolid(borderColor, bSize)
 
         if !quickMode
         {
-            renderer := app.getRenderer()
-            x1 := cast(s32) (x - capture.backImagePos.x)
-            y1 := cast(s32) (y - capture.backImagePos.y)
+            var renderer = app.getRenderer()
+            var x1 = cast(s32) (x - capture.backImagePos.x)
+            var y1 = cast(s32) (y - capture.backImagePos.y)
 
             switch kind
             {
@@ -340,10 +340,10 @@ impl IForm for FormImage
                         stc = strength
                         xc = x; yc = y; wc = w; hc = h
                         renderer.removeTexture(&texture)
-                        img := capture.backImg.toCrop(x1, y1, w, h)
-                        st := Math.map(cast(f32) strength, 0, 100, 1, 16)
-                        nw := Math.max(cast(s32) (img.width / st), 4)
-                        nh := Math.max(cast(s32) (img.height / st), 4)
+                        var img = capture.backImg.toCrop(x1, y1, w, h)
+                        var st = Math.map(cast(f32) strength, 0, 100, 1, 16)
+                        var nw = Math.max(cast(s32) (img.width / st), 4)
+                        var nh = Math.max(cast(s32) (img.height / st), 4)
                         img.resize(nw, nh, .Quadratic)
                         img.resize(w, h, kind == .Pixelate ? .Raw : .Quadratic)
                         texture = app.getRenderer().addImage(img)
@@ -367,9 +367,9 @@ impl IForm for FormImage
                         xc = x; yc = y; wc = w; hc = h
                         renderer.removeTexture(&texture)
                         const ZoomFactor = 2.5
-                        stw := cast(s32) Math.map(cast(f32) strength, 0, 100, 1, w / ZoomFactor)
-                        sth := cast(s32) Math.map(cast(f32) strength, 0, 100, 1, h / ZoomFactor)
-                        img := capture.backImg.toCrop(x1+stw, y1+sth, w-stw*2, h-sth*2)
+                        var stw = cast(s32) Math.map(cast(f32) strength, 0, 100, 1, w / ZoomFactor)
+                        var sth = cast(s32) Math.map(cast(f32) strength, 0, 100, 1, h / ZoomFactor)
+                        var img = capture.backImg.toCrop(x1+stw, y1+sth, w-stw*2, h-sth*2)
                         img.resize(w, h, .Raw)
                         texture = app.getRenderer().addImage(img)
                     }
@@ -413,7 +413,7 @@ impl IForm for FormImage
             elif kind == .Image and !image.isValid()
             {
                 painter.fillRect(pp, backColor)
-                icon := Icon.from(&g_Main.icons48, 13)
+                var icon = Icon.from(&g_Main.icons48, 13)
                 icon.paint(painter, pp.horzCenter() - icon.sizeX*0.5, pp.vertCenter() - icon.sizeY*0.5, Argb.White)
                 pp.inflate(-bSize * 0.5)
                 painter.drawRect(pp, pen)
@@ -426,14 +426,14 @@ impl IForm for FormImage
                 case Frame:
                     painter.drawTexture(pp, texture)
                 case Center:
-                    pp1 := pp
+                    var pp1 = pp
                     pp1.x = pp.horzCenter() - (texture.width / 2)*z
                     pp1.y = pp.vertCenter() - (texture.height / 2)*z
                     pp1.width = texture.width*z
                     pp1.height = texture.height*z
                     painter.drawTexture(pp1, texture)
                 case Free:
-                    pp1 := pp
+                    var pp1 = pp
                     pp1.offset(freePos.x*z, freePos.y*z)
                     pp1.width = freePos.width*z
                     pp1.height = freePos.height*z

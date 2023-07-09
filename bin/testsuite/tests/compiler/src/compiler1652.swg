@@ -3,5 +3,5 @@
 
 func toto(x: any)
 {
-    v := cast(s32) any
+    var v = cast(s32) any
 }

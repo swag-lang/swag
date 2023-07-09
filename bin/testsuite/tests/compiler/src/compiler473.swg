@@ -3,7 +3,7 @@
 //#[Swag.PrintBc]
 #test
 {
-	a := &F;
+	var a = &F;
 	a = &F1;
 }
 

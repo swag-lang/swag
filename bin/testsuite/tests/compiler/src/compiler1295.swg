@@ -7,7 +7,7 @@ func toto()
 
 #test
 {
-    x := 666
+    var x = 666
     toto()
     @assert(x == 500)
 }

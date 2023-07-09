@@ -3,5 +3,5 @@
 {
     alias X = *u16
     var v: X
-    str := @mkstring(v, 1)
+    var str = @mkstring(v, 1)
 }

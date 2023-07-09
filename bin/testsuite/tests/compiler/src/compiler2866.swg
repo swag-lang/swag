@@ -5,6 +5,6 @@
 #[Swag.Optim("", false)]
 #test
 {
-    x := 0xFFFFFFFF'u32
+    var x = 0xFFFFFFFF'u32
     var y: s32 = x
 }

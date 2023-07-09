@@ -7,5 +7,5 @@ struct AA
 
 #test
 {
-    x := AA(0)
+    var x = AA(0)
 }

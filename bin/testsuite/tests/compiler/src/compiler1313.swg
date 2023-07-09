@@ -16,7 +16,7 @@ impl A
 #test
 {
     DROP = 0
-    cpt := 0
+    var cpt = 0
     #scope outer
     {
         var x: A

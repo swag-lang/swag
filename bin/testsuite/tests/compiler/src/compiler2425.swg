@@ -5,7 +5,7 @@ func toto() => 1
 {
     @assert(@isconstexpr(1))
 
-    x := 0
+    var x = 0
     @assert(!@isconstexpr(x))
     @assert(!@isconstexpr(x + 1))
 

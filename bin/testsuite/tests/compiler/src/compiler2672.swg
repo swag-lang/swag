@@ -10,6 +10,6 @@ struct AA
 {
     var v: AA
     var v1: const&AA = v
-    v2 := &v1
-    vv := {v1, v2}
+    var v2 = &v1
+    var vv = {v1, v2}
 }

@@ -33,7 +33,7 @@ struct Team
 #test
 {
     {
-        team := Team{
+        var team = Team{
             a = Thing.initxxx(1),
             b = Thing.initxxx(2),
             c = Thing.initxxx(3),

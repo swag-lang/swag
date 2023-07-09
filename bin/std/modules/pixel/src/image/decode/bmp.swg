@@ -60,15 +60,15 @@ public impl IImageDecoder for Decoder
 
     mtd impl decode(buffer: const [..] u8, options: DecodeOptions)->Image throw
     {
-        dataof := @dataof(buffer)
-        countof := @countof(buffer)
-        last := dataof + countof
+        var dataof = @dataof(buffer)
+        var countof = @countof(buffer)
+        var last = dataof + countof
 
         // FileHeader
         var bfOffBits: u32
         if countof >= @sizeof(FileHeader)
         {
-            fh := cast(const *FileHeader) dataof
+            var fh = cast(const *FileHeader) dataof
             if fh.bfType == 0x4d42
             {
                 dataof += @sizeof(FileHeader)
@@ -78,12 +78,12 @@ public impl IImageDecoder for Decoder
 
         // CoreHeader
         var bh: Header
-        size := dref cast(const *u32) dataof
+        var size = dref cast(const *u32) dataof
         if size == @sizeof(CoreHeader)
         {
             if dataof + @sizeof(CoreHeader) > last
                 throw "invalid source buffer"
-            ch := cast(const *CoreHeader) dataof
+            var ch = cast(const *CoreHeader) dataof
             dataof += @sizeof(Header)
             bh.biSize        = ch.bcSize
             bh.biWidth       = cast(s32) ch.bcWidth
@@ -125,8 +125,8 @@ public impl IImageDecoder for Decoder
         if bfOffBits
             dataof = @dataof(buffer) + bfOffBits
 
-        bc8 := bh.biBitCount / 8
-        byteSize := cast(u64) (bh.biWidth * bh.biHeight * bc8)
+        var bc8 = bh.biBitCount / 8
+        var byteSize = cast(u64) (bh.biWidth * bh.biHeight * bc8)
         if dataof + byteSize > last
             throw "invalid source buffer"
 
@@ -134,14 +134,14 @@ public impl IImageDecoder for Decoder
         {
         case 24:
             // Must be aligned to 4 bytes
-            c := (bh.biWidth * 3) & 3
+            var c = (bh.biWidth * 3) & 3
             if c
             {
                 c = 4 - c
-                dst := result.pixels.buffer
-                src := dataof
-                dstW := cast(u64) result.width * result.bpp8
-                srcW := dstW + c
+                var dst = result.pixels.buffer
+                var src = dataof
+                var dstW = cast(u64) result.width * result.bpp8
+                var srcW = dstW + c
                 loop result.height
                 {
                     Memory.copy(dst, src, dstW)

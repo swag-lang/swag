@@ -7,8 +7,8 @@ using Core
     var arr: HashTable'(String, s64)
     arr.clear()
 
-    x := String.from("toto")
-    y := String.from("toto")
+    var x = String.from("toto")
+    var y = String.from("toto")
     @assert(x == y)
     y = "titi"
     @assert(x != y)

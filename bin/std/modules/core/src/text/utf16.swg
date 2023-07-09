@@ -13,7 +13,7 @@ func decodeRune(buffer: const [..] u16) -> {c: rune, eat: u32}
 {
     var result: retval
 
-    r := cast(u32) buffer[0]
+    var r = cast(u32) buffer[0]
     switch
     {
     case r < Surr1, r >= Surr3:
@@ -45,7 +45,7 @@ func encodeRune(dest: [..] u16, src: rune)->u32
         return 1
 
     case SurrSelf <= src and src <= 0x10FFFF:
-        r := src - SurrSelf
+        var r = src - SurrSelf
         dest[0] = Surr1 + ((r >> 10) & 0x3ff)
         dest[1] = Surr2 + (r & 0x3ff)
         return 2
@@ -60,18 +60,18 @@ func encodeRune(dest: [..] u16, src: rune)->u32
 // number of valid elements in the destination buffer
 func fromUtf8(dest: [..] u16, src: const [..] u8)->u64
 {
-    count := 0'u64
-    srcPtr := @dataof(src)
-    destPtr := @dataof(dest)
-    srcLength := @countof(src)
-    destLength := @countof(dest)
+    var count = 0'u64
+    var srcPtr = @dataof(src)
+    var destPtr = @dataof(dest)
+    var srcLength = @countof(src)
+    var destLength = @countof(dest)
 
     while srcLength
     {
-        (c, eat) := Utf8.decodeRune(@mkslice(srcPtr, srcLength))
+        var (c, eat) = Utf8.decodeRune(@mkslice(srcPtr, srcLength))
 
         Debug.assert(destLength >= 2, "destination buffer is too small")
-        eatDest := encodeRune(@mkslice(destPtr, destLength), c)
+        var eatDest = encodeRune(@mkslice(destPtr, destLength), c)
         destPtr, count += eatDest
         destLength -= eatDest
 
@@ -96,13 +96,13 @@ func fromUtf8(src: const [..] u8)->Array'u16
 // 'dest' must be at least 2 bytes long
 func fromUnicode(dest: [..] u16, src: const [..] rune)->u64
 {
-    dataof := @dataof(dest)
-    remain := @countof(dest)
+    var dataof = @dataof(dest)
+    var remain = @countof(dest)
 
     visit ch: src
     {
         Debug.assert(remain >= 2, "destination buffer is too small")
-        cpt := encodeRune(@mkslice(dataof, remain), ch)
+        var cpt = encodeRune(@mkslice(dataof, remain), ch)
         dataof += cpt
         remain -= cpt
     }
@@ -132,8 +132,8 @@ func toZeroTerminated(src: string)->Array'u16
 // Compute the string length of a zero terminated utf16 buffer
 func lengthZeroTerminated(buf: const ^u16)->u64
 {
-    ptr := buf
-    count := 0'u64
+    var ptr = buf
+    var count = 0'u64
     while dref ptr
         ptr, count += 1
     return count

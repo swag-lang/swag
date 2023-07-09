@@ -19,7 +19,7 @@ impl Array
 //#[Swag.PrintBc]
 #test
 {
-	x := 0
+	var x = 0
 	var arr: Array's32
 	arr.buffer = cast(^s32) &x
 	arr.add()

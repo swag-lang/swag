@@ -1138,7 +1138,7 @@ void initErrors()
     SWAG_ERROR(Hnt0113, "this parameter does not match");
     SWAG_ERROR(Hnt0114, "missing return type");
     SWAG_ERROR(Hnt0115, "one function is declared with 'throw' and the other one is not");
-    SWAG_ERROR(Hnt0116, "':=' should be replaced with '=' when used after an explicit 'const', 'var' or 'let'");
+    SWAG_ERROR(Hnt0116, nullptr);
     SWAG_ERROR(Hnt0117, "this could be the start of the initialization of '%s' or the start of a new block");
     SWAG_ERROR(Hnt0118, "no corresponding start of multi-line comment '/*' has been found");
     SWAG_ERROR(Hnt0119, "this is an enum value");

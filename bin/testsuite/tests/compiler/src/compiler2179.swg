@@ -14,6 +14,6 @@ func toto()->A
 //#[Swag.PrintBc]
 #test
 {
-    v := toto()
+    var v = toto()
     @assert(v.x == 10)
 }

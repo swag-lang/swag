@@ -86,21 +86,3 @@ We have seen that the type is optional in the declaration if it can be deduced f
         #assert @typeof(d) == string
     }
 }
-
-/**
-And in fact even `var` is optional if you use the short form with `:=`.
-*/
-#test
-{
-    a := 1.5
-    @assert(a == 1.5)
-    #assert @typeof(a) == f32
-
-    b := "string"
-    @assert(b == "string")
-    #assert @typeof(b) == string
-
-    c := 1.5'f64
-    @assert(c == 1.5)
-    #assert @typeof(c) == f64
-}

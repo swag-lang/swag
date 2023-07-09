@@ -53,7 +53,7 @@
             y: string = "454"
         }
 
-        v := MyStruct{}
+        var v = MyStruct{}
         @assert(v.x == 666)
         @assert(v.y == "454")
     }
@@ -78,7 +78,7 @@
         @assert(v1.y == 20)
 
         // You can name fields, and omit some.
-        v2 := MyStruct{y = 20}
+        var v2 = MyStruct{y = 20}
         @assert(v2.x == 1)
         @assert(v2.y == 20)
 

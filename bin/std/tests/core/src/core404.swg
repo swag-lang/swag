@@ -2,6 +2,6 @@ using Core, Random
 
 #test
 {
-    x := Hardware.getMacAddress()
+    var x = Hardware.getMacAddress()
     //Console.printf("%{X}", x)
 }

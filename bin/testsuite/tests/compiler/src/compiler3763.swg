@@ -8,7 +8,7 @@ func toto(x: s8)
 #[Swag.Optim("", false)]
 #test
 {
-    c := 1's8
-    d := 10's8
+    var c = 1's8
+    var d = 10's8
     toto(c + d)
 }

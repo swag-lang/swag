@@ -24,5 +24,5 @@ func toto()->VV
 //#[Swag.PrintBc]
 #test
 {
-    x := ref toto()
+    var x = ref toto()
 }

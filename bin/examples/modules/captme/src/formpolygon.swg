@@ -26,7 +26,7 @@ impl IForm for FormPolygon
 {
     mtd impl isSame(ptr: *BaseForm)->bool
     {
-        other := cast(*FormPolygon) ptr
+        var other = cast(*FormPolygon) ptr
         return  borderColor == other.borderColor and
                 borderSize  == other.borderSize and
                 backColor   == other.backColor and
@@ -36,8 +36,8 @@ impl IForm for FormPolygon
 
     mtd impl copy(dst, src: *BaseForm)
     {
-        dstf := cast(*FormPolygon) dst
-        srcf := cast(*FormPolygon) src
+        var dstf = cast(*FormPolygon) dst
+        var srcf = cast(*FormPolygon) src
         dstf.borderColor = srcf.borderColor
         dstf.borderSize  = srcf.borderSize
         dstf.backColor   = srcf.backColor
@@ -54,13 +54,13 @@ impl IForm for FormPolygon
             return false
         }
 
-        x0 := cast(s32) ((localPos.x - paintRect.x) / zoom)
-        y0 := cast(s32) ((localPos.y - paintRect.y) / zoom)
+        var x0 = cast(s32) ((localPos.x - paintRect.x) / zoom)
+        var y0 = cast(s32) ((localPos.y - paintRect.y) / zoom)
 
         if points.count < 2
         {
-            xs := cast(s32) ((movingStart.x - paintRect.x) / zoom)
-            ys := cast(s32) ((movingStart.y - paintRect.y) / zoom)
+            var xs = cast(s32) ((movingStart.x - paintRect.x) / zoom)
+            var ys = cast(s32) ((movingStart.y - paintRect.y) / zoom)
             points.add({xs, ys})
             points.add({x0, y0})
         }
@@ -88,9 +88,9 @@ impl IForm for FormPolygon
 
     mtd impl setBaseForm(newPosX, newPosY, newSizeX, newSizeY: s32)
     {
-        rect := boundRect()
-        fx := newSizeX / rect.width
-        fy := newSizeY / rect.height
+        var rect = boundRect()
+        var fx = newSizeX / rect.width
+        var fy = newSizeY / rect.height
 
         visit &pt: points
         {
@@ -129,11 +129,11 @@ impl IForm for FormPolygon
 
         var result: retval
 
-        bSize := borderSize * 0.5
-        x0 := Swag.F32.Max
-        y0 := Swag.F32.Max
-        x1 := 0'f32
-        y1 := 0'f32
+        var bSize = borderSize * 0.5
+        var x0 = Swag.F32.Max
+        var y0 = Swag.F32.Max
+        var x1 = 0'f32
+        var y1 = 0'f32
         visit &pt: points
         {
             x0 = Math.min(x0, pt.x - bSize)
@@ -155,13 +155,13 @@ impl IForm for FormPolygon
 
     mtd computePaintCoords(z: f32)
     {
-        rect := boundRect()
+        var rect = boundRect()
 
         paintPoints.clear()
         visit pt: points
         {
-            x0 := (pt.x * z) - (rect.x * z) + paintPos.x
-            x1 := (pt.y * z) - (rect.y * z) + paintPos.y
+            var x0 = (pt.x * z) - (rect.x * z) + paintPos.x
+            var x1 = (pt.y * z) - (rect.y * z) + paintPos.y
             paintPoints.add({x0, x1})
         }
     }
@@ -179,7 +179,7 @@ impl IForm for FormPolygon
             gizmo.anchors.clear()
             visit pt: paintPoints
                 gizmo.anchors.add({pt.x, pt.y})
-            col := subKind == .PixSel ? Argb.Yellow : Argb.White
+            var col = subKind == .PixSel ? Argb.Yellow : Argb.White
             gizmo.paint(null, painter, flags & .Selected ? false : true, col)
         }
     }
@@ -191,18 +191,18 @@ impl IForm for FormPolygon
 
     mtd impl hitTest(pt: Math.Point, z: f32)->bool
     {
-        bSize := borderSize * z * 0.5
+        var bSize = borderSize * z * 0.5
         computePaintCoords(z)
 
         // Just the outline
         if backColor.a == 0
         {
-            v := Math.Vector2{pt.x, pt.y}
+            var v = Math.Vector2{pt.x, pt.y}
             loop i: paintPoints
             {
-                ni := (i + 1) % paintPoints.count
-                p0 := Math.Vector2{paintPoints[i].x, paintPoints[i].y}
-                p1 := Math.Vector2{paintPoints[ni].x, paintPoints[ni].y}
+                var ni = (i + 1) % paintPoints.count
+                var p0 = Math.Vector2{paintPoints[i].x, paintPoints[i].y}
+                var p1 = Math.Vector2{paintPoints[ni].x, paintPoints[ni].y}
                 if v.distanceToSegment(p0, p1) <= bSize
                     return true
             }
@@ -216,11 +216,11 @@ impl IForm for FormPolygon
 
     mtd impl paint(app: *Application, painter: *Painter, z: f32, quickMode: bool)
     {
-        bSize := adaptSize(borderSize, MinBorderSize, MaxBorderSize, z, quickMode)
+        var bSize = adaptSize(borderSize, MinBorderSize, MaxBorderSize, z, quickMode)
         computePaintCoords(z)
 
-        backBrush := Brush.createHatch(.CheckBoardLarge, Argb.DarkGray)
-        bk := backColor
+        var backBrush = Brush.createHatch(.CheckBoardLarge, Argb.DarkGray)
+        var bk = backColor
         if quickMode and alpha != 100 and subKind == .Highlight
             bk.a = cast(u8) Math.map(cast(f32) alpha, 0, 100, 0, 255)
 
@@ -232,7 +232,7 @@ impl IForm for FormPolygon
             painter.removeParams(.Antialiased)
         }
 
-        pen := Pen.createDash(dashStyle, borderColor, bSize)
+        var pen = Pen.createDash(dashStyle, borderColor, bSize)
 
         linePath.start(paintPoints[0].x - paintPos.x, paintPoints[0].y - paintPos.y)
         loop i: 1..paintPoints.count-1

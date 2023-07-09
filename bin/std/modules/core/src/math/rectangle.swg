@@ -255,10 +255,10 @@ impl Rectangle
     // If there is no intersection, Zero is returned.
     func intersect(a, b: Rectangle)->Rectangle
     {
-        x1 := max(a.x, b.x)
-        x2 := min(a.x + a.width, b.x + b.width)
-        y1 := max(a.y, b.y)
-        y2 := min(a.y + a.height, b.y + b.height)
+        var x1 = max(a.x, b.x)
+        var x2 = min(a.x + a.width, b.x + b.width)
+        var y1 = max(a.y, b.y)
+        var y2 = min(a.y + a.height, b.y + b.height)
         if x2 >= x1 and y2 >= y1
             return Rectangle{x1, y1, x2 - x1, y2 - y1}
         return Zero;
@@ -279,10 +279,10 @@ impl Rectangle
     // Creates a rectangle that represents the union between 'a' and 'b'.
     func getUnion(a, b: Rectangle)->Rectangle
     {
-        x1 := min(a.x, b.x)
-        x2 := max(a.right(), b.right())
-        y1 := min(a.y, b.y)
-        y2 := max(a.bottom(), b.bottom())
+        var x1 = min(a.x, b.x)
+        var x2 = max(a.right(), b.right())
+        var y1 = min(a.y, b.y)
+        var y2 = max(a.bottom(), b.bottom())
         return Rectangle{x1, y1, x2 - x1, y2 - y1}
     }
 

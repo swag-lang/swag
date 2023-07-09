@@ -18,6 +18,6 @@ using Core
 
     //format(&buf, "%", &buf)
 
-    //str := buf.toString()
+    //var str = buf.toString()
     //Console.write(cast(string) str)
 }

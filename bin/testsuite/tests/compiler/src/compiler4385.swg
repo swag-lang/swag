@@ -6,5 +6,5 @@ func isF32(t: typeinfo)->bool => t == f32
 //#global testerror
 #test
 {
-    x:= isF32(f32)
+    var x = isF32(f32)
 }

@@ -12,7 +12,7 @@ impl A
 {
     const C: A = {1}
     const D: s32 = 2
-    //v := C - D
+    //var v = C - D
     const E = C - D
     //@print(v.x)
 }

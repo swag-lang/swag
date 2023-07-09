@@ -1,4 +1,4 @@
 func toto(toto: f32)
 {
-    x := toto
+    var x = toto
 }

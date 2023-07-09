@@ -7,5 +7,5 @@ struct A { a, b, c: s32; }
 func toto(v: bool)
 {
     var a: A = undefined
-    b := a
+    var b = a
 }

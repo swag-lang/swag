@@ -5,8 +5,8 @@ var x: any = "666"
 //#[Swag.PrintBc]
 #test
 {
-	t := @kindof(x)
+	var t = @kindof(x)
 	@assert(t.fullname == "string")
-	ptr := cast(*string) @dataof(x)
+	var ptr = cast(*string) @dataof(x)
 	@assert(dref ptr == "666")
 }

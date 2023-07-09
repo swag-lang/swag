@@ -16,7 +16,7 @@ impl KeyboardStateNative
 
     mtd isKeyPressed(key: Input.Key)->bool
     {
-        vkey := Keyboard.mapKeyToVKey[key]
+        var vkey = Keyboard.mapKeyToVKey[key]
         if vkey == 0
             return false
         return nativeState[vkey] & 0x80 ? true : false

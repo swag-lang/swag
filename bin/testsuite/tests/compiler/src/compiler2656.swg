@@ -23,7 +23,7 @@ impl AA
     {
         titi(null)
         {
-            v := cast(*ENUM) ptr
+            var v = cast(*ENUM) ptr
         }
     }
 }

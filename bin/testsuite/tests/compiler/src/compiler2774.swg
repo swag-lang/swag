@@ -1,5 +1,5 @@
 #test
 {
-    x := 456.0
-    v := @sqrt(@sqrt(x))
+    var x = 456.0
+    var v = @sqrt(@sqrt(x))
 }

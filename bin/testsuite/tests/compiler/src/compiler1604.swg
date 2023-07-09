@@ -15,5 +15,5 @@ enum Color
 //#[Swag.PrintBc]
 #test
 {
-    x := Color.Alpha
+    var x = Color.Alpha
 }

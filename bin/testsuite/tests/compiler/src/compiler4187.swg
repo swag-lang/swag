@@ -4,8 +4,8 @@
 func toto(z: f32)->f32
 {
     const F = 0'f32
-    x := 1
-    y := x + 0'f32
+    var x = 1
+    var y = x + 0'f32
     return z + y
 }
 

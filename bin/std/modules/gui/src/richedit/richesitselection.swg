@@ -5,11 +5,11 @@ private impl RichEditCtrl
 {
     mtd getSelectionRectRange(lineIndex: u64, rankBeg, rankEnd: *u64)->bool
     {
-        line := lines[lineIndex]
-        len  := line.length()
+        var line = lines[lineIndex]
+        var len = line.length()
 
-        x := getMarginLeft()
-        rb := 0'u64
+        var x = getMarginLeft()
+        var rb = 0'u64
         while x < selRectangle.x and rb < len
         {
             x += getRuneSize(line, rb, x).x
@@ -20,7 +20,7 @@ private impl RichEditCtrl
         if x < selRectangle.x
             return false
 
-        re := rb
+        var re = rb
         while x < selRectangle.right() and re < len
         {
             x += getRuneSize(line, re, x).x
@@ -34,7 +34,7 @@ private impl RichEditCtrl
 
     mtd deleteSelectionPrivate(posStart, posEnd: RichEditCursor, selRect: bool)
     {
-        undo := Memory.new'RichEditUndo()
+        var undo = Memory.new'RichEditUndo()
         undo.type       = .Delete
         (undo.runes, undo.styles) = getTextPrivate(posStart, posEnd)
         undo.selBeg     = selBeg
@@ -48,7 +48,7 @@ private impl RichEditCtrl
 
     mtd undoRestoreSelection()
     {
-        undo := Memory.new'RichEditUndo()
+        var undo = Memory.new'RichEditUndo()
         undo.type      = .Selection
         undo.selBeg    = selBeg
         undo.cursorPos = cursorPos
@@ -62,10 +62,10 @@ private impl RichEditCtrl
         if !hasSelRect
             return
 
-        size := getXExtent()
+        var size = getXExtent()
 
-        ptBeg := getCursorDisplayPos(beg)
-        ptEnd := getCursorDisplayPos(end)
+        var ptBeg = getCursorDisplayPos(beg)
+        var ptEnd = getCursorDisplayPos(end)
 
         if ptBeg.x > ptEnd.x
             swap(&ptBeg, &ptEnd)
@@ -166,7 +166,7 @@ impl RichEditCtrl
             invalidate()
         }
 
-        back := lines.back()
+        var back = lines.back()
         if selBeg.lineIndex == lines.count - 1 and selBeg.charPosInLine > back.length()
             selBeg.charPosInLine = back.length()
 
@@ -184,7 +184,7 @@ impl RichEditCtrl
             return
 
         pushUndo()
-        cp := getBegSelection()
+        var cp = getBegSelection()
         deleteSelectionPrivate(cp, getEndSelection(), hasSelRect)
         computeScrollY()
 
@@ -212,7 +212,7 @@ impl RichEditCtrl
         }
         elif hasSelRect and selBeg.charPosInLine == cursorPos.charPosInLine
         {
-            cp := cursorPos
+            var cp = cursorPos
             moveCursorLeft(&cp)
             if cp.lineIndex == cursorPos.lineIndex
             {
@@ -267,18 +267,18 @@ impl RichEditCtrl
     {
         if isSelectionEmpty()
             return
-        res := getTextPrivate(getBegSelection(), getEndSelection())
+        var res = getTextPrivate(getBegSelection(), getEndSelection())
 
         registerClipboardFormat()
         if clipFormat Clipboard.addData(clipFormat, res.styles.toSlice())
 
-        txt := Utf8.fromUnicode(res.text.toSlice())
+        var txt = Utf8.fromUnicode(res.text.toSlice())
         Clipboard.addString(txt)
     }
 
     mtd pasteFromClipboard()
     {
-        txt := Clipboard.getString()
+        var txt = Clipboard.getString()
         registerClipboardFormat()
 
         pushUndo()
@@ -286,7 +286,7 @@ impl RichEditCtrl
 
         if clipFormat and Clipboard.hasFormat(clipFormat)
         {
-            st := Clipboard.getData(clipFormat)
+            var st = Clipboard.getData(clipFormat)
             insertText(txt, st)
         }
         else
@@ -299,8 +299,8 @@ impl RichEditCtrl
     mtd deleteLine()
     {
         pushUndo()
-        beg := getBegSelection()
-        end := getEndSelection()
+        var beg = getBegSelection()
+        var end = getEndSelection()
         if end.charPosInLine == 0 and beg.lineIndex != end.lineIndex
             moveCursorLeft(&end)
         beg.charPosInLine = 0
@@ -315,16 +315,16 @@ impl RichEditCtrl
 
     mtd selectWord()
     {
-        line := lines[cursorPos.lineIndex]
-        len  := line.length()
+        var line = lines[cursorPos.lineIndex]
+        var len = line.length()
         if !len
             return
 
         if cursorPos.charPosInLine == len
             cursorPos.charPosInLine -= 1
-        cp := cursorPos.charPosInLine ? line.chars[selBeg.charPosInLine - 1] : 0'rune
-        c  := selBeg.charPosInLine == len ? 0'rune : line.chars[selBeg.charPosInLine]
-        cn := cursorPos.charPosInLine != len - 1 ? line.chars[selBeg.charPosInLine + 1] : 0'rune
+        var cp = cursorPos.charPosInLine ? line.chars[selBeg.charPosInLine - 1] : 0'rune
+        var c = selBeg.charPosInLine == len ? 0'rune : line.chars[selBeg.charPosInLine]
+        var cn = cursorPos.charPosInLine != len - 1 ? line.chars[selBeg.charPosInLine + 1] : 0'rune
 
         if Unicode.isSpace(c) and !Unicode.isSpace(cp) and !Unicode.isSpace(cn) and cursorPos.charPosInLine
             cursorPos.charPosInLine -= 1
@@ -369,17 +369,17 @@ impl RichEditCtrl
 
     mtd scrollLineUp()
     {
-        pt := scrollWnd.getScrollPos()
-        size := getXExtent()
+        var pt = scrollWnd.getScrollPos()
+        var size = getXExtent()
 
-        sy := (pt.y / size.y) * size.y
+        var sy = (pt.y / size.y) * size.y
         sy -= size.y
 
         scrollWnd.setScrollPos(pt.x, sy)
         sy = scrollWnd.getScrollPos().y
 
-        clientRect := edView.getClientRect()
-        pos := getCaretPos(cursorPos)
+        var clientRect = edView.getClientRect()
+        var pos = getCaretPos(cursorPos)
         while pos.bottom() > sy + clientRect.height
         {
             if !moveCursorUp(&cursorPos)
@@ -391,16 +391,16 @@ impl RichEditCtrl
 
     mtd scrollLineDown()
     {
-        pt := scrollWnd.getScrollPos()
-        size := getXExtent()
+        var pt = scrollWnd.getScrollPos()
+        var size = getXExtent()
 
-        sy := (pt.y / size.y) * size.y
+        var sy = (pt.y / size.y) * size.y
         sy += size.y
 
         scrollWnd.setScrollPos(pt.x, sy)
         sy = scrollWnd.getScrollPos().y
 
-        pos := getCaretPos(cursorPos)
+        var pos = getCaretPos(cursorPos)
         while pos.y < sy
         {
             if !moveCursorDown(&cursorPos)

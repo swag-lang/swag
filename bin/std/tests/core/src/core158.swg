@@ -5,12 +5,12 @@ using Core.Math
 #test
 {
     {
-        a := Rectangle{0, 0, 10, 8}
-        b := Rectangle{5, 5, 15, 15}
+        var a = Rectangle{0, 0, 10, 8}
+        var b = Rectangle{5, 5, 15, 15}
         @assert(a.intersectWith(b))
         @assert(b.intersectWith(a))
 
-        c := Rectangle.intersect(a, b)
+        var c = Rectangle.intersect(a, b)
         @assert(c.x == 5)
         @assert(c.y == 5)
         @assert(c.width == 5)
@@ -18,8 +18,8 @@ using Core.Math
     }
 
     {
-        a := Rectangle{0, 0, 10, 8}
-        b := Rectangle{5, 5, 15, 15}
+        var a = Rectangle{0, 0, 10, 8}
+        var b = Rectangle{5, 5, 15, 15}
         a.intersect(b)
         @assert(a.x == 5)
         @assert(a.y == 5)

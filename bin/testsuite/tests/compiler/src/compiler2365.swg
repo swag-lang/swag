@@ -16,7 +16,7 @@ public func macro2365(stmt: code)
 
 #test
 {
-    g := 0
+    var g = 0
     macro2365()
     {
         break

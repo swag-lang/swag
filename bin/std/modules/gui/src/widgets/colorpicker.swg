@@ -44,15 +44,15 @@ impl IWnd for ColorPicker
 {
     mtd computeXY()
     {
-        clientRect := getClientRect()
+        var clientRect = getClientRect()
 
         #[Swag.Complete]
         switch mode
         {
         case SaturationLightness:
             xCur = cast(s32) (sat * clientRect.width)
-            l1 := Math.lerp(1, 0.5, sat)
-            l2 := 1 - (lum / l1)
+            var l1 = Math.lerp(1, 0.5, sat)
+            var l2 = 1 - (lum / l1)
             if l2 < 0
             {
                 l2 = -l2
@@ -117,12 +117,12 @@ impl IWnd for ColorPicker
 
     mtd impl onPaintEvent(evt: *PaintEvent)
     {
-        bc := evt.bc
-        painter    := bc.painter
-        clientRect := getClientRect()
-        theme      := getTheme()
-        rects      := getThemeRects()
-        colors     := getThemeColors()
+        var bc = evt.bc
+        var painter = bc.painter
+        var clientRect = getClientRect()
+        var theme = getTheme()
+        var rects = getThemeRects()
+        var colors = getThemeColors()
 
         // Reconstruct image
         if dirty
@@ -135,58 +135,58 @@ impl IWnd for ColorPicker
 
             if mode == .AlphaHorz
             {
-                c := Color.fromHsl(hue, sat, lum)
-                c1 := c; c1.a = 0
-                c2 := c; c2.a = 255
+                var c = Color.fromHsl(hue, sat, lum)
+                var c1 = c; c1.a = 0
+                var c2 = c; c2.a = 255
                 img.fillGradient2(c1, c2)
             }
             elif mode == .AlphaVert
             {
-                c := Color.fromHsl(hue, sat, lum)
-                c1 := c; c1.a = 255
-                c2 := c; c2.a = 0
+                var c = Color.fromHsl(hue, sat, lum)
+                var c1 = c; c1.a = 255
+                var c2 = c; c2.a = 0
                 img.fillGradient4(c1, c1, c2, c2)
             }
             elif mode == .RedHorz
             {
-                c := Color.fromRgbf(r, g, b)
-                c1 := c; c1.r = 0
-                c2 := c; c2.r = 255
+                var c = Color.fromRgbf(r, g, b)
+                var c1 = c; c1.r = 0
+                var c2 = c; c2.r = 255
                 img.fillGradient2(c1, c2)
             }
             elif mode == .RedVert
             {
-                c := Color.fromRgbf(r, g, b)
-                c1 := c; c1.r = 255
-                c2 := c; c2.r = 0
+                var c = Color.fromRgbf(r, g, b)
+                var c1 = c; c1.r = 255
+                var c2 = c; c2.r = 0
                 img.fillGradient4(c1, c1, c2, c2)
             }
             elif mode == .GreenHorz
             {
-                c := Color.fromRgbf(r, g, b)
-                c1 := c; c1.g = 0
-                c2 := c; c2.g = 255
+                var c = Color.fromRgbf(r, g, b)
+                var c1 = c; c1.g = 0
+                var c2 = c; c2.g = 255
                 img.fillGradient2(c1, c2)
             }
             elif mode == .GreenVert
             {
-                c := Color.fromRgbf(r, g, b)
-                c1 := c; c1.g = 255
-                c2 := c; c2.g = 0
+                var c = Color.fromRgbf(r, g, b)
+                var c1 = c; c1.g = 255
+                var c2 = c; c2.g = 0
                 img.fillGradient4(c1, c1, c2, c2)
             }
             elif mode == .BlueHorz
             {
-                c := Color.fromRgbf(r, g, b)
-                c1 := c; c1.b = 0
-                c2 := c; c2.b = 255
+                var c = Color.fromRgbf(r, g, b)
+                var c1 = c; c1.b = 0
+                var c2 = c; c2.b = 255
                 img.fillGradient2(c1, c2)
             }
             elif mode == .BlueVert
             {
-                c := Color.fromRgbf(r, g, b)
-                c1 := c; c1.b = 255
-                c2 := c; c2.b = 0
+                var c = Color.fromRgbf(r, g, b)
+                var c1 = c; c1.b = 255
+                var c2 = c; c2.b = 0
                 img.fillGradient4(c1, c1, c2, c2)
             }
             else
@@ -234,50 +234,50 @@ impl IWnd for ColorPicker
 
     private mtd computeRGB()
     {
-        c := Color.fromHsl(hue, sat, lum)
+        var c = Color.fromHsl(hue, sat, lum)
         (r, g, b) = c.toRgbf()
     }
 
     private mtd computeHsl()
     {
-        c := Color.fromRgbf(r, g, b)
+        var c = Color.fromRgbf(r, g, b)
         (hue, sat, lum) = c.toHsl()
     }
 
     mtd impl onPostPaintEvent(evt: *PaintEvent)
     {
-        bc := evt.bc
-        painter     := bc.painter
-        theme       := getTheme()
-        rects       := getThemeRects()
-        clientRect  := getClientRect()
-        metrics     := getThemeMetrics()
-        colors      := getThemeColors()
+        var bc = evt.bc
+        var painter = bc.painter
+        var theme = getTheme()
+        var rects = getThemeRects()
+        var clientRect = getClientRect()
+        var metrics = getThemeMetrics()
+        var colors = getThemeColors()
 
         #[Swag.Complete]
         switch mode
         {
         case SaturationLightness, HueSaturation, HueLightness, GreenBlue, RedBlue, RedGreen:
-            size := metrics.colorPicker_RoundPick
-            rect := Math.Rectangle{xCur-size, yCur-size, 2*size, 2*size}
+            var size = metrics.colorPicker_RoundPick
+            var rect = Math.Rectangle{xCur-size, yCur-size, 2*size, 2*size}
             theme.drawSubRect(painter, rect, &rects.colorPicker_RoundPick, colors.colorPicker_Mark)
 
         case RedVert, GreenVert, BlueVert, AlphaVert, HueVert, LightnessVert, SaturationVert:
-            size := metrics.colorPicker_SquarePick
-            rect := Math.Rectangle{clientRect.horzCenter()-size, yCur-size, 2*size, 2*size}
+            var size = metrics.colorPicker_SquarePick
+            var rect = Math.Rectangle{clientRect.horzCenter()-size, yCur-size, 2*size, 2*size}
             theme.drawSubRect(painter, rect, &rects.colorPicker_SquarePick, colors.colorPicker_Mark)
 
         case RedHorz, GreenHorz, BlueHorz, AlphaHorz, HueHorz, LightnessHorz, SaturationHorz:
-            size := metrics.colorPicker_SquarePick
-            rect := Math.Rectangle{xCur-size, clientRect.vertCenter()-size, 2*size, 2*size}
+            var size = metrics.colorPicker_SquarePick
+            var rect = Math.Rectangle{xCur-size, clientRect.vertCenter()-size, 2*size, 2*size}
             theme.drawSubRect(painter, rect, &rects.colorPicker_SquarePick, colors.colorPicker_Mark)
         }
     }
 
     mtd impl onMouseEvent(evt: *MouseEvent)
     {
-        pos := surfaceToLocal(evt.surfacePos)
-        clientRect := getClientRect()
+        var pos = surfaceToLocal(evt.surfacePos)
+        var clientRect = getClientRect()
         pos.x = Math.clamp(pos.x, 0, clientRect.width)
         pos.y = Math.clamp(pos.y, 0, clientRect.height)
 
@@ -295,15 +295,15 @@ impl IWnd for ColorPicker
         case MouseMove:
             if isMoving
             {
-                x := Math.clamp(pos.x / clientRect.width, 0, 1)
-                y := Math.clamp(pos.y / clientRect.height, 0, 1)
+                var x = Math.clamp(pos.x / clientRect.width, 0, 1)
+                var y = Math.clamp(pos.y / clientRect.height, 0, 1)
 
                 #[Swag.Complete]
                 switch mode
                 {
                 case SaturationLightness:
                     sat = Math.clamp(x, 0, 1)
-                    l1 := Math.lerp(1, 0.5, sat)
+                    var l1 = Math.lerp(1, 0.5, sat)
                     lum = Math.lerp(l1, 0, y)
 
                 case HueSaturation:     hue = x; sat = 1 - y; computeRGB()
@@ -349,7 +349,7 @@ impl ColorPicker
     func create(parent: *Wnd, position: Math.Rectangle = {}, id: WndId = null)->*ColorPicker
     {
         Debug.assert(parent != null)
-        ret := Wnd.create'ColorPicker(parent, null, position, id)
+        var ret = Wnd.create'ColorPicker(parent, null, position, id)
         ret.wndFlags |= .PostChildsPaint
         ret.setColor(Argb.Red)
         ret.invalidatePadding = {-32, -32, -32, -32}
@@ -359,7 +359,7 @@ impl ColorPicker
     // Change one component, HSL or alpha
     mtd change(h, s, l, a: f32 = -1)
     {
-        changed := false
+        var changed = false
         if h >= 0 and h != hue
         {
             hue = h

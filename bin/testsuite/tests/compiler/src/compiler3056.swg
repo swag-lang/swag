@@ -11,6 +11,6 @@ impl Toto
 
 #test
 {
-    to := @typeof(Toto)
+    var to = @typeof(Toto)
     @assert(@countof(to.fields) == 1)
 }

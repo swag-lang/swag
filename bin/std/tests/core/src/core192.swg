@@ -4,7 +4,7 @@ using Core
 #test
 {
     {
-        res := Unicode.fromUtf8("abc")
+        var res = Unicode.fromUtf8("abc")
         Unicode.makeUpper(res.toSlice())
         @assert(res[0] == "A"'rune)
         @assert(res[1] == "B"'rune)
@@ -13,7 +13,7 @@ using Core
     }
 
     {
-        res := Unicode.fromUtf8("éxàmple")
+        var res = Unicode.fromUtf8("éxàmple")
         Unicode.makeUpper(res.toSlice())
         //Console.print("%", res)
         @assert(res[0] == "É"'rune)

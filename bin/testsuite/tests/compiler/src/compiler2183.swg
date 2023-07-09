@@ -7,13 +7,13 @@ struct ST
 func toto()->ST
 {
     var res: retval
-    res1 := res
+    var res1 = res
     return res
 }
 
 //#[Swag.PrintBc]
 #test
 {
-    v := toto()
+    var v = toto()
     @assert(v.x == 10)
 }

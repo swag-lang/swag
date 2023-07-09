@@ -1,5 +1,5 @@
 #test
 {
-    x := [1'u8,1'u8]
-    y := cast([..] u16) x
+    var x = [1'u8,1'u8]
+    var y = cast([..] u16) x
 }

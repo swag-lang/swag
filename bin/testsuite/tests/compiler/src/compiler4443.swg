@@ -35,7 +35,7 @@ impl I for B
 #test
 {
     var b: B
-    i := cast(I) b
+    var i = cast(I) b
 
     var pt: Pt
     i.toto(pt)

@@ -9,7 +9,7 @@ Initialize `G` with `[1,2,4,8,16]` at compile time.
 */
 #run
 {
-    value := 1'f32
+    var value = 1'f32
     loop i: @countof(G)
     {
         G[i] = value
@@ -38,7 +38,7 @@ const SumValue = #run sum(1, 2, 3, 4) + 10
 
 func sum(values: s32...)->s32
 {
-    result := 0's32
+    var result = 0's32
     visit v: values
         result += v
     return result

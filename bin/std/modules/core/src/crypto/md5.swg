@@ -19,8 +19,8 @@ public impl Md5
         var bits: [8] u8
         encode(&bits[0], count, 8)
 
-        index  := (count[0] >> 3) & 0x3f
-        padLen := (index < 56) ? (56 - index) : (120 - index)
+        var index = (count[0] >> 3) & 0x3f
+        var padLen = (index < 56) ? (56 - index) : (120 - index)
 
         update(@mkslice(&padding[0], padLen))
         update(@mkslice(&bits[0], 8))
@@ -44,16 +44,16 @@ public impl Md5
         // Only deal with 32 bits size
         Debug.assert(@countof(data) <= Swag.U32.Max)
 
-        input := @dataof(data)
-        inputLen := cast(u32) @countof(data)
+        var input = @dataof(data)
+        var inputLen = cast(u32) @countof(data)
 
-        index := (count[0] >> 3) & 0x3F
+        var index = (count[0] >> 3) & 0x3F
         count[0] += inputLen << 3
         if count[0] < inputLen << 3 count[1] += 1
         count[1] += inputLen >> 29
 
-        i := 0'u32
-        partLen := 64 - index
+        var i = 0'u32
+        var partLen = 64 - index
         if inputLen >= partLen
         {
             Memory.copy(&buffer[index], input, cast(u64) partLen)
@@ -150,10 +150,10 @@ impl Md5
 
     func transform(state: [4] u32, block: const ^u8)
     {
-        a := state[0]
-        b := state[1]
-        c := state[2]
-        d := state[3]
+        var a = state[0]
+        var b = state[1]
+        var c = state[2]
+        var d = state[3]
         var x: [16] u32
 
         decode(x, block, 64)
@@ -239,7 +239,7 @@ impl Md5
 
     func encode(output: ^u8, input: ^u32, len: u32)
     {
-        i, j := 0
+        var i, j = 0
         while j < len
         {
             output[j]     = cast(u8) (input[i] & 0xff)
@@ -253,7 +253,7 @@ impl Md5
 
     func decode(output: ^u32, input: const ^u8, len: u32)
     {
-        i, j := 0
+        var i, j = 0
         while j < len
         {
             output[i] = (cast(u32) input[j]) |

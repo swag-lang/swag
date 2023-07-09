@@ -14,7 +14,7 @@ impl AA
 #test
 {
     var x: AA
-    cpt := 0
+    var cpt = 0
     loop x
         cpt += 1
     @assert(cpt == 4)

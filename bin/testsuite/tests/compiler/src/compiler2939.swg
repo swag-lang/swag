@@ -1,6 +1,6 @@
 #test
 {
-    x := 5
+    var x = 5
     switch x
     {
     case 0..<5:  @assert(false)

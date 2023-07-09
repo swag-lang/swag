@@ -1,5 +1,5 @@
 //#[Swag.PrintBc]
 #test
 {
-    x := {}
+    var x = {}
 }

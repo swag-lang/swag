@@ -4,7 +4,7 @@ A basic test with `if`. Curlies are optional. The expression doesn't need to be 
 
 #test
 {
-    a := 0
+    var a = 0
     if a == 1
         @assert(false)
     if (a == 1)

@@ -6,5 +6,5 @@ struct AA
 func titi()
 {
     var x: AA
-    ptr := {&x}
+    var ptr = {&x}
 }

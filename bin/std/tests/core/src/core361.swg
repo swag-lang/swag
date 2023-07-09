@@ -4,7 +4,7 @@ using Core
 #test
 {
     var c: ConcatBuffer
-    s := c.getSeek()
+    var s = c.getSeek()
     c.moveSeek(10)
     @assert(c.count() == 10)
     c.setSeek(s)

@@ -7,7 +7,7 @@ func(T) add(x, y: T)->T
 
 #test
 {
-    v := add(1'u8, 2)
-    v1 := add(1'u16, 2)
-    v2 := add(1, 2)
+    var v = add(1'u8, 2)
+    var v1 = add(1'u16, 2)
+    var v2 = add(1, 2)
 }

@@ -3,8 +3,8 @@ using Swag
 //#[PrintBc]
 #test
 {
-    a := 10
-    b := a + 0
+    var a = 10
+    var b = a + 0
     @assert(b == a)
     b = 0 + a
     @assert(b == a)
@@ -16,8 +16,8 @@ using Swag
 
 #test
 {
-    a := 10
-    b := a * 1
+    var a = 10
+    var b = a * 1
     @assert(b == a)
     b = 1 * a
     @assert(b == a)
@@ -29,7 +29,7 @@ using Swag
 
 #test
 {
-    a := 1
+    var a = 1
     if false and a > 0
         @assert(true)
     if a > 0 and false

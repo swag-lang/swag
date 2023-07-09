@@ -1,7 +1,7 @@
 //#[Swag.PrintBc]
 #test
 {
-    a := 666
+    var a = 666
     if a == 666
     {
         #[Swag.Mixin]

@@ -56,10 +56,10 @@ public impl IWnd for MenuCtrl
 {
     private mtd paintBar(painter: *Painter)
     {
-        theme   := getTheme()
-        colors  := getThemeColors()
-        rects   := getThemeRects()
-        metrics := getThemeMetrics()
+        var theme = getTheme()
+        var colors = getThemeColors()
+        var rects = getThemeRects()
+        var metrics = getThemeMetrics()
 
         if dirtyLayout
         {
@@ -68,7 +68,7 @@ public impl IWnd for MenuCtrl
         }
 
         // Back
-        clientRect := getClientRect()
+        var clientRect = getClientRect()
         if backgroundStyle != .Transparent
         {
             theme.drawSubRect(painter, clientRect, &rects.menuBar_Bk, colors.menuBar_Bk)
@@ -107,7 +107,7 @@ public impl IWnd for MenuCtrl
             i.aniSel.apply(self, colorSel)
             i.aniText.apply(self, colorText)
 
-            backPos := labelPos
+            var backPos = labelPos
             backPos.x -= metrics.menuBar_SpaceBetween * 0.5
             backPos.width += metrics.menuBar_SpaceBetween
             theme.drawSubRect(painter, backPos, &rects.menuBar_SelectedBk, i.aniSel.cur())
@@ -132,20 +132,20 @@ public impl IWnd for MenuCtrl
 
     private mtd paintPopup(painter: *Painter)
     {
-        theme   := getTheme()
-        colors  := getThemeColors()
-        rects   := getThemeRects()
-        metrics := getThemeMetrics()
+        var theme = getTheme()
+        var colors = getThemeColors()
+        var rects = getThemeRects()
+        var metrics = getThemeMetrics()
 
         // Shadow
         if !paintByFrame
         {
-            subRect := &theme.rects.menuPopup_Shadow
+            var subRect = &theme.rects.menuPopup_Shadow
             theme.drawSubRect(painter, {0, 0, position.width, position.height}, subRect, colors.menuPopup_Shadow)
         }
 
         // Back
-        clientRect := getClientRect()
+        var clientRect = getClientRect()
         if !paintByFrame
         {
             clientRect.inflate(-metrics.menuPopup_ShadowSize)
@@ -159,7 +159,7 @@ public impl IWnd for MenuCtrl
         var colorText: Color
         var colorRightText: Color
 
-        lastIsSeparator := true
+        var lastIsSeparator = true
         visit i, idx: items
         {
             if i.hidden
@@ -195,7 +195,7 @@ public impl IWnd for MenuCtrl
             i.aniText.apply(self, colorText)
             i.aniRightText.apply(self, colorRightText)
 
-            backPos := labelPos
+            var backPos = labelPos
             backPos.y -= metrics.menuPopup_SpaceLines * 0.5
             backPos.height += metrics.menuPopup_SpaceLines
             backPos.inflate(paddingSel, 0)
@@ -204,7 +204,7 @@ public impl IWnd for MenuCtrl
             // Icon
             if i.checked
             {
-                checkPos := labelPos
+                var checkPos = labelPos
                 checkPos.y = labelPos.vertCenter() - i.size * 0.5
                 checkPos.width, checkPos.height = i.size
                 theme.drawSubRect(painter, checkPos, &rects.btnCheck_CheckedMark, i.aniText.cur())
@@ -242,7 +242,7 @@ public impl IWnd for MenuCtrl
             // Right icon
             if i.popup
             {
-                icon := theme.getIcon24(ThemeIcons24.RightPopupArrow)
+                var icon = theme.getIcon24(ThemeIcons24.RightPopupArrow)
                 icon.paint(painter, labelPos.right(), labelPos.vertCenter() - icon.sizeY * 0.5, colors.popupItem_Text)
             }
         }
@@ -266,7 +266,7 @@ public impl IWnd for MenuCtrl
 
     mtd impl onMouseEvent(evt: *MouseEvent)
     {
-        hit := hitTest(evt.surfacePos)
+        var hit = hitTest(evt.surfacePos)
         if hit != hotIdx
         {
             // Timer to auto open/hide sub menus
@@ -282,7 +282,7 @@ public impl IWnd for MenuCtrl
 
             if hit != Swag.U32.Max
             {
-                p := ownerMenu
+                var p = ownerMenu
                 while p
                 {
                     p.deleteTimer()
@@ -317,7 +317,7 @@ public impl IWnd for MenuCtrl
         {
             if hotIdx != Swag.U32.Max
             {
-                hotItem := items[hotIdx]
+                var hotItem = items[hotIdx]
                 if hotItem.popup
                 {
                     hideSubVisible()
@@ -341,7 +341,7 @@ impl MenuCtrl
 {
     mtd setEndModal(result: WndId)
     {
-        p := self
+        var p = self
         while p.ownerMenu
         {
             p.hide()
@@ -396,7 +396,7 @@ impl MenuCtrl
     {
         visit i: items
         {
-            evt := sendComputeCommandStateEvent(i.id)
+            var evt = sendComputeCommandStateEvent(i.id)
             if evt.setFlags & .Disabled
                 i.disabled = evt.disabled
             if evt.setFlags & .Hidden
@@ -418,7 +418,7 @@ impl MenuCtrl
     {
         with subVisible
         {
-            pt := .parent.surfaceToLocal(ptSurface)
+            var pt = .parent.surfaceToLocal(ptSurface)
             .setPosition({pt.x, pt.y, .position.width, .position.height})
             .bringToTop()
             .show()
@@ -433,10 +433,10 @@ impl MenuCtrl
     mtd showHotPopupBar()
     {
         selectedIdx = hotIdx
-        hotItem := items[hotIdx]
-        metrics := getThemeMetrics()
+        var hotItem = items[hotIdx]
+        var metrics = getThemeMetrics()
 
-        pos := getSurfaceRect()
+        var pos = getSurfaceRect()
         pos.x += hotItem.pos
         pos.x -= metrics.menuPopup_ShadowSize
         pos.x -= metrics.menuBar_SpaceBetween * 0.5
@@ -447,9 +447,9 @@ impl MenuCtrl
         // Be sure popup menu is in the client area of the top view
         subVisible.updateState()
         subVisible.computeLayoutPopup()
-        topView := getTopView()
-        pt := topView.surfaceToLocal({pos.x, pos.y})
-        subPos := subVisible.position
+        var topView = getTopView()
+        var pt = topView.surfaceToLocal({pos.x, pos.y})
+        var subPos = subVisible.position
         if pt.x + subPos.width > topView.position.width
             pt.x = topView.position.width - subPos.width
         if pt.y + subPos.height > topView.position.height
@@ -462,11 +462,11 @@ impl MenuCtrl
     mtd showHotPopupPopup()
     {
         selectedIdx = hotIdx
-        hotItem := items[hotIdx]
+        var hotItem = items[hotIdx]
 
-        pos := getSurfaceRect()
-        sdw := getThemeMetrics().menuPopup_ShadowSize
-        surfaceRect := pos
+        var pos = getSurfaceRect()
+        var sdw = getThemeMetrics().menuPopup_ShadowSize
+        var surfaceRect = pos
         pos.x = pos.right() - sdw
         pos.y += hotItem.pos
         pos.y -= padding.y
@@ -475,10 +475,10 @@ impl MenuCtrl
         // Be sure popup menu is in the client area of the top view
         subVisible.updateState()
         subVisible.computeLayoutPopup()
-        topView := getTopView()
-        pt := topView.surfaceToLocal({pos.x, pos.y})
+        var topView = getTopView()
+        var pt = topView.surfaceToLocal({pos.x, pos.y})
         pt -= sdw
-        subPos := subVisible.position
+        var subPos = subVisible.position
         if pt.x + subPos.width > topView.position.width
             pt.x = surfaceRect.x - subPos.width
         if pt.y + subPos.height > topView.position.height
@@ -504,13 +504,13 @@ impl MenuCtrl
 
     mtd hitTestBar(surfacePos: Math.Point)->u32
     {
-        pos := surfaceToLocal(surfacePos)
-        metrics := getThemeMetrics()
-        clientRect := getClientRect()
-        sl := metrics.menuBar_SpaceBetween
+        var pos = surfaceToLocal(surfacePos)
+        var metrics = getThemeMetrics()
+        var clientRect = getClientRect()
+        var sl = metrics.menuBar_SpaceBetween
         visit i, idx: items
         {
-            rect := Math.Rectangle{i.pos - sl * 0.5, clientRect.y, i.size + sl, clientRect.height}
+            var rect = Math.Rectangle{i.pos - sl * 0.5, clientRect.y, i.size + sl, clientRect.height}
             if rect.contains(pos)
                 return cast(u32) idx
         }
@@ -520,13 +520,13 @@ impl MenuCtrl
 
     mtd hitTestPopup(surfacePos: Math.Point)->u32
     {
-        pos := surfaceToLocal(surfacePos)
-        metrics := getThemeMetrics()
-        clientRect := getClientRect()
-        sl := metrics.menuPopup_SpaceLines
+        var pos = surfaceToLocal(surfacePos)
+        var metrics = getThemeMetrics()
+        var clientRect = getClientRect()
+        var sl = metrics.menuPopup_SpaceLines
         visit i, idx: items
         {
-            rect := Math.Rectangle{clientRect.x, i.pos - sl * 0.5, clientRect.width, i.size + sl}
+            var rect = Math.Rectangle{clientRect.x, i.pos - sl * 0.5, clientRect.width, i.size + sl}
             if rect.contains(pos)
                 return cast(u32) idx
         }
@@ -541,10 +541,10 @@ impl MenuCtrl
 
     mtd computeLayoutBar()
     {
-        metrics    := getThemeMetrics()
-        clientRect := getClientRectPadding()
+        var metrics = getThemeMetrics()
+        var clientRect = getClientRectPadding()
 
-        x := clientRect.x
+        var x = clientRect.x
 
         var fake: Pixel.Painter{fake = true}
         var rsf:  Pixel.RichStringFormat
@@ -565,9 +565,9 @@ impl MenuCtrl
 
     public mtd computeLayoutPopup()
     {
-        metrics := getThemeMetrics()
+        var metrics = getThemeMetrics()
 
-        clientRect := getClientRect()
+        var clientRect = getClientRect()
         if !paintByFrame
             clientRect.inflate(-metrics.menuPopup_ShadowSize)
         clientRect.applyPadding(padding)
@@ -579,7 +579,7 @@ impl MenuCtrl
         var rsf:  Pixel.RichStringFormat
         rsf.font = getFont()
 
-        lastIsSeparator := true
+        var lastIsSeparator = true
         visit i, idx: items
         {
             if i.hidden
@@ -604,7 +604,7 @@ impl MenuCtrl
             i.size = rsf.font.regular.height
 
             fake.drawRichString({0, 0, 512, 0}, &i.name, rsf)
-            w := i.name.boundRect.width
+            var w = i.name.boundRect.width
 
             if !menuCtrlFlags.has(.NoKeyShortcuts) and !i.rightName.isEmpty()
             {
@@ -636,7 +636,7 @@ public impl MenuCtrl
     #[Swag.Discardable]
     func createPopup(parent: *Wnd, id: WndId = null, owner: *Wnd = null)->*MenuCtrl
     {
-        with res := Wnd.create'MenuCtrl(parent.getTopView(), null, {}, id)
+        with var res = Wnd.create'MenuCtrl(parent.getTopView(), null, {}, id)
         {
             .owner = owner orelse #self.parent
             .setAllPaddings(.getThemeMetrics().menuPopup_Padding)
@@ -649,10 +649,10 @@ public impl MenuCtrl
     #[Swag.Discardable]
     func createBar(parent: *Wnd, pos: Math.Rectangle = {}, id: WndId = null, owner: *Wnd = null)->*MenuCtrl
     {
-        with res := Wnd.create'MenuCtrl(parent, null, pos, id)
+        with var res = Wnd.create'MenuCtrl(parent, null, pos, id)
         {
             .owner = owner
-            metrics := .getThemeMetrics()
+            var metrics = .getThemeMetrics()
             if .position.height == 0
                 .position.height = metrics.menuBar_Height
             .setAllPaddings(metrics.menuPopup_Padding)
@@ -671,7 +671,7 @@ public impl MenuCtrl
     // Add a new item
     mtd addItem(name: string, id: WndId, icon: Icon = {}, rightName: string = null, disabled = false, checked = false)
     {
-        with mitem := items.newPtr()
+        with var mitem = items.newPtr()
         {
             .name      = #self.name
             .icon      = #self.icon
@@ -694,7 +694,7 @@ public impl MenuCtrl
     // Add a new popup item
     mtd addPopup(name: string, popup: *MenuCtrl, icon: Icon = {}, id: WndId = null)
     {
-        with mitem := items.newPtr()
+        with var mitem = items.newPtr()
         {
             .name  = #self.name
             .icon  = #self.icon
@@ -710,7 +710,7 @@ public impl MenuCtrl
     // Add a separator
     mtd addSeparator()
     {
-        item := items.newPtr()
+        var item = items.newPtr()
         item.separator = true
         items.add(item)
         dirtyLayout = true
@@ -739,7 +739,7 @@ public impl MenuCtrl
         computeLayoutPopup()
 
         // Be sure popup menu is in the client area of the top view
-        pt := parent.surfaceToLocal(surfacePos)
+        var pt = parent.surfaceToLocal(surfacePos)
 
         switch pos
         {

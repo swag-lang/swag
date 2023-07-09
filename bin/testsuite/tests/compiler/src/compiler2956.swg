@@ -1,14 +1,14 @@
 #test
 {
     {
-        x := 0'f32
-        y := 1
+        var x = 0'f32
+        var y = 1
         x += y
     }
 
     {
-        x := 0'f32
-        y := 1'u32
+        var x = 0'f32
+        var y = 1'u32
         x += y
     }
 }

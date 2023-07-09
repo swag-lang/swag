@@ -8,5 +8,5 @@ func titi()->u32
 //#[Swag.PrintBc]
 #test
 {
-    x := titi()
+    var x = titi()
 }

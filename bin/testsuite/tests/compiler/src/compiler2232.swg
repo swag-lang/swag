@@ -38,7 +38,7 @@ func toto1()->TOTO
 #[Swag.Optim("", true)]
 #test
 {
-    res := toto1()
+    var res = toto1()
     //@assert(G == 3)
     @assert(res[0].x == 10)
     @assert(res[1].x == 20)

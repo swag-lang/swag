@@ -8,10 +8,10 @@ const SINGLE = false
 
 func findFirstLine(what: string)
 {
-    idxFirst := 0'u64
+    var idxFirst = 0'u64
     visit line: lines
     {
-        idx := line.indexOf(what)
+        var idx = line.indexOf(what)
         if idx == Swag.U64.Max continue
         #if LOG Console.printf("line: %\n", line)
         toProcess.add(line)
@@ -37,7 +37,7 @@ func findLine(what: string)->*String
 {
     visit &line: lines
     {
-        idx := line.indexOf(what)
+        var idx = line.indexOf(what)
         if idx == Swag.U64.Max continue
         #if LOG Console.printf("line: %\n", line)
         return line
@@ -60,8 +60,8 @@ func swapParams(what: string)->String
         if !result.isEmpty() result += ", "
 
         // Isolate parameter name
-        idxName := idxNext - 1
-        idxEnd := idxNext
+        var idxName = idxNext - 1
+        var idxEnd = idxNext
 
         var arr: string
         if what[idxName] == "]"'u8
@@ -74,14 +74,14 @@ func swapParams(what: string)->String
         }
 
         while Latin1.isLetter(what[idxName - 1]) idxName -= 1
-        name := what[idxName..idxEnd-1]
+        var name = what[idxName..idxEnd-1]
         #if LOG Console.printf("name: %\n", name)
 
         // Isolate parameter type
-        idxType := idxName - 1
+        var idxType = idxName - 1
         while idxType and what[idxType - 1] != ","'u8 idxType -= 1
         if idxType idxType += 1
-        type := String.from(what[idxType..idxName - 1])
+        var type = String.from(what[idxType..idxName - 1])
         type.trim()
         type.insert(0, arr)
         #if LOG Console.printf("type: '%'\n", type)
@@ -89,7 +89,7 @@ func swapParams(what: string)->String
         // Pointer
         if type.lastRune() == "*"'rune
         {
-            idxType1 := cast(s32) (type.length - 2)
+            var idxType1 = cast(s32) (type.length - 2)
             while idxType1 >= 0 and Latin1.isSpace(type[idxType1])
                 idxType1 -= 1
             while idxType1 >= 0 and Latin1.isLetter(type[idxType1])
@@ -125,45 +125,45 @@ func swapParams(what: string)->String
     Console.printf("arg: '%'\n", fctExtension)
 
     ///////////////////
-    curPath := Path.getDirectoryName(#location.fileName)
-    glewPath := Path.combine(curPath, "glew.h")
+    var curPath = Path.getDirectoryName(#location.fileName)
+    var glewPath = Path.combine(curPath, "glew.h")
     lines = catch File.readAllLines(glewPath)
     if @errmsg Console.fatal("error: cannot read '%' (%)\n", glewPath, @errmsg)
 
     findFirstLine(fctExtension)
     visit line11: toProcess
     {
-        line1 := cast(string) line11
-        idxN := line1.indexOf(" ", 9)
-        funcName := line1[8..idxN - 1]
+        var line1 = cast(string) line11
+        var idxN = line1.indexOf(" ", 9)
+        var funcName = line1[8..idxN - 1]
 
         ///////////////////
-        idx := line1.indexOf("(") + 1
-        glewStr := String.from(cast(string) line1.getTo(")"'u8, idx, includeDelimiter = false))
+        var idx = line1.indexOf("(") + 1
+        var glewStr = String.from(cast(string) line1.getTo(")"'u8, idx, includeDelimiter = false))
         #if LOG Console.printf("glewStr: %\n", glewStr)
         glewStr += ";"'u8
 
         ///////////////////
-        line2 := findLine(glewStr)
+        var line2 = findLine(glewStr)
         idx = line2.indexOf(" ") + 1
-        proc := cast(string) line2.getTo(" "'u8, idx, includeDelimiter = false)
+        var proc = cast(string) line2.getTo(" "'u8, idx, includeDelimiter = false)
         #if LOG Console.printf("proc: %\n", proc)
 
-        line3 := findLine(proc)
+        var line3 = findLine(proc)
         ///////////////////
         idx = line3.indexOf(" ")
         idx += 1
-        retType := String.from(cast(string) line3.getTo(" "'u8, idx, includeDelimiter = false))
+        var retType = String.from(cast(string) line3.getTo(" "'u8, idx, includeDelimiter = false))
         if retType == "void" retType.clear()
         #if LOG Console.printf("retType: %\n", retType)
 
         idx = line3.lastIndexOf("(")
         idx += 1
-        proto := String.from(cast(string) line3.getTo(")"'u8, idx, includeDelimiter = false))
+        var proto = String.from(cast(string) line3.getTo(")"'u8, idx, includeDelimiter = false))
         proto += ", "
 
         ///////////////////
-        strProto := swapParams(proto)
+        var strProto = swapParams(proto)
         if !retType.isEmpty()
             Console.printf("func %(%)->%;\n", funcName, strProto, retType)
         else

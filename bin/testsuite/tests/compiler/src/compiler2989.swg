@@ -17,13 +17,13 @@ impl AA
 func A()
 {
     var x: AA'{a:s32}
-    v := x.index(0)
-    v1 := x[0]
+    var v = x.index(0)
+    var v1 = x[0]
 }
 
 func B()
 {
     var x: AA'{a:s32}
-    v := x.index(0)
-    v1 := x[0]
+    var v = x.index(0)
+    var v1 = x[0]
 }

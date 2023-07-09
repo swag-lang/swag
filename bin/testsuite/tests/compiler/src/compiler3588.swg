@@ -3,9 +3,9 @@ var x: closure()
 //#[Swag.PrintBc]
 #test
 {
-    a := x == null
+    var a = x == null
     @assert(a == true)
 
-    b := x != null
+    var b = x != null
     @assert(b == false)
 }

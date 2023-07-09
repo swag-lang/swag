@@ -11,7 +11,7 @@ impl AA
         ppp += 1
         loop
         {
-            value := 0
+            var value = 0
         }
     }
 }

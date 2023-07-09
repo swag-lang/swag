@@ -24,11 +24,11 @@ impl IWnd for PushButton
 {
     mtd impl onPaintEvent(evt: *PaintEvent)
     {
-        bc      := evt.bc
-        theme   := getTheme()
-        metrics := getThemeMetrics()
-        colors  := getThemeColors()
-        rects   := getThemeRects()
+        var bc = evt.bc
+        var theme = getTheme()
+        var metrics = getThemeMetrics()
+        var colors = getThemeColors()
+        var rects = getThemeRects()
 
         var subRectBk:      *ThemeImageRect
         var subRectBorder:  *ThemeImageRect
@@ -141,7 +141,7 @@ impl IWnd for PushButton
         }
 
         // Background
-        clientRect := getClientRect()
+        var clientRect = getClientRect()
         aniBk.apply(self, colorBk)
         theme.drawSubRect(bc.painter, clientRect, subRectBk, aniBk.cur())
 
@@ -159,7 +159,7 @@ impl IWnd for PushButton
         format.font = getFont()
         if form == .Strong
             format.fontStyle = .Bold
-        labelPos := clientRect
+        var labelPos = clientRect
         labelPos.inflate(-metrics.btnPush_Padding)
         Theme.drawIconText(bc.painter, labelPos, icon, &name, format, metrics.iconText_Margin)
     }
@@ -177,12 +177,12 @@ impl PushButton
     func create(parent: *Wnd, name: string, position: Math.Rectangle = {}, id: WndId = null)->*PushButton
     {
         Debug.assert(parent != null)
-        pos := position
+        var pos = position
         if pos.height == 0
             pos.height = parent.getThemeMetrics().btnPush_Height
         if pos.width == 0
             pos.width = parent.getThemeMetrics().btnPush_Width
-        res := Wnd.create'PushButton(parent, name, pos, id)
+        var res = Wnd.create'PushButton(parent, name, pos, id)
         if id != null
             res.updateCommandState()
         return res

@@ -14,8 +14,8 @@ using Swag
     var paramBC: [2] *void
     paramBC[1] = acast 666'u64
 
-    id := 0'u32
-    h := CreateThread(null, 0, @mkcallback(&tcf_entry), cast(*void) &paramBC[0], 0, &id)
+    var id = 0'u32
+    var h = CreateThread(null, 0, @mkcallback(&tcf_entry), cast(*void) &paramBC[0], 0, &id)
     const INFINITE = 0xFFFFFFFF
-    ew := WaitForSingleObject(h, INFINITE);
+    var ew = WaitForSingleObject(h, INFINITE);
 }

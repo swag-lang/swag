@@ -5,11 +5,11 @@ using Swag
 // Check if this is a valid 'fmt' 'values' pair, coherent with 'format' specification
 func checkFormat(fct: string, fmt: string, values: ...)
 {
-    cptPercent := countPercent(fmt)
+    var cptPercent = countPercent(fmt)
     if cptPercent != @countof(values)
     {
         #[Match("validif", false)]
-        str := toString("bad number of arguments to '%' ('%' requested, '%' provided)", fct, cptPercent, @countof(values))
+        var str = toString("bad number of arguments to '%' ('%' requested, '%' provided)", fct, cptPercent, @countof(values))
         @compilererror(str, @location(values))
     }
 }
@@ -19,8 +19,8 @@ func checkFormat(fct: string, fmt: string, values: ...)
 #[ConstExpr]
 func countPercent(fmt: string)->u32
 {
-    cptPercent := 0'u32
-    for i := 0; i < @countof(fmt); i += 1
+    var cptPercent = 0'u32
+    for var i = 0; i < @countof(fmt); i += 1
     {
         if fmt[i] != "%"'u8
             continue
@@ -52,7 +52,7 @@ func replaceString(dest: *String, fmt: string, values: ...)
     append(&buf, fmt, values)
 
     buf.makeLinear()
-    (data, count, capacity) := buf.eatBuffer()
+    var (data, count, capacity) = buf.eatBuffer()
 
     dest.buffer   = data
     dest.length   = count
@@ -85,13 +85,13 @@ func append(buf: *ConcatBuffer, fmt: string, values: ...)
         return true
     }
 {
-    ptr := @dataof(fmt)
-    cpt := @countof(fmt)
+    var ptr = @dataof(fmt)
+    var cpt = @countof(fmt)
 
-    idx := 0'u32
-    nextIdx := 0'u32
-    paramIdx := 0'u32
-    numParams := @countof(values)
+    var idx = 0'u32
+    var nextIdx = 0'u32
+    var paramIdx = 0'u32
+    var numParams = @countof(values)
 
     while nextIdx < cpt
     {
@@ -116,8 +116,8 @@ func append(buf: *ConcatBuffer, fmt: string, values: ...)
             if ptr[nextIdx] == "{"'u8
             {
                 nextIdx += 1
-                ptrFormat := ptr + nextIdx
-                countFormat := 0'u32
+                var ptrFormat = ptr + nextIdx
+                var countFormat = 0'u32
                 while ptr[nextIdx] and ptr[nextIdx] != "}"'u8
                 {
                     countFormat += 1
@@ -161,11 +161,11 @@ func toInterp(buf: *ConcatBuffer, exp: string)
     {
         var sb: StrConv.StringBuilder
 
-        idx := 0'u64
+        var idx = 0'u64
         while idx != @countof(exp)
         {
             // To the interpolated string if it exists
-            idxE := Utf8.indexOf(exp, "{"'rune, startByteIndex = idx)
+            var idxE = Utf8.indexOf(exp, "{"'rune, startByteIndex = idx)
             if idxE == Swag.U64.Max
             {
                 sb.appendFormat("buf.addBytes(\"%\")\n", exp[idx..])
@@ -184,7 +184,7 @@ func toInterp(buf: *ConcatBuffer, exp: string)
                 break
             }
 
-            value := exp[idx..<idxE]
+            var value = exp[idx..<idxE]
             idx = idxE + 1
 
             // Format

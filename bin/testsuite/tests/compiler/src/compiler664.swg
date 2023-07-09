@@ -7,5 +7,5 @@ alias toto = s32
 //#global testerror
 #test
 {
-	pt := toto
+	var pt = toto
 }

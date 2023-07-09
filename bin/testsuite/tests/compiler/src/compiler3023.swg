@@ -15,5 +15,5 @@ func toto(x: Array'*PolyNode, y: *PolyNode)
 
 #test
 {
-    x := @typeof(&toto)
+    var x = @typeof(&toto)
 }

@@ -11,10 +11,10 @@ enum A : f32
 
 #test
 {
-	ptr := cast(const *TypeInfoEnum) @typeof(A.VAL)
+	var ptr = cast(const *TypeInfoEnum) @typeof(A.VAL)
 	@assert(@countof(ptr.values) == 1)
 	@assert(@countof(ptr.attributes) == 0)
-	ptr1 := cast(const *TypeValue) ptr.values[0]
-	ptrVal := cast(const *f32) ptr1.value
+	var ptr1 = cast(const *TypeValue) ptr.values[0]
+	var ptrVal = cast(const *f32) ptr1.value
 	@assert(dref ptrVal == 666)
 }

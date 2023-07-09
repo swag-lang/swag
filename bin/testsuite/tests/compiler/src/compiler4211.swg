@@ -1,14 +1,14 @@
 func(T) toto(y: T)->T
 {
-    x := y
+    var x = y
     x /= 3
     return x
 }
 
 func(T) toto(y, z: T)->T
 {
-    x1 := y
-    x2 := z
+    var x1 = y
+    var x2 = z
     x2 += 1
     x2 -= 1
     x1 /= x2

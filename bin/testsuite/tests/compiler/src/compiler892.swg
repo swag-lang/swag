@@ -1,6 +1,6 @@
 //#[Swag.PrintBc]
 #test
 {
-	a := 1
+	var a = 1
 	@assert(a > 0)
 }

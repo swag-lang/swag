@@ -5,11 +5,11 @@ var G = 0
 
 #test
 {
-	x := func() {
+	var x = func() {
 		G = 1
 	}
-	
-	r := ref &x
+
+	var r = ref &x
 	r()
 	@assert(G == 1)
 }

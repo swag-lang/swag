@@ -3,5 +3,5 @@
 #test
 {
     var chooseStepFunction: func()
-	moveNearerToZero := chooseStepFunction()
+	var moveNearerToZero = chooseStepFunction()
 }

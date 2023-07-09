@@ -1,12 +1,12 @@
 //#[Swag.PrintBc]
 #test
 {
-    a := 666
+    var a = 666
     if a == 666
     {
         func toto()
         {
-            a := 1
+            var a = 1
         }
 
         toto()

@@ -10,7 +10,7 @@ func toto(x: s64)
 //#[Swag.PrintBc]
 func(T) titi()
 {
-    xyz := 666's64
+    var xyz = 666's64
     #run toto(xyz)
 }
 

@@ -8,7 +8,7 @@ struct Point
 #test
 {
 	var pt : Point
-	ptr := &pt
+	var ptr = &pt
 	@init(ptr)(10, 20)
 	@assert(pt.x == 10)
 	@assert(pt.y == 20)

@@ -1,7 +1,7 @@
 //#[Swag.PrintBc]
 #test
 {
-    error := false
+    var error = false
     #scope outer loop x: 10
     {
         loop 20

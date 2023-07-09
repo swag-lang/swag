@@ -6,14 +6,14 @@ struct AA
 //#[Swag.PrintBc]
 func inc(x: AA)->AA
 {
-    y := x
+    var y = x
     return y
 }
 
 #test
 {
     var v: AA
-    v1 := inc(v)
+    var v1 = inc(v)
     @assert(v1.x == 666)
     v1.x = 555
     @assert(v.x == 666)

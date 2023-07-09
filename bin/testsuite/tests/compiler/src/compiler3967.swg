@@ -23,7 +23,7 @@ func toto()->const ref VV
 #test
 {
     var x: const ref VV = toto()
-    y := x
+    var y = x
     @assert(@typeof(x) == const ref VV)
     @assert(@typeof(y) == VV)
     @assert(PC == true)

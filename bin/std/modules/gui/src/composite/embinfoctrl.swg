@@ -18,10 +18,10 @@ impl EmbInfoCtrl
     // Create the popup list, but do not display it
     func create(parent: *Wnd, name: string, kind: EmbInfoCtrlKind, height = 40, top = true)->*EmbInfoCtrl
     {
-        theme  := parent.getTheme()
-        colors := parent.getThemeColors()
+        var theme = parent.getTheme()
+        var colors = parent.getThemeColors()
 
-        with ctrl := Wnd.create'EmbInfoCtrl(parent, {0, 0, 0, height})
+        with var ctrl = Wnd.create'EmbInfoCtrl(parent, {0, 0, 0, height})
         {
             .dockStyle = top ? .Top : .Bottom
             .label = Label.create(ctrl, #self.name, {})
@@ -48,7 +48,7 @@ impl EmbInfoCtrl
             .dockStyle = .Center
         }
 
-        with btn := IconButton.create(ctrl.label, theme.getIcon24(.WndClose, 18), {0, 0, 32, 32})
+        with var btn = IconButton.create(ctrl.label, theme.getIcon24(.WndClose, 18), {0, 0, 32, 32})
         {
             .margin = 5
             .dockStyle = .Right

@@ -69,12 +69,12 @@ func test(x: f64)
 
 #test
 {
-    xs8 := -5's8
-    xs16 := -5's16
-    xs32 := -5's32
-    xs64 := -5's64
-    xsf32 := 0.5'f32
-    xsf64 := 0.5'f64
+    var xs8 = -5's8
+    var xs16 = -5's16
+    var xs32 = -5's32
+    var xs64 = -5's64
+    var xsf32 = 0.5'f32
+    var xsf64 = 0.5'f64
 
     @assert(@abs(xs32) == 5)
 

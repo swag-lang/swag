@@ -49,8 +49,8 @@ func getRootLength(fullname: string)->u32
 {
     func startsWithOrdinal(source, value: string)->bool
     {
-        sourceLength := @countof(source)
-        valueLength := @countof(value)
+        var sourceLength = @countof(source)
+        var valueLength = @countof(value)
         if sourceLength < valueLength
             return false
 
@@ -63,16 +63,16 @@ func getRootLength(fullname: string)->u32
         return true;
     }
 
-    i := 0'u32;
-    volumeSeparatorLength := 2'u32;  // Length to the colon "C:"
-    uncRootLength := 2'u32;          // Length to the start of the server name "\\"
-    pathLength := @countof(fullname)
+    var i = 0'u32;
+    var volumeSeparatorLength = 2'u32;  // Length to the colon "C:"
+    var uncRootLength = 2'u32;          // Length to the start of the server name "\\"
+    var pathLength = @countof(fullname)
 
     const ExtendedPathPrefix = @"\\?\"@
     const UncExtendedPathPrefix = @"\\?\UNC\"@
 
-    extendedSyntax := startsWithOrdinal(fullname, ExtendedPathPrefix);
-    extendedUncSyntax := startsWithOrdinal(fullname, UncExtendedPathPrefix);
+    var extendedSyntax = startsWithOrdinal(fullname, ExtendedPathPrefix);
+    var extendedUncSyntax = startsWithOrdinal(fullname, UncExtendedPathPrefix);
     if extendedSyntax
     {
         // Shift the position we look for the root from to account for the extended prefix
@@ -98,7 +98,7 @@ func getRootLength(fullname: string)->u32
             // UNC (\\?\UNC\ or \\), scan past the next two directory separators at most
             // (e.g. to \\?\UNC\Server\Share or \\Server\Share\)
             i = uncRootLength
-            n := 1; // Maximum separators to skip
+            var n = 1; // Maximum separators to skip
             while i < pathLength and (!isDirectorySeparator(fullname[i]) or n >= 0)
             {
                 n -= 1
@@ -127,8 +127,8 @@ func getAbsolute(fullname: string)->String throw
     tmpArr.allocator = @getcontext().tempAllocator
     tmpArr.reserve(100)
 
-    winPath := Utf16.toZeroTerminated(fullname)
-    res := cast(u64) try GetFullPathNameW(@dataof(winPath), cast(DWORD) tmpArr.capacity, tmpArr.buffer, null)
+    var winPath = Utf16.toZeroTerminated(fullname)
+    var res = cast(u64) try GetFullPathNameW(@dataof(winPath), cast(DWORD) tmpArr.capacity, tmpArr.buffer, null)
 
     // No enough room in destination, give it another try
     if res >= 100

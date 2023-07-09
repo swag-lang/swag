@@ -2,9 +2,9 @@ var G: s32
 
 func toto()->closure()
 {
-    str := "10"
-    a := 50
-    b := 150
+    var str = "10"
+    var a = 50
+    var b = 150
     var v: closure() = closure|str,a,b|()
     {
         @assert(str == "10")
@@ -18,7 +18,7 @@ func toto()->closure()
 
 #test
 {
-    a := toto()
+    var a = toto()
     a()
     @assert(G == 200)
 }

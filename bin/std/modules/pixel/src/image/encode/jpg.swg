@@ -231,8 +231,8 @@ impl Encoder
             yDiv8 = imageY
 
         bufferRGB.resize(cast(u64) xDiv8 * yDiv8)
-        pdst := bufferRGB.buffer
-        pref := image.pixels.buffer
+        var pdst = bufferRGB.buffer
+        var pref = image.pixels.buffer
 
         loop nrline: imageY
         {
@@ -254,17 +254,17 @@ impl Encoder
 
             var lastcolor: ColorRGB = undefined
             Memory.copy(&lastcolor, pdst + nrline * xDiv8 + imageX - 1, 3)
-            for column := imageX; column < xDiv8; column += 1
+            for var column = imageX; column < xDiv8; column += 1
                 Memory.copy(pdst + nrline * xDiv8 + column, &lastcolor, 3)
         }
 
         imageX  = cast(u16) xDiv8
-        tmpline := Array.createBuffer(cast(u64) imageX * @sizeof(ColorRGB))
+        var tmpline = Array.createBuffer(cast(u64) imageX * @sizeof(ColorRGB))
 
         // Reorder in memory the inversed bitmap
-        nrLineUp := cast(u32) imageY - 1
-        nrLineDn := 0'u32
-        dimline  := cast(u32) imageX * 3'u64
+        var nrLineUp = cast(u32) imageY - 1
+        var nrLineDn = 0'u32
+        var dimline = cast(u32) imageX * 3'u64
         while nrLineUp > nrLineDn
         {
             Memory.copy(tmpline.buffer, pdst + nrLineUp * imageX, dimline)
@@ -276,7 +276,7 @@ impl Encoder
 
         // Y completion
         Memory.copy(tmpline.buffer, pdst + (imageY - 1) * cast(u32) imageX, dimline)
-        for nrLine := imageY; nrLine < yDiv8; nrLine += 1
+        for var nrLine = imageY; nrLine < yDiv8; nrLine += 1
             Memory.copy(pdst + nrLine * cast(u32) imageX, tmpline.buffer, dimline)
 
         imageY = cast(u16) yDiv8
@@ -286,7 +286,7 @@ impl Encoder
     {
         loop i: 64
         {
-            temp := (cast(s32) basicTable[i] * scaleFactor + 50) / 100
+            var temp = (cast(s32) basicTable[i] * scaleFactor + 50) / 100
             temp = Math.clamp(temp, 1, 255)
             newTable[ZigZag[i]] = cast(u8) temp
         }
@@ -323,11 +323,11 @@ impl Encoder
 
     func computeHuffmanTable(nrCodes: const ^u8, stdTable: const ^u8, hT: ^BitString)
     {
-        codevalue  := 0'u16
-        posInTable := 0
+        var codevalue = 0'u16
+        var posInTable = 0
         loop k: 1..16
         {
-            for j := 1; j <= nrCodes[k]; j += 1
+            for var j = 1; j <= nrCodes[k]; j += 1
             {
                 hT[stdTable[posInTable]].value  = codevalue
                 hT[stdTable[posInTable]].length = cast(u8) k
@@ -354,8 +354,8 @@ impl Encoder
         category = categoryAlloc.buffer + 32767
         bitcode  = bitcodeAlloc.buffer + 32767
 
-        nrlower := 1
-        nrupper := 2
+        var nrlower = 1
+        var nrupper = 2
         loop cat: 1..15
         {
             loop nr: nrlower..nrupper-1
@@ -367,7 +367,7 @@ impl Encoder
 
             loop nr: -(nrupper - 1)..(-nrlower)
             {
-                nof := cast,bit(u64) cast(s64) nr
+                var nof = cast,bit(u64) cast(s64) nr
                 category[nof] = cast(u8) cat
                 bitcode[nof].length = cast(u8) cat
                 bitcode[nof].value  = cast(u16) (nrupper - 1 + nr)
@@ -381,7 +381,7 @@ impl Encoder
     mtd prepareQuantTables()
     {
         const AanSf: [8] f64 = [1.0, 1.387039845, 1.306562965, 1.175875602, 1.0, 0.785694958, 0.541196100, 0.275899379]
-        i := 0
+        var i = 0
         loop row: 8
         {
             loop col: 8
@@ -414,8 +414,8 @@ impl Encoder
 
     mtd writeBits(bs: BitString)
     {
-        value  := bs.value
-        posval := cast(s32) bs.length - 1
+        var value = bs.value
+        var posval = cast(s32) bs.length - 1
         while posval >= 0
         {
             if value & Mask[posval]
@@ -531,17 +531,17 @@ impl Encoder
             func Cr(r, g, b: u8) => cast(u8) ((TabCrR[r] + TabCrG[g] + TabCrB[b]) >> 16)
         }
 
-        pos := 0
-        location := ypos * imageX + xpos
-        pdst := bufferRGB.buffer
+        var pos = 0
+        var location = ypos * imageX + xpos
+        var pdst = bufferRGB.buffer
 
         loop y: 8
         {
             loop x: 8
             {
-                r := pdst[location].r
-                g := pdst[location].g
-                b := pdst[location].b
+                var r = pdst[location].r
+                var g = pdst[location].g
+                var b = pdst[location].b
                 duY[pos]  = Y(r, g, b)
                 duCb[pos] = Cb(r, g, b)
                 duCr[pos] = Cr(r, g, b)
@@ -559,27 +559,27 @@ impl Encoder
         loop i: 64
             dataFloat[i] = data[i]
 
-        dataptr := &dataFloat
+        var dataptr = &dataFloat
         loop ctr: 7..0
         {
-            tmp0 := dataptr[0] + dataptr[7]
-            tmp7 := dataptr[0] - dataptr[7]
-            tmp1 := dataptr[1] + dataptr[6]
-            tmp6 := dataptr[1] - dataptr[6]
-            tmp2 := dataptr[2] + dataptr[5]
-            tmp5 := dataptr[2] - dataptr[5]
-            tmp3 := dataptr[3] + dataptr[4]
-            tmp4 := dataptr[3] - dataptr[4]
+            var tmp0 = dataptr[0] + dataptr[7]
+            var tmp7 = dataptr[0] - dataptr[7]
+            var tmp1 = dataptr[1] + dataptr[6]
+            var tmp6 = dataptr[1] - dataptr[6]
+            var tmp2 = dataptr[2] + dataptr[5]
+            var tmp5 = dataptr[2] - dataptr[5]
+            var tmp3 = dataptr[3] + dataptr[4]
+            var tmp4 = dataptr[3] - dataptr[4]
 
-            tmp10 := tmp0 + tmp3
-            tmp13 := tmp0 - tmp3
-            tmp11 := tmp1 + tmp2
-            tmp12 := tmp1 - tmp2
+            var tmp10 = tmp0 + tmp3
+            var tmp13 = tmp0 - tmp3
+            var tmp11 = tmp1 + tmp2
+            var tmp12 = tmp1 - tmp2
 
             dataptr[0] = tmp10 + tmp11
             dataptr[4] = tmp10 - tmp11
 
-            z1 := (tmp12 + tmp13) * 0.707106781
+            var z1 = (tmp12 + tmp13) * 0.707106781
             dataptr[2] = tmp13 + z1
             dataptr[6] = tmp13 - z1
 
@@ -587,13 +587,13 @@ impl Encoder
             tmp11 = tmp5 + tmp6
             tmp12 = tmp6 + tmp7
 
-            z5 := (tmp10 - tmp12) * 0.382683433
-            z2 := 0.541196100 * tmp10 + z5
-            z4 := 1.306562965 * tmp12 + z5
-            z3 := tmp11 * 0.707106781
+            var z5 = (tmp10 - tmp12) * 0.382683433
+            var z2 = 0.541196100 * tmp10 + z5
+            var z4 = 1.306562965 * tmp12 + z5
+            var z3 = tmp11 * 0.707106781
 
-            z11 := tmp7 + z3
-            z13 := tmp7 - z3
+            var z11 = tmp7 + z3
+            var z13 = tmp7 - z3
 
             dataptr[5] = z13 + z2
             dataptr[3] = z13 - z2
@@ -607,24 +607,24 @@ impl Encoder
 
         loop ctr: 7..0
         {
-            tmp0 := dataptr[0] + dataptr[56]
-            tmp7 := dataptr[0] - dataptr[56]
-            tmp1 := dataptr[8] + dataptr[48]
-            tmp6 := dataptr[8] - dataptr[48]
-            tmp2 := dataptr[16] + dataptr[40]
-            tmp5 := dataptr[16] - dataptr[40]
-            tmp3 := dataptr[24] + dataptr[32]
-            tmp4 := dataptr[24] - dataptr[32]
+            var tmp0 = dataptr[0] + dataptr[56]
+            var tmp7 = dataptr[0] - dataptr[56]
+            var tmp1 = dataptr[8] + dataptr[48]
+            var tmp6 = dataptr[8] - dataptr[48]
+            var tmp2 = dataptr[16] + dataptr[40]
+            var tmp5 = dataptr[16] - dataptr[40]
+            var tmp3 = dataptr[24] + dataptr[32]
+            var tmp4 = dataptr[24] - dataptr[32]
 
-            tmp10 := tmp0 + tmp3
-            tmp13 := tmp0 - tmp3
-            tmp11 := tmp1 + tmp2
-            tmp12 := tmp1 - tmp2
+            var tmp10 = tmp0 + tmp3
+            var tmp13 = tmp0 - tmp3
+            var tmp11 = tmp1 + tmp2
+            var tmp12 = tmp1 - tmp2
 
             dataptr[0]  = tmp10 + tmp11
             dataptr[32] = tmp10 - tmp11
 
-            z1 := (tmp12 + tmp13) * 0.707106781
+            var z1 = (tmp12 + tmp13) * 0.707106781
             dataptr[16] = tmp13 + z1
             dataptr[48] = tmp13 - z1
 
@@ -632,13 +632,13 @@ impl Encoder
             tmp11 = tmp5 + tmp6
             tmp12 = tmp6 + tmp7
 
-            z5 := (tmp10 - tmp12) * 0.382683433
-            z2 := 0.541196100 * tmp10 + z5
-            z4 := 1.306562965 * tmp12 + z5
-            z3 := tmp11 * 0.707106781
+            var z5 = (tmp10 - tmp12) * 0.382683433
+            var z2 = 0.541196100 * tmp10 + z5
+            var z4 = 1.306562965 * tmp12 + z5
+            var z3 = tmp11 * 0.707106781
 
-            z11 := tmp7 + z3
-            z13 := tmp7 - z3
+            var z11 = tmp7 + z3
+            var z13 = tmp7 - z3
 
             dataptr[40] = z13 + z2
             dataptr[24] = z13 - z2
@@ -650,33 +650,33 @@ impl Encoder
 
         loop i: 64
         {
-            temp := dataFloat[i] * fdtbl[i]
+            var temp = dataFloat[i] * fdtbl[i]
             outData[i] = cast(s16) (cast(s16)(temp + 16384.5) - 16384)
         }
     }
 
     mtd processDU(componentDU: ^s8, fdtbl: ^f32, dC: *s16, hTDC, hTAC: ^BitString)
     {
-        eob       := hTAC[0x00]
-        m16Zeroes := hTAC[0xF0]
+        var eob = hTAC[0x00]
+        var m16Zeroes = hTAC[0xF0]
 
         quantization(componentDU, fdtbl, duDct)
 
         loop i: 64
             du[ZigZag[i]] = duDct[i]
-        diff := du[0] - dref dC
+        var diff = du[0] - dref dC
         dref dC = du[0]
 
         if diff == 0
             writeBits(hTDC[0])
         else
         {
-            diffc := cast,bit(u64) cast(s64) diff // If negative
+            var diffc = cast,bit(u64) cast(s64) diff // If negative
             writeBits(hTDC[category[diffc]])
             writeBits(bitcode[diffc])
         }
 
-        end0pos := 63
+        var end0pos = 63
         while (end0pos > 0) and (du[end0pos] == 0)
             end0pos -= 1
 
@@ -686,13 +686,13 @@ impl Encoder
             return
         }
 
-        i := 1
+        var i = 1
         while i <= end0pos
         {
-            startpos := i
+            var startpos = i
             while (i <= end0pos) and (du[i] == 0)
                 i += 1
-            nrzeroes := i - startpos
+            var nrzeroes = i - startpos
             if nrzeroes >= 16
             {
                 loop nrmarker: 1..nrzeroes / 16
@@ -700,7 +700,7 @@ impl Encoder
                 nrzeroes = nrzeroes % 16
             }
 
-            offc := cast,bit(u64) cast(s64) du[i] // If negative
+            var offc = cast,bit(u64) cast(s64) du[i] // If negative
             writeBits(hTAC[nrzeroes * 16 + category[offc]])
             writeBits(bitcode[offc])
             i += 1
@@ -713,9 +713,9 @@ impl Encoder
     mtd encoder()
     {
         var dcy, dccb, dccr: s16
-        for ypos := 0'u16; ypos < imageY; ypos += 8
+        for var ypos = 0'u16; ypos < imageY; ypos += 8
         {
-            for xpos := 0'u16; xpos < imageX; xpos += 8
+            for var xpos = 0'u16; xpos < imageX; xpos += 8
             {
                 loadFromRGB(xpos, ypos)
                 processDU(duY, fdtblY, &dcy, htYDC, htYAC)
@@ -730,7 +730,7 @@ public impl IImageEncoder for Encoder
 {
     mtd impl canEncode(fileName: string)->bool
     {
-        ext := Path.getExtensionLowerCase(fileName)
+        var ext = Path.getExtensionLowerCase(fileName)
         return ext == ".jpg" or ext == ".jpeg"
     }
 

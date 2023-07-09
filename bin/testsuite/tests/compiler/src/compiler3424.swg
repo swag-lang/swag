@@ -1,7 +1,7 @@
 #test
 {
-    a := 10
-    b := 20
+    var a = 10
+    var b = 20
     var v: closure(s32) = closure|a,b|(x: s32)
     {
         @assert(a == 10)

@@ -2,7 +2,7 @@ using test_foreign
 
 #test
 {
-    f := foufou45()
-    x := f(666)
+    var f = foufou45()
+    var x = f(666)
     @assert(x == 666)
 }

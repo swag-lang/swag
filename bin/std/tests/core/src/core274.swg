@@ -7,6 +7,6 @@ alias GG = s32
     var gg: GG = 666
     var sb: StrConv.StringBuilder
     sb.appendFormat("%", gg)
-    str := sb.toString()
+    var str = sb.toString()
     @assert(str == "666")
 }

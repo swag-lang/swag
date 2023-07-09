@@ -13,5 +13,5 @@ func toto()->AA
 
 #test
 {
-    (x, y) := toto()
+    var (x, y) = toto()
 }

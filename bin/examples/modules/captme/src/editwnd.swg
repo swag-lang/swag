@@ -19,8 +19,8 @@ impl EditWnd
 {
     func create(main: *MainWnd, parent: *Wnd)->*EditWnd
     {
-        scroll := Wnd.create'EditWnd(parent)
-        view   := Wnd.create'EditView(scroll)
+        var scroll = Wnd.create'EditWnd(parent)
+        var view = Wnd.create'EditView(scroll)
         view.scroll = scroll
         view.main = main
         scroll.editView = view
@@ -49,7 +49,7 @@ impl IWnd for EditView
             if evt.modifiers & .Control
             {
                 evt.accepted = true
-                z := zoom + (evt.move.y > 0 ? 0.1 : -0.1)
+                var z = zoom + (evt.move.y > 0 ? 0.1 : -0.1)
                 setZoom(z, true)
             }
         }
@@ -63,10 +63,10 @@ impl IWnd for EditView
             firstPaint = false
         }
 
-        painter := evt.bc.painter
+        var painter = evt.bc.painter
 
         // Background
-        rect := getClientRect()
+        var rect = getClientRect()
         rect.offset(scrollPos)
         painter.fillRect(rect, getThemeColors().view_Bk)
         if !capture
@@ -92,7 +92,7 @@ impl EditView
     mtd getCaptureRect()->Math.Rectangle
     {
         var captureRect: retval
-        rect := scroll.getClientScrollRect()
+        var rect = scroll.getClientScrollRect()
         captureRect.width  = capture.width * zoom
         captureRect.height = capture.height * zoom
         captureRect.x = rect.horzCenter() - captureRect.width * 0.5
@@ -116,7 +116,7 @@ impl EditView
         }
 
         zoom = Math.clamp(z, MinZoom, MaxZoom)
-        captureRect := getCaptureRect()
+        var captureRect = getCaptureRect()
         scroll.setScrollSize(captureRect.width + (2*viewMargin), captureRect.height + (2*viewMargin))
 
         if mouseCenter
@@ -146,11 +146,11 @@ impl EditView
     {
         if !capture
             return
-        rect := getClientRect()
+        var rect = getClientRect()
         rect.inflate(-viewMargin*2)
 
-        zx := rect.width / capture.width
-        zy := rect.height / capture.height
+        var zx = rect.width / capture.width
+        var zy = rect.height / capture.height
 
         if !canZoom
         {

@@ -3,6 +3,6 @@
 //#[Swag.PrintBc]
 #test
 {
-    x := 0
-	a := dref 0
+    var x = 0
+	var a = dref 0
 }

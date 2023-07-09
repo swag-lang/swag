@@ -28,6 +28,6 @@ impl I for AA
 #test
 {
     var x: BB
-    ptr := cast(I) x
+    var ptr = cast(I) x
     ptr.toto()
 }

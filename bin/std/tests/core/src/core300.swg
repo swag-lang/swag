@@ -8,10 +8,10 @@ using Core
     }
 
     var x: TT
-    a0 := try CommandLine.parse(&x, ["-value:1"])
+    var a0 = try CommandLine.parse(&x, ["-value:1"])
     @assert(x.value == 1)
-    a1 := try CommandLine.parse(&x, ["-value=10"])
+    var a1 = try CommandLine.parse(&x, ["-value=10"])
     @assert(x.value == 10)
-    a2 := try CommandLine.parse(&x, ["-value= 20"])
+    var a2 = try CommandLine.parse(&x, ["-value= 20"])
     @assert(x.value == 20)
 }

@@ -5,17 +5,17 @@ using Core
     var dec: Compress.ZLib
 
     {
-        f   := try File.readAllBytes(filePath("0.zlib"))
-        res := try dec.decompress(f.toSlice())
+        var f = try File.readAllBytes(filePath("0.zlib"))
+        var res = try dec.decompress(f.toSlice())
     }
 
     {
-        f   := try File.readAllBytes(filePath("9.zlib"))
-        res := try dec.decompress(f.toSlice())
+        var f = try File.readAllBytes(filePath("9.zlib"))
+        var res = try dec.decompress(f.toSlice())
     }
 
     {
-        f   := try File.readAllBytes(filePath("fixed9.zlib"))
-        res := try dec.decompress(f.toSlice())
+        var f = try File.readAllBytes(filePath("fixed9.zlib"))
+        var res = try dec.decompress(f.toSlice())
     }
 }

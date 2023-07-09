@@ -15,13 +15,13 @@ impl B
 {
     var arr: B's32
 
-    val0 := arr.opIndex(0)
+    var val0 = arr.opIndex(0)
     @assert(val0 == 666)
-    val1 := arr[0]
+    var val1 = arr[0]
     @assert(val1 == 666)
 
-    val00 := arr.opIndex(10)
+    var val00 = arr.opIndex(10)
     @assert(val00 == 676)
-    val10 := arr[10]
+    var val10 = arr[10]
     @assert(val10 == 676)
 }

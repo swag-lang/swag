@@ -10,7 +10,7 @@
         Blue = "blue"
     }
 
-    a := Color.Red
+    var a = Color.Red
 
     #[Swag.Complete]
     switch a

@@ -1,9 +1,9 @@
 #message(Swag.CompilerMsgMask.PassBeforeOutput)
 {
-    itf := @compiler()
-    msg := itf.getMessage()
+    var itf = @compiler()
+    var msg = itf.getMessage()
     @assert(msg.moduleName == "test_compiler")
 
-    cfg := itf.getBuildCfg()
+    var cfg = itf.getBuildCfg()
     //cfg.backendLLVM.outputIR = true
 }

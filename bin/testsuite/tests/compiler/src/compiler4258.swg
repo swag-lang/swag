@@ -12,6 +12,6 @@ func toto1()
 
 #test
 {
-    a := 0
+    var a = 0
     toto1()
 }

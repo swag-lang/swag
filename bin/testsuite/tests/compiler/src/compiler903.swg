@@ -6,7 +6,7 @@
 func arithmeticMean(numbers: ...)
 {
     #[Swag.Safety("", true)]
-	cpt := cast(s32) numbers[1]
+	var cpt = cast(s32) numbers[1]
 }
 
 //#[Swag.PrintBc]

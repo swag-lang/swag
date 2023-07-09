@@ -291,7 +291,6 @@ bool Parser::doVarDecl(AstNode* parent, AstNode** result, AstNodeKind kind, bool
 
         SWAG_VERIFY(token.id != TokenId::SymEqualEqual, error(token, Err(Syn0149)));
         SWAG_VERIFY(token.id != TokenId::SymSemiColon, error(token, Fmt(Err(Syn0070), token.ctext())));
-        SWAG_VERIFY(token.id != TokenId::SymColonEqual, error(token, Fmt(Err(Syn0052), token.ctext()), Hnt(Hnt0116)));
         SWAG_VERIFY(token.id == TokenId::SymColon || token.id == TokenId::SymEqual, error(token, Fmt(Err(Syn0052), token.ctext())));
 
         AstNode* type = nullptr;

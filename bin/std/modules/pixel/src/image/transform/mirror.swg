@@ -4,15 +4,15 @@ impl Image
 {
     mtd const doMirror(dstImage: *Image)
     {
-        f := dstImage
+        var f = dstImage
 
         #[Swag.Mixin]
         func(BPP: u8) doIt()
         {
             visitPixels(f)
             {
-                dstImage := cast(*Image) userData
-                pixDst := dstImage.pixels.buffer + (image.width - x - 1) * image.bpp8
+                var dstImage = cast(*Image) userData
+                var pixDst = dstImage.pixels.buffer + (image.width - x - 1) * image.bpp8
                 pixDst += cast(u64) (y * (image.width * image.bpp8))
                 copyPixel'BPP(pixDst, pix)
             }

@@ -6,7 +6,7 @@ struct A
 
 #test
 {
-    with a, b := A{}
+    with var a, b = A{}
     {
         .x = 1
         .y = 2

@@ -1,7 +1,7 @@
 #test
 {
-    ptr := @typeof(s32)
-    g := 0
+    var ptr = @typeof(s32)
+    var g = 0
     switch ptr
     {
         case s32:   g = 1

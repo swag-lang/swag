@@ -18,7 +18,7 @@ impl A
 #test
 {
     var a: A's32
-    x := 0's32
+    var x = 0's32
     a.toto(moveref &x)
     @assert(G == 1)
 }

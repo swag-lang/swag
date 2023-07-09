@@ -4,6 +4,6 @@ using Core.Math
 #test
 {
 	var pt: Vector2{1, 1}
-	l := pt.length()
-	d := pt.dot(Vector2.One)
+	var l = pt.length()
+	var d = pt.dot(Vector2.One)
 }

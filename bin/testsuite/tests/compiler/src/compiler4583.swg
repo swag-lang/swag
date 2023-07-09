@@ -5,8 +5,8 @@ func titi() {}
 
 #test
 {
-    t := @typeof(titi)
-    a := t.attributes[0].params[0].value
+    var t = @typeof(titi)
+    var a = t.attributes[0].params[0].value
     @assert(@kindof(a) == f32)
     @assert(cast(f32) a == 1.0)
 }

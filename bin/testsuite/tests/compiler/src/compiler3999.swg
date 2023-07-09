@@ -15,7 +15,7 @@ impl A
 #test
 {
     var a: A
-    b := &a[0]
+    var b = &a[0]
     @assert(@typeof(b).kind == .Pointer)
     @assert(dref b == 666)
 }

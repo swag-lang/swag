@@ -47,7 +47,7 @@ impl enum FileAttributes
 // Returns attributes associated to the given filename
 func getAttributes(fullname: string)->FileAttributes throw
 {
-    winPath := Utf16.toZeroTerminated(fullname)
-    attributes := try GetFileAttributesW(@dataof(winPath))
+    var winPath = Utf16.toZeroTerminated(fullname)
+    var attributes = try GetFileAttributesW(@dataof(winPath))
     return FileAttributes.fromDWORD(attributes)
 }

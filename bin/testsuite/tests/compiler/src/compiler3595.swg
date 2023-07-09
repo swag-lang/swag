@@ -15,11 +15,11 @@ impl A
 #test
 {
     var x: A's32
-    xx := x[0]
+    var xx = x[0]
 
     alias S32 = s32
     var y: A'S32
-    yy := y[0]
+    var yy = y[0]
 
-    xx1 := x[0]
+    var xx1 = x[0]
 }

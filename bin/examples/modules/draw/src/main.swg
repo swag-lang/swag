@@ -25,7 +25,7 @@ const MaxPages = 8
 
 func dataPath()->String
 {
-    dataPath := Path.getDirectoryName(#location.fileName)
+    var dataPath = Path.getDirectoryName(#location.fileName)
     dataPath = Path.getDirectoryName(dataPath)
     dataPath = Path.getDirectoryName(dataPath)
     dataPath = Path.getDirectoryName(dataPath)
@@ -40,12 +40,12 @@ func imagePath(name: string)->String
 
 func displayPage0(painter: *Pixel.Painter)
 {
-    pen := Pen.createSolid(Argb.Black, 20)
+    var pen = Pen.createSolid(Argb.Black, 20)
 
     if g_Pattern
         pen.dashStyle = .Dot
 
-    trs := painter.getTransform()
+    var trs = painter.getTransform()
 
     //////////////////////////////////////
     {
@@ -165,7 +165,7 @@ func displayPage0(painter: *Pixel.Painter)
     painter.translateTransform(500, 600)
     painter.drawEllipse(50, 50, 25, 50, pen)
 
-    brush := Brush.createSolid(Argb.Black)
+    var brush = Brush.createSolid(Argb.Black)
     painter.setTransform(trs)
     painter.translateTransform(600, 600)
     painter.fillCircle(50, 50, 50, brush)
@@ -204,9 +204,9 @@ func displayPage0(painter: *Pixel.Painter)
     var lpl: LinePathList
     painter.setTransform(trs)
     painter.translateTransform(750, 550)
-    p0 := lpl.newPath()
+    var p0 = lpl.newPath()
     p0.setCircle(50, 160, 50)
-    p1 := lpl.newPath()
+    var p1 = lpl.newPath()
     p1.setRect(0, 0, 100, 100)
     painter.fillPath(&lpl, Argb.Red)
 }
@@ -216,10 +216,10 @@ func displayPage1(painter: *Pixel.Painter)
     var brush: Brush
     brush.color = Argb.Black
 
-    trs := painter.getTransform()
+    var trs = painter.getTransform()
     painter.translateTransform(50, 50)
 
-    cpt, cptLines := 0
+    var cpt, cptLines = 0
     visit e: HatchStyle
     {
         brush.type   = .Hatch
@@ -243,7 +243,7 @@ func displayPage1(painter: *Pixel.Painter)
 
 func displayPage2(painter: *Pixel.Painter)
 {
-    trs := painter.getTransform()
+    var trs = painter.getTransform()
 
     painter.drawTexture(200, 0, Res.image1)
 
@@ -256,7 +256,7 @@ func displayPage2(painter: *Pixel.Painter)
     painter.drawTexture(50, 250, 96, 96, Res.image0)
 
     painter.setTransform(trs)
-    pen := Pen.createHatch(.SolidDiamond, Argb.Black, 20)
+    var pen = Pen.createHatch(.SolidDiamond, Argb.Black, 20)
     painter.drawRoundRect(400, 700, 200, 200, 10, 10, pen)
 
     painter.drawTexture(50, 500, 150, 150, {228, 103, 206, 167}, Res.image1)
@@ -266,9 +266,9 @@ func displayPage2(painter: *Pixel.Painter)
 
 func displayPage3(painter: *Pixel.Painter)
 {
-    trs := painter.getTransform()
+    var trs = painter.getTransform()
 
-    brush := Brush.createHatch(.SolidDiamond, Argb.Black)
+    var brush = Brush.createHatch(.SolidDiamond, Argb.Black)
     painter.pushClippingRect({0, 0, 100, 100})
     painter.fillCircle(100, 100, 100, brush)
     painter.drawCircle(100, 100, 100, Argb.Red, 4)
@@ -325,14 +325,14 @@ func displayPage3(painter: *Pixel.Painter)
 
     {
         var lp1: LinePathList
-        lp := lp1.newPath()
+        var lp = lp1.newPath()
         lp.start(50, 0)
         lp.lineTo(50, 100)
         lp = lp1.newPath()
         lp.start(0, 50)
         lp.lineTo(100, 50)
 
-        pen := Pen.createSolid(Color.fromArgb(0x51, Argb.Green), 50)
+        var pen = Pen.createSolid(Color.fromArgb(0x51, Argb.Green), 50)
         painter.setTransform(trs)
         painter.translateTransform(700, 200)
         painter.drawPath(&lp1, pen, .Separate)
@@ -357,7 +357,7 @@ func displayPage3(painter: *Pixel.Painter)
 
 func displayPage4(painter: *Pixel.Painter)
 {
-    trs := painter.getTransform()
+    var trs = painter.getTransform()
 
     {
         var rect: Rectangle{350, 50, 100, 100}
@@ -387,10 +387,10 @@ func displayPage4(painter: *Pixel.Painter)
     }
 
     {
-        rect := Rectangle{650, 50, 200, 700}
+        var rect = Rectangle{650, 50, 200, 700}
         painter.fillRect(rect.x, rect.y, rect.width, rect.height, Argb.White)
 
-        sf := RichStringFormat{flags = StringFormatFlags.WordWrap}
+        var sf = RichStringFormat{flags = StringFormatFlags.WordWrap}
         sf.horzAlignment = .Center
         sf.font.regular = Res.fontDefault
         sf.palette[0] = Argb.Black
@@ -401,8 +401,8 @@ func displayPage4(painter: *Pixel.Painter)
     }
 
     {
-        rect := Rectangle{100, 225, 200, 700}
-        sf := RichStringFormat{flags = StringFormatFlags.WordWrap}
+        var rect = Rectangle{100, 225, 200, 700}
+        var sf = RichStringFormat{flags = StringFormatFlags.WordWrap}
         sf.horzAlignment = .Center
         sf.font.regular = Res.fontDefault
         sf.palette[0] = Color.fromArgb(0x1FFF0000)
@@ -415,7 +415,7 @@ func displayPage4(painter: *Pixel.Painter)
     }
 
     {
-        fnt := Res.fontFam.getFont(FontFamilyStyle.Regular)
+        var fnt = Res.fontFam.getFont(FontFamilyStyle.Regular)
         painter.fillCircle(100, 100, 5, Argb.Red)
         painter.drawString(100, 100, "abcdefghijkl", fnt, Argb.Black)
     }
@@ -423,9 +423,9 @@ func displayPage4(painter: *Pixel.Painter)
     const str = "abcdefghijklmnopqrstuvwxyz"
 
     {
-        brush := Brush.createTexture(Res.image1)
-        measure := Painter.measureString(str, Res.font40)
-        off := Res.font40.height - measure.height
+        var brush = Brush.createTexture(Res.image1)
+        var measure = Painter.measureString(str, Res.font40)
+        var off = Res.font40.height - measure.height
         painter.fillRect(100, 300+off, measure.width, measure.height, Color.fromArgb(0x1F, Argb.Blue))
         painter.fillRect(100, 300+off, measure.width, measure.ascent, Color.fromArgb(0x1F, Argb.Red))
         painter.drawString(100, 300, str, Res.font40, brush, UnderlineStyle.Strikeout)
@@ -436,7 +436,7 @@ func displayPage4(painter: *Pixel.Painter)
         var pathl: LinePathList
         painter.translateTransform(50, 470)
 
-        pen := Pen.createSolid(Argb.Red, 5)
+        var pen = Pen.createSolid(Argb.Red, 5)
         pen.joinStyle = .Round
         pen.plotOffset = 2
 
@@ -496,7 +496,7 @@ func displayPage4(painter: *Pixel.Painter)
 
 func displayPage5(painter: *Pixel.Painter)
 {
-    trs := painter.getTransform()
+    var trs = painter.getTransform()
 
     {
         painter.setTransform(trs)
@@ -578,7 +578,7 @@ func displayPage6(painter: *Pixel.Painter)
 
 func displayPage7(renderer: *Pixel.RenderOgl, painter: *Pixel.Painter)
 {
-    tgt := renderer.getRenderTarget(256, 256)
+    var tgt = renderer.getRenderTarget(256, 256)
     painter.drawRoundRect(200, 20, 100, 100, 10, 10, Color.fromArgb(80, Argb.Red), 15)
     painter.drawRoundRect(230, 50, 100, 100, 10, 10, Color.fromArgb(80, Argb.Green), 15)
     painter.bindRenderTarget(tgt, true)
@@ -623,7 +623,7 @@ impl IWnd for MyView
 {
     mtd impl onPaintEvent(event: *PaintEvent)
     {
-        painter := event.bc.painter
+        var painter = event.bc.painter
         painter.setParams(g_ModeAA ? .Antialiased : .Default)
         painter.setQuality(g_PaintQuality)
         painter.pushState()
@@ -691,14 +691,14 @@ impl IWnd for MyView
 {
     var app: Gui.Application
 
-    view := Wnd.create'MyView()
-    surface := try app.createSurface(100, 100, W, H, view = view)
+    var view = Wnd.create'MyView()
+    var surface = try app.createSurface(100, 100, W, H, view = view)
 
     assume
     {
-        rdr := surface.app.getRenderer()
-        img0 := Image.load(imagePath("basn0g01.png"))
-        img1 := Image.load(imagePath("test.gif"))
+        var rdr = surface.app.getRenderer()
+        var img0 = Image.load(imagePath("basn0g01.png"))
+        var img1 = Image.load(imagePath("test.gif"))
         Res.image0 = rdr.addImage(img0)
         Res.image1 = rdr.addImage(img1)
         Res.image2 = rdr.addImage(img1)

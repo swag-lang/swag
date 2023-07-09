@@ -7,6 +7,6 @@ func toto(v: [..] A)
 
 #test
 {
-    a := V
+    var a = V
     toto(a)
 }

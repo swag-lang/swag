@@ -1,6 +1,6 @@
 #test
 {
-    b := 666
+    var b = 666
     toto()
     @assert(b == 676)
 }

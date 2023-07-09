@@ -27,6 +27,6 @@ func cstr(x: string)->CStr
 //#[Swag.nooptim]
 #test
 {
-    v := cstr("toto")
+    var v = cstr("toto")
     @assert(v.length == 666)
 }

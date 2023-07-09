@@ -51,25 +51,25 @@ alias ConstF64 = Const'f64
 
     func smoothstep(edge0, edge1, x: f32)->f32
     {
-        t := clamp((x - edge0) / (edge1 - edge0), 0, 1)
+        var t = clamp((x - edge0) / (edge1 - edge0), 0, 1)
         return t * t * (3 - 2*t)
     }
 
     func smoothstep(edge0, edge1, x: f64)->f64
     {
-        t := clamp((x - edge0) / (edge1 - edge0), 0, 1)
+        var t = clamp((x - edge0) / (edge1 - edge0), 0, 1)
         return t * t * (3 - 2*t)
     }
 
     func map(val, minSrc, maxSrc, minDst, maxDst: f32)->f32
     {
-        r := (val - minSrc) / (maxSrc - minSrc)
+        var r = (val - minSrc) / (maxSrc - minSrc)
         return minDst + r * (maxDst - minDst)
     }
 
     func map(val, minSrc, maxSrc, minDst, maxDst: f64)->f64
     {
-        r := (val - minSrc) / (maxSrc - minSrc)
+        var r = (val - minSrc) / (maxSrc - minSrc)
         return minDst + r * (maxDst - minDst)
     }
 }

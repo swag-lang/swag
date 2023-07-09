@@ -4,10 +4,10 @@ using Core
 {
     var arr: Array'u8
 
-    rng := Random.shared()
+    var rng = Random.shared()
     loop 1000
     {
-        v := cast(u8) (rng.nextU32() % 256)
+        var v = cast(u8) (rng.nextU32() % 256)
         arr.add(v)
     }
 
@@ -18,7 +18,7 @@ using Core
     try comp.compress(&res, arr.toSlice())
 
     var decomp: Compress.Inflate
-    res1 := try decomp.decompress(res.toSlice())
+    var res1 = try decomp.decompress(res.toSlice())
 
     @assert(arr.count == res1.count)
     visit v, i: arr

@@ -54,7 +54,7 @@ func createWindow()->HWND
     wc.lpszClassName = @dataof("CLASS_NAME")
     assume RegisterClassA(wc)
 
-    hWnd := CreateWindowExA(
+    var hWnd = CreateWindowExA(
         0,
         @dataof("CLASS_NAME"),
         @dataof("Example"),
@@ -77,7 +77,7 @@ func createWindow()->HWND
     pfd.iPixelType   = PFD_TYPE_RGBA
     pfd.cColorBits   = 32
 
-    pf := assume ChoosePixelFormat(g_HDC, &pfd)
+    var pf = assume ChoosePixelFormat(g_HDC, &pfd)
     assume SetPixelFormat(g_HDC, pf, &pfd)
     assume DescribePixelFormat(g_HDC, pf, cast(UINT) @sizeof(PIXELFORMATDESCRIPTOR), &pfd)
 
@@ -108,10 +108,10 @@ func messageLoop()
 
 #main
 {
-    hWnd := createWindow()
+    var hWnd = createWindow()
 
     g_HDC = GetDC(hWnd)
-    hRC := try wglCreateContext(g_HDC)
+    var hRC = try wglCreateContext(g_HDC)
     try wglMakeCurrent(g_HDC, hRC)
 
     display()

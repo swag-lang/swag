@@ -7,6 +7,6 @@ func toto(#[ConstExpr] str: string)
 
 #test
 {
-    x := "titi"
+    var x = "titi"
     toto(x)
 }

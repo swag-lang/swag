@@ -8,6 +8,6 @@
 		return x;
 	}
 
-	b := a(3)
+	var b = a(3)
 	@assert(b == 3)
 }

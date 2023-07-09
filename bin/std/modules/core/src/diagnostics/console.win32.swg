@@ -52,7 +52,7 @@ var g_StdOutputCurAttr: u16
 // Set the console foreground color
 public func setTextColor(color: Color)
 {
-    attributes := g_ColorToWin[color]
+    var attributes = g_ColorToWin[color]
     g_StdOutputCurAttr &= BACKGROUND_MASK
     g_StdOutputCurAttr |= attributes
     catch SetConsoleTextAttribute(g_StdOutputHandle, g_StdOutputCurAttr)
@@ -61,7 +61,7 @@ public func setTextColor(color: Color)
 // Set the console background color
 public func setBackColor(color: Color)
 {
-    attributes := cast(u16) (g_ColorToWin[color] << 4)
+    var attributes = cast(u16) (g_ColorToWin[color] << 4)
     g_StdOutputCurAttr &= FOREGROUND_MASK
     g_StdOutputCurAttr |= attributes
     catch SetConsoleTextAttribute(g_StdOutputHandle, g_StdOutputCurAttr)
@@ -87,13 +87,13 @@ public func printf(message: string, params: ...)
 
     if @countof(params)
     {
-        str := Format.toString(message, params)
-        len := cast(u32) @countof(str)
+        var str = Format.toString(message, params)
+        var len = cast(u32) @countof(str)
         catch WriteFile(g_StdOutputHandle, @dataof(str), len, null, null)
     }
     else
     {
-        len := cast(u32) @countof(message)
+        var len = cast(u32) @countof(message)
         catch WriteFile(g_StdOutputHandle, @dataof(message), len, null, null)
     }
 }
@@ -107,7 +107,7 @@ public func prompt()->String
 	var buffer: [BufSize] u8
 	var dwRead: DWORD
 
-	h := GetStdHandle(STD_INPUT_HANDLE)
+	var h = GetStdHandle(STD_INPUT_HANDLE)
 	loop
 	{
 		if !ReadFile(h, &buffer[0], BufSize, &dwRead, null)

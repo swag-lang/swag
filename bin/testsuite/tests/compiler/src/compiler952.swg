@@ -8,5 +8,5 @@ func toto(x: s32, y: s32)->s32 => x
 //#[Swag.PrintBc]
 #test
 {
-	ptr := cast(const *TypeInfoFunc) @typeof(toto)
+	var ptr = cast(const *TypeInfoFunc) @typeof(toto)
 }

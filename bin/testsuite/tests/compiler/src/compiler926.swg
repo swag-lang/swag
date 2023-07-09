@@ -3,7 +3,7 @@
 //#[Swag.PrintBc]
 #test
 {
-	tt := @"coucou
+	var tt = @"coucou
 	la foule"@
 	//@print(tt)
 }

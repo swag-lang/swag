@@ -1,7 +1,7 @@
 //#[Swag.PrintBc]
 #run
 {
-    s := "%%"
-    ptr := @dataof(s)
+    var s = "%%"
+    var ptr = @dataof(s)
     @assert(ptr[0] == cast(u8) "%"'rune)
 }

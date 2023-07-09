@@ -12,22 +12,22 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
     switch evt.kind
     {
     case Paint:
-        paintEvt := cast(*PaintEvent) evt
-        painter  := paintEvt.bc.painter
+        var paintEvt = cast(*PaintEvent) evt
+        var painter = paintEvt.bc.painter
 
-        centerX := wnd.position.width * 0.5
-        centerY := wnd.position.height * 0.5
+        var centerX = wnd.position.width * 0.5
+        var centerY = wnd.position.height * 0.5
 
         painter.setParams(.Antialiased)
         painter.clear(Argb.Black)
         painter.drawCircle(centerX, centerY, 150, Argb.Purple, 8)
 
-        now := Time.DateTime.now()
+        var now = Time.DateTime.now()
 
         using Math
-        hour   := map(cast(f32) (now.hour % 12), 0, 12, 0, ConstF32.TwoPi)
-        minute := map(cast(f32) now.minute, 0, 60, 0, ConstF32.TwoPi)
-        sec    := map(cast(f32) now.second, 0, 60, 0, ConstF32.TwoPi)
+        var hour = map(cast(f32) (now.hour % 12), 0, 12, 0, ConstF32.TwoPi)
+        var minute = map(cast(f32) now.minute, 0, 60, 0, ConstF32.TwoPi)
+        var sec = map(cast(f32) now.second, 0, 60, 0, ConstF32.TwoPi)
 
         painter.drawArc(centerX, centerY, 60, 0, hour, Argb.Red, 8)
         painter.drawArc(centerX, centerY, 80, 0, minute, Argb.Green, 8)

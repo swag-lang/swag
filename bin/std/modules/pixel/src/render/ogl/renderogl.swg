@@ -72,15 +72,15 @@ private impl RenderOgl
     {
         {
             assume createShader(&shaderSimple, VertexShaderSimple, PixelShaderSimple)
-            text0 := glGetUniformLocation(cast(GLuint) shaderBlur.handle, @dataof("inTexture0"));
+            var text0 = glGetUniformLocation(cast(GLuint) shaderBlur.handle, @dataof("inTexture0"));
             glUseProgram(cast(GLuint) shaderSimple.handle)
             glUniform1i(text0, 0);
         }
 
         {
             assume createShader(&shaderAA, VertexShaderAA, PixelShaderAA)
-            text0 := glGetUniformLocation(cast(GLuint) shaderAA.handle, @dataof("inTexture0"));
-            text1 := glGetUniformLocation(cast(GLuint) shaderAA.handle, @dataof("inTexture1"));
+            var text0 = glGetUniformLocation(cast(GLuint) shaderAA.handle, @dataof("inTexture0"));
+            var text1 = glGetUniformLocation(cast(GLuint) shaderAA.handle, @dataof("inTexture1"));
             glUseProgram(cast(GLuint) shaderAA.handle)
             glUniform1i(text0, 0);
             glUniform1i(text1, 1);
@@ -88,7 +88,7 @@ private impl RenderOgl
 
         {
             assume createShader(&shaderBlur, VertexShaderSimple, PixelShaderBlur)
-            text0 := glGetUniformLocation(cast(GLuint) shaderBlur.handle, @dataof("inTexture0"));
+            var text0 = glGetUniformLocation(cast(GLuint) shaderBlur.handle, @dataof("inTexture0"));
             glUseProgram(cast(GLuint) shaderBlur.handle)
             glUniform1i(text0, 0);
             shaderBlur.axis   = acast glGetUniformLocation(cast(GLuint) shaderBlur.handle, @dataof("axis"));
@@ -137,7 +137,7 @@ private impl RenderOgl
 
     mtd buidModelMatrix(modelTransform: Transform2)
     {
-        tr := worldTransform
+        var tr = worldTransform
         tr.multiply(modelTransform)
 
         // Received matrix is in row major order, so transpose it
@@ -250,7 +250,7 @@ impl RenderOgl
     mtd setScissorRect(rect: Math.Rectangle)
     {
         glEnable(GL_SCISSOR_TEST)
-        (?, h) := getTargetSize()
+        var (?, h) = getTargetSize()
         glScissor(cast(GLint) rect.x, cast(GLint) (h - rect.y - rect.height), cast(GLint) rect.width, cast(GLint) rect.height)
     }
 
@@ -460,7 +460,7 @@ impl RenderOgl
     {
         if !image.isValid() return {}
         var fmt: GLenum = 0
-        internal := GL_RGB
+        var internal = GL_RGB
 
         #[Swag.Complete]
         switch image.pf
@@ -503,8 +503,8 @@ impl RenderOgl
     // Update content of texture
     mtd updateTexture(texture: Texture, pixels: const*u8)
     {
-        fmt := pixelFormatToNative(texture.pf)
-        textureID := cast(GLuint) texture.handle
+        var fmt = pixelFormatToNative(texture.pf)
+        var textureID = cast(GLuint) texture.handle
         glBindTexture(GL_TEXTURE_2D, textureID)
         glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, cast(s32) texture.width, cast(s32) texture.height, fmt, GL_UNSIGNED_BYTE, pixels)
     }
@@ -516,7 +516,7 @@ impl RenderOgl
         glEnable(GL_TEXTURE_2D)
         glBindTexture(GL_TEXTURE_2D, acast texture.handle)
         result.resize(cast(u64) texture.getByteSize())
-        fmt := pixelFormatToNative(pf)
+        var fmt = pixelFormatToNative(pf)
         glGetTexImage(GL_TEXTURE_2D, 0, fmt, GL_UNSIGNED_BYTE, result.buffer)
         glDisable(GL_TEXTURE_2D)
         return result
@@ -535,28 +535,28 @@ impl RenderOgl
     // Translate the world transform
     mtd translateTransform(x, y: f32)
     {
-        tr := Transform2.createTranslation(x, y)
+        var tr = Transform2.createTranslation(x, y)
         worldTransform.multiply(tr)
     }
 
     // Rotate the world transform
     mtd rotateTransform(angle: Math.Angle)
     {
-        tr := Transform2.createRotation(angle.rad, 0, 0)
+        var tr = Transform2.createRotation(angle.rad, 0, 0)
         worldTransform.multiply(tr)
     }
 
     // Rotate the world transform
     mtd rotateTransform(angle: Math.Angle, centerX, centerY: f32)
     {
-        tr := Transform2.createRotation(angle.rad, centerX, centerY)
+        var tr = Transform2.createRotation(angle.rad, centerX, centerY)
         worldTransform.multiply(tr)
     }
 
     // Scale the world transform
     mtd scaleTransform(x, y: f32)
     {
-        tr := Transform2.createScale(x, y, 0, 0)
+        var tr = Transform2.createScale(x, y, 0, 0)
         worldTransform.multiply(tr)
     }
 
@@ -569,7 +569,7 @@ impl RenderOgl
 
     mtd computeMatrices(mvp, mdl: ShaderParamHandle)
     {
-        (width, height) := getTargetSize()
+        var (width, height) = getTargetSize()
 
         // View, ortho projection
         ortho(cast(f32) height, 0, 0, cast(f32) width, 0, 1.0, orthoMatrix.m)
@@ -586,24 +586,24 @@ impl RenderOgl
         switch cmd.id
         {
         case SetBlendingMode:
-            params := &cmd.blendingMode
+            var params = &cmd.blendingMode
             setBlendingMode(params.mode)
 
         case Clear:
-            params := &cmd.clear
-            (a, r, g, b) := params.color.toArgbf()
+            var params = &cmd.clear
+            var (a, r, g, b) = params.color.toArgbf()
             glClearColor(r, g, b, a)
             glClear(GL_COLOR_BUFFER_BIT | GL_STENCIL_BUFFER_BIT)
 
         case ColorMask:
-            params := &cmd.colorMask
+            var params = &cmd.colorMask
             glColorMask(params.r ? GL_TRUE : GL_FALSE,
                         params.g ? GL_TRUE : GL_FALSE,
                         params.b ? GL_TRUE : GL_FALSE,
                         params.a ? GL_TRUE : GL_FALSE)
 
         case Transform:
-            params := &cmd.transform
+            var params = &cmd.transform
             buidModelMatrix(params.tr)
             glUniformMatrix4fv(cast(GLint) curShader.mdl, 1, GL_FALSE, &modelMatrix.m[0, 0])
 
@@ -614,8 +614,8 @@ impl RenderOgl
             fallthrough
 
         case SetClippingRegionMode:
-            params := &cmd.clippingRegion
-            mode := params.mode == .Set ? GL_REPLACE : cast(GLenum) GL_ZERO
+            var params = &cmd.clippingRegion
+            var mode = params.mode == .Set ? GL_REPLACE : cast(GLenum) GL_ZERO
             glStencilOp(mode, mode, mode)
 
         case EndClippingRegion:
@@ -627,7 +627,7 @@ impl RenderOgl
             glDisable(GL_STENCIL_TEST)
 
         case SetClippingRect:
-            params := &cmd.clippingRect
+            var params = &cmd.clippingRect
             glEnable(GL_SCISSOR_TEST)
             glScissor(cast(GLint) params.rect.x, cast(GLint) (height - params.rect.y - params.rect.height), cast(GLint) params.rect.width, cast(GLint) params.rect.height)
 
@@ -642,7 +642,7 @@ impl RenderOgl
             setBlendingMode(blendingMode)
 
         case DrawTriangles:
-            params := &cmd.drawTriangles
+            var params = &cmd.drawTriangles
             if !overlapMode
             {
                 glDrawArrays(GL_TRIANGLES, cast(GLint) params.start, cast(GLsizei) params.count)
@@ -673,9 +673,9 @@ impl RenderOgl
             }
 
         case BindTextureFont:
-            params := &cmd.textureFont
+            var params = &cmd.textureFont
             glActiveTexture(GL_TEXTURE1)
-            texture := params.font.atlases[params.atlasIndex].texture.handle
+            var texture = params.font.atlases[params.atlasIndex].texture.handle
             glBindTexture(GL_TEXTURE_2D, cast(GLuint) texture)
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE)
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE)
@@ -687,7 +687,7 @@ impl RenderOgl
             glBindTexture(GL_TEXTURE_2D, whiteTexture)
 
         case UpdateFont:
-            font := cmd.font.fontRef
+            var font = cmd.font.fontRef
             font.dirty = false
             glActiveTexture(GL_TEXTURE1)
             visit &atlas: font.atlases
@@ -701,7 +701,7 @@ impl RenderOgl
                 atlas.texture.pf = atlas.bpp == 1 ? .RGBA8 : .RGB8
                 glBindTexture(GL_TEXTURE_2D, cast(GLuint) atlas.texture.handle)
                 glPixelStorei(GL_UNPACK_ALIGNMENT, 1)
-                fmt := atlas.bpp == 1 ? GL_RED : GL_RGB
+                var fmt = atlas.bpp == 1 ? GL_RED : GL_RGB
                 glTexImage2D(GL_TEXTURE_2D, 0, fmt, cast(GLsizei) atlas.texture.width, cast(GLsizei) atlas.texture.height, 0, fmt, GL_UNSIGNED_BYTE, atlas.datas.buffer)
             }
 
@@ -710,7 +710,7 @@ impl RenderOgl
             glBindTexture(GL_TEXTURE_2D, whiteTexture)
 
         case BindTexture0:
-            params := &cmd.texture0
+            var params = &cmd.texture0
             glUniform4fv(cast(GLint) curShader.boundRect, 1, &params.boundRect.x)
             glUniform4fv(cast(GLint) curShader.textureRect, 1, &params.textureRect.x)
             glUniform1f(cast(GLint) curShader.uvMode, cast(GLfloat) params.uvMode)
@@ -770,9 +770,9 @@ impl RenderOgl
                 glBlendFunc(GL_SRC_ALPHA, GL_ZERO)
                 glBlendEquation(GL_MAX)
 
-                for i := curRT.paintAlphaIdx; i < cmdIdx; i += 1
+                for var i = curRT.paintAlphaIdx; i < cmdIdx; i += 1
                 {
-                    cmd1 := dc.commandBuffer[i]
+                    var cmd1 = dc.commandBuffer[i]
                     switch cmd1.id
                     {
                     case Transform,
@@ -793,11 +793,11 @@ impl RenderOgl
             releaseRenderTarget(cmd.renderTgt.tgt)
 
         case SetShader:
-            params := &cmd.shader
+            var params = &cmd.shader
             setShader(params.shader)
 
         case SetShaderParam:
-            params := &cmd.shaderParam
+            var params = &cmd.shaderParam
             switch params.type
             {
             case s32:
@@ -813,7 +813,7 @@ impl RenderOgl
     // Draw the given painter
     mtd draw(dc: *Painter)
     {
-        (width, height) := getTargetSize()
+        var (width, height) = getTargetSize()
         if width <= 0 or height <= 0
             return
 
@@ -860,8 +860,8 @@ impl RenderOgl
     // releaseRenderTarget must be called to release it
     mtd getRenderTarget(w, h: s32)->*RenderTarget
     {
-        w2 := Math.roundUpToPowerOf2(cast(u32) w)
-        h2 := Math.roundUpToPowerOf2(cast(u32) h)
+        var w2 = Math.roundUpToPowerOf2(cast(u32) w)
+        var h2 = Math.roundUpToPowerOf2(cast(u32) h)
 
         visit rt, i: stackReleasedRT
         {
@@ -881,7 +881,7 @@ impl RenderOgl
             }
         }
 
-        rt := Memory.new'RenderTarget()
+        var rt = Memory.new'RenderTarget()
         dref rt = createRenderTarget(cast(s32) w2, cast(s32) h2)
         return rt
     }
@@ -898,9 +898,9 @@ impl RenderOgl
         var buf: String = @mkstring(@dataof(vertex), @countof(vertex))
         buf.replace("#include base",  @mkstring(@dataof(BaseVertexShader), @countof(BaseVertexShader)))
 
-        vertexShaderID := glCreateShader(GL_VERTEX_SHADER)
-        vertexSourcePointer := buf.buffer
-        vertexSourceLength  := cast(GLint) buf.length
+        var vertexShaderID = glCreateShader(GL_VERTEX_SHADER)
+        var vertexSourcePointer = buf.buffer
+        var vertexSourceLength = cast(GLint) buf.length
         glShaderSource(vertexShaderID, 1, &vertexSourcePointer, &vertexSourceLength)
         glCompileShader(vertexShaderID)
         try setShaderCompileError(vertexShaderID)
@@ -908,14 +908,14 @@ impl RenderOgl
         buf = @mkstring(@dataof(pixel), @countof(pixel))
         buf.replace("#include base",  @mkstring(@dataof(BasePixelShader), @countof(BasePixelShader)))
 
-        fragmentShaderID := glCreateShader(GL_FRAGMENT_SHADER)
-        pixelSourcePointer := buf.buffer
-        pixelSourceLength  := cast(GLint) buf.length
+        var fragmentShaderID = glCreateShader(GL_FRAGMENT_SHADER)
+        var pixelSourcePointer = buf.buffer
+        var pixelSourceLength = cast(GLint) buf.length
         glShaderSource(fragmentShaderID, 1, &pixelSourcePointer, &pixelSourceLength)
         glCompileShader(fragmentShaderID)
         try setShaderCompileError(fragmentShaderID)
 
-        progID := glCreateProgram()
+        var progID = glCreateProgram()
         glAttachShader(progID, vertexShaderID)
         glAttachShader(progID, fragmentShaderID)
         glLinkProgram(progID)

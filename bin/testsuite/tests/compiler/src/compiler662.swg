@@ -9,5 +9,5 @@ enum OT
 //#[Swag.PrintBc]
 #test
 {
-	pt := #type {x: OT}
+	var pt = #type {x: OT}
 }

@@ -17,6 +17,6 @@ struct AA
     @assert(tt.y.x == 555)
     @assert(tt.y.y == 666)
 
-    //zz := {1, 2}
+    //var zz = {1, 2}
     //zz.a = 0
 }

@@ -1,7 +1,7 @@
 #[Swag.Inline]
 func toto()
 {
-    x := @nameof(toto)
+    var x = @nameof(toto)
     @assert(x == "toto")
 }
 

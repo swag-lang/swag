@@ -1,7 +1,7 @@
 //#global testerror
 #test
 {
-    x := 0
-    y := 1'rune
+    var x = 0
+    var y = 1'rune
     x += y
 }

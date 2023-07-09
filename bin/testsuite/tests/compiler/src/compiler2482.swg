@@ -12,44 +12,44 @@ func panic(msg: string, loc: Swag.SourceCodeLocation)
 #test
 {
     {
-        cxt := @getcontext()
+        var cxt = @getcontext()
         cxt.panic = &panic
         defer cxt.panic = null
 
         {
-            x := Swag.S16.Min
-            x0 := cast(s8) x
+            var x = Swag.S16.Min
+            var x0 = cast(s8) x
         }
 
         {
-            x := Swag.S16.Max
-            x0 := cast(s8) x
+            var x = Swag.S16.Max
+            var x0 = cast(s8) x
         }
 
         {
-            x := Swag.S32.Min
-            x0 := cast(s8) x
-            x1 := cast(s16) x
+            var x = Swag.S32.Min
+            var x0 = cast(s8) x
+            var x1 = cast(s16) x
         }
 
         {
-            x := Swag.S32.Max
-            x0 := cast(s8) x
-            x1 := cast(s16) x
+            var x = Swag.S32.Max
+            var x0 = cast(s8) x
+            var x1 = cast(s16) x
         }
 
         {
-            x := Swag.S64.Min
-            x0 := cast(s8) x
-            x1 := cast(s16) x
-            x2 := cast(s32) x
+            var x = Swag.S64.Min
+            var x0 = cast(s8) x
+            var x1 = cast(s16) x
+            var x2 = cast(s32) x
         }
 
         {
-            x := Swag.S64.Max
-            x0 := cast(s8) x
-            x1 := cast(s16) x
-            x2 := cast(s32) x
+            var x = Swag.S64.Max
+            var x0 = cast(s8) x
+            var x1 = cast(s16) x
+            var x2 = cast(s32) x
         }
     }
 

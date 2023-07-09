@@ -1,7 +1,7 @@
 #global testerror
 #test
 {
-    a := 2
-    b := {2}
-    c := a == b
+    var a = 2
+    var b = {2}
+    var c = a == b
 }

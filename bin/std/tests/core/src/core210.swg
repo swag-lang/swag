@@ -6,6 +6,6 @@ using Core.sync
 
 #test
 {
-    mtx := Mutex.create()
+    var mtx = Mutex.create()
     mtx = Mutex.create()
 }*/

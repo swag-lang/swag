@@ -7,7 +7,7 @@ func toto()->s32
 {
     defer
     {
-        y := titi()
+        var y = titi()
         @assert(y == 555)
     }
 
@@ -16,6 +16,6 @@ func toto()->s32
 
 #test
 {
-    x := toto()
+    var x = toto()
     @assert(x == 666)
 }

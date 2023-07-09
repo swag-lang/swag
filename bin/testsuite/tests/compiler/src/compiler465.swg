@@ -4,8 +4,8 @@
 //#[Swag.PrintBc]
 #test
 {
-	a := &F;
-	b := a();
+	var a = &F;
+	var b = a();
 	//@print(b)
 }
 

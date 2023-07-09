@@ -4,7 +4,7 @@
 // Remove ""
 func eatQuotes(str: string)->string
 {
-    countof := @countof(str)
+    var countof = @countof(str)
     if countof < 2 return str
     if str[0] == "\""'u8 and str[countof - 1] == "\""'u8
         return @mkstring(@dataof(str) + 1, countof - 2)
@@ -14,18 +14,18 @@ func eatQuotes(str: string)->string
 // Eat 'count' bytes, and returns the remaining string
 func eatCount(str: string, count: u64)->string
 {
-    countof := @countof(str)
-    cpt := Math.min(count, countof)
+    var countof = @countof(str)
+    var cpt = Math.min(count, countof)
     return @mkstring(@dataof(str) + cpt, countof - cpt)
 }
 
 // Eat all spaces, and returns the remaining string (trim left)
 func eatSpaces(str: string)->string
 {
-    countof := @countof(str)
+    var countof = @countof(str)
     if !countof return str
 
-    cpt := 0'u64
+    var cpt = 0'u64
     while cpt < countof and Latin1.isSpace(str[cpt])
         cpt += 1
     return @mkstring(@dataof(str) + cpt, countof - cpt)
@@ -37,12 +37,12 @@ func eatSpaces(str: string)->string
 func splitLines(src: string) -> Array'string
 {
     var result: retval
-    countof := @countof(src)
+    var countof = @countof(src)
     if !countof return result
 
-    dataof := @dataof(src)
-    cpt := 0
-    end := dataof
+    var dataof = @dataof(src)
+    var cpt = 0
+    var end = dataof
     while cpt < countof
     {
         while cpt < countof and dref end != "\r"'u8 and dref end != "\n"'u8
@@ -51,7 +51,7 @@ func splitLines(src: string) -> Array'string
             cpt += 1
         }
 
-        onestr := @mkstring(dataof, cast(u64) (end - dataof))
+        var onestr = @mkstring(dataof, cast(u64) (end - dataof))
         result.add(onestr)
         if cpt < countof - 1 and dref end == "\r"'u8 and end[1] == "\n"'u8
             end, cpt += 1
@@ -75,23 +75,23 @@ func split(src: string, separator: rune, maxSplit: u32 = 0, removeEmpty = true) 
 // All strings will be invalid if 'src' String is destroyed
 func split(src: string, separators: const [..] rune, maxSplit: u32 = 0, removeEmpty = true)->Array'string
 {
-    dataof := @dataof(src)
-    countof := @countof(src)
+    var dataof = @dataof(src)
+    var countof = @countof(src)
 
     var result: retval
     var ptr = dataof
     var c: rune
     var eat: u64
 
-    startbyteIdx := 0'u64
-    count := countof
-    cpt   := 0
+    var startbyteIdx = 0'u64
+    var count = countof
+    var cpt = 0
     loop
     {
         // Remove separator at the start
         loop
         {
-            sl := @mkslice(ptr, count)
+            var sl = @mkslice(ptr, count)
             (c, eat) = Utf8.decodeRune(sl)
             if eat == 0 or !Slice.contains(separators, c)
                 break
@@ -106,10 +106,10 @@ func split(src: string, separators: const [..] rune, maxSplit: u32 = 0, removeEm
             break // done
 
         // Add all real characters until we found a separator
-        endbyteIdx := startbyteIdx
+        var endbyteIdx = startbyteIdx
         loop
         {
-            sl := @mkslice(ptr, count)
+            var sl = @mkslice(ptr, count)
             (c, eat) = Utf8.decodeRune(sl)
             if eat == 0 or Slice.contains(separators, c)
                 break
@@ -118,7 +118,7 @@ func split(src: string, separators: const [..] rune, maxSplit: u32 = 0, removeEm
             count -= eat
         }
 
-        oneString := @mkstring(dataof + startbyteIdx, endbyteIdx - startbyteIdx)
+        var oneString = @mkstring(dataof + startbyteIdx, endbyteIdx - startbyteIdx)
         result.add(oneString)
 
         if eat == 0
@@ -143,8 +143,8 @@ func split(src: string, separators: const [..] rune, maxSplit: u32 = 0, removeEm
 // Returns the first substring of 'str', stopping at the first blank character
 func getToSpace(str: string)->string
 {
-    countof := @countof(str)
-    cpt := 0'u64
+    var countof = @countof(str)
+    var cpt = 0'u64
     while cpt < countof and !Latin1.isSpace(str[cpt])
         cpt += 1
     return @mkstring(@dataof(str), cpt)
@@ -153,8 +153,8 @@ func getToSpace(str: string)->string
 // Returns the first substring of 'str' containing only digits and letters
 func getWhileAlnum(str: string)->string
 {
-    countof := @countof(str)
-    cpt := 0'u64
+    var countof = @countof(str)
+    var cpt = 0'u64
     while cpt < countof and (Latin1.isDigit(str[cpt]) or Latin1.isLetter(str[cpt]))
         cpt += 1
     return @mkstring(@dataof(str), cpt)
@@ -163,15 +163,15 @@ func getWhileAlnum(str: string)->string
 // Returns a sub string starting at 'startByteIndex' and ending with 'delimiter'
 func getTo(src: string, delimiter: u8, startByteIndex = 0'u64, includeDelimiter = true)->string
 {
-    dataof := @dataof(src)
-    length := @countof(src)
+    var dataof = @dataof(src)
+    var length = @countof(src)
     if !length
         return @mkstring(dataof, 0)
     Debug.assert(startByteIndex < length, "invalid 'startByteIndex'")
 
     length -= startByteIndex
     dataof += startByteIndex
-    scan := dataof
+    var scan = dataof
     while length
     {
         if dref scan == delimiter

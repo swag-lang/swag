@@ -79,10 +79,10 @@ func readEachLines(fullname: string, encoding = TextEncoding.Utf8, stmt: code) t
 // Read a file, and store the result in an array of bytes
 func readAllBytes(fullname: string)->Array'u8 throw
 {
-    stream := openRead(fullname)
+    var stream = openRead(fullname)
 
     var result: retval
-    len := stream.getSize()
+    var len = stream.getSize()
     result.reserve(len)
     result.count = stream.read(result.buffer, len)
     return result
@@ -92,7 +92,7 @@ func readAllBytes(fullname: string)->Array'u8 throw
 #[Swag.Discardable]
 func writeAllBytes(fullname: string, buffer: const [..] u8)->u64 throw
 {
-    stream := openWrite(fullname)
+    var stream = openWrite(fullname)
     return stream.write(@dataof(buffer), @countof(buffer))
 }
 
@@ -100,9 +100,9 @@ func writeAllBytes(fullname: string, buffer: const [..] u8)->u64 throw
 #[Swag.Discardable]
 func writeAllBytes(fullname: string, buffer: ConcatBuffer)->u64 throw
 {
-    stream := openWrite(fullname)
+    var stream = openWrite(fullname)
 
-    total := 0'u64
+    var total = 0'u64
     visit p: buffer
         total += stream.write(p.datas, p.count)
 
@@ -113,9 +113,9 @@ func writeAllBytes(fullname: string, buffer: ConcatBuffer)->u64 throw
 #[Swag.Discardable]
 func writeAllLines(fullname: string, lines: Array'string)->u64 throw
 {
-    stream := openWrite(fullname)
+    var stream = openWrite(fullname)
 
-    total := 0'u64
+    var total = 0'u64
     visit v: lines
     {
         total += stream.write(@dataof(v), @countof(v))
@@ -128,14 +128,14 @@ func writeAllLines(fullname: string, lines: Array'string)->u64 throw
 // Duplicate a file
 func duplicate(newName, oldName: string) throw
 {
-    res := readAllBytes(oldName)
+    var res = readAllBytes(oldName)
     writeAllBytes(newName, res.toSlice())
 }
 
 // Get informations about a file
 func getFileInfo(fullName: string)->FileInfo throw
 {
-    file := Directory.enumerateFiles(Path.getDirectoryName(fullName), Path.getFileName(fullName))
+    var file = Directory.enumerateFiles(Path.getDirectoryName(fullName), Path.getFileName(fullName))
     if file.count == 0
         throw "cannot find file"
     return file[0]

@@ -4,7 +4,7 @@ func append(buf: *void, fmt: string, values: ...)
     #validifx
     {
         if !@isconstexpr(fmt) return true
-        cpt := @countof(values)
+        var cpt = @countof(values)
         return true
     }
 {
@@ -12,6 +12,6 @@ func append(buf: *void, fmt: string, values: ...)
 
 #run
 {
-    x, y, z := 0
+    var x, y, z = 0
     append(null, "toto", x, y, z)
 }

@@ -7,13 +7,13 @@ struct A
 //#[Swag.PrintBc]
 func toto(x: any)
 {
-    v := cast(A) x
+    var v = cast(A) x
     @assert(v.a == 665)
     @assert(v.b == 666)
 }
 
 #test
 {
-    x := A{}
+    var x = A{}
     toto(x)
 }

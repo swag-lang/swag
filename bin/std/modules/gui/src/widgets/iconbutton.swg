@@ -124,11 +124,11 @@ impl IWnd for IconButton
 
     mtd impl onPaintEvent(evt: *PaintEvent)
     {
-        bc      := evt.bc
-        theme   := getTheme()
-        colors  := getThemeColors()
-        rects   := getThemeRects()
-        metrics := getThemeMetrics()
+        var bc = evt.bc
+        var theme = getTheme()
+        var colors = getThemeColors()
+        var rects = getThemeRects()
+        var metrics = getThemeMetrics()
 
         var subRectBk:      *ThemeImageRect
         var colorBk:        Color = undefined
@@ -171,7 +171,7 @@ impl IWnd for IconButton
         }
 
         // Background
-        clientRect := getClientRect()
+        var clientRect = getClientRect()
         aniBk.apply(self, colorBk)
         theme.drawSubRect(bc.painter, clientRect, subRectBk, aniBk.cur())
 
@@ -194,14 +194,14 @@ impl IWnd for IconButton
             theme.drawSubRect(bc.painter, clientRect, subRectBk, colorChecked)
         }
 
-        pos := getClientRectPadding()
-        hasIcon := icon.isValid() or sigPaintIcon != null
+        var pos = getClientRectPadding()
+        var hasIcon = icon.isValid() or sigPaintIcon != null
 
         // Center everything
-        marginArrow := metrics.btnIcon_MarginArrow
+        var marginArrow = metrics.btnIcon_MarginArrow
         if iconBtnFlags.has(.Center)
         {
-            nw, nh := 0'f32
+            var nw, nh = 0'f32
             marginArrow = 0
 
             #[Swag.Complete]
@@ -215,8 +215,8 @@ impl IWnd for IconButton
                 break
             }
 
-            fontR := getFont().regular
-            sm := Painter.measureString(name.raw.toString(), fontR)
+            var fontR = getFont().regular
+            var sm = Painter.measureString(name.raw.toString(), fontR)
             nw += sm.width
             nh += fontR.height
 
@@ -243,9 +243,9 @@ impl IWnd for IconButton
         // Arrow
         if arrowPos != .None
         {
-            posArrow := pos
-            w := metrics.btnIcon_WidthArrow
-            h := metrics.btnIcon_HeightArrow
+            var posArrow = pos
+            var w = metrics.btnIcon_WidthArrow
+            var h = metrics.btnIcon_HeightArrow
 
             switch arrowPos
             {
@@ -327,7 +327,7 @@ impl IWnd for IconButton
                     icon.sizeX = pos.width
                 if pos.width < icon.sizeX
                 {
-                    ratio := icon.sizeX / icon.sizeY
+                    var ratio = icon.sizeX / icon.sizeY
                     icon.sizeX = pos.width * ratio
                     icon.sizeY = pos.width
                 }
@@ -348,7 +348,7 @@ impl IWnd for IconButton
                     icon.sizeX = pos.width
                 if pos.width < icon.sizeX
                 {
-                    ratio := icon.sizeX / icon.sizeY
+                    var ratio = icon.sizeX / icon.sizeY
                     icon.sizeX = pos.width * ratio
                     icon.sizeY = pos.width
                 }
@@ -366,7 +366,7 @@ impl IWnd for IconButton
                     icon.sizeY = pos.height
                 if pos.height < icon.sizeY
                 {
-                    ratio := icon.sizeX / icon.sizeY
+                    var ratio = icon.sizeX / icon.sizeY
                     icon.sizeX = pos.height * ratio
                     icon.sizeY = pos.height
                 }
@@ -385,7 +385,7 @@ impl IWnd for IconButton
                     icon.sizeY = pos.height
                 if pos.height < icon.sizeY
                 {
-                    ratio := icon.sizeX / icon.sizeY
+                    var ratio = icon.sizeX / icon.sizeY
                     icon.sizeX = pos.height * ratio
                     icon.sizeY = pos.height
                 }
@@ -475,12 +475,12 @@ impl IconButton
     func create(parent: *Wnd, icon: Icon, position: Math.Rectangle = {}, id: WndId = null)->*IconButton
     {
         Debug.assert(parent != null)
-        pos := position
+        var pos = position
         if pos.height == 0
             pos.height = parent.getThemeMetrics().btnPush_Height
         if pos.width == 0
             pos.width = parent.getThemeMetrics().btnPush_Width
-        res := Wnd.create'IconButton(parent, null, pos, id)
+        var res = Wnd.create'IconButton(parent, null, pos, id)
         res.icon = icon
         res.padding = res.getThemeMetrics().btnIcon_Padding
         if id != null

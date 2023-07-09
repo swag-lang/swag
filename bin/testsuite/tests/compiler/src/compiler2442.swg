@@ -13,6 +13,6 @@ func toto()->{a: A, err: string}
 //#[Swag.PrintBc]
 #test
 {
-    (v, err) := toto()
+    var (v, err) = toto()
     @assert(err == "err")
 }

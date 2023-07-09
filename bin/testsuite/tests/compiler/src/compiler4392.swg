@@ -6,12 +6,12 @@ struct Point
 
 func origin() -> Point
 {
-    x := Point {0, 0}
+    var x = Point {0, 0}
     return x
 }
 
 func toto()
 {
-    v := Point
-    (a, b) := origin()
+    var v = Point
+    var (a, b) = origin()
 }

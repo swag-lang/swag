@@ -4,7 +4,7 @@
 #[Swag.Safety("math", false)]
 #test
 {
-    y := -128's8
-    x := @abs(y)
+    var y = -128's8
+    var x = @abs(y)
     @print(x)
 }

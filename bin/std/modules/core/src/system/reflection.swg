@@ -33,7 +33,7 @@ using Swag
             if !isNative(t)
                 return false
 
-            tt := cast(const *TypeInfoNative) t
+            var tt = cast(const *TypeInfoNative) t
             return tt.nativeKind != .Any and tt.nativeKind != .String
         }
 
@@ -42,7 +42,7 @@ using Swag
             if !isNative(t)
                 return false
 
-            tt := cast(const *TypeInfoNative) t
+            var tt = cast(const *TypeInfoNative) t
             return tt.nativeKind == .Rune
         }
 
@@ -51,7 +51,7 @@ using Swag
             if !isNative(t)
                 return false
 
-            tt := cast(const *TypeInfoNative) t
+            var tt = cast(const *TypeInfoNative) t
             return tt.nativeKind == .Any
         }
 
@@ -60,7 +60,7 @@ using Swag
             if !isNative(t)
                 return false
 
-            tt := cast(const *TypeInfoNative) t
+            var tt = cast(const *TypeInfoNative) t
             return tt.nativeKind == .Bool
         }
 
@@ -69,7 +69,7 @@ using Swag
             if !isNative(t)
                 return false
 
-            tt := cast(const *TypeInfoNative) t
+            var tt = cast(const *TypeInfoNative) t
             return tt.nativeKind == .String
         }
     }
@@ -80,17 +80,17 @@ using Swag
         if !isStruct(type)
             return false
 
-        typeStruct := cast(const* TypeInfoStruct) type
+        var typeStruct = cast(const* TypeInfoStruct) type
         return typeStruct.structName == name
     }
 
     // In case this is a type alias, need to go deep inside it to find the right type
     func makeConcreteAlias(type: typeinfo)->typeinfo
     {
-        result := type
+        var result = type
         while isTypeAlias(result)
         {
-            typeAlias := cast(const *TypeInfoAlias) result
+            var typeAlias = cast(const *TypeInfoAlias) result
             result = typeAlias.rawType
         }
 
@@ -103,7 +103,7 @@ using Swag
         if !isEnum(type)
             return type
 
-        enumType := cast(const *TypeInfoEnum) type
+        var enumType = cast(const *TypeInfoEnum) type
         return enumType.rawType
     }
 
@@ -114,7 +114,7 @@ using Swag
         if !isStruct(type)
             return null
 
-        typeStruct := cast(const* TypeInfoStruct) type
+        var typeStruct = cast(const* TypeInfoStruct) type
         visit it: typeStruct.methods
         {
             if it.name == name
@@ -131,7 +131,7 @@ using Swag
         if !isStruct(type)
             return null
 
-        typeStruct := cast(const* TypeInfoStruct) type
+        var typeStruct = cast(const* TypeInfoStruct) type
         visit it: typeStruct.fields
         {
             if it.name == name
@@ -144,7 +144,7 @@ using Swag
     // Get a field value with a given runtime type
     func getFieldValue(dest: *void, type: const *TypeValue, src: *void, hardCast: bool = false)
     {
-        patch := cast(^u8) src + type.offset
+        var patch = cast(^u8) src + type.offset
         switch type.pointedType
         {
         case s8, u8, bool:          dref cast(*u8)  dest = dref cast(*u8)  patch
@@ -169,7 +169,7 @@ using Swag
     // Set a field value with a given runtime type
     func setFieldValue(dest: *void, type: const *TypeValue, src: const *void, hardCast: bool = false)
     {
-        patch := cast(^u8) dest + type.offset
+        var patch = cast(^u8) dest + type.offset
         switch type.pointedType
         {
         case s8, u8, bool:          dref cast(*u8)  patch = dref cast(const *u8)  src
@@ -208,7 +208,7 @@ using Swag
         if !isStruct(type)
             return false
 
-        typeStruct := cast(const* TypeInfoStruct) type
+        var typeStruct = cast(const* TypeInfoStruct) type
         visit it: typeStruct.interfaces
         {
             if it.name == itf.fullname
@@ -221,7 +221,7 @@ using Swag
     // Returns the given attribute value, or null
     func getAttributeValue(type: const *Swag.TypeValue, attribute: typeinfo, value: string)->any
     {
-        attrib := getAttribute(type, attribute)
+        var attrib = getAttribute(type, attribute)
         if !attrib
             return null
         return getAttributeValue(attrib, value)
@@ -230,7 +230,7 @@ using Swag
     // Returns the given attribute value, or null
     func getAttributeValue(type: typeinfo, attribute: typeinfo, value: string)->any
     {
-        attrib := getAttribute(type, attribute)
+        var attrib = getAttribute(type, attribute)
         if !attrib
             return null
         return getAttributeValue(attrib, value)
@@ -286,7 +286,7 @@ using Swag
         switch type.kind
         {
         case Func:
-            typeFunc := cast(const *TypeInfoFunc) type
+            var typeFunc = cast(const *TypeInfoFunc) type
             visit it: typeFunc.attributes
             {
                 if attribute == it.type
@@ -294,7 +294,7 @@ using Swag
             }
 
         case Struct:
-            typeStruct := cast(const *TypeInfoStruct) type
+            var typeStruct = cast(const *TypeInfoStruct) type
             visit it: typeStruct.attributes
             {
                 if attribute == it.type
@@ -302,7 +302,7 @@ using Swag
             }
 
         case Enum:
-            typeEnum := cast(const *TypeInfoEnum) type
+            var typeEnum = cast(const *TypeInfoEnum) type
             visit it: typeEnum.attributes
             {
                 if attribute == it.type
@@ -319,7 +319,7 @@ using Swag
         switch type.kind
         {
         case Func:
-            typeFunc := cast(const *TypeInfoFunc) type
+            var typeFunc = cast(const *TypeInfoFunc) type
             visit it: typeFunc.attributes
             {
                 if attribute == it.type
@@ -327,7 +327,7 @@ using Swag
             }
 
         case Struct:
-            typeStruct := cast(const *TypeInfoStruct) type
+            var typeStruct = cast(const *TypeInfoStruct) type
             visit it: typeStruct.attributes
             {
                 if attribute == it.type
@@ -335,7 +335,7 @@ using Swag
             }
 
         case Enum:
-            typeEnum := cast(const *TypeInfoEnum) type
+            var typeEnum = cast(const *TypeInfoEnum) type
             visit it: typeEnum.attributes
             {
                 if attribute == it.type
@@ -359,7 +359,7 @@ using Swag
         if !isEnum(type)
             return null
 
-        typeEnum := cast(const* TypeInfoEnum) type
+        var typeEnum = cast(const* TypeInfoEnum) type
         visit it: typeEnum.values
         {
             if it.name == name
@@ -376,8 +376,8 @@ using Swag
         var result: String
         if !isEnum(type)
             return result
-        typeEnum := cast(const *TypeInfoEnum) type
-        isFlags := hasAttribute(type, EnumFlags)
+        var typeEnum = cast(const *TypeInfoEnum) type
+        var isFlags = hasAttribute(type, EnumFlags)
 
         // Get the user value, as an 'u64' or a string
         var val1: u64
@@ -392,7 +392,7 @@ using Swag
         default: return result
         }
 
-        simpleName := type.name
+        var simpleName = type.name
 
         visit it: typeEnum.values
         {
@@ -442,7 +442,7 @@ using Swag
     // Returns the maximum sizeof a bunch of 'typeinfo'
     func maxSizeOf(v: const [..] typeinfo)->u64
     {
-        res := 0'u32
+        var res = 0'u32
         visit p: v
             res = @max(res, p.sizeof)
         return res
@@ -462,7 +462,7 @@ using Swag
         Memory.copy(dst, src, cast(u64) type.sizeof)
         if hasPostCopy(type)
         {
-            ptrStruct := cast(const *Swag.TypeInfoStruct) type
+            var ptrStruct = cast(const *Swag.TypeInfoStruct) type
             ptrStruct.opPostCopy(dst)
         }
     }
@@ -473,8 +473,8 @@ using Swag
 func roomInArray(addr: *void, valueType: typeinfo)->*void
 {
     // We will treat the array as a buffer of bytes, just to be able to access the fields
-    arr := cast(*Array'u8) addr
-    sizeValue := valueType.sizeof
+    var arr = cast(*Array'u8) addr
+    var sizeValue = valueType.sizeof
 
     var valueTypeStruct: const *TypeInfoStruct
     if isStruct(valueType)
@@ -484,8 +484,8 @@ func roomInArray(addr: *void, valueType: typeinfo)->*void
     // structures specials functions
     if arr.count >= arr.capacity
     {
-        newCapacity := Math.max(arr.count + 1, arr.capacity * 2)
-        newBuffer := cast(^u8) Memory.alloc(newCapacity * sizeValue, arr.allocator)
+        var newCapacity = Math.max(arr.count + 1, arr.capacity * 2)
+        var newBuffer = cast(^u8) Memory.alloc(newCapacity * sizeValue, arr.allocator)
         Memory.clear(newBuffer, newCapacity * sizeValue)
         arr.capacity = newCapacity
 
@@ -493,7 +493,7 @@ func roomInArray(addr: *void, valueType: typeinfo)->*void
         Memory.copy(newBuffer, arr.buffer, arr.count * sizeValue)
         if hasPostMove(valueType)
         {
-            buf := newBuffer
+            var buf = newBuffer
             loop arr.count
             {
                 valueTypeStruct.opPostMove(buf)
@@ -505,7 +505,7 @@ func roomInArray(addr: *void, valueType: typeinfo)->*void
         arr.buffer = newBuffer
     }
 
-    result := arr.buffer + (arr.count * valueType.sizeof)
+    var result = arr.buffer + (arr.count * valueType.sizeof)
     arr.count += 1
     if valueTypeStruct
         valueTypeStruct.opInit(result)
@@ -536,7 +536,7 @@ private var g_HashLock: Sync.RWLock
 func crcToType(crc: u32)->typeinfo
 {
     Sync.sharedLock(&g_HashLock)
-    e := g_HashCrcToType.find(crc)
+    var e = g_HashCrcToType.find(crc)
     if !e
         return null
     return e.value
@@ -546,7 +546,7 @@ func crcToType(crc: u32)->typeinfo
 func nameToType(name: string)->typeinfo
 {
     Sync.sharedLock(&g_HashLock)
-    e := g_HashNameToType.find(name)
+    var e = g_HashNameToType.find(name)
     if !e
         return null
     return e.value

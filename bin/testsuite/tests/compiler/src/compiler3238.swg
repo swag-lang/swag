@@ -19,6 +19,6 @@ impl Wnd
 #test
 {
     var v: Wnd
-    x := v.getTheme().getIcon24()
+    var x = v.getTheme().getIcon24()
     @assert(x == 666)
 }

@@ -29,7 +29,7 @@ impl List
     #[Swag.Macro]
     mtd(ptr: bool) opVisit(stmt: code)
     {
-        n := head
+        var n = head
         #scope Up
         while n
         {
@@ -59,7 +59,7 @@ impl List
     #[Swag.Macro]
     mtd(ptr: bool) opVisitBack(stmt: code)
     {
-        n := tail
+        var n = tail
         #scope Up
         while n
         {
@@ -85,10 +85,10 @@ impl List
     // Clear all elements
     mtd clear()
     {
-        n := head
+        var n = head
         while n
         {
-            next := n.next
+            var next = n.next
             Memory.delete(n)
             n = next
         }
@@ -101,7 +101,7 @@ impl List
     #[Swag.Discardable]
     mtd addFront(value: T)->*Node
     {
-        n := Memory.new'Node()
+        var n = Memory.new'Node()
         n.value = value
         count += 1
 
@@ -122,7 +122,7 @@ impl List
     #[Swag.Discardable]
     mtd addFront(value: moveref T)->*Node
     {
-        n := Memory.new'Node()
+        var n = Memory.new'Node()
         n.value =,move value
         count += 1
 
@@ -143,7 +143,7 @@ impl List
     #[Swag.Discardable]
     mtd addBack(value: T)->*Node
     {
-        n := Memory.new'Node()
+        var n = Memory.new'Node()
         n.value = value
         count += 1
 
@@ -164,7 +164,7 @@ impl List
     #[Swag.Discardable]
     mtd addBack(value: moveref T)->*Node
     {
-        n := Memory.new'Node()
+        var n = Memory.new'Node()
         n.value =,move value
         count += 1
 
@@ -187,7 +187,7 @@ impl List
     {
         Debug.assert(node != null)
 
-        n := Memory.new'Node()
+        var n = Memory.new'Node()
         n.value = value
         count += 1
 
@@ -206,7 +206,7 @@ impl List
     {
         Debug.assert(node != null)
 
-        n := Memory.new'Node()
+        var n = Memory.new'Node()
         n.value =,move value
         count += 1
 
@@ -226,7 +226,7 @@ impl List
     {
         Debug.assert(node != null)
 
-        n := Memory.new'Node()
+        var n = Memory.new'Node()
         n.value = value
         count += 1
 
@@ -245,7 +245,7 @@ impl List
     {
         Debug.assert(node != null)
 
-        n := Memory.new'Node()
+        var n = Memory.new'Node()
         n.value =,move value
         count += 1
 

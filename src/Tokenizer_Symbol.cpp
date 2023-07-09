@@ -84,16 +84,7 @@ bool Tokenizer::doSymbol(TokenParse& token, uint32_t c)
         return true;
 
     case ':':
-        if (curBuffer[0] == '=')
-        {
-            token.id = TokenId::SymColonEqual;
-            curBuffer++;
-            location.column++;
-        }
-        else
-        {
-            token.id = TokenId::SymColon;
-        }
+        token.id = TokenId::SymColon;
         return true;
 
     case '!':

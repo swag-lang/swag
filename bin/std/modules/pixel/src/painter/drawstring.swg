@@ -86,7 +86,7 @@ impl Painter
     func measureRune(c: rune, font: *Font)->Math.Point
     {
         var result: retval
-        desc := font.getGlyphDesc(c)
+        var desc = font.getGlyphDesc(c)
         result.x = desc.advanceX
         result.y = desc.shiftY + desc.height
         return result
@@ -95,7 +95,7 @@ impl Painter
     // Returns the metrics of a given text
     func measureString(text: string, font: *Font)->StringMetrics
     {
-        arr := getGlyphs(text, font)
+        var arr = getGlyphs(text, font)
         return measureString(arr)
     }
 
@@ -119,8 +119,8 @@ impl Painter
     // Draw a simple string (centered)
     mtd drawStringCenter(x, y: f32, text: string, font: *Font, color: Color, under = UnderlineStyle.None, zoom = 1.0)
     {
-        ms := measureString(text, font)
-        yr := y - (ms.height*0.5*zoom)
+        var ms = measureString(text, font)
+        var yr = y - (ms.height*0.5*zoom)
         yr -= (font.ascent - ms.ascent) * zoom
         drawString(x - (ms.width*0.5*zoom), yr, text, font, color, under, zoom)
     }
@@ -141,12 +141,12 @@ impl Painter
         if @countof(text) == 0 or brush.color.a == 0
             return
 
-        arr := getGlyphs(text, font)
+        var arr = getGlyphs(text, font)
         if arr.isEmpty()
             return
 
-        x := Math.round(left)
-        y := Math.round(top + font.ascent*zoom)
+        var x = Math.round(left)
+        var y = Math.round(top + font.ascent*zoom)
 
         // Compute text extent only if necessary
         var ms: StringMetrics = undefined
@@ -162,7 +162,7 @@ impl Painter
         // Underline
         if under != .None
         {
-            pen := Pen.createSolid(brush.color, Math.max(1, Math.floor(font.underlineSize)))
+            var pen = Pen.createSolid(brush.color, Math.max(1, Math.floor(font.underlineSize)))
             pen.beginCapStyle = .None
             pen.endCapStyle = .None
 
@@ -170,10 +170,10 @@ impl Painter
             switch under
             {
             case Strikeout:
-                yUnder := y - (ms.ascent*zoom / 2)
+                var yUnder = y - (ms.ascent*zoom / 2)
                 drawLine(x, yUnder, x + ms.width*zoom, yUnder, pen)
             case Underline:
-                yUnder := y - font.underlinePos
+                var yUnder = y - font.underlinePos
                 drawLine(x, yUnder, x + ms.width*zoom, yUnder, pen)
             }
 
@@ -188,20 +188,20 @@ impl Painter
             {
                 setTextureFont(font, refr.atlasIndex)
 
-                x1 := x + refr.shiftX
-                y1 := y - refr.shiftY
-                x2 := x1 + refr.width
-                y2 := y1 + refr.height
+                var x1 = x + refr.shiftX
+                var y1 = y - refr.shiftY
+                var x2 = x1 + refr.width
+                var y2 = y1 + refr.height
 
-                p1  := Vector2{x1, y1}
-                p2  := Vector2{x2, y1}
-                p3  := Vector2{x1, y2}
-                p4  := Vector2{x2, y2}
+                var p1 = Vector2{x1, y1}
+                var p2 = Vector2{x2, y1}
+                var p3 = Vector2{x1, y2}
+                var p4 = Vector2{x2, y2}
 
-                uv1 := Vector2{refr.uv.x, refr.uv.y}
-                uv2 := Vector2{refr.uv.x + refr.uv.width, refr.uv.y}
-                uv3 := Vector2{refr.uv.x, refr.uv.y + refr.uv.height}
-                uv4 := Vector2{refr.uv.x + refr.uv.width, refr.uv.y + refr.uv.height}
+                var uv1 = Vector2{refr.uv.x, refr.uv.y}
+                var uv2 = Vector2{refr.uv.x + refr.uv.width, refr.uv.y}
+                var uv3 = Vector2{refr.uv.x, refr.uv.y + refr.uv.height}
+                var uv4 = Vector2{refr.uv.x + refr.uv.width, refr.uv.y + refr.uv.height}
 
                 discard pushTriangle(p1, p2, p3, uv1, uv2, uv3, brush.color)
                 discard pushTriangle(p3, p2, p4, uv3, uv2, uv4, brush.color)
@@ -215,20 +215,20 @@ impl Painter
             {
                 setTextureFont(font, refr.atlasIndex)
 
-                x1 := Math.round(x + refr.shiftX*zoom)
-                y1 := Math.round(y - refr.shiftY*zoom)
-                x2 := Math.round(x + (refr.shiftX*zoom) + (refr.width*zoom))
-                y2 := Math.round(y - (refr.shiftY*zoom) + (refr.height*zoom))
+                var x1 = Math.round(x + refr.shiftX*zoom)
+                var y1 = Math.round(y - refr.shiftY*zoom)
+                var x2 = Math.round(x + (refr.shiftX*zoom) + (refr.width*zoom))
+                var y2 = Math.round(y - (refr.shiftY*zoom) + (refr.height*zoom))
 
-                p1  := Vector2{x1, y1}
-                p2  := Vector2{x2, y1}
-                p3  := Vector2{x1, y2}
-                p4  := Vector2{x2, y2}
+                var p1 = Vector2{x1, y1}
+                var p2 = Vector2{x2, y1}
+                var p3 = Vector2{x1, y2}
+                var p4 = Vector2{x2, y2}
 
-                uv1 := Vector2{refr.uv.x, refr.uv.y}
-                uv2 := Vector2{refr.uv.x + refr.uv.width, refr.uv.y}
-                uv3 := Vector2{refr.uv.x, refr.uv.y + refr.uv.height}
-                uv4 := Vector2{refr.uv.x + refr.uv.width, refr.uv.y + refr.uv.height}
+                var uv1 = Vector2{refr.uv.x, refr.uv.y}
+                var uv2 = Vector2{refr.uv.x + refr.uv.width, refr.uv.y}
+                var uv3 = Vector2{refr.uv.x, refr.uv.y + refr.uv.height}
+                var uv4 = Vector2{refr.uv.x + refr.uv.width, refr.uv.y + refr.uv.height}
 
                 discard pushTriangle(p1, p2, p3, uv1, uv2, uv3, brush.color)
                 discard pushTriangle(p3, p2, p4, uv3, uv2, uv4, brush.color)
@@ -259,17 +259,17 @@ impl Painter
         var lines: Array'OneLine
         var line:  OneLine
 
-        startLine := 0
-        lastWasSpace := false
+        var startLine = 0
+        var lastWasSpace = false
 
         visit &c, idx: text.chunks
         {
             // Attributes
-            fs := c.hasFontStyle ? c.fontStyle : format.fontStyle
+            var fs = c.hasFontStyle ? c.fontStyle : format.fontStyle
             c.font = format.font.getFont(fs)
 
             // Measure
-            ms := measureString(c.slice, c.font)
+            var ms = measureString(c.slice, c.font)
             c.boundRect = {0, 0, ms.width, ms.height}
 
             // User eol
@@ -291,7 +291,7 @@ impl Painter
             // Wrap
             if format.flags & .WordWrap or format.horzAlignment == .Justify
             {
-                curW := line.measure.width
+                var curW = line.measure.width
                 if format.horzAlignment == .Justify
                     curW += line.whiteSpaces
 
@@ -356,13 +356,13 @@ impl Painter
             lines.add(line)
         }
 
-        x := text.layoutRect.x
-        y := text.layoutRect.y
+        var x = text.layoutRect.x
+        var y = text.layoutRect.y
 
         // Vertical
         var totalHeight: f32
 
-        singleLine := lines.count == 1
+        var singleLine = lines.count == 1
         if lines.count > 1
         {
             totalHeight = cast(f32) (lines.count * format.font.regular.height)
@@ -395,8 +395,8 @@ impl Painter
         // Layout
         visit &l, idxLine: lines
         {
-            x1 := x
-            y1 := y
+            var x1 = x
+            var y1 = y
 
             switch format.horzAlignment
             {
@@ -410,7 +410,7 @@ impl Painter
 
             loop idx: l.start..<l.end
             {
-                c := &text.chunks[idx]
+                var c = &text.chunks[idx]
                 c.pos.x = x1
                 if c.isSpace and format.horzAlignment == .Justify and idxLine != lines.count - 1 and !l.hasEol
                     x1 += (pos.width - l.measure.width) / l.countSpaces
@@ -448,7 +448,7 @@ impl Painter
         }
 
         // Draw
-        brush := format.brush
+        var brush = format.brush
         visit &c: text.chunks
         {
             brush.color = format.palette[c.colorIdx]

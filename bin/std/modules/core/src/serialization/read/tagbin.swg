@@ -66,7 +66,7 @@ private impl TagBin
     {
         if freeSections.count
         {
-            ptr := freeSections.popBack()
+            var ptr = freeSections.popBack()
             ptr.mapSeek.clear()
             ptr.version = 0
             sections.add(ptr)
@@ -78,7 +78,7 @@ private impl TagBin
 
     mtd releaseSection()
     {
-        ptr := sections.popBack()
+        var ptr = sections.popBack()
         freeSections.add(ptr)
     }
 
@@ -104,12 +104,12 @@ private impl TagBin
 
         if Reflection.isArray(from)
         {
-            fromArr := cast(const *Swag.TypeInfoArray) from
+            var fromArr = cast(const *Swag.TypeInfoArray) from
 
             // Array to array, this is fine, we will deal with size change
             if Reflection.isArray(to)
             {
-                toArr := cast(const *Swag.TypeInfoArray) to
+                var toArr = cast(const *Swag.TypeInfoArray) to
                 if canConvertType(toArr.pointedType, fromArr.pointedType)
                     return true
             }
@@ -146,7 +146,7 @@ private impl TagBin
                 // Dynamic array to Static array
                 if Reflection.isArray(to)
                 {
-                    toArr := cast(const *Swag.TypeInfoArray) to
+                    var toArr = cast(const *Swag.TypeInfoArray) to
                     if canConvertType(toArr.pointedType, fromStruct.generics[0].pointedType)
                         return true
                 }
@@ -169,7 +169,7 @@ private impl TagBin
 
         if Reflection.isArray(to)
         {
-            toArr := cast(const *Swag.TypeInfoArray) to
+            var toArr = cast(const *Swag.TypeInfoArray) to
 
             // Conversion from simple value to array
             if canConvertType(from, toArr.pointedType)
@@ -217,7 +217,7 @@ impl TagBin
 
     mtd beginRoot() throw
     {
-        sig := stream.readNative'u32()
+        var sig = stream.readNative'u32()
         if sig != Write.TagBinSignatures.Root
             throw ErrorInvalidFile
     }
@@ -229,18 +229,18 @@ impl TagBin
 
     mtd beginSection(kind: SectionKind, skipFat = false) throw
     {
-        sec := newSection()
+        var sec = newSection()
         sec.kind    = kind
         sec.skipFat = skipFat
         if kind != .Unordered
             return
 
         // Read fat position and count
-        sig := stream.readNative'u32()
+        var sig = stream.readNative'u32()
         if sig != Write.TagBinSignatures.Fat
             throw ErrorFat
-        fatSeek  := stream.readNative'u64()
-        fatCount := stream.readNative'u64()
+        var fatSeek = stream.readNative'u64()
+        var fatCount = stream.readNative'u64()
 
         // We have a fat, but we do not want it !
         if skipFat
@@ -260,8 +260,8 @@ impl TagBin
 
             while fatCount
             {
-                crc  := stream.readNative'u32()
-                seek := stream.readNative'u64()
+                var crc = stream.readNative'u32()
+                var seek = stream.readNative'u64()
                 sec.mapSeek.add(crc, seek)
                 fatCount -= 1
             }
@@ -272,7 +272,7 @@ impl TagBin
 
     mtd endSection() throw
     {
-        sec := sections.back()
+        var sec = sections.back()
 
         // Fat is after the datas. We need to be sure to point
         // to what's next, except in raw mode where we are already at
@@ -293,17 +293,17 @@ impl TagBin
         else
         {
             // Read version
-            sig := stream.readNative'u32()
+            var sig = stream.readNative'u32()
             if sig != Write.TagBinSignatures.Version
                 throw ErrorCorrupted
-            streamVersion := stream.readNative'u32()
+            var streamVersion = stream.readNative'u32()
 
             // Deal with version
-            skipFat := false
-            version := Reflection.getAttributeValue(structType, Serialization.Version, "v")
+            var skipFat = false
+            var version = Reflection.getAttributeValue(structType, Serialization.Version, "v")
             if version != null
             {
-                curVersion := cast(u32) version
+                var curVersion = cast(u32) version
 
                 // Stream version is more recent than current code.
                 // Error, except if we want to try forward compatibility
@@ -330,8 +330,8 @@ impl TagBin
     {
         Debug.assert(sections.count != 0, "Missing a previous 'beginSection' call")
 
-        reqCrcName := val.crc32
-        sec := sections.back()
+        var reqCrcName = val.crc32
+        var sec = sections.back()
 
         // If section is raw, then we just have values without versionning
         if sec.kind == .Raw
@@ -341,17 +341,17 @@ impl TagBin
         // descriptors followed by values
         if sec.kind != .Ordered and !sec.skipFat
         {
-            ent := sec.mapSeek.find(val.crc32)
+            var ent = sec.mapSeek.find(val.crc32)
 
             // If ent is null, then we are requesting a field that do not exist
             // in the stream
             if !ent
             {
                 // So check for aliases
-                aliases := Reflection.getAttributes(val, Serialization.Alias)
+                var aliases = Reflection.getAttributes(val, Serialization.Alias)
                 visit al: aliases
                 {
-                    value := Reflection.getAttributeValue(al, "name")
+                    var value = Reflection.getAttributeValue(al, "name")
                     Debug.assert(value != null)
                     reqCrcName = Hash.Crc32.compute(cast(string) value)
                     ent = sec.mapSeek.find(reqCrcName)
@@ -368,16 +368,16 @@ impl TagBin
         }
 
         // Read name signature
-        crcName := stream.readNative'u32()
+        var crcName = stream.readNative'u32()
         if crcName != reqCrcName
             throw ErrorBadName
 
         // Read type signature. If they match, we are done
-        crcType := stream.readNative'u32()
+        var crcType = stream.readNative'u32()
         if crcType == val.pointedType.crc32
             return true
 
-        streamType := Reflection.crcToType(crcType)
+        var streamType = Reflection.crcToType(crcType)
 
         // Type from the stream does not exists anymore
         if !streamType
@@ -392,7 +392,7 @@ impl TagBin
         if convertArrayToVal
         {
             convertArrayToVal = false
-            sig := stream.readNative'u32()
+            var sig = stream.readNative'u32()
             if sig != Write.TagBinSignatures.Sequence
                 throw ErrorCorrupted
             discard stream.readNative'u64()
@@ -418,7 +418,7 @@ impl TagBin
 
     mtd beginSequence(typeElem: typeinfo, data: *u8, countElem: *u64)->bool throw
     {
-        orgCount := dref countElem
+        var orgCount = dref countElem
 
         // It's not an array in the stream, but we want one
         if convertValToArray
@@ -428,7 +428,7 @@ impl TagBin
         }
         else
         {
-            sig := stream.readNative'u32()
+            var sig = stream.readNative'u32()
 
             if sig != Write.TagBinSignatures.Sequence
                 throw ErrorCorrupted
@@ -445,15 +445,15 @@ impl TagBin
         // Just read them in one batch
         if typeElem.kind == .Struct
         {
-            structType := cast(const *TypeInfoStruct) typeElem
+            var structType = cast(const *TypeInfoStruct) typeElem
             if structType.fromGeneric == @typeof(Array)
             {
-                valueType := structType.generics[0].pointedType
-                (raw, sizeof) := isPodFinal(valueType)
+                var valueType = structType.generics[0].pointedType
+                var (raw, sizeof) = isPodFinal(valueType)
 
                 if raw
                 {
-                    bufArr := cast(*Array'u8) data
+                    var bufArr = cast(*Array'u8) data
                     bufArr.count = dref countElem
                     bufArr.reserve(bufArr.count * sizeof)
                     bufArr.capacity = bufArr.count
@@ -468,7 +468,7 @@ impl TagBin
         {
             dref countElem = Math.min(orgCount, dref countElem)
 
-            (raw, sizeof) := isPodFinal(typeElem)
+            var (raw, sizeof) = isPodFinal(typeElem)
             if raw
             {
                 stream.readBytes(data, dref countElem * sizeof)
@@ -509,7 +509,7 @@ impl TagBin
         #if NT == Core.String
         {
             var result: retval
-            count := cast(u64) stream.readNative'u32()
+            var count = cast(u64) stream.readNative'u32()
             result.reserve(count)
             stream.readBytes(result.buffer, count)
             result.length = count
@@ -523,37 +523,37 @@ impl TagBin
                 switch convertNextNative.nativeKind
                 {
                 case Bool:
-                    v := stream.readNative'bool()
+                    var v = stream.readNative'bool()
                     return cast(NT) v
                 case U8:
-                    v := stream.readNative'u8()
+                    var v = stream.readNative'u8()
                     return cast(NT) v
                 case U16:
-                    v := stream.readNative'u16()
+                    var v = stream.readNative'u16()
                     return cast(NT) v
                 case U32, Rune:
-                    v := stream.readNative'u32()
+                    var v = stream.readNative'u32()
                     return cast(NT) v
                 case U64:
-                    v := stream.readNative'u64()
+                    var v = stream.readNative'u64()
                     return cast(NT) v
                 case S8:
-                    v := stream.readNative's8()
+                    var v = stream.readNative's8()
                     return cast(NT) v
                 case S16:
-                    v := stream.readNative's16()
+                    var v = stream.readNative's16()
                     return cast(NT) v
                 case S32:
-                    v := stream.readNative's32()
+                    var v = stream.readNative's32()
                     return cast(NT) v
                 case S64:
-                    v := stream.readNative's64()
+                    var v = stream.readNative's64()
                     return cast(NT) v
                 case F32:
-                    v := stream.readNative'f32()
+                    var v = stream.readNative'f32()
                     return cast(NT) v
                 case F64:
-                    v := stream.readNative'f64()
+                    var v = stream.readNative'f64()
                     return cast(NT) v
                 }
             }

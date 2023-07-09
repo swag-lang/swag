@@ -4,5 +4,5 @@ func min(x, y: s32) => 0
 
 #test
 {
-    x := min(1's32, 2's16)
+    var x = min(1's32, 2's16)
 }

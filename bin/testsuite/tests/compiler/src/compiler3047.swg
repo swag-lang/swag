@@ -6,11 +6,11 @@ struct AA
 //#[Swag.PrintBc]
 func toto(x, y: typeinfo)->AA
 {
-    b := x == y
+    var b = x == y
     return {b}
 }
 
 #test
 {
-    x := toto(s32, s32)
+    var x = toto(s32, s32)
 }

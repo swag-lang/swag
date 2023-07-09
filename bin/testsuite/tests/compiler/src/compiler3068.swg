@@ -25,8 +25,8 @@ func toto()->AA
 #test
 {
     const X = #run toto()
-    v := X[0]
-    v1 := v
+    var v = X[0]
+    var v1 = v
     @assert(v1 == "1")
     @assert(X[1] == "2")
     @assert(X[2] == "3")

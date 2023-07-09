@@ -22,7 +22,7 @@ impl IActionUI for ActionRecentSize
 
     mtd impl update(cxt: ActionContext, evt: *CommandStateEvent)->bool
     {
-        main := cast(*MainWnd) cxt.wnd
+        var main = cast(*MainWnd) cxt.wnd
 
         switch cxt.id
         {
@@ -50,7 +50,7 @@ impl IActionUI for ActionRecentSize
 
     mtd impl execute(cxt: ActionContext)->bool
     {
-        main := cast(*MainWnd) cxt.wnd
+        var main = cast(*MainWnd) cxt.wnd
 
         switch cxt.id
         {

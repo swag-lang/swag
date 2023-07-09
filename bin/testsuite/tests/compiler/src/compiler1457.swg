@@ -1,6 +1,6 @@
 #test
 {
-    cpt := 0
+    var cpt = 0
     #scope up
     {
         loop 5

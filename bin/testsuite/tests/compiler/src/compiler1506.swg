@@ -10,7 +10,7 @@ func set(x: string)
 {
     #run
     {
-        x := "inside function set"
+        var x = "inside function set"
         set(x)
     }
 }

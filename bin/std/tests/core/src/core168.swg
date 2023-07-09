@@ -4,9 +4,9 @@ using Core.Time
 //#[Swag.PrintBc]
 #test
 {
-    dt := DateTime.now()
-    ts := TimeSpan.from(dt)
-    dt1 := ts.toDateTime()
+    var dt = DateTime.now()
+    var ts = TimeSpan.from(dt)
+    var dt1 = ts.toDateTime()
     /*Console.print("ticks: %\n", ts)
     Console.print("dt: %\n", dt)
     Console.print("dt1: %\n", dt1)*/

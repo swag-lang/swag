@@ -33,9 +33,9 @@ impl Transform2
         var result: retval = undefined
         using result
 
-        s := Math.sin(angle)
-        c := Math.cos(angle)
-        c1 := 1.0 - c
+        var s = Math.sin(angle)
+        var c = Math.cos(angle)
+        var c1 = 1.0 - c
 
         tx = (centerX * c1) + (centerY * s)
         ty = (centerY * c1) - (centerX * s)
@@ -83,15 +83,15 @@ impl Transform2
     // Multiply two matricies
     mtd multiply(matrix2: Transform2)
     {
-        sm11 := m11
+        var sm11 = m11
         m11 = sm11 * matrix2.m11 + m12 * matrix2.m21
         m12 = sm11 * matrix2.m12 + m12 * matrix2.m22
 
-        sm21 := m21
+        var sm21 = m21
         m21 = sm21 * matrix2.m11 + m22 * matrix2.m21
         m22 = sm21 * matrix2.m12 + m22 * matrix2.m22
 
-        stx := tx
+        var stx = tx
         tx = stx * matrix2.m11 + ty * matrix2.m21 + matrix2.tx
         ty = stx * matrix2.m12 + ty * matrix2.m22 + matrix2.ty
     }

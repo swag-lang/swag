@@ -2,5 +2,5 @@
 #test
 {
     var ptr: *u8
-    a := ptr[0..1]
+    var a = ptr[0..1]
 }

@@ -3,6 +3,6 @@ enum A { A; }
 
 func toto()
 {
-    x := 0
+    var x = 0
     x;
 }

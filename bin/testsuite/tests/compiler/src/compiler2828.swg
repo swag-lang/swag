@@ -2,7 +2,7 @@
 
 func level0()
 {
-    titi := 666's64
+    var titi = 666's64
     //@print(titi)
 }
 
@@ -12,9 +12,9 @@ func level0()
 func test(level: s64)
 {
     //@breakpoint()
-    ptr := &level
+    var ptr = &level
     level0()
-    toto := level
+    var toto = level
     //@print(cast(s64) toto)
 }
 

@@ -10,5 +10,5 @@ enum E
 
 #test
 {
-    x := E.GREEN
+    var x = E.GREEN
 }

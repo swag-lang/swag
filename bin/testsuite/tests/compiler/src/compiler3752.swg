@@ -2,5 +2,5 @@
 
 #test
 {
-    x := @kindof(@getcontext().allocator)
+    var x = @kindof(@getcontext().allocator)
 }

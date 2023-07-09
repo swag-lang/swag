@@ -5,5 +5,5 @@ alias toto = bool
 //#[Swag.PrintBc]
 #test
 {
-	a := toto[0]
+	var a = toto[0]
 }

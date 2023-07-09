@@ -18,7 +18,7 @@ impl Point
 #test
 {
 	var pt: Point
-	cpt := 0
+	var cpt = 0
 	loop pt
 	{
 		cpt += 1

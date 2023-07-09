@@ -21,7 +21,7 @@ func(T) toto()
 
 #test
 {
-    ptr1 := @typeof(toto'(AA.ST))
-    ptr2 := @typeof(toto'(BB.ST))
+    var ptr1 = @typeof(toto'(AA.ST))
+    var ptr2 = @typeof(toto'(BB.ST))
     @assert(ptr1 != ptr2)
 }

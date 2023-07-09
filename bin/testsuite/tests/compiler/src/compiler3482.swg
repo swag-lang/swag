@@ -1,10 +1,10 @@
 //#[Swag.PrintBc]
 func(T) insertionSort(values: [..] T, cb: closure(T, T)->s32)
 {
-    buffer := @dataof(values)
-    for i := 1'u32; i < 2; i += 1
+    var buffer = @dataof(values)
+    for var i = 1'u32; i < 2; i += 1
     {
-        for j := i; cb(buffer[j], buffer[j - 1]) < 0; j -= 1
+        for var j = i; cb(buffer[j], buffer[j - 1]) < 0; j -= 1
         {
         }
     }
@@ -12,7 +12,7 @@ func(T) insertionSort(values: [..] T, cb: closure(T, T)->s32)
 
 #test
 {
-    x := [1,2]
+    var x = [1,2]
 
     func toto(x, y: s32)->s32
     {

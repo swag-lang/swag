@@ -8,6 +8,6 @@ func toto(x: ref s32)
 //#[Swag.PrintBc]
 #test
 {
-    a := 2
+    var a = 2
     toto(&a)
 }

@@ -5,7 +5,7 @@ func toto(x: string)->string
 {
     #ast
     {
-        y := x
+        var y = x
         @print(y)
         return "return \"5\""//"return \"" ++ x ++ "\""
     }
@@ -13,7 +13,7 @@ func toto(x: string)->string
 
 #test
 {
-    y := "5"
-    x := toto(y)
+    var y = "5"
+    var x = toto(y)
     @assert(x == "5")
 }

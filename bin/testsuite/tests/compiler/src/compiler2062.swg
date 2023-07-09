@@ -1,7 +1,7 @@
 #test
 {
-    x := @typeof(s32)
-    y := @typeof(s32)
-    v := @typecmp(x,y, Swag.TypeCmpFlags.Strict)
+    var x = @typeof(s32)
+    var y = @typeof(s32)
+    var v = @typecmp(x,y, Swag.TypeCmpFlags.Strict)
     @assert(v)
 }

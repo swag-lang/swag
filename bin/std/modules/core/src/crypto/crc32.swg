@@ -518,11 +518,11 @@ public impl Crc32
     // Update the hash value with 'buffer' content
     mtd update(data: const [..] u8)
     {
-        cur := ~crc
-        length := @countof(data)
+        var cur = ~crc
+        var length = @countof(data)
         if !length
             return
-        current := cast(const ^u32) @dataof(data)
+        var current = cast(const ^u32) @dataof(data)
 
         const unroll = 4
         const bytesAtOnce = 16 * unroll
@@ -532,10 +532,10 @@ public impl Crc32
             {
             #if BIG_ENDIAN
             {
-                one   := current[0] ^ Swap(cur)
-                two   := current[1]
-                three := current[2]
-                four  := current[3]
+                var one = current[0] ^ Swap(cur)
+                var two = current[1]
+                var three = current[2]
+                var four = current[3]
                 current += 4
 
                 #[Swag.Overflow(true)]
@@ -550,10 +550,10 @@ public impl Crc32
             }
             #else
             {
-                one   := current[0] ^ cur
-                two   := current[1]
-                three := current[2]
-                four  := current[3]
+                var one = current[0] ^ cur
+                var two = current[1]
+                var three = current[2]
+                var four = current[3]
                 current += 4
 
                 #[Swag.Overflow(true)]
@@ -571,7 +571,7 @@ public impl Crc32
             length -= bytesAtOnce
         }
 
-        currentChar := cast(const ^u8) current
+        var currentChar = cast(const ^u8) current
         while length
         {
             cur = (cur >> 8) ^ LookupTable[0, (cur & 0xFF) ^ currentChar[0]]

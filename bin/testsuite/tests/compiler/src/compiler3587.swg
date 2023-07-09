@@ -14,7 +14,7 @@ var c1: Color
 
 #test
 {
-    (?, sat, lum) := c1.toHsl()
+    var (?, sat, lum) = c1.toHsl()
     @assert(sat == 2)
     @assert(lum == 3)
 }

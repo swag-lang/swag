@@ -3,6 +3,6 @@
     if @dbgalloc()
     {
         @dbgalloc().countAlloc = @dbgalloc().countAlloc
-        x := @rtflags()
+        var x = @rtflags()
     }
 }

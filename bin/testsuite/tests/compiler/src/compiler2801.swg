@@ -2,6 +2,6 @@
 
 #test
 {
-    x := const 30's32
+    var x = const 30's32
     x = 0
 }*/

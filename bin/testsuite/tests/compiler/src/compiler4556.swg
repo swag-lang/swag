@@ -6,8 +6,8 @@ alias A = string
 #[Swag.Safety("", true)]
 #test
 {
-    a := "toto"
+    var a = "toto"
     var x: ref A = &a
-    y := x[1..2]
+    var y = x[1..2]
     @assert(y == "ot")
 }

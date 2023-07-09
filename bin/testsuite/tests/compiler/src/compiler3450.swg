@@ -1,9 +1,9 @@
 //#[Swag.PrintBc, Swag.Optim("", false)]
 #test
 {
-    x := {a = 2, b = 3}
+    var x = {a = 2, b = 3}
 
-    v := closure|x|()
+    var v = closure|x|()
     {
         @assert(x.item0 == 2)
         @assert(x.item1 == 3)

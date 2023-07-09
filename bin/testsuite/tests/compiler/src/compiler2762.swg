@@ -13,14 +13,14 @@ enum AA: const [..] s32
 
 #test
 {
-    x := AA.A
+    var x = AA.A
     @assert(@countof(x) == 4)
     @assert(x[0] == 1)
     @assert(x[1] == 2)
     @assert(x[2] == 3)
     @assert(x[3] == 4)
 
-    y := AA.B
+    var y = AA.B
     @assert(@countof(y) == 3)
     @assert(y[0] == 10)
     @assert(y[1] == 20)

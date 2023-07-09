@@ -4,7 +4,7 @@
 #[Swag.Safety("", true)]
 #test
 {
-    x := 1
+    var x = 1
     x >>= 32
     x >>= 32
 //    x <<= 32

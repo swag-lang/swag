@@ -5,6 +5,6 @@
 #[Swag.Safety("", true)]
 #test
 {
-    x := 10
+    var x = 10
     x /= 0
 }

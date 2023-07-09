@@ -1,7 +1,7 @@
 //#[Swag.PrintBc]
 func(N: s32) toto()->s32
 {
-	cpt := 0
+	var cpt = 0
 	loop(N)
 	{
 		//@print("toto\n")

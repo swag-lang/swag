@@ -10,11 +10,11 @@ func toto(x: ref *s32)
 
 #test
 {
-	a := 10
-	ptr := &a
-	r := ref &ptr
+	var a = 10
+	var ptr = &a
+	var r = ref &ptr
 	toto(&r)
-	
+
 	//@print(dref ptr)
 	@assert(dref ptr == 5)
 	@assert(dref r == 5)

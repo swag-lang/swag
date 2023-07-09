@@ -11,6 +11,6 @@ func toto(x: *A)
 
 func titi()
 {
-    a := B{}
+    var a = B{}
     toto(a)
 }

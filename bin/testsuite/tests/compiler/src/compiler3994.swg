@@ -4,7 +4,7 @@ var G: *void
 
 func toto(x: any)
 {
-    k := @kindof(x)
+    var k = @kindof(x)
     @assert(G != @dataof(x))
     @assert(G == dref cast(**void) @dataof(x))
     @assert(k.kind == .Pointer)

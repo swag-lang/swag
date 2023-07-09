@@ -7,7 +7,7 @@
         #up a += 2
     }
 
-    a := 0
+    var a = 0
     toto()
     toto()
     toto()

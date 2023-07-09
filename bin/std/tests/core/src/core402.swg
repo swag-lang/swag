@@ -6,7 +6,7 @@ using Core, Random
     rng.seedU64(cast(u64) Time.nowMilliseconds())
     loop 10
     {
-        x := rng.nextU64()
+        var x = rng.nextU64()
         //@print(x, "\n")
     }
 
@@ -18,12 +18,12 @@ using Core, Random
     rng.seedU64(s)
     loop 10
     {
-        x := rng.nextU64()
+        var x = rng.nextU64()
         //@print(x, "\n")
     }
 
     var rng1: Rng'Mt64
     rng1.seedU32(Time.nowMilliseconds())
-    x := rng1.nextU32()
+    var x = rng1.nextU32()
     //@print(x)
 }

@@ -7,7 +7,7 @@
     //var ptr0: func() = &myFunction0
     //ptr0()
 
-    ptr1 := &myFunction1
+    var ptr1 = &myFunction1
     //@assert(myFunction1(2) == 4)
     @assert(ptr1(2) == 4)
 }

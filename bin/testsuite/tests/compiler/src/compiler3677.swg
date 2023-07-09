@@ -11,7 +11,7 @@ func toto(stmt: code)
     {
         struct A {}
         var x: A
-        //x := func(){}
+        //var x = func(){}
         //x()
     }
 }

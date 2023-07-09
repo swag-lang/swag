@@ -26,7 +26,7 @@ alias getExtensionAddress = wglGetProcAddress
 {
     func wglCreateContext(hDc: HDC)->HGLRC throw
     {
-        res := PrivOgl.wglCreateContext(hDc)
+        var res = PrivOgl.wglCreateContext(hDc)
         if !res
             try setError(GetLastError())
         return res

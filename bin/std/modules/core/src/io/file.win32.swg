@@ -6,16 +6,16 @@ using Win32
 // Delete the specified file
 func delete(fullname: string) throw
 {
-    winPath := Utf16.toZeroTerminated(fullname)
+    var winPath = Utf16.toZeroTerminated(fullname)
     try DeleteFileW(@dataof(winPath))
 }
 
 // Change the file write date/time
 func touch(fullname: string) throw
 {
-    winPath := Utf16.toZeroTerminated(fullname)
+    var winPath = Utf16.toZeroTerminated(fullname)
 
-    hFile := CreateFileW(@dataof(winPath), FILE_WRITE_ATTRIBUTES, 0, null, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, null)
+    var hFile = CreateFileW(@dataof(winPath), FILE_WRITE_ATTRIBUTES, 0, null, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, null)
     defer CloseHandle(hFile)
 
     var ft: FILETIME = undefined
@@ -29,8 +29,8 @@ func touch(fullname: string) throw
 func exists(fullname: string)->bool
 {
     if fullname == null return false
-    winPath := Utf16.toZeroTerminated(fullname)
-    attributes := catch GetFileAttributesW(@dataof(winPath))
+    var winPath = Utf16.toZeroTerminated(fullname)
+    var attributes = catch GetFileAttributesW(@dataof(winPath))
     if @errmsg return false
     if attributes == 0xFFFFFFFF return false
     if attributes & FILE_ATTRIBUTE_DIRECTORY return false
@@ -77,8 +77,8 @@ func open(fullname: string, mode: FileMode, access: FileAccess, share: FileShare
     if share & FileShare.Delete
         wShare |= FILE_SHARE_DELETE
 
-    winPath := Utf16.toZeroTerminated(fullname)
-    hFile := CreateFileW(@dataof(winPath), wAccess, wShare, null, wMode, FILE_ATTRIBUTE_NORMAL, null);
+    var winPath = Utf16.toZeroTerminated(fullname)
+    var hFile = CreateFileW(@dataof(winPath), wAccess, wShare, null, wMode, FILE_ATTRIBUTE_NORMAL, null);
 
     result.name    = fullname
     result.handle  = cast(FileHandle) hFile

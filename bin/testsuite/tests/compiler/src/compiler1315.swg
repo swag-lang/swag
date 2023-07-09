@@ -2,16 +2,16 @@
 //#[Swag.PrintBc]
 #test
 {
-    cpt := 6
+    var cpt = 6
 
     #macro
     {
-        cpt := 0
+        var cpt = 0
     }
 
     #macro
     {
-        cpt := 0
+        var cpt = 0
     }
 
     @assert(cpt == 6)

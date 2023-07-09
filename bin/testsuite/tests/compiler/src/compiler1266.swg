@@ -3,6 +3,6 @@
 
 func getCharCount(buffer: *u8)
 {
-    x := y
-    y := 0
+    var x = y
+    var y = 0
 }

@@ -12,6 +12,6 @@ func titi()->string throw
 //#[Swag.PrintBc]
 #test
 {
-    x := catch titi()
+    var x = catch titi()
     @assert(x == null)
 }

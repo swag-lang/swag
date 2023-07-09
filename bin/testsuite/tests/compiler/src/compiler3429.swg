@@ -5,6 +5,6 @@
         return 66
     }
 
-    x := v()
+    var x = v()
     @assert(x == 66)
 }

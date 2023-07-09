@@ -7,7 +7,7 @@ func toto()->s64 throw
 //#[Swag.PrintBc]
 #test
 {
-    g := 0
-    x := catch toto()
+    var g = 0
+    var x = catch toto()
     @assert(@errmsg != null)
 }

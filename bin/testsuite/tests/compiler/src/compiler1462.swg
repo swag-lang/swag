@@ -9,7 +9,7 @@ impl S
     #[Swag.Mixin, Swag.CalleeReturn]
     func(ptr: bool) opVisit(using self, stmt: code)
     {
-        for v := down; v <= up; v += 1
+        for var v = down; v <= up; v += 1
         {
             var @alias0 = v
             var @alias1 = @index
@@ -28,8 +28,8 @@ impl S
 #test
 {
     var x: S
-    cpt := 0
-    cpt1 := 0
+    var cpt = 0
+    var cpt1 = 0
     visit i, j: x
     {
         cpt +=  i

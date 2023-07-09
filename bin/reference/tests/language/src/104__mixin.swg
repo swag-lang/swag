@@ -16,7 +16,7 @@
             a += 1
         }
 
-        a := 0
+        var a = 0
         myMixin()   // Equivalent to 'a += 1'
         myMixin()   // Equivalent to 'a += 1'
         @assert(a == 2)
@@ -30,7 +30,7 @@
             a += increment
         }
 
-        a := 0
+        var a = 0
         myMixin()   // Equivalent to 'a += 1'
         myMixin(2)  // Equivalent to 'a += 2'
         @assert(a == 3)
@@ -46,7 +46,7 @@
             #mixin what
         }
 
-        a := 0
+        var a = 0
         doItTwice(#code {a += 1;})
         @assert(a == 2)
     }
@@ -60,7 +60,7 @@
             #mixin what
         }
 
-        a := 0
+        var a = 0
         doItTwice(4)
         {
             a += value
@@ -82,7 +82,7 @@
             @alias0 += 10
         }
 
-        a, b := 0
+        var a, b = 0
         inc10(|a|)  // Passing alias name 'a'
         inc10(|b|)  // Passing alias name 'b'
         @assert(a == b and b == 10)

@@ -8,5 +8,5 @@ struct TOTO
 //#[Swag.PrintBc]
 #test
 {
-    ptr := cast(const *TypeInfoStruct) @typeof(TOTO)
+    var ptr = cast(const *TypeInfoStruct) @typeof(TOTO)
 }

@@ -5,14 +5,14 @@ using Core
     {
         var r: Parser.RegExp
         assume r.compile("abc")
-        res := r.grepAll("abcggggabcggggabc")
+        var res = r.grepAll("abcggggabcggggabc")
         @assert(res.count == 3)
     }
 
     {
         var r: Parser.RegExp
         assume r.compile("a+")
-        res := r.grepAll("abcggggaaaa")
+        var res = r.grepAll("abcggggaaaa")
         @assert(res.count == 2)
         @assert(res[0] == "a")
         @assert(res[1] == "aaaa")
@@ -21,7 +21,7 @@ using Core
     {
         var r: Parser.RegExp
         assume r.compile("A+", ignoreCase = true)
-        res := r.grepAll("abcggggaaaa")
+        var res = r.grepAll("abcggggaaaa")
         @assert(res.count == 2)
         @assert(res[0] == "a")
         @assert(res[1] == "aaaa")

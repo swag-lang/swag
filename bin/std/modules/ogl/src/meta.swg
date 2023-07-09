@@ -14,8 +14,8 @@ var g_Functions: Array'OneFunc
 
 #message(CompilerMsgMask.SemFunctions)
 {
-    itf := @compiler()
-    msg := itf.getMessage()
+    var itf = @compiler()
+    var msg = itf.getMessage()
     if !Reflection.hasAttribute(msg.type, Extension)
         return
     g_Functions.add({msg.type, msg.name})
@@ -31,7 +31,7 @@ var g_Functions: Array'OneFunc
 
     visit e: g_Functions
     {
-        typeFunc := cast(const *TypeInfoFunc) e.type
+        var typeFunc = cast(const *TypeInfoFunc) e.type
 
         // Declare a lambda variable for that extension
         builderVars.appendFormat("var ext_%: %\n", e.name, typeFunc.name)
@@ -61,8 +61,8 @@ var g_Functions: Array'OneFunc
         builderInit.appendFormat("\text_% = cast(%) getExtensionAddress(@dataof(\"%\"))\n", e.name, typeFunc.name, e.name);
     }
 
-    itf := @compiler()
-    str := builderVars.toString()
+    var itf = @compiler()
+    var str = builderVars.toString()
     itf.compileString(str.toString())
 
     builderInit.appendString("}\n");

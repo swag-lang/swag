@@ -25,5 +25,5 @@ func toto()->AA
 #test
 {
     const X = toto()
-    v := X[0]
+    var v = X[0]
 }

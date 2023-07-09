@@ -17,7 +17,7 @@ using Core
     b.addNative(66'u8)
     @assert(@countof(b) == 2)
 
-    ptr := b.lastBucket.datas
+    var ptr = b.lastBucket.datas
     @assert(ptr[0] == 55)
     @assert(ptr[1] == 66)
 
@@ -47,13 +47,13 @@ using Core
 
     @assert(b.firstBucket != b.lastBucket)
 
-    ptr := b.firstBucket.datas
+    var ptr = b.firstBucket.datas
     @assert(ptr[0] == 1)
     @assert(ptr[1] == 2)
     @assert(ptr[2] == 3)
     @assert(ptr[3] == 4)
 
-    ptr1 := b.lastBucket.datas
+    var ptr1 = b.lastBucket.datas
     @assert(ptr1[0] == 5)
     @assert(ptr1[1] == 6)
     @assert(ptr1[2] == 7)

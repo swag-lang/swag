@@ -6,6 +6,6 @@ func toto(x: s32)
 
 #test
 {
-    y := &toto(1)
-    //x := @kindof(@getcontext().allocator)
+    var y = &toto(1)
+    //var x = @kindof(@getcontext().allocator)
 }

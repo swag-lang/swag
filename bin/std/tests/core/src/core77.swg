@@ -10,6 +10,6 @@ using Core, Utf8
     @assert(str.indexOf("C"'rune) == 4)
     @assert(Utf8.indexOf(str, "D"'rune) == Swag.U64.Max)
 
-    idx := Utf8.indexOf(str, "A"'rune)
+    var idx = Utf8.indexOf(str, "A"'rune)
     @assert(idx == 0)
 }

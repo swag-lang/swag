@@ -12,7 +12,7 @@ func toto(x: ref s32)
 
 #test
 {
-    x := 0
+    var x = 0
     toto(&x)
     @assert(G == 1)
 }

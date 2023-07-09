@@ -1,12 +1,12 @@
 func isLeapYear(year: s32)->s32
 {
-    x := year % 3
+    var x = year % 3
     return x
 }
 
 func isLeapYear1(year: s64)->u64
 {
-    x := year % 3
+    var x = year % 3
     return x
 }
 

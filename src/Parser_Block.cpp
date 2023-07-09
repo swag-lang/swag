@@ -198,7 +198,7 @@ bool Parser::doFor(AstNode* parent, AstNode** result)
     ScopedBreakable scopedBreakable(this, node);
 
     // Pre statement. Do not call doScopedCurlyStatement in order to avoid
-    // creating a new scope in the case of for { i:= 0; j := 0 } for example
+    // creating a new scope in the case of for { var i = 0; var j = 0 } for example
     if (token.id == TokenId::SymLeftCurly)
         SWAG_CHECK(doCurlyStatement(node, &node->preExpression));
     else

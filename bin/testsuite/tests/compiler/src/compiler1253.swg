@@ -5,7 +5,7 @@ func toto() -> {a:f32, b:bool}
 
 #test
 {
-	(x, y) := toto()
+	var (x, y) = toto()
     @assert(x == 666)
     @assert(y == true)
 }

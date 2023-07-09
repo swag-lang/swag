@@ -3,7 +3,7 @@
 func(T) toto(v: const [..] T)
 {
     #print @typeof(v).fullname
-    x := @countof(v)
+    var x = @countof(v)
     @print(x)
 }
 

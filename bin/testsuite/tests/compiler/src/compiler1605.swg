@@ -15,6 +15,6 @@ enum Color
 //#[Swag.PrintBc]
 #test
 {
-    x := Color.Alpha
+    var x = Color.Alpha
     @assert(cast(s64) Color.Alpha == 10)
 }

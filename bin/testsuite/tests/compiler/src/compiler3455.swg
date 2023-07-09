@@ -2,8 +2,8 @@
 var G = 0
 #test
 {
-    a := [1, 2, 3, 4]
-    v := closure|a|()
+    var a = [1, 2, 3, 4]
+    var v = closure|a|()
     {
         G = a[0] + a[1] + a[2] + a[3]
     }

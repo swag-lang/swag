@@ -4,6 +4,6 @@
 //#[Swag.PrintBc]
 #test
 {
-    a := [1, 2, 3, 4]
-    c := a[1..0]
+    var a = [1, 2, 3, 4]
+    var c = a[1..0]
 }

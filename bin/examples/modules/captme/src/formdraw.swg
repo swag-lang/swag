@@ -25,7 +25,7 @@ impl IForm for FormDraw
 {
     mtd impl isSame(ptr: *BaseForm)->bool
     {
-        other := cast(*FormDraw) ptr
+        var other = cast(*FormDraw) ptr
         return  borderColor == other.borderColor and
                 borderSize  == other.borderSize and
                 alpha       == other.alpha and
@@ -34,8 +34,8 @@ impl IForm for FormDraw
 
     mtd impl copy(dst, src: *BaseForm)
     {
-        dstf := cast(*FormDraw) dst
-        srcf := cast(*FormDraw) src
+        var dstf = cast(*FormDraw) dst
+        var srcf = cast(*FormDraw) src
         dstf.borderColor = srcf.borderColor
         dstf.borderSize  = srcf.borderSize
         dstf.alpha       = srcf.alpha
@@ -47,20 +47,20 @@ impl IForm for FormDraw
         if evt.kind == .MouseReleased and evt.button == .Left
             return false
 
-        x0 := (localPos.x - paintRect.x) / zoom
-        y0 := (localPos.y - paintRect.y) / zoom
+        var x0 = (localPos.x - paintRect.x) / zoom
+        var y0 = (localPos.y - paintRect.y) / zoom
 
         if points.count < 2
         {
-            xs := (movingStart.x - paintRect.x) / zoom
-            ys := (movingStart.y - paintRect.y) / zoom
+            var xs = (movingStart.x - paintRect.x) / zoom
+            var ys = (movingStart.y - paintRect.y) / zoom
             points.add({xs, ys})
             points.add({x0, y0})
         }
         elif evt.kind == .MouseMove
         {
-            xs := Math.abs(x0 - points.back().x)
-            ys := Math.abs(y0 - points.back().y)
+            var xs = Math.abs(x0 - points.back().x)
+            var ys = Math.abs(y0 - points.back().y)
             if xs > 5 or ys > 5
                 points.add({x0, y0})
         }
@@ -83,11 +83,11 @@ impl IForm for FormDraw
 
     mtd impl setBaseForm(newPosX, newPosY, newSizeX, newSizeY: s32)
     {
-        rect := boundRect()
-        bSize := borderSize * 0.5
+        var rect = boundRect()
+        var bSize = borderSize * 0.5
         rect.inflate(-bSize)
-        fx := newSizeX / rect.width
-        fy := newSizeY / rect.height
+        var fx = newSizeX / rect.width
+        var fy = newSizeY / rect.height
 
         visit &pt: points
         {
@@ -122,11 +122,11 @@ impl IForm for FormDraw
 
         var result: retval
 
-        bSize := borderSize * 0.5
-        x0 := Swag.F32.Max
-        y0 := Swag.F32.Max
-        x1 := 0'f32
-        y1 := 0'f32
+        var bSize = borderSize * 0.5
+        var x0 = Swag.F32.Max
+        var y0 = Swag.F32.Max
+        var x1 = 0'f32
+        var y1 = 0'f32
         visit &pt: points
         {
             x0 = Math.min(x0, pt.x - bSize)
@@ -144,13 +144,13 @@ impl IForm for FormDraw
 
     mtd computePaintCoords(z: f32)
     {
-        rect := boundRect()
+        var rect = boundRect()
 
         paintPoints.clear()
         visit pt: points
         {
-            x0 := (pt.x * z) - (rect.x * z) + paintPos.x
-            x1 := (pt.y * z) - (rect.y * z) + paintPos.y
+            var x0 = (pt.x * z) - (rect.x * z) + paintPos.x
+            var x1 = (pt.y * z) - (rect.y * z) + paintPos.y
             paintPoints.add({x0, x1})
         }
     }
@@ -165,14 +165,14 @@ impl IForm for FormDraw
         if flags & (.Hot | .Selected)
         {
             const anchorSize = 8
-            anchorSize2 := anchorSize * 0.5
-            col := subKind == .PixSel ? Argb.Yellow : Argb.White
-            color := Color.getBlend(Argb.Black, col, (flags & .Hot) ? 0.8 : 1)
+            var anchorSize2 = anchorSize * 0.5
+            var col = subKind == .PixSel ? Argb.Yellow : Argb.White
+            var color = Color.getBlend(Argb.Black, col, (flags & .Hot) ? 0.8 : 1)
 
-            start := paintPoints[0]
+            var start = paintPoints[0]
             painter.fillCircle(start.x, start.y, anchorSize2, color)
             painter.drawCircle(start.x, start.y, anchorSize2, Argb.Black, 1)
-            end := paintPoints.back()
+            var end = paintPoints.back()
             painter.fillCircle(end.x, end.y, anchorSize2, color)
             painter.drawCircle(end.x, end.y, anchorSize2, Argb.Black, 1)
         }
@@ -185,7 +185,7 @@ impl IForm for FormDraw
 
     mtd impl hitTest(pt: Math.Point, z: f32)->bool
     {
-        bSize := borderSize * z * 0.5
+        var bSize = borderSize * z * 0.5
         bSize = Math.max(bSize, 2)
 
         computePaintCoords(z)
@@ -193,7 +193,7 @@ impl IForm for FormDraw
         if subKind == .PixSel
             return Math.Vector2.polyContains(paintPoints, {pt.x, pt.y})
 
-        v := Math.Vector2{pt.x, pt.y}
+        var v = Math.Vector2{pt.x, pt.y}
         loop i: 0..paintPoints.count-2
         {
             if v.distanceToSegment(paintPoints[i], paintPoints[i+1]) <= bSize
@@ -205,7 +205,7 @@ impl IForm for FormDraw
 
     mtd impl paint(app: *Application, painter: *Painter, z: f32, quickMode: bool)
     {
-        bSize := adaptSize(borderSize, MinBorderSize, MaxBorderSize, z, quickMode)
+        var bSize = adaptSize(borderSize, MinBorderSize, MaxBorderSize, z, quickMode)
         bSize = Math.max(bSize, 2)
         computePaintCoords(z)
 
@@ -222,12 +222,12 @@ impl IForm for FormDraw
             painter.removeParams(.Antialiased)
         }
 
-        pen := Pen.createDash(dashStyle, borderColor, bSize)
+        var pen = Pen.createDash(dashStyle, borderColor, bSize)
         pen.joinStyle = .Round
 
         if quickMode and alpha != 100 and subKind == .Highlight
         {
-            pen1 := pen
+            var pen1 = pen
             pen1.brush = Brush.createHatch(.CheckBoardLarge, Argb.DarkGray)
             painter.drawPath(&pl, pen1)
             pen.brush.color.a = cast(u8) Math.map(cast(f32) alpha, 0, 100, 0, 255)

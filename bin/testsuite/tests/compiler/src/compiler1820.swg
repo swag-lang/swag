@@ -15,7 +15,7 @@ impl titi
 //#[Swag.PrintBc]
 #test
 {
-    arr := [10, 20, 320]
+    var arr = [10, 20, 320]
 	var t: titi
 	titi.toto(t, 666)
 }

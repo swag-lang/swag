@@ -22,13 +22,13 @@ public impl Adler32
     // Update the hash value with 'buffer' content
     mtd update(buffer: const [..] u8)
     {
-        s1 := adler & 0xffff
-        s2 := (adler >> 16) & 0xffff
+        var s1 = adler & 0xffff
+        var s2 = (adler >> 16) & 0xffff
 
-        countof := @countof(buffer)
+        var countof = @countof(buffer)
         if !countof return
 
-        input := @dataof(buffer)
+        var input = @dataof(buffer)
         if countof == 1
         {
             s1 += input[0]
@@ -53,14 +53,14 @@ public impl Adler32
         else
         {
             const n = NMax / 16
-            i := 0'u64
+            var i = 0'u64
 
             while i + NMax <= countof
             {
-                rounds := 0'u64
+                var rounds = 0'u64
                 for ; rounds < n; rounds += 1
                 {
-                    j := 0'u64
+                    var j = 0'u64
                     for ; j < 16; j += 1
                     {
                         s1 += input[i + j]
@@ -78,7 +78,7 @@ public impl Adler32
             {
                 for ; i + 16 <= countof; i += 16
                 {
-                    j := 0'u64
+                    var j = 0'u64
                     for ; j < 16; j += 1
                     {
                         s1 += input[i + j]

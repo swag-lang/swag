@@ -42,7 +42,7 @@ impl GizmoPoints
         case MouseMove:
             if moving
             {
-                diff := pos - movingStart
+                var diff = pos - movingStart
                 if firstMoving and sigChanged
                     sigChanged(diff, hotAnchor, true)
                 firstMoving = false
@@ -77,8 +77,8 @@ impl GizmoPoints
 
     mtd paint(_app: *Application, painter: *Painter, hot: bool, col: Color = Argb.White)
     {
-        anchorSize2 := anchorSize * 0.5
-        color := Color.getBlend(Argb.Black, col, hot ? 0.8 : 1)
+        var anchorSize2 = anchorSize * 0.5
+        var color = Color.getBlend(Argb.Black, col, hot ? 0.8 : 1)
         visit c: anchors
         {
             painter.fillCircle(c.x, c.y, anchorSize2, color)
@@ -88,12 +88,12 @@ impl GizmoPoints
 
     func apply(iform: IForm, diff: Math.Point, pt: u32, first: bool)
     {
-        form := cast(*BaseForm) @dataof(iform)
-        capture := form.capture
+        var form = cast(*BaseForm) @dataof(iform)
+        var capture = form.capture
         if !first
             capture.undo()
-        undo := capture.newUndo(.MovePoint)
-        zoom := capture.editView.zoom
+        var undo = capture.newUndo(.MovePoint)
+        var zoom = capture.editView.zoom
 
         undo.newPosX = cast(s32) (diff.x / zoom)
         undo.newPosY = cast(s32) (diff.y / zoom)

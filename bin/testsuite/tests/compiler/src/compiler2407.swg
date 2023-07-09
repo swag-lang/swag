@@ -3,6 +3,6 @@ public func toto2407()
 {
     #run
     {
-        x := 4
+        var x = 4
     }
 }

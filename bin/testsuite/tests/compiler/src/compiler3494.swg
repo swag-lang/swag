@@ -28,6 +28,6 @@ struct B
 #test
 {
     var v: B
-    x := v[0]
+    var x = v[0]
     @assert(x == 10)
 }

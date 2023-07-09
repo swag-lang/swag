@@ -36,8 +36,8 @@ This `#message` will be called for each function of the `Ogl` module.
 ```
 #message(CompilerMsgMask.SemFunctions)
 {
-    itf := @compiler()
-    msg := itf.getMessage()
+    var itf = @compiler()
+    var msg = itf.getMessage()
 
     // If the function does not have our attribute, forget it
     if !Reflection.hasAttribute(msg.type, Extension)
@@ -64,7 +64,7 @@ This is called once all functions of the module have been typed, and this is the
     // Visit all functions we have registered, i.e. all functions with the `Ogl.Extension` attribute.
     visit e: g_Functions
     {
-        typeFunc := cast(const *TypeInfoFunc) e.type
+        var typeFunc = cast(const *TypeInfoFunc) e.type
 
         // Declare a lambda variable for that extension
         builderVars.appendFormat("var ext_%: %\n", e.name, typeFunc.name)
@@ -95,8 +95,8 @@ This is called once all functions of the module have been typed, and this is the
     }
 
     // Compile !!
-    itf := @compiler()
-    str := builderVars.toString()
+    var itf = @compiler()
+    var str = builderVars.toString()
     itf.compileString(str.toString())
 
     builderInit.appendString("}\n");

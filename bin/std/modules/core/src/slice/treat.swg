@@ -12,9 +12,9 @@ func(T) modifyInPlace(values: [..] T, cb: func(*T))
 // Reverse the content of a slice
 func(T) reverse(values: [..] T)
 {
-    i := 0'u64
-    j := @countof(values) - 1
-    d := @dataof(values)
+    var i = 0'u64
+    var j = @countof(values) - 1
+    var d = @dataof(values)
     while i < j
     {
         swap(d + i, d + j)

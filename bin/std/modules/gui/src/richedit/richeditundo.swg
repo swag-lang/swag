@@ -31,7 +31,7 @@ private impl RichEditCtrl
 {
     mtd getLastModificationUndo()->u64
     {
-        count := currentUndo
+        var count = currentUndo
         while count
         {
             if (undoMgr[count - 1].type == .Delete) or
@@ -51,7 +51,7 @@ private impl RichEditCtrl
 
         while undoMgr.count > currentUndo
         {
-            back := undoMgr.popBack()
+            var back = undoMgr.popBack()
             Memory.delete(back)
         }
     }
@@ -88,7 +88,7 @@ impl RichEditCtrl
 
         loop i: toUndo.count
         {
-            undo := toUndo[i]
+            var undo = toUndo[i]
             undo.serial             = serialUndo
             undo.begSelectionBefore = selBegUndo
             undo.endSelectionBefore = cursorPosUndo
@@ -116,8 +116,8 @@ impl RichEditCtrl
             return
 
         currentUndo -= 1
-        undo   := undoMgr[currentUndo]
-        serial := undo.serial
+        var undo = undoMgr[currentUndo]
+        var serial = undo.serial
 
         loop
         {
@@ -125,7 +125,7 @@ impl RichEditCtrl
             {
                 selBeg    = undo.selBeg
                 cursorPos = undo.cursorPos
-                cp := getBegSelection()
+                var cp = getBegSelection()
                 insertTextPrivate(&cp, undo.runes, undo.styles, undo.hasSelRect)
             }
             elif undo.type == .Insert
@@ -169,8 +169,8 @@ impl RichEditCtrl
         if !canRedo()
             return
 
-        undo   := undoMgr[currentUndo]
-        serial := undo.serial
+        var undo = undoMgr[currentUndo]
+        var serial = undo.serial
         currentUndo += 1
 
         loop
@@ -187,7 +187,7 @@ impl RichEditCtrl
             {
                 selBeg = undo.selBeg
                 setCursorPos(undo.cursorPos)
-                cp := getBegSelection()
+                var cp = getBegSelection()
                 insertTextPrivate(&cp, undo.runes, undo.styles, undo.hasSelRect)
             }
 

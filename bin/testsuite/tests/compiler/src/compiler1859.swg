@@ -104,7 +104,7 @@ func aaa(ptr: *s64)
     if false
     {
         {
-            ptr := @getcontext()
+            var ptr = @getcontext()
         }
 
         @print(cast(s64) @countof(@args()))
@@ -112,34 +112,34 @@ func aaa(ptr: *s64)
         @print("\n")
 
         {
-            x := 666's64
+            var x = 666's64
             aaa(&x)
             @print(x)
-            y := 666's64
+            var y = 666's64
             aaa(&y)
             @print(y)
         }
         {
-            x, y := 0
+            var x, y = 0
             var diff: s64 = cast(^u32) &y - cast(^u32) &x
             @print(diff)
         }
 
         {
-            x := 0xFFFFFFFF_FFFFFFFF'u64
-            y := cast(u32) x
-            z := cast(u64) y
+            var x = 0xFFFFFFFF_FFFFFFFF'u64
+            var y = cast(u32) x
+            var z = cast(u64) y
             @print(cast(s64) z)
         }
 
         {
-            x := 1'u64
-            y := cast(f32) x
+            var x = 1'u64
+            var y = cast(f32) x
             @print(cast(f64) y)
         }
         {
-            x := 1'u32
-            y := cast(f32) x
+            var x = 1'u32
+            var y = cast(f32) x
             @print(cast(f64) y)
         }
 
@@ -158,15 +158,15 @@ func aaa(ptr: *s64)
         }
 
         {
-            x := [1, 2, 3]
-            y := [1, 3, 3]
+            var x = [1, 2, 3]
+            var y = [1, 3, 3]
             @print(cast(s64) @memcmp(&x[0], &y[0], 3'u64 * 4))
-            z := [1, 2, 3]
+            var z = [1, 2, 3]
             @print(cast(s64) @memcmp(&x[0], &z[0], 3'u64 * 4))
         }
 
         {
-            x := [1, 2, 3]
+            var x = [1, 2, 3]
             @print(cast(s64) x[0])
             @print(cast(s64) x[1])
             @print(cast(s64) x[2])
@@ -177,120 +177,120 @@ func aaa(ptr: *s64)
         }
 
         {
-            x := [1, 2, 3]
-            y := [10, 20, 30]
+            var x = [1, 2, 3]
+            var y = [10, 20, 30]
             @memcpy(&x[0], &y[0], cast(u64) 3 * @sizeof(u32))
             @print(cast(s64) x[0])
             @print(cast(s64) x[1])
             @print(cast(s64) x[2])
         }
         {
-            x := 12's64
+            var x = 12's64
             @print(cast(f64) x)
         }
 
         {
-            x := [0, 0]
+            var x = [0, 0]
             @init(&x[0], 2)(1)
             @print(cast(s64) x[0])
             @print(cast(s64) x[1])
         }
 
         {
-            x := 8's8
+            var x = 8's8
             x = ~x
             @print(cast(s64)x)
         }
         {
-            x := 0xFFFF's16
+            var x = 0xFFFF's16
             x = ~x
             @print(cast(s64)x)
         }
         {
-            x := 0's32
+            var x = 0's32
             x = ~x
             @print(cast(s64)x)
         }
         {
-            x := 0's64
+            var x = 0's64
             x = ~x
             @print(cast(s64)x)
         }
 
         {
-            x := 8'u64
+            var x = 8'u64
             x %= 3
             @print(cast(s64)x)
         }
         {
-            x := 8'u32
+            var x = 8'u32
             x %= 3
             @print(cast(s64)x)
         }
         {
-            x := 8'u16
+            var x = 8'u16
             x %= 3
             @print(cast(s64)x)
         }
         {
-            x := 8'u8
-            x %= 3
-            @print(cast(s64)x)
-        }
-
-        {
-            x := 8's64
-            x %= 3
-            @print(cast(s64)x)
-        }
-        {
-            x := 8's32
-            x %= 3
-            @print(cast(s64)x)
-        }
-        {
-            x := 8's16
-            x %= 3
-            @print(cast(s64)x)
-        }
-        {
-            x := 8's8
+            var x = 8'u8
             x %= 3
             @print(cast(s64)x)
         }
 
         {
-            x := 66.6'f64
-            y := cast(f32) x
+            var x = 8's64
+            x %= 3
+            @print(cast(s64)x)
+        }
+        {
+            var x = 8's32
+            x %= 3
+            @print(cast(s64)x)
+        }
+        {
+            var x = 8's16
+            x %= 3
+            @print(cast(s64)x)
+        }
+        {
+            var x = 8's8
+            x %= 3
+            @print(cast(s64)x)
+        }
+
+        {
+            var x = 66.6'f64
+            var y = cast(f32) x
             @print(cast(f64) x)
         }
 
         {
-            x := 66.6'f32
-            y := cast(s32) x
+            var x = 66.6'f32
+            var y = cast(s32) x
             @print(cast(s64) x)
         }
         {
-            x := 125's32
-            y := cast(f32) x
+            var x = 125's32
+            var y = cast(f32) x
             @print(cast(f64) x)
         }
         {
-            x := 1'u8
+            var x = 1'u8
             if(x)
                 @print("t")
             else
                 @print("f")
         }
         {
-            x := 0'u16
+            var x = 0'u16
             if(x)
                 @print("t")
             else
                 @print("f")
         }
         {
-            x := 0'u64
+            var x = 0'u64
             if(x)
                 @print("t")
             else
@@ -298,13 +298,13 @@ func aaa(ptr: *s64)
         }
 
         {
-            x := 0x12'u32
-            y := cast(u16) x
+            var x = 0x12'u32
+            var y = cast(u16) x
             @print(cast(s64) y)
         }
 
         {
-            x := retS()
+            var x = retS()
             @print(cast(s64) x.y)
             @print(cast(s64) x.z)
         }
@@ -312,85 +312,85 @@ func aaa(ptr: *s64)
         variadic2(555, 666's64, 777's64)
 
         {
-            x := 10'u64
+            var x = 10'u64
             x <<= 1
             @print(cast(s64) x)
         }
         {
-            x := 10'u8
+            var x = 10'u8
             x <<= 1
             @print(cast(s64) x)
         }
         {
-            x := 10'u16
+            var x = 10'u16
             x <<= 1
             @print(cast(s64) x)
         }
         {
-            x := 10'u32
-            x <<= 1
-            @print(cast(s64) x)
-        }
-
-        {
-            x := 10's64
-            x <<= 1
-            @print(cast(s64) x)
-        }
-        {
-            x := 10's8
-            x <<= 1
-            @print(cast(s64) x)
-        }
-        {
-            x := 10's16
-            x <<= 1
-            @print(cast(s64) x)
-        }
-        {
-            x := 10's32
+            var x = 10'u32
             x <<= 1
             @print(cast(s64) x)
         }
 
         {
-            x := 20'u64
+            var x = 10's64
+            x <<= 1
+            @print(cast(s64) x)
+        }
+        {
+            var x = 10's8
+            x <<= 1
+            @print(cast(s64) x)
+        }
+        {
+            var x = 10's16
+            x <<= 1
+            @print(cast(s64) x)
+        }
+        {
+            var x = 10's32
+            x <<= 1
+            @print(cast(s64) x)
+        }
+
+        {
+            var x = 20'u64
             x >>= 1
             @print(cast(s64) x)
         }
         {
-            x := 0xFF'u8
+            var x = 0xFF'u8
             x >>= 1
             @print(cast(s64) x)
         }
         {
-            x := 20'u16
+            var x = 20'u16
             x >>= 1
             @print(cast(s64) x)
         }
         {
-            x := 20'u32
+            var x = 20'u32
             x >>= 1
             @print(cast(s64) x)
         }
 
         {
-            x := 10's64
+            var x = 10's64
             x >>= 1
             @print(cast(s64) x)
         }
         {
-            x := 10's8
+            var x = 10's8
             x >>= 1
             @print(cast(s64) x)
         }
         {
-            x := 10's16
+            var x = 10's16
             x >>= 1
             @print(cast(s64) x)
         }
         {
-            x := 10's32
+            var x = 10's32
             x >>= 1
             @print(cast(s64) x)
         }
@@ -400,8 +400,8 @@ func aaa(ptr: *s64)
         variadic(10's64,10's64)
 
         {
-            x := [1's64, 2, 3]
-            ptr := &x[2]
+            var x = [1's64, 2, 3]
+            var ptr = &x[2]
             ptr = ptr - 1
             @print(dref ptr)
             ptr -= 1
@@ -410,12 +410,12 @@ func aaa(ptr: *s64)
             @print(dref ptr)
         }
         {
-            ptr := &tt3
+            var ptr = &tt3
             @print(ptr(5))
         }
 
         {
-            ptr := &tt4
+            var ptr = &tt4
             @print(ptr())
         }
         {
@@ -433,7 +433,7 @@ func aaa(ptr: *s64)
                 @print("false")
         }
         {
-            ptr := @alloc(10)
+            var ptr = @alloc(10)
             ptr = @realloc(ptr, 20)
             @free(ptr)
         }
@@ -441,7 +441,7 @@ func aaa(ptr: *s64)
             var x: [4] s64
             x[1] = 666
             @print(x[1])
-            cpt := 2
+            var cpt = 2
             @init(&x[0], cpt)
             @print(x[1])
         }
@@ -452,16 +452,16 @@ func aaa(ptr: *s64)
         }
 
         {
-            x := [1's64, 2]
-            ptr := &x[0]
+            var x = [1's64, 2]
+            var ptr = &x[0]
             @print(ptr[1])
             ptr[1] = 33
             @print(ptr[1])
         }
 
         {
-            x := [1's64]
-            ptr := &x[0]
+            var x = [1's64]
+            var ptr = &x[0]
             @print(ptr[0])
             ptr[0] = 10
             @print(ptr[0])
@@ -480,7 +480,7 @@ func aaa(ptr: *s64)
         @print(g1)
         @print(g2)
         {
-            x := "toto"
+            var x = "toto"
             if x == "toto"
                 @print("true")
             if x == "toto1"
@@ -490,23 +490,23 @@ func aaa(ptr: *s64)
         }
 
         {
-            x := 0'u64
-            y := 1'u64
-            z := x > y
+            var x = 0'u64
+            var y = 1'u64
+            var z = x > y
             @print(cast(s64) z)
         }
 
         {
-            x := 1'u32
-            y := 0'u32
-            z := x > y
+            var x = 1'u32
+            var y = 0'u32
+            var z = x > y
             @print(cast(s64) z)
         }
 
         @print(tt4())
 
         {
-            x := tt5()
+            var x = tt5()
             @print(x[3])
         }
 
@@ -516,279 +516,279 @@ func aaa(ptr: *s64)
         tt2(666.0, 50)
 
         {
-            x := 0'u64
-            y := 1'u64
-            z := x < y
+            var x = 0'u64
+            var y = 1'u64
+            var z = x < y
             @print(cast(s64) z)
         }
 
         {
-            x := 0'u32
-            y := 1'u32
-            z := x < y
+            var x = 0'u32
+            var y = 1'u32
+            var z = x < y
             @print(cast(s64) z)
         }
 
         {
-            ptr := @typeof(s32)
+            var ptr = @typeof(s32)
             @print(ptr.fullname)
         }
         {
-            ptr := @typeof(s32)
+            var ptr = @typeof(s32)
             @print(cast(s64) ptr.sizeof)
         }
         {
-            x := 0xFFFFFFFF
+            var x = 0xFFFFFFFF
             x = x >> 1
             @print(cast(s64) x)
         }
         {
-            x := 0xFFFFFFFF_FFFFFFFF
+            var x = 0xFFFFFFFF_FFFFFFFF
             x = x >> 1
             @print(cast(s64) x)
         }
         {
-            x := 5's8
+            var x = 5's8
             x &= 30
             @print(cast(s64) x)
         }
         {
-            x := 5's16
+            var x = 5's16
             x &= 7
             @print(cast(s64) x)
         }
         {
-            x := 5's32
+            var x = 5's32
             x &= 18
             @print(cast(s64) x)
         }
         {
-            x := 5's64
+            var x = 5's64
             x &= 31
             @print(cast(s64) x)
         }
 
         {
-            x := 5's8
+            var x = 5's8
             x |= 30
             @print(cast(s64) x)
         }
         {
-            x := 5's16
+            var x = 5's16
             x |= 7
             @print(cast(s64) x)
         }
         {
-            x := 5's32
+            var x = 5's32
             x |= 18
             @print(cast(s64) x)
         }
         {
-            x := 5's64
+            var x = 5's64
             x |= 31
             @print(cast(s64) x)
         }
 
         {
-            x := 5's8
+            var x = 5's8
             x ^= 3
             @print(cast(s64) x)
         }
         {
-            x := 5's16
+            var x = 5's16
             x ^= 3
             @print(cast(s64) x)
         }
         {
-            x := 5's32
+            var x = 5's32
             x ^= 3
             @print(cast(s64) x)
         }
         {
-            x := 5's64
+            var x = 5's64
             x ^= 3
             @print(cast(s64) x)
         }
         {
-            x := -5's32
+            var x = -5's32
             x = x % 3
             @print(cast(s64) x)
         }
         {
-            x := -5's64
+            var x = -5's64
             x = x % 3
             @print(cast(s64) x)
         }
         {
-            x := 5'u64
+            var x = 5'u64
             x = x % 3
             @print(cast(s64) x)
         }
         {
-            x := 5'u64
+            var x = 5'u64
             x = x % 3
             @print(cast(s64) x)
         }
 
         {
-            x := -5's32
+            var x = -5's32
             x = x / 2
             @print(cast(s64) x)
         }
         {
-            x := -50's64
-            x = x / 2
-            @print(cast(s64) x)
-        }
-
-        {
-            x := 5'u32
-            x = x / 2
-            @print(cast(s64) x)
-        }
-        {
-            x := 50'u64
+            var x = -50's64
             x = x / 2
             @print(cast(s64) x)
         }
 
         {
-            x := 5'f32
+            var x = 5'u32
+            x = x / 2
+            @print(cast(s64) x)
+        }
+        {
+            var x = 50'u64
+            x = x / 2
+            @print(cast(s64) x)
+        }
+
+        {
+            var x = 5'f32
             x = x / 2
             @print(cast(f64) x)
         }
         {
-            x := 7'f64
+            var x = 7'f64
             x = x / 2
             @print(cast(f64) x)
         }
         {
-            x := 10'u32
+            var x = 10'u32
             x = x >> 2
             @print(cast(s64) x)
         }
         {
-            x := 30'u64
+            var x = 30'u64
             x = x >> 1
             @print(cast(s64) x)
         }
 
         {
-            x := 3'u32
+            var x = 3'u32
             x = x << 4
             @print(cast(s64) x)
         }
         {
-            x := 3'u64
+            var x = 3'u64
             x = x << 2
             @print(cast(s64) x)
         }
 
         {
-            x := 3'u32
+            var x = 3'u32
             x = x ^ 5
             @print(cast(s64) x)
         }
         {
-            x := 3'u64
+            var x = 3'u64
             x = x ^ 5
             @print(cast(s64) x)
         }
 
         {
-            x := 3'f64
+            var x = 3'f64
             x = x * 3
             @print(cast(f64) x)
         }
 
         {
-            x := 3'f32
+            var x = 3'f32
             x = x * 3
             @print(cast(f64) x)
         }
         {
-            x := 3's32
+            var x = 3's32
             x = x * 3
             @print(cast(s64) x)
         }
         {
-            x := 3's64
+            var x = 3's64
             x = x * 3
             @print(cast(s64) x)
         }
 
         {
-            x := 3'f32
+            var x = 3'f32
             x = x - 1.5
             @print(cast(f64) x)
         }
         {
-            x := 3'f64
+            var x = 3'f64
             x = x - 1.5
             @print(cast(f64) x)
         }
 
         {
-            x := 3'f32
+            var x = 3'f32
             x = x + 1.5
             @print(cast(f64) x)
         }
         {
-            x := 3'f64
+            var x = 3'f64
             x = x + 1.5
             @print(cast(f64) x)
         }
         {
-            a := 1
+            var a = 1
             a = a - 5
             @print(cast(s64) a)
         }
         {
-            a := 1's64
+            var a = 1's64
             a = a - 5
             @print(cast(s64) a)
         }
 
         {
-            a := 1
+            var a = 1
             a = a + 5
             @print(cast(s64) a)
         }
         {
-            a := 1's64
+            var a = 1's64
             a = a + 5
             @print(cast(s64) a)
         }
 
         {
-            a, b := 1
-            x := a and b
+            var a, b = 1
+            var x = a and b
             @print(cast(s64) x)
         }
 
         {
-            a, b := 100
-            x := a or b
+            var a, b = 100
+            var x = a or b
             @print(cast(s64) x)
         }
 
         {
-            a := 6
+            var a = 6
             a = a | 1
             @print(cast(s64) a)
         }
         {
-            a := 6's64
+            var a = 6's64
             a = a | 1
             @print(cast(s64) a)
         }
         {
-            a := 6
+            var a = 6
             a = a & 4
             @print(cast(s64) a)
         }
         {
-            a := 6's64
+            var a = 6's64
             a = a & 4
             @print(cast(s64) a)
         }
@@ -799,31 +799,31 @@ func aaa(ptr: *s64)
         }
 
         {
-            x := -1'f64
+            var x = -1'f64
             x = -x
             @print(cast(f64) x)
         }
 
         {
-            x := 1'f32
+            var x = 1'f32
             x = -x
             @print(cast(f64) x)
         }
 
         {
-            x := -1's64
+            var x = -1's64
             x = -x
             @print(cast(s64) x)
         }
 
         {
-            x := 1's32
+            var x = 1's32
             x = -x
             @print(cast(s64) x)
         }
 
         {
-            x := 10'f64
+            var x = 10'f64
             if(x > 1.5)
                 @print("a")
             else
@@ -831,7 +831,7 @@ func aaa(ptr: *s64)
         }
 
         {
-            x := 1'f32
+            var x = 1'f32
             if(x > 1.5)
                 @print("a")
             else
@@ -839,7 +839,7 @@ func aaa(ptr: *s64)
         }
 
         {
-            x := 2's8
+            var x = 2's8
             if(x > 1)
                 @print("a")
             else
@@ -847,7 +847,7 @@ func aaa(ptr: *s64)
         }
 
         {
-            x := 1's64
+            var x = 1's64
             if(x > 1)
                 @print("a")
             else
@@ -855,7 +855,7 @@ func aaa(ptr: *s64)
         }
 
         {
-            x := 0.5'f64
+            var x = 0.5'f64
             if(x < 0.1)
                 @print("a")
             else
@@ -863,7 +863,7 @@ func aaa(ptr: *s64)
         }
 
         {
-            x := 0.5'f32
+            var x = 0.5'f32
             if(x < 1.0)
                 @print("a")
             else
@@ -871,193 +871,193 @@ func aaa(ptr: *s64)
         }
 
         {
-            x := 1's64
+            var x = 1's64
             if(x < 1)
                 @print("a")
         }
 
         {
-            x := 5'f32
+            var x = 5'f32
             x *= -2
             @print(cast(f64) x)
         }
 
         {
-            x := 5'f64
+            var x = 5'f64
             x *= -2
             @print(cast(f64) x)
         }
 
         {
-            x := 5's8
+            var x = 5's8
             x *= -2
             @print(cast(s64) x)
         }
 
         {
-            x := -5's16
+            var x = -5's16
             x *= -2
             @print(cast(s64) x)
         }
 
         {
-            x := -5's32
+            var x = -5's32
             x *= -2
             @print(cast(s64) x)
         }
 
         {
-            x := -5's64
+            var x = -5's64
             x *= -5
             @print(cast(s64) x)
         }
 
         {
-            x := 5'f64
+            var x = 5'f64
             x -= 2
             @print(cast(f64) x)
         }
 
         {
-            x := 5'f32
+            var x = 5'f32
             x -= 2
             @print(cast(f64) x)
         }
 
         {
-            x := 5's64
+            var x = 5's64
             x -= 2
             @print(cast(s64) x)
         }
 
         {
-            x := 5's32
+            var x = 5's32
             x -= 2
             @print(cast(s64) x)
         }
 
         {
-            x := 5's16
+            var x = 5's16
             x -= 2
             @print(cast(s64) x)
         }
 
         {
-            x := 5's8
+            var x = 5's8
             x -= 2
             @print(cast(s64) x)
         }
 
         {
-            x := 5'f32
+            var x = 5'f32
             x += 2
             @print(cast(f64) x)
         }
 
         {
-            x := 5'f64
+            var x = 5'f64
             x += 2
             @print(cast(f64) x)
         }
 
         {
-            x := 5'f64
+            var x = 5'f64
             x /= 2
             @print(cast(f64) x)
         }
 
         {
-            x := 5'f64
+            var x = 5'f64
             x /= 2
             @print(cast(f64) x)
         }
 
         {
-            x := 5'f64
+            var x = 5'f64
             x /= 2
             @print(cast(f64) x)
         }
 
         {
-            x := 5'f64
+            var x = 5'f64
             x /= 2
             @print(cast(f64) x)
         }
 
         {
-            x := 5'f32
+            var x = 5'f32
             x /= 2
             @print(cast(f64) x)
         }
 
         {
-            x := 10'u64
+            var x = 10'u64
             x /= 2
             @print(cast(s64) x)
         }
 
         {
-            x := 10'u32
+            var x = 10'u32
             x /= 2
             @print(cast(s64) x)
         }
 
         {
-            x := 10'u16
+            var x = 10'u16
             x /= 2
             @print(cast(s64) x)
         }
 
         {
-            x := 10'u8
+            var x = 10'u8
             x /= 2
             @print(cast(s64) x)
         }
 
         {
-            x := -12's64
+            var x = -12's64
             x /= -2
             @print(cast(s64) x)
         }
 
         {
-            x := -1's64
+            var x = -1's64
             x /= 2
             @print(cast(s64) x)
         }
 
         {
-            x := -12's16
+            var x = -12's16
             x /= -2
             @print(cast(s64) x)
         }
 
         {
-            x := -1's16
+            var x = -1's16
             x /= 2
             @print(cast(s64) x)
         }
 
         {
-            x := -1's32
+            var x = -1's32
             x /= 2
             @print(cast(s64) x)
         }
 
         {
-            x := -10's8
+            var x = -10's8
             x /= -2
             @print(cast(s64) x)
         }
 
         {
-            x := 10
+            var x = 10
             x /= -2
             @print(cast(s64) x)
         }
 
         {
-            x := 10
+            var x = 10
             x /= 2
             @print(cast(s64) x)
         }
@@ -1065,14 +1065,14 @@ func aaa(ptr: *s64)
         {
             var x, y: ^u8 = null
             y += 1
-            z := x orelse y
+            var z = x orelse y
             if z != null
                 @print("A")
         }
 
         {
             var x, y: *u8 = null
-            z := x orelse y
+            var z = x orelse y
             if z != null
                 @print("X")
             else
@@ -1080,7 +1080,7 @@ func aaa(ptr: *s64)
         }
 
         {
-            x := 1's16
+            var x = 1's16
             switch x
             {
                 case 0: @assert(false)
@@ -1089,7 +1089,7 @@ func aaa(ptr: *s64)
         }
 
         {
-            x := 1's8
+            var x = 1's8
             switch x
             {
                 case 0: @assert(false)
@@ -1098,7 +1098,7 @@ func aaa(ptr: *s64)
         }
 
         {
-            x := 10's8
+            var x = 10's8
             switch x
             {
                 case 0: @assert(false)
@@ -1108,46 +1108,46 @@ func aaa(ptr: *s64)
         }
 
         {
-            x := 0's8
-            y := x == 1 ? 10 : 20
+            var x = 0's8
+            var y = x == 1 ? 10 : 20
             @print(cast(s64) y)
         }
 
         {
-            x := 0's8
+            var x = 0's8
             x += -1
             @print(cast(s64) x)
         }
 
         {
-            x := 0's16
+            var x = 0's16
             x += -1
             @print(cast(s64) x)
         }
 
         {
-            x := 0's64
+            var x = 0's64
             x += -1
             @print(cast(s64) x)
         }
 
         {
-            x := [1'u8]
-            ptr := &x[0]
-            y := ptr[0]
+            var x = [1'u8]
+            var ptr = &x[0]
+            var y = ptr[0]
             @print(cast(s64) y)
         }
 
         {
-            x := [5'u16]
-            ptr := &x[0]
-            y := ptr[0]
+            var x = [5'u16]
+            var ptr = &x[0]
+            var y = ptr[0]
             @print(cast(s64) y)
         }
 
         {
-            x := 0
-            y := 1
+            var x = 0
+            var y = 1
             @print(cast(s64) y)
         }
 
@@ -1172,7 +1172,7 @@ func aaa(ptr: *s64)
         }
 
         {
-            cpt := 0
+            var cpt = 0
             while cpt < 4
             {
                 @print("X")
@@ -1180,21 +1180,21 @@ func aaa(ptr: *s64)
             }
         }
         {
-            x := [1's64, 2, 3]
-            ptr := &x[0]
+            var x = [1's64, 2, 3]
+            var ptr = &x[0]
             @print(ptr[0])
             @print(ptr[1])
         }
 
         {
-            x := [1's64, 2, 3]
+            var x = [1's64, 2, 3]
             @print(x[0])
             @print(x[1])
             @print(x[2])
         }
 
         {
-            a := 5
+            var a = 5
             if a != 5
                 @print("a")
             else
@@ -1202,7 +1202,7 @@ func aaa(ptr: *s64)
         }
 
         {
-            a := 5
+            var a = 5
             if a == 5
                 @print("a")
             else
@@ -1210,7 +1210,7 @@ func aaa(ptr: *s64)
         }
 
         {
-            a := 5
+            var a = 5
             if a == 4
                 @print("a")
             else
@@ -1220,12 +1220,12 @@ func aaa(ptr: *s64)
         loop 5 @print("g")
 
         {
-            x := -6's8
+            var x = -6's8
             @print(cast(s64) x)
         }
 
         {
-            x := -6's64
+            var x = -6's64
             @print(cast(s64) x)
             @print(cast(s64) g)
             @print("fripouille")

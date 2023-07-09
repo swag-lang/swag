@@ -15,7 +15,7 @@ impl SoaTest
 {
     #run
     {
-        itf := @compiler()
+        var itf = @compiler()
         var sb: StringBuilder
         itf.compileString(sb.toString())
     }

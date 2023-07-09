@@ -22,11 +22,11 @@ Unlike the C function `main()`, there's no argument, but you can use the intrins
 */
 #main
 {
-    myArgs := @args()
-    count  := @countof(myArgs)
+    var myArgs = @args()
+    var count = @countof(myArgs)
     if myArgs[0] == "fullscreen"
     {
-        ...   
+        ...
     }
 }
 
@@ -42,7 +42,7 @@ You can have as many `#init` as you want, but the execution order in the same mo
 /**
 # #drop
 `#drop` will be called at runtime, when module is unloaded.
-You can have as many `#drop` as you want. 
+You can have as many `#drop` as you want.
 The execution order in the same module is undefined, but is always the inverse order of `#init`.
 */
 #drop

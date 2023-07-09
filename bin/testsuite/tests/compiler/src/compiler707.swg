@@ -3,7 +3,7 @@
 //#[Swag.PrintBc]
 #test
 {
-	cpt := 0
+	var cpt = 0
 	loop i: 2
 	{
 		cpt += i

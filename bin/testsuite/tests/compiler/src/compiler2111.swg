@@ -2,6 +2,6 @@
 
 #test
 {
-    x := {"toto", true}
-    (name, 0) := x
+    var x = {"toto", true}
+    var (name, 0) = x
 }

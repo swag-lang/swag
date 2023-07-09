@@ -4,7 +4,7 @@ enum Toto { A; B; C; }
 
 #test
 {
-    x := Toto.A
+    var x = Toto.A
     x |= Toto.B
     @print(cast(s32)x)
 }

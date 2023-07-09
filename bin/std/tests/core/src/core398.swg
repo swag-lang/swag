@@ -34,7 +34,7 @@ func print(tree: const *Node)
 
 func calcTotalDepth(tree: *Node) -> s32
 {
-    total := 0
+    var total = 0
     walk(tree, closure|&total|(node, depth) {
         dref total += depth
     })
@@ -45,15 +45,15 @@ func calcTotalDepth(tree: *Node) -> s32
 #[Swag.Discardable]
 func process(intro: *Node)->*Node
 {
-    tree := Memory.new'Node()
+    var tree = Memory.new'Node()
     tree.name = "root"
     intro.kids.add(tree)
 
-    internalIntro := ref intro.kids[0]
+    var internalIntro = ref intro.kids[0]
     internalIntro.print()
     tree.print()
 
-    totalDepth := 0
+    var totalDepth = 0
     loop i: 200_000
         totalDepth += intro.calcTotalDepth()
 
@@ -63,7 +63,7 @@ func process(intro: *Node)->*Node
 
 #test
 {
-    intro := Memory.new'Node()
+    var intro = Memory.new'Node()
     defer intro.release()
     process(intro)
 }

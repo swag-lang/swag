@@ -29,17 +29,17 @@ private func winProc(hWnd: HWND, msg: UINT, wParam: WPARAM, lParam: LPARAM)->LRE
     // Associate pointer to surface with 'hWnd'
     if msg == WM_CREATE
     {
-        lpcs := cast(*CREATESTRUCTW) cast(u64) lParam
+        var lpcs = cast(*CREATESTRUCTW) cast(u64) lParam
         SetWindowLongPtrW(hWnd, GWLP_USERDATA, lpcs.lpCreateParams)
     }
 
     // Get 'Surface' pointer
-    surface := cast(*Surface) GetWindowLongPtrW(hWnd, GWLP_USERDATA)
+    var surface = cast(*Surface) GetWindowLongPtrW(hWnd, GWLP_USERDATA)
     if surface
     {
         if msg >= WM_USER
         {
-            evt := SysUserEvent{}
+            var evt = SysUserEvent{}
             evt.userMsg = msg
             evt.param0 = wParam
             evt.param1 = lParam
@@ -71,15 +71,15 @@ private func winProc(hWnd: HWND, msg: UINT, wParam: WPARAM, lParam: LPARAM)->LRE
 
             surface.lastDeadChar = 0
 
-            scanCode := cast(UINT) (lParam & 0xFF0000) >> 16
-            x := MapVirtualKeyW(scanCode, MAPVK_VSC_TO_VK_EX)
-            y := Input.Keyboard.virtualKeyToKey(x)
+            var scanCode = cast(UINT) (lParam & 0xFF0000) >> 16
+            var x = MapVirtualKeyW(scanCode, MAPVK_VSC_TO_VK_EX)
+            var y = Input.Keyboard.virtualKeyToKey(x)
 
             surface.app.sendRuneEvent(y, cast(rune) wParam)
             return 0
 
         case WM_MOUSEWHEEL:
-            z := GET_WHEEL_DELTA_WPARAM(wParam) / WHEEL_DELTA
+            var z = GET_WHEEL_DELTA_WPARAM(wParam) / WHEEL_DELTA
             surface.app.sendMouseWheelEvent(z)
             return 0
         case WM_SETCURSOR:
@@ -108,14 +108,14 @@ private func winProc(hWnd: HWND, msg: UINT, wParam: WPARAM, lParam: LPARAM)->LRE
             var pt: POINT
             pt.x = cast(s32) surface.position.x
             pt.y = cast(s32) surface.position.y
-            hm := MonitorFromPoint(pt, MONITOR_DEFAULTTONEAREST)
+            var hm = MonitorFromPoint(pt, MONITOR_DEFAULTTONEAREST)
             if hm != null
             {
                 var info: MONITORINFO
                 catch GetMonitorInfoA(hm, &info)
-                sdw := cast(s32) surface.app.theme.metrics.surfaceWnd_ShadowSize
+                var sdw = cast(s32) surface.app.theme.metrics.surfaceWnd_ShadowSize
 
-                mm := cast(*MINMAXINFO) cast(u64) lParam
+                var mm = cast(*MINMAXINFO) cast(u64) lParam
                 mm.ptMaxPosition.x = (info.rcWork.left - info.rcMonitor.left) - sdw
                 mm.ptMaxPosition.y = (info.rcWork.top - info.rcMonitor.top) - sdw
                 mm.ptMaxSize.x     = (info.rcWork.right - info.rcWork.left) + 2 * sdw
@@ -134,7 +134,7 @@ private func winProc(hWnd: HWND, msg: UINT, wParam: WPARAM, lParam: LPARAM)->LRE
             switch wParam
             {
             case SC_RESTORE:
-                evt := SysCommandEvent{}
+                var evt = SysCommandEvent{}
                 evt.sysKind = .Restore
                 surface.wnd.sendEvent(&evt)
             }
@@ -157,7 +157,7 @@ private impl Surface
         // Create class
         #[Swag.Global]
         var doneClass: bool
-        className := @dataof(Utf16.toZeroTerminated("Swag.Gui.Surface"))
+        var className = @dataof(Utf16.toZeroTerminated("Swag.Gui.Surface"))
         if !doneClass
         {
             doneClass = true
@@ -177,10 +177,10 @@ private impl Surface
             try RegisterClassW(wc)
         }
 
-        winFlags := 0'u32
+        var winFlags = 0'u32
         winFlags |= WS_POPUP | WS_CLIPCHILDREN
 
-        winFlagsEx := 0'u32
+        var winFlagsEx = 0'u32
         if flags & .Secondary
             winFlagsEx |= WS_EX_TOOLWINDOW
         if flags & .TopMost
@@ -221,7 +221,7 @@ impl Surface
     // Set the surface position
     mtd setPosition(pos: Math.Rectangle)
     {
-        clampPos := pos
+        var clampPos = pos
 
         if minSize.x > 0
             clampPos.width = Math.max(clampPos.width, minSize.x)
@@ -272,7 +272,7 @@ impl Surface
         wnd.applyLayout({position.width, position.height})
         ShowWindow(hWnd, SW_SHOW)
 
-        curFocus := wnd.view.getFocus()
+        var curFocus = wnd.view.getFocus()
         if !curFocus or !wnd.isParentOf(curFocus)
             wnd.view.setFocus()
         SetActiveWindow(hWnd)
@@ -325,7 +325,7 @@ impl Surface
     // Transform a point in screen space relative to the surface
     mtd screenToSurface(pt: *Math.Point)
     {
-        wpt := POINT{cast(s32) pt.x, cast(s32) pt.y}
+        var wpt = POINT{cast(s32) pt.x, cast(s32) pt.y}
         ScreenToClient(hWnd, &wpt)
         pt.x = wpt.x
         pt.y = wpt.y
@@ -334,7 +334,7 @@ impl Surface
     // Transform a point relative to the surface in screen space
     mtd surfaceToScreen(pt: *Math.Point)
     {
-        wpt := POINT{cast(s32) pt.x, cast(s32) pt.y}
+        var wpt = POINT{cast(s32) pt.x, cast(s32) pt.y}
         ClientToScreen(hWnd, &wpt)
         pt.x = wpt.x
         pt.y = wpt.y

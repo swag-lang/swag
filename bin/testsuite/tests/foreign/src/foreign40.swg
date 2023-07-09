@@ -7,7 +7,7 @@ public struct T40
 public func toto40(f: any)
 {
     @assert(@kindof(f) == T40)
-    ptr := cast(*T40) @dataof(f)
+    var ptr = cast(*T40) @dataof(f)
     @assert(ptr.x == 555)
     @assert(ptr.y == 666)
 }

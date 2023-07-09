@@ -19,6 +19,6 @@ impl V
 #test
 {
     var v: V
-    y := v[0..]
+    var y = v[0..]
     @assert(y == "toto")
 }

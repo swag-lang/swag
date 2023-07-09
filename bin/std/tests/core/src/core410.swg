@@ -5,8 +5,8 @@ using Core
 {
     var h: HashTable'(UUID, string)
 
-    v1 := UUID.getRandom()
-    v2 := UUID.getRandom()
+    var v1 = UUID.getRandom()
+    var v2 = UUID.getRandom()
 
     h.add(v1, "toto")
     h.add(v2, "titi")

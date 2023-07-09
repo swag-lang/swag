@@ -2,5 +2,5 @@ attr toto(x: s32)
 
 #test
 {
-    x := @typeof(toto)
+    var x = @typeof(toto)
 }

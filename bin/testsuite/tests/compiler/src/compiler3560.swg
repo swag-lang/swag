@@ -12,7 +12,7 @@ func toto()
     var arr: [2] CB
     arr[0] = &toto
 
-    cb := arr[0]
+    var cb = arr[0]
     @assert(G == 0)
     cb()
     @assert(G == 2)

@@ -5,5 +5,5 @@
 #test
 {
 	var ptr: *void
-	c := ptr[0]
+	var c = ptr[0]
 }

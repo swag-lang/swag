@@ -32,11 +32,11 @@ impl Image
             }
         }
 
-        f := {r = &convArrR[0], g = &convArrG[0], b = &convArrB[0]}
+        var f = {r = &convArrR[0], g = &convArrG[0], b = &convArrB[0]}
 
         visitPixels(&f)
         {
-            arr := cast(*@decltype(f)) userData
+            var arr = cast(*@decltype(f)) userData
             pix[0] = arr.r[pix[0]]
             pix[1] = arr.g[pix[1]]
             pix[2] = arr.b[pix[2]]

@@ -42,7 +42,7 @@ func set(dest: ^void, value: u8, size: u64)
 // Align a value to the given amount
 func align(value: u64, alignement: u32)->u64
 {
-    toAlign := (alignement orelse @sizeof(*void)) - 1
+    var toAlign = (alignement orelse @sizeof(*void)) - 1
     return (value + toAlign) & ~toAlign
 }
 
@@ -62,10 +62,10 @@ func freeTemp()
 #[Swag.Macro]
 func pushAllocator(allocator: Swag.IAllocator, stmt: code)
 {
-    prev := @getcontext()
+    var prev = @getcontext()
     defer @setcontext(prev)
 
-    cxt := dref prev
+    var cxt = dref prev
     cxt.allocator = allocator
     @setcontext(cxt)
 
@@ -79,10 +79,10 @@ func pushAllocator(allocator: Swag.IAllocator, stmt: code)
 #[Swag.Macro]
 func pushTempAllocator(stmt: code)
 {
-    prev := @getcontext()
+    var prev = @getcontext()
     defer @setcontext(prev)
 
-    cxt := dref prev
+    var cxt = dref prev
     cxt.allocator = @getcontext().tempAllocator
     @setcontext(cxt)
 

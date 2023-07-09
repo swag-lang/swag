@@ -1,6 +1,6 @@
 #global testerror
 #test
 {
-    x := 6's
+    var x = 6's
     @print(x)
 }

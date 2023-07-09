@@ -13,5 +13,5 @@ func isZeroEpsilo4(x: f32) => false
 
 #test
 {
-    r := isZeroEpsilon(true)
+    var r = isZeroEpsilon(true)
 }

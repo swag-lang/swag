@@ -24,7 +24,7 @@ impl TimeSpan
     // Initialize the TimeSpan with the current date and time
     mtd setNow()
     {
-        dateTime := DateTime.now()
+        var dateTime = DateTime.now()
         using dateTime
         ticks = dateToTicks(year, month, day)
         ticks += timeToTicks(hour, minute, second, millisecond)
@@ -61,8 +61,8 @@ impl TimeSpan
     mtd addMonths(months: s32)
     {
         Debug.assert(-120000 <= months and months <= 120000, "overflow")
-        (y, m, d) := ticksToDate(ticks)
-        i := cast(s32) (m - 1) + months
+        var (y, m, d) = ticksToDate(ticks)
+        var i = cast(s32) (m - 1) + months
         if i >= 0
         {
             m =  cast(u16) (i % 12 + 1)
@@ -75,7 +75,7 @@ impl TimeSpan
         }
 
         Debug.assert(1 <= y and y <= 9999, "overflow")
-        days := daysInMonth(y, m)
+        var days = daysInMonth(y, m)
         if (d > days) d = days
         ticks = dateToTicks(y, m, d) + (ticks % TicksPerDay)
     }
@@ -133,7 +133,7 @@ impl TimeSpan
 
     private mtd add(value: u32, scale: u64)
     {
-        millis := value * scale
+        var millis = value * scale
         Debug.assert(millis <= MaxMillis, "overflow")
         millis *= TicksPerMilliSecond
         Debug.assert(millis <= (MaxTicks - ticks), "overflow")
@@ -142,7 +142,7 @@ impl TimeSpan
 
     private mtd remove(value: u32, scale: u64)
     {
-        millis := value * scale
+        var millis = value * scale
         Debug.assert(millis <= MaxMillis, "overflow")
         millis *= TicksPerMilliSecond
         Debug.assert(millis <= ticks, "ticks overflow")

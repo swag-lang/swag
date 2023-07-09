@@ -4,5 +4,5 @@
 #test
 {
 	return;
-	a := 0
+	var a = 0
 }

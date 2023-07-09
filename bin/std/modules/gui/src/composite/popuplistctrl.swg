@@ -56,15 +56,15 @@ impl IWnd for PopupListView
     {
         var hit: u32
 
-        surfaceRect := getSurfaceRect()
-        mouseInRect := surfaceRect.contains(evt.surfacePos)
+        var surfaceRect = getSurfaceRect()
+        var mouseInRect = surfaceRect.contains(evt.surfacePos)
 
-        pos := surfaceToLocal(evt.surfacePos)
+        var pos = surfaceToLocal(evt.surfacePos)
         if evt.kind == .MouseLeave or !mouseInRect
             hit = Swag.U32.Max
         else
         {
-            y := pos.y + scrollPos.y
+            var y = pos.y + scrollPos.y
             visit v, i: list.items
             {
                 if v.isSeparator
@@ -125,20 +125,20 @@ impl IWnd for PopupListView
 
     mtd impl onPaintEvent(evt: *PaintEvent)
     {
-        painter := evt.bc.painter
+        var painter = evt.bc.painter
 
-        theme   := getTheme()
-        colors  := getThemeColors()
-        metrics := getThemeMetrics()
-        rects   := getThemeRects()
+        var theme = getTheme()
+        var colors = getThemeColors()
+        var metrics = getThemeMetrics()
+        var rects = getThemeRects()
 
-        clientRect := getClientRect()
+        var clientRect = getClientRect()
         clientRect.offset(scrollPos)
 
         var labelPos: Math.Rectangle = undefined
         var colorText: Color
 
-        y := 0'f32
+        var y = 0'f32
         visit i, idx: list.items
         {
             labelPos.x = clientRect.x
@@ -181,7 +181,7 @@ impl IWnd for PopupListView
             if list.maxIconSize
                 labelPos.moveLeft(list.maxIconSize + metrics.popupList_IconTextMargin)
 
-            fntHeight := getFont().regular.height
+            var fntHeight = getFont().regular.height
             if idx == list.selectedIdx
                 labelPos.setRight(labelPos.right() - fntHeight - metrics.popupList_IconTextMargin)
 
@@ -213,7 +213,7 @@ impl PopupListCtrl
     // Create the popup list, but do not display it
     func create(owner: *Wnd)->*PopupListCtrl
     {
-        popup := Wnd.create'PopupListCtrl(owner.getTopView(), owner.position, owner.id)
+        var popup = Wnd.create'PopupListCtrl(owner.getTopView(), owner.position, owner.id)
 
         with popup
         {
@@ -223,7 +223,7 @@ impl PopupListCtrl
             .scrollWnd.dockStyle = .Center
             .scrollWnd.focusStrategy = .None
             .scrollWnd.scrollWndFlags |= .SmallBar
-            popupView := .scrollWnd.createView'PopupListView()
+            var popupView = .scrollWnd.createView'PopupListView()
             popupView.list = popup
         }
 
@@ -235,13 +235,13 @@ impl PopupListCtrl
     {
         scrollWnd.setScrollSize(0, cast(f32) items.count * heightItem)
 
-        pt := parent.surfaceToLocal({x, y})
-        pos := Math.Rectangle{pt.x, pt.y, 0, 0}
+        var pt = parent.surfaceToLocal({x, y})
+        var pos = Math.Rectangle{pt.x, pt.y, 0, 0}
         pos.width = Math.max(width, minWidthPopup)
         pos.height = Math.min(scrollWnd.scrollSize.y, maxHeightPopup)
         pos.height += padding.y + padding.w
         setPosition(pos)
-        sdw := getThemeMetrics().frameWnd_SmallShadowSize
+        var sdw = getThemeMetrics().frameWnd_SmallShadowSize
         fitPosInParent(sdw.z, sdw.w, simFitX, simFitY)
         scrollWnd.view.captureMouse()
     }
@@ -249,7 +249,7 @@ impl PopupListCtrl
     // Add a new item in the list
     mtd addItem(name: string, id: WndId = null, icon: Icon = {}, userData0: *void = null, userData1: *void = null)
     {
-        item := items.newPtr()
+        var item = items.newPtr()
         with item
         {
             .name      = #self.name
@@ -267,7 +267,7 @@ impl PopupListCtrl
     // Add a separator
     mtd addSeparator()
     {
-        item := items.newPtr()
+        var item = items.newPtr()
         item.isSeparator = true
         items.add(item)
     }

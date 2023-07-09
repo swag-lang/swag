@@ -13,7 +13,7 @@ impl AA1976
     #[Macro, CalleeReturn]
     func(ptr: bool) opVisit(using self, stmt: code)
     {
-        a := TITI
+        var a = TITI
     }
 }
 

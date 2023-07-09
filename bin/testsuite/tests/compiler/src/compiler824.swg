@@ -3,7 +3,7 @@
 //#[Swag.PrintBc]
 #test
 {
-	x := 256
+	var x = 256
 	if x
 		@assert(true)
 	else

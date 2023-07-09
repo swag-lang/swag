@@ -112,14 +112,14 @@ impl QuickWnd
 
     mtd btnPopup(btn: *Button, pos: Math.Point)
     {
-        menu := MenuCtrl.createPopup(self)
+        var menu = MenuCtrl.createPopup(self)
         menu.addItem("Remove Quick Style", "0", disabled = !btn)
         menu.addSeparator()
         menu.addItem(CmdIdResetQuickStyle)
-        res := menu.doModal(pos, autoDestroy = true)
+        var res = menu.doModal(pos, autoDestroy = true)
         if res == "0"
         {
-            qbtn := cast(*QuickButton) btn
+            var qbtn = cast(*QuickButton) btn
             currentStyle.remove(qbtn.formItf)
             qbtn.destroy()
             updateQuickStyles()
@@ -128,7 +128,7 @@ impl QuickWnd
 
     func create(parent: *Wnd)->*QuickWnd
     {
-        with quick := Wnd.create'QuickWnd(parent, {0, 0, 0, 300})
+        with var quick = Wnd.create'QuickWnd(parent, {0, 0, 0, 300})
         {
             .backgroundStyle = .Window
             .scrollWndFlags |= .ForceVertical | .SmallBar | .TransparentBar
@@ -147,7 +147,7 @@ impl QuickWnd
         #[Swag.Macro]
         func add(startSize, borderSize, endSize: f32, color: Color)
         {
-            form := Memory.new'FormArrow()
+            var form = Memory.new'FormArrow()
             form.borderSize = borderSize
             form.startSize = startSize
             form.endSize = endSize
@@ -156,7 +156,7 @@ impl QuickWnd
             if endSize != 0
                 form.endCap = .ArrowAnchor
             form.borderColor = color
-            it := cast(IForm) form
+            var it = cast(IForm) form
             it.setup(null)
             #up qsArrow.forms.add(it)
         }
@@ -180,10 +180,10 @@ impl QuickWnd
         #[Swag.Macro]
         func add(borderSize: f32, color: Color)
         {
-            form := Memory.new'FormLine()
+            var form = Memory.new'FormLine()
             form.borderSize = borderSize
             form.borderColor = color
-            it := cast(IForm) form
+            var it = cast(IForm) form
             it.setup(null)
             #up qsLine.forms.add(it)
         }
@@ -204,12 +204,12 @@ impl QuickWnd
         #[Swag.Macro]
         func add(borderSize: f32, kind: FormShapeKind, color: Color, backColor: Color)
         {
-            form := Memory.new'FormShape()
+            var form = Memory.new'FormShape()
             form.borderSize = borderSize
             form.borderColor = color
             form.backColor = backColor
             form.kind = kind
-            it := cast(IForm) form
+            var it = cast(IForm) form
             it.setup(null)
             #up qsShape.forms.add(it)
         }
@@ -233,14 +233,14 @@ impl QuickWnd
         #[Swag.Macro]
         func add(borderSize: f32, kind: FormImageKind, color: Color)
         {
-            form := Memory.new'FormImage()
+            var form = Memory.new'FormImage()
             form.borderSize = borderSize
             form.borderColor = color
             form.backColor = Argb.Gray
             form.kind = kind
             if borderSize == 0
                 form.paintShadow = false
-            it := cast(IForm) form
+            var it = cast(IForm) form
             it.setup(null)
             #up qsImage.forms.add(it)
         }
@@ -257,11 +257,11 @@ impl QuickWnd
         #[Swag.Macro]
         func add(kind: FormStepKind, color: Color, backColor: Color)
         {
-            form := Memory.new'FormStep()
+            var form = Memory.new'FormStep()
             form.borderColor = color
             form.backColor = backColor
             form.kind = kind
-            it := cast(IForm) form
+            var it = cast(IForm) form
             it.setup(null)
             #up qsStep.forms.add(it)
         }
@@ -281,11 +281,11 @@ impl QuickWnd
         #[Swag.Macro]
         func add(borderSize: f32, color: Color)
         {
-            form := Memory.new'FormPolygon()
+            var form = Memory.new'FormPolygon()
             form.borderSize = borderSize
             form.borderColor = color
             form.backColor = 0
-            it := cast(IForm) form
+            var it = cast(IForm) form
             it.setup(null)
             #up qsPolygon.forms.add(it)
         }
@@ -305,13 +305,13 @@ impl QuickWnd
         #[Swag.Macro]
         func add(borderSize, fontSize: f32, bdColor, bkColor: Color)
         {
-            form := Memory.new'FormText()
+            var form = Memory.new'FormText()
             form.borderSize = borderSize
             form.borderColor = bdColor
             form.backColor = bkColor
             form.fontSize = fontSize
             form.text = "A"
-            it := cast(IForm) form
+            var it = cast(IForm) form
             it.setup(null)
             #up qsText.forms.add(it)
         }
@@ -334,10 +334,10 @@ impl QuickWnd
         #[Swag.Macro]
         func add(borderSize: f32, color: Color)
         {
-            form := Memory.new'FormDraw()
+            var form = Memory.new'FormDraw()
             form.borderSize = borderSize
             form.borderColor = color
-            it := cast(IForm) form
+            var it = cast(IForm) form
             it.setup(null)
             #up qsDraw.forms.add(it)
         }
@@ -358,12 +358,12 @@ impl QuickWnd
         #[Swag.Macro]
         func addDraw(borderSize: f32, color: Color)
         {
-            form := Memory.new'FormDraw()
+            var form = Memory.new'FormDraw()
             form.borderSize = borderSize
             form.borderColor = color
             form.alpha = 30
             form.subKind = .Highlight
-            it := cast(IForm) form
+            var it = cast(IForm) form
             it.setup(null)
             #up qsHighlight.forms.add(it)
         }
@@ -371,14 +371,14 @@ impl QuickWnd
         #[Swag.Macro]
         func addShape(kind: FormShapeKind, backColor: Color)
         {
-            form := Memory.new'FormShape()
+            var form = Memory.new'FormShape()
             form.borderSize = 0
             form.borderColor = Argb.Zero
             form.backColor = backColor
             form.alpha = 30
             form.kind = kind
             form.subKind = .Highlight
-            it := cast(IForm) form
+            var it = cast(IForm) form
             it.setup(null)
             #up qsHighlight.forms.add(it)
         }
@@ -386,13 +386,13 @@ impl QuickWnd
         #[Swag.Macro]
         func addPoly(backColor: Color)
         {
-            form := Memory.new'FormPolygon()
+            var form = Memory.new'FormPolygon()
             form.borderSize = 0
             form.borderColor = Argb.Zero
             form.backColor = backColor
             form.alpha = 30
             form.subKind = .Highlight
-            it := cast(IForm) form
+            var it = cast(IForm) form
             it.setup(null)
             #up qsHighlight.forms.add(it)
         }
@@ -419,10 +419,10 @@ impl QuickWnd
         #[Swag.Macro]
         func addDraw()
         {
-            form := Memory.new'FormDraw()
+            var form = Memory.new'FormDraw()
             form.subKind = .PixSel
             form.paintShadow = false
-            it := cast(IForm) form
+            var it = cast(IForm) form
             it.setup(null)
             #up qsPixSel.forms.add(it)
         }
@@ -430,11 +430,11 @@ impl QuickWnd
         #[Swag.Macro]
         func addShape(kind: FormShapeKind)
         {
-            form := Memory.new'FormShape()
+            var form = Memory.new'FormShape()
             form.kind = kind
             form.subKind = .PixSel
             form.paintShadow = false
-            it := cast(IForm) form
+            var it = cast(IForm) form
             it.setup(null)
             #up qsPixSel.forms.add(it)
         }
@@ -442,10 +442,10 @@ impl QuickWnd
         #[Swag.Macro]
         func addPoly()
         {
-            form := Memory.new'FormPolygon()
+            var form = Memory.new'FormPolygon()
             form.subKind = .PixSel
             form.paintShadow = false
-            it := cast(IForm) form
+            var it = cast(IForm) form
             it.setup(null)
             #up qsPixSel.forms.add(it)
         }
@@ -460,10 +460,10 @@ impl QuickWnd
     {
         if !currentStyle
             return
-        done := false
-        mode := main.getEditMode()
+        var done = false
+        var mode = main.getEditMode()
 
-        firstVisible := 0's32
+        var firstVisible = 0's32
         visit c: layout.childs
         {
             if c.isVisible()
@@ -473,7 +473,7 @@ impl QuickWnd
 
         visit it, i: currentStyle.forms
         {
-            btn := cast(*IconButton) layout.childs[i + firstVisible]
+            var btn = cast(*IconButton) layout.childs[i + firstVisible]
 
             #[Swag.Complete]
             switch @kindof(it)
@@ -500,7 +500,7 @@ impl QuickWnd
                 done = true
         }
 
-        curMdl := cast(*IconButton) layout.childs.back()
+        var curMdl = cast(*IconButton) layout.childs.back()
         if curMdl.userData
         {
             curMdl.show(!done)
@@ -516,7 +516,7 @@ impl QuickWnd
         if !currentStyle
             return
 
-        res := MessageDlg.confirm(surface, "This will reset the styles to the default values.")
+        var res = MessageDlg.confirm(surface, "This will reset the styles to the default values.")
         if res != MessageDlg.BtnYes
             return
 
@@ -547,25 +547,25 @@ impl QuickWnd
         func paintForm(painter: *Painter, btnp: *QuickButton)
         {
             painter.setParams(.Antialiased)
-            sel  := cast(*BaseForm) @dataof(btnp.formItf)
-            s    := cast(s32) BaseForm.adaptSize(sel.borderSize / 2, MinBorderSize, MaxBorderSize, 1, true)
-            rect := Math.Rectangle{8 + s, 8 + s, 48 - 2*s, 48 - 2*s}
+            var sel = cast(*BaseForm) @dataof(btnp.formItf)
+            var s = cast(s32) BaseForm.adaptSize(sel.borderSize / 2, MinBorderSize, MaxBorderSize, 1, true)
+            var rect = Math.Rectangle{8 + s, 8 + s, 48 - 2*s, 48 - 2*s}
 
-            title := ""
+            var title = ""
 
             switch @kindof(btnp.formItf)
             {
             case FormPolygon:
-                poly := cast(*FormPolygon) @dataof(btnp.formItf)
+                var poly = cast(*FormPolygon) @dataof(btnp.formItf)
                 poly.setDefaultShape()
             case FormDraw:
-                poly := cast(*FormDraw) @dataof(btnp.formItf)
+                var poly = cast(*FormDraw) @dataof(btnp.formItf)
                 poly.setDefaultShape()
             case FormText:
-                txt := cast(*FormText) @dataof(btnp.formItf)
+                var txt = cast(*FormText) @dataof(btnp.formItf)
                 txt.text = "A"
             case FormImage:
-                img := cast(*FormImage) @dataof(btnp.formItf)
+                var img = cast(*FormImage) @dataof(btnp.formItf)
                 switch img.kind
                 {
                 case Image:     title = "image"
@@ -583,7 +583,7 @@ impl QuickWnd
                 painter.drawStringCenter(rect.horzCenter(), rect.bottom(), title, btnp.getFont().regular, Argb.White)
         }
 
-        edMode := main.editMode == .Selection ? main.getEditMode() : main.editMode
+        var edMode = main.editMode == .Selection ? main.getEditMode() : main.editMode
         #[Swag.Complete]
         switch edMode
         {
@@ -620,7 +620,7 @@ impl QuickWnd
 
         visit it: currentStyle.forms
         {
-            btn := Wnd.create'QuickButton(layout, null, {0, 0, 64, 64})
+            var btn = Wnd.create'QuickButton(layout, null, {0, 0, 64, 64})
             btn.iconBtnFlags.add(.Checkable)
             btn.setForm(.RoundSquare)
             btn.formItf = it
@@ -630,7 +630,7 @@ impl QuickWnd
             }
 
             btn.sigRightPressed += closure|self|(btn) {
-                rect := btn.getSurfaceRect()
+                var rect = btn.getSurfaceRect()
                 self.btnPopup(btn, rect.center())
             }
 
@@ -638,53 +638,53 @@ impl QuickWnd
                 if !btn.isChecked
                     return
 
-                type := @kindof(it)
+                var type = @kindof(it)
 
                 #[Swag.Complete]
                 switch type
                 {
                 case FormShape:
-                    b := cast(*FormShape) @dataof(it)
+                    var b = cast(*FormShape) @dataof(it)
                     self.main.mdlFormShape = dref b
                     self.main.mdlFavorite  = &self.main.mdlFormShape
                     self.main.mdlHighlight = &self.main.mdlFormShape
                     self.main.mdlPixSel    = &self.main.mdlFormShape
                 case FormImage:
-                    b := cast(*FormImage) @dataof(it)
+                    var b = cast(*FormImage) @dataof(it)
                     self.main.mdlFormImage = dref b
                     self.main.mdlFavorite  = &self.main.mdlFormImage
                 case FormStep:
-                    b := cast(*FormStep) @dataof(it)
+                    var b = cast(*FormStep) @dataof(it)
                     self.main.mdlFormStep  = dref b
                     self.main.mdlFavorite  = &self.main.mdlFormStep
                 case FormLine:
-                    b := cast(*FormLine) @dataof(it)
+                    var b = cast(*FormLine) @dataof(it)
                     self.main.mdlFormLine  = dref b
                     self.main.mdlFavorite  = &self.main.mdlFormLine
                     self.main.mdlHighlight = &self.main.mdlFormLine
                 case FormPolygon:
-                    b := cast(*FormPolygon) @dataof(it)
+                    var b = cast(*FormPolygon) @dataof(it)
                     self.main.mdlFormPolygon = dref b
                     self.main.mdlFavorite  = &self.main.mdlFormPolygon
                     self.main.mdlHighlight = &self.main.mdlFormPolygon
                     self.main.mdlPixSel    = &self.main.mdlFormPolygon
                 case FormArrow:
-                    b := cast(*FormArrow) @dataof(it)
+                    var b = cast(*FormArrow) @dataof(it)
                     self.main.mdlFormArrow = dref b
                     self.main.mdlFavorite = &self.main.mdlFormArrow
                 case FormText:
-                    b := cast(*FormText) @dataof(it)
+                    var b = cast(*FormText) @dataof(it)
                     self.main.mdlFormText = dref b
                     self.main.mdlFavorite = &self.main.mdlFormText
                 case FormDraw:
-                    b := cast(*FormDraw) @dataof(it)
+                    var b = cast(*FormDraw) @dataof(it)
                     self.main.mdlFormDraw  = dref b
                     self.main.mdlFavorite  = &self.main.mdlFormDraw
                     self.main.mdlHighlight = &self.main.mdlFormDraw
                     self.main.mdlPixSel    = &self.main.mdlFormDraw
                 }
 
-                capture := self.main.getCapture()
+                var capture = self.main.getCapture()
                 if @kindof(it) == type and capture.selection.count
                 {
                     var mdlValue: *BaseForm
@@ -693,40 +693,40 @@ impl QuickWnd
                     switch type
                     {
                     case FormShape:
-                        b := cast(*FormShape) @dataof(it)
+                        var b = cast(*FormShape) @dataof(it)
                         mdlValue = Memory.new'FormShape()
                         it.copy(mdlValue, b)
                     case FormImage:
-                        b := cast(*FormImage) @dataof(it)
+                        var b = cast(*FormImage) @dataof(it)
                         mdlValue = Memory.new'FormImage()
                         it.copy(mdlValue, b)
                     case FormStep:
-                        b := cast(*FormStep) @dataof(it)
+                        var b = cast(*FormStep) @dataof(it)
                         mdlValue = Memory.new'FormStep()
                         it.copy(mdlValue, b)
                     case FormLine:
-                        b := cast(*FormLine) @dataof(it)
+                        var b = cast(*FormLine) @dataof(it)
                         mdlValue = Memory.new'FormLine()
                         it.copy(mdlValue, b)
                     case FormPolygon:
-                        b := cast(*FormPolygon) @dataof(it)
+                        var b = cast(*FormPolygon) @dataof(it)
                         mdlValue = Memory.new'FormPolygon()
                         it.copy(mdlValue, b)
                     case FormArrow:
-                        b := cast(*FormArrow) @dataof(it)
+                        var b = cast(*FormArrow) @dataof(it)
                         mdlValue = Memory.new'FormArrow()
                         it.copy(mdlValue, b)
                     case FormText:
-                        b := cast(*FormText) @dataof(it)
+                        var b = cast(*FormText) @dataof(it)
                         mdlValue = Memory.new'FormText()
                         it.copy(mdlValue, b)
                     case FormDraw:
-                        b := cast(*FormDraw) @dataof(it)
+                        var b = cast(*FormDraw) @dataof(it)
                         mdlValue = Memory.new'FormDraw()
                         it.copy(mdlValue, b)
                     }
 
-                    undo := capture.newUndo(.SetFormFromModel)
+                    var undo = capture.newUndo(.SetFormFromModel)
                     undo.mdlType = type
                     undo.mdlValue = mdlValue
                     capture.pushUndo(undo)
@@ -742,7 +742,7 @@ impl QuickWnd
         }
 
         // The button with the current model
-        mode := main.getEditMode()
+        var mode = main.getEditMode()
 
         var formItf: IForm
         #[Swag.Complete]
@@ -774,8 +774,8 @@ impl QuickWnd
             break
         }
 
-        baseForm := cast(*BaseForm) @dataof(formItf)
-        canAddModel := true
+        var baseForm = cast(*BaseForm) @dataof(formItf)
+        var canAddModel = true
         if main.editMode == .Highlight
         {
             if baseForm.subKind != .Highlight
@@ -792,7 +792,7 @@ impl QuickWnd
 
         if canAddModel
         {
-            btn := Wnd.create'QuickButton(layout, null, {0, 0, 64, 64})
+            var btn = Wnd.create'QuickButton(layout, null, {0, 0, 64, 64})
             btn.userData = cast(*void) 1'u64 // This is the model button
             btn.formItf = formItf
             btn.setForm(.RoundSquare)
@@ -803,15 +803,15 @@ impl QuickWnd
 
             btn.sigPaintIcon = func(btn, bc, pos) {
                 paintForm(bc.painter, cast(*QuickButton) btn)
-                rect := btn.getClientRect()
+                var rect = btn.getClientRect()
                 rect.inflate(-2, -2)
                 bc.painter.setParams(.Antialiased)
                 bc.painter.drawRoundRect(rect, 5, 5, Pen.createDash(.Dash, Argb.White, 2))
             }
 
             // Button to add a new style
-            ico  := getTheme().getIcon24(ThemeIcons24.Plus)
-            btn1 := IconButton.create(btn, ico, {64 - 26, 2, 24, 24})
+            var ico = getTheme().getIcon24(ThemeIcons24.Plus)
+            var btn1 = IconButton.create(btn, ico, {64 - 26, 2, 24, 24})
             btn1.style.addStyleSheetColors("btnIcon_Bk          $hilight")
             btn1.style.addStyleSheetColors("btnIcon_HotBk       $hilightLight")
             btn1.style.addStyleSheetColors("btnIcon_PressedBk   $hilightDark")
@@ -821,40 +821,40 @@ impl QuickWnd
             setScrollSize(0, layout.resultHeight)
 
             btn1.sigPressed += closure|self, main|(btn) {
-                mode := main.getEditMode()
+                var mode = main.getEditMode()
                 #[Swag.Complete]
                 switch mode
                 {
                 case Arrow:
-                    mdl := Memory.new'FormArrow()
+                    var mdl = Memory.new'FormArrow()
                     mdl.IForm.copy(mdl, &main.mdlFormArrow)
                     self.currentStyle.forms.add(mdl)
                 case Shape:
-                    mdl := Memory.new'FormShape()
+                    var mdl = Memory.new'FormShape()
                     mdl.IForm.copy(mdl, &main.mdlFormShape)
                     self.currentStyle.forms.add(mdl)
                 case Image:
-                    mdl := Memory.new'FormImage()
+                    var mdl = Memory.new'FormImage()
                     mdl.IForm.copy(mdl, &main.mdlFormImage)
                     self.currentStyle.forms.add(mdl)
                 case Step:
-                    mdl := Memory.new'FormStep()
+                    var mdl = Memory.new'FormStep()
                     mdl.IForm.copy(mdl, &main.mdlFormStep)
                     self.currentStyle.forms.add(mdl)
                 case Line:
-                    mdl := Memory.new'FormLine()
+                    var mdl = Memory.new'FormLine()
                     mdl.IForm.copy(mdl, &main.mdlFormLine)
                     self.currentStyle.forms.add(mdl)
                 case Polygon:
-                    mdl := Memory.new'FormPolygon()
+                    var mdl = Memory.new'FormPolygon()
                     mdl.IForm.copy(mdl, &main.mdlFormPolygon)
                     self.currentStyle.forms.add(mdl)
                 case Text:
-                    mdl := Memory.new'FormText()
+                    var mdl = Memory.new'FormText()
                     mdl.IForm.copy(mdl, &main.mdlFormText)
                     self.currentStyle.forms.add(mdl)
                 case Draw:
-                    mdl := Memory.new'FormDraw()
+                    var mdl = Memory.new'FormDraw()
                     mdl.IForm.copy(mdl, &main.mdlFormDraw)
                     self.currentStyle.forms.add(mdl)
                 case Favorites, Highlight, Selection, PixSel:

@@ -21,7 +21,7 @@ struct Thread
 
 func entry(param: *void)->u32
 {
-    th := cast(*Thread) param
+    var th = cast(*Thread) param
     th.lambda()
     return 0
 }
@@ -37,9 +37,9 @@ func create(lambda: func(*Thread), userParam: u64)
     th.lambda = lambda
     th.param  = userParam
 
-    id := 0'u32
-    h := CreateThread(null, 0, @mkcallback(&entry), &th, 0, &id)
-    ew := WaitForSingleObject(h, INFINITE);
+    var id = 0'u32
+    var h = CreateThread(null, 0, @mkcallback(&entry), &th, 0, &id)
+    var ew = WaitForSingleObject(h, INFINITE);
 }
 
 #test

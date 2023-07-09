@@ -5,9 +5,9 @@ using Core
 #test
 {
     var str: String = "toto"
-    u := Utf16.fromUtf8(str)
+    var u = Utf16.fromUtf8(str)
 
-    v := 0
+    var v = 0
     switch v
     {
         case 0:

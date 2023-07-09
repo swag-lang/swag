@@ -12,7 +12,7 @@ func toto(x: code)
 
 #test
 {
-    cpt := 0
+    var cpt = 0
     toto()
     {
         cpt += 1

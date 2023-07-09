@@ -5,7 +5,7 @@
     var DST1: [100] u8
     var destLen: u32 = @sizeof(DST)
 
-    result := zlib.compress(@dataof(DST), &destLen, @dataof(SRC), cast(u32) @countof(SRC) + 1)
+    var result = zlib.compress(@dataof(DST), &destLen, @dataof(SRC), cast(u32) @countof(SRC) + 1)
     @assert(result == zlib.Z_OK)
     @assert(destLen < @countof(SRC) + 1)
 
@@ -16,5 +16,5 @@
 
     //var tt: [..] u8 = [&DST1, destLen1]
     //@print(tt)
-    c := zlib.compressBound(100)
+    var c = zlib.compressBound(100)
 }*/

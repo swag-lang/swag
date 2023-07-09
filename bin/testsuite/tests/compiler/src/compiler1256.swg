@@ -7,5 +7,5 @@ func toto() -> {a:f32, b:bool}
 
 #test
 {
-	(x, x) := toto()
+	var (x, x) = toto()
 }

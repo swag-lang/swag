@@ -1,7 +1,7 @@
 func toto()->closure()->s32
 {
-    counter := 0
-    f := closure|counter|()->s32 {
+    var counter = 0
+    var f = closure|counter|()->s32 {
         counter += 1
         return counter
     }
@@ -11,7 +11,7 @@ func toto()->closure()->s32
 
 #test
 {
-    f := toto()
+    var f = toto()
     @assert(f() == 1)
     @assert(f() == 2)
     @assert(f() == 3)

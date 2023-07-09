@@ -2,6 +2,6 @@
 #test
 {
 	var pt : s32 = 1
-	ptr := &pt
+	var ptr = &pt
 	@drop(ptr, 2)
 }

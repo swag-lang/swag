@@ -8,8 +8,8 @@ func mix()
 //#[Swag.PrintBc]
 #test
 {
-    z := 4
-    x, y := 0
+    var z = 4
+    var x, y = 0
     mix(|x, z|)
     mix(|y, z|)
     @assert(x == 4)

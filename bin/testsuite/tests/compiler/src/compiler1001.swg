@@ -15,7 +15,7 @@ struct Point
 	x = tt
 	@assert(@kindof(x) == @typeof(Point))
 
-	ptr := cast(*Point) @dataof(x)
+	var ptr = cast(*Point) @dataof(x)
 	//@print(ptr.x)
 	@assert(ptr.x == 10)
 	@assert(ptr.y == 20)

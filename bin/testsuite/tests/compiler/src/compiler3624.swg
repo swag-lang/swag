@@ -9,7 +9,7 @@ func toto(v: F)
 
 #test
 {
-    x := E.A
+    var x = E.A
     switch x
     {
     case A: toto(.C)

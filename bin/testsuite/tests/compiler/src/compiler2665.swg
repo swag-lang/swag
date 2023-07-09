@@ -5,6 +5,6 @@ func toto()->{x: s32, y: s32}
 
 #test
 {
-    h := toto()
-    x := {h}
+    var h = toto()
+    var x = {h}
 }

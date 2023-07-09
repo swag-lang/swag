@@ -37,7 +37,7 @@ impl IWnd for SplitterCtrl
     mtd impl onMouseEvent(evt: *MouseEvent)
     {
         evt.accepted = true
-        local := surfaceToLocal(evt.surfacePos)
+        var local = surfaceToLocal(evt.surfacePos)
 
         switch evt.kind
         {
@@ -51,15 +51,15 @@ impl IWnd for SplitterCtrl
         case MouseMove:
             if moving
             {
-                rect := getBarRect(hotIdx)
+                var rect = getBarRect(hotIdx)
                 if isVertical()
                 {
-                    diff := local.y - (rect.y + correctMoving)
+                    var diff = local.y - (rect.y + correctMoving)
                     setPaneSize(hotIdx, items[hotIdx].size + diff)
                 }
                 else
                 {
-                    diff := local.x - (rect.x + correctMoving)
+                    var diff = local.x - (rect.x + correctMoving)
                     setPaneSize(hotIdx, items[hotIdx].size + diff)
                 }
 
@@ -67,7 +67,7 @@ impl IWnd for SplitterCtrl
             }
             else
             {
-                newHot := hitTest(evt.surfacePos)
+                var newHot = hitTest(evt.surfacePos)
                 if newHot != hotIdx
                     invalidate()
                 hotIdx = newHot
@@ -76,7 +76,7 @@ impl IWnd for SplitterCtrl
         case MousePressed:
             if evt.button == .Left and hotIdx != Swag.U32.Max
             {
-                rect := getBarRect(hotIdx)
+                var rect = getBarRect(hotIdx)
                 moving = true
                 surface.app.captureMouse(self)
                 if isVertical()
@@ -103,21 +103,21 @@ impl IWnd for SplitterCtrl
     {
         computeLayout()
 
-        client := getClientRectPadding()
-        x := client.x
-        y := client.y
-        barSize := getThemeMetrics().splitView_BarSize
+        var client = getClientRectPadding()
+        var x = client.x
+        var y = client.y
+        var barSize = getThemeMetrics().splitView_BarSize
 
         visit item: items
         {
             if isVertical()
             {
-                paneRect := Math.Rectangle{client.x, y, client.width, item.size}
+                var paneRect = Math.Rectangle{client.x, y, client.width, item.size}
                 paneRect.applyPadding(item.view.margin)
 
                 if item.label
                 {
-                    labelRect := paneRect
+                    var labelRect = paneRect
                     labelRect.height = titleSize
                     item.label.setPosition(labelRect)
 
@@ -130,12 +130,12 @@ impl IWnd for SplitterCtrl
             }
             else
             {
-                paneRect := Math.Rectangle{x, client.y, item.size, client.height}
+                var paneRect = Math.Rectangle{x, client.y, item.size, client.height}
                 paneRect.applyPadding(item.view.margin)
 
                 if item.label
                 {
-                    labelRect := paneRect
+                    var labelRect = paneRect
                     labelRect.width = titleSize
                     item.label.setPosition(labelRect)
 
@@ -154,27 +154,27 @@ impl IWnd for SplitterCtrl
         if !items.count
             return
 
-        painter := evt.bc.painter
-        theme   := getTheme()
-        rects   := getThemeRects()
-        colors  := getThemeColors()
+        var painter = evt.bc.painter
+        var theme = getTheme()
+        var rects = getThemeRects()
+        var colors = getThemeColors()
 
         loop idx: items.count - 1
         {
-            rect := getBarRect(cast(u32) idx)
-            isHot := hotIdx == idx
+            var rect = getBarRect(cast(u32) idx)
+            var isHot = hotIdx == idx
             if isHot or !splitterFlags.has(.HideBars)
             {
-                colorBar := isHot ? colors.splitView_BarHot : colors.splitView_Bar
+                var colorBar = isHot ? colors.splitView_BarHot : colors.splitView_Bar
                 items[idx].aniBar.apply(self, colorBar)
                 if isVertical()
                 {
-                    rectBar := isHot ? &rects.splitView_HorzBarHotBk : &rects.splitView_HorzBarBk
+                    var rectBar = isHot ? &rects.splitView_HorzBarHotBk : &rects.splitView_HorzBarBk
                     theme.drawSubRect(painter, rect, rectBar, items[idx].aniBar.cur())
                 }
                 else
                 {
-                    rectBar := isHot ? &rects.splitView_VertBarHotBk : &rects.splitView_VertBarBk
+                    var rectBar = isHot ? &rects.splitView_VertBarHotBk : &rects.splitView_VertBarBk
                     theme.drawSubRect(painter, rect, rectBar, items[idx].aniBar.cur())
                 }
             }
@@ -188,18 +188,18 @@ private impl SplitterCtrl
 {
     mtd computeLayout()
     {
-        rect    := getClientRectPadding()
+        var rect = getClientRectPadding()
         if rect.width <= items.count or rect.height <= items.count
             return
 
-        barSize := getThemeMetrics().splitView_BarSize
+        var barSize = getThemeMetrics().splitView_BarSize
 
         var dispatch: f32
         if items.count > 0
         {
             // Compute the current total sizes of panes
-            countNotPreserve, countPreserve := 0
-            totalSize := 0'f32
+            var countNotPreserve, countPreserve = 0
+            var totalSize = 0'f32
             visit item, idx: items
             {
                 totalSize += item.size
@@ -218,7 +218,7 @@ private impl SplitterCtrl
             // Dispatch the size change first to all panoes not marked as 'tryPreserveSize'
             if countNotPreserve
             {
-                diff := cast(f32) Math.round(dispatch / countNotPreserve)
+                var diff = cast(f32) Math.round(dispatch / countNotPreserve)
                 visit item, idx: items
                 {
                     if item.tryPreserveSize
@@ -226,7 +226,7 @@ private impl SplitterCtrl
 
                     countNotPreserve -= 1
 
-                    realDiff := countNotPreserve ? diff : dispatch
+                    var realDiff = countNotPreserve ? diff : dispatch
                     if item.maxSize > 0 and realDiff > 0 and item.size + realDiff > item.maxSize
                         realDiff = item.maxSize - item.size
                     elif realDiff < 0 and item.size + realDiff < item.minSize
@@ -240,7 +240,7 @@ private impl SplitterCtrl
             // Dispatch the rest between panes that try to preserved their size
             if countPreserve
             {
-                diff := cast(f32) Math.round(dispatch / countPreserve)
+                var diff = cast(f32) Math.round(dispatch / countPreserve)
                 visit item, idx: items
                 {
                     if !item.tryPreserveSize
@@ -248,7 +248,7 @@ private impl SplitterCtrl
 
                     countPreserve -= 1
 
-                    realDiff := countNotPreserve ? diff : dispatch
+                    var realDiff = countNotPreserve ? diff : dispatch
                     if item.maxSize > 0 and realDiff > 0 and item.size + realDiff > item.maxSize
                         realDiff = item.maxSize - item.size
                     elif realDiff < 0 and item.size + realDiff < item.minSize
@@ -268,16 +268,16 @@ private impl SplitterCtrl
 
     mtd hitTest(surfacePos: Math.Point)->u32
     {
-        client := getClientRectPadding()
-        local  := surfaceToLocal(surfacePos)
+        var client = getClientRectPadding()
+        var local = surfaceToLocal(surfacePos)
 
-        x := client.x
-        y := client.y
-        barSize := getThemeMetrics().splitView_BarSize
+        var x = client.x
+        var y = client.y
+        var barSize = getThemeMetrics().splitView_BarSize
 
         visit v, idx: items
         {
-            rect := client
+            var rect = client
             if isVertical()
             {
                 rect.y = y + v.size
@@ -303,7 +303,7 @@ private impl SplitterCtrl
     {
         var result: retval = getClientRectPadding()
 
-        barSize := getThemeMetrics().splitView_BarSize
+        var barSize = getThemeMetrics().splitView_BarSize
         loop i: 0..idx
         {
             if isVertical()
@@ -327,21 +327,21 @@ private impl SplitterCtrl
 
     mtd setPaneSizePrivate(idx: u32, newSize: f32)
     {
-        curPane := items[idx]
+        var curPane = items[idx]
 
-        reqSize := Math.max(curPane.minSize, newSize)
+        var reqSize = Math.max(curPane.minSize, newSize)
         if curPane.maxSize > 0
             reqSize = Math.min(curPane.maxSize, reqSize)
 
-        diff := reqSize - curPane.size
+        var diff = reqSize - curPane.size
         if items.count == 1
         {
             curPane.size += diff
             return
         }
 
-        scanLeft := idx == items.count - 1
-        i := cast(s32) idx
+        var scanLeft = idx == items.count - 1
+        var i = cast(s32) idx
 
         loop
         {
@@ -350,10 +350,10 @@ private impl SplitterCtrl
             if !scanLeft and i == items.count - 1
                 break
 
-            otherPane := scanLeft ? items[i - 1] : items[i + 1]
+            var otherPane = scanLeft ? items[i - 1] : items[i + 1]
             i += scanLeft ? -1 : 1
 
-            realDiff := diff
+            var realDiff = diff
             if realDiff > 0 and otherPane.size - realDiff < otherPane.minSize
             {
                 realDiff = otherPane.size - otherPane.minSize
@@ -385,8 +385,8 @@ impl SplitterCtrl
     {
         Debug.assert(parent != null)
 
-        pos := position
-        res := Wnd.create'SplitterCtrl(parent, null, pos, id)
+        var pos = position
+        var res = Wnd.create'SplitterCtrl(parent, null, pos, id)
         res.focusStrategy = .None
         res.wndFlags |= .PostChildsPaint
         if vertical
@@ -404,11 +404,11 @@ impl SplitterCtrl
     {
         pane.setParent(self)
 
-        item := items.newPtr()
+        var item = items.newPtr()
         item.view = pane
         if title
         {
-            with label := Label.create(self, "")
+            with var label = Label.create(self, "")
             {
                 .backgroundStyle = .Window
                 .style.addStyleSheetColors("wnd_Bk $dlg_BtnBarBk")
@@ -421,7 +421,7 @@ impl SplitterCtrl
 
         if items.count == 1
         {
-            rect := getClientRectPadding()
+            var rect = getClientRectPadding()
             if isVertical()
                 item.size = rect.height
             else

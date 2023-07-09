@@ -37,8 +37,8 @@ impl IWnd for RichEditView
             if evt.button == .Left
             {
                 evt.accepted = true
-                pt := surfaceToLocal(evt.surfacePos) + scrollPos
-                cp := ed.getCursorPosFromPoint(pt)
+                var pt = surfaceToLocal(evt.surfacePos) + scrollPos
+                var cp = ed.getCursorPosFromPoint(pt)
                 firstLineSelMode = cp.lineIndex
                 ed.setCursorPos(cp)
                 if !(evt.modifiers & .Shift)
@@ -61,8 +61,8 @@ impl IWnd for RichEditView
             if selMode
             {
                 evt.accepted = true
-                pt := surfaceToLocal(evt.surfacePos) + scrollPos
-                cp := ed.getCursorPosFromPoint(pt)
+                var pt = surfaceToLocal(evt.surfacePos) + scrollPos
+                var cp = ed.getCursorPosFromPoint(pt)
                 if ed.cursorPos.lineIndex != cp.lineIndex or ed.cursorPos.charPosInLine != cp.charPosInLine
                 {
                     if ed.hasSelRect
@@ -134,13 +134,13 @@ impl IWnd for RichEditView
 
     mtd impl onPaintEvent(evt: *PaintEvent)
     {
-        painter := evt.bc.painter
-        colors  := getThemeColors()
+        var painter = evt.bc.painter
+        var colors = getThemeColors()
 
-        marginLeft := ed.getMarginLeft()
-        x    := 0'f32
-        y    := 0'f32
-        size := ed.getXExtent()
+        var marginLeft = ed.getMarginLeft()
+        var x = 0'f32
+        var y = 0'f32
+        var size = ed.getXExtent()
 
         // Force visible caret
         if ed.forceCaretVisible
@@ -163,18 +163,18 @@ impl IWnd for RichEditView
             ed.countVisibleLines = 0
         ed.dirtyFirstLineView = false
 
-        clientRect := getClientRect()
-        firstHidden := true
-        maxx := 0'f32
+        var clientRect = getClientRect()
+        var firstHidden = true
+        var maxx = 0'f32
 
-        sizeChanged := lastClientRect != clientRect
+        var sizeChanged = lastClientRect != clientRect
         lastClientRect = clientRect
 
         // All lines
         while i < ed.lines.count
         {
             // Is the line visible ?
-            bvis := true
+            var bvis = true
             if y + size.y < scrollPos.y or y - scrollPos.y > clientRect.bottom()
                 bvis = false
 
@@ -186,7 +186,7 @@ impl IWnd for RichEditView
                 ed.countVisibleLines += 1
             ed.lastVisibleLineView = i
 
-            l := ed.lines[i]
+            var l = ed.lines[i]
 
             l.drawingRect.x = marginLeft
             l.drawingRect.y = y
@@ -196,7 +196,7 @@ impl IWnd for RichEditView
             // Current line
             if bvis and ed.isSelectionEmpty() and i == ed.cursorPos.lineIndex and ed.richEdFlags & .CurLineBorder
             {
-                fullRect := l.drawingRect
+                var fullRect = l.drawingRect
                 fullRect.y -= scrollPos.y
                 fullRect.setRight(clientRect.right() - ed.getMarginRight())
                 fullRect.inflate(-1)
@@ -210,8 +210,8 @@ impl IWnd for RichEditView
 
                 if ed.lexer
                 {
-                    prevLine := i ? ed.lines[i - 1] : null
-                    nextLine := i != ed.lines.count - 1 ? ed.lines[i + 1] : null
+                    var prevLine = i ? ed.lines[i - 1] : null
+                    var nextLine = i != ed.lines.count - 1 ? ed.lines[i + 1] : null
                     ed.lexer.compute(prevLine, l, nextLine)
                 }
 
@@ -234,18 +234,18 @@ impl IWnd for RichEditView
         // Caret
         if visibleCaret
         {
-            colorCaret := getThemeColors().richEdit_Caret
+            var colorCaret = getThemeColors().richEdit_Caret
             if ed.hasSelRect
             {
-                selBeg := ed.getBegSelection()
-                selEnd := ed.getEndSelection()
+                var selBeg = ed.getBegSelection()
+                var selEnd = ed.getEndSelection()
                 loop caretI: selBeg.lineIndex..selEnd.lineIndex
                 {
-                    cp := ed.cursorPos
+                    var cp = ed.cursorPos
                     cp.lineIndex = caretI
                     if cp.charPosInLine > ed.lines[cp.lineIndex].length()
                         continue
-                    posCaret := ed.getCaretPos(cp)
+                    var posCaret = ed.getCaretPos(cp)
                     posCaret.x -= scrollPos.x
                     posCaret.y -= scrollPos.y
                     painter.fillRect(posCaret, colorCaret)
@@ -253,7 +253,7 @@ impl IWnd for RichEditView
             }
             else
             {
-                posCaret := ed.getCaretPos(ed.cursorPos)
+                var posCaret = ed.getCaretPos(ed.cursorPos)
                 posCaret.x -= scrollPos.x
                 posCaret.y -= scrollPos.y
                 painter.fillRect(posCaret, colorCaret)
@@ -268,7 +268,7 @@ impl IWnd for RichEditView
             maxx = ed.scrollWnd.scrollSize.x
         else
         {
-            posCaret := ed.getCaretPos(ed.cursorPos)
+            var posCaret = ed.getCaretPos(ed.cursorPos)
             maxx += posCaret.width + 32
         }
 
@@ -298,10 +298,10 @@ impl RichEditView
 
     mtd paintString(bc: *PaintContext, x, y: f32, str: String, strStyle: RichEditRuneStyle, visible: bool)->f32
     {
-        painter := bc.painter
+        var painter = bc.painter
 
-        fontR := ed.getFont().getFont(strStyle.fontMode)
-        me := Painter.measureString(str, fontR)
+        var fontR = ed.getFont().getFont(strStyle.fontMode)
+        var me = Painter.measureString(str, fontR)
 
         // Background rectangle
         if visible and strStyle.colBk.a
@@ -320,15 +320,15 @@ impl RichEditView
 
     mtd paintLine(bc: *PaintContext, lineIndex: u64, py: f32, visible: bool)->f32
     {
-        line := ed.lines[lineIndex]
-        y := py
+        var line = ed.lines[lineIndex]
+        var y = py
 
         // Dummy character for empty lines, so that a selected line display something
-        dummyChar  := " "'rune
-        dummyStyle := 0'u8
-        count  := line.length()
-        pChar  := line.chars.buffer
-        pStyle := line.styles.buffer
+        var dummyChar = " "'rune
+        var dummyStyle = 0'u8
+        var count = line.length()
+        var pChar = line.chars.buffer
+        var pStyle = line.styles.buffer
         if !count
         {
             pChar  = cast(^rune) &dummyChar
@@ -341,28 +341,28 @@ impl RichEditView
 
         var oldStyle, newStyle: RichEditRuneStyle
         oldStyle = ed.styles[0]
-        x := ed.getMarginLeft() - scrollPos.x
+        var x = ed.getMarginLeft() - scrollPos.x
 
-        sel0 := ed.getBegSelection()
-        sel1 := ed.getEndSelection()
-        size := ed.getXExtent()
+        var sel0 = ed.getBegSelection()
+        var sel1 = ed.getEndSelection()
+        var size = ed.getXExtent()
 
-        i := 0
+        var i = 0
         while i < count
         {
             defer { i += 1; pChar += 1; pStyle += 1; }
             newStyle = ed.styles[dref pStyle]
 
-            cr := dref pChar
-            isTabulation := cr == "\t"'rune
+            var cr = dref pChar
+            var isTabulation = cr == "\t"'rune
 
-            selected := false
+            var selected = false
             if ed.hasSelRect
             {
                 var cp1: RichEditCursor
                 cp1.charPosInLine = i
                 cp1.lineIndex = lineIndex
-                charPos := ed.getCursorDisplayPos(cp1)
+                var charPos = ed.getCursorDisplayPos(cp1)
                 charPos.y -= size.y * 0.5
                 if ed.selRectangle.contains(charPos)
                     selected = true
@@ -403,7 +403,7 @@ impl RichEditView
             }
 
             // Paint accumulated string if we have a change of style
-            styleChange := newStyle != oldStyle
+            var styleChange = newStyle != oldStyle
             if styleChange or isTabulation
             {
                 x = paintString(bc, x, y, str, oldStyle, visible)
@@ -413,7 +413,7 @@ impl RichEditView
 
             if isTabulation
             {
-                x1 := x
+                var x1 = x
                 x += ed.getTabOffset(cast(s32) x)
 
                 // Background color for tabulations
@@ -429,7 +429,7 @@ impl RichEditView
         // Remaining string
         if !str.isEmpty()
         {
-            x1 := paintString(bc, x, y, str, oldStyle, visible)
+            var x1 = paintString(bc, x, y, str, oldStyle, visible)
             x = x1
         }
 

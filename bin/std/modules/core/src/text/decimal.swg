@@ -146,9 +146,9 @@ impl Decimal
         if nd1 < 0 or nd1 >= nd
             return
         // round up
-        for i := nd1 - 1; i >= 0; i -= 1
+        for var i = nd1 - 1; i >= 0; i -= 1
         {
-            c := d[i]
+            var c = d[i]
             if c < "9"'u8 // can stop after this digit
             {
                 d[i] += 1
@@ -169,11 +169,11 @@ impl Decimal
         var buf: [24] u8
 
         // Write reversed decimal in buf.
-        v := mant
-        n := 0
+        var v = mant
+        var n = 0
         while v > 0
         {
-            v1 := v / 10
+            var v1 = v / 10
             v -= 10 * v1
             buf[n] = cast(u8) (v + "0"'u8)
             n += 1
@@ -204,8 +204,8 @@ impl Decimal
     const MaxShift: u32 = 64 - 4
     func rightShift(using self, k: u32)
     {
-        r := 0 // read pointer
-        w := 0 // write pointer
+        var r = 0 // read pointer
+        var w = 0 // write pointer
 
         // Pick up enough leading digits to cover first shift.
         var n: u64
@@ -228,7 +228,7 @@ impl Decimal
                 break
             }
 
-            c := cast(u64) d[r]
+            var c = cast(u64) d[r]
             n = (n * 10) + c - "0"'u8
             r += 1
         }
@@ -240,8 +240,8 @@ impl Decimal
         // Pick up a digit, put down a digit.
         while r < nd
         {
-            c := cast(u64) d[r]
-            dig := n >> k
+            var c = cast(u64) d[r]
+            var dig = n >> k
             n &= mask
             d[w] = cast(u8) (dig + "0"'u8)
             w += 1
@@ -252,7 +252,7 @@ impl Decimal
         // Put down extra digits.
         while n > 0
         {
-            dig := n >> k
+            var dig = n >> k
             n &= mask
             if w < @countof(d)
             {
@@ -273,7 +273,7 @@ impl Decimal
 
     func prefixIsLessThan(b: const [..] u8, s: string) -> bool
     {
-        for i := 0; i < @countof(s); i += 1
+        for var i = 0; i < @countof(s); i += 1
         {
             if i >= @countof(b)
                 return true
@@ -286,12 +286,12 @@ impl Decimal
 
     func leftShift(using self, k: u32)
     {
-        delta := LeftCheats[k].delta
+        var delta = LeftCheats[k].delta
         if prefixIsLessThan(@mkslice(&d[0], nd), LeftCheats[k].cutoff)
             delta -= 1
 
-        r := nd         // read index
-        w := nd + delta // write index
+        var r = nd         // read index
+        var w = nd + delta // write index
 
         // Pick up a digit, put down a digit.
         var n: u64
@@ -299,8 +299,8 @@ impl Decimal
         while r >= 0
         {
             n += (cast(u64) (d[r]) - "0"'u8) << k
-            quo := n / 10
-            rem := n - (10 * quo)
+            var quo = n / 10
+            var rem = n - (10 * quo)
             w -= 1
             if w < @countof(d)
                 d[w] = cast(u8) (rem + "0"'u8)
@@ -313,8 +313,8 @@ impl Decimal
         // Put down extra digits.
         while n > 0
         {
-            quo := n / 10
-            rem := n - (10 * quo)
+            var quo = n / 10
+            var rem = n - (10 * quo)
             w -= 1
             if w < @countof(d)
                 d[w] = cast(u8) (rem + "0"'u8)
@@ -332,7 +332,7 @@ impl Decimal
 
     func shift(using self, kk: s32)
     {
-        k := kk
+        var k = kk
         switch
         {
         case nd == 0:
@@ -360,15 +360,15 @@ impl Decimal
 
     func readF64(using self, str: const [..] u8)->u32 throw
     {
-        cpt := 0'u32
-        countof := @countof(str)
-        buffer := @dataof(str)
+        var cpt = 0'u32
+        var countof = @countof(str)
+        var buffer = @dataof(str)
 
-        negSign := g_CultureInfo.numberFormat.negativeSign
-        plusSign := g_CultureInfo.numberFormat.positiveSign
-        dotSign := g_CultureInfo.numberFormat.decimalSeparator
+        var negSign = g_CultureInfo.numberFormat.negativeSign
+        var plusSign = g_CultureInfo.numberFormat.positiveSign
+        var dotSign = g_CultureInfo.numberFormat.decimalSeparator
 
-        c := dref buffer
+        var c = dref buffer
         if c == negSign
         {
             buffer, cpt += 1
@@ -384,10 +384,10 @@ impl Decimal
         }
 
         // digits
-        maxMantDigits := 19 // 10^19 fits in u64
-        sawdot    := false
-        sawDigits := false
-        ndMant := 0
+        var maxMantDigits = 19 // 10^19 fits in u64
+        var sawdot = false
+        var sawDigits = false
+        var ndMant = 0
 
         nd = 0
         dp = 0
@@ -445,7 +445,7 @@ impl Decimal
             if cpt >= countof
                 throw StrConv.ParseErrorIncomplete
 
-            esign := 1
+            var esign = 1
             c = dref buffer
             if c == negSign
             {
@@ -466,7 +466,7 @@ impl Decimal
             if cpt >= countof or c < "0"'u8 or c > "9"'u8
                 throw StrConv.ParseErrorInvalid
 
-            e := 0
+            var e = 0
             while cpt < countof
             {
                 c = dref buffer
@@ -492,7 +492,7 @@ impl Decimal
         var mant: u64
 
         // Zero is always a special case.
-        overflow := false
+        var overflow = false
         loop
         {
             if nd == 0
@@ -551,7 +551,7 @@ impl Decimal
             // adjust d accordingly.
             if exp < Swag.F64.Bias + 1
             {
-                n := Swag.F64.Bias + 1 - exp
+                var n = Swag.F64.Bias + 1 - exp
                 shift(-cast(s32) n)
                 exp += n
             }
@@ -592,7 +592,7 @@ impl Decimal
 
         // Assemble bits.
         var result: retval
-        bits := mant & ((1'u64 << Swag.F64.MantBits) - 1)
+        var bits = mant & ((1'u64 << Swag.F64.MantBits) - 1)
         bits |= cast(u64) ((exp - Swag.F64.Bias) & ((1's64 << Swag.F64.MantBits) - 1)) << Swag.F64.MantBits
         if neg bits |= (1'u64 << 63)
         result.b = bits
@@ -605,8 +605,8 @@ impl Decimal
         if dp > 20
             return 0xFFFFFFFFFFFFFFFF
 
-        i := 0's64
-        n := 0'u64
+        var i = 0's64
+        var n = 0'u64
         while i < dp and i < nd
         {
             n = (n*10) + cast(u64) (d[i] - "0"'u8)

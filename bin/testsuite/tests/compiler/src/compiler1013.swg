@@ -11,14 +11,14 @@ enum A
 
 #test
 {
-	ptr := cast(const *TypeInfoEnum) @typeof(A.VAL)
-	ptr1 := cast(const *TypeValue) ptr.values[0]
+	var ptr = cast(const *TypeInfoEnum) @typeof(A.VAL)
+	var ptr1 = cast(const *TypeValue) ptr.values[0]
 
 	//@print(ptr1.attributes[0].item0)
 	@assert(ptr1.attributes[0].type == @typeof(NC1))
 	@assert(ptr1.attributes[0].params[0].name == "x")
 
-	val := ptr1.attributes[0].params[0].value
+	var val = ptr1.attributes[0].params[0].value
 	@assert(@kindof(val) == string)
 	@assert(val == "TOTO")
 }

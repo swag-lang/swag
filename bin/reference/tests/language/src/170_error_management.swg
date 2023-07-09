@@ -26,7 +26,7 @@ The caller will then have to deal with the error in some way. It can `catch` it,
 func myFunc()
 {
     // Dismiss the eventual error with 'catch' and continue execution
-    cpt := catch count("fileName")
+    var cpt = catch count("fileName")
 
     // And test it with @errmsg, which returns the 'throw' corresponding string
     if @errmsg
@@ -38,7 +38,7 @@ func myFunc()
 
     // You can also use 'trycatch', which will exit the current function in case
     // an error has been raised (returning the default value if necessary)
-    cpt1 := trycatch count("fileName")
+    var cpt1 = trycatch count("fileName")
 }
 
 /**
@@ -49,7 +49,7 @@ Here, the caller of `myFunc1` will have to deal with the error at its turn.
 func myFunc1() throw
 {
     // If 'count()' raises an error, 'myFunc1' will return with the same error
-    cpt := try count("filename")
+    var cpt = try count("filename")
 }
 
 /**
@@ -61,7 +61,7 @@ The caller can also panic if an error is raised, with `assume`.
 func myFunc2()
 {
     // Here the program will stop with a panic message if 'count()' throws an error
-    cpt := assume count("filename")
+    var cpt = assume count("filename")
 }
 
 /**
@@ -73,30 +73,30 @@ func myFunc3() throw
     // instead of one single call
     try
     {
-        cpt0 := count("filename")
-        cpt1 := count("other filename")
+        var cpt0 = count("filename")
+        var cpt1 = count("other filename")
     }
 
     assume
     {
-        cpt2 := count("filename")
-        cpt3 := count("other filename")
+        var cpt2 = count("filename")
+        var cpt3 = count("other filename")
     }
 
     // Works also for 'catch' if you do not want to deal with the error message.
     // '@errmsg' in that case is not really relevant.
     catch
     {
-        cpt4 := count("filename")
-        cpt5 := count("other filename")
+        var cpt4 = count("filename")
+        var cpt5 = count("other filename")
     }
 
     // Works also for 'trycatch' if you do not want to deal with the error message
     // and you want to return as soon as an error is raised.
     trycatch
     {
-        cpt6 := count("filename")
-        cpt7 := count("other filename")
+        var cpt6 = count("filename")
+        var cpt7 = count("other filename")
     }
 }
 

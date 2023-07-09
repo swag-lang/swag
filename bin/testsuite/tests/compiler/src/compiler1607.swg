@@ -22,7 +22,7 @@ func toto()->A
 #test
 {
     {
-        ew := toto()
+        var ew = toto()
     }
 
     @assert(G == 1)

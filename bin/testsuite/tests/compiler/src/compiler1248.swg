@@ -17,7 +17,7 @@ impl IAllocator for MyAlloc
 
 func toto()
 {
-    cxt := @getcontext()
+    var cxt = @getcontext()
 
     var req: AllocatorRequest
     req.size = 10
@@ -28,7 +28,7 @@ func toto()
 {
     GG = false
 
-    savedCxt := @getcontext()
+    var savedCxt = @getcontext()
     var cxt: Context = dref savedCxt
     var myAlloc: MyAlloc
     cxt.allocator = myAlloc

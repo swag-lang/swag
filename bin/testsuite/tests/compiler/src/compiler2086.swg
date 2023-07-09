@@ -12,7 +12,7 @@ struct BB
     switch @kindof(v)
     {
     case BB.x:
-        vv := cast(BB.x) v
+        var vv = cast(BB.x) v
         @assert(vv.item0 == 5)
     default:
         @assert(false)
@@ -23,7 +23,7 @@ struct BB
     switch @kindof(v)
     {
     case BB.y:
-        vv := cast(BB.y) v
+        var vv = cast(BB.y) v
         @assert(vv.item0 == 5)
         @assert(vv.item1 == 10)
     default:

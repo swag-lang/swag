@@ -48,7 +48,7 @@ impl ConcatBuffer
     {
         if !firstBucket
             return
-        b := firstBucket
+        var b = firstBucket
         while b != lastBucket.next
         {
             #macro
@@ -75,7 +75,7 @@ impl ConcatBuffer
         if lastBucket
         {
             // Enough room in the last bucket
-            seek := cast(u64) (currentSP - lastBucket.datas)
+            var seek = cast(u64) (currentSP - lastBucket.datas)
             if seek + numBytes <= lastBucket.size
                 return
 
@@ -95,7 +95,7 @@ impl ConcatBuffer
         // Need to allocate a new bucket
         if allocator == null
             allocator = @getcontext().allocator
-        newBucket := Memory.new'ConcatBufferBucket(allocator)
+        var newBucket = Memory.new'ConcatBufferBucket(allocator)
 
         if lastBucket
         {
@@ -113,7 +113,7 @@ impl ConcatBuffer
 
         curBucket, lastBucket = newBucket
 
-        bsize := Math.max(granularity, numBytes)
+        var bsize = Math.max(granularity, numBytes)
         lastBucket.datas = Memory.alloc(bsize, allocator)
         lastBucket.size  = bsize
         currentSP = lastBucket.datas
@@ -140,10 +140,10 @@ impl ConcatBuffer
         if !firstBucket
             return
 
-        ptr := firstBucket
+        var ptr = firstBucket
         while ptr
         {
-            nextPtr := ptr.next
+            var nextPtr = ptr.next
             Memory.free(ptr.datas, ptr.size, allocator)
             if ptr != &viewFirstBucket
                 Memory.free(ptr, @sizeof(ConcatBufferBucket), allocator)
@@ -176,7 +176,7 @@ impl ConcatBuffer
             if @sizeof(T) > curBucket.count or
                currentSP > curBucket.datas + curBucket.count - @sizeof(T)
             {
-                v := val
+                var v = val
                 addBytes(@mkslice(cast(^u8) &v, @sizeof(T)), false)
                 return
             }
@@ -204,11 +204,11 @@ impl ConcatBuffer
     // If 'contiguous' is false, the slice will be divided in chunks if necessary
     mtd addBytes(bytes: const [..] u8, contiguous = true)
     {
-        num := @countof(bytes)
+        var num = @countof(bytes)
         if !num
             return
 
-        slicePtr := @dataof(bytes)
+        var slicePtr = @dataof(bytes)
 
         // Be sure we have a buffer
         if !lastBucket
@@ -220,8 +220,8 @@ impl ConcatBuffer
             // Overwrite
             if !isAtEnd
             {
-                curCount := cast(u64) (currentSP - curBucket.datas)
-                remain := curBucket.count - curCount
+                var curCount = cast(u64) (currentSP - curBucket.datas)
+                var remain = curBucket.count - curCount
                 while num > remain
                 {
                     Memory.copy(currentSP, slicePtr, remain)
@@ -256,8 +256,8 @@ impl ConcatBuffer
             // Append
             else
             {
-                curCount := cast(u64) (currentSP - lastBucket.datas)
-                remain := lastBucket.size - curCount
+                var curCount = cast(u64) (currentSP - lastBucket.datas)
+                var remain = lastBucket.size - curCount
                 while num > remain
                 {
                     Memory.copy(currentSP, slicePtr, remain)
@@ -301,11 +301,11 @@ impl ConcatBuffer
     // Seek current write pointer
     mtd moveSeek(num: u64)
     {
-        total := num
+        var total = num
 
         if !isAtEnd
         {
-            seek := cast(u64) (currentSP - curBucket.datas)
+            var seek = cast(u64) (currentSP - curBucket.datas)
             while curBucket.next and seek + total > curBucket.count
             {
                 total -= (curBucket.count - seek)
@@ -402,7 +402,7 @@ impl ConcatBuffer
 
         result.reserve(count() + 1)
 
-        ptr := firstBucket
+        var ptr = firstBucket
         while ptr != lastBucket.next
         {
             result.append(@mkstring(ptr.datas, ptr.count))
@@ -417,9 +417,9 @@ impl ConcatBuffer
         // Must be linear ?
         Debug.assert(lastBucket == firstBucket)
 
-        rdata     := firstBucket.datas
-        rcount    := firstBucket.count
-        rcapacity := firstBucket.size
+        var rdata = firstBucket.datas
+        var rcount = firstBucket.count
+        var rcapacity = firstBucket.size
 
         if firstBucket != &viewFirstBucket
             Memory.free(firstBucket, @sizeof(ConcatBufferBucket), allocator)
@@ -436,7 +436,7 @@ impl ConcatBuffer
             return toString()
 
         // Otherwise we can just eat the buffer
-        eat := eatBuffer()
+        var eat = eatBuffer()
         with var result: retval
         {
             .allocator = allocator
@@ -455,10 +455,10 @@ impl ConcatBuffer
         if lastBucket == firstBucket
             return
 
-        total := count()
-        newDatas := cast(^u8) Memory.alloc(total, allocator)
+        var total = count()
+        var newDatas = cast(^u8) Memory.alloc(total, allocator)
 
-        curPtr := newDatas
+        var curPtr = newDatas
         visit b: dref self
         {
             Memory.copy(curPtr, b.datas, b.count)

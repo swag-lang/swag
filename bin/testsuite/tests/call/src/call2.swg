@@ -14,7 +14,7 @@ using test_foreign
     tcf_toto1(64)
     tcf_toto2(1,2,3,4)
 
-    x := tcf_toto4()
+    var x = tcf_toto4()
     @assert(@countof(x) == 4)
 
     @assert(tcf_toto55(5) == 5)

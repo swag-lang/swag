@@ -3,7 +3,7 @@
 #[Swag.Optim("", false)]
 #test
 {
-    e := 0
-    c := 100'u8
+    var e = 0
+    var c = 100'u8
     e = e*10 + (c - "0"'u8)
 }

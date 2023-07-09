@@ -3,7 +3,7 @@ var g_Argc = 0'u32
 
 func init(x: string)
 {
-    cmdLine := cast(const ^u8) @dataof(x)
+    var cmdLine = cast(const ^u8) @dataof(x)
 
     g_Argc = 0
     while dref cmdLine
@@ -14,14 +14,14 @@ func init(x: string)
         if dref cmdLine == "\""'u8
         {
             cmdLine += 1
-            start := cmdLine
+            var start = cmdLine
             while dref cmdLine and dref cmdLine != "\""'u8 cmdLine += 1
             g_Argv[g_Argc] = @mkstring(start, cast(u64) (cmdLine - start))
             if dref cmdLine cmdLine += 1
         }
         else
         {
-            start := cmdLine
+            var start = cmdLine
             while dref cmdLine and dref cmdLine != " "'u8 cmdLine += 1
             g_Argv[g_Argc] = @mkstring(start, cast(u64) (cmdLine - start))
         }

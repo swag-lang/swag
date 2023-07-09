@@ -8,14 +8,14 @@ func set(x: string)
 //#[Swag.PrintBc]
 #test
 {
-    x := 0
+    var x = 0
     loop 10
     {
         #run
         {
             //@print("toto")
             //x = x
-            y := 6
+            var y = 6
         }
 
         x += 1

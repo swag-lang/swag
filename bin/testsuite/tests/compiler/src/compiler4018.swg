@@ -5,7 +5,7 @@ struct A
 
 #test
 {
-    c := 42
-    a := A{&c}
+    var c = 42
+    var a = A{&c}
     @assert(a.x == 42)
 }

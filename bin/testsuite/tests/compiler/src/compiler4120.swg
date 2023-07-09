@@ -3,24 +3,24 @@
 //#[Swag.PrintBc]
 #test
 {
-    a := Swag.F32.Nan
-    b := Swag.F32.Nan
-    c := a == b
+    var a = Swag.F32.Nan
+    var b = Swag.F32.Nan
+    var c = a == b
     @assert(c == false)
 }
 
 #test
 {
-    a := Swag.F32.Nan
-    b := Swag.F32.Nan
-    c := a != b
+    var a = Swag.F32.Nan
+    var b = Swag.F32.Nan
+    var c = a != b
     @assert(c == true)
 }
 
 #test
 {
     #assert Swag.F32.Nan != Swag.F32.Nan
-    a := Swag.F32.Nan
-    c := a == a
+    var a = Swag.F32.Nan
+    var c = a == a
     @assert(c == false)
 }

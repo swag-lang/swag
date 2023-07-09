@@ -1,6 +1,6 @@
 //#[Swag.PrintBc]
 #test
 {
-    a := 0'u32
-    b := 0 < a
+    var a = 0'u32
+    var b = 0 < a
 }

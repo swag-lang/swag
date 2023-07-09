@@ -6,7 +6,7 @@ func variadic(x: any)
 //#[Swag.PrintBc]
 func(T) isSorted(values: const [..] T)->bool
 {
-    countof := @countof(values)
+    var countof = @countof(values)
 
     loop i: countof - 1
     {

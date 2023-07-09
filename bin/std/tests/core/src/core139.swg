@@ -6,7 +6,7 @@ using Core
 #test
 {
     var x: String = "élémenT"
-    y := x.toUpper(CharacterSet.Latin1)
+    var y = x.toUpper(CharacterSet.Latin1)
     @assert(x == "élémenT")
     @assert(y == "ÉLÉMENT")
 }

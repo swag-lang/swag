@@ -1,8 +1,8 @@
 func toto(x: cstring)
 {
-    len := @strlen(x)
+    var len = @strlen(x)
     @assert(len == 4)
-    str := @mkstring(x, len)
+    var str = @mkstring(x, len)
     @assert(str == "titi")
 }
 

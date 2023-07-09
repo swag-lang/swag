@@ -17,13 +17,13 @@ impl FontFamily
 {
     func enumSubFamily(fa: const *LOGFONTW, _tm: const *TEXTMETRICW, _fontType: DWORD, lParam: LPARAM)->BOOL
     {
-        len := Utf16.lengthZeroTerminated(&fa.lfFaceName[0])
+        var len = Utf16.lengthZeroTerminated(&fa.lfFaceName[0])
         if !len
             return TRUE
-        x := Utf8.fromUtf16(@mkslice(&fa.lfFaceName[0], len))
+        var x = Utf8.fromUtf16(@mkslice(&fa.lfFaceName[0], len))
 
-        ret := cast(*FontFamilyEnumerate) cast(u64) lParam
-        idx := cast(u64) FontFamilyStyle.Regular
+        var ret = cast(*FontFamilyEnumerate) cast(u64) lParam
+        var idx = cast(u64) FontFamilyStyle.Regular
 
         if fa.lfWeight > FW_REGULAR
         {
@@ -44,17 +44,17 @@ impl FontFamily
     {
         if fontType & TRUETYPE_FONTTYPE
         {
-            len := Utf16.lengthZeroTerminated(&fa.lfFaceName[0])
+            var len = Utf16.lengthZeroTerminated(&fa.lfFaceName[0])
             if !len
                 return TRUE
-            x := Utf8.fromUtf16(@mkslice(&fa.lfFaceName[0], len))
+            var x = Utf8.fromUtf16(@mkslice(&fa.lfFaceName[0], len))
 
             // ???
             if x[0] == "@"'u8
                 return TRUE
 
             // Already here ?
-            ret := cast(*Array'FontFamilyEnumerate) cast(u64) lParam
+            var ret = cast(*Array'FontFamilyEnumerate) cast(u64) lParam
             visit here: dref ret
             {
                 if here.name == x
@@ -64,7 +64,7 @@ impl FontFamily
             var v: FontFamilyEnumerate
             v.name = x
 
-            hdc := GetDC(null)
+            var hdc = GetDC(null)
             defer ReleaseDC(null, hdc)
             EnumFontFamiliesExW(hdc, fa, @mkcallback(&enumSubFamily), cast(LPARAM) cast(u64) &v, 0)
 
@@ -79,7 +79,7 @@ impl FontFamily
     {
         var result: retval
 
-        hdc := GetDC(null)
+        var hdc = GetDC(null)
         defer ReleaseDC(null, hdc)
 
         var logFont: LOGFONTW
@@ -95,11 +95,11 @@ impl FontFamily
     // Get a FontFamilyEnumerate from a font family name
     public func getFromOs(fontFamily: string)->FontFamilyEnumerate
     {
-        hdc := GetDC(null)
+        var hdc = GetDC(null)
         defer ReleaseDC(null, hdc)
 
         var arr: Array'FontFamilyEnumerate
-        v := Utf16.toZeroTerminated(fontFamily)
+        var v = Utf16.toZeroTerminated(fontFamily)
         EnumFontFamiliesW(hdc, v.buffer, @mkcallback(&enumFamily), cast(LPARAM) cast(u64) &arr)
 
         return arr[0]
@@ -108,7 +108,7 @@ impl FontFamily
     // Creates a typeface from a FontFamilyEnumerate and FontFamilyStyle
     public func createTypeFace(enumerate: FontFamilyEnumerate, style: FontFamilyStyle)->*TypeFace throw
     {
-        logFont := enumerate.faces[cast(u64) style]
+        var logFont = enumerate.faces[cast(u64) style]
         if style == .Regular
         {
             if logFont.face.lfWidth == 0
@@ -151,11 +151,11 @@ impl FontFamily
                 return null
         }
 
-        hf := try CreateFontIndirectW(logFont.face)
+        var hf = try CreateFontIndirectW(logFont.face)
         defer catch DeleteObject(acast hf)
 
-        fontName := Format.toString("%_%", logFont.name, cast(u32) style)
-        typeFace := try TypeFace.createFromHFONT(fontName, hf)
+        var fontName = Format.toString("%_%", logFont.name, cast(u32) style)
+        var typeFace = try TypeFace.createFromHFONT(fontName, hf)
 
         if (style == .Italic or style == .BoldItalic) and !typeFace.isItalic()
             typeFace.forceItalic = true

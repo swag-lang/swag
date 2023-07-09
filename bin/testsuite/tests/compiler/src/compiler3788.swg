@@ -1,8 +1,8 @@
 #[Swag.ConstExpr]
 func countPercent(fmt: string)->u32
 {
-    cptPercent := 0'u32
-    for i := 0; i < @countof(fmt); i += 1
+    var cptPercent = 0'u32
+    for var i = 0; i < @countof(fmt); i += 1
     {
         if fmt[i] != "%"'u8
             continue
@@ -18,5 +18,5 @@ func countPercent(fmt: string)->u32
 
 #test
 {
-    x := countPercent("%toto%  %")
+    var x = countPercent("%toto%  %")
 }

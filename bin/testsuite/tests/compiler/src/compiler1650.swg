@@ -14,8 +14,8 @@ namespace aa1650
 //#[Swag.PrintBc]
 #run
 {
-    x := @typeof(aa1650.B)
-    y := @typeof(bool)
+    var x = @typeof(aa1650.B)
+    var y = @typeof(bool)
     if(x == y)
     {
         @assert(false)

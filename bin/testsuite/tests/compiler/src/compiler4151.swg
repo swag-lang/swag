@@ -1,6 +1,6 @@
 #global testerror
 #test
 {
-    a := 0
-    f := closure() = closure|a|(){}
+    var a = 0
+    var f = closure() = closure|a|(){}
 }

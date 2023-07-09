@@ -3,7 +3,7 @@
 #global testerror
 func average(x: any)
 {
-	t := @dataof(any)
+	var t = @dataof(any)
 }
 
 //#[Swag.PrintBc]

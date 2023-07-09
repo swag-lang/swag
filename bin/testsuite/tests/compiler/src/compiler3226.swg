@@ -8,7 +8,7 @@ enum A
 //#[Swag.PrintBc]//, Swag.Optim("", false)]
 func toto(x: A)
 {
-    v := 0
+    var v = 0
     if !(x & .A)
         v = 1
     @assert(v == 1)

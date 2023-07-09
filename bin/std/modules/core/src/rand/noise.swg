@@ -73,39 +73,39 @@ const PrimeZ = 1720413743
 
 func hash(seed: s32, xPrimed, yPrimed: s32)->s32
 {
-    hash := seed ^ xPrimed ^ yPrimed
+    var hash = seed ^ xPrimed ^ yPrimed
     hash *= 0x27d4eb2d
     return hash
 }
 
 func hash(seed: s32, xPrimed, yPrimed, zPrimed: s32)->s32
 {
-    hash := seed ^ xPrimed ^ yPrimed ^ zPrimed
+    var hash = seed ^ xPrimed ^ yPrimed ^ zPrimed
     hash *= 0x27d4eb2d
     return hash
 }
 
 func gradCoord(seed: s32, xPrimed, yPrimed: s32, xd, yd: f32)->f32
 {
-    hash := hash(seed, xPrimed, yPrimed)
+    var hash = hash(seed, xPrimed, yPrimed)
     hash ^= hash >> 15
     hash &= 127 << 1
 
-    xg := Gradients2D[hash]
-    yg := Gradients2D[hash | 1]
+    var xg = Gradients2D[hash]
+    var yg = Gradients2D[hash | 1]
 
     return xd * xg + yd * yg
 }
 
 func gradCoord(seed: s32, xPrimed, yPrimed, zPrimed: s32, xd, yd, zd: f32)->f32
 {
-    hash := hash(seed, xPrimed, yPrimed, zPrimed)
+    var hash = hash(seed, xPrimed, yPrimed, zPrimed)
     hash ^= hash >> 15
     hash &= 63 << 2
 
-    xg := Gradients3D[hash]
-    yg := Gradients3D[hash | 1]
-    zg := Gradients3D[hash | 2]
+    var xg = Gradients3D[hash]
+    var yg = Gradients3D[hash | 1]
+    var zg = Gradients3D[hash | 2]
 
     return xd * xg + yd * yg + zd * zg
 }
@@ -113,59 +113,59 @@ func gradCoord(seed: s32, xPrimed, yPrimed, zPrimed: s32, xd, yd, zd: f32)->f32
 // Perlin
 public func perlin(x, y: f32, seed: s32 = 1337)->f32
 {
-    x0 := fastFloor(x)
-    y0 := fastFloor(y)
+    var x0 = fastFloor(x)
+    var y0 = fastFloor(y)
 
-    xd0 := x - x0
-    yd0 := y - y0
-    xd1 := xd0 - 1
-    yd1 := yd0 - 1
+    var xd0 = x - x0
+    var yd0 = y - y0
+    var xd1 = xd0 - 1
+    var yd1 = yd0 - 1
 
-    xs := interpQuintic(xd0)
-    ys := interpQuintic(yd0)
+    var xs = interpQuintic(xd0)
+    var ys = interpQuintic(yd0)
 
     x0 *= PrimeX
     y0 *= PrimeY
-    x1 := cast(s32) (x0 + PrimeX)
-    y1 := cast(s32) (y0 + PrimeY)
+    var x1 = cast(s32) (x0 + PrimeX)
+    var y1 = cast(s32) (y0 + PrimeY)
 
-    xf0 := Math.lerp(gradCoord(seed, x0, y0, xd0, yd0), gradCoord(seed, x1, y0, xd1, yd0), xs)
-    xf1 := Math.lerp(gradCoord(seed, x0, y1, xd0, yd1), gradCoord(seed, x1, y1, xd1, yd1), xs)
+    var xf0 = Math.lerp(gradCoord(seed, x0, y0, xd0, yd0), gradCoord(seed, x1, y0, xd1, yd0), xs)
+    var xf1 = Math.lerp(gradCoord(seed, x0, y1, xd0, yd1), gradCoord(seed, x1, y1, xd1, yd1), xs)
 
     return Math.lerp(xf0, xf1, ys) * 1.4247691104677813
 }
 
 public func perlin(x, y, z: f32, seed: s32 = 1337)->f32
 {
-    x0 := fastFloor(x)
-    y0 := fastFloor(y)
-    z0 := fastFloor(z)
+    var x0 = fastFloor(x)
+    var y0 = fastFloor(y)
+    var z0 = fastFloor(z)
 
-    xd0 := x - x0
-    yd0 := y - y0
-    zd0 := z - z0
-    xd1 := xd0 - 1
-    yd1 := yd0 - 1
-    zd1 := zd0 - 1
+    var xd0 = x - x0
+    var yd0 = y - y0
+    var zd0 = z - z0
+    var xd1 = xd0 - 1
+    var yd1 = yd0 - 1
+    var zd1 = zd0 - 1
 
-    xs := interpQuintic(xd0)
-    ys := interpQuintic(yd0)
-    zs := interpQuintic(zd0)
+    var xs = interpQuintic(xd0)
+    var ys = interpQuintic(yd0)
+    var zs = interpQuintic(zd0)
 
     x0 *= PrimeX
     y0 *= PrimeY
     z0 *= PrimeZ
-    x1 := cast(s32) (x0 + PrimeX)
-    y1 := cast(s32) (y0 + PrimeY)
-    z1 := cast(s32) (z0 + PrimeZ)
+    var x1 = cast(s32) (x0 + PrimeX)
+    var y1 = cast(s32) (y0 + PrimeY)
+    var z1 = cast(s32) (z0 + PrimeZ)
 
-    xf00 := Math.lerp(gradCoord(seed, x0, y0, z0, xd0, yd0, zd0), gradCoord(seed, x1, y0, z0, xd1, yd0, zd0), xs)
-    xf10 := Math.lerp(gradCoord(seed, x0, y1, z0, xd0, yd1, zd0), gradCoord(seed, x1, y1, z0, xd1, yd1, zd0), xs)
-    xf01 := Math.lerp(gradCoord(seed, x0, y0, z1, xd0, yd0, zd1), gradCoord(seed, x1, y0, z1, xd1, yd0, zd1), xs)
-    xf11 := Math.lerp(gradCoord(seed, x0, y1, z1, xd0, yd1, zd1), gradCoord(seed, x1, y1, z1, xd1, yd1, zd1), xs)
+    var xf00 = Math.lerp(gradCoord(seed, x0, y0, z0, xd0, yd0, zd0), gradCoord(seed, x1, y0, z0, xd1, yd0, zd0), xs)
+    var xf10 = Math.lerp(gradCoord(seed, x0, y1, z0, xd0, yd1, zd0), gradCoord(seed, x1, y1, z0, xd1, yd1, zd0), xs)
+    var xf01 = Math.lerp(gradCoord(seed, x0, y0, z1, xd0, yd0, zd1), gradCoord(seed, x1, y0, z1, xd1, yd0, zd1), xs)
+    var xf11 = Math.lerp(gradCoord(seed, x0, y1, z1, xd0, yd1, zd1), gradCoord(seed, x1, y1, z1, xd1, yd1, zd1), xs)
 
-    yf0 := Math.lerp(xf00, xf10, ys)
-    yf1 := Math.lerp(xf01, xf11, ys)
+    var yf0 = Math.lerp(xf00, xf10, ys)
+    var yf1 = Math.lerp(xf01, xf11, ys)
 
     return Math.lerp(yf0, yf1, zs) * 0.964921414852142333984375
 }

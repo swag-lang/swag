@@ -25,7 +25,7 @@ impl I for B
 func(T) alloc()
 {
     var x: *T
-    itf := cast(I) x
+    var itf = cast(I) x
 }
 
 #test

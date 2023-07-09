@@ -5,7 +5,7 @@
 //#[Swag.PrintBc]
 #test
 {
-    y := -2.0'f32
-    x := @log(y)
+    var y = -2.0'f32
+    var x = @log(y)
     @print(x)
 }

@@ -1,5 +1,5 @@
 #global testerror
 #test
 {
-    (x, y) := 0
+    var (x, y) = 0
 }

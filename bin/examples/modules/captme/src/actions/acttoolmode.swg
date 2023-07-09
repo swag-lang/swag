@@ -40,8 +40,8 @@ impl IActionUI for ActionToolMode
 
     mtd impl update(cxt: ActionContext, evt: *CommandStateEvent)->bool
     {
-        main := cast(*MainWnd) cxt.wnd
-        capture := main.getCapture()
+        var main = cast(*MainWnd) cxt.wnd
+        var capture = main.getCapture()
 
         switch cxt.id
         {
@@ -135,8 +135,8 @@ impl IActionUI for ActionToolMode
 
     mtd impl execute(cxt: ActionContext)->bool
     {
-        main := cast(*MainWnd) cxt.wnd
-        capture := main.getCapture()
+        var main = cast(*MainWnd) cxt.wnd
+        var capture = main.getCapture()
 
         switch cxt.id
         {

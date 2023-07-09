@@ -13,7 +13,7 @@ using Core
     try comp.compress(&res, arr.toSlice())
 
     var decomp: Compress.Inflate
-    res1 := try decomp.decompress(res.toSlice())
+    var res1 = try decomp.decompress(res.toSlice())
 
     @assert(res1.count == 100)
     visit v, i: res1

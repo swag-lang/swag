@@ -14,6 +14,6 @@ func toto1(yyy: ref string)
 
 #test
 {
-	xxx := "a"
+	var xxx = "a"
 	toto1(&xxx)
 }

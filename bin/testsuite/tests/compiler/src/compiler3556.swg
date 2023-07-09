@@ -21,11 +21,11 @@ interface I
 var G = 0
 #message(Swag.CompilerMsgMask.AttributeGen)
 {
-    itf := @compiler()
-    msg := itf.getMessage()
+    var itf = @compiler()
+    var msg = itf.getMessage()
     if msg.type.kind != .Struct return
 
-    typeS := cast(const *TypeInfoStruct) msg.type
+    var typeS = cast(const *TypeInfoStruct) msg.type
     if @countof(typeS.attributes) != 1
         return
     if typeS.attributes[0].type != @typeof(GenStuff)
@@ -38,7 +38,7 @@ var G = 0
 #test
 {
     var x: A
-    i := cast(I) x
+    var i = cast(I) x
     i.toto()
     @assert(G == 1)
 }

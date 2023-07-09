@@ -6,6 +6,6 @@ using Core
 {
     var c: Array's32
     c.add(1)
-    x := c[0]
+    var x = c[0]
     @assert(x == 1)
 }

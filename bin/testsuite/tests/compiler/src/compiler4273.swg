@@ -18,6 +18,6 @@ func titi(v: u8)
 
 #test
 {
-    x := 1'u8
+    var x = 1'u8
     titi(x)
 }

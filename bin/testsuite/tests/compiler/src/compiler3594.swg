@@ -1,6 +1,6 @@
 public func toto3594()
 {
-    g := 0
+    var g = 0
     if ((true and true and true) or
         (false and false and false))
     {

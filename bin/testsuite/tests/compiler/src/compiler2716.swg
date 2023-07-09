@@ -17,7 +17,7 @@ func toto()->s64
     var x: AA
     if true
         return x
-    v := 10's64
+    var v = 10's64
     return v
 }
 

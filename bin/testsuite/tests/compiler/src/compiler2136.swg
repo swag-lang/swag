@@ -3,5 +3,5 @@
 
 #test
 {
-    a := toto(a)
+    var a = toto(a)
 }

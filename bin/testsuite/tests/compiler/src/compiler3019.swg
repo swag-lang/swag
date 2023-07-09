@@ -1,28 +1,28 @@
 #test
 {
     {
-        x, y := true
-        z := x ^ y
+        var x, y = true
+        var z = x ^ y
         @assert(z == false)
     }
 
     {
-        x := true
-        y := false
-        z := x ^ y
+        var x = true
+        var y = false
+        var z = x ^ y
         @assert(z == true)
     }
 
     {
-        y := true
-        x := false
-        z := x ^ y
+        var y = true
+        var x = false
+        var z = x ^ y
         @assert(z == true)
     }
 
     {
-        x, y := false
-        z := x ^ y
+        var x, y = false
+        var z = x ^ y
         @assert(z == false)
     }
 }

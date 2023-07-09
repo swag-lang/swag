@@ -2,7 +2,7 @@ using Core, Memory
 
 private func dataPath()->String
 {
-    dataPath := Path.getDirectoryName(#location.fileName)
+    var dataPath = Path.getDirectoryName(#location.fileName)
     dataPath = Path.getDirectoryName(dataPath)
     return Path.combine(dataPath, "datas")
 }

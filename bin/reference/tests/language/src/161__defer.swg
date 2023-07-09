@@ -5,7 +5,7 @@
 #test
 {
     {
-        v := 0
+        var v = 0
         defer @assert(v == 1)
         v += 1
         // defer expression will be executed here
@@ -13,7 +13,7 @@
 
     // `defer` can also be used with a block.
     {
-        v := 0
+        var v = 0
         defer
         {
             v += 10
@@ -40,7 +40,7 @@
 
     // `defer` are executed in reverse order of their declaration.
     {
-        x := 1
+        var x = 1
         defer @assert(x == 2)   // Will be executed second
         defer x *= 2            // Will be executed first
     }
@@ -51,7 +51,7 @@
         func releaseResource(resource: *bool) = dref resource = false
         func isResourceCreated(b: bool) => b
 
-        resource := false
+        var resource = false
         loop 10
         {
             resource = createResource()

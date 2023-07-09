@@ -163,7 +163,7 @@ impl RichEditCtrl
         case CursorUp:
             if !isSelectionEmpty()
             {
-                pt := getCursorDisplayPos(cursorPos)
+                var pt = getCursorDisplayPos(cursorPos)
                 setCursorPos(getBegSelection())
                 moveCursorUp(&cursorPos, pt)
             }
@@ -174,7 +174,7 @@ impl RichEditCtrl
         case CursorDown:
             if !isSelectionEmpty()
             {
-                pt := getCursorDisplayPos(cursorPos)
+                var pt = getCursorDisplayPos(cursorPos)
                 setCursorPos(getEndSelection())
                 moveCursorDown(&cursorPos, pt)
             }
@@ -274,7 +274,7 @@ impl RichEditCtrl
             setRectangularSelection(false)
 
         case SelectRectLeft:
-            cp := cursorPos
+            var cp = cursorPos
             moveCursorLeft(&cp)
             if cp.lineIndex == cursorPos.lineIndex
             {
@@ -283,7 +283,7 @@ impl RichEditCtrl
             }
 
         case SelectRectRight:
-            cp := cursorPos
+            var cp = cursorPos
             moveCursorRight(&cp)
             if cp.lineIndex == cursorPos.lineIndex
             {
@@ -292,7 +292,7 @@ impl RichEditCtrl
             }
 
         case SelectRectUp:
-            cp := cursorPos
+            var cp = cursorPos
             moveCursorUp(&cp)
             if cp.charPosInLine == cursorPos.charPosInLine
             {
@@ -301,7 +301,7 @@ impl RichEditCtrl
             }
 
         case SelectRectDown:
-            cp := cursorPos
+            var cp = cursorPos
             moveCursorDown(&cp)
             if cp.charPosInLine == cursorPos.charPosInLine
             {

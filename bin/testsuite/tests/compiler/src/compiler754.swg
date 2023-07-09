@@ -18,11 +18,11 @@ func(T) toto(x: func()->T)->T
 
 #test
 {
-	lambda := &concrete
-	result := toto(lambda)
+	var lambda = &concrete
+	var result = toto(lambda)
 	@assert(result == 666)
 
-	lambda1 := &concrete1
-	result1 := toto(lambda1)
+	var lambda1 = &concrete1
+	var result1 = toto(lambda1)
 	@assert(result1 == 666.0)
 }

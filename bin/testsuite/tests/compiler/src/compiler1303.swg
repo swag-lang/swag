@@ -5,7 +5,7 @@ func toto(x: code)
     {
         #macro
         {
-            value := 100
+            var value = 100
             #mixin #up x
         }
     }
@@ -13,7 +13,7 @@ func toto(x: code)
 
 #test
 {
-    cpt := 0'u32
+    var cpt = 0'u32
     toto()
     {
         @assert(value == 100)

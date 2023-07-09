@@ -18,6 +18,6 @@ func toto(x: Entry)
 #[Swag.Optim("", false)]
 #test
 {
-    key := 66
+    var key = 66
     toto({0x10,0x20,0x40})
 }

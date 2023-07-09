@@ -1,11 +1,11 @@
 //#[Swag.PrintBc]
 #test
 {
-    x := 666
-    ptr := @typeof(x)
-    val := @mkany(&x, ptr)
+    var x = 666
+    var ptr = @typeof(x)
+    var val = @mkany(&x, ptr)
 
-    value := cast(s32) val
+    var value = cast(s32) val
     @assert(value == 666)
     @assert(@kindof(value) == s32)
 }

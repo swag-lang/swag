@@ -36,12 +36,12 @@ impl ConvertFormatFloat
     // ---
     mtd setFormat(strFormat: string)
     {
-        buffer := @dataof(strFormat)
-        countof := @countof(strFormat)
+        var buffer = @dataof(strFormat)
+        var countof = @countof(strFormat)
         if buffer == null or countof == 0
             return
 
-        cpt := 0'u32
+        var cpt = 0'u32
 
         // Force sign for positive numbers
         if buffer[cpt] == "+"'u8
@@ -64,7 +64,7 @@ impl ConvertFormatFloat
         // Precision
         if cpt < countof
         {
-            (userWidth, eatCount, ?) := assume parseU64(@mkstring(buffer + cpt, cast(u64) (countof - cpt)))
+            var (userWidth, eatCount, ?) = assume parseU64(@mkstring(buffer + cpt, cast(u64) (countof - cpt)))
             Debug.assert(userWidth <= 255, "precision overflow")
             if eatCount
                 precision = cast(s8) userWidth
@@ -103,12 +103,12 @@ impl ConvertFormatInt
     // ---
     mtd setFormat(strFormat: string)
     {
-        buffer := @dataof(strFormat)
-        countof := @countof(strFormat)
+        var buffer = @dataof(strFormat)
+        var countof = @countof(strFormat)
         if buffer == null or countof == 0
             return
 
-        cpt := 0'u32
+        var cpt = 0'u32
 
         // Force sign for positive numbers
         if buffer[cpt] == "+"'u8
@@ -142,7 +142,7 @@ impl ConvertFormatInt
         // Next comes the padding width
         if cpt >= countof
             return
-        (userWidth, eatCount, ?) := assume parseU64(@mkstring(buffer + cpt, cast(u64) countof - cpt))
+        var (userWidth, eatCount, ?) = assume parseU64(@mkstring(buffer + cpt, cast(u64) countof - cpt))
         Debug.assert(userWidth <= 255, "padding width overflow")
         if eatCount width = cast(u8) userWidth
     }
@@ -151,23 +151,23 @@ impl ConvertFormatInt
 // Convert a value to an utf8 string, and append the result in a ConcatBuffer
 func convertAny(buf: *ConcatBuffer, value: any, strFormat: string)
 {
-    valueData := @dataof(value)
-    type      := Reflection.makeConcreteAlias(@kindof(value))
+    var valueData = @dataof(value)
+    var type = Reflection.makeConcreteAlias(@kindof(value))
 
     // A reference
     if Reflection.isPointerRef(type)
     {
-        ptrType := cast(const *TypeInfoPointer) type
+        var ptrType = cast(const *TypeInfoPointer) type
         valueData = dref cast(**void) valueData
         type = ptrType.pointedType
     }
 
-    concreteValue := @mkany(valueData, type)
+    var concreteValue = @mkany(valueData, type)
 
     // This is a type
     if Reflection.isType(type)
     {
-        ptrType := dref cast(*typeinfo) valueData
+        var ptrType = dref cast(*typeinfo) valueData
         if ptrType
             buf.addBytes(ptrType.fullname)
         else
@@ -180,8 +180,8 @@ func convertAny(buf: *ConcatBuffer, value: any, strFormat: string)
     {
         if type.flags & TypeInfoFlags.CString
         {
-            ptr := dref cast(const ^^u8) valueData
-            len := @strlen(ptr)
+            var ptr = dref cast(const ^^u8) valueData
+            var len = @strlen(ptr)
             buf.addBytes(@mkslice(ptr, len))
             return
         }
@@ -199,7 +199,7 @@ func convertAny(buf: *ConcatBuffer, value: any, strFormat: string)
     // An enum value
     if Reflection.isEnum(type)
     {
-        enumName := Reflection.getEnumName(type, valueData)
+        var enumName = Reflection.getEnumName(type, valueData)
         if !enumName.isEmpty()
             buf.addBytes(@mkslice(enumName.buffer, cast(u64) enumName.length))
         else
@@ -222,15 +222,15 @@ func convertAny(buf: *ConcatBuffer, value: any, strFormat: string)
     // A slice
     if Reflection.isSlice(type)
     {
-        ptrSlice := cast(const *TypeInfoSlice) type
+        var ptrSlice = cast(const *TypeInfoSlice) type
         buf.addBytes("[")
 
-        sl := cast(const [..] u8) valueData
-        bufSlice := @dataof(sl)
+        var sl = cast(const [..] u8) valueData
+        var bufSlice = @dataof(sl)
         loop @countof(sl)
         {
             if @index buf.addBytes(",")
-            v := @mkany(bufSlice, ptrSlice.pointedType)
+            var v = @mkany(bufSlice, ptrSlice.pointedType)
             convertAny(buf, v, strFormat)
             bufSlice += ptrSlice.pointedType.sizeof
         }
@@ -242,14 +242,14 @@ func convertAny(buf: *ConcatBuffer, value: any, strFormat: string)
     // A static array
     if Reflection.isArray(type)
     {
-        ptrArr := cast(const *TypeInfoArray) type
+        var ptrArr = cast(const *TypeInfoArray) type
         buf.addBytes("[")
 
-        bufArr := cast(const ^u8) valueData
+        var bufArr = cast(const ^u8) valueData
         loop ptrArr.count
         {
             if @index buf.addBytes(",")
-            v := @mkany(bufArr, ptrArr.pointedType)
+            var v = @mkany(bufArr, ptrArr.pointedType)
             convertAny(buf, v, strFormat)
             bufArr += ptrArr.pointedType.sizeof
         }
@@ -273,10 +273,10 @@ func convertAny(buf: *ConcatBuffer, value: any, strFormat: string)
     // Any
     if Reflection.isAny(type)
     {
-        ptrAny := cast(const *any) valueData
+        var ptrAny = cast(const *any) valueData
         buf.addBytes("{")
         buf.addBytes("type: ")
-        typeAny := @kindof(dref ptrAny)
+        var typeAny = @kindof(dref ptrAny)
         convertAny(buf, typeAny, strFormat)
         buf.addBytes(", value: ")
         convertAny(buf, dref ptrAny, strFormat)
@@ -300,14 +300,14 @@ func convertAny(buf: *ConcatBuffer, value: any, strFormat: string)
 // Convert a structure content to an utf8 string, and put the result in a ConcatBuffer
 func convertStruct(buf: *ConcatBuffer, value: any, strFormat: string)
 {
-    kindof := cast(const *Swag.TypeInfoStruct) @kindof(value)
+    var kindof = cast(const *Swag.TypeInfoStruct) @kindof(value)
     Debug.assert(kindof.kind == TypeInfoKind.Struct, "this is not a structure")
-    ptr := cast(const ^u8) @dataof(value)
+    var ptr = cast(const ^u8) @dataof(value)
 
     // Core.String
     if kindof == String
     {
-        ptrStr := cast(const *String) ptr
+        var ptrStr = cast(const *String) ptr
         buf.addBytes(@mkslice(ptrStr.buffer, ptrStr.length))
         return
     }
@@ -315,22 +315,22 @@ func convertStruct(buf: *ConcatBuffer, value: any, strFormat: string)
     // Core.Array
     if kindof.fromGeneric == Array
     {
-        typeContent := kindof.generics[0].pointedType
+        var typeContent = kindof.generics[0].pointedType
 
         // Trick to get the struct content
         // This rely on the fact that the Array struct layout is the same whatever
         // the underlying type is
-        addrArr := cast(const *Array'u8) ptr
-        bufArr := addrArr.buffer
+        var addrArr = cast(const *Array'u8) ptr
+        var bufArr = addrArr.buffer
 
         buf.addBytes("[")
-        first := true
+        var first = true
         loop addrArr.count
         {
             if !first
                 buf.addBytes(",")
             first = false
-            v := @mkany(bufArr, typeContent)
+            var v = @mkany(bufArr, typeContent)
             StrConv.convertAny(buf, v, strFormat)
             bufArr += typeContent.sizeof
         }
@@ -339,7 +339,7 @@ func convertStruct(buf: *ConcatBuffer, value: any, strFormat: string)
     }
 
     // A structure with an implementation of IConvert
-    itf := @mkinterface(ptr, kindof, IConvert)
+    var itf = @mkinterface(ptr, kindof, IConvert)
     if itf != null
     {
         itf.convert(buf, null, strFormat)
@@ -354,7 +354,7 @@ func convertStruct(buf: *ConcatBuffer, value: any, strFormat: string)
             buf.addBytes(", ")
         buf.addBytes(field.name)
         buf.addBytes(" = ")
-        val := @mkany(ptr + field.offset, field.pointedType)
+        var val = @mkany(ptr + field.offset, field.pointedType)
         convertAny(buf, val, strFormat)
     }
     buf.addBytes("}")
@@ -363,10 +363,10 @@ func convertStruct(buf: *ConcatBuffer, value: any, strFormat: string)
 // Convert a float to an utf8 string, and put the result in a ConcatBuffer
 func convertFloat(buf: *ConcatBuffer, fmt: ConvertFormatFloat)
 {
-    kindof := cast(const *Swag.TypeInfoNative) @kindof(fmt.value)
+    var kindof = cast(const *Swag.TypeInfoNative) @kindof(fmt.value)
     Debug.assert(kindof.flags & TypeInfoFlags.Float != 0, "value to convert is not a float")
 
-    dataof := @dataof(fmt.value)
+    var dataof = @dataof(fmt.value)
 
     var value: f64
     switch kindof.nativeKind
@@ -383,17 +383,17 @@ func convertFloat(buf: *ConcatBuffer, fmt: ConvertFormatFloat)
 // Convert an integer to an utf8 string, and put the result in a ConcatBuffer
 func convertInt(buf: *ConcatBuffer, fmt: ConvertFormatInt)
 {
-    kindof := cast(const *Swag.TypeInfoNative) @kindof(fmt.value)
+    var kindof = cast(const *Swag.TypeInfoNative) @kindof(fmt.value)
     Debug.assert(kindof.flags & TypeInfoFlags.Integer != 0, "value to convert is not an integer")
     Debug.assert(0 < fmt.base and fmt.base <= 16, "invalid convert base")
 
-    dataof := @dataof(fmt.value)
-    bits := kindof.sizeof * 8
+    var dataof = @dataof(fmt.value)
+    var bits = kindof.sizeof * 8
 
     var value: u64
     var signedValue: s64
 
-    overflowS64 := false
+    var overflowS64 = false
     switch kindof.nativeKind
     {
     case S8:
@@ -424,14 +424,14 @@ func convertInt(buf: *ConcatBuffer, fmt: ConvertFormatInt)
 
     const Tbl = "0123456789ABCDEF"
     var tmp: [64] u8 = undefined
-    cpt := 63'u32
+    var cpt = 63'u32
 
     // Special case for the lower digit of Swag.S64.Min
     // We have 9_223_372_036_854_775_807, and we want -9_223_372_036_854_775_808
     // So use '8' instead of '7'
     if overflowS64
     {
-        c := Tbl[8 % fmt.base]
+        var c = Tbl[8 % fmt.base]
         tmp[cpt] = c
         cpt, bits -= 1
         switch fmt.base
@@ -444,7 +444,7 @@ func convertInt(buf: *ConcatBuffer, fmt: ConvertFormatInt)
 
     loop bits
     {
-        c := Tbl[value % fmt.base]
+        var c = Tbl[value % fmt.base]
         tmp[cpt] = c
         cpt -= 1
         value /= cast(u64) fmt.base
@@ -455,7 +455,7 @@ func convertInt(buf: *ConcatBuffer, fmt: ConvertFormatInt)
     // Fill the remaining place with the padding character, so that the total result is 'fmt.width' long
     if fmt.padding
     {
-        curWidth := 63 - cpt
+        var curWidth = 63 - cpt
         while curWidth < fmt.width and cpt > 1
         {
             tmp[cpt] = fmt.padding

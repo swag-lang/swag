@@ -2,6 +2,6 @@
 #test
 {
     var a: [..] s32
-    b := 2
-    c := a == b
+    var b = 2
+    var c = a == b
 }

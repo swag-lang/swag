@@ -11,6 +11,6 @@ func toto(x: bool, rgb: RGB, rgb1: RGB1)
 
 #test
 {
-    x := true
+    var x = true
     x.toto(.R, .R)
 }

@@ -12,18 +12,18 @@ A type constraint can be added when declaring a generic type. If a function or a
     // Here we check that the function generic type is 's32' by calling 'isS32'.
     func(var T: isS32(T)) sum(x: T...)->T
     {
-        total := 0'T
+        var total = 0'T
         visit it: x
             total += it
         return total
     }
 
     // This is ok.
-    res1 := sum's32(1, 2)
+    var res1 = sum's32(1, 2)
     @assert(res1 == 3)
 
     // But the following would generate an error because the type is 'f32'.
-    // res1 := sum'f32(1, 2)
+    // var res1 = sum'f32(1, 2)
 }
 
 /**

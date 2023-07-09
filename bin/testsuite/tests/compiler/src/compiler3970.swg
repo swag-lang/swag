@@ -14,7 +14,7 @@ func toto1()->ref s32
 //#[Swag.PrintBc, Swag.Optim("", false)]
 #test
 {
-    y := ref toto()
+    var y = ref toto()
     y = 42
     @assert(G == 42)
 

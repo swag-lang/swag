@@ -7,7 +7,7 @@
     {
         func myFunc(param: bool) => param
 
-        b := false
+        var b = false
         @assert(myFunc(b) == b.myFunc())
     }
 

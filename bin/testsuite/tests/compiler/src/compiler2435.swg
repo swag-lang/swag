@@ -9,6 +9,6 @@ func append(v: ...)
 
 #test
 {
-    x := [10, 20, 30]
+    var x = [10, 20, 30]
     append(@spread(x))
 }

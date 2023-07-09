@@ -65,7 +65,7 @@ func toto(x: s32, y = Values.A)
 
     // Simple call.
     {
-        x := sub(5, 2)
+        var x = sub(5, 2)
         @assert(x == 3)
     }
 }
@@ -78,9 +78,9 @@ You can name parameters, and don't have to respect parameters order in that case
     func sub(x, y: s32) => x - y
 
     {
-        x1 := sub(x = 5, y = 2)
+        var x1 = sub(x = 5, y = 2)
         @assert(x1 == 3)
-        x2 := sub(y = 5, x = 2)
+        var x2 = sub(y = 5, x = 2)
         @assert(x2 == -3)
     }
 
@@ -103,7 +103,7 @@ You can name parameters, and don't have to respect parameters order in that case
             return {1.0, 2.0}
         }
 
-        result := myFunction()
+        var result = myFunction()
         @assert(result.item0 == 1.0)
         @assert(result.item1 == 2.0)
 
@@ -111,7 +111,7 @@ You can name parameters, and don't have to respect parameters order in that case
         @assert(x == 1.0)
         @assert(y == 2.0)
 
-        (z, w) := myFunction()
+        var (z, w) = myFunction()
         @assert(z == 1.0)
         @assert(w == 2.0)
     }
@@ -132,14 +132,14 @@ You can name parameters, and don't have to respect parameters order in that case
     }
 
     // You can access the tuple fields with the names (if specified), or with 'item?'
-    result := returns2()
+    var result = returns2()
     @assert(result.x == 1)
     @assert(result.item0 == 1)
     @assert(result.y == 2)
     @assert(result.item1 == 2)
 
     // You can deconstruct the returned tuple
-    (x, y) := returns2()
+    var (x, y) = returns2()
     @assert(x == 1)
     @assert(y == 2)
 }

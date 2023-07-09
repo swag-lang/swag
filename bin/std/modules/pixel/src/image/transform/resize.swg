@@ -19,8 +19,8 @@ public impl Image
     mtd resize(newWidth, newHeight: s32, mode = ResizeMode.Raw)
     {
         Debug.assert(newWidth > 0 or newHeight > 0)
-        nw := newWidth orelse cast(s32) (newHeight * (width / cast(f32) height))
-        nh := newHeight orelse cast(s32) (newWidth * (height / cast(f32) width))
+        var nw = newWidth orelse cast(s32) (newHeight * (width / cast(f32) height))
+        var nh = newHeight orelse cast(s32) (newWidth * (height / cast(f32) width))
         if nw == width and nh == height
             return
         allocWorkingBuffer(nw, nh, pf)
@@ -33,8 +33,8 @@ public impl Image
     mtd const toResize(newWidth, newHeight: s32, mode = ResizeMode.Raw)->Image
     {
         Debug.assert(newWidth > 0 or newHeight > 0)
-        nw := newWidth orelse cast(s32) (newHeight * (width / cast(f32) height))
-        nh := newHeight orelse cast(s32) (newWidth * (height / cast(f32) width))
+        var nw = newWidth orelse cast(s32) (newHeight * (width / cast(f32) height))
+        var nh = newHeight orelse cast(s32) (newWidth * (height / cast(f32) width))
         if nw == width and nh == height
         {
             var result: retval = dref self
@@ -95,7 +95,7 @@ namespace ResizeTools
         switch rmode
         {
         case Bilinear:
-            res := Math.abs(resf)
+            var res = Math.abs(resf)
             return res < 1 ? 1 - res : 0
         case Bicubic:
             if resf < -2.0 return 0
@@ -137,7 +137,7 @@ namespace ResizeTools
 
     func calcContributions(lineSize, srcSize: s64, scale: f64, rmode: Image.ResizeMode)->LineContrib
     {
-        filterWidth := getFilterWidth(rmode)
+        var filterWidth = getFilterWidth(rmode)
 
         var cscale, width: f64 = undefined
         if scale < 1.0
@@ -151,17 +151,17 @@ namespace ResizeTools
             cscale = 1.0
         }
 
-        windowSize := 2 * (cast(s64) Math.ceil(width) + 1)
+        var windowSize = 2 * (cast(s64) Math.ceil(width) + 1)
 
         var res: retval
         res = allocContributions(lineSize, windowSize)
 
         loop u: lineSize
         {
-            center := u / scale
+            var center = u / scale
 
-            left  := Math.max(cast(s64) Math.floor(center - width), 0)
-            right := Math.min(cast(s64) Math.ceil(center + width), srcSize - 1)
+            var left = Math.max(cast(s64) Math.floor(center - width), 0)
+            var right = Math.min(cast(s64) Math.ceil(center + width), srcSize - 1)
 
             // Cut edge points to fit in filter window in case of spill-off
             if right - left + 1 > windowSize
@@ -173,11 +173,11 @@ namespace ResizeTools
             }
 
             // Compute weights
-            nonZeroFound := false
-            totalWeight  := 0'f64
-            for src := left; src <= right; src += 1
+            var nonZeroFound = false
+            var totalWeight = 0'f64
+            for var src = left; src <= right; src += 1
             {
-                resf := getFilter(cscale * (src - center), rmode)
+                var resf = getFilter(cscale * (src - center), rmode)
                 if (resf > 0)
                     resf *= cscale
                 else
@@ -218,27 +218,27 @@ namespace ResizeTools
     #[Swag.Safety("", false)]
     func scaleRow(imgDst: *Image, imgSrc: const *Image, row: s64, contrib: *LineContrib)
     {
-        bpp8   := imgDst.bpp8
-        dstRow := imgDst.pixels.buffer + row * bpp8 * imgDst.width
-        srcRow := imgSrc.pixels.buffer + row * bpp8 * imgSrc.width
+        var bpp8 = imgDst.bpp8
+        var dstRow = imgDst.pixels.buffer + row * bpp8 * imgDst.width
+        var srcRow = imgSrc.pixels.buffer + row * bpp8 * imgSrc.width
 
         #[Swag.Mixin]
         func(BPP: u8) doIt()
         {
-            crow0 := contrib.row.buffer
+            var crow0 = contrib.row.buffer
             loop x: imgDst.width
             {
-                crow  := crow0 + x
-                left  := crow.left
-                right := crow.right
+                var crow = crow0 + x
+                var left = crow.left
+                var right = crow.right
 
                 #if BPP == 32 var da: f64
                 var dr, dg, db: f64
-                pw  := crow.weights.buffer
-                ptr := srcRow + left * bpp8
+                var pw = crow.weights.buffer
+                var ptr = srcRow + left * bpp8
                 loop (right - left) + 1
                 {
-                    f := dref pw
+                    var f = dref pw
                     db += f * ptr[0]
                     dg += f * ptr[1]
                     dr += f * ptr[2]
@@ -266,29 +266,29 @@ namespace ResizeTools
     #[Swag.Safety("", false)]
     func scaleCol(imgDst: *Image, imgSrc: const *Image, col: s64, contrib: *LineContrib)
     {
-        bpp8   := imgDst.bpp8
-        dstCol := imgDst.pixels.buffer + col * bpp8
-        srcCol := imgSrc.pixels.buffer + col * bpp8
-        w8Dst  := imgDst.width * bpp8
-        w8Src  := imgSrc.width * bpp8
+        var bpp8 = imgDst.bpp8
+        var dstCol = imgDst.pixels.buffer + col * bpp8
+        var srcCol = imgSrc.pixels.buffer + col * bpp8
+        var w8Dst = imgDst.width * bpp8
+        var w8Src = imgSrc.width * bpp8
 
         #[Swag.Mixin]
         func(BPP: u8) doIt()
         {
-            crow0 := contrib.row.buffer
+            var crow0 = contrib.row.buffer
             loop y: imgDst.height
             {
-                crow  := crow0 + y
-                left  := crow.left
-                right := crow.right
+                var crow = crow0 + y
+                var left = crow.left
+                var right = crow.right
 
                 #if BPP == 32 var da: f64
                 var dr, dg, db: f64
-                pw  := crow.weights.buffer
-                ptr := srcCol + left * w8Src
+                var pw = crow.weights.buffer
+                var ptr = srcCol + left * w8Src
                 loop (right - left) + 1
                 {
-                    f := dref pw
+                    var f = dref pw
                     db += f * ptr[0]
                     dg += f * ptr[1]
                     dr += f * ptr[2]
@@ -315,54 +315,54 @@ namespace ResizeTools
 
     func scaleCol(imgDst: *Image, imgSrc: const *Image, rmode: Image.ResizeMode)
     {
-        sh := cast(s64) imgSrc.height
-        dh := cast(s64) imgDst.height
-        contrib := calcContributions(dh, sh, cast(f64) dh / sh, rmode)
+        var sh = cast(s64) imgSrc.height
+        var dh = cast(s64) imgDst.height
+        var contrib = calcContributions(dh, sh, cast(f64) dh / sh, rmode)
 
-        f := {imgDst, imgSrc, contrib = &contrib}
+        var f = {imgDst, imgSrc, contrib = &contrib}
         Jobs.parallelFor(|index, data| cast(u32) imgDst.width, &f)
         {
-            params := cast(*@decltype(f)) data
+            var params = cast(*@decltype(f)) data
             scaleCol(params.imgDst, params.imgSrc, cast(s64) index, params.contrib)
         }
     }
 
     func scaleRow(imgDst: *Image, imgSrc: const *Image, rmode: Image.ResizeMode)
     {
-        sw := cast(s64) imgSrc.width
-        dw := cast(s64) imgDst.width
-        contrib := calcContributions(dw, sw, cast(f64) dw / sw, rmode)
+        var sw = cast(s64) imgSrc.width
+        var dw = cast(s64) imgDst.width
+        var contrib = calcContributions(dw, sw, cast(f64) dw / sw, rmode)
 
-        f := {imgDst, imgSrc, contrib = &contrib}
+        var f = {imgDst, imgSrc, contrib = &contrib}
         Jobs.parallelFor(|index, data| cast(u32) imgDst.height, &f)
         {
-            params := cast(*@decltype(f)) data
+            var params = cast(*@decltype(f)) data
             scaleRow(params.imgDst, params.imgSrc, cast(s64) index, params.contrib)
         }
     }
 
     func doResizeFilter(dstImage: *Image, srcImage: const *Image, mode: Image.ResizeMode)
     {
-        tmp := Image.create(dstImage.width, srcImage.height, srcImage.pf)
+        var tmp = Image.create(dstImage.width, srcImage.height, srcImage.pf)
         scaleRow(&tmp, srcImage, mode)
         scaleCol(dstImage, &tmp, mode)
     }
 
     func doResizeRaw(dstImage: *Image, srcImage: const *Image)
     {
-        xscale := srcImage.width / cast(f32) dstImage.width
-        yscale := srcImage.height / cast(f32) dstImage.height
-        f := {xscale, yscale, srcImage}
+        var xscale = srcImage.width / cast(f32) dstImage.width
+        var yscale = srcImage.height / cast(f32) dstImage.height
+        var f = {xscale, yscale, srcImage}
 
         #[Swag.Mixin]
         func(BPP: u8) doIt()
         {
             dstImage.visitPixels(&f)
             {
-                params := cast(*@decltype(f)) userData
-                fx := cast(u32) (x * params.xscale)
-                fy := cast(u32) (y * params.yscale)
-                pixSrc := params.srcImage.pixels.buffer + (fx * image.bpp8) + (fy * params.srcImage.width * image.bpp8)
+                var params = cast(*@decltype(f)) userData
+                var fx = cast(u32) (x * params.xscale)
+                var fy = cast(u32) (y * params.yscale)
+                var pixSrc = params.srcImage.pixels.buffer + (fx * image.bpp8) + (fy * params.srcImage.width * image.bpp8)
                 Image.copyPixel'BPP(pix, pixSrc)
             }
         }

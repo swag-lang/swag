@@ -5,7 +5,7 @@ enum Key
 
 #test
 {
-    a := 0
+    var a = 0
     if cast(Key) a == Key.A
         a = 1
 }

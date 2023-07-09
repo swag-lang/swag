@@ -2,5 +2,5 @@ func toto()->^u8 => null
 
 #test
 {
-    str := @mkstring(toto(), 1)
+    var str = @mkstring(toto(), 1)
 }

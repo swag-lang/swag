@@ -14,7 +14,7 @@ func toto1()->[2] TOTO
 
 #test
 {
-    res := toto1()
+    var res = toto1()
     @assert(res[0].x == 1)
     @assert(res[1].x == 1)
 }

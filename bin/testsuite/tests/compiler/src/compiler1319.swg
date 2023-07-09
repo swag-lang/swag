@@ -8,7 +8,7 @@ func toto(x: code)
 //#[Swag.PrintBc]
 #test
 {
-    cpt := 0
+    var cpt = 0
     toto(#code { #up cpt += 1; })
     @assert(cpt == 2)
 }

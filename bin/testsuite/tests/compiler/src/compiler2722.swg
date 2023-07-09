@@ -11,6 +11,6 @@ func toto()->[4] s32
 
 #test
 {
-    x := toto()
+    var x = toto()
     @assert(x[0] == 1)
 }

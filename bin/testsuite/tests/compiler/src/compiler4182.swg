@@ -3,10 +3,10 @@
 #[Swag.Safety("sanity", true)]
 func toto()->f32
 {
-    y := -10'f32
+    var y = -10'f32
     y *= 2
     y -= 1
     y += 32
-    x := @sqrt(y)
+    var x = @sqrt(y)
     return x
 }

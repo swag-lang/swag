@@ -3,7 +3,7 @@
 //#[Swag.PrintBc]
 #test
 {
-	currentValue := 3
+	var currentValue = 3
 	while currentValue
 	{
 		currentValue -= 1

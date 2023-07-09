@@ -23,7 +23,7 @@ impl BlendColor
             return
         }
 
-        vec4 := target.toVector4()
+        var vec4 = target.toVector4()
         if destVec4 != vec4
         {
             startVec4 = curVec4
@@ -36,8 +36,8 @@ impl BlendColor
             return
         }
 
-        startV := startVec4
-        destV  := destVec4
+        var startV = startVec4
+        var destV = destVec4
         if startV.w == 0
         {
             startV.x = destVec4.x

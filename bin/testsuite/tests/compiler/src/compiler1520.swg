@@ -1,7 +1,7 @@
 //#[Swag.PrintBc]
 #test
 {
-    a := 0'u32
+    var a = 0'u32
     @assert(@typeof(a) == @typeof(u32))
     var xx = a
     @assert(@typeof(xx) == @typeof(u32))

@@ -1,6 +1,6 @@
 func toto(ptr: const ^u8)
 {
-    x := @mkstring(ptr, 4)
+    var x = @mkstring(ptr, 4)
     //@print(@typeof(x).name)
     //@print("x")
     @assert(x == "toto")
@@ -18,6 +18,6 @@ func MessageBoxA(hwnd: *void, t: const *u8, t1: const *u8, flags: u32);
 #[Swag.PrintBc]
 #test
 {
-    v1 := "la foule"
+    var v1 = "la foule"
     MessageBoxA(null, cast(const *u8) "coucou", cast(const *u8) v1, 0)
 }*/

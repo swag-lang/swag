@@ -9,6 +9,6 @@ func toto()->*~64 s32
 //#[Swag.PrintBc]
 #test
 {
-    x := toto()
+    var x = toto()
     @assert(dref x == 666)
 }

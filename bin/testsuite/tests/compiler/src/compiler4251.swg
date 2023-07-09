@@ -1,6 +1,6 @@
 #test
 {
     const X = "abcd"
-    x := X[..]
+    var x = X[..]
     @assert(x == "abcd")
 }

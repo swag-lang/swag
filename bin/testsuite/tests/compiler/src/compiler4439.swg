@@ -10,6 +10,6 @@ func titi(x: moveref s32)
 
 #test
 {
-    x := 55
+    var x = 55
     titi(moveref &x)
 }

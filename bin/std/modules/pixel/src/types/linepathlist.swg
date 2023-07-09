@@ -19,7 +19,7 @@ impl LinePathList
     {
         visit p, i: paths
         {
-            ptr := Memory.new'LinePath()
+            var ptr = Memory.new'LinePath()
             dref ptr = dref p
             paths[i] = ptr
         }
@@ -39,7 +39,7 @@ impl LinePathList
     // Returns a new path
     mtd newPath()->*LinePath
     {
-        ptr := Memory.new'LinePath()
+        var ptr = Memory.new'LinePath()
         paths.add(ptr)
         return ptr
     }
@@ -67,7 +67,7 @@ impl LinePathList
 
         visit p: paths
         {
-            v := p.polygon.isClockwise ? value : -value
+            var v = p.polygon.isClockwise ? value : -value
             p.polygon.offset(v)
         }
     }
@@ -83,9 +83,9 @@ impl LinePathList
 
         visit p: paths
         {
-            v := p.polygon.isClockwise ? value : -value
+            var v = p.polygon.isClockwise ? value : -value
 
-            res := p.polygon.getOffset(v, joinStyle, toler)
+            var res = p.polygon.getOffset(v, joinStyle, toler)
             newList.paths.add(res.paths.toSlice())
             res.paths.count = 0
         }
@@ -103,7 +103,7 @@ impl LinePathList
 
         visit p: paths
         {
-            res := p.polygon.getClean()
+            var res = p.polygon.getClean()
             newList.paths.add(res.paths.toSlice())
             res.paths.count = 0
         }

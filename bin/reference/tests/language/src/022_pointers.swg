@@ -17,21 +17,21 @@
 
     // You can take the address of something with `&`.
     {
-        arr := 1
-        ptr := &arr // Take the address of the variable 'arr'
+        var arr = 1
+        var ptr = &arr // Take the address of the variable 'arr'
         @assert(@typeof(ptr) == *s32)
     }
 
     // You can get the pointed value with `dref`.
     {
-        arr := 42
-        ptr := &arr
+        var arr = 42
+        var ptr = &arr
         @assert(dref ptr == 42)
     }
 
     // Pointers can be `const`.
     {
-        str := "string"
+        var str = "string"
         var ptr: const *u8 = @dataof(str)
         @assert(dref ptr == "s"'u8)
     }
@@ -60,28 +60,28 @@ If you want to enable **pointer arithmetic**, and make a pointer to **multiple v
     // Taking the address of an array element enables pointer arithmetic.
     {
         var x: [4] s32
-        ptr := &x[1]
+        var ptr = &x[1]
         ptr = ptr - 1
         #assert @typeof(ptr) == ^s32
     }
 
     // As pointer arithmetic is enabled, you can dereference that kind of pointer by index.
     {
-        arr := [1, 2, 3, 4]
-        ptr := &arr[0]
+        var arr = [1, 2, 3, 4]
+        var ptr = &arr[0]
         @assert(@typeof(ptr) == ^s32)
 
         // The type of 'ptr' is ^s32, so it can be dereferenced by index
-        value1 := ptr[0]
+        var value1 = ptr[0]
         @assert(value1 == 1)
         #assert @typeof(value1) == s32
 
-        value2 := ptr[1]
+        var value2 = ptr[1]
         @assert(value2 == 2)
         #assert @typeof(value2) == s32
 
         // But 'dref' still works for the first element
-        value := dref ptr
+        var value = dref ptr
         @assert(value == 1)
         #assert @typeof(value) == s32
     }

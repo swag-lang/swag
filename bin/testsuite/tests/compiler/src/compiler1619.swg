@@ -6,6 +6,6 @@ func mac()->s32
 
 #test
 {
-    a := mac()
+    var a = mac()
     @assert(a == 1)
 }

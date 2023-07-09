@@ -1,6 +1,6 @@
 #test
 {
-    x := "B"'rune
+    var x = "B"'rune
     switch x
     {
     case "A"'rune.."C"'rune: break

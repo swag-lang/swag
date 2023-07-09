@@ -9,7 +9,7 @@ impl B
 {
     func emplace(using self)
     {
-        y := T
+        var y = T
         @assert(@typeof(y) == const *Swag.TypeInfoNative)
     }
 }

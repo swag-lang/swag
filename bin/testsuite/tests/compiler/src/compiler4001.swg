@@ -1,7 +1,7 @@
 #global testerror
 #test
 {
-    x := 0
-    v := cast(ref s32) &x
-    z := dref v
+    var x = 0
+    var v = cast(ref s32) &x
+    var z = dref v
 }

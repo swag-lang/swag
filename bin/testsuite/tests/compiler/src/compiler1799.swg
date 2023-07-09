@@ -9,6 +9,6 @@ namespace A.B
 
 #test
 {
-    toto := &A.B.toto
+    var toto = &A.B.toto
     alias toto = A.B.toto
 }

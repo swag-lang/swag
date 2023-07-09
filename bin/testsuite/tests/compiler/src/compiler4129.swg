@@ -3,7 +3,7 @@
 #[Swag.Safety("math", true)]
 func toto(y: f32)
 {
-    z := @sqrt(y)
+    var z = @sqrt(y)
     @print(z)
 }
 

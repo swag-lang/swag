@@ -15,25 +15,25 @@ func compute()
 {
     using Math
 
-    data := {minS = g_Slider.getValueLeft(), maxS = g_Slider.getValueRight()}
+    var data = {minS = g_Slider.getValueLeft(), maxS = g_Slider.getValueRight()}
     g_Image.visitPixels(&data)
     {
-        params := cast(*@decltype(data)) userData
-        minS := params.minS
-        maxS := params.maxS
+        var params = cast(*@decltype(data)) userData
+        var minS = params.minS
+        var maxS = params.maxS
 
-        a := map(cast(f32) x, 0, cast(f32) g_Image.width, minS, maxS)
-        b := map(cast(f32) y, 0, cast(f32) g_Image.height, minS, maxS)
+        var a = map(cast(f32) x, 0, cast(f32) g_Image.width, minS, maxS)
+        var b = map(cast(f32) y, 0, cast(f32) g_Image.height, minS, maxS)
 
-        ca := a
-        cb := b
+        var ca = a
+        var cb = b
 
-        n := 0
+        var n = 0
         const MaxIterations = 100
         while n < MaxIterations
         {
-            aa := a
-            bb := b
+            var aa = a
+            var bb = b
 
             a = aa * aa - bb * bb
             b = 2 * aa * bb
@@ -44,7 +44,7 @@ func compute()
                 break
         }
 
-        light := cast(u8) Math.map(cast(f32) n, 0, cast(f32) MaxIterations, 0, 255)
+        var light = cast(u8) Math.map(cast(f32) n, 0, cast(f32) MaxIterations, 0, 255)
         pix[0] = light
         pix[1] = light
         pix[2] = light
@@ -53,8 +53,8 @@ func compute()
 
 func onEvent(wnd: *Wnd, evt: *Event)->bool
 {
-    w := cast(s32) wnd.position.width
-    h := cast(s32) wnd.position.height
+    var w = cast(s32) wnd.position.width
+    var h = cast(s32) wnd.position.height
 
     switch evt.kind
     {
@@ -75,9 +75,9 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
         return true
 
     case Paint:
-        paintEvt := cast(*PaintEvent) evt
-        painter  := paintEvt.bc.painter
-        renderer := paintEvt.bc.renderer
+        var paintEvt = cast(*PaintEvent) evt
+        var painter = paintEvt.bc.painter
+        var renderer = paintEvt.bc.renderer
         renderer.updateTexture(g_Texture, g_Image.pixels.buffer)
         painter.drawTexture(0, 0, cast(f32) w, cast(f32) h, g_Texture)
         return true

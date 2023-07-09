@@ -2,7 +2,7 @@ using Core, Gui, Pixel
 
 func createListSimple(view: *Wnd, maxItems = 50)->*ListCtrl
 {
-    list := ListCtrl.createSimple(view, {5, 5, 250, 300})
+    var list = ListCtrl.createSimple(view, {5, 5, 250, 300})
     list.setFrameForm(FrameWndForm.Round)
     list.selectionMode = .Multi
     list.iconSize = 16
@@ -11,7 +11,7 @@ func createListSimple(view: *Wnd, maxItems = 50)->*ListCtrl
     loop i: maxItems
     {
         Format.replaceString(&str, "item %", i)
-        icon := app.theme.getIcon24(ThemeIcons24.Search, 16)
+        var icon = app.theme.getIcon24(ThemeIcons24.Search, 16)
         if i % 2 == 0 icon.clear()
         discard list.createLine(str, icon)
     }
@@ -22,7 +22,7 @@ func createListSimple(view: *Wnd, maxItems = 50)->*ListCtrl
 
 func createListMulti(view: *Wnd, checkable: bool = false)->*ListCtrl
 {
-    list := ListCtrl.createMultiColumns(view, {5, 5, 250, 300})
+    var list = ListCtrl.createMultiColumns(view, {5, 5, 250, 300})
     list.addColumn("column 0")
     list.addColumn("column 1")
     list.addColumn("column 2")
@@ -35,9 +35,9 @@ func createListMulti(view: *Wnd, checkable: bool = false)->*ListCtrl
     loop i: 50
     {
         Format.replaceString(&str, "item %", i)
-        icon := app.theme.getIcon24(ThemeIcons24.Search, 16)
+        var icon = app.theme.getIcon24(ThemeIcons24.Search, 16)
         if i % 2 == 0 icon.clear()
-        line := list.createLine(str, icon)
+        var line = list.createLine(str, icon)
         line.canCheck = checkable
         line.setItem(1, str)
         line.setItem(2, str, icon)
@@ -50,7 +50,7 @@ func createListMulti(view: *Wnd, checkable: bool = false)->*ListCtrl
 func createView1(_tabView: *Tab, view: *Wnd)
 {
     {
-        list := createListSimple(view, 10)
+        var list = createListSimple(view, 10)
         list.style.setFont(view.getTheme().createDefaultFont(40), .Regular)
         list.frameFlags.add(.FocusBorder)
         list.listFlags.add(.HotTrack)
@@ -59,20 +59,20 @@ func createView1(_tabView: *Tab, view: *Wnd)
     }
 
     {
-        list := createListSimple(view)
+        var list = createListSimple(view)
         list.setFrameForm(FrameWndForm.Square)
         list.selectionMode = .None
         list.setPosition({280, 5, 250, 300})
     }
 
     {
-        list := createListSimple(view)
+        var list = createListSimple(view)
         list.disable()
         list.setPosition({560, 5, 250, 300})
     }
 
     {
-        list := ListCtrl.createSimple(view, {830, 5, 250, 300})
+        var list = ListCtrl.createSimple(view, {830, 5, 250, 300})
         list.setFrameForm(FrameWndForm.Round)
         list.frameFlags.remove(.Borders)
         list.selectionMode = .Multi
@@ -81,15 +81,15 @@ func createView1(_tabView: *Tab, view: *Wnd)
 
         list.setVirtualCount(1_000_000)
         list.sigVirtualFill = func(list, line, idx) {
-            str := Format.toString("virtual %", idx)
+            var str = Format.toString("virtual %", idx)
             line.setItem(0, str)
         }
     }
 
     {
-        header := Header.create(view, {5, 320, 500})
+        var header = Header.create(view, {5, 320, 500})
         header.form = .Round
-        item := header.addItem("header1")
+        var item = header.addItem("header1")
         item.minWidth = 20
         item = header.addItem("header2")
         item.maxWidth = 100
@@ -97,7 +97,7 @@ func createView1(_tabView: *Tab, view: *Wnd)
     }
 
     {
-        list := createListMulti(view, checkable = true)
+        var list = createListMulti(view, checkable = true)
         list.frameFlags.add(.FocusBorder)
         list.header.headerFlags.remove(.Clickable)
         list.setPosition({5, 400, 400, 300})
@@ -105,30 +105,30 @@ func createView1(_tabView: *Tab, view: *Wnd)
         list.setColumnWidth(0, 150)
 
         list.sigSelChanged += func(list) {
-            sl := list.getSelectedLine()
+            var sl = list.getSelectedLine()
             if sl
                 Console.printf("selected: %\n", sl.getItem(0).name.raw)
         }
         list.sigCheckChanged += func(list) {
-            sl := list.getCheckedLines()
+            var sl = list.getCheckedLines()
             visit l: sl
                 Console.printf("checked: %\n", l.getItem(0).name.raw)
         }
         list.sigRightClick += func(list, pt) {
-            sel := list.getSelectedLines()
+            var sel = list.getSelectedLines()
             visit l: sel
                 Console.printf("%\n", l.getItem(0).name.raw)
         }
     }
 
     {
-        list := createListMulti(view)
+        var list = createListMulti(view)
         list.frameFlags.add(.FocusBorder)
         list.listFlags |= .AlternateLines | .HorzLines | .VertLines
         list.setFrameForm(FrameWndForm.Square)
         list.setPosition({420, 400, 400, 300})
 
-        line0 := list.getLine(0)
+        var line0 = list.getLine(0)
         line0.colorBk = Color.getDarker(Argb.Red, 0.5)
         line0.colorFg = Color.getLighter(Argb.Yellow, 0.5)
         line0.getItem(0).colorFg = Argb.Yellow
@@ -138,7 +138,7 @@ func createView1(_tabView: *Tab, view: *Wnd)
         list.header.getItem(0).clickable = false
 
         list.sigSelChanged += func(list) {
-            sel := list.getSelectedLines()
+            var sel = list.getSelectedLines()
             visit l: sel
                 Console.printf("%\n", l.getItem(0).name.raw)
         }

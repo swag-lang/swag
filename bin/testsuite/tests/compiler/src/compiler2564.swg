@@ -15,6 +15,6 @@ impl AA
 #test
 {
     var x: [2] AA
-    y := x
+    var y = x
     y = x
 }

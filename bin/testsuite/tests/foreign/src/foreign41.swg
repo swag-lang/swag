@@ -1,6 +1,6 @@
 public func toto41()
 {
-    m := @modules()
+    var m = @modules()
     @assert(@countof(m) == 1)
     @assert(m[0].name == "test_foreign")
 }

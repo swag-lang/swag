@@ -8,6 +8,6 @@ using Core, Core.StrConv
     fmt.value = -3.1415
     fmt.precision = 5
     Format.append(&buf, "%", fmt)
-    str := buf.toString()
+    var str = buf.toString()
     @assert(str == "-3.14150")
 }

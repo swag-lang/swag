@@ -36,7 +36,7 @@ impl ArrayPtr
     // Allocate a new pointer, and add it to the array
     mtd addNewPtr()->*T
     {
-        ptr := newPtr()
+        var ptr = newPtr()
         add(ptr)
         return ptr
     }

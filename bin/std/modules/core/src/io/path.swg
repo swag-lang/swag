@@ -20,7 +20,7 @@ func getRootName(fullname: string)->string
     if fullname == null
         return null
     Debug.assert(isValidPathName(fullname))
-    rootLength := getRootLength(fullname)
+    var rootLength = getRootLength(fullname)
     return acast @mkslice(@dataof(fullname), cast(u64) rootLength)
 }
 
@@ -32,7 +32,7 @@ func isRooted(fullname: string)->bool
     if fullname == null
         return false
     Debug.assert(isValidPathName(fullname))
-    countof := @countof(fullname)
+    var countof = @countof(fullname)
     if countof >= 1 and isDirectorySeparator(fullname[0])
         return true
     if countof >= 2 and fullname[1] == VolumeSeparatorChar
@@ -48,12 +48,12 @@ func getDirectoryName(fullname: string)->string
         return null
     Debug.assert(isValidPathName(fullname))
 
-    countof := @countof(fullname)
-    cpt := countof
+    var countof = @countof(fullname)
+    var cpt = countof
     while cpt
     {
         cpt -= 1
-        c := fullname[cpt]
+        var c = fullname[cpt]
         if isDirectorySeparator(c)
         {
             if cpt == 0
@@ -75,12 +75,12 @@ func getFileName(fullname: string)->string
         return null
     Debug.assert(isValidPathName(fullname))
 
-    countof := @countof(fullname)
-    cpt := countof
+    var countof = @countof(fullname)
+    var cpt = countof
     while cpt
     {
         cpt -= 1
-        c := fullname[cpt]
+        var c = fullname[cpt]
         if isDirectorySeparator(c) or c == VolumeSeparatorChar
         {
             if cpt == countof - 1 return null
@@ -99,13 +99,13 @@ func getFileNameWithoutExtension(fullname: string)->string
         return null
     Debug.assert(isValidPathName(fullname))
 
-    countof := @countof(fullname)
-    cpt := countof
-    last := countof
+    var countof = @countof(fullname)
+    var cpt = countof
+    var last = countof
     while cpt
     {
         cpt -= 1
-        c := fullname[cpt]
+        var c = fullname[cpt]
         if c == "."'u8 and last == countof
             last = cpt
         elif isDirectorySeparator(c) or c == VolumeSeparatorChar
@@ -127,11 +127,11 @@ func getExtension(fullname: string)->string
         return null
     Debug.assert(isValidPathName(fullname))
 
-    cpt := @countof(fullname)
+    var cpt = @countof(fullname)
     while cpt
     {
         cpt -= 1
-        c := fullname[cpt]
+        var c = fullname[cpt]
         if c == "."'u8
             return acast @mkslice(@dataof(fullname) + cpt, cast(u64) @countof(fullname) - cpt)
         if isDirectorySeparator(c) or c == VolumeSeparatorChar
@@ -162,11 +162,11 @@ func hasExtension(fullname: string)->bool
         return false
     Debug.assert(isValidPathName(fullname))
 
-    cpt := @countof(fullname)
+    var cpt = @countof(fullname)
     while cpt
     {
         cpt -= 1
-        c := fullname[cpt]
+        var c = fullname[cpt]
         if c == "."'u8
             return true
         if isDirectorySeparator(c) or c == VolumeSeparatorChar
@@ -188,7 +188,7 @@ func combine(fullnames: string...)->String
 
         if result.length
         {
-            c := result.back()
+            var c = result.back()
             if !isDirectorySeparator(c)
                 result += DirectorySeparatorChar
         }

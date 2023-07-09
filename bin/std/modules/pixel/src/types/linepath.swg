@@ -81,7 +81,7 @@ public impl LinePath
     // Add a line from the previous point to 'pt'
     mtd lineTo(x, y: f32)
     {
-        newEndPoint := Vector2{x, y}
+        var newEndPoint = Vector2{x, y}
         if newEndPoint.isEqualEpsilon(endPoint)
             return
 
@@ -96,7 +96,7 @@ public impl LinePath
     // Add a curve from the previous point to 'pt'
     mtd curveTo(x, y: f32)
     {
-        newEndPoint := Vector2{x, y}
+        var newEndPoint = Vector2{x, y}
         if newEndPoint.isEqualEpsilon(endPoint)
             return
 
@@ -111,7 +111,7 @@ public impl LinePath
     // Add a curve from the previous point to 'pt'
     mtd bezierTo(x, y: f32, ctx, cty: f32)
     {
-        newEndPoint := Vector2{x, y}
+        var newEndPoint = Vector2{x, y}
         if newEndPoint.isEqualEpsilon(endPoint)
             return
 
@@ -127,7 +127,7 @@ public impl LinePath
     // Add a curve from the previous point to 'pt'
     mtd bezierTo(x, y: f32, ct1x, ct1y: f32, ct2x, ct2y: f32)
     {
-        newEndPoint := Vector2{x, y}
+        var newEndPoint = Vector2{x, y}
         if newEndPoint.isEqualEpsilon(endPoint)
             return
 
@@ -144,13 +144,13 @@ public impl LinePath
     // Add an arc from the previous point
     mtd arcTo(centerX, centerY: f32, radiusX, radiusY: f32, initAngle, maxAngle: Math.Angle)
     {
-        ia := initAngle.rad
+        var ia = initAngle.rad
         while ia < 0 ia += Math.ConstF32.TwoPi
-        ma := maxAngle.rad
+        var ma = maxAngle.rad
         while ma < 0 ma += Math.ConstF32.TwoPi
         while ma < ia ma += Math.ConstF32.TwoPi
 
-        newEndPoint := Vector2{centerX + (Math.sin(ma) * radiusX), centerY + (-Math.cos(ma) * radiusY)}
+        var newEndPoint = Vector2{centerX + (Math.sin(ma) * radiusX), centerY + (-Math.cos(ma) * radiusY)}
         if newEndPoint.isEqualEpsilon(endPoint)
             return
 
@@ -176,7 +176,7 @@ public impl LinePath
         if isClosed or !elements.count
             return
 
-        v := endPoint - startPoint
+        var v = endPoint - startPoint
         if v.lengthSquared() >= 0.5 * 0.5
         {
             if elements.backPtr().type == .Curve
@@ -190,8 +190,8 @@ public impl LinePath
 
     private mtd setRectRaw(l, t, w, h: f32)
     {
-        r := l + w
-        b := t + h
+        var r = l + w
+        var b = t + h
 
         start(l, t)
         lineTo(r, t)
@@ -204,10 +204,10 @@ public impl LinePath
     // Initialize the path with a rectangle
     mtd setRect(left, top, width, height: f32)
     {
-        l := Math.round(left)
-        t := Math.round(top)
-        w := Math.round(width)
-        h := Math.round(height)
+        var l = Math.round(left)
+        var t = Math.round(top)
+        var w = Math.round(width)
+        var h = Math.round(height)
 
         setRectRaw(l, t, w, h)
     }
@@ -215,16 +215,16 @@ public impl LinePath
     // Initialize the path with a round rectangle
     mtd setRoundRect(left, top, width, height: f32, radiusX, radiusY: f32)
     {
-        l := Math.round(left)
-        t := Math.round(top)
-        w := Math.round(width)
-        h := Math.round(height)
+        var l = Math.round(left)
+        var t = Math.round(top)
+        var w = Math.round(width)
+        var h = Math.round(height)
 
-        r := l + w
-        b := t + h
+        var r = l + w
+        var b = t + h
 
-        rX := Math.min(radiusX, (w * 0.5) - 2)
-        rY := Math.min(radiusY, (h * 0.5) - 2)
+        var rX = Math.min(radiusX, (w * 0.5) - 2)
+        var rY = Math.min(radiusY, (h * 0.5) - 2)
         rX = Math.round(rX)
         rY = Math.round(rY)
 
@@ -252,10 +252,10 @@ public impl LinePath
     // Initialize the path with an ellipse
     mtd setEllipse(centerX, centerY: f32, radiusX, radiusY: f32)
     {
-        cX := Math.round(centerX)
-        cY := Math.round(centerY)
-        rX := 0.5*Math.round(radiusX*2)
-        rY := 0.5*Math.round(radiusY*2)
+        var cX = Math.round(centerX)
+        var cY = Math.round(centerY)
+        var rX = 0.5*Math.round(radiusX*2)
+        var rY = 0.5*Math.round(radiusY*2)
 
         setEllipseRaw(cX, cY, rX, rY)
     }
@@ -263,9 +263,9 @@ public impl LinePath
     // Initialize the path with a circle
     mtd setCircle(centerX, centerY: f32, radius: f32)
     {
-        cX := Math.round(centerX)
-        cY := Math.round(centerY)
-        r  := 0.5*Math.round(radius*2)
+        var cX = Math.round(centerX)
+        var cY = Math.round(centerY)
+        var r = 0.5*Math.round(radius*2)
 
         start(cX, cY - r)
         arcTo(cX, cY, r, r, 0'deg, 90'deg)
@@ -281,17 +281,17 @@ public impl LinePath
         if isZeroEpsilon(endAngle.rad - startAngle.rad)
             return
 
-        cX := Math.round(centerX)
-        cY := Math.round(centerY)
-        r  := Math.round(radius)
+        var cX = Math.round(centerX)
+        var cY = Math.round(centerY)
+        var r = Math.round(radius)
 
         Debug.assert(endAngle.rad > startAngle.rad)
-        startPos := Math.Vector2{0, -r}
+        var startPos = Math.Vector2{0, -r}
         startPos.rotate(startAngle)
         start(cX + startPos.x, cY + startPos.y)
 
-        s := startAngle.rad
-        m := 0'f32
+        var s = startAngle.rad
+        var m = 0'f32
         if s < Math.ConstF32.PiBy2
         {
             m = Math.min(endAngle.rad, Math.ConstF32.PiBy2)
@@ -342,10 +342,10 @@ public impl LinePath
         endPosBuffer = startPoint
         polygon.points.add(endPosBuffer)
 
-        lastElem := elements.count - 1
+        var lastElem = elements.count - 1
         visit elem, i: elements
         {
-            pos := elem.position
+            var pos = elem.position
 
             #[Swag.Complete]
             switch elem.type
@@ -392,17 +392,17 @@ public impl LinePath
                 const Alpha = 0.5
                 const Tension = 0.0
 
-                t01 := Math.pow(Vector2.distance(p0, p1), Alpha)
-                t12 := Math.pow(Vector2.distance(p1, p2), Alpha)
-                t23 := Math.pow(Vector2.distance(p2, p3), Alpha)
+                var t01 = Math.pow(Vector2.distance(p0, p1), Alpha)
+                var t12 = Math.pow(Vector2.distance(p1, p2), Alpha)
+                var t23 = Math.pow(Vector2.distance(p2, p3), Alpha)
 
-                m1 := (1.0 - Tension) * (p2 - p1 + t12 * ((p1 - p0) / t01 - (p2 - p0) / (t01 + t12)))
-                m2 := (1.0 - Tension) * (p2 - p1 + t12 * ((p3 - p2) / t23 - (p3 - p1) / (t12 + t23)))
+                var m1 = (1.0 - Tension) * (p2 - p1 + t12 * ((p1 - p0) / t01 - (p2 - p0) / (t01 + t12)))
+                var m2 = (1.0 - Tension) * (p2 - p1 + t12 * ((p3 - p2) / t23 - (p3 - p1) / (t12 + t23)))
 
-                sa := 2.0 * (p1 - p2) + m1 + m2
-                sb := -3.0 * (p1 - p2) - m1 - m1 - m2
-                sc := m1
-                sd := p1
+                var sa = 2.0 * (p1 - p2) + m1 + m2
+                var sb = -3.0 * (p1 - p2) - m1 - m1 - m2
+                var sc = m1
+                var sd = p1
                 flattenCurve(sa, sb, sc, sd, quality)
 
             case Arc:
@@ -418,7 +418,7 @@ impl LinePath
 {
     func getFlattenDistance(quality: PaintQuality)->f32
     {
-        minDist := 0'f32
+        var minDist = 0'f32
         switch quality
         {
         case Draft:  minDist = 2
@@ -430,27 +430,27 @@ impl LinePath
 
     mtd flattenBezier(pos, p1: Vector2, quality: PaintQuality)
     {
-        minDist := getFlattenDistance(quality)
-        startPt := endPosBuffer
+        var minDist = getFlattenDistance(quality)
+        var startPt = endPosBuffer
 
         // We divide a segment by half until the computed point on the curve is close to the corresponding segment
         var tmp: Array'{factor: f32, pos: Vector2}
         tmp.add({0, endPosBuffer})
         tmp.add({1, pos})
 
-        for i := 0; i < tmp.count - 1; i += 1
+        for var i = 0; i < tmp.count - 1; i += 1
         {
-            t  := (tmp[i].factor + tmp[i + 1].factor) * 0.5
-            it := 1.0 - t
-            a1 := it * it
-            a2 := 2.0 * t * it
-            a3 := t * t
+            var t = (tmp[i].factor + tmp[i + 1].factor) * 0.5
+            var it = 1.0 - t
+            var a1 = it * it
+            var a2 = 2.0 * t * it
+            var a3 = t * t
 
             var point: Vector2 = undefined
             point.x = a1 * startPt.x + a2 * p1.x + a3 * pos.x
             point.y = a1 * startPt.y + a2 * p1.y + a3 * pos.y
 
-            dist := point.distanceToLine(tmp[i].pos, tmp[i + 1].pos)
+            var dist = point.distanceToLine(tmp[i].pos, tmp[i + 1].pos)
             if dist < minDist continue
 
             tmp.insertAt(cast(u64) i + 1, {t, point})
@@ -463,28 +463,28 @@ impl LinePath
 
     mtd flattenBezier(pos, p1, p2: Vector2, quality: PaintQuality)
     {
-        minDist := getFlattenDistance(quality)
-        startPt := endPosBuffer
+        var minDist = getFlattenDistance(quality)
+        var startPt = endPosBuffer
 
         // We divide a segment by half until the computed point on the curve is close to the corresponding segment
         var tmp: Array'{factor: f32, pos: Vector2}
         tmp.add({0, endPosBuffer})
         tmp.add({1, pos})
 
-        for i := 0; i < tmp.count - 1; i += 1
+        for var i = 0; i < tmp.count - 1; i += 1
         {
-            t  := (tmp[i].factor + tmp[i + 1].factor) * 0.5
-            it := 1.0 - t
-            a1 := it * it * it
-            a2 := 3.0 * t * it * it
-            a3 := 3.0 * t * t * it
-            a4 := t * t * t
+            var t = (tmp[i].factor + tmp[i + 1].factor) * 0.5
+            var it = 1.0 - t
+            var a1 = it * it * it
+            var a2 = 3.0 * t * it * it
+            var a3 = 3.0 * t * t * it
+            var a4 = t * t * t
 
             var point: Vector2 = undefined
             point.x = a1 * startPt.x + a2 * p1.x + a3 * p2.x + a4 * pos.x
             point.y = a1 * startPt.y + a2 * p1.y + a3 * p2.y + a4 * pos.y
 
-            dist := point.distanceToLine(tmp[i].pos, tmp[i + 1].pos)
+            var dist = point.distanceToLine(tmp[i].pos, tmp[i + 1].pos)
             if dist < minDist continue
 
             tmp.insertAt(cast(u64) i + 1, {t, point})
@@ -497,16 +497,16 @@ impl LinePath
 
     mtd flattenCurve(p0, p1, p2, p3: Vector2, quality: PaintQuality)
     {
-        minDist := getFlattenDistance(quality)
+        var minDist = getFlattenDistance(quality)
 
         // We divide a segment by half until the computed point on the curve is close to the corresponding segment
         var tmp: Array'{factor: f32, pos: Vector2}
         tmp.add({0, endPosBuffer})
         tmp.add({1, p0 + p1 + p2 + p3})
 
-        for i := 0; i < tmp.count - 1; i += 1
+        for var i = 0; i < tmp.count - 1; i += 1
         {
-            t  := (tmp[i].factor + tmp[i + 1].factor) * 0.5
+            var t = (tmp[i].factor + tmp[i + 1].factor) * 0.5
 
             var point: Vector2 = undefined
             point  = p0 * t * t * t
@@ -514,7 +514,7 @@ impl LinePath
             point += p2 * t
             point += p3
 
-            dist := point.distanceToLine(tmp[i].pos, tmp[i + 1].pos)
+            var dist = point.distanceToLine(tmp[i].pos, tmp[i + 1].pos)
             if dist < minDist continue
 
             tmp.insertAt(cast(u64) i + 1, {t, point})
@@ -531,21 +531,21 @@ impl LinePath
         endPos.x = pos.x + (Math.sin(p1.y) * p2.x)
         endPos.y = pos.y + (-Math.cos(p1.y) * p2.y)
 
-        minDist := getFlattenDistance(quality)
+        var minDist = getFlattenDistance(quality)
 
         // We divide a segment by half until the computed point on the curve is close to the corresponding segment
         var tmp: Array'{angle: f32, pos: Vector2}
         tmp.add({p1.x, endPosBuffer})
         tmp.add({p1.y, endPos})
 
-        for i := 0; i < tmp.count - 1; i += 1
+        for var i = 0; i < tmp.count - 1; i += 1
         {
-            angle := (tmp[i].angle + tmp[i + 1].angle) * 0.5
-            point := pos
+            var angle = (tmp[i].angle + tmp[i + 1].angle) * 0.5
+            var point = pos
             point.x += (Math.sin(angle) * p2.x)
             point.y += -(Math.cos(angle) * p2.y)
 
-            dist := point.distanceToLine(tmp[i].pos, tmp[i + 1].pos)
+            var dist = point.distanceToLine(tmp[i].pos, tmp[i + 1].pos)
             if dist < minDist continue
 
             tmp.insertAt(cast(u64) i + 1, {angle, point})

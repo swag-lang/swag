@@ -3,12 +3,12 @@ using Core
 //#[Swag.PrintBc]
 #test
 {
-    t := @typeof(String)
+    var t = @typeof(String)
 
-    ptr := @alloc(cast(u64) t.sizeof)
+    var ptr = @alloc(cast(u64) t.sizeof)
     defer @free(ptr)
 
-    ptr1 := cast(*String) ptr
+    var ptr1 = cast(*String) ptr
     t.opInit(ptr1)
     ptr1.append("toto")
     @assert(dref ptr1 == "toto")

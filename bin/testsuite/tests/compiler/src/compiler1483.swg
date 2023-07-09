@@ -3,6 +3,6 @@
 
 #test
 {
-    ptr := @dataof("xxx")
+    var ptr = @dataof("xxx")
     ptr[0] = 0
 }

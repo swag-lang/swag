@@ -25,7 +25,7 @@ impl AA for BB
 #test
 {
     var v: BB
-    i := cast(AA) v
+    var i = cast(AA) v
     i.toto()
     @assert(G == 666)
 }

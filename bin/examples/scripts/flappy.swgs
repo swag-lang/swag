@@ -59,13 +59,13 @@ func paint(painter: *Painter)
     if !g_FirstStart
     {
         painter.pushState()
-        frame := (cast(s32) g_Bird.frame) % 3
+        var frame = (cast(s32) g_Bird.frame) % 3
 
-        trf := painter.getTransform()
+        var trf = painter.getTransform()
 
         painter.resetTransform()
-        speed := Math.clamp(g_Bird.speed.y, -200, 200)
-        angle := Math.map(speed, -200, 200, -Math.ConstF32.PiBy6, Math.ConstF32.PiBy6)
+        var speed = Math.clamp(g_Bird.speed.y, -200, 200)
+        var angle = Math.map(speed, -200, 200, -Math.ConstF32.PiBy6, Math.ConstF32.PiBy6)
         painter.rotateTransform(angle)
 
         painter.translateTransform(g_Bird.pos.x + trf.tx, g_Bird.pos.y + trf.ty)
@@ -124,7 +124,7 @@ func paint(painter: *Painter)
 
 func input(wnd: *Wnd)
 {
-    kb := wnd.getApp().getKeyboard()
+    var kb = wnd.getApp().getKeyboard()
 
     if g_GameOver or g_FirstStart
     {
@@ -202,10 +202,10 @@ func createPipe()
 {
     var pipe: Pipe
 
-    pos         := g_Rect.width
-    sizePassage := Random.shared().nextF32(70, 150)
-    heightUp    := Random.shared().nextF32(50, g_Rect.height - sizePassage - 50)
-    heightDown  := g_Rect.height - heightUp - GroundHeight - sizePassage
+    var pos = g_Rect.width
+    var sizePassage = Random.shared().nextF32(70, 150)
+    var heightUp = Random.shared().nextF32(50, g_Rect.height - sizePassage - 50)
+    var heightDown = g_Rect.height - heightUp - GroundHeight - sizePassage
 
     pipe.rectUp.x = pos
     pipe.rectUp.y = heightUp - g_PipeTextureU.height
@@ -235,7 +235,7 @@ func start()
 
 func loadAssets(wnd: *Wnd) throw
 {
-    render := &wnd.getApp().renderer
+    var render = &wnd.getApp().renderer
 
     var dataPath: String = Path.getDirectoryName(#location.fileName)
     dataPath = Path.combine(dataPath, "datas")
@@ -249,7 +249,7 @@ func loadAssets(wnd: *Wnd) throw
     g_BackTexture    = render.addImage(Path.combine(dataPath, "background-day.png"))
     g_MsgTexture     = render.addImage(Path.combine(dataPath, "message.png"))
 
-    img := Image.load(Path.combine(dataPath, "pipe-green.png"))
+    var img = Image.load(Path.combine(dataPath, "pipe-green.png"))
     g_PipeTextureD = render.addImage(img)
     img.flip()
     g_PipeTextureU = render.addImage(img)
@@ -270,8 +270,8 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
         g_Rect = wnd.getClientRect()
 
     case Paint:
-        paintEvt := cast(*PaintEvent) evt
-        painter  := paintEvt.bc.painter
+        var paintEvt = cast(*PaintEvent) evt
+        var painter = paintEvt.bc.painter
         g_Dt     = wnd.getApp().getDt()
 
         input(wnd)

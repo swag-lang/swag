@@ -14,6 +14,6 @@ struct A
     x.v = &x
 
     @assert(x.v.x == 666)
-    v := x.v
+    var v = x.v
     @assert(v.x == 666)
 }

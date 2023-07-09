@@ -1,7 +1,7 @@
 //#[Swag.PrintBc]
 #test
 {
-    b := true
+    var b = true
     @assert(b == true)
     b &= false
     @assert(b == false)

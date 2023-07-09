@@ -11,8 +11,8 @@ impl ScratchAllocator
 
     func align(value: u64, alignement: u32)->u64
     {
-        toAlign := alignement orelse @sizeof(*void)
-        result := value & ~(toAlign - 1)
+        var toAlign = alignement orelse @sizeof(*void)
+        var result = value & ~(toAlign - 1)
         if result < value result += toAlign
         return result
     }
@@ -54,8 +54,8 @@ impl ScratchAllocator
         used = 0
         while firstLeak
         {
-            p := cast(*LeakHeader) firstLeak
-            n := p.next
+            var p = cast(*LeakHeader) firstLeak
+            var n = p.next
             free(p, p.size)
             firstLeak = n
         }
@@ -87,7 +87,7 @@ impl IAllocator for ScratchAllocator
 
         // If this is the last allocated block in the buffer, we can free it
         // by changing the allocated used size
-        ptr := (block + used) - request.size
+        var ptr = (block + used) - request.size
         if ptr == request.address
         {
             request.address = null
@@ -104,7 +104,7 @@ impl IAllocator for ScratchAllocator
 
         // Otherwise we assume it's a leak. We unlink it, and free it with
         // the allocator
-        leak := cast(^LeakHeader) request.address
+        var leak = cast(^LeakHeader) request.address
         leak -= 1
         if !leak.prev
             firstLeak = leak.next
@@ -129,10 +129,10 @@ impl IAllocator for ScratchAllocator
         }
 
         // Allocate in the buffer if there is enough room
-        usedAlign := align(used, request.alignement)
+        var usedAlign = align(used, request.alignement)
         if usedAlign + request.size <= capacity
         {
-            oldAddress := request.address
+            var oldAddress = request.address
             request.address = block + usedAlign
             used = usedAlign + request.size
             maxUsed = @max(maxUsed, used)
@@ -144,9 +144,9 @@ impl IAllocator for ScratchAllocator
         // Otherwise this is a leak
         // We prepend a LeakHeader to the user block, and linked it in
         // the chained list of leak allocations (at the first position)
-        totalSize := request.size + @sizeof(LeakHeader)
-        ptr  := cast(^LeakHeader) alloc(totalSize, request.alignement)
-        leak := cast(^LeakHeader) firstLeak
+        var totalSize = request.size + @sizeof(LeakHeader)
+        var ptr = cast(^LeakHeader) alloc(totalSize, request.alignement)
+        var leak = cast(^LeakHeader) firstLeak
         if leak leak.prev = ptr
         ptr.prev = null
         ptr.next = firstLeak

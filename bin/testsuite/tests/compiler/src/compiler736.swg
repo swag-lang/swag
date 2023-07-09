@@ -9,6 +9,6 @@ func(T) toto(x: *T)
 
 #test
 {
-	cpt := 666
+	var cpt = 666
 	toto(&cpt)
 }

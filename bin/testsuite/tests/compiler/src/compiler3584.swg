@@ -15,7 +15,7 @@ impl A
 
     mtd opCount()->u64     { return 6; }
     mtd opSlice(a, b: u64)->string { return "abcdef"; }
-    mtd toString()->string  { return "abc:=0"; }
+    mtd toString()->string  { return "var abc =0"; }
 }
 
 //#[Swag.Compiler]
@@ -33,7 +33,7 @@ func toto()->A
     //#[Swag.PrintBc]
     //#ast
     //{
-        r := toto()
+        var r = toto()
         @assert(cast(string) r == "abcdef")
         //@print(cast(string) r)
      //   return cast(string) r //.toString()

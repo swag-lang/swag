@@ -1,5 +1,5 @@
 #[Swag.Inline]
 public func toto33()
 {
-    a, b := 0
+    var a, b = 0
 }

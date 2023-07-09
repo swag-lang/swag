@@ -7,5 +7,5 @@ func toto()->s64 throw
 //#[Swag.PrintBc]
 #test
 {
-    x := catch toto()
+    var x = catch toto()
 }

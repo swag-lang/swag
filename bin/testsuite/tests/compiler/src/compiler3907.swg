@@ -1,13 +1,13 @@
 //#[Swag.PrintBc]
 func toto(x: const [..] s32)
 {
-    a := &x[0]
+    var a = &x[0]
     @assert(@typeof(a).name == "const ^s32")
     @assert(@typeof(a) == const^s32)
 }
 
 #test
 {
-    x := [1]
+    var x = [1]
     toto(x)
 }

@@ -6,5 +6,5 @@ struct A
 func titi()
 {
     var pt: A
-    y := pt.x
+    var y = pt.x
 }

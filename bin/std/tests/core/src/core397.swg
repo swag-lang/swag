@@ -7,7 +7,7 @@ using Core
     loop i: 50
         h.add(i, String.from("s"))
 
-    h1 := h
+    var h1 = h
 
     visit k, v: h
         @assert(v[0] == "s"'u8)

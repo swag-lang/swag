@@ -6,6 +6,6 @@ struct Vector2
 const Max = Vector2{1, 1}
 #test
 {
-    x := Max
+    var x = Max
     x.x = 0
 }

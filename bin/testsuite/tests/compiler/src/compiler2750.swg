@@ -6,22 +6,22 @@
 #[Swag.Optim("", false)]
 #test
 {
-    x := -1'f32
-    y := cast(u64) x
+    var x = -1'f32
+    var y = cast(u64) x
 }
 
 #[Swag.Safety("", true)]
 #[Swag.Optim("", false)]
 #test
 {
-    x := Swag.F64.Max
-    y := cast(u64) x
+    var x = Swag.F64.Max
+    var y = cast(u64) x
 }
 
 #[Swag.Safety("", true)]
 #[Swag.Optim("", false)]
 #test
 {
-    x := -1'f64
-    y := cast(u64) x
+    var x = -1'f64
+    var y = cast(u64) x
 }

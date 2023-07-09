@@ -30,7 +30,7 @@ func toto()->[2] AA
 //#[Swag.PrintBc]
 #test
 {
-    x := toto()
+    var x = toto()
     @assert(x[0].x == 666)
     @assert(x[1].x == 666)
 }

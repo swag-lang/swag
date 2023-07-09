@@ -23,6 +23,6 @@ var err: MyError
 //#[Swag.PrintBc]
 #test
 {
-    v := toto()
+    var v = toto()
     @assert(v.toString() == "XX")
 }

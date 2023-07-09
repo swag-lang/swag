@@ -11,7 +11,7 @@ func toFloat() -> {a: f32, r: f32, g: f32}//, b: f32}
 //#[Swag.PrintBc, Swag.nooptim]
 #test
 {
-    v := toFloat()
+    var v = toFloat()
     @assert(v.a == 1)
     @assert(v.r == 2)
     @assert(v.g == 3)

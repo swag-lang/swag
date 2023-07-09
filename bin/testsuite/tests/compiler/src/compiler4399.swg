@@ -16,7 +16,7 @@ func(T, V) contains(values: const [..] T, value: V)->bool
 //#[Swag.PrintBc]
 #test
 {
-    arr := [1, 2, 4]
-    b := contains(arr[..], 1's32)
+    var arr = [1, 2, 4]
+    var b = contains(arr[..], 1's32)
     @assert(b)
 }

@@ -41,7 +41,7 @@ impl MyStruct
                 }
 
                 // @alias1 will be the index
-                @alias1 := @index
+                var @alias1 = @index
 
                 // include user code
                 #mixin #up stmt
@@ -55,8 +55,8 @@ So now that the `opVisit` has been defined, we can `visit` it.
 */
 #test
 {
-    myStruct := MyStruct{}
-    cpt := 0
+    var myStruct = MyStruct{}
+    var cpt = 0
 
     // Visiting each field in declaration order
     // 'v' is an alias for @alias0 (value)
@@ -97,7 +97,7 @@ impl MyStruct
                 case 2: @alias0 = #up self.x
                 }
 
-                @alias1 := @index
+                var @alias1 = @index
                 #mixin #up stmt
             }
         }
@@ -106,8 +106,8 @@ impl MyStruct
 
 #test
 {
-    myStruct := MyStruct{}
-    cpt := 0
+    var myStruct = MyStruct{}
+    var cpt = 0
 
     // To call a variant, add the extra name between parenthesis.
     visit(Reverse) v, i: myStruct

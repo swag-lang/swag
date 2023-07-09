@@ -1,7 +1,7 @@
 #[Swag.Mixin]
 func scopeLock()
 {
-    a := 4
+    var a = 4
     defer G = a
 }
 

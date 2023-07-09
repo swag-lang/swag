@@ -7,6 +7,6 @@ using Core, Math
     var b: Vector2 = {99.0, 100.0}
     var c: Vector2 = {100.0, 99.0}
     var d: Vector2 = {105.0, 99.0}
-    (x, y) := Vector2.lineLineIntersect(a, b, c, d)
+    var (x, y) = Vector2.lineLineIntersect(a, b, c, d)
     Console.print(y)
 }

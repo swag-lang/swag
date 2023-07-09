@@ -3,8 +3,8 @@
 {
     loop 4
     {
-        str := "toto"
+        var str = "toto"
     }
 
-    str := "titi"
+    var str = "titi"
 }

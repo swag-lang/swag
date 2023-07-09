@@ -749,7 +749,6 @@ bool Parser::doModifiers(Token& forNode, TokenId tokenId, uint32_t& mdfFlags)
             switch (opId)
             {
             case TokenId::SymEqual:
-            case TokenId::SymColonEqual:
                 break;
             default:
                 return error(token, Fmt(Err(Syn0126), token.ctext(), forNode.ctext()));
@@ -798,7 +797,6 @@ bool Parser::doModifiers(Token& forNode, TokenId tokenId, uint32_t& mdfFlags)
             switch (opId)
             {
             case TokenId::SymEqual:
-            case TokenId::SymColonEqual:
                 break;
             default:
                 return error(token, Fmt(Err(Syn0126), token.ctext(), forNode.ctext()));
@@ -815,7 +813,6 @@ bool Parser::doModifiers(Token& forNode, TokenId tokenId, uint32_t& mdfFlags)
             switch (opId)
             {
             case TokenId::SymEqual:
-            case TokenId::SymColonEqual:
                 break;
             default:
                 return error(token, Fmt(Err(Syn0126), token.ctext(), forNode.ctext()));
@@ -1395,30 +1392,18 @@ bool Parser::doAffectExpression(AstNode* parent, AstNode** result, AstWith* with
     SWAG_CHECK(doLeftExpressionAffect(parent, &leftNode, withNode));
     Ast::removeFromParent(leftNode);
 
-    // Variable declaration and initialization by ':='
-    if (token.id == TokenId::SymColonEqual)
-    {
-        auto     saveToken = token;
-        AstNode* assign;
-        SWAG_CHECK(eatToken());
-        SWAG_CHECK(doInitializationExpression(saveToken, parent, EXPR_FLAG_IN_VAR_DECL, &assign));
-        Ast::removeFromParent(assign);
-        SWAG_CHECK(doVarDeclExpression(parent, leftNode, nullptr, assign, saveToken, AstNodeKind::VarDecl, result));
-        leftNode->release();
-    }
-
     // Affect operator
-    else if (token.id == TokenId::SymEqual ||
-             token.id == TokenId::SymPlusEqual ||
-             token.id == TokenId::SymMinusEqual ||
-             token.id == TokenId::SymAsteriskEqual ||
-             token.id == TokenId::SymSlashEqual ||
-             token.id == TokenId::SymAmpersandEqual ||
-             token.id == TokenId::SymVerticalEqual ||
-             token.id == TokenId::SymCircumflexEqual ||
-             token.id == TokenId::SymPercentEqual ||
-             token.id == TokenId::SymLowerLowerEqual ||
-             token.id == TokenId::SymGreaterGreaterEqual)
+    if (token.id == TokenId::SymEqual ||
+        token.id == TokenId::SymPlusEqual ||
+        token.id == TokenId::SymMinusEqual ||
+        token.id == TokenId::SymAsteriskEqual ||
+        token.id == TokenId::SymSlashEqual ||
+        token.id == TokenId::SymAmpersandEqual ||
+        token.id == TokenId::SymVerticalEqual ||
+        token.id == TokenId::SymCircumflexEqual ||
+        token.id == TokenId::SymPercentEqual ||
+        token.id == TokenId::SymLowerLowerEqual ||
+        token.id == TokenId::SymGreaterGreaterEqual)
     {
         uint8_t  opFlags     = 0;
         uint64_t opAttrFlags = 0;

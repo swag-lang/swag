@@ -15,7 +15,7 @@ func whatever(x: s32)
 #test
 {
     whatever(665)
-    x := 665
+    var x = 665
     whatever(x)
     @assert(G == 3)
 }

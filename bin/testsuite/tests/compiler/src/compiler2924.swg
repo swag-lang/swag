@@ -9,6 +9,6 @@ func(T) toto(x: const [..] T)
 
 #test
 {
-    x := 0
+    var x = 0
     toto(@mkslice(cast(^s32) &x, 1))
 }

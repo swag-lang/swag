@@ -13,22 +13,22 @@ The `#validif` expression is evaluated **only once**, whatever the call, so it i
     func(T) sum(x: T...)->T
         #validif @typeof(T) == s32 or @typeof(T) == s64
     {
-        total := 0'T
+        var total = 0'T
         visit it: x
             total += it
         return total
     }
 
     // This is ok.
-    res1 := sum's32(1, 2)
+    var res1 = sum's32(1, 2)
     @assert(res1 == 3)
-    res2 := sum's64(10, 20)
+    var res2 = sum's64(10, 20)
     @assert(res2 == 30)
 
     // But the following would generate an error because the type is `f32`.
     // So there's no match possible for that type.
 
-    // res1 := sum'f32(1, 2)
+    // var res1 = sum'f32(1, 2)
 }
 
 /**
@@ -67,7 +67,7 @@ Instead of a single expression, `#validif` can be followed by a block that retur
             return false
         }
     {
-        total := 0'T
+        var total = 0'T
         visit it: x
             total += it
         return total
@@ -93,7 +93,7 @@ By using `@compilererror`, you can then trigger your own errors at compile time 
 
     // This will trigger an error
 
-    // x := sum'f32(1, 2)
+    // var x = sum'f32(1, 2)
 }
 
 
@@ -138,11 +138,11 @@ Instead of `#validif`, you can use `#validifx`. `#validifx` is evaluated for **e
         }
 
         // Fine
-        x1 := div(1, 1)
+        var x1 = div(1, 1)
 
         // Error at compile time, division by zero.
 
-        // x2 := div(1, 0)
+        // var x2 = div(1, 0)
     }
 
     {

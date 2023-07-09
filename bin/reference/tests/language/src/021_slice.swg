@@ -28,8 +28,8 @@ A slice is a pointer on a buffer of datas, and a `u64` to count the number of el
     // At runtime, `@dataof` will return the address of the values, `@countof` the number of elements.
     {
         var a: const [..] u32 = [10, 20, 30, 40, 50]
-        count := @countof(a)
-        addr  := @dataof(a)
+        var count = @countof(a)
+        var addr = @dataof(a)
         @assert(count == 5)
         @assert(addr[0] == 10)
         @assert(addr[4] == 50)
@@ -103,35 +103,35 @@ A slice is a pointer on a buffer of datas, and a `u64` to count the number of el
 
     // You can also slice an array.
     {
-        arr := [10, 20, 30, 40]
-        slice := arr[2..3]
+        var arr = [10, 20, 30, 40]
+        var slice = arr[2..3]
         @assert(slice[0] == 30)
         @assert(slice[1] == 40)
         @assert(@countof(slice) == 2)
 
         // Creates a slice for the whole array
-        slice1 := arr[..]
+        var slice1 = arr[..]
         @assert(@countof(slice1) == @countof(arr))
     }
 
     // You can slice another slice.
     {
-        arr := [10, 20, 30, 40]
-        slice1 := arr[1..3]
+        var arr = [10, 20, 30, 40]
+        var slice1 = arr[1..3]
         @assert(slice1[0] == 20)
         @assert(slice1[1] == 30)
         @assert(slice1[2] == 40)
 
-        slice2 := slice1[1..2]
+        var slice2 = slice1[1..2]
         @assert(slice2[0] == 30)
         @assert(slice2[1] == 40)
     }
 
     // You can transform a pointer to a slice.
     {
-        arr := [10, 20, 30, 40]
-        ptr := &arr[2]
-        slice := ptr[0..1]
+        var arr = [10, 20, 30, 40]
+        var ptr = &arr[2]
+        var slice = ptr[0..1]
         @assert(slice[0] == 30)
         @assert(slice[1] == 40)
         @assert(@countof(slice) == 2)

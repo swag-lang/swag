@@ -13,10 +13,10 @@
         #[Swag.Macro]
         func myMacro()
         {
-            a := 666    // 'a' is declared in the scope of 'myMacro'
+            var a = 666    // 'a' is declared in the scope of 'myMacro'
         }
 
-        a := 0
+        var a = 0
         myMacro()   // no conflict with the 'a' declared above
         @assert(a == 0)
     }
@@ -29,7 +29,7 @@
             #up a += 1 // Add '#up' before the identifier to reference the 'a' of the caller
         }
 
-        a := 0
+        var a = 0
         myMacro()
         myMacro()
         @assert(a == 2)
@@ -43,7 +43,7 @@
             #mixin what
         }
 
-        a := 0
+        var a = 0
 
         myMacro(#code { #up a += 1; } )
 
@@ -61,7 +61,7 @@
         func myMacro(what: code)
         {
             // No conflict, in its own scope
-            a := 666
+            var a = 666
 
             #macro
             {
@@ -70,7 +70,7 @@
             }
         }
 
-        a := 1
+        var a = 1
         myMacro()
         {
             a += 2  // will reference the 'a' above because this code has been inserted inside '#macro'
@@ -84,12 +84,12 @@
         #[Swag.Macro]
         func repeat(count: s32, what: code)
         {
-            a := 0
+            var a = 0
             while a < count
             {
                 #macro
                 {
-                    index := #up a
+                    var index = #up a
                     #mixin #up what
                 }
 
@@ -97,7 +97,7 @@
             }
         }
 
-        a := 0
+        var a = 0
         repeat(5) { a += index; }
         @assert(a == 0+1+2+3+4)
         repeat(3) { a += index; }
@@ -123,7 +123,7 @@
             }
         }
 
-        a := 0
+        var a = 0
         repeatSquare(5)
         {
             a += 1
@@ -139,8 +139,8 @@
         #[Swag.Macro]
         func call(v: s32, stmt: code)
         {
-            @alias0 := v
-            @alias1 := v * 2
+            var @alias0 = v
+            var @alias1 = v * 2
             #mixin stmt
         }
 

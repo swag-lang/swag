@@ -1,8 +1,8 @@
 //#[Swag.PrintBc]
 func(T) toto()
 {
-    x := cast(T) 2
-    y := cast(T) 1
+    var x = cast(T) 2
+    var y = cast(T) 1
     @assert(@min(x, y) == 1)
     @assert(@max(x, y) == 2)
     @assert(@min(y, x) == 1)
@@ -32,7 +32,7 @@ func(T) toto()
     toto'u64()
 
     {
-        x := 456
+        var x = 456
         @assert(@min(@max(x, 0), 255) == 255)
     }
 

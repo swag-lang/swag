@@ -3,7 +3,7 @@
 {
     #ast
     {
-        return "x := 0\nx += 1"
+        return "var x = 0\nx += 1"
     }
 
     #ast "x += 2"

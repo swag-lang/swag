@@ -1,27 +1,27 @@
 #test
 {
     {
-        x, y := true
+        var x, y = true
         x ^= y
         @assert(x == false)
     }
 
     {
-        x, y := false
+        var x, y = false
         x ^= y
         @assert(x == false)
     }
 
     {
-        x := false
-        y := true
+        var x = false
+        var y = true
         x ^= y
         @assert(x == true)
     }
 
     {
-        x := true
-        y := false
+        var x = true
+        var y = false
         x ^= y
         @assert(x == true)
     }

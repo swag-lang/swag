@@ -12,7 +12,7 @@ struct Point
 	var pt : Point
 	pt.x = 0
 	pt.y = 0
-	ptr := &pt
+	var ptr = &pt
 	@init(ptr)
 	@assert(pt.x == 10)
 	@assert(pt.y == 20)

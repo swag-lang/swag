@@ -2,8 +2,8 @@
 #test
 {
     {
-        cpt := 0
-        l := 0
+        var cpt = 0
+        var l = 0
         loop x: -5..5
         {
             cpt += x
@@ -15,7 +15,7 @@
     }
 
     {
-        l := 0
+        var l = 0
         loop i: 1..3
         {
             l += i
@@ -24,7 +24,7 @@
     }
 
     {
-        l := 0
+        var l = 0
         loop i: 1..1
         {
             l += i
@@ -33,8 +33,8 @@
     }
 
     {
-        l := 0
-        c := 0
+        var l = 0
+        var c = 0
         loop i: 4..0
         {
             l += i

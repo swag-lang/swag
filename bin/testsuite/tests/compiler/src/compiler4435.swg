@@ -7,8 +7,8 @@ func toto(a: ref string, b: moveref string)
 
 #test
 {
-    a := "1"
-    b := "2"
+    var a = "1"
+    var b = "2"
     toto(&a, moveref &b)
     @assert(a == "2")
 }

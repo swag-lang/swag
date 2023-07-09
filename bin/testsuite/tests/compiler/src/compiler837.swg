@@ -6,6 +6,6 @@
 	loop 10
 	{
 		break
-		a := 0
+		var a = 0
 	}
 }

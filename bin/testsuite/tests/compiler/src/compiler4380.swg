@@ -15,7 +15,7 @@
         return t == f32
     }*/
 
-    x := isF32(s32)
+    var x = isF32(s32)
 
     //if x == s32
     {

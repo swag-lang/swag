@@ -12,17 +12,17 @@ typeset AA
 
     {
         v = AA.T{666}
-        ptr := @kindof(v)
+        var ptr = @kindof(v)
         @assert(ptr == AA.T)
-        vv := cast(AA.T) v
+        var vv = cast(AA.T) v
         @assert(vv.x == 666)
     }
 
     {
         v = AA.T1{123, 456}
-        ptr := @kindof(v)
+        var ptr = @kindof(v)
         @assert(ptr == AA.T1)
-        vv := cast(AA.T1) v
+        var vv = cast(AA.T1) v
         @assert(vv.x == 123)
         @assert(vv.y == 456)
     }

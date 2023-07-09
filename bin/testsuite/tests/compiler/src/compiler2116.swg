@@ -17,7 +17,7 @@ struct(T) Arr
 #test
 {
     var x: Arr's32
-    ptr := @typeof(x.BB)
+    var ptr = @typeof(x.BB)
     @assert(ptr.rawType == s32)
     @assert(x.BB.R == 0)
     @assert(x.BB.G == 1)

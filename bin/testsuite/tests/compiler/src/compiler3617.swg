@@ -24,9 +24,9 @@ struct X
     x.t[0] = &toto
     x.t[1] = &toto1
 
-    res := x.t[0](1, 2)
+    var res = x.t[0](1, 2)
     @assert(res == 3)
 
-    //res1 := x.t[1](2, 3)
+    //var res1 = x.t[1](2, 3)
     //@assert(res1 == 5)
 }

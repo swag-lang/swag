@@ -83,8 +83,8 @@ impl Painter
         if radiusX == 0 or radiusY == 0 or pen.brush.color.a == 0
             return
 
-        rX := radiusX
-        rY := radiusY
+        var rX = radiusX
+        var rY = radiusY
 
         #[Swag.Complete]
         switch pen.borderPos

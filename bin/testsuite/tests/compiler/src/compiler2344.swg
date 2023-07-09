@@ -8,7 +8,7 @@ func toto(T: s32)->s32
         loop i: T
             az[i + 7] = "1"'u8
 
-        str1 := @mkstring(&az[0], 16)
+        var str1 = @mkstring(&az[0], 16)
         return str1
     }
 }
@@ -22,7 +22,7 @@ func toto(t: typeinfo) => t.fullname
 //#[Swag.PrintBc]
 #test
 {
-    s := @typeof(bool)
-    x := toto(s32)
+    var s = @typeof(bool)
+    var x = toto(s32)
     @assert(x == "s32")
 }

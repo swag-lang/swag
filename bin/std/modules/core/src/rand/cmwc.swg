@@ -31,12 +31,12 @@ impl CMWC4096
         if i > 4095 seedU32(362436)
 
 	    i = (i + 1) & 4095
-    	t := a * q[i] + c
+    	var t = a * q[i] + c
 	    c = cast(u32) (t >> 32)
-	    x := t + c
+	    var x = t + c
 	    if x < c
             x, c += 1
-        v := cast,bit(u32) (r - x)
+        var v = cast,bit(u32) (r - x)
         q[i] = v
 	    return v
     }

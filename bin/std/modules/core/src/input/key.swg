@@ -228,7 +228,7 @@ public func getKeyName(mdf: KeyModifiers, key: Key)->String
     }
 
     if result.length result += "+"
-    k := key
+    var k = key
 
     switch key
     {

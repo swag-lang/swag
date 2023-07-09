@@ -17,17 +17,17 @@ impl IWnd for PalettePicker
 {
     mtd impl onPaintEvent(evt: *PaintEvent)
     {
-        bc      := evt.bc
-        painter := bc.painter
-        colors  := getThemeColors()
+        var bc = evt.bc
+        var painter = bc.painter
+        var colors = getThemeColors()
 
         var colorBorder: Color = undefined
 
-        clientRect := getClientRectPadding()
+        var clientRect = getClientRectPadding()
         palPos.resize(pal.count)
 
-        x := clientRect.x
-        y := clientRect.y
+        var x = clientRect.x
+        var y = clientRect.y
         visit c, i: pal
         {
             if hotIdx == i
@@ -35,7 +35,7 @@ impl IWnd for PalettePicker
             else
                 colorBorder = colors.palPicker_Border
 
-            posBox := Math.Rectangle{x, y, boxSize, boxSize}
+            var posBox = Math.Rectangle{x, y, boxSize, boxSize}
             palPos[i] = posBox
 
             painter.setParams(.Antialiased)
@@ -58,11 +58,11 @@ impl IWnd for PalettePicker
 
     mtd impl onMouseEvent(evt: *MouseEvent)
     {
-        pos := surfaceToLocal(evt.surfacePos)
+        var pos = surfaceToLocal(evt.surfacePos)
         evt.accepted = false
 
         // Hit test
-        newHotIdx := Swag.S32.Max
+        var newHotIdx = Swag.S32.Max
         loop i: palPos
         {
             if palPos[i].contains(pos)
@@ -104,7 +104,7 @@ impl PalettePicker
     func create(parent: *Wnd, position: Math.Rectangle = {}, id: WndId = null)->*PalettePicker
     {
         Debug.assert(parent != null)
-        ret := Wnd.create'PalettePicker(parent, null, position, id)
+        var ret = Wnd.create'PalettePicker(parent, null, position, id)
         return ret
     }
 
@@ -125,7 +125,7 @@ impl PalettePicker
     // Add a range of changing 'luminance'
     mtd addLumColors(numColors: s32, base: Color)
     {
-        (h, s, l) := base.toHsl()
+        var (h, s, l) = base.toHsl()
 
         loop i: numColors
         {
@@ -141,7 +141,7 @@ impl PalettePicker
     // Add a range of changing 'saturation'
     mtd addSatColors(numColors: s32, base: Color, lum: f32 = 0.5)
     {
-        (h, s, l) := base.toHsl()
+        var (h, s, l) = base.toHsl()
 
         loop i: numColors
         {

@@ -12,5 +12,5 @@ func test()->{a,b: s32}
 
 #test
 {
-    x := test()
+    var x = test()
 }

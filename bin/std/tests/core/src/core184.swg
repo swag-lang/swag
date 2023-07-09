@@ -5,7 +5,7 @@ using Core
 #test
 {
     {
-        stream := catch File.openRead("tolklkjlkjk:jto")
+        var stream = catch File.openRead("tolklkjlkjk:jto")
         @assert(@errmsg != null)
     }
 

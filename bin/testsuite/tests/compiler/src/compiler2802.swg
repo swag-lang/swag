@@ -2,5 +2,5 @@
 
 #test
 {
-    x := const {1, 2}
+    var x = const {1, 2}
 }

@@ -20,12 +20,12 @@ impl IWnd for ProgressBar
 {
     mtd impl onPaintEvent(evt: *PaintEvent)
     {
-        bc     := evt.bc
-        painter := bc.painter
-        theme   := getTheme()
-        metrics := getThemeMetrics()
-        colors  := getThemeColors()
-        rects   := getThemeRects()
+        var bc = evt.bc
+        var painter = bc.painter
+        var theme = getTheme()
+        var metrics = getThemeMetrics()
+        var colors = getThemeColors()
+        var rects = getThemeRects()
 
         var colorBk:     Color = undefined
         var colorBorder: Color = undefined
@@ -43,29 +43,29 @@ impl IWnd for ProgressBar
             colorMark     = colors.progressBar_Mark
         }
 
-        subRectBk     := &rects.progressBar_Bk
-        subRectBorder := &rects.progressBar_Border
-        subRectMark   := &rects.progressBar_Mark
+        var subRectBk = &rects.progressBar_Bk
+        var subRectBorder = &rects.progressBar_Border
+        var subRectMark = &rects.progressBar_Mark
 
         // Bk
-        clientRect := getClientRect()
+        var clientRect = getClientRect()
         theme.drawSubRect(painter, clientRect, subRectBk, colorBk)
 
         painter.startClippingRegion()
-        clip := clientRect
+        var clip = clientRect
         clip.inflate(-metrics.progressBar_ClipOffset)
         theme.drawSubRect(painter, clip, subRectBk, Argb.White)
         painter.endClippingRegion()
 
         // Bar
-        posBox := clientRect
+        var posBox = clientRect
         posBox.y = clientRect.vertCenter() - (posBox.height * 0.5)
         if prgBarFlags.has(.Infinite)
         {
-            w := Math.max(clientRect.width / 5, 1)
+            var w = Math.max(clientRect.width / 5, 1)
             posBox.width = w
 
-            wt := clientRect.width + 2 * w
+            var wt = clientRect.width + 2 * w
             posBox.x = -w + (progression * wt)
 
             // Automatic update of progresssion
@@ -92,7 +92,7 @@ impl ProgressBar
     func create(parent: *Wnd, position: Math.Rectangle = {}, id: WndId = null)->*ProgressBar
     {
         Debug.assert(parent != null)
-        pos := position
+        var pos = position
         if pos.height == 0
             pos.height = parent.getThemeMetrics().progressBar_Height
         return Wnd.create'ProgressBar(parent, null, pos, id)
@@ -101,7 +101,7 @@ impl ProgressBar
     // Set the progression in [0..1] range
     mtd setProgression(prg: f32)
     {
-        newPrg := Math.saturate(prg)
+        var newPrg = Math.saturate(prg)
         if newPrg == progression
             return
         progression = newPrg

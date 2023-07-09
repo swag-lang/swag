@@ -2,7 +2,7 @@
 
 #test
 {
-    i := 0
+    var i = 0
     #scope Scope
     {
         if i == 2

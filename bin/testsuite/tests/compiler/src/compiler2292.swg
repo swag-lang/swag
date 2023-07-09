@@ -39,7 +39,7 @@ func toto()-> {x: AA}
 {
     {
         //var x: AA
-        (x) := toto()
+        var (x) = toto()
         @assert(G == 0)
     }
 }

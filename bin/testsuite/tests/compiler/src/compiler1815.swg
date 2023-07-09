@@ -5,7 +5,7 @@
 #[Swag.Optim("", false)]
 #test
 {
-    a := "toto"
+    var a = "toto"
     #[Swag.Safety("", true)]
-    c := a[0..4]
+    var c = a[0..4]
 }

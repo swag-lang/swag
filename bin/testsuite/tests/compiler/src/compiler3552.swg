@@ -11,11 +11,11 @@ struct A
 var G = 0
 #message(Swag.CompilerMsgMask.AttributeGen)
 {
-    itf := @compiler()
-    msg := itf.getMessage()
+    var itf = @compiler()
+    var msg = itf.getMessage()
     if msg.type.kind != .Struct return
 
-    typeS := cast(const *TypeInfoStruct) msg.type
+    var typeS = cast(const *TypeInfoStruct) msg.type
     if @countof(typeS.attributes) != 1 return
     if typeS.attributes[0].type != @typeof(GenStuff) return
     itf.compileString("impl A {\n mtd opDrop() {\nG += 1\n}\n}")
@@ -29,7 +29,7 @@ var G = 0
         @assert(G == 0)
     }
 
-    t := @typeof(A)
+    var t = @typeof(A)
     @assert(t.opDrop != null)
     @assert(G == 1)
 }

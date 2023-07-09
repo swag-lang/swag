@@ -52,7 +52,7 @@ struct BB
     G.toto()
     G.toto1()
     titi(&x)
-    y := &x
+    var y = &x
     y.toto()
 
     var b: BB

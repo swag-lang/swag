@@ -2,7 +2,7 @@
 //#[Swag.PrintBc]
 #test
 {
-	x := 0
-	ptr := &x
+	var x = 0
+	var ptr = &x
 	@init(ptr, 1.0)
 }

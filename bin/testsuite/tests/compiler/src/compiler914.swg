@@ -6,14 +6,14 @@ func(T) sum(x, y: *T) => dref x + dref y
 //#[Swag.PrintBc]
 #test
 {
-	a := 1
-	b := 2
+	var a = 1
+	var b = 2
 	@assert(sum(&a, &b) == 3)
 
 	b = 10
 	@assert(sum(&a, &b) == 11)
 
-	c := 1.0
-	d := 5.5
+	var c = 1.0
+	var d = 5.5
 	@assert(sum(&c, &d) == 6.5)
 }

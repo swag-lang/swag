@@ -21,15 +21,15 @@ func readF64(str: string)->{neg: bool, mantissa: u64, exp: s32, trunc: bool, eat
 {
     var result: retval
 
-    cpt := 0'u32
-    countof := @countof(str)
-    buffer := @dataof(str)
+    var cpt = 0'u32
+    var countof = @countof(str)
+    var buffer = @dataof(str)
 
-    negSign := "-"'u8 // g_CultureInfo.numberFormat.negativeSign
-    plusSign := "+"'u8 // g_CultureInfo.numberFormat.positiveSign
-    dotSign := "."'u8 // g_CultureInfo.numberFormat.decimalSeparator
+    var negSign = "-"'u8 // g_CultureInfo.numberFormat.negativeSign
+    var plusSign = "+"'u8 // g_CultureInfo.numberFormat.positiveSign
+    var dotSign = "."'u8 // g_CultureInfo.numberFormat.decimalSeparator
 
-    c := dref buffer
+    var c = dref buffer
     if c == negSign
     {
         buffer, cpt += 1
@@ -41,12 +41,12 @@ func readF64(str: string)->{neg: bool, mantissa: u64, exp: s32, trunc: bool, eat
     }
 
 	// digits
-	maxMantDigits := 19 // 10^19 fits in u64
-	sawdot    := false
-	sawDigits := false
-	nd := 0
-	ndMant := 0
-	dp := 0
+	var maxMantDigits = 19 // 10^19 fits in u64
+	var sawdot = false
+	var sawDigits = false
+	var nd = 0
+	var ndMant = 0
+	var dp = 0
 
     while cpt < countof
     {
@@ -96,7 +96,7 @@ func readF64(str: string)->{neg: bool, mantissa: u64, exp: s32, trunc: bool, eat
 		if cpt >= countof
 			throw "invalid"
 
-		esign := 1
+		var esign = 1
 		c = dref buffer
         if c == negSign
         {
@@ -113,7 +113,7 @@ func readF64(str: string)->{neg: bool, mantissa: u64, exp: s32, trunc: bool, eat
 		if cpt >= countof or c < "0"'u8 or c > "9"'u8
 			throw "invalid"
 
-		e := 0
+		var e = 0
         while cpt < countof
         {
             c = dref buffer
@@ -147,8 +147,8 @@ func atoF64Exact(neg: bool, mantissa: u64, exponent: s32) -> {f: f64, ok: bool}
 	if mantissa >> f64info.mantbits != 0
      	return result
 
-    exp := exponent
-	f := cast(f64) mantissa
+    var exp = exponent
+	var f = cast(f64) mantissa
 	if neg f = -f
 
 	switch
@@ -191,19 +191,19 @@ func atoF64Exact(neg: bool, mantissa: u64, exponent: s32) -> {f: f64, ok: bool}
 func atoF64(s: string)-> { value: f64, eat: u32 } throw
 {
     var result: retval
-    countof := @countof(s)
+    var countof = @countof(s)
     if !countof return result
 
-	/*if val, n, ok := special(s); ok {
+	/*if val, n, var ok = special(s); ok {
 		return val, n, nil
 	}*/
 
-	read := try readF64(s)
+	var read = try readF64(s)
     result.eat = read.eat
 
     if !read.trunc
     {
-        (f, ok) := atoF64Exact(read.neg, read.mantissa, read.exp)
+        var (f, ok) = atoF64Exact(read.neg, read.mantissa, read.exp)
         if ok
         {
             result.value = f
@@ -211,7 +211,7 @@ func atoF64(s: string)-> { value: f64, eat: u32 } throw
         }
     }
 
-    (f, ok) := eiselLemire64(read.neg, read.mantissa, read.exp)
+    var (f, ok) = eiselLemire64(read.neg, read.mantissa, read.exp)
     if !ok throw "invalid"
     result.value = f
 
@@ -222,7 +222,7 @@ func atoF64(s: string)-> { value: f64, eat: u32 } throw
         // Even if the mantissa was truncated, we may
         // have found the correct result. Confirm by
         // converting the upper mantissa bound.
-        fUp, ok := eiselLemire64(mantissa+1, exp, neg)
+        fUp, var ok = eiselLemire64(mantissa+1, exp, neg)
         if ok and f == fUp {
             return f, n, nil
         }
@@ -233,7 +233,7 @@ func atoF64(s: string)-> { value: f64, eat: u32 } throw
 	if !d.set(s[:n]) {
 		return 0, n, syntaxError(fnParseFloat, s)
 	}
-	b, ovf := d.floatBits(&f64info)
+	b, var ovf = d.floatBits(&f64info)
 	f = Math.f64frombits(b)
 	if ovf {
 		err = rangeError(fnParseFloat, s)
@@ -952,7 +952,7 @@ func eiselLemire64(neg: bool, mantissa: u64, exp10: s32)->{f: f64, ok: bool}
 	// https://nigeltao.github.io/blog/2020/eisel-lemire.html blog post.
 
 	// Exp10 Range.
-    man := mantissa
+    var man = mantissa
 	if man == 0
     {
 		if neg
@@ -964,24 +964,24 @@ func eiselLemire64(neg: bool, mantissa: u64, exp10: s32)->{f: f64, ok: bool}
 		return result
 
 	// Normalization.
-	clz := @bitcountlz(man)
+	var clz = @bitcountlz(man)
 	man <<= cast(u32) clz
 
 	const ExponentBias = 1023
-	retExp2 := cast(u64) (((217706's64 * exp10) >> 16) + 64 + ExponentBias) - clz
+	var retExp2 = cast(u64) (((217706's64 * exp10) >> 16) + 64 + ExponentBias) - clz
 
 	// Multiplication.
-    v := PowersOfTen[exp10-PowersOfTenMinExp10, 1]
-	(xHi, xLo) := mulU64(man, v)
+    var v = PowersOfTen[exp10-PowersOfTenMinExp10, 1]
+	var (xHi, xLo) = mulU64(man, v)
 
 	// Wider Approximation.
 	if xHi & 0x1FF == 0x1FF and xLo + man < man
     {
         v = PowersOfTen[exp10-PowersOfTenMinExp10, 0]
-		(yHi, yLo) := mulU64(man, v)
+		var (yHi, yLo) = mulU64(man, v)
 
-		mergedHi := xHi
-        mergedLo := xLo + yHi
+		var mergedHi = xHi
+        var mergedLo = xLo + yHi
 
 		if mergedLo < xLo
 			mergedHi += 1
@@ -994,8 +994,8 @@ func eiselLemire64(neg: bool, mantissa: u64, exp10: s32)->{f: f64, ok: bool}
 	}
 
 	// Shifting to 54 Bits.
-	msb := (xHi >> 63)
-	retMantissa := xHi >> cast(u32) (msb + 9)
+	var msb = (xHi >> 63)
+	var retMantissa = xHi >> cast(u32) (msb + 9)
 	retExp2 -= 1'u64 ^ msb
 
 	// Half-way Ambiguity.
@@ -1018,7 +1018,7 @@ func eiselLemire64(neg: bool, mantissa: u64, exp10: s32)->{f: f64, ok: bool}
 	if retExp2-1 >= 0x7FF-1
 		return result
 
-	retBits := (retExp2 << 52) | (retMantissa & 0x000FFFFFFFFFFFFF)
+	var retBits = (retExp2 << 52) | (retMantissa & 0x000FFFFFFFFFFFFF)
 	if neg
 		retBits |= 0x8000000000000000
 	result.f = cast,bit(f64) retBits
@@ -1029,14 +1029,14 @@ func eiselLemire64(neg: bool, mantissa: u64, exp10: s32)->{f: f64, ok: bool}
 func mulU64(x, y: u64) -> {hi: u64, lo: u64}
 {
 	const mask32 = (1'u64 << 32) - 1
-	x0 := x & mask32
-	x1 := x >> 32
-	y0 := y & mask32
-	y1 := y >> 32
-	w0 := x0 * y0
-	t := (x1 * y0) + (w0 >> 32)
-	w1 := t & mask32
-	w2 := t >> 32
+	var x0 = x & mask32
+	var x1 = x >> 32
+	var y0 = y & mask32
+	var y1 = y >> 32
+	var w0 = x0 * y0
+	var t = (x1 * y0) + (w0 >> 32)
+	var w1 = t & mask32
+	var w2 = t >> 32
 	w1 += x0 * y1
 
     var result: retval
@@ -1048,7 +1048,7 @@ func mulU64(x, y: u64) -> {hi: u64, lo: u64}
 #test
 {
 	{
-		x := assume readF64("1.0")
+		var x = assume readF64("1.0")
 		@assert(x.mantissa == 10)
 		@assert(x.exp == -1)
 		@assert(x.neg == false)
@@ -1056,7 +1056,7 @@ func mulU64(x, y: u64) -> {hi: u64, lo: u64}
 	}
 
 	{
-		x := assume readF64("-11.1")
+		var x = assume readF64("-11.1")
 		@assert(x.mantissa == 111)
 		@assert(x.exp == -1)
 		@assert(x.neg == true)
@@ -1064,7 +1064,7 @@ func mulU64(x, y: u64) -> {hi: u64, lo: u64}
 	}
 
 	{
-		x := assume readF64("66e-1")
+		var x = assume readF64("66e-1")
 		@assert(x.mantissa == 66)
 		@assert(x.exp == -1)
 		@assert(x.neg == false)
@@ -1075,21 +1075,21 @@ func mulU64(x, y: u64) -> {hi: u64, lo: u64}
 #test
 {
     {
-        x := assume atoF64("1.0")
+        var x = assume atoF64("1.0")
         @assert(x.value == 1.0)
         @assert(x.eat == 3)
     }
 
 
     {
-        x := assume atoF64("1.7976931348623157e308")
+        var x = assume atoF64("1.7976931348623157e308")
         //@print(x.value)
         //@assert(x.value == 1.0)
         //@assert(x.eat == 3)
     }
 
     {
-        x := assume atoF64("100000000000000016777216")
+        var x = assume atoF64("100000000000000016777216")
         //@print(x.value)
         //@assert(x.value == 1.0)
         //@assert(x.eat == 3)

@@ -34,7 +34,7 @@ impl IForm for FormStep
 {
     mtd impl isSame(ptr: *BaseForm)->bool
     {
-        other := cast(*FormStep) ptr
+        var other = cast(*FormStep) ptr
         return  borderColor == other.borderColor and
                 backColor   == other.backColor and
                 alpha       == other.alpha and
@@ -45,8 +45,8 @@ impl IForm for FormStep
 
     mtd impl copy(dst, src: *BaseForm)
     {
-        dstf := cast(*FormStep) dst
-        srcf := cast(*FormStep) src
+        var dstf = cast(*FormStep) dst
+        var srcf = cast(*FormStep) src
         dstf.borderColor = srcf.borderColor
         dstf.backColor   = srcf.backColor
         dstf.alpha       = srcf.alpha
@@ -59,14 +59,14 @@ impl IForm for FormStep
 
     mtd impl edit(evt: *MouseEvent, paintRect: Math.Rectangle, movingStart: Math.Point, localPos: Math.Point, zoom: f32)->bool
     {
-        xa := cast(s32) ((movingStart.x - paintRect.x) / zoom)
-        ya := cast(s32) ((movingStart.y - paintRect.y) / zoom)
+        var xa = cast(s32) ((movingStart.x - paintRect.x) / zoom)
+        var ya = cast(s32) ((movingStart.y - paintRect.y) / zoom)
         xa -= ws/2
         ya -= hs/2
         setBaseForm(xa, ya, ws, hs)
 
-        xbu := 0
-        ybu := 0
+        var xbu = 0
+        var ybu = 0
         capture.snap(&xbu, &ybu, true, true, 0, cast(IForm) self)
         xa += xbu
         ya += ybu
@@ -151,15 +151,15 @@ impl IForm for FormStep
         switch kind
         {
         case Ellipse:
-            pos := Math.Vector2{pt.x, pt.y}
-            cen := Math.Vector2{paintPos.horzCenter(), paintPos.vertCenter()}
+            var pos = Math.Vector2{pt.x, pt.y}
+            var cen = Math.Vector2{paintPos.horzCenter(), paintPos.vertCenter()}
             if !pos.isInEllipse(cen, paintPos.width * 0.5, paintPos.height * 0.5)
                 return false
             if backColor.a == 0 and pos.isInEllipse(cen, (paintPos.width * 0.5) - (2*borderSize), (paintPos.height * 0.5) - (2*borderSize))
                 return false
 
         case Rectangle, RoundRectangle:
-            rect := paintPos
+            var rect = paintPos
             rect.inflate(-2*borderSize)
             if backColor.a == 0 and rect.contains(pt)
                 return false
@@ -170,12 +170,12 @@ impl IForm for FormStep
 
     mtd impl paint(app: *Application, painter: *Painter, z: f32, quickMode: bool)
     {
-        pp        := Math.Rectangle{0, 0, paintPos.width, paintPos.height}
-        fSize     := Math.min(w, h) * 0.6
+        var pp = Math.Rectangle{0, 0, paintPos.width, paintPos.height}
+        var fSize = Math.min(w, h) * 0.6
         fSize     = Math.max(fSize, 8)
-        backBrush := Brush.createHatch(.CheckBoardLarge, Argb.DarkGray)
+        var backBrush = Brush.createHatch(.CheckBoardLarge, Argb.DarkGray)
 
-        face := g_App.theme.res.defaultTypeFaceR
+        var face = g_App.theme.res.defaultTypeFaceR
 
         if fSize != cachefSize or typeIndex != cacheTypeIndex
             isDirty = true
@@ -188,7 +188,7 @@ impl IForm for FormStep
             pathl.clear()
 
             var t: String
-            curIndex := quickMode ? 1 : index
+            var curIndex = quickMode ? 1 : index
 
             #[Swag.Complete]
             switch typeIndex
@@ -204,7 +204,7 @@ impl IForm for FormStep
             pathl.clean()
         }
 
-        bk := backColor
+        var bk = backColor
         if quickMode and alpha != 100
             bk.a = cast(u8) Math.map(cast(f32) alpha, 0, 100, 0, 255)
 
@@ -212,8 +212,8 @@ impl IForm for FormStep
         switch kind
         {
         case Ellipse:
-            sizeX := pp.width * 0.5
-            sizeY := pp.height * 0.5
+            var sizeX = pp.width * 0.5
+            var sizeY = pp.height * 0.5
             if quickMode and alpha != 100
                 painter.fillEllipse(pp.x + sizeX, pp.y + sizeY, sizeX, sizeY, backBrush)
             painter.fillEllipse(pp.x + sizeX, pp.y + sizeY, sizeX, sizeY, backColor)
@@ -224,17 +224,17 @@ impl IForm for FormStep
             painter.fillRect(pp, bk)
 
         case RoundRectangle:
-            round := cast(f32) (Math.min(w, h))
+            var round = cast(f32) (Math.min(w, h))
             round /= 3
             if quickMode and alpha != 100
                 painter.fillRoundRect(pp, round, round, backBrush)
             painter.fillRoundRect(pp, round, round, backColor)
         }
 
-        wt := (pathl.bvMax.x - pathl.bvMin.x) * z
-        ht := (pathl.bvMax.y - pathl.bvMin.y) * z
-        x0 := pp.horzCenter() - (wt * 0.5)
-        y0 := pp.vertCenter() - (ht * 0.5)
+        var wt = (pathl.bvMax.x - pathl.bvMin.x) * z
+        var ht = (pathl.bvMax.y - pathl.bvMin.y) * z
+        var x0 = pp.horzCenter() - (wt * 0.5)
+        var y0 = pp.vertCenter() - (ht * 0.5)
         painter.pushState()
         painter.scaleTransform(z, z)
         painter.translateTransform(x0 - (pathl.bvMin.x * z), y0 - (pathl.bvMin.y * z))

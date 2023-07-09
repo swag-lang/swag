@@ -3,7 +3,7 @@
 {
     const t = [10, 10, 10]
 
-    x := 0'f32
+    var x = 0'f32
     loop i: 3
     {
         defer x += t[i]

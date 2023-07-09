@@ -1,4 +1,4 @@
 #test
 {
-    ptr := @typeof(Swag)
+    var ptr = @typeof(Swag)
 }

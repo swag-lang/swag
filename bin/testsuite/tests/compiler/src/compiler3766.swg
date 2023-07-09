@@ -12,6 +12,6 @@ func toto(p: *s32)
 #test
 {
     var x: A
-    ptr := cast(const *A) &x
+    var ptr = cast(const *A) &x
     toto(&ptr.a)
 }

@@ -1,16 +1,16 @@
 #test
 {
-    a := ["1"'u8]
-    ptr := &a[0]
-    x := dref ptr
+    var a = ["1"'u8]
+    var ptr = &a[0]
+    var x = dref ptr
     @assert(x - "0"'u8 == 1)
 }
 
 #test
 {
-    a := ["1"'u16]
-    ptr := &a[0]
-    x := dref ptr
+    var a = ["1"'u16]
+    var ptr = &a[0]
+    var x = dref ptr
     @assert(x - "0"'u16 == 1)
 }
 
@@ -22,10 +22,10 @@
         var year = 2020'u16
         var day = 8'u16
 
-        m := (month + 9) % 12
-        y := year - m/10
+        var m = (month + 9) % 12
+        var y = year - m/10
         //@print("x: ", 365*y)
-        dn := 365*y +,over y/4 +,over y/400 +,over (m*306 + 5)/10 +,over day-1 -,over y/100
+        var dn = 365*y +,over y/4 +,over y/400 +,over (m*306 + 5)/10 +,over day-1 -,over y/100
         dn += 3
         //@print(dn % 7)
     }
@@ -35,10 +35,10 @@
         var year = 2020's32
         var day = 8's32
 
-        m := (month + 9) % 12
-        y := year - m/10
+        var m = (month + 9) % 12
+        var y = year - m/10
         //@print("x: ", 365*y)
-        dn := 365*y +,over y/4 +,over y/400 +,over (m*306 + 5)/10 +,over day-1 -,over y/100
+        var dn = 365*y +,over y/4 +,over y/400 +,over (m*306 + 5)/10 +,over day-1 -,over y/100
         dn += 3
         //@print(dn % 7)
     }

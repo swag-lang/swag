@@ -2,7 +2,7 @@ enum RGB { R; G; B; }
 
 #test
 {
-    x := RGB.R
+    var x = RGB.R
     switch x
     {
     case R..G:  break

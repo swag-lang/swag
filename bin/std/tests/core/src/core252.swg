@@ -4,17 +4,17 @@ using Core, StrConv
 {
     {
         var cb: ConcatBuffer
-        (v, ?, ?) := try Atod.parse("0.00001")
+        var (v, ?, ?) = try Atod.parse("0.00001")
         Dtoa.parse(&cb, v, "f"'u8, 5, false)
-        str := cb.toString()
+        var str = cb.toString()
         //Console.print("result: %\n", str)
     }
 
     {
         var cb: ConcatBuffer
-        (v, ?, ?) := try Atod.parse("3.1414997518839567e-05")
+        var (v, ?, ?) = try Atod.parse("3.1414997518839567e-05")
         Dtoa.parse(&cb, v, "e"'u8, -1, false)
-        str := cb.toString()
+        var str = cb.toString()
         //Console.print("result: %\n", str)
     }
 }

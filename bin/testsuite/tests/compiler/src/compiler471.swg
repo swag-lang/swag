@@ -4,8 +4,8 @@
 //#[Swag.PrintBc]
 #test
 {
-	a := &F;
-	b := a(100, 2);
+	var a = &F;
+	var b = a(100, 2);
 	@assert(b == 200)
 }
 

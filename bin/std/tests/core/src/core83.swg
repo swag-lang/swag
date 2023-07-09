@@ -6,5 +6,5 @@ using Core
     var buf: ConcatBuffer
     Format.append(&buf, "toto")
 
-    str := Format.toString("%", 1)
+    var str = Format.toString("%", 1)
 }

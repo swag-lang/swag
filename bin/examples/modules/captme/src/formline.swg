@@ -19,7 +19,7 @@ impl IForm for FormLine
 {
     mtd impl isSame(ptr: *BaseForm)->bool
     {
-        other := cast(*FormLine) ptr
+        var other = cast(*FormLine) ptr
         return  borderColor == other.borderColor and
                 borderSize  == other.borderSize and
                 alpha       == other.alpha and
@@ -34,8 +34,8 @@ impl IForm for FormLine
 
     mtd impl copy(dst, src: *BaseForm)
     {
-        dstf := cast(*FormLine) dst
-        srcf := cast(*FormLine) src
+        var dstf = cast(*FormLine) dst
+        var srcf = cast(*FormLine) src
         dstf.borderColor = srcf.borderColor
         dstf.borderSize  = srcf.borderSize
         dstf.alpha       = srcf.alpha
@@ -55,8 +55,8 @@ impl IForm for FormLine
         xb = cast(s32) ((localPos.x - paintRect.x) / zoom)
         yb = cast(s32) ((localPos.y - paintRect.y) / zoom)
 
-        xbu := 0
-        ybu := 0
+        var xbu = 0
+        var ybu = 0
         capture.snap(&xbu, &ybu, true, true, 1, cast(IForm) self)
         xb += xbu
         yb += ybu
@@ -104,15 +104,15 @@ impl IForm for FormLine
     {
         var result: retval
 
-        va := Math.Vector2{xa, ya}
-        vb := Math.Vector2{xb, yb}
+        var va = Math.Vector2{xa, ya}
+        var vb = Math.Vector2{xb, yb}
 
         func bound(va, vb, da, db: Math.Vector2)->Math.Vector4
         {
-            va1 := va + da
-            va2 := va - da
-            vb1 := vb + db
-            vb2 := vb - db
+            var va1 = va + da
+            var va2 = va - da
+            var vb1 = vb + db
+            var vb2 = vb - db
 
             var result: retval
             result.x = Math.min(va1.x, va2.x, vb1.x, vb2.x)
@@ -122,12 +122,12 @@ impl IForm for FormLine
             return result
         }
 
-        (w0, l0) := Painter.capStyleExtent(beginCap, borderSize, startSize)
-        (w1, l1) := Painter.capStyleExtent(endCap, borderSize, endSize)
+        var (w0, l0) = Painter.capStyleExtent(beginCap, borderSize, startSize)
+        var (w1, l1) = Painter.capStyleExtent(endCap, borderSize, endSize)
 
-        d := vb - va
+        var d = vb - va
         d.normalizeSafe()
-        d1 := d.cross(1)
+        var d1 = d.cross(1)
         d1.normalizeSafe()
 
         if beginCap == .ArrowAnchor
@@ -135,8 +135,8 @@ impl IForm for FormLine
         if endCap == .ArrowAnchor
             l1 = 2*2*borderSize
 
-        v1 := bound(va, vb, d*l0 + d1*w0, d*l1 + d1*w1)
-        v2 := bound(va, vb, d*l0 - d1*w0, d*l1 - d1*w1)
+        var v1 = bound(va, vb, d*l0 + d1*w0, d*l1 + d1*w1)
+        var v2 = bound(va, vb, d*l0 - d1*w0, d*l1 - d1*w1)
 
         v1.x = Math.min(v1.x, v2.x)
         v1.y = Math.min(v1.y, v2.y)
@@ -154,7 +154,7 @@ impl IForm for FormLine
 
     mtd computePaintCoords(z: f32)
     {
-        rect := boundRect()
+        var rect = boundRect()
         x0 = (xa * z) - (rect.x * z) + paintPos.x
         y0 = (ya * z) - (rect.y * z) + paintPos.y
         x1 = (xb * z) - (rect.x * z) + paintPos.x
@@ -189,17 +189,17 @@ impl IForm for FormLine
         paint(null, &painter, z, false)
         painter.end()
 
-        pos := Math.Vector2{pt.x - paintPos.x, pt.y - paintPos.y}
+        var pos = Math.Vector2{pt.x - paintPos.x, pt.y - paintPos.y}
         visit cmd: painter.commandBuffer
         {
             if cmd.id != .DrawTriangles
                 continue
-            for i := 0; i < cmd.drawTriangles.count; i += 3
+            for var i = 0; i < cmd.drawTriangles.count; i += 3
             {
-                tri := cmd.drawTriangles.start + i
-                xx0 := painter.vertexBuffer[tri].pos
-                xx1 := painter.vertexBuffer[tri+1].pos
-                xx2 := painter.vertexBuffer[tri+2].pos
+                var tri = cmd.drawTriangles.start + i
+                var xx0 = painter.vertexBuffer[tri].pos
+                var xx1 = painter.vertexBuffer[tri+1].pos
+                var xx2 = painter.vertexBuffer[tri+2].pos
                 if pos.isInTriangle(xx0, xx1, xx2)
                     return true
             }
@@ -212,11 +212,11 @@ impl IForm for FormLine
     {
         computePaintCoords(z)
 
-        bSize := adaptSize(borderSize, MinBorderSize, MaxBorderSize, z, quickMode)
-        sSize := quickMode ? Math.min(startSize, 4) : startSize
-        eSize := quickMode ? Math.min(endSize, 4) : endSize
+        var bSize = adaptSize(borderSize, MinBorderSize, MaxBorderSize, z, quickMode)
+        var sSize = quickMode ? Math.min(startSize, 4) : startSize
+        var eSize = quickMode ? Math.min(endSize, 4) : endSize
 
-        pen := Pen.createDash(dashStyle, borderColor, bSize)
+        var pen = Pen.createDash(dashStyle, borderColor, bSize)
         pen.beginCapStyle  = beginCap
         pen.endCapStyle    = endCap
         pen.capStartScaleX = sSize

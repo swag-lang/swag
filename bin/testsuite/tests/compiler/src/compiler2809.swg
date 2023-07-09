@@ -2,10 +2,10 @@
 #[Swag.Optim("", false)]
 #test
 {
-    b := false
-    x := 2
-    y := 2
-    z := 4
+    var b = false
+    var x = 2
+    var y = 2
+    var z = 4
     x = 1
     y = 0
     z = 4

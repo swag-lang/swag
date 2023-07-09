@@ -11,7 +11,7 @@ struct Point
 	var pt : [2] Point
 	pt[0].x = 0
 	pt[1].x = 0
-	ptr := &pt
+	var ptr = &pt
 	@init(ptr, 2)
 	@assert(pt[0].x == 10)
 	@assert(pt[1].x == 10)

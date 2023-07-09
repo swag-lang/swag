@@ -62,7 +62,7 @@ func reverse(x: u32)->u32
     const m0 = 0x55555555
     const m1 = 0x33333333
     const m2 = 0x0f0f0f0f
-	v := ((x >> 1) & m0) | ((x & m0) << 1)
+	var v = ((x >> 1) & m0) | ((x & m0) << 1)
 	v = ((v >> 2) & m1) | ((v & m1) << 2)
 	v = ((v >> 4) & m2) | ((v & m2) << 4)
 	return @byteswap(v)
@@ -75,7 +75,7 @@ func reverse(x: u64)->u64
     const m0 = 0x55555555_55555555
     const m1 = 0x33333333_33333333
     const m2 = 0x0f0f0f0f_0f0f0f0f
-	v := ((x >> 1) & m0) | ((x & m0) << 1)
+	var v = ((x >> 1) & m0) | ((x & m0) << 1)
 	v = ((v >> 2) & m1) | ((v & m1) << 2)
 	v = ((v >> 4) & m2) | ((v & m2) << 4)
 	return @byteswap(v)

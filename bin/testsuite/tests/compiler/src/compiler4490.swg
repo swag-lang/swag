@@ -1,5 +1,5 @@
 #global testerror
 #test
 {
-    const a := 0
+    const var a = 0
 }

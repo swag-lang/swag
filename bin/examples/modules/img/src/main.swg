@@ -21,7 +21,7 @@ const H = 1024
 
 func dataPath()->String
 {
-    dataPath := Path.getDirectoryName(#location.fileName)
+    var dataPath = Path.getDirectoryName(#location.fileName)
     dataPath = Path.getDirectoryName(dataPath)
     dataPath = Path.getDirectoryName(dataPath)
     dataPath = Path.getDirectoryName(dataPath)
@@ -45,8 +45,8 @@ func display()
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
 
     glBegin(GL_QUADS)
-    w := 2 * g_MyImage.width / cast(f32) W
-    h := 2 * g_MyImage.height / cast(f32) H
+    var w = 2 * g_MyImage.width / cast(f32) W
+    var h = 2 * g_MyImage.height / cast(f32) H
     glTexCoord2f(0.0, 0.0); glVertex2f(-1.0, -1.0)
     glTexCoord2f(1.0, 0.0); glVertex2f(-1.0 + w, -1.0)
     glTexCoord2f(1.0, 1.0); glVertex2f(-1.0 + w, -1.0 + h)
@@ -61,7 +61,7 @@ func loadImg()
 {
     using Pixel, Color
 
-    imgName := "rgba.bmp"
+    var imgName = "rgba.bmp"
     switch g_ImageIdx
     {
     case 0:     break
@@ -101,7 +101,7 @@ func loadImg()
     // Load image
     var ti: Time.Stopwatch
     ti.start()
-    data := imagePath(imgName)
+    var data = imagePath(imgName)
     g_MyImage = assume Image.load(data)
     ti.stop()
     //Console.printf("%: img: % (% x % %) load: %ms ", g_EffectIdx, imgName, g_MyImage.width, g_MyImage.height, g_MyImage.pf, ti.elapsedMilliseconds())
@@ -162,7 +162,7 @@ func loadImg()
     case 48: g_MyImage.setPixelFormat(.BGRA8)
 
     case 49:
-        img1 := assume Image.load(imagePath("testa.gif"))
+        var img1 = assume Image.load(imagePath("testa.gif"))
         img1.setPixelFormat(.RGBA8)
         g_MyImage.setPixelFormat(.RGBA8)
         g_MyImage.mix(img1, 0, 0, .AlphaBlend)
@@ -175,7 +175,7 @@ func loadImg()
     //Console.printf("filter: % %ms\n", g_EffectIdx, te.elapsedMilliseconds())
 
     var fmt: GLenum = 0
-    internal := GL_RGB
+    var internal = GL_RGB
 
     #[Swag.Complete]
     switch g_MyImage.pf
@@ -223,7 +223,7 @@ func createWindow()->HWND
     wc.lpszClassName = @dataof("CLASS_NAME")
     assume RegisterClassA(wc)
 
-    hWnd := CreateWindowExA(
+    var hWnd = CreateWindowExA(
         0,
         @dataof("CLASS_NAME"),
         @dataof("Example"),
@@ -248,7 +248,7 @@ func createWindow()->HWND
 
     assume
     {
-        pf := ChoosePixelFormat(g_HDC, &pfd)
+        var pf = ChoosePixelFormat(g_HDC, &pfd)
         SetPixelFormat(g_HDC, pf, &pfd)
         DescribePixelFormat(g_HDC, pf, cast(UINT) @sizeof(PIXELFORMATDESCRIPTOR), &pfd)
     }
@@ -312,10 +312,10 @@ func bigLoop()
 {
     try
     {
-        hWnd := createWindow()
+        var hWnd = createWindow()
 
         g_HDC = GetDC(hWnd)
-        hRC := wglCreateContext(g_HDC)
+        var hRC = wglCreateContext(g_HDC)
         wglMakeCurrent(g_HDC, hRC)
 
         Jobs.setNumWorkers()

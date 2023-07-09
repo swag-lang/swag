@@ -19,8 +19,8 @@ impl Print for A
 
 func callAny(value: any)
 {
-    ptr := cast(A) value
-    itf := cast(Print) ptr
+    var ptr = cast(A) value
+    var itf = cast(Print) ptr
     @assert(itf.toto() == 667)
     @assert(@typeof(itf).fullname == "__compiler1701.Print")
 }

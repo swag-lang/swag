@@ -11,7 +11,7 @@ func toto(stmt: code)
 {
     toto()
     {
-        x := res()
+        var x = res()
         return
     }
 }

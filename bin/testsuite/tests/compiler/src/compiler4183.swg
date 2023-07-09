@@ -6,8 +6,8 @@
 #[Swag.Safety("overflow", true)]
 #test
 {
-    x := 254'u8
-    y := 1'u8
+    var x = 254'u8
+    var y = 1'u8
     x += y
     x += y
 }

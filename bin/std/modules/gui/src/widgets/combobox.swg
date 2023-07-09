@@ -41,8 +41,8 @@ impl IWnd for ComboBox
     {
         if editBox
         {
-            metrics := getThemeMetrics()
-            clientRect := getClientRect()
+            var metrics = getThemeMetrics()
+            var clientRect = getClientRect()
             clientRect.width -= metrics.comboBox_RightMargin
             clientRect.moveLeft(metrics.comboBox_Padding)
             editBox.setPosition(clientRect)
@@ -51,13 +51,13 @@ impl IWnd for ComboBox
 
     mtd impl onPaintEvent(evt: *PaintEvent)
     {
-        bc      := evt.bc
-        painter := evt.bc.painter
+        var bc = evt.bc
+        var painter = evt.bc.painter
 
-        theme   := getTheme()
-        colors  := getThemeColors()
-        metrics := getThemeMetrics()
-        rects   := getThemeRects()
+        var theme = getTheme()
+        var colors = getThemeColors()
+        var metrics = getThemeMetrics()
+        var rects = getThemeRects()
 
         var subRectBk:      *ThemeImageRect
         var subRectBorder:  *ThemeImageRect
@@ -92,7 +92,7 @@ impl IWnd for ComboBox
         aniBorder.apply(self, colorBorder)
         aniText.apply(self, colorText)
 
-        clientRect := getClientRect()
+        var clientRect = getClientRect()
         theme.drawSubRect(painter, clientRect, subRectBk, aniBk.cur())
         theme.drawSubRect(painter, clientRect, subRectBorder, aniBorder.cur())
 
@@ -100,8 +100,8 @@ impl IWnd for ComboBox
         if !editBox and selectedIdx < items.count
         {
             var format: RichStringFormat
-            item := items[selectedIdx]
-            itemRect := clientRect
+            var item = items[selectedIdx]
+            var itemRect = clientRect
             itemRect.width -= metrics.comboBox_RightMargin
             itemRect.moveLeft(metrics.comboBox_Padding)
 
@@ -118,7 +118,7 @@ impl IWnd for ComboBox
             painter.drawRichString(itemRect, &item.name, format)
         }
 
-        icon := theme.getIcon24(ThemeIcons24.BottomPopupArrow)
+        var icon = theme.getIcon24(ThemeIcons24.BottomPopupArrow)
         icon.paint(painter, clientRect.right() - metrics.comboBox_RightMargin, clientRect.vertCenter() - icon.sizeY * 0.5, colorText)
     }
 
@@ -173,7 +173,7 @@ private impl ComboBox
             self.hidePopup()
         }
 
-        rect := getSurfaceRect()
+        var rect = getSurfaceRect()
         popup.show(rect.x, rect.bottom(), rect.width)
     }
 
@@ -192,12 +192,12 @@ impl ComboBox
     func create(parent: *Wnd, position: Math.Rectangle = {}, id: WndId = null, kind = ComboBoxKind.Select)->*ComboBox
     {
         Debug.assert(parent != null)
-        pos := position
+        var pos = position
         if pos.height == 0
             pos.height = parent.getThemeMetrics().comboBox_Height
         if pos.width == 0
             pos.width = parent.getThemeMetrics().comboBox_Width
-        res := Wnd.create'ComboBox(parent, null, pos, id)
+        var res = Wnd.create'ComboBox(parent, null, pos, id)
 
         res.kind = kind
         if res.kind == .Edit
@@ -222,7 +222,7 @@ impl ComboBox
     #[Swag.Discardable]
     mtd addItem(name: string, id: WndId = null, icon: Icon = {}, userData0: *void = null, userData1: *void = null)->*ComboBoxItem
     {
-        item := items.newPtr()
+        var item = items.newPtr()
         with item
         {
             .name      = #self.name
@@ -241,7 +241,7 @@ impl ComboBox
     // Add a separator
     mtd addSeparator()
     {
-        item := items.newPtr()
+        var item = items.newPtr()
         item.isSeparator = true
         items.add(item)
     }
@@ -257,7 +257,7 @@ impl ComboBox
     // Set the selected item index
     mtd selectItem(idx: u32)
     {
-        newIdx := selectedIdx
+        var newIdx = selectedIdx
         if idx >= items.count
             newIdx = Swag.U32.Max
         else

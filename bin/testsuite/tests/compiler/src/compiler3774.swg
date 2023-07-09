@@ -17,7 +17,7 @@ impl I for A
 #test
 {
     var a: A
-    i := cast(I) a
+    var i = cast(I) a
 
     struct TT
     {
@@ -25,13 +25,13 @@ impl I for A
         itable: const ^^void
     }
 
-    ptr := cast(*TT) &i
+    var ptr = cast(*TT) &i
     //@print(&a, " ", ptr.obj)
 
-    t := cast(const *Swag.TypeInfoStruct) ptr.itable[cast,bit(u64) -1's64]
+    var t = cast(const *Swag.TypeInfoStruct) ptr.itable[cast,bit(u64) -1's64]
     //@print(" ", t.fullname)
 
-    t1 := cast(const *Swag.TypeInfoStruct) ptr.itable[cast,bit(u64) -2's64]
+    var t1 = cast(const *Swag.TypeInfoStruct) ptr.itable[cast,bit(u64) -2's64]
     //@print(" ", t1.fullname)
 
     var itf1: TT

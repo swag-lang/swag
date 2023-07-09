@@ -7,7 +7,7 @@ using Core
     arr.add("val0", 10)
     arr.add("val1", 11)
 
-    total := 0's64
+    var total = 0's64
     visit k, v: arr
         total += v
 

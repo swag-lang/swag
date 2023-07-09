@@ -5,6 +5,6 @@ func toto()
         return ""
     }
 
-    //a := 0
+    //var a = 0
     #assert true
 }

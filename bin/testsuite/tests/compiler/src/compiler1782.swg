@@ -6,6 +6,6 @@
 #[Swag.Safety("", true)]
 #test
 {
-    x := "toto"
-    z := x[5]
+    var x = "toto"
+    var z = x[5]
 }

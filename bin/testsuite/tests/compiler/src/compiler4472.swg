@@ -1,8 +1,8 @@
 #[Swag.Optim("", false)]
 #test
 {
-    x := 0's8
-    y := 0's8
+    var x = 0's8
+    var y = 0's8
     x += 5
     y += 3
     @assert(x % y == 2)
@@ -11,8 +11,8 @@
 #[Swag.Optim("", false)]
 #test
 {
-    x := 0's16
-    y := 0's16
+    var x = 0's16
+    var y = 0's16
     x += 5
     y += 3
     @assert(x % y == 2)
@@ -21,8 +21,8 @@
 #[Swag.Optim("", false)]
 #test
 {
-    x := 0'u8
-    y := 0'u8
+    var x = 0'u8
+    var y = 0'u8
     x += 5
     y += 3
     @assert(x % y == 2)
@@ -31,8 +31,8 @@
 #[Swag.Optim("", false)]
 #test
 {
-    x := 0'u16
-    y := 0'u16
+    var x = 0'u16
+    var y = 0'u16
     x += 5
     y += 3
     @assert(x % y == 2)

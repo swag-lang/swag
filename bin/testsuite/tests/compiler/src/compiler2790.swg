@@ -22,6 +22,6 @@ impl AA for BB
 #test
 {
     var x: BB
-    itf := cast(AA) x
+    var itf = cast(AA) x
     itf.fb()
 }

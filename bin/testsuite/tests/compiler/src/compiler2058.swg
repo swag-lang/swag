@@ -2,9 +2,9 @@
 //#[Swag.PrintBc]
 #test
 {
-    x := "toto"
-    y := "toto"
+    var x = "toto"
+    var y = "toto"
     @assert(@stringcmp(x, y))
-    z := "titi"
+    var z = "titi"
     @assert(!@stringcmp(x, z))
 }

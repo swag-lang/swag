@@ -6,5 +6,5 @@ const x = "64"
 //#[Swag.PrintBc]
 #test
 {
-    y := &x[0]
+    var y = &x[0]
 }

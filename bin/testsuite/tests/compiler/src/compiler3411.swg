@@ -5,7 +5,7 @@ var G = 0
 #test
 {
     var v: closure(s32) = closure||(x: s32) { G = x; }
-    v1 := v
+    var v1 = v
     v1(5)
     @assert(G == 5)
 }

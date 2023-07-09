@@ -11,7 +11,7 @@ func toto()->A
 
 func aa()
 {
-    with a, b := toto()
+    with var a, b = toto()
     {
         .x = 1
     }

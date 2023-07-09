@@ -10,7 +10,7 @@ struct AA
 func toto(x: AA)
 {
     //@print(x.x)
-    v := {x}
+    var v = {x}
     @print(v.item0.x)
     //@print(v.item0.y)
     //@print(v.item0.z)

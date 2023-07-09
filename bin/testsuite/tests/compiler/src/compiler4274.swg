@@ -19,7 +19,7 @@ func toto(str: string)
 {
     toto("a")
 
-    x := "c"
+    var x = "c"
     toto(x)
 
     @assert(G == 21)

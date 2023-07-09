@@ -126,7 +126,7 @@ var atoftests: [] atofTest = [
     var cb: ConcatBuffer
     visit t: atoftests
     {
-        v := catch Atod.parse(t.in)
+        var v = catch Atod.parse(t.in)
         @assert(!@errmsg or t.error)
         @assert(!t.error or @errmsg != null or v.ovf)
         if v.ovf continue
@@ -134,7 +134,7 @@ var atoftests: [] atofTest = [
         cb.clear()
         Dtoa.parse(&cb, v.value, "g"'u8, -1, false)
 
-        res := cb.toString()
+        var res = cb.toString()
         if t.out != res
         {
             Console.printf("% %\n", t.out, res)

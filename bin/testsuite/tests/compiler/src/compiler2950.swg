@@ -5,6 +5,6 @@ struct AA
 
 func toto(x: AA)
 {
-    p := x
+    var p = x
     p.x = 0
 }

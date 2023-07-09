@@ -6,7 +6,7 @@ func isDirectorySeparator()->bool
 //#[Swag.PrintBc]
 func getRootLength(fullname: string)->u32
 {
-    extendedUncSyntax := false
+    var extendedUncSyntax = false
     if extendedUncSyntax or isDirectorySeparator()
     {
     }

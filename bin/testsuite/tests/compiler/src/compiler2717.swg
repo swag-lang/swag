@@ -2,7 +2,7 @@
 //#[Swag.Optim("", false)]
 func toto()->s64
 {
-    r := 666
+    var r = 666
     return r
 }
 

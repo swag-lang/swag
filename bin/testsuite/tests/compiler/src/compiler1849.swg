@@ -5,6 +5,6 @@
 {
     var x : string
     #[Swag.Safety("", true)]
-    ptr := &x[1]
+    var ptr = &x[1]
     @assert(dref ptr == "A"'u8)
 }

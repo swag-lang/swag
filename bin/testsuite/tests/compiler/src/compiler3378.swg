@@ -2,9 +2,9 @@
 //#[Swag.Optim("", false)]
 #test
 {
-    a := true
-    b := true
-    c := false
+    var a = true
+    var b = true
+    var c = false
     if !a or (!b and !c)
         @assert(false)
 }

@@ -1,6 +1,6 @@
 func toto(x: any)
 {
-    ptr := cast(^s32) @dataof(x)
+    var ptr = cast(^s32) @dataof(x)
     @assert(ptr[0] == 1)
     @assert(ptr[1] == 2)
 }

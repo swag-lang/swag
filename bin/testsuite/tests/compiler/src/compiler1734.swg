@@ -2,7 +2,7 @@
 {
     enum Enum { A; B; C; }
 
-    a := 0
+    var a = 0
     visit it, idx: @typeof(Enum).values
     {
         a += 1

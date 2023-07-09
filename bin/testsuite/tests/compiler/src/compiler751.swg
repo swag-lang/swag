@@ -15,7 +15,7 @@ func toto()->s32
 //#[Swag.PrintBc]
 #test
 {
-	x := &toto
-	c := x()
+	var x = &toto
+	var c = x()
 	@assert(c == 666)
 }

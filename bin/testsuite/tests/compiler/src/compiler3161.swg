@@ -3,7 +3,7 @@ func printf(format: cstring, args: cvarargs)->s64
 {
     var valist: Swag.CVaList
     @cvastart(&valist)
-    x := @cvaarg(&valist, f64)
+    var x = @cvaarg(&valist, f64)
     //@print(x)
     @assert(x == 3.14)
     @cvaend(&valist)

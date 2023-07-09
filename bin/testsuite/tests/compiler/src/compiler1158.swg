@@ -6,5 +6,5 @@ func min(x: s32)->s32
 
 #test
 {
-	x := min(1)
+	var x = min(1)
 }

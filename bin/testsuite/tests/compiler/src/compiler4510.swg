@@ -7,6 +7,6 @@ func(T) toto(v: T)->T
 }
 #test
 {
-    x := 0xFFFF'u16
+    var x = 0xFFFF'u16
     @assert(toto(x))
 }

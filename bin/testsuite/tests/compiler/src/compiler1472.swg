@@ -9,7 +9,7 @@ impl S
     #[Swag.Macro, Swag.CalleeReturn]
     func(ptr: bool) opVisit(using self, stmt: code)
     {
-        for v := down; v <= up; v += 1
+        for var v = down; v <= up; v += 1
         {
             #macro
             {
@@ -23,10 +23,10 @@ impl S
 #test
 {
     var x: S
-    cpt := 0
+    var cpt = 0
     visit i: x
     {
-        xx := 666
+        var xx = 666
         cpt += i
     }
 

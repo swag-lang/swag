@@ -11,7 +11,7 @@ func toto(x: s64)
 {
     G = false
     var x: func(s64) = &toto
-    tt := 666's64
+    var tt = 666's64
     tt.x()
     @assert(G == true)
 }

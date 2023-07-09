@@ -11,7 +11,7 @@ func toto(x: ref A)
 #test
 {
     var a: A
-    //b := ref a
+    //var b = ref a
     toto(a)
     @print(a.x, a.y)
 }

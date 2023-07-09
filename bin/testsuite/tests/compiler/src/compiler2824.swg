@@ -5,5 +5,5 @@ namespace titi
 
 func toto()
 {
-    titi := 0
+    var titi = 0
 }

@@ -3,5 +3,5 @@
 #[Swag.Macro]
 func toto(stmt: code)
 {
-    @alias40 := 0
+    @var alias40 = 0
 }

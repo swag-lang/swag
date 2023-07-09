@@ -78,7 +78,7 @@ impl IReset for Point3
 
     // To get the interface associated to a given struct, use the 'cast' operator.
     // If the compiler does not find the corresponding implementation, it will raise an error.
-    itf := cast(IReset) pt2
+    var itf = cast(IReset) pt2
     itf.set(10)
     @assert(pt2.x == 10)
     @assert(pt2.y == 10+1)

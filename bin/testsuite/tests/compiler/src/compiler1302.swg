@@ -12,7 +12,7 @@ func toto(x: code)
 
 #test
 {
-    cpt := 0'u64
+    var cpt = 0'u64
     toto()
     {
         cpt += @index

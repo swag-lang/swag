@@ -7,30 +7,30 @@
 #[Swag.Optim("", false)]
 #test
 {
-    x := 255'f32
-    y := cast(s8) x
+    var x = 255'f32
+    var y = cast(s8) x
 }
 
 #[Swag.Safety("", true)]
 #[Swag.Optim("", false)]
 #test
 {
-    x := -255'f32
-    y := cast(s8) x
+    var x = -255'f32
+    var y = cast(s8) x
 }
 
 #[Swag.Safety("", true)]
 #[Swag.Optim("", false)]
 #test
 {
-    x := 255'f64
-    y := cast(s8) x
+    var x = 255'f64
+    var y = cast(s8) x
 }
 
 #[Swag.Safety("", true)]
 #[Swag.Optim("", false)]
 #test
 {
-    x := -255'f64
-    y := cast(s8) x
+    var x = -255'f64
+    var y = cast(s8) x
 }

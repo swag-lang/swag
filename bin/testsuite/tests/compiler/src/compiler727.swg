@@ -42,7 +42,7 @@ impl Array
 {
 	var arr: Array
 	arr.values[0] = 10
-	it := arr.getIter()
+	var it = arr.getIter()
 	@print(it.arr.values[0])
 }
 */

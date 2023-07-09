@@ -9,5 +9,5 @@ func(T) toto (x: T) {}
 
 #test
 {
-    integer2 := Point{ x: 1, y: 1 }
+    var integer2 = Point{ x: 1, y: 1 }
 }

@@ -21,5 +21,5 @@ func titi()->[1] AA
 //#[Swag.PrintBc]
 #test
 {
-    v := titi()
+    var v = titi()
 }

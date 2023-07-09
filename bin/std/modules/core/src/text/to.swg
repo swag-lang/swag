@@ -4,7 +4,7 @@
 // Convert a size in a displayable format (with Kb, Mb and so on)
 func toDisplaySize(value: u64)->String
 {
-    size := value
+    var size = value
     if size < 1024
         return Format.toString("% bytes", size)
     size /= 1024

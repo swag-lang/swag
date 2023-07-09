@@ -16,7 +16,7 @@ struct Point
 	x = tt
 	//@assert(x is Point)
 
-	ptr := cast(*s32) @dataof(x)
+	var ptr = cast(*s32) @dataof(x)
 	@assert(dref ptr == 666)
 	//@assert(ptr.x == 10)
 	//@assert(ptr.y == 20)

@@ -4,7 +4,7 @@
 #[Swag.Safety("", true)]
 #test
 {
-    y := Swag.S32.Min
-    x := -y
+    var y = Swag.S32.Min
+    var x = -y
     x += 1
 }

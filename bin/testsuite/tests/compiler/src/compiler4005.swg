@@ -1,7 +1,7 @@
 #test
 {
-    x := "x"
-    y := &x
+    var x = "x"
+    var y = &x
     dref y = "y"
     @assert(x == "y")
 }

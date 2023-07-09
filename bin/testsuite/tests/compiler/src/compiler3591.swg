@@ -1,8 +1,8 @@
 #test
 {
-    a := 666
-    cb := closure|a|() {
-        cb1 := closure|a|() {
+    var a = 666
+    var cb = closure|a|() {
+        var cb1 = closure|a|() {
             a = 0
         }
     }

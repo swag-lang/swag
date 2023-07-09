@@ -7,7 +7,7 @@ struct A
 {
     var v: A
     v.fct = func(x, y) {
-        a := y
+        var a = y
         return true
     }
 }

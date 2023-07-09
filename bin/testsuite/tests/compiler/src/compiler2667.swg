@@ -1,13 +1,13 @@
 #[Swag.Macro]
 func toto()
 {
-    a := 0
+    var a = 0
     switch a
     {
     case 0:
-        b := 1
+        var b = 1
     case 1:
-        b := 1
+        var b = 1
     }
 }
 

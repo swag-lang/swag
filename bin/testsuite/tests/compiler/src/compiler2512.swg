@@ -10,10 +10,10 @@ func titi()
 //#[Swag.PrintBc]
 #test
 {
-    t := @typeof(titi)
+    var t = @typeof(titi)
     @assert(@countof(t.attributes) == 1)
-    a := t.attributes[0]
+    var a = t.attributes[0]
     @assert(@countof(a.params) == 1)
-    p := a.params[0]
+    var p = a.params[0]
     @assert(p.name == "x")
 }

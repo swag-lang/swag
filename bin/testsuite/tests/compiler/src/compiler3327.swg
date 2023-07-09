@@ -2,7 +2,7 @@
 #global testerror
 #test
 {
-    a := #run {
+    var a = #run {
         loop 1
             return 66.0
         return

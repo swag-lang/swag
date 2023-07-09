@@ -4,8 +4,8 @@ using Core
 //#[Swag.PrintBc]
 #test
 {
-    str := "A⺗B"
-    result := Utf8.decodeLastRune(str)
+    var str = "A⺗B"
+    var result = Utf8.decodeLastRune(str)
     @assert(result.item0 == "B"'rune)
     @assert(result.item1 == 1)
 

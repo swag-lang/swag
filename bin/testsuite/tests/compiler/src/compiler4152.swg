@@ -2,7 +2,7 @@
 #global #[Swag.Warn("wrn0006", Swag.WarnLevel.Enable)]
 #test
 {
-    a := 0
-    f := closure|a|(){
+    var a = 0
+    var f = closure|a|(){
     }
 }

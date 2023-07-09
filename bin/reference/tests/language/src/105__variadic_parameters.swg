@@ -78,17 +78,17 @@ You can spread the content of an array or a slice to variadic parameters with `@
         func sum(params: s32...)->s32
         {
             // Note that variadic parameters can be visited, as this is a slice
-            total := 0
+            var total = 0
             visit v: params
                 total += v
             return total
         }
 
-        arr := [1, 2, 3, 4]
-        res := sum(@spread(arr)) // is equivalent to sum(1, 2, 3, 4)
+        var arr = [1, 2, 3, 4]
+        var res = sum(@spread(arr)) // is equivalent to sum(1, 2, 3, 4)
         @assert(res == 1+2+3+4)
 
-        res1 := sum(@spread(arr[1..2])) // is equivalent to sum(2, 3)
+        var res1 = sum(@spread(arr[1..2])) // is equivalent to sum(2, 3)
         @assert(res1 == 2+3)
     }
 }

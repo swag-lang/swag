@@ -1,7 +1,7 @@
 //#[Swag.PrintBc, Swag.Optim("", false)]
 #test
 {
-    a := 666
+    var a = 666
     var v: closure(s32) = closure|a|(x: s32)
     {
         @assert(a == 666)

@@ -15,9 +15,9 @@ impl AA
 
 #test
 {
-    t := @typeof(AA)
-    f := t.methods[0].value
-    fn := cast(func()) f
+    var t = @typeof(AA)
+    var f = t.methods[0].value
+    var fn = cast(func()) f
     fn()
     @assert(G == 1)
 }

@@ -34,7 +34,7 @@ impl Array
         if buffer == null
             return
 
-        oldBuffer := buffer
+        var oldBuffer = buffer
         buffer = null
         realloc(count)
 
@@ -106,9 +106,9 @@ impl Array
         #validif Reflection.canCopy(T)
     {
         clear()
-        countof := @countof(arr)
+        var countof = @countof(arr)
         if !countof return
-        dataof := @dataof(arr)
+        var dataof = @dataof(arr)
 
         grow(countof)
         #if Reflection.hasPostCopy(T)
@@ -133,7 +133,7 @@ impl Array
 
         // Little trick to avoid labels. That way a 'continue' in the user code will work
         // correctly, that's why we increment 'scan' before the use code, and take -1 to start.
-        scan := buffer - 1
+        var scan = buffer - 1
 
         loop count
         {
@@ -160,7 +160,7 @@ impl Array
 
         // Little trick to avoid labels. That way a 'continue' in the user code will work
         // correctly, that's why we decrement 'scan' before the use code.
-        scan := buffer + count
+        var scan = buffer + count
 
         loop count
         {
@@ -192,7 +192,7 @@ impl Array
             return
         }
 
-        newBuffer := cast(^T) Memory.realloc(buffer, newCapacity * @sizeof(T), capacity * @sizeof(T), allocator)
+        var newBuffer = cast(^T) Memory.realloc(buffer, newCapacity * @sizeof(T), capacity * @sizeof(T), allocator)
 
         // Need to call opPostMove on every existing element if the buffer has not been reallocated
         // in place
@@ -260,7 +260,7 @@ impl Array
     {
         if newCount <= capacity
             return
-        newCapacity := Math.max(capacity * 2, newCount)
+        var newCapacity = Math.max(capacity * 2, newCount)
         reserve(newCapacity)
     }
 
@@ -355,7 +355,7 @@ impl Array
     {
         grow(count + num)
         count += num
-        res := buffer + count - num
+        var res = buffer + count - num
         @init(res, num)
         return res
     }
@@ -374,7 +374,7 @@ impl Array
 
         #if Reflection.hasPostMove(T)
         {
-            for idx := count - 1; idx > index; idx -= 1
+            for var idx = count - 1; idx > index; idx -= 1
                 buffer[idx] =,nodrop,moveraw buffer[idx - 1]
         }
         #else
@@ -398,7 +398,7 @@ impl Array
 
         #if Reflection.hasPostMove(T)
         {
-            for idx := count - 1; idx > index; idx -= 1
+            for var idx = count - 1; idx > index; idx -= 1
                 buffer[idx] =,nodrop,moveraw buffer[idx - 1]
         }
         #else
@@ -415,7 +415,7 @@ impl Array
     mtd insertAt(index: u64, values: const [..] T)
         #validif Reflection.canCopy(T)
     {
-        sliceCount := @countof(values)
+        var sliceCount = @countof(values)
         if !sliceCount
             return
 
@@ -427,7 +427,7 @@ impl Array
 
         #if Reflection.hasPostMove(T)
         {
-            for idx := count - 1; idx >= index + sliceCount; idx -= 1
+            for var idx = count - 1; idx >= index + sliceCount; idx -= 1
                 buffer[idx] =,nodrop,moveraw buffer[idx - sliceCount]
         }
         #else
@@ -437,7 +437,7 @@ impl Array
 
         #if Reflection.hasPostCopy(T)
         {
-            for idx := 0; idx < sliceCount; idx += 1
+            for var idx = 0; idx < sliceCount; idx += 1
                 buffer[index + idx] =,nodrop values[idx]
         }
         #else
@@ -452,7 +452,7 @@ impl Array
     mtd emplaceAt(index: u64, values: [..] T)
         #validif Reflection.canCopy(T)
     {
-        sliceCount := @countof(values)
+        var sliceCount = @countof(values)
         if !sliceCount
             return
 
@@ -464,7 +464,7 @@ impl Array
 
         #if Reflection.hasPostMove(T)
         {
-            for idx := count - 1; idx >= index + sliceCount; idx -= 1
+            for var idx = count - 1; idx >= index + sliceCount; idx -= 1
                 buffer[idx] =,nodrop,moveraw buffer[idx - sliceCount]
         }
         #else
@@ -474,7 +474,7 @@ impl Array
 
         #if Reflection.hasPostMove(T)
         {
-            for idx := 0; idx < sliceCount; idx += 1
+            for var idx = 0; idx < sliceCount; idx += 1
                 buffer[index + idx] =,nodrop,move values[idx]
         }
         #else
@@ -487,7 +487,7 @@ impl Array
     mtd add(values: const [..] T)
         #validif Reflection.canCopy(T)
     {
-        sliceCount := @countof(values)
+        var sliceCount = @countof(values)
         if !sliceCount
             return
 
@@ -496,12 +496,12 @@ impl Array
             Debug.assert(@dataof(values) < buffer or @dataof(values) > buffer + capacity)
 
         grow(count + sliceCount)
-        oldCount := count
+        var oldCount = count
         count += sliceCount
 
         #if Reflection.hasPostCopy(T)
         {
-            destPtr := buffer + oldCount
+            var destPtr = buffer + oldCount
             loop sliceCount
             {
                 dref destPtr =,nodrop values[@index]
@@ -577,7 +577,7 @@ impl Array
 
         #if Reflection.hasPostMove(T)
         {
-            idx := index
+            var idx = index
             loop count - index
             {
                 buffer[idx] =,nodrop,moveraw buffer[idx + numValues]
@@ -594,7 +594,7 @@ impl Array
     // If not found, does nothing
     mtd(V) remove(value: V)
     {
-        (idx, found) := Slice.findLinear(toSlice(), value)
+        var (idx, found) = Slice.findLinear(toSlice(), value)
         if !found return
         removeAt(idx)
     }
@@ -603,7 +603,7 @@ impl Array
     // If not found, does nothing
     mtd(V) removeOrdered(value: V)
     {
-        (idx, found) := Slice.findLinear(toSlice(), value)
+        var (idx, found) = Slice.findLinear(toSlice(), value)
         if !found return
         removeAtOrdered(idx)
     }
@@ -611,7 +611,7 @@ impl Array
     // Returns true if the given 'value' is in the array
     mtd(V) contains(value: V)->bool
     {
-        res := Slice.findLinear(toSlice(), value)
+        var res = Slice.findLinear(toSlice(), value)
         return res.success
     }
 

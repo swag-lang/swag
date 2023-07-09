@@ -31,7 +31,7 @@ func update(dt: f32)
     if g_Pending.delay < 0
     {
         // Make a copy because g_Pending will be destroy by 'show'
-        copy := dref g_Pending
+        var copy = dref g_Pending
         show(copy.owner, copy.surfacePos, copy.str, 0's)
     }
 }
@@ -86,8 +86,8 @@ public func show(owner: *Wnd, surfacePos: Math.Point, str: string, delay: Time.D
     var copy: String = str
     hide()
 
-    top := owner.surface.wnd
-    pos := top.surfaceToLocal(surfacePos)
+    var top = owner.surface.wnd
+    var pos = top.surfaceToLocal(surfacePos)
     pos.offset(12)
 
     // Frame container
@@ -100,15 +100,15 @@ public func show(owner: *Wnd, surfacePos: Math.Point, str: string, delay: Time.D
     g_CurrentOwner = owner
 
     // View
-    view := g_Current.createView'Wnd()
+    var view = g_Current.createView'Wnd()
     view.backgroundStyle = .Transparent
     view.margin = 0
 
-    colors  := top.getThemeColors()
-    metrics := top.getThemeMetrics()
+    var colors = top.getThemeColors()
+    var metrics = top.getThemeMetrics()
 
     // Rich edit
-    edit := RichEditCtrl.create(view)
+    var edit = RichEditCtrl.create(view)
     edit.setRichEdFlags(.WordWrap)
     edit.setForm(.Edit)
     edit.styles[0].colFg = colors.toolTip_Text
@@ -118,7 +118,7 @@ public func show(owner: *Wnd, surfacePos: Math.Point, str: string, delay: Time.D
     edit.dockStyle = .Center
 
     // Auto size
-    (w, h) := edit.evaluateSize()
+    var (w, h) = edit.evaluateSize()
     w += 2 * metrics.toolTip_Padding
     h += 2 * metrics.toolTip_Padding
     g_Current.setPosition(Math.Rectangle{pos.x, pos.y, w, h})

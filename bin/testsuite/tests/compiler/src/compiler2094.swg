@@ -1,4 +1,4 @@
-struct(T) AA 
+struct(T) AA
 {
     field: T
 }
@@ -10,5 +10,5 @@ func(T) RR()->AA
 
 #test
 {
-    res := RR's32()
+    var res = RR's32()
 }

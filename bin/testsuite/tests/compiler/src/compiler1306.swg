@@ -1,12 +1,12 @@
 #[Swag.Macro]
 func toto(t: s32, x: code)
 {
-    xx := t
+    var xx = t
     @assert(t == 100)
     @assert(xx == 100)
     #macro
     {
-        value := #up xx
+        var value = #up xx
         #mixin #up x
     }
 }

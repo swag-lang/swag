@@ -9,7 +9,7 @@ func toto(x: AA)
     @assert(x.x == 666)
     @assert(x.y == 666)
 
-    ptr := &x
+    var ptr = &x
     @assert(ptr.x == 666)
     @assert(ptr.y == 666)
 }

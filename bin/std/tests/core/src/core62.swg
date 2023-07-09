@@ -5,7 +5,7 @@ using Core.Console
 #test
 {
     silent(true)
-    ptr := &print
+    var ptr = &print
     ptr("toto")
     silent(false)
 }

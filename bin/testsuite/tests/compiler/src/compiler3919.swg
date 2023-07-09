@@ -14,6 +14,6 @@ impl B
 #test
 {
     var c: B
-    y := c orelse B{}
+    var y = c orelse B{}
     @assert(y == null)
 }

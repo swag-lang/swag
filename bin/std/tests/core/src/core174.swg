@@ -15,7 +15,7 @@ struct ST
     y[0] = "A"'u8
     y[1] = "B"'u8
     y[2] = 0
-    dataof := cast(const ^u8) y
+    var dataof = cast(const ^u8) y
 
     loop 20
     {

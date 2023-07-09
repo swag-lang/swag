@@ -4,9 +4,9 @@ using Core, Utf8
 //#[Swag.PrintBc]
 #test
 {
-    //res := "A假CD"
+    //var res = "A假CD"
     var res: String = "XXABAB"
-    result := indexOf(res.toString(), "AB")
+    var result = indexOf(res.toString(), "AB")
     @assert(result == 2)
 
     result = indexOf(res.toString(), "AB", 3)

@@ -22,8 +22,8 @@ func exact(neg: bool, mantissa: u64, exponent: s64) -> {f: f64, ok: bool}
 	if mantissa >> Swag.F64.MantBits != 0
      	return result
 
-    exp := exponent
-	f := cast(f64) mantissa
+    var exp = exponent
+	var f = cast(f64) mantissa
 	if neg f = -f
 
 	switch
@@ -773,7 +773,7 @@ func eiselLemire64(neg: bool, mantissa: u64, exp10: s64)->{f: f64, ok: bool}
 	// https://nigeltao.github.io/blog/2020/eisel-lemire.html blog post.
 
 	// Exp10 Range.
-    man := mantissa
+    var man = mantissa
 	if man == 0
     {
 		if neg
@@ -785,24 +785,24 @@ func eiselLemire64(neg: bool, mantissa: u64, exp10: s64)->{f: f64, ok: bool}
 		return result
 
 	// Normalization.
-	clz := @bitcountlz(man)
+	var clz = @bitcountlz(man)
 	man <<= cast(u32) clz
 
 	const ExponentBias = 1023
-	retExp2 := cast(u64) (((217706's64 * exp10) >> 16) + 64 + ExponentBias) - clz
+	var retExp2 = cast(u64) (((217706's64 * exp10) >> 16) + 64 + ExponentBias) - clz
 
 	// Multiplication.
-    v := PowersOfTen[exp10-PowersOfTenMinExp10, 1]
-	(xHi, xLo) := Math.mulU64(man, v)
+    var v = PowersOfTen[exp10-PowersOfTenMinExp10, 1]
+	var (xHi, xLo) = Math.mulU64(man, v)
 
 	// Wider Approximation.
 	if xHi & 0x1FF == 0x1FF and xLo + man < man
     {
         v = PowersOfTen[exp10-PowersOfTenMinExp10, 0]
-		(yHi, yLo) := Math.mulU64(man, v)
+		var (yHi, yLo) = Math.mulU64(man, v)
 
-		mergedHi := xHi
-        mergedLo := xLo + yHi
+		var mergedHi = xHi
+        var mergedLo = xLo + yHi
 
 		if mergedLo < xLo
 			mergedHi += 1
@@ -815,8 +815,8 @@ func eiselLemire64(neg: bool, mantissa: u64, exp10: s64)->{f: f64, ok: bool}
 	}
 
 	// Shifting to 54 Bits.
-	msb := (xHi >> 63)
-	retMantissa := xHi >> cast(u32) (msb + 9)
+	var msb = (xHi >> 63)
+	var retMantissa = xHi >> cast(u32) (msb + 9)
 	retExp2 -= 1'u64 ^ msb
 
 	// Half-way Ambiguity.
@@ -839,7 +839,7 @@ func eiselLemire64(neg: bool, mantissa: u64, exp10: s64)->{f: f64, ok: bool}
 	if retExp2-1 >= 0x7FF-1
 		return result
 
-	retBits := (retExp2 << 52) | (retMantissa & 0x000FFFFFFFFFFFFF)
+	var retBits = (retExp2 << 52) | (retMantissa & 0x000FFFFFFFFFFFFF)
 	if neg
 		retBits |= 0x8000000000000000
 	result.f = cast,bit(f64) retBits
@@ -874,7 +874,7 @@ func special(s: const [..] u8)->{ value: f64, eat: u32 }
 public func parse(s: const [..] u8) -> {value: f64, eat: u32, ovf: bool} throw
 {
     var result: retval
-    countof := @countof(s)
+    var countof = @countof(s)
     if !countof
         return result
 
@@ -889,7 +889,7 @@ public func parse(s: const [..] u8) -> {value: f64, eat: u32, ovf: bool} throw
 
     if !read.trunc
     {
-        (f, ok) := exact(read.neg, read.mantissa, read.exp)
+        var (f, ok) = exact(read.neg, read.mantissa, read.exp)
         if ok
         {
             result.value = f
@@ -897,7 +897,7 @@ public func parse(s: const [..] u8) -> {value: f64, eat: u32, ovf: bool} throw
         }
     }
 
-    (f, ok) := eiselLemire64(read.neg, read.mantissa, read.exp)
+    var (f, ok) = eiselLemire64(read.neg, read.mantissa, read.exp)
 	if ok
 	{
 		if !read.trunc
@@ -908,7 +908,7 @@ public func parse(s: const [..] u8) -> {value: f64, eat: u32, ovf: bool} throw
 
 		// Even if the mantissa was truncated, we may have found the correct result.
 		// Confirm by converting the upper mantissa bound.
-	    (f1, ok1) := eiselLemire64(read.neg, read.mantissa + 1, read.exp)
+	    var (f1, ok1) = eiselLemire64(read.neg, read.mantissa + 1, read.exp)
 		if ok1 and f == f1
 		{
 	        result.value = f
@@ -918,7 +918,7 @@ public func parse(s: const [..] u8) -> {value: f64, eat: u32, ovf: bool} throw
 
     // Slow fallback.
 	read.trunc = read.bigtrunc
-    (b, ovf) := read.floatBits()
+    var (b, ovf) = read.floatBits()
     result.ovf = ovf
     result.value = cast,bit(f64) b
     return result

@@ -3,5 +3,5 @@ using Core.Console
 //#[Swag.PrintBc]
 #test
 {
-    ptr := &print
+    var ptr = &print
 }

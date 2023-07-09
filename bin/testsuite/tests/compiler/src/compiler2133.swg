@@ -8,7 +8,7 @@ func toto()->const &u64
 //#[Swag.PrintBc]
 #test
 {
-    x := toto()
+    var x = toto()
     @assert(@typeof(x) == u64)
     @assert(x == 666)
 }

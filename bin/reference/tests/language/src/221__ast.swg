@@ -5,13 +5,13 @@ The most simple way to produce a string which contains the Swag code to compile 
 {
     // The `#ast` can be a simple expression with the string to compile.
     {
-        #ast "x := 666"
+        #ast "var x = 666"
         @assert(x == 666)
     }
 
     // Or it can be a block, with an explicit `return`
     {
-        cpt := 2
+        var cpt = 2
         #ast
         {
             const INC = 5
@@ -75,7 +75,7 @@ It works with generics too, and can be mixed with static declarations.
     #[Swag.Compiler]
     func append(buf: ^u8, val: string)
     {
-        len := 0
+        var len = 0
         while buf[len] len += 1
         @memcpy(buf + len, @dataof(val), cast(u64) @countof(val) + 1)
     }
@@ -110,10 +110,10 @@ struct(T) IsSet
     #ast
     {
         // A `StringBuilder` is used to manipulate dynamic strings.
-        str := StrConv.StringBuilder{}
+        var str = StrConv.StringBuilder{}
 
         // We get the type of the generic parameter `T`
-        typeof := @typeof(T)
+        var typeof = @typeof(T)
 
         // Then we visit all the fields, assuming the type is a struct (or this will not compile).
         // For each original field, we create one with the same name, but with a `bool` type.

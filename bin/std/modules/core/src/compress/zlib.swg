@@ -32,38 +32,38 @@ impl ZLib
     // Decompress stream
     mtd decompress(buffer: const [..] u8)->Array'u8 throw
     {
-        bs := ByteStream.openRead(buffer)
+        var bs = ByteStream.openRead(buffer)
         if bs.length() < 6
             throw "invalid format"
 
         // Compression mtd (8 is "deflate")
-        cmf := bs.readU8()
+        var cmf = bs.readU8()
         if cmf & 0xF != 8
             throw "invalid compression mtd"
 
         // Window size
-        cinfo := (cmf >> 4) & 0xF
+        var cinfo = (cmf >> 4) & 0xF
         if cinfo > 7
             throw "unsupported window size"
-        winSize := 1'u32 << (cinfo + 8)
+        var winSize = 1'u32 << (cinfo + 8)
 
         // Check
-        flg := bs.readU8()
+        var flg = bs.readU8()
 
         // Dict
-        fdict := (flg >> 5) & 1
+        var fdict = (flg >> 5) & 1
         if fdict
             throw "unsupported dictionnary"
 
         // Compression level
-        //flevel := (flg >> 6) & 3
+        //var flevel = (flg >> 6) & 3
 
         var result: retval
         result = try decoder.decompress(bs.remainReadToSlice(), winSize)
 
         // Now we should have the checksum
         decoder.stream.discardToNextByte()
-        adler32 := decoder.stream.readBits(8) << 24 |
+        var adler32 = decoder.stream.readBits(8) << 24 |
                    decoder.stream.readBits(8) << 16 |
                    decoder.stream.readBits(8) << 8  |
                    decoder.stream.readBits(8)

@@ -9,5 +9,5 @@ struct AA
 #test
 {
     var x: AA
-    y := x
+    var y = x
 }

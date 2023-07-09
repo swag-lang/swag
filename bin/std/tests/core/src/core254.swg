@@ -27,7 +27,7 @@ impl ILogWriter for W
 {
     var x: W
 
-    logger := Log.create()
+    var logger = Log.create()
     logger.setFlags(LogFlags.Prefix)
     logger.setPrefix("titi")
     logger.addWriter(x)

@@ -2,6 +2,6 @@
 
 #test
 {
-    str := "titi"
-    x := @runes(str)
+    var str = "titi"
+    var x = @runes(str)
 }

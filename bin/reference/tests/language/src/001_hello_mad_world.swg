@@ -67,7 +67,7 @@ using Core
     // So this whole thing is equivalent to a simple 'Console.print(Msg)'.
     #ast
     {
-        sb := StrConv.StringBuilder{}
+        var sb = StrConv.StringBuilder{}
         sb.appendString("Console.print(Msg)")
         return sb.toString()
     }
@@ -98,7 +98,7 @@ func mySillyFunction()->string
     // This creates a constant named 'MyConst'
     #ast
     {
-        sb := StrConv.StringBuilder{}
+        var sb = StrConv.StringBuilder{}
         sb.appendString("const MyConst = \"Hello ")
         sb.appendString("mad world ")
         sb.appendString("at runtime !\"")

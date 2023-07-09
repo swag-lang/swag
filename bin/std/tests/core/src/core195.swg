@@ -7,8 +7,8 @@
     var dbg: Swag.DebugAllocator
     dbg.setup(@sysalloc())
 
-    ptr := alloc(16, dbg)
-    ptr1 := new'String(dbg)
+    var ptr = alloc(16, dbg)
+    var ptr1 = new'String(dbg)
 
     //dbg.printAllocated()
 

@@ -19,7 +19,7 @@ impl IAllocator for MyAlloc
 
 func toto()
 {
-    cxt := @getcontext()
+    var cxt = @getcontext()
     var req: AllocatorRequest
     req.size = 10
     cxt.allocator.req(&req)
@@ -28,7 +28,7 @@ func toto()
 #[Swag.Macro]
 func changeContext(user: code)
 {
-    savedCxt := @getcontext()
+    var savedCxt = @getcontext()
     var cxt: Context = dref savedCxt
     @setcontext(cxt)
 

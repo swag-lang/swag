@@ -39,5 +39,5 @@ impl Array
 /*#test
 {
 	var arr: Array
-	it := arr.getIter()
+	var it = arr.getIter()
 }*/

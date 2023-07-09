@@ -24,9 +24,9 @@ impl IActionUI for ActionCopyPaste
 
     mtd impl update(cxt: ActionContext, evt: *CommandStateEvent)->bool
     {
-        main := cast(*MainWnd) cxt.wnd
-        capture := main.getCapture()
-        hasSel  := capture and capture.selection.count
+        var main = cast(*MainWnd) cxt.wnd
+        var capture = main.getCapture()
+        var hasSel = capture and capture.selection.count
 
         switch cxt.id
         {
@@ -47,15 +47,15 @@ impl IActionUI for ActionCopyPaste
             evt.disabled, evt.hidden = true
             evt.name = "Paste Inside Image"
 
-            hasImg := Clipboard.hasImage()
+            var hasImg = Clipboard.hasImage()
             if capture and hasSel
             {
                 visit it: capture.selection
                 {
-                    itfForm := capture.forms[it]
+                    var itfForm = capture.forms[it]
                     if @kindof(itfForm) != FormImage
                         continue
-                    b := cast(*FormImage) @dataof(itfForm)
+                    var b = cast(*FormImage) @dataof(itfForm)
                     if b.kind != .Image
                         continue
                     evt.hidden = false
@@ -78,8 +78,8 @@ impl IActionUI for ActionCopyPaste
 
     mtd impl execute(cxt: ActionContext)->bool
     {
-        main := cast(*MainWnd) cxt.wnd
-        capture := main.getCapture()
+        var main = cast(*MainWnd) cxt.wnd
+        var capture = main.getCapture()
 
         switch cxt.id
         {

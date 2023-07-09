@@ -4,6 +4,6 @@ func toto(x: ...) => 666
 {
     loop 10
     {
-        x := toto(1)
+        var x = toto(1)
     }
 }

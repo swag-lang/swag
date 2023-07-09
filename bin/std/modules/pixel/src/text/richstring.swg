@@ -123,13 +123,13 @@ impl RichString
     {
         var result: retval
 
-        scan := @dataof(str)
-        count := @countof(str)
+        var scan = @dataof(str)
+        var count = @countof(str)
         result.reserve(count)
 
         while count
         {
-            sl := @mkslice(scan, count)
+            var sl = @mkslice(scan, count)
             switch
             {
             case Utf8.startsWith(sl, "<u>"),
@@ -165,22 +165,22 @@ impl RichString
         chunks.clear()
         layoutRect.clear()
 
-        count := raw.length
+        var count = raw.length
         if !count
             return
 
-        startChunk := 0'u64
+        var startChunk = 0'u64
         var chunk: RichChunk
 
-        byteIdx := 0'u64
-        isBold, isItalic := false
-        colorFg := 0
-        under := UnderlineStyle.None
+        var byteIdx = 0'u64
+        var isBold, isItalic = false
+        var colorFg = 0
+        var under = UnderlineStyle.None
 
-        scan := raw.buffer
+        var scan = raw.buffer
         while count
         {
-            sl := @mkslice(scan, count)
+            var sl = @mkslice(scan, count)
             switch
             {
             case sl[0] != "<"'u8:
@@ -223,7 +223,7 @@ impl RichString
                 continue
             }
 
-            (c, eat) := Utf8.decodeRune(sl)
+            var (c, eat) = Utf8.decodeRune(sl)
             if eat == 0
                 break
 

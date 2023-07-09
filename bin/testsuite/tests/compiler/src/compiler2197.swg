@@ -18,8 +18,8 @@ impl CStr
 func cstr(x: string)->CStr
 {
     var tmp: retval = undefined
-    countof := @countof(x)
-    dataof := @dataof(x)
+    var countof = @countof(x)
+    var dataof = @dataof(x)
     tmp.length = countof
     tmp.buffer = cast(^u8) @alloc(cast(u64) countof + 1)
     @memcpy(tmp.buffer, dataof, cast(u64) countof)
@@ -30,6 +30,6 @@ func cstr(x: string)->CStr
 //#[Swag.PrintBc]
 #test
 {
-    v := cstr("toto")
+    var v = cstr("toto")
     @assert(@mkstring(v.buffer, cast(u64) v.length) == "toto")
 }

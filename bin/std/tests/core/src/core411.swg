@@ -6,8 +6,8 @@ using Core, StrConv
 //#[Swag.PrintBc]
 #test
 {
-    lafoule := 52
-    ca := 10
-    v := "toto {lafoule} comment {ca+1} va"
-    x := Format.toInterp(v)
+    var lafoule = 52
+    var ca = 10
+    var v = "toto {lafoule} comment {ca+1} va"
+    var x = Format.toInterp(v)
 }

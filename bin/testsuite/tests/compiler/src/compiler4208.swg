@@ -1,13 +1,13 @@
 //#[Swag.PrintBc]
 func toto(y: s32)->f32
 {
-    x := cast(f32) y
+    var x = cast(f32) y
     x *= 3
     return x
 }
 
 #test
 {
-    y := toto(3)
+    var y = toto(3)
     @assert(y == 9.0)
 }

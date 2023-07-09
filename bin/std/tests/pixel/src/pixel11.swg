@@ -10,7 +10,7 @@ using Core, Pixel
     t.endPolyLine()
     t.triangulate()
 
-    res := t.getTriangles()
+    var res = t.getTriangles()
     @assert(res[0].points[0].x == 0)
     @assert(res[0].points[1].x == 100)
     @assert(res[0].points[2].x == 100)

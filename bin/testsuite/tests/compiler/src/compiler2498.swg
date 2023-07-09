@@ -23,6 +23,6 @@ struct MNode
     a.node[1].next = &b.node
     @assert(a.node[1].next.value == 666)
 
-    c := a
+    var c = a
     @assert(c.node[1].next.value == 666)
 }

@@ -18,19 +18,19 @@ impl PaintImage
         if evt.kind != .Paint
             return false
 
-        pt := cast(*PaintImage) wnd.surface.userData
+        var pt = cast(*PaintImage) wnd.surface.userData
         if !pt.paint
             return false
 
-        painter := &pt.painter
+        var painter = &pt.painter
         painter.begin()
         painter.setParams(.Antialiased)
         painter.clear(Argb.Zero)
         pt.paint(wnd.getApp(), painter)
         painter.end()
 
-        r := &wnd.getApp().renderer
-        rt := r.getRenderTarget(pt.w, pt.h)
+        var r = &wnd.getApp().renderer
+        var rt = r.getRenderTarget(pt.w, pt.h)
         r.bindRenderTarget(rt)
         r.draw(painter)
         pt.image = r.unbindRenderTargetToImage(0, 0, pt.w, pt.h)

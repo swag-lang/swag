@@ -6,5 +6,5 @@ func toto()->string
 
 #test
 {
-    ptr := @mkcallback(&toto)
+    var ptr = @mkcallback(&toto)
 }

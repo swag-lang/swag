@@ -5,19 +5,19 @@ using Core
     var h: HashSet'String
     loop i: 50
     {
-        x := Format.toString("%", i)
+        var x = Format.toString("%", i)
         h.add(x)
     }
 
     loop i: 50
     {
-        x := Format.toString("%", i)
+        var x = Format.toString("%", i)
         h.remove(x)
     }
 
     loop i: 50
     {
-        x := Format.toString("%", i)
+        var x = Format.toString("%", i)
         h.add(x)
     }
 }

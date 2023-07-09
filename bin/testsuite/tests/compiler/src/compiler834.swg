@@ -3,7 +3,7 @@
 //#[Swag.PrintBc]
 #test
 {
-	a := 0
+	var a = 0
 	loop(1)
 	{
 		defer a = 1

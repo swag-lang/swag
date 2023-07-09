@@ -7,7 +7,7 @@ func arithmeticMean(numbers: s32...)
 {
     #[Swag.Safety("", true)]
     {
-	    cpt := numbers[1]
+	    var cpt = numbers[1]
     }
 }
 

@@ -1,7 +1,7 @@
 #test
 {
-    x := false
-    y := ref &x
+    var x = false
+    var y = ref &x
     while x
     {
         @assert(false)

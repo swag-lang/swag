@@ -6,6 +6,6 @@ func(A) toto(x: {a:bool, b:A})
 
 #test
 {
-    x := 0'f32
+    var x = 0'f32
     toto({true, &x})
 }

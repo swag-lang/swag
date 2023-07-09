@@ -1,9 +1,9 @@
 //#[Swag.PrintBc]
 #test
 {
-    x := 10
-    y := 5
-    c := 0
+    var x = 10
+    var y = 5
+    var c = 0
     loop x..y
     {
         c += @index

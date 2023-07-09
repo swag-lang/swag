@@ -12,13 +12,13 @@ You can loop on a struct value if `opCount` has been defined.
 */
 #test
 {
-    v := MyStruct{}
+    var v = MyStruct{}
 
     // '@countof' will call 'opCount'
     @assert(@countof(v) == 4)
 
     // You can then loop on a struct value if 'opCount' has been defined
-    cpt := 0
+    var cpt = 0
     loop v
         cpt += 1
 

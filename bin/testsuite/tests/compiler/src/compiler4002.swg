@@ -1,7 +1,7 @@
 #global testerror
 #test
 {
-    x := 0
-    y := true
+    var x = 0
+    var y = true
     x =,move acast y
 }

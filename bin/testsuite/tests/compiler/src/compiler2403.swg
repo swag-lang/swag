@@ -11,7 +11,7 @@ impl NumericArray
         #ast
         {
             @assert(@typeof(T) == f32)
-            return "a := 3.14"
+            return "var a = 3.14"
         }
 
         @assert(a == 3.14)

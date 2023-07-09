@@ -8,6 +8,6 @@ impl B
 {
     func toto(using self)
     {
-        xxx := 0
+        var xxx = 0
     }
 }

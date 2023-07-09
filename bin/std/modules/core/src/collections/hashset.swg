@@ -39,7 +39,7 @@ impl HashSet
         if !table
             return
 
-        newTable := cast(^HashSetEntry) Memory.alloc(capacity * @sizeof(HashSetEntry), allocator)
+        var newTable = cast(^HashSetEntry) Memory.alloc(capacity * @sizeof(HashSetEntry), allocator)
         #if Reflection.hasPostCopy(K)
         {
             loop i: capacity
@@ -62,7 +62,7 @@ impl HashSet
         if !count
             return
 
-        remain := count
+        var remain = count
         #scope Up
         loop capacity
         {
@@ -124,21 +124,21 @@ impl HashSet
         if capacity != 0 and capacity - (count + deleted) > capacity / 4
             return
 
-        newCapacity := capacity * 2
+        var newCapacity = capacity * 2
         reserve(newCapacity)
     }
 
     // Reserve 'newCapacity' elements in the table.
     mtd reserve(newCapacity: u64)
     {
-        reqCapacity := Math.max(newCapacity, 32)
+        var reqCapacity = Math.max(newCapacity, 32)
         if reqCapacity <= capacity
             return
 
-        oldTable := table
+        var oldTable = table
         count = 0
         deleted = 0
-        newCapacityBytes := reqCapacity * @sizeof(HashSetEntry)
+        var newCapacityBytes = reqCapacity * @sizeof(HashSetEntry)
 
         if allocator == null
             allocator = @getcontext().allocator
@@ -148,11 +148,11 @@ impl HashSet
         Memory.clear(table, newCapacityBytes)
 
         // Copy the last table to the new table, removing deleted entries
-        oldCapacity := capacity
+        var oldCapacity = capacity
         capacity = reqCapacity
         loop i: oldCapacity
         {
-            h := oldTable[i].hash
+            var h = oldTable[i].hash
             if h >= HASH_FIRST
             {
                 emplaceInternal(h, &oldTable[i].key)
@@ -173,8 +173,8 @@ impl HashSet
     {
         grow()
 
-        hashVal := hashKey(key)
-        index := hashVal % capacity
+        var hashVal = hashKey(key)
+        var index = hashVal % capacity
 
         while table[index].hash >= HASH_FIRST
         {
@@ -205,8 +205,8 @@ impl HashSet
     {
         grow()
 
-        hashVal := hashKey(key)
-        index := hashVal % capacity
+        var hashVal = hashKey(key)
+        var index = hashVal % capacity
 
         while table[index].hash >= HASH_FIRST
         {
@@ -238,7 +238,7 @@ impl HashSet
     {
         grow()
 
-        index := hashVal % capacity
+        var index = hashVal % capacity
 
         while table[index].hash >= HASH_FIRST
         {
@@ -269,8 +269,8 @@ impl HashSet
         if !table
             return
 
-        hashVal := hashKey(key)
-        index := hashVal % capacity
+        var hashVal = hashKey(key)
+        var index = hashVal % capacity
 
         while table[index].hash
         {
@@ -292,8 +292,8 @@ impl HashSet
         if !table
             return false
 
-        hashVal := hashKey(key)
-        index := hashVal % capacity
+        var hashVal = hashKey(key)
+        var index = hashVal % capacity
 
         while table[index].hash
         {
@@ -314,7 +314,7 @@ impl HashSet
         {
             loop i: capacity
             {
-                hashval := table[i].hash
+                var hashval = table[i].hash
                 if hashval >= HASH_DELETED
                     @drop(&table[i].key)
 

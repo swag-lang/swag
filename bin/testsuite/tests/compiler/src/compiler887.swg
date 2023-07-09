@@ -6,5 +6,5 @@
 	{
 	}
 
-	moveNearerToZero := chooseStepFunction()
+	var moveNearerToZero = chooseStepFunction()
 }

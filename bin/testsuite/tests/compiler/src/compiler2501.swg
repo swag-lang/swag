@@ -19,6 +19,6 @@ func toto()->Node
 #[Optim("bc",false)]
 #test
 {
-    x := toto()
+    var x = toto()
     @assert(x.next[0] == 666)
 }*/

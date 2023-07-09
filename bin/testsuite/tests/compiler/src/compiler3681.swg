@@ -1,7 +1,7 @@
 #[Swag.Macro]
 func toto(stmt: code)
 {
-    a := 666
+    var a = 666
     #mixin stmt
 }
 
@@ -12,7 +12,7 @@ var G: s32
 {
     toto()
     {
-        fn := closure|a|(){
+        var fn = closure|a|(){
             G += a
         }
         fn()

@@ -7,7 +7,7 @@
     //@print(cast(s64) @sizeof(arr))
     //@print(cast(s64) @countof(arr))
 
-    //cpt := 0
+    //var cpt = 0
     visit(Toto) xxx: arr
     {
         @print(cast(s64) xxx)

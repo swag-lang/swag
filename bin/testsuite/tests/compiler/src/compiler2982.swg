@@ -5,5 +5,5 @@ enum Col1 { CC; DD; }
 
 #test
 {
-    v := .CC
+    var v = .CC
 }

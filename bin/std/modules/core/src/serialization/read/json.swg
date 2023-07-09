@@ -12,7 +12,7 @@ public impl JSon
 {
     mtd zapBlanks()
     {
-        c := stream.peekU8()
+        var c = stream.peekU8()
         while c and Latin1.isSpace(c)
         {
             stream.moveSeek()
@@ -35,7 +35,7 @@ public impl JSon
     mtd beginSequence(_typeElem: typeinfo, _data: *u8, _countElem: *u64)->bool throw
     {
         zapBlanks()
-        c := stream.readU8()
+        var c = stream.readU8()
         if c != "["'u8
             throw "malformed array (missing opening '[')"
 
@@ -45,7 +45,7 @@ public impl JSon
     mtd endSequence() throw
     {
         zapBlanks()
-        c := stream.readU8()
+        var c = stream.readU8()
         if c != "]"'u8
             throw "malformed array (missing closing ']')"
     }
@@ -53,14 +53,14 @@ public impl JSon
     mtd toNextSequenceElement(_countElem: *u64)->bool
     {
         zapBlanks()
-        c := stream.peekU8()
+        var c = stream.peekU8()
         return c != "]"'u8
     }
 
     mtd beginRoot() throw
     {
         zapBlanks()
-        c := stream.readU8()
+        var c = stream.readU8()
         if c != "{"'u8
             throw "malformed root (missing opening '{')"
     }
@@ -68,7 +68,7 @@ public impl JSon
     mtd endRoot() throw
     {
         zapBlanks()
-        c := stream.readU8()
+        var c = stream.readU8()
         if c != "}"'u8
             throw "malformed root (missing closing '}')"
     }
@@ -76,7 +76,7 @@ public impl JSon
     mtd beginSection(_kind: SectionKind) throw
     {
         zapBlanks()
-        c := stream.readU8()
+        var c = stream.readU8()
         if c != "{"'u8
             throw "malformed struct (missing opening '{')"
     }
@@ -84,7 +84,7 @@ public impl JSon
     mtd endSection() throw
     {
         zapBlanks()
-        c := stream.readU8()
+        var c = stream.readU8()
         if c != "}"'u8
             throw "malformed struct (missing closing '}')"
     }
@@ -103,7 +103,7 @@ public impl JSon
     mtd beginElement(val: TypeValue)->bool throw
     {
         zapBlanks()
-        c := stream.readU8()
+        var c = stream.readU8()
         if c != "\""'u8
             throw "malformed property name (missing opening '\"')"
 
@@ -143,7 +143,7 @@ public impl JSon
     mtd endValue() throw
     {
         zapBlanks()
-        c := stream.peekU8()
+        var c = stream.peekU8()
         if c == ","'u8
             stream.moveSeek()
     }
@@ -163,67 +163,67 @@ public impl JSon
         zapBlanks()
         #if NT == bool
         {
-            val := StrConv.parseBool(stream.remainReadToString())
+            var val = StrConv.parseBool(stream.remainReadToString())
             stream.moveSeek(acast val.eat)
             return val.value
         }
         #elif NT == f32
         {
-            val := StrConv.parseF32(stream.remainReadToString())
+            var val = StrConv.parseF32(stream.remainReadToString())
             stream.moveSeek(acast val.eat)
             return val.value
         }
         #elif NT == f64
         {
-            val := StrConv.parseF64(stream.remainReadToString())
+            var val = StrConv.parseF64(stream.remainReadToString())
             stream.moveSeek(acast val.eat)
             return val.value
         }
         #elif NT == s8
         {
-            val := StrConv.parseS8(stream.remainReadToString())
+            var val = StrConv.parseS8(stream.remainReadToString())
             stream.moveSeek(acast val.eat)
             return val.value
         }
         #elif NT == s16
         {
-            val := StrConv.parseS16(stream.remainReadToString())
+            var val = StrConv.parseS16(stream.remainReadToString())
             stream.moveSeek(acast val.eat)
             return val.value
         }
         #elif NT == s32
         {
-            val := StrConv.parseS32(stream.remainReadToString())
+            var val = StrConv.parseS32(stream.remainReadToString())
             stream.moveSeek(acast val.eat)
             return val.value
         }
         #elif NT == s64
         {
-            val := StrConv.parseS64(stream.remainReadToString())
+            var val = StrConv.parseS64(stream.remainReadToString())
             stream.moveSeek(acast val.eat)
             return val.value
         }
         #elif NT == u8
         {
-            val := StrConv.parseU8(stream.remainReadToString())
+            var val = StrConv.parseU8(stream.remainReadToString())
             stream.moveSeek(acast val.eat)
             return val.value
         }
         #elif NT == u16
         {
-            val := StrConv.parseU16(stream.remainReadToString())
+            var val = StrConv.parseU16(stream.remainReadToString())
             stream.moveSeek(acast val.eat)
             return val.value
         }
         #elif NT == u32
         {
-            val := StrConv.parseU32(stream.remainReadToString())
+            var val = StrConv.parseU32(stream.remainReadToString())
             stream.moveSeek(acast val.eat)
             return val.value
         }
         #elif NT == u64
         {
-            val := StrConv.parseU64(stream.remainReadToString())
+            var val = StrConv.parseU64(stream.remainReadToString())
             stream.moveSeek(acast val.eat)
             return val.value
         }
@@ -232,7 +232,7 @@ public impl JSon
             var result: retval
 
             zapBlanks()
-            c := stream.readU8()
+            var c = stream.readU8()
             if c != "\""'u8
                 throw "malformed string (missing opening '\"')"
 

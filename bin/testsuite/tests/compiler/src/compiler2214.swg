@@ -43,7 +43,7 @@ func titi()->A
 #test
 {
     {
-        x := titi()
+        var x = titi()
         @assert(x.x == 1)
         @assert(G == 0)
     }

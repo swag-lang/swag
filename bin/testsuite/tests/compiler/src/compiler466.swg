@@ -4,7 +4,7 @@
 //#[Swag.PrintBc]
 #test
 {
-	a := &F;
+	var a = &F;
 	var b: s32 = a();
 	@assert(b == 666)
 }

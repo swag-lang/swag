@@ -16,11 +16,11 @@ impl Application
 {
     func pickColorAtMouse()->Color
     {
-        hdc := GetDC(null)
+        var hdc = GetDC(null)
 
         var pt: POINT
         GetCursorPos(&pt)
-        col := GetPixel(hdc, pt.x, pt.y) | 0xFF000000
+        var col = GetPixel(hdc, pt.x, pt.y) | 0xFF000000
 
         ReleaseDC(null, hdc)
         return Color.fromAbgr(col)
@@ -47,7 +47,7 @@ impl Application
             mod |= MOD_CONTROL
         if mdf & .Shift
             mod |= MOD_SHIFT
-        winkey := Input.Keyboard.keyToVirtualKey(key)
+        var winkey = Input.Keyboard.keyToVirtualKey(key)
 
         // We need to have a unique id per shortcut
         var crc32: Hash.Crc32
@@ -69,9 +69,9 @@ impl Application
             mdf |= .Control
         if msg.lParam & MOD_SHIFT
             mdf |= .Shift
-        key := Keyboard.virtualKeyToKey(acast (msg.lParam >> 16))
+        var key = Keyboard.virtualKeyToKey(acast (msg.lParam >> 16))
 
-        (id, target) := getHotKeyShortcut(mdf, key)
+        var (id, target) = getHotKeyShortcut(mdf, key)
         if id and target
             target.sendCommandEvent(id)
     }
@@ -96,7 +96,7 @@ impl Application
         var pt: POINT
         pt.x = cast(s32) x
         pt.y = cast(s32) y
-        hWnd := WindowFromPoint(pt)
+        var hWnd = WindowFromPoint(pt)
         if hWnd == null
             return null
 
@@ -136,17 +136,17 @@ impl Application
             curImgList = &fileBigIconsImageList
         }
 
-        sizeIcon := small ? 16 : 32
+        var sizeIcon = small ? 16 : 32
 
         // Convert icon to image
-        img := catch Image.from(hIcon)
+        var img = catch Image.from(hIcon)
         defer catch DestroyIcon(hIcon)
         if @errmsg
             return result
         img.resize(sizeIcon, sizeIcon)
 
         // Append to the image list
-        nimage := Image.create(sizeIcon * (index + 1), sizeIcon, .BGRA8)
+        var nimage = Image.create(sizeIcon * (index + 1), sizeIcon, .BGRA8)
         if curImg.isValid()
             nimage.mix(curImg, 0, 0)
         nimage.mix(img, sizeIcon * index, 0)
@@ -161,18 +161,18 @@ impl Application
 
     mtd getSpecialDirectoryIcon(what: Env.SpecialDirectory, small = true)->Icon
     {
-        val  := what
-        name := Reflection.getEnumName(Env.SpecialDirectory, &val).toString()
+        var val = what
+        var name = Reflection.getEnumName(Env.SpecialDirectory, &val).toString()
 
         if small
         {
-            here := mapFileSmallIcons.find(name)
+            var here = mapFileSmallIcons.find(name)
             if here
                 return Icon.from(&fileSmallIconsImageList, here.value)
         }
         else
         {
-            here := mapFileBigIcons.find(name)
+            var here = mapFileBigIcons.find(name)
             if here
                 return Icon.from(&fileBigIconsImageList, here.value)
         }
@@ -180,7 +180,7 @@ impl Application
         var sgi: SHSTOCKICONINFO
         sgi.cbSize = @sizeof(SHSTOCKICONINFO)
 
-        whatWin := SHSTOCKICONID.SIID_FOLDER
+        var whatWin = SHSTOCKICONID.SIID_FOLDER
         switch what
         {
         case Desktop:           whatWin = .SIID_DESKTOPPC
@@ -204,9 +204,9 @@ impl Application
         if !@countof(name)
             return result
 
-        ext := Path.getExtension(name)
+        var ext = Path.getExtension(name)
 
-        extractFromFile := false
+        var extractFromFile = false
         if isDirectory and name[@countof(name) - 1] == Path.VolumeSeparatorChar
             ext = "c:"
         elif isDirectory
@@ -221,13 +221,13 @@ impl Application
 
         if small
         {
-            here := mapFileSmallIcons.find(ext)
+            var here = mapFileSmallIcons.find(ext)
             if here
                 return Icon.from(&fileSmallIconsImageList, here.value)
         }
         else
         {
-            here := mapFileBigIcons.find(ext)
+            var here = mapFileBigIcons.find(ext)
             if here
                 return Icon.from(&fileBigIconsImageList, here.value)
         }
@@ -241,13 +241,13 @@ impl Application
                 ext = Path.getExtension(name)
                 if small
                 {
-                    here := mapFileSmallIcons.find(ext)
+                    var here = mapFileSmallIcons.find(ext)
                     if here
                         return Icon.from(&fileSmallIconsImageList, here.value)
                 }
                 else
                 {
-                    here := mapFileBigIcons.find(ext)
+                    var here = mapFileBigIcons.find(ext)
                     if here
                         return Icon.from(&fileBigIconsImageList, here.value)
                 }

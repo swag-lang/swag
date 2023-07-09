@@ -21,7 +21,7 @@ impl MouseState
 
         visit v: MouseButton
         {
-            b := pressed[v]
+            var b = pressed[v]
             pressed[v] = Mouse.isButtonPressed(v)
             if !b and pressed[v]
             {

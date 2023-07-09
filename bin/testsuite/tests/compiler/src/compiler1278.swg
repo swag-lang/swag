@@ -10,7 +10,7 @@ func toto(x: code)
 //#[Swag.PrintBc]
 #test
 {
-    b := 0
+    var b = 0
     toto(#code{b += 1;})
     @assert(b == 10)
 }

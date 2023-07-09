@@ -12,5 +12,5 @@ impl Random
 #test
 {
 	var rng: Random'bool
-	r := rng.nextS64()
+	var r = rng.nextS64()
 }

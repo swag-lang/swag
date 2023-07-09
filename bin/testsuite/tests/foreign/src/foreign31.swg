@@ -1,5 +1,5 @@
 #[Swag.Inline]
 public func toto31()
 {
-    x := closure||() {}
+    var x = closure||() {}
 }

@@ -4,7 +4,7 @@
 #[Swag.Mixin, Swag.Macro]
 func toto()
 {
-    x := 0
+    var x = 0
 }
 
 #test

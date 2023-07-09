@@ -14,19 +14,19 @@ using Swag
 // - a dynamic 'Core.Array' of the types above
 public func pokeValue(addr: *void, type: typeinfo, buf: string)->string throw
 {
-    patch := cast(*u8) addr
-    one := Tokenize.eatSpaces(buf)
+    var patch = cast(*u8) addr
+    var one = Tokenize.eatSpaces(buf)
 
     // Dynamic Core.Array
     if Reflection.isStruct(type)
     {
-        structType := cast(const *TypeInfoStruct) type
+        var structType = cast(const *TypeInfoStruct) type
         if structType.fromGeneric == @typeof(Array)
         {
-            valueType := structType.generics[0].pointedType
+            var valueType = structType.generics[0].pointedType
             while @countof(one) and one[0] != "#"'u8
             {
-                addrVal := Reflection.roomInArray(addr, valueType)
+                var addrVal = Reflection.roomInArray(addr, valueType)
                 one = try pokeValue(addrVal, valueType, one)
                 one = Tokenize.eatSpaces(one)
             }
@@ -38,9 +38,9 @@ public func pokeValue(addr: *void, type: typeinfo, buf: string)->string throw
     // Static array
     if Reflection.isArray(type)
     {
-        arrayType := cast(const *TypeInfoArray) type
-        addrVal := cast(^u8) addr
-        cpt := 0
+        var arrayType = cast(const *TypeInfoArray) type
+        var addrVal = cast(^u8) addr
+        var cpt = 0
         while @countof(one) and one[0] != "#"'u8
         {
             if cpt == arrayType.totalCount throw "too many values"
@@ -56,17 +56,17 @@ public func pokeValue(addr: *void, type: typeinfo, buf: string)->string throw
     // Enum
     if Reflection.isEnum(type)
     {
-        enumType := cast(const *TypeInfoEnum) type
+        var enumType = cast(const *TypeInfoEnum) type
         if enumType.rawType != string and enumType.sizeof > 8
             throw Format.toString("unsupported enum type '%'", enumType.rawType.name)
 
-        enumFlags := Reflection.hasAttribute(enumType, EnumFlags)
+        var enumFlags = Reflection.hasAttribute(enumType, EnumFlags)
 
         loop
         {
             one = Tokenize.eatSpaces(one)
-            id := try parseIdentifier(one)
-            v := Reflection.getEnumValue(type, id)
+            var id = try parseIdentifier(one)
+            var v = Reflection.getEnumValue(type, id)
             if !v throw Format.toString("unknown enum value '%'", id)
 
             if enumType.rawType == string
@@ -106,7 +106,7 @@ public func pokeValue(addr: *void, type: typeinfo, buf: string)->string throw
             one = Tokenize.eatCount(one, 1)
         }
 
-        eat := cast(u32) cast(s64) (@dataof(one) - @dataof(buf))
+        var eat = cast(u32) cast(s64) (@dataof(one) - @dataof(buf))
         one = Tokenize.eatCount(buf, cast(u64) eat)
         return one
     }
@@ -114,13 +114,13 @@ public func pokeValue(addr: *void, type: typeinfo, buf: string)->string throw
     // Decode interface
     if Reflection.hasInterface(type, IPokeValue)
     {
-        itf := @mkinterface(addr, type, IPokeValue)
+        var itf = @mkinterface(addr, type, IPokeValue)
         return try itf.poke(one)
     }
 
     // Basic types
-    eat := 0'u32
-    ovf := false
+    var eat = 0'u32
+    var ovf = false
     switch type
     {
     case s8:

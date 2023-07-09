@@ -7,6 +7,6 @@ typeset Foo
 
 #test
 {
-    sth := Foo.a{"hello"}
-    oth := Foo.b{isEnabled: false}
+    var sth = Foo.a{"hello"}
+    var oth = Foo.b{isEnabled: false}
 }

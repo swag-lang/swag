@@ -14,8 +14,8 @@ func toto(x: Pt)
 //#[Swag.PrintBc]
 #test
 {
-    x := 10's32
-    y := 20's32
-    z := 30's32
+    var x = 10's32
+    var y = 20's32
+    var z = 30's32
     toto({x, y, z})
 }

@@ -16,6 +16,6 @@ alias CB = closure()
 #test
 {
     var arr: Arr
-    x := func(){}
+    var x = func(){}
     arr.add(x)
 }

@@ -4,12 +4,12 @@
 // Insertion sort algorithm (slow)
 func(T) insertionSort(values: [..] T, cb: closure(T, T)->s32)
 {
-    buffer := @dataof(values)
-    count := @countof(values)
+    var buffer = @dataof(values)
+    var count = @countof(values)
 
-    for i := 1'u32; i < count; i += 1
+    for var i = 1'u32; i < count; i += 1
     {
-        for j := i; j > 0 and cb(buffer[j], buffer[j - 1]) < 0; j -= 1
+        for var j = i; j > 0 and cb(buffer[j], buffer[j - 1]) < 0; j -= 1
         {
             swap(&buffer[j], &buffer[j - 1])
         }
@@ -19,13 +19,13 @@ func(T) insertionSort(values: [..] T, cb: closure(T, T)->s32)
 // Quick sort algorithm
 func(T) quickSort(values: [..] T, cb: closure(T, T)->s32)
 {
-    count := cast(s64) @countof(values)
+    var count = cast(s64) @countof(values)
     if count == 0
         return
 
-    begin  := 0's64
-    end    := count - 1
-    buffer := @dataof(values)
+    var begin = 0's64
+    var end = count - 1
+    var buffer = @dataof(values)
 
     loop
     {
@@ -36,9 +36,9 @@ func(T) quickSort(values: [..] T, cb: closure(T, T)->s32)
             return
         }
 
-        pivot := begin
-        low   := begin
-        high  := end
+        var pivot = begin
+        var low = begin
+        var high = end
         loop
         {
             while low < high and cb(buffer[low], buffer[pivot]) <= 0
@@ -54,8 +54,8 @@ func(T) quickSort(values: [..] T, cb: closure(T, T)->s32)
         swap(&buffer[pivot], &buffer[high])
 
         // To avoid too much recursions, we recurse only for the smaller partition
-        set1 := (high - 1) - begin
-        set2 := end - (high + 1)
+        var set1 = (high - 1) - begin
+        var set2 = end - (high + 1)
         if set1 > 0 and set2 > 0
         {
             var first, last: s64 = undefined
@@ -111,7 +111,7 @@ func(T) isSorted(values: const [..] T)->bool
 func(T) isSorted(values: const [..] T, cb: closure(T, T)->s32)->bool
 {
     Debug.assert(cb != null)
-    countof := @countof(values)
+    var countof = @countof(values)
     loop i: countof - 1
     {
         if cb(values[i], values[i + 1]) > 0

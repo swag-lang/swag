@@ -14,7 +14,7 @@ var spaceTest: []rune = [
 //#[Swag.PrintBc]
 #test
 {
-    g := 0
+    var g = 0
     visit c: spaceTest g += 1
     @assert(g == 10)
 }

@@ -13,8 +13,8 @@ impl Vector3
 //#[Swag.PrintBc]
 #test
 {
-    a := Vector3{}
-    b := Vector3{1, 2, 3}
+    var a = Vector3{}
+    var b = Vector3{1, 2, 3}
     a =,move b
     @assert(b.x == 666)
 }

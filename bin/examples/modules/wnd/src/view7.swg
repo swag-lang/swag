@@ -56,11 +56,11 @@ var aa: AA
 
 func createView7(_tabView: *Tab, view: *Wnd)
 {
-    lt := PropertyList.create(view, {5, 55, 400, 600})
+    var lt = PropertyList.create(view, {5, 55, 400, 600})
     aa.str = "String content"
     lt.addItem(aa)
 
-    lt1 := PropertyListCtrl.create(view, {500, 10, 500, 600})
+    var lt1 = PropertyListCtrl.create(view, {500, 10, 500, 600})
     lt1.addItem(aa)
 
     lt.sigChanged += closure|lt1|(lt) {

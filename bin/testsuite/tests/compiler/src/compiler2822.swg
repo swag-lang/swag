@@ -6,6 +6,6 @@ func toto()
 
 #test
 {
-    aaa := 0
+    var aaa = 0
     aaa.toto()
 }

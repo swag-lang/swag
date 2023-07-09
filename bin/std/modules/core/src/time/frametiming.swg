@@ -18,7 +18,7 @@ impl FrameTiming
     // Update frame timers
     mtd update()
     {
-        newTick := nowPrecise()
+        var newTick = nowPrecise()
         if paused
             return
 
@@ -32,7 +32,7 @@ impl FrameTiming
         }
 
         // Delta time
-        diff := newTick - prevTick
+        var diff = newTick - prevTick
         dt = cast(f32) (cast(f64) diff / preciseFrequency())
         dt = Math.clamp(dt, dtMin, dtMax)
 

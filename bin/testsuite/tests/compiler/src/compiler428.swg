@@ -5,7 +5,7 @@
 #test
 {
 	const RES = 6;
-	res := 0;
+	var res = 0;
 	switch(6)
 	{
 	case 4: 		@assert(false);

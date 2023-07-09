@@ -1,8 +1,8 @@
 #test
 {
-    md := @modules()
+    var md = @modules()
     visit t: md[0].types
     {
-        x := t.fullname
+        var x = t.fullname
     }
 }

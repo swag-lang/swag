@@ -44,15 +44,15 @@ impl IWnd for FrameWnd
     {
         if frameFlags.has(.SmallShadow)
         {
-            bc      := evt.bc
-            painter := bc.painter
-            theme   := getTheme()
-            colors  := getThemeColors()
-            metrics := getThemeMetrics()
+            var bc = evt.bc
+            var painter = bc.painter
+            var theme = getTheme()
+            var colors = getThemeColors()
+            var metrics = getThemeMetrics()
 
-            clientRect := getClientRect()
+            var clientRect = getClientRect()
             clientRect.applyPadding(-metrics.frameWnd_SmallShadowSize)
-            subRect := &theme.rects.frameWnd_SmallShadow
+            var subRect = &theme.rects.frameWnd_SmallShadow
             theme.drawSubRect(painter, clientRect, subRect, colors.frameWnd_SmallShadow)
         }
     }
@@ -62,11 +62,11 @@ impl IWnd for FrameWnd
         if frameForm == .Transparent
             return
 
-        bc      := evt.bc
-        painter := bc.painter
-        theme   := getTheme()
-        colors  := getThemeColors()
-        rects   := getThemeRects()
+        var bc = evt.bc
+        var painter = bc.painter
+        var theme = getTheme()
+        var colors = getThemeColors()
+        var rects = getThemeRects()
 
         var subRectBk:  *ThemeImageRect
         var colorBk:    Color
@@ -80,10 +80,10 @@ impl IWnd for FrameWnd
         }
 
         // Display focus borders when the focus wnd is a child of me
-        showFocus := frameFlags.has(.FocusBorder)
+        var showFocus = frameFlags.has(.FocusBorder)
         if showFocus
         {
-            focus := getFocus()
+            var focus = getFocus()
             if !focus or !isParentOf(focus)
                 showFocus = false
         }
@@ -98,7 +98,7 @@ impl IWnd for FrameWnd
             colorBk = colors.frameWnd_Bk
         }
 
-        clientRect := getClientRect()
+        var clientRect = getClientRect()
         theme.drawSubRect(painter, clientRect, subRectBk, colorBk)
         usedColorBk = colorBk
     }
@@ -110,12 +110,12 @@ impl IWnd for FrameWnd
         if !(frameFlags & .Borders)
             return
 
-        bc      := evt.bc
-        painter := bc.painter
-        theme   := getTheme()
-        colors  := getThemeColors()
-        rects   := getThemeRects()
-        metrics := getThemeMetrics()
+        var bc = evt.bc
+        var painter = bc.painter
+        var theme = getTheme()
+        var colors = getThemeColors()
+        var rects = getThemeRects()
+        var metrics = getThemeMetrics()
 
         var subRectBorder:  *ThemeImageRect
         var colorBorder:    Color = undefined
@@ -129,10 +129,10 @@ impl IWnd for FrameWnd
         }
 
         // Display focus borders when the focus wnd is a child of me
-        showFocus := frameFlags.has(.FocusBorder)
+        var showFocus = frameFlags.has(.FocusBorder)
         if showFocus
         {
-            focus := getFocus()
+            var focus = getFocus()
             if !focus or !isParentOf(focus)
                 showFocus = false
         }
@@ -147,13 +147,13 @@ impl IWnd for FrameWnd
             colorBorder = colors.frameWnd_Border
         }
 
-        clientRect := getClientRect()
+        var clientRect = getClientRect()
         theme.drawSubRect(painter, clientRect, subRectBorder, colorBorder, false)
 
         // Anchor
         if anchor != .None
         {
-            posA := anchorPos
+            var posA = anchorPos
             var marginA: f32
             switch frameForm
             {
@@ -208,7 +208,7 @@ impl IWnd for FrameWnd
     {
         if !view
             return
-        rect := getClientRectPadding()
+        var rect = getClientRectPadding()
         rect.applyPadding(view.margin)
         view.setPosition(rect)
     }

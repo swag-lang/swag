@@ -13,9 +13,9 @@
     var x: B
     @assert(x.name == "toto")
 
-    ptr := &x
+    var ptr = &x
     @assert(ptr.name == "toto")
 
-    //ptr := @typeof(X)
+    //var ptr = @typeof(X)
     //@print(ptr.rawType.name)
 }

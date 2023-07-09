@@ -148,7 +148,7 @@ public impl enum Argb
     // Get the Argb value that matches 'name'
     func fromName(name: string)->Argb
     {
-        t := @typeof(Argb)
+        var t = @typeof(Argb)
         visit it: t.values
         {
             if it.name == name

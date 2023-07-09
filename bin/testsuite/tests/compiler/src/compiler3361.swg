@@ -38,7 +38,7 @@ impl A
 #test
 {
     var v: A
-    xx := 0
+    var xx = 0
     visit i: v
     {
         xx += i

@@ -11,5 +11,5 @@ namespace A
 #test
 {
     using A//, B
-    a := &toto
+    var a = &toto
 }

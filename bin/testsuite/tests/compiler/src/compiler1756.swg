@@ -4,6 +4,6 @@
 //#[Swag.PrintBc]
 #test
 {
-    a := null
+    var a = null
     //a = @dataof("string")
 }

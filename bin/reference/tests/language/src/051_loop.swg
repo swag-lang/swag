@@ -6,7 +6,7 @@
 {
     // The loop expression value is evaluated **once**, and must be a positive value.
     {
-        cpt := 0
+        var cpt = 0
         loop 10 // Loops 10 times
             cpt += 1
         @assert(cpt == 10)
@@ -14,7 +14,7 @@
 
     // The intrinsic `@index` returns the current index of the loop (starting at 0).
     {
-        cpt := 0'u64
+        var cpt = 0'u64
         loop 5
         {
             cpt += @index
@@ -25,8 +25,8 @@
 
     // You can name that index if you want.
     {
-        cpt  := 0
-        cpt1 := 0
+        var cpt = 0
+        var cpt1 = 0
 
         loop i: 5   // index is named 'i'
         {
@@ -44,10 +44,10 @@
 */
 #test
 {
-    arr := [10, 20, 30, 40]
+    var arr = [10, 20, 30, 40]
     #assert @countof(arr) == 4
 
-    cpt := 0
+    var cpt = 0
     loop arr    // The array contains 4 elements, so the loop count is 4
         cpt += arr[@index]
     @assert(cpt == 10+20+30+40)
@@ -59,7 +59,7 @@ On a string, it will loop for each byte, **not** runes (if a rune is encoded in 
 */
 #test
 {
-    cpt := 0
+    var cpt = 0
     loop "⻘"
         cpt += 1
 
@@ -75,7 +75,7 @@ On a string, it will loop for each byte, **not** runes (if a rune is encoded in 
 {
     // You can exit a loop with `break`.
     {
-        cpt := 0
+        var cpt = 0
         loop x: 10
         {
             if x == 5
@@ -88,7 +88,7 @@ On a string, it will loop for each byte, **not** runes (if a rune is encoded in 
 
     // You can force to return to the loop evaluation with `continue`.
     {
-        cpt := 0
+        var cpt = 0
         loop x: 10
         {
             if x == 5
@@ -108,8 +108,8 @@ Loop can also be used to iterate on a range of signed values.
 {
     // Syntax is `lower bound..upper bound`
     {
-        count := 0
-        sum   := 0
+        var count = 0
+        var sum = 0
         loop i: -1..1   // loop from -1 to 1, all included
         {
             count += 1
@@ -136,7 +136,7 @@ Loop can also be used to iterate on a range of signed values.
     // You can exclude the last value with the `..<` syntax.
     {
         // Will loop from 1 to 2 and **not** 1 to 3
-        cpt := 0
+        var cpt = 0
         loop i: 1..<3
         {
             cpt += i

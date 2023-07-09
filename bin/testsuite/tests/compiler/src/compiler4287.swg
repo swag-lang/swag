@@ -17,7 +17,7 @@ func parse(stmt: code)
 
 func toto()
 {
-    countTot := 0
+    var countTot = 0
     parse()
     {
         countTot += 1

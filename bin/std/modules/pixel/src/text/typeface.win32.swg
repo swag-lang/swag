@@ -7,13 +7,13 @@ impl TypeFace
     {
         var result: retval
 
-        hdc := GetDC(null)
+        var hdc = GetDC(null)
         defer ReleaseDC(null, hdc)
 
         SelectObject(hdc, acast hf)
         defer DeleteObject(acast hf)
 
-        outFontBufferLen := GetFontData(hdc, 0, 0, null, 0)
+        var outFontBufferLen = GetFontData(hdc, 0, 0, null, 0)
         result.resize(acast outFontBufferLen)
 
         discard GetFontData(hdc, 0, 0, result.buffer, cast(DWORD) result.count)
@@ -25,12 +25,12 @@ impl TypeFace
     {
         Sync.scopedLock(&lock)
 
-        str := String.from(fullname)
-        here := g_HashTypeFace.find(str)
+        var str = String.from(fullname)
+        var here = g_HashTypeFace.find(str)
         if here
             return here.value
 
-        tf := Memory.new'TypeFace()
+        var tf = Memory.new'TypeFace()
         tf.fullname = fullname
         tf.buffer   = getDataFromHFONT(hf)
 

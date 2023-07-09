@@ -5,7 +5,7 @@ using Win32
 
 func create(dirname: string) throw
 {
-    winPath := Utf16.toZeroTerminated(dirname)
+    var winPath = Utf16.toZeroTerminated(dirname)
     CreateDirectoryW(@dataof(winPath), null)
 }
 
@@ -14,8 +14,8 @@ func exists(dirName: string)->bool
 {
     if @countof(dirName) == 0
         return false
-    winPath := Utf16.toZeroTerminated(dirName)
-    attributes := catch GetFileAttributesW(@dataof(winPath))
+    var winPath = Utf16.toZeroTerminated(dirName)
+    var attributes = catch GetFileAttributesW(@dataof(winPath))
     if @errmsg
         return false
     if attributes == 0xFFFFFFFF
@@ -38,27 +38,27 @@ func enumerate(dirName: string, options: EnumerationOptions)->Array'(File.FileIn
     var fileTime:   SYSTEMTIME
     var stackPath:  Array'String
 
-    dataof := cast(const ^u16) @dataof(findfile.cFileName)
+    var dataof = cast(const ^u16) @dataof(findfile.cFileName)
 
     stackPath.add(String.from(dirName))
     while !stackPath.isEmpty()
     {
-        toScan := stackPath.popBack()
+        var toScan = stackPath.popBack()
         if toScan.back() == Path.VolumeSeparatorChar
             toScan += Path.DirectorySeparatorChar
-        searchPath := Path.combine(toScan.toString(), "*")
+        var searchPath = Path.combine(toScan.toString(), "*")
 
-        winPath := Utf16.toZeroTerminated(searchPath)
-        h := try FindFirstFileW(@dataof(winPath), &findfile)
+        var winPath = Utf16.toZeroTerminated(searchPath)
+        var h = try FindFirstFileW(@dataof(winPath), &findfile)
         if h == INVALID_HANDLE_VALUE
             continue
 
         loop
         {
-            filename := Utf8.fromUtf16(@mkslice(dataof, Utf16.lengthZeroTerminated(dataof)))
+            var filename = Utf8.fromUtf16(@mkslice(dataof, Utf16.lengthZeroTerminated(dataof)))
 
             // Filter by file/folder
-            mustAdd := false
+            var mustAdd = false
             if findfile.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY
             {
                 if filename != "." and filename != ".."
@@ -66,7 +66,7 @@ func enumerate(dirName: string, options: EnumerationOptions)->Array'(File.FileIn
                     mustAdd = options.wantDirectories
                     if options.recurse
                     {
-                        newPath := Path.combine(toScan.toString(), filename.toString())
+                        var newPath = Path.combine(toScan.toString(), filename.toString())
                         stackPath.add(moveref &newPath)
                     }
                 }
@@ -102,7 +102,7 @@ func enumerate(dirName: string, options: EnumerationOptions)->Array'(File.FileIn
                 }
             }
 
-            next := catch FindNextFileW(h, &findfile)
+            var next = catch FindNextFileW(h, &findfile)
             if !next break
         }
 
@@ -116,7 +116,7 @@ func enumerate(dirName: string, options: EnumerationOptions)->Array'(File.FileIn
 func getCurrent()->String throw
 {
     var result: retval
-    length := try GetCurrentDirectoryW(0, null)
+    var length = try GetCurrentDirectoryW(0, null)
 
     var arr16: Array'u16
     arr16.allocator = @getcontext().tempAllocator
@@ -132,7 +132,7 @@ func getCurrent()->String throw
 // Set the current directory
 func setCurrent(dirname: string) throw
 {
-    winPath := Utf16.toZeroTerminated(dirname)
+    var winPath = Utf16.toZeroTerminated(dirname)
     try SetCurrentDirectoryW(@dataof(winPath))
 }
 
@@ -144,7 +144,7 @@ func getDrives()->Array'String throw
     var volName: [MAX_PATH] u8
     var driveName: [MAX_PATH] u8
 
-    h := FindFirstVolumeA(volName, acast MAX_PATH)
+    var h = FindFirstVolumeA(volName, acast MAX_PATH)
     if h == INVALID_HANDLE_VALUE
         return result
 
@@ -154,10 +154,10 @@ func getDrives()->Array'String throw
         catch GetVolumePathNamesForVolumeNameA(volName, driveName, acast MAX_PATH, &ret)
         if !@errmsg
         {
-            len := @strlen(driveName)
+            var len = @strlen(driveName)
             if len
             {
-                str := String.from(@mkstring(&driveName[0], len))
+                var str = String.from(@mkstring(&driveName[0], len))
                 Path.normalize(&str)
                 result.add(str)
             }

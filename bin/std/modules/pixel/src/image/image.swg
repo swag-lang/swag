@@ -49,13 +49,13 @@ impl Image
     #[Swag.Macro]
     func(ptr: bool) opVisit(using self, stmt: code)
     {
-        scan := pixels.buffer
+        var scan = pixels.buffer
         loop width * height
         {
 			#macro
 			{
-                @alias0 := #up scan
-				@alias1 := @index
+                var @alias0 = #up scan
+				var @alias1 = @index
 				#mixin #up stmt
 			}
 
@@ -143,19 +143,19 @@ impl Image
     {
         Debug.assert(stride > 0)
 
-        p := {self, userData}
+        var p = {self, userData}
         Jobs.parallelVisit(|buffer, data| pixels.toSlice(), cast(u32) (bpp8 * stride), &p)
         {
-            p := cast(*@decltype(p)) data
+            var p = cast(*@decltype(p)) data
             #macro
             {
-                image    := #up p.self
-                userData := #up p.userData
-                pix      := #up buffer
+                var image = #up p.self
+                var userData = #up p.userData
+                var pix = #up buffer
 
-                index := (cast(u64) (pix - image.pixels.buffer)) / image.bpp8
-                x := cast(s32) index % image.width
-                y := cast(s32) index / image.width
+                var index = (cast(u64) (pix - image.pixels.buffer)) / image.bpp8
+                var x = cast(s32) index % image.width
+                var y = cast(s32) index / image.width
 
                 #mixin #up stmt
             }
@@ -208,33 +208,33 @@ impl Image
     mtd getPixelColor(pixX, pixY: s32)->Color
     {
         var result: retval
-        x := Math.clamp(pixX, 0, width - 1)
-        y := Math.clamp(pixY, 0, height - 1)
+        var x = Math.clamp(pixX, 0, width - 1)
+        var y = Math.clamp(pixY, 0, height - 1)
         y = height - y - 1
 
         #[Swag.Complete]
         switch pf
         {
         case RGBA8:
-            pix := pixels.buffer + (x * 4) + (y * width * 4)
+            var pix = pixels.buffer + (x * 4) + (y * width * 4)
             result.r = pix[0]
             result.g = pix[1]
             result.b = pix[2]
             result.a = pix[3]
         case RGB8:
-            pix := pixels.buffer + (x * 3) + (y * width * 3)
+            var pix = pixels.buffer + (x * 3) + (y * width * 3)
             result.r = pix[0]
             result.g = pix[1]
             result.b = pix[2]
             result.a = 255
         case BGRA8:
-            pix := pixels.buffer + (x * 4) + (y * width * 4)
+            var pix = pixels.buffer + (x * 4) + (y * width * 4)
             result.b = pix[0]
             result.g = pix[1]
             result.r = pix[2]
             result.a = pix[3]
         case BGR8:
-            pix := pixels.buffer + (x * 3) + (y * width * 3)
+            var pix = pixels.buffer + (x * 3) + (y * width * 3)
             result.b = pix[0]
             result.g = pix[1]
             result.r = pix[2]

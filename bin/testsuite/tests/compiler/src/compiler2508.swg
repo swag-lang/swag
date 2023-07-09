@@ -5,13 +5,13 @@
 #test
 {
     var x: [..]~32 s32
-    v := [10, 20]
+    var v = [10, 20]
     x = v
     @assert(@countof(x) == 2)
     @assert(x[0] == 10)
     @assert(x[1] == 20)
 
-    y := x
+    var y = x
     @assert(y[0] == 10)
     @assert(y[1] == 20)
 }

@@ -5,10 +5,10 @@
 {
 	var x: [] any = [6]
 
-	t := x[0]
-	type := @kindof(t)
+	var t = x[0]
+	var type = @kindof(t)
 	@assert(type.fullname == "s32")
 
-	ptr := cast(*s32) @dataof(x[0])
+	var ptr = cast(*s32) @dataof(x[0])
 	@assert(dref ptr == 6)
 }

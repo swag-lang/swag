@@ -50,7 +50,7 @@ impl IForm for FormText
 {
     mtd impl isSame(ptr: *BaseForm)->bool
     {
-        other := cast(*FormText) ptr
+        var other = cast(*FormText) ptr
         return  borderColor == other.borderColor and
                 borderSize  == other.borderSize and
                 backColor   == other.backColor and
@@ -65,8 +65,8 @@ impl IForm for FormText
 
     mtd impl copy(dst, src: *BaseForm)
     {
-        dstf := cast(*FormText) dst
-        srcf := cast(*FormText) src
+        var dstf = cast(*FormText) dst
+        var srcf = cast(*FormText) src
         dstf.borderColor = srcf.borderColor
         dstf.borderSize  = srcf.borderSize
         dstf.backColor   = srcf.backColor
@@ -81,10 +81,10 @@ impl IForm for FormText
 
     mtd impl edit(evt: *MouseEvent, paintRect: Math.Rectangle, movingStart: Math.Point, localPos: Math.Point, zoom: f32)->bool
     {
-        xa := cast(s32) ((movingStart.x - paintRect.x) / zoom)
-        ya := cast(s32) ((movingStart.y - paintRect.y) / zoom)
-        xb := cast(s32) ((localPos.x - paintRect.x) / zoom)
-        yb := cast(s32) ((localPos.y - paintRect.y) / zoom)
+        var xa = cast(s32) ((movingStart.x - paintRect.x) / zoom)
+        var ya = cast(s32) ((movingStart.y - paintRect.y) / zoom)
+        var xb = cast(s32) ((localPos.x - paintRect.x) / zoom)
+        var yb = cast(s32) ((localPos.y - paintRect.y) / zoom)
         setBaseForm(xa, ya, xb - xa, yb - ya)
         if evt.kind == .MouseReleased and evt.button == .Left
             return false
@@ -165,11 +165,11 @@ impl IForm for FormText
 
     mtd impl paint(app: *Application, painter: *Painter, z: f32, quickMode: bool)
     {
-        bSize := adaptSize(borderSize, MinTextBorderSize, MaxTextBorderSize, 1, quickMode, 2, 4)
-        fSize := adaptSize(fontSize, MinFontSize, MaxFontSize, 1, quickMode, 24, 48)
-        sSize := adaptSize(boldSize, MinBoldSize, MaxBoldSize, 1, quickMode, 1, 2)
+        var bSize = adaptSize(borderSize, MinTextBorderSize, MaxTextBorderSize, 1, quickMode, 2, 4)
+        var fSize = adaptSize(fontSize, MinFontSize, MaxFontSize, 1, quickMode, 24, 48)
+        var sSize = adaptSize(boldSize, MinBoldSize, MaxBoldSize, 1, quickMode, 1, 2)
 
-        pp := Math.Rectangle{0, 0, paintPos.width, paintPos.height}
+        var pp = Math.Rectangle{0, 0, paintPos.width, paintPos.height}
         pp.inflate(-bSize * 0.5)
 
         if text.isEmpty()
@@ -186,12 +186,12 @@ impl IForm for FormText
                 typeFace = null
             else
             {
-                en := FontFamily.getFromOs(fontName)
+                var en = FontFamily.getFromOs(fontName)
                 typeFace = catch FontFamily.createTypeFace(en, fontStyle)
             }
         }
 
-        face := typeFace
+        var face = typeFace
         if !face
         {
             switch fontStyle
@@ -215,7 +215,7 @@ impl IForm for FormText
             isDirty = true
         }
 
-        tokens := Tokenize.split(text, "\n"'rune)
+        var tokens = Tokenize.split(text, "\n"'rune)
         if isDirty
         {
             isDirty = false
@@ -235,12 +235,12 @@ impl IForm for FormText
             totalY = 0
             visit t, idx: tokens
             {
-                pathl  := &paths[idx * 2]
-                pathl1 := &paths[(idx * 2) + 1]
+                var pathl = &paths[idx * 2]
+                var pathl1 = &paths[(idx * 2) + 1]
 
                 Utf8.visitRunes(|c| t)
                 {
-                    it := runes.find(c)
+                    var it = runes.find(c)
                     if !it
                     {
                         var ftr: FormTextRune
@@ -282,16 +282,16 @@ impl IForm for FormText
             }
         }
 
-        y0 := 0'f32
-        addSize := (bSize + sSize) * z
+        var y0 = 0'f32
+        var addSize = (bSize + sSize) * z
 
-        count := paths.count / 2
+        var count = paths.count / 2
 
-        totalYZ := totalY * z
+        var totalYZ = totalY * z
         totalYZ += cast(f32) ((count - 1) * (lineSpacing * z))
 
-        aV := quickMode ? FormTextAlign.Center : alignVert
-        aH := quickMode ? FormTextAlign.Center : alignHorz
+        var aV = quickMode ? FormTextAlign.Center : alignVert
+        var aH = quickMode ? FormTextAlign.Center : alignHorz
         switch aV
         {
         case LeftTop:       y0 = pp.y + addSize
@@ -299,14 +299,14 @@ impl IForm for FormText
         case RightBottom:   y0 = pp.bottom() - addSize - totalYZ
         }
 
-        for i := 0; i < paths.count; i += 2
+        for var i = 0; i < paths.count; i += 2
         {
-            pathl1 := &paths[i + 1]
+            var pathl1 = &paths[i + 1]
 
-            wt := (pathl1.bvMax.x - pathl1.bvMin.x) * z
-            ht := (pathl1.bvMax.y - pathl1.bvMin.y) * z
+            var wt = (pathl1.bvMax.x - pathl1.bvMin.x) * z
+            var ht = (pathl1.bvMax.y - pathl1.bvMin.y) * z
 
-            x0 := 0'f32
+            var x0 = 0'f32
             switch aH
             {
             case LeftTop:       x0 = pp.x + addSize
@@ -324,7 +324,7 @@ impl IForm for FormText
                 painter.translateTransform(x0, y0 - (pathl1.bvMin.y * z))
                 Utf8.visitRunes(|c| tokens[i / 2])
                 {
-                    it := runes.find(c)
+                    var it = runes.find(c)
                     pl.paths.add(it.value.border.paths.toSlice())
                     painter.fillPath(&pl, borderColor)
                     pl.paths.count = 0
@@ -341,7 +341,7 @@ impl IForm for FormText
                 painter.translateTransform(x0, y0 - (pathl1.bvMin.y * z))
                 Utf8.visitRunes(|c| tokens[i / 2])
                 {
-                    it := runes.find(c)
+                    var it = runes.find(c)
                     pl.paths.add(it.value.back.paths.toSlice())
                     painter.fillPath(&pl, backColor)
                     pl.paths.count = 0

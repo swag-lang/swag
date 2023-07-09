@@ -52,20 +52,20 @@ impl IWnd for Header
 {
     mtd paintItem(bc: PaintContext, item: *HeaderItem, idx: u32, x: f32)
     {
-        painter := bc.painter
+        var painter = bc.painter
 
-        clientRect := getClientRect()
-        labelPos := clientRect
+        var clientRect = getClientRect()
+        var labelPos = clientRect
         labelPos.x = x
         labelPos.width = item.width
 
-        theme   := getTheme()
-        metrics := getThemeMetrics()
-        colors  := getThemeColors()
+        var theme = getTheme()
+        var metrics = getThemeMetrics()
+        var colors = getThemeColors()
 
         if hotIdx == idx and !hotSeparator
         {
-            labelPosBk := labelPos
+            var labelPosBk = labelPos
             labelPosBk.x -= (metrics.header_Separator * 0.5)
             labelPosBk.width += metrics.header_Separator
             painter.fillRect(labelPosBk, clicked ? colors.headerItem_ClickedBk : colors.headerItem_HotBk)
@@ -94,7 +94,7 @@ impl IWnd for Header
                 icon = theme.getIcon24(ThemeIcons24.SortArrowUp)
             if labelPos.width > icon.sizeX
             {
-                sortPos := labelPos
+                var sortPos = labelPos
                 sortPos.x = Math.max(sortPos.x, sortPos.right() - icon.sizeX)
                 sortPos.y = sortPos.vertCenter() - (icon.sizeY * 0.5)
                 icon.paint(painter, sortPos.x, sortPos.y, colorText)
@@ -113,14 +113,14 @@ impl IWnd for Header
 
     mtd impl onPaintEvent(evt: *PaintEvent)
     {
-        painter := evt.bc.painter
-        theme   := getTheme()
-        metrics := getThemeMetrics()
-        colors  := getThemeColors()
-        rects   := getThemeRects()
+        var painter = evt.bc.painter
+        var theme = getTheme()
+        var metrics = getThemeMetrics()
+        var colors = getThemeColors()
+        var rects = getThemeRects()
 
         // Background bar
-        clientRect := getClientRect()
+        var clientRect = getClientRect()
         clientRect.offset(scrollPos)
         switch form
         {
@@ -133,7 +133,7 @@ impl IWnd for Header
         }
 
         // Clipping, take care of padding
-        clipRect := getSurfaceRect()
+        var clipRect = getSurfaceRect()
         clipRect.applyPadding(padding)
         painter.pushClippingSurfaceRect(clipRect)
         defer painter.popClippingRect()
@@ -141,13 +141,13 @@ impl IWnd for Header
         // Paint all except selected one, which will be painted last
         clientRect = getClientRectPadding()
         clientRect.offset(scrollPos)
-        x := padding.x
+        var x = padding.x
         visit item, idx: items
         {
             paintItem(evt.bc, item, cast(u32) idx, x)
             x += item.width
 
-            rect := clientRect
+            var rect = clientRect
             rect.x = x + (metrics.header_Separator * 0.5)
             painter.drawLine(rect.x, rect.y, rect.x, rect.bottom(), colors.headerItem_Separator, 1)
 
@@ -161,7 +161,7 @@ impl IWnd for Header
         {
             if clicked and sigClicked
             {
-                (hit, sep) := hitTest(evt.surfacePos)
+                var (hit, sep) = hitTest(evt.surfacePos)
                 if hit == hotIdx
                     sigClicked(self, items[hotIdx].column)
             }
@@ -176,7 +176,7 @@ impl IWnd for Header
 
         if !moving and !clicked
         {
-            (hit, sep) := hitTest(evt.surfacePos)
+            var (hit, sep) = hitTest(evt.surfacePos)
 
             // Hot, if not a separator, is disabled if item is not clickable
             if hit != Swag.U32.Max
@@ -216,9 +216,9 @@ impl IWnd for Header
         case MouseMove:
             if moving
             {
-                pos := surfaceToLocal(evt.surfacePos)
+                var pos = surfaceToLocal(evt.surfacePos)
                 pos += scrollPos.x
-                move := pos.x - getItemPosition(hotIdx) + padding.x
+                var move = pos.x - getItemPosition(hotIdx) + padding.x
                 move -= correctMoving
                 setItemWidth(hotIdx, move)
             }
@@ -236,7 +236,7 @@ impl IWnd for Header
                 if hotSeparator
                 {
                     moving = true
-                    pos := surfaceToLocal(evt.surfacePos)
+                    var pos = surfaceToLocal(evt.surfacePos)
                     pos += scrollPos.x
                     correctMoving = pos.x - getItemPosition(hotIdx) + padding.x
                     correctMoving -= getItemWidth(hotIdx)
@@ -257,10 +257,10 @@ private impl Header
 {
     mtd hitTest(surfacePos: Math.Point)->{idx: u32, sep: bool}
     {
-        metrics := getThemeMetrics()
-        pos := surfaceToLocal(surfacePos)
+        var metrics = getThemeMetrics()
+        var pos = surfaceToLocal(surfacePos)
         pos += scrollPos.x
-        x := padding.x
+        var x = padding.x
         visit item, idx: items
         {
             if pos.x >= x and pos.x < x + item.width
@@ -282,11 +282,11 @@ impl Header
     {
         Debug.assert(parent != null)
 
-        metrics := parent.getThemeMetrics()
-        pos := position
+        var metrics = parent.getThemeMetrics()
+        var pos = position
         if pos.height == 0
             pos.height = metrics.header_Height
-        res := Wnd.create'Header(parent, null, pos, id)
+        var res = Wnd.create'Header(parent, null, pos, id)
         res.padding = metrics.header_Padding
         res.focusStrategy = .None
         return res
@@ -296,7 +296,7 @@ impl Header
     #[Swag.Discardable]
     mtd addItem(tabName: string, width = 100'f32, icon: Icon = {})->*HeaderItem
     {
-        item := items.newPtr()
+        var item = items.newPtr()
         item.name = tabName
         item.icon = icon
         item.width = width
@@ -359,8 +359,8 @@ impl Header
     {
         Debug.assert(column < items.count)
 
-        x := padding.x
-        m := getThemeMetrics().header_Separator
+        var x = padding.x
+        var m = getThemeMetrics().header_Separator
         visit item, i: items
         {
             if item.column == column
@@ -374,7 +374,7 @@ impl Header
     // Get the header total width
     mtd getTotalItemsWidth()->f32
     {
-        w := getItemPosition(cast(u32) items.count - 1)
+        var w = getItemPosition(cast(u32) items.count - 1)
         w += items.back().width
         w += getThemeMetrics().header_Separator
         return w
@@ -392,8 +392,8 @@ impl Header
     {
         Debug.assert(column < items.count)
 
-        item := getItemByCol(column)
-        move := Math.max(width, item.minWidth)
+        var item = getItemByCol(column)
+        var move = Math.max(width, item.minWidth)
         if item.maxWidth > 0
             move = Math.min(move, item.maxWidth)
         if item.width == move

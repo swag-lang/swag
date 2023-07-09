@@ -4,6 +4,6 @@ alias AA = toto
 
 #test
 {
-    s := AA(66)
+    var s = AA(66)
     @assert(s == 67)
 }

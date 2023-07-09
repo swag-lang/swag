@@ -3,7 +3,7 @@
 //#[Swag.Mixin]
 func mkVar(name: string, value: s32)
 {
-    #ast "titi := 0"
+    #ast "var titi = 0"
 }
 
 mkVar("titi", 555)

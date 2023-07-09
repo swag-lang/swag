@@ -89,7 +89,7 @@ private impl RichEditCtrl
 
     mtd setDefaultStyles()
     {
-        colors := getThemeColors()
+        var colors = getThemeColors()
         loop i: @countof(styles)
             styles[i].colFg = colors.richEdit_Text
         setForm(.RichEditCtrl)
@@ -97,12 +97,12 @@ private impl RichEditCtrl
 
     mtd computeScrollY()
     {
-        size := getXExtent()
+        var size = getXExtent()
         if !recomputeScroll
             return
 
-        y := 0'f32
-        firstHidden := true
+        var y = 0'f32
+        var firstHidden = true
         countVisibleLines = 0
         loop i: lines
         {
@@ -157,7 +157,7 @@ private impl RichEditCtrl
 
         if lines.count
         {
-            insLine := index == lines.count ? lines.back() : lines[index]
+            var insLine = index == lines.count ? lines.back() : lines[index]
             p.drawingRect = insLine.drawingRect
             p.drawingRect.y += p.drawingRect.height
         }
@@ -190,7 +190,7 @@ private impl RichEditCtrl
     {
         if !lines.count
             return 0
-        for i := lines.count - 1; i >= 0; i -= 0
+        for var i = lines.count - 1; i >= 0; i -= 0
         {
             if lines[i].isVisible()
                 return i
@@ -203,7 +203,7 @@ private impl RichEditCtrl
     {
         if !lineIndex
             return 0
-        i := lineIndex - 1
+        var i = lineIndex - 1
         loop
         {
             if lines[i].isVisible()
@@ -218,11 +218,11 @@ private impl RichEditCtrl
 
     mtd getNextVisibleLine(lineIndex: u64)->u64
     {
-        count := lines.count
+        var count = lines.count
         if lineIndex == count - 1
             return lineIndex
 
-        i := lineIndex + 1
+        var i = lineIndex + 1
         loop
         {
             if lines[i].isVisible()
@@ -241,13 +241,13 @@ impl RichEditCtrl
     #[Swag.Discardable]
     func create(parent: *Wnd, position: Math.Rectangle = {}, id: WndId = null)->*RichEditCtrl
     {
-        pos := position
+        var pos = position
         if pos.height == 0
             pos.height = parent.getThemeMetrics().editBox_Height
         if pos.width == 0
             pos.width = parent.getThemeMetrics().editBox_Width
 
-        ed := Wnd.create'RichEditCtrl(parent, "", pos, id)
+        var ed = Wnd.create'RichEditCtrl(parent, "", pos, id)
 
         with ed
         {
@@ -288,14 +288,14 @@ impl RichEditCtrl
     mtd setForm(form: RichEditForm)
     {
         self.form = #self.form
-        colors := getThemeColors()
+        var colors = getThemeColors()
 
         switch self.form
         {
         case RichEditCtrl:
             style.setFont(parent.getTheme().res.fontDefaultFs)
 
-            mdlBk := bkColorModel
+            var mdlBk = bkColorModel
             if bkColorModel.length == 0
                 mdlBk = String.from("$richEdit_Bk")
 
@@ -314,7 +314,7 @@ impl RichEditCtrl
         case Edit:
             style.clearFont()
 
-            mdlBk := bkColorModel
+            var mdlBk = bkColorModel
             if bkColorModel.length == 0
                 mdlBk = String.from("$edit_Bk")
 
@@ -337,7 +337,7 @@ impl RichEditCtrl
     // Returns true if the rich edit is read only
     mtd isReadOnly()->bool
     {
-        ro := false
+        var ro = false
         sigIsReadOnly.call(&ro)
         return ro or richEdFlags.has(.ReadOnly)
     }
@@ -345,14 +345,14 @@ impl RichEditCtrl
     // Simulate a keyboard character pressed
     mtd charPressed(key: Input.Key, ch: rune, mdf: Input.KeyModifiers)
     {
-        isChar := false
+        var isChar = false
         if mdf == .Zero and ch >= "0"'rune and ch <= "9"'rune
             isChar = true
 
         // If there is a corresponding command, do nothing
         if !isChar
         {
-            cmd := getMappingCommand(key, mdf)
+            var cmd = getMappingCommand(key, mdf)
             if cmd != .None
                 return
         }
@@ -360,7 +360,7 @@ impl RichEditCtrl
         if isReadOnly()
             return
 
-        c := ch
+        var c = ch
         if c == "\r"'rune
             c = "\n"'rune
 
@@ -377,7 +377,7 @@ impl RichEditCtrl
     // Simulate a keyboard pressed
     mtd keyPressed(key: Input.Key, mdf: Input.KeyModifiers)
     {
-        cmd := getMappingCommand(key, mdf)
+        var cmd = getMappingCommand(key, mdf)
         if cmd == .None
             return
         executeCommand(cmd)

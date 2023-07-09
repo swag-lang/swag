@@ -220,7 +220,7 @@ impl Color
     {
         func hueToCol(m1, m2, hue: f32)->u8
         {
-            h := hue
+            var h = hue
             if h < 0 h += 1
             if h > 1 h -= 1
 
@@ -237,9 +237,9 @@ impl Color
             return cast(u8) (v * 255)
         }
 
-        _h := Math.clamp(h, 0.0, 1.0)
-        _l := Math.clamp(l, 0.0, 1.0)
-        _s := Math.clamp(s, 0.0, 1.0)
+        var _h = Math.clamp(h, 0.0, 1.0)
+        var _l = Math.clamp(l, 0.0, 1.0)
+        var _s = Math.clamp(s, 0.0, 1.0)
 
         if _s == 0
         {
@@ -249,8 +249,8 @@ impl Color
         }
         else
         {
-            m2 := _l < 0.5 ? _l * (1 + _s) : (_l + _s) - (_l * _s)
-            m1 := 2 * _l - m2
+            var m2 = _l < 0.5 ? _l * (1 + _s) : (_l + _s) - (_l * _s)
+            var m1 = 2 * _l - m2
             r = hueToCol(m1, m2, _h + (1.0 / 3.0))
             g = hueToCol(m1, m2, _h)
             b = hueToCol(m1, m2, _h - (1.0 / 3.0))
@@ -262,11 +262,11 @@ impl Color
     {
         var result: retval = undefined
 
-        (rf, gf, bf) := toRgbf()
-        max := Math.max(rf, gf, bf)
-        min := Math.min(rf, gf, bf)
+        var (rf, gf, bf) = toRgbf()
+        var max = Math.max(rf, gf, bf)
+        var min = Math.min(rf, gf, bf)
         result.l = (max + min) * 0.5
-        delta := max - min
+        var delta = max - min
         if delta == 0
         {
             result.s = 0
@@ -279,9 +279,9 @@ impl Color
         else
             result.s = delta / (2 - max - min)
 
-        delr := (((max - rf) / 6) + (delta * 0.5)) / delta
-        delg := (((max - gf) / 6) + (delta * 0.5)) / delta
-        delb := (((max - bf) / 6) + (delta * 0.5)) / delta
+        var delr = (((max - rf) / 6) + (delta * 0.5)) / delta
+        var delg = (((max - gf) / 6) + (delta * 0.5)) / delta
+        var delb = (((max - bf) / 6) + (delta * 0.5)) / delta
 
         if rf == max
             result.h = delb - delg
@@ -339,10 +339,10 @@ impl Color
     // Returns the distance between the other color
     mtd getDistanceRgb(col: Color)->f32
     {
-        x1 := cast(f32) r - col.r
-        x2 := cast(f32) g - col.g
-        x3 := cast(f32) b - col.b
-        dist := Math.sqrt((x1*x1) + (x2*x2) + (x3*x3))
+        var x1 = cast(f32) r - col.r
+        var x2 = cast(f32) g - col.g
+        var x3 = cast(f32) b - col.b
+        var dist = Math.sqrt((x1*x1) + (x2*x2) + (x3*x3))
         dist /= 255*3
         return dist
     }
@@ -355,7 +355,7 @@ impl Core.StrConv.IPokeValue for Color
         var eat: u64
         var ovf: bool
 
-        one := Tokenize.eatSpaces(buf)
+        var one = Tokenize.eatSpaces(buf)
         if @countof(one) == 0
             throw "missing color value"
 
@@ -388,7 +388,7 @@ impl Core.StrConv.IPokeValue for Color
         }
         else
         {
-            id := try parseIdentifier(one)
+            var id = try parseIdentifier(one)
             one = Tokenize.eatCount(one, @countof(id))
             argb = cast(u32) Argb.fromName(id)
         }

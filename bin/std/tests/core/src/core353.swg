@@ -18,11 +18,11 @@ struct Toto
 
     try wri.writeAll(&buf, toto)
 
-    str := buf.toString()
+    var str = buf.toString()
     //Console.print(str, "\n")
 
     var rea: Decoder'Read.JSon
-    v := try rea.readAll'Toto(str.toSlice())
+    var v = try rea.readAll'Toto(str.toSlice())
     defer Memory.delete(v)
 
     @assert(v.v2.x == 0)

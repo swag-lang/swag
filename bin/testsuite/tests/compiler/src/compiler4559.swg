@@ -5,7 +5,7 @@ const Margin    = 4.0
 //#[Swag.Optim("", false)]
 #test
 {
-    y := 2
-    yi := 0.0 + (y*CellSize) + Margin
+    var y = 2
+    var yi = 0.0 + (y*CellSize) + Margin
     @assert(yi == 260)
 }

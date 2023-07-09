@@ -15,6 +15,6 @@ impl A
 #test
 {
     var x: A
-    res := x[1..2]
+    var res = x[1..2]
     @assert(res == 3)
 }

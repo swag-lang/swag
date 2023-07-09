@@ -4,5 +4,5 @@
 {
 	if false
 		return;
-	a := 0
+	var a = 0
 }

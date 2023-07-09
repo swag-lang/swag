@@ -3,8 +3,8 @@ using Core
 //#[Swag.PrintBc]
 #test
 {
-    res := "A假CD"
-    cpt := 0'u32
+    var res = "A假CD"
+    var cpt = 0'u32
     Utf8.visitRunes(|c, idx| res)
     {
         switch(idx)

@@ -1,7 +1,7 @@
 #[Swag.Macro]
 func toto(t: s32)
 {
-    xx := t
+    var xx = t
     @assert(t == 100)
     @assert(xx == 100)
 }

@@ -14,7 +14,7 @@ func __concreteAlias(type1: typeinfo)->typeinfo
 {
     if type1.kind != TypeInfoKind.Alias or type1.flags & TypeInfoFlags.Strict
         return type1
-    typeAlias := cast(const *TypeInfoAlias) type1
+    var typeAlias = cast(const *TypeInfoAlias) type1
     return __concreteAlias(typeAlias.rawType)
 }
 
@@ -27,8 +27,8 @@ func @typecmp(typeA, typeB: typeinfo, cmpFlags: TypeCmpFlags)->bool
     if !typeA or !typeB
         return false
 
-    type1 := __concreteAlias(typeA)
-    type2 := __concreteAlias(typeB)
+    var type1 = __concreteAlias(typeA)
+    var type2 = __concreteAlias(typeB)
 
     if (type1.kind != type2.kind) or (type1.sizeof != type2.sizeof) or (type1.flags != type2.flags)
         return false
@@ -36,12 +36,12 @@ func @typecmp(typeA, typeB: typeinfo, cmpFlags: TypeCmpFlags)->bool
     // For tuples, we compare field by field
     if type1.flags & .Tuple
     {
-        type1S := cast(const *TypeInfoStruct) type1
-        type2S := cast(const *TypeInfoStruct) type2
+        var type1S = cast(const *TypeInfoStruct) type1
+        var type2S = cast(const *TypeInfoStruct) type2
         loop i: type1S.fields
         {
-            field1 := type1S.fields[i]
-            field2 := type2S.fields[i]
+            var field1 = type1S.fields[i]
+            var field2 = type2S.fields[i]
             if field1.name != field2.name
                 return false
             if !@typecmp(field1.pointedType, field2.pointedType, cmpFlags)
@@ -77,7 +77,7 @@ var __argc = 0'u32
 
 func __convertArgcArgv(args: const ^u8)
 {
-    cmdLine := args
+    var cmdLine = args
     __argc = 0
     while dref cmdLine
     {
@@ -87,14 +87,14 @@ func __convertArgcArgv(args: const ^u8)
         if dref cmdLine == "\""'u8
         {
             cmdLine += 1
-            start := cmdLine
+            var start = cmdLine
             while dref cmdLine and dref cmdLine != "\""'u8 cmdLine += 1
             __argv[__argc] = cast(string) @mkslice(start, cast(u64) (cmdLine - start))
             if dref cmdLine cmdLine += 1
         }
         else
         {
-            start := cmdLine
+            var start = cmdLine
             while dref cmdLine and dref cmdLine != " "'u8 cmdLine += 1
             __argv[__argc] = cast(string) @mkslice(start, cast(u64) (cmdLine - start))
         }
@@ -110,7 +110,7 @@ func @args()->const [..] string
 {
     if __argc == 0
     {
-        ptr := @dataof(@getpinfos().args) orelse __getCommandLine()
+        var ptr = @dataof(@getpinfos().args) orelse __getCommandLine()
         __convertArgcArgv(ptr)
     }
 
@@ -134,7 +134,7 @@ func __setupRuntime(flags: RuntimeFlags)
 {
     __runtimeFlags = flags
 
-    cxt := @getcontext()
+    var cxt = @getcontext()
     cxt.tempAllocator.setCapacity(acast __buildCfg.scratchAllocatorCapacity, cxt.allocator)
 
     if __buildCfg.debugAllocator

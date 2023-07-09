@@ -1,11 +1,11 @@
 #test
 {
-    f := 666
-    g := {factor = f}
+    var f = 666
+    var g = {factor = f}
     @assert(g.factor == 666)
 
-    v := cast(*void) &g
+    var v = cast(*void) &g
 
-    p := cast(*@decltype(g)) v
+    var p = cast(*@decltype(g)) v
     @assert(p.factor == 666)
 }

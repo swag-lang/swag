@@ -15,8 +15,8 @@ impl Point
 
 #test
 {
-    p1 := Point{5's32}
-    p2 := Point{"Hello"}
-    p3 := p1.mixup(p2)
+    var p1 = Point{5's32}
+    var p2 = Point{"Hello"}
+    var p3 = p1.mixup(p2)
     @assert(p3.x == "Hello")
 }

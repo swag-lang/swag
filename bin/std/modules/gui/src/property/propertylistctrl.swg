@@ -16,7 +16,7 @@ impl PropertyListCtrl
     #[Swag.Discardable]
     func create(parent: *Wnd, position: Math.Rectangle = {}, id: WndId = null)->*PropertyListCtrl
     {
-        ed := Wnd.create'PropertyListCtrl(parent, "", position, id)
+        var ed = Wnd.create'PropertyListCtrl(parent, "", position, id)
 
         with ed
         {
@@ -26,12 +26,12 @@ impl PropertyListCtrl
             .list = ListCtrl.createSimple(.splitter)
             .list.listFlags.add(.ForceMarginExpandMark)
 			.list.sigSelChanged += closure|ed|(list) {
-				sel := list.getFocusLine()
+				var sel = list.getFocusLine()
                 if !sel
                     return
                 list.toggleExpand(sel)
-				item := cast(*PropertyListItem) sel.userData0
-				pos  := item.label.getRectIn(ed.prop.edView)
+				var item = cast(*PropertyListItem) sel.userData0
+				var pos = item.label.getRectIn(ed.prop.edView)
 				ed.prop.scrollWnd.setScrollPos(0, pos.y)
 			}
 
@@ -41,7 +41,7 @@ impl PropertyListCtrl
             .splitter.addPane(.prop)
         }
 
-        with filter := EditBox.create(ed, "", {0, 0, 0, 30})
+        with var filter = EditBox.create(ed, "", {0, 0, 0, 30})
         {
             .dockStyle = .Top
             .setNote("Search")
@@ -63,9 +63,9 @@ impl PropertyListCtrl
 			if it.item1 == 0
 				parentLine = null
 
-            str := it.item0.label.getText()
-            naked := RichString.getNaked(str)
-			line := list.createLine(naked, parentLine = parentLine)
+            var str = it.item0.label.getText()
+            var naked = RichString.getNaked(str)
+			var line = list.createLine(naked, parentLine = parentLine)
 			line.userData0 = it.item0
 
 			if it.item1 == 0

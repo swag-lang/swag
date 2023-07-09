@@ -1,5 +1,5 @@
 #test
 {
-	x := 5 % 2
+	var x = 5 % 2
 	@assert(x == 1)
 }

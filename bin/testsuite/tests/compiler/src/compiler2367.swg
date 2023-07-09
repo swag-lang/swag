@@ -13,7 +13,7 @@ func toto(stmt: code)
 
 #test
 {
-    cpt := 0
+    var cpt = 0
     toto()
     {
         loop 4

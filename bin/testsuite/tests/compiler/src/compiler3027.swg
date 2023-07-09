@@ -8,6 +8,6 @@ impl AA
 {
     mtd titi()
     {
-        x := 0
+        var x = 0
     }
 }

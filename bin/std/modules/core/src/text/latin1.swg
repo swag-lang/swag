@@ -61,9 +61,9 @@ func makeLower(buffer: [..] u8)
 // Returns -1, 0 or 1
 func compare(src, dst: const [..] u8, ignoreCase = false)->s32
 {
-    length      := @countof(src)
-    otherLength := @countof(dst)
-    minLen      := Math.min(length, otherLength)
+    var length = @countof(src)
+    var otherLength = @countof(dst)
+    var minLen = Math.min(length, otherLength)
 
     var result: s32
     if ignoreCase
@@ -71,8 +71,8 @@ func compare(src, dst: const [..] u8, ignoreCase = false)->s32
         #[Swag.Safety("boundcheck", false)]
         loop i: minLen
         {
-            c1 := src[i]
-            c2 := dst[i]
+            var c1 = src[i]
+            var c2 = dst[i]
             if c1 == c2 continue
 
             c1 += isUpperUtf8(c1) ? 0x20 : 0
@@ -103,16 +103,16 @@ func compareNatural(src, dst: const [..] u8, ignoreCase = false)->s32
 {
     func compareLeft(src, dst: const [..] u8)->s32
     {
-        csrc := @countof(src)
-        cdst := @countof(dst)
-        ai, bi := 0
+        var csrc = @countof(src)
+        var cdst = @countof(dst)
+        var ai, bi = 0
         loop
         {
-            ca := !csrc ? 0 : src[ai]
-            cb := !cdst ? 0 : dst[bi]
+            var ca = !csrc ? 0 : src[ai]
+            var cb = !cdst ? 0 : dst[bi]
 
-            dga := isDigit(ca)
-            dgb := isDigit(cb)
+            var dga = isDigit(ca)
+            var dgb = isDigit(cb)
 
             if !dga and !dgb
                 return 0
@@ -134,17 +134,17 @@ func compareNatural(src, dst: const [..] u8, ignoreCase = false)->s32
 
     func compareRight(src, dst: const [..] u8)->s32
     {
-        bias   := 0
-        csrc   := @countof(src)
-        cdst   := @countof(dst)
-        ai, bi := 0
+        var bias = 0
+        var csrc = @countof(src)
+        var cdst = @countof(dst)
+        var ai, bi = 0
         loop
         {
-            ca := !csrc ? 0 : src[ai]
-            cb := !cdst ? 0 : dst[bi]
+            var ca = !csrc ? 0 : src[ai]
+            var cb = !cdst ? 0 : dst[bi]
 
-            dga := isDigit(ca)
-            dgb := isDigit(cb)
+            var dga = isDigit(ca)
+            var dgb = isDigit(cb)
 
             if !dga and !dgb
                 return bias
@@ -173,16 +173,16 @@ func compareNatural(src, dst: const [..] u8, ignoreCase = false)->s32
         return 0;
     }
 
-    dsrc := @dataof(src)
-    ddst := @dataof(dst)
-    csrc := @countof(src)
-    cdst := @countof(dst)
+    var dsrc = @dataof(src)
+    var ddst = @dataof(dst)
+    var csrc = @countof(src)
+    var cdst = @countof(dst)
 
-    ai, bi := 0
+    var ai, bi = 0
     loop
     {
-        ca := !csrc ? 0 : src[ai]
-        cb := !cdst ? 0 : dst[bi]
+        var ca = !csrc ? 0 : src[ai]
+        var cb = !cdst ? 0 : dst[bi]
 
         // Skip over leading spaces or zeros
         while isSpace(ca)
@@ -202,9 +202,9 @@ func compareNatural(src, dst: const [..] u8, ignoreCase = false)->s32
         // Process run of digits
         if isDigit(ca) and isDigit(cb)
         {
-            result := 0
-            sl0 := @mkslice(dsrc + ai, csrc)
-            sl1 := @mkslice(ddst + bi, cdst)
+            var result = 0
+            var sl0 = @mkslice(dsrc + ai, csrc)
+            var sl1 = @mkslice(ddst + bi, cdst)
             if ca == "0"'u8 or cb == "0"'u8
                 result = compareLeft(sl0, sl1)
             else

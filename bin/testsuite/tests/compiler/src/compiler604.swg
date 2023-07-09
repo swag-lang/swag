@@ -16,7 +16,7 @@ impl Point
 
 #test
 {
-	x := 4
+	var x = 4
 	x *= 5
 	@assert(x == 20)
 	x = 3

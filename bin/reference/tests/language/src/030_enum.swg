@@ -12,7 +12,7 @@
     // By default, an enum is of type `s32`.
     {
         enum Values { A; B; }
-        type := @typeof(Values)
+        var type = @typeof(Values)
 
         // 'type' here is a 'typeinfo' dedicated to the enum type.
         // In that case, 'type.rawType' is the enum underlying type.
@@ -166,7 +166,7 @@ That kind of enum starts by default at 1, and not 0, and each value should be a 
     #assert MyFlags.C == 0b00000100
     #assert MyFlags.D == 0b00001000
 
-    value := MyFlags.B | MyFlags.C
+    var value = MyFlags.B | MyFlags.C
     @assert(value == 0b00000110)
     @assert(value & MyFlags.B == MyFlags.B)
     @assert(value & MyFlags.C == MyFlags.C)
@@ -205,10 +205,10 @@ You can have an enum of const slices.
     #assert @countof(Value.A) == 2
     #assert @countof(Value.B) == 4
 
-    x := Value.A
+    var x = Value.A
     @assert(x[0] == 1)
     @assert(x[1] == 2)
-    y := Value.B
+    var y = Value.B
     @assert(y[0] == 10)
     @assert(y[1] == 20)
 }
@@ -234,7 +234,7 @@ You can have an enum of const slices.
     // The enum type is not necessary in a `case` expression of a `switch` block (it is deduced from the switch expression).
     {
         enum Values { A; B; }
-        x := Values.A
+        var x = Values.A
 
         // The 'normal' form
         switch x
@@ -256,7 +256,7 @@ You can have an enum of const slices.
         enum Values { A; B; }
 
         // The normal form
-        x := Values.A
+        var x = Values.A
 
         // The simplified form, because 'Values' can be deduced from type of x
         @assert(x == .A)
@@ -268,7 +268,7 @@ You can have an enum of const slices.
         #[Swag.EnumFlags]
         enum Values { A; B; }
 
-        x := Values.A | Values.B
+        var x = Values.A | Values.B
         @assert((x & .A) and (x & .B))
     }
 
@@ -288,7 +288,7 @@ By type reflection, you can loop/visit all values of an enum.
     {
         enum RGB { R; G; B; }
 
-        cpt := 0
+        var cpt = 0
         loop idx: RGB
             cpt += 1
         @assert(cpt == 3)

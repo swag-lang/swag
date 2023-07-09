@@ -3,11 +3,11 @@ func toto(x: f32, y: ...)
 {
 	@assert(x == 1.0)
 
-	result := 0
+	var result = 0
 	loop @countof(y)
 	{
-		p := y[@index]
-		ptr := cast(*s32) @dataof(p)
+		var p = y[@index]
+		var ptr = cast(*s32) @dataof(p)
 		result += dref ptr
 	}
 

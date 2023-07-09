@@ -24,7 +24,7 @@ impl I for A
     var itf: I = cast(I) x
 
     //var ptr: closure()
-    ptr := closure|itf|()
+    var ptr = closure|itf|()
     {
         itf.toto()
     }

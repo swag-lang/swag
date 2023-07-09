@@ -7,6 +7,6 @@ using test_foreign
     var b: Vector2f = {99.0, 100.0}
     var c: Vector2f = {100.0, 99.0}
     var d: Vector2f = {105.0, 99.0}
-    y := lineLineIntersect1(a, b, c, d)
+    var y = lineLineIntersect1(a, b, c, d)
     @assert(y == 105)
 }

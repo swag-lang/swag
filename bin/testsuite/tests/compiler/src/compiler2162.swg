@@ -35,7 +35,7 @@ func toto() -> {a:A, b:bool}
 //#[Swag.PrintBc, Swag.nooptim]
 #test
 {
-    v := toto()
+    var v = toto()
     @assert(v.item0.x == 555)
     @assert(G == 1)
 }

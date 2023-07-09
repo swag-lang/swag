@@ -3,7 +3,7 @@
 
 func(T) valueof(x: any)->T
 {
-	ptr := cast(*T) @dataof(x)
+	var ptr = cast(*T) @dataof(x)
 	return dref ptr
 }
 
@@ -14,11 +14,11 @@ func toto(xx: string, a: ...)
 	@assert(valueof's32(a[1]) == 10)
 
 	/*
-	i := 0'u32
-	idx := 0
+	var i = 0'u32
+	var idx = 0
 	while(i < @countof(xx))
 	{
-		c := xx[i]
+		var c = xx[i]
 		if(c == cast(u8) '%')
 		{
 			i += 1

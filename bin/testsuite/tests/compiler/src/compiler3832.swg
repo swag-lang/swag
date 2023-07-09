@@ -1,7 +1,7 @@
 var G = 0
 #test
 {
-    c := 0'u8
+    var c = 0'u8
     switch c
     {
     case 0'u8..9'u8:

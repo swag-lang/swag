@@ -1,8 +1,8 @@
 //#[Swag.PrintBc]
 #test
 {
-    a := "ABCDEFG"
-    c := a[3..6]
+    var a = "ABCDEFG"
+    var c = a[3..6]
     @assert(c == "DEFG");
     @assert(@typeof(c) == @typeof(string))
 

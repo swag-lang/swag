@@ -9,7 +9,7 @@ var G = 0
         G = 10
     }
 
-    v := closure|&toto|() {
+    var v = closure|&toto|() {
         toto()
     }
 

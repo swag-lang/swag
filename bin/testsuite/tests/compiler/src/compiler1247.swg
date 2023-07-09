@@ -2,7 +2,7 @@ using Swag
 
 /*func toto()
 {
-    cxt := @getcontext()
+    var cxt = @getcontext()
 
     var req: AllocatorRequest
     req.size = 10

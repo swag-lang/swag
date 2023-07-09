@@ -1,4 +1,4 @@
 #test
 {
-    f := #location.fileName
+    var f = #location.fileName
 }

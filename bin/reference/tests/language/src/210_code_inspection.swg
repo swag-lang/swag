@@ -8,18 +8,18 @@ With the `Swag.CompilerMsgMask.SemFunctions` flag, for example, `#message` will 
 #message(Swag.CompilerMsgMask.SemFunctions)
 {
     // Get the interface to communicate with the compiler
-    itf := @compiler()
+    var itf = @compiler()
 
     // Get the current message
-    msg := itf.getMessage()
+    var msg = itf.getMessage()
 
     // We know that the type in the message is a function because of the '#message' mask.
     // So we can safely cast.
-    typeFunc := cast(const *Swag.TypeInfoFunc) msg.type
+    var typeFunc = cast(const *Swag.TypeInfoFunc) msg.type
 
     // The message name, for `Swag.CompilerMsgMask.SemFunctions`, is the name of the
     // function being compiled.
-    nameFunc := msg.name
+    var nameFunc = msg.name
 
     // As an example, we count that name if it starts with "XX".
     // But we could use custom function attributes instead...
@@ -47,8 +47,8 @@ This will be called for every global variables of the module.
 */
 #message(Swag.CompilerMsgMask.SemGlobals)
 {
-    itf := @compiler()
-    msg := itf.getMessage()
+    var itf = @compiler()
+    var msg = itf.getMessage()
 }
 
 /**
@@ -56,6 +56,6 @@ This will be called for every global types of the module (structs, enums, interf
 */
 #message(Swag.CompilerMsgMask.SemTypes)
 {
-    itf := @compiler()
-    msg := itf.getMessage()
+    var itf = @compiler()
+    var msg = itf.getMessage()
 }

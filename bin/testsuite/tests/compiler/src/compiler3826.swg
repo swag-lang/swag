@@ -16,7 +16,7 @@ impl A
 {
     {
         var x: [2] A
-        count := 1
+        var count = 1
         count -= 1
         @drop(&x[0], count)
     }

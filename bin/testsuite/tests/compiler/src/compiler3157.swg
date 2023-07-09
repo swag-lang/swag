@@ -3,9 +3,9 @@ func toto(str: string, x: cvarargs)
 {
     var valist: Swag.CVaList
     @cvastart(&valist)
-    a := @cvaarg(&valist, s32)
-    b := @cvaarg(&valist, s32)
-    c := @cvaarg(&valist, f64)
+    var a = @cvaarg(&valist, s32)
+    var b = @cvaarg(&valist, s32)
+    var c = @cvaarg(&valist, f64)
     //@print(a, " ", b, " ", c, "\n")
     @assert(a == 111)
     @assert(b == 222)

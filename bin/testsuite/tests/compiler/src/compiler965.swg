@@ -12,5 +12,5 @@ func toto()->Point
 //#[Swag.PrintBc]
 #test
 {
-	pt := toto()
+	var pt = toto()
 }

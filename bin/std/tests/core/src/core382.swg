@@ -17,12 +17,12 @@ struct Toto
         var wri: Encoder'Write.JSon
         ser.startWrite(wri, &buf)
         ser.beginSection(.Ordered)
-        x := 666's32
+        var x = 666's32
         ser.serialize("toto", &x)
         ser.endSection()
         ser.end()
 
-        //str := buf.toString()
+        //var str = buf.toString()
         //Console.print(str, "\n")
     }
 
@@ -31,7 +31,7 @@ struct Toto
         var rea: Decoder'Read.JSon
         ser.startRead(rea, buf.toSlice())
         ser.beginSection(.Ordered)
-        y := 0's32
+        var y = 0's32
         ser.serialize("toto", &y)
         ser.endSection()
         ser.end()

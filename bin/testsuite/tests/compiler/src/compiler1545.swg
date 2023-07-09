@@ -12,6 +12,6 @@ func toto(type: const* TypeInfo)
 #test
 {
     using Swag
-    x := @typeof(X)
+    var x = @typeof(X)
     x.toto()
 }

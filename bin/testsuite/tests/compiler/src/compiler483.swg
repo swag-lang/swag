@@ -6,7 +6,7 @@
 #test
 {
 	var res = T()
-	b := 1
+	var b = 1
 	@print(res.2)
 }
 

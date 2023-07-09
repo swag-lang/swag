@@ -7,7 +7,7 @@ func Visit(user: code)
         c = 100
 		#macro
         {
-            value := #up c
+            var value = #up c
             #mixin #up user
         }
 	}
@@ -16,7 +16,7 @@ func Visit(user: code)
 //#[Swag.PrintBc]
 #test
 {
-    cpt := 0
+    var cpt = 0
     Visit()
     {
         @assert(value == 100)

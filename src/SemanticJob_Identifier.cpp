@@ -1148,7 +1148,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* ide
             // If constant is inside an expression, everything before should be constant too.
             // Otherwise that means that we reference a constant threw a variable
             //
-            // x := y.Constant where y is a variable
+            // var x = y.Constant where y is a variable
             //
             auto checkParent = identifier->parent;
             auto child       = (AstNode*) identifier;
@@ -2400,7 +2400,7 @@ bool SemanticJob::ufcsSetFirstParam(SemanticContext* context, AstIdentifierRef* 
         if (identifierRef->previousResolvedNode && identifierRef->previousResolvedNode->kind == AstNodeKind::FuncCall)
         {
             // Function that returns an interface, used as an ufcs.
-            // Ex: cfg := @compiler().getBuildCfg()
+            // Ex: var cfg = @compiler().getBuildCfg()
             // :SpecUfcsNode
             identifierRef->previousResolvedNode->flags |= AST_TO_UFCS;
             fctCallParam->specUfcsNode = identifierRef->previousResolvedNode;

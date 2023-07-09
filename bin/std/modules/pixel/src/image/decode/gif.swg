@@ -92,7 +92,7 @@ impl Decoder
     {
         if streamLen < 1
             throw "read error"
-        res := stream[0]
+        var res = stream[0]
         stream    += 1
         streamLen -= 1
         return res
@@ -102,7 +102,7 @@ impl Decoder
     {
         if streamLen < 2
             throw "read error"
-        res := cast(u16) (stream[0] + (cast(u16) stream[1] << 8))
+        var res = cast(u16) (stream[0] + (cast(u16) stream[1] << 8))
         stream += 2
         streamLen -= 2
         return res
@@ -112,7 +112,7 @@ impl Decoder
     {
         loop
         {
-            size := readU8()
+            var size = readU8()
             if !size
                 break
             seek(acast size)
@@ -131,7 +131,7 @@ impl Decoder
     {
         /* Discard block size (always 0x04) */
         seek(1)
-        rdit := readU8()
+        var rdit = readU8()
         gce.disposal = (rdit >> 2) & 3
         gce.input = rdit & 2
         gce.transparency = rdit & 1
@@ -174,7 +174,7 @@ impl Decoder
 
     mtd readExt() throw
     {
-        label := readU8()
+        var label = readU8()
         switch label
         {
         case 0x01:
@@ -201,11 +201,11 @@ impl Decoder
 
     mtd getKey(keySize: s32, subLen, shift, byte: *u8)->u16 throw
     {
-        key := 0'u16
-        frag_size := 0
-        for bits_read := 0; bits_read < keySize; bits_read += frag_size
+        var key = 0'u16
+        var frag_size = 0
+        for var bits_read = 0; bits_read < keySize; bits_read += frag_size
         {
-            rpad := (dref shift + bits_read) % 8
+            var rpad = (dref shift + bits_read) % 8
             if rpad == 0
             {
                 /* Update byte. */
@@ -247,9 +247,9 @@ impl Decoder
 
     func interlacedLineIndex(h0, y0: s32)->s32
     {
-        h := h0
-        y := y0
-        p := (h - 1) / 8 + 1
+        var h = h0
+        var y = y0
+        var p = (h - 1) / 8 + 1
         if (y < p) /* pass 1 */
             return y * 8
         y -= p
@@ -267,31 +267,31 @@ impl Decoder
 
     mtd readImageData(interlace: u8) throw
     {
-        byte := readU8()
-        keySize := cast(s32) byte
+        var byte = readU8()
+        var keySize = cast(s32) byte
         if keySize < 2 or keySize > 8
             throw "invalid frame"
 
-        start := cast(u64) (stream - streamStart)
-        remainStart := streamLen
+        var start = cast(u64) (stream - streamStart)
+        var remainStart = streamLen
         discardSubBlocks()
-        end := cast(u64) (stream - streamStart)
-        remainEnd := streamLen
+        var end = cast(u64) (stream - streamStart)
+        var remainEnd = streamLen
         stream = streamStart + start
         streamLen = remainStart
 
-        clear := 1 << keySize
-        stop  := clear + 1
+        var clear = 1 << keySize
+        var stop = clear + 1
         initTable(keySize)
         keySize += 1
-        initKeySize := keySize
-        subLen, shift := 0'u8
-        key := getKey(keySize, &subLen, &shift, &byte) /* clear code */
-        frmOff := 0
-        ret := 0
-        frmSize := cast(u32) fw * fh
-        tableIsFull := 0
-        strLen := 0'u16
+        var initKeySize = keySize
+        var subLen, shift = 0'u8
+        var key = getKey(keySize, &subLen, &shift, &byte) /* clear code */
+        var frmOff = 0
+        var ret = 0
+        var frmSize = cast(u32) fw * fh
+        var tableIsFull = 0
+        var strLen = 0'u16
 
         var entry: Entry
         while frmOff < frmSize
@@ -320,9 +320,9 @@ impl Decoder
             strLen = entry.length
             loop i: strLen
             {
-                p := frmOff + entry.length - 1
-                x := p % fw
-                y := p / fw
+                var p = frmOff + entry.length - 1
+                var x = p % fw
+                var y = p / fw
                 if interlace
                     y = interlacedLineIndex(cast(s32) fh, y)
                 frame[(fy + y) * width + fx + x] = entry.suffix
@@ -355,8 +355,8 @@ impl Decoder
         fw = Math.min(fw, cast(u16) (width - fx))
         fh = Math.min(fh, cast(u16) (height - fy))
 
-        fisrz := readU8()
-        interlace := fisrz & 0x40
+        var fisrz = readU8()
+        var interlace = fisrz & 0x40
 
         /* Ignore Sort Flag. */
         /* Local Color Table? */
@@ -375,7 +375,7 @@ impl Decoder
 
     mtd renderFrame(buffer: ^u8, pf: PixelFormat)
     {
-        i := cast(u32) fy * width + fx
+        var i = cast(u32) fy * width + fx
 
         if pf.hasAlpha()
         {
@@ -383,9 +383,9 @@ impl Decoder
             {
                 loop k: cast(u32) fw
                 {
-                    index := frame[(fy + j) * cast(u32) width + (fx + k)]
-                    color := &palette.colors[index*3'u32]
-                    b     := buffer + (i+k)*4
+                    var index = frame[(fy + j) * cast(u32) width + (fx + k)]
+                    var color = &palette.colors[index*3'u32]
+                    var b = buffer + (i+k)*4
                     b[0] = color[0]
                     b[1] = color[1]
                     b[2] = color[2]
@@ -401,9 +401,9 @@ impl Decoder
             {
                 loop k: fw
                 {
-                    index := frame[(fy + j) * width + (fx + k)]
-                    color := &palette.colors[index*3]
-                    b     := buffer + (i+k)*4
+                    var index = frame[(fy + j) * width + (fx + k)]
+                    var color = &palette.colors[index*3]
+                    var b = buffer + (i+k)*4
                     b[0] = color[0]
                     b[1] = color[1]
                     b[2] = color[2]
@@ -416,7 +416,7 @@ impl Decoder
 
     mtd getFrame(decodePixels: bool)->s32 throw
     {
-        sep := readU8()
+        var sep = readU8()
         while sep != ","'u8
         {
             if sep == ";"'u8
@@ -478,12 +478,12 @@ public impl Decoder
 
         if decodePixels
         {
-            size := cast(u64) width * cast(u64) height
+            var size = cast(u64) width * cast(u64) height
             frame.resize(4 * size)
             Memory.set(frame.buffer, bgIndex, size)
             canvas  = &frame.buffer[size]
 
-            bgcolor := &palette.colors[bgIndex*3'u32]
+            var bgcolor = &palette.colors[bgIndex*3'u32]
             if bgcolor[0] or bgcolor[1] or bgcolor[2]
             {
                 loop i: size
@@ -554,7 +554,7 @@ public impl IImageDecoder for Decoder
 {
     mtd impl canDecode(fileName: string)->bool
     {
-        ext := Path.getExtensionLowerCase(fileName)
+        var ext = Path.getExtensionLowerCase(fileName)
         return ext == ".gif"
     }
 

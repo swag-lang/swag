@@ -44,24 +44,24 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
             initC(i)
 
     case Paint:
-        paintEvt := cast(*PaintEvent) evt
-        painter  := paintEvt.bc.painter
-        rect     := wnd.getClientRect()
+        var paintEvt = cast(*PaintEvent) evt
+        var painter = paintEvt.bc.painter
+        var rect = wnd.getClientRect()
 
         painter.fillRect(rect, Argb.Black)
 
         var str: String
         loop i: MaxColumns
         {
-            x := cast(f32) i * FontSize
+            var x = cast(f32) i * FontSize
             loop j: g_RD[i].length
             {
                 // Once in a while, change the rune in the trail
                 if g_Rng.nextU32(0, 300) < 2
                     g_RD[i].c[j] = cast(rune) g_Rng.nextS32(FirstRune, LastRune)
-                c := g_RD[i].c[j]
+                var c = g_RD[i].c[j]
 
-                y := g_RD[i].y
+                var y = g_RD[i].y
                 y -= j * FontSize
 
                 // No need to paint if rune is outside window
@@ -73,7 +73,7 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
                 // If the move is equivalent to one fontsize, then insert a new rune
                 // at the start of the trail
                 y /= FontSize
-                yi := cast(s32) y
+                var yi = cast(s32) y
                 if j == 0 and yi != g_RD[i].lastYI
                 {
                     g_RD[i].lastYI = yi

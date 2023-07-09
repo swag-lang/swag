@@ -12,18 +12,18 @@ impl Image
     {
         Debug.assert(srcImage.pf.hasAlpha() or mode != .AlphaBlend)
 
-        f := {dstImage, srcImage = &srcImage, x, y, mode}
+        var f = {dstImage, srcImage = &srcImage, x, y, mode}
 
         #[Swag.Mixin]
         func(BPP: u8) doIt()
         {
             visitPixels(&f)
             {
-                params   := cast(*@decltype(f)) userData
-                dstImage := cast(*Image) params.dstImage
-                srcImage := cast(const *Image) params.srcImage
+                var params = cast(*@decltype(f)) userData
+                var dstImage = cast(*Image) params.dstImage
+                var srcImage = cast(const *Image) params.srcImage
 
-                pixDst := dstImage.pixels.buffer + x * image.bpp8
+                var pixDst = dstImage.pixels.buffer + x * image.bpp8
                 pixDst += cast(u64) (y * (image.width * image.bpp8))
 
                 y = image.height - y
@@ -37,9 +37,9 @@ impl Image
                 }
                 else
                 {
-                    x1 := x - params.x
-                    y1 := srcImage.height - (y - params.y)
-                    pixSrc := srcImage.pixels.buffer + x1 * srcImage.bpp8
+                    var x1 = x - params.x
+                    var y1 = srcImage.height - (y - params.y)
+                    var pixSrc = srcImage.pixels.buffer + x1 * srcImage.bpp8
                     pixSrc += cast(u64) (y1 * (srcImage.width * srcImage.bpp8))
 
                     #[Swag.Complete]
@@ -49,7 +49,7 @@ impl Image
                         copyPixel'BPP(pixDst, pixSrc)
 
                     case AlphaBlend:
-                        bf := pixSrc[3] / 255.0
+                        var bf = pixSrc[3] / 255.0
                         pixDst[0] = cast(u8) Math.lerp(cast(f32) pix[0], cast(f32) pixSrc[0], bf)
                         pixDst[1] = cast(u8) Math.lerp(cast(f32) pix[1], cast(f32) pixSrc[1], bf)
                         pixDst[2] = cast(u8) Math.lerp(cast(f32) pix[2], cast(f32) pixSrc[2], bf)

@@ -1,17 +1,17 @@
 func(T) valueof(x: any)->T
 {
-	ptr := cast(*T) @dataof(x)
+	var ptr = cast(*T) @dataof(x)
 	return dref ptr
 }
 
 //#[Swag.PrintBc]
 func toto(xx: string, a: ...)
 {
-	i := 0'u32
-	idx := 0
+	var i = 0'u32
+	var idx = 0
 	while i < @countof(xx)
 	{
-		c := cast(rune) xx[i]
+		var c = cast(rune) xx[i]
 		if c == "%"'rune
 		{
 			i += 1

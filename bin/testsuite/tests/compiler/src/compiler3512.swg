@@ -2,6 +2,6 @@
 
 #test
 {
-    itf := @compiler()
+    var itf = @compiler()
     itf.compileString("const X = 1")
 }

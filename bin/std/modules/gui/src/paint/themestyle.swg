@@ -48,7 +48,7 @@ impl ThemeStyle
     mtd create(parent: *ThemeStyle)
     {
         free()
-        theme := Memory.new'Theme()
+        var theme = Memory.new'Theme()
         dref theme = dref parent.refr.theme
         set(theme)
     }
@@ -75,7 +75,7 @@ impl ThemeStyle
         refr.count += 1
 
         // Ask user
-        evt := SetThemeEvent{}
+        var evt = SetThemeEvent{}
         evt.accepted = false
         evt.style = self
         evt.parent = parent
@@ -148,7 +148,7 @@ impl ThemeStyle
     mtd getFont()->FontFamily
     {
         var result: retval
-        df := &refr.theme.res.fontDefault
+        var df = &refr.theme.res.fontDefault
         result.regular    = font.regular    orelse df.regular
         result.bold       = font.bold       orelse df.bold
         result.italic     = font.italic     orelse df.italic

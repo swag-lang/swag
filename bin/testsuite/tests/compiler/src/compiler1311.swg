@@ -1,7 +1,7 @@
 //#[Swag.PrintBc]
 /*#test
 {
-    cpt := 0
+    var cpt = 0
 
     #scope outer loop x: 10
     {

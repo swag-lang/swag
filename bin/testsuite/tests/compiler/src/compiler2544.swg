@@ -15,6 +15,6 @@ func toto()->AA throw
 //#[PrintBc]
 #test
 {
-    x := catch toto()
+    var x = catch toto()
     @assert(x.x == 555)
 }

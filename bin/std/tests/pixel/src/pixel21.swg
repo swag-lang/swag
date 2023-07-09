@@ -18,7 +18,7 @@ struct Test
         color1 Red
     "@
 
-    arr := Tokenize.splitLines(BUF)
+    var arr = Tokenize.splitLines(BUF)
     assume tw.parse(arr)
     @assert(t1.color.a == 127)
     @assert(t1.color.r == 0)

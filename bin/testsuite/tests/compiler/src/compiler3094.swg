@@ -17,7 +17,7 @@ impl AA
 //#[Swag.PrintBc]
 #test
 {
-    v := AA.create(10)
+    var v = AA.create(10)
     @assert(@typeof(v.x) == u8)
     @assert(v.x == 10)
 }

@@ -9,7 +9,7 @@ func toto(x: code)
 
 #test
 {
-    a := 0
+    var a = 0
     toto()
     {
         a = 666

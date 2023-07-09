@@ -29,18 +29,18 @@ impl IWnd for Label
 {
     mtd impl onPaintEvent(evt: *PaintEvent)
     {
-        bc      := evt.bc
-        theme   := getTheme()
-        painter := evt.bc.painter
+        var bc = evt.bc
+        var theme = getTheme()
+        var painter = evt.bc.painter
 
-        clientRect := getClientRect()
-        pos        := clientRect
+        var clientRect = getClientRect()
+        var pos = clientRect
         pos.applyPadding(padding)
 
         // Icon
         if icon.isValid()
         {
-            posIcon := pos
+            var posIcon = pos
             posIcon.applyPadding(paddingIcon)
 
             switch horzAlignmentIcon
@@ -60,7 +60,7 @@ impl IWnd for Label
             }
 
             // Icon
-            color := iconColor
+            var color = iconColor
             if !color.a
                 color = (wndFlags & .Disabled) ? theme.colors.label_DisabledIcon : theme.colors.label_Icon
             icon.paint(painter, posIcon.x, posIcon.y, color)
@@ -69,10 +69,10 @@ impl IWnd for Label
         // Text
         if !name.isEmpty()
         {
-            posText := pos
+            var posText = pos
             posText.applyPadding(paddingText)
 
-            sf := getStringFormat(bc.isDisabled)
+            var sf = getStringFormat(bc.isDisabled)
             painter.drawRichString(posText, &name, sf)
         }
     }
@@ -82,7 +82,7 @@ impl Label
 {
     private mtd getStringFormat(isDisabled: bool)->RichStringFormat
     {
-        theme := getTheme()
+        var theme = getTheme()
 
         var sf: retval
         sf.flags |= .Clip
@@ -117,10 +117,10 @@ impl Label
     func create(parent: *Wnd, name: string, position: Math.Rectangle = {}, id: WndId = null)->*Label
     {
         Debug.assert(parent != null)
-        pos := position
+        var pos = position
         if pos.height == 0
             pos.height = parent.getThemeMetrics().label_Height
-        lbl := Wnd.create'Label(parent, name, pos, id)
+        var lbl = Wnd.create'Label(parent, name, pos, id)
         return lbl
     }
 
@@ -130,7 +130,7 @@ impl Label
         if labelFlags.has(.AutoHeight)
         {
             var painter: Painter{fake = true}
-            sf := getStringFormat(false)
+            var sf = getStringFormat(false)
             name.compute()
             painter.computeLayout(position, &name, sf)
             position.height = name.boundRect.height

@@ -8,7 +8,7 @@ struct A
     var v: A
     with v
     {
-        a := &.x
+        var a = &.x
         dref a = 666
         @assert(.x == 666)
     }

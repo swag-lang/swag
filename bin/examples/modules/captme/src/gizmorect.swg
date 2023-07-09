@@ -24,7 +24,7 @@ impl GizmoRect
 {
     mtd mouse(view: *EditView, pos: Math.Point, evt: *MouseEvent)->bool
     {
-        prop := (evt.modifiers & .Shift) and !(evt.modifiers & .Control)
+        var prop = (evt.modifiers & .Shift) and !(evt.modifiers & .Control)
 
         switch evt.kind
         {
@@ -67,13 +67,13 @@ impl GizmoRect
         case MouseMove:
             if moving
             {
-                hitMove := 0'u32
+                var hitMove = 0'u32
                 if firstMoving and sigChanged and trackChange
                     sigChanged(self, true, 0)
 
                 firstMoving = false
 
-                diff := pos - movingStart
+                var diff = pos - movingStart
                 movingStart = pos
 
                 switch hotAnchor
@@ -186,9 +186,9 @@ impl GizmoRect
 
     mtd paint(painter: *Painter, hot: bool, col: Color = Argb.White)
     {
-        anchorSize2 := anchorSize * 0.5
+        var anchorSize2 = anchorSize * 0.5
 
-        color := Color.getBlend(Argb.Black, col, hot ? 0.8 : 1)
+        var color = Color.getBlend(Argb.Black, col, hot ? 0.8 : 1)
 
         if moving and !trackChange
             painter.drawRect(movingRect, Pen.createDash(.Dot, color, 2))
@@ -200,10 +200,10 @@ impl GizmoRect
             elif paintBigBorder
             {
                 painter.drawRect(rect, Argb.DarkGray, 4)
-                rect1 := rect
+                var rect1 = rect
                 rect1.inflate(2)
                 painter.drawRect(rect1, col, 1)
-                rect2 := rect
+                var rect2 = rect
                 rect2.inflate(-2)
                 painter.drawRect(rect2, col, 1)
             }
@@ -235,16 +235,16 @@ impl GizmoRect
 
     mtd apply(iform: IForm, first: bool, hitMove: u32)
     {
-        form := cast(*BaseForm) @dataof(iform)
-        capture := form.capture
+        var form = cast(*BaseForm) @dataof(iform)
+        var capture = form.capture
         if !first
             capture.undo()
-        undo := capture.newUndo(.MoveBaseForm)
+        var undo = capture.newUndo(.MoveBaseForm)
         undo.baseForm = iform
-        zoom := capture.editView.zoom
+        var zoom = capture.editView.zoom
 
-        dx := cast(s32) ((movingRect.x - startRect.x) / zoom)
-        dy := cast(s32) ((movingRect.y - startRect.y) / zoom)
+        var dx = cast(s32) ((movingRect.x - startRect.x) / zoom)
+        var dy = cast(s32) ((movingRect.y - startRect.y) / zoom)
         undo.newPosX = dx
         undo.newPosY = dy
         if hitMove & 1
@@ -252,8 +252,8 @@ impl GizmoRect
         if hitMove & 2
             capture.snap(null, &undo.newPosY, false, false)
 
-        dsx := cast(s32) ((movingRect.width - startRect.width) / zoom)
-        dsy := cast(s32) ((movingRect.height - startRect.height) / zoom)
+        var dsx = cast(s32) ((movingRect.width - startRect.width) / zoom)
+        var dsy = cast(s32) ((movingRect.height - startRect.height) / zoom)
         undo.newSizeX = dsx
         undo.newSizeY = dsy
         if hitMove & 4

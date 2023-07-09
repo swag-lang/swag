@@ -3,7 +3,7 @@ using Pixel
 //#[Swag.PrintBc]
 #test
 {
-	x := Argb.Red
+	var x = Argb.Red
 	var y: Color = Argb.Red
     @assert(y.a == 255)
     @assert(y.r == 255)

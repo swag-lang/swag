@@ -9,7 +9,7 @@ func titi(x: bool)
 {
     #run
     {
-        x := 666's64
+        var x = 666's64
         toto(x)
     }
 }

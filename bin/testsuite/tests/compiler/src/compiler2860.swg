@@ -10,7 +10,7 @@
     }
 
     var x: XX = Bool{true}
-    G := 0
+    var G = 0
     switch x
     {
     case Bool:

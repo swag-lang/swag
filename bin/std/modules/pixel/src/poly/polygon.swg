@@ -31,22 +31,22 @@ impl Polygon
         if Math.isZeroEpsilon(offset)
             return points.buffer[i]
 
-        count := points.count - 1
+        var count = points.count - 1
 
-        v0 := points.buffer[(i + count - 1) % count]
-        v1 := points.buffer[i]
-        v2 := points.buffer[(i + 1) % count]
+        var v0 = points.buffer[(i + count - 1) % count]
+        var v1 = points.buffer[i]
+        var v2 = points.buffer[(i + 1) % count]
 
-        tmp0 := Vector2.toNormalizeSafe(v1 - v0)
-        n0 := tmp0.cross(1)
-        tmp1 := Vector2.toNormalizeSafe(v2 - v1)
-        n1 := tmp1.cross(1)
+        var tmp0 = Vector2.toNormalizeSafe(v1 - v0)
+        var n0 = tmp0.cross(1)
+        var tmp1 = Vector2.toNormalizeSafe(v2 - v1)
+        var n1 = tmp1.cross(1)
 
-        vva1 := v1 + n0
-        vva0 := v0 + n0
-        vvb1 := v2 + n1
-        vvb0 := v1 + n1
-        (yes, intPos) := Vector2.lineLineIntersect(vva0, vva1, vvb0, vvb1)
+        var vva1 = v1 + n0
+        var vva0 = v0 + n0
+        var vvb1 = v2 + n1
+        var vvb0 = v1 + n1
+        var (yes, intPos) = Vector2.lineLineIntersect(vva0, vva1, vvb0, vvb1)
 
         var result: retval = v1
         if yes
@@ -55,7 +55,7 @@ impl Polygon
         }
         else
         {
-            n := Vector2.toNormalizeSafe(n0 + n1)
+            var n = Vector2.toNormalizeSafe(n0 + n1)
             result += (n * offset)
         }
 
@@ -65,19 +65,19 @@ impl Polygon
     // Divide by adding points if two points are too far away
     mtd normalizeDist(dist: f32, closed: bool = true)
     {
-        i := 0'u64
+        var i = 0'u64
         while i < (closed ? points.count : points.count - 1)
         {
             defer i += 1
-            v := points[(i + 1) % points.count] - points[i]
-            d := v.length()
-            divide := cast(s32) (d / dist)
+            var v = points[(i + 1) % points.count] - points[i]
+            var d = v.length()
+            var divide = cast(s32) (d / dist)
             if divide > 0
             {
                 v /= cast(f32) (divide + 1)
                 while divide > 0
                 {
-                    np := points[i] + v
+                    var np = points[i] + v
                     points.insertAt(i + 1, np)
                     divide -= 1
                     i += 1
@@ -127,12 +127,12 @@ impl Polygon
 
         visit pt: res
         {
-            vec := Math.Vector2{cast(f32) (pt.x / ClipperScaleCoords), cast(f32) (pt.y / ClipperScaleCoords)}
+            var vec = Math.Vector2{cast(f32) (pt.x / ClipperScaleCoords), cast(f32) (pt.y / ClipperScaleCoords)}
             add(vec)
         }
 
         // Closed path needs last point to be the same as the first one
-        v0 := getPoint(0)
+        var v0 = getPoint(0)
         add(v0)
 
         compute()
@@ -145,7 +145,7 @@ impl Polygon
         if !points.count
             return
 
-        joinType := Clipper.JoinType.Square
+        var joinType = Clipper.JoinType.Square
         switch joinStyle
         {
         case Round: joinType = .Round
@@ -189,7 +189,7 @@ impl Polygon
 
         visit p: res
         {
-            np := result.newPath()
+            var np = result.newPath()
             np.isPolyOnly = true
             np.polygon.storeClipperResult(p)
             np.bvMin = np.polygon.bvMin
@@ -240,7 +240,7 @@ impl Polygon
 
         visit p: res
         {
-            np := result.newPath()
+            var np = result.newPath()
             np.isPolyOnly = true
             np.polygon.storeClipperResult(p)
             np.bvMin = np.polygon.bvMin
@@ -263,25 +263,25 @@ impl Polygon
         if !points.count
             return
 
-        n := points.count - 1
-        isClosed := points[0].distanceSquared(points.back()) < 0.5*0.5
+        var n = points.count - 1
+        var isClosed = points[0].distanceSquared(points.back()) < 0.5*0.5
         if isClosed
             points.count -= 1
 
-        q := 0
-        p := n - 1
+        var q = 0
+        var p = n - 1
 
         bvMin = points[0]
         bvMax = points[0]
 
-        first := true
-        lastC := 0'f32
+        var first = true
+        var lastC = 0'f32
         while q < n
         {
             // Convex
-            v  := points.buffer[(q + 2) % points.count] - points.buffer[(q + 1) % points.count]
-            v1 := points.buffer[(q + 1) % points.count] - points.buffer[(q + 0) % points.count]
-            c  := v.cross(v1)
+            var v = points.buffer[(q + 2) % points.count] - points.buffer[(q + 1) % points.count]
+            var v1 = points.buffer[(q + 1) % points.count] - points.buffer[(q + 0) % points.count]
+            var c = v.cross(v1)
             if first
             {
                 lastC = c

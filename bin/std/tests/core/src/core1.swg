@@ -2,7 +2,7 @@ using Core
 
 #test
 {
-    v := [1, 2, 40]
-    c := cast([..] s32) v
+    var v = [1, 2, 40]
+    var c = cast([..] s32) v
     //Console.print("%{X}", c)
 }

@@ -12,7 +12,7 @@ impl Utf8
 		if(size >= newSize)
 			return;
 
-		newPtr := @alloc(newSize)
+		var newPtr = @alloc(newSize)
 		if buffer != null
 			@memcpy(newPtr, buffer, size)
 		size = newSize

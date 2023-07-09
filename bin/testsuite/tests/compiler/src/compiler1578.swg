@@ -10,7 +10,7 @@ func toto()
 
 #test
 {
-    ptr := cast(const *TypeInfoFunc) @typeof(toto)
+    var ptr = cast(const *TypeInfoFunc) @typeof(toto)
     @assert(@countof(ptr.attributes) == 1)
     @assert(@countof(ptr.attributes.params) == 2)
     @assert(@kindof(ptr.attributes.params[0].value) == @typeof(string))

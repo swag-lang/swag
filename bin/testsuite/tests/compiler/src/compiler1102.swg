@@ -8,5 +8,5 @@ enum Days
 
 #test
 {
-	x := ~Days.A
+	var x = ~Days.A
 }

@@ -14,14 +14,14 @@ const DaysToMonth366 = [0'u16, 31, 60, 91, 121, 152, 182, 213, 244, 274, 305, 33
 
 func dateToTicks(year, month, day: u16)->u64
 {
-    days := @dataof(DaysToMonth366)
-    y := cast(u64) (year - 1)
-    n := ((y * 365) + (y / 4) + (y / 400) + days[month - 1] + (day - 1)) - (y / 100)
+    var days = @dataof(DaysToMonth366)
+    var y = cast(u64) (year - 1)
+    var n = ((y * 365) + (y / 4) + (y / 400) + days[month - 1] + (day - 1)) - (y / 100)
     return n * TicksPerDay
 }
 
 #test
 {
-    ticks := dateToTicks(2020, 11, 6)
+    var ticks = dateToTicks(2020, 11, 6)
     @assert(ticks == 637402176000000000)
 }

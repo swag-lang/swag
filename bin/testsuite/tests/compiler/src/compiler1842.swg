@@ -12,6 +12,6 @@ interface IPrintable
 #test
 {
     var pt: Point
-    itf := @mkinterface(&pt, @typeof(pt), IPrintable)
+    var itf = @mkinterface(&pt, @typeof(pt), IPrintable)
     @assert(itf == null)
 }

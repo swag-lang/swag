@@ -24,8 +24,8 @@ impl IActionUI for ActionZoom
 
     mtd impl update(cxt: ActionContext, evt: *CommandStateEvent)->bool
     {
-        main := cast(*MainWnd) cxt.wnd
-        capture := main.getCapture()
+        var main = cast(*MainWnd) cxt.wnd
+        var capture = main.getCapture()
 
         switch cxt.id
         {
@@ -55,8 +55,8 @@ impl IActionUI for ActionZoom
 
     mtd impl execute(cxt: ActionContext)->bool
     {
-        main := cast(*MainWnd) cxt.wnd
-        view := main.editWnd.editView
+        var main = cast(*MainWnd) cxt.wnd
+        var view = main.editWnd.editView
 
         switch cxt.id
         {

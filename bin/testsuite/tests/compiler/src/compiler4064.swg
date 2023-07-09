@@ -1,8 +1,8 @@
 #test
 {
-    toto := 10
-    r := ref &toto
-    x := 0
+    var toto = 10
+    var r = ref &toto
+    var x = 0
     loop r
     {
         x += 1

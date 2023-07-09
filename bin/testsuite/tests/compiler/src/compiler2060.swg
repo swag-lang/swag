@@ -36,5 +36,5 @@ func interfaceOf(structType, itfType: const *Swag.TypeInfoStruct)->const *void
 #test
 {
     var x: AA
-    tt := interfaceOf(@typeof(x), ITF)
+    var tt = interfaceOf(@typeof(x), ITF)
 }

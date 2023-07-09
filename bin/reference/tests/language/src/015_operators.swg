@@ -50,9 +50,9 @@ These are the basic operators that can be used to manipulate values.
 
     // # Unary operators
     {
-        x := true
-        y := 0b0000_0001'u8
-        z := 1
+        var x = true
+        var y = 0b0000_0001'u8
+        var z = 1
 
         // Invert boolean
         x = !x
@@ -70,7 +70,7 @@ These are the basic operators that can be used to manipulate values.
 
     // # Comparison operators
     {
-        a := false
+        var a = false
 
         a = 1 == 1 ? true : false
         a = 1 != 1 ? true : false
@@ -81,8 +81,8 @@ These are the basic operators that can be used to manipulate values.
     }
 
     {
-        x := 5
-        y := 10
+        var x = 5
+        var y = 10
         @assert(x == 5)
         @assert(x != 10)
         @assert(x <= 5)
@@ -98,7 +98,7 @@ This is **not** `&&` and `||` like in C/C++, but `and` and `or`.
 */
 #test
 {
-    a := false
+    var a = false
     a = (1 > 10) and (10 < 1)
     a = (1 > 10) or (10 < 1)
 }
@@ -131,7 +131,7 @@ A <=> B == 1  if A > B
 #test
 {
     {
-        a := -1.5 <=> 2.31
+        var a = -1.5 <=> 2.31
         #assert @typeof(a) == s32
         @assert(a == -1)
 
@@ -141,11 +141,11 @@ A <=> B == 1  if A > B
     }
 
     {
-        x1 := 10 <=> 20
+        var x1 = 10 <=> 20
         @assert(x1 == -1)
-        x2 := 20 <=> 10
+        var x2 = 20 <=> 10
         @assert(x2 == 1)
-        x3 := 20 <=> 20
+        var x3 = 20 <=> 20
         @assert(x3 == 0)
     }
 }
@@ -158,11 +158,11 @@ The operator `orelse` will return the left expression if it is not zero, otherwi
 {
     // Works with strings, pointers and structures with the `opData` special function (we'll see that later).
     {
-        a := "string1"
-        b := "string2"
+        var a = "string1"
+        var b = "string2"
 
         // c = a if a is not null, else c = b.
-        c := a orelse b
+        var c = a orelse b
         @assert(c == "string1")
 
         a = null
@@ -172,9 +172,9 @@ The operator `orelse` will return the left expression if it is not zero, otherwi
 
     // Works also for basic types like integers.
     {
-        a := 0
-        b := 1
-        c := a orelse b
+        var a = 0
+        var b = 1
+        var c = a orelse b
         @assert(c == b)
     }
 }

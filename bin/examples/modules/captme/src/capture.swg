@@ -64,7 +64,7 @@ impl Capture
     {
         visit it: forms
         {
-            type := @kindof(it)
+            var type = @kindof(it)
             Memory.delete(@dataof(it), type)
         }
     }
@@ -78,7 +78,7 @@ impl Capture
     {
         editView = view
         gizmo.sigChanged = closure|self|(g, first, hitMove) {
-            undo := self.newUndo(.MoveCapture)
+            var undo = self.newUndo(.MoveCapture)
             undo.newPosX  = cast(s32) ((g.rect.x - g.movingRect.x) / self.editView.zoom)
             undo.newPosY  = cast(s32) ((g.rect.y - g.movingRect.y) / self.editView.zoom)
             undo.newSizeX = cast(s32) ((g.movingRect.width - g.rect.width) / self.editView.zoom)
@@ -94,7 +94,7 @@ impl Capture
 
     mtd computePreview()
     {
-        zoom := Math.min(PreviewWidth / width, PreviewHeight / height)
+        var zoom = Math.min(PreviewWidth / width, PreviewHeight / height)
         preview = toImage(zoom)
         preview.applyKernel(.GaussianBlur3x3A)
     }
@@ -103,11 +103,11 @@ impl Capture
     {
         var result: retval
 
-        rect := Math.Rectangle{width = width * zoom, height = height * zoom}
+        var rect = Math.Rectangle{width = width * zoom, height = height * zoom}
         var painter: Pixel.Painter
 
-        app := editView.getApp()
-        render := app.getRenderer()
+        var app = editView.getApp()
+        var render = app.getRenderer()
 
         painter.begin()
         painter.setColorMaskAlpha()
@@ -121,8 +121,8 @@ impl Capture
         {
             visit sel: selection
             {
-                f := forms[sel]
-                b := cast(*BaseForm) @dataof(f)
+                var f = forms[sel]
+                var b = cast(*BaseForm) @dataof(f)
                 if b.subKind == .PixSel
                     continue
                 paintForm(app, &painter, rect, f, zoom, snapMode = true)
@@ -132,7 +132,7 @@ impl Capture
         {
             visit f: forms
             {
-                b := cast(*BaseForm) @dataof(f)
+                var b = cast(*BaseForm) @dataof(f)
                 if b.subKind == .PixSel
                     continue
                 paintForm(app, &painter, rect, f, zoom, snapMode = true)
@@ -143,7 +143,7 @@ impl Capture
 
         render.begin(editView.surface.rc)
 
-        rt := render.getRenderTarget(cast(s32) rect.width, cast(s32) rect.height)
+        var rt = render.getRenderTarget(cast(s32) rect.width, cast(s32) rect.height)
         render.bindRenderTarget(rt)
         render.setScissorRect(rect)
         render.clear()
@@ -153,7 +153,7 @@ impl Capture
 
         render.end()
 
-        buffer := render.getTexturePixels(rt.colorBuffer, .BGRA8)
+        var buffer = render.getTexturePixels(rt.colorBuffer, .BGRA8)
         result = Image.create(rt.colorBuffer.width, rt.colorBuffer.height, .BGRA8, buffer.toSlice())
         result.crop(0, 0, cast(s32) rect.width, cast(s32) rect.height)
 
@@ -185,11 +185,11 @@ impl Capture
 
     func load(file: string)->*Capture throw
     {
-        res := File.readAllBytes(file)
+        var res = File.readAllBytes(file)
 
         var decoder: Decoder'Read.TagBin
         decoder.flags |= .IgnoreStructFieldError
-        capture := decoder.readAll'Capture(res.toSlice())
+        var capture = decoder.readAll'Capture(res.toSlice())
         capture.file = file
 
         visit itf: capture.forms
@@ -212,15 +212,15 @@ impl Capture
     {
         var arr: Array'IForm
 
-        imgDone := false
+        var imgDone = false
         visit s: selection
         {
-            itf := forms[s]
+            var itf = forms[s]
 
             // Add real image
             if !imgDone and @kindof(itf) == FormImage
             {
-                fimg := cast(*FormImage) @dataof(itf)
+                var fimg = cast(*FormImage) @dataof(itf)
                 if fimg.kind == .Image and fimg.image.isValid()
                 {
                     imgDone = true
@@ -247,11 +247,11 @@ impl Capture
 
     mtd pasteImageInside()
     {
-        img := Clipboard.getImage()
+        var img = Clipboard.getImage()
         if !img.isValid()
             return
 
-        undo := newUndo(.SetImageInside)
+        var undo = newUndo(.SetImageInside)
         undo.oldImg = img
         pushUndo(undo)
         selectionHasChanged()
@@ -259,7 +259,7 @@ impl Capture
 
     mtd clearImageInside()
     {
-        undo := newUndo(.SetImageInside)
+        var undo = newUndo(.SetImageInside)
         pushUndo(undo)
         selectionHasChanged()
     }
@@ -269,7 +269,7 @@ impl Capture
         var decode: Decoder'Read.TagBin
         var res:    Array'IForm
 
-        arr := Clipboard.getData(editView.main.clipFmt)
+        var arr = Clipboard.getData(editView.main.clipFmt)
         if arr.count
         {
             trycatch
@@ -282,10 +282,10 @@ impl Capture
         }
         else
         {
-            img := Clipboard.getImage()
+            var img = Clipboard.getImage()
             if img.isValid()
             {
-                formImg := Memory.new'FormImage()
+                var formImg = Memory.new'FormImage()
                 formImg.w = img.width
                 formImg.h = img.height
                 formImg.image = img
@@ -295,7 +295,7 @@ impl Capture
                 return
         }
 
-        undo := newUndo(.CreateForm)
+        var undo = newUndo(.CreateForm)
         selection.clear()
 
         var boundRect: Math.Rectangle
@@ -303,7 +303,7 @@ impl Capture
         visit &itf, idx: res
         {
             itf.setup(self)
-            bound := itf.boundRect()
+            var bound = itf.boundRect()
             if idx == 0
                 boundRect = bound
             else
@@ -313,24 +313,24 @@ impl Capture
         undo.oldForms = res
 
         // Move around mouse
-        pt := editView.getApp().mouse.getPosition()
+        var pt = editView.getApp().mouse.getPosition()
         pt = editView.screenToSurface(pt)
         pt = editView.surfaceToLocal(pt)
         pt += editView.scrollPos
         pt.x -= paintRect.x
         pt.y -= paintRect.y
-        zoom := paintRect.width / width
+        var zoom = paintRect.width / width
         pt.x /= zoom
         pt.y /= zoom
 
         visit itf: undo.oldForms
         {
-            dx := -boundRect.x + pt.x - (boundRect.width * 0.5)
-            dy := -boundRect.y + pt.y - (boundRect.height * 0.5)
+            var dx = -boundRect.x + pt.x - (boundRect.width * 0.5)
+            var dy = -boundRect.y + pt.y - (boundRect.height * 0.5)
             itf.moveForm(acast dx, acast dy)
         }
 
-        countBefore := forms.count
+        var countBefore = forms.count
         pushUndo(undo)
 
         // Select added forms
@@ -347,15 +347,15 @@ impl Capture
 
     func paintForm(app: *Application, painter: *Painter, rect: Math.Rectangle, f: IForm, zoom: f32, quickMode = false, snapMode = false)
     {
-        render := &app.renderer
+        var render = &app.renderer
 
-        boundRect := f.boundRect()
+        var boundRect = f.boundRect()
         if boundRect.width <= 0 or boundRect.height <= 0
             return
 
-        base := cast(*BaseForm) @dataof(f)
+        var base = cast(*BaseForm) @dataof(f)
 
-        savePaintPos := base.paintPos
+        var savePaintPos = base.paintPos
 
         base.paintPos.x      = rect.x + (boundRect.x * zoom)
         base.paintPos.y      = rect.y + (boundRect.y * zoom)
@@ -366,12 +366,12 @@ impl Capture
         base.paintPos.height += base.paintPos.y - Math.round(base.paintPos.y)
         base.paintPos.round()
 
-        wt2 := cast(s32) base.paintPos.width
-        ht2 := cast(s32) base.paintPos.height
-        wt  := wt2
-        ht  := ht2
+        var wt2 = cast(s32) base.paintPos.width
+        var ht2 = cast(s32) base.paintPos.height
+        var wt = wt2
+        var ht = ht2
 
-        rt := render.getRenderTarget(wt2, ht2)
+        var rt = render.getRenderTarget(wt2, ht2)
         painter.bindRenderTarget(rt, true)
         painter.setAntialiased()
         painter.clear(Argb.Zero)
@@ -392,17 +392,17 @@ impl Capture
             rt2 = render.getRenderTarget(wt, ht)
 
             // Draw the image with a margin around
-            srcRect := Math.Rectangle{0, 0, base.paintPos.width, base.paintPos.height}
+            var srcRect = Math.Rectangle{0, 0, base.paintPos.width, base.paintPos.height}
             painter.bindRenderTarget(rt1)
             painter.setShader(&render.shaderSimple)
             painter.setBlendingMode(.Copy)
             painter.setColorMaskFull()
             painter.clear(Argb.Zero)
-            dstRect := Math.Rectangle{Margin, Margin, wt2, ht2}
+            var dstRect = Math.Rectangle{Margin, Margin, wt2, ht2}
             painter.drawTexture(dstRect, srcRect, rt.colorBuffer)
             painter.unbindRenderTarget()
 
-            blurRadius := quickMode ? 4.0 : 8.0
+            var blurRadius = quickMode ? 4.0 : 8.0
 
             // Blur first pass
             painter.bindRenderTarget(rt2)
@@ -428,7 +428,7 @@ impl Capture
             painter.drawTexture(dstRect, dstRect, rt2.colorBuffer, Color.fromArgb(150, Argb.Black))
 
             // Add the real image at the right place just after
-            imgRect := dstRect
+            var imgRect = dstRect
             imgRect.offset(cast(f32) Margin)
             imgRect.width = base.paintPos.width
             imgRect.height = base.paintPos.height
@@ -452,10 +452,10 @@ impl Capture
         else
             colForm = Color.fromArgb(cast(u8) Math.map(cast(f32) base.alpha, 0, 100, 0, 255), Argb.White)
 
-        dstRect := Math.Rectangle{0, 0, wt, ht}
+        var dstRect = Math.Rectangle{0, 0, wt, ht}
         if base.paintShadow
         {
-            paintShadowRect := dstRect
+            var paintShadowRect = dstRect
             paintShadowRect.x = base.paintPos.x - Margin
             paintShadowRect.y = base.paintPos.y - Margin
             paintShadowRect.offset(base.shadowOffset.x, base.shadowOffset.y)
@@ -468,7 +468,7 @@ impl Capture
         }
         else
         {
-            paintRect := dstRect
+            var paintRect = dstRect
             paintRect.x = base.paintPos.x
             paintRect.y = base.paintPos.y
             painter.setColorMaskColor()
@@ -495,7 +495,7 @@ impl Capture
 
     mtd paintBackImage(painter: *Painter, x, y: f32, z: f32)
     {
-        renderer := editView.getApp().getRenderer()
+        var renderer = editView.getApp().getRenderer()
 
         // Background image
         if !backTexture.isValid() and backImg.width > 0
@@ -531,7 +531,7 @@ impl Capture
         painter.setParams(.Antialiased)
 
         paintRect = rect
-        zoom := rect.width / width
+        var zoom = rect.width / width
 
         // Background image
         painter.pushClippingRect(rect)
@@ -540,14 +540,14 @@ impl Capture
         painter.popClippingRect()
 
         // Shapes
-        app := editView.getApp()
+        var app = editView.getApp()
         visit f: forms
             paintForm(app, painter, rect, f, zoom)
 
         // Gizmos
         visit f, i: forms
         {
-            flags := FormFlags.Zero
+            var flags = FormFlags.Zero
             if i == hotForm
                 flags |= .Hot
             if selection.contains(i)
@@ -597,13 +597,13 @@ impl Capture
 
         if selection.count == 1 and type == FormPolygon
         {
-            poly := cast(*FormPolygon) @dataof(form)
+            var poly = cast(*FormPolygon) @dataof(form)
             result.x = poly.points[idxPt].x + nx
             result.y = poly.points[idxPt].y + ny
         }
         elif (selection.count == 1 or editForm) and (type == FormLine or type == FormArrow)
         {
-            line := cast(*FormLine) @dataof(form)
+            var line = cast(*FormLine) @dataof(form)
             if !right or !bottom
             {
                 result.x = line.xa
@@ -634,11 +634,11 @@ impl Capture
         if editForm
             return editForm.boundRect()
 
-        bound := Math.Rectangle{Swag.F32.Max, Swag.F32.Max, 0, 0}
+        var bound = Math.Rectangle{Swag.F32.Max, Swag.F32.Max, 0, 0}
         visit s: selection
         {
-            f := forms[s]
-            r := f.boundRect()
+            var f = forms[s]
+            var r = f.boundRect()
             bound.x = Math.min(bound.x, r.x)
             bound.y = Math.min(bound.y, r.y)
             bound.setRight(Math.max(bound.right(), r.right()))
@@ -657,14 +657,14 @@ impl Capture
         if y
             snapY = -1
 
-        ctrlPressed := Input.Keyboard.isKeyPressed(.Control) or Input.Keyboard.isKeyPressed(.RControl)
+        var ctrlPressed = Input.Keyboard.isKeyPressed(.Control) or Input.Keyboard.isKeyPressed(.RControl)
         if !editView.main.snap and !ctrlPressed
             return
 
-        nx := x ? dref x : 0
-        ny := y ? dref y : 0
+        var nx = x ? dref x : 0
+        var ny = y ? dref y : 0
 
-        bound := getSelectionBoundRect(editForm)
+        var bound = getSelectionBoundRect(editForm)
 
         var arrX: Array's32
         var arrY: Array's32
@@ -678,13 +678,13 @@ impl Capture
 
         visit f, i: forms
         {
-            autoSel := selection.contains(i) or @dataof(f) == @dataof(editForm)
-            form    := cast(*BaseForm) @dataof(f)
+            var autoSel = selection.contains(i) or @dataof(f) == @dataof(editForm)
+            var form = cast(*BaseForm) @dataof(f)
 
             switch @kindof(f)
             {
             case FormLine, FormArrow:
-                form2 := cast(*FormLine) form
+                var form2 = cast(*FormLine) form
                 if !autoSel or (idxPt != 0 and Math.abs(form2.ya - form2.yb) > 25)
                     arrX.add(cast(s32) form2.xa)
                 if !autoSel or (idxPt != 0 and Math.abs(form2.xa - form2.xb) > 25)
@@ -697,7 +697,7 @@ impl Capture
                 }
 
             case FormPolygon:
-                form2 := cast(*FormPolygon) form
+                var form2 = cast(*FormPolygon) form
                 visit pt, idx: form2.points
                 {
                     if !autoSel or idx != idxPt
@@ -710,7 +710,7 @@ impl Capture
             case FormDraw:
                 if autoSel
                     continue
-                boundR := f.boundRect()
+                var boundR = f.boundRect()
                 arrX.add(cast(s32) boundR.x)
                 arrX.add(cast(s32) boundR.right())
                 arrY.add(cast(s32) boundR.y)
@@ -726,17 +726,17 @@ impl Capture
             }
         }
 
-        bestX := Swag.F32.Max
-        bestY := Swag.F32.Max
-        bestCoordX := 0.0
-        bestCoordY := 0.0
+        var bestX = Swag.F32.Max
+        var bestY = Swag.F32.Max
+        var bestCoordX = 0.0
+        var bestCoordY = 0.0
 
         if x
         {
             visit ax: arrX
             {
-                p   := getSnapPoint(bound, right, bottom, nx, ny, idxPt, editForm)
-                nbX := Math.abs(p.x - ax)
+                var p = getSnapPoint(bound, right, bottom, nx, ny, idxPt, editForm)
+                var nbX = Math.abs(p.x - ax)
                 if nbX < bestX
                 {
                     bestX = nbX
@@ -749,8 +749,8 @@ impl Capture
         {
             visit ay: arrY
             {
-                p   := getSnapPoint(bound, right, bottom, nx, ny, idxPt, editForm)
-                nbY := Math.abs(p.y - ay)
+                var p = getSnapPoint(bound, right, bottom, nx, ny, idxPt, editForm)
+                var nbY = Math.abs(p.y - ay)
                 if nbY < bestY
                 {
                     bestY = nbY
@@ -762,14 +762,14 @@ impl Capture
         if x and bestX < SnapToler
         {
             snapX = bestCoordX
-            p := getSnapPoint(bound, right, bottom, 0, 0, idxPt, editForm)
+            var p = getSnapPoint(bound, right, bottom, 0, 0, idxPt, editForm)
             nx = cast(s32) (bestCoordX - p.x)
         }
 
         if y and bestY < SnapToler
         {
             snapY = bestCoordY
-            p := getSnapPoint(bound, right, bottom, 0, 0, idxPt, editForm)
+            var p = getSnapPoint(bound, right, bottom, 0, 0, idxPt, editForm)
             ny = cast(s32) (bestCoordY - p.y)
         }
 
@@ -783,12 +783,12 @@ impl Capture
 
     mtd popupMenu(view: *EditView, pos: Math.Point)
     {
-        with menu := MenuCtrl.createPopup(view)
+        with var menu = MenuCtrl.createPopup(view)
         {
             if selection.count
             {
-                f := forms[selection.back()]
-                t := @kindof(f)
+                var f = forms[selection.back()]
+                var t = @kindof(f)
                 switch t
                 {
                 case FormText:
@@ -807,7 +807,7 @@ impl Capture
             .addSeparator()
         }
 
-        with popup0 := MenuCtrl.createPopup(view)
+        with var popup0 = MenuCtrl.createPopup(view)
         {
             .addItem(CmdIdAlignLeft)
             .addItem(CmdIdAlignCenter)
@@ -819,7 +819,7 @@ impl Capture
             menu.addPopup("Align", popup0)
         }
 
-        with popup1 := MenuCtrl.createPopup(view)
+        with var popup1 = MenuCtrl.createPopup(view)
         {
             .addItem(CmdIdBringToFront)
             .addItem(CmdIdSendToBack)
@@ -847,9 +847,9 @@ impl Capture
 
     mtd mouse(view: *EditView, evt: *MouseEvent)->bool
     {
-        app := view.getApp()
+        var app = view.getApp()
 
-        localPos := view.surfaceToLocal(evt.surfacePos)
+        var localPos = view.surfaceToLocal(evt.surfacePos)
         localPos += view.scrollPos
 
         if mouseMode == .None
@@ -867,7 +867,7 @@ impl Capture
             // Specific moves only if one single selection
             if selection.count == 1
             {
-                selForm := forms[selection[0]]
+                var selForm = forms[selection[0]]
                 if selForm.mouse(view, localPos, evt)
                 {
                     evt.accepted = true
@@ -895,7 +895,7 @@ impl Capture
             }
             else
             {
-                ht := hitTest(localPos)
+                var ht = hitTest(localPos)
                 if ht != hotForm
                 {
                     view.invalidate()
@@ -918,8 +918,8 @@ impl Capture
             }
         }
 
-        shiftPressed := Input.Keyboard.isKeyPressed(.Shift) or Input.Keyboard.isKeyPressed(.RShift)
-        ctrlPressed  := Input.Keyboard.isKeyPressed(.Control) or Input.Keyboard.isKeyPressed(.RControl)
+        var shiftPressed = Input.Keyboard.isKeyPressed(.Shift) or Input.Keyboard.isKeyPressed(.RShift)
+        var ctrlPressed = Input.Keyboard.isKeyPressed(.Control) or Input.Keyboard.isKeyPressed(.RControl)
 
         // Start of mode
         ///////////////////////
@@ -938,8 +938,8 @@ impl Capture
                 }
                 else
                 {
-                    hadSelection := selection.count != 0
-                    here := selection.contains(hotForm)
+                    var hadSelection = selection.count != 0
+                    var here = selection.contains(hotForm)
                     if !(evt.modifiers & .Control) and !here
                     {
                         if selection.count
@@ -1019,7 +1019,7 @@ impl Capture
 
             visit f, idx: forms
             {
-                b := cast(*BaseForm) @dataof(f)
+                var b = cast(*BaseForm) @dataof(f)
                 if b.paintPos.intersectWith(r) and !selection.contains(idx)
                     selection.add(idx)
             }
@@ -1030,8 +1030,8 @@ impl Capture
             return true
 
         case Moving:
-            newPosX := cast(s32) ((localPos.x - movingStart.x) / view.zoom)
-            newPosY := cast(s32) ((localPos.y - movingStart.y) / view.zoom)
+            var newPosX = cast(s32) ((localPos.x - movingStart.x) / view.zoom)
+            var newPosY = cast(s32) ((localPos.y - movingStart.y) / view.zoom)
 
             if firstMouseMove
             {
@@ -1042,18 +1042,18 @@ impl Capture
             else
                 undo()
 
-            u := newUndo(.OffsetSelection)
+            var u = newUndo(.OffsetSelection)
 
             // Snap by bottom/right
-            nx := newPosX
-            ny := newPosY
+            var nx = newPosX
+            var ny = newPosY
             snap(&nx, &ny, true, true)
-            saveSnapX := snapX
-            saveSnapY := snapY
+            var saveSnapX = snapX
+            var saveSnapY = snapY
 
             // Snap by top/left
-            nx1 := newPosX
-            ny1 := newPosY
+            var nx1 = newPosX
+            var ny1 = newPosY
             snap(&nx1, &ny1, false, false)
 
             if Math.abs(nx - newPosX) > Math.abs(nx1 - newPosX)
@@ -1076,8 +1076,8 @@ impl Capture
             return true
 
         case Creating:
-            newPosX := cast(s32) ((localPos.x - movingStart.x) / view.zoom)
-            newPosY := cast(s32) ((localPos.y - movingStart.y) / view.zoom)
+            var newPosX = cast(s32) ((localPos.x - movingStart.x) / view.zoom)
+            var newPosY = cast(s32) ((localPos.y - movingStart.y) / view.zoom)
 
             if firstMouseMove
             {
@@ -1087,43 +1087,43 @@ impl Capture
 
                 var itf: IForm
 
-                mode := editView.main.getEditMode()
+                var mode = editView.main.getEditMode()
 
                 #[Swag.Complete]
                 switch mode
                 {
                 case Shape:
-                    form := Memory.new'FormShape()
+                    var form = Memory.new'FormShape()
                     dref form = editView.main.mdlFormShape
                     itf = cast(IForm) form
                 case Image:
-                    form := Memory.new'FormImage()
+                    var form = Memory.new'FormImage()
                     dref form = editView.main.mdlFormImage
                     form.image.release()
                     itf = cast(IForm) form
                 case Step:
-                    form := Memory.new'FormStep()
+                    var form = Memory.new'FormStep()
                     dref form = editView.main.mdlFormStep
                     itf = cast(IForm) form
                 case Arrow:
-                    form := Memory.new'FormArrow()
+                    var form = Memory.new'FormArrow()
                     dref form = editView.main.mdlFormArrow
                     itf = cast(IForm) form
                 case Line:
-                    form := Memory.new'FormLine()
+                    var form = Memory.new'FormLine()
                     dref form = editView.main.mdlFormLine
                     itf = cast(IForm) form
                 case Polygon:
-                    form := Memory.new'FormPolygon()
+                    var form = Memory.new'FormPolygon()
                     dref form = editView.main.mdlFormPolygon
                     form.points.clear()
                     itf = cast(IForm) form
                 case Text:
-                    form := Memory.new'FormText()
+                    var form = Memory.new'FormText()
                     dref form = editView.main.mdlFormText
                     itf = cast(IForm) form
                 case Draw:
-                    form := Memory.new'FormDraw()
+                    var form = Memory.new'FormDraw()
                     dref form = editView.main.mdlFormDraw
                     form.points.clear()
                     itf = cast(IForm) form
@@ -1133,12 +1133,12 @@ impl Capture
 
                 itf.setup(self)
 
-                undo := newUndo(.CreateForm)
+                var undo = newUndo(.CreateForm)
                 undo.oldForms.add(itf)
                 pushUndo(undo)
             }
 
-            f := forms.back()
+            var f = forms.back()
             if !f.edit(evt, paintRect, movingStart, localPos, view.zoom)
             {
                 view.releaseMouse()
@@ -1159,8 +1159,8 @@ impl Capture
             return Swag.U64.Max
         loop i: forms.count-1..0
         {
-            f := forms[i]
-            b := cast(*BaseForm) @dataof(f)
+            var f = forms[i]
+            var b = cast(*BaseForm) @dataof(f)
             if !b.paintPos.contains(localPos)
                 continue
             if !f.hitTest(localPos, editView.zoom)
@@ -1186,7 +1186,7 @@ impl Capture
     {
         if selection.count == 0
             return null
-        i := forms[selection.back()]
+        var i = forms[selection.back()]
         return @kindof(i)
     }
 
@@ -1195,13 +1195,13 @@ impl Capture
         if !selection.count
             return
 
-        main := editView.main
+        var main = editView.main
         if main.editMode == .Selection
             return
 
-        f := forms[selection.back()]
-        t := @kindof(f)
-        form := cast(*BaseForm) @dataof(f)
+        var f = forms[selection.back()]
+        var t = @kindof(f)
+        var form = cast(*BaseForm) @dataof(f)
 
         if main.editMode == .Favorites
         {
@@ -1264,9 +1264,9 @@ impl Capture
         if !selection.count
             return
 
-        f := forms[selection.back()]
-        t := @kindof(f)
-        form := cast(*BaseForm) @dataof(f)
+        var f = forms[selection.back()]
+        var t = @kindof(f)
+        var form = cast(*BaseForm) @dataof(f)
         if form.subKind == .Highlight
             editView.main.mdlHighlight = f
         elif form.subKind == .PixSel
@@ -1276,37 +1276,37 @@ impl Capture
         switch t
         {
         case FormShape:
-            b := cast(*FormShape) @dataof(f)
+            var b = cast(*FormShape) @dataof(f)
             editView.main.mdlFormShape = dref b
 
         case FormImage:
-            b := cast(*FormImage) @dataof(f)
+            var b = cast(*FormImage) @dataof(f)
             editView.main.mdlFormImage = dref b
 
         case FormStep:
-            b := cast(*FormStep) @dataof(f)
+            var b = cast(*FormStep) @dataof(f)
             editView.main.mdlFormStep = dref b
             editView.main.mdlFormStep.ws = b.w
             editView.main.mdlFormStep.hs = b.h
 
         case FormArrow:
-            b := cast(*FormArrow) @dataof(f)
+            var b = cast(*FormArrow) @dataof(f)
             editView.main.mdlFormArrow = dref b
 
         case FormLine:
-            b := cast(*FormLine) @dataof(f)
+            var b = cast(*FormLine) @dataof(f)
             editView.main.mdlFormLine = dref b
 
         case FormPolygon:
-            b := cast(*FormPolygon) @dataof(f)
+            var b = cast(*FormPolygon) @dataof(f)
             editView.main.mdlFormPolygon = dref b
 
         case FormText:
-            b := cast(*FormText) @dataof(f)
+            var b = cast(*FormText) @dataof(f)
             editView.main.mdlFormText = dref b
 
         case FormDraw:
-            b := cast(*FormDraw) @dataof(f)
+            var b = cast(*FormDraw) @dataof(f)
             editView.main.mdlFormDraw = dref b
         }
     }
@@ -1324,7 +1324,7 @@ impl Capture
 
     mtd newUndo(kind: UndoKind, serial: u32 = 0)->*Undo
     {
-        ptr := undos.newPtr()
+        var ptr = undos.newPtr()
         ptr.kind = kind
         if serial
             ptr.serial = serial
@@ -1352,7 +1352,7 @@ impl Capture
         if !canUndo()
             return
 
-        serial := undos[nextUndo-1].serial
+        var serial = undos[nextUndo-1].serial
         while nextUndo and undos[nextUndo-1].serial == serial
         {
             nextUndo -= 1
@@ -1367,7 +1367,7 @@ impl Capture
         if !canRedo()
             return
 
-        serial := undos[nextUndo].serial
+        var serial = undos[nextUndo].serial
         while nextUndo != undos.count and undos[nextUndo].serial == serial
         {
             undos[nextUndo].do()
@@ -1382,7 +1382,7 @@ impl Capture
         u.capture = self
 
         // Remove no more relevant undos
-        countUndo := nextUndo
+        var countUndo = nextUndo
         while nextUndo != undos.count
         {
             Memory.delete(undos[nextUndo])

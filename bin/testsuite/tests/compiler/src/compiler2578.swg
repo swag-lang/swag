@@ -19,6 +19,6 @@ impl AA
 #test
 {
     var x: AA's32
-    ptr := cast(const [..] s32) x
-    ptr1 := cast([..] s32) x
+    var ptr = cast(const [..] s32) x
+    var ptr1 = cast([..] s32) x
 }

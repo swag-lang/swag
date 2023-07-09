@@ -27,7 +27,7 @@ func validateOp(str: string)
             g_Error = null
         }
 
-        v := assume StrConv.toS64(str)
+        var v = assume StrConv.toS64(str)
         g_CurValue = (g_CurValue * 10) + v
     }
     else
@@ -64,7 +64,7 @@ func validateOp(str: string)
 func createBtn(str: string, x, y: s32)
 {
     {
-        btn := PushButton.create(layout, str)
+        var btn = PushButton.create(layout, str)
         btn.sigPressed += func(btn) { validateOp(btn.name.raw); }
         btn.style.setFont(g_FontBtn, .Regular)
         layout.setColRowChild(btn, x, y)
@@ -87,7 +87,7 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
         g_FontTxt = wnd.getTheme().createDefaultFont(30)
         g_FontBtn = wnd.getTheme().createDefaultFont(30)
 
-        with layout := GridLayoutCtrl.create(wnd, 4, 6)
+        with var layout = GridLayoutCtrl.create(wnd, 4, 6)
         {
             .dockStyle = .Center
             .gridLayoutFlags = .AdaptColWidth | .AdaptRowHeight

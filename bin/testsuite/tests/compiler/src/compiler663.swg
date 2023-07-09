@@ -7,5 +7,5 @@ enum OT
 //#[Swag.PrintBc]
 #test
 {
-	pt := OT
+	var pt = OT
 }

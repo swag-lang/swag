@@ -38,7 +38,7 @@ impl Struct
 
     // Called for explicit/implicit casting between struct value and return type
     // Can be overloaded by a different return type
-    // Example: x := cast(OneType) v
+    // Example: var x = cast(OneType) v
     func opCast(using self)->OneType      { return true; }
     func opCast(using self)->AnotherType  { return 0; }
 

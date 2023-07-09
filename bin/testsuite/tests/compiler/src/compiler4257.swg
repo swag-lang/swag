@@ -1,7 +1,7 @@
 #global testerror
 #test
 {
-    x := "toto"
-    y := x[..<0]
+    var x = "toto"
+    var y = x[..<0]
     @print(y)
 }

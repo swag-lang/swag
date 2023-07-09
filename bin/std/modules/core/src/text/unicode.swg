@@ -97,7 +97,7 @@ public
         if isLatin1(c)
             return acast Latin1.toLower(cast(u8) c)
 
-        res := caseChangeTo(WantedCase.LowerCase, c, TableSpecialCaseRanges)
+        var res = caseChangeTo(WantedCase.LowerCase, c, TableSpecialCaseRanges)
         if res.foundMapping
             return res.mappedRune
         res = caseChangeTo(WantedCase.LowerCase, c, TableCaseRanges)
@@ -111,7 +111,7 @@ public
         if isLatin1(c)
             return acast Latin1.toUpper(cast(u8) c)
 
-        res := caseChangeTo(WantedCase.UpperCase, c, TableSpecialCaseRanges)
+        var res = caseChangeTo(WantedCase.UpperCase, c, TableSpecialCaseRanges)
         if res.foundMapping
             return res.mappedRune
         res = caseChangeTo(WantedCase.UpperCase, c, TableCaseRanges)
@@ -126,7 +126,7 @@ public
         if isLatin1(c)
             return acast Latin1.toUpper(cast(u8) c)
 
-        res := caseChangeTo(WantedCase.TitleCase, c, TableSpecialCaseRanges)
+        var res = caseChangeTo(WantedCase.TitleCase, c, TableSpecialCaseRanges)
         if res.foundMapping
             return res.mappedRune
         res = caseChangeTo(WantedCase.TitleCase, c, TableCaseRanges)
@@ -141,12 +141,12 @@ public
 // number of valid elements in the destination buffer
 public func fromUtf8(dest: [..] rune, src: const [..] u8)->u32
 {
-    count := 0'u32
-    srcPtr := @dataof(src)
-    destPtr := @dataof(dest)
-    srcLength := @countof(src)
+    var count = 0'u32
+    var srcPtr = @dataof(src)
+    var destPtr = @dataof(dest)
+    var srcLength = @countof(src)
 
-    (c, eat) := Utf8.decodeRune(src)
+    var (c, eat) = Utf8.decodeRune(src)
     while eat != 0
     {
         Debug.assert(count != @countof(dest), "destination buffer is too small")
@@ -174,7 +174,7 @@ public func fromUtf8(src: const [..] u8)->Array'rune
 // Make a rune buffer upper case
 public func makeUpper(buffer: [..] rune)
 {
-    p := @dataof(buffer)
+    var p = @dataof(buffer)
     loop @countof(buffer)
     {
         dref p = toUpper(dref p)
@@ -185,7 +185,7 @@ public func makeUpper(buffer: [..] rune)
 // Make a rune buffer lower case
 public func makeLower(buffer: [..] rune)
 {
-    p := @dataof(buffer)
+    var p = @dataof(buffer)
     loop @countof(buffer)
     {
         dref p = toLower(dref p)
@@ -196,8 +196,8 @@ public func makeLower(buffer: [..] rune)
 // Compare two unicode strings, and returns -1, 0 or 1
 func compare(src, dst: const [..] rune, ignoreCase = false, len: u64 = 0)->s32
 {
-    length := @countof(src)
-    otherLength := @countof(dst)
+    var length = @countof(src)
+    var otherLength = @countof(dst)
 
     var minLen: u64 = undefined
     if len
@@ -219,8 +219,8 @@ func compare(src, dst: const [..] rune, ignoreCase = false, len: u64 = 0)->s32
         #[Swag.Safety("boundcheck", false)]
         loop i: minLen
         {
-            c1 := toLower(src[i])
-            c2 := toLower(dst[i])
+            var c1 = toLower(src[i])
+            var c2 = toLower(dst[i])
             result = cast(s32) c1 - cast(s32) c2
             if result != 0
                 return Math.sign(result)
@@ -279,12 +279,12 @@ func isInTable(ranges: const [..] Range, r: rune)->bool
     }
 
     // binary search over ranges
-    lo := 0'u64
-    hi := @countof(ranges)
+    var lo = 0'u64
+    var hi = @countof(ranges)
     while lo < hi
     {
-        m := lo + (hi-lo)/2
-        range := &ranges[m]
+        var m = lo + (hi-lo)/2
+        var range = &ranges[m]
         if range.lo <= r and r <= range.hi
         {
             return range.stride == 1 or (r-range.lo) % range.stride == 0
@@ -304,15 +304,15 @@ func caseChangeTo(wCase: WantedCase, r: rune, caseRange: const [..] CaseRange) -
     var result: retval
 
 	// binary search over ranges
-	lo := 0'u64
-	hi := @countof(caseRange)
+	var lo = 0'u64
+	var hi = @countof(caseRange)
 	while lo < hi
     {
-		m := lo + (hi-lo) / 2
-		cr := caseRange[m]
+		var m = lo + (hi-lo) / 2
+		var cr = caseRange[m]
 		if cr.lo <= r and r <= cr.hi
         {
-			delta := cr.delta[wCase]
+			var delta = cr.delta[wCase]
 			if delta == Swag.S32.Max
             {
 				// In an Upper-Lower sequence, which always starts with

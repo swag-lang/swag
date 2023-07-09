@@ -5,6 +5,6 @@
 #[Swag.Safety("", true)]
 #test
 {
-    x := [1, 2]
+    var x = [1, 2]
     @memcpy(null, null, 0)
 }

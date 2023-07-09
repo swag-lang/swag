@@ -145,7 +145,7 @@ impl Log
         }
 
         // Otherwise call all writers
-        str := buf.toString()
+        var str = buf.toString()
         visit w: writers
         {
             w.print(str)

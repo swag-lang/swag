@@ -1,7 +1,7 @@
 func getChar(buffer: const ^u8)->{a:const ^u8, b:rune}
 {
-	ptr := buffer
-	c := cast(rune) dref ptr
+	var ptr = buffer
+	var c = cast(rune) dref ptr
 	if c == 0
 		return {ptr, acast 0}
 
@@ -70,7 +70,7 @@ func getChar(buffer: const ^u8)->{a:const ^u8, b:rune}
 
 	var c: rune
 	var ptr: const ^u8 = @dataof(str)
-	cpt := 0
+	var cpt = 0
 	loop
 	{
 		(ptr, c) = getChar(ptr)

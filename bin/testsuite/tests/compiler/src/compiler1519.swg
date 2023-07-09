@@ -24,5 +24,5 @@ impl A
     var x: A
     x.toto()
 
-    v := 0
+    var v = 0
 }

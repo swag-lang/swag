@@ -3,7 +3,7 @@ var G = 0
 //#[Swag.PrintBc]
 func toto(y: *u8, x: string)
 {
-    concatLength := @countof(x)
+    var concatLength = @countof(x)
     if concatLength == 0
         return
     G = 1

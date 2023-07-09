@@ -17,7 +17,7 @@ public impl GamePad
         var vibration: XINPUT_VIBRATION = undefined
         vibration.wLeftMotorSpeed = cast(WORD) (0xFFFF * Math.saturate(left))
         vibration.wRightMotorSpeed = cast(WORD) (0xFFFF * Math.saturate(right))
-        res := XInputSetState(padIndex, &vibration)
+        var res = XInputSetState(padIndex, &vibration)
         switch res
         {
         case ERROR_SUCCESS:                 return

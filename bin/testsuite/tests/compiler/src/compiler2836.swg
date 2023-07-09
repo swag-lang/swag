@@ -2,11 +2,11 @@
 func toto(x: s32)->s32
 {
     const A = [1, 2, 3, 4, 5]
-    v := 10 / A[-x]
+    var v = 10 / A[-x]
     return v
 }
 
 #test
 {
-    r := toto(-2)
+    var r = toto(-2)
 }

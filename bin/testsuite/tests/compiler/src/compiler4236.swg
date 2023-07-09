@@ -10,7 +10,7 @@ func toto(#[Toto] x, y: s32)
 #[Swag.Optim("", false)]
 #test
 {
-    t := @typeof(toto)
+    var t = @typeof(toto)
     @assert(@countof(t.parameters[0].attributes) == 1)
     @assert(@countof(t.parameters[1].attributes) == 1)
 }

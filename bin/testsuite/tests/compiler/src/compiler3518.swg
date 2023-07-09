@@ -23,7 +23,7 @@ func update(game: Game)->Game
 
 #test
 {
-    v := Game{}
+    var v = Game{}
     v.answer = 666
     //v = update(&v)
     play(&v)

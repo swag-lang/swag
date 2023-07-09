@@ -3,7 +3,7 @@
 //#[Swag.PrintBc]
 #test
 {
-	a := 30
+	var a = 30
 	switch a
 	{
 	case 0:

@@ -44,7 +44,7 @@ impl Image
     func decode(decoder: *ImageDecoder, bytes: const [..] u8, options: DecodeOptions = {})->Image throw
     {
         // Create a decoder instance
-        ptrDecoder := Memory.new(decoder.type)
+        var ptrDecoder = Memory.new(decoder.type)
         defer
         {
             if decoder.type.opDrop
@@ -53,7 +53,7 @@ impl Image
         }
 
         // Decode
-        itf := @mkinterface(ptrDecoder, decoder.type, IImageDecoder)
+        var itf = @mkinterface(ptrDecoder, decoder.type, IImageDecoder)
         return try itf.decode(bytes, options)
     }
 }
@@ -88,7 +88,7 @@ public impl Image
     // Decode the given image buffer
     func decode(fileName: string, bytes: const [..] u8, options: DecodeOptions = {})->Image throw
     {
-        found := getDecoder(fileName)
+        var found = getDecoder(fileName)
         if !found
             throw "no matching image decoder"
         return decode(found, bytes, options)
@@ -97,10 +97,10 @@ public impl Image
     // Load the given image file
     func load(fileName: string, options: DecodeOptions = {})->Image throw
     {
-        found := getDecoder(fileName)
+        var found = getDecoder(fileName)
         if !found
             throw "no matching image decoder"
-        bytes := File.readAllBytes(fileName)
+        var bytes = File.readAllBytes(fileName)
         return decode(found, bytes.toSlice(), options)
     }
 }

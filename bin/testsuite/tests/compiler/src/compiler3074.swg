@@ -15,8 +15,8 @@ func toto(a, b: AA)->AA
 #[Swag.Optim("", true)]
 #test
 {
-    x := AA{1, 1}
-    y := AA{2, 2}
+    var x = AA{1, 1}
+    var y = AA{2, 2}
     x = toto(x, y)
     @assert(x.x == 3.0)
     @assert(x.y == 3.0)

@@ -7,7 +7,7 @@ func toto1()->[2] s32
 
 #test
 {
-    res := toto1()
+    var res = toto1()
     @assert(res[0] == 1)
     @assert(res[1] == 2)
 }

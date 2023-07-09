@@ -60,7 +60,7 @@ impl String
             return
         }
 
-        newCapacity := @countof(value) + 1
+        var newCapacity = @countof(value) + 1
         length = newCapacity - 1
         grow(newCapacity)
         Memory.copy(buffer, @dataof(value), length)
@@ -143,7 +143,7 @@ impl String
             buffer = acast &padding[0]
         else
         {
-            oldBuffer := buffer
+            var oldBuffer = buffer
             buffer = null
             capacity = 0
             reserve(length + 1)
@@ -184,7 +184,7 @@ impl String
 
         // Little trick to avoid labels. That way a 'continue' in the user code will work
         // correctly, that's why we increment 'scan' before the user code, and take -1 to start.
-        scan := buffer - 1
+        var scan = buffer - 1
 
         loop length
         {
@@ -236,12 +236,12 @@ impl String
     // Replace all occurences of 'what' with 'by'
     mtd replace(what, by: string, comparisonType = Utf8.ComparisonType.Latin1)
     {
-        whatLength := @countof(what)
+        var whatLength = @countof(what)
         if !whatLength or whatLength > length
             return
-        byLength := @countof(by)
+        var byLength = @countof(by)
 
-        idx := Utf8.indexOf(toString(), what, 0, comparisonType)
+        var idx = Utf8.indexOf(toString(), what, 0, comparisonType)
         while idx != Swag.U64.Max
         {
             reserve(length + byLength + 1)
@@ -297,7 +297,7 @@ impl String
         }
 
         Debug.safetyBoundCheck(byteIndex < length, "index out of range")
-        countof := @countof(value)
+        var countof = @countof(value)
         if !countof
             return
 
@@ -318,7 +318,7 @@ impl String
     mtd append(value: u8)
     {
         grow(length + 2)
-        ptr := cast(*u16) (buffer + length)
+        var ptr = cast(*u16) (buffer + length)
         dref ptr = value
         length += 1
     }
@@ -328,7 +328,7 @@ impl String
     {
         Debug.assert(Utf8.isValidRune(value), "invalid rune")
         var tmp: [4] u8
-        eat := Utf8.encodeRune(tmp, value)
+        var eat = Utf8.encodeRune(tmp, value)
         grow(length + eat + 1)
         loop i: eat
             buffer[length + i] = tmp[i]
@@ -339,11 +339,11 @@ impl String
     // Append a string to the String
     mtd append(value: string)
     {
-        concatLength := @countof(value)
+        var concatLength = @countof(value)
         if concatLength == 0
             return
 
-        newLength := length + concatLength + 1
+        var newLength = length + concatLength + 1
         grow(newLength)
         Memory.copy(buffer + length, @dataof(value), concatLength)
         length = newLength - 1
@@ -380,7 +380,7 @@ impl String
     {
         if wantedCapacity <= capacity
             return
-        newCapacity := Math.max(capacity * 2, wantedCapacity)
+        var newCapacity = Math.max(capacity * 2, wantedCapacity)
         reserve(newCapacity)
     }
 
@@ -406,7 +406,7 @@ impl String
         // We were in small size mode, and we are no more
         elif buffer == acast &padding[0]
         {
-            oldBuffer := buffer
+            var oldBuffer = buffer
             buffer = acast Memory.alloc(newCapacity, allocator)
             Memory.copy(buffer, oldBuffer, Math.min(newCapacity, length + 1))
             capacity = newCapacity
@@ -426,11 +426,11 @@ impl String
         if !length
             return
 
-        ptr := buffer
+        var ptr = buffer
         loop
         {
-            sl := @mkslice(ptr, length)
-            (c, eat) := Utf8.decodeRune(sl)
+            var sl = @mkslice(ptr, length)
+            var (c, eat) = Utf8.decodeRune(sl)
             if !Unicode.isSpace(c)
                 break
             length -= eat
@@ -449,8 +449,8 @@ impl String
 
         loop
         {
-            sl := @mkslice(buffer, length)
-            (c, eat) := Utf8.decodeLastRune(sl)
+            var sl = @mkslice(buffer, length)
+            var (c, eat) = Utf8.decodeLastRune(sl)
             if !Unicode.isSpace(c)
                 break
             length -= eat
@@ -496,7 +496,7 @@ impl String
     // Convert the string inplace to upper case.
     mtd makeUpper(set = CharacterSet.Latin1)
     {
-        sl := @mkslice(buffer, length)
+        var sl = @mkslice(buffer, length)
 
         using CharacterSet
         switch set
@@ -505,7 +505,7 @@ impl String
             Core.Latin1.makeUpper(sl)
 
         case Unicode:
-            uni32 := Core.Unicode.fromUtf8(toString())
+            var uni32 = Core.Unicode.fromUtf8(toString())
             Core.Unicode.makeUpper(uni32.toSlice())
             reserve(uni32.count * 4)
             length = Utf8.fromUnicode(@mkslice(buffer, capacity), uni32.toSlice())
@@ -515,7 +515,7 @@ impl String
     // Convert the string inplace to lower case.
     mtd makeLower(set = CharacterSet.Latin1)
     {
-        sl := @mkslice(buffer, length)
+        var sl = @mkslice(buffer, length)
 
         using CharacterSet
         switch set
@@ -524,7 +524,7 @@ impl String
             Core.Latin1.makeLower(sl)
 
         case Unicode:
-            uni32 := Core.Unicode.fromUtf8(toString())
+            var uni32 = Core.Unicode.fromUtf8(toString())
             Core.Unicode.makeLower(uni32.toSlice())
             reserve(uni32.count * 4)
             length = Utf8.fromUnicode(@mkslice(buffer, capacity), uni32.toSlice())

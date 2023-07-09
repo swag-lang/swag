@@ -50,12 +50,12 @@ impl Offset
 
     mtd addPath(path: ClipperPath, joinType: JoinType)
     {
-        highI := path.count - 1
+        var highI = path.count - 1
         if highI < 0 return
         while highI > 0 and path.buffer[0] == path.buffer[highI]
             highI -= 1
 
-        newNode := Memory.new'PolyNode()
+        var newNode = Memory.new'PolyNode()
         newNode.jointype = joinType
         newNode.contour.reserve(highI + 1)
         newNode.contour.add(path.buffer[0])
@@ -67,7 +67,7 @@ impl Offset
             {
                 j += 1
                 newNode.contour.add(path.buffer[i])
-                kC := newNode.contour[k]
+                var kC = newNode.contour[k]
                 if path[i].y > kC.y or (path[i].y == kC.y and path[i].x < kC.x)
                     k = j
             }
@@ -85,7 +85,7 @@ impl Offset
             lowest = IntPoint{polyNodes.childs.count - 1, k}
         else
         {
-            ip := polyNodes.childs[cast(s32) lowest.x].contour[cast(s32) lowest.y]
+            var ip = polyNodes.childs[cast(s32) lowest.x].contour[cast(s32) lowest.y]
             if newNode.contour[k].y > ip.y or (newNode.contour[k].y == ip.y and newNode.contour[k].x < ip.x)
                 lowest = IntPoint{polyNodes.childs.count - 1, k}
         }
@@ -107,7 +107,7 @@ impl Offset
         }
         else
         {
-            r := clpr.getBounds()
+            var r = clpr.getBounds()
             var outer: ClipperPath
             outer.add(IntPoint{r.left - 10, r.bottom + 10})
             outer.add(IntPoint{r.right + 10, r.bottom + 10})
@@ -124,15 +124,15 @@ impl Offset
 
     func area(poly: ClipperPath)->f64
     {
-        size := cast(s32) poly.count
+        var size = cast(s32) poly.count
         if size < 3 return 0
 
-        a := 0'f64
-        j := size - 1
-        pJ := poly[j]
+        var a = 0'f64
+        var j = size - 1
+        var pJ = poly[j]
         loop i: size
         {
-            pI := poly[i]
+            var pI = poly[i]
             a += (cast(f64) pJ.x + pI.x) * (cast(f64) pJ.y - pI.y)
             j = i
             pJ = pI
@@ -162,9 +162,9 @@ impl Offset
         if pt2.x == pt1.x and pt2.y == pt1.y
             return result
 
-        dx := cast(f64) (pt2.x - pt1.x)
-        dy := cast(f64) (pt2.y - pt1.y)
-        f  := 1.0 / Math.sqrt(dx*dx + dy*dy)
+        var dx = cast(f64) (pt2.x - pt1.x)
+        var dy = cast(f64) (pt2.y - pt1.y)
+        var f = 1.0 / Math.sqrt(dx*dx + dy*dy)
         dx *= f
         dy *= f
         result.x = dy
@@ -205,7 +205,7 @@ impl Offset
 
         const Pi    = ConstF64.Pi
         const TwoPi = ConstF64.TwoPi
-        steps := Pi / acos(1 - arcT / abs(delta))
+        var steps = Pi / acos(1 - arcT / abs(delta))
         if steps > abs(delta) * Pi
             steps = abs(delta) * Pi
         sinVal = sin(TwoPi / steps)
@@ -218,7 +218,7 @@ impl Offset
         {
             srcPoly = node.contour
 
-            len := cast(s32) srcPoly.count
+            var len = cast(s32) srcPoly.count
             if len == 0 or (delta <= 0 and len < 3)
                 continue
 
@@ -227,26 +227,26 @@ impl Offset
             {
                 if node.jointype == .Round
                 {
-                    x := 1.0'f64
-                    y := 0.0'f64
-                    for j := 1; j <= steps; j += 1
+                    var x = 1.0'f64
+                    var y = 0.0'f64
+                    for var j = 1; j <= steps; j += 1
                     {
-                        r1 := cround(srcPoly[0].x + x * delta)
-                        r2 := cround(srcPoly[0].y + y * delta)
+                        var r1 = cround(srcPoly[0].x + x * delta)
+                        var r2 = cround(srcPoly[0].y + y * delta)
                         destPoly.add(IntPoint{r1, r2})
-                        x2 := x
+                        var x2 = x
                         x = x * cosVal - sinVal * y
                         y = x2 * sinVal + y * cosVal
                     }
                 }
                 else
                 {
-                    x := -1.0'f64
-                    y := -1.0'f64
+                    var x = -1.0'f64
+                    var y = -1.0'f64
                     loop j: 4
                     {
-                        r1 := cround(srcPoly[0].x + x * delta)
-                        r2 := cround(srcPoly[0].y + y * delta)
+                        var r1 = cround(srcPoly[0].x + x * delta)
+                        var r2 = cround(srcPoly[0].y + y * delta)
                         destPoly.add(IntPoint{r1, r2})
                         if x < 0 x = 1
                         elif y < 0 y = 1
@@ -265,7 +265,7 @@ impl Offset
                 normals.add(getUnitNormal(srcPoly[j], srcPoly[j + 1]))
             normals.add(getUnitNormal(srcPoly[len - 1], srcPoly[0]))
 
-            k := len - 1
+            var k = len - 1
             loop j: len
                 offsetPoint(j, &k, node.jointype)
             destPolys.add(destPoly)
@@ -274,20 +274,20 @@ impl Offset
 
     mtd offsetPoint(j: s32, ptrk: *s32, jointype: JoinType)
     {
-        k := dref ptrk
+        var k = dref ptrk
 
-        kN := normals[k]
-        jN := normals[j]
-        jP := srcPoly[j]
+        var kN = normals[k]
+        var jN = normals[j]
+        var jP = srcPoly[j]
 
         sinaVal = (kN.x * jN.y - jN.x * kN.y)
         if Math.abs(sinaVal * deltaVal) < 1.0
         {
-            cosA := (kN.x * jN.x + jN.y * kN.y)
+            var cosA = (kN.x * jN.x + jN.y * kN.y)
             if cosA > 0
             {
-                r1 := cround(jP.x + kN.x * deltaVal)
-                r2 := cround(jP.y + kN.y * deltaVal)
+                var r1 = cround(jP.x + kN.x * deltaVal)
+                var r2 = cround(jP.y + kN.y * deltaVal)
                 destPoly.add(IntPoint{r1, r2})
                 return
             }
@@ -299,8 +299,8 @@ impl Offset
 
         if sinaVal * deltaVal < 0
         {
-            r1 := cround(jP.x + kN.x * deltaVal)
-            r2 := cround(jP.y + kN.y * deltaVal)
+            var r1 = cround(jP.x + kN.x * deltaVal)
+            var r2 = cround(jP.y + kN.y * deltaVal)
             destPoly.add(IntPoint{r1, r2})
             destPoly.add(jP)
             r1 = cround(jP.x + jN.x * deltaVal)
@@ -312,7 +312,7 @@ impl Offset
             switch jointype
             {
             case Miter:
-                r := 1 + (jN.x * kN.x + jN.y * kN.y)
+                var r = 1 + (jN.x * kN.x + jN.y * kN.y)
                 if r >= miterLim
                     doMiter(j, k, r)
                 else
@@ -329,13 +329,13 @@ impl Offset
 
     mtd doSquare(j, k: s32)
     {
-        kN := normals[k]
-        jN := normals[j]
-        jP := srcPoly[j]
+        var kN = normals[k]
+        var jN = normals[j]
+        var jP = srcPoly[j]
 
-        dx := Math.tan(Math.atan2(sinaVal, kN.x * jN.x + kN.y * jN.y) / 4)
-        r1 := cround(jP.x + deltaVal * (kN.x - kN.y * dx))
-        r2 := cround(jP.y + deltaVal * (kN.y + kN.x * dx))
+        var dx = Math.tan(Math.atan2(sinaVal, kN.x * jN.x + kN.y * jN.y) / 4)
+        var r1 = cround(jP.x + deltaVal * (kN.x - kN.y * dx))
+        var r2 = cround(jP.y + deltaVal * (kN.y + kN.x * dx))
         destPoly.add(IntPoint{r1, r2})
 
         r1 = cround(jP.x + deltaVal * (jN.x + jN.y * dx))
@@ -345,39 +345,39 @@ impl Offset
 
     mtd doMiter(j, k: s32, r: f64)
     {
-        kN := normals[k]
-        jN := normals[j]
-        jP := srcPoly[j]
+        var kN = normals[k]
+        var jN = normals[j]
+        var jP = srcPoly[j]
 
-        q := deltaVal / r
-        r1 := cround(jP.x + (kN.x + jN.x) * q)
-        r2 := cround(jP.y + (kN.y + jN.y) * q)
+        var q = deltaVal / r
+        var r1 = cround(jP.x + (kN.x + jN.x) * q)
+        var r2 = cround(jP.y + (kN.y + jN.y) * q)
         destPoly.add(IntPoint{r1, r2})
     }
 
     mtd doRound(j, k: s32)
     {
-        kN := normals[k]
-        jN := normals[j]
-        jP := srcPoly[j]
+        var kN = normals[k]
+        var jN = normals[j]
+        var jP = srcPoly[j]
 
-        a := Math.atan2(sinaVal, kN.x * jN.x + kN.y * jN.y)
-        steps := Math.max(cast(s32) cround(stepsPerRad * Math.abs(a)), 1)
+        var a = Math.atan2(sinaVal, kN.x * jN.x + kN.y * jN.y)
+        var steps = Math.max(cast(s32) cround(stepsPerRad * Math.abs(a)), 1)
 
-        x := kN.x
-        y := kN.y
+        var x = kN.x
+        var y = kN.y
         loop i: steps
         {
-            r1 := cround(jP.x + x * deltaVal)
-            r2 := cround(jP.y + y * deltaVal)
+            var r1 = cround(jP.x + x * deltaVal)
+            var r2 = cround(jP.y + y * deltaVal)
             destPoly.add(IntPoint{r1, r2})
-            x2 := x
+            var x2 = x
             x = x * cosVal - sinVal * y
             y = x2 * sinVal + y * cosVal
         }
 
-        r1 := cround(jP.x + jN.x * deltaVal)
-        r2 := cround(jP.y + jN.y * deltaVal)
+        var r1 = cround(jP.x + jN.x * deltaVal)
+        var r2 = cround(jP.y + jN.y * deltaVal)
         destPoly.add(IntPoint{r1, r2})
     }
 }

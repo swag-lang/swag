@@ -1,6 +1,6 @@
 #test
 {
-    g := false
+    var g = false
     if var x: string
     {
         g = true

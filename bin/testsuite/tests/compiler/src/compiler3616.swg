@@ -12,6 +12,6 @@ var t: [2] T
 #test
 {
     t[0] = &toto
-    x := t[0](1, 2)
+    var x = t[0](1, 2)
     @assert(x == 3)
 }

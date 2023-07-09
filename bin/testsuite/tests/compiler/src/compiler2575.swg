@@ -6,12 +6,12 @@ struct AA
 //#[Swag.PrintBc]
 #test
 {
-    t := @typeof(AA)
+    var t = @typeof(AA)
 
-    ptr := @alloc(cast(u64) t.sizeof)
+    var ptr = @alloc(cast(u64) t.sizeof)
     defer @free(ptr)
 
-    ptr1 := cast(*AA) ptr
+    var ptr1 = cast(*AA) ptr
     t.opInit(ptr1)
     @assert(ptr1.x == 666)
     @assert(ptr1.y == 666)

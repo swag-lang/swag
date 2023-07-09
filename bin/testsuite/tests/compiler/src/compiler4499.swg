@@ -3,6 +3,6 @@
 func toto()
 {
     unreachable
-    a := 0
+    var a = 0
     @print(a)
 }

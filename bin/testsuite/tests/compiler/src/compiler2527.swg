@@ -4,6 +4,6 @@ func toto() => 666
 
 #test
 {
-    y := 0
-    x := toto() try
+    var y = 0
+    var x = toto() try
 }

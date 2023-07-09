@@ -1,8 +1,8 @@
 //#[Swag.PrintBc]
 #test
 {
-    xHi := 2'u64
-	msb := cast(u32) (xHi >> 1)
+    var xHi = 2'u64
+	var msb = cast(u32) (xHi >> 1)
     @assert(msb == 1)
-	retMantissa := xHi >> (msb + 9)
+	var retMantissa = xHi >> (msb + 9)
 }

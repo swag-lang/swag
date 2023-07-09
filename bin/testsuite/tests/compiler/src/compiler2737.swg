@@ -35,6 +35,6 @@ func titi()->s32 throw
 //#[Swag.PrintBc]
 #test
 {
-    a := catch titi()
+    var a = catch titi()
     @assert(G == 1)
 }

@@ -239,7 +239,7 @@ impl Wnd
 
     func(T) create(parent: *Wnd, name: string, position: Math.Rectangle, id: WndId = null, hook: HookEvent = null)->*T
     {
-        res := Memory.new'T()
+        var res = Memory.new'T()
         res.isAllocated = true
         res.itf = cast(IWnd) dref res
         res.type = T
@@ -311,7 +311,7 @@ impl Wnd
                 who.childs.add(self)
             else
             {
-                idxToInsert := who.childs.count
+                var idxToInsert = who.childs.count
                 if !(wndFlags & .TopMost)
                 {
                     idxToInsert = who.firstTopMostIndex()
@@ -396,7 +396,7 @@ impl Wnd
     // Returns true if window, and all its parents, are visible
     mtd isVisible(onlyMe = false)->bool
     {
-        check := self
+        var check = self
         while check
         {
             if check.wndFlags.has(.Hidden)
@@ -414,7 +414,7 @@ impl Wnd
     // Returns true if window, and all its parents, are enabled
     mtd isEnabled()->bool
     {
-        check := self
+        var check = self
         while check
         {
             if check.wndFlags.has(.Disabled)
@@ -437,7 +437,7 @@ impl Wnd
 
     mtd paint(bc: *PaintContext)
     {
-        painter := bc.painter
+        var painter = bc.painter
         if painter.isEmptyClippingRect()
             return
 
@@ -445,12 +445,12 @@ impl Wnd
         computeStyle()
 
         // Transmit disabled state to childs
-        lastDisabled := bc.isDisabled
+        var lastDisabled = bc.isDisabled
         if wndFlags.has(.Disabled)
             bc.isDisabled = true
 
         // Background
-        theme := getTheme()
+        var theme = getTheme()
         switch backgroundStyle
         {
         case Window:
@@ -464,8 +464,8 @@ impl Wnd
         }
 
         painter.translateTransform(position.x, position.y)
-        curTrs := painter.getTransform()
-        evt := PaintEvent{}
+        var curTrs = painter.getTransform()
+        var evt = PaintEvent{}
         evt.bc = bc
 
         // Pre paint. Clipping is parent. No scroll
@@ -527,7 +527,7 @@ impl Wnd
     // Force the window to be repainted
     mtd invalidate()
     {
-        rect := getSurfaceRect()
+        var rect = getSurfaceRect()
         rect.applyPadding(invalidatePadding)
         rect.applyPadding({-32, -32, -32, -32})
         if surface
@@ -547,7 +547,7 @@ impl Wnd
     // Be sure rect is fully inside the parent rectangle (if possible)
     mtd fitPosInParent(marginW, marginH: f32 = 0, simX, simY = false)
     {
-        pos := position
+        var pos = position
         if pos.x + pos.width > parent.position.width - marginW
         {
             if simX
@@ -577,21 +577,21 @@ impl Wnd
     // Convert a surface coordinate to a local coordinate (relative to me)
     mtd surfaceToLocal(pos: Math.Point)->Math.Point
     {
-        r := getSurfaceRect()
+        var r = getSurfaceRect()
         return {pos.x - r.x, pos.y - r.y}
     }
 
     // Convert a local coordinate to a surface coordinate
     mtd localToSurface(pos: Math.Point)->Math.Point
     {
-        r := getSurfaceRect()
+        var r = getSurfaceRect()
         return {pos.x + r.x, pos.y + r.y}
     }
 
     // Convert a local coordinate to a surface coordinate
     mtd localToSurface(pos: Math.Rectangle)->Math.Rectangle
     {
-        r := getSurfaceRect()
+        var r = getSurfaceRect()
         return {pos.x + r.x, pos.y + r.y, pos.width, pos.height}
     }
 
@@ -614,7 +614,7 @@ impl Wnd
     mtd getSurfaceRect()->Math.Rectangle
     {
         var result: retval = position
-        p := parent
+        var p = parent
         while p
         {
             result.x += p.position.x
@@ -631,7 +631,7 @@ impl Wnd
     mtd getRectIn(in: *Wnd)->Math.Rectangle
     {
         var result: retval = position
-        p := parent
+        var p = parent
         while p and p != in
         {
             result.x += p.position.x
@@ -694,7 +694,7 @@ impl Wnd
         if parent.childs.front() == self
             return
 
-        (idx, found) := Slice.findLinear(parent.childs.toSlice(), self)
+        var (idx, found) = Slice.findLinear(parent.childs.toSlice(), self)
         Debug.assert(found)
 
         parent.childs.removeAtOrdered(idx)
@@ -708,11 +708,11 @@ impl Wnd
         if parent.childs.back() == self
             return
 
-        (idx, found) := Slice.findLinear(parent.childs.toSlice(), self)
+        var (idx, found) = Slice.findLinear(parent.childs.toSlice(), self)
         Debug.assert(found)
 
         // Put the window at the back, or before the first topmost window
-        idxToReplace := parent.childs.count - 1
+        var idxToReplace = parent.childs.count - 1
         if !wndFlags.has(.TopMost)
         {
             idxToReplace = parent.firstTopMostIndex()
@@ -743,7 +743,7 @@ impl Wnd
     {
         if position.x == x and position.y == y
             return
-        evt := MoveEvent{}
+        var evt = MoveEvent{}
         evt.oldPos = {position.x, position.y}
         position.x = Math.round(x)
         position.y = Math.round(y)
@@ -768,7 +768,7 @@ impl Wnd
         if position.width == width and position.height == height
             return
 
-        evt := ResizeEvent{}
+        var evt = ResizeEvent{}
         evt.oldSize = {position.width, position.height}
         position.width = Math.round(width)
         position.height = Math.round(height)
@@ -788,26 +788,26 @@ impl Wnd
 
     mtd applyLayout(oldSize: Math.Point)
     {
-        clientRect := getClientRectPadding()
+        var clientRect = getClientRectPadding()
 
-        centerLayout := Array.createTemp'(*Wnd)()
-        oldSizes     := Array.createTemp'Math.Point()
+        var centerLayout = Array.createTemp'(*Wnd)()
+        var oldSizes = Array.createTemp'Math.Point()
 
         visit c: childs
         {
             if c.anchorStyle == .None
                 continue
 
-            pos := c.position
+            var pos = c.position
             if c.anchorStyle & .X and oldSize.x > 0
             {
-                oldM := oldSize.x - c.position.x
+                var oldM = oldSize.x - c.position.x
                 pos.x = position.width - oldM
             }
 
             if c.anchorStyle & .Y and oldSize.y > 0
             {
-                oldM := oldSize.y - c.position.y
+                var oldM = oldSize.y - c.position.y
                 pos.y = position.height - oldM
             }
 
@@ -833,49 +833,49 @@ impl Wnd
             switch c.dockStyle
             {
             case Left:
-                pos := c.position
+                var pos = c.position
                 pos.x = clientRect.x + c.margin.x
                 pos.y = clientRect.y + c.margin.y
                 pos.setBottom(clientRect.bottom() - c.margin.w)
                 if c.maxSize.y > 0 and c.maxSize.y < pos.height and !(c.anchorStyle & .Y)
                     pos.y = clientRect.vertCenter() - c.maxSize.y * 0.5
                 c.setPosition(pos, false)
-                diff := c.margin.x + pos.width + c.margin.z
+                var diff = c.margin.x + pos.width + c.margin.z
                 clientRect.width -= diff
                 clientRect.x += diff
 
             case Right:
-                pos := c.position
+                var pos = c.position
                 pos.x = clientRect.right() - pos.width - c.margin.z
                 pos.y = clientRect.y + c.margin.y
                 pos.setBottom(clientRect.bottom() - c.margin.w)
                 if c.maxSize.y > 0 and c.maxSize.y < pos.height and !(c.anchorStyle & .Y)
                     pos.y = clientRect.vertCenter() - c.maxSize.y * 0.5
                 c.setPosition(pos, false)
-                diff := c.margin.x + pos.width + c.margin.z
+                var diff = c.margin.x + pos.width + c.margin.z
                 clientRect.width -= diff
 
             case Top:
-                pos := c.position
+                var pos = c.position
                 pos.x = clientRect.x + c.margin.x
                 pos.y = clientRect.y + c.margin.y
                 pos.setRight(clientRect.right() - c.margin.z)
                 if c.maxSize.x > 0 and c.maxSize.x < pos.width and !(c.anchorStyle & .X)
                     pos.x = clientRect.horzCenter() - c.maxSize.x * 0.5
                 c.setPosition(pos, false)
-                diff := c.margin.y + pos.height + c.margin.w
+                var diff = c.margin.y + pos.height + c.margin.w
                 clientRect.y += diff
                 clientRect.height -= diff
 
             case Bottom:
-                pos := c.position
+                var pos = c.position
                 pos.x = clientRect.x + c.margin.x
                 pos.y = clientRect.bottom() - c.margin.w - pos.height
                 pos.setRight(clientRect.right() - c.margin.z)
                 if c.maxSize.x > 0 and c.maxSize.x < pos.width and !(c.anchorStyle & .X)
                     pos.x = clientRect.horzCenter() - c.maxSize.x * 0.5
                 c.setPosition(pos, false)
-                diff := c.margin.w + pos.height + c.margin.y
+                var diff = c.margin.w + pos.height + c.margin.y
                 clientRect.height -= diff
 
             case Center:
@@ -885,7 +885,7 @@ impl Wnd
 
         visit c: centerLayout
         {
-            pos := clientRect
+            var pos = clientRect
             pos.applyPadding(c.margin)
             c.setPosition(pos, false)
         }
@@ -908,19 +908,19 @@ impl Wnd
         // Top level window is the last one painted, so it's the last
         // in the array.
         // So we must visit in revert order
-        for i := cast(s32) childs.count - 1; i >= 0; i -= 1
+        for var i = cast(s32) childs.count - 1; i >= 0; i -= 1
         {
-            c := childs[i]
+            var c = childs[i]
             if c.wndFlags.has(.Hidden) and !getHidden
                 continue
             if c.wndFlags.has(.Disabled) and !getDisabled
                 continue
 
 
-            pt := Math.Point{x - position.x, y - position.y}
+            var pt = Math.Point{x - position.x, y - position.y}
             if !c.wndFlags.has(.NoScroll)
                 pt += scrollPos
-            res := c.getWndAt(pt.x, pt.y)
+            var res = c.getWndAt(pt.x, pt.y)
             if res
                 return res
         }
@@ -933,7 +933,7 @@ impl Wnd
     {
         if !child
             return false
-        p := child.parent
+        var p = child.parent
         while p
         {
             if p == self
@@ -951,7 +951,7 @@ impl Wnd
         {
             if c.id == childId
                 return c
-            res := c.getChildById(childId)
+            var res = c.getChildById(childId)
             if res
                 return res
         }
@@ -962,7 +962,7 @@ impl Wnd
     // Retrieve the parent with the given id
     mtd getParentById(parentId: string)->*Wnd
     {
-        p := parent
+        var p = parent
         while p
         {
             if p.id == parentId
@@ -1004,10 +1004,10 @@ impl Wnd
         if !isEnabled()
             return
 
-        last := surface.app.keybFocusWnd
+        var last = surface.app.keybFocusWnd
         if last
         {
-            evt := FocusEvent{kind = EventKind.KillFocus}
+            var evt = FocusEvent{kind = EventKind.KillFocus}
             evt.other = self
             last.sendEvent(&evt)
             last.invalidate()
@@ -1016,7 +1016,7 @@ impl Wnd
         }
 
         surface.setFocus()
-        evt := FocusEvent{kind = EventKind.SetFocus}
+        var evt = FocusEvent{kind = EventKind.SetFocus}
         evt.other = last
         surface.app.keybFocusWnd = self
         sendEvent(&evt)
@@ -1058,7 +1058,7 @@ impl Wnd
                 return c.id
         }
 
-        p := getOwner()
+        var p = getOwner()
         if p return p.getKeyShortcut(mdf, key)
         return null
     }
@@ -1076,7 +1076,7 @@ impl Wnd
             }
         }
 
-        p := getOwner()
+        var p = getOwner()
         if p return p.getKeyShortcutNameFor(wndId)
         return result
     }
@@ -1098,7 +1098,7 @@ impl Wnd
 
     mtd postInvalidateEvent()
     {
-        evt := Event.create'Event()
+        var evt = Event.create'Event()
         evt.kind = .Invalidate
         postEvent(evt)
     }
@@ -1111,13 +1111,13 @@ impl Wnd
 
     mtd sendStateEvent(kind: EventKind)
     {
-        evt := StateEvent{kind = kind}
+        var evt = StateEvent{kind = kind}
         sendEvent(&evt)
     }
 
     mtd sendResizeEvent()
     {
-        evt := ResizeEvent{}
+        var evt = ResizeEvent{}
         evt.oldSize.x = position.width
         evt.oldSize.y = position.height
         sendEvent(&evt)
@@ -1125,7 +1125,7 @@ impl Wnd
 
     mtd postResizeEvent()
     {
-        evt := Event.create'ResizeEvent()
+        var evt = Event.create'ResizeEvent()
         evt.oldSize.x = position.width
         evt.oldSize.y = position.height
         postEvent(evt)
@@ -1136,7 +1136,7 @@ impl Wnd
         if createEventDone
             return
         createEventDone = true
-        evt := CreateEvent{}
+        var evt = CreateEvent{}
         sendEvent(&evt)
     }
 
@@ -1144,7 +1144,7 @@ impl Wnd
     {
         if cmdId == null
             return
-        evt := Event.create'CommandEvent()
+        var evt = Event.create'CommandEvent()
         evt.id = cmdId
         evt.source = self
         postEvent(evt)
@@ -1152,7 +1152,7 @@ impl Wnd
 
     mtd processEvent(evt: *Event)
     {
-        eat := false
+        var eat = false
         if hookOnEvent
             eat = hookOnEvent(self, evt)
         if !eat
@@ -1162,7 +1162,7 @@ impl Wnd
     // Send a notification event
     mtd notifyEvent(kind: NotifyEvent.Kind)
     {
-        ntfy := NotifyEvent{}
+        var ntfy = NotifyEvent{}
         ntfy.ntfyKind = kind
         sendEvent(&ntfy)
     }
@@ -1170,7 +1170,7 @@ impl Wnd
     // Send a notification event
     mtd ownerNotifyEvent(kind: NotifyEvent.Kind)
     {
-        p := getOwner()
+        var p = getOwner()
         if !p return
         p.notifyEvent(kind)
     }
@@ -1183,7 +1183,7 @@ impl Wnd
     // This will update the state of this window, and all of its childs
     mtd updateCommandState()
     {
-        evtState := sendComputeCommandStateEvent(id)
+        var evtState = sendComputeCommandStateEvent(id)
         if evtState.accepted
         {
             evtState.kind = .ApplyCommandState
@@ -1211,7 +1211,7 @@ impl Wnd
         sendEvent(&evtState)
 
         // Is there a keyboard shortcut or a global hot key ?
-        sk := getKeyShortcutNameFor(cmdId)
+        var sk = getKeyShortcutNameFor(cmdId)
         if !sk.length
             sk = getApp().getHotKeyShortcutNameFor(cmdId)
         if sk.length
@@ -1231,7 +1231,7 @@ impl Wnd
             return
 
         // We first need to be sure that the target can deal with the event
-        evtState := CommandStateEvent{}
+        var evtState = CommandStateEvent{}
         evtState.kind = .ComputeCommandState
         evtState.id = cmdId
         sendEvent(&evtState)
@@ -1239,7 +1239,7 @@ impl Wnd
         // If it's not disabled, then we can send
         if !evtState.setFlags.has(.Disabled) or !evtState.disabled
         {
-            evtc := CommandEvent{}
+            var evtc = CommandEvent{}
             evtc.id = cmdId
             sendEvent(&evtc)
         }
@@ -1252,7 +1252,7 @@ impl Wnd
     // Register one new action
     mtd(T) registerAction()
     {
-        itfAct := @mkinterface(null, @typeof(T), IActionUI)
+        var itfAct = @mkinterface(null, @typeof(T), IActionUI)
         actions.add(itfAct)
     }
 

@@ -6,14 +6,14 @@
 #test
 {
     var reader: TextReader
-    loc := #location
+    var loc = #location
 
     {
         catch reader.open(loc.fileName)
         @assert(@errmsg == null)
         defer reader.close()
 
-        res := reader.readToEnd()
+        var res = reader.readToEnd()
         @assert(res.length > 10)
         @assert(res[0] == "u"'u8)
         @assert(res[1] == "s"'u8)

@@ -3,7 +3,7 @@
 
 #run
 {
-    s := 1
+    var s = 1
     switch s
     {
         case 1:

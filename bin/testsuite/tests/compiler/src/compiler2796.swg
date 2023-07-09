@@ -8,6 +8,6 @@ enum RGB
 
 #test
 {
-    x := RGB.R
+    var x = RGB.R
     x = .R
 }

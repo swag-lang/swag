@@ -2,5 +2,5 @@
 //#global testerror
 #test
 {
-	pair := [s32]
+	var pair = [s32]
 }

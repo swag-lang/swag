@@ -8,6 +8,6 @@ using Core
     arr.add("0")
     arr.add("1")
 
-    x := String.from("A")
+    var x = String.from("A")
     arr.insertAt(0, moveref &x)
 }

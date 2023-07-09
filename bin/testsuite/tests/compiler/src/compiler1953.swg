@@ -56,9 +56,9 @@ func ref1()->const &ST => GG1
     @assert(ref0() >= ref1())
     @assert(ref0() <= ref1())
 
-    res := ref0() + ref1()
+    var res = ref0() + ref1()
     @assert(res.x == 2)
 
-    res1 := -ref0()
+    var res1 = -ref0()
     @assert(res1.x == -1)
 }

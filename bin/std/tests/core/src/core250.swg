@@ -66,13 +66,13 @@ const tests: [] Test = [
         switch c.base
         {
         case 2:
-            (value, eat, ovf) := assume parseB64(c.out)
+            var (value, eat, ovf) = assume parseB64(c.out)
             @assert(value == c.in)
         case 10:
-            (value, eat, ovf) := assume parseS64(c.out)
+            var (value, eat, ovf) = assume parseS64(c.out)
             @assert(value == c.in)
         case 16:
-            (value, eat, ovf) := assume parseX64(c.out)
+            var (value, eat, ovf) = assume parseX64(c.out)
             @assert(value == c.in)
         }
     }
@@ -82,13 +82,13 @@ const tests: [] Test = [
         switch c.base
         {
         case 2:
-            value := Format.toString("%{B}", c.in)
+            var value = Format.toString("%{B}", c.in)
             @assert(value == c.out)
         case 10:
-            value := Format.toString("%", c.in)
+            var value = Format.toString("%", c.in)
             @assert(value == c.out)
         case 16:
-            value := Format.toString("%{X}", c.in)
+            var value = Format.toString("%{X}", c.in)
             @assert(value == c.out)
         }
     }

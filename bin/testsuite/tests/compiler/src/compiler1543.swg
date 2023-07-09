@@ -36,6 +36,6 @@ impl X
 #test
 {
     using Swag
-    ptr := cast(const *TypeInfoStruct) @typeof(X)
+    var ptr = cast(const *TypeInfoStruct) @typeof(X)
     @assert(@countof(ptr.methods) == 2)
 }

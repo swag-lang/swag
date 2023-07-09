@@ -50,7 +50,7 @@ impl Variant
         {
             if type and Reflection.hasPostCopy(type)
             {
-                typeStruct := cast(const *Swag.TypeInfoStruct) type
+                var typeStruct = cast(const *Swag.TypeInfoStruct) type
                 typeStruct.opPostCopy(buffer)
             }
         }
@@ -62,7 +62,7 @@ impl Variant
         {
             if type and Reflection.hasPostMove(type)
             {
-                typeStruct := cast(const *Swag.TypeInfoStruct) type
+                var typeStruct = cast(const *Swag.TypeInfoStruct) type
                 typeStruct.opPostMove(buffer)
             }
         }
@@ -75,7 +75,7 @@ impl Variant
         {
             if type and Reflection.hasDrop(type)
             {
-                typeStruct := cast(const *Swag.TypeInfoStruct) type
+                var typeStruct = cast(const *Swag.TypeInfoStruct) type
                 typeStruct.opDrop(buffer)
                 type = null
             }

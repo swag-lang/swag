@@ -2,8 +2,8 @@ var T = true
 #test
 {
     {
-        x := T
-        z := x ^ true
+        var x = T
+        var z = x ^ true
         @assert(z == false)
     }
 }

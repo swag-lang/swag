@@ -9,11 +9,11 @@ func panic(msg: string, loc: Swag.SourceCodeLocation)
 #test
 {
     {
-        cxt := @getcontext()
+        var cxt = @getcontext()
         cxt.panic = &panic
         defer cxt.panic = null
 
-        x := 10'u8
+        var x = 10'u8
         x += 255
         x += 255
     }

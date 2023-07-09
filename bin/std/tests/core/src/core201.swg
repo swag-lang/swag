@@ -49,11 +49,11 @@ var utf8Map: [] Utf8Map = [
         @assert(isValidRune(it.c))
 
         var arr: [4] u8
-        eat := encodeRune(arr, it.c)
+        var eat = encodeRune(arr, it.c)
         @assert(eat == @countof(it.str))
         loop i: eat @assert(arr[i] == it.str[i])
 
-        res := decodeRune(it.str)
+        var res = decodeRune(it.str)
         @assert(res.eat == @countof(it.str))
         @assert(res.c == it.c)
     }

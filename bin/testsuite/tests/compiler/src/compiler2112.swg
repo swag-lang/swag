@@ -1,7 +1,7 @@
 //#[Swag.PrintBc]
 #test
 {
-    x := {"toto", true}
-    (name, ?) := x
+    var x = {"toto", true}
+    var (name, ?) = x
     (name, ?) = x
 }

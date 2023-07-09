@@ -9,6 +9,6 @@ func toto(x: string)->string
 
 #test
 {
-    x := toto("5")
+    var x = toto("5")
     @assert(x == "5")
 }

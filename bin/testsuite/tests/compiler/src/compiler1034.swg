@@ -3,8 +3,8 @@
 //#[Swag.PrintBc]
 #test
 {
-	x := ["10", "20", "30"]
-	count := 2
+	var x = ["10", "20", "30"]
+	var count = 2
 	@init(&x, count)
 	@assert(x[0] == null)
 	@assert(x[1] == null)

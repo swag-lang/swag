@@ -14,10 +14,10 @@ impl Vector2
 //#[Swag.PrintBc]
 #test
 {
-    a := Vector2{1, 1}
-    b := Vector2{2, 2}
-    c := Vector2{3, 3}
+    var a = Vector2{1, 1}
+    var b = Vector2{2, 2}
+    var c = Vector2{3, 3}
 
-    e := {a + b + c}
+    var e = {a + b + c}
     @assert(e.item0.x == 6)
 }

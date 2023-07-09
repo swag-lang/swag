@@ -7,12 +7,12 @@ impl AA
 {
     func opDrop(self)
     {
-        a := 0
+        var a = 0
     }
 
     func opPostMove(self)
     {
-        a := 0
+        var a = 0
     }
 }
 
@@ -32,5 +32,5 @@ func titi()->AA
 
 #test
 {
-    x := titi()
+    var x = titi()
 }

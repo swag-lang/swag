@@ -16,6 +16,6 @@ impl B
 #test
 {
     var v: B
-    val := &v.getA().x
+    var val = &v.getA().x
     @assert(dref val == 666)
 }

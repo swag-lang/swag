@@ -35,18 +35,18 @@ impl Image
         if pf != .BGR8 and pf != .BGRA8 return // unsupported
 
         // Remove alpha change if it does not exists
-        rmode := mode
+        var rmode = mode
         if pf == .BGR8
         {
             rmode &= ~.Alpha
             if rmode == 0 or value == .Alpha return
         }
 
-        f := {rmode, value, color}
+        var f = {rmode, value, color}
         visitPixels(&f)
         {
-            params := cast(*@decltype(f)) userData
-            mode := params.rmode
+            var params = cast(*@decltype(f)) userData
+            var mode = params.rmode
 
             var color: u8 = undefined
             #[Swag.Complete]

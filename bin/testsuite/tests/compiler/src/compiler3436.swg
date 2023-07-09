@@ -7,7 +7,7 @@ func toto(v: closure(s32)->s32)->s32
 //#[Swag.PrintBc, Swag.Optim("", false)]
 #test
 {
-    v := toto(func(x: s32)->s32 {
+    var v = toto(func(x: s32)->s32 {
         return x
     })
 

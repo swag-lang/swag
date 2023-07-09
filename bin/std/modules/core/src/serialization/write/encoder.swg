@@ -65,7 +65,7 @@ impl Encoder
 
     mtd writeValue(data: const ^void, dataType: typeinfo) throw
     {
-        type := Reflection.makeConcreteAlias(dataType)
+        var type = Reflection.makeConcreteAlias(dataType)
         type = Reflection.makeConcreteEnum(type)
 
         serializer.beginValue()
@@ -74,7 +74,7 @@ impl Encoder
         // Native
         if type.kind == .Native
         {
-            typeNative := cast(const *TypeInfoNative) type
+            var typeNative = cast(const *TypeInfoNative) type
             switch typeNative.nativeKind
             {
             case Bool:
@@ -106,14 +106,14 @@ impl Encoder
 
         if Reflection.isType(type)
         {
-            typeType := dref cast(const **TypeInfo) data
+            var typeType = dref cast(const **TypeInfo) data
             serializer.writeNative(typeType ? typeType.crc32 : 0'u32)
             return
         }
 
         if Reflection.isInterface(type)
         {
-            itf := cast(const *Swag.Interface) data
+            var itf = cast(const *Swag.Interface) data
 
             serializer.beginSection(.Raw)
             defer serializer.endSection()
@@ -151,25 +151,25 @@ impl Encoder
             // Core.String
             if type == String
             {
-                strBuf := cast(const *String) data
+                var strBuf = cast(const *String) data
                 serializer.writeNative(strBuf.toString())
                 return
             }
 
-            structType := cast(const *TypeInfoStruct) type
+            var structType = cast(const *TypeInfoStruct) type
 
             // Core.Array
             if structType.fromGeneric == @typeof(Array)
             {
-                valueType := structType.generics[0].pointedType
-                ptrArr    := cast(const *Array) data
+                var valueType = structType.generics[0].pointedType
+                var ptrArr = cast(const *Array) data
 
-                treated := serializer.beginSequence(type, data, ptrArr.count)
+                var treated = serializer.beginSequence(type, data, ptrArr.count)
                 defer serializer.endSequence()
 
                 if !treated
                 {
-                    bufArr := cast(const ^u8) ptrArr.buffer
+                    var bufArr = cast(const ^u8) ptrArr.buffer
                     loop i: ptrArr.count
                     {
                         writeValue(bufArr, valueType)
@@ -181,7 +181,7 @@ impl Encoder
             }
 
             // A structure with an implementation of ISerialize
-            itf := @mkinterface(data, type, ISerialize)
+            var itf = @mkinterface(data, type, ISerialize)
             if itf != null
             {
                 if itf.write(cast(IEncoder) self)
@@ -189,7 +189,7 @@ impl Encoder
             }
 
             // Start a fields section
-            treated := serializer.beginStruct(structType, data)
+            var treated = serializer.beginStruct(structType, data)
             defer(noerr) serializer.endStruct()
             if treated
                 return
@@ -214,13 +214,13 @@ impl Encoder
         // A static array
         if Reflection.isArray(type)
         {
-            typeArr := cast(const *TypeInfoArray) type
-            treated := serializer.beginSequence(typeArr.pointedType, data, typeArr.count)
+            var typeArr = cast(const *TypeInfoArray) type
+            var treated = serializer.beginSequence(typeArr.pointedType, data, typeArr.count)
             defer serializer.endSequence()
             if treated
                 return
 
-            bufArr := cast(const ^u8) data
+            var bufArr = cast(const ^u8) data
             loop typeArr.count
             {
                 writeValue(bufArr, typeArr.pointedType)
@@ -288,12 +288,12 @@ impl IEncoder for Encoder
 
     mtd impl writeBufferU8(data: const ^u8, count: u64) throw
     {
-        treated := serializer.beginSequence(u8, data, count)
+        var treated = serializer.beginSequence(u8, data, count)
         defer(noerr) serializer.endSequence()
 
         if !treated
         {
-            ptr := data
+            var ptr = data
             loop count
             {
                 serializer.beginValue()

@@ -23,8 +23,8 @@ impl BB for AA
 #test
 {
     var x: AA
-    ptr := &x
-    itf := cast(BB) ptr
+    var ptr = &x
+    var itf = cast(BB) ptr
     @assert(itf.x() == 555)
     @assert(G == 1)
 }

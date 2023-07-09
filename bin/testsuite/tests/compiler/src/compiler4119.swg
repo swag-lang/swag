@@ -1,7 +1,7 @@
 #global testerror
 #test
 {
-    a := 0'u8
+    var a = 0'u8
 
     #[Swag.Complete]
     switch a

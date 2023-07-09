@@ -4,7 +4,7 @@
 //#[Swag.PrintBc]
 #test
 {
-	res := 0;
+	var res = 0;
 	switch(5)
 	{
 	case 4: @assert(false);

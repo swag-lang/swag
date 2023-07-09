@@ -13,6 +13,6 @@ func titi()->s32
 
 #test
 {
-    x := titi()
+    var x = titi()
     @assert(x == 0)
 }

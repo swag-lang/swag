@@ -14,5 +14,5 @@ struct A
     (v.x, v.y) = toto()
     @assert(v.x == 5)
     @assert(v.y == 10)
-    //(x1, y1) := toto()
+    //var (x1, y1) = toto()
 }

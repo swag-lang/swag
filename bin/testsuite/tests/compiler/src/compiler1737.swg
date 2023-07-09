@@ -1,7 +1,7 @@
 //#[Swag.PrintBc]
 #test
 {
-    a := 0'u32
+    var a = 0'u32
     visit "ABC"
     {
         switch @index

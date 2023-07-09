@@ -1,4 +1,4 @@
 #test
 {
-    x := @countof(0'u64)
+    var x = @countof(0'u64)
 }

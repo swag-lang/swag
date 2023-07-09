@@ -3,7 +3,7 @@ struct(N: s32) Vector
 {
     #ast
     {
-        sb := StrConv.StringBuilder{}
+        var sb = StrConv.StringBuilder{}
         loop i: N
         {
             sb.appendFormat("%", cast(rune) ("a"'u32 + i))
@@ -18,11 +18,11 @@ struct(N: s32) Vector
 //#[Swag.PrintBc]
 #test
 {
-    x := Vector'3{}
+    var x = Vector'3{}
     @assert(x.a == 0)
     @assert(x.b == 0)
     @assert(x.c == 0)
 
-    x1 := Vector'4{}
+    var x1 = Vector'4{}
     @assert(x1.d == 0)
 }

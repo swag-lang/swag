@@ -3,17 +3,17 @@
 #[Swag.Macro]
 func Visit(str: const [..] u8, user: code)
 {
-    ptr := @dataof(str)
-    count := @countof(str)
+    var ptr = @dataof(str)
+    var count = @countof(str)
 	loop
 	{
-        slice := @mkslice(ptr, cast(u64) count)
-		(c, eat) := Core.Utf8.decodeRune(slice)
+        var slice = @mkslice(ptr, cast(u64) count)
+		var (c, eat) = Core.Utf8.decodeRune(slice)
 		if !eat
 			break
 		#macro
         {
-            value := #up c
+            var value = #up c
             #mixin #up user
         }
 
@@ -25,7 +25,7 @@ func Visit(str: const [..] u8, user: code)
 //#[Swag.PrintBc]
 #test
 {
-    cpt := 0
+    var cpt = 0
 	var str = "あああ"
     Visit(str)
     {

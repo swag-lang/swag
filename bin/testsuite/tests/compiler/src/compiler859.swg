@@ -4,13 +4,13 @@
 //#[Swag.PrintBc]
 #test
 {
-	a := 1
+	var a = 1
 	switch a
 	{
 	case 0:
-		b := 0
+		var b = 0
 	case 1:
-		b := 0
+		var b = 0
 	}
 
 	@assert(a == 1)

@@ -1,5 +1,5 @@
 #global testerror
 #test
 {
-    x :=,move,nodrop,moveraw 0
+    var x =,move,nodrop,moveraw 0
 }

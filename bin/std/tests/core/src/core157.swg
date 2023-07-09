@@ -18,7 +18,7 @@ using Core.Math
     @assert(ptx.x == 2)
     @assert(ptx.y == 3)
 
-    pty := pt0
+    var pty = pt0
     pty.trunc()
     @assert(pty.x == 1)
     @assert(pty.y == 2)

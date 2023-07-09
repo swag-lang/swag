@@ -1,10 +1,10 @@
 #[Swag.Mixin]
 func toto()
 {
-    vv := 0
+    var vv = 0
     while vv < 4
     {
-        xx := 666
+        var xx = 666
         vv += 1
     }
 }
@@ -12,7 +12,7 @@ func toto()
 //#[Swag.PrintBc]
 #test
 {
-    yy := 5
+    var yy = 5
     toto()
     @assert(yy == 5)
 }

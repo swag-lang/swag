@@ -36,7 +36,7 @@ impl IWnd for GridLayoutCtrl
         }
 
         // Auto compute width of each cell
-        forcedW := 0'f32
+        var forcedW = 0'f32
         if gridLayoutFlags.has(.AdaptColWidth)
         {
             forcedW = position.width
@@ -46,7 +46,7 @@ impl IWnd for GridLayoutCtrl
         }
 
         // Auto compute height of each cell
-        forcedH := 0'f32
+        var forcedH = 0'f32
         if gridLayoutFlags.has(.AdaptRowHeight)
         {
             forcedH = position.height
@@ -56,29 +56,29 @@ impl IWnd for GridLayoutCtrl
         }
 
         var done: Array'(*Wnd)
-        maxW, maxH := 0'f32
-        y := padding.y
+        var maxW, maxH = 0'f32
+        var y = padding.y
         loop j: numRows
         {
-            x := padding.x
+            var x = padding.x
             loop i: numColumns
             {
-                colW := forcedW orelse colSizes[i]
+                var colW = forcedW orelse colSizes[i]
                 defer x += colW + spacingHorz
 
-                idx := i + (j * numColumns)
-                curWnd := layout[idx]
+                var idx = i + (j * numColumns)
+                var curWnd = layout[idx]
                 if !curWnd or done.contains(curWnd)
                     continue
 
                 done.add(curWnd)
 
-                w := 0'f32
-                h := 0'f32
+                var w = 0'f32
+                var h = 0'f32
 
-                idxC := i
-                idxW := idx
-                idxN := 0
+                var idxC = i
+                var idxW = idx
+                var idxN = 0
                 while idxC < numColumns and layout[idxW] == curWnd
                 {
                     w += forcedW orelse colSizes[idxC]
@@ -121,7 +121,7 @@ impl GridLayoutCtrl
     {
         Debug.assert(numColumns > 0 and numRows > 0)
 
-        res := Wnd.create'GridLayoutCtrl(parent, position)
+        var res = Wnd.create'GridLayoutCtrl(parent, position)
         res.numColumns = numColumns
         res.numRows = numRows
 
@@ -162,11 +162,11 @@ impl GridLayoutCtrl
 
         loop i: spanH
         {
-            x := col + (row * numColumns)
+            var x = col + (row * numColumns)
             x += i
             loop j: spanV
             {
-                x1 := x + (j * numColumns)
+                var x1 = x + (j * numColumns)
                 layout[x1] = child
             }
         }

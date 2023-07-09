@@ -9,12 +9,12 @@ func(N: s32) toto(v: f32)->[N]f32
 
 #test
 {
-    v := toto'5(2)
+    var v = toto'5(2)
     @assert(@countof(v) == 5)
     @assert(v[0] == 4)
     @assert(v[4] == 4)
 
-    v1 := toto'10(3)
+    var v1 = toto'10(3)
     @assert(@countof(v1) == 10)
     @assert(v1[0] == 9)
     @assert(v1[9] == 9)

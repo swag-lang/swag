@@ -24,7 +24,7 @@ impl IForm for FormShape
 {
     mtd impl isSame(ptr: *BaseForm)->bool
     {
-        other := cast(*FormShape) ptr
+        var other = cast(*FormShape) ptr
         return  borderColor == other.borderColor and
                 borderSize  == other.borderSize and
                 backColor   == other.backColor and
@@ -36,8 +36,8 @@ impl IForm for FormShape
 
     mtd impl copy(dst, src: *BaseForm)
     {
-        dstf := cast(*FormShape) dst
-        srcf := cast(*FormShape) src
+        var dstf = cast(*FormShape) dst
+        var srcf = cast(*FormShape) src
         dstf.borderColor = srcf.borderColor
         dstf.borderSize  = srcf.borderSize
         dstf.backColor   = srcf.backColor
@@ -49,24 +49,24 @@ impl IForm for FormShape
 
     mtd impl edit(evt: *MouseEvent, paintRect: Math.Rectangle, movingStart: Math.Point, localPos: Math.Point, zoom: f32)->bool
     {
-        xa := cast(s32) ((movingStart.x - paintRect.x) / zoom)
-        ya := cast(s32) ((movingStart.y - paintRect.y) / zoom)
-        xb := cast(s32) ((localPos.x - paintRect.x) / zoom)
-        yb := cast(s32) ((localPos.y - paintRect.y) / zoom)
+        var xa = cast(s32) ((movingStart.x - paintRect.x) / zoom)
+        var ya = cast(s32) ((movingStart.y - paintRect.y) / zoom)
+        var xb = cast(s32) ((localPos.x - paintRect.x) / zoom)
+        var yb = cast(s32) ((localPos.y - paintRect.y) / zoom)
         setBaseForm(xa, ya, xb - xa, yb - ya)
 
-        xbu := 0
-        ybu := 0
+        var xbu = 0
+        var ybu = 0
         capture.snap(&xbu, &ybu, true, true, 0, cast(IForm) self)
         xb += xbu
         yb += ybu
 
         // Same size
-        shiftPressed := Input.Keyboard.isKeyPressed(.Shift) or Input.Keyboard.isKeyPressed(.RShift)
+        var shiftPressed = Input.Keyboard.isKeyPressed(.Shift) or Input.Keyboard.isKeyPressed(.RShift)
         if shiftPressed
         {
-            ww := xb - xa
-            hh := yb - ya
+            var ww = xb - xa
+            var hh = yb - ya
             if ww > hh
                 yb = ya + ww
             else
@@ -138,7 +138,7 @@ impl IForm for FormShape
         if flags & (.Hot | .Selected)
         {
             gizmo.rect = paintPos
-            col := subKind == .PixSel ? Argb.Yellow : Argb.White
+            var col = subKind == .PixSel ? Argb.Yellow : Argb.White
             gizmo.paint(painter, flags & .Selected ? false : true, col)
         }
     }
@@ -148,9 +148,9 @@ impl IForm for FormShape
         switch kind
         {
         case Ellipse:
-            br := boundRect()
-            pos := Math.Vector2{pt.x, pt.y}
-            cen := Math.Vector2{br.horzCenter(), br.vertCenter()}
+            var br = boundRect()
+            var pos = Math.Vector2{pt.x, pt.y}
+            var cen = Math.Vector2{br.horzCenter(), br.vertCenter()}
             return pos.isInEllipse(cen, br.width * 0.5, br.height * 0.5)
         default:
             return true
@@ -162,15 +162,15 @@ impl IForm for FormShape
         switch kind
         {
         case Ellipse:
-            pos := Math.Vector2{pt.x, pt.y}
-            cen := Math.Vector2{paintPos.horzCenter(), paintPos.vertCenter()}
+            var pos = Math.Vector2{pt.x, pt.y}
+            var cen = Math.Vector2{paintPos.horzCenter(), paintPos.vertCenter()}
             if !pos.isInEllipse(cen, paintPos.width * 0.5, paintPos.height * 0.5)
                 return false
             if backColor.a == 0 and pos.isInEllipse(cen, (paintPos.width * 0.5) - (2*borderSize), (paintPos.height * 0.5) - (2*borderSize))
                 return false
 
         case Rectangle, RoundRectangle:
-            rect := paintPos
+            var rect = paintPos
             rect.inflate(-2*borderSize)
             if backColor.a == 0 and rect.contains(pt)
                 return false
@@ -181,8 +181,8 @@ impl IForm for FormShape
 
     mtd impl paint(app: *Application, painter: *Painter, z: f32, quickMode: bool)
     {
-        bSize := adaptSize(borderSize, MinBorderSize, MaxBorderSize, z, quickMode)
-        rSize := adaptSize(roundSize, MinRoundSize, MaxRoundSize, z, quickMode)
+        var bSize = adaptSize(borderSize, MinBorderSize, MaxBorderSize, z, quickMode)
+        var rSize = adaptSize(roundSize, MinRoundSize, MaxRoundSize, z, quickMode)
 
         if subKind == .PixSel
         {
@@ -192,12 +192,12 @@ impl IForm for FormShape
             painter.setAntialiased(false)
         }
 
-        pp  := Math.Rectangle{0, 0, paintPos.width, paintPos.height}
-        pen := Pen.createDash(dashStyle, borderColor, bSize)
+        var pp = Math.Rectangle{0, 0, paintPos.width, paintPos.height}
+        var pen = Pen.createDash(dashStyle, borderColor, bSize)
         pen.borderPos = .Inside
-        backBrush := Brush.createHatch(.CheckBoardLarge, Argb.DarkGray)
+        var backBrush = Brush.createHatch(.CheckBoardLarge, Argb.DarkGray)
 
-        bk := backColor
+        var bk = backColor
         if quickMode and alpha != 100 and subKind == .Highlight
             bk.a = cast(u8) Math.map(cast(f32) alpha, 0, 100, 0, 255)
 
@@ -207,8 +207,8 @@ impl IForm for FormShape
             switch kind
             {
             case Ellipse:
-                sizeX := pp.width * 0.5
-                sizeY := pp.height * 0.5
+                var sizeX = pp.width * 0.5
+                var sizeY = pp.height * 0.5
                 painter.drawEllipse(pp.x + sizeX, pp.y + sizeY, sizeX, sizeY, pen)
 
             case Rectangle:
@@ -224,8 +224,8 @@ impl IForm for FormShape
             switch kind
             {
             case Ellipse:
-                sizeX := pp.width * 0.5
-                sizeY := pp.height * 0.5
+                var sizeX = pp.width * 0.5
+                var sizeY = pp.height * 0.5
                 if quickMode and alpha != 100 and subKind == .Highlight
                     painter.fillEllipse(pp.x + sizeX, pp.y + sizeY, sizeX, sizeY, backBrush)
                 painter.fillEllipse(pp.x + sizeX, pp.y + sizeY, sizeX, sizeY, bk)
@@ -243,7 +243,7 @@ impl IForm for FormShape
                 }
 
             case RoundRectangle:
-                pp1 := pp
+                var pp1 = pp
                 pp1.inflate(-bSize*0.5)
                 if quickMode and alpha != 100 and subKind == .Highlight
                     painter.fillRoundRect(pp1, rSize, rSize, backBrush)

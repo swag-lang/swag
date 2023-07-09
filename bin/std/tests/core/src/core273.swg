@@ -10,5 +10,5 @@ func toto()->Array'string
 
 #test
 {
-    c := #run toto()
+    var c = #run toto()
 }

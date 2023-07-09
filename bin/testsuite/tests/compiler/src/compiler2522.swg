@@ -1,6 +1,6 @@
 #global testerror
 
-(x, y) := toto()
+var (x, y) = toto()
 
 #[Swag.ConstExpr]
 func toto() -> {x: s32, y: s32}

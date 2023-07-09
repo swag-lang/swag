@@ -136,23 +136,23 @@ impl Vector2
     // Returns the distance between two vectors
     mtd const distance(to: Self)->f32
     {
-        xn := (x - to.x)
-        yn := (y - to.y)
+        var xn = (x - to.x)
+        var yn = (y - to.y)
         return sqrt((xn * xn) + (yn * yn))
     }
 
     // Returns the square distance between two vectors
     mtd const distanceSquared(to: Self)->f32
     {
-        xn := (x - to.x)
-        yn := (y - to.y)
+        var xn = (x - to.x)
+        var yn = (y - to.y)
         return (xn * xn) + (yn * yn)
     }
 
     // Normalize this vector (set its length to 1)
     mtd normalize()
     {
-        norm := sqrt((x * x) + (y * y))
+        var norm = sqrt((x * x) + (y * y))
         Debug.assert(!Math.isZeroEpsilon(norm))
         norm = 1 / norm
         x *= norm
@@ -162,7 +162,7 @@ impl Vector2
     // Returns this vector normalized
     mtd const toNormalize()->Self
     {
-        norm := sqrt((x * x) + (y * y))
+        var norm = sqrt((x * x) + (y * y))
         Debug.assert(!Math.isZeroEpsilon(norm))
         norm = 1 / norm
         return Self{x * norm, y * norm}
@@ -187,7 +187,7 @@ impl Vector2
     // Normalize this vector (set its length to 1) even if its length is almost null
     mtd normalizeSafe()
     {
-        norm := sqrt((x * x) + (y * y))
+        var norm = sqrt((x * x) + (y * y))
         if Math.isZeroEpsilon(norm)
         {
             x, y = 0
@@ -202,7 +202,7 @@ impl Vector2
     // Returns this vector normalized even if its length is almost null
     mtd const toNormalizeSafe()->Self
     {
-        norm := sqrt((x * x) + (y * y))
+        var norm = sqrt((x * x) + (y * y))
         if Math.isZeroEpsilon(norm)
             return Zero
         norm = 1 / norm
@@ -251,10 +251,10 @@ impl Vector2
     // Rotate the vector by a given angle
     mtd rotate(angle: Math.Angle)
     {
-        s := sin(angle.rad)
-        c := cos(angle.rad)
-        tx := x
-        ty := y
+        var s = sin(angle.rad)
+        var c = cos(angle.rad)
+        var tx = x
+        var ty = y
         x = (c * tx) - (s * ty)
         y = (s * tx) + (c * ty)
     }
@@ -262,16 +262,16 @@ impl Vector2
     // Returns the cosine angle with another vector
     mtd const cosAngle(other: Self)->f32
     {
-        vec1 := toNormalize()
-        vec2 := other.toNormalize()
+        var vec1 = toNormalize()
+        var vec2 = other.toNormalize()
         return vec1.dot(vec2)
     }
 
     // Returns the angle with another vector
     mtd const angle(other: Self)->f32
     {
-        angle := Math.acos(cosAngle(other))
-        //sign  := (x * other.y) - (y * other.x)
+        var angle = Math.acos(cosAngle(other))
+        //var sign = (x * other.y) - (y * other.x)
         //if sign < 0 angle = -angle;
         return angle
     }

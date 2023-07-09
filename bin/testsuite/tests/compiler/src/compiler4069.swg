@@ -1,8 +1,8 @@
 #test
 {
     var toto: const [..] s32 = [10, 20]
-    r := ref &toto
-    x := 0
+    var r = ref &toto
+    var x = 0
     loop r
     {
         x += 1

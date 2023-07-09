@@ -44,11 +44,11 @@ impl IWnd for Slider
 {
     mtd impl onPaintEvent(evt: *PaintEvent)
     {
-        bc     := evt.bc
-        theme   := getTheme()
-        metrics := getThemeMetrics()
-        colors  := getThemeColors()
-        rects   := getThemeRects()
+        var bc = evt.bc
+        var theme = getTheme()
+        var metrics = getThemeMetrics()
+        var colors = getThemeColors()
+        var rects = getThemeRects()
 
         var colorBkLeft:   Color = undefined
         var colorBkMiddle: Color = undefined
@@ -93,12 +93,12 @@ impl IWnd for Slider
         }
 
         // Pos box
-        posBox1 := getPosBox1()
-        posBox2 := getPosBox2()
+        var posBox1 = getPosBox1()
+        var posBox2 = getPosBox2()
 
-        clientRect := getClientRect()
+        var clientRect = getClientRect()
 
-        isVertical := sliderFlags.has(.Vertical)
+        var isVertical = sliderFlags.has(.Vertical)
         if isVertical
         {
             clientRect.y += (posBox1.height * 0.5)
@@ -111,7 +111,7 @@ impl IWnd for Slider
         }
 
         // Bar left
-        left := clientRect
+        var left = clientRect
         if isVertical
         {
             left.height = (clientRect.height * value1)
@@ -124,8 +124,8 @@ impl IWnd for Slider
         }
 
         // Bar right
-        valueRight := sliderFlags.has(.Range) ? value2 : value1
-        right := clientRect
+        var valueRight = sliderFlags.has(.Range) ? value2 : value1
+        var right = clientRect
         if isVertical
         {
             right.y += (clientRect.height * valueRight)
@@ -142,7 +142,7 @@ impl IWnd for Slider
         // Bar middle
         if sliderFlags.has(.Range)
         {
-            middle := clientRect
+            var middle = clientRect
             if isVertical
             {
                 middle.y = left.bottom()
@@ -171,9 +171,9 @@ impl IWnd for Slider
                 aniStep2.apply(self, colors.slider_HilightStepBk)
             }
 
-            for x := 0'f32; x < 1 + steps; x += steps
+            for var x = 0'f32; x < 1 + steps; x += steps
             {
-                posStep := getPosBoxAt(x, metrics.slider_StepSize)
+                var posStep = getPosBoxAt(x, metrics.slider_StepSize)
 
                 var colorStep: Color = undefined
                 if x <= value1 and sliderFlags.has(.HilightBar)
@@ -200,8 +200,8 @@ impl IWnd for Slider
 
     mtd impl onMouseEvent(evt: *MouseEvent)
     {
-        pos := surfaceToLocal(evt.surfacePos)
-        isVertical := sliderFlags.has(.Vertical)
+        var pos = surfaceToLocal(evt.surfacePos)
+        var isVertical = sliderFlags.has(.Vertical)
 
         switch evt.kind
         {
@@ -220,16 +220,16 @@ impl IWnd for Slider
                 break
             }
 
-            clientRect := getOffsetedClientRect()
+            var clientRect = getOffsetedClientRect()
             var f: f32
             if isVertical
             {
-                diff := (pos.y - correcMoving) - clientRect.y
+                var diff = (pos.y - correcMoving) - clientRect.y
                 f    = diff / clientRect.height
             }
             else
             {
-                diff := (pos.x - correcMoving) - clientRect.x
+                var diff = (pos.x - correcMoving) - clientRect.x
                 f    = diff / clientRect.width
             }
             if isPressed1
@@ -246,7 +246,7 @@ impl IWnd for Slider
                 if isHot1
                 {
                     isPressed1 = true
-                    posBox := getPosBox1()
+                    var posBox = getPosBox1()
                     if isVertical
                         correcMoving = pos.y - posBox.vertCenter()
                     else
@@ -255,7 +255,7 @@ impl IWnd for Slider
                 elif isHot2
                 {
                     isPressed2 = true
-                    posBox := getPosBox2()
+                    var posBox = getPosBox2()
                     if isVertical
                         correcMoving = pos.y - posBox.vertCenter()
                     else
@@ -265,35 +265,35 @@ impl IWnd for Slider
                 {
                     correcMoving = 0
                     isPressed1 = true
-                    clientRect := getOffsetedClientRect()
+                    var clientRect = getOffsetedClientRect()
                     if isVertical
                     {
-                        diff := pos.y - clientRect.y
+                        var diff = pos.y - clientRect.y
                         setValue1(diff / clientRect.height)
                     }
                     else
                     {
-                        diff := pos.x - clientRect.x
+                        var diff = pos.x - clientRect.x
                         setValue1(diff / clientRect.width)
                     }
                 }
                 else
                 {
                     correcMoving = 0
-                    clientRect := getOffsetedClientRect()
+                    var clientRect = getOffsetedClientRect()
                     var f: f32
                     if isVertical
                     {
-                        diff := pos.y - clientRect.y
+                        var diff = pos.y - clientRect.y
                         f = diff / clientRect.height
                     }
                     else
                     {
-                        diff := pos.x - clientRect.x
+                        var diff = pos.x - clientRect.x
                         f = diff / clientRect.width
                     }
 
-                    m := (value1 + value2) * 0.5
+                    var m = (value1 + value2) * 0.5
                     if f <= m
                     {
                         isPressed1 = true
@@ -329,13 +329,13 @@ private impl Slider
     {
         if steps > 0
         {
-            r := cast(s32) ((f / steps) + 0.5)
+            var r = cast(s32) ((f / steps) + 0.5)
             return r * steps
         }
 
         if sliderFlags.has(.Integer)
         {
-            val := Math.round((min + (max - min) * f))
+            var val = Math.round((min + (max - min) * f))
             return (val - min) / (max - min)
         }
 
@@ -344,7 +344,7 @@ private impl Slider
 
     mtd setValue1(f: f32)
     {
-        fc := clamp(Math.clamp(f, 0, 1))
+        var fc = clamp(Math.clamp(f, 0, 1))
         if sliderFlags.has(.Range)
             fc = Math.min(fc, value2)
         if fc == value1 and hasValue1
@@ -357,7 +357,7 @@ private impl Slider
 
     mtd setValue2(f: f32)
     {
-        fc := clamp(Math.clamp(f, 0, 1))
+        var fc = clamp(Math.clamp(f, 0, 1))
         if sliderFlags.has(.Range)
             fc = Math.max(fc, value1)
         if fc == value2 and hasValue2
@@ -370,7 +370,7 @@ private impl Slider
 
     mtd hitTest(surfacePos: Math.Point)
     {
-        pos := surfaceToLocal(surfacePos)
+        var pos = surfaceToLocal(surfacePos)
         if isHot1 or isHot2
         {
             invalidate()
@@ -379,7 +379,7 @@ private impl Slider
 
         if sliderFlags.has(.Range)
         {
-            rect := getPosBox2()
+            var rect = getPosBox2()
             if rect.contains(pos)
             {
                 isHot2 = true
@@ -388,7 +388,7 @@ private impl Slider
             }
         }
 
-        rect := getPosBox1()
+        var rect = getPosBox1()
         if rect.contains(pos)
         {
             isHot1 = true
@@ -495,7 +495,7 @@ impl Slider
     {
         Debug.assert(left < right)
         Debug.assert(sliderFlags.has(.Range))
-        diff := max - min
+        var diff = max - min
         value1 = (left - min) / diff
         value2 = (right - min) / diff
         setValue1(value1)
@@ -506,7 +506,7 @@ impl Slider
     func create(parent: *Wnd, position: Math.Rectangle = {}, id: WndId = null, range = false, vertical = false)->*Slider
     {
         Debug.assert(parent != null)
-        pos := position
+        var pos = position
 
         if pos.height == 0
         {
@@ -524,7 +524,7 @@ impl Slider
                 pos.width = parent.getThemeMetrics().slider_Width
         }
 
-        res := Wnd.create'Slider(parent, null, pos, id)
+        var res = Wnd.create'Slider(parent, null, pos, id)
         if range
             res.sliderFlags.add(.Range)
         if vertical

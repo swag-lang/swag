@@ -5,8 +5,8 @@ public func(T) titi2775(x: T) => toto2775(x)
 
 #test
 {
-    v := titi2775(1's64)
+    var v = titi2775(1's64)
     #assert @typeof(v) == s64
-    v1 := titi2775(true)
+    var v1 = titi2775(true)
     #assert @typeof(v1) == bool
 }

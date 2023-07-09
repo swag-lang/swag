@@ -42,31 +42,31 @@ impl Image
         if pf.channels() < 3 or pf.bitDepth() != 8
             return
 
-        f := {kernel, dstImage}
+        var f = {kernel, dstImage}
         visitPixels(&f)
         {
-            params := cast(*@decltype(f)) userData
-            kernelSize := params.kernel[0] / 2
-            b8 := image.bpp8
-            w8 := image.width8
-            w  := image.width
-            h  := image.height
-            px := image.pixels.buffer
-            ks := @dataof(params.kernel) + 2
+            var params = cast(*@decltype(f)) userData
+            var kernelSize = params.kernel[0] / 2
+            var b8 = image.bpp8
+            var w8 = image.width8
+            var w = image.width
+            var h = image.height
+            var px = image.pixels.buffer
+            var ks = @dataof(params.kernel) + 2
 
             var bs, gs, rs: s32
 
             // Fast case when we are not around borders
             if x >= kernelSize and x <= w - kernelSize - 1 and y >= kernelSize and y <= h - kernelSize - 1
             {
-                p := px + ((x - kernelSize) * b8) + ((y - kernelSize) * w8)
-                kfull := (kernelSize * 2) + 1
-                koff := cast(u64) (w8 - (kfull * b8))
+                var p = px + ((x - kernelSize) * b8) + ((y - kernelSize) * w8)
+                var kfull = (kernelSize * 2) + 1
+                var koff = cast(u64) (w8 - (kfull * b8))
                 loop kfull
                 {
                     loop kfull
                     {
-                        ks0 := dref ks
+                        var ks0 = dref ks
                         bs += cast(s32) p[0] * ks0
                         gs += cast(s32) p[1] * ks0
                         rs += cast(s32) p[2] * ks0
@@ -81,14 +81,14 @@ impl Image
             // Slowest case, near the borders
             else
             {
-                for dy := -kernelSize; dy <= kernelSize; dy += 1
+                for var dy = -kernelSize; dy <= kernelSize; dy += 1
                 {
-                    ny := Math.clamp(y + dy, 0, h - 1)
-                    for dx := -kernelSize; dx <= kernelSize; dx += 1
+                    var ny = Math.clamp(y + dy, 0, h - 1)
+                    for var dx = -kernelSize; dx <= kernelSize; dx += 1
                     {
-                        nx := Math.clamp(x + dx, 0, w - 1)
-                        p := px + (nx * b8) + (ny * w8)
-                        ks0 := dref ks
+                        var nx = Math.clamp(x + dx, 0, w - 1)
+                        var p = px + (nx * b8) + (ny * w8)
+                        var ks0 = dref ks
                         bs += cast(s32) p[0] * ks0
                         gs += cast(s32) p[1] * ks0
                         rs += cast(s32) p[2] * ks0
@@ -97,10 +97,10 @@ impl Image
                 }
             }
 
-            ksum := params.kernel[1]
+            var ksum = params.kernel[1]
             if ksum > 1 bs, gs, rs /= ksum
 
-            dpix := params.dstImage.pixels.buffer + (x * b8) + (y * w8)
+            var dpix = params.dstImage.pixels.buffer + (x * b8) + (y * w8)
             dpix[0] = cast(u8) Math.clamp(bs, 0, 255)
             dpix[1] = cast(u8) Math.clamp(gs, 0, 255)
             dpix[2] = cast(u8) Math.clamp(rs, 0, 255)

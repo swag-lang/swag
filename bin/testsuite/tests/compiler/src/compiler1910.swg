@@ -4,8 +4,8 @@
 //#[Swag.PrintBc]
 #test
 {
-    x := 666
-    val := @mkany(&x, f32)
+    var x = 666
+    var val = @mkany(&x, f32)
 
-    value := cast(f32) val
+    var value = cast(f32) val
 }

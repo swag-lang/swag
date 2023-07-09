@@ -1,6 +1,6 @@
 #global testerror
 #test
 {
-    x := "abcd"
-    y := x[0..<]
+    var x = "abcd"
+    var y = x[0..<]
 }

@@ -12,9 +12,9 @@ impl Vector
 //#[Swag.PrintBc, Swag.Optim("", false)]
 #test
 {
-    x := Vector{1, 2}
+    var x = Vector{1, 2}
 
-    v := closure|x|()
+    var v = closure|x|()
     {
         @assert(x.x == 1)
         @assert(x.y == 2)

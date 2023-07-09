@@ -17,11 +17,11 @@ impl A
 var G = 0
 #message(Swag.CompilerMsgMask.AttributeGen)
 {
-    itf := @compiler()
-    msg := itf.getMessage()
+    var itf = @compiler()
+    var msg = itf.getMessage()
     if msg.type.kind != .Struct return
 
-    typeS := cast(const *TypeInfoStruct) msg.type
+    var typeS = cast(const *TypeInfoStruct) msg.type
     if @countof(typeS.attributes) != 1 return
     if typeS.attributes[0].name != "__compiler3555.GenStuff" return
     itf.compileString("impl A {\n mtd opDrop() {\nG += 1\n}\n}")

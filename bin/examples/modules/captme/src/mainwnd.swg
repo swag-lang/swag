@@ -82,8 +82,8 @@ impl IWnd for MainWnd
 {
     mtd popupBar()
     {
-        sf := catch surface.app.createSurface(500, 400, 300, 300, .Secondary | .TopMost)
-        with menu := Wnd.create'MenuCtrl(sf.wnd.view, cast(WndId) null)
+        var sf = catch surface.app.createSurface(500, 400, 300, 300, .Secondary | .TopMost)
+        with var menu = Wnd.create'MenuCtrl(sf.wnd.view, cast(WndId) null)
         {
             .addItem(CmdIdShowEditor)
             .addSeparator()
@@ -104,7 +104,7 @@ impl IWnd for MainWnd
             .computeLayoutPopup()
         }
 
-        pt := Input.getMousePos()
+        var pt = Input.getMousePos()
         menu.position.width += 2 * getThemeMetrics().surfaceWnd_ShadowSize
         menu.position.height += 2 * getThemeMetrics().surfaceWnd_ShadowSize
         sf.setPosition({pt.x, pt.y, menu.position.width, menu.position.height})
@@ -193,7 +193,7 @@ impl MainWnd
         {
             editMode = .Shape
             getCapture().updateEditModeFromSelection()
-            edMode := editMode
+            var edMode = editMode
             editMode = .Selection
             return edMode
         }
@@ -250,14 +250,14 @@ impl MainWnd
 
     mtd updateZoomDisplay()
     {
-        z := cast(s32) (editWnd.editView.zoom * 100)
+        var z = cast(s32) (editWnd.editView.zoom * 100)
         zoomBtn.name = Format.toString("% %%", z)
         zoomBtn.invalidate()
     }
 
     mtd updateSizeDisplay()
     {
-        capture := getCapture()
+        var capture = getCapture()
         if !capture or !sizeBtn
             return
         sizeBtn.name = Format.toString("% x %", capture.width, capture.height)
@@ -319,7 +319,7 @@ impl MainWnd
         registerKeyShortcut(.Zero,             .Right,          CmdIdMoveSelRight)
         registerKeyShortcut(.Zero,             .Down,           CmdIdMoveSelBottom)
 
-        errorReg := false
+        var errorReg = false
 
         #[Swag.Mixin]
         func registerHotKey(mdf: Input.KeyModifiers, key: Input.Key, wndId: WndId)
@@ -329,7 +329,7 @@ impl MainWnd
             {
                 if !errorReg
                 {
-                    msg := Format.toString("Cannot register global shortcut '%'. ", Input.getKeyName(mdf, key))
+                    var msg = Format.toString("Cannot register global shortcut '%'. ", Input.getKeyName(mdf, key))
                     msg += "Another running application is probably already using it !"
                     discard EmbInfoCtrl.create(self.editWnd, msg, .Critical)
                 }
@@ -346,7 +346,7 @@ impl MainWnd
 
     mtd createTopMenu()
     {
-        with topMenu := MenuCtrl.createBar(parent, owner = self)
+        with var topMenu = MenuCtrl.createBar(parent, owner = self)
         {
             .bringToFront()
             .dockStyle = .Top
@@ -354,7 +354,7 @@ impl MainWnd
             .backgroundStyle = .Transparent
         }
 
-        with fileMenu := MenuCtrl.createPopup(parent, owner = self)
+        with var fileMenu = MenuCtrl.createPopup(parent, owner = self)
         {
             .addItem(CmdIdNewImage)
             .addItem(CmdIdNewFromClipboard)
@@ -369,7 +369,7 @@ impl MainWnd
             topMenu.addPopup("File", fileMenu)
         }
 
-        with captureMenu := MenuCtrl.createPopup(parent, owner = self)
+        with var captureMenu = MenuCtrl.createPopup(parent, owner = self)
         {
             .addItem(CmdIdCaptureArea)
             .addItem(CmdIdCaptureLastArea)
@@ -391,7 +391,7 @@ impl MainWnd
             .addItem(CmdIdCaptureHideEditor)
             .addItem(CmdIdCaptureShowEditor)
 
-            with delayMenu := MenuCtrl.createPopup(captureMenu, owner = self)
+            with var delayMenu = MenuCtrl.createPopup(captureMenu, owner = self)
             {
                 .addItem(CmdIdCaptureDelay0)
                 .addSeparator()
@@ -409,7 +409,7 @@ impl MainWnd
             .addItem(CmdIdCaptureToClipboard)
         }
 
-        with editMenu := MenuCtrl.createPopup(parent, owner = self)
+        with var editMenu = MenuCtrl.createPopup(parent, owner = self)
         {
             .addItem(CmdIdUndo)
             .addItem(CmdIdRedo)
@@ -426,7 +426,7 @@ impl MainWnd
             topMenu.addPopup("Edit", editMenu)
         }
 
-        with imageMenu := MenuCtrl.createPopup(parent, owner = self)
+        with var imageMenu = MenuCtrl.createPopup(parent, owner = self)
         {
             .addItem(CmdIdRestoreOrg)
             .addSeparator()
@@ -438,7 +438,7 @@ impl MainWnd
             topMenu.addPopup("Image", imageMenu)
         }
 
-        with viewMenu := MenuCtrl.createPopup(parent, owner = self)
+        with var viewMenu = MenuCtrl.createPopup(parent, owner = self)
         {
             .addItem(CmdIdZoomIn)
             .addItem(CmdIdZoomOut)
@@ -453,7 +453,7 @@ impl MainWnd
     {
         mtd createBtn(id: WndId, canCheck = true)
         {
-            with b := IconButton.create(editToolBar, {}, position = {0, 0, 60, 64})
+            with var b = IconButton.create(editToolBar, {}, position = {0, 0, 60, 64})
             {
                 .id = #self.id
                 .style.addStyleSheetColors("btnIcon_CheckedBk    $btnIcon_HotBk")
@@ -492,11 +492,11 @@ impl MainWnd
     {
         parent.surface.minSize = {1024, 512}
 
-        img24 := assume Image.decode(".png", Icons24)
-        img48 := assume Image.decode(".png", Icons48)
-        renderer := parent.getApp().getRenderer()
+        var img24 = assume Image.decode(".png", Icons24)
+        var img48 = assume Image.decode(".png", Icons48)
+        var renderer = parent.getApp().getRenderer()
 
-        with res := Wnd.create'MainWnd(parent, "captme.mainwnd")
+        with var res = Wnd.create'MainWnd(parent, "captme.mainwnd")
         {
             .icons24.set(renderer.addImage(img24), 24, 24)
             .icons48.set(renderer.addImage(img48), 48, 48)
@@ -508,7 +508,7 @@ impl MainWnd
             .monitors = Env.getMonitors()
         }
 
-        with topBar := Wnd.create'Wnd(res, {0, 0, 64, 68})
+        with var topBar = Wnd.create'Wnd(res, {0, 0, 64, 68})
         {
             .dockStyle = .Top
             .backgroundStyle = .Window
@@ -569,7 +569,7 @@ impl MainWnd
             .main = res
         }
 
-        item := res.quickStyleBar.addPane(res.quickWnd, title = true)
+        var item = res.quickStyleBar.addPane(res.quickWnd, title = true)
         item.tryPreserveSize = true
         item.label.setText("Quick Styles")
 
@@ -585,15 +585,15 @@ impl MainWnd
             .backgroundStyle = .Window
         }
 
-        ic := res.getTheme().getIcon24(ThemeIcons24.Search, 20)
+        var ic = res.getTheme().getIcon24(ThemeIcons24.Search, 20)
         with res.zoomBtn = IconButton.create(res.editZoomBar, ic, {0, 0, 120, 32})
         {
             .iconBtnFlags.add(.Center)
             .textPos = .Right
             .arrowPos = .RightUp
             .sigPressed += closure|res|(btn) {
-                pos  := btn.getSurfaceRect()
-                menu := MenuCtrl.createPopup(res)
+                var pos = btn.getSurfaceRect()
+                var menu = MenuCtrl.createPopup(res)
                 menu.menuCtrlFlags |= .NoKeyShortcuts
                 menu.addItem(CmdIdZoom1)
                 menu.addItem(CmdIdZoomFit)
@@ -607,8 +607,8 @@ impl MainWnd
             .textPos = .Right
             .arrowPos = .RightUp
             .sigPressed += closure|res|(btn) {
-                pos  := btn.getSurfaceRect()
-                menu := MenuCtrl.createPopup(res)
+                var pos = btn.getSurfaceRect()
+                var menu = MenuCtrl.createPopup(res)
                 menu.menuCtrlFlags.add(.NoKeyShortcuts)
                 menu.addItem(CmdIdResizeImage)
                 menu.addItem(CmdIdResizeCanevas)

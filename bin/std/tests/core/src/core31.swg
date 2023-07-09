@@ -5,7 +5,7 @@
 	using Core.Input
 	while !Keyboard.isKeyPressed(Key.Space)
     {
-        pt := getMousePos()
+        var pt = getMousePos()
         //@print(cast(s64) pt.item0)
         //@print("\n")
         break

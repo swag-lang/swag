@@ -25,5 +25,5 @@ func toto(a: s32)->A
 
 #test
 {
-    x := toto(1)
+    var x = toto(1)
 }

@@ -13,7 +13,7 @@ func titi()->[2] s32 throw
 //#[Swag.PrintBc]
 #test
 {
-    v := catch titi()
+    var v = catch titi()
     @assert(v[0] == 0)
     @assert(v[1] == 0)
 }

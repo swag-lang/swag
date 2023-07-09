@@ -34,8 +34,8 @@ impl IActionUI for ActionFile
 
     mtd impl update(cxt: ActionContext, evt: *CommandStateEvent)->bool
     {
-        main := cast(*MainWnd) cxt.wnd
-        capture := main.getCapture()
+        var main = cast(*MainWnd) cxt.wnd
+        var capture = main.getCapture()
 
         switch cxt.id
         {
@@ -88,8 +88,8 @@ impl IActionUI for ActionFile
 
     mtd impl execute(cxt: ActionContext)->bool
     {
-        main := cast(*MainWnd) cxt.wnd
-        capture := main.getCapture()
+        var main = cast(*MainWnd) cxt.wnd
+        var capture = main.getCapture()
 
         switch cxt.id
         {
@@ -109,25 +109,25 @@ impl IActionUI for ActionFile
             main.openImage()
 
         case CmdIdUpdateLinkedImage:
-            txt := Format.toString("This will overwrite the original image.\n")
+            var txt = Format.toString("This will overwrite the original image.\n")
             txt += Format.toString("File is '%'", capture.linkedImage)
             if MessageDlg.confirm(main.surface, txt) != Dialog.BtnYes
                 break
             Cursor.wait()
-            img := capture.toImage()
+            var img = capture.toImage()
             catch img.save(capture.linkedImage)
             if @errmsg
                 MessageDlg.error(main.surface, @errmsg, "Failed to update file !")
 
         case CmdIdDeleteCapture:
-            res := MessageDlg.confirm(main.surface, "This will delete the capture file.")
+            var res = MessageDlg.confirm(main.surface, "This will delete the capture file.")
             if res == MessageDlg.BtnYes
                 main.recentWnd.removeRecent()
 
         case CmdIdDupCapture:
-            file := Library.newFileName()
+            var file = Library.newFileName()
             trycatch File.duplicate(file, capture.file)
-            dupCapture := trycatch main.recentWnd.addRecent(file)
+            var dupCapture = trycatch main.recentWnd.addRecent(file)
             Memory.delete(dupCapture)
             main.recentWnd.recentView.select(0)
             g_Library.addFile(file)
@@ -160,11 +160,11 @@ impl MainWnd
             .filters.add({"TGA - Truevision Targa (*.tga)", ".tga"})
         }
 
-        dlg := FileDlg.create(surface, opt)
+        var dlg = FileDlg.create(surface, opt)
         if dlg.doModal() != Dialog.BtnOk
             return
 
-        img := catch Image.load(dlg.getSelectedName())
+        var img = catch Image.load(dlg.getSelectedName())
         if @errmsg
             MessageDlg.error(surface, @errmsg, "Failed to load image !")
         else
@@ -190,13 +190,13 @@ impl MainWnd
             .filters.add({"TGA - Truevision Targa (*.tga)", ".tga"})
         }
 
-        dlg := FileDlg.create(surface, opt)
+        var dlg = FileDlg.create(surface, opt)
         if dlg.doModal() != Dialog.BtnOk
             return
 
         Cursor.wait()
-        capture := getCapture()
-        img := capture.toImage()
+        var capture = getCapture()
+        var img = capture.toImage()
         catch img.save(dlg.getSelectedName())
         if @errmsg
         {
@@ -214,19 +214,19 @@ impl MainWnd
 
     mtd newImage()
     {
-        dlg := Dialog.createDialog(surface, 350, 235, title = "New Image")
+        var dlg = Dialog.createDialog(surface, 350, 235, title = "New Image")
         dlg.addButton("Create", Dialog.BtnOk, true)
         dlg.addButton("Cancel", Dialog.BtnCancel)
-        edit0 := EditCtrl.create(dlg, "Width", "512", {90, 12}, flags = .RightAlign)
-        edit1 := EditCtrl.create(dlg, "Height", "512", {90, 47}, flags = .RightAlign)
+        var edit0 = EditCtrl.create(dlg, "Width", "512", {90, 12}, flags = .RightAlign)
+        var edit1 = EditCtrl.create(dlg, "Height", "512", {90, 47}, flags = .RightAlign)
         edit0.edit.setInputU64(16, 4096)
         edit1.edit.setInputU64(16, 4096)
         if dlg.doModal() != Dialog.BtnOk
             return
 
-        (w, ?, ?) := catch StrConv.parseS32(edit0.edit.text)
-        (h, ?, ?) := catch StrConv.parseS32(edit1.edit.text)
-        img := Image.create(w orelse 512, h orelse 512, .RGB8)
+        var (w, ?, ?) = catch StrConv.parseS32(edit0.edit.text)
+        var (h, ?, ?) = catch StrConv.parseS32(edit1.edit.text)
+        var img = Image.create(w orelse 512, h orelse 512, .RGB8)
         img.fill(Argb.White)
         newCapture(img)
     }

@@ -2,16 +2,16 @@
 #test
 {
     {
-        a := 1'u8
-        b := 3'u8
-        c := a ^ b
+        var a = 1'u8
+        var b = 3'u8
+        var c = a ^ b
         @assert(c == 2)
     }
 
     {
-        a := 1'u16
-        b := 3'u16
-        c := a ^ b
+        var a = 1'u16
+        var b = 3'u16
+        var c = a ^ b
         @assert(c == 2)
     }
 }

@@ -1,7 +1,7 @@
 #[Swag.Mixin]
 func toto(x: code)
 {
-    cpt := 0
+    var cpt = 0
     loop 10
     {
         cpt += 1
@@ -12,7 +12,7 @@ func toto(x: code)
 //#[Swag.PrintBc]
 #test
 {
-    total := 0
+    var total = 0
 
     toto()
     {

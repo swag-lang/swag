@@ -6,6 +6,6 @@
 {
 	var a : f32
 	var b : f64
-	c := a + b
+	var c = a + b
 	@assert(@sizeof(c) == 8)
 }

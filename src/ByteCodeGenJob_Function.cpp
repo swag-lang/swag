@@ -1205,7 +1205,7 @@ void ByteCodeGenJob::emitPostCallUfcs(ByteCodeGenContext* context)
     // :SpecUfcsNode
     // Specific case. The function returns an interface, so it returns two registers.
     // But we want that interface to be also an ufcs parameter.
-    // Ex: cfg := @compiler().getBuildCfg()
+    // Ex: var cfg = @compiler().getBuildCfg()
     if (node->typeInfo->isInterface() && node->flags & AST_TO_UFCS)
     {
         auto r = reserveRegisterRC(context);

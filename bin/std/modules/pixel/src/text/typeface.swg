@@ -31,28 +31,28 @@ impl TypeFace
 
     func moveTo(to: const *FT_Vector, pathList: *LinePathList)->s32
     {
-        path := pathList.newPath()
+        var path = pathList.newPath()
         path.start(to.x / 64.0, -to.y / 64.0)
         return 0
     }
 
     func lineTo(to: const *FT_Vector, pathList: *LinePathList)->s32
     {
-        path := pathList.paths[pathList.paths.count - 1]
+        var path = pathList.paths[pathList.paths.count - 1]
         path.lineTo(to.x / 64.0, -to.y / 64.0)
         return 0
     }
 
     func conicTo(ctrl, to: const *FT_Vector, pathList: *LinePathList)->s32
     {
-        path := pathList.paths[pathList.paths.count - 1]
+        var path = pathList.paths[pathList.paths.count - 1]
         path.bezierTo(to.x / 64.0, -to.y / 64.0, ctrl.x / 64.0, -ctrl.y / 64.0)
         return 0
     }
 
     func bezierTo(ctrl1, ctrl2, to: const *FT_Vector, pathList: *LinePathList)->s32
     {
-        path := pathList.paths[pathList.paths.count - 1]
+        var path = pathList.paths[pathList.paths.count - 1]
         path.bezierTo(to.x / 64.0, -to.y / 64.0, ctrl1.x / 64.0, -ctrl1.y / 64.0, ctrl2.x / 64.0, -ctrl2.y / 64.0)
         return 0
     }
@@ -75,7 +75,7 @@ public impl TypeFace
     // Returns the underlying font family name
     mtd const getFamilyName()->string
     {
-        defname := @mkstring(face.family_name, @strlen(face.family_name))
+        var defname = @mkstring(face.family_name, @strlen(face.family_name))
         return defname
     }
 
@@ -94,11 +94,11 @@ public impl TypeFace
     {
         Sync.scopedLock(&lock)
 
-        here := g_HashTypeFace.find(fullname)
+        var here = g_HashTypeFace.find(fullname)
         if here
             return here.value
 
-        tf := Memory.new'TypeFace()
+        var tf = Memory.new'TypeFace()
         tf.fullname = fullname
         tf.buffer = bytes
         FT_New_Memory_Face(g_FT, tf.buffer.buffer, cast(FT_Long) tf.buffer.count, 0, &tf.face)
@@ -112,17 +112,17 @@ public impl TypeFace
     {
         Sync.scopedLock(&lock)
 
-        here := g_HashTypeFace.find(fullname)
+        var here = g_HashTypeFace.find(fullname)
         if here
             return here.value
 
-        tf := Memory.new'TypeFace()
+        var tf = Memory.new'TypeFace()
         tf.fullname = fullname
 
         // If file does not exist, try the system folder
         if !File.exists(fullname)
         {
-            p := Path.combine(Env.getSpecialDirectory(.Font), fullname)
+            var p = Path.combine(Env.getSpecialDirectory(.Font), fullname)
             tf.buffer = File.readAllBytes(p)
         }
         else
@@ -138,7 +138,7 @@ public impl TypeFace
 
     private mtd transform(size, embolden: u32 = 0, forceBold, forceItalic = false) throw
     {
-        emb := self.forceBold or #self.forceBold ? Math.max(1, size / forceBoldDiv) : 0
+        var emb = self.forceBold or #self.forceBold ? Math.max(1, size / forceBoldDiv) : 0
         emb += embolden
         if emb
             FT_Outline_Embolden(&face.glyph.outline, cast(FT_Pos) emb * 64)
@@ -172,7 +172,7 @@ public impl TypeFace
         FT_Load_Char(face, cast(FT_ULong) c, FT_LOAD_NO_BITMAP)
         transform(size, embolden)
 
-        prevIdx := pathList.paths.count
+        var prevIdx = pathList.paths.count
         FT_Outline_Decompose(&face.glyph.outline, &itf, pathList)
 
         if prevIdx != pathList.paths.count
@@ -197,8 +197,8 @@ public impl TypeFace
 
         try FT_Set_Pixel_Sizes(face, 0, size)
 
-        serial := 0
-        x := 0
+        var serial = 0
+        var x = 0
 
         Utf8.visitRunes(|c| text)
         {
@@ -207,7 +207,7 @@ public impl TypeFace
 
             FT_Outline_Translate(face.glyph.outline, x, 0)
 
-            prevIdx := pathList.paths.count
+            var prevIdx = pathList.paths.count
             FT_Outline_Decompose(&face.glyph.outline, &itf, pathList)
 
             if prevIdx != pathList.paths.count

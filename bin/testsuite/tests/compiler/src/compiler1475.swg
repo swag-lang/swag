@@ -1,6 +1,6 @@
 /*#test
 {
-    cpt := 0
+    var cpt = 0
     visit c: 16
     {
         cpt += 1
@@ -11,7 +11,7 @@
 
 #test
 {
-    cpt := 0
+    var cpt = 0
     visit 16
     {
         cpt += 1

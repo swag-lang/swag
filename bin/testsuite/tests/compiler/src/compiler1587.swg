@@ -13,7 +13,7 @@ impl B
 {
     func emplace(using self, x: T)
     {
-        y :=,move x
+        var y =,move x
     }
 }
 
