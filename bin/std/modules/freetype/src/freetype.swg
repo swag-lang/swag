@@ -434,67 +434,67 @@ var Errors: [0xFF] string = undefined
 {
     func FT_Init_FreeType(alibrary: *FT_Library) throw
     {
-        var err = FreeTypePriv.FT_Init_FreeType(alibrary)
+        let err = FreeTypePriv.FT_Init_FreeType(alibrary)
         if err throw Errors[err]
     }
 
     func FT_Done_FreeType(alibrary: FT_Library) throw
     {
-        var err = FreeTypePriv.FT_Done_FreeType(alibrary)
+        let err = FreeTypePriv.FT_Done_FreeType(alibrary)
         if err throw Errors[err]
     }
 
     func FT_New_Memory_Face(library: FT_Library, file_base: const *FT_Byte, file_size: FT_Long, face_index: FT_Long, aface: *FT_Face) throw
     {
-        var err = FreeTypePriv.FT_New_Memory_Face(library, file_base, file_size, face_index, aface)
+        let err = FreeTypePriv.FT_New_Memory_Face(library, file_base, file_size, face_index, aface)
         if err throw Errors[err]
     }
 
     func FT_Set_Pixel_Sizes(face: FT_Face, pixel_width, pixel_height: FT_UInt) throw
     {
-        var err = FreeTypePriv.FT_Set_Pixel_Sizes(face, pixel_width, pixel_height)
+        let err = FreeTypePriv.FT_Set_Pixel_Sizes(face, pixel_width, pixel_height)
         if err throw Errors[err]
     }
 
     func FT_Load_Glyph(face: FT_Face, glyph_index: FT_UInt, load_flags: FT_Int32) throw
     {
-        var err = FreeTypePriv.FT_Load_Glyph(face, glyph_index, load_flags)
+        let err = FreeTypePriv.FT_Load_Glyph(face, glyph_index, load_flags)
         if err throw Errors[err]
     }
 
     func FT_Load_Char(face: FT_Face, char_code: FT_ULong, load_flags: FT_Int32) throw
     {
-        var err = FreeTypePriv.FT_Load_Char(face, char_code, load_flags)
+        let err = FreeTypePriv.FT_Load_Char(face, char_code, load_flags)
         if err throw Errors[err]
     }
 
     func FT_Render_Glyph(slot: FT_GlyphSlot, render_mode: FT_Render_Mode) throw
     {
-        var err = FreeTypePriv.FT_Render_Glyph(slot, render_mode)
+        let err = FreeTypePriv.FT_Render_Glyph(slot, render_mode)
         if err throw Errors[err]
     }
 
     func FT_Outline_Decompose(outline: *FT_Outline, func_interface: const *FT_Outline_Funcs, user: *void) throw
     {
-        var err = FreeTypePriv.FT_Outline_Decompose(outline, func_interface, user)
+        let err = FreeTypePriv.FT_Outline_Decompose(outline, func_interface, user)
         if err throw Errors[err]
     }
 
     func FT_Outline_Embolden(outline: *FT_Outline, strength: FT_Pos) throw
     {
-        var err = FreeTypePriv.FT_Outline_Embolden(outline, strength)
+        let err = FreeTypePriv.FT_Outline_Embolden(outline, strength)
         if err throw Errors[err]
     }
 
     func FT_Library_SetLcdFilter(library: FT_Library, filter: FT_LcdFilter) throw
     {
-        var err = FreeTypePriv.FT_Library_SetLcdFilter(library, filter)
+        let err = FreeTypePriv.FT_Library_SetLcdFilter(library, filter)
         if err throw Errors[err]
     }
 
     func FT_Library_SetLcdFilterWeights(library: FT_Library, weights: const *u8) throw
     {
-        var err = FreeTypePriv.FT_Library_SetLcdFilterWeights(library, weights)
+        let err = FreeTypePriv.FT_Library_SetLcdFilterWeights(library, weights)
         if err throw Errors[err]
     }
 }

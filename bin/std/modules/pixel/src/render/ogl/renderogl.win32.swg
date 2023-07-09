@@ -37,7 +37,7 @@ public impl NativeRenderOgl
         pfd.cStencilBits = 8
         pfd.cColorBits   = 24
         pfd.cAlphaBits   = 8
-        var pf = try ChoosePixelFormat(hdc, &pfd)
+        let pf = try ChoosePixelFormat(hdc, &pfd)
         try SetPixelFormat(hdc, pf, &pfd)
 
         result.hRC = mainRC orelse try Ogl.wglCreateContext(result.hDC)

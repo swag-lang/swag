@@ -34,11 +34,11 @@ impl Decoder
 {
     func uncompress(bpp: u8, dstBuffer: ^u8, srcBuffer, lastSrc: const ^u8, length: u64) throw
     {
-        var lastDest = dstBuffer + length
+        let lastDest = dstBuffer + length
         var dest = dstBuffer
         var src = srcBuffer
         var l = length
-        var bpp8 = bpp >> 3
+        let bpp8 = bpp >> 3
 
         var invalid = false
         while l > 0
@@ -49,7 +49,7 @@ impl Decoder
             if num & 0x80
             {
                 num -= 127
-                var val = dref cast(const *u32) src
+                let val = dref cast(const *u32) src
                 src += bpp8
                 if dest + bpp8 * num > lastDest { invalid = true; break; }
 
@@ -75,7 +75,7 @@ impl Decoder
             }
             else
             {
-                var val = cast(u64) bpp8 * (num + 1)
+                let val = cast(u64) bpp8 * (num + 1)
                 if dest + val > lastDest { invalid = true; break; }
                 if src + val > lastSrc { invalid = true; break; }
                 Memory.copy(dest, src, val)
@@ -100,11 +100,11 @@ public impl IImageDecoder for Decoder
     func impl decode(using self, buffer: const [..] u8, options: DecodeOptions)->Image throw
     {
         var dataof = @dataof(buffer)
-        var countof = @countof(buffer)
-        var last = dataof + countof
+        let countof = @countof(buffer)
+        let last = dataof + countof
 
         if countof <= @sizeof(Header) throw "invalid source buffer"
-        var header = cast(const *Header) dataof
+        let header = cast(const *Header) dataof
         dataof += @sizeof(Header)
 
         // Create image

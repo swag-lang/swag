@@ -29,7 +29,7 @@ public impl IImageEncoder for Encoder
         header.biCompression = BI_RGB
         result.addStruct(header)
 
-        var align = (header.biWidth * 3) & 3
+        let align = (header.biWidth * 3) & 3
         var psrc = image.pixels.buffer
 
         if image.pf == .RGBA8

@@ -86,7 +86,7 @@ impl Painter
     func measureRune(c: rune, font: *Font)->Math.Point
     {
         var result: retval
-        var desc = font.getGlyphDesc(c)
+        let desc = font.getGlyphDesc(c)
         result.x = desc.advanceX
         result.y = desc.shiftY + desc.height
         return result

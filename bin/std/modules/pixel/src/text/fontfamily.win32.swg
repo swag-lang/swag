@@ -17,12 +17,12 @@ impl FontFamily
 {
     func enumSubFamily(fa: const *LOGFONTW, _tm: const *TEXTMETRICW, _fontType: DWORD, lParam: LPARAM)->BOOL
     {
-        var len = Utf16.lengthZeroTerminated(&fa.lfFaceName[0])
+        let len = Utf16.lengthZeroTerminated(&fa.lfFaceName[0])
         if !len
             return TRUE
         var x = Utf8.fromUtf16(@mkslice(&fa.lfFaceName[0], len))
 
-        var ret = cast(*FontFamilyEnumerate) cast(u64) lParam
+        let ret = cast(*FontFamilyEnumerate) cast(u64) lParam
         var idx = cast(u64) FontFamilyStyle.Regular
 
         if fa.lfWeight > FW_REGULAR
@@ -44,7 +44,7 @@ impl FontFamily
     {
         if fontType & TRUETYPE_FONTTYPE
         {
-            var len = Utf16.lengthZeroTerminated(&fa.lfFaceName[0])
+            let len = Utf16.lengthZeroTerminated(&fa.lfFaceName[0])
             if !len
                 return TRUE
             var x = Utf8.fromUtf16(@mkslice(&fa.lfFaceName[0], len))
@@ -54,7 +54,7 @@ impl FontFamily
                 return TRUE
 
             // Already here ?
-            var ret = cast(*Array'FontFamilyEnumerate) cast(u64) lParam
+            let ret = cast(*Array'FontFamilyEnumerate) cast(u64) lParam
             visit here: dref ret
             {
                 if here.name == x
@@ -64,7 +64,7 @@ impl FontFamily
             var v: FontFamilyEnumerate
             v.name = x
 
-            var hdc = GetDC(null)
+            let hdc = GetDC(null)
             defer ReleaseDC(null, hdc)
             EnumFontFamiliesExW(hdc, fa, @mkcallback(&enumSubFamily), cast(LPARAM) cast(u64) &v, 0)
 
@@ -79,7 +79,7 @@ impl FontFamily
     {
         var result: retval
 
-        var hdc = GetDC(null)
+        let hdc = GetDC(null)
         defer ReleaseDC(null, hdc)
 
         var logFont: LOGFONTW
@@ -95,11 +95,11 @@ impl FontFamily
     // Get a FontFamilyEnumerate from a font family name
     public func getFromOs(fontFamily: string)->FontFamilyEnumerate
     {
-        var hdc = GetDC(null)
+        let hdc = GetDC(null)
         defer ReleaseDC(null, hdc)
 
         var arr: Array'FontFamilyEnumerate
-        var v = Utf16.toZeroTerminated(fontFamily)
+        let v = Utf16.toZeroTerminated(fontFamily)
         EnumFontFamiliesW(hdc, v.buffer, @mkcallback(&enumFamily), cast(LPARAM) cast(u64) &arr)
 
         return arr[0]
@@ -151,11 +151,11 @@ impl FontFamily
                 return null
         }
 
-        var hf = try CreateFontIndirectW(logFont.face)
+        let hf = try CreateFontIndirectW(logFont.face)
         defer catch DeleteObject(acast hf)
 
-        var fontName = Format.toString("%_%", logFont.name, cast(u32) style)
-        var typeFace = try TypeFace.createFromHFONT(fontName, hf)
+        let fontName = Format.toString("%_%", logFont.name, cast(u32) style)
+        let typeFace = try TypeFace.createFromHFONT(fontName, hf)
 
         if (style == .Italic or style == .BoldItalic) and !typeFace.isItalic()
             typeFace.forceItalic = true

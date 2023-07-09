@@ -72,15 +72,15 @@ private impl RenderOgl
     {
         {
             assume createShader(&shaderSimple, VertexShaderSimple, PixelShaderSimple)
-            var text0 = glGetUniformLocation(cast(GLuint) shaderBlur.handle, @dataof("inTexture0"));
+            let text0 = glGetUniformLocation(cast(GLuint) shaderBlur.handle, @dataof("inTexture0"));
             glUseProgram(cast(GLuint) shaderSimple.handle)
             glUniform1i(text0, 0);
         }
 
         {
             assume createShader(&shaderAA, VertexShaderAA, PixelShaderAA)
-            var text0 = glGetUniformLocation(cast(GLuint) shaderAA.handle, @dataof("inTexture0"));
-            var text1 = glGetUniformLocation(cast(GLuint) shaderAA.handle, @dataof("inTexture1"));
+            let text0 = glGetUniformLocation(cast(GLuint) shaderAA.handle, @dataof("inTexture0"));
+            let text1 = glGetUniformLocation(cast(GLuint) shaderAA.handle, @dataof("inTexture1"));
             glUseProgram(cast(GLuint) shaderAA.handle)
             glUniform1i(text0, 0);
             glUniform1i(text1, 1);
@@ -88,7 +88,7 @@ private impl RenderOgl
 
         {
             assume createShader(&shaderBlur, VertexShaderSimple, PixelShaderBlur)
-            var text0 = glGetUniformLocation(cast(GLuint) shaderBlur.handle, @dataof("inTexture0"));
+            let text0 = glGetUniformLocation(cast(GLuint) shaderBlur.handle, @dataof("inTexture0"));
             glUseProgram(cast(GLuint) shaderBlur.handle)
             glUniform1i(text0, 0);
             shaderBlur.axis   = acast glGetUniformLocation(cast(GLuint) shaderBlur.handle, @dataof("axis"));
@@ -503,8 +503,8 @@ impl RenderOgl
     // Update content of texture
     mtd updateTexture(texture: Texture, pixels: const*u8)
     {
-        var fmt = pixelFormatToNative(texture.pf)
-        var textureID = cast(GLuint) texture.handle
+        let fmt = pixelFormatToNative(texture.pf)
+        let textureID = cast(GLuint) texture.handle
         glBindTexture(GL_TEXTURE_2D, textureID)
         glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, cast(s32) texture.width, cast(s32) texture.height, fmt, GL_UNSIGNED_BYTE, pixels)
     }
@@ -516,7 +516,7 @@ impl RenderOgl
         glEnable(GL_TEXTURE_2D)
         glBindTexture(GL_TEXTURE_2D, acast texture.handle)
         result.resize(cast(u64) texture.getByteSize())
-        var fmt = pixelFormatToNative(pf)
+        let fmt = pixelFormatToNative(pf)
         glGetTexImage(GL_TEXTURE_2D, 0, fmt, GL_UNSIGNED_BYTE, result.buffer)
         glDisable(GL_TEXTURE_2D)
         return result
@@ -535,28 +535,28 @@ impl RenderOgl
     // Translate the world transform
     mtd translateTransform(x, y: f32)
     {
-        var tr = Transform2.createTranslation(x, y)
+        let tr = Transform2.createTranslation(x, y)
         worldTransform.multiply(tr)
     }
 
     // Rotate the world transform
     mtd rotateTransform(angle: Math.Angle)
     {
-        var tr = Transform2.createRotation(angle.rad, 0, 0)
+        let tr = Transform2.createRotation(angle.rad, 0, 0)
         worldTransform.multiply(tr)
     }
 
     // Rotate the world transform
     mtd rotateTransform(angle: Math.Angle, centerX, centerY: f32)
     {
-        var tr = Transform2.createRotation(angle.rad, centerX, centerY)
+        let tr = Transform2.createRotation(angle.rad, centerX, centerY)
         worldTransform.multiply(tr)
     }
 
     // Scale the world transform
     mtd scaleTransform(x, y: f32)
     {
-        var tr = Transform2.createScale(x, y, 0, 0)
+        let tr = Transform2.createScale(x, y, 0, 0)
         worldTransform.multiply(tr)
     }
 
@@ -569,7 +569,7 @@ impl RenderOgl
 
     mtd computeMatrices(mvp, mdl: ShaderParamHandle)
     {
-        var (width, height) = getTargetSize()
+        let (width, height) = getTargetSize()
 
         // View, ortho projection
         ortho(cast(f32) height, 0, 0, cast(f32) width, 0, 1.0, orthoMatrix.m)
@@ -860,8 +860,8 @@ impl RenderOgl
     // releaseRenderTarget must be called to release it
     mtd getRenderTarget(w, h: s32)->*RenderTarget
     {
-        var w2 = Math.roundUpToPowerOf2(cast(u32) w)
-        var h2 = Math.roundUpToPowerOf2(cast(u32) h)
+        let w2 = Math.roundUpToPowerOf2(cast(u32) w)
+        let h2 = Math.roundUpToPowerOf2(cast(u32) h)
 
         visit rt, i: stackReleasedRT
         {
@@ -898,9 +898,9 @@ impl RenderOgl
         var buf: String = @mkstring(@dataof(vertex), @countof(vertex))
         buf.replace("#include base",  @mkstring(@dataof(BaseVertexShader), @countof(BaseVertexShader)))
 
-        var vertexShaderID = glCreateShader(GL_VERTEX_SHADER)
+        let vertexShaderID = glCreateShader(GL_VERTEX_SHADER)
         var vertexSourcePointer = buf.buffer
-        var vertexSourceLength = cast(GLint) buf.length
+        let vertexSourceLength = cast(GLint) buf.length
         glShaderSource(vertexShaderID, 1, &vertexSourcePointer, &vertexSourceLength)
         glCompileShader(vertexShaderID)
         try setShaderCompileError(vertexShaderID)
@@ -908,14 +908,14 @@ impl RenderOgl
         buf = @mkstring(@dataof(pixel), @countof(pixel))
         buf.replace("#include base",  @mkstring(@dataof(BasePixelShader), @countof(BasePixelShader)))
 
-        var fragmentShaderID = glCreateShader(GL_FRAGMENT_SHADER)
+        let fragmentShaderID = glCreateShader(GL_FRAGMENT_SHADER)
         var pixelSourcePointer = buf.buffer
-        var pixelSourceLength = cast(GLint) buf.length
+        let pixelSourceLength = cast(GLint) buf.length
         glShaderSource(fragmentShaderID, 1, &pixelSourcePointer, &pixelSourceLength)
         glCompileShader(fragmentShaderID)
         try setShaderCompileError(fragmentShaderID)
 
-        var progID = glCreateProgram()
+        let progID = glCreateProgram()
         glAttachShader(progID, vertexShaderID)
         glAttachShader(progID, fragmentShaderID)
         glLinkProgram(progID)

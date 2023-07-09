@@ -19,8 +19,8 @@ public impl Image
     mtd resize(newWidth, newHeight: s32, mode = ResizeMode.Raw)
     {
         Debug.assert(newWidth > 0 or newHeight > 0)
-        var nw = newWidth orelse cast(s32) (newHeight * (width / cast(f32) height))
-        var nh = newHeight orelse cast(s32) (newWidth * (height / cast(f32) width))
+        let nw = newWidth orelse cast(s32) (newHeight * (width / cast(f32) height))
+        let nh = newHeight orelse cast(s32) (newWidth * (height / cast(f32) width))
         if nw == width and nh == height
             return
         allocWorkingBuffer(nw, nh, pf)
@@ -33,8 +33,8 @@ public impl Image
     mtd const toResize(newWidth, newHeight: s32, mode = ResizeMode.Raw)->Image
     {
         Debug.assert(newWidth > 0 or newHeight > 0)
-        var nw = newWidth orelse cast(s32) (newHeight * (width / cast(f32) height))
-        var nh = newHeight orelse cast(s32) (newWidth * (height / cast(f32) width))
+        let nw = newWidth orelse cast(s32) (newHeight * (width / cast(f32) height))
+        let nh = newHeight orelse cast(s32) (newWidth * (height / cast(f32) width))
         if nw == width and nh == height
         {
             var result: retval = dref self
@@ -95,7 +95,7 @@ namespace ResizeTools
         switch rmode
         {
         case Bilinear:
-            var res = Math.abs(resf)
+            let res = Math.abs(resf)
             return res < 1 ? 1 - res : 0
         case Bicubic:
             if resf < -2.0 return 0
@@ -137,7 +137,7 @@ namespace ResizeTools
 
     func calcContributions(lineSize, srcSize: s64, scale: f64, rmode: Image.ResizeMode)->LineContrib
     {
-        var filterWidth = getFilterWidth(rmode)
+        let filterWidth = getFilterWidth(rmode)
 
         var cscale, width: f64 = undefined
         if scale < 1.0
@@ -151,14 +151,14 @@ namespace ResizeTools
             cscale = 1.0
         }
 
-        var windowSize = 2 * (cast(s64) Math.ceil(width) + 1)
+        let windowSize = 2 * (cast(s64) Math.ceil(width) + 1)
 
         var res: retval
         res = allocContributions(lineSize, windowSize)
 
         loop u: lineSize
         {
-            var center = u / scale
+            let center = u / scale
 
             var left = Math.max(cast(s64) Math.floor(center - width), 0)
             var right = Math.min(cast(s64) Math.ceil(center + width), srcSize - 1)
@@ -218,19 +218,19 @@ namespace ResizeTools
     #[Swag.Safety("", false)]
     func scaleRow(imgDst: *Image, imgSrc: const *Image, row: s64, contrib: *LineContrib)
     {
-        var bpp8 = imgDst.bpp8
+        let bpp8 = imgDst.bpp8
         var dstRow = imgDst.pixels.buffer + row * bpp8 * imgDst.width
-        var srcRow = imgSrc.pixels.buffer + row * bpp8 * imgSrc.width
+        let srcRow = imgSrc.pixels.buffer + row * bpp8 * imgSrc.width
 
         #[Swag.Mixin]
         func(BPP: u8) doIt()
         {
-            var crow0 = contrib.row.buffer
+            let crow0 = contrib.row.buffer
             loop x: imgDst.width
             {
-                var crow = crow0 + x
-                var left = crow.left
-                var right = crow.right
+                let crow = crow0 + x
+                let left = crow.left
+                let right = crow.right
 
                 #if BPP == 32 var da: f64
                 var dr, dg, db: f64
@@ -238,7 +238,7 @@ namespace ResizeTools
                 var ptr = srcRow + left * bpp8
                 loop (right - left) + 1
                 {
-                    var f = dref pw
+                    let f = dref pw
                     db += f * ptr[0]
                     dg += f * ptr[1]
                     dr += f * ptr[2]
@@ -266,21 +266,21 @@ namespace ResizeTools
     #[Swag.Safety("", false)]
     func scaleCol(imgDst: *Image, imgSrc: const *Image, col: s64, contrib: *LineContrib)
     {
-        var bpp8 = imgDst.bpp8
+        let bpp8 = imgDst.bpp8
         var dstCol = imgDst.pixels.buffer + col * bpp8
-        var srcCol = imgSrc.pixels.buffer + col * bpp8
-        var w8Dst = imgDst.width * bpp8
-        var w8Src = imgSrc.width * bpp8
+        let srcCol = imgSrc.pixels.buffer + col * bpp8
+        let w8Dst = imgDst.width * bpp8
+        let w8Src = imgSrc.width * bpp8
 
         #[Swag.Mixin]
         func(BPP: u8) doIt()
         {
-            var crow0 = contrib.row.buffer
+            let crow0 = contrib.row.buffer
             loop y: imgDst.height
             {
-                var crow = crow0 + y
-                var left = crow.left
-                var right = crow.right
+                let crow = crow0 + y
+                let left = crow.left
+                let right = crow.right
 
                 #if BPP == 32 var da: f64
                 var dr, dg, db: f64
@@ -288,7 +288,7 @@ namespace ResizeTools
                 var ptr = srcCol + left * w8Src
                 loop (right - left) + 1
                 {
-                    var f = dref pw
+                    let f = dref pw
                     db += f * ptr[0]
                     dg += f * ptr[1]
                     dr += f * ptr[2]
@@ -315,28 +315,28 @@ namespace ResizeTools
 
     func scaleCol(imgDst: *Image, imgSrc: const *Image, rmode: Image.ResizeMode)
     {
-        var sh = cast(s64) imgSrc.height
-        var dh = cast(s64) imgDst.height
+        let sh = cast(s64) imgSrc.height
+        let dh = cast(s64) imgDst.height
         var contrib = calcContributions(dh, sh, cast(f64) dh / sh, rmode)
 
         var f = {imgDst, imgSrc, contrib = &contrib}
         Jobs.parallelFor(|index, data| cast(u32) imgDst.width, &f)
         {
-            var params = cast(*@decltype(f)) data
+            let params = cast(*@decltype(f)) data
             scaleCol(params.imgDst, params.imgSrc, cast(s64) index, params.contrib)
         }
     }
 
     func scaleRow(imgDst: *Image, imgSrc: const *Image, rmode: Image.ResizeMode)
     {
-        var sw = cast(s64) imgSrc.width
-        var dw = cast(s64) imgDst.width
+        let sw = cast(s64) imgSrc.width
+        let dw = cast(s64) imgDst.width
         var contrib = calcContributions(dw, sw, cast(f64) dw / sw, rmode)
 
         var f = {imgDst, imgSrc, contrib = &contrib}
         Jobs.parallelFor(|index, data| cast(u32) imgDst.height, &f)
         {
-            var params = cast(*@decltype(f)) data
+            let params = cast(*@decltype(f)) data
             scaleRow(params.imgDst, params.imgSrc, cast(s64) index, params.contrib)
         }
     }
@@ -350,8 +350,8 @@ namespace ResizeTools
 
     func doResizeRaw(dstImage: *Image, srcImage: const *Image)
     {
-        var xscale = srcImage.width / cast(f32) dstImage.width
-        var yscale = srcImage.height / cast(f32) dstImage.height
+        let xscale = srcImage.width / cast(f32) dstImage.width
+        let yscale = srcImage.height / cast(f32) dstImage.height
         var f = {xscale, yscale, srcImage}
 
         #[Swag.Mixin]
@@ -359,10 +359,10 @@ namespace ResizeTools
         {
             dstImage.visitPixels(&f)
             {
-                var params = cast(*@decltype(f)) userData
-                var fx = cast(u32) (x * params.xscale)
-                var fy = cast(u32) (y * params.yscale)
-                var pixSrc = params.srcImage.pixels.buffer + (fx * image.bpp8) + (fy * params.srcImage.width * image.bpp8)
+                let params = cast(*@decltype(f)) userData
+                let fx = cast(u32) (x * params.xscale)
+                let fy = cast(u32) (y * params.yscale)
+                let pixSrc = params.srcImage.pixels.buffer + (fx * image.bpp8) + (fy * params.srcImage.width * image.bpp8)
                 Image.copyPixel'BPP(pix, pixSrc)
             }
         }

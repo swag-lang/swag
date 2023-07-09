@@ -150,7 +150,7 @@ impl Encoder
 {
     func writeU32(dst: *u8, val: u32)
     {
-        var v = Math.nativeToBigEndian(val)
+        let v = Math.nativeToBigEndian(val)
         dref cast(*u32) dst = v
     }
 
@@ -393,10 +393,10 @@ impl Encoder
     #[Swag.Safety("", false)]
     func paeth(a, b, c: u8)->u32
     {
-        var p = cast(s16) (a + b - c)
-        var pa = Math.abs(cast(s16) (p - a))
-        var pb = Math.abs(cast(s16) (p - b))
-        var pc = Math.abs(cast(s16) (p - c))
+        let p = cast(s16) (a + b - c)
+        let pa = Math.abs(cast(s16) (p - a))
+        let pb = Math.abs(cast(s16) (p - b))
+        let pc = Math.abs(cast(s16) (p - c))
 
         if pa <= pb and pa <= pc
             return a

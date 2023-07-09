@@ -55,7 +55,7 @@ impl Offset
         while highI > 0 and path.buffer[0] == path.buffer[highI]
             highI -= 1
 
-        var newNode = Memory.new'PolyNode()
+        let newNode = Memory.new'PolyNode()
         newNode.jointype = joinType
         newNode.contour.reserve(highI + 1)
         newNode.contour.add(path.buffer[0])
@@ -124,7 +124,7 @@ impl Offset
 
     func area(poly: ClipperPath)->f64
     {
-        var size = cast(s32) poly.count
+        let size = cast(s32) poly.count
         if size < 3 return 0
 
         var a = 0'f64
@@ -164,7 +164,7 @@ impl Offset
 
         var dx = cast(f64) (pt2.x - pt1.x)
         var dy = cast(f64) (pt2.y - pt1.y)
-        var f = 1.0 / Math.sqrt(dx*dx + dy*dy)
+        let f = 1.0 / Math.sqrt(dx*dx + dy*dy)
         dx *= f
         dy *= f
         result.x = dy
@@ -274,7 +274,7 @@ impl Offset
 
     mtd offsetPoint(j: s32, ptrk: *s32, jointype: JoinType)
     {
-        var k = dref ptrk
+        let k = dref ptrk
 
         var kN = normals[k]
         var jN = normals[j]
@@ -283,11 +283,11 @@ impl Offset
         sinaVal = (kN.x * jN.y - jN.x * kN.y)
         if Math.abs(sinaVal * deltaVal) < 1.0
         {
-            var cosA = (kN.x * jN.x + jN.y * kN.y)
+            let cosA = (kN.x * jN.x + jN.y * kN.y)
             if cosA > 0
             {
-                var r1 = cround(jP.x + kN.x * deltaVal)
-                var r2 = cround(jP.y + kN.y * deltaVal)
+                let r1 = cround(jP.x + kN.x * deltaVal)
+                let r2 = cround(jP.y + kN.y * deltaVal)
                 destPoly.add(IntPoint{r1, r2})
                 return
             }
@@ -312,7 +312,7 @@ impl Offset
             switch jointype
             {
             case Miter:
-                var r = 1 + (jN.x * kN.x + jN.y * kN.y)
+                let r = 1 + (jN.x * kN.x + jN.y * kN.y)
                 if r >= miterLim
                     doMiter(j, k, r)
                 else
@@ -371,7 +371,7 @@ impl Offset
             let r1 = cround(jP.x + x * deltaVal)
             let r2 = cround(jP.y + y * deltaVal)
             destPoly.add(IntPoint{r1, r2})
-            var x2 = x
+            let x2 = x
             x = x * cosVal - sinVal * y
             y = x2 * sinVal + y * cosVal
         }

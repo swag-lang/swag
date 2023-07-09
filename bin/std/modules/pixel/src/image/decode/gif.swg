@@ -92,7 +92,7 @@ impl Decoder
     {
         if streamLen < 1
             throw "read error"
-        var res = stream[0]
+        let res = stream[0]
         stream    += 1
         streamLen -= 1
         return res
@@ -102,7 +102,7 @@ impl Decoder
     {
         if streamLen < 2
             throw "read error"
-        var res = cast(u16) (stream[0] + (cast(u16) stream[1] << 8))
+        let res = cast(u16) (stream[0] + (cast(u16) stream[1] << 8))
         stream += 2
         streamLen -= 2
         return res
@@ -112,7 +112,7 @@ impl Decoder
     {
         loop
         {
-            var size = readU8()
+            let size = readU8()
             if !size
                 break
             seek(acast size)
@@ -131,7 +131,7 @@ impl Decoder
     {
         /* Discard block size (always 0x04) */
         seek(1)
-        var rdit = readU8()
+        let rdit = readU8()
         gce.disposal = (rdit >> 2) & 3
         gce.input = rdit & 2
         gce.transparency = rdit & 1
@@ -174,7 +174,7 @@ impl Decoder
 
     mtd readExt() throw
     {
-        var label = readU8()
+        let label = readU8()
         switch label
         {
         case 0x01:
@@ -205,7 +205,7 @@ impl Decoder
         var frag_size = 0
         for var bits_read = 0; bits_read < keySize; bits_read += frag_size
         {
-            var rpad = (dref shift + bits_read) % 8
+            let rpad = (dref shift + bits_read) % 8
             if rpad == 0
             {
                 /* Update byte. */
@@ -247,7 +247,7 @@ impl Decoder
 
     func interlacedLineIndex(h0, y0: s32)->s32
     {
-        var h = h0
+        let h = h0
         var y = y0
         var p = (h - 1) / 8 + 1
         if (y < p) /* pass 1 */
@@ -272,24 +272,24 @@ impl Decoder
         if keySize < 2 or keySize > 8
             throw "invalid frame"
 
-        var start = cast(u64) (stream - streamStart)
-        var remainStart = streamLen
+        let start = cast(u64) (stream - streamStart)
+        let remainStart = streamLen
         discardSubBlocks()
-        var end = cast(u64) (stream - streamStart)
-        var remainEnd = streamLen
+        let end = cast(u64) (stream - streamStart)
+        let remainEnd = streamLen
         stream = streamStart + start
         streamLen = remainStart
 
-        var clear = 1 << keySize
-        var stop = clear + 1
+        let clear = 1 << keySize
+        let stop = clear + 1
         initTable(keySize)
         keySize += 1
-        var initKeySize = keySize
+        let initKeySize = keySize
         var subLen, shift = 0'u8
         var key = getKey(keySize, &subLen, &shift, &byte) /* clear code */
         var frmOff = 0
         var ret = 0
-        var frmSize = cast(u32) fw * fh
+        let frmSize = cast(u32) fw * fh
         var tableIsFull = 0
         var strLen = 0'u16
 
@@ -320,8 +320,8 @@ impl Decoder
             strLen = entry.length
             loop i: strLen
             {
-                var p = frmOff + entry.length - 1
-                var x = p % fw
+                let p = frmOff + entry.length - 1
+                let x = p % fw
                 var y = p / fw
                 if interlace
                     y = interlacedLineIndex(cast(s32) fh, y)
@@ -355,8 +355,8 @@ impl Decoder
         fw = Math.min(fw, cast(u16) (width - fx))
         fh = Math.min(fh, cast(u16) (height - fy))
 
-        var fisrz = readU8()
-        var interlace = fisrz & 0x40
+        let fisrz = readU8()
+        let interlace = fisrz & 0x40
 
         /* Ignore Sort Flag. */
         /* Local Color Table? */
@@ -383,9 +383,9 @@ impl Decoder
             {
                 loop k: cast(u32) fw
                 {
-                    var index = frame[(fy + j) * cast(u32) width + (fx + k)]
-                    var color = &palette.colors[index*3'u32]
-                    var b = buffer + (i+k)*4
+                    let index = frame[(fy + j) * cast(u32) width + (fx + k)]
+                    let color = &palette.colors[index*3'u32]
+                    let b = buffer + (i+k)*4
                     b[0] = color[0]
                     b[1] = color[1]
                     b[2] = color[2]
@@ -401,9 +401,9 @@ impl Decoder
             {
                 loop k: fw
                 {
-                    var index = frame[(fy + j) * width + (fx + k)]
-                    var color = &palette.colors[index*3]
-                    var b = buffer + (i+k)*4
+                    let index = frame[(fy + j) * width + (fx + k)]
+                    let color = &palette.colors[index*3]
+                    let b = buffer + (i+k)*4
                     b[0] = color[0]
                     b[1] = color[1]
                     b[2] = color[2]
@@ -478,12 +478,12 @@ public impl Decoder
 
         if decodePixels
         {
-            var size = cast(u64) width * cast(u64) height
+            let size = cast(u64) width * cast(u64) height
             frame.resize(4 * size)
             Memory.set(frame.buffer, bgIndex, size)
             canvas  = &frame.buffer[size]
 
-            var bgcolor = &palette.colors[bgIndex*3'u32]
+            let bgcolor = &palette.colors[bgIndex*3'u32]
             if bgcolor[0] or bgcolor[1] or bgcolor[2]
             {
                 loop i: size

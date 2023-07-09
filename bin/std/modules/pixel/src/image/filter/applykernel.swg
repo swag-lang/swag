@@ -45,13 +45,13 @@ impl Image
         var f = {kernel, dstImage}
         visitPixels(&f)
         {
-            var params = cast(*@decltype(f)) userData
-            var kernelSize = params.kernel[0] / 2
-            var b8 = image.bpp8
-            var w8 = image.width8
-            var w = image.width
-            var h = image.height
-            var px = image.pixels.buffer
+            let params = cast(*@decltype(f)) userData
+            let kernelSize = params.kernel[0] / 2
+            let b8 = image.bpp8
+            let w8 = image.width8
+            let w = image.width
+            let h = image.height
+            let px = image.pixels.buffer
             var ks = @dataof(params.kernel) + 2
 
             var bs, gs, rs: s32
@@ -60,13 +60,13 @@ impl Image
             if x >= kernelSize and x <= w - kernelSize - 1 and y >= kernelSize and y <= h - kernelSize - 1
             {
                 var p = px + ((x - kernelSize) * b8) + ((y - kernelSize) * w8)
-                var kfull = (kernelSize * 2) + 1
-                var koff = cast(u64) (w8 - (kfull * b8))
+                let kfull = (kernelSize * 2) + 1
+                let koff = cast(u64) (w8 - (kfull * b8))
                 loop kfull
                 {
                     loop kfull
                     {
-                        var ks0 = dref ks
+                        let ks0 = dref ks
                         bs += cast(s32) p[0] * ks0
                         gs += cast(s32) p[1] * ks0
                         rs += cast(s32) p[2] * ks0
@@ -83,12 +83,12 @@ impl Image
             {
                 for var dy = -kernelSize; dy <= kernelSize; dy += 1
                 {
-                    var ny = Math.clamp(y + dy, 0, h - 1)
+                    let ny = Math.clamp(y + dy, 0, h - 1)
                     for var dx = -kernelSize; dx <= kernelSize; dx += 1
                     {
-                        var nx = Math.clamp(x + dx, 0, w - 1)
-                        var p = px + (nx * b8) + (ny * w8)
-                        var ks0 = dref ks
+                        let nx = Math.clamp(x + dx, 0, w - 1)
+                        let p = px + (nx * b8) + (ny * w8)
+                        let ks0 = dref ks
                         bs += cast(s32) p[0] * ks0
                         gs += cast(s32) p[1] * ks0
                         rs += cast(s32) p[2] * ks0
@@ -97,7 +97,7 @@ impl Image
                 }
             }
 
-            var ksum = params.kernel[1]
+            let ksum = params.kernel[1]
             if ksum > 1 bs, gs, rs /= ksum
 
             var dpix = params.dstImage.pixels.buffer + (x * b8) + (y * w8)

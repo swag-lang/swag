@@ -181,13 +181,13 @@ impl Decoder
 
     func filterPaeth(left, up, upLeft: u8)->u8
     {
-        var aa = cast(s16) left
-        var bb = cast(s16) up
-        var cc = cast(s16) upLeft
-        var p = aa + bb - cc
-        var pa = Math.abs(cast(s16) (p - aa))
-        var pb = Math.abs(cast(s16) (p - bb))
-        var pc = Math.abs(cast(s16) (p - cc))
+        let aa = cast(s16) left
+        let bb = cast(s16) up
+        let cc = cast(s16) upLeft
+        let p = aa + bb - cc
+        let pa = Math.abs(cast(s16) (p - aa))
+        let pb = Math.abs(cast(s16) (p - bb))
+        let pc = Math.abs(cast(s16) (p - cc))
         if pa <= pb and pa <= pc
             return left
         if pb <= pc
@@ -198,16 +198,16 @@ impl Decoder
     // Expand 1, 2, 4 bits to 8 bits
     mtd expand8(width, height: u32, output: ^u8)
     {
-        var rowStrideIn = getStrideIn(width);
-        var rowStrideOut = inChannels * width
+        let rowStrideIn = getStrideIn(width);
+        let rowStrideOut = inChannels * width
 
         var orgDest = output
-        var srcOffset = rowStrideOut - rowStrideIn
+        let srcOffset = rowStrideOut - rowStrideIn
 
         // 1 bit => 8 bits
         if header.bitDepth == 1
         {
-            var mul = paletteCount ? 1 : 255
+            let mul = paletteCount ? 1 : 255
             loop height
             {
                 var dest = orgDest
@@ -216,7 +216,7 @@ impl Decoder
                 var k = rowStrideOut
                 while k >= 8
                 {
-                    var c = src[0]
+                    let c = src[0]
                     dest[0] = cast,bit(u8) ((c >> 7) * mul)
                     dest[1] = cast,bit(u8) (((c >> 6) & 1) * mul)
                     dest[2] = cast,bit(u8) (((c >> 5) & 1) * mul)
@@ -231,7 +231,7 @@ impl Decoder
                 }
                 if k > 0
                 {
-                    var c = src[0]
+                    let c = src[0]
                     dest[0] = cast,bit(u8) ((c >> 7) * mul)
                     if k > 1 dest[1] = cast,bit(u8) (((c >> 6) & 1) * mul)
                     if k > 2 dest[2] = cast,bit(u8) (((c >> 5) & 1) * mul)
@@ -246,7 +246,7 @@ impl Decoder
         // 2 bits => 8 bits
         elif header.bitDepth == 2
         {
-            var mul = paletteCount ? 1 : 85
+            let mul = paletteCount ? 1 : 85
             loop height
             {
                 var dest = orgDest
@@ -255,7 +255,7 @@ impl Decoder
                 var k = rowStrideOut
                 while k >= 2
                 {
-                    var c = src[0]
+                    let c = src[0]
                     dest[0] = cast,bit(u8) ((c >> 6) * mul)
                     dest[1] = cast,bit(u8) (((c >> 4) & 3) * mul)
                     dest[2] = cast,bit(u8) (((c >> 2) & 3) * mul)
@@ -266,7 +266,7 @@ impl Decoder
                 }
                 if k > 0
                 {
-                    var c = src[0]
+                    let c = src[0]
                     dest[0] = cast,bit(u8) ((c >> 6) * mul)
                     if k > 1 dest[1] = cast,bit(u8) (((c >> 4) & 3) * mul)
                     if k > 2 dest[2] = cast,bit(u8) (((c >> 2) & 3) * mul)
@@ -277,7 +277,7 @@ impl Decoder
         // 4 bits => 8 bits
         elif header.bitDepth == 4
         {
-            var mul = paletteCount ? 1 : 17
+            let mul = paletteCount ? 1 : 17
             loop height
             {
                 var dest = orgDest
@@ -286,7 +286,7 @@ impl Decoder
                 var k = rowStrideOut
                 while k >= 2
                 {
-                    var c = src[0]
+                    let c = src[0]
                     dest[0] = cast,bit(u8) ((c >> 4) * mul)
                     dest[1] = cast,bit(u8) ((c & 15) * mul)
                     dest += 2
@@ -310,9 +310,9 @@ impl Decoder
 
     mtd defilter8(width, height: u32, input, output: ^u8)
     {
-        var rowStrideIn = getStrideIn(width)
-        var rowStrideOut = cast(u64) inChannels * width
-        var destOffset = rowStrideOut - rowStrideIn
+        let rowStrideIn = getStrideIn(width)
+        let rowStrideOut = cast(u64) inChannels * width
+        let destOffset = rowStrideOut - rowStrideIn
 
         var src = input
         var dest = output
@@ -324,10 +324,10 @@ impl Decoder
         Memory.clear(tmpRow.buffer, rowStrideOut)
         var up = tmpRow.buffer
 
-        var nk = rowStrideIn - inChannels
+        let nk = rowStrideIn - inChannels
         loop height
         {
-            var filter = cast(RowFilter) src[0]
+            let filter = cast(RowFilter) src[0]
             src += 1
 
             var destOff = dest + destOffset
@@ -349,24 +349,24 @@ impl Decoder
             case Average:
                 loop i: inChannels
                 {
-                    var avg = up[i] >> 1
+                    let avg = up[i] >> 1
                     destOff[i] = cast,bit(u8) (src[i] +,over avg)
                 }
                 loop k: nk
                 {
-                    var avg = cast(u8) ((cast(u16) (up[inChannels + k]) + cast(u16) (destOff[k])) >> 1)
+                    let avg = cast(u8) ((cast(u16) (up[inChannels + k]) + cast(u16) (destOff[k])) >> 1)
                     destOff[inChannels + k] = cast,bit(u8) (src[inChannels + k] +,over avg)
                 }
 
             case Paeth:
                 loop i: inChannels
                 {
-                    var paeth = cast(u32) filterPaeth(0, up[i], 0)
+                    let paeth = cast(u32) filterPaeth(0, up[i], 0)
                     destOff[i] = cast,bit(u8) (src[i] + paeth)
                 }
                 loop k: nk
                 {
-                    var paeth = cast(u32) filterPaeth(destOff[k], up[inChannels + k], up[k])
+                    let paeth = cast(u32) filterPaeth(destOff[k], up[inChannels + k], up[k])
                     destOff[inChannels + k] = cast,bit(u8) (src[inChannels + k] +,over paeth)
                 }
             }
@@ -402,8 +402,8 @@ impl Decoder
         var input = dcmpBuf.buffer
         loop p: 7
         {
-			var x = (header.width  - Adam7OrigX[p] + Adam7SpacingX[p] - 1) / Adam7SpacingX[p]
-			var y = (header.height - Adam7OrigY[p] + Adam7SpacingY[p] - 1) / Adam7SpacingY[p]
+			let x = (header.width  - Adam7OrigX[p] + Adam7SpacingX[p] - 1) / Adam7SpacingX[p]
+			let y = (header.height - Adam7OrigY[p] + Adam7SpacingY[p] - 1) / Adam7SpacingY[p]
             if x <= 0 or y <= 0
                 continue
 
@@ -417,8 +417,8 @@ impl Decoder
             {
                 loop i: x
                 {
-                    var out_y = header.height - ((j * Adam7SpacingY[p]) + Adam7OrigY[p]) - 1
-                    var out_x = (i * Adam7SpacingX[p]) + Adam7OrigX[p]
+                    let out_y = header.height - ((j * Adam7SpacingY[p]) + Adam7OrigY[p]) - 1
+                    let out_x = (i * Adam7SpacingX[p]) + Adam7OrigX[p]
                     var out_off = out_y * header.width * inChannels
                     out_off += out_x * inChannels
                     loop z: inChannels
@@ -427,7 +427,7 @@ impl Decoder
                 }
             }
 
-            var stride = (getStrideIn(cast(u32) x) + 1) * y
+            let stride = (getStrideIn(cast(u32) x) + 1) * y
             input += stride
         }
     }
@@ -521,13 +521,13 @@ impl Decoder
                 if seenIDAT
                     throw "invalid PLTE chunk"
                 var chunk = readChunk(ch)
-                var len = @countof(chunk.datas)
+                let len = @countof(chunk.datas)
                 if len % 3 != 0 or len > 768
                     throw "invalid PLTE chunk"
                 seenPLTE = true
                 for var i = 0; i < len; i += 3
                 {
-                    var col = (cast(u32) chunk.datas[i] << 16) | (cast(u32) chunk.datas[i+1] << 8) | (chunk.datas[i+2])
+                    let col = (cast(u32) chunk.datas[i] << 16) | (cast(u32) chunk.datas[i+1] << 8) | (chunk.datas[i+2])
                     palette[i/3] = col
                 }
 
@@ -585,11 +585,11 @@ impl Decoder
             var pm = {dstPixels, dec = self}
             result.visitPixels(&pm)
             {
-                var params = cast(*@decltype(pm)) userData
+                let params = cast(*@decltype(pm)) userData
                 var src = params.dstPixels
                 src += x + y * image.width
-                var pal = src[0]
-                var color = params.dec.palette[pal]
+                let pal = src[0]
+                let color = params.dec.palette[pal]
                 pix[0] = acast ((color >> 16) & 0xFF)
                 pix[1] = acast ((color >> 8) & 0xFF)
                 pix[2] = acast (color & 0xFF)
@@ -604,11 +604,11 @@ impl Decoder
             var pm = {dstPixels, dec = self}
             result.visitPixels(&pm)
             {
-                var params = cast(*@decltype(pm)) userData
+                let params = cast(*@decltype(pm)) userData
                 var src = params.dstPixels
                 src += x + y * image.width
-                var pal = src[0]
-                var color = params.dec.palette[pal]
+                let pal = src[0]
+                let color = params.dec.palette[pal]
                 pix[0] = acast ((color >> 16) & 0xFF)
                 pix[1] = acast ((color >> 8) & 0xFF)
                 pix[2] = acast (color & 0xFF)
@@ -635,12 +635,12 @@ impl Decoder
         elif inChannels == 1 and seenTRSN
         {
             var key = chunkTRNS.datas[1]
-            var scale = header.bitDepth == 1 ? 255'u8 : header.bitDepth == 2 ? 85'u8 : 17'u8
+            let scale = header.bitDepth == 1 ? 255'u8 : header.bitDepth == 2 ? 85'u8 : 17'u8
             key *= scale
             var pm = {dstPixels, key}
             result.visitPixels(&pm)
             {
-                var params = cast(*@decltype(pm)) userData
+                let params = cast(*@decltype(pm)) userData
                 var src = params.dstPixels
                 src += x + y * image.width
                 pix[0] = src[0]
@@ -667,14 +667,14 @@ impl Decoder
         // Color without alpha but transparency
         elif inChannels == 3 and seenTRSN
         {
-            var key = cast(const ^u8) @dataof(chunkTRNS.datas)
-            var key0 = key[1]
-            var key1 = key[3]
-            var key2 = key[5]
+            let key = cast(const ^u8) @dataof(chunkTRNS.datas)
+            let key0 = key[1]
+            let key1 = key[3]
+            let key2 = key[5]
             var pm = {dstPixels, key0, key1, key2}
             result.visitPixels(&pm)
             {
-                var params = cast(*@decltype(pm)) userData
+                let params = cast(*@decltype(pm)) userData
                 var src = params.dstPixels
                 src += (x * 3) + (y * image.width * 3)
                 pix[0] = src[0]

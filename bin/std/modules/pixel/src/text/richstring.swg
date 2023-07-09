@@ -129,7 +129,7 @@ impl RichString
 
         while count
         {
-            var sl = @mkslice(scan, count)
+            let sl = @mkslice(scan, count)
             switch
             {
             case Utf8.startsWith(sl, "<u>"),

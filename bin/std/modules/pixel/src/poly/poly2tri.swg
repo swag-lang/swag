@@ -93,7 +93,7 @@ impl Triangle
 
     mtd oppositePoint(t: *Triangle, p: *Point)->*Point
     {
-        var cw = t.pointCW(p)
+        let cw = t.pointCW(p)
         return pointCW(cw)
     }
 
@@ -388,9 +388,9 @@ impl AdvancingFront
 {
     mtd locatePoint(point: *Point)->*Node
     {
-        var px = point.x
+        let px = point.x
         var node = searchNode
-        var nx = node.point.x
+        let nx = node.point.x
 
         if px == nx
         {
@@ -850,11 +850,11 @@ impl Tesselate
 
     func isEdgeSideOfTriangle(triangle: *Triangle, ep, eq : *Point)->bool
     {
-        var index = triangle.edgeIndex(ep, eq)
+        let index = triangle.edgeIndex(ep, eq)
         if index != -1
         {
             triangle.markConstrainedEdge(index)
-            var t = triangle.neighbors[index]
+            let t = triangle.neighbors[index]
             if t t.markConstrainedEdge(ep, eq)
             return true
         }
@@ -972,8 +972,8 @@ impl Tesselate
 
     func basinAngle(node: *Node)->f64
     {
-        var ax = node.point.x - node.next.next.point.x
-        var ay = node.point.y - node.next.next.point.y
+        let ax = node.point.x - node.next.next.point.x
+        let ay = node.point.y - node.next.next.point.y
         return Math.atan2(ay, ax)
     }
 
@@ -1030,7 +1030,7 @@ impl Tesselate
 
     mtd fill(node: *Node)
     {
-        var triangle = Memory.new'Triangle()
+        let triangle = Memory.new'Triangle()
         triangle.points[0] = node.prev.point
         triangle.points[1] = node.point
         triangle.points[2] = node.next.point
@@ -1223,7 +1223,7 @@ impl Tesselate
         {
             if !t.neighbors[i]
             {
-                var n = front.locatePoint(t.pointCW(t.points[i]))
+                let n = front.locatePoint(t.pointCW(t.points[i]))
                 if n n.triangle = t
             }
         }
@@ -1237,7 +1237,7 @@ impl Tesselate
     mtd finalizationPolygon()
     {
         var t = front.head.next.triangle
-        var p = front.head.next.point
+        let p = front.head.next.point
         while t and !t.getConstrainedEdgeCW(p)
             t = t.neighborCCW(p)
         if t
@@ -1253,7 +1253,7 @@ impl Tesselate
 
         while stack.count
         {
-            var t = stack.popBack()
+            let t = stack.popBack()
             if !t or t.interior
                 continue
 
@@ -1273,7 +1273,7 @@ impl Tesselate
         {
             loop e: 3
             {
-                var neighbor = tri.neighbors[e]
+                let neighbor = tri.neighbors[e]
                 if neighbor and !neighbor.interior
                     tri.neighbors[e] = null
             }
@@ -1316,7 +1316,7 @@ impl Tesselate
 
     mtd createAdvancingFront()
     {
-        var triangle = Memory.new'Triangle()
+        let triangle = Memory.new'Triangle()
         triangle.points[0] = points[0]
         triangle.points[1] = head
         triangle.points[2] = tail

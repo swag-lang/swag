@@ -65,7 +65,7 @@ public impl Font
 
     private func mulFix(a, b: s32)->s32
     {
-        var ab = cast(s64) a * cast(s64) b
+        let ab = cast(s64) a * cast(s64) b
         return cast(s32) (((ab + 0x8000 - (ab < 0 ? 1 : 0)) >> 16))
     }
 
@@ -89,11 +89,11 @@ public impl Font
 
         Sync.scopedLock(&lock)
 
-        var here = g_HashFont.find(str)
+        let here = g_HashFont.find(str)
         if here
             return here.value
 
-        var font = Memory.new'Font()
+        let font = Memory.new'Font()
         font.fullname = str
         font.typeFace = typeFace
         font.size = size
@@ -101,7 +101,7 @@ public impl Font
         font.forceItalic = forceItalic
 
         assume FT_Set_Pixel_Sizes(typeFace.face, 0, size)
-        var metrics = &typeFace.face.size.metrics
+        let metrics = &typeFace.face.size.metrics
         font.ascent  = metrics.ascender / 64.0
         font.descent = metrics.descender / 64.0
         font.height  = font.ascent - font.descent
@@ -118,7 +118,7 @@ public impl Font
         Debug.assert(@countof(fullname) != 0)
         Debug.assert(size > 0)
 
-        var typeFace = try TypeFace.load(fullname)
+        let typeFace = try TypeFace.load(fullname)
         return create(typeFace, size, forceBold, forceItalic)
     }
 
@@ -133,13 +133,13 @@ public impl Font
         }
         else
         {
-            var entry = unicodeRef.find(c)
+            let entry = unicodeRef.find(c)
             if entry
                 return entry.value
         }
 
         // Render the glyph
-        var bmp = assume typeFace.renderGlyph(c, size, forceBold, forceItalic)
+        let bmp = assume typeFace.renderGlyph(c, size, forceBold, forceItalic)
 
         // Creates a new atlas if this is the first time, or if the last atlas is full
         var atlas = atlases.count ? &atlases.buffer[atlases.count - 1] : null
@@ -171,8 +171,8 @@ public impl Font
             atlas = &atlases.buffer[atlases.count - 1]
         }
 
-        var x = atlas.curX
-        var y = atlas.curY
+        let x = atlas.curX
+        let y = atlas.curY
         atlas.curX += bmp.width
         atlas.nextY = Math.max(atlas.nextY, atlas.curY + bmp.rows)
 
@@ -200,14 +200,14 @@ public impl Font
         refr.width  = bmp.width
         refr.height = bmp.rows
 
-        var glyph = typeFace.face.glyph
+        let glyph = typeFace.face.glyph
         refr.advanceX = glyph.advance.x / 64.0
         refr.advanceY = glyph.advance.y / 64.0
         refr.shiftX   = glyph.bitmap_left
         refr.shiftY   = glyph.bitmap_top
 
-        var widthf = cast(f32) atlas.width
-        var heightf = cast(f32) atlas.height
+        let widthf = cast(f32) atlas.width
+        let heightf = cast(f32) atlas.height
         refr.uv.x = x / widthf
         refr.uv.y = y / heightf
         refr.uv.width = refr.width / widthf

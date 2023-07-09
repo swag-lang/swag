@@ -75,7 +75,7 @@ public impl TypeFace
     // Returns the underlying font family name
     mtd const getFamilyName()->string
     {
-        var defname = @mkstring(face.family_name, @strlen(face.family_name))
+        let defname = @mkstring(face.family_name, @strlen(face.family_name))
         return defname
     }
 
@@ -94,11 +94,11 @@ public impl TypeFace
     {
         Sync.scopedLock(&lock)
 
-        var here = g_HashTypeFace.find(fullname)
+        let here = g_HashTypeFace.find(fullname)
         if here
             return here.value
 
-        var tf = Memory.new'TypeFace()
+        let tf = Memory.new'TypeFace()
         tf.fullname = fullname
         tf.buffer = bytes
         FT_New_Memory_Face(g_FT, tf.buffer.buffer, cast(FT_Long) tf.buffer.count, 0, &tf.face)
@@ -112,11 +112,11 @@ public impl TypeFace
     {
         Sync.scopedLock(&lock)
 
-        var here = g_HashTypeFace.find(fullname)
+        let here = g_HashTypeFace.find(fullname)
         if here
             return here.value
 
-        var tf = Memory.new'TypeFace()
+        let tf = Memory.new'TypeFace()
         tf.fullname = fullname
 
         // If file does not exist, try the system folder

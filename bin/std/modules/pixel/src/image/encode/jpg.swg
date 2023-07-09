@@ -231,7 +231,7 @@ impl Encoder
             yDiv8 = imageY
 
         bufferRGB.resize(cast(u64) xDiv8 * yDiv8)
-        var pdst = bufferRGB.buffer
+        let pdst = bufferRGB.buffer
         var pref = image.pixels.buffer
 
         loop nrline: imageY
@@ -264,7 +264,7 @@ impl Encoder
         // Reorder in memory the inversed bitmap
         var nrLineUp = cast(u32) imageY - 1
         var nrLineDn = 0'u32
-        var dimline = cast(u32) imageX * 3'u64
+        let dimline = cast(u32) imageX * 3'u64
         while nrLineUp > nrLineDn
         {
             Memory.copy(tmpline.buffer, pdst + nrLineUp * imageX, dimline)
@@ -367,7 +367,7 @@ impl Encoder
 
             loop nr: -(nrupper - 1)..(-nrlower)
             {
-                var nof = cast,bit(u64) cast(s64) nr
+                let nof = cast,bit(u64) cast(s64) nr
                 category[nof] = cast(u8) cat
                 bitcode[nof].length = cast(u8) cat
                 bitcode[nof].value  = cast(u16) (nrupper - 1 + nr)
@@ -533,15 +533,15 @@ impl Encoder
 
         var pos = 0
         var location = ypos * imageX + xpos
-        var pdst = bufferRGB.buffer
+        let pdst = bufferRGB.buffer
 
         loop y: 8
         {
             loop x: 8
             {
-                var r = pdst[location].r
-                var g = pdst[location].g
-                var b = pdst[location].b
+                let r = pdst[location].r
+                let g = pdst[location].g
+                let b = pdst[location].b
                 duY[pos]  = Y(r, g, b)
                 duCb[pos] = Cb(r, g, b)
                 duCr[pos] = Cr(r, g, b)
@@ -562,24 +562,24 @@ impl Encoder
         var dataptr = &dataFloat
         loop ctr: 7..0
         {
-            var tmp0 = dataptr[0] + dataptr[7]
-            var tmp7 = dataptr[0] - dataptr[7]
-            var tmp1 = dataptr[1] + dataptr[6]
-            var tmp6 = dataptr[1] - dataptr[6]
-            var tmp2 = dataptr[2] + dataptr[5]
-            var tmp5 = dataptr[2] - dataptr[5]
-            var tmp3 = dataptr[3] + dataptr[4]
-            var tmp4 = dataptr[3] - dataptr[4]
+            let tmp0 = dataptr[0] + dataptr[7]
+            let tmp7 = dataptr[0] - dataptr[7]
+            let tmp1 = dataptr[1] + dataptr[6]
+            let tmp6 = dataptr[1] - dataptr[6]
+            let tmp2 = dataptr[2] + dataptr[5]
+            let tmp5 = dataptr[2] - dataptr[5]
+            let tmp3 = dataptr[3] + dataptr[4]
+            let tmp4 = dataptr[3] - dataptr[4]
 
             var tmp10 = tmp0 + tmp3
-            var tmp13 = tmp0 - tmp3
+            let tmp13 = tmp0 - tmp3
             var tmp11 = tmp1 + tmp2
             var tmp12 = tmp1 - tmp2
 
             dataptr[0] = tmp10 + tmp11
             dataptr[4] = tmp10 - tmp11
 
-            var z1 = (tmp12 + tmp13) * 0.707106781
+            let z1 = (tmp12 + tmp13) * 0.707106781
             dataptr[2] = tmp13 + z1
             dataptr[6] = tmp13 - z1
 
@@ -587,13 +587,13 @@ impl Encoder
             tmp11 = tmp5 + tmp6
             tmp12 = tmp6 + tmp7
 
-            var z5 = (tmp10 - tmp12) * 0.382683433
-            var z2 = 0.541196100 * tmp10 + z5
-            var z4 = 1.306562965 * tmp12 + z5
-            var z3 = tmp11 * 0.707106781
+            let z5 = (tmp10 - tmp12) * 0.382683433
+            let z2 = 0.541196100 * tmp10 + z5
+            let z4 = 1.306562965 * tmp12 + z5
+            let z3 = tmp11 * 0.707106781
 
-            var z11 = tmp7 + z3
-            var z13 = tmp7 - z3
+            let z11 = tmp7 + z3
+            let z13 = tmp7 - z3
 
             dataptr[5] = z13 + z2
             dataptr[3] = z13 - z2
@@ -607,24 +607,24 @@ impl Encoder
 
         loop ctr: 7..0
         {
-            var tmp0 = dataptr[0] + dataptr[56]
-            var tmp7 = dataptr[0] - dataptr[56]
-            var tmp1 = dataptr[8] + dataptr[48]
-            var tmp6 = dataptr[8] - dataptr[48]
-            var tmp2 = dataptr[16] + dataptr[40]
-            var tmp5 = dataptr[16] - dataptr[40]
-            var tmp3 = dataptr[24] + dataptr[32]
-            var tmp4 = dataptr[24] - dataptr[32]
+            let tmp0 = dataptr[0] + dataptr[56]
+            let tmp7 = dataptr[0] - dataptr[56]
+            let tmp1 = dataptr[8] + dataptr[48]
+            let tmp6 = dataptr[8] - dataptr[48]
+            let tmp2 = dataptr[16] + dataptr[40]
+            let tmp5 = dataptr[16] - dataptr[40]
+            let tmp3 = dataptr[24] + dataptr[32]
+            let tmp4 = dataptr[24] - dataptr[32]
 
             var tmp10 = tmp0 + tmp3
-            var tmp13 = tmp0 - tmp3
+            let tmp13 = tmp0 - tmp3
             var tmp11 = tmp1 + tmp2
             var tmp12 = tmp1 - tmp2
 
             dataptr[0]  = tmp10 + tmp11
             dataptr[32] = tmp10 - tmp11
 
-            var z1 = (tmp12 + tmp13) * 0.707106781
+            let z1 = (tmp12 + tmp13) * 0.707106781
             dataptr[16] = tmp13 + z1
             dataptr[48] = tmp13 - z1
 
@@ -632,13 +632,13 @@ impl Encoder
             tmp11 = tmp5 + tmp6
             tmp12 = tmp6 + tmp7
 
-            var z5 = (tmp10 - tmp12) * 0.382683433
-            var z2 = 0.541196100 * tmp10 + z5
-            var z4 = 1.306562965 * tmp12 + z5
-            var z3 = tmp11 * 0.707106781
+            let z5 = (tmp10 - tmp12) * 0.382683433
+            let z2 = 0.541196100 * tmp10 + z5
+            let z4 = 1.306562965 * tmp12 + z5
+            let z3 = tmp11 * 0.707106781
 
-            var z11 = tmp7 + z3
-            var z13 = tmp7 - z3
+            let z11 = tmp7 + z3
+            let z13 = tmp7 - z3
 
             dataptr[40] = z13 + z2
             dataptr[24] = z13 - z2
@@ -650,7 +650,7 @@ impl Encoder
 
         loop i: 64
         {
-            var temp = dataFloat[i] * fdtbl[i]
+            let temp = dataFloat[i] * fdtbl[i]
             outData[i] = cast(s16) (cast(s16)(temp + 16384.5) - 16384)
         }
     }
@@ -664,14 +664,14 @@ impl Encoder
 
         loop i: 64
             du[ZigZag[i]] = duDct[i]
-        var diff = du[0] - dref dC
+        let diff = du[0] - dref dC
         dref dC = du[0]
 
         if diff == 0
             writeBits(hTDC[0])
         else
         {
-            var diffc = cast,bit(u64) cast(s64) diff // If negative
+            let diffc = cast,bit(u64) cast(s64) diff // If negative
             writeBits(hTDC[category[diffc]])
             writeBits(bitcode[diffc])
         }
@@ -689,7 +689,7 @@ impl Encoder
         var i = 1
         while i <= end0pos
         {
-            var startpos = i
+            let startpos = i
             while (i <= end0pos) and (du[i] == 0)
                 i += 1
             var nrzeroes = i - startpos
@@ -700,7 +700,7 @@ impl Encoder
                 nrzeroes = nrzeroes % 16
             }
 
-            var offc = cast,bit(u64) cast(s64) du[i] // If negative
+            let offc = cast,bit(u64) cast(s64) du[i] // If negative
             writeBits(hTAC[nrzeroes * 16 + category[offc]])
             writeBits(bitcode[offc])
             i += 1

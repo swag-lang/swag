@@ -14,7 +14,7 @@ func(T) reverse(values: [..] T)
 {
     var i = 0'u64
     var j = @countof(values) - 1
-    var d = @dataof(values)
+    let d = @dataof(values)
     while i < j
     {
         swap(d + i, d + j)

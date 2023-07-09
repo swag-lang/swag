@@ -4,11 +4,11 @@ impl Image
 {
     mtd const doFlip(dstImage: *Image)
     {
-        var f = dstImage
+        let f = dstImage
         visitPixels(f, stride = width)
         {
-            var dstImage = cast(*Image) userData
-            var w8 = image.width * image.bpp8
+            let dstImage = cast(*Image) userData
+            let w8 = image.width * image.bpp8
             Memory.copy(dstImage.pixels.buffer + (image.height - y - 1) * w8, pix, cast(u64) w8)
         }
     }

@@ -281,7 +281,7 @@ public func parallelFor(count: u32, userData: *void = null, stmt: code)
 
     func jobEntry(jobData: *void)
     {
-        var oneJob = cast(*ForJob) jobData
+        let oneJob = cast(*ForJob) jobData
         visitFor(oneJob.startIndex, oneJob.endIndex, oneJob.userData)
     }
 
@@ -320,7 +320,7 @@ public func parallelFor(count: u32, userData: *void = null, stmt: code)
     var startIndex = 0'u32
     visit &j: sliceJobs
     {
-        var sizeSlice = @index == sliceJobs.count - 1 ? lastSplitSize : splitSize
+        let sizeSlice = @index == sliceJobs.count - 1 ? lastSplitSize : splitSize
 
         j.base.lambda = &jobEntry
         j.base.data = j

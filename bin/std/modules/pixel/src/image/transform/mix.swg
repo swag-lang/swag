@@ -19,9 +19,9 @@ impl Image
         {
             visitPixels(&f)
             {
-                var params = cast(*@decltype(f)) userData
-                var dstImage = cast(*Image) params.dstImage
-                var srcImage = cast(const *Image) params.srcImage
+                let params = cast(*@decltype(f)) userData
+                let dstImage = cast(*Image) params.dstImage
+                let srcImage = cast(const *Image) params.srcImage
 
                 var pixDst = dstImage.pixels.buffer + x * image.bpp8
                 pixDst += cast(u64) (y * (image.width * image.bpp8))
@@ -37,8 +37,8 @@ impl Image
                 }
                 else
                 {
-                    var x1 = x - params.x
-                    var y1 = srcImage.height - (ny - params.y)
+                    let x1 = x - params.x
+                    let y1 = srcImage.height - (ny - params.y)
                     var pixSrc = srcImage.pixels.buffer + x1 * srcImage.bpp8
                     pixSrc += cast(u64) (y1 * (srcImage.width * srcImage.bpp8))
 
@@ -49,7 +49,7 @@ impl Image
                         copyPixel'BPP(pixDst, pixSrc)
 
                     case AlphaBlend:
-                        var bf = pixSrc[3] / 255.0
+                        let bf = pixSrc[3] / 255.0
                         pixDst[0] = cast(u8) Math.lerp(cast(f32) pix[0], cast(f32) pixSrc[0], bf)
                         pixDst[1] = cast(u8) Math.lerp(cast(f32) pix[1], cast(f32) pixSrc[1], bf)
                         pixDst[2] = cast(u8) Math.lerp(cast(f32) pix[2], cast(f32) pixSrc[2], bf)

@@ -60,7 +60,7 @@ public impl Image
             throw "no matching image encoder"
 
         // Create an encoder instance
-        var ptrEncoder = Memory.new(found.type)
+        let ptrEncoder = Memory.new(found.type)
         defer
         {
             if found.type.opDrop
@@ -69,7 +69,7 @@ public impl Image
         }
 
         // Encode
-        var itf = @mkinterface(ptrEncoder, found.type, IImageEncoder)
+        let itf = @mkinterface(ptrEncoder, found.type, IImageEncoder)
         var result: ConcatBuffer
         itf.encode(&result, dref self, options)
         File.writeAllBytes(fileName, result)
