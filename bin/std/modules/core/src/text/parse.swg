@@ -401,7 +401,7 @@ func parseString(str: string) -> {value: String, eat: u32} throw
 {
     var result: retval
 
-    var countof = @countof(str)
+    let countof = @countof(str)
     if !countof
         throw ParseErrorInvalid
 

@@ -273,15 +273,15 @@ func encodeRune(dest: [..] u8, src: rune)->u32
 // 'dest' must be at least 4 bytes long
 func fromUnicode(dest: [..] u8, src: const [..] rune)->u64
 {
-    var dataof = @dataof(dest)
+    let dataof = @dataof(dest)
     var remain = @countof(dest)
 
     var total = 0'u64
     visit ch: src
     {
         Debug.assert(remain >= 4, "destination buffer is too small")
-        var sl = @mkslice(dataof + total, remain)
-        var cpt = encodeRune(sl, ch)
+        let sl = @mkslice(dataof + total, remain)
+        let cpt = encodeRune(sl, ch)
         total += cpt
         remain -= cpt
     }
@@ -315,7 +315,7 @@ func fromUtf16(dest: [..] u8, src: const [..] u16)->u64
         var (c, eat) = Utf16.decodeRune(@mkslice(srcPtr, srcLength))
 
         Debug.assert(destLength >= 4, "destination buffer is too small")
-        var eatDest = encodeRune(@mkslice(destPtr, destLength), c)
+        let eatDest = encodeRune(@mkslice(destPtr, destLength), c)
         destPtr, count += eatDest
         destLength -= eatDest
 
@@ -420,7 +420,7 @@ func byteIndex(buffer: const [..] u8, charIndex: u64) -> {index: u64, success: b
     var resultByte = 0'u64
     while countof and resultChar != charIndex
     {
-        var val = countBytesAt(@mkslice(dataof, countof))
+        let val = countBytesAt(@mkslice(dataof, countof))
         Debug.assert(val <= countof, "invalid utf8 character")
         resultByte += val
         resultChar += 1
@@ -442,7 +442,7 @@ func countRunes(buffer: const [..] u8)->u64
     var cpt = 0'u64
     while countof
     {
-        var val = countBytesAt(@mkslice(dataof, countof))
+        let val = countBytesAt(@mkslice(dataof, countof))
         Debug.assert(val <= countof)
         cpt += 1
         dataof += val

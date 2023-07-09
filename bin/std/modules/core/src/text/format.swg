@@ -85,13 +85,13 @@ func append(buf: *ConcatBuffer, fmt: string, values: ...)
         return true
     }
 {
-    var ptr = @dataof(fmt)
-    var cpt = @countof(fmt)
+    let ptr = @dataof(fmt)
+    let cpt = @countof(fmt)
 
     var idx = 0'u32
     var nextIdx = 0'u32
     var paramIdx = 0'u32
-    var numParams = @countof(values)
+    let numParams = @countof(values)
 
     while nextIdx < cpt
     {

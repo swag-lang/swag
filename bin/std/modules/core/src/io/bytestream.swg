@@ -72,12 +72,13 @@ public impl ByteStream
     {
         Debug.assert(writeBuffer != null)
 
-        var count = @countof(slice)
-        if !count return
+        let count = @countof(slice)
+        if !count
+            return
 
         if seek + count > writeBuffer.count
             writeBuffer.reserve(seek + count)
-        var ptr = writeBuffer.buffer + seek
+        let ptr = writeBuffer.buffer + seek
         Memory.copy(ptr, @dataof(slice), count)
         seek += count
         writeBuffer.count = Math.max(writeBuffer.count, seek)
@@ -88,7 +89,7 @@ public impl ByteStream
     {
         if seek + @sizeof(T) > length()
             throw "byte stream overflow"
-        var val = dref cast(const *T) (readData() + seek)
+        let val = dref cast(const *T) (readData() + seek)
         seek += @sizeof(T)
         return val
     }
@@ -134,7 +135,7 @@ public impl ByteStream
     // Seek to the given position
     mtd setSeek(offset: u64)
     {
-        var len = length()
+        let len = length()
         Debug.assert(seek <= len)
         seek = offset
         eof = seek >= len

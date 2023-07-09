@@ -37,21 +37,21 @@ impl ZLib
             throw "invalid format"
 
         // Compression mtd (8 is "deflate")
-        var cmf = bs.readU8()
+        let cmf = bs.readU8()
         if cmf & 0xF != 8
             throw "invalid compression mtd"
 
         // Window size
-        var cinfo = (cmf >> 4) & 0xF
+        let cinfo = (cmf >> 4) & 0xF
         if cinfo > 7
             throw "unsupported window size"
-        var winSize = 1'u32 << (cinfo + 8)
+        let winSize = 1'u32 << (cinfo + 8)
 
         // Check
-        var flg = bs.readU8()
+        let flg = bs.readU8()
 
         // Dict
-        var fdict = (flg >> 5) & 1
+        let fdict = (flg >> 5) & 1
         if fdict
             throw "unsupported dictionnary"
 
@@ -63,7 +63,7 @@ impl ZLib
 
         // Now we should have the checksum
         decoder.stream.discardToNextByte()
-        var adler32 = decoder.stream.readBits(8) << 24 |
+        let adler32 = decoder.stream.readBits(8) << 24 |
                    decoder.stream.readBits(8) << 16 |
                    decoder.stream.readBits(8) << 8  |
                    decoder.stream.readBits(8)

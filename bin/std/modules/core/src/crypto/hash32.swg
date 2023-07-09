@@ -21,7 +21,7 @@ public func(T) hash32(value: T)->u32
     }
     #elif @sizeof(T) == 8
     {
-        var val64 = cast,bit(u64) value
+        let val64 = cast,bit(u64) value
         var key = (~val64) + (val64 << 18)
         key = key ^ (key >> 31)
         key = key * 21
@@ -32,7 +32,7 @@ public func(T) hash32(value: T)->u32
     }
     #elif @sizeof(T) == 4
     {
-        var val32 = cast,bit(u32) value
+        let val32 = cast,bit(u32) value
         var key = (~val32) + (val32 << 15)
         key = key ^ (key >> 12)
         key = key + (key << 2)
@@ -43,7 +43,7 @@ public func(T) hash32(value: T)->u32
     }
     #elif Reflection.isInteger(T)
     {
-        var val32 = cast(u32) value
+        let val32 = cast(u32) value
         var key = (~val32) + (val32 << 15)
         key = key ^ (key >> 12)
         key = key + (key << 2)

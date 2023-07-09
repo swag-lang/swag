@@ -25,7 +25,7 @@ impl GamePad
     // Update the GamePad current state
     mtd update() throw
     {
-        var newConnected = isConnected(padIndex)
+        let newConnected = isConnected(padIndex)
         if !newConnected
         {
             if connected clear(self)

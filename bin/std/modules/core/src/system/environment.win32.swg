@@ -49,7 +49,7 @@ public func getMonitors()->Array'Monitor
         if @errmsg return TRUE
 
         var m: Monitor
-        var ptr = cast(*Array'Monitor) cast(u64) lParam
+        let ptr = cast(*Array'Monitor) cast(u64) lParam
 
         m.rect.x      = mi.rcMonitor.left
         m.rect.y      = mi.rcMonitor.top

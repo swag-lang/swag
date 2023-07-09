@@ -44,8 +44,8 @@ public impl Md5
         // Only deal with 32 bits size
         Debug.assert(@countof(data) <= Swag.U32.Max)
 
-        var input = @dataof(data)
-        var inputLen = cast(u32) @countof(data)
+        let input = @dataof(data)
+        let inputLen = cast(u32) @countof(data)
 
         var index = (count[0] >> 3) & 0x3F
         count[0] += inputLen << 3
@@ -53,7 +53,7 @@ public impl Md5
         count[1] += inputLen >> 29
 
         var i = 0'u32
-        var partLen = 64 - index
+        let partLen = 64 - index
         if inputLen >= partLen
         {
             Memory.copy(&buffer[index], input, cast(u64) partLen)

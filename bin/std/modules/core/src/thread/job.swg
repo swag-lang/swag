@@ -99,7 +99,7 @@ func getJobToExec()->*Job
     Sync.scopedLock(&g_mutexPendingJobs)
     if g_pendingJobs.isEmpty()
         return null
-    var job = g_pendingJobs.popBack()
+    let job = g_pendingJobs.popBack()
     Debug.assert(job.testState(JobState.InPending))
     job.clearState(JobState.InPending)
     return job

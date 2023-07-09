@@ -37,8 +37,9 @@ func eatSpaces(str: string)->string
 func splitLines(src: string) -> Array'string
 {
     var result: retval
-    var countof = @countof(src)
-    if !countof return result
+    let countof = @countof(src)
+    if !countof
+        return result
 
     var dataof = @dataof(src)
     var cpt = 0
@@ -51,7 +52,7 @@ func splitLines(src: string) -> Array'string
             cpt += 1
         }
 
-        var onestr = @mkstring(dataof, cast(u64) (end - dataof))
+        let onestr = @mkstring(dataof, cast(u64) (end - dataof))
         result.add(onestr)
         if cpt < countof - 1 and dref end == "\r"'u8 and end[1] == "\n"'u8
             end, cpt += 1
@@ -75,8 +76,8 @@ func split(src: string, separator: rune, maxSplit: u32 = 0, removeEmpty = true) 
 // All strings will be invalid if 'src' String is destroyed
 func split(src: string, separators: const [..] rune, maxSplit: u32 = 0, removeEmpty = true)->Array'string
 {
-    var dataof = @dataof(src)
-    var countof = @countof(src)
+    let dataof = @dataof(src)
+    let countof = @countof(src)
 
     var result: retval
     var ptr = dataof
@@ -91,7 +92,7 @@ func split(src: string, separators: const [..] rune, maxSplit: u32 = 0, removeEm
         // Remove separator at the start
         loop
         {
-            var sl = @mkslice(ptr, count)
+            let sl = @mkslice(ptr, count)
             (c, eat) = Utf8.decodeRune(sl)
             if eat == 0 or !Slice.contains(separators, c)
                 break
@@ -109,7 +110,7 @@ func split(src: string, separators: const [..] rune, maxSplit: u32 = 0, removeEm
         var endbyteIdx = startbyteIdx
         loop
         {
-            var sl = @mkslice(ptr, count)
+            let sl = @mkslice(ptr, count)
             (c, eat) = Utf8.decodeRune(sl)
             if eat == 0 or Slice.contains(separators, c)
                 break

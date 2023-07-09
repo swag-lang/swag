@@ -49,8 +49,8 @@ func getRootLength(fullname: string)->u32
 {
     func startsWithOrdinal(source, value: string)->bool
     {
-        var sourceLength = @countof(source)
-        var valueLength = @countof(value)
+        let sourceLength = @countof(source)
+        let valueLength = @countof(value)
         if sourceLength < valueLength
             return false
 
@@ -66,13 +66,13 @@ func getRootLength(fullname: string)->u32
     var i = 0'u32;
     var volumeSeparatorLength = 2'u32;  // Length to the colon "C:"
     var uncRootLength = 2'u32;          // Length to the start of the server name "\\"
-    var pathLength = @countof(fullname)
+    let pathLength = @countof(fullname)
 
     const ExtendedPathPrefix = @"\\?\"@
     const UncExtendedPathPrefix = @"\\?\UNC\"@
 
-    var extendedSyntax = startsWithOrdinal(fullname, ExtendedPathPrefix);
-    var extendedUncSyntax = startsWithOrdinal(fullname, UncExtendedPathPrefix);
+    let extendedSyntax = startsWithOrdinal(fullname, ExtendedPathPrefix);
+    let extendedUncSyntax = startsWithOrdinal(fullname, UncExtendedPathPrefix);
     if extendedSyntax
     {
         // Shift the position we look for the root from to account for the extended prefix

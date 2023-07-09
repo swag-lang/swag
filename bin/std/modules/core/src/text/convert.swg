@@ -36,8 +36,8 @@ impl ConvertFormatFloat
     // ---
     mtd setFormat(strFormat: string)
     {
-        var buffer = @dataof(strFormat)
-        var countof = @countof(strFormat)
+        let buffer = @dataof(strFormat)
+        let countof = @countof(strFormat)
         if buffer == null or countof == 0
             return
 
@@ -103,8 +103,8 @@ impl ConvertFormatInt
     // ---
     mtd setFormat(strFormat: string)
     {
-        var buffer = @dataof(strFormat)
-        var countof = @countof(strFormat)
+        let buffer = @dataof(strFormat)
+        let countof = @countof(strFormat)
         if buffer == null or countof == 0
             return
 
@@ -300,14 +300,14 @@ func convertAny(buf: *ConcatBuffer, value: any, strFormat: string)
 // Convert a structure content to an utf8 string, and put the result in a ConcatBuffer
 func convertStruct(buf: *ConcatBuffer, value: any, strFormat: string)
 {
-    var kindof = cast(const *Swag.TypeInfoStruct) @kindof(value)
+    let kindof = cast(const *Swag.TypeInfoStruct) @kindof(value)
     Debug.assert(kindof.kind == TypeInfoKind.Struct, "this is not a structure")
-    var ptr = cast(const ^u8) @dataof(value)
+    let ptr = cast(const ^u8) @dataof(value)
 
     // Core.String
     if kindof == String
     {
-        var ptrStr = cast(const *String) ptr
+        let ptrStr = cast(const *String) ptr
         buf.addBytes(@mkslice(ptrStr.buffer, ptrStr.length))
         return
     }
@@ -315,12 +315,12 @@ func convertStruct(buf: *ConcatBuffer, value: any, strFormat: string)
     // Core.Array
     if kindof.fromGeneric == Array
     {
-        var typeContent = kindof.generics[0].pointedType
+        let typeContent = kindof.generics[0].pointedType
 
         // Trick to get the struct content
         // This rely on the fact that the Array struct layout is the same whatever
         // the underlying type is
-        var addrArr = cast(const *Array'u8) ptr
+        let addrArr = cast(const *Array'u8) ptr
         var bufArr = addrArr.buffer
 
         buf.addBytes("[")
@@ -330,7 +330,7 @@ func convertStruct(buf: *ConcatBuffer, value: any, strFormat: string)
             if !first
                 buf.addBytes(",")
             first = false
-            var v = @mkany(bufArr, typeContent)
+            let v = @mkany(bufArr, typeContent)
             StrConv.convertAny(buf, v, strFormat)
             bufArr += typeContent.sizeof
         }
@@ -339,7 +339,7 @@ func convertStruct(buf: *ConcatBuffer, value: any, strFormat: string)
     }
 
     // A structure with an implementation of IConvert
-    var itf = @mkinterface(ptr, kindof, IConvert)
+    let itf = @mkinterface(ptr, kindof, IConvert)
     if itf != null
     {
         itf.convert(buf, null, strFormat)
@@ -354,7 +354,7 @@ func convertStruct(buf: *ConcatBuffer, value: any, strFormat: string)
             buf.addBytes(", ")
         buf.addBytes(field.name)
         buf.addBytes(" = ")
-        var val = @mkany(ptr + field.offset, field.pointedType)
+        let val = @mkany(ptr + field.offset, field.pointedType)
         convertAny(buf, val, strFormat)
     }
     buf.addBytes("}")
@@ -363,10 +363,10 @@ func convertStruct(buf: *ConcatBuffer, value: any, strFormat: string)
 // Convert a float to an utf8 string, and put the result in a ConcatBuffer
 func convertFloat(buf: *ConcatBuffer, fmt: ConvertFormatFloat)
 {
-    var kindof = cast(const *Swag.TypeInfoNative) @kindof(fmt.value)
+    let kindof = cast(const *Swag.TypeInfoNative) @kindof(fmt.value)
     Debug.assert(kindof.flags & TypeInfoFlags.Float != 0, "value to convert is not a float")
 
-    var dataof = @dataof(fmt.value)
+    let dataof = @dataof(fmt.value)
 
     var value: f64
     switch kindof.nativeKind
@@ -383,11 +383,11 @@ func convertFloat(buf: *ConcatBuffer, fmt: ConvertFormatFloat)
 // Convert an integer to an utf8 string, and put the result in a ConcatBuffer
 func convertInt(buf: *ConcatBuffer, fmt: ConvertFormatInt)
 {
-    var kindof = cast(const *Swag.TypeInfoNative) @kindof(fmt.value)
+    let kindof = cast(const *Swag.TypeInfoNative) @kindof(fmt.value)
     Debug.assert(kindof.flags & TypeInfoFlags.Integer != 0, "value to convert is not an integer")
     Debug.assert(0 < fmt.base and fmt.base <= 16, "invalid convert base")
 
-    var dataof = @dataof(fmt.value)
+    let dataof = @dataof(fmt.value)
     var bits = kindof.sizeof * 8
 
     var value: u64
@@ -431,7 +431,7 @@ func convertInt(buf: *ConcatBuffer, fmt: ConvertFormatInt)
     // So use '8' instead of '7'
     if overflowS64
     {
-        var c = Tbl[8 % fmt.base]
+        let c = Tbl[8 % fmt.base]
         tmp[cpt] = c
         cpt, bits -= 1
         switch fmt.base
@@ -444,7 +444,7 @@ func convertInt(buf: *ConcatBuffer, fmt: ConvertFormatInt)
 
     loop bits
     {
-        var c = Tbl[value % fmt.base]
+        let c = Tbl[value % fmt.base]
         tmp[cpt] = c
         cpt -= 1
         value /= cast(u64) fmt.base

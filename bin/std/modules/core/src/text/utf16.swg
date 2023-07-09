@@ -45,7 +45,7 @@ func encodeRune(dest: [..] u16, src: rune)->u32
         return 1
 
     case SurrSelf <= src and src <= 0x10FFFF:
-        var r = src - SurrSelf
+        let r = src - SurrSelf
         dest[0] = Surr1 + ((r >> 10) & 0x3ff)
         dest[1] = Surr2 + (r & 0x3ff)
         return 2
@@ -71,7 +71,7 @@ func fromUtf8(dest: [..] u16, src: const [..] u8)->u64
         var (c, eat) = Utf8.decodeRune(@mkslice(srcPtr, srcLength))
 
         Debug.assert(destLength >= 2, "destination buffer is too small")
-        var eatDest = encodeRune(@mkslice(destPtr, destLength), c)
+        let eatDest = encodeRune(@mkslice(destPtr, destLength), c)
         destPtr, count += eatDest
         destLength -= eatDest
 
@@ -102,7 +102,7 @@ func fromUnicode(dest: [..] u16, src: const [..] rune)->u64
     visit ch: src
     {
         Debug.assert(remain >= 2, "destination buffer is too small")
-        var cpt = encodeRune(@mkslice(dataof, remain), ch)
+        let cpt = encodeRune(@mkslice(dataof, remain), ch)
         dataof += cpt
         remain -= cpt
     }

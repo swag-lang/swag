@@ -42,7 +42,7 @@ func set(dest: ^void, value: u8, size: u64)
 // Align a value to the given amount
 func align(value: u64, alignement: u32)->u64
 {
-    var toAlign = (alignement orelse @sizeof(*void)) - 1
+    let toAlign = (alignement orelse @sizeof(*void)) - 1
     return (value + toAlign) & ~toAlign
 }
 

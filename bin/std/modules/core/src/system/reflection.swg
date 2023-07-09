@@ -144,7 +144,7 @@ using Swag
     // Get a field value with a given runtime type
     func getFieldValue(dest: *void, type: const *TypeValue, src: *void, hardCast: bool = false)
     {
-        var patch = cast(^u8) src + type.offset
+        let patch = cast(^u8) src + type.offset
         switch type.pointedType
         {
         case s8, u8, bool:          dref cast(*u8)  dest = dref cast(*u8)  patch
@@ -286,7 +286,7 @@ using Swag
         switch type.kind
         {
         case Func:
-            var typeFunc = cast(const *TypeInfoFunc) type
+            let typeFunc = cast(const *TypeInfoFunc) type
             visit it: typeFunc.attributes
             {
                 if attribute == it.type
@@ -294,7 +294,7 @@ using Swag
             }
 
         case Struct:
-            var typeStruct = cast(const *TypeInfoStruct) type
+            let typeStruct = cast(const *TypeInfoStruct) type
             visit it: typeStruct.attributes
             {
                 if attribute == it.type
@@ -302,7 +302,7 @@ using Swag
             }
 
         case Enum:
-            var typeEnum = cast(const *TypeInfoEnum) type
+            let typeEnum = cast(const *TypeInfoEnum) type
             visit it: typeEnum.attributes
             {
                 if attribute == it.type
@@ -462,7 +462,7 @@ using Swag
         Memory.copy(dst, src, cast(u64) type.sizeof)
         if hasPostCopy(type)
         {
-            var ptrStruct = cast(const *Swag.TypeInfoStruct) type
+            let ptrStruct = cast(const *Swag.TypeInfoStruct) type
             ptrStruct.opPostCopy(dst)
         }
     }
@@ -473,8 +473,8 @@ using Swag
 func roomInArray(addr: *void, valueType: typeinfo)->*void
 {
     // We will treat the array as a buffer of bytes, just to be able to access the fields
-    var arr = cast(*Array'u8) addr
-    var sizeValue = valueType.sizeof
+    let arr = cast(*Array'u8) addr
+    let sizeValue = valueType.sizeof
 
     var valueTypeStruct: const *TypeInfoStruct
     if isStruct(valueType)
@@ -484,8 +484,8 @@ func roomInArray(addr: *void, valueType: typeinfo)->*void
     // structures specials functions
     if arr.count >= arr.capacity
     {
-        var newCapacity = Math.max(arr.count + 1, arr.capacity * 2)
-        var newBuffer = cast(^u8) Memory.alloc(newCapacity * sizeValue, arr.allocator)
+        let newCapacity = Math.max(arr.count + 1, arr.capacity * 2)
+        let newBuffer = cast(^u8) Memory.alloc(newCapacity * sizeValue, arr.allocator)
         Memory.clear(newBuffer, newCapacity * sizeValue)
         arr.capacity = newCapacity
 
@@ -505,7 +505,7 @@ func roomInArray(addr: *void, valueType: typeinfo)->*void
         arr.buffer = newBuffer
     }
 
-    var result = arr.buffer + (arr.count * valueType.sizeof)
+    let result = arr.buffer + (arr.count * valueType.sizeof)
     arr.count += 1
     if valueTypeStruct
         valueTypeStruct.opInit(result)
@@ -536,7 +536,7 @@ private var g_HashLock: Sync.RWLock
 func crcToType(crc: u32)->typeinfo
 {
     Sync.sharedLock(&g_HashLock)
-    var e = g_HashCrcToType.find(crc)
+    let e = g_HashCrcToType.find(crc)
     if !e
         return null
     return e.value
@@ -546,7 +546,7 @@ func crcToType(crc: u32)->typeinfo
 func nameToType(name: string)->typeinfo
 {
     Sync.sharedLock(&g_HashLock)
-    var e = g_HashNameToType.find(name)
+    let e = g_HashNameToType.find(name)
     if !e
         return null
     return e.value

@@ -136,16 +136,16 @@ impl Vector2
     // Returns the distance between two vectors
     mtd const distance(to: Self)->f32
     {
-        var xn = (x - to.x)
-        var yn = (y - to.y)
+        let xn = (x - to.x)
+        let yn = (y - to.y)
         return sqrt((xn * xn) + (yn * yn))
     }
 
     // Returns the square distance between two vectors
     mtd const distanceSquared(to: Self)->f32
     {
-        var xn = (x - to.x)
-        var yn = (y - to.y)
+        let xn = (x - to.x)
+        let yn = (y - to.y)
         return (xn * xn) + (yn * yn)
     }
 
@@ -251,10 +251,10 @@ impl Vector2
     // Rotate the vector by a given angle
     mtd rotate(angle: Math.Angle)
     {
-        var s = sin(angle.rad)
-        var c = cos(angle.rad)
-        var tx = x
-        var ty = y
+        let s = sin(angle.rad)
+        let c = cos(angle.rad)
+        let tx = x
+        let ty = y
         x = (c * tx) - (s * ty)
         y = (s * tx) + (c * ty)
     }
@@ -270,7 +270,7 @@ impl Vector2
     // Returns the angle with another vector
     mtd const angle(other: Self)->f32
     {
-        var angle = Math.acos(cosAngle(other))
+        let angle = Math.acos(cosAngle(other))
         //var sign = (x * other.y) - (y * other.x)
         //if sign < 0 angle = -angle;
         return angle

@@ -21,7 +21,7 @@ impl MouseState
 
         visit v: MouseButton
         {
-            var b = pressed[v]
+            let b = pressed[v]
             pressed[v] = Mouse.isButtonPressed(v)
             if !b and pressed[v]
             {

@@ -26,7 +26,7 @@ impl Keyboard
         currentState.update()
 
         // Repetition
-        var now = Time.nowMilliseconds()
+        let now = Time.nowMilliseconds()
         loop i: @countof(Key)
         {
             if !currentState.isKeyPressed(cast(Key) i)

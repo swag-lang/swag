@@ -55,7 +55,7 @@ func splitArguments(args: const [..] string, options: ParseOptions)->Array'strin
         if split.count == 2
         {
             allArgs.add(split[0])
-            var other = Tokenize.eatSpaces(split[1])
+            let other = Tokenize.eatSpaces(split[1])
             if @countof(other) allArgs.add(other)
         }
         else

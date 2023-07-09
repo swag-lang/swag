@@ -159,7 +159,7 @@ impl Inflate
                 throw "malformed"
         }
 
-        var b = ht.fast[stream.codeBuffer & FastMask]
+        let b = ht.fast[stream.codeBuffer & FastMask]
         if b
         {
             var s = cast(u8) (b >> FastBits)
@@ -167,15 +167,15 @@ impl Inflate
             return b & 511
         }
 
-        var cde = cast(u16) stream.peekBits(16)
-	    var k = reverse16(cde, 16)
+        let cde = cast(u16) stream.peekBits(16)
+	    let k = reverse16(cde, 16)
 
         var s = HuffmanFastBits + 1
         while k >= ht.maxCode[s] s += 1
 
         if s >= 16
             throw "bad huffman code"
-        var b1 = (k >> (16 - s)) - ht.firstCode[s] + ht.firstSymbol[s]
+        let b1 = (k >> (16 - s)) - ht.firstCode[s] + ht.firstSymbol[s]
         if b1 >= @countof(ht.size)
             throw "bad huffman code"
         if ht.size[b1] != s
@@ -187,7 +187,7 @@ impl Inflate
 
     mtd parseBlock(repeatHt, repeatZ: *HuffmanTable, dest: *Array'u8) throw
     {
-        var startBufCount = dest.count
+        let startBufCount = dest.count
         loop
         {
             var value = try decode(repeatHt)
@@ -200,7 +200,7 @@ impl Inflate
             // End of block. Update checksum
             if value == 256
             {
-                var newSlice = @mkslice(dest.buffer + startBufCount, dest.count - startBufCount)
+                let newSlice = @mkslice(dest.buffer + startBufCount, dest.count - startBufCount)
                 adler.update(newSlice)
                 return
             }
@@ -224,14 +224,14 @@ impl Inflate
             if distance == 1
             {
                 // Repeat the last byte 'length' times
-                var b = dest.buffer[dest.count - 1]
+                let b = dest.buffer[dest.count - 1]
                 Memory.set(dest.buffer + dest.count, b, cast(u64) length)
                 dest.count += length
             }
             elif distance >= length
             {
                 // Copy an already decoded sequence of bytes
-                var sl: const [..] u8 = @mkslice(dest.buffer + dest.count - distance, length)
+                let sl: const [..] u8 = @mkslice(dest.buffer + dest.count - distance, length)
                 dest.add(sl)
             }
             else
@@ -239,7 +239,7 @@ impl Inflate
                 // Copy an already decoded sequence of bytes, and repeat the last one
                 loop length
                 {
-                    var b = dest.buffer[dest.count - distance]
+                    let b = dest.buffer[dest.count - distance]
                     dest.add(b)
                 }
             }
@@ -262,21 +262,21 @@ impl Inflate
 
         loop
         {
-            var final = stream.readBits(1)
-            var type = stream.readBits(2)
+            let final = stream.readBits(1)
+            let type = stream.readBits(2)
 
             switch type
             {
             // Uncompressed block
             case 0:
                 stream.discardToNextByte()
-                var uncompressedLen = cast(u16) stream.readBits(16)
-                var lengthCheck = cast(u16) stream.readBits(16)
+                let uncompressedLen = cast(u16) stream.readBits(16)
+                let lengthCheck = cast(u16) stream.readBits(16)
                 if ~uncompressedLen != lengthCheck
                     throw "invalid buffer, length mismatch"
 
                 stream.revert()
-                var newSlice = @mkslice(stream.curPtr(), uncompressedLen)
+                let newSlice = @mkslice(stream.curPtr(), uncompressedLen)
                 adler.update(newSlice)
                 result.add(newSlice)
                 stream.curByte += uncompressedLen
@@ -295,17 +295,17 @@ impl Inflate
                 var lenCodes:        [286+32+137] u8
                 var codeLengthSizes: [19] u8
                 stream.refill(14)
-                var hlit = stream.readBitsNoRefill(5) + 257
-                var hdist = stream.readBitsNoRefill(5) + 1
-                var hclen = stream.readBitsNoRefill(4) + 4
+                let hlit = stream.readBitsNoRefill(5) + 257
+                let hdist = stream.readBitsNoRefill(5) + 1
+                let hclen = stream.readBitsNoRefill(4) + 4
                 loop i: hclen
                 {
-                    var s = cast(u8) stream.readBits(3)
+                    let s = cast(u8) stream.readBits(3)
                     codeLengthSizes[LengthDezigzag[i]] = s
                 }
 
                 codeLengthHt.init(codeLengthSizes)
-                var ntot = hlit + hdist
+                let ntot = hlit + hdist
                 var n = 0
                 while n < ntot
                 {
@@ -340,7 +340,7 @@ impl Inflate
 
                         if ntot - n < c
                             throw "bad code lengths"
-                        var nc = n + c
+                        let nc = n + c
                         while n < nc
                         {
                             lenCodes[n] = fill

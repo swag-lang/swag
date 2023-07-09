@@ -48,6 +48,6 @@ impl enum FileAttributes
 func getAttributes(fullname: string)->FileAttributes throw
 {
     var winPath = Utf16.toZeroTerminated(fullname)
-    var attributes = try GetFileAttributesW(@dataof(winPath))
+    let attributes = try GetFileAttributesW(@dataof(winPath))
     return FileAttributes.fromDWORD(attributes)
 }

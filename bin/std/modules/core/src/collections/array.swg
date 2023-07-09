@@ -34,7 +34,7 @@ impl Array
         if buffer == null
             return
 
-        var oldBuffer = buffer
+        let oldBuffer = buffer
         buffer = null
         realloc(count)
 
@@ -192,7 +192,7 @@ impl Array
             return
         }
 
-        var newBuffer = cast(^T) Memory.realloc(buffer, newCapacity * @sizeof(T), capacity * @sizeof(T), allocator)
+        let newBuffer = cast(^T) Memory.realloc(buffer, newCapacity * @sizeof(T), capacity * @sizeof(T), allocator)
 
         // Need to call opPostMove on every existing element if the buffer has not been reallocated
         // in place
@@ -260,7 +260,7 @@ impl Array
     {
         if newCount <= capacity
             return
-        var newCapacity = Math.max(capacity * 2, newCount)
+        let newCapacity = Math.max(capacity * 2, newCount)
         reserve(newCapacity)
     }
 
@@ -638,7 +638,7 @@ impl Array
     mtd front()->T
     {
         Debug.assert(count > 0, "array is empty")
-        var result: retval = buffer[0]
+        let result: retval = buffer[0]
         return result
     }
 
@@ -653,7 +653,7 @@ impl Array
     mtd back()->T
     {
         Debug.assert(count > 0, "array is empty")
-        var result: retval = buffer[count - 1]
+        let result: retval = buffer[count - 1]
         return result
     }
 

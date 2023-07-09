@@ -12,22 +12,22 @@ impl Vector2
     // Returns true if the point 'pt' is inside the triangle defined with 'a, b, c'
     mtd const isInTriangle(a, b, c: Vector2)->bool
     {
-        var ax = c.x - b.x
-        var ay = c.y - b.y
-        var bx = a.x - c.x
-        var by = a.y - c.y
-        var cx = b.x - a.x
-        var cy = b.y - a.y
-        var apx = x - a.x
-        var apy = y - a.y
-        var bpx = x - b.x
-        var bpy = y - b.y
-        var cpx = x - c.x
-        var cpy = y - c.y
+        let ax = c.x - b.x
+        let ay = c.y - b.y
+        let bx = a.x - c.x
+        let by = a.y - c.y
+        let cx = b.x - a.x
+        let cy = b.y - a.y
+        let apx = x - a.x
+        let apy = y - a.y
+        let bpx = x - b.x
+        let bpy = y - b.y
+        let cpx = x - c.x
+        let cpy = y - c.y
 
-        var aCROSSbp = ax * bpy - ay * bpx
-        var cCROSSap = cx * apy - cy * apx
-        var bCROSScp = bx * cpy - by * cpx
+        let aCROSSbp = ax * bpy - ay * bpx
+        let cCROSSap = cx * apy - cy * apx
+        let bCROSScp = bx * cpy - by * cpx
 
         return ((aCROSSbp >= 0) and (bCROSScp >= 0) and (cCROSSap >= 0)) or ((aCROSSbp <= 0) and (bCROSScp <= 0) and (cCROSSap <= 0))
     }
@@ -35,35 +35,35 @@ impl Vector2
     // Returns the distance of the point to the given line
     mtd const distanceToLine(a, b: Vector2)->f32
     {
-        var toPt = dref self - a
+        let toPt = dref self - a
         var seg = b - a
         seg.normalizeSafe()
-        var dot = toPt.dot(seg)
-        seg  *= dot
-        var cross = toPt - seg
+        let dot = toPt.dot(seg)
+        seg *= dot
+        let cross = toPt - seg
         return cross.length()
     }
 
     // Returns the distance of the point to the given segment
     mtd const distanceToSegment(a, b: Vector2)->f32
     {
-        var ab = b - a
-        var be = dref self - b
-        var ae = dref self - a
+        let ab = b - a
+        let be = dref self - b
+        let ae = dref self - a
 
-        var abbe = ab.dot(be)
+        let abbe = ab.dot(be)
         if abbe > 0
             return be.length()
 
-        var abae = ab.dot(ae)
+        let abae = ab.dot(ae)
         if abae < 0
             return ae.length()
 
-        var x1 = ab.x
-        var y1 = ab.y
-        var x2 = ae.x
-        var y2 = ae.y
-        var mod = Math.sqrt(x1 * x1 + y1 * y1)
+        let x1 = ab.x
+        let y1 = ab.y
+        let x2 = ae.x
+        let y2 = ae.y
+        let mod = Math.sqrt(x1 * x1 + y1 * y1)
         return Math.abs(x1 * y2 - y1 * x2) / mod
     }
 
@@ -79,28 +79,28 @@ impl Vector2
     // ---
     func nearestPointsSegSeg(p0, p1, q0, q1: Math.Vector2)->{a: Math.Vector2, b: Math.Vector2, dist: f32}
     {
-        var p1p0 = p1 - p0
-        var q1q0 = q1 - q0
-        var p0q0 = p0 - q0
-        var a = p1p0.dot(p1p0)
-        var b = p1p0.dot(q1q0)
-        var c = q1q0.dot(q1q0)
-        var d = p1p0.dot(p0q0)
-        var e = q1q0.dot(p0q0)
-        var det = a * c - b * b
+        let p1p0 = p1 - p0
+        let q1q0 = q1 - q0
+        let p0q0 = p0 - q0
+        let a = p1p0.dot(p1p0)
+        let b = p1p0.dot(q1q0)
+        let c = q1q0.dot(q1q0)
+        let d = p1p0.dot(p0q0)
+        let e = q1q0.dot(p0q0)
+        let det = a * c - b * b
 
         var s, t: f32 = undefined
         if det > 0
         {
-            var bte = b * e
-            var ctd = c * d
+            let bte = b * e
+            let ctd = c * d
             if bte <= ctd
             {
                 s = 0
                 if e <= 0
                 {
                     t = 0
-                    var nd = -d
+                    let nd = -d
                     if nd >= a
                         s = 1
                     elif nd > 0
@@ -113,7 +113,7 @@ impl Vector2
                 else
                 {
                     t = 1
-                    var bmd = b - d
+                    let bmd = b - d
                     if bmd >= a
                         s = 1
                     elif bmd > 0
@@ -126,11 +126,11 @@ impl Vector2
                 if s >= det
                 {
                     s = 1
-                    var bpe = b + e
+                    let bpe = b + e
                     if bpe <= 0
                     {
                         t = 0
-                        var nd = -d
+                        let nd = -d
                         if nd <= 0
                             s = 0
                         elif nd < a
@@ -143,7 +143,7 @@ impl Vector2
                     else
                     {
                         t = 1
-                        var bmd = b - d
+                        let bmd = b - d
                         if bmd <= 0
                             s = 0
                         elif bmd < a
@@ -152,12 +152,12 @@ impl Vector2
                 }
                 else
                 {
-                    var ate = a * e
-                    var btd = b * d
+                    let ate = a * e
+                    let btd = b * d
                     if ate <= btd
                     {
                         t = 0
-                        var nd = -d
+                        let nd = -d
                         if nd <= 0
                             s =0
                         elif nd >= a
@@ -171,7 +171,7 @@ impl Vector2
                         if t >= det
                         {
                             t = 1
-                            var bmd = b - d
+                            let bmd = b - d
                             if bmd <= 0
                                 s = 0
                             elif bmd >= a
@@ -193,7 +193,7 @@ impl Vector2
             if e <= 0
             {
                 t = 0
-                var nd = -d
+                let nd = -d
                 if nd <= 0
                     s = 0
                 elif nd >= a
@@ -204,7 +204,7 @@ impl Vector2
             elif e >= c
             {
                 t = 1
-                var bmd = b - d
+                let bmd = b - d
                 if bmd <= 0
                     s = 0
                 elif bmd >= a
@@ -231,9 +231,9 @@ impl Vector2
     {
         var result: retval
 
-        var ua = (end1.x - start1.x) * (start0.y - start1.y) - (end1.y - start1.y) * (start0.x - start1.x)
-        var ub = (end0.x - start0.x) * (start0.y - start1.y) - (end0.y - start0.y) * (start0.x - start1.x)
-        var d = (end1.y - start1.y) * (end0.x - start0.x) - (end1.x - start1.x) * (end0.y - start0.y)
+        let ua = (end1.x - start1.x) * (start0.y - start1.y) - (end1.y - start1.y) * (start0.x - start1.x)
+        let ub = (end0.x - start0.x) * (start0.y - start1.y) - (end0.y - start0.y) * (start0.x - start1.x)
+        let d = (end1.y - start1.y) * (end0.x - start0.x) - (end1.x - start1.x) * (end0.y - start0.y)
 
         // Parallel lines
         if Math.abs(d) < epsilon
@@ -285,8 +285,8 @@ impl Vector2
     // PNPoly by W. Randolph Franklin
     func polyContains(poly: Array'Math.Vector2, pt: Math.Vector2)->bool
     {
-        var i = 0
-        var j = cast(s32) poly.count - 1
+        let i = 0
+        let j = cast(s32) poly.count - 1
         var c = false
         var verti = poly.buffer + i
         var vertj = poly.buffer + j

@@ -30,7 +30,7 @@ private impl TagBin
     {
         if freeSections.count
         {
-            var ptr = freeSections.popBack()
+            let ptr = freeSections.popBack()
             ptr.mapSeek.clear()
             sections.add(ptr)
             return ptr
@@ -41,7 +41,7 @@ private impl TagBin
 
     mtd releaseSection()
     {
-        var ptr = sections.popBack()
+        let ptr = sections.popBack()
         freeSections.add(ptr)
     }
 }
@@ -65,7 +65,7 @@ impl TagBin
 
     mtd beginSection(kind: SectionKind)
     {
-        var sec = newSection()
+        let sec = newSection()
         sec.kind = kind
         if sec.kind != .Unordered
             return
@@ -78,7 +78,7 @@ impl TagBin
 
     mtd endSection()
     {
-        var sec = sections.back()
+        let sec = sections.back()
         if sec.kind != .Unordered
         {
             releaseSection()
@@ -114,7 +114,7 @@ impl TagBin
         {
             // Struct version
             output.addNative(TagBinSignatures.Version)
-            var version = Reflection.getAttributeValue(structType, Serialization.Version, "v")
+            let version = Reflection.getAttributeValue(structType, Serialization.Version, "v")
             if version == null
                 output.addNative(0'u32)
             else
@@ -136,7 +136,7 @@ impl TagBin
     {
         Debug.assert(sections.count != 0, "Missing a previous 'beginSection' call")
 
-        var sec = sections.back()
+        let sec = sections.back()
 
         // If section is raw, then we just have values without versionning
         if sec.kind == .Raw
@@ -178,15 +178,15 @@ impl TagBin
         // Just write them in one batch
         if typeElem.kind == .Struct
         {
-            var structType = cast(const *TypeInfoStruct) typeElem
+            let structType = cast(const *TypeInfoStruct) typeElem
             if structType.fromGeneric == @typeof(Array)
             {
-                var valueType = structType.generics[0].pointedType
-                var (raw, sizeof) = isPodFinal(valueType)
+                let valueType = structType.generics[0].pointedType
+                let (raw, sizeof) = isPodFinal(valueType)
 
                 if raw
                 {
-                    var bufArr = cast(const *Array'u8) data
+                    let bufArr = cast(const *Array'u8) data
                     output.addBytes(@mkslice(bufArr.buffer, countElem * sizeof))
                     return true
                 }
@@ -196,7 +196,7 @@ impl TagBin
         // Static array of raw serializable types
         else
         {
-            var (raw, sizeof) = isPodFinal(typeElem)
+            let (raw, sizeof) = isPodFinal(typeElem)
             if raw
             {
                 output.addBytes(@mkslice(cast(const ^u8) data, countElem * sizeof))

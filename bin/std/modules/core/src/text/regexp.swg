@@ -185,14 +185,14 @@ impl RegExp
     {
         var result: retval
         var res = str
-        var end = @dataof(str) + @countof(str)
+        let end = @dataof(str) + @countof(str)
         loop
         {
             res = grep(res)
             if !res
                 break
             result.add(res)
-            var newStart = @dataof(res) + @countof(res)
+            let newStart = @dataof(res) + @countof(res)
             res = @mkstring(newStart, end - newStart)
         }
 
@@ -280,7 +280,7 @@ impl RegExp
         func checkTr(c: rune)
         {
             {
-                var find = curState.transitions.find(c)
+                let find = curState.transitions.find(c)
                 if find
                 {
                     out.add(find.value)
@@ -293,7 +293,7 @@ impl RegExp
 
         if Unicode.isLatin1(c)
         {
-            var c8 = cast(u8) c
+            let c8 = cast(u8) c
             if Latin1.isDigit(c8)   checkTr(RuneAsciiDigit)
             if Latin1.isLetter(c8)  checkTr(RuneAsciiLetter)
             if Latin1.isLower(c8)   checkTr(RuneAsciiLower)
@@ -337,9 +337,9 @@ impl RegExp
     mtd nfaPush(c: rune)
     {
         // Creates 2 new states, and one transition (by c) between them
-        var table = Memory.new'NfaTable()
-        var s1 = Memory.new'NfaNode()
-        var s2 = Memory.new'NfaNode()
+        let table = Memory.new'NfaTable()
+        let s1 = Memory.new'NfaNode()
+        let s2 = Memory.new'NfaNode()
 
         table.level = cast(u32) openParen.count
         nfaTables.add(table)
@@ -357,18 +357,18 @@ impl RegExp
 
     mtd operatorUnion() throw
     {
-        var table2 = try nfaPop()
-        var table1 = try nfaPop()
+        let table2 = try nfaPop()
+        let table1 = try nfaPop()
 
-        var ns1 = Memory.new'NfaNode()
-        var ns2 = Memory.new'NfaNode()
+        let ns1 = Memory.new'NfaNode()
+        let ns2 = Memory.new'NfaNode()
         nfaNodes.add(ns1)
         nfaNodes.add(ns2)
 
-        var s1 = table1.nodes.front()
-        var s2 = table1.nodes.back()
-        var s3 = table2.nodes.front()
-        var s4 = table2.nodes.back()
+        let s1 = table1.nodes.front()
+        let s2 = table1.nodes.back()
+        let s3 = table2.nodes.front()
+        let s4 = table2.nodes.back()
 
         ns1.addTransition(0'rune, s1)
         s2.addTransition(0'rune, ns2)
@@ -616,7 +616,7 @@ impl RegExp
     mtd dfaBuild() throw
     {
         // One table must remain
-        var table = try nfaPop()
+        let table = try nfaPop()
 
         // Last state of NFA table is a terminal
         table.nodes.back().terminal = true

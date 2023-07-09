@@ -15,7 +15,7 @@ func touch(fullname: string) throw
 {
     var winPath = Utf16.toZeroTerminated(fullname)
 
-    var hFile = CreateFileW(@dataof(winPath), FILE_WRITE_ATTRIBUTES, 0, null, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, null)
+    let hFile = CreateFileW(@dataof(winPath), FILE_WRITE_ATTRIBUTES, 0, null, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, null)
     defer CloseHandle(hFile)
 
     var ft: FILETIME = undefined
@@ -30,7 +30,7 @@ func exists(fullname: string)->bool
 {
     if fullname == null return false
     var winPath = Utf16.toZeroTerminated(fullname)
-    var attributes = catch GetFileAttributesW(@dataof(winPath))
+    let attributes = catch GetFileAttributesW(@dataof(winPath))
     if @errmsg return false
     if attributes == 0xFFFFFFFF return false
     if attributes & FILE_ATTRIBUTE_DIRECTORY return false
@@ -78,7 +78,7 @@ func open(fullname: string, mode: FileMode, access: FileAccess, share: FileShare
         wShare |= FILE_SHARE_DELETE
 
     var winPath = Utf16.toZeroTerminated(fullname)
-    var hFile = CreateFileW(@dataof(winPath), wAccess, wShare, null, wMode, FILE_ATTRIBUTE_NORMAL, null);
+    let hFile = CreateFileW(@dataof(winPath), wAccess, wShare, null, wMode, FILE_ATTRIBUTE_NORMAL, null);
 
     result.name    = fullname
     result.handle  = cast(FileHandle) hFile

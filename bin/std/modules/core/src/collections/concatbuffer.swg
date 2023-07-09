@@ -75,7 +75,7 @@ impl ConcatBuffer
         if lastBucket
         {
             // Enough room in the last bucket
-            var seek = cast(u64) (currentSP - lastBucket.datas)
+            let seek = cast(u64) (currentSP - lastBucket.datas)
             if seek + numBytes <= lastBucket.size
                 return
 
@@ -95,7 +95,7 @@ impl ConcatBuffer
         // Need to allocate a new bucket
         if allocator == null
             allocator = @getcontext().allocator
-        var newBucket = Memory.new'ConcatBufferBucket(allocator)
+        let newBucket = Memory.new'ConcatBufferBucket(allocator)
 
         if lastBucket
         {
@@ -113,7 +113,7 @@ impl ConcatBuffer
 
         curBucket, lastBucket = newBucket
 
-        var bsize = Math.max(granularity, numBytes)
+        let bsize = Math.max(granularity, numBytes)
         lastBucket.datas = Memory.alloc(bsize, allocator)
         lastBucket.size  = bsize
         currentSP = lastBucket.datas
@@ -143,7 +143,7 @@ impl ConcatBuffer
         var ptr = firstBucket
         while ptr
         {
-            var nextPtr = ptr.next
+            let nextPtr = ptr.next
             Memory.free(ptr.datas, ptr.size, allocator)
             if ptr != &viewFirstBucket
                 Memory.free(ptr, @sizeof(ConcatBufferBucket), allocator)
@@ -220,7 +220,7 @@ impl ConcatBuffer
             // Overwrite
             if !isAtEnd
             {
-                var curCount = cast(u64) (currentSP - curBucket.datas)
+                let curCount = cast(u64) (currentSP - curBucket.datas)
                 var remain = curBucket.count - curCount
                 while num > remain
                 {
@@ -256,7 +256,7 @@ impl ConcatBuffer
             // Append
             else
             {
-                var curCount = cast(u64) (currentSP - lastBucket.datas)
+                let curCount = cast(u64) (currentSP - lastBucket.datas)
                 var remain = lastBucket.size - curCount
                 while num > remain
                 {
@@ -417,9 +417,9 @@ impl ConcatBuffer
         // Must be linear ?
         Debug.assert(lastBucket == firstBucket)
 
-        var rdata = firstBucket.datas
-        var rcount = firstBucket.count
-        var rcapacity = firstBucket.size
+        let rdata = firstBucket.datas
+        let rcount = firstBucket.count
+        let rcapacity = firstBucket.size
 
         if firstBucket != &viewFirstBucket
             Memory.free(firstBucket, @sizeof(ConcatBufferBucket), allocator)
@@ -455,8 +455,8 @@ impl ConcatBuffer
         if lastBucket == firstBucket
             return
 
-        var total = count()
-        var newDatas = cast(^u8) Memory.alloc(total, allocator)
+        let total = count()
+        let newDatas = cast(^u8) Memory.alloc(total, allocator)
 
         var curPtr = newDatas
         visit b: dref self

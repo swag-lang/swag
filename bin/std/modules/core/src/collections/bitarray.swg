@@ -43,7 +43,7 @@ public impl BitArray
     {
         if buffer
         {
-            var otherBuffer = buffer
+            let otherBuffer = buffer
             buffer = null
             reserve(count)
             Memory.copy(buffer, otherBuffer, capacity)
@@ -154,9 +154,9 @@ public impl BitArray
     mtd set(index: u64, value: bool)
     {
         Debug.assert(index < count)
-        var val = index >> 5
-        var bit = index - (val << 5)
-        var shift = 1'u32 << cast(u32) bit
+        let val = index >> 5
+        let bit = index - (val << 5)
+        let shift = 1'u32 << cast(u32) bit
         if value
             buffer[val] |= shift
         else
@@ -167,9 +167,9 @@ public impl BitArray
     mtd const get(index: u64)->bool
     {
         Debug.assert(index < count)
-        var val = index >> 5
-        var bit = index - (val << 5)
-        var shift = 1'u32 << cast(u32) bit
+        let val = index >> 5
+        let bit = index - (val << 5)
+        let shift = 1'u32 << cast(u32) bit
         return cast(bool) (buffer[val] & shift)
     }
 
@@ -177,9 +177,9 @@ public impl BitArray
     mtd invert(index: u64)
     {
         Debug.assert(index < count)
-        var val = index >> 5
-        var bit = index - (val << 5)
-        var shift = 1'u32 << cast(u32) bit
+        let val = index >> 5
+        let bit = index - (val << 5)
+        let shift = 1'u32 << cast(u32) bit
         if buffer[val] & shift
             buffer[val] ^= shift
         else

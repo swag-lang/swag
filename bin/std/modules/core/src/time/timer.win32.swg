@@ -5,7 +5,7 @@ using Win32
 
 private func timerEntry(param: *void, _timerOrWaitFired: BOOL)
 {
-    var t = cast(*Timer) param
+    let t = cast(*Timer) param
     if !@getcontext()
         @setcontext(t.context)
     t.userLambda(dref t)
@@ -38,7 +38,7 @@ impl Timer
         if !handle
             return
 
-        var evt = assume CreateEventA(null, FALSE, FALSE, null)
+        let evt = assume CreateEventA(null, FALSE, FALSE, null)
         defer CloseHandle(evt)
 
         DeleteTimerQueueTimer(null, handle, evt)

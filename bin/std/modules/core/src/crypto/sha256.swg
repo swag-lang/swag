@@ -151,8 +151,8 @@ public impl Sha256
     mtd update(buffer: const [..] u8)
     {
         Debug.assert(@countof(buffer) <= Swag.U32.Max)
-        var buf = @dataof(buffer)
-        var len = cast(u32) @countof(buffer)
+        let buf = @dataof(buffer)
+        let len = cast(u32) @countof(buffer)
 
         loop i: len
         {

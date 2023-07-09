@@ -82,7 +82,7 @@ func readAllBytes(fullname: string)->Array'u8 throw
     var stream = openRead(fullname)
 
     var result: retval
-    var len = stream.getSize()
+    let len = stream.getSize()
     result.reserve(len)
     result.count = stream.read(result.buffer, len)
     return result

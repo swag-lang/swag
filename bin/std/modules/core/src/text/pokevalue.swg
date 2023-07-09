@@ -56,17 +56,17 @@ public func pokeValue(addr: *void, type: typeinfo, buf: string)->string throw
     // Enum
     if Reflection.isEnum(type)
     {
-        var enumType = cast(const *TypeInfoEnum) type
+        let enumType = cast(const *TypeInfoEnum) type
         if enumType.rawType != string and enumType.sizeof > 8
             throw Format.toString("unsupported enum type '%'", enumType.rawType.name)
 
-        var enumFlags = Reflection.hasAttribute(enumType, EnumFlags)
+        let enumFlags = Reflection.hasAttribute(enumType, EnumFlags)
 
         loop
         {
             one = Tokenize.eatSpaces(one)
-            var id = try parseIdentifier(one)
-            var v = Reflection.getEnumValue(type, id)
+            let id = try parseIdentifier(one)
+            let v = Reflection.getEnumValue(type, id)
             if !v throw Format.toString("unknown enum value '%'", id)
 
             if enumType.rawType == string
@@ -106,7 +106,7 @@ public func pokeValue(addr: *void, type: typeinfo, buf: string)->string throw
             one = Tokenize.eatCount(one, 1)
         }
 
-        var eat = cast(u32) cast(s64) (@dataof(one) - @dataof(buf))
+        let eat = cast(u32) cast(s64) (@dataof(one) - @dataof(buf))
         one = Tokenize.eatCount(buf, cast(u64) eat)
         return one
     }
@@ -114,7 +114,7 @@ public func pokeValue(addr: *void, type: typeinfo, buf: string)->string throw
     // Decode interface
     if Reflection.hasInterface(type, IPokeValue)
     {
-        var itf = @mkinterface(addr, type, IPokeValue)
+        let itf = @mkinterface(addr, type, IPokeValue)
         return try itf.poke(one)
     }
 

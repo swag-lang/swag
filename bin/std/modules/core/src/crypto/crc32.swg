@@ -532,10 +532,10 @@ public impl Crc32
             {
             #if BIG_ENDIAN
             {
-                var one = current[0] ^ Swap(cur)
-                var two = current[1]
-                var three = current[2]
-                var four = current[3]
+                let one = current[0] ^ Swap(cur)
+                let two = current[1]
+                let three = current[2]
+                let four = current[3]
                 current += 4
 
                 #[Swag.Overflow(true)]
@@ -550,10 +550,10 @@ public impl Crc32
             }
             #else
             {
-                var one = current[0] ^ cur
-                var two = current[1]
-                var three = current[2]
-                var four = current[3]
+                let one = current[0] ^ cur
+                let two = current[1]
+                let three = current[2]
+                let four = current[3]
                 current += 4
 
                 #[Swag.Overflow(true)]

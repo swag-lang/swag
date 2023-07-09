@@ -40,7 +40,7 @@ public impl Mt64
     #[Swag.Overflow(true)]
     mtd seedU64(seed: const [..] u64)
     {
-        var keyLength = @countof(seed)
+        let keyLength = @countof(seed)
 
         seedU64(19650218)
         var i = 1
@@ -80,21 +80,21 @@ public impl Mt64
     {
         if mti >= NN
         {
-            var stateMid = mt[MID]
+            let stateMid = mt[MID]
 
             for {var i = 0; var j = MID;}
                 i != MID - 1
                 {i += 1; j += 1;}
             {
-                var x = (mt[i] & UM) | (mt[i + 1] & LM)
+                let x = (mt[i] & UM) | (mt[i + 1] & LM)
                 mt[i] = mt[i + MID] ^ (x >> 1) ^ ((mt[i + 1] & 1) * MATRIX_A)
-                var y = (mt[j] & UM) | (mt[j + 1] & LM)
+                let y = (mt[j] & UM) | (mt[j + 1] & LM)
                 mt[j] = mt[j - MID] ^ (y >> 1) ^ ((mt[j + 1] & 1) * MATRIX_A)
             }
 
-            var x = (mt[MID - 1] & UM) | (stateMid & LM)
+            let x = (mt[MID - 1] & UM) | (stateMid & LM)
             mt[MID - 1] = mt[NN - 1] ^ (x >> 1) ^ ((stateMid & 1) * MATRIX_A)
-            var y = (mt[NN - 1] & UM) | (mt[0] & LM)
+            let y = (mt[NN - 1] & UM) | (mt[0] & LM)
             mt[NN - 1] = mt[MID - 1] ^ (y >> 1) ^ ((mt[0] & 1) * MATRIX_A)
 
             mti = 0

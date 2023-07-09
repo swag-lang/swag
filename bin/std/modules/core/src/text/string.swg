@@ -60,7 +60,7 @@ impl String
             return
         }
 
-        var newCapacity = @countof(value) + 1
+        let newCapacity = @countof(value) + 1
         length = newCapacity - 1
         grow(newCapacity)
         Memory.copy(buffer, @dataof(value), length)
@@ -143,7 +143,7 @@ impl String
             buffer = acast &padding[0]
         else
         {
-            var oldBuffer = buffer
+            let oldBuffer = buffer
             buffer = null
             capacity = 0
             reserve(length + 1)
@@ -236,10 +236,10 @@ impl String
     // Replace all occurences of 'what' with 'by'
     mtd replace(what, by: string, comparisonType = Utf8.ComparisonType.Latin1)
     {
-        var whatLength = @countof(what)
+        let whatLength = @countof(what)
         if !whatLength or whatLength > length
             return
-        var byLength = @countof(by)
+        let byLength = @countof(by)
 
         var idx = Utf8.indexOf(toString(), what, 0, comparisonType)
         while idx != Swag.U64.Max
@@ -297,7 +297,7 @@ impl String
         }
 
         Debug.safetyBoundCheck(byteIndex < length, "index out of range")
-        var countof = @countof(value)
+        let countof = @countof(value)
         if !countof
             return
 
@@ -328,7 +328,7 @@ impl String
     {
         Debug.assert(Utf8.isValidRune(value), "invalid rune")
         var tmp: [4] u8
-        var eat = Utf8.encodeRune(tmp, value)
+        let eat = Utf8.encodeRune(tmp, value)
         grow(length + eat + 1)
         loop i: eat
             buffer[length + i] = tmp[i]
@@ -339,11 +339,11 @@ impl String
     // Append a string to the String
     mtd append(value: string)
     {
-        var concatLength = @countof(value)
+        let concatLength = @countof(value)
         if concatLength == 0
             return
 
-        var newLength = length + concatLength + 1
+        let newLength = length + concatLength + 1
         grow(newLength)
         Memory.copy(buffer + length, @dataof(value), concatLength)
         length = newLength - 1
@@ -406,7 +406,7 @@ impl String
         // We were in small size mode, and we are no more
         elif buffer == acast &padding[0]
         {
-            var oldBuffer = buffer
+            let oldBuffer = buffer
             buffer = acast Memory.alloc(newCapacity, allocator)
             Memory.copy(buffer, oldBuffer, Math.min(newCapacity, length + 1))
             capacity = newCapacity

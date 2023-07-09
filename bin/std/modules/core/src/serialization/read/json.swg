@@ -35,7 +35,7 @@ public impl JSon
     mtd beginSequence(_typeElem: typeinfo, _data: *u8, _countElem: *u64)->bool throw
     {
         zapBlanks()
-        var c = stream.readU8()
+        let c = stream.readU8()
         if c != "["'u8
             throw "malformed array (missing opening '[')"
 
@@ -45,7 +45,7 @@ public impl JSon
     mtd endSequence() throw
     {
         zapBlanks()
-        var c = stream.readU8()
+        let c = stream.readU8()
         if c != "]"'u8
             throw "malformed array (missing closing ']')"
     }
@@ -53,14 +53,14 @@ public impl JSon
     mtd toNextSequenceElement(_countElem: *u64)->bool
     {
         zapBlanks()
-        var c = stream.peekU8()
+        let c = stream.peekU8()
         return c != "]"'u8
     }
 
     mtd beginRoot() throw
     {
         zapBlanks()
-        var c = stream.readU8()
+        let c = stream.readU8()
         if c != "{"'u8
             throw "malformed root (missing opening '{')"
     }
@@ -68,7 +68,7 @@ public impl JSon
     mtd endRoot() throw
     {
         zapBlanks()
-        var c = stream.readU8()
+        let c = stream.readU8()
         if c != "}"'u8
             throw "malformed root (missing closing '}')"
     }
@@ -76,7 +76,7 @@ public impl JSon
     mtd beginSection(_kind: SectionKind) throw
     {
         zapBlanks()
-        var c = stream.readU8()
+        let c = stream.readU8()
         if c != "{"'u8
             throw "malformed struct (missing opening '{')"
     }
@@ -84,7 +84,7 @@ public impl JSon
     mtd endSection() throw
     {
         zapBlanks()
-        var c = stream.readU8()
+        let c = stream.readU8()
         if c != "}"'u8
             throw "malformed struct (missing closing '}')"
     }
@@ -143,7 +143,7 @@ public impl JSon
     mtd endValue() throw
     {
         zapBlanks()
-        var c = stream.peekU8()
+        let c = stream.peekU8()
         if c == ","'u8
             stream.moveSeek()
     }

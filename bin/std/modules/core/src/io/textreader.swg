@@ -85,8 +85,9 @@ public impl TextReader
 
         loop
         {
-            var ptr, ptrB = buffer.buffer + byteSeek
-            var ptrE = buffer.buffer + buffer.count
+            var ptr = buffer.buffer + byteSeek
+            let ptrB = ptr
+            let ptrE = buffer.buffer + buffer.count
 
             // u64 by u64
             while ptr + 8'u64 <= ptrE
@@ -101,7 +102,7 @@ public impl TextReader
             while ptr != ptrE and dref ptr != "\r"'u8 and dref ptr != "\n"'u8
                 ptr += 1
 
-            var range = cast(u64) (ptr - ptrB)
+            let range = cast(u64) (ptr - ptrB)
             result += @mkstring(ptrB, range)
 
             // We have reached the end of the buffer without finding an eol
@@ -141,7 +142,7 @@ public impl TextReader
         // Append what remains valid in the current decoded buffer
         if byteSeek < buffer.count
         {
-            var remain = buffer.count - byteSeek
+            let remain = buffer.count - byteSeek
             result.grow(result.length + remain)
             Memory.copy(result.buffer + result.length, buffer.buffer + byteSeek, remain)
             result.length += remain

@@ -15,7 +15,7 @@ func exists(dirName: string)->bool
     if @countof(dirName) == 0
         return false
     var winPath = Utf16.toZeroTerminated(dirName)
-    var attributes = catch GetFileAttributesW(@dataof(winPath))
+    let attributes = catch GetFileAttributesW(@dataof(winPath))
     if @errmsg
         return false
     if attributes == 0xFFFFFFFF
@@ -38,7 +38,7 @@ func enumerate(dirName: string, options: EnumerationOptions)->Array'(File.FileIn
     var fileTime:   SYSTEMTIME
     var stackPath:  Array'String
 
-    var dataof = cast(const ^u16) @dataof(findfile.cFileName)
+    let dataof = cast(const ^u16) @dataof(findfile.cFileName)
 
     stackPath.add(String.from(dirName))
     while !stackPath.isEmpty()
@@ -49,7 +49,7 @@ func enumerate(dirName: string, options: EnumerationOptions)->Array'(File.FileIn
         var searchPath = Path.combine(toScan.toString(), "*")
 
         var winPath = Utf16.toZeroTerminated(searchPath)
-        var h = try FindFirstFileW(@dataof(winPath), &findfile)
+        let h = try FindFirstFileW(@dataof(winPath), &findfile)
         if h == INVALID_HANDLE_VALUE
             continue
 
@@ -102,7 +102,7 @@ func enumerate(dirName: string, options: EnumerationOptions)->Array'(File.FileIn
                 }
             }
 
-            var next = catch FindNextFileW(h, &findfile)
+            let next = catch FindNextFileW(h, &findfile)
             if !next break
         }
 
@@ -116,7 +116,7 @@ func enumerate(dirName: string, options: EnumerationOptions)->Array'(File.FileIn
 func getCurrent()->String throw
 {
     var result: retval
-    var length = try GetCurrentDirectoryW(0, null)
+    let length = try GetCurrentDirectoryW(0, null)
 
     var arr16: Array'u16
     arr16.allocator = @getcontext().tempAllocator
@@ -144,7 +144,7 @@ func getDrives()->Array'String throw
     var volName: [MAX_PATH] u8
     var driveName: [MAX_PATH] u8
 
-    var h = FindFirstVolumeA(volName, acast MAX_PATH)
+    let h = FindFirstVolumeA(volName, acast MAX_PATH)
     if h == INVALID_HANDLE_VALUE
         return result
 
@@ -154,7 +154,7 @@ func getDrives()->Array'String throw
         catch GetVolumePathNamesForVolumeNameA(volName, driveName, acast MAX_PATH, &ret)
         if !@errmsg
         {
-            var len = @strlen(driveName)
+            let len = @strlen(driveName)
             if len
             {
                 var str = String.from(@mkstring(&driveName[0], len))

@@ -40,7 +40,7 @@ impl HashTable
         if !table
             return
 
-        var newTable = cast(^HashTableEntry) Memory.alloc(capacity * @sizeof(HashTableEntry), allocator)
+        let newTable = cast(^HashTableEntry) Memory.alloc(capacity * @sizeof(HashTableEntry), allocator)
         #if Reflection.hasPostCopy(K) or Reflection.hasPostCopy(V)
         {
             loop i: capacity
@@ -112,7 +112,7 @@ impl HashTable
         if capacity != 0 and capacity - (count + deleted) > capacity / 4
             return
 
-        var newCapacity = capacity * 2
+        let newCapacity = capacity * 2
         reserve(newCapacity)
     }
 
@@ -143,14 +143,14 @@ impl HashTable
     // Reserve 'newCapacity' elements in the table.
     mtd reserve(newCapacity: u64)
     {
-        var reqCapacity = Math.max(newCapacity, 32)
+        let reqCapacity = Math.max(newCapacity, 32)
         if reqCapacity <= capacity
             return
 
-        var oldTable = table
+        let oldTable = table
         count = 0
         deleted = 0
-        var newCapacityBytes = reqCapacity * @sizeof(HashTableEntry)
+        let newCapacityBytes = reqCapacity * @sizeof(HashTableEntry)
 
         if allocator == null
             allocator = @getcontext().allocator
@@ -160,11 +160,11 @@ impl HashTable
         Memory.clear(table, newCapacityBytes)
 
         // Copy the last table to the new table, removing deleted entries
-        var oldCapacity = capacity
+        let oldCapacity = capacity
         capacity = reqCapacity
         loop i: oldCapacity
         {
-            var h = oldTable[i].hash
+            let h = oldTable[i].hash
             if h >= HASH_FIRST
             {
                 emplaceInternal(h, &oldTable[i].key, &oldTable[i].value)
@@ -186,7 +186,7 @@ impl HashTable
     {
         grow()
 
-        var hashVal = hashKey(key)
+        let hashVal = hashKey(key)
         var index = hashVal % capacity
 
         while table[index].hash >= HASH_FIRST
@@ -225,7 +225,7 @@ impl HashTable
     {
         grow()
 
-        var hashVal = hashKey(key)
+        let hashVal = hashKey(key)
         var index = hashVal % capacity
 
         while table[index].hash >= HASH_FIRST
@@ -301,7 +301,7 @@ impl HashTable
         if !table
             return
 
-        var hashVal = hashKey(key)
+        let hashVal = hashKey(key)
         var index = hashVal % capacity
 
         while table[index].hash
@@ -324,7 +324,7 @@ impl HashTable
         if !table
             return false
 
-        var hashVal = hashKey(key)
+        let hashVal = hashKey(key)
         var index = hashVal % capacity
 
         while table[index].hash
@@ -344,7 +344,7 @@ impl HashTable
         if !table
             return null
 
-        var hashVal = hashKey(key)
+        let hashVal = hashKey(key)
         var index = hashVal % capacity
 
         while table[index].hash
@@ -366,7 +366,7 @@ impl HashTable
         {
             loop i: capacity
             {
-                var hashval = table[i].hash
+                let hashval = table[i].hash
 
                 if hashval >= HASH_DELETED
                 {

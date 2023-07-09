@@ -5,7 +5,7 @@ using Win32
 
 private func threadEntry(param: *void)->DWORD
 {
-    var th = cast(*Thread) param
+    let th = cast(*Thread) param
     @setcontext(th.context)
     th.userLambda(dref th)
     th.context.tempAllocator.release()
@@ -20,7 +20,7 @@ func wait(threads: *Thread...)
     var total = @countof(threads)
     while total > 0
     {
-        var toTreat = Math.min(MAXIMUM_WAIT_OBJECTS, cast(u32) total)
+        let toTreat = Math.min(MAXIMUM_WAIT_OBJECTS, cast(u32) total)
         loop i: toTreat
         {
             Debug.assert(threads[i].isValid())
@@ -87,7 +87,7 @@ impl Thread
     {
         Debug.assert(isValid())
 
-        var newPrio = #self.priority
+        let newPrio = #self.priority
         if self.priority == newPrio
             return
         self.priority = newPrio
@@ -120,7 +120,7 @@ impl Thread
     mtd isDone()->bool
     {
         Debug.assert(isValid())
-        var res = assume WaitForSingleObject(handle, 0)
+        let res = assume WaitForSingleObject(handle, 0)
         return res != WAIT_TIMEOUT
     }
 }

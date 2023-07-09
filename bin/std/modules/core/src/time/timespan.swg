@@ -62,7 +62,7 @@ impl TimeSpan
     {
         Debug.assert(-120000 <= months and months <= 120000, "overflow")
         var (y, m, d) = ticksToDate(ticks)
-        var i = cast(s32) (m - 1) + months
+        let i = cast(s32) (m - 1) + months
         if i >= 0
         {
             m =  cast(u16) (i % 12 + 1)
@@ -75,7 +75,7 @@ impl TimeSpan
         }
 
         Debug.assert(1 <= y and y <= 9999, "overflow")
-        var days = daysInMonth(y, m)
+        let days = daysInMonth(y, m)
         if (d > days) d = days
         ticks = dateToTicks(y, m, d) + (ticks % TicksPerDay)
     }

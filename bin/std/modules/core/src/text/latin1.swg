@@ -61,9 +61,9 @@ func makeLower(buffer: [..] u8)
 // Returns -1, 0 or 1
 func compare(src, dst: const [..] u8, ignoreCase = false)->s32
 {
-    var length = @countof(src)
-    var otherLength = @countof(dst)
-    var minLen = Math.min(length, otherLength)
+    let length = @countof(src)
+    let otherLength = @countof(dst)
+    let minLen = Math.min(length, otherLength)
 
     var result: s32
     if ignoreCase

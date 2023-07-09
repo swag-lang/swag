@@ -61,7 +61,7 @@ impl TweakFile
             if one[0] == "/"'u8
             {
                 one = Tokenize.eatCount(one, 1)
-                var folderName = catch StrConv.parseIdentifier(one)
+                let folderName = catch StrConv.parseIdentifier(one)
                 if @errmsg
                     throw Format.toString("line %: invalid folder name", idx + 1)
 
@@ -84,12 +84,12 @@ impl TweakFile
 
             // Value
             one = Tokenize.eatSpaces(one)
-            var id = catch StrConv.parseIdentifier(one)
+            let id = catch StrConv.parseIdentifier(one)
             if @errmsg
                 throw Format.toString("line %: invalid value name", idx + 1)
 
             // Search value into folder
-            var field = Reflection.getField(currentFolder.type, id)
+            let field = Reflection.getField(currentFolder.type, id)
             if !field
                 throw Format.toString("line %: value '%' not found in folder '%'", idx + 1, id, currentFolder.type.name)
             one = Tokenize.eatCount(one, @countof(id))
@@ -100,7 +100,7 @@ impl TweakFile
             if one[0] == "$"'u8
             {
                 one = Tokenize.eatCount(one, 1)
-                var otherField = Reflection.getField(currentFolder.type, one)
+                let otherField = Reflection.getField(currentFolder.type, one)
                 if !otherField
                     throw Format.toString("line %: reference '%' not found in folder '%'", idx + 1, one, currentFolder.type.name)
                 if field.pointedType != otherField.pointedType
@@ -152,8 +152,8 @@ impl TweakFile
                     break
             }
 
-            var ptrDst = cast(^u8) refr.folder.data + refr.dst.offset
-            var ptrSrc = cast(^u8) refr.folder.data + refr.src.offset
+            let ptrDst = cast(^u8) refr.folder.data + refr.dst.offset
+            let ptrSrc = cast(^u8) refr.folder.data + refr.src.offset
             Reflection.copy(ptrDst, ptrSrc, refr.dst.pointedType)
 
             refs.removeAt(toDo)

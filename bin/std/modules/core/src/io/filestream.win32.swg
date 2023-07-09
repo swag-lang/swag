@@ -49,9 +49,9 @@ impl FileStream
         Debug.assert(isOpen())
         Debug.assert(canSeek)
 
-        var hFile = cast(HANDLE) handle
+        let hFile = cast(HANDLE) handle
         var high = 0'u32
-        var low = try GetFileSize(hFile, &high)
+        let low = try GetFileSize(hFile, &high)
         return low + (cast(u64) high << 32)
     }
 
@@ -61,9 +61,9 @@ impl FileStream
         Debug.assert(isOpen())
         Debug.assert(canSeek)
 
-        var hFile = cast(HANDLE) handle
+        let hFile = cast(HANDLE) handle
         var high = 0
-        var low = try SetFilePointer(hFile, 0, &high, FILE_CURRENT)
+        let low = try SetFilePointer(hFile, 0, &high, FILE_CURRENT)
         return low + (cast(u64) high << 32)
     }
 
@@ -73,8 +73,8 @@ impl FileStream
         Debug.assert(isOpen())
         Debug.assert(canSeek)
 
-        var hFile = cast(HANDLE) handle
-        var low = cast(LONG) (seek & 0xFFFFFFFF)
+        let hFile = cast(HANDLE) handle
+        let low = cast(LONG) (seek & 0xFFFFFFFF)
         var high = cast(LONG) (seek >> 32)
 
         var seekMode: DWORD

@@ -31,14 +31,14 @@ private
 // Returns the current time expressed in milliseconds
 func nowMilliseconds()->u32
 {
-    var ticks = nowPrecise() / (preciseFrequency() / 1000)
+    let ticks = nowPrecise() / (preciseFrequency() / 1000)
     return cast,bit(u32) ticks
 }
 
 // Returns the current time expressed in microseconds
 func nowMicroseconds()->u32
 {
-    var ticks = nowPrecise() / (preciseFrequency() / 1000000)
+    let ticks = nowPrecise() / (preciseFrequency() / 1000000)
     return cast,bit(u32) ticks
 }
 
@@ -78,9 +78,9 @@ func dateToTicks(year, month, day: u16)->Ticks
     Debug.assert(1 <= month and month <= 12)
     Debug.assert(1 <= day and day <= daysInMonth(year, month))
 
-    var days = isLeapYear(year) ? @dataof(DaysToMonth366) : @dataof(DaysToMonth365)
-    var y = cast(u64) (year - 1)
-    var n = y*365 +,over y/4 +,over y/400 +,over days[month-1] +,over day-1 -,over y/100
+    let days = isLeapYear(year) ? @dataof(DaysToMonth366) : @dataof(DaysToMonth365)
+    let y = cast(u64) (year - 1)
+    let n = y*365 +,over y/4 +,over y/400 +,over days[month-1] +,over day-1 -,over y/100
     return n * TicksPerDay
 }
 
