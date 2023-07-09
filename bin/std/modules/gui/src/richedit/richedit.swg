@@ -352,7 +352,7 @@ impl RichEditCtrl
         // If there is a corresponding command, do nothing
         if !isChar
         {
-            var cmd = getMappingCommand(key, mdf)
+            let cmd = getMappingCommand(key, mdf)
             if cmd != .None
                 return
         }

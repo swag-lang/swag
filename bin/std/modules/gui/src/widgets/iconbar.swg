@@ -66,8 +66,8 @@ impl IconBar
     {
         var iconT = icon
         iconT.sizeX, iconT.sizeY = iconSize
-        var size = iconSize + 2*iconPadding
-        var b = IconButton.create(self, iconT, {0, 0, size, size})
+        let size = iconSize + 2*iconPadding
+        let b = IconButton.create(self, iconT, {0, 0, size, size})
         b.iconBtnFlags.set(iconBtnFlags)
         b.id = btnId
         b.dockStyle = .Left

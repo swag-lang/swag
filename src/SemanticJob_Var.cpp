@@ -606,6 +606,8 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
         symbolFlags |= OVERLOAD_IS_LET;
     if (node->attributeFlags & ATTRIBUTE_TLS)
         symbolFlags |= OVERLOAD_VAR_TLS;
+    if(node->assignment)
+        symbolFlags |= OVERLOAD_VAR_HAS_ASSIGN;
 
     auto concreteNodeType = node->type && node->type->typeInfo ? TypeManager::concreteType(node->type->typeInfo, CONCRETE_FORCEALIAS) : nullptr;
 

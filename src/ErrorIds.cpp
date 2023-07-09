@@ -1161,6 +1161,12 @@ void initErrors()
     SWAG_ERROR(Wrn0007, "the %s '%s' is unused");
     SWAG_ERROR(Wrn0008, "the function '%s' is unused");
     SWAG_ERROR(Wrn0009, "the local variable '%s' is never changed and should be declared with 'let'");
+    SWAG_ERROR(Wrn0010, "the variable '%s' is used but never changed");
+    SWAG_ERROR(Wrn0011, nullptr);
+    SWAG_ERROR(Wrn0012, nullptr);
+    SWAG_ERROR(Wrn0013, nullptr);
+    SWAG_ERROR(Wrn0014, nullptr);
+    SWAG_ERROR(Wrn0015, nullptr);
 
     /////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////

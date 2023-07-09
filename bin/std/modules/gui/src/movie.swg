@@ -171,7 +171,7 @@ impl Movie
     // Update timing and change frames
     mtd update(dt: f32)->bool
     {
-        var wasDirty = dirtyFrame
+        let wasDirty = dirtyFrame
         dirtyFrame = false
 
         if inPause

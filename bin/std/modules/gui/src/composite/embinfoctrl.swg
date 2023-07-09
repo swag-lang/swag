@@ -21,7 +21,7 @@ impl EmbInfoCtrl
         let theme = parent.getTheme()
         let colors = parent.getThemeColors()
 
-        with var ctrl = Wnd.create'EmbInfoCtrl(parent, {0, 0, 0, height})
+        with let ctrl = Wnd.create'EmbInfoCtrl(parent, {0, 0, 0, height})
         {
             .dockStyle = top ? .Top : .Bottom
             .label = Label.create(ctrl, #self.name, {})
@@ -48,7 +48,7 @@ impl EmbInfoCtrl
             .dockStyle = .Center
         }
 
-        with var btn = IconButton.create(ctrl.label, theme.getIcon24(.WndClose, 18), {0, 0, 32, 32})
+        with let btn = IconButton.create(ctrl.label, theme.getIcon24(.WndClose, 18), {0, 0, 32, 32})
         {
             .margin = 5
             .dockStyle = .Right

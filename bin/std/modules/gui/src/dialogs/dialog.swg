@@ -89,8 +89,8 @@ impl Dialog
     // Creates a simple dialog box
     func createDialog(from: *Surface, width = 512, height = 300, title: string = null)->*Dialog
     {
-        var dlg = Wnd.create'Dialog()
-        var srf = dlg.createSurface(from, 0, 0, width, height)
+        let dlg = Wnd.create'Dialog()
+        let srf = dlg.createSurface(from, 0, 0, width, height)
         srf.setTitle(title)
         srf.center(from)
         return dlg
@@ -100,7 +100,7 @@ impl Dialog
     mtd createSurface(from: *Surface, x, y: s32, width = 512, height = 300, flags = SurfaceFlags.Zero)->*Surface
     {
         let surfaceFlags = SurfaceFlags.BigCaption | SurfaceFlags.Secondary | flags
-        var srf = assume from.app.createSurface(x, y, width, height, surfaceFlags, self)
+        let srf = assume from.app.createSurface(x, y, width, height, surfaceFlags, self)
         srf.wnd.view.backgroundStyle = .Dialog
 
         let metrics = getThemeMetrics()
@@ -132,7 +132,7 @@ impl Dialog
     #[Swag.Discardable]
     mtd addButton(str: string, id: WndId, isDefault: bool = false)->*PushButton
     {
-        with var btn = PushButton.create(wndBottom, str, {}, #self.id)
+        with let btn = PushButton.create(wndBottom, str, {}, #self.id)
         {
             .form = isDefault ? .Default : .Strong
 

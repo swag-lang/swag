@@ -15,7 +15,7 @@ bool Parser::doWith(AstNode* parent, AstNode** result)
     *result   = node;
 
     AstNode* id = nullptr;
-    if (token.id == TokenId::KwdVar)
+    if (token.id == TokenId::KwdVar || token.id == TokenId::KwdLet)
     {
         SWAG_CHECK(doVarDecl(node, &id));
         if (id->kind != AstNodeKind::VarDecl)

@@ -1098,7 +1098,7 @@ impl Wnd
 
     mtd postInvalidateEvent()
     {
-        var evt = Event.create'Event()
+        let evt = Event.create'Event()
         evt.kind = .Invalidate
         postEvent(evt)
     }
@@ -1125,7 +1125,7 @@ impl Wnd
 
     mtd postResizeEvent()
     {
-        var evt = Event.create'ResizeEvent()
+        let evt = Event.create'ResizeEvent()
         evt.oldSize.x = position.width
         evt.oldSize.y = position.height
         postEvent(evt)
@@ -1144,7 +1144,7 @@ impl Wnd
     {
         if cmdId == null
             return
-        var evt = Event.create'CommandEvent()
+        let evt = Event.create'CommandEvent()
         evt.id = cmdId
         evt.source = self
         postEvent(evt)
@@ -1170,7 +1170,7 @@ impl Wnd
     // Send a notification event
     mtd ownerNotifyEvent(kind: NotifyEvent.Kind)
     {
-        var p = getOwner()
+        let p = getOwner()
         if !p return
         p.notifyEvent(kind)
     }

@@ -115,7 +115,7 @@ public impl MessageDlg
     // Message box with a 'ok'
     func ok(from: *Surface, message: string, icon: Icon = {})
     {
-        with var dlg = create(from, message, icon)
+        with let dlg = create(from, message, icon)
         {
             .addButton("OK", Dialog.BtnOk, true)
         }
@@ -126,7 +126,7 @@ public impl MessageDlg
     // Message box with a 'ok' and 'cancel' button
     func okCancel(from: *Surface, message: string, defaultId = Dialog.BtnCancel, icon: Icon = {})->WndId
     {
-        with var dlg = create(from, message, icon)
+        with let dlg = create(from, message, icon)
         {
             .addButton("OK", Dialog.BtnOk, defaultId == Dialog.BtnOk)
             .addButton("Cancel", Dialog.BtnCancel, defaultId == Dialog.BtnCancel)
@@ -139,7 +139,7 @@ public impl MessageDlg
     func yesNo(from: *Surface, message: string, title: string = null, defaultId = Dialog.BtnNo, icon: Icon = {})->WndId
     {
         var ic = icon.isValid() ? icon : from.app.theme.getIcon64(ThemeIcons64.Question)
-        with var dlg = create(from, message, ic)
+        with let dlg = create(from, message, ic)
         {
             .surface.setTitle(title)
             .addButton("Yes", Dialog.BtnYes, defaultId == Dialog.BtnYes)
@@ -152,7 +152,7 @@ public impl MessageDlg
     // Message box with a 'yes' and 'no' button
     func yesNoCancel(from: *Surface, message: string, defaultId = Dialog.BtnCancel, icon: Icon = {})->WndId
     {
-        with var dlg = create(from, message, icon.isValid() ? icon : from.app.theme.getIcon64(ThemeIcons64.Question))
+        with let dlg = create(from, message, icon.isValid() ? icon : from.app.theme.getIcon64(ThemeIcons64.Question))
         {
             .addButton("Yes", Dialog.BtnYes, defaultId == Dialog.BtnYes)
             .addButton("No", Dialog.BtnNo, defaultId == Dialog.BtnNo)
@@ -188,7 +188,7 @@ public impl MessageDlg
         }
 
         var icon = from.app.theme.getIcon64(.Critical)
-        with var dlg = create(from, txt.toString(), icon)
+        with let dlg = create(from, txt.toString(), icon)
         {
             .surface.setTitle("Error")
             .addButton("OK", Dialog.BtnOk, true)

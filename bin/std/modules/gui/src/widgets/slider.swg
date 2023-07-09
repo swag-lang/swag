@@ -98,7 +98,7 @@ impl IWnd for Slider
 
         var clientRect = getClientRect()
 
-        var isVertical = sliderFlags.has(.Vertical)
+        let isVertical = sliderFlags.has(.Vertical)
         if isVertical
         {
             clientRect.y += (posBox1.height * 0.5)
@@ -124,7 +124,7 @@ impl IWnd for Slider
         }
 
         // Bar right
-        var valueRight = sliderFlags.has(.Range) ? value2 : value1
+        let valueRight = sliderFlags.has(.Range) ? value2 : value1
         var right = clientRect
         if isVertical
         {
@@ -224,12 +224,12 @@ impl IWnd for Slider
             var f: f32
             if isVertical
             {
-                var diff = (pos.y - correcMoving) - clientRect.y
+                let diff = (pos.y - correcMoving) - clientRect.y
                 f    = diff / clientRect.height
             }
             else
             {
-                var diff = (pos.x - correcMoving) - clientRect.x
+                let diff = (pos.x - correcMoving) - clientRect.x
                 f    = diff / clientRect.width
             }
             if isPressed1
@@ -268,12 +268,12 @@ impl IWnd for Slider
                     var clientRect = getOffsetedClientRect()
                     if isVertical
                     {
-                        var diff = pos.y - clientRect.y
+                        let diff = pos.y - clientRect.y
                         setValue1(diff / clientRect.height)
                     }
                     else
                     {
-                        var diff = pos.x - clientRect.x
+                        let diff = pos.x - clientRect.x
                         setValue1(diff / clientRect.width)
                     }
                 }
@@ -284,16 +284,16 @@ impl IWnd for Slider
                     var f: f32
                     if isVertical
                     {
-                        var diff = pos.y - clientRect.y
+                        let diff = pos.y - clientRect.y
                         f = diff / clientRect.height
                     }
                     else
                     {
-                        var diff = pos.x - clientRect.x
+                        let diff = pos.x - clientRect.x
                         f = diff / clientRect.width
                     }
 
-                    var m = (value1 + value2) * 0.5
+                    let m = (value1 + value2) * 0.5
                     if f <= m
                     {
                         isPressed1 = true
@@ -329,13 +329,13 @@ private impl Slider
     {
         if steps > 0
         {
-            var r = cast(s32) ((f / steps) + 0.5)
+            let r = cast(s32) ((f / steps) + 0.5)
             return r * steps
         }
 
         if sliderFlags.has(.Integer)
         {
-            var val = Math.round((min + (max - min) * f))
+            let val = Math.round((min + (max - min) * f))
             return (val - min) / (max - min)
         }
 
@@ -495,7 +495,7 @@ impl Slider
     {
         Debug.assert(left < right)
         Debug.assert(sliderFlags.has(.Range))
-        var diff = max - min
+        let diff = max - min
         value1 = (left - min) / diff
         value2 = (right - min) / diff
         setValue1(value1)
@@ -524,7 +524,7 @@ impl Slider
                 pos.width = parent.getThemeMetrics().slider_Width
         }
 
-        var res = Wnd.create'Slider(parent, null, pos, id)
+        let res = Wnd.create'Slider(parent, null, pos, id)
         if range
             res.sliderFlags.add(.Range)
         if vertical

@@ -768,7 +768,7 @@ impl ListCtrl
     #[Swag.Discardable]
     func createSimple(parent: *Wnd, position: Math.Rectangle = {}, id: WndId = null)->*ListCtrl
     {
-        with var list = Wnd.create'ListCtrl(parent, "", position, id)
+        with let list = Wnd.create'ListCtrl(parent, "", position, id)
         {
             .scrollWnd = .createView'ScrollWnd()
             .scrollWnd.dockStyle = .Center
@@ -979,7 +979,7 @@ impl ListCtrl
     #[Swag.Discardable]
     mtd createLine(name: string, icon: Icon = {}, parentLine: *ListLine = null)->*ListLine
     {
-        var line = createLine(parentLine)
+        let line = createLine(parentLine)
         line.setItem(0, #self.name, #self.icon)
         return line
     }
@@ -1135,7 +1135,7 @@ impl ListCtrl
             return res
         }
 
-        var cb = closure|self, column, descentOrder|(a, b: *ListLine)->s32
+        let cb = closure|self, column, descentOrder|(a, b: *ListLine)->s32
         {
             if self.sigSort
                 return self.sigSort(a, b, column, descentOrder)

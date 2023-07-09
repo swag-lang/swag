@@ -636,7 +636,7 @@ public impl MenuCtrl
     #[Swag.Discardable]
     func createPopup(parent: *Wnd, id: WndId = null, owner: *Wnd = null)->*MenuCtrl
     {
-        with var res = Wnd.create'MenuCtrl(parent.getTopView(), null, {}, id)
+        with let res = Wnd.create'MenuCtrl(parent.getTopView(), null, {}, id)
         {
             .owner = owner orelse #self.parent
             .setAllPaddings(.getThemeMetrics().menuPopup_Padding)
@@ -649,10 +649,10 @@ public impl MenuCtrl
     #[Swag.Discardable]
     func createBar(parent: *Wnd, pos: Math.Rectangle = {}, id: WndId = null, owner: *Wnd = null)->*MenuCtrl
     {
-        with var res = Wnd.create'MenuCtrl(parent, null, pos, id)
+        with let res = Wnd.create'MenuCtrl(parent, null, pos, id)
         {
             .owner = owner
-            var metrics = .getThemeMetrics()
+            let metrics = .getThemeMetrics()
             if .position.height == 0
                 .position.height = metrics.menuBar_Height
             .setAllPaddings(metrics.menuPopup_Padding)
@@ -671,7 +671,7 @@ public impl MenuCtrl
     // Add a new item
     mtd addItem(name: string, id: WndId, icon: Icon = {}, rightName: string = null, disabled = false, checked = false)
     {
-        with var mitem = items.newPtr()
+        with let mitem = items.newPtr()
         {
             .name      = #self.name
             .icon      = #self.icon
@@ -694,7 +694,7 @@ public impl MenuCtrl
     // Add a new popup item
     mtd addPopup(name: string, popup: *MenuCtrl, icon: Icon = {}, id: WndId = null)
     {
-        with var mitem = items.newPtr()
+        with let mitem = items.newPtr()
         {
             .name  = #self.name
             .icon  = #self.icon

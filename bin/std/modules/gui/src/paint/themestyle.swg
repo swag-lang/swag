@@ -148,7 +148,7 @@ impl ThemeStyle
     mtd getFont()->FontFamily
     {
         var result: retval
-        var df = &refr.theme.res.fontDefault
+        let df = &refr.theme.res.fontDefault
         result.regular    = font.regular    orelse df.regular
         result.bold       = font.bold       orelse df.bold
         result.italic     = font.italic     orelse df.italic

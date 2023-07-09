@@ -40,7 +40,7 @@ impl ComboCtrl
         if pos.height == 0
             pos.height = metrics.comboBox_Height
 
-        with var ctrl = Wnd.create'ComboCtrl(parent, pos, id)
+        with let ctrl = Wnd.create'ComboCtrl(parent, pos, id)
         {
             .label = Label.create(ctrl, #self.name)
             .label.horzAlignmentText = .Right

@@ -157,8 +157,8 @@ impl Surface
             return
         }
 
-        var r = dirtyRect.right()
-        var b = dirtyRect.bottom()
+        let r = dirtyRect.right()
+        let b = dirtyRect.bottom()
         dirtyRect.x = Math.min(dirtyRect.x, rect.x)
         dirtyRect.y = Math.min(dirtyRect.y, rect.y)
         dirtyRect.setRight(Math.max(r, rect.right()))
@@ -201,8 +201,8 @@ impl Surface
         if !rt.colorBuffer.valid or rt.colorBuffer.width < rc.width or rt.colorBuffer.height < rc.height
         {
             app.renderer.deleteRenderTarget(&rt)
-            var w: s32 = Math.roundUpToPowerOf2(acast rc.width)
-            var h: s32 = Math.roundUpToPowerOf2(acast rc.height)
+            let w: s32 = Math.roundUpToPowerOf2(acast rc.width)
+            let h: s32 = Math.roundUpToPowerOf2(acast rc.height)
             rt = app.renderer.createRenderTarget(w, h)
             invalidate()
         }

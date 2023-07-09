@@ -43,7 +43,7 @@ impl SliderCtrl
         if pos.height == 0
             pos.height = Math.max(metrics.slider_Height, metrics.editBox_Height)
 
-        with var ctrl = Wnd.create'SliderCtrl(parent, pos, id)
+        with let ctrl = Wnd.create'SliderCtrl(parent, pos, id)
         {
             .label = Label.create(ctrl, #self.name, {})
             .label.vertAlignmentText = .Center

@@ -212,10 +212,8 @@ impl RichEditCtrl
         }
         elif c == "\t"'rune and (richEdFlags & .TabToSpaces)
         {
-            var numBlanks: s32
-
             let line = lines[cp.lineIndex]
-            loop tabSize - numBlanks
+            loop tabSize
             {
                 let posIns = Math.min(cp.charPosInLine, line.length())
                 line.insertRune(posIns, " "'rune, txtStyle)

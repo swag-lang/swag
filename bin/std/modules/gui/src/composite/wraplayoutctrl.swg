@@ -49,7 +49,7 @@ impl WrapLayoutCtrl
     // Create a layout control
     func create(parent: *Wnd, position: Math.Rectangle = {})->*WrapLayoutCtrl
     {
-        var res = Wnd.create'WrapLayoutCtrl(parent, position)
+        let res = Wnd.create'WrapLayoutCtrl(parent, position)
         return res
     }
 

@@ -204,7 +204,7 @@ impl FileDlg
     func create(from: *Surface, opt: FileDlgOptions = {})->*FileDlg
     {
         let dlg = Wnd.create'FileDlg()
-        with var srf = dlg.createSurface(from, 100, 100, 700, 500)
+        with let srf = dlg.createSurface(from, 100, 100, 700, 500)
         {
             .setSurfaceFlags(add = .Sizeable)
             .minSize = {400, 400}
@@ -243,7 +243,7 @@ impl FileDlg
 
                 if dlg.dlgOptions.mode == .CreateFile and File.exists(selName)
                 {
-                    var res = MessageDlg.confirm(dlg.surface, "This file already exists.", "Do you want to replace it ?")
+                    let res = MessageDlg.confirm(dlg.surface, "This file already exists.", "Do you want to replace it ?")
                     return res == Dialog.BtnYes
                 }
             }
@@ -517,7 +517,7 @@ impl FileDlg
     {
         var folderName: String = "New Folder"
 
-        with var dlg = EditDlg.createSingleLine(surface)
+        with let dlg = EditDlg.createSingleLine(surface)
         {
             .edit.setText(folderName)
             .edit.selectAll()

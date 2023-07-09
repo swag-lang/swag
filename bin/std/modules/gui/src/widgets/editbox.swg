@@ -508,7 +508,7 @@ private impl EditBox
         utf8[cpt] = 0
 
         // Should we check the content ?
-        var mustValidate = sigCheckContent != null or inputMode != .String
+        let mustValidate = sigCheckContent != null or inputMode != .String
         if !mustValidate
         {
             insertUtf8(@mkstring(&utf8[0], cpt))
@@ -546,8 +546,8 @@ private impl EditBox
 
         checkSelection()
 
-        var selB = getSelBeg()
-        var selE = getSelEnd()
+        let selB = getSelBeg()
+        let selE = getSelEnd()
         if selB == text.length
             return false
 
@@ -725,10 +725,10 @@ private impl EditBox
         if s == sel
             return sel
 
-        var test = !Latin1.isSpace(text.buffer[s])
+        let test = !Latin1.isSpace(text.buffer[s])
         loop
         {
-            var ns = moveCaretLeft(s)
+            let ns = moveCaretLeft(s)
             if ns == s
                 break
             if Latin1.isSpace(text.buffer[ns]) == test
@@ -744,7 +744,7 @@ private impl EditBox
         if sel == text.length
             return sel
 
-        var test = !Latin1.isSpace(text.buffer[sel])
+        let test = !Latin1.isSpace(text.buffer[sel])
         var s = sel
         while s != text.length
         {
@@ -760,8 +760,8 @@ private impl EditBox
     {
         if !sel
             return sel
-        var str = @mkstring(text.buffer, sel)
-        var (?, eat) = Utf8.decodeLastRune(str)
+        let str = @mkstring(text.buffer, sel)
+        let (?, eat) = Utf8.decodeLastRune(str)
         return sel - eat
     }
 
@@ -769,8 +769,8 @@ private impl EditBox
     {
         if sel == text.length
             return sel
-        var str = @mkstring(text.buffer + sel, text.length - sel)
-        var (?, eat) = Utf8.decodeRune(str)
+        let str = @mkstring(text.buffer + sel, text.length - sel)
+        let (?, eat) = Utf8.decodeRune(str)
         return sel + eat
     }
 
@@ -800,7 +800,7 @@ impl EditBox
             pos.height = parent.getThemeMetrics().editBox_Height
         if pos.width == 0
             pos.width = parent.getThemeMetrics().editBox_Width
-        var res = Wnd.create'EditBox(parent, null, pos, id)
+        let res = Wnd.create'EditBox(parent, null, pos, id)
 
         res.setForm(EditBoxForm.Square)
         res.text = content

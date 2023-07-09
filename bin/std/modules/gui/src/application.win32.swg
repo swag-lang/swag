@@ -16,11 +16,11 @@ impl Application
 {
     func pickColorAtMouse()->Color
     {
-        var hdc = GetDC(null)
+        let hdc = GetDC(null)
 
         var pt: POINT
         GetCursorPos(&pt)
-        var col = GetPixel(hdc, pt.x, pt.y) | 0xFF000000
+        let col = GetPixel(hdc, pt.x, pt.y) | 0xFF000000
 
         ReleaseDC(null, hdc)
         return Color.fromAbgr(col)
@@ -69,7 +69,7 @@ impl Application
             mdf |= .Control
         if msg.lParam & MOD_SHIFT
             mdf |= .Shift
-        var key = Keyboard.virtualKeyToKey(acast (msg.lParam >> 16))
+        let key = Keyboard.virtualKeyToKey(acast (msg.lParam >> 16))
 
         var (id, target) = getHotKeyShortcut(mdf, key)
         if id and target
@@ -136,7 +136,7 @@ impl Application
             curImgList = &fileBigIconsImageList
         }
 
-        var sizeIcon = small ? 16 : 32
+        let sizeIcon = small ? 16 : 32
 
         // Convert icon to image
         var img = catch Image.from(hIcon)
@@ -162,17 +162,17 @@ impl Application
     mtd getSpecialDirectoryIcon(what: Env.SpecialDirectory, small = true)->Icon
     {
         var val = what
-        var name = Reflection.getEnumName(Env.SpecialDirectory, &val).toString()
+        let name = Reflection.getEnumName(Env.SpecialDirectory, &val).toString()
 
         if small
         {
-            var here = mapFileSmallIcons.find(name)
+            let here = mapFileSmallIcons.find(name)
             if here
                 return Icon.from(&fileSmallIconsImageList, here.value)
         }
         else
         {
-            var here = mapFileBigIcons.find(name)
+            let here = mapFileBigIcons.find(name)
             if here
                 return Icon.from(&fileBigIconsImageList, here.value)
         }
@@ -221,13 +221,13 @@ impl Application
 
         if small
         {
-            var here = mapFileSmallIcons.find(ext)
+            let here = mapFileSmallIcons.find(ext)
             if here
                 return Icon.from(&fileSmallIconsImageList, here.value)
         }
         else
         {
-            var here = mapFileBigIcons.find(ext)
+            let here = mapFileBigIcons.find(ext)
             if here
                 return Icon.from(&fileBigIconsImageList, here.value)
         }
@@ -241,13 +241,13 @@ impl Application
                 ext = Path.getExtension(name)
                 if small
                 {
-                    var here = mapFileSmallIcons.find(ext)
+                    let here = mapFileSmallIcons.find(ext)
                     if here
                         return Icon.from(&fileSmallIconsImageList, here.value)
                 }
                 else
                 {
-                    var here = mapFileBigIcons.find(ext)
+                    let here = mapFileBigIcons.find(ext)
                     if here
                         return Icon.from(&fileBigIconsImageList, here.value)
                 }

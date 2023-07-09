@@ -111,7 +111,7 @@ private impl Application
         // to the surfaceWnd (we probably are in the shadow area)
         if !targetWnd
         {
-            var targetSurface = getSurfaceAt(mousePos.x, mousePos.y)
+            let targetSurface = getSurfaceAt(mousePos.x, mousePos.y)
             if targetSurface
             {
                 targetWnd = targetSurface.wnd
@@ -531,7 +531,7 @@ impl Application
         var flags = SurfaceFlags.OverlappedWindow
         if !canSize flags &= ~.Sizeable
         if !borders flags &= ~.Border
-        var surface = assume app.createSurface(x, y, width, height, flags, view, hook)
+        let surface = assume app.createSurface(x, y, width, height, flags, view, hook)
         surface.setTitle(title)
         if init init(&app)
         surface.show()
@@ -690,7 +690,7 @@ impl Application
     // Ask to exit the application
     mtd postQuitEvent(quitCode: s32 = 0)
     {
-        var evt = Event.create'QuitEvent()
+        let evt = Event.create'QuitEvent()
         evt.quitCode = #self.quitCode
         postEvent(evt)
     }

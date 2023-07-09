@@ -29,7 +29,7 @@ private func winProc(hWnd: HWND, msg: UINT, wParam: WPARAM, lParam: LPARAM)->LRE
     // Associate pointer to surface with 'hWnd'
     if msg == WM_CREATE
     {
-        var lpcs = cast(*CREATESTRUCTW) cast(u64) lParam
+        let lpcs = cast(*CREATESTRUCTW) cast(u64) lParam
         SetWindowLongPtrW(hWnd, GWLP_USERDATA, lpcs.lpCreateParams)
     }
 

@@ -22,7 +22,7 @@ impl Theme
             return
         }
 
-        var cx, cy = subRect.corner
+        let cx, cy = subRect.corner
         var cxd, cyd = subRect.corner
         if cxd * 2 > dstRect.width
             cxd = dstRect.width / 2
@@ -92,7 +92,7 @@ impl Theme
 
     func drawIconText(painter: *Painter, position: Math.Rectangle, icon: Icon, name: *RichString, stringFormat: RichStringFormat, iconMargin = 4'f32)
     {
-        var count = @countof(dref name)
+        let count = @countof(dref name)
         if count == 0 and !icon.isValid()
             return
 

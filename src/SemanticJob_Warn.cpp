@@ -152,8 +152,16 @@ bool SemanticJob::warnUnusedVariables(SemanticContext* context, Scope* scope)
         {
             if (!overload->typeInfo->isStruct() && !overload->typeInfo->isArray())
             {
-                //Diagnostic diag{front, front->token, Fmt(Err(Wrn0009), sym->name.c_str()), DiagnosticLevel::Warning};
-                //isOk = isOk && context->report(diag);
+                if (!(overload->flags & OVERLOAD_VAR_HAS_ASSIGN))
+                {
+                    Diagnostic diag{front, front->token, Fmt(Err(Wrn0010), sym->name.c_str()), DiagnosticLevel::Warning};
+                    isOk = isOk && context->report(diag);
+                }
+                else
+                {
+                    //Diagnostic diag{front, front->token, Fmt(Err(Wrn0009), sym->name.c_str()), DiagnosticLevel::Warning};
+                    //isOk = isOk && context->report(diag);
+                }
             }
         }
 

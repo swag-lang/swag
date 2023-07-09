@@ -480,7 +480,7 @@ impl IconButton
             pos.height = parent.getThemeMetrics().btnPush_Height
         if pos.width == 0
             pos.width = parent.getThemeMetrics().btnPush_Width
-        var res = Wnd.create'IconButton(parent, null, pos, id)
+        let res = Wnd.create'IconButton(parent, null, pos, id)
         res.icon = icon
         res.padding = res.getThemeMetrics().btnIcon_Padding
         if id != null

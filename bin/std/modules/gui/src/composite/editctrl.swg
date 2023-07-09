@@ -43,7 +43,7 @@ impl EditCtrl
         if pos.height == 0
             pos.height = metrics.editBox_Height
 
-        with var ctrl = Wnd.create'EditCtrl(parent, pos, id)
+        with let ctrl = Wnd.create'EditCtrl(parent, pos, id)
         {
             .label = Label.create(ctrl, #self.name, {})
             .label.horzAlignmentText = .Right

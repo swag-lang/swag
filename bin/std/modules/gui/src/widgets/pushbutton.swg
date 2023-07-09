@@ -182,7 +182,7 @@ impl PushButton
             pos.height = parent.getThemeMetrics().btnPush_Height
         if pos.width == 0
             pos.width = parent.getThemeMetrics().btnPush_Width
-        var res = Wnd.create'PushButton(parent, name, pos, id)
+        let res = Wnd.create'PushButton(parent, name, pos, id)
         if id != null
             res.updateCommandState()
         return res

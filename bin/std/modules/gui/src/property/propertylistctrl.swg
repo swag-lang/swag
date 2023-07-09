@@ -41,7 +41,7 @@ impl PropertyListCtrl
             .splitter.addPane(.prop)
         }
 
-        with var filter = EditBox.create(ed, "", {0, 0, 0, 30})
+        with let filter = EditBox.create(ed, "", {0, 0, 0, 30})
         {
             .dockStyle = .Top
             .setNote("Search")

@@ -112,14 +112,14 @@ public impl IWnd for ScrollWnd
 
             if isPressedV
             {
-                var vh = position.height - paddingW
+                let vh = position.height - paddingW
                 var f = (pos.y - correcMoving) / (vh - offsetClientV)
                 f *= scrollSize.y
                 setScrollPos(view.scrollPos.x, f)
             }
             elif isPressedH
             {
-                var vh = position.width - paddingZ
+                let vh = position.width - paddingZ
                 var f = (pos.x - correcMoving) / (vh - offsetClientH)
                 f *= scrollSize.x
                 setScrollPos(f, view.scrollPos.y)
@@ -198,7 +198,7 @@ public impl IWnd for ScrollWnd
     {
         if smoothScroll
         {
-            var dt = getApp().getDt()
+            let dt = getApp().getDt()
             if  !Math.isEqualEpsilon(scrollRequestPos.x, view.scrollPos.x) or
                 !Math.isEqualEpsilon(scrollRequestPos.y, view.scrollPos.y)
             {
@@ -404,7 +404,7 @@ impl ScrollWnd
         if needH or scrollWndFlags.has(.ForceHorizontal)
             showBarH = true
 
-        var barSize = scrollWndFlags.has(.SmallBar) ? metrics.scrollBar_SmallSize : metrics.scrollBar_NormalSize
+        let barSize = scrollWndFlags.has(.SmallBar) ? metrics.scrollBar_SmallSize : metrics.scrollBar_NormalSize
 
         paddingZ, paddingW = 0
         if showBarV
@@ -414,7 +414,7 @@ impl ScrollWnd
 
         if showBarV
         {
-            var vh0 = clientRect.height - paddingW
+            let vh0 = clientRect.height - paddingW
             var vh1 = position.height - paddingW
             sizeBoxV = (vh0 / sy) * vh1
             if sizeBoxV < metrics.scrollBar_BoxMinSize
@@ -430,7 +430,7 @@ impl ScrollWnd
 
         if showBarH
         {
-            var vh0 = clientRect.width - paddingZ
+            let vh0 = clientRect.width - paddingZ
             var vh1 = position.width - paddingZ
             sizeBoxH = (vh0 / sx) * vh1
             if sizeBoxH < metrics.scrollBar_BoxMinSize

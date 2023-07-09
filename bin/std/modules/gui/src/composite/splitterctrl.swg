@@ -386,7 +386,7 @@ impl SplitterCtrl
         Debug.assert(parent != null)
 
         var pos = position
-        var res = Wnd.create'SplitterCtrl(parent, null, pos, id)
+        let res = Wnd.create'SplitterCtrl(parent, null, pos, id)
         res.focusStrategy = .None
         res.wndFlags |= .PostChildsPaint
         if vertical
@@ -408,7 +408,7 @@ impl SplitterCtrl
         item.view = pane
         if title
         {
-            with var label = Label.create(self, "")
+            with let label = Label.create(self, "")
             {
                 .backgroundStyle = .Window
                 .style.addStyleSheetColors("wnd_Bk $dlg_BtnBarBk")

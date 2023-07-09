@@ -139,7 +139,7 @@ private impl PropertyList
     {
         if item.comboBox
         {
-            var typeEnum = cast(const *Swag.TypeInfoEnum) item.typeValue.pointedType
+            let typeEnum = cast(const *Swag.TypeInfoEnum) item.typeValue.pointedType
 
             var val1, val2: u64
             var val1s, val2s: string
@@ -238,7 +238,7 @@ private impl PropertyList
 
     func refreshItem(item: *PropertyListItem)
     {
-        var pointed = item.type orelse item.typeValue.pointedType
+        let pointed = item.type orelse item.typeValue.pointedType
         if pointed == null
             return
 
@@ -273,8 +273,8 @@ private impl PropertyList
             #[Swag.Mixin]
             func(T) setEd()
             {
-                var p = cast(*T) item.ptrData
-                var p1 = cast(*T) item.checkBox.userData
+                let p = cast(*T) item.ptrData
+                let p1 = cast(*T) item.checkBox.userData
                 if item.checkBox.checked == .Checked
                     dref p |= dref p1
                 else
@@ -379,7 +379,7 @@ private impl PropertyList
                 dref p = catch StrConv.toNum'T(txt)
             }
 
-            var txt = item.editBox.getText()
+            let txt = item.editBox.getText()
             switch nativeType.nativeKind
             {
             case U8:    setEd'u8()
@@ -422,7 +422,7 @@ private impl PropertyList
         else
             dispName = Format.toString("<b>%<b>", f.name)
 
-        with var label = Label.create(line, dispName, {0, 0, position.width, nameHeight})
+        with let label = Label.create(line, dispName, {0, 0, position.width, nameHeight})
         {
             .labelFlags |= .WordWrap | .AutoHeight
             .horzAlignmentText = .Justify
@@ -481,7 +481,7 @@ private impl PropertyList
                 let dispDesc = Reflection.getAttributeValue(v, PropertyList.Description, "desc")
                 itemB.filter += cast(string) dispDesc
 
-                with var label1 = Label.create(line1, "", {30, 0, position.width - 30})
+                with let label1 = Label.create(line1, "", {30, 0, position.width - 30})
                 {
                     .dockStyle = .Center
                     .labelFlags |= .WordWrap | .AutoHeight
@@ -547,7 +547,7 @@ private impl PropertyList
         ed.dockStyle = .Left
 
         let dispDesc = Reflection.getAttributeValue(f, PropertyList.Description, "desc")
-        with var label1 = Label.create(line1, "", {30, 0, position.width - 30})
+        with let label1 = Label.create(line1, "", {30, 0, position.width - 30})
         {
             .dockStyle = .Center
             .labelFlags |= .WordWrap | .AutoHeight
@@ -577,12 +577,12 @@ private impl PropertyList
 
         if Reflection.hasAttribute(f, EditSlider)
         {
-            var slider = SliderCtrl.create(line, null)
+            let slider = SliderCtrl.create(line, null)
             slider.labelSize = 0
             item.sliderBox = slider
 
-            var minV = cast(f32) Reflection.getAttributeValue(f, EditSlider, "min")
-            var maxV = cast(f32) Reflection.getAttributeValue(f, EditSlider, "max")
+            let minV = cast(f32) Reflection.getAttributeValue(f, EditSlider, "min")
+            let maxV = cast(f32) Reflection.getAttributeValue(f, EditSlider, "max")
 
             switch nativeType.nativeKind
             {
@@ -699,7 +699,7 @@ impl PropertyList
     #[Swag.Discardable]
     func create(parent: *Wnd, position: Math.Rectangle = {}, id: WndId = null)->*PropertyList
     {
-        var ed = Wnd.create'PropertyList(parent, "", position, id)
+        let ed = Wnd.create'PropertyList(parent, "", position, id)
 
         with ed
         {
@@ -714,7 +714,7 @@ impl PropertyList
             .edView.layoutKind = .Top
             .edView.spacing = 0
 
-            var theme = parent.getTheme()
+            let theme = parent.getTheme()
 
             const Font0Size = 30'u32
             .font0.regular = Font.create(theme.res.defaultTypeFaceR, Font0Size)
@@ -741,10 +741,10 @@ impl PropertyList
     // Add a new struct to display
     mtd addItem(val: any)
     {
-        var dataof = @dataof(val)
-        var typeof = @kindof(val)
+        let dataof = @dataof(val)
+        let typeof = @kindof(val)
         Debug.assert(typeof.kind == .Struct)
-        var typeStruct = cast(const *Swag.TypeInfoStruct) typeof
+        let typeStruct = cast(const *Swag.TypeInfoStruct) typeof
         addStruct(dataof, typeStruct)
 
         edView.sendResizeEvent()

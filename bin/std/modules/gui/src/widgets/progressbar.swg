@@ -62,7 +62,7 @@ impl IWnd for ProgressBar
         posBox.y = clientRect.vertCenter() - (posBox.height * 0.5)
         if prgBarFlags.has(.Infinite)
         {
-            var w = Math.max(clientRect.width / 5, 1)
+            let w = Math.max(clientRect.width / 5, 1)
             posBox.width = w
 
             let wt = clientRect.width + 2 * w

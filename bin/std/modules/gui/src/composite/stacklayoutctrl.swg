@@ -122,7 +122,7 @@ impl StackLayoutCtrl
     // Create a layout control
     func create(parent: *Wnd, kind: StackLayoutKind = .Top, position: Math.Rectangle = {})->*StackLayoutCtrl
     {
-        var res = Wnd.create'StackLayoutCtrl(parent, position)
+        let res = Wnd.create'StackLayoutCtrl(parent, position)
         res.layoutKind = kind
         return res
     }

@@ -51,7 +51,7 @@ impl IWnd for ColorPicker
         {
         case SaturationLightness:
             xCur = cast(s32) (sat * clientRect.width)
-            var l1 = Math.lerp(1, 0.5, sat)
+            let l1 = Math.lerp(1, 0.5, sat)
             var l2 = 1 - (lum / l1)
             if l2 < 0
             {
@@ -258,17 +258,17 @@ impl IWnd for ColorPicker
         switch mode
         {
         case SaturationLightness, HueSaturation, HueLightness, GreenBlue, RedBlue, RedGreen:
-            var size = metrics.colorPicker_RoundPick
+            let size = metrics.colorPicker_RoundPick
             var rect = Math.Rectangle{xCur-size, yCur-size, 2*size, 2*size}
             theme.drawSubRect(painter, rect, &rects.colorPicker_RoundPick, colors.colorPicker_Mark)
 
         case RedVert, GreenVert, BlueVert, AlphaVert, HueVert, LightnessVert, SaturationVert:
-            var size = metrics.colorPicker_SquarePick
+            let size = metrics.colorPicker_SquarePick
             var rect = Math.Rectangle{clientRect.horzCenter()-size, yCur-size, 2*size, 2*size}
             theme.drawSubRect(painter, rect, &rects.colorPicker_SquarePick, colors.colorPicker_Mark)
 
         case RedHorz, GreenHorz, BlueHorz, AlphaHorz, HueHorz, LightnessHorz, SaturationHorz:
-            var size = metrics.colorPicker_SquarePick
+            let size = metrics.colorPicker_SquarePick
             var rect = Math.Rectangle{xCur-size, clientRect.vertCenter()-size, 2*size, 2*size}
             theme.drawSubRect(painter, rect, &rects.colorPicker_SquarePick, colors.colorPicker_Mark)
         }
@@ -295,15 +295,15 @@ impl IWnd for ColorPicker
         case MouseMove:
             if isMoving
             {
-                var x = Math.clamp(pos.x / clientRect.width, 0, 1)
-                var y = Math.clamp(pos.y / clientRect.height, 0, 1)
+                let x = Math.clamp(pos.x / clientRect.width, 0, 1)
+                let y = Math.clamp(pos.y / clientRect.height, 0, 1)
 
                 #[Swag.Complete]
                 switch mode
                 {
                 case SaturationLightness:
                     sat = Math.clamp(x, 0, 1)
-                    var l1 = Math.lerp(1, 0.5, sat)
+                    let l1 = Math.lerp(1, 0.5, sat)
                     lum = Math.lerp(l1, 0, y)
 
                 case HueSaturation:     hue = x; sat = 1 - y; computeRGB()
