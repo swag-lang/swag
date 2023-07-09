@@ -807,7 +807,7 @@ void initErrors()
     SWAG_ERROR(Err0043, "too many parameters for special function '%s' ('%d' expected, '%d' provided)");
     SWAG_ERROR(Err0578, "too many variadic parameters ('%d' provided, maximum is '%d')");
     SWAG_ERROR(Err0252, "type '%s' and type '%s' defined in the command line for '%s' are incompatible");
-    SWAG_ERROR(Err0873, nullptr);
+    SWAG_ERROR(Err0873, "a local variable declared with 'let' should be explicitly initialized");
     SWAG_ERROR(Err0309, "unable to deduce type of %s '%s'");
     SWAG_ERROR(Err0534, "uncatched error when calling '%s' (expected 'try', 'assume' or 'catch')");
     SWAG_ERROR(Err0567, "unexpected '#validifx' for a struct");

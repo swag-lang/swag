@@ -814,7 +814,19 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
 
     if (node->flags & AST_EXPLICITLY_NOT_INITIALIZED)
     {
-        SWAG_VERIFY(!isCompilerConstant, context->report({node->assignment, Err(Err0298)}));
+        if (isCompilerConstant)
+        {
+            Diagnostic diag{node->assignment, Err(Err0298)};
+            diag.hint = Hnt(Hnt0061);
+            return context->report(diag);
+        }
+
+        if (node->specFlags & AstVarDecl::SPECFLAG_IS_LET)
+        {
+            Diagnostic diag{node->assignment, Err(Err0873)};
+            diag.hint = Hnt(Hnt0061);
+            return context->report(diag);
+        }
     }
 
     // Types and assignements are specified
