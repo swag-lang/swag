@@ -77,7 +77,7 @@ impl Painter
 
         var p = p1
         let d = d1 * sx
-        let n = Vector2{d.y * sens, -d.x * sens}
+        var n = Vector2{d.y * sens, -d.x * sens}
         n.setLengthSafe(d.length() * sy)
         p -= n * 0.5
 
@@ -299,7 +299,7 @@ impl Painter
 
     mtd drawJoinMiter(p, d1, d2: Vector2, justMiter: bool, pen: Pen)
     {
-        let a = Vector2{d1.x + d2.x, d1.y + d2.y}
+        var a = Vector2{d1.x + d2.x, d1.y + d2.y}
         let w = d1.length()
         let l = a.length()
         if Math.isZeroEpsilon(l)

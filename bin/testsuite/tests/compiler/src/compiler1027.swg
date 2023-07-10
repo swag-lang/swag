@@ -9,7 +9,7 @@ struct Point
 //#[Swag.PrintBc]
 #test
 {
-	let pt : Point
+	var pt : Point
 	pt.x = 0
 	pt.y = 0
 	let ptr = &pt

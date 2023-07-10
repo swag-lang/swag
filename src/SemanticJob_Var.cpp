@@ -606,7 +606,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
         symbolFlags |= OVERLOAD_IS_LET;
     if (node->attributeFlags & ATTRIBUTE_TLS)
         symbolFlags |= OVERLOAD_VAR_TLS;
-    if(node->assignment)
+    if (node->assignment)
         symbolFlags |= OVERLOAD_VAR_HAS_ASSIGN;
 
     auto concreteNodeType = node->type && node->type->typeInfo ? TypeManager::concreteType(node->type->typeInfo, CONCRETE_FORCEALIAS) : nullptr;
@@ -1017,6 +1017,10 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
     // Type should be a correct one
     SWAG_VERIFY(!node->typeInfo->isPointerNull(), context->report({node, Err(Err0308)}));
     SWAG_VERIFY(!node->typeInfo->isVoid(), context->report({node, Err(Err0149)}));
+
+    // A 'let' for a struct make the type const
+    if (node->specFlags & AstVarDecl::SPECFLAG_IS_LET && node->typeInfo->isStruct())
+        node->typeInfo = g_TypeMgr->makeConst(node->typeInfo);
 
     // Determine if the call parameters cover everything (to avoid calling default initialization)
     // i.e. set AST_HAS_FULL_STRUCT_PARAMETERS

@@ -85,7 +85,7 @@ impl LinePathList
         {
             let v = p.polygon.isClockwise ? value : -value
 
-            let res = p.polygon.getOffset(v, joinStyle, toler)
+            var res = p.polygon.getOffset(v, joinStyle, toler)
             newList.paths.add(res.paths.toSlice())
             res.paths.count = 0
         }

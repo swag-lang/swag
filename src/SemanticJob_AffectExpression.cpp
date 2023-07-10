@@ -18,6 +18,8 @@ bool SemanticJob::resolveMove(SemanticContext* context)
     node->inheritOrFlag(right, AST_NO_LEFT_DROP | AST_FORCE_MOVE | AST_NO_RIGHT_DROP);
     node->typeInfo    = right->typeInfo;
     node->byteCodeFct = ByteCodeGenJob::emitPassThrough;
+    if (right->resolvedSymbolOverload)
+        right->resolvedSymbolOverload->flags |= OVERLOAD_HAS_MAKE_POINTER;
 
     if (node->flags & AST_FORCE_MOVE)
     {
@@ -186,6 +188,7 @@ bool SemanticJob::checkIsConstAffect(SemanticContext* context, AstNode* left, As
     {
         Diagnostic diag{node, node->token, Err(Err0564), Hnt(Hnt0061)};
         diag.addRange(left, Hnt(Hnt0050));
+        note = Diagnostic::hereIs(left->resolvedSymbolOverload->node);
         return context->report(diag, note);
     }
 
