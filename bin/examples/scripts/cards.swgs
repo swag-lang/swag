@@ -180,14 +180,14 @@ func paintOne(app: *Application, dc: *Painter, x, y: u32, fi: ImageInfo)
 
         if img.width > img.height
         {
-            var ratio = img.width / cast(f32) img.height
-            var newHeight = rectImage.height
+            let ratio = img.width / cast(f32) img.height
+            let newHeight = rectImage.height
             img.resize(cast(s32) (newHeight * ratio), cast(s32) newHeight)
         }
         else
         {
-            var ratio = img.height / cast(f32) img.width
-            var newWidth = rectImage.width
+            let ratio = img.height / cast(f32) img.width
+            let newWidth = rectImage.width
             img.resize(cast(s32) newWidth, cast(s32) (newWidth * ratio))
         }
 

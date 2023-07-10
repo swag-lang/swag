@@ -26,7 +26,7 @@ func openImage(surface: *Surface)
         .filters.add({"TGA - Truevision Targa (*.tga)", ".tga"})
     }
 
-    var dlg = FileDlg.create(surface, opt)
+    let dlg = FileDlg.create(surface, opt)
     if dlg.doModal() != Dialog.BtnOk
         return
 
@@ -51,7 +51,7 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
     switch evt.kind
     {
     case Create:
-        var btn = PushButton.create(wnd, "Load Image", {10, 10, 100})
+        let btn = PushButton.create(wnd, "Load Image", {10, 10, 100})
         btn.sigPressed += closure|wnd|(btn) {
             openImage(btn.surface)
             compute(&btn.getApp().renderer)
@@ -64,20 +64,20 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
         if !g_Img.isValid()
             break
 
-        var paintEvt = cast(*PaintEvent) evt
-        var painter = paintEvt.bc.painter
+        let paintEvt = cast(*PaintEvent) evt
+        let painter = paintEvt.bc.painter
 
         const GrayRamp = "$@B%8&WM#*oahkbdpqwmZO0QLCJUYXzcvunxrjft/|()1{}[]?-_+~<>i!lI;:,\"^`\'. ";
 
-        var size = cast(f32) g_Font.size * 0.8
+        let size = cast(f32) g_Font.size * 0.8
 
         loop x: g_Img.width
         {
             loop y: g_Img.height
             {
-                var col = g_Img.getPixelColor(x, y)
-                var idx = Math.map(cast(f32) col.r, 0, 255, 0, cast(f32) @countof(GrayRamp))
-                var v = @mkstring(@dataof(GrayRamp) + cast(s32) idx, 1)
+                let col = g_Img.getPixelColor(x, y)
+                let idx = Math.map(cast(f32) col.r, 0, 255, 0, cast(f32) @countof(GrayRamp))
+                let v = @mkstring(@dataof(GrayRamp) + cast(s32) idx, 1)
                 painter.drawString(x * size, y * size, v, g_Font, Argb.White)
             }
         }

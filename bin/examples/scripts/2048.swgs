@@ -36,7 +36,7 @@ func paintGrid(wnd: *Wnd, painter: *Painter)
 
     var rectGrid: Math.Rectangle
 
-    var size = CellSize * CellCount
+    let size = CellSize * CellCount
     rectGrid.x = rect.horzCenter() - size * 0.5
     rectGrid.y = rect.bottom() - size - 3*Margin
     rectGrid.width, rectGrid.height = size
@@ -51,8 +51,8 @@ func paintGrid(wnd: *Wnd, painter: *Painter)
     {
         loop y: 4
         {
-            var xi = rectGrid.x + (x * CellSize) + (Margin)
-            var yi = rectGrid.y + (y * CellSize) + (Margin)
+            let xi = rectGrid.x + (x * CellSize) + (Margin)
+            let yi = rectGrid.y + (y * CellSize) + (Margin)
             painter.fillRoundRect(xi, yi, CellSizeW, CellSizeW, RoundCorners, RoundCorners, Color.fromRgb(204, 192, 178))
         }
     }
@@ -61,8 +61,8 @@ func paintGrid(wnd: *Wnd, painter: *Painter)
     {
         var color: Color
 
-        var xi = rectGrid.x + (c.x * CellSize) + Margin
-        var yi = rectGrid.y + (c.y * CellSize) + Margin
+        let xi = rectGrid.x + (c.x * CellSize) + Margin
+        let yi = rectGrid.y + (c.y * CellSize) + Margin
 
         switch c.val
         {
@@ -77,7 +77,7 @@ func paintGrid(wnd: *Wnd, painter: *Painter)
         default:  color = Color.fromRgb(238, 194, 46)
         }
 
-        var off = (1 - c.z) * 40
+        let off = (1 - c.z) * 40
         painter.fillRoundRect(xi+off, yi+off, CellSizeW-2*off, CellSizeW-2*off, RoundCorners, RoundCorners, color)
         if !c.val
             continue
@@ -94,8 +94,8 @@ func randValue()
 {
     loop
     {
-        var x = Random.shared().nextS32(0, CellCount)
-        var y = Random.shared().nextS32(0, CellCount)
+        let x = Random.shared().nextS32(0, CellCount)
+        let y = Random.shared().nextS32(0, CellCount)
         if cellAt(x, y)
             continue
 
@@ -110,9 +110,9 @@ func randValue()
 
 func animate(wnd: *Wnd)
 {
-    var dt = wnd.getApp().getDt()
+    let dt = wnd.getApp().getDt()
 
-    var wasMoving = g_IsMoving
+    let wasMoving = g_IsMoving
     g_IsMoving = false
     visit &c: g_Cells
     {
@@ -131,7 +131,7 @@ func animate(wnd: *Wnd)
             if Math.isEqualEpsilon(c.x, c.xd, 0.1) and Math.isEqualEpsilon(c.y, c.yd, 0.1)
             {
                 c.moving = false
-                var dest = cellAt(cast(s32) c.xd, cast(s32) c.yd, c)
+                let dest = cellAt(cast(s32) c.xd, cast(s32) c.yd, c)
                 if dest and dest.val
                 {
                     c.moving = true
@@ -156,7 +156,7 @@ func animate(wnd: *Wnd)
 
     for var i = 0'u64; i < g_Cells.count; i += 1
     {
-        var c = ref g_Cells[i]
+        let c = ref g_Cells[i]
         if c.remove
         {
             g_Cells.removeAt(i)
@@ -202,7 +202,7 @@ func keyboard(wnd: *Wnd)
     if g_IsMoving or g_GameOver
         return
 
-    var kb = wnd.getApp().getKeyboard()
+    let kb = wnd.getApp().getKeyboard()
 
     switch
     {
@@ -231,7 +231,7 @@ func keyboard(wnd: *Wnd)
             {
                 if g_MoveDirX != 0
                 {
-                    var nx = cast(s32) (c.xd + i*g_MoveDirX)
+                    let nx = cast(s32) (c.xd + i*g_MoveDirX)
                     if nx < 0 or nx >= CellCount
                         break
                     if c.xd == nx or canMoveTo(c.val, nx, cast(s32) c.y)
@@ -243,7 +243,7 @@ func keyboard(wnd: *Wnd)
                 }
                 elif g_MoveDirY != 0
                 {
-                    var ny = cast(s32) (c.yd + i*g_MoveDirY)
+                    let ny = cast(s32) (c.yd + i*g_MoveDirY)
                     if ny < 0 or ny >= CellCount
                         break
                     if c.yd == ny or canMoveTo(c.val, cast(s32) c.x, ny)
@@ -279,8 +279,8 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
         randValue()
 
     case Paint:
-        var paintEvt = cast(*PaintEvent) evt
-        var painter = paintEvt.bc.painter
+        let paintEvt = cast(*PaintEvent) evt
+        let painter = paintEvt.bc.painter
         var rect = wnd.getClientRect()
 
         painter.fillRect(rect, Color.fromRgb(43,43,43))

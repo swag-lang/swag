@@ -22,7 +22,7 @@ impl C
 {
     mtd update(wnd: *Wnd)
     {
-        var app = wnd.getApp()
+        let app = wnd.getApp()
 
         speed += acc
         pos += speed * app.getDt()
@@ -75,8 +75,8 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
         }
 
     case Paint:
-        var paintEvt = cast(*PaintEvent) evt
-        var painter = paintEvt.bc.painter
+        let paintEvt = cast(*PaintEvent) evt
+        let painter = paintEvt.bc.painter
         var rect = wnd.getClientRect()
 
         painter.fillRect(rect, Argb.Black)
@@ -85,7 +85,7 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
         {
             p.update(wnd)
             var v = p.target - p.pos
-            var d = map(Math.min(v.length(), 100), 0, 100, 0, 1)
+            let d = map(Math.min(v.length(), 100), 0, 100, 0, 1)
             var c = Color.getBlend(Argb.White, Argb.Black, d)
             painter.fillCircle(p.pos.x, p.pos.y, 4, c)
         }

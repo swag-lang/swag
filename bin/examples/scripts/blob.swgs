@@ -13,11 +13,11 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
     if evt.kind != .Paint
         return false
 
-    var paintEvt = cast(*PaintEvent) evt
-    var painter = paintEvt.bc.painter
+    let paintEvt = cast(*PaintEvent) evt
+    let painter = paintEvt.bc.painter
 
-    var centerX = wnd.position.width * 0.5
-    var centerY = wnd.position.height * 0.5
+    let centerX = wnd.position.width * 0.5
+    let centerY = wnd.position.height * 0.5
 
     #[Swag.Global]
     var zoff: f32
@@ -26,12 +26,12 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
     var lp: LinePath
     for var a = 0'f32; a < ConstF32.TwoPi; a += 0.1
     {
-        var xoff = map(cos(a), -1, 1, 0, NoiseMax)
-        var yoff = map(sin(a), -1, 1, 0, NoiseMax)
-        var r = map(Noise.perlin(xoff, yoff, zoff), -1, 1, 100, 200)
+        let xoff = map(cos(a), -1, 1, 0, NoiseMax)
+        let yoff = map(sin(a), -1, 1, 0, NoiseMax)
+        let r = map(Noise.perlin(xoff, yoff, zoff), -1, 1, 100, 200)
 
-        var x = r * cos(a)
-        var y = r * sin(a)
+        let x = r * cos(a)
+        let y = r * sin(a)
         if a == 0
             lp.start(x, y)
         else

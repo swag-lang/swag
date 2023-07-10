@@ -19,8 +19,8 @@ func paintSnake(painter: *Painter)
     var scale = 0.52
     visit p: g_Snake
     {
-        var x = p.x * ElemSize
-        var y = p.y * ElemSize
+        let x = p.x * ElemSize
+        let y = p.y * ElemSize
 
         painter.fillCircle(x, y, ElemSize*scale, Argb.Black)
         if @index == 0
@@ -32,8 +32,8 @@ func paintSnake(painter: *Painter)
 
 func paintApple(painter: *Painter)
 {
-    var x = g_ApplePos.x * ElemSize
-    var y = g_ApplePos.y * ElemSize
+    let x = g_ApplePos.x * ElemSize
+    let y = g_ApplePos.y * ElemSize
     painter.fillCircle(x, y, ElemSize*0.45, Argb.Red)
 }
 
@@ -75,7 +75,7 @@ func updateCollisions()->bool
 
 func updateSnakePosition()
 {
-    var curTime = Time.nowMilliseconds()
+    let curTime = Time.nowMilliseconds()
     if curTime - g_Time < SnakeTime
         return
 
@@ -92,7 +92,7 @@ func updateSnakePosition()
 
 func updateSpeed(wnd: *Wnd)
 {
-    var kb = wnd.getApp().getKeyboard()
+    let kb = wnd.getApp().getKeyboard()
 
     if kb.isKeyJustPressed(.Up)
     {
@@ -159,8 +159,8 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
         startGame()
 
     case Paint:
-        var paintEvt = cast(*PaintEvent) evt
-        var painter = paintEvt.bc.painter
+        let paintEvt = cast(*PaintEvent) evt
+        let painter = paintEvt.bc.painter
         g_Rect   = wnd.getClientRect()
 
         updateSnakePosition()

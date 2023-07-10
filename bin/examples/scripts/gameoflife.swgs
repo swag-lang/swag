@@ -12,20 +12,20 @@ var g_CurGen:   s32
 
 func onEvent(wnd: *Wnd, evt: *Event)->bool
 {
-    var leftPressed = wnd.getApp().mouse.isButtonPressed(.Left)
-    var rightPressed = wnd.getApp().mouse.isButtonPressed(.Right)
-    var cellSize = Math.min(wnd.position.width, wnd.position.height) / GridSize
+    let leftPressed = wnd.getApp().mouse.isButtonPressed(.Left)
+    let rightPressed = wnd.getApp().mouse.isButtonPressed(.Right)
+    let cellSize = Math.min(wnd.position.width, wnd.position.height) / GridSize
 
     switch evt.kind
     {
     case MousePressed, MouseMove:
         if leftPressed or rightPressed
         {
-            var mouseEvt = cast(*MouseEvent) evt
-            var pos = wnd.surfaceToLocal(mouseEvt.surfacePos)
+            let mouseEvt = cast(*MouseEvent) evt
+            let pos = wnd.surfaceToLocal(mouseEvt.surfacePos)
 
-            var x = cast(s32) (pos.x / cellSize)
-            var y = cast(s32) (pos.y / cellSize)
+            let x = cast(s32) (pos.x / cellSize)
+            let y = cast(s32) (pos.y / cellSize)
             if x < 1 or x >= GridSize - 1 or y < 1 or y >= GridSize - 1
                 break
             g_Grid[g_CurGen, x, y] = leftPressed ? true : false
@@ -44,9 +44,9 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
         }
 
     case Paint:
-        var paintEvt = cast(*PaintEvent) evt
-        var painter = paintEvt.bc.painter
-        var nextGen = (g_CurGen + 1) % 2
+        let paintEvt = cast(*PaintEvent) evt
+        let painter = paintEvt.bc.painter
+        let nextGen = (g_CurGen + 1) % 2
 
         // Compute next generation, except if user is painting
         if !leftPressed and !rightPressed
@@ -84,8 +84,8 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
         painter.clear(Argb.White)
         loop i: 1..GridSize-2
         {
-            var x = i * cellSize
-            var w = Math.min(wnd.position.width, wnd.position.height) - (2 * cellSize)
+            let x = i * cellSize
+            let w = Math.min(wnd.position.width, wnd.position.height) - (2 * cellSize)
             painter.drawRect(cellSize, x, w, cellSize, Argb.Black)
             painter.drawRect(x, cellSize, cellSize, w, Argb.Black)
         }
@@ -97,8 +97,8 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
             {
                 if g_Grid[g_CurGen, i, j]
                 {
-                    var x = i * cellSize
-                    var y = j * cellSize
+                    let x = i * cellSize
+                    let y = j * cellSize
                     painter.fillRect(x + 1, y + 1, cellSize-2, cellSize-2, Argb.Black)
                 }
             }

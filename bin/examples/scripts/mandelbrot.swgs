@@ -53,8 +53,8 @@ func compute()
 
 func onEvent(wnd: *Wnd, evt: *Event)->bool
 {
-    var w = cast(s32) wnd.position.width
-    var h = cast(s32) wnd.position.height
+    let w = cast(s32) wnd.position.width
+    let h = cast(s32) wnd.position.height
 
     switch evt.kind
     {
@@ -75,9 +75,9 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
         return true
 
     case Paint:
-        var paintEvt = cast(*PaintEvent) evt
-        var painter = paintEvt.bc.painter
-        var renderer = paintEvt.bc.renderer
+        let paintEvt = cast(*PaintEvent) evt
+        let painter = paintEvt.bc.painter
+        let renderer = paintEvt.bc.renderer
         renderer.updateTexture(g_Texture, g_Image.pixels.buffer)
         painter.drawTexture(0, 0, cast(f32) w, cast(f32) h, g_Texture)
         return true

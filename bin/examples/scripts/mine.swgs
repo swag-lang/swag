@@ -50,8 +50,8 @@ func fillGrid()
             {
                 loop jj: -1..1
                 {
-                    var ti = i + ii
-                    var tj = j + jj
+                    let ti = i + ii
+                    let tj = j + jj
                     if ti < 0 or ti >= GridSize or tj < 0 or tj >= GridSize
                         continue
                     g_Grid[i, j].score += g_Grid[ti, tj].mine ? 1 : 0
@@ -82,8 +82,8 @@ func floodFill(x, y: s32)
         {
             loop jj: -1..1
             {
-                var ti = pt.x + ii
-                var tj = pt.y + jj
+                let ti = pt.x + ii
+                let tj = pt.y + jj
                 if ti < 0 or ti >= GridSize or tj < 0 or tj >= GridSize
                     continue
                 if ii and jj
@@ -110,10 +110,10 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
     case Create:
         g_FontCell = wnd.getTheme().createDefaultFont(20)
 
-        var btn = PushButton.create(wnd, "Again!", {CellSize, (CellSize * 2) + GridSize * CellSize})
+        let btn = PushButton.create(wnd, "Again!", {CellSize, (CellSize * 2) + GridSize * CellSize})
         btn.sigPressed += closure|wnd|(btn) { setup(); wnd.invalidate(); }
 
-        var sli = SliderCtrl.create(wnd, "Density", {CellSize + 120, (CellSize * 2) + GridSize * CellSize, 250})
+        let sli = SliderCtrl.create(wnd, "Density", {CellSize + 120, (CellSize * 2) + GridSize * CellSize, 250})
         sli.slider.setMinMax(1, 10)
         sli.edit.setInputU64(1, 10)
         sli.slider.setValue(acast g_Density)
@@ -122,7 +122,7 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
         setup()
 
     case MousePressed:
-        var mouseEvt = cast(*MouseEvent) evt
+        let mouseEvt = cast(*MouseEvent) evt
         var pos = wnd.surfaceToLocal(mouseEvt.surfacePos)
         var x = cast(s32) (pos.x / CellSize)
         var y = cast(s32) (pos.y / CellSize)
@@ -150,8 +150,8 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
         return true
 
     case Paint:
-        var paintEvt = cast(*PaintEvent) evt
-        var painter = paintEvt.bc.painter
+        let paintEvt = cast(*PaintEvent) evt
+        let painter = paintEvt.bc.painter
 
         painter.fillRect(wnd.getClientRect(), wnd.getThemeColors().wnd_Bk)
         var bk = Math.Rectangle{CellSize, CellSize, GridSize * CellSize, GridSize * CellSize}
@@ -160,8 +160,8 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
         // Paint grid
         loop i: GridSize
         {
-            var x = CellSize + (i * CellSize)
-            var w = CellSize * GridSize
+            let x = CellSize + (i * CellSize)
+            let w = CellSize * GridSize
             painter.drawRect(CellSize, x, w, CellSize, Argb.DarkGray)
             painter.drawRect(x, CellSize, CellSize, w, Argb.DarkGray)
         }
@@ -172,8 +172,8 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
         {
             loop j: GridSize
             {
-                var x = CellSize + (i * CellSize)
-                var y = CellSize + (j * CellSize)
+                let x = CellSize + (i * CellSize)
+                let y = CellSize + (j * CellSize)
                 var rect = Math.Rectangle{x, y, CellSize, CellSize}
 
                 if !g_Grid[i, j].show and !g_Lost and !g_Win
@@ -183,7 +183,7 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
                 }
                 elif g_Grid[i, j].mine
                 {
-                    var color = g_Win ? Argb.Green : Argb.Red
+                    let color = g_Win ? Argb.Green : Argb.Red
                     painter.fillCircle(x + CellSize * 0.5, y + CellSize * 0.5, CellSize * 0.4, color)
                 }
                 elif g_Grid[i, j].score

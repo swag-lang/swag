@@ -38,7 +38,7 @@ func resetBall()
     g_Ball.pos.x = g_Rect.horzCenter()
     g_Ball.pos.y = g_Rect.vertCenter()
 
-    var angle = g_Rng.nextF32(-ConstF32.PiBy4, ConstF32.PiBy4)
+    let angle = g_Rng.nextF32(-ConstF32.PiBy4, ConstF32.PiBy4)
     g_Ball.speed.x = 300 * cos(angle)
     g_Ball.speed.y = 300 * sin(angle)
     if g_Rng.nextBool()
@@ -47,8 +47,8 @@ func resetBall()
 
 func updatePaddles(wnd: *Wnd)
 {
-    var dt = wnd.getApp().getDt()
-    var kb = wnd.getApp().getKeyboard()
+    let dt = wnd.getApp().getDt()
+    let kb = wnd.getApp().getKeyboard()
 
     if kb.isKeyPressed(.A)
         g_PaddleLeft.pos.y -= 400 * dt
@@ -65,7 +65,7 @@ func updatePaddles(wnd: *Wnd)
 
 func updateBall(wnd: *Wnd)
 {
-    var dt = wnd.getApp().getDt()
+    let dt = wnd.getApp().getDt()
 
     var rect = g_Rect
     rect.inflate(-BallRadius)
@@ -91,9 +91,9 @@ func updateBall(wnd: *Wnd)
        g_Ball.pos.x - BallRadius < g_PaddleLeft.pos.x + PaddleWidth and
        g_Ball.pos.x > g_PaddleLeft.pos.x
     {
-        var n = g_Ball.speed.length()
-        var diff = g_Ball.pos.y - (g_PaddleLeft.pos.y - PaddleHeight)
-        var angle = map(diff, 0, PaddleHeight * 2, -toRadians(45'f32), toRadians(45'f32))
+        let n = g_Ball.speed.length()
+        let diff = g_Ball.pos.y - (g_PaddleLeft.pos.y - PaddleHeight)
+        let angle = map(diff, 0, PaddleHeight * 2, -toRadians(45'f32), toRadians(45'f32))
         g_Ball.speed.x = n * cos(angle)
         g_Ball.speed.y = n * sin(angle)
         g_Ball.pos.x = g_PaddleLeft.pos.x + PaddleWidth + BallRadius
@@ -103,9 +103,9 @@ func updateBall(wnd: *Wnd)
        g_Ball.pos.x + BallRadius > g_PaddleRight.pos.x - PaddleWidth and
        g_Ball.pos.x < g_PaddleRight.pos.x
     {
-        var n = g_Ball.speed.length()
-        var diff = g_Ball.pos.y - (g_PaddleRight.pos.y - PaddleHeight)
-        var angle = map(diff, 0, PaddleHeight * 2, toRadians(225'f32), toRadians(135'f32))
+        let n = g_Ball.speed.length()
+        let diff = g_Ball.pos.y - (g_PaddleRight.pos.y - PaddleHeight)
+        let angle = map(diff, 0, PaddleHeight * 2, toRadians(225'f32), toRadians(135'f32))
         g_Ball.speed.x = n * cos(angle)
         g_Ball.speed.y = n * sin(angle)
         g_Ball.pos.x = g_PaddleRight.pos.x - PaddleWidth - BallRadius
@@ -132,8 +132,8 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
         g_PaddleRight.pos.x = g_Rect.right() - BallRadius - PaddleWidth
 
     case Paint:
-        var paintEvt = cast(*PaintEvent) evt
-        var painter = paintEvt.bc.painter
+        let paintEvt = cast(*PaintEvent) evt
+        let painter = paintEvt.bc.painter
 
         updatePaddles(wnd)
         updateBall(wnd)

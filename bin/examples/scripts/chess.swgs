@@ -94,15 +94,15 @@ func initCells()
 {
     loop i: 96'u8
     {
-        var x = i%12
-        var y = i/12
+        let x = i%12
+        let y = i/12
 
         g_Board[i].piece = .None
         if x < 2 or x >= 10
             g_Board[i].content = .Invalid
         else
         {
-            var xinfo = x - 2
+            let xinfo = x - 2
             g_BoardInfo[i].odd  = (xinfo + y)%2 == 1
             g_BoardInfo[i].rect = {BorderSize + xinfo * CellSize, BorderSize + (7 - y) * CellSize, CellSize, CellSize}
             g_Board[i].content  = (y < 2) ? .White : ((y > 5) ? .Black : .Empty)
@@ -124,7 +124,7 @@ func initCells()
 
 func getCellWithOffset(board: ^Cell, source, offset: s8)->s8
 {
-    var result = source + offset
+    let result = source + offset
     if result < 0 or result >= 96 or board[result].content == .Invalid
         return -1
     return result
@@ -140,7 +140,7 @@ func getKingCell(board: ^Cell, color: ContentEnum)->s8
 
 func isCheck(board: ^Cell, white: bool)->bool
 {
-    var kingCell = getKingCell(board, white ? .White : .Black)
+    let kingCell = getKingCell(board, white ? .White : .Black)
     if kingCell == -1
         return false
 
@@ -169,7 +169,7 @@ func isCheck(board: ^Cell, white: bool)->bool
 
 func computeMoves()
 {
-    var contentToTreat = g_Game.whiteTurn ? ContentEnum.White : .Black
+    let contentToTreat = g_Game.whiteTurn ? ContentEnum.White : .Black
     g_Game.possibleMoves.clear()
 
     visit cell: g_Board
@@ -179,7 +179,7 @@ func computeMoves()
 
         var moves: Array's8
 
-        var i = cast(s8) @index
+        let i = cast(s8) @index
         switch cell.piece
         {
         case Pawn:
@@ -207,9 +207,9 @@ func computeMoves()
     }
 
     // castle special case
-    var ki = g_Game.whiteTurn ? 6's8 : 90's8
-    var littleCastle = g_Game.castle[contentToTreat, 0]
-    var bigCastle = g_Game.castle[contentToTreat, 1]
+    let ki = g_Game.whiteTurn ? 6's8 : 90's8
+    let littleCastle = g_Game.castle[contentToTreat, 0]
+    let bigCastle = g_Game.castle[contentToTreat, 1]
 
     if littleCastle and moveIsPossible(ki, ki+1)
             and g_Board[ki+1].content == .Empty
@@ -238,8 +238,8 @@ func computeMoves()
 
 func getPawnMoves(board: ^Cell, from: s8, moves: *Array's8)
 {
-    var isWhite = board[from].content == .White
-    var offset = isWhite ? 12's8 : -12's8
+    let isWhite = board[from].content == .White
+    let offset = isWhite ? 12's8 : -12's8
     var target = getCellWithOffset(board, from, offset)
     if target != -1 and board[target].content == .Empty
         moves.add(target)
@@ -255,9 +255,9 @@ func getPawnMoves(board: ^Cell, from: s8, moves: *Array's8)
 
 func getPawnAttacks(board: ^Cell, from: s8, moves: *Array's8)
 {
-    var isWhite = board[from].content == .White
-    var targetContent = isWhite ? ContentEnum.Black : .White
-    var offset = isWhite ? 12's8 : -12's8
+    let isWhite = board[from].content == .White
+    let targetContent = isWhite ? ContentEnum.Black : .White
+    let offset = isWhite ? 12's8 : -12's8
     var target = getCellWithOffset(board, from, offset-1)
     if target != -1 and (board[target].content == targetContent or g_Game.priseEnPassant == target)
         moves.add(target)
@@ -268,7 +268,7 @@ func getPawnAttacks(board: ^Cell, from: s8, moves: *Array's8)
 
 func getPieceMove(board: ^Cell, from, offset: s8, moves: *Array's8)->bool
 {
-    var target = getCellWithOffset(board, from, offset)
+    let target = getCellWithOffset(board, from, offset)
     if target == -1
         return false
 
@@ -317,12 +317,12 @@ func getRookMoves( board:^Cell, from: s8, moves: *Array's8)
 
 func doMove(from, to: s8)
 {
-    var content = g_Board[from].content
+    let content = g_Board[from].content
     if content > ContentEnum.Black
         return
 
     // castle update and params
-    var ki = content == .White ? 6's8 : 90's8
+    let ki = content == .White ? 6's8 : 90's8
     g_Game.castle[content, 0] = g_Game.castle[content, 0] and (from != ki) and (from != ki+3)
     g_Game.castle[content, 1] = g_Game.castle[content, 1] and (from != ki) and (from != ki-4)
 
@@ -340,7 +340,7 @@ func doMove(from, to: s8)
     // prise en passant
     if to == g_Game.priseEnPassant
     {
-        var otherTo = to - 12 * Math.sign(cast(s8) (to - from))
+        let otherTo = to - 12 * Math.sign(cast(s8) (to - from))
         g_Board[otherTo].piece = .None
         g_Board[otherTo].content = .Empty
     }
@@ -371,10 +371,10 @@ func doMove(board:^Cell, from, to: s8)->[96] Cell
 
 func paintCell(painter: *Pixel.Painter, index: s8)
 {
-    var cell = &g_Board[index]
+    let cell = &g_Board[index]
     if cell.content == .Invalid
         return
-    var cellInfo = &g_BoardInfo[index]
+    let cellInfo = &g_BoardInfo[index]
     painter.fillRect(cellInfo.rect, cellInfo.odd ? ColorOdd : ColorEven)
     if cell.piece == .None
         return
@@ -391,11 +391,11 @@ func paintCell(painter: *Pixel.Painter, index: s8)
 
 func paintBoard(evt: *Event)
 {
-    var paintEvt = cast(*PaintEvent) evt
-    var painter = paintEvt.bc.painter
+    let paintEvt = cast(*PaintEvent) evt
+    let painter = paintEvt.bc.painter
 
-    var s = BoardSize
-    var b = BorderSize
+    let s = BoardSize
+    let b = BorderSize
 
     painter.fillRect({0, 0, b + s + b, b}, ColorBorder)
     painter.fillRect({0, b + s, b + s + b, b}, ColorBorder)
@@ -450,8 +450,8 @@ func paintBoard(evt: *Event)
 
 func paintStates(evt: *Event)
 {
-    var paintEvt = cast(*PaintEvent) evt
-    var painter = paintEvt.bc.painter
+    let paintEvt = cast(*PaintEvent) evt
+    let painter = paintEvt.bc.painter
     var str: String
 
     var y = BoardWithBorderSize + 12
@@ -498,15 +498,15 @@ func paintStates(evt: *Event)
 
 func pickCell(pos: Math.Point)->s8
 {
-    var xpix = pos.x - BorderSize
+    let xpix = pos.x - BorderSize
     if xpix < 0 or xpix >= BoardSize
         return -1
-    var ypix = pos.y - BorderSize
+    let ypix = pos.y - BorderSize
     if ypix < 0 or ypix >= BoardSize
         return -1
 
-    var x = cast(s32) (xpix / CellSize)
-    var y = 7 - cast(s32) (ypix / CellSize)
+    let x = cast(s32) (xpix / CellSize)
+    let y = 7 - cast(s32) (ypix / CellSize)
     return cast(s8) (y * 12 + x + 2)
 }
 
@@ -520,7 +520,7 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
         initGame()
         initCells()
 
-        var btn = PushButton.create(wnd, "Restart !", {BoardWithBorderSize + 12, 12})
+        let btn = PushButton.create(wnd, "Restart !", {BoardWithBorderSize + 12, 12})
         btn.sigPressed += closure|wnd|(btn) {
             initGame()
             initCells()
@@ -528,7 +528,7 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
         }
 
     case MousePressed:
-        var mouseEvt = cast(*MouseEvent) evt
+        let mouseEvt = cast(*MouseEvent) evt
         if mouseEvt.button == .Left
         {
             var pos = wnd.surfaceToLocal(mouseEvt.surfacePos)
@@ -549,7 +549,7 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
                         cell = -1
                     else
                     {
-                        var isWhite = g_Board[cell].content == .White
+                        let isWhite = g_Board[cell].content == .White
                         if isWhite != g_Game.whiteTurn
                             cell = -1
                     }
@@ -577,7 +577,7 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
     if Env.hasArg("swag.test")
         app.maxRunFrame = 100
 
-    var surface = try app.createSurface(100, 100, 1024, 1024, flags = (.OverlappedWindow & ~.Sizeable), hook = &onEvent)
+    let surface = try app.createSurface(100, 100, 1024, 1024, flags = (.OverlappedWindow & ~.Sizeable), hook = &onEvent)
     surface.setTitle("Chess")
 
     var dataPath: String = Path.getDirectoryName(#location.fileName)
@@ -586,7 +586,7 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
     dataPath = Path.combine(dataPath, "pieces.png")
     var img = assume Image.load(dataPath)
 
-    var rdr = surface.app.getRenderer()
+    let rdr = surface.app.getRenderer()
     var y = 0
     loop i: 2
     {

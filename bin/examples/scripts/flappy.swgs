@@ -59,13 +59,13 @@ func paint(painter: *Painter)
     if !g_FirstStart
     {
         painter.pushState()
-        var frame = (cast(s32) g_Bird.frame) % 3
+        let frame = (cast(s32) g_Bird.frame) % 3
 
         var trf = painter.getTransform()
 
         painter.resetTransform()
-        var speed = Math.clamp(g_Bird.speed.y, -200, 200)
-        var angle = Math.map(speed, -200, 200, -Math.ConstF32.PiBy6, Math.ConstF32.PiBy6)
+        let speed = Math.clamp(g_Bird.speed.y, -200, 200)
+        let angle = Math.map(speed, -200, 200, -Math.ConstF32.PiBy6, Math.ConstF32.PiBy6)
         painter.rotateTransform(angle)
 
         painter.translateTransform(g_Bird.pos.x + trf.tx, g_Bird.pos.y + trf.ty)
@@ -124,7 +124,7 @@ func paint(painter: *Painter)
 
 func input(wnd: *Wnd)
 {
-    var kb = wnd.getApp().getKeyboard()
+    let kb = wnd.getApp().getKeyboard()
 
     if g_GameOver or g_FirstStart
     {
@@ -202,10 +202,10 @@ func createPipe()
 {
     var pipe: Pipe
 
-    var pos = g_Rect.width
-    var sizePassage = Random.shared().nextF32(70, 150)
-    var heightUp = Random.shared().nextF32(50, g_Rect.height - sizePassage - 50)
-    var heightDown = g_Rect.height - heightUp - GroundHeight - sizePassage
+    let pos = g_Rect.width
+    let sizePassage = Random.shared().nextF32(70, 150)
+    let heightUp = Random.shared().nextF32(50, g_Rect.height - sizePassage - 50)
+    let heightDown = g_Rect.height - heightUp - GroundHeight - sizePassage
 
     pipe.rectUp.x = pos
     pipe.rectUp.y = heightUp - g_PipeTextureU.height
@@ -235,7 +235,7 @@ func start()
 
 func loadAssets(wnd: *Wnd) throw
 {
-    var render = &wnd.getApp().renderer
+    let render = &wnd.getApp().renderer
 
     var dataPath: String = Path.getDirectoryName(#location.fileName)
     dataPath = Path.combine(dataPath, "datas")
@@ -270,8 +270,8 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
         g_Rect = wnd.getClientRect()
 
     case Paint:
-        var paintEvt = cast(*PaintEvent) evt
-        var painter = paintEvt.bc.painter
+        let paintEvt = cast(*PaintEvent) evt
+        let painter = paintEvt.bc.painter
         g_Dt     = wnd.getApp().getDt()
 
         input(wnd)
