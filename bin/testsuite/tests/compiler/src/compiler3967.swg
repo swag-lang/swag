@@ -22,8 +22,8 @@ func toto()->const ref VV
 //#[Swag.PrintBc, Swag.Optim("", false)]
 #test
 {
-    var x: const ref VV = toto()
-    var y = x
+    let x: const ref VV = toto()
+    let y = x
     @assert(@typeof(x) == const ref VV)
     @assert(@typeof(y) == VV)
     @assert(PC == true)

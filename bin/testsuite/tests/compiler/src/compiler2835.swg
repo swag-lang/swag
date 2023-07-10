@@ -1,7 +1,7 @@
 //#[Swag.PrintBc]
 #test
 {
-    var x = 0'u8
+    let x = 0'u8
     if (x|32) == "e"'u8
     {
         @assert(false)

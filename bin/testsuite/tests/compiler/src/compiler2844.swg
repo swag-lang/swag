@@ -9,6 +9,6 @@ func print(params: ...)
 //#[Swag.PrintBc]
 #test
 {
-    var ptr = &print
+    let ptr = &print
     ptr("this is a string", "this is a string", "this is a string")
 }

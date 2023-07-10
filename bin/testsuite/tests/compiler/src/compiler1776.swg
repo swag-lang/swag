@@ -1,8 +1,8 @@
 //#[Swag.PrintBc]
 #test
 {
-	var c = 0xFFFFFFFF_FFFFFFFF;
+	let c = 0xFFFFFFFF_FFFFFFFF;
     #[Swag.Overflow(true)]
-	var a = c << 56;
+	let a = c << 56;
 	@assert(a == 0xFF000000_00000000);
 }

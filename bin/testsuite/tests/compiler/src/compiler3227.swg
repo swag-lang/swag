@@ -19,6 +19,6 @@ impl A
 
 #test
 {
-    var t = toto().titi()
+    let t = toto().titi()
     @assert(t == 555)
 }

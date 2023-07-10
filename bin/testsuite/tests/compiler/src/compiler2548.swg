@@ -34,7 +34,7 @@ impl AA
 //#[Swag.PrintBc]
 func titi()->[1] AA
 {
-    var ptrptr: *u8 = @alloc(10)
+    let ptrptr: *u8 = @alloc(10)
     /*@print("ptr ")
     @print(cast(s64) cast(u64) ptrptr)
     @print("\n")*/

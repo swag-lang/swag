@@ -1,8 +1,8 @@
 //#[Swag.PrintBc]
 #test
 {
-    var x = 10
-    var y = 5
+    let x = 10
+    let y = 5
     var c = 0
     loop x..y
     {

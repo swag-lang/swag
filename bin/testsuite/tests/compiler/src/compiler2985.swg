@@ -17,7 +17,7 @@ var G = 0
 #[Swag.Inline]
 func test()
 {
-    var v = CommandId.StartClippingRegion
+    let v = CommandId.StartClippingRegion
     switch v
     {
     case Clear:

@@ -7,7 +7,7 @@
         var cfg: *Swag.BuildCfg
         cfg = @compiler().getBuildCfg()
         //@print(cfg.debugAllocator)
-        var cfg1 = @compiler().getBuildCfg()
+        let cfg1 = @compiler().getBuildCfg()
         @assert(cfg == cfg1)
     }
 }

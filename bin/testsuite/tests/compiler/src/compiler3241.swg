@@ -11,6 +11,6 @@ func toto(x: code)
 
 #test
 {
-    var s = "titi"
+    let s = "titi"
     toto(#code tata(s))
 }

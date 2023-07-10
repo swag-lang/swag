@@ -12,6 +12,6 @@ func toto(x, y: s32)->s32
     var gg: bool
     var t: [2] func(s32, s32)->s32
     t[1] = &toto
-    var x = t[1](1, 2)
+    let x = t[1](1, 2)
     @assert(x == 3)
 }

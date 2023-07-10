@@ -1,7 +1,7 @@
 #test
 {
     var t = [1, 2]
-    var x: *s32 = &t
-    var y = dref &t[1]
+    let x: *s32 = &t
+    let y = dref &t[1]
     @assert(y == 2)
 }

@@ -1,7 +1,7 @@
 #test
 {
-    var toto = "10"
-    var r = ref &toto
+    let toto = "10"
+    let r = ref &toto
     var x = 0
     loop r
     {

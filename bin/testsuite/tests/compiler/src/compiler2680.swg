@@ -1,15 +1,15 @@
 #test
 {
     {
-        var xx = 555
-        var yy = 666
-        var t = {xx, yy}
+        let xx = 555
+        let yy = 666
+        let t = {xx, yy}
     }
 
     {
-        var x = 555
-        var y = 666
-        var t = {x, y}
+        let x = 555
+        let y = 666
+        let t = {x, y}
         @assert(t.x == 555)
         @assert(t.item0 == t.x)
         @assert(t.y == 666)

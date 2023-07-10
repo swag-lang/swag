@@ -17,6 +17,6 @@ func toto(v: s32)
 #test
 {
     var v: AA
-    var ptr = &v
+    let ptr = &v
     ptr.toto()
 }

@@ -2,7 +2,7 @@
 //#global testerror
 #test
 {
-    var a = #run {
+    let a = #run {
         var ret = 0's32
         loop 10 ret += 66
         return ret

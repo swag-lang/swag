@@ -1,6 +1,6 @@
 func toto()
 {
-    var seenIEnd = false
+    let seenIEnd = false
     while !seenIEnd
     {
     }

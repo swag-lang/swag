@@ -6,7 +6,7 @@ func toto()
 //#[Swag.Optim("", false)]
 #test
 {
-    var a = 0
+    let a = 0
     switch a
     {
     case 0:

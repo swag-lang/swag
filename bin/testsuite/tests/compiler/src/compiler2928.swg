@@ -1,6 +1,6 @@
 #test
 {
-    var x = 10
+    let x = 10
     switch x
     {
     case 0..10: break

@@ -9,6 +9,6 @@ func getA() => &gA
 
 #test
 {
-    var val = &getA().x
+    let val = &getA().x
     @assert(dref val == 666)
 }

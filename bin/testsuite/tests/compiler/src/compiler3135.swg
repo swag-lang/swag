@@ -1,7 +1,7 @@
 //#[Swag.PrintBc, Swag.Optim("", false), Swag.Safety("", false)]
 #test
 {
-    var x = @runes("山人水")
+    let x = @runes("山人水")
     @assert(@countof(x) == 3)
     @assert(x[0] == "山"'rune)
     @assert(x[1] == "人"'rune)

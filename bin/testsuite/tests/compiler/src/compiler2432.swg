@@ -12,6 +12,6 @@ func append(buf: *void, fmt: string, values: ...)
 
 #run
 {
-    var x, y, z = 0
+    let x, y, z = 0
     append(null, "toto", x, y, z)
 }

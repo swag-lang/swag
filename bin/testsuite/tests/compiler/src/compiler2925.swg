@@ -1,6 +1,6 @@
 #test
 {
-    var x: any = "t"
+    let x: any = "t"
     switch x
     {
     case s32:       @assert(false)

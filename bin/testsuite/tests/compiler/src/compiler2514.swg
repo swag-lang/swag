@@ -2,7 +2,7 @@ using Swag
 
 #test
 {
-    var al: IAllocator = @getcontext().tempAllocator
+    let al: IAllocator = @getcontext().tempAllocator
 
     var req: AllocatorRequest
     req.size = 512

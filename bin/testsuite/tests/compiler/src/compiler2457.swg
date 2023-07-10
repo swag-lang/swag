@@ -2,20 +2,20 @@
 #test
 {
     {
-        var x = -1's8
-        var y: s32 = cast(s32) x
+        let x = -1's8
+        let y: s32 = cast(s32) x
         @assert(y == -1)
     }
 
     {
-        var x = -1's8
-        var y: s64 = cast(s64) x
+        let x = -1's8
+        let y: s64 = cast(s64) x
         @assert(y == -1)
     }
 
     {
-        var x = -1's16
-        var y: s64 = cast(s64) x
+        let x = -1's16
+        let y: s64 = cast(s64) x
         @assert(y == -1)
     }
 }

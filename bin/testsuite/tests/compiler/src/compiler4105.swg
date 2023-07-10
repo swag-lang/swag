@@ -3,6 +3,6 @@ using Swag
 
 #test
 {
-    var b = false
+    let b = false
     var x = b ? "toto" : null
 }

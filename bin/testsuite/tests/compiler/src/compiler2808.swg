@@ -1,7 +1,7 @@
 // Swap two values
 func swap(x, y: *s32)
 {
-    var tmp =,moveraw dref x
+    let tmp =,moveraw dref x
     dref x =,nodrop,moveraw dref y
     dref y =,nodrop,moveraw tmp
 }
@@ -9,11 +9,11 @@ func swap(x, y: *s32)
 // Quick sort algorithm
 func quick(values: [..] s32, cb: func(s32, s32)->s32)
 {
-    var count = @countof(values)
+    let count = @countof(values)
     if(count == 0)
         return
 
-    var begin = 0'u64
+    let begin = 0'u64
     var end = count - 1
     var buffer = @dataof(values)
 
@@ -26,7 +26,7 @@ func quick(values: [..] s32, cb: func(s32, s32)->s32)
         }
 
         // Pick a pivot and,move it out of the way
-        var pivot = (begin + end) / 2
+        let pivot = (begin + end) / 2
         swap(&buffer[pivot], &buffer[end])
 
         var low = begin
@@ -68,8 +68,8 @@ func quick(values: [..] s32, cb: func(s32, s32)->s32)
             }
             else*/
             {
-                var first = high + 1
-                var last = end
+                let first = high + 1
+                let last = end
                 quick(@mkslice(buffer + first, 1 + (last - first)), cb);
                 end = low - 1
             }

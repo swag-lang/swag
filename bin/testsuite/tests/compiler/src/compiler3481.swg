@@ -11,6 +11,6 @@ func cmp(a, b: s32)->s32
 //#[Swag.PrintBc]
 #test
 {
-    var v = toto(&cmp)
+    let v = toto(&cmp)
     @assert(v == 666)
 }

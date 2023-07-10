@@ -25,7 +25,7 @@ impl I for BB
 {
     mtd impl init()->s32
     {
-        var itf = cast(I) base
+        let itf = cast(I) base
         return itf.init()
     }
 

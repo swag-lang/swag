@@ -4,10 +4,10 @@ const X: [2] s32 = [10, 20]
 //#[Swag.PrintBc]
 #test
 {
-    var ptr = &X[0]
+    let ptr = &X[0]
     @assert(ptr[0] == 10)
     @assert(ptr[1] == 20)
 
-    var ptr1 = &X[1]
+    let ptr1 = &X[1]
     @assert(ptr1[0] == 20)
 }

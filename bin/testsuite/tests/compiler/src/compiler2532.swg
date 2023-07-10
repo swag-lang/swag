@@ -14,6 +14,6 @@ func titi()->s64 throw
 //#[Swag.PrintBc]
 #test
 {
-    var x = catch titi()
+    let x = catch titi()
     @assert(x == 0)
 }

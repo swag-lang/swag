@@ -6,7 +6,7 @@ func toto(x: s32)
 //#[Swag.PrintBc]
 #test
 {
-    var ptr = @typeof(toto)
-    var ptr1 = &ptr.parameters[0]
+    let ptr = @typeof(toto)
+    let ptr1 = &ptr.parameters[0]
     @assert(ptr1.name == "x")
 }

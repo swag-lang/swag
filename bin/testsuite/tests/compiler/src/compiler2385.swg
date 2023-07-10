@@ -1,8 +1,8 @@
 //#[Swag.PrintBc]
 #test
 {
-    var x = 1
-    var y = 2
-    var b = (x >= 1) | (y <= 2)
+    let x = 1
+    let y = 2
+    let b = (x >= 1) | (y <= 2)
     @assert(b)
 }

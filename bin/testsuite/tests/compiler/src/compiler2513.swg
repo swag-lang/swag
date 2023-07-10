@@ -1,7 +1,7 @@
 func toto(x: string)-> [100] u8
 {
     var result: retval
-    var len = @countof(x)
+    let len = @countof(x)
     @memcpy(@dataof(result), @dataof(x), len)
     result[len] = 0
     return result
@@ -10,6 +10,6 @@ func toto(x: string)-> [100] u8
 //#[Swag.PrintBc]
 #test
 {
-    var x = toto("toto")
+    let x = toto("toto")
     @assert(@strlen(@dataof(x)) == 4)
 }

@@ -1,7 +1,7 @@
 #[Swag.Inline]
 public func toto2589()
 {
-    var x = 0
+    let x = 0
     switch x
     {
     case 0, 1:      @print("0")

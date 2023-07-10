@@ -12,7 +12,7 @@ func(T) sortQuick(values: [..] T, cb: func(T, T)->s32)
         // Pick a pivot and,move it out of the way
         let pivot = (begin + end) / 2
 
-        var med = buffer[pivot]
+        let med = buffer[pivot]
         buffer[pivot] = buffer[end]
         buffer[end] = med
 
@@ -26,7 +26,7 @@ func(T) sortQuick(values: [..] T, cb: func(T, T)->s32)
                 high -= 1
             if low >= high
                 break
-            var tmp = low
+            let tmp = low
             low = high
             high = tmp
         }
@@ -39,7 +39,7 @@ func(T) sortQuick(values: [..] T, cb: func(T, T)->s32)
         #[Swag.Overflow(true)]
         let set1 = cast(s64) ((low - 1) - begin)
         #[Swag.Overflow(true)]
-        var set2 = cast(s64) (end - (high + 1))
+        let set2 = cast(s64) (end - (high + 1))
 
         if set1 > 0 and set2 > 0
         {

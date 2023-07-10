@@ -6,11 +6,11 @@ enum X: const [4] u8
 
 #test
 {
-    var ptr = @typeof(X)
+    let ptr = @typeof(X)
     var cpt = 0
     visit p: ptr.values
     {
-        var ptr1 = cast(const*u8) p.value
+        let ptr1 = cast(const*u8) p.value
         cpt += dref ptr1
     }
 

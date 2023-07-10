@@ -1,8 +1,8 @@
 //#global skip
 #test
 {
-    var toto = false
-    var r = ref &toto
+    let toto = false
+    let r = ref &toto
     while r
     {
         @assert(false)

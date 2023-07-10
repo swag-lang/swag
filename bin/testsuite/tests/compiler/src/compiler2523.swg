@@ -1,7 +1,7 @@
 //#[Swag.PrintBc]
 #test
 {
-    var x = "toto"
+    let x = "toto"
     if x == null
     {
         @assert(false)

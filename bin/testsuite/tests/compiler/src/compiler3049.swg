@@ -1,7 +1,7 @@
 #[Swag.ConstExpr]
 func orFlags()->Swag.TypeInfoFlags
 {
-    var res: Swag.TypeInfoFlags = Zero
+    let res: Swag.TypeInfoFlags = Zero
     return res
 }
 

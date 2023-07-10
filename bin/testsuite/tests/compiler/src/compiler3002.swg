@@ -6,7 +6,7 @@ struct Vector2
 //#[Swag.PrintBc, Swag.Optim("", false)]
 #test
 {
-    var size = 10's32
+    let size = 10's32
     var v = Vector2{1.0 + size}
     @assert(v.x == 11.0)
 }

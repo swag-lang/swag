@@ -1,7 +1,7 @@
 //#[Swag.PrintBc]
 func toto()->s32
 {
-    var result: retval = 10
+    let result: retval = 10
     return result
 }
 

@@ -10,6 +10,6 @@ func toto()->string throw
 //#[PrintBc]
 #test
 {
-    var x = catch toto()
+    let x = catch toto()
     @assert(x == null)
 }

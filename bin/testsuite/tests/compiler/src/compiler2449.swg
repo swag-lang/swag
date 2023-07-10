@@ -25,8 +25,8 @@ var err: MyError
 //#[Swag.PrintBc]
 #test
 {
-    var v = toto()
-    var vv = cast(*MyError) @dataof(v)
+    let v = toto()
+    let vv = cast(*MyError) @dataof(v)
     @assert(vv.x == 666)
     @assert(vv.z == 3.14)
     //@print(@typeof(v).name)

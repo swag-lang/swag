@@ -25,7 +25,7 @@ var err: MyError
 //#[Swag.PrintBc]
 #test
 {
-    var v = toto()
+    let v = toto()
     @assert(@kindof(v) == MyError)
     //@print(@typeof(v).name)
     //@print(@kindof(v).name)

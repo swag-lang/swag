@@ -1,26 +1,26 @@
 #test
 {
     {
-        var x = 1.0
-        var y = cast(bool) x
+        let x = 1.0
+        let y = cast(bool) x
         @assert(y)
     }
 
     {
-        var x = 1.0'f64
-        var y = cast(bool) x
+        let x = 1.0'f64
+        let y = cast(bool) x
         @assert(y)
     }
 
     {
-        var x = 0.0
-        var y = cast(bool) x
+        let x = 0.0
+        let y = cast(bool) x
         @assert(!y)
     }
 
     {
-        var x = 0.0'f64
-        var y = cast(bool) x
+        let x = 0.0'f64
+        let y = cast(bool) x
         @assert(!y)
     }
 }

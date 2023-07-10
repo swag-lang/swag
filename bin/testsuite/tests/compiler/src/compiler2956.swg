@@ -2,13 +2,13 @@
 {
     {
         var x = 0'f32
-        var y = 1
+        let y = 1
         x += y
     }
 
     {
         var x = 0'f32
-        var y = 1'u32
+        let y = 1'u32
         x += y
     }
 }

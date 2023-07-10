@@ -1,7 +1,7 @@
 #test
 {
-    var x: const [2] s32 = [10, 20]
-    var ptr = &x[0]
+    let x: const [2] s32 = [10, 20]
+    let ptr = &x[0]
     @assert(@stringof(@typeof(ptr)) == "const ^s32")
 }
 

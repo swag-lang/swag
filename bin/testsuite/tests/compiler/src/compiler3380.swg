@@ -21,7 +21,7 @@ func toto(x, y: s32) => x + y
     var v: A
     v.sig = &toto
 
-    var r: fct = cast(fct) v
-    var r1 = r(1, 2)
+    let r: fct = cast(fct) v
+    let r1 = r(1, 2)
     @assert(r1 == 3)
 }

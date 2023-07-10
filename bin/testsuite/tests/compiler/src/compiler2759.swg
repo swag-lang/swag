@@ -5,7 +5,7 @@ func titi() {}
 
 #test
 {
-    var x = &toto
+    let x = &toto
     var r = 0
     switch x
     {

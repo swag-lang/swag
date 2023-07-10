@@ -26,7 +26,7 @@ impl BB
 
 func ptr(x: ...)
 {
-    var v = cast(s32) x[0]
+    let v = cast(s32) x[0]
     @assert(v == 820856226)
 }
 

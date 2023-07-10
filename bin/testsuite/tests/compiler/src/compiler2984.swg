@@ -7,7 +7,7 @@ enum Col { AA; BB; }
 
 #test
 {
-    var v = Col.AA
+    let v = Col.AA
     switch(v)
     {
     case AA: break
