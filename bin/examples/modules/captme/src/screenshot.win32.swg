@@ -96,7 +96,7 @@ func getWndAtPos(hWnd: HWND, pt: POINT)->HWND
     {
         var pt1 = pt
         ScreenToClient(g_Hit, &pt1)
-        var child = ChildWindowFromPointEx(g_Hit, pt1, CWP_SKIPINVISIBLE | CWP_SKIPDISABLED | CWP_SKIPTRANSPARENT)
+        let child = ChildWindowFromPointEx(g_Hit, pt1, CWP_SKIPINVISIBLE | CWP_SKIPDISABLED | CWP_SKIPTRANSPARENT)
         if !child or child == g_Hit
             break
         g_Hit = child
@@ -158,7 +158,7 @@ func winProc(hWnd: HWND, msg: UINT, wParam: WPARAM, lParam: LPARAM)->LRESULT
             pp.y = g_EndGrabY
             ClientToScreen(hWnd, &pp)
 
-            var under = getWndAtPos(hWnd, pp)
+            let under = getWndAtPos(hWnd, pp)
             if under
             {
                 var r: RECT
@@ -178,7 +178,7 @@ func winProc(hWnd: HWND, msg: UINT, wParam: WPARAM, lParam: LPARAM)->LRESULT
 
     case WM_PAINT:
         var ps: PAINTSTRUCT
-        var hDC = BeginPaint(hWnd, &ps)
+        let hDC = BeginPaint(hWnd, &ps)
 
         var rc1: RECT
         GetClientRect(hWnd, &rc1)
@@ -191,15 +191,15 @@ func winProc(hWnd: HWND, msg: UINT, wParam: WPARAM, lParam: LPARAM)->LRESULT
         // Lerp
         if g_AutoGrab
         {
-            var dt = 0.1'f32
+            let dt = 0.1'f32
             g_RStartGrabX = Math.lerp(g_RStartGrabX, cast(f32) x1, dt)
             g_RStartGrabY = Math.lerp(g_RStartGrabY, cast(f32) y1, dt)
             g_REndGrabX   = Math.lerp(g_REndGrabX, cast(f32) x2, dt)
             g_REndGrabY   = Math.lerp(g_REndGrabY, cast(f32) y2, dt)
-            var xx1 = cast(s32) g_RStartGrabX
-            var yy1 = cast(s32) g_RStartGrabY
-            var xx2 = cast(s32) g_REndGrabX
-            var yy2 = cast(s32) g_REndGrabY
+            let xx1 = cast(s32) g_RStartGrabX
+            let yy1 = cast(s32) g_RStartGrabY
+            let xx2 = cast(s32) g_REndGrabX
+            let yy2 = cast(s32) g_REndGrabY
             if x1 != xx1 or y1 != yy1 or x2 != xx2 or y2 != yy2
                 InvalidateRect(hWnd, null, FALSE)
             x1 = xx1; x2 = xx2; y1 = yy1; y2 = yy2
@@ -247,7 +247,7 @@ func winProc(hWnd: HWND, msg: UINT, wParam: WPARAM, lParam: LPARAM)->LRESULT
 
 func createNative(w, h: s32)->HWND throw
 {
-    var className = @dataof(Utf16.toZeroTerminated("CaptMe.CaptureSurface"))
+    let className = @dataof(Utf16.toZeroTerminated("CaptMe.CaptureSurface"))
 
     var wc: WNDCLASSW
     wc.hInstance     = GetModuleHandleW(null)
@@ -258,7 +258,7 @@ func createNative(w, h: s32)->HWND throw
     wc.lpszClassName = className
     catch RegisterClassW(wc)
 
-    var hWnd = cast(const *void) CreateWindowExW(
+    let hWnd = cast(const *void) CreateWindowExW(
         WS_EX_TOPMOST | WS_EX_TOOLWINDOW,
         className,
         null,
@@ -296,8 +296,8 @@ func screenShot(main: *MainWnd, captureMode: CaptureMode)->Image throw
     g_ScreenWidth  = GetSystemMetrics(SM_CXMAXTRACK)
     g_ScreenHeight = GetSystemMetrics(SM_CYMAXTRACK)
 
-    var hDesktopWnd = GetDesktopWindow()
-    var hDesktopDC = GetDC(hDesktopWnd)
+    let hDesktopWnd = GetDesktopWindow()
+    let hDesktopDC = GetDC(hDesktopWnd)
 
     // Make a copy of the desktop
     g_MemDesktopDC = CreateCompatibleDC(hDesktopDC)
@@ -325,7 +325,7 @@ func screenShot(main: *MainWnd, captureMode: CaptureMode)->Image throw
     }
     elif captureMode >= .Screen0 and captureMode <= .Screen3
     {
-        var idx = cast(s32) captureMode - cast(s32) CaptureMode.Screen0
+        let idx = cast(s32) captureMode - cast(s32) CaptureMode.Screen0
         g_StartGrabX = cast(s32) main.monitors[idx].rect.x
         g_StartGrabY = cast(s32) main.monitors[idx].rect.y
         g_EndGrabX = g_StartGrabX + cast(s32) main.monitors[idx].rect.width
@@ -358,7 +358,7 @@ func screenShot(main: *MainWnd, captureMode: CaptureMode)->Image throw
         g_REndGrabY = 0
 
         main.getApp().runFrame()
-        var hWnd = createNative(g_ScreenWidth, g_ScreenHeight)
+        let hWnd = createNative(g_ScreenWidth, g_ScreenHeight)
         SetCapture(hWnd)
 
         var msg: MSG
@@ -376,13 +376,13 @@ func screenShot(main: *MainWnd, captureMode: CaptureMode)->Image throw
             return result
     }
 
-    var (x1, y1, x2, y2) = getGrabRect()
-    var wGrab = Math.max(x2 - x1, 8)
-    var hGrab = Math.max(y2 - y1, 8)
+    let (x1, y1, x2, y2) = getGrabRect()
+    let wGrab = Math.max(x2 - x1, 8)
+    let hGrab = Math.max(y2 - y1, 8)
 
     // Copy the portion of the screen we want
-    var hCaptureDC = CreateCompatibleDC(hDesktopDC)
-    var hCaptureBitmap = CreateCompatibleBitmap(hDesktopDC, wGrab, hGrab)
+    let hCaptureDC = CreateCompatibleDC(hDesktopDC)
+    let hCaptureBitmap = CreateCompatibleBitmap(hDesktopDC, wGrab, hGrab)
     SelectObject(hCaptureDC, acast hCaptureBitmap)
     BitBlt(hCaptureDC, 0, 0, wGrab, hGrab, g_MemDesktopDC, x1, y1, SRCCOPY | CAPTUREBLT)
 

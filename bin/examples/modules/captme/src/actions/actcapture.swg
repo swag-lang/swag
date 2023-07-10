@@ -42,7 +42,7 @@ impl IActionUI for ActionCapture
 
     mtd impl update(cxt: ActionContext, evt: *CommandStateEvent)->bool
     {
-        var main = cast(*MainWnd) cxt.wnd
+        let main = cast(*MainWnd) cxt.wnd
 
         switch cxt.id
         {
@@ -110,7 +110,7 @@ impl IActionUI for ActionCapture
 
     mtd impl execute(cxt: ActionContext)->bool
     {
-        var main = cast(*MainWnd) cxt.wnd
+        let main = cast(*MainWnd) cxt.wnd
 
         switch cxt.id
         {
@@ -154,7 +154,7 @@ impl MainWnd
         if !img.isValid()
             return
 
-        with var capture = Memory.new'Capture()
+        with let capture = Memory.new'Capture()
         {
             .changed = true
             .width, .widthOrg = img.width
@@ -183,7 +183,7 @@ impl MainWnd
 
     mtd captureScreen(mode: CaptureMode)
     {
-        var wasHidden = surface.isHidden
+        let wasHidden = surface.isHidden
         if captureHideEditor and !surface.isHidden and !surface.isMinimized
             surface.hide()
 
@@ -191,7 +191,7 @@ impl MainWnd
             Threading.Thread.sleep(captureDelay * 1000)
 
         var img = catch screenShot(mode)
-        var isValid = !@errmsg and img.width > 0 and img.height > 0
+        let isValid = !@errmsg and img.width > 0 and img.height > 0
 
         if (isValid and captureShowEditor) or !wasHidden
         {

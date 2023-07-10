@@ -22,8 +22,8 @@ impl IActionUI for ActionImage
 
     mtd impl update(cxt: ActionContext, evt: *CommandStateEvent)->bool
     {
-        var main = cast(*MainWnd) cxt.wnd
-        var capture = main.getCapture()
+        let main = cast(*MainWnd) cxt.wnd
+        let capture = main.getCapture()
 
         switch cxt.id
         {
@@ -53,8 +53,8 @@ impl IActionUI for ActionImage
 
     mtd impl execute(cxt: ActionContext)->bool
     {
-        var main = cast(*MainWnd) cxt.wnd
-        var capture = main.getCapture()
+        let main = cast(*MainWnd) cxt.wnd
+        let capture = main.getCapture()
 
         switch cxt.id
         {
@@ -68,7 +68,7 @@ impl IActionUI for ActionImage
             main.trimCanevas()
 
         case CmdIdRestoreOrg:
-            var undo = capture.newUndo(.RestoreOrg)
+            let undo = capture.newUndo(.RestoreOrg)
             capture.pushUndo(undo)
             main.invalidate()
         }
@@ -84,45 +84,45 @@ impl MainWnd
         #[Swag.Global]
         var g_KeepRatio: bool = true
 
-        var capture = getCapture()
-        var ratio = cast(f32) capture.width / capture.height
+        let capture = getCapture()
+        let ratio = cast(f32) capture.width / capture.height
 
-        var dlg = Dialog.createDialog(surface, 350, 265, title = "Resize Image")
+        let dlg = Dialog.createDialog(surface, 350, 265, title = "Resize Image")
         dlg.addButton("Resize", Dialog.BtnOk, true)
         dlg.addButton("Cancel", Dialog.BtnCancel)
-        var edit0 = EditCtrl.create(dlg, "Width", Format.toString("%", capture.width), {80, 15}, flags = .RightAlign)
-        var edit1 = EditCtrl.create(dlg, "Height", Format.toString("%", capture.height), {80, 50}, flags = .RightAlign)
+        let edit0 = EditCtrl.create(dlg, "Width", Format.toString("%", capture.width), {80, 15}, flags = .RightAlign)
+        let edit1 = EditCtrl.create(dlg, "Height", Format.toString("%", capture.height), {80, 50}, flags = .RightAlign)
         edit0.edit.setInputU64(acast Capture.MinSize, acast Capture.MaxSize)
         edit1.edit.setInputU64(acast Capture.MinSize, acast Capture.MaxSize)
-        var btnRatio = CheckButton.create(dlg, "Keep Ratio", {120, 85})
+        let btnRatio = CheckButton.create(dlg, "Keep Ratio", {120, 85})
         btnRatio.checked = g_KeepRatio ? .Checked : .UnChecked
 
         edit0.edit.sigChanged += closure|ratio, btnRatio, edit1|(edt) {
             if btnRatio.checked == .Checked
             {
-                var w = trycatch StrConv.toS32(edt.text)
-                var h = Math.max(1, cast(s32) (w / ratio))
+                let w = trycatch StrConv.toS32(edt.text)
+                let h = Math.max(1, cast(s32) (w / ratio))
                 edit1.edit.setTextSilent(Format.toString("%", h))
             }
         }
         edit1.edit.sigChanged += closure|ratio, btnRatio, edit0|(edt) {
             if btnRatio.checked == .Checked
             {
-                var h = trycatch StrConv.toS32(edt.text)
-                var w = Math.max(1, cast(s32) (h * ratio))
+                let h = trycatch StrConv.toS32(edt.text)
+                let w = Math.max(1, cast(s32) (h * ratio))
                 edit0.edit.setTextSilent(Format.toString("%", w))
             }
         }
 
-        var res = dlg.doModal()
+        let res = dlg.doModal()
         g_KeepRatio = btnRatio.checked == .Checked
         if res != Dialog.BtnOk
             return
 
-        var w = trycatch StrConv.toS32(edit0.edit.text)
+        let w = trycatch StrConv.toS32(edit0.edit.text)
         if w < Capture.MinSize or w > Capture.MaxSize
             return
-        var h = trycatch StrConv.toS32(edit1.edit.text)
+        let h = trycatch StrConv.toS32(edit1.edit.text)
         if h < Capture.MinSize or h > Capture.MaxSize
             return
         if w == capture.width and h == capture.height
@@ -135,16 +135,16 @@ impl MainWnd
         }
 
         capture.serialUndo += 1
-        var serial = capture.serialUndo
+        let serial = capture.serialUndo
 
-        var undo0 = capture.newUndo(.FlattenAll, serial)
+        let undo0 = capture.newUndo(.FlattenAll, serial)
         capture.pushUndo(undo0)
-        var img = capture.backImg
+        let img = capture.backImg
         img.resize(w, h, .Bilinear)
-        var undo1 = capture.newUndo(.SetImage, serial)
+        let undo1 = capture.newUndo(.SetImage, serial)
         undo1.newImg = img
         capture.pushUndo(undo1)
-        var undo2 = capture.newUndo(.MoveCapture, serial)
+        let undo2 = capture.newUndo(.MoveCapture, serial)
         undo2.newImg = img
         undo2.newSizeX = w - capture.width
         undo2.newSizeY = h - capture.height
@@ -158,32 +158,32 @@ impl MainWnd
         #[Swag.Global]
         var g_ResizeMode: u64 = 5
 
-        var capture = getCapture()
-        var ratio = cast(f32) capture.width / capture.height
+        let capture = getCapture()
+        let ratio = cast(f32) capture.width / capture.height
 
-        var dlg = Dialog.createDialog(surface, 350, 265, title = "Resize Canevas")
+        let dlg = Dialog.createDialog(surface, 350, 265, title = "Resize Canevas")
         dlg.addButton("Resize", Dialog.BtnOk, true)
         dlg.addButton("Cancel", Dialog.BtnCancel)
-        var edit0 = EditCtrl.create(dlg, "Width", Format.toString("%", capture.width), {30, 15}, flags = .RightAlign)
-        var edit1 = EditCtrl.create(dlg, "Height", Format.toString("%", capture.height), {30, 50}, flags = .RightAlign)
+        let edit0 = EditCtrl.create(dlg, "Width", Format.toString("%", capture.width), {30, 15}, flags = .RightAlign)
+        let edit1 = EditCtrl.create(dlg, "Height", Format.toString("%", capture.height), {30, 50}, flags = .RightAlign)
         edit0.edit.setInputU64(acast Capture.MinSize, acast Capture.MaxSize)
         edit1.edit.setInputU64(acast Capture.MinSize, acast Capture.MaxSize)
-        var btnRatio = CheckButton.create(dlg, "Keep Ratio", {70, 85})
+        let btnRatio = CheckButton.create(dlg, "Keep Ratio", {70, 85})
         btnRatio.checked = g_KeepRatio ? .Checked : .UnChecked
 
         edit0.edit.sigChanged += closure|ratio, btnRatio, edit1|(edt) {
             if btnRatio.checked == .Checked
             {
-                var w = trycatch StrConv.toS32(edt.text)
-                var h = Math.max(1, cast(s32) (w / ratio))
+                let w = trycatch StrConv.toS32(edt.text)
+                let h = Math.max(1, cast(s32) (w / ratio))
                 edit1.edit.setTextSilent(Format.toString("%", h))
             }
         }
         edit1.edit.sigChanged += closure|ratio, btnRatio, edit0|(edt) {
             if btnRatio.checked == .Checked
             {
-                var h = trycatch StrConv.toS32(edt.text)
-                var w = Math.max(1, cast(s32) (h * ratio))
+                let h = trycatch StrConv.toS32(edt.text)
+                let w = Math.max(1, cast(s32) (h * ratio))
                 edit0.edit.setTextSilent(Format.toString("%", w))
             }
         }
@@ -199,7 +199,7 @@ impl MainWnd
                 {
                     if c.userData
                     {
-                        var btnc = cast(*CheckButton) c
+                        let btnc = cast(*CheckButton) c
                         btnc.checked = c != btn ? .UnChecked : .Undefined
                         btnc.invalidate()
                     }
@@ -218,14 +218,14 @@ impl MainWnd
         createBtn(dlg, {X+S+O, Y+S+O+S+O, S, S}, 8)
         createBtn(dlg, {X+S+O+S+O, Y+S+O+S+O, S, S}, 9)
 
-        var res = dlg.doModal()
+        let res = dlg.doModal()
 
         g_KeepRatio = btnRatio.checked == .Checked
         visit c: dlg.childs
         {
             if c.userData
             {
-                var btnc = cast(*CheckButton) c
+                let btnc = cast(*CheckButton) c
                 if btnc.checked != .UnChecked
                 {
                     g_ResizeMode = cast(u64) btnc.userData
@@ -237,19 +237,19 @@ impl MainWnd
         if res != Dialog.BtnOk
             return
 
-        var w = trycatch StrConv.toS32(edit0.edit.text)
+        let w = trycatch StrConv.toS32(edit0.edit.text)
         if w < Capture.MinSize or w > Capture.MaxSize
             return
-        var h = trycatch StrConv.toS32(edit1.edit.text)
+        let h = trycatch StrConv.toS32(edit1.edit.text)
         if h < Capture.MinSize or h > Capture.MaxSize
             return
         if w == capture.width and h == capture.height
             return
 
-        var nw = w - capture.width
-        var nh = h - capture.height
+        let nw = w - capture.width
+        let nh = h - capture.height
 
-        var undo = capture.newUndo(.MoveCapture)
+        let undo = capture.newUndo(.MoveCapture)
         undo.newSizeX = nw
         undo.newSizeY = nh
 
@@ -274,7 +274,7 @@ impl MainWnd
 
     mtd trimCanevas()
     {
-        var capture = getCapture()
+        let capture = getCapture()
         capture.selection.clear()
 
         var minX = Swag.F32.Max
@@ -365,12 +365,12 @@ impl MainWnd
         }
 
         capture.serialUndo += 1
-        var serial = capture.serialUndo
+        let serial = capture.serialUndo
 
         // Resize capture
         if minX or minY or maxX != capture.width or maxY != capture.height
         {
-            var undo = capture.newUndo(.MoveCapture, serial)
+            let undo = capture.newUndo(.MoveCapture, serial)
             undo.newPosX -= cast(s32) minX
             undo.newSizeX -= cast(s32) minX
             undo.newPosY -= cast(s32) minY
@@ -383,7 +383,7 @@ impl MainWnd
         // Remove forms outside the cavenas
         if capture.selection.count
         {
-            var undo = capture.newUndo(.DeleteSelection, serial)
+            let undo = capture.newUndo(.DeleteSelection, serial)
             capture.pushUndo(undo)
         }
 
@@ -403,7 +403,7 @@ impl MainWnd
             if capture.backImagePos.y + capture.backImg.height > capture.height
                 cropRect.height -= (capture.backImagePos.y + capture.backImg.height) - capture.height
 
-            var undo = capture.newUndo(.SetImage, serial)
+            let undo = capture.newUndo(.SetImage, serial)
             undo.newImg = capture.backImg.toCrop(cropRect)
             capture.pushUndo(undo)
         }

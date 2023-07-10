@@ -112,14 +112,14 @@ impl QuickWnd
 
     mtd btnPopup(btn: *Button, pos: Math.Point)
     {
-        var menu = MenuCtrl.createPopup(self)
+        let menu = MenuCtrl.createPopup(self)
         menu.addItem("Remove Quick Style", "0", disabled = !btn)
         menu.addSeparator()
         menu.addItem(CmdIdResetQuickStyle)
-        var res = menu.doModal(pos, autoDestroy = true)
+        let res = menu.doModal(pos, autoDestroy = true)
         if res == "0"
         {
-            var qbtn = cast(*QuickButton) btn
+            let qbtn = cast(*QuickButton) btn
             currentStyle.remove(qbtn.formItf)
             qbtn.destroy()
             updateQuickStyles()
@@ -128,7 +128,7 @@ impl QuickWnd
 
     func create(parent: *Wnd)->*QuickWnd
     {
-        with var quick = Wnd.create'QuickWnd(parent, {0, 0, 0, 300})
+        with let quick = Wnd.create'QuickWnd(parent, {0, 0, 0, 300})
         {
             .backgroundStyle = .Window
             .scrollWndFlags |= .ForceVertical | .SmallBar | .TransparentBar
@@ -461,7 +461,7 @@ impl QuickWnd
         if !currentStyle
             return
         var done = false
-        var mode = main.getEditMode()
+        let mode = main.getEditMode()
 
         var firstVisible = 0's32
         visit c: layout.childs
@@ -473,7 +473,7 @@ impl QuickWnd
 
         visit it, i: currentStyle.forms
         {
-            var btn = cast(*IconButton) layout.childs[i + firstVisible]
+            let btn = cast(*IconButton) layout.childs[i + firstVisible]
 
             #[Swag.Complete]
             switch @kindof(it)
@@ -500,7 +500,7 @@ impl QuickWnd
                 done = true
         }
 
-        var curMdl = cast(*IconButton) layout.childs.back()
+        let curMdl = cast(*IconButton) layout.childs.back()
         if curMdl.userData
         {
             curMdl.show(!done)
@@ -516,7 +516,7 @@ impl QuickWnd
         if !currentStyle
             return
 
-        var res = MessageDlg.confirm(surface, "This will reset the styles to the default values.")
+        let res = MessageDlg.confirm(surface, "This will reset the styles to the default values.")
         if res != MessageDlg.BtnYes
             return
 
@@ -547,8 +547,8 @@ impl QuickWnd
         func paintForm(painter: *Painter, btnp: *QuickButton)
         {
             painter.setParams(.Antialiased)
-            var sel = cast(*BaseForm) @dataof(btnp.formItf)
-            var s = cast(s32) BaseForm.adaptSize(sel.borderSize / 2, MinBorderSize, MaxBorderSize, 1, true)
+            let sel = cast(*BaseForm) @dataof(btnp.formItf)
+            let s = cast(s32) BaseForm.adaptSize(sel.borderSize / 2, MinBorderSize, MaxBorderSize, 1, true)
             var rect = Math.Rectangle{8 + s, 8 + s, 48 - 2*s, 48 - 2*s}
 
             var title = ""
@@ -556,16 +556,16 @@ impl QuickWnd
             switch @kindof(btnp.formItf)
             {
             case FormPolygon:
-                var poly = cast(*FormPolygon) @dataof(btnp.formItf)
+                let poly = cast(*FormPolygon) @dataof(btnp.formItf)
                 poly.setDefaultShape()
             case FormDraw:
-                var poly = cast(*FormDraw) @dataof(btnp.formItf)
+                let poly = cast(*FormDraw) @dataof(btnp.formItf)
                 poly.setDefaultShape()
             case FormText:
-                var txt = cast(*FormText) @dataof(btnp.formItf)
+                let txt = cast(*FormText) @dataof(btnp.formItf)
                 txt.text = "A"
             case FormImage:
-                var img = cast(*FormImage) @dataof(btnp.formItf)
+                let img = cast(*FormImage) @dataof(btnp.formItf)
                 switch img.kind
                 {
                 case Image:     title = "image"
@@ -583,7 +583,7 @@ impl QuickWnd
                 painter.drawStringCenter(rect.horzCenter(), rect.bottom(), title, btnp.getFont().regular, Argb.White)
         }
 
-        var edMode = main.editMode == .Selection ? main.getEditMode() : main.editMode
+        let edMode = main.editMode == .Selection ? main.getEditMode() : main.editMode
         #[Swag.Complete]
         switch edMode
         {
@@ -620,7 +620,7 @@ impl QuickWnd
 
         visit it: currentStyle.forms
         {
-            var btn = Wnd.create'QuickButton(layout, null, {0, 0, 64, 64})
+            let btn = Wnd.create'QuickButton(layout, null, {0, 0, 64, 64})
             btn.iconBtnFlags.add(.Checkable)
             btn.setForm(.RoundSquare)
             btn.formItf = it
@@ -644,40 +644,40 @@ impl QuickWnd
                 switch type
                 {
                 case FormShape:
-                    var b = cast(*FormShape) @dataof(it)
+                    let b = cast(*FormShape) @dataof(it)
                     self.main.mdlFormShape = dref b
                     self.main.mdlFavorite  = &self.main.mdlFormShape
                     self.main.mdlHighlight = &self.main.mdlFormShape
                     self.main.mdlPixSel    = &self.main.mdlFormShape
                 case FormImage:
-                    var b = cast(*FormImage) @dataof(it)
+                    let b = cast(*FormImage) @dataof(it)
                     self.main.mdlFormImage = dref b
                     self.main.mdlFavorite  = &self.main.mdlFormImage
                 case FormStep:
-                    var b = cast(*FormStep) @dataof(it)
+                    let b = cast(*FormStep) @dataof(it)
                     self.main.mdlFormStep  = dref b
                     self.main.mdlFavorite  = &self.main.mdlFormStep
                 case FormLine:
-                    var b = cast(*FormLine) @dataof(it)
+                    let b = cast(*FormLine) @dataof(it)
                     self.main.mdlFormLine  = dref b
                     self.main.mdlFavorite  = &self.main.mdlFormLine
                     self.main.mdlHighlight = &self.main.mdlFormLine
                 case FormPolygon:
-                    var b = cast(*FormPolygon) @dataof(it)
+                    let b = cast(*FormPolygon) @dataof(it)
                     self.main.mdlFormPolygon = dref b
                     self.main.mdlFavorite  = &self.main.mdlFormPolygon
                     self.main.mdlHighlight = &self.main.mdlFormPolygon
                     self.main.mdlPixSel    = &self.main.mdlFormPolygon
                 case FormArrow:
-                    var b = cast(*FormArrow) @dataof(it)
+                    let b = cast(*FormArrow) @dataof(it)
                     self.main.mdlFormArrow = dref b
                     self.main.mdlFavorite = &self.main.mdlFormArrow
                 case FormText:
-                    var b = cast(*FormText) @dataof(it)
+                    let b = cast(*FormText) @dataof(it)
                     self.main.mdlFormText = dref b
                     self.main.mdlFavorite = &self.main.mdlFormText
                 case FormDraw:
-                    var b = cast(*FormDraw) @dataof(it)
+                    let b = cast(*FormDraw) @dataof(it)
                     self.main.mdlFormDraw  = dref b
                     self.main.mdlFavorite  = &self.main.mdlFormDraw
                     self.main.mdlHighlight = &self.main.mdlFormDraw
@@ -693,40 +693,40 @@ impl QuickWnd
                     switch type
                     {
                     case FormShape:
-                        var b = cast(*FormShape) @dataof(it)
+                        let b = cast(*FormShape) @dataof(it)
                         mdlValue = Memory.new'FormShape()
                         it.copy(mdlValue, b)
                     case FormImage:
-                        var b = cast(*FormImage) @dataof(it)
+                        let b = cast(*FormImage) @dataof(it)
                         mdlValue = Memory.new'FormImage()
                         it.copy(mdlValue, b)
                     case FormStep:
-                        var b = cast(*FormStep) @dataof(it)
+                        let b = cast(*FormStep) @dataof(it)
                         mdlValue = Memory.new'FormStep()
                         it.copy(mdlValue, b)
                     case FormLine:
-                        var b = cast(*FormLine) @dataof(it)
+                        let b = cast(*FormLine) @dataof(it)
                         mdlValue = Memory.new'FormLine()
                         it.copy(mdlValue, b)
                     case FormPolygon:
-                        var b = cast(*FormPolygon) @dataof(it)
+                        let b = cast(*FormPolygon) @dataof(it)
                         mdlValue = Memory.new'FormPolygon()
                         it.copy(mdlValue, b)
                     case FormArrow:
-                        var b = cast(*FormArrow) @dataof(it)
+                        let b = cast(*FormArrow) @dataof(it)
                         mdlValue = Memory.new'FormArrow()
                         it.copy(mdlValue, b)
                     case FormText:
-                        var b = cast(*FormText) @dataof(it)
+                        let b = cast(*FormText) @dataof(it)
                         mdlValue = Memory.new'FormText()
                         it.copy(mdlValue, b)
                     case FormDraw:
-                        var b = cast(*FormDraw) @dataof(it)
+                        let b = cast(*FormDraw) @dataof(it)
                         mdlValue = Memory.new'FormDraw()
                         it.copy(mdlValue, b)
                     }
 
-                    var undo = capture.newUndo(.SetFormFromModel)
+                    let undo = capture.newUndo(.SetFormFromModel)
                     undo.mdlType = type
                     undo.mdlValue = mdlValue
                     capture.pushUndo(undo)
@@ -742,7 +742,7 @@ impl QuickWnd
         }
 
         // The button with the current model
-        var mode = main.getEditMode()
+        let mode = main.getEditMode()
 
         var formItf: IForm
         #[Swag.Complete]
@@ -774,7 +774,7 @@ impl QuickWnd
             break
         }
 
-        var baseForm = cast(*BaseForm) @dataof(formItf)
+        let baseForm = cast(*BaseForm) @dataof(formItf)
         var canAddModel = true
         if main.editMode == .Highlight
         {
@@ -792,7 +792,7 @@ impl QuickWnd
 
         if canAddModel
         {
-            var btn = Wnd.create'QuickButton(layout, null, {0, 0, 64, 64})
+            let btn = Wnd.create'QuickButton(layout, null, {0, 0, 64, 64})
             btn.userData = cast(*void) 1'u64 // This is the model button
             btn.formItf = formItf
             btn.setForm(.RoundSquare)
@@ -810,8 +810,8 @@ impl QuickWnd
             }
 
             // Button to add a new style
-            var ico = getTheme().getIcon24(ThemeIcons24.Plus)
-            var btn1 = IconButton.create(btn, ico, {64 - 26, 2, 24, 24})
+            let ico = getTheme().getIcon24(ThemeIcons24.Plus)
+            let btn1 = IconButton.create(btn, ico, {64 - 26, 2, 24, 24})
             btn1.style.addStyleSheetColors("btnIcon_Bk          $hilight")
             btn1.style.addStyleSheetColors("btnIcon_HotBk       $hilightLight")
             btn1.style.addStyleSheetColors("btnIcon_PressedBk   $hilightDark")
@@ -821,40 +821,40 @@ impl QuickWnd
             setScrollSize(0, layout.resultHeight)
 
             btn1.sigPressed += closure|self, main|(btn) {
-                var mode = main.getEditMode()
+                let mode = main.getEditMode()
                 #[Swag.Complete]
                 switch mode
                 {
                 case Arrow:
-                    var mdl = Memory.new'FormArrow()
+                    let mdl = Memory.new'FormArrow()
                     mdl.IForm.copy(mdl, &main.mdlFormArrow)
                     self.currentStyle.forms.add(mdl)
                 case Shape:
-                    var mdl = Memory.new'FormShape()
+                    let mdl = Memory.new'FormShape()
                     mdl.IForm.copy(mdl, &main.mdlFormShape)
                     self.currentStyle.forms.add(mdl)
                 case Image:
-                    var mdl = Memory.new'FormImage()
+                    let mdl = Memory.new'FormImage()
                     mdl.IForm.copy(mdl, &main.mdlFormImage)
                     self.currentStyle.forms.add(mdl)
                 case Step:
-                    var mdl = Memory.new'FormStep()
+                    let mdl = Memory.new'FormStep()
                     mdl.IForm.copy(mdl, &main.mdlFormStep)
                     self.currentStyle.forms.add(mdl)
                 case Line:
-                    var mdl = Memory.new'FormLine()
+                    let mdl = Memory.new'FormLine()
                     mdl.IForm.copy(mdl, &main.mdlFormLine)
                     self.currentStyle.forms.add(mdl)
                 case Polygon:
-                    var mdl = Memory.new'FormPolygon()
+                    let mdl = Memory.new'FormPolygon()
                     mdl.IForm.copy(mdl, &main.mdlFormPolygon)
                     self.currentStyle.forms.add(mdl)
                 case Text:
-                    var mdl = Memory.new'FormText()
+                    let mdl = Memory.new'FormText()
                     mdl.IForm.copy(mdl, &main.mdlFormText)
                     self.currentStyle.forms.add(mdl)
                 case Draw:
-                    var mdl = Memory.new'FormDraw()
+                    let mdl = Memory.new'FormDraw()
                     mdl.IForm.copy(mdl, &main.mdlFormDraw)
                     self.currentStyle.forms.add(mdl)
                 case Favorites, Highlight, Selection, PixSel:

@@ -45,8 +45,8 @@ func display()
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
 
     glBegin(GL_QUADS)
-    var w = 2 * g_MyImage.width / cast(f32) W
-    var h = 2 * g_MyImage.height / cast(f32) H
+    let w = 2 * g_MyImage.width / cast(f32) W
+    let h = 2 * g_MyImage.height / cast(f32) H
     glTexCoord2f(0.0, 0.0); glVertex2f(-1.0, -1.0)
     glTexCoord2f(1.0, 0.0); glVertex2f(-1.0 + w, -1.0)
     glTexCoord2f(1.0, 1.0); glVertex2f(-1.0 + w, -1.0 + h)
@@ -223,7 +223,7 @@ func createWindow()->HWND
     wc.lpszClassName = @dataof("CLASS_NAME")
     assume RegisterClassA(wc)
 
-    var hWnd = CreateWindowExA(
+    let hWnd = CreateWindowExA(
         0,
         @dataof("CLASS_NAME"),
         @dataof("Example"),
@@ -248,7 +248,7 @@ func createWindow()->HWND
 
     assume
     {
-        var pf = ChoosePixelFormat(g_HDC, &pfd)
+        let pf = ChoosePixelFormat(g_HDC, &pfd)
         SetPixelFormat(g_HDC, pf, &pfd)
         DescribePixelFormat(g_HDC, pf, cast(UINT) @sizeof(PIXELFORMATDESCRIPTOR), &pfd)
     }
@@ -312,10 +312,10 @@ func bigLoop()
 {
     try
     {
-        var hWnd = createWindow()
+        let hWnd = createWindow()
 
         g_HDC = GetDC(hWnd)
-        var hRC = wglCreateContext(g_HDC)
+        let hRC = wglCreateContext(g_HDC)
         wglMakeCurrent(g_HDC, hRC)
 
         Jobs.setNumWorkers()

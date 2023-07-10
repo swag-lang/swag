@@ -82,8 +82,8 @@ impl IWnd for MainWnd
 {
     mtd popupBar()
     {
-        var sf = catch surface.app.createSurface(500, 400, 300, 300, .Secondary | .TopMost)
-        with var menu = Wnd.create'MenuCtrl(sf.wnd.view, cast(WndId) null)
+        let sf = catch surface.app.createSurface(500, 400, 300, 300, .Secondary | .TopMost)
+        with let menu = Wnd.create'MenuCtrl(sf.wnd.view, cast(WndId) null)
         {
             .addItem(CmdIdShowEditor)
             .addSeparator()
@@ -193,7 +193,7 @@ impl MainWnd
         {
             editMode = .Shape
             getCapture().updateEditModeFromSelection()
-            var edMode = editMode
+            let edMode = editMode
             editMode = .Selection
             return edMode
         }
@@ -250,14 +250,14 @@ impl MainWnd
 
     mtd updateZoomDisplay()
     {
-        var z = cast(s32) (editWnd.editView.zoom * 100)
+        let z = cast(s32) (editWnd.editView.zoom * 100)
         zoomBtn.name = Format.toString("% %%", z)
         zoomBtn.invalidate()
     }
 
     mtd updateSizeDisplay()
     {
-        var capture = getCapture()
+        let capture = getCapture()
         if !capture or !sizeBtn
             return
         sizeBtn.name = Format.toString("% x %", capture.width, capture.height)
@@ -346,7 +346,7 @@ impl MainWnd
 
     mtd createTopMenu()
     {
-        with var topMenu = MenuCtrl.createBar(parent, owner = self)
+        with let topMenu = MenuCtrl.createBar(parent, owner = self)
         {
             .bringToFront()
             .dockStyle = .Top
@@ -354,7 +354,7 @@ impl MainWnd
             .backgroundStyle = .Transparent
         }
 
-        with var fileMenu = MenuCtrl.createPopup(parent, owner = self)
+        with let fileMenu = MenuCtrl.createPopup(parent, owner = self)
         {
             .addItem(CmdIdNewImage)
             .addItem(CmdIdNewFromClipboard)
@@ -369,7 +369,7 @@ impl MainWnd
             topMenu.addPopup("File", fileMenu)
         }
 
-        with var captureMenu = MenuCtrl.createPopup(parent, owner = self)
+        with let captureMenu = MenuCtrl.createPopup(parent, owner = self)
         {
             .addItem(CmdIdCaptureArea)
             .addItem(CmdIdCaptureLastArea)
@@ -391,7 +391,7 @@ impl MainWnd
             .addItem(CmdIdCaptureHideEditor)
             .addItem(CmdIdCaptureShowEditor)
 
-            with var delayMenu = MenuCtrl.createPopup(captureMenu, owner = self)
+            with let delayMenu = MenuCtrl.createPopup(captureMenu, owner = self)
             {
                 .addItem(CmdIdCaptureDelay0)
                 .addSeparator()
@@ -409,7 +409,7 @@ impl MainWnd
             .addItem(CmdIdCaptureToClipboard)
         }
 
-        with var editMenu = MenuCtrl.createPopup(parent, owner = self)
+        with let editMenu = MenuCtrl.createPopup(parent, owner = self)
         {
             .addItem(CmdIdUndo)
             .addItem(CmdIdRedo)
@@ -426,7 +426,7 @@ impl MainWnd
             topMenu.addPopup("Edit", editMenu)
         }
 
-        with var imageMenu = MenuCtrl.createPopup(parent, owner = self)
+        with let imageMenu = MenuCtrl.createPopup(parent, owner = self)
         {
             .addItem(CmdIdRestoreOrg)
             .addSeparator()
@@ -438,7 +438,7 @@ impl MainWnd
             topMenu.addPopup("Image", imageMenu)
         }
 
-        with var viewMenu = MenuCtrl.createPopup(parent, owner = self)
+        with let viewMenu = MenuCtrl.createPopup(parent, owner = self)
         {
             .addItem(CmdIdZoomIn)
             .addItem(CmdIdZoomOut)
@@ -453,7 +453,7 @@ impl MainWnd
     {
         mtd createBtn(id: WndId, canCheck = true)
         {
-            with var b = IconButton.create(editToolBar, {}, position = {0, 0, 60, 64})
+            with let b = IconButton.create(editToolBar, {}, position = {0, 0, 60, 64})
             {
                 .id = #self.id
                 .style.addStyleSheetColors("btnIcon_CheckedBk    $btnIcon_HotBk")
@@ -494,9 +494,9 @@ impl MainWnd
 
         var img24 = assume Image.decode(".png", Icons24)
         var img48 = assume Image.decode(".png", Icons48)
-        var renderer = parent.getApp().getRenderer()
+        let renderer = parent.getApp().getRenderer()
 
-        with var res = Wnd.create'MainWnd(parent, "captme.mainwnd")
+        with let res = Wnd.create'MainWnd(parent, "captme.mainwnd")
         {
             .icons24.set(renderer.addImage(img24), 24, 24)
             .icons48.set(renderer.addImage(img48), 48, 48)
@@ -508,7 +508,7 @@ impl MainWnd
             .monitors = Env.getMonitors()
         }
 
-        with var topBar = Wnd.create'Wnd(res, {0, 0, 64, 68})
+        with let topBar = Wnd.create'Wnd(res, {0, 0, 64, 68})
         {
             .dockStyle = .Top
             .backgroundStyle = .Window

@@ -34,8 +34,8 @@ impl IActionUI for ActionFile
 
     mtd impl update(cxt: ActionContext, evt: *CommandStateEvent)->bool
     {
-        var main = cast(*MainWnd) cxt.wnd
-        var capture = main.getCapture()
+        let main = cast(*MainWnd) cxt.wnd
+        let capture = main.getCapture()
 
         switch cxt.id
         {
@@ -88,8 +88,8 @@ impl IActionUI for ActionFile
 
     mtd impl execute(cxt: ActionContext)->bool
     {
-        var main = cast(*MainWnd) cxt.wnd
-        var capture = main.getCapture()
+        let main = cast(*MainWnd) cxt.wnd
+        let capture = main.getCapture()
 
         switch cxt.id
         {
@@ -114,20 +114,20 @@ impl IActionUI for ActionFile
             if MessageDlg.confirm(main.surface, txt) != Dialog.BtnYes
                 break
             Cursor.wait()
-            var img = capture.toImage()
+            let img = capture.toImage()
             catch img.save(capture.linkedImage)
             if @errmsg
                 MessageDlg.error(main.surface, @errmsg, "Failed to update file !")
 
         case CmdIdDeleteCapture:
-            var res = MessageDlg.confirm(main.surface, "This will delete the capture file.")
+            let res = MessageDlg.confirm(main.surface, "This will delete the capture file.")
             if res == MessageDlg.BtnYes
                 main.recentWnd.removeRecent()
 
         case CmdIdDupCapture:
-            var file = Library.newFileName()
+            let file = Library.newFileName()
             trycatch File.duplicate(file, capture.file)
-            var dupCapture = trycatch main.recentWnd.addRecent(file)
+            let dupCapture = trycatch main.recentWnd.addRecent(file)
             Memory.delete(dupCapture)
             main.recentWnd.recentView.select(0)
             g_Library.addFile(file)
@@ -160,11 +160,11 @@ impl MainWnd
             .filters.add({"TGA - Truevision Targa (*.tga)", ".tga"})
         }
 
-        var dlg = FileDlg.create(surface, opt)
+        let dlg = FileDlg.create(surface, opt)
         if dlg.doModal() != Dialog.BtnOk
             return
 
-        var img = catch Image.load(dlg.getSelectedName())
+        let img = catch Image.load(dlg.getSelectedName())
         if @errmsg
             MessageDlg.error(surface, @errmsg, "Failed to load image !")
         else
@@ -190,12 +190,12 @@ impl MainWnd
             .filters.add({"TGA - Truevision Targa (*.tga)", ".tga"})
         }
 
-        var dlg = FileDlg.create(surface, opt)
+        let dlg = FileDlg.create(surface, opt)
         if dlg.doModal() != Dialog.BtnOk
             return
 
         Cursor.wait()
-        var capture = getCapture()
+        let capture = getCapture()
         var img = capture.toImage()
         catch img.save(dlg.getSelectedName())
         if @errmsg
@@ -214,19 +214,19 @@ impl MainWnd
 
     mtd newImage()
     {
-        var dlg = Dialog.createDialog(surface, 350, 235, title = "New Image")
+        let dlg = Dialog.createDialog(surface, 350, 235, title = "New Image")
         dlg.addButton("Create", Dialog.BtnOk, true)
         dlg.addButton("Cancel", Dialog.BtnCancel)
-        var edit0 = EditCtrl.create(dlg, "Width", "512", {90, 12}, flags = .RightAlign)
-        var edit1 = EditCtrl.create(dlg, "Height", "512", {90, 47}, flags = .RightAlign)
+        let edit0 = EditCtrl.create(dlg, "Width", "512", {90, 12}, flags = .RightAlign)
+        let edit1 = EditCtrl.create(dlg, "Height", "512", {90, 47}, flags = .RightAlign)
         edit0.edit.setInputU64(16, 4096)
         edit1.edit.setInputU64(16, 4096)
         if dlg.doModal() != Dialog.BtnOk
             return
 
-        var (w, ?, ?) = catch StrConv.parseS32(edit0.edit.text)
-        var (h, ?, ?) = catch StrConv.parseS32(edit1.edit.text)
-        var img = Image.create(w orelse 512, h orelse 512, .RGB8)
+        let (w, ?, ?) = catch StrConv.parseS32(edit0.edit.text)
+        let (h, ?, ?) = catch StrConv.parseS32(edit1.edit.text)
+        let img = Image.create(w orelse 512, h orelse 512, .RGB8)
         img.fill(Argb.White)
         newCapture(img)
     }

@@ -19,7 +19,7 @@ impl IForm for FormLine
 {
     mtd impl isSame(ptr: *BaseForm)->bool
     {
-        var other = cast(*FormLine) ptr
+        let other = cast(*FormLine) ptr
         return  borderColor == other.borderColor and
                 borderSize  == other.borderSize and
                 alpha       == other.alpha and
@@ -34,8 +34,8 @@ impl IForm for FormLine
 
     mtd impl copy(dst, src: *BaseForm)
     {
-        var dstf = cast(*FormLine) dst
-        var srcf = cast(*FormLine) src
+        let dstf = cast(*FormLine) dst
+        let srcf = cast(*FormLine) src
         dstf.borderColor = srcf.borderColor
         dstf.borderSize  = srcf.borderSize
         dstf.alpha       = srcf.alpha
@@ -196,10 +196,10 @@ impl IForm for FormLine
                 continue
             for var i = 0; i < cmd.drawTriangles.count; i += 3
             {
-                var tri = cmd.drawTriangles.start + i
-                var xx0 = painter.vertexBuffer[tri].pos
-                var xx1 = painter.vertexBuffer[tri+1].pos
-                var xx2 = painter.vertexBuffer[tri+2].pos
+                let tri = cmd.drawTriangles.start + i
+                let xx0 = painter.vertexBuffer[tri].pos
+                let xx1 = painter.vertexBuffer[tri+1].pos
+                let xx2 = painter.vertexBuffer[tri+2].pos
                 if pos.isInTriangle(xx0, xx1, xx2)
                     return true
             }
@@ -212,11 +212,11 @@ impl IForm for FormLine
     {
         computePaintCoords(z)
 
-        var bSize = adaptSize(borderSize, MinBorderSize, MaxBorderSize, z, quickMode)
-        var sSize = quickMode ? Math.min(startSize, 4) : startSize
-        var eSize = quickMode ? Math.min(endSize, 4) : endSize
+        let bSize = adaptSize(borderSize, MinBorderSize, MaxBorderSize, z, quickMode)
+        let sSize = quickMode ? Math.min(startSize, 4) : startSize
+        let eSize = quickMode ? Math.min(endSize, 4) : endSize
 
-        var pen = Pen.createDash(dashStyle, borderColor, bSize)
+        let pen = Pen.createDash(dashStyle, borderColor, bSize)
         pen.beginCapStyle  = beginCap
         pen.endCapStyle    = endCap
         pen.capStartScaleX = sSize

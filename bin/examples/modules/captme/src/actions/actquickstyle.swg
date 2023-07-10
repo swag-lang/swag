@@ -30,7 +30,7 @@ impl IActionUI for ActionQuickStyle
 
     mtd impl execute(cxt: ActionContext)->bool
     {
-        var main = cast(*MainWnd) cxt.wnd
+        let main = cast(*MainWnd) cxt.wnd
 
         switch cxt.id
         {

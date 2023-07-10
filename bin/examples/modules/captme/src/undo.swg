@@ -120,10 +120,10 @@ impl Undo
             selection = capture.selection
             visit s: selection
             {
-                var f = capture.forms[s]
+                let f = capture.forms[s]
                 if @kindof(f) != FormImage
                     continue
-                var b = cast(*FormImage) @dataof(f)
+                let b = cast(*FormImage) @dataof(f)
                 if b.kind != .Image
                     continue
                 oldImage.add(b.image)
@@ -133,10 +133,10 @@ impl Undo
             selection = capture.selection
             visit s: selection
             {
-                var f = capture.forms[s]
+                let f = capture.forms[s]
                 if @kindof(f) != FormText
                     continue
-                var b = cast(*FormText) @dataof(f)
+                let b = cast(*FormText) @dataof(f)
                 oldText.add(b.text)
             }
 
@@ -144,10 +144,10 @@ impl Undo
             selection = capture.selection
             visit s: selection
             {
-                var f = capture.forms[s]
+                let f = capture.forms[s]
                 if @kindof(f) != FormText
                     continue
-                var b = cast(*FormText) @dataof(f)
+                let b = cast(*FormText) @dataof(f)
                 oldText.add(b.fontName)
                 oldU32.add(cast(u32) b.fontStyle)
             }
@@ -156,10 +156,10 @@ impl Undo
             selection = capture.selection
             visit s: selection
             {
-                var f = capture.forms[s]
+                let f = capture.forms[s]
                 if @kindof(f) != FormText
                     continue
-                var b = cast(*FormText) @dataof(f)
+                let b = cast(*FormText) @dataof(f)
                 oldU32.add(cast(u32) b.fontStyle)
             }
 
@@ -167,10 +167,10 @@ impl Undo
             selection = capture.selection
             visit s: selection
             {
-                var f = capture.forms[s]
+                let f = capture.forms[s]
                 if !acceptsType(@kindof(f))
                     continue
-                var save = cast(*BaseForm) Memory.new(mdlType)
+                let save = cast(*BaseForm) Memory.new(mdlType)
                 f.copy(save, cast(*BaseForm) @dataof(f))
                 oldForm.add(save)
             }
@@ -182,8 +182,8 @@ impl Undo
             oldS32.reserve(selection.count)
             visit s: selection
             {
-                var f = capture.forms[s]
-                var r = f.boundRect()
+                let f = capture.forms[s]
+                let r = f.boundRect()
                 oldS32.add(cast(s32) r.x)
                 minP = Math.min(minP, cast(s32) r.x)
                 maxP = Math.max(maxP, cast(s32) (r.x + r.width))
@@ -196,8 +196,8 @@ impl Undo
             oldS32.reserve(selection.count)
             visit s: selection
             {
-                var f = capture.forms[s]
-                var r = f.boundRect()
+                let f = capture.forms[s]
+                let r = f.boundRect()
                 oldS32.add(cast(s32) r.x)
                 minP = Math.min(minP, cast(s32) r.y)
                 maxP = Math.max(maxP, cast(s32) (r.y + r.height))
@@ -210,7 +210,7 @@ impl Undo
             selection = capture.selection
             visit s: selection
             {
-                var f = capture.forms[s]
+                let f = capture.forms[s]
                 if !acceptsType(@kindof(f))
                     continue
                 var val: u32
@@ -238,7 +238,7 @@ impl Undo
             var offset = 0
             visit s: selection
             {
-                var f = capture.forms[s - offset]
+                let f = capture.forms[s - offset]
                 offset += 1
                 capture.forms.removeOrdered(f)
                 toFreeForms.add(f)
@@ -292,10 +292,10 @@ impl Undo
         case SetImageInside:
             visit s, i: selection
             {
-                var f = capture.forms[s]
+                let f = capture.forms[s]
                 if @kindof(f) != FormImage
                     continue
-                var b = cast(*FormImage) @dataof(f)
+                let b = cast(*FormImage) @dataof(f)
                 if b.kind != .Image
                     continue
                 b.image = oldImg
@@ -305,10 +305,10 @@ impl Undo
         case SetText:
             visit s, i: selection
             {
-                var f = capture.forms[s]
+                let f = capture.forms[s]
                 if @kindof(f) != FormText
                     continue
-                var b = cast(*FormText) @dataof(f)
+                let b = cast(*FormText) @dataof(f)
                 b.text = text
                 b.isDirty = true
             }
@@ -316,10 +316,10 @@ impl Undo
         case SetFont:
             visit s, i: selection
             {
-                var f = capture.forms[s]
+                let f = capture.forms[s]
                 if @kindof(f) != FormText
                     continue
-                var b = cast(*FormText) @dataof(f)
+                let b = cast(*FormText) @dataof(f)
                 b.fontName  = text
                 b.fontStyle = fontStyle
                 b.isDirtyFont = true
@@ -328,10 +328,10 @@ impl Undo
         case SetFontStyle:
             visit s, i: selection
             {
-                var f = capture.forms[s]
+                let f = capture.forms[s]
                 if @kindof(f) != FormText
                     continue
-                var b = cast(*FormText) @dataof(f)
+                let b = cast(*FormText) @dataof(f)
                 b.fontStyle = fontStyle
                 b.isDirtyFont = true
             }
@@ -339,10 +339,10 @@ impl Undo
         case SetFormFromModel:
             visit s: selection
             {
-                var f = capture.forms[s]
+                let f = capture.forms[s]
                 if !acceptsType(@kindof(f))
                     continue
-                var bf = cast(*BaseForm) @dataof(f)
+                let bf = cast(*BaseForm) @dataof(f)
                 if bf.subKind != mdlValue.subKind
                     continue
                 f.copy(cast(*BaseForm) @dataof(f), mdlValue)
@@ -351,7 +351,7 @@ impl Undo
         case SetTypedValue:
             visit s: selection
             {
-                var f = capture.forms[s]
+                let f = capture.forms[s]
                 if !acceptsType(@kindof(f))
                     continue
                 Reflection.setFieldValue(@dataof(f), valRef, &valU32, true)
@@ -362,48 +362,48 @@ impl Undo
         case AlignLeft:
             visit s: selection
             {
-                var f = capture.forms[s]
-                var r = f.boundRect()
+                let f = capture.forms[s]
+                let r = f.boundRect()
                 f.moveBaseForm(minP - cast(s32) r.x, 0, 0, 0)
             }
 
         case AlignRight:
             visit s: selection
             {
-                var f = capture.forms[s]
-                var r = f.boundRect()
+                let f = capture.forms[s]
+                let r = f.boundRect()
                 f.moveBaseForm((maxP - cast(s32) r.width) - cast(s32) r.x, 0, 0, 0)
             }
 
         case AlignCenter:
             visit s: selection
             {
-                var f = capture.forms[s]
-                var r = f.boundRect()
+                let f = capture.forms[s]
+                let r = f.boundRect()
                 f.moveBaseForm(((maxP + minP) / 2 - (cast(s32) r.width / 2)) - cast(s32) r.x, 0, 0, 0)
             }
 
         case AlignTop:
             visit s: selection
             {
-                var f = capture.forms[s]
-                var r = f.boundRect()
+                let f = capture.forms[s]
+                let r = f.boundRect()
                 f.moveBaseForm(0, minP - cast(s32) r.y, 0, 0)
             }
 
         case AlignBottom:
             visit s: selection
             {
-                var f = capture.forms[s]
-                var r = f.boundRect()
+                let f = capture.forms[s]
+                let r = f.boundRect()
                 f.moveBaseForm(0, (maxP - cast(s32) r.height) - cast(s32) r.y, 0, 0)
             }
 
         case AlignMiddle:
             visit s: selection
             {
-                var f = capture.forms[s]
-                var r = f.boundRect()
+                let f = capture.forms[s]
+                let r = f.boundRect()
                 f.moveBaseForm(0, ((maxP + minP) / 2 - (cast(s32) r.height / 2)) - cast(s32) r.y, 0, 0)
             }
 
@@ -426,7 +426,7 @@ impl Undo
         case OffsetSelection:
             visit s: selection
             {
-                var f = capture.forms[s]
+                let f = capture.forms[s]
                 f.moveForm(newPosX, newPosY)
             }
 
@@ -435,10 +435,10 @@ impl Undo
             var dstIdx = cast(s32) (capture.forms.count - 1)
             for var i = cast(s32) (selection.count - 1); i >= 0; i -= 1
             {
-                var srcIdx = selection[i]
+                let srcIdx = selection[i]
                 if srcIdx != dstIdx
                 {
-                    var form = capture.forms[srcIdx]
+                    let form = capture.forms[srcIdx]
                     capture.forms.removeAtOrdered(srcIdx)
                     capture.forms.insertAt(acast dstIdx, form)
                     capture.selection.remove(srcIdx)
@@ -453,10 +453,10 @@ impl Undo
             var dstIdx = 0
             for var i = 0; i < selection.count; i += 1
             {
-                var srcIdx = selection[i]
+                let srcIdx = selection[i]
                 if srcIdx != dstIdx
                 {
-                    var form = capture.forms[srcIdx]
+                    let form = capture.forms[srcIdx]
                     capture.forms.removeAtOrdered(srcIdx)
                     capture.forms.insertAt(acast dstIdx, form)
                     capture.selection.remove(srcIdx)
@@ -470,10 +470,10 @@ impl Undo
             capture.hotForm = Swag.U64.Max
             for var i = cast(s32) (selection.count - 1); i >= 0; i -= 1
             {
-                var srcIdx = selection[i]
+                let srcIdx = selection[i]
                 if srcIdx != capture.forms.count - 1
                 {
-                    var form = capture.forms[srcIdx]
+                    let form = capture.forms[srcIdx]
                     capture.forms.removeAtOrdered(srcIdx)
                     capture.forms.insertAt(srcIdx + 1, form)
                     capture.selection.remove(srcIdx)
@@ -485,10 +485,10 @@ impl Undo
             capture.hotForm = Swag.U64.Max
             for var i = 0; i < selection.count; i += 1
             {
-                var srcIdx = selection[i]
+                let srcIdx = selection[i]
                 if srcIdx != 0
                 {
-                    var form = capture.forms[srcIdx]
+                    let form = capture.forms[srcIdx]
                     capture.forms.removeAtOrdered(srcIdx)
                     capture.forms.insertAt(srcIdx - 1, form)
                     capture.selection.remove(srcIdx)
@@ -545,10 +545,10 @@ impl Undo
         case SetImageInside:
             visit s, i: selection
             {
-                var f = capture.forms[s]
+                let f = capture.forms[s]
                 if @kindof(f) != FormImage
                     continue
-                var b = cast(*FormImage) @dataof(f)
+                let b = cast(*FormImage) @dataof(f)
                 if b.kind != .Image
                     continue
                 b.image = oldImage[i]
@@ -558,10 +558,10 @@ impl Undo
         case SetText:
             visit s, i: selection
             {
-                var f = capture.forms[s]
+                let f = capture.forms[s]
                 if @kindof(f) != FormText
                     continue
-                var b = cast(*FormText) @dataof(f)
+                let b = cast(*FormText) @dataof(f)
                 b.text = oldText[i]
                 b.isDirty = true
             }
@@ -569,10 +569,10 @@ impl Undo
         case SetFont:
             visit s, i: selection
             {
-                var f = capture.forms[s]
+                let f = capture.forms[s]
                 if @kindof(f) != FormText
                     continue
-                var b = cast(*FormText) @dataof(f)
+                let b = cast(*FormText) @dataof(f)
                 b.fontName = oldText[i]
                 b.fontStyle = acast oldU32[i]
                 b.isDirtyFont = true
@@ -581,10 +581,10 @@ impl Undo
         case SetFontStyle:
             visit s, i: selection
             {
-                var f = capture.forms[s]
+                let f = capture.forms[s]
                 if @kindof(f) != FormText
                     continue
-                var b = cast(*FormText) @dataof(f)
+                let b = cast(*FormText) @dataof(f)
                 b.fontStyle = acast oldU32[i]
                 b.isDirtyFont = true
             }
@@ -592,10 +592,10 @@ impl Undo
         case SetFormFromModel:
             visit s, i: selection
             {
-                var f = capture.forms[s]
+                let f = capture.forms[s]
                 if !acceptsType(@kindof(f))
                     continue
-                var bf = cast(*BaseForm) @dataof(f)
+                let bf = cast(*BaseForm) @dataof(f)
                 if bf.subKind != mdlValue.subKind
                     continue
                 f.copy(cast(*BaseForm) @dataof(f), oldForm[i])
@@ -604,10 +604,10 @@ impl Undo
         case SetTypedValue:
             visit s, i: selection
             {
-                var f = capture.forms[s]
+                let f = capture.forms[s]
                 if !acceptsType(@kindof(f))
                     continue
-                var val = oldU32[i]
+                let val = oldU32[i]
                 Reflection.setFieldValue(@dataof(f), valRef, &val, true)
             }
             capture.updateModelFromSelection()
@@ -615,7 +615,7 @@ impl Undo
         case AlignLeft, AlignRight, AlignCenter, AlignTop, AlignBottom, AlignMiddle:
             visit s, i: selection
             {
-                var b = cast(*BaseForm) @dataof(capture.forms[s])
+                let b = cast(*BaseForm) @dataof(capture.forms[s])
                 b.x = oldS32[i]
             }
 
@@ -636,7 +636,7 @@ impl Undo
         case OffsetSelection:
             visit s: selection
             {
-                var f = capture.forms[s]
+                let f = capture.forms[s]
                 f.moveForm(-newPosX, -newPosY)
             }
 

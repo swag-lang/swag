@@ -14,8 +14,8 @@ var g_App: Application
     img.setPixelFormat(.BGRA8)
     g_App.setAppIcon(img)
 
-    var surface = try g_App.createSurface(200, 100, 1200, 1000, SurfaceFlags.OverlappedWindow)
-    var mainWnd = MainWnd.create(surface.wnd)
+    let surface = try g_App.createSurface(200, 100, 1200, 1000, SurfaceFlags.OverlappedWindow)
+    let mainWnd = MainWnd.create(surface.wnd)
     surface.setView(mainWnd)
     mainWnd.createTopMenu()
     if Env.hasArg("swag.test")

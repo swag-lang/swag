@@ -77,7 +77,7 @@ impl IWnd for LibraryView
 
         if evt.kind == .MouseDoubleClick and selectedItem != Swag.U64.Max and evt.button == .Left
         {
-            var item = &items[selectedItem]
+            let item = &items[selectedItem]
             catch File.touch(item.fi.fullname)
             mainWnd.recentWnd.addRecent(item.fi.fullname, item.capture.preview, front = true, sel = true)
             mainWnd.swapLibraryMode()
@@ -178,7 +178,7 @@ impl LibraryView
             return b.lastWriteTime <=> a.lastWriteTime
         })
 
-        var renderer = getApp().getRenderer()
+        let renderer = getApp().getRenderer()
         visit &it: items
             renderer.removeTexture(&it.texture)
 
@@ -201,7 +201,7 @@ impl LibraryView
             thread.init(closure|self|(th: Thread) {
                 visit &it: self.items
                 {
-                    var capture = catch Capture.load(it.fi.fullname)
+                    let capture = catch Capture.load(it.fi.fullname)
                     if capture
                     {
                         capture.backImg.release()
@@ -238,7 +238,7 @@ impl LibraryWnd
         if listCtrl.getLineCount()
             return
 
-        var line = listCtrl.createLine("All Captures", Icon.from(&main.icons24, 4))
+        let line = listCtrl.createLine("All Captures", Icon.from(&main.icons24, 4))
         var item = line.setItem(1, Format.toString("% ", g_Library.files.count))
         item.horzAlign = .Right
 
@@ -332,24 +332,24 @@ impl LibraryWnd
 
     func create(parent: *MainWnd)->*LibraryWnd
     {
-        with var res = Wnd.create'LibraryWnd(parent, "captme.librarywnd")
+        with let res = Wnd.create'LibraryWnd(parent, "captme.librarywnd")
         {
             .main = parent
             .dockStyle = .Center
             .backgroundStyle = .View
         }
 
-        with var rightBar = Wnd.create'Wnd(res, {0, 0, 300, 0})
+        with let rightBar = Wnd.create'Wnd(res, {0, 0, 300, 0})
         {
             .dockStyle = .Right
         }
 
-        with var scrollWnd = Wnd.create'ScrollWnd(res)
+        with let scrollWnd = Wnd.create'ScrollWnd(res)
         {
             .dockStyle = .Center
         }
 
-        with var view = Wnd.create'LibraryView(scrollWnd)
+        with let view = Wnd.create'LibraryView(scrollWnd)
         {
             .libWnd = res
             .padding = 8
@@ -360,7 +360,7 @@ impl LibraryWnd
         scrollWnd.setView(view)
         res.view = view
 
-        with var list = ListCtrl.createMultiColumns(rightBar)
+        with let list = ListCtrl.createMultiColumns(rightBar)
         {
             .addColumn("name", 200)
             .addColumn("count", 70)

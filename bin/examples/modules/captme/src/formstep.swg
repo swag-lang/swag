@@ -34,7 +34,7 @@ impl IForm for FormStep
 {
     mtd impl isSame(ptr: *BaseForm)->bool
     {
-        var other = cast(*FormStep) ptr
+        let other = cast(*FormStep) ptr
         return  borderColor == other.borderColor and
                 backColor   == other.backColor and
                 alpha       == other.alpha and
@@ -45,8 +45,8 @@ impl IForm for FormStep
 
     mtd impl copy(dst, src: *BaseForm)
     {
-        var dstf = cast(*FormStep) dst
-        var srcf = cast(*FormStep) src
+        let dstf = cast(*FormStep) dst
+        let srcf = cast(*FormStep) src
         dstf.borderColor = srcf.borderColor
         dstf.backColor   = srcf.backColor
         dstf.alpha       = srcf.alpha
@@ -175,7 +175,7 @@ impl IForm for FormStep
         fSize     = Math.max(fSize, 8)
         var backBrush = Brush.createHatch(.CheckBoardLarge, Argb.DarkGray)
 
-        var face = g_App.theme.res.defaultTypeFaceR
+        let face = g_App.theme.res.defaultTypeFaceR
 
         if fSize != cachefSize or typeIndex != cacheTypeIndex
             isDirty = true
@@ -188,7 +188,7 @@ impl IForm for FormStep
             pathl.clear()
 
             var t: String
-            var curIndex = quickMode ? 1 : index
+            let curIndex = quickMode ? 1 : index
 
             #[Swag.Complete]
             switch typeIndex
@@ -212,8 +212,8 @@ impl IForm for FormStep
         switch kind
         {
         case Ellipse:
-            var sizeX = pp.width * 0.5
-            var sizeY = pp.height * 0.5
+            let sizeX = pp.width * 0.5
+            let sizeY = pp.height * 0.5
             if quickMode and alpha != 100
                 painter.fillEllipse(pp.x + sizeX, pp.y + sizeY, sizeX, sizeY, backBrush)
             painter.fillEllipse(pp.x + sizeX, pp.y + sizeY, sizeX, sizeY, backColor)
@@ -231,10 +231,10 @@ impl IForm for FormStep
             painter.fillRoundRect(pp, round, round, backColor)
         }
 
-        var wt = (pathl.bvMax.x - pathl.bvMin.x) * z
-        var ht = (pathl.bvMax.y - pathl.bvMin.y) * z
-        var x0 = pp.horzCenter() - (wt * 0.5)
-        var y0 = pp.vertCenter() - (ht * 0.5)
+        let wt = (pathl.bvMax.x - pathl.bvMin.x) * z
+        let ht = (pathl.bvMax.y - pathl.bvMin.y) * z
+        let x0 = pp.horzCenter() - (wt * 0.5)
+        let y0 = pp.vertCenter() - (ht * 0.5)
         painter.pushState()
         painter.scaleTransform(z, z)
         painter.translateTransform(x0 - (pathl.bvMin.x * z), y0 - (pathl.bvMin.y * z))

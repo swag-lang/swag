@@ -22,16 +22,16 @@ impl IActionUI for ActionPixSel
 
     mtd impl update(cxt: ActionContext, evt: *CommandStateEvent)->bool
     {
-        var main = cast(*MainWnd) cxt.wnd
-        var capture = main.getCapture()
+        let main = cast(*MainWnd) cxt.wnd
+        let capture = main.getCapture()
 
         var hasPixSel = false
         if capture
         {
             visit s: capture.selection
             {
-                var f = capture.forms[s]
-                var b = cast(*BaseForm) @dataof(f)
+                let f = capture.forms[s]
+                let b = cast(*BaseForm) @dataof(f)
                 hasPixSel = b.subKind == .PixSel
                 if hasPixSel break
             }
@@ -69,7 +69,7 @@ impl IActionUI for ActionPixSel
 
     mtd impl execute(cxt: ActionContext)->bool
     {
-        var main = cast(*MainWnd) cxt.wnd
+        let main = cast(*MainWnd) cxt.wnd
 
         switch cxt.id
         {
@@ -92,11 +92,11 @@ impl MainWnd
     mtd getPixSels()->Array'IForm
     {
         var result: retval
-        var capture = getCapture()
+        let capture = getCapture()
         visit s: capture.selection
         {
-            var f = capture.forms[s]
-            var b = cast(*BaseForm) @dataof(f)
+            let f = capture.forms[s]
+            let b = cast(*BaseForm) @dataof(f)
             if b.subKind == .PixSel
                 result.add(f)
         }
@@ -110,8 +110,8 @@ impl MainWnd
         if forms.count == 0
             return
 
-        var capture = getCapture()
-        var undo = capture.newUndo(.SetImage)
+        let capture = getCapture()
+        let undo = capture.newUndo(.SetImage)
         undo.newImagePos = capture.backImagePos
         undo.newImg = capture.backImg
 
@@ -148,8 +148,8 @@ impl MainWnd
         if forms.count == 0
             return
 
-        var capture = getCapture()
-        var undo = capture.newUndo(.SetImage)
+        let capture = getCapture()
+        let undo = capture.newUndo(.SetImage)
         undo.newImagePos = capture.backImagePos
         undo.newImg = capture.backImg
 
@@ -186,8 +186,8 @@ impl MainWnd
         if forms.count == 0
             return
 
-        var capture = getCapture()
-        var undo = capture.newUndo(.SetImage, serial)
+        let capture = getCapture()
+        let undo = capture.newUndo(.SetImage, serial)
         undo.newImagePos = capture.backImagePos
         undo.newImg = capture.backImg
 
@@ -267,19 +267,19 @@ impl MainWnd
 
                 if f.isInside(pt)
                 {
-                    var p1 = p.infos[idx].boundCols[x]
-                    var col1 = p1.col1
-                    var col2 = p1.col2
-                    var y1 = p1.y1
-                    var y2 = p1.y2
+                    let p1 = p.infos[idx].boundCols[x]
+                    let col1 = p1.col1
+                    let col2 = p1.col2
+                    let y1 = p1.y1
+                    let y2 = p1.y2
                     if y2 != y1
                     {
                         // Store pixel mask
                         if p.masks
                         {
-                            var xx = cast(s32) (pt.x - p.infos[idx].boundRect.x)
+                            let xx = cast(s32) (pt.x - p.infos[idx].boundRect.x)
                             var yy = cast(s32) (pt.y - p.infos[idx].boundRect.y)
-                            var pmask = p.masks.buffer + idx
+                            let pmask = p.masks.buffer + idx
                             yy = pmask.height - yy
                             if xx < pmask.width and yy < pmask.height
                             {
@@ -291,7 +291,7 @@ impl MainWnd
 
                         var fVert = (y - y1) / cast(f32) (y2 - y1)
                         fVert = Math.clamp(fVert, 0, 1)
-                        var col = Color.getBlend(col1, col2, fVert)
+                        let col = Color.getBlend(col1, col2, fVert)
                         dref cast(*u32) pix = col.argb
                     }
 
@@ -309,19 +309,19 @@ impl MainWnd
         if forms.count == 0
             return
 
-        var capture = getCapture()
+        let capture = getCapture()
 
         capture.serialUndo += 1
-        var serial = capture.serialUndo
+        let serial = capture.serialUndo
 
         var undo = capture.newUndo(.CreateForm, serial)
 
-        var startCount = capture.forms.count - forms.count
+        let startCount = capture.forms.count - forms.count
         visit f: forms
         {
             var br = f.boundRect()
 
-            with var nf = Memory.new'FormImage()
+            with let nf = Memory.new'FormImage()
             {
                 .kind = .Capture
                 .x = cast(s32) br.x
@@ -346,7 +346,7 @@ impl MainWnd
 
         visit f, idx: undo.oldForms
         {
-            var nf = cast(*FormImage) f
+            let nf = cast(*FormImage) f
             nf.IForm.backCaptureMask(getApp(), masks.buffer + idx)
         }
 

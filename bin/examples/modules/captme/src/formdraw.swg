@@ -25,7 +25,7 @@ impl IForm for FormDraw
 {
     mtd impl isSame(ptr: *BaseForm)->bool
     {
-        var other = cast(*FormDraw) ptr
+        let other = cast(*FormDraw) ptr
         return  borderColor == other.borderColor and
                 borderSize  == other.borderSize and
                 alpha       == other.alpha and
@@ -34,8 +34,8 @@ impl IForm for FormDraw
 
     mtd impl copy(dst, src: *BaseForm)
     {
-        var dstf = cast(*FormDraw) dst
-        var srcf = cast(*FormDraw) src
+        let dstf = cast(*FormDraw) dst
+        let srcf = cast(*FormDraw) src
         dstf.borderColor = srcf.borderColor
         dstf.borderSize  = srcf.borderSize
         dstf.alpha       = srcf.alpha
@@ -47,20 +47,20 @@ impl IForm for FormDraw
         if evt.kind == .MouseReleased and evt.button == .Left
             return false
 
-        var x0 = (localPos.x - paintRect.x) / zoom
-        var y0 = (localPos.y - paintRect.y) / zoom
+        let x0 = (localPos.x - paintRect.x) / zoom
+        let y0 = (localPos.y - paintRect.y) / zoom
 
         if points.count < 2
         {
-            var xs = (movingStart.x - paintRect.x) / zoom
-            var ys = (movingStart.y - paintRect.y) / zoom
+            let xs = (movingStart.x - paintRect.x) / zoom
+            let ys = (movingStart.y - paintRect.y) / zoom
             points.add({xs, ys})
             points.add({x0, y0})
         }
         elif evt.kind == .MouseMove
         {
-            var xs = Math.abs(x0 - points.back().x)
-            var ys = Math.abs(y0 - points.back().y)
+            let xs = Math.abs(x0 - points.back().x)
+            let ys = Math.abs(y0 - points.back().y)
             if xs > 5 or ys > 5
                 points.add({x0, y0})
         }
@@ -84,10 +84,10 @@ impl IForm for FormDraw
     mtd impl setBaseForm(newPosX, newPosY, newSizeX, newSizeY: s32)
     {
         var rect = boundRect()
-        var bSize = borderSize * 0.5
+        let bSize = borderSize * 0.5
         rect.inflate(-bSize)
-        var fx = newSizeX / rect.width
-        var fy = newSizeY / rect.height
+        let fx = newSizeX / rect.width
+        let fy = newSizeY / rect.height
 
         visit &pt: points
         {
@@ -122,7 +122,7 @@ impl IForm for FormDraw
 
         var result: retval
 
-        var bSize = borderSize * 0.5
+        let bSize = borderSize * 0.5
         var x0 = Swag.F32.Max
         var y0 = Swag.F32.Max
         var x1 = 0'f32
@@ -149,8 +149,8 @@ impl IForm for FormDraw
         paintPoints.clear()
         visit pt: points
         {
-            var x0 = (pt.x * z) - (rect.x * z) + paintPos.x
-            var x1 = (pt.y * z) - (rect.y * z) + paintPos.y
+            let x0 = (pt.x * z) - (rect.x * z) + paintPos.x
+            let x1 = (pt.y * z) - (rect.y * z) + paintPos.y
             paintPoints.add({x0, x1})
         }
     }
@@ -165,14 +165,14 @@ impl IForm for FormDraw
         if flags & (.Hot | .Selected)
         {
             const anchorSize = 8
-            var anchorSize2 = anchorSize * 0.5
-            var col = subKind == .PixSel ? Argb.Yellow : Argb.White
-            var color = Color.getBlend(Argb.Black, col, (flags & .Hot) ? 0.8 : 1)
+            let anchorSize2 = anchorSize * 0.5
+            let col = subKind == .PixSel ? Argb.Yellow : Argb.White
+            let color = Color.getBlend(Argb.Black, col, (flags & .Hot) ? 0.8 : 1)
 
-            var start = paintPoints[0]
+            let start = paintPoints[0]
             painter.fillCircle(start.x, start.y, anchorSize2, color)
             painter.drawCircle(start.x, start.y, anchorSize2, Argb.Black, 1)
-            var end = paintPoints.back()
+            let end = paintPoints.back()
             painter.fillCircle(end.x, end.y, anchorSize2, color)
             painter.drawCircle(end.x, end.y, anchorSize2, Argb.Black, 1)
         }

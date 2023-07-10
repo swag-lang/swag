@@ -24,7 +24,7 @@ impl GizmoRect
 {
     mtd mouse(view: *EditView, pos: Math.Point, evt: *MouseEvent)->bool
     {
-        var prop = (evt.modifiers & .Shift) and !(evt.modifiers & .Control)
+        let prop = (evt.modifiers & .Shift) and !(evt.modifiers & .Control)
 
         switch evt.kind
         {
@@ -186,7 +186,7 @@ impl GizmoRect
 
     mtd paint(painter: *Painter, hot: bool, col: Color = Argb.White)
     {
-        var anchorSize2 = anchorSize * 0.5
+        let anchorSize2 = anchorSize * 0.5
 
         var color = Color.getBlend(Argb.Black, col, hot ? 0.8 : 1)
 
@@ -235,16 +235,16 @@ impl GizmoRect
 
     mtd apply(iform: IForm, first: bool, hitMove: u32)
     {
-        var form = cast(*BaseForm) @dataof(iform)
-        var capture = form.capture
+        let form = cast(*BaseForm) @dataof(iform)
+        let capture = form.capture
         if !first
             capture.undo()
-        var undo = capture.newUndo(.MoveBaseForm)
+        let undo = capture.newUndo(.MoveBaseForm)
         undo.baseForm = iform
-        var zoom = capture.editView.zoom
+        let zoom = capture.editView.zoom
 
-        var dx = cast(s32) ((movingRect.x - startRect.x) / zoom)
-        var dy = cast(s32) ((movingRect.y - startRect.y) / zoom)
+        let dx = cast(s32) ((movingRect.x - startRect.x) / zoom)
+        let dy = cast(s32) ((movingRect.y - startRect.y) / zoom)
         undo.newPosX = dx
         undo.newPosY = dy
         if hitMove & 1
@@ -252,8 +252,8 @@ impl GizmoRect
         if hitMove & 2
             capture.snap(null, &undo.newPosY, false, false)
 
-        var dsx = cast(s32) ((movingRect.width - startRect.width) / zoom)
-        var dsy = cast(s32) ((movingRect.height - startRect.height) / zoom)
+        let dsx = cast(s32) ((movingRect.width - startRect.width) / zoom)
+        let dsy = cast(s32) ((movingRect.height - startRect.height) / zoom)
         undo.newSizeX = dsx
         undo.newSizeY = dsy
         if hitMove & 4

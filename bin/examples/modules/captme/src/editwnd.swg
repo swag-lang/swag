@@ -19,8 +19,8 @@ impl EditWnd
 {
     func create(main: *MainWnd, parent: *Wnd)->*EditWnd
     {
-        var scroll = Wnd.create'EditWnd(parent)
-        var view = Wnd.create'EditView(scroll)
+        let scroll = Wnd.create'EditWnd(parent)
+        let view = Wnd.create'EditView(scroll)
         view.scroll = scroll
         view.main = main
         scroll.editView = view
@@ -49,7 +49,7 @@ impl IWnd for EditView
             if evt.modifiers & .Control
             {
                 evt.accepted = true
-                var z = zoom + (evt.move.y > 0 ? 0.1 : -0.1)
+                let z = zoom + (evt.move.y > 0 ? 0.1 : -0.1)
                 setZoom(z, true)
             }
         }

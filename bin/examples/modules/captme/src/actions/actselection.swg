@@ -26,9 +26,9 @@ impl IActionUI for ActionSelection
 
     mtd impl update(cxt: ActionContext, evt: *CommandStateEvent)->bool
     {
-        var main = cast(*MainWnd) cxt.wnd
-        var capture = main.getCapture()
-        var hasSel = capture and capture.selection.count
+        let main = cast(*MainWnd) cxt.wnd
+        let capture = main.getCapture()
+        let hasSel = capture and capture.selection.count
 
         switch cxt.id
         {
@@ -63,8 +63,8 @@ impl IActionUI for ActionSelection
 
     mtd impl execute(cxt: ActionContext)->bool
     {
-        var main = cast(*MainWnd) cxt.wnd
-        var capture = main.getCapture()
+        let main = cast(*MainWnd) cxt.wnd
+        let capture = main.getCapture()
 
         switch cxt.id
         {
@@ -89,7 +89,7 @@ impl IActionUI for ActionSelection
             capture.selectionHasChanged()
 
         case CmdIdDeleteSelection:
-            var undo = capture.newUndo(.DeleteSelection)
+            let undo = capture.newUndo(.DeleteSelection)
             capture.pushUndo(undo)
 
         case CmdIdSnap:

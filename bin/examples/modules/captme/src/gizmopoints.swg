@@ -77,8 +77,8 @@ impl GizmoPoints
 
     mtd paint(_app: *Application, painter: *Painter, hot: bool, col: Color = Argb.White)
     {
-        var anchorSize2 = anchorSize * 0.5
-        var color = Color.getBlend(Argb.Black, col, hot ? 0.8 : 1)
+        let anchorSize2 = anchorSize * 0.5
+        let color = Color.getBlend(Argb.Black, col, hot ? 0.8 : 1)
         visit c: anchors
         {
             painter.fillCircle(c.x, c.y, anchorSize2, color)
@@ -88,12 +88,12 @@ impl GizmoPoints
 
     func apply(iform: IForm, diff: Math.Point, pt: u32, first: bool)
     {
-        var form = cast(*BaseForm) @dataof(iform)
-        var capture = form.capture
+        let form = cast(*BaseForm) @dataof(iform)
+        let capture = form.capture
         if !first
             capture.undo()
-        var undo = capture.newUndo(.MovePoint)
-        var zoom = capture.editView.zoom
+        let undo = capture.newUndo(.MovePoint)
+        let zoom = capture.editView.zoom
 
         undo.newPosX = cast(s32) (diff.x / zoom)
         undo.newPosY = cast(s32) (diff.y / zoom)

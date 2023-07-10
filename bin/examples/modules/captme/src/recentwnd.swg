@@ -34,7 +34,7 @@ impl RecentView
             return
         }
 
-        var view = main.editWnd.editView
+        let view = main.editWnd.editView
 
         // Save current zoom
         if selected < items.count
@@ -42,8 +42,8 @@ impl RecentView
 
         // Select new recent item
         selected = idx
-        var item = items[idx]
-        var capture = catch Capture.load(item.file)
+        let item = items[idx]
+        let capture = catch Capture.load(item.file)
         if capture
         {
             if main.getCapture()
@@ -92,7 +92,7 @@ impl IWnd for RecentView
                 select(hotItem)
                 if evt.button == .Right
                 {
-                    with var menu = MenuCtrl.createPopup(self)
+                    with let menu = MenuCtrl.createPopup(self)
                     {
                         .addItem(CmdIdDupCapture)
                         .addItem(CmdIdDeleteCapture)
@@ -110,7 +110,7 @@ impl IWnd for RecentView
 
     func paintRecent(parent: *Wnd, painter: *Painter, texture: Texture, rect: Math.Rectangle, hot, selected: bool)
     {
-        var colors = parent.getThemeColors()
+        let colors = parent.getThemeColors()
 
         painter.fillRoundRect(rect, 8, 8, colors.wnd_Bk)
 
@@ -125,7 +125,7 @@ impl IWnd for RecentView
         var txtRect = rect
         txtRect.inflate(-RecentPadding*0.5)
 
-        var ratio = Math.min(txtRect.width / texture.width, txtRect.height / texture.height)
+        let ratio = Math.min(txtRect.width / texture.width, txtRect.height / texture.height)
 
         txtRect.x = rect.horzCenter() - (texture.width * 0.5 * ratio)
         txtRect.y = rect.vertCenter() - (texture.height * 0.5 * ratio)
@@ -148,7 +148,7 @@ impl IWnd for RecentView
         var x = clientRect.x
         visit i, idx: items
         {
-            var w = clientRect.height * 4.0/3
+            let w = clientRect.height * 4.0/3
 
             var rect = Math.Rectangle{x, clientRect.y, w, clientRect.height}
             i.rect = rect
@@ -173,12 +173,12 @@ impl IWnd for RecentWnd
 {
     mtd impl onTimerEvent(evt: *TimerEvent)
     {
-        var capture = main.getCapture()
+        let capture = main.getCapture()
         if !capture
             return
 
         capture.computePreview()
-        var item = recentView.items[recentView.selected]
+        let item = recentView.items[recentView.selected]
         getApp().getRenderer().removeTexture(&item.preview)
         item.preview = getApp().getRenderer().addImage(capture.preview)
         invalidate()
@@ -193,7 +193,7 @@ impl RecentWnd
 {
     func create(parent: *Wnd, main: *MainWnd)->*RecentWnd
     {
-        with var recent = Wnd.create'RecentWnd(parent, {0, 0, 0, PreviewHeight + RecentPadding*2})
+        with let recent = Wnd.create'RecentWnd(parent, {0, 0, 0, PreviewHeight + RecentPadding*2})
         {
             .scrollWndFlags |= .SmallBar | .ForceHorizontal
             .backgroundStyle = .Window
@@ -217,7 +217,7 @@ impl RecentWnd
         var cptRecent = 0
         visit r, idx: res
         {
-            var capture = catch recent.addRecent(r.fullname, front = false)
+            let capture = catch recent.addRecent(r.fullname, front = false)
             defer(err) Memory.delete(capture)
             if @errmsg continue
 
@@ -252,7 +252,7 @@ impl RecentWnd
         if recentView.selected >= recentView.items.count
             return
 
-        var item = recentView.items[recentView.selected]
+        let item = recentView.items[recentView.selected]
 
         catch File.delete(item.file)
         if @errmsg
@@ -273,20 +273,20 @@ impl RecentWnd
         recentView.items.removeAtOrdered(recentView.selected)
 
         // Select new one
-        var sel = recentView.selected
+        let sel = recentView.selected
         recentView.selected = Swag.U64.Max
         recentView.select(sel)
     }
 
     mtd addRecent(file: string, front = true, sel = false)->*Capture throw
     {
-        var capture = Capture.load(file)
+        let capture = Capture.load(file)
         addRecent(capture.file, capture.preview, front, sel)
 
         // Too much recent. Remove the oldest
         if front and recentView.items.count > MaxRecent
         {
-            var back = recentView.items.back()
+            let back = recentView.items.back()
             if back.preview.isValid()
                 getApp().getRenderer().removeTexture(&back.preview)
             recentView.items.deletePtr(back)
@@ -318,7 +318,7 @@ impl RecentWnd
             }
         }
 
-        var item = recentView.items.newPtr()
+        let item = recentView.items.newPtr()
         item.preview = getApp().getRenderer().addImage(preview)
         item.file = file
         if front

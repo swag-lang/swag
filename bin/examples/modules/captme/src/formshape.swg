@@ -24,7 +24,7 @@ impl IForm for FormShape
 {
     mtd impl isSame(ptr: *BaseForm)->bool
     {
-        var other = cast(*FormShape) ptr
+        let other = cast(*FormShape) ptr
         return  borderColor == other.borderColor and
                 borderSize  == other.borderSize and
                 backColor   == other.backColor and
@@ -36,8 +36,8 @@ impl IForm for FormShape
 
     mtd impl copy(dst, src: *BaseForm)
     {
-        var dstf = cast(*FormShape) dst
-        var srcf = cast(*FormShape) src
+        let dstf = cast(*FormShape) dst
+        let srcf = cast(*FormShape) src
         dstf.borderColor = srcf.borderColor
         dstf.borderSize  = srcf.borderSize
         dstf.backColor   = srcf.backColor
@@ -49,8 +49,8 @@ impl IForm for FormShape
 
     mtd impl edit(evt: *MouseEvent, paintRect: Math.Rectangle, movingStart: Math.Point, localPos: Math.Point, zoom: f32)->bool
     {
-        var xa = cast(s32) ((movingStart.x - paintRect.x) / zoom)
-        var ya = cast(s32) ((movingStart.y - paintRect.y) / zoom)
+        let xa = cast(s32) ((movingStart.x - paintRect.x) / zoom)
+        let ya = cast(s32) ((movingStart.y - paintRect.y) / zoom)
         var xb = cast(s32) ((localPos.x - paintRect.x) / zoom)
         var yb = cast(s32) ((localPos.y - paintRect.y) / zoom)
         setBaseForm(xa, ya, xb - xa, yb - ya)
@@ -62,11 +62,11 @@ impl IForm for FormShape
         yb += ybu
 
         // Same size
-        var shiftPressed = Input.Keyboard.isKeyPressed(.Shift) or Input.Keyboard.isKeyPressed(.RShift)
+        let shiftPressed = Input.Keyboard.isKeyPressed(.Shift) or Input.Keyboard.isKeyPressed(.RShift)
         if shiftPressed
         {
-            var ww = xb - xa
-            var hh = yb - ya
+            let ww = xb - xa
+            let hh = yb - ya
             if ww > hh
                 yb = ya + ww
             else
@@ -138,7 +138,7 @@ impl IForm for FormShape
         if flags & (.Hot | .Selected)
         {
             gizmo.rect = paintPos
-            var col = subKind == .PixSel ? Argb.Yellow : Argb.White
+            let col = subKind == .PixSel ? Argb.Yellow : Argb.White
             gizmo.paint(painter, flags & .Selected ? false : true, col)
         }
     }
@@ -182,7 +182,7 @@ impl IForm for FormShape
     mtd impl paint(app: *Application, painter: *Painter, z: f32, quickMode: bool)
     {
         var bSize = adaptSize(borderSize, MinBorderSize, MaxBorderSize, z, quickMode)
-        var rSize = adaptSize(roundSize, MinRoundSize, MaxRoundSize, z, quickMode)
+        let rSize = adaptSize(roundSize, MinRoundSize, MaxRoundSize, z, quickMode)
 
         if subKind == .PixSel
         {
@@ -207,8 +207,8 @@ impl IForm for FormShape
             switch kind
             {
             case Ellipse:
-                var sizeX = pp.width * 0.5
-                var sizeY = pp.height * 0.5
+                let sizeX = pp.width * 0.5
+                let sizeY = pp.height * 0.5
                 painter.drawEllipse(pp.x + sizeX, pp.y + sizeY, sizeX, sizeY, pen)
 
             case Rectangle:
@@ -224,8 +224,8 @@ impl IForm for FormShape
             switch kind
             {
             case Ellipse:
-                var sizeX = pp.width * 0.5
-                var sizeY = pp.height * 0.5
+                let sizeX = pp.width * 0.5
+                let sizeY = pp.height * 0.5
                 if quickMode and alpha != 100 and subKind == .Highlight
                     painter.fillEllipse(pp.x + sizeX, pp.y + sizeY, sizeX, sizeY, backBrush)
                 painter.fillEllipse(pp.x + sizeX, pp.y + sizeY, sizeX, sizeY, bk)

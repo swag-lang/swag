@@ -32,10 +32,10 @@ impl IActionUI for ActionAlign
 
     mtd impl update(cxt: ActionContext, evt: *CommandStateEvent)->bool
     {
-        var main = cast(*MainWnd) cxt.wnd
+        let main = cast(*MainWnd) cxt.wnd
 
-        var capture = main.getCapture()
-        var hasSel = capture and capture.selection.count
+        let capture = main.getCapture()
+        let hasSel = capture and capture.selection.count
 
         switch cxt.id
         {
@@ -52,8 +52,8 @@ impl IActionUI for ActionAlign
 
     mtd impl execute(cxt: ActionContext)->bool
     {
-        var main = cast(*MainWnd) cxt.wnd
-        var capture = main.getCapture()
+        let main = cast(*MainWnd) cxt.wnd
+        let capture = main.getCapture()
 
         var undo: *Undo
         switch cxt.id
