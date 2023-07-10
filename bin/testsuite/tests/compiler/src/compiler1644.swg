@@ -3,6 +3,6 @@
 {
     const tbl = "0123456789ABCDEF"
     var x = 1
-    var c = tbl[x]
+    let c = tbl[x]
     @assert(c == cast(u8) "1"'rune)
 }

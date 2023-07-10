@@ -2,14 +2,14 @@
 {
     var a = ["1"'u8]
     let ptr = &a[0]
-    var x = dref ptr
+    let x = dref ptr
     @assert(x - "0"'u8 == 1)
 }
 
 #test
 {
     var a = ["1"'u16]
-    var ptr = &a[0]
+    let ptr = &a[0]
     let x = dref ptr
     @assert(x - "0"'u16 == 1)
 }

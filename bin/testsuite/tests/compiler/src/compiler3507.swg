@@ -10,7 +10,7 @@
         }
     }
 
-    var fct = getInc()
+    let fct = getInc()
     @assert(fct() == 11)
     @assert(fct() == 12)
     @assert(fct() == 13)

@@ -3,7 +3,7 @@ var G = 0
 #test
 {
     var a = [1, 2, 3, 4]
-    var v = closure|a|()
+    let v = closure|a|()
     {
         G = a[0] + a[1] + a[2] + a[3]
     }

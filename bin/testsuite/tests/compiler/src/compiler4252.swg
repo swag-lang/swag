@@ -1,7 +1,7 @@
 #test
 {
-    var x = "abcd"
-    var v = 2
-    var y = x[..<v]
+    let x = "abcd"
+    let v = 2
+    let y = x[..<v]
     @assert(y == "ab")
 }

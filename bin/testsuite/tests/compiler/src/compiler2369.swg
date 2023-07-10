@@ -1,6 +1,6 @@
 #test
 {
-    var cpt = 4
+    let cpt = 4
     loop cpt
     {
         #scope up

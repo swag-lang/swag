@@ -1,6 +1,6 @@
 #test
 {
     const X = "abcd"
-    var x = X[..]
+    let x = X[..]
     @assert(x == "abcd")
 }

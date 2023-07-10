@@ -1,13 +1,13 @@
 //#[Swag.PrintBc]
 func isLeapYear(year: s16)->s32
 {
-    var x = year / 3
+    let x = year / 3
     return x
 }
 
 func isLeapYear1(year: s64)->u64
 {
-    var x = year / 3
+    let x = year / 3
     return x
 }
 

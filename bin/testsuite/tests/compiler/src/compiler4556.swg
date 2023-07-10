@@ -7,7 +7,7 @@ alias A = string
 #test
 {
     var a = "toto"
-    var x: ref A = &a
+    let x: ref A = &a
     let y = x[1..2]
     @assert(y == "ot")
 }

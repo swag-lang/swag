@@ -1,7 +1,7 @@
 #[Swag.Optim("", false)]
 #test
 {
-    var x = -1's8
-    var y = @abs(x)
+    let x = -1's8
+    let y = @abs(x)
     @assert(y == 1)
 }

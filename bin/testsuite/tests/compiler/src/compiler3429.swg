@@ -1,10 +1,10 @@
 #test
 {
-    var v: closure()->s32 = closure||()->s32
+    let v: closure()->s32 = closure||()->s32
     {
         return 66
     }
 
-    var x = v()
+    let x = v()
     @assert(x == 66)
 }

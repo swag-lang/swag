@@ -8,6 +8,6 @@ func toto(x: ...)
 //#[Swag.PrintBc]
 #test
 {
-    var x: func(...) = &toto
+    let x: func(...) = &toto
     x(4, 5)
 }

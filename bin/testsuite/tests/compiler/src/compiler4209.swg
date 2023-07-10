@@ -7,7 +7,7 @@ func toto(y: s8)->s8
 
 #test
 {
-    var y = toto(2)
+    let y = toto(2)
     @assert(y == 4)
 }
 
@@ -20,6 +20,6 @@ func toto1(y: s16)->s16
 
 #test
 {
-    var y = toto1(3)
+    let y = toto1(3)
     @assert(y == 6)
 }

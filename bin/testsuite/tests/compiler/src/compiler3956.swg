@@ -8,6 +8,6 @@ func toto()->const ref s32
 //#[Swag.PrintBc]
 #test
 {
-    var x: s32 = toto()
+    let x: s32 = toto()
     @assert(x == 666)
 }

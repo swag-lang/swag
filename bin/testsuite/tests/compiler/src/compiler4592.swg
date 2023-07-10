@@ -7,6 +7,6 @@
         @assert(x == 52)
     }
 
-    var xx: s32 = 52
+    let xx: s32 = 52
     xx.x()
 }

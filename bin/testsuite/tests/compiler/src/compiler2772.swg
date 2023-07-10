@@ -32,7 +32,7 @@ func(T) toto()
     toto'u64()
 
     {
-        var x = 456
+        let x = 456
         @assert(@min(@max(x, 0), 255) == 255)
     }
 

@@ -14,7 +14,7 @@ func tata()
 {
     trycatch
     {
-        var x = titi()
+        let x = titi()
         @assert(x == 0)
     }
 }

@@ -8,7 +8,7 @@ func toto(y: s8)->s8
 
 #test
 {
-    var y = toto(6)
+    let y = toto(6)
     @assert(y == 2)
 }
 
@@ -16,13 +16,13 @@ func toto(y: s8)->s8
 func toto(y, z: s8)->s8
 {
     var x1 = y
-    var x2 = z
+    let x2 = z
     x1 /= x2
     return x1
 }
 
 #test
 {
-    var y = toto(9, 3)
+    let y = toto(9, 3)
     @assert(y == 3)
 }

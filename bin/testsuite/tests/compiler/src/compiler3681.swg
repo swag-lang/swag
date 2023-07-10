@@ -12,7 +12,7 @@ var G: s32
 {
     toto()
     {
-        var fn = closure|a|(){
+        let fn = closure|a|(){
             G += a
         }
         fn()

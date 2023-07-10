@@ -8,7 +8,7 @@ func toto()->ref s32
 //#[Swag.PrintBc, Swag.Optim("", false)]
 #test
 {
-    var x = ref toto()
+    let x = ref toto()
     var y = ref x
     @assert(@typeof(x) == #type ref s32)
     @assert(@typeof(y) == #type ref s32)

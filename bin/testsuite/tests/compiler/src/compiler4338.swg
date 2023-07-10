@@ -14,11 +14,11 @@ func(T) largest(list: [..] T)->ref T
 {
     var number_list = [34, 50, 25, 100, 65]
 
-    var result = largest(number_list[..])
+    let result = largest(number_list[..])
     @assert(result == 100)
 
     var char_list = ["大"'rune, "m", "a", "q"]
 
-    var result1 = largest(char_list[..])
+    let result1 = largest(char_list[..])
     @assert(result1 == "大"'rune)
 }

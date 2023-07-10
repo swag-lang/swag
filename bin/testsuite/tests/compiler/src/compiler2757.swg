@@ -13,7 +13,7 @@ enum AA: const [2] s32
 
 #test
 {
-    var x = AA.A
+    let x = AA.A
     @assert(x[0] == 1)
     @assert(x[1] == 2)
 }

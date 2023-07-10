@@ -24,6 +24,6 @@ struct B
 #test
 {
     var v: B
-    var x = v[0]
+    let x = v[0]
     @assert(x == 10)
 }

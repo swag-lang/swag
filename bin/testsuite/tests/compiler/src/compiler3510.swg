@@ -5,14 +5,14 @@
     #[Swag.Inline]
     func getInc()->closure()->s32
     {
-        var x = 10
+        let x = 10
         return closure|x|()->s32 {
             x += 1
             return x
         }
     }
 
-    var fct = getInc()
+    let fct = getInc()
     @assert(fct() == 11)
     @assert(fct() == 12)
     @assert(fct() == 13)

@@ -7,6 +7,6 @@ func toto()->any
 //#[Swag.PrintBc]
 #test
 {
-    var x = toto()
+    let x = toto()
     @assert(x == null)
 }

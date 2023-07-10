@@ -1,11 +1,11 @@
 func(T) sort(values: [..] T, cb: func(T, T)->s32)
 {
-    var buffer = @dataof(values)
-    var count = @countof(values)
+    let buffer = @dataof(values)
+    let count = @countof(values)
 
     for var i = 1'u32; i < count; i += 1
     {
-        var tmp =,move buffer[i]
+        let tmp =,move buffer[i]
         var j = i
         while cb(buffer[j - 1], tmp) > 0
         {

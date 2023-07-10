@@ -16,6 +16,6 @@ struct D
 #test
 {
     var x: D
-    var v = cast(s32) x.x
+    let v = cast(s32) x.x
     @assert(v == 666)
 }

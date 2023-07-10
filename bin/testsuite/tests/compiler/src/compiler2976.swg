@@ -5,9 +5,9 @@ enum X: const [4] u8
 
 #test
 {
-    var ptr = @typeof(X)
+    let ptr = @typeof(X)
 
-    var ptr1 = cast(const ^u8) ptr.values[0].value
+    let ptr1 = cast(const ^u8) ptr.values[0].value
     @assert(ptr1[0] == 1)
     @assert(ptr1[1] == 2)
     @assert(ptr1[2] == 3)

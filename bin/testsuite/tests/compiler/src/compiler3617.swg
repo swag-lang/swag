@@ -24,7 +24,7 @@ struct X
     x.t[0] = &toto
     x.t[1] = &toto1
 
-    var res = x.t[0](1, 2)
+    let res = x.t[0](1, 2)
     @assert(res == 3)
 
     //var res1 = x.t[1](2, 3)

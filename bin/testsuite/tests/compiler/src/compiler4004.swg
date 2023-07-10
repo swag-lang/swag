@@ -1,10 +1,10 @@
 //#[Swag.PrintBc]
 #test
 {
-    var x = "x"
-    var y = "y"
+    let x = "x"
+    let y = "y"
     var xp = @dataof(x)
-    var yp = @dataof(y)
+    let yp = @dataof(y)
 
     xp =,move yp
 }

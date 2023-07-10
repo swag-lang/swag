@@ -1,8 +1,8 @@
 //#[Swag.PrintBc]
 #test
 {
-    var a: any = null
-    var b: any = null
+    let a: any = null
+    let b: any = null
     @assert(a == null)
     @assert(b == null)
 }

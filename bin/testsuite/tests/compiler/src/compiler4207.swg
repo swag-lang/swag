@@ -8,6 +8,6 @@ func toto(y: s32)->f32
 
 #test
 {
-    var y = toto(3)
+    let y = toto(3)
     @assert(y == 1.0)
 }

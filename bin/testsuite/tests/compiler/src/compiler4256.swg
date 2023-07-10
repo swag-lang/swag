@@ -19,6 +19,6 @@ impl V
 #test
 {
     var v: V
-    var y = v[0..<6]
+    let y = v[0..<6]
     @assert(y == "toto")
 }

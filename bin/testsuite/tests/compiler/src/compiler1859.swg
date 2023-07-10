@@ -121,7 +121,7 @@ func aaa(ptr: *s64)
         }
         {
             var x, y = 0
-            var diff: s64 = cast(^u32) &y - cast(^u32) &x
+            let diff: s64 = cast(^u32) &y - cast(^u32) &x
             @print(diff)
         }
 
