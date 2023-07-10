@@ -6,6 +6,6 @@ func toto(x: const ref s32)
 //#[Swag.PrintBc, Swag.Optim("", false)]
 #test
 {
-    var a = 2
+    let a = 2
     toto(a)
 }

@@ -12,7 +12,7 @@ func toto(x: AA)
 //#[Swag.PrintBc]
 #test
 {
-    var x = &toto
+    let x = &toto
     var tt: AA
     tt.x()
 }

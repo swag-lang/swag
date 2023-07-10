@@ -17,7 +17,7 @@ func toto()->Point
 #test
 {
     {
-        var x = &toto
+        let x = &toto
         var c = x()
         @assert(c.x == 10)
         @assert(c.y == 20)

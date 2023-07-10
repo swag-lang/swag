@@ -4,7 +4,7 @@
 {
     struct X {}
 
-    var x: closure(X, ...) = func(x: X, y: ...)
+    let x: closure(X, ...) = func(x: X, y: ...)
     {
         @assert(cast(s32) y[0] == 4)
     }

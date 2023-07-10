@@ -33,7 +33,7 @@ impl I for BB
 #test
 {
     var x: BB
-    var ptr = cast(I) x
+    let ptr = cast(I) x
     @assert(ptr.init() == 1)
     @assert(ptr.close() == 20)
 }

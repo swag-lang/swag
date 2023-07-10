@@ -5,7 +5,7 @@ func(T) toto(cb: closure(T, T))
 
 #test
 {
-    var a = 10
+    let a = 10
     toto's32(closure|a|(x, y)
     {
         @assert(x == a)

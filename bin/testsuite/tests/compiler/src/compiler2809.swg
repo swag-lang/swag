@@ -2,7 +2,7 @@
 #[Swag.Optim("", false)]
 #test
 {
-    var b = false
+    let b = false
     var x = 2
     var y = 2
     var z = 4

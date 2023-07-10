@@ -1,7 +1,7 @@
 //#[Swag.PrintBc]
 func(T) insertionSort(values: [..] T, cb: closure(T, T)->s32)
 {
-    var buffer = @dataof(values)
+    let buffer = @dataof(values)
     for var i = 1'u32; i < 2; i += 1
     {
         for var j = i; cb(buffer[j], buffer[j - 1]) < 0; j -= 1

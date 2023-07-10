@@ -1,7 +1,7 @@
 #[Swag.Safety("", false)]
 func toto()->s32
 {
-    var x = 1
+    let x = 1
     var y = 2
     y *= x
     var z = 4

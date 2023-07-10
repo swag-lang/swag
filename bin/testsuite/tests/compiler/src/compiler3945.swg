@@ -12,7 +12,7 @@ func toto()->const ref V
 //#[Swag.PrintBc]
 #test
 {
-    var x: const ref V = toto()
+    let x: const ref V = toto()
     @assert(x.x == 1)
     @assert(x.y == 10)
     G.x = 4

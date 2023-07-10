@@ -7,9 +7,9 @@ func toto()->{a:rune, b:u32}
 	const mask4 = 0b00000111
 
     var dataof: ^u8
-    var p0 = cast(rune) dref dataof
+    let p0 = cast(rune) dref dataof
 
-	var b1 = cast(u32) dataof[1]
+	let b1 = cast(u32) dataof[1]
 	return {(p0 & mask2) << 6 | (b1 & maskx), 2}
 
 	//var b2 = cast(rune) dataof[2]

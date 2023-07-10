@@ -3,7 +3,7 @@ var G = 0
 //#[Swag.PrintBc]
 func toto()
 {
-    var x = 0
+    let x = 0
     if x == 0
         return
     defer G = 1

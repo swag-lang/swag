@@ -3,16 +3,16 @@
 {
     func getInc()->closure()->s32
     {
-        var x = 10
-        var y = 20
-        var z = 30
+        let x = 10
+        let y = 20
+        let z = 30
         return closure|x, z|()->s32 {
             x = x + z + 1
             return x
         }
     }
 
-    var fct = getInc()
+    let fct = getInc()
     @assert(fct() == 41)
     @assert(fct() == 72)
 }

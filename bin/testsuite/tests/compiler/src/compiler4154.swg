@@ -5,12 +5,12 @@ func(N) titi()->N => true
 #[Swag.Safety("", false)]
 func(N) toto()->N
 {
-    var aa = titi'N()
+    let aa = titi'N()
     return cast(N) aa
 }
 
 #test
 {
-    var x = toto'bool()
+    let x = toto'bool()
     @assert(x == true)
 }

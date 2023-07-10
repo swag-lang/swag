@@ -7,6 +7,6 @@ func toto()->f32
     y *= 2
     y -= 1
     y += 32
-    var x = @sqrt(y)
+    let x = @sqrt(y)
     return x
 }

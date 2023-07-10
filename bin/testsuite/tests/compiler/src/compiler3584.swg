@@ -33,7 +33,7 @@ func toto()->A
     //#[Swag.PrintBc]
     //#ast
     //{
-        var r = toto()
+        let r = toto()
         @assert(cast(string) r == "abcdef")
         //@print(cast(string) r)
      //   return cast(string) r //.toString()

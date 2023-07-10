@@ -7,6 +7,6 @@ enum RGB
 
 #test
 {
-    var x = RGB.R
+    let x = RGB.R
     @assert(x == .R)
 }

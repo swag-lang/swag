@@ -23,6 +23,6 @@ func toto(t: typeinfo) => t.fullname
 #test
 {
     var s = @typeof(bool)
-    var x = toto(s32)
+    let x = toto(s32)
     @assert(x == "s32")
 }

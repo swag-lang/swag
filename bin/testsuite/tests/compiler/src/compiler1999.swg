@@ -10,7 +10,7 @@ func(T) sortQuick(values: [..] T, cb: func(T, T)->s32)
     loop
     {
         // Pick a pivot and,move it out of the way
-        var pivot = (begin + end) / 2
+        let pivot = (begin + end) / 2
 
         var med = buffer[pivot]
         buffer[pivot] = buffer[end]
@@ -37,7 +37,7 @@ func(T) sortQuick(values: [..] T, cb: func(T, T)->s32)
 
         // To avoid too much recursions, we recurse only for the smaller partition
         #[Swag.Overflow(true)]
-        var set1 = cast(s64) ((low - 1) - begin)
+        let set1 = cast(s64) ((low - 1) - begin)
         #[Swag.Overflow(true)]
         var set2 = cast(s64) (end - (high + 1))
 

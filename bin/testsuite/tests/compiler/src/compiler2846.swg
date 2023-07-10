@@ -54,19 +54,19 @@
     }
 
     {
-        var x = -100's8
-        var y = 32
+        let x = -100's8
+        let y = 32
         @assert(x >> y == -1)
     }
 
     {
-        var x = -100's8
-        var y = 512
+        let x = -100's8
+        let y = 512
         @assert(x >> y == -1)
     }
 
     {
-        var x = -100's8
+        let x = -100's8
         @assert(x >> 512 == -1)
     }
 
