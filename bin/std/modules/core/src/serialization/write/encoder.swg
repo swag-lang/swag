@@ -74,7 +74,7 @@ impl Encoder
         // Native
         if type.kind == .Native
         {
-            var typeNative = cast(const *TypeInfoNative) type
+            let typeNative = cast(const *TypeInfoNative) type
             switch typeNative.nativeKind
             {
             case Bool:
@@ -106,14 +106,14 @@ impl Encoder
 
         if Reflection.isType(type)
         {
-            var typeType = dref cast(const **TypeInfo) data
+            let typeType = dref cast(const **TypeInfo) data
             serializer.writeNative(typeType ? typeType.crc32 : 0'u32)
             return
         }
 
         if Reflection.isInterface(type)
         {
-            var itf = cast(const *Swag.Interface) data
+            let itf = cast(const *Swag.Interface) data
 
             serializer.beginSection(.Raw)
             defer serializer.endSection()
@@ -151,20 +151,20 @@ impl Encoder
             // Core.String
             if type == String
             {
-                var strBuf = cast(const *String) data
+                let strBuf = cast(const *String) data
                 serializer.writeNative(strBuf.toString())
                 return
             }
 
-            var structType = cast(const *TypeInfoStruct) type
+            let structType = cast(const *TypeInfoStruct) type
 
             // Core.Array
             if structType.fromGeneric == @typeof(Array)
             {
-                var valueType = structType.generics[0].pointedType
-                var ptrArr = cast(const *Array) data
+                let valueType = structType.generics[0].pointedType
+                let ptrArr = cast(const *Array) data
 
-                var treated = serializer.beginSequence(type, data, ptrArr.count)
+                let treated = serializer.beginSequence(type, data, ptrArr.count)
                 defer serializer.endSequence()
 
                 if !treated
@@ -181,7 +181,7 @@ impl Encoder
             }
 
             // A structure with an implementation of ISerialize
-            var itf = @mkinterface(data, type, ISerialize)
+            let itf = @mkinterface(data, type, ISerialize)
             if itf != null
             {
                 if itf.write(cast(IEncoder) self)
@@ -189,7 +189,7 @@ impl Encoder
             }
 
             // Start a fields section
-            var treated = serializer.beginStruct(structType, data)
+            let treated = serializer.beginStruct(structType, data)
             defer(noerr) serializer.endStruct()
             if treated
                 return
@@ -214,8 +214,8 @@ impl Encoder
         // A static array
         if Reflection.isArray(type)
         {
-            var typeArr = cast(const *TypeInfoArray) type
-            var treated = serializer.beginSequence(typeArr.pointedType, data, typeArr.count)
+            let typeArr = cast(const *TypeInfoArray) type
+            let treated = serializer.beginSequence(typeArr.pointedType, data, typeArr.count)
             defer serializer.endSequence()
             if treated
                 return
@@ -288,7 +288,7 @@ impl IEncoder for Encoder
 
     mtd impl writeBufferU8(data: const ^u8, count: u64) throw
     {
-        var treated = serializer.beginSequence(u8, data, count)
+        let treated = serializer.beginSequence(u8, data, count)
         defer(noerr) serializer.endSequence()
 
         if !treated

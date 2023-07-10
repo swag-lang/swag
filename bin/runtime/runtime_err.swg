@@ -5,10 +5,7 @@ using Swag
 func __seterr(value: string)
 {
     let cxt = @getcontext()
-    var len = @countof(value)
-    if len > MaxLenErrorMsg
-        len = MaxLenErrorMsg
-
+    let len = @min(@countof(value), MaxLenErrorMsg)
     @assert(cxt.errorIndex < MaxErrors)
     @memcpy(&cxt.errors[cxt.errorIndex].msgBuf, @dataof(value), len)
     cxt.errors[cxt.errorIndex].msg = @mkstring(&cxt.errors[cxt.errorIndex].msgBuf, len)

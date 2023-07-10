@@ -5,8 +5,8 @@ using Core, Libc
     var timer: time_t
     discard time(&timer)
 
-    var ptr = ctime(&timer)
-    var a = strlen(ptr)
+    let ptr = ctime(&timer)
+    let a = strlen(ptr)
     @assert(a > 0)
     //Console.print(@mkstring(ptr, a))
 }

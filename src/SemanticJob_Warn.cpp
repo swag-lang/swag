@@ -159,8 +159,8 @@ bool SemanticJob::warnUnusedVariables(SemanticContext* context, Scope* scope)
                 }
                 else
                 {
-                    //Diagnostic diag{front, front->token, Fmt(Err(Wrn0009), sym->name.c_str()), DiagnosticLevel::Warning};
-                    //isOk = isOk && context->report(diag);
+                    Diagnostic diag{front, front->token, Fmt(Err(Wrn0009), sym->name.c_str()), DiagnosticLevel::Warning};
+                    isOk = isOk && context->report(diag);
                 }
             }
         }

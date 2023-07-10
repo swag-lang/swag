@@ -86,7 +86,7 @@ var stderr: *FILE
     {
         var valist: va_list
         va_start(&valist, 0)
-        var res = stdio_common_vfprintf(0, file, format, null, dref cast(**void) &valist)
+        let res = stdio_common_vfprintf(0, file, format, null, dref cast(**void) &valist)
         va_end(&valist)
         return res
     }
@@ -96,7 +96,7 @@ var stderr: *FILE
     {
         var valist: va_list
         va_start(&valist, 0)
-        var res = stdio_common_vfprintf(0, stdout, format, null, dref cast(**void) &valist)
+        let res = stdio_common_vfprintf(0, stdout, format, null, dref cast(**void) &valist)
         va_end(&valist)
         return res
     }
@@ -106,7 +106,7 @@ var stderr: *FILE
     {
         var valist: va_list
         va_start(&valist, 0)
-        var res = stdio_common_vsprintf(0, s, SIZE_MAX, format, null, dref cast(**void) &valist)
+        let res = stdio_common_vsprintf(0, s, SIZE_MAX, format, null, dref cast(**void) &valist)
         va_end(&valist)
         return res
     }
@@ -116,7 +116,7 @@ var stderr: *FILE
     {
         var valist: va_list
         va_start(&valist, 0)
-        var res = stdio_common_vsprintf(0, s, count, format, null, dref cast(**void) &valist)
+        let res = stdio_common_vsprintf(0, s, count, format, null, dref cast(**void) &valist)
         va_end(&valist)
         return res
     }
@@ -150,7 +150,7 @@ var stderr: *FILE
     {
         var valist: va_list
         va_start(&valist, 0)
-        var res = stdio_common_vfscanf(0, stdin, format, null, dref cast(**void) &valist)
+        let res = stdio_common_vfscanf(0, stdin, format, null, dref cast(**void) &valist)
         va_end(&valist)
         return res
     }
@@ -160,7 +160,7 @@ var stderr: *FILE
     {
         var valist: va_list
         va_start(&valist, 0)
-        var res = stdio_common_vfscanf(0, file, format, null, dref cast(**void) &valist)
+        let res = stdio_common_vfscanf(0, file, format, null, dref cast(**void) &valist)
         va_end(&valist)
         return res
     }
@@ -182,7 +182,7 @@ var stderr: *FILE
     {
         var valist: va_list
         va_start(&valist, 0)
-        var res = stdio_common_vsscanf(0, s, SIZE_MAX, format, null, dref cast(**void) &valist)
+        let res = stdio_common_vsscanf(0, s, SIZE_MAX, format, null, dref cast(**void) &valist)
         va_end(&valist)
         return res
     }
