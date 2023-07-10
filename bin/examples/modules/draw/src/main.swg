@@ -204,9 +204,9 @@ func displayPage0(painter: *Pixel.Painter)
     var lpl: LinePathList
     painter.setTransform(trs)
     painter.translateTransform(750, 550)
-    var p0 = lpl.newPath()
+    let p0 = lpl.newPath()
     p0.setCircle(50, 160, 50)
-    var p1 = lpl.newPath()
+    let p1 = lpl.newPath()
     p1.setRect(0, 0, 100, 100)
     painter.fillPath(&lpl, Argb.Red)
 }
@@ -415,7 +415,7 @@ func displayPage4(painter: *Pixel.Painter)
     }
 
     {
-        var fnt = Res.fontFam.getFont(FontFamilyStyle.Regular)
+        let fnt = Res.fontFam.getFont(FontFamilyStyle.Regular)
         painter.fillCircle(100, 100, 5, Argb.Red)
         painter.drawString(100, 100, "abcdefghijkl", fnt, Argb.Black)
     }
@@ -425,7 +425,7 @@ func displayPage4(painter: *Pixel.Painter)
     {
         var brush = Brush.createTexture(Res.image1)
         var measure = Painter.measureString(str, Res.font40)
-        var off = Res.font40.height - measure.height
+        let off = Res.font40.height - measure.height
         painter.fillRect(100, 300+off, measure.width, measure.height, Color.fromArgb(0x1F, Argb.Blue))
         painter.fillRect(100, 300+off, measure.width, measure.ascent, Color.fromArgb(0x1F, Argb.Red))
         painter.drawString(100, 300, str, Res.font40, brush, UnderlineStyle.Strikeout)
@@ -578,7 +578,7 @@ func displayPage6(painter: *Pixel.Painter)
 
 func displayPage7(renderer: *Pixel.RenderOgl, painter: *Pixel.Painter)
 {
-    var tgt = renderer.getRenderTarget(256, 256)
+    let tgt = renderer.getRenderTarget(256, 256)
     painter.drawRoundRect(200, 20, 100, 100, 10, 10, Color.fromArgb(80, Argb.Red), 15)
     painter.drawRoundRect(230, 50, 100, 100, 10, 10, Color.fromArgb(80, Argb.Green), 15)
     painter.bindRenderTarget(tgt, true)
@@ -623,7 +623,7 @@ impl IWnd for MyView
 {
     mtd impl onPaintEvent(event: *PaintEvent)
     {
-        var painter = event.bc.painter
+        let painter = event.bc.painter
         painter.setParams(g_ModeAA ? .Antialiased : .Default)
         painter.setQuality(g_PaintQuality)
         painter.pushState()
@@ -691,12 +691,12 @@ impl IWnd for MyView
 {
     var app: Gui.Application
 
-    var view = Wnd.create'MyView()
-    var surface = try app.createSurface(100, 100, W, H, view = view)
+    let view = Wnd.create'MyView()
+    let surface = try app.createSurface(100, 100, W, H, view = view)
 
     assume
     {
-        var rdr = surface.app.getRenderer()
+        let rdr = surface.app.getRenderer()
         var img0 = Image.load(imagePath("basn0g01.png"))
         var img1 = Image.load(imagePath("test.gif"))
         Res.image0 = rdr.addImage(img0)

@@ -12,7 +12,7 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
 
     if evt.kind == .Command
     {
-        var pevt = cast(*CommandEvent) evt
+        let pevt = cast(*CommandEvent) evt
         if pevt.id == "exitBtn"
         {
             wnd.surface.destroy()
@@ -26,10 +26,10 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
 
     if evt.kind == .MousePressed
     {
-        var pevt = cast(*MouseEvent) evt
+        let pevt = cast(*MouseEvent) evt
         if pevt.button == .Right
         {
-            var menu = MenuCtrl.createPopup(wnd)
+            let menu = MenuCtrl.createPopup(wnd)
             menu.addItem("Coucou", "0", rightName = "Ctrl+A")
             menu.addItem("Salut", "1", app.theme.getIcon24(ThemeIcons24.Search, 18), disabled = true)
             menu.addItem("La", "2", app.theme.getIcon24(ThemeIcons24.WndClose, 18))
@@ -40,7 +40,7 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
             popup.addItem("Coucou1", "1")
             menu.addPopup("Popup1", popup)
 
-            var popup1 = MenuCtrl.createPopup(wnd)
+            let popup1 = MenuCtrl.createPopup(wnd)
             popup1.addItem("Coucou0", "0")
             popup1.addItem("Coucou1", "1")
 
@@ -60,7 +60,7 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
 
 func createView0(tabView: *Tab, view: *Wnd)
 {
-    var theme = app.theme
+    let theme = app.theme
     view.hookOnEvent = &onEvent
     view.getApp().registerFrameEvent(view)
 
@@ -149,7 +149,7 @@ func createView0(tabView: *Tab, view: *Wnd)
         edit.maxLength = 3
 
         edit = EditBox.create(view, "toto toto toto", {470, 140, 100})
-        var btn = IconButton.create(edit, app.theme.getIcon24(ThemeIcons24.WndClose, 18), {0, 0, 24, 24})
+        let btn = IconButton.create(edit, app.theme.getIcon24(ThemeIcons24.WndClose, 18), {0, 0, 24, 24})
         btn.dockStyle = .Right
         btn.setForm(IconButtonForm.Round)
         btn.sigPressed += func(btn) { var edt = cast(*EditBox) btn.parent; edt.setText(null); }
@@ -210,16 +210,16 @@ func createView0(tabView: *Tab, view: *Wnd)
         slider.setMinMax(0, 1, 0.1)
         slider.setValue(0.55)
 
-        var slider0 = Slider.create(view, {10, 470}, id = "slider0")
+        let slider0 = Slider.create(view, {10, 470}, id = "slider0")
         slider0.sliderFlags &= ~.HilightBar
-        var edit0 = EditBox.create(view, "0", {210, 464, 45}, id = "edit0")
+        let edit0 = EditBox.create(view, "0", {210, 464, 45}, id = "edit0")
         edit0.setForm(EditBoxForm.Transparent)
 
         slider0.setMinMax(0, 255)
         slider0.sigChanged += func(wnd)
         {
-            var val = Format.toString("%", cast(s32) wnd.getValue())
-            var edit = cast(*EditBox) wnd.getTopView().getChildById("edit0")
+            let val = Format.toString("%", cast(s32) wnd.getValue())
+            let edit = cast(*EditBox) wnd.getTopView().getChildById("edit0")
             edit.setText(val)
         }
 
@@ -227,8 +227,8 @@ func createView0(tabView: *Tab, view: *Wnd)
         edit0.maxLength = 3
         edit0.sigLoseFocus += func(wnd)
         {
-            var (val, ?, ?) = catch StrConv.parseS32(wnd.text)
-            var slider = cast(*Slider) wnd.getTopView().getChildById("slider0")
+            let (val, ?, ?) = catch StrConv.parseS32(wnd.text)
+            let slider = cast(*Slider) wnd.getTopView().getChildById("slider0")
             slider.setValue(cast(f32) val)
         }
 
@@ -237,7 +237,7 @@ func createView0(tabView: *Tab, view: *Wnd)
 
     // SliderCtrl
     {
-        var sliderctrl = SliderCtrl.create(view, "Center", {370, 590, 250, 50})
+        let sliderctrl = SliderCtrl.create(view, "Center", {370, 590, 250, 50})
         sliderctrl.slider.setMinMax(0, 255)
         sliderctrl.edit.setInputU64(0, 255)
         sliderctrl.edit.setForm(.Square)
@@ -281,9 +281,9 @@ func createView0(tabView: *Tab, view: *Wnd)
 
     // Tab
     {
-        var frame = Wnd.create'FrameWnd(view, {600, 20, 400, 100})
+        let frame = Wnd.create'FrameWnd(view, {600, 20, 400, 100})
         frame.style.addStyleSheetColors("frameWnd_Border Red")
-        var tab = Tab.create(frame, {})
+        let tab = Tab.create(frame, {})
         tab.barForm = .FlatRound
         tab.viewForm = .Round
         frame.view = tab
@@ -291,8 +291,8 @@ func createView0(tabView: *Tab, view: *Wnd)
         frame.padding.clear()
         tab.dockStyle = .Center
 
-        var view0 = Wnd.create'Wnd(tab)
-        var view1 = Wnd.create'Wnd(tab)
+        let view0 = Wnd.create'Wnd(tab)
+        let view1 = Wnd.create'Wnd(tab)
         Label.create(view0, "view0", {10, 10, 50, 30})
         Label.create(view1, "view1", {10, 10, 50, 30})
 
@@ -303,21 +303,21 @@ func createView0(tabView: *Tab, view: *Wnd)
     }
 
     {
-        var tab = Tab.create(view, {600, 150, 400, 100}, id = "tab0")
+        let tab = Tab.create(view, {600, 150, 400, 100}, id = "tab0")
         tab.setForm(TabForm.Round)
         tab.barLayout = .Fixed
 
         loop 5
         {
-            var view0 = Wnd.create'Wnd(tab)
-            var n = Format.toString("Tab%", @index == 0 ? 1568 : @index)
+            let view0 = Wnd.create'Wnd(tab)
+            let n = Format.toString("Tab%", @index == 0 ? 1568 : @index)
             tab.addItem(n, app.theme.getIcon24(ThemeIcons24.Search, 16), view0)
             Label.create(view0, n, {10, 10, 50, 30})
         }
     }
 
     {
-        var tab = Tab.create(view, {600, 560, 400, 100})
+        let tab = Tab.create(view, {600, 560, 400, 100})
         tab.setForm(.Button)
         tab.style.setFont(view.getTheme().createDefaultFont(40), .Regular)
         tab.addItem("toto", app.theme.getIcon24(ThemeIcons24.Search, 16))
@@ -327,16 +327,16 @@ func createView0(tabView: *Tab, view: *Wnd)
 
     // MenuCtrl
     {
-        var menu = MenuCtrl.createBar(view, {600, 280, 400})
+        let menu = MenuCtrl.createBar(view, {600, 280, 400})
         menu.addItem("Coucou", "0")
         menu.addItem("Salut", "0")
         menu.addItem("La", "0")
 
-        var popup1 = MenuCtrl.createPopup(view)
+        let popup1 = MenuCtrl.createPopup(view)
         popup1.addItem("Coucou0", "0")
         popup1.addItem("Coucou1", "1")
 
-        var popup = MenuCtrl.createPopup(view)
+        let popup = MenuCtrl.createPopup(view)
         popup.addItem("Coucou0", "0")
         popup.addItem("Coucou1", "1")
         popup.addPopup("Popup1", popup1)
@@ -347,12 +347,12 @@ func createView0(tabView: *Tab, view: *Wnd)
 
     // Scroll
     {
-        var swnd = Wnd.create'ScrollWnd(view, {600, 350, 400, 200}, id = "scroll")
+        let swnd = Wnd.create'ScrollWnd(view, {600, 350, 400, 200}, id = "scroll")
         swnd.createView'Wnd()
         swnd.view.backgroundStyle = .Dialog
         discard PushButton.create(swnd.view, "Normal", {5, 15})
         discard PushButton.create(swnd.view, "Other", {5, 55})
-        var edit = EditBox.create(swnd.view, "NoScroll", {5, 100})
+        let edit = EditBox.create(swnd.view, "NoScroll", {5, 100})
         edit.setNote("NoScroll")
         edit.wndFlags |= .NoScroll
         edit.dockStyle = .Bottom
@@ -389,12 +389,12 @@ func createView0(tabView: *Tab, view: *Wnd)
 
     // Progress Bar
     {
-        var prg = ProgressBar.create(view, {20, 520, 200})
+        let prg = ProgressBar.create(view, {20, 520, 200})
         prg.prgBarFlags |= .Infinite
     }
 
     {
-        var prg = ProgressBar.create(view, {20, 550, 200})
+        let prg = ProgressBar.create(view, {20, 550, 200})
         g_Prg = prg
         tabView.sigSelChanged += closure|prg|(tab) {
             prg.setProgression(0)
@@ -402,29 +402,29 @@ func createView0(tabView: *Tab, view: *Wnd)
     }
 
     {
-        var prg = ProgressBar.create(view, {20, 580, 200})
+        let prg = ProgressBar.create(view, {20, 580, 200})
         prg.setProgression(0.5)
         prg.disable()
     }
 
-    var frm = Wnd.create'FrameWnd(view, {10, 610, 300, 170})
+    let frm = Wnd.create'FrameWnd(view, {10, 610, 300, 170})
     frm.setFrameForm(.Round)
 
     // ImageRect
     {
-        var img = ImageRect.create(view, {20, 620, 48, 48})
+        let img = ImageRect.create(view, {20, 620, 48, 48})
         img.setMovie(theme.res.spin)
         img.style.addStyleSheetColors("imageRect_Fg $hilight")
 
-        var img1 = ImageRect.create(view, {20, 680, 48, 48})
+        let img1 = ImageRect.create(view, {20, 680, 48, 48})
         img1.setMovie(theme.res.spin)
 
-        var img2 = ImageRect.create(view, {400, 640, 128, 128})
+        let img2 = ImageRect.create(view, {400, 640, 128, 128})
         var path2 = Path.combine(Path.getDirectoryName(#file), "/datas/test.gif")
         assume img2.setFile(path2)
 
-        var btn = IconButton.create(view, app.theme.getIcon24(ThemeIcons24.Pause), {400, 780, 24, 24})
-        var slider = Slider.create(view,  {425, 780, 120})
+        let btn = IconButton.create(view, app.theme.getIcon24(ThemeIcons24.Pause), {400, 780, 24, 24})
+        let slider = Slider.create(view,  {425, 780, 120})
         slider.disable()
 
         btn.sigPressed += closure|img2, slider|(btn) {
@@ -444,21 +444,21 @@ func createView0(tabView: *Tab, view: *Wnd)
             img2.invalidate()
         }
 
-        var img3 = ImageRect.create(view, {540, 640, 128, 128})
+        let img3 = ImageRect.create(view, {540, 640, 128, 128})
         var path3 = Path.combine(Path.getDirectoryName(#file), "/datas/testa.gif")
         assume img3.setFile(path3)
 
-        var img4 = ImageRect.create(view, {680, 640, 128, 128})
+        let img4 = ImageRect.create(view, {680, 640, 128, 128})
         img4.setImage(theme.res.icons64)
     }
 
     // IconButton
     {
-        var btn0 = IconButton.create(view, theme.getIcon24(ThemeIcons24.Search), {80, 620, 32, 32})
+        let btn0 = IconButton.create(view, theme.getIcon24(ThemeIcons24.Search), {80, 620, 32, 32})
         btn0.setForm(.RoundSquare)
-        var btn1 = IconButton.create(view, theme.getIcon24(ThemeIcons24.Picker), {112, 620, 32, 32})
+        let btn1 = IconButton.create(view, theme.getIcon24(ThemeIcons24.Picker), {112, 620, 32, 32})
         btn1.setForm(.RoundSquare)
-        var btn2 = IconButton.create(view, theme.getIcon24(ThemeIcons24.Picker), {144, 620, 32, 32})
+        let btn2 = IconButton.create(view, theme.getIcon24(ThemeIcons24.Picker), {144, 620, 32, 32})
         btn2.disable()
         btn2.setForm(.RoundSquare)
     }
@@ -474,21 +474,21 @@ func createView0(tabView: *Tab, view: *Wnd)
             btn.iconBtnFlags.set(.CheckableToggle)
         }
 
-        var btn0 = IconButton.create(view, theme.getIcon24(ThemeIcons24.Search), {80, 660, 48, 48})
+        let btn0 = IconButton.create(view, theme.getIcon24(ThemeIcons24.Search), {80, 660, 48, 48})
         setStyle(btn0)
         btn0.checkedForm = .Bottom
 
-        var btn1 = IconButton.create(view, theme.getIcon24(ThemeIcons24.Picker), {130, 660, 48, 48})
+        let btn1 = IconButton.create(view, theme.getIcon24(ThemeIcons24.Picker), {130, 660, 48, 48})
         setStyle(btn1)
         btn1.checkedForm = .Top
 
-        var btn2 = IconButton.create(view, theme.getIcon24(ThemeIcons24.Search), {180, 660, 48, 48})
+        let btn2 = IconButton.create(view, theme.getIcon24(ThemeIcons24.Search), {180, 660, 48, 48})
         setStyle(btn2)
         btn2.checkedForm = .None
         btn2.style.addStyleSheetColors("btnIcon_CheckedIcon      $hilight")
         btn2.style.addStyleSheetColors("btnIcon_CheckedHotIcon   $hilight")
 
-        var btn3 = IconButton.create(view, theme.getIcon24(ThemeIcons24.Picker), {230, 660, 48, 48})
+        let btn3 = IconButton.create(view, theme.getIcon24(ThemeIcons24.Picker), {230, 660, 48, 48})
         setStyle(btn3)
         btn3.checkedForm = .None
         btn3.style.addStyleSheetColors("btnIcon_CheckedIcon      $hilight")
@@ -496,21 +496,21 @@ func createView0(tabView: *Tab, view: *Wnd)
     }
 
     {
-        var btn0 = IconButton.create(view, theme.getIcon24(ThemeIcons24.Search), {80, 720, 48, 48})
+        let btn0 = IconButton.create(view, theme.getIcon24(ThemeIcons24.Search), {80, 720, 48, 48})
         btn0.setForm(.RoundSquare)
         btn0.checkedForm = .Full
         btn0.iconBtnFlags.set(.CheckableToggle)
     }
 
     {
-        var ib = IconBar.create(view, 24, {880, 630, 124, 48})
+        let ib = IconBar.create(view, 24, {880, 630, 124, 48})
         ib.addItem(theme.getIcon24(ThemeIcons24.Play), "0")
         ib.addItem(theme.getIcon24(ThemeIcons24.Pause), "1")
         ib.addItem(theme.getIcon24(ThemeIcons24.Stop), "2")
     }
 
     {
-        var ib = IconBar.create(view, 18, {880, 680, 124, 48})
+        let ib = IconBar.create(view, 18, {880, 680, 124, 48})
         ib.setIconBarFlags(.Vertical)
         ib.addItem(theme.getIcon24(ThemeIcons24.Play), "0")
         ib.addItem(theme.getIcon24(ThemeIcons24.Pause), "1")

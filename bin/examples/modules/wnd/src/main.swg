@@ -8,32 +8,32 @@ const MAX_PAGES = 8
 
 #main
 {
-    var surface0 = try app.createSurface(100, 100, 1200, 1000, SurfaceFlags.OverlappedWindow)
+    let surface0 = try app.createSurface(100, 100, 1200, 1000, SurfaceFlags.OverlappedWindow)
     surface0.setTitle("Example 0")
     surface0.setIcon(app.theme.getIcon24(ThemeIcons24.WndMinimize, 20))
 
-    var tab = Tab.create(surface0.wnd.view, {}, id = "bigtab")
+    let tab = Tab.create(surface0.wnd.view, {}, id = "bigtab")
     g_Tab = tab
     tab.dockStyle = .Center
     tab.barLayout = .Fixed
     tab.setAllPaddings(10)
     tab.style.addStyleSheetColors("tabView_FlatBk $wnd_Bk")
 
-    var view0 = Wnd.create'Wnd(tab)
+    let view0 = Wnd.create'Wnd(tab)
     tab.addItem("Widgets", {}, view0)
-    var view1 = Wnd.create'Wnd(tab)
+    let view1 = Wnd.create'Wnd(tab)
     tab.addItem("ListCtrl", {}, view1)
-    var view2 = Wnd.create'Wnd(tab)
+    let view2 = Wnd.create'Wnd(tab)
     tab.addItem("TreeCtrl", {}, view2)
-    var view3 = Wnd.create'Wnd(tab)
+    let view3 = Wnd.create'Wnd(tab)
     tab.addItem("Color", {}, view3)
-    var view4 = Wnd.create'Wnd(tab)
+    let view4 = Wnd.create'Wnd(tab)
     tab.addItem("RichEditCtrl", {}, view4)
-    var view5 = Wnd.create'Wnd(tab)
+    let view5 = Wnd.create'Wnd(tab)
     tab.addItem("SplitterCtrl", {}, view5)
-    var view6 = Wnd.create'Wnd(tab)
+    let view6 = Wnd.create'Wnd(tab)
     tab.addItem("LayoutCtrl", {}, view6)
-    var view7 = Wnd.create'Wnd(tab)
+    let view7 = Wnd.create'Wnd(tab)
     tab.addItem("PropertyList", {}, view7)
 
     createView0(tab, view0)
