@@ -13,7 +13,7 @@ func cstr(x: string)->string
 //#[Swag.PrintBc]
 #test
 {
-    var v = cstr("toto")
+    let v = cstr("toto")
     @assert(G == 1)
     @assert(v == "toto")
 }

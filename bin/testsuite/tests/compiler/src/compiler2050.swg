@@ -1,7 +1,7 @@
 //#[Swag.PrintBc]
 func toto(x: ...)
 {
-    var v = cast(^s32) @dataof(x[0])
+    let v = cast(^s32) @dataof(x[0])
     @assert(v[0] == 1)
     @assert(v[1] == 2)
     @assert(v[2] == 3)

@@ -8,7 +8,7 @@ func toto()->bool
 #[Swag.Optim("", false)]
 #test
 {
-    var a = 0
+    let a = 0
     if a != 0 and toto()
     {
     }

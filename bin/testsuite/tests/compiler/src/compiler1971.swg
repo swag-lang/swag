@@ -9,14 +9,14 @@ impl Array
 	func validateCount(self)
 	{
         //@print(@typeof(T).name)
-	    var size = cast(u64) @sizeof(T)
+	    let size = cast(u64) @sizeof(T)
         G += size
     }
 
 	func add(self)
 	{
         //@print(@typeof(T).name)
-        var size = @sizeof(T)
+        let size = @sizeof(T)
         G += cast(u64) size
 		validateCount(self)
 	}

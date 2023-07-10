@@ -17,7 +17,7 @@ impl AA
 {
     {
         var x: AA
-        var v = 0
+        let v = 0
         switch v
         {
             case 0:

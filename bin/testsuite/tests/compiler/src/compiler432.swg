@@ -2,7 +2,7 @@
 //#global testerror
 #test
 {
-	var c: const [..] u8 = [0, 1]
-	var d = cast(const [..] u16) c
+	let c: const [..] u8 = [0, 1]
+	let d = cast(const [..] u16) c
     @assert(@countof(d) == 1)
 }

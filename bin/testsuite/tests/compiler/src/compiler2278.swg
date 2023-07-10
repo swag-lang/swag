@@ -6,7 +6,7 @@ func toto()->Swag.IAllocator
 //#[Swag.PrintBc]
 #test
 {
-    var a = toto()
+    let a = toto()
 
     var req: Swag.AllocatorRequest
     a.req(&req)

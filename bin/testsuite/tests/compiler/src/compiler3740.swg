@@ -3,7 +3,7 @@
 //#[Swag.PrintBc, Swag.Optim("", false)]
 #test
 {
-    var x = 1
+    let x = 1
 
     //#[Swag.Complete]
     //#[Swag.Safety("switch", false)]

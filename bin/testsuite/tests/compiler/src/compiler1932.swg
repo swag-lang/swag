@@ -12,6 +12,6 @@ func convertInt(value: s64, strFormat: string)
 
 #test
 {
-    var y: any = 666's64
+    let y: any = 666's64
     convertAny(y, "toto")
 }

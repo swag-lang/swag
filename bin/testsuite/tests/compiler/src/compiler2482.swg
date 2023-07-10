@@ -17,39 +17,39 @@ func panic(msg: string, loc: Swag.SourceCodeLocation)
         defer cxt.panic = null
 
         {
-            var x = Swag.S16.Min
-            var x0 = cast(s8) x
+            let x = Swag.S16.Min
+            let x0 = cast(s8) x
         }
 
         {
-            var x = Swag.S16.Max
-            var x0 = cast(s8) x
+            let x = Swag.S16.Max
+            let x0 = cast(s8) x
         }
 
         {
-            var x = Swag.S32.Min
-            var x0 = cast(s8) x
-            var x1 = cast(s16) x
+            let x = Swag.S32.Min
+            let x0 = cast(s8) x
+            let x1 = cast(s16) x
         }
 
         {
-            var x = Swag.S32.Max
-            var x0 = cast(s8) x
-            var x1 = cast(s16) x
+            let x = Swag.S32.Max
+            let x0 = cast(s8) x
+            let x1 = cast(s16) x
         }
 
         {
-            var x = Swag.S64.Min
-            var x0 = cast(s8) x
-            var x1 = cast(s16) x
-            var x2 = cast(s32) x
+            let x = Swag.S64.Min
+            let x0 = cast(s8) x
+            let x1 = cast(s16) x
+            let x2 = cast(s32) x
         }
 
         {
-            var x = Swag.S64.Max
-            var x0 = cast(s8) x
-            var x1 = cast(s16) x
-            var x2 = cast(s32) x
+            let x = Swag.S64.Max
+            let x0 = cast(s8) x
+            let x1 = cast(s16) x
+            let x2 = cast(s32) x
         }
     }
 

@@ -8,6 +8,6 @@ alias A = string
 {
     var a = "toto"
     var x: ref A = &a
-    var y = x[1..2]
+    let y = x[1..2]
     @assert(y == "ot")
 }

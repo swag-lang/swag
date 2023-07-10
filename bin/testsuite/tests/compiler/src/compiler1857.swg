@@ -20,7 +20,7 @@ func testInline(type: const* TypeInfoFunc)
 #message(CompilerMsgMask.SemFunctions)
 {
     let itf = @compiler()
-    var msg = itf.getMessage()
+    let msg = itf.getMessage()
     @assert(msg != null)
     if(msg.type.kind != TypeInfoKind.Func) return
 

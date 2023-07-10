@@ -1,12 +1,12 @@
 func foozle(x: any)
 {
-    var isType = @kindof(x).flags & Swag.TypeInfoFlags.PointerTypeInfo
+    let isType = @kindof(x).flags & Swag.TypeInfoFlags.PointerTypeInfo
     @assert(isType ? true : false)
 
-    var ptr = cast(const *Swag.TypeInfo) @dataof(x)
-    var isInteger = ptr.flags & Swag.TypeInfoFlags.Integer
+    let ptr = cast(const *Swag.TypeInfo) @dataof(x)
+    let isInteger = ptr.flags & Swag.TypeInfoFlags.Integer
     @assert(isInteger ? true : false)
-    var isUnsigned = ptr.flags & Swag.TypeInfoFlags.Unsigned
+    let isUnsigned = ptr.flags & Swag.TypeInfoFlags.Unsigned
     @assert(isUnsigned ? false : true)
 
     @assert(ptr.sizeof == 4)

@@ -1,7 +1,9 @@
 //#[Swag.PrintBc]
 #test
 {
-    var a, b, c = 5
+    var a = 5
+    var b = 5
+    let c = 5
     @assert(a == b and b == c)
     @assert(a == b and b == c and c == 5)
     @assert(1 < b and b < 10)

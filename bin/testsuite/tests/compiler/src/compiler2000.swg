@@ -2,7 +2,7 @@
 #[Swag.Inline]
 func swap(x, y: *s32)
 {
-    var tmp = dref x
+    let tmp = dref x
     dref x = dref y
     dref y = tmp
 }

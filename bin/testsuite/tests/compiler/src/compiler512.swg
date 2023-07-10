@@ -1,6 +1,6 @@
 func(T) valueof(x: any)->T
 {
-	var ptr = cast(*T) @dataof(x)
+	let ptr = cast(*T) @dataof(x)
 	return dref ptr
 }
 
@@ -11,7 +11,7 @@ func toto(xx: string, a: ...)
 	var idx = 0
 	while i < @countof(xx)
 	{
-		var c = cast(rune) xx[i]
+		let c = cast(rune) xx[i]
 		if c == "%"'rune
 		{
 			i += 1

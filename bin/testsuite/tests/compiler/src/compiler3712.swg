@@ -1,12 +1,12 @@
 func toto(x: any)
 {
-    var ptr = cast(^s32) @dataof(x)
+    let ptr = cast(^s32) @dataof(x)
     @assert(ptr[0] == 1)
     @assert(ptr[1] == 2)
 
-    var type = @kindof(x)
+    let type = @kindof(x)
     @assert(type.kind == .Array)
-    var arr = cast(const *Swag.TypeInfoArray) type
+    let arr = cast(const *Swag.TypeInfoArray) type
     @assert(arr.count == 2)
 }
 

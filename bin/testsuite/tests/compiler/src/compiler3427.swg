@@ -1,8 +1,8 @@
 #test
 {
-    var str = "10"
-    var a = 50
-    var b = 150
+    let str = "10"
+    let a = 50
+    let b = 150
     var v: closure() = closure|str,a,b|()
     {
         @assert(str == "10")

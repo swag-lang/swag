@@ -23,7 +23,7 @@ func(T) hash(value: T)->u32
         return value
     #elif @typeof(T).kind == Swag.TypeInfoKind.Struct
     {
-        var itf = cast(IHash) value
+        let itf = cast(IHash) value
         return itf.hash()
     }
     return 5

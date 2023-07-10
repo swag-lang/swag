@@ -18,7 +18,7 @@ impl enum RGBRGB
 
 #test
 {
-    var xyz = RGBRGB.R
+    let xyz = RGBRGB.R
     @assert(xyz.isRed())
     //@assert(RGBRGB.isRed())
     @assert(RGBRGB.R.isRed())

@@ -75,17 +75,17 @@ func energy(bodies: ^Planet)->f64
     //visit bi, i: bodies[..@countof(bodies)-2]
     for var i = 0; i < 5; i += 1
     {
-        var bi = &bodies[i]
+        let bi = &bodies[i]
         e += 0.5 * (bi.vx * bi.vx + bi.vy * bi.vy + bi.vz * bi.vz) * bi.mass
 
         //visit bj: bodies[i+1..]
         for var j = i+1; j < 5; j += 1
         {
-            var bj = &bodies[j]
-            var dx = bi.x - bj.x
-            var dy = bi.y - bj.y
-            var dz = bi.z - bj.z
-            var dist = @sqrt(dx * dx + dy * dy + dz * dz)
+            let bj = &bodies[j]
+            let dx = bi.x - bj.x
+            let dy = bi.y - bj.y
+            let dz = bi.z - bj.z
+            let dist = @sqrt(dx * dx + dy * dy + dz * dz)
             e -= bi.mass * bj.mass / dist
         }
     }
@@ -101,7 +101,7 @@ func advance(bodies: [..] Planet, dt: f64, steps: u64)
         //loop i: 3
         //visit &bi, j:  bodies[..@countof(bodies)-2]
         {
-            var bi = &bodies[i]
+            let bi = &bodies[i]
             var vx = bi.vx
             var vy = bi.vy
             var vz = bi.vz
@@ -109,16 +109,16 @@ func advance(bodies: [..] Planet, dt: f64, steps: u64)
             for var j = i+1; j < 5; j += 1
             //visit &bj: bodies[j+1 ..]
             {
-                var bj = &bodies[j]
+                let bj = &bodies[j]
 
-                var dx = bi.x - bj.x;
-                var dy = bi.y - bj.y;
-                var dz = bi.z - bj.z;
+                let dx = bi.x - bj.x;
+                let dy = bi.y - bj.y;
+                let dz = bi.z - bj.z;
 
-                var dsq = dx * dx + dy * dy + dz * dz
-                var dst = @sqrt(dsq)
-                var mag = dt / (dsq * dst)
-                var mi = bi.mass
+                let dsq = dx * dx + dy * dy + dz * dz
+                let dst = @sqrt(dsq)
+                let mag = dt / (dsq * dst)
+                let mi = bi.mass
 
                 vx -= dx * bj.mass * mag
                 vy -= dy * bj.mass * mag
@@ -151,7 +151,7 @@ func offset_momentum(bodies: [..] Planet) {
         pz -= b.vz * b.mass
     }
 
-    var sun = &bodies[0]
+    let sun = &bodies[0]
     sun.vx = px / solar_mass
     sun.vy = py / solar_mass
     sun.vz = pz / solar_mass
@@ -169,7 +169,7 @@ func offset_momentum(bodies: [..] Planet) {
     //@print(ret, "\n")
 
     //var n = 5_000_000'u64
-    var n = 5'u64
+    let n = 5'u64
     advance(bodies, 0.01, n)
     ret = energy(bodies)
     //@print(ret, "\n")

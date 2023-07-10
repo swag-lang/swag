@@ -22,12 +22,12 @@ func readF64(str: string)->{neg: bool, mantissa: u64, exp: s32, trunc: bool, eat
     var result: retval
 
     var cpt = 0'u32
-    var countof = @countof(str)
+    let countof = @countof(str)
     var buffer = @dataof(str)
 
-    var negSign = "-"'u8 // g_CultureInfo.numberFormat.negativeSign
-    var plusSign = "+"'u8 // g_CultureInfo.numberFormat.positiveSign
-    var dotSign = "."'u8 // g_CultureInfo.numberFormat.decimalSeparator
+    let negSign = "-"'u8 // g_CultureInfo.numberFormat.negativeSign
+    let plusSign = "+"'u8 // g_CultureInfo.numberFormat.positiveSign
+    let dotSign = "."'u8 // g_CultureInfo.numberFormat.decimalSeparator
 
     var c = dref buffer
     if c == negSign
@@ -41,7 +41,7 @@ func readF64(str: string)->{neg: bool, mantissa: u64, exp: s32, trunc: bool, eat
     }
 
 	// digits
-	var maxMantDigits = 19 // 10^19 fits in u64
+	let maxMantDigits = 19 // 10^19 fits in u64
 	var sawdot = false
 	var sawDigits = false
 	var nd = 0
@@ -191,7 +191,7 @@ func atoF64Exact(neg: bool, mantissa: u64, exponent: s32) -> {f: f64, ok: bool}
 func atoF64(s: string)-> { value: f64, eat: u32 } throw
 {
     var result: retval
-    var countof = @countof(s)
+    let countof = @countof(s)
     if !countof return result
 
 	/*if val, n, var ok = special(s); ok {
@@ -964,7 +964,7 @@ func eiselLemire64(neg: bool, mantissa: u64, exp10: s32)->{f: f64, ok: bool}
 		return result
 
 	// Normalization.
-	var clz = @bitcountlz(man)
+	let clz = @bitcountlz(man)
 	man <<= cast(u32) clz
 
 	const ExponentBias = 1023
@@ -981,7 +981,7 @@ func eiselLemire64(neg: bool, mantissa: u64, exp10: s32)->{f: f64, ok: bool}
 		var (yHi, yLo) = mulU64(man, v)
 
 		var mergedHi = xHi
-        var mergedLo = xLo + yHi
+        let mergedLo = xLo + yHi
 
 		if mergedLo < xLo
 			mergedHi += 1
@@ -994,7 +994,7 @@ func eiselLemire64(neg: bool, mantissa: u64, exp10: s32)->{f: f64, ok: bool}
 	}
 
 	// Shifting to 54 Bits.
-	var msb = (xHi >> 63)
+	let msb = (xHi >> 63)
 	var retMantissa = xHi >> cast(u32) (msb + 9)
 	retExp2 -= 1'u64 ^ msb
 
@@ -1029,14 +1029,14 @@ func eiselLemire64(neg: bool, mantissa: u64, exp10: s32)->{f: f64, ok: bool}
 func mulU64(x, y: u64) -> {hi: u64, lo: u64}
 {
 	const mask32 = (1'u64 << 32) - 1
-	var x0 = x & mask32
-	var x1 = x >> 32
-	var y0 = y & mask32
-	var y1 = y >> 32
-	var w0 = x0 * y0
-	var t = (x1 * y0) + (w0 >> 32)
+	let x0 = x & mask32
+	let x1 = x >> 32
+	let y0 = y & mask32
+	let y1 = y >> 32
+	let w0 = x0 * y0
+	let t = (x1 * y0) + (w0 >> 32)
 	var w1 = t & mask32
-	var w2 = t >> 32
+	let w2 = t >> 32
 	w1 += x0 * y1
 
     var result: retval

@@ -44,10 +44,10 @@ impl AA
     var v: AA'([s32, string])
 
     v.set's32(666)
-    var x = v.get's32()
+    let x = v.get's32()
     @assert(x == 666)
 
     v.set'string("titi")
-    var x1 = v.get'string()
+    let x1 = v.get'string()
     @assert(x1 == "titi")
 }

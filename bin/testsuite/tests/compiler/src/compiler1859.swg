@@ -126,20 +126,20 @@ func aaa(ptr: *s64)
         }
 
         {
-            var x = 0xFFFFFFFF_FFFFFFFF'u64
-            var y = cast(u32) x
-            var z = cast(u64) y
+            let x = 0xFFFFFFFF_FFFFFFFF'u64
+            let y = cast(u32) x
+            let z = cast(u64) y
             @print(cast(s64) z)
         }
 
         {
-            var x = 1'u64
-            var y = cast(f32) x
+            let x = 1'u64
+            let y = cast(f32) x
             @print(cast(f64) y)
         }
         {
-            var x = 1'u32
-            var y = cast(f32) x
+            let x = 1'u32
+            let y = cast(f32) x
             @print(cast(f64) y)
         }
 
@@ -185,7 +185,7 @@ func aaa(ptr: *s64)
             @print(cast(s64) x[2])
         }
         {
-            var x = 12's64
+            let x = 12's64
             @print(cast(f64) x)
         }
 
@@ -260,37 +260,37 @@ func aaa(ptr: *s64)
         }
 
         {
-            var x = 66.6'f64
+            let x = 66.6'f64
             var y = cast(f32) x
             @print(cast(f64) x)
         }
 
         {
-            var x = 66.6'f32
-            var y = cast(s32) x
+            let x = 66.6'f32
+            let y = cast(s32) x
             @print(cast(s64) x)
         }
         {
-            var x = 125's32
-            var y = cast(f32) x
+            let x = 125's32
+            let y = cast(f32) x
             @print(cast(f64) x)
         }
         {
-            var x = 1'u8
+            let x = 1'u8
             if(x)
                 @print("t")
             else
                 @print("f")
         }
         {
-            var x = 0'u16
+            let x = 0'u16
             if(x)
                 @print("t")
             else
                 @print("f")
         }
         {
-            var x = 0'u64
+            let x = 0'u64
             if(x)
                 @print("t")
             else
@@ -298,13 +298,13 @@ func aaa(ptr: *s64)
         }
 
         {
-            var x = 0x12'u32
-            var y = cast(u16) x
+            let x = 0x12'u32
+            let y = cast(u16) x
             @print(cast(s64) y)
         }
 
         {
-            var x = retS()
+            let x = retS()
             @print(cast(s64) x.y)
             @print(cast(s64) x.z)
         }
@@ -410,23 +410,23 @@ func aaa(ptr: *s64)
             @print(dref ptr)
         }
         {
-            var ptr = &tt3
+            let ptr = &tt3
             @print(ptr(5))
         }
 
         {
-            var ptr = &tt4
+            let ptr = &tt4
             @print(ptr())
         }
         {
-            var x: any = 0
+            let x: any = 0
             if(@kindof(x) == s32)
                 @print("true")
             else
                 @print("false")
         }
         {
-            var x: any = 0
+            let x: any = 0
             if(@kindof(x) == s64)
                 @print("true")
             else
@@ -441,7 +441,7 @@ func aaa(ptr: *s64)
             var x: [4] s64
             x[1] = 666
             @print(x[1])
-            var cpt = 2
+            let cpt = 2
             @init(&x[0], cpt)
             @print(x[1])
         }
@@ -480,7 +480,7 @@ func aaa(ptr: *s64)
         @print(g1)
         @print(g2)
         {
-            var x = "toto"
+            let x = "toto"
             if x == "toto"
                 @print("true")
             if x == "toto1"
@@ -490,23 +490,23 @@ func aaa(ptr: *s64)
         }
 
         {
-            var x = 0'u64
-            var y = 1'u64
-            var z = x > y
+            let x = 0'u64
+            let y = 1'u64
+            let z = x > y
             @print(cast(s64) z)
         }
 
         {
-            var x = 1'u32
-            var y = 0'u32
-            var z = x > y
+            let x = 1'u32
+            let y = 0'u32
+            let z = x > y
             @print(cast(s64) z)
         }
 
         @print(tt4())
 
         {
-            var x = tt5()
+            let x = tt5()
             @print(x[3])
         }
 
@@ -516,25 +516,25 @@ func aaa(ptr: *s64)
         tt2(666.0, 50)
 
         {
-            var x = 0'u64
-            var y = 1'u64
-            var z = x < y
+            let x = 0'u64
+            let y = 1'u64
+            let z = x < y
             @print(cast(s64) z)
         }
 
         {
-            var x = 0'u32
-            var y = 1'u32
-            var z = x < y
+            let x = 0'u32
+            let y = 1'u32
+            let z = x < y
             @print(cast(s64) z)
         }
 
         {
-            var ptr = @typeof(s32)
+            let ptr = @typeof(s32)
             @print(ptr.fullname)
         }
         {
-            var ptr = @typeof(s32)
+            let ptr = @typeof(s32)
             @print(cast(s64) ptr.sizeof)
         }
         {
@@ -761,14 +761,14 @@ func aaa(ptr: *s64)
         }
 
         {
-            var a, b = 1
-            var x = a and b
+            let a, b = 1
+            let x = a and b
             @print(cast(s64) x)
         }
 
         {
-            var a, b = 100
-            var x = a or b
+            let a, b = 100
+            let x = a or b
             @print(cast(s64) x)
         }
 
@@ -823,7 +823,7 @@ func aaa(ptr: *s64)
         }
 
         {
-            var x = 10'f64
+            let x = 10'f64
             if(x > 1.5)
                 @print("a")
             else
@@ -831,7 +831,7 @@ func aaa(ptr: *s64)
         }
 
         {
-            var x = 1'f32
+            let x = 1'f32
             if(x > 1.5)
                 @print("a")
             else
@@ -839,7 +839,7 @@ func aaa(ptr: *s64)
         }
 
         {
-            var x = 2's8
+            let x = 2's8
             if(x > 1)
                 @print("a")
             else
@@ -847,7 +847,7 @@ func aaa(ptr: *s64)
         }
 
         {
-            var x = 1's64
+            let x = 1's64
             if(x > 1)
                 @print("a")
             else
@@ -855,7 +855,7 @@ func aaa(ptr: *s64)
         }
 
         {
-            var x = 0.5'f64
+            let x = 0.5'f64
             if(x < 0.1)
                 @print("a")
             else
@@ -863,7 +863,7 @@ func aaa(ptr: *s64)
         }
 
         {
-            var x = 0.5'f32
+            let x = 0.5'f32
             if(x < 1.0)
                 @print("a")
             else
@@ -871,7 +871,7 @@ func aaa(ptr: *s64)
         }
 
         {
-            var x = 1's64
+            let x = 1's64
             if(x < 1)
                 @print("a")
         }
@@ -1063,16 +1063,17 @@ func aaa(ptr: *s64)
         }
 
         {
-            var x, y: ^u8 = null
+            let x: ^u8 = null
+            var y: ^u8 = null
             y += 1
-            var z = x orelse y
+            let z = x orelse y
             if z != null
                 @print("A")
         }
 
         {
-            var x, y: *u8 = null
-            var z = x orelse y
+            let x, y: *u8 = null
+            let z = x orelse y
             if z != null
                 @print("X")
             else
@@ -1080,7 +1081,7 @@ func aaa(ptr: *s64)
         }
 
         {
-            var x = 1's16
+            let x = 1's16
             switch x
             {
                 case 0: @assert(false)
@@ -1089,7 +1090,7 @@ func aaa(ptr: *s64)
         }
 
         {
-            var x = 1's8
+            let x = 1's8
             switch x
             {
                 case 0: @assert(false)
@@ -1098,7 +1099,7 @@ func aaa(ptr: *s64)
         }
 
         {
-            var x = 10's8
+            let x = 10's8
             switch x
             {
                 case 0: @assert(false)
@@ -1108,8 +1109,8 @@ func aaa(ptr: *s64)
         }
 
         {
-            var x = 0's8
-            var y = x == 1 ? 10 : 20
+            let x = 0's8
+            let y = x == 1 ? 10 : 20
             @print(cast(s64) y)
         }
 
@@ -1133,21 +1134,21 @@ func aaa(ptr: *s64)
 
         {
             var x = [1'u8]
-            var ptr = &x[0]
-            var y = ptr[0]
+            let ptr = &x[0]
+            let y = ptr[0]
             @print(cast(s64) y)
         }
 
         {
             var x = [5'u16]
-            var ptr = &x[0]
-            var y = ptr[0]
+            let ptr = &x[0]
+            let y = ptr[0]
             @print(cast(s64) y)
         }
 
         {
             var x = 0
-            var y = 1
+            let y = 1
             @print(cast(s64) y)
         }
 
@@ -1181,7 +1182,7 @@ func aaa(ptr: *s64)
         }
         {
             var x = [1's64, 2, 3]
-            var ptr = &x[0]
+            let ptr = &x[0]
             @print(ptr[0])
             @print(ptr[1])
         }
@@ -1194,7 +1195,7 @@ func aaa(ptr: *s64)
         }
 
         {
-            var a = 5
+            let a = 5
             if a != 5
                 @print("a")
             else
@@ -1202,7 +1203,7 @@ func aaa(ptr: *s64)
         }
 
         {
-            var a = 5
+            let a = 5
             if a == 5
                 @print("a")
             else
@@ -1210,7 +1211,7 @@ func aaa(ptr: *s64)
         }
 
         {
-            var a = 5
+            let a = 5
             if a == 4
                 @print("a")
             else
@@ -1220,7 +1221,7 @@ func aaa(ptr: *s64)
         loop 5 @print("g")
 
         {
-            var x = -6's8
+            let x = -6's8
             @print(cast(s64) x)
         }
 

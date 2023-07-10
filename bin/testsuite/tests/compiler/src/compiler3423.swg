@@ -4,7 +4,7 @@
 #test
 {
     var a = 10
-    var v: closure(s32) = closure|&a|(x: s32)
+    let v: closure(s32) = closure|&a|(x: s32)
     {
         dref a += x
     }

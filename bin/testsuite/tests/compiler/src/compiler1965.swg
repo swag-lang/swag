@@ -5,8 +5,8 @@ struct AA
 
 #test
 {
-    var x = 10'u32
-    var y = 5'u32
+    let x = 10'u32
+    let y = 5'u32
     var r = 0
     loop (x - y) - 1
         r += 1

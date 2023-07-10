@@ -14,14 +14,14 @@ func init(x: string)
         if dref cmdLine == "\""'u8
         {
             cmdLine += 1
-            var start = cmdLine
+            let start = cmdLine
             while dref cmdLine and dref cmdLine != "\""'u8 cmdLine += 1
             g_Argv[g_Argc] = @mkstring(start, cast(u64) (cmdLine - start))
             if dref cmdLine cmdLine += 1
         }
         else
         {
-            var start = cmdLine
+            let start = cmdLine
             while dref cmdLine and dref cmdLine != " "'u8 cmdLine += 1
             g_Argv[g_Argc] = @mkstring(start, cast(u64) (cmdLine - start))
         }

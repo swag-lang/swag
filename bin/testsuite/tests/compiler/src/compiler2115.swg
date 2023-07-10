@@ -31,12 +31,12 @@ impl IT for Arr
 #test
 {
     var x: Arr's32
-    var t = cast(IT) x
+    let t = cast(IT) x
     t.toto()
     @assert(G == 1)
 
     var x1: Arr'f64
-    var t1 = cast(IT) x1
+    let t1 = cast(IT) x1
     t1.toto1()
     @assert(G == 11)
 }

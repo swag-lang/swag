@@ -1,7 +1,7 @@
 //#[Swag.PrintBc]
 func(T) swap(x, y: *T)
 {
-    var tmp =,moveraw dref x
+    let tmp =,moveraw dref x
     dref x =,nodrop,moveraw dref y
     dref y =,nodrop,moveraw tmp
 }

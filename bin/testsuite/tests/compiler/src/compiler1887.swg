@@ -2,7 +2,7 @@
 func(T) checker()
 {
     //@print(v)
-    var ptr = @typeof(T)
+    let ptr = @typeof(T)
     @assert(ptr == s32)
 }
 

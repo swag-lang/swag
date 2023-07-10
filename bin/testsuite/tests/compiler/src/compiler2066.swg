@@ -11,7 +11,7 @@ func toto()->s32
 //#[Swag.PrintBc]
 #test
 {
-    var y = 0's32
-    var x = y ? toto() : 666's32
+    let y = 0's32
+    let x = y ? toto() : 666's32
     @assert(G == 0)
 }

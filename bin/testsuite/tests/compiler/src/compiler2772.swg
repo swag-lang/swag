@@ -1,8 +1,8 @@
 //#[Swag.PrintBc]
 func(T) toto()
 {
-    var x = cast(T) 2
-    var y = cast(T) 1
+    let x = cast(T) 2
+    let y = cast(T) 1
     @assert(@min(x, y) == 1)
     @assert(@max(x, y) == 2)
     @assert(@min(y, x) == 1)

@@ -1,6 +1,6 @@
 #test
 {
-    var ptr = @typeof(s32)
+    let ptr = @typeof(s32)
     var g = 0
     switch ptr
     {

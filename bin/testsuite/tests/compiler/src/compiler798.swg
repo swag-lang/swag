@@ -12,7 +12,7 @@ impl Utf8
 		if(self.size >= newSize)
 			return;
 
-		var newPtr = @alloc(newSize)
+		let newPtr = @alloc(newSize)
 		if self.buffer != null
 			@memcpy(newPtr, self.buffer, self.size)
 		self.size = newSize;

@@ -11,7 +11,7 @@ impl AA
 
 func xxxxxxxxxxxxxx()
 {
-    var integerDigits = 0
+    let integerDigits = 0
     var pow10 = 1'u64
     var x: AA
     pow10 = x.uint64pow10[integerDigits]

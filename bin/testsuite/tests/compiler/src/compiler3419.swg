@@ -3,7 +3,7 @@
 func toto()->closure(s32)
 {
     var a = 666
-    var v: closure(s32) = closure|a|(x: s32)
+    let v: closure(s32) = closure|a|(x: s32)
     {
         @assert(a == 666)
         @assert(x == 5)
@@ -14,6 +14,6 @@ func toto()->closure(s32)
 
 #test
 {
-    var f = toto()
+    let f = toto()
     f(5)
 }

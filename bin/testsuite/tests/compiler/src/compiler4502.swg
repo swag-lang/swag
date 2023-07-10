@@ -2,7 +2,7 @@
 func toto(y: s32)
 {
     {
-        var x = 2's32
+        let x = 2's32
         @assert(x >> y == 1)
     }
 }

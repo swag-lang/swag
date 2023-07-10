@@ -6,7 +6,7 @@
     ptr += 1'u8
     @assert(ptr[0] == 1)
 
-    var c = ptr[0]
-    var x = ptr[c]
+    let c = ptr[0]
+    let x = ptr[c]
     @assert(x == 2)
 }

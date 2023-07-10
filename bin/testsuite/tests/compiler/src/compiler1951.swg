@@ -13,7 +13,7 @@ impl Foozle
 
     func(G) add1(self, x: G)
     {
-        var t: A = cast(A) x
+        let t: A = cast(A) x
         self.add(t)
     }
 }

@@ -2,6 +2,6 @@
 #test
 {
     var x = 0
-    var y = 1'rune
+    let y = 1'rune
     x += y
 }

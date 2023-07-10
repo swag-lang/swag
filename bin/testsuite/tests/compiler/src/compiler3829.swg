@@ -11,7 +11,7 @@ struct A
     x[0].x = 1
     x[1].x = 2
 
-    var count = 1
+    let count = 1
     @init(&x[0], count)(55)
 
     @assert(x[0].x == 55)

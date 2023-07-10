@@ -32,6 +32,6 @@ impl I for XX
 #test
 {
     var x: BB
-    var ptr = cast(I) x
+    let ptr = cast(I) x
     ptr.toto()
 }

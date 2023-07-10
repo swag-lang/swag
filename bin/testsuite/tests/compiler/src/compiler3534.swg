@@ -13,11 +13,11 @@ func sendWords(text: string)
     while start < @countof(text)
     {
         //@print("start:", start, "\n")
-        var stop = indexOf(text, " "'rune, start)
+        let stop = indexOf(text, " "'rune, start)
         //@print("stop:", stop, "\n")
         if stop == Swag.U64.Max
             break
-        var word = text[start..stop]
+        let word = text[start..stop]
         sendMessage(word)
         //@breakpoint()
         start = stop + 1
@@ -30,6 +30,6 @@ func sendWords(text: string)
 
 #test
 {
-    var text = "hi there you"
+    let text = "hi there you"
     sendWords(text)
 }

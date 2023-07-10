@@ -2,8 +2,8 @@
 #test
 {
     enum RGB { R; G; B; }
-    var x = RGB
+    let x = RGB
     @assert(@typeof(x) == const *Swag.TypeInfoEnum)
-    var y = RGB.B
+    let y = RGB.B
     @assert(y == 2)
 }

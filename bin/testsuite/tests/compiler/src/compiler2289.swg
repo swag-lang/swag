@@ -7,6 +7,6 @@ func set(ptr: ^u8)
 #test
 {
     let cxt = @getcontext()
-    var ptr = &cxt.errors[0].msgBuf[0]
+    let ptr = &cxt.errors[0].msgBuf[0]
     set(ptr)
 }

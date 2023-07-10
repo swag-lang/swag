@@ -18,8 +18,8 @@ impl BB for AA
 #test
 {
     var a: AA
-    var itf: BB = a
+    let itf: BB = a
 
-    var ptr = cast(*AA) itf
+    let ptr = cast(*AA) itf
     @assert(ptr == &a)
 }

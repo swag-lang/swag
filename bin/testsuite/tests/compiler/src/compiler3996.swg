@@ -2,7 +2,7 @@ struct V {}
 
 func toto(x: ...)
 {
-    var k = @kindof(x[0])
+    let k = @kindof(x[0])
     @assert(k.kind == .Pointer)
 }
 

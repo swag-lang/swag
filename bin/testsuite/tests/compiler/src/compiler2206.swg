@@ -4,7 +4,7 @@
     var arr = [0'u8, 1, 2, 3]
     var arr1: [..] u8 = arr
 
-    var c = arr1[1]
+    let c = arr1[1]
     arr1[c] = 1
     @assert(arr1[c] == 1)
 
@@ -13,6 +13,6 @@
     @assert(arr1[c] == 2)
 
     var str = "ABCD"
-    var y = &str[c]
+    let y = &str[c]
     @assert(y[1] == "C"'u8)
 }

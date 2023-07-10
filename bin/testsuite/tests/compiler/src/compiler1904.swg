@@ -10,7 +10,7 @@ struct TT
     var buf: [100] u8
     var idx = 0'u64
 
-    var ptr = @typeof(TT)
+    let ptr = @typeof(TT)
     visit it: ptr.fields
     {
         @memcpy(&buf[idx], @dataof(it.name), @countof(it.name))

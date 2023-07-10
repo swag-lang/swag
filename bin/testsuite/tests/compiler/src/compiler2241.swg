@@ -8,7 +8,7 @@ func mix()
 //#[Swag.PrintBc]
 #test
 {
-    var z = 4
+    let z = 4
     var x, y = 0
     mix(|x, z|)
     mix(|y, z|)

@@ -5,6 +5,6 @@ struct(T) AA
 #test
 {
     var v: AA's32
-    var ptr = @typeof(v)
+    let ptr = @typeof(v)
     @assert(ptr.structName == "AA")
 }

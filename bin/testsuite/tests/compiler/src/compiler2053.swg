@@ -1,7 +1,7 @@
 //#[Swag.PrintBc]
 func toto(x: any)
 {
-    var v = dref cast(^^s32) @dataof(x)
+    let v = dref cast(^^s32) @dataof(x)
     @assert(v[0] == 1)
     @assert(v[1] == 2)
     @assert(v[2] == 3)
