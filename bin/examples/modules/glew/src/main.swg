@@ -11,7 +11,7 @@ func findFirstLine(what: string)
     var idxFirst = 0'u64
     visit line: lines
     {
-        var idx = line.indexOf(what)
+        let idx = line.indexOf(what)
         if idx == Swag.U64.Max continue
         #if LOG Console.printf("line: %\n", line)
         toProcess.add(line)
@@ -37,7 +37,7 @@ func findLine(what: string)->*String
 {
     visit &line: lines
     {
-        var idx = line.indexOf(what)
+        let idx = line.indexOf(what)
         if idx == Swag.U64.Max continue
         #if LOG Console.printf("line: %\n", line)
         return line
@@ -74,7 +74,7 @@ func swapParams(what: string)->String
         }
 
         while Latin1.isLetter(what[idxName - 1]) idxName -= 1
-        var name = what[idxName..idxEnd-1]
+        let name = what[idxName..idxEnd-1]
         #if LOG Console.printf("name: %\n", name)
 
         // Isolate parameter type
@@ -125,7 +125,7 @@ func swapParams(what: string)->String
     Console.printf("arg: '%'\n", fctExtension)
 
     ///////////////////
-    var curPath = Path.getDirectoryName(#location.fileName)
+    let curPath = Path.getDirectoryName(#location.fileName)
     var glewPath = Path.combine(curPath, "glew.h")
     lines = catch File.readAllLines(glewPath)
     if @errmsg Console.fatal("error: cannot read '%' (%)\n", glewPath, @errmsg)
@@ -133,9 +133,9 @@ func swapParams(what: string)->String
     findFirstLine(fctExtension)
     visit line11: toProcess
     {
-        var line1 = cast(string) line11
-        var idxN = line1.indexOf(" ", 9)
-        var funcName = line1[8..idxN - 1]
+        let line1 = cast(string) line11
+        let idxN = line1.indexOf(" ", 9)
+        let funcName = line1[8..idxN - 1]
 
         ///////////////////
         var idx = line1.indexOf("(") + 1
@@ -144,12 +144,12 @@ func swapParams(what: string)->String
         glewStr += ";"'u8
 
         ///////////////////
-        var line2 = findLine(glewStr)
+        let line2 = findLine(glewStr)
         idx = line2.indexOf(" ") + 1
-        var proc = cast(string) line2.getTo(" "'u8, idx, includeDelimiter = false)
+        let proc = cast(string) line2.getTo(" "'u8, idx, includeDelimiter = false)
         #if LOG Console.printf("proc: %\n", proc)
 
-        var line3 = findLine(proc)
+        let line3 = findLine(proc)
         ///////////////////
         idx = line3.indexOf(" ")
         idx += 1

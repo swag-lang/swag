@@ -35,7 +35,7 @@ func genInit()
     // Generate initial population
     loop PopulationCount
     {
-        var soluce = g_Gen[0].all.addNewPtr()
+        let soluce = g_Gen[0].all.addNewPtr()
         soluce.genes.resize(cast(u64) g_NumGenes)
         loop i: g_NumGenes soluce.genes[i] = i
         g_Rng.shuffle(soluce.genes.toSlice())
@@ -50,7 +50,7 @@ func genInit()
     // Placeholder for the next generation
     loop PopulationCount
     {
-        var soluce = g_Gen[1].all.addNewPtr()
+        let soluce = g_Gen[1].all.addNewPtr()
         soluce.genes.resize(cast(u64) g_NumGenes)
     }
 
@@ -69,7 +69,7 @@ func evaluateSolution(idxSrc, idxDst: u32)->f32
     b.g = g_Image1.pixels[(idxDst*3)+1]
     b.b = g_Image1.pixels[(idxDst*3)+2]
 
-    var dist = a.getDistanceRgb(b)
+    let dist = a.getDistanceRgb(b)
     return dist
 }
 
@@ -117,13 +117,13 @@ func mutate(child: *Solution, idx: u32)
         mutNum  = 20
     }
 
-    var rnd = g_Rng.nextU32(0, 100)
+    let rnd = g_Rng.nextU32(0, 100)
     if rnd <= mutRate
     {
         loop mutNum
         {
-            var src = g_Rng.nextU32(0, g_NumGenes)
-            var dst = g_Rng.nextU32(0, g_NumGenes)
+            let src = g_Rng.nextU32(0, g_NumGenes)
+            let dst = g_Rng.nextU32(0, g_NumGenes)
             swap(child.genes.buffer + src, child.genes.buffer + dst)
         }
     }
@@ -146,7 +146,7 @@ func mutate(child: *Solution, idx: u32)
 
 func copyToNext(idxNext, idxCur: u32)
 {
-    var nextGenIdx = (g_CurGen + 1) % 2
+    let nextGenIdx = (g_CurGen + 1) % 2
     g_Gen[nextGenIdx].all[idxNext].genes = g_Gen[g_CurGen].all[idxCur].genes
     evaluateSolution(g_Gen[nextGenIdx].all[idxNext])
 }
@@ -163,7 +163,7 @@ func genGo()->*u8
         g_TotalWeight += child.weight
     }
 
-    var nextGenIdx = (g_CurGen + 1) % 2
+    let nextGenIdx = (g_CurGen + 1) % 2
     var numChilds = PopulationCount - TakeBest - TakeWorst
 
     Jobs.parallelFor(|index| numChilds)
@@ -171,17 +171,17 @@ func genGo()->*u8
         var done: Array'bool
         done.resize(cast(u64) g_NumGenes)
 
-        var nextGenIdx = (g_CurGen + 1) % 2
+        let nextGenIdx = (g_CurGen + 1) % 2
 
         // Selection
-        var father = pickToMate()
-        var mother = pickToMate(father)
+        let father = pickToMate()
+        let mother = pickToMate(father)
 
         // Cross point
-        var crossPoint1 = g_Rng.nextU32(1, g_NumGenes - 2)
+        let crossPoint1 = g_Rng.nextU32(1, g_NumGenes - 2)
 
         // Copy solution from father
-        var child1 = g_Gen[nextGenIdx].all[index]
+        let child1 = g_Gen[nextGenIdx].all[index]
         Memory.copy(child1.genes.buffer, father.genes.buffer, cast(u64) crossPoint1 * @sizeof(u32))
         loop i: crossPoint1
             done[child1.genes.buffer[i]] = true
@@ -191,7 +191,7 @@ func genGo()->*u8
         var cpt = 0'u32
         loop i: g_NumGenes - crossPoint1
         {
-            var g = mother.genes[i + crossPoint1]
+            let g = mother.genes[i + crossPoint1]
             if !done[g]
             {
                 done[g] = true
@@ -215,9 +215,9 @@ func genGo()->*u8
 
             for var idx = 0; idx < Math.min(50, holes.count); idx += 1
             {
-                var start = g_Rng.nextU32(0, acast holes.count)
-                var hole = holes[start]
-                var result = evaluateSolution(i, hole)
+                let start = g_Rng.nextU32(0, acast holes.count)
+                let hole = holes[start]
+                let result = evaluateSolution(i, hole)
                 if result < bestRes
                 {
                     bestRes = result
@@ -264,8 +264,8 @@ func genGo()->*u8
     })
 
     // Returns the best score
-    var best = g_Gen[g_CurGen].all[0]
-    var bestScore = best.score
+    let best = g_Gen[g_CurGen].all[0]
+    let bestScore = best.score
     if bestScore < g_BestScore
     {
         g_BestScore = bestScore
@@ -273,7 +273,7 @@ func genGo()->*u8
 
         loop i: best.genes
         {
-            var idx = best.genes[i]
+            let idx = best.genes[i]
             g_Result[(i*3)+0] = g_Image0.pixels[(idx*3)+0]
             g_Result[(i*3)+1] = g_Image0.pixels[(idx*3)+1]
             g_Result[(i*3)+2] = g_Image0.pixels[(idx*3)+2]
