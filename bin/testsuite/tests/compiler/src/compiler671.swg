@@ -8,8 +8,8 @@
 	a.0 = 1
 	a.1 = 2*/
 
-	var a: f32 = 5
-	var b: s32 = 10
-	var c = a + b
+	let a: f32 = 5
+	let b: s32 = 10
+	let c = a + b
 	@assert(c == 15.0)
 }

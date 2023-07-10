@@ -5,7 +5,7 @@
 //#[Swag.PrintBc]
 #test
 {
-    var y = Swag.F32.Nan
-    var x = @pow(y, 2)
+    let y = Swag.F32.Nan
+    let x = @pow(y, 2)
     @print(x)
 }

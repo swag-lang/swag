@@ -4,8 +4,8 @@ using Swag
 //#[Swag.PrintBc]
 #test
 {
-	var x: any = 6
-	var y: s32 = cast(s32) x
+	let x: any = 6
+	let y: s32 = cast(s32) x
 	@assert(x == 6)
 	@assert(y == 6)
 }

@@ -4,7 +4,7 @@
 //#[Swag.PrintBc]
 #test
 {
-	var toto = "1234";
+	let toto = "1234";
 
 	var cpt = 0;
 	loop(@countof(toto))

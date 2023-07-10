@@ -10,6 +10,6 @@ func(T) toto(x: T)
 
 #test
 {
-	var cpt = "toto"
+	let cpt = "toto"
 	toto(cpt)
 }

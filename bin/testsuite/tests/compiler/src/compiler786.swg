@@ -12,13 +12,13 @@ enum TOTO
 {
 	using Swag
 
-	var t = @typeof(TOTO)
-	var ptr = cast(const *TypeInfoEnum) t
+	let t = @typeof(TOTO)
+	let ptr = cast(const *TypeInfoEnum) t
 	@assert(@countof(ptr.values) == 3)
 
-	var ptr1 = ptr.values[1]
+	let ptr1 = ptr.values[1]
 	@assert(ptr1.name == "G")
 
-	var ptrVal = cast(const *s32) ptr1.value;
+	let ptrVal = cast(const *s32) ptr1.value;
 	@assert(dref ptrVal == 200)
 }

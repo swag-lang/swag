@@ -11,12 +11,12 @@ struct Point
 #test
 {
 	var x : any
-	var tt: s32 = 666//Point(10, 20)
+	let tt: s32 = 666//Point(10, 20)
 
 	x = tt
 	//@assert(x is Point)
 
-	var ptr = cast(*s32) @dataof(x)
+	let ptr = cast(*s32) @dataof(x)
 	@assert(dref ptr == 666)
 	//@assert(ptr.x == 10)
 	//@assert(ptr.y == 20)

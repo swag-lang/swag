@@ -5,6 +5,6 @@
 func main ()
 {
 	var a: bool;
-	var b = &a;
-	var c = dref b;
+	let b = &a;
+	let c = dref b;
 }

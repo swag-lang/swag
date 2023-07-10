@@ -717,7 +717,7 @@ namespace Swag
         debugAllocatorLeaks         = true                // Detect memory leaks
         errorStackTrace             = true                // Add stack trace in case a 'throw' is raised
 
-        warnAsErrors:           string  // Force some warnings to be treated as errors. Format is "wrnXXXX|wrnXXXX..."
+        warnAsErrors:           string  // Force some warnings to be treated as errors. Format is "WrnXXXX|WrnXXXX..."
         warnAsWarning:          string  // Override 'warnAsErrors', restoring warnings as warnings
         warnAsDisabled:         string  // Disable some specific warnings
         warnDefaultDisabled:    bool    // All warnings are disabled, except those specified above

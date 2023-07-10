@@ -20,7 +20,7 @@ struct Point
 //#[Swag.PrintBc]
 #test
 {
-	var t = cast(const *TypeInfoStruct) @typeof(Point)
+	let t = cast(const *TypeInfoStruct) @typeof(Point)
 	@assert(@countof(t.attributes) == 2)
 	@assert(t.attributes[0].type == @typeof(NC))
 	@assert(t.attributes[1].type == @typeof(NC0))

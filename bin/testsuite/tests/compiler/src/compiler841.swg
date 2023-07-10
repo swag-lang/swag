@@ -3,7 +3,7 @@
 //#[Swag.PrintBc]
 #test
 {
-	var j = 0
+	let j = 0
 	if(j == 0)
 	{
 		var i = 0

@@ -8,13 +8,13 @@
 
 func valueof(x: any)
 {
-	var ptr = cast(*s32) @dataof(x)
+	let ptr = cast(*s32) @dataof(x)
 	@assert(dref ptr == 666)
 }
 
 //#[Swag.PrintBc]
 #test
 {
-	var x: any = 666
+	let x: any = 666
 	valueof(x)
 }

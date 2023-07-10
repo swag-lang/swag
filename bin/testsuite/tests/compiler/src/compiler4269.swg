@@ -4,7 +4,7 @@
 func toto(x: string)
     #validif
     {
-        var y = x
+        let y = x
         @print(y)
         return false
     }

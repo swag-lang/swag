@@ -7,7 +7,7 @@
 #test
 {
     var x = 1'u8
-    var y = 1'u8
+    let y = 1'u8
     x -= y
     x -= y
 }

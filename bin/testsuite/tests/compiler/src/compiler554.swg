@@ -11,6 +11,6 @@ struct point
 #test
 {
 	var arr: [2] point
-	var ptr = &arr[0]
+	let ptr = &arr[0]
 	@assert(ptr[0].x == 666)
 }

@@ -3,9 +3,9 @@
 //#[Swag.PrintBc]
 func toto(x: any)
 {
-	var type = @kindof(x)
+	let type = @kindof(x)
 	@assert(type.fullname == "u8")
-	var ptr = cast(*u8) @dataof(x)
+	let ptr = cast(*u8) @dataof(x)
 	//@print(cast(s32) ptr[0])
 	@assert(dref ptr == 125)
 }

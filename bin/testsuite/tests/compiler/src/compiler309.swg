@@ -4,7 +4,7 @@
 //#[Swag.PrintBc]
 #test
 {
-	var c = "toto";
+	let c = "toto";
 	@assert(c == "toto");
 	@assert(c != "titi");
 }

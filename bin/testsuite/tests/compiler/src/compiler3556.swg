@@ -38,7 +38,7 @@ var G = 0
 #test
 {
     var x: A
-    var i = cast(I) x
+    let i = cast(I) x
     i.toto()
     @assert(G == 1)
 }

@@ -5,6 +5,6 @@
 #[Swag.Optim("", false)]
 #test
 {
-    var x = -1's8
-    var y = cast(u64) x
+    let x = -1's8
+    let y = cast(u64) x
 }

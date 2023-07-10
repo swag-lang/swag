@@ -5,10 +5,10 @@ func toto(x: string, y: ...)
 {
 	@assert(x == "1.0")
 
-	var ptr = cast(*string) @dataof(y[0])
+	let ptr = cast(*string) @dataof(y[0])
 	@assert(dref ptr == "10")
 
-	var ptr1 = cast(*s32) @dataof(y[1])
+	let ptr1 = cast(*s32) @dataof(y[1])
 	@assert(dref ptr1 == 20)
 }
 

@@ -16,6 +16,6 @@ using Swag
 	@assert(ptr2.pointedType == @typeof([3] string))
 	@assert(ptr2.finalType == @typeof(string))
 
-	var ptr3 = cast(const *TypeInfoSlice) @typeof(#type [..] string)
+	let ptr3 = cast(const *TypeInfoSlice) @typeof(#type [..] string)
 	@assert(ptr3.pointedType == @typeof(string))
 }

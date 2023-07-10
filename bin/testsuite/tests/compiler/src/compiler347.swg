@@ -5,7 +5,7 @@
 #test
 {
 	const a = 6;
-	var b = a;
+	let b = a;
 	@assert(b == 6);
 	@assert(b == a);
 }

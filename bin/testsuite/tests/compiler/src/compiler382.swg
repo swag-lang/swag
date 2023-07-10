@@ -5,7 +5,7 @@
 #test
 {
 	var cpt = 0;
-	var b = 10'u32;
+	let b = 10'u32;
 	loop(b)
 	{
 		cpt += 1;

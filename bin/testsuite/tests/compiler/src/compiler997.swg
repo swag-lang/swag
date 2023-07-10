@@ -4,7 +4,7 @@ using Swag
 #test
 {
 	var array = [1, 2, 3]
-	var ptr = &array[0]
-	var value = dref ptr
+	let ptr = &array[0]
+	let value = dref ptr
 	@assert(value == 1)
 }

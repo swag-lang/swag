@@ -14,6 +14,6 @@ func toto()->closure(s32)
 
 #test
 {
-    var f = toto()
+    let f = toto()
     f(5)
 }

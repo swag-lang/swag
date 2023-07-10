@@ -4,7 +4,7 @@ using Swag;
 //#[PrintBc]
 #test
 {
-	var b = "XYZ";
+	let b = "XYZ";
 	@assert(b[2] == cast(u8) ("Z"'rune));
 	@assert(b[3] == 0);
 }

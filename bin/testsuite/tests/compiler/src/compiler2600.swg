@@ -19,7 +19,7 @@ func toto(cpt: s64, stmt: code)
 //#[PrintBc]
 #test
 {
-    var x = 5's64
+    let x = 5's64
     toto(x)
     {
         G += 1

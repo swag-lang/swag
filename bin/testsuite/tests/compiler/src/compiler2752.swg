@@ -7,30 +7,30 @@
 #[Swag.Optim("", false)]
 #test
 {
-    var x = Swag.F32.Max
-    var y = cast(s32) x
+    let x = Swag.F32.Max
+    let y = cast(s32) x
 }
 
 #[Swag.Safety("", true)]
 #[Swag.Optim("", false)]
 #test
 {
-    var x = -Swag.F32.Max
-    var y = cast(s32) x
+    let x = -Swag.F32.Max
+    let y = cast(s32) x
 }
 
 #[Swag.Safety("", true)]
 #[Swag.Optim("", false)]
 #test
 {
-    var x = Swag.F64.Max
-    var y = cast(s32) x
+    let x = Swag.F64.Max
+    let y = cast(s32) x
 }
 
 #[Swag.Safety("", true)]
 #[Swag.Optim("", false)]
 #test
 {
-    var x = -Swag.F64.Max
-    var y = cast(s32) x
+    let x = -Swag.F64.Max
+    let y = cast(s32) x
 }

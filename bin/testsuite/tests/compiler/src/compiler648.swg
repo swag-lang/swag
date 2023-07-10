@@ -4,7 +4,7 @@ var gx: s32
 
 func(T) toto()
 {
-	var x: T = 100
+	let x: T = 100
 	gx = x
 }
 

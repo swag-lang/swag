@@ -25,7 +25,7 @@ func compare (str1: string, str2: string)-> bool
 //#[Swag.PrintBc]
 func compare (str: string)
 {
-	var count = @countof(str);
+	let count = @countof(str);
 	@assert(count == 4);
 }
 

@@ -9,6 +9,6 @@ func arithmeticMean(numbers: const [..] f64) -> f64 {
 //#[Swag.PrintBc]
 #test
 {
-	var result = arithmeticMean([1, 2, 3, 4, 5])
+	let result = arithmeticMean([1, 2, 3, 4, 5])
 	@assert(result == 3)
 }

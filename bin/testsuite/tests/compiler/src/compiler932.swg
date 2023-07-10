@@ -8,7 +8,7 @@
 
 func valueof(x: any)
 {
-	var ptr = cast(*s32) @dataof(x)
+	let ptr = cast(*s32) @dataof(x)
 	@assert(dref ptr == 666)
 }
 

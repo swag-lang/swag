@@ -7,7 +7,7 @@ func toto1()->s32 => 667
 //#[Swag.PrintBc]
 #test
 {
-	var ptr = &toto
+	let ptr = &toto
 	var ptr1 = &toto
 	@assert(ptr == ptr1)
 	ptr1 = &toto1

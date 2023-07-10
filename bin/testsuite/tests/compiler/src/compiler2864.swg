@@ -10,6 +10,6 @@
     var y: s32
     y = x + 1
     @print(cast(s64) y)*/
-    var x = -1.0
-    var y = @sqrt(x)
+    let x = -1.0
+    let y = @sqrt(x)
 }

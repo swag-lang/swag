@@ -5,6 +5,6 @@
 #test
 {
 	const a = 666;
-	var b = #run a;
+	let b = #run a;
 	@assert(b == 666);
 }

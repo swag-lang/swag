@@ -6,6 +6,6 @@ const TOTO = 666;
 //#[Swag.PrintBc]
 #test
 {
-	var b = TOTO;
+	let b = TOTO;
 	@assert(b == 666);
 }

@@ -18,7 +18,7 @@ func T(color: COLOR)->s32
 //#[Swag.PrintBc]
 #test
 {
-	var res : s32 = T(COLOR.RED);
+	let res : s32 = T(COLOR.RED);
 	@assert(res == 1);
 	@assert(T(COLOR.GREEN) == 2);
 	@assert(T(COLOR.BLUE) == 3);

@@ -14,8 +14,8 @@ struct Point
 //#[Swag.PrintBc]
 #test
 {
-	var t = cast(const *TypeInfoStruct) @typeof(Point)
-	var p = cast(const *TypeValue) t.fields[0]
+	let t = cast(const *TypeInfoStruct) @typeof(Point)
+	let p = cast(const *TypeValue) t.fields[0]
 
     //@print(cast(s64) @countof(p.attributes))
 
@@ -26,11 +26,11 @@ struct Point
     @assert(@countof(p.attributes[0].params) == 1)
     @assert(@countof(p.attributes[1].params) == 1)
 
-	var ptr = @kindof(p.attributes[1].params[0].value)
+	let ptr = @kindof(p.attributes[1].params[0].value)
     //@print(cast(s64) ptr.sizeof)
     //@print(ptr.name)
     //@print("\n")
 	@assert(ptr.fullname == "s32")
-	var ptr1 = cast(*s32) @dataof(p.attributes[1].params[0].value)
+	let ptr1 = cast(*s32) @dataof(p.attributes[1].params[0].value)
 	@assert(dref ptr1 == 666)
 }

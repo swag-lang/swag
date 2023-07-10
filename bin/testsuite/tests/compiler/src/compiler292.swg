@@ -3,7 +3,7 @@ using Swag;
 //#[PrintBc]
 #test
 {
-	var b = "abcd";
+	let b = "abcd";
 	@assert(b[0] == cast(u8) ("a"'rune));
 	@assert(b[1] == cast(u8) ("b"'rune));
 	@assert(b[2] == cast(u8) ("c"'rune));

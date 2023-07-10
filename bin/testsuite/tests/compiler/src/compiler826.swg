@@ -1,43 +1,43 @@
 //#[Swag.PrintBc]
 #test
 {
-	var x = 256's64
+	let x = 256's64
 	if x
 		@assert(true)
 	else
 		@assert(false)
 
-	var x1 = 25's8
+	let x1 = 25's8
 	if x1
 		@assert(true)
 	else
 		@assert(false)
 
-	var x2 = 256's16
+	let x2 = 256's16
 	if x2
 		@assert(true)
 	else
 		@assert(false)
 
-	var x3 = 256'u16
+	let x3 = 256'u16
 	if x3
 		@assert(true)
 	else
 		@assert(false)
 
-	var x4 = 256'u32
+	let x4 = 256'u32
 	if x4
 		@assert(true)
 	else
 		@assert(false)
 
-	var x5 = 256's32
+	let x5 = 256's32
 	if x5
 		@assert(true)
 	else
 		@assert(false)
 
-	var x6 = 25'u8
+	let x6 = 25'u8
 	if x5
 		@assert(true)
 	else

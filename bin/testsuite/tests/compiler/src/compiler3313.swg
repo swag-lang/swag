@@ -1,6 +1,6 @@
 #global testerror
 #test
 {
-    var x = 6's
+    let x = 6's
     @print(x)
 }

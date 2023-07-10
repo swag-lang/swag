@@ -13,7 +13,7 @@
 	//@assert(c[0] == 10);
 
 	var a = [0, 1];
-	var b = &a;
+	let b = &a;
 	var c = b;
 	c[1] = 10;
 	@assert(a[1] == 10);

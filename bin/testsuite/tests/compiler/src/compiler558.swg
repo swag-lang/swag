@@ -10,6 +10,6 @@ struct point
 //#[Swag.PrintBc]
 #test
 {
-	var pt = cast(*point) @alloc(cast(u64) @sizeof(point))
+	let pt = cast(*point) @alloc(cast(u64) @sizeof(point))
 	@free(cast(*u8) pt)
 }

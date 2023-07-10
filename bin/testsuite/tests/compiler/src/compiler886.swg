@@ -11,7 +11,7 @@
 	}
 
 	var currentValue = 3
-	var moveNearerToZero = chooseStepFunction(backward = currentValue > 0)
+	let moveNearerToZero = chooseStepFunction(backward = currentValue > 0)
 
 	var cpt = 0
 	while currentValue != 0 {

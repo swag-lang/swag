@@ -3,7 +3,7 @@
 //#[Swag.PrintBc]
 func average(x: any)
 {
-	var tt = @kindof(x)
+	let tt = @kindof(x)
 	@assert(tt == @typeof(string))
 }
 

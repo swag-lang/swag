@@ -5,16 +5,16 @@ var G : s32 = 0
 //#[Swag.PrintBc]
 func average(x: any)
 {
-	var tt = @kindof(x)
+	let tt = @kindof(x)
 	if(tt == @typeof(s32))
 	{
-		var val = cast(*s32) @dataof(x)
+		let val = cast(*s32) @dataof(x)
 		@assert(dref val == 666)
 		G += 1
 	}
 	elif(tt == @typeof(string))
 	{
-		var val = cast(*string) @dataof(x)
+		let val = cast(*string) @dataof(x)
 		@assert(dref val == "666")
 		G += 1
 	}

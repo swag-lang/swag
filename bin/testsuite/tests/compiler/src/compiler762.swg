@@ -7,6 +7,6 @@ struct Point
 //#[Swag.PrintBc]
 #test
 {
-	var cpt = Point
+	let cpt = Point
     @assert(cpt == Point)
 }

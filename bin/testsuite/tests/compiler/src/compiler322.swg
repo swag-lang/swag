@@ -5,7 +5,7 @@
 #test
 {
 	var a: s32 = 666;
-	var b = &a;
+	let b = &a;
 	var c: *s32;
 	c = b;
 	@assert(dref b == 666);

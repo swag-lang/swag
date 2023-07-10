@@ -6,7 +6,7 @@ var a = [1, 2];
 //#[Swag.PrintBc]
 #test
 {
-	var ptr1 = &a;
+	let ptr1 = &a;
 	@assert(ptr1[0] == 1);
 	@assert(ptr1[1] == 2);
 }

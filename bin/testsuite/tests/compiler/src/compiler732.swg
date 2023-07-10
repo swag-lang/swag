@@ -16,7 +16,7 @@
 #test
 {
 	var arr = ["toto", "titi"]
-	var ptr: ^string = &arr
+	let ptr: ^string = &arr
 	@assert(ptr[0] == "toto")
 	@assert(ptr[1] == "titi")
 }

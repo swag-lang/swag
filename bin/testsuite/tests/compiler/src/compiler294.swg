@@ -5,6 +5,6 @@ using Swag;
 //#[PrintBc]
 #test
 {
-	var b = "XYZ";
+	let b = "XYZ";
 	@assert(b[3] == 0);
 }

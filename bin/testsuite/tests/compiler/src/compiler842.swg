@@ -5,7 +5,7 @@ var G: s32 = 0
 {
 	G = 0
 
-	var j = 1
+	let j = 1
 	if(j == 0)
 	{
 	}

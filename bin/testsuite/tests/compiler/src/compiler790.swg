@@ -12,8 +12,8 @@ enum TOTO : string
 {
 	using Swag
 
-	var t = @typeof(TOTO)
-	var ptr = cast(const *TypeInfoEnum) t
+	let t = @typeof(TOTO)
+	let ptr = cast(const *TypeInfoEnum) t
 	@assert(@countof(ptr.values) == 3)
 
     @assert(ptr.values[0].name == "R")
@@ -22,6 +22,6 @@ enum TOTO : string
 	var ptr1 = ptr.values[1]
 	@assert(ptr1.name == "G")
 
-	var ptrVal = cast(const *string) ptr1.value;
+	let ptrVal = cast(const *string) ptr1.value;
 	@assert(dref ptrVal == "str200")
 }

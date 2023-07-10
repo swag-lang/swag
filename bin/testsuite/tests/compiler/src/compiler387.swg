@@ -5,7 +5,7 @@
 #test
 {
 	var cpt = 0;
-	var l = "titi";
+	let l = "titi";
 	loop(l)
 	{
 		cpt += 1;

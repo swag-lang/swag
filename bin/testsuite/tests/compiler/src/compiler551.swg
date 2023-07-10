@@ -18,7 +18,7 @@ struct point
 #test
 {
 	var pt: [10] point
-	var ptr1 = &pt[9]
+	let ptr1 = &pt[9]
 	ptr1.pt.x = 100
 	@assert(ptr1.pt.x == 100)
 }

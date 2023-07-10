@@ -8,6 +8,6 @@ func toString() -> [..] u8
 #[Swag.Safety("boundcheck", true)]
 #test
 {
-	var x = toString()
+	let x = toString()
 	@assert(x[4] == 3)
 }

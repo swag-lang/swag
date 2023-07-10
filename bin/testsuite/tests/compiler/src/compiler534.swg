@@ -9,6 +9,6 @@ func toto(x: s32)
 //#[Swag.PrintBc]
 #test
 {
-	var a = 666
+	let a = 666
 	a.toto()
 }

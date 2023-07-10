@@ -4,7 +4,7 @@
 #[Swag.Safety("", true)]
 #test
 {
-    var x = [10]
-    var y = 1
-    var z = x[y]
+    let x = [10]
+    let y = 1
+    let z = x[y]
 }

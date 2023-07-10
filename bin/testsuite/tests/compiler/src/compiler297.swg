@@ -7,6 +7,6 @@ func test1 ()-> string
 //#[Swag.PrintBc]
 #test
 {
-	var c = test1();
+	let c = test1();
 	@assert(c == "toto1");
 }

@@ -2,7 +2,7 @@
 
 func average(x: any)
 {
-	var t = cast(*f32) @dataof(x)
+	let t = cast(*f32) @dataof(x)
 	@assert(dref t == 10.0)
 	//var t1 = @typeof(x)
 }

@@ -6,8 +6,8 @@ func toto(x: f32, y: ...)
 	var result = 0
 	loop @countof(y)
 	{
-		var p = y[@index]
-		var ptr = cast(*s32) @dataof(p)
+		let p = y[@index]
+		let ptr = cast(*s32) @dataof(p)
 		result += dref ptr
 	}
 

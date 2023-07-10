@@ -3,7 +3,7 @@
 //#[Swag.PrintBc]
 #test
 {
-	var square = func(x: f32)->f32 { return x * x; }
-	var v = square(2)
+	let square = func(x: f32)->f32 { return x * x; }
+	let v = square(2)
 	@assert(v == 4)
 }

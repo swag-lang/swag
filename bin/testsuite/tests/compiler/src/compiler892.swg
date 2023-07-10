@@ -1,6 +1,6 @@
 //#[Swag.PrintBc]
 #test
 {
-	var a = 1
+	let a = 1
 	@assert(a > 0)
 }

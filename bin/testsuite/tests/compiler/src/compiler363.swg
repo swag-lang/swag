@@ -5,7 +5,7 @@
 #test
 {
 	var arr = [6, 10];
-	var idx = 0;
-	var c = arr[idx];
+	let idx = 0;
+	let c = arr[idx];
 	@assert(c == 6);
 }

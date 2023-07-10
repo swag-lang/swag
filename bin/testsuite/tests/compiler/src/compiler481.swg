@@ -18,7 +18,7 @@ func T(param: *s32)
 //#[Swag.PrintBc]
 func F(param: [..] s32, b: func(*s32))
 {
-	var data = @dataof(param)
+	let data = @dataof(param)
 	loop(param)
 	{
 		b(data + @index)

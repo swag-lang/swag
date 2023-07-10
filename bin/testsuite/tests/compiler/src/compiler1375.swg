@@ -19,7 +19,7 @@ impl IAllocator for MyAlloc
 
 func toto()
 {
-    var cxt = @getcontext()
+    let cxt = @getcontext()
     var req: AllocatorRequest
     req.size = 10
     cxt.allocator.req(&req)

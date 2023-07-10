@@ -7,7 +7,7 @@ struct Point
 #test
 {
 	var pt: Point
-	var slice : [..] *Point = [&pt]
+	let slice : [..] *Point = [&pt]
 	@assert(slice[0].x == 666)
 
 	var slice1 : [1] *Point = [&pt]

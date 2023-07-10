@@ -9,7 +9,7 @@ struct Point
 //#[Swag.PrintBc]
 func(T) toto()
 {
-	var t = @typeof(T)
+	let t = @typeof(T)
 	if(t == @typeof(s32))
 		cpt |= 1
 	if(t == @typeof(f32))

@@ -9,7 +9,7 @@ func F()->s32
 //#[Swag.PrintBc]
 #test
 {
-	var a, b, c = F();
+	let a, b, c = F();
 	@assert(a == 666);
 	@assert(b == 666);
 	@assert(c == 666);

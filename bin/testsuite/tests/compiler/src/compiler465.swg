@@ -4,7 +4,7 @@
 //#[Swag.PrintBc]
 #test
 {
-	var a = &F;
+	let a = &F;
 	var b = a();
 	//@print(b)
 }

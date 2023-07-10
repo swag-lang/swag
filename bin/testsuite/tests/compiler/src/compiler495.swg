@@ -11,6 +11,6 @@ enum EN : s32
 #test
 {
 	using EN
-	var val = Red
+	let val = Red
 	@assert(val == 666)
 }

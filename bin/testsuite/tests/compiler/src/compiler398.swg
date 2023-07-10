@@ -8,6 +8,6 @@ func test1(a: const [3] s32)
 //#[Swag.PrintBc]
 #test
 {
-	var c = 666;
+	let c = 666;
 	test1([1, c, 2]);
 }

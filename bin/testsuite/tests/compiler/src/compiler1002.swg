@@ -10,10 +10,10 @@ struct Point
 //#[Swag.PrintBc]
 #test
 {
-	var x : any = Point{10, 20}
+	let x : any = Point{10, 20}
 	@assert(@kindof(x) == @typeof(Point))
 
-	var ptr = cast(*Point) @dataof(x)
+	let ptr = cast(*Point) @dataof(x)
 	@assert(ptr.x == 10)
 	@assert(ptr.y == 20)
 }
