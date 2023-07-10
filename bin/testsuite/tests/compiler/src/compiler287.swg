@@ -1,7 +1,7 @@
 //#[Swag.PrintBc]
 #test
 {
-	var a: bool = true;
+	let a: bool = true;
 	let b = &a;
 	let c = dref b;
 	@assert(c == true);

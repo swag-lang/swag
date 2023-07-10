@@ -148,6 +148,7 @@ bool SemanticJob::warnUnusedVariables(SemanticContext* context, Scope* scope)
             !(overload->flags & OVERLOAD_IS_LET) &&
             !(overload->flags & OVERLOAD_HAS_AFFECT) &&
             !(overload->flags & OVERLOAD_HAS_MAKE_POINTER) &&
+            !(overload->flags & OVERLOAD_NOT_INITIALIZED) &&
             (overload->flags & OVERLOAD_VAR_LOCAL))
         {
             if (!overload->typeInfo->isStruct() && !overload->typeInfo->isArray())

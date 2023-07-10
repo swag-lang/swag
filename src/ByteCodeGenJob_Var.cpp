@@ -159,7 +159,9 @@ bool ByteCodeGenJob::emitLocalVarDecl(ByteCodeGenContext* context)
                 resolved->registers               = node->resultRegisterRC;
                 node->resultRegisterRC.cannotFree = true;
             }
-            else
+
+            // Store value to stack
+            if (!isLet || (resolved->flags & OVERLOAD_HAS_MAKE_POINTER))
             {
                 node->allocateExtension(ExtensionKind::Misc);
                 emitAffectEqual(context, node->extMisc()->additionalRegisterRC, node->resultRegisterRC, node->typeInfo, node->assignment);

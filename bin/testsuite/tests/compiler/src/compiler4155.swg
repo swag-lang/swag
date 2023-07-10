@@ -5,8 +5,8 @@
 #[Swag.Safety("sanity", true)]
 func toto()->*s32
 {
-    var a = 0
-    var ptr = cast(^s32) &a
+    let a = 0
+    let ptr = cast(^s32) &a
     ptr += 1
     return ptr
 }

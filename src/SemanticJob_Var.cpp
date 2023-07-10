@@ -816,6 +816,8 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
 
     if (node->flags & AST_EXPLICITLY_NOT_INITIALIZED)
     {
+        symbolFlags |= OVERLOAD_NOT_INITIALIZED;
+
         if (isCompilerConstant)
         {
             Diagnostic diag{node->assignment, Err(Err0298)};

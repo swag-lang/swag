@@ -36,6 +36,7 @@ const uint32_t OVERLOAD_HAS_AFFECT       = 0x00200000;
 const uint32_t OVERLOAD_IS_LET           = 0x00400000;
 const uint32_t OVERLOAD_HAS_MAKE_POINTER = 0x00800000;
 const uint32_t OVERLOAD_VAR_HAS_ASSIGN   = 0x01000000;
+const uint32_t OVERLOAD_NOT_INITIALIZED  = 0x02000000;
 
 struct SymbolOverload
 {

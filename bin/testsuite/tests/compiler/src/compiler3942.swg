@@ -9,7 +9,7 @@ func toto(x: ref s32)
 //#[Swag.PrintBc]
 #test
 {
-    var a = 2
+    let a = 2
     toto(&a)
     @assert(a == 3)
 }
