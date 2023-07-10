@@ -1,8 +1,8 @@
 //#[Swag.PrintBc]
 #test
 {
-    var sa8: s8 = 1
+    let sa8: s8 = 1
     @assert(-sa8 == -1)
-    var sa16: s16 = 1
+    let sa16: s16 = 1
     @assert(-sa16 == -1)
 }

@@ -9,7 +9,7 @@ impl I for A
 {
     mtd(N) titi()
     {
-        var v = @typeof(N)
+        let v = @typeof(N)
         @assert(v.name == "s32")
     }
 

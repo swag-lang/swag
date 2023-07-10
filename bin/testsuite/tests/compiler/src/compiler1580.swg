@@ -7,7 +7,7 @@
         Blue
     }
 
-    var a = Color.Green
+    let a = Color.Green
     @assert(a == 1)
 }
 

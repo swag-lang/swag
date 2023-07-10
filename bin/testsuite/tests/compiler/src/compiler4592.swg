@@ -1,7 +1,7 @@
 //#[Swag.PrintBc]
 #test
 {
-    var x: closure(s32, ...) = closure||(x: s32, y: ...)
+    let x: closure(s32, ...) = closure||(x: s32, y: ...)
     {
         //@print(x)
         @assert(x == 52)

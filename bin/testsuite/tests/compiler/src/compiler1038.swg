@@ -8,6 +8,6 @@ struct Point
 #test
 {
 	var pt : [5] Point
-	var ptr = &pt
+	let ptr = &pt
 	@init(ptr, 5)
 }

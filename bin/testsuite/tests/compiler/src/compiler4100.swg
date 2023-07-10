@@ -4,7 +4,7 @@
 {
     if @isbytecode()
     {
-        var cfg = @compiler().getBuildCfg().safetyGuards
+        let cfg = @compiler().getBuildCfg().safetyGuards
         @assert(@sizeof(cfg) == 2)
     }
 }

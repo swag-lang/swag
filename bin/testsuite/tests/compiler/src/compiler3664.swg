@@ -13,7 +13,7 @@ impl I for X
 #test
 {
     var a, b: X
-    var ai = cast(I) a
-    var bi = cast(I) b
+    let ai = cast(I) a
+    let bi = cast(I) b
     @assert(ai != bi)
 }

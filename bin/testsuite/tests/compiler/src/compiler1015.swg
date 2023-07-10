@@ -6,11 +6,11 @@ using Swag
 {
 	var ptr = @typeof(const *TypeInfo)
 
-	var ptr1 = cast(const *TypeInfoArray) @typeof([2] s32)
+	let ptr1 = cast(const *TypeInfoArray) @typeof([2] s32)
 	@assert(ptr1.count == 2)
 	@assert(ptr1.pointedType == @typeof(s32))
 
-	var ptr2 = cast(const *TypeInfoArray) @typeof([2, 3] string)
+	let ptr2 = cast(const *TypeInfoArray) @typeof([2, 3] string)
 	@assert(ptr2.count == 2)
 	@assert(ptr2.totalCount == 6)
 	@assert(ptr2.pointedType == @typeof([3] string))

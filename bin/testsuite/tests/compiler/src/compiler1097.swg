@@ -13,8 +13,8 @@ enum Days
 
 #test
 {
-    var meetingDays = Days.Tuesday | Days.Thursday;
+    let meetingDays = Days.Tuesday | Days.Thursday;
 	@assert(@typeof(meetingDays) == @typeof(Days))
-	var ptr = @typeof(meetingDays)
+	let ptr = @typeof(meetingDays)
 	@assert(ptr.fullname == "__compiler1097.Days")
 }

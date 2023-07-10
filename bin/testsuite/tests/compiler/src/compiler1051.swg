@@ -41,7 +41,7 @@ impl Point
 #test
 {
 	G = 0
-	var ptr = new'(Point, 4)()
+	let ptr = new'(Point, 4)()
 	delete'(Point, 4)(ptr)
 	@assert(G == 4)
 }

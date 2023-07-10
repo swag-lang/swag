@@ -1,6 +1,6 @@
 #test
 {
-    var str = "string"
-    var tuple = {@dataof(str), 2}
-    var ptr = @kindof(tuple)
+    let str = "string"
+    let tuple = {@dataof(str), 2}
+    let ptr = @kindof(tuple)
 }

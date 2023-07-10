@@ -8,7 +8,7 @@ func toto()
 //#[Swag.PrintBc]
 #test
 {
-    var b = 666
+    let b = 666
     toto()
     @assert(b == 666)
 }

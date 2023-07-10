@@ -6,7 +6,7 @@ func toString() -> const [..] u8
 
 #test
 {
-	var x = toString()
+	let x = toString()
 	@assert(x[0] == 0)
 	@assert(x[1] == 1)
 	@assert(x[2] == 2)

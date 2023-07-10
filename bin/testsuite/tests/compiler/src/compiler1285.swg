@@ -1,7 +1,7 @@
 //#[Swag.PrintBc]
 #test
 {
-    var a = 666
+    let a = 666
     if a == 666
     {
         func toto()

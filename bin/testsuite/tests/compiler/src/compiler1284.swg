@@ -1,13 +1,13 @@
 //#[Swag.PrintBc]
 #test
 {
-    var a = 666
+    let a = 666
     func toto()
     {
-        var a = 1
+        let a = 1
         func toto1()
         {
-            var a = 2
+            let a = 2
         }
     }
 

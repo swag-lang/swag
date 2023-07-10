@@ -22,9 +22,9 @@ impl Toto
 #test
 {
 	var x: Toto
-	var y: s32 = x
+	let y: s32 = x
 	@assert(y == 20)
 
-    var z: string = x
+    let z: string = x
     @assert(z == "x + y")
 }

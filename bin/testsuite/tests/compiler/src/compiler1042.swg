@@ -3,7 +3,7 @@ func(T) new()->*T
 	var req : Swag.AllocatorRequest
 	req.size = @sizeof(T)
 
-	var context = @getcontext()
+	let context = @getcontext()
 	context.allocator.req(&req)
 
 	@init(cast(*T) req.address)
@@ -17,7 +17,7 @@ struct Point
 //#[Swag.PrintBc]
 #test
 {
-	var ptr = new'Point()
+	let ptr = new'Point()
 	@assert(ptr.x == "coucou")
 	@assert(ptr.y == "coucou")
 

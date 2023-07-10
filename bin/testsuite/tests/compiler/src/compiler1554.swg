@@ -20,10 +20,10 @@ impl A
 
 #test
 {
-    var ptr = cast(const* TypeInfoStruct) @typeof(A)
+    let ptr = cast(const* TypeInfoStruct) @typeof(A)
     @assert(@countof(ptr.methods) == 1)
 
-    var fct = ptr.methods[0]
+    let fct = ptr.methods[0]
     @assert(fct.name == "toto")
     @assert(@countof(fct.attributes) == 1)
 }

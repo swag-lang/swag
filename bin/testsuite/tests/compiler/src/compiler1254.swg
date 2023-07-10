@@ -1,6 +1,6 @@
 #test
 {
-	var x, y = 666
+	let x, y = 666
     @assert(x == 666)
     @assert(y == 666)
 }

@@ -25,6 +25,6 @@ func toto(v: string)
 	t.buf[2] = acast "3"'rune
 	t.buf[3] = 0
 
-	var x = t.toString()
+	let x = t.toString()
 	toto(cast(string) x)
 }

@@ -1,7 +1,7 @@
 //#[Swag.PrintBc]
 #test
 {
-    var a = "ABCDEFG"
+    let a = "ABCDEFG"
     var c = a[3..6]
     @assert(c == "DEFG");
     @assert(@typeof(c) == @typeof(string))

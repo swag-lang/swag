@@ -1,9 +1,9 @@
 //#[Swag.PrintBc]
 #test
 {
-    var ptr:  *u8 = null
-    var ptr1: const *u8 = null
+    let ptr:  *u8 = null
+    let ptr1: const *u8 = null
 
-    var v: u64 = cast(u64) ptr
-    var v1: u64 = cast(u64) ptr1
+    let v: u64 = cast(u64) ptr
+    let v1: u64 = cast(u64) ptr1
 }

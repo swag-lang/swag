@@ -1,7 +1,7 @@
 //#[Swag.PrintBc]
 func toto(x: const [2] s64)
 {
-    var ptr = &x[0]
+    let ptr = &x[0]
     @assert(ptr[0] == 10)
     @assert(ptr[1] == 20)
 }

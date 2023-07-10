@@ -10,7 +10,7 @@ func toto(x: code)
 //#[Swag.PrintBc]
 #test
 {
-    var a = 1
-    var b = 2
+    let a = 1
+    let b = 2
     toto(#code a < b)
 }

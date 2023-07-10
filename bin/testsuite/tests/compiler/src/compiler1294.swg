@@ -1,12 +1,12 @@
 #[Swag.Macro]
 func toto()
 {
-    var y = #up x
+    let y = #up x
     @assert(y == 666)
 }
 
 #test
 {
-    var x = 666
+    let x = 666
     toto()
 }

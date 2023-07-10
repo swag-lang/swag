@@ -25,13 +25,13 @@ impl I for A
         itable: const ^^void
     }
 
-    var ptr = cast(*TT) &i
+    let ptr = cast(*TT) &i
     //@print(&a, " ", ptr.obj)
 
-    var t = cast(const *Swag.TypeInfoStruct) ptr.itable[cast,bit(u64) -1's64]
+    let t = cast(const *Swag.TypeInfoStruct) ptr.itable[cast,bit(u64) -1's64]
     //@print(" ", t.fullname)
 
-    var t1 = cast(const *Swag.TypeInfoStruct) ptr.itable[cast,bit(u64) -2's64]
+    let t1 = cast(const *Swag.TypeInfoStruct) ptr.itable[cast,bit(u64) -2's64]
     //@print(" ", t1.fullname)
 
     var itf1: TT

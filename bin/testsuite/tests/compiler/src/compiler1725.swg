@@ -14,7 +14,7 @@
     @assert(MyFlags.C == 0b00000100)
     @assert(MyFlags.D == 0b00001000)
 
-    var value = MyFlags.B | MyFlags.C
+    let value = MyFlags.B | MyFlags.C
     @assert(value == 0b00000110)
     @assert(value & MyFlags.B == MyFlags.B)
     @assert(value & MyFlags.C == MyFlags.C)

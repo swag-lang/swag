@@ -1,44 +1,44 @@
 //#[Swag.PrintBc]
 #test
 {
-    var a = 1's64
-    var b = 2's64
-    var c = a > b
+    let a = 1's64
+    let b = 2's64
+    let c = a > b
     @assert(c == false)
-    var c1 = b > a
+    let c1 = b > a
     @assert(c1 == true)
-    var d = a < b
+    let d = a < b
     @assert(d == true)
-    var d1 = b < a
+    let d1 = b < a
     @assert(d1 == false)
 }
 
 //#[Swag.PrintBc]
 #test
 {
-    var a = 1'f32
-    var b = 2'f32
-    var c = a > b
+    let a = 1'f32
+    let b = 2'f32
+    let c = a > b
     @assert(c == false)
-    var c1 = b > a
+    let c1 = b > a
     @assert(c1 == true)
-    var d = a < b
+    let d = a < b
     @assert(d == true)
-    var d1 = b < a
+    let d1 = b < a
     @assert(d1 == false)
 }
 
 //#[Swag.PrintBc]
 #test
 {
-    var a = 1'f64
-    var b = 2'f64
-    var c = a > b
+    let a = 1'f64
+    let b = 2'f64
+    let c = a > b
     @assert(c == false)
-    var c1 = b > a
+    let c1 = b > a
     @assert(c1 == true)
-    var d = a < b
+    let d = a < b
     @assert(d == true)
-    var d1 = b < a
+    let d1 = b < a
     @assert(d1 == false)
 }

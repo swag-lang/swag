@@ -1,7 +1,7 @@
 #[Swag.Mixin]
 func toto()
 {
-    var x = 666
+    let x = 666
 }
 
 #test

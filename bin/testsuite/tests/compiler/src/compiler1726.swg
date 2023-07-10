@@ -13,7 +13,7 @@
     var x: B
     @assert(x.name == "toto")
 
-    var ptr = &x
+    let ptr = &x
     @assert(ptr.name == "toto")
 
     //var ptr = @typeof(X)

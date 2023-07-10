@@ -7,6 +7,6 @@ func clamp(x: f32, min: f32, max: f32)->f32
 //#[Swag.PrintBc]
 #test
 {
-	var x = clamp(2'f32, 0'f32, 1'f32)
+	let x = clamp(2'f32, 0'f32, 1'f32)
 	@assert(cast(f64) x == 1)
 }

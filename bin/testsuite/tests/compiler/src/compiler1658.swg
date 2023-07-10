@@ -10,7 +10,7 @@ struct ConvertFormatFloat
 
 func convertFloat(buf: *ConcatBuffer, fmt: ConvertFormatFloat)
 {
-    var neg: bool = fmt.value < 0
+    let neg: bool = fmt.value < 0
 
     var value = fmt.value
     if(neg)

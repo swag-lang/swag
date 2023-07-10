@@ -14,9 +14,9 @@ struct Point
 	@assert(pt.x == 1)
 	@assert(pt.y == 2)*/
 
-	var a = new().x
+	let a = new().x
 	@assert(a == 1)
-	var b = new().y
+	let b = new().y
 	@assert(b == 2)
 
 	@assert(new().x == 1)

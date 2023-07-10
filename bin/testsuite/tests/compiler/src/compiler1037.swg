@@ -9,7 +9,7 @@ struct Point
 #test
 {
 	var pt : [5] Point
-	var ptr = &pt
+	let ptr = &pt
 	@init(ptr, 5)(10, 20)
 	@assert(pt[4].x == 10)
 	@assert(pt[4].y == 20)

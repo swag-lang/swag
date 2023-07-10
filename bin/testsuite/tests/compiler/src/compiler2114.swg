@@ -20,10 +20,10 @@ var toTreatCpt: u32
 #message(CompilerMsgMask.SemFunctions)
 {
     let itf = @compiler()
-    var msg = itf.getMessage()
+    let msg = itf.getMessage()
     if msg.type.kind != TypeInfoKind.Func return
 
-    var typeF = cast(const *TypeInfoFunc) msg.type
+    let typeF = cast(const *TypeInfoFunc) msg.type
     visit i: typeF.attributes
     {
         if i.type == @typeof(myAttr)

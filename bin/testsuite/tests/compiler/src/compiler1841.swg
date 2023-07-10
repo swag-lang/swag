@@ -22,9 +22,9 @@ impl IPrintable for Point
 #test
 {
     var pt: Point
-    var an: any = pt
+    let an: any = pt
 
-    var itf = @mkinterface(@dataof(an), @kindof(an), IPrintable)
+    let itf = @mkinterface(@dataof(an), @kindof(an), IPrintable)
     @assert(itf != null)
     itf.print()
     @assert(G == 666)

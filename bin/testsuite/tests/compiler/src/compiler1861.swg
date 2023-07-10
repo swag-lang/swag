@@ -1,6 +1,6 @@
 func toto(ptr: const ^u8)
 {
-    var x = @mkstring(ptr, 4)
+    let x = @mkstring(ptr, 4)
     //@print(@typeof(x).name)
     //@print("x")
     @assert(x == "toto")

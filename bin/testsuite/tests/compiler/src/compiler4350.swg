@@ -10,7 +10,7 @@ impl Point
     #[Swag.Inline]
     mtd mixup() -> Point
     {
-        var v = x
+        let v = x
         var t: Point{v}
         return t
     }

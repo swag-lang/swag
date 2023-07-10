@@ -2,7 +2,7 @@ struct(T) Toto
 {
     #ast
     {
-        var type = @typeof(T)
+        let type = @typeof(T)
         @assert(type.kind == Swag.TypeInfoKind.Struct)
         /*@print(cast(s64) type.kind)
         @print(" ")

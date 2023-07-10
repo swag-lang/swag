@@ -11,7 +11,7 @@ func toto()
 
 #test
 {
-    var yy = 5
+    let yy = 5
     toto()
     @assert(yy == 5)
 }

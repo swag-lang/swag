@@ -10,7 +10,7 @@ func panic(msg: string, loc: Swag.SourceCodeLocation)
 #test
 {
     {
-        var cxt = @getcontext()
+        let cxt = @getcontext()
         cxt.panic = &panic
         defer cxt.panic = null
 

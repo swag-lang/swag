@@ -8,7 +8,7 @@ func toto()
 //#[Swag.PrintBc]
 #test
 {
-	var a = 1
+	let a = 1
 	toto()
 	@assert(a == 1)
 }

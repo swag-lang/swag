@@ -20,7 +20,7 @@ impl A for X
 #test
 {
     var v: X
-    var x: A = v
+    let x: A = v
 
     @assert(x != null)
 }

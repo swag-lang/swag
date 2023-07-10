@@ -22,7 +22,7 @@ impl titi
 	t.buf[2] = 3
 	t.buf[3] = 4
 
-	var x = t.toString()
+	let x = t.toString()
 	@assert(x[0] == 1)
 	@assert(x[1] == 2)
 	@assert(x[2] == 3)

@@ -7,7 +7,7 @@
         Blue
     }
 
-    var a = Color.Red
+    let a = Color.Red
 
     #[Swag.Complete]
     switch a

@@ -1,7 +1,7 @@
 #test
 {
-    var contentHeight = 40
-    var hasHeader = true
+    let contentHeight = 40
+    let hasHeader = true
     var rowHeight: s32
     if hasHeader {
         rowHeight = contentHeight + 50

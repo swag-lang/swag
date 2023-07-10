@@ -1225,7 +1225,7 @@ func aaa(ptr: *s64)
         }
 
         {
-            var x = -6's64
+            let x = -6's64
             @print(cast(s64) x)
             @print(cast(s64) g)
             @print("fripouille")

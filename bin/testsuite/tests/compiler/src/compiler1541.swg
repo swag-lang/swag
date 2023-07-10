@@ -23,13 +23,13 @@ impl X
 #test
 {
     using Swag
-    var ptr = cast(const *TypeInfoStruct) @typeof(X)
+    let ptr = cast(const *TypeInfoStruct) @typeof(X)
     @assert(@countof(ptr.methods) == 1)
 
     visit i: ptr.methods
     {
         @assert(i.name != "titi")
-        var ptrFunc = cast(const *TypeInfoFunc) i.pointedType
+        let ptrFunc = cast(const *TypeInfoFunc) i.pointedType
         @assert(ptrFunc.returnType != null)
     }
 }

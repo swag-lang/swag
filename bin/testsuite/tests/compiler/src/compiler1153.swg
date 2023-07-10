@@ -10,7 +10,7 @@ func toto(x, y: s64)
 	toto(3, 7)
 	toto(5, 5)
 
-	var x = 9's64
-	var y = 1's64
+	let x = 9's64
+	let y = 1's64
 	toto(x, y)
 }

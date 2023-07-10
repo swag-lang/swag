@@ -9,6 +9,6 @@ enum TOTO : s64
 {
     var x = TOTO.A
     var y = TOTO.B
-    var ptr = &x
+    let ptr = &x
     y = acast dref ptr
 }

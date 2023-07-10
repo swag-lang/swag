@@ -1,6 +1,6 @@
 //#[Swag.PrintBc]
 #test
 {
-	var ptr = s32
+	let ptr = s32
     @assert(ptr == s32)
 }

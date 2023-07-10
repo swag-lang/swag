@@ -1,5 +1,5 @@
 #test
 {
-	var x = 5 % 2
+	let x = 5 % 2
 	@assert(x == 1)
 }

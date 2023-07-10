@@ -1,7 +1,7 @@
 //#[Swag.PrintBc]
 #run
 {
-    var s = 1
+    let s = 1
     var res = false
     switch s
     {

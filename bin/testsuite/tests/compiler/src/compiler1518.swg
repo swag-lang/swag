@@ -15,7 +15,7 @@ impl A
         #assert ptr == true
         loop idx: titi's32(1, 1)
         {
-            var shift: u32 = 0
+            let shift: u32 = 0
             loop 1
             {
                 #macro

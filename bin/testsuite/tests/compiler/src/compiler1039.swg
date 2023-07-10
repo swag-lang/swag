@@ -17,7 +17,7 @@ impl Point
 #test
 {
 	var pt : Point
-	var ptr = &pt
+	let ptr = &pt
 	@drop(ptr)
 	@assert(pt.x == 100)
 }

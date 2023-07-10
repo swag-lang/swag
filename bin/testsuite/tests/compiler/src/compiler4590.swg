@@ -7,7 +7,7 @@ struct V
 {
     var v: V
     var fn: closure(V)
-    var t: s32 = 40
+    let t: s32 = 40
 
     fn = closure|t|(v)
     {

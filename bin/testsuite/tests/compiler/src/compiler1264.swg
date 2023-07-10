@@ -15,6 +15,6 @@ impl Toto
 #test
 {
 	var x: Toto
-	var y: s32 = x
+	let y: s32 = x
 	@assert(y == 20)
 }

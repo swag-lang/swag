@@ -16,7 +16,7 @@ struct Point
 //#[Swag.PrintBc]
 #test
 {
-	var ptr = new'Point()
+	let ptr = new'Point()
 	@assert(ptr.x == "coucou")
 	@assert(ptr.y == "coucou")
 

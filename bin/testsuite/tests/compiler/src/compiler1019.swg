@@ -3,7 +3,7 @@ using Swag
 //#[Swag.PrintBc]
 #test
 {
-	var context = @getcontext()
+	let context = @getcontext()
 
 	var req: AllocatorRequest
 	req.size = 16

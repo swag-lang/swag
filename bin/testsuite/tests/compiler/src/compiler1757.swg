@@ -2,7 +2,7 @@
 #test
 {
     var a = "string1"
-    var b = "string2"
+    let b = "string2"
 
     var c = a orelse b
     @assert(c == "string1")

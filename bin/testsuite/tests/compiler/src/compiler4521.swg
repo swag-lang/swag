@@ -12,6 +12,6 @@ func toto()->AL
 
 #test
 {
-    var x = toto()
+    let x = toto()
     @assert(@typeof(x) == AL)
 }

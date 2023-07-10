@@ -4,6 +4,6 @@ func min(x, y: s32) => x < y ? x : y
 //#[Swag.PrintBc]
 #test
 {
-	var x = min(5, min(4, 2))
+	let x = min(5, min(4, 2))
 	@assert(x == 2)
 }

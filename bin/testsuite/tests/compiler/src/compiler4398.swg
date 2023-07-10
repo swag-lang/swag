@@ -3,7 +3,7 @@ struct A { x, y: s32; }
 #test
 {
     var arr: [4] A
-    var slice = arr[..]
+    let slice = arr[..]
     visit v: slice
     {
         v = A{1, 2}

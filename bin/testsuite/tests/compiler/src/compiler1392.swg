@@ -1,6 +1,6 @@
 #test
 {
-    var x: u32 = 4
-    var y: u32 = 2
+    let x: u32 = 4
+    let y: u32 = 2
     @assert(x / y == 2)
 }

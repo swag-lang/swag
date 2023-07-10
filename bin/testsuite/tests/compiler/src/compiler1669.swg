@@ -5,6 +5,6 @@ func function(x: s32, y: ...)
 
 #run
 {
-    var ptr = &function
+    let ptr = &function
     ptr(50)
 }

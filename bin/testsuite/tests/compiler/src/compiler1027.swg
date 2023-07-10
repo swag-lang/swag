@@ -9,10 +9,10 @@ struct Point
 //#[Swag.PrintBc]
 #test
 {
-	var pt : Point
+	let pt : Point
 	pt.x = 0
 	pt.y = 0
-	var ptr = &pt
+	let ptr = &pt
 	@init(ptr)
 	@assert(pt.x == 10)
 	@assert(pt.y == 20)

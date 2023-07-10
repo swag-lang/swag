@@ -29,6 +29,6 @@ func toto()->I => &x
 //#[Swag.PrintBc]
 #test
 {
-    var h = toto().call()
+    let h = toto().call()
     @assert(h == 666)
 }

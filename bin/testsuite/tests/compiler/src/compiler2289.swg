@@ -6,7 +6,7 @@ func set(ptr: ^u8)
 //#[Swag.PrintBc]
 #test
 {
-    var cxt = @getcontext()
+    let cxt = @getcontext()
     var ptr = &cxt.errors[0].msgBuf[0]
     set(ptr)
 }

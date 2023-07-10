@@ -21,10 +21,10 @@ impl I for A
 #test
 {
     var x: A
-    var itf: I = cast(I) x
+    let itf: I = cast(I) x
 
     //var ptr: closure()
-    var ptr = closure|itf|()
+    let ptr = closure|itf|()
     {
         itf.toto()
     }

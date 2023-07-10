@@ -9,13 +9,13 @@ alias X = TOTO
 
 func fromName(name: string)->X
 {
-    var t = cast(const *TypeInfoEnum) @typeof(TOTO)
+    let t = cast(const *TypeInfoEnum) @typeof(TOTO)
     loop t.values
     {
-        var param = t.values[@index]
+        let param = t.values[@index]
         if(param.name == name)
         {
-            var ptr = cast(const *TOTO) param.value
+            let ptr = cast(const *TOTO) param.value
             return dref ptr
         }
     }
