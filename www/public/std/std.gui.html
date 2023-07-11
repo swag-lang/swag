@@ -1304,7 +1304,7 @@ modalSurfaces</td>
 <td class="tdname">
 toDelete</td>
 <td class="tdtype">
-<a href="core.html#Core_Array">Core.Array</a>({*void, const *<a href="swag.html#Swag_TypeInfo">Swag.TypeInfo</a>})</td>
+<a href="core.html#Core_Array">Core.Array</a>({ptr: *void, type: const *<a href="swag.html#Swag_TypeInfo">Swag.TypeInfo</a>})</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -1781,7 +1781,12 @@ End current modal loop.</p>
 <p>
 Get the id associated with a shortcut. null if none.</p>
 <p class="code">
-<code style="white-space: break-spaces">func getHotKeyShortcut(using self, mdf: <a href="core.html#Core_Input_KeyModifiers">Core.Input.KeyModifiers</a>, key: <a href="core.html#Core_Input_Key">Core.Input.Key</a>)->{<a href="gui.html#Gui_WndId">Gui.WndId</a>, *<a href="#Gui_Wnd">Gui.Wnd</a>}
+<code style="white-space: break-spaces">func getHotKeyShortcut(using self, mdf: <a href="core.html#Core_Input_KeyModifiers">Core.Input.KeyModifiers</a>, key: <a href="core.html#Core_Input_Key">Core.Input.Key</a>)->struct
+{ 
+	id: <a href="gui.html#Gui_WndId">Gui.WndId</a>
+	wnd: *<a href="#Gui_Wnd">Gui.Wnd</a>
+}
+
 </code>
 </p>
 <p>
@@ -6794,7 +6799,7 @@ mode</td>
 <td class="tdname">
 filters</td>
 <td class="tdtype">
-<a href="core.html#Core_Array">Core.Array</a>({string, string})</td>
+<a href="core.html#Core_Array">Core.Array</a>({name: string, extensions: string})</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -6802,7 +6807,7 @@ filters</td>
 <td class="tdname">
 shortcuts</td>
 <td class="tdtype">
-<a href="core.html#Core_Array">Core.Array</a>({<a href="core.html#Core_Env_SpecialDirectory">Core.Env.SpecialDirectory</a>, string})</td>
+<a href="core.html#Core_Array">Core.Array</a>({type: <a href="core.html#Core_Env_SpecialDirectory">Core.Env.SpecialDirectory</a>, name: string})</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -13766,7 +13771,7 @@ edView</td>
 <td class="tdname">
 categs</td>
 <td class="tdtype">
-<a href="core.html#Core_Array">Core.Array</a>({*<a href="#Gui_PropertyListItem">Gui.PropertyListItem</a>, s32})</td>
+<a href="core.html#Core_Array">Core.Array</a>({item: *<a href="#Gui_PropertyListItem">Gui.PropertyListItem</a>, lvl: s32})</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -15703,7 +15708,7 @@ Set the text content.</p>
 <h3 class="content" id="Gui_RichEditCtrl_addText"><span class="titletype">func</span> <span class="titlelight">RichEditCtrl.</span><span class="titlestrong">addText</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\richedit\richedittext.swg#L449" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\richedit\richedittext.swg#L447" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -15782,7 +15787,7 @@ Simulate a keyboard character pressed.</p>
 <h3 class="content" id="Gui_RichEditCtrl_clear"><span class="titletype">func</span> <span class="titlelight">RichEditCtrl.</span><span class="titlestrong">clear</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\richedit\richedittext.swg#L392" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\richedit\richedittext.swg#L390" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -15874,7 +15879,7 @@ Clear content.</p>
 <h3 class="content" id="Gui_RichEditCtrl_deleteBegLine"><span class="titletype">func</span> <span class="titlelight">RichEditCtrl.</span><span class="titlestrong">deleteBegLine</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\richedit\richedittext.swg#L692" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\richedit\richedittext.swg#L690" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -16011,14 +16016,19 @@ Delete a given text at the start of each selected line.</p>
 <h3 class="content" id="Gui_RichEditCtrl_evaluateSize"><span class="titletype">func</span> <span class="titlelight">RichEditCtrl.</span><span class="titlestrong">evaluateSize</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\richedit\richedittext.swg#L798" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\richedit\richedittext.swg#L796" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p>
 Evaluate the rendering size.</p>
 <p class="code">
-<code style="white-space: break-spaces">func evaluateSize(using self)-&gt;{w: f32, h: f32}
+<code style="white-space: break-spaces">func evaluateSize(using self)-&gt;struct
+{ 
+	w: f32
+	h: f32
+}
+
 </code>
 </p>
 <p>
@@ -16135,14 +16145,19 @@ Execute a command.</p>
 <h3 class="content" id="Gui_RichEditCtrl_getRune"><span class="titletype">func</span> <span class="titlelight">RichEditCtrl.</span><span class="titlestrong">getRune</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\richedit\richedittext.swg#L499" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\richedit\richedittext.swg#L497" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p>
 Get the rune at the given cursor pos.</p>
 <p class="code">
-<code style="white-space: break-spaces">func getRune(using self, cp: <a href="#Gui_RichEditCursor">Gui.RichEditCursor</a>)->{char: rune, style: <a href="gui.html#Gui_RichEditStyleRef">Gui.RichEditStyleRef</a>}
+<code style="white-space: break-spaces">func getRune(using self, cp: <a href="#Gui_RichEditCursor">Gui.RichEditCursor</a>)->struct
+{ 
+	char: rune
+	style: <a href="gui.html#Gui_RichEditStyleRef">Gui.RichEditStyleRef</a>
+}
+
 </code>
 </p>
 <p>
@@ -16167,7 +16182,7 @@ Get the rune at the given cursor pos.</p>
 <h3 class="content" id="Gui_RichEditCtrl_getSelectedText"><span class="titletype">func</span> <span class="titlelight">RichEditCtrl.</span><span class="titlestrong">getSelectedText</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\richedit\richedittext.swg#L407" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\richedit\richedittext.swg#L405" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -16199,7 +16214,7 @@ Get the selected text.</p>
 <h3 class="content" id="Gui_RichEditCtrl_getText"><span class="titletype">func</span> <span class="titlelight">RichEditCtrl.</span><span class="titlestrong">getText</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\richedit\richedittext.swg#L415" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\richedit\richedittext.swg#L413" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -16216,14 +16231,19 @@ Get the full text.</p>
 <h3 class="content" id="Gui_RichEditCtrl_getTextAndStyles"><span class="titletype">func</span> <span class="titlelight">RichEditCtrl.</span><span class="titlestrong">getTextAndStyles</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\richedit\richedittext.swg#L427" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\richedit\richedittext.swg#L425" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p>
 Get the full text with the associated styles per character.</p>
 <p class="code">
-<code style="white-space: break-spaces">func getTextAndStyles(using self)->{text: <a href="core.html#Core_Array">Core.Array</a>(rune), styles: <a href="core.html#Core_Array">Core.Array</a>(u8)}
+<code style="white-space: break-spaces">func getTextAndStyles(using self)->struct
+{ 
+	text: <a href="core.html#Core_Array">Core.Array</a>(rune)
+	styles: <a href="core.html#Core_Array">Core.Array</a>(u8)
+}
+
 </code>
 </p>
 <p>
@@ -16248,7 +16268,7 @@ Get the full text with the associated styles per character.</p>
 <h3 class="content" id="Gui_RichEditCtrl_insertBegLine"><span class="titletype">func</span> <span class="titlelight">RichEditCtrl.</span><span class="titlestrong">insertBegLine</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\richedit\richedittext.swg#L639" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\richedit\richedittext.swg#L637" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -16265,7 +16285,7 @@ Insert text at the start of each selected line.</p>
 <h3 class="content" id="Gui_RichEditCtrl_insertRune"><span class="titletype">func</span> <span class="titlelight">RichEditCtrl.</span><span class="titlestrong">insertRune</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\richedit\richedittext.swg#L515" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\richedit\richedittext.swg#L513" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -16282,7 +16302,7 @@ Insert a rune.</p>
 <h3 class="content" id="Gui_RichEditCtrl_insertText"><span class="titletype">func</span> <span class="titlelight">RichEditCtrl.</span><span class="titlestrong">insertText</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\richedit\richedittext.swg#L463" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\richedit\richedittext.swg#L461" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -16797,7 +16817,7 @@ Set richedit flags.</p>
 <h3 class="content" id="Gui_RichEditCtrl_setText"><span class="titletype">func</span> <span class="titlelight">RichEditCtrl.</span><span class="titlestrong">setText</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\richedit\richedittext.swg#L437" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\richedit\richedittext.swg#L435" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -16973,7 +16993,7 @@ mapWords</td>
 <h3 class="content" id="Gui_RichEditLexerSwag_IRichEditLexer_compute"><span class="titletype">func</span> <span class="titlelight">IRichEditLexer.</span><span class="titlestrong">compute</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\richedit\richeditlexerswag.swg#L406" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\richedit\richeditlexerswag.swg#L407" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -16988,7 +17008,7 @@ mapWords</td>
 <h3 class="content" id="Gui_RichEditLexerSwag_IRichEditLexer_insertRune"><span class="titletype">func</span> <span class="titlelight">IRichEditLexer.</span><span class="titlestrong">insertRune</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\richedit\richeditlexerswag.swg#L374" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\richedit\richeditlexerswag.swg#L375" class="src">[src]</a></td>
 </tr>
 </table>
 </p>

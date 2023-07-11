@@ -4211,7 +4211,7 @@ Write a <code class = "incode">native</code> type value.</p>
 <h3 class="content" id="Core_ByteStream_getSeek"><span class="titletype">func</span> <span class="titlelight">ByteStream.</span><span class="titlestrong">getSeek</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\bytestream.swg#L144" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\bytestream.swg#L145" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -4262,7 +4262,7 @@ Returns length of associated slice.</p>
 <h3 class="content" id="Core_ByteStream_moveSeek"><span class="titletype">func</span> <span class="titlelight">ByteStream.</span><span class="titlestrong">moveSeek</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\bytestream.swg#L122" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\bytestream.swg#L123" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -4313,7 +4313,7 @@ Creates a byte stream to write to an array.</p>
 <h3 class="content" id="Core_ByteStream_peekU8"><span class="titletype">func</span> <span class="titlelight">ByteStream.</span><span class="titlestrong">peekU8</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\bytestream.swg#L114" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\bytestream.swg#L115" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -4330,7 +4330,7 @@ Read one byte and seek.</p>
 <h3 class="content" id="Core_ByteStream_readBytes"><span class="titletype">func</span> <span class="titlelight">ByteStream.</span><span class="titlestrong">readBytes</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\bytestream.swg#L97" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\bytestream.swg#L98" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -4364,7 +4364,7 @@ Get the buffer of datas to read.</p>
 <h3 class="content" id="Core_ByteStream_readNative"><span class="titletype">func</span> <span class="titlelight">ByteStream.</span><span class="titlestrong">readNative</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\bytestream.swg#L87" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\bytestream.swg#L88" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -4381,7 +4381,7 @@ Read a <code class = "incode">native</code> type value.</p>
 <h3 class="content" id="Core_ByteStream_readU8"><span class="titletype">func</span> <span class="titlelight">ByteStream.</span><span class="titlestrong">readU8</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\bytestream.swg#L106" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\bytestream.swg#L107" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -4432,7 +4432,7 @@ Returns a string of the remaing bytes to read.</p>
 <h3 class="content" id="Core_ByteStream_setSeek"><span class="titletype">func</span> <span class="titlelight">ByteStream.</span><span class="titlestrong">setSeek</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\bytestream.swg#L135" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\bytestream.swg#L136" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -5765,7 +5765,13 @@ Returns the number of bytes.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func eatBuffer(using self)-&gt;{data: ^u8, size: u64, capacity: u64}
+<code style="white-space: break-spaces">func eatBuffer(using self)-&gt;struct
+{ 
+	data: ^u8
+	size: u64
+	capacity: u64
+}
+
 </code>
 </p>
 <p>
@@ -8494,7 +8500,7 @@ Read one line of text.</p>
 <h3 class="content" id="Core_File_TextReader_readToEnd"><span class="titletype">func</span> <span class="titlelight">TextReader.</span><span class="titlestrong">readToEnd</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\textreader.swg#L137" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\textreader.swg#L138" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -19449,7 +19455,12 @@ Lerp one vector with another.</p>
 <p>
 Compute the intersection point of two lines.</p>
 <p class="code">
-<code style="white-space: break-spaces">func lineLineIntersect(start0: <a href="#Core_Math_Vector2">Core.Math.Vector2</a>, end0: <a href="#Core_Math_Vector2">Core.Math.Vector2</a>, start1: <a href="#Core_Math_Vector2">Core.Math.Vector2</a>, end1: <a href="#Core_Math_Vector2">Core.Math.Vector2</a>, epsilon: f32 = ConstF32.Epsilon)->{yes: bool, pos: <a href="#Core_Math_Vector2">Core.Math.Vector2</a>}
+<code style="white-space: break-spaces">func lineLineIntersect(start0: <a href="#Core_Math_Vector2">Core.Math.Vector2</a>, end0: <a href="#Core_Math_Vector2">Core.Math.Vector2</a>, start1: <a href="#Core_Math_Vector2">Core.Math.Vector2</a>, end1: <a href="#Core_Math_Vector2">Core.Math.Vector2</a>, epsilon: f32 = ConstF32.Epsilon)->struct
+{ 
+	yes: bool
+	pos: <a href="#Core_Math_Vector2">Core.Math.Vector2</a>
+}
+
 </code>
 </p>
 <p>
@@ -19500,7 +19511,13 @@ Returns a vector which is the <code class = "incode">min</code> of two vectors.<
 <p>
 Returns the minimal segment between two segments (and the minimal distance).</p>
 <p class="code">
-<code style="white-space: break-spaces">func nearestPointsSegSeg(p0: <a href="#Core_Math_Vector2">Core.Math.Vector2</a>, p1: <a href="#Core_Math_Vector2">Core.Math.Vector2</a>, q0: <a href="#Core_Math_Vector2">Core.Math.Vector2</a>, q1: <a href="#Core_Math_Vector2">Core.Math.Vector2</a>)->{a: <a href="#Core_Math_Vector2">Core.Math.Vector2</a>, b: <a href="#Core_Math_Vector2">Core.Math.Vector2</a>, dist: f32}
+<code style="white-space: break-spaces">func nearestPointsSegSeg(p0: <a href="#Core_Math_Vector2">Core.Math.Vector2</a>, p1: <a href="#Core_Math_Vector2">Core.Math.Vector2</a>, q0: <a href="#Core_Math_Vector2">Core.Math.Vector2</a>, q1: <a href="#Core_Math_Vector2">Core.Math.Vector2</a>)->struct
+{ 
+	a: <a href="#Core_Math_Vector2">Core.Math.Vector2</a>
+	b: <a href="#Core_Math_Vector2">Core.Math.Vector2</a>
+	dist: f32
+}
+
 </code>
 </p>
 <p style="white-space: break-spaces"> David Eberly, Geometric Tools, Redmond WA 98052
@@ -19702,7 +19719,12 @@ Math.round.</p>
 <p>
 Compute the intersection point of two segments.</p>
 <p class="code">
-<code style="white-space: break-spaces">func segSegIntersect(start0: <a href="#Core_Math_Vector2">Core.Math.Vector2</a>, end0: <a href="#Core_Math_Vector2">Core.Math.Vector2</a>, start1: <a href="#Core_Math_Vector2">Core.Math.Vector2</a>, end1: <a href="#Core_Math_Vector2">Core.Math.Vector2</a>, epsilon: f32 = ConstF32.Epsilon)->{yes: bool, pos: <a href="#Core_Math_Vector2">Core.Math.Vector2</a>}
+<code style="white-space: break-spaces">func segSegIntersect(start0: <a href="#Core_Math_Vector2">Core.Math.Vector2</a>, end0: <a href="#Core_Math_Vector2">Core.Math.Vector2</a>, start1: <a href="#Core_Math_Vector2">Core.Math.Vector2</a>, end1: <a href="#Core_Math_Vector2">Core.Math.Vector2</a>, epsilon: f32 = ConstF32.Epsilon)->struct
+{ 
+	yes: bool
+	pos: <a href="#Core_Math_Vector2">Core.Math.Vector2</a>
+}
+
 </code>
 </p>
 <p>
@@ -21209,7 +21231,12 @@ func mulAdd(x: f64, y: f64, z: f64)
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func mulU64(x: u64, y: u64)-&gt;{hi: u64, lo: u64}
+<code style="white-space: break-spaces">func mulU64(x: u64, y: u64)-&gt;struct
+{ 
+	hi: u64
+	lo: u64
+}
+
 </code>
 </p>
 <p>
@@ -29197,7 +29224,12 @@ Version</td>
 <p>
 Determin if a type can be serialized by a simple copy.</p>
 <p class="code">
-<code style="white-space: break-spaces">func isPodFinal(type: const *<a href="swag.html#Swag_TypeInfo">Swag.TypeInfo</a>)->{raw: bool, sizeof: u64}
+<code style="white-space: break-spaces">func isPodFinal(type: const *<a href="swag.html#Swag_TypeInfo">Swag.TypeInfo</a>)->struct
+{ 
+	raw: bool
+	sizeof: u64
+}
+
 </code>
 </p>
 <p>
@@ -29356,7 +29388,12 @@ Returns true if two slices are equal.</p>
 <p>
 Find <code class = "incode">value</code> in a slice by performing a linear search.</p>
 <p class="code">
-<code style="white-space: break-spaces">func(T, V) findLinear(values: const [..] T, value: V)-&gt;{index: u64, success: bool}
+<code style="white-space: break-spaces">func(T, V) findLinear(values: const [..] T, value: V)-&gt;struct(T, V)
+{ 
+	index: u64
+	success: bool
+}
+
 </code>
 </p>
 <p>
@@ -29375,7 +29412,12 @@ Find <code class = "incode">value</code> in a slice by performing a linear searc
 <p>
 Find <code class = "incode">value</code> in a slice by performing a binary search.</p>
 <p class="code">
-<code style="white-space: break-spaces">func(T, V) findSorted(values: const [..] T, value: V)-&gt;{index: u64, success: bool}
+<code style="white-space: break-spaces">func(T, V) findSorted(values: const [..] T, value: V)-&gt;struct(T, V)
+{ 
+	index: u64
+	success: bool
+}
+
 </code>
 </p>
 <p>
@@ -30870,7 +30912,13 @@ Transform a string to an <code class = "incode">u8</code>.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func parse(s: const [..] u8)-&gt;{value: f64, eat: u32, ovf: bool} throw
+<code style="white-space: break-spaces">func parse(s: const [..] u8)-&gt;struct
+{ 
+	value: f64
+	eat: u32
+	ovf: bool
+}
+ throw
 </code>
 </p>
 <p>
@@ -31865,7 +31913,13 @@ s32</td>
 <p>
 Convert an utf8 buffer in binary to an unsigned integer value Returns the value and the number of bytes used to make the conversion <code class = "incode">ovf</code> will be true in case of overflow.</p>
 <p class="code">
-<code style="white-space: break-spaces">func parseB64(str: string)-&gt;{value: u64, eat: u32, ovf: bool} throw
+<code style="white-space: break-spaces">func parseB64(str: string)-&gt;struct
+{ 
+	value: u64
+	eat: u32
+	ovf: bool
+}
+ throw
 </code>
 </p>
 <p>
@@ -31882,7 +31936,12 @@ Convert an utf8 buffer in binary to an unsigned integer value Returns the value 
 <p>
 Convert an utf8 buffer to a boolean Returns the value and the number of bytes used to make the conversion.</p>
 <p class="code">
-<code style="white-space: break-spaces">func parseBool(str: string)-&gt;{value: bool, eat: u32} throw
+<code style="white-space: break-spaces">func parseBool(str: string)-&gt;struct
+{ 
+	value: bool
+	eat: u32
+}
+ throw
 </code>
 </p>
 <p>
@@ -31899,7 +31958,13 @@ Convert an utf8 buffer to a boolean Returns the value and the number of bytes us
 <p>
 Convert an utf8 buffer to a floating point value Returns the value and the number of bytes used to make the conversion <code class = "incode">ovf</code> will be true in case of overflow.</p>
 <p class="code">
-<code style="white-space: break-spaces">func parseF32(str: string)-&gt;{value: f32, eat: u32, ovf: bool} throw
+<code style="white-space: break-spaces">func parseF32(str: string)-&gt;struct
+{ 
+	value: f32
+	eat: u32
+	ovf: bool
+}
+ throw
 </code>
 </p>
 <p>
@@ -31914,7 +31979,13 @@ Convert an utf8 buffer to a floating point value Returns the value and the numbe
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func parseF64(str: string)-&gt;{value: f64, eat: u32, ovf: bool} throw
+<code style="white-space: break-spaces">func parseF64(str: string)-&gt;struct
+{ 
+	value: f64
+	eat: u32
+	ovf: bool
+}
+ throw
 </code>
 </p>
 <p>
@@ -31948,7 +32019,12 @@ Parse an identifier name in the sens of swag (ascii).</p>
 <p>
 Convert an utf8 buffer to a simple rune.</p>
 <p class="code">
-<code style="white-space: break-spaces">func parseRune(str: string)-&gt;{value: rune, eat: u32} throw
+<code style="white-space: break-spaces">func parseRune(str: string)-&gt;struct
+{ 
+	value: rune
+	eat: u32
+}
+ throw
 </code>
 </p>
 <p>
@@ -31963,7 +32039,13 @@ Convert an utf8 buffer to a simple rune.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func parseS16(str: string)-&gt;{value: s16, eat: u32, ovf: bool} throw
+<code style="white-space: break-spaces">func parseS16(str: string)-&gt;struct
+{ 
+	value: s16
+	eat: u32
+	ovf: bool
+}
+ throw
 </code>
 </p>
 <p>
@@ -31978,7 +32060,13 @@ Convert an utf8 buffer to a simple rune.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func parseS32(str: string)-&gt;{value: s32, eat: u32, ovf: bool} throw
+<code style="white-space: break-spaces">func parseS32(str: string)-&gt;struct
+{ 
+	value: s32
+	eat: u32
+	ovf: bool
+}
+ throw
 </code>
 </p>
 <p>
@@ -31993,7 +32081,13 @@ Convert an utf8 buffer to a simple rune.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func parseS64(str: string)-&gt;{value: s64, eat: u32, ovf: bool} throw
+<code style="white-space: break-spaces">func parseS64(str: string)-&gt;struct
+{ 
+	value: s64
+	eat: u32
+	ovf: bool
+}
+ throw
 </code>
 </p>
 <p>
@@ -32010,7 +32104,13 @@ Convert an utf8 buffer to a simple rune.</p>
 <p>
 Convert an utf8 buffer to an signed integer value Returns the value and the number of bytes used to make the conversion <code class = "incode">ovf</code> will be true in case of overflow.</p>
 <p class="code">
-<code style="white-space: break-spaces">func parseS8(str: string)-&gt;{value: s8, eat: u32, ovf: bool} throw
+<code style="white-space: break-spaces">func parseS8(str: string)-&gt;struct
+{ 
+	value: s8
+	eat: u32
+	ovf: bool
+}
+ throw
 </code>
 </p>
 <p>
@@ -32027,7 +32127,12 @@ Convert an utf8 buffer to an signed integer value Returns the value and the numb
 <p>
 Convert an utf8 buffer to a Core.String String in the buffer can be quoted (but the result will not be in that case).</p>
 <p class="code">
-<code style="white-space: break-spaces">func parseString(str: string)->{value: <a href="#Core_String">Core.String</a>, eat: u32} throw
+<code style="white-space: break-spaces">func parseString(str: string)->struct
+{ 
+	value: <a href="#Core_String">Core.String</a>
+	eat: u32
+}
+ throw
 </code>
 </p>
 <p>
@@ -32042,7 +32147,13 @@ Convert an utf8 buffer to a Core.String String in the buffer can be quoted (but 
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func parseU16(str: string)-&gt;{value: u16, eat: u32, ovf: bool} throw
+<code style="white-space: break-spaces">func parseU16(str: string)-&gt;struct
+{ 
+	value: u16
+	eat: u32
+	ovf: bool
+}
+ throw
 </code>
 </p>
 <p>
@@ -32057,7 +32168,13 @@ Convert an utf8 buffer to a Core.String String in the buffer can be quoted (but 
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func parseU32(str: string)-&gt;{value: u32, eat: u32, ovf: bool} throw
+<code style="white-space: break-spaces">func parseU32(str: string)-&gt;struct
+{ 
+	value: u32
+	eat: u32
+	ovf: bool
+}
+ throw
 </code>
 </p>
 <p>
@@ -32072,7 +32189,13 @@ Convert an utf8 buffer to a Core.String String in the buffer can be quoted (but 
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func parseU64(str: string)-&gt;{value: u64, eat: u32, ovf: bool} throw
+<code style="white-space: break-spaces">func parseU64(str: string)-&gt;struct
+{ 
+	value: u64
+	eat: u32
+	ovf: bool
+}
+ throw
 </code>
 </p>
 <p>
@@ -32089,7 +32212,13 @@ Convert an utf8 buffer to a Core.String String in the buffer can be quoted (but 
 <p>
 Convert an utf8 buffer in decimal to an unsigned integer value Returns the value and the number of bytes used to make the conversion <code class = "incode">ovf</code> will be true in case of overflow.</p>
 <p class="code">
-<code style="white-space: break-spaces">func parseU8(str: string)-&gt;{value: u8, eat: u32, ovf: bool} throw
+<code style="white-space: break-spaces">func parseU8(str: string)-&gt;struct
+{ 
+	value: u8
+	eat: u32
+	ovf: bool
+}
+ throw
 </code>
 </p>
 <p>
@@ -32106,7 +32235,13 @@ Convert an utf8 buffer in decimal to an unsigned integer value Returns the value
 <p>
 Convert an utf8 buffer in hexadecimal to an unsigned integer value Returns the value and the number of bytes used to make the conversion <code class = "incode">ovf</code> will be true in case of overflow.</p>
 <p class="code">
-<code style="white-space: break-spaces">func parseX64(str: string)-&gt;{value: u64, eat: u32, ovf: bool} throw
+<code style="white-space: break-spaces">func parseX64(str: string)-&gt;struct
+{ 
+	value: u64
+	eat: u32
+	ovf: bool
+}
+ throw
 </code>
 </p>
 <p>
@@ -34969,7 +35104,12 @@ Returns a DateTime containing the current date and time.</p>
 <p>
 Convert a string to a DateTime with the given format.</p>
 <p class="code">
-<code style="white-space: break-spaces">func parse(str: string, fmt = DateTimeFormat.DateTime, checkDate = true)->{value: <a href="#Core_Time_DateTime">Core.Time.DateTime</a>, eat: u32} throw
+<code style="white-space: break-spaces">func parse(str: string, fmt = DateTimeFormat.DateTime, checkDate = true)->struct
+{ 
+	value: <a href="#Core_Time_DateTime">Core.Time.DateTime</a>
+	eat: u32
+}
+ throw
 </code>
 </p>
 <p>
@@ -36524,7 +36664,13 @@ The frequency of the precise counter, in ticks per second.</p>
 <p>
 Convert a 64 bits value to a date.</p>
 <p class="code">
-<code style="white-space: break-spaces">func ticksToDate(ticks: <a href="core.html#Core_Time_Ticks">Core.Time.Ticks</a>)->{year: u16, month: u16, day: u16}
+<code style="white-space: break-spaces">func ticksToDate(ticks: <a href="core.html#Core_Time_Ticks">Core.Time.Ticks</a>)->struct
+{ 
+	year: u16
+	month: u16
+	day: u16
+}
+
 </code>
 </p>
 <p>
@@ -36541,7 +36687,14 @@ Convert a 64 bits value to a date.</p>
 <p>
 Convert a 64 bits tick value to a time.</p>
 <p class="code">
-<code style="white-space: break-spaces">func ticksToTime(ticks: <a href="core.html#Core_Time_Ticks">Core.Time.Ticks</a>)->{hour: u16, minute: u16, second: u16, millisecond: u16}
+<code style="white-space: break-spaces">func ticksToTime(ticks: <a href="core.html#Core_Time_Ticks">Core.Time.Ticks</a>)->struct
+{ 
+	hour: u16
+	minute: u16
+	second: u16
+	millisecond: u16
+}
+
 </code>
 </p>
 <p>
@@ -36703,7 +36856,7 @@ Eat all spaces, and returns the remaining string (trim left).</p>
 <h3 class="content" id="Core_Tokenize_getTo"><span class="titletype">func</span> <span class="titlelight">Tokenize.</span><span class="titlestrong">getTo</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\tokenize.swg#L164" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\tokenize.swg#L165" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -36720,7 +36873,7 @@ Returns a sub string starting at <code class = "incode">startByteIndex</code> an
 <h3 class="content" id="Core_Tokenize_getToSpace"><span class="titletype">func</span> <span class="titlelight">Tokenize.</span><span class="titlestrong">getToSpace</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\tokenize.swg#L144" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\tokenize.swg#L145" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -36737,7 +36890,7 @@ Returns the first substring of <code class = "incode">str</code>, stopping at th
 <h3 class="content" id="Core_Tokenize_getWhileAlnum"><span class="titletype">func</span> <span class="titlelight">Tokenize.</span><span class="titlestrong">getWhileAlnum</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\tokenize.swg#L154" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\tokenize.swg#L155" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -36754,7 +36907,7 @@ Returns the first substring of <code class = "incode">str</code> containing only
 <h3 class="content" id="Core_Tokenize_split"><span class="titletype">func</span> <span class="titlelight">Tokenize.</span><span class="titlestrong">split</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\tokenize.swg#L76" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\tokenize.swg#L77" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -37772,7 +37925,12 @@ u32</td>
 <p>
 Get the unicode character pointed by <code class = "incode">buffer</code>, and the number of u16 to encode it Will return <code class = "incode">RuneError</code> for an invalid utf16 sequence.</p>
 <p class="code">
-<code style="white-space: break-spaces">func decodeRune(buffer: const [..] u16)-&gt;{c: rune, eat: u32}
+<code style="white-space: break-spaces">func decodeRune(buffer: const [..] u16)-&gt;struct
+{ 
+	c: rune
+	eat: u32
+}
+
 </code>
 </p>
 <p>
@@ -38407,7 +38565,12 @@ Status for the special one-byte case.</p>
 <p>
 Returns the byte index of the given rune index.</p>
 <p class="code">
-<code style="white-space: break-spaces">func byteIndex(buffer: const [..] u8, charIndex: u64)-&gt;{index: u64, success: bool}
+<code style="white-space: break-spaces">func byteIndex(buffer: const [..] u8, charIndex: u64)-&gt;struct
+{ 
+	index: u64
+	success: bool
+}
+
 </code>
 </p>
 <p>
@@ -38494,7 +38657,12 @@ Returns the number of runes in an utf8 buffer.</p>
 <p>
 Get the last unicode rune of the utf8 slice, and the number of bytes to encode it.</p>
 <p class="code">
-<code style="white-space: break-spaces">func decodeLastRune(buffer: const [..] u8)-&gt;{c: rune, eat: u32}
+<code style="white-space: break-spaces">func decodeLastRune(buffer: const [..] u8)-&gt;struct
+{ 
+	c: rune
+	eat: u32
+}
+
 </code>
 </p>
 <p>
@@ -38511,7 +38679,12 @@ Get the last unicode rune of the utf8 slice, and the number of bytes to encode i
 <p>
 Get the unicode rune pointed by <code class = "incode">buffer</code>, and the number of bytes to encode it.</p>
 <p class="code">
-<code style="white-space: break-spaces">func decodeRune(buffer: const [..] u8)-&gt;{c: rune, eat: u32}
+<code style="white-space: break-spaces">func decodeRune(buffer: const [..] u8)-&gt;struct
+{ 
+	c: rune
+	eat: u32
+}
+
 </code>
 </p>
 <p>

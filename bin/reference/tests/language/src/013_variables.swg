@@ -1,15 +1,24 @@
 /**
-To declare a variable, use the `var` keyword, followed by `:` and then the type.
+To declare a variable, use the `let` or `var` keyword, followed by `:` and then the type.
+
+`let` is used for a variable that cannot be changed after the initial affectation.
+
+`var` is used for a variable that can be changed again after the initial affectation.
 */
 #test
 {
     {
-        // Variable 'a' is of type 'u32' and its value is '1'.
+        // Variable 'a' is of type 'u32' and its value is '1'. It cannot be changed.
         let a: u32 = 1
         @assert(a == 1)
 
         let b: string = "string"
         @assert(b == "string")
+
+        // Variable 'c' is declared with 'var', so it can be changed.
+        var c: s32 = 42
+        c += 1
+        @assert(c == 43)
     }
 
     // We have already seen that we can declare multiple variables on the same line.

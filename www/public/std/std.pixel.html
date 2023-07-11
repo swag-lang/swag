@@ -4206,7 +4206,14 @@ Set r,g,b with floats in the range [0 1].</p>
 <p>
 Retrieve all components as floating point values between 0 and 1.</p>
 <p class="code">
-<code style="white-space: break-spaces">func toArgbf(const self)-&gt;{a: f32, r: f32, g: f32, b: f32}
+<code style="white-space: break-spaces">func toArgbf(const self)-&gt;struct
+{ 
+	a: f32
+	r: f32
+	g: f32
+	b: f32
+}
+
 </code>
 </p>
 <p>
@@ -4223,7 +4230,13 @@ Retrieve all components as floating point values between 0 and 1.</p>
 <p>
 Returns hue, saturation, lightness.</p>
 <p class="code">
-<code style="white-space: break-spaces">func toHsl(using const self)-&gt;{h: f32, s: f32, l: f32}
+<code style="white-space: break-spaces">func toHsl(using const self)-&gt;struct
+{ 
+	h: f32
+	s: f32
+	l: f32
+}
+
 </code>
 </p>
 <p>
@@ -4240,7 +4253,13 @@ Returns hue, saturation, lightness.</p>
 <p>
 Retrieve all components as floating point values between 0 and 1.</p>
 <p class="code">
-<code style="white-space: break-spaces">func toRgbf(const self)-&gt;{r: f32, g: f32, b: f32}
+<code style="white-space: break-spaces">func toRgbf(const self)-&gt;struct
+{ 
+	r: f32
+	g: f32
+	b: f32
+}
+
 </code>
 </p>
 <p>
@@ -10615,7 +10634,12 @@ Bind a render target.</p>
 <p>
 Returns the extent in both directions of a given LineCapStyle.</p>
 <p class="code">
-<code style="white-space: break-spaces">func capStyleExtent(capStyle: <a href="#Pixel_LineCapStyle">Pixel.LineCapStyle</a>, lineSize: f32, capScale: f32)->{w: f32, l: f32}
+<code style="white-space: break-spaces">func capStyleExtent(capStyle: <a href="#Pixel_LineCapStyle">Pixel.LineCapStyle</a>, lineSize: f32, capScale: f32)->struct
+{ 
+	w: f32
+	l: f32
+}
+
 </code>
 </p>
 <p>
@@ -13815,7 +13839,12 @@ Get a render target of the given size releaseRenderTarget must be called to rele
 <p>
 Get the actual render target size.</p>
 <p class="code">
-<code style="white-space: break-spaces">func getTargetSize(using self)-&gt;{s32, s32}
+<code style="white-space: break-spaces">func getTargetSize(using self)-&gt;struct
+{ 
+	width: s32
+	height: s32
+}
+
 </code>
 </p>
 <p>

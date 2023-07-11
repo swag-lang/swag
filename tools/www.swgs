@@ -106,12 +106,12 @@ func addLine(line: string)
         return
     }
 
-    stateBold   := false
-    stateItalic := false
-    stateCode   := false
+    var stateBold = false
+    var stateItalic = false
+    var stateCode = false
 
     // Process character by character, in order to detect some 'markdown' stuff
-    for i := 0; i < @countof(line); i += 1
+    for var i = 0; i < @countof(line); i += 1
     {
         // Bold with '**'
         if line[i] == "*"'u8 and line[i+1] == "*"'u8
@@ -219,10 +219,10 @@ func flushCode()
     g_Edit.setText(g_Code)
     g_Edit.lexAll()
 
-    res := g_Edit.getTextAndStyles()
+    var res = g_Edit.getTextAndStyles()
 
     g_Edit.styles[0].colFg = Pixel.Argb.Black
-    lastStyle := -1
+    var lastStyle = -1
     loop i: res.text
     {
         if res.styles[i] != lastStyle
@@ -231,8 +231,8 @@ func flushCode()
                 g_Buf += "</span>"
             lastStyle = res.styles[i]
 
-            color := g_Edit.styles[lastStyle].colFg
-            hsl := color.toHsl()
+            var color = g_Edit.styles[lastStyle].colFg
+            var hsl = color.toHsl()
             hsl.l = Math.clamp(hsl.l, 0, 0.5)
             color = Pixel.Color.fromHsl(hsl.h, hsl.s, hsl.l)
 
@@ -258,14 +258,14 @@ func addLineCode(l: string)
 
 func processFile(fileName: string)
 {
-    lines := assume File.readAllLines(fileName)
-    for i := 0; i < @countof(lines); i += 1
+    var lines = assume File.readAllLines(fileName)
+    for var i = 0; i < @countof(lines); i += 1
     {
-        l := lines[i]
-        lineTrim := lines[i]
+        var l = lines[i]
+        var lineTrim = lines[i]
         lineTrim.trim()
 
-        curState := g_State.back()
+        var curState = g_State.back()
 
         // Some state changes
         if Utf8.startsWith(lineTrim, "/**")
@@ -366,7 +366,7 @@ func processFile(fileName: string)
                 continue
             }
 
-            lineLine := l
+            var lineLine = l
             if Utf8.startsWith(lineLine, "    ")
                 lineLine.remove(0, 4)
             addLineCode(lineLine)
@@ -387,7 +387,7 @@ func processFile(fileName: string)
         stateLeave(g_State.popBack())
 }
 
-func generateOverview(in, out: string)
+func generateOverview(in, out: string, old: bool)
 {
     g_Buf.clear()
     g_Toc.clear()
@@ -397,52 +397,55 @@ func generateOverview(in, out: string)
     g_SubTitle = false
     g_BaseTitle = 3
 
-    files := assume Directory.enumerateFiles(in, ".swg", recurse: true)
+    var files = assume Directory.enumerateFiles(in, ".swg", recurse = true)
     files.sort(func(a, b) => a.fullname <=> b.fullname)
 
     // Create styles
-    //g_Buf += "<?php include('html_start.php'); include('header.php'); ?>\n"
-    /*g_Buf += """
-        <style>
-        <?php include('css/style.php'); ?>
+    if old
+    {
+        g_Buf += "<?php include('html_start.php'); include('header.php'); ?>\n"
+        g_Buf += """
+            <style>
+            <?php include('css/style.php'); ?>
 
-        .left {
-            overflow-y: scroll;
-        }
-
-        .right {
-            overflow-y: scroll;
-            padding-left: 10px;
-        }
-
-        .left h1 {
-            margin-bottom: 0px;
-        }
-
-        .left ul {
-            padding-left: 20px;
-        }
-
-        .left a {
-            color: black;
-        }
-
-        @media (min-width: 1024px) {
-            html, body {
-                height: 100%;
+            .left {
+                overflow-y: scroll;
             }
 
-            pre {
-                margin: 20px;
+            .right {
+                overflow-y: scroll;
+                padding-left: 10px;
             }
-        }
-        </style>
-    """*/
+
+            .left h1 {
+                margin-bottom: 0px;
+            }
+
+            .left ul {
+                padding-left: 20px;
+            }
+
+            .left a {
+                color: black;
+            }
+
+            @media (min-width: 1024px) {
+                html, body {
+                    height: 100%;
+                }
+
+                pre {
+                    margin: 20px;
+                }
+            }
+            </style>
+        """
+    }
 
     // Main page (left and right parts, left is for table of content, right is for content)
     g_Buf += "<div class=\"lg:flex flex-1\">\n"
     g_Buf += "<div class=\"left h-full lg:w-[350px]\" x-data=\"{ open_content: false }\">\n"
-    seekToc := g_Buf.length // This will be the place where we will insert the 'g_Toc' table of content
+    let seekToc = g_Buf.length // This will be the place where we will insert the 'g_Toc' table of content
     g_Buf += "</div>\n"
 
     // Right page start
@@ -460,11 +463,11 @@ func generateOverview(in, out: string)
     visit v: files
     {
         var title: String = Path.getFileNameWithoutExtension(v.fullname)
-        fileName := title
+        var fileName = title
         title = title[4..]
 
         // If there's an additional '_' after 'NNN_', then this is a 'sub part'.
-        wasSubTitle := g_SubTitle
+        let wasSubTitle = g_SubTitle
         g_SubTitle = title[0] == "_"'u8
         if g_SubTitle
             title = title[1..]
@@ -499,8 +502,11 @@ func generateOverview(in, out: string)
     // Close html page
     g_Buf += "</div>\n"
     g_Buf += "</div>\n"
-    //g_Buf += "</div>\n"
-    //g_Buf += "<?php include('html_end.php'); ?>\n"
+    if old
+    {
+        g_Buf += "</div>\n"
+        g_Buf += "<?php include('html_end.php'); ?>\n"
+    }
 
     g_Buf.insert(seekToc, g_Toc)
 
@@ -509,7 +515,7 @@ func generateOverview(in, out: string)
 
 func convertMd(in, out: string)
 {
-    files := assume Directory.enumerateFiles(in, ".md", recurse: true)
+    var files = assume Directory.enumerateFiles(in, ".md", recurse = true)
     visit v: files
     {
         g_Buf.clear()
@@ -531,8 +537,8 @@ func convertMd(in, out: string)
         g_State.add(State.Paragraph)
         processFile(v.fullname)
 
-        title := Path.getFileNameWithoutExtension(v.fullname)
-        outName := Path.combine(out, title)
+        let title = Path.getFileNameWithoutExtension(v.fullname)
+        var outName = Path.combine(out, title)
         outName += ".blade.php"
 
         //g_Buf += "</div>\n"
@@ -546,6 +552,8 @@ func convertMd(in, out: string)
 
 #run
 {
-    generateOverview("../bin/reference/tests/language/src", "../www/resources/views/pages/g/overview.blade.php")
-    convertMd("../www/resources/md", "../www/resources/views/pages/g")
+    generateOverview("../bin/reference/tests/language/src", "../web/language.php", true)
+
+    //generateOverview("../bin/reference/tests/language/src", "../www/resources/views/pages/g/overview.blade.php", false)
+    //convertMd("../www/resources/md", "../www/resources/views/pages/g")
 }
