@@ -49,26 +49,26 @@
 
     // A floating point value has the usual C/C++ form.
     {
-        var a = 1.5
+        let a = 1.5
         @assert(a == 1.5)
         #assert @typeof(a) == f32
 
-        var b = 0.11
+        let b = 0.11
         @assert(b == 0.11)
 
-        var c = 15e2
+        let c = 15e2
         @assert(c == 15e2)
 
-        var d = 15e+2
+        let d = 15e+2
         @assert(d == 15e2)
 
-        var e = -1E-1
+        let e = -1E-1
         @assert(e == -0.1)
     }
 
     // By default, a floating point value is `f32`, not `f64` (aka `double`) like in C/C++.
     {
-        var a = 1.5
+        let a = 1.5
         @assert(a == 1.5)
         #assert @typeof(a) == f32
         #assert @typeof(a) != f64
@@ -82,16 +82,16 @@ You can also **postfix** a literal number by a type.
 #test
 {
     // Declare 'a' to be a 'f64' variable assigned to '1.5'
-    var a = 1.5'f64
+    let a = 1.5'f64
     @assert(a == 1.5)
     @assert(a == 1.5'f64)
     #assert @typeof(a) == f64
 
     // 'b' is a new variable of type 'u8' initialized with '10'.
-    var b = 10'u8
+    let b = 10'u8
     @assert(b == 10)
     #assert @typeof(b) == u8
 
-    var c = 1'u32
+    let c = 1'u32
     #assert @typeof(c) == u32
 }

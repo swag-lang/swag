@@ -26,7 +26,7 @@ The caller will then have to deal with the error in some way. It can `catch` it,
 func myFunc()
 {
     // Dismiss the eventual error with 'catch' and continue execution
-    var cpt = catch count("fileName")
+    let cpt = catch count("fileName")
 
     // And test it with @errmsg, which returns the 'throw' corresponding string
     if @errmsg

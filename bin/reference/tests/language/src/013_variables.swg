@@ -5,23 +5,23 @@ To declare a variable, use the `var` keyword, followed by `:` and then the type.
 {
     {
         // Variable 'a' is of type 'u32' and its value is '1'.
-        var a: u32 = 1
+        let a: u32 = 1
         @assert(a == 1)
 
-        var b: string = "string"
+        let b: string = "string"
         @assert(b == "string")
     }
 
     // We have already seen that we can declare multiple variables on the same line.
     {
-        var a, b: u32 = 123
+        let a, b: u32 = 123
         @assert(a == 123)
         @assert(b == 123)
     }
 
     // Or
     {
-        var a: u32 = 12, b: f32 = 1.5
+        let a: u32 = 12, b: f32 = 1.5
         @assert(a == 12)
         @assert(b == 1.5)
     }
@@ -58,28 +58,28 @@ We have seen that the type is optional in the declaration if it can be deduced f
 {
     // These are a bunch of **type inferences**.
     {
-        var a = 1.5
+        let a = 1.5
         @assert(a == 1.5)
         #assert @typeof(a) == f32
 
-        var b = "string"
+        let b = "string"
         @assert(b == "string")
         #assert @typeof(b) == string
 
-        var c = 1.5'f64
+        let c = 1.5'f64
         @assert(c == 1.5)
         #assert @typeof(c) == f64
     }
 
     // The same goes for multiple variables.
     {
-        var a, b = true
+        let a, b = true
         @assert(a == true)
         @assert(b == true)
         #assert @typeof(a) == @typeof(true)
         #assert @typeof(b) == @typeof(a)
 
-        var c = 1.5, d = "string"
+        let c = 1.5, d = "string"
         @assert(c == 1.5)
         @assert(d == "string")
         #assert @typeof(c) == f32

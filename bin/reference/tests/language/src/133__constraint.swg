@@ -19,11 +19,11 @@ A type constraint can be added when declaring a generic type. If a function or a
     }
 
     // This is ok.
-    var res1 = sum's32(1, 2)
+    let res1 = sum's32(1, 2)
     @assert(res1 == 3)
 
     // But the following would generate an error because the type is 'f32'.
-    // var res1 = sum'f32(1, 2)
+    // let res1 = sum'f32(1, 2)
 }
 
 /**

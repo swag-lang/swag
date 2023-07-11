@@ -28,8 +28,8 @@ A slice is a pointer on a buffer of datas, and a `u64` to count the number of el
     // At runtime, `@dataof` will return the address of the values, `@countof` the number of elements.
     {
         var a: const [..] u32 = [10, 20, 30, 40, 50]
-        var count = @countof(a)
-        var addr = @dataof(a)
+        let count = @countof(a)
+        let addr = @dataof(a)
         @assert(count == 5)
         @assert(addr[0] == 10)
         @assert(addr[4] == 50)
@@ -40,10 +40,10 @@ A slice is a pointer on a buffer of datas, and a `u64` to count the number of el
 
     // You can create a slice with your own `pointer` and `count` using `@mkslice`.
     {
-        var array: [4] u32 = [10, 20, 30, 40]
+        let array: [4] u32 = [10, 20, 30, 40]
 
         // Creates a slice of 'array' (a view, or subpart) starting at index 2, with 2 elements.
-        var slice: [..] u32 = @mkslice(&array[0] + 2, 2)
+        let slice: [..] u32 = @mkslice(&array[0] + 2, 2)
 
         @assert(@countof(slice) == 2)
         @assert(slice[0] == 30)
@@ -56,8 +56,8 @@ A slice is a pointer on a buffer of datas, and a `u64` to count the number of el
 
     // For a string, the slice must be `const` because a string is immutable.
     {
-        var str = "string"
-        var strSlice: const [..] u8 = @mkslice(@dataof(str), 2)
+        let str = "string"
+        let strSlice: const [..] u8 = @mkslice(@dataof(str), 2)
         @assert(strSlice[0] == "s"'u8)
         @assert(strSlice[1] == "t"'u8)
     }
@@ -70,68 +70,68 @@ A slice is a pointer on a buffer of datas, and a `u64` to count the number of el
 {
     // Instead of `@mkslice`, you can slice something with the `..` operator. For example you can slice a string.
     {
-        var str = "string"
+        let str = "string"
 
         // Creates a slice starting at byte 0 and ending at byte 3.
-        var slice = str[1..3]
+        let slice = str[1..3]
 
         @assert(slice == "tri")
     }
 
     // The upper limit is **included** by default. If you want to exclude it, use `..<` insteand of `..`.
     {
-        var str = "string"
-        var slice = str[1..<3]
+        let str = "string"
+        let slice = str[1..<3]
         @assert(slice == "tr")
     }
 
     // You can omit the upper bound if you want to slice to the end.
     {
-        var str = "string"
-        var slice = str[2..]
+        let str = "string"
+        let slice = str[2..]
         @assert(slice == "ring")
     }
 
     // You can omit the lower bound if you want to slice from the start (0).
     {
-        var str = "string"
-        var slice = str[..2]        // Index 2 is included
+        let str = "string"
+        let slice = str[..2]        // Index 2 is included
         @assert(slice == "str")
-        var slice1 = str[..<2]      // Index 2 is excluded
+        let slice1 = str[..<2]      // Index 2 is excluded
         @assert(slice1 == "st")
     }
 
     // You can also slice an array.
     {
-        var arr = [10, 20, 30, 40]
-        var slice = arr[2..3]
+        let arr = [10, 20, 30, 40]
+        let slice = arr[2..3]
         @assert(slice[0] == 30)
         @assert(slice[1] == 40)
         @assert(@countof(slice) == 2)
 
         // Creates a slice for the whole array
-        var slice1 = arr[..]
+        let slice1 = arr[..]
         @assert(@countof(slice1) == @countof(arr))
     }
 
     // You can slice another slice.
     {
-        var arr = [10, 20, 30, 40]
-        var slice1 = arr[1..3]
+        let arr = [10, 20, 30, 40]
+        let slice1 = arr[1..3]
         @assert(slice1[0] == 20)
         @assert(slice1[1] == 30)
         @assert(slice1[2] == 40)
 
-        var slice2 = slice1[1..2]
+        let slice2 = slice1[1..2]
         @assert(slice2[0] == 30)
         @assert(slice2[1] == 40)
     }
 
     // You can transform a pointer to a slice.
     {
-        var arr = [10, 20, 30, 40]
-        var ptr = &arr[2]
-        var slice = ptr[0..1]
+        let arr = [10, 20, 30, 40]
+        let ptr = &arr[2]
+        let slice = ptr[0..1]
         @assert(slice[0] == 30)
         @assert(slice[1] == 40)
         @assert(@countof(slice) == 2)

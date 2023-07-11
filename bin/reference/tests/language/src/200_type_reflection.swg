@@ -5,36 +5,36 @@ In Swag, types are also values that can be inspected at compile time or at runti
 {
     // You can get the type of an expression with `@typeof`, or just with the type itself (**types are also values**).
     {
-        var ptr1 = @typeof(s8)
+        let ptr1 = @typeof(s8)
         @assert(ptr1.name == "s8")
         @assert(ptr1 == s8)
 
-        var ptr2 = @typeof(s16)
+        let ptr2 = @typeof(s16)
         @assert(ptr2.name == "s16")
         @assert(ptr2 == s16)
 
-        var ptr3 = s32
+        let ptr3 = s32
         @assert(ptr3.name == "s32")
         @assert(ptr3 == @typeof(s32))
 
-        var ptr4 = s64
+        let ptr4 = s64
         @assert(ptr4.name == "s64")
         @assert(ptr4 == s64)
     }
 
     // The return result of `@typeof` is a const pointer to a `Swag.TypeInfo` kind of structure. This is an alias for the `typeinfo` type.
     {
-        var ptr = bool
+        let ptr = bool
         @assert(@typeof(ptr) == @typeof(const *Swag.TypeInfoNative))
 
-        var ptr1 = #type [2] s32
+        let ptr1 = #type [2] s32
         @assert(@typeof(ptr1) == @typeof(const *Swag.TypeInfoArray))
         @assert(ptr1.name == "[2] s32")
     }
 
     // The `TypeInfo` structure contains a different enum value for each type.
     {
-        var ptr = f64
+        let ptr = f64
         @assert(@typeof(ptr.kind).fullname == "Swag.TypeInfoKind")
         @assert(ptr.sizeof == @sizeof(f64))
     }

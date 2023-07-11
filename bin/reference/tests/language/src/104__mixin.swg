@@ -92,7 +92,7 @@
         #[Swag.Mixin]
         func setVar(value: s32)
         {
-            var @alias0 = value
+            let @alias0 = value
         }
 
         setVar(|a| 10)  // Passing alias name 'a'

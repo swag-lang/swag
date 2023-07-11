@@ -11,15 +11,15 @@ With the `Swag.CompilerMsgMask.SemFunctions` flag, for example, `#message` will 
     let itf = @compiler()
 
     // Get the current message
-    var msg = itf.getMessage()
+    let msg = itf.getMessage()
 
     // We know that the type in the message is a function because of the '#message' mask.
     // So we can safely cast.
-    var typeFunc = cast(const *Swag.TypeInfoFunc) msg.type
+    let typeFunc = cast(const *Swag.TypeInfoFunc) msg.type
 
     // The message name, for `Swag.CompilerMsgMask.SemFunctions`, is the name of the
     // function being compiled.
-    var nameFunc = msg.name
+    let nameFunc = msg.name
 
     // As an example, we count that name if it starts with "XX".
     // But we could use custom function attributes instead...

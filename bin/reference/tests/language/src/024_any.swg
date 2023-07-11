@@ -22,8 +22,8 @@
 
     // `any` is in fact a pointer to the value, and a `typeinfo`. `@dataof` can be used to retrieve the pointer to the value.
     {
-        var a: any = 6
-        var ptr = cast(const *s32) @dataof(a)
+        let a: any = 6
+        let ptr = cast(const *s32) @dataof(a)
         @assert(dref ptr == 6)
     }
 

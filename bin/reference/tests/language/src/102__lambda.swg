@@ -7,11 +7,11 @@ A lambda is just a **pointer to a function**.
     func myFunction1(x: s32) => x * x
 
     // 'ptr0' is declared as a pointer to a function that takes no parameter, and returns nothing
-    var ptr0: func() = &myFunction0
+    let ptr0: func() = &myFunction0
     ptr0()
 
     // Here type of 'ptr1' is deduced from 'myFunction1'
-    var ptr1 = &myFunction1
+    let ptr1 = &myFunction1
     @assert(myFunction1(2) == 4)
     @assert(ptr1(2) == 4)
 }
@@ -95,7 +95,7 @@ Lambdas can have default parameters values.
 #test
 {
     {
-        var x = func(val = true) {
+        let x = func(val = true) {
             @assert(val == true)
         }
 

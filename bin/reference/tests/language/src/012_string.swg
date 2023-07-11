@@ -60,10 +60,10 @@ You can concatenate some values if the values are known at compile time. Use the
     #assert a == "the devil number is 666"
 
     const b = 666
-    var c = "the devil number is not " ++ (b + 1) ++ "!"
+    let c = "the devil number is not " ++ (b + 1) ++ "!"
     @assert(c == "the devil number is not 667!")
 
-    var d = "they are " ++ 4 ++ " apples in " ++ (2*2) ++ " baskets"
+    let d = "they are " ++ 4 ++ " apples in " ++ (2*2) ++ " baskets"
     @assert(d == "they are 4 apples in 4 baskets")
 }
 
@@ -181,23 +181,23 @@ A single *character* can be casted to every unsigned integer type.
 #test
 {
     {
-        var a = "0"'u8
+        let a = "0"'u8
         @assert(a == 48)
         @assert(@typeof(a) == @typeof(u8))
 
-        var b = "1"'u16
+        let b = "1"'u16
         @assert(b == 49)
         @assert(@typeof(b) == @typeof(u16))
 
-        var c = "2"'u32
+        let c = "2"'u32
         @assert(c == 50)
         @assert(@typeof(c) == @typeof(u32))
 
-        var d = "3"'u64
+        let d = "3"'u64
         @assert(d == 51)
         @assert(@typeof(d) == @typeof(u64))
 
-        var e = "4"'rune
+        let e = "4"'rune
         @assert(e == 52)
         @assert(@typeof(e) == @typeof(rune))
     }

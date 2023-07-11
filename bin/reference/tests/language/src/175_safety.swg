@@ -48,7 +48,7 @@ For 8 or 16 bits, you can promote an operation to 32 bits by using ',up'.
 */
 #test
 {
-    var x = 255'u8 +,up 1
+    let x = 255'u8 +,up 1
     @assert(x == 256)
     @assert(@typeof(x) == u32)
 }
@@ -58,18 +58,18 @@ Swag will also check that a cast does not lose information.
 */
 #test
 {
-    var x1 = 255'u8
+    let x1 = 255'u8
 
     //var y0 = cast(s8) x1     // This would lose information and panic, as 255 cannot be encoded in 's8'
     //@print(y0)
 
-    var y1 = cast,over(s8) x1  // But ',over' can be used on the cast operation too
+    let y1 = cast,over(s8) x1  // But ',over' can be used on the cast operation too
     @assert(y1 == -1)
 
-    var x2 = -1's8
+    let x2 = -1's8
     //var y2 = cast(u8) x2     // This cast also is not possible, because 'x2' is negative and 'y' is 'u8'
     //@print(y)
-    var y2 = cast,over(u8) x2
+    let y2 = cast,over(u8) x2
     @assert(y2 == 255)
 }
 
@@ -96,8 +96,8 @@ Swag will panic if a bad cast from `any` is performed.
 
 #test
 {
-    var x: any = "1"
-    var y = cast(string) x     // This is valid, because this is the correct underlying type
+    let x: any = "1"
+    let y = cast(string) x     // This is valid, because this is the correct underlying type
     //var z = cast(s32) x      // This is not valid, and will panic
     //@assert(z == 0)
 }
@@ -125,7 +125,7 @@ Safety when indexing a slice.
 */
 #test
 {
-    var x: const [..] s32 = [0, 1, 2]
+    let x: const [..] s32 = [0, 1, 2]
     var idx = 1
     @assert(x[idx] == 1)        // '1' is in range, ok
     idx += 9

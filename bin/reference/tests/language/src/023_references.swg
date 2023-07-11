@@ -9,7 +9,7 @@ Swag has also **references**, which are pointers that behave like values.
     // Use 'ref' to declare a reference.
     // Here we declare a reference to the variable 'x'.
     // Note that unlike C++, you have to take the address of 'x' to convert it to a reference.
-    var myRef: const ref s32 = &x
+    let myRef: const ref s32 = &x
 
     // This is a pointer that behaves like a value, so no explicit dereferencing is necessary.
     // You can see this as a kind of an alias.
@@ -67,7 +67,7 @@ func toto(x: const ref s32)
     @assert(x == 4)
 
     // Under the hood, you will get a const address to an 's32'
-    var ptr = &x
+    let ptr = &x
     @assert(dref ptr == 4)
 }
 

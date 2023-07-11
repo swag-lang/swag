@@ -63,7 +63,7 @@
 
     // You are not obliged to name the scope, so this can also be used (for example) as an alternative of a bunch of if/else.
     {
-        var cpt = 0
+        let cpt = 0
         #scope
         {
             if cpt == 1

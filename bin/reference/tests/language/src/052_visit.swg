@@ -7,7 +7,7 @@
         visit value: "ABC"
         {
             // '@index' is also available. It stores the loop index.
-            var a = @index
+            let a = @index
             switch a
             {
             case 0: @assert(value == "A"'u8)
@@ -21,7 +21,7 @@
     {
         visit value, index: "ABC"
         {
-            var a = index
+            let a = index
             switch a
             {
             case 0: @assert(value == "A"'u8)
@@ -35,7 +35,7 @@
     {
         visit "ABC"
         {
-            var a = @alias1    // This is the index
+            let a = @alias1    // This is the index
             @assert(a == @index)
             switch a
             {

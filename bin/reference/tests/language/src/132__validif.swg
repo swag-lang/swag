@@ -20,9 +20,9 @@ The `#validif` expression is evaluated **only once**, whatever the call, so it i
     }
 
     // This is ok.
-    var res1 = sum's32(1, 2)
+    let res1 = sum's32(1, 2)
     @assert(res1 == 3)
-    var res2 = sum's64(10, 20)
+    let res2 = sum's64(10, 20)
     @assert(res2 == 30)
 
     // But the following would generate an error because the type is `f32`.

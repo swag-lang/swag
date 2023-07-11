@@ -81,8 +81,8 @@ These are the basic operators that can be used to manipulate values.
     }
 
     {
-        var x = 5
-        var y = 10
+        let x = 5
+        let y = 10
         @assert(x == 5)
         @assert(x != 10)
         @assert(x <= 5)
@@ -111,11 +111,11 @@ The ternary operator will test an expression, and will return a value depending 
 #test
 {
     // Returns 1 because the expression 'true' is... true.
-    var x = true ? 1 : 666
+    let x = true ? 1 : 666
     @assert(x == 1)
 
     // Returns 666 because the expression 'x == 52' is false.
-    var y = (x == 52) ? 1 : 666
+    let y = (x == 52) ? 1 : 666
     @assert(y == 666)
 }
 
@@ -131,7 +131,7 @@ A <=> B == 1  if A > B
 #test
 {
     {
-        var a = -1.5 <=> 2.31
+        let a = -1.5 <=> 2.31
         #assert @typeof(a) == s32
         @assert(a == -1)
 
@@ -141,11 +141,11 @@ A <=> B == 1  if A > B
     }
 
     {
-        var x1 = 10 <=> 20
+        let x1 = 10 <=> 20
         @assert(x1 == -1)
-        var x2 = 20 <=> 10
+        let x2 = 20 <=> 10
         @assert(x2 == 1)
-        var x3 = 20 <=> 20
+        let x3 = 20 <=> 20
         @assert(x3 == 0)
     }
 }
@@ -159,7 +159,7 @@ The operator `orelse` will return the left expression if it is not zero, otherwi
     // Works with strings, pointers and structures with the `opData` special function (we'll see that later).
     {
         var a = "string1"
-        var b = "string2"
+        let b = "string2"
 
         // c = a if a is not null, else c = b.
         var c = a orelse b
@@ -172,9 +172,9 @@ The operator `orelse` will return the left expression if it is not zero, otherwi
 
     // Works also for basic types like integers.
     {
-        var a = 0
-        var b = 1
-        var c = a orelse b
+        let a = 0
+        let b = 1
+        let c = a orelse b
         @assert(c == b)
     }
 }

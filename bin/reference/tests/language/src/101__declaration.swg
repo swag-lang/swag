@@ -65,7 +65,7 @@ func toto(x: s32, y = Values.A)
 
     // Simple call.
     {
-        var x = sub(5, 2)
+        let x = sub(5, 2)
         @assert(x == 3)
     }
 }
@@ -78,9 +78,9 @@ You can name parameters, and don't have to respect parameters order in that case
     func sub(x, y: s32) => x - y
 
     {
-        var x1 = sub(x = 5, y = 2)
+        let x1 = sub(x = 5, y = 2)
         @assert(x1 == 3)
-        var x2 = sub(y = 5, x = 2)
+        let x2 = sub(y = 5, x = 2)
         @assert(x2 == -3)
     }
 

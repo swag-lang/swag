@@ -9,11 +9,11 @@ Another limitation is that you can only capture 'simple' variables (no struct wi
 {
     // A closure is declared like a lambda, with the captured variables between `|...|` before the function parameters.
     {
-        var a = 125
-        var b = 521
+        let a = 125
+        let b = 521
 
         // Capture 'a' and 'b'
-        var fct: closure() = closure|a, b|()
+        let fct: closure() = closure|a, b|()
         {
             @assert(a == 125)
             @assert(b == 521)
@@ -27,7 +27,7 @@ Another limitation is that you can only capture 'simple' variables (no struct wi
         var a = 125
 
         // Capture 'a' by pointer
-        var fct: closure() = closure|&a|()
+        let fct: closure() = closure|&a|()
         {
             // We can change the value of the local variable 'a'
             dref a += 1
@@ -44,7 +44,7 @@ Another limitation is that you can only capture 'simple' variables (no struct wi
         var a = 125
 
         // Capture 'a' by reference
-        var fct = closure|ref a|()
+        let fct = closure|ref a|()
         {
             // We can change the value of the local variable 'a'
             a += 1
@@ -80,7 +80,7 @@ Another limitation is that you can only capture 'simple' variables (no struct wi
             return res
         }
 
-        var result = fct(4)
+        let result = fct(4)
         @assert(result == 1 + 2 + 3 + 4)
     }
 
@@ -88,7 +88,7 @@ Another limitation is that you can only capture 'simple' variables (no struct wi
     {
         func getInc()->closure()->s32
         {
-            var x = 10
+            let x = 10
 
             return closure|x|()->s32 {
                 x += 1
@@ -96,7 +96,7 @@ Another limitation is that you can only capture 'simple' variables (no struct wi
             }
         }
 
-        var fct = getInc()
+        let fct = getInc()
         @assert(fct() == 11)
         @assert(fct() == 12)
         @assert(fct() == 13)

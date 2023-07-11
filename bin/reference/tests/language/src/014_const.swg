@@ -21,7 +21,7 @@ Constants can have more than just simple types. In that case, there's a memory f
     {
         const a: [3] s32 = [0, 1, 2]
 
-        var ptr = &a[0] // Take the address of the first element
+        let ptr = &a[0] // Take the address of the first element
         @assert(ptr[0] == 0)
         @assert(ptr[2] == 2)
 

@@ -16,7 +16,7 @@
             var a = 666    // 'a' is declared in the scope of 'myMacro'
         }
 
-        var a = 0
+        let a = 0
         myMacro()   // no conflict with the 'a' declared above
         @assert(a == 0)
     }
