@@ -585,7 +585,22 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
         }
     }
 
+    if (node->assignment && node->assignment->semFlags & SEMFLAG_LITERAL_SUFFIX)
+    {
+        if (!node->type || !node->type->typeInfo->isStruct())
+            return context->report({node->assignment->childs.front(), Fmt(Err(Err0532), node->assignment->childs.front()->token.ctext())});
+    }
+
     uint32_t symbolFlags = 0;
+
+    if (node->specFlags & AstVarDecl::SPECFLAG_IS_LET)
+    {
+        /*if (node->assignment && node->assignment->flags & AST_VALUE_COMPUTED)
+            isCompilerConstant = true;
+        else*/
+        symbolFlags |= OVERLOAD_IS_LET;
+    }
+
     if (isCompilerConstant)
         symbolFlags |= OVERLOAD_CONSTANT;
     if (node->kind == AstNodeKind::FuncDeclParam)
@@ -602,8 +617,6 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
         isLocalConstant = true;
     if (node->specFlags & AstVarDecl::SPECFLAG_CONST_ASSIGN)
         symbolFlags |= OVERLOAD_CONST_ASSIGN;
-    if (node->specFlags & AstVarDecl::SPECFLAG_IS_LET)
-        symbolFlags |= OVERLOAD_IS_LET;
     if (node->attributeFlags & ATTRIBUTE_TLS)
         symbolFlags |= OVERLOAD_VAR_TLS;
     if (node->assignment)
