@@ -139,7 +139,7 @@ impl MainWnd
 
         let undo0 = capture.newUndo(.FlattenAll, serial)
         capture.pushUndo(undo0)
-        let img = capture.backImg
+        var img = capture.backImg
         img.resize(w, h, .Bilinear)
         let undo1 = capture.newUndo(.SetImage, serial)
         undo1.newImg = img

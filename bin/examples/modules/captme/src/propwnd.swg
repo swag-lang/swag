@@ -116,7 +116,7 @@ impl PropWnd
         {
             let form = getSelectedBaseForm()
             let field = Reflection.getField(#self.type, #self.name)
-            let valU32 = val
+            var valU32 = val
             Reflection.setFieldValue(form, field, &valU32, true)
         }
 
@@ -701,9 +701,9 @@ impl PropWnd
         {
             bc.painter.setParams(.Antialiased)
             let curSel = cast(*FormLine) me.getSelectedBaseForm()
-            let rect = pos
+            var rect = pos
             rect.inflate(-9, -9)
-            let pen = Pen.createSolid(btn.getThemeColors().btnIcon_Icon, CapSize)
+            var pen = Pen.createSolid(btn.getThemeColors().btnIcon_Icon, CapSize)
             pen.beginCapStyle = .None
             pen.endCapStyle = curSel.endCap
             let (w0, l0) = Painter.capStyleExtent(curSel.endCap, CapSize, pen.capEndScaleX)

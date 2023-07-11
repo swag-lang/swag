@@ -340,7 +340,7 @@ impl IForm for FormImage
                         stc = strength
                         xc = x; yc = y; wc = w; hc = h
                         renderer.removeTexture(&texture)
-                        let img = capture.backImg.toCrop(x1, y1, w, h)
+                        var img = capture.backImg.toCrop(x1, y1, w, h)
                         let st = Math.map(cast(f32) strength, 0, 100, 1, 16)
                         let nw = Math.max(cast(s32) (img.width / st), 4)
                         let nh = Math.max(cast(s32) (img.height / st), 4)
@@ -369,7 +369,7 @@ impl IForm for FormImage
                         const ZoomFactor = 2.5
                         let stw = cast(s32) Math.map(cast(f32) strength, 0, 100, 1, w / ZoomFactor)
                         let sth = cast(s32) Math.map(cast(f32) strength, 0, 100, 1, h / ZoomFactor)
-                        let img = capture.backImg.toCrop(x1+stw, y1+sth, w-stw*2, h-sth*2)
+                        var img = capture.backImg.toCrop(x1+stw, y1+sth, w-stw*2, h-sth*2)
                         img.resize(w, h, .Raw)
                         texture = app.getRenderer().addImage(img)
                     }

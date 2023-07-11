@@ -923,7 +923,7 @@ void initErrors()
     SWAG_ERROR(Err0280, "function '%s' is part of the interface '%s' but is not marked with 'impl'");
     SWAG_ERROR(Err0289, "unexpected 'impl' outside of an 'impl for' block");
     SWAG_ERROR(Err0436, "an immutable variable declared with 'let' should be explicitly initialized");
-    SWAG_ERROR(Err0501, nullptr);
+    SWAG_ERROR(Err0501, "cannot take the address of a local variable declared with 'let'");
     SWAG_ERROR(Err0520, nullptr);
     SWAG_ERROR(Err0521, nullptr);
     SWAG_ERROR(Err0528, nullptr);

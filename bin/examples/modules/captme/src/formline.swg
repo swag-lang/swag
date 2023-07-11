@@ -216,7 +216,7 @@ impl IForm for FormLine
         let sSize = quickMode ? Math.min(startSize, 4) : startSize
         let eSize = quickMode ? Math.min(endSize, 4) : endSize
 
-        let pen = Pen.createDash(dashStyle, borderColor, bSize)
+        var pen = Pen.createDash(dashStyle, borderColor, bSize)
         pen.beginCapStyle  = beginCap
         pen.endCapStyle    = endCap
         pen.capStartScaleX = sSize

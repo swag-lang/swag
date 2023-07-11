@@ -1,6 +1,6 @@
 #test
 {
-    let toto = "10"
+    var toto = "10"
     let r = ref &toto
     var x = 0
     loop r

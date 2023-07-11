@@ -131,6 +131,12 @@ bool SemanticJob::resolveMakePointer(SemanticContext* context)
         child->resolvedSymbolOverload->flags |= OVERLOAD_HAS_MAKE_POINTER;
     }
 
+    if (child->resolvedSymbolOverload && child->resolvedSymbolOverload->flags & OVERLOAD_IS_LET)
+    {
+        Diagnostic diag{node, node->token, Err(Err0501)};
+        return context->report(diag, Diagnostic::hereIs(child->resolvedSymbolOverload->node));
+    }
+
     if (child->resolvedSymbolName->kind == SymbolKind::Function)
     {
         // For a function, if no parameters, then this is for a lambda

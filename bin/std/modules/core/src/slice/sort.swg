@@ -4,7 +4,7 @@
 // Insertion sort algorithm (slow)
 func(T) insertionSort(values: [..] T, cb: closure(T, T)->s32)
 {
-    let buffer = @dataof(values)
+    var buffer = @dataof(values)
     let count = @countof(values)
 
     for var i = 1'u32; i < count; i += 1
@@ -25,7 +25,7 @@ func(T) quickSort(values: [..] T, cb: closure(T, T)->s32)
 
     var begin = 0's64
     var end = count - 1
-    let buffer = @dataof(values)
+    var buffer = @dataof(values)
 
     loop
     {

@@ -607,7 +607,7 @@ impl Undo
                 let f = capture.forms[s]
                 if !acceptsType(@kindof(f))
                     continue
-                let val = oldU32[i]
+                var val = oldU32[i]
                 Reflection.setFieldValue(@dataof(f), valRef, &val, true)
             }
             capture.updateModelFromSelection()

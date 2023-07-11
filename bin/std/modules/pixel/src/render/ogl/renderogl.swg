@@ -900,7 +900,7 @@ impl RenderOgl
 
         let vertexShaderID = glCreateShader(GL_VERTEX_SHADER)
         var vertexSourcePointer = buf.buffer
-        let vertexSourceLength = cast(GLint) buf.length
+        var vertexSourceLength = cast(GLint) buf.length
         glShaderSource(vertexShaderID, 1, &vertexSourcePointer, &vertexSourceLength)
         glCompileShader(vertexShaderID)
         try setShaderCompileError(vertexShaderID)
@@ -910,7 +910,7 @@ impl RenderOgl
 
         let fragmentShaderID = glCreateShader(GL_FRAGMENT_SHADER)
         var pixelSourcePointer = buf.buffer
-        let pixelSourceLength = cast(GLint) buf.length
+        var pixelSourceLength = cast(GLint) buf.length
         glShaderSource(fragmentShaderID, 1, &pixelSourcePointer, &pixelSourceLength)
         glCompileShader(fragmentShaderID)
         try setShaderCompileError(fragmentShaderID)

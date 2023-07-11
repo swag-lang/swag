@@ -1,7 +1,7 @@
 //#global skip
 #test
 {
-    let toto = false
+    var toto = false
     let r = ref &toto
     if r and r
     {

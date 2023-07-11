@@ -50,7 +50,7 @@ func solveCollisions()
         var v1 = g_Objs[i]
         for var j = i + 1; j < g_Objs.count; j += 1
         {
-            let v2 = g_Objs[j]
+            var v2 = g_Objs[j]
             var n = v1.positionCurrent - v2.positionCurrent
             let d = n.length()
             if d < v1.radius + v2.radius

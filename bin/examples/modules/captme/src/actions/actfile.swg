@@ -114,7 +114,7 @@ impl IActionUI for ActionFile
             if MessageDlg.confirm(main.surface, txt) != Dialog.BtnYes
                 break
             Cursor.wait()
-            let img = capture.toImage()
+            var img = capture.toImage()
             catch img.save(capture.linkedImage)
             if @errmsg
                 MessageDlg.error(main.surface, @errmsg, "Failed to update file !")
@@ -226,7 +226,7 @@ impl MainWnd
 
         let (w, ?, ?) = catch StrConv.parseS32(edit0.edit.text)
         let (h, ?, ?) = catch StrConv.parseS32(edit1.edit.text)
-        let img = Image.create(w orelse 512, h orelse 512, .RGB8)
+        var img = Image.create(w orelse 512, h orelse 512, .RGB8)
         img.fill(Argb.White)
         newCapture(img)
     }

@@ -40,7 +40,7 @@ A slice is a pointer on a buffer of datas, and a `u64` to count the number of el
 
     // You can create a slice with your own `pointer` and `count` using `@mkslice`.
     {
-        let array: [4] u32 = [10, 20, 30, 40]
+        var array: [4] u32 = [10, 20, 30, 40]
 
         // Creates a slice of 'array' (a view, or subpart) starting at index 2, with 2 elements.
         let slice: [..] u32 = @mkslice(&array[0] + 2, 2)
@@ -129,7 +129,7 @@ A slice is a pointer on a buffer of datas, and a `u64` to count the number of el
 
     // You can transform a pointer to a slice.
     {
-        let arr = [10, 20, 30, 40]
+        var arr = [10, 20, 30, 40]
         let ptr = &arr[2]
         let slice = ptr[0..1]
         @assert(slice[0] == 30)

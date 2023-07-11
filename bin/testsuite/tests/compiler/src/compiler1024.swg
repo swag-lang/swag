@@ -3,7 +3,7 @@
 //#[Swag.PrintBc]
 #test
 {
-	let x = [1, 2, 3]
+	var x = [1, 2, 3]
 	let ptr = &x
 	@init(ptr, 2)
 	@assert(x[0] == 0)

@@ -3,7 +3,7 @@
 //#[Swag.PrintBc]
 #test
 {
-	let pt = ["A"]
+	var pt = ["A"]
 	let slice: [..] ^string = [&pt[0]]
 
 	let str = slice[0, 0]

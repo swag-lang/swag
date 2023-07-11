@@ -1,8 +1,8 @@
 #test
 {
     let toto = 0
-    let toto1 = 1
-    let toto2 = 2
+    var toto1 = 1
+    var toto2 = 2
 
     let ref1 = ref &toto1
     let ref2 = ref &toto2

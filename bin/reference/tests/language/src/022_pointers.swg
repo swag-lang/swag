@@ -17,14 +17,14 @@
 
     // You can take the address of something with `&`.
     {
-        let arr = 1
+        var arr = 1
         let ptr = &arr // Take the address of the variable 'arr'
-        @assert(@typeof(ptr) == const *s32)
+        @assert(@typeof(ptr) == *s32)
     }
 
     // You can get the pointed value with `dref`.
     {
-        let arr = 42
+        var arr = 42
         let ptr = &arr
         @assert(dref ptr == 42)
     }
@@ -67,7 +67,7 @@ If you want to enable **pointer arithmetic**, and make a pointer to **multiple v
 
     // As pointer arithmetic is enabled, you can dereference that kind of pointer by index.
     {
-        let arr = [1, 2, 3, 4]
+        var arr = [1, 2, 3, 4]
         let ptr = &arr[0]
         @assert(@typeof(ptr) == ^s32)
 
