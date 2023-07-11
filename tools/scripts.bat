@@ -16,3 +16,4 @@
 ..\bin\swag ..\bin\examples\scripts\snake.swgs      --args:"swag.test" %1 %2 %3 %4
 ..\bin\swag ..\bin\examples\scripts\2048.swgs       --args:"swag.test" %1 %2 %3 %4
 ..\bin\swag ..\bin\examples\scripts\flappy.swgs     --args:"swag.test" %1 %2 %3 %4
+..\bin\swag ..\bin\examples\scripts\asciiart.swgs   --args:"swag.test" %1 %2 %3 %4

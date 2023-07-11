@@ -88,5 +88,6 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
 
 #run
 {
-    Application.runSurface(4100, 100, 1024, 1024, title = "Ascii art", hook = &onEvent)
+    func test(app: *Application) = if Env.hasArg("swag.test") app.maxRunFrame = 100
+    Application.runSurface(4100, 100, 1024, 1024, title = "Ascii art", hook = &onEvent, init = &test)
 }
