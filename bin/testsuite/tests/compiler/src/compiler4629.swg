@@ -4,8 +4,8 @@
 #[Swag.Optim("", false)]
 #test
 {
-    const x = 255'u16
-    let y = cast(s8) x
+    const x = 0xFFFF'u32
+    let y = cast(s16) x
 }
 
 /*
