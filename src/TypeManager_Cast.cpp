@@ -667,7 +667,7 @@ bool TypeManager::castToNativeRune(SemanticContext* context, TypeInfo* fromType,
     if (fromType->nativeType == NativeTypeKind::Rune)
         return true;
 
-    if (castFlags & CASTFLAG_EXPLICIT && castFlags & CASTFLAG_COERCE)
+    if ((castFlags & CASTFLAG_EXPLICIT) && (castFlags & CASTFLAG_COERCE))
     {
         switch (fromType->nativeType)
         {
@@ -781,7 +781,7 @@ bool TypeManager::castToNativeU8(SemanticContext* context, TypeInfo* fromType, A
     if (fromType->nativeType == NativeTypeKind::U8)
         return true;
 
-    if (!(castFlags & CASTFLAG_EXPLICIT) || (castFlags & CASTFLAG_COERCE))
+    if (!canOverflow(context, fromNode, castFlags))
     {
         switch (fromType->nativeType)
         {
@@ -820,10 +820,6 @@ bool TypeManager::castToNativeU8(SemanticContext* context, TypeInfo* fromType, A
                         errorOutOfRange(context, fromNode, fromType, g_TypeMgr->typeInfoU8);
                     return false;
                 }
-
-                if (!(castFlags & CASTFLAG_JUST_CHECK))
-                    fromNode->typeInfo = g_TypeMgr->typeInfoU8;
-                return true;
             }
             else if (fromType->isUntypedInteger() || fromType->isUntypedBinHex())
             {
@@ -834,10 +830,43 @@ bool TypeManager::castToNativeU8(SemanticContext* context, TypeInfo* fromType, A
                     if (value > UINT8_MAX)
                         return false;
                 }
-
-                return true;
             }
+            break;
 
+        case NativeTypeKind::F32:
+            if (fromNode && fromNode->flags & AST_VALUE_COMPUTED)
+            {
+                if (fromNode->computedValue->reg.f32 <= -SAFETY_ZERO_EPSILON)
+                {
+                    if (!(castFlags & CASTFLAG_JUST_CHECK))
+                        errorOutOfRange(context, fromNode, fromType, g_TypeMgr->typeInfoU8, true);
+                    return false;
+                }
+                else if (fromNode->computedValue->reg.f32 >= (float) UINT8_MAX + 0.5f)
+                {
+                    if (!(castFlags & CASTFLAG_JUST_CHECK))
+                        errorOutOfRange(context, fromNode, fromType, g_TypeMgr->typeInfoU8);
+                    return false;
+                }
+            }
+            break;
+
+        case NativeTypeKind::F64:
+            if (fromNode && fromNode->flags & AST_VALUE_COMPUTED)
+            {
+                if (fromNode->computedValue->reg.f64 <= -SAFETY_ZERO_EPSILON)
+                {
+                    if (!(castFlags & CASTFLAG_JUST_CHECK))
+                        errorOutOfRange(context, fromNode, fromType, g_TypeMgr->typeInfoU8, true);
+                    return false;
+                }
+                else if (fromNode->computedValue->reg.f64 >= (double) UINT8_MAX + 0.5)
+                {
+                    if (!(castFlags & CASTFLAG_JUST_CHECK))
+                        errorOutOfRange(context, fromNode, fromType, g_TypeMgr->typeInfoU8);
+                    return false;
+                }
+            }
             break;
 
         default:
@@ -845,7 +874,35 @@ bool TypeManager::castToNativeU8(SemanticContext* context, TypeInfo* fromType, A
         }
     }
 
-    if (castFlags & CASTFLAG_EXPLICIT && castFlags & CASTFLAG_COERCE)
+    if (!(castFlags & CASTFLAG_EXPLICIT) || (castFlags & CASTFLAG_COERCE))
+    {
+        switch (fromType->nativeType)
+        {
+        case NativeTypeKind::S8:
+        case NativeTypeKind::S16:
+        case NativeTypeKind::S32:
+        case NativeTypeKind::S64:
+        case NativeTypeKind::U16:
+        case NativeTypeKind::U32:
+        case NativeTypeKind::U64:
+            if (fromNode && fromNode->flags & AST_VALUE_COMPUTED)
+            {
+                if (!(castFlags & CASTFLAG_JUST_CHECK))
+                    fromNode->typeInfo = g_TypeMgr->typeInfoU8;
+                return true;
+            }
+            else if (fromType->isUntypedInteger() || fromType->isUntypedBinHex())
+            {
+                return true;
+            }
+            break;
+
+        default:
+            break;
+        }
+    }
+
+    if ((castFlags & CASTFLAG_EXPLICIT) && (castFlags & CASTFLAG_COERCE))
     {
         switch (fromType->nativeType)
         {
@@ -913,7 +970,7 @@ bool TypeManager::castToNativeU16(SemanticContext* context, TypeInfo* fromType, 
     if (fromType->nativeType == NativeTypeKind::U16)
         return true;
 
-    if (!(castFlags & CASTFLAG_EXPLICIT) || (castFlags & CASTFLAG_COERCE))
+    if (!canOverflow(context, fromNode, castFlags))
     {
         switch (fromType->nativeType)
         {
@@ -952,10 +1009,6 @@ bool TypeManager::castToNativeU16(SemanticContext* context, TypeInfo* fromType, 
                         errorOutOfRange(context, fromNode, fromType, g_TypeMgr->typeInfoU16);
                     return false;
                 }
-
-                if (!(castFlags & CASTFLAG_JUST_CHECK))
-                    fromNode->typeInfo = g_TypeMgr->typeInfoU16;
-                return true;
             }
             else if (fromType->isUntypedInteger() || fromType->isUntypedBinHex())
             {
@@ -966,10 +1019,68 @@ bool TypeManager::castToNativeU16(SemanticContext* context, TypeInfo* fromType, 
                     if (value > UINT16_MAX)
                         return false;
                 }
+            }
+            break;
 
+        case NativeTypeKind::F32:
+            if (fromNode && fromNode->flags & AST_VALUE_COMPUTED)
+            {
+                if (fromNode->computedValue->reg.f32 <= -SAFETY_ZERO_EPSILON)
+                {
+                    if (!(castFlags & CASTFLAG_JUST_CHECK))
+                        errorOutOfRange(context, fromNode, fromType, g_TypeMgr->typeInfoU16, true);
+                    return false;
+                }
+                else if (fromNode->computedValue->reg.f32 >= (float) UINT16_MAX + 0.5f)
+                {
+                    if (!(castFlags & CASTFLAG_JUST_CHECK))
+                        errorOutOfRange(context, fromNode, fromType, g_TypeMgr->typeInfoU16);
+                    return false;
+                }
+            }
+            break;
+
+        case NativeTypeKind::F64:
+            if (fromNode && fromNode->flags & AST_VALUE_COMPUTED)
+            {
+                if (fromNode->computedValue->reg.f64 <= -SAFETY_ZERO_EPSILON)
+                {
+                    if (!(castFlags & CASTFLAG_JUST_CHECK))
+                        errorOutOfRange(context, fromNode, fromType, g_TypeMgr->typeInfoU16, true);
+                    return false;
+                }
+                else if (fromNode->computedValue->reg.f64 >= (double) UINT16_MAX + 0.5)
+                {
+                    if (!(castFlags & CASTFLAG_JUST_CHECK))
+                        errorOutOfRange(context, fromNode, fromType, g_TypeMgr->typeInfoU16);
+                    return false;
+                }
+            }
+            break;
+        }
+    }
+
+    if (!(castFlags & CASTFLAG_EXPLICIT) || (castFlags & CASTFLAG_COERCE))
+    {
+        switch (fromType->nativeType)
+        {
+        case NativeTypeKind::S8:
+        case NativeTypeKind::S16:
+        case NativeTypeKind::S32:
+        case NativeTypeKind::S64:
+        case NativeTypeKind::U8:
+        case NativeTypeKind::U32:
+        case NativeTypeKind::U64:
+            if (fromNode && fromNode->flags & AST_VALUE_COMPUTED)
+            {
+                if (!(castFlags & CASTFLAG_JUST_CHECK))
+                    fromNode->typeInfo = g_TypeMgr->typeInfoU16;
                 return true;
             }
-
+            else if (fromType->isUntypedInteger() || fromType->isUntypedBinHex())
+            {
+                return true;
+            }
             break;
 
         default:
@@ -977,7 +1088,7 @@ bool TypeManager::castToNativeU16(SemanticContext* context, TypeInfo* fromType, 
         }
     }
 
-    if (castFlags & CASTFLAG_EXPLICIT && castFlags & CASTFLAG_COERCE)
+    if ((castFlags & CASTFLAG_EXPLICIT) && (castFlags & CASTFLAG_COERCE))
     {
         switch (fromType->nativeType)
         {
@@ -1157,7 +1268,7 @@ bool TypeManager::castToNativeU32(SemanticContext* context, TypeInfo* fromType, 
         }
     }
 
-    if (castFlags & CASTFLAG_EXPLICIT && castFlags & CASTFLAG_COERCE)
+    if ((castFlags & CASTFLAG_EXPLICIT) && (castFlags & CASTFLAG_COERCE))
     {
         switch (fromType->nativeType)
         {
@@ -1332,7 +1443,7 @@ bool TypeManager::castToNativeU64(SemanticContext* context, TypeInfo* fromType, 
         }
     }
 
-    if (castFlags & CASTFLAG_EXPLICIT && castFlags & CASTFLAG_COERCE)
+    if ((castFlags & CASTFLAG_EXPLICIT) && (castFlags & CASTFLAG_COERCE))
     {
         switch (fromType->nativeType)
         {
@@ -1456,7 +1567,7 @@ bool TypeManager::castToNativeS8(SemanticContext* context, TypeInfo* fromType, A
         }
     }
 
-    if (castFlags & CASTFLAG_EXPLICIT && castFlags & CASTFLAG_COERCE)
+    if ((castFlags & CASTFLAG_EXPLICIT) && (castFlags & CASTFLAG_COERCE))
     {
         switch (fromType->nativeType)
         {
@@ -1572,7 +1683,7 @@ bool TypeManager::castToNativeS16(SemanticContext* context, TypeInfo* fromType, 
         }
     }
 
-    if (castFlags & CASTFLAG_EXPLICIT && castFlags & CASTFLAG_COERCE)
+    if ((castFlags & CASTFLAG_EXPLICIT) && (castFlags & CASTFLAG_COERCE))
     {
         switch (fromType->nativeType)
         {
@@ -1672,7 +1783,7 @@ bool TypeManager::castToNativeS32(SemanticContext* context, TypeInfo* fromType, 
         }
     }
 
-    if (castFlags & CASTFLAG_EXPLICIT && castFlags & CASTFLAG_COERCE)
+    if ((castFlags & CASTFLAG_EXPLICIT) && (castFlags & CASTFLAG_COERCE))
     {
         switch (fromType->nativeType)
         {
@@ -1772,7 +1883,7 @@ bool TypeManager::castToNativeS64(SemanticContext* context, TypeInfo* fromType, 
         }
     }
 
-    if (castFlags & CASTFLAG_EXPLICIT && castFlags & CASTFLAG_COERCE)
+    if ((castFlags & CASTFLAG_EXPLICIT) && (castFlags & CASTFLAG_COERCE))
     {
         switch (fromType->nativeType)
         {
@@ -1837,7 +1948,7 @@ bool TypeManager::castToNativeF32(SemanticContext* context, TypeInfo* fromType, 
     if (fromType->nativeType == NativeTypeKind::F32)
         return true;
 
-    if (castFlags & CASTFLAG_EXPLICIT && castFlags & CASTFLAG_COERCE)
+    if ((castFlags & CASTFLAG_EXPLICIT) && (castFlags & CASTFLAG_COERCE))
     {
         switch (fromType->nativeType)
         {
@@ -1950,7 +2061,7 @@ bool TypeManager::castToNativeF64(SemanticContext* context, TypeInfo* fromType, 
     if (fromType->nativeType == NativeTypeKind::F64)
         return true;
 
-    if (castFlags & CASTFLAG_EXPLICIT && castFlags & CASTFLAG_COERCE)
+    if ((castFlags & CASTFLAG_EXPLICIT) && (castFlags & CASTFLAG_COERCE))
     {
         switch (fromType->nativeType)
         {
