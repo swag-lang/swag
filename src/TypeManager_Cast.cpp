@@ -1572,6 +1572,42 @@ bool TypeManager::castToNativeS8(SemanticContext* context, TypeInfo* fromType, A
             }
             break;
 
+        case NativeTypeKind::F32:
+            if (fromNode && fromNode->flags & AST_VALUE_COMPUTED)
+            {
+                if (fromNode->computedValue->reg.f32 <= (float) INT8_MIN - 0.5f)
+                {
+                    if (!(castFlags & CASTFLAG_JUST_CHECK))
+                        errorOutOfRange(context, fromNode, fromType, g_TypeMgr->typeInfoS8);
+                    return false;
+                }
+                else if (fromNode->computedValue->reg.f32 >= (float) INT8_MAX + 0.5f)
+                {
+                    if (!(castFlags & CASTFLAG_JUST_CHECK))
+                        errorOutOfRange(context, fromNode, fromType, g_TypeMgr->typeInfoS8);
+                    return false;
+                }
+            }
+            break;
+
+        case NativeTypeKind::F64:
+            if (fromNode && fromNode->flags & AST_VALUE_COMPUTED)
+            {
+                if (fromNode->computedValue->reg.f64 <= (double) INT8_MIN - 0.5)
+                {
+                    if (!(castFlags & CASTFLAG_JUST_CHECK))
+                        errorOutOfRange(context, fromNode, fromType, g_TypeMgr->typeInfoS8);
+                    return false;
+                }
+                else if (fromNode->computedValue->reg.f64 >= (double) INT8_MAX + 0.5)
+                {
+                    if (!(castFlags & CASTFLAG_JUST_CHECK))
+                        errorOutOfRange(context, fromNode, fromType, g_TypeMgr->typeInfoS8);
+                    return false;
+                }
+            }
+            break;
+
         default:
             break;
         }
@@ -1725,6 +1761,42 @@ bool TypeManager::castToNativeS16(SemanticContext* context, TypeInfo* fromType, 
                     auto value  = native->valueInteger;
                     if (value < INT16_MIN || value > INT16_MAX)
                         return false;
+                }
+            }
+            break;
+
+        case NativeTypeKind::F32:
+            if (fromNode && fromNode->flags & AST_VALUE_COMPUTED)
+            {
+                if (fromNode->computedValue->reg.f32 <= (float) INT16_MIN - 0.5f)
+                {
+                    if (!(castFlags & CASTFLAG_JUST_CHECK))
+                        errorOutOfRange(context, fromNode, fromType, g_TypeMgr->typeInfoS16);
+                    return false;
+                }
+                else if (fromNode->computedValue->reg.f32 >= (float) INT16_MAX + 0.5f)
+                {
+                    if (!(castFlags & CASTFLAG_JUST_CHECK))
+                        errorOutOfRange(context, fromNode, fromType, g_TypeMgr->typeInfoS16);
+                    return false;
+                }
+            }
+            break;
+
+        case NativeTypeKind::F64:
+            if (fromNode && fromNode->flags & AST_VALUE_COMPUTED)
+            {
+                if (fromNode->computedValue->reg.f64 <= (double) INT16_MIN - 0.5)
+                {
+                    if (!(castFlags & CASTFLAG_JUST_CHECK))
+                        errorOutOfRange(context, fromNode, fromType, g_TypeMgr->typeInfoS16);
+                    return false;
+                }
+                else if (fromNode->computedValue->reg.f64 >= (double) INT16_MAX + 0.5)
+                {
+                    if (!(castFlags & CASTFLAG_JUST_CHECK))
+                        errorOutOfRange(context, fromNode, fromType, g_TypeMgr->typeInfoS16);
+                    return false;
                 }
             }
             break;
@@ -1885,6 +1957,42 @@ bool TypeManager::castToNativeS32(SemanticContext* context, TypeInfo* fromType, 
             }
             break;
 
+        case NativeTypeKind::F32:
+            if (fromNode && fromNode->flags & AST_VALUE_COMPUTED)
+            {
+                if (fromNode->computedValue->reg.f32 <= (float) INT32_MIN - 0.5f)
+                {
+                    if (!(castFlags & CASTFLAG_JUST_CHECK))
+                        errorOutOfRange(context, fromNode, fromType, g_TypeMgr->typeInfoS32);
+                    return false;
+                }
+                else if (fromNode->computedValue->reg.f32 >= (float) INT32_MAX + 0.5f)
+                {
+                    if (!(castFlags & CASTFLAG_JUST_CHECK))
+                        errorOutOfRange(context, fromNode, fromType, g_TypeMgr->typeInfoS32);
+                    return false;
+                }
+            }
+            break;
+
+        case NativeTypeKind::F64:
+            if (fromNode && fromNode->flags & AST_VALUE_COMPUTED)
+            {
+                if (fromNode->computedValue->reg.f64 <= (double) INT32_MIN - 0.5)
+                {
+                    if (!(castFlags & CASTFLAG_JUST_CHECK))
+                        errorOutOfRange(context, fromNode, fromType, g_TypeMgr->typeInfoS32);
+                    return false;
+                }
+                else if (fromNode->computedValue->reg.f64 >= (double) INT32_MAX + 0.5)
+                {
+                    if (!(castFlags & CASTFLAG_JUST_CHECK))
+                        errorOutOfRange(context, fromNode, fromType, g_TypeMgr->typeInfoS32);
+                    return false;
+                }
+            }
+            break;
+
         default:
             break;
         }
@@ -2004,6 +2112,42 @@ bool TypeManager::castToNativeS64(SemanticContext* context, TypeInfo* fromType, 
             if (fromNode && fromNode->flags & AST_VALUE_COMPUTED)
             {
                 if (fromNode->computedValue->reg.u64 > INT64_MAX)
+                {
+                    if (!(castFlags & CASTFLAG_JUST_CHECK))
+                        errorOutOfRange(context, fromNode, fromType, g_TypeMgr->typeInfoS64);
+                    return false;
+                }
+            }
+            break;
+
+        case NativeTypeKind::F32:
+            if (fromNode && fromNode->flags & AST_VALUE_COMPUTED)
+            {
+                if (fromNode->computedValue->reg.f32 <= (float) INT64_MIN - 0.5f)
+                {
+                    if (!(castFlags & CASTFLAG_JUST_CHECK))
+                        errorOutOfRange(context, fromNode, fromType, g_TypeMgr->typeInfoS64);
+                    return false;
+                }
+                else if (fromNode->computedValue->reg.f32 >= (float) INT64_MAX + 0.5f)
+                {
+                    if (!(castFlags & CASTFLAG_JUST_CHECK))
+                        errorOutOfRange(context, fromNode, fromType, g_TypeMgr->typeInfoS64);
+                    return false;
+                }
+            }
+            break;
+
+        case NativeTypeKind::F64:
+            if (fromNode && fromNode->flags & AST_VALUE_COMPUTED)
+            {
+                if (fromNode->computedValue->reg.f64 <= (double) INT64_MIN - 0.5)
+                {
+                    if (!(castFlags & CASTFLAG_JUST_CHECK))
+                        errorOutOfRange(context, fromNode, fromType, g_TypeMgr->typeInfoS64);
+                    return false;
+                }
+                else if (fromNode->computedValue->reg.f64 >= (double) INT64_MAX + 0.5)
                 {
                     if (!(castFlags & CASTFLAG_JUST_CHECK))
                         errorOutOfRange(context, fromNode, fromType, g_TypeMgr->typeInfoS64);
