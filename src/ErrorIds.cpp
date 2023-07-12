@@ -76,7 +76,11 @@ void initErrors()
     SWAG_ERROR(Saf0001, "[safety] dereferencing of a null pointer");
     SWAG_ERROR(Saf0002, nullptr);
     SWAG_ERROR(Saf0028, nullptr);
-    SWAG_ERROR(Saf0029, nullptr);
+    SWAG_ERROR(Saf0029, "[safety] value '%s' ('%I64u' in decimal) does not fit in the type '%s'");
+    SWAG_ERROR(Saf0030, "[safety] value '%g' is negative and does not fit in the unsigned type '%s'");
+    SWAG_ERROR(Saf0031, "[safety] value '%g' does not fit in the type '%s'");
+    SWAG_ERROR(Saf0032, "[safety] value '%I64d' is negative and does not fit in the unsigned type '%s'");
+    SWAG_ERROR(Saf0033, "[safety] value '%I64u' does not fit in the type '%s'");
 
     /////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////
@@ -908,9 +912,9 @@ void initErrors()
     SWAG_ERROR(Err0008, "use of unknown named parameter '%s'");
     SWAG_ERROR(Err0122, "use of unknown identifier '%s'");
     SWAG_ERROR(Err0165, "use of unknown type '%s'");
-    SWAG_ERROR(Err0180, "value '%I64d' is negative and does not fit in the unsigned type '%s'");
-    SWAG_ERROR(Err0181, "value '%I64u' does not fit in the type '%s'");
-    SWAG_ERROR(Err0183, "value '%s' ('%I64u' in decimal) does not fit in the type '%s'");
+    SWAG_ERROR(Err0180, nullptr);
+    SWAG_ERROR(Err0181, nullptr);
+    SWAG_ERROR(Err0183, nullptr);
     SWAG_ERROR(Err0056, "x64 backend unsupported os '%s'");
     SWAG_ERROR(Err0073, "'with' should not be used on an enum variable (type is '%s')");
     SWAG_ERROR(Err0080, "ambiguous resolution of enum value '%s'");
@@ -924,8 +928,8 @@ void initErrors()
     SWAG_ERROR(Err0289, "unexpected 'impl' outside of an 'impl for' block");
     SWAG_ERROR(Err0436, "an immutable variable declared with 'let' should be explicitly initialized");
     SWAG_ERROR(Err0501, "cannot take the address of a local variable declared with 'let'");
-    SWAG_ERROR(Err0520, "value '%g' is negative and does not fit in the unsigned type '%s'");
-    SWAG_ERROR(Err0521, "value '%g' does not fit in the type '%s'");
+    SWAG_ERROR(Err0520, nullptr);
+    SWAG_ERROR(Err0521, nullptr);
     SWAG_ERROR(Err0528, nullptr);
     SWAG_ERROR(Err0529, nullptr);
     SWAG_ERROR(Err0544, nullptr);
