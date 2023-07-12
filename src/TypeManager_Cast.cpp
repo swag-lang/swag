@@ -49,7 +49,7 @@ bool TypeManager::errorOutOfRange(SemanticContext* context, AstNode* fromNode, T
     case NativeTypeKind::F64:
         return context->report({fromNode, Fmt(Err(Saf0031), fromNode->computedValue->reg.f64, toType->getDisplayNameC())});
     default:
-        return context->report({fromNode, Fmt(Err(Saf0032), fromNode->computedValue->reg.u64, toType->getDisplayNameC())});
+        return context->report({fromNode, Fmt(Err(Saf0033), fromNode->computedValue->reg.u64, toType->getDisplayNameC())});
     }
 }
 
@@ -1517,20 +1517,36 @@ bool TypeManager::castToNativeS8(SemanticContext* context, TypeInfo* fromType, A
     if (fromType->nativeType == NativeTypeKind::S8)
         return true;
 
-    if (!(castFlags & CASTFLAG_EXPLICIT) || (castFlags & CASTFLAG_COERCE))
+    if (!canOverflow(context, fromNode, castFlags))
     {
         switch (fromType->nativeType)
         {
+        case NativeTypeKind::U8:
+        case NativeTypeKind::U16:
         case NativeTypeKind::U32:
-        {
-            if (!fromType->isUntypedBinHex())
+        case NativeTypeKind::U64:
+            if (fromType->isUntypedBinHex())
+            {
+                auto native = CastTypeInfo<TypeInfoNative>(fromType, fromType->kind);
+                auto value  = native->valueInteger;
+                if (value > UINT8_MAX)
+                {
+                    if (!(castFlags & CASTFLAG_JUST_CHECK))
+                        errorOutOfRange(context, fromNode, fromType, g_TypeMgr->typeInfoS8);
+                    return false;
+                }
                 break;
-            auto native = CastTypeInfo<TypeInfoNative>(fromType, fromType->kind);
-            auto value  = native->valueInteger;
-            if (value <= UINT8_MAX)
-                return true;
-            break;
-        }
+            }
+
+            if (fromNode && fromNode->flags & AST_VALUE_COMPUTED)
+            {
+                if (fromNode->computedValue->reg.u64 > INT8_MAX)
+                {
+                    if (!(castFlags & CASTFLAG_JUST_CHECK))
+                        errorOutOfRange(context, fromNode, fromType, g_TypeMgr->typeInfoS8);
+                    return false;
+                }
+            }
 
         case NativeTypeKind::S16:
         case NativeTypeKind::S32:
@@ -1543,10 +1559,6 @@ bool TypeManager::castToNativeS8(SemanticContext* context, TypeInfo* fromType, A
                         errorOutOfRange(context, fromNode, fromType, g_TypeMgr->typeInfoS8);
                     return false;
                 }
-
-                if (!(castFlags & CASTFLAG_JUST_CHECK))
-                    fromNode->typeInfo = g_TypeMgr->typeInfoS8;
-                return true;
             }
             else if (fromType->isUntypedInteger() || fromType->isUntypedBinHex())
             {
@@ -1557,11 +1569,43 @@ bool TypeManager::castToNativeS8(SemanticContext* context, TypeInfo* fromType, A
                     if (value < INT8_MIN || value > INT8_MAX)
                         return false;
                 }
+            }
+            break;
 
+        default:
+            break;
+        }
+    }
+
+    if (!(castFlags & CASTFLAG_EXPLICIT) || (castFlags & CASTFLAG_COERCE))
+    {
+        switch (fromType->nativeType)
+        {
+        case NativeTypeKind::U32:
+            if (fromType->isUntypedBinHex())
+            {
+                auto native = CastTypeInfo<TypeInfoNative>(fromType, fromType->kind);
+                auto value  = native->valueInteger;
+                if (value <= UINT8_MAX)
+                    return true;
+            }
+            break;
+
+        case NativeTypeKind::S16:
+        case NativeTypeKind::S32:
+        case NativeTypeKind::S64:
+            if (fromNode && fromNode->flags & AST_VALUE_COMPUTED)
+            {
+                if (!(castFlags & CASTFLAG_JUST_CHECK))
+                    fromNode->typeInfo = g_TypeMgr->typeInfoS8;
                 return true;
             }
-
+            else if (fromType->isUntypedInteger() || fromType->isUntypedBinHex())
+            {
+                return true;
+            }
             break;
+
         default:
             break;
         }
