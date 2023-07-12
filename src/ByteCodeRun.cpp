@@ -142,7 +142,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
     case ByteCodeOp::IntrinsicF64x1:
     {
         auto& rb = (ip->flags & BCI_IMM_B) ? ip->b : registersRC[ip->b.u32];
-        SWAG_CHECK(executeMathIntrinsic(&context->jc, ip, registersRC[ip->a.u32], rb, {}, {}, true));
+        SWAG_CHECK(executeMathIntrinsic(&context->jc, ip, registersRC[ip->a.u32], rb, {}, {}, !context->forConstExpr));
         break;
     }
 
@@ -159,7 +159,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
     {
         auto& rb = (ip->flags & BCI_IMM_B) ? ip->b : registersRC[ip->b.u32];
         auto& rc = (ip->flags & BCI_IMM_C) ? ip->c : registersRC[ip->c.u32];
-        SWAG_CHECK(executeMathIntrinsic(&context->jc, ip, registersRC[ip->a.u32], rb, rc, {}, true));
+        SWAG_CHECK(executeMathIntrinsic(&context->jc, ip, registersRC[ip->a.u32], rb, rc, {}, !context->forConstExpr));
         break;
     }
 
@@ -169,7 +169,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
         auto& rb = (ip->flags & BCI_IMM_B) ? ip->b : registersRC[ip->b.u32];
         auto& rc = (ip->flags & BCI_IMM_C) ? ip->c : registersRC[ip->c.u32];
         auto& rd = (ip->flags & BCI_IMM_D) ? ip->d : registersRC[ip->d.u32];
-        SWAG_CHECK(executeMathIntrinsic(&context->jc, ip, registersRC[ip->a.u32], rb, rc, rd, true));
+        SWAG_CHECK(executeMathIntrinsic(&context->jc, ip, registersRC[ip->a.u32], rb, rc, rd, !context->forConstExpr));
         break;
     }
 

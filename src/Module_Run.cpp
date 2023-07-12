@@ -275,7 +275,8 @@ bool Module::executeNode(SourceFile* sourceFile, AstNode* node, JobContext* call
     g_ByteCodeStackTrace->clear();
     g_RunContext->callerContext = callerContext;
     g_RunContext->setup(sourceFile, node, bc);
-    g_RunContext->oldBc = nullptr;
+    g_RunContext->oldBc        = nullptr;
+    g_RunContext->forConstExpr = params ? params->forConstExpr : false;
 
     // Setup run context
     if (params)

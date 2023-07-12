@@ -115,6 +115,7 @@ struct ExecuteNodeParams
     void* debuggerResult[2];
     bool  forDebugger  = false;
     bool  breakOnStart = false;
+    bool  forConstExpr = false;
 };
 
 struct CompilerMessage

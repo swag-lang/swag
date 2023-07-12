@@ -296,7 +296,7 @@ struct SemanticJob : public Job
     static bool         setupFuncDeclParams(SemanticContext* context, TypeInfoFuncAttr* typeInfo, AstNode* funcAttr, AstNode* parameters, bool forGenerics);
     static Diagnostic*  computeNonConstExprNote(AstNode* node);
     static bool         executeCompilerNode(SemanticContext* context, AstNode* node, bool onlyConstExpr);
-    static bool         executeCompilerNode(SemanticContext* context, AstNode* node);
+    static bool         doExecuteCompilerNode(SemanticContext* context, AstNode* node, bool onlyConstExpr);
     static bool         reserveAndStoreToSegment(JobContext* context, DataSegment* storageSegment, uint32_t& storageOffset, ComputedValue* value, TypeInfo* typeInfo, AstNode* assignment);
     static bool         storeToSegment(JobContext* context, DataSegment* storageSegment, uint32_t storageOffset, ComputedValue* value, TypeInfo* typeInfo, AstNode* assignment);
     static bool         collectLiteralsToSegment(JobContext* context, DataSegment* storageSegment, uint32_t baseOffset, uint32_t& offset, AstNode* node);

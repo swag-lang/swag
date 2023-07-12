@@ -119,6 +119,7 @@ struct ByteCodeRunContext
 
     bool debugOnFirstError = false;
     bool sharedStack       = false;
+    bool forConstExpr      = false;
 
     const ExportedCompilerMessage* currentCompilerMessage = nullptr;
     Job*                           currentCompilerJob     = nullptr;

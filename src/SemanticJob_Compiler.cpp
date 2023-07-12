@@ -71,15 +71,15 @@ bool SemanticJob::executeCompilerNode(SemanticContext* context, AstNode* node, b
     if (showContext)
     {
         PushErrCxtStep ec(context, node, ErrCxtStepKind::CompileTime, nullptr);
-        return executeCompilerNode(context, node);
+        return doExecuteCompilerNode(context, node, onlyConstExpr);
     }
     else
     {
-        return executeCompilerNode(context, node);
+        return doExecuteCompilerNode(context, node, onlyConstExpr);
     }
 }
 
-bool SemanticJob::executeCompilerNode(SemanticContext* context, AstNode* node)
+bool SemanticJob::doExecuteCompilerNode(SemanticContext* context, AstNode* node, bool onlyConstExpr)
 {
     // No need to run, this is already baked
     if (node->flags & AST_VALUE_COMPUTED)
@@ -98,6 +98,8 @@ bool SemanticJob::executeCompilerNode(SemanticContext* context, AstNode* node)
     // :CheckConstExprFuncReturnType
     // Be sure we can deal with the type at compile time
     ExecuteNodeParams execParams;
+    execParams.forConstExpr = onlyConstExpr;
+
     if (!(node->semFlags & SEMFLAG_EXEC_RET_STACK))
     {
         auto realType = TypeManager::concreteType(node->typeInfo);
