@@ -717,7 +717,6 @@ void ByteCodeGenJob::emitSafetyCastOverflow(ByteCodeGenContext* context, TypeInf
             inst = EMIT_INST3(context, ByteCodeOp::CompareOpLowerF64, exprNode->resultRegisterRC, 0, re);
             inst->flags |= BCI_IMM_B;
             inst->b.f64 = (double) INT32_MAX + 0.5;
-            ;
             emitAssert(context, re, msg);
             break;
         }
@@ -745,7 +744,6 @@ void ByteCodeGenJob::emitSafetyCastOverflow(ByteCodeGenContext* context, TypeInf
             auto inst = EMIT_INST3(context, ByteCodeOp::CompareOpLowerF64, exprNode->resultRegisterRC, 0, re);
             inst->flags |= BCI_IMM_B;
             inst->b.f64 = (double) INT64_MAX + 0.5;
-            ;
             emitAssert(context, re, msg);
             break;
         }
@@ -847,12 +845,12 @@ void ByteCodeGenJob::emitSafetyCastOverflow(ByteCodeGenContext* context, TypeInf
         {
             auto inst = EMIT_INST3(context, ByteCodeOp::CompareOpGreaterF32, exprNode->resultRegisterRC, 0, re);
             inst->flags |= BCI_IMM_B;
-            inst->b.f32 = -0.5f;
+            inst->b.f32 = -SAFETY_ZERO_EPSILON;
             emitAssert(context, re, msg1);
 
             inst = EMIT_INST3(context, ByteCodeOp::CompareOpLowerF32, exprNode->resultRegisterRC, 0, re);
             inst->flags |= BCI_IMM_B;
-            inst->b.f32 = UINT8_MAX + 0.5;
+            inst->b.f32 = (float) UINT8_MAX + 0.5;
             emitAssert(context, re, msg);
             break;
         }
@@ -861,12 +859,12 @@ void ByteCodeGenJob::emitSafetyCastOverflow(ByteCodeGenContext* context, TypeInf
         {
             auto inst = EMIT_INST3(context, ByteCodeOp::CompareOpGreaterF64, exprNode->resultRegisterRC, 0, re);
             inst->flags |= BCI_IMM_B;
-            inst->b.f64 = -0.5;
+            inst->b.f64 = -SAFETY_ZERO_EPSILON;
             emitAssert(context, re, msg1);
 
             inst = EMIT_INST3(context, ByteCodeOp::CompareOpLowerF64, exprNode->resultRegisterRC, 0, re);
             inst->flags |= BCI_IMM_B;
-            inst->b.f64 = UINT8_MAX + 0.5;
+            inst->b.f64 = (double) UINT8_MAX + 0.5;
             emitAssert(context, re, msg);
             break;
         }
@@ -949,7 +947,7 @@ void ByteCodeGenJob::emitSafetyCastOverflow(ByteCodeGenContext* context, TypeInf
         {
             auto inst = EMIT_INST3(context, ByteCodeOp::CompareOpGreaterF32, exprNode->resultRegisterRC, 0, re);
             inst->flags |= BCI_IMM_B;
-            inst->b.f32 = -0.5f;
+            inst->b.f32 = -SAFETY_ZERO_EPSILON;
             emitAssert(context, re, msg1);
 
             inst = EMIT_INST3(context, ByteCodeOp::CompareOpLowerF32, exprNode->resultRegisterRC, 0, re);
@@ -964,13 +962,12 @@ void ByteCodeGenJob::emitSafetyCastOverflow(ByteCodeGenContext* context, TypeInf
         {
             auto inst = EMIT_INST3(context, ByteCodeOp::CompareOpGreaterF64, exprNode->resultRegisterRC, 0, re);
             inst->flags |= BCI_IMM_B;
-            inst->b.f64 = -0.5;
+            inst->b.f64 = -SAFETY_ZERO_EPSILON;
             emitAssert(context, re, msg1);
 
             inst = EMIT_INST3(context, ByteCodeOp::CompareOpLowerF64, exprNode->resultRegisterRC, 0, re);
             inst->flags |= BCI_IMM_B;
-            inst->b.f64 = UINT16_MAX + 0.5;
-            ;
+            inst->b.f64 = (double) UINT16_MAX + 0.5;
             emitAssert(context, re, msg);
             break;
         }
@@ -1039,7 +1036,7 @@ void ByteCodeGenJob::emitSafetyCastOverflow(ByteCodeGenContext* context, TypeInf
         {
             auto inst = EMIT_INST3(context, ByteCodeOp::CompareOpGreaterF32, exprNode->resultRegisterRC, 0, re);
             inst->flags |= BCI_IMM_B;
-            inst->b.f32 = -0.5f;
+            inst->b.f32 = -SAFETY_ZERO_EPSILON;
             emitAssert(context, re, msg1);
 
             inst = EMIT_INST3(context, ByteCodeOp::CompareOpLowerF32, exprNode->resultRegisterRC, 0, re);
@@ -1053,13 +1050,12 @@ void ByteCodeGenJob::emitSafetyCastOverflow(ByteCodeGenContext* context, TypeInf
         {
             auto inst = EMIT_INST3(context, ByteCodeOp::CompareOpGreaterF64, exprNode->resultRegisterRC, 0, re);
             inst->flags |= BCI_IMM_B;
-            inst->b.f64 = -0.5;
+            inst->b.f64 = -SAFETY_ZERO_EPSILON;
             emitAssert(context, re, msg1);
 
             inst = EMIT_INST3(context, ByteCodeOp::CompareOpLowerF64, exprNode->resultRegisterRC, 0, re);
             inst->flags |= BCI_IMM_B;
-            inst->b.f64 = UINT32_MAX + 0.5;
-            ;
+            inst->b.f64 = (double) UINT32_MAX + 0.5;
             emitAssert(context, re, msg);
             break;
         }
@@ -1113,7 +1109,7 @@ void ByteCodeGenJob::emitSafetyCastOverflow(ByteCodeGenContext* context, TypeInf
         {
             auto inst = EMIT_INST3(context, ByteCodeOp::CompareOpGreaterF32, exprNode->resultRegisterRC, 0, re);
             inst->flags |= BCI_IMM_B;
-            inst->b.f32 = -0.5f;
+            inst->b.f32 = -SAFETY_ZERO_EPSILON;
             emitAssert(context, re, msg1);
             break;
         }
@@ -1122,7 +1118,7 @@ void ByteCodeGenJob::emitSafetyCastOverflow(ByteCodeGenContext* context, TypeInf
         {
             auto inst = EMIT_INST3(context, ByteCodeOp::CompareOpGreaterF64, exprNode->resultRegisterRC, 0, re);
             inst->flags |= BCI_IMM_B;
-            inst->b.f64 = -0.5;
+            inst->b.f64 = -SAFETY_ZERO_EPSILON;
             emitAssert(context, re, msg1);
 
             inst = EMIT_INST3(context, ByteCodeOp::CompareOpLowerF64, exprNode->resultRegisterRC, 0, re);

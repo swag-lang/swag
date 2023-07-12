@@ -756,6 +756,8 @@ bool SemanticJob::resolveExplicitCast(SemanticContext* context)
     uint32_t castFlags = CASTFLAG_EXPLICIT | CASTFLAG_ACCEPT_PENDING;
     if (node->specFlags & AstCast::SPECFLAG_UNCONST)
         castFlags |= CASTFLAG_FORCE_UNCONST;
+    if (node->specFlags & AstCast::SPECFLAG_OVERFLOW)
+        castFlags |= CASTFLAG_CAN_OVERFLOW;
     SWAG_CHECK(TypeManager::makeCompatibles(context, typeNode->typeInfo, nullptr, exprNode, castFlags));
     if (context->result == ContextResult::Pending)
         return true;

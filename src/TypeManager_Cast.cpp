@@ -8,18 +8,49 @@
 #include "LanguageSpec.h"
 #include "Naming.h"
 
+bool TypeManager::canOverflow(SemanticContext* context, AstNode* fromNode, uint64_t castFlags)
+{
+    if ((castFlags & CASTFLAG_EXPLICIT) && (castFlags & CASTFLAG_CAN_OVERFLOW))
+        return true;
+    if (castFlags & CASTFLAG_COERCE)
+        return false;
+    if (fromNode && context->sourceFile && context->sourceFile->module && !context->sourceFile->module->mustEmitSafetyOverflow(fromNode))
+        return true;
+    return false;
+}
+
 bool TypeManager::errorOutOfRange(SemanticContext* context, AstNode* fromNode, TypeInfo* fromType, TypeInfo* toType, bool isNeg)
 {
     if (isNeg)
-        return context->report({fromNode, Fmt(Err(Err0180), fromNode->computedValue->reg.s64, toType->getDisplayNameC())});
+    {
+        switch (fromType->nativeType)
+        {
+        case NativeTypeKind::F32:
+            return context->report({fromNode, Fmt(Err(Err0520), fromNode->computedValue->reg.f32, toType->getDisplayNameC())});
+        case NativeTypeKind::F64:
+            return context->report({fromNode, Fmt(Err(Err0520), fromNode->computedValue->reg.f64, toType->getDisplayNameC())});
+        default:
+            return context->report({fromNode, Fmt(Err(Err0180), fromNode->computedValue->reg.s64, toType->getDisplayNameC())});
+        }
+    }
 
     if (fromNode->kind == AstNodeKind::Literal && fromNode->token.text.length() > 2)
     {
         if (std::tolower(fromNode->token.text[1]) == 'x' || std::tolower(fromNode->token.text[1]) == 'b')
+        {
             return context->report({fromNode, Fmt(Err(Err0183), fromNode->token.ctext(), fromNode->computedValue->reg.u64, toType->getDisplayNameC())});
+        }
     }
 
-    return context->report({fromNode, Fmt(Err(Err0181), fromNode->computedValue->reg.u64, toType->getDisplayNameC())});
+    switch (fromType->nativeType)
+    {
+    case NativeTypeKind::F32:
+        return context->report({fromNode, Fmt(Err(Err0521), fromNode->computedValue->reg.f32, toType->getDisplayNameC())});
+    case NativeTypeKind::F64:
+        return context->report({fromNode, Fmt(Err(Err0521), fromNode->computedValue->reg.f64, toType->getDisplayNameC())});
+    default:
+        return context->report({fromNode, Fmt(Err(Err0181), fromNode->computedValue->reg.u64, toType->getDisplayNameC())});
+    }
 }
 
 bool TypeManager::safetyComputedValue(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* fromNode, uint64_t castFlags)
@@ -1153,7 +1184,7 @@ bool TypeManager::castToNativeU64(SemanticContext* context, TypeInfo* fromType, 
         }
     }
 
-    if (!(castFlags & CASTFLAG_EXPLICIT) || (castFlags & CASTFLAG_COERCE))
+    if (!canOverflow(context, fromNode, castFlags))
     {
         switch (fromType->nativeType)
         {
@@ -1180,7 +1211,51 @@ bool TypeManager::castToNativeU64(SemanticContext* context, TypeInfo* fromType, 
                         return false;
                 }
             }
+            break;
 
+        case NativeTypeKind::F32:
+            if (fromNode && fromNode->flags & AST_VALUE_COMPUTED)
+            {
+                if (fromNode->computedValue->reg.f32 <= -SAFETY_ZERO_EPSILON)
+                {
+                    if (!(castFlags & CASTFLAG_JUST_CHECK))
+                        errorOutOfRange(context, fromNode, fromType, g_TypeMgr->typeInfoU64, true);
+                    return false;
+                }
+            }
+            break;
+
+        case NativeTypeKind::F64:
+            if (fromNode && fromNode->flags & AST_VALUE_COMPUTED)
+            {
+                if (fromNode->computedValue->reg.f64 <= -SAFETY_ZERO_EPSILON)
+                {
+                    if (!(castFlags & CASTFLAG_JUST_CHECK))
+                        errorOutOfRange(context, fromNode, fromType, g_TypeMgr->typeInfoU64, true);
+                    return false;
+                }
+                else if (fromNode->computedValue->reg.f64 >= (double) UINT64_MAX + 0.5)
+                {
+                    if (!(castFlags & CASTFLAG_JUST_CHECK))
+                        errorOutOfRange(context, fromNode, fromType, g_TypeMgr->typeInfoU64);
+                    return false;
+                }
+            }
+            break;
+
+        default:
+            break;
+        }
+    }
+
+    if (!(castFlags & CASTFLAG_EXPLICIT) || (castFlags & CASTFLAG_COERCE))
+    {
+        switch (fromType->nativeType)
+        {
+        case NativeTypeKind::S8:
+        case NativeTypeKind::S16:
+        case NativeTypeKind::S32:
+        case NativeTypeKind::S64:
         case NativeTypeKind::U8:
         case NativeTypeKind::U16:
         case NativeTypeKind::U32:
@@ -1194,8 +1269,8 @@ bool TypeManager::castToNativeU64(SemanticContext* context, TypeInfo* fromType, 
             {
                 return true;
             }
-
             break;
+
         default:
             break;
         }
@@ -1261,6 +1336,7 @@ bool TypeManager::castToNativeU64(SemanticContext* context, TypeInfo* fromType, 
                 }
             }
             return true;
+
         default:
             break;
         }

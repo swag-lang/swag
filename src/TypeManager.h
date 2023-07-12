@@ -41,6 +41,7 @@ const uint64_t CASTFLAG_PTR_REF            = 0x0000000002000000;
 const uint64_t CASTFLAG_NO_TUPLE_TO_STRUCT = 0x0000000004000000;
 const uint64_t CASTFLAG_ACCEPT_MOVE_REF    = 0x0000000008000000;
 const uint64_t CASTFLAG_EXACT              = 0x0000000010000000;
+const uint64_t CASTFLAG_CAN_OVERFLOW       = 0x0000000020000000;
 
 // Stored in SymbolMatchContext.flags
 const uint32_t CASTFLAG_RESULT_STRUCT_CONVERT     = 0x01000000;
@@ -68,6 +69,7 @@ struct TypeManager
 {
     void setup();
 
+    static bool canOverflow(SemanticContext* context, AstNode* fromNode, uint64_t castFlags);
     static bool errorOutOfRange(SemanticContext* context, AstNode* fromNode, TypeInfo* fromType, TypeInfo* toType, bool isNeg = false);
     static bool safetyComputedValue(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* fromNode, uint64_t castFlags);
     static void getCastErrorMsg(Utf8& msg, Utf8& hint, TypeInfo* toType, TypeInfo* fromType, uint64_t castFlags, CastErrorType castError = CastErrorType::Zero, bool forNote = false);
