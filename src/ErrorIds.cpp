@@ -48,39 +48,39 @@ void initErrors()
     /////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////
 
-    SWAG_ERROR(Saf0003, "[safety] '@abs' integer overflow (type is '%s')");
-    SWAG_ERROR(Saf0027, "[safety] '@acos' invalid argument (type is '%s')");
-    SWAG_ERROR(Saf0026, "[safety] '@asin' invalid argument (type is '%s')");
-    SWAG_ERROR(Saf0023, "[safety] '@log' invalid argument (type is '%s')");
-    SWAG_ERROR(Saf0025, "[safety] '@log10' invalid argument (type is '%s')");
-    SWAG_ERROR(Saf0024, "[safety] '@log2' invalid argument (type is '%s')");
-    SWAG_ERROR(Saf0022, "[safety] '@sqrt' invalid argument (type is '%s')");
-    SWAG_ERROR(Saf0006, "[safety] cast from a negative value of type '%s' to an unsigned type '%s'");
-    SWAG_ERROR(Saf0007, "[safety] division by zero");
-    SWAG_ERROR(Saf0008, "[safety] index out of range");
-    SWAG_ERROR(Saf0010, "[safety] integer overflow during '*' operation (type is '%s')");
-    SWAG_ERROR(Saf0009, "[safety] integer overflow during '*=' operation (type is '%s')");
-    SWAG_ERROR(Saf0012, "[safety] integer overflow during '+' operation (type is '%s')");
-    SWAG_ERROR(Saf0011, "[safety] integer overflow during '+=' operation (type is '%s')");
-    SWAG_ERROR(Saf0014, "[safety] integer overflow during '-' operation (type is '%s')");
-    SWAG_ERROR(Saf0013, "[safety] integer overflow during '-=' operation (type is '%s')");
-    SWAG_ERROR(Saf0015, "[safety] integer overflow during '<<' operation (type is '%s')");
-    SWAG_ERROR(Saf0016, "[safety] integer overflow during '>>' operation (type is '%s')");
-    SWAG_ERROR(Saf0017, "[safety] integer overflow when taking the negative value of type '%s'");
-    SWAG_ERROR(Saf0020, "[safety] invalid boolean value (neither 'true' nor 'false')");
-    SWAG_ERROR(Saf0021, "[safety] invalid float value (NaN)");
-    SWAG_ERROR(Saf0004, "[safety] invalid slicing, the lower bound is greater than the upper bound");
-    SWAG_ERROR(Saf0005, "[safety] invalid slicing, the upper bound is out of range");
-    SWAG_ERROR(Saf0018, "[safety] truncated bits when casting expression from '%s' to '%s'");
-    SWAG_ERROR(Saf0019, "[safety] unexpected switch value (switch is marked with 'Swag.Complete')");
-    SWAG_ERROR(Saf0001, "[safety] dereferencing of a null pointer");
-    SWAG_ERROR(Saf0002, nullptr);
+    SWAG_ERROR(Saf0003, "[safety 'math'] '@abs' integer overflow (type is '%s')");
+    SWAG_ERROR(Saf0027, "[safety 'math'] '@acos' invalid argument (type is '%s')");
+    SWAG_ERROR(Saf0026, "[safety 'math'] '@asin' invalid argument (type is '%s')");
+    SWAG_ERROR(Saf0023, "[safety 'math'] '@log' invalid argument (type is '%s')");
+    SWAG_ERROR(Saf0025, "[safety 'math'] '@log10' invalid argument (type is '%s')");
+    SWAG_ERROR(Saf0024, "[safety 'math'] '@log2' invalid argument (type is '%s')");
+    SWAG_ERROR(Saf0022, "[safety 'math'] '@sqrt' invalid argument (type is '%s')");
+    SWAG_ERROR(Saf0007, "[safety 'math'] division by zero");
+    SWAG_ERROR(Saf0008, "[safety 'boundcheck'] index out of range");
+    SWAG_ERROR(Saf0004, "[safety 'boundcheck'] invalid slicing, the lower bound is greater than the upper bound");
+    SWAG_ERROR(Saf0005, "[safety 'boundcheck'] invalid slicing, the upper bound is out of range");
+    SWAG_ERROR(Saf0006, "[safety 'overflow'] cast from a negative value of type '%s' to an unsigned type '%s'");
+    SWAG_ERROR(Saf0010, "[safety 'overflow'] integer overflow during '*' operation (type is '%s')");
+    SWAG_ERROR(Saf0009, "[safety 'overflow'] integer overflow during '*=' operation (type is '%s')");
+    SWAG_ERROR(Saf0012, "[safety 'overflow'] integer overflow during '+' operation (type is '%s')");
+    SWAG_ERROR(Saf0011, "[safety 'overflow'] integer overflow during '+=' operation (type is '%s')");
+    SWAG_ERROR(Saf0014, "[safety 'overflow'] integer overflow during '-' operation (type is '%s')");
+    SWAG_ERROR(Saf0013, "[safety 'overflow'] integer overflow during '-=' operation (type is '%s')");
+    SWAG_ERROR(Saf0015, "[safety 'overflow'] integer overflow during '<<' operation (type is '%s')");
+    SWAG_ERROR(Saf0016, "[safety 'overflow'] integer overflow during '>>' operation (type is '%s')");
+    SWAG_ERROR(Saf0017, "[safety 'overflow'] integer overflow when taking the negative value of type '%s'");
+    SWAG_ERROR(Saf0018, "[safety 'overflow'] truncated bits when casting expression from '%s' to '%s'");
+    SWAG_ERROR(Saf0020, "[safety 'bool'] invalid boolean value (neither 'true' nor 'false')");
+    SWAG_ERROR(Saf0021, "[safety 'nan'] invalid float value (NaN)");
+    SWAG_ERROR(Saf0019, "[safety 'switch'] unexpected switch value (switch is marked with 'Swag.Complete')");
+    SWAG_ERROR(Saf0001, "[safety 'null'] dereferencing of a null pointer");
+    SWAG_ERROR(Saf0002, "<reserved in runtime_err.swg>");
     SWAG_ERROR(Saf0028, nullptr);
-    SWAG_ERROR(Saf0029, "[safety] value '%s' ('%I64u' in decimal) does not fit in the type '%s'");
-    SWAG_ERROR(Saf0030, "[safety] value '%g' is negative and does not fit in the unsigned type '%s'");
-    SWAG_ERROR(Saf0031, "[safety] value '%g' does not fit in the type '%s'");
-    SWAG_ERROR(Saf0032, "[safety] value '%I64d' is negative and does not fit in the unsigned type '%s'");
-    SWAG_ERROR(Saf0033, "[safety] value '%I64u' does not fit in the type '%s'");
+    SWAG_ERROR(Saf0029, "[safety 'overflow'] value '%s' ('%I64u' in decimal) does not fit in the type '%s'");
+    SWAG_ERROR(Saf0030, "[safety 'overflow'] value '%g' is negative and does not fit in the unsigned type '%s'");
+    SWAG_ERROR(Saf0031, "[safety 'overflow'] value '%g' does not fit in the type '%s'");
+    SWAG_ERROR(Saf0032, "[safety 'overflow'] value '%I64d' is negative and does not fit in the unsigned type '%s'");
+    SWAG_ERROR(Saf0033, "[safety 'overflow'] value '%I64u' does not fit in the type '%s'");
 
     /////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////

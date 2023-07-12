@@ -58,7 +58,7 @@ func __checkAny(typeA, typeB: typeinfo, loc: SourceCodeLocation)
 
         if !typeB
         {
-            __strcat(str, MaxLenErrorMsg, "[safety] 'any' value is null and cannot be casted")
+            __strcat(str, MaxLenErrorMsg, "[Saf0002] [safety 'any'] value is null and cannot be casted")
             if typeA
             {
                 __strcat(str, MaxLenErrorMsg, " ('")
@@ -68,7 +68,7 @@ func __checkAny(typeA, typeB: typeinfo, loc: SourceCodeLocation)
         }
         else
         {
-            __strcat(str, Swag.MaxLenErrorMsg, "[safety] invalid dynamic cast from type 'any'")
+            __strcat(str, Swag.MaxLenErrorMsg, "[Saf0002] [safety 'any'] invalid dynamic cast from type 'any'")
             if typeA and typeB
             {
                 __strcat(str, MaxLenErrorMsg, " ('")
