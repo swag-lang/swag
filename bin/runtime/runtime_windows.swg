@@ -289,7 +289,7 @@ func __panicBox(msg, title: string)
     case IDCANCEL:
         __exitError()
     case IDTRYAGAIN:
-        DebugBreak();
+        DebugBreak()
     case IDCONTINUE:
         break
     }

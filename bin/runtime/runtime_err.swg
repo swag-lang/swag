@@ -149,11 +149,11 @@ func @panic(message: string, loc: SourceCodeLocation)
     }
 
     // Print the message first
-    @print("\n");
+    @print("\n")
     @print("########################", "\n")
     @print("! RUNTIME PANIC ATTACK !", "\n")
     @print("########################", "\n")
-    @print("\n");
+    @print("\n")
 
     @print("panic: ", message, "\n")
     @print("--> ")
@@ -163,24 +163,24 @@ func @panic(message: string, loc: SourceCodeLocation)
     // Print the error stack trace if available
     if cxt.traceIndex
     {
-        @print("[error callstack]", "\n");
+        @print("[error callstack]", "\n")
         for var i = cast(s32) cxt.traceIndex - 1; i >= 0; i -= 1
         {
-            @print("error");
+            @print("error")
             @print(" --> ")
             @print(cxt.traces[i].fileName)
-            @print(":");
-            @print(cast(s64) cxt.traces[i].lineStart + 1);
-            @print(":");
-            @print(cast(s64) cxt.traces[i].colStart + 1);
-            @print(":\n");
+            @print(":")
+            @print(cast(s64) cxt.traces[i].lineStart + 1)
+            @print(":")
+            @print(cast(s64) cxt.traces[i].colStart + 1)
+            @print(":\n")
         }
 
         @print("\n")
     }
 
     // Print the calling stack trace
-    @print("[runtime callstack]", "\n");
+    @print("[runtime callstack]", "\n")
     var arr: [64] *void
     let nb = __captureStack(1, arr)
     __logStackTrace(@mkslice(&arr[0], nb))
@@ -201,14 +201,14 @@ func @panic(message: string, loc: SourceCodeLocation)
         @memcpy(&str[0], @dataof(message), len)
         str[len]     = "\n"'u8
         str[len + 1] = "\n"'u8
-        len += 2;
+        len += 2
     }
 
     // Source location
     @memcpy(&str[len], @dataof(loc.fileName), @countof(loc.fileName))
     len += @countof(loc.fileName)
-    @memcpy(&str[len], @dataof(", line "), 7);
-    len += 7;
+    @memcpy(&str[len], @dataof(", line "), 7)
+    len += 7
     let dstLine = &str[len]
     let cptLine = cast(u32) (__itoa(dstLine, cast(s64) loc.lineStart + 1) - dstLine)
     len += cptLine

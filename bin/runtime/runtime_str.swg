@@ -103,7 +103,7 @@ func __ftoa(result: ^u8, value: f64)
         n += 1
     }
     else
-        n = __itoa(result, ipart);
+        n = __itoa(result, ipart)
 
     n[0] = "."'u8
     n += 1

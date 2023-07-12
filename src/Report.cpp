@@ -476,6 +476,7 @@ static bool reportInternal(const Diagnostic& inDiag, const Vector<const Diagnost
 
         g_Workspace->numWarnings++;
         break;
+
     default:
         break;
     }

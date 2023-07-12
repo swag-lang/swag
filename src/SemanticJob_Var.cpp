@@ -601,7 +601,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
             node->kind         = AstNodeKind::ConstDecl;
         }
         else*/
-            symbolFlags |= OVERLOAD_IS_LET;
+        symbolFlags |= OVERLOAD_IS_LET;
     }
 
     if (isCompilerConstant)
@@ -1156,8 +1156,12 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
                     node->assignment->setFlagsValueIsComputed();
                     SWAG_CHECK(reserveAndStoreToSegment(context, storageSegment, storageOffset, node->assignment->computedValue, node->assignment->typeInfo, node->assignment));
 
-                    auto typeList                                   = CastTypeInfo<TypeInfoList>(node->assignment->typeInfo, TypeInfoKind::TypeListArray);
-                    node->assignment->computedValue->reg.u64        = typeList->subTypes.size();
+                    if (node->assignment->kind != AstNodeKind::Literal)
+                    {
+                        auto typeList                            = CastTypeInfo<TypeInfoList>(node->assignment->typeInfo, TypeInfoKind::TypeListArray);
+                        node->assignment->computedValue->reg.u64 = typeList->subTypes.size();
+                    }
+
                     node->assignment->computedValue->storageOffset  = storageOffset;
                     node->assignment->computedValue->storageSegment = storageSegment;
                 }
