@@ -2891,8 +2891,8 @@ bool TypeManager::castToFromAny(SemanticContext* context, TypeInfo* toType, Type
         // From a constant, need to check the type
         if (fromNode && fromNode->flags & AST_VALUE_COMPUTED)
         {
-            void** slice       = (void**) fromNode->computedValue->storageSegment->address(fromNode->computedValue->storageOffset);
-            auto   newTypeInfo = context->sourceFile->module->typeGen.getRealType(fromNode->computedValue->storageSegment, (ExportedTypeInfo*) slice[1]);
+            ExportedAny* any         = (ExportedAny*) fromNode->computedValue->storageSegment->address(fromNode->computedValue->storageOffset);
+            auto         newTypeInfo = context->sourceFile->module->typeGen.getRealType(fromNode->computedValue->storageSegment, (ExportedTypeInfo*) any->type);
 
             if (context->sourceFile->module->mustEmitSafety(fromNode, SAFETY_ANY))
             {
@@ -2908,7 +2908,7 @@ bool TypeManager::castToFromAny(SemanticContext* context, TypeInfo* toType, Type
             {
                 fromNode->typeInfo       = newTypeInfo;
                 fromNode->castedTypeInfo = nullptr;
-                SWAG_CHECK(SemanticJob::derefConstantValue(context, fromNode, fromNode->typeInfo, fromNode->computedValue->storageSegment, slice[0]));
+                SWAG_CHECK(SemanticJob::derefConstantValue(context, fromNode, fromNode->typeInfo, fromNode->computedValue->storageSegment, any->value));
             }
 
             return true;
