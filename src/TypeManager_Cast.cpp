@@ -2888,6 +2888,32 @@ bool TypeManager::castToFromAny(SemanticContext* context, TypeInfo* toType, Type
                 return castError(context, toType, fromType, fromNode, castFlags);
         }
 
+        // From a constant, need to check the type
+        if (fromNode && fromNode->flags & AST_VALUE_COMPUTED)
+        {
+            void** slice       = (void**) fromNode->computedValue->storageSegment->address(fromNode->computedValue->storageOffset);
+            auto   newTypeInfo = context->sourceFile->module->typeGen.getRealType(fromNode->computedValue->storageSegment, (ExportedTypeInfo*) slice[1]);
+
+            if (context->sourceFile->module->mustEmitSafety(fromNode, SAFETY_ANY))
+            {
+                if (!toType->isSame(newTypeInfo, CASTFLAG_EXACT))
+                {
+                    if (!(castFlags & CASTFLAG_JUST_CHECK))
+                        return castError(context, toType, fromType, fromNode, castFlags);
+                    return false;
+                }
+            }
+
+            if (!(castFlags & CASTFLAG_JUST_CHECK))
+            {
+                fromNode->typeInfo       = newTypeInfo;
+                fromNode->castedTypeInfo = nullptr;
+                SWAG_CHECK(SemanticJob::derefConstantValue(context, fromNode, fromNode->typeInfo, fromNode->computedValue->storageSegment, slice[0]));
+            }
+
+            return true;
+        }
+
         if (fromNode && !(castFlags & CASTFLAG_JUST_CHECK))
         {
             // When casting something complexe to any, we will copy the value to the stack to be sure

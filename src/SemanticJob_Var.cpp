@@ -1171,6 +1171,13 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
                     storageSegment = node->computedValue->storageSegment;
                 }
             }
+            else if (typeInfo->isAny())
+            {
+                node->assignment->setFlagsValueIsComputed();
+                SWAG_CHECK(reserveAndStoreToSegment(context, storageSegment, storageOffset, node->assignment->computedValue, node->assignment->typeInfo, node->assignment));
+                node->assignment->computedValue->storageOffset = storageOffset;
+                node->assignment->computedValue->storageSegment = storageSegment;
+            }
 
             node->inheritComputedValue(node->assignment);
             SWAG_ASSERT(node->computedValue);
