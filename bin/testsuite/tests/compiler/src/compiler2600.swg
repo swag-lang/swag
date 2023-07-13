@@ -17,9 +17,10 @@ func toto(cpt: s64, stmt: code)
 }
 
 //#[PrintBc]
+#[Swag.Warn("wrn0009", Swag.WarnLevel.Disable)]
 #test
 {
-    let x = 5's64
+    var x = 5's64
     toto(x)
     {
         G += 1
