@@ -379,7 +379,11 @@ void TypeManager::getCastErrorMsg(Utf8& msg, Utf8& hint, TypeInfo* toType, TypeI
     if (!toType || !fromType)
         return;
 
-    if (castError == CastErrorType::Const)
+    if (castError == CastErrorType::SafetyCastAny)
+    {
+        msg = Fmt(Err(Saf0002), toType->getDisplayNameC());
+    }
+    else if (castError == CastErrorType::Const)
     {
         hint = Hnt(Hnt0022);
         msg  = Fmt(ErrNte(Err0418, forNote), fromType->getDisplayNameC(), toType->getDisplayNameC());
@@ -2899,7 +2903,7 @@ bool TypeManager::castToFromAny(SemanticContext* context, TypeInfo* toType, Type
                 if (!toType->isSame(newTypeInfo, CASTFLAG_EXACT))
                 {
                     if (!(castFlags & CASTFLAG_JUST_CHECK))
-                        return castError(context, toType, fromType, fromNode, castFlags);
+                        return castError(context, toType, newTypeInfo, fromNode, castFlags, CastErrorType::SafetyCastAny);
                     return false;
                 }
             }
