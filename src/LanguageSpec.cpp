@@ -27,7 +27,6 @@ void LanguageSpec::setupNames()
     name__initStackTrace      = "__initStackTrace";
     name__stackTrace          = "__stackTrace";
     name__loaddll             = "__loaddll";
-    name__checkAny            = "__checkAny";
 
     name_swag = "swag";
     name_Swag = "Swag";

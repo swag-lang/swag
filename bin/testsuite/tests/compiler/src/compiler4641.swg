@@ -1,0 +1,11 @@
+#global testerror
+using Swag
+
+#[Swag.Safety("", true)]
+#[Swag.Safety("sanity", false)]
+#test
+{
+    var x: any
+    let a = cast(s32) x
+    @assert(a == 0)
+}

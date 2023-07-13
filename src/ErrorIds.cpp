@@ -74,8 +74,8 @@ void initErrors()
     SWAG_ERROR(Saf0021, "[safety 'nan'] invalid float value (NaN)");
     SWAG_ERROR(Saf0019, "[safety 'switch'] unexpected switch value (switch is marked with 'Swag.Complete')");
     SWAG_ERROR(Saf0001, "[safety 'null'] dereferencing of a null pointer");
-    SWAG_ERROR(Saf0002, "<reserved in runtime_err.swg>");
-    SWAG_ERROR(Saf0028, nullptr);
+    SWAG_ERROR(Saf0002, "[safety 'any'] invalid dynamic cast from type 'any' to type '%s'");
+    SWAG_ERROR(Saf0028, "[safety 'any'] value is null and cannot be casted to '%s'");
     SWAG_ERROR(Saf0029, "[safety 'overflow'] value '%s' ('%I64u' in decimal) does not fit in the type '%s'");
     SWAG_ERROR(Saf0030, "[safety 'overflow'] value '%g' is negative and does not fit in the unsigned type '%s'");
     SWAG_ERROR(Saf0031, "[safety 'overflow'] value '%g' does not fit in the type '%s'");

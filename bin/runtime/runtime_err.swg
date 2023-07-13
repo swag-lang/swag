@@ -48,41 +48,6 @@ func __poperr()
     cxt.traceIndex = cxt.errors[cxt.errorIndex].pushTraceIndex
 }
 
-func __checkAny(typeA, typeB: typeinfo, loc: SourceCodeLocation)
-{
-    if !@typecmp(typeA, typeB, .CastAny)
-    {
-        let cxt = @getcontext()
-        let str = &cxt.errors[0].msgBuf[0]
-        cxt.errors[0].msgBuf[0] = 0
-
-        if !typeB
-        {
-            __strcat(str, MaxLenErrorMsg, "[Saf0002] [safety 'any'] value is null and cannot be casted")
-            if typeA
-            {
-                __strcat(str, MaxLenErrorMsg, " ('")
-                __strcat(str, MaxLenErrorMsg, typeA.name)
-                __strcat(str, MaxLenErrorMsg, "' expected)")
-            }
-        }
-        else
-        {
-            __strcat(str, Swag.MaxLenErrorMsg, "[Saf0002] [safety 'any'] invalid dynamic cast from type 'any'")
-            if typeA and typeB
-            {
-                __strcat(str, MaxLenErrorMsg, " ('")
-                __strcat(str, MaxLenErrorMsg, typeA.name)
-                __strcat(str, MaxLenErrorMsg, "' expected, '")
-                __strcat(str, MaxLenErrorMsg, typeB.name)
-                __strcat(str, MaxLenErrorMsg, "' provided)")
-            }
-        }
-
-        @panic(@mkstring(str, @strlen(str)), loc)
-    }
-}
-
 ////////////////////////////////////////////////////////////
 
 func __initStackTrace()

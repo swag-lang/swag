@@ -4581,10 +4581,6 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             break;
         }
 
-        case ByteCodeOp::InternalCheckAny:
-            emitInternalCall(pp, moduleToGen, g_LangSpec->name__checkAny, {ip->a.u32, ip->b.u32, ip->c.u32});
-            break;
-
         case ByteCodeOp::IntrinsicGetErrMsg:
             SWAG_ASSERT(ip->b.u32 == ip->a.u32 + 1);
             emitInternalCall(pp, moduleToGen, g_LangSpec->name__geterrmsg, {}, regOffset(ip->a.u32));

@@ -165,8 +165,8 @@ struct Module
 
     bool mustOptimizeBytecode(AstNode* node);
     bool mustOptimizeBackend(AstNode* node);
-    bool mustEmitSafetyOverflow(AstNode* node);
-    bool mustEmitSafety(AstNode* node, uint16_t what);
+    bool mustEmitSafetyOverflow(AstNode* node, bool compileTime = false);
+    bool mustEmitSafety(AstNode* node, uint16_t what, bool compileTime = false);
 
     void setBuildPass(BuildPass buildP);
 

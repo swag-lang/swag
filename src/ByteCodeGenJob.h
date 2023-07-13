@@ -66,6 +66,8 @@ enum class SafetyMsg
     IntrinsicASin,
     IntrinsicACos,
     NullCheck,
+    CastAnyNull,
+    CastAny,
     Count,
 };
 

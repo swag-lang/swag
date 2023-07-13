@@ -14,7 +14,7 @@ bool TypeManager::canOverflow(SemanticContext* context, AstNode* fromNode, uint6
         return true;
     if (castFlags & CASTFLAG_COERCE)
         return false;
-    if (fromNode && context->sourceFile && context->sourceFile->module && !context->sourceFile->module->mustEmitSafetyOverflow(fromNode))
+    if (fromNode && context->sourceFile && context->sourceFile->module && !context->sourceFile->module->mustEmitSafetyOverflow(fromNode, true))
         return true;
     return false;
 }
@@ -2894,7 +2894,7 @@ bool TypeManager::castToFromAny(SemanticContext* context, TypeInfo* toType, Type
             ExportedAny* any         = (ExportedAny*) fromNode->computedValue->storageSegment->address(fromNode->computedValue->storageOffset);
             auto         newTypeInfo = context->sourceFile->module->typeGen.getRealType(fromNode->computedValue->storageSegment, (ExportedTypeInfo*) any->type);
 
-            if (context->sourceFile->module->mustEmitSafety(fromNode, SAFETY_ANY))
+            if (context->sourceFile->module->mustEmitSafety(fromNode, SAFETY_ANY, true))
             {
                 if (!toType->isSame(newTypeInfo, CASTFLAG_EXACT))
                 {

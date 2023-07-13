@@ -4237,10 +4237,6 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             storeRT2ToRegisters(context, buildParameters, ip->a.u32, ip->b.u32, allocR, allocT);
             break;
 
-        case ByteCodeOp::InternalCheckAny:
-            emitCall(buildParameters, moduleToGen, g_LangSpec->name__checkAny, allocR, allocT, {ip->a.u32, ip->b.u32, ip->c.u32}, {});
-            break;
-
         case ByteCodeOp::IntrinsicGetErr:
             emitCall(buildParameters, moduleToGen, g_LangSpec->name_aterr, allocR, allocT, {ip->a.u32}, {});
             break;

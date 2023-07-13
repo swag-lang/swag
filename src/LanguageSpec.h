@@ -38,7 +38,6 @@ struct LanguageSpec
     Utf8 name__initStackTrace;
     Utf8 name__stackTrace;
     Utf8 name__loaddll;
-    Utf8 name__checkAny;
 
     Utf8 name_memcpy;
     Utf8 name_memset;

@@ -931,12 +931,12 @@ void Module::printBC()
         bc->print();
 }
 
-bool Module::mustEmitSafetyOverflow(AstNode* node)
+bool Module::mustEmitSafetyOverflow(AstNode* node, bool compileTime)
 {
-    return mustEmitSafety(node, SAFETY_OVERFLOW);
+    return mustEmitSafety(node, SAFETY_OVERFLOW, compileTime);
 }
 
-bool Module::mustEmitSafety(AstNode* node, uint16_t what)
+bool Module::mustEmitSafety(AstNode* node, uint16_t what, bool compileTime)
 {
     if (what == SAFETY_OVERFLOW)
     {
@@ -944,7 +944,16 @@ bool Module::mustEmitSafety(AstNode* node, uint16_t what)
             return false;
     }
 
-    return ((buildCfg.safetyGuards & what) || (node->safetyOn & what)) && !(node->safetyOff & what);
+    if (node->safetyOff & what)
+        return false;
+    if (node->safetyOn & what)
+        return true;
+
+    // At compile time, we must emit safety except if the user has specifically changed it in the code
+    if (compileTime)
+        return true;
+
+    return (buildCfg.safetyGuards & what);
 }
 
 bool Module::mustOptimizeBytecode(AstNode* node)

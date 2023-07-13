@@ -9,7 +9,6 @@ thread_local Utf8 typedMsg[(int) SafetyMsg::Count][(int) NativeTypeKind::Count][
 
 const char* ByteCodeGenJob::safetyMsg(SafetyMsg msg, TypeInfo* toType, TypeInfo* fromType)
 {
-
     int m = (int) msg;
     int i = toType ? (int) toType->nativeType : 0;
     int j = fromType ? (int) fromType->nativeType : 0;
@@ -18,6 +17,14 @@ const char* ByteCodeGenJob::safetyMsg(SafetyMsg msg, TypeInfo* toType, TypeInfo*
     {
         switch (msg)
         {
+        case SafetyMsg::CastAnyNull:
+            SWAG_ASSERT(toType);
+            typedMsg[m][i][j] = Fmt(Err(Saf0028), toType->name.c_str());
+            break;
+        case SafetyMsg::CastAny:
+            SWAG_ASSERT(toType);
+            typedMsg[m][i][j] = Fmt(Err(Saf0002), toType->name.c_str());
+            break;
         case SafetyMsg::NullCheck:
             typedMsg[m][0][0] = Err(Saf0001);
             break;
@@ -363,16 +370,20 @@ void ByteCodeGenJob::emitSafetyCastAny(ByteCodeGenContext* context, AstNode* exp
     auto r0 = reserveRegisterRC(context);
     auto r1 = reserveRegisterRC(context);
 
+    emitSafetyNotZero(context, exprNode->resultRegisterRC[1], 64, safetyMsg(SafetyMsg::CastAnyNull, context->node->typeInfo));
+
     // :AnyTypeSegment
     SWAG_ASSERT(exprNode->hasExtMisc());
     SWAG_ASSERT(exprNode->extMisc()->anyTypeSegment);
     emitMakeSegPointer(context, exprNode->extMisc()->anyTypeSegment, exprNode->extMisc()->anyTypeOffset, r0);
 
-    context->node->allocateComputedValue();
-    computeSourceLocation(context, context->node, &context->node->computedValue->storageOffset, &context->node->computedValue->storageSegment);
-    emitMakeSegPointer(context, context->node->computedValue->storageSegment, context->node->computedValue->storageOffset, r1);
+    auto rflags = reserveRegisterRC(context);
+    auto inst   = EMIT_INST1(context, ByteCodeOp::SetImmediate32, rflags);
+    inst->b.u64 = SWAG_COMPARE_CAST_ANY;
+    inst        = EMIT_INST4(context, ByteCodeOp::IntrinsicTypeCmp, r0, exprNode->resultRegisterRC[1], rflags, r1);
+    freeRegisterRC(context, rflags);
+    emitSafetyNotZero(context, r1, 8, safetyMsg(SafetyMsg::CastAny, context->node->typeInfo));
 
-    EMIT_INST3(context, ByteCodeOp::InternalCheckAny, r0, exprNode->resultRegisterRC[1], r1);
     freeRegisterRC(context, r0);
     freeRegisterRC(context, r1);
 }
