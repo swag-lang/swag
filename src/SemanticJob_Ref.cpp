@@ -881,7 +881,9 @@ bool SemanticJob::resolveArrayPointerDeRef(SemanticContext* context)
         {
             auto ptr = storageSegment->address(storageOffset);
             if (derefConstantValue(context, arrayNode, typePtr->finalType, storageSegment, ptr))
+            {
                 arrayNode->setFlagsValueIsComputed();
+            }
             else if (typePtr->finalType->isStruct())
             {
                 arrayNode->setFlagsValueIsComputed();
@@ -1124,6 +1126,16 @@ bool SemanticJob::derefConstantValue(SemanticContext* context, AstNode* node, Ty
         return true;
     }
 
+    // Any
+    if (typeInfo->isAny())
+    {
+        node->setFlagsValueIsComputed();
+        node->computedValue->storageSegment = storageSegment;
+        node->computedValue->storageOffset  = storageSegment->offset((uint8_t*) ptr);
+        node->computedValue->reg.pointer    = (uint8_t*) typeInfo;
+        return true;
+    }
+
     return derefConstantValue(context, node, typeInfo->kind, typeInfo->nativeType, ptr);
 }
 
@@ -1201,20 +1213,6 @@ bool SemanticJob::derefConstantValue(SemanticContext* context, AstNode* node, Ty
             node->typeInfo = g_TypeMgr->typeInfoBool;
         node->computedValue->reg.b = *(bool*) ptr;
         break;
-    case NativeTypeKind::Any:
-    {
-        void** ppt         = (void**) ptr;
-        void*  anyValue    = ppt[0];
-        auto   anyTypeInfo = (ExportedTypeInfo*) ppt[1];
-        if (anyTypeInfo->kind == TypeInfoKind::Native)
-        {
-            auto anyNative = (ExportedTypeInfoNative*) anyTypeInfo;
-            node->typeInfo = nullptr;
-            return derefConstantValue(context, node, anyNative->base.kind, anyNative->nativeKind, anyValue);
-        }
-
-        return false;
-    }
 
     default:
         return false;

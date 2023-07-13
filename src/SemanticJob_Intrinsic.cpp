@@ -603,7 +603,39 @@ bool SemanticJob::resolveIntrinsicKindOf(SemanticContext* context)
     auto& typeGen    = sourceFile->module->typeGen;
 
     // Will be runtime for an 'any' type
-    if (expr->typeInfo->isAny() || expr->typeInfo->isInterface())
+    if (expr->typeInfo->isAny())
+    {
+        SWAG_CHECK(checkIsConcrete(context, expr));
+
+        if (expr->flags & AST_VALUE_COMPUTED)
+        {
+            SWAG_ASSERT(expr->computedValue);
+            SWAG_ASSERT(expr->computedValue->storageSegment);
+            SWAG_ASSERT(expr->computedValue->storageOffset != UINT32_MAX);
+            ExportedAny* any                   = (ExportedAny*) expr->computedValue->storageSegment->address(expr->computedValue->storageOffset);
+            expr->computedValue->storageOffset = expr->computedValue->storageSegment->offset((uint8_t*) any->type);
+            node->inheritComputedValue(expr);
+            node->flags |= AST_VALUE_IS_TYPEINFO;
+            node->typeInfo = g_TypeMgr->typeInfoTypeType;
+            SWAG_CHECK(setupIdentifierRef(context, node));
+        }
+        else
+        {
+            node->allocateComputedValue();
+            node->computedValue->storageSegment = getConstantSegFromContext(node);
+            SWAG_CHECK(typeGen.genExportedTypeInfo(context, expr->typeInfo, node->computedValue->storageSegment, &node->computedValue->storageOffset, GEN_EXPORTED_TYPE_SHOULD_WAIT, &node->typeInfo));
+            if (context->result != ContextResult::Done)
+                return true;
+            node->byteCodeFct = ByteCodeGenJob::emitIntrinsicKindOf;
+            node->flags |= AST_R_VALUE;
+            SWAG_CHECK(setupIdentifierRef(context, node));
+        }
+
+        return true;
+    }
+
+    // Will be runtime for an 'interface' type
+    if (expr->typeInfo->isInterface())
     {
         SWAG_CHECK(checkIsConcrete(context, expr));
         node->allocateComputedValue();
