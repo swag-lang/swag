@@ -610,6 +610,7 @@ void Report::error(const Utf8& msg)
 {
     g_Log.lock();
     g_Log.setColor(LogColor::Red);
+    g_Log.print("error: ");
     g_Log.print(msg);
     if (msg.back() != '\n')
         g_Log.eol();

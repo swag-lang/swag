@@ -671,6 +671,8 @@ void Diagnostic::printRanges()
     const auto& backLine = lines.back();
     printMargin(false, true);
 
+    bool lastHintIsCompact = !showMultipleCodeLines;
+
     // Print all marks
     auto startIndex = minBlanks;
     for (size_t i = 0; i < ranges.size(); i++)
@@ -698,7 +700,7 @@ void Diagnostic::printRanges()
                 g_Log.print(LogSymbol::HorizontalLine);
         }
 
-        if (i != ranges.size() - 1)
+        if (!r.hint.empty() && (!lastHintIsCompact || i != ranges.size() - 1))
         {
             startIndex++;
             if (r.errorLevel == DiagnosticLevel::Error || r.errorLevel == DiagnosticLevel::Panic || r.errorLevel == DiagnosticLevel::Warning)
@@ -718,7 +720,7 @@ void Diagnostic::printRanges()
     }
 
     // Last hint message on the same line
-    if (!ranges.empty() && !ranges.back().hint.empty())
+    if (!ranges.empty() && !ranges.back().hint.empty() && lastHintIsCompact)
     {
         g_Log.print(" ");
         g_Log.setColor(hintColor);
