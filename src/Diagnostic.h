@@ -149,6 +149,7 @@ struct Diagnostic
     void printSourceCode(bool verboseMode);
     void printSourceLine();
     void printErrorLevel();
+    void printMarginLineNo(int lineNo);
     void printMargin(bool eol = false, bool maxDigits = false, int lineNo = 0);
     void printRemarks();
     void setColorRanges(DiagnosticLevel level);
@@ -181,7 +182,7 @@ struct Diagnostic
     LogColor          errorColor;
     LogColor          codeColor;
     LogColor          hintColor;
-    LogColor          marginCodeColor;
+    LogColor          marginBorderColor;
     LogColor          rangeNoteColor;
     LogColor          warningColor;
     LogColor          noteColor;
@@ -189,6 +190,7 @@ struct Diagnostic
     LogColor          autoRemarkColor;
     LogColor          remarkColor;
     LogColor          sourceFileColor;
+    LogColor          codeLineNoColor;
 
     SourceLocation startLocation;
     SourceLocation endLocation;
@@ -218,4 +220,5 @@ struct Diagnostic
     bool lowPrio         = false;
     bool forceSourceFile = false;
     bool isNote          = false;
+    bool closeFileName   = false;
 };

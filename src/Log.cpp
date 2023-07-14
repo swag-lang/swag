@@ -37,6 +37,13 @@ void Log::print(LogSymbol symbol)
             g_Log.print("\xe2\x94\x82");
         break;
 
+    case LogSymbol::DotCenter:
+        if (g_CommandLine.logAscii)
+            g_Log.print(".");
+        else
+            g_Log.print("\xc2\xb7");
+        break;
+
     case LogSymbol::HorizontalLine:
         if (g_CommandLine.logAscii)
             g_Log.print("-");
@@ -65,11 +72,18 @@ void Log::print(LogSymbol symbol)
             g_Log.print("\xe2\x95\xa4");
         break;
 
-    case LogSymbol::UpRight:
+    case LogSymbol::DownRight:
         if (g_CommandLine.logAscii)
             g_Log.print("*");
         else
             g_Log.print("\xe2\x94\x94");
+        break;
+
+    case LogSymbol::UpRight:
+        if (g_CommandLine.logAscii)
+            g_Log.print("*");
+        else
+            g_Log.print("\xe2\x94\x8c");
         break;
     }
 }

@@ -40,7 +40,9 @@ enum class LogSymbol
     HorizontalLine2,
     HorizontalLineMidVert,
     HorizontalLine2MidVert,
+    DownRight,
     UpRight,
+    DotCenter,
 };
 
 enum class LogPassType

@@ -9,18 +9,19 @@
 
 void Diagnostic::setupColors(bool verboseMode)
 {
-    verboseColor    = LogColor::DarkCyan;
-    errorColor      = verboseMode ? verboseColor : LogColor::Red;
-    codeColor       = verboseMode ? verboseColor : LogColor::White;
-    marginCodeColor = verboseMode ? verboseColor : LogColor::Gray;
-    hintColor       = verboseMode ? verboseColor : LogColor::White;
-    rangeNoteColor  = verboseMode ? verboseColor : LogColor::White;
-    warningColor    = verboseMode ? verboseColor : LogColor::Magenta;
-    noteColor       = verboseMode ? verboseColor : LogColor::Cyan;
-    stackColor      = verboseMode ? verboseColor : LogColor::DarkYellow;
-    remarkColor     = verboseMode ? verboseColor : LogColor::White;
-    autoRemarkColor = verboseMode ? verboseColor : LogColor::Gray;
-    sourceFileColor = verboseMode ? verboseColor : LogColor::Gray;
+    verboseColor      = LogColor::DarkCyan;
+    errorColor        = verboseMode ? verboseColor : LogColor::Red;
+    codeColor         = verboseMode ? verboseColor : LogColor::White;
+    marginBorderColor = verboseMode ? verboseColor : LogColor::Cyan;
+    codeLineNoColor   = verboseMode ? verboseColor : LogColor::Gray;
+    hintColor         = verboseMode ? verboseColor : LogColor::White;
+    rangeNoteColor    = verboseMode ? verboseColor : LogColor::White;
+    warningColor      = verboseMode ? verboseColor : LogColor::Magenta;
+    noteColor         = verboseMode ? verboseColor : LogColor::Cyan;
+    stackColor        = verboseMode ? verboseColor : LogColor::DarkYellow;
+    remarkColor       = verboseMode ? verboseColor : LogColor::White;
+    autoRemarkColor   = verboseMode ? verboseColor : LogColor::Gray;
+    sourceFileColor   = verboseMode ? verboseColor : LogColor::Gray;
 }
 
 void Diagnostic::setup()
@@ -92,6 +93,25 @@ void Diagnostic::printSourceLine()
         g_Log.print(": ");
 }
 
+void Diagnostic::printMarginLineNo(int lineNo)
+{
+    g_Log.setColor(codeLineNoColor);
+
+    auto l = lineNo;
+    int  m = 0;
+    while (l)
+    {
+        l /= 10;
+        m++;
+    }
+
+    while (m++ < MAX_LINE_DIGITS)
+        g_Log.print(" ");
+    if (lineNo)
+        g_Log.print(Fmt("%d", lineNo));
+    g_Log.print(" ");
+}
+
 void Diagnostic::printMargin(bool eol, bool printLineNo, int lineNo)
 {
     if (!printLineNo)
@@ -101,25 +121,9 @@ void Diagnostic::printMargin(bool eol, bool printLineNo, int lineNo)
         return;
     }
 
-    g_Log.setColor(marginCodeColor);
+    printMarginLineNo(lineNo);
 
-    if (printLineNo)
-    {
-        auto l = lineNo;
-        int  m = 0;
-        while (l)
-        {
-            l /= 10;
-            m++;
-        }
-
-        while (m++ < MAX_LINE_DIGITS)
-            g_Log.print(" ");
-        if (lineNo)
-            g_Log.print(Fmt("%d", lineNo));
-    }
-
-    g_Log.print(" ");
+    g_Log.setColor(marginBorderColor);
     g_Log.print(LogSymbol::VerticalLine);
     g_Log.print("  ");
 
@@ -671,7 +675,7 @@ void Diagnostic::printRanges()
     const auto& backLine = lines.back();
     printMargin(false, true);
 
-    bool lastHintIsCompact = !showMultipleCodeLines;
+    bool lastHintIsCompact = false; // !showMultipleCodeLines;
 
     // Print all marks
     auto startIndex = minBlanks;
@@ -761,7 +765,7 @@ void Diagnostic::printRanges()
             if (i == ranges.size() - 1)
             {
                 setColorRanges(r.errorLevel);
-                g_Log.print(LogSymbol::UpRight);
+                g_Log.print(LogSymbol::DownRight);
                 g_Log.print(LogSymbol::HorizontalLine);
                 g_Log.print(LogSymbol::HorizontalLine);
                 g_Log.print(" ");
@@ -819,6 +823,13 @@ void Diagnostic::report(bool verboseMode)
         g_Log.print(textMsg);
         g_Log.eol();
     }
+    else if (!showFileName)
+    {
+        printMarginLineNo(0);
+        g_Log.setColor(marginBorderColor);
+        g_Log.print(LogSymbol::VerticalLine);
+        g_Log.eol();
+    }
     else
     {
         printMargin(true);
@@ -827,11 +838,17 @@ void Diagnostic::report(bool verboseMode)
     // Source file and location on their own line
     if (showFileName)
     {
-        g_Log.setColor(sourceFileColor);
-        g_Log.print("-->");
+        if (showErrorLevel)
+            g_Log.eol();
+        printMarginLineNo(0);
+        g_Log.setColor(marginBorderColor);
+        g_Log.print(LogSymbol::UpRight);
+        g_Log.print(LogSymbol::HorizontalLine);
         g_Log.print(" ");
+        g_Log.setColor(sourceFileColor);
         printSourceLine();
         g_Log.eol();
+        printMargin(false, true);
     }
 
     // Source code
@@ -839,6 +856,15 @@ void Diagnostic::report(bool verboseMode)
     {
         printSourceCode(verboseMode);
         printRanges();
+
+        if (closeFileName)
+        {
+            printMarginLineNo(0);
+            g_Log.setColor(marginBorderColor);
+            g_Log.print(LogSymbol::DownRight);
+            g_Log.print(LogSymbol::HorizontalLine);
+            g_Log.eol();
+        }
     }
 
     // Code remarks
