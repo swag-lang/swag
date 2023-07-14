@@ -7,29 +7,30 @@ func panic(msg: string, loc: Swag.SourceCodeLocation)
 //#[Swag.PrintBc]
 #[Swag.Safety("overflow", true)]
 #[Swag.Optim("", false)]
+#[Swag.Warn("Wrn0009", Swag.WarnLevel.Disable)]
 #test
 {
     {
-        let cxt = @getcontext()
+        var cxt = @getcontext()
         cxt.panic = &panic
         defer cxt.panic = null
 
         {
-            let x = 0xFFFF'u16
-            let x0 = cast(u8) x
+            var x = 0xFFFF'u16
+            var x0 = cast(u8) x
         }
 
         {
-            let x = 0xFFFFFFFF'u32
-            let x0 = cast(u8) x
-            let x1 = cast(u16) x
+            var x = 0xFFFFFFFF'u32
+            var x0 = cast(u8) x
+            var x1 = cast(u16) x
         }
 
         {
-            let x = 0xFFFFFFFF_FFFFFFFF'u64
-            let x0 = cast(u32) x
-            let x1 = cast(u8) x
-            let x2 = cast(u16) x
+            var x = 0xFFFFFFFF_FFFFFFFF'u64
+            var x0 = cast(u32) x
+            var x1 = cast(u8) x
+            var x2 = cast(u16) x
         }
     }
 

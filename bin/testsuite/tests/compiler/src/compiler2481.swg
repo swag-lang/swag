@@ -9,61 +9,62 @@ func panic(msg: string, loc: Swag.SourceCodeLocation)
 #[Safety("overflow", true)]
 #[Optim("", false)]
 //#[PrintBc, optim("bc", false)]
+#[Swag.Warn("Wrn0009", Swag.WarnLevel.Disable)]
 #test
 {
     {
-        let cxt = @getcontext()
+        var cxt = @getcontext()
         cxt.panic = &panic
         defer cxt.panic = null
 
         {
-            let x = -1's8
-            let x0 = cast(u8) x
-            let x1 = cast(u16) x
-            let x2 = cast(u32) x
-            let x3 = cast(u64) x
+            var x = -1's8
+            var x0 = cast(u8) x
+            var x1 = cast(u16) x
+            var x2 = cast(u32) x
+            var x3 = cast(u64) x
         }
 
         {
-            let x = -1's16
-            let x0 = cast(u8) x
-            let x1 = cast(u16) x
-            let x2 = cast(u32) x
-            let x3 = cast(u64) x
+            var x = -1's16
+            var x0 = cast(u8) x
+            var x1 = cast(u16) x
+            var x2 = cast(u32) x
+            var x3 = cast(u64) x
         }
 
         {
-            let x = -1's32
-            let x0 = cast(u8) x
-            let x1 = cast(u16) x
-            let x2 = cast(u32) x
-            let x3 = cast(u64) x
+            var x = -1's32
+            var x0 = cast(u8) x
+            var x1 = cast(u16) x
+            var x2 = cast(u32) x
+            var x3 = cast(u64) x
         }
 
         {
-            let x = -1's64
-            let x0 = cast(u8) x
-            let x1 = cast(u16) x
-            let x2 = cast(u32) x
-            let x3 = cast(u64) x
+            var x = -1's64
+            var x0 = cast(u8) x
+            var x1 = cast(u16) x
+            var x2 = cast(u32) x
+            var x3 = cast(u64) x
         }
 
         {
-            let x = Swag.S16.Max
-            let x0 = cast(u8) x
+            var x = Swag.S16.Max
+            var x0 = cast(u8) x
         }
 
         {
-            let x = Swag.S32.Max
-            let x0 = cast(u8) x
-            let x1 = cast(u16) x
+            var x = Swag.S32.Max
+            var x0 = cast(u8) x
+            var x1 = cast(u16) x
         }
 
         {
-            let x = Swag.S64.Max
-            let x0 = cast(u8) x
-            let x1 = cast(u16) x
-            let x2 = cast(u32) x
+            var x = Swag.S64.Max
+            var x0 = cast(u8) x
+            var x1 = cast(u16) x
+            var x2 = cast(u32) x
         }
     }
 
