@@ -596,10 +596,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
     if (node->specFlags & AstVarDecl::SPECFLAG_IS_LET)
     {
         /*if (node->assignment && node->assignment->flags & AST_VALUE_COMPUTED)
-        {
             isCompilerConstant = true;
-            node->kind         = AstNodeKind::ConstDecl;
-        }
         else*/
         symbolFlags |= OVERLOAD_IS_LET;
     }
@@ -1100,7 +1097,6 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
         if (!isGeneric)
         {
             SWAG_VERIFY(!node->typeInfo->isGeneric(), context->report({node, Fmt(Err(Err0311), node->typeInfo->getDisplayNameC())}));
-
             storageSegment = getSegmentForVar(context, node);
             if (node->hasExtMisc() && node->extMisc()->resolvedUserOpSymbolOverload)
             {
@@ -1151,12 +1147,22 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
             }
             else if (typeInfo->isSlice())
             {
-                if (!(node->flags & AST_VALUE_COMPUTED))
+                if (node->assignment && node->assignment->flags & AST_VALUE_COMPUTED)
+                {
+                    storageOffset  = node->assignment->computedValue->storageOffset;
+                    storageSegment = node->assignment->computedValue->storageSegment;
+                }
+                else if (node->flags & AST_VALUE_COMPUTED)
+                {
+                    storageOffset  = node->computedValue->storageOffset;
+                    storageSegment = node->computedValue->storageSegment;
+                }
+                else
                 {
                     node->assignment->setFlagsValueIsComputed();
                     SWAG_CHECK(reserveAndStoreToSegment(context, storageSegment, storageOffset, node->assignment->computedValue, node->assignment->typeInfo, node->assignment));
 
-                    if (node->assignment->kind != AstNodeKind::Literal)
+                    if (node->assignment->typeInfo->kind == TypeInfoKind::TypeListArray)
                     {
                         auto typeList                            = CastTypeInfo<TypeInfoList>(node->assignment->typeInfo, TypeInfoKind::TypeListArray);
                         node->assignment->computedValue->reg.u64 = typeList->subTypes.size();
@@ -1164,11 +1170,6 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
 
                     node->assignment->computedValue->storageOffset  = storageOffset;
                     node->assignment->computedValue->storageSegment = storageSegment;
-                }
-                else
-                {
-                    storageOffset  = node->computedValue->storageOffset;
-                    storageSegment = node->computedValue->storageSegment;
                 }
             }
             else if (typeInfo->isAny())

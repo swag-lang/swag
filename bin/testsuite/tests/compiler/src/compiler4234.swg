@@ -11,9 +11,10 @@ func toto(x: string)->string
     }
 }
 
+//#[Swag.Warn("wrn0003|wrn0004", Swag.WarnLevel.Disable)]
 #test
 {
-    let y = "5"
+    var y = "5"
     let x = toto(y)
     @assert(x == "5")
 }
