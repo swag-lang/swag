@@ -1,4 +1,4 @@
-#include "pch.h"
+﻿#include "pch.h"
 #include "Log.h"
 #include "Os.h"
 #include "CommandLine.h"
@@ -49,6 +49,27 @@ void Log::print(LogSymbol symbol)
             g_Log.print("=");
         else
             g_Log.print("\xe2\x95\x90");
+        break;
+
+    case LogSymbol::HorizontalLineMidVert:
+        if (g_CommandLine.logAscii)
+            g_Log.print("-");
+        else
+            g_Log.print("\xe2\x94\xac");
+        break;
+
+    case LogSymbol::HorizontalLine2MidVert:
+        if (g_CommandLine.logAscii)
+            g_Log.print("=");
+        else
+            g_Log.print("\xe2\x95\xa4");
+        break;
+
+    case LogSymbol::UpRight:
+        if (g_CommandLine.logAscii)
+            g_Log.print("*");
+        else
+            g_Log.print("\xe2\x94\x94");
         break;
     }
 }

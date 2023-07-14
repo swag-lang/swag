@@ -673,8 +673,10 @@ void Diagnostic::printRanges()
 
     // Print all marks
     auto startIndex = minBlanks;
-    for (auto& r : ranges)
+    for (size_t i = 0; i < ranges.size(); i++)
     {
+        const auto& r = ranges[i];
+
         while (startIndex < r.startLocation.column && startIndex < (uint32_t) backLine.length())
         {
             if (backLine[startIndex] == '\t')
@@ -685,12 +687,31 @@ void Diagnostic::printRanges()
         }
 
         setColorRanges(r.errorLevel);
+        auto mid = r.startLocation.column + r.width / 2;
 
-        for (uint32_t i = 0; i < (uint32_t) r.width && i < (uint32_t) backLine.length(); i++)
+        while (startIndex < mid && startIndex < (uint32_t) backLine.length())
         {
             startIndex++;
             if (r.errorLevel == DiagnosticLevel::Error || r.errorLevel == DiagnosticLevel::Panic || r.errorLevel == DiagnosticLevel::Warning)
-                g_Log.print("^");
+                g_Log.print(LogSymbol::HorizontalLine2);
+            else
+                g_Log.print(LogSymbol::HorizontalLine);
+        }
+
+        if (i != ranges.size() - 1)
+        {
+            startIndex++;
+            if (r.errorLevel == DiagnosticLevel::Error || r.errorLevel == DiagnosticLevel::Panic || r.errorLevel == DiagnosticLevel::Warning)
+                g_Log.print(LogSymbol::HorizontalLine2MidVert);
+            else
+                g_Log.print(LogSymbol::HorizontalLineMidVert);
+        }
+
+        while (startIndex < r.startLocation.column + r.width && startIndex < (uint32_t) backLine.length())
+        {
+            startIndex++;
+            if (r.errorLevel == DiagnosticLevel::Error || r.errorLevel == DiagnosticLevel::Panic || r.errorLevel == DiagnosticLevel::Warning)
+                g_Log.print(LogSymbol::HorizontalLine2);
             else
                 g_Log.print(LogSymbol::HorizontalLine);
         }
@@ -724,7 +745,9 @@ void Diagnostic::printRanges()
         startIndex = minBlanks;
         for (const auto& r : ranges)
         {
-            while (startIndex < r.startLocation.column && startIndex < (uint32_t) backLine.length())
+            auto mid = r.startLocation.column + r.width / 2;
+
+            while (startIndex < mid && startIndex < (uint32_t) backLine.length())
             {
                 if (backLine[startIndex] == '\t')
                     g_Log.print("\t");
@@ -745,8 +768,10 @@ void Diagnostic::printRanges()
         startIndex = minBlanks;
         for (size_t i = 0; i < ranges.size(); i++)
         {
-            const auto& r = ranges[i];
-            while (startIndex < r.startLocation.column && startIndex < (uint32_t) backLine.length())
+            const auto& r   = ranges[i];
+            auto        mid = r.startLocation.column + r.width / 2;
+
+            while (startIndex < mid && startIndex < (uint32_t) backLine.length())
             {
                 if (backLine[startIndex] == '\t')
                     g_Log.print("\t");
@@ -757,6 +782,11 @@ void Diagnostic::printRanges()
 
             if (i == ranges.size() - 1)
             {
+                setColorRanges(r.errorLevel);
+                g_Log.print(LogSymbol::UpRight);
+                g_Log.print(LogSymbol::HorizontalLine);
+                g_Log.print(LogSymbol::HorizontalLine);
+                g_Log.print(" ");
                 g_Log.setColor(hintColor);
                 g_Log.print(r.hint);
             }

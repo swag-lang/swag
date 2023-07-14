@@ -17,7 +17,7 @@ void CommandLineParser::setup(CommandLine* cmdLine)
     addArg("bu sc doc",           "--verbose-path",         nullptr,    CommandLineType::Bool,          &cmdLine->verbosePath, nullptr, "log global paths");
     addArg("bu sc",               "--verbose-link",         nullptr,    CommandLineType::Bool,          &cmdLine->verboseLink, nullptr, "log linker command line");
     addArg("bu sc",               "--verbose-ctypes",       nullptr,    CommandLineType::Bool,          &cmdLine->verboseConcreteTypes, nullptr, "log generated concrete types");
-    addArg("te",                  "--verbose-testerrors",   nullptr,    CommandLineType::Bool,          &cmdLine->verboseTestErrors, nullptr, "log errors during test");
+    addArg("te",                  "--verbose-test-errors",  nullptr,    CommandLineType::Bool,          &cmdLine->verboseTestErrors, nullptr, "log errors during test");
     addArg("bu sc te doc",        "--verbose-stages",       nullptr,    CommandLineType::Bool,          &cmdLine->verboseStages, nullptr, "log compiler stages");                                             
                                   
     addArg("bu sc doc",           "--error-oneline",        "-el",      CommandLineType::Bool,          &cmdLine->errorOneLine, nullptr, "display errors in a single line");
