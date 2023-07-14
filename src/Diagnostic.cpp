@@ -740,33 +740,9 @@ void Diagnostic::printRanges()
 
     while (ranges.size())
     {
-        g_Log.eol();
-        printMargin(false, true);
-
-        // Print all the vertical bars
-        startIndex = minBlanks;
-        for (const auto& r : ranges)
-        {
-            auto mid = r.startLocation.column + r.width / 2;
-
-            while (startIndex < mid && startIndex < (uint32_t) backLine.length())
-            {
-                if (backLine[startIndex] == '\t')
-                    g_Log.print("\t");
-                else
-                    g_Log.print(" ");
-                startIndex++;
-            }
-
-            setColorRanges(r.errorLevel);
-            g_Log.print(LogSymbol::VerticalLine);
-            startIndex++;
-        }
-
-        g_Log.eol();
-        printMargin(false, true);
-
         // Print the last hint
+        g_Log.eol();
+        printMargin(false, true);
         startIndex = minBlanks;
         for (size_t i = 0; i < ranges.size(); i++)
         {
@@ -802,6 +778,31 @@ void Diagnostic::printRanges()
 
         // Remove processed range
         ranges.pop_back();
+
+        // Print all the vertical bars
+        if (!ranges.empty())
+        {
+            g_Log.eol();
+            printMargin(false, true);
+            startIndex = minBlanks;
+            for (const auto& r : ranges)
+            {
+                auto mid = r.startLocation.column + r.width / 2;
+
+                while (startIndex < mid && startIndex < (uint32_t) backLine.length())
+                {
+                    if (backLine[startIndex] == '\t')
+                        g_Log.print("\t");
+                    else
+                        g_Log.print(" ");
+                    startIndex++;
+                }
+
+                setColorRanges(r.errorLevel);
+                g_Log.print(LogSymbol::VerticalLine);
+                startIndex++;
+            }
+        }
     }
 
     g_Log.eol();
@@ -828,7 +829,6 @@ void Diagnostic::report(bool verboseMode)
     {
         g_Log.setColor(sourceFileColor);
         g_Log.print("-->");
-        // g_Log.print("\xe2\x87\xa8");
         g_Log.print(" ");
         printSourceLine();
         g_Log.eol();
