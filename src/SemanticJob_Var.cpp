@@ -1097,89 +1097,54 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
         if (!isGeneric)
         {
             SWAG_VERIFY(!node->typeInfo->isGeneric(), context->report({node, Fmt(Err(Err0311), node->typeInfo->getDisplayNameC())}));
+
+            // A constant array cannot be initialized with just one value (this is for variables)
+            if (typeInfo->isArray() && node->assignment && !node->assignment->typeInfo->isArray() && !node->assignment->typeInfo->isListArray())
+            {
+                Diagnostic diag{node->assignment, Fmt(Err(Err0500), node->assignment->typeInfo->getDisplayNameC())};
+                auto       note = Diagnostic::help(Hlp(Hlp0050));
+                return context->report(diag, note);
+            }
+
             storageSegment = getSegmentForVar(context, node);
             if (node->hasExtMisc() && node->extMisc()->resolvedUserOpSymbolOverload)
             {
                 storageOffset = 0;
                 symbolFlags |= OVERLOAD_INCOMPLETE;
             }
-            else if (typeInfo->isArray())
+            else if (node->assignment && typeInfo->isAny())
             {
-                if (node->assignment && !node->assignment->typeInfo->isArray() && !node->assignment->typeInfo->isListArray())
-                {
-                    Diagnostic diag{node->assignment, Fmt(Err(Err0500), node->assignment->typeInfo->getDisplayNameC())};
-                    auto       note = Diagnostic::help(Hlp(Hlp0050));
-                    return context->report(diag, note);
-                }
-                else if (node->assignment && node->assignment->flags & AST_VALUE_COMPUTED)
-                {
-                    storageOffset  = node->assignment->computedValue->storageOffset;
-                    storageSegment = node->assignment->computedValue->storageSegment;
-                }
-                else if (node->flags & AST_VALUE_COMPUTED)
-                {
-                    storageOffset  = node->computedValue->storageOffset;
-                    storageSegment = node->computedValue->storageSegment;
-                }
-                else
-                {
-                    node->allocateComputedValue();
-                    SWAG_CHECK(collectAssignment(context, storageSegment, storageOffset, node));
-                }
+                node->assignment->setFlagsValueIsComputed();
+                SWAG_CHECK(reserveAndStoreToSegment(context, storageSegment, storageOffset, node->assignment->computedValue, node->assignment->typeInfo, node->assignment));
+                node->assignment->computedValue->storageOffset  = storageOffset;
+                node->assignment->computedValue->storageSegment = storageSegment;
             }
-            else if (typeInfo->isStruct())
+            else if (node->assignment && node->assignment->flags & AST_VALUE_COMPUTED)
             {
-                if (node->assignment && node->assignment->flags & AST_VALUE_COMPUTED)
-                {
-                    storageOffset  = node->assignment->computedValue->storageOffset;
-                    storageSegment = node->assignment->computedValue->storageSegment;
-                }
-                else if (node->flags & AST_VALUE_COMPUTED)
-                {
-                    storageOffset  = node->computedValue->storageOffset;
-                    storageSegment = node->computedValue->storageSegment;
-                }
-                else
-                {
-                    node->allocateComputedValue();
-                    SWAG_CHECK(collectAssignment(context, storageSegment, storageOffset, node));
-                }
+                storageOffset  = node->assignment->computedValue->storageOffset;
+                storageSegment = node->assignment->computedValue->storageSegment;
             }
-            else if (typeInfo->isSlice())
+            else if (node->flags & AST_VALUE_COMPUTED)
             {
-                if (node->assignment && node->assignment->flags & AST_VALUE_COMPUTED)
-                {
-                    storageOffset  = node->assignment->computedValue->storageOffset;
-                    storageSegment = node->assignment->computedValue->storageSegment;
-                }
-                else if (node->flags & AST_VALUE_COMPUTED)
-                {
-                    storageOffset  = node->computedValue->storageOffset;
-                    storageSegment = node->computedValue->storageSegment;
-                }
-                else
-                {
-                    node->assignment->setFlagsValueIsComputed();
-                    SWAG_CHECK(reserveAndStoreToSegment(context, storageSegment, storageOffset, node->assignment->computedValue, node->assignment->typeInfo, node->assignment));
+                storageOffset  = node->computedValue->storageOffset;
+                storageSegment = node->computedValue->storageSegment;
+            }
+            else if (typeInfo->isArray() || typeInfo->isStruct())
+            {
+                node->allocateComputedValue();
+                SWAG_CHECK(collectAssignment(context, storageSegment, storageOffset, node));
+            }
+            else if (node->assignment && typeInfo->isSlice())
+            {
+                node->assignment->setFlagsValueIsComputed();
+                SWAG_CHECK(reserveAndStoreToSegment(context, storageSegment, storageOffset, node->assignment->computedValue, node->assignment->typeInfo, node->assignment));
+                node->assignment->computedValue->storageOffset  = storageOffset;
+                node->assignment->computedValue->storageSegment = storageSegment;
 
-                    if (node->assignment->typeInfo->kind == TypeInfoKind::TypeListArray)
-                    {
-                        auto typeList                            = CastTypeInfo<TypeInfoList>(node->assignment->typeInfo, TypeInfoKind::TypeListArray);
-                        node->assignment->computedValue->reg.u64 = typeList->subTypes.size();
-                    }
-
-                    node->assignment->computedValue->storageOffset  = storageOffset;
-                    node->assignment->computedValue->storageSegment = storageSegment;
-                }
-            }
-            else if (typeInfo->isAny())
-            {
-                if (node->assignment)
+                if (node->assignment->typeInfo->kind == TypeInfoKind::TypeListArray)
                 {
-                    node->assignment->setFlagsValueIsComputed();
-                    SWAG_CHECK(reserveAndStoreToSegment(context, storageSegment, storageOffset, node->assignment->computedValue, node->assignment->typeInfo, node->assignment));
-                    node->assignment->computedValue->storageOffset  = storageOffset;
-                    node->assignment->computedValue->storageSegment = storageSegment;
+                    auto typeList                            = CastTypeInfo<TypeInfoList>(node->assignment->typeInfo, TypeInfoKind::TypeListArray);
+                    node->assignment->computedValue->reg.u64 = typeList->subTypes.size();
                 }
             }
 
