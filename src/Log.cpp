@@ -26,6 +26,33 @@ void Log::setColor(LogColor color)
         print(colorToVTS(color));
 }
 
+void Log::print(LogSymbol symbol)
+{
+    switch (symbol)
+    {
+    case LogSymbol::VerticalLine:
+        if (g_CommandLine.logAscii)
+            g_Log.print("|");
+        else
+            g_Log.print("\xe2\x94\x82");
+        break;
+
+    case LogSymbol::HorizontalLine:
+        if (g_CommandLine.logAscii)
+            g_Log.print("-");
+        else
+            g_Log.print("\xe2\x94\x80");
+        break;
+
+    case LogSymbol::HorizontalLine2:
+        if (g_CommandLine.logAscii)
+            g_Log.print("=");
+        else
+            g_Log.print("\xe2\x95\x90");
+        break;
+    }
+}
+
 void Log::print(const char* message)
 {
     cout << message;

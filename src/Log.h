@@ -33,6 +33,13 @@ enum class LogColor
     SyntaxString,
 };
 
+enum class LogSymbol
+{
+    VerticalLine,
+    HorizontalLine,
+    HorizontalLine2,
+};
+
 enum class LogPassType
 {
     PassBegin,
@@ -119,6 +126,7 @@ struct Log
     void print(const char* message);
     void print(const char* message, LogColor color);
     void print(const Utf8& message);
+    void print(LogSymbol symbol);
     void eol();
 
     void messageHeaderCentered(const Utf8& header, const Utf8& message, LogColor headerColor = LogColor::Green, LogColor msgColor = LogColor::White);

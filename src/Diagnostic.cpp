@@ -119,7 +119,10 @@ void Diagnostic::printMargin(bool eol, bool printLineNo, int lineNo)
             g_Log.print(Fmt("%d", lineNo));
     }
 
-    g_Log.print(" |  ");
+    g_Log.print(" ");
+    g_Log.print(LogSymbol::VerticalLine);
+    g_Log.print("  ");
+
     if (eol)
         g_Log.eol();
 }
@@ -686,12 +689,10 @@ void Diagnostic::printRanges()
         for (uint32_t i = 0; i < (uint32_t) r.width && i < (uint32_t) backLine.length(); i++)
         {
             startIndex++;
-            if (r.errorLevel == DiagnosticLevel::Error || r.errorLevel == DiagnosticLevel::Panic)
-                g_Log.print("^");
-            else if (r.errorLevel == DiagnosticLevel::Warning)
+            if (r.errorLevel == DiagnosticLevel::Error || r.errorLevel == DiagnosticLevel::Panic || r.errorLevel == DiagnosticLevel::Warning)
                 g_Log.print("^");
             else
-                g_Log.print("-");
+                g_Log.print(LogSymbol::HorizontalLine);
         }
     }
 
@@ -733,7 +734,7 @@ void Diagnostic::printRanges()
             }
 
             setColorRanges(r.errorLevel);
-            g_Log.print("|");
+            g_Log.print(LogSymbol::VerticalLine);
             startIndex++;
         }
 
@@ -762,7 +763,7 @@ void Diagnostic::printRanges()
             else
             {
                 setColorRanges(r.errorLevel);
-                g_Log.print("|");
+                g_Log.print(LogSymbol::VerticalLine);
                 startIndex++;
             }
         }
@@ -794,7 +795,9 @@ void Diagnostic::report(bool verboseMode)
     if (showFileName)
     {
         g_Log.setColor(sourceFileColor);
-        g_Log.print("--> ");
+        g_Log.print("-->");
+        // g_Log.print("\xe2\x87\xa8");
+        g_Log.print(" ");
         printSourceLine();
         g_Log.eol();
     }

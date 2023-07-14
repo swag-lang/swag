@@ -87,7 +87,7 @@ void ByteCodeDebugger::printDebugContext(ByteCodeRunContext* context, bool force
     {
         g_Log.setColor(LogColor::Green);
         for (int i = 0; i < LINE_W; i++)
-            g_Log.print(Utf8("\xe2\x94\x80"));
+            g_Log.print(LogSymbol::HorizontalLine);
         g_Log.eol();
     }
 

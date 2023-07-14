@@ -10,7 +10,8 @@ void CommandLineParser::setup(CommandLine* cmdLine)
 {
     // clang-format off
     addArg("all",                 "--silent",               "-s",       CommandLineType::Bool,          &cmdLine->silent, nullptr, "do not log messages");
-    addArg("all",                 "--colors",               nullptr,    CommandLineType::Bool,          &cmdLine->logColors, nullptr, "log messages with colors");
+    addArg("all",                 "--log-colors",           nullptr,    CommandLineType::Bool,          &cmdLine->logColors, nullptr, "output to console can be colored");
+    addArg("all",                 "--log-ascii",            nullptr,    CommandLineType::Bool,          &cmdLine->logAscii, nullptr, "output to console only use ascii characters (no unicode)");
                                                                                                         
     addArg("all",                 "--verbose-cmdline",      nullptr,    CommandLineType::Bool,          &cmdLine->verboseCmdLine, nullptr, "log swag command line");
     addArg("bu sc doc",           "--verbose-path",         nullptr,    CommandLineType::Bool,          &cmdLine->verbosePath, nullptr, "log global paths");

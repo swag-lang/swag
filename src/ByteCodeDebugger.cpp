@@ -573,13 +573,13 @@ bool ByteCodeDebugger::step(ByteCodeRunContext* context)
 
             g_Log.eol();
             for (int i = 0; i < LINE_W; i++)
-                g_Log.print(Utf8("\xe2\x95\x90"));
+                g_Log.print(LogSymbol::HorizontalLine2);
             g_Log.eol();
 
             g_Log.print("entering bytecode debugger, type '?' for help\n");
 
             for (int i = 0; i < LINE_W; i++)
-                g_Log.print(Utf8("\xe2\x94\x80"));
+                g_Log.print(LogSymbol::HorizontalLine);
             g_Log.eol();
 
             g_Log.print(Fmt("build configuration            = '%s'\n", g_CommandLine.buildCfg.c_str()));
@@ -588,7 +588,7 @@ bool ByteCodeDebugger::step(ByteCodeRunContext* context)
             g_Log.print(Fmt("BuildCfg.byteCodeOptimizeLevel = %d\n", module->buildCfg.byteCodeOptimizeLevel));
 
             for (int i = 0; i < LINE_W; i++)
-                g_Log.print(Utf8("\xe2\x95\x90"));
+                g_Log.print(LogSymbol::HorizontalLine2);
             g_Log.eol();
 
             g_Log.eol();
@@ -597,7 +597,7 @@ bool ByteCodeDebugger::step(ByteCodeRunContext* context)
             /////////////////////////////////////////
             g_Log.setColor(LogColor::Green);
             for (int i = 0; i < LINE_W; i++)
-                g_Log.print(Utf8("\xe2\x94\x80"));
+                g_Log.print(LogSymbol::HorizontalLine);
             g_Log.eol();
             g_Log.setColor(LogColor::Gray);
         }
@@ -667,7 +667,7 @@ bool ByteCodeDebugger::step(ByteCodeRunContext* context)
         /////////////////////////////////////////
         g_Log.setColor(LogColor::Green);
         for (int i = 0; i < LINE_W; i++)
-            g_Log.print(Utf8("\xe2\x94\x80"));
+            g_Log.print(LogSymbol::HorizontalLine);
         g_Log.eol();
         g_Log.setColor(LogColor::Gray);
 

@@ -67,6 +67,7 @@ struct CommandLine
     // Display
     bool silent                = false;
     bool logColors             = true;
+    bool logAscii              = false;
     bool verbose               = false;
     bool verboseCmdLine        = false;
     bool verbosePath           = false;
