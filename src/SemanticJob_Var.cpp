@@ -1099,11 +1099,15 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
             SWAG_VERIFY(!node->typeInfo->isGeneric(), context->report({node, Fmt(Err(Err0311), node->typeInfo->getDisplayNameC())}));
 
             // A constant array cannot be initialized with just one value (this is for variables)
-            if (typeInfo->isArray() && node->assignment && !node->assignment->typeInfo->isArray() && !node->assignment->typeInfo->isListArray())
+            if (typeInfo->isArray() && node->assignment)
             {
-                Diagnostic diag{node->assignment, Fmt(Err(Err0500), node->assignment->typeInfo->getDisplayNameC())};
-                auto       note = Diagnostic::help(Hlp(Hlp0050));
-                return context->report(diag, note);
+                auto typeAssign = TypeManager::concreteType(node->assignment->typeInfo);
+                if (!typeAssign->isArray() && !typeAssign->isListArray())
+                {
+                    Diagnostic diag{node->assignment, Fmt(Err(Err0500), typeAssign->getDisplayNameC())};
+                    auto       note = Diagnostic::help(Hlp(Hlp0050));
+                    return context->report(diag, note);
+                }
             }
 
             storageSegment = getSegmentForVar(context, node);
