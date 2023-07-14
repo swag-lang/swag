@@ -9,7 +9,7 @@ func titi()
 {
     let to = @typeof(titi)
     @assert(@countof(to.attributes) == 1)
-    @assert(@countof(to.attributes.params) == 4)
+    @assert(@countof(to.attributes[0].params) == 4)
     @assert(cast(s32) to.attributes[0].params[0].value == 666)
     @assert(cast(string) to.attributes[0].params[1].value == "a")
     @assert(cast(string) to.attributes[0].params[2].value == "b")

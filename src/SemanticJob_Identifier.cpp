@@ -780,6 +780,17 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* ide
         return context->report({identifier, Fmt(Err(Err0187), symbol->name.c_str()), Diagnostic::isType(identifier->typeInfo)});
     }
 
+    // A.X and A is a slice : missing index
+    if (symbol &&
+        symbol->kind == SymbolKind::Variable &&
+        identifier->typeInfo->isSlice() &&
+        identifier->parent->kind != AstNodeKind::ArrayPointerIndex &&
+        identifier->parent == identifierRef &&
+        identifierRef->childs.back() != identifier)
+    {
+        return context->report({identifier, Fmt(Err(Err0180), symbol->name.c_str()), Diagnostic::isType(identifier->typeInfo)});
+    }
+
     // Reapply back the values of the match to the call parameter node
     for (auto& pp : oneMatch.paramParameters)
     {

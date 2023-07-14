@@ -912,7 +912,7 @@ void initErrors()
     SWAG_ERROR(Err0008, "use of unknown named parameter '%s'");
     SWAG_ERROR(Err0122, "use of unknown identifier '%s'");
     SWAG_ERROR(Err0165, "use of unknown type '%s'");
-    SWAG_ERROR(Err0180, nullptr);
+    SWAG_ERROR(Err0180, "missing index when dereferencing slice '%s'");
     SWAG_ERROR(Err0181, nullptr);
     SWAG_ERROR(Err0183, nullptr);
     SWAG_ERROR(Err0056, "x64 backend unsupported os '%s'");
