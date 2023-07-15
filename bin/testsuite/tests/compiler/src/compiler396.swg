@@ -1,7 +1,8 @@
 //#[Swag.PrintBc]
+#[Swag.Warn("Wrn0009", Swag.WarnLevel.Disable)]
 #test
 {
-	let c = 666;
+	var c = 666
 	let d: [..] s32 = [1, c, 2];
 
 	@assert(d[0] == 1);

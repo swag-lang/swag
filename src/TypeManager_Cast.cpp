@@ -2898,7 +2898,7 @@ bool TypeManager::castToFromAny(SemanticContext* context, TypeInfo* toType, Type
             ExportedAny* any         = (ExportedAny*) fromNode->computedValue->storageSegment->address(fromNode->computedValue->storageOffset);
             auto         newTypeInfo = context->sourceFile->module->typeGen.getRealType(fromNode->computedValue->storageSegment, (ExportedTypeInfo*) any->type);
 
-            if (context->sourceFile->module->mustEmitSafety(fromNode, SAFETY_ANY, true))
+            if (newTypeInfo && context->sourceFile->module->mustEmitSafety(fromNode, SAFETY_ANY, true))
             {
                 if (!toType->isSame(newTypeInfo, CASTFLAG_EXACT))
                 {

@@ -5,5 +5,5 @@ using Swag
 #test
 {
 	let x: any = 6
-	@assert(x == 6)
+	@assert(cast(s32) x == 6)
 }

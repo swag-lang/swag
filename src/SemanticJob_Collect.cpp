@@ -36,23 +36,32 @@ bool SemanticJob::storeToSegment(JobContext* context, DataSegment* storageSegmen
         if (!assignment->castedTypeInfo)
             return Report::internalError(context->node, "storeToSegment, cannot resolve any");
 
-        // Store value in constant storageSegment
-        auto     constSegment = SemanticJob::getConstantSegFromContext(context->node, storageSegment->kind == SegmentKind::Compiler);
-        uint32_t storageOffsetValue;
-        SWAG_CHECK(reserveAndStoreToSegment(context, constSegment, storageOffsetValue, value, assignment->castedTypeInfo, assignment));
+        if (assignment && assignment->typeInfo->isPointerNull())
+        {
+            *(void**) ptrDest                      = nullptr;
+            *(uint64_t*) (ptrDest + sizeof(void*)) = 0;
+        }
+        else if (assignment)
+        {
+            // Store value in constant storageSegment
+            auto     constSegment = SemanticJob::getConstantSegFromContext(context->node, storageSegment->kind == SegmentKind::Compiler);
+            uint32_t storageOffsetValue;
+            SWAG_CHECK(reserveAndStoreToSegment(context, constSegment, storageOffsetValue, value, assignment->castedTypeInfo, assignment));
 
-        // Then reference that value and the concrete type info
-        // Pointer to the value
-        auto ptrStorage   = constSegment->address(storageOffsetValue);
-        *(void**) ptrDest = ptrStorage;
-        storageSegment->addInitPtr(storageOffset, storageOffsetValue, constSegment->kind);
+            // Then reference that value and the concrete type info
+            // Pointer to the value
+            auto ptrStorage   = constSegment->address(storageOffsetValue);
+            *(void**) ptrDest = ptrStorage;
+            storageSegment->addInitPtr(storageOffset, storageOffsetValue, constSegment->kind);
 
-        // :AnyTypeSegment
-        SWAG_ASSERT(assignment->hasExtMisc());
-        SWAG_ASSERT(assignment->extMisc()->anyTypeSegment);
-        constSegment                        = assignment->extMisc()->anyTypeSegment;
-        *(void**) (ptrDest + sizeof(void*)) = constSegment->address(assignment->extMisc()->anyTypeOffset);
-        storageSegment->addInitPtr(storageOffset + 8, assignment->extMisc()->anyTypeOffset, constSegment->kind);
+            // :AnyTypeSegment
+            SWAG_ASSERT(assignment->hasExtMisc());
+            SWAG_ASSERT(assignment->extMisc()->anyTypeSegment);
+            constSegment                        = assignment->extMisc()->anyTypeSegment;
+            *(void**) (ptrDest + sizeof(void*)) = constSegment->address(assignment->extMisc()->anyTypeOffset);
+            storageSegment->addInitPtr(storageOffset + 8, assignment->extMisc()->anyTypeOffset, constSegment->kind);
+        }
+
         return true;
     }
 

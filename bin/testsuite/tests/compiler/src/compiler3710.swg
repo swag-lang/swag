@@ -4,10 +4,10 @@
     @assert(x == null)
     x = 6
     @assert(x != null)
-    @assert(x == 6)
+    @assert(cast(s32) x == 6)
     x = "string"
     @assert(x != null)
-    @assert(x == "string")
+    @assert(cast(string) x == "string")
     x = null
     @assert(x == null)
 }

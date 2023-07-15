@@ -913,7 +913,7 @@ void initErrors()
     SWAG_ERROR(Err0122, "use of unknown identifier '%s'");
     SWAG_ERROR(Err0165, "use of unknown type '%s'");
     SWAG_ERROR(Err0180, "missing index when dereferencing slice '%s'");
-    SWAG_ERROR(Err0181, nullptr);
+    SWAG_ERROR(Err0181, "a type 'any' without a cast can only be compared to 'null'");
     SWAG_ERROR(Err0183, nullptr);
     SWAG_ERROR(Err0056, "x64 backend unsupported os '%s'");
     SWAG_ERROR(Err0073, "'with' should not be used on an enum variable (type is '%s')");
@@ -1142,7 +1142,7 @@ void initErrors()
     SWAG_ERROR(Hnt0113, "this parameter does not match");
     SWAG_ERROR(Hnt0114, "missing return type");
     SWAG_ERROR(Hnt0115, "one function is declared with 'throw' and the other one is not");
-    SWAG_ERROR(Hnt0116, nullptr);
+    SWAG_ERROR(Hnt0116, "this should be casted to the underlying 'any' type");
     SWAG_ERROR(Hnt0117, "this could be the start of the initialization of '%s' or the start of a new block");
     SWAG_ERROR(Hnt0118, "no corresponding start of multi-line comment '/*' has been found");
     SWAG_ERROR(Hnt0119, "this is an enum value");

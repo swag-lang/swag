@@ -20,5 +20,5 @@ enum A
 
 	let val = ptr1.attributes[0].params[0].value
 	@assert(@kindof(val) == string)
-	@assert(val == "TOTO")
+	@assert(cast(string) val == "TOTO")
 }
