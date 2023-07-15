@@ -78,8 +78,6 @@ bool SemanticJob::resolveBinaryOpPlus(SemanticContext* context, AstNode* left, A
         return true;
     }
 
-    SWAG_VERIFY(rightTypeInfo->isNative(), context->report({right, Fmt(Err(Err0142), rightTypeInfo->getDisplayNameC())}));
-
     PushErrCxtStep ec(context, nullptr, ErrCxtStepKind::MsgPrio, [leftTypeInfo, rightTypeInfo]()
                       { return Fmt(Err(Err0196), "add", leftTypeInfo->getDisplayNameC(), "and", rightTypeInfo->getDisplayNameC()); });
     SWAG_CHECK(TypeManager::makeCompatibles(context, left, right, CASTFLAG_TRY_COERCE));
@@ -262,7 +260,6 @@ bool SemanticJob::resolveBinaryOpMinus(SemanticContext* context, AstNode* left, 
         return true;
     }
 
-    SWAG_VERIFY(rightTypeInfo->isNative(), context->report({right, Fmt(Err(Err0146), rightTypeInfo->getDisplayNameC())}));
     PushErrCxtStep ec(context, nullptr, ErrCxtStepKind::MsgPrio, [leftTypeInfo, rightTypeInfo]()
                       { return Fmt(Err(Err0196), "substract", leftTypeInfo->getDisplayNameC(), "and", rightTypeInfo->getDisplayNameC()); });
     SWAG_CHECK(TypeManager::makeCompatibles(context, left, right, CASTFLAG_TRY_COERCE));

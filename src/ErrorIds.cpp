@@ -758,8 +758,8 @@ void initErrors()
     SWAG_ERROR(Err0005, "the operation '%s' is not allowed on type '%s'");
     SWAG_ERROR(Err0143, "the operator '%s' does not accept a left expression of type '%s'");
     SWAG_ERROR(Err0164, nullptr);
-    SWAG_ERROR(Err0142, "the operator '+' does not accept an operand of type '%s'");
-    SWAG_ERROR(Err0146, "the operator '-' does not accept an operand of type '%s'");
+    SWAG_ERROR(Err0142, nullptr);
+    SWAG_ERROR(Err0146, nullptr);
     SWAG_ERROR(Err0163, nullptr);
     SWAG_ERROR(Err0770, "the return type has already been deduced to be '%s' (and '%s' is now provided)");
     SWAG_ERROR(Err0773, "the return type has already been deduced to be nothing (and '%s' is now provided)");
