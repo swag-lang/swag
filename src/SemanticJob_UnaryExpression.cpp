@@ -7,6 +7,7 @@
 
 bool SemanticJob::resolveUnaryOpMinus(SemanticContext* context, AstNode* op, AstNode* child)
 {
+    auto node     = context->node;
     auto typeInfo = TypeManager::concreteType(child->typeInfo);
 
     switch (typeInfo->nativeType)
@@ -18,13 +19,33 @@ bool SemanticJob::resolveUnaryOpMinus(SemanticContext* context, AstNode* op, Ast
     case NativeTypeKind::F32:
     case NativeTypeKind::F64:
         break;
+
     case NativeTypeKind::U8:
     case NativeTypeKind::U16:
     case NativeTypeKind::U32:
     case NativeTypeKind::U64:
-        return context->report({child, Fmt(Err(Err0827), typeInfo->getDisplayNameC())});
+    {
+        Diagnostic diag{node, node->token, Fmt(Err(Err0827), typeInfo->getDisplayNameC())};
+        diag.hint = Hnt(Hnt0061);
+        diag.addRange(child, Diagnostic::isType(typeInfo));
+        return context->report(diag);
+    }
+
+    case NativeTypeKind::Any:
+    {
+        Diagnostic diag{node, node->token, Fmt(Err(Err0828), typeInfo->getDisplayNameC())};
+        diag.hint = Hnt(Hnt0061);
+        diag.addRange(child, Hnt(Hnt0116));
+        return context->report(diag);
+    }
+
     default:
-        return context->report({child, Fmt(Err(Err0828), typeInfo->getDisplayNameC())});
+    {
+        Diagnostic diag{node, node->token, Fmt(Err(Err0828), typeInfo->getDisplayNameC())};
+        diag.hint = Hnt(Hnt0061);
+        diag.addRange(child, Diagnostic::isType(typeInfo));
+        return context->report(diag);
+    }
     }
 
     if (child->flags & AST_VALUE_COMPUTED && !(child->semFlags & SEMFLAG_NEG_EATEN))
